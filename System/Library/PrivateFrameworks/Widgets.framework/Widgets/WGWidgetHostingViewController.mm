@@ -1,119 +1,119 @@
 @interface WGWidgetHostingViewController
-+ (BOOL)_canWidgetHostCaptureSnapshotForSequence:(id)a3;
-+ (BOOL)_canWidgetHostConnectRemoteViewControllerByCancellingDisappearanceForSequence:(id)a3;
-+ (BOOL)_canWidgetHostConnectRemoteViewControllerByRequestingForSequence:(id)a3 disconnectionTimer:(id)a4 connectionState:(int64_t)a5;
-+ (BOOL)_canWidgetHostDisconnectRemoteViewControllerForSequence:(id)a3 disconnectionTimer:(id)a4 coalesce:(BOOL)a5;
-+ (BOOL)_canWidgetHostEndSequenceByDisconnectingRemoteViewControllerForSequence:(id)a3;
-+ (BOOL)_canWidgetHostInsertRemoteViewForSequence:(id)a3;
-+ (BOOL)_canWidgetHostRequestRemoteViewControllerForSequence:(id)a3;
-+ (void)setWidgetSnapshotTimestampsEnabled:(BOOL)a3;
-- (BOOL)_canInsertRemoteView:(id *)a3;
-- (BOOL)_hasOutstandingUpdateRequestForSequence:(id)a3;
-- (BOOL)_isActiveSequence:(id)a3;
++ (BOOL)_canWidgetHostCaptureSnapshotForSequence:(id)sequence;
++ (BOOL)_canWidgetHostConnectRemoteViewControllerByCancellingDisappearanceForSequence:(id)sequence;
++ (BOOL)_canWidgetHostConnectRemoteViewControllerByRequestingForSequence:(id)sequence disconnectionTimer:(id)timer connectionState:(int64_t)state;
++ (BOOL)_canWidgetHostDisconnectRemoteViewControllerForSequence:(id)sequence disconnectionTimer:(id)timer coalesce:(BOOL)coalesce;
++ (BOOL)_canWidgetHostEndSequenceByDisconnectingRemoteViewControllerForSequence:(id)sequence;
++ (BOOL)_canWidgetHostInsertRemoteViewForSequence:(id)sequence;
++ (BOOL)_canWidgetHostRequestRemoteViewControllerForSequence:(id)sequence;
++ (void)setWidgetSnapshotTimestampsEnabled:(BOOL)enabled;
+- (BOOL)_canInsertRemoteView:(id *)view;
+- (BOOL)_hasOutstandingUpdateRequestForSequence:(id)sequence;
+- (BOOL)_isActiveSequence:(id)sequence;
 - (BOOL)_managingContainerIsVisible;
 - (BOOL)_shouldRemoveSnapshotWhenNotVisible;
 - (BOOL)isBrokenViewVisible;
 - (BOOL)isRemoteViewVisible;
 - (BSAuditToken)auditToken;
 - (CGRect)_snapshotViewBounds;
-- (CGSize)_maxSizeForDisplayMode:(int64_t)a3;
+- (CGSize)_maxSizeForDisplayMode:(int64_t)mode;
 - (NSString)_containerIdentifier;
 - (NSTimer)_disconnectionTimer;
 - (UIEdgeInsets)_layoutMargins;
 - (UIEdgeInsets)_marginInsets;
-- (WGWidgetHostingViewController)initWithWidgetInfo:(id)a3 delegate:(id)a4 host:(id)a5;
+- (WGWidgetHostingViewController)initWithWidgetInfo:(id)info delegate:(id)delegate host:(id)host;
 - (WGWidgetHostingViewControllerDelegate)delegate;
 - (WGWidgetHostingViewControllerHost)host;
-- (id)_snapshotIdentifierForLayoutMode:(int64_t)a3;
-- (id)_updateRequestForSequence:(id)a3;
-- (id)_widgetSnapshotURLForLayoutMode:(int64_t)a3 ensuringDirectoryExists:(BOOL)a4;
-- (id)_widgetSnapshotURLForSnapshotIdentifier:(id)a3 ensuringDirectoryExists:(BOOL)a4;
+- (id)_snapshotIdentifierForLayoutMode:(int64_t)mode;
+- (id)_updateRequestForSequence:(id)sequence;
+- (id)_widgetSnapshotURLForLayoutMode:(int64_t)mode ensuringDirectoryExists:(BOOL)exists;
+- (id)_widgetSnapshotURLForSnapshotIdentifier:(id)identifier ensuringDirectoryExists:(BOOL)exists;
 - (id)description;
 - (int64_t)largestAvailableDisplayMode;
 - (int64_t)userSpecifiedDisplayMode;
 - (void)_abortActiveSequence;
 - (void)_attemptReconnectionAfterUnanticipatedDisconnection;
-- (void)_beginRemoteViewControllerAppearanceTransitionIfNecessary:(BOOL)a3 semaphore:(id)a4 animated:(BOOL)a5 completion:(id)a6;
-- (void)_beginSequenceWithReason:(id)a3 completion:(id)a4 updateHandler:(id)a5;
-- (void)_captureLayerTree:(id)a3;
-- (void)_captureSnapshotAndBeginDisappearanceTransitionForSequence:(id)a3 completionHandler:(id)a4;
-- (void)_connectRemoteViewControllerForReason:(id)a3 sequence:(id)a4 completionHandler:(id)a5;
-- (void)_disconnectRemoteViewControllerForReason:(id)a3 sequence:(id)a4 coalesce:(BOOL)a5 completionHandler:(id)a6;
-- (void)_disconnectRemoteViewControllerForSequence:(id)a3 completion:(id)a4;
-- (void)_disconnectionTimerDidFire:(id)a3;
+- (void)_beginRemoteViewControllerAppearanceTransitionIfNecessary:(BOOL)necessary semaphore:(id)semaphore animated:(BOOL)animated completion:(id)completion;
+- (void)_beginSequenceWithReason:(id)reason completion:(id)completion updateHandler:(id)handler;
+- (void)_captureLayerTree:(id)tree;
+- (void)_captureSnapshotAndBeginDisappearanceTransitionForSequence:(id)sequence completionHandler:(id)handler;
+- (void)_connectRemoteViewControllerForReason:(id)reason sequence:(id)sequence completionHandler:(id)handler;
+- (void)_disconnectRemoteViewControllerForReason:(id)reason sequence:(id)sequence coalesce:(BOOL)coalesce completionHandler:(id)handler;
+- (void)_disconnectRemoteViewControllerForSequence:(id)sequence completion:(id)completion;
+- (void)_disconnectionTimerDidFire:(id)fire;
 - (void)_endRemoteViewControllerAppearanceTransitionIfNecessary;
-- (void)_endRemoteViewControllerAppearanceTransitionIfNecessaryWithCompletion:(id)a3;
-- (void)_endSequence:(id)a3 withReason:(id)a4 completion:(id)a5;
-- (void)_enqueueDisconnectionRequestForSequence:(id)a3 endTransitionBlock:(id)a4 completion:(id)a5;
-- (void)_enqueueRemoteServiceRequest:(id)a3 withDescription:(id)a4;
-- (void)_enqueueRequest:(id)a3 inQueue:(id)a4 trampolinedToMainQueue:(BOOL)a5 withDescription:(id)a6;
-- (void)_finishDisconnectingRemoteViewControllerForSequence:(id)a3 error:(id)a4 completion:(id)a5;
+- (void)_endRemoteViewControllerAppearanceTransitionIfNecessaryWithCompletion:(id)completion;
+- (void)_endSequence:(id)sequence withReason:(id)reason completion:(id)completion;
+- (void)_enqueueDisconnectionRequestForSequence:(id)sequence endTransitionBlock:(id)block completion:(id)completion;
+- (void)_enqueueRemoteServiceRequest:(id)request withDescription:(id)description;
+- (void)_enqueueRequest:(id)request inQueue:(id)queue trampolinedToMainQueue:(BOOL)mainQueue withDescription:(id)description;
+- (void)_finishDisconnectingRemoteViewControllerForSequence:(id)sequence error:(id)error completion:(id)completion;
 - (void)_initiateNewSequenceIfNecessary;
 - (void)_insertAppropriateContentView;
 - (void)_insertBrokenView;
-- (void)_insertContentProvidingSubview:(id)a3 sequence:(id)a4 completion:(id)a5;
-- (void)_insertLockedOutViewWithExplanation:(id)a3;
+- (void)_insertContentProvidingSubview:(id)subview sequence:(id)sequence completion:(id)completion;
+- (void)_insertLockedOutViewWithExplanation:(id)explanation;
 - (void)_insertSnapshotViewIfAppropriate;
-- (void)_insertSnapshotWithCompletionHandler:(id)a3;
+- (void)_insertSnapshotWithCompletionHandler:(id)handler;
 - (void)_invalidateDisconnectionTimer;
-- (void)_invalidateSnapshotWithForce:(BOOL)a3 removingSnapshotFilesForActiveDisplayMode:(BOOL)a4 completionHandler:(id)a5;
+- (void)_invalidateSnapshotWithForce:(BOOL)force removingSnapshotFilesForActiveDisplayMode:(BOOL)mode completionHandler:(id)handler;
 - (void)_invalidateVisibleFrame;
 - (void)_layoutMarginsDidChange;
-- (void)_loadSnapshotViewFromDiskIfNecessary:(id)a3;
-- (void)_noteOutstandingUpdateRequestForSequence:(id)a3;
-- (void)_packageViewFromURL:(id)a3 reply:(id)a4;
-- (void)_packageViewWithBlock:(id)a3 reply:(id)a4;
-- (void)_performUpdateForSequence:(id)a3 withCompletionHandler:(id)a4;
+- (void)_loadSnapshotViewFromDiskIfNecessary:(id)necessary;
+- (void)_noteOutstandingUpdateRequestForSequence:(id)sequence;
+- (void)_packageViewFromURL:(id)l reply:(id)reply;
+- (void)_packageViewWithBlock:(id)block reply:(id)reply;
+- (void)_performUpdateForSequence:(id)sequence withCompletionHandler:(id)handler;
 - (void)_purgeLegacySnapshotsIfNecessary;
-- (void)_registerUpdateRequestCompletionHandler:(id)a3 forSequence:(id)a4;
-- (void)_removeAllSnapshotFilesDueToIssue:(BOOL)a3;
+- (void)_registerUpdateRequestCompletionHandler:(id)handler forSequence:(id)sequence;
+- (void)_removeAllSnapshotFilesDueToIssue:(BOOL)issue;
 - (void)_removeAllSnapshotFilesForActiveDisplayMode;
 - (void)_removeAllSnapshotFilesInActiveDisplayModeForAllButActiveUserInterfaceStyle;
-- (void)_removeAllSnapshotFilesInActiveDisplayModeForContentSizeCategory:(id)a3;
-- (void)_removeAllSnapshotFilesMatchingPredicate:(id)a3 dueToIssue:(BOOL)a4;
-- (void)_removeItemAsynchronouslyAtURL:(id)a3;
-- (void)_removeItemAtURL:(id)a3;
-- (void)_requestInsertionOfRemoteViewAfterViewWillAppearForSequence:(id)a3 completionHandler:(id)a4;
-- (void)_requestRemoteViewControllerForSequence:(id)a3 completionHander:(id)a4;
-- (void)_requestVisibilityStateUpdateForPossiblyAppearing:(BOOL)a3 sequence:(id)a4;
-- (void)_rowHeightDidChange:(id)a3;
-- (void)_scheduleDisconnectionTimerForSequence:(id)a3 endTransitionBlock:(id)a4 completion:(id)a5;
-- (void)_setImplementsPerformUpdate:(BOOL)a3;
-- (void)_setLargestAvailableDisplayMode:(int64_t)a3;
-- (void)_setRemoteViewController:(id)a3;
-- (void)_setSnapshotView:(id)a3;
+- (void)_removeAllSnapshotFilesInActiveDisplayModeForContentSizeCategory:(id)category;
+- (void)_removeAllSnapshotFilesMatchingPredicate:(id)predicate dueToIssue:(BOOL)issue;
+- (void)_removeItemAsynchronouslyAtURL:(id)l;
+- (void)_removeItemAtURL:(id)l;
+- (void)_requestInsertionOfRemoteViewAfterViewWillAppearForSequence:(id)sequence completionHandler:(id)handler;
+- (void)_requestRemoteViewControllerForSequence:(id)sequence completionHander:(id)hander;
+- (void)_requestVisibilityStateUpdateForPossiblyAppearing:(BOOL)appearing sequence:(id)sequence;
+- (void)_rowHeightDidChange:(id)change;
+- (void)_scheduleDisconnectionTimerForSequence:(id)sequence endTransitionBlock:(id)block completion:(id)completion;
+- (void)_setImplementsPerformUpdate:(BOOL)update;
+- (void)_setLargestAvailableDisplayMode:(int64_t)mode;
+- (void)_setRemoteViewController:(id)controller;
+- (void)_setSnapshotView:(id)view;
 - (void)_setupRequestQueue;
 - (void)_synchronizeGeometryWithSnapshot;
-- (void)_updatePreferredContentSizeWithHeight:(double)a3;
-- (void)_updateWidgetWithCompletionHandler:(id)a3;
+- (void)_updatePreferredContentSizeWithHeight:(double)height;
+- (void)_updateWidgetWithCompletionHandler:(id)handler;
 - (void)_validateSnapshotViewForActiveLayoutMode;
 - (void)dealloc;
-- (void)handleReconnectionRequest:(id)a3;
-- (void)invalidateCachedSnapshotWithURL:(id)a3 completionHandler:(id)a4;
-- (void)managingContainerDidDisappear:(id)a3;
-- (void)managingContainerWillAppear:(id)a3;
-- (void)maximumSizeDidChangeForDisplayMode:(int64_t)a3;
-- (void)requestIconWithHandler:(id)a3;
-- (void)requestSettingsIconWithHandler:(id)a3;
-- (void)setActiveDisplayMode:(int64_t)a3;
-- (void)setLockedOut:(BOOL)a3 withExplanation:(id)a4;
-- (void)setPreferredContentSize:(CGSize)a3;
-- (void)setUserSpecifiedDisplayMode:(int64_t)a3;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)handleReconnectionRequest:(id)request;
+- (void)invalidateCachedSnapshotWithURL:(id)l completionHandler:(id)handler;
+- (void)managingContainerDidDisappear:(id)disappear;
+- (void)managingContainerWillAppear:(id)appear;
+- (void)maximumSizeDidChangeForDisplayMode:(int64_t)mode;
+- (void)requestIconWithHandler:(id)handler;
+- (void)requestSettingsIconWithHandler:(id)handler;
+- (void)setActiveDisplayMode:(int64_t)mode;
+- (void)setLockedOut:(BOOL)out withExplanation:(id)explanation;
+- (void)setPreferredContentSize:(CGSize)size;
+- (void)setUserSpecifiedDisplayMode:(int64_t)mode;
+- (void)traitCollectionDidChange:(id)change;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)widget:(id)a3 didTerminateWithError:(id)a4;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)widget:(id)widget didTerminateWithError:(id)error;
 @end
 
 @implementation WGWidgetHostingViewController
 
-+ (void)setWidgetSnapshotTimestampsEnabled:(BOOL)a3
++ (void)setWidgetSnapshotTimestampsEnabled:(BOOL)enabled
 {
   v7 = *MEMORY[0x277D85DE8];
-  __WGWidgetSnapshotDebugLabelsEnabled = a3;
+  __WGWidgetSnapshotDebugLabelsEnabled = enabled;
   v3 = WGLogWidgets;
   if (os_log_type_enabled(WGLogWidgets, OS_LOG_TYPE_DEFAULT))
   {
@@ -149,22 +149,22 @@
   if ((objc_opt_respondsToSelector() & 1) != 0 && [v5 shouldPurgeNonCAMLSnapshotsForWidget:self])
   {
     v6 = MEMORY[0x277CBEBC0];
-    v7 = [(WGWidgetHostingViewController *)self appBundleID];
-    v8 = WGContainingBundleCachePathForWidgetWithContainingBundleIdentifier(v7, @"Snapshots", 0);
+    appBundleID = [(WGWidgetHostingViewController *)self appBundleID];
+    v8 = WGContainingBundleCachePathForWidgetWithContainingBundleIdentifier(appBundleID, @"Snapshots", 0);
     v9 = [v6 fileURLWithPath:v8];
 
     v10 = WGLogWidgets;
     if (os_log_type_enabled(WGLogWidgets, OS_LOG_TYPE_DEFAULT))
     {
       v11 = v10;
-      v12 = [(WGWidgetHostingViewController *)self widgetIdentifier];
-      v13 = [(WGWidgetHostingViewController *)self _containerIdentifier];
+      widgetIdentifier = [(WGWidgetHostingViewController *)self widgetIdentifier];
+      _containerIdentifier = [(WGWidgetHostingViewController *)self _containerIdentifier];
       v18 = 138544130;
-      v19 = v12;
+      v19 = widgetIdentifier;
       v20 = 2050;
-      v21 = self;
+      selfCopy2 = self;
       v22 = 2114;
-      v23 = v13;
+      v23 = _containerIdentifier;
       v24 = 2114;
       v25 = v9;
       _os_log_impl(&dword_27425E000, v11, OS_LOG_TYPE_DEFAULT, "<%{public}@: %{public}p; container: %{public}@> Remove app bundle snapshots at %{public}@", &v18, 0x2Au);
@@ -179,14 +179,14 @@
     if (os_log_type_enabled(WGLogWidgets, OS_LOG_TYPE_DEFAULT))
     {
       v15 = v14;
-      v16 = [(WGWidgetHostingViewController *)self widgetIdentifier];
-      v17 = [(WGWidgetHostingViewController *)self _containerIdentifier];
+      widgetIdentifier2 = [(WGWidgetHostingViewController *)self widgetIdentifier];
+      _containerIdentifier2 = [(WGWidgetHostingViewController *)self _containerIdentifier];
       v18 = 138543874;
-      v19 = v16;
+      v19 = widgetIdentifier2;
       v20 = 2050;
-      v21 = self;
+      selfCopy2 = self;
       v22 = 2114;
-      v23 = v17;
+      v23 = _containerIdentifier2;
       _os_log_impl(&dword_27425E000, v15, OS_LOG_TYPE_DEFAULT, "<%{public}@: %{public}p; container: %{public}@> Remove all non-ASTC snapshots", &v18, 0x20u);
     }
 
@@ -194,47 +194,47 @@
   }
 }
 
-- (WGWidgetHostingViewController)initWithWidgetInfo:(id)a3 delegate:(id)a4 host:(id)a5
+- (WGWidgetHostingViewController)initWithWidgetInfo:(id)info delegate:(id)delegate host:(id)host
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  infoCopy = info;
+  delegateCopy = delegate;
+  hostCopy = host;
   v31.receiver = self;
   v31.super_class = WGWidgetHostingViewController;
   v12 = [(WGWidgetHostingViewController *)&v31 initWithNibName:0 bundle:0];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_widgetInfo, a3);
-    objc_storeWeak(&v13->_delegate, v10);
-    objc_storeWeak(&v13->_host, v11);
-    v14 = [(WGWidgetHostingViewController *)v13 widgetIdentifier];
-    v15 = QueueName(@"com.apple.widgets.proxyconnectionqueue", v14);
+    objc_storeStrong(&v12->_widgetInfo, info);
+    objc_storeWeak(&v13->_delegate, delegateCopy);
+    objc_storeWeak(&v13->_host, hostCopy);
+    widgetIdentifier = [(WGWidgetHostingViewController *)v13 widgetIdentifier];
+    v15 = QueueName(@"com.apple.widgets.proxyconnectionqueue", widgetIdentifier);
     v16 = NewSerialQueue(v15);
     proxyConnectionQueue = v13->_proxyConnectionQueue;
     v13->_proxyConnectionQueue = v16;
 
-    v18 = QueueName(@"com.apple.widgets.proxyrequestqueue", v14);
+    v18 = QueueName(@"com.apple.widgets.proxyrequestqueue", widgetIdentifier);
     v19 = NewSerialQueue(v18);
     proxyRequestQueue = v13->_proxyRequestQueue;
     v13->_proxyRequestQueue = v19;
 
     InvalidateQueue(v13->_proxyRequestQueue);
-    v21 = QueueName(@"com.apple.widgets.diskqueue", v14);
+    v21 = QueueName(@"com.apple.widgets.diskqueue", widgetIdentifier);
     v22 = NewSerialQueue(v21);
     diskWriteQueue = v13->_diskWriteQueue;
     v13->_diskWriteQueue = v22;
 
-    v24 = WGContainingBundleIdentifierForWidgetWithBundleIdentifier(v14);
+    v24 = WGContainingBundleIdentifierForWidgetWithBundleIdentifier(widgetIdentifier);
     [(WGWidgetHostingViewController *)v13 setAppBundleID:v24];
 
-    v25 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
     openAppearanceTransactions = v13->_openAppearanceTransactions;
-    v13->_openAppearanceTransactions = v25;
+    v13->_openAppearanceTransactions = strongToStrongObjectsMapTable;
 
     v13->_implementsPerformUpdate = 1;
     [(WGWidgetInfo *)v13->_widgetInfo registerWidgetHost:v13];
-    if ((objc_opt_respondsToSelector() & 1) != 0 && [v11 shouldPurgeArchivedSnapshotsForWidget:v13])
+    if ((objc_opt_respondsToSelector() & 1) != 0 && [hostCopy shouldPurgeArchivedSnapshotsForWidget:v13])
     {
       [(WGWidgetHostingViewController *)v13 _removeAllSnapshotFilesDueToIssue:1];
       [(WGWidgetHostingViewController *)v13 preferredContentSize];
@@ -262,8 +262,8 @@
       [(WGWidgetHostingViewController *)v13 _updatePreferredContentSizeWithHeight:v28];
     }
 
-    v29 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v29 addObserver:v13 selector:sel__rowHeightDidChange_ name:@"WGWidgetRowHeightDidChangeNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v13 selector:sel__rowHeightDidChange_ name:@"WGWidgetRowHeightDidChangeNotification" object:0];
   }
 
   return v13;
@@ -305,28 +305,28 @@ void __66__WGWidgetHostingViewController_initWithWidgetInfo_delegate_host___bloc
       [WGWidgetHostingViewController dealloc];
     }
 
-    v4 = [(_WGWidgetRemoteViewController *)self->_remoteViewController disconnect];
+    disconnect = [(_WGWidgetRemoteViewController *)self->_remoteViewController disconnect];
   }
 
   InvalidateQueue(self->_proxyRequestQueue);
   InvalidateQueue(self->_proxyConnectionQueue);
   InvalidateQueue(self->_diskWriteQueue);
-  v5 = [(NSMapTable *)self->_openAppearanceTransactions keyEnumerator];
-  v6 = [v5 nextObject];
-  if (v6)
+  keyEnumerator = [(NSMapTable *)self->_openAppearanceTransactions keyEnumerator];
+  nextObject = [keyEnumerator nextObject];
+  if (nextObject)
   {
-    v7 = v6;
+    v7 = nextObject;
     do
     {
       v8 = [(NSMapTable *)self->_openAppearanceTransactions objectForKey:v7];
       v8[2]();
 
-      v9 = [v5 nextObject];
+      nextObject2 = [keyEnumerator nextObject];
 
-      v7 = v9;
+      v7 = nextObject2;
     }
 
-    while (v9);
+    while (nextObject2);
   }
 
   v10.receiver = self;
@@ -334,48 +334,48 @@ void __66__WGWidgetHostingViewController_initWithWidgetInfo_delegate_host___bloc
   [(WGWidgetHostingViewController *)&v10 dealloc];
 }
 
-- (void)requestIconWithHandler:(id)a3
+- (void)requestIconWithHandler:(id)handler
 {
-  if (a3)
+  if (handler)
   {
     [(WGWidgetInfo *)self->_widgetInfo requestIconWithHandler:?];
   }
 }
 
-- (void)requestSettingsIconWithHandler:(id)a3
+- (void)requestSettingsIconWithHandler:(id)handler
 {
-  if (a3)
+  if (handler)
   {
     [(WGWidgetInfo *)self->_widgetInfo requestSettingsIconWithHandler:?];
   }
 }
 
-- (void)setActiveDisplayMode:(int64_t)a3
+- (void)setActiveDisplayMode:(int64_t)mode
 {
   v19 = *MEMORY[0x277D85DE8];
-  if (self->_activeDisplayMode != a3)
+  if (self->_activeDisplayMode != mode)
   {
-    self->_activeDisplayMode = a3;
+    self->_activeDisplayMode = mode;
     v4 = WGLogWidgets;
     if (os_log_type_enabled(WGLogWidgets, OS_LOG_TYPE_DEFAULT))
     {
       v5 = v4;
-      v6 = [(WGWidgetHostingViewController *)self widgetIdentifier];
-      v7 = [(WGWidgetHostingViewController *)self _containerIdentifier];
+      widgetIdentifier = [(WGWidgetHostingViewController *)self widgetIdentifier];
+      _containerIdentifier = [(WGWidgetHostingViewController *)self _containerIdentifier];
       v8 = NCStringFromWidgetDisplayMode();
       v11 = 138544130;
-      v12 = v6;
+      v12 = widgetIdentifier;
       v13 = 2050;
-      v14 = self;
+      selfCopy = self;
       v15 = 2114;
-      v16 = v7;
+      v16 = _containerIdentifier;
       v17 = 2114;
       v18 = v8;
       _os_log_impl(&dword_27425E000, v5, OS_LOG_TYPE_DEFAULT, "<%{public}@: %{public}p; container: %{public}@> Updated active display mode: %{public}@", &v11, 0x2Au);
     }
 
-    v9 = [(WGWidgetHostingViewController *)self _activeLifeCycleSequence];
-    v10 = [v9 isCurrentStateNotYet:5];
+    _activeLifeCycleSequence = [(WGWidgetHostingViewController *)self _activeLifeCycleSequence];
+    v10 = [_activeLifeCycleSequence isCurrentStateNotYet:5];
 
     if (v10)
     {
@@ -427,18 +427,18 @@ void __54__WGWidgetHostingViewController_setActiveDisplayMode___block_invoke(uin
   return v4;
 }
 
-- (void)setUserSpecifiedDisplayMode:(int64_t)a3
+- (void)setUserSpecifiedDisplayMode:(int64_t)mode
 {
   WeakRetained = objc_loadWeakRetained(&self->_host);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained widget:self didChangeUserSpecifiedDisplayMode:a3];
+    [WeakRetained widget:self didChangeUserSpecifiedDisplayMode:mode];
   }
 
-  v5 = [(WGWidgetHostingViewController *)self userSpecifiedDisplayMode];
-  if (v5 <= [(WGWidgetHostingViewController *)self largestAvailableDisplayMode])
+  userSpecifiedDisplayMode = [(WGWidgetHostingViewController *)self userSpecifiedDisplayMode];
+  if (userSpecifiedDisplayMode <= [(WGWidgetHostingViewController *)self largestAvailableDisplayMode])
   {
-    [(WGWidgetHostingViewController *)self setActiveDisplayMode:v5];
+    [(WGWidgetHostingViewController *)self setActiveDisplayMode:userSpecifiedDisplayMode];
   }
 }
 
@@ -446,9 +446,9 @@ void __54__WGWidgetHostingViewController_setActiveDisplayMode___block_invoke(uin
 {
   if ([(_WGWidgetRemoteViewController *)self->_remoteViewController isViewLoaded])
   {
-    v3 = [(_WGWidgetRemoteViewController *)self->_remoteViewController view];
+    view = [(_WGWidgetRemoteViewController *)self->_remoteViewController view];
     contentProvidingView = self->_contentProvidingView;
-    if (v3 == contentProvidingView)
+    if (view == contentProvidingView)
     {
       v5 = ![(UIView *)contentProvidingView isHidden];
     }
@@ -481,18 +481,18 @@ void __54__WGWidgetHostingViewController_setActiveDisplayMode___block_invoke(uin
   }
 }
 
-- (void)invalidateCachedSnapshotWithURL:(id)a3 completionHandler:(id)a4
+- (void)invalidateCachedSnapshotWithURL:(id)l completionHandler:(id)handler
 {
-  v10 = a3;
-  v6 = a4;
+  lCopy = l;
+  handlerCopy = handler;
   snapshotView = self->_snapshotView;
   if (snapshotView)
   {
-    v8 = [(_WGCAPackageView *)snapshotView snapshotIdentifier];
-    v9 = [(WGWidgetHostingViewController *)self _widgetSnapshotURLForSnapshotIdentifier:v8 ensuringDirectoryExists:0];
-    if (v9 && [v10 isEqual:v9])
+    snapshotIdentifier = [(_WGCAPackageView *)snapshotView snapshotIdentifier];
+    v9 = [(WGWidgetHostingViewController *)self _widgetSnapshotURLForSnapshotIdentifier:snapshotIdentifier ensuringDirectoryExists:0];
+    if (v9 && [lCopy isEqual:v9])
     {
-      [(WGWidgetHostingViewController *)self _invalidateSnapshotWithForce:1 removingSnapshotFilesForActiveDisplayMode:0 completionHandler:v6];
+      [(WGWidgetHostingViewController *)self _invalidateSnapshotWithForce:1 removingSnapshotFilesForActiveDisplayMode:0 completionHandler:handlerCopy];
     }
   }
 }
@@ -516,15 +516,15 @@ void __54__WGWidgetHostingViewController_setActiveDisplayMode___block_invoke(uin
   return v4;
 }
 
-- (void)maximumSizeDidChangeForDisplayMode:(int64_t)a3
+- (void)maximumSizeDidChangeForDisplayMode:(int64_t)mode
 {
-  v5 = [(WGWidgetHostingViewController *)self _activeLifeCycleSequence];
-  v6 = [v5 isCurrentState:4];
+  _activeLifeCycleSequence = [(WGWidgetHostingViewController *)self _activeLifeCycleSequence];
+  v6 = [_activeLifeCycleSequence isCurrentState:4];
 
   if (v6)
   {
-    v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"Updating max size for display mode '%ld'", a3, MEMORY[0x277D85DD0], 3221225472, __68__WGWidgetHostingViewController_maximumSizeDidChangeForDisplayMode___block_invoke, &__block_descriptor_40_e72_v28__0__WGWidgetHostingViewController_8__WGWidgetLifeCycleSequence_16B24l, a3];
-    [(WGWidgetHostingViewController *)self _enqueueRemoteServiceRequest:&v8 withDescription:v7];
+    mode = [MEMORY[0x277CCACA8] stringWithFormat:@"Updating max size for display mode '%ld'", mode, MEMORY[0x277D85DD0], 3221225472, __68__WGWidgetHostingViewController_maximumSizeDidChangeForDisplayMode___block_invoke, &__block_descriptor_40_e72_v28__0__WGWidgetHostingViewController_8__WGWidgetLifeCycleSequence_16B24l, mode];
+    [(WGWidgetHostingViewController *)self _enqueueRemoteServiceRequest:&v8 withDescription:mode];
   }
 }
 
@@ -559,23 +559,23 @@ void __68__WGWidgetHostingViewController_maximumSizeDidChangeForDisplayMode___bl
   return v4;
 }
 
-- (void)setLockedOut:(BOOL)a3 withExplanation:(id)a4
+- (void)setLockedOut:(BOOL)out withExplanation:(id)explanation
 {
-  v4 = a3;
-  v6 = a4;
-  if (self->_lockedOut != v4)
+  outCopy = out;
+  explanationCopy = explanation;
+  if (self->_lockedOut != outCopy)
   {
-    self->_lockedOut = v4;
-    if (v4)
+    self->_lockedOut = outCopy;
+    if (outCopy)
     {
-      [(WGWidgetHostingViewController *)self _insertLockedOutViewWithExplanation:v6];
-      v7 = [(WGWidgetHostingViewController *)self _activeLifeCycleSequence];
+      [(WGWidgetHostingViewController *)self _insertLockedOutViewWithExplanation:explanationCopy];
+      _activeLifeCycleSequence = [(WGWidgetHostingViewController *)self _activeLifeCycleSequence];
       v8[0] = MEMORY[0x277D85DD0];
       v8[1] = 3221225472;
       v8[2] = __62__WGWidgetHostingViewController_setLockedOut_withExplanation___block_invoke;
       v8[3] = &unk_279ED1970;
       v8[4] = self;
-      [(WGWidgetHostingViewController *)self _endSequence:v7 withReason:@"lock out began" completion:v8];
+      [(WGWidgetHostingViewController *)self _endSequence:_activeLifeCycleSequence withReason:@"lock out began" completion:v8];
     }
 
     else if ([(UIViewController *)self wg_isAppearingOrAppeared])
@@ -598,24 +598,24 @@ void __62__WGWidgetHostingViewController_setLockedOut_withExplanation___block_in
   }
 }
 
-- (void)_beginRemoteViewControllerAppearanceTransitionIfNecessary:(BOOL)a3 semaphore:(id)a4 animated:(BOOL)a5 completion:(id)a6
+- (void)_beginRemoteViewControllerAppearanceTransitionIfNecessary:(BOOL)necessary semaphore:(id)semaphore animated:(BOOL)animated completion:(id)completion
 {
-  v8 = a3;
+  necessaryCopy = necessary;
   v62 = *MEMORY[0x277D85DE8];
-  v10 = a4;
-  v39 = a6;
-  if (!v8)
+  semaphoreCopy = semaphore;
+  completionCopy = completion;
+  if (!necessaryCopy)
   {
     if ((self->_ignoringParentAppearState || [(WGWidgetHostingViewController *)self _appearState]!= 1) && [(_WGWidgetRemoteViewController *)self->_remoteViewController _isValid])
     {
-      v15 = [(UIViewController *)self->_remoteViewController wg_isAppearingOrAppeared];
+      wg_isAppearingOrAppeared = [(UIViewController *)self->_remoteViewController wg_isAppearingOrAppeared];
       v14 = 0;
       goto LABEL_16;
     }
 
 LABEL_11:
     v14 = 0;
-    v15 = 0;
+    wg_isAppearingOrAppeared = 0;
     goto LABEL_16;
   }
 
@@ -626,11 +626,11 @@ LABEL_11:
 
   if ([(_WGWidgetRemoteViewController *)self->_remoteViewController _isValid])
   {
-    v11 = a5;
+    animatedCopy = animated;
     contentProvidingView = self->_contentProvidingView;
-    v13 = [(_WGWidgetRemoteViewController *)self->_remoteViewController view];
-    v14 = contentProvidingView == v13 && [(UIViewController *)self->_remoteViewController wg_isDisappearingOrDisappeared];
-    a5 = v11;
+    view = [(_WGWidgetRemoteViewController *)self->_remoteViewController view];
+    v14 = contentProvidingView == view && [(UIViewController *)self->_remoteViewController wg_isDisappearingOrDisappeared];
+    animated = animatedCopy;
   }
 
   else
@@ -638,19 +638,19 @@ LABEL_11:
     v14 = 0;
   }
 
-  v15 = 0;
+  wg_isAppearingOrAppeared = 0;
 LABEL_16:
-  v38 = v10;
-  if (v14 || v15)
+  v38 = semaphoreCopy;
+  if (v14 || wg_isAppearingOrAppeared)
   {
-    v37 = a5;
+    animatedCopy2 = animated;
     v18 = WGLogWidgets;
     if (os_log_type_enabled(WGLogWidgets, OS_LOG_TYPE_DEFAULT))
     {
       log = v18;
-      v19 = [(WGWidgetHostingViewController *)self widgetIdentifier];
-      v20 = [(WGWidgetHostingViewController *)self _containerIdentifier];
-      if (v8)
+      widgetIdentifier = [(WGWidgetHostingViewController *)self widgetIdentifier];
+      _containerIdentifier = [(WGWidgetHostingViewController *)self _containerIdentifier];
+      if (necessaryCopy)
       {
         v21 = @"appearing";
       }
@@ -664,11 +664,11 @@ LABEL_16:
       v23 = WGStringForAppearState([(WGWidgetHostingViewController *)self _appearState]);
       v24 = WGStringForAppearState([(_WGWidgetRemoteViewController *)self->_remoteViewController _appearState]);
       *location = 138544898;
-      *&location[4] = v19;
+      *&location[4] = widgetIdentifier;
       v50 = 2050;
-      v51 = self;
+      selfCopy2 = self;
       v52 = 2114;
-      v53 = v20;
+      v53 = _containerIdentifier;
       v54 = 2114;
       v55 = v21;
       v56 = 2114;
@@ -680,33 +680,33 @@ LABEL_16:
       _os_log_impl(&dword_27425E000, log, OS_LOG_TYPE_DEFAULT, "<%{public}@: %{public}p; container: %{public}@> Begin appearance transition (%{public}@): _remoteViewController=%{public}@, [self _appearState]=%{public}@, [_remoteViewController _appearState]=%{public}@", location, 0x48u);
     }
 
-    if (v14 && [(_WGWidgetRemoteViewController *)self->_remoteViewController _appearState]== 3 || v15 && [(_WGWidgetRemoteViewController *)self->_remoteViewController _appearState]== 1)
+    if (v14 && [(_WGWidgetRemoteViewController *)self->_remoteViewController _appearState]== 3 || wg_isAppearingOrAppeared && [(_WGWidgetRemoteViewController *)self->_remoteViewController _appearState]== 1)
     {
       v25 = WGLogWidgets;
       if (os_log_type_enabled(WGLogWidgets, OS_LOG_TYPE_DEFAULT))
       {
         v26 = v25;
-        v27 = [(WGWidgetHostingViewController *)self widgetIdentifier];
-        v28 = [(WGWidgetHostingViewController *)self _containerIdentifier];
-        v29 = v28;
+        widgetIdentifier2 = [(WGWidgetHostingViewController *)self widgetIdentifier];
+        _containerIdentifier2 = [(WGWidgetHostingViewController *)self _containerIdentifier];
+        v29 = _containerIdentifier2;
         v30 = @"Disappearing";
         *location = 138544386;
-        *&location[4] = v27;
-        if (v8)
+        *&location[4] = widgetIdentifier2;
+        if (necessaryCopy)
         {
           v30 = @"Appearing";
         }
 
         v31 = @"appearing";
         v50 = 2050;
-        v51 = self;
-        if (v8)
+        selfCopy2 = self;
+        if (necessaryCopy)
         {
           v31 = @"disappearing";
         }
 
         v52 = 2114;
-        v53 = v28;
+        v53 = _containerIdentifier2;
         v54 = 2114;
         v55 = v30;
         v56 = 2114;
@@ -722,9 +722,9 @@ LABEL_16:
     v44[2] = __121__WGWidgetHostingViewController__beginRemoteViewControllerAppearanceTransitionIfNecessary_semaphore_animated_completion___block_invoke;
     v44[3] = &unk_279ED1998;
     v47 = v14;
-    v48 = v15;
+    v48 = wg_isAppearingOrAppeared;
     v45 = v38;
-    v46 = v39;
+    v46 = completionCopy;
     v32 = MEMORY[0x2743E8C10](v44);
     v40[0] = MEMORY[0x277D85DD0];
     v40[1] = 3221225472;
@@ -732,10 +732,10 @@ LABEL_16:
     v40[3] = &unk_279ED19E8;
     v33 = v32;
     v41 = v33;
-    v42 = v8;
-    v43 = v37;
+    v42 = necessaryCopy;
+    v43 = animatedCopy2;
     [(WGWidgetHostingViewController *)self _enqueueRemoteServiceRequest:v40 withDescription:@"Opening begin appearance transaction"];
-    if (v8)
+    if (necessaryCopy)
     {
       v34 = 1144;
     }
@@ -754,17 +754,17 @@ LABEL_16:
 
   else
   {
-    if (v10)
+    if (semaphoreCopy)
     {
-      dispatch_semaphore_signal(v10);
+      dispatch_semaphore_signal(semaphoreCopy);
     }
 
     objc_initWeak(location, self);
-    if (v39)
+    if (completionCopy)
     {
       WeakRetained = objc_loadWeakRetained(location);
-      v17 = [(WGWidgetHostingViewController *)self _activeLifeCycleSequence];
-      (*(v39 + 2))(v39, WeakRetained, v17);
+      _activeLifeCycleSequence = [(WGWidgetHostingViewController *)self _activeLifeCycleSequence];
+      (*(completionCopy + 2))(completionCopy, WeakRetained, _activeLifeCycleSequence);
     }
 
     objc_destroyWeak(location);
@@ -872,10 +872,10 @@ void __121__WGWidgetHostingViewController__beginRemoteViewControllerAppearanceTr
   [v2 _enqueueRemoteServiceRequest:v1 withDescription:v3];
 }
 
-- (void)_endRemoteViewControllerAppearanceTransitionIfNecessaryWithCompletion:(id)a3
+- (void)_endRemoteViewControllerAppearanceTransitionIfNecessaryWithCompletion:(id)completion
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   if (self->_ignoringParentAppearState || [(WGWidgetHostingViewController *)self _appearState]== 2)
   {
     if ([(_WGWidgetRemoteViewController *)self->_remoteViewController _isValid])
@@ -915,11 +915,11 @@ void __121__WGWidgetHostingViewController__beginRemoteViewControllerAppearanceTr
   if (!v6)
   {
     objc_initWeak(location, self);
-    if (v4)
+    if (completionCopy)
     {
       WeakRetained = objc_loadWeakRetained(location);
-      v8 = [(WGWidgetHostingViewController *)self _activeLifeCycleSequence];
-      v4[2](v4, WeakRetained, v8);
+      _activeLifeCycleSequence = [(WGWidgetHostingViewController *)self _activeLifeCycleSequence];
+      completionCopy[2](completionCopy, WeakRetained, _activeLifeCycleSequence);
     }
 
     goto LABEL_22;
@@ -929,11 +929,11 @@ LABEL_17:
   if (self->_viewWillAppearSemaphore && v5 || self->_viewWillDisappearSemaphore != 0 && v6)
   {
     objc_initWeak(location, self);
-    if (v4)
+    if (completionCopy)
     {
       v9 = objc_loadWeakRetained(location);
-      v10 = [(WGWidgetHostingViewController *)self _activeLifeCycleSequence];
-      v4[2](v4, v9, v10);
+      _activeLifeCycleSequence2 = [(WGWidgetHostingViewController *)self _activeLifeCycleSequence];
+      completionCopy[2](completionCopy, v9, _activeLifeCycleSequence2);
     }
 
 LABEL_22:
@@ -945,17 +945,17 @@ LABEL_22:
   if (os_log_type_enabled(WGLogWidgets, OS_LOG_TYPE_DEFAULT))
   {
     v12 = v11;
-    v13 = [(WGWidgetHostingViewController *)self widgetIdentifier];
-    v14 = [(WGWidgetHostingViewController *)self _containerIdentifier];
+    widgetIdentifier = [(WGWidgetHostingViewController *)self widgetIdentifier];
+    _containerIdentifier = [(WGWidgetHostingViewController *)self _containerIdentifier];
     remoteViewController = self->_remoteViewController;
     v16 = WGStringForAppearState([(WGWidgetHostingViewController *)self _appearState]);
     v17 = WGStringForAppearState([(_WGWidgetRemoteViewController *)self->_remoteViewController _appearState]);
     *location = 138544642;
-    *&location[4] = v13;
+    *&location[4] = widgetIdentifier;
     v29 = 2050;
-    v30 = self;
+    selfCopy = self;
     v31 = 2114;
-    v32 = v14;
+    v32 = _containerIdentifier;
     v33 = 2114;
     v34 = remoteViewController;
     v35 = 2114;
@@ -965,13 +965,13 @@ LABEL_22:
     _os_log_impl(&dword_27425E000, v12, OS_LOG_TYPE_DEFAULT, "<%{public}@: %{public}p; container: %{public}@> End appearance transition: _remoteViewController=%{public}@, [self _appearState]=%{public}@, [_remoteViewController _appearState]=%{public}@", location, 0x3Eu);
   }
 
-  if (v4)
+  if (completionCopy)
   {
     v26[0] = MEMORY[0x277D85DD0];
     v26[1] = 3221225472;
     v26[2] = __103__WGWidgetHostingViewController__endRemoteViewControllerAppearanceTransitionIfNecessaryWithCompletion___block_invoke;
     v26[3] = &unk_279ED1A10;
-    v18 = v4;
+    v18 = completionCopy;
     v27 = v18;
     v19 = MEMORY[0x2743E8C10](v26);
     v22[0] = MEMORY[0x277D85DD0];
@@ -987,8 +987,8 @@ LABEL_22:
 
   else
   {
-    v21 = [(WGWidgetHostingViewController *)self _remoteViewController];
-    [v21 endAppearanceTransition];
+    _remoteViewController = [(WGWidgetHostingViewController *)self _remoteViewController];
+    [_remoteViewController endAppearanceTransition];
   }
 
 LABEL_23:
@@ -1064,7 +1064,7 @@ void __103__WGWidgetHostingViewController__endRemoteViewControllerAppearanceTran
 
 - (void)_endRemoteViewControllerAppearanceTransitionIfNecessary
 {
-  v4 = [(WGWidgetHostingViewController *)self delegate];
+  delegate = [(WGWidgetHostingViewController *)self delegate];
   if ([(_WGWidgetRemoteViewController *)self->_remoteViewController _appearState]== 1)
   {
     if (objc_opt_respondsToSelector())
@@ -1099,7 +1099,7 @@ void __88__WGWidgetHostingViewController__endRemoteViewControllerAppearanceTrans
   }
 }
 
-- (void)managingContainerWillAppear:(id)a3
+- (void)managingContainerWillAppear:(id)appear
 {
   if ([(UIViewController *)self wg_isDisappearingOrDisappeared]&& [(WGWidgetHostingViewController *)self _shouldRemoveSnapshotWhenNotVisible])
   {
@@ -1109,13 +1109,13 @@ void __88__WGWidgetHostingViewController__endRemoteViewControllerAppearanceTrans
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v7.receiver = self;
   v7.super_class = WGWidgetHostingViewController;
-  [(WGWidgetHostingViewController *)&v7 viewWillAppear:a3];
-  v4 = [(WGWidgetHostingViewController *)self delegate];
-  [v4 registerWidgetForRefreshEvents:self];
+  [(WGWidgetHostingViewController *)&v7 viewWillAppear:appear];
+  delegate = [(WGWidgetHostingViewController *)self delegate];
+  [delegate registerWidgetForRefreshEvents:self];
 
   [(WGWidgetHostingViewController *)self _validateSnapshotViewForActiveLayoutMode];
   [(WGWidgetHostingViewController *)self _insertSnapshotViewIfAppropriate];
@@ -1123,68 +1123,68 @@ void __88__WGWidgetHostingViewController__endRemoteViewControllerAppearanceTrans
   if ([(WGWidgetLifeCycleSequence *)self->_activeLifeCycleSequence isCurrentStateAtLeast:4]&& [(WGWidgetLifeCycleSequence *)self->_activeLifeCycleSequence isCurrentStateAtMost:6]&& [(_WGWidgetRemoteViewController *)self->_remoteViewController _isValid])
   {
     contentProvidingView = self->_contentProvidingView;
-    v6 = [(_WGWidgetRemoteViewController *)self->_remoteViewController view];
+    view = [(_WGWidgetRemoteViewController *)self->_remoteViewController view];
 
-    if (contentProvidingView == v6)
+    if (contentProvidingView == view)
     {
       [(WGWidgetHostingViewController *)self _beginSequenceWithReason:@"appearance transition" completion:&__block_literal_global_105 updateHandler:0];
     }
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = WGWidgetHostingViewController;
-  [(WGWidgetHostingViewController *)&v4 viewDidAppear:a3];
+  [(WGWidgetHostingViewController *)&v4 viewDidAppear:appear];
   [(WGWidgetHostingViewController *)self _beginSequenceWithReason:@"appearance transition" completion:&__block_literal_global_109 updateHandler:0];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v6.receiver = self;
   v6.super_class = WGWidgetHostingViewController;
-  [(WGWidgetHostingViewController *)&v6 viewWillDisappear:a3];
-  v4 = [(WGWidgetHostingViewController *)self _activeLifeCycleSequence];
+  [(WGWidgetHostingViewController *)&v6 viewWillDisappear:disappear];
+  _activeLifeCycleSequence = [(WGWidgetHostingViewController *)self _activeLifeCycleSequence];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __51__WGWidgetHostingViewController_viewWillDisappear___block_invoke;
   v5[3] = &unk_279ED1970;
   v5[4] = self;
-  [(WGWidgetHostingViewController *)self _endSequence:v4 withReason:@"disappearance transition" completion:v5];
+  [(WGWidgetHostingViewController *)self _endSequence:_activeLifeCycleSequence withReason:@"disappearance transition" completion:v5];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v6.receiver = self;
   v6.super_class = WGWidgetHostingViewController;
-  [(WGWidgetHostingViewController *)&v6 viewDidDisappear:a3];
-  v4 = [(WGWidgetHostingViewController *)self _activeLifeCycleSequence];
-  [(WGWidgetHostingViewController *)self _requestVisibilityStateUpdateForPossiblyAppearing:0 sequence:v4];
+  [(WGWidgetHostingViewController *)&v6 viewDidDisappear:disappear];
+  _activeLifeCycleSequence = [(WGWidgetHostingViewController *)self _activeLifeCycleSequence];
+  [(WGWidgetHostingViewController *)self _requestVisibilityStateUpdateForPossiblyAppearing:0 sequence:_activeLifeCycleSequence];
 
-  v5 = [(WGWidgetHostingViewController *)self delegate];
-  [v5 unregisterWidgetForRefreshEvents:self];
+  delegate = [(WGWidgetHostingViewController *)self delegate];
+  [delegate unregisterWidgetForRefreshEvents:self];
 }
 
-- (void)managingContainerDidDisappear:(id)a3
+- (void)managingContainerDidDisappear:(id)disappear
 {
-  v4 = [(WGWidgetHostingViewController *)self _snapshotView];
-  if (v4)
+  _snapshotView = [(WGWidgetHostingViewController *)self _snapshotView];
+  if (_snapshotView)
   {
-    v9 = v4;
-    v5 = [(WGWidgetHostingViewController *)self _contentProvidingView];
-    v6 = [(WGWidgetHostingViewController *)self _snapshotView];
-    v7 = v6;
-    if (v5 == v6)
+    _activeLifeCycleSequence = _snapshotView;
+    _contentProvidingView = [(WGWidgetHostingViewController *)self _contentProvidingView];
+    _snapshotView2 = [(WGWidgetHostingViewController *)self _snapshotView];
+    v7 = _snapshotView2;
+    if (_contentProvidingView == _snapshotView2)
     {
-      v8 = [(WGWidgetHostingViewController *)self _shouldRemoveSnapshotWhenNotVisible];
+      _shouldRemoveSnapshotWhenNotVisible = [(WGWidgetHostingViewController *)self _shouldRemoveSnapshotWhenNotVisible];
 
-      if (!v8)
+      if (!_shouldRemoveSnapshotWhenNotVisible)
       {
         return;
       }
 
-      v9 = [(WGWidgetHostingViewController *)self _activeLifeCycleSequence];
+      _activeLifeCycleSequence = [(WGWidgetHostingViewController *)self _activeLifeCycleSequence];
       [WGWidgetHostingViewController _insertContentProvidingSubview:"_insertContentProvidingSubview:sequence:completion:" sequence:0 completion:?];
     }
 
@@ -1199,32 +1199,32 @@ void __88__WGWidgetHostingViewController__endRemoteViewControllerAppearanceTrans
   v4.receiver = self;
   v4.super_class = WGWidgetHostingViewController;
   [(WGWidgetHostingViewController *)&v4 viewDidLoad];
-  v3 = [(WGWidgetHostingViewController *)self view];
-  [v3 setAutoresizesSubviews:1];
+  view = [(WGWidgetHostingViewController *)self view];
+  [view setAutoresizesSubviews:1];
 
   [(WGWidgetHostingViewController *)self _insertAppropriateContentView];
 }
 
-- (void)setPreferredContentSize:(CGSize)a3
+- (void)setPreferredContentSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v20 = *MEMORY[0x277D85DE8];
   v6 = WGLogWidgets;
   if (os_log_type_enabled(WGLogWidgets, OS_LOG_TYPE_DEFAULT))
   {
     v7 = v6;
-    v8 = [(WGWidgetHostingViewController *)self widgetIdentifier];
-    v9 = [(WGWidgetHostingViewController *)self _containerIdentifier];
+    widgetIdentifier = [(WGWidgetHostingViewController *)self widgetIdentifier];
+    _containerIdentifier = [(WGWidgetHostingViewController *)self _containerIdentifier];
     v21.width = width;
     v21.height = height;
     v10 = NSStringFromCGSize(v21);
     *buf = 138544130;
-    v13 = v8;
+    v13 = widgetIdentifier;
     v14 = 2050;
-    v15 = self;
+    selfCopy = self;
     v16 = 2114;
-    v17 = v9;
+    v17 = _containerIdentifier;
     v18 = 2114;
     v19 = v10;
     _os_log_impl(&dword_27425E000, v7, OS_LOG_TYPE_DEFAULT, "<%{public}@: %{public}p; container: %{public}@> Requested preferred content size: %{public}@", buf, 0x2Au);
@@ -1236,20 +1236,20 @@ void __88__WGWidgetHostingViewController__endRemoteViewControllerAppearanceTrans
   [(WGWidgetInfo *)self->_widgetInfo updatePreferredContentSize:self forWidgetHost:width, height];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v12.receiver = self;
   v12.super_class = WGWidgetHostingViewController;
-  [(WGWidgetHostingViewController *)&v12 traitCollectionDidChange:v4];
-  v5 = [v4 preferredContentSizeCategory];
-  if (!v5 || (-[WGWidgetHostingViewController traitCollection](self, "traitCollection"), v6 = objc_claimAutoreleasedReturnValue(), [v6 preferredContentSizeCategory], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, v7 == v5))
+  [(WGWidgetHostingViewController *)&v12 traitCollectionDidChange:changeCopy];
+  preferredContentSizeCategory = [changeCopy preferredContentSizeCategory];
+  if (!preferredContentSizeCategory || (-[WGWidgetHostingViewController traitCollection](self, "traitCollection"), v6 = objc_claimAutoreleasedReturnValue(), [v6 preferredContentSizeCategory], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, v7 == preferredContentSizeCategory))
   {
-    v9 = [v4 userInterfaceStyle];
-    v10 = [(WGWidgetHostingViewController *)self traitCollection];
-    v11 = [v10 userInterfaceStyle];
+    userInterfaceStyle = [changeCopy userInterfaceStyle];
+    traitCollection = [(WGWidgetHostingViewController *)self traitCollection];
+    userInterfaceStyle2 = [traitCollection userInterfaceStyle];
 
-    if (v9 != v11)
+    if (userInterfaceStyle != userInterfaceStyle2)
     {
       [(WGWidgetHostingViewController *)self _removeAllSnapshotFilesInActiveDisplayModeForAllButActiveUserInterfaceStyle];
     }
@@ -1257,7 +1257,7 @@ void __88__WGWidgetHostingViewController__endRemoteViewControllerAppearanceTrans
 
   else
   {
-    [(WGWidgetHostingViewController *)self _removeAllSnapshotFilesInActiveDisplayModeForContentSizeCategory:v5];
+    [(WGWidgetHostingViewController *)self _removeAllSnapshotFilesInActiveDisplayModeForContentSizeCategory:preferredContentSizeCategory];
     [(WGWidgetHostingViewController *)self maximumSizeDidChangeForDisplayMode:0];
     [(WGWidgetHostingViewController *)self maximumSizeDidChangeForDisplayMode:1];
     if (![(WGWidgetHostingViewController *)self activeDisplayMode])
@@ -1270,24 +1270,24 @@ void __88__WGWidgetHostingViewController__endRemoteViewControllerAppearanceTrans
   }
 }
 
-- (BOOL)_isActiveSequence:(id)a3
+- (BOOL)_isActiveSequence:(id)sequence
 {
-  v4 = a3;
-  v5 = [(WGWidgetHostingViewController *)self _activeLifeCycleSequence];
+  sequenceCopy = sequence;
+  _activeLifeCycleSequence = [(WGWidgetHostingViewController *)self _activeLifeCycleSequence];
 
-  return v5 == v4;
+  return _activeLifeCycleSequence == sequenceCopy;
 }
 
 - (void)_initiateNewSequenceIfNecessary
 {
   v31 = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(WGWidgetHostingViewController *)self widgetIdentifier];
-  v5 = [(WGWidgetHostingViewController *)self _containerIdentifier];
+  widgetIdentifier = [(WGWidgetHostingViewController *)self widgetIdentifier];
+  _containerIdentifier = [(WGWidgetHostingViewController *)self _containerIdentifier];
   v6 = MEMORY[0x277CCA968];
-  v7 = [MEMORY[0x277CBEAA8] date];
-  v8 = [v6 localizedStringFromDate:v7 dateStyle:1 timeStyle:2];
-  v9 = [v3 stringWithFormat:@"%@.%@.%@", v4, v5, v8];
+  date = [MEMORY[0x277CBEAA8] date];
+  v8 = [v6 localizedStringFromDate:date dateStyle:1 timeStyle:2];
+  v9 = [v3 stringWithFormat:@"%@.%@.%@", widgetIdentifier, _containerIdentifier, v8];
 
   activeLifeCycleSequence = self->_activeLifeCycleSequence;
   if (activeLifeCycleSequence)
@@ -1302,15 +1302,15 @@ void __88__WGWidgetHostingViewController__endRemoteViewControllerAppearanceTrans
       if (os_log_type_enabled(WGLogWidgets, OS_LOG_TYPE_DEFAULT))
       {
         v14 = v13;
-        v15 = [(WGWidgetHostingViewController *)self widgetIdentifier];
-        v16 = [(WGWidgetHostingViewController *)self _containerIdentifier];
+        widgetIdentifier2 = [(WGWidgetHostingViewController *)self widgetIdentifier];
+        _containerIdentifier2 = [(WGWidgetHostingViewController *)self _containerIdentifier];
         v17 = self->_activeLifeCycleSequence;
         *buf = 138544130;
-        v24 = v15;
+        v24 = widgetIdentifier2;
         v25 = 2050;
-        v26 = self;
+        selfCopy2 = self;
         v27 = 2114;
-        v28 = v16;
+        v28 = _containerIdentifier2;
         v29 = 2114;
         v30 = v17;
         v18 = "<%{public}@: %{public}p; container: %{public}@> Initiating new life cycle sequence: %{public}@";
@@ -1330,15 +1330,15 @@ LABEL_7:
     if (os_log_type_enabled(WGLogWidgets, OS_LOG_TYPE_DEFAULT))
     {
       v14 = v21;
-      v15 = [(WGWidgetHostingViewController *)self widgetIdentifier];
-      v16 = [(WGWidgetHostingViewController *)self _containerIdentifier];
+      widgetIdentifier2 = [(WGWidgetHostingViewController *)self widgetIdentifier];
+      _containerIdentifier2 = [(WGWidgetHostingViewController *)self _containerIdentifier];
       v22 = self->_activeLifeCycleSequence;
       *buf = 138544130;
-      v24 = v15;
+      v24 = widgetIdentifier2;
       v25 = 2050;
-      v26 = self;
+      selfCopy2 = self;
       v27 = 2114;
-      v28 = v16;
+      v28 = _containerIdentifier2;
       v29 = 2114;
       v30 = v22;
       v18 = "<%{public}@: %{public}p; container: %{public}@> Initiating new life cycle sequence: '%{public}@'";
@@ -1354,15 +1354,15 @@ LABEL_7:
   if (os_log_type_enabled(WGLogWidgets, OS_LOG_TYPE_DEFAULT))
   {
     v4 = v3;
-    v5 = [(WGWidgetHostingViewController *)self widgetIdentifier];
-    v6 = [(WGWidgetHostingViewController *)self _containerIdentifier];
+    widgetIdentifier = [(WGWidgetHostingViewController *)self widgetIdentifier];
+    _containerIdentifier = [(WGWidgetHostingViewController *)self _containerIdentifier];
     activeLifeCycleSequence = self->_activeLifeCycleSequence;
     v9 = 138544130;
-    v10 = v5;
+    v10 = widgetIdentifier;
     v11 = 2050;
-    v12 = self;
+    selfCopy = self;
     v13 = 2114;
-    v14 = v6;
+    v14 = _containerIdentifier;
     v15 = 2114;
     v16 = activeLifeCycleSequence;
     _os_log_impl(&dword_27425E000, v4, OS_LOG_TYPE_DEFAULT, "<%{public}@: %{public}p; container: %{public}@> Aborting active life cycle sequence: %{public}@", &v9, 0x2Au);
@@ -1377,8 +1377,8 @@ LABEL_7:
   v19 = *MEMORY[0x277D85DE8];
   if (!self->_proxyRequestQueue)
   {
-    v3 = [(WGWidgetHostingViewController *)self widgetIdentifier];
-    v4 = QueueName(@"com.apple.widgets.proxyrequestqueue", v3);
+    widgetIdentifier = [(WGWidgetHostingViewController *)self widgetIdentifier];
+    v4 = QueueName(@"com.apple.widgets.proxyrequestqueue", widgetIdentifier);
 
     v5 = NewSerialQueue(v4);
     proxyRequestQueue = self->_proxyRequestQueue;
@@ -1388,14 +1388,14 @@ LABEL_7:
     if (os_log_type_enabled(WGLogWidgets, OS_LOG_TYPE_DEFAULT))
     {
       v8 = v7;
-      v9 = [(WGWidgetHostingViewController *)self widgetIdentifier];
-      v10 = [(WGWidgetHostingViewController *)self _containerIdentifier];
+      widgetIdentifier2 = [(WGWidgetHostingViewController *)self widgetIdentifier];
+      _containerIdentifier = [(WGWidgetHostingViewController *)self _containerIdentifier];
       v11 = 138544130;
-      v12 = v9;
+      v12 = widgetIdentifier2;
       v13 = 2050;
-      v14 = self;
+      selfCopy = self;
       v15 = 2114;
-      v16 = v10;
+      v16 = _containerIdentifier;
       v17 = 2082;
       v18 = v4;
       _os_log_impl(&dword_27425E000, v8, OS_LOG_TYPE_DEFAULT, "<%{public}@: %{public}p; container: %{public}@> Setup request queue (%{public}s)", &v11, 0x2Au);
@@ -1403,22 +1403,22 @@ LABEL_7:
   }
 }
 
-- (void)_enqueueRequest:(id)a3 inQueue:(id)a4 trampolinedToMainQueue:(BOOL)a5 withDescription:(id)a6
+- (void)_enqueueRequest:(id)request inQueue:(id)queue trampolinedToMainQueue:(BOOL)mainQueue withDescription:(id)description
 {
-  v7 = a5;
+  mainQueueCopy = mainQueue;
   v45 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  if (v11)
+  requestCopy = request;
+  queueCopy = queue;
+  descriptionCopy = description;
+  if (queueCopy)
   {
     v13 = objc_initWeak(&v29, self);
-    v14 = [(WGWidgetHostingViewController *)self _activeLifeCycleSequence];
+    _activeLifeCycleSequence = [(WGWidgetHostingViewController *)self _activeLifeCycleSequence];
     objc_initWeak(&location, self);
-    v15 = v14;
-    v16 = v10;
-    v17 = v11;
-    v18 = v12;
+    v15 = _activeLifeCycleSequence;
+    v16 = requestCopy;
+    v17 = queueCopy;
+    v18 = descriptionCopy;
     v19 = objc_loadWeakRetained(&location);
     if (v16)
     {
@@ -1448,7 +1448,7 @@ LABEL_7:
     v35 = v15;
     v22 = MEMORY[0x2743E8C10](v32);
     v23 = v22;
-    if (v7)
+    if (mainQueueCopy)
     {
       v30[0] = MEMORY[0x277D85DD0];
       v30[1] = 3221225472;
@@ -1493,50 +1493,50 @@ LABEL_13:
   }
 }
 
-- (void)_enqueueRemoteServiceRequest:(id)a3 withDescription:(id)a4
+- (void)_enqueueRemoteServiceRequest:(id)request withDescription:(id)description
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(WGWidgetHostingViewController *)self _proxyRequestQueue];
-  [(WGWidgetHostingViewController *)self _enqueueRequest:v7 inQueue:v8 trampolinedToMainQueue:1 withDescription:v6];
+  descriptionCopy = description;
+  requestCopy = request;
+  _proxyRequestQueue = [(WGWidgetHostingViewController *)self _proxyRequestQueue];
+  [(WGWidgetHostingViewController *)self _enqueueRequest:requestCopy inQueue:_proxyRequestQueue trampolinedToMainQueue:1 withDescription:descriptionCopy];
 }
 
-- (void)_beginSequenceWithReason:(id)a3 completion:(id)a4 updateHandler:(id)a5
+- (void)_beginSequenceWithReason:(id)reason completion:(id)completion updateHandler:(id)handler
 {
   v29 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  reasonCopy = reason;
+  completionCopy = completion;
+  handlerCopy = handler;
   v11 = WGLogWidgets;
   if (os_log_type_enabled(WGLogWidgets, OS_LOG_TYPE_DEFAULT))
   {
     v12 = v11;
-    v13 = [(WGWidgetHostingViewController *)self widgetIdentifier];
-    v14 = [(WGWidgetHostingViewController *)self _containerIdentifier];
+    widgetIdentifier = [(WGWidgetHostingViewController *)self widgetIdentifier];
+    _containerIdentifier = [(WGWidgetHostingViewController *)self _containerIdentifier];
     *buf = 138544130;
-    v22 = v13;
+    v22 = widgetIdentifier;
     v23 = 2050;
-    v24 = self;
+    selfCopy = self;
     v25 = 2114;
-    v26 = v14;
+    v26 = _containerIdentifier;
     v27 = 2114;
-    v28 = v8;
+    v28 = reasonCopy;
     _os_log_impl(&dword_27425E000, v12, OS_LOG_TYPE_DEFAULT, "<%{public}@: %{public}p; container: %{public}@> Begin sequence with reason: %{public}@", buf, 0x2Au);
   }
 
   [(WGWidgetHostingViewController *)self _initiateNewSequenceIfNecessary];
   [(WGWidgetHostingViewController *)self _validateSnapshotViewForActiveLayoutMode];
-  v15 = [(WGWidgetHostingViewController *)self _activeLifeCycleSequence];
+  _activeLifeCycleSequence = [(WGWidgetHostingViewController *)self _activeLifeCycleSequence];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __83__WGWidgetHostingViewController__beginSequenceWithReason_completion_updateHandler___block_invoke;
   v18[3] = &unk_279ED1A88;
-  v19 = v10;
-  v20 = v9;
+  v19 = handlerCopy;
+  v20 = completionCopy;
   v18[4] = self;
-  v16 = v9;
-  v17 = v10;
-  [(WGWidgetHostingViewController *)self _connectRemoteViewControllerForReason:v8 sequence:v15 completionHandler:v18];
+  v16 = completionCopy;
+  v17 = handlerCopy;
+  [(WGWidgetHostingViewController *)self _connectRemoteViewControllerForReason:reasonCopy sequence:_activeLifeCycleSequence completionHandler:v18];
 }
 
 void __83__WGWidgetHostingViewController__beginSequenceWithReason_completion_updateHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1684,13 +1684,13 @@ uint64_t __83__WGWidgetHostingViewController__beginSequenceWithReason_completion
   return [v9 _registerUpdateRequestCompletionHandler:0 forSequence:v10];
 }
 
-- (void)_connectRemoteViewControllerForReason:(id)a3 sequence:(id)a4 completionHandler:(id)a5
+- (void)_connectRemoteViewControllerForReason:(id)reason sequence:(id)sequence completionHandler:(id)handler
 {
   v55 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(WGWidgetHostingViewController *)self _isActiveSequence:v9];
+  reasonCopy = reason;
+  sequenceCopy = sequence;
+  handlerCopy = handler;
+  v11 = [(WGWidgetHostingViewController *)self _isActiveSequence:sequenceCopy];
   v12 = WGLogWidgets;
   v13 = os_log_type_enabled(WGLogWidgets, OS_LOG_TYPE_DEFAULT);
   if (v11)
@@ -1698,38 +1698,38 @@ uint64_t __83__WGWidgetHostingViewController__beginSequenceWithReason_completion
     if (v13)
     {
       v14 = v12;
-      v15 = [(WGWidgetHostingViewController *)self widgetIdentifier];
-      v16 = [(WGWidgetHostingViewController *)self _containerIdentifier];
+      widgetIdentifier = [(WGWidgetHostingViewController *)self widgetIdentifier];
+      _containerIdentifier = [(WGWidgetHostingViewController *)self _containerIdentifier];
       *buf = 138544130;
-      v46 = v15;
+      v46 = widgetIdentifier;
       v47 = 2050;
-      v48 = self;
+      selfCopy5 = self;
       v49 = 2114;
-      v50 = v16;
+      v50 = _containerIdentifier;
       v51 = 2114;
-      v52 = v8;
+      v52 = reasonCopy;
       _os_log_impl(&dword_27425E000, v14, OS_LOG_TYPE_DEFAULT, "<%{public}@: %{public}p; container: %{public}@> Connection requested with reason: '%{public}@'", buf, 0x2Au);
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_disconnectionTimer);
-    if ([objc_opt_class() _canWidgetHostConnectRemoteViewControllerByRequestingForSequence:v9 disconnectionTimer:WeakRetained connectionState:self->_connectionState])
+    if ([objc_opt_class() _canWidgetHostConnectRemoteViewControllerByRequestingForSequence:sequenceCopy disconnectionTimer:WeakRetained connectionState:self->_connectionState])
     {
       v18 = WGLogWidgets;
       if (os_log_type_enabled(WGLogWidgets, OS_LOG_TYPE_DEFAULT))
       {
         v19 = v18;
-        v20 = [(WGWidgetHostingViewController *)self widgetIdentifier];
-        v21 = [(WGWidgetHostingViewController *)self _containerIdentifier];
+        widgetIdentifier2 = [(WGWidgetHostingViewController *)self widgetIdentifier];
+        _containerIdentifier2 = [(WGWidgetHostingViewController *)self _containerIdentifier];
         *buf = 138543874;
-        v46 = v20;
+        v46 = widgetIdentifier2;
         v47 = 2050;
-        v48 = self;
+        selfCopy5 = self;
         v49 = 2114;
-        v50 = v21;
+        v50 = _containerIdentifier2;
         _os_log_impl(&dword_27425E000, v19, OS_LOG_TYPE_DEFAULT, "<%{public}@: %{public}p; container: %{public}@> Will request remote view controller", buf, 0x20u);
       }
 
-      v22 = [v9 transitionToState:1];
+      v22 = [sequenceCopy transitionToState:1];
       if (v22)
       {
         v23 = WGLogWidgets;
@@ -1739,10 +1739,10 @@ uint64_t __83__WGWidgetHostingViewController__beginSequenceWithReason_completion
         }
 
         objc_initWeak(buf, self);
-        if (v10)
+        if (handlerCopy)
         {
           v24 = objc_loadWeakRetained(buf);
-          v10[2](v10, v24, v9);
+          handlerCopy[2](handlerCopy, v24, sequenceCopy);
         }
 
         objc_destroyWeak(buf);
@@ -1754,12 +1754,12 @@ uint64_t __83__WGWidgetHostingViewController__beginSequenceWithReason_completion
         v43[1] = 3221225472;
         v43[2] = __98__WGWidgetHostingViewController__connectRemoteViewControllerForReason_sequence_completionHandler___block_invoke;
         v43[3] = &unk_279ED1AB0;
-        v44 = v10;
-        [(WGWidgetHostingViewController *)self _requestRemoteViewControllerForSequence:v9 completionHander:v43];
+        v44 = handlerCopy;
+        [(WGWidgetHostingViewController *)self _requestRemoteViewControllerForSequence:sequenceCopy completionHander:v43];
       }
     }
 
-    else if ([objc_opt_class() _canWidgetHostConnectRemoteViewControllerByCancellingDisappearanceForSequence:v9])
+    else if ([objc_opt_class() _canWidgetHostConnectRemoteViewControllerByCancellingDisappearanceForSequence:sequenceCopy])
     {
       if (WeakRetained)
       {
@@ -1767,21 +1767,21 @@ uint64_t __83__WGWidgetHostingViewController__beginSequenceWithReason_completion
         if (os_log_type_enabled(WGLogWidgets, OS_LOG_TYPE_DEFAULT))
         {
           v31 = v30;
-          v32 = [(WGWidgetHostingViewController *)self widgetIdentifier];
-          v33 = [(WGWidgetHostingViewController *)self _containerIdentifier];
+          widgetIdentifier3 = [(WGWidgetHostingViewController *)self widgetIdentifier];
+          _containerIdentifier3 = [(WGWidgetHostingViewController *)self _containerIdentifier];
           *buf = 138543874;
-          v46 = v32;
+          v46 = widgetIdentifier3;
           v47 = 2050;
-          v48 = self;
+          selfCopy5 = self;
           v49 = 2114;
-          v50 = v33;
+          v50 = _containerIdentifier3;
           _os_log_impl(&dword_27425E000, v31, OS_LOG_TYPE_DEFAULT, "<%{public}@: %{public}p; container: %{public}@> Connection requested with pending disconnection - invalidating disconnection timer", buf, 0x20u);
         }
 
         [(WGWidgetHostingViewController *)self _invalidateDisconnectionTimer];
       }
 
-      v34 = [v9 transitionToState:2];
+      v34 = [sequenceCopy transitionToState:2];
       if (v34)
       {
         v35 = WGLogWidgets;
@@ -1791,10 +1791,10 @@ uint64_t __83__WGWidgetHostingViewController__beginSequenceWithReason_completion
         }
 
         objc_initWeak(buf, self);
-        if (v10)
+        if (handlerCopy)
         {
           v36 = objc_loadWeakRetained(buf);
-          v10[2](v10, v36, v9);
+          handlerCopy[2](handlerCopy, v36, sequenceCopy);
         }
       }
 
@@ -1802,10 +1802,10 @@ uint64_t __83__WGWidgetHostingViewController__beginSequenceWithReason_completion
       {
         ValidateQueue(self->_proxyRequestQueue);
         objc_initWeak(buf, self);
-        if (v10)
+        if (handlerCopy)
         {
           v42 = objc_loadWeakRetained(buf);
-          v10[2](v10, v42, v9);
+          handlerCopy[2](handlerCopy, v42, sequenceCopy);
         }
       }
 
@@ -1818,24 +1818,24 @@ uint64_t __83__WGWidgetHostingViewController__beginSequenceWithReason_completion
       if (os_log_type_enabled(WGLogWidgets, OS_LOG_TYPE_DEFAULT))
       {
         v38 = v37;
-        v39 = [(WGWidgetHostingViewController *)self widgetIdentifier];
-        v40 = [(WGWidgetHostingViewController *)self _containerIdentifier];
+        widgetIdentifier4 = [(WGWidgetHostingViewController *)self widgetIdentifier];
+        _containerIdentifier4 = [(WGWidgetHostingViewController *)self _containerIdentifier];
         *buf = 138544130;
-        v46 = v39;
+        v46 = widgetIdentifier4;
         v47 = 2050;
-        v48 = self;
+        selfCopy5 = self;
         v49 = 2114;
-        v50 = v40;
+        v50 = _containerIdentifier4;
         v51 = 2114;
-        v52 = v9;
+        v52 = sequenceCopy;
         _os_log_impl(&dword_27425E000, v38, OS_LOG_TYPE_DEFAULT, "<%{public}@: %{public}p; container: %{public}@> Sequence already at satisfactory state: %{public}@", buf, 0x2Au);
       }
 
       objc_initWeak(buf, self);
-      if (v10)
+      if (handlerCopy)
       {
         v41 = objc_loadWeakRetained(buf);
-        v10[2](v10, v41, v9);
+        handlerCopy[2](handlerCopy, v41, sequenceCopy);
       }
 
       objc_destroyWeak(buf);
@@ -1847,27 +1847,27 @@ uint64_t __83__WGWidgetHostingViewController__beginSequenceWithReason_completion
     if (v13)
     {
       v25 = v12;
-      v26 = [(WGWidgetHostingViewController *)self widgetIdentifier];
-      v27 = [(WGWidgetHostingViewController *)self _containerIdentifier];
-      v28 = [(WGWidgetHostingViewController *)self _activeLifeCycleSequence];
+      widgetIdentifier5 = [(WGWidgetHostingViewController *)self widgetIdentifier];
+      _containerIdentifier5 = [(WGWidgetHostingViewController *)self _containerIdentifier];
+      _activeLifeCycleSequence = [(WGWidgetHostingViewController *)self _activeLifeCycleSequence];
       *buf = 138544386;
-      v46 = v26;
+      v46 = widgetIdentifier5;
       v47 = 2050;
-      v48 = self;
+      selfCopy5 = self;
       v49 = 2114;
-      v50 = v27;
+      v50 = _containerIdentifier5;
       v51 = 2114;
-      v52 = v9;
+      v52 = sequenceCopy;
       v53 = 2114;
-      v54 = v28;
+      v54 = _activeLifeCycleSequence;
       _os_log_impl(&dword_27425E000, v25, OS_LOG_TYPE_DEFAULT, "<%{public}@: %{public}p; container: %{public}@> Can't request remote view controller as argument sequence (%{public}@) doesn't match active sequence (%{public}@)", buf, 0x34u);
     }
 
     objc_initWeak(buf, self);
-    if (v10)
+    if (handlerCopy)
     {
       v29 = objc_loadWeakRetained(buf);
-      v10[2](v10, v29, v9);
+      handlerCopy[2](handlerCopy, v29, sequenceCopy);
     }
 
     objc_destroyWeak(buf);
@@ -1894,18 +1894,18 @@ void __98__WGWidgetHostingViewController__connectRemoteViewControllerForReason_s
   }
 }
 
-- (void)_requestRemoteViewControllerForSequence:(id)a3 completionHander:(id)a4
+- (void)_requestRemoteViewControllerForSequence:(id)sequence completionHander:(id)hander
 {
   v110 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = [(WGWidgetHostingViewController *)self _isActiveSequence:v7];
-  v10 = [objc_opt_class() _canWidgetHostRequestRemoteViewControllerForSequence:v7];
+  sequenceCopy = sequence;
+  handerCopy = hander;
+  v9 = [(WGWidgetHostingViewController *)self _isActiveSequence:sequenceCopy];
+  v10 = [objc_opt_class() _canWidgetHostRequestRemoteViewControllerForSequence:sequenceCopy];
   if (v9 && v10)
   {
-    v11 = [(WGWidgetHostingViewController *)self _isBlacklisted];
-    v12 = [(WGWidgetHostingViewController *)self isLockedOut];
-    if (!v11 && !v12)
+    _isBlacklisted = [(WGWidgetHostingViewController *)self _isBlacklisted];
+    isLockedOut = [(WGWidgetHostingViewController *)self isLockedOut];
+    if (!_isBlacklisted && !isLockedOut)
     {
       *v99 = 0;
       *&v99[8] = v99;
@@ -1918,15 +1918,15 @@ void __98__WGWidgetHostingViewController__connectRemoteViewControllerForReason_s
       v95 = 0x3032000000;
       v96 = __Block_byref_object_copy__5;
       v97 = __Block_byref_object_dispose__5;
-      v98 = MEMORY[0x2743E8C10](v8);
-      v13 = [(WGWidgetHostingViewController *)self _remoteViewControllerConnectionHandler];
+      v98 = MEMORY[0x2743E8C10](handerCopy);
+      _remoteViewControllerConnectionHandler = [(WGWidgetHostingViewController *)self _remoteViewControllerConnectionHandler];
       v87[0] = MEMORY[0x277D85DD0];
       v87[1] = 3221225472;
       v87[2] = __90__WGWidgetHostingViewController__requestRemoteViewControllerForSequence_completionHander___block_invoke;
       v87[3] = &unk_279ED1AD8;
-      v70 = v13;
+      v70 = _remoteViewControllerConnectionHandler;
       v89 = v70;
-      v14 = v7;
+      v14 = sequenceCopy;
       v88 = v14;
       v90 = v99;
       v91 = &v93;
@@ -1937,26 +1937,26 @@ void __98__WGWidgetHostingViewController__connectRemoteViewControllerForReason_s
         v15 = WGLogWidgets;
         if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
         {
-          v16 = [(WGWidgetHostingViewController *)self widgetIdentifier];
-          v17 = [(WGWidgetHostingViewController *)self _containerIdentifier];
+          widgetIdentifier = [(WGWidgetHostingViewController *)self widgetIdentifier];
+          _containerIdentifier = [(WGWidgetHostingViewController *)self _containerIdentifier];
           *buf = 138543874;
-          v103 = v16;
+          v103 = widgetIdentifier;
           v104 = 2050;
-          v105 = self;
+          selfCopy3 = self;
           v106 = 2114;
-          v107 = v17;
+          v107 = _containerIdentifier;
           _os_log_impl(&dword_27425E000, v15, OS_LOG_TYPE_DEFAULT, "<%{public}@: %{public}p; container: %{public}@> Already have an outstanding request, so updating connection handler", buf, 0x20u);
         }
 
         v72 = 0;
         v18 = [v14 beginTransitionToState:2 error:&v72];
-        v19 = v72;
+        extension = v72;
         v20 = *(*&v99[8] + 40);
         *(*&v99[8] + 40) = v18;
 
-        if (*(*&v99[8] + 40) | v19)
+        if (*(*&v99[8] + 40) | extension)
         {
-          if (v19)
+          if (extension)
           {
             v21 = WGLogWidgets;
             if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -1967,10 +1967,10 @@ void __98__WGWidgetHostingViewController__connectRemoteViewControllerForReason_s
             }
 
             objc_initWeak(&location, self);
-            if (v8)
+            if (handerCopy)
             {
               v22 = objc_loadWeakRetained(&location);
-              v8[2](v8, v22, v14);
+              handerCopy[2](handerCopy, v22, v14);
             }
 
             objc_destroyWeak(&location);
@@ -1980,8 +1980,8 @@ void __98__WGWidgetHostingViewController__connectRemoteViewControllerForReason_s
 
         else
         {
-          v63 = [MEMORY[0x277CCA890] currentHandler];
-          [v63 handleFailureInMethod:a2 object:self file:@"WGWidgetHostingViewController.m" lineNumber:982 description:{@"Invalid parameter not satisfying: %@", @"endTransitionBlock || error"}];
+          currentHandler = [MEMORY[0x277CCA890] currentHandler];
+          [currentHandler handleFailureInMethod:a2 object:self file:@"WGWidgetHostingViewController.m" lineNumber:982 description:{@"Invalid parameter not satisfying: %@", @"endTransitionBlock || error"}];
         }
 
         [(WGWidgetHostingViewController *)self _setRemoteViewControllerConnectionHandler:v71];
@@ -1997,13 +1997,13 @@ LABEL_64:
       {
         v86 = 0;
         v43 = [v14 beginTransitionToState:2 error:&v86];
-        v19 = v86;
+        extension = v86;
         v44 = *(*&v99[8] + 40);
         *(*&v99[8] + 40) = v43;
 
-        if (*(*&v99[8] + 40) | v19)
+        if (*(*&v99[8] + 40) | extension)
         {
-          if (v19)
+          if (extension)
           {
             v45 = WGLogWidgets;
             if (os_log_type_enabled(v45, OS_LOG_TYPE_ERROR))
@@ -2014,10 +2014,10 @@ LABEL_64:
             }
 
             objc_initWeak(&location, self);
-            if (v8)
+            if (handerCopy)
             {
               v46 = objc_loadWeakRetained(&location);
-              v8[2](v8, v46, v14);
+              handerCopy[2](handerCopy, v46, v14);
             }
 
             objc_destroyWeak(&location);
@@ -2027,8 +2027,8 @@ LABEL_64:
 
         else
         {
-          v64 = [MEMORY[0x277CCA890] currentHandler];
-          [v64 handleFailureInMethod:a2 object:self file:@"WGWidgetHostingViewController.m" lineNumber:849 description:{@"Invalid parameter not satisfying: %@", @"endTransitionBlock || error"}];
+          currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+          [currentHandler2 handleFailureInMethod:a2 object:self file:@"WGWidgetHostingViewController.m" lineNumber:849 description:{@"Invalid parameter not satisfying: %@", @"endTransitionBlock || error"}];
         }
 
         [(WGWidgetHostingViewController *)self _setRemoteViewControllerConnectionHandler:0];
@@ -2040,32 +2040,32 @@ LABEL_64:
         goto LABEL_64;
       }
 
-      v19 = [(WGWidgetInfo *)self->_widgetInfo extension];
+      extension = [(WGWidgetInfo *)self->_widgetInfo extension];
       v47 = WGLogWidgets;
       v48 = os_log_type_enabled(v47, OS_LOG_TYPE_DEFAULT);
-      if (!v19)
+      if (!extension)
       {
         if (v48)
         {
-          v59 = [(WGWidgetHostingViewController *)self widgetIdentifier];
-          v60 = [(WGWidgetHostingViewController *)self _containerIdentifier];
-          v61 = [(WGWidgetHostingViewController *)self widgetIdentifier];
+          widgetIdentifier2 = [(WGWidgetHostingViewController *)self widgetIdentifier];
+          _containerIdentifier2 = [(WGWidgetHostingViewController *)self _containerIdentifier];
+          widgetIdentifier3 = [(WGWidgetHostingViewController *)self widgetIdentifier];
           *buf = 138544130;
-          v103 = v59;
+          v103 = widgetIdentifier2;
           v104 = 2050;
-          v105 = self;
+          selfCopy3 = self;
           v106 = 2114;
-          v107 = v60;
+          v107 = _containerIdentifier2;
           v108 = 2114;
-          v109 = v61;
+          v109 = widgetIdentifier3;
           _os_log_impl(&dword_27425E000, v47, OS_LOG_TYPE_DEFAULT, "<%{public}@: %{public}p; container: %{public}@> No extension found for identifier (%{public}@)", buf, 0x2Au);
         }
 
         objc_initWeak(buf, self);
-        if (v8)
+        if (handerCopy)
         {
           WeakRetained = objc_loadWeakRetained(buf);
-          v8[2](v8, WeakRetained, v14);
+          handerCopy[2](handerCopy, WeakRetained, v14);
         }
 
         objc_destroyWeak(buf);
@@ -2074,17 +2074,17 @@ LABEL_64:
 
       if (v48)
       {
-        v69 = [(WGWidgetHostingViewController *)self widgetIdentifier];
-        v49 = [(WGWidgetHostingViewController *)self _containerIdentifier];
-        v50 = [v19 wg_description];
+        widgetIdentifier4 = [(WGWidgetHostingViewController *)self widgetIdentifier];
+        _containerIdentifier3 = [(WGWidgetHostingViewController *)self _containerIdentifier];
+        wg_description = [extension wg_description];
         *buf = 138544130;
-        v103 = v69;
+        v103 = widgetIdentifier4;
         v104 = 2050;
-        v105 = self;
+        selfCopy3 = self;
         v106 = 2114;
-        v107 = v49;
+        v107 = _containerIdentifier3;
         v108 = 2114;
-        v109 = v50;
+        v109 = wg_description;
         _os_log_impl(&dword_27425E000, v47, OS_LOG_TYPE_DEFAULT, "<%{public}@: %{public}p; container: %{public}@> Will request remote view controller from extension %{public}@", buf, 0x2Au);
       }
 
@@ -2093,7 +2093,7 @@ LABEL_64:
       v83[1] = 3221225472;
       v83[2] = __90__WGWidgetHostingViewController__requestRemoteViewControllerForSequence_completionHander___block_invoke_147;
       v83[3] = &unk_279ED1AB0;
-      v51 = v8;
+      v51 = handerCopy;
       v84 = v51;
       v52 = MEMORY[0x2743E8C10](v83);
       v53 = v94[5];
@@ -2131,8 +2131,8 @@ LABEL_64:
 
       else
       {
-        v65 = [MEMORY[0x277CCA890] currentHandler];
-        [v65 handleFailureInMethod:a2 object:self file:@"WGWidgetHostingViewController.m" lineNumber:871 description:{@"Invalid parameter not satisfying: %@", @"endTransitionBlock || error"}];
+        currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+        [currentHandler3 handleFailureInMethod:a2 object:self file:@"WGWidgetHostingViewController.m" lineNumber:871 description:{@"Invalid parameter not satisfying: %@", @"endTransitionBlock || error"}];
       }
 
       v66 = dispatch_semaphore_create(0);
@@ -2141,12 +2141,12 @@ LABEL_64:
       v75[2] = __90__WGWidgetHostingViewController__requestRemoteViewControllerForSequence_completionHander___block_invoke_148;
       v75[3] = &unk_279ED1B78;
       v79 = v71;
-      v76 = v19;
+      v76 = extension;
       v67 = v66;
       v80 = &v93;
       v81 = a2;
       v77 = v67;
-      v78 = self;
+      selfCopy4 = self;
       [(WGWidgetHostingViewController *)self _enqueueRequest:v75 inQueue:self->_proxyConnectionQueue trampolinedToMainQueue:1 withDescription:@"Requesting remote view controller"];
       v73[0] = MEMORY[0x277D85DD0];
       v73[1] = 3221225472;
@@ -2160,47 +2160,47 @@ LABEL_63:
       goto LABEL_64;
     }
 
-    if (v11)
+    if (_isBlacklisted)
     {
       v34 = WGLogWidgets;
       if (os_log_type_enabled(WGLogWidgets, OS_LOG_TYPE_DEFAULT))
       {
         v35 = v34;
-        v36 = [(WGWidgetHostingViewController *)self widgetIdentifier];
-        v37 = [(WGWidgetHostingViewController *)self _containerIdentifier];
+        widgetIdentifier5 = [(WGWidgetHostingViewController *)self widgetIdentifier];
+        _containerIdentifier4 = [(WGWidgetHostingViewController *)self _containerIdentifier];
         *v99 = 138543874;
-        *&v99[4] = v36;
+        *&v99[4] = widgetIdentifier5;
         *&v99[12] = 2050;
         *&v99[14] = self;
         *&v99[22] = 2114;
-        v100 = v37;
+        v100 = _containerIdentifier4;
         _os_log_impl(&dword_27425E000, v35, OS_LOG_TYPE_DEFAULT, "<%{public}@: %{public}p; container: %{public}@> Can't request remote view controller that is blacklisted", v99, 0x20u);
       }
     }
 
-    else if (v12)
+    else if (isLockedOut)
     {
       v38 = WGLogWidgets;
       if (os_log_type_enabled(WGLogWidgets, OS_LOG_TYPE_DEFAULT))
       {
         v39 = v38;
-        v40 = [(WGWidgetHostingViewController *)self widgetIdentifier];
-        v41 = [(WGWidgetHostingViewController *)self _containerIdentifier];
+        widgetIdentifier6 = [(WGWidgetHostingViewController *)self widgetIdentifier];
+        _containerIdentifier5 = [(WGWidgetHostingViewController *)self _containerIdentifier];
         *v99 = 138543874;
-        *&v99[4] = v40;
+        *&v99[4] = widgetIdentifier6;
         *&v99[12] = 2050;
         *&v99[14] = self;
         *&v99[22] = 2114;
-        v100 = v41;
+        v100 = _containerIdentifier5;
         _os_log_impl(&dword_27425E000, v39, OS_LOG_TYPE_DEFAULT, "<%{public}@: %{public}p; container: %{public}@> Can't request remote view controller that is locked out", v99, 0x20u);
       }
     }
 
     objc_initWeak(v99, self);
-    if (v8)
+    if (handerCopy)
     {
       v42 = objc_loadWeakRetained(v99);
-      v8[2](v8, v42, v7);
+      handerCopy[2](handerCopy, v42, sequenceCopy);
     }
   }
 
@@ -2214,17 +2214,17 @@ LABEL_63:
         if (os_log_type_enabled(WGLogWidgets, OS_LOG_TYPE_DEFAULT))
         {
           v24 = v23;
-          v25 = [(WGWidgetHostingViewController *)self widgetIdentifier];
-          v26 = [(WGWidgetHostingViewController *)self _containerIdentifier];
+          widgetIdentifier7 = [(WGWidgetHostingViewController *)self widgetIdentifier];
+          _containerIdentifier6 = [(WGWidgetHostingViewController *)self _containerIdentifier];
           v27 = WGStringFromWidgetLifeCycleSequenceState(1uLL);
           *v99 = 138544386;
-          *&v99[4] = v25;
+          *&v99[4] = widgetIdentifier7;
           *&v99[12] = 2050;
           *&v99[14] = self;
           *&v99[22] = 2114;
-          v100 = v26;
+          v100 = _containerIdentifier6;
           *v101 = 2114;
-          *&v101[2] = v7;
+          *&v101[2] = sequenceCopy;
           *&v101[10] = 2114;
           *&v101[12] = v27;
           _os_log_impl(&dword_27425E000, v24, OS_LOG_TYPE_DEFAULT, "<%{public}@: %{public}p; container: %{public}@> Can't request remote view controller as argument sequence (%{public}@) isn't in expected state (%{public}@)", v99, 0x34u);
@@ -2238,28 +2238,28 @@ LABEL_63:
       if (os_log_type_enabled(WGLogWidgets, OS_LOG_TYPE_DEFAULT))
       {
         v29 = v28;
-        v30 = [(WGWidgetHostingViewController *)self widgetIdentifier];
-        v31 = [(WGWidgetHostingViewController *)self _containerIdentifier];
-        v32 = [(WGWidgetHostingViewController *)self _activeLifeCycleSequence];
+        widgetIdentifier8 = [(WGWidgetHostingViewController *)self widgetIdentifier];
+        _containerIdentifier7 = [(WGWidgetHostingViewController *)self _containerIdentifier];
+        _activeLifeCycleSequence = [(WGWidgetHostingViewController *)self _activeLifeCycleSequence];
         *v99 = 138544386;
-        *&v99[4] = v30;
+        *&v99[4] = widgetIdentifier8;
         *&v99[12] = 2050;
         *&v99[14] = self;
         *&v99[22] = 2114;
-        v100 = v31;
+        v100 = _containerIdentifier7;
         *v101 = 2114;
-        *&v101[2] = v7;
+        *&v101[2] = sequenceCopy;
         *&v101[10] = 2114;
-        *&v101[12] = v32;
+        *&v101[12] = _activeLifeCycleSequence;
         _os_log_impl(&dword_27425E000, v29, OS_LOG_TYPE_DEFAULT, "<%{public}@: %{public}p; container: %{public}@> Can't request remote view controller as argument sequence (%{public}@) doesn't match active sequence (%{public}@)", v99, 0x34u);
       }
     }
 
     objc_initWeak(v99, self);
-    if (v8)
+    if (handerCopy)
     {
       v33 = objc_loadWeakRetained(v99);
-      v8[2](v8, v33, v7);
+      handerCopy[2](handerCopy, v33, sequenceCopy);
     }
   }
 
@@ -2903,22 +2903,22 @@ void __90__WGWidgetHostingViewController__requestRemoteViewControllerForSequence
   }
 }
 
-- (void)_setImplementsPerformUpdate:(BOOL)a3
+- (void)_setImplementsPerformUpdate:(BOOL)update
 {
   v19 = *MEMORY[0x277D85DE8];
-  if (self->_implementsPerformUpdate != a3)
+  if (self->_implementsPerformUpdate != update)
   {
-    self->_implementsPerformUpdate = a3;
+    self->_implementsPerformUpdate = update;
     v4 = WGLogWidgets;
     if (os_log_type_enabled(WGLogWidgets, OS_LOG_TYPE_DEFAULT))
     {
       v5 = v4;
-      v6 = [(WGWidgetHostingViewController *)self widgetIdentifier];
-      v7 = [(WGWidgetHostingViewController *)self _containerIdentifier];
-      v8 = v7;
+      widgetIdentifier = [(WGWidgetHostingViewController *)self widgetIdentifier];
+      _containerIdentifier = [(WGWidgetHostingViewController *)self _containerIdentifier];
+      v8 = _containerIdentifier;
       implementsPerformUpdate = self->_implementsPerformUpdate;
       v11 = 138544130;
-      v12 = v6;
+      v12 = widgetIdentifier;
       v13 = 2050;
       if (implementsPerformUpdate)
       {
@@ -2930,9 +2930,9 @@ void __90__WGWidgetHostingViewController__requestRemoteViewControllerForSequence
         v10 = @"does not";
       }
 
-      v14 = self;
+      selfCopy = self;
       v15 = 2114;
-      v16 = v7;
+      v16 = _containerIdentifier;
       v17 = 2114;
       v18 = v10;
       _os_log_impl(&dword_27425E000, v5, OS_LOG_TYPE_DEFAULT, "<%{public}@: %{public}p; container: %{public}@> Recording that widget %{public}@ implement 'performUpdate...'", &v11, 0x2Au);
@@ -2940,36 +2940,36 @@ void __90__WGWidgetHostingViewController__requestRemoteViewControllerForSequence
   }
 }
 
-- (void)_performUpdateForSequence:(id)a3 withCompletionHandler:(id)a4
+- (void)_performUpdateForSequence:(id)sequence withCompletionHandler:(id)handler
 {
   v36 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  handlerCopy = handler;
   if ([(WGWidgetHostingViewController *)self implementsPerformUpdate])
   {
-    v6 = [(WGWidgetHostingViewController *)self _didUpdate];
+    _didUpdate = [(WGWidgetHostingViewController *)self _didUpdate];
     v7 = 1;
-    if (v5)
+    if (handlerCopy)
     {
-      if (!v6)
+      if (!_didUpdate)
       {
-        v8 = [(WGWidgetHostingViewController *)self _remoteViewController];
-        v9 = [v8 _isValid];
+        _remoteViewController = [(WGWidgetHostingViewController *)self _remoteViewController];
+        _isValid = [_remoteViewController _isValid];
 
-        if (v9)
+        if (_isValid)
         {
           [(WGWidgetHostingViewController *)self _setDidUpdate:1];
           v10 = WGLogWidgets;
           if (os_log_type_enabled(WGLogWidgets, OS_LOG_TYPE_DEFAULT))
           {
             v11 = v10;
-            v12 = [(WGWidgetHostingViewController *)self widgetIdentifier];
-            v13 = [(WGWidgetHostingViewController *)self _containerIdentifier];
+            widgetIdentifier = [(WGWidgetHostingViewController *)self widgetIdentifier];
+            _containerIdentifier = [(WGWidgetHostingViewController *)self _containerIdentifier];
             *buf = 138543874;
-            v31 = v12;
+            v31 = widgetIdentifier;
             v32 = 2050;
-            v33 = self;
+            selfCopy = self;
             v34 = 2114;
-            v35 = v13;
+            v35 = _containerIdentifier;
             _os_log_impl(&dword_27425E000, v11, OS_LOG_TYPE_DEFAULT, "<%{public}@: %{public}p; container: %{public}@> Performing update", buf, 0x20u);
           }
 
@@ -2986,7 +2986,7 @@ void __90__WGWidgetHostingViewController__requestRemoteViewControllerForSequence
             objc_copyWeak(&v29, buf);
             v16 = v15;
             v27 = v16;
-            v17 = v5;
+            v17 = handlerCopy;
             v28 = v17;
             v18 = MEMORY[0x2743E8C10](v26);
             block[0] = MEMORY[0x277D85DD0];
@@ -3016,9 +3016,9 @@ void __90__WGWidgetHostingViewController__requestRemoteViewControllerForSequence
     v7 = 1;
   }
 
-  if (v5 && v7)
+  if (handlerCopy && v7)
   {
-    (*(v5 + 2))(v5, 2, [(WGWidgetHostingViewController *)self implementsPerformUpdate]);
+    (*(handlerCopy + 2))(handlerCopy, 2, [(WGWidgetHostingViewController *)self implementsPerformUpdate]);
   }
 }
 
@@ -3162,9 +3162,9 @@ void __81__WGWidgetHostingViewController__performUpdateForSequence_withCompletio
   (*(*(a1 + 32) + 16))(*(a1 + 32), 2, [WeakRetained implementsPerformUpdate]);
 }
 
-- (void)_updateWidgetWithCompletionHandler:(id)a3
+- (void)_updateWidgetWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   [(WGWidgetHostingViewController *)self _setIgnoringParentAppearState:1];
   objc_initWeak(&location, self);
   v21[0] = MEMORY[0x277D85DD0];
@@ -3172,11 +3172,11 @@ void __81__WGWidgetHostingViewController__performUpdateForSequence_withCompletio
   v21[2] = __68__WGWidgetHostingViewController__updateWidgetWithCompletionHandler___block_invoke;
   v21[3] = &unk_279ED1C68;
   objc_copyWeak(&v23, &location);
-  v5 = v4;
+  v5 = handlerCopy;
   v22 = v5;
   v6 = MEMORY[0x2743E8C10](v21);
-  v7 = [(WGWidgetHostingViewController *)self implementsPerformUpdate];
-  if (v7 && (-[WGWidgetHostingViewController _remoteViewController](self, "_remoteViewController"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 _isValid], v8, (v9 & 1) == 0))
+  implementsPerformUpdate = [(WGWidgetHostingViewController *)self implementsPerformUpdate];
+  if (implementsPerformUpdate && (-[WGWidgetHostingViewController _remoteViewController](self, "_remoteViewController"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 _isValid], v8, (v9 & 1) == 0))
   {
     v10 = dispatch_group_create();
     dispatch_group_enter(v10);
@@ -3203,7 +3203,7 @@ void __81__WGWidgetHostingViewController__performUpdateForSequence_withCompletio
 
   else
   {
-    v6[2](v6, 2, v7);
+    v6[2](v6, 2, implementsPerformUpdate);
   }
 
   objc_destroyWeak(&v23);
@@ -3296,67 +3296,67 @@ void __68__WGWidgetHostingViewController__updateWidgetWithCompletionHandler___bl
   return v4;
 }
 
-- (void)_captureSnapshotAndBeginDisappearanceTransitionForSequence:(id)a3 completionHandler:(id)a4
+- (void)_captureSnapshotAndBeginDisappearanceTransitionForSequence:(id)sequence completionHandler:(id)handler
 {
   v40 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (![(WGWidgetHostingViewController *)self _isActiveSequence:v6])
+  sequenceCopy = sequence;
+  handlerCopy = handler;
+  if (![(WGWidgetHostingViewController *)self _isActiveSequence:sequenceCopy])
   {
     v11 = WGLogWidgets;
     if (os_log_type_enabled(WGLogWidgets, OS_LOG_TYPE_DEFAULT))
     {
       v12 = v11;
-      v13 = [(WGWidgetHostingViewController *)self widgetIdentifier];
-      v14 = [(WGWidgetHostingViewController *)self _containerIdentifier];
-      v15 = [(WGWidgetHostingViewController *)self _activeLifeCycleSequence];
+      widgetIdentifier = [(WGWidgetHostingViewController *)self widgetIdentifier];
+      _containerIdentifier = [(WGWidgetHostingViewController *)self _containerIdentifier];
+      _activeLifeCycleSequence = [(WGWidgetHostingViewController *)self _activeLifeCycleSequence];
       *location = 138544386;
-      *&location[4] = v13;
+      *&location[4] = widgetIdentifier;
       v32 = 2050;
-      v33 = self;
+      selfCopy2 = self;
       v34 = 2114;
-      v35 = v14;
+      v35 = _containerIdentifier;
       v36 = 2114;
-      v37 = v6;
+      v37 = sequenceCopy;
       v38 = 2114;
-      v39 = v15;
+      v39 = _activeLifeCycleSequence;
       _os_log_impl(&dword_27425E000, v12, OS_LOG_TYPE_DEFAULT, "<%{public}@: %{public}p; container: %{public}@> Can't begin disappearance transition as argument sequence (%{public}@) doesn't match active sequence (%{public}@)", location, 0x34u);
     }
 
     objc_initWeak(location, self);
-    if (v7)
+    if (handlerCopy)
     {
       WeakRetained = objc_loadWeakRetained(location);
-      v7[2](v7, WeakRetained, v6);
+      handlerCopy[2](handlerCopy, WeakRetained, sequenceCopy);
     }
 
     goto LABEL_13;
   }
 
-  if (![objc_opt_class() _canWidgetHostCaptureSnapshotForSequence:v6])
+  if (![objc_opt_class() _canWidgetHostCaptureSnapshotForSequence:sequenceCopy])
   {
     v17 = WGLogWidgets;
     if (os_log_type_enabled(WGLogWidgets, OS_LOG_TYPE_DEFAULT))
     {
       v18 = v17;
-      v19 = [(WGWidgetHostingViewController *)self widgetIdentifier];
-      v20 = [(WGWidgetHostingViewController *)self _containerIdentifier];
+      widgetIdentifier2 = [(WGWidgetHostingViewController *)self widgetIdentifier];
+      _containerIdentifier2 = [(WGWidgetHostingViewController *)self _containerIdentifier];
       *location = 138544130;
-      *&location[4] = v19;
+      *&location[4] = widgetIdentifier2;
       v32 = 2050;
-      v33 = self;
+      selfCopy2 = self;
       v34 = 2114;
-      v35 = v20;
+      v35 = _containerIdentifier2;
       v36 = 2114;
-      v37 = v6;
+      v37 = sequenceCopy;
       _os_log_impl(&dword_27425E000, v18, OS_LOG_TYPE_DEFAULT, "<%{public}@: %{public}p; container: %{public}@> Sequence already at satisfactory state: %{public}@", location, 0x2Au);
     }
 
     objc_initWeak(location, self);
-    if (v7)
+    if (handlerCopy)
     {
       v21 = objc_loadWeakRetained(location);
-      v7[2](v7, v21, v6);
+      handlerCopy[2](handlerCopy, v21, sequenceCopy);
     }
 
 LABEL_13:
@@ -3364,7 +3364,7 @@ LABEL_13:
     goto LABEL_21;
   }
 
-  v8 = [v6 transitionToState:5];
+  v8 = [sequenceCopy transitionToState:5];
   if (v8)
   {
     v9 = WGLogWidgets;
@@ -3374,10 +3374,10 @@ LABEL_13:
     }
 
     objc_initWeak(location, self);
-    if (v7)
+    if (handlerCopy)
     {
       v10 = objc_loadWeakRetained(location);
-      v7[2](v7, v10, v6);
+      handlerCopy[2](handlerCopy, v10, sequenceCopy);
     }
 
     objc_destroyWeak(location);
@@ -3389,7 +3389,7 @@ LABEL_13:
     v29[1] = 3221225472;
     v29[2] = __110__WGWidgetHostingViewController__captureSnapshotAndBeginDisappearanceTransitionForSequence_completionHandler___block_invoke;
     v29[3] = &unk_279ED1A10;
-    v22 = v7;
+    v22 = handlerCopy;
     v30 = v22;
     v23 = MEMORY[0x2743E8C10](v29);
     v25[0] = MEMORY[0x277D85DD0];
@@ -3732,56 +3732,56 @@ uint64_t __110__WGWidgetHostingViewController__captureSnapshotAndBeginDisappeara
   return result;
 }
 
-- (id)_snapshotIdentifierForLayoutMode:(int64_t)a3
+- (id)_snapshotIdentifierForLayoutMode:(int64_t)mode
 {
   [(WGWidgetHostingViewController *)self _maxSizeForDisplayMode:[(WGWidgetHostingViewController *)self activeDisplayMode]];
   v6 = v5;
   v7 = MEMORY[0x277CCACA8];
-  v8 = [(WGWidgetHostingViewController *)self widgetIdentifier];
-  v9 = WGShortStringFromLayoutMode(a3);
+  widgetIdentifier = [(WGWidgetHostingViewController *)self widgetIdentifier];
+  v9 = WGShortStringFromLayoutMode(mode);
   v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", v6];
-  v11 = [MEMORY[0x277CBEAF8] currentLocale];
-  v12 = [v11 localeIdentifier];
-  v13 = [*MEMORY[0x277D76620] preferredContentSizeCategory];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  localeIdentifier = [currentLocale localeIdentifier];
+  preferredContentSizeCategory = [*MEMORY[0x277D76620] preferredContentSizeCategory];
   v14 = NCStringFromWidgetDisplayMode();
-  v15 = [(WGWidgetHostingViewController *)self traitCollection];
-  v16 = WGStringFromUserInterfaceStyle([v15 userInterfaceStyle]);
-  v17 = [v7 stringWithFormat:@"%@-%@-%@-%@-%@-%@-%@", v8, v9, v10, v12, v13, v14, v16];
+  traitCollection = [(WGWidgetHostingViewController *)self traitCollection];
+  v16 = WGStringFromUserInterfaceStyle([traitCollection userInterfaceStyle]);
+  v17 = [v7 stringWithFormat:@"%@-%@-%@-%@-%@-%@-%@", widgetIdentifier, v9, v10, localeIdentifier, preferredContentSizeCategory, v14, v16];
 
   return v17;
 }
 
-- (id)_widgetSnapshotURLForSnapshotIdentifier:(id)a3 ensuringDirectoryExists:(BOOL)a4
+- (id)_widgetSnapshotURLForSnapshotIdentifier:(id)identifier ensuringDirectoryExists:(BOOL)exists
 {
-  v4 = a4;
-  v6 = [a3 stringByAppendingPathExtension:@"ca"];
+  existsCopy = exists;
+  v6 = [identifier stringByAppendingPathExtension:@"ca"];
   v7 = MEMORY[0x277CBEBC0];
-  v8 = [(WGWidgetHostingViewController *)self widgetIdentifier];
-  v9 = WGWidgetCachePathForWidgetWithBundleIdentifier(v8, @"Snapshots", v4);
+  widgetIdentifier = [(WGWidgetHostingViewController *)self widgetIdentifier];
+  v9 = WGWidgetCachePathForWidgetWithBundleIdentifier(widgetIdentifier, @"Snapshots", existsCopy);
   v10 = [v7 fileURLWithPath:v9 isDirectory:1];
   v11 = [v10 URLByAppendingPathComponent:v6 isDirectory:1];
 
   return v11;
 }
 
-- (id)_widgetSnapshotURLForLayoutMode:(int64_t)a3 ensuringDirectoryExists:(BOOL)a4
+- (id)_widgetSnapshotURLForLayoutMode:(int64_t)mode ensuringDirectoryExists:(BOOL)exists
 {
-  v4 = a4;
-  v6 = [(WGWidgetHostingViewController *)self _snapshotIdentifierForLayoutMode:a3];
-  v7 = [(WGWidgetHostingViewController *)self _widgetSnapshotURLForSnapshotIdentifier:v6 ensuringDirectoryExists:v4];
+  existsCopy = exists;
+  v6 = [(WGWidgetHostingViewController *)self _snapshotIdentifierForLayoutMode:mode];
+  v7 = [(WGWidgetHostingViewController *)self _widgetSnapshotURLForSnapshotIdentifier:v6 ensuringDirectoryExists:existsCopy];
 
   return v7;
 }
 
-- (void)_removeItemAtURL:(id)a3
+- (void)_removeItemAtURL:(id)l
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  lCopy = l;
+  if (lCopy)
   {
-    v5 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     v16 = 0;
-    v6 = [v5 removeItemAtURL:v4 error:&v16];
+    v6 = [defaultManager removeItemAtURL:lCopy error:&v16];
     v7 = v16;
 
     v8 = WGLogWidgets;
@@ -3791,16 +3791,16 @@ uint64_t __110__WGWidgetHostingViewController__captureSnapshotAndBeginDisappeara
       if (v9)
       {
         v10 = v8;
-        v11 = [(WGWidgetHostingViewController *)self widgetIdentifier];
-        v12 = [(WGWidgetHostingViewController *)self _containerIdentifier];
+        widgetIdentifier = [(WGWidgetHostingViewController *)self widgetIdentifier];
+        _containerIdentifier = [(WGWidgetHostingViewController *)self _containerIdentifier];
         *buf = 138544130;
-        v18 = v11;
+        v18 = widgetIdentifier;
         v19 = 2050;
-        v20 = self;
+        selfCopy2 = self;
         v21 = 2114;
-        v22 = v12;
+        v22 = _containerIdentifier;
         v23 = 2114;
-        v24 = v4;
+        v24 = lCopy;
         v13 = "<%{public}@: %{public}p; container: %{public}@> Removed item at %{public}@";
         v14 = v10;
         v15 = 42;
@@ -3812,16 +3812,16 @@ LABEL_7:
     else if (v9)
     {
       v10 = v8;
-      v11 = [(WGWidgetHostingViewController *)self widgetIdentifier];
-      v12 = [(WGWidgetHostingViewController *)self _containerIdentifier];
+      widgetIdentifier = [(WGWidgetHostingViewController *)self widgetIdentifier];
+      _containerIdentifier = [(WGWidgetHostingViewController *)self _containerIdentifier];
       *buf = 138544386;
-      v18 = v11;
+      v18 = widgetIdentifier;
       v19 = 2050;
-      v20 = self;
+      selfCopy2 = self;
       v21 = 2114;
-      v22 = v12;
+      v22 = _containerIdentifier;
       v23 = 2114;
-      v24 = v4;
+      v24 = lCopy;
       v25 = 2114;
       v26 = v7;
       v13 = "<%{public}@: %{public}p; container: %{public}@> Failed to remove item at %{public}@: %{public}@";
@@ -3832,20 +3832,20 @@ LABEL_7:
   }
 }
 
-- (void)_removeItemAsynchronouslyAtURL:(id)a3
+- (void)_removeItemAsynchronouslyAtURL:(id)l
 {
-  v4 = a3;
-  if (v4)
+  lCopy = l;
+  if (lCopy)
   {
     objc_initWeak(&location, self);
-    v5 = [(WGWidgetHostingViewController *)self _diskWriteQueue];
+    _diskWriteQueue = [(WGWidgetHostingViewController *)self _diskWriteQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __64__WGWidgetHostingViewController__removeItemAsynchronouslyAtURL___block_invoke;
     block[3] = &unk_279ED09F0;
     objc_copyWeak(&v8, &location);
-    v7 = v4;
-    dispatch_async(v5, block);
+    v7 = lCopy;
+    dispatch_async(_diskWriteQueue, block);
 
     objc_destroyWeak(&v8);
     objc_destroyWeak(&location);
@@ -3858,56 +3858,56 @@ void __64__WGWidgetHostingViewController__removeItemAsynchronouslyAtURL___block_
   [WeakRetained _removeItemAtURL:*(a1 + 32)];
 }
 
-- (void)_removeAllSnapshotFilesMatchingPredicate:(id)a3 dueToIssue:(BOOL)a4
+- (void)_removeAllSnapshotFilesMatchingPredicate:(id)predicate dueToIssue:(BOOL)issue
 {
-  v4 = a4;
+  issueCopy = issue;
   v36 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  predicateCopy = predicate;
   v7 = WGLogWidgets;
   if (os_log_type_enabled(WGLogWidgets, OS_LOG_TYPE_DEFAULT))
   {
     v8 = v7;
-    v9 = [(WGWidgetHostingViewController *)self widgetIdentifier];
-    v10 = [(WGWidgetHostingViewController *)self _containerIdentifier];
-    v11 = v10;
+    widgetIdentifier = [(WGWidgetHostingViewController *)self widgetIdentifier];
+    _containerIdentifier = [(WGWidgetHostingViewController *)self _containerIdentifier];
+    v11 = _containerIdentifier;
     v12 = &stru_2883435D8;
     *buf = 138544130;
     v30 = 2050;
-    v29 = v9;
-    if (v4)
+    v29 = widgetIdentifier;
+    if (issueCopy)
     {
       v12 = @" due to issue";
     }
 
-    v31 = self;
+    selfCopy = self;
     v32 = 2114;
-    v33 = v10;
+    v33 = _containerIdentifier;
     v34 = 2114;
     v35 = v12;
     _os_log_impl(&dword_27425E000, v8, OS_LOG_TYPE_DEFAULT, "<%{public}@: %{public}p; container: %{public}@> Removing snapshots matching predicate%{public}@", buf, 0x2Au);
   }
 
   v13 = MEMORY[0x277CBEBC0];
-  v14 = [(WGWidgetHostingViewController *)self widgetIdentifier];
-  v15 = WGWidgetCachePathForWidgetWithBundleIdentifier(v14, @"Snapshots", 0);
+  widgetIdentifier2 = [(WGWidgetHostingViewController *)self widgetIdentifier];
+  v15 = WGWidgetCachePathForWidgetWithBundleIdentifier(widgetIdentifier2, @"Snapshots", 0);
   v16 = [v13 fileURLWithPath:v15 isDirectory:1];
 
-  v17 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   objc_initWeak(buf, self);
-  v18 = [(WGWidgetHostingViewController *)self _diskWriteQueue];
+  _diskWriteQueue = [(WGWidgetHostingViewController *)self _diskWriteQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __85__WGWidgetHostingViewController__removeAllSnapshotFilesMatchingPredicate_dueToIssue___block_invoke;
   block[3] = &unk_279ED1DA8;
   objc_copyWeak(&v26, buf);
-  v23 = v17;
+  v23 = defaultManager;
   v24 = v16;
-  v25 = v6;
-  v27 = v4;
-  v19 = v6;
+  v25 = predicateCopy;
+  v27 = issueCopy;
+  v19 = predicateCopy;
   v20 = v16;
-  v21 = v17;
-  dispatch_async(v18, block);
+  v21 = defaultManager;
+  dispatch_async(_diskWriteQueue, block);
 
   objc_destroyWeak(&v26);
   objc_destroyWeak(buf);
@@ -4030,19 +4030,19 @@ void __85__WGWidgetHostingViewController__removeAllSnapshotFilesMatchingPredicat
   }
 }
 
-- (void)_removeAllSnapshotFilesDueToIssue:(BOOL)a3
+- (void)_removeAllSnapshotFilesDueToIssue:(BOOL)issue
 {
-  v3 = a3;
-  v5 = [(WGWidgetHostingViewController *)self widgetIdentifier];
+  issueCopy = issue;
+  widgetIdentifier = [(WGWidgetHostingViewController *)self widgetIdentifier];
   v6 = MEMORY[0x277CCAC30];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __67__WGWidgetHostingViewController__removeAllSnapshotFilesDueToIssue___block_invoke;
   v9[3] = &unk_279ED1DD0;
-  v10 = v5;
-  v7 = v5;
+  v10 = widgetIdentifier;
+  v7 = widgetIdentifier;
   v8 = [v6 predicateWithBlock:v9];
-  [(WGWidgetHostingViewController *)self _removeAllSnapshotFilesMatchingPredicate:v8 dueToIssue:v3];
+  [(WGWidgetHostingViewController *)self _removeAllSnapshotFilesMatchingPredicate:v8 dueToIssue:issueCopy];
 }
 
 uint64_t __67__WGWidgetHostingViewController__removeAllSnapshotFilesDueToIssue___block_invoke(uint64_t a1, void *a2)
@@ -4055,21 +4055,21 @@ uint64_t __67__WGWidgetHostingViewController__removeAllSnapshotFilesDueToIssue__
 
 - (void)_removeAllSnapshotFilesForActiveDisplayMode
 {
-  v3 = [(WGWidgetHostingViewController *)self widgetIdentifier];
-  v4 = [(WGWidgetHostingViewController *)self activeDisplayMode];
-  v5 = v4 == 0;
-  [(WGWidgetHostingViewController *)self _maxSizeForDisplayMode:v4];
+  widgetIdentifier = [(WGWidgetHostingViewController *)self widgetIdentifier];
+  activeDisplayMode = [(WGWidgetHostingViewController *)self activeDisplayMode];
+  v5 = activeDisplayMode == 0;
+  [(WGWidgetHostingViewController *)self _maxSizeForDisplayMode:activeDisplayMode];
   v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", v6];
   v8 = MEMORY[0x277CCAC30];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __76__WGWidgetHostingViewController__removeAllSnapshotFilesForActiveDisplayMode__block_invoke;
   v12[3] = &unk_279ED1DF8;
-  v13 = v3;
+  v13 = widgetIdentifier;
   v14 = v7;
   v15 = v5;
   v9 = v7;
-  v10 = v3;
+  v10 = widgetIdentifier;
   v11 = [v8 predicateWithBlock:v12];
   [(WGWidgetHostingViewController *)self _removeAllSnapshotFilesMatchingPredicate:v11 dueToIssue:0];
 }
@@ -4091,21 +4091,21 @@ uint64_t __76__WGWidgetHostingViewController__removeAllSnapshotFilesForActiveDis
   return v5;
 }
 
-- (void)_removeAllSnapshotFilesInActiveDisplayModeForContentSizeCategory:(id)a3
+- (void)_removeAllSnapshotFilesInActiveDisplayModeForContentSizeCategory:(id)category
 {
-  v4 = a3;
-  v5 = [(WGWidgetHostingViewController *)self widgetIdentifier];
-  v6 = [(WGWidgetHostingViewController *)self activeDisplayMode];
+  categoryCopy = category;
+  widgetIdentifier = [(WGWidgetHostingViewController *)self widgetIdentifier];
+  activeDisplayMode = [(WGWidgetHostingViewController *)self activeDisplayMode];
   v7 = MEMORY[0x277CCAC30];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __98__WGWidgetHostingViewController__removeAllSnapshotFilesInActiveDisplayModeForContentSizeCategory___block_invoke;
   v11[3] = &unk_279ED1DF8;
-  v13 = v4;
-  v14 = v6;
-  v12 = v5;
-  v8 = v4;
-  v9 = v5;
+  v13 = categoryCopy;
+  v14 = activeDisplayMode;
+  v12 = widgetIdentifier;
+  v8 = categoryCopy;
+  v9 = widgetIdentifier;
   v10 = [v7 predicateWithBlock:v11];
   [(WGWidgetHostingViewController *)self _removeAllSnapshotFilesMatchingPredicate:v10 dueToIssue:0];
 }
@@ -4137,20 +4137,20 @@ uint64_t __98__WGWidgetHostingViewController__removeAllSnapshotFilesInActiveDisp
 
 - (void)_removeAllSnapshotFilesInActiveDisplayModeForAllButActiveUserInterfaceStyle
 {
-  v3 = [(WGWidgetHostingViewController *)self widgetIdentifier];
-  v4 = [(WGWidgetHostingViewController *)self activeDisplayMode];
-  v5 = [(WGWidgetHostingViewController *)self traitCollection];
-  v6 = [v5 userInterfaceStyle];
+  widgetIdentifier = [(WGWidgetHostingViewController *)self widgetIdentifier];
+  activeDisplayMode = [(WGWidgetHostingViewController *)self activeDisplayMode];
+  traitCollection = [(WGWidgetHostingViewController *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
   v7 = MEMORY[0x277CCAC30];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __108__WGWidgetHostingViewController__removeAllSnapshotFilesInActiveDisplayModeForAllButActiveUserInterfaceStyle__block_invoke;
   v10[3] = &unk_279ED1E20;
-  v11 = v3;
-  v12 = v4;
-  v13 = v6;
-  v8 = v3;
+  v11 = widgetIdentifier;
+  v12 = activeDisplayMode;
+  v13 = userInterfaceStyle;
+  v8 = widgetIdentifier;
   v9 = [v7 predicateWithBlock:v10];
   [(WGWidgetHostingViewController *)self _removeAllSnapshotFilesMatchingPredicate:v9 dueToIssue:0];
 }
@@ -4181,13 +4181,13 @@ uint64_t __108__WGWidgetHostingViewController__removeAllSnapshotFilesInActiveDis
   return v6;
 }
 
-- (void)_setSnapshotView:(id)a3
+- (void)_setSnapshotView:(id)view
 {
   v26 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (self->_snapshotView != v5)
+  viewCopy = view;
+  if (self->_snapshotView != viewCopy)
   {
-    objc_storeStrong(&self->_snapshotView, a3);
+    objc_storeStrong(&self->_snapshotView, view);
     p_snapshotViewBounds = &self->_snapshotViewBounds;
     snapshotView = self->_snapshotView;
     if (snapshotView)
@@ -4210,15 +4210,15 @@ uint64_t __108__WGWidgetHostingViewController__removeAllSnapshotFilesInActiveDis
     if (os_log_type_enabled(WGLogWidgets, OS_LOG_TYPE_DEFAULT))
     {
       v14 = v13;
-      v15 = [(WGWidgetHostingViewController *)self widgetIdentifier];
-      v16 = [(WGWidgetHostingViewController *)self _containerIdentifier];
+      widgetIdentifier = [(WGWidgetHostingViewController *)self widgetIdentifier];
+      _containerIdentifier = [(WGWidgetHostingViewController *)self _containerIdentifier];
       v17 = self->_snapshotView;
       v18 = 138544130;
-      v19 = v15;
+      v19 = widgetIdentifier;
       v20 = 2050;
-      v21 = self;
+      selfCopy = self;
       v22 = 2114;
-      v23 = v16;
+      v23 = _containerIdentifier;
       v24 = 2114;
       v25 = v17;
       _os_log_impl(&dword_27425E000, v14, OS_LOG_TYPE_DEFAULT, "<%{public}@: %{public}p; container: %{public}@> Set snapshot view: %{public}@", &v18, 0x2Au);
@@ -4226,16 +4226,16 @@ uint64_t __108__WGWidgetHostingViewController__removeAllSnapshotFilesInActiveDis
   }
 }
 
-- (void)_invalidateSnapshotWithForce:(BOOL)a3 removingSnapshotFilesForActiveDisplayMode:(BOOL)a4 completionHandler:(id)a5
+- (void)_invalidateSnapshotWithForce:(BOOL)force removingSnapshotFilesForActiveDisplayMode:(BOOL)mode completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = v8;
+  handlerCopy = handler;
+  v9 = handlerCopy;
   snapshotView = self->_snapshotView;
-  if (!a3 && snapshotView && snapshotView == self->_contentProvidingView)
+  if (!force && snapshotView && snapshotView == self->_contentProvidingView)
   {
-    if (v8)
+    if (handlerCopy)
     {
-      (*(v8 + 2))(v8, 0);
+      (*(handlerCopy + 2))(handlerCopy, 0);
     }
   }
 
@@ -4248,14 +4248,14 @@ uint64_t __108__WGWidgetHostingViewController__removeAllSnapshotFilesInActiveDis
     v18[3] = &unk_279ED1E48;
     v12 = v11;
     v19 = v12;
-    v21 = a3;
-    v22 = a4;
+    forceCopy = force;
+    modeCopy = mode;
     v20 = v9;
     v13 = MEMORY[0x2743E8C10](v18);
     if (v12 == self->_contentProvidingView)
     {
-      v16 = [(WGWidgetHostingViewController *)self _activeLifeCycleSequence];
-      [(WGWidgetHostingViewController *)self _insertContentProvidingSubview:0 sequence:v16 completion:v13];
+      _activeLifeCycleSequence = [(WGWidgetHostingViewController *)self _activeLifeCycleSequence];
+      [(WGWidgetHostingViewController *)self _insertContentProvidingSubview:0 sequence:_activeLifeCycleSequence completion:v13];
     }
 
     else
@@ -4264,8 +4264,8 @@ uint64_t __108__WGWidgetHostingViewController__removeAllSnapshotFilesInActiveDis
       if (v13)
       {
         v14 = objc_loadWeakRetained(&v17);
-        v15 = [(WGWidgetHostingViewController *)self _activeLifeCycleSequence];
-        (v13)[2](v13, v14, v15);
+        _activeLifeCycleSequence2 = [(WGWidgetHostingViewController *)self _activeLifeCycleSequence];
+        (v13)[2](v13, v14, _activeLifeCycleSequence2);
       }
 
       objc_destroyWeak(&v17);
@@ -4319,17 +4319,17 @@ void __122__WGWidgetHostingViewController__invalidateSnapshotWithForce_removingS
   }
 }
 
-- (void)_captureLayerTree:(id)a3
+- (void)_captureLayerTree:(id)tree
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  treeCopy = tree;
   if ([(WGWidgetHostingViewController *)self isRemoteViewVisible])
   {
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __51__WGWidgetHostingViewController__captureLayerTree___block_invoke;
     v8[3] = &unk_279ED1A10;
-    v9 = v4;
+    v9 = treeCopy;
     [(WGWidgetHostingViewController *)self _enqueueRemoteServiceRequest:v8 withDescription:@"Encoding layer tree"];
     v5 = v9;
 LABEL_5:
@@ -4337,7 +4337,7 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  if (v4)
+  if (treeCopy)
   {
     v6 = MEMORY[0x277CCA9B8];
     v10 = *MEMORY[0x277CCA450];
@@ -4345,7 +4345,7 @@ LABEL_5:
     v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:&v10 count:1];
     v5 = [v6 errorWithDomain:@"WGWidgetHostingViewControllerErrorDomain" code:1 userInfo:v7];
 
-    (*(v4 + 2))(v4, 0, -1, v5);
+    (*(treeCopy + 2))(treeCopy, 0, -1, v5);
     goto LABEL_5;
   }
 
@@ -4527,12 +4527,12 @@ void __51__WGWidgetHostingViewController__captureLayerTree___block_invoke_3(void
   [v5 _setEncodingLayerTree:0];
 }
 
-- (void)_packageViewWithBlock:(id)a3 reply:(id)a4
+- (void)_packageViewWithBlock:(id)block reply:(id)reply
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (!v5 || !v6)
+  blockCopy = block;
+  replyCopy = reply;
+  v7 = replyCopy;
+  if (!blockCopy || !replyCopy)
   {
     [WGWidgetHostingViewController _packageViewWithBlock:reply:];
   }
@@ -4542,9 +4542,9 @@ void __51__WGWidgetHostingViewController__captureLayerTree___block_invoke_3(void
   v10[2] = __61__WGWidgetHostingViewController__packageViewWithBlock_reply___block_invoke;
   v10[3] = &unk_279ED1EC0;
   v11 = v7;
-  v8 = v5[2];
+  v8 = blockCopy[2];
   v9 = v7;
-  v8(v5, v10);
+  v8(blockCopy, v10);
 }
 
 void __61__WGWidgetHostingViewController__packageViewWithBlock_reply___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -4559,15 +4559,15 @@ void __61__WGWidgetHostingViewController__packageViewWithBlock_reply___block_inv
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)_packageViewFromURL:(id)a3 reply:(id)a4
+- (void)_packageViewFromURL:(id)l reply:(id)reply
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  lCopy = l;
+  replyCopy = reply;
+  if (!replyCopy)
   {
     [WGWidgetHostingViewController _packageViewFromURL:reply:];
-    if (v6)
+    if (lCopy)
     {
       goto LABEL_3;
     }
@@ -4579,11 +4579,11 @@ LABEL_5:
     v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:&v13 count:1];
     v8 = [v9 errorWithDomain:@"WGWidgetHostingViewControllerErrorDomain" code:2 userInfo:v10];
 
-    v7[2](v7, 0, v8);
+    replyCopy[2](replyCopy, 0, v8);
     goto LABEL_6;
   }
 
-  if (!v6)
+  if (!lCopy)
   {
     goto LABEL_5;
   }
@@ -4593,16 +4593,16 @@ LABEL_3:
   v11[1] = 3221225472;
   v11[2] = __59__WGWidgetHostingViewController__packageViewFromURL_reply___block_invoke;
   v11[3] = &unk_279ED1EE8;
-  v12 = v6;
-  [(WGWidgetHostingViewController *)self _packageViewWithBlock:v11 reply:v7];
+  v12 = lCopy;
+  [(WGWidgetHostingViewController *)self _packageViewWithBlock:v11 reply:replyCopy];
   v8 = v12;
 LABEL_6:
 }
 
-- (void)_loadSnapshotViewFromDiskIfNecessary:(id)a3
+- (void)_loadSnapshotViewFromDiskIfNecessary:(id)necessary
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  necessaryCopy = necessary;
   objc_initWeak(&location, self);
   if (!self->_snapshotView)
   {
@@ -4614,24 +4614,24 @@ LABEL_6:
 
     else
     {
-      v8 = [MEMORY[0x277D75418] currentDevice];
-      v9 = [v8 userInterfaceIdiom];
+      currentDevice = [MEMORY[0x277D75418] currentDevice];
+      userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-      v7 = 2 * ((v9 & 0xFFFFFFFFFFFFFFFBLL) == 1);
+      v7 = 2 * ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1);
     }
 
     v10 = [(WGWidgetHostingViewController *)self _widgetSnapshotURLForLayoutMode:v7 ensuringDirectoryExists:0];
     v11 = WGLogWidgets;
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [(WGWidgetHostingViewController *)self widgetIdentifier];
-      v13 = [(WGWidgetHostingViewController *)self _containerIdentifier];
+      widgetIdentifier = [(WGWidgetHostingViewController *)self widgetIdentifier];
+      _containerIdentifier = [(WGWidgetHostingViewController *)self _containerIdentifier];
       *buf = 138544130;
-      v20 = v12;
+      v20 = widgetIdentifier;
       v21 = 2050;
-      v22 = self;
+      selfCopy = self;
       v23 = 2114;
-      v24 = v13;
+      v24 = _containerIdentifier;
       v25 = 2114;
       v26 = v10;
       _os_log_impl(&dword_27425E000, v11, OS_LOG_TYPE_DEFAULT, "<%{public}@: %{public}p; container: %{public}@> Attempting to load snapshot at URL: %{public}@", buf, 0x2Au);
@@ -4642,20 +4642,20 @@ LABEL_6:
     v14[2] = __70__WGWidgetHostingViewController__loadSnapshotViewFromDiskIfNecessary___block_invoke;
     v14[3] = &unk_279ED1F10;
     objc_copyWeak(&v17, &location);
-    v16 = v4;
-    v6 = v10;
-    v15 = v6;
-    [(WGWidgetHostingViewController *)self _packageViewFromURL:v6 reply:v14];
+    v16 = necessaryCopy;
+    _activeLifeCycleSequence = v10;
+    v15 = _activeLifeCycleSequence;
+    [(WGWidgetHostingViewController *)self _packageViewFromURL:_activeLifeCycleSequence reply:v14];
 
     objc_destroyWeak(&v17);
     goto LABEL_10;
   }
 
-  if (v4)
+  if (necessaryCopy)
   {
     WeakRetained = objc_loadWeakRetained(&location);
-    v6 = [(WGWidgetHostingViewController *)self _activeLifeCycleSequence];
-    (*(v4 + 2))(v4, WeakRetained, v6);
+    _activeLifeCycleSequence = [(WGWidgetHostingViewController *)self _activeLifeCycleSequence];
+    (*(necessaryCopy + 2))(necessaryCopy, WeakRetained, _activeLifeCycleSequence);
 LABEL_10:
   }
 
@@ -4728,10 +4728,10 @@ void __70__WGWidgetHostingViewController__loadSnapshotViewFromDiskIfNecessary___
   snapshotView = self->_snapshotView;
   if (snapshotView)
   {
-    v4 = [(_WGCAPackageView *)snapshotView snapshotIdentifier];
-    if (v4)
+    snapshotIdentifier = [(_WGCAPackageView *)snapshotView snapshotIdentifier];
+    if (snapshotIdentifier)
     {
-      v10 = v4;
+      v10 = snapshotIdentifier;
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
       if (objc_opt_respondsToSelector())
       {
@@ -4740,10 +4740,10 @@ void __70__WGWidgetHostingViewController__loadSnapshotViewFromDiskIfNecessary___
 
       else
       {
-        v7 = [MEMORY[0x277D75418] currentDevice];
-        v8 = [v7 userInterfaceIdiom];
+        currentDevice = [MEMORY[0x277D75418] currentDevice];
+        userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-        v6 = 2 * ((v8 & 0xFFFFFFFFFFFFFFFBLL) == 1);
+        v6 = 2 * ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1);
       }
 
       v9 = [(WGWidgetHostingViewController *)self _snapshotIdentifierForLayoutMode:v6];
@@ -4752,28 +4752,28 @@ void __70__WGWidgetHostingViewController__loadSnapshotViewFromDiskIfNecessary___
         [(WGWidgetHostingViewController *)self _invalidateSnapshotWithForce:1 removingSnapshotFilesForActiveDisplayMode:1 completionHandler:0];
       }
 
-      v4 = v10;
+      snapshotIdentifier = v10;
     }
   }
 }
 
-- (void)_requestVisibilityStateUpdateForPossiblyAppearing:(BOOL)a3 sequence:(id)a4
+- (void)_requestVisibilityStateUpdateForPossiblyAppearing:(BOOL)appearing sequence:(id)sequence
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(_WGWidgetRemoteViewController *)self->_remoteViewController _isValid];
-  if (!v7 || !v4)
+  appearingCopy = appearing;
+  sequenceCopy = sequence;
+  _isValid = [(_WGWidgetRemoteViewController *)self->_remoteViewController _isValid];
+  if (!_isValid || !appearingCopy)
   {
-    if (v7)
+    if (_isValid)
     {
 LABEL_7:
-      v9 = [v6 currentState];
+      currentState = [sequenceCopy currentState];
       v12[0] = MEMORY[0x277D85DD0];
       v12[1] = 3221225472;
       v12[2] = __92__WGWidgetHostingViewController__requestVisibilityStateUpdateForPossiblyAppearing_sequence___block_invoke;
       v12[3] = &__block_descriptor_41_e72_v28__0__WGWidgetHostingViewController_8__WGWidgetLifeCycleSequence_16B24l;
-      v12[4] = v9;
-      v13 = v4;
+      v12[4] = currentState;
+      v13 = appearingCopy;
       [(WGWidgetHostingViewController *)self _enqueueRemoteServiceRequest:v12 withDescription:@"Updating visibility state"];
     }
   }
@@ -4781,9 +4781,9 @@ LABEL_7:
   else
   {
     contentProvidingView = self->_contentProvidingView;
-    v11 = [(_WGWidgetRemoteViewController *)self->_remoteViewController view];
+    view = [(_WGWidgetRemoteViewController *)self->_remoteViewController view];
 
-    if (contentProvidingView == v11)
+    if (contentProvidingView == view)
     {
       goto LABEL_7;
     }
@@ -4835,18 +4835,18 @@ void __92__WGWidgetHostingViewController__requestVisibilityStateUpdateForPossibl
 LABEL_13:
 }
 
-- (void)_insertContentProvidingSubview:(id)a3 sequence:(id)a4 completion:(id)a5
+- (void)_insertContentProvidingSubview:(id)subview sequence:(id)sequence completion:(id)completion
 {
   v83 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([(WGWidgetHostingViewController *)self _isActiveSequence:v9])
+  subviewCopy = subview;
+  sequenceCopy = sequence;
+  completionCopy = completion;
+  if ([(WGWidgetHostingViewController *)self _isActiveSequence:sequenceCopy])
   {
     if ([(_WGWidgetRemoteViewController *)self->_remoteViewController isViewLoaded])
     {
-      v59 = [(_WGWidgetRemoteViewController *)self->_remoteViewController view];
-      if (!v8)
+      view = [(_WGWidgetRemoteViewController *)self->_remoteViewController view];
+      if (!subviewCopy)
       {
         goto LABEL_16;
       }
@@ -4854,71 +4854,71 @@ LABEL_13:
 
     else
     {
-      v59 = 0;
-      if (!v8)
+      view = 0;
+      if (!subviewCopy)
       {
 LABEL_16:
-        if (self->_contentProvidingView == v8)
+        if (self->_contentProvidingView == subviewCopy)
         {
-          v58 = 0;
+          _contentProvidingView = 0;
         }
 
         else
         {
-          v58 = [(WGWidgetHostingViewController *)self _contentProvidingView];
+          _contentProvidingView = [(WGWidgetHostingViewController *)self _contentProvidingView];
         }
 
-        v21 = self->_contentProvidingView == v8;
-        [(WGWidgetHostingViewController *)self _setContentProvidingView:v8];
-        v22 = v59 != v8 || v21;
+        v21 = self->_contentProvidingView == subviewCopy;
+        [(WGWidgetHostingViewController *)self _setContentProvidingView:subviewCopy];
+        v22 = view != subviewCopy || v21;
         if ((v22 & 1) == 0)
         {
-          [(UIView *)v8 setHidden:1];
+          [(UIView *)subviewCopy setHidden:1];
         }
 
-        if (v8)
+        if (subviewCopy)
         {
-          v23 = [(WGWidgetHostingViewController *)self view];
-          [v23 addSubview:v8];
+          view2 = [(WGWidgetHostingViewController *)self view];
+          [view2 addSubview:subviewCopy];
         }
 
         v24 = WGLogWidgets;
         if (os_log_type_enabled(WGLogWidgets, OS_LOG_TYPE_DEFAULT))
         {
           v25 = v24;
-          v26 = [(WGWidgetHostingViewController *)self widgetIdentifier];
-          v27 = [(WGWidgetHostingViewController *)self _containerIdentifier];
-          v28 = [(WGWidgetHostingViewController *)self view];
-          v29 = [v28 subviews];
+          widgetIdentifier = [(WGWidgetHostingViewController *)self widgetIdentifier];
+          _containerIdentifier = [(WGWidgetHostingViewController *)self _containerIdentifier];
+          view3 = [(WGWidgetHostingViewController *)self view];
+          subviews = [view3 subviews];
           *buf = 138544386;
-          v72 = v26;
+          v72 = widgetIdentifier;
           v73 = 2050;
-          v74 = self;
+          selfCopy4 = self;
           v75 = 2114;
-          v76 = v27;
+          v76 = _containerIdentifier;
           v77 = 2114;
-          v78 = v8;
+          v78 = subviewCopy;
           v79 = 2114;
-          v80 = v29;
+          v80 = subviews;
           _os_log_impl(&dword_27425E000, v25, OS_LOG_TYPE_DEFAULT, "<%{public}@: %{public}p; container: %{public}@> Inserted content providing subview: %{public}@ (subviews=%{public}@)", buf, 0x34u);
         }
 
-        v30 = [(WGWidgetHostingViewController *)self view];
-        [v30 bounds];
+        view4 = [(WGWidgetHostingViewController *)self view];
+        [view4 bounds];
         v32 = v31;
         v34 = v33;
         v36 = v35;
         v38 = v37;
 
-        [(UIView *)v8 setFrame:v32, v34, v36, v38];
-        [(UIView *)v8 setAutoresizingMask:18];
-        v39 = [v9 currentState];
-        if (v8 == 0 || v59 != v8)
+        [(UIView *)subviewCopy setFrame:v32, v34, v36, v38];
+        [(UIView *)subviewCopy setAutoresizingMask:18];
+        currentState = [sequenceCopy currentState];
+        if (subviewCopy == 0 || view != subviewCopy)
         {
-          if (v58 == v59)
+          if (_contentProvidingView == view)
           {
-            [(UIView *)v58 setHidden:1];
-            [(WGWidgetHostingViewController *)self _requestVisibilityStateUpdateForPossiblyAppearing:0 sequence:v9];
+            [(UIView *)_contentProvidingView setHidden:1];
+            [(WGWidgetHostingViewController *)self _requestVisibilityStateUpdateForPossiblyAppearing:0 sequence:sequenceCopy];
             WeakRetained = objc_loadWeakRetained(&self->_delegate);
             if (objc_opt_respondsToSelector())
             {
@@ -4928,14 +4928,14 @@ LABEL_16:
 
           else
           {
-            [(UIView *)v58 removeFromSuperview];
+            [(UIView *)_contentProvidingView removeFromSuperview];
           }
 
           objc_initWeak(buf, self);
-          if (v10)
+          if (completionCopy)
           {
             v52 = objc_loadWeakRetained(buf);
-            v10[2](v10, v52, v9);
+            completionCopy[2](completionCopy, v52, sequenceCopy);
           }
 
           objc_destroyWeak(buf);
@@ -4943,7 +4943,7 @@ LABEL_16:
 
         else
         {
-          v40 = v39;
+          v40 = currentState;
           v41 = dispatch_get_global_queue(25, 0);
           if (v41)
           {
@@ -4953,14 +4953,14 @@ LABEL_16:
               if (os_log_type_enabled(WGLogWidgets, OS_LOG_TYPE_DEFAULT))
               {
                 v43 = v42;
-                v44 = [(WGWidgetHostingViewController *)self widgetIdentifier];
-                v45 = [(WGWidgetHostingViewController *)self _containerIdentifier];
+                widgetIdentifier2 = [(WGWidgetHostingViewController *)self widgetIdentifier];
+                _containerIdentifier2 = [(WGWidgetHostingViewController *)self _containerIdentifier];
                 *buf = 138543874;
-                v72 = v44;
+                v72 = widgetIdentifier2;
                 v73 = 2050;
-                v74 = self;
+                selfCopy4 = self;
                 v75 = 2114;
-                v76 = v45;
+                v76 = _containerIdentifier2;
                 _os_log_impl(&dword_27425E000, v43, OS_LOG_TYPE_DEFAULT, "<%{public}@: %{public}p; container: %{public}@> '_viewWillAppearSemaphore' already exists", buf, 0x20u);
               }
             }
@@ -4974,9 +4974,9 @@ LABEL_16:
             v47 = v46;
             v66 = v47;
             v70 = v40;
-            v67 = v8;
-            v68 = v58;
-            v69 = v10;
+            v67 = subviewCopy;
+            v68 = _contentProvidingView;
+            v69 = completionCopy;
             v48 = MEMORY[0x2743E8C10](v65);
             objc_initWeak(buf, self);
             block[0] = MEMORY[0x277D85DD0];
@@ -4986,7 +4986,7 @@ LABEL_16:
             objc_copyWeak(&v64, buf);
             v61 = v47;
             v63 = v48;
-            v62 = v9;
+            v62 = sequenceCopy;
             v49 = v48;
             v50 = v47;
             dispatch_async(v41, block);
@@ -5001,22 +5001,22 @@ LABEL_16:
             if (os_log_type_enabled(WGLogWidgets, OS_LOG_TYPE_DEFAULT))
             {
               v54 = v53;
-              v55 = [(WGWidgetHostingViewController *)self widgetIdentifier];
-              v56 = [(WGWidgetHostingViewController *)self _containerIdentifier];
+              widgetIdentifier3 = [(WGWidgetHostingViewController *)self widgetIdentifier];
+              _containerIdentifier3 = [(WGWidgetHostingViewController *)self _containerIdentifier];
               *buf = 138543874;
-              v72 = v55;
+              v72 = widgetIdentifier3;
               v73 = 2050;
-              v74 = self;
+              selfCopy4 = self;
               v75 = 2114;
-              v76 = v56;
+              v76 = _containerIdentifier3;
               _os_log_impl(&dword_27425E000, v54, OS_LOG_TYPE_DEFAULT, "<%{public}@: %{public}p; container: %{public}@> Failed to obtain a queue", buf, 0x20u);
             }
 
             objc_initWeak(buf, self);
-            if (v10)
+            if (completionCopy)
             {
               v57 = objc_loadWeakRetained(buf);
-              v10[2](v10, v57, v9);
+              completionCopy[2](completionCopy, v57, sequenceCopy);
             }
 
             objc_destroyWeak(buf);
@@ -5027,14 +5027,14 @@ LABEL_16:
       }
     }
 
-    v17 = [(WGWidgetHostingViewController *)self view];
-    v18 = [v17 subviews];
-    if ([v18 count] > 1)
+    view5 = [(WGWidgetHostingViewController *)self view];
+    subviews2 = [view5 subviews];
+    if ([subviews2 count] > 1)
     {
-      v19 = [(UIView *)v8 superview];
-      v20 = [(WGWidgetHostingViewController *)self view];
+      superview = [(UIView *)subviewCopy superview];
+      view6 = [(WGWidgetHostingViewController *)self view];
 
-      if (v19 != v20 && os_log_type_enabled(WGLogWidgets, OS_LOG_TYPE_ERROR))
+      if (superview != view6 && os_log_type_enabled(WGLogWidgets, OS_LOG_TYPE_ERROR))
       {
         [WGWidgetHostingViewController _insertContentProvidingSubview:sequence:completion:];
       }
@@ -5051,29 +5051,29 @@ LABEL_16:
   if (os_log_type_enabled(WGLogWidgets, OS_LOG_TYPE_DEFAULT))
   {
     v12 = v11;
-    v13 = [(WGWidgetHostingViewController *)self widgetIdentifier];
-    v14 = [(WGWidgetHostingViewController *)self _containerIdentifier];
-    v15 = [(WGWidgetHostingViewController *)self _activeLifeCycleSequence];
+    widgetIdentifier4 = [(WGWidgetHostingViewController *)self widgetIdentifier];
+    _containerIdentifier4 = [(WGWidgetHostingViewController *)self _containerIdentifier];
+    _activeLifeCycleSequence = [(WGWidgetHostingViewController *)self _activeLifeCycleSequence];
     *buf = 138544642;
-    v72 = v13;
+    v72 = widgetIdentifier4;
     v73 = 2050;
-    v74 = self;
+    selfCopy4 = self;
     v75 = 2114;
-    v76 = v14;
+    v76 = _containerIdentifier4;
     v77 = 2114;
-    v78 = v8;
+    v78 = subviewCopy;
     v79 = 2114;
-    v80 = v9;
+    v80 = sequenceCopy;
     v81 = 2114;
-    v82 = v15;
+    v82 = _activeLifeCycleSequence;
     _os_log_impl(&dword_27425E000, v12, OS_LOG_TYPE_DEFAULT, "<%{public}@: %{public}p; container: %{public}@> Can't insert view '%{public}@' as argument sequence (%{public}@) doesn't match active sequence (%{public}@)", buf, 0x3Eu);
   }
 
   objc_initWeak(buf, self);
-  if (v10)
+  if (completionCopy)
   {
     v16 = objc_loadWeakRetained(buf);
-    v10[2](v10, v16, v9);
+    completionCopy[2](completionCopy, v16, sequenceCopy);
   }
 
   objc_destroyWeak(buf);
@@ -5271,45 +5271,45 @@ void __84__WGWidgetHostingViewController__insertContentProvidingSubview_sequence
   (*(v2 + 16))(v2, WeakRetained, *(a1 + 32));
 }
 
-- (BOOL)_canInsertRemoteView:(id *)a3
+- (BOOL)_canInsertRemoteView:(id *)view
 {
   if ([(WGWidgetHostingViewController *)self isViewLoaded])
   {
-    v5 = [(_WGWidgetRemoteViewController *)self->_remoteViewController _isValid];
-    if (!a3)
+    _isValid = [(_WGWidgetRemoteViewController *)self->_remoteViewController _isValid];
+    if (!view)
     {
-      return v5;
+      return _isValid;
     }
   }
 
   else
   {
-    v5 = 0;
-    if (!a3)
+    _isValid = 0;
+    if (!view)
     {
-      return v5;
+      return _isValid;
     }
   }
 
-  if (!v5)
+  if (!_isValid)
   {
     v6 = MEMORY[0x277CCACA8];
     [(WGWidgetHostingViewController *)self isViewLoaded];
     v7 = NSStringFromBOOL();
     [(_WGWidgetRemoteViewController *)self->_remoteViewController _isValid];
     v8 = NSStringFromBOOL();
-    *a3 = [v6 stringWithFormat:@"Can't insert remote view: isViewLoaded: %@ _remoteViewController isValid: %@", v7, v8];;
+    *view = [v6 stringWithFormat:@"Can't insert remote view: isViewLoaded: %@ _remoteViewController isValid: %@", v7, v8];;
   }
 
-  return v5;
+  return _isValid;
 }
 
 - (void)_insertAppropriateContentView
 {
   if ([(_WGWidgetRemoteViewController *)self->_remoteViewController _isValid])
   {
-    v3 = [(WGWidgetHostingViewController *)self _activeLifeCycleSequence];
-    [(WGWidgetHostingViewController *)self _requestInsertionOfRemoteViewAfterViewWillAppearForSequence:v3 completionHandler:0];
+    _activeLifeCycleSequence = [(WGWidgetHostingViewController *)self _activeLifeCycleSequence];
+    [(WGWidgetHostingViewController *)self _requestInsertionOfRemoteViewAfterViewWillAppearForSequence:_activeLifeCycleSequence completionHandler:0];
   }
 
   else if (self->_snapshotView)
@@ -5368,23 +5368,23 @@ LABEL_6:
 LABEL_8:
 }
 
-- (void)_requestInsertionOfRemoteViewAfterViewWillAppearForSequence:(id)a3 completionHandler:(id)a4
+- (void)_requestInsertionOfRemoteViewAfterViewWillAppearForSequence:(id)sequence completionHandler:(id)handler
 {
   v54 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([(WGWidgetHostingViewController *)self _isActiveSequence:v6])
+  sequenceCopy = sequence;
+  handlerCopy = handler;
+  if ([(WGWidgetHostingViewController *)self _isActiveSequence:sequenceCopy])
   {
     v44 = 0;
     v8 = [(WGWidgetHostingViewController *)self _canInsertRemoteView:&v44];
     v9 = v44;
     if (v8)
     {
-      if ([objc_opt_class() _canWidgetHostInsertRemoteViewForSequence:v6])
+      if ([objc_opt_class() _canWidgetHostInsertRemoteViewForSequence:sequenceCopy])
       {
-        if (([v6 isCurrentStateNotYet:3] & 1) != 0 || objc_msgSend(v6, "isCurrentStateAtLeast:", 5))
+        if (([sequenceCopy isCurrentStateNotYet:3] & 1) != 0 || objc_msgSend(sequenceCopy, "isCurrentStateAtLeast:", 5))
         {
-          v10 = [v6 transitionToState:3];
+          v10 = [sequenceCopy transitionToState:3];
           if (v10)
           {
             v11 = WGLogWidgets;
@@ -5394,10 +5394,10 @@ LABEL_8:
             }
 
             objc_initWeak(location, self);
-            if (v7)
+            if (handlerCopy)
             {
               WeakRetained = objc_loadWeakRetained(location);
-              v7[2](v7, WeakRetained, v6);
+              handlerCopy[2](handlerCopy, WeakRetained, sequenceCopy);
             }
 
             objc_destroyWeak(location);
@@ -5405,7 +5405,7 @@ LABEL_8:
           }
 
           v43 = 0;
-          v29 = [v6 beginTransitionToState:4 error:&v43];
+          v29 = [sequenceCopy beginTransitionToState:4 error:&v43];
           v30 = v43;
           v31 = v30;
           if (v29 | v30)
@@ -5419,10 +5419,10 @@ LABEL_8:
               }
 
               objc_initWeak(location, self);
-              if (v7)
+              if (handlerCopy)
               {
                 v33 = objc_loadWeakRetained(location);
-                v7[2](v7, v33, v6);
+                handlerCopy[2](handlerCopy, v33, sequenceCopy);
               }
 
               objc_destroyWeak(location);
@@ -5442,7 +5442,7 @@ LABEL_8:
           v39[4] = self;
           v40 = v29;
           v42 = 4;
-          v41 = v7;
+          v41 = handlerCopy;
           [(WGWidgetHostingViewController *)self _enqueueRemoteServiceRequest:v39 withDescription:@"Inserting remote view"];
 
 LABEL_41:
@@ -5455,24 +5455,24 @@ LABEL_42:
         if (os_log_type_enabled(WGLogWidgets, OS_LOG_TYPE_DEFAULT))
         {
           v35 = v34;
-          v36 = [(WGWidgetHostingViewController *)self widgetIdentifier];
-          v37 = [(WGWidgetHostingViewController *)self _containerIdentifier];
+          widgetIdentifier = [(WGWidgetHostingViewController *)self widgetIdentifier];
+          _containerIdentifier = [(WGWidgetHostingViewController *)self _containerIdentifier];
           *location = 138544130;
-          *&location[4] = v36;
+          *&location[4] = widgetIdentifier;
           v46 = 2050;
-          v47 = self;
+          selfCopy4 = self;
           v48 = 2114;
-          v49 = v37;
+          v49 = _containerIdentifier;
           v50 = 2114;
-          v51 = v6;
+          v51 = sequenceCopy;
           _os_log_impl(&dword_27425E000, v35, OS_LOG_TYPE_DEFAULT, "<%{public}@: %{public}p; container: %{public}@> Sequence already at satisfactory state: %{public}@", location, 0x2Au);
         }
 
         objc_initWeak(location, self);
-        if (v7)
+        if (handlerCopy)
         {
           v38 = objc_loadWeakRetained(location);
-          v7[2](v7, v38, v6);
+          handlerCopy[2](handlerCopy, v38, sequenceCopy);
         }
       }
 
@@ -5482,24 +5482,24 @@ LABEL_42:
         if (os_log_type_enabled(WGLogWidgets, OS_LOG_TYPE_DEFAULT))
         {
           v25 = v24;
-          v26 = [(WGWidgetHostingViewController *)self widgetIdentifier];
-          v27 = [(WGWidgetHostingViewController *)self _containerIdentifier];
+          widgetIdentifier2 = [(WGWidgetHostingViewController *)self widgetIdentifier];
+          _containerIdentifier2 = [(WGWidgetHostingViewController *)self _containerIdentifier];
           *location = 138544130;
-          *&location[4] = v26;
+          *&location[4] = widgetIdentifier2;
           v46 = 2050;
-          v47 = self;
+          selfCopy4 = self;
           v48 = 2114;
-          v49 = v27;
+          v49 = _containerIdentifier2;
           v50 = 2114;
-          v51 = v6;
+          v51 = sequenceCopy;
           _os_log_impl(&dword_27425E000, v25, OS_LOG_TYPE_DEFAULT, "<%{public}@: %{public}p; container: %{public}@> Sequence state where insertion of remote view isn't possible: %{public}@", location, 0x2Au);
         }
 
         objc_initWeak(location, self);
-        if (v7)
+        if (handlerCopy)
         {
           v28 = objc_loadWeakRetained(location);
-          v7[2](v7, v28, v6);
+          handlerCopy[2](handlerCopy, v28, sequenceCopy);
         }
       }
     }
@@ -5510,24 +5510,24 @@ LABEL_42:
       if (os_log_type_enabled(WGLogWidgets, OS_LOG_TYPE_DEFAULT))
       {
         v20 = v19;
-        v21 = [(WGWidgetHostingViewController *)self widgetIdentifier];
-        v22 = [(WGWidgetHostingViewController *)self _containerIdentifier];
+        widgetIdentifier3 = [(WGWidgetHostingViewController *)self widgetIdentifier];
+        _containerIdentifier3 = [(WGWidgetHostingViewController *)self _containerIdentifier];
         *location = 138544130;
-        *&location[4] = v21;
+        *&location[4] = widgetIdentifier3;
         v46 = 2050;
-        v47 = self;
+        selfCopy4 = self;
         v48 = 2114;
-        v49 = v22;
+        v49 = _containerIdentifier3;
         v50 = 2114;
         v51 = v9;
         _os_log_impl(&dword_27425E000, v20, OS_LOG_TYPE_DEFAULT, "<%{public}@: %{public}p; container: %{public}@> %{public}@", location, 0x2Au);
       }
 
       objc_initWeak(location, self);
-      if (v7)
+      if (handlerCopy)
       {
         v23 = objc_loadWeakRetained(location);
-        v7[2](v7, v23, v6);
+        handlerCopy[2](handlerCopy, v23, sequenceCopy);
       }
     }
 
@@ -5541,27 +5541,27 @@ LABEL_43:
   if (os_log_type_enabled(WGLogWidgets, OS_LOG_TYPE_DEFAULT))
   {
     v14 = v13;
-    v15 = [(WGWidgetHostingViewController *)self widgetIdentifier];
-    v16 = [(WGWidgetHostingViewController *)self _containerIdentifier];
-    v17 = [(WGWidgetHostingViewController *)self _activeLifeCycleSequence];
+    widgetIdentifier4 = [(WGWidgetHostingViewController *)self widgetIdentifier];
+    _containerIdentifier4 = [(WGWidgetHostingViewController *)self _containerIdentifier];
+    _activeLifeCycleSequence = [(WGWidgetHostingViewController *)self _activeLifeCycleSequence];
     *location = 138544386;
-    *&location[4] = v15;
+    *&location[4] = widgetIdentifier4;
     v46 = 2050;
-    v47 = self;
+    selfCopy4 = self;
     v48 = 2114;
-    v49 = v16;
+    v49 = _containerIdentifier4;
     v50 = 2114;
-    v51 = v6;
+    v51 = sequenceCopy;
     v52 = 2114;
-    v53 = v17;
+    v53 = _activeLifeCycleSequence;
     _os_log_impl(&dword_27425E000, v14, OS_LOG_TYPE_DEFAULT, "<%{public}@: %{public}p; container: %{public}@> Can't insert remote view as argument sequence (%{public}@) doesn't match active sequence (%{public}@)", location, 0x34u);
   }
 
   objc_initWeak(location, self);
-  if (v7)
+  if (handlerCopy)
   {
     v18 = objc_loadWeakRetained(location);
-    v7[2](v7, v18, v6);
+    handlerCopy[2](handlerCopy, v18, sequenceCopy);
   }
 
   objc_destroyWeak(location);
@@ -5717,13 +5717,13 @@ void __111__WGWidgetHostingViewController__requestInsertionOfRemoteViewAfterView
 
 - (void)_synchronizeGeometryWithSnapshot
 {
-  v3 = [(WGWidgetHostingViewController *)self _snapshotView];
-  if (v3)
+  _snapshotView = [(WGWidgetHostingViewController *)self _snapshotView];
+  if (_snapshotView)
   {
-    v4 = v3;
-    v5 = [(WGWidgetHostingViewController *)self isRemoteViewVisible];
+    v4 = _snapshotView;
+    isRemoteViewVisible = [(WGWidgetHostingViewController *)self isRemoteViewVisible];
 
-    if (!v5)
+    if (!isRemoteViewVisible)
     {
       [(WGWidgetHostingViewController *)self _snapshotViewBounds];
       Height = CGRectGetHeight(v8);
@@ -5733,33 +5733,33 @@ void __111__WGWidgetHostingViewController__requestInsertionOfRemoteViewAfterView
   }
 }
 
-- (void)_insertSnapshotWithCompletionHandler:(id)a3
+- (void)_insertSnapshotWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if ([(WGWidgetHostingViewController *)self isViewLoaded]&& (snapshotView = self->_snapshotView) != 0 && ([(WGWidgetHostingViewController *)self _contentProvidingView], v6 = objc_claimAutoreleasedReturnValue(), v6, snapshotView != v6))
   {
     [(WGWidgetHostingViewController *)self _beginRemoteViewControllerAppearanceTransitionIfNecessary:0 semaphore:0 animated:0 completion:0];
-    v7 = [(_WGCAPackageView *)self->_snapshotView layer];
-    [v7 setSecurityMode:*MEMORY[0x277CDA770]];
+    layer = [(_WGCAPackageView *)self->_snapshotView layer];
+    [layer setSecurityMode:*MEMORY[0x277CDA770]];
 
-    v8 = [(WGWidgetHostingViewController *)self _snapshotView];
-    v9 = [(WGWidgetHostingViewController *)self _activeLifeCycleSequence];
+    _snapshotView = [(WGWidgetHostingViewController *)self _snapshotView];
+    _activeLifeCycleSequence = [(WGWidgetHostingViewController *)self _activeLifeCycleSequence];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __70__WGWidgetHostingViewController__insertSnapshotWithCompletionHandler___block_invoke;
     v13[3] = &unk_279ED1AB0;
-    v14 = v4;
-    [(WGWidgetHostingViewController *)self _insertContentProvidingSubview:v8 sequence:v9 completion:v13];
+    v14 = handlerCopy;
+    [(WGWidgetHostingViewController *)self _insertContentProvidingSubview:_snapshotView sequence:_activeLifeCycleSequence completion:v13];
   }
 
   else
   {
     objc_initWeak(&v12, self);
-    if (v4)
+    if (handlerCopy)
     {
       v10 = objc_loadWeakRetained(&v12);
-      v11 = [(WGWidgetHostingViewController *)self _activeLifeCycleSequence];
-      (*(v4 + 2))(v4, v10, v11);
+      _activeLifeCycleSequence2 = [(WGWidgetHostingViewController *)self _activeLifeCycleSequence];
+      (*(handlerCopy + 2))(handlerCopy, v10, _activeLifeCycleSequence2);
     }
 
     objc_destroyWeak(&v12);
@@ -5791,45 +5791,45 @@ void __70__WGWidgetHostingViewController__insertSnapshotWithCompletionHandler___
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    v4 = [WeakRetained managingContainerIsVisibleForWidget:self];
+    wg_isAppearingOrAppeared = [WeakRetained managingContainerIsVisibleForWidget:self];
   }
 
   else
   {
-    v5 = [(WGWidgetHostingViewController *)self parentViewController];
-    v4 = [v5 wg_isAppearingOrAppeared];
+    parentViewController = [(WGWidgetHostingViewController *)self parentViewController];
+    wg_isAppearingOrAppeared = [parentViewController wg_isAppearingOrAppeared];
   }
 
-  return v4;
+  return wg_isAppearingOrAppeared;
 }
 
-- (void)_endSequence:(id)a3 withReason:(id)a4 completion:(id)a5
+- (void)_endSequence:(id)sequence withReason:(id)reason completion:(id)completion
 {
   v41 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sequenceCopy = sequence;
+  reasonCopy = reason;
+  completionCopy = completion;
   v11 = WGLogWidgets;
   if (os_log_type_enabled(WGLogWidgets, OS_LOG_TYPE_DEFAULT))
   {
     v12 = v11;
-    v13 = [(WGWidgetHostingViewController *)self widgetIdentifier];
-    v14 = [(WGWidgetHostingViewController *)self _containerIdentifier];
+    widgetIdentifier = [(WGWidgetHostingViewController *)self widgetIdentifier];
+    _containerIdentifier = [(WGWidgetHostingViewController *)self _containerIdentifier];
     *buf = 138544386;
-    v32 = v13;
+    v32 = widgetIdentifier;
     v33 = 2050;
-    v34 = self;
+    selfCopy3 = self;
     v35 = 2114;
-    v36 = v14;
+    v36 = _containerIdentifier;
     v37 = 2114;
-    v38 = v8;
+    v38 = sequenceCopy;
     v39 = 2114;
-    v40 = v9;
+    v40 = reasonCopy;
     _os_log_impl(&dword_27425E000, v12, OS_LOG_TYPE_DEFAULT, "<%{public}@: %{public}p; container: %{public}@> End sequence '%{public}@' with reason: %{public}@", buf, 0x34u);
   }
 
-  v15 = ![(WGWidgetHostingViewController *)self _isActiveSequence:v8];
-  if (!v8)
+  v15 = ![(WGWidgetHostingViewController *)self _isActiveSequence:sequenceCopy];
+  if (!sequenceCopy)
   {
     LOBYTE(v15) = 1;
   }
@@ -5840,56 +5840,56 @@ void __70__WGWidgetHostingViewController__insertSnapshotWithCompletionHandler___
     if (os_log_type_enabled(WGLogWidgets, OS_LOG_TYPE_DEFAULT))
     {
       v18 = v17;
-      v19 = [(WGWidgetHostingViewController *)self widgetIdentifier];
-      v20 = [(WGWidgetHostingViewController *)self _containerIdentifier];
-      v21 = [(WGWidgetHostingViewController *)self _activeLifeCycleSequence];
+      widgetIdentifier2 = [(WGWidgetHostingViewController *)self widgetIdentifier];
+      _containerIdentifier2 = [(WGWidgetHostingViewController *)self _containerIdentifier];
+      _activeLifeCycleSequence = [(WGWidgetHostingViewController *)self _activeLifeCycleSequence];
       *buf = 138544386;
-      v32 = v19;
+      v32 = widgetIdentifier2;
       v33 = 2050;
-      v34 = self;
+      selfCopy3 = self;
       v35 = 2114;
-      v36 = v20;
+      v36 = _containerIdentifier2;
       v37 = 2114;
-      v38 = v8;
+      v38 = sequenceCopy;
       v39 = 2114;
-      v40 = v21;
+      v40 = _activeLifeCycleSequence;
       _os_log_impl(&dword_27425E000, v18, OS_LOG_TYPE_DEFAULT, "<%{public}@: %{public}p; container: %{public}@> Can't end sequence as argument sequence (%{public}@) doesn't match active sequence (%{public}@), or there's no active sequence", buf, 0x34u);
     }
 
     objc_initWeak(buf, self);
-    if (v10)
+    if (completionCopy)
     {
       WeakRetained = objc_loadWeakRetained(buf);
-      v10[2](v10, WeakRetained, v8);
+      completionCopy[2](completionCopy, WeakRetained, sequenceCopy);
     }
 
     goto LABEL_13;
   }
 
-  if (![objc_opt_class() _canWidgetHostEndSequenceByDisconnectingRemoteViewControllerForSequence:v8])
+  if (![objc_opt_class() _canWidgetHostEndSequenceByDisconnectingRemoteViewControllerForSequence:sequenceCopy])
   {
     v23 = WGLogWidgets;
     if (os_log_type_enabled(WGLogWidgets, OS_LOG_TYPE_DEFAULT))
     {
       v24 = v23;
-      v25 = [(WGWidgetHostingViewController *)self widgetIdentifier];
-      v26 = [(WGWidgetHostingViewController *)self _containerIdentifier];
+      widgetIdentifier3 = [(WGWidgetHostingViewController *)self widgetIdentifier];
+      _containerIdentifier3 = [(WGWidgetHostingViewController *)self _containerIdentifier];
       *buf = 138544130;
-      v32 = v25;
+      v32 = widgetIdentifier3;
       v33 = 2050;
-      v34 = self;
+      selfCopy3 = self;
       v35 = 2114;
-      v36 = v26;
+      v36 = _containerIdentifier3;
       v37 = 2114;
-      v38 = v8;
+      v38 = sequenceCopy;
       _os_log_impl(&dword_27425E000, v24, OS_LOG_TYPE_DEFAULT, "<%{public}@: %{public}p; container: %{public}@> Sequence already at satisfactory state: %{public}@", buf, 0x2Au);
     }
 
     objc_initWeak(buf, self);
-    if (v10)
+    if (completionCopy)
     {
       v27 = objc_loadWeakRetained(buf);
-      v10[2](v10, v27, v8);
+      completionCopy[2](completionCopy, v27, sequenceCopy);
     }
 
 LABEL_13:
@@ -5902,17 +5902,17 @@ LABEL_13:
   v28[2] = __68__WGWidgetHostingViewController__endSequence_withReason_completion___block_invoke;
   v28[3] = &unk_279ED2020;
   v28[4] = self;
-  v29 = v9;
-  v30 = v10;
+  v29 = reasonCopy;
+  v30 = completionCopy;
   v16 = MEMORY[0x2743E8C10](v28);
-  if ([(WGWidgetHostingViewController *)self _hasOutstandingUpdateRequestForSequence:v8])
+  if ([(WGWidgetHostingViewController *)self _hasOutstandingUpdateRequestForSequence:sequenceCopy])
   {
-    [(WGWidgetHostingViewController *)self _registerUpdateRequestCompletionHandler:v16 forSequence:v8];
+    [(WGWidgetHostingViewController *)self _registerUpdateRequestCompletionHandler:v16 forSequence:sequenceCopy];
   }
 
   else
   {
-    (v16)[2](v16, self, v8);
+    (v16)[2](v16, self, sequenceCopy);
   }
 
 LABEL_21:
@@ -6094,14 +6094,14 @@ LABEL_11:
 LABEL_13:
 }
 
-- (void)_disconnectRemoteViewControllerForReason:(id)a3 sequence:(id)a4 coalesce:(BOOL)a5 completionHandler:(id)a6
+- (void)_disconnectRemoteViewControllerForReason:(id)reason sequence:(id)sequence coalesce:(BOOL)coalesce completionHandler:(id)handler
 {
-  v7 = a5;
+  coalesceCopy = coalesce;
   v64 = *MEMORY[0x277D85DE8];
-  v52 = a3;
-  v10 = a4;
-  v11 = a6;
-  v12 = [(WGWidgetHostingViewController *)self _isActiveSequence:v10];
+  reasonCopy = reason;
+  sequenceCopy = sequence;
+  handlerCopy = handler;
+  v12 = [(WGWidgetHostingViewController *)self _isActiveSequence:sequenceCopy];
   v13 = WGLogWidgets;
   v14 = os_log_type_enabled(WGLogWidgets, OS_LOG_TYPE_DEFAULT);
   if (v12)
@@ -6109,54 +6109,54 @@ LABEL_13:
     if (v14)
     {
       v15 = v13;
-      v16 = [(WGWidgetHostingViewController *)self widgetIdentifier];
-      v17 = [(WGWidgetHostingViewController *)self _containerIdentifier];
+      widgetIdentifier = [(WGWidgetHostingViewController *)self widgetIdentifier];
+      _containerIdentifier = [(WGWidgetHostingViewController *)self _containerIdentifier];
       v18 = NSStringFromBOOL();
       *buf = 138544386;
-      v55 = v16;
+      v55 = widgetIdentifier;
       v56 = 2050;
-      v57 = self;
+      selfCopy6 = self;
       v58 = 2114;
-      v59 = v17;
+      v59 = _containerIdentifier;
       v60 = 2114;
-      v61 = v52;
+      v61 = reasonCopy;
       v62 = 2114;
       v63 = v18;
       _os_log_impl(&dword_27425E000, v15, OS_LOG_TYPE_DEFAULT, "<%{public}@: %{public}p; container: %{public}@> Disconnection requested with reason: '%{public}@'; shouldCoalesce: %{public}@", buf, 0x34u);
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_disconnectionTimer);
-    if (![objc_opt_class() _canWidgetHostDisconnectRemoteViewControllerForSequence:v10 disconnectionTimer:WeakRetained coalesce:v7])
+    if (![objc_opt_class() _canWidgetHostDisconnectRemoteViewControllerForSequence:sequenceCopy disconnectionTimer:WeakRetained coalesce:coalesceCopy])
     {
       v33 = WGLogWidgets;
       if (os_log_type_enabled(WGLogWidgets, OS_LOG_TYPE_DEFAULT))
       {
         v34 = v33;
-        v35 = [(WGWidgetHostingViewController *)self widgetIdentifier];
-        v36 = [(WGWidgetHostingViewController *)self _containerIdentifier];
+        widgetIdentifier2 = [(WGWidgetHostingViewController *)self widgetIdentifier];
+        _containerIdentifier2 = [(WGWidgetHostingViewController *)self _containerIdentifier];
         *buf = 138544130;
-        v55 = v35;
+        v55 = widgetIdentifier2;
         v56 = 2050;
-        v57 = self;
+        selfCopy6 = self;
         v58 = 2114;
-        v59 = v36;
+        v59 = _containerIdentifier2;
         v60 = 2114;
-        v61 = v10;
+        v61 = sequenceCopy;
         _os_log_impl(&dword_27425E000, v34, OS_LOG_TYPE_DEFAULT, "<%{public}@: %{public}p; container: %{public}@> Sequence already at satisfactory state: %{public}@", buf, 0x2Au);
       }
 
       objc_initWeak(buf, self);
-      if (v11)
+      if (handlerCopy)
       {
         v37 = objc_loadWeakRetained(buf);
-        v11[2](v11, v37, v10);
+        handlerCopy[2](handlerCopy, v37, sequenceCopy);
       }
 
       objc_destroyWeak(buf);
       goto LABEL_43;
     }
 
-    v20 = [v10 transitionToState:6];
+    v20 = [sequenceCopy transitionToState:6];
     if (v20)
     {
       v21 = WGLogWidgets;
@@ -6169,15 +6169,15 @@ LABEL_13:
       if (os_log_type_enabled(WGLogWidgets, OS_LOG_TYPE_DEFAULT))
       {
         v23 = v22;
-        v24 = [(WGWidgetHostingViewController *)self widgetIdentifier];
-        v25 = [(WGWidgetHostingViewController *)self _containerIdentifier];
+        widgetIdentifier3 = [(WGWidgetHostingViewController *)self widgetIdentifier];
+        _containerIdentifier3 = [(WGWidgetHostingViewController *)self _containerIdentifier];
         v26 = WGStringFromWidgetLifeCycleSequenceState(6uLL);
         *buf = 138544386;
-        v55 = v24;
+        v55 = widgetIdentifier3;
         v56 = 2050;
-        v57 = self;
+        selfCopy6 = self;
         v58 = 2114;
-        v59 = v25;
+        v59 = _containerIdentifier3;
         v60 = 2112;
         v61 = v26;
         v62 = 2112;
@@ -6186,10 +6186,10 @@ LABEL_13:
       }
 
       objc_initWeak(buf, self);
-      if (v11)
+      if (handlerCopy)
       {
         v27 = objc_loadWeakRetained(buf);
-        v11[2](v11, v27, v10);
+        handlerCopy[2](handlerCopy, v27, sequenceCopy);
       }
 
       objc_destroyWeak(buf);
@@ -6197,7 +6197,7 @@ LABEL_13:
     }
 
     v53 = 0;
-    v51 = [v10 beginTransitionToState:0 error:&v53];
+    v51 = [sequenceCopy beginTransitionToState:0 error:&v53];
     v38 = v53;
     v39 = v38;
     if (v51 | v38)
@@ -6214,15 +6214,15 @@ LABEL_13:
         if (os_log_type_enabled(WGLogWidgets, OS_LOG_TYPE_DEFAULT))
         {
           v42 = v41;
-          v43 = [(WGWidgetHostingViewController *)self widgetIdentifier];
-          v44 = [(WGWidgetHostingViewController *)self _containerIdentifier];
+          widgetIdentifier4 = [(WGWidgetHostingViewController *)self widgetIdentifier];
+          _containerIdentifier4 = [(WGWidgetHostingViewController *)self _containerIdentifier];
           v45 = WGStringFromWidgetLifeCycleSequenceState(0);
           *buf = 138544386;
-          v55 = v43;
+          v55 = widgetIdentifier4;
           v56 = 2050;
-          v57 = self;
+          selfCopy6 = self;
           v58 = 2114;
-          v59 = v44;
+          v59 = _containerIdentifier4;
           v60 = 2112;
           v61 = v45;
           v62 = 2112;
@@ -6231,10 +6231,10 @@ LABEL_13:
         }
 
         objc_initWeak(buf, self);
-        if (v11)
+        if (handlerCopy)
         {
           v46 = objc_loadWeakRetained(buf);
-          v11[2](v11, v46, v10);
+          handlerCopy[2](handlerCopy, v46, sequenceCopy);
         }
 
         objc_destroyWeak(buf);
@@ -6252,7 +6252,7 @@ LABEL_43:
       [WGWidgetHostingViewController _disconnectRemoteViewControllerForReason:sequence:coalesce:completionHandler:];
     }
 
-    if (v7)
+    if (coalesceCopy)
     {
       if (WeakRetained && os_log_type_enabled(WGLogWidgets, OS_LOG_TYPE_ERROR))
       {
@@ -6263,24 +6263,24 @@ LABEL_43:
       if (os_log_type_enabled(WGLogWidgets, OS_LOG_TYPE_DEFAULT))
       {
         v48 = v47;
-        v49 = [(WGWidgetHostingViewController *)self widgetIdentifier];
-        v50 = [(WGWidgetHostingViewController *)self _containerIdentifier];
+        widgetIdentifier5 = [(WGWidgetHostingViewController *)self widgetIdentifier];
+        _containerIdentifier5 = [(WGWidgetHostingViewController *)self _containerIdentifier];
         *buf = 138543874;
-        v55 = v49;
+        v55 = widgetIdentifier5;
         v56 = 2050;
-        v57 = self;
+        selfCopy6 = self;
         v58 = 2114;
-        v59 = v50;
+        v59 = _containerIdentifier5;
         _os_log_impl(&dword_27425E000, v48, OS_LOG_TYPE_DEFAULT, "<%{public}@: %{public}p; container: %{public}@> Disconnection requested - scheduling disconnection timer", buf, 0x20u);
       }
 
-      [(WGWidgetHostingViewController *)self _scheduleDisconnectionTimerForSequence:v10 endTransitionBlock:v51 completion:v11];
+      [(WGWidgetHostingViewController *)self _scheduleDisconnectionTimerForSequence:sequenceCopy endTransitionBlock:v51 completion:handlerCopy];
     }
 
     else
     {
       [(WGWidgetHostingViewController *)self _invalidateDisconnectionTimer];
-      [(WGWidgetHostingViewController *)self _enqueueDisconnectionRequestForSequence:v10 endTransitionBlock:v51 completion:v11];
+      [(WGWidgetHostingViewController *)self _enqueueDisconnectionRequestForSequence:sequenceCopy endTransitionBlock:v51 completion:handlerCopy];
     }
 
     goto LABEL_41;
@@ -6289,42 +6289,42 @@ LABEL_43:
   if (v14)
   {
     v28 = v13;
-    v29 = [(WGWidgetHostingViewController *)self widgetIdentifier];
-    v30 = [(WGWidgetHostingViewController *)self _containerIdentifier];
-    v31 = [(WGWidgetHostingViewController *)self _activeLifeCycleSequence];
+    widgetIdentifier6 = [(WGWidgetHostingViewController *)self widgetIdentifier];
+    _containerIdentifier6 = [(WGWidgetHostingViewController *)self _containerIdentifier];
+    _activeLifeCycleSequence = [(WGWidgetHostingViewController *)self _activeLifeCycleSequence];
     *buf = 138544386;
-    v55 = v29;
+    v55 = widgetIdentifier6;
     v56 = 2050;
-    v57 = self;
+    selfCopy6 = self;
     v58 = 2114;
-    v59 = v30;
+    v59 = _containerIdentifier6;
     v60 = 2114;
-    v61 = v10;
+    v61 = sequenceCopy;
     v62 = 2114;
-    v63 = v31;
+    v63 = _activeLifeCycleSequence;
     _os_log_impl(&dword_27425E000, v28, OS_LOG_TYPE_DEFAULT, "<%{public}@: %{public}p; container: %{public}@> Can't disconnect remote view controller as argument sequence (%{public}@) doesn't match active sequence (%{public}@)", buf, 0x34u);
   }
 
   objc_initWeak(buf, self);
-  if (v11)
+  if (handlerCopy)
   {
     v32 = objc_loadWeakRetained(buf);
-    v11[2](v11, v32, v10);
+    handlerCopy[2](handlerCopy, v32, sequenceCopy);
   }
 
   objc_destroyWeak(buf);
 LABEL_44:
 }
 
-- (void)_enqueueDisconnectionRequestForSequence:(id)a3 endTransitionBlock:(id)a4 completion:(id)a5
+- (void)_enqueueDisconnectionRequestForSequence:(id)sequence endTransitionBlock:(id)block completion:(id)completion
 {
-  v7 = a4;
-  v8 = a5;
+  blockCopy = block;
+  completionCopy = completion;
   v12 = MEMORY[0x277D85DD0];
-  v13 = v7;
-  v14 = v8;
-  v9 = v8;
-  v10 = v7;
+  v13 = blockCopy;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  v10 = blockCopy;
   v11 = [(WGWidgetHostingViewController *)self _proxyConnectionQueue:v12];
   [(WGWidgetHostingViewController *)self _enqueueRequest:&v12 inQueue:v11 trampolinedToMainQueue:1 withDescription:@"Disconnecting remote view controller"];
 }
@@ -6462,23 +6462,23 @@ LABEL_23:
 LABEL_25:
 }
 
-- (void)_disconnectRemoteViewControllerForSequence:(id)a3 completion:(id)a4
+- (void)_disconnectRemoteViewControllerForSequence:(id)sequence completion:(id)completion
 {
   v40 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  sequenceCopy = sequence;
+  completionCopy = completion;
   v8 = WGLogWidgets;
   if (os_log_type_enabled(WGLogWidgets, OS_LOG_TYPE_DEFAULT))
   {
     v9 = v8;
-    v10 = [(WGWidgetHostingViewController *)self widgetIdentifier];
-    v11 = [(WGWidgetHostingViewController *)self _containerIdentifier];
+    widgetIdentifier = [(WGWidgetHostingViewController *)self widgetIdentifier];
+    _containerIdentifier = [(WGWidgetHostingViewController *)self _containerIdentifier];
     *buf = 138543874;
-    v35 = v10;
+    v35 = widgetIdentifier;
     v36 = 2050;
-    v37 = self;
+    selfCopy2 = self;
     v38 = 2114;
-    v39 = v11;
+    v39 = _containerIdentifier;
     _os_log_impl(&dword_27425E000, v9, OS_LOG_TYPE_DEFAULT, "<%{public}@: %{public}p; container: %{public}@> Severing remote view controller connection...", buf, 0x20u);
   }
 
@@ -6488,14 +6488,14 @@ LABEL_25:
     if (os_log_type_enabled(WGLogWidgets, OS_LOG_TYPE_DEFAULT))
     {
       v13 = v12;
-      v14 = [(WGWidgetHostingViewController *)self widgetIdentifier];
-      v15 = [(WGWidgetHostingViewController *)self _containerIdentifier];
+      widgetIdentifier2 = [(WGWidgetHostingViewController *)self widgetIdentifier];
+      _containerIdentifier2 = [(WGWidgetHostingViewController *)self _containerIdentifier];
       *buf = 138543874;
-      v35 = v14;
+      v35 = widgetIdentifier2;
       v36 = 2050;
-      v37 = self;
+      selfCopy2 = self;
       v38 = 2114;
-      v39 = v15;
+      v39 = _containerIdentifier2;
       _os_log_impl(&dword_27425E000, v13, OS_LOG_TYPE_DEFAULT, "<%{public}@: %{public}p; container: %{public}@> Already had a remote view controller disconnection handler", buf, 0x20u);
     }
 
@@ -6508,7 +6508,7 @@ LABEL_25:
 
     remoteViewControllerDisconnectionHandler = self->_remoteViewControllerDisconnectionHandler;
     WeakRetained = objc_loadWeakRetained(buf);
-    remoteViewControllerDisconnectionHandler[2](remoteViewControllerDisconnectionHandler, WeakRetained, v6, v18);
+    remoteViewControllerDisconnectionHandler[2](remoteViewControllerDisconnectionHandler, WeakRetained, sequenceCopy, v18);
 
     objc_destroyWeak(buf);
   }
@@ -6522,7 +6522,7 @@ LABEL_25:
   v29[3] = &unk_279ED2070;
   v23 = v21;
   v30 = v23;
-  v24 = v7;
+  v24 = completionCopy;
   v31 = v24;
   [(WGWidgetHostingViewController *)self _setRemoteViewControllerDisconnectionHandler:v29];
   v27[0] = MEMORY[0x277D85DD0];
@@ -6535,7 +6535,7 @@ LABEL_25:
   [(WGWidgetHostingViewController *)self _setConnectionState:2];
   if (v22)
   {
-    v26 = [(_WGWidgetRemoteViewController *)v22 disconnect];
+    disconnect = [(_WGWidgetRemoteViewController *)v22 disconnect];
   }
 
   else
@@ -6629,52 +6629,52 @@ void __87__WGWidgetHostingViewController__disconnectRemoteViewControllerForSeque
   }
 }
 
-- (void)_finishDisconnectingRemoteViewControllerForSequence:(id)a3 error:(id)a4 completion:(id)a5
+- (void)_finishDisconnectingRemoteViewControllerForSequence:(id)sequence error:(id)error completion:(id)completion
 {
   v31 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sequenceCopy = sequence;
+  errorCopy = error;
+  completionCopy = completion;
   v11 = WGLogWidgets;
   if (os_log_type_enabled(WGLogWidgets, OS_LOG_TYPE_DEFAULT))
   {
     v12 = v11;
-    v13 = [(WGWidgetHostingViewController *)self widgetIdentifier];
-    v14 = [(WGWidgetHostingViewController *)self _containerIdentifier];
+    widgetIdentifier = [(WGWidgetHostingViewController *)self widgetIdentifier];
+    _containerIdentifier = [(WGWidgetHostingViewController *)self _containerIdentifier];
     v25 = 138543874;
-    v26 = v13;
+    v26 = widgetIdentifier;
     v27 = 2050;
-    v28 = self;
+    selfCopy2 = self;
     v29 = 2114;
-    v30 = v14;
+    v30 = _containerIdentifier;
     _os_log_impl(&dword_27425E000, v12, OS_LOG_TYPE_DEFAULT, "<%{public}@: %{public}p; container: %{public}@> Severed remote view controller connection", &v25, 0x20u);
   }
 
   [(WGWidgetHostingViewController *)self _setConnectionState:0];
-  v15 = [(WGWidgetHostingViewController *)self _viewWillAppearSemaphore];
+  _viewWillAppearSemaphore = [(WGWidgetHostingViewController *)self _viewWillAppearSemaphore];
 
-  if (v15)
+  if (_viewWillAppearSemaphore)
   {
-    v16 = [(WGWidgetHostingViewController *)self _viewWillAppearSemaphore];
-    dispatch_semaphore_signal(v16);
+    _viewWillAppearSemaphore2 = [(WGWidgetHostingViewController *)self _viewWillAppearSemaphore];
+    dispatch_semaphore_signal(_viewWillAppearSemaphore2);
   }
 
   [(WGWidgetHostingViewController *)self _setRemoteViewController:0];
   [(WGWidgetHostingViewController *)self _setDidUpdate:0];
-  if (([v8 isCurrentState:0] & 1) == 0)
+  if (([sequenceCopy isCurrentState:0] & 1) == 0)
   {
     v17 = WGLogWidgets;
     if (os_log_type_enabled(WGLogWidgets, OS_LOG_TYPE_DEFAULT))
     {
       v18 = v17;
-      v19 = [(WGWidgetHostingViewController *)self widgetIdentifier];
-      v20 = [(WGWidgetHostingViewController *)self _containerIdentifier];
+      widgetIdentifier2 = [(WGWidgetHostingViewController *)self widgetIdentifier];
+      _containerIdentifier2 = [(WGWidgetHostingViewController *)self _containerIdentifier];
       v25 = 138543874;
-      v26 = v19;
+      v26 = widgetIdentifier2;
       v27 = 2050;
-      v28 = self;
+      selfCopy2 = self;
       v29 = 2114;
-      v30 = v20;
+      v30 = _containerIdentifier2;
       _os_log_impl(&dword_27425E000, v18, OS_LOG_TYPE_DEFAULT, "<%{public}@: %{public}p; container: %{public}@> Widget disconnected unexpectedly", &v25, 0x20u);
     }
 
@@ -6686,61 +6686,61 @@ void __87__WGWidgetHostingViewController__disconnectRemoteViewControllerForSeque
     }
   }
 
-  v21 = [(WGWidgetHostingViewController *)self _extensionRequest];
+  _extensionRequest = [(WGWidgetHostingViewController *)self _extensionRequest];
   [(WGWidgetHostingViewController *)self _setExtensionRequest:0];
-  if (v21)
+  if (_extensionRequest)
   {
-    v22 = [(WGWidgetHostingViewController *)self widgetInfo];
-    v23 = [v22 extension];
+    widgetInfo = [(WGWidgetHostingViewController *)self widgetInfo];
+    extension = [widgetInfo extension];
 
-    [v23 cancelExtensionRequestWithIdentifier:v21];
+    [extension cancelExtensionRequestWithIdentifier:_extensionRequest];
   }
 
-  if (v10)
+  if (completionCopy)
   {
-    v10[2](v10, self, v8);
+    completionCopy[2](completionCopy, self, sequenceCopy);
   }
 
-  v24 = [(WGWidgetHostingViewController *)self delegate];
+  delegate = [(WGWidgetHostingViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v24 remoteViewControllerDidDisconnectForWidget:self];
+    [delegate remoteViewControllerDidDisconnectForWidget:self];
   }
 }
 
-- (void)_scheduleDisconnectionTimerForSequence:(id)a3 endTransitionBlock:(id)a4 completion:(id)a5
+- (void)_scheduleDisconnectionTimerForSequence:(id)sequence endTransitionBlock:(id)block completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
+  blockCopy = block;
+  completionCopy = completion;
   v10 = MEMORY[0x277CCACC8];
-  v11 = a3;
+  sequenceCopy = sequence;
   if (([v10 isMainThread] & 1) == 0 && (v12 = WGLogWidgets, os_log_type_enabled(WGLogWidgets, OS_LOG_TYPE_ERROR)))
   {
     [WGWidgetHostingViewController _scheduleDisconnectionTimerForSequence:v12 endTransitionBlock:self completion:?];
-    if (v11)
+    if (sequenceCopy)
     {
       goto LABEL_4;
     }
   }
 
-  else if (v11)
+  else if (sequenceCopy)
   {
     goto LABEL_4;
   }
 
   [WGWidgetHostingViewController _scheduleDisconnectionTimerForSequence:endTransitionBlock:completion:];
 LABEL_4:
-  v13 = [objc_alloc(MEMORY[0x277CBEB38]) initWithObjectsAndKeys:{v11, @"WGWidgetHostingViewControllerDisconnectionTimerSequenceKey", 0}];
+  v13 = [objc_alloc(MEMORY[0x277CBEB38]) initWithObjectsAndKeys:{sequenceCopy, @"WGWidgetHostingViewControllerDisconnectionTimerSequenceKey", 0}];
 
-  if (v8)
+  if (blockCopy)
   {
-    v14 = [v8 copy];
+    v14 = [blockCopy copy];
     [v13 setObject:v14 forKey:@"WGWidgetHostingViewControllerDisconnectionTimerEndTransitionBlockKey"];
   }
 
-  if (v9)
+  if (completionCopy)
   {
-    v15 = [v9 copy];
+    v15 = [completionCopy copy];
     [v13 setObject:v15 forKey:@"WGWidgetHostingViewControllerDisconnectionTimerCompletionKey"];
   }
 
@@ -6748,10 +6748,10 @@ LABEL_4:
   objc_storeWeak(&self->_disconnectionTimer, v16);
 }
 
-- (void)_disconnectionTimerDidFire:(id)a3
+- (void)_disconnectionTimerDidFire:(id)fire
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fireCopy = fire;
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
     v5 = WGLogWidgets;
@@ -6763,26 +6763,26 @@ LABEL_4:
 
   WeakRetained = objc_loadWeakRetained(&self->_disconnectionTimer);
 
-  if (WeakRetained == v4)
+  if (WeakRetained == fireCopy)
   {
     v7 = WGLogWidgets;
     if (os_log_type_enabled(WGLogWidgets, OS_LOG_TYPE_DEFAULT))
     {
       v8 = v7;
-      v9 = [(WGWidgetHostingViewController *)self widgetIdentifier];
-      v10 = [(WGWidgetHostingViewController *)self _containerIdentifier];
+      widgetIdentifier = [(WGWidgetHostingViewController *)self widgetIdentifier];
+      _containerIdentifier = [(WGWidgetHostingViewController *)self _containerIdentifier];
       v17 = 138543874;
-      v18 = v9;
+      v18 = widgetIdentifier;
       v19 = 2050;
-      v20 = self;
+      selfCopy = self;
       v21 = 2114;
-      v22 = v10;
+      v22 = _containerIdentifier;
       _os_log_impl(&dword_27425E000, v8, OS_LOG_TYPE_DEFAULT, "<%{public}@: %{public}p; container: %{public}@> Disconnection timer fired", &v17, 0x20u);
     }
 
     v11 = objc_opt_class();
-    v12 = [v4 userInfo];
-    v13 = WGSafeCast(v11, v12);
+    userInfo = [fireCopy userInfo];
+    v13 = WGSafeCast(v11, userInfo);
 
     v14 = [v13 objectForKey:@"WGWidgetHostingViewControllerDisconnectionTimerSequenceKey"];
     v15 = [v13 objectForKey:@"WGWidgetHostingViewControllerDisconnectionTimerEndTransitionBlockKey"];
@@ -6793,8 +6793,8 @@ LABEL_4:
 
 - (void)_invalidateDisconnectionTimer
 {
-  v3 = a1;
-  v4 = [a2 widgetIdentifier];
+  selfCopy = self;
+  widgetIdentifier = [a2 widgetIdentifier];
   OUTLINED_FUNCTION_0();
   OUTLINED_FUNCTION_2(&dword_27425E000, v5, v6, "%{public}@: Attempting to invalidate disconnection timer on non-main thread!", v7, v8, v9, v10, v11);
 }
@@ -6806,32 +6806,32 @@ LABEL_4:
   if (os_log_type_enabled(WGLogWidgets, OS_LOG_TYPE_DEFAULT))
   {
     v4 = v3;
-    v5 = [(WGWidgetHostingViewController *)self widgetIdentifier];
-    v6 = [(WGWidgetHostingViewController *)self _containerIdentifier];
+    widgetIdentifier = [(WGWidgetHostingViewController *)self widgetIdentifier];
+    _containerIdentifier = [(WGWidgetHostingViewController *)self _containerIdentifier];
     v19 = 138543874;
-    v20 = v5;
+    v20 = widgetIdentifier;
     v21 = 2050;
-    v22 = self;
+    selfCopy3 = self;
     v23 = 2114;
-    v24 = v6;
+    v24 = _containerIdentifier;
     _os_log_impl(&dword_27425E000, v4, OS_LOG_TYPE_DEFAULT, "<%{public}@: %{public}p; container: %{public}@> Remote view controller disconnected unexpectedly", &v19, 0x20u);
   }
 
-  v7 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   if (self->_lastUnanticipatedDisconnectionDate && ([MEMORY[0x277CBEAA8] date], v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "timeIntervalSinceDate:", self->_lastUnanticipatedDisconnectionDate), v10 = v9, v8, v10 < 8.0))
   {
     v11 = WGLogWidgets;
     if (os_log_type_enabled(WGLogWidgets, OS_LOG_TYPE_DEFAULT))
     {
       v12 = v11;
-      v13 = [(WGWidgetHostingViewController *)self widgetIdentifier];
-      v14 = [(WGWidgetHostingViewController *)self _containerIdentifier];
+      widgetIdentifier2 = [(WGWidgetHostingViewController *)self widgetIdentifier];
+      _containerIdentifier2 = [(WGWidgetHostingViewController *)self _containerIdentifier];
       v19 = 138544130;
-      v20 = v13;
+      v20 = widgetIdentifier2;
       v21 = 2050;
-      v22 = self;
+      selfCopy3 = self;
       v23 = 2114;
-      v24 = v14;
+      v24 = _containerIdentifier2;
       v25 = 2050;
       v26 = 8;
       _os_log_impl(&dword_27425E000, v12, OS_LOG_TYPE_DEFAULT, "<%{public}@: %{public}p; container: %{public}@> Two crashes within interval (%{public}ld) - we're done", &v19, 0x2Au);
@@ -6849,30 +6849,30 @@ LABEL_4:
     if (os_log_type_enabled(WGLogWidgets, OS_LOG_TYPE_DEFAULT))
     {
       v16 = v15;
-      v17 = [(WGWidgetHostingViewController *)self widgetIdentifier];
-      v18 = [(WGWidgetHostingViewController *)self _containerIdentifier];
+      widgetIdentifier3 = [(WGWidgetHostingViewController *)self widgetIdentifier];
+      _containerIdentifier3 = [(WGWidgetHostingViewController *)self _containerIdentifier];
       v19 = 138543874;
-      v20 = v17;
+      v20 = widgetIdentifier3;
       v21 = 2050;
-      v22 = self;
+      selfCopy3 = self;
       v23 = 2114;
-      v24 = v18;
+      v24 = _containerIdentifier3;
       _os_log_impl(&dword_27425E000, v16, OS_LOG_TYPE_DEFAULT, "<%{public}@: %{public}p; container: %{public}@> Attempting to reconnect to remote view controller", &v19, 0x20u);
     }
 
     [(WGWidgetHostingViewController *)self _beginSequenceWithReason:@"reconnection attempt" completion:0 updateHandler:0];
   }
 
-  [(WGWidgetHostingViewController *)self _setLastUnanticipatedDisconnectionDate:v7];
+  [(WGWidgetHostingViewController *)self _setLastUnanticipatedDisconnectionDate:date];
 }
 
 - (void)_insertBrokenView
 {
-  v3 = [(WGWidgetHostingViewController *)self _brokenView];
-  v4 = v3;
-  if (v3)
+  _brokenView = [(WGWidgetHostingViewController *)self _brokenView];
+  v4 = _brokenView;
+  if (_brokenView)
   {
-    v5 = v3;
+    v5 = _brokenView;
   }
 
   else
@@ -6883,8 +6883,8 @@ LABEL_4:
   v7 = v5;
 
   [(WGWidgetHostingViewController *)self _setBrokenView:v7];
-  v6 = [(WGWidgetHostingViewController *)self _brokenView];
-  [(WGWidgetHostingViewController *)self _insertContentProvidingSubview:v6 sequence:self->_activeLifeCycleSequence completion:&__block_literal_global_328];
+  _brokenView2 = [(WGWidgetHostingViewController *)self _brokenView];
+  [(WGWidgetHostingViewController *)self _insertContentProvidingSubview:_brokenView2 sequence:self->_activeLifeCycleSequence completion:&__block_literal_global_328];
 }
 
 void __50__WGWidgetHostingViewController__insertBrokenView__block_invoke(uint64_t a1, void *a2)
@@ -6909,22 +6909,22 @@ void __50__WGWidgetHostingViewController__insertBrokenView__block_invoke(uint64_
   }
 }
 
-- (void)handleReconnectionRequest:(id)a3
+- (void)handleReconnectionRequest:(id)request
 {
   [(WGWidgetHostingViewController *)self _setBlacklisted:0];
 
   [(WGWidgetHostingViewController *)self _beginSequenceWithReason:@"reconnection attempt" completion:0 updateHandler:0];
 }
 
-- (CGSize)_maxSizeForDisplayMode:(int64_t)a3
+- (CGSize)_maxSizeForDisplayMode:(int64_t)mode
 {
   +[WGWidgetInfo maximumContentHeightForCompactDisplayMode];
   v6 = v5;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (WeakRetained)
   {
-    v8 = [(WGWidgetHostingViewController *)self delegate];
-    [v8 maxSizeForWidget:self forDisplayMode:a3];
+    delegate = [(WGWidgetHostingViewController *)self delegate];
+    [delegate maxSizeForWidget:self forDisplayMode:mode];
     v10 = v9;
     v6 = v11;
   }
@@ -7003,8 +7003,8 @@ void __50__WGWidgetHostingViewController__insertBrokenView__block_invoke(uint64_
 
 - (void)_layoutMarginsDidChange
 {
-  v3 = [(WGWidgetHostingViewController *)self _activeLifeCycleSequence];
-  v4 = [v3 isCurrentState:4];
+  _activeLifeCycleSequence = [(WGWidgetHostingViewController *)self _activeLifeCycleSequence];
+  v4 = [_activeLifeCycleSequence isCurrentState:4];
 
   if (v4)
   {
@@ -7030,23 +7030,23 @@ void __56__WGWidgetHostingViewController__layoutMarginsDidChange__block_invoke(d
   }
 }
 
-- (void)_updatePreferredContentSizeWithHeight:(double)a3
+- (void)_updatePreferredContentSizeWithHeight:(double)height
 {
   v17 = *MEMORY[0x277D85DE8];
   v5 = WGLogWidgets;
   if (os_log_type_enabled(WGLogWidgets, OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = [(WGWidgetHostingViewController *)self widgetIdentifier];
-    v8 = [(WGWidgetHostingViewController *)self _containerIdentifier];
+    widgetIdentifier = [(WGWidgetHostingViewController *)self widgetIdentifier];
+    _containerIdentifier = [(WGWidgetHostingViewController *)self _containerIdentifier];
     v9 = 138544130;
-    v10 = v7;
+    v10 = widgetIdentifier;
     v11 = 2050;
-    v12 = self;
+    selfCopy = self;
     v13 = 2114;
-    v14 = v8;
+    v14 = _containerIdentifier;
     v15 = 2050;
-    v16 = a3;
+    heightCopy = height;
     _os_log_impl(&dword_27425E000, v6, OS_LOG_TYPE_DEFAULT, "<%{public}@: %{public}p; container: %{public}@> Requested preferred height: %{public}ld", &v9, 0x2Au);
   }
 
@@ -7054,34 +7054,34 @@ void __56__WGWidgetHostingViewController__layoutMarginsDidChange__block_invoke(d
   [(WGWidgetHostingViewController *)self setPreferredContentSize:?];
 }
 
-- (void)_setLargestAvailableDisplayMode:(int64_t)a3
+- (void)_setLargestAvailableDisplayMode:(int64_t)mode
 {
-  if ([(WGWidgetHostingViewController *)self largestAvailableDisplayMode]!= a3)
+  if ([(WGWidgetHostingViewController *)self largestAvailableDisplayMode]!= mode)
   {
     WeakRetained = objc_loadWeakRetained(&self->_host);
     if (objc_opt_respondsToSelector())
     {
-      [WeakRetained widget:self didChangeLargestAvailableDisplayMode:a3];
+      [WeakRetained widget:self didChangeLargestAvailableDisplayMode:mode];
     }
 
     v6 = objc_loadWeakRetained(&self->_delegate);
     if (objc_opt_respondsToSelector())
     {
-      [v6 widget:self didChangeLargestSupportedDisplayMode:a3];
+      [v6 widget:self didChangeLargestSupportedDisplayMode:mode];
     }
   }
 
-  if ([(WGWidgetHostingViewController *)self userSpecifiedDisplayMode]>= a3)
+  if ([(WGWidgetHostingViewController *)self userSpecifiedDisplayMode]>= mode)
   {
 
-    [(WGWidgetHostingViewController *)self setActiveDisplayMode:a3];
+    [(WGWidgetHostingViewController *)self setActiveDisplayMode:mode];
   }
 }
 
-- (void)_noteOutstandingUpdateRequestForSequence:(id)a3
+- (void)_noteOutstandingUpdateRequestForSequence:(id)sequence
 {
-  v4 = a3;
-  if (v4)
+  sequenceCopy = sequence;
+  if (sequenceCopy)
   {
     sequenceIDsToOutstandingWidgetUpdateCompletionHandlers = self->_sequenceIDsToOutstandingWidgetUpdateCompletionHandlers;
     if (!sequenceIDsToOutstandingWidgetUpdateCompletionHandlers)
@@ -7093,8 +7093,8 @@ void __56__WGWidgetHostingViewController__layoutMarginsDidChange__block_invoke(d
       sequenceIDsToOutstandingWidgetUpdateCompletionHandlers = self->_sequenceIDsToOutstandingWidgetUpdateCompletionHandlers;
     }
 
-    v8 = [v4 sequenceIdentifier];
-    v9 = [(NSMutableDictionary *)sequenceIDsToOutstandingWidgetUpdateCompletionHandlers objectForKey:v8];
+    sequenceIdentifier = [sequenceCopy sequenceIdentifier];
+    v9 = [(NSMutableDictionary *)sequenceIDsToOutstandingWidgetUpdateCompletionHandlers objectForKey:sequenceIdentifier];
 
     if (v9 && os_log_type_enabled(WGLogWidgets, OS_LOG_TYPE_DEBUG))
     {
@@ -7102,8 +7102,8 @@ void __56__WGWidgetHostingViewController__layoutMarginsDidChange__block_invoke(d
     }
 
     v10 = self->_sequenceIDsToOutstandingWidgetUpdateCompletionHandlers;
-    v11 = [v4 sequenceIdentifier];
-    [(NSMutableDictionary *)v10 setObject:&__block_literal_global_10 forKey:v11];
+    sequenceIdentifier2 = [sequenceCopy sequenceIdentifier];
+    [(NSMutableDictionary *)v10 setObject:&__block_literal_global_10 forKey:sequenceIdentifier2];
   }
 
   else if (os_log_type_enabled(WGLogWidgets, OS_LOG_TYPE_DEBUG))
@@ -7112,21 +7112,21 @@ void __56__WGWidgetHostingViewController__layoutMarginsDidChange__block_invoke(d
   }
 }
 
-- (BOOL)_hasOutstandingUpdateRequestForSequence:(id)a3
+- (BOOL)_hasOutstandingUpdateRequestForSequence:(id)sequence
 {
   sequenceIDsToOutstandingWidgetUpdateCompletionHandlers = self->_sequenceIDsToOutstandingWidgetUpdateCompletionHandlers;
-  v4 = [a3 sequenceIdentifier];
-  v5 = [(NSMutableDictionary *)sequenceIDsToOutstandingWidgetUpdateCompletionHandlers objectForKey:v4];
+  sequenceIdentifier = [sequence sequenceIdentifier];
+  v5 = [(NSMutableDictionary *)sequenceIDsToOutstandingWidgetUpdateCompletionHandlers objectForKey:sequenceIdentifier];
   LOBYTE(sequenceIDsToOutstandingWidgetUpdateCompletionHandlers) = v5 == &__block_literal_global_10;
 
   return sequenceIDsToOutstandingWidgetUpdateCompletionHandlers;
 }
 
-- (void)_registerUpdateRequestCompletionHandler:(id)a3 forSequence:(id)a4
+- (void)_registerUpdateRequestCompletionHandler:(id)handler forSequence:(id)sequence
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  handlerCopy = handler;
+  sequenceCopy = sequence;
+  if (sequenceCopy)
   {
     if (!self->_sequenceIDsToOutstandingWidgetUpdateCompletionHandlers)
     {
@@ -7136,10 +7136,10 @@ void __56__WGWidgetHostingViewController__layoutMarginsDidChange__block_invoke(d
     }
 
     v10 = self->_sequenceIDsToOutstandingWidgetUpdateCompletionHandlers;
-    v11 = [v7 sequenceIdentifier];
-    if (v6)
+    sequenceIdentifier = [sequenceCopy sequenceIdentifier];
+    if (handlerCopy)
     {
-      v12 = [(NSMutableDictionary *)v10 objectForKey:v11];
+      v12 = [(NSMutableDictionary *)v10 objectForKey:sequenceIdentifier];
 
       if (v12)
       {
@@ -7157,14 +7157,14 @@ void __56__WGWidgetHostingViewController__layoutMarginsDidChange__block_invoke(d
       }
 
       v14 = self->_sequenceIDsToOutstandingWidgetUpdateCompletionHandlers;
-      v15 = MEMORY[0x2743E8C10](v6);
-      v16 = [v7 sequenceIdentifier];
-      [(NSMutableDictionary *)v14 setObject:v15 forKey:v16];
+      v15 = MEMORY[0x2743E8C10](handlerCopy);
+      sequenceIdentifier2 = [sequenceCopy sequenceIdentifier];
+      [(NSMutableDictionary *)v14 setObject:v15 forKey:sequenceIdentifier2];
     }
 
     else
     {
-      [(NSMutableDictionary *)v10 removeObjectForKey:v11];
+      [(NSMutableDictionary *)v10 removeObjectForKey:sequenceIdentifier];
     }
   }
 
@@ -7174,13 +7174,13 @@ void __56__WGWidgetHostingViewController__layoutMarginsDidChange__block_invoke(d
   }
 }
 
-- (id)_updateRequestForSequence:(id)a3
+- (id)_updateRequestForSequence:(id)sequence
 {
-  if (a3)
+  if (sequence)
   {
     sequenceIDsToOutstandingWidgetUpdateCompletionHandlers = self->_sequenceIDsToOutstandingWidgetUpdateCompletionHandlers;
-    v4 = [a3 sequenceIdentifier];
-    v5 = [(NSMutableDictionary *)sequenceIDsToOutstandingWidgetUpdateCompletionHandlers objectForKey:v4];
+    sequenceIdentifier = [sequence sequenceIdentifier];
+    v5 = [(NSMutableDictionary *)sequenceIDsToOutstandingWidgetUpdateCompletionHandlers objectForKey:sequenceIdentifier];
     v6 = MEMORY[0x2743E8C10]();
   }
 
@@ -7192,27 +7192,27 @@ void __56__WGWidgetHostingViewController__layoutMarginsDidChange__block_invoke(d
   return v6;
 }
 
-- (void)_setRemoteViewController:(id)a3
+- (void)_setRemoteViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   remoteViewController = self->_remoteViewController;
-  v9 = v5;
-  if (remoteViewController != v5)
+  v9 = controllerCopy;
+  if (remoteViewController != controllerCopy)
   {
     [(_WGWidgetRemoteViewController *)remoteViewController willMoveToParentViewController:0];
-    v7 = [(WGWidgetHostingViewController *)self isRemoteViewVisible];
+    isRemoteViewVisible = [(WGWidgetHostingViewController *)self isRemoteViewVisible];
     [(WGWidgetHostingViewController *)self _beginRemoteViewControllerAppearanceTransitionIfNecessary:0 semaphore:0 animated:0 completion:0];
-    v8 = [(_WGWidgetRemoteViewController *)self->_remoteViewController view];
-    [v8 removeFromSuperview];
+    view = [(_WGWidgetRemoteViewController *)self->_remoteViewController view];
+    [view removeFromSuperview];
 
-    if (v7)
+    if (isRemoteViewVisible)
     {
       [(WGWidgetHostingViewController *)self _setContentProvidingView:0];
     }
 
     [(WGWidgetHostingViewController *)self _endRemoteViewControllerAppearanceTransitionIfNecessary];
     [(_WGWidgetRemoteViewController *)self->_remoteViewController removeFromParentViewController];
-    objc_storeStrong(&self->_remoteViewController, a3);
+    objc_storeStrong(&self->_remoteViewController, controller);
     if (self->_remoteViewController)
     {
       [(WGWidgetHostingViewController *)self addChildViewController:?];
@@ -7221,49 +7221,49 @@ void __56__WGWidgetHostingViewController__layoutMarginsDidChange__block_invoke(d
   }
 }
 
-- (void)widget:(id)a3 didTerminateWithError:(id)a4
+- (void)widget:(id)widget didTerminateWithError:(id)error
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  widgetCopy = widget;
+  errorCopy = error;
   v8 = WGLogWidgets;
   if (os_log_type_enabled(WGLogWidgets, OS_LOG_TYPE_DEFAULT))
   {
     v9 = v8;
-    v10 = [(WGWidgetHostingViewController *)self widgetIdentifier];
-    v11 = [(WGWidgetHostingViewController *)self _containerIdentifier];
+    widgetIdentifier = [(WGWidgetHostingViewController *)self widgetIdentifier];
+    _containerIdentifier = [(WGWidgetHostingViewController *)self _containerIdentifier];
     v15 = 138544130;
-    v16 = v10;
+    v16 = widgetIdentifier;
     v17 = 2050;
-    v18 = self;
+    selfCopy = self;
     v19 = 2114;
-    v20 = v11;
+    v20 = _containerIdentifier;
     v21 = 2114;
-    v22 = v7;
+    v22 = errorCopy;
     _os_log_impl(&dword_27425E000, v9, OS_LOG_TYPE_DEFAULT, "<%{public}@: %{public}p; container: %{public}@> Remote view controller did terminate with error: %{public}@", &v15, 0x2Au);
   }
 
-  v12 = [(WGWidgetHostingViewController *)self _remoteViewController];
+  _remoteViewController = [(WGWidgetHostingViewController *)self _remoteViewController];
 
-  if (v12 == v6)
+  if (_remoteViewController == widgetCopy)
   {
-    v13 = [(WGWidgetHostingViewController *)self _remoteViewControllerDisconnectionHandler];
-    if (v13)
+    _remoteViewControllerDisconnectionHandler = [(WGWidgetHostingViewController *)self _remoteViewControllerDisconnectionHandler];
+    if (_remoteViewControllerDisconnectionHandler)
     {
       [(WGWidgetHostingViewController *)self _setRemoteViewControllerDisconnectionHandler:0];
-      v14 = [(WGWidgetHostingViewController *)self _activeLifeCycleSequence];
-      (v13)[2](v13, self, v14, v7);
+      _activeLifeCycleSequence = [(WGWidgetHostingViewController *)self _activeLifeCycleSequence];
+      (_remoteViewControllerDisconnectionHandler)[2](_remoteViewControllerDisconnectionHandler, self, _activeLifeCycleSequence, errorCopy);
     }
 
     else
     {
-      v14 = [(WGWidgetHostingViewController *)self _activeLifeCycleSequence];
-      [(WGWidgetHostingViewController *)self _finishDisconnectingRemoteViewControllerForSequence:v14 error:v7 completion:0];
+      _activeLifeCycleSequence = [(WGWidgetHostingViewController *)self _activeLifeCycleSequence];
+      [(WGWidgetHostingViewController *)self _finishDisconnectingRemoteViewControllerForSequence:_activeLifeCycleSequence error:errorCopy completion:0];
     }
   }
 }
 
-- (void)_rowHeightDidChange:(id)a3
+- (void)_rowHeightDidChange:(id)change
 {
   [(WGWidgetHostingViewController *)self preferredContentSize];
 
@@ -7272,8 +7272,8 @@ void __56__WGWidgetHostingViewController__layoutMarginsDidChange__block_invoke(d
 
 - (NSString)_containerIdentifier
 {
-  v2 = [(WGWidgetHostingViewController *)self parentViewController];
-  if (v2)
+  parentViewController = [(WGWidgetHostingViewController *)self parentViewController];
+  if (parentViewController)
   {
     v3 = objc_opt_class();
     v4 = NSStringFromClass(v3);
@@ -7331,19 +7331,19 @@ void __56__WGWidgetHostingViewController__invalidateVisibleFrame__block_invoke_2
   [v3 _setWantsVisibleFrame:a2];
 }
 
-- (void)_insertLockedOutViewWithExplanation:(id)a3
+- (void)_insertLockedOutViewWithExplanation:(id)explanation
 {
-  v8 = a3;
-  v4 = [(WGWidgetHostingViewController *)self _lockedOutView];
-  v5 = v4;
-  if (v4)
+  explanationCopy = explanation;
+  _lockedOutView = [(WGWidgetHostingViewController *)self _lockedOutView];
+  v5 = _lockedOutView;
+  if (_lockedOutView)
   {
-    v6 = v4;
+    v6 = _lockedOutView;
   }
 
   else
   {
-    v6 = [[_WGLockedOutWidgetView alloc] initWithExplanation:v8];
+    v6 = [[_WGLockedOutWidgetView alloc] initWithExplanation:explanationCopy];
   }
 
   v7 = v6;
@@ -7356,10 +7356,10 @@ void __56__WGWidgetHostingViewController__invalidateVisibleFrame__block_invoke_2
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(WGWidgetHostingViewController *)self widgetIdentifier];
-  v6 = [(WGWidgetHostingViewController *)self _remoteViewController];
-  v7 = [(WGWidgetHostingViewController *)self _contentProvidingView];
-  v8 = [v3 stringWithFormat:@"<%@: %p widgetIdentifier = %@; _remoteViewController = %@; _contentProvidingView = %@>", v4, self, v5, v6, v7];;
+  widgetIdentifier = [(WGWidgetHostingViewController *)self widgetIdentifier];
+  _remoteViewController = [(WGWidgetHostingViewController *)self _remoteViewController];
+  _contentProvidingView = [(WGWidgetHostingViewController *)self _contentProvidingView];
+  v8 = [v3 stringWithFormat:@"<%@: %p widgetIdentifier = %@; _remoteViewController = %@; _contentProvidingView = %@>", v4, self, widgetIdentifier, _remoteViewController, _contentProvidingView];;
 
   return v8;
 }
@@ -7398,20 +7398,20 @@ void __56__WGWidgetHostingViewController__invalidateVisibleFrame__block_invoke_2
   return WeakRetained;
 }
 
-+ (BOOL)_canWidgetHostConnectRemoteViewControllerByRequestingForSequence:(id)a3 disconnectionTimer:(id)a4 connectionState:(int64_t)a5
++ (BOOL)_canWidgetHostConnectRemoteViewControllerByRequestingForSequence:(id)sequence disconnectionTimer:(id)timer connectionState:(int64_t)state
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  sequenceCopy = sequence;
+  timerCopy = timer;
+  if (!sequenceCopy)
   {
     +[WGWidgetHostingViewController(Testing) _canWidgetHostConnectRemoteViewControllerByRequestingForSequence:disconnectionTimer:connectionState:];
   }
 
   v9 = 1;
-  if (([v7 isCurrentStateNotYet:1] & 1) == 0)
+  if (([sequenceCopy isCurrentStateNotYet:1] & 1) == 0)
   {
-    v10 = [v7 isCurrentState:6];
-    if (v8)
+    v10 = [sequenceCopy isCurrentState:6];
+    if (timerCopy)
     {
       v11 = 0;
     }
@@ -7421,62 +7421,62 @@ void __56__WGWidgetHostingViewController__invalidateVisibleFrame__block_invoke_2
       v11 = v10;
     }
 
-    v9 = a5 == 1 || v11;
+    v9 = state == 1 || v11;
   }
 
   return v9;
 }
 
-+ (BOOL)_canWidgetHostConnectRemoteViewControllerByCancellingDisappearanceForSequence:(id)a3
++ (BOOL)_canWidgetHostConnectRemoteViewControllerByCancellingDisappearanceForSequence:(id)sequence
 {
-  v3 = a3;
-  if (!v3)
+  sequenceCopy = sequence;
+  if (!sequenceCopy)
   {
     +[WGWidgetHostingViewController(Testing) _canWidgetHostConnectRemoteViewControllerByCancellingDisappearanceForSequence:];
   }
 
-  v4 = [v3 isCurrentStateAtLeast:5];
+  v4 = [sequenceCopy isCurrentStateAtLeast:5];
 
   return v4;
 }
 
-+ (BOOL)_canWidgetHostRequestRemoteViewControllerForSequence:(id)a3
++ (BOOL)_canWidgetHostRequestRemoteViewControllerForSequence:(id)sequence
 {
-  v3 = a3;
-  if (!v3)
+  sequenceCopy = sequence;
+  if (!sequenceCopy)
   {
     +[WGWidgetHostingViewController(Testing) _canWidgetHostRequestRemoteViewControllerForSequence:];
   }
 
-  v4 = [v3 isCurrentState:1];
+  v4 = [sequenceCopy isCurrentState:1];
 
   return v4;
 }
 
-+ (BOOL)_canWidgetHostCaptureSnapshotForSequence:(id)a3
++ (BOOL)_canWidgetHostCaptureSnapshotForSequence:(id)sequence
 {
-  v3 = a3;
-  if (!v3)
+  sequenceCopy = sequence;
+  if (!sequenceCopy)
   {
     +[WGWidgetHostingViewController(Testing) _canWidgetHostCaptureSnapshotForSequence:];
   }
 
-  v4 = [v3 isCurrentStateNotYet:5];
+  v4 = [sequenceCopy isCurrentStateNotYet:5];
 
   return v4;
 }
 
-+ (BOOL)_canWidgetHostInsertRemoteViewForSequence:(id)a3
++ (BOOL)_canWidgetHostInsertRemoteViewForSequence:(id)sequence
 {
-  v3 = a3;
-  if (!v3)
+  sequenceCopy = sequence;
+  if (!sequenceCopy)
   {
     +[WGWidgetHostingViewController(Testing) _canWidgetHostInsertRemoteViewForSequence:];
   }
 
-  if ([v3 isCurrentStateAtLeast:2])
+  if ([sequenceCopy isCurrentStateAtLeast:2])
   {
-    v4 = [v3 isCurrentStateNotYet:6];
+    v4 = [sequenceCopy isCurrentStateNotYet:6];
   }
 
   else
@@ -7487,39 +7487,39 @@ void __56__WGWidgetHostingViewController__invalidateVisibleFrame__block_invoke_2
   return v4;
 }
 
-+ (BOOL)_canWidgetHostEndSequenceByDisconnectingRemoteViewControllerForSequence:(id)a3
++ (BOOL)_canWidgetHostEndSequenceByDisconnectingRemoteViewControllerForSequence:(id)sequence
 {
-  v3 = a3;
-  if (!v3)
+  sequenceCopy = sequence;
+  if (!sequenceCopy)
   {
     +[WGWidgetHostingViewController(Testing) _canWidgetHostEndSequenceByDisconnectingRemoteViewControllerForSequence:];
   }
 
-  if ([v3 isCurrentState:0])
+  if ([sequenceCopy isCurrentState:0])
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [v3 isCurrentStateNotYet:6];
+    v4 = [sequenceCopy isCurrentStateNotYet:6];
   }
 
   return v4;
 }
 
-+ (BOOL)_canWidgetHostDisconnectRemoteViewControllerForSequence:(id)a3 disconnectionTimer:(id)a4 coalesce:(BOOL)a5
++ (BOOL)_canWidgetHostDisconnectRemoteViewControllerForSequence:(id)sequence disconnectionTimer:(id)timer coalesce:(BOOL)coalesce
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  sequenceCopy = sequence;
+  timerCopy = timer;
+  if (!sequenceCopy)
   {
     +[WGWidgetHostingViewController(Testing) _canWidgetHostDisconnectRemoteViewControllerForSequence:disconnectionTimer:coalesce:];
   }
 
-  v9 = [v7 isCurrentStateNotYet:6];
-  v10 = !a5;
-  if (!v8)
+  v9 = [sequenceCopy isCurrentStateNotYet:6];
+  v10 = !coalesce;
+  if (!timerCopy)
   {
     v10 = 0;
   }

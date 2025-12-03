@@ -1,9 +1,9 @@
 @interface BSServiceConnection
-+ (id)NSXPCConnectionWithEndpoint:(id)a3 clientContextBuilder:(id)a4 configurator:(id)a5;
-+ (id)NSXPCConnectionWithEndpoint:(id)a3 configurator:(id)a4;
-+ (id)_connectionWithEndpoint:(uint64_t)a3 muxer:(uint64_t)a4 clientContextBuilder:;
-+ (id)connectionWithEndpoint:(id)a3;
-+ (id)connectionWithEndpoint:(id)a3 clientContextBuilder:(id)a4;
++ (id)NSXPCConnectionWithEndpoint:(id)endpoint clientContextBuilder:(id)builder configurator:(id)configurator;
++ (id)NSXPCConnectionWithEndpoint:(id)endpoint configurator:(id)configurator;
++ (id)_connectionWithEndpoint:(uint64_t)endpoint muxer:(uint64_t)muxer clientContextBuilder:;
++ (id)connectionWithEndpoint:(id)endpoint;
++ (id)connectionWithEndpoint:(id)endpoint clientContextBuilder:(id)builder;
 + (void)_currentConnection;
 - (BSProcessHandle)remoteProcess;
 - (BSServiceConnection)init;
@@ -11,14 +11,14 @@
 - (NSString)description;
 - (RBSTarget)remoteAssertionTarget;
 - (id)_connection;
-- (id)_extractNSXPCConnectionWithConfigurator:(uint64_t)a1 assertionProvider:(void *)a2;
+- (id)_extractNSXPCConnectionWithConfigurator:(uint64_t)configurator assertionProvider:(void *)provider;
 - (id)_extractUnderlyingConnection;
-- (id)_initWithConfiguration:(id *)a1;
-- (id)createMessageWithCompletion:(id)a3;
-- (id)extractNSXPCConnectionWithConfigurator:(id)a3;
-- (id)extractNSXPCConnectionWithViewServiceConfigurator:(id)a3;
-- (id)remoteTargetWithAssertionAttributes:(id)a3;
-- (void)_config:(uint64_t)a1;
+- (id)_initWithConfiguration:(id *)configuration;
+- (id)createMessageWithCompletion:(id)completion;
+- (id)extractNSXPCConnectionWithConfigurator:(id)configurator;
+- (id)extractNSXPCConnectionWithViewServiceConfigurator:(id)configurator;
+- (id)remoteTargetWithAssertionAttributes:(id)attributes;
+- (void)_config:(uint64_t)_config;
 - (void)activate;
 - (void)dealloc;
 - (void)invalidate;
@@ -53,10 +53,10 @@
 
   v4 = v3;
 
-  v5 = [v4 object];
+  object = [v4 object];
 
   v6 = objc_opt_class();
-  v7 = v5;
+  v7 = object;
   if (v6)
   {
     if (objc_opt_isKindOfClass())
@@ -100,7 +100,7 @@
       v13 = 2114;
       v14 = v8;
       v15 = 2048;
-      v16 = self;
+      selfCopy = self;
       v17 = 2114;
       v18 = @"BSServiceConnection.m";
       v19 = 1024;
@@ -192,7 +192,7 @@ void __31__BSServiceConnection_activate__block_invoke_259(void *a1, uint64_t a2)
         v62 = 2114;
         v63 = v25;
         v64 = 2048;
-        v65 = self;
+        selfCopy7 = self;
         v66 = 2114;
         v67 = @"BSServiceConnection.m";
         v68 = 1024;
@@ -222,7 +222,7 @@ void __31__BSServiceConnection_activate__block_invoke_259(void *a1, uint64_t a2)
         v62 = 2114;
         v63 = v36;
         v64 = 2048;
-        v65 = self;
+        selfCopy7 = self;
         v66 = 2114;
         v67 = @"BSServiceConnection.m";
         v68 = 1024;
@@ -252,7 +252,7 @@ void __31__BSServiceConnection_activate__block_invoke_259(void *a1, uint64_t a2)
         v62 = 2114;
         v63 = v20;
         v64 = 2048;
-        v65 = self;
+        selfCopy7 = self;
         v66 = 2114;
         v67 = @"BSServiceConnection.m";
         v68 = 1024;
@@ -272,8 +272,8 @@ void __31__BSServiceConnection_activate__block_invoke_259(void *a1, uint64_t a2)
     goto LABEL_41;
   }
 
-  v6 = [(BSServiceInterface *)interface identifier];
-  if (v6 && ![(NSString *)self->_service isEqualToString:v6])
+  identifier = [(BSServiceInterface *)interface identifier];
+  if (identifier && ![(NSString *)self->_service isEqualToString:identifier])
   {
     if ([(NSString *)self->_service isEqualToString:@"com.apple.BoardServices.invalid-service"])
     {
@@ -298,9 +298,9 @@ void __31__BSServiceConnection_activate__block_invoke_259(void *a1, uint64_t a2)
         }
 
         v11 = configured_connectionQueue;
-        v12 = [(BSXPCServiceConnectionEndpoint *)v11 isNullEndpoint];
+        isNullEndpoint = [(BSXPCServiceConnectionEndpoint *)v11 isNullEndpoint];
 
-        if (v12)
+        if (isNullEndpoint)
         {
           goto LABEL_12;
         }
@@ -323,7 +323,7 @@ void __31__BSServiceConnection_activate__block_invoke_259(void *a1, uint64_t a2)
       v62 = 2114;
       v63 = v31;
       v64 = 2048;
-      v65 = self;
+      selfCopy7 = self;
       v66 = 2114;
       v67 = @"BSServiceConnection.m";
       v68 = 1024;
@@ -354,7 +354,7 @@ LABEL_12:
       v62 = 2114;
       v63 = v41;
       v64 = 2048;
-      v65 = self;
+      selfCopy7 = self;
       v66 = 2114;
       v67 = @"BSServiceConnection.m";
       v68 = 1024;
@@ -374,11 +374,11 @@ LABEL_12:
   v13 = self->_connection;
   if (v13)
   {
-    v14 = [(BSXPCServiceConnectionContext *)v13->_context isServer];
+    isServer = [(BSXPCServiceConnectionContext *)v13->_context isServer];
     v15 = self->_lock_config->_interface;
-    if (v14)
+    if (isServer)
     {
-      v16 = [(BSServiceInterface *)v15 server];
+      server = [(BSServiceInterface *)v15 server];
       goto LABEL_38;
     }
   }
@@ -388,11 +388,11 @@ LABEL_12:
     v15 = self->_lock_config->_interface;
   }
 
-  v16 = [(BSServiceInterface *)v15 client];
+  server = [(BSServiceInterface *)v15 client];
 LABEL_38:
-  v43 = v16;
-  v44 = [v16 methods];
-  v45 = [v44 count];
+  v43 = server;
+  methods = [server methods];
+  v45 = [methods count];
 
   if (v45)
   {
@@ -410,7 +410,7 @@ LABEL_38:
         v62 = 2114;
         v63 = v52;
         v64 = 2048;
-        v65 = self;
+        selfCopy7 = self;
         v66 = 2114;
         v67 = @"BSServiceConnection.m";
         v68 = 1024;
@@ -442,7 +442,7 @@ LABEL_41:
       v62 = 2114;
       v63 = v56;
       v64 = 2048;
-      v65 = self;
+      selfCopy7 = self;
       v66 = 2114;
       v67 = @"BSServiceConnection.m";
       v68 = 1024;
@@ -923,22 +923,22 @@ uint64_t __31__BSServiceConnection_activate__block_invoke_2(uint64_t a1, void *a
 
 - (id)_connection
 {
-  if (a1)
+  if (self)
   {
-    a1 = a1[1];
+    self = self[1];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (BSProcessHandle)remoteProcess
 {
-  v2 = [(BSXPCServiceConnection *)self->_connection peer];
-  v3 = v2;
-  if (v2)
+  peer = [(BSXPCServiceConnection *)self->_connection peer];
+  v3 = peer;
+  if (peer)
   {
-    v4 = *(v2 + 32);
+    v4 = *(peer + 32);
   }
 
   else
@@ -992,15 +992,15 @@ void __31__BSServiceConnection_activate__block_invoke_247(uint64_t a1)
 
 - (NSString)description
 {
-  v3 = [(BSXPCServiceConnection *)self->_connection name];
-  if ([(NSString *)self->_name isEqualToString:v3])
+  name = [(BSXPCServiceConnection *)self->_connection name];
+  if ([(NSString *)self->_name isEqualToString:name])
   {
     [MEMORY[0x1E696AEC0] stringWithFormat:@"<%@:%p>", self->_name, self];
   }
 
   else
   {
-    [MEMORY[0x1E696AEC0] stringWithFormat:@"<%@:%p name=%@>", self->_name, self, v3];
+    [MEMORY[0x1E696AEC0] stringWithFormat:@"<%@:%p name=%@>", self->_name, self, name];
   }
   v4 = ;
 
@@ -1010,10 +1010,10 @@ void __31__BSServiceConnection_activate__block_invoke_247(uint64_t a1)
 - (id)_extractUnderlyingConnection
 {
   v35 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    os_unfair_lock_lock((a1 + 32));
-    if (!*(a1 + 40))
+    os_unfair_lock_lock((self + 32));
+    if (!*(self + 40))
     {
       v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"cannot extract connection after activation"];
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -1026,7 +1026,7 @@ void __31__BSServiceConnection_activate__block_invoke_247(uint64_t a1)
         v25 = 2114;
         v26 = v13;
         v27 = 2048;
-        v28 = a1;
+        selfCopy2 = self;
         v29 = 2114;
         v30 = @"BSServiceConnection.m";
         v31 = 1024;
@@ -1043,7 +1043,7 @@ void __31__BSServiceConnection_activate__block_invoke_247(uint64_t a1)
       JUMPOUT(0x19A82CF00);
     }
 
-    v2 = *(a1 + 8);
+    v2 = *(self + 8);
     if (!v2)
     {
       v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"cannot extract connection twice"];
@@ -1057,7 +1057,7 @@ void __31__BSServiceConnection_activate__block_invoke_247(uint64_t a1)
         v25 = 2114;
         v26 = v18;
         v27 = 2048;
-        v28 = a1;
+        selfCopy2 = self;
         v29 = 2114;
         v30 = @"BSServiceConnection.m";
         v31 = 1024;
@@ -1075,19 +1075,19 @@ void __31__BSServiceConnection_activate__block_invoke_247(uint64_t a1)
     }
 
     v3 = v2;
-    v4 = *(*(a1 + 40) + 48);
-    v5 = *(a1 + 8);
-    *(a1 + 8) = 0;
+    v4 = *(*(self + 40) + 48);
+    v5 = *(self + 8);
+    *(self + 8) = 0;
 
-    os_unfair_lock_unlock((a1 + 32));
-    [a1 invalidate];
+    os_unfair_lock_unlock((self + 32));
+    [self invalidate];
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __51__BSServiceConnection__extractUnderlyingConnection__block_invoke;
     v20[3] = &unk_1E7520500;
     v6 = v4;
     v21 = v6;
-    v22 = a1;
+    selfCopy3 = self;
     [(BSXPCServiceConnection *)v3 configure:v20];
     v7 = v3;
   }
@@ -1207,12 +1207,12 @@ void __31__BSServiceConnection_activate__block_invoke_2_249(uint64_t a1, uint64_
   v4 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)NSXPCConnectionWithEndpoint:(id)a3 configurator:(id)a4
++ (id)NSXPCConnectionWithEndpoint:(id)endpoint configurator:(id)configurator
 {
   v49 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = v7;
+  endpointCopy = endpoint;
+  configuratorCopy = configurator;
+  v9 = endpointCopy;
   if (!v9)
   {
     v14 = MEMORY[0x1E696AEC0];
@@ -1230,7 +1230,7 @@ void __31__BSServiceConnection_activate__block_invoke_2_249(uint64_t a1, uint64_
       v39 = 2114;
       v40 = v20;
       v41 = 2048;
-      v42 = a1;
+      selfCopy3 = self;
       v43 = 2114;
       v44 = @"BSNSXPCTransport.m";
       v45 = 1024;
@@ -1251,13 +1251,13 @@ void __31__BSServiceConnection_activate__block_invoke_2_249(uint64_t a1, uint64_
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v22 = MEMORY[0x1E696AEC0];
-    v23 = [v9 classForCoder];
-    if (!v23)
+    classForCoder = [v9 classForCoder];
+    if (!classForCoder)
     {
-      v23 = objc_opt_class();
+      classForCoder = objc_opt_class();
     }
 
-    v24 = NSStringFromClass(v23);
+    v24 = NSStringFromClass(classForCoder);
     v25 = objc_opt_class();
     v26 = NSStringFromClass(v25);
     v27 = [v22 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"endpoint", v24, v26];
@@ -1272,7 +1272,7 @@ void __31__BSServiceConnection_activate__block_invoke_2_249(uint64_t a1, uint64_
       v39 = 2114;
       v40 = v30;
       v41 = 2048;
-      v42 = a1;
+      selfCopy3 = self;
       v43 = 2114;
       v44 = @"BSNSXPCTransport.m";
       v45 = 1024;
@@ -1289,7 +1289,7 @@ void __31__BSServiceConnection_activate__block_invoke_2_249(uint64_t a1, uint64_
     JUMPOUT(0x19A83D1BCLL);
   }
 
-  if (!v8)
+  if (!configuratorCopy)
   {
     v32 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"configurator"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -1302,7 +1302,7 @@ void __31__BSServiceConnection_activate__block_invoke_2_249(uint64_t a1, uint64_
       v39 = 2114;
       v40 = v35;
       v41 = 2048;
-      v42 = a1;
+      selfCopy3 = self;
       v43 = 2114;
       v44 = @"BSNSXPCTransport.m";
       v45 = 1024;
@@ -1320,7 +1320,7 @@ void __31__BSServiceConnection_activate__block_invoke_2_249(uint64_t a1, uint64_
   }
 
   v10 = [[BSServiceInitiatingConnection alloc] initWithEndpoint:v9 options:&__block_literal_global_321];
-  v11 = [BSServiceConnection _extractNSXPCConnectionWithConfigurator:v10 assertionProvider:v8];
+  v11 = [BSServiceConnection _extractNSXPCConnectionWithConfigurator:v10 assertionProvider:configuratorCopy];
 
   v12 = *MEMORY[0x1E69E9840];
 
@@ -1334,14 +1334,14 @@ void __81__BSServiceConnection_NSXPCConnection__NSXPCConnectionWithEndpoint_conf
   [v3 setMultiplexer:v2];
 }
 
-- (id)_extractNSXPCConnectionWithConfigurator:(uint64_t)a1 assertionProvider:(void *)a2
+- (id)_extractNSXPCConnectionWithConfigurator:(uint64_t)configurator assertionProvider:(void *)provider
 {
   v86 = *MEMORY[0x1E69E9840];
-  v3 = a2;
-  v4 = v3;
-  if (a1)
+  providerCopy = provider;
+  v4 = providerCopy;
+  if (configurator)
   {
-    if (!v3)
+    if (!providerCopy)
     {
       v33 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"configurator"];
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -1354,7 +1354,7 @@ void __81__BSServiceConnection_NSXPCConnection__NSXPCConnectionWithEndpoint_conf
         v76 = 2114;
         v77 = v36;
         v78 = 2048;
-        v79 = a1;
+        configuratorCopy2 = configurator;
         v80 = 2114;
         v81 = @"BSNSXPCTransport.m";
         v82 = 1024;
@@ -1371,10 +1371,10 @@ void __81__BSServiceConnection_NSXPCConnection__NSXPCConnectionWithEndpoint_conf
       JUMPOUT(0x19A83D864);
     }
 
-    v5 = [(BSServiceConnection *)a1 _extractUnderlyingConnection];
-    if (!v5)
+    _extractUnderlyingConnection = [(BSServiceConnection *)configurator _extractUnderlyingConnection];
+    if (!_extractUnderlyingConnection)
     {
-      v38 = [MEMORY[0x1E696AEC0] stringWithFormat:@"failed to extract BSXPCServiceConnection from %@", a1];
+      configurator = [MEMORY[0x1E696AEC0] stringWithFormat:@"failed to extract BSXPCServiceConnection from %@", configurator];
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
         v39 = NSStringFromSelector(sel__extractNSXPCConnectionWithConfigurator_assertionProvider_);
@@ -1385,18 +1385,18 @@ void __81__BSServiceConnection_NSXPCConnection__NSXPCConnectionWithEndpoint_conf
         v76 = 2114;
         v77 = v41;
         v78 = 2048;
-        v79 = a1;
+        configuratorCopy2 = configurator;
         v80 = 2114;
         v81 = @"BSNSXPCTransport.m";
         v82 = 1024;
         v83 = 823;
         v84 = 2114;
-        v85 = v38;
+        v85 = configurator;
         _os_log_error_impl(&dword_19A821000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "failure in %{public}@ of <%{public}@:%p> (%{public}@:%i) : %{public}@", buf, 0x3Au);
       }
 
-      v42 = v38;
-      [v38 UTF8String];
+      v42 = configurator;
+      [configurator UTF8String];
       _bs_set_crash_log_message();
       __break(0);
       JUMPOUT(0x19A83D960);
@@ -1404,7 +1404,7 @@ void __81__BSServiceConnection_NSXPCConnection__NSXPCConnectionWithEndpoint_conf
 
     v68 = v4;
     v6 = [BSNSXPCTransport alloc];
-    v7 = v5;
+    v7 = _extractUnderlyingConnection;
     v8 = v68;
     if (v6)
     {
@@ -1414,14 +1414,14 @@ void __81__BSServiceConnection_NSXPCConnection__NSXPCConnectionWithEndpoint_conf
       v10 = v9;
       if (v9)
       {
-        objc_storeStrong(v9 + 1, v5);
+        objc_storeStrong(v9 + 1, _extractUnderlyingConnection);
         v11 = objc_opt_new();
         v12 = v10[9];
         v10[9] = v11;
 
         v13 = MEMORY[0x1E696AEC0];
-        v14 = [(BSXPCServiceConnection *)v10[1] loggingProem];
-        v15 = [v13 stringWithFormat:@"BSNSXPCTransport%@", v14];
+        loggingProem = [(BSXPCServiceConnection *)v10[1] loggingProem];
+        v15 = [v13 stringWithFormat:@"BSNSXPCTransport%@", loggingProem];
         v16 = v10[2];
         v10[2] = v15;
 
@@ -1471,7 +1471,7 @@ void __81__BSServiceConnection_NSXPCConnection__NSXPCConnectionWithEndpoint_conf
               v76 = 2114;
               v77 = v54;
               v78 = 2048;
-              v79 = v24;
+              configuratorCopy2 = v24;
               v80 = 2114;
               v81 = @"BSNSXPCTransport.m";
               v82 = 1024;
@@ -1502,7 +1502,7 @@ void __81__BSServiceConnection_NSXPCConnection__NSXPCConnectionWithEndpoint_conf
               v76 = 2114;
               v77 = v57;
               v78 = 2048;
-              v79 = v24;
+              configuratorCopy2 = v24;
               v80 = 2114;
               v81 = @"BSNSXPCTransport.m";
               v82 = 1024;
@@ -1532,7 +1532,7 @@ void __81__BSServiceConnection_NSXPCConnection__NSXPCConnectionWithEndpoint_conf
               v76 = 2114;
               v77 = v60;
               v78 = 2048;
-              v79 = v24;
+              configuratorCopy2 = v24;
               v80 = 2114;
               v81 = @"BSNSXPCTransport.m";
               v82 = 1024;
@@ -1585,7 +1585,7 @@ void __81__BSServiceConnection_NSXPCConnection__NSXPCConnectionWithEndpoint_conf
         v76 = 2114;
         v77 = v46;
         v78 = 2048;
-        v79 = v7;
+        configuratorCopy2 = v7;
         v80 = 2114;
         v81 = @"BSNSXPCTransport.m";
         v82 = 1024;
@@ -1615,7 +1615,7 @@ void __81__BSServiceConnection_NSXPCConnection__NSXPCConnectionWithEndpoint_conf
         v76 = 2114;
         v77 = v51;
         v78 = 2048;
-        v79 = v7;
+        configuratorCopy2 = v7;
         v80 = 2114;
         v81 = @"BSNSXPCTransport.m";
         v82 = 1024;
@@ -1645,13 +1645,13 @@ void __81__BSServiceConnection_NSXPCConnection__NSXPCConnectionWithEndpoint_conf
   return v30;
 }
 
-+ (id)NSXPCConnectionWithEndpoint:(id)a3 clientContextBuilder:(id)a4 configurator:(id)a5
++ (id)NSXPCConnectionWithEndpoint:(id)endpoint clientContextBuilder:(id)builder configurator:(id)configurator
 {
   v61 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v9;
+  endpointCopy = endpoint;
+  builderCopy = builder;
+  configuratorCopy = configurator;
+  v12 = endpointCopy;
   if (!v12)
   {
     v19 = MEMORY[0x1E696AEC0];
@@ -1669,7 +1669,7 @@ void __81__BSServiceConnection_NSXPCConnection__NSXPCConnectionWithEndpoint_conf
       v51 = 2114;
       v52 = v25;
       v53 = 2048;
-      v54 = a1;
+      selfCopy4 = self;
       v55 = 2114;
       v56 = @"BSNSXPCTransport.m";
       v57 = 1024;
@@ -1690,13 +1690,13 @@ void __81__BSServiceConnection_NSXPCConnection__NSXPCConnectionWithEndpoint_conf
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v27 = MEMORY[0x1E696AEC0];
-    v28 = [v12 classForCoder];
-    if (!v28)
+    classForCoder = [v12 classForCoder];
+    if (!classForCoder)
     {
-      v28 = objc_opt_class();
+      classForCoder = objc_opt_class();
     }
 
-    v29 = NSStringFromClass(v28);
+    v29 = NSStringFromClass(classForCoder);
     v30 = objc_opt_class();
     v31 = NSStringFromClass(v30);
     v32 = [v27 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"endpoint", v29, v31];
@@ -1711,7 +1711,7 @@ void __81__BSServiceConnection_NSXPCConnection__NSXPCConnectionWithEndpoint_conf
       v51 = 2114;
       v52 = v35;
       v53 = 2048;
-      v54 = a1;
+      selfCopy4 = self;
       v55 = 2114;
       v56 = @"BSNSXPCTransport.m";
       v57 = 1024;
@@ -1728,7 +1728,7 @@ void __81__BSServiceConnection_NSXPCConnection__NSXPCConnectionWithEndpoint_conf
     JUMPOUT(0x19A83E41CLL);
   }
 
-  if (!v10)
+  if (!builderCopy)
   {
     v37 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"contextBuilder"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -1741,7 +1741,7 @@ void __81__BSServiceConnection_NSXPCConnection__NSXPCConnectionWithEndpoint_conf
       v51 = 2114;
       v52 = v40;
       v53 = 2048;
-      v54 = a1;
+      selfCopy4 = self;
       v55 = 2114;
       v56 = @"BSNSXPCTransport.m";
       v57 = 1024;
@@ -1758,7 +1758,7 @@ void __81__BSServiceConnection_NSXPCConnection__NSXPCConnectionWithEndpoint_conf
     JUMPOUT(0x19A83E520);
   }
 
-  if (!v11)
+  if (!configuratorCopy)
   {
     v42 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"configurator"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -1771,7 +1771,7 @@ void __81__BSServiceConnection_NSXPCConnection__NSXPCConnectionWithEndpoint_conf
       v51 = 2114;
       v52 = v45;
       v53 = 2048;
-      v54 = a1;
+      selfCopy4 = self;
       v55 = 2114;
       v56 = @"BSNSXPCTransport.m";
       v57 = 1024;
@@ -1793,10 +1793,10 @@ void __81__BSServiceConnection_NSXPCConnection__NSXPCConnectionWithEndpoint_conf
   v47[1] = 3221225472;
   v47[2] = __102__BSServiceConnection_NSXPCConnection__NSXPCConnectionWithEndpoint_clientContextBuilder_configurator___block_invoke;
   v47[3] = &unk_1E7520548;
-  v14 = v10;
+  v14 = builderCopy;
   v48 = v14;
   v15 = [(BSServiceInitiatingConnection *)v13 initWithEndpoint:v12 options:v47];
-  v16 = [BSServiceConnection _extractNSXPCConnectionWithConfigurator:v15 assertionProvider:v11];
+  v16 = [BSServiceConnection _extractNSXPCConnectionWithConfigurator:v15 assertionProvider:configuratorCopy];
 
   v17 = *MEMORY[0x1E69E9840];
 
@@ -1811,16 +1811,16 @@ void __102__BSServiceConnection_NSXPCConnection__NSXPCConnectionWithEndpoint_cli
   [v4 setMultiplexer:v3];
 }
 
-- (id)extractNSXPCConnectionWithConfigurator:(id)a3
+- (id)extractNSXPCConnectionWithConfigurator:(id)configurator
 {
-  v3 = [BSServiceConnection _extractNSXPCConnectionWithConfigurator:a3 assertionProvider:?];
+  v3 = [BSServiceConnection _extractNSXPCConnectionWithConfigurator:configurator assertionProvider:?];
 
   return v3;
 }
 
-- (id)extractNSXPCConnectionWithViewServiceConfigurator:(id)a3
+- (id)extractNSXPCConnectionWithViewServiceConfigurator:(id)configurator
 {
-  v3 = [BSServiceConnection _extractNSXPCConnectionWithConfigurator:a3 assertionProvider:?];
+  v3 = [BSServiceConnection _extractNSXPCConnectionWithConfigurator:configurator assertionProvider:?];
 
   return v3;
 }
@@ -1839,7 +1839,7 @@ void __102__BSServiceConnection_NSXPCConnection__NSXPCConnectionWithEndpoint_cli
     v12 = 2114;
     v13 = v7;
     v14 = 2048;
-    v15 = self;
+    selfCopy = self;
     v16 = 2114;
     v17 = @"BSServiceConnection.m";
     v18 = 1024;
@@ -1856,11 +1856,11 @@ void __102__BSServiceConnection_NSXPCConnection__NSXPCConnectionWithEndpoint_cli
   return result;
 }
 
-- (id)_initWithConfiguration:(id *)a1
+- (id)_initWithConfiguration:(id *)configuration
 {
-  v2 = a1;
+  configurationCopy = configuration;
   v101 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (configuration)
   {
     v4 = a2;
     if (!v4)
@@ -1880,7 +1880,7 @@ void __102__BSServiceConnection_NSXPCConnection__NSXPCConnectionWithEndpoint_cli
         v91 = 2114;
         v92 = v31;
         v93 = 2048;
-        v94 = v2;
+        v94 = configurationCopy;
         v95 = 2114;
         v96 = @"BSServiceConnection.m";
         v97 = 1024;
@@ -1901,13 +1901,13 @@ void __102__BSServiceConnection_NSXPCConnection__NSXPCConnectionWithEndpoint_cli
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       v33 = MEMORY[0x1E696AEC0];
-      v34 = [v4 classForCoder];
-      if (!v34)
+      classForCoder = [v4 classForCoder];
+      if (!classForCoder)
       {
-        v34 = objc_opt_class();
+        classForCoder = objc_opt_class();
       }
 
-      v35 = NSStringFromClass(v34);
+      v35 = NSStringFromClass(classForCoder);
       v36 = objc_opt_class();
       v37 = NSStringFromClass(v36);
       v38 = [v33 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"config", v35, v37];
@@ -1922,7 +1922,7 @@ void __102__BSServiceConnection_NSXPCConnection__NSXPCConnectionWithEndpoint_cli
         v91 = 2114;
         v92 = v41;
         v93 = 2048;
-        v94 = v2;
+        v94 = configurationCopy;
         v95 = 2114;
         v96 = @"BSServiceConnection.m";
         v97 = 1024;
@@ -1957,7 +1957,7 @@ void __102__BSServiceConnection_NSXPCConnection__NSXPCConnectionWithEndpoint_cli
         v91 = 2114;
         v92 = v49;
         v93 = 2048;
-        v94 = v2;
+        v94 = configurationCopy;
         v95 = 2114;
         v96 = @"BSServiceConnection.m";
         v97 = 1024;
@@ -1978,13 +1978,13 @@ void __102__BSServiceConnection_NSXPCConnection__NSXPCConnectionWithEndpoint_cli
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       v51 = MEMORY[0x1E696AEC0];
-      v52 = [v5 classForCoder];
-      if (!v52)
+      classForCoder2 = [v5 classForCoder];
+      if (!classForCoder2)
       {
-        v52 = objc_opt_class();
+        classForCoder2 = objc_opt_class();
       }
 
-      v53 = NSStringFromClass(v52);
+      v53 = NSStringFromClass(classForCoder2);
       v54 = objc_opt_class();
       v55 = NSStringFromClass(v54);
       v56 = [v51 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"config->_connection", v53, v55];
@@ -1999,7 +1999,7 @@ void __102__BSServiceConnection_NSXPCConnection__NSXPCConnectionWithEndpoint_cli
         v91 = 2114;
         v92 = v59;
         v93 = 2048;
-        v94 = v2;
+        v94 = configurationCopy;
         v95 = 2114;
         v96 = @"BSServiceConnection.m";
         v97 = 1024;
@@ -2034,7 +2034,7 @@ void __102__BSServiceConnection_NSXPCConnection__NSXPCConnectionWithEndpoint_cli
         v91 = 2114;
         v92 = v66;
         v93 = 2048;
-        v94 = v2;
+        v94 = configurationCopy;
         v95 = 2114;
         v96 = @"BSServiceConnection.m";
         v97 = 1024;
@@ -2055,13 +2055,13 @@ void __102__BSServiceConnection_NSXPCConnection__NSXPCConnectionWithEndpoint_cli
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       v68 = MEMORY[0x1E696AEC0];
-      v69 = [v6 classForCoder];
-      if (!v69)
+      classForCoder3 = [v6 classForCoder];
+      if (!classForCoder3)
       {
-        v69 = objc_opt_class();
+        classForCoder3 = objc_opt_class();
       }
 
-      v70 = NSStringFromClass(v69);
+      v70 = NSStringFromClass(classForCoder3);
       v71 = objc_opt_class();
       v72 = NSStringFromClass(v71);
       v73 = [v68 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"config->_service", v70, v72];
@@ -2076,7 +2076,7 @@ void __102__BSServiceConnection_NSXPCConnection__NSXPCConnectionWithEndpoint_cli
         v91 = 2114;
         v92 = v76;
         v93 = 2048;
-        v94 = v2;
+        v94 = configurationCopy;
         v95 = 2114;
         v96 = @"BSServiceConnection.m";
         v97 = 1024;
@@ -2100,13 +2100,13 @@ void __102__BSServiceConnection_NSXPCConnection__NSXPCConnectionWithEndpoint_cli
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
         v78 = MEMORY[0x1E696AEC0];
-        v79 = [v8 classForCoder];
-        if (!v79)
+        classForCoder4 = [v8 classForCoder];
+        if (!classForCoder4)
         {
-          v79 = objc_opt_class();
+          classForCoder4 = objc_opt_class();
         }
 
-        v80 = NSStringFromClass(v79);
+        v80 = NSStringFromClass(classForCoder4);
         v81 = objc_opt_class();
         v82 = NSStringFromClass(v81);
         v83 = [v78 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"config->_instance", v80, v82];
@@ -2121,7 +2121,7 @@ void __102__BSServiceConnection_NSXPCConnection__NSXPCConnectionWithEndpoint_cli
           v91 = 2114;
           v92 = v86;
           v93 = 2048;
-          v94 = v2;
+          v94 = configurationCopy;
           v95 = 2114;
           v96 = @"BSServiceConnection.m";
           v97 = 1024;
@@ -2139,24 +2139,24 @@ void __102__BSServiceConnection_NSXPCConnection__NSXPCConnectionWithEndpoint_cli
       }
     }
 
-    v88.receiver = v2;
+    v88.receiver = configurationCopy;
     v88.super_class = BSServiceConnection;
     v9 = objc_msgSendSuper2(&v88, sel_init);
-    v2 = v9;
+    configurationCopy = v9;
     if (v9)
     {
       objc_storeStrong(v9 + 1, v4[2]);
       v10 = [v4[3] copy];
-      v11 = v2[8];
-      v2[8] = v10;
+      v11 = configurationCopy[8];
+      configurationCopy[8] = v10;
 
       v12 = [v4[4] copy];
-      v13 = v2[9];
-      v2[9] = v12;
+      v13 = configurationCopy[9];
+      configurationCopy[9] = v12;
 
-      v14 = v2[1];
-      v15 = v2[8];
-      v16 = v2[9];
+      v14 = configurationCopy[1];
+      v15 = configurationCopy[8];
+      v16 = configurationCopy[9];
       objc_opt_self();
       if (v16)
       {
@@ -2171,8 +2171,8 @@ void __102__BSServiceConnection_NSXPCConnection__NSXPCConnectionWithEndpoint_cli
       v18 = v17;
       if (v14 && [v14[24] isServer])
       {
-        v19 = [(BSXPCServiceConnection *)v14 initiatingContext];
-        v20 = [v19 decodeStringForKey:@"lp"];
+        initiatingContext = [(BSXPCServiceConnection *)v14 initiatingContext];
+        v20 = [initiatingContext decodeStringForKey:@"lp"];
 
         v21 = [(BSXPCServiceConnection *)v14 defaultNameWithClientLoggingProem:v20 as:v18];
       }
@@ -2182,23 +2182,23 @@ void __102__BSServiceConnection_NSXPCConnection__NSXPCConnectionWithEndpoint_cli
         v21 = [(BSXPCServiceConnection *)v14 defaultNameWithClientLoggingProem:v18 as:?];
       }
 
-      v22 = v2[2];
-      v2[2] = v21;
+      v22 = configurationCopy[2];
+      configurationCopy[2] = v21;
 
-      *(v2 + 58) = *(v4 + 169);
-      *(v2 + 8) = 0;
-      objc_storeStrong(v2 + 5, a2);
+      *(configurationCopy + 58) = *(v4 + 169);
+      *(configurationCopy + 8) = 0;
+      objc_storeStrong(configurationCopy + 5, a2);
     }
   }
 
   v23 = *MEMORY[0x1E69E9840];
-  return v2;
+  return configurationCopy;
 }
 
-- (void)_config:(uint64_t)a1
+- (void)_config:(uint64_t)_config
 {
   v29 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (_config)
   {
     if (!a2)
     {
@@ -2213,7 +2213,7 @@ void __102__BSServiceConnection_NSXPCConnection__NSXPCConnectionWithEndpoint_cli
         v19 = 2114;
         v20 = v9;
         v21 = 2048;
-        v22 = a1;
+        _configCopy2 = _config;
         v23 = 2114;
         v24 = @"BSServiceConnection.m";
         v25 = 1024;
@@ -2230,8 +2230,8 @@ void __102__BSServiceConnection_NSXPCConnection__NSXPCConnectionWithEndpoint_cli
       JUMPOUT(0x19A8432CCLL);
     }
 
-    os_unfair_lock_lock((a1 + 32));
-    v4 = *(a1 + 40);
+    os_unfair_lock_lock((_config + 32));
+    v4 = *(_config + 40);
     if (!v4)
     {
       v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"configure called after activation or invalidation"];
@@ -2245,7 +2245,7 @@ void __102__BSServiceConnection_NSXPCConnection__NSXPCConnectionWithEndpoint_cli
         v19 = 2114;
         v20 = v14;
         v21 = 2048;
-        v22 = a1;
+        _configCopy2 = _config;
         v23 = 2114;
         v24 = @"BSServiceConnection.m";
         v25 = 1024;
@@ -2263,14 +2263,14 @@ void __102__BSServiceConnection_NSXPCConnection__NSXPCConnectionWithEndpoint_cli
     }
 
     os_unfair_lock_lock(v4 + 2);
-    *(*(a1 + 40) + 168) = 2;
-    (*(a2 + 16))(a2, *(a1 + 40));
-    *(*(a1 + 40) + 168) = 0;
-    objc_storeStrong((a1 + 24), *(*(a1 + 40) + 56));
-    os_unfair_lock_unlock((*(a1 + 40) + 8));
+    *(*(_config + 40) + 168) = 2;
+    (*(a2 + 16))(a2, *(_config + 40));
+    *(*(_config + 40) + 168) = 0;
+    objc_storeStrong((_config + 24), *(*(_config + 40) + 56));
+    os_unfair_lock_unlock((*(_config + 40) + 8));
     v5 = *MEMORY[0x1E69E9840];
 
-    os_unfair_lock_unlock((a1 + 32));
+    os_unfair_lock_unlock((_config + 32));
   }
 
   else
@@ -2279,28 +2279,28 @@ void __102__BSServiceConnection_NSXPCConnection__NSXPCConnectionWithEndpoint_cli
   }
 }
 
-+ (id)connectionWithEndpoint:(id)a3
++ (id)connectionWithEndpoint:(id)endpoint
 {
   v4 = +[BSServiceInitiatingConnectionMultiplexer userInteractiveMultiplexer];
-  v5 = [BSServiceConnection _connectionWithEndpoint:a3 muxer:v4 clientContextBuilder:0];
+  v5 = [BSServiceConnection _connectionWithEndpoint:endpoint muxer:v4 clientContextBuilder:0];
 
   return v5;
 }
 
-+ (id)_connectionWithEndpoint:(uint64_t)a3 muxer:(uint64_t)a4 clientContextBuilder:
++ (id)_connectionWithEndpoint:(uint64_t)endpoint muxer:(uint64_t)muxer clientContextBuilder:
 {
   objc_opt_self();
-  v7 = [a2 service];
+  service = [a2 service];
 
-  if (v7)
+  if (service)
   {
     v8 = [BSServiceInitiatingConnection alloc];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __74__BSServiceConnection__connectionWithEndpoint_muxer_clientContextBuilder___block_invoke;
     v11[3] = &unk_1E75206B8;
-    v11[4] = a3;
-    v11[5] = a4;
+    v11[4] = endpoint;
+    v11[5] = muxer;
     v9 = [(BSServiceInitiatingConnection *)&v8->super.super.isa _initWithEndpoint:a2 options:v11];
   }
 
@@ -2312,10 +2312,10 @@ void __102__BSServiceConnection_NSXPCConnection__NSXPCConnectionWithEndpoint_cli
   return v9;
 }
 
-+ (id)connectionWithEndpoint:(id)a3 clientContextBuilder:(id)a4
++ (id)connectionWithEndpoint:(id)endpoint clientContextBuilder:(id)builder
 {
   v6 = +[BSServiceInitiatingConnectionMultiplexer userInteractiveMultiplexer];
-  v7 = [BSServiceConnection _connectionWithEndpoint:a3 muxer:v6 clientContextBuilder:a4];
+  v7 = [BSServiceConnection _connectionWithEndpoint:endpoint muxer:v6 clientContextBuilder:builder];
 
   return v7;
 }
@@ -2402,10 +2402,10 @@ void __31__BSServiceConnection_activate__block_invoke_264(uint64_t a1, uint64_t 
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (id)remoteTargetWithAssertionAttributes:(id)a3
+- (id)remoteTargetWithAssertionAttributes:(id)attributes
 {
   v25 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!attributes)
   {
     v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"attributes"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -2418,7 +2418,7 @@ void __31__BSServiceConnection_activate__block_invoke_264(uint64_t a1, uint64_t 
       v15 = 2114;
       v16 = v11;
       v17 = 2048;
-      v18 = self;
+      selfCopy = self;
       v19 = 2114;
       v20 = @"BSServiceConnection.m";
       v21 = 1024;
@@ -2438,7 +2438,7 @@ void __31__BSServiceConnection_activate__block_invoke_264(uint64_t a1, uint64_t 
   connection = self->_connection;
   v5 = *MEMORY[0x1E69E9840];
 
-  return [(BSXPCServiceConnection *)connection remoteTargetWithAssertionAttributes:a3 enforcingLaunchConstraints:0];
+  return [(BSXPCServiceConnection *)connection remoteTargetWithAssertionAttributes:attributes enforcingLaunchConstraints:0];
 }
 
 - (RBSTarget)remoteAssertionTarget
@@ -2455,13 +2455,13 @@ void __31__BSServiceConnection_activate__block_invoke_264(uint64_t a1, uint64_t 
   }
 }
 
-- (id)createMessageWithCompletion:(id)a3
+- (id)createMessageWithCompletion:(id)completion
 {
   v4 = [(BSXPCServiceConnection *)self->_connection createMessageWithOptions:?];
   v6 = v4;
   if (v4)
   {
-    objc_setProperty_nonatomic_copy(v4, v5, a3, 80);
+    objc_setProperty_nonatomic_copy(v4, v5, completion, 80);
   }
 
   return v6;
@@ -2469,13 +2469,13 @@ void __31__BSServiceConnection_activate__block_invoke_264(uint64_t a1, uint64_t 
 
 - (void)loggingProem
 {
-  if (a1)
+  if (self)
   {
-    a1 = [(BSXPCServiceConnection *)a1[1] loggingProem];
+    self = [(BSXPCServiceConnection *)self[1] loggingProem];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 @end

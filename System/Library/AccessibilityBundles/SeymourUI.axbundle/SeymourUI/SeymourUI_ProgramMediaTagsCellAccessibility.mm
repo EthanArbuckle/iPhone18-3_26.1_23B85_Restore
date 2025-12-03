@@ -1,15 +1,15 @@
 @interface SeymourUI_ProgramMediaTagsCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation SeymourUI_ProgramMediaTagsCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SeymourUI.ProgramMediaTagsCell" hasInstanceMethod:@"accessibilityMediaTags" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SeymourUI.ProgramMediaTagsCell" hasInstanceMethod:@"tagsTextLabel" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SeymourUI.ProgramMediaTagsCell" hasInstanceMethod:@"accessibilityMediaTags" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SeymourUI.ProgramMediaTagsCell" hasInstanceMethod:@"tagsTextLabel" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel
@@ -17,12 +17,12 @@
   v3 = [(SeymourUI_ProgramMediaTagsCellAccessibility *)self safeValueForKey:@"tagsTextLabel"];
   v4 = [(SeymourUI_ProgramMediaTagsCellAccessibility *)self safeArrayForKey:@"accessibilityMediaTags"];
   v5 = _accessibilityDescriptionForMediaTags(v4);
-  v6 = [v3 accessibilityLabel];
+  accessibilityLabel = [v3 accessibilityLabel];
 
-  if (v6)
+  if (accessibilityLabel)
   {
-    v7 = [v3 accessibilityLabel];
-    v9 = _accessibilityReplaceStylsticBulletsForSpeaking(v7, v8);
+    accessibilityLabel2 = [v3 accessibilityLabel];
+    v9 = _accessibilityReplaceStylsticBulletsForSpeaking(accessibilityLabel2, v8);
   }
 
   else

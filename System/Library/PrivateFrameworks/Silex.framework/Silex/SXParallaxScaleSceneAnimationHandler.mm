@@ -1,10 +1,10 @@
 @interface SXParallaxScaleSceneAnimationHandler
-- (CGRect)fillContentFrameForScale:(double)a3 andTranslation:(double)a4;
+- (CGRect)fillContentFrameForScale:(double)scale andTranslation:(double)translation;
 - (SXContainerComponentView)headerComponent;
-- (double)factorForVisibileBounds:(CGRect)a3 andAbsoluteComponentRect:(CGRect)a4;
+- (double)factorForVisibileBounds:(CGRect)bounds andAbsoluteComponentRect:(CGRect)rect;
 - (void)ensureScalabilityOfHeaderComponentFill;
 - (void)prepareAnimation;
-- (void)updateAnimationWithFactor:(double)a3;
+- (void)updateAnimationWithFactor:(double)factor;
 @end
 
 @implementation SXParallaxScaleSceneAnimationHandler
@@ -14,42 +14,42 @@
   v8.receiver = self;
   v8.super_class = SXParallaxScaleSceneAnimationHandler;
   [(SXComponentAnimationHandler *)&v8 prepareAnimation];
-  v3 = [(SXComponentAnimationHandler *)self component];
-  v4 = [v3 componentViewsForRole:12 recursive:1];
+  component = [(SXComponentAnimationHandler *)self component];
+  v4 = [component componentViewsForRole:12 recursive:1];
 
-  v5 = [v4 firstObject];
-  [v5 setAnimationsAndBehaviorsEnabled:0];
-  [(SXParallaxScaleSceneAnimationHandler *)self setHeaderComponent:v5];
-  v6 = [v5 fillView];
-  v7 = [v6 fill];
-  -[SXParallaxScaleSceneAnimationHandler setAttachmentType:](self, "setAttachmentType:", [v7 attachment]);
+  firstObject = [v4 firstObject];
+  [firstObject setAnimationsAndBehaviorsEnabled:0];
+  [(SXParallaxScaleSceneAnimationHandler *)self setHeaderComponent:firstObject];
+  fillView = [firstObject fillView];
+  fill = [fillView fill];
+  -[SXParallaxScaleSceneAnimationHandler setAttachmentType:](self, "setAttachmentType:", [fill attachment]);
 
   [(SXParallaxScaleSceneAnimationHandler *)self ensureScalabilityOfHeaderComponentFill];
 }
 
 - (void)ensureScalabilityOfHeaderComponentFill
 {
-  v3 = [(SXParallaxScaleSceneAnimationHandler *)self headerComponent];
-  v4 = [v3 fillView];
+  headerComponent = [(SXParallaxScaleSceneAnimationHandler *)self headerComponent];
+  fillView = [headerComponent fillView];
 
   if (!UIAccessibilityIsVoiceOverRunning() && !UIAccessibilityIsReduceMotionEnabled())
   {
     [(SXParallaxScaleSceneAnimationHandler *)self fillContentFrameForScale:1.25 andTranslation:0.0];
-    [v4 setContentFrame:?];
+    [fillView setContentFrame:?];
   }
 }
 
-- (void)updateAnimationWithFactor:(double)a3
+- (void)updateAnimationWithFactor:(double)factor
 {
   v9.receiver = self;
   v9.super_class = SXParallaxScaleSceneAnimationHandler;
   [(SXComponentAnimationHandler *)&v9 updateAnimationWithFactor:?];
-  v5 = [(SXParallaxScaleSceneAnimationHandler *)self headerComponent];
-  v6 = [v5 fillView];
+  headerComponent = [(SXParallaxScaleSceneAnimationHandler *)self headerComponent];
+  fillView = [headerComponent fillView];
 
   if (UIAccessibilityIsVoiceOverRunning() || UIAccessibilityIsReduceMotionEnabled())
   {
-    [v6 originalFrame];
+    [fillView originalFrame];
   }
 
   else
@@ -57,39 +57,39 @@
     v7 = 0.0;
     if (![(SXParallaxScaleSceneAnimationHandler *)self attachmentType])
     {
-      v8 = [(SXParallaxScaleSceneAnimationHandler *)self headerComponent];
-      [v8 bounds];
-      v7 = CGRectGetHeight(v10) * 0.45 * a3;
+      headerComponent2 = [(SXParallaxScaleSceneAnimationHandler *)self headerComponent];
+      [headerComponent2 bounds];
+      v7 = CGRectGetHeight(v10) * 0.45 * factor;
     }
 
-    [(SXParallaxScaleSceneAnimationHandler *)self fillContentFrameForScale:(1.0 - a3) * 0.25 + 1.0 andTranslation:v7];
+    [(SXParallaxScaleSceneAnimationHandler *)self fillContentFrameForScale:(1.0 - factor) * 0.25 + 1.0 andTranslation:v7];
   }
 
-  [v6 setContentFrame:?];
+  [fillView setContentFrame:?];
 }
 
-- (CGRect)fillContentFrameForScale:(double)a3 andTranslation:(double)a4
+- (CGRect)fillContentFrameForScale:(double)scale andTranslation:(double)translation
 {
-  v6 = [(SXParallaxScaleSceneAnimationHandler *)self headerComponent];
-  v7 = [v6 fillView];
+  headerComponent = [(SXParallaxScaleSceneAnimationHandler *)self headerComponent];
+  fillView = [headerComponent fillView];
 
-  [v7 originalFrame];
+  [fillView originalFrame];
   x = v22.origin.x;
   y = v22.origin.y;
-  v22.size.width = v12 * a3;
+  v22.size.width = v12 * scale;
   width = v22.size.width;
-  v22.size.height = v13 * a3;
+  v22.size.height = v13 * scale;
   height = v22.size.height;
   v14 = CGRectGetWidth(v22);
-  [v7 originalFrame];
+  [fillView originalFrame];
   v15 = x - (v14 - CGRectGetWidth(v23)) * 0.5;
   v24.origin.x = v15;
   v24.origin.y = y;
   v24.size.width = width;
   v24.size.height = height;
   v16 = CGRectGetHeight(v24);
-  [v7 originalFrame];
-  v17 = y - (v16 - CGRectGetHeight(v25)) * 0.5 + a4 * a3;
+  [fillView originalFrame];
+  v17 = y - (v16 - CGRectGetHeight(v25)) * 0.5 + translation * scale;
 
   v18 = v15;
   v19 = v17;
@@ -102,11 +102,11 @@
   return result;
 }
 
-- (double)factorForVisibileBounds:(CGRect)a3 andAbsoluteComponentRect:(CGRect)a4
+- (double)factorForVisibileBounds:(CGRect)bounds andAbsoluteComponentRect:(CGRect)rect
 {
-  v5 = [(SXComponentAnimationHandler *)self component:a3.origin.x];
-  v6 = [(SXParallaxScaleSceneAnimationHandler *)self headerComponent];
-  [v6 frame];
+  v5 = [(SXComponentAnimationHandler *)self component:bounds.origin.x];
+  headerComponent = [(SXParallaxScaleSceneAnimationHandler *)self headerComponent];
+  [headerComponent frame];
   [v5 convertRect:0 toView:?];
   v8 = v7;
   v10 = v9;

@@ -1,6 +1,6 @@
 @interface TSDContentAnimation
 + (id)animation;
-- (void)i_applyToLayer:(id)a3 withTransformBlock:(id)a4 completionBlock:(id)a5;
+- (void)i_applyToLayer:(id)layer withTransformBlock:(id)block completionBlock:(id)completionBlock;
 @end
 
 @implementation TSDContentAnimation
@@ -12,7 +12,7 @@
   return v2;
 }
 
-- (void)i_applyToLayer:(id)a3 withTransformBlock:(id)a4 completionBlock:(id)a5
+- (void)i_applyToLayer:(id)layer withTransformBlock:(id)block completionBlock:(id)completionBlock
 {
   if ([(TSDContentAnimation *)self i_canProduceAnimation])
   {
@@ -22,13 +22,13 @@
     v10[2] = __73__TSDContentAnimation_i_applyToLayer_withTransformBlock_completionBlock___block_invoke;
     v10[3] = &unk_279D49278;
     v10[5] = self;
-    v10[6] = a5;
-    v10[4] = a3;
+    v10[6] = completionBlock;
+    v10[4] = layer;
     [MEMORY[0x277CD9FF0] setCompletionBlock:v10];
-    v9 = [(TSDContentAnimation *)self i_animationWithTransformBlock:a4];
+    v9 = [(TSDContentAnimation *)self i_animationWithTransformBlock:block];
     [v9 setRemovedOnCompletion:0];
     [v9 setFillMode:*MEMORY[0x277CDA238]];
-    [a3 addAnimation:v9 forKey:@"contentAnimation"];
+    [layer addAnimation:v9 forKey:@"contentAnimation"];
     [MEMORY[0x277CD9FF0] commit];
   }
 }

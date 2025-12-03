@@ -2,8 +2,8 @@
 + (id)sharedInstance;
 - (id)getCurrentAppUsageSessionUUID;
 - (void)collectAppUsageBetweenLastSetupDoneAndNow;
-- (void)collectAppUsageDataForSession:(id)a3 fromStart:(id)a4 toEnd:(id)a5;
-- (void)collectAppUsageWithSessionStart:(id)a3 andEnd:(id)a4;
+- (void)collectAppUsageDataForSession:(id)session fromStart:(id)start toEnd:(id)end;
+- (void)collectAppUsageWithSessionStart:(id)start andEnd:(id)end;
 @end
 
 @implementation MSDDeviceDataCollector
@@ -22,12 +22,12 @@
 
 - (id)getCurrentAppUsageSessionUUID
 {
-  v3 = [(MSDDeviceDataCollector *)self sessionUUID];
-  objc_sync_enter(v3);
-  v4 = [(MSDDeviceDataCollector *)self sessionUUID];
-  v5 = [v4 copy];
+  sessionUUID = [(MSDDeviceDataCollector *)self sessionUUID];
+  objc_sync_enter(sessionUUID);
+  sessionUUID2 = [(MSDDeviceDataCollector *)self sessionUUID];
+  v5 = [sessionUUID2 copy];
 
-  objc_sync_exit(v3);
+  objc_sync_exit(sessionUUID);
 
   return v5;
 }
@@ -59,48 +59,48 @@
   }
 }
 
-- (void)collectAppUsageWithSessionStart:(id)a3 andEnd:(id)a4
+- (void)collectAppUsageWithSessionStart:(id)start andEnd:(id)end
 {
-  v12 = a3;
-  v6 = a4;
-  v7 = [(MSDDeviceDataCollector *)self sessionUUID];
-  objc_sync_enter(v7);
-  v8 = [(MSDDeviceDataCollector *)self sessionUUID];
-  v9 = [v8 copy];
+  startCopy = start;
+  endCopy = end;
+  sessionUUID = [(MSDDeviceDataCollector *)self sessionUUID];
+  objc_sync_enter(sessionUUID);
+  sessionUUID2 = [(MSDDeviceDataCollector *)self sessionUUID];
+  v9 = [sessionUUID2 copy];
 
   v10 = +[NSUUID UUID];
-  v11 = [v10 UUIDString];
-  [(MSDDeviceDataCollector *)self setSessionUUID:v11];
+  uUIDString = [v10 UUIDString];
+  [(MSDDeviceDataCollector *)self setSessionUUID:uUIDString];
 
-  objc_sync_exit(v7);
-  [(MSDDeviceDataCollector *)self collectAppUsageDataForSession:v9 fromStart:v12 toEnd:v6];
+  objc_sync_exit(sessionUUID);
+  [(MSDDeviceDataCollector *)self collectAppUsageDataForSession:v9 fromStart:startCopy toEnd:endCopy];
 }
 
-- (void)collectAppUsageDataForSession:(id)a3 fromStart:(id)a4 toEnd:(id)a5
+- (void)collectAppUsageDataForSession:(id)session fromStart:(id)start toEnd:(id)end
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  sessionCopy = session;
+  startCopy = start;
+  endCopy = end;
   v10 = sub_100063A54();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v8 toString];
-    v12 = [v9 toString];
+    toString = [startCopy toString];
+    toString2 = [endCopy toString];
     *buf = 138543618;
-    *&buf[4] = v11;
+    *&buf[4] = toString;
     *&buf[12] = 2114;
-    *&buf[14] = v12;
+    *&buf[14] = toString2;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Collecting app usage data between %{public}@ and %{public}@", buf, 0x16u);
   }
 
-  v13 = [MSDBiome collectAppUsageDataFrom:v8 to:v9];
+  v13 = [MSDBiome collectAppUsageDataFrom:startCopy to:endCopy];
   v14 = v13;
   if (v13)
   {
     if ([v13 count])
     {
       v15 = objc_alloc_init(NSDateFormatter);
-      [v9 timeIntervalSinceDate:v8];
+      [endCopy timeIntervalSinceDate:startCopy];
       v17 = v16;
       [v15 setDateFormat:@"dd-MM-yyyy_HH:mm:ss:SSS"];
       *buf = 0;
@@ -115,7 +115,7 @@
       v20 = v18;
       v22 = buf;
       v23 = v17;
-      v21 = v7;
+      v21 = sessionCopy;
       [v14 enumerateObjectsUsingBlock:v19];
 
       _Block_object_dispose(buf, 8);

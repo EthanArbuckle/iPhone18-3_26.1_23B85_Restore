@@ -1,25 +1,25 @@
 @interface SiriAlternativeParaphraseAlternativeMultiResultsView
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SiriAlternativeParaphraseAlternativeMultiResultsView)initWithAlternativeResult:(id)a3;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SiriAlternativeParaphraseAlternativeMultiResultsView)initWithAlternativeResult:(id)result;
 - (SiriAlternativeParaphraseAlternativeViewControllerDelegate)delegate;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
 - (void)layoutSubviews;
 @end
 
 @implementation SiriAlternativeParaphraseAlternativeMultiResultsView
 
-- (SiriAlternativeParaphraseAlternativeMultiResultsView)initWithAlternativeResult:(id)a3
+- (SiriAlternativeParaphraseAlternativeMultiResultsView)initWithAlternativeResult:(id)result
 {
-  v5 = a3;
+  resultCopy = result;
   v42.receiver = self;
   v42.super_class = SiriAlternativeParaphraseAlternativeMultiResultsView;
   v6 = [(SiriAlternativeParaphraseAlternativeMultiResultsView *)&v42 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_result, a3);
+    objc_storeStrong(&v6->_result, result);
     v8 = objc_alloc_init(UIView);
     containerView = v7->_containerView;
     v7->_containerView = v8;
@@ -34,11 +34,11 @@
     v41 = 0u;
     v38 = 0u;
     v39 = 0u;
-    v12 = [(SAARAlternativeResultsView *)v7->_result resultView];
-    v13 = [v12 views];
+    resultView = [(SAARAlternativeResultsView *)v7->_result resultView];
+    views = [resultView views];
 
-    obj = v13;
-    v14 = [v13 countByEnumeratingWithState:&v38 objects:v47 count:16];
+    obj = views;
+    v14 = [views countByEnumeratingWithState:&v38 objects:v47 count:16];
     if (v14)
     {
       v15 = v14;
@@ -60,11 +60,11 @@
           if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEFAULT))
           {
             v22 = v21;
-            v23 = [v18 displayText];
+            displayText = [v18 displayText];
             *buf = 136315394;
             v44 = "[SiriAlternativeParaphraseAlternativeMultiResultsView initWithAlternativeResult:]";
             v45 = 2112;
-            v46 = v23;
+            v46 = displayText;
             _os_log_impl(&dword_0, v22, OS_LOG_TYPE_DEFAULT, "%s Paraphrase alternatives: %@", buf, 0x16u);
           }
 
@@ -83,8 +83,8 @@
 
     [(SiriUICollectionViewFlowLayout *)v7->_flowLayout setMinimumLineSpacing:0.0];
     [(SiriUICollectionViewFlowLayout *)v7->_flowLayout setMinimumInteritemSpacing:0.0];
-    v26 = [(SiriAlternativeParaphraseAlternativeMultiResultsView *)v7 delegate];
-    [v26 viewControllerExpectedWidth];
+    delegate = [(SiriAlternativeParaphraseAlternativeMultiResultsView *)v7 delegate];
+    [delegate viewControllerExpectedWidth];
     v28 = v27;
 
     v29 = [[UICollectionView alloc] initWithFrame:v7->_flowLayout collectionViewLayout:{0.0, 0.0, v28, 0.0}];
@@ -112,10 +112,10 @@
   return v7;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  v5 = [(NSMutableArray *)self->_viewArray count:a3.width];
+  width = fits.width;
+  v5 = [(NSMutableArray *)self->_viewArray count:fits.width];
   viewArray = self->_viewArray;
   if (v5)
   {
@@ -150,54 +150,54 @@
   [(SiriUICollectionViewFlowLayout *)flowLayout invalidateLayout];
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
   collectionView = self->_collectionView;
-  v6 = a4;
+  pathCopy = path;
   v7 = +[SiriUIContentCollectionViewCell reuseIdentifier];
-  v8 = [(UICollectionView *)collectionView dequeueReusableCellWithReuseIdentifier:v7 forIndexPath:v6];
+  v8 = [(UICollectionView *)collectionView dequeueReusableCellWithReuseIdentifier:v7 forIndexPath:pathCopy];
 
   [v8 setHasChevron:0];
   viewArray = self->_viewArray;
-  v10 = [v6 item];
+  item = [pathCopy item];
 
-  v11 = [(NSMutableArray *)viewArray objectAtIndex:v10];
+  v11 = [(NSMutableArray *)viewArray objectAtIndex:item];
   [v11 edgeInsets];
   [v8 setCustomViewEdgeInsets:?];
   [v8 setCustomView:v11];
-  v12 = [(NSMutableArray *)self->_viewArray lastObject];
-  v13 = v11 != v12;
+  lastObject = [(NSMutableArray *)self->_viewArray lastObject];
+  v13 = v11 != lastObject;
 
   [v8 setKeylineType:v13];
 
   return v8;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  [a3 deselectItemAtIndexPath:v6 animated:1];
+  pathCopy = path;
+  [view deselectItemAtIndexPath:pathCopy animated:1];
   viewArray = self->_viewArray;
-  v8 = [v6 row];
+  v8 = [pathCopy row];
 
   v12 = [(NSMutableArray *)viewArray objectAtIndex:v8];
-  v9 = [(SiriAlternativeParaphraseAlternativeMultiResultsView *)self delegate];
-  v10 = [v12 commands];
-  v11 = [v12 responseText];
-  [v9 performAceCommands:v10 userUtterance:v11];
+  delegate = [(SiriAlternativeParaphraseAlternativeMultiResultsView *)self delegate];
+  commands = [v12 commands];
+  responseText = [v12 responseText];
+  [delegate performAceCommands:commands userUtterance:responseText];
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
-  v6 = a5;
-  v7 = [(SiriAlternativeParaphraseAlternativeMultiResultsView *)self delegate];
-  [v7 viewControllerExpectedWidth];
+  pathCopy = path;
+  delegate = [(SiriAlternativeParaphraseAlternativeMultiResultsView *)self delegate];
+  [delegate viewControllerExpectedWidth];
   v9 = v8;
 
   viewArray = self->_viewArray;
-  v11 = [v6 item];
+  item = [pathCopy item];
 
-  v12 = [(NSMutableArray *)viewArray objectAtIndex:v11];
+  v12 = [(NSMutableArray *)viewArray objectAtIndex:item];
   [v12 sizeThatFits:{v9, 1.79769313e308}];
   v14 = v13;
 

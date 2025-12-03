@@ -1,48 +1,48 @@
 @interface NqmlAttributedStringGenerator
 - (_TtC11AppStoreKitP33_C3424BAA7458924954B01A73811F55C429NqmlAttributedStringGenerator)init;
-- (void)parser:(id)a3 didEndElement:(unint64_t)a4;
-- (void)parser:(id)a3 didFindCharacters:(id)a4;
-- (void)parser:(id)a3 didStartElement:(unint64_t)a4 attributes:(id)a5;
-- (void)parser:(id)a3 parseErrorOccurred:(id)a4;
-- (void)parserDidEndDocument:(id)a3;
+- (void)parser:(id)parser didEndElement:(unint64_t)element;
+- (void)parser:(id)parser didFindCharacters:(id)characters;
+- (void)parser:(id)parser didStartElement:(unint64_t)element attributes:(id)attributes;
+- (void)parser:(id)parser parseErrorOccurred:(id)occurred;
+- (void)parserDidEndDocument:(id)document;
 @end
 
 @implementation NqmlAttributedStringGenerator
 
-- (void)parser:(id)a3 didStartElement:(unint64_t)a4 attributes:(id)a5
+- (void)parser:(id)parser didStartElement:(unint64_t)element attributes:(id)attributes
 {
-  v7 = a3;
-  v8 = self;
-  sub_1E15B5564(a4);
+  parserCopy = parser;
+  selfCopy = self;
+  sub_1E15B5564(element);
 }
 
-- (void)parser:(id)a3 didEndElement:(unint64_t)a4
+- (void)parser:(id)parser didEndElement:(unint64_t)element
 {
-  v6 = a3;
-  v7 = self;
-  sub_1E15B5CC8(a4);
+  parserCopy = parser;
+  selfCopy = self;
+  sub_1E15B5CC8(element);
 }
 
-- (void)parser:(id)a3 didFindCharacters:(id)a4
+- (void)parser:(id)parser didFindCharacters:(id)characters
 {
   sub_1E1AF5DFC();
-  v6 = a3;
-  v7 = self;
+  parserCopy = parser;
+  selfCopy = self;
   sub_1E15B64C4();
 }
 
-- (void)parser:(id)a3 parseErrorOccurred:(id)a4
+- (void)parser:(id)parser parseErrorOccurred:(id)occurred
 {
-  v6 = a3;
-  v8 = a4;
-  v7 = self;
+  parserCopy = parser;
+  occurredCopy = occurred;
+  selfCopy = self;
   sub_1E15B6B34();
 }
 
-- (void)parserDidEndDocument:(id)a3
+- (void)parserDidEndDocument:(id)document
 {
-  v4 = a3;
-  v5 = self;
+  documentCopy = document;
+  selfCopy = self;
   sub_1E15B6D14();
 }
 

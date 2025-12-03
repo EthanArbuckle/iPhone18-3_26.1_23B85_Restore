@@ -1,10 +1,10 @@
 @interface VKSnapshotElevationRaster
-- (VKSnapshotElevationRaster)initWithCoder:(id)a3;
-- (VKSnapshotElevationRaster)initWithQuadTile:(QuadTile *)a3 width:(int)a4 height:(int)a5 scale:(float)a6 tileSizeInMeters:(float)a7 minElevationInMeters:(signed __int16)a8;
+- (VKSnapshotElevationRaster)initWithCoder:(id)coder;
+- (VKSnapshotElevationRaster)initWithQuadTile:(QuadTile *)tile width:(int)width height:(int)height scale:(float)scale tileSizeInMeters:(float)meters minElevationInMeters:(signed __int16)inMeters;
 - (float)_rasterElevationInMetersAtPoint:()Matrix<int;
-- (float)getElevationAtPoint:(const void *)a3;
+- (float)getElevationAtPoint:(const void *)point;
 - (id).cxx_construct;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation VKSnapshotElevationRaster
@@ -19,10 +19,10 @@
   return self;
 }
 
-- (float)getElevationAtPoint:(const void *)a3
+- (float)getElevationAtPoint:(const void *)point
 {
-  v4 = *a3;
-  v5 = 1.0 - *(a3 + 1);
+  v4 = *point;
+  v5 = 1.0 - *(point + 1);
   v6 = (self->_width - 1) * v4;
   v7 = (self->_height - 1) * v5;
   v8 = v7;
@@ -65,25 +65,25 @@
   }
 
   v7 = v6 + v4 * width;
-  v8 = [(NSData *)self->_rasterData bytes];
+  bytes = [(NSData *)self->_rasterData bytes];
   v9 = [(NSData *)self->_rasterData length];
   v10 = 0.0;
   if (v9 >= v7)
   {
-    LOWORD(v10) = v8[v7];
+    LOWORD(v10) = bytes[v7];
     v10 = LODWORD(v10);
   }
 
   return self->_minElevationInMeters + (self->_scale * v10);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = v4;
+  coderCopy = coder;
+  v5 = coderCopy;
   if (self->_rasterData)
   {
-    [v4 encodeInt32:self->_width forKey:@"width"];
+    [coderCopy encodeInt32:self->_width forKey:@"width"];
     [v5 encodeInt32:self->_height forKey:@"height"];
     *&v6 = self->_scale;
     [v5 encodeFloat:@"scale" forKey:v6];
@@ -100,21 +100,21 @@
   }
 }
 
-- (VKSnapshotElevationRaster)initWithCoder:(id)a3
+- (VKSnapshotElevationRaster)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = VKSnapshotElevationRaster;
   v5 = [(VKSnapshotElevationRaster *)&v16 init];
   if (v5)
   {
-    *(v5 + 10) = [v4 decodeInt32ForKey:@"width"];
-    *(v5 + 11) = [v4 decodeInt32ForKey:@"height"];
-    [v4 decodeFloatForKey:@"scale"];
+    *(v5 + 10) = [coderCopy decodeInt32ForKey:@"width"];
+    *(v5 + 11) = [coderCopy decodeInt32ForKey:@"height"];
+    [coderCopy decodeFloatForKey:@"scale"];
     *(v5 + 13) = v6;
-    [v4 decodeFloatForKey:@"tileSizeInMeters"];
+    [coderCopy decodeFloatForKey:@"tileSizeInMeters"];
     *(v5 + 14) = v7;
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"quadTile"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"quadTile"];
     if (!strcmp([v8 objCType], "{QuadTileCoding=iiC}"))
     {
       v15 = 0;
@@ -128,8 +128,8 @@
       v5[32] = 1;
     }
 
-    *(v5 + 30) = [v4 decodeIntForKey:@"minElevationInMeters"];
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"rasterData"];
+    *(v5 + 30) = [coderCopy decodeIntForKey:@"minElevationInMeters"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"rasterData"];
     v11 = *(v5 + 8);
     *(v5 + 8) = v10;
 
@@ -139,21 +139,21 @@
   return v5;
 }
 
-- (VKSnapshotElevationRaster)initWithQuadTile:(QuadTile *)a3 width:(int)a4 height:(int)a5 scale:(float)a6 tileSizeInMeters:(float)a7 minElevationInMeters:(signed __int16)a8
+- (VKSnapshotElevationRaster)initWithQuadTile:(QuadTile *)tile width:(int)width height:(int)height scale:(float)scale tileSizeInMeters:(float)meters minElevationInMeters:(signed __int16)inMeters
 {
   v16.receiver = self;
   v16.super_class = VKSnapshotElevationRaster;
   result = [(VKSnapshotElevationRaster *)&v16 init];
   if (result)
   {
-    v15 = *&a3->_type;
-    *(&result->_tile._xIdx + 1) = *(&a3->_xIdx + 1);
+    v15 = *&tile->_type;
+    *(&result->_tile._xIdx + 1) = *(&tile->_xIdx + 1);
     *&result->_tile._type = v15;
-    result->_width = a4;
-    result->_height = a5;
-    result->_scale = a6;
-    result->_tileSizeInMeters = a7;
-    result->_minElevationInMeters = a8;
+    result->_width = width;
+    result->_height = height;
+    result->_scale = scale;
+    result->_tileSizeInMeters = meters;
+    result->_minElevationInMeters = inMeters;
   }
 
   return result;

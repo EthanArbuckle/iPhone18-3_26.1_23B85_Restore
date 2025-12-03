@@ -7,7 +7,7 @@
 
 - (UIActivityItemsConfigurationReading)activityItemsConfiguration
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1002FC234();
 
   return v3;

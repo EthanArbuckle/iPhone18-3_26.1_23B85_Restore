@@ -1,18 +1,18 @@
 @interface CKBaseLayer
 - (CKLayerDelegate)ckLayerDelegate;
-- (void)layerDidBecomeVisible:(BOOL)a3;
+- (void)layerDidBecomeVisible:(BOOL)visible;
 @end
 
 @implementation CKBaseLayer
 
-- (void)layerDidBecomeVisible:(BOOL)a3
+- (void)layerDidBecomeVisible:(BOOL)visible
 {
-  v3 = a3;
+  visibleCopy = visible;
   v6.receiver = self;
   v6.super_class = CKBaseLayer;
   [(CKBaseLayer *)&v6 layerDidBecomeVisible:?];
-  v5 = [(CKBaseLayer *)self ckLayerDelegate];
-  [v5 ckLayerDidBecomeVisible:v3];
+  ckLayerDelegate = [(CKBaseLayer *)self ckLayerDelegate];
+  [ckLayerDelegate ckLayerDidBecomeVisible:visibleCopy];
 }
 
 - (CKLayerDelegate)ckLayerDelegate

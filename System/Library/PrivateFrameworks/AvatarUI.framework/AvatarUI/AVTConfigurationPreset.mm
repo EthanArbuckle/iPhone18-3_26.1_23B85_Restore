@@ -1,26 +1,26 @@
 @interface AVTConfigurationPreset
 - ($0AC6E346AE4835514AAA8AC86D8F4844)settingKind;
-- (AVTConfigurationPreset)initWithDefaultPresetForSettingKind:(id)a3;
-- (AVTConfigurationPreset)initWithPreset:(id)a3 settingKind:(id)a4;
-- (BOOL)isEqual:(id)a3;
+- (AVTConfigurationPreset)initWithDefaultPresetForSettingKind:(id)kind;
+- (AVTConfigurationPreset)initWithPreset:(id)preset settingKind:(id)kind;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation AVTConfigurationPreset
 
-- (AVTConfigurationPreset)initWithPreset:(id)a3 settingKind:(id)a4
+- (AVTConfigurationPreset)initWithPreset:(id)preset settingKind:(id)kind
 {
-  var1 = a4.var1;
-  var0 = a4.var0;
-  v8 = a3;
+  var1 = kind.var1;
+  var0 = kind.var0;
+  presetCopy = preset;
   v12.receiver = self;
   v12.super_class = AVTConfigurationPreset;
   v9 = [(AVTConfigurationPreset *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_preset, a3);
+    objc_storeStrong(&v9->_preset, preset);
     v10->_settingKind.destination = var0;
     v10->_settingKind.category = var1;
   }
@@ -28,10 +28,10 @@
   return v10;
 }
 
-- (AVTConfigurationPreset)initWithDefaultPresetForSettingKind:(id)a3
+- (AVTConfigurationPreset)initWithDefaultPresetForSettingKind:(id)kind
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = kind.var1;
+  var0 = kind.var0;
   v6.receiver = self;
   v6.super_class = AVTConfigurationPreset;
   result = [(AVTConfigurationPreset *)&v6 init];
@@ -59,8 +59,8 @@
 
   else
   {
-    v5 = [(AVTConfigurationPreset *)self preset];
-    v6 = [v5 description];
+    preset = [(AVTConfigurationPreset *)self preset];
+    v6 = [preset description];
     [v4 appendString:v6];
   }
 
@@ -69,36 +69,36 @@
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (v5 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v16 = 1;
     goto LABEL_11;
   }
 
-  v6 = [(AVTConfigurationPreset *)self isDefaultPreset];
-  if (v6 != [(AVTConfigurationPreset *)v5 isDefaultPreset])
+  isDefaultPreset = [(AVTConfigurationPreset *)self isDefaultPreset];
+  if (isDefaultPreset != [(AVTConfigurationPreset *)equalCopy isDefaultPreset])
   {
     goto LABEL_10;
   }
 
-  v7 = [(AVTConfigurationPreset *)self preset];
-  if (!v7)
+  preset = [(AVTConfigurationPreset *)self preset];
+  if (!preset)
   {
-    v3 = [(AVTConfigurationPreset *)v5 preset];
-    if (!v3)
+    preset2 = [(AVTConfigurationPreset *)equalCopy preset];
+    if (!preset2)
     {
       goto LABEL_7;
     }
   }
 
-  v8 = [(AVTConfigurationPreset *)self preset];
-  v9 = [(AVTConfigurationPreset *)v5 preset];
-  v10 = [v8 isEqual:v9];
+  preset3 = [(AVTConfigurationPreset *)self preset];
+  preset4 = [(AVTConfigurationPreset *)equalCopy preset];
+  v10 = [preset3 isEqual:preset4];
 
-  if (!v7)
+  if (!preset)
   {
 
     if (v10)
@@ -117,10 +117,10 @@ LABEL_10:
   }
 
 LABEL_7:
-  v11 = [(AVTConfigurationPreset *)self settingKind];
+  settingKind = [(AVTConfigurationPreset *)self settingKind];
   v13 = v12;
-  v14 = [(AVTConfigurationPreset *)v5 settingKind];
-  v16 = AVTAvatarSettingKindEqual(v11, v13, v14, v15);
+  settingKind2 = [(AVTConfigurationPreset *)equalCopy settingKind];
+  v16 = AVTAvatarSettingKindEqual(settingKind, v13, settingKind2, v15);
 LABEL_11:
 
   return v16;
@@ -135,12 +135,12 @@ LABEL_11:
 
   else
   {
-    v4 = [(AVTConfigurationPreset *)self preset];
-    v3 = [v4 hash];
+    preset = [(AVTConfigurationPreset *)self preset];
+    v3 = [preset hash];
   }
 
-  v5 = [(AVTConfigurationPreset *)self settingKind];
-  return AVTAvatarSettingKindHash(v5, v6) ^ __ROR8__(v3, 32);
+  settingKind = [(AVTConfigurationPreset *)self settingKind];
+  return AVTAvatarSettingKindHash(settingKind, v6) ^ __ROR8__(v3, 32);
 }
 
 - ($0AC6E346AE4835514AAA8AC86D8F4844)settingKind

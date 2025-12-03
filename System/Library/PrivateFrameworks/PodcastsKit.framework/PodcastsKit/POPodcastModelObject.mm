@@ -10,10 +10,10 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(POPodcastModelObject *)self title];
-  v7 = [(POPodcastModelObject *)self indexPath];
-  v8 = [(POPodcastModelObject *)self uuid];
-  v9 = [v3 stringWithFormat:@"%@ (%p) title: %@, index path: %@, uuid, %@", v5, self, v6, v7, v8];
+  title = [(POPodcastModelObject *)self title];
+  indexPath = [(POPodcastModelObject *)self indexPath];
+  uuid = [(POPodcastModelObject *)self uuid];
+  v9 = [v3 stringWithFormat:@"%@ (%p) title: %@, index path: %@, uuid, %@", v5, self, title, indexPath, uuid];
 
   return v9;
 }
@@ -23,15 +23,15 @@
   v15 = *MEMORY[0x277D85DE8];
   v3 = objc_alloc_init([objc_opt_class() SAMPClass]);
   v4 = MEMORY[0x277CCACA8];
-  v5 = [objc_opt_class() uriScheme];
-  v6 = [(POPodcastModelObject *)self uuid];
-  v7 = [v4 stringWithFormat:@"%@://device/%@", v5, v6];
+  uriScheme = [objc_opt_class() uriScheme];
+  uuid = [(POPodcastModelObject *)self uuid];
+  v7 = [v4 stringWithFormat:@"%@://device/%@", uriScheme, uuid];
 
   v8 = [MEMORY[0x277CBEBC0] URLWithString:v7];
   [v3 setIdentifier:v8];
 
-  v9 = [(POPodcastModelObject *)self title];
-  [v3 setTitle:v9];
+  title = [(POPodcastModelObject *)self title];
+  [v3 setTitle:title];
 
   POLogInitIfNeeded();
   if (POLogContextCommand)

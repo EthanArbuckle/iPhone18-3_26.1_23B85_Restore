@@ -1,42 +1,42 @@
 @interface PUIDSystemPointerRootViewController
 - (NSString)description;
-- (PUIDSystemPointerRootViewController)initWithCoder:(id)a3;
-- (PUIDSystemPointerRootViewController)initWithDisplay:(id)a3;
-- (PUIDSystemPointerRootViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)_addMatchMoveAnimationFromSource:(id)a3 toView:(id)a4;
-- (void)backgroundLumaView:(id)a3 didTransitionToLevel:(unint64_t)a4;
-- (void)setLumaChangedHandlerBlock:(id)a3;
-- (void)setSamplingLuma:(BOOL)a3 seedingWithLumaLevel:(unint64_t)a4;
-- (void)setSystemPointerPortalSourceCollection:(id)a3;
+- (PUIDSystemPointerRootViewController)initWithCoder:(id)coder;
+- (PUIDSystemPointerRootViewController)initWithDisplay:(id)display;
+- (PUIDSystemPointerRootViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)_addMatchMoveAnimationFromSource:(id)source toView:(id)view;
+- (void)backgroundLumaView:(id)view didTransitionToLevel:(unint64_t)level;
+- (void)setLumaChangedHandlerBlock:(id)block;
+- (void)setSamplingLuma:(BOOL)luma seedingWithLumaLevel:(unint64_t)level;
+- (void)setSystemPointerPortalSourceCollection:(id)collection;
 - (void)viewDidLoad;
 @end
 
 @implementation PUIDSystemPointerRootViewController
 
-- (PUIDSystemPointerRootViewController)initWithDisplay:(id)a3
+- (PUIDSystemPointerRootViewController)initWithDisplay:(id)display
 {
-  v5 = a3;
+  displayCopy = display;
   v9.receiver = self;
   v9.super_class = PUIDSystemPointerRootViewController;
   v6 = [(PUIDSystemPointerRootViewController *)&v9 initWithNibName:0 bundle:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_display, a3);
+    objc_storeStrong(&v6->_display, display);
   }
 
   return v7;
 }
 
-- (PUIDSystemPointerRootViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (PUIDSystemPointerRootViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  v6 = [NSAssertionHandler currentHandler:a3];
+  v6 = [NSAssertionHandler currentHandler:name];
   [v6 handleFailureInMethod:a2 object:self file:@"PUIDSystemPointerRootViewController.m" lineNumber:47 description:@"Call initWithDisplay: instead"];
 
   return [(PUIDSystemPointerRootViewController *)self init];
 }
 
-- (PUIDSystemPointerRootViewController)initWithCoder:(id)a3
+- (PUIDSystemPointerRootViewController)initWithCoder:(id)coder
 {
   v5 = +[NSAssertionHandler currentHandler];
   [v5 handleFailureInMethod:a2 object:self file:@"PUIDSystemPointerRootViewController.m" lineNumber:53 description:@"Call initWithDisplay: instead"];
@@ -49,14 +49,14 @@
   v20.receiver = self;
   v20.super_class = PUIDSystemPointerRootViewController;
   [(PUIDSystemPointerRootViewController *)&v20 viewDidLoad];
-  v3 = [(PUIDSystemPointerRootViewController *)self view];
-  [v3 bounds];
+  view = [(PUIDSystemPointerRootViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v12 = +[UIColor clearColor];
-  [v3 setBackgroundColor:v12];
+  [view setBackgroundColor:v12];
 
   v13 = [[_UILumaTrackingBackdropView alloc] initWithTransitionBoundaries:self delegate:0.45 frame:{0.55, 0.0, 0.0, 19.0, 19.0}];
   pointerLumaMeasurementView = self->_pointerLumaMeasurementView;
@@ -64,45 +64,45 @@
 
   [(_UILumaTrackingBackdropView *)self->_pointerLumaMeasurementView setPaused:1];
   [(_UILumaTrackingBackdropView *)self->_pointerLumaMeasurementView setHidden:1];
-  [v3 addSubview:self->_pointerLumaMeasurementView];
-  v15 = [(PSPointerPortalSourceCollection *)self->_systemPointerPortalSourceCollection samplingMatchMoveSource];
-  [(PUIDSystemPointerRootViewController *)self _addMatchMoveAnimationFromSource:v15 toView:self->_pointerLumaMeasurementView];
+  [view addSubview:self->_pointerLumaMeasurementView];
+  samplingMatchMoveSource = [(PSPointerPortalSourceCollection *)self->_systemPointerPortalSourceCollection samplingMatchMoveSource];
+  [(PUIDSystemPointerRootViewController *)self _addMatchMoveAnimationFromSource:samplingMatchMoveSource toView:self->_pointerLumaMeasurementView];
   v16 = [[_UIPortalView alloc] initWithFrame:{v5, v7, v9, v11}];
   systemPointerPortalView = self->_systemPointerPortalView;
   self->_systemPointerPortalView = v16;
 
-  v18 = [(PSPointerPortalSourceCollection *)self->_systemPointerPortalSourceCollection pointerPortalSource];
-  if (v18)
+  pointerPortalSource = [(PSPointerPortalSourceCollection *)self->_systemPointerPortalSourceCollection pointerPortalSource];
+  if (pointerPortalSource)
   {
-    v19 = [(_UIPortalView *)self->_systemPointerPortalView portalLayer];
-    [v19 setSourceContextId:{objc_msgSend(v18, "sourceContextID")}];
-    [v19 setSourceLayerRenderId:{objc_msgSend(v18, "sourceLayerRenderID")}];
+    portalLayer = [(_UIPortalView *)self->_systemPointerPortalView portalLayer];
+    [portalLayer setSourceContextId:{objc_msgSend(pointerPortalSource, "sourceContextID")}];
+    [portalLayer setSourceLayerRenderId:{objc_msgSend(pointerPortalSource, "sourceLayerRenderID")}];
   }
 
   [(_UIPortalView *)self->_systemPointerPortalView setMatchesAlpha:1];
   [(_UIPortalView *)self->_systemPointerPortalView setHidesSourceView:0];
   [(_UIPortalView *)self->_systemPointerPortalView setMatchesTransform:1];
   [(_UIPortalView *)self->_systemPointerPortalView setMatchesPosition:1];
-  [v3 addSubview:self->_systemPointerPortalView];
+  [view addSubview:self->_systemPointerPortalView];
 }
 
 - (NSString)description
 {
   v3 = [BSDescriptionBuilder builderWithObject:self];
   v4 = [v3 appendObject:self->_display withName:@"display"];
-  v5 = [v3 build];
+  build = [v3 build];
 
-  return v5;
+  return build;
 }
 
-- (void)setSystemPointerPortalSourceCollection:(id)a3
+- (void)setSystemPointerPortalSourceCollection:(id)collection
 {
-  v4 = a3;
+  collectionCopy = collection;
   systemPointerPortalSourceCollection = self->_systemPointerPortalSourceCollection;
-  if (systemPointerPortalSourceCollection != v4)
+  if (systemPointerPortalSourceCollection != collectionCopy)
   {
-    v12 = v4;
-    if (([(PSPointerPortalSourceCollection *)systemPointerPortalSourceCollection isEqual:v4]& 1) == 0)
+    v12 = collectionCopy;
+    if (([(PSPointerPortalSourceCollection *)systemPointerPortalSourceCollection isEqual:collectionCopy]& 1) == 0)
     {
       v6 = [(PSPointerPortalSourceCollection *)v12 copy];
       v7 = self->_systemPointerPortalSourceCollection;
@@ -111,16 +111,16 @@
       systemPointerPortalView = self->_systemPointerPortalView;
       if (systemPointerPortalView)
       {
-        v9 = [(_UIPortalView *)systemPointerPortalView portalLayer];
-        v10 = [(PSPointerPortalSourceCollection *)v12 pointerPortalSource];
-        [v9 setSourceContextId:{objc_msgSend(v10, "sourceContextID")}];
-        [v9 setSourceLayerRenderId:{objc_msgSend(v10, "sourceLayerRenderID")}];
+        portalLayer = [(_UIPortalView *)systemPointerPortalView portalLayer];
+        pointerPortalSource = [(PSPointerPortalSourceCollection *)v12 pointerPortalSource];
+        [portalLayer setSourceContextId:{objc_msgSend(pointerPortalSource, "sourceContextID")}];
+        [portalLayer setSourceLayerRenderId:{objc_msgSend(pointerPortalSource, "sourceLayerRenderID")}];
       }
 
       if (self->_pointerLumaMeasurementView)
       {
-        v11 = [(PSPointerPortalSourceCollection *)v12 samplingMatchMoveSource];
-        [(PUIDSystemPointerRootViewController *)self _addMatchMoveAnimationFromSource:v11 toView:self->_pointerLumaMeasurementView];
+        samplingMatchMoveSource = [(PSPointerPortalSourceCollection *)v12 samplingMatchMoveSource];
+        [(PUIDSystemPointerRootViewController *)self _addMatchMoveAnimationFromSource:samplingMatchMoveSource toView:self->_pointerLumaMeasurementView];
       }
     }
   }
@@ -128,23 +128,23 @@
   _objc_release_x1();
 }
 
-- (void)setSamplingLuma:(BOOL)a3 seedingWithLumaLevel:(unint64_t)a4
+- (void)setSamplingLuma:(BOOL)luma seedingWithLumaLevel:(unint64_t)level
 {
-  if (self->_sampling == a3)
+  if (self->_sampling == luma)
   {
     return;
   }
 
-  self->_sampling = a3;
+  self->_sampling = luma;
   pointerLumaMeasurementView = self->_pointerLumaMeasurementView;
-  if (a3)
+  if (luma)
   {
     [(_UILumaTrackingBackdropView *)pointerLumaMeasurementView setHidden:0];
     v7 = self->_pointerLumaMeasurementView;
-    if (a4)
+    if (level)
     {
 
-      [(_UILumaTrackingBackdropView *)v7 unpauseAfterSeedingWithLumaLevel:a4];
+      [(_UILumaTrackingBackdropView *)v7 unpauseAfterSeedingWithLumaLevel:level];
       return;
     }
 
@@ -153,7 +153,7 @@
 
   else
   {
-    [(_UILumaTrackingBackdropView *)pointerLumaMeasurementView setHidden:1, a4];
+    [(_UILumaTrackingBackdropView *)pointerLumaMeasurementView setHidden:1, level];
     v7 = self->_pointerLumaMeasurementView;
     v8 = 1;
   }
@@ -161,34 +161,34 @@
   [(_UILumaTrackingBackdropView *)v7 setPaused:v8];
 }
 
-- (void)setLumaChangedHandlerBlock:(id)a3
+- (void)setLumaChangedHandlerBlock:(id)block
 {
-  self->_lumaChangedHandlerBlock = [a3 copy];
+  self->_lumaChangedHandlerBlock = [block copy];
 
   _objc_release_x1();
 }
 
-- (void)backgroundLumaView:(id)a3 didTransitionToLevel:(unint64_t)a4
+- (void)backgroundLumaView:(id)view didTransitionToLevel:(unint64_t)level
 {
   lumaChangedHandlerBlock = self->_lumaChangedHandlerBlock;
   if (lumaChangedHandlerBlock)
   {
-    lumaChangedHandlerBlock[2](lumaChangedHandlerBlock, a4);
+    lumaChangedHandlerBlock[2](lumaChangedHandlerBlock, level);
   }
 }
 
-- (void)_addMatchMoveAnimationFromSource:(id)a3 toView:(id)a4
+- (void)_addMatchMoveAnimationFromSource:(id)source toView:(id)view
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v5 layer];
-  [v7 removeAnimationForKey:@"PUIDSamplingMatchMoveAnimationKey"];
+  viewCopy = view;
+  sourceCopy = source;
+  layer = [viewCopy layer];
+  [layer removeAnimationForKey:@"PUIDSamplingMatchMoveAnimationKey"];
 
   v8 = +[CAMatchMoveAnimation animation];
-  [v8 setSourceContextId:{objc_msgSend(v6, "sourceContextID")}];
-  v9 = [v6 sourceLayerRenderID];
+  [v8 setSourceContextId:{objc_msgSend(sourceCopy, "sourceContextID")}];
+  sourceLayerRenderID = [sourceCopy sourceLayerRenderID];
 
-  [v8 setSourceLayerRenderId:v9];
+  [v8 setSourceLayerRenderId:sourceLayerRenderID];
   [v8 setFillMode:kCAFillModeBoth];
   [v8 setRemovedOnCompletion:0];
   [v8 setDuration:INFINITY];
@@ -204,9 +204,9 @@
   v14 = [NSArray arrayWithObjects:v16 count:4];
   [v8 setSourcePoints:v14];
 
-  v15 = [v5 layer];
+  layer2 = [viewCopy layer];
 
-  [v15 addAnimation:v8 forKey:@"PUIDSamplingMatchMoveAnimationKey"];
+  [layer2 addAnimation:v8 forKey:@"PUIDSamplingMatchMoveAnimationKey"];
 }
 
 @end

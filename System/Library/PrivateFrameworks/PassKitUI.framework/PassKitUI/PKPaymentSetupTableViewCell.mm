@@ -1,23 +1,23 @@
 @interface PKPaymentSetupTableViewCell
 + (CGSize)defaultImageViewSize;
-- (PKPaymentSetupTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (PKPaymentSetupTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setShowBetaBadge:(BOOL)a3;
-- (void)setThumbnail:(id)a3 type:(int64_t)a4 animated:(BOOL)a5;
+- (void)setShowBetaBadge:(BOOL)badge;
+- (void)setThumbnail:(id)thumbnail type:(int64_t)type animated:(BOOL)animated;
 @end
 
 @implementation PKPaymentSetupTableViewCell
 
-- (PKPaymentSetupTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (PKPaymentSetupTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v27.receiver = self;
   v27.super_class = PKPaymentSetupTableViewCell;
-  v4 = [(PKPaymentSetupTableViewCell *)&v27 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(PKPaymentSetupTableViewCell *)&v27 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
-    v6 = [(PKPaymentSetupTableViewCell *)v4 contentView];
+    contentView = [(PKPaymentSetupTableViewCell *)v4 contentView];
     v7 = objc_alloc(MEMORY[0x1E69DCAE0]);
     v8 = *MEMORY[0x1E695F058];
     v9 = *(MEMORY[0x1E695F058] + 8);
@@ -28,22 +28,22 @@
     v5->_cardImageView = v12;
 
     [(UIImageView *)v5->_cardImageView setAccessibilityIgnoresInvertColors:1];
-    [v6 addSubview:v5->_cardImageView];
+    [contentView addSubview:v5->_cardImageView];
     v14 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithFrame:{v8, v9, v10, v11}];
     iconImageView = v5->_iconImageView;
     v5->_iconImageView = v14;
 
     [(UIImageView *)v5->_iconImageView setAccessibilityIgnoresInvertColors:1];
     [(UIImageView *)v5->_iconImageView setContentMode:1];
-    [v6 addSubview:v5->_iconImageView];
-    v16 = [(UIImageView *)v5->_cardImageView layer];
+    [contentView addSubview:v5->_iconImageView];
+    layer = [(UIImageView *)v5->_cardImageView layer];
     PKUIPixelLength();
     v17 = [MEMORY[0x1E69DC888] colorWithWhite:0.0 alpha:0.21];
     [v17 CGColor];
     PKPaymentStyleApplyCorners();
 
-    [v16 setShouldRasterize:1];
-    [v16 setRasterizationScale:PKUIScreenScale()];
+    [layer setShouldRasterize:1];
+    [layer setRasterizationScale:PKUIScreenScale()];
     v18 = [MEMORY[0x1E69DB878] systemFontOfSize:12.0];
     v19 = [MEMORY[0x1E69DC888] colorWithRed:0.909803922 green:0.364705882 blue:0.0 alpha:1.0];
     v20 = objc_alloc_init(MEMORY[0x1E69DCC10]);
@@ -54,29 +54,29 @@
     v23 = PKLocalizedPaymentString(&cfstr_CardTypeBetaBa.isa);
     [(UILabel *)v22 setText:v23];
 
-    v24 = [(UILabel *)v5->_betaLabel layer];
+    layer2 = [(UILabel *)v5->_betaLabel layer];
 
-    [v24 setBorderWidth:1.0];
-    [v24 setCornerRadius:3.0];
-    [v24 setBorderColor:{objc_msgSend(v19, "CGColor")}];
+    [layer2 setBorderWidth:1.0];
+    [layer2 setCornerRadius:3.0];
+    [layer2 setBorderColor:{objc_msgSend(v19, "CGColor")}];
     [(UILabel *)v5->_betaLabel setTextColor:v19];
     [(UILabel *)v5->_betaLabel setFont:v18];
     [(UILabel *)v5->_betaLabel setTextAlignment:1];
-    v25 = [(PKPaymentSetupTableViewCell *)v5 textLabel];
-    [v25 setNumberOfLines:2];
+    textLabel = [(PKPaymentSetupTableViewCell *)v5 textLabel];
+    [textLabel setNumberOfLines:2];
   }
 
   return v5;
 }
 
-- (void)setShowBetaBadge:(BOOL)a3
+- (void)setShowBetaBadge:(BOOL)badge
 {
-  if (self->_showBetaBadge != a3)
+  if (self->_showBetaBadge != badge)
   {
-    if (a3)
+    if (badge)
     {
-      v5 = [(PKPaymentSetupTableViewCell *)self contentView];
-      [v5 addSubview:self->_betaLabel];
+      contentView = [(PKPaymentSetupTableViewCell *)self contentView];
+      [contentView addSubview:self->_betaLabel];
     }
 
     else
@@ -85,27 +85,27 @@
     }
   }
 
-  self->_showBetaBadge = a3;
+  self->_showBetaBadge = badge;
 }
 
-- (void)setThumbnail:(id)a3 type:(int64_t)a4 animated:(BOOL)a5
+- (void)setThumbnail:(id)thumbnail type:(int64_t)type animated:(BOOL)animated
 {
-  v5 = a5;
-  v9 = a3;
-  if (self->_thumbnail != v9 || self->_thumbnailType != a4)
+  animatedCopy = animated;
+  thumbnailCopy = thumbnail;
+  if (self->_thumbnail != thumbnailCopy || self->_thumbnailType != type)
   {
-    objc_storeStrong(&self->_thumbnail, a3);
-    self->_thumbnailType = a4;
+    objc_storeStrong(&self->_thumbnail, thumbnail);
+    self->_thumbnailType = type;
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __58__PKPaymentSetupTableViewCell_setThumbnail_type_animated___block_invoke;
     aBlock[3] = &unk_1E8013D60;
     aBlock[4] = self;
-    v13 = v9;
-    v14 = v5;
+    v13 = thumbnailCopy;
+    v14 = animatedCopy;
     v10 = _Block_copy(aBlock);
     v11 = v10;
-    if (v5)
+    if (animatedCopy)
     {
       [MEMORY[0x1E69DD250] transitionWithView:self duration:5242880 options:v10 animations:0 completion:0.3];
     }
@@ -163,9 +163,9 @@ LABEL_6:
   v56.receiver = self;
   v56.super_class = PKPaymentSetupTableViewCell;
   [(PKPaymentSetupTableViewCell *)&v56 layoutSubviews];
-  v3 = [(PKPaymentSetupTableViewCell *)self _shouldReverseLayoutDirection];
-  v4 = [(PKPaymentSetupTableViewCell *)self contentView];
-  [v4 frame];
+  _shouldReverseLayoutDirection = [(PKPaymentSetupTableViewCell *)self _shouldReverseLayoutDirection];
+  contentView = [(PKPaymentSetupTableViewCell *)self contentView];
+  [contentView frame];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -189,7 +189,7 @@ LABEL_6:
   {
     PKFloatRoundToPixel();
     v19 = v18;
-    if (v3)
+    if (_shouldReverseLayoutDirection)
     {
       v20 = Width + -53.0 + -15.0;
     }
@@ -232,9 +232,9 @@ LABEL_6:
     v61.size.width = v21;
     v61.size.height = v22;
     v25 = Width - CGRectGetWidth(v61) + -30.0 - v24;
-    v26 = [(PKPaymentSetupTableViewCell *)self textLabel];
-    [v26 sizeToFit];
-    [v26 sizeThatFits:{v25, 1.79769313e308}];
+    textLabel = [(PKPaymentSetupTableViewCell *)self textLabel];
+    [textLabel sizeToFit];
+    [textLabel sizeThatFits:{v25, 1.79769313e308}];
     v29 = v28;
     if (v25 >= v27)
     {
@@ -250,7 +250,7 @@ LABEL_6:
     v32 = v19;
     v33 = v21;
     v34 = v22;
-    if (v3)
+    if (_shouldReverseLayoutDirection)
     {
       v35 = CGRectGetMinX(*&v31) + -15.0 - v25;
     }
@@ -260,7 +260,7 @@ LABEL_6:
       v35 = CGRectGetMaxX(*&v31) + 15.0;
     }
 
-    [v26 setFrame:{v35, v30, v25, v29}];
+    [textLabel setFrame:{v35, v30, v25, v29}];
   }
 
   if (self->_showBetaBadge)
@@ -286,12 +286,12 @@ LABEL_6:
       v39 = 19.0;
     }
 
-    v40 = [(UILabel *)self->_betaLabel text];
+    text = [(UILabel *)self->_betaLabel text];
     v57 = *MEMORY[0x1E69DB648];
-    v41 = [(UILabel *)self->_betaLabel font];
-    v58[0] = v41;
+    font = [(UILabel *)self->_betaLabel font];
+    v58[0] = font;
     v42 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v58 forKeys:&v57 count:1];
-    [v40 sizeWithAttributes:v42];
+    [text sizeWithAttributes:v42];
     v44 = v43;
 
     if (v38 >= v44 + 20.0)
@@ -304,15 +304,15 @@ LABEL_6:
       v45 = v44 + 20.0;
     }
 
-    v46 = [(PKPaymentSetupTableViewCell *)self textLabel];
-    [v46 frame];
+    textLabel2 = [(PKPaymentSetupTableViewCell *)self textLabel];
+    [textLabel2 frame];
     v48 = v47;
     v50 = v49;
 
     PKFloatRoundToPixel();
     v52 = v51;
     v53 = v48 - v45 + -11.0;
-    if (!v3)
+    if (!_shouldReverseLayoutDirection)
     {
       v53 = v48 + v50 + 11.0;
     }
@@ -335,8 +335,8 @@ LABEL_6:
   v4.receiver = self;
   v4.super_class = PKPaymentSetupTableViewCell;
   [(PKTableViewCell *)&v4 prepareForReuse];
-  v3 = [(PKPaymentSetupTableViewCell *)self textLabel];
-  [v3 setText:0];
+  textLabel = [(PKPaymentSetupTableViewCell *)self textLabel];
+  [textLabel setText:0];
 
   [(PKPaymentSetupTableViewCell *)self setThumbnail:0 type:0 animated:0];
   [(PKPaymentSetupTableViewCell *)self setShowBetaBadge:0];

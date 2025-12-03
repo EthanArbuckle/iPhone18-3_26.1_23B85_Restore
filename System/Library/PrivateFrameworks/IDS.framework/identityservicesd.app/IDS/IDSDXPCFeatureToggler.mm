@@ -1,26 +1,26 @@
 @interface IDSDXPCFeatureToggler
-- (IDSDXPCFeatureToggler)initWithService:(id)a3 queue:(id)a4 connection:(id)a5;
+- (IDSDXPCFeatureToggler)initWithService:(id)service queue:(id)queue connection:(id)connection;
 - (id)_accountToUse;
-- (void)retrieveFeatureToggleStateForOptions:(id)a3 completion:(id)a4;
-- (void)updateFeatureToggleStateWithOptions:(id)a3 completion:(id)a4;
+- (void)retrieveFeatureToggleStateForOptions:(id)options completion:(id)completion;
+- (void)updateFeatureToggleStateWithOptions:(id)options completion:(id)completion;
 @end
 
 @implementation IDSDXPCFeatureToggler
 
-- (IDSDXPCFeatureToggler)initWithService:(id)a3 queue:(id)a4 connection:(id)a5
+- (IDSDXPCFeatureToggler)initWithService:(id)service queue:(id)queue connection:(id)connection
 {
-  v7 = a3;
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [v11 valueForEntitlement:kIDSRegistrationEntitlement];
+  serviceCopy = service;
+  serviceCopy2 = service;
+  queueCopy = queue;
+  connectionCopy = connection;
+  v12 = [connectionCopy valueForEntitlement:kIDSRegistrationEntitlement];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      if ([v12 isEqualToString:v9])
+      if ([v12 isEqualToString:serviceCopy2])
       {
         goto LABEL_18;
       }
@@ -40,15 +40,15 @@ LABEL_22:
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v35 = v11;
+      v35 = connectionCopy;
       _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "Missing IDS Registration entitlement -- failing creation of IDSXPCFeatureToggler collaborator {connection: %@}", buf, 0xCu);
     }
 
-    v22 = 0;
+    selfCopy2 = 0;
     goto LABEL_25;
   }
 
-  v28 = a4;
+  queueCopy2 = queue;
   v32 = 0u;
   v33 = 0u;
   v30 = 0u;
@@ -62,9 +62,9 @@ LABEL_22:
   }
 
   v15 = v14;
-  v25 = v7;
-  v26 = self;
-  v27 = v10;
+  v25 = serviceCopy;
+  selfCopy = self;
+  v27 = queueCopy;
   v16 = 0;
   v17 = *v31;
   do
@@ -80,7 +80,7 @@ LABEL_22:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v16 |= [v19 isEqualToString:v9];
+        v16 |= [v19 isEqualToString:serviceCopy2];
       }
     }
 
@@ -89,9 +89,9 @@ LABEL_22:
 
   while (v15);
 
-  self = v26;
-  v7 = v25;
-  a4 = v28;
+  self = selfCopy;
+  serviceCopy = v25;
+  queue = queueCopy2;
   if ((v16 & 1) == 0)
   {
     goto LABEL_22;
@@ -104,22 +104,22 @@ LABEL_18:
   p_isa = &v20->super.isa;
   if (v20)
   {
-    objc_storeStrong(&v20->_queue, a4);
-    objc_storeStrong(p_isa + 2, v7);
+    objc_storeStrong(&v20->_queue, queue);
+    objc_storeStrong(p_isa + 2, serviceCopy);
   }
 
   self = p_isa;
-  v22 = self;
+  selfCopy2 = self;
 LABEL_25:
 
-  return v22;
+  return selfCopy2;
 }
 
 - (id)_accountToUse
 {
   v3 = +[IDSDServiceController sharedInstance];
-  v4 = [(IDSDXPCFeatureToggler *)self service];
-  v5 = [v3 serviceWithIdentifier:v4];
+  service = [(IDSDXPCFeatureToggler *)self service];
+  v5 = [v3 serviceWithIdentifier:service];
 
   v6 = +[IDSDAccountController sharedInstance];
   v7 = [v6 appleIDAccountOnService:v5];
@@ -149,10 +149,10 @@ LABEL_25:
           }
 
           v15 = *(*(&v19 + 1) + 8 * i);
-          v16 = [v15 primaryRegistration];
-          v17 = [v16 registrationCert];
+          primaryRegistration = [v15 primaryRegistration];
+          registrationCert = [primaryRegistration registrationCert];
 
-          if (v17)
+          if (registrationCert)
           {
             v7 = v15;
             goto LABEL_13;
@@ -175,22 +175,22 @@ LABEL_13:
   return v7;
 }
 
-- (void)retrieveFeatureToggleStateForOptions:(id)a3 completion:(id)a4
+- (void)retrieveFeatureToggleStateForOptions:(id)options completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  optionsCopy = options;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (v6 && ([v6 featureID], v8 = objc_claimAutoreleasedReturnValue(), v8, v8))
+    if (optionsCopy && ([optionsCopy featureID], v8 = objc_claimAutoreleasedReturnValue(), v8, v8))
     {
-      v9 = [(IDSDXPCFeatureToggler *)self _accountToUse];
-      if (!v9)
+      _accountToUse = [(IDSDXPCFeatureToggler *)self _accountToUse];
+      if (!_accountToUse)
       {
         v10 = [IDSFeatureToggleRetrievalResult resultWithError:4];
-        v7[2](v7, v10);
+        completionCopy[2](completionCopy, v10);
       }
 
-      [v9 retrieveFeatureToggleStateForOptions:v6 completionBlock:v7];
+      [_accountToUse retrieveFeatureToggleStateForOptions:optionsCopy completionBlock:completionCopy];
     }
 
     else
@@ -201,46 +201,46 @@ LABEL_13:
         sub_10091FD14();
       }
 
-      v9 = [IDSFeatureToggleRetrievalResult resultWithError:1];
-      v7[2](v7, v9);
+      _accountToUse = [IDSFeatureToggleRetrievalResult resultWithError:1];
+      completionCopy[2](completionCopy, _accountToUse);
     }
   }
 
   else
   {
-    v9 = +[IDSFoundationLog FeatureToggler];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
+    _accountToUse = +[IDSFoundationLog FeatureToggler];
+    if (os_log_type_enabled(_accountToUse, OS_LOG_TYPE_FAULT))
     {
       sub_10091FD54();
     }
   }
 }
 
-- (void)updateFeatureToggleStateWithOptions:(id)a3 completion:(id)a4
+- (void)updateFeatureToggleStateWithOptions:(id)options completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  optionsCopy = options;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (v6 && ([v6 featureID], v8 = objc_claimAutoreleasedReturnValue(), v8, v8))
+    if (optionsCopy && ([optionsCopy featureID], v8 = objc_claimAutoreleasedReturnValue(), v8, v8))
     {
-      if ([v6 state] == 1 || objc_msgSend(v6, "state") == 2)
+      if ([optionsCopy state] == 1 || objc_msgSend(optionsCopy, "state") == 2)
       {
-        v9 = [(IDSDXPCFeatureToggler *)self _accountToUse];
-        if (!v9)
+        _accountToUse = [(IDSDXPCFeatureToggler *)self _accountToUse];
+        if (!_accountToUse)
         {
           v10 = [IDSFeatureToggleUpdateResult resultWithError:4];
-          v7[2](v7, v10);
+          completionCopy[2](completionCopy, v10);
         }
 
-        [v9 updateFeatureToggleStateWithOptions:v6 completionBlock:v7];
+        [_accountToUse updateFeatureToggleStateWithOptions:optionsCopy completionBlock:completionCopy];
         goto LABEL_14;
       }
 
       v11 = +[IDSFoundationLog FeatureToggler];
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
-        sub_10091FD94(v6, v11);
+        sub_10091FD94(optionsCopy, v11);
       }
     }
 
@@ -253,13 +253,13 @@ LABEL_13:
       }
     }
 
-    v9 = [IDSFeatureToggleUpdateResult resultWithError:1];
-    v7[2](v7, v9);
+    _accountToUse = [IDSFeatureToggleUpdateResult resultWithError:1];
+    completionCopy[2](completionCopy, _accountToUse);
     goto LABEL_14;
   }
 
-  v9 = +[IDSFoundationLog FeatureToggler];
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
+  _accountToUse = +[IDSFoundationLog FeatureToggler];
+  if (os_log_type_enabled(_accountToUse, OS_LOG_TYPE_FAULT))
   {
     sub_10091FE60();
   }

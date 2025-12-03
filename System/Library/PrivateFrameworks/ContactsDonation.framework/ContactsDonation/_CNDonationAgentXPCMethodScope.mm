@@ -1,6 +1,6 @@
 @interface _CNDonationAgentXPCMethodScope
 - (_CNDonationAgentXPCMethodScope)init;
-- (_CNDonationAgentXPCMethodScope)initWithConnection:(id)a3 promise:(id)a4 proxy:(id)a5;
+- (_CNDonationAgentXPCMethodScope)initWithConnection:(id)connection promise:(id)promise proxy:(id)proxy;
 @end
 
 @implementation _CNDonationAgentXPCMethodScope
@@ -14,8 +14,8 @@
   v5 = MEMORY[0x277CFBEF0];
   v22[0] = objc_opt_class();
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v22 count:1];
-  v7 = [v4 remoteObjectInterface];
-  [v5 addAllowedClasses:v6 toInterface:v7 forSelector:sel_meCardDonations_ argumentIndex:0 ofReply:1];
+  remoteObjectInterface = [v4 remoteObjectInterface];
+  [v5 addAllowedClasses:v6 toInterface:remoteObjectInterface forSelector:sel_meCardDonations_ argumentIndex:0 ofReply:1];
 
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
@@ -47,35 +47,35 @@
   return v9;
 }
 
-- (_CNDonationAgentXPCMethodScope)initWithConnection:(id)a3 promise:(id)a4 proxy:(id)a5
+- (_CNDonationAgentXPCMethodScope)initWithConnection:(id)connection promise:(id)promise proxy:(id)proxy
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  connectionCopy = connection;
+  promiseCopy = promise;
+  proxyCopy = proxy;
   v22.receiver = self;
   v22.super_class = _CNDonationAgentXPCMethodScope;
   v11 = [(_CNDonationAgentXPCMethodScope *)&v22 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_promise, a4);
-    objc_storeStrong(&v12->_proxy, a5);
-    v13 = [(CNPromise *)v12->_promise future];
+    objc_storeStrong(&v11->_promise, promise);
+    objc_storeStrong(&v12->_proxy, proxy);
+    future = [(CNPromise *)v12->_promise future];
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __67___CNDonationAgentXPCMethodScope_initWithConnection_promise_proxy___block_invoke;
     v20[3] = &unk_278569E60;
-    v14 = v8;
+    v14 = connectionCopy;
     v21 = v14;
-    [v13 addSuccessBlock:v20];
+    [future addSuccessBlock:v20];
 
-    v15 = [(CNPromise *)v12->_promise future];
+    future2 = [(CNPromise *)v12->_promise future];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __67___CNDonationAgentXPCMethodScope_initWithConnection_promise_proxy___block_invoke_2;
     v18[3] = &unk_278569E88;
     v19 = v14;
-    [v15 addFailureBlock:v18];
+    [future2 addFailureBlock:v18];
 
     v16 = v12;
   }

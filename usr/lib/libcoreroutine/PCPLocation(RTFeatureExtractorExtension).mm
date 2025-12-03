@@ -16,9 +16,9 @@
   [v6 setLocationLongitudeDeg:?];
   [v5 horizontalUncertainty];
   [v6 setLocationHorizontalUncertaintyMeters:?];
-  v7 = [v5 referenceFrame];
+  referenceFrame = [v5 referenceFrame];
 
-  [v6 setLocationReferenceFrame:v7];
+  [v6 setLocationReferenceFrame:referenceFrame];
   return v6;
 }
 
@@ -33,9 +33,9 @@
   [v6 setLocationLongitudeDeg:v7];
   [v5 horizontalAccuracy];
   [v6 setLocationHorizontalUncertaintyMeters:?];
-  v8 = [v5 referenceFrame];
+  referenceFrame = [v5 referenceFrame];
 
-  [v6 setLocationReferenceFrame:v8];
+  [v6 setLocationReferenceFrame:referenceFrame];
   return v6;
 }
 

@@ -1,22 +1,22 @@
 @interface HSTContactStabilizerStats
-- (BOOL)hsDecode:(void *)a3;
-- (BOOL)hsEncode:(void *)a3;
+- (BOOL)hsDecode:(void *)decode;
+- (BOOL)hsEncode:(void *)encode;
 - (id).cxx_construct;
 @end
 
 @implementation HSTContactStabilizerStats
 
-- (BOOL)hsEncode:(void *)a3
+- (BOOL)hsEncode:(void *)encode
 {
-  if (!*a3)
+  if (!*encode)
   {
-    *&v8 = *(a3 + 17);
+    *&v8 = *(encode + 17);
     DWORD2(v8) = 2;
-    std::vector<HSUtil::Encoder::ContainerRecord>::push_back[abi:ne200100](a3 + 56, &v8);
-    HSUtil::Encoder::_writeTokenValue16(a3, 0xE7u, 0);
-    if (!*a3)
+    std::vector<HSUtil::Encoder::ContainerRecord>::push_back[abi:ne200100](encode + 56, &v8);
+    HSUtil::Encoder::_writeTokenValue16(encode, 0xE7u, 0);
+    if (!*encode)
     {
-      HSUtil::Encoder::_encodeUInt(a3, self->hysteresisRadius);
+      HSUtil::Encoder::_encodeUInt(encode, self->hysteresisRadius);
     }
   }
 
@@ -24,23 +24,23 @@
   end = self->contacts.__end_;
   while (begin != end)
   {
-    if (!*a3)
+    if (!*encode)
     {
-      StatContact::encode(begin, a3);
+      StatContact::encode(begin, encode);
     }
 
     begin = (begin + 28);
   }
 
-  if (!*a3)
+  if (!*encode)
   {
-    HSUtil::Encoder::_encodeContainerStop(a3);
+    HSUtil::Encoder::_encodeContainerStop(encode);
   }
 
   return 1;
 }
 
-- (BOOL)hsDecode:(void *)a3
+- (BOOL)hsDecode:(void *)decode
 {
   *&v5 = 0xAAAAAAAAAAAAAAAALL;
   *(&v5 + 1) = 0xAAAAAAAAAAAAAAAALL;
@@ -49,8 +49,8 @@
   v26 = v5;
   v27 = v5;
   v25 = v5;
-  HSUtil::Decoder::decodeArray(a3, &v25);
-  if (*a3)
+  HSUtil::Decoder::decodeArray(decode, &v25);
+  if (*decode)
   {
     memset(__b, 170, sizeof(__b));
     basename_r("/Library/Caches/com.apple.xbs/Sources/Multitouch/HIDSensingTouch/HSTPipeline/HSTContactStabilizer.mm", __b);

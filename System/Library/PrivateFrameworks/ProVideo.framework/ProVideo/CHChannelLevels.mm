@@ -1,7 +1,7 @@
 @interface CHChannelLevels
-- (double)blackValueAtTime:(id *)a3;
-- (double)gammaValueAtTime:(id *)a3;
-- (double)whiteValueAtTime:(id *)a3;
+- (double)blackValueAtTime:(id *)time;
+- (double)gammaValueAtTime:(id *)time;
+- (double)whiteValueAtTime:(id *)time;
 - (id)blackChannel;
 - (id)gammaChannel;
 - (id)whiteChannel;
@@ -56,7 +56,7 @@
   return CHChannelWrapperForOZChannel(Gamma, 0);
 }
 
-- (double)blackValueAtTime:(id *)a3
+- (double)blackValueAtTime:(id *)time
 {
   pOZChannel = self->super.super.super._pOZChannel;
   if (pOZChannel)
@@ -68,12 +68,12 @@
     v5 = 0;
   }
 
-  (*(*v5 + 336))(&v7, v5, a3);
+  (*(*v5 + 336))(&v7, v5, time);
   OZChannelLevels::getBlackValue(v5, &v7, 0.0);
   return result;
 }
 
-- (double)whiteValueAtTime:(id *)a3
+- (double)whiteValueAtTime:(id *)time
 {
   pOZChannel = self->super.super.super._pOZChannel;
   if (pOZChannel)
@@ -85,12 +85,12 @@
     v5 = 0;
   }
 
-  (*(*v5 + 336))(&v7, v5, a3);
+  (*(*v5 + 336))(&v7, v5, time);
   OZChannelLevels::getWhiteValue(v5, &v7, 0.0);
   return result;
 }
 
-- (double)gammaValueAtTime:(id *)a3
+- (double)gammaValueAtTime:(id *)time
 {
   pOZChannel = self->super.super.super._pOZChannel;
   if (pOZChannel)
@@ -102,7 +102,7 @@
     v5 = 0;
   }
 
-  (*(*v5 + 336))(&v7, v5, a3);
+  (*(*v5 + 336))(&v7, v5, time);
   OZChannelLevels::getGammaValue(v5, &v7, 0.0);
   return result;
 }

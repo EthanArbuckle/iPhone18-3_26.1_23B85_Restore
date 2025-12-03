@@ -2,47 +2,47 @@
 - (BOOL)isAttachmentImageFeatured;
 - (id)_richContentView;
 - (void)_layoutNotificationContentView;
-- (void)setAttachmentImageFeatured:(BOOL)a3;
+- (void)setAttachmentImageFeatured:(BOOL)featured;
 @end
 
 @implementation NCNotificationRichShortLookView
 
 - (BOOL)isAttachmentImageFeatured
 {
-  v2 = [(NCNotificationRichShortLookView *)self _richContentView];
-  v3 = [v2 isAttachmentImageFeatured];
+  _richContentView = [(NCNotificationRichShortLookView *)self _richContentView];
+  isAttachmentImageFeatured = [_richContentView isAttachmentImageFeatured];
 
-  return v3;
+  return isAttachmentImageFeatured;
 }
 
-- (void)setAttachmentImageFeatured:(BOOL)a3
+- (void)setAttachmentImageFeatured:(BOOL)featured
 {
-  v3 = a3;
-  v4 = [(NCNotificationRichShortLookView *)self _richContentView];
-  [v4 setAttachmentImageFeatured:v3];
+  featuredCopy = featured;
+  _richContentView = [(NCNotificationRichShortLookView *)self _richContentView];
+  [_richContentView setAttachmentImageFeatured:featuredCopy];
 }
 
 - (void)_layoutNotificationContentView
 {
-  v3 = [(NCNotificationRichShortLookView *)self _richContentView];
+  _richContentView = [(NCNotificationRichShortLookView *)self _richContentView];
 
-  if (v3)
+  if (_richContentView)
   {
-    v4 = [(NCNotificationShortLookView *)self customContentView];
-    [v4 bounds];
+    customContentView = [(NCNotificationShortLookView *)self customContentView];
+    [customContentView bounds];
 
-    v5 = [(NCNotificationRichShortLookView *)self _richContentView];
+    _richContentView2 = [(NCNotificationRichShortLookView *)self _richContentView];
     _NCMainScreenScale();
     UIRectIntegralWithScale();
-    [v5 setFrame:?];
+    [_richContentView2 setFrame:?];
   }
 }
 
 - (id)_richContentView
 {
-  v2 = [(NCNotificationShortLookView *)self notificationContentView];
+  notificationContentView = [(NCNotificationShortLookView *)self notificationContentView];
   v3 = objc_opt_class();
-  v4 = v2;
+  v4 = notificationContentView;
   if (v3)
   {
     if (objc_opt_isKindOfClass())

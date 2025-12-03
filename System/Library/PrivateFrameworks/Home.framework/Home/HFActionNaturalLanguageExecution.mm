@@ -1,20 +1,20 @@
 @interface HFActionNaturalLanguageExecution
-+ (id)executionWithActions:(id)a3 options:(id)a4;
++ (id)executionWithActions:(id)actions options:(id)options;
 - (HFAccessoryRepresentable)singularInvolvedObject;
-- (HFActionNaturalLanguageExecution)initWithOptions:(id)a3;
-- (id)stringKeysForMatterActions:(id)a3;
+- (HFActionNaturalLanguageExecution)initWithOptions:(id)options;
+- (id)stringKeysForMatterActions:(id)actions;
 - (unint64_t)accessoryCount;
 - (void)updateInvolvedObjects;
 @end
 
 @implementation HFActionNaturalLanguageExecution
 
-- (id)stringKeysForMatterActions:(id)a3
+- (id)stringKeysForMatterActions:(id)actions
 {
   sub_20D9D7510(0, &qword_27C843EE8, 0x277CD17F8);
   sub_20D9EC18C(&qword_27C843EF0, &qword_27C843EE8, 0x277CD17F8);
   v4 = sub_20DD651E4();
-  v5 = self;
+  selfCopy = self;
   HFActionNaturalLanguageExecution.stringKeys(for:)(v4);
 
   sub_20D9D7510(0, &qword_27C843958, off_277DEFC90);
@@ -24,16 +24,16 @@
   return v6;
 }
 
-- (HFActionNaturalLanguageExecution)initWithOptions:(id)a3
+- (HFActionNaturalLanguageExecution)initWithOptions:(id)options
 {
-  v5 = a3;
+  optionsCopy = options;
   v11.receiver = self;
   v11.super_class = HFActionNaturalLanguageExecution;
   v6 = [(HFActionNaturalLanguageExecution *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_options, a3);
+    objc_storeStrong(&v6->_options, options);
     v7->_named = 0;
     v8 = [MEMORY[0x277CBEB58] set];
     indescribableActionTypes = v7->_indescribableActionTypes;
@@ -47,32 +47,32 @@
 {
   if ([(HFActionNaturalLanguageExecution *)self accessoryCount]== 1)
   {
-    v3 = [(HFActionNaturalLanguageExecution *)self allInvolvedObjects];
-    v4 = [v3 anyObject];
+    allInvolvedObjects = [(HFActionNaturalLanguageExecution *)self allInvolvedObjects];
+    anyObject = [allInvolvedObjects anyObject];
   }
 
   else
   {
-    v4 = 0;
+    anyObject = 0;
   }
 
-  return v4;
+  return anyObject;
 }
 
 - (unint64_t)accessoryCount
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = [(HFActionNaturalLanguageExecution *)self options];
-  v4 = [v3 accessoryCountType];
+  options = [(HFActionNaturalLanguageExecution *)self options];
+  accessoryCountType = [options accessoryCountType];
 
-  if (v4)
+  if (accessoryCountType)
   {
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v5 = [(HFActionNaturalLanguageExecution *)self allInvolvedObjects];
-    v6 = [v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    allInvolvedObjects = [(HFActionNaturalLanguageExecution *)self allInvolvedObjects];
+    v6 = [allInvolvedObjects countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v6)
     {
       v7 = v6;
@@ -84,11 +84,11 @@
         {
           if (*v20 != v9)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(allInvolvedObjects);
           }
 
-          v11 = [*(*(&v19 + 1) + 8 * i) hf_containedServices];
-          v12 = [v11 na_filter:&__block_literal_global_335];
+          hf_containedServices = [*(*(&v19 + 1) + 8 * i) hf_containedServices];
+          v12 = [hf_containedServices na_filter:&__block_literal_global_335];
 
           if ([v12 count])
           {
@@ -103,7 +103,7 @@
           v8 += v13;
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v7 = [allInvolvedObjects countByEnumeratingWithState:&v19 objects:v23 count:16];
       }
 
       while (v7);
@@ -120,24 +120,24 @@
 
   else
   {
-    v14 = [(HFActionNaturalLanguageExecution *)self allInvolvedObjects];
-    v15 = [v14 count];
+    allInvolvedObjects2 = [(HFActionNaturalLanguageExecution *)self allInvolvedObjects];
+    v15 = [allInvolvedObjects2 count];
 
     v16 = *MEMORY[0x277D85DE8];
     return v15;
   }
 }
 
-+ (id)executionWithActions:(id)a3 options:(id)a4
++ (id)executionWithActions:(id)actions options:(id)options
 {
-  v6 = a4;
-  v7 = [MEMORY[0x277CBEB98] setWithArray:a3];
+  optionsCopy = options;
+  v7 = [MEMORY[0x277CBEB98] setWithArray:actions];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __65__HFActionNaturalLanguageExecution_executionWithActions_options___block_invoke;
   v18[3] = &unk_277DF6308;
-  v19 = v6;
-  v8 = v6;
+  v19 = optionsCopy;
+  v8 = optionsCopy;
   v9 = [v7 na_filter:v18];
 
   v10 = [[HFActionNaturalLanguageExecution alloc] initWithOptions:v8];
@@ -146,11 +146,11 @@
   [(HFActionNaturalLanguageExecution *)v10 setInvolvedServices:v11];
 
   [(HFActionNaturalLanguageExecution *)v10 updateInvolvedObjects];
-  v12 = [(HFActionNaturalLanguageExecution *)v10 allInvolvedObjects];
-  v13 = [a1 _accessoryRepresentingIDsInSet:v12];
+  allInvolvedObjects = [(HFActionNaturalLanguageExecution *)v10 allInvolvedObjects];
+  v13 = [self _accessoryRepresentingIDsInSet:allInvolvedObjects];
 
-  v14 = [v8 objectsInContext];
-  v15 = [a1 _accessoryRepresentingIDsInSet:v14];
+  objectsInContext = [v8 objectsInContext];
+  v15 = [self _accessoryRepresentingIDsInSet:objectsInContext];
 
   v16 = [v13 na_setByRemovingObjectsFromSet:v15];
   -[HFActionNaturalLanguageExecution setNamed:](v10, "setNamed:", [v16 count] != 0);
@@ -242,8 +242,8 @@ id __67__HFActionNaturalLanguageExecution__accessoryRepresentingIDsInSet___block
 
 - (void)updateInvolvedObjects
 {
-  v3 = [(HFActionNaturalLanguageExecution *)self actions];
-  v4 = [v3 na_flatMap:&__block_literal_global_343_0];
+  actions = [(HFActionNaturalLanguageExecution *)self actions];
+  v4 = [actions na_flatMap:&__block_literal_global_343_0];
 
   v14 = 0;
   v15 = &v14;

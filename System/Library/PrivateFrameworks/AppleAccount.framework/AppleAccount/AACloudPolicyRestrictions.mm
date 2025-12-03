@@ -1,7 +1,7 @@
 @interface AACloudPolicyRestrictions
-+ (BOOL)policyRestrictsDataclass:(id)a3;
++ (BOOL)policyRestrictsDataclass:(id)dataclass;
 + (id)_managedIcloudPolicyIdentifierForDataclass;
-+ (id)_policyRestrictionIdentifierForDataclass:(id)a3;
++ (id)_policyRestrictionIdentifierForDataclass:(id)dataclass;
 @end
 
 @implementation AACloudPolicyRestrictions
@@ -37,19 +37,19 @@ void __71__AACloudPolicyRestrictions__managedIcloudPolicyIdentifierForDataclass_
   _managedIcloudPolicyIdentifierForDataclass_iCloudPolicyIdentifiersDictionary = v0;
 }
 
-+ (id)_policyRestrictionIdentifierForDataclass:(id)a3
++ (id)_policyRestrictionIdentifierForDataclass:(id)dataclass
 {
-  v3 = a3;
+  dataclassCopy = dataclass;
   v4 = +[AACloudPolicyRestrictions _managedIcloudPolicyIdentifierForDataclass];
-  v5 = [v4 objectForKey:v3];
+  v5 = [v4 objectForKey:dataclassCopy];
 
   return v5;
 }
 
-+ (BOOL)policyRestrictsDataclass:(id)a3
++ (BOOL)policyRestrictsDataclass:(id)dataclass
 {
-  v3 = a3;
-  v4 = [AACloudPolicyRestrictions _policyRestrictionIdentifierForDataclass:v3];
+  dataclassCopy = dataclass;
+  v4 = [AACloudPolicyRestrictions _policyRestrictionIdentifierForDataclass:dataclassCopy];
   v5 = v4;
   if (v4)
   {
@@ -58,7 +58,7 @@ void __71__AACloudPolicyRestrictions__managedIcloudPolicyIdentifierForDataclass_
     v8 = _AALogSystem();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
-      [(AACloudPolicyRestrictions *)v3 policyRestrictsDataclass:v8];
+      [(AACloudPolicyRestrictions *)dataclassCopy policyRestrictsDataclass:v8];
     }
   }
 
@@ -67,7 +67,7 @@ void __71__AACloudPolicyRestrictions__managedIcloudPolicyIdentifierForDataclass_
     v8 = _AALogSystem();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
-      [(AACloudPolicyRestrictions *)v3 policyRestrictsDataclass:v8];
+      [(AACloudPolicyRestrictions *)dataclassCopy policyRestrictsDataclass:v8];
     }
 
     v7 = 0;

@@ -5,22 +5,22 @@
 - (void)_startObservingPreviewControllerAttributeChanges;
 - (void)_stopObservingPreviewControllerAttributeChanges;
 - (void)dealloc;
-- (void)generatePreviewForURL:(id)a3 completion:(id)a4;
-- (void)getARQLInlineProxy2WithCompletionHandler:(id)a3;
-- (void)getARQLInlineProxy3WithCompletionHandler:(id)a3;
-- (void)getARQLInlineProxyWithCompletionHandler:(id)a3;
-- (void)getPrinterProxyWithCompletionHandler:(id)a3;
-- (void)invalidateServiceWithCompletionHandler:(id)a3;
-- (void)loadPreviewControllerWithContents:(id)a3 context:(id)a4 completionHandler:(id)a5;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)previewControllerDidUpdatePreferredContentSize:(id)a3;
-- (void)previewControllerDidUpdateTitle:(id)a3;
-- (void)previewDidAppear:(BOOL)a3;
-- (void)previewDidDisappear:(BOOL)a3;
-- (void)previewWillAppear:(BOOL)a3;
-- (void)previewWillDisappear:(BOOL)a3;
-- (void)setAppearance:(id)a3 animated:(BOOL)a4;
-- (void)setHostViewControllerProxy:(id)a3;
+- (void)generatePreviewForURL:(id)l completion:(id)completion;
+- (void)getARQLInlineProxy2WithCompletionHandler:(id)handler;
+- (void)getARQLInlineProxy3WithCompletionHandler:(id)handler;
+- (void)getARQLInlineProxyWithCompletionHandler:(id)handler;
+- (void)getPrinterProxyWithCompletionHandler:(id)handler;
+- (void)invalidateServiceWithCompletionHandler:(id)handler;
+- (void)loadPreviewControllerWithContents:(id)contents context:(id)context completionHandler:(id)handler;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)previewControllerDidUpdatePreferredContentSize:(id)size;
+- (void)previewControllerDidUpdateTitle:(id)title;
+- (void)previewDidAppear:(BOOL)appear;
+- (void)previewDidDisappear:(BOOL)disappear;
+- (void)previewWillAppear:(BOOL)appear;
+- (void)previewWillDisappear:(BOOL)disappear;
+- (void)setAppearance:(id)appearance animated:(BOOL)animated;
+- (void)setHostViewControllerProxy:(id)proxy;
 @end
 
 @implementation QLPreviewExtensionServiceContext_iOS
@@ -51,29 +51,29 @@
 
 - (id)protocolHost
 {
-  v2 = [(QLPreviewExtensionServiceContext_iOS *)self _auxiliaryConnection];
-  v3 = [v2 remoteObjectProxyWithErrorHandler:&__block_literal_global_219];
+  _auxiliaryConnection = [(QLPreviewExtensionServiceContext_iOS *)self _auxiliaryConnection];
+  v3 = [_auxiliaryConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_219];
 
   return v3;
 }
 
-- (void)previewControllerDidUpdateTitle:(id)a3
+- (void)previewControllerDidUpdateTitle:(id)title
 {
-  v4 = a3;
-  v5 = [(QLPreviewExtensionServiceContext_iOS *)self protocolHost];
-  [v5 previewControllerDidUpdateTitle:v4];
+  titleCopy = title;
+  protocolHost = [(QLPreviewExtensionServiceContext_iOS *)self protocolHost];
+  [protocolHost previewControllerDidUpdateTitle:titleCopy];
 }
 
-- (void)previewControllerDidUpdatePreferredContentSize:(id)a3
+- (void)previewControllerDidUpdatePreferredContentSize:(id)size
 {
-  v4 = a3;
-  v5 = [(QLPreviewExtensionServiceContext_iOS *)self protocolHost];
-  [v5 previewControllerDidUpdatePreferredContentSize:v4];
+  sizeCopy = size;
+  protocolHost = [(QLPreviewExtensionServiceContext_iOS *)self protocolHost];
+  [protocolHost previewControllerDidUpdatePreferredContentSize:sizeCopy];
 }
 
-- (void)previewWillAppear:(BOOL)a3
+- (void)previewWillAppear:(BOOL)appear
 {
-  v3 = [(QLPreviewExtensionServiceContext_iOS *)self previewViewController];
+  previewViewController = [(QLPreviewExtensionServiceContext_iOS *)self previewViewController];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
@@ -82,9 +82,9 @@
   }
 }
 
-- (void)previewDidAppear:(BOOL)a3
+- (void)previewDidAppear:(BOOL)appear
 {
-  v3 = [(QLPreviewExtensionServiceContext_iOS *)self previewViewController];
+  previewViewController = [(QLPreviewExtensionServiceContext_iOS *)self previewViewController];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
@@ -93,9 +93,9 @@
   }
 }
 
-- (void)previewWillDisappear:(BOOL)a3
+- (void)previewWillDisappear:(BOOL)disappear
 {
-  v3 = [(QLPreviewExtensionServiceContext_iOS *)self previewViewController];
+  previewViewController = [(QLPreviewExtensionServiceContext_iOS *)self previewViewController];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
@@ -104,9 +104,9 @@
   }
 }
 
-- (void)previewDidDisappear:(BOOL)a3
+- (void)previewDidDisappear:(BOOL)disappear
 {
-  v3 = [(QLPreviewExtensionServiceContext_iOS *)self previewViewController];
+  previewViewController = [(QLPreviewExtensionServiceContext_iOS *)self previewViewController];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
@@ -115,105 +115,105 @@
   }
 }
 
-- (void)setAppearance:(id)a3 animated:(BOOL)a4
+- (void)setAppearance:(id)appearance animated:(BOOL)animated
 {
-  v5 = a3;
-  v6 = [(QLPreviewExtensionServiceContext_iOS *)self previewViewController];
+  appearanceCopy = appearance;
+  previewViewController = [(QLPreviewExtensionServiceContext_iOS *)self previewViewController];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = v5;
+    v8 = appearanceCopy;
     QLRunInMainThread();
   }
 }
 
-- (void)getPrinterProxyWithCompletionHandler:(id)a3
+- (void)getPrinterProxyWithCompletionHandler:(id)handler
 {
-  v8 = a3;
-  v4 = [(QLPreviewExtensionServiceContext_iOS *)self previewViewController];
+  handlerCopy = handler;
+  previewViewController = [(QLPreviewExtensionServiceContext_iOS *)self previewViewController];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(QLPreviewExtensionServiceContext_iOS *)self previewViewController];
-    v7 = [v6 printer];
-    v8[2](v8, v7);
+    previewViewController2 = [(QLPreviewExtensionServiceContext_iOS *)self previewViewController];
+    printer = [previewViewController2 printer];
+    handlerCopy[2](handlerCopy, printer);
   }
 
   else
   {
-    v8[2](v8, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 }
 
-- (void)getARQLInlineProxyWithCompletionHandler:(id)a3
+- (void)getARQLInlineProxyWithCompletionHandler:(id)handler
 {
-  v7 = a3;
-  v4 = [(QLPreviewExtensionServiceContext_iOS *)self previewViewController];
-  v5 = [v4 conformsToProtocol:&unk_284DC59D0];
+  handlerCopy = handler;
+  previewViewController = [(QLPreviewExtensionServiceContext_iOS *)self previewViewController];
+  v5 = [previewViewController conformsToProtocol:&unk_284DC59D0];
 
   if (v5)
   {
-    v6 = [(QLPreviewExtensionServiceContext_iOS *)self previewViewController];
-    v7[2](v7, v6);
+    previewViewController2 = [(QLPreviewExtensionServiceContext_iOS *)self previewViewController];
+    handlerCopy[2](handlerCopy, previewViewController2);
   }
 
   else
   {
-    v7[2](v7, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 }
 
-- (void)getARQLInlineProxy2WithCompletionHandler:(id)a3
+- (void)getARQLInlineProxy2WithCompletionHandler:(id)handler
 {
-  v7 = a3;
-  v4 = [(QLPreviewExtensionServiceContext_iOS *)self previewViewController];
-  v5 = [v4 conformsToProtocol:&unk_284DCED78];
+  handlerCopy = handler;
+  previewViewController = [(QLPreviewExtensionServiceContext_iOS *)self previewViewController];
+  v5 = [previewViewController conformsToProtocol:&unk_284DCED78];
 
   if (v5)
   {
-    v6 = [(QLPreviewExtensionServiceContext_iOS *)self previewViewController];
-    v7[2](v7, v6);
+    previewViewController2 = [(QLPreviewExtensionServiceContext_iOS *)self previewViewController];
+    handlerCopy[2](handlerCopy, previewViewController2);
   }
 
   else
   {
-    v7[2](v7, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 }
 
-- (void)getARQLInlineProxy3WithCompletionHandler:(id)a3
+- (void)getARQLInlineProxy3WithCompletionHandler:(id)handler
 {
-  v7 = a3;
-  v4 = [(QLPreviewExtensionServiceContext_iOS *)self previewViewController];
-  v5 = [v4 conformsToProtocol:&unk_284DCEDD8];
+  handlerCopy = handler;
+  previewViewController = [(QLPreviewExtensionServiceContext_iOS *)self previewViewController];
+  v5 = [previewViewController conformsToProtocol:&unk_284DCEDD8];
 
   if (v5)
   {
-    v6 = [(QLPreviewExtensionServiceContext_iOS *)self previewViewController];
-    v7[2](v7, v6);
+    previewViewController2 = [(QLPreviewExtensionServiceContext_iOS *)self previewViewController];
+    handlerCopy[2](handlerCopy, previewViewController2);
   }
 
   else
   {
-    v7[2](v7, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 }
 
-- (void)setHostViewControllerProxy:(id)a3
+- (void)setHostViewControllerProxy:(id)proxy
 {
-  v4 = a3;
-  v5 = [(QLPreviewExtensionServiceContext_iOS *)self previewViewController];
+  proxyCopy = proxy;
+  previewViewController = [(QLPreviewExtensionServiceContext_iOS *)self previewViewController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [(QLPreviewExtensionServiceContext_iOS *)self previewViewController];
+    previewViewController2 = [(QLPreviewExtensionServiceContext_iOS *)self previewViewController];
     v7 = objc_opt_respondsToSelector();
 
     if (v7)
     {
-      v8 = v4;
+      v8 = proxyCopy;
       QLRunInMainThread();
     }
   }
@@ -223,68 +223,68 @@
   }
 }
 
-- (void)loadPreviewControllerWithContents:(id)a3 context:(id)a4 completionHandler:(id)a5
+- (void)loadPreviewControllerWithContents:(id)contents context:(id)context completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(QLPreviewExtensionServiceContext_iOS *)self previewViewController];
+  contentsCopy = contents;
+  contextCopy = context;
+  handlerCopy = handler;
+  previewViewController = [(QLPreviewExtensionServiceContext_iOS *)self previewViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v13 = [(QLPreviewExtensionServiceContext_iOS *)self previewViewController];
-    v14 = [v9 canBeShared];
-    if (v14 != [v13 isShareEnabled])
+    previewViewController2 = [(QLPreviewExtensionServiceContext_iOS *)self previewViewController];
+    canBeShared = [contextCopy canBeShared];
+    if (canBeShared != [previewViewController2 isShareEnabled])
     {
-      [v13 setIsShareEnabled:v14];
+      [previewViewController2 setIsShareEnabled:canBeShared];
     }
 
-    v15 = [v9 clientPreviewOptions];
-    if (v15)
+    clientPreviewOptions = [contextCopy clientPreviewOptions];
+    if (clientPreviewOptions)
     {
-      v16 = [v13 previewOptions];
-      v17 = [v16 isEqual:v15];
+      previewOptions = [previewViewController2 previewOptions];
+      v17 = [previewOptions isEqual:clientPreviewOptions];
 
       if ((v17 & 1) == 0)
       {
-        [v13 setPreviewOptions:v15];
+        [previewViewController2 setPreviewOptions:clientPreviewOptions];
       }
     }
   }
 
-  v18 = [(QLPreviewExtensionServiceContext_iOS *)self previewViewController];
-  v19 = [v9 clientPreviewItemDisplayState];
-  if (v19)
+  previewViewController3 = [(QLPreviewExtensionServiceContext_iOS *)self previewViewController];
+  clientPreviewItemDisplayState = [contextCopy clientPreviewItemDisplayState];
+  if (clientPreviewItemDisplayState)
   {
-    v20 = [v18 previewItemDisplayState];
-    v21 = [v20 isEqual:v19];
+    previewItemDisplayState = [previewViewController3 previewItemDisplayState];
+    v21 = [previewItemDisplayState isEqual:clientPreviewItemDisplayState];
 
     if ((v21 & 1) == 0)
     {
-      [v18 setPreviewItemDisplayState:v19];
+      [previewViewController3 setPreviewItemDisplayState:clientPreviewItemDisplayState];
     }
   }
 
-  v24 = v8;
-  v22 = v10;
-  v23 = v8;
+  v24 = contentsCopy;
+  v22 = handlerCopy;
+  v23 = contentsCopy;
   QLRunInMainThread();
 }
 
-- (void)generatePreviewForURL:(id)a3 completion:(id)a4
+- (void)generatePreviewForURL:(id)l completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(QLPreviewExtensionServiceContext_iOS *)self previewProvider];
+  lCopy = l;
+  completionCopy = completion;
+  previewProvider = [(QLPreviewExtensionServiceContext_iOS *)self previewProvider];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
 
     goto LABEL_5;
   }
 
-  v9 = [(QLPreviewExtensionServiceContext_iOS *)self previewProvider];
+  previewProvider2 = [(QLPreviewExtensionServiceContext_iOS *)self previewProvider];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -292,65 +292,65 @@
   {
 LABEL_5:
     v16 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.quicklook.QLRemoteItemViewController" code:3 userInfo:0];
-    v7[2](v7, 0, v16);
+    completionCopy[2](completionCopy, 0, v16);
 
     goto LABEL_6;
   }
 
   v11 = objc_alloc(MEMORY[0x277D43EA0]);
-  v12 = [v6 fileURL];
-  v13 = [v11 initWithURL:v12];
+  fileURL = [lCopy fileURL];
+  v13 = [v11 initWithURL:fileURL];
 
-  v14 = [(QLPreviewExtensionServiceContext_iOS *)self previewProvider];
+  previewProvider3 = [(QLPreviewExtensionServiceContext_iOS *)self previewProvider];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __73__QLPreviewExtensionServiceContext_iOS_generatePreviewForURL_completion___block_invoke;
   v17[3] = &unk_278B58E58;
-  v20 = v7;
+  v20 = completionCopy;
   v18 = v13;
-  v19 = v6;
+  v19 = lCopy;
   v15 = v13;
-  [v14 providePreviewForFileRequest:v15 completionHandler:v17];
+  [previewProvider3 providePreviewForFileRequest:v15 completionHandler:v17];
 
 LABEL_6:
 }
 
-- (void)invalidateServiceWithCompletionHandler:(id)a3
+- (void)invalidateServiceWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(QLPreviewExtensionServiceContext_iOS *)self inputItems];
+  handlerCopy = handler;
+  inputItems = [(QLPreviewExtensionServiceContext_iOS *)self inputItems];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __79__QLPreviewExtensionServiceContext_iOS_invalidateServiceWithCompletionHandler___block_invoke;
   v7[3] = &unk_278B57B40;
-  v8 = v4;
-  v6 = v4;
-  [(QLPreviewExtensionServiceContext_iOS *)self completeRequestReturningItems:v5 completionHandler:v7];
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  [(QLPreviewExtensionServiceContext_iOS *)self completeRequestReturningItems:inputItems completionHandler:v7];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  if (a6 == &QLRemoteItemViewControllerContext)
+  pathCopy = path;
+  objectCopy = object;
+  if (context == &QLRemoteItemViewControllerContext)
   {
-    if ([v10 isEqualToString:@"title"])
+    if ([pathCopy isEqualToString:@"title"])
     {
-      v12 = [v11 title];
-      [(QLPreviewExtensionServiceContext_iOS *)self previewControllerDidUpdateTitle:v12];
+      title = [objectCopy title];
+      [(QLPreviewExtensionServiceContext_iOS *)self previewControllerDidUpdateTitle:title];
     }
 
     else
     {
-      if (![v10 isEqualToString:@"preferredContentSize"])
+      if (![pathCopy isEqualToString:@"preferredContentSize"])
       {
         goto LABEL_8;
       }
 
       v13 = MEMORY[0x277CCAE60];
-      [v11 preferredContentSize];
-      v12 = [v13 valueWithCGSize:?];
-      [(QLPreviewExtensionServiceContext_iOS *)self previewControllerDidUpdatePreferredContentSize:v12];
+      [objectCopy preferredContentSize];
+      title = [v13 valueWithCGSize:?];
+      [(QLPreviewExtensionServiceContext_iOS *)self previewControllerDidUpdatePreferredContentSize:title];
     }
 
     goto LABEL_8;
@@ -358,31 +358,31 @@ LABEL_6:
 
   v14.receiver = self;
   v14.super_class = QLPreviewExtensionServiceContext_iOS;
-  [(QLPreviewExtensionServiceContext_iOS *)&v14 observeValueForKeyPath:v10 ofObject:v11 change:a5 context:a6];
+  [(QLPreviewExtensionServiceContext_iOS *)&v14 observeValueForKeyPath:pathCopy ofObject:objectCopy change:change context:context];
 LABEL_8:
 }
 
 - (void)_startObservingPreviewControllerAttributeChanges
 {
-  v3 = [(QLPreviewExtensionServiceContext_iOS *)self previewViewController];
-  [(QLPreviewExtensionServiceContext_iOS *)self setObservedObject:v3];
+  previewViewController = [(QLPreviewExtensionServiceContext_iOS *)self previewViewController];
+  [(QLPreviewExtensionServiceContext_iOS *)self setObservedObject:previewViewController];
 
-  v4 = [(QLPreviewExtensionServiceContext_iOS *)self observedObject];
-  [v4 addObserver:self forKeyPath:@"title" options:0 context:&QLRemoteItemViewControllerContext];
+  observedObject = [(QLPreviewExtensionServiceContext_iOS *)self observedObject];
+  [observedObject addObserver:self forKeyPath:@"title" options:0 context:&QLRemoteItemViewControllerContext];
 
-  v5 = [(QLPreviewExtensionServiceContext_iOS *)self observedObject];
-  [v5 addObserver:self forKeyPath:@"preferredContentSize" options:0 context:&QLRemoteItemViewControllerContext];
+  observedObject2 = [(QLPreviewExtensionServiceContext_iOS *)self observedObject];
+  [observedObject2 addObserver:self forKeyPath:@"preferredContentSize" options:0 context:&QLRemoteItemViewControllerContext];
 
   self->_isObservingPreviewController = 1;
 }
 
 - (void)_stopObservingPreviewControllerAttributeChanges
 {
-  v3 = [(QLPreviewExtensionServiceContext_iOS *)self observedObject];
-  [v3 removeObserver:self forKeyPath:@"title" context:&QLRemoteItemViewControllerContext];
+  observedObject = [(QLPreviewExtensionServiceContext_iOS *)self observedObject];
+  [observedObject removeObserver:self forKeyPath:@"title" context:&QLRemoteItemViewControllerContext];
 
-  v4 = [(QLPreviewExtensionServiceContext_iOS *)self observedObject];
-  [v4 removeObserver:self forKeyPath:@"preferredContentSize" context:&QLRemoteItemViewControllerContext];
+  observedObject2 = [(QLPreviewExtensionServiceContext_iOS *)self observedObject];
+  [observedObject2 removeObserver:self forKeyPath:@"preferredContentSize" context:&QLRemoteItemViewControllerContext];
 
   [(QLPreviewExtensionServiceContext_iOS *)self setObservedObject:0];
   self->_isObservingPreviewController = 0;

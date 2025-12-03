@@ -1,17 +1,17 @@
 @interface CAState
-+ (void)CAMLParserStartElement:(id)a3;
++ (void)CAMLParserStartElement:(id)element;
 - (CAState)init;
-- (CAState)initWithCoder:(id)a3;
-- (id)CAMLTypeForKey:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CAState)initWithCoder:(id)coder;
+- (id)CAMLTypeForKey:(id)key;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
-- (void)addElement:(id)a3;
+- (void)addElement:(id)element;
 - (void)dealloc;
-- (void)encodeWithCAMLWriter:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)foreachLayer:(id)a3;
-- (void)removeElement:(id)a3;
-- (void)setElements:(id)a3;
+- (void)encodeWithCAMLWriter:(id)writer;
+- (void)encodeWithCoder:(id)coder;
+- (void)foreachLayer:(id)layer;
+- (void)removeElement:(id)element;
+- (void)setElements:(id)elements;
 @end
 
 @implementation CAState
@@ -58,7 +58,7 @@
   return [v3 stringWithFormat:@"{%@:%p %@ basedOn %@ %@%s%s}", v4, self, *&self->_name, self->_elements, v6, v5];
 }
 
-- (CAState)initWithCoder:(id)a3
+- (CAState)initWithCoder:(id)coder
 {
   v10 = *MEMORY[0x1E69E9840];
   v9.receiver = self;
@@ -69,88 +69,88 @@
   {
     v4->_enabled = 1;
     *&v4->_nextDelay = vdupq_n_s64(0x7FF0000000000000uLL);
-    v4->_name = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
-    v5->_basedOn = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"basedOn"];
-    v5->_elements = [objc_msgSend(a3 decodeObjectOfClasses:objc_msgSend(MEMORY[0x1E696AB10] forKey:{"CA_supportedClasses"), @"elements", "mutableCopy"}];
-    if ([a3 containsValueForKey:@"nextDelay"])
+    v4->_name = [coder decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+    v5->_basedOn = [coder decodeObjectOfClass:objc_opt_class() forKey:@"basedOn"];
+    v5->_elements = [objc_msgSend(coder decodeObjectOfClasses:objc_msgSend(MEMORY[0x1E696AB10] forKey:{"CA_supportedClasses"), @"elements", "mutableCopy"}];
+    if ([coder containsValueForKey:@"nextDelay"])
     {
-      [a3 decodeDoubleForKey:@"nextDelay"];
+      [coder decodeDoubleForKey:@"nextDelay"];
       v5->_nextDelay = v6;
     }
 
-    if ([a3 containsValueForKey:@"previousDelay"])
+    if ([coder containsValueForKey:@"previousDelay"])
     {
-      [a3 decodeDoubleForKey:@"previousDelay"];
+      [coder decodeDoubleForKey:@"previousDelay"];
       v5->_previousDelay = v7;
     }
 
-    if ([a3 containsValueForKey:@"enabled"])
+    if ([coder containsValueForKey:@"enabled"])
     {
-      v5->_enabled = [a3 decodeBoolForKey:@"enabled"];
+      v5->_enabled = [coder decodeBoolForKey:@"enabled"];
     }
 
-    if ([a3 containsValueForKey:@"locked"])
+    if ([coder containsValueForKey:@"locked"])
     {
-      v5->_locked = [a3 decodeBoolForKey:@"locked"];
+      v5->_locked = [coder decodeBoolForKey:@"locked"];
     }
 
-    if ([a3 containsValueForKey:@"initial"])
+    if ([coder containsValueForKey:@"initial"])
     {
-      v5->_initial = [a3 decodeBoolForKey:@"initial"];
+      v5->_initial = [coder decodeBoolForKey:@"initial"];
     }
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   name = self->_name;
   if (name)
   {
-    [a3 encodeObject:name forKey:@"name"];
+    [coder encodeObject:name forKey:@"name"];
   }
 
   basedOn = self->_basedOn;
   if (basedOn)
   {
-    [a3 encodeObject:basedOn forKey:@"basedOn"];
+    [coder encodeObject:basedOn forKey:@"basedOn"];
   }
 
   elements = self->_elements;
   if (elements)
   {
-    [a3 encodeObject:elements forKey:@"elements"];
+    [coder encodeObject:elements forKey:@"elements"];
   }
 
   if ((*&self->_nextDelay & 0x7FFFFFFFFFFFFFFFuLL) <= 0x7FEFFFFFFFFFFFFFLL)
   {
-    [a3 encodeDouble:@"nextDelay" forKey:?];
+    [coder encodeDouble:@"nextDelay" forKey:?];
   }
 
   if ((*&self->_previousDelay & 0x7FFFFFFFFFFFFFFFuLL) <= 0x7FEFFFFFFFFFFFFFLL)
   {
-    [a3 encodeDouble:@"previousDelay" forKey:?];
+    [coder encodeDouble:@"previousDelay" forKey:?];
   }
 
   if (!self->_enabled)
   {
-    [a3 encodeBool:0 forKey:@"enabled"];
+    [coder encodeBool:0 forKey:@"enabled"];
   }
 
   if (self->_locked)
   {
-    [a3 encodeBool:1 forKey:@"locked"];
+    [coder encodeBool:1 forKey:@"locked"];
   }
 
   if (self->_initial)
   {
 
-    [a3 encodeBool:1 forKey:@"initial"];
+    [coder encodeBool:1 forKey:@"initial"];
   }
 }
 
-- (id)CAMLTypeForKey:(id)a3
+- (id)CAMLTypeForKey:(id)key
 {
   v4 = [CAState CAMLTypeForKey:]::dict;
   if (![CAState CAMLTypeForKey:]::dict)
@@ -159,37 +159,37 @@
     [CAState CAMLTypeForKey:]::dict = v4;
   }
 
-  return [v4 objectForKey:a3];
+  return [v4 objectForKey:key];
 }
 
-- (void)encodeWithCAMLWriter:(id)a3
+- (void)encodeWithCAMLWriter:(id)writer
 {
   v11[1] = *MEMORY[0x1E69E9840];
   name = self->_name;
   if (name)
   {
-    [a3 setElementAttribute:name forKey:@"name"];
+    [writer setElementAttribute:name forKey:@"name"];
   }
 
   basedOn = self->_basedOn;
   if (basedOn)
   {
-    [a3 setElementAttribute:basedOn forKey:@"basedOn"];
+    [writer setElementAttribute:basedOn forKey:@"basedOn"];
   }
 
   if (!self->_enabled)
   {
-    [a3 setElementAttribute:@"false" forKey:@"enabled"];
+    [writer setElementAttribute:@"false" forKey:@"enabled"];
   }
 
   if (self->_locked)
   {
-    [a3 setElementAttribute:@"true" forKey:@"locked"];
+    [writer setElementAttribute:@"true" forKey:@"locked"];
   }
 
   if (self->_initial)
   {
-    [a3 setElementAttribute:@"true" forKey:@"initial"];
+    [writer setElementAttribute:@"true" forKey:@"initial"];
   }
 
   if ((*&self->_nextDelay & 0x7FFFFFFFFFFFFFFFuLL) <= 0x7FEFFFFFFFFFFFFFLL)
@@ -199,7 +199,7 @@
     if (v7)
     {
       v8 = v7;
-      [a3 setElementAttribute:v7 forKey:@"nextDelay"];
+      [writer setElementAttribute:v7 forKey:@"nextDelay"];
       CFRelease(v8);
     }
   }
@@ -211,21 +211,21 @@
     if (v9)
     {
       v10 = v9;
-      [a3 setElementAttribute:v9 forKey:@"previousDelay"];
+      [writer setElementAttribute:v9 forKey:@"previousDelay"];
       CFRelease(v10);
     }
   }
 
   if (self->_elements)
   {
-    [a3 beginPropertyElement:@"elements"];
-    [a3 encodeObject:self->_elements];
+    [writer beginPropertyElement:@"elements"];
+    [writer encodeObject:self->_elements];
 
-    [a3 endElement];
+    [writer endElement];
   }
 }
 
-- (void)foreachLayer:(id)a3
+- (void)foreachLayer:(id)layer
 {
   v14 = *MEMORY[0x1E69E9840];
   v10 = 0u;
@@ -247,7 +247,7 @@
           objc_enumerationMutation(elements);
         }
 
-        [*(*(&v10 + 1) + 8 * i) foreachLayer:a3];
+        [*(*(&v10 + 1) + 8 * i) foreachLayer:layer];
       }
 
       v6 = [(NSMutableArray *)elements countByEnumeratingWithState:&v10 objects:v9 count:16];
@@ -257,16 +257,16 @@
   }
 }
 
-- (void)removeElement:(id)a3
+- (void)removeElement:(id)element
 {
   elements = self->_elements;
   if (elements)
   {
-    [(NSMutableArray *)elements removeObjectIdenticalTo:a3];
+    [(NSMutableArray *)elements removeObjectIdenticalTo:element];
   }
 }
 
-- (void)addElement:(id)a3
+- (void)addElement:(id)element
 {
   elements = self->_elements;
   if (!elements)
@@ -275,20 +275,20 @@
     self->_elements = elements;
   }
 
-  [(NSMutableArray *)elements addObject:a3];
+  [(NSMutableArray *)elements addObject:element];
 }
 
-- (void)setElements:(id)a3
+- (void)setElements:(id)elements
 {
   elements = self->_elements;
-  if (elements != a3)
+  if (elements != elements)
   {
 
-    self->_elements = [a3 mutableCopy];
+    self->_elements = [elements mutableCopy];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v17 = *MEMORY[0x1E69E9840];
   v4 = objc_alloc_init(objc_opt_class());
@@ -339,10 +339,10 @@
   return v4;
 }
 
-+ (void)CAMLParserStartElement:(id)a3
++ (void)CAMLParserStartElement:(id)element
 {
-  v4 = objc_alloc_init(a1);
-  [a3 setElementValue:v4];
+  v4 = objc_alloc_init(self);
+  [element setElementValue:v4];
 }
 
 @end

@@ -1,35 +1,35 @@
 @interface HWBrowserViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_axAnnounceHandwritingViewScroll;
 - (void)_axUpdateAndFocusCanvas;
-- (void)_clear:(id)a3;
-- (void)_inkViewTouchesEndedNotification:(id)a3;
-- (void)_scrollPageToLeft:(id)a3;
-- (void)_scrollPageToRight:(id)a3;
-- (void)_undo:(id)a3;
-- (void)scrollViewDidEndScrollingAnimation:(id)a3;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)setCurrentHandwritingItem:(id)a3;
+- (void)_clear:(id)_clear;
+- (void)_inkViewTouchesEndedNotification:(id)notification;
+- (void)_scrollPageToLeft:(id)left;
+- (void)_scrollPageToRight:(id)right;
+- (void)_undo:(id)_undo;
+- (void)scrollViewDidEndScrollingAnimation:(id)animation;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)setCurrentHandwritingItem:(id)item;
 - (void)viewDidLoad;
 @end
 
 @implementation HWBrowserViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"HWBrowserViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"HWBrowserViewController" hasInstanceMethod:@"canvasView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HWBrowserViewController" hasInstanceMethod:@"currentHandwritingItem" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HWBrowserViewController" hasInstanceMethod:@"handwritingScrollView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HWBrowserViewController" hasInstanceMethod:@"_clear:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"HWBrowserViewController" hasInstanceMethod:@"_undo:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"HWBrowserViewController" hasInstanceMethod:@"_scrollPageToLeft:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"HWBrowserViewController" hasInstanceMethod:@"_scrollPageToRight:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"HWBrowserViewController" hasInstanceMethod:@"_inkViewTouchesEndedNotification:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"HWBrowserViewController" hasInstanceMethod:@"scrollViewDidScroll:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"HWBrowserViewController" hasInstanceMethod:@"scrollViewDidEndScrollingAnimation:" withFullSignature:{"v", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"HWBrowserViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"HWBrowserViewController" hasInstanceMethod:@"canvasView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HWBrowserViewController" hasInstanceMethod:@"currentHandwritingItem" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HWBrowserViewController" hasInstanceMethod:@"handwritingScrollView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HWBrowserViewController" hasInstanceMethod:@"_clear:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"HWBrowserViewController" hasInstanceMethod:@"_undo:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"HWBrowserViewController" hasInstanceMethod:@"_scrollPageToLeft:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"HWBrowserViewController" hasInstanceMethod:@"_scrollPageToRight:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"HWBrowserViewController" hasInstanceMethod:@"_inkViewTouchesEndedNotification:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"HWBrowserViewController" hasInstanceMethod:@"scrollViewDidScroll:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"HWBrowserViewController" hasInstanceMethod:@"scrollViewDidEndScrollingAnimation:" withFullSignature:{"v", "@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -51,34 +51,34 @@
   [(HWBrowserViewControllerAccessibility *)self _accessibilityLoadAccessibilityInformation];
 }
 
-- (void)setCurrentHandwritingItem:(id)a3
+- (void)setCurrentHandwritingItem:(id)item
 {
   v4.receiver = self;
   v4.super_class = HWBrowserViewControllerAccessibility;
-  [(HWBrowserViewControllerAccessibility *)&v4 setCurrentHandwritingItem:a3];
+  [(HWBrowserViewControllerAccessibility *)&v4 setCurrentHandwritingItem:item];
   [(HWBrowserViewControllerAccessibility *)self _axUpdateAndFocusCanvas];
   [(HWBrowserViewControllerAccessibility *)self _axSetShouldAnnounceScroll:0];
 }
 
-- (void)_clear:(id)a3
+- (void)_clear:(id)_clear
 {
   v4.receiver = self;
   v4.super_class = HWBrowserViewControllerAccessibility;
-  [(HWBrowserViewControllerAccessibility *)&v4 _clear:a3];
+  [(HWBrowserViewControllerAccessibility *)&v4 _clear:_clear];
   [(HWBrowserViewControllerAccessibility *)self _axUpdateAndFocusCanvas];
 }
 
-- (void)_undo:(id)a3
+- (void)_undo:(id)_undo
 {
   v4.receiver = self;
   v4.super_class = HWBrowserViewControllerAccessibility;
-  [(HWBrowserViewControllerAccessibility *)&v4 _undo:a3];
+  [(HWBrowserViewControllerAccessibility *)&v4 _undo:_undo];
   [(HWBrowserViewControllerAccessibility *)self _axSetShouldAnnounceScroll:0];
 }
 
-- (void)_scrollPageToLeft:(id)a3
+- (void)_scrollPageToLeft:(id)left
 {
-  v4 = a3;
+  leftCopy = left;
   v8 = 0;
   objc_opt_class();
   v5 = [(HWBrowserViewControllerAccessibility *)self safeValueForKey:@"handwritingScrollView"];
@@ -88,12 +88,12 @@
   [(HWBrowserViewControllerAccessibility *)self _axSetLastContentOffsetX:?];
   v7.receiver = self;
   v7.super_class = HWBrowserViewControllerAccessibility;
-  [(HWBrowserViewControllerAccessibility *)&v7 _scrollPageToLeft:v4];
+  [(HWBrowserViewControllerAccessibility *)&v7 _scrollPageToLeft:leftCopy];
 }
 
-- (void)_scrollPageToRight:(id)a3
+- (void)_scrollPageToRight:(id)right
 {
-  v4 = a3;
+  rightCopy = right;
   v8 = 0;
   objc_opt_class();
   v5 = [(HWBrowserViewControllerAccessibility *)self safeValueForKey:@"handwritingScrollView"];
@@ -103,30 +103,30 @@
   [(HWBrowserViewControllerAccessibility *)self _axSetLastContentOffsetX:?];
   v7.receiver = self;
   v7.super_class = HWBrowserViewControllerAccessibility;
-  [(HWBrowserViewControllerAccessibility *)&v7 _scrollPageToRight:v4];
+  [(HWBrowserViewControllerAccessibility *)&v7 _scrollPageToRight:rightCopy];
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
   v4.receiver = self;
   v4.super_class = HWBrowserViewControllerAccessibility;
-  [(HWBrowserViewControllerAccessibility *)&v4 scrollViewDidScroll:a3];
+  [(HWBrowserViewControllerAccessibility *)&v4 scrollViewDidScroll:scroll];
   [(HWBrowserViewControllerAccessibility *)self _axAnnounceHandwritingViewScroll];
 }
 
-- (void)scrollViewDidEndScrollingAnimation:(id)a3
+- (void)scrollViewDidEndScrollingAnimation:(id)animation
 {
   v4.receiver = self;
   v4.super_class = HWBrowserViewControllerAccessibility;
-  [(HWBrowserViewControllerAccessibility *)&v4 scrollViewDidEndScrollingAnimation:a3];
+  [(HWBrowserViewControllerAccessibility *)&v4 scrollViewDidEndScrollingAnimation:animation];
   [(HWBrowserViewControllerAccessibility *)self _axSetShouldAnnounceScroll:1];
 }
 
-- (void)_inkViewTouchesEndedNotification:(id)a3
+- (void)_inkViewTouchesEndedNotification:(id)notification
 {
   v4.receiver = self;
   v4.super_class = HWBrowserViewControllerAccessibility;
-  [(HWBrowserViewControllerAccessibility *)&v4 _inkViewTouchesEndedNotification:a3];
+  [(HWBrowserViewControllerAccessibility *)&v4 _inkViewTouchesEndedNotification:notification];
   [(HWBrowserViewControllerAccessibility *)self _axUpdateAndFocusCanvas];
 }
 

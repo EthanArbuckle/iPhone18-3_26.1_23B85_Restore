@@ -10,13 +10,13 @@
 - (void)supported20MHzChannels
 {
   v18 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = [a1 hardwareSupportedChannels];
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  hardwareSupportedChannels = [self hardwareSupportedChannels];
+  v4 = [hardwareSupportedChannels countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
     v5 = v4;
@@ -27,25 +27,25 @@
       {
         if (*v14 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(hardwareSupportedChannels);
         }
 
         v8 = *(*(&v13 + 1) + 8 * i);
         if ([v8 width] == 20)
         {
-          [v2 addObject:v8];
+          [array addObject:v8];
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v5 = [hardwareSupportedChannels countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v5);
   }
 
-  if ([v2 count])
+  if ([array count])
   {
-    v9 = v2;
+    v9 = array;
   }
 
   else
@@ -65,8 +65,8 @@
   v9 = a4;
   if (v9)
   {
-    v10 = [v8 OSSpecificAttributes];
-    v11 = [v10 mutableCopy];
+    oSSpecificAttributes = [v8 OSSpecificAttributes];
+    v11 = [oSSpecificAttributes mutableCopy];
 
     if (!v11)
     {
@@ -77,22 +77,22 @@
     [v8 setOSSpecificAttributes:v11];
   }
 
-  v12 = [a1 updateKnownNetworkProfile:v8 properties:0 error:a5];
+  v12 = [self updateKnownNetworkProfile:v8 properties:0 error:a5];
 
   return v12;
 }
 
 - (unint64_t)deviceSupports6E
 {
-  v2 = [a1 capabilities];
-  if ([v2 indexOfObject:&unk_288304BB8] == 0x7FFFFFFFFFFFFFFFLL)
+  capabilities = [self capabilities];
+  if ([capabilities indexOfObject:&unk_288304BB8] == 0x7FFFFFFFFFFFFFFFLL)
   {
     v3 = 0;
   }
 
   else
   {
-    v3 = ([a1 countryBandSupport] >> 2) & 1;
+    v3 = ([self countryBandSupport] >> 2) & 1;
   }
 
   return v3;

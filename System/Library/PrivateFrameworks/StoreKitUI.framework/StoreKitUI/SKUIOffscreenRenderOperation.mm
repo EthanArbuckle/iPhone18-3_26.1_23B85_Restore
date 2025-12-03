@@ -5,7 +5,7 @@
 - (id)createLayerBlock;
 - (void)init;
 - (void)main;
-- (void)setCreateLayerBlock:(id)a3;
+- (void)setCreateLayerBlock:(id)block;
 @end
 
 @implementation SKUIOffscreenRenderOperation
@@ -36,7 +36,7 @@
   if (([(SKUIOffscreenRenderOperation *)self isCancelled]& 1) == 0)
   {
     v3 = CACurrentMediaTime();
-    v4 = [(SKUIOffscreenRenderOperation *)self createLayerBlock];
+    createLayerBlock = [(SKUIOffscreenRenderOperation *)self createLayerBlock];
     v126 = 0;
     v127 = 0;
     _SKUIOffscreenRenderOperationPopRenderingContext(&v127, &v126);
@@ -48,17 +48,17 @@
       goto LABEL_208;
     }
 
-    v8 = [getEAGLContextClass() currentContext];
+    currentContext = [getEAGLContextClass() currentContext];
     [getEAGLContextClass() setCurrentContext:v7];
     [MEMORY[0x277CD9FF0] begin];
     [MEMORY[0x277CD9FF0] setDisableActions:1];
     v9 = *(MEMORY[0x277CBF398] + 16);
     v125.origin = *MEMORY[0x277CBF398];
     v125.size = v9;
-    if (!v4 || ((v4)[2](v4, &v125), v119 = objc_claimAutoreleasedReturnValue(), v119, !v119))
+    if (!createLayerBlock || ((createLayerBlock)[2](createLayerBlock, &v125), v119 = objc_claimAutoreleasedReturnValue(), v119, !v119))
     {
 LABEL_207:
-      [getEAGLContextClass() setCurrentContext:v8];
+      [getEAGLContextClass() setCurrentContext:currentContext];
       _SKUIOffscreenRenderOperationPushRenderingContext(v5, v7);
 
 LABEL_208:
@@ -81,10 +81,10 @@ LABEL_208:
     v15 = v14;
     [v119 rasterizationScale];
     v17 = v16;
-    v118 = [MEMORY[0x277CD9ED0] layer];
-    [v118 setContentsScale:v15];
-    [v118 addSublayer:v119];
-    [v118 convertRect:v119 fromLayer:{*&v125.origin, *&v125.size}];
+    layer = [MEMORY[0x277CD9ED0] layer];
+    [layer setContentsScale:v15];
+    [layer addSublayer:v119];
+    [layer convertRect:v119 fromLayer:{*&v125.origin, *&v125.size}];
     v19 = v18;
     v21 = v20;
     v23 = v22;
@@ -92,8 +92,8 @@ LABEL_208:
     memset(&v124, 0, sizeof(v124));
     CATransform3DMakeScale(&v124, 1.0, -1.0, 1.0);
     v123 = v124;
-    [v118 setTransform:&v123];
-    [v5 setLayer:v118];
+    [layer setTransform:&v123];
+    [v5 setLayer:layer];
     [v5 setBounds:{v19, v21, v23, v25}];
     [MEMORY[0x277CD9FF0] commit];
     [MEMORY[0x277CD9FF0] flush];
@@ -190,7 +190,7 @@ LABEL_206:
     }
 
     v113 = v29;
-    v37 = v8;
+    v37 = currentContext;
     _Block_object_dispose(&v129, 8);
     if (!v34)
     {
@@ -257,7 +257,7 @@ LABEL_206:
     v133[4] = v46;
     v134[4] = MEMORY[0x277CBEC28];
     v115 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v134 forKeys:v133 count:5];
-    v8 = v37;
+    currentContext = v37;
 
     v129 = 0;
     v130 = &v129;
@@ -1072,17 +1072,17 @@ uint64_t __48__SKUIOffscreenRenderOperation_createLayerBlock__block_invoke(uint6
   return v3;
 }
 
-- (void)setCreateLayerBlock:(id)a3
+- (void)setCreateLayerBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __52__SKUIOffscreenRenderOperation_setCreateLayerBlock___block_invoke;
   v7[3] = &unk_2781F98F0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   dispatch_barrier_async(accessQueue, v7);
 }
 

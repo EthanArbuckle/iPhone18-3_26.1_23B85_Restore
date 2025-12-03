@@ -1,31 +1,31 @@
 @interface BKTVOutController
 - (BKTVOutController)init;
-- (BOOL)displayIsConnected:(id)a3;
-- (BOOL)supportCloningToDisplay:(id)a3;
+- (BOOL)displayIsConnected:(id)connected;
+- (BOOL)supportCloningToDisplay:(id)display;
 - (NSArray)windowServerDisplays;
 - (void)_handleIapServerConnectionDied;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)systemShellDidFinishLaunching:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)systemShellDidFinishLaunching:(id)launching;
 @end
 
 @implementation BKTVOutController
 
 - (void)_handleIapServerConnectionDied
 {
-  if (a1)
+  if (self)
   {
-    v1 = *(a1 + 8);
+    v1 = *(self + 8);
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100057EA8;
     block[3] = &unk_1000FD150;
-    block[4] = a1;
+    block[4] = self;
     dispatch_async(v1, block);
   }
 }
 
-- (void)systemShellDidFinishLaunching:(id)a3
+- (void)systemShellDidFinishLaunching:(id)launching
 {
   v11 = 0;
   v12 = 0;
@@ -56,13 +56,13 @@
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
   v13 = objc_opt_class();
-  v14 = v11;
+  v14 = objectCopy;
   if (v13)
   {
     if (objc_opt_isKindOfClass())
@@ -85,19 +85,19 @@
 
   if (v16)
   {
-    if ([v10 isEqualToString:@"currentMode"])
+    if ([pathCopy isEqualToString:@"currentMode"])
     {
-      v17 = [v16 immutableCopy];
+      immutableCopy = [v16 immutableCopy];
       workQueue = self->_workQueue;
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = sub_100058C08;
       block[3] = &unk_1000FBA68;
       v29 = v14;
-      v30 = v12;
-      v31 = self;
-      v32 = v17;
-      v19 = v17;
+      v30 = changeCopy;
+      selfCopy = self;
+      v32 = immutableCopy;
+      v19 = immutableCopy;
       dispatch_async(workQueue, block);
 
       v20 = v29;
@@ -105,26 +105,26 @@
 
     else
     {
-      if (![v10 isEqualToString:@"availableModes"])
+      if (![pathCopy isEqualToString:@"availableModes"])
       {
         v19 = BKLogDisplay();
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543874;
-          v34 = v10;
+          v34 = pathCopy;
           v35 = 2114;
           v36 = v14;
           v37 = 2114;
-          v38 = v12;
+          v38 = changeCopy;
           _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "%{public}@ changed on %{public}@ -> %{public}@", buf, 0x20u);
         }
 
         goto LABEL_15;
       }
 
-      v21 = [v16 immutableCopy];
-      v22 = 2 * (a6 == @"Wireless");
-      v23 = a6 == @"PurpleTVOut";
+      immutableCopy2 = [v16 immutableCopy];
+      v22 = 2 * (context == @"Wireless");
+      v23 = context == @"PurpleTVOut";
       v24 = self->_workQueue;
       v25[0] = _NSConcreteStackBlock;
       v25[1] = 3221225472;
@@ -136,9 +136,9 @@
       }
 
       v25[4] = self;
-      v26 = v21;
+      v26 = immutableCopy2;
       v27 = v22;
-      v19 = v21;
+      v19 = immutableCopy2;
       dispatch_async(v24, v25);
       v20 = v26;
     }
@@ -147,15 +147,15 @@ LABEL_15:
   }
 }
 
-- (BOOL)supportCloningToDisplay:(id)a3
+- (BOOL)supportCloningToDisplay:(id)display
 {
-  v4 = [a3 name];
-  if ([v4 isEqualToString:@"Wireless"])
+  name = [display name];
+  if ([name isEqualToString:@"Wireless"])
   {
     v5 = 1;
   }
 
-  else if ([v4 isEqualToString:@"TVOut"])
+  else if ([name isEqualToString:@"TVOut"])
   {
     v5 = !self->_queue_forceTVOutMode;
   }
@@ -168,12 +168,12 @@ LABEL_15:
   return v5;
 }
 
-- (BOOL)displayIsConnected:(id)a3
+- (BOOL)displayIsConnected:(id)connected
 {
-  v4 = [a3 displayId];
+  displayId = [connected displayId];
   if (self)
   {
-    v5 = v4;
+    v5 = displayId;
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
@@ -196,7 +196,7 @@ LABEL_15:
           v11 = *(*(&v16 + 1) + 8 * i);
           if ([v11 displayId] == v5)
           {
-            v12 = [v11 immutableCopy];
+            immutableCopy = [v11 immutableCopy];
             goto LABEL_12;
           }
         }
@@ -211,17 +211,17 @@ LABEL_15:
       }
     }
 
-    v12 = 0;
+    immutableCopy = 0;
 LABEL_12:
   }
 
   else
   {
-    v12 = 0;
+    immutableCopy = 0;
   }
 
-  v13 = [v12 availableModes];
-  v14 = [v13 count] != 0;
+  availableModes = [immutableCopy availableModes];
+  v14 = [availableModes count] != 0;
 
   return v14;
 }
@@ -229,9 +229,9 @@ LABEL_12:
 - (NSArray)windowServerDisplays
 {
   v2 = +[CAWindowServer serverIfRunning];
-  v3 = [v2 displays];
+  displays = [v2 displays];
 
-  return v3;
+  return displays;
 }
 
 - (void)dealloc

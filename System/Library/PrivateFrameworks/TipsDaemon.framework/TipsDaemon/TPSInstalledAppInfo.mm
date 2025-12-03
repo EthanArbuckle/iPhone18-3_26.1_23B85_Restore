@@ -1,19 +1,19 @@
 @interface TPSInstalledAppInfo
-- (TPSInstalledAppInfo)initWithDictionary:(id)a3;
+- (TPSInstalledAppInfo)initWithDictionary:(id)dictionary;
 - (id)debugDescription;
 @end
 
 @implementation TPSInstalledAppInfo
 
-- (TPSInstalledAppInfo)initWithDictionary:(id)a3
+- (TPSInstalledAppInfo)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = TPSInstalledAppInfo;
   v5 = [(TPSInstalledAppInfo *)&v14 init];
   if (v5)
   {
-    v6 = [v4 TPSSafeStringForKey:@"bundleId"];
+    v6 = [dictionaryCopy TPSSafeStringForKey:@"bundleId"];
     v7 = v6;
     if (v6)
     {
@@ -27,11 +27,11 @@
 
     objc_storeStrong(&v5->_bundleID, v8);
 
-    v9 = [v4 TPSSafeStringForKey:@"minVersion"];
+    v9 = [dictionaryCopy TPSSafeStringForKey:@"minVersion"];
     minVersion = v5->_minVersion;
     v5->_minVersion = v9;
 
-    v11 = [v4 TPSSafeStringForKey:@"maxVersion"];
+    v11 = [dictionaryCopy TPSSafeStringForKey:@"maxVersion"];
     maxVersion = v5->_maxVersion;
     v5->_maxVersion = v11;
   }
@@ -47,14 +47,14 @@
   v4 = [(TPSSerializableObject *)&v10 debugDescription];
   v5 = [v3 initWithString:v4];
 
-  v6 = [(TPSInstalledAppInfo *)self bundleID];
-  [v5 appendFormat:@"%@ = %@", @"bundleID", v6];
+  bundleID = [(TPSInstalledAppInfo *)self bundleID];
+  [v5 appendFormat:@"%@ = %@", @"bundleID", bundleID];
 
-  v7 = [(TPSInstalledAppInfo *)self minVersion];
-  [v5 appendFormat:@"; %@ = %@", @"minVersion", v7];
+  minVersion = [(TPSInstalledAppInfo *)self minVersion];
+  [v5 appendFormat:@"; %@ = %@", @"minVersion", minVersion];
 
-  v8 = [(TPSInstalledAppInfo *)self maxVersion];
-  [v5 appendFormat:@"; %@ = %@", @"maxVersion", v8];
+  maxVersion = [(TPSInstalledAppInfo *)self maxVersion];
+  [v5 appendFormat:@"; %@ = %@", @"maxVersion", maxVersion];
 
   return v5;
 }

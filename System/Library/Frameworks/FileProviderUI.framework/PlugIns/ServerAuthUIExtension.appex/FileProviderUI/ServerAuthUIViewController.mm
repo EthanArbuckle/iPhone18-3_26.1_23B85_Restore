@@ -1,17 +1,17 @@
 @interface ServerAuthUIViewController
 - (FPUIAuthenticationViewController)authenticaionVC;
 - (ServerAuthUIViewController)init;
-- (void)_updateRecentServersListWithServer:(id)a3;
-- (void)addSMBServerOrShare:(id)a3 connectionFlowDelegate:(id)a4;
+- (void)_updateRecentServersListWithServer:(id)server;
+- (void)addSMBServerOrShare:(id)share connectionFlowDelegate:(id)delegate;
 - (void)cancel;
 - (void)cancelAuthenticationSession;
-- (void)connectToServerAtAddress:(id)a3 connectionFlowDelegate:(id)a4;
-- (void)connectionFlowDelegate:(id)a3 didInputCredentials:(id)a4;
-- (void)connectionFlowDelegate:(id)a3 didPickVolumeMountIdentifiers:(id)a4;
-- (void)didEncounterError:(id)a3 completionHandler:(id)a4;
-- (void)mountedVolumeIdentifiersWithCompletionHandler:(id)a3;
-- (void)recentServerRepresentationsWithCompletionHandler:(id)a3;
-- (void)removeRecentServerWithRepresentation:(id)a3 completion:(id)a4;
+- (void)connectToServerAtAddress:(id)address connectionFlowDelegate:(id)delegate;
+- (void)connectionFlowDelegate:(id)delegate didInputCredentials:(id)credentials;
+- (void)connectionFlowDelegate:(id)delegate didPickVolumeMountIdentifiers:(id)identifiers;
+- (void)didEncounterError:(id)error completionHandler:(id)handler;
+- (void)mountedVolumeIdentifiersWithCompletionHandler:(id)handler;
+- (void)recentServerRepresentationsWithCompletionHandler:(id)handler;
+- (void)removeRecentServerWithRepresentation:(id)representation completion:(id)completion;
 - (void)viewDidLoad;
 @end
 
@@ -45,40 +45,40 @@
   v29.receiver = self;
   v29.super_class = ServerAuthUIViewController;
   [(ServerAuthUIViewController *)&v29 viewDidLoad];
-  v3 = [(ServerAuthUIViewController *)self extensionContext];
-  v28 = [v3 initialURL];
+  extensionContext = [(ServerAuthUIViewController *)self extensionContext];
+  initialURL = [extensionContext initialURL];
 
-  v4 = [[FPUIAuthenticationViewController alloc] initWithServerURL:v28];
+  v4 = [[FPUIAuthenticationViewController alloc] initWithServerURL:initialURL];
   [v4 setAuthenticationDelegate:self];
   objc_storeWeak(&self->_authenticaionVC, v4);
   [(ServerAuthUIViewController *)self addChildViewController:v4];
-  v5 = [(ServerAuthUIViewController *)self view];
-  v6 = [v4 view];
-  [v5 addSubview:v6];
+  view = [(ServerAuthUIViewController *)self view];
+  view2 = [v4 view];
+  [view addSubview:view2];
 
-  v27 = [(ServerAuthUIViewController *)self view];
-  v25 = [v27 centerXAnchor];
-  v26 = [v4 view];
-  v24 = [v26 centerXAnchor];
-  v23 = [v25 constraintEqualToAnchor:v24];
+  view3 = [(ServerAuthUIViewController *)self view];
+  centerXAnchor = [view3 centerXAnchor];
+  view4 = [v4 view];
+  centerXAnchor2 = [view4 centerXAnchor];
+  v23 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v30[0] = v23;
-  v22 = [(ServerAuthUIViewController *)self view];
-  v20 = [v22 centerYAnchor];
-  v21 = [v4 view];
-  v19 = [v21 centerYAnchor];
-  v18 = [v20 constraintEqualToAnchor:v19];
+  view5 = [(ServerAuthUIViewController *)self view];
+  centerYAnchor = [view5 centerYAnchor];
+  view6 = [v4 view];
+  centerYAnchor2 = [view6 centerYAnchor];
+  v18 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v30[1] = v18;
-  v17 = [(ServerAuthUIViewController *)self view];
-  v15 = [v17 widthAnchor];
-  v16 = [v4 view];
-  v7 = [v16 widthAnchor];
-  v8 = [v15 constraintEqualToAnchor:v7];
+  view7 = [(ServerAuthUIViewController *)self view];
+  widthAnchor = [view7 widthAnchor];
+  view8 = [v4 view];
+  widthAnchor2 = [view8 widthAnchor];
+  v8 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
   v30[2] = v8;
-  v9 = [(ServerAuthUIViewController *)self view];
-  v10 = [v9 heightAnchor];
-  v11 = [v4 view];
-  v12 = [v11 heightAnchor];
-  v13 = [v10 constraintEqualToAnchor:v12];
+  view9 = [(ServerAuthUIViewController *)self view];
+  heightAnchor = [view9 heightAnchor];
+  view10 = [v4 view];
+  heightAnchor2 = [view10 heightAnchor];
+  v13 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
   v30[3] = v13;
   v14 = [NSArray arrayWithObjects:v30 count:4];
   [NSLayoutConstraint activateConstraints:v14];
@@ -88,41 +88,41 @@
 
 - (void)cancel
 {
-  v3 = [(ServerAuthUIViewController *)self extensionContext];
+  extensionContext = [(ServerAuthUIViewController *)self extensionContext];
   v2 = [NSError errorWithDomain:NSCocoaErrorDomain code:3072 userInfo:0];
-  [v3 cancelRequestWithError:v2];
+  [extensionContext cancelRequestWithError:v2];
 }
 
-- (void)connectToServerAtAddress:(id)a3 connectionFlowDelegate:(id)a4
+- (void)connectToServerAtAddress:(id)address connectionFlowDelegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [NSURL _webkit_URLWithUserTypedString:v6];
-  v9 = [v8 host];
-  if (!v9 || (v10 = v9, [v8 scheme], v11 = objc_claimAutoreleasedReturnValue(), v11, v10, !v11))
+  addressCopy = address;
+  delegateCopy = delegate;
+  v8 = [NSURL _webkit_URLWithUserTypedString:addressCopy];
+  host = [v8 host];
+  if (!host || (v10 = host, [v8 scheme], v11 = objc_claimAutoreleasedReturnValue(), v11, v10, !v11))
   {
-    v12 = [NSString stringWithFormat:@"%@://%@", @"smb", v6];
+    addressCopy = [NSString stringWithFormat:@"%@://%@", @"smb", addressCopy];
 
-    v13 = [NSURL _webkit_URLWithUserTypedString:v12];
+    v13 = [NSURL _webkit_URLWithUserTypedString:addressCopy];
 
     v8 = v13;
-    v6 = v12;
+    addressCopy = addressCopy;
   }
 
   v14 = +[NSCharacterSet URLHostAllowedCharacterSet];
-  v15 = [v14 invertedSet];
+  invertedSet = [v14 invertedSet];
 
-  if (v8 && ([v8 host], v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "rangeOfCharacterFromSet:", v15), v16, v17 == 0x7FFFFFFFFFFFFFFFLL))
+  if (v8 && ([v8 host], v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "rangeOfCharacterFromSet:", invertedSet), v16, v17 == 0x7FFFFFFFFFFFFFFFLL))
   {
     v18 = 0;
   }
 
   else
   {
-    if (v6)
+    if (addressCopy)
     {
       v34 = NSURLErrorFailingURLStringErrorKey;
-      v35 = v6;
+      v35 = addressCopy;
       v19 = [NSDictionary dictionaryWithObjects:&v35 forKeys:&v34 count:1];
     }
 
@@ -134,8 +134,8 @@
     v18 = [NSError errorWithDomain:NSURLErrorDomain code:-1000 userInfo:v19];
   }
 
-  v20 = [v8 scheme];
-  if ([v20 compare:@"smb" options:1])
+  scheme = [v8 scheme];
+  if ([scheme compare:@"smb" options:1])
   {
 
 LABEL_14:
@@ -157,9 +157,9 @@ LABEL_14:
     goto LABEL_18;
   }
 
-  v21 = [v8 isFileURL];
+  isFileURL = [v8 isFileURL];
 
-  if (v21)
+  if (isFileURL)
   {
     goto LABEL_14;
   }
@@ -167,37 +167,37 @@ LABEL_14:
 LABEL_18:
   if (v18)
   {
-    [v7 authenticationDelegate:self didEncounterError:v18];
+    [delegateCopy authenticationDelegate:self didEncounterError:v18];
   }
 
   else
   {
     objc_storeStrong(&self->_serverURL, v8);
-    v24 = [(NSURL *)self->_serverURL user];
-    if (v24 && (v25 = v24, [(NSURL *)self->_serverURL password], v26 = objc_claimAutoreleasedReturnValue(), v26, v25, v26))
+    user = [(NSURL *)self->_serverURL user];
+    if (user && (v25 = user, [(NSURL *)self->_serverURL password], v26 = objc_claimAutoreleasedReturnValue(), v26, v25, v26))
     {
-      [(ServerAuthUIViewController *)self addSMBServerOrShare:self->_serverURL connectionFlowDelegate:v7];
+      [(ServerAuthUIViewController *)self addSMBServerOrShare:self->_serverURL connectionFlowDelegate:delegateCopy];
     }
 
     else
     {
       connection = self->_connection;
-      v28 = [(NSURL *)self->_serverURL host];
+      host2 = [(NSURL *)self->_serverURL host];
       v29[0] = _NSConcreteStackBlock;
       v29[1] = 3221225472;
       v29[2] = sub_100001BA8;
       v29[3] = &unk_1000083A0;
-      v30 = v7;
-      v31 = self;
-      [(SMBClientManager *)connection credentialTypesForServer:v28 completionHandler:v29];
+      v30 = delegateCopy;
+      selfCopy = self;
+      [(SMBClientManager *)connection credentialTypesForServer:host2 completionHandler:v29];
     }
   }
 }
 
-- (void)addSMBServerOrShare:(id)a3 connectionFlowDelegate:(id)a4
+- (void)addSMBServerOrShare:(id)share connectionFlowDelegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
+  shareCopy = share;
+  delegateCopy = delegate;
   objc_initWeak(&location, self);
   connection = self->_connection;
   v11[0] = _NSConcreteStackBlock;
@@ -205,9 +205,9 @@ LABEL_18:
   v11[2] = sub_1000020A0;
   v11[3] = &unk_1000083F0;
   objc_copyWeak(&v14, &location);
-  v9 = v7;
+  v9 = delegateCopy;
   v12 = v9;
-  v10 = v6;
+  v10 = shareCopy;
   v13 = v10;
   [(SMBClientManager *)connection addSMBServerOrShare:v10 completionHandler:v11];
 
@@ -215,15 +215,15 @@ LABEL_18:
   objc_destroyWeak(&location);
 }
 
-- (void)connectionFlowDelegate:(id)a3 didInputCredentials:(id)a4
+- (void)connectionFlowDelegate:(id)delegate didInputCredentials:(id)credentials
 {
-  v12 = a4;
-  v6 = a3;
+  credentialsCopy = credentials;
+  delegateCopy = delegate;
   v7 = [[NSURLComponents alloc] initWithURL:self->_serverURL resolvingAgainstBaseURL:0];
-  v8 = [v12 type];
-  if ((v8 - 1) >= 2)
+  type = [credentialsCopy type];
+  if ((type - 1) >= 2)
   {
-    if (!v8)
+    if (!type)
     {
       [v7 setUser:@"GUEST"];
       [v7 setPassword:0];
@@ -232,34 +232,34 @@ LABEL_18:
 
   else
   {
-    v9 = [v12 username];
-    [v7 setUser:v9];
+    username = [credentialsCopy username];
+    [v7 setUser:username];
 
-    v10 = [v12 password];
-    [v7 setPassword:v10];
+    password = [credentialsCopy password];
+    [v7 setPassword:password];
   }
 
   v11 = [v7 URL];
-  [(ServerAuthUIViewController *)self addSMBServerOrShare:v11 connectionFlowDelegate:v6];
+  [(ServerAuthUIViewController *)self addSMBServerOrShare:v11 connectionFlowDelegate:delegateCopy];
 }
 
-- (void)connectionFlowDelegate:(id)a3 didPickVolumeMountIdentifiers:(id)a4
+- (void)connectionFlowDelegate:(id)delegate didPickVolumeMountIdentifiers:(id)identifiers
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  identifiersCopy = identifiers;
   objc_initWeak(&location, self);
   connection = self->_connection;
-  v9 = [(NSURL *)self->_serverURL host];
+  host = [(NSURL *)self->_serverURL host];
   chosenAuthType = self->_chosenAuthType;
   chosenAuthOptions = self->_chosenAuthOptions;
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10000255C;
   v13[3] = &unk_100008468;
-  v12 = v6;
+  v12 = delegateCopy;
   v14 = v12;
   objc_copyWeak(&v15, &location);
-  [(SMBClientManager *)connection addVolumes:v7 atServer:v9 credentialType:chosenAuthType credential:chosenAuthOptions completionHandler:v13];
+  [(SMBClientManager *)connection addVolumes:identifiersCopy atServer:host credentialType:chosenAuthType credential:chosenAuthOptions completionHandler:v13];
 
   objc_destroyWeak(&v15);
   objc_destroyWeak(&location);
@@ -267,14 +267,14 @@ LABEL_18:
 
 - (void)cancelAuthenticationSession
 {
-  v3 = [(ServerAuthUIViewController *)self extensionContext];
+  extensionContext = [(ServerAuthUIViewController *)self extensionContext];
   v2 = [NSError errorWithDomain:NSCocoaErrorDomain code:3072 userInfo:0];
-  [v3 cancelRequestWithError:v2];
+  [extensionContext cancelRequestWithError:v2];
 }
 
-- (void)_updateRecentServersListWithServer:(id)a3
+- (void)_updateRecentServersListWithServer:(id)server
 {
-  v11 = [a3 serverAuthUI_strippedDownURL];
+  serverAuthUI_strippedDownURL = [server serverAuthUI_strippedDownURL];
   v4 = +[NSUserDefaults standardUserDefaults];
   v5 = [v4 objectForKey:@"com.apple.SMBClientProvider.FileProvider.RecentServers"];
   v6 = [v5 mutableCopy];
@@ -284,18 +284,18 @@ LABEL_18:
     v6 = +[NSMutableArray array];
   }
 
-  v7 = [v11 absoluteString];
-  [v6 removeObject:v7];
+  absoluteString = [serverAuthUI_strippedDownURL absoluteString];
+  [v6 removeObject:absoluteString];
 
-  v8 = [v11 absoluteString];
-  [v6 insertObject:v8 atIndex:0];
+  absoluteString2 = [serverAuthUI_strippedDownURL absoluteString];
+  [v6 insertObject:absoluteString2 atIndex:0];
 
   if ([v6 count] >= 4)
   {
     do
     {
-      v9 = [v6 lastObject];
-      v10 = [[NSURL alloc] initWithString:v9];
+      lastObject = [v6 lastObject];
+      v10 = [[NSURL alloc] initWithString:lastObject];
       [(ServerAuthUICredentialStore *)self->_credentialStore dropCredentialsForServerURL:v10];
       [v6 removeLastObject];
     }
@@ -306,9 +306,9 @@ LABEL_18:
   [v4 setObject:v6 forKey:@"com.apple.SMBClientProvider.FileProvider.RecentServers"];
 }
 
-- (void)recentServerRepresentationsWithCompletionHandler:(id)a3
+- (void)recentServerRepresentationsWithCompletionHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v14 = +[NSUserDefaults standardUserDefaults];
   v4 = [v14 objectForKey:@"com.apple.SMBClientProvider.FileProvider.RecentServers"];
   v5 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v4 count]);
@@ -350,41 +350,41 @@ LABEL_18:
     while (v8);
   }
 
-  v3[2](v3, v5, 0);
+  handlerCopy[2](handlerCopy, v5, 0);
 }
 
-- (void)removeRecentServerWithRepresentation:(id)a3 completion:(id)a4
+- (void)removeRecentServerWithRepresentation:(id)representation completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  representationCopy = representation;
   v13 = +[NSUserDefaults standardUserDefaults];
   v8 = [v13 objectForKey:@"com.apple.SMBClientProvider.FileProvider.RecentServers"];
   v9 = [v8 mutableCopy];
 
   credentialStore = self->_credentialStore;
-  v11 = [v7 url];
+  v11 = [representationCopy url];
   [(ServerAuthUICredentialStore *)credentialStore dropCredentialsForServerURL:v11];
 
-  v12 = [v7 identifier];
+  identifier = [representationCopy identifier];
 
-  [v9 removeObject:v12];
+  [v9 removeObject:identifier];
   [v13 setObject:v9 forKey:@"com.apple.SMBClientProvider.FileProvider.RecentServers"];
-  v6[2](v6, 0);
+  completionCopy[2](completionCopy, 0);
 }
 
-- (void)mountedVolumeIdentifiersWithCompletionHandler:(id)a3
+- (void)mountedVolumeIdentifiersWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = [NSError errorWithDomain:NSCocoaErrorDomain code:3328 userInfo:0];
-  (*(a3 + 2))(v4, 0, v5);
+  (*(handler + 2))(handlerCopy, 0, v5);
 }
 
-- (void)didEncounterError:(id)a3 completionHandler:(id)a4
+- (void)didEncounterError:(id)error completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ServerAuthUIViewController *)self extensionContext];
-  [v8 didEncounterError:v7 completionHandler:v6];
+  handlerCopy = handler;
+  errorCopy = error;
+  extensionContext = [(ServerAuthUIViewController *)self extensionContext];
+  [extensionContext didEncounterError:errorCopy completionHandler:handlerCopy];
 }
 
 - (FPUIAuthenticationViewController)authenticaionVC

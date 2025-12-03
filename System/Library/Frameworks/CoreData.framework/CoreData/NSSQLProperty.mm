@@ -1,9 +1,9 @@
 @interface NSSQLProperty
-- (BOOL)isEqual:(id)a3;
-- (NSSQLProperty)initWithEntity:(id)a3 propertyDescription:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (NSSQLProperty)initWithEntity:(id)entity propertyDescription:(id)description;
 - (id)description;
 - (void)dealloc;
-- (void)setConstrained:(BOOL)a3;
+- (void)setConstrained:(BOOL)constrained;
 @end
 
 @implementation NSSQLProperty
@@ -17,7 +17,7 @@
   [(NSSQLProperty *)&v2 dealloc];
 }
 
-- (NSSQLProperty)initWithEntity:(id)a3 propertyDescription:(id)a4
+- (NSSQLProperty)initWithEntity:(id)entity propertyDescription:(id)description
 {
   v10.receiver = self;
   v10.super_class = NSSQLProperty;
@@ -25,22 +25,22 @@
   v7 = v6;
   if (v6)
   {
-    v6->_propertyDescription = a4;
-    v6->_entity = a3;
-    if (a4)
+    v6->_propertyDescription = description;
+    v6->_entity = entity;
+    if (description)
     {
-      if (-[NSEntityDescription _hasUniquedProperty:]([a3 entityDescription], a4))
+      if (-[NSEntityDescription _hasUniquedProperty:]([entity entityDescription], description))
       {
         *&v7->_flags |= 6u;
-        if (a3)
+        if (entity)
         {
-          v8 = [a3 rootEntity];
-          if (v8)
+          rootEntity = [entity rootEntity];
+          if (rootEntity)
           {
-            v8 = v8[26];
+            rootEntity = rootEntity[26];
           }
 
-          [v8 addObject:v7];
+          [rootEntity addObject:v7];
         }
       }
     }
@@ -49,9 +49,9 @@
   return v7;
 }
 
-- (void)setConstrained:(BOOL)a3
+- (void)setConstrained:(BOOL)constrained
 {
-  if (a3)
+  if (constrained)
   {
     v3 = 4;
   }
@@ -64,9 +64,9 @@
   *&self->_flags = *&self->_flags & 0xFFFB | v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     LOBYTE(v7) = 1;
   }
@@ -80,8 +80,8 @@
     v7 = [(NSSQLProperty *)&v10 isEqual:?];
     if (v7)
     {
-      v8 = [(NSSQLProperty *)self propertyDescription];
-      LOBYTE(v7) = v8 == [a3 propertyDescription];
+      propertyDescription = [(NSSQLProperty *)self propertyDescription];
+      LOBYTE(v7) = propertyDescription == [equal propertyDescription];
     }
   }
 
@@ -94,18 +94,18 @@
   v4 = MEMORY[0x1E696AEC0];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  v7 = [(NSSQLProperty *)self name];
+  name = [(NSSQLProperty *)self name];
   if (self)
   {
-    v8 = [(NSSQLProperty *)self columnName];
+    columnName = [(NSSQLProperty *)self columnName];
   }
 
   else
   {
-    v8 = 0;
+    columnName = 0;
   }
 
-  v9 = [v4 stringWithFormat:@"<%@ %@ (%@)>", v6, v7, v8];
+  v9 = [v4 stringWithFormat:@"<%@ %@ (%@)>", v6, name, columnName];
   objc_autoreleasePoolPop(v3);
 
   return v9;

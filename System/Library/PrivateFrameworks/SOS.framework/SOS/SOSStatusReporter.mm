@@ -4,8 +4,8 @@
 - (SOSStatusReporter)init;
 - (void)_updateSOSFlowState;
 - (void)handleSosdLaunch;
-- (void)setConnection:(id)a3;
-- (void)updateSOSFlowState:(int64_t)a3;
+- (void)setConnection:(id)connection;
+- (void)updateSOSFlowState:(int64_t)state;
 @end
 
 @implementation SOSStatusReporter
@@ -16,7 +16,7 @@
   block[1] = 3221225472;
   block[2] = __35__SOSStatusReporter_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken_5 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_5, block);
@@ -67,15 +67,15 @@ uint64_t __35__SOSStatusReporter_sharedInstance__block_invoke(uint64_t a1)
     }
 
     self = v3;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 void __25__SOSStatusReporter_init__block_invoke(uint64_t a1)
@@ -120,14 +120,14 @@ void __25__SOSStatusReporter_init__block_invoke(uint64_t a1)
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateSOSFlowState:(int64_t)a3
+- (void)updateSOSFlowState:(int64_t)state
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __40__SOSStatusReporter_updateSOSFlowState___block_invoke;
   v3[3] = &unk_279B53E18;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = state;
   dispatch_async(MEMORY[0x277D85CD0], v3);
 }
 
@@ -151,8 +151,8 @@ uint64_t __40__SOSStatusReporter_updateSOSFlowState___block_invoke(uint64_t a1)
 
 - (void)_updateSOSFlowState
 {
-  v4 = [(SOSStatusReporter *)self connection];
-  v3 = [v4 remoteObjectProxyWithErrorHandler:&__block_literal_global_10];
+  connection = [(SOSStatusReporter *)self connection];
+  v3 = [connection remoteObjectProxyWithErrorHandler:&__block_literal_global_10];
   [v3 updateSOSFlowState:{-[SOSStatusReporter flowState](self, "flowState")}];
 }
 
@@ -166,9 +166,9 @@ void __40__SOSStatusReporter__updateSOSFlowState__block_invoke(uint64_t a1, void
   }
 }
 
-- (void)setConnection:(id)a3
+- (void)setConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v6 = sos_default_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -179,17 +179,17 @@ void __40__SOSStatusReporter__updateSOSFlowState__block_invoke(uint64_t a1, void
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
   connection = self->_connection;
   p_connection = &self->_connection;
-  v7 = connection;
-  if (connection != v5)
+  connectionCopy2 = connection;
+  if (connection != connectionCopy)
   {
-    if (v7)
+    if (connectionCopy2)
     {
-      [(NSXPCConnection *)v7 invalidate];
+      [(NSXPCConnection *)connectionCopy2 invalidate];
       [(NSXPCConnection *)*p_connection setInvalidationHandler:0];
       [(NSXPCConnection *)*p_connection setInterruptionHandler:0];
     }
 
-    objc_storeStrong(p_connection, a3);
+    objc_storeStrong(p_connection, connection);
   }
 }
 

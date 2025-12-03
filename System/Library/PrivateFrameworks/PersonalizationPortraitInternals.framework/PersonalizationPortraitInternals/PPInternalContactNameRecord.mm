@@ -1,15 +1,15 @@
 @interface PPInternalContactNameRecord
-- (PPInternalContactNameRecord)initWithIdentifier:(id)a3 score:(double)a4 source:(unsigned __int8)a5 sourceIdentifier:(id)a6 changeType:(unsigned __int8)a7 firstName:(id)a8 phoneticFirstName:(id)a9 middleName:(id)a10 phoneticMiddleName:(id)a11 lastName:(id)a12 phoneticLastName:(id)a13 organizationName:(id)a14 jobTitle:(id)a15 nickname:(id)a16 relatedNames:(id)a17 streetNames:(id)a18 cityNames:(id)a19;
-- (PPInternalContactNameRecord)initWithPBContactNameRecord:(id)a3;
+- (PPInternalContactNameRecord)initWithIdentifier:(id)identifier score:(double)score source:(unsigned __int8)source sourceIdentifier:(id)sourceIdentifier changeType:(unsigned __int8)type firstName:(id)name phoneticFirstName:(id)firstName middleName:(id)self0 phoneticMiddleName:(id)self1 lastName:(id)self2 phoneticLastName:(id)self3 organizationName:(id)self4 jobTitle:(id)self5 nickname:(id)self6 relatedNames:(id)self7 streetNames:(id)self8 cityNames:(id)self9;
+- (PPInternalContactNameRecord)initWithPBContactNameRecord:(id)record;
 - (id)clientCopy;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)localizedFullName;
 - (id)relatedNames;
 @end
 
 @implementation PPInternalContactNameRecord
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [PPInternalContactNameRecord alloc];
   v5 = [(PPPBContactNameRecord *)self->_pbRecord copy];
@@ -24,28 +24,28 @@
   if (!localizedFullName)
   {
     v4 = objc_opt_new();
-    v5 = [(PPPBContactNameRecord *)self->_pbRecord firstName];
-    v6 = [(PPPBContactNameRecord *)self->_pbRecord middleName];
-    v7 = [(PPPBContactNameRecord *)self->_pbRecord lastName];
-    v8 = [(PPPBContactNameRecord *)self->_pbRecord nickname];
-    if (v5)
+    firstName = [(PPPBContactNameRecord *)self->_pbRecord firstName];
+    middleName = [(PPPBContactNameRecord *)self->_pbRecord middleName];
+    lastName = [(PPPBContactNameRecord *)self->_pbRecord lastName];
+    nickname = [(PPPBContactNameRecord *)self->_pbRecord nickname];
+    if (firstName)
     {
-      [v4 setGivenName:v5];
+      [v4 setGivenName:firstName];
     }
 
-    if (v6)
+    if (middleName)
     {
-      [v4 setMiddleName:v6];
+      [v4 setMiddleName:middleName];
     }
 
-    if (v7)
+    if (lastName)
     {
-      [v4 setFamilyName:v7];
+      [v4 setFamilyName:lastName];
     }
 
-    if (v8)
+    if (nickname)
     {
-      [v4 setNickname:v8];
+      [v4 setNickname:nickname];
     }
 
     [v4 setContactType:0];
@@ -63,15 +63,15 @@
 {
   v24 = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277CBEB38]);
-  v4 = [(PPPBContactNameRecord *)self->_pbRecord relatedNames];
-  v5 = [v3 initWithCapacity:{objc_msgSend(v4, "count")}];
+  relatedNames = [(PPPBContactNameRecord *)self->_pbRecord relatedNames];
+  v5 = [v3 initWithCapacity:{objc_msgSend(relatedNames, "count")}];
 
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = [(PPPBContactNameRecord *)self->_pbRecord relatedNames];
-  v7 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  relatedNames2 = [(PPPBContactNameRecord *)self->_pbRecord relatedNames];
+  v7 = [relatedNames2 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v7)
   {
     v8 = v7;
@@ -82,7 +82,7 @@
       {
         if (*v20 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(relatedNames2);
         }
 
         v11 = *(*(&v19 + 1) + 8 * i);
@@ -90,18 +90,18 @@
         if (v12)
         {
           v13 = v12;
-          v14 = [v11 value];
+          value = [v11 value];
 
-          if (v14)
+          if (value)
           {
-            v15 = [v11 value];
+            value2 = [v11 value];
             v16 = [v11 key];
-            [v5 setObject:v15 forKeyedSubscript:v16];
+            [v5 setObject:value2 forKeyedSubscript:v16];
           }
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v8 = [relatedNames2 countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v8);
@@ -115,103 +115,103 @@
 - (id)clientCopy
 {
   v21 = objc_alloc(MEMORY[0x277D3A360]);
-  v23 = [(PPInternalContactNameRecord *)self identifier];
+  identifier = [(PPInternalContactNameRecord *)self identifier];
   [(PPInternalContactNameRecord *)self score];
   v4 = v3;
-  v20 = [(PPInternalContactNameRecord *)self source];
-  v19 = [(PPInternalContactNameRecord *)self sourceIdentifier];
-  v18 = [(PPInternalContactNameRecord *)self changeType];
-  v17 = [(PPInternalContactNameRecord *)self firstName];
-  v16 = [(PPInternalContactNameRecord *)self phoneticFirstName];
-  v15 = [(PPInternalContactNameRecord *)self middleName];
-  v14 = [(PPInternalContactNameRecord *)self phoneticMiddleName];
-  v13 = [(PPInternalContactNameRecord *)self lastName];
-  v5 = [(PPInternalContactNameRecord *)self phoneticLastName];
-  v6 = [(PPInternalContactNameRecord *)self organizationName];
-  v7 = [(PPInternalContactNameRecord *)self jobTitle];
-  v8 = [(PPInternalContactNameRecord *)self nickname];
-  v9 = [(PPInternalContactNameRecord *)self relatedNames];
-  v10 = [(PPInternalContactNameRecord *)self streetNames];
-  v11 = [(PPInternalContactNameRecord *)self cityNames];
-  v22 = [v21 initWithIdentifier:v23 score:v20 source:v19 sourceIdentifier:v18 changeType:v17 firstName:v16 phoneticFirstName:v4 middleName:v15 phoneticMiddleName:v14 lastName:v13 phoneticLastName:v5 organizationName:v6 jobTitle:v7 nickname:v8 relatedNames:v9 streetNames:v10 cityNames:v11];
+  source = [(PPInternalContactNameRecord *)self source];
+  sourceIdentifier = [(PPInternalContactNameRecord *)self sourceIdentifier];
+  changeType = [(PPInternalContactNameRecord *)self changeType];
+  firstName = [(PPInternalContactNameRecord *)self firstName];
+  phoneticFirstName = [(PPInternalContactNameRecord *)self phoneticFirstName];
+  middleName = [(PPInternalContactNameRecord *)self middleName];
+  phoneticMiddleName = [(PPInternalContactNameRecord *)self phoneticMiddleName];
+  lastName = [(PPInternalContactNameRecord *)self lastName];
+  phoneticLastName = [(PPInternalContactNameRecord *)self phoneticLastName];
+  organizationName = [(PPInternalContactNameRecord *)self organizationName];
+  jobTitle = [(PPInternalContactNameRecord *)self jobTitle];
+  nickname = [(PPInternalContactNameRecord *)self nickname];
+  relatedNames = [(PPInternalContactNameRecord *)self relatedNames];
+  streetNames = [(PPInternalContactNameRecord *)self streetNames];
+  cityNames = [(PPInternalContactNameRecord *)self cityNames];
+  v22 = [v21 initWithIdentifier:identifier score:source source:sourceIdentifier sourceIdentifier:changeType changeType:firstName firstName:phoneticFirstName phoneticFirstName:v4 middleName:middleName phoneticMiddleName:phoneticMiddleName lastName:lastName phoneticLastName:phoneticLastName organizationName:organizationName jobTitle:jobTitle nickname:nickname relatedNames:relatedNames streetNames:streetNames cityNames:cityNames];
 
   return v22;
 }
 
-- (PPInternalContactNameRecord)initWithPBContactNameRecord:(id)a3
+- (PPInternalContactNameRecord)initWithPBContactNameRecord:(id)record
 {
-  v5 = a3;
+  recordCopy = record;
   v9.receiver = self;
   v9.super_class = PPInternalContactNameRecord;
-  v6 = [(PPContactNameRecord *)&v9 init_];
-  v7 = v6;
-  if (v6)
+  init_ = [(PPContactNameRecord *)&v9 init_];
+  v7 = init_;
+  if (init_)
   {
-    objc_storeStrong(v6 + 1, a3);
+    objc_storeStrong(init_ + 1, record);
   }
 
   return v7;
 }
 
-- (PPInternalContactNameRecord)initWithIdentifier:(id)a3 score:(double)a4 source:(unsigned __int8)a5 sourceIdentifier:(id)a6 changeType:(unsigned __int8)a7 firstName:(id)a8 phoneticFirstName:(id)a9 middleName:(id)a10 phoneticMiddleName:(id)a11 lastName:(id)a12 phoneticLastName:(id)a13 organizationName:(id)a14 jobTitle:(id)a15 nickname:(id)a16 relatedNames:(id)a17 streetNames:(id)a18 cityNames:(id)a19
+- (PPInternalContactNameRecord)initWithIdentifier:(id)identifier score:(double)score source:(unsigned __int8)source sourceIdentifier:(id)sourceIdentifier changeType:(unsigned __int8)type firstName:(id)name phoneticFirstName:(id)firstName middleName:(id)self0 phoneticMiddleName:(id)self1 lastName:(id)self2 phoneticLastName:(id)self3 organizationName:(id)self4 jobTitle:(id)self5 nickname:(id)self6 relatedNames:(id)self7 streetNames:(id)self8 cityNames:(id)self9
 {
-  v53 = a7;
-  v51 = a5;
+  typeCopy = type;
+  sourceCopy = source;
   v71 = *MEMORY[0x277D85DE8];
-  v23 = a3;
-  v24 = a6;
-  v25 = a8;
-  v26 = a9;
-  v64 = a10;
-  v27 = a11;
-  v63 = a12;
-  v62 = a13;
-  v28 = v23;
-  v61 = a14;
-  v29 = a15;
-  v30 = a16;
-  v31 = a17;
-  v60 = a18;
-  v32 = a19;
+  identifierCopy = identifier;
+  sourceIdentifierCopy = sourceIdentifier;
+  nameCopy = name;
+  firstNameCopy = firstName;
+  middleNameCopy = middleName;
+  phoneticMiddleNameCopy = phoneticMiddleName;
+  lastNameCopy = lastName;
+  phoneticLastNameCopy = phoneticLastName;
+  v28 = identifierCopy;
+  organizationNameCopy = organizationName;
+  titleCopy = title;
+  nicknameCopy = nickname;
+  namesCopy = names;
+  streetNamesCopy = streetNames;
+  cityNamesCopy = cityNames;
   v69.receiver = self;
   v69.super_class = PPInternalContactNameRecord;
-  v33 = [(PPContactNameRecord *)&v69 init_];
-  if (v33)
+  init_ = [(PPContactNameRecord *)&v69 init_];
+  if (init_)
   {
     v34 = objc_opt_new();
-    v59 = v27;
-    pbRecord = v33->_pbRecord;
-    v33->_pbRecord = v34;
+    v59 = phoneticMiddleNameCopy;
+    pbRecord = init_->_pbRecord;
+    init_->_pbRecord = v34;
 
-    [(PPPBContactNameRecord *)v33->_pbRecord setIdentifier:v28];
-    [(PPPBContactNameRecord *)v33->_pbRecord setScore:a4];
-    [(PPPBContactNameRecord *)v33->_pbRecord setSource:v51];
-    v55 = v24;
-    [(PPPBContactNameRecord *)v33->_pbRecord setSourceIdentifier:v24];
-    [(PPPBContactNameRecord *)v33->_pbRecord setChangeType:v53];
-    [(PPPBContactNameRecord *)v33->_pbRecord setFirstName:v25];
-    v57 = v26;
-    [(PPPBContactNameRecord *)v33->_pbRecord setPhoneticFirstName:v26];
-    [(PPPBContactNameRecord *)v33->_pbRecord setMiddleName:v64];
-    [(PPPBContactNameRecord *)v33->_pbRecord setPhoneticMiddleName:v27];
-    [(PPPBContactNameRecord *)v33->_pbRecord setLastName:v63];
-    [(PPPBContactNameRecord *)v33->_pbRecord setPhoneticLastName:v62];
-    [(PPPBContactNameRecord *)v33->_pbRecord setOrganizationName:v61];
-    v56 = v29;
-    [(PPPBContactNameRecord *)v33->_pbRecord setJobTitle:v29];
-    [(PPPBContactNameRecord *)v33->_pbRecord setNickname:v30];
-    v52 = v31;
-    v54 = v30;
-    v36 = v24;
-    if ([v31 count])
+    [(PPPBContactNameRecord *)init_->_pbRecord setIdentifier:v28];
+    [(PPPBContactNameRecord *)init_->_pbRecord setScore:score];
+    [(PPPBContactNameRecord *)init_->_pbRecord setSource:sourceCopy];
+    v55 = sourceIdentifierCopy;
+    [(PPPBContactNameRecord *)init_->_pbRecord setSourceIdentifier:sourceIdentifierCopy];
+    [(PPPBContactNameRecord *)init_->_pbRecord setChangeType:typeCopy];
+    [(PPPBContactNameRecord *)init_->_pbRecord setFirstName:nameCopy];
+    v57 = firstNameCopy;
+    [(PPPBContactNameRecord *)init_->_pbRecord setPhoneticFirstName:firstNameCopy];
+    [(PPPBContactNameRecord *)init_->_pbRecord setMiddleName:middleNameCopy];
+    [(PPPBContactNameRecord *)init_->_pbRecord setPhoneticMiddleName:phoneticMiddleNameCopy];
+    [(PPPBContactNameRecord *)init_->_pbRecord setLastName:lastNameCopy];
+    [(PPPBContactNameRecord *)init_->_pbRecord setPhoneticLastName:phoneticLastNameCopy];
+    [(PPPBContactNameRecord *)init_->_pbRecord setOrganizationName:organizationNameCopy];
+    v56 = titleCopy;
+    [(PPPBContactNameRecord *)init_->_pbRecord setJobTitle:titleCopy];
+    [(PPPBContactNameRecord *)init_->_pbRecord setNickname:nicknameCopy];
+    v52 = namesCopy;
+    v54 = nicknameCopy;
+    v36 = sourceIdentifierCopy;
+    if ([namesCopy count])
     {
       v50 = v28;
-      v37 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v31, "count")}];
+      v37 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(namesCopy, "count")}];
       v65 = 0u;
       v66 = 0u;
       v67 = 0u;
       v68 = 0u;
-      v38 = v31;
+      v38 = namesCopy;
       v39 = [v38 countByEnumeratingWithState:&v65 objects:v70 count:16];
       if (v39)
       {
@@ -241,43 +241,43 @@
         while (v40);
       }
 
-      [(PPPBContactNameRecord *)v33->_pbRecord setRelatedNames:v37];
+      [(PPPBContactNameRecord *)init_->_pbRecord setRelatedNames:v37];
       v28 = v50;
       v36 = v55;
     }
 
-    v24 = v36;
-    if ([v60 count])
+    sourceIdentifierCopy = v36;
+    if ([streetNamesCopy count])
     {
-      v46 = [v60 mutableCopy];
-      [(PPPBContactNameRecord *)v33->_pbRecord setStreetNames:v46];
+      v46 = [streetNamesCopy mutableCopy];
+      [(PPPBContactNameRecord *)init_->_pbRecord setStreetNames:v46];
     }
 
     else
     {
-      [(PPPBContactNameRecord *)v33->_pbRecord setStreetNames:0];
+      [(PPPBContactNameRecord *)init_->_pbRecord setStreetNames:0];
     }
 
-    v27 = v59;
-    if ([v32 count])
+    phoneticMiddleNameCopy = v59;
+    if ([cityNamesCopy count])
     {
-      v47 = [v32 mutableCopy];
-      [(PPPBContactNameRecord *)v33->_pbRecord setCityNames:v47];
+      v47 = [cityNamesCopy mutableCopy];
+      [(PPPBContactNameRecord *)init_->_pbRecord setCityNames:v47];
     }
 
     else
     {
-      [(PPPBContactNameRecord *)v33->_pbRecord setCityNames:0];
+      [(PPPBContactNameRecord *)init_->_pbRecord setCityNames:0];
     }
 
-    v26 = v57;
-    v29 = v56;
-    v31 = v52;
-    v30 = v54;
+    firstNameCopy = v57;
+    titleCopy = v56;
+    namesCopy = v52;
+    nicknameCopy = v54;
   }
 
   v48 = *MEMORY[0x277D85DE8];
-  return v33;
+  return init_;
 }
 
 @end

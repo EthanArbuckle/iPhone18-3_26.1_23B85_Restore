@@ -1,17 +1,17 @@
 @interface UIKBHandwritingCandidateView
-+ (double)shadowYForBounds:(CGRect)a3 shadowHeight:(double)a4;
-- (UIKBHandwritingCandidateView)initWithFrame:(CGRect)a3 keyplane:(id)a4 key:(id)a5;
++ (double)shadowYForBounds:(CGRect)bounds shadowHeight:(double)height;
+- (UIKBHandwritingCandidateView)initWithFrame:(CGRect)frame keyplane:(id)keyplane key:(id)key;
 - (void)updateCandidateKey;
-- (void)updateForKeyplane:(id)a3 key:(id)a4;
+- (void)updateForKeyplane:(id)keyplane key:(id)key;
 @end
 
 @implementation UIKBHandwritingCandidateView
 
-- (UIKBHandwritingCandidateView)initWithFrame:(CGRect)a3 keyplane:(id)a4 key:(id)a5
+- (UIKBHandwritingCandidateView)initWithFrame:(CGRect)frame keyplane:(id)keyplane key:(id)key
 {
   v10.receiver = self;
   v10.super_class = UIKBHandwritingCandidateView;
-  v5 = [(UIKBCandidateView *)&v10 initWithFrame:a4 keyplane:a5 key:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(UIKBCandidateView *)&v10 initWithFrame:keyplane keyplane:key key:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v6 = v5;
   if (v5)
   {
@@ -26,64 +26,64 @@
   return v6;
 }
 
-+ (double)shadowYForBounds:(CGRect)a3 shadowHeight:(double)a4
++ (double)shadowYForBounds:(CGRect)bounds shadowHeight:(double)height
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  MinY = CGRectGetMinY(a3);
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  MinY = CGRectGetMinY(bounds);
   v11.origin.x = x;
   v11.origin.y = y;
   v11.size.width = width;
   v11.size.height = height;
-  return MinY + (CGRectGetHeight(v11) - a4) * 0.5;
+  return MinY + (CGRectGetHeight(v11) - height) * 0.5;
 }
 
-- (void)updateForKeyplane:(id)a3 key:(id)a4
+- (void)updateForKeyplane:(id)keyplane key:(id)key
 {
-  [(UIKBCandidateView *)self clearCandidateKey:a3];
+  [(UIKBCandidateView *)self clearCandidateKey:keyplane];
 
   [(UIKBHandwritingCandidateView *)self updateCandidateKey];
 }
 
 - (void)updateCandidateKey
 {
-  v3 = [(UIKBKeyView *)self factory];
+  factory = [(UIKBKeyView *)self factory];
   v4 = [(UIKBKeyView *)self key];
-  v5 = [(UIKBKeyView *)self keyplane];
-  v35 = [v3 traitsForKey:v4 onKeyplane:v5];
+  keyplane = [(UIKBKeyView *)self keyplane];
+  v35 = [factory traitsForKey:v4 onKeyplane:keyplane];
 
-  v6 = [v35 geometry];
-  [v6 frame];
-  v7 = [v35 geometry];
-  [v7 paddedFrame];
+  geometry = [v35 geometry];
+  [geometry frame];
+  geometry2 = [v35 geometry];
+  [geometry2 paddedFrame];
   CGRectGetMinY(v38);
 
-  v8 = [v35 geometry];
-  [v8 frame];
-  v9 = [v35 geometry];
-  [v9 paddedFrame];
+  geometry3 = [v35 geometry];
+  [geometry3 frame];
+  geometry4 = [v35 geometry];
+  [geometry4 paddedFrame];
   CGRectGetMaxX(v40);
 
-  v10 = [v35 geometry];
-  [v10 frame];
-  v11 = [v35 geometry];
-  [v11 paddedFrame];
+  geometry5 = [v35 geometry];
+  [geometry5 frame];
+  geometry6 = [v35 geometry];
+  [geometry6 paddedFrame];
   CGRectGetMaxY(v42);
 
-  v12 = [v35 geometry];
-  [v12 frame];
-  v13 = [v35 geometry];
-  [v13 paddedFrame];
+  geometry7 = [v35 geometry];
+  [geometry7 frame];
+  geometry8 = [v35 geometry];
+  [geometry8 paddedFrame];
   CGRectGetMinX(v44);
 
   v14 = +[UIKeyboardImpl activeInstance];
-  v15 = [v14 candidateController];
+  candidateController = [v14 candidateController];
 
-  v16 = [(UIKBCandidateView *)self candidateKey];
+  candidateKey = [(UIKBCandidateView *)self candidateKey];
 
-  if (!v16)
+  if (!candidateKey)
   {
     if (([(UIKBCandidateView *)self visualStyling]& 0x3F) == 1 || ([(UIKBCandidateView *)self visualStyling]& 0x3F) == 0x18 || ([(UIKBCandidateView *)self visualStyling]& 0x3F) == 0x19)
     {
@@ -99,25 +99,25 @@
       }
     }
 
-    v18 = [(__objc2_class *)*v17 configuration];
+    configuration = [(__objc2_class *)*v17 configuration];
     [(UIView *)self bounds];
-    v19 = [v15 newCandidateKeyWithFrame:v18 configuration:?];
+    v19 = [candidateController newCandidateKeyWithFrame:configuration configuration:?];
     [(UIKBCandidateView *)self setCandidateKey:v19];
   }
 
-  v20 = [(UIKBCandidateView *)self candidateKey];
-  v21 = [v20 superview];
+  candidateKey2 = [(UIKBCandidateView *)self candidateKey];
+  superview = [candidateKey2 superview];
 
-  if (v21 != self)
+  if (superview != self)
   {
-    v22 = [(UIKBCandidateView *)self candidateKey];
-    [v22 removeFromSuperview];
+    candidateKey3 = [(UIKBCandidateView *)self candidateKey];
+    [candidateKey3 removeFromSuperview];
 
-    v23 = [(UIKBCandidateView *)self candidateKey];
-    [v23 setHidden:0];
+    candidateKey4 = [(UIKBCandidateView *)self candidateKey];
+    [candidateKey4 setHidden:0];
 
-    v24 = [(UIKBCandidateView *)self candidateKey];
-    [(UIView *)self addSubview:v24];
+    candidateKey5 = [(UIKBCandidateView *)self candidateKey];
+    [(UIView *)self addSubview:candidateKey5];
   }
 
   [(UIView *)self bounds];
@@ -125,13 +125,13 @@
   v28 = v27;
   v30 = v29;
   v32 = v31;
-  v33 = [(UIKBCandidateView *)self candidateKey];
-  [v33 setFrame:{v26, v28, v30, v32}];
+  candidateKey6 = [(UIKBCandidateView *)self candidateKey];
+  [candidateKey6 setFrame:{v26, v28, v30, v32}];
 
-  v34 = [(UIKBCandidateView *)self candidateKey];
-  [v34 setAutoresizingMask:18];
+  candidateKey7 = [(UIKBCandidateView *)self candidateKey];
+  [candidateKey7 setAutoresizingMask:18];
 
-  [v15 setActiveCandidateViewType:1];
+  [candidateController setActiveCandidateViewType:1];
 }
 
 @end

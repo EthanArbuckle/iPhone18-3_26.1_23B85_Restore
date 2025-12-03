@@ -1,5 +1,5 @@
 @interface SUPlayerStatus
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (void)dealloc;
 @end
@@ -31,9 +31,9 @@
   return [MEMORY[0x1E696AEC0] stringWithFormat:@"%@: Time: (%.2f : %.2f), State: %@", -[SUPlayerStatus description](&v5, sel_description), *&self->_currentTime, *&self->_duration, v3];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(v4 + 8) = self->_currentTime;
   *(v4 + 16) = self->_duration;
   *(v4 + 24) = self->_error;

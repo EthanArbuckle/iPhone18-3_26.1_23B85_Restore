@@ -16,10 +16,10 @@
     v5 = [TPSSIMApplicationsLocalizedString localizedStringForKey:@"BUNDLE_CONTROLLER_ROOT_SPECIFIER_TITLE"];
     v6 = [PSSpecifier preferenceSpecifierNamed:v5 target:self set:0 get:0 detail:objc_opt_class() cell:2 edit:0];
     [v6 setIdentifier:@"SIM_APPLICATIONS_TELEPHONY_SETTINGS"];
-    v7 = [(TPSSIMApplicationsBundleController *)self SIMApplicationsController];
+    sIMApplicationsController = [(TPSSIMApplicationsBundleController *)self SIMApplicationsController];
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
-    [v6 setProperty:v7 forKey:v9];
+    [v6 setProperty:sIMApplicationsController forKey:v9];
 
     [v4 addObject:v6];
     v10 = [v4 copy];
@@ -53,8 +53,8 @@
   if (!SIMApplicationsController)
   {
     v4 = [TPSSIMApplicationsController alloc];
-    v5 = [(TPSSIMApplicationsBundleController *)self telephonyController];
-    v6 = [(TPSSIMApplicationsController *)v4 initWithTelephonyController:v5];
+    telephonyController = [(TPSSIMApplicationsBundleController *)self telephonyController];
+    v6 = [(TPSSIMApplicationsController *)v4 initWithTelephonyController:telephonyController];
     v7 = self->_SIMApplicationsController;
     self->_SIMApplicationsController = v6;
 
@@ -71,13 +71,13 @@
   {
     v21.receiver = self;
     v21.super_class = TPSSIMApplicationsBundleController;
-    v4 = [(TPSSIMApplicationsBundleController *)&v21 subscriptions];
-    v5 = +[NSMutableOrderedSet orderedSetWithCapacity:](NSMutableOrderedSet, "orderedSetWithCapacity:", [v4 count]);
+    subscriptions = [(TPSSIMApplicationsBundleController *)&v21 subscriptions];
+    v5 = +[NSMutableOrderedSet orderedSetWithCapacity:](NSMutableOrderedSet, "orderedSetWithCapacity:", [subscriptions count]);
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v6 = v4;
+    v6 = subscriptions;
     v7 = [v6 countByEnumeratingWithState:&v17 objects:v22 count:16];
     if (v7)
     {
@@ -95,8 +95,8 @@
           v11 = *(*(&v17 + 1) + 8 * i);
           if (([v11 isSimHidden] & 1) == 0)
           {
-            v12 = [(TPSSIMApplicationsBundleController *)self SIMApplicationsController];
-            v13 = [v12 isSupportedForSubscriptionContext:v11];
+            sIMApplicationsController = [(TPSSIMApplicationsBundleController *)self SIMApplicationsController];
+            v13 = [sIMApplicationsController isSupportedForSubscriptionContext:v11];
 
             if (v13)
             {

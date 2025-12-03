@@ -3,15 +3,15 @@
 - (VCWifiAssistManager)init;
 - (id)description;
 - (unsigned)wifiAssistState;
-- (void)addDelegate:(id)a3;
+- (void)addDelegate:(id)delegate;
 - (void)dealloc;
-- (void)didStartTrackingNOI:(id)a3;
-- (void)didStopTrackingNOI:(id)a3;
+- (void)didStartTrackingNOI:(id)i;
+- (void)didStopTrackingNOI:(id)i;
 - (void)init;
 - (void)queryBudget;
 - (void)queryUserPreference;
 - (void)refreshBudget;
-- (void)removeDelegate:(id)a3;
+- (void)removeDelegate:(id)delegate;
 @end
 
 @implementation VCWifiAssistManager
@@ -19,10 +19,10 @@
 - (void)refreshBudget
 {
   v26 = *MEMORY[0x1E69E9840];
-  v3 = [(VCWifiAssistManager *)self isAvailable];
+  isAvailable = [(VCWifiAssistManager *)self isAvailable];
   [(VCWifiAssistManager *)self queryUserPreference];
   [(VCWifiAssistManager *)self queryBudget];
-  v4 = [(VCWifiAssistManager *)self isAvailable];
+  isAvailable2 = [(VCWifiAssistManager *)self isAvailable];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
   {
     v5 = VRTraceErrorLogLevelToCSTR();
@@ -41,7 +41,7 @@
     }
   }
 
-  if (v3 != v4)
+  if (isAvailable != isAvailable2)
   {
     v7 = [-[NSMutableSet allObjects](self->_delegates "allObjects")];
     v14 = 0u;
@@ -62,7 +62,7 @@
             objc_enumerationMutation(v7);
           }
 
-          if (v4)
+          if (isAvailable2)
           {
             v12 = 0;
           }
@@ -77,7 +77,7 @@
             v12 = 1;
           }
 
-          [*(*(&v14 + 1) + 8 * i) didChangeWifiAssistAvailable:v4 reason:v12];
+          [*(*(&v14 + 1) + 8 * i) didChangeWifiAssistAvailable:isAvailable2 reason:v12];
         }
 
         v9 = [v7 countByEnumeratingWithState:&v14 objects:v13 count:16];
@@ -378,10 +378,10 @@ void __37__VCWifiAssistManager_sharedInstance__block_invoke()
   return [v3 stringWithFormat:@"%@: userPrefered = %s, inBudget = %s", v5, v7, v6];
 }
 
-- (void)addDelegate:(id)a3
+- (void)addDelegate:(id)delegate
 {
   block[6] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (delegate)
   {
     serialQueue = self->_serialQueue;
     block[0] = MEMORY[0x1E69E9820];
@@ -389,7 +389,7 @@ void __37__VCWifiAssistManager_sharedInstance__block_invoke()
     block[2] = __35__VCWifiAssistManager_addDelegate___block_invoke;
     block[3] = &unk_1E85F37F0;
     block[4] = self;
-    block[5] = a3;
+    block[5] = delegate;
     dispatch_async(serialQueue, block);
   }
 }
@@ -426,10 +426,10 @@ void __35__VCWifiAssistManager_addDelegate___block_invoke(uint64_t a1)
   }
 }
 
-- (void)removeDelegate:(id)a3
+- (void)removeDelegate:(id)delegate
 {
   block[6] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (delegate)
   {
     serialQueue = self->_serialQueue;
     block[0] = MEMORY[0x1E69E9820];
@@ -437,7 +437,7 @@ void __35__VCWifiAssistManager_addDelegate___block_invoke(uint64_t a1)
     block[2] = __38__VCWifiAssistManager_removeDelegate___block_invoke;
     block[3] = &unk_1E85F37F0;
     block[4] = self;
-    block[5] = a3;
+    block[5] = delegate;
     dispatch_async(serialQueue, block);
   }
 }
@@ -492,7 +492,7 @@ uint64_t __38__VCWifiAssistManager_removeDelegate___block_invoke(uint64_t a1)
   return 2;
 }
 
-- (void)didStartTrackingNOI:(id)a3
+- (void)didStartTrackingNOI:(id)i
 {
   v15 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -508,16 +508,16 @@ uint64_t __38__VCWifiAssistManager_removeDelegate___block_invoke(uint64_t a1)
       v11 = 1024;
       v12 = 227;
       v13 = 2048;
-      v14 = a3;
+      iCopy = i;
       _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d noi = %p", &v7, 0x26u);
     }
   }
 
-  self->_wifiNOI = a3;
+  self->_wifiNOI = i;
   [(VCWifiAssistManager *)self queryBudget];
 }
 
-- (void)didStopTrackingNOI:(id)a3
+- (void)didStopTrackingNOI:(id)i
 {
   v15 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -533,7 +533,7 @@ uint64_t __38__VCWifiAssistManager_removeDelegate___block_invoke(uint64_t a1)
       v11 = 1024;
       v12 = 234;
       v13 = 2048;
-      v14 = a3;
+      iCopy = i;
       _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d noi = %p", &v7, 0x26u);
     }
   }

@@ -1,25 +1,25 @@
 @interface PLImageFormat
-+ (PLImageFormat)formatWithID:(unsigned __int16)a3;
++ (PLImageFormat)formatWithID:(unsigned __int16)d;
 + (id)_syncFormats;
-- (BOOL)_isAcceptableForDesiredImageSize:(CGSize)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToFormat:(id)a3;
-- (CGSize)_shortSideFormatScaledSizeForSourceSize:(CGSize)a3 capLength:(BOOL)a4;
-- (CGSize)scaledSizeForSourceSize:(CGSize)a3;
-- (CGSize)scaledSizeForSourceSize:(CGSize)a3 capLength:(BOOL)a4;
+- (BOOL)_isAcceptableForDesiredImageSize:(CGSize)size;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToFormat:(id)format;
+- (CGSize)_shortSideFormatScaledSizeForSourceSize:(CGSize)size capLength:(BOOL)length;
+- (CGSize)scaledSizeForSourceSize:(CGSize)size;
+- (CGSize)scaledSizeForSourceSize:(CGSize)size capLength:(BOOL)length;
 - (CGSize)size;
 - (Class)_tableClass;
 - (PLImageFormat)init;
-- (PLImageFormat)initWithFormatID:(unsigned __int16)a3;
-- (PLImageFormat)initWithName:(id)a3 size:(CGSize)a4 isCropped:(BOOL)a5 version:(int64_t)a6 isAlwaysFullScreen:(BOOL)a7 formatMode:(int64_t)a8 thumbnailKind:(int64_t)thumbnailKind;
-- (id)createTableWithPath:(id)a3 readOnly:(BOOL)a4 format:(id)a5;
+- (PLImageFormat)initWithFormatID:(unsigned __int16)d;
+- (PLImageFormat)initWithName:(id)name size:(CGSize)size isCropped:(BOOL)cropped version:(int64_t)version isAlwaysFullScreen:(BOOL)screen formatMode:(int64_t)mode thumbnailKind:(int64_t)thumbnailKind;
+- (id)createTableWithPath:(id)path readOnly:(BOOL)only format:(id)format;
 - (id)description;
 - (id)thumbnailSpecification;
-- (int64_t)compare:(id)a3;
+- (int64_t)compare:(id)compare;
 - (unint64_t)fullSizeDesiredLongSide;
 - (unint64_t)fullSizeMinShortSide;
 - (unint64_t)tableFormatBytesPerPixel;
-- (unint64_t)tableFormatBytesPerRowForWidth:(int)a3;
+- (unint64_t)tableFormatBytesPerRowForWidth:(int)width;
 @end
 
 @implementation PLImageFormat
@@ -51,25 +51,25 @@
 
 - (unint64_t)tableFormatBytesPerPixel
 {
-  v2 = [(PLImageFormat *)self thumbnailKind];
-  if ((v2 - 1) > 3)
+  thumbnailKind = [(PLImageFormat *)self thumbnailKind];
+  if ((thumbnailKind - 1) > 3)
   {
     return 0;
   }
 
   else
   {
-    return qword_1AAA8F568[v2 - 1];
+    return qword_1AAA8F568[thumbnailKind - 1];
   }
 }
 
-- (BOOL)_isAcceptableForDesiredImageSize:(CGSize)a3
+- (BOOL)_isAcceptableForDesiredImageSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(PLImageFormat *)self dimension];
   v7 = v6;
-  v8 = [(PLImageFormat *)self formatMode];
+  formatMode = [(PLImageFormat *)self formatMode];
   if (width >= height)
   {
     v9 = width;
@@ -80,14 +80,14 @@
     v9 = height;
   }
 
-  return v9 < v7 * 1.005 && v8 != 1;
+  return v9 < v7 * 1.005 && formatMode != 1;
 }
 
-- (id)createTableWithPath:(id)a3 readOnly:(BOOL)a4 format:(id)a5
+- (id)createTableWithPath:(id)path readOnly:(BOOL)only format:(id)format
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = a3;
+  onlyCopy = only;
+  formatCopy = format;
+  pathCopy = path;
   v10 = [objc_alloc(-[PLImageFormat _tableClass](self "_tableClass"))];
 
   return v10;
@@ -129,31 +129,31 @@
   return v10;
 }
 
-- (unint64_t)tableFormatBytesPerRowForWidth:(int)a3
+- (unint64_t)tableFormatBytesPerRowForWidth:(int)width
 {
-  v4 = [(PLImageFormat *)self tableFormatBytesPerPixel];
-  if (a3 + 7 <= 0)
+  tableFormatBytesPerPixel = [(PLImageFormat *)self tableFormatBytesPerPixel];
+  if (width + 7 <= 0)
   {
-    v5 = -(-(a3 + 7) & 7);
+    v5 = -(-(width + 7) & 7);
   }
 
   else
   {
-    v5 = (a3 + 7) & 7;
+    v5 = (width + 7) & 7;
   }
 
-  return v4 * (a3 + 7 - v5);
+  return tableFormatBytesPerPixel * (width + 7 - v5);
 }
 
-- (CGSize)scaledSizeForSourceSize:(CGSize)a3 capLength:(BOOL)a4
+- (CGSize)scaledSizeForSourceSize:(CGSize)size capLength:(BOOL)length
 {
-  v4 = a4;
-  height = a3.height;
-  width = a3.width;
+  lengthCopy = length;
+  height = size.height;
+  width = size.width;
   if ([(PLImageFormat *)self dimensionsReferToShortSide])
   {
 
-    [(PLImageFormat *)self _shortSideFormatScaledSizeForSourceSize:v4 capLength:width, height];
+    [(PLImageFormat *)self _shortSideFormatScaledSizeForSourceSize:lengthCopy capLength:width, height];
   }
 
   else
@@ -167,15 +167,15 @@
   return result;
 }
 
-- (CGSize)scaledSizeForSourceSize:(CGSize)a3
+- (CGSize)scaledSizeForSourceSize:(CGSize)size
 {
-  v3 = PLScaledSizeWithinSizeCore(a3.width, a3.height, self->_size.width, self->_size.height);
+  v3 = PLScaledSizeWithinSizeCore(size.width, size.height, self->_size.width, self->_size.height);
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (CGSize)_shortSideFormatScaledSizeForSourceSize:(CGSize)a3 capLength:(BOOL)a4
+- (CGSize)_shortSideFormatScaledSizeForSourceSize:(CGSize)size capLength:(BOOL)length
 {
   width = self->_size.width;
   if (width < self->_size.height)
@@ -183,7 +183,7 @@
     width = self->_size.height;
   }
 
-  if (a4)
+  if (length)
   {
     v5 = 5 * width;
   }
@@ -193,7 +193,7 @@
     v5 = 0x7FFFFFFFLL;
   }
 
-  v6 = PLScaleDimensionsForThumbnailCore(width, width, v5, 2, a3.width, a3.height);
+  v6 = PLScaleDimensionsForThumbnailCore(width, width, v5, 2, size.width, size.height);
   result.height = v7;
   result.width = v6;
   return result;
@@ -203,8 +203,8 @@
 {
   if (self->_formatID - 4035 >= 3)
   {
-    v4 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v4 handleFailureInMethod:a2 object:self file:@"PLImageFormat.m" lineNumber:657 description:@"Passed a format that isn't a full size format"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLImageFormat.m" lineNumber:657 description:@"Passed a format that isn't a full size format"];
   }
 
   return self->_size.width;
@@ -214,17 +214,17 @@
 {
   if (self->_formatID - 4035 >= 3)
   {
-    v4 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v4 handleFailureInMethod:a2 object:self file:@"PLImageFormat.m" lineNumber:643 description:@"Passed a format that isn't a full size format"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLImageFormat.m" lineNumber:643 description:@"Passed a format that isn't a full size format"];
   }
 
   return (self->_size.width / 0.75);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -232,25 +232,25 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(PLImageFormat *)self isEqualToFormat:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(PLImageFormat *)self isEqualToFormat:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToFormat:(id)a3
+- (BOOL)isEqualToFormat:(id)format
 {
-  v4 = a3;
-  v5 = v4;
+  formatCopy = format;
+  v5 = formatCopy;
   if (self->_formatID)
   {
     formatID = self->_formatID;
-    v7 = formatID == [v4 formatID];
+    v7 = formatID == [formatCopy formatID];
   }
 
   else
   {
-    [v4 size];
+    [formatCopy size];
     v11 = self->_size.width == v10 && self->_size.height == v9;
     if (!v11 || (dimension = self->_dimension, [v5 dimension], dimension != v13) || (isCropped = self->_isCropped, isCropped != objc_msgSend(v5, "isCropped")) || (formatMode = self->_formatMode, formatMode != objc_msgSend(v5, "formatMode")) || (thumbnailKind = self->_thumbnailKind, thumbnailKind != objc_msgSend(v5, "thumbnailKind")) || (isAlwaysFullScreen = self->_isAlwaysFullScreen, isAlwaysFullScreen != objc_msgSend(v5, "isAlwaysFullScreen")))
     {
@@ -268,17 +268,17 @@ LABEL_18:
   return v8;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
+  compareCopy = compare;
   [(PLImageFormat *)self dimension];
   v6 = v5;
-  [v4 dimension];
+  [compareCopy dimension];
   if (v6 <= 0.0 || v7 <= 0.0)
   {
-    v10 = [(PLImageFormat *)self formatID];
-    v11 = [v4 formatID];
-    if (v10 >= v11)
+    formatID = [(PLImageFormat *)self formatID];
+    formatID2 = [compareCopy formatID];
+    if (formatID >= formatID2)
     {
       v12 = 0;
     }
@@ -288,7 +288,7 @@ LABEL_18:
       v12 = -1;
     }
 
-    if (v10 <= v11)
+    if (formatID <= formatID2)
     {
       v9 = v12;
     }
@@ -326,29 +326,29 @@ LABEL_18:
   v8.receiver = self;
   v8.super_class = PLImageFormat;
   v3 = [(PLImageFormat *)&v8 description];
-  v4 = [(PLImageFormat *)self shortDescription];
+  shortDescription = [(PLImageFormat *)self shortDescription];
   [(PLImageFormat *)self dimension];
-  v6 = [v3 stringByAppendingFormat:@" - %@, %f", v4, v5];
+  v6 = [v3 stringByAppendingFormat:@" - %@, %f", shortDescription, v5];
 
   return v6;
 }
 
-- (PLImageFormat)initWithFormatID:(unsigned __int16)a3
+- (PLImageFormat)initWithFormatID:(unsigned __int16)d
 {
-  v4 = self;
-  if (a3 > 3506)
+  selfCopy = self;
+  if (d > 3506)
   {
-    if (a3 <= 4133)
+    if (d <= 4133)
     {
-      if (a3 <= 4031)
+      if (d <= 4031)
       {
-        if (a3 > 4008)
+        if (d > 4008)
         {
-          if (a3 > 4028)
+          if (d > 4028)
           {
-            if (a3 != 4029)
+            if (d != 4029)
             {
-              if (a3 == 4030)
+              if (d == 4030)
               {
                 v5 = @"AspectLong180Table";
                 v6 = 180.0;
@@ -381,14 +381,14 @@ LABEL_161:
             goto LABEL_174;
           }
 
-          if (a3 == 4009)
+          if (d == 4009)
           {
             v9 = @"FilledScreen";
           }
 
           else
           {
-            if (a3 != 4011)
+            if (d != 4011)
             {
               goto LABEL_188;
             }
@@ -406,11 +406,11 @@ LABEL_186:
           goto LABEL_187;
         }
 
-        if (a3 <= 3601)
+        if (d <= 3601)
         {
-          if (a3 != 3507)
+          if (d != 3507)
           {
-            if (a3 != 3601)
+            if (d != 3601)
             {
               goto LABEL_188;
             }
@@ -431,9 +431,9 @@ LABEL_176:
           goto LABEL_177;
         }
 
-        if (a3 != 3602)
+        if (d != 3602)
         {
-          if (a3 != 4007)
+          if (d != 4007)
           {
             goto LABEL_188;
           }
@@ -447,18 +447,18 @@ LABEL_176:
         goto LABEL_129;
       }
 
-      if (a3 > 4039)
+      if (d > 4039)
       {
-        if (a3 > 4130)
+        if (d > 4130)
         {
-          if (a3 == 4131)
+          if (d == 4131)
           {
             v5 = @"AspectLong240";
             v6 = 240.0;
             goto LABEL_176;
           }
 
-          if (a3 == 4132)
+          if (d == 4132)
           {
             v5 = @"AspectLong64";
             v8 = 0x4050000000000000;
@@ -479,17 +479,17 @@ LABEL_130:
 LABEL_178:
           v27 = [(PLImageFormat *)self initWithName:v5 size:v13 isCropped:v14 version:v15 isAlwaysFullScreen:v16 formatMode:v23 thumbnailKind:v6, v7];
 LABEL_187:
-          v4 = v27;
+          selfCopy = v27;
 LABEL_188:
-          if (v4)
+          if (selfCopy)
           {
-            v4->_formatID = a3;
+            selfCopy->_formatID = d;
           }
 
-          return v4;
+          return selfCopy;
         }
 
-        if (a3 == 4040)
+        if (d == 4040)
         {
           v9 = @"WildcatStack";
           v10 = 166.0;
@@ -497,7 +497,7 @@ LABEL_188:
 
         else
         {
-          if (a3 != 4100)
+          if (d != 4100)
           {
             goto LABEL_188;
           }
@@ -509,9 +509,9 @@ LABEL_188:
         goto LABEL_163;
       }
 
-      if (a3 > 4035)
+      if (d > 4035)
       {
-        if (a3 == 4036)
+        if (d == 4036)
         {
           v5 = @"FullSize768";
           v17 = 0x4088000000000000;
@@ -519,7 +519,7 @@ LABEL_188:
 
         else
         {
-          if (a3 != 4037)
+          if (d != 4037)
           {
             goto LABEL_188;
           }
@@ -531,14 +531,14 @@ LABEL_188:
 
       else
       {
-        if (a3 == 4032)
+        if (d == 4032)
         {
           v5 = @"AspectLong32";
           v8 = 0x4040000000000000;
           goto LABEL_151;
         }
 
-        if (a3 != 4035)
+        if (d != 4035)
         {
           goto LABEL_188;
         }
@@ -558,13 +558,13 @@ LABEL_156:
       goto LABEL_178;
     }
 
-    if (a3 > 8000)
+    if (d > 8000)
     {
-      if (a3 <= 9987)
+      if (d <= 9987)
       {
-        if (a3 > 8100)
+        if (d > 8100)
         {
-          if (a3 == 8101)
+          if (d == 8101)
           {
             v9 = @"VideoScrubber64Landscape";
             v10 = 86.0;
@@ -572,7 +572,7 @@ LABEL_156:
 
           else
           {
-            if (a3 != 8102)
+            if (d != 8102)
             {
               goto LABEL_188;
             }
@@ -586,9 +586,9 @@ LABEL_156:
 
         else
         {
-          if (a3 != 8001)
+          if (d != 8001)
           {
-            if (a3 != 8002)
+            if (d != 8002)
             {
               goto LABEL_188;
             }
@@ -607,9 +607,9 @@ LABEL_156:
         goto LABEL_141;
       }
 
-      if (a3 <= 9997)
+      if (d <= 9997)
       {
-        if (a3 == 9988)
+        if (d == 9988)
         {
           v10 = *MEMORY[0x1E695F060];
           v18 = *(MEMORY[0x1E695F060] + 8);
@@ -617,7 +617,7 @@ LABEL_156:
           goto LABEL_170;
         }
 
-        if (a3 != 9997)
+        if (d != 9997)
         {
           goto LABEL_188;
         }
@@ -631,7 +631,7 @@ LABEL_156:
 
       else
       {
-        switch(a3)
+        switch(d)
         {
           case 0x270Eu:
             v6 = *MEMORY[0x1E695F060];
@@ -663,11 +663,11 @@ LABEL_156:
       goto LABEL_156;
     }
 
-    if (a3 > 4530)
+    if (d > 4530)
     {
-      if (a3 > 5000)
+      if (d > 5000)
       {
-        switch(a3)
+        switch(d)
         {
           case 0x1389u:
             v5 = @"AspectShort128";
@@ -697,9 +697,9 @@ LABEL_177:
         goto LABEL_178;
       }
 
-      if (a3 != 4531)
+      if (d != 4531)
       {
-        if (a3 != 4532)
+        if (d != 4532)
         {
           goto LABEL_188;
         }
@@ -716,9 +716,9 @@ LABEL_160:
       goto LABEL_161;
     }
 
-    if (a3 > 4199)
+    if (d > 4199)
     {
-      if (a3 == 4200)
+      if (d == 4200)
       {
         v9 = @"WildcatCachedStackedImageHiDPI";
         v10 = 420.0;
@@ -726,7 +726,7 @@ LABEL_160:
 
       else
       {
-        if (a3 != 4300)
+        if (d != 4300)
         {
           goto LABEL_188;
         }
@@ -738,14 +738,14 @@ LABEL_160:
 
     else
     {
-      if (a3 == 4134)
+      if (d == 4134)
       {
         v5 = @"AspectLong64_ASTC";
         v21 = 0x4050000000000000;
         goto LABEL_160;
       }
 
-      if (a3 != 4140)
+      if (d != 4140)
       {
         goto LABEL_188;
       }
@@ -763,11 +763,11 @@ LABEL_185:
     goto LABEL_186;
   }
 
-  if (a3 > 3300)
+  if (d > 3300)
   {
-    if (a3 <= 3349)
+    if (d <= 3349)
     {
-      switch(a3)
+      switch(d)
       {
         case 0xCE5u:
           v5 = @"Square16";
@@ -856,9 +856,9 @@ LABEL_122:
       }
     }
 
-    if (a3 <= 3500)
+    if (d <= 3500)
     {
-      switch(a3)
+      switch(d)
       {
         case 0xD16u:
           v5 = @"Square76_ASTC";
@@ -894,7 +894,7 @@ LABEL_174:
       goto LABEL_178;
     }
 
-    switch(a3)
+    switch(d)
     {
       case 0xDADu:
         v5 = @"AspectLong132";
@@ -915,11 +915,11 @@ LABEL_174:
     goto LABEL_176;
   }
 
-  if (a3 > 3033)
+  if (d > 3033)
   {
-    if (a3 <= 3140)
+    if (d <= 3140)
     {
-      switch(a3)
+      switch(d)
       {
         case 0xBDAu:
           v9 = @"PosterThumbnail";
@@ -943,9 +943,9 @@ LABEL_169:
       goto LABEL_183;
     }
 
-    if (a3 <= 3211)
+    if (d <= 3211)
     {
-      if (a3 == 3141)
+      if (d == 3141)
       {
         v9 = @"Square158Baked";
         v10 = 158.0;
@@ -953,7 +953,7 @@ LABEL_169:
 
       else
       {
-        if (a3 != 3143)
+        if (d != 3143)
         {
           goto LABEL_188;
         }
@@ -967,7 +967,7 @@ LABEL_183:
       goto LABEL_184;
     }
 
-    if (a3 == 3212)
+    if (d == 3212)
     {
       v9 = @"VideoScrubberLandscapeHiDPI";
       v10 = 78.0;
@@ -975,7 +975,7 @@ LABEL_183:
 
     else
     {
-      if (a3 != 3213)
+      if (d != 3213)
       {
         goto LABEL_188;
       }
@@ -992,13 +992,13 @@ LABEL_184:
     goto LABEL_185;
   }
 
-  if (a3 > 1095)
+  if (d > 1095)
   {
-    if (a3 > 3011)
+    if (d > 3011)
     {
-      if (a3 != 3012)
+      if (d != 3012)
       {
-        if (a3 != 3013)
+        if (d != 3013)
         {
           goto LABEL_188;
         }
@@ -1015,9 +1015,9 @@ LABEL_184:
 
     else
     {
-      if (a3 != 1096)
+      if (d != 1096)
       {
-        if (a3 != 3010)
+        if (d != 3010)
         {
           goto LABEL_188;
         }
@@ -1035,9 +1035,9 @@ LABEL_184:
     goto LABEL_183;
   }
 
-  if (a3)
+  if (d)
   {
-    if (a3 == 901)
+    if (d == 901)
     {
       v9 = @"FaceThumbnail";
       v10 = 132.0;
@@ -1045,7 +1045,7 @@ LABEL_184:
 
     else
     {
-      if (a3 != 1095)
+      if (d != 1095)
       {
         goto LABEL_188;
       }
@@ -1067,11 +1067,11 @@ LABEL_184:
   return 0;
 }
 
-- (PLImageFormat)initWithName:(id)a3 size:(CGSize)a4 isCropped:(BOOL)a5 version:(int64_t)a6 isAlwaysFullScreen:(BOOL)a7 formatMode:(int64_t)a8 thumbnailKind:(int64_t)thumbnailKind
+- (PLImageFormat)initWithName:(id)name size:(CGSize)size isCropped:(BOOL)cropped version:(int64_t)version isAlwaysFullScreen:(BOOL)screen formatMode:(int64_t)mode thumbnailKind:(int64_t)thumbnailKind
 {
-  height = a4.height;
-  width = a4.width;
-  v18 = a3;
+  height = size.height;
+  width = size.width;
+  nameCopy = name;
   v31.receiver = self;
   v31.super_class = PLImageFormat;
   v19 = [(PLImageFormat *)&v31 init];
@@ -1079,22 +1079,22 @@ LABEL_184:
   if (v19)
   {
     v19->_formatID = 0;
-    v21 = [v18 copy];
+    v21 = [nameCopy copy];
     name = v20->_name;
     v20->_name = v21;
 
     v20->_size.width = width;
     v20->_size.height = height;
-    v20->_isCropped = a5;
+    v20->_isCropped = cropped;
     v20->_thumbnailKind = thumbnailKind;
-    v20->_formatMode = a8;
+    v20->_formatMode = mode;
     v20->_dimension = width;
-    v20->_version = a6;
-    v20->_isAlwaysFullScreen = a7;
-    if (thumbnailKind && (a8 - 1) >= 3)
+    v20->_version = version;
+    v20->_isAlwaysFullScreen = screen;
+    if (thumbnailKind && (mode - 1) >= 3)
     {
-      v23 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v23 handleFailureInMethod:a2 object:v20 file:@"PLImageFormat.m" lineNumber:155 description:{@"Thumbnail image formats must be either square, aspect short, or aspect long"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v20 file:@"PLImageFormat.m" lineNumber:155 description:{@"Thumbnail image formats must be either square, aspect short, or aspect long"}];
 
       thumbnailKind = v20->_thumbnailKind;
     }
@@ -1105,14 +1105,14 @@ LABEL_184:
       v25 = v24 <= 0 ? -(-v24 & 3) : v24 & 3;
       if (width != (v24 - v25) || ((v26 = height + 3, v26 <= 0) ? (v27 = -(-v26 & 3)) : (v27 = v26 & 3), height != (v26 - v27)))
       {
-        v30 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v30 handleFailureInMethod:a2 object:v20 file:@"PLImageFormat.m" lineNumber:158 description:@"ASTC/BC7 format dimensions must be in even multiples of 4."];
+        currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler2 handleFailureInMethod:a2 object:v20 file:@"PLImageFormat.m" lineNumber:158 description:@"ASTC/BC7 format dimensions must be in even multiples of 4."];
       }
     }
 
-    v28 = [(PLImageFormat *)v20 _tableClass];
-    v20->_metalPixelFormat = [(objc_class *)v28 metalPixelFormat];
-    v20->_colorSpaceName = [(objc_class *)v28 colorSpaceName];
+    _tableClass = [(PLImageFormat *)v20 _tableClass];
+    v20->_metalPixelFormat = [(objc_class *)_tableClass metalPixelFormat];
+    v20->_colorSpaceName = [(objc_class *)_tableClass colorSpaceName];
   }
 
   return v20;
@@ -1124,9 +1124,9 @@ LABEL_184:
   objc_exception_throw(v2);
 }
 
-+ (PLImageFormat)formatWithID:(unsigned __int16)a3
++ (PLImageFormat)formatWithID:(unsigned __int16)d
 {
-  v3 = a3;
+  dCopy = d;
   v25 = *MEMORY[0x1E69E9840];
   pl_dispatch_once(&formatWithID__onceToken, &__block_literal_global_265);
   v17 = 0;
@@ -1140,7 +1140,7 @@ LABEL_184:
   v15[2] = __30__PLImageFormat_formatWithID___block_invoke_267;
   v15[3] = &unk_1E7930E08;
   v15[4] = &v17;
-  v16 = v3;
+  v16 = dCopy;
   pl_dispatch_sync(formatWithID__readerWriterQueue, v15);
   if (!v18[5])
   {
@@ -1149,13 +1149,13 @@ LABEL_184:
     v13[2] = __30__PLImageFormat_formatWithID___block_invoke_2;
     v13[3] = &unk_1E7930E08;
     v13[4] = &v17;
-    v14 = v3;
+    v14 = dCopy;
     pl_dispatch_barrier_sync(formatWithID__readerWriterQueue, v13);
     if (!v18[5])
     {
-      v5 = [a1 _syncFormats];
-      v6 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:v3];
-      v7 = [v5 objectForKey:v6];
+      _syncFormats = [self _syncFormats];
+      v6 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:dCopy];
+      v7 = [_syncFormats objectForKey:v6];
       v8 = v18[5];
       v18[5] = v7;
     }
@@ -1164,9 +1164,9 @@ LABEL_184:
   v9 = PLPhotoKitGetLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
-    v10 = [v18[5] shortDescription];
+    shortDescription = [v18[5] shortDescription];
     *buf = 138412290;
-    v24 = v10;
+    v24 = shortDescription;
     _os_log_impl(&dword_1AA9BD000, v9, OS_LOG_TYPE_DEBUG, "PLImageFormat formatWithID returning: %@", buf, 0xCu);
   }
 

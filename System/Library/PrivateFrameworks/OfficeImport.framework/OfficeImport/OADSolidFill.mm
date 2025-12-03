@@ -3,15 +3,15 @@
 + (id)defaultProperties;
 + (id)whiteFill;
 - (BOOL)isAnythingOverridden;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)usesPlaceholderColor;
 - (OADSolidFill)initWithDefaults;
 - (id)color;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)fixPropertiesForChangingParentPreservingEffectiveValues:(id)a3;
+- (void)fixPropertiesForChangingParentPreservingEffectiveValues:(id)values;
 - (void)removeUnnecessaryOverrides;
-- (void)setStyleColor:(id)a3;
+- (void)setStyleColor:(id)color;
 @end
 
 @implementation OADSolidFill
@@ -32,14 +32,14 @@
 {
   v5.receiver = self;
   v5.super_class = OADSolidFill;
-  v2 = [(OADProperties *)&v5 initWithDefaults];
-  if (v2)
+  initWithDefaults = [(OADProperties *)&v5 initWithDefaults];
+  if (initWithDefaults)
   {
     v3 = +[OADRgbColor black];
-    [(OADSolidFill *)v2 setColor:v3];
+    [(OADSolidFill *)initWithDefaults setColor:v3];
   }
 
-  return v2;
+  return initWithDefaults;
 }
 
 - (id)color
@@ -86,12 +86,12 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (LOBYTE(self->mColor) == 1)
   {
-    v6 = [*&self->super.mDefinedByStyle copyWithZone:a3];
+    v6 = [*&self->super.mDefinedByStyle copyWithZone:zone];
     [v5 setColor:v6];
   }
 
@@ -105,39 +105,39 @@ void __33__OADSolidFill_defaultProperties__block_invoke()
   +[OADSolidFill defaultProperties]::defaultProperties = v0;
 }
 
-- (void)fixPropertiesForChangingParentPreservingEffectiveValues:(id)a3
+- (void)fixPropertiesForChangingParentPreservingEffectiveValues:(id)values
 {
-  v4 = a3;
+  valuesCopy = values;
   v11.receiver = self;
   v11.super_class = OADSolidFill;
-  [(OADProperties *)&v11 fixPropertiesForChangingParentPreservingEffectiveValues:v4];
-  if ((self->mColor & 1) != 0 || ([(OADProperties *)self parent], v5 = objc_claimAutoreleasedReturnValue(), v5, v5 != v4))
+  [(OADProperties *)&v11 fixPropertiesForChangingParentPreservingEffectiveValues:valuesCopy];
+  if ((self->mColor & 1) != 0 || ([(OADProperties *)self parent], v5 = objc_claimAutoreleasedReturnValue(), v5, v5 != valuesCopy))
   {
     v6 = [(OADProperties *)self possiblyInexistentOverrideForSelector:sel_isColorOverridden];
 
     if (v6)
     {
-      v7 = [(OADSolidFill *)self color];
+      color = [(OADSolidFill *)self color];
     }
 
     else
     {
-      v7 = 0;
+      color = 0;
     }
 
-    v8 = [v4 possiblyInexistentOverrideForSelector:sel_isColorOverridden];
+    v8 = [valuesCopy possiblyInexistentOverrideForSelector:sel_isColorOverridden];
 
     if (v8)
     {
-      v9 = [v4 color];
+      color2 = [valuesCopy color];
     }
 
     else
     {
-      v9 = 0;
+      color2 = 0;
     }
 
-    if (TCObjectEqual(v7, v9))
+    if (TCObjectEqual(color, color2))
     {
       v10 = *&self->super.mDefinedByStyle;
       *&self->super.mDefinedByStyle = 0;
@@ -147,34 +147,34 @@ void __33__OADSolidFill_defaultProperties__block_invoke()
 
     else if ((self->mColor & 1) == 0 && v6)
     {
-      [(OADSolidFill *)self setColor:v7];
+      [(OADSolidFill *)self setColor:color];
     }
   }
 }
 
-- (void)setStyleColor:(id)a3
+- (void)setStyleColor:(id)color
 {
-  v4 = [*&self->super.mDefinedByStyle colorForStyleColor:a3];
+  v4 = [*&self->super.mDefinedByStyle colorForStyleColor:color];
   [(OADSolidFill *)self setColor:?];
 }
 
 - (BOOL)usesPlaceholderColor
 {
-  v2 = [(OADSolidFill *)self color];
+  color = [(OADSolidFill *)self color];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   return isKindOfClass & 1;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v8.receiver = self;
   v8.super_class = OADSolidFill;
-  if ([(OADFill *)&v8 isEqual:v4])
+  if ([(OADFill *)&v8 isEqual:equalCopy])
   {
-    v5 = v4;
+    v5 = equalCopy;
     if (LOBYTE(self->mColor) == *(v5 + 32))
     {
       if (LOBYTE(self->mColor))
@@ -211,49 +211,49 @@ void __33__OADSolidFill_defaultProperties__block_invoke()
 
 - (void)removeUnnecessaryOverrides
 {
-  v3 = [(OADProperties *)self parent];
+  parent = [(OADProperties *)self parent];
 
-  if (v3)
+  if (parent)
   {
-    v4 = [(OADProperties *)self isMerged];
-    v5 = [(OADProperties *)self isMergedWithParent];
+    isMerged = [(OADProperties *)self isMerged];
+    isMergedWithParent = [(OADProperties *)self isMergedWithParent];
     [(OADProperties *)self setMerged:0];
     [(OADProperties *)self setMergedWithParent:0];
     if (![(OADSolidFill *)self isColorOverridden])
     {
 LABEL_10:
-      [(OADProperties *)self setMerged:v4];
-      [(OADProperties *)self setMergedWithParent:v5];
+      [(OADProperties *)self setMerged:isMerged];
+      [(OADProperties *)self setMergedWithParent:isMergedWithParent];
       v13.receiver = self;
       v13.super_class = OADSolidFill;
       [(OADProperties *)&v13 removeUnnecessaryOverrides];
       return;
     }
 
-    v6 = [(OADProperties *)self parent];
-    v7 = [(OADSolidFill *)self color];
-    v8 = [v6 color];
+    parent2 = [(OADProperties *)self parent];
+    color = [(OADSolidFill *)self color];
+    color2 = [parent2 color];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(objc_object *)v7 removeUnnecessaryOverrides];
+      [(objc_object *)color removeUnnecessaryOverrides];
       v9 = objc_opt_class();
       if (v9 != objc_opt_class())
       {
         goto LABEL_9;
       }
 
-      v10 = [(objc_object *)v7 isMergedWithParent];
-      [(objc_object *)v7 setMergedWithParent:0];
-      v11 = [(objc_object *)v7 isAnythingOverridden];
-      [(objc_object *)v7 setMergedWithParent:v10];
-      if (v11)
+      isMergedWithParent2 = [(objc_object *)color isMergedWithParent];
+      [(objc_object *)color setMergedWithParent:0];
+      isAnythingOverridden = [(objc_object *)color isAnythingOverridden];
+      [(objc_object *)color setMergedWithParent:isMergedWithParent2];
+      if (isAnythingOverridden)
       {
         goto LABEL_9;
       }
     }
 
-    else if (!TCObjectEqual(v7, v8))
+    else if (!TCObjectEqual(color, color2))
     {
 LABEL_9:
 

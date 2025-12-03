@@ -1,17 +1,17 @@
 @interface GEORPFeedbackUserInfo
-+ (id)userCredentialsForContactBackEmailAddress:(id)a3 userEnteredEmailAddress:(id)a4 pushToken:(id)a5;
++ (id)userCredentialsForContactBackEmailAddress:(id)address userEnteredEmailAddress:(id)emailAddress pushToken:(id)token;
 @end
 
 @implementation GEORPFeedbackUserInfo
 
-+ (id)userCredentialsForContactBackEmailAddress:(id)a3 userEnteredEmailAddress:(id)a4 pushToken:(id)a5
++ (id)userCredentialsForContactBackEmailAddress:(id)address userEnteredEmailAddress:(id)emailAddress pushToken:(id)token
 {
-  v6 = a4;
-  v7 = a3;
+  emailAddressCopy = emailAddress;
+  addressCopy = address;
   v8 = objc_alloc_init(GEORPFeedbackUserInfo);
-  [v8 setUserEmail:v7];
+  [v8 setUserEmail:addressCopy];
 
-  [v8 setPreferredEmail:v6];
+  [v8 setPreferredEmail:emailAddressCopy];
   v9 = +[GEORPUserCredentials _credentialsForPrimaryICloudAccount];
   [v8 setUserCredentials:v9];
 

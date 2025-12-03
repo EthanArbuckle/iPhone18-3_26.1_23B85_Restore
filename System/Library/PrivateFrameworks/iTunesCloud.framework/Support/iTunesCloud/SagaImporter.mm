@@ -1,38 +1,38 @@
 @interface SagaImporter
-- (BOOL)_updateGlobalPlaylistsFromContainersPayloadAtPath:(id)a3 downloadPathForSubscribedContainersPayload:(id)a4;
-- (SagaImporter)initWithConnection:(id)a3 serverInitiatedReset:(BOOL)a4 clientInitiatedReset:(BOOL)a5 clientInitiatedReloadForPins:(BOOL)a6 clientFeaturesVersion:(id)a7 clientIdentity:(id)a8 fromRevision:(unsigned int)a9 toRevision:(unsigned int)a10;
-- (id)_importDataFromResponseFileURLs:(id)a3;
-- (void)_fetchUpdatedAlbumsWithCompletion:(id)a3;
-- (void)_fetchUpdatedAlbumsWithPaginationToken:(id)a3 responseFileURLs:(id)a4 completion:(id)a5;
-- (void)_fetchUpdatedArtistsWithCompletion:(id)a3;
-- (void)_fetchUpdatedArtistsWithPaginationToken:(id)a3 responseFileURLs:(id)a4 completion:(id)a5;
-- (void)_fetchUpdatedLibraryPinsWithCompletion:(id)a3;
-- (void)_fetchUpdatedPlaylistsWithCompletion:(id)a3;
-- (void)_fetchUpdatedTracksWithCompletion:(id)a3;
-- (void)_fetchUpdatedTracksWithPaginationToken:(id)a3 responseFileURLs:(id)a4 currentIncludesBookmarkable:(BOOL)a5 cloudIDToLyricsTokenMap:(id)a6 completion:(id)a7;
-- (void)_importLyricsWithLyricsTokenMap:(id)a3;
-- (void)_removeUnavailableSubscriptionAssetsInLibrary:(id)a3;
-- (void)_updateProgressWithItemsProgress:(float)itemsProgress albumsProgress:(float)albumsProgress artistsProgress:(float)artistsProgress playlistProgress:(float)playlistProgress importerProgress:(float)a7;
+- (BOOL)_updateGlobalPlaylistsFromContainersPayloadAtPath:(id)path downloadPathForSubscribedContainersPayload:(id)payload;
+- (SagaImporter)initWithConnection:(id)connection serverInitiatedReset:(BOOL)reset clientInitiatedReset:(BOOL)initiatedReset clientInitiatedReloadForPins:(BOOL)pins clientFeaturesVersion:(id)version clientIdentity:(id)identity fromRevision:(unsigned int)revision toRevision:(unsigned int)self0;
+- (id)_importDataFromResponseFileURLs:(id)ls;
+- (void)_fetchUpdatedAlbumsWithCompletion:(id)completion;
+- (void)_fetchUpdatedAlbumsWithPaginationToken:(id)token responseFileURLs:(id)ls completion:(id)completion;
+- (void)_fetchUpdatedArtistsWithCompletion:(id)completion;
+- (void)_fetchUpdatedArtistsWithPaginationToken:(id)token responseFileURLs:(id)ls completion:(id)completion;
+- (void)_fetchUpdatedLibraryPinsWithCompletion:(id)completion;
+- (void)_fetchUpdatedPlaylistsWithCompletion:(id)completion;
+- (void)_fetchUpdatedTracksWithCompletion:(id)completion;
+- (void)_fetchUpdatedTracksWithPaginationToken:(id)token responseFileURLs:(id)ls currentIncludesBookmarkable:(BOOL)bookmarkable cloudIDToLyricsTokenMap:(id)map completion:(id)completion;
+- (void)_importLyricsWithLyricsTokenMap:(id)map;
+- (void)_removeUnavailableSubscriptionAssetsInLibrary:(id)library;
+- (void)_updateProgressWithItemsProgress:(float)itemsProgress albumsProgress:(float)albumsProgress artistsProgress:(float)artistsProgress playlistProgress:(float)playlistProgress importerProgress:(float)progress;
 - (void)cancel;
-- (void)performUpdateWithCompletionHandler:(id)a3;
+- (void)performUpdateWithCompletionHandler:(id)handler;
 @end
 
 @implementation SagaImporter
 
-- (void)_fetchUpdatedArtistsWithPaginationToken:(id)a3 responseFileURLs:(id)a4 completion:(id)a5
+- (void)_fetchUpdatedArtistsWithPaginationToken:(id)token responseFileURLs:(id)ls completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(SagaImporter *)self connection];
+  tokenCopy = token;
+  lsCopy = ls;
+  completionCopy = completion;
+  connection = [(SagaImporter *)self connection];
   v12 = [(NSString *)self->_updateBaseDirectory stringByAppendingPathComponent:@"Artists"];
-  v13 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"artists_%lu.daap", [v9 count] + 1);
+  v13 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"artists_%lu.daap", [lsCopy count] + 1);
   v30[0] = v12;
   v30[1] = v13;
   v14 = [NSArray arrayWithObjects:v30 count:2];
   v15 = [NSURL fileURLWithPathComponents:v14];
 
-  v16 = -[ICArtistsRequest initWithDatabaseID:paginationToken:]([ICArtistsRequest alloc], "initWithDatabaseID:paginationToken:", [v11 databaseID], v8);
+  v16 = -[ICArtistsRequest initWithDatabaseID:paginationToken:]([ICArtistsRequest alloc], "initWithDatabaseID:paginationToken:", [connection databaseID], tokenCopy);
   fromRevision = self->_fromRevision;
   if (fromRevision)
   {
@@ -47,14 +47,14 @@
         toRevision = self->_toRevision;
       }
 
-      v20 = [NSString stringWithFormat:@"%u", toRevision];
-      [(ICDRequest *)v16 setValue:v20 forArgument:@"revision-id"];
+      toRevision = [NSString stringWithFormat:@"%u", toRevision];
+      [(ICDRequest *)v16 setValue:toRevision forArgument:@"revision-id"];
     }
   }
 
-  if ([v8 length])
+  if ([tokenCopy length])
   {
-    [(ICDRequest *)v16 setValue:v8 forArgument:@"dmap.paginationtoken"];
+    [(ICDRequest *)v16 setValue:tokenCopy forArgument:@"dmap.paginationtoken"];
   }
 
   [(ICDRequest *)v16 setSagaClientFeaturesVersion:self->_clientFeaturesVersionString];
@@ -65,46 +65,46 @@
   v25[2] = sub_1000B7948;
   v25[3] = &unk_1001DCC18;
   v28 = v12;
-  v29 = v10;
+  v29 = completionCopy;
   v25[4] = self;
   v26 = v15;
-  v27 = v9;
+  v27 = lsCopy;
   v21 = v12;
-  v22 = v9;
+  v22 = lsCopy;
   v23 = v15;
-  v24 = v10;
-  [v11 sendRequest:v16 withResponseHandler:v25];
+  v24 = completionCopy;
+  [connection sendRequest:v16 withResponseHandler:v25];
 }
 
-- (void)_fetchUpdatedArtistsWithCompletion:(id)a3
+- (void)_fetchUpdatedArtistsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = os_log_create("com.apple.amp.itunescloudd", "CloudSync");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543362;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ Starting artist update", &v7, 0xCu);
   }
 
   v6 = +[NSMutableArray array];
-  [(SagaImporter *)self _fetchUpdatedArtistsWithPaginationToken:0 responseFileURLs:v6 completion:v4];
+  [(SagaImporter *)self _fetchUpdatedArtistsWithPaginationToken:0 responseFileURLs:v6 completion:completionCopy];
 }
 
-- (void)_fetchUpdatedAlbumsWithPaginationToken:(id)a3 responseFileURLs:(id)a4 completion:(id)a5
+- (void)_fetchUpdatedAlbumsWithPaginationToken:(id)token responseFileURLs:(id)ls completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(SagaImporter *)self connection];
+  tokenCopy = token;
+  lsCopy = ls;
+  completionCopy = completion;
+  connection = [(SagaImporter *)self connection];
   v12 = [(NSString *)self->_updateBaseDirectory stringByAppendingPathComponent:@"Albums"];
-  v13 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"albums_%lu.daap", [v9 count] + 1);
+  v13 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"albums_%lu.daap", [lsCopy count] + 1);
   v30[0] = v12;
   v30[1] = v13;
   v14 = [NSArray arrayWithObjects:v30 count:2];
   v15 = [NSURL fileURLWithPathComponents:v14];
 
-  v16 = -[ICAlbumsRequest initWithDatabaseID:paginationToken:]([ICAlbumsRequest alloc], "initWithDatabaseID:paginationToken:", [v11 databaseID], v8);
+  v16 = -[ICAlbumsRequest initWithDatabaseID:paginationToken:]([ICAlbumsRequest alloc], "initWithDatabaseID:paginationToken:", [connection databaseID], tokenCopy);
   fromRevision = self->_fromRevision;
   if (fromRevision)
   {
@@ -119,14 +119,14 @@
         toRevision = self->_toRevision;
       }
 
-      v20 = [NSString stringWithFormat:@"%u", toRevision];
-      [(ICDRequest *)v16 setValue:v20 forArgument:@"revision-id"];
+      toRevision = [NSString stringWithFormat:@"%u", toRevision];
+      [(ICDRequest *)v16 setValue:toRevision forArgument:@"revision-id"];
     }
   }
 
-  if ([v8 length])
+  if ([tokenCopy length])
   {
-    [(ICDRequest *)v16 setValue:v8 forArgument:@"dmap.paginationtoken"];
+    [(ICDRequest *)v16 setValue:tokenCopy forArgument:@"dmap.paginationtoken"];
   }
 
   [(ICDRequest *)v16 setSagaClientFeaturesVersion:self->_clientFeaturesVersionString];
@@ -137,50 +137,50 @@
   v25[2] = sub_1000B82BC;
   v25[3] = &unk_1001DCC18;
   v28 = v12;
-  v29 = v10;
+  v29 = completionCopy;
   v25[4] = self;
   v26 = v15;
-  v27 = v9;
+  v27 = lsCopy;
   v21 = v12;
-  v22 = v9;
+  v22 = lsCopy;
   v23 = v15;
-  v24 = v10;
-  [v11 sendRequest:v16 withResponseHandler:v25];
+  v24 = completionCopy;
+  [connection sendRequest:v16 withResponseHandler:v25];
 }
 
-- (void)_fetchUpdatedAlbumsWithCompletion:(id)a3
+- (void)_fetchUpdatedAlbumsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = os_log_create("com.apple.amp.itunescloudd", "CloudSync");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543362;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ Starting albums update", &v7, 0xCu);
   }
 
   v6 = +[NSMutableArray array];
-  [(SagaImporter *)self _fetchUpdatedAlbumsWithPaginationToken:0 responseFileURLs:v6 completion:v4];
+  [(SagaImporter *)self _fetchUpdatedAlbumsWithPaginationToken:0 responseFileURLs:v6 completion:completionCopy];
 }
 
-- (void)_fetchUpdatedLibraryPinsWithCompletion:(id)a3
+- (void)_fetchUpdatedLibraryPinsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = os_log_create("com.apple.amp.itunescloudd", "CloudSync");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v17 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ Starting pins update", buf, 0xCu);
   }
 
-  v6 = [(SagaImporter *)self connection];
+  connection = [(SagaImporter *)self connection];
   v15[0] = self->_updateBaseDirectory;
   v15[1] = @"pins.daap";
   v7 = [NSArray arrayWithObjects:v15 count:2];
   v8 = [NSURL fileURLWithPathComponents:v7];
 
-  v9 = -[ICPinsRequest initWithDatabaseID:]([ICPinsRequest alloc], "initWithDatabaseID:", [v6 databaseID]);
+  v9 = -[ICPinsRequest initWithDatabaseID:]([ICPinsRequest alloc], "initWithDatabaseID:", [connection databaseID]);
   [(ICDRequest *)v9 setValue:@"all" forArgument:@"meta"];
   [(ICDRequest *)v9 setResponseDataDestinationFileURL:v8];
   v12[0] = _NSConcreteStackBlock;
@@ -188,25 +188,25 @@
   v12[2] = sub_1000B8B48;
   v12[3] = &unk_1001DCBF0;
   v13 = v8;
-  v14 = v4;
+  v14 = completionCopy;
   v12[4] = self;
   v10 = v8;
-  v11 = v4;
-  [v6 sendRequest:v9 withResponseHandler:v12];
+  v11 = completionCopy;
+  [connection sendRequest:v9 withResponseHandler:v12];
 }
 
-- (void)_fetchUpdatedPlaylistsWithCompletion:(id)a3
+- (void)_fetchUpdatedPlaylistsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = os_log_create("com.apple.amp.itunescloudd", "CloudSync");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v24 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ Starting playlists update", buf, 0xCu);
   }
 
-  v6 = [(SagaImporter *)self connection];
+  connection = [(SagaImporter *)self connection];
   v22[0] = self->_updateBaseDirectory;
   v22[1] = @"containers.daap";
   v7 = [NSArray arrayWithObjects:v22 count:2];
@@ -215,27 +215,27 @@
   v9 = [ML3MusicLibrary musicLibraryForUserAccount:self->_userIdentity];
   [v9 setClientIdentity:self->_clientIdentity];
   v10 = [v9 valueForDatabaseProperty:@"MLCloudNeedsContainerRefetch"];
-  v11 = [v10 BOOLValue];
+  bOOLValue = [v10 BOOLValue];
 
-  if (v11)
+  if (bOOLValue)
   {
     [v9 setValue:0 forDatabaseProperty:@"MLCloudNeedsContainerRefetch"];
   }
 
-  v12 = +[ICContainersRequest requestWithDatabaseID:](ICContainersRequest, "requestWithDatabaseID:", [v6 databaseID]);
+  v12 = +[ICContainersRequest requestWithDatabaseID:](ICContainersRequest, "requestWithDatabaseID:", [connection databaseID]);
   fromRevision = self->_fromRevision;
   if (fromRevision)
   {
     toRevision = self->_toRevision;
     if (toRevision <= fromRevision)
     {
-      if (v11 & 1 | !self->_clientInitiatedReloadForPins)
+      if (bOOLValue & 1 | !self->_clientInitiatedReloadForPins)
       {
         goto LABEL_14;
       }
     }
 
-    else if (v11)
+    else if (bOOLValue)
     {
       goto LABEL_14;
     }
@@ -248,8 +248,8 @@
       toRevision = self->_toRevision;
     }
 
-    v16 = [NSString stringWithFormat:@"%u", toRevision];
-    [v12 setValue:v16 forArgument:@"revision-id"];
+    toRevision = [NSString stringWithFormat:@"%u", toRevision];
+    [v12 setValue:toRevision forArgument:@"revision-id"];
   }
 
 LABEL_14:
@@ -261,28 +261,28 @@ LABEL_14:
   v19[2] = sub_1000B9104;
   v19[3] = &unk_1001DCBF0;
   v20 = v8;
-  v21 = v4;
+  v21 = completionCopy;
   v19[4] = self;
   v17 = v8;
-  v18 = v4;
-  [v6 sendRequest:v12 withResponseHandler:v19];
+  v18 = completionCopy;
+  [connection sendRequest:v12 withResponseHandler:v19];
 }
 
-- (void)_fetchUpdatedTracksWithPaginationToken:(id)a3 responseFileURLs:(id)a4 currentIncludesBookmarkable:(BOOL)a5 cloudIDToLyricsTokenMap:(id)a6 completion:(id)a7
+- (void)_fetchUpdatedTracksWithPaginationToken:(id)token responseFileURLs:(id)ls currentIncludesBookmarkable:(BOOL)bookmarkable cloudIDToLyricsTokenMap:(id)map completion:(id)completion
 {
-  v11 = a4;
-  v12 = a6;
-  v13 = a7;
-  v14 = a3;
-  v15 = [(SagaImporter *)self connection];
+  lsCopy = ls;
+  mapCopy = map;
+  completionCopy = completion;
+  tokenCopy = token;
+  connection = [(SagaImporter *)self connection];
   v16 = [(NSString *)self->_updateBaseDirectory stringByAppendingPathComponent:@"Items"];
-  +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"items_%lu.daap", [v11 count] + 1);
+  +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"items_%lu.daap", [lsCopy count] + 1);
   v40 = v39 = v16;
   v31 = v40;
   v17 = [NSArray arrayWithObjects:&v39 count:2];
   v18 = [NSURL fileURLWithPathComponents:v17];
 
-  v19 = +[ICItemsRequest requestWithDatabaseID:paginationToken:](ICItemsRequest, "requestWithDatabaseID:paginationToken:", [v15 databaseID], v14);
+  v19 = +[ICItemsRequest requestWithDatabaseID:paginationToken:](ICItemsRequest, "requestWithDatabaseID:paginationToken:", [connection databaseID], tokenCopy);
 
   [v19 setValue:@"all" forArgument:@"meta"];
   fromRevision = self->_fromRevision;
@@ -308,8 +308,8 @@ LABEL_14:
         }
       }
 
-      v24 = [v22[88] stringWithFormat:@"%u", toRevision];
-      [v19 setValue:v24 forArgument:@"revision-id"];
+      toRevision = [v22[88] stringWithFormat:@"%u", toRevision];
+      [v19 setValue:toRevision forArgument:@"revision-id"];
     }
   }
 
@@ -322,59 +322,59 @@ LABEL_14:
   v32[3] = &unk_1001DCBC8;
   v32[4] = self;
   v33 = v18;
-  v34 = v11;
+  v34 = lsCopy;
   v35 = v16;
-  v38 = a5;
-  v36 = v12;
-  v37 = v13;
-  v25 = v12;
+  bookmarkableCopy = bookmarkable;
+  v36 = mapCopy;
+  v37 = completionCopy;
+  v25 = mapCopy;
   v26 = v16;
-  v27 = v11;
+  v27 = lsCopy;
   v28 = v18;
-  v29 = v13;
-  [v15 sendRequest:v19 withResponseHandler:v32];
+  v29 = completionCopy;
+  [connection sendRequest:v19 withResponseHandler:v32];
 }
 
-- (void)_fetchUpdatedTracksWithCompletion:(id)a3
+- (void)_fetchUpdatedTracksWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = os_log_create("com.apple.amp.itunescloudd", "CloudSync");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138543362;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ Starting items update", &v8, 0xCu);
   }
 
   v6 = +[NSMutableArray array];
   v7 = +[NSMutableDictionary dictionary];
-  [(SagaImporter *)self _fetchUpdatedTracksWithPaginationToken:0 responseFileURLs:v6 currentIncludesBookmarkable:0 cloudIDToLyricsTokenMap:v7 completion:v4];
+  [(SagaImporter *)self _fetchUpdatedTracksWithPaginationToken:0 responseFileURLs:v6 currentIncludesBookmarkable:0 cloudIDToLyricsTokenMap:v7 completion:completionCopy];
 }
 
-- (id)_importDataFromResponseFileURLs:(id)a3
+- (id)_importDataFromResponseFileURLs:(id)ls
 {
-  v3 = [a3 msv_map:&stru_1001DCBA0];
+  v3 = [ls msv_map:&stru_1001DCBA0];
   v4 = ML3DatabaseImportDataForDAAPFilePaths();
 
   return v4;
 }
 
-- (BOOL)_updateGlobalPlaylistsFromContainersPayloadAtPath:(id)a3 downloadPathForSubscribedContainersPayload:(id)a4
+- (BOOL)_updateGlobalPlaylistsFromContainersPayloadAtPath:(id)path downloadPathForSubscribedContainersPayload:(id)payload
 {
-  v6 = a4;
-  v7 = [NSURL fileURLWithPath:a3];
+  payloadCopy = payload;
+  v7 = [NSURL fileURLWithPath:path];
   v8 = [NSInputStream inputStreamWithURL:v7];
   v9 = [[DKDAAPParser alloc] initWithStream:v8];
   v10 = objc_alloc_init(ContainerCloudIDsParserDelegate);
   [v9 setDelegate:v10];
   [v9 parse];
-  v11 = [(ContainerCloudIDsParserDelegate *)v10 subscribedPlaylistCloudIDs];
+  subscribedPlaylistCloudIDs = [(ContainerCloudIDsParserDelegate *)v10 subscribedPlaylistCloudIDs];
 
   v12 = [SagaSubscribedPlaylistUpdater alloc];
-  v13 = [(SagaImporter *)self connection];
-  v14 = [(SagaSubscribedPlaylistUpdater *)v12 initWithSubscribedPlaylistCloudIDs:v11 cloudLibraryConnection:v13];
+  connection = [(SagaImporter *)self connection];
+  v14 = [(SagaSubscribedPlaylistUpdater *)v12 initWithSubscribedPlaylistCloudIDs:subscribedPlaylistCloudIDs cloudLibraryConnection:connection];
 
-  [(SagaSubscribedPlaylistUpdater *)v14 setPayloadDownloadPathOverride:v6];
+  [(SagaSubscribedPlaylistUpdater *)v14 setPayloadDownloadPathOverride:payloadCopy];
   [(SagaSubscribedPlaylistUpdater *)v14 setIgnoreMinRefreshInterval:1];
   clientIdentity = self->_clientIdentity;
   v20 = 0;
@@ -386,7 +386,7 @@ LABEL_14:
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v22 = self;
+      selfCopy = self;
       v23 = 2114;
       v24 = v17;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_ERROR, "%{public}@ Error updating global playlists: %{public}@", buf, 0x16u);
@@ -396,32 +396,32 @@ LABEL_14:
   return v16;
 }
 
-- (void)_importLyricsWithLyricsTokenMap:(id)a3
+- (void)_importLyricsWithLyricsTokenMap:(id)map
 {
-  v9 = [a3 allKeys];
+  allKeys = [map allKeys];
   v4 = [SagaLoadLyricsOperation alloc];
-  v5 = [(SagaImporter *)self configuration];
-  v6 = [(SagaLoadLyricsOperation *)v4 initWithConfiguration:v5 clientIdentity:self->_clientIdentity sagaIDs:v9];
+  configuration = [(SagaImporter *)self configuration];
+  v6 = [(SagaLoadLyricsOperation *)v4 initWithConfiguration:configuration clientIdentity:self->_clientIdentity sagaIDs:allKeys];
 
   [(SagaLoadLyricsOperation *)v6 setName:@"com.apple.itunescloudd.SagaImporter.loadLyricsOperation"];
-  v7 = [(SagaImporter *)self configuration];
-  v8 = [(BaseRequestHandler *)ICDCloudMusicLibraryRequestHandler handlerForConfiguration:v7];
+  configuration2 = [(SagaImporter *)self configuration];
+  v8 = [(BaseRequestHandler *)ICDCloudMusicLibraryRequestHandler handlerForConfiguration:configuration2];
   [v8 addBackgroundOperation:v6 forLibraryType:1 priority:1];
 }
 
-- (void)_removeUnavailableSubscriptionAssetsInLibrary:(id)a3
+- (void)_removeUnavailableSubscriptionAssetsInLibrary:(id)library
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_1000BA1F4;
   v5[3] = &unk_1001DEDD0;
-  v6 = a3;
-  v7 = self;
-  v4 = v6;
+  libraryCopy = library;
+  selfCopy = self;
+  v4 = libraryCopy;
   [v4 performDatabaseTransactionWithBlock:v5];
 }
 
-- (void)_updateProgressWithItemsProgress:(float)itemsProgress albumsProgress:(float)albumsProgress artistsProgress:(float)artistsProgress playlistProgress:(float)playlistProgress importerProgress:(float)a7
+- (void)_updateProgressWithItemsProgress:(float)itemsProgress albumsProgress:(float)albumsProgress artistsProgress:(float)artistsProgress playlistProgress:(float)playlistProgress importerProgress:(float)progress
 {
   os_unfair_lock_lock(&self->_lock);
   if (itemsProgress == 0.0)
@@ -448,21 +448,21 @@ LABEL_14:
   }
 
   self->_playlistProgress = playlistProgress;
-  importerProgress = a7;
-  if (a7 == 0.0)
+  importerProgress = progress;
+  if (progress == 0.0)
   {
     importerProgress = self->_importerProgress;
   }
 
   self->_importerProgress = importerProgress;
-  self->_progress = (((((albumsProgress * 10.0) + (itemsProgress * 10.0)) + (artistsProgress * 10.0)) + (playlistProgress * 10.0)) + (a7 * 60.0)) / 100.0;
+  self->_progress = (((((albumsProgress * 10.0) + (itemsProgress * 10.0)) + (artistsProgress * 10.0)) + (playlistProgress * 10.0)) + (progress * 60.0)) / 100.0;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)performUpdateWithCompletionHandler:(id)a3
+- (void)performUpdateWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = os_log_create("com.apple.amp.itunescloudd", "CloudSync");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -594,7 +594,7 @@ LABEL_14:
   v16[2] = sub_1000BB270;
   v16[3] = &unk_1001DCB38;
   v16[4] = self;
-  v17 = v4;
+  v17 = handlerCopy;
   v18 = buf;
   v19 = v56;
   v20 = v54;
@@ -603,7 +603,7 @@ LABEL_14:
   v23 = v52;
   v24 = v48;
   v25 = v50;
-  v15 = v4;
+  v15 = handlerCopy;
   dispatch_group_notify(v13, v14, v16);
 
   _Block_object_dispose(v48, 8);
@@ -635,12 +635,12 @@ LABEL_14:
   dispatch_semaphore_wait(v4, 0xFFFFFFFFFFFFFFFFLL);
 }
 
-- (SagaImporter)initWithConnection:(id)a3 serverInitiatedReset:(BOOL)a4 clientInitiatedReset:(BOOL)a5 clientInitiatedReloadForPins:(BOOL)a6 clientFeaturesVersion:(id)a7 clientIdentity:(id)a8 fromRevision:(unsigned int)a9 toRevision:(unsigned int)a10
+- (SagaImporter)initWithConnection:(id)connection serverInitiatedReset:(BOOL)reset clientInitiatedReset:(BOOL)initiatedReset clientInitiatedReloadForPins:(BOOL)pins clientFeaturesVersion:(id)version clientIdentity:(id)identity fromRevision:(unsigned int)revision toRevision:(unsigned int)self0
 {
-  v18 = a3;
-  v19 = a7;
-  v20 = a8;
-  if (!v18)
+  connectionCopy = connection;
+  versionCopy = version;
+  identityCopy = identity;
+  if (!connectionCopy)
   {
     obj = +[NSAssertionHandler currentHandler];
     [obj handleFailureInMethod:a2 object:self file:@"SagaImporter.m" lineNumber:66 description:{@"Invalid parameter not satisfying: %@", @"connection"}];
@@ -652,33 +652,33 @@ LABEL_14:
   v22 = v21;
   if (v21)
   {
-    objc_storeStrong(&v21->_connection, a3);
-    v23 = [v18 configuration];
+    objc_storeStrong(&v21->_connection, connection);
+    configuration = [connectionCopy configuration];
     configuration = v22->_configuration;
-    v22->_configuration = v23;
+    v22->_configuration = configuration;
 
-    v25 = [v18 userIdentity];
+    userIdentity = [connectionCopy userIdentity];
     userIdentity = v22->_userIdentity;
-    v22->_userIdentity = v25;
+    v22->_userIdentity = userIdentity;
 
-    v22->_clientInitiatedReset = a5;
-    v22->_serverInitiatedReset = a4;
-    v22->_clientInitiatedReloadForPins = a6;
-    v22->_fromRevision = a9;
-    v22->_toRevision = a10;
+    v22->_clientInitiatedReset = initiatedReset;
+    v22->_serverInitiatedReset = reset;
+    v22->_clientInitiatedReloadForPins = pins;
+    v22->_fromRevision = revision;
+    v22->_toRevision = toRevision;
     v22->_lock._os_unfair_lock_opaque = 0;
     v27 = NSTemporaryDirectory();
     v36[0] = v27;
     v36[1] = @"com.apple.MediaServices";
     v28 = +[NSUUID UUID];
-    v29 = [v28 UUIDString];
-    v36[2] = v29;
+    uUIDString = [v28 UUIDString];
+    v36[2] = uUIDString;
     v30 = [NSArray arrayWithObjects:v36 count:3];
     v31 = [NSString pathWithComponents:v30];
     updateBaseDirectory = v22->_updateBaseDirectory;
     v22->_updateBaseDirectory = v31;
 
-    objc_storeStrong(&v22->_clientFeaturesVersionString, a7);
+    objc_storeStrong(&v22->_clientFeaturesVersionString, version);
   }
 
   return v22;

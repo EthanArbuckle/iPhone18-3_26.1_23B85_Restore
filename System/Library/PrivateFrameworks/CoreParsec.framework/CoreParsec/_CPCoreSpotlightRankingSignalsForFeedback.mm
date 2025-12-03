@@ -1,8 +1,8 @@
 @interface _CPCoreSpotlightRankingSignalsForFeedback
-- (BOOL)isEqual:(id)a3;
-- (_CPCoreSpotlightRankingSignalsForFeedback)initWithFacade:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (_CPCoreSpotlightRankingSignalsForFeedback)initWithFacade:(id)facade;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _CPCoreSpotlightRankingSignalsForFeedback
@@ -62,85 +62,85 @@
   return *&veor_s8(*v36.i8, *&vextq_s8(v36, v36, 8uLL)) ^ (2654435761 * self->_wasNominatedAsTopHit) ^ (2654435761 * self->_isExactMatchOfLaunchString) ^ (2654435761 * self->_wasEngagedInSpotlight) ^ (2654435761 * self->_resultQueryRecency) ^ (2654435761 * self->_isSemanticMatch) ^ (2654435761 * self->_isSyntacticMatch) ^ (2654435761 * self->_embeddingStatus) ^ (2654435761 * self->_itemAgeInDays);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_18;
   }
 
   topicalityScore = self->_topicalityScore;
-  [v4 topicalityScore];
+  [equalCopy topicalityScore];
   if (topicalityScore != v6)
   {
     goto LABEL_18;
   }
 
   freshness = self->_freshness;
-  [v4 freshness];
+  [equalCopy freshness];
   if (freshness != v8)
   {
     goto LABEL_18;
   }
 
   engagementScore = self->_engagementScore;
-  [v4 engagementScore];
+  [equalCopy engagementScore];
   if (engagementScore != v10)
   {
     goto LABEL_18;
   }
 
   predictedLikelihoodOfEngagement = self->_predictedLikelihoodOfEngagement;
-  [v4 predictedLikelihoodOfEngagement];
+  [equalCopy predictedLikelihoodOfEngagement];
   if (predictedLikelihoodOfEngagement != v12)
   {
     goto LABEL_18;
   }
 
   wasNominatedAsTopHit = self->_wasNominatedAsTopHit;
-  if (wasNominatedAsTopHit != [v4 wasNominatedAsTopHit])
+  if (wasNominatedAsTopHit != [equalCopy wasNominatedAsTopHit])
   {
     goto LABEL_18;
   }
 
   sodiumL2Score = self->_sodiumL2Score;
-  [v4 sodiumL2Score];
+  [equalCopy sodiumL2Score];
   if (sodiumL2Score != v15)
   {
     goto LABEL_18;
   }
 
   isExactMatchOfLaunchString = self->_isExactMatchOfLaunchString;
-  if (isExactMatchOfLaunchString != [v4 isExactMatchOfLaunchString])
+  if (isExactMatchOfLaunchString != [equalCopy isExactMatchOfLaunchString])
   {
     goto LABEL_18;
   }
 
   wasEngagedInSpotlight = self->_wasEngagedInSpotlight;
-  if (wasEngagedInSpotlight != [v4 wasEngagedInSpotlight])
+  if (wasEngagedInSpotlight != [equalCopy wasEngagedInSpotlight])
   {
     goto LABEL_18;
   }
 
   resultQueryRecency = self->_resultQueryRecency;
-  if (resultQueryRecency != [v4 resultQueryRecency])
+  if (resultQueryRecency != [equalCopy resultQueryRecency])
   {
     goto LABEL_18;
   }
 
   pommesL2Score = self->_pommesL2Score;
-  [v4 pommesL2Score];
+  [equalCopy pommesL2Score];
   if (pommesL2Score != v20)
   {
     goto LABEL_18;
   }
 
   isSemanticMatch = self->_isSemanticMatch;
-  if (isSemanticMatch == [v4 isSemanticMatch] && (semanticScore = self->_semanticScore, objc_msgSend(v4, "semanticScore"), semanticScore == v23) && (isSyntacticMatch = self->_isSyntacticMatch, isSyntacticMatch == objc_msgSend(v4, "isSyntacticMatch")) && (syntacticScore = self->_syntacticScore, objc_msgSend(v4, "syntacticScore"), syntacticScore == v26) && (embeddingStatus = self->_embeddingStatus, embeddingStatus == objc_msgSend(v4, "embeddingStatus")))
+  if (isSemanticMatch == [equalCopy isSemanticMatch] && (semanticScore = self->_semanticScore, objc_msgSend(equalCopy, "semanticScore"), semanticScore == v23) && (isSyntacticMatch = self->_isSyntacticMatch, isSyntacticMatch == objc_msgSend(equalCopy, "isSyntacticMatch")) && (syntacticScore = self->_syntacticScore, objc_msgSend(equalCopy, "syntacticScore"), syntacticScore == v26) && (embeddingStatus = self->_embeddingStatus, embeddingStatus == objc_msgSend(equalCopy, "embeddingStatus")))
   {
     itemAgeInDays = self->_itemAgeInDays;
-    v29 = itemAgeInDays == [v4 itemAgeInDays];
+    v29 = itemAgeInDays == [equalCopy itemAgeInDays];
   }
 
   else
@@ -152,9 +152,9 @@ LABEL_18:
   return v29;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  a3;
+  to;
   [(_CPCoreSpotlightRankingSignalsForFeedback *)self topicalityScore];
   if (v4 != 0.0)
   {
@@ -262,94 +262,94 @@ LABEL_18:
   MEMORY[0x1EEE66BE0]();
 }
 
-- (_CPCoreSpotlightRankingSignalsForFeedback)initWithFacade:(id)a3
+- (_CPCoreSpotlightRankingSignalsForFeedback)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v24.receiver = self;
   v24.super_class = _CPCoreSpotlightRankingSignalsForFeedback;
   v5 = [(_CPCoreSpotlightRankingSignalsForFeedback *)&v24 init];
   if (v5)
   {
-    v6 = [v4 topicalityScore];
+    topicalityScore = [facadeCopy topicalityScore];
 
-    if (v6)
+    if (topicalityScore)
     {
-      v7 = [v4 topicalityScore];
-      [v7 floatValue];
+      topicalityScore2 = [facadeCopy topicalityScore];
+      [topicalityScore2 floatValue];
       [(_CPCoreSpotlightRankingSignalsForFeedback *)v5 setTopicalityScore:?];
     }
 
-    v8 = [v4 freshness];
+    freshness = [facadeCopy freshness];
 
-    if (v8)
+    if (freshness)
     {
-      v9 = [v4 freshness];
-      [v9 floatValue];
+      freshness2 = [facadeCopy freshness];
+      [freshness2 floatValue];
       [(_CPCoreSpotlightRankingSignalsForFeedback *)v5 setFreshness:?];
     }
 
-    v10 = [v4 engagementScore];
+    engagementScore = [facadeCopy engagementScore];
 
-    if (v10)
+    if (engagementScore)
     {
-      v11 = [v4 engagementScore];
-      [v11 floatValue];
+      engagementScore2 = [facadeCopy engagementScore];
+      [engagementScore2 floatValue];
       [(_CPCoreSpotlightRankingSignalsForFeedback *)v5 setEngagementScore:?];
     }
 
-    v12 = [v4 predictedLikelihoodOfEngagement];
+    predictedLikelihoodOfEngagement = [facadeCopy predictedLikelihoodOfEngagement];
 
-    if (v12)
+    if (predictedLikelihoodOfEngagement)
     {
-      v13 = [v4 predictedLikelihoodOfEngagement];
-      [v13 floatValue];
+      predictedLikelihoodOfEngagement2 = [facadeCopy predictedLikelihoodOfEngagement];
+      [predictedLikelihoodOfEngagement2 floatValue];
       [(_CPCoreSpotlightRankingSignalsForFeedback *)v5 setPredictedLikelihoodOfEngagement:?];
     }
 
-    -[_CPCoreSpotlightRankingSignalsForFeedback setWasNominatedAsTopHit:](v5, "setWasNominatedAsTopHit:", [v4 wasNominatedAsTopHit]);
-    v14 = [v4 sodiumL2Score];
+    -[_CPCoreSpotlightRankingSignalsForFeedback setWasNominatedAsTopHit:](v5, "setWasNominatedAsTopHit:", [facadeCopy wasNominatedAsTopHit]);
+    sodiumL2Score = [facadeCopy sodiumL2Score];
 
-    if (v14)
+    if (sodiumL2Score)
     {
-      v15 = [v4 sodiumL2Score];
-      [v15 floatValue];
+      sodiumL2Score2 = [facadeCopy sodiumL2Score];
+      [sodiumL2Score2 floatValue];
       [(_CPCoreSpotlightRankingSignalsForFeedback *)v5 setSodiumL2Score:?];
     }
 
-    -[_CPCoreSpotlightRankingSignalsForFeedback setIsExactMatchOfLaunchString:](v5, "setIsExactMatchOfLaunchString:", [v4 isExactMatchOfLaunchString]);
-    -[_CPCoreSpotlightRankingSignalsForFeedback setWasEngagedInSpotlight:](v5, "setWasEngagedInSpotlight:", [v4 wasEngagedInSpotlight]);
-    -[_CPCoreSpotlightRankingSignalsForFeedback setResultQueryRecency:](v5, "setResultQueryRecency:", [v4 resultQueryRecency]);
-    v16 = [v4 pommesL2Score];
+    -[_CPCoreSpotlightRankingSignalsForFeedback setIsExactMatchOfLaunchString:](v5, "setIsExactMatchOfLaunchString:", [facadeCopy isExactMatchOfLaunchString]);
+    -[_CPCoreSpotlightRankingSignalsForFeedback setWasEngagedInSpotlight:](v5, "setWasEngagedInSpotlight:", [facadeCopy wasEngagedInSpotlight]);
+    -[_CPCoreSpotlightRankingSignalsForFeedback setResultQueryRecency:](v5, "setResultQueryRecency:", [facadeCopy resultQueryRecency]);
+    pommesL2Score = [facadeCopy pommesL2Score];
 
-    if (v16)
+    if (pommesL2Score)
     {
-      v17 = [v4 pommesL2Score];
-      [v17 floatValue];
+      pommesL2Score2 = [facadeCopy pommesL2Score];
+      [pommesL2Score2 floatValue];
       [(_CPCoreSpotlightRankingSignalsForFeedback *)v5 setPommesL2Score:?];
     }
 
-    -[_CPCoreSpotlightRankingSignalsForFeedback setIsSemanticMatch:](v5, "setIsSemanticMatch:", [v4 isSemanticMatch]);
-    v18 = [v4 semanticScore];
+    -[_CPCoreSpotlightRankingSignalsForFeedback setIsSemanticMatch:](v5, "setIsSemanticMatch:", [facadeCopy isSemanticMatch]);
+    semanticScore = [facadeCopy semanticScore];
 
-    if (v18)
+    if (semanticScore)
     {
-      v19 = [v4 semanticScore];
-      [v19 floatValue];
+      semanticScore2 = [facadeCopy semanticScore];
+      [semanticScore2 floatValue];
       [(_CPCoreSpotlightRankingSignalsForFeedback *)v5 setSemanticScore:?];
     }
 
-    -[_CPCoreSpotlightRankingSignalsForFeedback setIsSyntacticMatch:](v5, "setIsSyntacticMatch:", [v4 isSyntacticMatch]);
-    v20 = [v4 syntacticScore];
+    -[_CPCoreSpotlightRankingSignalsForFeedback setIsSyntacticMatch:](v5, "setIsSyntacticMatch:", [facadeCopy isSyntacticMatch]);
+    syntacticScore = [facadeCopy syntacticScore];
 
-    if (v20)
+    if (syntacticScore)
     {
-      v21 = [v4 syntacticScore];
-      [v21 floatValue];
+      syntacticScore2 = [facadeCopy syntacticScore];
+      [syntacticScore2 floatValue];
       [(_CPCoreSpotlightRankingSignalsForFeedback *)v5 setSyntacticScore:?];
     }
 
-    -[_CPCoreSpotlightRankingSignalsForFeedback setEmbeddingStatus:](v5, "setEmbeddingStatus:", [v4 embeddingStatus]);
-    -[_CPCoreSpotlightRankingSignalsForFeedback setItemAgeInDays:](v5, "setItemAgeInDays:", [v4 itemAgeInDays]);
+    -[_CPCoreSpotlightRankingSignalsForFeedback setEmbeddingStatus:](v5, "setEmbeddingStatus:", [facadeCopy embeddingStatus]);
+    -[_CPCoreSpotlightRankingSignalsForFeedback setItemAgeInDays:](v5, "setItemAgeInDays:", [facadeCopy itemAgeInDays]);
     v22 = v5;
   }
 

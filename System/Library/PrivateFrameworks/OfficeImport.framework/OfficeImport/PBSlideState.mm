@@ -1,7 +1,7 @@
 @interface PBSlideState
 - (PBSlideState)init;
 - (unsigned)generateGroupId;
-- (void)addBuild:(id)a3 order:(unsigned int)a4;
+- (void)addBuild:(id)build order:(unsigned int)order;
 @end
 
 @implementation PBSlideState
@@ -23,13 +23,13 @@
   return v2;
 }
 
-- (void)addBuild:(id)a3 order:(unsigned int)a4
+- (void)addBuild:(id)build order:(unsigned int)order
 {
-  v4 = *&a4;
-  v6 = a3;
-  if (v6)
+  v4 = *&order;
+  buildCopy = build;
+  if (buildCopy)
   {
-    v12 = v6;
+    v12 = buildCopy;
     while (1)
     {
       mBuildOrderMap = self->mBuildOrderMap;
@@ -48,7 +48,7 @@
     v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v4];
     [(NSMutableDictionary *)v10 setObject:v12 forKey:v11];
 
-    v6 = v12;
+    buildCopy = v12;
   }
 }
 

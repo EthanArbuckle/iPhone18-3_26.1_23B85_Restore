@@ -1,26 +1,26 @@
 @interface ASRSchemaASRSampledAudioFileEnqueued
-- (ASRSchemaASRSampledAudioFileEnqueued)initWithDictionary:(id)a3;
-- (ASRSchemaASRSampledAudioFileEnqueued)initWithJSON:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (ASRSchemaASRSampledAudioFileEnqueued)initWithDictionary:(id)dictionary;
+- (ASRSchemaASRSampledAudioFileEnqueued)initWithJSON:(id)n;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ASRSchemaASRSampledAudioFileEnqueued
 
-- (ASRSchemaASRSampledAudioFileEnqueued)initWithDictionary:(id)a3
+- (ASRSchemaASRSampledAudioFileEnqueued)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = ASRSchemaASRSampledAudioFileEnqueued;
   v5 = [(ASRSchemaASRSampledAudioFileEnqueued *)&v11 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"originalAsrId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"originalAsrId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -28,7 +28,7 @@
       [(ASRSchemaASRSampledAudioFileEnqueued *)v5 setOriginalAsrId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"audioCodec"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"audioCodec"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -41,30 +41,30 @@
   return v5;
 }
 
-- (ASRSchemaASRSampledAudioFileEnqueued)initWithJSON:(id)a3
+- (ASRSchemaASRSampledAudioFileEnqueued)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(ASRSchemaASRSampledAudioFileEnqueued *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(ASRSchemaASRSampledAudioFileEnqueued *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(ASRSchemaASRSampledAudioFileEnqueued *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -77,7 +77,7 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = [(ASRSchemaASRSampledAudioFileEnqueued *)self audioCodec]- 1;
@@ -91,28 +91,28 @@
       v5 = off_1E78D1F18[v4];
     }
 
-    [v3 setObject:v5 forKeyedSubscript:@"audioCodec"];
+    [dictionary setObject:v5 forKeyedSubscript:@"audioCodec"];
   }
 
   if (self->_originalAsrId)
   {
-    v6 = [(ASRSchemaASRSampledAudioFileEnqueued *)self originalAsrId];
-    v7 = [v6 dictionaryRepresentation];
-    if (v7)
+    originalAsrId = [(ASRSchemaASRSampledAudioFileEnqueued *)self originalAsrId];
+    dictionaryRepresentation = [originalAsrId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v7 forKeyedSubscript:@"originalAsrId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"originalAsrId"];
     }
 
     else
     {
-      v8 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v8 forKeyedSubscript:@"originalAsrId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"originalAsrId"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -131,18 +131,18 @@
   return v4 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(ASRSchemaASRSampledAudioFileEnqueued *)self originalAsrId];
-  v6 = [v4 originalAsrId];
-  v7 = v6;
-  if ((v5 != 0) == (v6 == 0))
+  originalAsrId = [(ASRSchemaASRSampledAudioFileEnqueued *)self originalAsrId];
+  originalAsrId2 = [equalCopy originalAsrId];
+  v7 = originalAsrId2;
+  if ((originalAsrId != 0) == (originalAsrId2 == 0))
   {
 
 LABEL_12:
@@ -150,13 +150,13 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v8 = [(ASRSchemaASRSampledAudioFileEnqueued *)self originalAsrId];
-  if (v8)
+  originalAsrId3 = [(ASRSchemaASRSampledAudioFileEnqueued *)self originalAsrId];
+  if (originalAsrId3)
   {
-    v9 = v8;
-    v10 = [(ASRSchemaASRSampledAudioFileEnqueued *)self originalAsrId];
-    v11 = [v4 originalAsrId];
-    v12 = [v10 isEqual:v11];
+    v9 = originalAsrId3;
+    originalAsrId4 = [(ASRSchemaASRSampledAudioFileEnqueued *)self originalAsrId];
+    originalAsrId5 = [equalCopy originalAsrId];
+    v12 = [originalAsrId4 isEqual:originalAsrId5];
 
     if (!v12)
     {
@@ -168,7 +168,7 @@ LABEL_12:
   {
   }
 
-  if ((*&self->_has & 1) != (v4[20] & 1))
+  if ((*&self->_has & 1) != (equalCopy[20] & 1))
   {
     goto LABEL_12;
   }
@@ -176,7 +176,7 @@ LABEL_12:
   if (*&self->_has)
   {
     audioCodec = self->_audioCodec;
-    if (audioCodec != [v4 audioCodec])
+    if (audioCodec != [equalCopy audioCodec])
     {
       goto LABEL_12;
     }
@@ -188,14 +188,14 @@ LABEL_13:
   return v14;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
-  v4 = [(ASRSchemaASRSampledAudioFileEnqueued *)self originalAsrId];
+  toCopy = to;
+  originalAsrId = [(ASRSchemaASRSampledAudioFileEnqueued *)self originalAsrId];
 
-  if (v4)
+  if (originalAsrId)
   {
-    v5 = [(ASRSchemaASRSampledAudioFileEnqueued *)self originalAsrId];
+    originalAsrId2 = [(ASRSchemaASRSampledAudioFileEnqueued *)self originalAsrId];
     PBDataWriterWriteSubmessage();
   }
 
@@ -205,17 +205,17 @@ LABEL_13:
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = ASRSchemaASRSampledAudioFileEnqueued;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(ASRSchemaASRSampledAudioFileEnqueued *)self originalAsrId:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(ASRSchemaASRSampledAudioFileEnqueued *)self deleteOriginalAsrId];
   }

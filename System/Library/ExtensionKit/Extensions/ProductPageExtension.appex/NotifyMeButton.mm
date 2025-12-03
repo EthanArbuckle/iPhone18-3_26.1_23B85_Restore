@@ -1,14 +1,14 @@
 @interface NotifyMeButton
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC20ProductPageExtension14NotifyMeButton)initWithCoder:(id)a3;
-- (_TtC20ProductPageExtension14NotifyMeButton)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC20ProductPageExtension14NotifyMeButton)initWithCoder:(id)coder;
+- (_TtC20ProductPageExtension14NotifyMeButton)initWithFrame:(CGRect)frame;
 - (void)_dynamicUserInterfaceTraitDidChange;
 - (void)layoutSubviews;
 @end
 
 @implementation NotifyMeButton
 
-- (_TtC20ProductPageExtension14NotifyMeButton)initWithCoder:(id)a3
+- (_TtC20ProductPageExtension14NotifyMeButton)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC20ProductPageExtension14NotifyMeButton_style) = 0;
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC20ProductPageExtension14NotifyMeButton_isActive) = 0;
@@ -20,14 +20,14 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_10050FCA4();
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  v4 = self;
+  width = fits.width;
+  selfCopy = self;
   sub_100510270(width);
   v6 = v5;
   v8 = v7;
@@ -48,7 +48,7 @@
   sub_10050E5DC();
 }
 
-- (_TtC20ProductPageExtension14NotifyMeButton)initWithFrame:(CGRect)a3
+- (_TtC20ProductPageExtension14NotifyMeButton)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

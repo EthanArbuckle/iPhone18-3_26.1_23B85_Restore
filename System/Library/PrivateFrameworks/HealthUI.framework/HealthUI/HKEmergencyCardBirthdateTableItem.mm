@@ -1,29 +1,29 @@
 @interface HKEmergencyCardBirthdateTableItem
-- (double)tableView:(id)a3 heightForRowAtIndex:(int64_t)a4;
+- (double)tableView:(id)view heightForRowAtIndex:(int64_t)index;
 - (id)_cachedCalendar;
 - (id)_createEditableCell;
-- (id)initInEditMode:(BOOL)a3;
-- (id)tableView:(id)a3 cellForRowAtIndex:(int64_t)a4;
+- (id)initInEditMode:(BOOL)mode;
+- (id)tableView:(id)view cellForRowAtIndex:(int64_t)index;
 - (id)title;
-- (int64_t)commitEditingStyle:(int64_t)a3 forRowAtIndex:(int64_t)a4;
-- (int64_t)editingStyleForRowAtIndex:(int64_t)a3;
-- (void)didCommitEditingStyle:(int64_t)a3 forRowAtIndex:(int64_t)a4;
-- (void)medicalIDEditorCellDidChangeValue:(id)a3;
+- (int64_t)commitEditingStyle:(int64_t)style forRowAtIndex:(int64_t)index;
+- (int64_t)editingStyleForRowAtIndex:(int64_t)index;
+- (void)didCommitEditingStyle:(int64_t)style forRowAtIndex:(int64_t)index;
+- (void)medicalIDEditorCellDidChangeValue:(id)value;
 @end
 
 @implementation HKEmergencyCardBirthdateTableItem
 
-- (id)initInEditMode:(BOOL)a3
+- (id)initInEditMode:(BOOL)mode
 {
-  v3 = a3;
-  if (!a3)
+  modeCopy = mode;
+  if (!mode)
   {
     [(HKEmergencyCardBirthdateTableItem *)a2 initInEditMode:?];
   }
 
   v6.receiver = self;
   v6.super_class = HKEmergencyCardBirthdateTableItem;
-  return [(HKEmergencyCardTableItem *)&v6 initInEditMode:v3];
+  return [(HKEmergencyCardTableItem *)&v6 initInEditMode:modeCopy];
 }
 
 - (id)title
@@ -37,8 +37,8 @@
 - (id)_createEditableCell
 {
   v3 = [(HKMedicalIDEditorCell *)[HKMedicalIDEditorDateCell alloc] initWithStyle:0 reuseIdentifier:@"kBirthdateTableItemCellIdentifier"];
-  v4 = [(HKEmergencyCardBirthdateTableItem *)self title];
-  [(HKMedicalIDEditorCell *)v3 setLabel:v4];
+  title = [(HKEmergencyCardBirthdateTableItem *)self title];
+  [(HKMedicalIDEditorCell *)v3 setLabel:title];
 
   [(HKMedicalIDEditorCell *)v3 setMinimumLabelWidth:47.0];
   [(HKMedicalIDEditorCell *)v3 setEditDelegate:self];
@@ -46,7 +46,7 @@
   return v3;
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndex:(int64_t)a4
+- (double)tableView:(id)view heightForRowAtIndex:(int64_t)index
 {
   if (HKUIApplicationIsUsingAccessibilityContentSizeCategory())
   {
@@ -59,27 +59,27 @@
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndex:(int64_t)a4
+- (id)tableView:(id)view cellForRowAtIndex:(int64_t)index
 {
-  v5 = a3;
-  v6 = [(HKEmergencyCardTableItem *)self data];
-  v7 = [v6 gregorianBirthday];
+  viewCopy = view;
+  data = [(HKEmergencyCardTableItem *)self data];
+  gregorianBirthday = [data gregorianBirthday];
 
-  if (v7)
+  if (gregorianBirthday)
   {
-    v8 = [v5 dequeueReusableCellWithIdentifier:@"kBirthdateTableItemCellIdentifier"];
-    if (!v8)
+    _createEditableCell = [viewCopy dequeueReusableCellWithIdentifier:@"kBirthdateTableItemCellIdentifier"];
+    if (!_createEditableCell)
     {
-      v8 = [(HKEmergencyCardBirthdateTableItem *)self _createEditableCell];
+      _createEditableCell = [(HKEmergencyCardBirthdateTableItem *)self _createEditableCell];
     }
 
-    v9 = [(HKEmergencyCardBirthdateTableItem *)self _cachedCalendar];
-    v10 = [(HKEmergencyCardTableItem *)self data];
-    v11 = [v10 gregorianBirthday];
-    v12 = [v9 dateFromComponents:v11];
-    [v8 setDateValue:v12];
+    _cachedCalendar = [(HKEmergencyCardBirthdateTableItem *)self _cachedCalendar];
+    data2 = [(HKEmergencyCardTableItem *)self data];
+    gregorianBirthday2 = [data2 gregorianBirthday];
+    v12 = [_cachedCalendar dateFromComponents:gregorianBirthday2];
+    [_createEditableCell setDateValue:v12];
 
-    v13 = v8;
+    v13 = _createEditableCell;
     editableCell = self->_editableCell;
     self->_editableCell = v13;
   }
@@ -88,18 +88,18 @@
   {
     editableCell = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
     v15 = [editableCell localizedStringForKey:@"add_birthdate" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
-    v13 = [(HKEmergencyCardTableItem *)self _dequeueNoValueCellInTableView:v5 withTitle:v15];
+    v13 = [(HKEmergencyCardTableItem *)self _dequeueNoValueCellInTableView:viewCopy withTitle:v15];
   }
 
   return v13;
 }
 
-- (int64_t)editingStyleForRowAtIndex:(int64_t)a3
+- (int64_t)editingStyleForRowAtIndex:(int64_t)index
 {
-  v3 = [(HKEmergencyCardTableItem *)self data];
-  v4 = [v3 gregorianBirthday];
+  data = [(HKEmergencyCardTableItem *)self data];
+  gregorianBirthday = [data gregorianBirthday];
 
-  if (v4)
+  if (gregorianBirthday)
   {
     return 1;
   }
@@ -110,9 +110,9 @@
   }
 }
 
-- (int64_t)commitEditingStyle:(int64_t)a3 forRowAtIndex:(int64_t)a4
+- (int64_t)commitEditingStyle:(int64_t)style forRowAtIndex:(int64_t)index
 {
-  if (a3 == 1)
+  if (style == 1)
   {
     v5 = [(HKEmergencyCardTableItem *)self data:1];
     [v5 setGregorianBirthday:0];
@@ -121,28 +121,28 @@
   else
   {
     v5 = HKUIDefaultGregorianBirthday();
-    v6 = [(HKEmergencyCardTableItem *)self data];
-    [v6 setGregorianBirthday:v5];
+    data = [(HKEmergencyCardTableItem *)self data];
+    [data setGregorianBirthday:v5];
   }
 
   return 2;
 }
 
-- (void)didCommitEditingStyle:(int64_t)a3 forRowAtIndex:(int64_t)a4
+- (void)didCommitEditingStyle:(int64_t)style forRowAtIndex:(int64_t)index
 {
-  if (a3 == 2)
+  if (style == 2)
   {
     [(HKMedicalIDEditorDateCell *)self->_editableCell beginEditing:2];
   }
 }
 
-- (void)medicalIDEditorCellDidChangeValue:(id)a3
+- (void)medicalIDEditorCellDidChangeValue:(id)value
 {
-  v8 = [(HKMedicalIDEditorDateCell *)self->_editableCell dateValue];
-  if (v8)
+  dateValue = [(HKMedicalIDEditorDateCell *)self->_editableCell dateValue];
+  if (dateValue)
   {
-    v3 = [(HKEmergencyCardBirthdateTableItem *)self _cachedCalendar];
-    v5 = [v3 hk_dateOfBirthDateComponentsWithDate:v8];
+    _cachedCalendar = [(HKEmergencyCardBirthdateTableItem *)self _cachedCalendar];
+    v5 = [_cachedCalendar hk_dateOfBirthDateComponentsWithDate:dateValue];
   }
 
   else
@@ -150,14 +150,14 @@
     v5 = 0;
   }
 
-  v6 = [(HKEmergencyCardTableItem *)self data];
-  [v6 setGregorianBirthday:v5];
+  data = [(HKEmergencyCardTableItem *)self data];
+  [data setGregorianBirthday:v5];
 
-  v7 = v8;
-  if (v8)
+  v7 = dateValue;
+  if (dateValue)
   {
 
-    v7 = v8;
+    v7 = dateValue;
   }
 }
 
@@ -166,9 +166,9 @@
   gregorianCalendar = self->_gregorianCalendar;
   if (!gregorianCalendar)
   {
-    v4 = [MEMORY[0x1E695DEE8] hk_gregorianCalendar];
+    hk_gregorianCalendar = [MEMORY[0x1E695DEE8] hk_gregorianCalendar];
     v5 = self->_gregorianCalendar;
-    self->_gregorianCalendar = v4;
+    self->_gregorianCalendar = hk_gregorianCalendar;
 
     gregorianCalendar = self->_gregorianCalendar;
   }

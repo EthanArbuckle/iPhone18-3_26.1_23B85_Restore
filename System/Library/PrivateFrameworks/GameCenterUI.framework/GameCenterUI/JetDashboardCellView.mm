@@ -1,19 +1,19 @@
 @interface JetDashboardCellView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in;
 - (NSString)accessibilityLabel;
 - (_TtC12GameCenterUI16DynamicTypeLabel)accessibilitySubtitleLabel;
 - (_TtC12GameCenterUI16DynamicTypeLabel)accessibilityTitleLabel;
 - (void)layoutSubviews;
-- (void)setAccessibilityLabel:(id)a3;
+- (void)setAccessibilityLabel:(id)label;
 @end
 
 @implementation JetDashboardCellView
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  v4 = self;
+  width = fits.width;
+  selfCopy = self;
   v5 = sub_24E017F7C(width);
   v7 = v6;
 
@@ -24,13 +24,13 @@
   return result;
 }
 
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in
 {
-  width = a3.width;
+  width = fitting.width;
   swift_getObjectType();
   swift_unknownObjectRetain();
-  v7 = self;
-  v8 = sub_24E019030(a4, v7, width);
+  selfCopy = self;
+  v8 = sub_24E019030(in, selfCopy, width);
   v10 = v9;
   v12 = v11;
   v14 = v13;
@@ -49,13 +49,13 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_24E0181BC();
 }
 
 - (NSString)accessibilityLabel
 {
-  v2 = self;
+  selfCopy = self;
   sub_24E018934();
   v4 = v3;
 
@@ -72,9 +72,9 @@
   return v5;
 }
 
-- (void)setAccessibilityLabel:(id)a3
+- (void)setAccessibilityLabel:(id)label
 {
-  if (a3)
+  if (label)
   {
     v4 = sub_24E347CF8();
     v6 = v5;
@@ -86,7 +86,7 @@
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   sub_24E018BB0(v4, v6);
 }
 

@@ -1,12 +1,12 @@
 @interface PLSyndicationDeleteEngine
-- (BOOL)_deleteConversationWithBundleID:(id)a3 syndicationIdentifiers:(id)a4;
-- (BOOL)_deleteSyndicationAssetsWithBundleID:(id)a3 syndicationIdentifiers:(id)a4 deleteCount:(int64_t *)a5;
-- (BOOL)_processDeletesForBundleID:(id)a3 unprefixedIdentifiers:(id)a4;
-- (PLSyndicationDeleteEngine)initWithDelegate:(id)a3 path:(id)a4 logPrefix:(id)a5;
-- (PLSyndicationDeleteEngine)initWithLibraryServicesManager:(id)a3;
+- (BOOL)_deleteConversationWithBundleID:(id)d syndicationIdentifiers:(id)identifiers;
+- (BOOL)_deleteSyndicationAssetsWithBundleID:(id)d syndicationIdentifiers:(id)identifiers deleteCount:(int64_t *)count;
+- (BOOL)_processDeletesForBundleID:(id)d unprefixedIdentifiers:(id)identifiers;
+- (PLSyndicationDeleteEngine)initWithDelegate:(id)delegate path:(id)path logPrefix:(id)prefix;
+- (PLSyndicationDeleteEngine)initWithLibraryServicesManager:(id)manager;
 - (PLSyndicationDeleteEngineDelegate)delegate;
-- (void)_inqueueProcessDeletesForBundleID:(id)a3 identifiers:(id)a4;
-- (void)processDeletesForBundleID:(id)a3 identifiers:(id)a4 completion:(id)a5;
+- (void)_inqueueProcessDeletesForBundleID:(id)d identifiers:(id)identifiers;
+- (void)processDeletesForBundleID:(id)d identifiers:(id)identifiers completion:(id)completion;
 @end
 
 @implementation PLSyndicationDeleteEngine
@@ -18,15 +18,15 @@
   return WeakRetained;
 }
 
-- (void)processDeletesForBundleID:(id)a3 identifiers:(id)a4 completion:(id)a5
+- (void)processDeletesForBundleID:(id)d identifiers:(id)identifiers completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  identifiersCopy = identifiers;
+  completionCopy = completion;
   v11 = MEMORY[0x1E69BF360];
   v12 = [MEMORY[0x1E696AD98] numberWithInteger:self->_wellKnownPhotoLibraryIdentifier];
-  v13 = [v12 stringValue];
-  v14 = [@"PLSyndicationDeleteEngine-processDeletes-" stringByAppendingString:v13];
+  stringValue = [v12 stringValue];
+  v14 = [@"PLSyndicationDeleteEngine-processDeletes-" stringByAppendingString:stringValue];
   v15 = [v11 transaction:{objc_msgSend(v14, "UTF8String")}];
 
   queue = self->_queue;
@@ -35,14 +35,14 @@
   block[2] = __78__PLSyndicationDeleteEngine_processDeletesForBundleID_identifiers_completion___block_invoke;
   block[3] = &unk_1E7576EE8;
   block[4] = self;
-  v22 = v8;
+  v22 = dCopy;
   v24 = v15;
-  v25 = v10;
-  v23 = v9;
+  v25 = completionCopy;
+  v23 = identifiersCopy;
   v17 = v15;
-  v18 = v10;
-  v19 = v9;
-  v20 = v8;
+  v18 = completionCopy;
+  v19 = identifiersCopy;
+  v20 = dCopy;
   dispatch_async(queue, block);
 }
 
@@ -60,44 +60,44 @@ uint64_t __78__PLSyndicationDeleteEngine_processDeletesForBundleID_identifiers_c
   return [v3 stillAlive];
 }
 
-- (void)_inqueueProcessDeletesForBundleID:(id)a3 identifiers:(id)a4
+- (void)_inqueueProcessDeletesForBundleID:(id)d identifiers:(id)identifiers
 {
   v14 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  identifiersCopy = identifiers;
   v8 = PLSyndicationGetLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(PLSyndicationDeleteEngine *)self logPrefix];
+    logPrefix = [(PLSyndicationDeleteEngine *)self logPrefix];
     v10 = 138543618;
-    v11 = v9;
+    v11 = logPrefix;
     v12 = 2048;
-    v13 = [v7 count];
+    v13 = [identifiersCopy count];
     _os_log_impl(&dword_19BF1F000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ Going to delete %lu items", &v10, 0x16u);
   }
 
-  [(PLSyndicationDeleteEngine *)self _processDeletesForBundleID:v6 unprefixedIdentifiers:v7];
-  if ([v6 isEqualToString:*MEMORY[0x1E69BFF00]])
+  [(PLSyndicationDeleteEngine *)self _processDeletesForBundleID:dCopy unprefixedIdentifiers:identifiersCopy];
+  if ([dCopy isEqualToString:*MEMORY[0x1E69BFF00]])
   {
-    [(PLSyndicationDeleteEngine *)self _deleteConversationWithBundleID:v6 syndicationIdentifiers:v7];
+    [(PLSyndicationDeleteEngine *)self _deleteConversationWithBundleID:dCopy syndicationIdentifiers:identifiersCopy];
   }
 }
 
-- (BOOL)_deleteConversationWithBundleID:(id)a3 syndicationIdentifiers:(id)a4
+- (BOOL)_deleteConversationWithBundleID:(id)d syndicationIdentifiers:(id)identifiers
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PLSyndicationDeleteEngine *)self delegate];
+  dCopy = d;
+  identifiersCopy = identifiers;
+  delegate = [(PLSyndicationDeleteEngine *)self delegate];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __84__PLSyndicationDeleteEngine__deleteConversationWithBundleID_syndicationIdentifiers___block_invoke;
   v12[3] = &unk_1E7574238;
-  v13 = v7;
-  v14 = self;
-  v15 = v6;
-  v9 = v6;
-  v10 = v7;
-  [v8 performTransactionForSyndicationDeleteManager:self name:"-[PLSyndicationDeleteEngine _deleteConversationWithBundleID:syndicationIdentifiers:]" transaction:v12];
+  v13 = identifiersCopy;
+  selfCopy = self;
+  v15 = dCopy;
+  v9 = dCopy;
+  v10 = identifiersCopy;
+  [delegate performTransactionForSyndicationDeleteManager:self name:"-[PLSyndicationDeleteEngine _deleteConversationWithBundleID:syndicationIdentifiers:]" transaction:v12];
 
   return 0;
 }
@@ -148,22 +148,22 @@ void __84__PLSyndicationDeleteEngine__deleteConversationWithBundleID_syndication
   }
 }
 
-- (BOOL)_deleteSyndicationAssetsWithBundleID:(id)a3 syndicationIdentifiers:(id)a4 deleteCount:(int64_t *)a5
+- (BOOL)_deleteSyndicationAssetsWithBundleID:(id)d syndicationIdentifiers:(id)identifiers deleteCount:(int64_t *)count
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(PLSyndicationDeleteEngine *)self delegate];
+  dCopy = d;
+  identifiersCopy = identifiers;
+  delegate = [(PLSyndicationDeleteEngine *)self delegate];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __101__PLSyndicationDeleteEngine__deleteSyndicationAssetsWithBundleID_syndicationIdentifiers_deleteCount___block_invoke;
   v14[3] = &unk_1E7574260;
-  v15 = v9;
-  v16 = v8;
-  v17 = self;
-  v18 = a5;
-  v11 = v8;
-  v12 = v9;
-  [v10 performTransactionForSyndicationDeleteManager:self name:"-[PLSyndicationDeleteEngine _deleteSyndicationAssetsWithBundleID:syndicationIdentifiers:deleteCount:]" transaction:v14];
+  v15 = identifiersCopy;
+  v16 = dCopy;
+  selfCopy = self;
+  countCopy = count;
+  v11 = dCopy;
+  v12 = identifiersCopy;
+  [delegate performTransactionForSyndicationDeleteManager:self name:"-[PLSyndicationDeleteEngine _deleteSyndicationAssetsWithBundleID:syndicationIdentifiers:deleteCount:]" transaction:v14];
 
   return 0;
 }
@@ -239,24 +239,24 @@ void __101__PLSyndicationDeleteEngine__deleteSyndicationAssetsWithBundleID_syndi
   }
 }
 
-- (BOOL)_processDeletesForBundleID:(id)a3 unprefixedIdentifiers:(id)a4
+- (BOOL)_processDeletesForBundleID:(id)d unprefixedIdentifiers:(id)identifiers
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  identifiersCopy = identifiers;
   v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v9 = [(PLSyndicationDeleteEngine *)self delegate];
+  delegate = [(PLSyndicationDeleteEngine *)self delegate];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __78__PLSyndicationDeleteEngine__processDeletesForBundleID_unprefixedIdentifiers___block_invoke;
   v19[3] = &unk_1E7574238;
-  v10 = v7;
+  v10 = identifiersCopy;
   v20 = v10;
-  v21 = v6;
+  v21 = dCopy;
   v11 = v8;
   v22 = v11;
-  v12 = v6;
-  [v9 performTransactionForSyndicationDeleteManager:self name:"-[PLSyndicationDeleteEngine _processDeletesForBundleID:unprefixedIdentifiers:]" transaction:v19];
+  v12 = dCopy;
+  [delegate performTransactionForSyndicationDeleteManager:self name:"-[PLSyndicationDeleteEngine _processDeletesForBundleID:unprefixedIdentifiers:]" transaction:v19];
 
   v18 = 0;
   v13 = PLSyndicationGetLog();
@@ -350,38 +350,38 @@ void __78__PLSyndicationDeleteEngine__processDeletesForBundleID_unprefixedIdenti
   }
 }
 
-- (PLSyndicationDeleteEngine)initWithLibraryServicesManager:(id)a3
+- (PLSyndicationDeleteEngine)initWithLibraryServicesManager:(id)manager
 {
-  v4 = a3;
-  v5 = [v4 pathManager];
-  v6 = [v5 photoDirectoryWithType:5];
+  managerCopy = manager;
+  pathManager = [managerCopy pathManager];
+  v6 = [pathManager photoDirectoryWithType:5];
   v7 = [v6 stringByAppendingPathComponent:@"SyndicationDeleteJournal"];
 
-  v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"[sync.delete] L%td", objc_msgSend(v4, "wellKnownPhotoLibraryIdentifier")];
-  v9 = [(PLSyndicationDeleteEngine *)self initWithDelegate:v4 path:v7 logPrefix:v8];
+  v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"[sync.delete] L%td", objc_msgSend(managerCopy, "wellKnownPhotoLibraryIdentifier")];
+  v9 = [(PLSyndicationDeleteEngine *)self initWithDelegate:managerCopy path:v7 logPrefix:v8];
 
   return v9;
 }
 
-- (PLSyndicationDeleteEngine)initWithDelegate:(id)a3 path:(id)a4 logPrefix:(id)a5
+- (PLSyndicationDeleteEngine)initWithDelegate:(id)delegate path:(id)path logPrefix:(id)prefix
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  delegateCopy = delegate;
+  pathCopy = path;
+  prefixCopy = prefix;
   v16.receiver = self;
   v16.super_class = PLSyndicationDeleteEngine;
   v11 = [(PLSyndicationDeleteEngine *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_delegate, v8);
-    objc_storeStrong(&v12->_logPrefix, a5);
-    objc_storeStrong(&v12->_path, a4);
+    objc_storeWeak(&v11->_delegate, delegateCopy);
+    objc_storeStrong(&v12->_logPrefix, prefix);
+    objc_storeStrong(&v12->_path, path);
     v13 = dispatch_queue_create("com.apple.photos.syndicationDeleteManager", 0);
     queue = v12->_queue;
     v12->_queue = v13;
 
-    v12->_wellKnownPhotoLibraryIdentifier = [v8 wellKnownPhotoLibraryIdentifier];
+    v12->_wellKnownPhotoLibraryIdentifier = [delegateCopy wellKnownPhotoLibraryIdentifier];
   }
 
   return v12;

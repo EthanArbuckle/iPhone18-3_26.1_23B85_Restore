@@ -1,22 +1,22 @@
 @interface CRFormFieldTextOverlapCleanupStep
-+ (CGRect)_clipRectangle:(CGRect)a3 intersectionRectangle:(CGRect)a4 type:(unint64_t)a5;
-+ (id)cleanupTextOverlapForFields:(id)a3 document:(id)a4 underlinedFieldsOnly:(BOOL)a5;
-- (id)process:(id)a3 externalFields:(id)a4 document:(id)a5 options:(id)a6;
++ (CGRect)_clipRectangle:(CGRect)rectangle intersectionRectangle:(CGRect)intersectionRectangle type:(unint64_t)type;
++ (id)cleanupTextOverlapForFields:(id)fields document:(id)document underlinedFieldsOnly:(BOOL)only;
+- (id)process:(id)process externalFields:(id)fields document:(id)document options:(id)options;
 @end
 
 @implementation CRFormFieldTextOverlapCleanupStep
 
-+ (CGRect)_clipRectangle:(CGRect)a3 intersectionRectangle:(CGRect)a4 type:(unint64_t)a5
++ (CGRect)_clipRectangle:(CGRect)rectangle intersectionRectangle:(CGRect)intersectionRectangle type:(unint64_t)type
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v10 = a3.size.height;
-  v11 = a3.size.width;
-  v12 = a3.origin.y;
-  v13 = a3.origin.x;
-  MinX = CGRectGetMinX(a3);
+  height = intersectionRectangle.size.height;
+  width = intersectionRectangle.size.width;
+  y = intersectionRectangle.origin.y;
+  x = intersectionRectangle.origin.x;
+  v10 = rectangle.size.height;
+  v11 = rectangle.size.width;
+  v12 = rectangle.origin.y;
+  v13 = rectangle.origin.x;
+  MinX = CGRectGetMinX(rectangle);
   v36.origin.x = v13;
   v36.origin.y = v12;
   v36.size.width = v11;
@@ -36,7 +36,7 @@
   v15 = y;
   v16 = width;
   v17 = height;
-  if (a5)
+  if (type)
   {
     v29 = width;
     v18 = height;
@@ -69,7 +69,7 @@
 
     else
     {
-      if (a5 == 1)
+      if (type == 1)
       {
         v42.origin.x = x;
         v42.origin.y = y;
@@ -153,18 +153,18 @@
   return result;
 }
 
-+ (id)cleanupTextOverlapForFields:(id)a3 document:(id)a4 underlinedFieldsOnly:(BOOL)a5
++ (id)cleanupTextOverlapForFields:(id)fields document:(id)document underlinedFieldsOnly:(BOOL)only
 {
-  v5 = a5;
+  onlyCopy = only;
   v47 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v28 = a4;
+  fieldsCopy = fields;
+  documentCopy = document;
   if (+[CRFormFieldTextOverlapCleanupStep cleanupTextOverlapForFields:document:underlinedFieldsOnly:]::onceToken != -1)
   {
     dispatch_once(&+[CRFormFieldTextOverlapCleanupStep cleanupTextOverlapForFields:document:underlinedFieldsOnly:]::onceToken, &__block_literal_global_165);
   }
 
-  v27 = [v28 contentsWithTypes:8];
+  v27 = [documentCopy contentsWithTypes:8];
   v26 = objc_opt_new();
   v25 = objc_opt_new();
   v9 = objc_opt_new();
@@ -174,22 +174,22 @@
   aBlock[3] = &unk_1E7BC20C0;
   v10 = v9;
   v33 = v10;
-  v38 = v5;
+  v38 = onlyCopy;
   v11 = v27;
   v34 = v11;
   v12 = v26;
   v35 = v12;
-  v37 = a1;
+  selfCopy = self;
   v13 = v25;
   v36 = v13;
   v14 = _Block_copy(aBlock);
-  if (v5)
+  if (onlyCopy)
   {
-    [CRFormPostProcessingManager enumerateAllFieldsInFields:v8 block:v14, v25, v26, v27];
+    [CRFormPostProcessingManager enumerateAllFieldsInFields:fieldsCopy block:v14, v25, v26, v27];
     v15 = CROSLogForCategory(6);
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
     {
-      v16 = [v8 count];
+      v16 = [fieldsCopy count];
       v17 = [v10 count];
       *buf = 136315650;
       v40 = "+[CRFormFieldTextOverlapCleanupStep cleanupTextOverlapForFields:document:underlinedFieldsOnly:]";
@@ -200,13 +200,13 @@
       _os_log_impl(&dword_1B40D2000, v15, OS_LOG_TYPE_DEBUG, "%s: Processed %lu fields; Returning %lu fields.", buf, 0x20u);
     }
 
-    v18 = v10;
+    array = v10;
   }
 
   else
   {
-    [CRFormPostProcessingManager enumerateContourBasedDetectedFields:v8 block:v14, v25, v26, v27];
-    [CRFormPostProcessingManager enumerateTextBasedDetectedFields:v8 block:v14];
+    [CRFormPostProcessingManager enumerateContourBasedDetectedFields:fieldsCopy block:v14, v25, v26, v27];
+    [CRFormPostProcessingManager enumerateTextBasedDetectedFields:fieldsCopy block:v14];
     v19 = [v13 count];
     v20 = [v12 count];
     v29[0] = MEMORY[0x1E69E9820];
@@ -216,7 +216,7 @@
     v30 = v12;
     v21 = v13;
     v31 = v21;
-    [CRFormPostProcessingManager enumerateAllFieldsInFields:v8 block:v29];
+    [CRFormPostProcessingManager enumerateAllFieldsInFields:fieldsCopy block:v29];
     v22 = CROSLogForCategory(6);
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
     {
@@ -232,10 +232,10 @@
       _os_log_impl(&dword_1B40D2000, v22, OS_LOG_TYPE_DEBUG, "%s: Fields removed %lu, Updated: %lu, Total number of fields preserved: %lu.", buf, 0x2Au);
     }
 
-    v18 = [v21 array];
+    array = [v21 array];
   }
 
-  return v18;
+  return array;
 }
 
 void __95__CRFormFieldTextOverlapCleanupStep_cleanupTextOverlapForFields_document_underlinedFieldsOnly___block_invoke()
@@ -688,22 +688,22 @@ void __95__CRFormFieldTextOverlapCleanupStep_cleanupTextOverlapForFields_documen
   }
 }
 
-- (id)process:(id)a3 externalFields:(id)a4 document:(id)a5 options:(id)a6
+- (id)process:(id)process externalFields:(id)fields document:(id)document options:(id)options
 {
   v16 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a5;
+  processCopy = process;
+  documentCopy = document;
   v9 = CROSLogForCategory(6);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
     v10 = objc_opt_class();
     v11 = NSStringFromClass(v10);
     v14 = 136315138;
-    v15 = [v11 UTF8String];
+    uTF8String = [v11 UTF8String];
     _os_log_impl(&dword_1B40D2000, v9, OS_LOG_TYPE_DEBUG, "CRFormPostProcessor: %s is running.", &v14, 0xCu);
   }
 
-  v12 = [objc_opt_class() cleanupTextOverlapForFields:v7 document:v8 underlinedFieldsOnly:0];
+  v12 = [objc_opt_class() cleanupTextOverlapForFields:processCopy document:documentCopy underlinedFieldsOnly:0];
 
   return v12;
 }

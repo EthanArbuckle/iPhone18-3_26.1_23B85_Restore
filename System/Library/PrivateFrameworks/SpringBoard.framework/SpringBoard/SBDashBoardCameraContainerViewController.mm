@@ -1,36 +1,36 @@
 @interface SBDashBoardCameraContainerViewController
-- (BOOL)handleEvent:(id)a3;
-- (CGRect)_referenceBoundsForBounds:(CGRect)a3;
-- (SBDashBoardCameraContainerViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (BOOL)handleEvent:(id)event;
+- (CGRect)_referenceBoundsForBounds:(CGRect)bounds;
+- (SBDashBoardCameraContainerViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (id)_traitsArbiter;
 - (void)_acquireTraitsParticipantIfNeeded;
 - (void)_invalidateTraitsParticipant;
-- (void)_setPresenterNeedsZStackPreferencesUpdateWithReason:(id)a3;
+- (void)_setPresenterNeedsZStackPreferencesUpdateWithReason:(id)reason;
 - (void)_updateZStackPolicyAssistants;
-- (void)addGrabberView:(id)a3;
-- (void)aggregateAppearance:(id)a3;
-- (void)aggregateBehavior:(id)a3;
-- (void)aggregatePresentation:(id)a3;
+- (void)addGrabberView:(id)view;
+- (void)aggregateAppearance:(id)appearance;
+- (void)aggregateBehavior:(id)behavior;
+- (void)aggregatePresentation:(id)presentation;
 - (void)dealloc;
-- (void)hostableEntityPresenter:(id)a3 didBeginHosting:(id)a4;
-- (void)hostableEntityPresenter:(id)a3 didEndHosting:(id)a4;
+- (void)hostableEntityPresenter:(id)presenter didBeginHosting:(id)hosting;
+- (void)hostableEntityPresenter:(id)presenter didEndHosting:(id)hosting;
 - (void)invalidate;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4;
-- (void)viewIsAppearing:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)zStackParticipant:(id)a3 updatePreferences:(id)a4;
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear;
+- (void)viewIsAppearing:(BOOL)appearing;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)zStackParticipant:(id)participant updatePreferences:(id)preferences;
 @end
 
 @implementation SBDashBoardCameraContainerViewController
 
-- (SBDashBoardCameraContainerViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (SBDashBoardCameraContainerViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v18.receiver = self;
   v18.super_class = SBDashBoardCameraContainerViewController;
-  v4 = [(CSCoverSheetViewControllerBase *)&v18 initWithNibName:a3 bundle:a4];
+  v4 = [(CSCoverSheetViewControllerBase *)&v18 initWithNibName:name bundle:bundle];
   if (v4)
   {
     v5 = objc_alloc_init(MEMORY[0x277D02C18]);
@@ -51,13 +51,13 @@
     systemApertureZStackPolicyAssistant = v4->_systemApertureZStackPolicyAssistant;
     v4->_systemApertureZStackPolicyAssistant = v11;
 
-    v13 = [MEMORY[0x277D67C98] sharedInstance];
+    mEMORY[0x277D67C98] = [MEMORY[0x277D67C98] sharedInstance];
     biometricResource = v4->_biometricResource;
-    v4->_biometricResource = v13;
+    v4->_biometricResource = mEMORY[0x277D67C98];
 
-    v15 = [SBApp authenticationController];
+    authenticationController = [SBApp authenticationController];
     authenticationAssertionProvider = v4->_authenticationAssertionProvider;
-    v4->_authenticationAssertionProvider = v15;
+    v4->_authenticationAssertionProvider = authenticationController;
   }
 
   return v4;
@@ -76,26 +76,26 @@
   v24.receiver = self;
   v24.super_class = SBDashBoardCameraContainerViewController;
   [(CSCoverSheetViewControllerBase *)&v24 viewDidLoad];
-  v3 = [(SBDashBoardCameraContainerViewController *)self view];
-  v4 = [MEMORY[0x277D75348] blackColor];
-  [v3 setBackgroundColor:v4];
+  view = [(SBDashBoardCameraContainerViewController *)self view];
+  blackColor = [MEMORY[0x277D75348] blackColor];
+  [view setBackgroundColor:blackColor];
 
   v5 = objc_alloc_init(SBTraitsOrientedContentViewController);
   orientedContentViewController = self->_orientedContentViewController;
   self->_orientedContentViewController = v5;
 
-  v7 = [(SBTraitsOrientedContentViewController *)self->_orientedContentViewController view];
-  v8 = [(CSHostedEntityViewController *)self->_hostedEntityViewController view];
+  view2 = [(SBTraitsOrientedContentViewController *)self->_orientedContentViewController view];
+  view3 = [(CSHostedEntityViewController *)self->_hostedEntityViewController view];
   v9 = self->_orientedContentViewController;
   hostedEntityViewController = self->_hostedEntityViewController;
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __55__SBDashBoardCameraContainerViewController_viewDidLoad__block_invoke;
   v21[3] = &unk_2783A9460;
-  v22 = v8;
-  v11 = v3;
+  v22 = view3;
+  v11 = view;
   v23 = v11;
-  v12 = v8;
+  v12 = view3;
   [(SBTraitsOrientedContentViewController *)v9 bs_addChildViewController:hostedEntityViewController animated:0 transitionBlock:v21];
   v13 = self->_orientedContentViewController;
   v17[0] = MEMORY[0x277D85DD0];
@@ -103,13 +103,13 @@
   v17[2] = __55__SBDashBoardCameraContainerViewController_viewDidLoad__block_invoke_2;
   v17[3] = &unk_2783B08F8;
   v18 = v11;
-  v19 = v7;
-  v20 = self;
-  v14 = v7;
+  v19 = view2;
+  selfCopy = self;
+  v14 = view2;
   v15 = v11;
   [(SBDashBoardCameraContainerViewController *)self bs_addChildViewController:v13 animated:0 transitionBlock:v17];
-  v16 = [v15 layer];
-  [v16 setAllowsGroupOpacity:1];
+  layer = [v15 layer];
+  [layer setAllowsGroupOpacity:1];
 }
 
 void __55__SBDashBoardCameraContainerViewController_viewDidLoad__block_invoke(uint64_t a1, void *a2)
@@ -144,11 +144,11 @@ void __55__SBDashBoardCameraContainerViewController_viewDidLoad__block_invoke_2(
   v15[2]();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v10.receiver = self;
   v10.super_class = SBDashBoardCameraContainerViewController;
-  [(CSCoverSheetViewControllerBase *)&v10 viewWillAppear:a3];
+  [(CSCoverSheetViewControllerBase *)&v10 viewWillAppear:appear];
   [(SBDashBoardCameraContainerViewController *)self _acquireTraitsParticipantIfNeeded];
   [(CSHostedEntityViewController *)self->_hostedEntityViewController setHostableEntityContentMode:2];
   if (!self->_sustainAuthenticationAssertion)
@@ -161,8 +161,8 @@ void __55__SBDashBoardCameraContainerViewController_viewDidLoad__block_invoke_2(
     }
 
     authenticationAssertionProvider = self->_authenticationAssertionProvider;
-    v6 = [(CSCoverSheetViewControllerBase *)self appearanceIdentifier];
-    v7 = [(SBFAuthenticationAssertionProviding *)authenticationAssertionProvider createKeybagUnlockAssertionWithReason:v6];
+    appearanceIdentifier = [(CSCoverSheetViewControllerBase *)self appearanceIdentifier];
+    v7 = [(SBFAuthenticationAssertionProviding *)authenticationAssertionProvider createKeybagUnlockAssertionWithReason:appearanceIdentifier];
     sustainAuthenticationAssertion = self->_sustainAuthenticationAssertion;
     self->_sustainAuthenticationAssertion = v7;
 
@@ -170,27 +170,27 @@ void __55__SBDashBoardCameraContainerViewController_viewDidLoad__block_invoke_2(
   }
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
   v4.receiver = self;
   v4.super_class = SBDashBoardCameraContainerViewController;
-  [(SBDashBoardCameraContainerViewController *)&v4 viewIsAppearing:a3];
+  [(SBDashBoardCameraContainerViewController *)&v4 viewIsAppearing:appearing];
   [(SBDashBoardCameraContainerViewController *)self _acquireTraitsParticipantIfNeeded];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = SBDashBoardCameraContainerViewController;
-  [(CSCoverSheetViewControllerBase *)&v4 viewDidAppear:a3];
+  [(CSCoverSheetViewControllerBase *)&v4 viewDidAppear:appear];
   [(SBDashBoardCameraContainerViewController *)self _updateZStackPolicyAssistants];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v7.receiver = self;
   v7.super_class = SBDashBoardCameraContainerViewController;
-  [(CSCoverSheetViewControllerBase *)&v7 viewDidDisappear:a3];
+  [(CSCoverSheetViewControllerBase *)&v7 viewDidDisappear:disappear];
   [(CSHostedEntityViewController *)self->_hostedEntityViewController setHostableEntityContentMode:1];
   if (self->_sustainAuthenticationAssertion)
   {
@@ -209,16 +209,16 @@ void __55__SBDashBoardCameraContainerViewController_viewDidLoad__block_invoke_2(
   [(SBDashBoardCameraContainerViewController *)self _invalidateTraitsParticipant];
 }
 
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear
 {
-  v4 = a4;
-  v6 = a3;
+  disappearCopy = disappear;
+  windowCopy = window;
   v16.receiver = self;
   v16.super_class = SBDashBoardCameraContainerViewController;
-  [(SBDashBoardCameraContainerViewController *)&v16 viewDidMoveToWindow:v6 shouldAppearOrDisappear:v4];
+  [(SBDashBoardCameraContainerViewController *)&v16 viewDidMoveToWindow:windowCopy shouldAppearOrDisappear:disappearCopy];
   orientedContentViewController = self->_orientedContentViewController;
   v8 = objc_opt_class();
-  v9 = v6;
+  v9 = windowCopy;
   if (v8)
   {
     if (objc_opt_isKindOfClass())
@@ -239,9 +239,9 @@ void __55__SBDashBoardCameraContainerViewController_viewDidLoad__block_invoke_2(
 
   v11 = v10;
 
-  v12 = [v11 traitsParticipant];
+  traitsParticipant = [v11 traitsParticipant];
 
-  [(SBTraitsOrientedContentViewController *)orientedContentViewController setContainerParticipant:v12];
+  [(SBTraitsOrientedContentViewController *)orientedContentViewController setContainerParticipant:traitsParticipant];
   if (v9)
   {
     [(SBDashBoardCameraContainerViewController *)self _acquireTraitsParticipantIfNeeded];
@@ -249,46 +249,46 @@ void __55__SBDashBoardCameraContainerViewController_viewDidLoad__block_invoke_2(
 
   else
   {
-    v13 = [(CSHostedEntityViewController *)self->_hostedEntityViewController hostedEntity];
-    v14 = [v13 hostingViewController];
-    v15 = [v14 _sbWindowScene];
+    hostedEntity = [(CSHostedEntityViewController *)self->_hostedEntityViewController hostedEntity];
+    hostingViewController = [hostedEntity hostingViewController];
+    _sbWindowScene = [hostingViewController _sbWindowScene];
 
-    if (!v15)
+    if (!_sbWindowScene)
     {
       [(CSHostedEntityViewController *)self->_hostedEntityViewController setHostableEntityContentMode:1];
     }
   }
 }
 
-- (void)aggregateBehavior:(id)a3
+- (void)aggregateBehavior:(id)behavior
 {
-  v4 = a3;
+  behaviorCopy = behavior;
   v5.receiver = self;
   v5.super_class = SBDashBoardCameraContainerViewController;
-  [(CSCoverSheetViewControllerBase *)&v5 aggregateBehavior:v4];
-  [v4 unionBehavior:self->_hostedEntityViewController];
+  [(CSCoverSheetViewControllerBase *)&v5 aggregateBehavior:behaviorCopy];
+  [behaviorCopy unionBehavior:self->_hostedEntityViewController];
   if ([(SBUIBiometricResource *)self->_biometricResource hasPearlSupport])
   {
-    [v4 addRestrictedCapabilities:8];
+    [behaviorCopy addRestrictedCapabilities:8];
   }
 }
 
-- (void)aggregateAppearance:(id)a3
+- (void)aggregateAppearance:(id)appearance
 {
   v5.receiver = self;
   v5.super_class = SBDashBoardCameraContainerViewController;
-  v4 = a3;
-  [(CSCoverSheetViewControllerBase *)&v5 aggregateAppearance:v4];
-  [v4 unionAppearance:{self->_hostedEntityViewController, v5.receiver, v5.super_class}];
+  appearanceCopy = appearance;
+  [(CSCoverSheetViewControllerBase *)&v5 aggregateAppearance:appearanceCopy];
+  [appearanceCopy unionAppearance:{self->_hostedEntityViewController, v5.receiver, v5.super_class}];
 }
 
-- (void)aggregatePresentation:(id)a3
+- (void)aggregatePresentation:(id)presentation
 {
   v5.receiver = self;
   v5.super_class = SBDashBoardCameraContainerViewController;
-  v4 = a3;
-  [(CSCoverSheetViewControllerBase *)&v5 aggregatePresentation:v4];
-  [v4 unionPresentation:{self->_hostedEntityViewController, v5.receiver, v5.super_class}];
+  presentationCopy = presentation;
+  [(CSCoverSheetViewControllerBase *)&v5 aggregatePresentation:presentationCopy];
+  [presentationCopy unionPresentation:{self->_hostedEntityViewController, v5.receiver, v5.super_class}];
 }
 
 - (void)invalidate
@@ -300,29 +300,29 @@ void __55__SBDashBoardCameraContainerViewController_viewDidLoad__block_invoke_2(
   [(SBDashBoardCameraContainerViewController *)self _invalidateTraitsParticipant];
 }
 
-- (BOOL)handleEvent:(id)a3
+- (BOOL)handleEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v7.receiver = self;
   v7.super_class = SBDashBoardCameraContainerViewController;
-  if (-[CSCoverSheetViewControllerBase handleEvent:](&v7, sel_handleEvent_, v4) && ([v4 isConsumable] & 1) != 0 || -[CSHostedEntityViewController handleEvent:](self->_hostedEntityViewController, "handleEvent:", v4))
+  if (-[CSCoverSheetViewControllerBase handleEvent:](&v7, sel_handleEvent_, eventCopy) && ([eventCopy isConsumable] & 1) != 0 || -[CSHostedEntityViewController handleEvent:](self->_hostedEntityViewController, "handleEvent:", eventCopy))
   {
-    v5 = [v4 isConsumable];
+    isConsumable = [eventCopy isConsumable];
   }
 
   else
   {
-    v5 = 0;
+    isConsumable = 0;
   }
 
-  return v5;
+  return isConsumable;
 }
 
-- (void)addGrabberView:(id)a3
+- (void)addGrabberView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v5 = objc_opt_class();
-  v8 = v4;
+  v8 = viewCopy;
   if (v5)
   {
     if (objc_opt_isKindOfClass())
@@ -349,66 +349,66 @@ void __55__SBDashBoardCameraContainerViewController_viewDidLoad__block_invoke_2(
   }
 }
 
-- (void)zStackParticipant:(id)a3 updatePreferences:(id)a4
+- (void)zStackParticipant:(id)participant updatePreferences:(id)preferences
 {
-  v11 = a4;
+  preferencesCopy = preferences;
   if (([(SBDashBoardCameraContainerViewController *)self bs_isDisappearingOrDisappeared]& 1) == 0)
   {
-    [v11 setSuppressSystemApertureForSystemChromeSuppression:-[SBSystemApertureZStackPolicyAssistant suppressSystemApertureForSystemChromeSuppression](self->_systemApertureZStackPolicyAssistant)];
-    v5 = [(SBCameraHardwareButton *)self->_systemApertureZStackPolicyAssistant allCameraShutterButtonPIDs];
-    [v11 setAssociatedBundleIdentifiersToSuppressInSystemAperture:v5];
+    [preferencesCopy setSuppressSystemApertureForSystemChromeSuppression:-[SBSystemApertureZStackPolicyAssistant suppressSystemApertureForSystemChromeSuppression](self->_systemApertureZStackPolicyAssistant)];
+    allCameraShutterButtonPIDs = [(SBCameraHardwareButton *)self->_systemApertureZStackPolicyAssistant allCameraShutterButtonPIDs];
+    [preferencesCopy setAssociatedBundleIdentifiersToSuppressInSystemAperture:allCameraShutterButtonPIDs];
 
-    v6 = [(SBCameraHardwareButton *)self->_systemApertureZStackPolicyAssistant foregroundCameraShutterButtonPIDs];
-    [v11 setAssociatedSceneIdentifiersToSuppressInSystemAperture:v6];
+    foregroundCameraShutterButtonPIDs = [(SBCameraHardwareButton *)self->_systemApertureZStackPolicyAssistant foregroundCameraShutterButtonPIDs];
+    [preferencesCopy setAssociatedSceneIdentifiersToSuppressInSystemAperture:foregroundCameraShutterButtonPIDs];
 
-    v7 = [(SBAudioCategoryZStackPolicyAssistant *)self->_audioCategoryZStackPolicyAssistant audioCategoriesDisablingVolumeHUD];
-    [v11 setAudioCategoriesDisablingVolumeHUD:v7];
+    audioCategoriesDisablingVolumeHUD = [(SBAudioCategoryZStackPolicyAssistant *)self->_audioCategoryZStackPolicyAssistant audioCategoriesDisablingVolumeHUD];
+    [preferencesCopy setAudioCategoriesDisablingVolumeHUD:audioCategoriesDisablingVolumeHUD];
 
-    v8 = [(SBPhysicalButtonZStackPolicyAssistant *)self->_physicalButtonZStackPolicyAssistant physicalButtonSceneTargets];
-    [v11 setPhysicalButtonSceneTargets:v8];
+    physicalButtonSceneTargets = [(SBPhysicalButtonZStackPolicyAssistant *)self->_physicalButtonZStackPolicyAssistant physicalButtonSceneTargets];
+    [preferencesCopy setPhysicalButtonSceneTargets:physicalButtonSceneTargets];
 
-    v9 = [(SBPhysicalButtonZStackPolicyAssistant *)self->_physicalButtonZStackPolicyAssistant captureButtonFullFidelityEventRequestingScenes];
-    [v11 setCaptureButtonFullFidelityEventRequestingScenes:v9];
+    captureButtonFullFidelityEventRequestingScenes = [(SBPhysicalButtonZStackPolicyAssistant *)self->_physicalButtonZStackPolicyAssistant captureButtonFullFidelityEventRequestingScenes];
+    [preferencesCopy setCaptureButtonFullFidelityEventRequestingScenes:captureButtonFullFidelityEventRequestingScenes];
 
-    v10 = [(SBPhysicalButtonZStackPolicyAssistant *)self->_physicalButtonZStackPolicyAssistant foregroundCaptureSceneTargets];
-    [v11 setForegroundCaptureSceneTargets:v10];
+    foregroundCaptureSceneTargets = [(SBPhysicalButtonZStackPolicyAssistant *)self->_physicalButtonZStackPolicyAssistant foregroundCaptureSceneTargets];
+    [preferencesCopy setForegroundCaptureSceneTargets:foregroundCaptureSceneTargets];
   }
 }
 
-- (void)hostableEntityPresenter:(id)a3 didBeginHosting:(id)a4
+- (void)hostableEntityPresenter:(id)presenter didBeginHosting:(id)hosting
 {
-  v9 = a3;
+  presenterCopy = presenter;
   if ([(SBDashBoardCameraContainerViewController *)self bs_isAppearingOrAppeared])
   {
     [(SBDashBoardCameraContainerViewController *)self _acquireTraitsParticipantIfNeeded];
   }
 
-  v5 = [v9 sceneHandleForTraitsParticipant];
-  v6 = [v5 scene];
+  sceneHandleForTraitsParticipant = [presenterCopy sceneHandleForTraitsParticipant];
+  scene = [sceneHandleForTraitsParticipant scene];
 
-  if (!v6)
+  if (!scene)
   {
-    v6 = [v9 sceneForTraitsParticipant];
+    scene = [presenterCopy sceneForTraitsParticipant];
   }
 
-  v7 = [(SBTraitsOrientedContentViewController *)self->_orientedContentViewController view];
-  v8 = [v6 settings];
-  [v8 frame];
-  [v7 setContentViewBoundsInReferenceSpace:?];
+  view = [(SBTraitsOrientedContentViewController *)self->_orientedContentViewController view];
+  settings = [scene settings];
+  [settings frame];
+  [view setContentViewBoundsInReferenceSpace:?];
 
   [(SBDashBoardCameraContainerViewController *)self _updateZStackPolicyAssistants];
   [(SBDashBoardCameraContainerViewController *)self _setPresenterNeedsZStackPreferencesUpdateWithReason:@"Began hosting"];
 }
 
-- (void)hostableEntityPresenter:(id)a3 didEndHosting:(id)a4
+- (void)hostableEntityPresenter:(id)presenter didEndHosting:(id)hosting
 {
-  v8 = a3;
-  v6 = a4;
-  if (v6)
+  presenterCopy = presenter;
+  hostingCopy = hosting;
+  if (hostingCopy)
   {
-    v7 = [(CSHostedEntityViewController *)self->_hostedEntityViewController hostedEntity];
+    hostedEntity = [(CSHostedEntityViewController *)self->_hostedEntityViewController hostedEntity];
 
-    if (v7 == v6)
+    if (hostedEntity == hostingCopy)
     {
       [(SBDashBoardCameraContainerViewController *)self _invalidateTraitsParticipant];
       [(SBDashBoardCameraContainerViewController *)self _updateZStackPolicyAssistants];
@@ -416,23 +416,23 @@ void __55__SBDashBoardCameraContainerViewController_viewDidLoad__block_invoke_2(
   }
 }
 
-- (void)_setPresenterNeedsZStackPreferencesUpdateWithReason:(id)a3
+- (void)_setPresenterNeedsZStackPreferencesUpdateWithReason:(id)reason
 {
-  v5 = a3;
-  v4 = [(CSCoverSheetViewControllerBase *)self _presenter];
+  reasonCopy = reason;
+  _presenter = [(CSCoverSheetViewControllerBase *)self _presenter];
   if (objc_opt_respondsToSelector())
   {
-    [v4 invalidateZStackParticipantPreferencesWithReason:v5];
+    [_presenter invalidateZStackParticipantPreferencesWithReason:reasonCopy];
   }
 }
 
 - (void)_updateZStackPolicyAssistants
 {
-  v10 = [(CSHostedEntityViewController *)self->_hostedEntityViewController sceneHandleForTraitsParticipant];
-  if (v10)
+  sceneHandleForTraitsParticipant = [(CSHostedEntityViewController *)self->_hostedEntityViewController sceneHandleForTraitsParticipant];
+  if (sceneHandleForTraitsParticipant)
   {
     v3 = objc_opt_class();
-    v4 = v10;
+    v4 = sceneHandleForTraitsParticipant;
     if (v3)
     {
       if (objc_opt_isKindOfClass())
@@ -455,24 +455,24 @@ void __55__SBDashBoardCameraContainerViewController_viewDidLoad__block_invoke_2(
 
     if (v8)
     {
-      v9 = [(CSHostedEntityViewController *)self->_hostedEntityViewController homeGrabberView];
-      [(SBSystemApertureZStackPolicyAssistant *)self->_systemApertureZStackPolicyAssistant setForegroundExclusiveSceneHandle:v8 homeGrabberView:v9];
+      homeGrabberView = [(CSHostedEntityViewController *)self->_hostedEntityViewController homeGrabberView];
+      [(SBSystemApertureZStackPolicyAssistant *)self->_systemApertureZStackPolicyAssistant setForegroundExclusiveSceneHandle:v8 homeGrabberView:homeGrabberView];
     }
 
-    v6 = v4;
+    sceneForTraitsParticipant = v4;
   }
 
   else
   {
-    v6 = [(CSHostedEntityViewController *)self->_hostedEntityViewController sceneForTraitsParticipant];
-    if (!v6)
+    sceneForTraitsParticipant = [(CSHostedEntityViewController *)self->_hostedEntityViewController sceneForTraitsParticipant];
+    if (!sceneForTraitsParticipant)
     {
       v7 = 0;
       goto LABEL_13;
     }
   }
 
-  v7 = [MEMORY[0x277CBEA60] arrayWithObject:v6];
+  v7 = [MEMORY[0x277CBEA60] arrayWithObject:sceneForTraitsParticipant];
 LABEL_13:
   [(SBZStackForegroundSceneOrderedPolicyAssistant *)self->_audioCategoryZStackPolicyAssistant setForegroundScenes:v7];
   [(SBZStackForegroundSceneOrderedPolicyAssistant *)self->_physicalButtonZStackPolicyAssistant setForegroundScenes:v7];
@@ -482,26 +482,26 @@ LABEL_13:
 {
   if (!self->_traitsParticipant)
   {
-    v3 = [(SBDashBoardCameraContainerViewController *)self view];
-    v4 = [v3 window];
+    view = [(SBDashBoardCameraContainerViewController *)self view];
+    window = [view window];
 
-    if (v4)
+    if (window)
     {
-      v5 = [(SBDashBoardCameraContainerViewController *)self _traitsArbiter];
-      v6 = [(CSHostedEntityViewController *)self->_hostedEntityViewController sceneHandleForTraitsParticipant];
-      if (v6)
+      _traitsArbiter = [(SBDashBoardCameraContainerViewController *)self _traitsArbiter];
+      sceneHandleForTraitsParticipant = [(CSHostedEntityViewController *)self->_hostedEntityViewController sceneHandleForTraitsParticipant];
+      if (sceneHandleForTraitsParticipant)
       {
-        v7 = [[SBTraitsSceneParticipantDelegate alloc] initWithSceneHandle:v6];
+        v7 = [[SBTraitsSceneParticipantDelegate alloc] initWithSceneHandle:sceneHandleForTraitsParticipant];
         traitsParticipantDelegate = self->_traitsParticipantDelegate;
         self->_traitsParticipantDelegate = v7;
       }
 
       else
       {
-        v9 = [(CSHostedEntityViewController *)self->_hostedEntityViewController sceneForTraitsParticipant];
-        if (v9)
+        sceneForTraitsParticipant = [(CSHostedEntityViewController *)self->_hostedEntityViewController sceneForTraitsParticipant];
+        if (sceneForTraitsParticipant)
         {
-          v10 = [[SBTraitsSceneParticipantDelegate alloc] initWithScene:v9];
+          v10 = [[SBTraitsSceneParticipantDelegate alloc] initWithScene:sceneForTraitsParticipant];
           v11 = self->_traitsParticipantDelegate;
           self->_traitsParticipantDelegate = v10;
         }
@@ -509,22 +509,22 @@ LABEL_13:
 
       if (self->_traitsParticipantDelegate)
       {
-        v12 = [v5 acquireParticipantWithRole:@"SBTraitsParticipantRoleCoverSheetCamera" delegate:?];
+        v12 = [_traitsArbiter acquireParticipantWithRole:@"SBTraitsParticipantRoleCoverSheetCamera" delegate:?];
         traitsParticipant = self->_traitsParticipant;
         self->_traitsParticipant = v12;
 
-        [(SBTraitsSceneParticipantDelegate *)self->_traitsParticipantDelegate setArbiter:v5];
+        [(SBTraitsSceneParticipantDelegate *)self->_traitsParticipantDelegate setArbiter:_traitsArbiter];
         [(SBTraitsSceneParticipantDelegate *)self->_traitsParticipantDelegate setParticipant:self->_traitsParticipant];
         v14 = self->_traitsParticipantDelegate;
         v15 = MEMORY[0x277CCABB0];
-        [v4 windowLevel];
+        [window windowLevel];
         v16 = [v15 numberWithDouble:?];
         [(SBTraitsSceneParticipantDelegate *)v14 setPreferredSceneLevel:v16];
 
         [(SBTraitsOrientedContentViewController *)self->_orientedContentViewController setContentParticipant:self->_traitsParticipant];
         orientedContentViewController = self->_orientedContentViewController;
         v18 = objc_opt_class();
-        v19 = v4;
+        v19 = window;
         if (v18)
         {
           if (objc_opt_isKindOfClass())
@@ -545,11 +545,11 @@ LABEL_13:
 
         v21 = v20;
 
-        v22 = [v21 traitsParticipant];
+        traitsParticipant = [v21 traitsParticipant];
 
-        [(SBTraitsOrientedContentViewController *)orientedContentViewController setContainerParticipant:v22];
-        v23 = [(SBTraitsOrientedContentViewController *)self->_orientedContentViewController view];
-        [v23 setContentOrientation:{objc_msgSend(v23, "containerOrientation")}];
+        [(SBTraitsOrientedContentViewController *)orientedContentViewController setContainerParticipant:traitsParticipant];
+        view2 = [(SBTraitsOrientedContentViewController *)self->_orientedContentViewController view];
+        [view2 setContentOrientation:{objc_msgSend(view2, "containerOrientation")}];
         objc_initWeak(&location, self);
         v24 = self->_traitsParticipantDelegate;
         v28[0] = MEMORY[0x277D85DD0];
@@ -609,32 +609,32 @@ void __77__SBDashBoardCameraContainerViewController__acquireTraitsParticipantIfN
 
 - (id)_traitsArbiter
 {
-  v4 = [(SBDashBoardCameraContainerViewController *)self view];
-  v5 = [v4 window];
+  view = [(SBDashBoardCameraContainerViewController *)self view];
+  window = [view window];
 
-  if (v5)
+  if (window)
   {
-    v6 = [v5 _sbWindowScene];
-    v7 = [v6 traitsArbiter];
+    _sbWindowScene = [window _sbWindowScene];
+    traitsArbiter = [_sbWindowScene traitsArbiter];
   }
 
   else
   {
-    v6 = [MEMORY[0x277CCA890] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"SBDashBoardCameraContainerViewController.m" lineNumber:404 description:@"Unexpected nil window"];
-    v7 = 0;
+    _sbWindowScene = [MEMORY[0x277CCA890] currentHandler];
+    [_sbWindowScene handleFailureInMethod:a2 object:self file:@"SBDashBoardCameraContainerViewController.m" lineNumber:404 description:@"Unexpected nil window"];
+    traitsArbiter = 0;
   }
 
-  return v7;
+  return traitsArbiter;
 }
 
-- (CGRect)_referenceBoundsForBounds:(CGRect)a3
+- (CGRect)_referenceBoundsForBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = CGRectGetHeight(a3);
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  v7 = CGRectGetHeight(bounds);
   v13.origin.x = x;
   v13.origin.y = y;
   v13.size.width = width;

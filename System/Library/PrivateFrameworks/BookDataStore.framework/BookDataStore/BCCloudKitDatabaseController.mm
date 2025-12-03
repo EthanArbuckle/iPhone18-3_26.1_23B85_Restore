@@ -1,64 +1,64 @@
 @interface BCCloudKitDatabaseController
-+ (id)decodeRecordFromSystemFields:(id)a3;
-+ (id)encodeRecordSystemFields:(id)a3;
++ (id)decodeRecordFromSystemFields:(id)fields;
++ (id)encodeRecordSystemFields:(id)fields;
 + (void)startInternetConnectionReachabilityNotifier;
-- (BCCloudKitDatabaseController)initWithConfiguration:(id)a3 archiveURL:(id)a4;
+- (BCCloudKitDatabaseController)initWithConfiguration:(id)configuration archiveURL:(id)l;
 - (BOOL)establishedSalt;
 - (NSString)subscriptionID;
 - (id)appBundleIdentifier;
 - (id)diagnosticDatabaseInfo;
 - (id)p_archiveToData;
-- (id)p_unarchiveFromData:(id)a3;
-- (id)recordNameFromRecordType:(id)a3 identifier:(id)a4;
-- (id)saltedAndHashedIDFromLocalID:(id)a3;
-- (void)_deleteRecordZonesWithIDs:(id)a3 qualityOfService:(int64_t)a4 completion:(id)a5;
-- (void)addObserver:(id)a3 recordType:(id)a4;
-- (void)addObserver:(id)a3 zoneID:(id)a4;
-- (void)attachToZones:(id)a3 completion:(id)a4;
-- (void)connectUserTo:(id)a3 container:(id)a4 updateSubscription:(BOOL)a5 completion:(id)a6 subscriptionCompletion:(id)a7;
-- (void)detachWithError:(id)a3 completion:(id)a4;
-- (void)fetchChangesWithCompletion:(id)a3;
-- (void)fetchRecordForRecordID:(id)a3 completion:(id)a4;
-- (void)getAttached:(id)a3;
-- (void)p_createRecordIDSaltWithCompletion:(id)a3;
-- (void)p_createRecordZones:(id)a3 completionHandler:(id)a4;
-- (void)p_fetchDatabaseChanges:(id)a3;
-- (void)p_fetchRecordZoneChanges:(id)a3 optionsByRecordZoneID:(id)a4 completionHandler:(id)a5;
-- (void)p_fetchRecordZoneChangesForRecordZoneIDs:(id)a3 completionHandler:(id)a4;
-- (void)p_fetchZoneChanges:(id)a3;
+- (id)p_unarchiveFromData:(id)data;
+- (id)recordNameFromRecordType:(id)type identifier:(id)identifier;
+- (id)saltedAndHashedIDFromLocalID:(id)d;
+- (void)_deleteRecordZonesWithIDs:(id)ds qualityOfService:(int64_t)service completion:(id)completion;
+- (void)addObserver:(id)observer recordType:(id)type;
+- (void)addObserver:(id)observer zoneID:(id)d;
+- (void)attachToZones:(id)zones completion:(id)completion;
+- (void)connectUserTo:(id)to container:(id)container updateSubscription:(BOOL)subscription completion:(id)completion subscriptionCompletion:(id)subscriptionCompletion;
+- (void)detachWithError:(id)error completion:(id)completion;
+- (void)fetchChangesWithCompletion:(id)completion;
+- (void)fetchRecordForRecordID:(id)d completion:(id)completion;
+- (void)getAttached:(id)attached;
+- (void)p_createRecordIDSaltWithCompletion:(id)completion;
+- (void)p_createRecordZones:(id)zones completionHandler:(id)handler;
+- (void)p_fetchDatabaseChanges:(id)changes;
+- (void)p_fetchRecordZoneChanges:(id)changes optionsByRecordZoneID:(id)d completionHandler:(id)handler;
+- (void)p_fetchRecordZoneChangesForRecordZoneIDs:(id)ds completionHandler:(id)handler;
+- (void)p_fetchZoneChanges:(id)changes;
 - (void)p_informObserversOfAttachmentChange;
-- (void)p_informObserversOfCompletedFetchOfZone:(id)a3;
-- (void)p_informObserversOfRecordsChanged:(id)a3;
-- (void)p_informObserversOfRecordsChanged:(id)a3 forRecordType:(id)a4;
-- (void)p_informObserversOfSaltVersionIdentifierChanged:(id)a3 forZones:(id)a4 completion:(id)a5;
-- (void)p_internetReachabilityChanged:(id)a3;
-- (void)p_scheduleArchiveWithCompletion:(id)a3;
-- (void)p_subscribeWithCompletion:(id)a3;
+- (void)p_informObserversOfCompletedFetchOfZone:(id)zone;
+- (void)p_informObserversOfRecordsChanged:(id)changed;
+- (void)p_informObserversOfRecordsChanged:(id)changed forRecordType:(id)type;
+- (void)p_informObserversOfSaltVersionIdentifierChanged:(id)changed forZones:(id)zones completion:(id)completion;
+- (void)p_internetReachabilityChanged:(id)changed;
+- (void)p_scheduleArchiveWithCompletion:(id)completion;
+- (void)p_subscribeWithCompletion:(id)completion;
 - (void)p_unarchive;
-- (void)p_unsubscribeToContainer:(id)a3;
-- (void)p_updateRetryParametersFromFetchZoneChangesOperationError:(id)a3;
-- (void)recordZoneWithName:(id)a3 completionHandler:(id)a4;
-- (void)registerServerChangeTokenStore:(id)a3 forZoneID:(id)a4;
-- (void)removeObserver:(id)a3;
-- (void)removeObserver:(id)a3 recordType:(id)a4;
-- (void)unregisterServerChangeTokenStore:(id)a3;
-- (void)willAttachToContainer:(id)a3 serviceMode:(BOOL)a4 completion:(id)a5;
-- (void)zonesDeletedOrReset:(id)a3 completion:(id)a4;
-- (void)zonesTemporarilyUnreadableWithError:(id)a3 completion:(id)a4;
-- (void)zonesUnreadableDueToMissingD2DEncryptionIdentity:(id)a3 completion:(id)a4;
+- (void)p_unsubscribeToContainer:(id)container;
+- (void)p_updateRetryParametersFromFetchZoneChangesOperationError:(id)error;
+- (void)recordZoneWithName:(id)name completionHandler:(id)handler;
+- (void)registerServerChangeTokenStore:(id)store forZoneID:(id)d;
+- (void)removeObserver:(id)observer;
+- (void)removeObserver:(id)observer recordType:(id)type;
+- (void)unregisterServerChangeTokenStore:(id)store;
+- (void)willAttachToContainer:(id)container serviceMode:(BOOL)mode completion:(id)completion;
+- (void)zonesDeletedOrReset:(id)reset completion:(id)completion;
+- (void)zonesTemporarilyUnreadableWithError:(id)error completion:(id)completion;
+- (void)zonesUnreadableDueToMissingD2DEncryptionIdentity:(id)identity completion:(id)completion;
 @end
 
 @implementation BCCloudKitDatabaseController
 
 - (void)p_unarchive
 {
-  v3 = [(BCCloudKitDatabaseController *)self accessQueue];
-  dispatch_assert_queue_V2(v3);
+  accessQueue = [(BCCloudKitDatabaseController *)self accessQueue];
+  dispatch_assert_queue_V2(accessQueue);
 
-  v7 = [(BCCloudKitDatabaseController *)self archiveURL];
-  if (v7)
+  archiveURL = [(BCCloudKitDatabaseController *)self archiveURL];
+  if (archiveURL)
   {
-    v4 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithContentsOfURL:v7];
+    v4 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithContentsOfURL:archiveURL];
     if (v4)
     {
       v5 = v4;
@@ -67,25 +67,25 @@
   }
 }
 
-- (BCCloudKitDatabaseController)initWithConfiguration:(id)a3 archiveURL:(id)a4
+- (BCCloudKitDatabaseController)initWithConfiguration:(id)configuration archiveURL:(id)l
 {
-  v7 = a3;
-  v8 = a4;
+  configurationCopy = configuration;
+  lCopy = l;
   v40.receiver = self;
   v40.super_class = BCCloudKitDatabaseController;
   v9 = [(BCCloudKitDatabaseController *)&v40 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_configuration, a3);
-    objc_storeStrong(&v10->_archiveURL, a4);
+    objc_storeStrong(&v9->_configuration, configuration);
+    objc_storeStrong(&v10->_archiveURL, l);
     v11 = objc_opt_new();
     observers = v10->_observers;
     v10->_observers = v11;
 
-    v13 = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
+    strongToWeakObjectsMapTable = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
     zoneObservers = v10->_zoneObservers;
-    v10->_zoneObservers = v13;
+    v10->_zoneObservers = strongToWeakObjectsMapTable;
 
     v10->_zoneObserversLock._os_unfair_lock_opaque = 0;
     v15 = objc_opt_new();
@@ -108,9 +108,9 @@
     v22 = v10;
     v39 = v22;
     dispatch_sync(accessQueue, block);
-    v23 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v24 = +[BDSReachability sharedReachabilityForInternetConnection];
-    [v23 addObserver:v22 selector:sel_p_internetReachabilityChanged_ name:@"kNetworkReachabilityChangedNotification" object:v24];
+    [defaultCenter addObserver:v22 selector:sel_p_internetReachabilityChanged_ name:@"kNetworkReachabilityChangedNotification" object:v24];
 
     objc_initWeak(&location, v22);
     v25 = objc_alloc(MEMORY[0x1E698F548]);
@@ -119,7 +119,7 @@
     v34[2] = sub_1E461A9F8;
     v34[3] = &unk_1E875A290;
     objc_copyWeak(&v36, &location);
-    v35 = v8;
+    v35 = lCopy;
     v26 = [v25 initWithNotifyBlock:v34 notifyTimeout:10 blockDescription:@"_coalescedArchive in BCCloudKitDatabaseController" notifyTimeoutBlock:&unk_1F5E61F68];
     v27 = v22[8];
     v22[8] = v26;
@@ -147,101 +147,101 @@
 
 - (NSString)subscriptionID
 {
-  v2 = [(BCCloudKitDatabaseController *)self configuration];
-  v3 = [v2 dbSubscriptionID];
+  configuration = [(BCCloudKitDatabaseController *)self configuration];
+  dbSubscriptionID = [configuration dbSubscriptionID];
 
-  return v3;
+  return dbSubscriptionID;
 }
 
 - (id)appBundleIdentifier
 {
-  v2 = [(BCCloudKitDatabaseController *)self configuration];
-  v3 = [v2 appBundleIdentifier];
+  configuration = [(BCCloudKitDatabaseController *)self configuration];
+  appBundleIdentifier = [configuration appBundleIdentifier];
 
-  return v3;
+  return appBundleIdentifier;
 }
 
-- (void)fetchChangesWithCompletion:(id)a3
+- (void)fetchChangesWithCompletion:(id)completion
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   v5 = BDSCloudKitLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [(BCCloudKitDatabaseController *)self containerIdentifier];
+    containerIdentifier = [(BCCloudKitDatabaseController *)self containerIdentifier];
     *buf = 138543362;
-    v14 = v6;
+    v14 = containerIdentifier;
     _os_log_impl(&dword_1E45E0000, v5, OS_LOG_TYPE_INFO, "BCCloudKitDatabaseController (%{public}@) - fetchChangesWithCompletion:", buf, 0xCu);
   }
 
   objc_initWeak(buf, self);
-  v7 = [(BCCloudKitDatabaseController *)self accessQueue];
+  accessQueue = [(BCCloudKitDatabaseController *)self accessQueue];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = sub_1E461B468;
   v10[3] = &unk_1E87596B0;
   objc_copyWeak(&v12, buf);
-  v11 = v4;
-  v8 = v4;
-  dispatch_async(v7, v10);
+  v11 = completionCopy;
+  v8 = completionCopy;
+  dispatch_async(accessQueue, v10);
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(buf);
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchRecordForRecordID:(id)a3 completion:(id)a4
+- (void)fetchRecordForRecordID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v8 = [(BCCloudKitDatabaseController *)self accessQueue];
+  accessQueue = [(BCCloudKitDatabaseController *)self accessQueue];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = sub_1E461BA78;
   v11[3] = &unk_1E875A268;
   objc_copyWeak(&v14, &location);
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, v11);
+  v12 = dCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = dCopy;
+  dispatch_async(accessQueue, v11);
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
 }
 
-- (void)willAttachToContainer:(id)a3 serviceMode:(BOOL)a4 completion:(id)a5
+- (void)willAttachToContainer:(id)container serviceMode:(BOOL)mode completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(BCCloudKitDatabaseController *)self accessQueue];
+  containerCopy = container;
+  completionCopy = completion;
+  accessQueue = [(BCCloudKitDatabaseController *)self accessQueue];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = sub_1E461BD8C;
   v13[3] = &unk_1E875A358;
   v13[4] = self;
-  v14 = v8;
-  v16 = a4;
-  v15 = v9;
-  v11 = v9;
-  v12 = v8;
-  dispatch_sync(v10, v13);
+  v14 = containerCopy;
+  modeCopy = mode;
+  v15 = completionCopy;
+  v11 = completionCopy;
+  v12 = containerCopy;
+  dispatch_sync(accessQueue, v13);
 }
 
-- (void)connectUserTo:(id)a3 container:(id)a4 updateSubscription:(BOOL)a5 completion:(id)a6 subscriptionCompletion:(id)a7
+- (void)connectUserTo:(id)to container:(id)container updateSubscription:(BOOL)subscription completion:(id)completion subscriptionCompletion:(id)subscriptionCompletion
 {
   v31 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
+  toCopy = to;
+  containerCopy = container;
+  completionCopy = completion;
+  subscriptionCompletionCopy = subscriptionCompletion;
   v16 = BDSCloudKitLog();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
   {
-    v17 = [v13 containerIdentifier];
+    containerIdentifier = [containerCopy containerIdentifier];
     *buf = 138543362;
-    v30 = v17;
+    v30 = containerIdentifier;
     _os_log_impl(&dword_1E45E0000, v16, OS_LOG_TYPE_INFO, "BCCloudKitDatabaseController (%{public}@) - connectUserTo:container:updateSubscription:completion:", buf, 0xCu);
   }
 
@@ -250,27 +250,27 @@
   v23[2] = sub_1E461C1B0;
   v23[3] = &unk_1E875A3A8;
   v23[4] = self;
-  v24 = v13;
-  v28 = a5;
-  v25 = v12;
-  v26 = v15;
-  v27 = v14;
-  v18 = v14;
-  v19 = v15;
-  v20 = v12;
-  v21 = v13;
+  v24 = containerCopy;
+  subscriptionCopy = subscription;
+  v25 = toCopy;
+  v26 = subscriptionCompletionCopy;
+  v27 = completionCopy;
+  v18 = completionCopy;
+  v19 = subscriptionCompletionCopy;
+  v20 = toCopy;
+  v21 = containerCopy;
   [v21 fetchUserRecordIDWithCompletionHandler:v23];
 
   v22 = *MEMORY[0x1E69E9840];
 }
 
-- (void)attachToZones:(id)a3 completion:(id)a4
+- (void)attachToZones:(id)zones completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  zonesCopy = zones;
+  completionCopy = completion;
   v8 = _os_activity_create(&dword_1E45E0000, "BCCloudKitDatabaseController/attachToZones-cloud", MEMORY[0x1E69E9C08], OS_ACTIVITY_FLAG_DEFAULT);
-  v9 = [(BCCloudKitDatabaseController *)self containerIdentifier];
-  v10 = [v9 containsString:@"cloudData"];
+  containerIdentifier = [(BCCloudKitDatabaseController *)self containerIdentifier];
+  v10 = [containerIdentifier containsString:@"cloudData"];
 
   if ((v10 & 1) == 0)
   {
@@ -283,86 +283,86 @@
   block[1] = 3221225472;
   block[2] = sub_1E461C660;
   block[3] = &unk_1E875A448;
-  v15 = v6;
-  v16 = v7;
+  v15 = zonesCopy;
+  v16 = completionCopy;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
+  v12 = zonesCopy;
+  v13 = completionCopy;
   os_activity_apply(v8, block);
 }
 
-- (void)detachWithError:(id)a3 completion:(id)a4
+- (void)detachWithError:(id)error completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BCCloudKitDatabaseController *)self accessQueue];
+  errorCopy = error;
+  completionCopy = completion;
+  accessQueue = [(BCCloudKitDatabaseController *)self accessQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = sub_1E461D58C;
   block[3] = &unk_1E875A470;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = errorCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = errorCopy;
+  dispatch_async(accessQueue, block);
 }
 
-- (void)getAttached:(id)a3
+- (void)getAttached:(id)attached
 {
-  v4 = a3;
-  v5 = [(BCCloudKitDatabaseController *)self accessQueue];
+  attachedCopy = attached;
+  accessQueue = [(BCCloudKitDatabaseController *)self accessQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = sub_1E461D774;
   v7[3] = &unk_1E875A498;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = attachedCopy;
+  v6 = attachedCopy;
+  dispatch_async(accessQueue, v7);
 }
 
-- (void)recordZoneWithName:(id)a3 completionHandler:(id)a4
+- (void)recordZoneWithName:(id)name completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  nameCopy = name;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v8 = [(BCCloudKitDatabaseController *)self database];
+    database = [(BCCloudKitDatabaseController *)self database];
 
-    if (v8)
+    if (database)
     {
-      v9 = [(BCCloudKitDatabaseController *)self accessQueue];
+      accessQueue = [(BCCloudKitDatabaseController *)self accessQueue];
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = sub_1E461D8F4;
       block[3] = &unk_1E875A4C0;
-      v11 = v6;
-      v12 = self;
-      v13 = v7;
-      dispatch_async(v9, block);
+      v11 = nameCopy;
+      selfCopy = self;
+      v13 = handlerCopy;
+      dispatch_async(accessQueue, block);
     }
 
     else
     {
-      (*(v7 + 2))(v7, 0);
+      (*(handlerCopy + 2))(handlerCopy, 0);
     }
   }
 }
 
-- (id)saltedAndHashedIDFromLocalID:(id)a3
+- (id)saltedAndHashedIDFromLocalID:(id)d
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(BCCloudKitDatabaseController *)self recordIDSalt];
-  v6 = v5;
-  if (v5)
+  dCopy = d;
+  recordIDSalt = [(BCCloudKitDatabaseController *)self recordIDSalt];
+  v6 = recordIDSalt;
+  if (recordIDSalt)
   {
     memset(&v14, 0, sizeof(v14));
-    CCHmacInit(&v14, 0, [v5 bytes], objc_msgSend(v5, "length"));
-    v7 = [v4 UTF8String];
-    v8 = strlen(v7);
-    CCHmacUpdate(&v14, v7, v8);
+    CCHmacInit(&v14, 0, [recordIDSalt bytes], objc_msgSend(recordIDSalt, "length"));
+    uTF8String = [dCopy UTF8String];
+    v8 = strlen(uTF8String);
+    CCHmacUpdate(&v14, uTF8String, v8);
     macOut[0] = 0;
     macOut[1] = 0;
     v16 = 0;
@@ -389,22 +389,22 @@
 
 - (BOOL)establishedSalt
 {
-  v2 = [(BCCloudKitDatabaseController *)self recordIDSalt];
-  v3 = v2 != 0;
+  recordIDSalt = [(BCCloudKitDatabaseController *)self recordIDSalt];
+  v3 = recordIDSalt != 0;
 
   return v3;
 }
 
-- (id)recordNameFromRecordType:(id)a3 identifier:(id)a4
+- (id)recordNameFromRecordType:(id)type identifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  typeCopy = type;
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
     goto LABEL_6;
   }
 
-  v8 = [(BCCloudKitDatabaseController *)self saltedAndHashedIDFromLocalID:v7];
+  v8 = [(BCCloudKitDatabaseController *)self saltedAndHashedIDFromLocalID:identifierCopy];
   if (!v8)
   {
     goto LABEL_6;
@@ -412,9 +412,9 @@
 
   v9 = v8;
   v10 = @"-";
-  if (v6)
+  if (typeCopy)
   {
-    v10 = v6;
+    v10 = typeCopy;
   }
 
   v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v10, v8];
@@ -434,32 +434,32 @@ LABEL_6:
   return v11;
 }
 
-- (void)p_unsubscribeToContainer:(id)a3
+- (void)p_unsubscribeToContainer:(id)container
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 privateCloudDatabase];
-  if (v5)
+  containerCopy = container;
+  privateCloudDatabase = [containerCopy privateCloudDatabase];
+  if (privateCloudDatabase)
   {
     objc_initWeak(&location, self);
     v6 = objc_alloc(MEMORY[0x1E695B9C8]);
-    v7 = [(BCCloudKitDatabaseController *)self subscriptionID];
-    v16[0] = v7;
+    subscriptionID = [(BCCloudKitDatabaseController *)self subscriptionID];
+    v16[0] = subscriptionID;
     v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:1];
     v9 = [v6 initWithSubscriptionsToSave:0 subscriptionIDsToDelete:v8];
 
-    v10 = [MEMORY[0x1E695BA00] bds_defaultConfiguration];
-    [v10 setContainer:v4];
-    [v9 setConfiguration:v10];
-    [v9 setDatabase:v5];
+    bds_defaultConfiguration = [MEMORY[0x1E695BA00] bds_defaultConfiguration];
+    [bds_defaultConfiguration setContainer:containerCopy];
+    [v9 setConfiguration:bds_defaultConfiguration];
+    [v9 setDatabase:privateCloudDatabase];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = sub_1E461DE9C;
     v12[3] = &unk_1E875A4E8;
     objc_copyWeak(&v14, &location);
-    v13 = v4;
+    v13 = containerCopy;
     [v9 setModifySubscriptionsCompletionBlock:v12];
-    [v5 addOperation:v9];
+    [privateCloudDatabase addOperation:v9];
 
     objc_destroyWeak(&v14);
     objc_destroyWeak(&location);
@@ -468,25 +468,25 @@ LABEL_6:
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)p_subscribeWithCompletion:(id)a3
+- (void)p_subscribeWithCompletion:(id)completion
 {
   v36[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(BCCloudKitDatabaseController *)self accessQueue];
-  dispatch_assert_queue_V2(v5);
+  completionCopy = completion;
+  accessQueue = [(BCCloudKitDatabaseController *)self accessQueue];
+  dispatch_assert_queue_V2(accessQueue);
 
   v6 = BDSCloudKitLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
-    v7 = [(BCCloudKitDatabaseController *)self containerIdentifier];
+    containerIdentifier = [(BCCloudKitDatabaseController *)self containerIdentifier];
     *buf = 138543362;
-    v35 = v7;
+    v35 = containerIdentifier;
     _os_log_impl(&dword_1E45E0000, v6, OS_LOG_TYPE_INFO, "p_subscribeWithCompletion (%{public}@)", buf, 0xCu);
   }
 
   if ([(BCCloudKitDatabaseController *)self hasSubscription]|| ([(BCCloudKitDatabaseController *)self database], v8 = objc_claimAutoreleasedReturnValue(), v9 = v8 == 0, v8, v9))
   {
-    v24 = _Block_copy(v4);
+    v24 = _Block_copy(completionCopy);
     v13 = v24;
     if (v24)
     {
@@ -504,8 +504,8 @@ LABEL_6:
     }
 
     v11 = objc_alloc(MEMORY[0x1E695B8C0]);
-    v12 = [(BCCloudKitDatabaseController *)self subscriptionID];
-    v13 = [v11 initWithSubscriptionID:v12];
+    subscriptionID = [(BCCloudKitDatabaseController *)self subscriptionID];
+    v13 = [v11 initWithSubscriptionID:subscriptionID];
 
     v14 = objc_alloc_init(MEMORY[0x1E695B9F0]);
     [v14 setShouldSendContentAvailable:1];
@@ -516,31 +516,31 @@ LABEL_6:
     v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v36 count:1];
     v17 = [v15 initWithSubscriptionsToSave:v16 subscriptionIDsToDelete:0];
 
-    v18 = [MEMORY[0x1E695BA00] bds_defaultConfiguration];
-    v19 = [(BCCloudKitDatabaseController *)self container];
-    [v18 setContainer:v19];
+    bds_defaultConfiguration = [MEMORY[0x1E695BA00] bds_defaultConfiguration];
+    container = [(BCCloudKitDatabaseController *)self container];
+    [bds_defaultConfiguration setContainer:container];
 
-    [v17 setConfiguration:v18];
-    v20 = [(BCCloudKitDatabaseController *)self database];
-    [v17 setDatabase:v20];
+    [v17 setConfiguration:bds_defaultConfiguration];
+    database = [(BCCloudKitDatabaseController *)self database];
+    [v17 setDatabase:database];
 
     v26 = MEMORY[0x1E69E9820];
     v27 = 3221225472;
     v28 = sub_1E461E424;
     v29 = &unk_1E875A510;
     objc_copyWeak(&v32, &location);
-    v30 = self;
-    v31 = v4;
+    selfCopy = self;
+    v31 = completionCopy;
     [v17 setModifySubscriptionsCompletionBlock:&v26];
     v21 = BDSCloudKitLog();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
     {
-      v22 = [v17 operationID];
-      sub_1E4706648(v17, v22, buf, v21);
+      operationID = [v17 operationID];
+      sub_1E4706648(v17, operationID, buf, v21);
     }
 
-    v23 = [(BCCloudKitDatabaseController *)self database];
-    [v23 addOperation:v17];
+    database2 = [(BCCloudKitDatabaseController *)self database];
+    [database2 addOperation:v17];
 
     objc_destroyWeak(&v32);
     objc_destroyWeak(&location);
@@ -549,40 +549,40 @@ LABEL_6:
   v25 = *MEMORY[0x1E69E9840];
 }
 
-- (void)p_fetchDatabaseChanges:(id)a3
+- (void)p_fetchDatabaseChanges:(id)changes
 {
   v45 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(BCCloudKitDatabaseController *)self accessQueue];
-  dispatch_assert_queue_V2(v5);
+  changesCopy = changes;
+  accessQueue = [(BCCloudKitDatabaseController *)self accessQueue];
+  dispatch_assert_queue_V2(accessQueue);
 
   v6 = BDSCloudKitLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(BCCloudKitDatabaseController *)self containerIdentifier];
-    v8 = [(BCCloudKitDatabaseController *)self serverChangeToken];
+    containerIdentifier = [(BCCloudKitDatabaseController *)self containerIdentifier];
+    serverChangeToken = [(BCCloudKitDatabaseController *)self serverChangeToken];
     *buf = 138543618;
-    *&buf[4] = v7;
+    *&buf[4] = containerIdentifier;
     *&buf[12] = 2114;
-    *&buf[14] = v8;
+    *&buf[14] = serverChangeToken;
     _os_log_impl(&dword_1E45E0000, v6, OS_LOG_TYPE_DEFAULT, "BCCloudKitDatabaseController (%{public}@)- Adding fetch database changes, serverChangeToken: %{public}@", buf, 0x16u);
   }
 
-  v9 = [(BCCloudKitDatabaseController *)self database];
-  if (v9)
+  database = [(BCCloudKitDatabaseController *)self database];
+  if (database)
   {
     v10 = objc_alloc(MEMORY[0x1E695B8F8]);
-    v11 = [(BCCloudKitDatabaseController *)self serverChangeToken];
-    v12 = [v10 initWithPreviousServerChangeToken:v11];
+    serverChangeToken2 = [(BCCloudKitDatabaseController *)self serverChangeToken];
+    v12 = [v10 initWithPreviousServerChangeToken:serverChangeToken2];
 
     [v12 setFetchAllChanges:1];
-    v13 = [MEMORY[0x1E695BA00] bds_defaultConfiguration];
-    v14 = [(BCCloudKitDatabaseController *)self container];
-    [v13 setContainer:v14];
+    bds_defaultConfiguration = [MEMORY[0x1E695BA00] bds_defaultConfiguration];
+    container = [(BCCloudKitDatabaseController *)self container];
+    [bds_defaultConfiguration setContainer:container];
 
-    [v12 setConfiguration:v13];
-    v15 = [(BCCloudKitDatabaseController *)self database];
-    [v12 setDatabase:v15];
+    [v12 setConfiguration:bds_defaultConfiguration];
+    database2 = [(BCCloudKitDatabaseController *)self database];
+    [v12 setDatabase:database2];
 
     *buf = 0;
     *&buf[8] = buf;
@@ -618,9 +618,9 @@ LABEL_6:
     v33[4] = self;
     [v12 setChangeTokenUpdatedBlock:v33];
     v16 = MEMORY[0x1E695DFD8];
-    v17 = [(BCCloudKitDatabaseController *)self configuration];
-    v18 = [v17 appZones];
-    v19 = [v16 setWithArray:v18];
+    configuration = [(BCCloudKitDatabaseController *)self configuration];
+    appZones = [configuration appZones];
+    v19 = [v16 setWithArray:appZones];
 
     v31[0] = MEMORY[0x1E69E9820];
     v31[1] = 3221225472;
@@ -635,8 +635,8 @@ LABEL_6:
     v26 = sub_1E461F60C;
     v27 = &unk_1E875A5D8;
     v30 = buf;
-    v28 = self;
-    v29 = v4;
+    selfCopy = self;
+    v29 = changesCopy;
     [v12 setFetchDatabaseChangesCompletionBlock:&v24];
     v21 = BDSCloudKitLog();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
@@ -649,38 +649,38 @@ LABEL_6:
       _os_log_impl(&dword_1E45E0000, v21, OS_LOG_TYPE_DEFAULT, "BCCloudKitDatabaseController (%{public}@)- Adding fetch database changes %@", v37, 0x16u);
     }
 
-    [v9 addOperation:v12];
+    [database addOperation:v12];
     _Block_object_dispose(buf, 8);
 
     goto LABEL_9;
   }
 
-  v12 = _Block_copy(v4);
+  v12 = _Block_copy(changesCopy);
   if (v12)
   {
-    v13 = [MEMORY[0x1E696ABC0] errorWithDomain:@"BDSErrorDomain" code:1004 userInfo:0];
-    (*(v12 + 2))(v12, v13);
+    bds_defaultConfiguration = [MEMORY[0x1E696ABC0] errorWithDomain:@"BDSErrorDomain" code:1004 userInfo:0];
+    (*(v12 + 2))(v12, bds_defaultConfiguration);
 LABEL_9:
   }
 
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (void)p_createRecordZones:(id)a3 completionHandler:(id)a4
+- (void)p_createRecordZones:(id)zones completionHandler:(id)handler
 {
   v34 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BCCloudKitDatabaseController *)self accessQueue];
-  dispatch_assert_queue_V2(v8);
+  zonesCopy = zones;
+  handlerCopy = handler;
+  accessQueue = [(BCCloudKitDatabaseController *)self accessQueue];
+  dispatch_assert_queue_V2(accessQueue);
 
-  v9 = [(BCCloudKitDatabaseController *)self database];
+  database = [(BCCloudKitDatabaseController *)self database];
   v10 = BDSCloudKitLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [(BCCloudKitDatabaseController *)self containerIdentifier];
+    containerIdentifier = [(BCCloudKitDatabaseController *)self containerIdentifier];
     v12 = MEMORY[0x1E695DF70];
-    v13 = v6;
+    v13 = zonesCopy;
     v14 = objc_alloc_init(v12);
     *buf = MEMORY[0x1E69E9820];
     *&buf[8] = 3221225472;
@@ -691,35 +691,35 @@ LABEL_9:
     [v13 enumerateObjectsUsingBlock:buf];
     v16 = [v15 componentsJoinedByString:{@", "}];
 
-    v17 = [(BCCloudKitDatabaseController *)self database];
+    database2 = [(BCCloudKitDatabaseController *)self database];
     *buf = 138412802;
-    *&buf[4] = v11;
+    *&buf[4] = containerIdentifier;
     *&buf[12] = 2112;
     *&buf[14] = v16;
     *&buf[22] = 2114;
-    v32 = v17;
+    v32 = database2;
     _os_log_impl(&dword_1E45E0000, v10, OS_LOG_TYPE_DEFAULT, "[BCCloudKitDatabaseController (%@)] 2. p_createRecordZones:%@ database:%{public}@", buf, 0x20u);
   }
 
-  if ([v6 count] && v9)
+  if ([zonesCopy count] && database)
   {
-    v18 = [objc_alloc(MEMORY[0x1E695B928]) initWithRecordZoneIDs:v6];
-    v19 = [MEMORY[0x1E695BA00] bds_defaultConfiguration];
-    v20 = [(BCCloudKitDatabaseController *)self container];
-    [v19 setContainer:v20];
-    [v18 setConfiguration:v19];
-    [v18 setDatabase:v9];
+    v18 = [objc_alloc(MEMORY[0x1E695B928]) initWithRecordZoneIDs:zonesCopy];
+    bds_defaultConfiguration = [MEMORY[0x1E695BA00] bds_defaultConfiguration];
+    container = [(BCCloudKitDatabaseController *)self container];
+    [bds_defaultConfiguration setContainer:container];
+    [v18 setConfiguration:bds_defaultConfiguration];
+    [v18 setDatabase:database];
     objc_initWeak(buf, self);
     v25[0] = MEMORY[0x1E69E9820];
     v25[1] = 3221225472;
     v25[2] = sub_1E461FE2C;
     v25[3] = &unk_1E875A6F0;
     objc_copyWeak(&v30, buf);
-    v29 = v7;
-    v26 = v6;
-    v21 = v20;
+    v29 = handlerCopy;
+    v26 = zonesCopy;
+    v21 = container;
     v27 = v21;
-    v22 = v9;
+    v22 = database;
     v28 = v22;
     [v18 setFetchRecordZonesCompletionBlock:v25];
     [v22 addOperation:v18];
@@ -730,7 +730,7 @@ LABEL_9:
 
   else
   {
-    v23 = _Block_copy(v7);
+    v23 = _Block_copy(handlerCopy);
     v18 = v23;
     if (v23)
     {
@@ -741,37 +741,37 @@ LABEL_9:
   v24 = *MEMORY[0x1E69E9840];
 }
 
-- (void)p_createRecordIDSaltWithCompletion:(id)a3
+- (void)p_createRecordIDSaltWithCompletion:(id)completion
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(BCCloudKitDatabaseController *)self accessQueue];
-  dispatch_assert_queue_V2(v5);
+  completionCopy = completion;
+  accessQueue = [(BCCloudKitDatabaseController *)self accessQueue];
+  dispatch_assert_queue_V2(accessQueue);
 
   v6 = BDSCloudKitLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(BCCloudKitDatabaseController *)self containerIdentifier];
-    v8 = [(BCCloudKitDatabaseController *)self database];
+    containerIdentifier = [(BCCloudKitDatabaseController *)self containerIdentifier];
+    database = [(BCCloudKitDatabaseController *)self database];
     *buf = 138543618;
-    v17 = v7;
+    v17 = containerIdentifier;
     v18 = 2114;
-    v19 = v8;
+    v19 = database;
     _os_log_impl(&dword_1E45E0000, v6, OS_LOG_TYPE_DEFAULT, "(%{public}@) Establishing record salt, database:%{public}@", buf, 0x16u);
   }
 
   v9 = [objc_alloc(MEMORY[0x1E695BA70]) initWithRecordName:@"recordIDSalt"];
   objc_initWeak(buf, self);
-  v10 = [(BCCloudKitDatabaseController *)self database];
+  database2 = [(BCCloudKitDatabaseController *)self database];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = sub_1E46215A0;
   v13[3] = &unk_1E875A740;
   objc_copyWeak(&v15, buf);
   v13[4] = self;
-  v11 = v4;
+  v11 = completionCopy;
   v14 = v11;
-  [v10 fetchRecordWithID:v9 completionHandler:v13];
+  [database2 fetchRecordWithID:v9 completionHandler:v13];
 
   objc_destroyWeak(&v15);
   objc_destroyWeak(buf);
@@ -779,11 +779,11 @@ LABEL_9:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)p_fetchZoneChanges:(id)a3
+- (void)p_fetchZoneChanges:(id)changes
 {
-  v4 = a3;
-  v5 = [(BCCloudKitDatabaseController *)self accessQueue];
-  dispatch_assert_queue_V2(v5);
+  changesCopy = changes;
+  accessQueue = [(BCCloudKitDatabaseController *)self accessQueue];
+  dispatch_assert_queue_V2(accessQueue);
 
   if ([(BCCloudKitDatabaseController *)self serverFetchPostponed])
   {
@@ -794,25 +794,25 @@ LABEL_9:
       _os_log_impl(&dword_1E45E0000, v6, OS_LOG_TYPE_DEFAULT, "fetch zone changes attempted while postponing such fetches.  Nil error, but this operation will be attempted again after the back-off period.", buf, 2u);
     }
 
-    v4[2](v4, 0);
+    changesCopy[2](changesCopy, 0);
   }
 
   else
   {
-    v7 = [MEMORY[0x1E695DF70] array];
-    v8 = [MEMORY[0x1E695DF70] array];
-    v9 = [(BCCloudKitDatabaseController *)self tokenStores];
-    v10 = [v9 allKeys];
+    array = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
+    tokenStores = [(BCCloudKitDatabaseController *)self tokenStores];
+    allKeys = [tokenStores allKeys];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = sub_1E46224BC;
     v18[3] = &unk_1E875A768;
     v18[4] = self;
-    v19 = v7;
-    v11 = v8;
+    v19 = array;
+    v11 = array2;
     v20 = v11;
-    v12 = v7;
-    [v10 enumerateObjectsUsingBlock:v18];
+    v12 = array;
+    [allKeys enumerateObjectsUsingBlock:v18];
 
     v13 = [v12 copy];
     v15[0] = MEMORY[0x1E69E9820];
@@ -821,46 +821,46 @@ LABEL_9:
     v15[3] = &unk_1E875A420;
     v15[4] = self;
     v16 = v11;
-    v17 = v4;
+    v17 = changesCopy;
     v14 = v11;
     [(BCCloudKitDatabaseController *)self p_fetchRecordZoneChangesForRecordZoneIDs:v13 completionHandler:v15];
   }
 }
 
-- (void)p_fetchRecordZoneChangesForRecordZoneIDs:(id)a3 completionHandler:(id)a4
+- (void)p_fetchRecordZoneChangesForRecordZoneIDs:(id)ds completionHandler:(id)handler
 {
   v41 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BCCloudKitDatabaseController *)self accessQueue];
-  dispatch_assert_queue_V2(v8);
+  dsCopy = ds;
+  handlerCopy = handler;
+  accessQueue = [(BCCloudKitDatabaseController *)self accessQueue];
+  dispatch_assert_queue_V2(accessQueue);
 
-  v9 = [v6 count];
+  v9 = [dsCopy count];
   v10 = BDSCloudKitLog();
   v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
   if (v9)
   {
     if (v11)
     {
-      v12 = [(BCCloudKitDatabaseController *)self containerIdentifier];
+      containerIdentifier = [(BCCloudKitDatabaseController *)self containerIdentifier];
       *buf = 138543618;
-      v38 = v12;
+      v38 = containerIdentifier;
       v39 = 2114;
-      v40 = v6;
+      v40 = dsCopy;
       _os_log_impl(&dword_1E45E0000, v10, OS_LOG_TYPE_DEFAULT, "BCCloudKitDatabaseController (%{public}@)- fetching record zone changes for recordZoneIDs:%{public}@", buf, 0x16u);
     }
 
-    v13 = [(BCCloudKitDatabaseController *)self recordZones];
-    v14 = [(BCCloudKitDatabaseController *)self desiredRecordZoneIDs];
+    recordZones = [(BCCloudKitDatabaseController *)self recordZones];
+    desiredRecordZoneIDs = [(BCCloudKitDatabaseController *)self desiredRecordZoneIDs];
     v34[0] = MEMORY[0x1E69E9820];
     v34[1] = 3221225472;
     v34[2] = sub_1E4622AEC;
     v34[3] = &unk_1E875A790;
-    v35 = v13;
-    v36 = v14;
-    v15 = v14;
-    v16 = v13;
-    [v6 enumerateObjectsUsingBlock:v34];
+    v35 = recordZones;
+    v36 = desiredRecordZoneIDs;
+    v15 = desiredRecordZoneIDs;
+    v16 = recordZones;
+    [dsCopy enumerateObjectsUsingBlock:v34];
     v17 = objc_opt_new();
     v18 = dispatch_group_create();
     v31[0] = MEMORY[0x1E69E9820];
@@ -872,32 +872,32 @@ LABEL_9:
     v19 = v17;
     v33 = v19;
     v20 = v18;
-    [v6 enumerateObjectsUsingBlock:v31];
-    v21 = [(BCCloudKitDatabaseController *)self accessQueue];
+    [dsCopy enumerateObjectsUsingBlock:v31];
+    accessQueue2 = [(BCCloudKitDatabaseController *)self accessQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = sub_1E4622E28;
     block[3] = &unk_1E8759CE0;
     v27 = v19;
-    v28 = self;
-    v29 = v6;
-    v30 = v7;
+    selfCopy = self;
+    v29 = dsCopy;
+    v30 = handlerCopy;
     v22 = v19;
-    dispatch_group_notify(v20, v21, block);
+    dispatch_group_notify(v20, accessQueue2, block);
   }
 
   else
   {
     if (v11)
     {
-      v23 = [(BCCloudKitDatabaseController *)self containerIdentifier];
+      containerIdentifier2 = [(BCCloudKitDatabaseController *)self containerIdentifier];
       *buf = 138543362;
-      v38 = v23;
+      v38 = containerIdentifier2;
       _os_log_impl(&dword_1E45E0000, v10, OS_LOG_TYPE_DEFAULT, "BCCloudKitDatabaseController (%{public}@)- No record zone changes to fetch", buf, 0xCu);
     }
 
     self->_fetchRecordZoneChangesSuccess = 1;
-    v24 = _Block_copy(v7);
+    v24 = _Block_copy(handlerCopy);
     v16 = v24;
     if (v24)
     {
@@ -908,14 +908,14 @@ LABEL_9:
   v25 = *MEMORY[0x1E69E9840];
 }
 
-- (void)p_updateRetryParametersFromFetchZoneChangesOperationError:(id)a3
+- (void)p_updateRetryParametersFromFetchZoneChangesOperationError:(id)error
 {
-  v15 = a3;
-  v4 = [(BCCloudKitDatabaseController *)self accessQueue];
-  dispatch_assert_queue_V2(v4);
+  errorCopy = error;
+  accessQueue = [(BCCloudKitDatabaseController *)self accessQueue];
+  dispatch_assert_queue_V2(accessQueue);
 
-  v5 = [v15 domain];
-  v6 = [v5 isEqualToString:*MEMORY[0x1E695B740]];
+  domain = [errorCopy domain];
+  v6 = [domain isEqualToString:*MEMORY[0x1E695B740]];
 
   v7 = 5.0;
   if (!v6)
@@ -924,8 +924,8 @@ LABEL_9:
   }
 
   objc_opt_class();
-  v8 = [v15 userInfo];
-  v9 = [v8 objectForKeyedSubscript:*MEMORY[0x1E695B748]];
+  userInfo = [errorCopy userInfo];
+  v9 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E695B748]];
   v10 = BUDynamicCast();
   [v10 doubleValue];
   v7 = v11;
@@ -937,8 +937,8 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v12 = [v15 code];
-  if (v12 <= 0x17 && ((1 << v12) & 0x8000C0) != 0)
+  code = [errorCopy code];
+  if (code <= 0x17 && ((1 << code) & 0x8000C0) != 0)
   {
     [(BCCloudKitDatabaseController *)self backOffInterval];
     v7 = 5.0;
@@ -954,18 +954,18 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)p_fetchRecordZoneChanges:(id)a3 optionsByRecordZoneID:(id)a4 completionHandler:(id)a5
+- (void)p_fetchRecordZoneChanges:(id)changes optionsByRecordZoneID:(id)d completionHandler:(id)handler
 {
   v57 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  changesCopy = changes;
+  dCopy = d;
+  handlerCopy = handler;
   v11 = BDSCloudKitLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [(BCCloudKitDatabaseController *)self containerIdentifier];
+    containerIdentifier = [(BCCloudKitDatabaseController *)self containerIdentifier];
     v13 = MEMORY[0x1E695DF70];
-    v14 = v8;
+    v14 = changesCopy;
     v15 = objc_alloc_init(v13);
     *buf = MEMORY[0x1E69E9820];
     *&buf[8] = 3221225472;
@@ -976,20 +976,20 @@ LABEL_8:
     [v14 enumerateObjectsUsingBlock:buf];
     v17 = [v16 componentsJoinedByString:{@", "}];
 
-    v18 = [(BCCloudKitDatabaseController *)self database];
+    database = [(BCCloudKitDatabaseController *)self database];
     *buf = 138544130;
-    *&buf[4] = v12;
+    *&buf[4] = containerIdentifier;
     *&buf[12] = 2114;
     *&buf[14] = v17;
     *&buf[22] = 2114;
-    v55 = v9;
+    v55 = dCopy;
     LOWORD(v56) = 2048;
-    *(&v56 + 2) = v18;
+    *(&v56 + 2) = database;
     _os_log_impl(&dword_1E45E0000, v11, OS_LOG_TYPE_DEFAULT, "BCCloudKitDatabaseController (%{public}@) p_fetchRecordZoneChanges recordZoneIDs:%{public}@, optionsByRecordZoneID:%{public}@ self.database=%p", buf, 0x2Au);
   }
 
-  v19 = [(BCCloudKitDatabaseController *)self database];
-  if (v19)
+  database2 = [(BCCloudKitDatabaseController *)self database];
+  if (database2)
   {
     *buf = 0;
     *&buf[8] = buf;
@@ -1003,18 +1003,18 @@ LABEL_8:
     v48[3] = sub_1E461ECFC;
     v48[4] = sub_1E461ED0C;
     v49 = objc_alloc_init(MEMORY[0x1E695DFA0]);
-    v20 = [objc_alloc(MEMORY[0x1E695B918]) initWithRecordZoneIDs:v8 configurationsByRecordZoneID:v9];
+    v20 = [objc_alloc(MEMORY[0x1E695B918]) initWithRecordZoneIDs:changesCopy configurationsByRecordZoneID:dCopy];
     [v20 setFetchAllChanges:1];
-    v21 = [MEMORY[0x1E695BA00] bds_defaultConfiguration];
-    v22 = [(BCCloudKitDatabaseController *)self container];
-    [v21 setContainer:v22];
+    bds_defaultConfiguration = [MEMORY[0x1E695BA00] bds_defaultConfiguration];
+    container = [(BCCloudKitDatabaseController *)self container];
+    [bds_defaultConfiguration setContainer:container];
 
-    [v21 setQualityOfService:17];
-    [v21 setDiscretionaryNetworkBehavior:0];
-    [v21 setAutomaticallyRetryNetworkFailures:0];
-    [v20 setConfiguration:v21];
-    v23 = [(BCCloudKitDatabaseController *)self database];
-    [v20 setDatabase:v23];
+    [bds_defaultConfiguration setQualityOfService:17];
+    [bds_defaultConfiguration setDiscretionaryNetworkBehavior:0];
+    [bds_defaultConfiguration setAutomaticallyRetryNetworkFailures:0];
+    [v20 setConfiguration:bds_defaultConfiguration];
+    database3 = [(BCCloudKitDatabaseController *)self database];
+    [v20 setDatabase:database3];
 
     objc_initWeak(&location, self);
     v46[0] = MEMORY[0x1E69E9820];
@@ -1035,7 +1035,7 @@ LABEL_8:
     v42[2] = sub_1E4623DAC;
     v42[3] = &unk_1E875A880;
     v42[4] = self;
-    v24 = v8;
+    v24 = changesCopy;
     v43 = v24;
     v44 = buf;
     [v20 setRecordZoneChangeTokensUpdatedBlock:v42];
@@ -1058,21 +1058,21 @@ LABEL_8:
     v35 = v48;
     v33 = v25;
     v36 = buf;
-    v34 = v10;
+    v34 = handlerCopy;
     [v20 setFetchRecordZoneChangesCompletionBlock:v32];
     v26 = BDSCloudKitLog();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
     {
-      v27 = [(BCCloudKitDatabaseController *)self containerIdentifier];
+      containerIdentifier2 = [(BCCloudKitDatabaseController *)self containerIdentifier];
       *v50 = 138543618;
-      v51 = v27;
+      v51 = containerIdentifier2;
       v52 = 2112;
       v53 = v20;
       _os_log_impl(&dword_1E45E0000, v26, OS_LOG_TYPE_DEFAULT, "BCCloudKitDatabaseController (%{public}@) p_fetchRecordZoneChanges Adding fetchRecordZoneChangesOperation=%@", v50, 0x16u);
     }
 
-    v28 = [(BCCloudKitDatabaseController *)self database];
-    [v28 addOperation:v20];
+    database4 = [(BCCloudKitDatabaseController *)self database];
+    [database4 addOperation:v20];
 
     objc_destroyWeak(&v37);
     objc_destroyWeak(&location);
@@ -1083,7 +1083,7 @@ LABEL_8:
 
   else
   {
-    v29 = _Block_copy(v10);
+    v29 = _Block_copy(handlerCopy);
     if (v29)
     {
       v30 = [MEMORY[0x1E696ABC0] errorWithDomain:@"BDSErrorDomain" code:1004 userInfo:0];
@@ -1094,15 +1094,15 @@ LABEL_8:
   v31 = *MEMORY[0x1E69E9840];
 }
 
-- (void)p_internetReachabilityChanged:(id)a3
+- (void)p_internetReachabilityChanged:(id)changed
 {
-  v4 = [(BCCloudKitDatabaseController *)self accessQueue];
+  accessQueue = [(BCCloudKitDatabaseController *)self accessQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = sub_1E4625258;
   block[3] = &unk_1E875A008;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(accessQueue, block);
 }
 
 - (void)p_informObserversOfAttachmentChange
@@ -1111,23 +1111,23 @@ LABEL_8:
   v3 = BDSCloudKitLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
-    v4 = [(BCCloudKitDatabaseController *)self containerIdentifier];
-    v5 = [(BCCloudKitDatabaseController *)self attachedToContainer];
+    containerIdentifier = [(BCCloudKitDatabaseController *)self containerIdentifier];
+    attachedToContainer = [(BCCloudKitDatabaseController *)self attachedToContainer];
     v6 = @"NO";
-    if (v5)
+    if (attachedToContainer)
     {
       v6 = @"YES";
     }
 
     *buf = 138543618;
-    v33 = v4;
+    v33 = containerIdentifier;
     v34 = 2112;
     v35 = v6;
     _os_log_impl(&dword_1E45E0000, v3, OS_LOG_TYPE_INFO, "BCCloudKitDatabaseController (%{public}@) - p_informObserversOfAttachmentChange. Attached to container: %@", buf, 0x16u);
   }
 
-  v7 = [(BCCloudKitDatabaseController *)self accessQueue];
-  dispatch_assert_queue_V2(v7);
+  accessQueue = [(BCCloudKitDatabaseController *)self accessQueue];
+  dispatch_assert_queue_V2(accessQueue);
 
   v28 = 0u;
   v29 = 0u;
@@ -1150,8 +1150,8 @@ LABEL_8:
         }
 
         v12 = *(*(&v26 + 1) + 8 * v11);
-        v13 = [(BCCloudKitDatabaseController *)self observers];
-        v14 = [v13 objectForKeyedSubscript:v12];
+        observers = [(BCCloudKitDatabaseController *)self observers];
+        v14 = [observers objectForKeyedSubscript:v12];
 
         if ([v14 count])
         {
@@ -1199,85 +1199,85 @@ LABEL_8:
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)p_informObserversOfRecordsChanged:(id)a3
+- (void)p_informObserversOfRecordsChanged:(id)changed
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  changedCopy = changed;
   v5 = BDSCloudKitLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [(BCCloudKitDatabaseController *)self containerIdentifier];
+    containerIdentifier = [(BCCloudKitDatabaseController *)self containerIdentifier];
     *buf = 138543362;
-    v11 = v6;
+    v11 = containerIdentifier;
     _os_log_impl(&dword_1E45E0000, v5, OS_LOG_TYPE_INFO, "BCCloudKitDatabaseController (%{public}@) - p_informObserversOfRecordsChanged.", buf, 0xCu);
   }
 
-  v7 = [(BCCloudKitDatabaseController *)self accessQueue];
-  dispatch_assert_queue_V2(v7);
+  accessQueue = [(BCCloudKitDatabaseController *)self accessQueue];
+  dispatch_assert_queue_V2(accessQueue);
 
-  if ([v4 count])
+  if ([changedCopy count])
   {
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = sub_1E4625880;
     v9[3] = &unk_1E875A998;
     v9[4] = self;
-    [v4 enumerateKeysAndObjectsUsingBlock:v9];
+    [changedCopy enumerateKeysAndObjectsUsingBlock:v9];
   }
 
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)p_informObserversOfSaltVersionIdentifierChanged:(id)a3 forZones:(id)a4 completion:(id)a5
+- (void)p_informObserversOfSaltVersionIdentifierChanged:(id)changed forZones:(id)zones completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  changedCopy = changed;
+  zonesCopy = zones;
+  completionCopy = completion;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = sub_1E4625A64;
   v14[3] = &unk_1E8759CE0;
   v14[4] = self;
-  v15 = v8;
-  v16 = v9;
-  v17 = v10;
-  v11 = v10;
-  v12 = v9;
-  v13 = v8;
+  v15 = changedCopy;
+  v16 = zonesCopy;
+  v17 = completionCopy;
+  v11 = completionCopy;
+  v12 = zonesCopy;
+  v13 = changedCopy;
   os_unfair_lock_lock(&self->_zoneObserversLock);
   sub_1E4625A64(v14);
   os_unfair_lock_unlock(&self->_zoneObserversLock);
 }
 
-- (void)p_informObserversOfRecordsChanged:(id)a3 forRecordType:(id)a4
+- (void)p_informObserversOfRecordsChanged:(id)changed forRecordType:(id)type
 {
   v33 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BCCloudKitDatabaseController *)self accessQueue];
-  dispatch_assert_queue_V2(v8);
+  changedCopy = changed;
+  typeCopy = type;
+  accessQueue = [(BCCloudKitDatabaseController *)self accessQueue];
+  dispatch_assert_queue_V2(accessQueue);
 
   v9 = BDSCloudKitLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [(BCCloudKitDatabaseController *)self containerIdentifier];
+    containerIdentifier = [(BCCloudKitDatabaseController *)self containerIdentifier];
     *buf = 138543874;
-    v28 = v10;
+    v28 = containerIdentifier;
     v29 = 2050;
-    v30 = [v6 count];
+    v30 = [changedCopy count];
     v31 = 2114;
-    v32 = v7;
+    v32 = typeCopy;
     _os_log_impl(&dword_1E45E0000, v9, OS_LOG_TYPE_DEFAULT, "BCCloudKitDatabaseController (%{public}@) - p_informObserversOfRecordsChanged: changedRecords.count=%{public}lu recordType=%{public}@", buf, 0x20u);
   }
 
-  if ([v6 count])
+  if ([changedCopy count])
   {
-    v11 = [(BCCloudKitDatabaseController *)self observers];
-    v12 = [v11 objectForKeyedSubscript:v7];
+    observers = [(BCCloudKitDatabaseController *)self observers];
+    v12 = [observers objectForKeyedSubscript:typeCopy];
 
     if ([v12 count])
     {
-      v21 = v7;
+      v21 = typeCopy;
       v24 = 0u;
       v25 = 0u;
       v22 = 0u;
@@ -1299,7 +1299,7 @@ LABEL_8:
             }
 
             v18 = *(*(&v22 + 1) + 8 * v17);
-            v19 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithArray:v6 copyItems:1];
+            v19 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithArray:changedCopy copyItems:1];
             [v18 databaseController:self recordsChanged:v19];
 
             ++v17;
@@ -1312,28 +1312,28 @@ LABEL_8:
         while (v15);
       }
 
-      v7 = v21;
+      typeCopy = v21;
     }
   }
 
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)p_informObserversOfCompletedFetchOfZone:(id)a3
+- (void)p_informObserversOfCompletedFetchOfZone:(id)zone
 {
   v36 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(BCCloudKitDatabaseController *)self accessQueue];
-  dispatch_assert_queue_V2(v5);
+  zoneCopy = zone;
+  accessQueue = [(BCCloudKitDatabaseController *)self accessQueue];
+  dispatch_assert_queue_V2(accessQueue);
 
   v6 = BDSCloudKitLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
-    v7 = [(BCCloudKitDatabaseController *)self containerIdentifier];
+    containerIdentifier = [(BCCloudKitDatabaseController *)self containerIdentifier];
     *buf = 138543618;
-    v33 = v7;
+    v33 = containerIdentifier;
     v34 = 2114;
-    v35 = v4;
+    v35 = zoneCopy;
     _os_log_impl(&dword_1E45E0000, v6, OS_LOG_TYPE_INFO, "BCCloudKitDatabaseController (%{public}@) - p_informObserversOfCompletedFetchOfZone zoneName=%{public}@", buf, 0x16u);
   }
 
@@ -1358,8 +1358,8 @@ LABEL_8:
         }
 
         v12 = *(*(&v26 + 1) + 8 * v11);
-        v13 = [(BCCloudKitDatabaseController *)self observers];
-        v14 = [v13 objectForKeyedSubscript:v12];
+        observers = [(BCCloudKitDatabaseController *)self observers];
+        v14 = [observers objectForKeyedSubscript:v12];
 
         if ([v14 count])
         {
@@ -1383,7 +1383,7 @@ LABEL_8:
                   objc_enumerationMutation(v15);
                 }
 
-                [*(*(&v22 + 1) + 8 * v19++) databaseController:self fetchedAllRecordsInZone:v4];
+                [*(*(&v22 + 1) + 8 * v19++) databaseController:self fetchedAllRecordsInZone:zoneCopy];
               }
 
               while (v17 != v19);
@@ -1407,20 +1407,20 @@ LABEL_8:
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)p_scheduleArchiveWithCompletion:(id)a3
+- (void)p_scheduleArchiveWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(BCCloudKitDatabaseController *)self accessQueue];
-  dispatch_assert_queue_V2(v5);
+  completionCopy = completion;
+  accessQueue = [(BCCloudKitDatabaseController *)self accessQueue];
+  dispatch_assert_queue_V2(accessQueue);
 
-  v6 = [(BCCloudKitDatabaseController *)self coalescedArchive];
-  [v6 signalWithCompletion:v4];
+  coalescedArchive = [(BCCloudKitDatabaseController *)self coalescedArchive];
+  [coalescedArchive signalWithCompletion:completionCopy];
 }
 
 - (id)p_archiveToData
 {
-  v3 = [(BCCloudKitDatabaseController *)self accessQueue];
-  dispatch_assert_queue_V2(v3);
+  accessQueue = [(BCCloudKitDatabaseController *)self accessQueue];
+  dispatch_assert_queue_V2(accessQueue);
 
   v4 = [objc_alloc(MEMORY[0x1E696ACC8]) initRequiringSecureCoding:1];
   if (v4)
@@ -1430,60 +1430,60 @@ LABEL_8:
       [v4 encodeInteger:1 forKey:@"hasUpdatedSubscription"];
     }
 
-    v5 = [(BCCloudKitDatabaseController *)self serverChangeToken];
-    if (v5)
+    serverChangeToken = [(BCCloudKitDatabaseController *)self serverChangeToken];
+    if (serverChangeToken)
     {
-      [v4 encodeObject:v5 forKey:@"serverChangeToken"];
+      [v4 encodeObject:serverChangeToken forKey:@"serverChangeToken"];
     }
 
-    v6 = [(BCCloudKitDatabaseController *)self changedRecordZoneIDs];
-    v7 = [v6 count];
+    changedRecordZoneIDs = [(BCCloudKitDatabaseController *)self changedRecordZoneIDs];
+    v7 = [changedRecordZoneIDs count];
 
     if (v7)
     {
-      v8 = [(BCCloudKitDatabaseController *)self changedRecordZoneIDs];
-      [v4 encodeObject:v8 forKey:@"changedRecordZoneIDs"];
+      changedRecordZoneIDs2 = [(BCCloudKitDatabaseController *)self changedRecordZoneIDs];
+      [v4 encodeObject:changedRecordZoneIDs2 forKey:@"changedRecordZoneIDs"];
     }
 
-    v9 = [(BCCloudKitDatabaseController *)self containerIdentifier];
-    v10 = [v9 length];
+    containerIdentifier = [(BCCloudKitDatabaseController *)self containerIdentifier];
+    v10 = [containerIdentifier length];
 
     if (v10)
     {
-      v11 = [(BCCloudKitDatabaseController *)self containerIdentifier];
-      [v4 encodeObject:v11 forKey:@"containerIdentifier"];
+      containerIdentifier2 = [(BCCloudKitDatabaseController *)self containerIdentifier];
+      [v4 encodeObject:containerIdentifier2 forKey:@"containerIdentifier"];
     }
 
-    v12 = [(BCCloudKitDatabaseController *)self userRecordID];
+    userRecordID = [(BCCloudKitDatabaseController *)self userRecordID];
 
-    if (v12)
+    if (userRecordID)
     {
-      v13 = [(BCCloudKitDatabaseController *)self userRecordID];
-      [v4 encodeObject:v13 forKey:@"userRecordID"];
+      userRecordID2 = [(BCCloudKitDatabaseController *)self userRecordID];
+      [v4 encodeObject:userRecordID2 forKey:@"userRecordID"];
     }
 
     [v4 finishEncoding];
-    v14 = [v4 encodedData];
+    encodedData = [v4 encodedData];
   }
 
   else
   {
-    v14 = 0;
+    encodedData = 0;
   }
 
-  return v14;
+  return encodedData;
 }
 
-- (id)p_unarchiveFromData:(id)a3
+- (id)p_unarchiveFromData:(id)data
 {
-  v4 = a3;
-  v5 = [(BCCloudKitDatabaseController *)self accessQueue];
-  dispatch_assert_queue_V2(v5);
+  dataCopy = data;
+  accessQueue = [(BCCloudKitDatabaseController *)self accessQueue];
+  dispatch_assert_queue_V2(accessQueue);
 
-  if (v4)
+  if (dataCopy)
   {
     v17 = 0;
-    v6 = [objc_alloc(MEMORY[0x1E696ACD0]) initForReadingFromData:v4 error:&v17];
+    v6 = [objc_alloc(MEMORY[0x1E696ACD0]) initForReadingFromData:dataCopy error:&v17];
     v7 = v17;
     if (v7)
     {
@@ -1529,25 +1529,25 @@ LABEL_8:
   return 0;
 }
 
-+ (id)encodeRecordSystemFields:(id)a3
++ (id)encodeRecordSystemFields:(id)fields
 {
   v3 = MEMORY[0x1E696ACC8];
-  v4 = a3;
+  fieldsCopy = fields;
   v5 = [[v3 alloc] initRequiringSecureCoding:1];
-  [v4 encodeSystemFieldsWithCoder:v5];
+  [fieldsCopy encodeSystemFieldsWithCoder:v5];
 
   [v5 finishEncoding];
-  v6 = [v5 encodedData];
+  encodedData = [v5 encodedData];
 
-  return v6;
+  return encodedData;
 }
 
-+ (id)decodeRecordFromSystemFields:(id)a3
++ (id)decodeRecordFromSystemFields:(id)fields
 {
   v3 = MEMORY[0x1E696ACD0];
-  v4 = a3;
+  fieldsCopy = fields;
   v10 = 0;
-  v5 = [[v3 alloc] initForReadingFromData:v4 error:&v10];
+  v5 = [[v3 alloc] initForReadingFromData:fieldsCopy error:&v10];
 
   v6 = v10;
   if (v6)
@@ -1576,35 +1576,35 @@ LABEL_8:
   [v2 startNotifier];
 }
 
-- (void)_deleteRecordZonesWithIDs:(id)a3 qualityOfService:(int64_t)a4 completion:(id)a5
+- (void)_deleteRecordZonesWithIDs:(id)ds qualityOfService:(int64_t)service completion:(id)completion
 {
   v24 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  v10 = [(BCCloudKitDatabaseController *)self accessQueue];
-  dispatch_assert_queue_V2(v10);
+  dsCopy = ds;
+  completionCopy = completion;
+  accessQueue = [(BCCloudKitDatabaseController *)self accessQueue];
+  dispatch_assert_queue_V2(accessQueue);
 
   v11 = BDSCloudKitLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     *buf = 138543362;
-    v23 = v8;
+    v23 = dsCopy;
     _os_log_impl(&dword_1E45E0000, v11, OS_LOG_TYPE_INFO, "Deleting zone: (%{public}@)", buf, 0xCu);
   }
 
   if (self->_container)
   {
-    v12 = [objc_alloc(MEMORY[0x1E695B9B0]) initWithRecordZonesToSave:0 recordZoneIDsToDelete:v8];
+    v12 = [objc_alloc(MEMORY[0x1E695B9B0]) initWithRecordZonesToSave:0 recordZoneIDsToDelete:dsCopy];
     v16 = MEMORY[0x1E69E9820];
     v17 = 3221225472;
     v18 = sub_1E4626CB0;
     v19 = &unk_1E875A9E8;
-    v20 = v8;
-    v21 = v9;
+    v20 = dsCopy;
+    v21 = completionCopy;
     [v12 setModifyRecordZonesCompletionBlock:&v16];
-    [v12 setQualityOfService:{a4, v16, v17, v18, v19}];
-    v13 = [(CKContainer *)self->_container privateCloudDatabase];
-    [v13 addOperation:v12];
+    [v12 setQualityOfService:{service, v16, v17, v18, v19}];
+    privateCloudDatabase = [(CKContainer *)self->_container privateCloudDatabase];
+    [privateCloudDatabase addOperation:v12];
 
     v14 = v20;
 LABEL_7:
@@ -1612,7 +1612,7 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v12 = _Block_copy(v9);
+  v12 = _Block_copy(completionCopy);
   if (v12)
   {
     v14 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E695B740] code:5 userInfo:0];
@@ -1625,97 +1625,97 @@ LABEL_8:
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)zonesUnreadableDueToMissingD2DEncryptionIdentity:(id)a3 completion:(id)a4
+- (void)zonesUnreadableDueToMissingD2DEncryptionIdentity:(id)identity completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identityCopy = identity;
+  completionCopy = completion;
   v8 = BDSCloudKitLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
   {
     sub_1E4706A60(self);
   }
 
-  v9 = [(BCCloudKitDatabaseController *)self accessQueue];
+  accessQueue = [(BCCloudKitDatabaseController *)self accessQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = sub_1E4626E70;
   block[3] = &unk_1E875A470;
   block[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
-  dispatch_async(v9, block);
+  v13 = identityCopy;
+  v14 = completionCopy;
+  v10 = completionCopy;
+  v11 = identityCopy;
+  dispatch_async(accessQueue, block);
 }
 
-- (void)zonesTemporarilyUnreadableWithError:(id)a3 completion:(id)a4
+- (void)zonesTemporarilyUnreadableWithError:(id)error completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  errorCopy = error;
+  completionCopy = completion;
   v8 = BDSCloudKitLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
   {
     sub_1E4706AFC(self);
   }
 
-  v9 = [(BCCloudKitDatabaseController *)self accessQueue];
+  accessQueue = [(BCCloudKitDatabaseController *)self accessQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = sub_1E4627228;
   block[3] = &unk_1E875A470;
   block[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
-  dispatch_async(v9, block);
+  v13 = errorCopy;
+  v14 = completionCopy;
+  v10 = completionCopy;
+  v11 = errorCopy;
+  dispatch_async(accessQueue, block);
 }
 
-- (void)zonesDeletedOrReset:(id)a3 completion:(id)a4
+- (void)zonesDeletedOrReset:(id)reset completion:(id)completion
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  resetCopy = reset;
+  completionCopy = completion;
   v8 = BDSCloudKitLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(BCCloudKitDatabaseController *)self containerIdentifier];
+    containerIdentifier = [(BCCloudKitDatabaseController *)self containerIdentifier];
     *buf = 138543618;
-    v16 = v9;
+    v16 = containerIdentifier;
     v17 = 2114;
-    v18 = v6;
+    v18 = resetCopy;
     _os_log_impl(&dword_1E45E0000, v8, OS_LOG_TYPE_DEFAULT, "BCCloudKitDatabaseController (%{public}@) - zonesDeletedOrReset: %{public}@", buf, 0x16u);
   }
 
-  v10 = [(BCCloudKitDatabaseController *)self accessQueue];
+  accessQueue = [(BCCloudKitDatabaseController *)self accessQueue];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = sub_1E462746C;
   v13[3] = &unk_1E875A3D0;
   v13[4] = self;
-  v14 = v7;
-  v11 = v7;
-  dispatch_async(v10, v13);
+  v14 = completionCopy;
+  v11 = completionCopy;
+  dispatch_async(accessQueue, v13);
 
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addObserver:(id)a3 recordType:(id)a4
+- (void)addObserver:(id)observer recordType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6 && [v7 length])
+  observerCopy = observer;
+  typeCopy = type;
+  v8 = typeCopy;
+  if (observerCopy && [typeCopy length])
   {
-    v9 = [(BCCloudKitDatabaseController *)self accessQueue];
+    accessQueue = [(BCCloudKitDatabaseController *)self accessQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = sub_1E4627668;
     block[3] = &unk_1E8759FE0;
     block[4] = self;
     v12 = v8;
-    v13 = v6;
-    dispatch_async(v9, block);
+    v13 = observerCopy;
+    dispatch_async(accessQueue, block);
   }
 
   else
@@ -1728,22 +1728,22 @@ LABEL_8:
   }
 }
 
-- (void)removeObserver:(id)a3 recordType:(id)a4
+- (void)removeObserver:(id)observer recordType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6 && [v7 length])
+  observerCopy = observer;
+  typeCopy = type;
+  v8 = typeCopy;
+  if (observerCopy && [typeCopy length])
   {
-    v9 = [(BCCloudKitDatabaseController *)self accessQueue];
+    accessQueue = [(BCCloudKitDatabaseController *)self accessQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = sub_1E4627870;
     block[3] = &unk_1E8759FE0;
     block[4] = self;
     v12 = v8;
-    v13 = v6;
-    dispatch_async(v9, block);
+    v13 = observerCopy;
+    dispatch_async(accessQueue, block);
   }
 
   else
@@ -1756,19 +1756,19 @@ LABEL_8:
   }
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  if (v4)
+  observerCopy = observer;
+  if (observerCopy)
   {
-    v5 = [(BCCloudKitDatabaseController *)self accessQueue];
+    accessQueue = [(BCCloudKitDatabaseController *)self accessQueue];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = sub_1E4627AB0;
     v14[3] = &unk_1E875A030;
     v14[4] = self;
-    v15 = v4;
-    dispatch_async(v5, v14);
+    v15 = observerCopy;
+    dispatch_async(accessQueue, v14);
   }
 
   else
@@ -1781,42 +1781,42 @@ LABEL_8:
   }
 }
 
-- (void)addObserver:(id)a3 zoneID:(id)a4
+- (void)addObserver:(id)observer zoneID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  observerCopy = observer;
+  dCopy = d;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = sub_1E4627CE8;
   v10[3] = &unk_1E8759FE0;
-  v11 = v6;
-  v12 = v7;
-  v13 = self;
-  v8 = v7;
-  v9 = v6;
+  v11 = observerCopy;
+  v12 = dCopy;
+  selfCopy = self;
+  v8 = dCopy;
+  v9 = observerCopy;
   os_unfair_lock_lock(&self->_zoneObserversLock);
   sub_1E4627CE8(v10);
   os_unfair_lock_unlock(&self->_zoneObserversLock);
 }
 
-- (void)registerServerChangeTokenStore:(id)a3 forZoneID:(id)a4
+- (void)registerServerChangeTokenStore:(id)store forZoneID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6 && v7)
+  storeCopy = store;
+  dCopy = d;
+  v8 = dCopy;
+  if (storeCopy && dCopy)
   {
     objc_initWeak(&location, self);
-    v9 = [(BCCloudKitDatabaseController *)self accessQueue];
+    accessQueue = [(BCCloudKitDatabaseController *)self accessQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = sub_1E4627F58;
     block[3] = &unk_1E875AA60;
     objc_copyWeak(&v15, &location);
     v12 = v8;
-    v13 = v6;
-    v14 = self;
-    dispatch_async(v9, block);
+    v13 = storeCopy;
+    selfCopy = self;
+    dispatch_async(accessQueue, block);
 
     objc_destroyWeak(&v15);
     objc_destroyWeak(&location);
@@ -1832,20 +1832,20 @@ LABEL_8:
   }
 }
 
-- (void)unregisterServerChangeTokenStore:(id)a3
+- (void)unregisterServerChangeTokenStore:(id)store
 {
-  v4 = a3;
-  if (v4)
+  storeCopy = store;
+  if (storeCopy)
   {
     objc_initWeak(&location, self);
-    v5 = [(BCCloudKitDatabaseController *)self accessQueue];
+    accessQueue = [(BCCloudKitDatabaseController *)self accessQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = sub_1E46283E8;
     block[3] = &unk_1E875A178;
     objc_copyWeak(&v9, &location);
-    v8 = v4;
-    dispatch_async(v5, block);
+    v8 = storeCopy;
+    dispatch_async(accessQueue, block);
 
     objc_destroyWeak(&v9);
     objc_destroyWeak(&location);
@@ -1875,17 +1875,17 @@ LABEL_8:
   v24 = 0;
   v3 = dispatch_group_create();
   dispatch_group_enter(v3);
-  v4 = [(BCCloudKitDatabaseController *)self accessQueue];
+  accessQueue = [(BCCloudKitDatabaseController *)self accessQueue];
   v11 = MEMORY[0x1E69E9820];
   v12 = 3221225472;
   v13 = sub_1E4628740;
   v14 = &unk_1E875AA88;
   v17 = &v25;
   v18 = &v19;
-  v15 = self;
+  selfCopy = self;
   v5 = v3;
   v16 = v5;
-  dispatch_async(v4, &v11);
+  dispatch_async(accessQueue, &v11);
 
   dispatch_group_wait(v5, 0xFFFFFFFFFFFFFFFFLL);
   v6 = [BDSCloudSyncDiagnosticDatabaseInfo alloc];

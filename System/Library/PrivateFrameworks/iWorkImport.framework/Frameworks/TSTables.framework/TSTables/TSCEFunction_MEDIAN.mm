@@ -1,24 +1,24 @@
 @interface TSCEFunction_MEDIAN
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5;
-+ (id)evaluateVector:(id)a3 context:(id)a4 functionSpec:(id)a5;
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments;
++ (id)evaluateVector:(id)vector context:(id)context functionSpec:(id)spec;
 @end
 
 @implementation TSCEFunction_MEDIAN
 
-+ (id)evaluateVector:(id)a3 context:(id)a4 functionSpec:(id)a5
++ (id)evaluateVector:(id)vector context:(id)context functionSpec:(id)spec
 {
   v138 = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  contextCopy = context;
   v8 = objc_autoreleasePoolPush();
-  v120 = objc_msgSend_deepResolveInPlace_(a3, v9, v7, v10, v11);
+  v120 = objc_msgSend_deepResolveInPlace_(vector, v9, contextCopy, v10, v11);
   v16 = objc_msgSend_gridValue(v120, v12, v13, v14, v15);
   v133 = 0;
-  v121 = objc_msgSend_createFromGridValue_functionSpec_argumentIndex_evaluationContext_ignoreError_ignoreDuplicates_outError_(TSCETaggedDecimalListObject, v17, v16, a5, 0, v7, 0, 0, &v133);
+  v121 = objc_msgSend_createFromGridValue_functionSpec_argumentIndex_evaluationContext_ignoreError_ignoreDuplicates_outError_(TSCETaggedDecimalListObject, v17, v16, spec, 0, contextCopy, 0, 0, &v133);
   v22 = v133;
   if (v22)
   {
     v23 = v8;
-    v24 = objc_msgSend_raiseErrorOrConvert_(v7, v18, v22, v20, v21);
+    v24 = objc_msgSend_raiseErrorOrConvert_(contextCopy, v18, v22, v20, v21);
 LABEL_3:
     v25 = 0;
     v26 = 0;
@@ -34,19 +34,19 @@ LABEL_4:
     v24 = v28[4];
     if (!v24)
     {
-      v22 = objc_msgSend_functionName(a5, v29, v30, v31, v32);
+      v22 = objc_msgSend_functionName(spec, v29, v30, v31, v32);
       v65 = objc_msgSend_noSuitableArgumentsFoundErrorForFunctionName_requiredType_(TSCEError, v63, v22, 8, v64);
       v23 = v8;
-      v24 = objc_msgSend_raiseErrorOrConvert_(v7, v66, v65, v67, v68);
+      v24 = objc_msgSend_raiseErrorOrConvert_(contextCopy, v66, v65, v67, v68);
 
       goto LABEL_3;
     }
 
     v23 = v8;
     sub_221402924(v28, (v24 - 1) >> 1, &v136);
-    v34 = v7;
+    v34 = contextCopy;
     v127[0] = v34;
-    v127[1] = a5;
+    v127[1] = spec;
     v128 = 0;
     v129[0] = 0;
     *(v129 + 7) = 0;
@@ -90,10 +90,10 @@ LABEL_25:
       }
 
       v126 = 0;
-      v95 = objc_msgSend_asDate_functionSpec_argumentIndex_outError_(v26, v79, v34, a5, 0, &v126);
+      v95 = objc_msgSend_asDate_functionSpec_argumentIndex_outError_(v26, v79, v34, spec, 0, &v126);
       v96 = v126;
       v125 = v96;
-      v119 = objc_msgSend_asDate_functionSpec_argumentIndex_outError_(v74, v97, v24, a5, 0, &v125);
+      v119 = objc_msgSend_asDate_functionSpec_argumentIndex_outError_(v74, v97, v24, spec, 0, &v125);
       v22 = v125;
 
       if (v22)
@@ -130,7 +130,7 @@ LABEL_25:
       TSUDecimal::operator/=();
       v123 = v124[0];
       v122 = 0;
-      v87 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v26, v86, v34, a5, 0, &v122);
+      v87 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v26, v86, v34, spec, 0, &v122);
       v22 = v122;
       v91 = objc_msgSend_numberWithDecimal_(v87, v88, &v123, v89, v90);
 
@@ -169,20 +169,20 @@ LABEL_5:
   return v24;
 }
 
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments
 {
-  v8 = **a5;
+  v8 = **arguments;
   v16 = 0;
-  v9 = objc_msgSend_asGrid_functionSpec_argumentIndex_applyPreferredFormat_outError_(v8, a2, a3, a4, 0, 0, &v16);
+  v9 = objc_msgSend_asGrid_functionSpec_argumentIndex_applyPreferredFormat_outError_(v8, a2, context, spec, 0, 0, &v16);
   v13 = v16;
   if (v13)
   {
-    objc_msgSend_raiseErrorOrConvert_(a3, v10, v13, v11, v12);
+    objc_msgSend_raiseErrorOrConvert_(context, v10, v13, v11, v12);
   }
 
   else
   {
-    objc_msgSend_evaluateVector_context_functionSpec_(a1, v10, v9, a3, a4);
+    objc_msgSend_evaluateVector_context_functionSpec_(self, v10, v9, context, spec);
   }
   v14 = ;
 

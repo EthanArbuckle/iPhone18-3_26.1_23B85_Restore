@@ -1,21 +1,21 @@
 @interface NSString
-- (id)stringByResolvingRealPathWithError:(id *)a3;
+- (id)stringByResolvingRealPathWithError:(id *)error;
 @end
 
 @implementation NSString
 
-- (id)stringByResolvingRealPathWithError:(id *)a3
+- (id)stringByResolvingRealPathWithError:(id *)error
 {
   if ([(NSString *)self isEqualToString:&stru_1000A7240])
   {
-    if (a3)
+    if (error)
     {
       v12[0] = NSLocalizedDescriptionKey;
       v12[1] = NSFilePathErrorKey;
       v13[0] = @"Receiver must not be the empty string.";
       v13[1] = self;
       v5 = [NSDictionary dictionaryWithObjects:v13 forKeys:v12 count:2];
-      *a3 = [NSError errorWithDomain:NSPOSIXErrorDomain code:2 userInfo:v5];
+      *error = [NSError errorWithDomain:NSPOSIXErrorDomain code:2 userInfo:v5];
     }
 
 LABEL_7:
@@ -29,8 +29,8 @@ LABEL_7:
     memset(v11, 0, 512);
     while (1)
     {
-      v6 = self;
-      if (getattrlist([(NSString *)v6 fileSystemRepresentation:v9], &v9, v11, 0x40CuLL, 0) != -1)
+      selfCopy = self;
+      if (getattrlist([(NSString *)selfCopy fileSystemRepresentation:v9], &v9, v11, 0x40CuLL, 0) != -1)
       {
         break;
       }

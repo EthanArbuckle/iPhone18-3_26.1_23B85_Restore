@@ -1,23 +1,23 @@
 @interface VNModelCatalogBridgingInterface
-- (id)foregroundBackgroundSegmentationModelBundleURLWithError:(id *)a3;
-- (void)downloadForegroundBackgroundSegmentationModelBundleWithCompletionHandler:(id)a3;
+- (id)foregroundBackgroundSegmentationModelBundleURLWithError:(id *)error;
+- (void)downloadForegroundBackgroundSegmentationModelBundleWithCompletionHandler:(id)handler;
 @end
 
 @implementation VNModelCatalogBridgingInterface
 
-- (id)foregroundBackgroundSegmentationModelBundleURLWithError:(id *)a3
+- (id)foregroundBackgroundSegmentationModelBundleURLWithError:(id *)error
 {
   v4 = objc_alloc_init(_TtC19ModelCatalogWrapper19ModelCatalogWrapper);
-  v5 = [(ModelCatalogWrapper *)v4 foregroundBackgroundSegmentationModelBundleURLAndReturnError:a3];
+  v5 = [(ModelCatalogWrapper *)v4 foregroundBackgroundSegmentationModelBundleURLAndReturnError:error];
 
   return v5;
 }
 
-- (void)downloadForegroundBackgroundSegmentationModelBundleWithCompletionHandler:(id)a3
+- (void)downloadForegroundBackgroundSegmentationModelBundleWithCompletionHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v4 = objc_alloc_init(_TtC19ModelCatalogWrapper19ModelCatalogWrapper);
-  [(ModelCatalogWrapper *)v4 downloadForegroundBackgroundSegmentationModelBundleWithCompletionHandler:v3];
+  [(ModelCatalogWrapper *)v4 downloadForegroundBackgroundSegmentationModelBundleWithCompletionHandler:handlerCopy];
 }
 
 @end

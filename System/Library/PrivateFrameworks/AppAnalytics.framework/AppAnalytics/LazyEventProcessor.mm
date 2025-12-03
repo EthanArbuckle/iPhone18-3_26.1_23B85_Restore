@@ -1,12 +1,12 @@
 @interface LazyEventProcessor
-- (void)flushWithCallbackQueue:(id)a3 completion:(id)a4;
+- (void)flushWithCallbackQueue:(id)queue completion:(id)completion;
 @end
 
 @implementation LazyEventProcessor
 
-- (void)flushWithCallbackQueue:(id)a3 completion:(id)a4
+- (void)flushWithCallbackQueue:(id)queue completion:(id)completion
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(completion);
   if (v5)
   {
     v6 = swift_allocObject();
@@ -19,9 +19,9 @@
     v6 = 0;
   }
 
-  v7 = a3;
+  queueCopy = queue;
 
-  LazyEventProcessor.flush(callbackQueue:completion:)(v7, v5, v6);
+  LazyEventProcessor.flush(callbackQueue:completion:)(queueCopy, v5, v6);
   sub_1B69A3100(v5);
 }
 

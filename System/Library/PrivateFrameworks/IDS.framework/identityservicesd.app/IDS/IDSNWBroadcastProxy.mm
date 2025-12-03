@@ -1,11 +1,11 @@
 @interface IDSNWBroadcastProxy
-- (id)methodSignatureForSelector:(SEL)a3;
-- (void)forwardInvocation:(id)a3;
+- (id)methodSignatureForSelector:(SEL)selector;
+- (void)forwardInvocation:(id)invocation;
 @end
 
 @implementation IDSNWBroadcastProxy
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
   v12 = 0u;
   v13 = 0u;
@@ -26,7 +26,7 @@
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) methodSignatureForSelector:{a3, v12}];
+        v9 = [*(*(&v12 + 1) + 8 * i) methodSignatureForSelector:{selector, v12}];
         if (v9)
         {
           v10 = v9;
@@ -50,9 +50,9 @@ LABEL_11:
   return v10;
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
-  v4 = a3;
+  invocationCopy = invocation;
   if ([(NSArray *)self->_targets count])
   {
     v13 = 0u;
@@ -76,10 +76,10 @@ LABEL_11:
           }
 
           v10 = *(*(&v11 + 1) + 8 * v9);
-          [v4 selector];
+          [invocationCopy selector];
           if (objc_opt_respondsToSelector())
           {
-            [v4 invokeWithTarget:v10];
+            [invocationCopy invokeWithTarget:v10];
           }
 
           v9 = v9 + 1;

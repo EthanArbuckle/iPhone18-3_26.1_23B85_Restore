@@ -1,18 +1,18 @@
 @interface TMBBPlugin
-- (BOOL)fetchTimeFromNetwork:(BOOL)a3;
-- (TMBBPlugin)initWithClock:(id)a3 daemonCore:(id)a4;
+- (BOOL)fetchTimeFromNetwork:(BOOL)network;
+- (TMBBPlugin)initWithClock:(id)clock daemonCore:(id)core;
 - (int)mobileCountryCode;
-- (void)TMCAFetchEvent:(int64_t)a3;
+- (void)TMCAFetchEvent:(int64_t)event;
 - (void)airplaneModeChanged;
 - (void)attemptLocationNetworkCorroboration;
 - (void)dealloc;
-- (void)fetch:(id)a3;
-- (void)locationProvidedTimeZone:(id)a3;
-- (void)networkSource:(id)a3 providedTimeZones:(id)a4;
-- (void)provideNetworkTimeZone:(id)a3;
-- (void)setSimulatedMcc:(id)a3 withHandler:(id)a4;
-- (void)sourceBecameUnavailable:(id)a3;
-- (void)timeZoneWasReset:(id)a3;
+- (void)fetch:(id)fetch;
+- (void)locationProvidedTimeZone:(id)zone;
+- (void)networkSource:(id)source providedTimeZones:(id)zones;
+- (void)provideNetworkTimeZone:(id)zone;
+- (void)setSimulatedMcc:(id)mcc withHandler:(id)handler;
+- (void)sourceBecameUnavailable:(id)unavailable;
+- (void)timeZoneWasReset:(id)reset;
 @end
 
 @implementation TMBBPlugin
@@ -89,14 +89,14 @@ LABEL_13:
   [(TMBBPlugin *)&v4 dealloc];
 }
 
-- (TMBBPlugin)initWithClock:(id)a3 daemonCore:(id)a4
+- (TMBBPlugin)initWithClock:(id)clock daemonCore:(id)core
 {
   v6 = [(TMBBPlugin *)self init];
   if (v6)
   {
     BBTIME_FACILITY = os_log_create("com.apple.timed", "cell");
-    v6->_daemonCore = a4;
-    v6->_clock = a3;
+    v6->_daemonCore = core;
+    v6->_clock = clock;
     v6->_simulatedMcc = -1;
     v6->_networkTimeMap = [[TMNetworkTimeMap alloc] initWithUrl:[NSURL fileURLWithPath:[[NSBundle bundleForClass:?]ofType:"pathForResource:ofType:", @"tz_map", @"plist"]]];
     v13 = 0;
@@ -133,25 +133,25 @@ LABEL_13:
 
 - (void)airplaneModeChanged
 {
-  v3 = [(TMDaemonCore *)self->_daemonCore workloop];
+  workloop = [(TMDaemonCore *)self->_daemonCore workloop];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_11F4;
   block[3] = &unk_8190;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(workloop, block);
 }
 
-- (void)provideNetworkTimeZone:(id)a3
+- (void)provideNetworkTimeZone:(id)zone
 {
-  [objc_msgSend(a3 objectForKey:{@"TMCurrentTime", "doubleValue"}];
+  [objc_msgSend(zone objectForKey:{@"TMCurrentTime", "doubleValue"}];
   v6 = v5;
-  v30 = [objc_msgSend(a3 objectForKey:{@"TMTzOffset", "intValue"}];
-  v7 = [objc_msgSend(a3 objectForKey:{@"TMMcc", "intValue"}];
-  v8 = [objc_msgSend(a3 objectForKey:{@"TMTzOffset", "intValue"}];
-  v9 = [objc_msgSend(a3 objectForKey:{@"TMDstActive", "BOOLValue"}];
-  v10 = [a3 objectForKey:@"TMSource"];
-  v11 = [objc_msgSend(a3 objectForKey:{@"TMCellSlot", "intValue"}];
+  v30 = [objc_msgSend(zone objectForKey:{@"TMTzOffset", "intValue"}];
+  v7 = [objc_msgSend(zone objectForKey:{@"TMMcc", "intValue"}];
+  v8 = [objc_msgSend(zone objectForKey:{@"TMTzOffset", "intValue"}];
+  v9 = [objc_msgSend(zone objectForKey:{@"TMDstActive", "BOOLValue"}];
+  v10 = [zone objectForKey:@"TMSource"];
+  v11 = [objc_msgSend(zone objectForKey:{@"TMCellSlot", "intValue"}];
   v12 = [NSMutableString stringWithFormat:@"%@-%u", v10, v11];
   v13 = BBTIME_FACILITY;
   if (os_log_type_enabled(BBTIME_FACILITY, OS_LOG_TYPE_DEFAULT))
@@ -206,19 +206,19 @@ LABEL_21:
     }
   }
 
-  v16 = [NSMutableDictionary dictionaryWithDictionary:a3];
+  v16 = [NSMutableDictionary dictionaryWithDictionary:zone];
   [(NSMutableDictionary *)v16 setObject:[(NSOrderedSet *)v15 firstObject] forKey:@"TMTimeZone"];
   v17 = CORETIME_DATA_FACILITY;
   if (os_log_type_enabled(CORETIME_DATA_FACILITY, OS_LOG_TYPE_DEFAULT))
   {
-    v18 = self;
+    selfCopy = self;
     v19 = [(NSMutableDictionary *)v16 objectForKeyedSubscript:@"TMSource"];
     [-[NSMutableDictionary objectForKeyedSubscript:](v16 objectForKeyedSubscript:{@"TMRtcTime", "doubleValue"}];
     *buf = 138413826;
     *v32 = @"NTZ";
     *&v32[8] = 2112;
     v33 = *&v19;
-    self = v18;
+    self = selfCopy;
     *v34 = 2048;
     *&v34[2] = v20;
     *&v34[10] = 2048;
@@ -283,9 +283,9 @@ LABEL_31:
   }
 }
 
-- (void)timeZoneWasReset:(id)a3
+- (void)timeZoneWasReset:(id)reset
 {
-  v4 = [a3 isEqualToString:@"AirplaneMode"] ^ 1;
+  v4 = [reset isEqualToString:@"AirplaneMode"] ^ 1;
   v5 = BBTIME_FACILITY;
   if (os_log_type_enabled(BBTIME_FACILITY, OS_LOG_TYPE_INFO))
   {
@@ -298,9 +298,9 @@ LABEL_31:
   [(TMBBPlugin *)self fetchTimeFromNetwork:v4];
 }
 
-- (void)fetch:(id)a3
+- (void)fetch:(id)fetch
 {
-  if ((([a3 hasPrefix:@"NITZ"] & 1) != 0 || objc_msgSend(a3, "hasPrefix:", @"CDMA")) && (-[NSMutableSet containsObject:](self->primedSources, "containsObject:", a3) & 1) == 0)
+  if ((([fetch hasPrefix:@"NITZ"] & 1) != 0 || objc_msgSend(fetch, "hasPrefix:", @"CDMA")) && (-[NSMutableSet containsObject:](self->primedSources, "containsObject:", fetch) & 1) == 0)
   {
     v5 = BBTIME_FACILITY;
     if (os_log_type_enabled(BBTIME_FACILITY, OS_LOG_TYPE_DEFAULT))
@@ -313,7 +313,7 @@ LABEL_31:
   }
 }
 
-- (BOOL)fetchTimeFromNetwork:(BOOL)a3
+- (BOOL)fetchTimeFromNetwork:(BOOL)network
 {
   [(TMBBPlugin *)self TMCAFetchEvent:3];
   if (self->_ctServerConnection)
@@ -339,7 +339,7 @@ LABEL_31:
 - (int)mobileCountryCode
 {
   simulatedMcc = self->_simulatedMcc;
-  v3 = simulatedMcc;
+  intValue = simulatedMcc;
   if (simulatedMcc == -1)
   {
     if (self->_ctServerConnection)
@@ -352,16 +352,16 @@ LABEL_31:
           sub_2E2C();
         }
 
-        v3 = 0;
+        intValue = 0;
       }
 
       else
       {
-        v3 = [v7 intValue];
+        intValue = [v7 intValue];
         v4 = BBTIME_FACILITY;
         if (os_log_type_enabled(BBTIME_FACILITY, OS_LOG_TYPE_DEBUG))
         {
-          sub_2E60(v3, v4);
+          sub_2E60(intValue, v4);
         }
       }
     }
@@ -373,7 +373,7 @@ LABEL_31:
         sub_2ED8();
       }
 
-      v3 = 0;
+      intValue = 0;
     }
   }
 
@@ -381,25 +381,25 @@ LABEL_31:
   if (os_log_type_enabled(BBTIME_FACILITY, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(v7) = 67109376;
-    HIDWORD(v7) = v3;
+    HIDWORD(v7) = intValue;
     v8 = 1024;
     v9 = simulatedMcc != -1;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "Current mcc: '%d' simulated:'%d'.", &v7, 0xEu);
   }
 
-  return v3;
+  return intValue;
 }
 
-- (void)setSimulatedMcc:(id)a3 withHandler:(id)a4
+- (void)setSimulatedMcc:(id)mcc withHandler:(id)handler
 {
-  v6 = [a3 objectForKey:{@"TMMcc", a4}];
-  v7 = [(__CFString *)v6 intValue];
-  self->_simulatedMcc = v7;
+  v6 = [mcc objectForKey:{@"TMMcc", handler}];
+  intValue = [(__CFString *)v6 intValue];
+  self->_simulatedMcc = intValue;
   v8 = CORETIME_DATA_FACILITY;
   if (os_log_type_enabled(CORETIME_DATA_FACILITY, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [a3 objectForKeyedSubscript:@"TMSource"];
-    [objc_msgSend(a3 objectForKeyedSubscript:{@"TMRtcTime", "doubleValue"}];
+    v9 = [mcc objectForKeyedSubscript:@"TMSource"];
+    [objc_msgSend(mcc objectForKeyedSubscript:{@"TMRtcTime", "doubleValue"}];
     simulatedMcc = self->_simulatedMcc;
     v17 = 138413058;
     v18 = @"set_simulated_mcc";
@@ -410,12 +410,12 @@ LABEL_31:
     v23 = 1024;
     v24 = simulatedMcc;
     _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "cmd,%@,src,%@,rtc_s,%.9f,mcc,%d", &v17, 0x26u);
-    v7 = self->_simulatedMcc;
+    intValue = self->_simulatedMcc;
   }
 
   v12 = BBTIME_FACILITY;
   v13 = os_log_type_enabled(BBTIME_FACILITY, OS_LOG_TYPE_DEFAULT);
-  if (v7 == -1)
+  if (intValue == -1)
   {
     if (!v13)
     {
@@ -438,7 +438,7 @@ LABEL_31:
     v17 = 138412546;
     v18 = v6;
     v19 = 1024;
-    LODWORD(v20) = v7;
+    LODWORD(v20) = intValue;
     v14 = "Simulating mcc: %@ (%d)";
     v15 = v12;
     v16 = 18;
@@ -447,20 +447,20 @@ LABEL_31:
   _os_log_impl(&dword_0, v15, OS_LOG_TYPE_DEFAULT, v14, &v17, v16);
 }
 
-- (void)sourceBecameUnavailable:(id)a3
+- (void)sourceBecameUnavailable:(id)unavailable
 {
-  if ([a3 isEqualToString:@"Location"])
+  if ([unavailable isEqualToString:@"Location"])
   {
 
     [(TMBBPlugin *)self locationProvidedTimeZone:?];
   }
 
-  else if (([a3 hasPrefix:@"NITZ"] & 1) != 0 || objc_msgSend(a3, "hasPrefix:", @"CDMA"))
+  else if (([unavailable hasPrefix:@"NITZ"] & 1) != 0 || objc_msgSend(unavailable, "hasPrefix:", @"CDMA"))
   {
-    [(NSMutableDictionary *)self->cellularTimeZones setObject:0 forKeyedSubscript:a3];
-    if (([a3 hasSuffix:@"Non-Olson"] & 1) == 0)
+    [(NSMutableDictionary *)self->cellularTimeZones setObject:0 forKeyedSubscript:unavailable];
+    if (([unavailable hasSuffix:@"Non-Olson"] & 1) == 0)
     {
-      v5 = [a3 stringByAppendingFormat:@"-Non-Olson"];
+      v5 = [unavailable stringByAppendingFormat:@"-Non-Olson"];
       if ([(NSMutableDictionary *)self->cellularTimeZones objectForKeyedSubscript:v5])
       {
         [(TMMonotonicClock *)self->_clock coarseMonotonicTime];
@@ -472,33 +472,33 @@ LABEL_31:
   }
 }
 
-- (void)locationProvidedTimeZone:(id)a3
+- (void)locationProvidedTimeZone:(id)zone
 {
-  self->locationTimeZone = a3;
+  self->locationTimeZone = zone;
 
   [(TMBBPlugin *)self attemptLocationNetworkCorroboration];
 }
 
-- (void)networkSource:(id)a3 providedTimeZones:(id)a4
+- (void)networkSource:(id)source providedTimeZones:(id)zones
 {
   [(NSMutableSet *)self->primedSources removeObject:?];
-  [(NSMutableDictionary *)self->cellularTimeZones setObject:a4 forKeyedSubscript:a3];
+  [(NSMutableDictionary *)self->cellularTimeZones setObject:zones forKeyedSubscript:source];
 
   [(TMBBPlugin *)self attemptLocationNetworkCorroboration];
 }
 
-- (void)TMCAFetchEvent:(int64_t)a3
+- (void)TMCAFetchEvent:(int64_t)event
 {
-  v5 = [(TMBBPlugin *)self fetchTime];
-  if (v5)
+  fetchTime = [(TMBBPlugin *)self fetchTime];
+  if (fetchTime)
   {
-    v6 = v5;
+    v6 = fetchTime;
     v7 = clock_gettime_nsec_np(_CLOCK_MONOTONIC_RAW);
     if (v7)
     {
       v13 = (v7 - v6) / 0x3B9ACA00;
       AnalyticsSendEventLazy();
-      [(TMBBPlugin *)self setFetchTime:0, _NSConcreteStackBlock, 3221225472, sub_2598, &unk_81D0, v13, a3];
+      [(TMBBPlugin *)self setFetchTime:0, _NSConcreteStackBlock, 3221225472, sub_2598, &unk_81D0, v13, event];
     }
 
     else

@@ -2,19 +2,19 @@
 - (_TtC17proximitycontrold12TempProvider)init;
 - (id)displayContextHandler;
 - (id)progressEventHandler;
-- (void)receiveEvent:(id)a3;
-- (void)setDispatchQueue:(id)a3;
-- (void)setDisplayContextHandler:(id)a3;
-- (void)setProgressEventHandler:(id)a3;
+- (void)receiveEvent:(id)event;
+- (void)setDispatchQueue:(id)queue;
+- (void)setDisplayContextHandler:(id)handler;
+- (void)setProgressEventHandler:(id)handler;
 @end
 
 @implementation TempProvider
 
-- (void)setDispatchQueue:(id)a3
+- (void)setDispatchQueue:(id)queue
 {
   v4 = *(self + OBJC_IVAR____TtC17proximitycontrold12TempProvider_dispatchQueue);
-  *(self + OBJC_IVAR____TtC17proximitycontrold12TempProvider_dispatchQueue) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC17proximitycontrold12TempProvider_dispatchQueue) = queue;
+  queueCopy = queue;
 }
 
 - (id)displayContextHandler
@@ -39,9 +39,9 @@
   return v3;
 }
 
-- (void)setDisplayContextHandler:(id)a3
+- (void)setDisplayContextHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = v4;
@@ -60,7 +60,7 @@
   v9 = *(self + OBJC_IVAR____TtC17proximitycontrold12TempProvider_displayContextHandler + 8);
   *v7 = v6;
   v7[1] = v4;
-  v10 = self;
+  selfCopy = self;
   sub_10002689C(v8);
 }
 
@@ -86,9 +86,9 @@
   return v3;
 }
 
-- (void)setProgressEventHandler:(id)a3
+- (void)setProgressEventHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = v4;
@@ -107,7 +107,7 @@
   v9 = *(self + OBJC_IVAR____TtC17proximitycontrold12TempProvider_progressEventHandler + 8);
   *v7 = v6;
   v7[1] = v4;
-  v10 = self;
+  selfCopy = self;
   sub_10002689C(v8);
 }
 
@@ -137,11 +137,11 @@
   return [(TempProvider *)&v10 init];
 }
 
-- (void)receiveEvent:(id)a3
+- (void)receiveEvent:(id)event
 {
-  v4 = a3;
-  v5 = self;
-  sub_10024B8C4(v4);
+  eventCopy = event;
+  selfCopy = self;
+  sub_10024B8C4(eventCopy);
 }
 
 @end

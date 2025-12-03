@@ -1,37 +1,37 @@
 @interface HKEmergencyContactPicker
-- (HKEmergencyContactPicker)initWithOwningViewController:(id)a3;
+- (HKEmergencyContactPicker)initWithOwningViewController:(id)controller;
 - (HKEmergencyContactPickerDelegate)delegate;
 - (id)_meContactIdentifier;
 - (void)_meContactIdentifier;
-- (void)contactPicker:(id)a3 didSelectContact:(id)a4;
-- (void)contactPicker:(id)a3 didSelectContactProperty:(id)a4;
-- (void)presentEmergencyContactPickerForMedicalIDDataIfPossible:(id)a3;
+- (void)contactPicker:(id)picker didSelectContact:(id)contact;
+- (void)contactPicker:(id)picker didSelectContactProperty:(id)property;
+- (void)presentEmergencyContactPickerForMedicalIDDataIfPossible:(id)possible;
 - (void)presentMaximumEmergencyContactAlert;
 @end
 
 @implementation HKEmergencyContactPicker
 
-- (HKEmergencyContactPicker)initWithOwningViewController:(id)a3
+- (HKEmergencyContactPicker)initWithOwningViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v9.receiver = self;
   v9.super_class = HKEmergencyContactPicker;
   v6 = [(HKEmergencyContactPicker *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_owningViewController, a3);
+    objc_storeStrong(&v6->_owningViewController, controller);
   }
 
   return v7;
 }
 
-- (void)presentEmergencyContactPickerForMedicalIDDataIfPossible:(id)a3
+- (void)presentEmergencyContactPickerForMedicalIDDataIfPossible:(id)possible
 {
   v30[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 emergencyContacts];
-  v6 = [v5 count];
+  possibleCopy = possible;
+  emergencyContacts = [possibleCopy emergencyContacts];
+  v6 = [emergencyContacts count];
 
   if (v6 >= 10)
   {
@@ -69,18 +69,18 @@
       [v9 setDelegate:self];
       [v9 setMode:1];
       [v9 setOnlyRealContacts:1];
-      v12 = [(HKEmergencyContactPicker *)self _meContactIdentifier];
+      _meContactIdentifier = [(HKEmergencyContactPicker *)self _meContactIdentifier];
       v13 = NSStringFromSelector(sel_nameContactIdentifier);
-      v14 = [v4 emergencyContacts];
-      v15 = [v14 valueForKeyPath:v13];
+      emergencyContacts2 = [possibleCopy emergencyContacts];
+      v15 = [emergencyContacts2 valueForKeyPath:v13];
 
       v16 = MEMORY[0x1E695DF70];
       v17 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K.@count > 0", v10];
       v18 = [v16 arrayWithObject:v17];
 
-      if (v12 && ![(HKEmergencyContactPicker *)self isSecondaryProfile])
+      if (_meContactIdentifier && ![(HKEmergencyContactPicker *)self isSecondaryProfile])
       {
-        v19 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K != %@", *MEMORY[0x1E695C258], v12];
+        v19 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K != %@", *MEMORY[0x1E695C258], _meContactIdentifier];
         [v18 addObject:v19];
       }
 
@@ -105,8 +105,8 @@
       v23 = [MEMORY[0x1E696AE18] predicateWithFormat:@"property == 'phoneNumbers'"];
       [v9 setPredicateForSelectionOfProperty:v23];
 
-      v24 = [(HKEmergencyContactPicker *)self owningViewController];
-      [v24 presentViewController:v9 animated:1 completion:0];
+      owningViewController = [(HKEmergencyContactPicker *)self owningViewController];
+      [owningViewController presentViewController:v9 animated:1 completion:0];
     }
   }
 }
@@ -126,22 +126,22 @@
   v10 = [v7 actionWithTitle:v9 style:1 handler:0];
 
   [v6 addAction:v10];
-  v11 = [(HKEmergencyContactPicker *)self owningViewController];
-  [v11 presentViewController:v6 animated:1 completion:0];
+  owningViewController = [(HKEmergencyContactPicker *)self owningViewController];
+  [owningViewController presentViewController:v6 animated:1 completion:0];
 }
 
-- (void)contactPicker:(id)a3 didSelectContact:(id)a4
+- (void)contactPicker:(id)picker didSelectContact:(id)contact
 {
-  v5 = a4;
+  contactCopy = contact;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained emergencyContactPicker:self didSelectContact:v5];
+  [WeakRetained emergencyContactPicker:self didSelectContact:contactCopy];
 }
 
-- (void)contactPicker:(id)a3 didSelectContactProperty:(id)a4
+- (void)contactPicker:(id)picker didSelectContactProperty:(id)property
 {
-  v5 = a4;
+  propertyCopy = property;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained emergencyContactPicker:self didSelectContactProperty:v5];
+  [WeakRetained emergencyContactPicker:self didSelectContactProperty:propertyCopy];
 }
 
 - (id)_meContactIdentifier
@@ -166,15 +166,15 @@
       }
     }
 
-    v7 = [v4 identifier];
+    identifier = [v4 identifier];
   }
 
   else
   {
-    v7 = &stru_1F42FFBE0;
+    identifier = &stru_1F42FFBE0;
   }
 
-  return v7;
+  return identifier;
 }
 
 - (HKEmergencyContactPickerDelegate)delegate
@@ -188,7 +188,7 @@
 {
   v4 = *MEMORY[0x1E69E9840];
   v2 = 138412290;
-  v3 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_1C3942000, a2, OS_LOG_TYPE_ERROR, "Error fetching me contact: %@", &v2, 0xCu);
 }
 

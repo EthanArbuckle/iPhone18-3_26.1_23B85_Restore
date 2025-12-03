@@ -1,19 +1,19 @@
 @interface CKAssistantUIAvatarView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CKAssistantUIAvatarView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CKAssistantUIAvatarView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setContactsForAvatarView:(id)a3;
-- (void)setToFieldText:(id)a3;
+- (void)setContactsForAvatarView:(id)view;
+- (void)setToFieldText:(id)text;
 @end
 
 @implementation CKAssistantUIAvatarView
 
-- (CKAssistantUIAvatarView)initWithFrame:(CGRect)a3
+- (CKAssistantUIAvatarView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v22.receiver = self;
   v22.super_class = CKAssistantUIAvatarView;
   v7 = [(CKAssistantUIAvatarView *)&v22 initWithFrame:?];
@@ -46,8 +46,8 @@
 
     v18 = v7->_toLabel;
     v19 = +[CKUIBehavior sharedBehaviors];
-    v20 = [v19 avatarNameFont];
-    [(UILabel *)v18 setFont:v20];
+    avatarNameFont = [v19 avatarNameFont];
+    [(UILabel *)v18 setFont:avatarNameFont];
 
     [(UILabel *)v7->_toLabel setTextAlignment:1];
     [(UILabel *)v7->_toLabel setNumberOfLines:1];
@@ -57,24 +57,24 @@
   return v7;
 }
 
-- (void)setToFieldText:(id)a3
+- (void)setToFieldText:(id)text
 {
-  v6 = a3;
-  v4 = [(UILabel *)self->_toLabel text];
-  v5 = [v6 isEqualToString:v4];
+  textCopy = text;
+  text = [(UILabel *)self->_toLabel text];
+  v5 = [textCopy isEqualToString:text];
 
   if ((v5 & 1) == 0)
   {
-    [(UILabel *)self->_toLabel setText:v6];
+    [(UILabel *)self->_toLabel setText:textCopy];
     [(CKAssistantUIAvatarView *)self setNeedsLayout];
   }
 }
 
-- (void)setContactsForAvatarView:(id)a3
+- (void)setContactsForAvatarView:(id)view
 {
-  v4 = a3;
-  v7 = v4;
-  if (v4 && [v4 count])
+  viewCopy = view;
+  v7 = viewCopy;
+  if (viewCopy && [viewCopy count])
   {
     [(CNAvatarView *)self->_avatar setContacts:v7];
   }
@@ -111,10 +111,10 @@
   [(UIView *)blurView setFrame:v4, v6, v8, v10];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  v5 = [CKUIBehavior sharedBehaviors:a3.width];
+  width = fits.width;
+  v5 = [CKUIBehavior sharedBehaviors:fits.width];
   [v5 conversationListContactImageDiameter];
   v7 = v6;
 

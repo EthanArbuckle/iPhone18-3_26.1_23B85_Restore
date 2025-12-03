@@ -2,7 +2,7 @@
 - (id)description;
 - (id)dictionaryRepresentation;
 - (void)dealloc;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PBUnknownFields
@@ -15,18 +15,18 @@
   [(PBUnknownFields *)&v3 dealloc];
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (self->_bufLen)
   {
-    [a3 write:self->_buf maxLength:?];
+    [to write:self->_buf maxLength:?];
   }
 }
 
 - (id)description
 {
-  v2 = [(PBUnknownFields *)self dictionaryRepresentation];
-  v3 = [v2 description];
+  dictionaryRepresentation = [(PBUnknownFields *)self dictionaryRepresentation];
+  v3 = [dictionaryRepresentation description];
 
   return v3;
 }
@@ -37,16 +37,16 @@
   {
     v2 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytesNoCopy:self->_buf length:self->_bufLen freeWhenDone:0];
     v3 = [[PBDataReader alloc] initWithData:v2];
-    v4 = [MEMORY[0x1E695DF90] dictionary];
-    _dictionaryRepresentation(v3, 0, 6, v4);
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    _dictionaryRepresentation(v3, 0, 6, dictionary);
   }
 
   else
   {
-    v4 = [MEMORY[0x1E695DF20] dictionary];
+    dictionary = [MEMORY[0x1E695DF20] dictionary];
   }
 
-  return v4;
+  return dictionary;
 }
 
 @end

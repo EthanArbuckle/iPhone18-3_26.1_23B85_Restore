@@ -1,7 +1,7 @@
 @interface DMHelperConnection
 - (DMHelperConnection)init;
 - (void)invalidate;
-- (void)panicWithMessage:(id)a3;
+- (void)panicWithMessage:(id)message;
 - (void)performLoggingWork;
 - (void)reboot;
 - (void)resume;
@@ -25,42 +25,42 @@
 
 - (void)resume
 {
-  v2 = [(DMHelperConnection *)self connection];
-  [v2 resume];
+  connection = [(DMHelperConnection *)self connection];
+  [connection resume];
 }
 
 - (void)invalidate
 {
-  v2 = [(DMHelperConnection *)self connection];
-  [v2 invalidate];
+  connection = [(DMHelperConnection *)self connection];
+  [connection invalidate];
 }
 
-- (void)panicWithMessage:(id)a3
+- (void)panicWithMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   xdict = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_int64(xdict, "eventID", 1);
-  v5 = [v4 UTF8String];
+  uTF8String = [messageCopy UTF8String];
 
-  xpc_dictionary_set_string(xdict, "message", v5);
-  v6 = [(DMHelperConnection *)self connection];
-  v7 = [v6 sendMessageSync:xdict];
+  xpc_dictionary_set_string(xdict, "message", uTF8String);
+  connection = [(DMHelperConnection *)self connection];
+  v7 = [connection sendMessageSync:xdict];
 }
 
 - (void)reboot
 {
   v5 = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_int64(v5, "eventID", 2);
-  v3 = [(DMHelperConnection *)self connection];
-  v4 = [v3 sendMessageSync:v5];
+  connection = [(DMHelperConnection *)self connection];
+  v4 = [connection sendMessageSync:v5];
 }
 
 - (void)performLoggingWork
 {
   v5 = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_int64(v5, "eventID", 3);
-  v3 = [(DMHelperConnection *)self connection];
-  v4 = [v3 sendMessageSync:v5];
+  connection = [(DMHelperConnection *)self connection];
+  v4 = [connection sendMessageSync:v5];
 }
 
 @end

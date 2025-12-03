@@ -43,15 +43,15 @@
   v9 = [(SBDeviceApplicationSceneEntity *)v7 initWithApplicationForMainDisplay:v8];
 
   v10 = +[SBMainSwitcherControllerCoordinator _shim_activeSwitcherController];
-  v11 = [v10 layoutStatePrimaryElement];
-  v12 = [v10 layoutStateSideElement];
-  v13 = [v11 workspaceEntity];
-  v14 = [v12 workspaceEntity];
+  layoutStatePrimaryElement = [v10 layoutStatePrimaryElement];
+  layoutStateSideElement = [v10 layoutStateSideElement];
+  workspaceEntity = [layoutStatePrimaryElement workspaceEntity];
+  workspaceEntity2 = [layoutStateSideElement workspaceEntity];
   if (self->_activated)
   {
-    if (v13)
+    if (workspaceEntity)
     {
-      v15 = v13;
+      v15 = workspaceEntity;
     }
 
     else
@@ -60,9 +60,9 @@
     }
 
     v16 = v15;
-    if (v14)
+    if (workspaceEntity2)
     {
-      v17 = v14;
+      v17 = workspaceEntity2;
     }
 
     else
@@ -76,16 +76,16 @@
 
   else
   {
-    v16 = v13;
+    v16 = workspaceEntity;
     v19 = v6;
-    if ([v14 isAnalogousToEntity:v6])
+    if ([workspaceEntity2 isAnalogousToEntity:v6])
     {
       v18 = +[(SBWorkspaceEntity *)SBEmptyWorkspaceEntity];
     }
 
     else
     {
-      v18 = v14;
+      v18 = workspaceEntity2;
     }
   }
 
@@ -122,8 +122,8 @@ void __33__SBMedusaAppsTestRecipe__toggle__block_invoke_2(uint64_t a1, void *a2)
 
 - (void)_updateAppsToBringUpFromPreferences
 {
-  v11 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v11 stringForKey:@"testMedusaAppLeftBundleID"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults stringForKey:@"testMedusaAppLeftBundleID"];
   v4 = v3;
   if (!v3)
   {
@@ -134,7 +134,7 @@ void __33__SBMedusaAppsTestRecipe__toggle__block_invoke_2(uint64_t a1, void *a2)
   leftTestBundleID = self->_leftTestBundleID;
   self->_leftTestBundleID = v5;
 
-  v7 = [v11 stringForKey:@"testMedusaAppRightBundleID"];
+  v7 = [standardUserDefaults stringForKey:@"testMedusaAppRightBundleID"];
   v8 = v7;
   if (!v7)
   {

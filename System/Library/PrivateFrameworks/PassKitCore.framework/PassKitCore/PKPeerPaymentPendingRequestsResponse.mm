@@ -1,24 +1,24 @@
 @interface PKPeerPaymentPendingRequestsResponse
-- (PKPeerPaymentPendingRequestsResponse)initWithData:(id)a3;
+- (PKPeerPaymentPendingRequestsResponse)initWithData:(id)data;
 @end
 
 @implementation PKPeerPaymentPendingRequestsResponse
 
-- (PKPeerPaymentPendingRequestsResponse)initWithData:(id)a3
+- (PKPeerPaymentPendingRequestsResponse)initWithData:(id)data
 {
   v30 = *MEMORY[0x1E69E9840];
   v24.receiver = self;
   v24.super_class = PKPeerPaymentPendingRequestsResponse;
-  v3 = [(PKWebServiceResponse *)&v24 initWithData:a3];
+  v3 = [(PKWebServiceResponse *)&v24 initWithData:data];
   v4 = v3;
   if (v3)
   {
-    v5 = [(PKWebServiceResponse *)v3 JSONObject];
+    jSONObject = [(PKWebServiceResponse *)v3 JSONObject];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
-      v7 = [MEMORY[0x1E695DF70] array];
+      v6 = jSONObject;
+      array = [MEMORY[0x1E695DF70] array];
       v20 = 0u;
       v21 = 0u;
       v22 = 0u;
@@ -40,7 +40,7 @@
             }
 
             v13 = [[PKPeerPaymentPendingRequestSummary alloc] initWithDictionary:*(*(&v20 + 1) + 8 * v12)];
-            [v7 addObject:v13];
+            [array addObject:v13];
 
             ++v12;
           }
@@ -52,7 +52,7 @@
         while (v10);
       }
 
-      v14 = [v7 copy];
+      v14 = [array copy];
       requestSummaries = v4->_requestSummaries;
       v4->_requestSummaries = v14;
     }
@@ -68,11 +68,11 @@ LABEL_14:
       }
 
       v16 = objc_opt_class();
-      v7 = NSStringFromClass(v16);
+      array = NSStringFromClass(v16);
       v17 = objc_opt_class();
       v18 = NSStringFromClass(v17);
       *buf = 138543618;
-      v26 = v7;
+      v26 = array;
       v27 = 2114;
       v28 = v18;
       _os_log_impl(&dword_1AD337000, v6, OS_LOG_TYPE_DEFAULT, "Malformed %{public}@: expected dictionary and received %{public}@", buf, 0x16u);

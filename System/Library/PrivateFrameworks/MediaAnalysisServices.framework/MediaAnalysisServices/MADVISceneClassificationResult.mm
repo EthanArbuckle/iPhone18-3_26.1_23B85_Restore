@@ -1,20 +1,20 @@
 @interface MADVISceneClassificationResult
-- (MADVISceneClassificationResult)initWithCoder:(id)a3;
+- (MADVISceneClassificationResult)initWithCoder:(id)coder;
 - (double)executionTimeInterval;
 - (id)description;
 - (unint64_t)executionNanoseconds;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MADVISceneClassificationResult
 
-- (MADVISceneClassificationResult)initWithCoder:(id)a3
+- (MADVISceneClassificationResult)initWithCoder:(id)coder
 {
   v37[4] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v27.receiver = self;
   v27.super_class = MADVISceneClassificationResult;
-  v5 = [(MADResult *)&v27 initWithCoder:v4];
+  v5 = [(MADResult *)&v27 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = MEMORY[0x1E695DFD8];
@@ -80,23 +80,23 @@
     v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v37 count:4];
     v15 = [v6 setWithArray:v14];
 
-    v16 = [v4 decodeObjectOfClasses:v15 forKey:@"ClassificationObservations"];
+    v16 = [coderCopy decodeObjectOfClasses:v15 forKey:@"ClassificationObservations"];
     classificationObservations = v5->_classificationObservations;
     v5->_classificationObservations = v16;
 
-    v18 = [v4 decodeObjectOfClasses:v15 forKey:@"NSFWObservations"];
+    v18 = [coderCopy decodeObjectOfClasses:v15 forKey:@"NSFWObservations"];
     nsfwObservations = v5->_nsfwObservations;
     v5->_nsfwObservations = v18;
 
-    v20 = [v4 decodeObjectOfClasses:v15 forKey:@"SignificantEventObservations"];
+    v20 = [coderCopy decodeObjectOfClasses:v15 forKey:@"SignificantEventObservations"];
     significantEventObservations = v5->_significantEventObservations;
     v5->_significantEventObservations = v20;
 
-    v22 = [v4 decodeObjectOfClasses:v15 forKey:@"RecognizedObjectObservations"];
+    v22 = [coderCopy decodeObjectOfClasses:v15 forKey:@"RecognizedObjectObservations"];
     recognizedObjectObservations = v5->_recognizedObjectObservations;
     v5->_recognizedObjectObservations = v22;
 
-    v24 = [v4 decodeObjectOfClasses:v15 forKey:@"SaliencyObservations"];
+    v24 = [coderCopy decodeObjectOfClasses:v15 forKey:@"SaliencyObservations"];
     saliencyObservations = v5->_saliencyObservations;
     v5->_saliencyObservations = v24;
   }
@@ -104,17 +104,17 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = MADVISceneClassificationResult;
-  v4 = a3;
-  [(MADResult *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_classificationObservations forKey:{@"ClassificationObservations", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_nsfwObservations forKey:@"NSFWObservations"];
-  [v4 encodeObject:self->_significantEventObservations forKey:@"SignificantEventObservations"];
-  [v4 encodeObject:self->_recognizedObjectObservations forKey:@"RecognizedObjectObservations"];
-  [v4 encodeObject:self->_saliencyObservations forKey:@"SaliencyObservations"];
+  coderCopy = coder;
+  [(MADResult *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_classificationObservations forKey:{@"ClassificationObservations", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_nsfwObservations forKey:@"NSFWObservations"];
+  [coderCopy encodeObject:self->_significantEventObservations forKey:@"SignificantEventObservations"];
+  [coderCopy encodeObject:self->_recognizedObjectObservations forKey:@"RecognizedObjectObservations"];
+  [coderCopy encodeObject:self->_saliencyObservations forKey:@"SaliencyObservations"];
 }
 
 - (unint64_t)executionNanoseconds
@@ -134,19 +134,19 @@
 
 - (id)description
 {
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  [v3 appendFormat:@"<%@ %p, ", v5, self];
+  [string appendFormat:@"<%@ %p, ", v5, self];
 
-  [v3 appendFormat:@"\nclassification observations:\n "];
+  [string appendFormat:@"\nclassification observations:\n "];
   if ([(NSArray *)self->_classificationObservations count])
   {
     v6 = 0;
     do
     {
       v7 = [(NSArray *)self->_classificationObservations objectAtIndexedSubscript:v6];
-      v8 = [v7 identifier];
+      identifier = [v7 identifier];
 
       if (v6)
       {
@@ -159,7 +159,7 @@
       }
 
       v10 = [(NSArray *)self->_classificationObservations objectAtIndexedSubscript:v6];
-      [v3 appendFormat:@"%s%@ classification identifier=%@", v9, v10, v8];
+      [string appendFormat:@"%s%@ classification identifier=%@", v9, v10, identifier];
 
       ++v6;
     }
@@ -167,14 +167,14 @@
     while (v6 < [(NSArray *)self->_classificationObservations count]);
   }
 
-  [v3 appendFormat:@"\nnsfw observations:\n "];
+  [string appendFormat:@"\nnsfw observations:\n "];
   if ([(NSArray *)self->_nsfwObservations count])
   {
     v11 = 0;
     do
     {
       v12 = [(NSArray *)self->_nsfwObservations objectAtIndexedSubscript:v11];
-      v13 = [v12 identifier];
+      identifier2 = [v12 identifier];
 
       if (v11)
       {
@@ -187,7 +187,7 @@
       }
 
       v15 = [(NSArray *)self->_nsfwObservations objectAtIndexedSubscript:v11];
-      [v3 appendFormat:@"%s%@ nsfw identifier=%@", v14, v15, v13];
+      [string appendFormat:@"%s%@ nsfw identifier=%@", v14, v15, identifier2];
 
       ++v11;
     }
@@ -195,14 +195,14 @@
     while (v11 < [(NSArray *)self->_nsfwObservations count]);
   }
 
-  [v3 appendFormat:@"\nsignificant event observations:\n "];
+  [string appendFormat:@"\nsignificant event observations:\n "];
   if ([(NSArray *)self->_significantEventObservations count])
   {
     v16 = 0;
     do
     {
       v17 = [(NSArray *)self->_significantEventObservations objectAtIndexedSubscript:v16];
-      v18 = [v17 identifier];
+      identifier3 = [v17 identifier];
 
       if (v16)
       {
@@ -215,7 +215,7 @@
       }
 
       v20 = [(NSArray *)self->_significantEventObservations objectAtIndexedSubscript:v16];
-      [v3 appendFormat:@"%s%@ significant event identifier=%@", v19, v20, v18];
+      [string appendFormat:@"%s%@ significant event identifier=%@", v19, v20, identifier3];
 
       ++v16;
     }
@@ -223,14 +223,14 @@
     while (v16 < [(NSArray *)self->_significantEventObservations count]);
   }
 
-  [v3 appendFormat:@"\nrecognized object observations:\n "];
+  [string appendFormat:@"\nrecognized object observations:\n "];
   if ([(NSArray *)self->_recognizedObjectObservations count])
   {
     v21 = 0;
     do
     {
       v22 = [(NSArray *)self->_recognizedObjectObservations objectAtIndexedSubscript:v21];
-      v23 = [v22 labels];
+      labels = [v22 labels];
 
       if (v21)
       {
@@ -243,7 +243,7 @@
       }
 
       v25 = [(NSArray *)self->_recognizedObjectObservations objectAtIndexedSubscript:v21];
-      [v3 appendFormat:@"%s%@ recognized object labels=%@", v24, v25, v23];
+      [string appendFormat:@"%s%@ recognized object labels=%@", v24, v25, labels];
 
       ++v21;
     }
@@ -251,14 +251,14 @@
     while (v21 < [(NSArray *)self->_recognizedObjectObservations count]);
   }
 
-  [v3 appendFormat:@"\nsalient object observations:\n "];
+  [string appendFormat:@"\nsalient object observations:\n "];
   if ([(NSArray *)self->_saliencyObservations count])
   {
     v26 = 0;
     do
     {
       v27 = [(NSArray *)self->_saliencyObservations objectAtIndexedSubscript:v26];
-      v28 = [v27 salientObjects];
+      salientObjects = [v27 salientObjects];
 
       if (v26)
       {
@@ -271,7 +271,7 @@
       }
 
       v30 = [(NSArray *)self->_saliencyObservations objectAtIndexedSubscript:v26];
-      [v3 appendFormat:@"%s%@ salient objects=%@", v29, v30, v28];
+      [string appendFormat:@"%s%@ salient objects=%@", v29, v30, salientObjects];
 
       ++v26;
     }
@@ -279,9 +279,9 @@
     while (v26 < [(NSArray *)self->_saliencyObservations count]);
   }
 
-  [v3 appendFormat:@">"];
+  [string appendFormat:@">"];
 
-  return v3;
+  return string;
 }
 
 @end

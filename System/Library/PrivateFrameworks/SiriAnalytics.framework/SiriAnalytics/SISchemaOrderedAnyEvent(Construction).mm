@@ -11,9 +11,9 @@
   v6 = a4;
   v7 = a3;
   v8 = objc_alloc_init(v5);
-  v9 = [v6 loggingRepresentation];
+  loggingRepresentation = [v6 loggingRepresentation];
 
-  [v8 setTimestamp:v9];
+  [v8 setTimestamp:loggingRepresentation];
   v10 = objc_alloc_init(MEMORY[0x1E69CF5C0]);
   [v10 setMetadata:v8];
   [v10 setEvent:v7];

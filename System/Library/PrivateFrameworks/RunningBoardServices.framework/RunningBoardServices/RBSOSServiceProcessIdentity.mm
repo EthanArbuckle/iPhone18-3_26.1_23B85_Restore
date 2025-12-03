@@ -1,16 +1,16 @@
 @interface RBSOSServiceProcessIdentity
-- (BOOL)_matchesIdentity:(id)a3;
-- (BOOL)treatedAsAnAppByFrontBoard:(id *)a3;
-- (RBSOSServiceProcessIdentity)initWithDecodeFromJob:(id)a3 uuid:(id)a4;
-- (RBSOSServiceProcessIdentity)initWithRBSXPCCoder:(id)a3;
+- (BOOL)_matchesIdentity:(id)identity;
+- (BOOL)treatedAsAnAppByFrontBoard:(id *)board;
+- (RBSOSServiceProcessIdentity)initWithDecodeFromJob:(id)job uuid:(id)uuid;
+- (RBSOSServiceProcessIdentity)initWithRBSXPCCoder:(id)coder;
 - (id)angelJobLabel;
 - (id)consistentLaunchdJobLabel;
 - (id)daemonJobLabel;
 - (id)debugDescription;
 - (id)encodeForJob;
 - (void)encodeForJob;
-- (void)encodeWithRBSXPCCoder:(id)a3;
-- (void)setOsServiceType:(unsigned __int8)a3;
+- (void)encodeWithRBSXPCCoder:(id)coder;
+- (void)setOsServiceType:(unsigned __int8)type;
 @end
 
 @implementation RBSOSServiceProcessIdentity
@@ -35,10 +35,10 @@
   jobLabel = self->_jobLabel;
   if (jobLabel)
   {
-    v5 = [(NSString *)jobLabel UTF8String];
-    if (v5)
+    uTF8String = [(NSString *)jobLabel UTF8String];
+    if (uTF8String)
     {
-      xpc_dictionary_set_string(empty, "l", v5);
+      xpc_dictionary_set_string(empty, "l", uTF8String);
     }
   }
 
@@ -49,11 +49,11 @@
   return empty;
 }
 
-- (BOOL)_matchesIdentity:(id)a3
+- (BOOL)_matchesIdentity:(id)identity
 {
-  v4 = a3;
+  identityCopy = identity;
   v5 = objc_opt_class();
-  v6 = v5 == objc_opt_class() && ((jobLabel = self->_jobLabel, v9 = v4[7], jobLabel == v9) || (jobLabel ? (v10 = v9 == 0) : (v10 = 1), !v10 && [(NSString *)jobLabel isEqual:?])) && self->super._pid == *(v4 + 2);
+  v6 = v5 == objc_opt_class() && ((jobLabel = self->_jobLabel, v9 = identityCopy[7], jobLabel == v9) || (jobLabel ? (v10 = v9 == 0) : (v10 = 1), !v10 && [(NSString *)jobLabel isEqual:?])) && self->super._pid == *(identityCopy + 2);
 
   return v6;
 }
@@ -61,8 +61,8 @@
 - (id)debugDescription
 {
   v3 = self->_jobLabel;
-  v4 = [(RBSProcessIdentity *)self auid];
-  v5 = v4;
+  auid = [(RBSProcessIdentity *)self auid];
+  v5 = auid;
   v6 = MEMORY[0x1E696AEC0];
   pid = self->super._pid;
   if (pid <= 0)
@@ -78,7 +78,7 @@
   if (pid < 1)
   {
     v9 = &stru_1F01CD8F0;
-    if (v4)
+    if (auid)
     {
       goto LABEL_6;
     }
@@ -106,21 +106,21 @@ LABEL_9:
   return v11;
 }
 
-- (RBSOSServiceProcessIdentity)initWithDecodeFromJob:(id)a3 uuid:(id)a4
+- (RBSOSServiceProcessIdentity)initWithDecodeFromJob:(id)job uuid:(id)uuid
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  jobCopy = job;
+  uuidCopy = uuid;
+  if (uuidCopy)
   {
     v8 = rbs_general_log();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_FAULT))
     {
-      [RBSOSServiceProcessIdentity initWithDecodeFromJob:v7 uuid:v8];
+      [RBSOSServiceProcessIdentity initWithDecodeFromJob:uuidCopy uuid:v8];
     }
   }
 
-  int64 = xpc_dictionary_get_int64(v6, "p");
-  string = xpc_dictionary_get_string(v6, "l");
+  int64 = xpc_dictionary_get_int64(jobCopy, "p");
+  string = xpc_dictionary_get_string(jobCopy, "l");
   if (string)
   {
     v11 = [MEMORY[0x1E696AEC0] stringWithUTF8String:string];
@@ -131,26 +131,26 @@ LABEL_9:
     v11 = 0;
   }
 
-  v12 = [(RBSOSServiceProcessIdentity *)self _initServiceWithJobLabel:v11 pid:int64 auid:0 type:xpc_dictionary_get_int64(v6, "t")];
+  v12 = [(RBSOSServiceProcessIdentity *)self _initServiceWithJobLabel:v11 pid:int64 auid:0 type:xpc_dictionary_get_int64(jobCopy, "t")];
 
   return v12;
 }
 
-- (void)encodeWithRBSXPCCoder:(id)a3
+- (void)encodeWithRBSXPCCoder:(id)coder
 {
   jobLabel = self->_jobLabel;
-  v5 = a3;
-  [v5 encodeObject:jobLabel forKey:@"_jobLabel"];
-  [v5 encodeInt64:self->super._pid forKey:@"_pid"];
-  [v5 encodeInt64:self->_type forKey:@"_type"];
+  coderCopy = coder;
+  [coderCopy encodeObject:jobLabel forKey:@"_jobLabel"];
+  [coderCopy encodeInt64:self->super._pid forKey:@"_pid"];
+  [coderCopy encodeInt64:self->_type forKey:@"_type"];
 }
 
-- (RBSOSServiceProcessIdentity)initWithRBSXPCCoder:(id)a3
+- (RBSOSServiceProcessIdentity)initWithRBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeInt64ForKey:@"_pid"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_jobLabel"];
-  v7 = [v4 decodeInt64ForKey:@"_type"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeInt64ForKey:@"_pid"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_jobLabel"];
+  v7 = [coderCopy decodeInt64ForKey:@"_type"];
 
   v8 = [(RBSOSServiceProcessIdentity *)self _initServiceWithJobLabel:v6 pid:v5 auid:0 type:v7];
   return v8;
@@ -170,15 +170,15 @@ LABEL_9:
   return v2;
 }
 
-- (void)setOsServiceType:(unsigned __int8)a3
+- (void)setOsServiceType:(unsigned __int8)type
 {
   if (self->_type == 1)
   {
-    self->_type = a3;
+    self->_type = type;
   }
 }
 
-- (BOOL)treatedAsAnAppByFrontBoard:(id *)a3
+- (BOOL)treatedAsAnAppByFrontBoard:(id *)board
 {
   type = self->_type;
   if (type == 2)
@@ -192,14 +192,14 @@ LABEL_9:
   }
 
   v7 = +[RBSConnection sharedInstance];
-  LOBYTE(a3) = [v7 isIdentityAnAngel:self withError:a3];
+  LOBYTE(board) = [v7 isIdentityAnAngel:self withError:board];
 
-  return a3;
+  return board;
 }
 
 - (void)encodeForJob
 {
-  *a1 = 0;
+  *self = 0;
   a2[3] = 0u;
   a2[4] = 0u;
   a2[1] = 0u;
@@ -208,7 +208,7 @@ LABEL_9:
   os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR);
   v6 = *a3;
   _os_log_send_and_compose_impl();
-  v5 = *a1;
+  v5 = *self;
   _os_crash_msg();
   __break(1u);
 }

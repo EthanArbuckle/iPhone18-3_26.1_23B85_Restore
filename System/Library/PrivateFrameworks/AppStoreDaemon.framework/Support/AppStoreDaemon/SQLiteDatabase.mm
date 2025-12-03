@@ -1,20 +1,20 @@
 @interface SQLiteDatabase
-- (BOOL)connectionNeedsResetForCorruption:(id)a3;
-- (BOOL)connectionNeedsResetForReopen:(id)a3;
+- (BOOL)connectionNeedsResetForCorruption:(id)corruption;
+- (BOOL)connectionNeedsResetForReopen:(id)reopen;
 @end
 
 @implementation SQLiteDatabase
 
-- (BOOL)connectionNeedsResetForReopen:(id)a3
+- (BOOL)connectionNeedsResetForReopen:(id)reopen
 {
-  v4 = a3;
+  reopenCopy = reopen;
   dispatch_assert_queue_V2(self->_transactionQueue);
   v5 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
-    if (v4)
+    if (reopenCopy)
     {
-      Property = v4[8];
+      Property = reopenCopy[8];
       v9 = Property;
       if (Property)
       {
@@ -38,13 +38,13 @@
   return 1;
 }
 
-- (BOOL)connectionNeedsResetForCorruption:(id)a3
+- (BOOL)connectionNeedsResetForCorruption:(id)corruption
 {
-  v4 = a3;
+  corruptionCopy = corruption;
   dispatch_assert_queue_V2(self->_transactionQueue);
-  if (v4)
+  if (corruptionCopy)
   {
-    Property = v4[8];
+    Property = corruptionCopy[8];
     v7 = Property;
     if (Property)
     {
@@ -68,9 +68,9 @@
     _os_log_error_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "Exiting after deleting corrupt database at: %{public}@", buf, 0xCu);
   }
 
-  if (v4)
+  if (corruptionCopy)
   {
-    sub_10022C29C(v4);
+    sub_10022C29C(corruptionCopy);
   }
 
   v17 = 0;

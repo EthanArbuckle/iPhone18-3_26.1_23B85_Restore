@@ -1,5 +1,5 @@
 @interface MSPBTimerContext
-+ (id)contextWithDate:(id)a3;
++ (id)contextWithDate:(id)date;
 - (MSPBTimerContext)init;
 @end
 
@@ -18,11 +18,11 @@
   return result;
 }
 
-+ (id)contextWithDate:(id)a3
++ (id)contextWithDate:(id)date
 {
-  v4 = a3;
-  v5 = objc_alloc_init(a1);
-  [v5 setDate:v4];
+  dateCopy = date;
+  v5 = objc_alloc_init(self);
+  [v5 setDate:dateCopy];
 
   return v5;
 }

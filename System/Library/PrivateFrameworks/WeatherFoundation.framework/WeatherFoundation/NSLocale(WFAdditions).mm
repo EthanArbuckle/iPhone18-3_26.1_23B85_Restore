@@ -7,7 +7,7 @@
 
 - (uint64_t)wf_temperatureUnit
 {
-  v1 = [a1 objectForKey:*MEMORY[0x277CBE700]];
+  v1 = [self objectForKey:*MEMORY[0x277CBE700]];
   v2 = NSLocaleTemperatureUnitToWFTemperatureUnit(v1);
 
   return v2;

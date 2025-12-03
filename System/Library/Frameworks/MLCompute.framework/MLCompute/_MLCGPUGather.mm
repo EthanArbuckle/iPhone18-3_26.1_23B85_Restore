@@ -1,13 +1,13 @@
 @interface _MLCGPUGather
-+ (id)layerWithDevice:(id)a3 dimension:(unint64_t)a4;
-- (_MLCGPUGather)initWithDevice:(id)a3 dimension:(unint64_t)a4;
++ (id)layerWithDevice:(id)device dimension:(unint64_t)dimension;
+- (_MLCGPUGather)initWithDevice:(id)device dimension:(unint64_t)dimension;
 @end
 
 @implementation _MLCGPUGather
 
-- (_MLCGPUGather)initWithDevice:(id)a3 dimension:(unint64_t)a4
+- (_MLCGPUGather)initWithDevice:(id)device dimension:(unint64_t)dimension
 {
-  v5 = a3;
+  deviceCopy = device;
   v29.receiver = self;
   v29.super_class = _MLCGPUGather;
   v6 = [(_MLCGPUGather *)&v29 init];
@@ -15,24 +15,24 @@
   if (v6)
   {
     v26 = v6;
-    v8 = [v5 deviceList];
-    v9 = [v8 count];
+    deviceList = [deviceCopy deviceList];
+    v9 = [deviceList count];
 
     v10 = [MEMORY[0x277CBEBF8] mutableCopy];
     if (v9)
     {
       for (i = 0; i != v9; ++i)
       {
-        v12 = [v5 deviceList];
-        v13 = [v12 objectAtIndexedSubscript:i];
+        deviceList2 = [deviceCopy deviceList];
+        v13 = [deviceList2 objectAtIndexedSubscript:i];
 
-        v14 = [v5 gpuLibrary];
-        v15 = [v14 objectAtIndexedSubscript:i];
+        gpuLibrary = [deviceCopy gpuLibrary];
+        v15 = [gpuLibrary objectAtIndexedSubscript:i];
         v16 = [v15 newFunctionWithName:@"gather_forward"];
 
         v17 = [v13 newComputePipelineStateWithFunction:v16 error:0];
-        v18 = [v5 gpuLibrary];
-        v19 = [v18 objectAtIndexedSubscript:i];
+        gpuLibrary2 = [deviceCopy gpuLibrary];
+        v19 = [gpuLibrary2 objectAtIndexedSubscript:i];
         v20 = [v19 newFunctionWithName:@"scatter_forward"];
 
         v21 = [v13 newComputePipelineStateWithFunction:v20 error:0];
@@ -42,7 +42,7 @@
         {
           [v22 setIsMPSKernel:0];
           [v23 setMetalKernelType:14];
-          [v23 setScatterGatherDimension:a4];
+          [v23 setScatterGatherDimension:dimension];
           [v23 setScatterReduceType:1];
           [v23 setLayer:objc_opt_class()];
           [v10 addObject:v23];
@@ -60,10 +60,10 @@
   return v7;
 }
 
-+ (id)layerWithDevice:(id)a3 dimension:(unint64_t)a4
++ (id)layerWithDevice:(id)device dimension:(unint64_t)dimension
 {
-  v6 = a3;
-  v7 = [[a1 alloc] initWithDevice:v6 dimension:a4];
+  deviceCopy = device;
+  v7 = [[self alloc] initWithDevice:deviceCopy dimension:dimension];
 
   return v7;
 }

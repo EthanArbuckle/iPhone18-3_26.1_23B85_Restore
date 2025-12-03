@@ -1,30 +1,30 @@
 @interface THiOSFlowToCTableViewController
-- (THiOSFlowToCTableViewController)initWithFlowTOCViewController:(id)a3 asset:(id)a4;
-- (void)setTheme:(id)a3;
-- (void)th_addChildViewController:(id)a3 withFrame:(CGRect)a4;
-- (void)th_determineLeftFrame:(CGRect *)a3 rightFrame:(CGRect *)a4;
+- (THiOSFlowToCTableViewController)initWithFlowTOCViewController:(id)controller asset:(id)asset;
+- (void)setTheme:(id)theme;
+- (void)th_addChildViewController:(id)controller withFrame:(CGRect)frame;
+- (void)th_determineLeftFrame:(CGRect *)frame rightFrame:(CGRect *)rightFrame;
 - (void)th_updateColorsForTheme;
 - (void)viewDidLoad;
 @end
 
 @implementation THiOSFlowToCTableViewController
 
-- (THiOSFlowToCTableViewController)initWithFlowTOCViewController:(id)a3 asset:(id)a4
+- (THiOSFlowToCTableViewController)initWithFlowTOCViewController:(id)controller asset:(id)asset
 {
-  v7 = a3;
-  v8 = a4;
+  controllerCopy = controller;
+  assetCopy = asset;
   v14.receiver = self;
   v14.super_class = THiOSFlowToCTableViewController;
   v9 = [(THiOSFlowToCTableViewController *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_flowToCViewController, a3);
+    objc_storeStrong(&v9->_flowToCViewController, controller);
     v11 = objc_alloc_init(THBookCoverViewController);
     coverViewController = v10->_coverViewController;
     v10->_coverViewController = v11;
 
-    [(THBookCoverViewController *)v10->_coverViewController setAsset:v8];
+    [(THBookCoverViewController *)v10->_coverViewController setAsset:assetCopy];
   }
 
   return v10;
@@ -35,11 +35,11 @@
   v41.receiver = self;
   v41.super_class = THiOSFlowToCTableViewController;
   [(THiOSFlowToCTableViewController *)&v41 viewDidLoad];
-  v3 = [(THBookCoverViewController *)self->_coverViewController view];
-  v4 = [(THFlowTOCViewController *)self->_flowToCViewController view];
-  v5 = [(THiOSFlowToCTableViewController *)self view];
-  [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
+  view = [(THBookCoverViewController *)self->_coverViewController view];
+  view2 = [(THFlowTOCViewController *)self->_flowToCViewController view];
+  view3 = [(THiOSFlowToCTableViewController *)self view];
+  [view setTranslatesAutoresizingMaskIntoConstraints:0];
+  [view2 setTranslatesAutoresizingMaskIntoConstraints:0];
   size = CGRectZero.size;
   origin = CGRectZero.origin;
   v40 = size;
@@ -48,42 +48,42 @@
   [(THiOSFlowToCTableViewController *)self th_determineLeftFrame:&origin rightFrame:&v37];
   [(THiOSFlowToCTableViewController *)self th_addChildViewController:self->_coverViewController withFrame:origin, v40];
   [(THiOSFlowToCTableViewController *)self th_addChildViewController:self->_flowToCViewController withFrame:v37, v38];
-  v7 = v5;
-  v36 = v5;
-  v8 = [v5 safeAreaLayoutGuide];
-  v9 = [v7 centerXAnchor];
-  v35 = [v3 leftAnchor];
-  v34 = [v8 leftAnchor];
-  v32 = [v35 constraintEqualToAnchor:v34];
+  v7 = view3;
+  v36 = view3;
+  safeAreaLayoutGuide = [view3 safeAreaLayoutGuide];
+  centerXAnchor = [v7 centerXAnchor];
+  leftAnchor = [view leftAnchor];
+  leftAnchor2 = [safeAreaLayoutGuide leftAnchor];
+  v32 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
   v42[0] = v32;
-  v31 = [v3 rightAnchor];
-  v28 = v9;
-  v30 = [v31 constraintEqualToAnchor:v9];
+  rightAnchor = [view rightAnchor];
+  v28 = centerXAnchor;
+  v30 = [rightAnchor constraintEqualToAnchor:centerXAnchor];
   v42[1] = v30;
-  v33 = v3;
-  v29 = [v3 topAnchor];
-  v27 = [v8 topAnchor];
-  v26 = [v29 constraintEqualToAnchor:v27];
+  v33 = view;
+  topAnchor = [view topAnchor];
+  topAnchor2 = [safeAreaLayoutGuide topAnchor];
+  v26 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v42[2] = v26;
-  v25 = [v3 bottomAnchor];
-  v23 = [v8 bottomAnchor];
-  v22 = [v25 constraintEqualToAnchor:v23];
+  bottomAnchor = [view bottomAnchor];
+  bottomAnchor2 = [safeAreaLayoutGuide bottomAnchor];
+  v22 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v42[3] = v22;
-  v21 = [v4 leftAnchor];
-  v20 = [v21 constraintEqualToAnchor:v9];
+  leftAnchor3 = [view2 leftAnchor];
+  v20 = [leftAnchor3 constraintEqualToAnchor:centerXAnchor];
   v42[4] = v20;
-  v19 = [v4 rightAnchor];
-  v18 = [v8 rightAnchor];
-  v10 = [v19 constraintEqualToAnchor:v18];
+  rightAnchor2 = [view2 rightAnchor];
+  rightAnchor3 = [safeAreaLayoutGuide rightAnchor];
+  v10 = [rightAnchor2 constraintEqualToAnchor:rightAnchor3];
   v42[5] = v10;
-  v24 = v4;
-  v11 = [v4 topAnchor];
-  v12 = [v8 topAnchor];
-  v13 = [v11 constraintEqualToAnchor:v12];
+  v24 = view2;
+  topAnchor3 = [view2 topAnchor];
+  topAnchor4 = [safeAreaLayoutGuide topAnchor];
+  v13 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   v42[6] = v13;
-  v14 = [v4 bottomAnchor];
-  v15 = [v8 bottomAnchor];
-  v16 = [v14 constraintEqualToAnchor:v15];
+  bottomAnchor3 = [view2 bottomAnchor];
+  bottomAnchor4 = [safeAreaLayoutGuide bottomAnchor];
+  v16 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   v42[7] = v16;
   v17 = [NSArray arrayWithObjects:v42 count:8];
   [NSLayoutConstraint activateConstraints:v17];
@@ -91,9 +91,9 @@
   [(THiOSFlowToCTableViewController *)self th_updateColorsForTheme];
 }
 
-- (void)setTheme:(id)a3
+- (void)setTheme:(id)theme
 {
-  objc_storeStrong(&self->_theme, a3);
+  objc_storeStrong(&self->_theme, theme);
   [(THiOSFlowToCTableViewController *)self th_updateColorsForTheme];
 
   [(THiOSFlowToCTableViewController *)self setNeedsStatusBarAppearanceUpdate];
@@ -113,10 +113,10 @@
   }
 
   [(THiOSFlowToCTableViewController *)self setOverrideUserInterfaceStyle:v3];
-  v4 = [(THiOSFlowToCTableViewController *)self viewIfLoaded];
-  [v4 setBackgroundColor:v10];
+  viewIfLoaded = [(THiOSFlowToCTableViewController *)self viewIfLoaded];
+  [viewIfLoaded setBackgroundColor:v10];
 
-  v5 = [(THBookCoverViewController *)self->_coverViewController view];
+  view = [(THBookCoverViewController *)self->_coverViewController view];
   if ([(THTheme *)self->_theme overlayContentBackgroundColor])
   {
     v6 = [CAFilter alloc];
@@ -130,14 +130,14 @@
     v8 = 0;
   }
 
-  v9 = [v5 layer];
-  [v9 setFilters:v8];
+  layer = [view layer];
+  [layer setFilters:v8];
 }
 
-- (void)th_determineLeftFrame:(CGRect *)a3 rightFrame:(CGRect *)a4
+- (void)th_determineLeftFrame:(CGRect *)frame rightFrame:(CGRect *)rightFrame
 {
-  v6 = [(THiOSFlowToCTableViewController *)self view];
-  [v6 bounds];
+  view = [(THiOSFlowToCTableViewController *)self view];
+  [view bounds];
   v8 = v7;
   v10 = v9;
   v12 = v11;
@@ -158,40 +158,40 @@
   v20.size.width = v15;
   v20.size.height = Height;
   MaxX = CGRectGetMaxX(v20);
-  if (a3)
+  if (frame)
   {
-    a3->origin.x = 0.0;
-    a3->origin.y = 0.0;
-    a3->size.width = v15;
-    a3->size.height = Height;
+    frame->origin.x = 0.0;
+    frame->origin.y = 0.0;
+    frame->size.width = v15;
+    frame->size.height = Height;
   }
 
-  if (a4)
+  if (rightFrame)
   {
-    a4->origin.x = MaxX;
-    a4->origin.y = 0.0;
-    a4->size.width = v15;
-    a4->size.height = Height;
+    rightFrame->origin.x = MaxX;
+    rightFrame->origin.y = 0.0;
+    rightFrame->size.width = v15;
+    rightFrame->size.height = Height;
   }
 }
 
-- (void)th_addChildViewController:(id)a3 withFrame:(CGRect)a4
+- (void)th_addChildViewController:(id)controller withFrame:(CGRect)frame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3;
-  v11 = [v9 view];
-  [v9 willMoveToParentViewController:0];
-  [v11 removeFromSuperview];
-  [v9 removeFromParentViewController];
-  [(THiOSFlowToCTableViewController *)self addChildViewController:v9];
-  [v11 setFrame:{x, y, width, height}];
-  v10 = [(THiOSFlowToCTableViewController *)self view];
-  [v10 addSubview:v11];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  controllerCopy = controller;
+  view = [controllerCopy view];
+  [controllerCopy willMoveToParentViewController:0];
+  [view removeFromSuperview];
+  [controllerCopy removeFromParentViewController];
+  [(THiOSFlowToCTableViewController *)self addChildViewController:controllerCopy];
+  [view setFrame:{x, y, width, height}];
+  view2 = [(THiOSFlowToCTableViewController *)self view];
+  [view2 addSubview:view];
 
-  [v9 didMoveToParentViewController:self];
+  [controllerCopy didMoveToParentViewController:self];
 }
 
 @end

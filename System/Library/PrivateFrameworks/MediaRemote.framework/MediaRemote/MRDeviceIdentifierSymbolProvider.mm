@@ -2,8 +2,8 @@
 + (id)currentDeviceRoutingSymbolName;
 + (id)sharedProvider;
 - (MRDeviceIdentifierSymbolProvider)init;
-- (id)symbolNameForModelID:(id)a3;
-- (id)symbolNameForProductIdentifier:(id)a3;
+- (id)symbolNameForModelID:(id)d;
+- (id)symbolNameForProductIdentifier:(id)identifier;
 @end
 
 @implementation MRDeviceIdentifierSymbolProvider
@@ -48,43 +48,43 @@ void __50__MRDeviceIdentifierSymbolProvider_sharedProvider__block_invoke()
   if (v2)
   {
     v2->_lock._os_unfair_lock_opaque = 0;
-    v4 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     cache = v3->_cache;
-    v3->_cache = v4;
+    v3->_cache = dictionary;
   }
 
   return v3;
 }
 
-- (id)symbolNameForModelID:(id)a3
+- (id)symbolNameForModelID:(id)d
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
     os_unfair_lock_lock(&self->_lock);
-    v5 = [(MRDeviceIdentifierSymbolProvider *)self cache];
-    v6 = [v5 objectForKeyedSubscript:v4];
+    cache = [(MRDeviceIdentifierSymbolProvider *)self cache];
+    v6 = [cache objectForKeyedSubscript:dCopy];
 
     os_unfair_lock_unlock(&self->_lock);
     if (!v6)
     {
-      v7 = [MEMORY[0x1E6982C40] _typeWithDeviceModelCode:v4];
+      v7 = [MEMORY[0x1E6982C40] _typeWithDeviceModelCode:dCopy];
       v8 = MEMORY[0x1E69A8A40];
-      v9 = [v7 identifier];
+      identifier = [v7 identifier];
       v18 = 0;
-      v10 = [v8 symbolForTypeIdentifier:v9 withResolutionStrategy:1 variantOptions:1 error:&v18];
+      v10 = [v8 symbolForTypeIdentifier:identifier withResolutionStrategy:1 variantOptions:1 error:&v18];
       v11 = v18;
 
-      v12 = [v10 name];
-      v13 = v12;
+      name = [v10 name];
+      v13 = name;
       if (v11)
       {
         v14 = _MRLogForCategory(0);
         if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
         {
           *buf = 138543874;
-          v20 = v4;
+          v20 = dCopy;
           v21 = 2114;
           v22 = v7;
           v23 = 2114;
@@ -93,11 +93,11 @@ void __50__MRDeviceIdentifierSymbolProvider_sharedProvider__block_invoke()
         }
       }
 
-      else if (v12)
+      else if (name)
       {
         os_unfair_lock_lock(&self->_lock);
-        v15 = [(MRDeviceIdentifierSymbolProvider *)self cache];
-        [v15 setObject:v13 forKeyedSubscript:v4];
+        cache2 = [(MRDeviceIdentifierSymbolProvider *)self cache];
+        [cache2 setObject:v13 forKeyedSubscript:dCopy];
 
         os_unfair_lock_unlock(&self->_lock);
       }
@@ -116,38 +116,38 @@ void __50__MRDeviceIdentifierSymbolProvider_sharedProvider__block_invoke()
   return v6;
 }
 
-- (id)symbolNameForProductIdentifier:(id)a3
+- (id)symbolNameForProductIdentifier:(id)identifier
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v5 = v4;
-    v6 = [MEMORY[0x1E696AB08] letterCharacterSet];
-    v7 = [v5 stringByTrimmingCharactersInSet:v6];
+    v5 = identifierCopy;
+    letterCharacterSet = [MEMORY[0x1E696AB08] letterCharacterSet];
+    v7 = [v5 stringByTrimmingCharactersInSet:letterCharacterSet];
 
     os_unfair_lock_lock(&self->_lock);
-    v8 = [(MRDeviceIdentifierSymbolProvider *)self cache];
-    v9 = [v8 objectForKeyedSubscript:v7];
+    cache = [(MRDeviceIdentifierSymbolProvider *)self cache];
+    v9 = [cache objectForKeyedSubscript:v7];
 
     os_unfair_lock_unlock(&self->_lock);
     if (!v9)
     {
       v10 = [v7 componentsSeparatedByString:{@", "}];
-      v11 = [v10 firstObject];
-      v12 = [v10 lastObject];
-      v13 = v12;
-      if (v11 && v12)
+      firstObject = [v10 firstObject];
+      lastObject = [v10 lastObject];
+      v13 = lastObject;
+      if (firstObject && lastObject)
       {
-        v14 = [MEMORY[0x1E6982C40] _typeWithBluetoothProductID:objc_msgSend(v12 vendorID:{"intValue"), objc_msgSend(v11, "intValue")}];
+        v14 = [MEMORY[0x1E6982C40] _typeWithBluetoothProductID:objc_msgSend(lastObject vendorID:{"intValue"), objc_msgSend(firstObject, "intValue")}];
         v15 = MEMORY[0x1E69A8A40];
-        v16 = [v14 identifier];
+        identifier = [v14 identifier];
         v25 = 0;
-        v17 = [v15 symbolForTypeIdentifier:v16 withResolutionStrategy:1 variantOptions:1 error:&v25];
+        v17 = [v15 symbolForTypeIdentifier:identifier withResolutionStrategy:1 variantOptions:1 error:&v25];
         v18 = v25;
 
-        v19 = [v17 name];
-        v20 = v19;
+        name = [v17 name];
+        v20 = name;
         if (v18)
         {
           v21 = _MRLogForCategory(0);
@@ -163,11 +163,11 @@ void __50__MRDeviceIdentifierSymbolProvider_sharedProvider__block_invoke()
           }
         }
 
-        else if (v19)
+        else if (name)
         {
           os_unfair_lock_lock(&self->_lock);
-          v22 = [(MRDeviceIdentifierSymbolProvider *)self cache];
-          [v22 setObject:v20 forKeyedSubscript:v7];
+          cache2 = [(MRDeviceIdentifierSymbolProvider *)self cache];
+          [cache2 setObject:v20 forKeyedSubscript:v7];
 
           os_unfair_lock_unlock(&self->_lock);
         }

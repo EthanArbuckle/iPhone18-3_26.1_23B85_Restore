@@ -1,25 +1,25 @@
 @interface ATDeviceProvisioningHandler
 - (ATDeviceProvisioningHandler)init;
 - (id)_getEndpointInfo;
-- (void)_handleBeginSessionRequest:(id)a3 onMessageLink:(id)a4;
-- (void)_handleCreateSessionRequest:(id)a3 onMessageLink:(id)a4;
-- (void)_handleRegisterEndpointRequest:(id)a3 onMessageLink:(id)a4;
-- (void)_processBeginSessionResponse:(id)a3 onMessageLink:(id)a4;
-- (void)_processCreateSessionResponse:(id)a3 onMessageLink:(id)a4;
-- (void)_processRegisterEndpointResponse:(id)a3 onMessageLink:(id)a4;
-- (void)_sendBeginSessionRequestOnMessageLink:(id)a3;
-- (void)_sendCreateSessionRequestWithData:(id)a3 onMessageLink:(id)a4;
-- (void)_sendRegisterEndpointRequestOnMessageLink:(id)a3;
-- (void)_setMessageLinkAsInitialized:(id)a3;
-- (void)messageLink:(id)a3 didReceiveRequest:(id)a4;
-- (void)messageLinkWasOpened:(id)a3;
+- (void)_handleBeginSessionRequest:(id)request onMessageLink:(id)link;
+- (void)_handleCreateSessionRequest:(id)request onMessageLink:(id)link;
+- (void)_handleRegisterEndpointRequest:(id)request onMessageLink:(id)link;
+- (void)_processBeginSessionResponse:(id)response onMessageLink:(id)link;
+- (void)_processCreateSessionResponse:(id)response onMessageLink:(id)link;
+- (void)_processRegisterEndpointResponse:(id)response onMessageLink:(id)link;
+- (void)_sendBeginSessionRequestOnMessageLink:(id)link;
+- (void)_sendCreateSessionRequestWithData:(id)data onMessageLink:(id)link;
+- (void)_sendRegisterEndpointRequestOnMessageLink:(id)link;
+- (void)_setMessageLinkAsInitialized:(id)initialized;
+- (void)messageLink:(id)link didReceiveRequest:(id)request;
+- (void)messageLinkWasOpened:(id)opened;
 @end
 
 @implementation ATDeviceProvisioningHandler
 
-- (void)_setMessageLinkAsInitialized:(id)a3
+- (void)_setMessageLinkAsInitialized:(id)initialized
 {
-  v6 = a3;
+  initializedCopy = initialized;
   if ([(ATDeviceSettings *)self->_settings grappaEnabled])
   {
     v4 = [[ATGrappaSignatureProvider alloc] initWithGrappaSession:self->_grappaSession];
@@ -31,31 +31,31 @@
   }
 
   v5 = v4;
-  [v6 setSignatureProvider:v4];
+  [initializedCopy setSignatureProvider:v4];
 
   [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
   ATReportEventAddDoubleToScalarKey();
-  [v6 setInitialized:1];
+  [initializedCopy setInitialized:1];
 }
 
 - (id)_getEndpointInfo
 {
   v28 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = [(ATDeviceSettings *)self->_settings libraryIdentifier];
-  [v3 setObject:v4 forKey:@"_ProvisioningLibraryIdentifier"];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  libraryIdentifier = [(ATDeviceSettings *)self->_settings libraryIdentifier];
+  [dictionary setObject:libraryIdentifier forKey:@"_ProvisioningLibraryIdentifier"];
 
   v5 = MGCopyAnswer();
   if (v5)
   {
-    [v3 setObject:v5 forKey:@"_ProvisioningHostOSVersion"];
+    [dictionary setObject:v5 forKey:@"_ProvisioningHostOSVersion"];
   }
 
-  [v3 setObject:@"iOS" forKey:@"_ProvisioningHostOSType"];
+  [dictionary setObject:@"iOS" forKey:@"_ProvisioningHostOSType"];
   v6 = MGCopyAnswer();
   if (v6)
   {
-    [v3 setObject:v6 forKey:@"_ProvisioningHostModel"];
+    [dictionary setObject:v6 forKey:@"_ProvisioningHostModel"];
   }
 
   v7 = [MEMORY[0x277CBEB58] set];
@@ -64,9 +64,9 @@
   v25 = 0u;
   v26 = 0u;
   v8 = +[ATClientController sharedInstance];
-  v9 = [v8 allClients];
+  allClients = [v8 allClients];
 
-  v10 = [v9 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  v10 = [allClients countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v10)
   {
     v11 = v10;
@@ -77,87 +77,87 @@
       {
         if (*v24 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(allClients);
         }
 
         v14 = *(*(&v23 + 1) + 8 * i);
         if ([v14 conformsToProtocol:&unk_2837092A8])
         {
-          v15 = [v14 syncDataClass];
-          [v7 addObject:v15];
+          syncDataClass = [v14 syncDataClass];
+          [v7 addObject:syncDataClass];
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v11 = [allClients countByEnumeratingWithState:&v23 objects:v27 count:16];
     }
 
     while (v11);
   }
 
-  v16 = [v7 allObjects];
-  [v3 setObject:v16 forKey:@"_ProvisioningEnabledDataClasses"];
+  allObjects = [v7 allObjects];
+  [dictionary setObject:allObjects forKey:@"_ProvisioningEnabledDataClasses"];
 
-  v17 = [MEMORY[0x277D7FBA8] sharedMonitor];
-  v18 = [v17 pairedDevicePairingID];
+  mEMORY[0x277D7FBA8] = [MEMORY[0x277D7FBA8] sharedMonitor];
+  pairedDevicePairingID = [mEMORY[0x277D7FBA8] pairedDevicePairingID];
 
-  if (v18)
+  if (pairedDevicePairingID)
   {
-    v19 = [v18 UUIDString];
-    [v3 setObject:v19 forKey:@"_ProvisioningDevicePairingId"];
+    uUIDString = [pairedDevicePairingID UUIDString];
+    [dictionary setObject:uUIDString forKey:@"_ProvisioningDevicePairingId"];
   }
 
-  v20 = [MEMORY[0x277D7FA80] currentDeviceInfo];
-  v21 = [v20 deviceGUID];
+  currentDeviceInfo = [MEMORY[0x277D7FA80] currentDeviceInfo];
+  deviceGUID = [currentDeviceInfo deviceGUID];
 
-  if (v21)
+  if (deviceGUID)
   {
-    [v3 setObject:v21 forKey:@"_ProvisioningDeviceGUID"];
+    [dictionary setObject:deviceGUID forKey:@"_ProvisioningDeviceGUID"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)_processBeginSessionResponse:(id)a3 onMessageLink:(id)a4
+- (void)_processBeginSessionResponse:(id)response onMessageLink:(id)link
 {
   v13 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (([v6 isPartial] & 1) == 0)
+  responseCopy = response;
+  linkCopy = link;
+  if (([responseCopy isPartial] & 1) == 0)
   {
-    v8 = [v6 error];
+    error = [responseCopy error];
 
-    if (v8)
+    if (error)
     {
       v9 = _ATLogCategoryFramework();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
-        v10 = [v6 error];
+        error2 = [responseCopy error];
         v11 = 138543362;
-        v12 = v10;
+        v12 = error2;
         _os_log_impl(&dword_223819000, v9, OS_LOG_TYPE_ERROR, "Failed to process BeginSession response: %{public}@", &v11, 0xCu);
       }
 
-      [v7 close];
+      [linkCopy close];
     }
 
     else
     {
-      [(ATDeviceProvisioningHandler *)self _setMessageLinkAsInitialized:v7];
+      [(ATDeviceProvisioningHandler *)self _setMessageLinkAsInitialized:linkCopy];
     }
   }
 }
 
-- (void)_handleBeginSessionRequest:(id)a3 onMessageLink:(id)a4
+- (void)_handleBeginSessionRequest:(id)request onMessageLink:(id)link
 {
-  v6 = a4;
-  v7 = [a3 responseWithError:0 parameters:0];
+  linkCopy = link;
+  v7 = [request responseWithError:0 parameters:0];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __72__ATDeviceProvisioningHandler__handleBeginSessionRequest_onMessageLink___block_invoke;
   v9[3] = &unk_2784E59D8;
-  v10 = v6;
-  v11 = self;
-  v8 = v6;
+  v10 = linkCopy;
+  selfCopy = self;
+  v8 = linkCopy;
   [v8 sendResponse:v7 withCompletion:v9];
 }
 
@@ -184,17 +184,17 @@ void __72__ATDeviceProvisioningHandler__handleBeginSessionRequest_onMessageLink_
   }
 }
 
-- (void)_sendBeginSessionRequestOnMessageLink:(id)a3
+- (void)_sendBeginSessionRequestOnMessageLink:(id)link
 {
-  v4 = a3;
+  linkCopy = link;
   v5 = [objc_alloc(MEMORY[0x277CEA458]) initWithCommand:@"ProvisioningBeginSession" dataClass:@"Provisioning" parameters:0];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __69__ATDeviceProvisioningHandler__sendBeginSessionRequestOnMessageLink___block_invoke;
   v7[3] = &unk_2784E50D8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = linkCopy;
+  v6 = linkCopy;
   [v6 sendRequest:v5 withCompletion:v7];
 }
 
@@ -225,22 +225,22 @@ void __69__ATDeviceProvisioningHandler__sendBeginSessionRequestOnMessageLink___b
   }
 }
 
-- (void)_processCreateSessionResponse:(id)a3 onMessageLink:(id)a4
+- (void)_processCreateSessionResponse:(id)response onMessageLink:(id)link
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (([v6 isPartial] & 1) == 0)
+  responseCopy = response;
+  linkCopy = link;
+  if (([responseCopy isPartial] & 1) == 0)
   {
-    v8 = [v6 error];
-    if (v8)
+    error = [responseCopy error];
+    if (error)
     {
-      v9 = v8;
+      v9 = error;
     }
 
-    else if (!-[ATDeviceSettings grappaEnabled](self->_settings, "grappaEnabled") || ([v6 parameters], v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "objectForKey:", @"_ProvisioningSessionResposneData"), v12 = objc_claimAutoreleasedReturnValue(), v11, -[ATGrappaSession beginHostSessionWithDeviceResponseData:](self->_grappaSession, "beginHostSessionWithDeviceResponseData:", v12), v9 = objc_claimAutoreleasedReturnValue(), v12, !v9))
+    else if (!-[ATDeviceSettings grappaEnabled](self->_settings, "grappaEnabled") || ([responseCopy parameters], v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "objectForKey:", @"_ProvisioningSessionResposneData"), v12 = objc_claimAutoreleasedReturnValue(), v11, -[ATGrappaSession beginHostSessionWithDeviceResponseData:](self->_grappaSession, "beginHostSessionWithDeviceResponseData:", v12), v9 = objc_claimAutoreleasedReturnValue(), v12, !v9))
     {
-      [(ATDeviceProvisioningHandler *)self _sendBeginSessionRequestOnMessageLink:v7];
+      [(ATDeviceProvisioningHandler *)self _sendBeginSessionRequestOnMessageLink:linkCopy];
       goto LABEL_10;
     }
 
@@ -252,21 +252,21 @@ void __69__ATDeviceProvisioningHandler__sendBeginSessionRequestOnMessageLink___b
       _os_log_impl(&dword_223819000, v10, OS_LOG_TYPE_ERROR, "Failed to process CreateSession response: %{public}@", &v13, 0xCu);
     }
 
-    [v7 close];
+    [linkCopy close];
   }
 
 LABEL_10:
 }
 
-- (void)_handleCreateSessionRequest:(id)a3 onMessageLink:(id)a4
+- (void)_handleCreateSessionRequest:(id)request onMessageLink:(id)link
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CBEB38] dictionary];
+  requestCopy = request;
+  linkCopy = link;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if ([(ATDeviceSettings *)self->_settings grappaEnabled])
   {
-    v9 = [v6 parameters];
-    v10 = [v9 objectForKey:@"_ProvisioningSessionRequestData"];
+    parameters = [requestCopy parameters];
+    v10 = [parameters objectForKey:@"_ProvisioningSessionRequestData"];
 
     grappaSession = self->_grappaSession;
     v19 = 0;
@@ -275,7 +275,7 @@ LABEL_10:
     v14 = v13;
     if (!v12 && v13)
     {
-      [v8 setObject:v13 forKey:@"_ProvisioningSessionResposneData"];
+      [dictionary setObject:v13 forKey:@"_ProvisioningSessionResposneData"];
     }
   }
 
@@ -284,13 +284,13 @@ LABEL_10:
     v12 = 0;
   }
 
-  v15 = [v6 responseWithError:v12 parameters:v8];
+  v15 = [requestCopy responseWithError:v12 parameters:dictionary];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __73__ATDeviceProvisioningHandler__handleCreateSessionRequest_onMessageLink___block_invoke;
   v17[3] = &unk_2784E58E8;
-  v18 = v7;
-  v16 = v7;
+  v18 = linkCopy;
+  v16 = linkCopy;
   [v16 sendResponse:v15 withCompletion:v17];
 }
 
@@ -312,15 +312,15 @@ void __73__ATDeviceProvisioningHandler__handleCreateSessionRequest_onMessageLink
   }
 }
 
-- (void)_sendCreateSessionRequestWithData:(id)a3 onMessageLink:(id)a4
+- (void)_sendCreateSessionRequestWithData:(id)data onMessageLink:(id)link
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CBEB38] dictionary];
-  v9 = v8;
-  if (v6)
+  dataCopy = data;
+  linkCopy = link;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v9 = dictionary;
+  if (dataCopy)
   {
-    [v8 setObject:v6 forKey:@"_ProvisioningSessionRequestData"];
+    [dictionary setObject:dataCopy forKey:@"_ProvisioningSessionRequestData"];
   }
 
   v10 = [objc_alloc(MEMORY[0x277CEA458]) initWithCommand:@"ProvisioningCreateSession" dataClass:@"Provisioning" parameters:v9];
@@ -329,8 +329,8 @@ void __73__ATDeviceProvisioningHandler__handleCreateSessionRequest_onMessageLink
   v12[2] = __79__ATDeviceProvisioningHandler__sendCreateSessionRequestWithData_onMessageLink___block_invoke;
   v12[3] = &unk_2784E50D8;
   v12[4] = self;
-  v13 = v7;
-  v11 = v7;
+  v13 = linkCopy;
+  v11 = linkCopy;
   [v11 sendRequest:v10 withCompletion:v12];
 }
 
@@ -361,44 +361,44 @@ void __79__ATDeviceProvisioningHandler__sendCreateSessionRequestWithData_onMessa
   }
 }
 
-- (void)_processRegisterEndpointResponse:(id)a3 onMessageLink:(id)a4
+- (void)_processRegisterEndpointResponse:(id)response onMessageLink:(id)link
 {
   v36 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (([v6 isPartial] & 1) == 0)
+  responseCopy = response;
+  linkCopy = link;
+  if (([responseCopy isPartial] & 1) == 0)
   {
-    v8 = [v6 error];
-    if (v8)
+    error = [responseCopy error];
+    if (error)
     {
-      v9 = v8;
+      v9 = error;
       v10 = 0;
       goto LABEL_13;
     }
 
-    v11 = [v6 parameters];
-    v12 = [v11 objectForKey:@"_ProvisioningLibraryIdentifier"];
-    [v7 setIdentifier:v12];
+    parameters = [responseCopy parameters];
+    v12 = [parameters objectForKey:@"_ProvisioningLibraryIdentifier"];
+    [linkCopy setIdentifier:v12];
     v13 = [(ATDeviceSettings *)self->_settings hostInfoForLibrary:v12];
-    v14 = [v11 objectForKey:@"_ProvisioningHostModel"];
+    v14 = [parameters objectForKey:@"_ProvisioningHostModel"];
     [v13 setModel:v14];
 
-    v15 = [v11 objectForKey:@"_ProvisioningHostOSType"];
+    v15 = [parameters objectForKey:@"_ProvisioningHostOSType"];
     [v13 setOsType:v15];
 
-    v16 = [v11 objectForKey:@"_ProvisioningHostOSVersion"];
+    v16 = [parameters objectForKey:@"_ProvisioningHostOSVersion"];
     [v13 setOsVersion:v16];
 
-    v17 = [v11 objectForKey:@"_ProvisioningDeviceInfo"];
+    v17 = [parameters objectForKey:@"_ProvisioningDeviceInfo"];
     [v13 setGrappaInfo:v17];
 
-    v18 = [v11 objectForKey:@"_ProvisioningEnabledDataClasses"];
+    v18 = [parameters objectForKey:@"_ProvisioningEnabledDataClasses"];
     [v13 setEnabledDataClasses:v18];
 
-    v19 = [v11 objectForKey:@"_ProvisioningDeviceGUID"];
+    v19 = [parameters objectForKey:@"_ProvisioningDeviceGUID"];
     [v13 setDeviceGUID:v19];
 
-    v20 = [v11 objectForKey:@"_ProvisioningDevicePairingId"];
+    v20 = [parameters objectForKey:@"_ProvisioningDevicePairingId"];
     if (v20)
     {
       v21 = v20;
@@ -414,10 +414,10 @@ void __79__ATDeviceProvisioningHandler__sendCreateSessionRequestWithData_onMessa
         _os_log_impl(&dword_223819000, v28, OS_LOG_TYPE_DEFAULT, "No pairing ID provided from endpoint %{public}@ - assuming active paired device", buf, 0xCu);
       }
 
-      v29 = [MEMORY[0x277D7FBA8] sharedMonitor];
-      v30 = [v29 activePairedDevicePairingID];
+      mEMORY[0x277D7FBA8] = [MEMORY[0x277D7FBA8] sharedMonitor];
+      activePairedDevicePairingID = [mEMORY[0x277D7FBA8] activePairedDevicePairingID];
 
-      if (!v30 || ([v30 UUIDString], v21 = objc_claimAutoreleasedReturnValue(), v30, !v21))
+      if (!activePairedDevicePairingID || ([activePairedDevicePairingID UUIDString], v21 = objc_claimAutoreleasedReturnValue(), activePairedDevicePairingID, !v21))
       {
 LABEL_7:
         [(ATDeviceSettings *)self->_settings setHostInfo:v13 forLibrary:v12];
@@ -438,9 +438,9 @@ LABEL_7:
           self->_grappaSession = v23;
 
           v25 = self->_grappaSession;
-          v26 = [v13 grappaInfo];
+          grappaInfo = [v13 grappaInfo];
           v31 = 0;
-          v9 = [(ATGrappaSession *)v25 establishHostSessionWithDeviceInfo:v26 clientRequestData:&v31];
+          v9 = [(ATGrappaSession *)v25 establishHostSessionWithDeviceInfo:grappaInfo clientRequestData:&v31];
           v10 = v31;
         }
 
@@ -452,7 +452,7 @@ LABEL_7:
 
         if (!v9)
         {
-          [(ATDeviceProvisioningHandler *)self _sendCreateSessionRequestWithData:v10 onMessageLink:v7];
+          [(ATDeviceProvisioningHandler *)self _sendCreateSessionRequestWithData:v10 onMessageLink:linkCopy];
 LABEL_16:
 
           goto LABEL_17;
@@ -467,7 +467,7 @@ LABEL_13:
           _os_log_impl(&dword_223819000, v27, OS_LOG_TYPE_ERROR, "Failed to register endpoint: %{public}@", buf, 0xCu);
         }
 
-        [v7 close];
+        [linkCopy close];
         goto LABEL_16;
       }
     }
@@ -480,68 +480,68 @@ LABEL_13:
 LABEL_17:
 }
 
-- (void)_handleRegisterEndpointRequest:(id)a3 onMessageLink:(id)a4
+- (void)_handleRegisterEndpointRequest:(id)request onMessageLink:(id)link
 {
   v37 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CBEB38] dictionary];
-  v9 = [v6 parameters];
-  v10 = [v9 objectForKey:@"_ProvisioningLibraryIdentifier"];
+  requestCopy = request;
+  linkCopy = link;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  parameters = [requestCopy parameters];
+  v10 = [parameters objectForKey:@"_ProvisioningLibraryIdentifier"];
   if (!v10)
   {
     v26 = [MEMORY[0x277CCA9B8] errorWithDomain:@"ATError" code:21 userInfo:0];
     goto LABEL_15;
   }
 
-  [v7 setIdentifier:v10];
+  [linkCopy setIdentifier:v10];
   v11 = [(ATDeviceSettings *)self->_settings hostInfoForLibrary:v10];
-  v12 = [v9 objectForKey:@"_ProvisioningHostModel"];
+  v12 = [parameters objectForKey:@"_ProvisioningHostModel"];
   [v11 setModel:v12];
 
-  v13 = [v9 objectForKey:@"_ProvisioningHostOSType"];
+  v13 = [parameters objectForKey:@"_ProvisioningHostOSType"];
   [v11 setOsType:v13];
 
-  v14 = [v9 objectForKey:@"_ProvisioningHostOSVersion"];
+  v14 = [parameters objectForKey:@"_ProvisioningHostOSVersion"];
   [v11 setOsVersion:v14];
 
-  v15 = [v9 objectForKey:@"_ProvisioningDeviceInfo"];
+  v15 = [parameters objectForKey:@"_ProvisioningDeviceInfo"];
   [v11 setGrappaInfo:v15];
 
-  v16 = [v9 objectForKey:@"_ProvisioningEnabledDataClasses"];
+  v16 = [parameters objectForKey:@"_ProvisioningEnabledDataClasses"];
   [v11 setEnabledDataClasses:v16];
 
-  v17 = [v9 objectForKey:@"_ProvisioningDevicePairingId"];
+  v17 = [parameters objectForKey:@"_ProvisioningDevicePairingId"];
   [v11 setDevicePairingId:v17];
 
-  v18 = [v9 objectForKey:@"_ProvisioningDeviceGUID"];
+  v18 = [parameters objectForKey:@"_ProvisioningDeviceGUID"];
   [v11 setDeviceGUID:v18];
 
-  v19 = [v9 objectForKey:@"_ProvisioningDevicePairingId"];
+  v19 = [parameters objectForKey:@"_ProvisioningDevicePairingId"];
   if (v19)
   {
-    v20 = v19;
+    uUIDString = v19;
   }
 
   else
   {
-    v27 = [MEMORY[0x277D7FBA8] sharedMonitor];
-    v28 = [v27 activePairedDevicePairingID];
+    mEMORY[0x277D7FBA8] = [MEMORY[0x277D7FBA8] sharedMonitor];
+    activePairedDevicePairingID = [mEMORY[0x277D7FBA8] activePairedDevicePairingID];
 
-    if (!v28)
+    if (!activePairedDevicePairingID)
     {
       goto LABEL_5;
     }
 
-    v20 = [v28 UUIDString];
+    uUIDString = [activePairedDevicePairingID UUIDString];
 
-    if (!v20)
+    if (!uUIDString)
     {
       goto LABEL_5;
     }
   }
 
-  [v11 setDevicePairingId:v20];
+  [v11 setDevicePairingId:uUIDString];
 
 LABEL_5:
   [(ATDeviceSettings *)self->_settings setHostInfo:v11 forLibrary:v10];
@@ -555,17 +555,17 @@ LABEL_5:
     _os_log_impl(&dword_223819000, v21, OS_LOG_TYPE_DEFAULT, "Registering with endpoint %{public}@; hostInfo=%{public}@", buf, 0x16u);
   }
 
-  v22 = [(ATDeviceProvisioningHandler *)self _getEndpointInfo];
-  [v8 addEntriesFromDictionary:v22];
+  _getEndpointInfo = [(ATDeviceProvisioningHandler *)self _getEndpointInfo];
+  [dictionary addEntriesFromDictionary:_getEndpointInfo];
 
   v23 = [[ATGrappaSession alloc] initWithType:0];
   grappaSession = self->_grappaSession;
   self->_grappaSession = v23;
 
-  v25 = [(ATGrappaSession *)self->_grappaSession deviceInfo];
-  if (v25)
+  deviceInfo = [(ATGrappaSession *)self->_grappaSession deviceInfo];
+  if (deviceInfo)
   {
-    [v8 setObject:v25 forKey:@"_ProvisioningDeviceInfo"];
+    [dictionary setObject:deviceInfo forKey:@"_ProvisioningDeviceInfo"];
     v26 = 0;
   }
 
@@ -575,13 +575,13 @@ LABEL_5:
   }
 
 LABEL_15:
-  v29 = [v6 responseWithError:v26 parameters:v8];
+  v29 = [requestCopy responseWithError:v26 parameters:dictionary];
   v31[0] = MEMORY[0x277D85DD0];
   v31[1] = 3221225472;
   v31[2] = __76__ATDeviceProvisioningHandler__handleRegisterEndpointRequest_onMessageLink___block_invoke;
   v31[3] = &unk_2784E58E8;
-  v32 = v7;
-  v30 = v7;
+  v32 = linkCopy;
+  v30 = linkCopy;
   [v30 sendResponse:v29 withCompletion:v31];
 }
 
@@ -603,18 +603,18 @@ void __76__ATDeviceProvisioningHandler__handleRegisterEndpointRequest_onMessageL
   }
 }
 
-- (void)_sendRegisterEndpointRequestOnMessageLink:(id)a3
+- (void)_sendRegisterEndpointRequestOnMessageLink:(id)link
 {
-  v4 = a3;
-  v5 = [(ATDeviceProvisioningHandler *)self _getEndpointInfo];
-  v6 = [objc_alloc(MEMORY[0x277CEA458]) initWithCommand:@"ProvisioningRegisterEndpoint" dataClass:@"Provisioning" parameters:v5];
+  linkCopy = link;
+  _getEndpointInfo = [(ATDeviceProvisioningHandler *)self _getEndpointInfo];
+  v6 = [objc_alloc(MEMORY[0x277CEA458]) initWithCommand:@"ProvisioningRegisterEndpoint" dataClass:@"Provisioning" parameters:_getEndpointInfo];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __73__ATDeviceProvisioningHandler__sendRegisterEndpointRequestOnMessageLink___block_invoke;
   v8[3] = &unk_2784E50D8;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = linkCopy;
+  v7 = linkCopy;
   [v7 sendRequest:v6 withCompletion:v8];
 }
 
@@ -645,19 +645,19 @@ void __73__ATDeviceProvisioningHandler__sendRegisterEndpointRequestOnMessageLink
   }
 }
 
-- (void)messageLink:(id)a3 didReceiveRequest:(id)a4
+- (void)messageLink:(id)link didReceiveRequest:(id)request
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isInitialized])
+  linkCopy = link;
+  requestCopy = request;
+  if ([linkCopy isInitialized])
   {
     v8 = _ATLogCategoryFramework();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [v7 command];
+      command = [requestCopy command];
       v19 = 138543362;
-      v20 = v9;
+      v20 = command;
       v10 = "Received provisioning request on initialized link. command=%{public}@";
       v11 = v8;
       v12 = OS_LOG_TYPE_DEFAULT;
@@ -668,39 +668,39 @@ LABEL_4:
 
   else
   {
-    v13 = [v7 command];
-    v14 = [v13 isEqualToString:@"ProvisioningRegisterEndpoint"];
+    command2 = [requestCopy command];
+    v14 = [command2 isEqualToString:@"ProvisioningRegisterEndpoint"];
 
     if (v14)
     {
-      [(ATDeviceProvisioningHandler *)self _handleRegisterEndpointRequest:v7 onMessageLink:v6];
+      [(ATDeviceProvisioningHandler *)self _handleRegisterEndpointRequest:requestCopy onMessageLink:linkCopy];
       goto LABEL_12;
     }
 
-    v15 = [v7 command];
-    v16 = [v15 isEqualToString:@"ProvisioningCreateSession"];
+    command3 = [requestCopy command];
+    v16 = [command3 isEqualToString:@"ProvisioningCreateSession"];
 
     if (v16)
     {
-      [(ATDeviceProvisioningHandler *)self _handleCreateSessionRequest:v7 onMessageLink:v6];
+      [(ATDeviceProvisioningHandler *)self _handleCreateSessionRequest:requestCopy onMessageLink:linkCopy];
       goto LABEL_12;
     }
 
-    v17 = [v7 command];
-    v18 = [v17 isEqualToString:@"ProvisioningBeginSession"];
+    command4 = [requestCopy command];
+    v18 = [command4 isEqualToString:@"ProvisioningBeginSession"];
 
     if (v18)
     {
-      [(ATDeviceProvisioningHandler *)self _handleBeginSessionRequest:v7 onMessageLink:v6];
+      [(ATDeviceProvisioningHandler *)self _handleBeginSessionRequest:requestCopy onMessageLink:linkCopy];
       goto LABEL_12;
     }
 
     v8 = _ATLogCategoryFramework();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
-      v9 = [v7 command];
+      command = [requestCopy command];
       v19 = 138543362;
-      v20 = v9;
+      v20 = command;
       v10 = "Received unexpected provisioning request. command=%{public}@";
       v11 = v8;
       v12 = OS_LOG_TYPE_INFO;
@@ -708,27 +708,27 @@ LABEL_4:
     }
   }
 
-  [v6 close];
+  [linkCopy close];
 LABEL_12:
 }
 
-- (void)messageLinkWasOpened:(id)a3
+- (void)messageLinkWasOpened:(id)opened
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 endpointType];
+  openedCopy = opened;
+  endpointType = [openedCopy endpointType];
   v6 = _ATLogCategoryFramework();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
-  if (v5 == 1)
+  if (endpointType == 1)
   {
     if (v7)
     {
       v9 = 138543362;
-      v10 = v4;
+      v10 = openedCopy;
       _os_log_impl(&dword_223819000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ opened - starting provisioning", &v9, 0xCu);
     }
 
-    [(ATDeviceProvisioningHandler *)self _sendRegisterEndpointRequestOnMessageLink:v4];
+    [(ATDeviceProvisioningHandler *)self _sendRegisterEndpointRequestOnMessageLink:openedCopy];
   }
 
   else
@@ -736,7 +736,7 @@ LABEL_12:
     if (v7)
     {
       v9 = 138543362;
-      v10 = v4;
+      v10 = openedCopy;
       _os_log_impl(&dword_223819000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ opened - waiting for provisioning message from server", &v9, 0xCu);
     }
   }

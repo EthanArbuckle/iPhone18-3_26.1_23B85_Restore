@@ -1,36 +1,36 @@
 @interface BWInferenceDepthScalingProvider
-- (BWInferenceDepthScalingProvider)initWithOutputRequirements:(id)a3 configuration:(id)a4;
+- (BWInferenceDepthScalingProvider)initWithOutputRequirements:(id)requirements configuration:(id)configuration;
 - (BWInferenceSubmittable)submittable;
-- (id)bindVideoInputFromAttachedMediaUsingKey:(id)a3 preparedByAttachedMediaKey:(id)a4 withVideoFormatProvider:(id)a5;
+- (id)bindVideoInputFromAttachedMediaUsingKey:(id)key preparedByAttachedMediaKey:(id)mediaKey withVideoFormatProvider:(id)provider;
 - (id)newStorage;
-- (int)executeOnSampleBuffer:(opaqueCMSampleBuffer *)a3 usingStorage:(id)a4 withExecutionTime:(id *)a5 completionHandler:(id)a6;
-- (int)prepareForSubmissionWithWorkQueue:(id)a3;
-- (int)submitForSampleBuffer:(opaqueCMSampleBuffer *)a3 usingStorage:(id)a4 withSubmissionTime:(id *)a5 workQueue:(id)a6 completionHandler:(id)a7;
+- (int)executeOnSampleBuffer:(opaqueCMSampleBuffer *)buffer usingStorage:(id)storage withExecutionTime:(id *)time completionHandler:(id)handler;
+- (int)prepareForSubmissionWithWorkQueue:(id)queue;
+- (int)submitForSampleBuffer:(opaqueCMSampleBuffer *)buffer usingStorage:(id)storage withSubmissionTime:(id *)time workQueue:(id)queue completionHandler:(id)handler;
 - (uint64_t)_resolveProcessingMode;
 - (void)dealloc;
-- (void)setCustomInferenceIdentifier:(id)a3;
-- (void)setInputRequirement:(id)a3;
+- (void)setCustomInferenceIdentifier:(id)identifier;
+- (void)setInputRequirement:(id)requirement;
 @end
 
 @implementation BWInferenceDepthScalingProvider
 
-- (BWInferenceDepthScalingProvider)initWithOutputRequirements:(id)a3 configuration:(id)a4
+- (BWInferenceDepthScalingProvider)initWithOutputRequirements:(id)requirements configuration:(id)configuration
 {
   v9.receiver = self;
   v9.super_class = BWInferenceDepthScalingProvider;
   v6 = [(BWInferenceDepthScalingProvider *)&v9 init];
   if (v6)
   {
-    v6->_outputRequirements = a3;
+    v6->_outputRequirements = requirements;
     v7 = FigCapturePlatformIdentifier() > 6;
     v6->_GPUDepthConversionSupported = v7;
     v6->_processingMode = v7;
-    v6->_flipX = [a4 flipX];
-    v6->_NANValue = [a4 NANValue];
-    v6->_clampMin = [a4 clampMin];
-    v6->_clampMax = [a4 clampMax];
-    v6->_allowUpsampling = [a4 allowUpsampling];
-    v6->_concurrencyWidth = [a4 concurrencyWidth];
+    v6->_flipX = [configuration flipX];
+    v6->_NANValue = [configuration NANValue];
+    v6->_clampMin = [configuration clampMin];
+    v6->_clampMax = [configuration clampMax];
+    v6->_allowUpsampling = [configuration allowUpsampling];
+    v6->_concurrencyWidth = [configuration concurrencyWidth];
   }
 
   return v6;
@@ -49,26 +49,26 @@
   [(BWInferenceDepthScalingProvider *)&v4 dealloc];
 }
 
-- (int)prepareForSubmissionWithWorkQueue:(id)a3
+- (int)prepareForSubmissionWithWorkQueue:(id)queue
 {
   self->_metalContext = [objc_alloc(MEMORY[0x1E6991778]) initWithbundle:objc_msgSend(MEMORY[0x1E696AAE8] andOptionalCommandQueue:{"bundleForClass:", objc_opt_class()), 0}];
-  v4 = [(BWInferenceVideoRequirement *)self->_inputRequirement videoFormat];
+  videoFormat = [(BWInferenceVideoRequirement *)self->_inputRequirement videoFormat];
   v5 = [-[NSArray firstObject](self->_outputRequirements "firstObject")];
-  v6 = [(BWInferenceVideoFormat *)[(BWInferenceVideoRequirement *)self->_inputRequirement videoFormat] width];
-  v7 = [(BWInferenceVideoFormat *)[(BWInferenceVideoRequirement *)self->_inputRequirement videoFormat] height];
-  v8 = [MEMORY[0x1E69741C0] texture2DDescriptorWithPixelFormat:23 width:v6 height:v7 mipmapped:0];
+  width = [(BWInferenceVideoFormat *)[(BWInferenceVideoRequirement *)self->_inputRequirement videoFormat] width];
+  height = [(BWInferenceVideoFormat *)[(BWInferenceVideoRequirement *)self->_inputRequirement videoFormat] height];
+  v8 = [MEMORY[0x1E69741C0] texture2DDescriptorWithPixelFormat:23 width:width height:height mipmapped:0];
   self->_srcdesc = v8;
   [(MTLTextureDescriptor *)v8 setUsage:1];
-  v9 = [v5 width];
-  v10 = [v5 height];
-  v11 = [v5 pixelFormat];
+  width2 = [v5 width];
+  height2 = [v5 height];
+  pixelFormat = [v5 pixelFormat];
   result = -31740;
   v13 = 55;
-  if (v11 > 1717856626)
+  if (pixelFormat > 1717856626)
   {
-    if (v11 != 1717856627)
+    if (pixelFormat != 1717856627)
     {
-      if (v11 != 1751411059 && v11 != 1751410032)
+      if (pixelFormat != 1751411059 && pixelFormat != 1751410032)
       {
         return result;
       }
@@ -78,11 +78,11 @@ LABEL_9:
     }
   }
 
-  else if (v11 != 1278226534)
+  else if (pixelFormat != 1278226534)
   {
-    if (v11 != 1278226536)
+    if (pixelFormat != 1278226536)
     {
-      if (v11 != 1717855600)
+      if (pixelFormat != 1717855600)
       {
         return result;
       }
@@ -94,12 +94,12 @@ LABEL_9:
   }
 
 LABEL_10:
-  v14 = [MEMORY[0x1E69741C0] texture2DDescriptorWithPixelFormat:v13 width:v9 height:v10 mipmapped:0];
+  v14 = [MEMORY[0x1E69741C0] texture2DDescriptorWithPixelFormat:v13 width:width2 height:height2 mipmapped:0];
   self->_dstdesc = v14;
   [(MTLTextureDescriptor *)v14 setUsage:2];
-  self->_requestedRotation = bwisr_getRequestedRotationDegrees(v4, v5);
+  self->_requestedRotation = bwisr_getRequestedRotationDegrees(videoFormat, v5);
   v15 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v16 = [(FigMetalContext *)self->_metalContext device];
+  device = [(FigMetalContext *)self->_metalContext device];
   v27 = 0;
   v23 = 0u;
   v24 = 0u;
@@ -119,7 +119,7 @@ LABEL_10:
           objc_enumerationMutation(&unk_1F224A758);
         }
 
-        [v15 setObject:objc_msgSend(v16 forKeyedSubscript:{"newComputePipelineStateWithFunction:error:", objc_msgSend(-[FigMetalContext library](self->_metalContext, "library"), "newFunctionWithName:", *(*(&v23 + 1) + 8 * i)), &v27), *(*(&v23 + 1) + 8 * i)}];
+        [v15 setObject:objc_msgSend(device forKeyedSubscript:{"newComputePipelineStateWithFunction:error:", objc_msgSend(-[FigMetalContext library](self->_metalContext, "library"), "newFunctionWithName:", *(*(&v23 + 1) + 8 * i)), &v27), *(*(&v23 + 1) + 8 * i)}];
         if (v27)
         {
           [BWInferenceDepthScalingProvider prepareForSubmissionWithWorkQueue:];
@@ -143,18 +143,18 @@ LABEL_10:
   return result;
 }
 
-- (int)submitForSampleBuffer:(opaqueCMSampleBuffer *)a3 usingStorage:(id)a4 withSubmissionTime:(id *)a5 workQueue:(id)a6 completionHandler:(id)a7
+- (int)submitForSampleBuffer:(opaqueCMSampleBuffer *)buffer usingStorage:(id)storage withSubmissionTime:(id *)time workQueue:(id)queue completionHandler:(id)handler
 {
-  v11 = [a4 pixelBufferForRequirement:self->_inputRequirement];
+  v11 = [storage pixelBufferForRequirement:self->_inputRequirement];
   if (v11)
   {
     v12 = v11;
-    v13 = [objc_msgSend(a4 pixelBufferPoolForRequirement:{-[NSArray firstObject](self->_outputRequirements, "firstObject")), "newPixelBuffer"}];
+    v13 = [objc_msgSend(storage pixelBufferPoolForRequirement:{-[NSArray firstObject](self->_outputRequirements, "firstObject")), "newPixelBuffer"}];
     if (v13)
     {
       v14 = v13;
       v73[0] = [objc_msgSend(CVPixelBufferGetAttributes() objectForKeyedSubscript:{*MEMORY[0x1E69660A8]), "shortValue"}];
-      AttachedMedia = BWSampleBufferGetAttachedMedia(a3, [(BWInferenceMediaRequirement *)self->_inputRequirement attachedMediaKey]);
+      AttachedMedia = BWSampleBufferGetAttachedMedia(buffer, [(BWInferenceMediaRequirement *)self->_inputRequirement attachedMediaKey]);
       v16 = CMGetAttachment(AttachedMedia, *off_1E798A328, 0);
       [objc_msgSend(v16 objectForKeyedSubscript:{*off_1E798ABB8), "floatValue"}];
       v18 = v17;
@@ -185,7 +185,7 @@ LABEL_10:
       }
 
       clampMax = self->_clampMax;
-      v55 = a7;
+      handlerCopy = handler;
       if (clampMax)
       {
         [(NSNumber *)clampMax floatValue];
@@ -197,23 +197,23 @@ LABEL_10:
         v29 = 2143289344;
       }
 
-      v30 = [(FigMetalContext *)self->_metalContext device];
-      v56 = [v30 newTextureWithDescriptor:self->_srcdesc iosurface:CVPixelBufferGetIOSurface(v12) plane:0];
-      v31 = [v30 newTextureWithDescriptor:self->_dstdesc iosurface:CVPixelBufferGetIOSurface(v14) plane:0];
+      device = [(FigMetalContext *)self->_metalContext device];
+      v56 = [device newTextureWithDescriptor:self->_srcdesc iosurface:CVPixelBufferGetIOSurface(v12) plane:0];
+      v31 = [device newTextureWithDescriptor:self->_dstdesc iosurface:CVPixelBufferGetIOSurface(v14) plane:0];
       v67 = 0;
       v68 = v26;
       v69 = v29;
       v71 = v18;
       v72 = v20;
       v70 = v23;
-      v32 = [(BWInferenceVideoFormat *)[(BWInferenceVideoRequirement *)self->_inputRequirement videoFormat] width];
-      v33 = [(BWInferenceVideoFormat *)[(BWInferenceVideoRequirement *)self->_inputRequirement videoFormat] height];
+      width = [(BWInferenceVideoFormat *)[(BWInferenceVideoRequirement *)self->_inputRequirement videoFormat] width];
+      height = [(BWInferenceVideoFormat *)[(BWInferenceVideoRequirement *)self->_inputRequirement videoFormat] height];
       v34 = [-[NSArray firstObject](self->_outputRequirements "firstObject")];
-      v35 = [v34 width];
-      v36 = [v34 height];
+      width2 = [v34 width];
+      height2 = [v34 height];
       requestedRotation = self->_requestedRotation;
       pipelineStates = self->_pipelineStates;
-      v39 = v35;
+      v39 = width2;
       if (requestedRotation != 90)
       {
         if (requestedRotation == 180)
@@ -240,29 +240,29 @@ LABEL_18:
             }
 
             v45 = [(NSDictionary *)pipelineStates objectForKeyedSubscript:v44];
-            *&v67 = v33 / v39;
-            v33 = v32;
+            *&v67 = height / v39;
+            height = width;
 LABEL_27:
-            *(&v67 + 1) = v33 / v36;
+            *(&v67 + 1) = height / height2;
             v47 = [-[FigMetalContext commandQueue](self->_metalContext "commandQueue")];
-            v48 = [v47 computeCommandEncoder];
+            computeCommandEncoder = [v47 computeCommandEncoder];
             if (*MEMORY[0x1E695FF58] == 1)
             {
               kdebug_trace();
             }
 
-            [v48 setTexture:v56 atIndex:1];
-            [v48 setTexture:v31 atIndex:0];
-            [v48 setBytes:&v67 length:28 atIndex:0];
-            [v48 setBytes:v73 length:4 atIndex:1];
-            [v48 setComputePipelineState:v45];
+            [computeCommandEncoder setTexture:v56 atIndex:1];
+            [computeCommandEncoder setTexture:v31 atIndex:0];
+            [computeCommandEncoder setBytes:&v67 length:28 atIndex:0];
+            [computeCommandEncoder setBytes:v73 length:4 atIndex:1];
+            [computeCommandEncoder setComputePipelineState:v45];
             v66[0] = [v31 width];
             v66[1] = [v31 height];
             v66[2] = 1;
             v64 = xmmword_1AD0466B0;
             v65 = 1;
-            [v48 dispatchThreads:v66 threadsPerThreadgroup:&v64];
-            [v48 endEncoding];
+            [computeCommandEncoder dispatchThreads:v66 threadsPerThreadgroup:&v64];
+            [computeCommandEncoder endEncoding];
             v62 = 0u;
             v63 = 0u;
             v60 = 0u;
@@ -282,7 +282,7 @@ LABEL_27:
                     objc_enumerationMutation(outputRequirements);
                   }
 
-                  [a4 setPixelBuffer:v14 forRequirement:*(*(&v60 + 1) + 8 * i)];
+                  [storage setPixelBuffer:v14 forRequirement:*(*(&v60 + 1) + 8 * i)];
                 }
 
                 v51 = [(NSArray *)outputRequirements countByEnumeratingWithState:&v60 objects:v59 count:16];
@@ -296,7 +296,7 @@ LABEL_27:
             v57[2] = __117__BWInferenceDepthScalingProvider_submitForSampleBuffer_usingStorage_withSubmissionTime_workQueue_completionHandler___block_invoke;
             v57[3] = &unk_1E798FB70;
             v57[4] = self;
-            v57[5] = v55;
+            v57[5] = handlerCopy;
             v58 = 0;
             [v47 addCompletedHandler:v57];
             [v47 commit];
@@ -321,7 +321,7 @@ LABEL_27:
         }
 
         v45 = [(NSDictionary *)pipelineStates objectForKeyedSubscript:v46];
-        *&v67 = v32 / v39;
+        *&v67 = width / v39;
         goto LABEL_27;
       }
 
@@ -338,9 +338,9 @@ LABEL_27:
     v14 = 4294935584;
   }
 
-  if (a7)
+  if (handler)
   {
-    (*(a7 + 2))(a7, v14, self);
+    (*(handler + 2))(handler, v14, self);
   }
 
   v31 = 0;
@@ -368,13 +368,13 @@ uint64_t __117__BWInferenceDepthScalingProvider_submitForSampleBuffer_usingStora
   return result;
 }
 
-- (void)setCustomInferenceIdentifier:(id)a3
+- (void)setCustomInferenceIdentifier:(id)identifier
 {
   customInferenceIdentifier = self->_customInferenceIdentifier;
-  if (customInferenceIdentifier != a3)
+  if (customInferenceIdentifier != identifier)
   {
 
-    self->_customInferenceIdentifier = a3;
+    self->_customInferenceIdentifier = identifier;
   }
 }
 
@@ -412,14 +412,14 @@ uint64_t __117__BWInferenceDepthScalingProvider_submitForSampleBuffer_usingStora
   return -[BWInferenceProviderStorage initWithRequirementsNeedingPixelBuffers:requirementsNeedingPixelBufferPools:](v5, "initWithRequirementsNeedingPixelBuffers:requirementsNeedingPixelBufferPools:", [MEMORY[0x1E695DEC8] arrayWithObjects:&inputRequirement count:1], outputRequirements);
 }
 
-- (id)bindVideoInputFromAttachedMediaUsingKey:(id)a3 preparedByAttachedMediaKey:(id)a4 withVideoFormatProvider:(id)a5
+- (id)bindVideoInputFromAttachedMediaUsingKey:(id)key preparedByAttachedMediaKey:(id)mediaKey withVideoFormatProvider:(id)provider
 {
   if (self->_inputRequirement)
   {
     return 0;
   }
 
-  v6 = [[BWInferenceLazyVideoRequirement alloc] initWithAttachedMediaKey:a3 preparedByAttachedMediaKey:a3 videoFormatProvider:a5];
+  v6 = [[BWInferenceLazyVideoRequirement alloc] initWithAttachedMediaKey:key preparedByAttachedMediaKey:key videoFormatProvider:provider];
   self->_inputRequirement = &v6->super;
   [(BWInferenceDepthScalingProvider *)self _resolveProcessingMode];
   return v6;
@@ -446,20 +446,20 @@ uint64_t __117__BWInferenceDepthScalingProvider_submitForSampleBuffer_usingStora
   return result;
 }
 
-- (void)setInputRequirement:(id)a3
+- (void)setInputRequirement:(id)requirement
 {
-  self->_inputRequirement = a3;
+  self->_inputRequirement = requirement;
 
   [(BWInferenceDepthScalingProvider *)self _resolveProcessingMode];
 }
 
-- (int)executeOnSampleBuffer:(opaqueCMSampleBuffer *)a3 usingStorage:(id)a4 withExecutionTime:(id *)a5 completionHandler:(id)a6
+- (int)executeOnSampleBuffer:(opaqueCMSampleBuffer *)buffer usingStorage:(id)storage withExecutionTime:(id *)time completionHandler:(id)handler
 {
-  v9 = [a4 pixelBufferForRequirement:self->_inputRequirement];
+  v9 = [storage pixelBufferForRequirement:self->_inputRequirement];
   if (v9)
   {
     v10 = v9;
-    v11 = [objc_msgSend(a4 pixelBufferPoolForRequirement:{-[NSArray firstObject](self->_outputRequirements, "firstObject")), "newPixelBuffer"}];
+    v11 = [objc_msgSend(storage pixelBufferPoolForRequirement:{-[NSArray firstObject](self->_outputRequirements, "firstObject")), "newPixelBuffer"}];
     if (v11)
     {
       v12 = MEMORY[0x1E695FF58];
@@ -493,7 +493,7 @@ uint64_t __117__BWInferenceDepthScalingProvider_submitForSampleBuffer_usingStora
                 objc_enumerationMutation(outputRequirements);
               }
 
-              v26 = [a4 setPixelBuffer:v11 forRequirement:*(8 * i)];
+              v26 = [storage setPixelBuffer:v11 forRequirement:*(8 * i)];
             }
 
             v23 = OUTLINED_FUNCTION_10_0(v26, v27, v28, v29, v30, v31, v32, v33, v37, v39, v41, v43, v45, v47, v49, v51, v53, v55, v57, v59, v61, v63, v65, v67, v69, v71, v72);
@@ -523,9 +523,9 @@ uint64_t __117__BWInferenceDepthScalingProvider_submitForSampleBuffer_usingStora
     v34 = 4294935584;
   }
 
-  if (a6)
+  if (handler)
   {
-    (*(a6 + 2))(a6, v34, self);
+    (*(handler + 2))(handler, v34, self);
   }
 
   if (v11)

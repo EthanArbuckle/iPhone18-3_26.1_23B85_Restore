@@ -1,25 +1,25 @@
 @interface BWPointCloudDensificationNodeConfiguration
-- (BWPointCloudDensificationNodeConfiguration)initWithRGBSensorConfiguration:(id)a3 timeOfFlightSensorConfiguration:(id)a4 rgbCameraHorizontalSensorBinningFactor:(int)a5 rgbCameraVerticalSensorBinningFactor:(int)a6 filteringEnabled:(BOOL)a7 depthPixelFormat:(unsigned int)a8 depthOutputDimensions:(id)a9 timeOfFlightCameraType:(int)a10;
+- (BWPointCloudDensificationNodeConfiguration)initWithRGBSensorConfiguration:(id)configuration timeOfFlightSensorConfiguration:(id)sensorConfiguration rgbCameraHorizontalSensorBinningFactor:(int)factor rgbCameraVerticalSensorBinningFactor:(int)binningFactor filteringEnabled:(BOOL)enabled depthPixelFormat:(unsigned int)format depthOutputDimensions:(id)dimensions timeOfFlightCameraType:(int)self0;
 - (void)dealloc;
 @end
 
 @implementation BWPointCloudDensificationNodeConfiguration
 
-- (BWPointCloudDensificationNodeConfiguration)initWithRGBSensorConfiguration:(id)a3 timeOfFlightSensorConfiguration:(id)a4 rgbCameraHorizontalSensorBinningFactor:(int)a5 rgbCameraVerticalSensorBinningFactor:(int)a6 filteringEnabled:(BOOL)a7 depthPixelFormat:(unsigned int)a8 depthOutputDimensions:(id)a9 timeOfFlightCameraType:(int)a10
+- (BWPointCloudDensificationNodeConfiguration)initWithRGBSensorConfiguration:(id)configuration timeOfFlightSensorConfiguration:(id)sensorConfiguration rgbCameraHorizontalSensorBinningFactor:(int)factor rgbCameraVerticalSensorBinningFactor:(int)binningFactor filteringEnabled:(BOOL)enabled depthPixelFormat:(unsigned int)format depthOutputDimensions:(id)dimensions timeOfFlightCameraType:(int)self0
 {
   v18.receiver = self;
   v18.super_class = BWPointCloudDensificationNodeConfiguration;
   v16 = [(BWPointCloudDensificationNodeConfiguration *)&v18 init];
   if (v16)
   {
-    v16->_rgbSensorConfiguration = a3;
-    v16->_timeOfFlightSensorConfiguration = a4;
-    v16->_rgbCameraHorizontalSensorBinningFactor = a5;
-    v16->_rgbCameraVerticalSensorBinningFactor = a6;
-    v16->_filteringEnabled = a7;
-    v16->_depthPixelFormat = a8;
-    v16->_depthOutputDimensions = a9;
-    v16->_timeOfFlightCameraType = a10;
+    v16->_rgbSensorConfiguration = configuration;
+    v16->_timeOfFlightSensorConfiguration = sensorConfiguration;
+    v16->_rgbCameraHorizontalSensorBinningFactor = factor;
+    v16->_rgbCameraVerticalSensorBinningFactor = binningFactor;
+    v16->_filteringEnabled = enabled;
+    v16->_depthPixelFormat = format;
+    v16->_depthOutputDimensions = dimensions;
+    v16->_timeOfFlightCameraType = type;
   }
 
   return v16;

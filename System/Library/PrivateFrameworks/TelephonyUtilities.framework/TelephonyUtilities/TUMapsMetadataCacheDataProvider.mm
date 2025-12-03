@@ -1,20 +1,20 @@
 @interface TUMapsMetadataCacheDataProvider
-- (void)updateCacheWithDestinationIDs:(id)a3 withGroup:(id)a4;
+- (void)updateCacheWithDestinationIDs:(id)ds withGroup:(id)group;
 @end
 
 @implementation TUMapsMetadataCacheDataProvider
 
-- (void)updateCacheWithDestinationIDs:(id)a3 withGroup:(id)a4
+- (void)updateCacheWithDestinationIDs:(id)ds withGroup:(id)group
 {
   v31 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  groupCopy = group;
   v8 = [MEMORY[0x1E695DFA8] set];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v9 = v6;
+  v9 = dsCopy;
   v10 = [v9 countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v10)
   {
@@ -31,10 +31,10 @@
           objc_enumerationMutation(v9);
         }
 
-        v15 = [*(*(&v26 + 1) + 8 * v14) handle];
-        v16 = [v15 normalizedValue];
+        handle = [*(*(&v26 + 1) + 8 * v14) handle];
+        normalizedValue = [handle normalizedValue];
 
-        if ([v16 length])
+        if ([normalizedValue length])
         {
           v17 = CFPhoneNumberCreate();
           if (v17)
@@ -57,11 +57,11 @@
 
   if ([v8 count])
   {
-    dispatch_group_enter(v7);
+    dispatch_group_enter(groupCopy);
     v19 = objc_alloc_init(CUTWeakLinkClass());
     [v19 _setAllowPhoneNumberLookupUsingCellular:1];
-    v20 = [v8 allObjects];
-    [v19 _setPhoneNumbers:v20];
+    allObjects = [v8 allObjects];
+    [v19 _setPhoneNumbers:allObjects];
 
     v21 = dispatch_queue_create("com.apple.telephonyutilities.metadatacache.mapsQueue", 0);
     v22 = [objc_alloc(CUTWeakLinkClass()) initWithRequest:v19];
@@ -70,7 +70,7 @@
     v24[2] = __75__TUMapsMetadataCacheDataProvider_updateCacheWithDestinationIDs_withGroup___block_invoke;
     v24[3] = &unk_1E7426AD8;
     v24[4] = self;
-    v25 = v7;
+    v25 = groupCopy;
     [v22 _phoneOnlyStartWithCompletionHandler:v24 queue:v21];
   }
 

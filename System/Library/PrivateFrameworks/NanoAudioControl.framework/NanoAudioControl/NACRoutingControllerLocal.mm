@@ -1,27 +1,27 @@
 @interface NACRoutingControllerLocal
 - (NACAudioRoute)pickedRoute;
 - (NACRoutingControllerDelegate)delegate;
-- (NACRoutingControllerLocal)initWithAudioCategory:(id)a3;
+- (NACRoutingControllerLocal)initWithAudioCategory:(id)category;
 - (NSArray)availableAudioRoutes;
 - (void)beginObservingRoutes;
 - (void)endObservingRoutes;
-- (void)pickAudioRoute:(id)a3;
-- (void)routingController:(id)a3 didFailToPickRouteWithError:(id)a4;
-- (void)routingControllerAvailableRoutesDidChange:(id)a3;
+- (void)pickAudioRoute:(id)route;
+- (void)routingController:(id)controller didFailToPickRouteWithError:(id)error;
+- (void)routingControllerAvailableRoutesDidChange:(id)change;
 @end
 
 @implementation NACRoutingControllerLocal
 
-- (NACRoutingControllerLocal)initWithAudioCategory:(id)a3
+- (NACRoutingControllerLocal)initWithAudioCategory:(id)category
 {
-  v5 = a3;
+  categoryCopy = category;
   v9.receiver = self;
   v9.super_class = NACRoutingControllerLocal;
   v6 = [(NACRoutingControllerLocal *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_audioCategory, a3);
+    objc_storeStrong(&v6->_audioCategory, category);
   }
 
   return v7;
@@ -47,16 +47,16 @@
   MEMORY[0x2821F96F8]();
 }
 
-- (void)pickAudioRoute:(id)a3
+- (void)pickAudioRoute:(id)route
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  routeCopy = route;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [(MPAVRoutingController *)self->_routingController availableRoutes];
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  availableRoutes = [(MPAVRoutingController *)self->_routingController availableRoutes];
+  v6 = [availableRoutes countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
     v7 = v6;
@@ -67,12 +67,12 @@
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(availableRoutes);
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
         v11 = [NACAudioRoute audioRouteWithMPAVRoute:v10];
-        if ([v4 isEqualToAudioRoute:v11])
+        if ([routeCopy isEqualToAudioRoute:v11])
         {
           routingController = self->_routingController;
           v14[0] = MEMORY[0x277D85DD0];
@@ -86,7 +86,7 @@
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [availableRoutes countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v7)
       {
         continue;
@@ -116,8 +116,8 @@ void __44__NACRoutingControllerLocal_pickAudioRoute___block_invoke(uint64_t a1, 
 
 - (NACAudioRoute)pickedRoute
 {
-  v2 = [(MPAVRoutingController *)self->_routingController pickedRoute];
-  v3 = [NACAudioRoute audioRouteWithMPAVRoute:v2];
+  pickedRoute = [(MPAVRoutingController *)self->_routingController pickedRoute];
+  v3 = [NACAudioRoute audioRouteWithMPAVRoute:pickedRoute];
 
   return v3;
 }
@@ -130,8 +130,8 @@ void __44__NACRoutingControllerLocal_pickAudioRoute___block_invoke(uint64_t a1, 
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(MPAVRoutingController *)self->_routingController availableRoutes];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  availableRoutes = [(MPAVRoutingController *)self->_routingController availableRoutes];
+  v5 = [availableRoutes countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -142,14 +142,14 @@ void __44__NACRoutingControllerLocal_pickAudioRoute___block_invoke(uint64_t a1, 
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(availableRoutes);
         }
 
         v9 = [NACAudioRoute audioRouteWithMPAVRoute:*(*(&v12 + 1) + 8 * i)];
         [v3 addObject:v9];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [availableRoutes countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -160,13 +160,13 @@ void __44__NACRoutingControllerLocal_pickAudioRoute___block_invoke(uint64_t a1, 
   return v3;
 }
 
-- (void)routingControllerAvailableRoutesDidChange:(id)a3
+- (void)routingControllerAvailableRoutesDidChange:(id)change
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained routingControllerDidUpdateAvailableRoutes:self];
 }
 
-- (void)routingController:(id)a3 didFailToPickRouteWithError:(id)a4
+- (void)routingController:(id)controller didFailToPickRouteWithError:(id)error
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v6 = objc_opt_respondsToSelector();

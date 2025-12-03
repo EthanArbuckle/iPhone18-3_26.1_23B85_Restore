@@ -7,11 +7,11 @@
 - (void)main
 {
   v91[1] = *MEMORY[0x277D85DE8];
-  v3 = [(HDCloudSyncOperation *)self configuration];
-  v4 = [v3 repository];
-  v5 = [v4 medicalIDDataManager];
+  configuration = [(HDCloudSyncOperation *)self configuration];
+  repository = [configuration repository];
+  medicalIDDataManager = [repository medicalIDDataManager];
   v82 = 0;
-  v6 = [v5 fetchMedicalIDWithError:&v82];
+  v6 = [medicalIDDataManager fetchMedicalIDWithError:&v82];
   v7 = v82;
   localMedicalIDData = self->_localMedicalIDData;
   self->_localMedicalIDData = v6;
@@ -36,23 +36,23 @@
   {
     v71 = v7;
     v12 = [HDCloudSyncCompoundOperation alloc];
-    v13 = [(HDCloudSyncOperation *)self configuration];
-    v72 = [(HDCloudSyncCompoundOperation *)v12 initWithConfiguration:v13 cloudState:0 name:@"Fetch and Process Medical ID" continueOnSubOperationError:0];
+    configuration2 = [(HDCloudSyncOperation *)self configuration];
+    v72 = [(HDCloudSyncCompoundOperation *)v12 initWithConfiguration:configuration2 cloudState:0 name:@"Fetch and Process Medical ID" continueOnSubOperationError:0];
 
     v14 = [HDCloudSyncParallelOperation alloc];
-    v15 = [(HDCloudSyncOperation *)self configuration];
-    v16 = [(HDCloudSyncParallelOperation *)v14 initWithConfiguration:v15 cloudState:0];
+    configuration3 = [(HDCloudSyncOperation *)self configuration];
+    v16 = [(HDCloudSyncParallelOperation *)v14 initWithConfiguration:configuration3 cloudState:0];
 
-    v17 = [(HDCloudSyncOperation *)self configuration];
-    v18 = [v17 repository];
-    v19 = [v18 secondaryCKContainers];
+    configuration4 = [(HDCloudSyncOperation *)self configuration];
+    repository2 = [configuration4 repository];
+    secondaryCKContainers = [repository2 secondaryCKContainers];
 
     v20 = [HDCloudSyncMedicalIDFetchOperation alloc];
-    v21 = [(HDCloudSyncOperation *)self configuration];
-    v22 = [(HDCloudSyncOperation *)self configuration];
-    v23 = [v22 repository];
-    v24 = [v23 primaryCKContainer];
-    v25 = [(HDCloudSyncMedicalIDFetchOperation *)v20 initWithConfiguration:v21 cloudState:0 container:v24];
+    configuration5 = [(HDCloudSyncOperation *)self configuration];
+    configuration6 = [(HDCloudSyncOperation *)self configuration];
+    repository3 = [configuration6 repository];
+    primaryCKContainer = [repository3 primaryCKContainer];
+    v25 = [(HDCloudSyncMedicalIDFetchOperation *)v20 initWithConfiguration:configuration5 cloudState:0 container:primaryCKContainer];
 
     v70 = v25;
     [(HDCloudSyncParallelOperation *)v16 addOperation:v25];
@@ -61,7 +61,7 @@
     v79 = 0u;
     v80 = 0u;
     v81 = 0u;
-    obj = v19;
+    obj = secondaryCKContainers;
     v27 = [obj countByEnumeratingWithState:&v78 objects:v86 count:16];
     if (v27)
     {
@@ -78,12 +78,12 @@
 
           v31 = *(*(&v78 + 1) + 8 * i);
           v32 = [HDCloudSyncMedicalIDFetchOperation alloc];
-          v33 = [(HDCloudSyncOperation *)self configuration];
-          v34 = [(HDCloudSyncMedicalIDFetchOperation *)v32 initWithConfiguration:v33 cloudState:0 container:v31];
+          configuration7 = [(HDCloudSyncOperation *)self configuration];
+          v34 = [(HDCloudSyncMedicalIDFetchOperation *)v32 initWithConfiguration:configuration7 cloudState:0 container:v31];
 
           [v26 addObject:v34];
-          v35 = [(HDCloudSyncOperation *)v34 operationIgnoringErrors];
-          [(HDCloudSyncParallelOperation *)v16 addOperation:v35];
+          operationIgnoringErrors = [(HDCloudSyncOperation *)v34 operationIgnoringErrors];
+          [(HDCloudSyncParallelOperation *)v16 addOperation:operationIgnoringErrors];
         }
 
         v28 = [obj countByEnumeratingWithState:&v78 objects:v86 count:16];
@@ -93,11 +93,11 @@
     }
 
     [(HDCloudSyncCompoundOperation *)v72 addOperation:v16 transitionHandler:0];
-    v36 = [(HDCloudSyncOperation *)self configuration];
+    configuration8 = [(HDCloudSyncOperation *)self configuration];
     if (self)
     {
-      v73 = v36;
-      v37 = [[HDCloudSyncCompoundOperation alloc] initWithConfiguration:v36 cloudState:0 name:@"Process Medical ID" continueOnSubOperationError:0];
+      v73 = configuration8;
+      v37 = [[HDCloudSyncCompoundOperation alloc] initWithConfiguration:configuration8 cloudState:0 name:@"Process Medical ID" continueOnSubOperationError:0];
       v38 = [(HDCloudSyncOperation *)[HDCloudSyncMedicalIDMergeOperation alloc] initWithConfiguration:v73 cloudState:0];
       v85[0] = MEMORY[0x277D85DD0];
       v85[1] = 3221225472;
@@ -115,33 +115,33 @@
       v69 = v39;
       v84 = v68;
       [(HDCloudSyncCompoundOperation *)v37 addOperation:v39 transitionHandler:v83];
-      v67 = [(HDCloudSyncOperation *)self configuration];
-      v40 = [v67 repository];
-      v41 = [v40 primaryCKContainer];
-      v42 = [(HDCloudSyncOperation *)self configuration];
-      v43 = [v42 repository];
-      v44 = [v43 profileIdentifier];
-      v45 = HDDatabaseForContainer(v41, v44);
-      v66 = [v45 databaseScope];
+      configuration9 = [(HDCloudSyncOperation *)self configuration];
+      repository4 = [configuration9 repository];
+      primaryCKContainer2 = [repository4 primaryCKContainer];
+      configuration10 = [(HDCloudSyncOperation *)self configuration];
+      repository5 = [configuration10 repository];
+      profileIdentifier = [repository5 profileIdentifier];
+      v45 = HDDatabaseForContainer(primaryCKContainer2, profileIdentifier);
+      databaseScope = [v45 databaseScope];
 
       v46 = v37;
-      v36 = v73;
+      configuration8 = v73;
 
-      if (v66 == 2)
+      if (databaseScope == 2)
       {
         v47 = objc_alloc(MEMORY[0x277CBC5E8]);
         v48 = MEMORY[0x277CBC5F8];
-        v49 = [v73 repository];
-        v50 = [v49 syncCircleIdentifier];
-        v51 = [v48 hd_unifiedSyncZoneIDForSyncCircleIdentifier:v50];
+        repository6 = [v73 repository];
+        syncCircleIdentifier = [repository6 syncCircleIdentifier];
+        v51 = [v48 hd_unifiedSyncZoneIDForSyncCircleIdentifier:syncCircleIdentifier];
         v52 = [v47 initWithZoneID:v51];
 
         v53 = [HDCloudSyncCreateZonesOperation alloc];
         v91[0] = v52;
         v54 = [MEMORY[0x277CBEA60] arrayWithObjects:v91 count:1];
-        v55 = [v73 repository];
-        v56 = [v55 primaryCKContainer];
-        v57 = [(HDCloudSyncCreateZonesOperation *)v53 initWithConfiguration:v73 cloudState:0 zones:v54 container:v56];
+        repository7 = [v73 repository];
+        primaryCKContainer3 = [repository7 primaryCKContainer];
+        v57 = [(HDCloudSyncCreateZonesOperation *)v53 initWithConfiguration:v73 cloudState:0 zones:v54 container:primaryCKContainer3];
 
         [(HDCloudSyncCompoundOperation *)v46 addOperation:v57 transitionHandler:0];
       }
@@ -151,7 +151,7 @@
       *&buf[8] = 3221225472;
       *&buf[16] = __77__HDCloudSyncPipelineStageMedicalID__compoundSyncOperationWithConfiguration___block_invoke_3;
       v88 = &unk_278614D48;
-      v89 = self;
+      selfCopy = self;
       v90 = v68;
       v59 = v68;
       [(HDCloudSyncCompoundOperation *)v46 addOperation:v58 transitionHandler:buf];

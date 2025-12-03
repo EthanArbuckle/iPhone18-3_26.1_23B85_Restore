@@ -1,37 +1,37 @@
 @interface MBDHTMLToSuper_FONT_Frame
-- (void)parser:(id)a3 context:(id)a4 didEndElement:(id)a5 namespaceURI:(id)a6 qualifiedName:(id)a7;
-- (void)parser:(id)a3 context:(id)a4 didStartElement:(id)a5 namespaceURI:(id)a6 qualifiedName:(id)a7 attributes:(id)a8;
+- (void)parser:(id)parser context:(id)context didEndElement:(id)element namespaceURI:(id)i qualifiedName:(id)name;
+- (void)parser:(id)parser context:(id)context didStartElement:(id)element namespaceURI:(id)i qualifiedName:(id)name attributes:(id)attributes;
 @end
 
 @implementation MBDHTMLToSuper_FONT_Frame
 
-- (void)parser:(id)a3 context:(id)a4 didStartElement:(id)a5 namespaceURI:(id)a6 qualifiedName:(id)a7 attributes:(id)a8
+- (void)parser:(id)parser context:(id)context didStartElement:(id)element namespaceURI:(id)i qualifiedName:(id)name attributes:(id)attributes
 {
-  v12 = a4;
-  v10 = MBDIMCopyNormalizedAttributes(a8, 1, 0);
+  contextCopy = context;
+  v10 = MBDIMCopyNormalizedAttributes(attributes, 1, 0);
   v11 = [v10 objectForKey:@"face"];
   if (v11)
   {
-    [v12 pushFontFamily:v11];
+    [contextCopy pushFontFamily:v11];
     self->_shouldPopFontName = 1;
   }
 }
 
-- (void)parser:(id)a3 context:(id)a4 didEndElement:(id)a5 namespaceURI:(id)a6 qualifiedName:(id)a7
+- (void)parser:(id)parser context:(id)context didEndElement:(id)element namespaceURI:(id)i qualifiedName:(id)name
 {
-  v16 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  parserCopy = parser;
+  contextCopy = context;
+  elementCopy = element;
+  iCopy = i;
+  nameCopy = name;
   if (self->_shouldPopFontName)
   {
-    [v12 popFontFamily];
+    [contextCopy popFontFamily];
   }
 
   if (self->_shouldPopFontSize)
   {
-    [v12 popFontSize];
+    [contextCopy popFontSize];
   }
 }
 

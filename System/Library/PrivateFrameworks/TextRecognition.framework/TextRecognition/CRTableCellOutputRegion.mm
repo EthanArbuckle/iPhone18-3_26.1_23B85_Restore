@@ -1,33 +1,33 @@
 @interface CRTableCellOutputRegion
-- (CRTableCellOutputRegion)initWithBlock:(id)a3 quad:(id)a4 rowRange:(_NSRange)a5 colRange:(_NSRange)a6;
-- (CRTableCellOutputRegion)initWithCRCodableDataRepresentation:(id)a3 version:(int64_t)a4 offset:(unint64_t *)a5;
+- (CRTableCellOutputRegion)initWithBlock:(id)block quad:(id)quad rowRange:(_NSRange)range colRange:(_NSRange)colRange;
+- (CRTableCellOutputRegion)initWithCRCodableDataRepresentation:(id)representation version:(int64_t)version offset:(unint64_t *)offset;
 - (_NSRange)colRange;
 - (_NSRange)rowRange;
-- (id)copyWithZone:(_NSZone *)a3 copyChildren:(BOOL)a4 copyCandidates:(BOOL)a5 deepCopy:(BOOL)a6;
+- (id)copyWithZone:(_NSZone *)zone copyChildren:(BOOL)children copyCandidates:(BOOL)candidates deepCopy:(BOOL)copy;
 - (id)crCodableDataRepresentation;
 @end
 
 @implementation CRTableCellOutputRegion
 
-- (CRTableCellOutputRegion)initWithBlock:(id)a3 quad:(id)a4 rowRange:(_NSRange)a5 colRange:(_NSRange)a6
+- (CRTableCellOutputRegion)initWithBlock:(id)block quad:(id)quad rowRange:(_NSRange)range colRange:(_NSRange)colRange
 {
-  length = a6.length;
-  location = a6.location;
-  v8 = a5.length;
-  v9 = a5.location;
+  length = colRange.length;
+  location = colRange.location;
+  v8 = range.length;
+  v9 = range.location;
   v17[1] = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
+  blockCopy = block;
+  quadCopy = quad;
   v14 = [(CROutputRegion *)self init];
   if (v14)
   {
-    [v13 baselineAngle];
+    [quadCopy baselineAngle];
     [(CROutputRegion *)v14 setBaselineAngle:?];
-    -[CROutputRegion setConfidence:](v14, "setConfidence:", [v12 confidence]);
-    [(CROutputRegion *)v14 setBoundingQuad:v13];
+    -[CROutputRegion setConfidence:](v14, "setConfidence:", [blockCopy confidence]);
+    [(CROutputRegion *)v14 setBoundingQuad:quadCopy];
     [(CROutputRegion *)v14 setShouldComputeBoundsFromChildren:0];
     [(CROutputRegion *)v14 setShouldComputeTranscriptFromChildren:1];
-    v17[0] = v12;
+    v17[0] = blockCopy;
     v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:1];
     [(CROutputRegion *)v14 setChildren:v15];
 
@@ -38,22 +38,22 @@
   return v14;
 }
 
-- (CRTableCellOutputRegion)initWithCRCodableDataRepresentation:(id)a3 version:(int64_t)a4 offset:(unint64_t *)a5
+- (CRTableCellOutputRegion)initWithCRCodableDataRepresentation:(id)representation version:(int64_t)version offset:(unint64_t *)offset
 {
-  v8 = a3;
+  representationCopy = representation;
   v15.receiver = self;
   v15.super_class = CRTableCellOutputRegion;
-  v9 = [(CROutputRegion *)&v15 initWithCRCodableDataRepresentation:v8 version:a4 offset:a5];
+  v9 = [(CROutputRegion *)&v15 initWithCRCodableDataRepresentation:representationCopy version:version offset:offset];
   if (v9)
   {
-    if (a4 >= 3)
+    if (version >= 3)
     {
-      [CRCodingUtilities integerFromEncodingData:v8 offset:a5];
+      [CRCodingUtilities integerFromEncodingData:representationCopy offset:offset];
     }
 
-    v10 = [CRCodingUtilities rangeFromEncodingData:v8 offset:a5];
+    v10 = [CRCodingUtilities rangeFromEncodingData:representationCopy offset:offset];
     [(CRTableCellOutputRegion *)v9 setRowRange:v10, v11];
-    v12 = [CRCodingUtilities rangeFromEncodingData:v8 offset:a5];
+    v12 = [CRCodingUtilities rangeFromEncodingData:representationCopy offset:offset];
     [(CRTableCellOutputRegion *)v9 setColRange:v12, v13];
   }
 
@@ -65,27 +65,27 @@
   v3 = MEMORY[0x1E695DF88];
   v11.receiver = self;
   v11.super_class = CRTableCellOutputRegion;
-  v4 = [(CROutputRegion *)&v11 crCodableDataRepresentation];
-  v5 = [v3 dataWithData:v4];
+  crCodableDataRepresentation = [(CROutputRegion *)&v11 crCodableDataRepresentation];
+  v5 = [v3 dataWithData:crCodableDataRepresentation];
 
   [CRCodingUtilities appendInteger:1 toData:v5];
-  v6 = [(CRTableCellOutputRegion *)self rowRange];
-  [CRCodingUtilities appendRange:v6 toData:v7, v5];
-  v8 = [(CRTableCellOutputRegion *)self colRange];
-  [CRCodingUtilities appendRange:v8 toData:v9, v5];
+  rowRange = [(CRTableCellOutputRegion *)self rowRange];
+  [CRCodingUtilities appendRange:rowRange toData:v7, v5];
+  colRange = [(CRTableCellOutputRegion *)self colRange];
+  [CRCodingUtilities appendRange:colRange toData:v9, v5];
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3 copyChildren:(BOOL)a4 copyCandidates:(BOOL)a5 deepCopy:(BOOL)a6
+- (id)copyWithZone:(_NSZone *)zone copyChildren:(BOOL)children copyCandidates:(BOOL)candidates deepCopy:(BOOL)copy
 {
   v13.receiver = self;
   v13.super_class = CRTableCellOutputRegion;
-  v7 = [(CROutputRegion *)&v13 copyWithZone:a3 copyChildren:a4 copyCandidates:a5 deepCopy:a6];
-  v8 = [(CRTableCellOutputRegion *)self rowRange];
-  [v7 setRowRange:{v8, v9}];
-  v10 = [(CRTableCellOutputRegion *)self colRange];
-  [v7 setColRange:{v10, v11}];
+  v7 = [(CROutputRegion *)&v13 copyWithZone:zone copyChildren:children copyCandidates:candidates deepCopy:copy];
+  rowRange = [(CRTableCellOutputRegion *)self rowRange];
+  [v7 setRowRange:{rowRange, v9}];
+  colRange = [(CRTableCellOutputRegion *)self colRange];
+  [v7 setColRange:{colRange, v11}];
   return v7;
 }
 

@@ -1,15 +1,15 @@
 @interface _DASTrialManager
 + (_DASTrialManager)sharedInstance;
 + (void)initialize;
-- (BOOL)handleTrialContinuation:(id)a3;
-- (BOOL)handleTrialEnd:(id)a3;
-- (BOOL)handleTrialStart:(id)a3;
-- (BOOL)handleTrialUpdate:(id)a3;
-- (BOOL)matches:(id)a3 withCache:(id)a4;
-- (void)addDelegate:(id)a3;
+- (BOOL)handleTrialContinuation:(id)continuation;
+- (BOOL)handleTrialEnd:(id)end;
+- (BOOL)handleTrialStart:(id)start;
+- (BOOL)handleTrialUpdate:(id)update;
+- (BOOL)matches:(id)matches withCache:(id)cache;
+- (void)addDelegate:(id)delegate;
 - (void)clear;
-- (void)saveToDefaults:(id)a3;
-- (void)sendToPPS:(id)a3;
+- (void)saveToDefaults:(id)defaults;
+- (void)sendToPPS:(id)s;
 - (void)startTimer;
 - (void)updateFactors;
 - (void)updateKernelWithDASIdentifiers;
@@ -186,13 +186,13 @@ LABEL_14:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)addDelegate:(id)a3
+- (void)addDelegate:(id)delegate
 {
-  if (a3)
+  if (delegate)
   {
-    v4 = a3;
+    delegateCopy = delegate;
     os_unfair_lock_lock(&self->_lock);
-    [(NSMutableArray *)self->_delegates addObject:v4];
+    [(NSMutableArray *)self->_delegates addObject:delegateCopy];
 
     os_unfair_lock_unlock(&self->_lock);
   }
@@ -224,19 +224,19 @@ LABEL_14:
   }
 }
 
-- (BOOL)handleTrialStart:(id)a3
+- (BOOL)handleTrialStart:(id)start
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && ([v4 experimentId], v6 = objc_claimAutoreleasedReturnValue(), v6, v6) && (-[_DASTrialManager readFromDefaults](self, "readFromDefaults"), v7 = objc_claimAutoreleasedReturnValue(), v7, !v7))
+  startCopy = start;
+  v5 = startCopy;
+  if (startCopy && ([startCopy experimentId], v6 = objc_claimAutoreleasedReturnValue(), v6, v6) && (-[_DASTrialManager readFromDefaults](self, "readFromDefaults"), v7 = objc_claimAutoreleasedReturnValue(), v7, !v7))
   {
-    v10 = [v5 treatmentId];
+    treatmentId = [v5 treatmentId];
     treatmentID = self->_treatmentID;
-    self->_treatmentID = v10;
+    self->_treatmentID = treatmentId;
 
-    v12 = [v5 experimentId];
+    experimentId = [v5 experimentId];
     experimentID = self->_experimentID;
-    self->_experimentID = v12;
+    self->_experimentID = experimentId;
 
     self->_deploymentID = [v5 deploymentId];
     v14 = objc_alloc_init(NSMutableDictionary);
@@ -263,14 +263,14 @@ LABEL_14:
   return v8;
 }
 
-- (BOOL)handleTrialUpdate:(id)a3
+- (BOOL)handleTrialUpdate:(id)update
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && ([v4 experimentId], v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
+  updateCopy = update;
+  v5 = updateCopy;
+  if (updateCopy && ([updateCopy experimentId], v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
   {
-    v7 = [(_DASTrialManager *)self readFromDefaults];
-    v8 = [v7 mutableCopy];
+    readFromDefaults = [(_DASTrialManager *)self readFromDefaults];
+    v8 = [readFromDefaults mutableCopy];
 
     if (v8 && ![(_DASTrialManager *)self matches:v5 withCache:v8])
     {
@@ -278,13 +278,13 @@ LABEL_14:
       [v8 setObject:v10 forKeyedSubscript:@"trialEndDate"];
 
       [(_DASTrialManager *)self sendToPPS:v8];
-      v11 = [v5 treatmentId];
+      treatmentId = [v5 treatmentId];
       treatmentID = self->_treatmentID;
-      self->_treatmentID = v11;
+      self->_treatmentID = treatmentId;
 
-      v13 = [v5 experimentId];
+      experimentId = [v5 experimentId];
       experimentID = self->_experimentID;
-      self->_experimentID = v13;
+      self->_experimentID = experimentId;
 
       self->_deploymentID = [v5 deploymentId];
       v15 = objc_alloc_init(NSMutableDictionary);
@@ -316,15 +316,15 @@ LABEL_14:
   return v9;
 }
 
-- (BOOL)handleTrialEnd:(id)a3
+- (BOOL)handleTrialEnd:(id)end
 {
-  if (a3)
+  if (end)
   {
     return 0;
   }
 
-  v5 = [(_DASTrialManager *)self readFromDefaults];
-  v6 = [v5 mutableCopy];
+  readFromDefaults = [(_DASTrialManager *)self readFromDefaults];
+  v6 = [readFromDefaults mutableCopy];
 
   v3 = v6 != 0;
   if (v6)
@@ -339,24 +339,24 @@ LABEL_14:
   return v3;
 }
 
-- (BOOL)handleTrialContinuation:(id)a3
+- (BOOL)handleTrialContinuation:(id)continuation
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && ([v4 experimentId], v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
+  continuationCopy = continuation;
+  v5 = continuationCopy;
+  if (continuationCopy && ([continuationCopy experimentId], v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
   {
-    v7 = [(_DASTrialManager *)self readFromDefaults];
-    v8 = [v7 mutableCopy];
+    readFromDefaults = [(_DASTrialManager *)self readFromDefaults];
+    v8 = [readFromDefaults mutableCopy];
 
     if (v8 && [(_DASTrialManager *)self matches:v5 withCache:v8])
     {
-      v9 = [v5 treatmentId];
+      treatmentId = [v5 treatmentId];
       treatmentID = self->_treatmentID;
-      self->_treatmentID = v9;
+      self->_treatmentID = treatmentId;
 
-      v11 = [v5 experimentId];
+      experimentId = [v5 experimentId];
       experimentID = self->_experimentID;
-      self->_experimentID = v11;
+      self->_experimentID = experimentId;
 
       self->_deploymentID = [v5 deploymentId];
       [(_DASTrialManager *)self sendToPPS:v8];
@@ -378,11 +378,11 @@ LABEL_14:
   return v13;
 }
 
-- (void)saveToDefaults:(id)a3
+- (void)saveToDefaults:(id)defaults
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 count])
+  defaultsCopy = defaults;
+  v5 = defaultsCopy;
+  if (defaultsCopy && [defaultsCopy count])
   {
     [(NSUserDefaults *)self->_defaults setObject:v5 forKey:@"trialDictionary"];
   }
@@ -395,20 +395,20 @@ LABEL_14:
   [(NSUserDefaults *)self->_defaults synchronize];
 }
 
-- (BOOL)matches:(id)a3 withCache:(id)a4
+- (BOOL)matches:(id)matches withCache:(id)cache
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 experimentId];
-  v8 = [v6 objectForKeyedSubscript:@"trialExperimentId"];
-  if ([v7 isEqualToString:v8])
+  matchesCopy = matches;
+  cacheCopy = cache;
+  experimentId = [matchesCopy experimentId];
+  v8 = [cacheCopy objectForKeyedSubscript:@"trialExperimentId"];
+  if ([experimentId isEqualToString:v8])
   {
-    v9 = [v5 treatmentId];
-    v10 = [v6 objectForKeyedSubscript:@"trialTreatmentId"];
-    if ([v9 isEqualToString:v10])
+    treatmentId = [matchesCopy treatmentId];
+    v10 = [cacheCopy objectForKeyedSubscript:@"trialTreatmentId"];
+    if ([treatmentId isEqualToString:v10])
     {
-      v11 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v5 deploymentId]);
-      v12 = [v6 objectForKeyedSubscript:@"trialDeploymentId"];
+      v11 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [matchesCopy deploymentId]);
+      v12 = [cacheCopy objectForKeyedSubscript:@"trialDeploymentId"];
       v13 = [v11 isEqualToNumber:v12];
     }
 
@@ -473,11 +473,11 @@ LABEL_14:
   [(_DASTrialManager *)self saveToDefaults:0];
 }
 
-- (void)sendToPPS:(id)a3
+- (void)sendToPPS:(id)s
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && [v3 count])
+  sCopy = s;
+  v4 = sCopy;
+  if (sCopy && [sCopy count])
   {
     v5 = [_DASDaemonLogger logForCategory:@"powerlog"];
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -507,8 +507,8 @@ LABEL_14:
 
     if (v12)
     {
-      v13 = [v12 array];
-      v14 = [v13 count];
+      array = [v12 array];
+      v14 = [array count];
 
       if (v14 > 4)
       {

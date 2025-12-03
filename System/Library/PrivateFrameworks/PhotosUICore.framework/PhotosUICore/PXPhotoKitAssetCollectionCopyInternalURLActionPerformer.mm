@@ -1,15 +1,15 @@
 @interface PXPhotoKitAssetCollectionCopyInternalURLActionPerformer
-+ (BOOL)canPerformOn:(id)a3;
-+ (BOOL)canPerformOnAssetCollectionReference:(id)a3 withInputs:(id)a4;
-+ (id)localizedTitleForUseCase:(unint64_t)a3 assetCollectionReference:(id)a4 withInputs:(id)a5;
++ (BOOL)canPerformOn:(id)on;
++ (BOOL)canPerformOnAssetCollectionReference:(id)reference withInputs:(id)inputs;
++ (id)localizedTitleForUseCase:(unint64_t)case assetCollectionReference:(id)reference withInputs:(id)inputs;
 - (void)performUserInteractionTask;
 @end
 
 @implementation PXPhotoKitAssetCollectionCopyInternalURLActionPerformer
 
-+ (id)localizedTitleForUseCase:(unint64_t)a3 assetCollectionReference:(id)a4 withInputs:(id)a5
++ (id)localizedTitleForUseCase:(unint64_t)case assetCollectionReference:(id)reference withInputs:(id)inputs
 {
-  if (a3 == 2)
+  if (case == 2)
   {
     return @"(Internal) Copy URL";
   }
@@ -20,13 +20,13 @@
   }
 }
 
-+ (BOOL)canPerformOn:(id)a3
++ (BOOL)canPerformOn:(id)on
 {
-  v3 = a3;
+  onCopy = on;
   v4 = +[PXRootSettings sharedInstance];
   if ([v4 canShowInternalUI])
   {
-    v5 = [v3 count] == 1;
+    v5 = [onCopy count] == 1;
   }
 
   else
@@ -37,32 +37,32 @@
   return v5;
 }
 
-+ (BOOL)canPerformOnAssetCollectionReference:(id)a3 withInputs:(id)a4
++ (BOOL)canPerformOnAssetCollectionReference:(id)reference withInputs:(id)inputs
 {
-  v4 = [PXRootSettings sharedInstance:a3];
-  v5 = [v4 canShowInternalUI];
+  v4 = [PXRootSettings sharedInstance:reference];
+  canShowInternalUI = [v4 canShowInternalUI];
 
-  return v5;
+  return canShowInternalUI;
 }
 
 - (void)performUserInteractionTask
 {
-  v3 = [(PXPhotoKitAssetCollectionActionPerformer *)self people];
-  v4 = [v3 firstObject];
+  people = [(PXPhotoKitAssetCollectionActionPerformer *)self people];
+  firstObject = [people firstObject];
 
-  if (v4)
+  if (firstObject)
   {
-    v7 = [v4 px_navigationURL];
+    px_navigationURL = [firstObject px_navigationURL];
   }
 
   else
   {
-    v5 = [(PXAssetCollectionActionPerformer *)self assetCollection];
-    v7 = [v5 px_navigationURL];
+    assetCollection = [(PXAssetCollectionActionPerformer *)self assetCollection];
+    px_navigationURL = [assetCollection px_navigationURL];
   }
 
-  v6 = [MEMORY[0x1E69DCD50] generalPasteboard];
-  [v6 setURL:v7];
+  generalPasteboard = [MEMORY[0x1E69DCD50] generalPasteboard];
+  [generalPasteboard setURL:px_navigationURL];
 
   [(PXActionPerformer *)self completeUserInteractionTaskWithSuccess:1 error:0];
 }

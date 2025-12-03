@@ -1,12 +1,12 @@
 @interface SharediPadInput
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isSharediPad;
 - (NSString)description;
 - (SharediPadInput)init;
-- (SharediPadInput)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SharediPadInput)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SharediPadInput
@@ -31,14 +31,14 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v7.receiver = self;
   v7.super_class = SharediPadInput;
-  if ([(EligibilityInput *)&v7 isEqual:v4])
+  if ([(EligibilityInput *)&v7 isEqual:equalCopy])
   {
-    if (v4 == self)
+    if (equalCopy == self)
     {
       isKindOfClass = 1;
     }
@@ -65,25 +65,25 @@
   return [(EligibilityInput *)&v3 hash];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4.receiver = self;
   v4.super_class = SharediPadInput;
-  return [(EligibilityInput *)&v4 copyWithZone:a3];
+  return [(EligibilityInput *)&v4 copyWithZone:zone];
 }
 
-- (SharediPadInput)initWithCoder:(id)a3
+- (SharediPadInput)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = SharediPadInput;
-  return [(EligibilityInput *)&v4 initWithCoder:a3];
+  return [(EligibilityInput *)&v4 initWithCoder:coder];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = SharediPadInput;
-  [(EligibilityInput *)&v3 encodeWithCoder:a3];
+  [(EligibilityInput *)&v3 encodeWithCoder:coder];
 }
 
 - (SharediPadInput)init
@@ -96,9 +96,9 @@
 - (BOOL)isSharediPad
 {
   v2 = +[UMUserManager sharedManager];
-  v3 = [v2 isSharedIPad];
+  isSharedIPad = [v2 isSharedIPad];
 
-  return v3;
+  return isSharedIPad;
 }
 
 @end

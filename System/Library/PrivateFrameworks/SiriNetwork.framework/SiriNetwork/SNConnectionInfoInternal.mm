@@ -3,20 +3,20 @@
 - (NSString)connectionId;
 - (id)policy;
 - (id)policyRoute;
-- (void)setConnectionPolicy:(id)a3;
-- (void)setConnectionPolicyRoute:(id)a3;
-- (void)setPolicy:(id)a3;
-- (void)setPolicyRoute:(id)a3;
-- (void)setSkipPeerErrorReason:(id)a3;
+- (void)setConnectionPolicy:(id)policy;
+- (void)setConnectionPolicyRoute:(id)route;
+- (void)setPolicy:(id)policy;
+- (void)setPolicyRoute:(id)route;
+- (void)setSkipPeerErrorReason:(id)reason;
 @end
 
 @implementation SNConnectionInfoInternal
 
-- (void)setConnectionPolicy:(id)a3
+- (void)setConnectionPolicy:(id)policy
 {
-  v5 = a3;
-  v6 = self;
-  ConnectionInfo.connectionPolicy.setter(a3);
+  policyCopy = policy;
+  selfCopy = self;
+  ConnectionInfo.connectionPolicy.setter(policy);
 }
 
 - (id)policy
@@ -26,23 +26,23 @@
   return v0;
 }
 
-- (void)setConnectionPolicyRoute:(id)a3
+- (void)setConnectionPolicyRoute:(id)route
 {
-  v5 = a3;
-  v6 = self;
-  ConnectionInfo.connectionPolicyRoute.setter(a3);
+  routeCopy = route;
+  selfCopy = self;
+  ConnectionInfo.connectionPolicyRoute.setter(route);
 }
 
-- (void)setSkipPeerErrorReason:(id)a3
+- (void)setSkipPeerErrorReason:(id)reason
 {
-  v5 = self;
-  v4 = a3;
-  ConnectionInfo.skipPeerErrorReason.setter(a3);
+  selfCopy = self;
+  reasonCopy = reason;
+  ConnectionInfo.skipPeerErrorReason.setter(reason);
 }
 
 - (NSString)connectionId
 {
-  v2 = self;
+  selfCopy = self;
   v3 = ConnectionInfo.connectionId.getter();
   v5 = v4;
 
@@ -83,18 +83,18 @@
   return v4;
 }
 
-- (void)setPolicy:(id)a3
+- (void)setPolicy:(id)policy
 {
-  v5 = a3;
-  v6 = self;
-  ConnectionInfo.policy.setter(a3);
+  policyCopy = policy;
+  selfCopy = self;
+  ConnectionInfo.policy.setter(policy);
 }
 
-- (void)setPolicyRoute:(id)a3
+- (void)setPolicyRoute:(id)route
 {
-  v5 = a3;
-  v6 = self;
-  ConnectionInfo.policyRoute.setter(a3);
+  routeCopy = route;
+  selfCopy = self;
+  ConnectionInfo.policyRoute.setter(route);
 }
 
 @end

@@ -1,8 +1,8 @@
 @interface _MusicSubscriptionOfferViewController
 - (_MusicSubscriptionOfferViewControllerDelegate)delegate;
 - (_TtCCC17_MusicKit_SwiftUI10MusicAngel6Client14ViewController)childViewController;
-- (void)_loadWithOptions:(id)a3 completionHandler:(id)a4;
-- (void)_setupView:(id)a3;
+- (void)_loadWithOptions:(id)options completionHandler:(id)handler;
+- (void)_setupView:(id)view;
 - (void)viewDidLoad;
 @end
 
@@ -13,8 +13,8 @@
   v4.receiver = self;
   v4.super_class = _MusicSubscriptionOfferViewController;
   [(_MusicSubscriptionOfferViewController *)&v4 viewDidLoad];
-  v3 = [(_MusicSubscriptionOfferViewController *)self view];
-  [(_MusicSubscriptionOfferViewController *)self _setupView:v3];
+  view = [(_MusicSubscriptionOfferViewController *)self view];
+  [(_MusicSubscriptionOfferViewController *)self _setupView:view];
 }
 
 - (_MusicSubscriptionOfferViewControllerDelegate)delegate
@@ -26,22 +26,22 @@
 
 - (_TtCCC17_MusicKit_SwiftUI10MusicAngel6Client14ViewController)childViewController
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_21666C264();
 
   return v3;
 }
 
-- (void)_setupView:(id)a3
+- (void)_setupView:(id)view
 {
-  v4 = a3;
-  v5 = self;
-  sub_21666C510(v4);
+  viewCopy = view;
+  selfCopy = self;
+  sub_21666C510(viewCopy);
 }
 
-- (void)_loadWithOptions:(id)a3 completionHandler:(id)a4
+- (void)_loadWithOptions:(id)options completionHandler:(id)handler
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(handler);
   if (v6)
   {
     v7 = swift_allocObject();
@@ -54,9 +54,9 @@
     v7 = 0;
   }
 
-  v8 = a3;
-  v9 = self;
-  sub_21666C734(v8, v6, v7);
+  optionsCopy = options;
+  selfCopy = self;
+  sub_21666C734(optionsCopy, v6, v7);
   sub_21664D5A4(v6);
 }
 

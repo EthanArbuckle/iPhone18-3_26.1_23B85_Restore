@@ -1,11 +1,11 @@
 @interface NTKAlarmTimelineEntry
-+ (id)companionModelWithDevice:(id)a3;
-- (NTKAlarmTimelineEntry)initWithDevice:(id)a3;
++ (id)companionModelWithDevice:(id)device;
+- (NTKAlarmTimelineEntry)initWithDevice:(id)device;
 - (id)_activeStateTimeRelativeDateTextProvider;
 - (id)_activeStateTimeTextProvider;
-- (id)_circularTemplateForAlarm:(BOOL)a3;
+- (id)_circularTemplateForAlarm:(BOOL)alarm;
 - (id)_extraLargeAlarmInactiveImageProvider;
-- (id)_getAlarmImageProviderWithActiveStatus:(BOOL)a3;
+- (id)_getAlarmImageProviderWithActiveStatus:(BOOL)status;
 - (id)_largeUtilityInactiveImageProvider;
 - (id)_modularSmallAlarmInactiveImageProvider;
 - (id)_newCircularMediumTemplate;
@@ -23,100 +23,100 @@
 - (id)_richCircularMetadata;
 - (id)_snoozeStateDateTextProvider;
 - (id)description;
-- (id)templateForComplicationFamily:(int64_t)a3;
-- (void)_makeAlarmStackTextTimeProvider:(id *)a3 designatorProvider:(id *)a4 designatorExists:(BOOL *)a5 designatorLeads:(BOOL *)a6;
+- (id)templateForComplicationFamily:(int64_t)family;
+- (void)_makeAlarmStackTextTimeProvider:(id *)provider designatorProvider:(id *)designatorProvider designatorExists:(BOOL *)exists designatorLeads:(BOOL *)leads;
 @end
 
 @implementation NTKAlarmTimelineEntry
 
-+ (id)companionModelWithDevice:(id)a3
++ (id)companionModelWithDevice:(id)device
 {
-  v3 = a3;
-  v4 = [[NTKAlarmTimelineEntry alloc] initWithDevice:v3];
+  deviceCopy = device;
+  v4 = [[NTKAlarmTimelineEntry alloc] initWithDevice:deviceCopy];
 
   [(NTKAlarmTimelineEntry *)v4 setEntryType:4];
   v5 = NTKClockFaceLocalizedString(@"ALARMS_TITLE", 0);
   [(NTKAlarmTimelineEntry *)v4 setAlarmLabel:v5];
 
-  v6 = [MEMORY[0x277CBEA80] currentCalendar];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
   v7 = +[(CLKDate *)NTKDate];
-  v8 = [v6 dateBySettingHour:7 minute:0 second:0 ofDate:v7 options:0];
+  v8 = [currentCalendar dateBySettingHour:7 minute:0 second:0 ofDate:v7 options:0];
   [(NTKAlarmTimelineEntry *)v4 setFireDate:v8];
 
   return v4;
 }
 
-- (NTKAlarmTimelineEntry)initWithDevice:(id)a3
+- (NTKAlarmTimelineEntry)initWithDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v9.receiver = self;
   v9.super_class = NTKAlarmTimelineEntry;
   v6 = [(NTKAlarmTimelineEntry *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_device, a3);
+    objc_storeStrong(&v6->_device, device);
   }
 
   return v7;
 }
 
-- (id)templateForComplicationFamily:(int64_t)a3
+- (id)templateForComplicationFamily:(int64_t)family
 {
   v5 = 0;
-  if (a3 > 6)
+  if (family > 6)
   {
-    if (a3 > 9)
+    if (family > 9)
     {
-      switch(a3)
+      switch(family)
       {
         case 10:
-          v6 = [(NTKAlarmTimelineEntry *)self _newSignatureCircularTemplate];
+          _newSignatureCircularTemplate = [(NTKAlarmTimelineEntry *)self _newSignatureCircularTemplate];
           break;
         case 11:
-          v6 = [(NTKAlarmTimelineEntry *)self _newSignatureRectangularTemplate];
+          _newSignatureCircularTemplate = [(NTKAlarmTimelineEntry *)self _newSignatureRectangularTemplate];
           break;
         case 12:
-          v6 = [(NTKAlarmTimelineEntry *)self _newSignatureExtraLargeCircularTemplate];
+          _newSignatureCircularTemplate = [(NTKAlarmTimelineEntry *)self _newSignatureExtraLargeCircularTemplate];
           break;
         default:
           goto LABEL_28;
       }
     }
 
-    else if (a3 == 7)
+    else if (family == 7)
     {
-      v6 = [(NTKAlarmTimelineEntry *)self _newExtraLargeTemplate];
+      _newSignatureCircularTemplate = [(NTKAlarmTimelineEntry *)self _newExtraLargeTemplate];
     }
 
-    else if (a3 == 8)
+    else if (family == 8)
     {
-      v6 = [(NTKAlarmTimelineEntry *)self _newSignatureCornerTemplate];
+      _newSignatureCircularTemplate = [(NTKAlarmTimelineEntry *)self _newSignatureCornerTemplate];
     }
 
     else
     {
-      v6 = [(NTKAlarmTimelineEntry *)self _newSignatureBezelTemplate];
+      _newSignatureCircularTemplate = [(NTKAlarmTimelineEntry *)self _newSignatureBezelTemplate];
     }
 
     goto LABEL_27;
   }
 
-  if (a3 > 2)
+  if (family > 2)
   {
-    if (a3 == 3)
+    if (family == 3)
     {
-      v6 = [(NTKAlarmTimelineEntry *)self _newLargeUtilityTemplate];
+      _newSignatureCircularTemplate = [(NTKAlarmTimelineEntry *)self _newLargeUtilityTemplate];
       goto LABEL_27;
     }
 
-    if (a3 == 4)
+    if (family == 4)
     {
-      v6 = [(NTKAlarmTimelineEntry *)self _newCircularSmallTemplate];
+      _newSignatureCircularTemplate = [(NTKAlarmTimelineEntry *)self _newCircularSmallTemplate];
       goto LABEL_27;
     }
 
-    if (a3 != 6)
+    if (family != 6)
     {
       goto LABEL_28;
     }
@@ -124,62 +124,62 @@
     goto LABEL_14;
   }
 
-  switch(a3)
+  switch(family)
   {
     case 0:
-      v6 = [(NTKAlarmTimelineEntry *)self _newSmallModularTemplate];
+      _newSignatureCircularTemplate = [(NTKAlarmTimelineEntry *)self _newSmallModularTemplate];
       goto LABEL_27;
     case 1:
-      v6 = [(NTKAlarmTimelineEntry *)self _newLargeModularTemplate];
+      _newSignatureCircularTemplate = [(NTKAlarmTimelineEntry *)self _newLargeModularTemplate];
       goto LABEL_27;
     case 2:
 LABEL_14:
-      v6 = [(NTKAlarmTimelineEntry *)self _newSmallFlatUtilityTemplate];
+      _newSignatureCircularTemplate = [(NTKAlarmTimelineEntry *)self _newSmallFlatUtilityTemplate];
 LABEL_27:
-      v5 = v6;
+      v5 = _newSignatureCircularTemplate;
       break;
   }
 
 LABEL_28:
-  if (*MEMORY[0x277CBB668] == a3)
+  if (*MEMORY[0x277CBB668] == family)
   {
-    v7 = [(NTKAlarmTimelineEntry *)self _newCircularMediumTemplate];
+    _newCircularMediumTemplate = [(NTKAlarmTimelineEntry *)self _newCircularMediumTemplate];
 
-    v5 = v7;
+    v5 = _newCircularMediumTemplate;
   }
 
-  v8 = [MEMORY[0x277D75348] systemOrangeColor];
-  [v5 setTintColor:v8];
+  systemOrangeColor = [MEMORY[0x277D75348] systemOrangeColor];
+  [v5 setTintColor:systemOrangeColor];
 
   return v5;
 }
 
 - (id)_newSmallModularTemplate
 {
-  v3 = [(NTKAlarmTimelineEntry *)self entryType];
-  v4 = 0;
-  if (v3 > 2)
+  entryType = [(NTKAlarmTimelineEntry *)self entryType];
+  _modularSmallAlarmInactiveImageProvider = 0;
+  if (entryType > 2)
   {
-    if (v3 != 3)
+    if (entryType != 3)
     {
-      if (v3 == 5)
+      if (entryType == 5)
       {
         if (![(NTKAlarmTimelineEntry *)self _pairedDeviceSupportsComplicationSymbols])
         {
           NTKImageNamed(@"modularAlarmSnoozing");
         }
 
-        v4 = [MEMORY[0x277CBBB98] symbolImageProviderWithSystemName:@"zzz"];
-        v12 = [MEMORY[0x277D75348] systemOrangeColor];
-        [v4 setTintColor:v12];
+        _modularSmallAlarmInactiveImageProvider = [MEMORY[0x277CBBB98] symbolImageProviderWithSystemName:@"zzz"];
+        systemOrangeColor = [MEMORY[0x277D75348] systemOrangeColor];
+        [_modularSmallAlarmInactiveImageProvider setTintColor:systemOrangeColor];
 
-        v11 = [(NTKAlarmTimelineEntry *)self _snoozeStateDateTextProvider];
+        _snoozeStateDateTextProvider = [(NTKAlarmTimelineEntry *)self _snoozeStateDateTextProvider];
       }
 
       else
       {
         v5 = 0;
-        if (v3 != 4)
+        if (entryType != 4)
         {
           goto LABEL_19;
         }
@@ -189,43 +189,43 @@ LABEL_28:
           NTKImageNamed(@"modularAlarmActive");
         }
 
-        v4 = [MEMORY[0x277CBBB98] symbolImageProviderWithSystemName:@"alarm.waves.left.and.right.fill"];
-        v10 = [MEMORY[0x277D75348] systemOrangeColor];
-        [v4 setTintColor:v10];
+        _modularSmallAlarmInactiveImageProvider = [MEMORY[0x277CBBB98] symbolImageProviderWithSystemName:@"alarm.waves.left.and.right.fill"];
+        systemOrangeColor2 = [MEMORY[0x277D75348] systemOrangeColor];
+        [_modularSmallAlarmInactiveImageProvider setTintColor:systemOrangeColor2];
 
-        v11 = [(NTKAlarmTimelineEntry *)self _activeStateTimeTextProvider];
+        _snoozeStateDateTextProvider = [(NTKAlarmTimelineEntry *)self _activeStateTimeTextProvider];
       }
 
-      v5 = v11;
+      v5 = _snoozeStateDateTextProvider;
       goto LABEL_19;
     }
 
 LABEL_11:
-    v4 = [(NTKAlarmTimelineEntry *)self _modularSmallAlarmInactiveImageProvider];
+    _modularSmallAlarmInactiveImageProvider = [(NTKAlarmTimelineEntry *)self _modularSmallAlarmInactiveImageProvider];
     v6 = MEMORY[0x277CBBB88];
     v7 = @"ALARMS_NONE_SMALL";
     v8 = @"NONE";
     goto LABEL_13;
   }
 
-  if (!v3)
+  if (!entryType)
   {
-    v4 = [(NTKAlarmTimelineEntry *)self _modularSmallAlarmInactiveImageProvider];
+    _modularSmallAlarmInactiveImageProvider = [(NTKAlarmTimelineEntry *)self _modularSmallAlarmInactiveImageProvider];
     v6 = MEMORY[0x277CBBB88];
     v7 = @"UNKNOWN_TIME";
     v8 = @"‒‒:‒‒";
     goto LABEL_13;
   }
 
-  if (v3 == 1)
+  if (entryType == 1)
   {
     goto LABEL_11;
   }
 
   v5 = 0;
-  if (v3 == 2)
+  if (entryType == 2)
   {
-    v4 = [(NTKAlarmTimelineEntry *)self _modularSmallAlarmInactiveImageProvider];
+    _modularSmallAlarmInactiveImageProvider = [(NTKAlarmTimelineEntry *)self _modularSmallAlarmInactiveImageProvider];
     v6 = MEMORY[0x277CBBB88];
     v7 = @"ALARMS_OFF_SMALL";
     v8 = @"OFF";
@@ -235,18 +235,18 @@ LABEL_13:
   }
 
 LABEL_19:
-  v13 = [MEMORY[0x277CBBA68] templateWithLine1ImageProvider:v4 line2TextProvider:v5];
+  v13 = [MEMORY[0x277CBBA68] templateWithLine1ImageProvider:_modularSmallAlarmInactiveImageProvider line2TextProvider:v5];
 
   return v13;
 }
 
 - (id)_newLargeModularTemplate
 {
-  v3 = [(NTKAlarmTimelineEntry *)self entryType];
+  entryType = [(NTKAlarmTimelineEntry *)self entryType];
   v4 = 0;
-  if (v3 > 2)
+  if (entryType > 2)
   {
-    if (v3 == 3)
+    if (entryType == 3)
     {
       v18 = MEMORY[0x277CBBB88];
       v19 = NTKClockFaceLocalizedString(@"ALARMS_TITLE", @"Alarm");
@@ -258,19 +258,19 @@ LABEL_19:
       goto LABEL_13;
     }
 
-    if (v3 == 5)
+    if (entryType == 5)
     {
       v24 = MEMORY[0x277CBBB88];
       v25 = NTKClockFaceLocalizedString(@"ALARMS_SNOOZE", @"Snooze");
       v4 = [v24 textProviderWithText:v25];
 
-      v13 = [(NTKAlarmTimelineEntry *)self _snoozeStateDateTextProvider];
+      _snoozeStateDateTextProvider = [(NTKAlarmTimelineEntry *)self _snoozeStateDateTextProvider];
     }
 
     else
     {
       v5 = 0;
-      if (v3 != 4)
+      if (entryType != 4)
       {
         goto LABEL_16;
       }
@@ -279,14 +279,14 @@ LABEL_19:
       v12 = NTKClockFaceLocalizedString(@"ALARMS_TITLE", @"Alarm");
       v4 = [v11 textProviderWithText:v12];
 
-      v13 = [(NTKAlarmTimelineEntry *)self _activeStateTimeTextProvider];
+      _snoozeStateDateTextProvider = [(NTKAlarmTimelineEntry *)self _activeStateTimeTextProvider];
     }
 
-    v5 = v13;
+    v5 = _snoozeStateDateTextProvider;
     goto LABEL_16;
   }
 
-  if (!v3)
+  if (!entryType)
   {
     v14 = MEMORY[0x277CBBB88];
     v15 = NTKClockFaceLocalizedString(@"ALARMS_TITLE", @"Alarm");
@@ -299,7 +299,7 @@ LABEL_19:
     goto LABEL_16;
   }
 
-  if (v3 == 1)
+  if (entryType == 1)
   {
     v20 = MEMORY[0x277CBBB88];
     v21 = NTKClockFaceLocalizedString(@"ALARMS_TITLE", @"Alarm");
@@ -312,7 +312,7 @@ LABEL_19:
   }
 
   v5 = 0;
-  if (v3 != 2)
+  if (entryType != 2)
   {
 LABEL_16:
     v23 = [MEMORY[0x277CBBA20] templateWithHeaderTextProvider:v4 bodyTextProvider:v5];
@@ -337,9 +337,9 @@ LABEL_17:
   return v26;
 }
 
-- (id)_circularTemplateForAlarm:(BOOL)a3
+- (id)_circularTemplateForAlarm:(BOOL)alarm
 {
-  v3 = a3;
+  alarmCopy = alarm;
   v19 = 0;
   v17 = 0;
   v18 = 0;
@@ -349,7 +349,7 @@ LABEL_17:
   v6 = v5;
   if (HIBYTE(v19) != 1 || v4 == 0 || v5 == 0)
   {
-    if (v3)
+    if (alarmCopy)
     {
       v9 = MEMORY[0x277CBB750];
     }
@@ -385,7 +385,7 @@ LABEL_17:
       v12 = v5;
     }
 
-    if (!v3)
+    if (!alarmCopy)
     {
       v11 = 0x277CBB7A8;
     }
@@ -398,53 +398,53 @@ LABEL_17:
   return v15;
 }
 
-- (void)_makeAlarmStackTextTimeProvider:(id *)a3 designatorProvider:(id *)a4 designatorExists:(BOOL *)a5 designatorLeads:(BOOL *)a6
+- (void)_makeAlarmStackTextTimeProvider:(id *)provider designatorProvider:(id *)designatorProvider designatorExists:(BOOL *)exists designatorLeads:(BOOL *)leads
 {
   v18 = objc_opt_new();
-  v11 = [(NTKAlarmTimelineEntry *)self fireDate];
-  [v18 setOverrideDate:v11];
+  fireDate = [(NTKAlarmTimelineEntry *)self fireDate];
+  [v18 setOverrideDate:fireDate];
 
   [v18 _setUseNarrowDesignatorTextForGerman:1];
-  if (a3)
+  if (provider)
   {
     v12 = MEMORY[0x277CBBB88];
-    v13 = [v18 timeText];
-    *a3 = [v12 textProviderWithText:v13];
+    timeText = [v18 timeText];
+    *provider = [v12 textProviderWithText:timeText];
   }
 
-  if (a4)
+  if (designatorProvider)
   {
     v14 = MEMORY[0x277CBBB88];
-    v15 = [v18 designatorText];
-    *a4 = [v14 textProviderWithText:v15];
+    designatorText = [v18 designatorText];
+    *designatorProvider = [v14 textProviderWithText:designatorText];
   }
 
   v16 = v18;
-  if (a5)
+  if (exists)
   {
-    *a5 = [v18 timeAndDesignatorTextHasDesignator];
+    *exists = [v18 timeAndDesignatorTextHasDesignator];
     v16 = v18;
   }
 
-  if (a6)
+  if (leads)
   {
-    v17 = [v16 timeAndDesignatorTextHasDesignator];
-    if (v17)
+    timeAndDesignatorTextHasDesignator = [v16 timeAndDesignatorTextHasDesignator];
+    if (timeAndDesignatorTextHasDesignator)
     {
-      LOBYTE(v17) = [v18 timeAndDesignatorTextStartsWithDesignator];
+      LOBYTE(timeAndDesignatorTextHasDesignator) = [v18 timeAndDesignatorTextStartsWithDesignator];
     }
 
-    *a6 = v17;
+    *leads = timeAndDesignatorTextHasDesignator;
     v16 = v18;
   }
 }
 
 - (id)_newCircularSmallTemplate
 {
-  v3 = [(NTKAlarmTimelineEntry *)self entryType];
-  if (v3 >= 4)
+  entryType = [(NTKAlarmTimelineEntry *)self entryType];
+  if (entryType >= 4)
   {
-    if (v3 == 5)
+    if (entryType == 5)
     {
       if (![(NTKAlarmTimelineEntry *)self _pairedDeviceSupportsComplicationSymbols])
       {
@@ -452,14 +452,14 @@ LABEL_17:
       }
 
       v8 = [MEMORY[0x277CBBB98] symbolImageProviderWithSystemName:@"zzz"];
-      v9 = [MEMORY[0x277D75348] systemOrangeColor];
-      [v8 setTintColor:v9];
+      systemOrangeColor = [MEMORY[0x277D75348] systemOrangeColor];
+      [v8 setTintColor:systemOrangeColor];
 
-      v10 = [(NTKAlarmTimelineEntry *)self _snoozeStateDateTextProvider];
-      v6 = [MEMORY[0x277CBB7A0] templateWithLine1ImageProvider:v8 line2TextProvider:v10];
+      _snoozeStateDateTextProvider = [(NTKAlarmTimelineEntry *)self _snoozeStateDateTextProvider];
+      v6 = [MEMORY[0x277CBB7A0] templateWithLine1ImageProvider:v8 line2TextProvider:_snoozeStateDateTextProvider];
     }
 
-    else if (v3 == 4)
+    else if (entryType == 4)
     {
       [(NTKAlarmTimelineEntry *)self _circularTemplateForAlarm:0];
       return objc_claimAutoreleasedReturnValue();
@@ -479,8 +479,8 @@ LABEL_17:
     }
 
     v4 = [MEMORY[0x277CBBB98] symbolImageProviderWithSystemName:@"alarm"];
-    v5 = [MEMORY[0x277D75348] systemOrangeColor];
-    [v4 setTintColor:v5];
+    systemOrangeColor2 = [MEMORY[0x277D75348] systemOrangeColor];
+    [v4 setTintColor:systemOrangeColor2];
 
     v6 = [MEMORY[0x277CBB790] templateWithImageProvider:v4];
   }
@@ -490,10 +490,10 @@ LABEL_17:
 
 - (id)_newCircularMediumTemplate
 {
-  v3 = [(NTKAlarmTimelineEntry *)self entryType];
-  if (v3 >= 4)
+  entryType = [(NTKAlarmTimelineEntry *)self entryType];
+  if (entryType >= 4)
   {
-    if (v3 == 5)
+    if (entryType == 5)
     {
       if (![(NTKAlarmTimelineEntry *)self _pairedDeviceSupportsComplicationSymbols])
       {
@@ -501,14 +501,14 @@ LABEL_17:
       }
 
       v8 = [MEMORY[0x277CBBB98] symbolImageProviderWithSystemName:@"zzz"];
-      v9 = [MEMORY[0x277D75348] systemOrangeColor];
-      [v8 setTintColor:v9];
+      systemOrangeColor = [MEMORY[0x277D75348] systemOrangeColor];
+      [v8 setTintColor:systemOrangeColor];
 
-      v10 = [(NTKAlarmTimelineEntry *)self _snoozeStateDateTextProvider];
-      v6 = [MEMORY[0x277CBB758] templateWithLine1ImageProvider:v8 line2TextProvider:v10];
+      _snoozeStateDateTextProvider = [(NTKAlarmTimelineEntry *)self _snoozeStateDateTextProvider];
+      v6 = [MEMORY[0x277CBB758] templateWithLine1ImageProvider:v8 line2TextProvider:_snoozeStateDateTextProvider];
     }
 
-    else if (v3 == 4)
+    else if (entryType == 4)
     {
       [(NTKAlarmTimelineEntry *)self _circularTemplateForAlarm:1];
       return objc_claimAutoreleasedReturnValue();
@@ -528,8 +528,8 @@ LABEL_17:
     }
 
     v4 = [MEMORY[0x277CBBB98] symbolImageProviderWithSystemName:@"alarm"];
-    v5 = [MEMORY[0x277D75348] systemOrangeColor];
-    [v4 setTintColor:v5];
+    systemOrangeColor2 = [MEMORY[0x277D75348] systemOrangeColor];
+    [v4 setTintColor:systemOrangeColor2];
 
     v6 = [MEMORY[0x277CBB748] templateWithImageProvider:v4];
   }
@@ -539,13 +539,13 @@ LABEL_17:
 
 - (id)_newSmallFlatUtilityTemplate
 {
-  v3 = [(NTKAlarmTimelineEntry *)self entryType];
+  entryType = [(NTKAlarmTimelineEntry *)self entryType];
   v4 = 0;
-  if (v3 > 2)
+  if (entryType > 2)
   {
-    if (v3 != 3)
+    if (entryType != 3)
     {
-      if (v3 == 5)
+      if (entryType == 5)
       {
         if (![(NTKAlarmTimelineEntry *)self _pairedDeviceSupportsComplicationSymbols])
         {
@@ -553,16 +553,16 @@ LABEL_17:
         }
 
         v4 = [MEMORY[0x277CBBB98] symbolImageProviderWithSystemName:@"zzz"];
-        v15 = [MEMORY[0x277D75348] systemOrangeColor];
-        [v4 setTintColor:v15];
+        systemOrangeColor = [MEMORY[0x277D75348] systemOrangeColor];
+        [v4 setTintColor:systemOrangeColor];
 
-        v12 = [(NTKAlarmTimelineEntry *)self _snoozeStateDateTextProvider];
+        _snoozeStateDateTextProvider = [(NTKAlarmTimelineEntry *)self _snoozeStateDateTextProvider];
       }
 
       else
       {
         v5 = 0;
-        if (v3 != 4)
+        if (entryType != 4)
         {
           goto LABEL_27;
         }
@@ -573,13 +573,13 @@ LABEL_17:
         }
 
         v4 = [MEMORY[0x277CBBB98] symbolImageProviderWithSystemName:@"alarm.waves.left.and.right.fill"];
-        v11 = [MEMORY[0x277D75348] systemOrangeColor];
-        [v4 setTintColor:v11];
+        systemOrangeColor2 = [MEMORY[0x277D75348] systemOrangeColor];
+        [v4 setTintColor:systemOrangeColor2];
 
-        v12 = [(NTKAlarmTimelineEntry *)self _activeStateTimeTextProvider];
+        _snoozeStateDateTextProvider = [(NTKAlarmTimelineEntry *)self _activeStateTimeTextProvider];
       }
 
-      v5 = v12;
+      v5 = _snoozeStateDateTextProvider;
       goto LABEL_27;
     }
 
@@ -590,8 +590,8 @@ LABEL_17:
 
 LABEL_17:
     v4 = [MEMORY[0x277CBBB98] symbolImageProviderWithSystemName:@"alarm"];
-    v13 = [MEMORY[0x277D75348] systemOrangeColor];
-    [v4 setTintColor:v13];
+    systemOrangeColor3 = [MEMORY[0x277D75348] systemOrangeColor];
+    [v4 setTintColor:systemOrangeColor3];
 
     v8 = MEMORY[0x277CBBB88];
     v9 = @"ALARMS_NONE_SMALL";
@@ -603,7 +603,7 @@ LABEL_24:
     goto LABEL_27;
   }
 
-  if (!v3)
+  if (!entryType)
   {
     if (![(NTKAlarmTimelineEntry *)self _pairedDeviceSupportsComplicationSymbols])
     {
@@ -611,8 +611,8 @@ LABEL_24:
     }
 
     v4 = [MEMORY[0x277CBBB98] symbolImageProviderWithSystemName:@"alarm"];
-    v6 = [MEMORY[0x277D75348] systemOrangeColor];
-    [v4 setTintColor:v6];
+    systemOrangeColor4 = [MEMORY[0x277D75348] systemOrangeColor];
+    [v4 setTintColor:systemOrangeColor4];
 
     v8 = MEMORY[0x277CBBB88];
     v9 = @"UNKNOWN_TIME";
@@ -620,7 +620,7 @@ LABEL_24:
     goto LABEL_24;
   }
 
-  if (v3 == 1)
+  if (entryType == 1)
   {
     if (![(NTKAlarmTimelineEntry *)self _pairedDeviceSupportsComplicationSymbols])
     {
@@ -631,7 +631,7 @@ LABEL_24:
   }
 
   v5 = 0;
-  if (v3 == 2)
+  if (entryType == 2)
   {
     if (![(NTKAlarmTimelineEntry *)self _pairedDeviceSupportsComplicationSymbols])
     {
@@ -639,8 +639,8 @@ LABEL_24:
     }
 
     v4 = [MEMORY[0x277CBBB98] symbolImageProviderWithSystemName:@"alarm"];
-    v7 = [MEMORY[0x277D75348] systemOrangeColor];
-    [v4 setTintColor:v7];
+    systemOrangeColor5 = [MEMORY[0x277D75348] systemOrangeColor];
+    [v4 setTintColor:systemOrangeColor5];
 
     v8 = MEMORY[0x277CBBB88];
     v9 = @"ALARMS_OFF_SMALL";
@@ -656,30 +656,30 @@ LABEL_27:
 
 - (id)_newLargeUtilityTemplate
 {
-  v3 = [(NTKAlarmTimelineEntry *)self entryType];
-  v4 = 0;
-  if (v3 > 2)
+  entryType = [(NTKAlarmTimelineEntry *)self entryType];
+  _largeUtilityInactiveImageProvider = 0;
+  if (entryType > 2)
   {
-    if (v3 != 3)
+    if (entryType != 3)
     {
-      if (v3 == 5)
+      if (entryType == 5)
       {
         if (![(NTKAlarmTimelineEntry *)self _pairedDeviceSupportsComplicationSymbols])
         {
           NTKImageNamed(@"analogAlarmSnooze");
         }
 
-        v4 = [MEMORY[0x277CBBB98] symbolImageProviderWithSystemName:@"zzz"];
-        v14 = [MEMORY[0x277D75348] systemOrangeColor];
-        [v4 setTintColor:v14];
+        _largeUtilityInactiveImageProvider = [MEMORY[0x277CBBB98] symbolImageProviderWithSystemName:@"zzz"];
+        systemOrangeColor = [MEMORY[0x277D75348] systemOrangeColor];
+        [_largeUtilityInactiveImageProvider setTintColor:systemOrangeColor];
 
-        v13 = [(NTKAlarmTimelineEntry *)self _snoozeStateDateTextProvider];
+        _snoozeStateDateTextProvider = [(NTKAlarmTimelineEntry *)self _snoozeStateDateTextProvider];
       }
 
       else
       {
         v5 = 0;
-        if (v3 != 4)
+        if (entryType != 4)
         {
           goto LABEL_21;
         }
@@ -689,18 +689,18 @@ LABEL_27:
           NTKImageNamed(@"analogAlarmActive");
         }
 
-        v4 = [MEMORY[0x277CBBB98] symbolImageProviderWithSystemName:@"alarm.waves.left.and.right.fill"];
-        v12 = [MEMORY[0x277D75348] systemOrangeColor];
-        [v4 setTintColor:v12];
+        _largeUtilityInactiveImageProvider = [MEMORY[0x277CBBB98] symbolImageProviderWithSystemName:@"alarm.waves.left.and.right.fill"];
+        systemOrangeColor2 = [MEMORY[0x277D75348] systemOrangeColor];
+        [_largeUtilityInactiveImageProvider setTintColor:systemOrangeColor2];
 
-        v13 = [(NTKAlarmTimelineEntry *)self _activeStateTimeTextProvider];
+        _snoozeStateDateTextProvider = [(NTKAlarmTimelineEntry *)self _activeStateTimeTextProvider];
       }
 
-      v5 = v13;
+      v5 = _snoozeStateDateTextProvider;
       goto LABEL_21;
     }
 
-    v4 = [(NTKAlarmTimelineEntry *)self _largeUtilityInactiveImageProvider];
+    _largeUtilityInactiveImageProvider = [(NTKAlarmTimelineEntry *)self _largeUtilityInactiveImageProvider];
     v9 = MEMORY[0x277CBBB88];
     v10 = @"ALARMS_NOT_UPCOMING_LARGE_ALL_CAPS";
     v11 = @"NONE UPCOMING";
@@ -710,18 +710,18 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if (!v3)
+  if (!entryType)
   {
-    v4 = [(NTKAlarmTimelineEntry *)self _largeUtilityInactiveImageProvider];
+    _largeUtilityInactiveImageProvider = [(NTKAlarmTimelineEntry *)self _largeUtilityInactiveImageProvider];
     v9 = MEMORY[0x277CBBB88];
     v10 = @"UNKNOWN_TIME";
     v11 = @"‒‒:‒‒";
     goto LABEL_14;
   }
 
-  if (v3 == 1)
+  if (entryType == 1)
   {
-    v4 = [(NTKAlarmTimelineEntry *)self _largeUtilityInactiveImageProvider];
+    _largeUtilityInactiveImageProvider = [(NTKAlarmTimelineEntry *)self _largeUtilityInactiveImageProvider];
     v9 = MEMORY[0x277CBBB88];
     v10 = @"ALARMS_NONE_LARGE_ALL_CAPS";
     v11 = @"NO ALARMS";
@@ -729,9 +729,9 @@ LABEL_14:
   }
 
   v5 = 0;
-  if (v3 == 2)
+  if (entryType == 2)
   {
-    v4 = [(NTKAlarmTimelineEntry *)self _largeUtilityInactiveImageProvider];
+    _largeUtilityInactiveImageProvider = [(NTKAlarmTimelineEntry *)self _largeUtilityInactiveImageProvider];
     v6 = MEMORY[0x277CBBB88];
     v7 = NTKClockFaceLocalizedString(@"ALARMS_OFF_LARGE_ALL_CAPS", @"ALL ALARMS OFF");
     v8 = NTKClockFaceLocalizedString(@"ALARMS_OFF_LARGE_ALL_CAPS_SHORT", @"ALARMS OFF");
@@ -741,37 +741,37 @@ LABEL_15:
   }
 
 LABEL_21:
-  v15 = [MEMORY[0x277CBBA80] templateWithTextProvider:v5 imageProvider:v4];
+  v15 = [MEMORY[0x277CBBA80] templateWithTextProvider:v5 imageProvider:_largeUtilityInactiveImageProvider];
 
   return v15;
 }
 
 - (id)_newExtraLargeTemplate
 {
-  v3 = [(NTKAlarmTimelineEntry *)self entryType];
-  v4 = 0;
-  if (v3 > 2)
+  entryType = [(NTKAlarmTimelineEntry *)self entryType];
+  _extraLargeAlarmInactiveImageProvider = 0;
+  if (entryType > 2)
   {
-    if (v3 != 3)
+    if (entryType != 3)
     {
-      if (v3 == 5)
+      if (entryType == 5)
       {
         if (![(NTKAlarmTimelineEntry *)self _pairedDeviceSupportsComplicationSymbols])
         {
           NTKImageNamed(@"XLmodularAlarmSnoozing");
         }
 
-        v4 = [MEMORY[0x277CBBB98] symbolImageProviderWithSystemName:@"zzz"];
-        v12 = [MEMORY[0x277D75348] systemOrangeColor];
-        [v4 setTintColor:v12];
+        _extraLargeAlarmInactiveImageProvider = [MEMORY[0x277CBBB98] symbolImageProviderWithSystemName:@"zzz"];
+        systemOrangeColor = [MEMORY[0x277D75348] systemOrangeColor];
+        [_extraLargeAlarmInactiveImageProvider setTintColor:systemOrangeColor];
 
-        v11 = [(NTKAlarmTimelineEntry *)self _snoozeStateDateTextProvider];
+        _snoozeStateDateTextProvider = [(NTKAlarmTimelineEntry *)self _snoozeStateDateTextProvider];
       }
 
       else
       {
         v5 = 0;
-        if (v3 != 4)
+        if (entryType != 4)
         {
           goto LABEL_19;
         }
@@ -781,43 +781,43 @@ LABEL_21:
           NTKImageNamed(@"XLmodularAlarmActive");
         }
 
-        v4 = [MEMORY[0x277CBBB98] symbolImageProviderWithSystemName:@"alarm.waves.left.and.right.fill"];
-        v10 = [MEMORY[0x277D75348] systemOrangeColor];
-        [v4 setTintColor:v10];
+        _extraLargeAlarmInactiveImageProvider = [MEMORY[0x277CBBB98] symbolImageProviderWithSystemName:@"alarm.waves.left.and.right.fill"];
+        systemOrangeColor2 = [MEMORY[0x277D75348] systemOrangeColor];
+        [_extraLargeAlarmInactiveImageProvider setTintColor:systemOrangeColor2];
 
-        v11 = [(NTKAlarmTimelineEntry *)self _activeStateTimeTextProvider];
+        _snoozeStateDateTextProvider = [(NTKAlarmTimelineEntry *)self _activeStateTimeTextProvider];
       }
 
-      v5 = v11;
+      v5 = _snoozeStateDateTextProvider;
       goto LABEL_19;
     }
 
 LABEL_11:
-    v4 = [(NTKAlarmTimelineEntry *)self _extraLargeAlarmInactiveImageProvider];
+    _extraLargeAlarmInactiveImageProvider = [(NTKAlarmTimelineEntry *)self _extraLargeAlarmInactiveImageProvider];
     v6 = MEMORY[0x277CBBB88];
     v7 = @"ALARMS_NONE_SMALL";
     v8 = @"NONE";
     goto LABEL_13;
   }
 
-  if (!v3)
+  if (!entryType)
   {
-    v4 = [(NTKAlarmTimelineEntry *)self _extraLargeAlarmInactiveImageProvider];
+    _extraLargeAlarmInactiveImageProvider = [(NTKAlarmTimelineEntry *)self _extraLargeAlarmInactiveImageProvider];
     v6 = MEMORY[0x277CBBB88];
     v7 = @"UNKNOWN_TIME";
     v8 = @"‒‒:‒‒";
     goto LABEL_13;
   }
 
-  if (v3 == 1)
+  if (entryType == 1)
   {
     goto LABEL_11;
   }
 
   v5 = 0;
-  if (v3 == 2)
+  if (entryType == 2)
   {
-    v4 = [(NTKAlarmTimelineEntry *)self _extraLargeAlarmInactiveImageProvider];
+    _extraLargeAlarmInactiveImageProvider = [(NTKAlarmTimelineEntry *)self _extraLargeAlarmInactiveImageProvider];
     v6 = MEMORY[0x277CBBB88];
     v7 = @"ALARMS_OFF_SMALL";
     v8 = @"OFF";
@@ -827,31 +827,31 @@ LABEL_13:
   }
 
 LABEL_19:
-  v13 = [MEMORY[0x277CBB800] templateWithLine1ImageProvider:v4 line2TextProvider:v5];
+  v13 = [MEMORY[0x277CBB800] templateWithLine1ImageProvider:_extraLargeAlarmInactiveImageProvider line2TextProvider:v5];
 
   return v13;
 }
 
 - (id)_newSignatureCornerTemplate
 {
-  v3 = [(NTKAlarmTimelineEntry *)self entryType];
+  entryType = [(NTKAlarmTimelineEntry *)self entryType];
   v4 = 0;
-  if (v3 > 2)
+  if (entryType > 2)
   {
-    if (v3 != 3)
+    if (entryType != 3)
     {
-      if (v3 == 5)
+      if (entryType == 5)
       {
         v4 = [(NTKAlarmTimelineEntry *)self _getAlarmImageProviderWithActiveStatus:1];
         v10 = MEMORY[0x277CBBBA0];
         v7 = NTKClockFaceLocalizedString(@"SNOOZING_LABEL_CORNER_FORMAT", @"SNOOZING %@");
-        v11 = [(NTKAlarmTimelineEntry *)self _snoozeStateDateTextProvider];
+        _snoozeStateDateTextProvider = [(NTKAlarmTimelineEntry *)self _snoozeStateDateTextProvider];
       }
 
       else
       {
         v5 = 0;
-        if (v3 != 4)
+        if (entryType != 4)
         {
           goto LABEL_18;
         }
@@ -859,11 +859,11 @@ LABEL_19:
         v4 = [(NTKAlarmTimelineEntry *)self _getAlarmImageProviderWithActiveStatus:1];
         v10 = MEMORY[0x277CBBBA0];
         v7 = NTKClockFaceLocalizedString(@"ALARM_LABEL_CORNER_FORMAT", @"ALARM %@");
-        v11 = [(NTKAlarmTimelineEntry *)self _activeStateTimeTextProvider];
+        _snoozeStateDateTextProvider = [(NTKAlarmTimelineEntry *)self _activeStateTimeTextProvider];
       }
 
-      v8 = v11;
-      v9 = [v10 textProviderWithFormat:v7, v11];
+      v8 = _snoozeStateDateTextProvider;
+      v9 = [v10 textProviderWithFormat:v7, _snoozeStateDateTextProvider];
       goto LABEL_16;
     }
 
@@ -879,7 +879,7 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  if (!v3)
+  if (!entryType)
   {
     v4 = [(NTKAlarmTimelineEntry *)self _getAlarmImageProviderWithActiveStatus:0];
     v12 = MEMORY[0x277CBBB88];
@@ -888,7 +888,7 @@ LABEL_17:
     goto LABEL_13;
   }
 
-  if (v3 == 1)
+  if (entryType == 1)
   {
     v4 = [(NTKAlarmTimelineEntry *)self _getAlarmImageProviderWithActiveStatus:0];
     v12 = MEMORY[0x277CBBB88];
@@ -898,7 +898,7 @@ LABEL_17:
   }
 
   v5 = 0;
-  if (v3 == 2)
+  if (entryType == 2)
   {
     v4 = [(NTKAlarmTimelineEntry *)self _getAlarmImageProviderWithActiveStatus:0];
     v6 = MEMORY[0x277CBBB88];
@@ -912,33 +912,33 @@ LABEL_16:
   }
 
 LABEL_18:
-  v15 = [MEMORY[0x277D75348] systemOrangeColor];
-  [v5 setTintColor:v15];
+  systemOrangeColor = [MEMORY[0x277D75348] systemOrangeColor];
+  [v5 setTintColor:systemOrangeColor];
 
   v16 = [MEMORY[0x277CBB908] templateWithTextProvider:v5 imageProvider:v4];
 
   return v16;
 }
 
-- (id)_getAlarmImageProviderWithActiveStatus:(BOOL)a3
+- (id)_getAlarmImageProviderWithActiveStatus:(BOOL)status
 {
-  v3 = a3;
+  statusCopy = status;
   v19[2] = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (status)
   {
-    v5 = [MEMORY[0x277D75348] systemOrangeColor];
-    v19[0] = v5;
-    v6 = [MEMORY[0x277D75348] whiteColor];
-    v19[1] = v6;
+    systemOrangeColor = [MEMORY[0x277D75348] systemOrangeColor];
+    v19[0] = systemOrangeColor;
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    v19[1] = whiteColor;
     v7 = v19;
   }
 
   else
   {
-    v5 = [MEMORY[0x277D75348] whiteColor];
-    v18[0] = v5;
-    v6 = [MEMORY[0x277D75348] systemOrangeColor];
-    v18[1] = v6;
+    systemOrangeColor = [MEMORY[0x277D75348] whiteColor];
+    v18[0] = systemOrangeColor;
+    whiteColor = [MEMORY[0x277D75348] systemOrangeColor];
+    v18[1] = whiteColor;
     v7 = v18;
   }
 
@@ -954,7 +954,7 @@ LABEL_18:
     NTKImageNamed(@"fullColorAnalogAlarm");
   }
 
-  if (v3)
+  if (statusCopy)
   {
     v14 = v12;
   }
@@ -973,61 +973,61 @@ LABEL_18:
 - (id)_richCircularMetadata
 {
   v19[1] = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = [(NTKAlarmTimelineEntry *)self entryType];
-  if (v4 == 4)
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  entryType = [(NTKAlarmTimelineEntry *)self entryType];
+  if (entryType == 4)
   {
-    [v3 setObject:@"NTKAlarmComplicationMetadataStateValue_Set" forKeyedSubscript:@"NTKAlarmComplicationMetadataStateKey"];
+    [dictionary setObject:@"NTKAlarmComplicationMetadataStateValue_Set" forKeyedSubscript:@"NTKAlarmComplicationMetadataStateKey"];
     v18 = 0;
     v16 = 0;
     v17 = 0;
     [(NTKAlarmTimelineEntry *)self _makeAlarmStackTextTimeProvider:&v17 designatorProvider:&v16 designatorExists:&v18 + 1 designatorLeads:&v18];
-    v6 = v17;
+    snoozeDate = v17;
     v12 = v16;
-    [v3 setObject:v6 forKeyedSubscript:@"NTKAlarmComplicationMetadataTimeTextProviderKey"];
-    [v3 setObject:v12 forKeyedSubscript:@"NTKAlarmComplicationMetadataDesignatorTextProviderKey"];
+    [dictionary setObject:snoozeDate forKeyedSubscript:@"NTKAlarmComplicationMetadataTimeTextProviderKey"];
+    [dictionary setObject:v12 forKeyedSubscript:@"NTKAlarmComplicationMetadataDesignatorTextProviderKey"];
 
     v13 = [MEMORY[0x277CCABB0] numberWithBool:HIBYTE(v18)];
-    [v3 setObject:v13 forKeyedSubscript:@"NTKAlarmComplicationMetadataDesignatorExistsKey"];
+    [dictionary setObject:v13 forKeyedSubscript:@"NTKAlarmComplicationMetadataDesignatorExistsKey"];
 
     v14 = [MEMORY[0x277CCABB0] numberWithBool:v18];
-    [v3 setObject:v14 forKeyedSubscript:@"NTKAlarmComplicationMetadataDesignatorLeadsKey"];
+    [dictionary setObject:v14 forKeyedSubscript:@"NTKAlarmComplicationMetadataDesignatorLeadsKey"];
 
-    [v3 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277CBB6E8]];
+    [dictionary setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277CBB6E8]];
     goto LABEL_5;
   }
 
-  if (v4 == 5)
+  if (entryType == 5)
   {
-    [v3 setObject:@"NTKAlarmComplicationMetadataStateValue_Snooze" forKeyedSubscript:@"NTKAlarmComplicationMetadataStateKey"];
-    v5 = [(NTKAlarmTimelineEntry *)self _snoozeStateDateTextProvider];
-    [v3 setObject:v5 forKeyedSubscript:@"NTKAlarmComplicationMetadataTimeTextProviderKey"];
+    [dictionary setObject:@"NTKAlarmComplicationMetadataStateValue_Snooze" forKeyedSubscript:@"NTKAlarmComplicationMetadataStateKey"];
+    _snoozeStateDateTextProvider = [(NTKAlarmTimelineEntry *)self _snoozeStateDateTextProvider];
+    [dictionary setObject:_snoozeStateDateTextProvider forKeyedSubscript:@"NTKAlarmComplicationMetadataTimeTextProviderKey"];
 
-    v6 = [(NTKAlarmTimelineEntry *)self snoozeDate];
-    v7 = [v6 dateByAddingTimeInterval:-540.0];
+    snoozeDate = [(NTKAlarmTimelineEntry *)self snoozeDate];
+    v7 = [snoozeDate dateByAddingTimeInterval:-540.0];
     v8 = MEMORY[0x277CBBBB0];
-    v9 = [MEMORY[0x277D75348] systemOrangeColor];
-    v19[0] = v9;
+    systemOrangeColor = [MEMORY[0x277D75348] systemOrangeColor];
+    v19[0] = systemOrangeColor;
     v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v19 count:1];
-    v11 = [v8 gaugeProviderWithStyle:1 gaugeColors:v10 gaugeColorLocations:0 startDate:v7 endDate:v6];
-    [v3 setObject:v11 forKeyedSubscript:@"NTKAlarmComplicationMetadataGaugeProviderKey"];
+    v11 = [v8 gaugeProviderWithStyle:1 gaugeColors:v10 gaugeColorLocations:0 startDate:v7 endDate:snoozeDate];
+    [dictionary setObject:v11 forKeyedSubscript:@"NTKAlarmComplicationMetadataGaugeProviderKey"];
 
 LABEL_5:
     goto LABEL_7;
   }
 
-  [v3 setObject:@"NTKAlarmComplicationMetadataStateValue_Idle" forKeyedSubscript:@"NTKAlarmComplicationMetadataStateKey"];
-  [v3 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277CBB6E8]];
+  [dictionary setObject:@"NTKAlarmComplicationMetadataStateValue_Idle" forKeyedSubscript:@"NTKAlarmComplicationMetadataStateKey"];
+  [dictionary setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277CBB6E8]];
 LABEL_7:
 
-  return v3;
+  return dictionary;
 }
 
 - (id)_newSignatureCircularTemplate
 {
   v2 = MEMORY[0x277CBB858];
-  v3 = [(NTKAlarmTimelineEntry *)self _richCircularMetadata];
-  v4 = [v2 templateWithMetadata:v3];
+  _richCircularMetadata = [(NTKAlarmTimelineEntry *)self _richCircularMetadata];
+  v4 = [v2 templateWithMetadata:_richCircularMetadata];
 
   return v4;
 }
@@ -1035,8 +1035,8 @@ LABEL_7:
 - (id)_newSignatureExtraLargeCircularTemplate
 {
   v2 = MEMORY[0x277CBB940];
-  v3 = [(NTKAlarmTimelineEntry *)self _richCircularMetadata];
-  v4 = [v2 templateWithMetadata:v3];
+  _richCircularMetadata = [(NTKAlarmTimelineEntry *)self _richCircularMetadata];
+  v4 = [v2 templateWithMetadata:_richCircularMetadata];
 
   return v4;
 }
@@ -1044,20 +1044,20 @@ LABEL_7:
 - (id)_newSignatureBezelTemplate
 {
   v2 = MEMORY[0x277CBB810];
-  v3 = [(NTKAlarmTimelineEntry *)self _newSignatureCircularTemplate];
-  v4 = [v2 templateWithCircularTemplate:v3];
+  _newSignatureCircularTemplate = [(NTKAlarmTimelineEntry *)self _newSignatureCircularTemplate];
+  v4 = [v2 templateWithCircularTemplate:_newSignatureCircularTemplate];
 
   return v4;
 }
 
 - (id)_newSignatureRectangularTemplate
 {
-  v3 = [(NTKAlarmTimelineEntry *)self entryType];
-  if (v3 > 2)
+  entryType = [(NTKAlarmTimelineEntry *)self entryType];
+  if (entryType > 2)
   {
-    if (v3 != 3)
+    if (entryType != 3)
     {
-      if (v3 == 5)
+      if (entryType == 5)
       {
         v8 = MEMORY[0x277CBBB88];
         v9 = NTKClockFaceLocalizedString(@"ALARMS_SNOOZE", @"Snooze");
@@ -1068,7 +1068,7 @@ LABEL_7:
         objc_claimAutoreleasedReturnValue();
       }
 
-      else if (v3 == 4)
+      else if (entryType == 4)
       {
         [(NTKAlarmTimelineEntry *)self _activeStateTimeTextProvider];
         objc_claimAutoreleasedReturnValue();
@@ -1085,9 +1085,9 @@ LABEL_15:
     v6 = @"None upcoming";
   }
 
-  else if (v3)
+  else if (entryType)
   {
-    if (v3 == 1)
+    if (entryType == 1)
     {
       v4 = MEMORY[0x277CBBB88];
       v5 = @"ALARMS_NONE_LARGE";
@@ -1096,7 +1096,7 @@ LABEL_15:
 
     else
     {
-      if (v3 != 2)
+      if (entryType != 2)
       {
         goto LABEL_15;
       }
@@ -1124,8 +1124,8 @@ LABEL_15:
 - (id)_activeStateTimeTextProvider
 {
   v2 = MEMORY[0x277CBBBB8];
-  v3 = [(NTKAlarmTimelineEntry *)self fireDate];
-  v4 = [v2 textProviderWithDate:v3];
+  fireDate = [(NTKAlarmTimelineEntry *)self fireDate];
+  v4 = [v2 textProviderWithDate:fireDate];
 
   [v4 setDisallowBothMinutesAndDesignator:0];
 
@@ -1135,8 +1135,8 @@ LABEL_15:
 - (id)_activeStateTimeRelativeDateTextProvider
 {
   v2 = MEMORY[0x277CBBB60];
-  v3 = [(NTKAlarmTimelineEntry *)self fireDate];
-  v4 = [v2 textProviderWithDate:v3 style:0 units:96];
+  fireDate = [(NTKAlarmTimelineEntry *)self fireDate];
+  v4 = [v2 textProviderWithDate:fireDate style:0 units:96];
 
   return v4;
 }
@@ -1144,8 +1144,8 @@ LABEL_15:
 - (id)_snoozeStateDateTextProvider
 {
   v2 = MEMORY[0x277CBBB60];
-  v3 = [(NTKAlarmTimelineEntry *)self snoozeDate];
-  v4 = [v2 textProviderWithDate:v3 style:2 units:224];
+  snoozeDate = [(NTKAlarmTimelineEntry *)self snoozeDate];
+  v4 = [v2 textProviderWithDate:snoozeDate style:2 units:224];
 
   return v4;
 }
@@ -1157,9 +1157,9 @@ LABEL_15:
   v5[2] = __64__NTKAlarmTimelineEntry__modularSmallAlarmInactiveImageProvider__block_invoke;
   v5[3] = &unk_27877DDA0;
   v5[4] = self;
-  v2 = [MEMORY[0x277CBBB68] sharedRenderingContext];
-  v3 = [v2 device];
-  __64__NTKAlarmTimelineEntry__modularSmallAlarmInactiveImageProvider__block_invoke(v5, v3);
+  mEMORY[0x277CBBB68] = [MEMORY[0x277CBBB68] sharedRenderingContext];
+  device = [mEMORY[0x277CBBB68] device];
+  __64__NTKAlarmTimelineEntry__modularSmallAlarmInactiveImageProvider__block_invoke(v5, device);
 
   return _modularSmallAlarmInactiveImageProvider_glyphImageProvider;
 }
@@ -1229,9 +1229,9 @@ void __64__NTKAlarmTimelineEntry__modularSmallAlarmInactiveImageProvider__block_
   v5[2] = __62__NTKAlarmTimelineEntry__extraLargeAlarmInactiveImageProvider__block_invoke;
   v5[3] = &unk_27877DDA0;
   v5[4] = self;
-  v2 = [MEMORY[0x277CBBB68] sharedRenderingContext];
-  v3 = [v2 device];
-  __62__NTKAlarmTimelineEntry__extraLargeAlarmInactiveImageProvider__block_invoke(v5, v3);
+  mEMORY[0x277CBBB68] = [MEMORY[0x277CBBB68] sharedRenderingContext];
+  device = [mEMORY[0x277CBBB68] device];
+  __62__NTKAlarmTimelineEntry__extraLargeAlarmInactiveImageProvider__block_invoke(v5, device);
 
   return _extraLargeAlarmInactiveImageProvider_glyphImageProvider;
 }
@@ -1301,9 +1301,9 @@ void __62__NTKAlarmTimelineEntry__extraLargeAlarmInactiveImageProvider__block_in
   v5[2] = __59__NTKAlarmTimelineEntry__largeUtilityInactiveImageProvider__block_invoke;
   v5[3] = &unk_27877DDA0;
   v5[4] = self;
-  v2 = [MEMORY[0x277CBBB68] sharedRenderingContext];
-  v3 = [v2 device];
-  __59__NTKAlarmTimelineEntry__largeUtilityInactiveImageProvider__block_invoke(v5, v3);
+  mEMORY[0x277CBBB68] = [MEMORY[0x277CBBB68] sharedRenderingContext];
+  device = [mEMORY[0x277CBBB68] device];
+  __59__NTKAlarmTimelineEntry__largeUtilityInactiveImageProvider__block_invoke(v5, device);
 
   return _largeUtilityInactiveImageProvider_glyphImageProvider;
 }
@@ -1374,15 +1374,15 @@ void __59__NTKAlarmTimelineEntry__largeUtilityInactiveImageProvider__block_invok
   }
 
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(NTKTimelineEntryModel *)self entryDate];
-  v5 = _FormattedDate(v4);
+  entryDate = [(NTKTimelineEntryModel *)self entryDate];
+  v5 = _FormattedDate(entryDate);
   v6 = [description_typeNames objectAtIndexedSubscript:{-[NTKAlarmTimelineEntry entryType](self, "entryType")}];
-  v7 = [(NTKAlarmTimelineEntry *)self alarmLabel];
-  v8 = [(NTKAlarmTimelineEntry *)self fireDate];
-  v9 = _FormattedDate(v8);
-  v10 = [(NTKAlarmTimelineEntry *)self snoozeDate];
-  v11 = _FormattedDate(v10);
-  v12 = [v3 stringWithFormat:@"EntryDate: %@\tType: %@\tLabel: %@\tFireDate: %@\tSnoozeDate: %@", v5, v6, v7, v9, v11];
+  alarmLabel = [(NTKAlarmTimelineEntry *)self alarmLabel];
+  fireDate = [(NTKAlarmTimelineEntry *)self fireDate];
+  v9 = _FormattedDate(fireDate);
+  snoozeDate = [(NTKAlarmTimelineEntry *)self snoozeDate];
+  v11 = _FormattedDate(snoozeDate);
+  v12 = [v3 stringWithFormat:@"EntryDate: %@\tType: %@\tLabel: %@\tFireDate: %@\tSnoozeDate: %@", v5, v6, alarmLabel, v9, v11];
 
   return v12;
 }

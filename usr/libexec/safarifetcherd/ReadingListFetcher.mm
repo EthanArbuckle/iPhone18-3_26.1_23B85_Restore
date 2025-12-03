@@ -2,46 +2,46 @@
 + (id)sharedReadingListFetcher;
 - (BOOL)_allBackgroundTaskAgentJobsAreUnsatisfied;
 - (BOOL)_anyBackgroundTaskAgentJobIsScheduled;
-- (BOOL)_rescheduleRestartingServiceBTAJobWithJob:(id)a3;
-- (BOOL)_shouldLoadBookmarkConsideringPreviousAttempts:(id)a3;
+- (BOOL)_rescheduleRestartingServiceBTAJobWithJob:(id)job;
+- (BOOL)_shouldLoadBookmarkConsideringPreviousAttempts:(id)attempts;
 - (ReadingListFetcher)init;
 - (double)currentProgress;
 - (id)_nextItemToFetch;
-- (id)connectionPropertiesForLocallyAddedItem:(BOOL)a3;
+- (id)connectionPropertiesForLocallyAddedItem:(BOOL)item;
 - (id)pendingBookmarkChangesFilePath;
 - (unint64_t)_diskSpaceAvailable;
 - (void)_cancelFetchIfNecessary;
 - (void)_createOrResetPowerAssertion;
 - (void)_fetchNextItem;
 - (void)_initBackgroundTaskAgentJobs;
-- (void)_powerlog:(id)a3;
-- (void)_queueChangeForBookmark:(id)a3 key:(id)a4 value:(id)a5;
+- (void)_powerlog:(id)_powerlog;
+- (void)_queueChangeForBookmark:(id)bookmark key:(id)key value:(id)value;
 - (void)_refreshRemainingItemCount;
 - (void)_releasePowerAssertion;
 - (void)_removePendingChangesFileIfPossible;
 - (void)_scheduleBTAJobsWithDelayIfNecessary;
 - (void)_scheduleBTATimerFired;
 - (void)_scheduleOrRemoveBackgroundTaskAgentJobs;
-- (void)_scheduleRestartingServiceBTAJobWithDelay:(double)a3;
+- (void)_scheduleRestartingServiceBTAJobWithDelay:(double)delay;
 - (void)_startFetchingInternal;
 - (void)_stopFetchingInternal;
 - (void)_unscheduleAllBTAJobs;
 - (void)_writeChangesInMemoryToPlist;
 - (void)applyPendingBookmarkChanges;
 - (void)applyPendingBookmarkChangesSoon;
-- (void)backgroundTaskAgentJobDidBecomeSatisfied:(id)a3 withJobDetails:(id)a4;
-- (void)backgroundTaskAgentJobDidBecomeUnsatisfied:(id)a3 withJobDetails:(id)a4;
-- (void)backgroundTaskAgentJobDidExpire:(id)a3 withJobDetails:(id)a4;
-- (void)backgroundTaskAgentJobDidGetJobRequestError:(id)a3 withJobDetails:(id)a4;
-- (void)clearChangesForBookmark:(id)a3;
+- (void)backgroundTaskAgentJobDidBecomeSatisfied:(id)satisfied withJobDetails:(id)details;
+- (void)backgroundTaskAgentJobDidBecomeUnsatisfied:(id)unsatisfied withJobDetails:(id)details;
+- (void)backgroundTaskAgentJobDidExpire:(id)expire withJobDetails:(id)details;
+- (void)backgroundTaskAgentJobDidGetJobRequestError:(id)error withJobDetails:(id)details;
+- (void)clearChangesForBookmark:(id)bookmark;
 - (void)dealloc;
-- (void)didFinishFetchingDocument:(id)a3;
-- (void)document:(id)a3 didUpdateProgress:(double)a4;
-- (void)queueChangeForBookmark:(id)a3 archiveStatus:(int64_t)a4;
+- (void)didFinishFetchingDocument:(id)document;
+- (void)document:(id)document didUpdateProgress:(double)progress;
+- (void)queueChangeForBookmark:(id)bookmark archiveStatus:(int64_t)status;
 - (void)start;
 - (void)tryApplyPendingBookmarkChanges;
 - (void)updateArchivingMode;
-- (void)willStartFetchingReaderPage:(id)a3;
+- (void)willStartFetchingReaderPage:(id)page;
 @end
 
 @implementation ReadingListFetcher
@@ -57,8 +57,8 @@
     [(ReadingListFetcher *)v2 _initBackgroundTaskAgentJobs];
     v2->_powerAssertionID = 0;
     [(ReadingListFetcher *)v2 updateArchivingMode];
-    v3 = [(ReadingListFetcher *)v2 pendingBookmarkChangesFilePath];
-    v4 = [NSData dataWithContentsOfFile:v3];
+    pendingBookmarkChangesFilePath = [(ReadingListFetcher *)v2 pendingBookmarkChangesFilePath];
+    v4 = [NSData dataWithContentsOfFile:pendingBookmarkChangesFilePath];
 
     if (v4)
     {
@@ -193,9 +193,9 @@ LABEL_14:
 
 - (void)_fetchNextItem
 {
-  v3 = [(ReadingListFetcher *)self _nextItemToFetch];
+  _nextItemToFetch = [(ReadingListFetcher *)self _nextItemToFetch];
   bookmarkToFetch = self->_bookmarkToFetch;
-  self->_bookmarkToFetch = v3;
+  self->_bookmarkToFetch = _nextItemToFetch;
 
   v5 = self->_itemsAttemptedToFetch + 1;
   self->_itemsAttemptedToFetch = v5;
@@ -213,9 +213,9 @@ LABEL_14:
     v9 = v8;
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
-      v10 = [(WebBookmark *)self->_bookmarkToFetch address];
-      v11 = [(WebBookmark *)self->_bookmarkToFetch UUID];
-      sub_10000A008(v10, v11, v33, v9);
+      address = [(WebBookmark *)self->_bookmarkToFetch address];
+      uUID = [(WebBookmark *)self->_bookmarkToFetch UUID];
+      sub_10000A008(address, uUID, v33, v9);
     }
 
     if ([(ReadingListFetcher *)self _shouldLoadBookmarkConsideringPreviousAttempts:self->_bookmarkToFetch])
@@ -230,9 +230,9 @@ LABEL_14:
         }
 
         v13 = +[WebBookmarkCollection safariBookmarkCollection];
-        v14 = [v13 rollOutLastReadingListItem];
+        rollOutLastReadingListItem = [v13 rollOutLastReadingListItem];
 
-        if ((v14 & 1) == 0)
+        if ((rollOutLastReadingListItem & 1) == 0)
         {
           v15 = sub_100009E64();
           if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -282,8 +282,8 @@ LABEL_14:
       v31[0] = @"subevent";
       v31[1] = @"item";
       v32[0] = @"startItemFetch";
-      v22 = [(WebBookmark *)self->_bookmarkToFetch UUID];
-      v32[1] = v22;
+      uUID2 = [(WebBookmark *)self->_bookmarkToFetch UUID];
+      v32[1] = uUID2;
       v23 = [NSDictionary dictionaryWithObjects:v32 forKeys:v31 count:2];
       [(ReadingListFetcher *)self _powerlog:v23];
 
@@ -342,11 +342,11 @@ LABEL_14:
   }
 }
 
-- (BOOL)_shouldLoadBookmarkConsideringPreviousAttempts:(id)a3
+- (BOOL)_shouldLoadBookmarkConsideringPreviousAttempts:(id)attempts
 {
-  v4 = a3;
-  v5 = [v4 UUID];
-  v6 = [(NSMutableDictionary *)self->_pendingBookmarkChanges objectForKey:v5];
+  attemptsCopy = attempts;
+  uUID = [attemptsCopy UUID];
+  v6 = [(NSMutableDictionary *)self->_pendingBookmarkChanges objectForKey:uUID];
   v7 = v6;
   if (!v6)
   {
@@ -354,7 +354,7 @@ LABEL_14:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
       *buf = 138543362;
-      v34[0] = v5;
+      v34[0] = uUID;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "Attempting initial load of Reading List item with UUID %{public}@", buf, 0xCu);
     }
 
@@ -364,16 +364,16 @@ LABEL_14:
     v16 = [NSDictionary dictionaryWithObjects:&v32 forKeys:&v31 count:1];
     v7 = [v14 initWithDictionary:v16];
 
-    [(NSMutableDictionary *)self->_pendingBookmarkChanges setObject:v7 forKey:v5];
+    [(NSMutableDictionary *)self->_pendingBookmarkChanges setObject:v7 forKey:uUID];
     if (+[WebBookmarkCollection lockSync])
     {
-      [v4 setArchiveStatus:3];
+      [attemptsCopy setArchiveStatus:3];
       v17 = +[WebBookmarkCollection safariBookmarkCollection];
-      v18 = [v17 saveBookmark:v4 startReadingListFetcher:0];
+      v18 = [v17 saveBookmark:attemptsCopy startReadingListFetcher:0];
 
       if ((v18 & 1) == 0)
       {
-        [(ReadingListFetcher *)self queueChangeForBookmark:v4 archiveStatus:3];
+        [(ReadingListFetcher *)self queueChangeForBookmark:attemptsCopy archiveStatus:3];
       }
 
       +[WebBookmarkCollection unlockSync];
@@ -384,7 +384,7 @@ LABEL_14:
       v29 = sub_100009E64();
       if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
       {
-        sub_10000A2B0(v5, v29);
+        sub_10000A2B0(uUID, v29);
       }
     }
 
@@ -392,11 +392,11 @@ LABEL_14:
   }
 
   v8 = [v6 objectForKey:@"NumFailedLoads"];
-  v9 = [v8 unsignedShortValue];
+  unsignedShortValue = [v8 unsignedShortValue];
 
-  if (v9 < 3)
+  if (unsignedShortValue < 3)
   {
-    v10 = v9 + 1;
+    v10 = unsignedShortValue + 1;
     v11 = [NSNumber numberWithUnsignedShort:v10];
     [v7 setObject:v11 forKey:@"NumFailedLoads"];
 
@@ -406,11 +406,11 @@ LABEL_14:
       *buf = 67109378;
       LODWORD(v34[0]) = v10;
       WORD2(v34[0]) = 2114;
-      *(v34 + 6) = v5;
+      *(v34 + 6) = uUID;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "Attempting subsequent load %ud of Reading List item with UUID %{public}@", buf, 0x12u);
     }
 
-    [(NSMutableDictionary *)self->_pendingBookmarkChanges setObject:v7 forKey:v5];
+    [(NSMutableDictionary *)self->_pendingBookmarkChanges setObject:v7 forKey:uUID];
 LABEL_22:
     [(ReadingListFetcher *)self _writeChangesInMemoryToPlist];
     v28 = 1;
@@ -420,7 +420,7 @@ LABEL_22:
   v19 = sub_100009E64();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
   {
-    sub_10000A1B0(v5, v19);
+    sub_10000A1B0(uUID, v19);
   }
 
   v20 = +[WebBookmarkCollection lockSync];
@@ -430,12 +430,12 @@ LABEL_22:
     goto LABEL_16;
   }
 
-  [v4 setArchiveStatus:4];
+  [attemptsCopy setArchiveStatus:4];
   v22 = +[NSDate date];
-  [v4 setDateLastArchived:v22];
+  [attemptsCopy setDateLastArchived:v22];
 
   v23 = +[WebBookmarkCollection safariBookmarkCollection];
-  v24 = [v23 saveBookmark:v4 startReadingListFetcher:0];
+  v24 = [v23 saveBookmark:attemptsCopy startReadingListFetcher:0];
 
   +[WebBookmarkCollection unlockSync];
   if ((v24 & 1) == 0)
@@ -447,13 +447,13 @@ LABEL_16:
       sub_10000A228(v21, v25);
     }
 
-    [(ReadingListFetcher *)self queueChangeForBookmark:v4 archiveStatus:4];
+    [(ReadingListFetcher *)self queueChangeForBookmark:attemptsCopy archiveStatus:4];
     v26 = +[NSDate date];
-    [(ReadingListFetcher *)self queueChangeForBookmark:v4 dateLastArchived:v26];
+    [(ReadingListFetcher *)self queueChangeForBookmark:attemptsCopy dateLastArchived:v26];
   }
 
   v27 = +[SafariFetcherServer sharedServer];
-  [v27 deliverReadingListFetchingDidStopForItemWithUUID:v5];
+  [v27 deliverReadingListFetchingDidStopForItemWithUUID:uUID];
 
   [(ReadingListFetcher *)self didFinishFetchingDocument:0];
   v28 = 0;
@@ -475,9 +475,9 @@ LABEL_23:
   return result;
 }
 
-- (void)document:(id)a3 didUpdateProgress:(double)a4
+- (void)document:(id)document didUpdateProgress:(double)progress
 {
-  if (self->_document == a3)
+  if (self->_document == document)
   {
     v6 = +[SafariFetcherServer sharedServer];
     [(ReadingListFetcher *)self currentProgress];
@@ -500,9 +500,9 @@ LABEL_23:
   }
 }
 
-- (void)willStartFetchingReaderPage:(id)a3
+- (void)willStartFetchingReaderPage:(id)page
 {
-  if (self->_document == a3)
+  if (self->_document == page)
   {
 
     [(ReadingListFetcher *)self _createOrResetPowerAssertion];
@@ -518,9 +518,9 @@ LABEL_23:
   }
 }
 
-- (void)didFinishFetchingDocument:(id)a3
+- (void)didFinishFetchingDocument:(id)document
 {
-  v4 = a3;
+  documentCopy = document;
   document = self->_document;
   if (document && ![(ReadingListFetcherDocument *)document wasCancelled])
   {
@@ -538,8 +538,8 @@ LABEL_23:
     v19[0] = @"subevent";
     v19[1] = @"item";
     v20[0] = @"endItemFetch";
-    v8 = [(WebBookmark *)bookmarkToFetch UUID];
-    v20[1] = v8;
+    uUID = [(WebBookmark *)bookmarkToFetch UUID];
+    v20[1] = uUID;
     v9 = [NSDictionary dictionaryWithObjects:v20 forKeys:v19 count:2];
     [(ReadingListFetcher *)self _powerlog:v9];
   }
@@ -586,8 +586,8 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  v14 = [(ReadingListFetcher *)self _nextItemToFetch];
-  v15 = v14 == 0;
+  _nextItemToFetch = [(ReadingListFetcher *)self _nextItemToFetch];
+  v15 = _nextItemToFetch == 0;
 
   if (v15)
   {
@@ -697,7 +697,7 @@ LABEL_16:
     v6[2] = sub_100003E10;
     v6[3] = &unk_10001C790;
     v7 = v3;
-    v8 = self;
+    selfCopy = self;
     v5 = v3;
     dispatch_async(v4, v6);
   }
@@ -726,22 +726,22 @@ LABEL_16:
 - (id)_nextItemToFetch
 {
   v3 = +[NSUserDefaults safari_browserDefaults];
-  v4 = [v3 safari_shouldAutomaticallyDownloadReadingListItems];
+  safari_shouldAutomaticallyDownloadReadingListItems = [v3 safari_shouldAutomaticallyDownloadReadingListItems];
 
   v5 = +[WebBookmarkCollection safariBookmarkCollection];
-  v6 = [v5 firstReadingListBookmarkNeedingArchiveInMode:self->_archivingMode automaticArchivingEnabled:v4];
+  v6 = [v5 firstReadingListBookmarkNeedingArchiveInMode:self->_archivingMode automaticArchivingEnabled:safari_shouldAutomaticallyDownloadReadingListItems];
 
   pendingBookmarkChanges = self->_pendingBookmarkChanges;
   v31 = v6;
-  v8 = [v6 UUID];
-  v9 = [(NSMutableDictionary *)pendingBookmarkChanges objectForKey:v8];
+  uUID = [v6 UUID];
+  v9 = [(NSMutableDictionary *)pendingBookmarkChanges objectForKey:uUID];
 
   v30 = v9;
   v33 = [v9 objectForKey:@"NumFailedLoads"];
-  if (v9 && v33 && (![v31 shouldReattemptArchiveWithAutomaticArchivingEnabled:v4] || !objc_msgSend(v33, "unsignedIntegerValue")))
+  if (v9 && v33 && (![v31 shouldReattemptArchiveWithAutomaticArchivingEnabled:safari_shouldAutomaticallyDownloadReadingListItems] || !objc_msgSend(v33, "unsignedIntegerValue")))
   {
     v11 = +[WebBookmarkCollection safariBookmarkCollection];
-    v12 = [v11 readingListBookmarksNeedingArchiveInMode:self->_archivingMode automaticArchivingEnabled:v4];
+    v12 = [v11 readingListBookmarksNeedingArchiveInMode:self->_archivingMode automaticArchivingEnabled:safari_shouldAutomaticallyDownloadReadingListItems];
 
     v29 = v12;
     [v12 bookmarkArray];
@@ -765,8 +765,8 @@ LABEL_16:
 
           v16 = *(*(&v34 + 1) + 8 * i);
           v17 = self->_pendingBookmarkChanges;
-          v18 = [v16 UUID];
-          v19 = [(NSMutableDictionary *)v17 objectForKey:v18];
+          uUID2 = [v16 UUID];
+          v19 = [(NSMutableDictionary *)v17 objectForKey:uUID2];
 
           if (!v19 || ([v19 objectForKey:@"NumFailedLoads"], v20 = objc_claimAutoreleasedReturnValue(), v21 = v20 == 0, v20, v21))
           {
@@ -780,13 +780,13 @@ LABEL_16:
           if (!v10)
           {
             v22 = [v19 objectForKey:@"ArchiveStatus"];
-            v23 = [v22 unsignedIntValue];
+            unsignedIntValue = [v22 unsignedIntValue];
 
             v24 = [v19 objectForKey:@"NumFailedLoads"];
-            v25 = [v24 unsignedShortValue];
+            unsignedShortValue = [v24 unsignedShortValue];
 
             v10 = 0;
-            if (v23 == 3 && v25 <= 3)
+            if (unsignedIntValue == 3 && unsignedShortValue <= 3)
             {
               v10 = v16;
             }
@@ -819,10 +819,10 @@ LABEL_21:
 {
   remainingItemCount = self->_remainingItemCount;
   v4 = +[NSUserDefaults safari_browserDefaults];
-  v5 = [v4 safari_shouldAutomaticallyDownloadReadingListItems];
+  safari_shouldAutomaticallyDownloadReadingListItems = [v4 safari_shouldAutomaticallyDownloadReadingListItems];
 
   v6 = +[WebBookmarkCollection safariBookmarkCollection];
-  self->_remainingItemCount = [v6 countReadingListBookmarksNeedingArchiveInMode:self->_archivingMode automaticArchivingEnabled:v5];
+  self->_remainingItemCount = [v6 countReadingListBookmarksNeedingArchiveInMode:self->_archivingMode automaticArchivingEnabled:safari_shouldAutomaticallyDownloadReadingListItems];
 
   if (remainingItemCount != self->_remainingItemCount)
   {
@@ -843,8 +843,8 @@ LABEL_21:
   if (self->_bookmarkToFetch)
   {
     v3 = +[WebBookmarkCollection safariBookmarkCollection];
-    v4 = [(WebBookmark *)self->_bookmarkToFetch UUID];
-    v5 = [v3 bookmarkWithUUID:v4];
+    uUID = [(WebBookmark *)self->_bookmarkToFetch UUID];
+    v5 = [v3 bookmarkWithUUID:uUID];
 
     if (!v5)
     {
@@ -941,10 +941,10 @@ LABEL_21:
 - (void)_scheduleOrRemoveBackgroundTaskAgentJobs
 {
   v3 = +[NSUserDefaults safari_browserDefaults];
-  v4 = [v3 safari_shouldAutomaticallyDownloadReadingListItems];
+  safari_shouldAutomaticallyDownloadReadingListItems = [v3 safari_shouldAutomaticallyDownloadReadingListItems];
 
   v5 = +[WebBookmarkCollection safariBookmarkCollection];
-  v6 = [v5 countReadingListBookmarksNeedingArchiveInMode:0 automaticArchivingEnabled:v4];
+  v6 = [v5 countReadingListBookmarksNeedingArchiveInMode:0 automaticArchivingEnabled:safari_shouldAutomaticallyDownloadReadingListItems];
 
   if (!v6)
   {
@@ -955,7 +955,7 @@ LABEL_7:
   }
 
   v7 = +[WebBookmarkCollection safariBookmarkCollection];
-  v8 = [v7 countReadingListBookmarksNeedingArchiveInMode:1 automaticArchivingEnabled:v4];
+  v8 = [v7 countReadingListBookmarksNeedingArchiveInMode:1 automaticArchivingEnabled:safari_shouldAutomaticallyDownloadReadingListItems];
 
   if (!v8)
   {
@@ -964,7 +964,7 @@ LABEL_7:
   }
 
   v9 = +[WebBookmarkCollection safariBookmarkCollection];
-  v10 = [v9 countReadingListBookmarksNeedingArchiveInMode:2 automaticArchivingEnabled:v4];
+  v10 = [v9 countReadingListBookmarksNeedingArchiveInMode:2 automaticArchivingEnabled:safari_shouldAutomaticallyDownloadReadingListItems];
 
   [self->_highBackgroundTaskAgentJob schedule];
   [self->_mediumBackgroundTaskAgentJob schedule];
@@ -988,29 +988,29 @@ LABEL_9:
   self->_highBackgroundTaskAgentJob = v3;
 
   [self->_highBackgroundTaskAgentJob setDelegate:self];
-  v5 = [self->_highBackgroundTaskAgentJob requirements];
+  requirements = [self->_highBackgroundTaskAgentJob requirements];
   v6 = XPC_ACTIVITY_REQUIRE_INEXPENSIVE_NETWORK_CONNECTIVITY;
-  xdict = v5;
-  xpc_dictionary_set_BOOL(v5, XPC_ACTIVITY_REQUIRE_INEXPENSIVE_NETWORK_CONNECTIVITY, 1);
+  xdict = requirements;
+  xpc_dictionary_set_BOOL(requirements, XPC_ACTIVITY_REQUIRE_INEXPENSIVE_NETWORK_CONNECTIVITY, 1);
   xpc_dictionary_set_BOOL(xdict, XPC_ACTIVITY_ALLOW_BATTERY, 0);
   v7 = [[BackgroundTaskAgentJob alloc] initWithName:@"com.apple.safarifetcherd.readinglistfetcher.medium" startDelay:3.0];
   mediumBackgroundTaskAgentJob = self->_mediumBackgroundTaskAgentJob;
   self->_mediumBackgroundTaskAgentJob = v7;
 
   [self->_mediumBackgroundTaskAgentJob setDelegate:self];
-  v9 = [self->_mediumBackgroundTaskAgentJob requirements];
-  xpc_dictionary_set_BOOL(v9, v6, !self->_readingListCellularFetchingEnabled);
-  xpc_dictionary_set_BOOL(v9, XPC_ACTIVITY_ALLOW_BATTERY, 1);
+  requirements2 = [self->_mediumBackgroundTaskAgentJob requirements];
+  xpc_dictionary_set_BOOL(requirements2, v6, !self->_readingListCellularFetchingEnabled);
+  xpc_dictionary_set_BOOL(requirements2, XPC_ACTIVITY_ALLOW_BATTERY, 1);
   v10 = [[BackgroundTaskAgentJob alloc] initWithName:@"com.apple.safarifetcherd.readinglistfetcher.low" startDelay:3.0];
   lowBackgroundTaskAgentJob = self->_lowBackgroundTaskAgentJob;
   self->_lowBackgroundTaskAgentJob = v10;
 
   [self->_lowBackgroundTaskAgentJob setDelegate:self];
-  v12 = [self->_lowBackgroundTaskAgentJob requirements];
-  xpc_dictionary_set_BOOL(v12, XPC_ACTIVITY_ALLOW_BATTERY, 1);
+  requirements3 = [self->_lowBackgroundTaskAgentJob requirements];
+  xpc_dictionary_set_BOOL(requirements3, XPC_ACTIVITY_ALLOW_BATTERY, 1);
 }
 
-- (void)_scheduleRestartingServiceBTAJobWithDelay:(double)a3
+- (void)_scheduleRestartingServiceBTAJobWithDelay:(double)delay
 {
   retryBackgroundTaskAgentJob = self->_retryBackgroundTaskAgentJob;
   if (retryBackgroundTaskAgentJob)
@@ -1020,7 +1020,7 @@ LABEL_9:
     self->_retryBackgroundTaskAgentJob = 0;
   }
 
-  v7 = [[BackgroundTaskAgentJob alloc] initWithName:@"com.apple.safarifetcherd.readinglistfetcher.watchdog" startDelay:a3];
+  v7 = [[BackgroundTaskAgentJob alloc] initWithName:@"com.apple.safarifetcherd.readinglistfetcher.watchdog" startDelay:delay];
   v8 = self->_retryBackgroundTaskAgentJob;
   self->_retryBackgroundTaskAgentJob = v7;
 
@@ -1050,25 +1050,25 @@ LABEL_9:
   self->_retryBackgroundTaskAgentJob = 0;
 }
 
-- (BOOL)_rescheduleRestartingServiceBTAJobWithJob:(id)a3
+- (BOOL)_rescheduleRestartingServiceBTAJobWithJob:(id)job
 {
   retryBackgroundTaskAgentJob = self->_retryBackgroundTaskAgentJob;
-  if (retryBackgroundTaskAgentJob == a3)
+  if (retryBackgroundTaskAgentJob == job)
   {
     [(ReadingListFetcher *)self _scheduleRestartingServiceBTAJobWithDelay:600.0];
   }
 
-  return retryBackgroundTaskAgentJob == a3;
+  return retryBackgroundTaskAgentJob == job;
 }
 
-- (void)backgroundTaskAgentJobDidExpire:(id)a3 withJobDetails:(id)a4
+- (void)backgroundTaskAgentJobDidExpire:(id)expire withJobDetails:(id)details
 {
-  v5 = a3;
+  expireCopy = expire;
   if (![(ReadingListFetcher *)self _rescheduleRestartingServiceBTAJobWithJob:?])
   {
     [(ReadingListFetcher *)self updateArchivingMode];
-    [v5 unschedule];
-    [v5 schedule];
+    [expireCopy unschedule];
+    [expireCopy schedule];
     if ([(ReadingListFetcher *)self _allBackgroundTaskAgentJobsAreUnsatisfied])
     {
       if (self->_bookmarkToFetch)
@@ -1079,16 +1079,16 @@ LABEL_9:
   }
 }
 
-- (void)backgroundTaskAgentJobDidGetJobRequestError:(id)a3 withJobDetails:(id)a4
+- (void)backgroundTaskAgentJobDidGetJobRequestError:(id)error withJobDetails:(id)details
 {
-  v5 = a3;
-  if (![(ReadingListFetcher *)self _rescheduleRestartingServiceBTAJobWithJob:v5])
+  errorCopy = error;
+  if (![(ReadingListFetcher *)self _rescheduleRestartingServiceBTAJobWithJob:errorCopy])
   {
     [(ReadingListFetcher *)self updateArchivingMode];
     v6 = sub_100009E64();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_FAULT))
     {
-      [v5 name];
+      [errorCopy name];
       objc_claimAutoreleasedReturnValue();
       sub_10000A624();
     }
@@ -1100,9 +1100,9 @@ LABEL_9:
   }
 }
 
-- (void)backgroundTaskAgentJobDidBecomeSatisfied:(id)a3 withJobDetails:(id)a4
+- (void)backgroundTaskAgentJobDidBecomeSatisfied:(id)satisfied withJobDetails:(id)details
 {
-  v5 = a3;
+  satisfiedCopy = satisfied;
   if (![(ReadingListFetcher *)self _rescheduleRestartingServiceBTAJobWithJob:?])
   {
     [(ReadingListFetcher *)self updateArchivingMode];
@@ -1113,25 +1113,25 @@ LABEL_9:
   }
 }
 
-- (void)backgroundTaskAgentJobDidBecomeUnsatisfied:(id)a3 withJobDetails:(id)a4
+- (void)backgroundTaskAgentJobDidBecomeUnsatisfied:(id)unsatisfied withJobDetails:(id)details
 {
-  v6 = a3;
-  v7 = a4;
-  if (![(ReadingListFetcher *)self _rescheduleRestartingServiceBTAJobWithJob:v6])
+  unsatisfiedCopy = unsatisfied;
+  detailsCopy = details;
+  if (![(ReadingListFetcher *)self _rescheduleRestartingServiceBTAJobWithJob:unsatisfiedCopy])
   {
     [(ReadingListFetcher *)self updateArchivingMode];
     if ([(ReadingListFetcher *)self _allBackgroundTaskAgentJobsAreUnsatisfied])
     {
-      if (self->_highBackgroundTaskAgentJob == v6)
+      if (self->_highBackgroundTaskAgentJob == unsatisfiedCopy)
       {
-        if (xpc_dictionary_get_BOOL(v7, kBackgroundTaskAgentJobStatusNetwork))
+        if (xpc_dictionary_get_BOOL(detailsCopy, kBackgroundTaskAgentJobStatusNetwork))
         {
-          if (xpc_dictionary_get_BOOL(v7, kBackgroundTaskAgentJobStatusPowerPluggedin))
+          if (xpc_dictionary_get_BOOL(detailsCopy, kBackgroundTaskAgentJobStatusPowerPluggedin))
           {
             v8 = sub_100009E64();
             if (os_log_type_enabled(v8, OS_LOG_TYPE_FAULT))
             {
-              [(BackgroundTaskAgentJob *)v6 name];
+              [(BackgroundTaskAgentJob *)unsatisfiedCopy name];
               objc_claimAutoreleasedReturnValue();
               sub_10000A784();
             }
@@ -1142,7 +1142,7 @@ LABEL_9:
           v9 = sub_100009E64();
           if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
           {
-            [(BackgroundTaskAgentJob *)v6 name];
+            [(BackgroundTaskAgentJob *)unsatisfiedCopy name];
             objc_claimAutoreleasedReturnValue();
             sub_10000A740();
           }
@@ -1159,16 +1159,16 @@ LABEL_9:
         goto LABEL_18;
       }
 
-      if (self->_mediumBackgroundTaskAgentJob == v6 || self->_lowBackgroundTaskAgentJob == v6)
+      if (self->_mediumBackgroundTaskAgentJob == unsatisfiedCopy || self->_lowBackgroundTaskAgentJob == unsatisfiedCopy)
       {
-        if (xpc_dictionary_get_BOOL(v7, kBackgroundTaskAgentJobStatusNetwork))
+        if (xpc_dictionary_get_BOOL(detailsCopy, kBackgroundTaskAgentJobStatusNetwork))
         {
-          if (xpc_dictionary_get_BOOL(v7, kBackgroundTaskAgentJobStatusBatteryLevel))
+          if (xpc_dictionary_get_BOOL(detailsCopy, kBackgroundTaskAgentJobStatusBatteryLevel))
           {
             v8 = sub_100009E64();
             if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
             {
-              [(BackgroundTaskAgentJob *)v6 name];
+              [(BackgroundTaskAgentJob *)unsatisfiedCopy name];
               objc_claimAutoreleasedReturnValue();
               sub_10000A6FC();
             }
@@ -1179,7 +1179,7 @@ LABEL_9:
           v9 = sub_100009E64();
           if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
           {
-            [(BackgroundTaskAgentJob *)v6 name];
+            [(BackgroundTaskAgentJob *)unsatisfiedCopy name];
             objc_claimAutoreleasedReturnValue();
             sub_10000A6B8();
           }
@@ -1194,7 +1194,7 @@ LABEL_23:
         if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
         {
 LABEL_17:
-          [(BackgroundTaskAgentJob *)v6 name];
+          [(BackgroundTaskAgentJob *)unsatisfiedCopy name];
           objc_claimAutoreleasedReturnValue();
           sub_10000A674();
         }
@@ -1209,9 +1209,9 @@ LABEL_18:
 LABEL_24:
 }
 
-- (void)_powerlog:(id)a3
+- (void)_powerlog:(id)_powerlog
 {
-  v3 = a3;
+  _powerlogCopy = _powerlog;
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;
@@ -1251,7 +1251,7 @@ LABEL_9:
     _Block_object_dispose(&v8, 8);
     if (v6)
     {
-      v6(27, @"MobileSafari-ReadingListFetcher", v3, &__NSArray0__struct);
+      v6(27, @"MobileSafari-ReadingListFetcher", _powerlogCopy, &__NSArray0__struct);
       goto LABEL_9;
     }
   }
@@ -1350,7 +1350,7 @@ LABEL_9:
   }
 }
 
-- (id)connectionPropertiesForLocallyAddedItem:(BOOL)a3
+- (id)connectionPropertiesForLocallyAddedItem:(BOOL)item
 {
   p_connectionPropertiesAllowCellularFallback = &self->_connectionPropertiesAllowCellularFallback;
   if (!self->_connectionPropertiesAllowCellularFallback)
@@ -1380,7 +1380,7 @@ LABEL_9:
     *p_connectionPropertiesForbidCellularFallback = v11;
   }
 
-  if (!a3 && !self->_readingListCellularFetchingEnabled)
+  if (!item && !self->_readingListCellularFetchingEnabled)
   {
     p_connectionPropertiesAllowCellularFallback = &self->_connectionPropertiesForbidCellularFallback;
   }
@@ -1390,42 +1390,42 @@ LABEL_9:
   return v13;
 }
 
-- (void)_queueChangeForBookmark:(id)a3 key:(id)a4 value:(id)a5
+- (void)_queueChangeForBookmark:(id)bookmark key:(id)key value:(id)value
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [a3 UUID];
-  v11 = [(NSMutableDictionary *)self->_pendingBookmarkChanges objectForKey:v10];
+  keyCopy = key;
+  valueCopy = value;
+  uUID = [bookmark UUID];
+  v11 = [(NSMutableDictionary *)self->_pendingBookmarkChanges objectForKey:uUID];
   v12 = v11;
   if (v11)
   {
-    [v11 setObject:v9 forKey:v8];
-    [(NSMutableDictionary *)self->_pendingBookmarkChanges setObject:v12 forKey:v10];
+    [v11 setObject:valueCopy forKey:keyCopy];
+    [(NSMutableDictionary *)self->_pendingBookmarkChanges setObject:v12 forKey:uUID];
   }
 
   else
   {
     v13 = [NSMutableDictionary alloc];
-    v15 = v8;
-    v16 = v9;
+    v15 = keyCopy;
+    v16 = valueCopy;
     v14 = [NSDictionary dictionaryWithObjects:&v16 forKeys:&v15 count:1];
     v12 = [v13 initWithDictionary:v14];
 
-    [(NSMutableDictionary *)self->_pendingBookmarkChanges setObject:v12 forKey:v10];
+    [(NSMutableDictionary *)self->_pendingBookmarkChanges setObject:v12 forKey:uUID];
   }
 }
 
-- (void)queueChangeForBookmark:(id)a3 archiveStatus:(int64_t)a4
+- (void)queueChangeForBookmark:(id)bookmark archiveStatus:(int64_t)status
 {
-  v7 = a3;
-  v6 = [NSNumber numberWithUnsignedInt:a4];
-  [(ReadingListFetcher *)self _queueChangeForBookmark:v7 key:@"ArchiveStatus" value:v6];
+  bookmarkCopy = bookmark;
+  v6 = [NSNumber numberWithUnsignedInt:status];
+  [(ReadingListFetcher *)self _queueChangeForBookmark:bookmarkCopy key:@"ArchiveStatus" value:v6];
 }
 
-- (void)clearChangesForBookmark:(id)a3
+- (void)clearChangesForBookmark:(id)bookmark
 {
   pendingBookmarkChanges = self->_pendingBookmarkChanges;
-  v4 = [a3 UUID];
+  uUID = [bookmark UUID];
   [(NSMutableDictionary *)pendingBookmarkChanges removeObjectForKey:?];
 }
 

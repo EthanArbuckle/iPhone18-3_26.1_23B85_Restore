@@ -1,7 +1,7 @@
 @interface ML3SortMapFaultingNameOrderDictionary
-- (ML3SortMapFaultingNameOrderDictionary)initWithObjects:(const void *)a3 forKeys:(const void *)a4 count:(unint64_t)a5;
+- (ML3SortMapFaultingNameOrderDictionary)initWithObjects:(const void *)objects forKeys:(const void *)keys count:(unint64_t)count;
 - (id)keyEnumerator;
-- (id)objectForKey:(id)a3;
+- (id)objectForKey:(id)key;
 - (unint64_t)count;
 @end
 
@@ -10,33 +10,33 @@
 - (id)keyEnumerator
 {
   v3 = [_ML3SortMapFaultingNameOrderDictionaryEnumerator alloc];
-  v4 = [(NSMutableDictionary *)self->_dirtyInserts keyEnumerator];
-  v5 = [(_ML3SortMapFaultingNameOrderDictionaryEnumerator *)v3 initWithDirtyInsertsEnumerator:v4 connection:self->_connection];
+  keyEnumerator = [(NSMutableDictionary *)self->_dirtyInserts keyEnumerator];
+  v5 = [(_ML3SortMapFaultingNameOrderDictionaryEnumerator *)v3 initWithDirtyInsertsEnumerator:keyEnumerator connection:self->_connection];
 
   return v5;
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
   v19[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  keyCopy = key;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
   v16 = __Block_byref_object_copy__6467;
   v17 = __Block_byref_object_dispose__6468;
   v18 = 0;
-  v6 = [(NSMutableDictionary *)self->_dirtyInserts objectForKey:v5];
+  v6 = [(NSMutableDictionary *)self->_dirtyInserts objectForKey:keyCopy];
 
   if (v6)
   {
-    v7 = [(NSMutableDictionary *)self->_dirtyInserts objectForKey:v5];
+    v7 = [(NSMutableDictionary *)self->_dirtyInserts objectForKey:keyCopy];
   }
 
   else
   {
     connection = self->_connection;
-    v19[0] = v5;
+    v19[0] = keyCopy;
     v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v19 count:1];
     v10 = [(ML3DatabaseConnection *)connection executeQuery:@"SELECT name withParameters:name_order, name_section FROM sort_map WHERE name = ?", v9];
 
@@ -89,20 +89,20 @@ void __54__ML3SortMapFaultingNameOrderDictionary_objectForKey___block_invoke(voi
 - (unint64_t)count
 {
   v3 = [(ML3DatabaseConnection *)self->_connection executeQuery:@"SELECT COUNT() from sort_map"];
-  v4 = [v3 int64ValueForFirstRowAndColumn];
+  int64ValueForFirstRowAndColumn = [v3 int64ValueForFirstRowAndColumn];
   v5 = [(NSMutableDictionary *)self->_dirtyInserts count];
 
-  return v5 + v4;
+  return v5 + int64ValueForFirstRowAndColumn;
 }
 
-- (ML3SortMapFaultingNameOrderDictionary)initWithObjects:(const void *)a3 forKeys:(const void *)a4 count:(unint64_t)a5
+- (ML3SortMapFaultingNameOrderDictionary)initWithObjects:(const void *)objects forKeys:(const void *)keys count:(unint64_t)count
 {
   v14.receiver = self;
   v14.super_class = ML3SortMapFaultingNameOrderDictionary;
   v8 = [(ML3SortMapFaultingNameOrderDictionary *)&v14 init];
   if (v8)
   {
-    v9 = a5 == 0;
+    v9 = count == 0;
   }
 
   else
@@ -114,14 +114,14 @@ void __54__ML3SortMapFaultingNameOrderDictionary_objectForKey___block_invoke(voi
   {
     do
     {
-      v11 = *a3++;
+      v11 = *objects++;
       v10 = v11;
-      v12 = *a4++;
+      v12 = *keys++;
       [(NSMutableDictionary *)v8->_dirtyInserts setObject:v10 forKey:v12];
-      --a5;
+      --count;
     }
 
-    while (a5);
+    while (count);
   }
 
   return v8;

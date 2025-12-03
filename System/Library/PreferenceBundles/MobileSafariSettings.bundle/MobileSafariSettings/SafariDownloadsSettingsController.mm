@@ -3,15 +3,15 @@
 - (id)_itemManager;
 - (id)_specifiersForDownloadExpirationInterval;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)_setDefaultDownloadsLocationItem:(id)a3;
-- (void)_setDownloadsLocationForProviderDomain:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)_setDefaultDownloadsLocationItem:(id)item;
+- (void)_setDownloadsLocationForProviderDomain:(id)domain;
 - (void)_showFolderPicker;
-- (void)_updateFooterWithProviderDomain:(id)a3;
+- (void)_updateFooterWithProviderDomain:(id)domain;
 - (void)_updateSelectedFolder;
-- (void)_updateSpecifiersWithProviderDomains:(id)a3;
-- (void)documentPicker:(id)a3 didPickDocumentsAtURLs:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)_updateSpecifiersWithProviderDomains:(id)domains;
+- (void)documentPicker:(id)picker didPickDocumentsAtURLs:(id)ls;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation SafariDownloadsSettingsController
@@ -121,18 +121,18 @@
     [(PSSpecifier *)v13 setProperty:v14 forKey:PSIconImageKey];
 
     [v6 addObject:self->_selectOtherFolderSpecifier];
-    v15 = [(SafariDownloadsSettingsController *)self _specifiersForDownloadExpirationInterval];
-    [v6 addObjectsFromArray:v15];
+    _specifiersForDownloadExpirationInterval = [(SafariDownloadsSettingsController *)self _specifiersForDownloadExpirationInterval];
+    [v6 addObjectsFromArray:_specifiersForDownloadExpirationInterval];
 
     objc_storeStrong(&self->super.PSListController_opaque[v2], v6);
     [(SafariDownloadsSettingsController *)self reload];
-    v16 = [(SafariDownloadsSettingsController *)self _downloadSettings];
+    _downloadSettings = [(SafariDownloadsSettingsController *)self _downloadSettings];
     v18[0] = _NSConcreteStackBlock;
     v18[1] = 3221225472;
     v18[2] = __47__SafariDownloadsSettingsController_specifiers__block_invoke;
     v18[3] = &unk_89C10;
     objc_copyWeak(&v19, &location);
-    [v16 fetchProvidersSuitableForDownloads:v18];
+    [_downloadSettings fetchProvidersSuitableForDownloads:v18];
 
     v4 = *&self->super.PSListController_opaque[v2];
     objc_destroyWeak(&v19);
@@ -176,15 +176,15 @@ void __47__SafariDownloadsSettingsController_specifiers__block_invoke_75(uint64_
   [WeakRetained _updateSpecifiersWithProviderDomains:*(a1 + 32)];
 }
 
-- (void)_updateSpecifiersWithProviderDomains:(id)a3
+- (void)_updateSpecifiersWithProviderDomains:(id)domains
 {
-  v3 = a3;
+  domainsCopy = domains;
   v4 = +[NSMutableArray array];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  obj = v3;
+  obj = domainsCopy;
   v5 = [obj countByEnumeratingWithState:&v20 objects:v26 count:16];
   if (v5)
   {
@@ -206,12 +206,12 @@ void __47__SafariDownloadsSettingsController_specifiers__block_invoke_75(uint64_
         v12 = DOCLocalizedDisplayName();
         v13 = [PSSpecifier preferenceSpecifierNamed:v12 target:0 set:0 get:0 detail:0 cell:3 edit:0];
 
-        v14 = [v11 identifier];
-        [v13 setAccessibilityIdentifier:v14];
+        identifier = [v11 identifier];
+        [v13 setAccessibilityIdentifier:identifier];
 
         [v13 setProperty:objc_opt_class() forKey:v8];
-        v15 = [v11 identifier];
-        [v13 setProperty:v15 forKey:v9];
+        identifier2 = [v11 identifier];
+        [v13 setProperty:identifier2 forKey:v9];
 
         v24 = @"providerDomain";
         v25 = v11;
@@ -238,13 +238,13 @@ void __47__SafariDownloadsSettingsController_specifiers__block_invoke_75(uint64_
 
 - (void)_updateSelectedFolder
 {
-  v3 = [(SafariDownloadsSettingsController *)self _downloadSettings];
+  _downloadSettings = [(SafariDownloadsSettingsController *)self _downloadSettings];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = __58__SafariDownloadsSettingsController__updateSelectedFolder__block_invoke;
   v4[3] = &unk_89C38;
   v4[4] = self;
-  [v3 fetchDefaultDownloadsLocationItem:v4];
+  [_downloadSettings fetchDefaultDownloadsLocationItem:v4];
 }
 
 void __58__SafariDownloadsSettingsController__updateSelectedFolder__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -302,11 +302,11 @@ void __58__SafariDownloadsSettingsController__updateSelectedFolder__block_invoke
   [v10 _updateFooterWithProviderDomain:v12];
 }
 
-- (void)_updateFooterWithProviderDomain:(id)a3
+- (void)_updateFooterWithProviderDomain:(id)domain
 {
-  v9 = a3;
-  v4 = [v9 providerID];
-  if ([v9 isiCloudDriveProvider])
+  domainCopy = domain;
+  providerID = [domainCopy providerID];
+  if ([domainCopy isiCloudDriveProvider])
   {
     v5 = @"iCloud Footer Text";
 LABEL_5:
@@ -314,7 +314,7 @@ LABEL_5:
     goto LABEL_7;
   }
 
-  if ([v4 isEqualToString:DOCDocumentSourceIdentifierLocal])
+  if ([providerID isEqualToString:DOCDocumentSourceIdentifierLocal])
   {
     v5 = @"Local Footer Text";
     goto LABEL_5;
@@ -329,18 +329,18 @@ LABEL_7:
   [(SafariDownloadsSettingsController *)self reloadSpecifier:self->_downloadsFolderGroupSpecifier animated:1];
 }
 
-- (void)_setDownloadsLocationForProviderDomain:(id)a3
+- (void)_setDownloadsLocationForProviderDomain:(id)domain
 {
-  v4 = a3;
-  v5 = [(SafariDownloadsSettingsController *)self _downloadSettings];
+  domainCopy = domain;
+  _downloadSettings = [(SafariDownloadsSettingsController *)self _downloadSettings];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = __76__SafariDownloadsSettingsController__setDownloadsLocationForProviderDomain___block_invoke;
   v7[3] = &unk_89C60;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  [v5 setDefaultDownloadsItemForProviderDomain:v6 completionHandler:v7];
+  v8 = domainCopy;
+  selfCopy = self;
+  v6 = domainCopy;
+  [_downloadSettings setDefaultDownloadsItemForProviderDomain:v6 completionHandler:v7];
 }
 
 void __76__SafariDownloadsSettingsController__setDownloadsLocationForProviderDomain___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -365,18 +365,18 @@ void __76__SafariDownloadsSettingsController__setDownloadsLocationForProviderDom
   }
 }
 
-- (void)_setDefaultDownloadsLocationItem:(id)a3
+- (void)_setDefaultDownloadsLocationItem:(id)item
 {
-  v4 = a3;
-  v5 = [(SafariDownloadsSettingsController *)self _downloadSettings];
+  itemCopy = item;
+  _downloadSettings = [(SafariDownloadsSettingsController *)self _downloadSettings];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = __70__SafariDownloadsSettingsController__setDefaultDownloadsLocationItem___block_invoke;
   v7[3] = &unk_89C88;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  [v5 setDefaultDownloadsLocationItem:v6 completionHandler:v7];
+  v8 = itemCopy;
+  selfCopy = self;
+  v6 = itemCopy;
+  [_downloadSettings setDefaultDownloadsLocationItem:v6 completionHandler:v7];
 }
 
 void __70__SafariDownloadsSettingsController__setDefaultDownloadsLocationItem___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -417,15 +417,15 @@ void __70__SafariDownloadsSettingsController__setDefaultDownloadsLocationItem___
 
   if (self->_cachedDownloadsLocationItem)
   {
-    v6 = [(SafariDownloadsSettingsController *)self _itemManager];
+    _itemManager = [(SafariDownloadsSettingsController *)self _itemManager];
     cachedDownloadsLocationItem = self->_cachedDownloadsLocationItem;
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = __54__SafariDownloadsSettingsController__showFolderPicker__block_invoke;
     v8[3] = &unk_89CD8;
     v9 = v5;
-    v10 = self;
-    [v6 fetchURLForItem:cachedDownloadsLocationItem completionHandler:v8];
+    selfCopy = self;
+    [_itemManager fetchURLForItem:cachedDownloadsLocationItem completionHandler:v8];
   }
 
   else
@@ -457,47 +457,47 @@ id __54__SafariDownloadsSettingsController__showFolderPicker__block_invoke_2(uin
   return [v2 presentViewController:v3 animated:1 completion:0];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v15.receiver = self;
   v15.super_class = SafariDownloadsSettingsController;
-  v6 = a4;
-  v7 = [(SafariDownloadsSettingsController *)&v15 tableView:a3 cellForRowAtIndexPath:v6];
-  v8 = [(SafariDownloadsSettingsController *)self specifierAtIndexPath:v6, v15.receiver, v15.super_class];
+  pathCopy = path;
+  v7 = [(SafariDownloadsSettingsController *)&v15 tableView:view cellForRowAtIndexPath:pathCopy];
+  v8 = [(SafariDownloadsSettingsController *)self specifierAtIndexPath:pathCopy, v15.receiver, v15.super_class];
 
   [v7 setIsAccessibilityElement:1];
-  v9 = [v8 accessibilityIdentifier];
-  [v7 setAccessibilityIdentifier:v9];
+  accessibilityIdentifier = [v8 accessibilityIdentifier];
+  [v7 setAccessibilityIdentifier:accessibilityIdentifier];
 
-  v10 = [v8 properties];
-  v11 = [v10 objectForKeyedSubscript:PSIDKey];
+  properties = [v8 properties];
+  v11 = [properties objectForKeyedSubscript:PSIDKey];
   v12 = [v11 isEqualToString:@"DOWNLOADS_EXPIRATION_INTERVAL"];
 
   if (v12)
   {
-    v13 = [v7 textLabel];
-    [v13 setNumberOfLines:0];
+    textLabel = [v7 textLabel];
+    [textLabel setNumberOfLines:0];
   }
 
   return v7;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SafariDownloadsSettingsController *)self specifierAtIndexPath:v7];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(SafariDownloadsSettingsController *)self specifierAtIndexPath:pathCopy];
   v9 = v8;
   if (v8 == self->_selectOtherFolderSpecifier)
   {
-    [v6 deselectRowAtIndexPath:v7 animated:1];
+    [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
     [(SafariDownloadsSettingsController *)self _showFolderPicker];
   }
 
   else
   {
-    v10 = [(PSSpecifier *)v8 userInfo];
-    v11 = [v10 objectForKeyedSubscript:@"providerDomain"];
+    userInfo = [(PSSpecifier *)v8 userInfo];
+    v11 = [userInfo objectForKeyedSubscript:@"providerDomain"];
 
     if (v11)
     {
@@ -506,24 +506,24 @@ id __54__SafariDownloadsSettingsController__showFolderPicker__block_invoke_2(uin
 
     v12.receiver = self;
     v12.super_class = SafariDownloadsSettingsController;
-    [(SafariSettingsListController *)&v12 tableView:v6 didSelectRowAtIndexPath:v7];
+    [(SafariSettingsListController *)&v12 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
   }
 }
 
-- (void)documentPicker:(id)a3 didPickDocumentsAtURLs:(id)a4
+- (void)documentPicker:(id)picker didPickDocumentsAtURLs:(id)ls
 {
-  v5 = a4;
-  if ([v5 count])
+  lsCopy = ls;
+  if ([lsCopy count])
   {
-    v6 = [(SafariDownloadsSettingsController *)self _itemManager];
-    v7 = [v5 firstObject];
+    _itemManager = [(SafariDownloadsSettingsController *)self _itemManager];
+    firstObject = [lsCopy firstObject];
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = __75__SafariDownloadsSettingsController_documentPicker_didPickDocumentsAtURLs___block_invoke;
     v9[3] = &unk_89C60;
-    v10 = v5;
-    v11 = self;
-    [v6 fetchItemForURL:v7 completionHandler:v9];
+    v10 = lsCopy;
+    selfCopy = self;
+    [_itemManager fetchItemForURL:firstObject completionHandler:v9];
   }
 
   else

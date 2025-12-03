@@ -1,23 +1,23 @@
 @interface HDCodableRacingCluster
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addEligibleClusterUUIDs:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasActivityType:(BOOL)a3;
-- (void)setHasClusterSize:(BOOL)a3;
-- (void)setHasFinal:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addEligibleClusterUUIDs:(id)ds;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasActivityType:(BOOL)type;
+- (void)setHasClusterSize:(BOOL)size;
+- (void)setHasFinal:(BOOL)final;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HDCodableRacingCluster
 
-- (void)setHasClusterSize:(BOOL)a3
+- (void)setHasClusterSize:(BOOL)size
 {
-  if (a3)
+  if (size)
   {
     v3 = 4;
   }
@@ -30,9 +30,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasActivityType:(BOOL)a3
+- (void)setHasActivityType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -45,9 +45,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasFinal:(BOOL)a3
+- (void)setHasFinal:(BOOL)final
 {
-  if (a3)
+  if (final)
   {
     v3 = 8;
   }
@@ -60,22 +60,22 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)addEligibleClusterUUIDs:(id)a3
+- (void)addEligibleClusterUUIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   eligibleClusterUUIDs = self->_eligibleClusterUUIDs;
-  v8 = v4;
+  v8 = dsCopy;
   if (!eligibleClusterUUIDs)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_eligibleClusterUUIDs;
     self->_eligibleClusterUUIDs = v6;
 
-    v4 = v8;
+    dsCopy = v8;
     eligibleClusterUUIDs = self->_eligibleClusterUUIDs;
   }
 
-  [(NSMutableArray *)eligibleClusterUUIDs addObject:v4];
+  [(NSMutableArray *)eligibleClusterUUIDs addObject:dsCopy];
 }
 
 - (id)description
@@ -84,20 +84,20 @@
   v8.receiver = self;
   v8.super_class = HDCodableRacingCluster;
   v4 = [(HDCodableRacingCluster *)&v8 description];
-  v5 = [(HDCodableRacingCluster *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HDCodableRacingCluster *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   uuid = self->_uuid;
   if (uuid)
   {
-    [v3 setObject:uuid forKey:@"uuid"];
+    [dictionary setObject:uuid forKey:@"uuid"];
   }
 
   workoutClusterUUID = self->_workoutClusterUUID;
@@ -156,22 +156,22 @@ LABEL_9:
   syncIdentity = self->_syncIdentity;
   if (syncIdentity)
   {
-    v12 = [(HDCodableSyncIdentity *)syncIdentity dictionaryRepresentation];
-    [v4 setObject:v12 forKey:@"syncIdentity"];
+    dictionaryRepresentation = [(HDCodableSyncIdentity *)syncIdentity dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"syncIdentity"];
   }
 
   lastWorkoutMetrics = self->_lastWorkoutMetrics;
   if (lastWorkoutMetrics)
   {
-    v14 = [(HDCodableRacingMetrics *)lastWorkoutMetrics dictionaryRepresentation];
-    [v4 setObject:v14 forKey:@"lastWorkoutMetrics"];
+    dictionaryRepresentation2 = [(HDCodableRacingMetrics *)lastWorkoutMetrics dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation2 forKey:@"lastWorkoutMetrics"];
   }
 
   bestWorkoutMetrics = self->_bestWorkoutMetrics;
   if (bestWorkoutMetrics)
   {
-    v16 = [(HDCodableRacingMetrics *)bestWorkoutMetrics dictionaryRepresentation];
-    [v4 setObject:v16 forKey:@"bestWorkoutMetrics"];
+    dictionaryRepresentation3 = [(HDCodableRacingMetrics *)bestWorkoutMetrics dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation3 forKey:@"bestWorkoutMetrics"];
   }
 
   if ((*&self->_has & 8) != 0)
@@ -189,10 +189,10 @@ LABEL_9:
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (self->_uuid)
   {
     PBDataWriterWriteDataField();
@@ -299,27 +299,27 @@ LABEL_9:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v10 = v4;
+  toCopy = to;
+  v10 = toCopy;
   if (self->_uuid)
   {
-    [v4 setUuid:?];
-    v4 = v10;
+    [toCopy setUuid:?];
+    toCopy = v10;
   }
 
   if (self->_workoutClusterUUID)
   {
     [v10 setWorkoutClusterUUID:?];
-    v4 = v10;
+    toCopy = v10;
   }
 
   has = self->_has;
   if (has)
   {
-    *(v4 + 1) = *&self->_relevance;
-    *(v4 + 100) |= 1u;
+    *(toCopy + 1) = *&self->_relevance;
+    *(toCopy + 100) |= 1u;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -338,59 +338,59 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  *(v4 + 8) = self->_clusterSize;
-  *(v4 + 100) |= 4u;
+  *(toCopy + 8) = self->_clusterSize;
+  *(toCopy + 100) |= 4u;
   if ((*&self->_has & 2) != 0)
   {
 LABEL_8:
-    *(v4 + 4) = self->_activityType;
-    *(v4 + 100) |= 2u;
+    *(toCopy + 4) = self->_activityType;
+    *(toCopy + 100) |= 2u;
   }
 
 LABEL_9:
   if (self->_routeSnapshot)
   {
     [v10 setRouteSnapshot:?];
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_routeLabel)
   {
     [v10 setRouteLabel:?];
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_syncIdentity)
   {
     [v10 setSyncIdentity:?];
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_lastWorkoutMetrics)
   {
     [v10 setLastWorkoutMetrics:?];
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_bestWorkoutMetrics)
   {
     [v10 setBestWorkoutMetrics:?];
-    v4 = v10;
+    toCopy = v10;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    *(v4 + 96) = self->_final;
-    *(v4 + 100) |= 8u;
+    *(toCopy + 96) = self->_final;
+    *(toCopy + 100) |= 8u;
   }
 
   if ([(HDCodableRacingCluster *)self eligibleClusterUUIDsCount])
   {
     [v10 clearEligibleClusterUUIDs];
-    v6 = [(HDCodableRacingCluster *)self eligibleClusterUUIDsCount];
-    if (v6)
+    eligibleClusterUUIDsCount = [(HDCodableRacingCluster *)self eligibleClusterUUIDsCount];
+    if (eligibleClusterUUIDsCount)
     {
-      v7 = v6;
+      v7 = eligibleClusterUUIDsCount;
       for (i = 0; i != v7; ++i)
       {
         v9 = [(HDCodableRacingCluster *)self eligibleClusterUUIDsAtIndex:i];
@@ -400,15 +400,15 @@ LABEL_9:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v34 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSData *)self->_uuid copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSData *)self->_uuid copyWithZone:zone];
   v7 = *(v5 + 80);
   *(v5 + 80) = v6;
 
-  v8 = [(NSData *)self->_workoutClusterUUID copyWithZone:a3];
+  v8 = [(NSData *)self->_workoutClusterUUID copyWithZone:zone];
   v9 = *(v5 + 88);
   *(v5 + 88) = v8;
 
@@ -445,23 +445,23 @@ LABEL_4:
   }
 
 LABEL_5:
-  v11 = [(NSData *)self->_routeSnapshot copyWithZone:a3];
+  v11 = [(NSData *)self->_routeSnapshot copyWithZone:zone];
   v12 = *(v5 + 64);
   *(v5 + 64) = v11;
 
-  v13 = [(NSString *)self->_routeLabel copyWithZone:a3];
+  v13 = [(NSString *)self->_routeLabel copyWithZone:zone];
   v14 = *(v5 + 56);
   *(v5 + 56) = v13;
 
-  v15 = [(HDCodableSyncIdentity *)self->_syncIdentity copyWithZone:a3];
+  v15 = [(HDCodableSyncIdentity *)self->_syncIdentity copyWithZone:zone];
   v16 = *(v5 + 72);
   *(v5 + 72) = v15;
 
-  v17 = [(HDCodableRacingMetrics *)self->_lastWorkoutMetrics copyWithZone:a3];
+  v17 = [(HDCodableRacingMetrics *)self->_lastWorkoutMetrics copyWithZone:zone];
   v18 = *(v5 + 48);
   *(v5 + 48) = v17;
 
-  v19 = [(HDCodableRacingMetrics *)self->_bestWorkoutMetrics copyWithZone:a3];
+  v19 = [(HDCodableRacingMetrics *)self->_bestWorkoutMetrics copyWithZone:zone];
   v20 = *(v5 + 24);
   *(v5 + 24) = v19;
 
@@ -490,7 +490,7 @@ LABEL_5:
           objc_enumerationMutation(v21);
         }
 
-        v26 = [*(*(&v29 + 1) + 8 * i) copyWithZone:{a3, v29}];
+        v26 = [*(*(&v29 + 1) + 8 * i) copyWithZone:{zone, v29}];
         [v5 addEligibleClusterUUIDs:v26];
       }
 
@@ -504,16 +504,16 @@ LABEL_5:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_36;
   }
 
   uuid = self->_uuid;
-  if (uuid | *(v4 + 10))
+  if (uuid | *(equalCopy + 10))
   {
     if (![(NSData *)uuid isEqual:?])
     {
@@ -522,7 +522,7 @@ LABEL_5:
   }
 
   workoutClusterUUID = self->_workoutClusterUUID;
-  if (workoutClusterUUID | *(v4 + 11))
+  if (workoutClusterUUID | *(equalCopy + 11))
   {
     if (![(NSData *)workoutClusterUUID isEqual:?])
     {
@@ -530,54 +530,54 @@ LABEL_5:
     }
   }
 
-  v7 = *(v4 + 100);
+  v7 = *(equalCopy + 100);
   if (*&self->_has)
   {
-    if ((*(v4 + 100) & 1) == 0 || self->_relevance != *(v4 + 1))
+    if ((*(equalCopy + 100) & 1) == 0 || self->_relevance != *(equalCopy + 1))
     {
       goto LABEL_36;
     }
   }
 
-  else if (*(v4 + 100))
+  else if (*(equalCopy + 100))
   {
     goto LABEL_36;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 100) & 4) == 0 || self->_clusterSize != *(v4 + 8))
+    if ((*(equalCopy + 100) & 4) == 0 || self->_clusterSize != *(equalCopy + 8))
     {
       goto LABEL_36;
     }
   }
 
-  else if ((*(v4 + 100) & 4) != 0)
+  else if ((*(equalCopy + 100) & 4) != 0)
   {
     goto LABEL_36;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 100) & 2) == 0 || self->_activityType != *(v4 + 4))
+    if ((*(equalCopy + 100) & 2) == 0 || self->_activityType != *(equalCopy + 4))
     {
       goto LABEL_36;
     }
   }
 
-  else if ((*(v4 + 100) & 2) != 0)
+  else if ((*(equalCopy + 100) & 2) != 0)
   {
     goto LABEL_36;
   }
 
   routeSnapshot = self->_routeSnapshot;
-  if (routeSnapshot | *(v4 + 8) && ![(NSData *)routeSnapshot isEqual:?])
+  if (routeSnapshot | *(equalCopy + 8) && ![(NSData *)routeSnapshot isEqual:?])
   {
     goto LABEL_36;
   }
 
   routeLabel = self->_routeLabel;
-  if (routeLabel | *(v4 + 7))
+  if (routeLabel | *(equalCopy + 7))
   {
     if (![(NSString *)routeLabel isEqual:?])
     {
@@ -586,7 +586,7 @@ LABEL_5:
   }
 
   syncIdentity = self->_syncIdentity;
-  if (syncIdentity | *(v4 + 9))
+  if (syncIdentity | *(equalCopy + 9))
   {
     if (![(HDCodableSyncIdentity *)syncIdentity isEqual:?])
     {
@@ -595,7 +595,7 @@ LABEL_5:
   }
 
   lastWorkoutMetrics = self->_lastWorkoutMetrics;
-  if (lastWorkoutMetrics | *(v4 + 6))
+  if (lastWorkoutMetrics | *(equalCopy + 6))
   {
     if (![(HDCodableRacingMetrics *)lastWorkoutMetrics isEqual:?])
     {
@@ -604,7 +604,7 @@ LABEL_5:
   }
 
   bestWorkoutMetrics = self->_bestWorkoutMetrics;
-  if (bestWorkoutMetrics | *(v4 + 3))
+  if (bestWorkoutMetrics | *(equalCopy + 3))
   {
     if (![(HDCodableRacingMetrics *)bestWorkoutMetrics isEqual:?])
     {
@@ -612,10 +612,10 @@ LABEL_5:
     }
   }
 
-  v13 = *(v4 + 100);
+  v13 = *(equalCopy + 100);
   if ((*&self->_has & 8) == 0)
   {
-    if ((*(v4 + 100) & 8) == 0)
+    if ((*(equalCopy + 100) & 8) == 0)
     {
       goto LABEL_33;
     }
@@ -625,28 +625,28 @@ LABEL_36:
     goto LABEL_37;
   }
 
-  if ((*(v4 + 100) & 8) == 0)
+  if ((*(equalCopy + 100) & 8) == 0)
   {
     goto LABEL_36;
   }
 
-  v17 = *(v4 + 96);
+  v17 = *(equalCopy + 96);
   if (self->_final)
   {
-    if ((*(v4 + 96) & 1) == 0)
+    if ((*(equalCopy + 96) & 1) == 0)
     {
       goto LABEL_36;
     }
   }
 
-  else if (*(v4 + 96))
+  else if (*(equalCopy + 96))
   {
     goto LABEL_36;
   }
 
 LABEL_33:
   eligibleClusterUUIDs = self->_eligibleClusterUUIDs;
-  if (eligibleClusterUUIDs | *(v4 + 5))
+  if (eligibleClusterUUIDs | *(equalCopy + 5))
   {
     v15 = [(NSMutableArray *)eligibleClusterUUIDs isEqual:?];
   }
@@ -738,26 +738,26 @@ LABEL_14:
   return v19 ^ v20 ^ v5 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13 ^ v14 ^ v15 ^ v16 ^ [(NSMutableArray *)self->_eligibleClusterUUIDs hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (*(v4 + 10))
+  fromCopy = from;
+  if (*(fromCopy + 10))
   {
     [(HDCodableRacingCluster *)self setUuid:?];
   }
 
-  if (*(v4 + 11))
+  if (*(fromCopy + 11))
   {
     [(HDCodableRacingCluster *)self setWorkoutClusterUUID:?];
   }
 
-  v5 = *(v4 + 100);
+  v5 = *(fromCopy + 100);
   if (v5)
   {
-    self->_relevance = *(v4 + 1);
+    self->_relevance = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v5 = *(v4 + 100);
+    v5 = *(fromCopy + 100);
     if ((v5 & 4) == 0)
     {
 LABEL_7:
@@ -770,33 +770,33 @@ LABEL_7:
     }
   }
 
-  else if ((*(v4 + 100) & 4) == 0)
+  else if ((*(fromCopy + 100) & 4) == 0)
   {
     goto LABEL_7;
   }
 
-  self->_clusterSize = *(v4 + 8);
+  self->_clusterSize = *(fromCopy + 8);
   *&self->_has |= 4u;
-  if ((*(v4 + 100) & 2) != 0)
+  if ((*(fromCopy + 100) & 2) != 0)
   {
 LABEL_8:
-    self->_activityType = *(v4 + 4);
+    self->_activityType = *(fromCopy + 4);
     *&self->_has |= 2u;
   }
 
 LABEL_9:
-  if (*(v4 + 8))
+  if (*(fromCopy + 8))
   {
     [(HDCodableRacingCluster *)self setRouteSnapshot:?];
   }
 
-  if (*(v4 + 7))
+  if (*(fromCopy + 7))
   {
     [(HDCodableRacingCluster *)self setRouteLabel:?];
   }
 
   syncIdentity = self->_syncIdentity;
-  v7 = *(v4 + 9);
+  v7 = *(fromCopy + 9);
   if (syncIdentity)
   {
     if (v7)
@@ -811,7 +811,7 @@ LABEL_9:
   }
 
   lastWorkoutMetrics = self->_lastWorkoutMetrics;
-  v9 = *(v4 + 6);
+  v9 = *(fromCopy + 6);
   if (lastWorkoutMetrics)
   {
     if (v9)
@@ -826,7 +826,7 @@ LABEL_9:
   }
 
   bestWorkoutMetrics = self->_bestWorkoutMetrics;
-  v11 = *(v4 + 3);
+  v11 = *(fromCopy + 3);
   if (bestWorkoutMetrics)
   {
     if (v11)
@@ -840,9 +840,9 @@ LABEL_9:
     [(HDCodableRacingCluster *)self setBestWorkoutMetrics:?];
   }
 
-  if ((*(v4 + 100) & 8) != 0)
+  if ((*(fromCopy + 100) & 8) != 0)
   {
-    self->_final = *(v4 + 96);
+    self->_final = *(fromCopy + 96);
     *&self->_has |= 8u;
   }
 
@@ -850,7 +850,7 @@ LABEL_9:
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v12 = *(v4 + 5);
+  v12 = *(fromCopy + 5);
   v13 = [v12 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v13)
   {

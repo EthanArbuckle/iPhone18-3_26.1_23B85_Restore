@@ -1,42 +1,42 @@
 @interface AVEditBehaviorContext
 - (AVEditBehavior)behavior;
-- (AVEditBehaviorContext)initWithAVKitOwner:(id)a3;
+- (AVEditBehaviorContext)initWithAVKitOwner:(id)owner;
 - (AVPlayerViewController)playerViewController;
 - (CGAffineTransform)rotationTransform;
-- (double)editViewDuration:(id)a3;
-- (double)editViewThumbnailAspectRatio:(id)a3;
+- (double)editViewDuration:(id)duration;
+- (double)editViewThumbnailAspectRatio:(id)ratio;
 - (id)_makeBarButtonItems;
-- (id)videoCompostitionRotatingAsset:(id)a3;
+- (id)videoCompostitionRotatingAsset:(id)asset;
 - (void)_createAssetImageGenerator;
-- (void)cancel:(id)a3;
-- (void)contentViewWillTransitionToSize:(CGSize)a3 withCoordinator:(id)a4;
+- (void)cancel:(id)cancel;
+- (void)contentViewWillTransitionToSize:(CGSize)size withCoordinator:(id)coordinator;
 - (void)dealloc;
-- (void)didAddBehavior:(id)a3;
-- (void)didRemoveBehavior:(id)a3;
-- (void)done:(id)a3;
-- (void)editView:(id)a3 currentTimeDidChange:(double)a4;
-- (void)editView:(id)a3 requestThumbnailImageForTimestamp:(id)a4;
-- (void)editView:(id)a3 trimEndTimeDidChange:(double)a4;
-- (void)editView:(id)a3 trimStartTimeDidChange:(double)a4;
-- (void)editViewDidBeginScrubbing:(id)a3;
-- (void)editViewDidEndScrubbing:(id)a3;
-- (void)editViewDidFinishRequestingThumbnails:(id)a3;
-- (void)editViewWillBeginRequestingThumbnails:(id)a3;
+- (void)didAddBehavior:(id)behavior;
+- (void)didRemoveBehavior:(id)behavior;
+- (void)done:(id)done;
+- (void)editView:(id)view currentTimeDidChange:(double)change;
+- (void)editView:(id)view requestThumbnailImageForTimestamp:(id)timestamp;
+- (void)editView:(id)view trimEndTimeDidChange:(double)change;
+- (void)editView:(id)view trimStartTimeDidChange:(double)change;
+- (void)editViewDidBeginScrubbing:(id)scrubbing;
+- (void)editViewDidEndScrubbing:(id)scrubbing;
+- (void)editViewDidFinishRequestingThumbnails:(id)thumbnails;
+- (void)editViewWillBeginRequestingThumbnails:(id)thumbnails;
 - (void)endEditing;
-- (void)pause:(id)a3;
-- (void)play:(id)a3;
+- (void)pause:(id)pause;
+- (void)play:(id)play;
 - (void)rotateClockwise;
-- (void)setRotationTransform:(CGAffineTransform *)a3;
+- (void)setRotationTransform:(CGAffineTransform *)transform;
 - (void)startEditing;
 @end
 
 @implementation AVEditBehaviorContext
 
-- (void)setRotationTransform:(CGAffineTransform *)a3
+- (void)setRotationTransform:(CGAffineTransform *)transform
 {
-  v3 = *&a3->a;
-  v4 = *&a3->c;
-  *&self->_rotationTransform.tx = *&a3->tx;
+  v3 = *&transform->a;
+  v4 = *&transform->c;
+  *&self->_rotationTransform.tx = *&transform->tx;
   *&self->_rotationTransform.c = v4;
   *&self->_rotationTransform.a = v3;
 }
@@ -64,63 +64,63 @@
   return WeakRetained;
 }
 
-- (void)editViewDidFinishRequestingThumbnails:(id)a3
+- (void)editViewDidFinishRequestingThumbnails:(id)thumbnails
 {
   if (self)
   {
-    v4 = [(AVEditBehaviorContext *)self imageGenerator];
-    v5 = [v4 status];
+    imageGenerator = [(AVEditBehaviorContext *)self imageGenerator];
+    status = [imageGenerator status];
 
-    if (v5)
+    if (status)
     {
       [(AVEditBehaviorContext *)self _createAssetImageGenerator];
     }
 
-    v6 = [(AVEditBehaviorContext *)self imageGenerator];
-    v7 = [(AVEditBehaviorContext *)self pendingImageRequests];
+    imageGenerator2 = [(AVEditBehaviorContext *)self imageGenerator];
+    pendingImageRequests = [(AVEditBehaviorContext *)self pendingImageRequests];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __44__AVEditBehaviorContext__generateThumbnails__block_invoke;
     v9[3] = &unk_1E72081F0;
     v9[4] = self;
-    [v6 generateCGImagesAsynchronouslyForTimes:v7 completionHandler:v9];
+    [imageGenerator2 generateCGImagesAsynchronouslyForTimes:pendingImageRequests completionHandler:v9];
 
-    v8 = [(AVEditBehaviorContext *)self pendingImageRequests];
-    [v8 removeAllObjects];
+    pendingImageRequests2 = [(AVEditBehaviorContext *)self pendingImageRequests];
+    [pendingImageRequests2 removeAllObjects];
   }
 }
 
 - (void)_createAssetImageGenerator
 {
-  if (a1)
+  if (self)
   {
-    v18 = [a1 playerViewController];
-    v4 = [v18 player];
-    v5 = [v4 currentItem];
+    playerViewController = [self playerViewController];
+    player = [playerViewController player];
+    currentItem = [player currentItem];
 
     v6 = MEMORY[0x1E6987E68];
-    v7 = [v5 asset];
-    v8 = [v6 assetImageGeneratorWithAsset:v7];
-    [a1 setImageGenerator:v8];
+    asset = [currentItem asset];
+    v8 = [v6 assetImageGeneratorWithAsset:asset];
+    [self setImageGenerator:v8];
 
-    v9 = [a1 imageGenerator];
-    [v9 setAppliesPreferredTrackTransform:1];
-    v10 = [v18 contentView];
-    v11 = [v10 traitCollection];
-    [v11 displayScale];
+    imageGenerator = [self imageGenerator];
+    [imageGenerator setAppliesPreferredTrackTransform:1];
+    contentView = [playerViewController contentView];
+    traitCollection = [contentView traitCollection];
+    [traitCollection displayScale];
     v13 = v12;
     v14 = 1.0;
     if (v12 >= 1.0)
     {
-      v1 = [v18 contentView];
-      v2 = [v1 traitCollection];
-      [v2 displayScale];
+      contentView2 = [playerViewController contentView];
+      traitCollection2 = [contentView2 traitCollection];
+      [traitCollection2 displayScale];
       v14 = v15;
     }
 
-    v16 = [a1 editView];
-    [v16 intrinsicContentSize];
-    [v9 setMaximumSize:{0.0, v14 * v17}];
+    editView = [self editView];
+    [editView intrinsicContentSize];
+    [imageGenerator setMaximumSize:{0.0, v14 * v17}];
 
     if (v13 >= 1.0)
     {
@@ -164,39 +164,39 @@ void __44__AVEditBehaviorContext__generateThumbnails__block_invoke_2(uint64_t a1
   CGImageRelease(*(a1 + 40));
 }
 
-- (void)editViewWillBeginRequestingThumbnails:(id)a3
+- (void)editViewWillBeginRequestingThumbnails:(id)thumbnails
 {
-  v3 = [(AVEditBehaviorContext *)self imageGenerator];
-  [v3 cancelAllCGImageGeneration];
+  imageGenerator = [(AVEditBehaviorContext *)self imageGenerator];
+  [imageGenerator cancelAllCGImageGeneration];
 }
 
-- (void)editViewDidEndScrubbing:(id)a3
+- (void)editViewDidEndScrubbing:(id)scrubbing
 {
-  v4 = a3;
-  if ([v4 isTrimming])
+  scrubbingCopy = scrubbing;
+  if ([scrubbingCopy isTrimming])
   {
-    [v4 trimStartTime];
+    [scrubbingCopy trimStartTime];
     AVTimeIntervalToCMTime(&time1, v5);
-    v6 = [(AVEditBehaviorContext *)self playerController];
-    v7 = [v6 player];
-    v8 = [v7 currentItem];
-    [v8 setReversePlaybackEndTime:&time1];
+    playerController = [(AVEditBehaviorContext *)self playerController];
+    player = [playerController player];
+    currentItem = [player currentItem];
+    [currentItem setReversePlaybackEndTime:&time1];
 
-    [v4 trimEndTime];
+    [scrubbingCopy trimEndTime];
     AVTimeIntervalToCMTime(&v44, v9);
-    v10 = [(AVEditBehaviorContext *)self playerController];
-    v11 = [v10 player];
-    v12 = [v11 currentItem];
+    playerController2 = [(AVEditBehaviorContext *)self playerController];
+    player2 = [playerController2 player];
+    currentItem2 = [player2 currentItem];
     time1 = v44;
-    [v12 setForwardPlaybackEndTime:&time1];
+    [currentItem2 setForwardPlaybackEndTime:&time1];
 
-    v13 = [(AVEditBehaviorContext *)self playerController];
-    v14 = [v13 player];
-    v15 = [v14 currentItem];
-    v16 = v15;
-    if (v15)
+    playerController3 = [(AVEditBehaviorContext *)self playerController];
+    player3 = [playerController3 player];
+    currentItem3 = [player3 currentItem];
+    v16 = currentItem3;
+    if (currentItem3)
     {
-      [v15 forwardPlaybackEndTime];
+      [currentItem3 forwardPlaybackEndTime];
     }
 
     else
@@ -204,13 +204,13 @@ void __44__AVEditBehaviorContext__generateThumbnails__block_invoke_2(uint64_t a1
       memset(&time1, 0, sizeof(time1));
     }
 
-    v17 = [(AVEditBehaviorContext *)self playerController];
-    v18 = [v17 player];
-    v19 = [v18 currentItem];
-    v20 = v19;
-    if (v19)
+    playerController4 = [(AVEditBehaviorContext *)self playerController];
+    player4 = [playerController4 player];
+    currentItem4 = [player4 currentItem];
+    v20 = currentItem4;
+    if (currentItem4)
     {
-      [v19 currentTime];
+      [currentItem4 currentTime];
     }
 
     else
@@ -222,20 +222,20 @@ void __44__AVEditBehaviorContext__generateThumbnails__block_invoke_2(uint64_t a1
 
     if (v21 < 0)
     {
-      v26 = [(AVEditBehaviorContext *)self playerController];
-      v27 = [v26 player];
-      v28 = [v27 currentItem];
-      v29 = [(AVEditBehaviorContext *)self playerController];
-      v30 = [v29 player];
-      v31 = [v30 currentItem];
-      v32 = v31;
-      if (v31)
+      playerController5 = [(AVEditBehaviorContext *)self playerController];
+      player5 = [playerController5 player];
+      currentItem5 = [player5 currentItem];
+      playerController6 = [(AVEditBehaviorContext *)self playerController];
+      player6 = [playerController6 player];
+      currentItem6 = [player6 currentItem];
+      v32 = currentItem6;
+      if (currentItem6)
       {
-        [v31 forwardPlaybackEndTime];
+        [currentItem6 forwardPlaybackEndTime];
 LABEL_21:
         time2 = **&MEMORY[0x1E6960CC0];
         v42 = time2;
-        [v28 seekToTime:&time1 toleranceBefore:&time2 toleranceAfter:&v42 completionHandler:0];
+        [currentItem5 seekToTime:&time1 toleranceBefore:&time2 toleranceAfter:&v42 completionHandler:0];
 
         goto LABEL_22;
       }
@@ -245,13 +245,13 @@ LABEL_20:
       goto LABEL_21;
     }
 
-    v22 = [(AVEditBehaviorContext *)self playerController];
-    v23 = [v22 player];
-    v24 = [v23 currentItem];
-    v25 = v24;
-    if (v24)
+    playerController7 = [(AVEditBehaviorContext *)self playerController];
+    player7 = [playerController7 player];
+    currentItem7 = [player7 currentItem];
+    v25 = currentItem7;
+    if (currentItem7)
     {
-      [v24 reversePlaybackEndTime];
+      [currentItem7 reversePlaybackEndTime];
     }
 
     else
@@ -259,13 +259,13 @@ LABEL_20:
       memset(&time1, 0, sizeof(time1));
     }
 
-    v33 = [(AVEditBehaviorContext *)self playerController];
-    v34 = [v33 player];
-    v35 = [v34 currentItem];
-    v36 = v35;
-    if (v35)
+    playerController8 = [(AVEditBehaviorContext *)self playerController];
+    player8 = [playerController8 player];
+    currentItem8 = [player8 currentItem];
+    v36 = currentItem8;
+    if (currentItem8)
     {
-      [v35 currentTime];
+      [currentItem8 currentTime];
     }
 
     else
@@ -277,16 +277,16 @@ LABEL_20:
 
     if (v37 >= 1)
     {
-      v26 = [(AVEditBehaviorContext *)self playerController];
-      v27 = [v26 player];
-      v28 = [v27 currentItem];
-      v29 = [(AVEditBehaviorContext *)self playerController];
-      v30 = [v29 player];
-      v38 = [v30 currentItem];
-      v32 = v38;
-      if (v38)
+      playerController5 = [(AVEditBehaviorContext *)self playerController];
+      player5 = [playerController5 player];
+      currentItem5 = [player5 currentItem];
+      playerController6 = [(AVEditBehaviorContext *)self playerController];
+      player6 = [playerController6 player];
+      currentItem9 = [player6 currentItem];
+      v32 = currentItem9;
+      if (currentItem9)
       {
-        [v38 reversePlaybackEndTime];
+        [currentItem9 reversePlaybackEndTime];
         goto LABEL_21;
       }
 
@@ -295,29 +295,29 @@ LABEL_20:
   }
 
 LABEL_22:
-  v39 = [(AVEditBehaviorContext *)self playerViewController];
-  v40 = [v39 playerController];
-  [v40 endScrubbing:self];
+  playerViewController = [(AVEditBehaviorContext *)self playerViewController];
+  playerController9 = [playerViewController playerController];
+  [playerController9 endScrubbing:self];
 
-  v41 = [(AVEditBehaviorContext *)self playerController];
-  [v41 currentTime];
-  [v4 setCurrentTime:?];
+  playerController10 = [(AVEditBehaviorContext *)self playerController];
+  [playerController10 currentTime];
+  [scrubbingCopy setCurrentTime:?];
 }
 
-- (void)editViewDidBeginScrubbing:(id)a3
+- (void)editViewDidBeginScrubbing:(id)scrubbing
 {
-  v5 = [(AVEditBehaviorContext *)self playerViewController];
-  v4 = [v5 playerController];
-  [v4 beginScrubbing:self];
+  playerViewController = [(AVEditBehaviorContext *)self playerViewController];
+  playerController = [playerViewController playerController];
+  [playerController beginScrubbing:self];
 }
 
-- (void)editView:(id)a3 trimEndTimeDidChange:(double)a4
+- (void)editView:(id)view trimEndTimeDidChange:(double)change
 {
-  v6 = [(AVEditBehaviorContext *)self playerController];
-  v7 = [v6 player];
-  v8 = [v7 currentItem];
-  v9 = v8;
-  if (!v8)
+  playerController = [(AVEditBehaviorContext *)self playerController];
+  player = [playerController player];
+  currentItem = [player currentItem];
+  currentItem2 = currentItem;
+  if (!currentItem)
   {
     v14 = 0;
     v15 = 0;
@@ -325,31 +325,31 @@ LABEL_22:
     goto LABEL_5;
   }
 
-  [v8 forwardPlaybackEndTime];
+  [currentItem forwardPlaybackEndTime];
 
   if ((v15 & 0x100000000) != 0)
   {
-    v6 = [(AVEditBehaviorContext *)self playerController];
-    v7 = [v6 player];
-    v9 = [v7 currentItem];
+    playerController = [(AVEditBehaviorContext *)self playerController];
+    player = [playerController player];
+    currentItem2 = [player currentItem];
     v12 = *MEMORY[0x1E6960C70];
     v13 = *(MEMORY[0x1E6960C70] + 16);
-    [v9 setForwardPlaybackEndTime:&v12];
+    [currentItem2 setForwardPlaybackEndTime:&v12];
 LABEL_5:
   }
 
-  v10 = [(AVEditBehaviorContext *)self playerViewController];
-  v11 = [v10 playerController];
-  [v11 seekToTime:a4];
+  playerViewController = [(AVEditBehaviorContext *)self playerViewController];
+  playerController2 = [playerViewController playerController];
+  [playerController2 seekToTime:change];
 }
 
-- (void)editView:(id)a3 trimStartTimeDidChange:(double)a4
+- (void)editView:(id)view trimStartTimeDidChange:(double)change
 {
-  v6 = [(AVEditBehaviorContext *)self playerController];
-  v7 = [v6 player];
-  v8 = [v7 currentItem];
-  v9 = v8;
-  if (!v8)
+  playerController = [(AVEditBehaviorContext *)self playerController];
+  player = [playerController player];
+  currentItem = [player currentItem];
+  currentItem2 = currentItem;
+  if (!currentItem)
   {
     v14 = 0;
     v15 = 0;
@@ -357,54 +357,54 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  [v8 reversePlaybackEndTime];
+  [currentItem reversePlaybackEndTime];
 
   if ((v15 & 0x100000000) != 0)
   {
-    v6 = [(AVEditBehaviorContext *)self playerController];
-    v7 = [v6 player];
-    v9 = [v7 currentItem];
+    playerController = [(AVEditBehaviorContext *)self playerController];
+    player = [playerController player];
+    currentItem2 = [player currentItem];
     v12 = *MEMORY[0x1E6960C70];
     v13 = *(MEMORY[0x1E6960C70] + 16);
-    [v9 setReversePlaybackEndTime:&v12];
+    [currentItem2 setReversePlaybackEndTime:&v12];
 LABEL_5:
   }
 
-  v10 = [(AVEditBehaviorContext *)self playerViewController];
-  v11 = [v10 playerController];
-  [v11 seekToTime:a4];
+  playerViewController = [(AVEditBehaviorContext *)self playerViewController];
+  playerController2 = [playerViewController playerController];
+  [playerController2 seekToTime:change];
 }
 
-- (void)editView:(id)a3 currentTimeDidChange:(double)a4
+- (void)editView:(id)view currentTimeDidChange:(double)change
 {
-  if ([a3 isScrubbing])
+  if ([view isScrubbing])
   {
-    v7 = [(AVEditBehaviorContext *)self playerViewController];
-    v6 = [v7 playerController];
-    [v6 seekToTime:a4];
+    playerViewController = [(AVEditBehaviorContext *)self playerViewController];
+    playerController = [playerViewController playerController];
+    [playerController seekToTime:change];
   }
 }
 
-- (void)editView:(id)a3 requestThumbnailImageForTimestamp:(id)a4
+- (void)editView:(id)view requestThumbnailImageForTimestamp:(id)timestamp
 {
   v5 = MEMORY[0x1E696B098];
-  v6 = a4;
-  [v6 doubleValue];
+  timestampCopy = timestamp;
+  [timestampCopy doubleValue];
   CMTimeMakeWithSeconds(&v11, v7, 90000);
   v8 = [v5 valueWithCMTime:&v11];
-  v9 = [(AVEditBehaviorContext *)self pendingImageRequests];
-  [v9 addObject:v8];
+  pendingImageRequests = [(AVEditBehaviorContext *)self pendingImageRequests];
+  [pendingImageRequests addObject:v8];
 
-  v10 = [(AVEditBehaviorContext *)self requestedImageTimeToCMTimeMap];
-  [v10 setObject:v6 forKeyedSubscript:v8];
+  requestedImageTimeToCMTimeMap = [(AVEditBehaviorContext *)self requestedImageTimeToCMTimeMap];
+  [requestedImageTimeToCMTimeMap setObject:timestampCopy forKeyedSubscript:v8];
 }
 
-- (double)editViewThumbnailAspectRatio:(id)a3
+- (double)editViewThumbnailAspectRatio:(id)ratio
 {
-  v3 = [(AVEditBehaviorContext *)self playerController];
-  v4 = [v3 player];
-  v5 = [v4 currentItem];
-  [v5 presentationSize];
+  playerController = [(AVEditBehaviorContext *)self playerController];
+  player = [playerController player];
+  currentItem = [player currentItem];
+  [currentItem presentationSize];
   v7 = v6;
   v9 = v8;
 
@@ -417,23 +417,23 @@ LABEL_5:
   return result;
 }
 
-- (double)editViewDuration:(id)a3
+- (double)editViewDuration:(id)duration
 {
-  v3 = [(AVEditBehaviorContext *)self playerController];
-  [v3 contentDuration];
+  playerController = [(AVEditBehaviorContext *)self playerController];
+  [playerController contentDuration];
   v5 = v4;
 
   return v5;
 }
 
-- (void)contentViewWillTransitionToSize:(CGSize)a3 withCoordinator:(id)a4
+- (void)contentViewWillTransitionToSize:(CGSize)size withCoordinator:(id)coordinator
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __73__AVEditBehaviorContext_contentViewWillTransitionToSize_withCoordinator___block_invoke;
   v4[3] = &unk_1E7208180;
   v4[4] = self;
-  [a4 animateAlongsideTransition:v4 completion:&__block_literal_global_67];
+  [coordinator animateAlongsideTransition:v4 completion:&__block_literal_global_67];
 }
 
 void __73__AVEditBehaviorContext_contentViewWillTransitionToSize_withCoordinator___block_invoke(uint64_t a1)
@@ -442,29 +442,29 @@ void __73__AVEditBehaviorContext_contentViewWillTransitionToSize_withCoordinator
   [v1 reloadData];
 }
 
-- (void)didRemoveBehavior:(id)a3
+- (void)didRemoveBehavior:(id)behavior
 {
-  v4 = [(AVEditBehaviorContext *)self playerViewController];
-  v5 = [(AVEditBehaviorContext *)self zoomingBehavior];
-  [v4 removeBehavior:v5];
+  playerViewController = [(AVEditBehaviorContext *)self playerViewController];
+  zoomingBehavior = [(AVEditBehaviorContext *)self zoomingBehavior];
+  [playerViewController removeBehavior:zoomingBehavior];
 
   [(AVEditBehaviorContext *)self endEditing];
 
   [(AVEditBehaviorContext *)self setPlayerController:0];
 }
 
-- (void)didAddBehavior:(id)a3
+- (void)didAddBehavior:(id)behavior
 {
-  v4 = [(AVEditBehaviorContext *)self playerViewController];
-  v5 = [(AVEditBehaviorContext *)self zoomingBehavior];
-  [v4 addBehavior:v5];
+  playerViewController = [(AVEditBehaviorContext *)self playerViewController];
+  zoomingBehavior = [(AVEditBehaviorContext *)self zoomingBehavior];
+  [playerViewController addBehavior:zoomingBehavior];
 
-  v6 = [(AVEditBehaviorContext *)self playerViewController];
-  v7 = [v6 playerController];
-  [(AVEditBehaviorContext *)self setPlayerController:v7];
+  playerViewController2 = [(AVEditBehaviorContext *)self playerViewController];
+  playerController = [playerViewController2 playerController];
+  [(AVEditBehaviorContext *)self setPlayerController:playerController];
 
-  v9 = [(AVEditBehaviorContext *)self observationController];
-  v8 = [v9 startObserving:self keyPath:@"playerController.player.currentItem" includeInitialValue:1 observationHandler:&__block_literal_global_64];
+  observationController = [(AVEditBehaviorContext *)self observationController];
+  v8 = [observationController startObserving:self keyPath:@"playerController.player.currentItem" includeInitialValue:1 observationHandler:&__block_literal_global_64];
 }
 
 void __40__AVEditBehaviorContext_didAddBehavior___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -482,18 +482,18 @@ void __40__AVEditBehaviorContext_didAddBehavior___block_invoke(uint64_t a1, void
   }
 }
 
-- (void)done:(id)a3
+- (void)done:(id)done
 {
   v25 = *MEMORY[0x1E69E9840];
   v4 = [MEMORY[0x1E69DC650] alertControllerWithTitle:0 message:0 preferredStyle:0];
-  v5 = [(AVEditBehaviorContext *)self doneButton];
-  v6 = [v4 popoverPresentationController];
-  [v6 setBarButtonItem:v5];
+  doneButton = [(AVEditBehaviorContext *)self doneButton];
+  popoverPresentationController = [v4 popoverPresentationController];
+  [popoverPresentationController setBarButtonItem:doneButton];
 
-  v7 = [(AVEditBehaviorContext *)self behavior];
-  v8 = [v7 delegate];
-  v9 = [(AVEditBehaviorContext *)self behavior];
-  v10 = [v8 editBehaviorAlertActionsForDoneButtonTap:v9];
+  behavior = [(AVEditBehaviorContext *)self behavior];
+  delegate = [behavior delegate];
+  behavior2 = [(AVEditBehaviorContext *)self behavior];
+  v10 = [delegate editBehaviorAlertActionsForDoneButtonTap:behavior2];
 
   v22 = 0u;
   v23 = 0u;
@@ -531,57 +531,57 @@ void __40__AVEditBehaviorContext_didAddBehavior___block_invoke(uint64_t a1, void
 
   [v18 setEnabled:1];
   [v4 addAction:v18];
-  v19 = [(AVEditBehaviorContext *)self playerViewController];
-  [v19 presentViewController:v4 animated:0 completion:0];
+  playerViewController = [(AVEditBehaviorContext *)self playerViewController];
+  [playerViewController presentViewController:v4 animated:0 completion:0];
 }
 
-- (void)pause:(id)a3
+- (void)pause:(id)pause
 {
-  v5 = [(AVEditBehaviorContext *)self playerViewController];
-  v4 = [v5 playerController];
-  [v4 pause:self];
+  playerViewController = [(AVEditBehaviorContext *)self playerViewController];
+  playerController = [playerViewController playerController];
+  [playerController pause:self];
 }
 
-- (void)play:(id)a3
+- (void)play:(id)play
 {
-  v5 = [(AVEditBehaviorContext *)self playerViewController];
-  v4 = [v5 playerController];
-  [v4 play:self];
+  playerViewController = [(AVEditBehaviorContext *)self playerViewController];
+  playerController = [playerViewController playerController];
+  [playerController play:self];
 }
 
-- (void)cancel:(id)a3
+- (void)cancel:(id)cancel
 {
-  v4 = [(AVEditBehaviorContext *)self playerViewController];
-  v5 = [v4 player];
-  v6 = [v5 currentItem];
+  playerViewController = [(AVEditBehaviorContext *)self playerViewController];
+  player = [playerViewController player];
+  currentItem = [player currentItem];
   v15 = *MEMORY[0x1E6960C70];
   v14 = v15;
   v16 = *(MEMORY[0x1E6960C70] + 16);
   v7 = v16;
-  [v6 setReversePlaybackEndTime:&v15];
+  [currentItem setReversePlaybackEndTime:&v15];
 
-  v8 = [(AVEditBehaviorContext *)self playerViewController];
-  v9 = [v8 player];
-  v10 = [v9 currentItem];
+  playerViewController2 = [(AVEditBehaviorContext *)self playerViewController];
+  player2 = [playerViewController2 player];
+  currentItem2 = [player2 currentItem];
   v15 = v14;
   v16 = v7;
-  [v10 setForwardPlaybackEndTime:&v15];
+  [currentItem2 setForwardPlaybackEndTime:&v15];
 
   [(AVEditBehaviorContext *)self endEditing];
-  v11 = [(AVEditBehaviorContext *)self behavior];
-  v12 = [v11 delegate];
-  v13 = [(AVEditBehaviorContext *)self behavior];
-  [v12 editBehaviorDidCancel:v13];
+  behavior = [(AVEditBehaviorContext *)self behavior];
+  delegate = [behavior delegate];
+  behavior2 = [(AVEditBehaviorContext *)self behavior];
+  [delegate editBehaviorDidCancel:behavior2];
 }
 
-- (id)videoCompostitionRotatingAsset:(id)a3
+- (id)videoCompostitionRotatingAsset:(id)asset
 {
   v39[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 avkit_tracksWithMediaType:*MEMORY[0x1E6987608]];
-  v6 = [v5 firstObject];
+  assetCopy = asset;
+  v5 = [assetCopy avkit_tracksWithMediaType:*MEMORY[0x1E6987608]];
+  firstObject = [v5 firstObject];
 
-  [v6 naturalSize];
+  [firstObject naturalSize];
   v29 = *&v8;
   v31 = *&v7;
   v11 = ((v8 & 0x7FFFFFFFFFFFFFFFuLL) - 0x10000000000000) >> 53 < 0x3FF && v8 >= 0 || (v8 - 1) < 0xFFFFFFFFFFFFFLL;
@@ -593,9 +593,9 @@ void __40__AVEditBehaviorContext_didAddBehavior___block_invoke(uint64_t a1, void
   else
   {
     v37 = 0;
-    if (v6)
+    if (firstObject)
     {
-      [v6 preferredTransform];
+      [firstObject preferredTransform];
     }
 
     else
@@ -644,20 +644,20 @@ void __40__AVEditBehaviorContext_didAddBehavior___block_invoke(uint64_t a1, void
     v33 = v36;
     CGAffineTransformConcat(&t2, &v33, &t1);
     v36 = t2;
-    v20 = [MEMORY[0x1E6988070] videoCompositionLayerInstruction];
-    [v20 setTrackID:{objc_msgSend(v6, "trackID")}];
+    videoCompositionLayerInstruction = [MEMORY[0x1E6988070] videoCompositionLayerInstruction];
+    [videoCompositionLayerInstruction setTrackID:{objc_msgSend(firstObject, "trackID")}];
     t2 = v36;
     v30 = *MEMORY[0x1E6960CC0];
     *&t1.a = *MEMORY[0x1E6960CC0];
     v21 = *(MEMORY[0x1E6960CC0] + 16);
     t1.c = v21;
-    [v20 setTransform:&t2 atTime:&t1];
+    [videoCompositionLayerInstruction setTransform:&t2 atTime:&t1];
     t2 = v36;
     [(AVEditBehaviorContext *)self setRotationTransform:&t2];
-    v22 = [MEMORY[0x1E6988068] videoCompositionInstruction];
-    if (v4)
+    videoCompositionInstruction = [MEMORY[0x1E6988068] videoCompositionInstruction];
+    if (assetCopy)
     {
-      [v4 duration];
+      [assetCopy duration];
     }
 
     else
@@ -668,13 +668,13 @@ void __40__AVEditBehaviorContext_didAddBehavior___block_invoke(uint64_t a1, void
     *&v33.a = v30;
     v33.c = v21;
     CMTimeRangeMake(&t2, &v33, &t1);
-    [v22 setTimeRange:&t2];
-    v39[0] = v20;
+    [videoCompositionInstruction setTimeRange:&t2];
+    v39[0] = videoCompositionLayerInstruction;
     v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:v39 count:1];
-    [v22 setLayerInstructions:v23];
+    [videoCompositionInstruction setLayerInstructions:v23];
 
-    v15 = [MEMORY[0x1E6988060] videoCompositionWithPropertiesOfAsset:v4];
-    v38 = v22;
+    v15 = [MEMORY[0x1E6988060] videoCompositionWithPropertiesOfAsset:assetCopy];
+    v38 = videoCompositionInstruction;
     v24 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v38 count:1];
     [v15 setInstructions:v24];
 
@@ -687,36 +687,36 @@ void __40__AVEditBehaviorContext_didAddBehavior___block_invoke(uint64_t a1, void
 - (void)rotateClockwise
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [(AVEditBehaviorContext *)self playerController];
-  v4 = [v3 player];
-  v5 = [v4 currentItem];
-  v6 = [v5 asset];
+  playerController = [(AVEditBehaviorContext *)self playerController];
+  player = [playerController player];
+  currentItem = [player currentItem];
+  asset = [currentItem asset];
 
-  if (v6)
+  if (asset)
   {
     [(AVEditBehaviorContext *)self setCurrentRotation:([(AVEditBehaviorContext *)self currentRotation]+ 1) & 3];
-    v7 = [(AVEditBehaviorContext *)self playerController];
-    v8 = [v7 player];
-    v9 = [v8 currentItem];
-    v10 = [v9 asset];
-    v11 = [(AVEditBehaviorContext *)self videoCompostitionRotatingAsset:v10];
+    playerController2 = [(AVEditBehaviorContext *)self playerController];
+    player2 = [playerController2 player];
+    currentItem2 = [player2 currentItem];
+    asset2 = [currentItem2 asset];
+    v11 = [(AVEditBehaviorContext *)self videoCompostitionRotatingAsset:asset2];
 
     if (v11)
     {
-      v12 = [(AVEditBehaviorContext *)self playerController];
-      v13 = [v12 player];
-      v14 = [v13 currentItem];
-      [v14 setVideoComposition:v11];
+      playerController3 = [(AVEditBehaviorContext *)self playerController];
+      player3 = [playerController3 player];
+      currentItem3 = [player3 currentItem];
+      [currentItem3 setVideoComposition:v11];
     }
 
     else
     {
-      v12 = _AVLog();
-      if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+      playerController3 = _AVLog();
+      if (os_log_type_enabled(playerController3, OS_LOG_TYPE_DEFAULT))
       {
         v15 = 136315138;
         v16 = "[AVEditBehaviorContext rotateClockwise]";
-        _os_log_impl(&dword_18B49C000, v12, OS_LOG_TYPE_DEFAULT, "%s Did not get a valid video composition.", &v15, 0xCu);
+        _os_log_impl(&dword_18B49C000, playerController3, OS_LOG_TYPE_DEFAULT, "%s Did not get a valid video composition.", &v15, 0xCu);
       }
     }
   }
@@ -725,22 +725,22 @@ void __40__AVEditBehaviorContext_didAddBehavior___block_invoke(uint64_t a1, void
 - (void)endEditing
 {
   [(AVEditBehaviorContext *)self setEditing:0];
-  v3 = [(AVEditBehaviorContext *)self observationController];
-  [v3 stopAllObservation];
+  observationController = [(AVEditBehaviorContext *)self observationController];
+  [observationController stopAllObservation];
 
-  v4 = [(AVEditBehaviorContext *)self containerView];
-  [v4 removeFromSuperview];
+  containerView = [(AVEditBehaviorContext *)self containerView];
+  [containerView removeFromSuperview];
 
   [(AVEditBehaviorContext *)self setContainerView:0];
   [(AVEditBehaviorContext *)self setEditView:0];
-  v5 = [(AVEditBehaviorContext *)self playerTimeObserver];
+  playerTimeObserver = [(AVEditBehaviorContext *)self playerTimeObserver];
 
-  if (v5)
+  if (playerTimeObserver)
   {
-    v6 = [(AVEditBehaviorContext *)self playerController];
-    v7 = [v6 player];
-    v8 = [(AVEditBehaviorContext *)self playerTimeObserver];
-    [v7 removeTimeObserver:v8];
+    playerController = [(AVEditBehaviorContext *)self playerController];
+    player = [playerController player];
+    playerTimeObserver2 = [(AVEditBehaviorContext *)self playerTimeObserver];
+    [player removeTimeObserver:playerTimeObserver2];
 
     [(AVEditBehaviorContext *)self setPlayerTimeObserver:0];
   }
@@ -752,41 +752,41 @@ void __40__AVEditBehaviorContext_didAddBehavior___block_invoke(uint64_t a1, void
   if (![(AVEditBehaviorContext *)self isEditing])
   {
     [(AVEditBehaviorContext *)self setEditing:1];
-    v3 = [(AVEditBehaviorContext *)self playerViewController];
-    [v3 loadViewIfNeeded];
-    v4 = [v3 contentView];
-    [v4 loadPlaybackControlsViewIfNeeded];
+    playerViewController = [(AVEditBehaviorContext *)self playerViewController];
+    [playerViewController loadViewIfNeeded];
+    contentView = [playerViewController contentView];
+    [contentView loadPlaybackControlsViewIfNeeded];
 
-    v5 = [v3 contentView];
-    [v5 interruptActiveInteractions];
+    contentView2 = [playerViewController contentView];
+    [contentView2 interruptActiveInteractions];
 
     objc_initWeak(&location, self);
-    v6 = [(AVEditBehaviorContext *)self playerController];
-    v7 = [v6 player];
+    playerController = [(AVEditBehaviorContext *)self playerController];
+    player = [playerController player];
     CMTimeMake(&v20, 1, 30);
     v15 = MEMORY[0x1E69E9820];
     v16 = 3221225472;
     v17 = __37__AVEditBehaviorContext_startEditing__block_invoke;
     v18 = &unk_1E7208138;
     objc_copyWeak(&v19, &location);
-    v8 = [v7 addPeriodicTimeObserverForInterval:&v20 queue:0 usingBlock:&v15];
+    v8 = [player addPeriodicTimeObserverForInterval:&v20 queue:0 usingBlock:&v15];
     [(AVEditBehaviorContext *)self setPlayerTimeObserver:v8, v15, v16, v17, v18];
 
-    v9 = [(AVEditBehaviorContext *)self observationController];
+    observationController = [(AVEditBehaviorContext *)self observationController];
     v23[0] = @"playerController.player.currentItem.duration";
     v23[1] = @"playerController.player.currentItem.presentationSize";
     v23[2] = @"playerController.status";
     v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:3];
-    v11 = [v9 startObserving:self keyPaths:v10 includeInitialValue:1 observationHandler:&__block_literal_global_11769];
+    v11 = [observationController startObserving:self keyPaths:v10 includeInitialValue:1 observationHandler:&__block_literal_global_11769];
 
-    v12 = [(AVEditBehaviorContext *)self observationController];
+    observationController2 = [(AVEditBehaviorContext *)self observationController];
     v22[0] = @"playerController.player.timeControlStatus";
     v22[1] = @"playerController.scrubbing";
     v22[2] = @"playerController.seeking";
     v22[3] = @"editView.trimming";
     v22[4] = @"editView.scrubbing";
     v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:5];
-    v14 = [v12 startObserving:self keyPaths:v13 includeInitialValue:0 observationHandler:&__block_literal_global_51];
+    v14 = [observationController2 startObserving:self keyPaths:v13 includeInitialValue:0 observationHandler:&__block_literal_global_51];
 
     objc_destroyWeak(&v19);
     objc_destroyWeak(&location);
@@ -821,79 +821,79 @@ void __37__AVEditBehaviorContext_startEditing__block_invoke_3(uint64_t a1, void 
 
 - (id)_makeBarButtonItems
 {
-  v1 = a1;
+  selfCopy = self;
   v34[5] = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v2 = [a1 flexibleSpaceItem];
+    flexibleSpaceItem = [self flexibleSpaceItem];
 
-    if (!v2)
+    if (!flexibleSpaceItem)
     {
       v3 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:5 target:0 action:0];
-      [v1 setFlexibleSpaceItem:v3];
+      [selfCopy setFlexibleSpaceItem:v3];
 
-      v4 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:1 target:v1 action:sel_cancel_];
-      [v1 setCancelButton:v4];
+      v4 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:1 target:selfCopy action:sel_cancel_];
+      [selfCopy setCancelButton:v4];
 
-      v5 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:17 target:v1 action:sel_play_];
-      [v1 setPlayButton:v5];
+      v5 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:17 target:selfCopy action:sel_play_];
+      [selfCopy setPlayButton:v5];
 
-      v6 = [MEMORY[0x1E69DC888] systemWhiteColor];
-      v7 = [v1 playButton];
-      [v7 setTintColor:v6];
+      systemWhiteColor = [MEMORY[0x1E69DC888] systemWhiteColor];
+      playButton = [selfCopy playButton];
+      [playButton setTintColor:systemWhiteColor];
 
-      v8 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:18 target:v1 action:sel_pause_];
-      [v1 setPauseButton:v8];
+      v8 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:18 target:selfCopy action:sel_pause_];
+      [selfCopy setPauseButton:v8];
 
-      v9 = [MEMORY[0x1E69DC888] systemWhiteColor];
-      v10 = [v1 pauseButton];
-      [v10 setTintColor:v9];
+      systemWhiteColor2 = [MEMORY[0x1E69DC888] systemWhiteColor];
+      pauseButton = [selfCopy pauseButton];
+      [pauseButton setTintColor:systemWhiteColor2];
 
-      v11 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:0 target:v1 action:sel_done_];
-      [v1 setDoneButton:v11];
+      v11 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:0 target:selfCopy action:sel_done_];
+      [selfCopy setDoneButton:v11];
 
-      v12 = [MEMORY[0x1E69DC888] systemYellowColor];
-      v13 = [v1 doneButton];
-      [v13 setTintColor:v12];
+      systemYellowColor = [MEMORY[0x1E69DC888] systemYellowColor];
+      doneButton = [selfCopy doneButton];
+      [doneButton setTintColor:systemYellowColor];
     }
 
-    v14 = [v1 toolbar];
-    v15 = [v14 items];
-    if (v15)
+    toolbar = [selfCopy toolbar];
+    items = [toolbar items];
+    if (items)
     {
-      v16 = v15;
-      v17 = [v1 editView];
-      if ([v17 isScrubbing])
+      v16 = items;
+      editView = [selfCopy editView];
+      if ([editView isScrubbing])
       {
 LABEL_10:
 
 LABEL_11:
-        v20 = [v1 toolbar];
-        v1 = [v20 items];
+        toolbar2 = [selfCopy toolbar];
+        selfCopy = [toolbar2 items];
 LABEL_17:
 
         goto LABEL_18;
       }
 
-      v18 = [v1 editView];
-      if ([v18 isTrimming])
+      editView2 = [selfCopy editView];
+      if ([editView2 isTrimming])
       {
 LABEL_9:
 
         goto LABEL_10;
       }
 
-      v19 = [v1 playerController];
-      if ([v19 isSeeking])
+      playerController = [selfCopy playerController];
+      if ([playerController isSeeking])
       {
 
         goto LABEL_9;
       }
 
-      v31 = [v1 playerController];
-      v32 = [v31 isScrubbing];
+      playerController2 = [selfCopy playerController];
+      isScrubbing = [playerController2 isScrubbing];
 
-      if (v32)
+      if (isScrubbing)
       {
         goto LABEL_11;
       }
@@ -903,52 +903,52 @@ LABEL_9:
     {
     }
 
-    v21 = [v1 playerController];
-    v22 = [v21 timeControlStatus];
+    playerController3 = [selfCopy playerController];
+    timeControlStatus = [playerController3 timeControlStatus];
 
-    if (v22)
+    if (timeControlStatus)
     {
-      v23 = [v1 editView];
-      [v23 setPrefersThumbVisible:1];
+      editView3 = [selfCopy editView];
+      [editView3 setPrefersThumbVisible:1];
 
-      v20 = [v1 cancelButton];
-      v33[0] = v20;
-      v24 = [v1 flexibleSpaceItem];
-      v33[1] = v24;
-      v25 = [v1 pauseButton];
-      v33[2] = v25;
-      v26 = [v1 flexibleSpaceItem];
-      v33[3] = v26;
-      v27 = [v1 doneButton];
-      v33[4] = v27;
+      toolbar2 = [selfCopy cancelButton];
+      v33[0] = toolbar2;
+      flexibleSpaceItem2 = [selfCopy flexibleSpaceItem];
+      v33[1] = flexibleSpaceItem2;
+      pauseButton2 = [selfCopy pauseButton];
+      v33[2] = pauseButton2;
+      flexibleSpaceItem3 = [selfCopy flexibleSpaceItem];
+      v33[3] = flexibleSpaceItem3;
+      doneButton2 = [selfCopy doneButton];
+      v33[4] = doneButton2;
       v28 = MEMORY[0x1E695DEC8];
       v29 = v33;
     }
 
     else
     {
-      v20 = [v1 cancelButton];
-      v34[0] = v20;
-      v24 = [v1 flexibleSpaceItem];
-      v34[1] = v24;
-      v25 = [v1 playButton];
-      v34[2] = v25;
-      v26 = [v1 flexibleSpaceItem];
-      v34[3] = v26;
-      v27 = [v1 doneButton];
-      v34[4] = v27;
+      toolbar2 = [selfCopy cancelButton];
+      v34[0] = toolbar2;
+      flexibleSpaceItem2 = [selfCopy flexibleSpaceItem];
+      v34[1] = flexibleSpaceItem2;
+      pauseButton2 = [selfCopy playButton];
+      v34[2] = pauseButton2;
+      flexibleSpaceItem3 = [selfCopy flexibleSpaceItem];
+      v34[3] = flexibleSpaceItem3;
+      doneButton2 = [selfCopy doneButton];
+      v34[4] = doneButton2;
       v28 = MEMORY[0x1E695DEC8];
       v29 = v34;
     }
 
-    v1 = [v28 arrayWithObjects:v29 count:5];
+    selfCopy = [v28 arrayWithObjects:v29 count:5];
 
     goto LABEL_17;
   }
 
 LABEL_18:
 
-  return v1;
+  return selfCopy;
 }
 
 void __37__AVEditBehaviorContext_startEditing__block_invoke_2(uint64_t a1, void *a2)
@@ -1099,29 +1099,29 @@ LABEL_14:
   [(AVEditBehaviorContext *)&v3 dealloc];
 }
 
-- (AVEditBehaviorContext)initWithAVKitOwner:(id)a3
+- (AVEditBehaviorContext)initWithAVKitOwner:(id)owner
 {
-  v4 = a3;
+  ownerCopy = owner;
   v19.receiver = self;
   v19.super_class = AVEditBehaviorContext;
   v5 = [(AVEditBehaviorContext *)&v19 init];
   v6 = v5;
   if (v5)
   {
-    v7 = objc_storeWeak(&v5->_playerViewController, v4);
-    [v4 setRequiresImmediateAssetInspection:1];
+    v7 = objc_storeWeak(&v5->_playerViewController, ownerCopy);
+    [ownerCopy setRequiresImmediateAssetInspection:1];
 
     v8 = [[AVObservationController alloc] initWithOwner:v6];
     observationController = v6->_observationController;
     v6->_observationController = v8;
 
-    v10 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     pendingImageRequests = v6->_pendingImageRequests;
-    v6->_pendingImageRequests = v10;
+    v6->_pendingImageRequests = array;
 
-    v12 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     requestedImageTimeToCMTimeMap = v6->_requestedImageTimeToCMTimeMap;
-    v6->_requestedImageTimeToCMTimeMap = v12;
+    v6->_requestedImageTimeToCMTimeMap = dictionary;
 
     v14 = objc_alloc_init(AVZoomingBehavior);
     zoomingBehavior = v6->_zoomingBehavior;

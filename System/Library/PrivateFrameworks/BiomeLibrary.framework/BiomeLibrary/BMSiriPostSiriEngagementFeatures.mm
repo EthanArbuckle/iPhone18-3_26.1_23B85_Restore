@@ -1,28 +1,28 @@
 @interface BMSiriPostSiriEngagementFeatures
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMSiriPostSiriEngagementFeatures)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BMSiriPostSiriEngagementFeatures)initWithTaskSuccess:(int)a3 isUserAbandoned:(id)a4 isUserCancelled:(id)a5 isSiriCompleted:(id)a6 isPromptInteraction:(id)a7 isConfirmInteraction:(id)a8 isDisambiguateInteraction:(id)a9 isUnsupportedPromptInteraction:(id)a10;
-- (BOOL)isEqual:(id)a3;
+- (BMSiriPostSiriEngagementFeatures)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BMSiriPostSiriEngagementFeatures)initWithTaskSuccess:(int)success isUserAbandoned:(id)abandoned isUserCancelled:(id)cancelled isSiriCompleted:(id)completed isPromptInteraction:(id)interaction isConfirmInteraction:(id)confirmInteraction isDisambiguateInteraction:(id)disambiguateInteraction isUnsupportedPromptInteraction:(id)self0;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMSiriPostSiriEngagementFeatures
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMSiriPostSiriEngagementFeatures *)self taskSuccess];
-    if (v6 != [v5 taskSuccess])
+    v5 = equalCopy;
+    taskSuccess = [(BMSiriPostSiriEngagementFeatures *)self taskSuccess];
+    if (taskSuccess != [v5 taskSuccess])
     {
       goto LABEL_39;
     }
@@ -39,8 +39,8 @@
         goto LABEL_39;
       }
 
-      v7 = [(BMSiriPostSiriEngagementFeatures *)self isUserAbandoned];
-      if (v7 != [v5 isUserAbandoned])
+      isUserAbandoned = [(BMSiriPostSiriEngagementFeatures *)self isUserAbandoned];
+      if (isUserAbandoned != [v5 isUserAbandoned])
       {
         goto LABEL_39;
       }
@@ -58,8 +58,8 @@
         goto LABEL_39;
       }
 
-      v8 = [(BMSiriPostSiriEngagementFeatures *)self isUserCancelled];
-      if (v8 != [v5 isUserCancelled])
+      isUserCancelled = [(BMSiriPostSiriEngagementFeatures *)self isUserCancelled];
+      if (isUserCancelled != [v5 isUserCancelled])
       {
         goto LABEL_39;
       }
@@ -77,8 +77,8 @@
         goto LABEL_39;
       }
 
-      v9 = [(BMSiriPostSiriEngagementFeatures *)self isSiriCompleted];
-      if (v9 != [v5 isSiriCompleted])
+      isSiriCompleted = [(BMSiriPostSiriEngagementFeatures *)self isSiriCompleted];
+      if (isSiriCompleted != [v5 isSiriCompleted])
       {
         goto LABEL_39;
       }
@@ -96,8 +96,8 @@
         goto LABEL_39;
       }
 
-      v10 = [(BMSiriPostSiriEngagementFeatures *)self isPromptInteraction];
-      if (v10 != [v5 isPromptInteraction])
+      isPromptInteraction = [(BMSiriPostSiriEngagementFeatures *)self isPromptInteraction];
+      if (isPromptInteraction != [v5 isPromptInteraction])
       {
         goto LABEL_39;
       }
@@ -115,8 +115,8 @@
         goto LABEL_39;
       }
 
-      v11 = [(BMSiriPostSiriEngagementFeatures *)self isConfirmInteraction];
-      if (v11 != [v5 isConfirmInteraction])
+      isConfirmInteraction = [(BMSiriPostSiriEngagementFeatures *)self isConfirmInteraction];
+      if (isConfirmInteraction != [v5 isConfirmInteraction])
       {
         goto LABEL_39;
       }
@@ -134,8 +134,8 @@
         goto LABEL_39;
       }
 
-      v12 = [(BMSiriPostSiriEngagementFeatures *)self isDisambiguateInteraction];
-      if (v12 != [v5 isDisambiguateInteraction])
+      isDisambiguateInteraction = [(BMSiriPostSiriEngagementFeatures *)self isDisambiguateInteraction];
+      if (isDisambiguateInteraction != [v5 isDisambiguateInteraction])
       {
         goto LABEL_39;
       }
@@ -149,8 +149,8 @@
 
     if (-[BMSiriPostSiriEngagementFeatures hasIsUnsupportedPromptInteraction](self, "hasIsUnsupportedPromptInteraction") && [v5 hasIsUnsupportedPromptInteraction])
     {
-      v13 = [(BMSiriPostSiriEngagementFeatures *)self isUnsupportedPromptInteraction];
-      v14 = v13 ^ [v5 isUnsupportedPromptInteraction] ^ 1;
+      isUnsupportedPromptInteraction = [(BMSiriPostSiriEngagementFeatures *)self isUnsupportedPromptInteraction];
+      v14 = isUnsupportedPromptInteraction ^ [v5 isUnsupportedPromptInteraction] ^ 1;
     }
 
     else
@@ -245,76 +245,76 @@ LABEL_41:
   }
 
   v29[0] = @"taskSuccess";
-  v10 = v3;
+  null = v3;
   if (!v3)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v24 = v10;
-  v30[0] = v10;
+  v24 = null;
+  v30[0] = null;
   v29[1] = @"isUserAbandoned";
-  v11 = v4;
+  null2 = v4;
   if (!v4)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
   v27 = v3;
-  v23 = v11;
-  v30[1] = v11;
+  v23 = null2;
+  v30[1] = null2;
   v29[2] = @"isUserCancelled";
-  v12 = v5;
+  null3 = v5;
   if (!v5)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
   v26 = v4;
-  v22 = v12;
-  v30[2] = v12;
+  v22 = null3;
+  v30[2] = null3;
   v29[3] = @"isSiriCompleted";
-  v13 = v6;
+  null4 = v6;
   if (!v6)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
   v25 = v5;
-  v30[3] = v13;
+  v30[3] = null4;
   v29[4] = @"isPromptInteraction";
-  v14 = v28;
+  null5 = v28;
   if (!v28)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
   v15 = v6;
-  v30[4] = v14;
+  v30[4] = null5;
   v29[5] = @"isConfirmInteraction";
-  v16 = v7;
+  null6 = v7;
   if (!v7)
   {
-    v16 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v30[5] = v16;
+  v30[5] = null6;
   v29[6] = @"isDisambiguateInteraction";
-  v17 = v8;
+  null7 = v8;
   if (!v8)
   {
-    v17 = [MEMORY[0x1E695DFB0] null];
+    null7 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v30[6] = v17;
+  v30[6] = null7;
   v29[7] = @"isUnsupportedPromptInteraction";
-  v18 = v9;
+  null8 = v9;
   if (!v9)
   {
-    v18 = [MEMORY[0x1E695DFB0] null];
+    null8 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v30[7] = v18;
+  v30[7] = null8;
   v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v30 forKeys:v29 count:8];
   if (v9)
   {
@@ -382,23 +382,23 @@ LABEL_49:
   return v19;
 }
 
-- (BMSiriPostSiriEngagementFeatures)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMSiriPostSiriEngagementFeatures)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v103[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"taskSuccess"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"taskSuccess"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v8 = 0;
 LABEL_9:
-    v10 = [v6 objectForKeyedSubscript:@"isUserAbandoned"];
-    v82 = a4;
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"isUserAbandoned"];
+    errorCopy = error;
     if (v10 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v11 = 0;
           v24 = 0;
@@ -419,7 +419,7 @@ LABEL_9:
         v34 = [v29 initWithDomain:v30 code:2 userInfo:v12];
         v11 = 0;
         v24 = 0;
-        *v82 = v34;
+        *errorCopy = v34;
         goto LABEL_42;
       }
 
@@ -431,14 +431,14 @@ LABEL_9:
       v11 = 0;
     }
 
-    v12 = [v6 objectForKeyedSubscript:@"isUserCancelled"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"isUserCancelled"];
     v87 = v7;
     if (v12 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v26 = 0;
           v24 = 0;
@@ -463,7 +463,7 @@ LABEL_9:
         v11 = v81;
         v26 = 0;
         v24 = 0;
-        *v82 = [v41 initWithDomain:v42 code:2 userInfo:v40];
+        *errorCopy = [v41 initWithDomain:v42 code:2 userInfo:v40];
 LABEL_41:
 
 LABEL_42:
@@ -471,7 +471,7 @@ LABEL_42:
       }
 
       v17 = v12;
-      v14 = self;
+      selfCopy2 = self;
       v13 = v17;
       v85 = v17;
     }
@@ -479,24 +479,24 @@ LABEL_42:
     else
     {
       v13 = v12;
-      v14 = self;
+      selfCopy2 = self;
       v85 = 0;
     }
 
-    v15 = [v6 objectForKeyedSubscript:@"isSiriCompleted"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"isSiriCompleted"];
     v84 = v8;
     if (v15 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v86 = 0;
           v24 = 0;
           v26 = v85;
           v25 = v15;
-          self = v14;
+          self = selfCopy2;
           v12 = v13;
           v7 = v87;
           goto LABEL_41;
@@ -520,8 +520,8 @@ LABEL_42:
         v11 = v44;
         v86 = 0;
         v24 = 0;
-        *v82 = [v49 initWithDomain:v50 code:2 userInfo:v16];
-        self = v14;
+        *errorCopy = [v49 initWithDomain:v50 code:2 userInfo:v16];
+        self = selfCopy2;
         v12 = v13;
         v7 = v87;
         goto LABEL_40;
@@ -537,8 +537,8 @@ LABEL_42:
       v86 = 0;
     }
 
-    v16 = [v6 objectForKeyedSubscript:@"isPromptInteraction"];
-    self = v14;
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"isPromptInteraction"];
+    self = selfCopy2;
     v80 = v11;
     if (v16)
     {
@@ -550,7 +550,7 @@ LABEL_42:
         v7 = v87;
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (!a4)
+          if (!error)
           {
             v83 = 0;
             v24 = 0;
@@ -573,7 +573,7 @@ LABEL_42:
           v11 = v80;
           v83 = 0;
           v24 = 0;
-          *v82 = [v51 initWithDomain:v56 code:2 userInfo:v18];
+          *errorCopy = [v51 initWithDomain:v56 code:2 userInfo:v18];
 LABEL_39:
           v25 = v78;
 
@@ -585,21 +585,21 @@ LABEL_40:
 
         v83 = v16;
 LABEL_27:
-        v18 = [v6 objectForKeyedSubscript:@"isConfirmInteraction"];
+        v18 = [dictionaryCopy objectForKeyedSubscript:@"isConfirmInteraction"];
         v77 = v10;
         if (v18 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
         {
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
-            if (!a4)
+            if (!error)
             {
               v79 = 0;
               v24 = 0;
               goto LABEL_39;
             }
 
-            v20 = self;
+            selfCopy5 = self;
             v62 = objc_alloc(MEMORY[0x1E696ABC0]);
             v63 = *MEMORY[0x1E698F240];
             v92 = *MEMORY[0x1E696A578];
@@ -611,7 +611,7 @@ LABEL_27:
             v65 = [v64 initWithDomain:v63 code:2 userInfo:v19];
             v79 = 0;
             v24 = 0;
-            *a4 = v65;
+            *error = v65;
             goto LABEL_38;
           }
 
@@ -623,14 +623,14 @@ LABEL_27:
           v79 = 0;
         }
 
-        v19 = [v6 objectForKeyedSubscript:@"isDisambiguateInteraction"];
+        v19 = [dictionaryCopy objectForKeyedSubscript:@"isDisambiguateInteraction"];
         if (v19 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
         {
           objc_opt_class();
-          v20 = self;
+          selfCopy5 = self;
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
-            if (!a4)
+            if (!error)
             {
               v21 = 0;
               v24 = 0;
@@ -646,7 +646,7 @@ LABEL_27:
             v68 = [v66 initWithDomain:v67 code:2 userInfo:v22];
             v21 = 0;
             v24 = 0;
-            *v82 = v68;
+            *errorCopy = v68;
             goto LABEL_37;
           }
 
@@ -655,17 +655,17 @@ LABEL_27:
 
         else
         {
-          v20 = self;
+          selfCopy5 = self;
           v21 = 0;
         }
 
-        v22 = [v6 objectForKeyedSubscript:@"isUnsupportedPromptInteraction"];
+        v22 = [dictionaryCopy objectForKeyedSubscript:@"isUnsupportedPromptInteraction"];
         if (v22 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
         {
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
-            if (v82)
+            if (errorCopy)
             {
               v76 = objc_alloc(MEMORY[0x1E696ABC0]);
               v75 = *MEMORY[0x1E698F240];
@@ -673,7 +673,7 @@ LABEL_27:
               v69 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"isUnsupportedPromptInteraction"];
               v89 = v69;
               v70 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v89 forKeys:&v88 count:1];
-              *v82 = [v76 initWithDomain:v75 code:2 userInfo:v70];
+              *errorCopy = [v76 initWithDomain:v75 code:2 userInfo:v70];
             }
 
             v23 = 0;
@@ -689,14 +689,14 @@ LABEL_27:
           v23 = 0;
         }
 
-        v24 = -[BMSiriPostSiriEngagementFeatures initWithTaskSuccess:isUserAbandoned:isUserCancelled:isSiriCompleted:isPromptInteraction:isConfirmInteraction:isDisambiguateInteraction:isUnsupportedPromptInteraction:](v20, "initWithTaskSuccess:isUserAbandoned:isUserCancelled:isSiriCompleted:isPromptInteraction:isConfirmInteraction:isDisambiguateInteraction:isUnsupportedPromptInteraction:", [v84 intValue], v80, v85, v86, v83, v79, v21, v23);
-        v20 = v24;
+        v24 = -[BMSiriPostSiriEngagementFeatures initWithTaskSuccess:isUserAbandoned:isUserCancelled:isSiriCompleted:isPromptInteraction:isConfirmInteraction:isDisambiguateInteraction:isUnsupportedPromptInteraction:](selfCopy5, "initWithTaskSuccess:isUserAbandoned:isUserCancelled:isSiriCompleted:isPromptInteraction:isConfirmInteraction:isDisambiguateInteraction:isUnsupportedPromptInteraction:", [v84 intValue], v80, v85, v86, v83, v79, v21, v23);
+        selfCopy5 = v24;
 LABEL_37:
 
         v10 = v77;
 LABEL_38:
 
-        self = v20;
+        self = selfCopy5;
         v7 = v87;
         v11 = v80;
         goto LABEL_39;
@@ -731,14 +731,14 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  if (!a4)
+  if (!error)
   {
     v8 = 0;
     v24 = 0;
     goto LABEL_44;
   }
 
-  v57 = a4;
+  errorCopy2 = error;
   v58 = objc_alloc(MEMORY[0x1E696ABC0]);
   v59 = *MEMORY[0x1E698F240];
   v102 = *MEMORY[0x1E696A578];
@@ -749,7 +749,7 @@ LABEL_8:
   v11 = v60;
   v8 = 0;
   v24 = 0;
-  *v57 = [v58 initWithDomain:v61 code:2 userInfo:v10];
+  *errorCopy2 = [v58 initWithDomain:v61 code:2 userInfo:v10];
 LABEL_43:
 
 LABEL_44:
@@ -761,16 +761,16 @@ LABEL_44:
 {
   v3 = objc_opt_new();
   [(BMSiriPostSiriEngagementFeatures *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   taskSuccess = self->_taskSuccess;
-  v13 = v4;
+  v13 = toCopy;
   PBDataWriterWriteUint32Field();
   if (self->_hasIsUserAbandoned)
   {
@@ -815,9 +815,9 @@ LABEL_44:
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v70.receiver = self;
   v70.super_class = BMSiriPostSiriEngagementFeatures;
   v5 = [(BMEventBase *)&v70 init];
@@ -826,12 +826,12 @@ LABEL_44:
     goto LABEL_125;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -842,18 +842,18 @@ LABEL_44:
       while (1)
       {
         v71 = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v71 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v71 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v71 & 0x7F) << v7;
@@ -871,9 +871,9 @@ LABEL_44:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -892,18 +892,18 @@ LABEL_16:
             while (1)
             {
               v71 = 0;
-              v63 = [v4 position] + 1;
-              if (v63 >= [v4 position] && (v64 = objc_msgSend(v4, "position") + 1, v64 <= objc_msgSend(v4, "length")))
+              v63 = [fromCopy position] + 1;
+              if (v63 >= [fromCopy position] && (v64 = objc_msgSend(fromCopy, "position") + 1, v64 <= objc_msgSend(fromCopy, "length")))
               {
-                v65 = [v4 data];
-                [v65 getBytes:&v71 range:{objc_msgSend(v4, "position"), 1}];
+                data2 = [fromCopy data];
+                [data2 getBytes:&v71 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
               }
 
               else
               {
-                [v4 _setError];
+                [fromCopy _setError];
               }
 
               v62 |= (v71 & 0x7F) << v60;
@@ -921,7 +921,7 @@ LABEL_16:
               }
             }
 
-            v22 = (v62 != 0) & ~[v4 hasError];
+            v22 = (v62 != 0) & ~[fromCopy hasError];
 LABEL_112:
             v66 = 26;
           }
@@ -946,18 +946,18 @@ LABEL_101:
             while (1)
             {
               v71 = 0;
-              v38 = [v4 position] + 1;
-              if (v38 >= [v4 position] && (v39 = objc_msgSend(v4, "position") + 1, v39 <= objc_msgSend(v4, "length")))
+              v38 = [fromCopy position] + 1;
+              if (v38 >= [fromCopy position] && (v39 = objc_msgSend(fromCopy, "position") + 1, v39 <= objc_msgSend(fromCopy, "length")))
               {
-                v40 = [v4 data];
-                [v40 getBytes:&v71 range:{objc_msgSend(v4, "position"), 1}];
+                data3 = [fromCopy data];
+                [data3 getBytes:&v71 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
               }
 
               else
               {
-                [v4 _setError];
+                [fromCopy _setError];
               }
 
               v37 |= (v71 & 0x7F) << v35;
@@ -975,7 +975,7 @@ LABEL_101:
               }
             }
 
-            v22 = (v37 != 0) & ~[v4 hasError];
+            v22 = (v37 != 0) & ~[fromCopy hasError];
 LABEL_120:
             v66 = 28;
           }
@@ -990,18 +990,18 @@ LABEL_120:
           while (1)
           {
             v71 = 0;
-            v51 = [v4 position] + 1;
-            if (v51 >= [v4 position] && (v52 = objc_msgSend(v4, "position") + 1, v52 <= objc_msgSend(v4, "length")))
+            v51 = [fromCopy position] + 1;
+            if (v51 >= [fromCopy position] && (v52 = objc_msgSend(fromCopy, "position") + 1, v52 <= objc_msgSend(fromCopy, "length")))
             {
-              v53 = [v4 data];
-              [v53 getBytes:&v71 range:{objc_msgSend(v4, "position"), 1}];
+              data4 = [fromCopy data];
+              [data4 getBytes:&v71 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v50 |= (v71 & 0x7F) << v48;
@@ -1019,7 +1019,7 @@ LABEL_120:
             }
           }
 
-          v22 = (v50 != 0) & ~[v4 hasError];
+          v22 = (v50 != 0) & ~[fromCopy hasError];
 LABEL_108:
           v66 = 22;
         }
@@ -1038,18 +1038,18 @@ LABEL_108:
           while (1)
           {
             v71 = 0;
-            v26 = [v4 position] + 1;
-            if (v26 >= [v4 position] && (v27 = objc_msgSend(v4, "position") + 1, v27 <= objc_msgSend(v4, "length")))
+            v26 = [fromCopy position] + 1;
+            if (v26 >= [fromCopy position] && (v27 = objc_msgSend(fromCopy, "position") + 1, v27 <= objc_msgSend(fromCopy, "length")))
             {
-              v28 = [v4 data];
-              [v28 getBytes:&v71 range:{objc_msgSend(v4, "position"), 1}];
+              data5 = [fromCopy data];
+              [data5 getBytes:&v71 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v25 |= (v71 & 0x7F) << v23;
@@ -1067,7 +1067,7 @@ LABEL_108:
             }
           }
 
-          v22 = (v25 != 0) & ~[v4 hasError];
+          v22 = (v25 != 0) & ~[fromCopy hasError];
 LABEL_116:
           v66 = 24;
         }
@@ -1084,18 +1084,18 @@ LABEL_116:
           while (1)
           {
             v71 = 0;
-            v57 = [v4 position] + 1;
-            if (v57 >= [v4 position] && (v58 = objc_msgSend(v4, "position") + 1, v58 <= objc_msgSend(v4, "length")))
+            v57 = [fromCopy position] + 1;
+            if (v57 >= [fromCopy position] && (v58 = objc_msgSend(fromCopy, "position") + 1, v58 <= objc_msgSend(fromCopy, "length")))
             {
-              v59 = [v4 data];
-              [v59 getBytes:&v71 range:{objc_msgSend(v4, "position"), 1}];
+              data6 = [fromCopy data];
+              [data6 getBytes:&v71 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v56 |= (v71 & 0x7F) << v54;
@@ -1113,7 +1113,7 @@ LABEL_116:
             }
           }
 
-          v22 = (v56 != 0) & ~[v4 hasError];
+          v22 = (v56 != 0) & ~[fromCopy hasError];
 LABEL_110:
           v66 = 18;
         }
@@ -1132,18 +1132,18 @@ LABEL_110:
           while (1)
           {
             v71 = 0;
-            v32 = [v4 position] + 1;
-            if (v32 >= [v4 position] && (v33 = objc_msgSend(v4, "position") + 1, v33 <= objc_msgSend(v4, "length")))
+            v32 = [fromCopy position] + 1;
+            if (v32 >= [fromCopy position] && (v33 = objc_msgSend(fromCopy, "position") + 1, v33 <= objc_msgSend(fromCopy, "length")))
             {
-              v34 = [v4 data];
-              [v34 getBytes:&v71 range:{objc_msgSend(v4, "position"), 1}];
+              data7 = [fromCopy data];
+              [data7 getBytes:&v71 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v31 |= (v71 & 0x7F) << v29;
@@ -1161,7 +1161,7 @@ LABEL_110:
             }
           }
 
-          v22 = (v31 != 0) & ~[v4 hasError];
+          v22 = (v31 != 0) & ~[fromCopy hasError];
 LABEL_118:
           v66 = 20;
         }
@@ -1177,18 +1177,18 @@ LABEL_118:
           while (1)
           {
             v71 = 0;
-            v44 = [v4 position] + 1;
-            if (v44 >= [v4 position] && (v45 = objc_msgSend(v4, "position") + 1, v45 <= objc_msgSend(v4, "length")))
+            v44 = [fromCopy position] + 1;
+            if (v44 >= [fromCopy position] && (v45 = objc_msgSend(fromCopy, "position") + 1, v45 <= objc_msgSend(fromCopy, "length")))
             {
-              v46 = [v4 data];
-              [v46 getBytes:&v71 range:{objc_msgSend(v4, "position"), 1}];
+              data8 = [fromCopy data];
+              [data8 getBytes:&v71 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v43 |= (v71 & 0x7F) << v41;
@@ -1204,7 +1204,7 @@ LABEL_118:
             }
           }
 
-          if (([v4 hasError] & 1) != 0 || v43 > 4)
+          if (([fromCopy hasError] & 1) != 0 || v43 > 4)
           {
 LABEL_105:
             LODWORD(v43) = 0;
@@ -1226,18 +1226,18 @@ LABEL_105:
         while (1)
         {
           v71 = 0;
-          v19 = [v4 position] + 1;
-          if (v19 >= [v4 position] && (v20 = objc_msgSend(v4, "position") + 1, v20 <= objc_msgSend(v4, "length")))
+          v19 = [fromCopy position] + 1;
+          if (v19 >= [fromCopy position] && (v20 = objc_msgSend(fromCopy, "position") + 1, v20 <= objc_msgSend(fromCopy, "length")))
           {
-            v21 = [v4 data];
-            [v21 getBytes:&v71 range:{objc_msgSend(v4, "position"), 1}];
+            data9 = [fromCopy data];
+            [data9 getBytes:&v71 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v18 |= (v71 & 0x7F) << v16;
@@ -1255,20 +1255,20 @@ LABEL_105:
           }
         }
 
-        v22 = (v18 != 0) & ~[v4 hasError];
+        v22 = (v18 != 0) & ~[fromCopy hasError];
 LABEL_114:
         v66 = 16;
       }
 
       *(&v5->super.super.isa + v66) = v22;
 LABEL_122:
-      v67 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v67 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_124:
     v68 = 0;
@@ -1299,26 +1299,26 @@ LABEL_125:
   return v12;
 }
 
-- (BMSiriPostSiriEngagementFeatures)initWithTaskSuccess:(int)a3 isUserAbandoned:(id)a4 isUserCancelled:(id)a5 isSiriCompleted:(id)a6 isPromptInteraction:(id)a7 isConfirmInteraction:(id)a8 isDisambiguateInteraction:(id)a9 isUnsupportedPromptInteraction:(id)a10
+- (BMSiriPostSiriEngagementFeatures)initWithTaskSuccess:(int)success isUserAbandoned:(id)abandoned isUserCancelled:(id)cancelled isSiriCompleted:(id)completed isPromptInteraction:(id)interaction isConfirmInteraction:(id)confirmInteraction isDisambiguateInteraction:(id)disambiguateInteraction isUnsupportedPromptInteraction:(id)self0
 {
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
-  v22 = a10;
+  abandonedCopy = abandoned;
+  cancelledCopy = cancelled;
+  completedCopy = completed;
+  interactionCopy = interaction;
+  confirmInteractionCopy = confirmInteraction;
+  disambiguateInteractionCopy = disambiguateInteraction;
+  promptInteractionCopy = promptInteraction;
   v25.receiver = self;
   v25.super_class = BMSiriPostSiriEngagementFeatures;
   v23 = [(BMEventBase *)&v25 init];
   if (v23)
   {
     v23->_dataVersion = [objc_opt_class() latestDataVersion];
-    v23->_taskSuccess = a3;
-    if (v16)
+    v23->_taskSuccess = success;
+    if (abandonedCopy)
     {
       v23->_hasIsUserAbandoned = 1;
-      v23->_isUserAbandoned = [v16 BOOLValue];
+      v23->_isUserAbandoned = [abandonedCopy BOOLValue];
     }
 
     else
@@ -1327,10 +1327,10 @@ LABEL_125:
       v23->_isUserAbandoned = 0;
     }
 
-    if (v17)
+    if (cancelledCopy)
     {
       v23->_hasIsUserCancelled = 1;
-      v23->_isUserCancelled = [v17 BOOLValue];
+      v23->_isUserCancelled = [cancelledCopy BOOLValue];
     }
 
     else
@@ -1339,10 +1339,10 @@ LABEL_125:
       v23->_isUserCancelled = 0;
     }
 
-    if (v18)
+    if (completedCopy)
     {
       v23->_hasIsSiriCompleted = 1;
-      v23->_isSiriCompleted = [v18 BOOLValue];
+      v23->_isSiriCompleted = [completedCopy BOOLValue];
     }
 
     else
@@ -1351,10 +1351,10 @@ LABEL_125:
       v23->_isSiriCompleted = 0;
     }
 
-    if (v19)
+    if (interactionCopy)
     {
       v23->_hasIsPromptInteraction = 1;
-      v23->_isPromptInteraction = [v19 BOOLValue];
+      v23->_isPromptInteraction = [interactionCopy BOOLValue];
     }
 
     else
@@ -1363,10 +1363,10 @@ LABEL_125:
       v23->_isPromptInteraction = 0;
     }
 
-    if (v20)
+    if (confirmInteractionCopy)
     {
       v23->_hasIsConfirmInteraction = 1;
-      v23->_isConfirmInteraction = [v20 BOOLValue];
+      v23->_isConfirmInteraction = [confirmInteractionCopy BOOLValue];
     }
 
     else
@@ -1375,10 +1375,10 @@ LABEL_125:
       v23->_isConfirmInteraction = 0;
     }
 
-    if (v21)
+    if (disambiguateInteractionCopy)
     {
       v23->_hasIsDisambiguateInteraction = 1;
-      v23->_isDisambiguateInteraction = [v21 BOOLValue];
+      v23->_isDisambiguateInteraction = [disambiguateInteractionCopy BOOLValue];
     }
 
     else
@@ -1387,10 +1387,10 @@ LABEL_125:
       v23->_isDisambiguateInteraction = 0;
     }
 
-    if (v22)
+    if (promptInteractionCopy)
     {
       v23->_hasIsUnsupportedPromptInteraction = 1;
-      v23->_isUnsupportedPromptInteraction = [v22 BOOLValue];
+      v23->_isUnsupportedPromptInteraction = [promptInteractionCopy BOOLValue];
     }
 
     else
@@ -1455,13 +1455,13 @@ LABEL_125:
   return v10;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4 == 1)
+  if (version == 1)
   {
     v4 = MEMORY[0x1E69C65B8];
-    v5 = a3;
-    v6 = [[v4 alloc] initWithData:v5];
+    dataCopy = data;
+    v6 = [[v4 alloc] initWithData:dataCopy];
 
     v7 = [[BMSiriPostSiriEngagementFeatures alloc] initByReadFrom:v6];
     v8 = v7;

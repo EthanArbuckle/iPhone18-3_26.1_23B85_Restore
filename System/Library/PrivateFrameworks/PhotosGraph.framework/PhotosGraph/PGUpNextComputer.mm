@@ -1,12 +1,12 @@
 @interface PGUpNextComputer
-- (BOOL)enumerateSuggestionsWith:(id)a3 featureWeightVectors:(id)a4 error:(id *)a5 block:(id)a6;
+- (BOOL)enumerateSuggestionsWith:(id)with featureWeightVectors:(id)vectors error:(id *)error block:(id)block;
 - (_TtC11PhotosGraph16PGUpNextComputer)init;
-- (_TtC11PhotosGraph16PGUpNextComputer)initWithTargets:(id)a3;
+- (_TtC11PhotosGraph16PGUpNextComputer)initWithTargets:(id)targets;
 @end
 
 @implementation PGUpNextComputer
 
-- (_TtC11PhotosGraph16PGUpNextComputer)initWithTargets:(id)a3
+- (_TtC11PhotosGraph16PGUpNextComputer)initWithTargets:(id)targets
 {
   ObjectType = swift_getObjectType();
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27DAB23C8, &qword_22F779810);
@@ -16,19 +16,19 @@
   return [(PGUpNextComputer *)&v6 init];
 }
 
-- (BOOL)enumerateSuggestionsWith:(id)a3 featureWeightVectors:(id)a4 error:(id *)a5 block:(id)a6
+- (BOOL)enumerateSuggestionsWith:(id)with featureWeightVectors:(id)vectors error:(id *)error block:(id)block
 {
-  v9 = _Block_copy(a6);
-  if (a4)
+  v9 = _Block_copy(block);
+  if (vectors)
   {
     sub_22F1DC8C0();
-    a4 = sub_22F741180();
+    vectors = sub_22F741180();
   }
 
   _Block_copy(v9);
   swift_unknownObjectRetain();
-  v10 = self;
-  sub_22F1DC68C(a3, a4, v10);
+  selfCopy = self;
+  sub_22F1DC68C(with, vectors, selfCopy);
   _Block_release(v9);
 
   swift_unknownObjectRelease();

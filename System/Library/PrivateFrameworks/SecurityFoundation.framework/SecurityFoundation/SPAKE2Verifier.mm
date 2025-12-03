@@ -1,24 +1,24 @@
 @interface SPAKE2Verifier
-+ (id)generateCodeWithError:(id *)a3;
++ (id)generateCodeWithError:(id *)error;
 - (BOOL)hasKey;
 - (BOOL)isVerified;
-- (BOOL)keyMatchesWith:(id)a3;
-- (BOOL)processMsg1:(id)a3 error:(id *)a4;
-- (BOOL)processMsg2:(id)a3 error:(id *)a4;
-- (SPAKE2Verifier)initWithSalt:(id)a3 code:(id)a4 error:(id *)a5;
-- (id)decryptMessage:(id)a3 error:(id *)a4;
-- (id)encryptMessage:(id)a3 error:(id *)a4;
+- (BOOL)keyMatchesWith:(id)with;
+- (BOOL)processMsg1:(id)msg1 error:(id *)error;
+- (BOOL)processMsg2:(id)msg2 error:(id *)error;
+- (SPAKE2Verifier)initWithSalt:(id)salt code:(id)code error:(id *)error;
+- (id)decryptMessage:(id)message error:(id *)error;
+- (id)encryptMessage:(id)message error:(id *)error;
 - (id)getCode;
 - (id)getKey;
-- (id)getMsg1WithError:(id *)a3;
-- (id)getMsg2WithError:(id *)a3;
+- (id)getMsg1WithError:(id *)error;
+- (id)getMsg2WithError:(id *)error;
 - (id)testGetW0;
 - (id)testGetW1;
 @end
 
 @implementation SPAKE2Verifier
 
-+ (id)generateCodeWithError:(id *)a3
++ (id)generateCodeWithError:(id *)error
 {
   v4 = SecPasswordCreateWithRandomDigits();
   v5 = v4;
@@ -27,18 +27,18 @@
     v6 = v4;
   }
 
-  else if (a3)
+  else if (error)
   {
-    *a3 = 0;
+    *error = 0;
   }
 
   return v5;
 }
 
-- (SPAKE2Verifier)initWithSalt:(id)a3 code:(id)a4 error:(id *)a5
+- (SPAKE2Verifier)initWithSalt:(id)salt code:(id)code error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  saltCopy = salt;
+  codeCopy = code;
   v19.receiver = self;
   v19.super_class = SPAKE2Verifier;
   v10 = [(SPAKE2Verifier *)&v19 init];
@@ -49,19 +49,19 @@
 
   v11 = [SPAKE2Common alloc];
   v12 = ccrng();
-  v13 = [(SPAKE2Common *)v11 initWithSalt:v8 code:v9 rng:v12 cp:ccspake_cp_256()];
+  v13 = [(SPAKE2Common *)v11 initWithSalt:saltCopy code:codeCopy rng:v12 cp:ccspake_cp_256()];
   [(SPAKE2Verifier *)v10 setCommon:v13];
 
-  v14 = [(SPAKE2Verifier *)v10 common];
-  LODWORD(v12) = [v14 generateStateWithError:a5];
+  common = [(SPAKE2Verifier *)v10 common];
+  LODWORD(v12) = [common generateStateWithError:error];
 
   if (!v12)
   {
     goto LABEL_5;
   }
 
-  v15 = [(SPAKE2Verifier *)v10 common];
-  v16 = [v15 setupVerifier:a5];
+  common2 = [(SPAKE2Verifier *)v10 common];
+  v16 = [common2 setupVerifier:error];
 
   if (v16)
   {
@@ -80,111 +80,111 @@ LABEL_5:
 
 - (id)getCode
 {
-  v2 = [(SPAKE2Verifier *)self common];
-  v3 = [v2 code];
+  common = [(SPAKE2Verifier *)self common];
+  code = [common code];
 
-  return v3;
+  return code;
 }
 
-- (id)getMsg1WithError:(id *)a3
+- (id)getMsg1WithError:(id *)error
 {
-  v4 = [(SPAKE2Verifier *)self common];
-  v5 = [v4 getMsg1WithError:a3];
+  common = [(SPAKE2Verifier *)self common];
+  v5 = [common getMsg1WithError:error];
 
   return v5;
 }
 
-- (BOOL)processMsg1:(id)a3 error:(id *)a4
+- (BOOL)processMsg1:(id)msg1 error:(id *)error
 {
-  v6 = a3;
-  v7 = [(SPAKE2Verifier *)self common];
-  LOBYTE(a4) = [v7 processMsg1:v6 error:a4];
+  msg1Copy = msg1;
+  common = [(SPAKE2Verifier *)self common];
+  LOBYTE(error) = [common processMsg1:msg1Copy error:error];
 
-  return a4;
+  return error;
 }
 
-- (id)getMsg2WithError:(id *)a3
+- (id)getMsg2WithError:(id *)error
 {
-  v4 = [(SPAKE2Verifier *)self common];
-  v5 = [v4 getMsg2WithError:a3];
+  common = [(SPAKE2Verifier *)self common];
+  v5 = [common getMsg2WithError:error];
 
   return v5;
 }
 
-- (BOOL)processMsg2:(id)a3 error:(id *)a4
+- (BOOL)processMsg2:(id)msg2 error:(id *)error
 {
-  v6 = a3;
-  v7 = [(SPAKE2Verifier *)self common];
-  LOBYTE(a4) = [v7 processMsg2Orig:v6 error:a4];
+  msg2Copy = msg2;
+  common = [(SPAKE2Verifier *)self common];
+  LOBYTE(error) = [common processMsg2Orig:msg2Copy error:error];
 
-  return a4;
+  return error;
 }
 
 - (BOOL)isVerified
 {
-  v2 = [(SPAKE2Verifier *)self common];
-  v3 = [v2 isVerified];
+  common = [(SPAKE2Verifier *)self common];
+  isVerified = [common isVerified];
 
-  return v3;
+  return isVerified;
 }
 
 - (id)getKey
 {
-  v2 = [(SPAKE2Verifier *)self common];
-  v3 = [v2 getSessionKey];
+  common = [(SPAKE2Verifier *)self common];
+  getSessionKey = [common getSessionKey];
 
-  return v3;
+  return getSessionKey;
 }
 
-- (id)encryptMessage:(id)a3 error:(id *)a4
+- (id)encryptMessage:(id)message error:(id *)error
 {
-  v6 = a3;
-  v7 = [(SPAKE2Verifier *)self common];
-  v8 = [v7 encryptMessage:v6 error:a4];
+  messageCopy = message;
+  common = [(SPAKE2Verifier *)self common];
+  v8 = [common encryptMessage:messageCopy error:error];
 
   return v8;
 }
 
-- (id)decryptMessage:(id)a3 error:(id *)a4
+- (id)decryptMessage:(id)message error:(id *)error
 {
-  v6 = a3;
-  v7 = [(SPAKE2Verifier *)self common];
-  v8 = [v7 decryptMessage:v6 error:a4];
+  messageCopy = message;
+  common = [(SPAKE2Verifier *)self common];
+  v8 = [common decryptMessage:messageCopy error:error];
 
   return v8;
 }
 
 - (id)testGetW0
 {
-  v2 = [(SPAKE2Verifier *)self common];
-  v3 = [v2 w0];
+  common = [(SPAKE2Verifier *)self common];
+  v3 = [common w0];
 
   return v3;
 }
 
 - (id)testGetW1
 {
-  v2 = [(SPAKE2Verifier *)self common];
-  v3 = [v2 w1];
+  common = [(SPAKE2Verifier *)self common];
+  v3 = [common w1];
 
   return v3;
 }
 
-- (BOOL)keyMatchesWith:(id)a3
+- (BOOL)keyMatchesWith:(id)with
 {
-  v4 = a3;
+  withCopy = with;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(SPAKE2Verifier *)self common];
-    v7 = [v6 session_key];
-    v8 = [v7 keyData];
-    v9 = [v5 common];
+    v5 = withCopy;
+    common = [(SPAKE2Verifier *)self common];
+    session_key = [common session_key];
+    keyData = [session_key keyData];
+    common2 = [v5 common];
 
-    v10 = [v9 session_key];
-    v11 = [v10 keyData];
-    v12 = [v8 isEqualToData:v11];
+    session_key2 = [common2 session_key];
+    keyData2 = [session_key2 keyData];
+    v12 = [keyData isEqualToData:keyData2];
   }
 
   else
@@ -197,9 +197,9 @@ LABEL_5:
 
 - (BOOL)hasKey
 {
-  v2 = [(SPAKE2Verifier *)self common];
-  v3 = [v2 session_key];
-  v4 = v3 != 0;
+  common = [(SPAKE2Verifier *)self common];
+  session_key = [common session_key];
+  v4 = session_key != 0;
 
   return v4;
 }

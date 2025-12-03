@@ -1,47 +1,47 @@
 @interface CAMZoomDial
-+ (CGPoint)_pointForOffsetAngle:(double)a3 dialCenter:(CGPoint)a4 radius:(double)a5;
-+ (double)_normalizedValueForZoomFactor:(double)a3 min:(double)a4 max:(double)a5;
-+ (double)_offsetAngleForZoomFactor:(double)a3 relativeToCurrentZoomFactor:(BOOL)a4 currentZoomFactor:(double)a5 min:(double)a6 max:(double)a7 signedAngleDeltaForZoomRange:(double)a8;
-+ (id)_createBackgroundImageForBounds:(CGRect)a3 dialCenter:(CGPoint)a4 radius:(double)a5 backgroundAlpha:(double)a6 borderStrokeWidth:(double)a7;
-+ (id)_createMaskImageWithSize:(CGSize)a3 tickLabelCenterRadialInset:(double)a4 notchMaskImage:(id)a5;
-+ (id)_createTicksImageForBounds:(CGRect)a3 dialCenter:(CGPoint)a4 radius:(double)a5 pixelWidth:(double)a6 zoomFactors:(id)a7 minAvailableZoomFactor:(double)a8 maxAvailableZoomFactor:(double)a9 signedAngleDeltaForZoomRange:(double)a10;
-- (CAMZoomDial)initWithFrame:(CGRect)a3;
-- (CGPoint)_pointForOffsetAngle:(double)a3 radialInset:(double)a4 assumeExpanded:(BOOL)a5;
-- (CGPoint)_textCenterForOffsetAngle:(double)a3 assumeExpanded:(BOOL)a4;
-- (CGPoint)_tickEndpointForOffsetAngle:(double)a3 isTop:(BOOL)a4;
++ (CGPoint)_pointForOffsetAngle:(double)angle dialCenter:(CGPoint)center radius:(double)radius;
++ (double)_normalizedValueForZoomFactor:(double)factor min:(double)min max:(double)max;
++ (double)_offsetAngleForZoomFactor:(double)factor relativeToCurrentZoomFactor:(BOOL)zoomFactor currentZoomFactor:(double)currentZoomFactor min:(double)min max:(double)max signedAngleDeltaForZoomRange:(double)range;
++ (id)_createBackgroundImageForBounds:(CGRect)bounds dialCenter:(CGPoint)center radius:(double)radius backgroundAlpha:(double)alpha borderStrokeWidth:(double)width;
++ (id)_createMaskImageWithSize:(CGSize)size tickLabelCenterRadialInset:(double)inset notchMaskImage:(id)image;
++ (id)_createTicksImageForBounds:(CGRect)bounds dialCenter:(CGPoint)center radius:(double)radius pixelWidth:(double)width zoomFactors:(id)factors minAvailableZoomFactor:(double)factor maxAvailableZoomFactor:(double)zoomFactor signedAngleDeltaForZoomRange:(double)self0;
+- (CAMZoomDial)initWithFrame:(CGRect)frame;
+- (CGPoint)_pointForOffsetAngle:(double)angle radialInset:(double)inset assumeExpanded:(BOOL)expanded;
+- (CGPoint)_textCenterForOffsetAngle:(double)angle assumeExpanded:(BOOL)expanded;
+- (CGPoint)_tickEndpointForOffsetAngle:(double)angle isTop:(BOOL)top;
 - (CGPoint)dialCenter;
-- (CGPoint)textCenterForZoomFactor:(double)a3 assumeExpanded:(BOOL)a4;
+- (CGPoint)textCenterForZoomFactor:(double)factor assumeExpanded:(BOOL)expanded;
 - (NSArray)activeZoomFactorLabels;
 - (double)_focalLengthInsetLandscape;
 - (double)_focalLengthInsetPortrait;
 - (double)_fullRadius;
 - (double)_labelPaddingForContentSizeCategory;
 - (double)_labelRotationAngleForOrientation;
-- (double)_offsetAngleForZoomFactor:(double)a3 relativeToCurrentZoomFactor:(BOOL)a4;
-- (double)_offsetAngleForZoomPoint:(id)a3;
+- (double)_offsetAngleForZoomFactor:(double)factor relativeToCurrentZoomFactor:(BOOL)zoomFactor;
+- (double)_offsetAngleForZoomPoint:(id)point;
 - (double)_radiusDelta;
 - (double)_signedAngleDeltaForZoomRange;
 - (double)_tickLabelCenterRadialInset;
 - (double)dialBorderWidth;
 - (double)maximumZoomFactor;
 - (double)minimumZoomFactor;
-- (double)normalizedValueForZoomFactor:(double)a3;
-- (double)offsetAngleForPoint:(CGPoint)a3;
-- (double)zoomFactorForNormalizedValue:(double)a3;
-- (double)zoomFactorForOffsetAngle:(double)a3;
+- (double)normalizedValueForZoomFactor:(double)factor;
+- (double)offsetAngleForPoint:(CGPoint)point;
+- (double)zoomFactorForNormalizedValue:(double)value;
+- (double)zoomFactorForOffsetAngle:(double)angle;
 - (id)_zoomPointIndexesForPrioritizedFocalLengthLabels;
 - (void)_commonCAMZoomDialInitialization;
 - (void)_invalidateImagesForViewSize;
-- (void)_layoutBackgroundAndContainerWithContentInset:(double)a3;
+- (void)_layoutBackgroundAndContainerWithContentInset:(double)inset;
 - (void)_layoutSubviewsWithTicks;
 - (void)_preferredContentSizeCategoryChanged;
-- (void)_setBackgroundViewUpdateNeeded:(BOOL)a3;
-- (void)_setCanLoadImages:(BOOL)a3;
-- (void)_setFocalLengthLabelsLandscape:(id)a3;
-- (void)_setFocalLengthLabelsPortrait:(id)a3;
-- (void)_setLabels:(id)a3;
-- (void)_setMaskUpdateNeeded:(BOOL)a3;
-- (void)_setTicksUpdateNeeded:(BOOL)a3;
+- (void)_setBackgroundViewUpdateNeeded:(BOOL)needed;
+- (void)_setCanLoadImages:(BOOL)images;
+- (void)_setFocalLengthLabelsLandscape:(id)landscape;
+- (void)_setFocalLengthLabelsPortrait:(id)portrait;
+- (void)_setLabels:(id)labels;
+- (void)_setMaskUpdateNeeded:(BOOL)needed;
+- (void)_setTicksUpdateNeeded:(BOOL)needed;
 - (void)_updateBackgroundImageViewIfNeeded;
 - (void)_updateContentIfNeeded;
 - (void)_updateFocalLengthLabelAlphas;
@@ -53,23 +53,23 @@
 - (void)_updatePortraitFocalLengthLabelAlphas;
 - (void)_updateTicksImageIfNeeded;
 - (void)layoutSubviews;
-- (void)setBounds:(CGRect)a3;
-- (void)setContentMaskingHeight:(double)a3;
-- (void)setContractionDistance:(double)a3;
-- (void)setExpanded:(BOOL)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setHideFocalLengthLabels:(BOOL)a3;
-- (void)setHideLabels:(BOOL)a3;
-- (void)setMaxAvailableZoomFactor:(double)a3;
-- (void)setMinAvailableZoomFactor:(double)a3;
-- (void)setOrientation:(int64_t)a3 animated:(BOOL)a4;
-- (void)setZoomFactor:(double)a3;
-- (void)setZoomPoints:(id)a3;
+- (void)setBounds:(CGRect)bounds;
+- (void)setContentMaskingHeight:(double)height;
+- (void)setContractionDistance:(double)distance;
+- (void)setExpanded:(BOOL)expanded;
+- (void)setFrame:(CGRect)frame;
+- (void)setHideFocalLengthLabels:(BOOL)labels;
+- (void)setHideLabels:(BOOL)labels;
+- (void)setMaxAvailableZoomFactor:(double)factor;
+- (void)setMinAvailableZoomFactor:(double)factor;
+- (void)setOrientation:(int64_t)orientation animated:(BOOL)animated;
+- (void)setZoomFactor:(double)factor;
+- (void)setZoomPoints:(id)points;
 @end
 
 @implementation CAMZoomDial
 
-- (CAMZoomDial)initWithFrame:(CGRect)a3
+- (CAMZoomDial)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = CAMZoomDial;
@@ -96,12 +96,12 @@
   zoomFactors = self->_zoomFactors;
   self->_zoomFactors = &unk_1F16C9B48;
 
-  v7 = [(NSArray *)self->_zoomFactors firstObject];
-  [v7 doubleValue];
+  firstObject = [(NSArray *)self->_zoomFactors firstObject];
+  [firstObject doubleValue];
   self->_minAvailableZoomFactor = v8;
 
-  v9 = [(NSArray *)self->_zoomFactors lastObject];
-  [v9 doubleValue];
+  lastObject = [(NSArray *)self->_zoomFactors lastObject];
+  [lastObject doubleValue];
   self->_maxAvailableZoomFactor = v10;
 
   self->_zoomFactor = self->_minAvailableZoomFactor;
@@ -146,24 +146,24 @@
   self->__contentMaskView = v26;
 
   [(UIView *)self->__contentContainerView setMaskView:self->__contentMaskView];
-  v28 = [MEMORY[0x1E69DC728] bezierPath];
+  bezierPath = [MEMORY[0x1E69DC728] bezierPath];
   v29 = *MEMORY[0x1E695EFF8];
   v30 = *(MEMORY[0x1E695EFF8] + 8);
-  [v28 moveToPoint:{*MEMORY[0x1E695EFF8], v30}];
-  [v28 addLineToPoint:{4.0, 0.0}];
-  [v28 addLineToPoint:{2.0, 10.0}];
-  [v28 addLineToPoint:{v29, v30}];
+  [bezierPath moveToPoint:{*MEMORY[0x1E695EFF8], v30}];
+  [bezierPath addLineToPoint:{4.0, 0.0}];
+  [bezierPath addLineToPoint:{2.0, 10.0}];
+  [bezierPath addLineToPoint:{v29, v30}];
   v31 = objc_alloc_init(MEMORY[0x1E69794A0]);
-  [v31 setPath:{objc_msgSend(v28, "CGPath")}];
-  v32 = [MEMORY[0x1E69DC888] systemYellowColor];
-  [v31 setFillColor:{objc_msgSend(v32, "CGColor")}];
+  [v31 setPath:{objc_msgSend(bezierPath, "CGPath")}];
+  systemYellowColor = [MEMORY[0x1E69DC888] systemYellowColor];
+  [v31 setFillColor:{objc_msgSend(systemYellowColor, "CGColor")}];
 
   v33 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{v12, v13, v14, v15}];
   needleView = self->__needleView;
   self->__needleView = v33;
 
-  v35 = [(UIView *)self->__needleView layer];
-  [v35 addSublayer:v31];
+  layer = [(UIView *)self->__needleView layer];
+  [layer addSublayer:v31];
 
   [(CAMZoomDial *)self addSubview:self->__needleView];
   v38[0] = objc_opt_class();
@@ -171,12 +171,12 @@
   v37 = [(CAMZoomDial *)self registerForTraitChanges:v36 withAction:sel__preferredContentSizeCategoryChanged];
 }
 
-- (void)_setCanLoadImages:(BOOL)a3
+- (void)_setCanLoadImages:(BOOL)images
 {
-  if (self->__canLoadImages != a3)
+  if (self->__canLoadImages != images)
   {
-    self->__canLoadImages = a3;
-    if (a3)
+    self->__canLoadImages = images;
+    if (images)
     {
       [(CAMZoomDial *)self _updateTicksImageIfNeeded];
       [(CAMZoomDial *)self _updateBackgroundImageViewIfNeeded];
@@ -188,9 +188,9 @@
 
 - (double)minimumZoomFactor
 {
-  v2 = [(CAMZoomDial *)self zoomFactors];
-  v3 = [v2 firstObject];
-  [v3 doubleValue];
+  zoomFactors = [(CAMZoomDial *)self zoomFactors];
+  firstObject = [zoomFactors firstObject];
+  [firstObject doubleValue];
   v5 = v4;
 
   return v5;
@@ -198,21 +198,21 @@
 
 - (double)maximumZoomFactor
 {
-  v2 = [(CAMZoomDial *)self zoomFactors];
-  v3 = [v2 lastObject];
-  [v3 doubleValue];
+  zoomFactors = [(CAMZoomDial *)self zoomFactors];
+  lastObject = [zoomFactors lastObject];
+  [lastObject doubleValue];
   v5 = v4;
 
   return v5;
 }
 
-- (void)setZoomPoints:(id)a3
+- (void)setZoomPoints:(id)points
 {
-  v8 = a3;
+  pointsCopy = points;
   if (![(NSArray *)self->_zoomPoints isEqualToArray:?])
   {
-    objc_storeStrong(&self->_zoomPoints, a3);
-    v5 = [CAMZoomPoint displayZoomFactorsFromZoomPoints:v8];
+    objc_storeStrong(&self->_zoomPoints, points);
+    v5 = [CAMZoomPoint displayZoomFactorsFromZoomPoints:pointsCopy];
     zoomFactors = self->_zoomFactors;
     self->_zoomFactors = v5;
 
@@ -226,11 +226,11 @@
   }
 }
 
-- (void)setMinAvailableZoomFactor:(double)a3
+- (void)setMinAvailableZoomFactor:(double)factor
 {
-  if (self->_minAvailableZoomFactor != a3)
+  if (self->_minAvailableZoomFactor != factor)
   {
-    self->_minAvailableZoomFactor = a3;
+    self->_minAvailableZoomFactor = factor;
     [(CAMZoomDial *)self _setLabelsUpdateNeeded:1];
     [(CAMZoomDial *)self _setTicksUpdateNeeded:1];
 
@@ -238,11 +238,11 @@
   }
 }
 
-- (void)setMaxAvailableZoomFactor:(double)a3
+- (void)setMaxAvailableZoomFactor:(double)factor
 {
-  if (self->_maxAvailableZoomFactor != a3)
+  if (self->_maxAvailableZoomFactor != factor)
   {
-    self->_maxAvailableZoomFactor = a3;
+    self->_maxAvailableZoomFactor = factor;
     [(CAMZoomDial *)self _setLabelsUpdateNeeded:1];
     [(CAMZoomDial *)self _setTicksUpdateNeeded:1];
 
@@ -250,7 +250,7 @@
   }
 }
 
-- (void)setZoomFactor:(double)a3
+- (void)setZoomFactor:(double)factor
 {
   [(CAMZoomDial *)self minimumZoomFactor];
   [(CAMZoomDial *)self minAvailableZoomFactor];
@@ -269,32 +269,32 @@
   }
 }
 
-- (double)normalizedValueForZoomFactor:(double)a3
+- (double)normalizedValueForZoomFactor:(double)factor
 {
   v5 = objc_opt_class();
   [(CAMZoomDial *)self minimumZoomFactor];
   v7 = v6;
   [(CAMZoomDial *)self maximumZoomFactor];
 
-  [v5 _normalizedValueForZoomFactor:a3 min:v7 max:v8];
+  [v5 _normalizedValueForZoomFactor:factor min:v7 max:v8];
   return result;
 }
 
-+ (double)_normalizedValueForZoomFactor:(double)a3 min:(double)a4 max:(double)a5
++ (double)_normalizedValueForZoomFactor:(double)factor min:(double)min max:(double)max
 {
   CEKClamp();
   v8 = v7;
   result = 0.0;
-  if (a5 != a4)
+  if (max != min)
   {
-    v10 = log(v8 / a4);
-    return v10 / log(a5 / a4);
+    v10 = log(v8 / min);
+    return v10 / log(max / min);
   }
 
   return result;
 }
 
-- (double)zoomFactorForNormalizedValue:(double)a3
+- (double)zoomFactorForNormalizedValue:(double)value
 {
   [(CAMZoomDial *)self minimumZoomFactor];
   v5 = v4;
@@ -304,40 +304,40 @@
   return v5 * pow(v7 / v5, v8);
 }
 
-- (void)setContentMaskingHeight:(double)a3
+- (void)setContentMaskingHeight:(double)height
 {
-  if (self->_contentMaskingHeight != a3)
+  if (self->_contentMaskingHeight != height)
   {
-    self->_contentMaskingHeight = a3;
+    self->_contentMaskingHeight = height;
     [(CAMZoomDial *)self _setMaskUpdateNeeded:1];
 
     [(CAMZoomDial *)self setNeedsLayout];
   }
 }
 
-- (void)setContractionDistance:(double)a3
+- (void)setContractionDistance:(double)distance
 {
-  if (self->_contractionDistance != a3)
+  if (self->_contractionDistance != distance)
   {
-    self->_contractionDistance = a3;
+    self->_contractionDistance = distance;
     [(CAMZoomDial *)self setNeedsLayout];
   }
 }
 
-- (void)setExpanded:(BOOL)a3
+- (void)setExpanded:(BOOL)expanded
 {
-  if (self->_expanded != a3)
+  if (self->_expanded != expanded)
   {
-    self->_expanded = a3;
+    self->_expanded = expanded;
     [(CAMZoomDial *)self setNeedsLayout];
   }
 }
 
 - (double)_radiusDelta
 {
-  v3 = [(CAMZoomDial *)self isExpanded];
+  isExpanded = [(CAMZoomDial *)self isExpanded];
   result = 0.0;
-  if (!v3)
+  if (!isExpanded)
   {
     [(CAMZoomDial *)self contractionDistance];
     return -v5;
@@ -372,15 +372,15 @@
   v4 = v3;
   [(CAMZoomDial *)self maxAvailableZoomFactor];
   v6 = v5;
-  v7 = [(CAMZoomDial *)self zoomFactors];
+  zoomFactors = [(CAMZoomDial *)self zoomFactors];
   if (v6 != v4)
   {
     v35 = 0u;
     v36 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v8 = [(CAMZoomDial *)self zoomFactors];
-    v9 = [v8 countByEnumeratingWithState:&v33 objects:v38 count:16];
+    zoomFactors2 = [(CAMZoomDial *)self zoomFactors];
+    v9 = [zoomFactors2 countByEnumeratingWithState:&v33 objects:v38 count:16];
     if (v9)
     {
       v10 = v9;
@@ -391,7 +391,7 @@ LABEL_4:
       {
         if (*v34 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(zoomFactors2);
         }
 
         [*(*(&v33 + 1) + 8 * v12) doubleValue];
@@ -402,7 +402,7 @@ LABEL_4:
 
         if (v10 == ++v12)
         {
-          v10 = [v8 countByEnumeratingWithState:&v33 objects:v38 count:16];
+          v10 = [zoomFactors2 countByEnumeratingWithState:&v33 objects:v38 count:16];
           if (v10)
           {
             goto LABEL_4;
@@ -417,11 +417,11 @@ LABEL_4:
     {
 LABEL_10:
 
-      v8 = [(CAMZoomDial *)self zoomFactors];
+      zoomFactors2 = [(CAMZoomDial *)self zoomFactors];
       v14 = [MEMORY[0x1E696AD98] numberWithDouble:v6];
-      v15 = [v8 arrayByAddingObject:v14];
+      v15 = [zoomFactors2 arrayByAddingObject:v14];
 
-      v7 = v15;
+      zoomFactors = v15;
     }
   }
 
@@ -430,7 +430,7 @@ LABEL_10:
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v17 = v7;
+  v17 = zoomFactors;
   v18 = [v17 countByEnumeratingWithState:&v29 objects:v37 count:16];
   if (v18)
   {
@@ -475,17 +475,17 @@ LABEL_10:
 
 - (void)_updateMinimizedLabels
 {
-  v3 = [(CAMZoomDial *)self zoomPoints];
-  v4 = [(CAMZoomDial *)self _labels];
-  v5 = [v4 count];
-  if (v5 >= [v3 count])
+  zoomPoints = [(CAMZoomDial *)self zoomPoints];
+  _labels = [(CAMZoomDial *)self _labels];
+  v5 = [_labels count];
+  if (v5 >= [zoomPoints count])
   {
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __37__CAMZoomDial__updateMinimizedLabels__block_invoke;
     v6[3] = &unk_1E76FC480;
-    v7 = v4;
-    [v3 enumerateObjectsUsingBlock:v6];
+    v7 = _labels;
+    [zoomPoints enumerateObjectsUsingBlock:v6];
   }
 }
 
@@ -500,7 +500,7 @@ void __37__CAMZoomDial__updateMinimizedLabels__block_invoke(uint64_t a1, void *a
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v5 = [(CAMZoomDial *)self zoomPoints];
+  zoomPoints = [(CAMZoomDial *)self zoomPoints];
   v8 = MEMORY[0x1E69E9820];
   v9 = 3221225472;
   v10 = __39__CAMZoomDial__updateFocalLengthLabels__block_invoke;
@@ -509,7 +509,7 @@ void __37__CAMZoomDial__updateMinimizedLabels__block_invoke(uint64_t a1, void *a
   v13 = v4;
   v6 = v4;
   v7 = v3;
-  [v5 enumerateObjectsUsingBlock:&v8];
+  [zoomPoints enumerateObjectsUsingBlock:&v8];
   [(CAMZoomDial *)self _setFocalLengthLabelsPortrait:v7, v8, v9, v10, v11];
   [(CAMZoomDial *)self _setFocalLengthLabelsLandscape:v6];
   [(CAMZoomDial *)self _updateFocalLengthLabelAlphas];
@@ -546,19 +546,19 @@ void __39__CAMZoomDial__updateFocalLengthLabels__block_invoke(uint64_t a1, void 
   }
 }
 
-- (void)_setLabels:(id)a3
+- (void)_setLabels:(id)labels
 {
   v31 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  labelsCopy = labels;
   labels = self->__labels;
-  if (labels != v5)
+  if (labels != labelsCopy)
   {
     v27 = 0u;
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v7 = labels;
-    v8 = [(NSArray *)v7 countByEnumeratingWithState:&v25 objects:v30 count:16];
+    labelsCopy2 = labels;
+    v8 = [(NSArray *)labelsCopy2 countByEnumeratingWithState:&v25 objects:v30 count:16];
     if (v8)
     {
       v9 = v8;
@@ -569,38 +569,38 @@ void __39__CAMZoomDial__updateFocalLengthLabels__block_invoke(uint64_t a1, void 
         {
           if (*v26 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(labelsCopy2);
           }
 
           [*(*(&v25 + 1) + 8 * i) removeFromSuperview];
         }
 
-        v9 = [(NSArray *)v7 countByEnumeratingWithState:&v25 objects:v30 count:16];
+        v9 = [(NSArray *)labelsCopy2 countByEnumeratingWithState:&v25 objects:v30 count:16];
       }
 
       while (v9);
     }
 
-    objc_storeStrong(&self->__labels, a3);
-    v12 = [(CAMZoomDial *)self _labelContainerView];
-    v13 = v12;
-    if (v12)
+    objc_storeStrong(&self->__labels, labels);
+    _labelContainerView = [(CAMZoomDial *)self _labelContainerView];
+    v13 = _labelContainerView;
+    if (_labelContainerView)
     {
-      v14 = v12;
+      _contentContainerView = _labelContainerView;
     }
 
     else
     {
-      v14 = [(CAMZoomDial *)self _contentContainerView];
+      _contentContainerView = [(CAMZoomDial *)self _contentContainerView];
     }
 
-    v15 = v14;
+    v15 = _contentContainerView;
 
     v23 = 0u;
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v16 = v5;
+    v16 = labelsCopy;
     v17 = [(NSArray *)v16 countByEnumeratingWithState:&v21 objects:v29 count:16];
     if (v17)
     {
@@ -626,12 +626,12 @@ void __39__CAMZoomDial__updateFocalLengthLabels__block_invoke(uint64_t a1, void 
   }
 }
 
-- (void)_setFocalLengthLabelsPortrait:(id)a3
+- (void)_setFocalLengthLabelsPortrait:(id)portrait
 {
   v31 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  portraitCopy = portrait;
   focalLengthLabelsPortrait = self->__focalLengthLabelsPortrait;
-  if (focalLengthLabelsPortrait != v5)
+  if (focalLengthLabelsPortrait != portraitCopy)
   {
     v27 = 0u;
     v28 = 0u;
@@ -661,26 +661,26 @@ void __39__CAMZoomDial__updateFocalLengthLabels__block_invoke(uint64_t a1, void 
       while (v9);
     }
 
-    objc_storeStrong(&self->__focalLengthLabelsPortrait, a3);
-    v12 = [(CAMZoomDial *)self _focalLengthLabelContainerView];
-    v13 = v12;
-    if (v12)
+    objc_storeStrong(&self->__focalLengthLabelsPortrait, portrait);
+    _focalLengthLabelContainerView = [(CAMZoomDial *)self _focalLengthLabelContainerView];
+    v13 = _focalLengthLabelContainerView;
+    if (_focalLengthLabelContainerView)
     {
-      v14 = v12;
+      _contentContainerView = _focalLengthLabelContainerView;
     }
 
     else
     {
-      v14 = [(CAMZoomDial *)self _contentContainerView];
+      _contentContainerView = [(CAMZoomDial *)self _contentContainerView];
     }
 
-    v15 = v14;
+    v15 = _contentContainerView;
 
     v23 = 0u;
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v16 = v5;
+    v16 = portraitCopy;
     v17 = [(NSArray *)v16 countByEnumeratingWithState:&v21 objects:v29 count:16];
     if (v17)
     {
@@ -706,12 +706,12 @@ void __39__CAMZoomDial__updateFocalLengthLabels__block_invoke(uint64_t a1, void 
   }
 }
 
-- (void)_setFocalLengthLabelsLandscape:(id)a3
+- (void)_setFocalLengthLabelsLandscape:(id)landscape
 {
   v31 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  landscapeCopy = landscape;
   focalLengthLabelsLandscape = self->__focalLengthLabelsLandscape;
-  if (focalLengthLabelsLandscape != v5)
+  if (focalLengthLabelsLandscape != landscapeCopy)
   {
     v27 = 0u;
     v28 = 0u;
@@ -741,26 +741,26 @@ void __39__CAMZoomDial__updateFocalLengthLabels__block_invoke(uint64_t a1, void 
       while (v9);
     }
 
-    objc_storeStrong(&self->__focalLengthLabelsLandscape, a3);
-    v12 = [(CAMZoomDial *)self _focalLengthLabelContainerView];
-    v13 = v12;
-    if (v12)
+    objc_storeStrong(&self->__focalLengthLabelsLandscape, landscape);
+    _focalLengthLabelContainerView = [(CAMZoomDial *)self _focalLengthLabelContainerView];
+    v13 = _focalLengthLabelContainerView;
+    if (_focalLengthLabelContainerView)
     {
-      v14 = v12;
+      _contentContainerView = _focalLengthLabelContainerView;
     }
 
     else
     {
-      v14 = [(CAMZoomDial *)self _contentContainerView];
+      _contentContainerView = [(CAMZoomDial *)self _contentContainerView];
     }
 
-    v15 = v14;
+    v15 = _contentContainerView;
 
     v23 = 0u;
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v16 = v5;
+    v16 = landscapeCopy;
     v17 = [(NSArray *)v16 countByEnumeratingWithState:&v21 objects:v29 count:16];
     if (v17)
     {
@@ -789,13 +789,13 @@ void __39__CAMZoomDial__updateFocalLengthLabels__block_invoke(uint64_t a1, void 
 - (void)_updateFocalLengthLabelAlphas
 {
   v3 = ([(CAMZoomDial *)self orientation]- 3) < 2;
-  v4 = [(CAMZoomDial *)self _focalLengthLabelsLandscape];
+  _focalLengthLabelsLandscape = [(CAMZoomDial *)self _focalLengthLabelsLandscape];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __44__CAMZoomDial__updateFocalLengthLabelAlphas__block_invoke;
   v5[3] = &__block_descriptor_33_e28_v32__0__UIImageView_8Q16_B24l;
   v6 = v3;
-  [v4 enumerateObjectsUsingBlock:v5];
+  [_focalLengthLabelsLandscape enumerateObjectsUsingBlock:v5];
 
   [(CAMZoomDial *)self _updatePortraitFocalLengthLabelAlphas];
 }
@@ -815,12 +815,12 @@ uint64_t __44__CAMZoomDial__updateFocalLengthLabelAlphas__block_invoke(uint64_t 
 {
   v43 = *MEMORY[0x1E69E9840];
   [(CAMZoomDial *)self _updateLabelsIfNeeded];
-  v3 = [(CAMZoomDial *)self _focalLengthLabelsPortrait];
+  _focalLengthLabelsPortrait = [(CAMZoomDial *)self _focalLengthLabelsPortrait];
   if (([(CAMZoomDial *)self orientation]- 3) > 1)
   {
-    v9 = [(CAMZoomDial *)self zoomPoints];
-    v10 = [(CAMZoomDial *)self _zoomPointIndexesForPrioritizedFocalLengthLabels];
-    if ([v9 count])
+    zoomPoints = [(CAMZoomDial *)self zoomPoints];
+    _zoomPointIndexesForPrioritizedFocalLengthLabels = [(CAMZoomDial *)self _zoomPointIndexesForPrioritizedFocalLengthLabels];
+    if ([zoomPoints count])
     {
       v11 = 0;
       v12 = 0x7FFFFFFFFFFFFFFFLL;
@@ -828,12 +828,12 @@ uint64_t __44__CAMZoomDial__updateFocalLengthLabelAlphas__block_invoke(uint64_t 
       v14 = 1.79769313e308;
       do
       {
-        v15 = [v9 objectAtIndexedSubscript:v11];
+        v15 = [zoomPoints objectAtIndexedSubscript:v11];
         [(CAMZoomDial *)self _offsetAngleForZoomPoint:v15];
         v17 = v16;
         if (v11)
         {
-          v18 = [v9 objectAtIndexedSubscript:v11 - 1];
+          v18 = [zoomPoints objectAtIndexedSubscript:v11 - 1];
           [(CAMZoomDial *)self _offsetAngleForZoomPoint:v18];
           v20 = vabdd_f64(v17, v19);
           if (v20 < v13)
@@ -842,7 +842,7 @@ uint64_t __44__CAMZoomDial__updateFocalLengthLabelAlphas__block_invoke(uint64_t 
           }
         }
 
-        v21 = [v10 containsIndex:v11];
+        v21 = [_zoomPointIndexesForPrioritizedFocalLengthLabels containsIndex:v11];
         v22 = fabs(v17);
         v23 = fabs(v14);
         v24 = v22 < v23;
@@ -875,7 +875,7 @@ uint64_t __44__CAMZoomDial__updateFocalLengthLabelAlphas__block_invoke(uint64_t 
         ++v11;
       }
 
-      while (v11 < [v9 count]);
+      while (v11 < [zoomPoints count]);
     }
 
     else
@@ -889,18 +889,18 @@ uint64_t __44__CAMZoomDial__updateFocalLengthLabelAlphas__block_invoke(uint64_t 
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[2] = __52__CAMZoomDial__updatePortraitFocalLengthLabelAlphas__block_invoke;
     aBlock[3] = &unk_1E76FC4F0;
-    v4 = v9;
+    v4 = zoomPoints;
     v35 = v4;
-    v36 = self;
+    selfCopy = self;
     v37 = v13 / 1.5;
     v27 = _Block_copy(aBlock);
-    if ([v3 count])
+    if ([_focalLengthLabelsPortrait count])
     {
       v28 = 0;
       do
       {
-        v29 = [v3 objectAtIndexedSubscript:v28];
-        if ([v10 containsIndex:v28])
+        v29 = [_focalLengthLabelsPortrait objectAtIndexedSubscript:v28];
+        if ([_zoomPointIndexesForPrioritizedFocalLengthLabels containsIndex:v28])
         {
           v30 = [v4 objectAtIndexedSubscript:v28];
           [(CAMZoomDial *)self _offsetAngleForZoomPoint:v30];
@@ -923,7 +923,7 @@ uint64_t __44__CAMZoomDial__updateFocalLengthLabelAlphas__block_invoke(uint64_t 
         ++v28;
       }
 
-      while (v28 < [v3 count]);
+      while (v28 < [_focalLengthLabelsPortrait count]);
     }
   }
 
@@ -933,7 +933,7 @@ uint64_t __44__CAMZoomDial__updateFocalLengthLabelAlphas__block_invoke(uint64_t 
     v41 = 0u;
     v38 = 0u;
     v39 = 0u;
-    v4 = v3;
+    v4 = _focalLengthLabelsPortrait;
     v5 = [v4 countByEnumeratingWithState:&v38 objects:v42 count:16];
     if (v5)
     {
@@ -972,8 +972,8 @@ double __52__CAMZoomDial__updatePortraitFocalLengthLabelAlphas__block_invoke(uin
 - (id)_zoomPointIndexesForPrioritizedFocalLengthLabels
 {
   v3 = +[CAMCaptureCapabilities capabilities];
-  v4 = [(CAMZoomDial *)self zoomPoints];
-  v5 = [MEMORY[0x1E696AD50] indexSetWithIndexesInRange:{0, objc_msgSend(v4, "count")}];
+  zoomPoints = [(CAMZoomDial *)self zoomPoints];
+  v5 = [MEMORY[0x1E696AD50] indexSetWithIndexesInRange:{0, objc_msgSend(zoomPoints, "count")}];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __63__CAMZoomDial__zoomPointIndexesForPrioritizedFocalLengthLabels__block_invoke;
@@ -982,7 +982,7 @@ double __52__CAMZoomDial__updatePortraitFocalLengthLabelAlphas__block_invoke(uin
   v6 = v5;
   v13 = v6;
   v7 = v3;
-  [v4 enumerateObjectsUsingBlock:v11];
+  [zoomPoints enumerateObjectsUsingBlock:v11];
   v8 = v13;
   v9 = v6;
 
@@ -998,12 +998,12 @@ void __63__CAMZoomDial__zoomPointIndexesForPrioritizedFocalLengthLabels__block_i
   }
 }
 
-- (void)setHideLabels:(BOOL)a3
+- (void)setHideLabels:(BOOL)labels
 {
-  if (self->_hideLabels != a3)
+  if (self->_hideLabels != labels)
   {
-    self->_hideLabels = a3;
-    if (a3)
+    self->_hideLabels = labels;
+    if (labels)
     {
       v4 = 0.0;
     }
@@ -1013,17 +1013,17 @@ void __63__CAMZoomDial__zoomPointIndexesForPrioritizedFocalLengthLabels__block_i
       v4 = 1.0;
     }
 
-    v5 = [(CAMZoomDial *)self _labelContainerView];
-    [v5 setAlpha:v4];
+    _labelContainerView = [(CAMZoomDial *)self _labelContainerView];
+    [_labelContainerView setAlpha:v4];
   }
 }
 
-- (void)setHideFocalLengthLabels:(BOOL)a3
+- (void)setHideFocalLengthLabels:(BOOL)labels
 {
-  if (self->_hideFocalLengthLabels != a3)
+  if (self->_hideFocalLengthLabels != labels)
   {
-    self->_hideFocalLengthLabels = a3;
-    if (a3)
+    self->_hideFocalLengthLabels = labels;
+    if (labels)
     {
       v4 = 0.0;
     }
@@ -1033,8 +1033,8 @@ void __63__CAMZoomDial__zoomPointIndexesForPrioritizedFocalLengthLabels__block_i
       v4 = 1.0;
     }
 
-    v5 = [(CAMZoomDial *)self _focalLengthLabelContainerView];
-    [v5 setAlpha:v4];
+    _focalLengthLabelContainerView = [(CAMZoomDial *)self _focalLengthLabelContainerView];
+    [_focalLengthLabelContainerView setAlpha:v4];
   }
 }
 
@@ -1049,15 +1049,15 @@ void __63__CAMZoomDial__zoomPointIndexesForPrioritizedFocalLengthLabels__block_i
   else
   {
     v4 = MEMORY[0x1E695DF70];
-    v5 = [(CAMZoomDial *)self _labels];
-    v3 = [v4 arrayWithCapacity:{objc_msgSend(v5, "count")}];
+    _labels = [(CAMZoomDial *)self _labels];
+    v3 = [v4 arrayWithCapacity:{objc_msgSend(_labels, "count")}];
 
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v6 = [(CAMZoomDial *)self _labels];
-    v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    _labels2 = [(CAMZoomDial *)self _labels];
+    v7 = [_labels2 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v7)
     {
       v8 = v7;
@@ -1068,7 +1068,7 @@ void __63__CAMZoomDial__zoomPointIndexesForPrioritizedFocalLengthLabels__block_i
         {
           if (*v15 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(_labels2);
           }
 
           v11 = *(*(&v14 + 1) + 8 * i);
@@ -1079,7 +1079,7 @@ void __63__CAMZoomDial__zoomPointIndexesForPrioritizedFocalLengthLabels__block_i
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v8 = [_labels2 countByEnumeratingWithState:&v14 objects:v18 count:16];
       }
 
       while (v8);
@@ -1117,9 +1117,9 @@ void __63__CAMZoomDial__zoomPointIndexesForPrioritizedFocalLengthLabels__block_i
 
 - (double)_labelPaddingForContentSizeCategory
 {
-  v2 = [(CAMZoomDial *)self traitCollection];
-  v3 = [v2 preferredContentSizeCategory];
-  [CAMZoomButton fontSizeForContentSize:v3];
+  traitCollection = [(CAMZoomDial *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  [CAMZoomButton fontSizeForContentSize:preferredContentSizeCategory];
   v5 = v4;
   [CAMZoomButton fontSizeForContentSize:*MEMORY[0x1E69DDC70]];
   v7 = v5 - v6;
@@ -1154,9 +1154,9 @@ void __63__CAMZoomDial__zoomPointIndexesForPrioritizedFocalLengthLabels__block_i
 
 - (double)_signedAngleDeltaForZoomRange
 {
-  v3 = [(CAMZoomDial *)self _shouldReverseLayoutDirection];
+  _shouldReverseLayoutDirection = [(CAMZoomDial *)self _shouldReverseLayoutDirection];
   [(CAMZoomDial *)self angleDeltaForZoomRange];
-  if (v3)
+  if (_shouldReverseLayoutDirection)
   {
     return -result;
   }
@@ -1164,17 +1164,17 @@ void __63__CAMZoomDial__zoomPointIndexesForPrioritizedFocalLengthLabels__block_i
   return result;
 }
 
-- (double)_offsetAngleForZoomPoint:(id)a3
+- (double)_offsetAngleForZoomPoint:(id)point
 {
-  [a3 displayZoomFactor];
+  [point displayZoomFactor];
 
   [(CAMZoomDial *)self offsetAngleForZoomFactor:?];
   return result;
 }
 
-- (double)_offsetAngleForZoomFactor:(double)a3 relativeToCurrentZoomFactor:(BOOL)a4
+- (double)_offsetAngleForZoomFactor:(double)factor relativeToCurrentZoomFactor:(BOOL)zoomFactor
 {
-  v4 = a4;
+  zoomFactorCopy = zoomFactor;
   v7 = objc_opt_class();
   [(CAMZoomDial *)self zoomFactor];
   v9 = v8;
@@ -1184,23 +1184,23 @@ void __63__CAMZoomDial__zoomPointIndexesForPrioritizedFocalLengthLabels__block_i
   v13 = v12;
   [(CAMZoomDial *)self _signedAngleDeltaForZoomRange];
 
-  [v7 _offsetAngleForZoomFactor:v4 relativeToCurrentZoomFactor:a3 currentZoomFactor:v9 min:v11 max:v13 signedAngleDeltaForZoomRange:v14];
+  [v7 _offsetAngleForZoomFactor:zoomFactorCopy relativeToCurrentZoomFactor:factor currentZoomFactor:v9 min:v11 max:v13 signedAngleDeltaForZoomRange:v14];
   return result;
 }
 
-+ (double)_offsetAngleForZoomFactor:(double)a3 relativeToCurrentZoomFactor:(BOOL)a4 currentZoomFactor:(double)a5 min:(double)a6 max:(double)a7 signedAngleDeltaForZoomRange:(double)a8
++ (double)_offsetAngleForZoomFactor:(double)factor relativeToCurrentZoomFactor:(BOOL)zoomFactor currentZoomFactor:(double)currentZoomFactor min:(double)min max:(double)max signedAngleDeltaForZoomRange:(double)range
 {
-  v12 = a4;
-  [a1 _normalizedValueForZoomFactor:a3 min:a6 max:a7];
+  zoomFactorCopy = zoomFactor;
+  [self _normalizedValueForZoomFactor:factor min:min max:max];
   v15 = v14;
-  if (v12)
+  if (zoomFactorCopy)
   {
-    [a1 _normalizedValueForZoomFactor:a5 min:a6 max:a7];
+    [self _normalizedValueForZoomFactor:currentZoomFactor min:min max:max];
     v15 = v15 - v16;
   }
 
-  result = v15 * a8;
-  if (v15 * a8 >= -3.14159265)
+  result = v15 * range;
+  if (v15 * range >= -3.14159265)
   {
     if (result <= 3.14159265)
     {
@@ -1218,9 +1218,9 @@ void __63__CAMZoomDial__zoomPointIndexesForPrioritizedFocalLengthLabels__block_i
   return result + v18;
 }
 
-- (double)zoomFactorForOffsetAngle:(double)a3
+- (double)zoomFactorForOffsetAngle:(double)angle
 {
-  if (a3 == 0.0)
+  if (angle == 0.0)
   {
 
     [(CAMZoomDial *)self zoomFactor];
@@ -1240,10 +1240,10 @@ void __63__CAMZoomDial__zoomPointIndexesForPrioritizedFocalLengthLabels__block_i
   return result;
 }
 
-- (double)offsetAngleForPoint:(CGPoint)a3
+- (double)offsetAngleForPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   [(CAMZoomDial *)self dialCenter];
   result = atan2(y - v6, x - v5) + 1.57079633;
   if (result > 3.14159265)
@@ -1254,80 +1254,80 @@ void __63__CAMZoomDial__zoomPointIndexesForPrioritizedFocalLengthLabels__block_i
   return result;
 }
 
-- (CGPoint)_pointForOffsetAngle:(double)a3 radialInset:(double)a4 assumeExpanded:(BOOL)a5
+- (CGPoint)_pointForOffsetAngle:(double)angle radialInset:(double)inset assumeExpanded:(BOOL)expanded
 {
   v8 = 0.0;
-  if (!a5)
+  if (!expanded)
   {
     [(CAMZoomDial *)self _radiusDelta];
     v8 = v9;
   }
 
   [(CAMZoomDial *)self _fullRadius];
-  v11 = v8 + v10 - a4;
+  v11 = v8 + v10 - inset;
   v12 = objc_opt_class();
   [(CAMZoomDial *)self dialCenter];
 
-  [v12 _pointForOffsetAngle:a3 dialCenter:v13 radius:{v14, v11}];
+  [v12 _pointForOffsetAngle:angle dialCenter:v13 radius:{v14, v11}];
   result.y = v16;
   result.x = v15;
   return result;
 }
 
-+ (CGPoint)_pointForOffsetAngle:(double)a3 dialCenter:(CGPoint)a4 radius:(double)a5
++ (CGPoint)_pointForOffsetAngle:(double)angle dialCenter:(CGPoint)center radius:(double)radius
 {
-  y = a4.y;
-  x = a4.x;
-  v8 = __sincos_stret(a3 + -1.57079633);
-  v9 = y + a5 * v8.__sinval;
-  v10 = x + a5 * v8.__cosval;
+  y = center.y;
+  x = center.x;
+  v8 = __sincos_stret(angle + -1.57079633);
+  v9 = y + radius * v8.__sinval;
+  v10 = x + radius * v8.__cosval;
   result.y = v9;
   result.x = v10;
   return result;
 }
 
-- (CGPoint)_tickEndpointForOffsetAngle:(double)a3 isTop:(BOOL)a4
+- (CGPoint)_tickEndpointForOffsetAngle:(double)angle isTop:(BOOL)top
 {
   v4 = 20.6666667;
-  if (a4)
+  if (top)
   {
     v4 = 4.0;
   }
 
-  [(CAMZoomDial *)self _pointForOffsetAngle:1 radialInset:a3 assumeExpanded:v4];
+  [(CAMZoomDial *)self _pointForOffsetAngle:1 radialInset:angle assumeExpanded:v4];
   result.y = v6;
   result.x = v5;
   return result;
 }
 
-- (CGPoint)textCenterForZoomFactor:(double)a3 assumeExpanded:(BOOL)a4
+- (CGPoint)textCenterForZoomFactor:(double)factor assumeExpanded:(BOOL)expanded
 {
-  v4 = a4;
-  [(CAMZoomDial *)self _offsetAngleForZoomFactor:1 relativeToCurrentZoomFactor:a3];
+  expandedCopy = expanded;
+  [(CAMZoomDial *)self _offsetAngleForZoomFactor:1 relativeToCurrentZoomFactor:factor];
 
-  [(CAMZoomDial *)self _textCenterForOffsetAngle:v4 assumeExpanded:?];
+  [(CAMZoomDial *)self _textCenterForOffsetAngle:expandedCopy assumeExpanded:?];
   result.y = v7;
   result.x = v6;
   return result;
 }
 
-- (CGPoint)_textCenterForOffsetAngle:(double)a3 assumeExpanded:(BOOL)a4
+- (CGPoint)_textCenterForOffsetAngle:(double)angle assumeExpanded:(BOOL)expanded
 {
-  v4 = a4;
+  expandedCopy = expanded;
   [(CAMZoomDial *)self _tickLabelCenterRadialInset];
 
-  [(CAMZoomDial *)self _pointForOffsetAngle:v4 radialInset:a3 assumeExpanded:v7];
+  [(CAMZoomDial *)self _pointForOffsetAngle:expandedCopy radialInset:angle assumeExpanded:v7];
   result.y = v9;
   result.x = v8;
   return result;
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(CAMZoomDial *)self bounds];
   if (v9 != width || v8 != height)
   {
@@ -1339,12 +1339,12 @@ void __63__CAMZoomDial__zoomPointIndexesForPrioritizedFocalLengthLabels__block_i
   [(CAMZoomDial *)&v11 setBounds:x, y, width, height];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(CAMZoomDial *)self frame];
   if (v9 != width || v8 != height)
   {
@@ -1364,28 +1364,28 @@ void __63__CAMZoomDial__zoomPointIndexesForPrioritizedFocalLengthLabels__block_i
   [(CAMZoomDial *)self _setMaskUpdateNeeded:1];
 }
 
-- (void)_setBackgroundViewUpdateNeeded:(BOOL)a3
+- (void)_setBackgroundViewUpdateNeeded:(BOOL)needed
 {
-  self->__backgroundViewUpdateNeeded = a3;
-  if (a3)
+  self->__backgroundViewUpdateNeeded = needed;
+  if (needed)
   {
     [(CAMZoomDial *)self setNeedsLayout];
   }
 }
 
-- (void)_setTicksUpdateNeeded:(BOOL)a3
+- (void)_setTicksUpdateNeeded:(BOOL)needed
 {
-  self->__ticksUpdateNeeded = a3;
-  if (a3)
+  self->__ticksUpdateNeeded = needed;
+  if (needed)
   {
     [(CAMZoomDial *)self setNeedsLayout];
   }
 }
 
-- (void)_setMaskUpdateNeeded:(BOOL)a3
+- (void)_setMaskUpdateNeeded:(BOOL)needed
 {
-  self->__maskUpdateNeeded = a3;
-  if (a3)
+  self->__maskUpdateNeeded = needed;
+  if (needed)
   {
     [(CAMZoomDial *)self setNeedsLayout];
   }
@@ -1401,12 +1401,12 @@ void __63__CAMZoomDial__zoomPointIndexesForPrioritizedFocalLengthLabels__block_i
   [(CAMZoomDial *)self _layoutSubviewsWithTicks];
 }
 
-- (void)_layoutBackgroundAndContainerWithContentInset:(double)a3
+- (void)_layoutBackgroundAndContainerWithContentInset:(double)inset
 {
-  v4 = [(CAMZoomDial *)self _backgroundView];
-  v5 = [(CAMZoomDial *)self _contentContainerView];
-  v6 = [(CAMZoomDial *)self _labelContainerView];
-  v7 = [(CAMZoomDial *)self _focalLengthLabelContainerView];
+  _backgroundView = [(CAMZoomDial *)self _backgroundView];
+  _contentContainerView = [(CAMZoomDial *)self _contentContainerView];
+  _labelContainerView = [(CAMZoomDial *)self _labelContainerView];
+  _focalLengthLabelContainerView = [(CAMZoomDial *)self _focalLengthLabelContainerView];
   [(CAMZoomDial *)self bounds];
   v9 = v8;
   v11 = v10;
@@ -1431,13 +1431,13 @@ void __63__CAMZoomDial__zoomPointIndexesForPrioritizedFocalLengthLabels__block_i
   if (v21 > 0.0)
   {
     CGAffineTransformMakeScale(&v34, (v21 + v23) / v21, (v21 + v23) / v21);
-    CGAffineTransformMakeScale(&v33, (v21 - a3 + v23) / (v21 - a3), (v21 - a3 + v23) / (v21 - a3));
+    CGAffineTransformMakeScale(&v33, (v21 - inset + v23) / (v21 - inset), (v21 - inset + v23) / (v21 - inset));
   }
 
-  [v4 setCenter:{v17, v19}];
-  [v4 setBounds:{v9, v11, v13, v15}];
+  [_backgroundView setCenter:{v17, v19}];
+  [_backgroundView setBounds:{v9, v11, v13, v15}];
   v32 = v34;
-  [v4 setTransform:&v32];
+  [_backgroundView setTransform:&v32];
   [(CAMZoomDial *)self _offsetAngleForZoomFactor:1 relativeToCurrentZoomFactor:v28];
   memset(&v32, 0, sizeof(v32));
   CGAffineTransformMakeRotation(&v32, v26);
@@ -1445,20 +1445,20 @@ void __63__CAMZoomDial__zoomPointIndexesForPrioritizedFocalLengthLabels__block_i
   memset(&v31, 0, sizeof(v31));
   t2 = v33;
   CGAffineTransformConcat(&v31, &t1, &t2);
-  [v5 setCenter:{v17, v19}];
-  [v5 setBounds:{v9, v11, v13, v15}];
+  [_contentContainerView setCenter:{v17, v19}];
+  [_contentContainerView setBounds:{v9, v11, v13, v15}];
   t1 = v31;
-  [v5 setTransform:&t1];
-  [v6 setCenter:{v17, v19}];
-  [v6 setBounds:{v9, v11, v13, v15}];
-  [v7 setCenter:{v17, v19}];
-  [v7 setBounds:{v9, v11, v13, v15}];
+  [_contentContainerView setTransform:&t1];
+  [_labelContainerView setCenter:{v17, v19}];
+  [_labelContainerView setBounds:{v9, v11, v13, v15}];
+  [_focalLengthLabelContainerView setCenter:{v17, v19}];
+  [_focalLengthLabelContainerView setBounds:{v9, v11, v13, v15}];
 }
 
 - (void)_layoutSubviewsWithTicks
 {
-  v3 = [(CAMZoomDial *)self _ticksView];
-  v4 = [(CAMZoomDial *)self _contentMaskView];
+  _ticksView = [(CAMZoomDial *)self _ticksView];
+  _contentMaskView = [(CAMZoomDial *)self _contentMaskView];
   [(CAMZoomDial *)self bounds];
   v6 = v5;
   v8 = v7;
@@ -1471,12 +1471,12 @@ void __63__CAMZoomDial__zoomPointIndexesForPrioritizedFocalLengthLabels__block_i
   [(CAMZoomDial *)self minimumZoomFactor];
   v18 = v17;
   [(CAMZoomDial *)self _layoutBackgroundAndContainerWithContentInset:4.0];
-  [v3 setCenter:{v14, v16}];
-  [v3 setBounds:{v6, v8, v10, v12}];
+  [_ticksView setCenter:{v14, v16}];
+  [_ticksView setBounds:{v6, v8, v10, v12}];
   v19 = *MEMORY[0x1E695F058];
   v20 = *(MEMORY[0x1E695F058] + 8);
-  v21 = [v4 image];
-  [v21 size];
+  image = [_contentMaskView image];
+  [image size];
   v23 = v22;
   v25 = v24;
 
@@ -1487,21 +1487,21 @@ void __63__CAMZoomDial__zoomPointIndexesForPrioritizedFocalLengthLabels__block_i
   v31 = v30;
   memset(&v55, 0, sizeof(v55));
   CGAffineTransformMakeRotation(&v55, v27);
-  [v4 setBounds:{v19, v20, v23, v25}];
-  [v4 setCenter:{v29, v31}];
+  [_contentMaskView setBounds:{v19, v20, v23, v25}];
+  [_contentMaskView setCenter:{v29, v31}];
   v54 = v55;
-  [v4 setTransform:&v54];
+  [_contentMaskView setTransform:&v54];
   [(CAMZoomDial *)self _pointForOffsetAngle:0 radialInset:0.0 assumeExpanded:4.0];
   v33 = v32;
   v35 = v34 + -2.0;
-  v36 = [(CAMZoomDial *)self _needleView];
-  [v36 setFrame:{v35, v33, 4.0, 10.0}];
+  _needleView = [(CAMZoomDial *)self _needleView];
+  [_needleView setFrame:{v35, v33, 4.0, 10.0}];
 
   [(CAMZoomDial *)self _labelRotationAngleForOrientation];
   v38 = v37;
-  v39 = [(CAMZoomDial *)self _labels];
-  v40 = [(CAMZoomDial *)self _focalLengthLabelsPortrait];
-  v41 = [(CAMZoomDial *)self _focalLengthLabelsLandscape];
+  _labels = [(CAMZoomDial *)self _labels];
+  _focalLengthLabelsPortrait = [(CAMZoomDial *)self _focalLengthLabelsPortrait];
+  _focalLengthLabelsLandscape = [(CAMZoomDial *)self _focalLengthLabelsLandscape];
   [(CAMZoomDial *)self zoomFactor];
   v42 = [CAMZoomButton textForZoomFactor:0 showZoomFactorSymbol:?];
   v47[0] = MEMORY[0x1E69E9820];
@@ -1512,13 +1512,13 @@ void __63__CAMZoomDial__zoomPointIndexesForPrioritizedFocalLengthLabels__block_i
   v52 = v16;
   v53 = v38;
   v47[4] = self;
-  v48 = v40;
-  v49 = v41;
+  v48 = _focalLengthLabelsPortrait;
+  v49 = _focalLengthLabelsLandscape;
   v50 = v42;
   v43 = v42;
-  v44 = v41;
-  v45 = v40;
-  [v39 enumerateObjectsUsingBlock:v47];
+  v44 = _focalLengthLabelsLandscape;
+  v45 = _focalLengthLabelsPortrait;
+  [_labels enumerateObjectsUsingBlock:v47];
 }
 
 void __39__CAMZoomDial__layoutSubviewsWithTicks__block_invoke(uint64_t a1, void *a2, unint64_t a3)
@@ -1653,7 +1653,7 @@ uint64_t __39__CAMZoomDial__layoutSubviewsWithTicks__block_invoke_2(uint64_t a1)
       [(CAMZoomDial *)self _fullRadius];
       [(CAMZoomDial *)self _backgroundAlpha];
       [(CAMZoomDial *)self _borderStrokeWidth];
-      v3 = [(CAMZoomDial *)self _imageGenerationQueue];
+      _imageGenerationQueue = [(CAMZoomDial *)self _imageGenerationQueue];
       pl_dispatch_async();
     }
   }
@@ -1702,12 +1702,12 @@ void __49__CAMZoomDial__updateBackgroundImageViewIfNeeded__block_invoke_2(uint64
       [(CAMZoomDial *)self dialCenter];
       [(CAMZoomDial *)self _fullRadius];
       CAMPixelWidthForView(self);
-      v3 = [(CAMZoomDial *)self zoomFactors];
+      zoomFactors = [(CAMZoomDial *)self zoomFactors];
       [(CAMZoomDial *)self minAvailableZoomFactor];
       [(CAMZoomDial *)self maxAvailableZoomFactor];
       [(CAMZoomDial *)self _signedAngleDeltaForZoomRange];
-      v4 = [(CAMZoomDial *)self _imageGenerationQueue];
-      v5 = v3;
+      _imageGenerationQueue = [(CAMZoomDial *)self _imageGenerationQueue];
+      v5 = zoomFactors;
       pl_dispatch_async();
     }
   }
@@ -1762,7 +1762,7 @@ void __40__CAMZoomDial__updateTicksImageIfNeeded__block_invoke_2(uint64_t a1)
     v5 = CAMCameraUIFrameworkBundle();
     v6 = [v4 imageNamed:@"CAMZoomDialNotchMask" inBundle:v5];
 
-    v7 = [(CAMZoomDial *)self _imageGenerationQueue];
+    _imageGenerationQueue = [(CAMZoomDial *)self _imageGenerationQueue];
     v8 = v6;
     pl_dispatch_async();
   }
@@ -1799,24 +1799,24 @@ void __39__CAMZoomDial__updateMaskImageIfNeeded__block_invoke_2(uint64_t a1)
   }
 }
 
-+ (id)_createBackgroundImageForBounds:(CGRect)a3 dialCenter:(CGPoint)a4 radius:(double)a5 backgroundAlpha:(double)a6 borderStrokeWidth:(double)a7
++ (id)_createBackgroundImageForBounds:(CGRect)bounds dialCenter:(CGPoint)center radius:(double)radius backgroundAlpha:(double)alpha borderStrokeWidth:(double)width
 {
-  y = a4.y;
-  x = a4.x;
-  height = a3.size.height;
-  width = a3.size.width;
-  v13 = [MEMORY[0x1E69DCA80] preferredFormat];
-  [v13 setPreferredRange:32766];
-  v14 = [objc_alloc(MEMORY[0x1E69DCA78]) initWithSize:v13 format:{width, height}];
+  y = center.y;
+  x = center.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  preferredFormat = [MEMORY[0x1E69DCA80] preferredFormat];
+  [preferredFormat setPreferredRange:32766];
+  v14 = [objc_alloc(MEMORY[0x1E69DCA78]) initWithSize:preferredFormat format:{width, height}];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __99__CAMZoomDial__createBackgroundImageForBounds_dialCenter_radius_backgroundAlpha_borderStrokeWidth___block_invoke;
   v17[3] = &__block_descriptor_72_e40_v16__0__UIGraphicsImageRendererContext_8l;
   *&v17[4] = x;
   *&v17[5] = y;
-  *&v17[6] = a5;
-  *&v17[7] = a6;
-  *&v17[8] = a7;
+  *&v17[6] = radius;
+  *&v17[7] = alpha;
+  *&v17[8] = width;
   v15 = [v14 imageWithActions:v17];
 
   return v15;
@@ -1837,19 +1837,19 @@ void __99__CAMZoomDial__createBackgroundImageForBounds_dialCenter_radius_backgro
   }
 }
 
-+ (id)_createTicksImageForBounds:(CGRect)a3 dialCenter:(CGPoint)a4 radius:(double)a5 pixelWidth:(double)a6 zoomFactors:(id)a7 minAvailableZoomFactor:(double)a8 maxAvailableZoomFactor:(double)a9 signedAngleDeltaForZoomRange:(double)a10
++ (id)_createTicksImageForBounds:(CGRect)bounds dialCenter:(CGPoint)center radius:(double)radius pixelWidth:(double)width zoomFactors:(id)factors minAvailableZoomFactor:(double)factor maxAvailableZoomFactor:(double)zoomFactor signedAngleDeltaForZoomRange:(double)self0
 {
-  y = a4.y;
-  x = a4.x;
-  height = a3.size.height;
-  width = a3.size.width;
-  v14 = a7;
-  v15 = [v14 firstObject];
-  [v15 doubleValue];
+  y = center.y;
+  x = center.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  factorsCopy = factors;
+  firstObject = [factorsCopy firstObject];
+  [firstObject doubleValue];
   v17 = v16;
 
-  v18 = [v14 lastObject];
-  [v18 doubleValue];
+  lastObject = [factorsCopy lastObject];
+  [lastObject doubleValue];
   v20 = v19;
 
   if (v17 == v20)
@@ -1859,22 +1859,22 @@ void __99__CAMZoomDial__createBackgroundImageForBounds_dialCenter_radius_backgro
 
   else
   {
-    v22 = [MEMORY[0x1E69DCA80] preferredFormat];
-    [v22 setPreferredRange:32766];
-    v23 = [objc_alloc(MEMORY[0x1E69DCA78]) initWithSize:v22 format:{width, height}];
+    preferredFormat = [MEMORY[0x1E69DCA80] preferredFormat];
+    [preferredFormat setPreferredRange:32766];
+    v23 = [objc_alloc(MEMORY[0x1E69DCA78]) initWithSize:preferredFormat format:{width, height}];
     v28[0] = MEMORY[0x1E69E9820];
     v28[1] = 3221225472;
     v28[2] = __158__CAMZoomDial__createTicksImageForBounds_dialCenter_radius_pixelWidth_zoomFactors_minAvailableZoomFactor_maxAvailableZoomFactor_signedAngleDeltaForZoomRange___block_invoke;
     v28[3] = &unk_1E76FC5B0;
-    v29 = v14;
-    v30 = a1;
+    v29 = factorsCopy;
+    selfCopy = self;
     v31 = v17;
     v32 = v20;
-    v33 = a8;
-    v34 = a9;
-    v35 = a6;
-    v36 = a10;
-    v37 = a5;
+    factorCopy = factor;
+    zoomFactorCopy = zoomFactor;
+    widthCopy = width;
+    rangeCopy = range;
+    radiusCopy = radius;
     v38 = x;
     v39 = y;
     v21 = [v23 imageWithActions:v28];
@@ -1963,15 +1963,15 @@ void __158__CAMZoomDial__createTicksImageForBounds_dialCenter_radius_pixelWidth_
   [v4 addObject:v5];
 }
 
-+ (id)_createMaskImageWithSize:(CGSize)a3 tickLabelCenterRadialInset:(double)a4 notchMaskImage:(id)a5
++ (id)_createMaskImageWithSize:(CGSize)size tickLabelCenterRadialInset:(double)inset notchMaskImage:(id)image
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a5;
+  height = size.height;
+  width = size.width;
+  imageCopy = image;
   v15 = *MEMORY[0x1E695F058];
-  v8 = [MEMORY[0x1E69DCA80] preferredFormat];
-  [v8 setPreferredRange:32766];
-  v9 = [objc_alloc(MEMORY[0x1E69DCA78]) initWithSize:v8 format:{width, height}];
+  preferredFormat = [MEMORY[0x1E69DCA80] preferredFormat];
+  [preferredFormat setPreferredRange:32766];
+  v9 = [objc_alloc(MEMORY[0x1E69DCA78]) initWithSize:preferredFormat format:{width, height}];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __82__CAMZoomDial__createMaskImageWithSize_tickLabelCenterRadialInset_notchMaskImage___block_invoke;
@@ -1980,8 +1980,8 @@ void __158__CAMZoomDial__createTicksImageForBounds_dialCenter_radius_pixelWidth_
   v17 = height;
   v18 = width;
   v19 = height;
-  v14 = v7;
-  v10 = v7;
+  v14 = imageCopy;
+  v10 = imageCopy;
   v11 = [v9 imageWithActions:v13];
 
   return v11;
@@ -2036,16 +2036,16 @@ void __82__CAMZoomDial__createMaskImageWithSize_tickLabelCenterRadialInset_notch
   [*(a1 + 32) drawInRect:17 blendMode:0 alpha:?];
 }
 
-- (void)setOrientation:(int64_t)a3 animated:(BOOL)a4
+- (void)setOrientation:(int64_t)orientation animated:(BOOL)animated
 {
-  if (self->_orientation != a3)
+  if (self->_orientation != orientation)
   {
     aBlock[5] = v7;
     aBlock[6] = v6;
     aBlock[11] = v4;
     aBlock[12] = v5;
-    v8 = a4;
-    self->_orientation = a3;
+    animatedCopy = animated;
+    self->_orientation = orientation;
     [(CAMZoomDial *)self setNeedsLayout];
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
@@ -2054,7 +2054,7 @@ void __82__CAMZoomDial__createMaskImageWithSize_tickLabelCenterRadialInset_notch
     aBlock[4] = self;
     v10 = _Block_copy(aBlock);
     v11 = v10;
-    if (v8)
+    if (animatedCopy)
     {
       v12 = MEMORY[0x1E69DD250];
       v13[0] = MEMORY[0x1E69E9820];
@@ -2083,11 +2083,11 @@ uint64_t __39__CAMZoomDial_setOrientation_animated___block_invoke_2(uint64_t a1)
 
 - (double)_labelRotationAngleForOrientation
 {
-  v2 = [(CAMZoomDial *)self orientation];
+  orientation = [(CAMZoomDial *)self orientation];
   result = 0.0;
-  if ((v2 - 2) <= 2)
+  if ((orientation - 2) <= 2)
   {
-    return dbl_1A3A6A390[v2 - 2];
+    return dbl_1A3A6A390[orientation - 2];
   }
 
   return result;

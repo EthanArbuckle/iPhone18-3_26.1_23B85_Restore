@@ -1,8 +1,8 @@
 @interface PLAccountingPowerEventIntervalEntry
 + (id)entryKey;
 + (void)load;
-- (BOOL)canMergeWithEvent:(id)a3;
-- (PLAccountingPowerEventIntervalEntry)initWithRootNodeID:(id)a3 withPower:(double)a4 withStartDate:(id)a5 withEndDate:(id)a6;
+- (BOOL)canMergeWithEvent:(id)event;
+- (PLAccountingPowerEventIntervalEntry)initWithRootNodeID:(id)d withPower:(double)power withStartDate:(id)date withEndDate:(id)endDate;
 @end
 
 @implementation PLAccountingPowerEventIntervalEntry
@@ -21,7 +21,7 @@
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___PLAccountingPowerEventIntervalEntry;
   objc_msgSendSuper2(&v2, sel_load);
 }
@@ -33,33 +33,33 @@ uint64_t __47__PLAccountingPowerEventIntervalEntry_entryKey__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (PLAccountingPowerEventIntervalEntry)initWithRootNodeID:(id)a3 withPower:(double)a4 withStartDate:(id)a5 withEndDate:(id)a6
+- (PLAccountingPowerEventIntervalEntry)initWithRootNodeID:(id)d withPower:(double)power withStartDate:(id)date withEndDate:(id)endDate
 {
-  v7 = 0;
-  if (a5 && a6)
+  selfCopy = 0;
+  if (date && endDate)
   {
-    v11 = a3;
-    v12 = [PLAccountingRange rangeWithStartDate:a5 withEndDate:a6];
+    dCopy = d;
+    v12 = [PLAccountingRange rangeWithStartDate:date withEndDate:endDate];
     v15.receiver = self;
     v15.super_class = PLAccountingPowerEventIntervalEntry;
-    v13 = [(PLAccountingPowerEventEntry *)&v15 initWithRootNodeID:v11 withPower:v12 withRange:a4];
+    v13 = [(PLAccountingPowerEventEntry *)&v15 initWithRootNodeID:dCopy withPower:v12 withRange:power];
 
     self = v13;
-    v7 = self;
+    selfCopy = self;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (BOOL)canMergeWithEvent:(id)a3
+- (BOOL)canMergeWithEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(PLAccountingEventEntry *)self range];
-  v6 = [v5 endDate];
-  v7 = [v4 range];
-  v8 = [v7 startDate];
-  [v6 timeIntervalSinceDate:v8];
-  v34 = v4;
+  eventCopy = event;
+  range = [(PLAccountingEventEntry *)self range];
+  endDate = [range endDate];
+  range2 = [eventCopy range];
+  startDate = [range2 startDate];
+  [endDate timeIntervalSinceDate:startDate];
+  v34 = eventCopy;
   if (v9 <= -1.0)
   {
     v15 = 0;
@@ -67,34 +67,34 @@ uint64_t __47__PLAccountingPowerEventIntervalEntry_entryKey__block_invoke()
 
   else
   {
-    v10 = [v4 range];
-    v11 = [v10 endDate];
-    v12 = [(PLAccountingEventEntry *)self range];
-    v13 = [v12 startDate];
-    [v11 timeIntervalSinceDate:v13];
+    range3 = [eventCopy range];
+    endDate2 = [range3 endDate];
+    range4 = [(PLAccountingEventEntry *)self range];
+    startDate2 = [range4 startDate];
+    [endDate2 timeIntervalSinceDate:startDate2];
     v15 = v14 > -1.0;
   }
 
-  v16 = [(PLAccountingPowerEventEntry *)self rootNodeID];
-  v17 = [v16 intValue];
+  rootNodeID = [(PLAccountingPowerEventEntry *)self rootNodeID];
+  intValue = [rootNodeID intValue];
 
-  if (v17 == 54)
+  if (intValue == 54)
   {
-    v18 = [(PLAccountingEventEntry *)self range];
-    [v18 length];
+    range5 = [(PLAccountingEventEntry *)self range];
+    [range5 length];
     v20 = v19;
     v21 = v34;
-    v22 = [v34 range];
-    [v22 length];
+    range6 = [v34 range];
+    [range6 length];
     v24 = v20 + v23;
 
     v25 = 1800.0;
     goto LABEL_6;
   }
 
-  v26 = [(PLAccountingPowerEventEntry *)self rootNodeID];
+  rootNodeID2 = [(PLAccountingPowerEventEntry *)self rootNodeID];
   v21 = v34;
-  if ([v26 intValue] != 56 || !objc_msgSend(MEMORY[0x277D3F208], "hasAOD"))
+  if ([rootNodeID2 intValue] != 56 || !objc_msgSend(MEMORY[0x277D3F208], "hasAOD"))
   {
 
     goto LABEL_14;
@@ -104,11 +104,11 @@ uint64_t __47__PLAccountingPowerEventIntervalEntry_entryKey__block_invoke()
 
   if (v27)
   {
-    v28 = [(PLAccountingEventEntry *)self range];
-    [v28 length];
+    range7 = [(PLAccountingEventEntry *)self range];
+    [range7 length];
     v30 = v29;
-    v31 = [v34 range];
-    [v31 length];
+    range8 = [v34 range];
+    [range8 length];
     v24 = v30 + v32;
 
     v25 = 60.0;

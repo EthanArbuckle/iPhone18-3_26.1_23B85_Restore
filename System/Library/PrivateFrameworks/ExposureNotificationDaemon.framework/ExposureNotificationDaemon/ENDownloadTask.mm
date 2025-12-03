@@ -1,28 +1,28 @@
 @interface ENDownloadTask
-+ (id)taskWithEndpointState:(id)a3 date:(id)a4 group:(id)a5 scheduler:(id)a6;
++ (id)taskWithEndpointState:(id)state date:(id)date group:(id)group scheduler:(id)scheduler;
 - (BOOL)shouldDefer;
-- (void)finishDeferred:(BOOL)a3 error:(id)a4;
+- (void)finishDeferred:(BOOL)deferred error:(id)error;
 @end
 
 @implementation ENDownloadTask
 
-+ (id)taskWithEndpointState:(id)a3 date:(id)a4 group:(id)a5 scheduler:(id)a6
++ (id)taskWithEndpointState:(id)state date:(id)date group:(id)group scheduler:(id)scheduler
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = objc_alloc_init(a1);
+  stateCopy = state;
+  dateCopy = date;
+  groupCopy = group;
+  schedulerCopy = scheduler;
+  v15 = objc_alloc_init(self);
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(v15 + 4, a3);
-    v17 = [v12 copy];
+    objc_storeStrong(v15 + 4, state);
+    v17 = [dateCopy copy];
     v18 = v16[5];
     v16[5] = v17;
 
-    objc_storeStrong(v16 + 1, a5);
-    objc_storeStrong(v16 + 2, a6);
+    objc_storeStrong(v16 + 1, group);
+    objc_storeStrong(v16 + 2, scheduler);
   }
 
   return v16;
@@ -39,12 +39,12 @@
   return scheduler;
 }
 
-- (void)finishDeferred:(BOOL)a3 error:(id)a4
+- (void)finishDeferred:(BOOL)deferred error:(id)error
 {
-  v6 = a4;
+  errorCopy = error;
   if (!self->_finished)
   {
-    v9 = v6;
+    v9 = errorCopy;
     [(NSDate *)self->_date timeIntervalSinceNow];
     if (v9)
     {
@@ -54,7 +54,7 @@
       }
 
       [(ENDownloadTask *)self finishDeferred:v9 error:&v10];
-      v7 = v10;
+      shortIdentifier = v10;
     }
 
     else
@@ -64,16 +64,16 @@
         goto LABEL_12;
       }
 
-      v7 = [(ENDownloadTask *)self shortIdentifier];
+      shortIdentifier = [(ENDownloadTask *)self shortIdentifier];
       downloadCount = self->_downloadCount;
       LogPrintF_safe();
     }
 
 LABEL_12:
     self->_finished = 1;
-    self->_didDefer = a3;
+    self->_didDefer = deferred;
     dispatch_group_leave(self->_group);
-    v6 = v9;
+    errorCopy = v9;
   }
 }
 

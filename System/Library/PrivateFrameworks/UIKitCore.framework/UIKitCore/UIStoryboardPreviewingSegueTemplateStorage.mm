@@ -1,13 +1,13 @@
 @interface UIStoryboardPreviewingSegueTemplateStorage
 - (UIStoryboardPreviewingSegueTemplate)previewTemplate;
-- (UIStoryboardPreviewingSegueTemplateStorage)initWithCoder:(id)a3;
+- (UIStoryboardPreviewingSegueTemplateStorage)initWithCoder:(id)coder;
 - (UIStoryboardSegueTemplate)commitTemplate;
 - (UIView)sender;
 @end
 
 @implementation UIStoryboardPreviewingSegueTemplateStorage
 
-- (UIStoryboardPreviewingSegueTemplateStorage)initWithCoder:(id)a3
+- (UIStoryboardPreviewingSegueTemplateStorage)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = UIStoryboardPreviewingSegueTemplateStorage;

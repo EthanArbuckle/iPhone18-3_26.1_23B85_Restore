@@ -1,21 +1,21 @@
 @interface TUILogicalScrollAnchor
-- (TUILogicalScrollAnchor)initWithPosition:(unint64_t)a3 identifier:(id)a4;
+- (TUILogicalScrollAnchor)initWithPosition:(unint64_t)position identifier:(id)identifier;
 - (id)description;
 @end
 
 @implementation TUILogicalScrollAnchor
 
-- (TUILogicalScrollAnchor)initWithPosition:(unint64_t)a3 identifier:(id)a4
+- (TUILogicalScrollAnchor)initWithPosition:(unint64_t)position identifier:(id)identifier
 {
-  v7 = a4;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = TUILogicalScrollAnchor;
   v8 = [(TUILogicalScrollAnchor *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_position = a3;
-    objc_storeStrong(&v8->_identifier, a4);
+    v8->_position = position;
+    objc_storeStrong(&v8->_identifier, identifier);
   }
 
   return v9;

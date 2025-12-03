@@ -3,93 +3,93 @@
 + (id)sharedCaptureDeviceVendorWithDefaultDeviceCreateFunction:(void *)Function;
 + (void)initialize;
 - (BOOL)_isRearCameraCalibrationValid;
-- (BOOL)activeDefaultDeviceEquals:(id)a3;
+- (BOOL)activeDefaultDeviceEquals:(id)equals;
 - (BOOL)hasActiveForClientAssertion;
 - (BOOL)rearCameraCalibrationValid;
-- (BOOL)streamsInUseForDevice:(id)a3;
-- (BWFigCaptureDeviceVendor)initWithDefaultDeviceCreateFunction:(void *)a3;
-- (BWFigCaptureDeviceVendor)initWithDefaultDeviceCreateFunction:(void *)a3 cmioExtensionDeviceCreateFunction:(void *)a4 cmioDiscoverySession:(id)a5;
+- (BOOL)streamsInUseForDevice:(id)device;
+- (BWFigCaptureDeviceVendor)initWithDefaultDeviceCreateFunction:(void *)function;
+- (BWFigCaptureDeviceVendor)initWithDefaultDeviceCreateFunction:(void *)function cmioExtensionDeviceCreateFunction:(void *)createFunction cmioDiscoverySession:(id)session;
 - (NSArray)deviceIDs;
-- (float)structuredLightProjectorStandbyTemperatureWithError:(int *)a3;
-- (id)_copyStreamsFromDevice:(id)a3 positions:(id)a4 deviceTypes:(id)a5 requestControl:(BOOL)a6 deviceClientPriority:(int)a7 allowsStreamControlLoss:(BOOL)a8 error:(int *)a9;
-- (id)_deviceWithID:(id)a3;
+- (float)structuredLightProjectorStandbyTemperatureWithError:(int *)error;
+- (id)_copyStreamsFromDevice:(id)device positions:(id)positions deviceTypes:(id)types requestControl:(BOOL)control deviceClientPriority:(int)priority allowsStreamControlLoss:(BOOL)loss error:(int *)error;
+- (id)_deviceWithID:(id)d;
 - (id)_popLatestVictimizedDeviceClient;
 - (id)_popLatestVictimizedDeviceClientThatCanShareWithFlashlight;
 - (id)activeDeviceClient;
 - (id)activeDeviceClients;
-- (id)cameraPoseMatrixForStreamWithPosition:(int)a3 deviceType:(int)a4 deviceID:(id)a5;
+- (id)cameraPoseMatrixForStreamWithPosition:(int)position deviceType:(int)type deviceID:(id)d;
 - (id)cmioDeviceCreationHistory;
-- (id)controlledStreamsForDevice:(id)a3;
-- (id)copyDefaultDeviceForVibeMitigation:(int *)a3;
-- (id)copyDeviceForPublishingWithID:(id)a3 error:(int *)a4;
-- (id)copyDeviceWithID:(id)a3 forClient:(int)a4 informClientWhenDeviceAvailableAgain:(BOOL)a5 error:(int *)a6;
-- (id)copyStreamFromDevice:(id)a3 position:(int)a4 deviceType:(int)a5 deviceClientPriority:(int)a6 allowsStreamControlLoss:(BOOL)a7 error:(int *)a8;
-- (id)copyStreamWithoutControlFromDevice:(id)a3 position:(int)a4 deviceType:(int)a5 error:(int *)a6;
-- (id)copyStreamsFromDevice:(id)a3 positions:(id)a4 deviceTypes:(id)a5 deviceClientPriority:(int)a6 allowsStreamControlLoss:(BOOL)a7 error:(int *)a8;
-- (id)copyStreamsWithUniqueIDs:(id)a3 forDevice:(id)a4 deviceClientPriority:(int)a5 error:(int *)a6;
-- (id)copyStreamsWithoutControlFromDevice:(id)a3 positions:(id)a4 deviceTypes:(id)a5 error:(int *)a6;
+- (id)controlledStreamsForDevice:(id)device;
+- (id)copyDefaultDeviceForVibeMitigation:(int *)mitigation;
+- (id)copyDeviceForPublishingWithID:(id)d error:(int *)error;
+- (id)copyDeviceWithID:(id)d forClient:(int)client informClientWhenDeviceAvailableAgain:(BOOL)again error:(int *)error;
+- (id)copyStreamFromDevice:(id)device position:(int)position deviceType:(int)type deviceClientPriority:(int)priority allowsStreamControlLoss:(BOOL)loss error:(int *)error;
+- (id)copyStreamWithoutControlFromDevice:(id)device position:(int)position deviceType:(int)type error:(int *)error;
+- (id)copyStreamsFromDevice:(id)device positions:(id)positions deviceTypes:(id)types deviceClientPriority:(int)priority allowsStreamControlLoss:(BOOL)loss error:(int *)error;
+- (id)copyStreamsWithUniqueIDs:(id)ds forDevice:(id)device deviceClientPriority:(int)priority error:(int *)error;
+- (id)copyStreamsWithoutControlFromDevice:(id)device positions:(id)positions deviceTypes:(id)types error:(int *)error;
 - (id)defaultDeviceCreationHistory;
-- (id)deviceWithID:(id)a3;
+- (id)deviceWithID:(id)d;
 - (id)osStatePropertyList;
-- (id)registeredDeviceClientWithID:(int)a3;
+- (id)registeredDeviceClientWithID:(int)d;
 - (id)registeredDeviceClients;
-- (id)streamsControlledByOtherClientsForDevice:(id)a3;
+- (id)streamsControlledByOtherClientsForDevice:(id)device;
 - (id)victimizedDeviceClients;
 - (int)activeClientPriority;
-- (int)keepControlOfStreamsWithPositions:(id)a3 deviceTypes:(id)a4 forDevice:(id)a5;
-- (int)registerClientWithPID:(int)a3 clientApplicationID:(id)a4 clientDescription:(id)a5 clientPriority:(int)a6 canStealFromClientsWithSamePriority:(BOOL)a7 deviceSharingWithOtherClientsAllowed:(BOOL)a8 clientType:(int)a9 deviceAvailabilityChangedHandler:(id)a10;
-- (int)requestControlOfStreams:(id)a3 device:(id)a4 deviceClientPriority:(int)a5;
-- (int)unregisterClient:(int)a3;
-- (int)usageCountForDevice:(id)a3;
-- (uint64_t)_activeDeviceClientWithClientID:(uint64_t)a1;
-- (uint64_t)_deviceStateForDeviceWithStream:(uint64_t)a1;
+- (int)keepControlOfStreamsWithPositions:(id)positions deviceTypes:(id)types forDevice:(id)device;
+- (int)registerClientWithPID:(int)d clientApplicationID:(id)iD clientDescription:(id)description clientPriority:(int)priority canStealFromClientsWithSamePriority:(BOOL)samePriority deviceSharingWithOtherClientsAllowed:(BOOL)allowed clientType:(int)type deviceAvailabilityChangedHandler:(id)self0;
+- (int)requestControlOfStreams:(id)streams device:(id)device deviceClientPriority:(int)priority;
+- (int)unregisterClient:(int)client;
+- (int)usageCountForDevice:(id)device;
+- (uint64_t)_activeDeviceClientWithClientID:(uint64_t)d;
+- (uint64_t)_deviceStateForDeviceWithStream:(uint64_t)stream;
 - (uint64_t)_dumpInventory;
-- (uint64_t)_getGameModeEnabledOnDevice:(uint64_t)a1;
+- (uint64_t)_getGameModeEnabledOnDevice:(uint64_t)device;
 - (uint64_t)_logISPStartupTimeToCoreAnalytics;
 - (uint64_t)_registerForDeviceNotifications:(uint64_t)result;
 - (uint64_t)_registerForStreamNotifications:(uint64_t)result;
 - (uint64_t)_releasePowerAssertion;
 - (uint64_t)_relinquishControlOfStreamsForDevice:(uint64_t)result;
-- (uint64_t)_removeActiveDeviceClient:(int)a3 moveToVictimizedList:;
-- (uint64_t)_removeDeviceClient:(int)a3 moveToVictimizedList:;
+- (uint64_t)_removeActiveDeviceClient:(int)client moveToVictimizedList:;
+- (uint64_t)_removeDeviceClient:(int)client moveToVictimizedList:;
 - (uint64_t)_removeRegisteredDeviceClientWithClientID:(uint64_t)result;
 - (uint64_t)_removeVictimizedDeviceClientWithClientID:(uint64_t)result;
-- (uint64_t)_setLowMemoryModeEnabledOnDevice:(uint64_t)a1;
+- (uint64_t)_setLowMemoryModeEnabledOnDevice:(uint64_t)device;
 - (uint64_t)_takePowerAssertion;
 - (uint64_t)_unregisterForDeviceNotifications:(uint64_t)result;
 - (uint64_t)_unregisterFromStreamNotifications:(uint64_t)result;
 - (uint64_t)_updateAFDriverShortStatisticsForStream:(uint64_t)result;
 - (uint64_t)osStatePropertyList;
 - (void)_createDevice:reason:clientPID:figCaptureDevice:;
-- (void)_deviceAvailabilityChangedForClient:(uint64_t)a1 available:postNotification:reason:canShareWithFlashlight:;
-- (void)_deviceAvailabilityChangedForClients:(char)a3 available:(int)a4 postNotifications:(int)a5 reason:(char)a6 canShareWithFlashlight:(uint64_t)a7 cameraStolenInterruptor:;
-- (void)_handleCMIOExtensionDevicesChangedNotification:(id)a3;
-- (void)_handleDeviceNoLongerAvailable:(uint64_t)a1;
-- (void)_handleDeviceUnrecoverableError:(uint64_t)a1 fromDevice:;
-- (void)_handleErrorForDevice:(uint64_t)a1;
-- (void)_handleStreamControlTakenByAnotherClientNotification:(uint64_t)a1;
-- (void)_handleStreamFrameReceiveTimeoutNotification:(uint64_t)a1;
-- (void)_handleStreamRelinquishedByAnotherClientNotification:(uint64_t)a1;
+- (void)_deviceAvailabilityChangedForClient:(uint64_t)client available:postNotification:reason:canShareWithFlashlight:;
+- (void)_deviceAvailabilityChangedForClients:(char)clients available:(int)available postNotifications:(int)notifications reason:(char)reason canShareWithFlashlight:(uint64_t)flashlight cameraStolenInterruptor:;
+- (void)_handleCMIOExtensionDevicesChangedNotification:(id)notification;
+- (void)_handleDeviceNoLongerAvailable:(uint64_t)available;
+- (void)_handleDeviceUnrecoverableError:(uint64_t)error fromDevice:;
+- (void)_handleErrorForDevice:(uint64_t)device;
+- (void)_handleStreamControlTakenByAnotherClientNotification:(uint64_t)notification;
+- (void)_handleStreamFrameReceiveTimeoutNotification:(uint64_t)notification;
+- (void)_handleStreamRelinquishedByAnotherClientNotification:(uint64_t)notification;
 - (void)_invalidate:keepFigCaptureDeviceAlive:preserveTorchState:;
 - (void)_logActiveDefaultDeviceClientAndDevice;
-- (void)_performBlockOnDeviceQueue:(uint64_t)a1;
-- (void)_performBlockOnDeviceQueueSynchronously:(uint64_t)a1;
+- (void)_performBlockOnDeviceQueue:(uint64_t)queue;
+- (void)_performBlockOnDeviceQueueSynchronously:(uint64_t)synchronously;
 - (void)_registeredDeviceClientWithID:(void *)result;
-- (void)_requestControlOfStreams:(uint64_t)a1 device:deviceClientPriority:;
-- (void)_resetDeviceCloseTimerForDevice:(uint64_t)a1;
-- (void)_setupDeviceCloseTimerForDevice:(uint64_t)a1;
-- (void)_showISPLeftOnTapToRadarPromptIfNecessary:(uint64_t)a1;
+- (void)_requestControlOfStreams:(uint64_t)streams device:deviceClientPriority:;
+- (void)_resetDeviceCloseTimerForDevice:(uint64_t)device;
+- (void)_setupDeviceCloseTimerForDevice:(uint64_t)device;
+- (void)_showISPLeftOnTapToRadarPromptIfNecessary:(uint64_t)necessary;
 - (void)_updateCMIOExtensionDevices;
-- (void)_updateDefaultDevicePriorStreamPortTypes:(uint64_t)a1;
-- (void)_updateTofAFEstimatorResultsForStream:(uint64_t)a3 totalStreamingDuration:(uint64_t)a4;
+- (void)_updateDefaultDevicePriorStreamPortTypes:(uint64_t)types;
+- (void)_updateTofAFEstimatorResultsForStream:(uint64_t)stream totalStreamingDuration:(uint64_t)duration;
 - (void)dealloc;
-- (void)invalidateVideoDevice:(id)a3 forPID:(int)a4;
-- (void)prewarmDefaultVideoDeviceForPID:(int)a3 completionHandler:(id)a4;
+- (void)invalidateVideoDevice:(id)device forPID:(int)d;
+- (void)prewarmDefaultVideoDeviceForPID:(int)d completionHandler:(id)handler;
 - (void)resumeSystemPressuredDevice;
-- (void)shutDownSystemPressuredDevice:(id)a3;
-- (void)takeBackDevice:(id)a3 forClient:(int)a4 informClientWhenDeviceAvailableAgain:(BOOL)a5 prefersDeviceInvalidatedImmediately:(BOOL)a6;
-- (void)takeBackStreams:(id)a3 device:(id)a4 totalStreamingDuration:(unsigned int)a5;
-- (void)updateClientPriority:(int)a3 clientPriority:(int)a4;
+- (void)shutDownSystemPressuredDevice:(id)device;
+- (void)takeBackDevice:(id)device forClient:(int)client informClientWhenDeviceAvailableAgain:(BOOL)again prefersDeviceInvalidatedImmediately:(BOOL)immediately;
+- (void)takeBackStreams:(id)streams device:(id)device totalStreamingDuration:(unsigned int)duration;
+- (void)updateClientPriority:(int)priority clientPriority:(int)clientPriority;
 @end
 
 @implementation BWFigCaptureDeviceVendor
@@ -280,7 +280,7 @@ uint64_t __48__BWFigCaptureDeviceVendor_activeClientPriority__block_invoke(uint6
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     FigNote_AllowInternalDefaultLogs();
     fig_note_initialize_category_with_default_work_cf();
@@ -301,13 +301,13 @@ uint64_t __48__BWFigCaptureDeviceVendor_activeClientPriority__block_invoke(uint6
   {
     if (objc_opt_class())
     {
-      v4 = [MEMORY[0x1E6963468] sharedInstance];
+      mEMORY[0x1E6963468] = [MEMORY[0x1E6963468] sharedInstance];
       v5 = CMIOExtensionFigCaptureDeviceCreate;
     }
 
     else
     {
-      v4 = 0;
+      mEMORY[0x1E6963468] = 0;
       v5 = 0;
     }
 
@@ -317,7 +317,7 @@ uint64_t __48__BWFigCaptureDeviceVendor_activeClientPriority__block_invoke(uint6
       Function = FigCaptureGetCaptureDeviceCreateFunction();
     }
 
-    sharedCaptureDeviceVendorWithDefaultDeviceCreateFunction__sharedDeviceVendor = [(BWFigCaptureDeviceVendor *)v6 initWithDefaultDeviceCreateFunction:Function cmioExtensionDeviceCreateFunction:v5 cmioDiscoverySession:v4];
+    sharedCaptureDeviceVendorWithDefaultDeviceCreateFunction__sharedDeviceVendor = [(BWFigCaptureDeviceVendor *)v6 initWithDefaultDeviceCreateFunction:Function cmioExtensionDeviceCreateFunction:v5 cmioDiscoverySession:mEMORY[0x1E6963468]];
   }
 
   FigSimpleMutexUnlock();
@@ -331,27 +331,27 @@ uint64_t __85__BWFigCaptureDeviceVendor_sharedCaptureDeviceVendorWithDefaultDevi
   return result;
 }
 
-- (BWFigCaptureDeviceVendor)initWithDefaultDeviceCreateFunction:(void *)a3
+- (BWFigCaptureDeviceVendor)initWithDefaultDeviceCreateFunction:(void *)function
 {
   if (objc_opt_class())
   {
-    v5 = [MEMORY[0x1E6963468] sharedInstance];
+    mEMORY[0x1E6963468] = [MEMORY[0x1E6963468] sharedInstance];
     v6 = CMIOExtensionFigCaptureDeviceCreate;
   }
 
   else
   {
-    v5 = 0;
+    mEMORY[0x1E6963468] = 0;
     v6 = 0;
   }
 
-  return [(BWFigCaptureDeviceVendor *)self initWithDefaultDeviceCreateFunction:a3 cmioExtensionDeviceCreateFunction:v6 cmioDiscoverySession:v5];
+  return [(BWFigCaptureDeviceVendor *)self initWithDefaultDeviceCreateFunction:function cmioExtensionDeviceCreateFunction:v6 cmioDiscoverySession:mEMORY[0x1E6963468]];
 }
 
-- (BWFigCaptureDeviceVendor)initWithDefaultDeviceCreateFunction:(void *)a3 cmioExtensionDeviceCreateFunction:(void *)a4 cmioDiscoverySession:(id)a5
+- (BWFigCaptureDeviceVendor)initWithDefaultDeviceCreateFunction:(void *)function cmioExtensionDeviceCreateFunction:(void *)createFunction cmioDiscoverySession:(id)session
 {
-  v5 = self;
-  if (!(a3 | a4))
+  selfCopy = self;
+  if (!(function | createFunction))
   {
     [BWFigCaptureDeviceVendor initWithDefaultDeviceCreateFunction:cmioExtensionDeviceCreateFunction:cmioDiscoverySession:];
 LABEL_14:
@@ -361,83 +361,83 @@ LABEL_14:
 
   v17.receiver = self;
   v17.super_class = BWFigCaptureDeviceVendor;
-  v5 = [(BWFigCaptureDeviceVendor *)&v17 init];
-  if (!v5)
+  selfCopy = [(BWFigCaptureDeviceVendor *)&v17 init];
+  if (!selfCopy)
   {
-    return v5;
+    return selfCopy;
   }
 
-  v5->_devicesStatesByDeviceID = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v5->_deviceCloseTimeoutSeconds = 5.0;
-  v5->_registeredDeviceClients = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v5->_activeDeviceClients = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v5->_victimizedDeviceClients = objc_alloc_init(MEMORY[0x1E695DF70]);
+  selfCopy->_devicesStatesByDeviceID = objc_alloc_init(MEMORY[0x1E695DF90]);
+  selfCopy->_deviceCloseTimeoutSeconds = 5.0;
+  selfCopy->_registeredDeviceClients = objc_alloc_init(MEMORY[0x1E695DF70]);
+  selfCopy->_activeDeviceClients = objc_alloc_init(MEMORY[0x1E695DF70]);
+  selfCopy->_victimizedDeviceClients = objc_alloc_init(MEMORY[0x1E695DF70]);
   v9 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_USER_INTERACTIVE, 0);
-  v5->_deviceQueue = dispatch_queue_create("com.apple.bwgraph.devicevendor", v9);
-  v5->_notificationQueue = dispatch_queue_create("com.apple.bwgraph.devicevendor.notification", 0);
-  v5->_cameraPoseMatricesByPortTypeByDeviceID = objc_alloc_init(MEMORY[0x1E695DF90]);
-  if ((FigCaptureIsRunningInVirtualization() & 1) == 0 && !a3)
+  selfCopy->_deviceQueue = dispatch_queue_create("com.apple.bwgraph.devicevendor", v9);
+  selfCopy->_notificationQueue = dispatch_queue_create("com.apple.bwgraph.devicevendor.notification", 0);
+  selfCopy->_cameraPoseMatricesByPortTypeByDeviceID = objc_alloc_init(MEMORY[0x1E695DF90]);
+  if ((FigCaptureIsRunningInVirtualization() & 1) == 0 && !function)
   {
     [BWFigCaptureDeviceVendor initWithDefaultDeviceCreateFunction:cmioExtensionDeviceCreateFunction:cmioDiscoverySession:];
     goto LABEL_14;
   }
 
-  v5->_defaultDeviceCreateFunction = a3;
-  if (!a4)
+  selfCopy->_defaultDeviceCreateFunction = function;
+  if (!createFunction)
   {
     goto LABEL_8;
   }
 
-  if (!a5)
+  if (!session)
   {
     [BWFigCaptureDeviceVendor initWithDefaultDeviceCreateFunction:cmioExtensionDeviceCreateFunction:cmioDiscoverySession:];
     goto LABEL_14;
   }
 
-  v5->_cmioDiscoverySession = a5;
-  v5->_cmioExtensionDeviceCreateFunction = a4;
-  v10 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v10 addObserver:v5 selector:sel__handleCMIOExtensionDevicesChangedNotification_ name:*MEMORY[0x1E6963418] object:0];
+  selfCopy->_cmioDiscoverySession = session;
+  selfCopy->_cmioExtensionDeviceCreateFunction = createFunction;
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:selfCopy selector:sel__handleCMIOExtensionDevicesChangedNotification_ name:*MEMORY[0x1E6963418] object:0];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __119__BWFigCaptureDeviceVendor_initWithDefaultDeviceCreateFunction_cmioExtensionDeviceCreateFunction_cmioDiscoverySession___block_invoke;
   v16[3] = &unk_1E798F870;
-  v16[4] = v5;
-  [(BWFigCaptureDeviceVendor *)v5 _performBlockOnDeviceQueueSynchronously:v16];
+  v16[4] = selfCopy;
+  [(BWFigCaptureDeviceVendor *)selfCopy _performBlockOnDeviceQueueSynchronously:v16];
 LABEL_8:
-  v5->_osStateHandle = [[FigCaptureOSStateHandle alloc] initWithTitle:@"BWFigCaptureDeviceVendor" queue:v5->_deviceQueue dataProvider:v5];
-  v5->_defaultDeviceCreationHistory = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:10];
-  v5->_cmioDeviceCreationHistory = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:10];
+  selfCopy->_osStateHandle = [[FigCaptureOSStateHandle alloc] initWithTitle:@"BWFigCaptureDeviceVendor" queue:selfCopy->_deviceQueue dataProvider:selfCopy];
+  selfCopy->_defaultDeviceCreationHistory = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:10];
+  selfCopy->_cmioDeviceCreationHistory = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:10];
   v11 = objc_alloc_init(MEMORY[0x1E696AB78]);
-  v5->_deviceDateFormatter = v11;
+  selfCopy->_deviceDateFormatter = v11;
   [(NSDateFormatter *)v11 setDateFormat:@"yyyy-MM-dd HH:mm:ssZ"];
-  v5->_defaultDevicePriorStreamPortTypes = 0;
+  selfCopy->_defaultDevicePriorStreamPortTypes = 0;
   v12 = [FigCaptureGameModeMonitor alloc];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __119__BWFigCaptureDeviceVendor_initWithDefaultDeviceCreateFunction_cmioExtensionDeviceCreateFunction_cmioDiscoverySession___block_invoke_2;
   v15[3] = &unk_1E798F870;
-  v15[4] = v5;
-  v5->_gameModeMonitor = [(FigCaptureGameModeMonitor *)v12 initWithStateChangeHandler:v15];
-  v5->_calibrationStatusLock._os_unfair_lock_opaque = 0;
-  v5->_calibrationStatusQueried = FigCaptureCurrentProcessIsCameracaptured() == 0;
-  v5->_rearCameraCalibrationValid = 1;
+  v15[4] = selfCopy;
+  selfCopy->_gameModeMonitor = [(FigCaptureGameModeMonitor *)v12 initWithStateChangeHandler:v15];
+  selfCopy->_calibrationStatusLock._os_unfair_lock_opaque = 0;
+  selfCopy->_calibrationStatusQueried = FigCaptureCurrentProcessIsCameracaptured() == 0;
+  selfCopy->_rearCameraCalibrationValid = 1;
   if (FigCaptureCurrentProcessIsCameracaptured())
   {
     global_queue = dispatch_get_global_queue(21, 0);
     dispatch_async(global_queue, &__block_literal_global_268);
   }
 
-  return v5;
+  return selfCopy;
 }
 
-- (void)_performBlockOnDeviceQueueSynchronously:(uint64_t)a1
+- (void)_performBlockOnDeviceQueueSynchronously:(uint64_t)synchronously
 {
-  if (a1)
+  if (synchronously)
   {
     if (a2)
     {
-      v2 = *(a1 + 56);
+      v2 = *(synchronously + 56);
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __68__BWFigCaptureDeviceVendor__performBlockOnDeviceQueueSynchronously___block_invoke;
@@ -562,8 +562,8 @@ LABEL_19:
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [(NSMutableDictionary *)self->_devicesStatesByDeviceID allValues];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v9 count:16];
+  allValues = [(NSMutableDictionary *)self->_devicesStatesByDeviceID allValues];
+  v4 = [allValues countByEnumeratingWithState:&v10 objects:v9 count:16];
   if (v4)
   {
     v5 = v4;
@@ -575,14 +575,14 @@ LABEL_19:
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allValues);
         }
 
         -[BWFigCaptureDeviceVendor invalidateVideoDevice:forPID:](self, "invalidateVideoDevice:forPID:", [*(*(&v10 + 1) + 8 * v7++) device], 0xFFFFFFFFLL);
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v9 count:16];
+      v5 = [allValues countByEnumeratingWithState:&v10 objects:v9 count:16];
     }
 
     while (v5);
@@ -619,15 +619,15 @@ LABEL_19:
   return v6;
 }
 
-- (void)prewarmDefaultVideoDeviceForPID:(int)a3 completionHandler:(id)a4
+- (void)prewarmDefaultVideoDeviceForPID:(int)d completionHandler:(id)handler
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __78__BWFigCaptureDeviceVendor_prewarmDefaultVideoDeviceForPID_completionHandler___block_invoke;
   v4[3] = &unk_1E79994B8;
-  v5 = a3;
+  dCopy = d;
   v4[4] = self;
-  v4[5] = a4;
+  v4[5] = handler;
   [(BWFigCaptureDeviceVendor *)self _performBlockOnDeviceQueue:v4];
 }
 
@@ -722,13 +722,13 @@ uint64_t __78__BWFigCaptureDeviceVendor_prewarmDefaultVideoDeviceForPID_completi
   return result;
 }
 
-- (void)_performBlockOnDeviceQueue:(uint64_t)a1
+- (void)_performBlockOnDeviceQueue:(uint64_t)queue
 {
-  if (a1)
+  if (queue)
   {
     if (a2)
     {
-      v2 = *(a1 + 56);
+      v2 = *(queue + 56);
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __55__BWFigCaptureDeviceVendor__performBlockOnDeviceQueue___block_invoke;
@@ -739,7 +739,7 @@ uint64_t __78__BWFigCaptureDeviceVendor_prewarmDefaultVideoDeviceForPID_completi
   }
 }
 
-- (int)registerClientWithPID:(int)a3 clientApplicationID:(id)a4 clientDescription:(id)a5 clientPriority:(int)a6 canStealFromClientsWithSamePriority:(BOOL)a7 deviceSharingWithOtherClientsAllowed:(BOOL)a8 clientType:(int)a9 deviceAvailabilityChangedHandler:(id)a10
+- (int)registerClientWithPID:(int)d clientApplicationID:(id)iD clientDescription:(id)description clientPriority:(int)priority canStealFromClientsWithSamePriority:(BOOL)samePriority deviceSharingWithOtherClientsAllowed:(BOOL)allowed clientType:(int)type deviceAvailabilityChangedHandler:(id)self0
 {
   v18 = 0;
   v19 = &v18;
@@ -749,16 +749,16 @@ uint64_t __78__BWFigCaptureDeviceVendor_prewarmDefaultVideoDeviceForPID_completi
   v12[1] = 3221225472;
   v12[2] = __220__BWFigCaptureDeviceVendor_registerClientWithPID_clientApplicationID_clientDescription_clientPriority_canStealFromClientsWithSamePriority_deviceSharingWithOtherClientsAllowed_clientType_deviceAvailabilityChangedHandler___block_invoke;
   v12[3] = &unk_1E79994E0;
-  v16 = a8;
-  v12[7] = a10;
+  allowedCopy = allowed;
+  v12[7] = handler;
   v12[8] = &v18;
   v12[4] = self;
-  v12[5] = a4;
-  v12[6] = a5;
-  v13 = a3;
-  v14 = a6;
-  v17 = a7;
-  v15 = a9;
+  v12[5] = iD;
+  v12[6] = description;
+  dCopy = d;
+  priorityCopy = priority;
+  samePriorityCopy = samePriority;
+  typeCopy = type;
   [(BWFigCaptureDeviceVendor *)self _performBlockOnDeviceQueueSynchronously:v12];
   v10 = *(v19 + 6);
   _Block_object_dispose(&v18, 8);
@@ -843,15 +843,15 @@ LABEL_17:
   }
 }
 
-- (void)updateClientPriority:(int)a3 clientPriority:(int)a4
+- (void)updateClientPriority:(int)priority clientPriority:(int)clientPriority
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __64__BWFigCaptureDeviceVendor_updateClientPriority_clientPriority___block_invoke;
   v4[3] = &unk_1E7990178;
   v4[4] = self;
-  v5 = a3;
-  v6 = a4;
+  priorityCopy = priority;
+  clientPriorityCopy = clientPriority;
   [(BWFigCaptureDeviceVendor *)self _performBlockOnDeviceQueue:v4];
 }
 
@@ -982,7 +982,7 @@ LABEL_12:
   return fig_log_call_emit_and_clean_up_after_send_and_compose();
 }
 
-- (int)unregisterClient:(int)a3
+- (int)unregisterClient:(int)client
 {
   v7 = 0;
   v8 = &v7;
@@ -992,7 +992,7 @@ LABEL_12:
   v5[1] = 3221225472;
   v5[2] = __45__BWFigCaptureDeviceVendor_unregisterClient___block_invoke;
   v5[3] = &unk_1E7999508;
-  v6 = a3;
+  clientCopy = client;
   v5[4] = self;
   v5[5] = &v7;
   [(BWFigCaptureDeviceVendor *)self _performBlockOnDeviceQueueSynchronously:v5];
@@ -1140,7 +1140,7 @@ id __37__BWFigCaptureDeviceVendor_deviceIDs__block_invoke(uint64_t a1)
   return result;
 }
 
-- (id)copyDeviceWithID:(id)a3 forClient:(int)a4 informClientWhenDeviceAvailableAgain:(BOOL)a5 error:(int *)a6
+- (id)copyDeviceWithID:(id)d forClient:(int)client informClientWhenDeviceAvailableAgain:(BOOL)again error:(int *)error
 {
   v43 = 0;
   v44 = &v43;
@@ -1161,7 +1161,7 @@ id __37__BWFigCaptureDeviceVendor_deviceIDs__block_invoke(uint64_t a1)
   v29 = 0x3052000000;
   v30 = __Block_byref_object_copy__29;
   v31 = __Block_byref_object_dispose__29;
-  v32 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v23 = 0;
   v24 = &v23;
   v25 = 0x2020000000;
@@ -1177,11 +1177,11 @@ id __37__BWFigCaptureDeviceVendor_deviceIDs__block_invoke(uint64_t a1)
   v14[2] = __98__BWFigCaptureDeviceVendor_copyDeviceWithID_forClient_informClientWhenDeviceAvailableAgain_error___block_invoke;
   v14[3] = &unk_1E7999530;
   v14[4] = self;
-  v14[5] = a3;
-  v15 = a4;
+  v14[5] = d;
+  clientCopy = client;
   v14[6] = &v43;
   v14[7] = &v37;
-  v16 = a5;
+  againCopy = again;
   v14[8] = &v17;
   v14[9] = &v27;
   v14[10] = &v33;
@@ -1197,9 +1197,9 @@ id __37__BWFigCaptureDeviceVendor_deviceIDs__block_invoke(uint64_t a1)
     *(v44 + 6) = -12786;
   }
 
-  if (a6)
+  if (error)
   {
-    *a6 = *(v44 + 6);
+    *error = *(v44 + 6);
   }
 
   v12 = v38[5];
@@ -1212,7 +1212,7 @@ id __37__BWFigCaptureDeviceVendor_deviceIDs__block_invoke(uint64_t a1)
   return v12;
 }
 
-- (id)copyDeviceForPublishingWithID:(id)a3 error:(int *)a4
+- (id)copyDeviceForPublishingWithID:(id)d error:(int *)error
 {
   v14 = 0;
   v15 = &v14;
@@ -1228,14 +1228,14 @@ id __37__BWFigCaptureDeviceVendor_deviceIDs__block_invoke(uint64_t a1)
   v7[1] = 3221225472;
   v7[2] = __64__BWFigCaptureDeviceVendor_copyDeviceForPublishingWithID_error___block_invoke;
   v7[3] = &unk_1E7997788;
-  v7[4] = a3;
+  v7[4] = d;
   v7[5] = self;
   v7[6] = &v14;
   v7[7] = &v8;
   [(BWFigCaptureDeviceVendor *)self _performBlockOnDeviceQueueSynchronously:v7];
-  if (a4)
+  if (error)
   {
-    *a4 = *(v15 + 6);
+    *error = *(v15 + 6);
   }
 
   v5 = v9[5];
@@ -1384,7 +1384,7 @@ LABEL_19:
   return result;
 }
 
-- (id)copyDefaultDeviceForVibeMitigation:(int *)a3
+- (id)copyDefaultDeviceForVibeMitigation:(int *)mitigation
 {
   v13 = 0;
   v14 = &v13;
@@ -1404,9 +1404,9 @@ LABEL_19:
   v6[5] = &v13;
   v6[6] = &v7;
   [(BWFigCaptureDeviceVendor *)self _performBlockOnDeviceQueueSynchronously:v6];
-  if (a3)
+  if (mitigation)
   {
-    *a3 = *(v14 + 6);
+    *mitigation = *(v14 + 6);
   }
 
   v4 = v8[5];
@@ -1538,21 +1538,21 @@ LABEL_8:
   return result;
 }
 
-- (id)copyStreamFromDevice:(id)a3 position:(int)a4 deviceType:(int)a5 deviceClientPriority:(int)a6 allowsStreamControlLoss:(BOOL)a7 error:(int *)a8
+- (id)copyStreamFromDevice:(id)device position:(int)position deviceType:(int)type deviceClientPriority:(int)priority allowsStreamControlLoss:(BOOL)loss error:(int *)error
 {
-  v9 = a7;
-  v10 = *&a6;
-  v11 = *&a5;
-  v19 = [MEMORY[0x1E696AD98] numberWithInt:*&a4];
+  lossCopy = loss;
+  v10 = *&priority;
+  v11 = *&type;
+  v19 = [MEMORY[0x1E696AD98] numberWithInt:*&position];
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v19 count:1];
   v18 = [MEMORY[0x1E696AD98] numberWithInt:v11];
-  v15 = -[BWFigCaptureDeviceVendor copyStreamsFromDevice:positions:deviceTypes:deviceClientPriority:allowsStreamControlLoss:error:](self, "copyStreamsFromDevice:positions:deviceTypes:deviceClientPriority:allowsStreamControlLoss:error:", a3, v14, [MEMORY[0x1E695DEC8] arrayWithObjects:&v18 count:1], v10, v9, a8);
-  v16 = [v15 firstObject];
+  v15 = -[BWFigCaptureDeviceVendor copyStreamsFromDevice:positions:deviceTypes:deviceClientPriority:allowsStreamControlLoss:error:](self, "copyStreamsFromDevice:positions:deviceTypes:deviceClientPriority:allowsStreamControlLoss:error:", device, v14, [MEMORY[0x1E695DEC8] arrayWithObjects:&v18 count:1], v10, lossCopy, error);
+  firstObject = [v15 firstObject];
 
-  return v16;
+  return firstObject;
 }
 
-- (id)copyStreamsFromDevice:(id)a3 positions:(id)a4 deviceTypes:(id)a5 deviceClientPriority:(int)a6 allowsStreamControlLoss:(BOOL)a7 error:(int *)a8
+- (id)copyStreamsFromDevice:(id)device positions:(id)positions deviceTypes:(id)types deviceClientPriority:(int)priority allowsStreamControlLoss:(BOOL)loss error:(int *)error
 {
   v13 = 0;
   v14 = &v13;
@@ -1565,13 +1565,13 @@ LABEL_8:
   v10[2] = __123__BWFigCaptureDeviceVendor_copyStreamsFromDevice_positions_deviceTypes_deviceClientPriority_allowsStreamControlLoss_error___block_invoke;
   v10[3] = &unk_1E7999558;
   v10[4] = self;
-  v10[5] = a3;
-  v10[6] = a4;
-  v10[7] = a5;
-  v11 = a6;
-  v12 = a7;
+  v10[5] = device;
+  v10[6] = positions;
+  v10[7] = types;
+  priorityCopy = priority;
+  lossCopy = loss;
   v10[8] = &v13;
-  v10[9] = a8;
+  v10[9] = error;
   [(BWFigCaptureDeviceVendor *)self _performBlockOnDeviceQueueSynchronously:v10];
   v8 = v14[5];
   _Block_object_dispose(&v13, 8);
@@ -1585,19 +1585,19 @@ uint64_t __123__BWFigCaptureDeviceVendor_copyStreamsFromDevice_positions_deviceT
   return result;
 }
 
-- (id)copyStreamWithoutControlFromDevice:(id)a3 position:(int)a4 deviceType:(int)a5 error:(int *)a6
+- (id)copyStreamWithoutControlFromDevice:(id)device position:(int)position deviceType:(int)type error:(int *)error
 {
-  v7 = *&a5;
-  v15 = [MEMORY[0x1E696AD98] numberWithInt:*&a4];
+  v7 = *&type;
+  v15 = [MEMORY[0x1E696AD98] numberWithInt:*&position];
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v15 count:1];
   v14 = [MEMORY[0x1E696AD98] numberWithInt:v7];
-  v11 = -[BWFigCaptureDeviceVendor copyStreamsWithoutControlFromDevice:positions:deviceTypes:error:](self, "copyStreamsWithoutControlFromDevice:positions:deviceTypes:error:", a3, v10, [MEMORY[0x1E695DEC8] arrayWithObjects:&v14 count:1], a6);
-  v12 = [v11 firstObject];
+  v11 = -[BWFigCaptureDeviceVendor copyStreamsWithoutControlFromDevice:positions:deviceTypes:error:](self, "copyStreamsWithoutControlFromDevice:positions:deviceTypes:error:", device, v10, [MEMORY[0x1E695DEC8] arrayWithObjects:&v14 count:1], error);
+  firstObject = [v11 firstObject];
 
-  return v12;
+  return firstObject;
 }
 
-- (id)copyStreamsWithoutControlFromDevice:(id)a3 positions:(id)a4 deviceTypes:(id)a5 error:(int *)a6
+- (id)copyStreamsWithoutControlFromDevice:(id)device positions:(id)positions deviceTypes:(id)types error:(int *)error
 {
   v9 = 0;
   v10 = &v9;
@@ -1610,11 +1610,11 @@ uint64_t __123__BWFigCaptureDeviceVendor_copyStreamsFromDevice_positions_deviceT
   v8[2] = __92__BWFigCaptureDeviceVendor_copyStreamsWithoutControlFromDevice_positions_deviceTypes_error___block_invoke;
   v8[3] = &unk_1E7999580;
   v8[4] = self;
-  v8[5] = a3;
-  v8[6] = a4;
-  v8[7] = a5;
+  v8[5] = device;
+  v8[6] = positions;
+  v8[7] = types;
   v8[8] = &v9;
-  v8[9] = a6;
+  v8[9] = error;
   [(BWFigCaptureDeviceVendor *)self _performBlockOnDeviceQueueSynchronously:v8];
   v6 = v10[5];
   _Block_object_dispose(&v9, 8);
@@ -1628,10 +1628,10 @@ uint64_t __92__BWFigCaptureDeviceVendor_copyStreamsWithoutControlFromDevice_posi
   return result;
 }
 
-- (id)_copyStreamsFromDevice:(id)a3 positions:(id)a4 deviceTypes:(id)a5 requestControl:(BOOL)a6 deviceClientPriority:(int)a7 allowsStreamControlLoss:(BOOL)a8 error:(int *)a9
+- (id)_copyStreamsFromDevice:(id)device positions:(id)positions deviceTypes:(id)types requestControl:(BOOL)control deviceClientPriority:(int)priority allowsStreamControlLoss:(BOOL)loss error:(int *)error
 {
-  v10 = a8;
-  v11 = a6;
+  lossCopy = loss;
+  controlCopy = control;
   v28[0] = 0;
   if (!_FigIsCurrentDispatchQueue())
   {
@@ -1647,28 +1647,28 @@ uint64_t __92__BWFigCaptureDeviceVendor_copyStreamsWithoutControlFromDevice_posi
     fig_log_call_emit_and_clean_up_after_send_and_compose();
   }
 
-  if (a3)
+  if (device)
   {
-    os_log_and_send_and_compose_flags_and_os_log_type = [a4 count];
-    if (os_log_and_send_and_compose_flags_and_os_log_type == [a5 count])
+    os_log_and_send_and_compose_flags_and_os_log_type = [positions count];
+    if (os_log_and_send_and_compose_flags_and_os_log_type == [types count])
     {
-      os_log_and_send_and_compose_flags_and_os_log_type = -[NSMutableDictionary objectForKeyedSubscript:](self->_devicesStatesByDeviceID, "objectForKeyedSubscript:", [a3 deviceID]);
-      if ([a4 count] != 1 || objc_msgSend(objc_msgSend(a4, "objectAtIndexedSubscript:", 0), "intValue") || objc_msgSend(objc_msgSend(a5, "objectAtIndexedSubscript:", 0), "intValue"))
+      os_log_and_send_and_compose_flags_and_os_log_type = -[NSMutableDictionary objectForKeyedSubscript:](self->_devicesStatesByDeviceID, "objectForKeyedSubscript:", [device deviceID]);
+      if ([positions count] != 1 || objc_msgSend(objc_msgSend(positions, "objectAtIndexedSubscript:", 0), "intValue") || objc_msgSend(objc_msgSend(types, "objectAtIndexedSubscript:", 0), "intValue"))
       {
-        v16 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(a4, "count", v24, v25)}];
-        if ([a4 count])
+        v16 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(positions, "count", v24, v25)}];
+        if ([positions count])
         {
           v17 = 0;
           while (1)
           {
-            v18 = BWCaptureDevicePositionAndDeviceTypeToPortType([objc_msgSend(a4 objectAtIndexedSubscript:{v17), "intValue"}], objc_msgSend(objc_msgSend(a5, "objectAtIndexedSubscript:", v17), "intValue"));
+            v18 = BWCaptureDevicePositionAndDeviceTypeToPortType([objc_msgSend(positions objectAtIndexedSubscript:{v17), "intValue"}], objc_msgSend(objc_msgSend(types, "objectAtIndexedSubscript:", v17), "intValue"));
             if (!v18)
             {
               break;
             }
 
             [v16 addObject:v18];
-            if ([a4 count] <= ++v17)
+            if ([positions count] <= ++v17)
             {
               goto LABEL_14;
             }
@@ -1681,12 +1681,12 @@ uint64_t __92__BWFigCaptureDeviceVendor_copyStreamsWithoutControlFromDevice_posi
         }
 
 LABEL_14:
-        v19 = [a3 copyStreamsWithPortTypes:v16 error:v28];
+        v19 = [device copyStreamsWithPortTypes:v16 error:v28];
         if (v28[0])
         {
           [BWFigCaptureDeviceVendor _copyStreamsFromDevice:positions:deviceTypes:requestControl:deviceClientPriority:allowsStreamControlLoss:error:];
           v21 = 0;
-          v20 = a9;
+          errorCopy4 = error;
 LABEL_21:
           if (!v28[0])
           {
@@ -1696,8 +1696,8 @@ LABEL_21:
           goto LABEL_22;
         }
 
-        v20 = a9;
-        if (v10)
+        errorCopy4 = error;
+        if (lossCopy)
         {
           v21 = [MEMORY[0x1E695DEC8] arrayWithArray:v16];
         }
@@ -1710,9 +1710,9 @@ LABEL_21:
 
       else
       {
-        v19 = [objc_msgSend(a3 "streams")];
+        v19 = [objc_msgSend(device "streams")];
         v21 = 0;
-        v20 = a9;
+        errorCopy4 = error;
       }
 
       if ([v21 count])
@@ -1720,7 +1720,7 @@ LABEL_21:
         [-[NSObject portTypesAllowingStreamControlLoss](os_log_and_send_and_compose_flags_and_os_log_type "portTypesAllowingStreamControlLoss")];
       }
 
-      if (v11)
+      if (controlCopy)
       {
         [BWFigCaptureDeviceVendor _requestControlOfStreams:? device:? deviceClientPriority:?];
         v28[0] = v23;
@@ -1740,7 +1740,7 @@ LABEL_21:
   v21 = 0;
   v28[0] = -12780;
 LABEL_33:
-  v20 = a9;
+  errorCopy4 = error;
 LABEL_22:
   if ([v21 count] && v28[0] != -12681)
   {
@@ -1749,32 +1749,32 @@ LABEL_22:
 
   v19 = 0;
 LABEL_26:
-  if (v20)
+  if (errorCopy4)
   {
-    *v20 = v28[0];
+    *errorCopy4 = v28[0];
   }
 
   return v19;
 }
 
-- (id)copyStreamsWithUniqueIDs:(id)a3 forDevice:(id)a4 deviceClientPriority:(int)a5 error:(int *)a6
+- (id)copyStreamsWithUniqueIDs:(id)ds forDevice:(id)device deviceClientPriority:(int)priority error:(int *)error
 {
-  v28 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(a3, "count")}];
-  if (!a4)
+  v28 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(ds, "count")}];
+  if (!device)
   {
     v22 = -12780;
     goto LABEL_25;
   }
 
-  v24 = self;
-  v25 = a5;
-  v26 = a6;
-  obj = a3;
+  selfCopy = self;
+  priorityCopy = priority;
+  errorCopy = error;
+  obj = ds;
   v37 = 0u;
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v11 = [a3 countByEnumeratingWithState:&v35 objects:v34 count:16];
+  v11 = [ds countByEnumeratingWithState:&v35 objects:v34 count:16];
   if (v11)
   {
     v12 = v11;
@@ -1793,8 +1793,8 @@ LABEL_26:
         v31 = 0u;
         v32 = 0u;
         v33 = 0u;
-        v16 = [a4 streams];
-        v17 = [v16 countByEnumeratingWithState:&v30 objects:v29 count:16];
+        streams = [device streams];
+        v17 = [streams countByEnumeratingWithState:&v30 objects:v29 count:16];
         if (v17)
         {
           v18 = v17;
@@ -1805,7 +1805,7 @@ LABEL_26:
             {
               if (*v31 != v19)
               {
-                objc_enumerationMutation(v16);
+                objc_enumerationMutation(streams);
               }
 
               v21 = *(*(&v30 + 1) + 8 * j);
@@ -1816,7 +1816,7 @@ LABEL_26:
               }
             }
 
-            v18 = [v16 countByEnumeratingWithState:&v30 objects:v29 count:16];
+            v18 = [streams countByEnumeratingWithState:&v30 objects:v29 count:16];
             if (v18)
             {
               continue;
@@ -1836,15 +1836,15 @@ LABEL_17:
     while (v12);
   }
 
-  v22 = [(BWFigCaptureDeviceVendor *)v24 requestControlOfStreams:v28 device:a4 deviceClientPriority:v25];
+  v22 = [(BWFigCaptureDeviceVendor *)selfCopy requestControlOfStreams:v28 device:device deviceClientPriority:priorityCopy];
   if (v22)
   {
     [BWFigCaptureDeviceVendor copyStreamsWithUniqueIDs:forDevice:deviceClientPriority:error:];
-    a6 = v26;
+    error = errorCopy;
 LABEL_25:
 
     v28 = 0;
-    if (!a6)
+    if (!error)
     {
       return v28;
     }
@@ -1852,19 +1852,19 @@ LABEL_25:
     goto LABEL_21;
   }
 
-  a6 = v26;
-  if (v26)
+  error = errorCopy;
+  if (errorCopy)
   {
 LABEL_21:
-    *a6 = v22;
+    *error = v22;
   }
 
   return v28;
 }
 
-- (void)takeBackDevice:(id)a3 forClient:(int)a4 informClientWhenDeviceAvailableAgain:(BOOL)a5 prefersDeviceInvalidatedImmediately:(BOOL)a6
+- (void)takeBackDevice:(id)device forClient:(int)client informClientWhenDeviceAvailableAgain:(BOOL)again prefersDeviceInvalidatedImmediately:(BOOL)immediately
 {
-  if (a3)
+  if (device)
   {
     v22 = 0;
     v23 = &v22;
@@ -1884,13 +1884,13 @@ LABEL_21:
     v8[1] = 3221225472;
     v8[2] = __126__BWFigCaptureDeviceVendor_takeBackDevice_forClient_informClientWhenDeviceAvailableAgain_prefersDeviceInvalidatedImmediately___block_invoke;
     v8[3] = &unk_1E79995A8;
-    v9 = a4;
-    v8[4] = a3;
+    clientCopy = client;
+    v8[4] = device;
     v8[5] = self;
-    v10 = a6;
+    immediatelyCopy = immediately;
     v8[6] = &v12;
     v8[7] = &v16;
-    v11 = a5;
+    againCopy = again;
     v8[8] = &v22;
     [(BWFigCaptureDeviceVendor *)self _performBlockOnDeviceQueueSynchronously:v8];
     v7 = v17;
@@ -2410,9 +2410,9 @@ LABEL_110:
   }
 }
 
-- (void)invalidateVideoDevice:(id)a3 forPID:(int)a4
+- (void)invalidateVideoDevice:(id)device forPID:(int)d
 {
-  if (a3)
+  if (device)
   {
     v13[0] = 0;
     v13[1] = v13;
@@ -2428,8 +2428,8 @@ LABEL_110:
     v5[1] = 3221225472;
     v5[2] = __57__BWFigCaptureDeviceVendor_invalidateVideoDevice_forPID___block_invoke;
     v5[3] = &unk_1E79995D0;
-    v6 = a4;
-    v5[4] = a3;
+    dCopy = d;
+    v5[4] = device;
     v5[5] = self;
     v5[6] = &v7;
     v5[7] = v13;
@@ -2441,7 +2441,7 @@ LABEL_110:
   }
 }
 
-- (int)keepControlOfStreamsWithPositions:(id)a3 deviceTypes:(id)a4 forDevice:(id)a5
+- (int)keepControlOfStreamsWithPositions:(id)positions deviceTypes:(id)types forDevice:(id)device
 {
   v8 = 0;
   v9 = &v8;
@@ -2452,9 +2452,9 @@ LABEL_110:
   v7[2] = __84__BWFigCaptureDeviceVendor_keepControlOfStreamsWithPositions_deviceTypes_forDevice___block_invoke;
   v7[3] = &unk_1E7991D18;
   v7[4] = self;
-  v7[5] = a5;
-  v7[6] = a3;
-  v7[7] = a4;
+  v7[5] = device;
+  v7[6] = positions;
+  v7[7] = types;
   v7[8] = &v8;
   [(BWFigCaptureDeviceVendor *)self _performBlockOnDeviceQueueSynchronously:v7];
   v5 = *(v9 + 6);
@@ -2462,16 +2462,16 @@ LABEL_110:
   return v5;
 }
 
-- (void)shutDownSystemPressuredDevice:(id)a3
+- (void)shutDownSystemPressuredDevice:(id)device
 {
-  if (a3)
+  if (device)
   {
     v3[0] = MEMORY[0x1E69E9820];
     v3[1] = 3221225472;
     v3[2] = __58__BWFigCaptureDeviceVendor_shutDownSystemPressuredDevice___block_invoke;
     v3[3] = &unk_1E798F898;
     v3[4] = self;
-    v3[5] = a3;
+    v3[5] = device;
     [(BWFigCaptureDeviceVendor *)self _performBlockOnDeviceQueueSynchronously:v3];
   }
 }
@@ -2486,7 +2486,7 @@ LABEL_110:
   [(BWFigCaptureDeviceVendor *)self _performBlockOnDeviceQueueSynchronously:v2];
 }
 
-- (float)structuredLightProjectorStandbyTemperatureWithError:(int *)a3
+- (float)structuredLightProjectorStandbyTemperatureWithError:(int *)error
 {
   v11 = 0;
   v12 = &v11;
@@ -2504,9 +2504,9 @@ LABEL_110:
   v6[5] = &v7;
   v6[6] = &v11;
   [(BWFigCaptureDeviceVendor *)self _performBlockOnDeviceQueueSynchronously:v6];
-  if (a3)
+  if (error)
   {
-    *a3 = *(v8 + 6);
+    *error = *(v8 + 6);
   }
 
   v4 = v12[6];
@@ -2545,7 +2545,7 @@ void __80__BWFigCaptureDeviceVendor_structuredLightProjectorStandbyTemperatureWi
   }
 }
 
-- (BOOL)activeDefaultDeviceEquals:(id)a3
+- (BOOL)activeDefaultDeviceEquals:(id)equals
 {
   v6 = 0;
   v7 = &v6;
@@ -2556,7 +2556,7 @@ void __80__BWFigCaptureDeviceVendor_structuredLightProjectorStandbyTemperatureWi
   v5[2] = __54__BWFigCaptureDeviceVendor_activeDefaultDeviceEquals___block_invoke;
   v5[3] = &unk_1E79906C0;
   v5[4] = self;
-  v5[5] = a3;
+  v5[5] = equals;
   v5[6] = &v6;
   [(BWFigCaptureDeviceVendor *)self _performBlockOnDeviceQueueSynchronously:v5];
   v3 = *(v7 + 24);
@@ -2593,7 +2593,7 @@ LABEL_8:
   return result;
 }
 
-- (id)cameraPoseMatrixForStreamWithPosition:(int)a3 deviceType:(int)a4 deviceID:(id)a5
+- (id)cameraPoseMatrixForStreamWithPosition:(int)position deviceType:(int)type deviceID:(id)d
 {
   v11 = 0;
   v12 = &v11;
@@ -2601,7 +2601,7 @@ LABEL_8:
   v14 = __Block_byref_object_copy__29;
   v15 = __Block_byref_object_dispose__29;
   v16 = 0;
-  v7 = BWCaptureDevicePositionAndDeviceTypeToPortType(a3, a4);
+  v7 = BWCaptureDevicePositionAndDeviceTypeToPortType(position, type);
   if (v7)
   {
     v10[0] = MEMORY[0x1E69E9820];
@@ -2609,7 +2609,7 @@ LABEL_8:
     v10[2] = __86__BWFigCaptureDeviceVendor_cameraPoseMatrixForStreamWithPosition_deviceType_deviceID___block_invoke;
     v10[3] = &unk_1E79992F0;
     v10[4] = self;
-    v10[5] = a5;
+    v10[5] = d;
     v10[6] = v7;
     v10[7] = &v11;
     [(BWFigCaptureDeviceVendor *)self _performBlockOnDeviceQueueSynchronously:v10];
@@ -2902,7 +2902,7 @@ LABEL_9:
   }
 }
 
-- (int)requestControlOfStreams:(id)a3 device:(id)a4 deviceClientPriority:(int)a5
+- (int)requestControlOfStreams:(id)streams device:(id)device deviceClientPriority:(int)priority
 {
   v9 = 0;
   v10 = &v9;
@@ -2913,10 +2913,10 @@ LABEL_9:
   v7[2] = __80__BWFigCaptureDeviceVendor_requestControlOfStreams_device_deviceClientPriority___block_invoke;
   v7[3] = &unk_1E7999640;
   v7[4] = self;
-  v7[5] = a3;
-  v7[6] = a4;
+  v7[5] = streams;
+  v7[6] = device;
   v7[7] = &v9;
-  v8 = a5;
+  priorityCopy = priority;
   [(BWFigCaptureDeviceVendor *)self _performBlockOnDeviceQueueSynchronously:v7];
   v5 = *(v10 + 6);
   _Block_object_dispose(&v9, 8);
@@ -2939,7 +2939,7 @@ void __68__BWFigCaptureDeviceVendor__performBlockOnDeviceQueueSynchronously___bl
   objc_autoreleasePoolPop(v2);
 }
 
-- (id)deviceWithID:(id)a3
+- (id)deviceWithID:(id)d
 {
   v6 = 0;
   v7 = &v6;
@@ -2951,7 +2951,7 @@ void __68__BWFigCaptureDeviceVendor__performBlockOnDeviceQueueSynchronously___bl
   v5[1] = 3221225472;
   v5[2] = __41__BWFigCaptureDeviceVendor_deviceWithID___block_invoke;
   v5[3] = &unk_1E7999668;
-  v5[5] = a3;
+  v5[5] = d;
   v5[6] = &v6;
   v5[4] = self;
   [(BWFigCaptureDeviceVendor *)self _performBlockOnDeviceQueueSynchronously:v5];
@@ -2967,19 +2967,19 @@ id __41__BWFigCaptureDeviceVendor_deviceWithID___block_invoke(uint64_t a1)
   return result;
 }
 
-- (id)_deviceWithID:(id)a3
+- (id)_deviceWithID:(id)d
 {
   if (!_FigIsCurrentDispatchQueue())
   {
     [BWFigCaptureDeviceVendor _deviceWithID:];
   }
 
-  v5 = [(NSMutableDictionary *)self->_devicesStatesByDeviceID objectForKeyedSubscript:a3];
+  v5 = [(NSMutableDictionary *)self->_devicesStatesByDeviceID objectForKeyedSubscript:d];
 
   return [v5 device];
 }
 
-- (id)controlledStreamsForDevice:(id)a3
+- (id)controlledStreamsForDevice:(id)device
 {
   v6 = 0;
   v7 = &v6;
@@ -2992,7 +2992,7 @@ id __41__BWFigCaptureDeviceVendor_deviceWithID___block_invoke(uint64_t a1)
   v5[2] = __55__BWFigCaptureDeviceVendor_controlledStreamsForDevice___block_invoke;
   v5[3] = &unk_1E79906C0;
   v5[4] = self;
-  v5[5] = a3;
+  v5[5] = device;
   v5[6] = &v6;
   [(BWFigCaptureDeviceVendor *)self _performBlockOnDeviceQueueSynchronously:v5];
   v3 = v7[5];
@@ -3007,7 +3007,7 @@ uint64_t __55__BWFigCaptureDeviceVendor_controlledStreamsForDevice___block_invok
   return result;
 }
 
-- (id)streamsControlledByOtherClientsForDevice:(id)a3
+- (id)streamsControlledByOtherClientsForDevice:(id)device
 {
   v6 = 0;
   v7 = &v6;
@@ -3020,7 +3020,7 @@ uint64_t __55__BWFigCaptureDeviceVendor_controlledStreamsForDevice___block_invok
   v5[2] = __69__BWFigCaptureDeviceVendor_streamsControlledByOtherClientsForDevice___block_invoke;
   v5[3] = &unk_1E79906C0;
   v5[4] = self;
-  v5[5] = a3;
+  v5[5] = device;
   v5[6] = &v6;
   [(BWFigCaptureDeviceVendor *)self _performBlockOnDeviceQueueSynchronously:v5];
   v3 = v7[5];
@@ -3035,7 +3035,7 @@ uint64_t __69__BWFigCaptureDeviceVendor_streamsControlledByOtherClientsForDevice
   return result;
 }
 
-- (int)usageCountForDevice:(id)a3
+- (int)usageCountForDevice:(id)device
 {
   v6 = 0;
   v7 = &v6;
@@ -3045,7 +3045,7 @@ uint64_t __69__BWFigCaptureDeviceVendor_streamsControlledByOtherClientsForDevice
   v5[1] = 3221225472;
   v5[2] = __48__BWFigCaptureDeviceVendor_usageCountForDevice___block_invoke;
   v5[3] = &unk_1E7999668;
-  v5[5] = a3;
+  v5[5] = device;
   v5[6] = &v6;
   v5[4] = self;
   [(BWFigCaptureDeviceVendor *)self _performBlockOnDeviceQueueSynchronously:v5];
@@ -3088,7 +3088,7 @@ uint64_t __51__BWFigCaptureDeviceVendor_registeredDeviceClients__block_invoke(ui
   return result;
 }
 
-- (id)registeredDeviceClientWithID:(int)a3
+- (id)registeredDeviceClientWithID:(int)d
 {
   v7 = 0;
   v8 = &v7;
@@ -3102,7 +3102,7 @@ uint64_t __51__BWFigCaptureDeviceVendor_registeredDeviceClients__block_invoke(ui
   v5[3] = &unk_1E7999508;
   v5[4] = self;
   v5[5] = &v7;
-  v6 = a3;
+  dCopy = d;
   [(BWFigCaptureDeviceVendor *)self _performBlockOnDeviceQueueSynchronously:v5];
   v3 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -3496,10 +3496,10 @@ void __69__BWFigCaptureDeviceVendor__updateDefaultDevicePriorStreamPortTypes___b
     [BWFigCaptureDeviceVendor osStatePropertyList];
   }
 
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  [v3 setObject:self->_defaultDeviceCreationHistory forKeyedSubscript:@"Default Device Creation History"];
-  [v3 setObject:self->_cmioDeviceCreationHistory forKeyedSubscript:@"CMIO Device Creation History"];
-  return v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setObject:self->_defaultDeviceCreationHistory forKeyedSubscript:@"Default Device Creation History"];
+  [dictionary setObject:self->_cmioDeviceCreationHistory forKeyedSubscript:@"CMIO Device Creation History"];
+  return dictionary;
 }
 
 void __55__BWFigCaptureDeviceVendor__updateCMIOExtensionDevices__block_invoke(uint64_t a1)
@@ -3510,10 +3510,10 @@ void __55__BWFigCaptureDeviceVendor__updateCMIOExtensionDevices__block_invoke(ui
   CFNotificationCenterPostNotification(LocalCenter, @"DevicesChanged", v3, 0, 1u);
 }
 
-- (void)_handleCMIOExtensionDevicesChangedNotification:(id)a3
+- (void)_handleCMIOExtensionDevicesChangedNotification:(id)notification
 {
-  v4 = [a3 name];
-  if ([v4 isEqualToString:*MEMORY[0x1E6963418]])
+  name = [notification name];
+  if ([name isEqualToString:*MEMORY[0x1E6963418]])
   {
     if (dword_1ED844630)
     {
@@ -3540,7 +3540,7 @@ void __55__BWFigCaptureDeviceVendor__updateCMIOExtensionDevices__block_invoke(ui
 
 - (void)_updateCMIOExtensionDevices
 {
-  if (a1)
+  if (self)
   {
     OUTLINED_FUNCTION_60();
     v2 = v1;
@@ -3552,15 +3552,15 @@ void __55__BWFigCaptureDeviceVendor__updateCMIOExtensionDevices__block_invoke(ui
     }
 
     obj = [MEMORY[0x1E695DF70] array];
-    v3 = [MEMORY[0x1E695DF70] array];
-    v87 = [MEMORY[0x1E695DF70] array];
-    v90 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
+    array3 = [MEMORY[0x1E695DF70] array];
     v153 = 0u;
     v154 = 0u;
     v155 = 0u;
     v156 = 0u;
     v4 = *(v2 + 24);
-    v6 = OUTLINED_FUNCTION_64(v90, v5, &v153, v152);
+    v6 = OUTLINED_FUNCTION_64(array3, v5, &v153, v152);
     if (v6)
     {
       v7 = v6;
@@ -3592,10 +3592,10 @@ void __55__BWFigCaptureDeviceVendor__updateCMIOExtensionDevices__block_invoke(ui
     v151 = 0u;
     v148 = 0u;
     v149 = 0u;
-    v13 = [*(v2 + 128) devices];
-    v14 = [v13 countByEnumeratingWithState:&v148 objects:v147 count:16];
+    devices = [*(v2 + 128) devices];
+    v14 = [devices countByEnumeratingWithState:&v148 objects:v147 count:16];
     v100 = v2;
-    v94 = v3;
+    v94 = array;
     if (v14)
     {
       v16 = v14;
@@ -3610,7 +3610,7 @@ void __55__BWFigCaptureDeviceVendor__updateCMIOExtensionDevices__block_invoke(ui
         {
           if (*v149 != v98)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(devices);
           }
 
           v18 = *(*(&v148 + 1) + 8 * v17);
@@ -3619,8 +3619,8 @@ void __55__BWFigCaptureDeviceVendor__updateCMIOExtensionDevices__block_invoke(ui
           v144 = 0u;
           v145 = 0u;
           v146 = 0u;
-          v20 = [v18 streams];
-          v21 = [v20 countByEnumeratingWithState:&v143 objects:v142 count:16];
+          streams = [v18 streams];
+          v21 = [streams countByEnumeratingWithState:&v143 objects:v142 count:16];
           if (!v21)
           {
             goto LABEL_26;
@@ -3635,7 +3635,7 @@ void __55__BWFigCaptureDeviceVendor__updateCMIOExtensionDevices__block_invoke(ui
             {
               if (*v144 != v24)
               {
-                objc_enumerationMutation(v20);
+                objc_enumerationMutation(streams);
               }
 
               if (![*(*(&v143 + 1) + 8 * v25) direction])
@@ -3673,15 +3673,15 @@ void __55__BWFigCaptureDeviceVendor__updateCMIOExtensionDevices__block_invoke(ui
 
                     OUTLINED_FUNCTION_1_4();
                     v21 = fig_log_call_emit_and_clean_up_after_send_and_compose();
-                    v3 = v94;
+                    array = v94;
                     goto LABEL_36;
                   }
 
-                  [v87 addObject:v19];
+                  [array2 addObject:v19];
                   v89 = 1;
                 }
 
-                v21 = [v3 addObject:v19];
+                v21 = [array addObject:v19];
                 goto LABEL_36;
               }
 
@@ -3689,7 +3689,7 @@ void __55__BWFigCaptureDeviceVendor__updateCMIOExtensionDevices__block_invoke(ui
             }
 
             while (v23 != v25);
-            v21 = [v20 countByEnumeratingWithState:&v143 objects:v142 count:16];
+            v21 = [streams countByEnumeratingWithState:&v143 objects:v142 count:16];
             v23 = v21;
             if (v21)
             {
@@ -3725,7 +3725,7 @@ LABEL_26:
             }
 
             v2 = v100;
-            v3 = v94;
+            array = v94;
             OUTLINED_FUNCTION_2_4();
             v21 = fig_log_call_emit_and_clean_up_after_send_and_compose();
           }
@@ -3757,7 +3757,7 @@ LABEL_36:
     {
       v34 = v33;
       v35 = *v133;
-      v36 = v90;
+      v36 = array3;
       v37 = v89;
       do
       {
@@ -3769,9 +3769,9 @@ LABEL_36:
           }
 
           v39 = *(*(&v132 + 1) + 8 * j);
-          if (([v3 containsObject:v39] & 1) == 0)
+          if (([array containsObject:v39] & 1) == 0)
           {
-            [v90 addObject:v39];
+            [array3 addObject:v39];
             v37 = 1;
           }
         }
@@ -3785,7 +3785,7 @@ LABEL_36:
 
     else
     {
-      v36 = v90;
+      v36 = array3;
       v37 = v89;
     }
 
@@ -3824,7 +3824,7 @@ LABEL_36:
             v124 = 0u;
             v125 = 0u;
             v54 = *(v2 + 40);
-            v55 = OUTLINED_FUNCTION_35_14(v46, v47, v48, v49, v50, v51, v52, v53, v84, v85, v86, v87, v88, v90, v91, v92, v43, v93[1], v94, obj, v96[0], v96[1], v97, v44, v100, v101, v102, v103, v104, v105, *v106, *&v106[8], *&v106[16], v107, v108, v109, v110, v111, v112, v113, v114, v115, v116, v117, v118, v119, v120, v121, v122, v123, 0);
+            v55 = OUTLINED_FUNCTION_35_14(v46, v47, v48, v49, v50, v51, v52, v53, v84, v85, v86, array2, v88, array3, v91, v92, v43, v93[1], v94, obj, v96[0], v96[1], v97, v44, v100, v101, v102, v103, v104, v105, *v106, *&v106[8], *&v106[16], v107, v108, v109, v110, v111, v112, v113, v114, v115, v116, v117, v118, v119, v120, v121, v122, v123, 0);
             if (v55)
             {
               v56 = v55;
@@ -3873,16 +3873,16 @@ LABEL_36:
                   dispatch_async(v63, block);
                 }
 
-                v56 = OUTLINED_FUNCTION_35_14(v64, v65, v66, v67, v68, v69, v70, v71, v84, v85, v86, v87, v88, v90, v91, v92, v93[0], v93[1], v94, obj, v96[0], v96[1], v97, v99, v100, v101, v102, v103, v104, v105, *v106, *&v106[8], *&v106[16], v107, v108, v109, v110, v111, v112, v113, v114, v115, v116, v117, v118, v119, v120, v121, v122, v123, v124);
+                v56 = OUTLINED_FUNCTION_35_14(v64, v65, v66, v67, v68, v69, v70, v71, v84, v85, v86, array2, v88, array3, v91, v92, v93[0], v93[1], v94, obj, v96[0], v96[1], v97, v99, v100, v101, v102, v103, v104, v105, *v106, *&v106[8], *&v106[16], v107, v108, v109, v110, v111, v112, v113, v114, v115, v116, v117, v118, v119, v120, v121, v122, v123, v124);
               }
 
               while (v56);
             }
 
             [*(v2 + 40) removeAllObjects];
-            v36 = v90;
+            v36 = array3;
             v42 = v91;
-            v3 = v94;
+            array = v94;
             v43 = v93[0];
           }
 
@@ -3925,7 +3925,7 @@ LABEL_36:
         {
           *v106 = 136315394;
           OUTLINED_FUNCTION_26_15();
-          *&v106[14] = v3;
+          *&v106[14] = array;
           OUTLINED_FUNCTION_23_17();
           OUTLINED_FUNCTION_4_4();
           _os_log_send_and_compose_impl();
@@ -3943,7 +3943,7 @@ LABEL_36:
           {
             *v106 = 136315394;
             OUTLINED_FUNCTION_26_15();
-            *&v106[14] = v87;
+            *&v106[14] = array2;
             OUTLINED_FUNCTION_23_17();
             OUTLINED_FUNCTION_4_4();
             _os_log_send_and_compose_impl();
@@ -3961,7 +3961,7 @@ LABEL_36:
             {
               *v106 = 136315394;
               OUTLINED_FUNCTION_26_15();
-              *&v106[14] = v90;
+              *&v106[14] = array3;
               OUTLINED_FUNCTION_23_17();
               OUTLINED_FUNCTION_4_4();
               _os_log_send_and_compose_impl();
@@ -4047,9 +4047,9 @@ LABEL_2:
   [BWFigCaptureDeviceVendor _invalidate:keepFigCaptureDeviceAlive:preserveTorchState:];
 }
 
-- (void)_setupDeviceCloseTimerForDevice:(uint64_t)a1
+- (void)_setupDeviceCloseTimerForDevice:(uint64_t)device
 {
-  if (a1 && (FigCaptureIsDebuggerOrSlowAllocationPathEnabled() & 1) == 0)
+  if (device && (FigCaptureIsDebuggerOrSlowAllocationPathEnabled() & 1) == 0)
   {
     if (!_FigIsCurrentDispatchQueue())
     {
@@ -4058,7 +4058,7 @@ LABEL_2:
       FigDebugAssert3();
     }
 
-    v4 = [*(a1 + 24) objectForKeyedSubscript:a2];
+    v4 = [*(device + 24) objectForKeyedSubscript:a2];
     if ([objc_msgSend(objc_msgSend(v4 "device")])
     {
       if (![v4 deviceCloseTimer] || dispatch_source_testcancel(objc_msgSend(v4, "deviceCloseTimer")))
@@ -4081,7 +4081,7 @@ LABEL_2:
             v14 = 136315394;
             v15 = "[BWFigCaptureDeviceVendor _setupDeviceCloseTimerForDevice:]";
             v16 = 2048;
-            v17 = [v4 device];
+            device = [v4 device];
             OUTLINED_FUNCTION_34_16();
             OUTLINED_FUNCTION_13();
             OUTLINED_FUNCTION_141();
@@ -4091,15 +4091,15 @@ LABEL_2:
           OUTLINED_FUNCTION_39_0();
         }
 
-        v11 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, *(a1 + 56));
+        v11 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, *(device + 56));
         [v4 setDeviceCloseTimer:v11];
-        [BWFigCaptureDeviceVendor _resetDeviceCloseTimerForDevice:a1];
+        [BWFigCaptureDeviceVendor _resetDeviceCloseTimerForDevice:device];
         handler[0] = MEMORY[0x1E69E9820];
         handler[1] = 3221225472;
         handler[2] = __60__BWFigCaptureDeviceVendor__setupDeviceCloseTimerForDevice___block_invoke;
         handler[3] = &unk_1E798FE78;
         handler[4] = v4;
-        handler[5] = a1;
+        handler[5] = device;
         handler[6] = a2;
         handler[7] = v11;
         dispatch_source_set_event_handler(v11, handler);
@@ -4134,7 +4134,7 @@ LABEL_2:
           v14 = 136315394;
           v15 = "[BWFigCaptureDeviceVendor _setupDeviceCloseTimerForDevice:]";
           v16 = 2048;
-          v17 = [v4 device];
+          device = [v4 device];
           OUTLINED_FUNCTION_34_16();
           OUTLINED_FUNCTION_58_1();
         }
@@ -4146,9 +4146,9 @@ LABEL_2:
   }
 }
 
-- (void)_resetDeviceCloseTimerForDevice:(uint64_t)a1
+- (void)_resetDeviceCloseTimerForDevice:(uint64_t)device
 {
-  if (a1)
+  if (device)
   {
     if (!OUTLINED_FUNCTION_59_9())
     {
@@ -4949,7 +4949,7 @@ LABEL_95:
   return result;
 }
 
-- (uint64_t)_removeDeviceClient:(int)a3 moveToVictimizedList:
+- (uint64_t)_removeDeviceClient:(int)client moveToVictimizedList:
 {
   if (result)
   {
@@ -4975,15 +4975,15 @@ LABEL_95:
     }
 
     result = [*(v4 + 32) removeObject:v3];
-    if (a3)
+    if (client)
     {
       result = [v3 deviceAvailabilityChangedHandler];
       if (result)
       {
         if ([v3 clientType] == 2 && objc_msgSend(v3, "clientPriority") <= 3)
         {
-          v6 = [*(v4 + 48) reverseObjectEnumerator];
-          if (![v6 countByEnumeratingWithState:v14 objects:v13 count:16])
+          reverseObjectEnumerator = [*(v4 + 48) reverseObjectEnumerator];
+          if (![reverseObjectEnumerator countByEnumeratingWithState:v14 objects:v13 count:16])
           {
             return [*(v4 + 48) addObject:v3];
           }
@@ -4993,7 +4993,7 @@ LABEL_95:
             OUTLINED_FUNCTION_89();
             if (!v7)
             {
-              objc_enumerationMutation(v6);
+              objc_enumerationMutation(reverseObjectEnumerator);
             }
 
             v8 = *v15;
@@ -5076,7 +5076,7 @@ LABEL_95:
           v88 = 136315394;
           v89 = "[BWFigCaptureDeviceVendor _invalidate:keepFigCaptureDeviceAlive:preserveTorchState:]";
           v90 = 2048;
-          v91 = [v9 device];
+          device = [v9 device];
           OUTLINED_FUNCTION_34_16();
           v44 = &v88;
           OUTLINED_FUNCTION_13();
@@ -5127,10 +5127,10 @@ LABEL_95:
 
       [v9 device];
       [BWFigCaptureDeviceVendor _unregisterForDeviceNotifications:v23];
-      v36 = [v9 device];
+      device2 = [v9 device];
       if ((v52 & 0x100000000) != 0)
       {
-        [(BWFigCaptureDeviceVendor *)v23 _setLowMemoryModeEnabledOnDevice:v36];
+        [(BWFigCaptureDeviceVendor *)v23 _setLowMemoryModeEnabledOnDevice:device2];
         [objc_msgSend(v9 "device")];
         [objc_msgSend(v9 "device")];
         v37 = OUTLINED_FUNCTION_3_30();
@@ -5139,7 +5139,7 @@ LABEL_95:
 
       else
       {
-        [v36 deviceID];
+        [device2 deviceID];
         v39 = OUTLINED_FUNCTION_3_30();
         [(BWFigCaptureDeviceVendor *)v39 _relinquishControlOfStreamsForDevice:v40];
         [v9 device];
@@ -5367,12 +5367,12 @@ LABEL_49:
 
         v49 = v48;
         v50 = 0x1E695D000uLL;
-        v51 = [MEMORY[0x1E695DF90] dictionary];
-        [v51 setObject:objc_msgSend(v49 forKeyedSubscript:{"description"), @"Description"}];
-        [v51 setObject:objc_msgSend(v49 forKeyedSubscript:{"deviceID"), @"DeviceID"}];
+        dictionary = [MEMORY[0x1E695DF90] dictionary];
+        [dictionary setObject:objc_msgSend(v49 forKeyedSubscript:{"description"), @"Description"}];
+        [dictionary setObject:objc_msgSend(v49 forKeyedSubscript:{"deviceID"), @"DeviceID"}];
         v52 = v144;
         [MEMORY[0x1E695DF00] date];
-        [v51 setObject:objc_msgSend(OUTLINED_FUNCTION_17() forKeyedSubscript:{"stringFromDate:"), @"CreationDate"}];
+        [dictionary setObject:objc_msgSend(OUTLINED_FUNCTION_17() forKeyedSubscript:{"stringFromDate:"), @"CreationDate"}];
         v53 = OUTLINED_FUNCTION_98_6();
         v54 = 152;
         if (v53)
@@ -5385,8 +5385,8 @@ LABEL_49:
         {
           if (v53)
           {
-            v56 = [v55 firstObject];
-            if (![v56 objectForKeyedSubscript:@"ReleaseDate"])
+            firstObject = [v55 firstObject];
+            if (![firstObject objectForKeyedSubscript:@"ReleaseDate"])
             {
               LODWORD(v162[0]) = 0;
               type[0] = OS_LOG_TYPE_DEFAULT;
@@ -5397,7 +5397,7 @@ LABEL_49:
                 v153[0] = 136315394;
                 *&v153[1] = "[BWFigCaptureDeviceVendor _createDevice:reason:clientPID:figCaptureDevice:]";
                 v154 = 2112;
-                v155 = v56;
+                v155 = firstObject;
                 OUTLINED_FUNCTION_14_28();
                 OUTLINED_FUNCTION_4_4();
                 _os_log_send_and_compose_impl();
@@ -5411,7 +5411,7 @@ LABEL_49:
             }
 
             [v55 removeObjectAtIndex:0];
-            [v55 addObject:v51];
+            [v55 addObject:dictionary];
             goto LABEL_78;
           }
 
@@ -5463,7 +5463,7 @@ LABEL_58:
           v49 = v148;
         }
 
-        [v55 addObject:v51];
+        [v55 addObject:dictionary];
         if (!v53)
         {
           [BWFigCaptureDeviceVendor _registerForDeviceNotifications:v52];
@@ -5527,8 +5527,8 @@ LABEL_78:
                 v159 = 0u;
                 *type = 0u;
                 v157 = 0u;
-                v93 = [v49 synchronizedStreamsGroups];
-                v94 = [v93 countByEnumeratingWithState:type objects:v153 count:16];
+                synchronizedStreamsGroups = [v49 synchronizedStreamsGroups];
+                v94 = [synchronizedStreamsGroups countByEnumeratingWithState:type objects:v153 count:16];
                 if (v94)
                 {
                   v95 = v94;
@@ -5539,7 +5539,7 @@ LABEL_92:
                     OUTLINED_FUNCTION_89();
                     if (!v71)
                     {
-                      objc_enumerationMutation(v93);
+                      objc_enumerationMutation(synchronizedStreamsGroups);
                     }
 
                     v97 = *(*&type[8] + 8 * v96);
@@ -5685,7 +5685,7 @@ LABEL_119:
         v110 = [BWFigCaptureDeviceVendorDeviceState alloc];
         v111 = [(BWFigCaptureDeviceVendorDeviceState *)v110 initWithDevice:v49 figCaptureDevice:cf];
         [*(v52 + 24) setObject:v111 forKeyedSubscript:v7];
-        v112 = [v49 streams];
+        streams = [v49 streams];
         OUTLINED_FUNCTION_85();
         v114 = [v113 countByEnumeratingWithState:? objects:? count:?];
         if (v114)
@@ -5700,7 +5700,7 @@ LABEL_119:
             {
               if (MEMORY[0] != v116)
               {
-                objc_enumerationMutation(v112);
+                objc_enumerationMutation(streams);
               }
 
               v120 = *(8 * j);
@@ -5900,7 +5900,7 @@ LABEL_140:
   OUTLINED_FUNCTION_81();
 }
 
-- (uint64_t)_removeActiveDeviceClient:(int)a3 moveToVictimizedList:
+- (uint64_t)_removeActiveDeviceClient:(int)client moveToVictimizedList:
 {
   if (result)
   {
@@ -5929,7 +5929,7 @@ LABEL_140:
 
       OUTLINED_FUNCTION_2_4();
       OUTLINED_FUNCTION_39_0();
-      if (a3 && dword_1ED844630)
+      if (client && dword_1ED844630)
       {
         OUTLINED_FUNCTION_112();
         v9 = OUTLINED_FUNCTION_77();
@@ -5947,7 +5947,7 @@ LABEL_140:
       }
     }
 
-    return [(BWFigCaptureDeviceVendor *)v5 _removeDeviceClient:a2 moveToVictimizedList:a3];
+    return [(BWFigCaptureDeviceVendor *)v5 _removeDeviceClient:a2 moveToVictimizedList:client];
   }
 
   return result;
@@ -5967,8 +5967,8 @@ LABEL_140:
     v4 = [*(v2 + 24) objectForKeyedSubscript:a2];
     if ([objc_msgSend(v4 "controlledStreams")] || (result = objc_msgSend(objc_msgSend(v4, "streamsControlledByOtherClients"), "count")) != 0)
     {
-      v5 = [v4 controlledStreams];
-      v6 = [v5 countByEnumeratingWithState:v25 objects:v24 count:16];
+      controlledStreams = [v4 controlledStreams];
+      v6 = [controlledStreams countByEnumeratingWithState:v25 objects:v24 count:16];
       if (v6)
       {
         v7 = v6;
@@ -5980,7 +5980,7 @@ LABEL_140:
             OUTLINED_FUNCTION_21_20();
             if (!v9)
             {
-              objc_enumerationMutation(v5);
+              objc_enumerationMutation(controlledStreams);
             }
 
             v10 = [BWFigCaptureDeviceVendor _unregisterFromStreamNotifications:v2];
@@ -5994,7 +5994,7 @@ LABEL_140:
         while (v7);
       }
 
-      v12 = [v4 streamsControlledByOtherClients];
+      streamsControlledByOtherClients = [v4 streamsControlledByOtherClients];
       OUTLINED_FUNCTION_17_20();
       v14 = [v13 countByEnumeratingWithState:? objects:? count:?];
       if (v14)
@@ -6009,7 +6009,7 @@ LABEL_140:
             OUTLINED_FUNCTION_29_11();
             if (v18 != v16)
             {
-              objc_enumerationMutation(v12);
+              objc_enumerationMutation(streamsControlledByOtherClients);
             }
 
             [BWFigCaptureDeviceVendor _unregisterFromStreamNotifications:v2];
@@ -6037,9 +6037,9 @@ LABEL_140:
   return result;
 }
 
-- (void)_deviceAvailabilityChangedForClients:(char)a3 available:(int)a4 postNotifications:(int)a5 reason:(char)a6 canShareWithFlashlight:(uint64_t)a7 cameraStolenInterruptor:
+- (void)_deviceAvailabilityChangedForClients:(char)clients available:(int)available postNotifications:(int)notifications reason:(char)reason canShareWithFlashlight:(uint64_t)flashlight cameraStolenInterruptor:
 {
-  if (a1)
+  if (self)
   {
     OUTLINED_FUNCTION_69_0();
     OUTLINED_FUNCTION_17_20();
@@ -6063,11 +6063,11 @@ LABEL_140:
           v26 = v17;
           v27 = &unk_1E7999618;
           v31 = 0;
-          v32 = a3;
-          v30 = a5;
-          v33 = 0;
+          clientsCopy2 = clients;
+          notificationsCopy2 = notifications;
+          reasonCopy = 0;
           v28 = v18;
-          v29 = a7;
+          flashlightCopy = flashlight;
           dispatch_async(v19, block);
           ++v15;
         }
@@ -6080,7 +6080,7 @@ LABEL_140:
       while (v13);
     }
 
-    if (a4)
+    if (available)
     {
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
@@ -6088,19 +6088,19 @@ LABEL_140:
       v26 = v20;
       v27 = &unk_1E7999618;
       v31 = 1;
-      v32 = a3;
-      v30 = a5;
-      v33 = a6;
+      clientsCopy2 = clients;
+      notificationsCopy2 = notifications;
+      reasonCopy = reason;
       v28 = 0;
-      v29 = 0;
+      flashlightCopy = 0;
       dispatch_async(v21, block);
     }
   }
 }
 
-- (uint64_t)_getGameModeEnabledOnDevice:(uint64_t)a1
+- (uint64_t)_getGameModeEnabledOnDevice:(uint64_t)device
 {
-  if (!a1)
+  if (!device)
   {
     return 0;
   }
@@ -6121,9 +6121,9 @@ LABEL_140:
   return [v2 isGameModeEnabled];
 }
 
-- (void)_requestControlOfStreams:(uint64_t)a1 device:deviceClientPriority:
+- (void)_requestControlOfStreams:(uint64_t)streams device:deviceClientPriority:
 {
-  if (a1)
+  if (streams)
   {
     OUTLINED_FUNCTION_60();
     v3 = v2;
@@ -6167,7 +6167,7 @@ LABEL_140:
       v10 = [OUTLINED_FUNCTION_4() objectForKeyedSubscript:?];
       if (![v10 device] || objc_msgSend(v10, "device") == v5)
       {
-        v11 = [MEMORY[0x1E695DF70] array];
+        array = [MEMORY[0x1E695DF70] array];
         v12 = OUTLINED_FUNCTION_121_2();
         if (v12)
         {
@@ -6184,14 +6184,14 @@ LABEL_140:
 
               v16 = *(8 * i);
               v17 = [objc_msgSend(v10 "controlledStreams")];
-              v18 = v11;
+              streamsInUse = array;
               if (v17)
               {
                 [objc_msgSend(v10 "streamsToKeepControlled")];
-                v18 = [v10 streamsInUse];
+                streamsInUse = [v10 streamsInUse];
               }
 
-              [v18 addObject:v16];
+              [streamsInUse addObject:v16];
             }
 
             v13 = OUTLINED_FUNCTION_121_2();
@@ -6200,9 +6200,9 @@ LABEL_140:
           while (v13);
         }
 
-        if ([v11 count])
+        if ([array count])
         {
-          v19 = [v5 requestControlOfStreams:v11 clientPriority:v3];
+          v19 = [v5 requestControlOfStreams:array clientPriority:v3];
           if (v19 == -12681)
           {
             v176 = 0;
@@ -6214,7 +6214,7 @@ LABEL_140:
               v163 = 136315394;
               v164 = "[BWFigCaptureDeviceVendor _requestControlOfStreams:device:deviceClientPriority:]";
               v165 = 2112;
-              v166 = v11;
+              v166 = array;
               OUTLINED_FUNCTION_34_16();
               v78 = &v163;
               OUTLINED_FUNCTION_13();
@@ -6232,7 +6232,7 @@ LABEL_140:
                 OUTLINED_FUNCTION_89();
                 if (!v24)
                 {
-                  objc_enumerationMutation(v11);
+                  objc_enumerationMutation(array);
                 }
 
                 v44 = MEMORY[0];
@@ -6266,7 +6266,7 @@ LABEL_140:
                 {
                   if (MEMORY[0] != v51)
                   {
-                    objc_enumerationMutation(v11);
+                    objc_enumerationMutation(array);
                   }
 
                   v53 = [objc_msgSend(v10 "portTypesAllowingStreamControlLoss")];
@@ -6291,8 +6291,8 @@ LABEL_140:
                           }
 
                           v67 = *(v117 + 8 * v65);
-                          v68 = [v67 clientType];
-                          if (v68 != 1)
+                          clientType = [v67 clientType];
+                          if (clientType != 1)
                           {
                             [(BWFigCaptureDeviceVendor *)v1 _removeActiveDeviceClient:v67 moveToVictimizedList:1];
                             v76 = *(v1 + 80);
@@ -6311,11 +6311,11 @@ LABEL_140:
                           v65 = v65 + 1;
                         }
 
-                        while (v11 != v65);
-                        v11 = OUTLINED_FUNCTION_1_2(v68, v69, v70, v71, v72, v73, v74, v75, v79, v81, v83, v85, v87, v89, v91, v93, v95, v97, v99, v101, v103, v105, v107, v109, v111, v113, v115);
+                        while (array != v65);
+                        array = OUTLINED_FUNCTION_1_2(clientType, v69, v70, v71, v72, v73, v74, v75, v79, v81, v83, v85, v87, v89, v91, v93, v95, v97, v99, v101, v103, v105, v107, v109, v111, v113, v115);
                       }
 
-                      while (v11);
+                      while (array);
                     }
 
                     goto LABEL_60;
@@ -6343,7 +6343,7 @@ LABEL_140:
                 OUTLINED_FUNCTION_89();
                 if (!v24)
                 {
-                  objc_enumerationMutation(v11);
+                  objc_enumerationMutation(array);
                 }
 
                 v25 = MEMORY[0];
@@ -6377,9 +6377,9 @@ LABEL_60:
   }
 }
 
-- (uint64_t)_activeDeviceClientWithClientID:(uint64_t)a1
+- (uint64_t)_activeDeviceClientWithClientID:(uint64_t)d
 {
-  if (!a1)
+  if (!d)
   {
     return 0;
   }
@@ -6392,7 +6392,7 @@ LABEL_60:
   }
 
   v5 = OUTLINED_FUNCTION_43_13();
-  v6 = *(a1 + 40);
+  v6 = *(d + 40);
   if (!OUTLINED_FUNCTION_33_14(v7, v8, v17, v9, v10, v5))
   {
     return 0;
@@ -6422,10 +6422,10 @@ LABEL_60:
   return v2;
 }
 
-- (uint64_t)_setLowMemoryModeEnabledOnDevice:(uint64_t)a1
+- (uint64_t)_setLowMemoryModeEnabledOnDevice:(uint64_t)device
 {
-  v2 = a1;
-  if (a1)
+  deviceCopy = device;
+  if (device)
   {
     if (!_FigIsCurrentDispatchQueue())
     {
@@ -6434,10 +6434,10 @@ LABEL_60:
       FigDebugAssert3();
     }
 
-    v4 = *(v2 + 176);
+    v4 = *(deviceCopy + 176);
     if (v4)
     {
-      v2 = [v4 isGameModeEnabled];
+      deviceCopy = [v4 isGameModeEnabled];
       if (dword_1ED844630)
       {
         os_log_and_send_and_compose_flags_and_os_log_type = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
@@ -6453,7 +6453,7 @@ LABEL_60:
         OUTLINED_FUNCTION_13_0();
       }
 
-      [a2 setPropertyIfSupported:*off_1E798A008 value:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithBool:", v2)}];
+      [a2 setPropertyIfSupported:*off_1E798A008 value:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithBool:", deviceCopy)}];
     }
 
     else
@@ -6462,12 +6462,12 @@ LABEL_60:
     }
   }
 
-  return v2;
+  return deviceCopy;
 }
 
 - (id)_popLatestVictimizedDeviceClient
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
@@ -6484,14 +6484,14 @@ LABEL_60:
     return 0;
   }
 
-  v2 = [*(v1 + 48) lastObject];
+  lastObject = [*(v1 + 48) lastObject];
   [*(v1 + 48) removeLastObject];
-  return v2;
+  return lastObject;
 }
 
 - (id)_popLatestVictimizedDeviceClientThatCanShareWithFlashlight
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
@@ -6508,14 +6508,14 @@ LABEL_60:
     return 0;
   }
 
-  v2 = [*(v1 + 48) lastObject];
+  lastObject = [*(v1 + 48) lastObject];
   [*(v1 + 48) removeLastObject];
-  return v2;
+  return lastObject;
 }
 
-- (void)_deviceAvailabilityChangedForClient:(uint64_t)a1 available:postNotification:reason:canShareWithFlashlight:
+- (void)_deviceAvailabilityChangedForClient:(uint64_t)client available:postNotification:reason:canShareWithFlashlight:
 {
-  if (a1)
+  if (client)
   {
     OUTLINED_FUNCTION_7_1();
     v5 = 3221225472;
@@ -6529,20 +6529,20 @@ LABEL_60:
   }
 }
 
-- (BOOL)streamsInUseForDevice:(id)a3
+- (BOOL)streamsInUseForDevice:(id)device
 {
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  if (a3)
+  if (device)
   {
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __50__BWFigCaptureDeviceVendor_streamsInUseForDevice___block_invoke;
     v5[3] = &unk_1E79906C0;
     v5[4] = self;
-    v5[5] = a3;
+    v5[5] = device;
     v5[6] = &v6;
     [(BWFigCaptureDeviceVendor *)self _performBlockOnDeviceQueueSynchronously:v5];
     v3 = *(v7 + 24);
@@ -6737,9 +6737,9 @@ void __84__BWFigCaptureDeviceVendor_keepControlOfStreamsWithPositions_deviceType
   }
 }
 
-- (void)takeBackStreams:(id)a3 device:(id)a4 totalStreamingDuration:(unsigned int)a5
+- (void)takeBackStreams:(id)streams device:(id)device totalStreamingDuration:(unsigned int)duration
 {
-  if (a4)
+  if (device)
   {
     OUTLINED_FUNCTION_33_0();
     v9[1] = 3221225472;
@@ -6854,7 +6854,7 @@ uint64_t __74__BWFigCaptureDeviceVendor_takeBackStreams_device_totalStreamingDur
   return result;
 }
 
-- (void)_updateTofAFEstimatorResultsForStream:(uint64_t)a3 totalStreamingDuration:(uint64_t)a4
+- (void)_updateTofAFEstimatorResultsForStream:(uint64_t)stream totalStreamingDuration:(uint64_t)duration
 {
   OUTLINED_FUNCTION_59_0();
   if (v32)
@@ -6876,7 +6876,7 @@ uint64_t __74__BWFigCaptureDeviceVendor_takeBackStreams_device_totalStreamingDur
       {
         [objc_msgSend(v35 "tofAFEstimatorResultsByPortType")];
         [objc_msgSend(v35 "tofAFEstimatorResultsStreamingTimeByPortType")];
-        v37 = [*(v30 + 40) firstObject];
+        firstObject = [*(v30 + 40) firstObject];
         OUTLINED_FUNCTION_54_8();
         v38 = *(v30 + 40);
         OUTLINED_FUNCTION_17_20();
@@ -6896,10 +6896,10 @@ uint64_t __74__BWFigCaptureDeviceVendor_takeBackStreams_device_totalStreamingDur
               }
 
               v48 = *(a28 + 8 * i);
-              v49 = [v48 clientType];
-              if (v49 > [v37 clientType])
+              clientType = [v48 clientType];
+              if (clientType > [firstObject clientType])
               {
-                v37 = v48;
+                firstObject = v48;
               }
             }
 
@@ -6910,7 +6910,7 @@ uint64_t __74__BWFigCaptureDeviceVendor_takeBackStreams_device_totalStreamingDur
           while (v44);
         }
 
-        [v37 applicationID];
+        [firstObject applicationID];
         [v35 tofAFEstimatorClientApplicationIDByPortType];
         [v29 portType];
         [OUTLINED_FUNCTION_40() setObject:? forKeyedSubscript:?];
@@ -6946,10 +6946,10 @@ uint64_t __74__BWFigCaptureDeviceVendor_takeBackStreams_device_totalStreamingDur
       if (result)
       {
         v5 = result;
-        v6 = [v4 afDriverShortStatisticsByPortType];
-        v7 = [v1 portType];
+        afDriverShortStatisticsByPortType = [v4 afDriverShortStatisticsByPortType];
+        portType = [v1 portType];
 
-        return [v6 setObject:v5 forKeyedSubscript:v7];
+        return [afDriverShortStatisticsByPortType setObject:v5 forKeyedSubscript:portType];
       }
     }
 
@@ -7086,9 +7086,9 @@ void __60__BWFigCaptureDeviceVendor__setupDeviceCloseTimerForDevice___block_invo
   }
 }
 
-- (uint64_t)_deviceStateForDeviceWithStream:(uint64_t)a1
+- (uint64_t)_deviceStateForDeviceWithStream:(uint64_t)stream
 {
-  if (!a1)
+  if (!stream)
   {
     return 0;
   }
@@ -7101,8 +7101,8 @@ void __60__BWFigCaptureDeviceVendor__setupDeviceCloseTimerForDevice___block_invo
     FigDebugAssert3();
   }
 
-  v4 = [*(v2 + 24) allValues];
-  if (![v4 countByEnumeratingWithState:v12 objects:v11 count:16])
+  allValues = [*(v2 + 24) allValues];
+  if (![allValues countByEnumeratingWithState:v12 objects:v11 count:16])
   {
     return 0;
   }
@@ -7113,7 +7113,7 @@ void __60__BWFigCaptureDeviceVendor__setupDeviceCloseTimerForDevice___block_invo
     OUTLINED_FUNCTION_21_20();
     if (!v5)
     {
-      objc_enumerationMutation(v4);
+      objc_enumerationMutation(allValues);
     }
 
     if ([objc_msgSend(objc_msgSend(OUTLINED_FUNCTION_75_6(v13) "device")])
@@ -7131,9 +7131,9 @@ void __60__BWFigCaptureDeviceVendor__setupDeviceCloseTimerForDevice___block_invo
   return v3;
 }
 
-- (void)_handleStreamControlTakenByAnotherClientNotification:(uint64_t)a1
+- (void)_handleStreamControlTakenByAnotherClientNotification:(uint64_t)notification
 {
-  if (a1)
+  if (notification)
   {
     OUTLINED_FUNCTION_7_1();
     OUTLINED_FUNCTION_105_3();
@@ -7268,9 +7268,9 @@ uint64_t __81__BWFigCaptureDeviceVendor__handleStreamControlTakenByAnotherClient
   return result;
 }
 
-- (void)_handleStreamRelinquishedByAnotherClientNotification:(uint64_t)a1
+- (void)_handleStreamRelinquishedByAnotherClientNotification:(uint64_t)notification
 {
-  if (a1)
+  if (notification)
   {
     OUTLINED_FUNCTION_7_1();
     OUTLINED_FUNCTION_105_3();
@@ -7385,9 +7385,9 @@ void __81__BWFigCaptureDeviceVendor__handleStreamRelinquishedByAnotherClientNoti
   }
 }
 
-- (void)_handleStreamFrameReceiveTimeoutNotification:(uint64_t)a1
+- (void)_handleStreamFrameReceiveTimeoutNotification:(uint64_t)notification
 {
-  if (a1)
+  if (notification)
   {
     OUTLINED_FUNCTION_7_1();
     OUTLINED_FUNCTION_105_3();
@@ -7419,9 +7419,9 @@ void __73__BWFigCaptureDeviceVendor__handleStreamFrameReceiveTimeoutNotification
   }
 }
 
-- (void)_handleErrorForDevice:(uint64_t)a1
+- (void)_handleErrorForDevice:(uint64_t)device
 {
-  if (a1)
+  if (device)
   {
     OUTLINED_FUNCTION_60();
     v3 = v2;
@@ -7436,8 +7436,8 @@ void __73__BWFigCaptureDeviceVendor__handleStreamFrameReceiveTimeoutNotification
     if (v4)
     {
       v5 = v4;
-      v6 = [MEMORY[0x1E695DF70] array];
-      v7 = [v6 addObjectsFromArray:*(v1 + 40)];
+      array = [MEMORY[0x1E695DF70] array];
+      v7 = [array addObjectsFromArray:*(v1 + 40)];
       memset(v78, 0, 64);
       v9 = OUTLINED_FUNCTION_37(v7, v8, v78, v77);
       if (v9)
@@ -7450,7 +7450,7 @@ void __73__BWFigCaptureDeviceVendor__handleStreamFrameReceiveTimeoutNotification
             OUTLINED_FUNCTION_21_20();
             if (!v12)
             {
-              objc_enumerationMutation(v6);
+              objc_enumerationMutation(array);
             }
 
             v13 = [(BWFigCaptureDeviceVendor *)v1 _removeActiveDeviceClient:0 moveToVictimizedList:?];
@@ -7478,7 +7478,7 @@ void __73__BWFigCaptureDeviceVendor__handleStreamFrameReceiveTimeoutNotification
             OUTLINED_FUNCTION_29_11();
             if (v26 != v24)
             {
-              objc_enumerationMutation(v6);
+              objc_enumerationMutation(array);
             }
 
             OUTLINED_FUNCTION_10_35();
@@ -7502,9 +7502,9 @@ void __73__BWFigCaptureDeviceVendor__handleStreamFrameReceiveTimeoutNotification
   }
 }
 
-- (void)_handleDeviceUnrecoverableError:(uint64_t)a1 fromDevice:
+- (void)_handleDeviceUnrecoverableError:(uint64_t)error fromDevice:
 {
-  if (a1)
+  if (error)
   {
     OUTLINED_FUNCTION_33_0();
     v2 = OUTLINED_FUNCTION_0_78(v1, COERCE_DOUBLE(3221225472));
@@ -7512,9 +7512,9 @@ void __73__BWFigCaptureDeviceVendor__handleStreamFrameReceiveTimeoutNotification
   }
 }
 
-- (void)_handleDeviceNoLongerAvailable:(uint64_t)a1
+- (void)_handleDeviceNoLongerAvailable:(uint64_t)available
 {
-  if (a1)
+  if (available)
   {
     OUTLINED_FUNCTION_7_1();
     OUTLINED_FUNCTION_105_3();
@@ -7577,9 +7577,9 @@ void __73__BWFigCaptureDeviceVendor__handleStreamFrameReceiveTimeoutNotification
   return result;
 }
 
-- (void)_showISPLeftOnTapToRadarPromptIfNecessary:(uint64_t)a1
+- (void)_showISPLeftOnTapToRadarPromptIfNecessary:(uint64_t)necessary
 {
-  if (a1)
+  if (necessary)
   {
     if (!_FigIsCurrentDispatchQueue())
     {
@@ -7614,7 +7614,7 @@ void __73__BWFigCaptureDeviceVendor__handleStreamFrameReceiveTimeoutNotification
 
 - (void)_logActiveDefaultDeviceClientAndDevice
 {
-  if (a1)
+  if (self)
   {
     OUTLINED_FUNCTION_84();
     v2 = v1;
@@ -7664,26 +7664,26 @@ void __73__BWFigCaptureDeviceVendor__handleStreamFrameReceiveTimeoutNotification
 
             if (v12)
             {
-              v31 = [v9 applicationID];
+              applicationID = [v9 applicationID];
               v13 = [v9 pid];
               v14 = v5;
               v15 = v6;
               v16 = v4;
-              v17 = [v9 clientID];
-              v18 = [v9 clientDescription];
+              clientID = [v9 clientID];
+              clientDescription = [v9 clientDescription];
               v32 = 136316163;
               v33 = "[BWFigCaptureDeviceVendor _logActiveDefaultDeviceClientAndDevice]";
               v34 = 2114;
-              v35 = v31;
+              v35 = applicationID;
               v36 = 1025;
               v37 = v13;
               v38 = 1024;
-              v39 = v17;
+              v39 = clientID;
               v4 = v16;
               v6 = v15;
               v5 = v14;
               v40 = 2114;
-              v41 = v18;
+              v41 = clientDescription;
               LODWORD(v28) = 44;
               v27 = &v32;
               OUTLINED_FUNCTION_13();
@@ -7752,23 +7752,23 @@ void __73__BWFigCaptureDeviceVendor__handleStreamFrameReceiveTimeoutNotification
   }
 }
 
-- (void)_updateDefaultDevicePriorStreamPortTypes:(uint64_t)a1
+- (void)_updateDefaultDevicePriorStreamPortTypes:(uint64_t)types
 {
-  if (a1)
+  if (types)
   {
     if ([objc_msgSend(a2 "deviceID")])
     {
       v4 = objc_alloc_init(MEMORY[0x1E695DFA8]);
       memset(v17, 0, sizeof(v17));
-      v5 = [a2 streams];
-      if ([v5 countByEnumeratingWithState:v17 objects:v16 count:16])
+      streams = [a2 streams];
+      if ([streams countByEnumeratingWithState:v17 objects:v16 count:16])
       {
         do
         {
           OUTLINED_FUNCTION_89();
           if (!v6)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(streams);
           }
 
           [*v17[1] portType];
@@ -7779,24 +7779,24 @@ void __73__BWFigCaptureDeviceVendor__handleStreamFrameReceiveTimeoutNotification
         while (!v6 || OUTLINED_FUNCTION_64(v7, v8, v17, v16));
       }
 
-      v9 = *(a1 + 168);
+      v9 = *(types + 168);
       if (v9)
       {
         if (([v9 isEqualToSet:v4] & 1) == 0)
         {
-          [*(a1 + 168) setSet:v4];
+          [*(types + 168) setSet:v4];
           OUTLINED_FUNCTION_8_7();
           v12 = 3221225472;
           v13 = __69__BWFigCaptureDeviceVendor__updateDefaultDevicePriorStreamPortTypes___block_invoke;
           v14 = &unk_1E798F870;
-          v15 = a1;
+          typesCopy = types;
           dispatch_async(v10, block);
         }
       }
 
       else
       {
-        *(a1 + 168) = [objc_alloc(MEMORY[0x1E695DFA8]) initWithSet:v4];
+        *(types + 168) = [objc_alloc(MEMORY[0x1E695DFA8]) initWithSet:v4];
       }
     }
 

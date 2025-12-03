@@ -1,13 +1,13 @@
 @interface GuidedAccessController
 - (GuidedAccessController)init;
-- (id)accessibilityPreferenceForSpecifier:(id)a3;
-- (id)autoLockTime:(id)a3;
+- (id)accessibilityPreferenceForSpecifier:(id)specifier;
+- (id)autoLockTime:(id)time;
 - (id)specifiers;
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4;
-- (void)_reallyToggleGAXSettingFromValue:(BOOL)a3;
-- (void)accessibilitySetPreference:(id)a3 specifier:(id)a4;
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section;
+- (void)_reallyToggleGAXSettingFromValue:(BOOL)value;
+- (void)accessibilitySetPreference:(id)preference specifier:(id)specifier;
 - (void)dealloc;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)willBecomeActive;
 @end
 
@@ -52,7 +52,7 @@
     v39 = v5;
     [v4 addObject:v5];
     v7 = GAXSLocString(@"AUTO_LOCK");
-    v41 = self;
+    selfCopy = self;
     v8 = [PSSpecifier preferenceSpecifierNamed:v7 target:self set:0 get:"autoLockTime:" detail:objc_opt_class() cell:2 edit:0];
 
     [v8 setProperty:@"GuidedAccessAutoLockTime" forKey:v6];
@@ -165,13 +165,13 @@ LABEL_18:
         v33 = [obj specifierForID:@"GuidedAccessAutoLockTime"];
         v53[7] = v33;
         v34 = [NSArray arrayWithObjects:v53 count:8];
-        [(GuidedAccessController *)v41 setDetailItems:v34];
+        [(GuidedAccessController *)selfCopy setDetailItems:v34];
 
-        v35 = [(GuidedAccessController *)v41 specifiersByRemovingDetailItemsFromOriginalSpecifiers:obj ifHidden:_AXSGuidedAccessEnabled() == 0];
-        v36 = *&v41->AXUISettingsBaseListController_opaque[v40];
-        *&v41->AXUISettingsBaseListController_opaque[v40] = v35;
+        v35 = [(GuidedAccessController *)selfCopy specifiersByRemovingDetailItemsFromOriginalSpecifiers:obj ifHidden:_AXSGuidedAccessEnabled() == 0];
+        v36 = *&selfCopy->AXUISettingsBaseListController_opaque[v40];
+        *&selfCopy->AXUISettingsBaseListController_opaque[v40] = v35;
 
-        v3 = *&v41->AXUISettingsBaseListController_opaque[v40];
+        v3 = *&selfCopy->AXUISettingsBaseListController_opaque[v40];
         break;
       }
     }
@@ -180,12 +180,12 @@ LABEL_18:
   return v3;
 }
 
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section
 {
-  v6 = a3;
+  viewCopy = view;
   v18.receiver = self;
   v18.super_class = GuidedAccessController;
-  v7 = [(GuidedAccessController *)&v18 tableView:v6 titleForFooterInSection:a4];
+  v7 = [(GuidedAccessController *)&v18 tableView:viewCopy titleForFooterInSection:section];
   v8 = +[NSLocale preferredLanguages];
   if ([v8 count])
   {
@@ -194,9 +194,9 @@ LABEL_18:
 
     if (v10)
     {
-      v11 = [v6 window];
-      v12 = [v11 windowScene];
-      v13 = [v12 interfaceOrientation];
+      window = [viewCopy window];
+      windowScene = [window windowScene];
+      interfaceOrientation = [windowScene interfaceOrientation];
 
       v14 = +[UIDevice currentDevice];
       if ([v14 userInterfaceIdiom] != &dword_0 + 1)
@@ -206,7 +206,7 @@ LABEL_7:
         goto LABEL_8;
       }
 
-      if (a4 == 1 && (v13 - 1) <= 1)
+      if (section == 1 && (interfaceOrientation - 1) <= 1)
       {
         v15 = [v7 componentsSeparatedByString:@" "];
         v14 = [v15 mutableCopy];
@@ -233,18 +233,18 @@ LABEL_8:
   [(GuidedAccessController *)self setDetailItemsHidden:_AXSGuidedAccessEnabled() == 0];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = GuidedAccessController;
-  [(GuidedAccessController *)&v4 viewWillAppear:a3];
+  [(GuidedAccessController *)&v4 viewWillAppear:appear];
   [(GuidedAccessController *)self reloadSpecifiers];
 }
 
-- (id)accessibilityPreferenceForSpecifier:(id)a3
+- (id)accessibilityPreferenceForSpecifier:(id)specifier
 {
-  v3 = [a3 properties];
-  v4 = [v3 objectForKey:PSIDKey];
+  properties = [specifier properties];
+  v4 = [properties objectForKey:PSIDKey];
 
   if ([v4 isEqualToString:@"EnableGuidedAccess"])
   {
@@ -265,11 +265,11 @@ LABEL_8:
   return v5;
 }
 
-- (void)_reallyToggleGAXSettingFromValue:(BOOL)a3
+- (void)_reallyToggleGAXSettingFromValue:(BOOL)value
 {
-  v3 = a3;
+  valueCopy = value;
   _AXSGuidedAccessSetEnabled();
-  if (v3)
+  if (valueCopy)
   {
     AXPerformBlockOnMainThreadAfterDelay();
   }
@@ -277,30 +277,30 @@ LABEL_8:
   [(GuidedAccessController *)self setDetailItemsHidden:_AXSGuidedAccessEnabled() == 0];
 }
 
-- (void)accessibilitySetPreference:(id)a3 specifier:(id)a4
+- (void)accessibilitySetPreference:(id)preference specifier:(id)specifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 properties];
-  v9 = [v8 objectForKey:PSIDKey];
+  preferenceCopy = preference;
+  specifierCopy = specifier;
+  properties = [specifierCopy properties];
+  v9 = [properties objectForKey:PSIDKey];
 
-  v10 = [v6 BOOLValue];
+  bOOLValue = [preferenceCopy BOOLValue];
   if ([v9 isEqualToString:@"EnableGuidedAccess"])
   {
-    if (v10)
+    if (bOOLValue)
     {
       v19[0] = _NSConcreteStackBlock;
       v19[1] = 3221225472;
       v19[2] = __63__GuidedAccessController_accessibilitySetPreference_specifier___block_invoke;
       v19[3] = &unk_2554E8;
       v19[4] = self;
-      v20 = v10;
+      v20 = bOOLValue;
       v13 = _NSConcreteStackBlock;
       v14 = 3221225472;
       v15 = __63__GuidedAccessController_accessibilitySetPreference_specifier___block_invoke_2;
       v16 = &unk_255538;
-      v17 = v7;
-      v18 = self;
+      v17 = specifierCopy;
+      selfCopy = self;
       [(GuidedAccessController *)self accessibilityPerformTripleClickAddingBlockConfirmingSOSConflicts:v19 cancellationBlock:&v13];
     }
 
@@ -312,9 +312,9 @@ LABEL_8:
 
   else if ([v9 isEqualToString:@"GuidedAccessEnableAXFeatures"])
   {
-    v11 = [v6 BOOLValue];
+    bOOLValue2 = [preferenceCopy BOOLValue];
     v12 = +[AXSettings sharedInstance];
-    [v12 setGuidedAccessAXFeaturesEnabled:v11];
+    [v12 setGuidedAccessAXFeaturesEnabled:bOOLValue2];
   }
 
   [(GuidedAccessController *)self setDetailItemsHidden:_AXSGuidedAccessEnabled() == 0, v13, v14, v15, v16];
@@ -335,7 +335,7 @@ void __40__GuidedAccessController__unsetPasscode__block_invoke(id a1)
   [v1 setPasscode:0];
 }
 
-- (id)autoLockTime:(id)a3
+- (id)autoLockTime:(id)time
 {
   v3 = +[AXSettings sharedInstance];
   v4 = GuidedAccessDescriptionForAutoLockTime([v3 guidedAccessAutoLockTimeInSeconds]);

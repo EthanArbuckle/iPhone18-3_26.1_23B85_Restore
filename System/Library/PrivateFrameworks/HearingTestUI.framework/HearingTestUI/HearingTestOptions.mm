@@ -1,24 +1,24 @@
 @interface HearingTestOptions
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_TtC13HearingTestUI18HearingTestOptions)init;
-- (_TtC13HearingTestUI18HearingTestOptions)initWithRawValue:(int64_t)a3;
+- (_TtC13HearingTestUI18HearingTestOptions)initWithRawValue:(int64_t)value;
 @end
 
 @implementation HearingTestOptions
 
-- (_TtC13HearingTestUI18HearingTestOptions)initWithRawValue:(int64_t)a3
+- (_TtC13HearingTestUI18HearingTestOptions)initWithRawValue:(int64_t)value
 {
-  *(&self->super.isa + OBJC_IVAR____TtC13HearingTestUI18HearingTestOptions_rawValue) = a3;
+  *(&self->super.isa + OBJC_IVAR____TtC13HearingTestUI18HearingTestOptions_rawValue) = value;
   v4.receiver = self;
   v4.super_class = type metadata accessor for HearingTestOptions();
   return [(HearingTestOptions *)&v4 init];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_20CE13FC4();
     swift_unknownObjectRelease();
@@ -27,7 +27,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = sub_20CDC3ED4(v8);

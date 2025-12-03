@@ -1,14 +1,14 @@
 @interface NATouchInsetsButton
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (UIEdgeInsets)touchInsets;
 @end
 
 @implementation NATouchInsetsButton
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   [(NATouchInsetsButton *)self bounds];
   top = self->_touchInsets.top;
   left = self->_touchInsets.left;

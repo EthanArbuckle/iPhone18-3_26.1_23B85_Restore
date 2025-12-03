@@ -4,8 +4,8 @@
 - (NSString)return_str;
 - (NSString)session_id;
 - (NSString)speech_id;
-- (Offset<siri::speech::schema_fb::PostItnHammerResponse>)addObjectToBuffer:(void *)a3;
-- (QSSPostItnHammerResponse)initWithFlatbuffData:(id)a3 root:(const PostItnHammerResponse *)a4 verify:(BOOL)a5;
+- (Offset<siri::speech::schema_fb::PostItnHammerResponse>)addObjectToBuffer:(void *)buffer;
+- (QSSPostItnHammerResponse)initWithFlatbuffData:(id)data root:(const PostItnHammerResponse *)root verify:(BOOL)verify;
 - (id)flatbuffData;
 - (int)return_code;
 @end
@@ -41,64 +41,64 @@ flatbuffers::DetachedBuffer *__40__QSSPostItnHammerResponse_flatbuffData__block_
   return result;
 }
 
-- (Offset<siri::speech::schema_fb::PostItnHammerResponse>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::schema_fb::PostItnHammerResponse>)addObjectToBuffer:(void *)buffer
 {
   v48 = *MEMORY[0x277D85DE8];
-  v5 = [(QSSPostItnHammerResponse *)self speech_id];
-  v6 = v5;
-  if (!v5)
+  speech_id = [(QSSPostItnHammerResponse *)self speech_id];
+  v6 = speech_id;
+  if (!speech_id)
   {
-    v5 = &stru_2879AE8E0;
+    speech_id = &stru_2879AE8E0;
   }
 
-  v7 = [(__CFString *)v5 UTF8String];
-  v8 = strlen(v7);
-  String = flatbuffers::FlatBufferBuilder::CreateString(a3, v7, v8);
+  uTF8String = [(__CFString *)speech_id UTF8String];
+  v8 = strlen(uTF8String);
+  String = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String, v8);
 
-  v10 = [(QSSPostItnHammerResponse *)self session_id];
-  v11 = v10;
-  if (!v10)
+  session_id = [(QSSPostItnHammerResponse *)self session_id];
+  v11 = session_id;
+  if (!session_id)
   {
-    v10 = &stru_2879AE8E0;
+    session_id = &stru_2879AE8E0;
   }
 
-  v12 = [(__CFString *)v10 UTF8String];
-  v13 = strlen(v12);
-  v14 = flatbuffers::FlatBufferBuilder::CreateString(a3, v12, v13);
+  uTF8String2 = [(__CFString *)session_id UTF8String];
+  v13 = strlen(uTF8String2);
+  v14 = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String2, v13);
 
-  v15 = [(QSSPostItnHammerResponse *)self language];
-  v16 = v15;
-  if (!v15)
+  language = [(QSSPostItnHammerResponse *)self language];
+  v16 = language;
+  if (!language)
   {
-    v15 = &stru_2879AE8E0;
+    language = &stru_2879AE8E0;
   }
 
-  v17 = [(__CFString *)v15 UTF8String];
-  v18 = strlen(v17);
-  v19 = flatbuffers::FlatBufferBuilder::CreateString(a3, v17, v18);
+  uTF8String3 = [(__CFString *)language UTF8String];
+  v18 = strlen(uTF8String3);
+  v19 = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String3, v18);
 
-  v20 = [(QSSPostItnHammerResponse *)self return_code];
-  v21 = [(QSSPostItnHammerResponse *)self return_str];
-  v22 = v21;
-  if (!v21)
+  return_code = [(QSSPostItnHammerResponse *)self return_code];
+  return_str = [(QSSPostItnHammerResponse *)self return_str];
+  v22 = return_str;
+  if (!return_str)
   {
-    v21 = &stru_2879AE8E0;
+    return_str = &stru_2879AE8E0;
   }
 
-  v23 = [(__CFString *)v21 UTF8String];
-  v24 = strlen(v23);
-  v25 = flatbuffers::FlatBufferBuilder::CreateString(a3, v23, v24);
+  uTF8String4 = [(__CFString *)return_str UTF8String];
+  v24 = strlen(uTF8String4);
+  v25 = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String4, v24);
 
   memset(&v46, 0, sizeof(v46));
-  v26 = [(QSSPostItnHammerResponse *)self tokens];
-  std::vector<flatbuffers::Offset<siri::speech::schema_fb::RecognitionToken>>::reserve(&v46, [v26 count]);
+  tokens = [(QSSPostItnHammerResponse *)self tokens];
+  std::vector<flatbuffers::Offset<siri::speech::schema_fb::RecognitionToken>>::reserve(&v46, [tokens count]);
 
   v44 = 0u;
   v45 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v27 = [(QSSPostItnHammerResponse *)self tokens];
-  v28 = [v27 countByEnumeratingWithState:&v42 objects:v47 count:16];
+  tokens2 = [(QSSPostItnHammerResponse *)self tokens];
+  v28 = [tokens2 countByEnumeratingWithState:&v42 objects:v47 count:16];
   if (v28)
   {
     v29 = *v43;
@@ -108,14 +108,14 @@ flatbuffers::DetachedBuffer *__40__QSSPostItnHammerResponse_flatbuffData__block_
       {
         if (*v43 != v29)
         {
-          objc_enumerationMutation(v27);
+          objc_enumerationMutation(tokens2);
         }
 
-        v41 = [*(*(&v42 + 1) + 8 * i) addObjectToBuffer:a3];
+        v41 = [*(*(&v42 + 1) + 8 * i) addObjectToBuffer:buffer];
         std::vector<flatbuffers::Offset<siri::speech::schema_fb::RecognitionToken>>::push_back[abi:ne200100](&v46, &v41);
       }
 
-      v28 = [v27 countByEnumeratingWithState:&v42 objects:v47 count:16];
+      v28 = [tokens2 countByEnumeratingWithState:&v42 objects:v47 count:16];
     }
 
     while (v28);
@@ -133,19 +133,19 @@ flatbuffers::DetachedBuffer *__40__QSSPostItnHammerResponse_flatbuffData__block_
     v32 = v46.__begin_;
   }
 
-  v33 = flatbuffers::FlatBufferBuilder::CreateVector<flatbuffers::String>(a3, v32, v46.__end_ - v46.__begin_);
-  flatbuffers::FlatBufferBuilder::NotNested(a3);
-  *(a3 + 70) = 1;
-  v34 = *(a3 + 8);
-  v35 = *(a3 + 12);
-  v36 = *(a3 + 10);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 4, String);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 6, v14);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 8, v19);
-  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(a3, 10, v20);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 12, v40);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 14, v33);
-  v37.var0 = flatbuffers::FlatBufferBuilder::EndTable(a3, v34 - v35 + v36);
+  v33 = flatbuffers::FlatBufferBuilder::CreateVector<flatbuffers::String>(buffer, v32, v46.__end_ - v46.__begin_);
+  flatbuffers::FlatBufferBuilder::NotNested(buffer);
+  *(buffer + 70) = 1;
+  v34 = *(buffer + 8);
+  v35 = *(buffer + 12);
+  v36 = *(buffer + 10);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 4, String);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 6, v14);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 8, v19);
+  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(buffer, 10, return_code);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 12, v40);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 14, v33);
+  v37.var0 = flatbuffers::FlatBufferBuilder::EndTable(buffer, v34 - v35 + v36);
   if (begin)
   {
     operator delete(begin);
@@ -157,10 +157,10 @@ flatbuffers::DetachedBuffer *__40__QSSPostItnHammerResponse_flatbuffData__block_
 
 - (NSArray)tokens
 {
-  v3 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"tokens"];
-  if (!v3)
+  array = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"tokens"];
+  if (!array)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     root = self->_root;
     v5 = &root[-*root->var0];
     if (*v5->var0 >= 0xFu)
@@ -177,7 +177,7 @@ flatbuffers::DetachedBuffer *__40__QSSPostItnHammerResponse_flatbuffData__block_
           do
           {
             v11 = [[QSSRecognitionToken alloc] initWithFlatbuffData:self->_data root:&v10[*v10->var0] verify:0];
-            [v3 addObject:v11];
+            [array addObject:v11];
 
             v10 += 4;
             v9 -= 4;
@@ -188,10 +188,10 @@ flatbuffers::DetachedBuffer *__40__QSSPostItnHammerResponse_flatbuffData__block_
       }
     }
 
-    [(NSMutableDictionary *)self->_storage setObject:v3 forKeyedSubscript:@"tokens"];
+    [(NSMutableDictionary *)self->_storage setObject:array forKeyedSubscript:@"tokens"];
   }
 
-  return v3;
+  return array;
 }
 
 - (NSString)return_str
@@ -301,10 +301,10 @@ flatbuffers::DetachedBuffer *__40__QSSPostItnHammerResponse_flatbuffData__block_
   return v6;
 }
 
-- (QSSPostItnHammerResponse)initWithFlatbuffData:(id)a3 root:(const PostItnHammerResponse *)a4 verify:(BOOL)a5
+- (QSSPostItnHammerResponse)initWithFlatbuffData:(id)data root:(const PostItnHammerResponse *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v44.receiver = self;
   v44.super_class = QSSPostItnHammerResponse;
   v10 = [(QSSPostItnHammerResponse *)&v44 init];
@@ -314,35 +314,35 @@ flatbuffers::DetachedBuffer *__40__QSSPostItnHammerResponse_flatbuffData__block_
     goto LABEL_53;
   }
 
-  if (!v9 || ![v9 length])
+  if (!dataCopy || ![dataCopy length])
   {
     goto LABEL_54;
   }
 
-  objc_storeStrong(&v10->_data, a3);
-  if (!a4)
+  objc_storeStrong(&v10->_data, data);
+  if (!root)
   {
-    v12 = [(NSData *)v10->_data bytes];
-    a4 = v12 + *v12;
+    bytes = [(NSData *)v10->_data bytes];
+    root = bytes + *bytes;
   }
 
-  v10->_root = a4;
-  if (!v5)
+  v10->_root = root;
+  if (!verifyCopy)
   {
     goto LABEL_52;
   }
 
-  v13 = [(NSData *)v10->_data bytes];
+  bytes2 = [(NSData *)v10->_data bytes];
   v14 = [(NSData *)v10->_data length];
   root = v10->_root;
-  if (root < v13 || root > v13 + v14)
+  if (root < bytes2 || root > bytes2 + v14)
   {
     goto LABEL_54;
   }
 
-  v17 = [(NSData *)v10->_data bytes];
+  bytes3 = [(NSData *)v10->_data bytes];
   v18 = [(NSData *)v10->_data length];
-  v39 = v17;
+  v39 = bytes3;
   v40 = v18;
   v41 = xmmword_26914CD70;
   v42 = 0;
@@ -470,9 +470,9 @@ LABEL_51:
   }
 
 LABEL_52:
-  v35 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   storage = v11->_storage;
-  v11->_storage = v35;
+  v11->_storage = dictionary;
 
 LABEL_53:
   v37 = v11;

@@ -4,13 +4,13 @@
 - (WOWorkoutAlertPresenter)init;
 - (WOWorkoutAlertSuppressor)_alertSuppressor;
 - (WOWorkoutAlertSuppressor)alertSuppressor;
-- (void)alertSource:(id)a3 didTriggerAlert:(id)a4;
-- (void)alertSource:(id)a3 speakUtterance:(id)a4;
-- (void)backlight:(id)a3 didCompleteUpdateToState:(int64_t)a4 forEvent:(id)a5;
-- (void)displayCompletedFor:(id)a3;
-- (void)setAlertSuppressor:(id)a3;
-- (void)setCurrentAlert:(id)a3;
-- (void)set_currentAlert:(id)a3;
+- (void)alertSource:(id)source didTriggerAlert:(id)alert;
+- (void)alertSource:(id)source speakUtterance:(id)utterance;
+- (void)backlight:(id)backlight didCompleteUpdateToState:(int64_t)state forEvent:(id)event;
+- (void)displayCompletedFor:(id)for;
+- (void)setAlertSuppressor:(id)suppressor;
+- (void)setCurrentAlert:(id)alert;
+- (void)set_currentAlert:(id)alert;
 @end
 
 @implementation WOWorkoutAlertPresenter
@@ -27,7 +27,7 @@
 {
   swift_getKeyPath();
   lazy protocol witness table accessor for type WorkoutAlertPresenter and conformance WorkoutAlertPresenter(&lazy protocol witness table cache variable for type WorkoutAlertPresenter and conformance WorkoutAlertPresenter, type metadata accessor for WorkoutAlertPresenter);
-  v3 = self;
+  selfCopy = self;
   ObservationRegistrar.access<A, B>(_:keyPath:)();
 
   swift_beginAccess();
@@ -36,49 +36,49 @@
   return Strong;
 }
 
-- (void)setAlertSuppressor:(id)a3
+- (void)setAlertSuppressor:(id)suppressor
 {
   swift_getKeyPath();
   lazy protocol witness table accessor for type WorkoutAlertPresenter and conformance WorkoutAlertPresenter(&lazy protocol witness table cache variable for type WorkoutAlertPresenter and conformance WorkoutAlertPresenter, type metadata accessor for WorkoutAlertPresenter);
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   ObservationRegistrar.withMutation<A, B, C>(of:keyPath:_:)();
 
   swift_unknownObjectRelease();
 }
 
-- (void)set_currentAlert:(id)a3
+- (void)set_currentAlert:(id)alert
 {
   v4 = *(self + OBJC_IVAR___WOWorkoutAlertPresenter__currentAlert);
-  *(self + OBJC_IVAR___WOWorkoutAlertPresenter__currentAlert) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___WOWorkoutAlertPresenter__currentAlert) = alert;
+  alertCopy = alert;
 }
 
 - (NLWorkoutAlert)currentAlert
 {
   swift_getKeyPath();
   lazy protocol witness table accessor for type WorkoutAlertPresenter and conformance WorkoutAlertPresenter(&lazy protocol witness table cache variable for type WorkoutAlertPresenter and conformance WorkoutAlertPresenter, type metadata accessor for WorkoutAlertPresenter);
-  v3 = self;
+  selfCopy = self;
   ObservationRegistrar.access<A, B>(_:keyPath:)();
 
-  v4 = *(v3 + OBJC_IVAR___WOWorkoutAlertPresenter__currentAlert);
+  v4 = *(selfCopy + OBJC_IVAR___WOWorkoutAlertPresenter__currentAlert);
   v5 = v4;
 
   return v4;
 }
 
-- (void)setCurrentAlert:(id)a3
+- (void)setCurrentAlert:(id)alert
 {
-  v5 = a3;
-  v6 = self;
-  WorkoutAlertPresenter.currentAlert.setter(a3);
+  alertCopy = alert;
+  selfCopy = self;
+  WorkoutAlertPresenter.currentAlert.setter(alert);
 }
 
-- (void)displayCompletedFor:(id)a3
+- (void)displayCompletedFor:(id)for
 {
-  v4 = a3;
-  v5 = self;
-  WorkoutAlertPresenter.displayCompleted(for:)(v4);
+  forCopy = for;
+  selfCopy = self;
+  WorkoutAlertPresenter.displayCompleted(for:)(forCopy);
 }
 
 - (WOWorkoutAlertPresenter)init
@@ -88,25 +88,25 @@
   return result;
 }
 
-- (void)alertSource:(id)a3 didTriggerAlert:(id)a4
+- (void)alertSource:(id)source didTriggerAlert:(id)alert
 {
   swift_unknownObjectRetain();
-  v6 = a4;
-  v7 = self;
+  alertCopy = alert;
+  selfCopy = self;
   _bridgeAnyObjectToAny(_:)();
   swift_unknownObjectRelease();
   type metadata accessor for DispatchUtilities();
   v8 = swift_allocObject();
-  *(v8 + 16) = v7;
-  *(v8 + 24) = v6;
-  v9 = v6;
-  v10 = v7;
+  *(v8 + 16) = selfCopy;
+  *(v8 + 24) = alertCopy;
+  v9 = alertCopy;
+  v10 = selfCopy;
   static DispatchUtilities.ensureMainQueueOrAsync(block:)();
 
   __swift_destroy_boxed_opaque_existential_0(&v11);
 }
 
-- (void)alertSource:(id)a3 speakUtterance:(id)a4
+- (void)alertSource:(id)source speakUtterance:(id)utterance
 {
   swift_unknownObjectRetain();
   _bridgeAnyObjectToAny(_:)();
@@ -119,20 +119,20 @@
 {
   swift_getKeyPath();
   lazy protocol witness table accessor for type WorkoutAlertPresenter and conformance WorkoutAlertPresenter(&lazy protocol witness table cache variable for type WorkoutAlertPresenter and conformance WorkoutAlertPresenter, type metadata accessor for WorkoutAlertPresenter);
-  v3 = self;
+  selfCopy = self;
   ObservationRegistrar.access<A, B>(_:keyPath:)();
 
-  LOBYTE(self) = *(v3 + OBJC_IVAR___WOWorkoutAlertPresenter__isAlertingANonVisualAlert);
+  LOBYTE(self) = *(selfCopy + OBJC_IVAR___WOWorkoutAlertPresenter__isAlertingANonVisualAlert);
 
   return (self & 1) == 0;
 }
 
-- (void)backlight:(id)a3 didCompleteUpdateToState:(int64_t)a4 forEvent:(id)a5
+- (void)backlight:(id)backlight didCompleteUpdateToState:(int64_t)state forEvent:(id)event
 {
   swift_unknownObjectRetain();
-  v8 = a5;
-  v9 = self;
-  specialized WorkoutAlertPresenter.backlight(_:didCompleteUpdateTo:for:)(a4, a5);
+  eventCopy = event;
+  selfCopy = self;
+  specialized WorkoutAlertPresenter.backlight(_:didCompleteUpdateTo:for:)(state, event);
   swift_unknownObjectRelease();
 }
 

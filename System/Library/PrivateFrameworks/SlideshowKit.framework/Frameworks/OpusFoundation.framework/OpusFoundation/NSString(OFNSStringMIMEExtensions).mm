@@ -20,11 +20,11 @@
 
 + (void)mimePart:()OFNSStringMIMEExtensions forName:
 {
-  v6 = [MEMORY[0x277CCAB68] string];
-  [v6 appendFormat:@"--%@\r\nContent-Disposition: form-data; charset=UTF-8; name=%@\r\n\r\n", objc_msgSend(MEMORY[0x277CCACA8], "mimeBoundary"), a4];
-  [v6 appendString:a3];
-  [v6 appendString:@"\r\n"];
-  return v6;
+  string = [MEMORY[0x277CCAB68] string];
+  [string appendFormat:@"--%@\r\nContent-Disposition: form-data; charset=UTF-8; name=%@\r\n\r\n", objc_msgSend(MEMORY[0x277CCACA8], "mimeBoundary"), a4];
+  [string appendString:a3];
+  [string appendString:@"\r\n"];
+  return string;
 }
 
 @end

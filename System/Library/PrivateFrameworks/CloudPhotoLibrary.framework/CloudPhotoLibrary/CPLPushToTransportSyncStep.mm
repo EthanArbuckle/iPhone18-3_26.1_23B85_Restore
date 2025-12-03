@@ -1,5 +1,5 @@
 @interface CPLPushToTransportSyncStep
-- (CPLPushToTransportSyncStep)initWithSyncManager:(id)a3 syncSession:(id)a4 highPriority:(BOOL)a5;
+- (CPLPushToTransportSyncStep)initWithSyncManager:(id)manager syncSession:(id)session highPriority:(BOOL)priority;
 - (id)newTask;
 @end
 
@@ -9,23 +9,23 @@
 {
   v5.receiver = self;
   v5.super_class = CPLPushToTransportSyncStep;
-  v3 = [(CPLSimpleTaskSyncStep *)&v5 newTask];
-  [v3 setHighPriority:self->_highPriority];
-  return v3;
+  newTask = [(CPLSimpleTaskSyncStep *)&v5 newTask];
+  [newTask setHighPriority:self->_highPriority];
+  return newTask;
 }
 
-- (CPLPushToTransportSyncStep)initWithSyncManager:(id)a3 syncSession:(id)a4 highPriority:(BOOL)a5
+- (CPLPushToTransportSyncStep)initWithSyncManager:(id)manager syncSession:(id)session highPriority:(BOOL)priority
 {
-  v8 = a4;
-  v9 = a3;
+  sessionCopy = session;
+  managerCopy = manager;
   v10 = objc_opt_class();
   v13.receiver = self;
   v13.super_class = CPLPushToTransportSyncStep;
-  v11 = [(CPLSimpleTaskSyncStep *)&v13 initWithSyncManager:v9 syncSession:v8 taskClass:v10];
+  v11 = [(CPLSimpleTaskSyncStep *)&v13 initWithSyncManager:managerCopy syncSession:sessionCopy taskClass:v10];
 
   if (v11)
   {
-    v11->_highPriority = a5;
+    v11->_highPriority = priority;
   }
 
   return v11;

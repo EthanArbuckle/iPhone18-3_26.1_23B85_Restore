@@ -1,11 +1,11 @@
 @interface MADAutoSetPolicy
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (MADAutoSetPolicy)init;
-- (MADAutoSetPolicy)initWithCoder:(id)a3;
+- (MADAutoSetPolicy)initWithCoder:(id)coder;
 - (id)copy;
-- (id)initFromAutoAssetSetPolicy:(id)a3;
+- (id)initFromAutoAssetSetPolicy:(id)policy;
 - (id)summary;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MADAutoSetPolicy
@@ -23,59 +23,59 @@
   return result;
 }
 
-- (id)initFromAutoAssetSetPolicy:(id)a3
+- (id)initFromAutoAssetSetPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v7.receiver = self;
   v7.super_class = MADAutoSetPolicy;
   v5 = [(MADAutoSetPolicy *)&v7 init];
   if (v5)
   {
-    v5->_userInitiated = [v4 userInitiated];
-    v5->_lockInhibitsEmergencyRemoval = [v4 lockInhibitsEmergencyRemoval];
-    v5->_allowCheckDownloadOnBattery = [v4 allowCheckDownloadOnBattery];
-    v5->_allowCheckDownloadWhenBatteryLow = [v4 allowCheckDownloadWhenBatteryLow];
-    v5->_allowCheckDownloadWhenCPUHigh = [v4 allowCheckDownloadWhenCPUHigh];
-    v5->_allowCheckDownloadOverExpensive = [v4 allowCheckDownloadOverExpensive];
-    v5->_allowCheckDownloadOverCellular = [v4 allowCheckDownloadOverCellular];
-    v5->_blockCheckDownload = [v4 blockCheckDownload];
+    v5->_userInitiated = [policyCopy userInitiated];
+    v5->_lockInhibitsEmergencyRemoval = [policyCopy lockInhibitsEmergencyRemoval];
+    v5->_allowCheckDownloadOnBattery = [policyCopy allowCheckDownloadOnBattery];
+    v5->_allowCheckDownloadWhenBatteryLow = [policyCopy allowCheckDownloadWhenBatteryLow];
+    v5->_allowCheckDownloadWhenCPUHigh = [policyCopy allowCheckDownloadWhenCPUHigh];
+    v5->_allowCheckDownloadOverExpensive = [policyCopy allowCheckDownloadOverExpensive];
+    v5->_allowCheckDownloadOverCellular = [policyCopy allowCheckDownloadOverCellular];
+    v5->_blockCheckDownload = [policyCopy blockCheckDownload];
   }
 
   return v5;
 }
 
-- (MADAutoSetPolicy)initWithCoder:(id)a3
+- (MADAutoSetPolicy)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = MADAutoSetPolicy;
   v5 = [(MADAutoSetPolicy *)&v7 init];
   if (v5)
   {
-    v5->_userInitiated = [v4 decodeBoolForKey:@"userInitiated"];
-    v5->_lockInhibitsEmergencyRemoval = [v4 decodeBoolForKey:@"lockInhibitsEmergencyRemoval"];
-    v5->_allowCheckDownloadOnBattery = [v4 decodeBoolForKey:@"allowCheckDownloadOnBattery"];
-    v5->_allowCheckDownloadWhenBatteryLow = [v4 decodeBoolForKey:@"allowCheckDownloadWhenBatteryLow"];
-    v5->_allowCheckDownloadWhenCPUHigh = [v4 decodeBoolForKey:@"allowCheckDownloadWhenCPUHigh"];
-    v5->_allowCheckDownloadOverExpensive = [v4 decodeBoolForKey:@"allowCheckDownloadOverExpensive"];
-    v5->_allowCheckDownloadOverCellular = [v4 decodeBoolForKey:@"allowCheckDownloadOverCellular"];
-    v5->_blockCheckDownload = [v4 decodeBoolForKey:@"blockCheckDownload"];
+    v5->_userInitiated = [coderCopy decodeBoolForKey:@"userInitiated"];
+    v5->_lockInhibitsEmergencyRemoval = [coderCopy decodeBoolForKey:@"lockInhibitsEmergencyRemoval"];
+    v5->_allowCheckDownloadOnBattery = [coderCopy decodeBoolForKey:@"allowCheckDownloadOnBattery"];
+    v5->_allowCheckDownloadWhenBatteryLow = [coderCopy decodeBoolForKey:@"allowCheckDownloadWhenBatteryLow"];
+    v5->_allowCheckDownloadWhenCPUHigh = [coderCopy decodeBoolForKey:@"allowCheckDownloadWhenCPUHigh"];
+    v5->_allowCheckDownloadOverExpensive = [coderCopy decodeBoolForKey:@"allowCheckDownloadOverExpensive"];
+    v5->_allowCheckDownloadOverCellular = [coderCopy decodeBoolForKey:@"allowCheckDownloadOverCellular"];
+    v5->_blockCheckDownload = [coderCopy decodeBoolForKey:@"blockCheckDownload"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeBool:-[MADAutoSetPolicy userInitiated](self forKey:{"userInitiated"), @"userInitiated"}];
-  [v4 encodeBool:-[MADAutoSetPolicy lockInhibitsEmergencyRemoval](self forKey:{"lockInhibitsEmergencyRemoval"), @"lockInhibitsEmergencyRemoval"}];
-  [v4 encodeBool:-[MADAutoSetPolicy allowCheckDownloadOnBattery](self forKey:{"allowCheckDownloadOnBattery"), @"allowCheckDownloadOnBattery"}];
-  [v4 encodeBool:-[MADAutoSetPolicy allowCheckDownloadWhenBatteryLow](self forKey:{"allowCheckDownloadWhenBatteryLow"), @"allowCheckDownloadWhenBatteryLow"}];
-  [v4 encodeBool:-[MADAutoSetPolicy allowCheckDownloadWhenCPUHigh](self forKey:{"allowCheckDownloadWhenCPUHigh"), @"allowCheckDownloadWhenCPUHigh"}];
-  [v4 encodeBool:-[MADAutoSetPolicy allowCheckDownloadOverExpensive](self forKey:{"allowCheckDownloadOverExpensive"), @"allowCheckDownloadOverExpensive"}];
-  [v4 encodeBool:-[MADAutoSetPolicy allowCheckDownloadOverCellular](self forKey:{"allowCheckDownloadOverCellular"), @"allowCheckDownloadOverCellular"}];
-  [v4 encodeBool:-[MADAutoSetPolicy blockCheckDownload](self forKey:{"blockCheckDownload"), @"blockCheckDownload"}];
+  coderCopy = coder;
+  [coderCopy encodeBool:-[MADAutoSetPolicy userInitiated](self forKey:{"userInitiated"), @"userInitiated"}];
+  [coderCopy encodeBool:-[MADAutoSetPolicy lockInhibitsEmergencyRemoval](self forKey:{"lockInhibitsEmergencyRemoval"), @"lockInhibitsEmergencyRemoval"}];
+  [coderCopy encodeBool:-[MADAutoSetPolicy allowCheckDownloadOnBattery](self forKey:{"allowCheckDownloadOnBattery"), @"allowCheckDownloadOnBattery"}];
+  [coderCopy encodeBool:-[MADAutoSetPolicy allowCheckDownloadWhenBatteryLow](self forKey:{"allowCheckDownloadWhenBatteryLow"), @"allowCheckDownloadWhenBatteryLow"}];
+  [coderCopy encodeBool:-[MADAutoSetPolicy allowCheckDownloadWhenCPUHigh](self forKey:{"allowCheckDownloadWhenCPUHigh"), @"allowCheckDownloadWhenCPUHigh"}];
+  [coderCopy encodeBool:-[MADAutoSetPolicy allowCheckDownloadOverExpensive](self forKey:{"allowCheckDownloadOverExpensive"), @"allowCheckDownloadOverExpensive"}];
+  [coderCopy encodeBool:-[MADAutoSetPolicy allowCheckDownloadOverCellular](self forKey:{"allowCheckDownloadOverCellular"), @"allowCheckDownloadOverCellular"}];
+  [coderCopy encodeBool:-[MADAutoSetPolicy blockCheckDownload](self forKey:{"blockCheckDownload"), @"blockCheckDownload"}];
 }
 
 - (id)copy
@@ -92,10 +92,10 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     LOBYTE(v13) = 1;
   }
@@ -105,12 +105,12 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(MADAutoSetPolicy *)v5 userInitiated];
-      if (v6 == [(MADAutoSetPolicy *)self userInitiated]&& (v7 = [(MADAutoSetPolicy *)v5 lockInhibitsEmergencyRemoval], v7 == [(MADAutoSetPolicy *)self lockInhibitsEmergencyRemoval]) && (v8 = [(MADAutoSetPolicy *)v5 allowCheckDownloadOnBattery], v8 == [(MADAutoSetPolicy *)self allowCheckDownloadOnBattery]) && (v9 = [(MADAutoSetPolicy *)v5 allowCheckDownloadWhenBatteryLow], v9 == [(MADAutoSetPolicy *)self allowCheckDownloadWhenBatteryLow]) && (v10 = [(MADAutoSetPolicy *)v5 allowCheckDownloadWhenCPUHigh], v10 == [(MADAutoSetPolicy *)self allowCheckDownloadWhenCPUHigh]) && (v11 = [(MADAutoSetPolicy *)v5 allowCheckDownloadOverExpensive], v11 == [(MADAutoSetPolicy *)self allowCheckDownloadOverExpensive]) && (v12 = [(MADAutoSetPolicy *)v5 allowCheckDownloadOverCellular], v12 == [(MADAutoSetPolicy *)self allowCheckDownloadOverCellular]))
+      v5 = equalCopy;
+      userInitiated = [(MADAutoSetPolicy *)v5 userInitiated];
+      if (userInitiated == [(MADAutoSetPolicy *)self userInitiated]&& (v7 = [(MADAutoSetPolicy *)v5 lockInhibitsEmergencyRemoval], v7 == [(MADAutoSetPolicy *)self lockInhibitsEmergencyRemoval]) && (v8 = [(MADAutoSetPolicy *)v5 allowCheckDownloadOnBattery], v8 == [(MADAutoSetPolicy *)self allowCheckDownloadOnBattery]) && (v9 = [(MADAutoSetPolicy *)v5 allowCheckDownloadWhenBatteryLow], v9 == [(MADAutoSetPolicy *)self allowCheckDownloadWhenBatteryLow]) && (v10 = [(MADAutoSetPolicy *)v5 allowCheckDownloadWhenCPUHigh], v10 == [(MADAutoSetPolicy *)self allowCheckDownloadWhenCPUHigh]) && (v11 = [(MADAutoSetPolicy *)v5 allowCheckDownloadOverExpensive], v11 == [(MADAutoSetPolicy *)self allowCheckDownloadOverExpensive]) && (v12 = [(MADAutoSetPolicy *)v5 allowCheckDownloadOverCellular], v12 == [(MADAutoSetPolicy *)self allowCheckDownloadOverCellular]))
       {
-        v15 = [(MADAutoSetPolicy *)v5 blockCheckDownload];
-        v13 = v15 ^ [(MADAutoSetPolicy *)self blockCheckDownload]^ 1;
+        blockCheckDownload = [(MADAutoSetPolicy *)v5 blockCheckDownload];
+        v13 = blockCheckDownload ^ [(MADAutoSetPolicy *)self blockCheckDownload]^ 1;
       }
 
       else

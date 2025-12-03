@@ -1,25 +1,25 @@
 @interface CTUIListLoadingGroup
-- (CTUIListLoadingGroup)initWithHostController:(id)a3 groupSpecifier:(id)a4;
+- (CTUIListLoadingGroup)initWithHostController:(id)controller groupSpecifier:(id)specifier;
 - (NSArray)specifiers;
 - (PSListController)hostController;
 - (PSSpecifier)groupSpecifier;
-- (void)setSpecifiers:(id)a3;
+- (void)setSpecifiers:(id)specifiers;
 @end
 
 @implementation CTUIListLoadingGroup
 
-- (CTUIListLoadingGroup)initWithHostController:(id)a3 groupSpecifier:(id)a4
+- (CTUIListLoadingGroup)initWithHostController:(id)controller groupSpecifier:(id)specifier
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  specifierCopy = specifier;
   v13.receiver = self;
   v13.super_class = CTUIListLoadingGroup;
   v8 = [(CTUIListLoadingGroup *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_hostController, v6);
-    objc_storeWeak(&v9->_groupSpecifier, v7);
+    objc_storeWeak(&v8->_hostController, controllerCopy);
+    objc_storeWeak(&v9->_groupSpecifier, specifierCopy);
     v10 = [objc_alloc(MEMORY[0x277D3FAD8]) initWithName:&stru_287733598 target:0 set:0 get:0 detail:0 cell:15 edit:0];
     spinnerSpecifier = v9->_spinnerSpecifier;
     v9->_spinnerSpecifier = v10;
@@ -28,12 +28,12 @@
   return v9;
 }
 
-- (void)setSpecifiers:(id)a3
+- (void)setSpecifiers:(id)specifiers
 {
-  v5 = a3;
-  if (v5 | self->_specifiers)
+  specifiersCopy = specifiers;
+  if (specifiersCopy | self->_specifiers)
   {
-    v14 = v5;
+    v14 = specifiersCopy;
     WeakRetained = objc_loadWeakRetained(&self->_hostController);
     [WeakRetained beginUpdates];
 
@@ -50,7 +50,7 @@
       [v8 removeSpecifier:self->_spinnerSpecifier animated:1];
     }
 
-    objc_storeStrong(&self->_specifiers, a3);
+    objc_storeStrong(&self->_specifiers, specifiers);
     v10 = objc_loadWeakRetained(&self->_hostController);
     if (v14)
     {
@@ -68,7 +68,7 @@
     v13 = objc_loadWeakRetained(&self->_hostController);
     [v13 endUpdates];
 
-    v5 = v14;
+    specifiersCopy = v14;
   }
 }
 

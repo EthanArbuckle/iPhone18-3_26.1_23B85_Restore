@@ -1,18 +1,18 @@
 @interface NPNameParser
-- (BOOL)isPrefix:(id)a3;
-- (BOOL)isSuffix:(id)a3;
+- (BOOL)isPrefix:(id)prefix;
+- (BOOL)isSuffix:(id)suffix;
 - (NPNameParser)init;
-- (id)normalizeFullname:(id)a3;
-- (id)parseChineseName:(id)a3 normalize:(BOOL)a4;
-- (id)parseFullnameWithDefaultHMMClassifier:(id)a3 normalize:(BOOL)a4 score:(double *)a5;
-- (id)parseJapaneseName:(id)a3 normalize:(BOOL)a4;
-- (id)parseKoreanName:(id)a3 normalize:(BOOL)a4;
-- (id)personNameCompomentsFromPrefix:(id)a3 suffix:(id)a4 givenNames:(id)a5 middleNames:(id)a6 familyNames:(id)a7;
-- (id)personNameComponentsFromString:(id)a3;
-- (unint64_t)frequencyOfLatinFamilyName:(id)a3;
-- (unint64_t)frequencyOfLatinGivenName:(id)a3;
-- (unint64_t)genderMajorityForGivenName:(id)a3;
-- (unint64_t)namingTraditionForName:(id)a3;
+- (id)normalizeFullname:(id)fullname;
+- (id)parseChineseName:(id)name normalize:(BOOL)normalize;
+- (id)parseFullnameWithDefaultHMMClassifier:(id)classifier normalize:(BOOL)normalize score:(double *)score;
+- (id)parseJapaneseName:(id)name normalize:(BOOL)normalize;
+- (id)parseKoreanName:(id)name normalize:(BOOL)normalize;
+- (id)personNameCompomentsFromPrefix:(id)prefix suffix:(id)suffix givenNames:(id)names middleNames:(id)middleNames familyNames:(id)familyNames;
+- (id)personNameComponentsFromString:(id)string;
+- (unint64_t)frequencyOfLatinFamilyName:(id)name;
+- (unint64_t)frequencyOfLatinGivenName:(id)name;
+- (unint64_t)genderMajorityForGivenName:(id)name;
+- (unint64_t)namingTraditionForName:(id)name;
 - (void)dealloc;
 @end
 
@@ -73,13 +73,13 @@
   [(NPNameParser *)&v4 dealloc];
 }
 
-- (unint64_t)namingTraditionForName:(id)a3
+- (unint64_t)namingTraditionForName:(id)name
 {
   v78 = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CCA900];
-  v4 = a3;
-  v5 = [v3 whitespaceAndNewlineCharacterSet];
-  v6 = [v4 stringByTrimmingCharactersInSet:v5];
+  nameCopy = name;
+  whitespaceAndNewlineCharacterSet = [v3 whitespaceAndNewlineCharacterSet];
+  v6 = [nameCopy stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
   if (![v6 length])
   {
@@ -232,8 +232,8 @@ LABEL_15:
     v57 += v22;
     v13 = v23 + v25;
     v15 += [_NPLatinCharSet_result characterIsMember:v21];
-    v26 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-    v16 += [v26 characterIsMember:v21];
+    whitespaceAndNewlineCharacterSet2 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+    v16 += [whitespaceAndNewlineCharacterSet2 characterIsMember:v21];
 
     ++v14;
     --v12;
@@ -264,8 +264,8 @@ LABEL_43:
   v61 = 0u;
   v58 = 0u;
   v59 = 0u;
-  v35 = [MEMORY[0x277CBEAF8] preferredLanguages];
-  v36 = [v35 countByEnumeratingWithState:&v58 objects:v77 count:16];
+  preferredLanguages = [MEMORY[0x277CBEAF8] preferredLanguages];
+  v36 = [preferredLanguages countByEnumeratingWithState:&v58 objects:v77 count:16];
   if (v36)
   {
     v37 = v36;
@@ -278,7 +278,7 @@ LABEL_43:
       {
         if (*v59 != v40)
         {
-          objc_enumerationMutation(v35);
+          objc_enumerationMutation(preferredLanguages);
         }
 
         v42 = *(*(&v58 + 1) + 8 * i);
@@ -293,7 +293,7 @@ LABEL_43:
         }
       }
 
-      v37 = [v35 countByEnumeratingWithState:&v58 objects:v77 count:16];
+      v37 = [preferredLanguages countByEnumeratingWithState:&v58 objects:v77 count:16];
     }
 
     while (v37);
@@ -305,10 +305,10 @@ LABEL_43:
     v39 = 0;
   }
 
-  v43 = [MEMORY[0x277CBEAF8] currentLocale];
-  v44 = [v43 regionCode];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  regionCode = [currentLocale regionCode];
 
-  if ([v44 isEqualToString:@"CN"])
+  if ([regionCode isEqualToString:@"CN"])
   {
     v45 = v13;
     v46 = v52;
@@ -317,7 +317,7 @@ LABEL_43:
 
   v45 = v13;
   v46 = v52;
-  if ([v44 isEqualToString:@"HK"] & 1) != 0 || (objc_msgSend(v44, "isEqualToString:", @"MO") & 1) != 0 || (objc_msgSend(v44, "isEqualToString:", @"TW") & 1) != 0 || (v39 |= objc_msgSend(v44, "isEqualToString:", @"JP"), (v38))
+  if ([regionCode isEqualToString:@"HK"] & 1) != 0 || (objc_msgSend(regionCode, "isEqualToString:", @"MO") & 1) != 0 || (objc_msgSend(regionCode, "isEqualToString:", @"TW") & 1) != 0 || (v39 |= objc_msgSend(regionCode, "isEqualToString:", @"JP"), (v38))
   {
 LABEL_61:
     v47 = v39;
@@ -375,9 +375,9 @@ LABEL_74:
   return v34;
 }
 
-- (id)personNameComponentsFromString:(id)a3
+- (id)personNameComponentsFromString:(id)string
 {
-  v4 = [(NPNameParser *)self normalizeFullname:a3];
+  v4 = [(NPNameParser *)self normalizeFullname:string];
   v5 = [(NPNameParser *)self namingTraditionForName:v4];
   v6 = 0;
   if (v5 > 1)
@@ -419,51 +419,51 @@ LABEL_11:
   return v6;
 }
 
-- (id)parseFullnameWithDefaultHMMClassifier:(id)a3 normalize:(BOOL)a4 score:(double *)a5
+- (id)parseFullnameWithDefaultHMMClassifier:(id)classifier normalize:(BOOL)normalize score:(double *)score
 {
-  v6 = a4;
+  normalizeCopy = normalize;
   v84 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  if (v6)
+  classifierCopy = classifier;
+  if (normalizeCopy)
   {
-    v9 = [(NPNameParser *)self normalizeFullname:v8];
+    v9 = [(NPNameParser *)self normalizeFullname:classifierCopy];
 
-    v8 = v9;
+    classifierCopy = v9;
   }
 
-  v10 = _NPTokenizeName(v8);
+  v10 = _NPTokenizeName(classifierCopy);
   v11 = [v10 mutableCopy];
 
-  v70 = a5;
+  scoreCopy = score;
   if ([v11 count] < 2)
   {
-    v72 = 0;
-    v73 = 0;
+    lastObject2 = 0;
+    firstObject2 = 0;
     goto LABEL_13;
   }
 
-  v12 = [v11 firstObject];
-  v13 = [(NPNameParser *)self isPrefix:v12];
+  firstObject = [v11 firstObject];
+  v13 = [(NPNameParser *)self isPrefix:firstObject];
 
   if (v13)
   {
-    v73 = [v11 firstObject];
+    firstObject2 = [v11 firstObject];
     [v11 removeObjectAtIndex:0];
   }
 
   else
   {
-    v73 = 0;
+    firstObject2 = 0;
   }
 
-  v14 = [v11 lastObject];
-  if ([(NPNameParser *)self isSuffix:v14])
+  lastObject = [v11 lastObject];
+  if ([(NPNameParser *)self isSuffix:lastObject])
   {
     v15 = [v11 count];
 
     if (v15 >= 2)
     {
-      v72 = [v11 lastObject];
+      lastObject2 = [v11 lastObject];
       [v11 removeLastObject];
       goto LABEL_13;
     }
@@ -473,11 +473,11 @@ LABEL_11:
   {
   }
 
-  v72 = 0;
+  lastObject2 = 0;
 LABEL_13:
-  v69 = self;
-  v16 = [(NPNameParser *)self classifier];
-  v17 = [v16 hiddenStatesFromObservationSequence:v11];
+  selfCopy = self;
+  classifier = [(NPNameParser *)self classifier];
+  v17 = [classifier hiddenStatesFromObservationSequence:v11];
 
   v74 = [MEMORY[0x277CCAC30] predicateWithFormat:@"self == %ld || self == %ld", 0, 1];
   v18 = [v11 count];
@@ -488,7 +488,7 @@ LABEL_13:
   v19 = v17;
   v20 = [v19 countByEnumeratingWithState:&v79 objects:v83 count:16];
   obj = v19;
-  v71 = v8;
+  v71 = classifierCopy;
   if (v20)
   {
     v21 = v20;
@@ -515,8 +515,8 @@ LABEL_13:
           v22 = v29;
         }
 
-        v30 = [v27 oovIndices];
-        v31 = [v30 count];
+        oovIndices = [v27 oovIndices];
+        v31 = [oovIndices count];
 
         if (v31 < v18)
         {
@@ -542,13 +542,13 @@ LABEL_21:
           [v27 score];
           if (v35 == v25)
           {
-            v36 = [v23 sequence];
+            sequence = [v23 sequence];
             v76 = v23;
-            v37 = [v36 filteredArrayUsingPredicate:v74];
+            v37 = [sequence filteredArrayUsingPredicate:v74];
             v75 = [v37 count];
 
-            v38 = [v27 sequence];
-            v39 = [v38 filteredArrayUsingPredicate:v74];
+            sequence2 = [v27 sequence];
+            v39 = [sequence2 filteredArrayUsingPredicate:v74];
             v40 = [v39 count];
 
             v31 = v18;
@@ -575,7 +575,7 @@ LABEL_27:
           [v22 score];
           v43 = v42;
           [v23 score];
-          v8 = v71;
+          classifierCopy = v71;
           v11 = v68;
           if (v43 > v44)
           {
@@ -586,7 +586,7 @@ LABEL_27:
 
         else
         {
-          v8 = v71;
+          classifierCopy = v71;
           v11 = v68;
         }
 
@@ -602,8 +602,8 @@ LABEL_33:
   v23 = v22;
 LABEL_35:
   v45 = [v11 count];
-  v46 = [v23 oovIndices];
-  v47 = [v46 count];
+  oovIndices2 = [v23 oovIndices];
+  v47 = [oovIndices2 count];
 
   if (v45 == 4 && v47 > 2 || v45 >= 5 && vcvts_n_f32_u64(v45, 1uLL) <= v47)
   {
@@ -616,35 +616,35 @@ LABEL_35:
     v49 = objc_opt_new();
     v50 = objc_opt_new();
     v51 = objc_opt_new();
-    v52 = [v23 observation];
-    v53 = [v52 count];
+    observation = [v23 observation];
+    v53 = [observation count];
 
     if (v53)
     {
       for (j = 0; v53 != j; ++j)
       {
         v55 = v23;
-        v56 = [v23 sequence];
-        v57 = [v56 objectAtIndexedSubscript:j];
-        v58 = [v57 unsignedIntegerValue];
+        sequence3 = [v23 sequence];
+        v57 = [sequence3 objectAtIndexedSubscript:j];
+        unsignedIntegerValue = [v57 unsignedIntegerValue];
 
         v23 = v55;
-        if (v58 == 2)
+        if (unsignedIntegerValue == 2)
         {
-          v62 = [v55 observation];
-          v63 = [v62 objectAtIndexedSubscript:j];
+          observation2 = [v55 observation];
+          v63 = [observation2 objectAtIndexedSubscript:j];
           v64 = v50;
         }
 
         else
         {
-          if (v58 != 1)
+          if (unsignedIntegerValue != 1)
           {
-            if (!v58)
+            if (!unsignedIntegerValue)
             {
               v59 = objc_autoreleasePoolPush();
-              v60 = [v55 observation];
-              v61 = [v60 objectAtIndexedSubscript:j];
+              observation3 = [v55 observation];
+              v61 = [observation3 objectAtIndexedSubscript:j];
               [v49 addObject:v61];
 
               v23 = v55;
@@ -654,8 +654,8 @@ LABEL_35:
             continue;
           }
 
-          v62 = [v55 observation];
-          v63 = [v62 objectAtIndexedSubscript:j];
+          observation2 = [v55 observation];
+          v63 = [observation2 objectAtIndexedSubscript:j];
           v64 = v51;
         }
 
@@ -663,12 +663,12 @@ LABEL_35:
       }
     }
 
-    v48 = [(NPNameParser *)v69 personNameCompomentsFromPrefix:v73 suffix:v72 givenNames:v49 middleNames:v51 familyNames:v50];
-    v8 = v71;
-    if (v70)
+    v48 = [(NPNameParser *)selfCopy personNameCompomentsFromPrefix:firstObject2 suffix:lastObject2 givenNames:v49 middleNames:v51 familyNames:v50];
+    classifierCopy = v71;
+    if (scoreCopy)
     {
       [v23 score];
-      *v70 = v65;
+      *scoreCopy = v65;
     }
 
     v22 = v77;
@@ -680,20 +680,20 @@ LABEL_35:
   return v48;
 }
 
-- (id)personNameCompomentsFromPrefix:(id)a3 suffix:(id)a4 givenNames:(id)a5 middleNames:(id)a6 familyNames:(id)a7
+- (id)personNameCompomentsFromPrefix:(id)prefix suffix:(id)suffix givenNames:(id)names middleNames:(id)middleNames familyNames:(id)familyNames
 {
-  v11 = a5;
-  v12 = a6;
-  v13 = a7;
-  v14 = a4;
-  v15 = a3;
+  namesCopy = names;
+  middleNamesCopy = middleNames;
+  familyNamesCopy = familyNames;
+  suffixCopy = suffix;
+  prefixCopy = prefix;
   v16 = objc_opt_new();
-  [v16 setNamePrefix:v15];
+  [v16 setNamePrefix:prefixCopy];
 
-  [v16 setNameSuffix:v14];
-  if ([v11 count])
+  [v16 setNameSuffix:suffixCopy];
+  if ([namesCopy count])
   {
-    v17 = [v11 componentsJoinedByString:@" "];
+    v17 = [namesCopy componentsJoinedByString:@" "];
     v18 = [v17 stringByReplacingOccurrencesOfString:@"|" withString:@" "];
     [v16 setGivenName:v18];
   }
@@ -703,9 +703,9 @@ LABEL_35:
     [v16 setGivenName:0];
   }
 
-  if ([v12 count])
+  if ([middleNamesCopy count])
   {
-    v19 = [v12 componentsJoinedByString:@" "];
+    v19 = [middleNamesCopy componentsJoinedByString:@" "];
     v20 = [v19 stringByReplacingOccurrencesOfString:@"|" withString:@" "];
     [v16 setMiddleName:v20];
   }
@@ -715,9 +715,9 @@ LABEL_35:
     [v16 setMiddleName:0];
   }
 
-  if ([v13 count])
+  if ([familyNamesCopy count])
   {
-    v21 = [v13 componentsJoinedByString:@" "];
+    v21 = [familyNamesCopy componentsJoinedByString:@" "];
     v22 = [v21 stringByReplacingOccurrencesOfString:@"|" withString:@" "];
     [v16 setFamilyName:v22];
   }
@@ -730,48 +730,48 @@ LABEL_35:
   return v16;
 }
 
-- (id)parseChineseName:(id)a3 normalize:(BOOL)a4
+- (id)parseChineseName:(id)name normalize:(BOOL)normalize
 {
-  v4 = a4;
-  v6 = a3;
-  if (v4)
+  normalizeCopy = normalize;
+  nameCopy = name;
+  if (normalizeCopy)
   {
-    v7 = [(NPNameParser *)self normalizeFullname:v6];
+    v7 = [(NPNameParser *)self normalizeFullname:nameCopy];
 
-    v6 = v7;
+    nameCopy = v7;
   }
 
-  v8 = _NPTokenizeName(v6);
+  v8 = _NPTokenizeName(nameCopy);
   v9 = objc_opt_new();
   if ([v8 count] == 2)
   {
-    v10 = [v8 lastObject];
-    [v9 setGivenName:v10];
+    lastObject = [v8 lastObject];
+    [v9 setGivenName:lastObject];
 
-    v11 = [v8 firstObject];
-    [v9 setFamilyName:v11];
+    firstObject = [v8 firstObject];
+    [v9 setFamilyName:firstObject];
     goto LABEL_23;
   }
 
   v12 = MEMORY[0x277CCAC68];
   v13 = [(NPNameComponentsData *)self->_nameComponentsData objectValueForEntry:3];
-  v11 = [v12 regularExpressionWithPattern:v13 options:0 error:0];
+  firstObject = [v12 regularExpressionWithPattern:v13 options:0 error:0];
 
-  v14 = [v6 length];
+  v14 = [nameCopy length];
   if (v14 <= 2)
   {
     if (v14 == 2)
     {
       nameComponentsData = self->_nameComponentsData;
-      v16 = [v6 substringToIndex:1];
+      v16 = [nameCopy substringToIndex:1];
       LODWORD(nameComponentsData) = [(NPNameComponentsData *)nameComponentsData collectionForEntry:2 contains:v16];
 
       if (nameComponentsData)
       {
-        v17 = [v6 substringToIndex:1];
+        v17 = [nameCopy substringToIndex:1];
         [v9 setFamilyName:v17];
 
-        v18 = [v6 substringFromIndex:1];
+        v18 = [nameCopy substringFromIndex:1];
         v19 = v9;
         v20 = v18;
         goto LABEL_17;
@@ -785,15 +785,15 @@ LABEL_35:
   {
     if (v14 == 4)
     {
-      v21 = [v6 substringToIndex:2];
+      v21 = [nameCopy substringToIndex:2];
       v18 = [v21 stringByApplyingTransform:@"Traditional-Simplified" reverse:0];
 
-      if ([v11 numberOfMatchesInString:v18 options:0 range:{0, objc_msgSend(v18, "length")}])
+      if ([firstObject numberOfMatchesInString:v18 options:0 range:{0, objc_msgSend(v18, "length")}])
       {
-        v22 = [v6 substringToIndex:2];
+        v22 = [nameCopy substringToIndex:2];
         [v9 setFamilyName:v22];
 
-        v23 = [v6 substringFromIndex:2];
+        v23 = [nameCopy substringFromIndex:2];
         [v9 setGivenName:v23];
 
 LABEL_18:
@@ -801,26 +801,26 @@ LABEL_18:
       }
 
       v19 = v9;
-      v20 = v6;
+      v20 = nameCopy;
 LABEL_17:
       [v19 setGivenName:v20];
       goto LABEL_18;
     }
 
 LABEL_13:
-    [v9 setGivenName:v6];
+    [v9 setGivenName:nameCopy];
     goto LABEL_23;
   }
 
-  v24 = [v6 substringToIndex:2];
+  v24 = [nameCopy substringToIndex:2];
   v25 = [v24 stringByApplyingTransform:@"Traditional-Simplified" reverse:0];
 
-  if ([v11 numberOfMatchesInString:v25 options:0 range:{0, objc_msgSend(v25, "length")}])
+  if ([firstObject numberOfMatchesInString:v25 options:0 range:{0, objc_msgSend(v25, "length")}])
   {
-    v26 = [v6 substringToIndex:2];
+    v26 = [nameCopy substringToIndex:2];
     [v9 setFamilyName:v26];
 
-    v27 = v6;
+    v27 = nameCopy;
     v28 = 2;
   }
 
@@ -832,14 +832,14 @@ LABEL_13:
 
     if (!v29)
     {
-      [v9 setGivenName:v6];
+      [v9 setGivenName:nameCopy];
       goto LABEL_22;
     }
 
-    v31 = [v6 substringToIndex:1];
+    v31 = [nameCopy substringToIndex:1];
     [v9 setFamilyName:v31];
 
-    v27 = v6;
+    v27 = nameCopy;
     v28 = 1;
   }
 
@@ -852,33 +852,33 @@ LABEL_23:
   return v9;
 }
 
-- (id)parseJapaneseName:(id)a3 normalize:(BOOL)a4
+- (id)parseJapaneseName:(id)name normalize:(BOOL)normalize
 {
-  v4 = a4;
-  v7 = a3;
-  if (v4)
+  normalizeCopy = normalize;
+  nameCopy = name;
+  if (normalizeCopy)
   {
-    v8 = [(NPNameParser *)self normalizeFullname:v7];
+    v8 = [(NPNameParser *)self normalizeFullname:nameCopy];
 
-    v7 = v8;
+    nameCopy = v8;
   }
 
-  v9 = _NPTokenizeName(v7);
+  v9 = _NPTokenizeName(nameCopy);
   v10 = objc_opt_new();
   if ([v9 count] == 2)
   {
-    v11 = [v9 lastObject];
-    [v10 setGivenName:v11];
+    lastObject = [v9 lastObject];
+    [v10 setGivenName:lastObject];
 
-    v12 = [v9 firstObject];
-    [v10 setFamilyName:v12];
+    firstObject = [v9 firstObject];
+    [v10 setFamilyName:firstObject];
 
     goto LABEL_39;
   }
 
   if ([v9 count] >= 3)
   {
-    [v10 setFamilyName:v7];
+    [v10 setFamilyName:nameCopy];
     goto LABEL_39;
   }
 
@@ -900,7 +900,7 @@ LABEL_23:
   v61 = &v60;
   v62 = 0x2020000000;
   v63 = 0;
-  v17 = [v7 length];
+  v17 = [nameCopy length];
   v18 = *MEMORY[0x277CCA3D8];
   v57[0] = MEMORY[0x277D85DD0];
   v57[1] = 3221225472;
@@ -909,15 +909,15 @@ LABEL_23:
   v19 = v15;
   v58 = v19;
   v59 = &v60;
-  [v7 enumerateLinguisticTagsInRange:0 scheme:v17 options:v18 orthography:6 usingBlock:{v16, v57}];
+  [nameCopy enumerateLinguisticTagsInRange:0 scheme:v17 options:v18 orthography:6 usingBlock:{v16, v57}];
   if ((v61[3] & 1) == 0 && [v19 count])
   {
     if ([v19 count] == 1)
     {
       v20 = [v19 objectAtIndexedSubscript:0];
-      v21 = [v20 rangeValue];
-      v23 = [v7 substringWithRange:{v21, v22}];
-      [v10 setFamilyName:v23];
+      rangeValue = [v20 rangeValue];
+      lastObject2 = [nameCopy substringWithRange:{rangeValue, v22}];
+      [v10 setFamilyName:lastObject2];
 LABEL_36:
 
       goto LABEL_37;
@@ -937,12 +937,12 @@ LABEL_36:
     while (1)
     {
       v26 = [v19 objectAtIndexedSubscript:v25];
-      v27 = [v26 rangeValue];
+      rangeValue2 = [v26 rangeValue];
       v29 = v28;
 
       v30 = [v19 objectAtIndexedSubscript:0];
       v65.location = [v30 rangeValue];
-      v68.location = v27;
+      v68.location = rangeValue2;
       v68.length = v29;
       v31 = NSUnionRange(v65, v68);
       length = v31.length;
@@ -970,7 +970,7 @@ LABEL_36:
     {
       length = 1;
 LABEL_33:
-      v48 = [v7 substringWithRange:{v31.location, length}];
+      v48 = [nameCopy substringWithRange:{v31.location, length}];
       [v10 setFamilyName:v48];
 
       if (v25 >= [v19 count] - 1)
@@ -979,15 +979,15 @@ LABEL_33:
       }
 
       v20 = [v19 objectAtIndexedSubscript:v25 + 1];
-      v49 = [v20 rangeValue];
+      rangeValue3 = [v20 rangeValue];
       v51 = v50;
-      v23 = [v19 lastObject];
-      v70.location = [v23 rangeValue];
+      lastObject2 = [v19 lastObject];
+      v70.location = [lastObject2 rangeValue];
       v70.length = v52;
-      v67.location = v49;
+      v67.location = rangeValue3;
       v67.length = v51;
       v53 = NSUnionRange(v67, v70);
-      v47 = [v7 substringWithRange:{v53.location, v53.length}];
+      v47 = [nameCopy substringWithRange:{v53.location, v53.length}];
       [v10 setGivenName:v47];
       goto LABEL_35;
     }
@@ -996,15 +996,15 @@ LABEL_28:
     if ([v19 count] != 2)
     {
       v20 = [v19 objectAtIndexedSubscript:0];
-      v42 = [v20 rangeValue];
+      rangeValue4 = [v20 rangeValue];
       v44 = v43;
-      v23 = [v19 lastObject];
-      v69.location = [v23 rangeValue];
+      lastObject2 = [v19 lastObject];
+      v69.location = [lastObject2 rangeValue];
       v69.length = v45;
-      v66.location = v42;
+      v66.location = rangeValue4;
       v66.length = v44;
       v46 = NSUnionRange(v66, v69);
-      v47 = [v7 substringWithRange:{v46.location, v46.length}];
+      v47 = [nameCopy substringWithRange:{v46.location, v46.length}];
       [v10 setFamilyName:v47];
 LABEL_35:
 
@@ -1012,24 +1012,24 @@ LABEL_35:
     }
 
     v34 = [v19 objectAtIndexedSubscript:0];
-    v35 = [v34 rangeValue];
+    rangeValue5 = [v34 rangeValue];
     v37 = v36;
 
     v38 = [v19 objectAtIndexedSubscript:1];
-    v39 = [v38 rangeValue];
+    rangeValue6 = [v38 rangeValue];
     v56 = v40;
-    v41 = v39;
+    v41 = rangeValue6;
 
     if (v37 == 3)
     {
-      if (v35 + 3 != v41)
+      if (rangeValue5 + 3 != v41)
       {
         v37 = 3;
 LABEL_47:
-        v55 = [v7 substringWithRange:{v35, v37}];
+        v55 = [nameCopy substringWithRange:{rangeValue5, v37}];
         [v10 setFamilyName:v55];
 
-        v20 = [v7 substringWithRange:{v41, v56}];
+        v20 = [nameCopy substringWithRange:{v41, v56}];
         [v10 setGivenName:v20];
 LABEL_37:
 
@@ -1037,7 +1037,7 @@ LABEL_37:
       }
     }
 
-    else if (v37 != 2 || v56 != 1 || v35 + 2 != v41)
+    else if (v37 != 2 || v56 != 1 || rangeValue5 + 2 != v41)
     {
       goto LABEL_47;
     }
@@ -1052,7 +1052,7 @@ LABEL_37:
     goto LABEL_47;
   }
 
-  [v10 setFamilyName:v7];
+  [v10 setFamilyName:nameCopy];
 LABEL_38:
 
   _Block_object_dispose(&v60, 8);
@@ -1077,26 +1077,26 @@ void __44__NPNameParser_parseJapaneseName_normalize___block_invoke(uint64_t a1, 
   }
 }
 
-- (id)parseKoreanName:(id)a3 normalize:(BOOL)a4
+- (id)parseKoreanName:(id)name normalize:(BOOL)normalize
 {
-  v4 = a4;
+  normalizeCopy = normalize;
   v58 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (v4)
+  nameCopy = name;
+  if (normalizeCopy)
   {
-    v7 = [(NPNameParser *)self normalizeFullname:v6];
+    v7 = [(NPNameParser *)self normalizeFullname:nameCopy];
 
-    v6 = v7;
+    nameCopy = v7;
   }
 
-  v8 = _NPTokenizeName(v6);
+  v8 = _NPTokenizeName(nameCopy);
   v9 = objc_opt_new();
-  v10 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
   if ([v8 count] >= 2)
   {
-    v42 = v10;
+    v42 = whitespaceAndNewlineCharacterSet;
     v43 = v8;
-    v44 = v6;
+    v44 = nameCopy;
     v54 = 0u;
     v55 = 0u;
     v52 = 0u;
@@ -1108,7 +1108,7 @@ void __44__NPNameParser_parseJapaneseName_normalize___block_invoke(uint64_t a1, 
       v13 = v12;
       v14 = *v53;
       v45 = *v53;
-      v46 = self;
+      selfCopy = self;
       do
       {
         v15 = 0;
@@ -1160,7 +1160,7 @@ void __44__NPNameParser_parseJapaneseName_normalize___block_invoke(uint64_t a1, 
             }
 
             v14 = v45;
-            self = v46;
+            self = selfCopy;
             v11 = v18;
             v13 = v47;
           }
@@ -1176,12 +1176,12 @@ void __44__NPNameParser_parseJapaneseName_normalize___block_invoke(uint64_t a1, 
       while (v13);
     }
 
-    v25 = [v9 familyName];
-    v26 = [v25 length];
+    familyName = [v9 familyName];
+    v26 = [familyName length];
 
     v8 = v43;
-    v6 = v44;
-    v10 = v42;
+    nameCopy = v44;
+    whitespaceAndNewlineCharacterSet = v42;
     if (!v26)
     {
       v27 = [v11 objectAtIndexedSubscript:0];
@@ -1192,45 +1192,45 @@ void __44__NPNameParser_parseJapaneseName_normalize___block_invoke(uint64_t a1, 
     }
   }
 
-  if ([v6 length] < 2 || (objc_msgSend(v9, "givenName"), v29 = objc_claimAutoreleasedReturnValue(), v29, v29))
+  if ([nameCopy length] < 2 || (objc_msgSend(v9, "givenName"), v29 = objc_claimAutoreleasedReturnValue(), v29, v29))
   {
     v30 = 0;
   }
 
   else
   {
-    v30 = [v6 substringToIndex:2];
+    v30 = [nameCopy substringToIndex:2];
     if ([(NPNameComponentsData *)self->_nameComponentsData collectionForEntry:4 contains:v30])
     {
       [v9 setFamilyName:v30];
-      if ([v6 length] == 2)
+      if ([nameCopy length] == 2)
       {
         [v9 setGivenName:0];
       }
 
       else
       {
-        v41 = [v6 substringFromIndex:2];
+        v41 = [nameCopy substringFromIndex:2];
         [v9 setGivenName:v41];
       }
     }
   }
 
-  if ([v6 length] && (objc_msgSend(v9, "givenName"), v31 = objc_claimAutoreleasedReturnValue(), v31, !v31))
+  if ([nameCopy length] && (objc_msgSend(v9, "givenName"), v31 = objc_claimAutoreleasedReturnValue(), v31, !v31))
   {
-    v32 = [v6 substringToIndex:1];
+    v32 = [nameCopy substringToIndex:1];
 
     if ([(NPNameComponentsData *)self->_nameComponentsData collectionForEntry:4 contains:v32])
     {
       [v9 setFamilyName:v32];
-      if ([v6 length] == 1)
+      if ([nameCopy length] == 1)
       {
         [v9 setGivenName:0];
       }
 
       else
       {
-        v40 = [v6 substringFromIndex:1];
+        v40 = [nameCopy substringFromIndex:1];
         [v9 setGivenName:v40];
       }
     }
@@ -1241,19 +1241,19 @@ void __44__NPNameParser_parseJapaneseName_normalize___block_invoke(uint64_t a1, 
     v32 = v30;
   }
 
-  v33 = [v9 givenName];
+  givenName = [v9 givenName];
 
-  if (!v33)
+  if (!givenName)
   {
-    [v9 setGivenName:v6];
+    [v9 setGivenName:nameCopy];
   }
 
-  v34 = [v9 givenName];
-  v35 = [v34 stringByTrimmingCharactersInSet:v10];
+  givenName2 = [v9 givenName];
+  v35 = [givenName2 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
   [v9 setGivenName:v35];
 
-  v36 = [v9 familyName];
-  v37 = [v36 stringByTrimmingCharactersInSet:v10];
+  familyName2 = [v9 familyName];
+  v37 = [familyName2 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
   [v9 setFamilyName:v37];
 
   v38 = *MEMORY[0x277D85DE8];
@@ -1261,9 +1261,9 @@ void __44__NPNameParser_parseJapaneseName_normalize___block_invoke(uint64_t a1, 
   return v9;
 }
 
-- (id)normalizeFullname:(id)a3
+- (id)normalizeFullname:(id)fullname
 {
-  v3 = _NPStripQuotationMarks(a3);
+  v3 = _NPStripQuotationMarks(fullname);
   v4 = _NPRemoveEmojis(v3);
 
   v5 = _NPRemoveParenthesisBracketsAndInside(v4);
@@ -1275,49 +1275,49 @@ void __44__NPNameParser_parseJapaneseName_normalize___block_invoke(uint64_t a1, 
   return v7;
 }
 
-- (BOOL)isPrefix:(id)a3
+- (BOOL)isPrefix:(id)prefix
 {
-  v3 = self;
-  v4 = [(NPNameParser *)self normalizedAffix:a3];
-  LOBYTE(v3) = [(NPNameComponentsData *)v3->_nameComponentsData collectionForEntry:0 contains:v4];
+  selfCopy = self;
+  v4 = [(NPNameParser *)self normalizedAffix:prefix];
+  LOBYTE(selfCopy) = [(NPNameComponentsData *)selfCopy->_nameComponentsData collectionForEntry:0 contains:v4];
 
-  return v3;
+  return selfCopy;
 }
 
-- (BOOL)isSuffix:(id)a3
+- (BOOL)isSuffix:(id)suffix
 {
-  v3 = self;
-  v4 = [(NPNameParser *)self normalizedAffix:a3];
-  LOBYTE(v3) = [(NPNameComponentsData *)v3->_nameComponentsData collectionForEntry:1 contains:v4];
+  selfCopy = self;
+  v4 = [(NPNameParser *)self normalizedAffix:suffix];
+  LOBYTE(selfCopy) = [(NPNameComponentsData *)selfCopy->_nameComponentsData collectionForEntry:1 contains:v4];
 
-  return v3;
+  return selfCopy;
 }
 
-- (unint64_t)frequencyOfLatinFamilyName:(id)a3
+- (unint64_t)frequencyOfLatinFamilyName:(id)name
 {
-  v4 = a3;
-  v5 = [(NPNameParser *)self classifier];
-  v6 = [v5 frequencyForName:v4 type:2];
+  nameCopy = name;
+  classifier = [(NPNameParser *)self classifier];
+  v6 = [classifier frequencyForName:nameCopy type:2];
 
   return v6;
 }
 
-- (unint64_t)frequencyOfLatinGivenName:(id)a3
+- (unint64_t)frequencyOfLatinGivenName:(id)name
 {
-  v4 = a3;
-  v5 = [(NPNameParser *)self classifier];
-  v6 = [v5 frequencyForName:v4 type:0];
+  nameCopy = name;
+  classifier = [(NPNameParser *)self classifier];
+  v6 = [classifier frequencyForName:nameCopy type:0];
 
   return v6;
 }
 
-- (unint64_t)genderMajorityForGivenName:(id)a3
+- (unint64_t)genderMajorityForGivenName:(id)name
 {
-  v4 = [(NPNameParser *)self normalizeFullname:a3];
-  v5 = [v4 lowercaseString];
+  v4 = [(NPNameParser *)self normalizeFullname:name];
+  lowercaseString = [v4 lowercaseString];
 
-  v6 = [(NPNameParser *)self classifier];
-  v7 = [v6 genderMajorityForGivenName:v5];
+  classifier = [(NPNameParser *)self classifier];
+  v7 = [classifier genderMajorityForGivenName:lowercaseString];
 
   return v7;
 }

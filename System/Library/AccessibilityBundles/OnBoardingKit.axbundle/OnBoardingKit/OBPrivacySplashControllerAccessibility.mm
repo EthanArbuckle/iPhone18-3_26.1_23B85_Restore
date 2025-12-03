@@ -1,19 +1,19 @@
 @interface OBPrivacySplashControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)_axSetIconProperties:(id)a3;
+- (void)_axSetIconProperties:(id)properties;
 - (void)viewDidLoad;
 @end
 
 @implementation OBPrivacySplashControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"OBPrivacySplashController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"OBPrivacySplashController" isKindOfClass:@"OBWelcomeController"];
-  [v3 validateClass:@"OBWelcomeController" hasInstanceVariable:@"_headerView" withType:"OBHeaderView"];
-  [v3 validateClass:@"OBHeaderView" hasInstanceVariable:@"_imageView" withType:"OBImageView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"OBPrivacySplashController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"OBPrivacySplashController" isKindOfClass:@"OBWelcomeController"];
+  [validationsCopy validateClass:@"OBWelcomeController" hasInstanceVariable:@"_headerView" withType:"OBHeaderView"];
+  [validationsCopy validateClass:@"OBHeaderView" hasInstanceVariable:@"_imageView" withType:"OBImageView"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -35,16 +35,16 @@
   [(OBPrivacySplashControllerAccessibility *)self _accessibilityLoadAccessibilityInformation];
 }
 
-- (void)_axSetIconProperties:(id)a3
+- (void)_axSetIconProperties:(id)properties
 {
-  if (a3)
+  if (properties)
   {
-    v4 = a3;
-    [v4 setIsAccessibilityElement:1];
+    propertiesCopy = properties;
+    [propertiesCopy setIsAccessibilityElement:1];
     v3 = accessibilityLocalizedString(@"privacy.icon");
-    [v4 setAccessibilityLabel:v3];
+    [propertiesCopy setAccessibilityLabel:v3];
 
-    [v4 setAccessibilityTraits:*MEMORY[0x29EDBDB40]];
+    [propertiesCopy setAccessibilityTraits:*MEMORY[0x29EDBDB40]];
   }
 }
 

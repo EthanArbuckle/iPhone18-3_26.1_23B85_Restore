@@ -1,35 +1,35 @@
 @interface MapsActivity
 + (id)mapsActivityPerDefault;
-+ (void)brandMapsActivityFromUserActivity:(id)a3 completion:(id)a4;
++ (void)brandMapsActivityFromUserActivity:(id)activity completion:(id)completion;
 - (BOOL)affectsMapType;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)readFrom:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)readFrom:(id)from;
 - (BOOL)shouldIndex;
-- (MapsActivity)initWithBzip2CompressedData:(id)a3;
+- (MapsActivity)initWithBzip2CompressedData:(id)data;
 - (NSData)bzip2CompressedData;
 - (NSData)bzip2DataByIterativelyReducingIfNeeded;
 - (NSString)name;
 - (id)_destinationDirectionsURL;
 - (id)categoryString;
-- (id)collectionsModeAsString:(int)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)collectionsModeAsString:(int)string;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)destinationString;
 - (id)dictionaryRepresentation;
 - (id)mapsSiriAction;
-- (int)StringAsCollectionsMode:(id)a3;
+- (int)StringAsCollectionsMode:(id)mode;
 - (int)collectionsMode;
 - (int64_t)type;
 - (unint64_t)hash;
-- (void)addSearchPlaces:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasCollectionsMode:(BOOL)a3;
-- (void)setHasIsDroppedPinPresented:(BOOL)a3;
-- (void)setHasIsDroppedPinSelected:(BOOL)a3;
-- (void)setHasIsPresentingSelectedPlace:(BOOL)a3;
-- (void)setHasSelectedTransitFeatureID:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addSearchPlaces:(id)places;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasCollectionsMode:(BOOL)mode;
+- (void)setHasIsDroppedPinPresented:(BOOL)presented;
+- (void)setHasIsDroppedPinSelected:(BOOL)selected;
+- (void)setHasIsPresentingSelectedPlace:(BOOL)place;
+- (void)setHasSelectedTransitFeatureID:(BOOL)d;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MapsActivity
@@ -40,37 +40,37 @@
   {
     if ([(MapsActivity *)self hasPresentedMapItem])
     {
-      v3 = [(MapsActivity *)self presentedMapItem];
-      v4 = [v3 data];
-      v5 = [GEOMapItemStorage mapItemStorageForSerializedMapItemStorage:v4];
+      presentedMapItem = [(MapsActivity *)self presentedMapItem];
+      data = [presentedMapItem data];
+      v5 = [GEOMapItemStorage mapItemStorageForSerializedMapItemStorage:data];
 
       if (!v5)
       {
-        v22 = 0;
+        customSearchResult = 0;
 LABEL_15:
 
         v23 = +[NSBundle mainBundle];
-        v24 = [v23 localizedStringForKey:@"Maps" value:@"localized string not found" table:0];
+        currentResults = [v23 localizedStringForKey:@"Maps" value:@"localized string not found" table:0];
 
-        if (v22)
+        if (customSearchResult)
         {
-          v25 = [v22 _addressFormattedAsCity];
-          if ([v25 length])
+          _addressFormattedAsCity = [customSearchResult _addressFormattedAsCity];
+          if ([_addressFormattedAsCity length])
           {
             v26 = +[NSBundle mainBundle];
             v27 = [v26 localizedStringForKey:@"History_Directions_Title" value:@"localized string not found" table:0];
-            v28 = [v22 name];
-            v29 = [NSString stringWithFormat:v27, v28, v25];
+            name = [customSearchResult name];
+            name2 = [NSString stringWithFormat:v27, name, _addressFormattedAsCity];
 
-            v24 = v26;
+            currentResults = v26;
           }
 
           else
           {
-            v29 = [v22 name];
+            name2 = [customSearchResult name];
           }
 
-          v24 = v29;
+          currentResults = name2;
         }
 
         goto LABEL_25;
@@ -81,13 +81,13 @@ LABEL_15:
 
     else
     {
-      v21 = [(MapsActivity *)self searchPlaces];
-      v5 = [v21 objectAtIndexedSubscript:{-[MapsActivity selectedPlaceIndex](self, "selectedPlaceIndex")}];
+      searchPlaces = [(MapsActivity *)self searchPlaces];
+      v5 = [searchPlaces objectAtIndexedSubscript:{-[MapsActivity selectedPlaceIndex](self, "selectedPlaceIndex")}];
 
       v6 = [[MKMapItem alloc] initWithGeoMapItem:v5 isPlaceHolderPlace:0];
     }
 
-    v22 = v6;
+    customSearchResult = v6;
     goto LABEL_15;
   }
 
@@ -99,13 +99,13 @@ LABEL_47:
       if ([(MapsActivity *)self hasDroppedPin])
       {
         v54 = +[CustomSearchManager sharedManager];
-        v22 = [v54 customSearchResult];
+        customSearchResult = [v54 customSearchResult];
 
-        v55 = [v22 mapItem];
-        v56 = [v55 _addressFormattedAsShortenedAddress];
+        mapItem = [customSearchResult mapItem];
+        _addressFormattedAsShortenedAddress = [mapItem _addressFormattedAsShortenedAddress];
 
         v57 = +[_TtC4Maps18LibraryUIUtilities isMyPlacesEnabled];
-        if (v56)
+        if (_addressFormattedAsShortenedAddress)
         {
           v58 = +[NSBundle mainBundle];
           v59 = v58;
@@ -120,9 +120,9 @@ LABEL_47:
           }
 
           v67 = [v58 localizedStringForKey:v60 value:@"localized string not found" table:0];
-          v68 = [v22 mapItem];
-          v69 = [v68 _addressFormattedAsShortenedAddress];
-          v24 = [NSString stringWithFormat:v67, v69];
+          mapItem2 = [customSearchResult mapItem];
+          _addressFormattedAsShortenedAddress2 = [mapItem2 _addressFormattedAsShortenedAddress];
+          currentResults = [NSString stringWithFormat:v67, _addressFormattedAsShortenedAddress2];
         }
 
         else
@@ -139,14 +139,14 @@ LABEL_47:
             v66 = @"Dropped Pin";
           }
 
-          v24 = [v65 localizedStringForKey:v66 value:@"localized string not found" table:0];
+          currentResults = [v65 localizedStringForKey:v66 value:@"localized string not found" table:0];
         }
       }
 
       else
       {
-        v22 = +[NSBundle mainBundle];
-        v24 = [v22 localizedStringForKey:@"Maps" value:@"localized string not found" table:0];
+        customSearchResult = +[NSBundle mainBundle];
+        currentResults = [customSearchResult localizedStringForKey:@"Maps" value:@"localized string not found" table:0];
       }
 
 LABEL_25:
@@ -155,46 +155,46 @@ LABEL_25:
     }
 
     v30 = +[SearchSession currentSearchSession];
-    v31 = [v30 searchFieldItem];
+    searchFieldItem = [v30 searchFieldItem];
     v82 = 0;
     v83 = &v82;
     v84 = 0x3032000000;
     v85 = sub_100BF3C2C;
     v86 = sub_100BF3C3C;
     v87 = 0;
-    v32 = [v31 historyItem];
-    v33 = [v32 historyEntry];
+    historyItem = [searchFieldItem historyItem];
+    historyEntry = [historyItem historyEntry];
     v81[0] = _NSConcreteStackBlock;
     v81[1] = 3221225472;
     v81[2] = sub_100BF3C44;
     v81[3] = &unk_101656AE8;
     v81[4] = &v82;
-    [v33 ifSearch:v81 ifRoute:0 ifPlaceDisplay:0 ifTransitLineItem:0];
+    [historyEntry ifSearch:v81 ifRoute:0 ifPlaceDisplay:0 ifTransitLineItem:0];
 
-    v24 = [v30 currentResults];
-    v34 = [v24 count];
+    currentResults = [v30 currentResults];
+    searchPlacesCount = [currentResults count];
 
     if ([(MapsActivity *)self hasSearchCategoryStorage])
     {
       v35 = [GEOSearchCategory alloc];
-      v36 = [(MapsActivity *)self searchCategoryStorage];
-      v24 = [v35 initWithStorage:v36];
+      searchCategoryStorage = [(MapsActivity *)self searchCategoryStorage];
+      currentResults = [v35 initWithStorage:searchCategoryStorage];
 
-      v37 = [v24 popularTokenString];
-      v38 = v37;
-      if (v37)
+      popularTokenString = [currentResults popularTokenString];
+      v38 = popularTokenString;
+      if (popularTokenString)
       {
-        v39 = v37;
+        displayString = popularTokenString;
       }
 
       else
       {
-        v39 = [v24 displayString];
+        displayString = [currentResults displayString];
       }
 
-      v43 = v39;
+      searchString = displayString;
 
-      if (!v34)
+      if (!searchPlacesCount)
       {
         goto LABEL_42;
       }
@@ -202,9 +202,9 @@ LABEL_25:
 
     else
     {
-      v43 = [(MapsActivity *)self searchString];
-      v34 = [(MapsActivity *)self searchPlacesCount];
-      if (!v34)
+      searchString = [(MapsActivity *)self searchString];
+      searchPlacesCount = [(MapsActivity *)self searchPlacesCount];
+      if (!searchPlacesCount)
       {
         goto LABEL_42;
       }
@@ -215,14 +215,14 @@ LABEL_25:
       v50 = +[NSBundle mainBundle];
       v51 = [v50 localizedStringForKey:@"Title_for_search_in_maps_history" value:@"localized string not found" table:0];
 
-      v52 = [NSString localizedStringWithFormat:v51, v34, v83[5]];
-      v24 = [NSString stringWithFormat:@"%@\n%@", v43, v52];
+      v52 = [NSString localizedStringWithFormat:v51, searchPlacesCount, v83[5]];
+      currentResults = [NSString stringWithFormat:@"%@\n%@", searchString, v52];
 
       goto LABEL_44;
     }
 
 LABEL_42:
-    if (!v43)
+    if (!searchString)
     {
       v53 = 1;
 LABEL_46:
@@ -236,59 +236,59 @@ LABEL_46:
       goto LABEL_47;
     }
 
-    v24 = v43;
+    currentResults = searchString;
 LABEL_44:
     v53 = 0;
     goto LABEL_46;
   }
 
-  v8 = [(MapsActivity *)self directionsPlan];
-  v9 = [v8 originString];
+  directionsPlan = [(MapsActivity *)self directionsPlan];
+  originString = [directionsPlan originString];
 
-  v10 = [(MapsActivity *)self directionsPlan];
-  v11 = [v10 destinationString];
+  directionsPlan2 = [(MapsActivity *)self directionsPlan];
+  destinationString = [directionsPlan2 destinationString];
 
-  v12 = [(MapsActivity *)self directionsPlan];
-  v13 = [v12 routeRequestStorage];
-  v14 = [v13 waypoints];
-  v15 = [v14 count];
+  directionsPlan3 = [(MapsActivity *)self directionsPlan];
+  routeRequestStorage = [directionsPlan3 routeRequestStorage];
+  waypoints = [routeRequestStorage waypoints];
+  v15 = [waypoints count];
 
   v16 = MKLocalizedStringForCurrentLocation();
-  if (v9 && !v11 && v15)
+  if (originString && !destinationString && v15)
   {
-    v17 = [(MapsActivity *)self directionsPlan];
-    v18 = [v17 routeRequestStorage];
-    v19 = [v18 waypoints];
-    v20 = [v19 firstObject];
+    directionsPlan4 = [(MapsActivity *)self directionsPlan];
+    routeRequestStorage2 = [directionsPlan4 routeRequestStorage];
+    waypoints2 = [routeRequestStorage2 waypoints];
+    firstObject = [waypoints2 firstObject];
 
-    if ([v20 isCurrentLocation])
+    if ([firstObject isCurrentLocation])
     {
-      v11 = v16;
+      destinationString = v16;
 LABEL_71:
 
       goto LABEL_72;
     }
 
-    v49 = [v20 geoMapItem];
-    v11 = [v49 name];
+    geoMapItem = [firstObject geoMapItem];
+    destinationString = [geoMapItem name];
     goto LABEL_56;
   }
 
-  if (v11 && !v9 && v15)
+  if (destinationString && !originString && v15)
   {
-    v40 = [(MapsActivity *)self directionsPlan];
-    v41 = [v40 routeRequestStorage];
-    v42 = [v41 waypoints];
-    v20 = [v42 firstObject];
+    directionsPlan5 = [(MapsActivity *)self directionsPlan];
+    routeRequestStorage3 = [directionsPlan5 routeRequestStorage];
+    waypoints3 = [routeRequestStorage3 waypoints];
+    firstObject = [waypoints3 firstObject];
 
-    if ([v20 isCurrentLocation])
+    if ([firstObject isCurrentLocation])
     {
-      v9 = v16;
+      originString = v16;
       goto LABEL_71;
     }
 
-    v49 = [v20 geoMapItem];
-    v9 = [v49 name];
+    geoMapItem = [firstObject geoMapItem];
+    originString = [geoMapItem name];
 LABEL_56:
 
     goto LABEL_71;
@@ -296,89 +296,89 @@ LABEL_56:
 
   if (v15 >= 2)
   {
-    v44 = [(MapsActivity *)self directionsPlan];
-    v45 = [v44 routeRequestStorage];
-    v46 = [v45 waypoints];
-    v47 = [v46 firstObject];
+    directionsPlan6 = [(MapsActivity *)self directionsPlan];
+    routeRequestStorage4 = [directionsPlan6 routeRequestStorage];
+    waypoints4 = [routeRequestStorage4 waypoints];
+    firstObject2 = [waypoints4 firstObject];
 
-    if ([v47 isCurrentLocation])
+    if ([firstObject2 isCurrentLocation])
     {
-      v48 = v9;
-      v9 = v16;
+      geoMapItem2 = originString;
+      originString = v16;
     }
 
     else
     {
-      v48 = [v47 geoMapItem];
-      v70 = [v48 name];
+      geoMapItem2 = [firstObject2 geoMapItem];
+      name3 = [geoMapItem2 name];
 
-      v9 = v70;
+      originString = name3;
     }
 
-    v71 = [(MapsActivity *)self directionsPlan];
-    v72 = [v71 routeRequestStorage];
-    v73 = [v72 waypoints];
-    v20 = [v73 lastObject];
+    directionsPlan7 = [(MapsActivity *)self directionsPlan];
+    routeRequestStorage5 = [directionsPlan7 routeRequestStorage];
+    waypoints5 = [routeRequestStorage5 waypoints];
+    firstObject = [waypoints5 lastObject];
 
-    if ([v20 isCurrentLocation])
+    if ([firstObject isCurrentLocation])
     {
-      v74 = v16;
+      name4 = v16;
     }
 
     else
     {
-      v75 = [v20 geoMapItem];
-      v74 = [v75 name];
+      geoMapItem3 = [firstObject geoMapItem];
+      name4 = [geoMapItem3 name];
 
-      v11 = v75;
+      destinationString = geoMapItem3;
     }
 
-    v11 = v74;
+    destinationString = name4;
     goto LABEL_71;
   }
 
   if (v15 == 1)
   {
-    v61 = [(MapsActivity *)self directionsPlan];
-    v62 = [v61 routeRequestStorage];
-    v63 = [v62 waypoints];
-    v20 = [v63 firstObject];
+    directionsPlan8 = [(MapsActivity *)self directionsPlan];
+    routeRequestStorage6 = [directionsPlan8 routeRequestStorage];
+    waypoints6 = [routeRequestStorage6 waypoints];
+    firstObject = [waypoints6 firstObject];
 
-    if ([v20 isCurrentLocation])
+    if ([firstObject isCurrentLocation])
     {
-      v64 = v16;
+      name5 = v16;
     }
 
     else
     {
-      v76 = [v20 geoMapItem];
-      v64 = [v76 name];
+      geoMapItem4 = [firstObject geoMapItem];
+      name5 = [geoMapItem4 name];
 
-      v11 = v76;
+      destinationString = geoMapItem4;
     }
 
     v77 = v16;
-    v11 = v64;
-    v9 = v77;
+    destinationString = name5;
+    originString = v77;
     goto LABEL_71;
   }
 
 LABEL_72:
   v78 = +[NSBundle mainBundle];
   v79 = [v78 localizedStringForKey:@"%@\nDirection from %@" value:@"localized string not found" table:0];
-  v24 = [NSString stringWithFormat:v79, v11, v9];
+  currentResults = [NSString stringWithFormat:v79, destinationString, originString];
 
 LABEL_73:
 
-  return v24;
+  return currentResults;
 }
 
 - (NSData)bzip2CompressedData
 {
-  v2 = [(MapsActivity *)self data];
-  v3 = [v2 bzip2CompressedData];
+  data = [(MapsActivity *)self data];
+  bzip2CompressedData = [data bzip2CompressedData];
 
-  return v3;
+  return bzip2CompressedData;
 }
 
 - (BOOL)shouldIndex
@@ -393,21 +393,21 @@ LABEL_73:
 
 - (id)mapsSiriAction
 {
-  v3 = [(MapsActivity *)self type];
-  if (v3 == 1)
+  type = [(MapsActivity *)self type];
+  if (type == 1)
   {
-    v27 = [(MapsActivity *)self searchString];
-    v28 = v27;
+    searchString = [(MapsActivity *)self searchString];
+    v28 = searchString;
     v29 = &stru_1016631F0;
-    if (v27)
+    if (searchString)
     {
-      v29 = v27;
+      v29 = searchString;
     }
 
-    v7 = v29;
+    presentedMapItem = v29;
 
-    v8 = [GEOMapURLBuilder URLForSearch:v7];
-    if (![(__CFString *)v7 length])
+    _destinationDirectionsURL = [GEOMapURLBuilder URLForSearch:presentedMapItem];
+    if (![(__CFString *)presentedMapItem length])
     {
       v9 = 0;
       v10 = 0;
@@ -417,9 +417,9 @@ LABEL_73:
     v41[0] = @"MapsActionKey";
     v41[1] = @"MapsActionSearchStringKey";
     v42[0] = @"MapsSearchActionKey";
-    v42[1] = v7;
+    v42[1] = presentedMapItem;
     v41[2] = @"MapsActionLaunchURLKey";
-    v42[2] = v8;
+    v42[2] = _destinationDirectionsURL;
     v10 = [NSDictionary dictionaryWithObjects:v42 forKeys:v41 count:3];
     v11 = +[NSBundle mainBundle];
     v12 = v11;
@@ -427,32 +427,32 @@ LABEL_73:
 LABEL_20:
     v26 = [v11 localizedStringForKey:v13 value:@"localized string not found" table:0];
 
-    v30 = [[NSString alloc] initWithFormat:v26, v7];
+    v30 = [[NSString alloc] initWithFormat:v26, presentedMapItem];
     goto LABEL_25;
   }
 
-  if (v3 != 4)
+  if (type != 4)
   {
-    if (v3 != 3)
+    if (type != 3)
     {
       v10 = 0;
       v9 = 0;
       goto LABEL_30;
     }
 
-    v4 = [(MapsActivity *)self destinationString];
-    v5 = v4;
+    destinationString = [(MapsActivity *)self destinationString];
+    v5 = destinationString;
     v6 = &stru_1016631F0;
-    if (v4)
+    if (destinationString)
     {
-      v6 = v4;
+      v6 = destinationString;
     }
 
-    v7 = v6;
+    presentedMapItem = v6;
 
-    v8 = [(MapsActivity *)self _destinationDirectionsURL];
+    _destinationDirectionsURL = [(MapsActivity *)self _destinationDirectionsURL];
     v9 = 0;
-    if (![(__CFString *)v7 length]|| !v8)
+    if (![(__CFString *)presentedMapItem length]|| !_destinationDirectionsURL)
     {
       v10 = 0;
       goto LABEL_27;
@@ -461,9 +461,9 @@ LABEL_20:
     v43[0] = @"MapsActionKey";
     v43[1] = @"MapsActionDestinationStringKey";
     v44[0] = @"MapsDirectionsActionKey";
-    v44[1] = v7;
+    v44[1] = presentedMapItem;
     v43[2] = @"MapsActionLaunchURLKey";
-    v44[2] = v8;
+    v44[2] = _destinationDirectionsURL;
     v10 = [NSDictionary dictionaryWithObjects:v44 forKeys:v43 count:3];
     v11 = +[NSBundle mainBundle];
     v12 = v11;
@@ -471,51 +471,51 @@ LABEL_20:
     goto LABEL_20;
   }
 
-  v7 = [(MapsActivity *)self presentedMapItem];
+  presentedMapItem = [(MapsActivity *)self presentedMapItem];
   if ([(MapsActivity *)self hasSelectedPlaceIndex])
   {
-    v14 = [(MapsActivity *)self selectedPlaceIndex];
-    if (v14 < [(MapsActivity *)self searchPlacesCount])
+    selectedPlaceIndex = [(MapsActivity *)self selectedPlaceIndex];
+    if (selectedPlaceIndex < [(MapsActivity *)self searchPlacesCount])
     {
-      v15 = [(MapsActivity *)self searchPlaces];
-      v16 = [v15 objectAtIndexedSubscript:{-[MapsActivity selectedPlaceIndex](self, "selectedPlaceIndex")}];
+      searchPlaces = [(MapsActivity *)self searchPlaces];
+      v16 = [searchPlaces objectAtIndexedSubscript:{-[MapsActivity selectedPlaceIndex](self, "selectedPlaceIndex")}];
 
-      v7 = v16;
+      presentedMapItem = v16;
     }
   }
 
-  v17 = [(__CFString *)v7 name];
-  v18 = v17;
+  name = [(__CFString *)presentedMapItem name];
+  v18 = name;
   v19 = &stru_1016631F0;
-  if (v17)
+  if (name)
   {
-    v19 = v17;
+    v19 = name;
   }
 
-  v8 = v19;
+  _destinationDirectionsURL = v19;
 
   if (MapsFeature_IsEnabled_URLUnification())
   {
-    [(__CFString *)v7 coordinate];
+    [(__CFString *)presentedMapItem coordinate];
     v21 = v20;
     v23 = v22;
-    v24 = [(__CFString *)v7 shortAddress];
-    v25 = [(__CFString *)v7 _identifier];
-    v26 = [GEOMapURLBuilder URLForCoordinate:v24 address:v8 label:v25 mapItemIdentifier:v21, v23];
+    shortAddress = [(__CFString *)presentedMapItem shortAddress];
+    _identifier = [(__CFString *)presentedMapItem _identifier];
+    v26 = [GEOMapURLBuilder URLForCoordinate:shortAddress address:_destinationDirectionsURL label:_identifier mapItemIdentifier:v21, v23];
   }
 
   else
   {
-    v31 = [(__CFString *)v7 _muid];
-    v32 = [(__CFString *)v7 _resultProviderID];
-    [(__CFString *)v7 coordinate];
+    _muid = [(__CFString *)presentedMapItem _muid];
+    _resultProviderID = [(__CFString *)presentedMapItem _resultProviderID];
+    [(__CFString *)presentedMapItem coordinate];
     v34 = v33;
     v36 = v35;
-    v24 = [(__CFString *)v7 shortAddress];
-    v26 = [GEOMapURLBuilder URLForInternalBusiness:v8 id:v31 provider:v32 coordinate:v24 address:v34, v36];
+    shortAddress = [(__CFString *)presentedMapItem shortAddress];
+    v26 = [GEOMapURLBuilder URLForInternalBusiness:_destinationDirectionsURL id:_muid provider:_resultProviderID coordinate:shortAddress address:v34, v36];
   }
 
-  if (![(__CFString *)v8 length])
+  if (![(__CFString *)_destinationDirectionsURL length])
   {
     v9 = 0;
     v10 = 0;
@@ -525,11 +525,11 @@ LABEL_20:
   v39[0] = @"MapsActionKey";
   v39[1] = @"MapsActionMapItemNameKey";
   v40[0] = @"MapsMapItemActionKey";
-  v40[1] = v8;
+  v40[1] = _destinationDirectionsURL;
   v39[2] = @"MapsActionLaunchURLKey";
   v40[2] = v26;
   v10 = [NSDictionary dictionaryWithObjects:v40 forKeys:v39 count:3];
-  v30 = [[NSString alloc] initWithString:v8];
+  v30 = [[NSString alloc] initWithString:_destinationDirectionsURL];
 LABEL_25:
   v9 = v30;
 LABEL_26:
@@ -557,8 +557,8 @@ LABEL_31:
 
   if ([(MapsActivity *)self hasSelectedPlaceIndex])
   {
-    v4 = [(MapsActivity *)self selectedPlaceIndex];
-    if (v4 < [(MapsActivity *)self searchPlacesCount])
+    selectedPlaceIndex = [(MapsActivity *)self selectedPlaceIndex];
+    if (selectedPlaceIndex < [(MapsActivity *)self searchPlacesCount])
     {
       return 4;
     }
@@ -589,112 +589,112 @@ LABEL_31:
 
 - (NSData)bzip2DataByIterativelyReducingIfNeeded
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(MapsActivity *)v2 bzip2CompressedData];
-  if ([v3 length] <= 0x2328)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  bzip2CompressedData = [(MapsActivity *)selfCopy bzip2CompressedData];
+  if ([bzip2CompressedData length] <= 0x2328)
   {
-    v9 = v3;
+    v9 = bzip2CompressedData;
   }
 
   else
   {
-    v4 = [(MapsActivity *)v2 copy];
+    v4 = [(MapsActivity *)selfCopy copy];
     while (1)
     {
-      v5 = [v4 searchPlaces];
-      v6 = [v5 count];
+      searchPlaces = [v4 searchPlaces];
+      v6 = [searchPlaces count];
 
       if (!v6)
       {
         break;
       }
 
-      v7 = [v4 searchPlaces];
-      [v7 removeLastObject];
+      searchPlaces2 = [v4 searchPlaces];
+      [searchPlaces2 removeLastObject];
 
-      v8 = [v4 bzip2CompressedData];
+      bzip2CompressedData2 = [v4 bzip2CompressedData];
 
-      v3 = v8;
-      if ([v8 length] <= 0x2328)
+      bzip2CompressedData = bzip2CompressedData2;
+      if ([bzip2CompressedData2 length] <= 0x2328)
       {
         goto LABEL_8;
       }
     }
 
-    v8 = v3;
+    bzip2CompressedData2 = bzip2CompressedData;
 LABEL_8:
-    v9 = v8;
+    v9 = bzip2CompressedData2;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v9;
 }
 
 - (id)destinationString
 {
-  v3 = [(MapsActivity *)self directionsPlan];
-  v4 = [v3 destinationString];
+  directionsPlan = [(MapsActivity *)self directionsPlan];
+  destinationString = [directionsPlan destinationString];
 
-  if ([v4 length])
+  if ([destinationString length])
   {
-    v5 = v4;
+    name2 = destinationString;
   }
 
   else
   {
-    v6 = [(MapsActivity *)self directionsPlan];
-    v7 = [v6 routeRequestStorage];
-    v8 = [v7 waypoints];
-    v9 = [v8 lastObject];
+    directionsPlan2 = [(MapsActivity *)self directionsPlan];
+    routeRequestStorage = [directionsPlan2 routeRequestStorage];
+    waypoints = [routeRequestStorage waypoints];
+    lastObject = [waypoints lastObject];
 
-    v10 = [v9 geoMapItem];
-    v11 = [v10 name];
-    v12 = [v11 length];
+    geoMapItem = [lastObject geoMapItem];
+    name = [geoMapItem name];
+    v12 = [name length];
 
     if (v12)
     {
-      v13 = [v9 geoMapItem];
-      v5 = [v13 name];
+      geoMapItem2 = [lastObject geoMapItem];
+      name2 = [geoMapItem2 name];
     }
 
     else
     {
-      v5 = 0;
+      name2 = 0;
     }
   }
 
-  return v5;
+  return name2;
 }
 
 - (id)_destinationDirectionsURL
 {
-  v3 = [(MapsActivity *)self destinationString];
-  v4 = [(MapsActivity *)self directionsPlan];
-  v5 = [v4 routeRequestStorage];
-  v6 = [v5 waypoints];
-  v7 = [v6 lastObject];
+  destinationString = [(MapsActivity *)self destinationString];
+  directionsPlan = [(MapsActivity *)self directionsPlan];
+  routeRequestStorage = [directionsPlan routeRequestStorage];
+  waypoints = [routeRequestStorage waypoints];
+  lastObject = [waypoints lastObject];
 
-  v8 = [v7 geoMapItem];
-  v9 = [v8 shortAddress];
-  v10 = [(MapsActivity *)self directionsPlan];
-  v11 = [v10 destinationString];
+  geoMapItem = [lastObject geoMapItem];
+  shortAddress = [geoMapItem shortAddress];
+  directionsPlan2 = [(MapsActivity *)self directionsPlan];
+  destinationString2 = [directionsPlan2 destinationString];
 
-  if ([v9 length])
+  if ([shortAddress length])
   {
-    v12 = v9;
+    v12 = shortAddress;
   }
 
   else
   {
-    v12 = v11;
+    v12 = destinationString2;
   }
 
   v13 = v12;
   if ([v13 length])
   {
-    v14 = +[GEOMapURLBuilder URLForDirectionsFromHereTo:label:muid:provider:transport:](GEOMapURLBuilder, "URLForDirectionsFromHereTo:label:muid:provider:transport:", v13, v3, [v8 _muid], objc_msgSend(v8, "_resultProviderID"), 4);
+    v14 = +[GEOMapURLBuilder URLForDirectionsFromHereTo:label:muid:provider:transport:](GEOMapURLBuilder, "URLForDirectionsFromHereTo:label:muid:provider:transport:", v13, destinationString, [geoMapItem _muid], objc_msgSend(geoMapItem, "_resultProviderID"), 4);
   }
 
   else
@@ -710,22 +710,22 @@ LABEL_8:
   if ([(MapsActivity *)self hasSearchCategoryStorage])
   {
     v3 = [GEOSearchCategory alloc];
-    v4 = [(MapsActivity *)self searchCategoryStorage];
-    v5 = [v3 initWithStorage:v4];
+    searchCategoryStorage = [(MapsActivity *)self searchCategoryStorage];
+    v5 = [v3 initWithStorage:searchCategoryStorage];
 
-    v6 = [v5 popularTokenString];
-    v7 = v6;
-    if (v6)
+    popularTokenString = [v5 popularTokenString];
+    v7 = popularTokenString;
+    if (popularTokenString)
     {
-      v8 = v6;
+      displayString = popularTokenString;
     }
 
     else
     {
-      v8 = [v5 displayString];
+      displayString = [v5 displayString];
     }
 
-    v9 = v8;
+    v9 = displayString;
   }
 
   else
@@ -738,46 +738,46 @@ LABEL_8:
 
 - (BOOL)affectsMapType
 {
-  v3 = [(MapsActivity *)self displayOptions];
-  if ([v3 hasMapType])
+  displayOptions = [(MapsActivity *)self displayOptions];
+  if ([displayOptions hasMapType])
   {
-    v4 = 1;
+    hasTransportType = 1;
   }
 
   else
   {
-    v5 = [(MapsActivity *)self displayOptions];
-    if ([v5 hasTransportType])
+    displayOptions2 = [(MapsActivity *)self displayOptions];
+    if ([displayOptions2 hasTransportType])
     {
-      v4 = 1;
+      hasTransportType = 1;
     }
 
     else
     {
-      v6 = [(MapsActivity *)self directionsPlan];
-      v7 = [v6 routeRequestStorage];
-      v4 = [v7 hasTransportType];
+      directionsPlan = [(MapsActivity *)self directionsPlan];
+      routeRequestStorage = [directionsPlan routeRequestStorage];
+      hasTransportType = [routeRequestStorage hasTransportType];
     }
   }
 
-  return v4;
+  return hasTransportType;
 }
 
-- (MapsActivity)initWithBzip2CompressedData:(id)a3
+- (MapsActivity)initWithBzip2CompressedData:(id)data
 {
-  v4 = [a3 bzip2UncompressedData];
-  if (v4)
+  bzip2UncompressedData = [data bzip2UncompressedData];
+  if (bzip2UncompressedData)
   {
-    self = [(MapsActivity *)self initWithData:v4];
-    v5 = self;
+    self = [(MapsActivity *)self initWithData:bzip2UncompressedData];
+    selfCopy = self;
   }
 
   else
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 + (id)mapsActivityPerDefault
@@ -786,8 +786,8 @@ LABEL_8:
   v3 = objc_alloc_init(GEOURLOptions);
   [(MapsActivity *)v2 setDisplayOptions:v3];
 
-  v4 = [(MapsActivity *)v2 displayOptions];
-  [v4 setUserTrackingMode:1];
+  displayOptions = [(MapsActivity *)v2 displayOptions];
+  [displayOptions setUserTrackingMode:1];
 
   v5 = +[MapsSettings selectedViewMode]- 1;
   if (v5 > 6)
@@ -800,55 +800,55 @@ LABEL_8:
     v6 = dword_101216080[v5];
   }
 
-  v7 = [(MapsActivity *)v2 displayOptions];
-  [v7 setMapType:v6];
+  displayOptions2 = [(MapsActivity *)v2 displayOptions];
+  [displayOptions2 setMapType:v6];
 
   return v2;
 }
 
-+ (void)brandMapsActivityFromUserActivity:(id)a3 completion:(id)a4
++ (void)brandMapsActivityFromUserActivity:(id)activity completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 activityType];
-  v8 = [v7 isEqualToString:@"MKPlaceBrandUserActivity"];
+  activityCopy = activity;
+  completionCopy = completion;
+  activityType = [activityCopy activityType];
+  v8 = [activityType isEqualToString:@"MKPlaceBrandUserActivity"];
 
   if (v8)
   {
     v9 = objc_opt_class();
     v10 = objc_opt_class();
     v11 = [NSSet setWithObjects:v9, v10, objc_opt_class(), 0];
-    v12 = [v5 userInfo];
-    v13 = [v12 objectForKeyedSubscript:@"MKPlaceBrandUserActivityData"];
+    userInfo = [activityCopy userInfo];
+    v13 = [userInfo objectForKeyedSubscript:@"MKPlaceBrandUserActivityData"];
     v14 = [NSKeyedUnarchiver unarchivedObjectOfClasses:v11 fromData:v13 error:0];
 
     v15 = [v14 objectForKeyedSubscript:@"MKPlaceBrandUserActivityID"];
-    v16 = [v15 longLongValue];
+    longLongValue = [v15 longLongValue];
 
     v17 = +[MKMapService sharedService];
-    v18 = [v17 ticketForSearchPoisForBrandMUID:v16 traits:0];
+    v18 = [v17 ticketForSearchPoisForBrandMUID:longLongValue traits:0];
 
     v20[0] = _NSConcreteStackBlock;
     v20[1] = 3221225472;
     v20[2] = sub_100BF3F6C;
     v20[3] = &unk_1016601F0;
     v21 = v14;
-    v22 = v6;
+    v22 = completionCopy;
     v19 = v14;
     [v18 submitWithHandler:v20 networkActivity:&stru_10164D6D0];
   }
 
-  else if (v6)
+  else if (completionCopy)
   {
-    (*(v6 + 2))(v6, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   displayOptions = self->_displayOptions;
-  v6 = *(v4 + 5);
+  v6 = *(fromCopy + 5);
   if (displayOptions)
   {
     if (v6)
@@ -862,13 +862,13 @@ LABEL_8:
     [(MapsActivity *)self setDisplayOptions:?];
   }
 
-  if ((*(v4 + 116) & 4) != 0)
+  if ((*(fromCopy + 116) & 4) != 0)
   {
-    self->_collectionsMode = *(v4 + 6);
+    self->_collectionsMode = *(fromCopy + 6);
     *&self->_has |= 4u;
   }
 
-  if (*(v4 + 11))
+  if (*(fromCopy + 11))
   {
     [(MapsActivity *)self setSearchString:?];
   }
@@ -877,7 +877,7 @@ LABEL_8:
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v7 = *(v4 + 10);
+  v7 = *(fromCopy + 10);
   v8 = [v7 countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v8)
   {
@@ -901,22 +901,22 @@ LABEL_8:
     while (v9);
   }
 
-  v12 = *(v4 + 116);
+  v12 = *(fromCopy + 116);
   if (v12)
   {
-    self->_selectedPlaceIndex = *(v4 + 1);
+    self->_selectedPlaceIndex = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v12 = *(v4 + 116);
+    v12 = *(fromCopy + 116);
   }
 
   if ((v12 & 0x20) != 0)
   {
-    self->_isPresentingSelectedPlace = *(v4 + 114);
+    self->_isPresentingSelectedPlace = *(fromCopy + 114);
     *&self->_has |= 0x20u;
   }
 
   directionsPlan = self->_directionsPlan;
-  v14 = *(v4 + 4);
+  v14 = *(fromCopy + 4);
   if (directionsPlan)
   {
     if (v14)
@@ -931,7 +931,7 @@ LABEL_8:
   }
 
   droppedPin = self->_droppedPin;
-  v16 = *(v4 + 6);
+  v16 = *(fromCopy + 6);
   if (droppedPin)
   {
     if (v16)
@@ -945,22 +945,22 @@ LABEL_8:
     [(MapsActivity *)self setDroppedPin:?];
   }
 
-  v17 = *(v4 + 116);
+  v17 = *(fromCopy + 116);
   if ((v17 & 0x10) != 0)
   {
-    self->_isDroppedPinSelected = *(v4 + 113);
+    self->_isDroppedPinSelected = *(fromCopy + 113);
     *&self->_has |= 0x10u;
-    v17 = *(v4 + 116);
+    v17 = *(fromCopy + 116);
   }
 
   if ((v17 & 8) != 0)
   {
-    self->_isDroppedPinPresented = *(v4 + 112);
+    self->_isDroppedPinPresented = *(fromCopy + 112);
     *&self->_has |= 8u;
   }
 
   presentedMapItem = self->_presentedMapItem;
-  v19 = *(v4 + 8);
+  v19 = *(fromCopy + 8);
   if (presentedMapItem)
   {
     if (v19)
@@ -975,7 +975,7 @@ LABEL_8:
   }
 
   searchCategoryStorage = self->_searchCategoryStorage;
-  v21 = *(v4 + 9);
+  v21 = *(fromCopy + 9);
   if (searchCategoryStorage)
   {
     if (v21)
@@ -989,19 +989,19 @@ LABEL_8:
     [(MapsActivity *)self setSearchCategoryStorage:?];
   }
 
-  if ((*(v4 + 116) & 2) != 0)
+  if ((*(fromCopy + 116) & 2) != 0)
   {
-    self->_selectedTransitFeatureID = *(v4 + 2);
+    self->_selectedTransitFeatureID = *(fromCopy + 2);
     *&self->_has |= 2u;
   }
 
-  if (*(v4 + 12))
+  if (*(fromCopy + 12))
   {
     [(MapsActivity *)self setSelectedTransitLineName:?];
   }
 
   lineItem = self->_lineItem;
-  v23 = *(v4 + 7);
+  v23 = *(fromCopy + 7);
   if (lineItem)
   {
     if (v23)
@@ -1015,7 +1015,7 @@ LABEL_8:
     [(MapsActivity *)self setLineItem:?];
   }
 
-  if (*(v4 + 13))
+  if (*(fromCopy + 13))
   {
     [(MapsActivity *)self setUserCreatedCollectionID:?];
   }
@@ -1100,16 +1100,16 @@ LABEL_14:
   return v12 ^ v14 ^ [(NSString *)self->_userCreatedCollectionID hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_36;
   }
 
   displayOptions = self->_displayOptions;
-  if (displayOptions | *(v4 + 5))
+  if (displayOptions | *(equalCopy + 5))
   {
     if (![(GEOURLOptions *)displayOptions isEqual:?])
     {
@@ -1119,25 +1119,25 @@ LABEL_14:
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 116) & 4) == 0 || self->_collectionsMode != *(v4 + 6))
+    if ((*(equalCopy + 116) & 4) == 0 || self->_collectionsMode != *(equalCopy + 6))
     {
       goto LABEL_36;
     }
   }
 
-  else if ((*(v4 + 116) & 4) != 0)
+  else if ((*(equalCopy + 116) & 4) != 0)
   {
     goto LABEL_36;
   }
 
   searchString = self->_searchString;
-  if (searchString | *(v4 + 11) && ![(NSString *)searchString isEqual:?])
+  if (searchString | *(equalCopy + 11) && ![(NSString *)searchString isEqual:?])
   {
     goto LABEL_36;
   }
 
   searchPlaces = self->_searchPlaces;
-  if (searchPlaces | *(v4 + 10))
+  if (searchPlaces | *(equalCopy + 10))
   {
     if (![(NSMutableArray *)searchPlaces isEqual:?])
     {
@@ -1147,51 +1147,51 @@ LABEL_14:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 116) & 1) == 0 || self->_selectedPlaceIndex != *(v4 + 1))
+    if ((*(equalCopy + 116) & 1) == 0 || self->_selectedPlaceIndex != *(equalCopy + 1))
     {
       goto LABEL_36;
     }
   }
 
-  else if (*(v4 + 116))
+  else if (*(equalCopy + 116))
   {
     goto LABEL_36;
   }
 
   if ((*&self->_has & 0x20) != 0)
   {
-    if ((*(v4 + 116) & 0x20) == 0)
+    if ((*(equalCopy + 116) & 0x20) == 0)
     {
       goto LABEL_36;
     }
 
     if (self->_isPresentingSelectedPlace)
     {
-      if ((*(v4 + 114) & 1) == 0)
+      if ((*(equalCopy + 114) & 1) == 0)
       {
         goto LABEL_36;
       }
     }
 
-    else if (*(v4 + 114))
+    else if (*(equalCopy + 114))
     {
       goto LABEL_36;
     }
   }
 
-  else if ((*(v4 + 116) & 0x20) != 0)
+  else if ((*(equalCopy + 116) & 0x20) != 0)
   {
     goto LABEL_36;
   }
 
   directionsPlan = self->_directionsPlan;
-  if (directionsPlan | *(v4 + 4) && ![(DirectionsPlan *)directionsPlan isEqual:?])
+  if (directionsPlan | *(equalCopy + 4) && ![(DirectionsPlan *)directionsPlan isEqual:?])
   {
     goto LABEL_36;
   }
 
   droppedPin = self->_droppedPin;
-  if (droppedPin | *(v4 + 6))
+  if (droppedPin | *(equalCopy + 6))
   {
     if (![(MSPDroppedPin *)droppedPin isEqual:?])
     {
@@ -1201,64 +1201,64 @@ LABEL_14:
 
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(v4 + 116) & 0x10) == 0)
+    if ((*(equalCopy + 116) & 0x10) == 0)
     {
       goto LABEL_36;
     }
 
     if (self->_isDroppedPinSelected)
     {
-      if ((*(v4 + 113) & 1) == 0)
+      if ((*(equalCopy + 113) & 1) == 0)
       {
         goto LABEL_36;
       }
     }
 
-    else if (*(v4 + 113))
+    else if (*(equalCopy + 113))
     {
       goto LABEL_36;
     }
   }
 
-  else if ((*(v4 + 116) & 0x10) != 0)
+  else if ((*(equalCopy + 116) & 0x10) != 0)
   {
     goto LABEL_36;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 116) & 8) == 0)
+    if ((*(equalCopy + 116) & 8) == 0)
     {
       goto LABEL_36;
     }
 
     if (self->_isDroppedPinPresented)
     {
-      if ((*(v4 + 112) & 1) == 0)
+      if ((*(equalCopy + 112) & 1) == 0)
       {
         goto LABEL_36;
       }
     }
 
-    else if (*(v4 + 112))
+    else if (*(equalCopy + 112))
     {
       goto LABEL_36;
     }
   }
 
-  else if ((*(v4 + 116) & 8) != 0)
+  else if ((*(equalCopy + 116) & 8) != 0)
   {
     goto LABEL_36;
   }
 
   presentedMapItem = self->_presentedMapItem;
-  if (presentedMapItem | *(v4 + 8) && ![(GEOMapItemStorage *)presentedMapItem isEqual:?])
+  if (presentedMapItem | *(equalCopy + 8) && ![(GEOMapItemStorage *)presentedMapItem isEqual:?])
   {
     goto LABEL_36;
   }
 
   searchCategoryStorage = self->_searchCategoryStorage;
-  if (searchCategoryStorage | *(v4 + 9))
+  if (searchCategoryStorage | *(equalCopy + 9))
   {
     if (![(GEOSearchCategoryStorage *)searchCategoryStorage isEqual:?])
     {
@@ -1268,7 +1268,7 @@ LABEL_14:
 
   if ((*&self->_has & 2) == 0)
   {
-    if ((*(v4 + 116) & 2) == 0)
+    if ((*(equalCopy + 116) & 2) == 0)
     {
       goto LABEL_57;
     }
@@ -1278,20 +1278,20 @@ LABEL_36:
     goto LABEL_37;
   }
 
-  if ((*(v4 + 116) & 2) == 0 || self->_selectedTransitFeatureID != *(v4 + 2))
+  if ((*(equalCopy + 116) & 2) == 0 || self->_selectedTransitFeatureID != *(equalCopy + 2))
   {
     goto LABEL_36;
   }
 
 LABEL_57:
   selectedTransitLineName = self->_selectedTransitLineName;
-  if (selectedTransitLineName | *(v4 + 12) && ![(NSString *)selectedTransitLineName isEqual:?])
+  if (selectedTransitLineName | *(equalCopy + 12) && ![(NSString *)selectedTransitLineName isEqual:?])
   {
     goto LABEL_36;
   }
 
   lineItem = self->_lineItem;
-  if (lineItem | *(v4 + 7))
+  if (lineItem | *(equalCopy + 7))
   {
     if (![(MSPTransitStorageLineItem *)lineItem isEqual:?])
     {
@@ -1300,7 +1300,7 @@ LABEL_57:
   }
 
   userCreatedCollectionID = self->_userCreatedCollectionID;
-  if (userCreatedCollectionID | *(v4 + 13))
+  if (userCreatedCollectionID | *(equalCopy + 13))
   {
     v12 = [(NSString *)userCreatedCollectionID isEqual:?];
   }
@@ -1315,10 +1315,10 @@ LABEL_37:
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(GEOURLOptions *)self->_displayOptions copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(GEOURLOptions *)self->_displayOptions copyWithZone:zone];
   v7 = v5[5];
   v5[5] = v6;
 
@@ -1328,7 +1328,7 @@ LABEL_37:
     *(v5 + 116) |= 4u;
   }
 
-  v8 = [(NSString *)self->_searchString copyWithZone:a3];
+  v8 = [(NSString *)self->_searchString copyWithZone:zone];
   v9 = v5[11];
   v5[11] = v8;
 
@@ -1351,7 +1351,7 @@ LABEL_37:
           objc_enumerationMutation(v10);
         }
 
-        v15 = [*(*(&v33 + 1) + 8 * i) copyWithZone:{a3, v33}];
+        v15 = [*(*(&v33 + 1) + 8 * i) copyWithZone:{zone, v33}];
         [v5 addSearchPlaces:v15];
       }
 
@@ -1375,11 +1375,11 @@ LABEL_37:
     *(v5 + 116) |= 0x20u;
   }
 
-  v17 = [(DirectionsPlan *)self->_directionsPlan copyWithZone:a3, v33];
+  v17 = [(DirectionsPlan *)self->_directionsPlan copyWithZone:zone, v33];
   v18 = v5[4];
   v5[4] = v17;
 
-  v19 = [(MSPDroppedPin *)self->_droppedPin copyWithZone:a3];
+  v19 = [(MSPDroppedPin *)self->_droppedPin copyWithZone:zone];
   v20 = v5[6];
   v5[6] = v19;
 
@@ -1397,11 +1397,11 @@ LABEL_37:
     *(v5 + 116) |= 8u;
   }
 
-  v22 = [(GEOMapItemStorage *)self->_presentedMapItem copyWithZone:a3];
+  v22 = [(GEOMapItemStorage *)self->_presentedMapItem copyWithZone:zone];
   v23 = v5[8];
   v5[8] = v22;
 
-  v24 = [(GEOSearchCategoryStorage *)self->_searchCategoryStorage copyWithZone:a3];
+  v24 = [(GEOSearchCategoryStorage *)self->_searchCategoryStorage copyWithZone:zone];
   v25 = v5[9];
   v5[9] = v24;
 
@@ -1411,35 +1411,35 @@ LABEL_37:
     *(v5 + 116) |= 2u;
   }
 
-  v26 = [(NSString *)self->_selectedTransitLineName copyWithZone:a3];
+  v26 = [(NSString *)self->_selectedTransitLineName copyWithZone:zone];
   v27 = v5[12];
   v5[12] = v26;
 
-  v28 = [(MSPTransitStorageLineItem *)self->_lineItem copyWithZone:a3];
+  v28 = [(MSPTransitStorageLineItem *)self->_lineItem copyWithZone:zone];
   v29 = v5[7];
   v5[7] = v28;
 
-  v30 = [(NSString *)self->_userCreatedCollectionID copyWithZone:a3];
+  v30 = [(NSString *)self->_userCreatedCollectionID copyWithZone:zone];
   v31 = v5[13];
   v5[13] = v30;
 
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v12 = v4;
+  toCopy = to;
+  v12 = toCopy;
   if (self->_displayOptions)
   {
-    [v4 setDisplayOptions:?];
-    v4 = v12;
+    [toCopy setDisplayOptions:?];
+    toCopy = v12;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    *(v4 + 6) = self->_collectionsMode;
-    *(v4 + 116) |= 4u;
+    *(toCopy + 6) = self->_collectionsMode;
+    *(toCopy + 116) |= 4u;
   }
 
   if (self->_searchString)
@@ -1450,10 +1450,10 @@ LABEL_37:
   if ([(MapsActivity *)self searchPlacesCount])
   {
     [v12 clearSearchPlaces];
-    v5 = [(MapsActivity *)self searchPlacesCount];
-    if (v5)
+    searchPlacesCount = [(MapsActivity *)self searchPlacesCount];
+    if (searchPlacesCount)
     {
-      v6 = v5;
+      v6 = searchPlacesCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(MapsActivity *)self searchPlacesAtIndex:i];
@@ -1540,9 +1540,9 @@ LABEL_37:
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_displayOptions)
   {
     PBDataWriterWriteSubmessage();
@@ -1651,19 +1651,19 @@ LABEL_37:
   }
 }
 
-- (BOOL)readFrom:(id)a3
+- (BOOL)readFrom:(id)from
 {
-  v5 = [a3 position];
-  if (v5 >= [a3 length])
+  position = [from position];
+  if (position >= [from length])
   {
-    return [a3 hasError] ^ 1;
+    return [from hasError] ^ 1;
   }
 
   while (2)
   {
-    if ([a3 hasError])
+    if ([from hasError])
     {
-      return [a3 hasError] ^ 1;
+      return [from hasError] ^ 1;
     }
 
     v6 = 0;
@@ -1672,18 +1672,18 @@ LABEL_37:
     while (1)
     {
       LOBYTE(v62) = 0;
-      v9 = [a3 position] + 1;
-      if (v9 >= [a3 position] && (v10 = objc_msgSend(a3, "position") + 1, v10 <= objc_msgSend(a3, "length")))
+      v9 = [from position] + 1;
+      if (v9 >= [from position] && (v10 = objc_msgSend(from, "position") + 1, v10 <= objc_msgSend(from, "length")))
       {
-        v11 = [a3 data];
-        [v11 getBytes:&v62 range:{objc_msgSend(a3, "position"), 1}];
+        data = [from data];
+        [data getBytes:&v62 range:{objc_msgSend(from, "position"), 1}];
 
-        [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+        [from setPosition:{objc_msgSend(from, "position") + 1}];
       }
 
       else
       {
-        [a3 _setError];
+        [from _setError];
       }
 
       v8 |= (v62 & 0x7F) << v6;
@@ -1701,11 +1701,11 @@ LABEL_37:
       }
     }
 
-    v13 = [a3 hasError] ? 0 : v8;
+    v13 = [from hasError] ? 0 : v8;
 LABEL_15:
-    if (([a3 hasError] & 1) != 0 || (v13 & 7) == 4)
+    if (([from hasError] & 1) != 0 || (v13 & 7) == 4)
     {
-      return [a3 hasError] ^ 1;
+      return [from hasError] ^ 1;
     }
 
     switch((v13 >> 3))
@@ -1722,18 +1722,18 @@ LABEL_15:
         while (1)
         {
           LOBYTE(v62) = 0;
-          v41 = [a3 position] + 1;
-          if (v41 >= [a3 position] && (v42 = objc_msgSend(a3, "position") + 1, v42 <= objc_msgSend(a3, "length")))
+          v41 = [from position] + 1;
+          if (v41 >= [from position] && (v42 = objc_msgSend(from, "position") + 1, v42 <= objc_msgSend(from, "length")))
           {
-            v43 = [a3 data];
-            [v43 getBytes:&v62 range:{objc_msgSend(a3, "position"), 1}];
+            data2 = [from data];
+            [data2 getBytes:&v62 range:{objc_msgSend(from, "position"), 1}];
 
-            [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+            [from setPosition:{objc_msgSend(from, "position") + 1}];
           }
 
           else
           {
-            [a3 _setError];
+            [from _setError];
           }
 
           v40 |= (v62 & 0x7F) << v38;
@@ -1751,7 +1751,7 @@ LABEL_15:
           }
         }
 
-        if ([a3 hasError])
+        if ([from hasError])
         {
           v44 = 0;
         }
@@ -1780,18 +1780,18 @@ LABEL_105:
         while (1)
         {
           LOBYTE(v62) = 0;
-          v19 = [a3 position] + 1;
-          if (v19 >= [a3 position] && (v20 = objc_msgSend(a3, "position") + 1, v20 <= objc_msgSend(a3, "length")))
+          v19 = [from position] + 1;
+          if (v19 >= [from position] && (v20 = objc_msgSend(from, "position") + 1, v20 <= objc_msgSend(from, "length")))
           {
-            v21 = [a3 data];
-            [v21 getBytes:&v62 range:{objc_msgSend(a3, "position"), 1}];
+            data3 = [from data];
+            [data3 getBytes:&v62 range:{objc_msgSend(from, "position"), 1}];
 
-            [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+            [from setPosition:{objc_msgSend(from, "position") + 1}];
           }
 
           else
           {
-            [a3 _setError];
+            [from _setError];
           }
 
           v18 |= (v62 & 0x7F) << v16;
@@ -1809,7 +1809,7 @@ LABEL_105:
           }
         }
 
-        if ([a3 hasError])
+        if ([from hasError])
         {
           v22 = 0;
         }
@@ -1830,18 +1830,18 @@ LABEL_94:
         while (1)
         {
           LOBYTE(v62) = 0;
-          v48 = [a3 position] + 1;
-          if (v48 >= [a3 position] && (v49 = objc_msgSend(a3, "position") + 1, v49 <= objc_msgSend(a3, "length")))
+          v48 = [from position] + 1;
+          if (v48 >= [from position] && (v49 = objc_msgSend(from, "position") + 1, v49 <= objc_msgSend(from, "length")))
           {
-            v50 = [a3 data];
-            [v50 getBytes:&v62 range:{objc_msgSend(a3, "position"), 1}];
+            data4 = [from data];
+            [data4 getBytes:&v62 range:{objc_msgSend(from, "position"), 1}];
 
-            [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+            [from setPosition:{objc_msgSend(from, "position") + 1}];
           }
 
           else
           {
-            [a3 _setError];
+            [from _setError];
           }
 
           v47 |= (v62 & 0x7F) << v45;
@@ -1859,7 +1859,7 @@ LABEL_94:
           }
         }
 
-        v35 = (v47 != 0) & ~[a3 hasError];
+        v35 = (v47 != 0) & ~[from hasError];
 LABEL_107:
         v59 = 114;
         goto LABEL_110;
@@ -1868,7 +1868,7 @@ LABEL_107:
         objc_storeStrong(&self->_directionsPlan, v14);
         v62 = 0;
         v63 = 0;
-        if (!PBReaderPlaceMark() || !sub_100A6C418(v14, a3))
+        if (!PBReaderPlaceMark() || !sub_100A6C418(v14, from))
         {
           goto LABEL_113;
         }
@@ -1886,18 +1886,18 @@ LABEL_107:
         while (1)
         {
           LOBYTE(v62) = 0;
-          v55 = [a3 position] + 1;
-          if (v55 >= [a3 position] && (v56 = objc_msgSend(a3, "position") + 1, v56 <= objc_msgSend(a3, "length")))
+          v55 = [from position] + 1;
+          if (v55 >= [from position] && (v56 = objc_msgSend(from, "position") + 1, v56 <= objc_msgSend(from, "length")))
           {
-            v57 = [a3 data];
-            [v57 getBytes:&v62 range:{objc_msgSend(a3, "position"), 1}];
+            data5 = [from data];
+            [data5 getBytes:&v62 range:{objc_msgSend(from, "position"), 1}];
 
-            [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+            [from setPosition:{objc_msgSend(from, "position") + 1}];
           }
 
           else
           {
-            [a3 _setError];
+            [from _setError];
           }
 
           v54 |= (v62 & 0x7F) << v52;
@@ -1915,7 +1915,7 @@ LABEL_107:
           }
         }
 
-        v35 = (v54 != 0) & ~[a3 hasError];
+        v35 = (v54 != 0) & ~[from hasError];
 LABEL_109:
         v59 = 113;
         goto LABEL_110;
@@ -1927,18 +1927,18 @@ LABEL_109:
         while (1)
         {
           LOBYTE(v62) = 0;
-          v32 = [a3 position] + 1;
-          if (v32 >= [a3 position] && (v33 = objc_msgSend(a3, "position") + 1, v33 <= objc_msgSend(a3, "length")))
+          v32 = [from position] + 1;
+          if (v32 >= [from position] && (v33 = objc_msgSend(from, "position") + 1, v33 <= objc_msgSend(from, "length")))
           {
-            v34 = [a3 data];
-            [v34 getBytes:&v62 range:{objc_msgSend(a3, "position"), 1}];
+            data6 = [from data];
+            [data6 getBytes:&v62 range:{objc_msgSend(from, "position"), 1}];
 
-            [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+            [from setPosition:{objc_msgSend(from, "position") + 1}];
           }
 
           else
           {
-            [a3 _setError];
+            [from _setError];
           }
 
           v31 |= (v62 & 0x7F) << v29;
@@ -1956,7 +1956,7 @@ LABEL_109:
           }
         }
 
-        v35 = (v31 != 0) & ~[a3 hasError];
+        v35 = (v31 != 0) & ~[from hasError];
 LABEL_101:
         v59 = 112;
 LABEL_110:
@@ -1978,18 +1978,18 @@ LABEL_110:
         while (1)
         {
           LOBYTE(v62) = 0;
-          v26 = [a3 position] + 1;
-          if (v26 >= [a3 position] && (v27 = objc_msgSend(a3, "position") + 1, v27 <= objc_msgSend(a3, "length")))
+          v26 = [from position] + 1;
+          if (v26 >= [from position] && (v27 = objc_msgSend(from, "position") + 1, v27 <= objc_msgSend(from, "length")))
           {
-            v28 = [a3 data];
-            [v28 getBytes:&v62 range:{objc_msgSend(a3, "position"), 1}];
+            data7 = [from data];
+            [data7 getBytes:&v62 range:{objc_msgSend(from, "position"), 1}];
 
-            [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+            [from setPosition:{objc_msgSend(from, "position") + 1}];
           }
 
           else
           {
-            [a3 _setError];
+            [from _setError];
           }
 
           v25 |= (v62 & 0x7F) << v23;
@@ -2007,7 +2007,7 @@ LABEL_110:
           }
         }
 
-        if ([a3 hasError])
+        if ([from hasError])
         {
           v22 = 0;
         }
@@ -2034,16 +2034,16 @@ LABEL_76:
 LABEL_77:
         v62 = 0;
         v63 = 0;
-        if (PBReaderPlaceMark() && [(DirectionsPlan *)v14 readFrom:a3])
+        if (PBReaderPlaceMark() && [(DirectionsPlan *)v14 readFrom:from])
         {
 LABEL_79:
           PBReaderRecallMark();
 
 LABEL_111:
-          v60 = [a3 position];
-          if (v60 >= [a3 length])
+          position2 = [from position];
+          if (position2 >= [from length])
           {
-            return [a3 hasError] ^ 1;
+            return [from hasError] ^ 1;
           }
 
           continue;
@@ -2077,8 +2077,8 @@ LABEL_71:
   displayOptions = self->_displayOptions;
   if (displayOptions)
   {
-    v5 = [(GEOURLOptions *)displayOptions dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"displayOptions"];
+    dictionaryRepresentation = [(GEOURLOptions *)displayOptions dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation forKey:@"displayOptions"];
   }
 
   if ((*&self->_has & 4) != 0)
@@ -2125,8 +2125,8 @@ LABEL_71:
             objc_enumerationMutation(v10);
           }
 
-          v15 = [*(*(&v36 + 1) + 8 * i) dictionaryRepresentation];
-          [v9 addObject:v15];
+          dictionaryRepresentation2 = [*(*(&v36 + 1) + 8 * i) dictionaryRepresentation];
+          [v9 addObject:dictionaryRepresentation2];
         }
 
         v12 = [(NSMutableArray *)v10 countByEnumeratingWithState:&v36 objects:v40 count:16];
@@ -2156,15 +2156,15 @@ LABEL_71:
   directionsPlan = self->_directionsPlan;
   if (directionsPlan)
   {
-    v20 = [(DirectionsPlan *)directionsPlan dictionaryRepresentation];
-    [v3 setObject:v20 forKey:@"directionsPlan"];
+    dictionaryRepresentation3 = [(DirectionsPlan *)directionsPlan dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation3 forKey:@"directionsPlan"];
   }
 
   droppedPin = self->_droppedPin;
   if (droppedPin)
   {
-    v22 = [(MSPDroppedPin *)droppedPin dictionaryRepresentation];
-    [v3 setObject:v22 forKey:@"droppedPin"];
+    dictionaryRepresentation4 = [(MSPDroppedPin *)droppedPin dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation4 forKey:@"droppedPin"];
   }
 
   v23 = self->_has;
@@ -2185,15 +2185,15 @@ LABEL_71:
   presentedMapItem = self->_presentedMapItem;
   if (presentedMapItem)
   {
-    v27 = [(GEOMapItemStorage *)presentedMapItem dictionaryRepresentation];
-    [v3 setObject:v27 forKey:@"presentedMapItem"];
+    dictionaryRepresentation5 = [(GEOMapItemStorage *)presentedMapItem dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation5 forKey:@"presentedMapItem"];
   }
 
   searchCategoryStorage = self->_searchCategoryStorage;
   if (searchCategoryStorage)
   {
-    v29 = [(GEOSearchCategoryStorage *)searchCategoryStorage dictionaryRepresentation];
-    [v3 setObject:v29 forKey:@"searchCategoryStorage"];
+    dictionaryRepresentation6 = [(GEOSearchCategoryStorage *)searchCategoryStorage dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation6 forKey:@"searchCategoryStorage"];
   }
 
   if ((*&self->_has & 2) != 0)
@@ -2211,8 +2211,8 @@ LABEL_71:
   lineItem = self->_lineItem;
   if (lineItem)
   {
-    v33 = [(MSPTransitStorageLineItem *)lineItem dictionaryRepresentation];
-    [v3 setObject:v33 forKey:@"lineItem"];
+    dictionaryRepresentation7 = [(MSPTransitStorageLineItem *)lineItem dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation7 forKey:@"lineItem"];
   }
 
   userCreatedCollectionID = self->_userCreatedCollectionID;
@@ -2229,15 +2229,15 @@ LABEL_71:
   v7.receiver = self;
   v7.super_class = MapsActivity;
   v3 = [(MapsActivity *)&v7 description];
-  v4 = [(MapsActivity *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(MapsActivity *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
 
-- (void)setHasSelectedTransitFeatureID:(BOOL)a3
+- (void)setHasSelectedTransitFeatureID:(BOOL)d
 {
-  if (a3)
+  if (d)
   {
     v3 = 2;
   }
@@ -2250,9 +2250,9 @@ LABEL_71:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasIsDroppedPinPresented:(BOOL)a3
+- (void)setHasIsDroppedPinPresented:(BOOL)presented
 {
-  if (a3)
+  if (presented)
   {
     v3 = 8;
   }
@@ -2265,9 +2265,9 @@ LABEL_71:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasIsDroppedPinSelected:(BOOL)a3
+- (void)setHasIsDroppedPinSelected:(BOOL)selected
 {
-  if (a3)
+  if (selected)
   {
     v3 = 16;
   }
@@ -2280,9 +2280,9 @@ LABEL_71:
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasIsPresentingSelectedPlace:(BOOL)a3
+- (void)setHasIsPresentingSelectedPlace:(BOOL)place
 {
-  if (a3)
+  if (place)
   {
     v3 = 32;
   }
@@ -2295,43 +2295,43 @@ LABEL_71:
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)addSearchPlaces:(id)a3
+- (void)addSearchPlaces:(id)places
 {
-  v4 = a3;
+  placesCopy = places;
   searchPlaces = self->_searchPlaces;
-  v8 = v4;
+  v8 = placesCopy;
   if (!searchPlaces)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_searchPlaces;
     self->_searchPlaces = v6;
 
-    v4 = v8;
+    placesCopy = v8;
     searchPlaces = self->_searchPlaces;
   }
 
-  [(NSMutableArray *)searchPlaces addObject:v4];
+  [(NSMutableArray *)searchPlaces addObject:placesCopy];
 }
 
-- (int)StringAsCollectionsMode:(id)a3
+- (int)StringAsCollectionsMode:(id)mode
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"None"])
+  modeCopy = mode;
+  if ([modeCopy isEqualToString:@"None"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Bookmarks"])
+  else if ([modeCopy isEqualToString:@"Bookmarks"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Recents"])
+  else if ([modeCopy isEqualToString:@"Recents"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Contacts"])
+  else if ([modeCopy isEqualToString:@"Contacts"])
   {
     v4 = 3;
   }
@@ -2344,24 +2344,24 @@ LABEL_71:
   return v4;
 }
 
-- (id)collectionsModeAsString:(int)a3
+- (id)collectionsModeAsString:(int)string
 {
-  if (a3 >= 4)
+  if (string >= 4)
   {
-    v4 = [NSString stringWithFormat:@"(unknown: %i)", *&a3];
+    v4 = [NSString stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   else
   {
-    v4 = off_10165D518[a3];
+    v4 = off_10165D518[string];
   }
 
   return v4;
 }
 
-- (void)setHasCollectionsMode:(BOOL)a3
+- (void)setHasCollectionsMode:(BOOL)mode
 {
-  if (a3)
+  if (mode)
   {
     v3 = 4;
   }

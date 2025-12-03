@@ -1,65 +1,65 @@
 @interface CLSMultipleChoiceAnswerFormat
-+ (BOOL)migrateFromVersion:(unint64_t)a3 finalVersion:(unint64_t *)a4 inDatabase:(id)a5;
-- (BOOL)canCopyToDatabase:(id)a3;
-- (CLSMultipleChoiceAnswerFormat)initWithCKRecord:(id)a3;
-- (id)initWithDatabaseRow:(id)a3;
-- (int64_t)syncBackend:(id)a3;
-- (void)bindTo:(id)a3;
-- (void)populate:(id)a3;
-- (void)willBeDeletedFromDatabase:(id)a3;
++ (BOOL)migrateFromVersion:(unint64_t)version finalVersion:(unint64_t *)finalVersion inDatabase:(id)database;
+- (BOOL)canCopyToDatabase:(id)database;
+- (CLSMultipleChoiceAnswerFormat)initWithCKRecord:(id)record;
+- (id)initWithDatabaseRow:(id)row;
+- (int64_t)syncBackend:(id)backend;
+- (void)bindTo:(id)to;
+- (void)populate:(id)populate;
+- (void)willBeDeletedFromDatabase:(id)database;
 @end
 
 @implementation CLSMultipleChoiceAnswerFormat
 
-- (CLSMultipleChoiceAnswerFormat)initWithCKRecord:(id)a3
+- (CLSMultipleChoiceAnswerFormat)initWithCKRecord:(id)record
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"type"];
+  recordCopy = record;
+  v5 = [recordCopy objectForKeyedSubscript:@"type"];
   if (v5)
   {
     v6 = [(CLSMultipleChoiceAnswerFormat *)self initWithType:CLSMultipleChoiceTypeFromString()];
     v7 = v6;
     if (v6)
     {
-      [(CLSMultipleChoiceAnswerFormat *)v6 _initCommonPropsWithRecord:v4];
+      [(CLSMultipleChoiceAnswerFormat *)v6 _initCommonPropsWithRecord:recordCopy];
     }
 
     self = v7;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (void)populate:(id)a3
+- (void)populate:(id)populate
 {
   v6.receiver = self;
   v6.super_class = CLSMultipleChoiceAnswerFormat;
-  v4 = a3;
-  [(CLSMultipleChoiceAnswerFormat *)&v6 populate:v4];
+  populateCopy = populate;
+  [(CLSMultipleChoiceAnswerFormat *)&v6 populate:populateCopy];
   [(CLSMultipleChoiceAnswerFormat *)self type:v6.receiver];
   v5 = NSStringFromCLSMultipleChoiceType();
-  [v4 setObject:v5 forKeyedSubscript:@"type"];
+  [populateCopy setObject:v5 forKeyedSubscript:@"type"];
 
-  [(CLSMultipleChoiceAnswerFormat *)self updateParentReferencesForRecord:v4];
+  [(CLSMultipleChoiceAnswerFormat *)self updateParentReferencesForRecord:populateCopy];
 }
 
-- (int64_t)syncBackend:(id)a3
+- (int64_t)syncBackend:(id)backend
 {
-  v4 = a3;
-  v5 = [(CLSMultipleChoiceAnswerFormat *)self parentObjectID];
-  if (v5)
+  backendCopy = backend;
+  parentObjectID = [(CLSMultipleChoiceAnswerFormat *)self parentObjectID];
+  if (parentObjectID)
   {
-    v6 = [v4 select:objc_opt_class() identity:v5];
+    v6 = [backendCopy select:objc_opt_class() identity:parentObjectID];
     v7 = v6;
     if (v6)
     {
-      v8 = [v6 syncBackend:v4];
+      v8 = [v6 syncBackend:backendCopy];
     }
 
     else
@@ -76,87 +76,87 @@
   return v8;
 }
 
-- (BOOL)canCopyToDatabase:(id)a3
+- (BOOL)canCopyToDatabase:(id)database
 {
-  v4 = a3;
+  databaseCopy = database;
   v5 = objc_opt_class();
-  v6 = [(CLSMultipleChoiceAnswerFormat *)self parentObjectID];
-  v7 = [v4 select:v5 identity:v6];
+  parentObjectID = [(CLSMultipleChoiceAnswerFormat *)self parentObjectID];
+  v7 = [databaseCopy select:v5 identity:parentObjectID];
 
-  LOBYTE(v6) = [v7 canCopyToDatabase:v4];
-  return v6;
+  LOBYTE(parentObjectID) = [v7 canCopyToDatabase:databaseCopy];
+  return parentObjectID;
 }
 
-- (id)initWithDatabaseRow:(id)a3
+- (id)initWithDatabaseRow:(id)row
 {
-  v4 = a3;
-  v5 = [(CLSMultipleChoiceAnswerFormat *)self _init];
-  v6 = v5;
-  if (v5)
+  rowCopy = row;
+  _init = [(CLSMultipleChoiceAnswerFormat *)self _init];
+  v6 = _init;
+  if (_init)
   {
-    [v5 _initCommonPropsWithDatabaseRow:v4];
-    v7 = sub_10016D778(v4, @"parentObjectID");
+    [_init _initCommonPropsWithDatabaseRow:rowCopy];
+    v7 = sub_10016D778(rowCopy, @"parentObjectID");
     [v6 setParentObjectID:v7];
 
-    v8 = sub_10016D778(v4, @"type");
+    v8 = sub_10016D778(rowCopy, @"type");
     [v6 setType:{objc_msgSend(v8, "intValue")}];
 
-    v9 = sub_10016D778(v4, @"answerFormatType");
+    v9 = sub_10016D778(rowCopy, @"answerFormatType");
     [v6 setAnswerFormatType:{objc_msgSend(v9, "intValue")}];
   }
 
   return v6;
 }
 
-- (void)bindTo:(id)a3
+- (void)bindTo:(id)to
 {
   v9.receiver = self;
   v9.super_class = CLSMultipleChoiceAnswerFormat;
-  v4 = a3;
-  [(CLSMultipleChoiceAnswerFormat *)&v9 bindTo:v4];
+  toCopy = to;
+  [(CLSMultipleChoiceAnswerFormat *)&v9 bindTo:toCopy];
   v10 = @"appIdentifier";
   v5 = [NSArray arrayWithObjects:&v10 count:1, v9.receiver, v9.super_class];
-  sub_1000983A8(v4, v5);
+  sub_1000983A8(toCopy, v5);
 
-  v6 = [(CLSMultipleChoiceAnswerFormat *)self parentObjectID];
-  sub_1000982FC(v4, v6, @"parentObjectID");
+  parentObjectID = [(CLSMultipleChoiceAnswerFormat *)self parentObjectID];
+  sub_1000982FC(toCopy, parentObjectID, @"parentObjectID");
 
   v7 = [NSNumber numberWithInteger:[(CLSMultipleChoiceAnswerFormat *)self type]];
-  sub_1000982FC(v4, v7, @"type");
+  sub_1000982FC(toCopy, v7, @"type");
 
   v8 = [NSNumber numberWithInteger:[(CLSMultipleChoiceAnswerFormat *)self answerFormatType]];
-  sub_1000982FC(v4, v8, @"answerFormatType");
+  sub_1000982FC(toCopy, v8, @"answerFormatType");
 }
 
-+ (BOOL)migrateFromVersion:(unint64_t)a3 finalVersion:(unint64_t *)a4 inDatabase:(id)a5
++ (BOOL)migrateFromVersion:(unint64_t)version finalVersion:(unint64_t *)finalVersion inDatabase:(id)database
 {
-  v7 = a5;
-  v8 = v7;
-  if (!a3)
+  databaseCopy = database;
+  v8 = databaseCopy;
+  if (!version)
   {
-    if (!sub_1000B9298(v7, @"create table CLSMultipleChoiceAnswerFormat (\n    objectID          text not null,\n    parentObjectID    text not null,\n    dateCreated       real not null,\n    dateLastModified  real not null,\n    type              integer,\n    answerFormatType  integer,\nforeign key (parentObjectID) references CLSQuestionStep(objectID) on delete cascade on update cascade\n)", 0, 0, 0) || !sub_1000B9298(v8, @"create unique index if not exists CLSMultipleChoiceAnswerFormat_objectID on CLSMultipleChoiceAnswerFormat (objectID)", 0, 0, 0) || !sub_1000B9298(v8, @"create index if not exists CLSMultipleChoiceAnswerFormat_parentObjectID on CLSMultipleChoiceAnswerFormat (parentObjectID)", 0, 0, 0))
+    if (!sub_1000B9298(databaseCopy, @"create table CLSMultipleChoiceAnswerFormat (\n    objectID          text not null,\n    parentObjectID    text not null,\n    dateCreated       real not null,\n    dateLastModified  real not null,\n    type              integer,\n    answerFormatType  integer,\nforeign key (parentObjectID) references CLSQuestionStep(objectID) on delete cascade on update cascade\n)", 0, 0, 0) || !sub_1000B9298(v8, @"create unique index if not exists CLSMultipleChoiceAnswerFormat_objectID on CLSMultipleChoiceAnswerFormat (objectID)", 0, 0, 0) || !sub_1000B9298(v8, @"create index if not exists CLSMultipleChoiceAnswerFormat_parentObjectID on CLSMultipleChoiceAnswerFormat (parentObjectID)", 0, 0, 0))
     {
       v9 = 0;
       goto LABEL_8;
     }
 
-    a3 = 1;
+    version = 1;
   }
 
-  *a4 = a3;
+  *finalVersion = version;
   v9 = 1;
 LABEL_8:
 
   return v9;
 }
 
-- (void)willBeDeletedFromDatabase:(id)a3
+- (void)willBeDeletedFromDatabase:(id)database
 {
-  v4 = a3;
-  v5 = [(CLSMultipleChoiceAnswerFormat *)self objectID];
-  v7 = v5;
+  databaseCopy = database;
+  objectID = [(CLSMultipleChoiceAnswerFormat *)self objectID];
+  v7 = objectID;
   v6 = [NSArray arrayWithObjects:&v7 count:1];
-  [v4 deleteAll:objc_opt_class() where:@"parentObjectID = ?" bindings:v6];
+  [databaseCopy deleteAll:objc_opt_class() where:@"parentObjectID = ?" bindings:v6];
 }
 
 @end

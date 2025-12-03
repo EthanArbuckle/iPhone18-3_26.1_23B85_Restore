@@ -1,27 +1,27 @@
 @interface SXComponentDependency
-+ (id)componentDependencyFromComponentIdentifier:(void *)a3 toComponentIdentifier:(void *)a4 fromLayoutAttribute:(void *)a5 toAttribute:(void *)a6 withDescriptor:;
-- (BOOL)isEqual:(id)a3;
++ (id)componentDependencyFromComponentIdentifier:(void *)identifier toComponentIdentifier:(void *)componentIdentifier fromLayoutAttribute:(void *)attribute toAttribute:(void *)toAttribute withDescriptor:;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
-- (id)initWithComponentDependencyFromComponentIdentifier:(void *)a3 toComponentIdentifier:(void *)a4 fromLayoutAttribute:(void *)a5 toAttribute:(void *)a6 withDescriptor:;
+- (id)initWithComponentDependencyFromComponentIdentifier:(void *)identifier toComponentIdentifier:(void *)componentIdentifier fromLayoutAttribute:(void *)attribute toAttribute:(void *)toAttribute withDescriptor:;
 @end
 
 @implementation SXComponentDependency
 
-+ (id)componentDependencyFromComponentIdentifier:(void *)a3 toComponentIdentifier:(void *)a4 fromLayoutAttribute:(void *)a5 toAttribute:(void *)a6 withDescriptor:
++ (id)componentDependencyFromComponentIdentifier:(void *)identifier toComponentIdentifier:(void *)componentIdentifier fromLayoutAttribute:(void *)attribute toAttribute:(void *)toAttribute withDescriptor:
 {
-  v10 = a6;
-  v11 = a3;
+  toAttributeCopy = toAttribute;
+  identifierCopy = identifier;
   v12 = a2;
   objc_opt_self();
-  v13 = [[SXComponentDependency alloc] initWithComponentDependencyFromComponentIdentifier:v12 toComponentIdentifier:v11 fromLayoutAttribute:a4 toAttribute:a5 withDescriptor:v10];
+  v13 = [[SXComponentDependency alloc] initWithComponentDependencyFromComponentIdentifier:v12 toComponentIdentifier:identifierCopy fromLayoutAttribute:componentIdentifier toAttribute:attribute withDescriptor:toAttributeCopy];
 
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4 == self || [(NSString *)self->_fromComponentIdentifier isEqualToString:v4->_fromComponentIdentifier]&& [(NSString *)self->_toComponentIdentifier isEqualToString:v4->_toComponentIdentifier]&& self->_fromDependencyAttribute == v4->_fromDependencyAttribute && self->_toDependencyAttribute == v4->_toDependencyAttribute;
+  equalCopy = equal;
+  v5 = equalCopy == self || [(NSString *)self->_fromComponentIdentifier isEqualToString:equalCopy->_fromComponentIdentifier]&& [(NSString *)self->_toComponentIdentifier isEqualToString:equalCopy->_toComponentIdentifier]&& self->_fromDependencyAttribute == equalCopy->_fromDependencyAttribute && self->_toDependencyAttribute == equalCopy->_toDependencyAttribute;
 
   return v5;
 }
@@ -53,28 +53,28 @@
   return v11;
 }
 
-- (id)initWithComponentDependencyFromComponentIdentifier:(void *)a3 toComponentIdentifier:(void *)a4 fromLayoutAttribute:(void *)a5 toAttribute:(void *)a6 withDescriptor:
+- (id)initWithComponentDependencyFromComponentIdentifier:(void *)identifier toComponentIdentifier:(void *)componentIdentifier fromLayoutAttribute:(void *)attribute toAttribute:(void *)toAttribute withDescriptor:
 {
   v12 = a2;
-  v13 = a3;
-  v14 = a6;
-  if (a1)
+  identifierCopy = identifier;
+  toAttributeCopy = toAttribute;
+  if (self)
   {
-    v17.receiver = a1;
+    v17.receiver = self;
     v17.super_class = SXComponentDependency;
     v15 = objc_msgSendSuper2(&v17, sel_init);
-    a1 = v15;
+    self = v15;
     if (v15)
     {
       objc_storeStrong(v15 + 1, a2);
-      objc_storeStrong(a1 + 2, a3);
-      a1[3] = a4;
-      a1[4] = a5;
-      objc_storeStrong(a1 + 5, a6);
+      objc_storeStrong(self + 2, identifier);
+      self[3] = componentIdentifier;
+      self[4] = attribute;
+      objc_storeStrong(self + 5, toAttribute);
     }
   }
 
-  return a1;
+  return self;
 }
 
 @end

@@ -1,77 +1,77 @@
 @interface UIPrintPanelViewController
-- (BOOL)isKindOfClass:(Class)a3;
+- (BOOL)isKindOfClass:(Class)class;
 - (BOOL)shouldShowDuplex;
 - (BOOL)shouldShowLayout;
 - (BOOL)shouldShowOrientation;
 - (BOOL)shouldShowPageRange;
 - (BOOL)shouldShowScaling;
 - (BOOL)showingVerticalPreview;
-- (CGSize)preferredSizeForScene:(id)a3;
-- (UIEdgeInsets)contentInsetForPreviewWithHeight:(double)a3;
-- (UIPrintPanelViewController)initWithPrintInterationController:(id)a3 inParentController:(id)a4 usingSplitView:(BOOL)a5;
+- (CGSize)preferredSizeForScene:(id)scene;
+- (UIEdgeInsets)contentInsetForPreviewWithHeight:(double)height;
+- (UIPrintPanelViewController)initWithPrintInterationController:(id)controller inParentController:(id)parentController usingSplitView:(BOOL)view;
 - (UIViewController)parentController;
 - (id)controlTintColor;
-- (id)createShareablePDFFileURL:(id)a3;
+- (id)createShareablePDFFileURL:(id)l;
 - (id)keyCommands;
 - (id)shareableURLForPreviewing;
-- (void)_presentInParentAnimated:(BOOL)a3 hostingScene:(id)a4;
-- (void)addCanelButtonToNavItem:(id)a3;
-- (void)addPrintShareButtonsToNavItem:(id)a3;
-- (void)backButtonPressed:(id)a3;
+- (void)_presentInParentAnimated:(BOOL)animated hostingScene:(id)scene;
+- (void)addCanelButtonToNavItem:(id)item;
+- (void)addPrintShareButtonsToNavItem:(id)item;
+- (void)backButtonPressed:(id)pressed;
 - (void)cancelQuickLookPDFGeneration;
 - (void)dealloc;
 - (void)dismissKeyboard;
-- (void)dismissPrintPanelWithAction:(int64_t)a3 animated:(BOOL)a4 completionHandler:(id)a5;
-- (void)generateQuickLookPDFWithCompletionHandler:(id)a3;
-- (void)hideGeneratingPDFProgress:(id)a3;
+- (void)dismissPrintPanelWithAction:(int64_t)action animated:(BOOL)animated completionHandler:(id)handler;
+- (void)generateQuickLookPDFWithCompletionHandler:(id)handler;
+- (void)hideGeneratingPDFProgress:(id)progress;
 - (void)loadView;
 - (void)lookupLastUsedPrinter;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)preferredContentSizeCategoryChanged;
-- (void)presentPrintPanelAnimated:(BOOL)a3 hostingScene:(id)a4;
-- (void)presentPrintPanelFromBarButtonItem:(id)a3 animated:(BOOL)a4;
-- (void)presentPrintPanelFromRect:(CGRect)a3 inView:(id)a4 animated:(BOOL)a5;
-- (void)printButtonPressed:(id)a3;
+- (void)presentPrintPanelAnimated:(BOOL)animated hostingScene:(id)scene;
+- (void)presentPrintPanelFromBarButtonItem:(id)item animated:(BOOL)animated;
+- (void)presentPrintPanelFromRect:(CGRect)rect inView:(id)view animated:(BOOL)animated;
+- (void)printButtonPressed:(id)pressed;
 - (void)printNavigationConrollerDidDismiss;
 - (void)printPanelDidDisappear;
 - (void)removeShareablePDFFiles;
 - (void)resetPreviewPages;
-- (void)setPrinter:(id)a3;
-- (void)shareButtonPress:(id)a3;
+- (void)setPrinter:(id)printer;
+- (void)shareButtonPress:(id)press;
 - (void)showCompactPreview;
 - (void)showGeneratingPDFProgressPanel;
-- (void)showSharePanelForPDFURL:(id)a3;
+- (void)showSharePanelForPDFURL:(id)l;
 - (void)showsSidebarPreview;
-- (void)splitViewController:(id)a3 didHideColumn:(int64_t)a4;
-- (void)splitViewController:(id)a3 didShowColumn:(int64_t)a4;
+- (void)splitViewController:(id)controller didHideColumn:(int64_t)column;
+- (void)splitViewController:(id)controller didShowColumn:(int64_t)column;
 - (void)startPrinting;
 - (void)updatePageCount;
 - (void)updatePageRange;
 - (void)updatePreviewLayoutConstraints;
 - (void)updateViewConstraints;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation UIPrintPanelViewController
 
-- (UIPrintPanelViewController)initWithPrintInterationController:(id)a3 inParentController:(id)a4 usingSplitView:(BOOL)a5
+- (UIPrintPanelViewController)initWithPrintInterationController:(id)controller inParentController:(id)parentController usingSplitView:(BOOL)view
 {
-  v5 = a5;
+  viewCopy = view;
   v44[1] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
+  controllerCopy = controller;
+  parentControllerCopy = parentController;
   v43.receiver = self;
   v43.super_class = UIPrintPanelViewController;
   v11 = [(UIPrintPanelViewController *)&v43 initWithNibName:0 bundle:0];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_printInteractionController, a3);
-    objc_storeWeak(&v12->_parentController, v10);
-    if (v5)
+    objc_storeStrong(&v11->_printInteractionController, controller);
+    objc_storeWeak(&v12->_parentController, parentControllerCopy);
+    if (viewCopy)
     {
       v13 = _UISolariumEnabled();
     }
@@ -87,44 +87,44 @@
     v15 = [v14 localizedStringForKey:@"Print" value:@"Print" table:@"Localizable"];
     [(UIPrintPanelViewController *)v12 setTitle:v15];
 
-    v16 = [v9 _currentPrintInfo];
-    [(UIPrintPanelViewController *)v12 setPrintInfo:v16];
+    _currentPrintInfo = [controllerCopy _currentPrintInfo];
+    [(UIPrintPanelViewController *)v12 setPrintInfo:_currentPrintInfo];
 
-    v17 = [(UIPrintPanelViewController *)v12 printInteractionController];
-    v18 = [v17 paper];
-    v19 = [(UIPrintPanelViewController *)v12 printInfo];
-    [v19 setPrintPaper:v18];
+    printInteractionController = [(UIPrintPanelViewController *)v12 printInteractionController];
+    paper = [printInteractionController paper];
+    printInfo = [(UIPrintPanelViewController *)v12 printInfo];
+    [printInfo setPrintPaper:paper];
 
-    v20 = [(UIPrintPanelViewController *)v12 printInteractionController];
-    v21 = [v20 _canShowAnnotations];
-    v22 = [(UIPrintPanelViewController *)v12 printInfo];
-    [v22 setPdfAnnotationsAvailable:v21];
+    printInteractionController2 = [(UIPrintPanelViewController *)v12 printInteractionController];
+    _canShowAnnotations = [printInteractionController2 _canShowAnnotations];
+    printInfo2 = [(UIPrintPanelViewController *)v12 printInfo];
+    [printInfo2 setPdfAnnotationsAvailable:_canShowAnnotations];
 
-    v23 = [(UIPrintPanelViewController *)v12 printInteractionController];
-    [v23 setShowsPaperSelectionForLoadedPapers:1];
+    printInteractionController3 = [(UIPrintPanelViewController *)v12 printInteractionController];
+    [printInteractionController3 setShowsPaperSelectionForLoadedPapers:1];
 
-    v24 = [(UIPrintPanelViewController *)v12 printInfo];
-    [v24 addObserver:v12 forKeyPath:0x2871AF150 options:0 context:0];
+    printInfo3 = [(UIPrintPanelViewController *)v12 printInfo];
+    [printInfo3 addObserver:v12 forKeyPath:0x2871AF150 options:0 context:0];
 
-    v25 = [(UIPrintPanelViewController *)v12 printInfo];
-    [v25 addObserver:v12 forKeyPath:0x2871AF110 options:0 context:0];
+    printInfo4 = [(UIPrintPanelViewController *)v12 printInfo];
+    [printInfo4 addObserver:v12 forKeyPath:0x2871AF110 options:0 context:0];
 
-    v26 = [(UIPrintPanelViewController *)v12 printInfo];
-    [v26 addObserver:v12 forKeyPath:0x2871AF1B0 options:0 context:0];
+    printInfo5 = [(UIPrintPanelViewController *)v12 printInfo];
+    [printInfo5 addObserver:v12 forKeyPath:0x2871AF1B0 options:0 context:0];
 
-    v27 = [(UIPrintPanelViewController *)v12 printInfo];
-    [v27 addObserver:v12 forKeyPath:0x2871AF290 options:0 context:0];
+    printInfo6 = [(UIPrintPanelViewController *)v12 printInfo];
+    [printInfo6 addObserver:v12 forKeyPath:0x2871AF290 options:0 context:0];
 
-    v28 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v28 addObserver:v12 selector:sel_applicationDidBecomeActive_ name:*MEMORY[0x277D76648] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v12 selector:sel_applicationDidBecomeActive_ name:*MEMORY[0x277D76648] object:0];
 
     _UIPrinterInfoCancelRequests();
-    v29 = [(UIPrintPanelViewController *)v12 printInteractionController];
-    v30 = [v29 _currentPrintInfo];
-    v31 = [v30 printerID];
-    LOBYTE(v22) = v31 == 0;
+    printInteractionController4 = [(UIPrintPanelViewController *)v12 printInteractionController];
+    _currentPrintInfo2 = [printInteractionController4 _currentPrintInfo];
+    printerID = [_currentPrintInfo2 printerID];
+    LOBYTE(printInfo2) = printerID == 0;
 
-    if (v22)
+    if (printInfo2)
     {
       [(UIPrintPanelViewController *)v12 lookupLastUsedPrinter];
     }
@@ -132,14 +132,14 @@
     else
     {
       v32 = MEMORY[0x277D410A8];
-      v33 = [v9 _currentPrintInfo];
-      v34 = [v33 printerID];
+      _currentPrintInfo3 = [controllerCopy _currentPrintInfo];
+      printerID2 = [_currentPrintInfo3 printerID];
       v41[0] = MEMORY[0x277D85DD0];
       v41[1] = 3221225472;
       v41[2] = __98__UIPrintPanelViewController_initWithPrintInterationController_inParentController_usingSplitView___block_invoke;
       v41[3] = &unk_279A9BE90;
       v42 = v12;
-      [v32 printerWithName:v34 discoveryTimeout:v41 completionHandler:30.0];
+      [v32 printerWithName:printerID2 discoveryTimeout:v41 completionHandler:30.0];
     }
 
     objc_initWeak(&location, v12);
@@ -176,26 +176,26 @@ void __98__UIPrintPanelViewController_initWithPrintInterationController_inParent
 
 - (void)dealloc
 {
-  v3 = [(UIPrintPanelViewController *)self updatePageCountThread];
-  [v3 cancel];
+  updatePageCountThread = [(UIPrintPanelViewController *)self updatePageCountThread];
+  [updatePageCountThread cancel];
 
-  v4 = [(UIPrintPanelViewController *)self printInfo];
-  [v4 removeObserver:self forKeyPath:0x2871AF150];
+  printInfo = [(UIPrintPanelViewController *)self printInfo];
+  [printInfo removeObserver:self forKeyPath:0x2871AF150];
 
-  v5 = [(UIPrintPanelViewController *)self printInfo];
-  [v5 removeObserver:self forKeyPath:0x2871AF110];
+  printInfo2 = [(UIPrintPanelViewController *)self printInfo];
+  [printInfo2 removeObserver:self forKeyPath:0x2871AF110];
 
-  v6 = [(UIPrintPanelViewController *)self printInfo];
-  [v6 removeObserver:self forKeyPath:0x2871AF1B0];
+  printInfo3 = [(UIPrintPanelViewController *)self printInfo];
+  [printInfo3 removeObserver:self forKeyPath:0x2871AF1B0];
 
-  v7 = [(UIPrintPanelViewController *)self printInfo];
-  [v7 removeObserver:self forKeyPath:0x2871AF290];
+  printInfo4 = [(UIPrintPanelViewController *)self printInfo];
+  [printInfo4 removeObserver:self forKeyPath:0x2871AF290];
 
-  v8 = [(UIPrintPanelViewController *)self view];
-  [v8 removeObserver:self forKeyPath:@"frame"];
+  view = [(UIPrintPanelViewController *)self view];
+  [view removeObserver:self forKeyPath:@"frame"];
 
-  v9 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v9 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [(UIPrintPanelViewController *)self removeShareablePDFFiles];
   v10.receiver = self;
@@ -203,12 +203,12 @@ void __98__UIPrintPanelViewController_initWithPrintInterationController_inParent
   [(UIPrintPanelViewController *)&v10 dealloc];
 }
 
-- (BOOL)isKindOfClass:(Class)a3
+- (BOOL)isKindOfClass:(Class)class
 {
   v7.receiver = self;
   v7.super_class = UIPrintPanelViewController;
   v5 = [(UIPrintPanelViewController *)&v7 isKindOfClass:?];
-  if (objc_opt_class() == a3)
+  if (objc_opt_class() == class)
   {
     return [(UIPrintPanelViewController *)self usingSplitView];
   }
@@ -216,10 +216,10 @@ void __98__UIPrintPanelViewController_initWithPrintInterationController_inParent
   return v5;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v7 = a3;
-  if ([v7 isEqualToString:0x2871AF150])
+  pathCopy = path;
+  if ([pathCopy isEqualToString:0x2871AF150])
   {
     v8 = v15;
     v15[0] = MEMORY[0x277D85DD0];
@@ -233,7 +233,7 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if ([v7 isEqualToString:0x2871AF290])
+  if ([pathCopy isEqualToString:0x2871AF290])
   {
     v8 = v14;
     v14[0] = MEMORY[0x277D85DD0];
@@ -242,7 +242,7 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  if ([v7 isEqualToString:0x2871AF1B0])
+  if ([pathCopy isEqualToString:0x2871AF1B0])
   {
     v8 = v13;
     v13[0] = MEMORY[0x277D85DD0];
@@ -251,7 +251,7 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  if ([v7 isEqualToString:0x2871AF110])
+  if ([pathCopy isEqualToString:0x2871AF110])
   {
     v8 = v12;
     v12[0] = MEMORY[0x277D85DD0];
@@ -260,10 +260,10 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  if ([v7 isEqualToString:@"frame"])
+  if ([pathCopy isEqualToString:@"frame"])
   {
-    v10 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v10 postNotificationName:@"UIPrintPanelDidChangeSizeNotification" object:0 userInfo:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"UIPrintPanelDidChangeSizeNotification" object:0 userInfo:0];
 
     v8 = block;
     block[0] = MEMORY[0x277D85DD0];
@@ -313,19 +313,19 @@ void __77__UIPrintPanelViewController_observeValueForKeyPath_ofObject_change_con
   [(UIPrintPanelViewController *)self setPrintOptionsTableView:v9];
 
   v10 = [UIPrintOptionsTableViewController alloc];
-  v11 = [(UIPrintPanelViewController *)self printOptionsTableView];
-  v12 = [(UIPrintPanelViewController *)self printInfo];
-  v13 = [(UIPrintOptionsTableViewController *)v10 initWithTableView:v11 printInfo:v12 printPanelViewController:self];
+  printOptionsTableView = [(UIPrintPanelViewController *)self printOptionsTableView];
+  printInfo = [(UIPrintPanelViewController *)self printInfo];
+  v13 = [(UIPrintOptionsTableViewController *)v10 initWithTableView:printOptionsTableView printInfo:printInfo printPanelViewController:self];
   [(UIPrintPanelViewController *)self setPrintOptionsTableViewController:v13];
 
   v14 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v15 = [v14 localizedStringForKey:@"Options" value:@"Options" table:@"Localizable"];
-  v16 = [(UIPrintPanelViewController *)self printOptionsTableViewController];
-  [v16 setTitle:v15];
+  printOptionsTableViewController = [(UIPrintPanelViewController *)self printOptionsTableViewController];
+  [printOptionsTableViewController setTitle:v15];
 
   v17 = [UIPrintPanelNavigationController alloc];
-  v18 = [(UIPrintPanelViewController *)self printOptionsTableViewController];
-  v19 = [(UIPrintPanelNavigationController *)v17 initWithRootViewController:v18];
+  printOptionsTableViewController2 = [(UIPrintPanelViewController *)self printOptionsTableViewController];
+  v19 = [(UIPrintPanelNavigationController *)v17 initWithRootViewController:printOptionsTableViewController2];
   [(UIPrintPanelViewController *)self setPrintOptionsNavController:v19];
 
   if ([(UIPrintPanelViewController *)self usingSplitView])
@@ -334,162 +334,162 @@ void __77__UIPrintPanelViewController_observeValueForKeyPath_ofObject_change_con
     [(UIPrintPanelViewController *)self setSidebarPreviewContainerView:v20];
 
     v21 = [UIPrintPreviewViewController alloc];
-    v22 = [(UIPrintPanelViewController *)self sidebarPreviewContainerView];
-    v23 = [(UIPrintPreviewViewController *)v21 initWithPrintPanelViewController:self useCompactPreview:0 withContainerView:v22];
+    sidebarPreviewContainerView = [(UIPrintPanelViewController *)self sidebarPreviewContainerView];
+    v23 = [(UIPrintPreviewViewController *)v21 initWithPrintPanelViewController:self useCompactPreview:0 withContainerView:sidebarPreviewContainerView];
     [(UIPrintPanelViewController *)self setSidebarPreviewViewController:v23];
 
     v24 = [objc_alloc(MEMORY[0x277D75A50]) initWithStyle:1];
     [(UIPrintPanelViewController *)self setSplitViewController:v24];
 
-    v25 = [(UIPrintPanelViewController *)self view];
-    v26 = [(UIPrintPanelViewController *)self splitViewController];
-    v27 = [v26 view];
-    [v25 addSubview:v27];
+    view = [(UIPrintPanelViewController *)self view];
+    splitViewController = [(UIPrintPanelViewController *)self splitViewController];
+    view2 = [splitViewController view];
+    [view addSubview:view2];
 
-    v28 = [(UIPrintPanelViewController *)self splitViewController];
-    v29 = [v28 view];
-    [v29 setTranslatesAutoresizingMaskIntoConstraints:0];
+    splitViewController2 = [(UIPrintPanelViewController *)self splitViewController];
+    view3 = [splitViewController2 view];
+    [view3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
     v92 = MEMORY[0x277CCAAD0];
-    v114 = [(UIPrintPanelViewController *)self splitViewController];
-    v112 = [v114 view];
-    v108 = [v112 leadingAnchor];
-    v110 = [(UIPrintPanelViewController *)self view];
-    v106 = [v110 leadingAnchor];
-    v104 = [v108 constraintEqualToAnchor:v106];
+    splitViewController3 = [(UIPrintPanelViewController *)self splitViewController];
+    view4 = [splitViewController3 view];
+    leadingAnchor = [view4 leadingAnchor];
+    view5 = [(UIPrintPanelViewController *)self view];
+    leadingAnchor2 = [view5 leadingAnchor];
+    v104 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v119[0] = v104;
-    v102 = [(UIPrintPanelViewController *)self splitViewController];
-    v100 = [v102 view];
-    v96 = [v100 trailingAnchor];
-    v98 = [(UIPrintPanelViewController *)self view];
-    v94 = [v98 trailingAnchor];
-    v90 = [v96 constraintEqualToAnchor:v94];
+    splitViewController4 = [(UIPrintPanelViewController *)self splitViewController];
+    view6 = [splitViewController4 view];
+    trailingAnchor = [view6 trailingAnchor];
+    view7 = [(UIPrintPanelViewController *)self view];
+    trailingAnchor2 = [view7 trailingAnchor];
+    v90 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v119[1] = v90;
-    v88 = [(UIPrintPanelViewController *)self splitViewController];
-    v86 = [v88 view];
-    v82 = [v86 topAnchor];
-    v84 = [(UIPrintPanelViewController *)self view];
-    v30 = [v84 topAnchor];
-    v31 = [v82 constraintEqualToAnchor:v30];
+    splitViewController5 = [(UIPrintPanelViewController *)self splitViewController];
+    view8 = [splitViewController5 view];
+    topAnchor = [view8 topAnchor];
+    view9 = [(UIPrintPanelViewController *)self view];
+    topAnchor2 = [view9 topAnchor];
+    v31 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v119[2] = v31;
-    v32 = [(UIPrintPanelViewController *)self splitViewController];
-    v33 = [v32 view];
-    v34 = [v33 bottomAnchor];
-    v35 = [(UIPrintPanelViewController *)self view];
-    v36 = [v35 bottomAnchor];
-    v37 = [v34 constraintEqualToAnchor:v36];
+    splitViewController6 = [(UIPrintPanelViewController *)self splitViewController];
+    view10 = [splitViewController6 view];
+    bottomAnchor = [view10 bottomAnchor];
+    view11 = [(UIPrintPanelViewController *)self view];
+    bottomAnchor2 = [view11 bottomAnchor];
+    v37 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v119[3] = v37;
     v38 = [MEMORY[0x277CBEA60] arrayWithObjects:v119 count:4];
     [v92 activateConstraints:v38];
 
-    v39 = [(UIPrintPanelViewController *)self splitViewController];
-    [v39 setDelegate:self];
+    splitViewController7 = [(UIPrintPanelViewController *)self splitViewController];
+    [splitViewController7 setDelegate:self];
 
-    v40 = [(UIPrintPanelViewController *)self splitViewController];
-    [v40 setPreferredDisplayMode:2];
+    splitViewController8 = [(UIPrintPanelViewController *)self splitViewController];
+    [splitViewController8 setPreferredDisplayMode:2];
 
-    v41 = [(UIPrintPanelViewController *)self splitViewController];
-    [v41 setPreferredSplitBehavior:1];
+    splitViewController9 = [(UIPrintPanelViewController *)self splitViewController];
+    [splitViewController9 setPreferredSplitBehavior:1];
 
-    v42 = [(UIPrintPanelViewController *)self splitViewController];
-    [v42 setDisplayModeButtonVisibility:1];
+    splitViewController10 = [(UIPrintPanelViewController *)self splitViewController];
+    [splitViewController10 setDisplayModeButtonVisibility:1];
 
-    v43 = [(UIPrintPanelViewController *)self splitViewController];
-    [v43 setPrimaryBackgroundStyle:1];
+    splitViewController11 = [(UIPrintPanelViewController *)self splitViewController];
+    [splitViewController11 setPrimaryBackgroundStyle:1];
 
-    v44 = [(UIPrintPanelViewController *)self splitViewController];
-    [v44 setPreferredPrimaryColumnWidthFraction:0.3];
+    splitViewController12 = [(UIPrintPanelViewController *)self splitViewController];
+    [splitViewController12 setPreferredPrimaryColumnWidthFraction:0.3];
 
-    v45 = [MEMORY[0x277D759A0] mainScreen];
-    [v45 bounds];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen bounds];
     v47 = v46 * 0.3;
-    v48 = [(UIPrintPanelViewController *)self splitViewController];
-    [v48 setMaximumPrimaryColumnWidth:v47];
+    splitViewController13 = [(UIPrintPanelViewController *)self splitViewController];
+    [splitViewController13 setMaximumPrimaryColumnWidth:v47];
 
-    v49 = [(UIPrintPanelViewController *)self splitViewController];
-    [v49 setMinimumPrimaryColumnWidth:200.0];
+    splitViewController14 = [(UIPrintPanelViewController *)self splitViewController];
+    [splitViewController14 setMinimumPrimaryColumnWidth:200.0];
 
-    v50 = [(UIPrintPanelViewController *)self splitViewController];
-    v51 = [(UIPrintPanelViewController *)self printOptionsNavController];
-    [v50 setViewController:v51 forColumn:2];
+    splitViewController15 = [(UIPrintPanelViewController *)self splitViewController];
+    printOptionsNavController = [(UIPrintPanelViewController *)self printOptionsNavController];
+    [splitViewController15 setViewController:printOptionsNavController forColumn:2];
 
     v52 = objc_alloc_init(MEMORY[0x277D75D28]);
-    v53 = [(UIPrintPanelViewController *)self sidebarPreviewContainerView];
-    [v52 setView:v53];
+    sidebarPreviewContainerView2 = [(UIPrintPanelViewController *)self sidebarPreviewContainerView];
+    [v52 setView:sidebarPreviewContainerView2];
 
-    v54 = [(UIPrintPanelViewController *)self splitViewController];
+    splitViewController16 = [(UIPrintPanelViewController *)self splitViewController];
     v109 = v52;
-    [v54 setViewController:v52 forColumn:0];
+    [splitViewController16 setViewController:v52 forColumn:0];
 
-    v55 = [(UIPrintPanelViewController *)self sidebarPreviewContainerView];
-    v56 = [(UIPrintPanelViewController *)self sidebarPreviewViewController];
-    v57 = [v56 view];
-    [v55 addSubview:v57];
+    sidebarPreviewContainerView3 = [(UIPrintPanelViewController *)self sidebarPreviewContainerView];
+    sidebarPreviewViewController = [(UIPrintPanelViewController *)self sidebarPreviewViewController];
+    view12 = [sidebarPreviewViewController view];
+    [sidebarPreviewContainerView3 addSubview:view12];
 
-    v58 = [(UIPrintPanelViewController *)self sidebarPreviewViewController];
-    [v52 addChildViewController:v58];
+    sidebarPreviewViewController2 = [(UIPrintPanelViewController *)self sidebarPreviewViewController];
+    [v52 addChildViewController:sidebarPreviewViewController2];
 
-    v59 = [(UIPrintPanelViewController *)self sidebarPreviewViewController];
-    v60 = [v59 view];
-    [v60 setTranslatesAutoresizingMaskIntoConstraints:0];
+    sidebarPreviewViewController3 = [(UIPrintPanelViewController *)self sidebarPreviewViewController];
+    view13 = [sidebarPreviewViewController3 view];
+    [view13 setTranslatesAutoresizingMaskIntoConstraints:0];
 
     v91 = MEMORY[0x277CCAAD0];
-    v99 = [(UIPrintPanelViewController *)self sidebarPreviewViewController];
-    v115 = [v99 view];
-    v111 = [v115 topAnchor];
-    v113 = [(UIPrintPanelViewController *)self sidebarPreviewContainerView];
-    v107 = [v113 topAnchor];
-    v105 = [v111 constraintEqualToAnchor:v107];
+    sidebarPreviewViewController4 = [(UIPrintPanelViewController *)self sidebarPreviewViewController];
+    view14 = [sidebarPreviewViewController4 view];
+    topAnchor3 = [view14 topAnchor];
+    sidebarPreviewContainerView4 = [(UIPrintPanelViewController *)self sidebarPreviewContainerView];
+    topAnchor4 = [sidebarPreviewContainerView4 topAnchor];
+    v105 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
     v118[0] = v105;
-    v103 = [(UIPrintPanelViewController *)self sidebarPreviewViewController];
-    v101 = [v103 view];
-    v95 = [v101 bottomAnchor];
-    v97 = [(UIPrintPanelViewController *)self sidebarPreviewContainerView];
-    v93 = [v97 bottomAnchor];
-    v89 = [v95 constraintEqualToAnchor:v93];
+    sidebarPreviewViewController5 = [(UIPrintPanelViewController *)self sidebarPreviewViewController];
+    view15 = [sidebarPreviewViewController5 view];
+    bottomAnchor3 = [view15 bottomAnchor];
+    sidebarPreviewContainerView5 = [(UIPrintPanelViewController *)self sidebarPreviewContainerView];
+    bottomAnchor4 = [sidebarPreviewContainerView5 bottomAnchor];
+    v89 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
     v118[1] = v89;
-    v87 = [(UIPrintPanelViewController *)self sidebarPreviewViewController];
-    v85 = [v87 view];
-    v81 = [v85 leadingAnchor];
-    v83 = [(UIPrintPanelViewController *)self sidebarPreviewContainerView];
-    v61 = [v83 leadingAnchor];
-    v62 = [v81 constraintEqualToAnchor:v61];
+    sidebarPreviewViewController6 = [(UIPrintPanelViewController *)self sidebarPreviewViewController];
+    view16 = [sidebarPreviewViewController6 view];
+    leadingAnchor3 = [view16 leadingAnchor];
+    sidebarPreviewContainerView6 = [(UIPrintPanelViewController *)self sidebarPreviewContainerView];
+    leadingAnchor4 = [sidebarPreviewContainerView6 leadingAnchor];
+    v62 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     v118[2] = v62;
-    v63 = [(UIPrintPanelViewController *)self sidebarPreviewViewController];
-    v64 = [v63 view];
-    v65 = [v64 trailingAnchor];
-    v66 = [(UIPrintPanelViewController *)self sidebarPreviewContainerView];
-    v67 = [v66 trailingAnchor];
-    v68 = [v65 constraintEqualToAnchor:v67];
+    sidebarPreviewViewController7 = [(UIPrintPanelViewController *)self sidebarPreviewViewController];
+    view17 = [sidebarPreviewViewController7 view];
+    trailingAnchor3 = [view17 trailingAnchor];
+    sidebarPreviewContainerView7 = [(UIPrintPanelViewController *)self sidebarPreviewContainerView];
+    trailingAnchor4 = [sidebarPreviewContainerView7 trailingAnchor];
+    v68 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     v118[3] = v68;
     v69 = [MEMORY[0x277CBEA60] arrayWithObjects:v118 count:4];
     [v91 activateConstraints:v69];
 
-    v70 = v99;
+    view18 = sidebarPreviewViewController4;
     v71 = v109;
   }
 
   else
   {
     v71 = [objc_alloc(MEMORY[0x277D75D18]) initWithFrame:{v5, v4, v7, v6}];
-    v72 = [MEMORY[0x277D75348] systemGroupedBackgroundColor];
-    [v71 setBackgroundColor:v72];
+    systemGroupedBackgroundColor = [MEMORY[0x277D75348] systemGroupedBackgroundColor];
+    [v71 setBackgroundColor:systemGroupedBackgroundColor];
 
     [(UIPrintPanelViewController *)self setView:v71];
-    v73 = [(UIPrintPanelViewController *)self printOptionsNavController];
-    v70 = [v73 view];
+    printOptionsNavController2 = [(UIPrintPanelViewController *)self printOptionsNavController];
+    view18 = [printOptionsNavController2 view];
 
-    [v70 setTranslatesAutoresizingMaskIntoConstraints:0];
-    [v71 addSubview:v70];
-    v74 = [(UIPrintPanelViewController *)self printOptionsNavController];
-    [(UIPrintPanelViewController *)self addChildViewController:v74];
+    [view18 setTranslatesAutoresizingMaskIntoConstraints:0];
+    [v71 addSubview:view18];
+    printOptionsNavController3 = [(UIPrintPanelViewController *)self printOptionsNavController];
+    [(UIPrintPanelViewController *)self addChildViewController:printOptionsNavController3];
 
     v75 = MEMORY[0x277CCAAD0];
-    v76 = [MEMORY[0x277CCAAD0] constraintWithItem:v70 attribute:3 relatedBy:0 toItem:v71 attribute:3 multiplier:1.0 constant:0.0];
+    v76 = [MEMORY[0x277CCAAD0] constraintWithItem:view18 attribute:3 relatedBy:0 toItem:v71 attribute:3 multiplier:1.0 constant:0.0];
     v117[0] = v76;
-    v77 = [MEMORY[0x277CCAAD0] constraintWithItem:v70 attribute:6 relatedBy:0 toItem:v71 attribute:6 multiplier:1.0 constant:0.0];
+    v77 = [MEMORY[0x277CCAAD0] constraintWithItem:view18 attribute:6 relatedBy:0 toItem:v71 attribute:6 multiplier:1.0 constant:0.0];
     v117[1] = v77;
-    v78 = [MEMORY[0x277CCAAD0] constraintWithItem:v70 attribute:4 relatedBy:0 toItem:v71 attribute:4 multiplier:1.0 constant:0.0];
+    v78 = [MEMORY[0x277CCAAD0] constraintWithItem:view18 attribute:4 relatedBy:0 toItem:v71 attribute:4 multiplier:1.0 constant:0.0];
     v117[2] = v78;
     v79 = [MEMORY[0x277CBEA60] arrayWithObjects:v117 count:3];
     [v75 activateConstraints:v79];
@@ -497,21 +497,21 @@ void __77__UIPrintPanelViewController_observeValueForKeyPath_ofObject_change_con
     [(UIPrintPanelViewController *)self showCompactPreview];
   }
 
-  v80 = [(UIPrintPanelViewController *)self view];
-  [v80 addObserver:self forKeyPath:@"frame" options:0 context:0];
+  view19 = [(UIPrintPanelViewController *)self view];
+  [view19 addObserver:self forKeyPath:@"frame" options:0 context:0];
 }
 
-- (void)splitViewController:(id)a3 didHideColumn:(int64_t)a4
+- (void)splitViewController:(id)controller didHideColumn:(int64_t)column
 {
-  if (!a4)
+  if (!column)
   {
     [(UIPrintPanelViewController *)self showCompactPreview];
   }
 }
 
-- (void)splitViewController:(id)a3 didShowColumn:(int64_t)a4
+- (void)splitViewController:(id)controller didShowColumn:(int64_t)column
 {
-  if (!a4)
+  if (!column)
   {
     [(UIPrintPanelViewController *)self showsSidebarPreview];
   }
@@ -520,97 +520,97 @@ void __77__UIPrintPanelViewController_observeValueForKeyPath_ofObject_change_con
 - (void)showCompactPreview
 {
   v151[4] = *MEMORY[0x277D85DE8];
-  v3 = [(UIPrintPanelViewController *)self compactPreviewViewController];
+  compactPreviewViewController = [(UIPrintPanelViewController *)self compactPreviewViewController];
 
-  if (!v3)
+  if (!compactPreviewViewController)
   {
     v4 = [UIPrintPreviewContainerView alloc];
     v5 = [(UIPrintPreviewContainerView *)v4 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
     [(UIPrintPanelViewController *)self setCompactPreviewContainerView:v5];
 
     v6 = [UIPrintPreviewViewController alloc];
-    v7 = [(UIPrintPanelViewController *)self compactPreviewContainerView];
-    v8 = [(UIPrintPreviewViewController *)v6 initWithPrintPanelViewController:self useCompactPreview:1 withContainerView:v7];
+    compactPreviewContainerView = [(UIPrintPanelViewController *)self compactPreviewContainerView];
+    v8 = [(UIPrintPreviewViewController *)v6 initWithPrintPanelViewController:self useCompactPreview:1 withContainerView:compactPreviewContainerView];
     [(UIPrintPanelViewController *)self setCompactPreviewViewController:v8];
 
-    v9 = [(UIPrintPanelViewController *)self usingSplitView];
-    v10 = [(UIPrintPanelViewController *)self compactPreviewContainerView];
-    [v10 setHidden:v9];
+    usingSplitView = [(UIPrintPanelViewController *)self usingSplitView];
+    compactPreviewContainerView2 = [(UIPrintPanelViewController *)self compactPreviewContainerView];
+    [compactPreviewContainerView2 setHidden:usingSplitView];
 
-    v11 = [(UIPrintPanelViewController *)self compactPreviewContainerView];
-    [v11 setTranslatesAutoresizingMaskIntoConstraints:0];
+    compactPreviewContainerView3 = [(UIPrintPanelViewController *)self compactPreviewContainerView];
+    [compactPreviewContainerView3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
     if (_UISolariumEnabled())
     {
-      v12 = [MEMORY[0x277D75348] secondarySystemGroupedBackgroundColor];
-      v13 = [(UIPrintPanelViewController *)self compactPreviewContainerView];
-      [v13 setBackgroundColor:v12];
+      secondarySystemGroupedBackgroundColor = [MEMORY[0x277D75348] secondarySystemGroupedBackgroundColor];
+      compactPreviewContainerView4 = [(UIPrintPanelViewController *)self compactPreviewContainerView];
+      [compactPreviewContainerView4 setBackgroundColor:secondarySystemGroupedBackgroundColor];
 
-      v14 = [objc_alloc(MEMORY[0x277D763B0]) initWithVariant:10];
-      v15 = [(UIPrintPanelViewController *)self compactPreviewContainerView];
-      [v15 _setBackground:v14];
+      systemGroupedBackgroundColor = [objc_alloc(MEMORY[0x277D763B0]) initWithVariant:10];
+      compactPreviewContainerView5 = [(UIPrintPanelViewController *)self compactPreviewContainerView];
+      [compactPreviewContainerView5 _setBackground:systemGroupedBackgroundColor];
     }
 
     else
     {
-      v14 = [MEMORY[0x277D75348] systemGroupedBackgroundColor];
-      v15 = [(UIPrintPanelViewController *)self compactPreviewContainerView];
-      [v15 setBackgroundColor:v14];
+      systemGroupedBackgroundColor = [MEMORY[0x277D75348] systemGroupedBackgroundColor];
+      compactPreviewContainerView5 = [(UIPrintPanelViewController *)self compactPreviewContainerView];
+      [compactPreviewContainerView5 setBackgroundColor:systemGroupedBackgroundColor];
     }
 
-    v16 = [(UIPrintPanelViewController *)self view];
-    v17 = [(UIPrintPanelViewController *)self compactPreviewContainerView];
-    [v16 addSubview:v17];
+    view = [(UIPrintPanelViewController *)self view];
+    compactPreviewContainerView6 = [(UIPrintPanelViewController *)self compactPreviewContainerView];
+    [view addSubview:compactPreviewContainerView6];
 
-    v18 = [MEMORY[0x277D759A0] mainScreen];
-    [v18 scale];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
     v20 = v19;
 
     v21 = [objc_alloc(MEMORY[0x277D75D18]) initWithFrame:{0.0, 0.0, v20, v20}];
     [(UIPrintPanelViewController *)self setPreviewHorizSeparatorView:v21];
 
-    v22 = [(UIPrintPanelViewController *)self previewHorizSeparatorView];
-    [v22 setTranslatesAutoresizingMaskIntoConstraints:0];
+    previewHorizSeparatorView = [(UIPrintPanelViewController *)self previewHorizSeparatorView];
+    [previewHorizSeparatorView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v23 = [MEMORY[0x277D75348] separatorColor];
-    v24 = [(UIPrintPanelViewController *)self previewHorizSeparatorView];
-    [v24 setBackgroundColor:v23];
+    separatorColor = [MEMORY[0x277D75348] separatorColor];
+    previewHorizSeparatorView2 = [(UIPrintPanelViewController *)self previewHorizSeparatorView];
+    [previewHorizSeparatorView2 setBackgroundColor:separatorColor];
 
-    v25 = 0;
+    showingVerticalPreview = 0;
     if (_UISolariumEnabled())
     {
-      v25 = [(UIPrintPanelViewController *)self showingVerticalPreview];
+      showingVerticalPreview = [(UIPrintPanelViewController *)self showingVerticalPreview];
     }
 
-    v26 = [(UIPrintPanelViewController *)self previewHorizSeparatorView];
-    [v26 setHidden:v25];
+    previewHorizSeparatorView3 = [(UIPrintPanelViewController *)self previewHorizSeparatorView];
+    [previewHorizSeparatorView3 setHidden:showingVerticalPreview];
 
-    v27 = [(UIPrintPanelViewController *)self compactPreviewContainerView];
-    v28 = [(UIPrintPanelViewController *)self previewHorizSeparatorView];
-    [v27 addSubview:v28];
+    compactPreviewContainerView7 = [(UIPrintPanelViewController *)self compactPreviewContainerView];
+    previewHorizSeparatorView4 = [(UIPrintPanelViewController *)self previewHorizSeparatorView];
+    [compactPreviewContainerView7 addSubview:previewHorizSeparatorView4];
 
     v115 = MEMORY[0x277CCAAD0];
-    v142 = [(UIPrintPanelViewController *)self previewHorizSeparatorView];
-    v133 = [v142 leadingAnchor];
-    v138 = [(UIPrintPanelViewController *)self compactPreviewContainerView];
-    v130 = [v138 leadingAnchor];
-    v127 = [v133 constraintEqualToAnchor:v130];
+    previewHorizSeparatorView5 = [(UIPrintPanelViewController *)self previewHorizSeparatorView];
+    leadingAnchor = [previewHorizSeparatorView5 leadingAnchor];
+    compactPreviewContainerView8 = [(UIPrintPanelViewController *)self compactPreviewContainerView];
+    leadingAnchor2 = [compactPreviewContainerView8 leadingAnchor];
+    v127 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v151[0] = v127;
-    v124 = [(UIPrintPanelViewController *)self previewHorizSeparatorView];
-    v118 = [v124 trailingAnchor];
-    v121 = [(UIPrintPanelViewController *)self compactPreviewContainerView];
-    v112 = [v121 trailingAnchor];
-    v29 = [v118 constraintEqualToAnchor:v112];
+    previewHorizSeparatorView6 = [(UIPrintPanelViewController *)self previewHorizSeparatorView];
+    trailingAnchor = [previewHorizSeparatorView6 trailingAnchor];
+    compactPreviewContainerView9 = [(UIPrintPanelViewController *)self compactPreviewContainerView];
+    trailingAnchor2 = [compactPreviewContainerView9 trailingAnchor];
+    v29 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v151[1] = v29;
-    v30 = [(UIPrintPanelViewController *)self previewHorizSeparatorView];
-    v31 = [v30 bottomAnchor];
-    v32 = [(UIPrintPanelViewController *)self compactPreviewContainerView];
-    v33 = [v32 topAnchor];
-    v34 = [v31 constraintEqualToAnchor:v33];
+    previewHorizSeparatorView7 = [(UIPrintPanelViewController *)self previewHorizSeparatorView];
+    bottomAnchor = [previewHorizSeparatorView7 bottomAnchor];
+    compactPreviewContainerView10 = [(UIPrintPanelViewController *)self compactPreviewContainerView];
+    topAnchor = [compactPreviewContainerView10 topAnchor];
+    v34 = [bottomAnchor constraintEqualToAnchor:topAnchor];
     v151[2] = v34;
     v35 = MEMORY[0x277CCAAD0];
-    v36 = [(UIPrintPanelViewController *)self previewHorizSeparatorView];
-    v37 = [v35 constraintWithItem:v36 attribute:8 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:1.0];
+    previewHorizSeparatorView8 = [(UIPrintPanelViewController *)self previewHorizSeparatorView];
+    v37 = [v35 constraintWithItem:previewHorizSeparatorView8 attribute:8 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:1.0];
     v151[3] = v37;
     v38 = [MEMORY[0x277CBEA60] arrayWithObjects:v151 count:4];
     [v115 activateConstraints:v38];
@@ -618,212 +618,212 @@ void __77__UIPrintPanelViewController_observeValueForKeyPath_ofObject_change_con
     v39 = [objc_alloc(MEMORY[0x277D75D18]) initWithFrame:{0.0, 0.0, v20, v20}];
     [(UIPrintPanelViewController *)self setPreviewVertSeparatorView:v39];
 
-    v40 = [(UIPrintPanelViewController *)self previewVertSeparatorView];
-    [v40 setTranslatesAutoresizingMaskIntoConstraints:0];
+    previewVertSeparatorView = [(UIPrintPanelViewController *)self previewVertSeparatorView];
+    [previewVertSeparatorView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v41 = [MEMORY[0x277D75348] separatorColor];
-    v42 = [(UIPrintPanelViewController *)self previewVertSeparatorView];
-    [v42 setBackgroundColor:v41];
+    separatorColor2 = [MEMORY[0x277D75348] separatorColor];
+    previewVertSeparatorView2 = [(UIPrintPanelViewController *)self previewVertSeparatorView];
+    [previewVertSeparatorView2 setBackgroundColor:separatorColor2];
 
     v43 = _UISolariumEnabled();
-    v44 = [(UIPrintPanelViewController *)self previewVertSeparatorView];
-    [v44 setHidden:v43];
+    previewVertSeparatorView3 = [(UIPrintPanelViewController *)self previewVertSeparatorView];
+    [previewVertSeparatorView3 setHidden:v43];
 
-    v45 = [(UIPrintPanelViewController *)self compactPreviewContainerView];
-    v46 = [(UIPrintPanelViewController *)self previewVertSeparatorView];
-    [v45 addSubview:v46];
+    compactPreviewContainerView11 = [(UIPrintPanelViewController *)self compactPreviewContainerView];
+    previewVertSeparatorView4 = [(UIPrintPanelViewController *)self previewVertSeparatorView];
+    [compactPreviewContainerView11 addSubview:previewVertSeparatorView4];
 
     v116 = MEMORY[0x277CCAAD0];
-    v143 = [(UIPrintPanelViewController *)self previewVertSeparatorView];
-    v134 = [v143 topAnchor];
-    v139 = [(UIPrintPanelViewController *)self compactPreviewContainerView];
-    v131 = [v139 topAnchor];
-    v128 = [v134 constraintEqualToAnchor:v131];
+    previewVertSeparatorView5 = [(UIPrintPanelViewController *)self previewVertSeparatorView];
+    topAnchor2 = [previewVertSeparatorView5 topAnchor];
+    compactPreviewContainerView12 = [(UIPrintPanelViewController *)self compactPreviewContainerView];
+    topAnchor3 = [compactPreviewContainerView12 topAnchor];
+    v128 = [topAnchor2 constraintEqualToAnchor:topAnchor3];
     v150[0] = v128;
-    v125 = [(UIPrintPanelViewController *)self previewVertSeparatorView];
-    v119 = [v125 bottomAnchor];
-    v122 = [(UIPrintPanelViewController *)self compactPreviewContainerView];
-    v113 = [v122 bottomAnchor];
-    v47 = [v119 constraintEqualToAnchor:v113];
+    previewVertSeparatorView6 = [(UIPrintPanelViewController *)self previewVertSeparatorView];
+    bottomAnchor2 = [previewVertSeparatorView6 bottomAnchor];
+    compactPreviewContainerView13 = [(UIPrintPanelViewController *)self compactPreviewContainerView];
+    bottomAnchor3 = [compactPreviewContainerView13 bottomAnchor];
+    v47 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
     v150[1] = v47;
-    v48 = [(UIPrintPanelViewController *)self previewVertSeparatorView];
-    v49 = [v48 leadingAnchor];
-    v50 = [(UIPrintPanelViewController *)self compactPreviewContainerView];
-    v51 = [v50 trailingAnchor];
-    v52 = [v49 constraintEqualToAnchor:v51];
+    previewVertSeparatorView7 = [(UIPrintPanelViewController *)self previewVertSeparatorView];
+    leadingAnchor3 = [previewVertSeparatorView7 leadingAnchor];
+    compactPreviewContainerView14 = [(UIPrintPanelViewController *)self compactPreviewContainerView];
+    trailingAnchor3 = [compactPreviewContainerView14 trailingAnchor];
+    v52 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor3];
     v150[2] = v52;
     v53 = MEMORY[0x277CCAAD0];
-    v54 = [(UIPrintPanelViewController *)self previewVertSeparatorView];
-    v55 = [v53 constraintWithItem:v54 attribute:7 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:1.0];
+    previewVertSeparatorView8 = [(UIPrintPanelViewController *)self previewVertSeparatorView];
+    v55 = [v53 constraintWithItem:previewVertSeparatorView8 attribute:7 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:1.0];
     v150[3] = v55;
     v56 = [MEMORY[0x277CBEA60] arrayWithObjects:v150 count:4];
     [v116 activateConstraints:v56];
 
     v135 = MEMORY[0x277CCAAD0];
-    v144 = [(UIPrintPanelViewController *)self compactPreviewContainerView];
-    v140 = [v144 leadingAnchor];
-    v57 = [(UIPrintPanelViewController *)self view];
-    v58 = [v57 leadingAnchor];
-    v59 = [v140 constraintEqualToAnchor:v58];
+    compactPreviewContainerView15 = [(UIPrintPanelViewController *)self compactPreviewContainerView];
+    leadingAnchor4 = [compactPreviewContainerView15 leadingAnchor];
+    view2 = [(UIPrintPanelViewController *)self view];
+    leadingAnchor5 = [view2 leadingAnchor];
+    v59 = [leadingAnchor4 constraintEqualToAnchor:leadingAnchor5];
     v149[0] = v59;
-    v60 = [(UIPrintPanelViewController *)self compactPreviewContainerView];
-    v61 = [v60 bottomAnchor];
-    v62 = [(UIPrintPanelViewController *)self view];
-    v63 = [v62 bottomAnchor];
-    v64 = [v61 constraintEqualToAnchor:v63];
+    compactPreviewContainerView16 = [(UIPrintPanelViewController *)self compactPreviewContainerView];
+    bottomAnchor4 = [compactPreviewContainerView16 bottomAnchor];
+    view3 = [(UIPrintPanelViewController *)self view];
+    bottomAnchor5 = [view3 bottomAnchor];
+    v64 = [bottomAnchor4 constraintEqualToAnchor:bottomAnchor5];
     v149[1] = v64;
     v65 = [MEMORY[0x277CBEA60] arrayWithObjects:v149 count:2];
     [v135 activateConstraints:v65];
 
-    v66 = [(UIPrintPanelViewController *)self printOptionsNavController];
-    v67 = [v66 view];
+    printOptionsNavController = [(UIPrintPanelViewController *)self printOptionsNavController];
+    view4 = [printOptionsNavController view];
 
-    v68 = [MEMORY[0x277CCAAD0] constraintWithItem:v67 attribute:7 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:333.0];
+    v68 = [MEMORY[0x277CCAAD0] constraintWithItem:view4 attribute:7 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:333.0];
     [(UIPrintPanelViewController *)self setPrintOptionsWidthConstraint:v68];
 
-    v141 = [(UIPrintPanelViewController *)self compactPreviewContainerView];
-    v136 = [v141 topAnchor];
-    v69 = [(UIPrintPanelViewController *)self view];
-    v70 = [v69 topAnchor];
-    v71 = [v136 constraintEqualToAnchor:v70];
+    compactPreviewContainerView17 = [(UIPrintPanelViewController *)self compactPreviewContainerView];
+    topAnchor4 = [compactPreviewContainerView17 topAnchor];
+    view5 = [(UIPrintPanelViewController *)self view];
+    topAnchor5 = [view5 topAnchor];
+    v71 = [topAnchor4 constraintEqualToAnchor:topAnchor5];
     v148[0] = v71;
-    v72 = [(UIPrintPanelViewController *)self compactPreviewContainerView];
-    v73 = [v72 trailingAnchor];
-    v145 = v67;
-    v74 = [v67 leadingAnchor];
-    v75 = [v73 constraintEqualToAnchor:v74];
+    compactPreviewContainerView18 = [(UIPrintPanelViewController *)self compactPreviewContainerView];
+    trailingAnchor4 = [compactPreviewContainerView18 trailingAnchor];
+    v145 = view4;
+    leadingAnchor6 = [view4 leadingAnchor];
+    v75 = [trailingAnchor4 constraintEqualToAnchor:leadingAnchor6];
     v148[1] = v75;
-    v76 = [(UIPrintPanelViewController *)self printOptionsWidthConstraint];
-    v148[2] = v76;
+    printOptionsWidthConstraint = [(UIPrintPanelViewController *)self printOptionsWidthConstraint];
+    v148[2] = printOptionsWidthConstraint;
     v77 = [MEMORY[0x277CBEA60] arrayWithObjects:v148 count:3];
     [(UIPrintPanelViewController *)self setVertScrollPrintPanelConstraints:v77];
 
     v78 = MEMORY[0x277CCAAD0];
-    v79 = [(UIPrintPanelViewController *)self compactPreviewContainerView];
-    v80 = [v78 constraintWithItem:v79 attribute:8 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:250.0];
+    compactPreviewContainerView19 = [(UIPrintPanelViewController *)self compactPreviewContainerView];
+    v80 = [v78 constraintWithItem:compactPreviewContainerView19 attribute:8 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:250.0];
     [(UIPrintPanelViewController *)self setPreviewHeightConstraint:v80];
 
     if ([(UIPrintPanelViewController *)self usingSplitView])
     {
-      v81 = [(UIPrintPanelViewController *)self view];
-      v82 = [v81 leadingAnchor];
-      v83 = [(UIPrintPanelViewController *)self compactPreviewContainerView];
-      v84 = [v83 leadingAnchor];
-      v85 = [v82 constraintEqualToAnchor:v84];
+      view6 = [(UIPrintPanelViewController *)self view];
+      leadingAnchor7 = [view6 leadingAnchor];
+      compactPreviewContainerView20 = [(UIPrintPanelViewController *)self compactPreviewContainerView];
+      leadingAnchor8 = [compactPreviewContainerView20 leadingAnchor];
+      v85 = [leadingAnchor7 constraintEqualToAnchor:leadingAnchor8];
       [(UIPrintPanelViewController *)self setPrintOptionsLeadingConstraint:v85];
     }
 
     else
     {
-      v81 = [v145 leadingAnchor];
-      v82 = [(UIPrintPanelViewController *)self compactPreviewContainerView];
-      v83 = [v82 leadingAnchor];
-      v84 = [v81 constraintEqualToAnchor:v83];
-      [(UIPrintPanelViewController *)self setPrintOptionsLeadingConstraint:v84];
+      view6 = [v145 leadingAnchor];
+      leadingAnchor7 = [(UIPrintPanelViewController *)self compactPreviewContainerView];
+      compactPreviewContainerView20 = [leadingAnchor7 leadingAnchor];
+      leadingAnchor8 = [view6 constraintEqualToAnchor:compactPreviewContainerView20];
+      [(UIPrintPanelViewController *)self setPrintOptionsLeadingConstraint:leadingAnchor8];
     }
 
-    v86 = [(UIPrintPanelViewController *)self compactPreviewContainerView];
-    v87 = [v86 trailingAnchor];
-    v88 = [(UIPrintPanelViewController *)self view];
-    v89 = [v88 trailingAnchor];
-    v90 = [v87 constraintEqualToAnchor:v89];
+    compactPreviewContainerView21 = [(UIPrintPanelViewController *)self compactPreviewContainerView];
+    trailingAnchor5 = [compactPreviewContainerView21 trailingAnchor];
+    view7 = [(UIPrintPanelViewController *)self view];
+    trailingAnchor6 = [view7 trailingAnchor];
+    v90 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
     v147[0] = v90;
-    v91 = [(UIPrintPanelViewController *)self previewHeightConstraint];
-    v147[1] = v91;
+    previewHeightConstraint = [(UIPrintPanelViewController *)self previewHeightConstraint];
+    v147[1] = previewHeightConstraint;
     v92 = [MEMORY[0x277CBEA60] arrayWithObjects:v147 count:2];
     [(UIPrintPanelViewController *)self setHorizScrollPrintPanelConstraints:v92];
 
-    v93 = [(UIPrintPanelViewController *)self compactPreviewViewController];
-    v94 = [v93 collectionView];
+    compactPreviewViewController2 = [(UIPrintPanelViewController *)self compactPreviewViewController];
+    collectionView = [compactPreviewViewController2 collectionView];
 
-    v95 = [(UIPrintPanelViewController *)self compactPreviewContainerView];
-    [v95 addSubview:v94];
+    compactPreviewContainerView22 = [(UIPrintPanelViewController *)self compactPreviewContainerView];
+    [compactPreviewContainerView22 addSubview:collectionView];
 
-    v96 = [(UIPrintPanelViewController *)self compactPreviewViewController];
-    [(UIPrintPanelViewController *)self addChildViewController:v96];
+    compactPreviewViewController3 = [(UIPrintPanelViewController *)self compactPreviewViewController];
+    [(UIPrintPanelViewController *)self addChildViewController:compactPreviewViewController3];
 
-    [v94 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v111 = [(UIPrintPanelViewController *)self compactPreviewContainerView];
-    v132 = [v94 leadingAnchor];
-    v137 = [(UIPrintPanelViewController *)self compactPreviewContainerView];
-    v129 = [v137 safeAreaLayoutGuide];
-    v126 = [v129 leadingAnchor];
-    v123 = [v132 constraintEqualToAnchor:v126];
+    [collectionView setTranslatesAutoresizingMaskIntoConstraints:0];
+    compactPreviewContainerView23 = [(UIPrintPanelViewController *)self compactPreviewContainerView];
+    leadingAnchor9 = [collectionView leadingAnchor];
+    compactPreviewContainerView24 = [(UIPrintPanelViewController *)self compactPreviewContainerView];
+    safeAreaLayoutGuide = [compactPreviewContainerView24 safeAreaLayoutGuide];
+    leadingAnchor10 = [safeAreaLayoutGuide leadingAnchor];
+    v123 = [leadingAnchor9 constraintEqualToAnchor:leadingAnchor10];
     v146[0] = v123;
-    v117 = [v94 trailingAnchor];
-    v120 = [(UIPrintPanelViewController *)self compactPreviewContainerView];
-    v114 = [v120 trailingAnchor];
-    v110 = [v117 constraintEqualToAnchor:v114];
+    trailingAnchor7 = [collectionView trailingAnchor];
+    compactPreviewContainerView25 = [(UIPrintPanelViewController *)self compactPreviewContainerView];
+    trailingAnchor8 = [compactPreviewContainerView25 trailingAnchor];
+    v110 = [trailingAnchor7 constraintEqualToAnchor:trailingAnchor8];
     v146[1] = v110;
-    v108 = [v94 topAnchor];
-    v109 = [(UIPrintPanelViewController *)self compactPreviewContainerView];
-    v97 = [v109 topAnchor];
-    v98 = [v108 constraintEqualToAnchor:v97];
+    topAnchor6 = [collectionView topAnchor];
+    compactPreviewContainerView26 = [(UIPrintPanelViewController *)self compactPreviewContainerView];
+    topAnchor7 = [compactPreviewContainerView26 topAnchor];
+    v98 = [topAnchor6 constraintEqualToAnchor:topAnchor7];
     v146[2] = v98;
-    v99 = [v94 bottomAnchor];
-    v100 = [(UIPrintPanelViewController *)self compactPreviewContainerView];
-    v101 = [v100 safeAreaLayoutGuide];
-    v102 = [v101 bottomAnchor];
-    v103 = [v99 constraintEqualToAnchor:v102];
+    bottomAnchor6 = [collectionView bottomAnchor];
+    compactPreviewContainerView27 = [(UIPrintPanelViewController *)self compactPreviewContainerView];
+    safeAreaLayoutGuide2 = [compactPreviewContainerView27 safeAreaLayoutGuide];
+    bottomAnchor7 = [safeAreaLayoutGuide2 bottomAnchor];
+    v103 = [bottomAnchor6 constraintEqualToAnchor:bottomAnchor7];
     v146[3] = v103;
     v104 = [MEMORY[0x277CBEA60] arrayWithObjects:v146 count:4];
-    [v111 addConstraints:v104];
+    [compactPreviewContainerView23 addConstraints:v104];
 
     if ([(UIPrintPanelViewController *)self usingSplitView])
     {
-      v105 = [(UIPrintPanelViewController *)self compactPreviewViewController];
-      [v105 setScrollDirection:1];
+      compactPreviewViewController4 = [(UIPrintPanelViewController *)self compactPreviewViewController];
+      [compactPreviewViewController4 setScrollDirection:1];
     }
 
-    v106 = [(UIPrintPanelViewController *)self view];
-    [v106 setNeedsUpdateConstraints];
+    view8 = [(UIPrintPanelViewController *)self view];
+    [view8 setNeedsUpdateConstraints];
   }
 
-  v107 = [(UIPrintPanelViewController *)self compactPreviewContainerView];
-  [v107 setHidden:0];
+  compactPreviewContainerView28 = [(UIPrintPanelViewController *)self compactPreviewContainerView];
+  [compactPreviewContainerView28 setHidden:0];
 }
 
 - (void)showsSidebarPreview
 {
-  v3 = [(UIPrintPanelViewController *)self compactPreviewContainerView];
-  [v3 setHidden:1];
+  compactPreviewContainerView = [(UIPrintPanelViewController *)self compactPreviewContainerView];
+  [compactPreviewContainerView setHidden:1];
 
-  v13 = [(UIPrintPanelViewController *)self previewHeightConstraint];
-  [v13 constant];
+  previewHeightConstraint = [(UIPrintPanelViewController *)self previewHeightConstraint];
+  [previewHeightConstraint constant];
   [(UIPrintPanelViewController *)self contentInsetForPreviewWithHeight:?];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(UIPrintPanelViewController *)self printOptionsTableView];
-  [v12 setContentInset:{v5, v7, v9, v11}];
+  printOptionsTableView = [(UIPrintPanelViewController *)self printOptionsTableView];
+  [printOptionsTableView setContentInset:{v5, v7, v9, v11}];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
   v7.receiver = self;
   v7.super_class = UIPrintPanelViewController;
-  [(UIPrintPanelViewController *)&v7 viewWillTransitionToSize:a4 withTransitionCoordinator:a3.width, a3.height];
-  v5 = [(UIPrintPanelViewController *)self compactPreviewViewController];
-  [v5 updatePrintPreviewPages:0];
+  [(UIPrintPanelViewController *)&v7 viewWillTransitionToSize:coordinator withTransitionCoordinator:size.width, size.height];
+  compactPreviewViewController = [(UIPrintPanelViewController *)self compactPreviewViewController];
+  [compactPreviewViewController updatePrintPreviewPages:0];
 
-  v6 = [(UIPrintPanelViewController *)self sidebarPreviewViewController];
-  [v6 updatePrintPreviewPages:0];
+  sidebarPreviewViewController = [(UIPrintPanelViewController *)self sidebarPreviewViewController];
+  [sidebarPreviewViewController updatePrintPreviewPages:0];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v7.receiver = self;
   v7.super_class = UIPrintPanelViewController;
-  [(UIPrintPanelViewController *)&v7 viewWillAppear:a3];
-  v4 = [(UIPrintPanelViewController *)self parentController];
+  [(UIPrintPanelViewController *)&v7 viewWillAppear:appear];
+  parentController = [(UIPrintPanelViewController *)self parentController];
   if ([(UIPrintPanelViewController *)self presentingInParentNavController])
   {
-    [v4 setNavigationBarHidden:1];
+    [parentController setNavigationBarHidden:1];
   }
 
-  v5 = [(UIPrintPanelViewController *)self splitViewController];
-  v6 = [v5 isShowingColumn:0];
+  splitViewController = [(UIPrintPanelViewController *)self splitViewController];
+  v6 = [splitViewController isShowingColumn:0];
 
   if ((v6 & 1) == 0)
   {
@@ -831,28 +831,28 @@ void __77__UIPrintPanelViewController_observeValueForKeyPath_ofObject_change_con
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v8.receiver = self;
   v8.super_class = UIPrintPanelViewController;
-  [(UIPrintPanelViewController *)&v8 viewDidDisappear:a3];
-  v4 = [(UIPrintPanelViewController *)self parentController];
+  [(UIPrintPanelViewController *)&v8 viewDidDisappear:disappear];
+  parentController = [(UIPrintPanelViewController *)self parentController];
   if ([(UIPrintPanelViewController *)self presentingInParentNavController])
   {
-    [v4 setNavigationBarHidden:0];
+    [parentController setNavigationBarHidden:0];
   }
 
-  v5 = [(UIPrintPanelViewController *)self compactPreviewViewController];
-  if ([v5 showingPreviewDocumentInteractionController])
+  compactPreviewViewController = [(UIPrintPanelViewController *)self compactPreviewViewController];
+  if ([compactPreviewViewController showingPreviewDocumentInteractionController])
   {
   }
 
   else
   {
-    v6 = [(UIPrintPanelViewController *)self sidebarPreviewViewController];
-    v7 = [v6 showingPreviewDocumentInteractionController];
+    sidebarPreviewViewController = [(UIPrintPanelViewController *)self sidebarPreviewViewController];
+    showingPreviewDocumentInteractionController = [sidebarPreviewViewController showingPreviewDocumentInteractionController];
 
-    if ((v7 & 1) == 0)
+    if ((showingPreviewDocumentInteractionController & 1) == 0)
     {
       [(UIPrintPanelViewController *)self printPanelDidDisappear];
     }
@@ -861,26 +861,26 @@ void __77__UIPrintPanelViewController_observeValueForKeyPath_ofObject_change_con
 
 - (void)preferredContentSizeCategoryChanged
 {
-  v3 = [(UIPrintPanelViewController *)self sidebarPreviewViewController];
-  [v3 resetAllPages];
+  sidebarPreviewViewController = [(UIPrintPanelViewController *)self sidebarPreviewViewController];
+  [sidebarPreviewViewController resetAllPages];
 
-  v4 = [(UIPrintPanelViewController *)self compactPreviewViewController];
-  [v4 resetAllPages];
+  compactPreviewViewController = [(UIPrintPanelViewController *)self compactPreviewViewController];
+  [compactPreviewViewController resetAllPages];
 }
 
 - (BOOL)showingVerticalPreview
 {
-  v3 = [(UIPrintPanelViewController *)self view];
-  [v3 frame];
+  view = [(UIPrintPanelViewController *)self view];
+  [view frame];
   v5 = v4 > 500.0;
 
   if ([(UIPrintPanelViewController *)self usingSplitView])
   {
-    v6 = [(UIPrintPanelViewController *)self compactPreviewViewController];
-    if (v6)
+    compactPreviewViewController = [(UIPrintPanelViewController *)self compactPreviewViewController];
+    if (compactPreviewViewController)
     {
-      v7 = [(UIPrintPanelViewController *)self splitViewController];
-      v5 = [v7 isShowingColumn:0];
+      splitViewController = [(UIPrintPanelViewController *)self splitViewController];
+      v5 = [splitViewController isShowingColumn:0];
     }
 
     else
@@ -894,14 +894,14 @@ void __77__UIPrintPanelViewController_observeValueForKeyPath_ofObject_change_con
 
 - (void)updatePreviewLayoutConstraints
 {
-  v3 = [(UIPrintPanelViewController *)self compactPreviewViewController];
+  compactPreviewViewController = [(UIPrintPanelViewController *)self compactPreviewViewController];
 
-  if (v3)
+  if (compactPreviewViewController)
   {
-    v4 = [(UIPrintPanelViewController *)self showingVerticalPreview];
-    v5 = [(UIPrintPanelViewController *)self view];
-    [v5 frame];
-    if (v4)
+    showingVerticalPreview = [(UIPrintPanelViewController *)self showingVerticalPreview];
+    view = [(UIPrintPanelViewController *)self view];
+    [view frame];
+    if (showingVerticalPreview)
     {
       v8 = v6 * 0.6667;
 
@@ -913,37 +913,37 @@ void __77__UIPrintPanelViewController_observeValueForKeyPath_ofObject_change_con
 
       v10 = v9;
       v11 = floorf(v10);
-      v5 = [(UIPrintPanelViewController *)self printOptionsWidthConstraint];
-      [v5 setConstant:v11];
+      view = [(UIPrintPanelViewController *)self printOptionsWidthConstraint];
+      [view setConstant:v11];
     }
 
     else
     {
       v12 = v7 * 0.38;
       v13 = floorf(v12);
-      v14 = [(UIPrintPanelViewController *)self compactPreviewViewController];
-      [v14 headerHeight];
+      compactPreviewViewController2 = [(UIPrintPanelViewController *)self compactPreviewViewController];
+      [compactPreviewViewController2 headerHeight];
       v16 = v15 + v13;
-      v17 = [(UIPrintPanelViewController *)self previewHeightConstraint];
-      [v17 setConstant:v16];
+      previewHeightConstraint = [(UIPrintPanelViewController *)self previewHeightConstraint];
+      [previewHeightConstraint setConstant:v16];
     }
 
-    v18 = [(UIPrintPanelViewController *)self showingVerticalPreview];
+    showingVerticalPreview2 = [(UIPrintPanelViewController *)self showingVerticalPreview];
     v19 = MEMORY[0x277CCAAD0];
-    if (v18)
+    if (showingVerticalPreview2)
     {
-      v20 = [(UIPrintPanelViewController *)self horizScrollPrintPanelConstraints];
-      [v19 deactivateConstraints:v20];
+      horizScrollPrintPanelConstraints = [(UIPrintPanelViewController *)self horizScrollPrintPanelConstraints];
+      [v19 deactivateConstraints:horizScrollPrintPanelConstraints];
 
-      v21 = [(UIPrintPanelViewController *)self printOptionsLeadingConstraint];
-      [v21 setActive:0];
+      printOptionsLeadingConstraint = [(UIPrintPanelViewController *)self printOptionsLeadingConstraint];
+      [printOptionsLeadingConstraint setActive:0];
 
       v22 = MEMORY[0x277CCAAD0];
-      v23 = [(UIPrintPanelViewController *)self vertScrollPrintPanelConstraints];
-      [v22 activateConstraints:v23];
+      vertScrollPrintPanelConstraints = [(UIPrintPanelViewController *)self vertScrollPrintPanelConstraints];
+      [v22 activateConstraints:vertScrollPrintPanelConstraints];
 
-      v24 = [(UIPrintPanelViewController *)self previewHorizSeparatorView];
-      [v24 setHidden:1];
+      previewHorizSeparatorView = [(UIPrintPanelViewController *)self previewHorizSeparatorView];
+      [previewHorizSeparatorView setHidden:1];
 
       v25 = _UISolariumEnabled();
       [(UIPrintPanelViewController *)self previewVertSeparatorView];
@@ -951,18 +951,18 @@ void __77__UIPrintPanelViewController_observeValueForKeyPath_ofObject_change_con
 
     else
     {
-      v26 = [(UIPrintPanelViewController *)self vertScrollPrintPanelConstraints];
-      [v19 deactivateConstraints:v26];
+      vertScrollPrintPanelConstraints2 = [(UIPrintPanelViewController *)self vertScrollPrintPanelConstraints];
+      [v19 deactivateConstraints:vertScrollPrintPanelConstraints2];
 
       v27 = MEMORY[0x277CCAAD0];
-      v28 = [(UIPrintPanelViewController *)self horizScrollPrintPanelConstraints];
-      [v27 activateConstraints:v28];
+      horizScrollPrintPanelConstraints2 = [(UIPrintPanelViewController *)self horizScrollPrintPanelConstraints];
+      [v27 activateConstraints:horizScrollPrintPanelConstraints2];
 
-      v29 = [(UIPrintPanelViewController *)self printOptionsLeadingConstraint];
-      [v29 setActive:1];
+      printOptionsLeadingConstraint2 = [(UIPrintPanelViewController *)self printOptionsLeadingConstraint];
+      [printOptionsLeadingConstraint2 setActive:1];
 
-      v30 = [(UIPrintPanelViewController *)self previewVertSeparatorView];
-      [v30 setHidden:1];
+      previewVertSeparatorView = [(UIPrintPanelViewController *)self previewVertSeparatorView];
+      [previewVertSeparatorView setHidden:1];
 
       v25 = _UISolariumEnabled();
       [(UIPrintPanelViewController *)self previewHorizSeparatorView];
@@ -970,26 +970,26 @@ void __77__UIPrintPanelViewController_observeValueForKeyPath_ofObject_change_con
     v31 = ;
     [v31 setHidden:v25];
 
-    v41 = [(UIPrintPanelViewController *)self previewHeightConstraint];
-    [v41 constant];
+    previewHeightConstraint2 = [(UIPrintPanelViewController *)self previewHeightConstraint];
+    [previewHeightConstraint2 constant];
     [(UIPrintPanelViewController *)self contentInsetForPreviewWithHeight:?];
     v33 = v32;
     v35 = v34;
     v37 = v36;
     v39 = v38;
-    v40 = [(UIPrintPanelViewController *)self printOptionsTableView];
-    [v40 setContentInset:{v33, v35, v37, v39}];
+    printOptionsTableView = [(UIPrintPanelViewController *)self printOptionsTableView];
+    [printOptionsTableView setContentInset:{v33, v35, v37, v39}];
   }
 }
 
-- (UIEdgeInsets)contentInsetForPreviewWithHeight:(double)a3
+- (UIEdgeInsets)contentInsetForPreviewWithHeight:(double)height
 {
-  v3 = a3;
-  if (a3 == 0.0)
+  heightCopy = height;
+  if (height == 0.0)
   {
-    v5 = [(UIPrintPanelViewController *)self compactPreviewContainerView];
-    [v5 bounds];
-    v3 = v6;
+    compactPreviewContainerView = [(UIPrintPanelViewController *)self compactPreviewContainerView];
+    [compactPreviewContainerView bounds];
+    heightCopy = v6;
   }
 
   v7 = *(MEMORY[0x277D768C8] + 8);
@@ -1001,7 +1001,7 @@ void __77__UIPrintPanelViewController_observeValueForKeyPath_ofObject_change_con
 
   else
   {
-    v9 = v3 + -40.0;
+    v9 = heightCopy + -40.0;
   }
 
   v10 = -20.0;
@@ -1029,12 +1029,12 @@ void __77__UIPrintPanelViewController_observeValueForKeyPath_ofObject_change_con
   [(UIPrintPanelViewController *)&v6 viewWillLayoutSubviews];
   if (![(UIPrintPanelViewController *)self usingSplitView])
   {
-    v3 = [(UIPrintPanelViewController *)self showingVerticalPreview];
-    v4 = [(UIPrintPanelViewController *)self compactPreviewViewController];
-    [v4 setScrollDirection:!v3];
+    showingVerticalPreview = [(UIPrintPanelViewController *)self showingVerticalPreview];
+    compactPreviewViewController = [(UIPrintPanelViewController *)self compactPreviewViewController];
+    [compactPreviewViewController setScrollDirection:!showingVerticalPreview];
 
-    v5 = [(UIPrintPanelViewController *)self view];
-    [v5 setNeedsUpdateConstraints];
+    view = [(UIPrintPanelViewController *)self view];
+    [view setNeedsUpdateConstraints];
   }
 }
 
@@ -1053,11 +1053,11 @@ void __77__UIPrintPanelViewController_observeValueForKeyPath_ofObject_change_con
   v5 = [objc_alloc(MEMORY[0x277CCACC8]) initWithBlock:v3];
   [(UIPrintPanelViewController *)self setUpdatePageCountThread:v5];
 
-  v6 = [(UIPrintPanelViewController *)self updatePageCountThread];
-  [v6 setName:@"com.apple.UIKit.UIPrintPreviewViewController.updatePageCountThread"];
+  updatePageCountThread = [(UIPrintPanelViewController *)self updatePageCountThread];
+  [updatePageCountThread setName:@"com.apple.UIKit.UIPrintPreviewViewController.updatePageCountThread"];
 
-  v7 = [(UIPrintPanelViewController *)self updatePageCountThread];
-  [v7 start];
+  updatePageCountThread2 = [(UIPrintPanelViewController *)self updatePageCountThread];
+  [updatePageCountThread2 start];
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);
@@ -1074,31 +1074,31 @@ void __45__UIPrintPanelViewController_updatePageCount__block_invoke(uint64_t a1)
 {
   if ([(UIPrintPanelViewController *)self shouldShowPageRange])
   {
-    v6 = [(UIPrintPanelViewController *)self printInfo];
-    v3 = [v6 pageRanges];
-    v4 = [v3 copy];
-    v5 = [(UIPrintPanelViewController *)self printInteractionController];
-    [v5 setPageRanges:v4];
+    printInfo = [(UIPrintPanelViewController *)self printInfo];
+    pageRanges = [printInfo pageRanges];
+    v4 = [pageRanges copy];
+    printInteractionController = [(UIPrintPanelViewController *)self printInteractionController];
+    [printInteractionController setPageRanges:v4];
   }
 }
 
 - (id)controlTintColor
 {
-  v2 = [(UIPrintPanelViewController *)self view];
-  v3 = [v2 tintColor];
+  view = [(UIPrintPanelViewController *)self view];
+  tintColor = [view tintColor];
 
-  v4 = [MEMORY[0x277CCA8D8] mainBundle];
-  v5 = [v4 bundleIdentifier];
-  v6 = [v5 isEqualToString:@"com.apple.iBooks"];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v6 = [bundleIdentifier isEqualToString:@"com.apple.iBooks"];
 
   if (v6)
   {
-    v7 = [MEMORY[0x277D75348] systemBlueColor];
+    systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
 
-    v3 = v7;
+    tintColor = systemBlueColor;
   }
 
-  return v3;
+  return tintColor;
 }
 
 - (id)keyCommands
@@ -1114,26 +1114,26 @@ void __45__UIPrintPanelViewController_updatePageCount__block_invoke(uint64_t a1)
   return v5;
 }
 
-- (void)backButtonPressed:(id)a3
+- (void)backButtonPressed:(id)pressed
 {
-  v5 = [(UIPrintPanelViewController *)self parentController];
+  parentController = [(UIPrintPanelViewController *)self parentController];
   if ([(UIPrintPanelViewController *)self presentingInParentNavController])
   {
-    v4 = [v5 popViewControllerAnimated:1];
+    v4 = [parentController popViewControllerAnimated:1];
   }
 }
 
-- (void)printButtonPressed:(id)a3
+- (void)printButtonPressed:(id)pressed
 {
-  v4 = [(UIPrintPanelViewController *)self printInfo];
-  v5 = [v4 currentPrinter];
+  printInfo = [(UIPrintPanelViewController *)self printInfo];
+  currentPrinter = [printInfo currentPrinter];
 
-  if (v5)
+  if (currentPrinter)
   {
-    v6 = [(UIPrintPanelViewController *)self printOptionsTableViewController];
-    v7 = [v6 canDismissPrintOptions];
+    printOptionsTableViewController = [(UIPrintPanelViewController *)self printOptionsTableViewController];
+    canDismissPrintOptions = [printOptionsTableViewController canDismissPrintOptions];
 
-    if (v7)
+    if (canDismissPrintOptions)
     {
 
       [(UIPrintPanelViewController *)self startPrinting];
@@ -1143,17 +1143,17 @@ void __45__UIPrintPanelViewController_updatePageCount__block_invoke(uint64_t a1)
 
 - (void)dismissKeyboard
 {
-  v2 = [(UIPrintPanelViewController *)self printOptionsTableViewController];
-  [v2 dismissKeyboard];
+  printOptionsTableViewController = [(UIPrintPanelViewController *)self printOptionsTableViewController];
+  [printOptionsTableViewController dismissKeyboard];
 }
 
 - (void)resetPreviewPages
 {
-  v3 = [(UIPrintPanelViewController *)self sidebarPreviewViewController];
-  [v3 resetAllPages];
+  sidebarPreviewViewController = [(UIPrintPanelViewController *)self sidebarPreviewViewController];
+  [sidebarPreviewViewController resetAllPages];
 
-  v4 = [(UIPrintPanelViewController *)self compactPreviewViewController];
-  [v4 resetAllPages];
+  compactPreviewViewController = [(UIPrintPanelViewController *)self compactPreviewViewController];
+  [compactPreviewViewController resetAllPages];
 }
 
 - (void)showGeneratingPDFProgressPanel
@@ -1168,7 +1168,7 @@ void __45__UIPrintPanelViewController_updatePageCount__block_invoke(uint64_t a1)
       v6 = [v3 alertControllerWithTitle:v5 message:@"\n" preferredStyle:1];
       [(UIPrintPanelViewController *)self setPdfCreationProgressController:v6];
 
-      v7 = [(UIPrintPanelViewController *)self pdfCreationProgressController];
+      pdfCreationProgressController = [(UIPrintPanelViewController *)self pdfCreationProgressController];
       v8 = MEMORY[0x277D750F8];
       v9 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v10 = [v9 localizedStringForKey:@"PRINT_INTERACTION_CANCEL_BUTTON" value:@"Cancel" table:@"Localizable"];
@@ -1178,34 +1178,34 @@ void __45__UIPrintPanelViewController_updatePageCount__block_invoke(uint64_t a1)
       v18[3] = &unk_279A9CA70;
       v18[4] = self;
       v11 = [v8 actionWithTitle:v10 style:1 handler:v18];
-      [v7 addAction:v11];
+      [pdfCreationProgressController addAction:v11];
 
       v12 = [objc_alloc(MEMORY[0x277D750E8]) initWithActivityIndicatorStyle:100];
       [v12 setTranslatesAutoresizingMaskIntoConstraints:0];
       [v12 startAnimating];
-      v13 = [(UIPrintPanelViewController *)self pdfCreationProgressController];
-      v14 = [v13 view];
+      pdfCreationProgressController2 = [(UIPrintPanelViewController *)self pdfCreationProgressController];
+      view = [pdfCreationProgressController2 view];
 
-      [v14 addSubview:v12];
-      v15 = [MEMORY[0x277CCAAD0] constraintWithItem:v12 attribute:9 relatedBy:0 toItem:v14 attribute:9 multiplier:1.0 constant:0.0];
-      [v14 addConstraint:v15];
+      [view addSubview:v12];
+      v15 = [MEMORY[0x277CCAAD0] constraintWithItem:v12 attribute:9 relatedBy:0 toItem:view attribute:9 multiplier:1.0 constant:0.0];
+      [view addConstraint:v15];
 
-      v16 = [MEMORY[0x277CCAAD0] constraintWithItem:v12 attribute:10 relatedBy:0 toItem:v14 attribute:10 multiplier:1.0 constant:0.0];
-      [v14 addConstraint:v16];
+      v16 = [MEMORY[0x277CCAAD0] constraintWithItem:v12 attribute:10 relatedBy:0 toItem:view attribute:10 multiplier:1.0 constant:0.0];
+      [view addConstraint:v16];
 
       [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
       [(UIPrintPanelViewController *)self setProgressPresentationTime:?];
-      v17 = [(UIPrintPanelViewController *)self pdfCreationProgressController];
-      [(UIPrintPanelViewController *)self presentViewController:v17 animated:1 completion:0];
+      pdfCreationProgressController3 = [(UIPrintPanelViewController *)self pdfCreationProgressController];
+      [(UIPrintPanelViewController *)self presentViewController:pdfCreationProgressController3 animated:1 completion:0];
     }
   }
 }
 
-- (void)showSharePanelForPDFURL:(id)a3
+- (void)showSharePanelForPDFURL:(id)l
 {
   v35[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(UIPrintPanelViewController *)self createShareablePDFFileURL:v4];
+  lCopy = l;
+  v5 = [(UIPrintPanelViewController *)self createShareablePDFFileURL:lCopy];
   if (v5)
   {
     v31 = 0;
@@ -1232,44 +1232,44 @@ void __45__UIPrintPanelViewController_updatePageCount__block_invoke(uint64_t a1)
     v10 = [v8 initWithActivityItems:v9 applicationActivities:0];
     [(UIPrintPanelViewController *)self setActivityViewController:v10];
 
-    v11 = [(UIPrintPanelViewController *)self activityViewController];
-    v12 = [(UIPrintPanelViewController *)self printInfo];
-    v13 = [v12 jobName];
-    [v11 setValue:v13 forKey:@"subject"];
+    activityViewController = [(UIPrintPanelViewController *)self activityViewController];
+    printInfo = [(UIPrintPanelViewController *)self printInfo];
+    jobName = [printInfo jobName];
+    [activityViewController setValue:jobName forKey:@"subject"];
 
-    v14 = [(UIPrintPanelViewController *)self activityViewController];
-    [v14 setExcludedActivityTypes:&unk_2871BC230];
+    activityViewController2 = [(UIPrintPanelViewController *)self activityViewController];
+    [activityViewController2 setExcludedActivityTypes:&unk_2871BC230];
 
-    v15 = [(UIPrintPanelViewController *)self printInteractionController];
-    v16 = [v15 isContentManaged];
-    v17 = [(UIPrintPanelViewController *)self activityViewController];
-    [v17 setIsContentManaged:v16];
+    printInteractionController = [(UIPrintPanelViewController *)self printInteractionController];
+    isContentManaged = [printInteractionController isContentManaged];
+    activityViewController3 = [(UIPrintPanelViewController *)self activityViewController];
+    [activityViewController3 setIsContentManaged:isContentManaged];
 
-    v18 = [MEMORY[0x277D75418] currentDevice];
-    LOBYTE(v16) = [v18 userInterfaceIdiom] == 0;
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    LOBYTE(isContentManaged) = [currentDevice userInterfaceIdiom] == 0;
 
-    if ((v16 & 1) == 0)
+    if ((isContentManaged & 1) == 0)
     {
-      v19 = [(UIPrintPanelViewController *)self activityViewController];
-      [v19 setModalPresentationStyle:7];
+      activityViewController4 = [(UIPrintPanelViewController *)self activityViewController];
+      [activityViewController4 setModalPresentationStyle:7];
 
-      v20 = [(UIPrintPanelViewController *)self activityViewController];
-      v21 = [v20 popoverPresentationController];
+      activityViewController5 = [(UIPrintPanelViewController *)self activityViewController];
+      popoverPresentationController = [activityViewController5 popoverPresentationController];
 
-      v22 = [(UIPrintPanelViewController *)self shareButton];
-      [v21 setBarButtonItem:v22];
+      shareButton = [(UIPrintPanelViewController *)self shareButton];
+      [popoverPresentationController setBarButtonItem:shareButton];
 
-      [v21 setPermittedArrowDirections:1];
+      [popoverPresentationController setPermittedArrowDirections:1];
     }
 
     objc_initWeak(location, self);
-    v23 = [(UIPrintPanelViewController *)self activityViewController];
+    activityViewController6 = [(UIPrintPanelViewController *)self activityViewController];
     v25 = MEMORY[0x277D85DD0];
     v26 = 3221225472;
     v27 = __54__UIPrintPanelViewController_showSharePanelForPDFURL___block_invoke;
     v28 = &unk_279A9C860;
     objc_copyWeak(&v29, location);
-    [v23 setCompletionWithItemsHandler:&v25];
+    [activityViewController6 setCompletionWithItemsHandler:&v25];
 
     v24 = [(UIPrintPanelViewController *)self activityViewController:v25];
     [(UIPrintPanelViewController *)self presentViewController:v24 animated:1 completion:0];
@@ -1289,9 +1289,9 @@ void __54__UIPrintPanelViewController_showSharePanelForPDFURL___block_invoke(uin
   }
 }
 
-- (void)shareButtonPress:(id)a3
+- (void)shareButtonPress:(id)press
 {
-  v4 = a3;
+  pressCopy = press;
   [(UIPrintPanelViewController *)self dismissKeyboard];
   [(UIPrintPanelViewController *)self performSelector:sel_showGeneratingPDFProgressPanel withObject:0 afterDelay:0.5];
   objc_initWeak(&location, self);
@@ -1363,18 +1363,18 @@ LABEL_8:
   }
 }
 
-- (void)hideGeneratingPDFProgress:(id)a3
+- (void)hideGeneratingPDFProgress:(id)progress
 {
-  v4 = a3;
-  v5 = [(UIPrintPanelViewController *)self pdfCreationProgressController];
+  progressCopy = progress;
+  pdfCreationProgressController = [(UIPrintPanelViewController *)self pdfCreationProgressController];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __56__UIPrintPanelViewController_hideGeneratingPDFProgress___block_invoke;
   v7[3] = &unk_279A9BF78;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 dismissViewControllerAnimated:1 completion:v7];
+  v8 = progressCopy;
+  v6 = progressCopy;
+  [pdfCreationProgressController dismissViewControllerAnimated:1 completion:v7];
 }
 
 uint64_t __56__UIPrintPanelViewController_hideGeneratingPDFProgress___block_invoke(uint64_t a1)
@@ -1390,67 +1390,67 @@ uint64_t __56__UIPrintPanelViewController_hideGeneratingPDFProgress___block_invo
   return result;
 }
 
-- (void)addPrintShareButtonsToNavItem:(id)a3
+- (void)addPrintShareButtonsToNavItem:(id)item
 {
   v17[3] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277D751E0];
-  v5 = a3;
+  itemCopy = item;
   v6 = [v4 alloc];
   v7 = [MEMORY[0x277D755B8] systemImageNamed:@"printer"];
   v8 = [v6 initWithImage:v7 style:2 target:self action:sel_printButtonPressed_];
 
-  v9 = [(UIPrintPanelViewController *)self printInfo];
-  v10 = [v9 currentPrinter];
-  [v8 setEnabled:v10 != 0];
+  printInfo = [(UIPrintPanelViewController *)self printInfo];
+  currentPrinter = [printInfo currentPrinter];
+  [v8 setEnabled:currentPrinter != 0];
 
   v11 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:9 target:self action:sel_shareButtonPress_];
   [(UIPrintPanelViewController *)self setShareButton:v11];
 
-  v12 = [(UIPrintPanelViewController *)self printInteractionController];
-  LODWORD(v10) = [v12 preventPDFCreation];
-  v13 = [(UIPrintPanelViewController *)self shareButton];
-  [v13 setEnabled:v10 ^ 1];
+  printInteractionController = [(UIPrintPanelViewController *)self printInteractionController];
+  LODWORD(currentPrinter) = [printInteractionController preventPDFCreation];
+  shareButton = [(UIPrintPanelViewController *)self shareButton];
+  [shareButton setEnabled:currentPrinter ^ 1];
 
   v14 = [MEMORY[0x277D751E0] fixedSpaceItemOfWidth:{0.0, v8}];
   v17[1] = v14;
-  v15 = [(UIPrintPanelViewController *)self shareButton];
-  v17[2] = v15;
+  shareButton2 = [(UIPrintPanelViewController *)self shareButton];
+  v17[2] = shareButton2;
   v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:3];
-  [v5 setRightBarButtonItems:v16];
+  [itemCopy setRightBarButtonItems:v16];
 }
 
-- (void)addCanelButtonToNavItem:(id)a3
+- (void)addCanelButtonToNavItem:(id)item
 {
   v18[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(UIPrintPanelViewController *)self parentController];
+  itemCopy = item;
+  parentController = [(UIPrintPanelViewController *)self parentController];
   if ([(UIPrintPanelViewController *)self presentingInParentNavController])
   {
-    v6 = [v5 viewControllers];
-    if ([v6 count] < 2)
+    viewControllers = [parentController viewControllers];
+    if ([viewControllers count] < 2)
     {
-      v9 = 0;
+      title = 0;
     }
 
     else
     {
-      v7 = [v6 objectAtIndex:{objc_msgSend(v6, "count") - 2}];
+      v7 = [viewControllers objectAtIndex:{objc_msgSend(viewControllers, "count") - 2}];
       v8 = v7;
       if (v7 == self)
       {
         v11 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-        v9 = [v11 localizedStringForKey:@"Back" value:@"Back" table:@"Localizable"];
+        title = [v11 localizedStringForKey:@"Back" value:@"Back" table:@"Localizable"];
       }
 
       else
       {
-        v9 = [(UIPrintPanelViewController *)v7 title];
+        title = [(UIPrintPanelViewController *)v7 title];
       }
 
-      if (v9)
+      if (title)
       {
-        v12 = [(UIPrintPanelViewController *)self printOptionsWidthConstraint];
-        [v12 constant];
+        printOptionsWidthConstraint = [(UIPrintPanelViewController *)self printOptionsWidthConstraint];
+        [printOptionsWidthConstraint constant];
         v14 = v13;
 
         if (v14 > 433.0)
@@ -1463,46 +1463,46 @@ uint64_t __56__UIPrintPanelViewController_hideGeneratingPDFProgress___block_invo
     v15 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v16 = [v15 localizedStringForKey:@"Back" value:@"Back" table:@"Localizable"];
 
-    v9 = v16;
+    title = v16;
 LABEL_11:
-    v10 = [objc_alloc(MEMORY[0x277D751E0]) initWithTitle:v9 style:0 target:self action:sel_backButtonPressed_];
+    v10 = [objc_alloc(MEMORY[0x277D751E0]) initWithTitle:title style:0 target:self action:sel_backButtonPressed_];
     [v10 _setShowsBackButtonIndicator:1];
     goto LABEL_12;
   }
 
-  v9 = [MEMORY[0x277D755D0] configurationWithWeight:6];
-  v6 = [MEMORY[0x277D755B8] systemImageNamed:@"xmark" withConfiguration:v9];
-  v10 = [objc_alloc(MEMORY[0x277D751E0]) initWithImage:v6 style:0 target:self action:sel_cancelButtonPressed_];
+  title = [MEMORY[0x277D755D0] configurationWithWeight:6];
+  viewControllers = [MEMORY[0x277D755B8] systemImageNamed:@"xmark" withConfiguration:title];
+  v10 = [objc_alloc(MEMORY[0x277D751E0]) initWithImage:viewControllers style:0 target:self action:sel_cancelButtonPressed_];
 LABEL_12:
 
   v18[0] = v10;
   v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v18 count:1];
-  [v4 setLeftBarButtonItems:v17];
+  [itemCopy setLeftBarButtonItems:v17];
 }
 
-- (void)setPrinter:(id)a3
+- (void)setPrinter:(id)printer
 {
-  v4 = a3;
-  v5 = [v4 pkPrinter];
-  _UIPrinterInfoCancelRequest(v5);
-  v6 = [(UIPrintPanelViewController *)self printInteractionController];
-  [v6 setPrinter:v5];
+  printerCopy = printer;
+  pkPrinter = [printerCopy pkPrinter];
+  _UIPrinterInfoCancelRequest(pkPrinter);
+  printInteractionController = [(UIPrintPanelViewController *)self printInteractionController];
+  [printInteractionController setPrinter:pkPrinter];
 
-  v7 = [(UIPrintPanelViewController *)self printOptionsTableViewController];
-  [v7 setCurrentPrinter:v4];
+  printOptionsTableViewController = [(UIPrintPanelViewController *)self printOptionsTableViewController];
+  [printOptionsTableViewController setCurrentPrinter:printerCopy];
 
-  v8 = [(UIPrintPanelViewController *)self printOptionsTableViewController];
-  v9 = v8;
-  if (v4)
+  printOptionsTableViewController2 = [(UIPrintPanelViewController *)self printOptionsTableViewController];
+  v9 = printOptionsTableViewController2;
+  if (printerCopy)
   {
-    [v8 setShowContactingPrinter:1];
+    [printOptionsTableViewController2 setShowContactingPrinter:1];
 
     v27 = 0;
     v28 = &v27;
     v29 = 0x3032000000;
     v30 = __Block_byref_object_copy__0;
     v31 = __Block_byref_object_dispose__0;
-    v32 = v5;
+    v32 = pkPrinter;
     v10 = v28[5];
     v26[0] = MEMORY[0x277D85DD0];
     v26[1] = 3221225472;
@@ -1511,34 +1511,34 @@ LABEL_12:
     v26[4] = self;
     v26[5] = &v27;
     _UIPrintInfoPrinterLookup(v10, v26);
-    v11 = [(UIPrintPanelViewController *)self printOptionsTableViewController];
-    [v11 setShowingGatheringPrinterInfo:1];
+    printOptionsTableViewController3 = [(UIPrintPanelViewController *)self printOptionsTableViewController];
+    [printOptionsTableViewController3 setShowingGatheringPrinterInfo:1];
 
-    v12 = [v4 pkPrinter];
+    pkPrinter2 = [printerCopy pkPrinter];
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
     v25[2] = __41__UIPrintPanelViewController_setPrinter___block_invoke_2;
     v25[3] = &unk_279A9C090;
     v25[4] = self;
-    State = _UIPrinterInfoGetState(v12, v25);
+    State = _UIPrinterInfoGetState(pkPrinter2, v25);
 
     if (State)
     {
-      v14 = [(UIPrintPanelViewController *)self printOptionsTableViewController];
-      [v14 setShowingGatheringPrinterInfo:0];
+      printOptionsTableViewController4 = [(UIPrintPanelViewController *)self printOptionsTableViewController];
+      [printOptionsTableViewController4 setShowingGatheringPrinterInfo:0];
       if (State == 1)
       {
 
-        v15 = [v4 pkPrinter];
-        v16 = [v15 printInfoSupported];
-        v17 = [(UIPrintPanelViewController *)self printInfo];
-        v18 = [v17 currentPrinter];
-        [v18 setPrinterInfoDict:v16];
+        pkPrinter3 = [printerCopy pkPrinter];
+        printInfoSupported = [pkPrinter3 printInfoSupported];
+        printInfo = [(UIPrintPanelViewController *)self printInfo];
+        currentPrinter = [printInfo currentPrinter];
+        [currentPrinter setPrinterInfoDict:printInfoSupported];
 
-        v14 = [(UIPrintPanelViewController *)self printInteractionController];
-        v19 = [v14 paper];
-        v20 = [(UIPrintPanelViewController *)self printInfo];
-        [v20 setPrintPaper:v19];
+        printOptionsTableViewController4 = [(UIPrintPanelViewController *)self printInteractionController];
+        paper = [printOptionsTableViewController4 paper];
+        printInfo2 = [(UIPrintPanelViewController *)self printInfo];
+        [printInfo2 setPrintPaper:paper];
       }
     }
 
@@ -1547,14 +1547,14 @@ LABEL_12:
 
   else
   {
-    [v8 setShowContactingPrinter:0];
+    [printOptionsTableViewController2 setShowContactingPrinter:0];
   }
 
-  v21 = [(UIPrintPanelViewController *)self printOptionsNavController];
-  v22 = [v21 topViewController];
-  v23 = [v22 navigationItem];
-  v24 = [v23 rightBarButtonItem];
-  [v24 setEnabled:v4 != 0];
+  printOptionsNavController = [(UIPrintPanelViewController *)self printOptionsNavController];
+  topViewController = [printOptionsNavController topViewController];
+  navigationItem = [topViewController navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
+  [rightBarButtonItem setEnabled:printerCopy != 0];
 }
 
 void __41__UIPrintPanelViewController_setPrinter___block_invoke(uint64_t a1, char a2)
@@ -1613,24 +1613,24 @@ void __41__UIPrintPanelViewController_setPrinter___block_invoke_2(uint64_t a1, i
 
 - (void)lookupLastUsedPrinter
 {
-  v3 = [(UIPrintPanelViewController *)self lastUsedPrinterArray];
+  lastUsedPrinterArray = [(UIPrintPanelViewController *)self lastUsedPrinterArray];
 
-  if (!v3)
+  if (!lastUsedPrinterArray)
   {
-    v4 = [MEMORY[0x277D41090] lastUsedPrinters];
-    [(UIPrintPanelViewController *)self setLastUsedPrinterArray:v4];
+    lastUsedPrinters = [MEMORY[0x277D41090] lastUsedPrinters];
+    [(UIPrintPanelViewController *)self setLastUsedPrinterArray:lastUsedPrinters];
   }
 
   if ([(UIPrintPanelViewController *)self lastUsedPrinterIndex]<= 2)
   {
-    v5 = [(UIPrintPanelViewController *)self lastUsedPrinterArray];
-    v6 = [v5 count];
-    v7 = [(UIPrintPanelViewController *)self lastUsedPrinterIndex];
+    lastUsedPrinterArray2 = [(UIPrintPanelViewController *)self lastUsedPrinterArray];
+    v6 = [lastUsedPrinterArray2 count];
+    lastUsedPrinterIndex = [(UIPrintPanelViewController *)self lastUsedPrinterIndex];
 
-    if (v6 > v7)
+    if (v6 > lastUsedPrinterIndex)
     {
-      v8 = [(UIPrintPanelViewController *)self lastUsedPrinterArray];
-      v9 = [v8 objectAtIndex:{-[UIPrintPanelViewController lastUsedPrinterIndex](self, "lastUsedPrinterIndex")}];
+      lastUsedPrinterArray3 = [(UIPrintPanelViewController *)self lastUsedPrinterArray];
+      v9 = [lastUsedPrinterArray3 objectAtIndex:{-[UIPrintPanelViewController lastUsedPrinterIndex](self, "lastUsedPrinterIndex")}];
 
       v10 = [v9 objectForKey:*MEMORY[0x277D41210]];
       v11 = [v9 objectForKey:*MEMORY[0x277D410D0]];
@@ -1744,27 +1744,27 @@ void __51__UIPrintPanelViewController_lookupLastUsedPrinter__block_invoke_3(uint
 {
   if (![(UIPrintPanelViewController *)self dismissed])
   {
-    v3 = [(UIPrintPanelViewController *)self printInteractionController];
-    [v3 _printPanelWillDismissWithAction:0];
+    printInteractionController = [(UIPrintPanelViewController *)self printInteractionController];
+    [printInteractionController _printPanelWillDismissWithAction:0];
 
     [(UIPrintPanelViewController *)self setDismissed:1];
     _UIPrinterInfoCancelRequests();
-    v4 = [(UIPrintPanelViewController *)self printOptionsNavController];
-    v5 = [v4 topViewController];
-    v6 = [(UIPrintPanelViewController *)self printOptionsTableViewController];
+    printOptionsNavController = [(UIPrintPanelViewController *)self printOptionsNavController];
+    topViewController = [printOptionsNavController topViewController];
+    printOptionsTableViewController = [(UIPrintPanelViewController *)self printOptionsTableViewController];
 
-    if (v5 != v6)
+    if (topViewController != printOptionsTableViewController)
     {
-      v7 = [(UIPrintPanelViewController *)self printOptionsNavController];
-      v8 = [(UIPrintPanelViewController *)self printOptionsTableViewController];
-      v9 = [v7 popToViewController:v8 animated:0];
+      printOptionsNavController2 = [(UIPrintPanelViewController *)self printOptionsNavController];
+      printOptionsTableViewController2 = [(UIPrintPanelViewController *)self printOptionsTableViewController];
+      v9 = [printOptionsNavController2 popToViewController:printOptionsTableViewController2 animated:0];
     }
 
-    v10 = [(UIPrintPanelViewController *)self printPanelWindow];
-    [v10 setHidden:1];
+    printPanelWindow = [(UIPrintPanelViewController *)self printPanelWindow];
+    [printPanelWindow setHidden:1];
 
-    v11 = [(UIPrintPanelViewController *)self printInteractionController];
-    [v11 _printPanelDidDismissWithAction:0];
+    printInteractionController2 = [(UIPrintPanelViewController *)self printInteractionController];
+    [printInteractionController2 _printPanelDidDismissWithAction:0];
 
     [(UIPrintPanelViewController *)self setPrintInteractionController:0];
   }
@@ -1774,10 +1774,10 @@ void __51__UIPrintPanelViewController_lookupLastUsedPrinter__block_invoke_3(uint
 {
   if (![(UIPrintPanelViewController *)self dismissed])
   {
-    v8 = [(UIPrintPanelViewController *)self parentController];
+    parentController = [(UIPrintPanelViewController *)self parentController];
     if ([(UIPrintPanelViewController *)self presentingInParentNavController])
     {
-      v3 = v8;
+      v3 = parentController;
     }
 
     else
@@ -1786,17 +1786,17 @@ void __51__UIPrintPanelViewController_lookupLastUsedPrinter__block_invoke_3(uint
     }
 
     v4 = v3;
-    v5 = [v4 topViewController];
+    topViewController = [v4 topViewController];
 
-    if (v5 == self)
+    if (topViewController == self)
     {
       [(UIPrintPanelViewController *)self dismissPrintPanelWithAction:0 animated:0 completionHandler:0];
     }
 
     else
     {
-      v6 = [v4 viewControllers];
-      v7 = [v6 containsObject:self];
+      viewControllers = [v4 viewControllers];
+      v7 = [viewControllers containsObject:self];
 
       if ((v7 & 1) == 0)
       {
@@ -1808,60 +1808,60 @@ void __51__UIPrintPanelViewController_lookupLastUsedPrinter__block_invoke_3(uint
 
 - (BOOL)shouldShowPageRange
 {
-  v2 = [(UIPrintPanelViewController *)self printInteractionController];
-  v3 = [v2 _canShowPageRange];
+  printInteractionController = [(UIPrintPanelViewController *)self printInteractionController];
+  _canShowPageRange = [printInteractionController _canShowPageRange];
 
-  return v3;
+  return _canShowPageRange;
 }
 
 - (BOOL)shouldShowDuplex
 {
-  v2 = [(UIPrintPanelViewController *)self printInteractionController];
-  v3 = [v2 _canShowDuplex];
+  printInteractionController = [(UIPrintPanelViewController *)self printInteractionController];
+  _canShowDuplex = [printInteractionController _canShowDuplex];
 
-  return v3;
+  return _canShowDuplex;
 }
 
 - (BOOL)shouldShowOrientation
 {
-  v2 = [(UIPrintPanelViewController *)self printInteractionController];
-  v3 = [v2 _canShowOrientation];
+  printInteractionController = [(UIPrintPanelViewController *)self printInteractionController];
+  _canShowOrientation = [printInteractionController _canShowOrientation];
 
-  return v3;
+  return _canShowOrientation;
 }
 
 - (BOOL)shouldShowScaling
 {
-  v2 = [(UIPrintPanelViewController *)self printInteractionController];
-  v3 = [v2 _canShowScaling];
+  printInteractionController = [(UIPrintPanelViewController *)self printInteractionController];
+  _canShowScaling = [printInteractionController _canShowScaling];
 
-  return v3;
+  return _canShowScaling;
 }
 
 - (BOOL)shouldShowLayout
 {
-  v2 = [(UIPrintPanelViewController *)self printInteractionController];
-  v3 = [v2 _canShowLayout];
+  printInteractionController = [(UIPrintPanelViewController *)self printInteractionController];
+  _canShowLayout = [printInteractionController _canShowLayout];
 
-  return v3;
+  return _canShowLayout;
 }
 
 - (void)startPrinting
 {
-  v3 = [(UIPrintPanelViewController *)self printInfo];
-  v4 = [v3 currentPrinter];
-  v5 = [v4 _printerID];
-  v6 = [(UIPrintPanelViewController *)self printInteractionController];
-  v7 = [v6 _currentPrintInfo];
-  [v7 setPrinterID:v5];
+  printInfo = [(UIPrintPanelViewController *)self printInfo];
+  currentPrinter = [printInfo currentPrinter];
+  _printerID = [currentPrinter _printerID];
+  printInteractionController = [(UIPrintPanelViewController *)self printInteractionController];
+  _currentPrintInfo = [printInteractionController _currentPrintInfo];
+  [_currentPrintInfo setPrinterID:_printerID];
 
   [(UIPrintPanelViewController *)self dismissPrintPanelWithAction:1 animated:1 completionHandler:0];
 }
 
-- (CGSize)preferredSizeForScene:(id)a3
+- (CGSize)preferredSizeForScene:(id)scene
 {
-  v4 = [a3 screen];
-  [v4 bounds];
+  screen = [scene screen];
+  [screen bounds];
   v6 = v5;
   v8 = v7;
 
@@ -1869,8 +1869,8 @@ void __51__UIPrintPanelViewController_lookupLastUsedPrinter__block_invoke_3(uint
   {
     v14 = v6 * 0.66667;
     v6 = floorf(v14);
-    v15 = [(UIPrintPanelViewController *)self view];
-    [v15 frame];
+    view = [(UIPrintPanelViewController *)self view];
+    [view frame];
     v17 = v16;
 
     if (v17 >= v8)
@@ -1886,8 +1886,8 @@ void __51__UIPrintPanelViewController_lookupLastUsedPrinter__block_invoke_3(uint
 
   else
   {
-    v9 = [(UIPrintPanelViewController *)self view];
-    [v9 frame];
+    view2 = [(UIPrintPanelViewController *)self view];
+    [view2 frame];
     v11 = v10;
 
     if (v11 >= v6)
@@ -1905,11 +1905,11 @@ void __51__UIPrintPanelViewController_lookupLastUsedPrinter__block_invoke_3(uint
   return result;
 }
 
-- (void)_presentInParentAnimated:(BOOL)a3 hostingScene:(id)a4
+- (void)_presentInParentAnimated:(BOOL)animated hostingScene:(id)scene
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(UIPrintPanelViewController *)self parentController];
+  animatedCopy = animated;
+  sceneCopy = scene;
+  parentController = [(UIPrintPanelViewController *)self parentController];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __68__UIPrintPanelViewController__presentInParentAnimated_hostingScene___block_invoke;
@@ -1930,34 +1930,34 @@ void __51__UIPrintPanelViewController_lookupLastUsedPrinter__block_invoke_3(uint
   [(UIPrintPanelViewController *)self setPresentingInParentNavController:v9];
   if ([(UIPrintPanelViewController *)self presentingInParentNavController])
   {
-    v10 = [(UIPrintPanelViewController *)self parentController];
-    v11 = [v10 view];
-    [v11 frame];
+    parentController2 = [(UIPrintPanelViewController *)self parentController];
+    view = [parentController2 view];
+    [view frame];
     [(UIPrintPanelViewController *)self setPreferredContentSize:v12, v13];
 
-    [v7 pushViewController:self animated:v4];
-    v14 = [(UIPrintPanelViewController *)self transitionCoordinator];
+    [parentController pushViewController:self animated:animatedCopy];
+    transitionCoordinator = [(UIPrintPanelViewController *)self transitionCoordinator];
     v16 = MEMORY[0x277D85DD0];
     v17 = 3221225472;
     v18 = __68__UIPrintPanelViewController__presentInParentAnimated_hostingScene___block_invoke_2;
     v19 = &unk_279A9CB60;
     v20 = v8;
     v15 = MEMORY[0x25F8E54A0](&v16);
-    [v14 animateAlongsideTransition:&__block_literal_global_6 completion:{v15, v16, v17, v18, v19}];
+    [transitionCoordinator animateAlongsideTransition:&__block_literal_global_6 completion:{v15, v16, v17, v18, v19}];
   }
 
   else
   {
-    [(UIPrintPanelViewController *)self preferredSizeForScene:v6];
+    [(UIPrintPanelViewController *)self preferredSizeForScene:sceneCopy];
     [(UIPrintPanelViewController *)self setPreferredContentSize:?];
-    if (v4)
+    if (animatedCopy)
     {
-      [v7 presentViewController:self withTransition:3 completion:v8];
+      [parentController presentViewController:self withTransition:3 completion:v8];
     }
 
     else
     {
-      [v7 presentViewController:self animated:0 completion:v8];
+      [parentController presentViewController:self animated:0 completion:v8];
     }
   }
 }
@@ -1968,55 +1968,55 @@ void __68__UIPrintPanelViewController__presentInParentAnimated_hostingScene___bl
   [v1 _printPanelDidPresent];
 }
 
-- (void)presentPrintPanelAnimated:(BOOL)a3 hostingScene:(id)a4
+- (void)presentPrintPanelAnimated:(BOOL)animated hostingScene:(id)scene
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(UIPrintPanelViewController *)self parentController];
+  animatedCopy = animated;
+  sceneCopy = scene;
+  parentController = [(UIPrintPanelViewController *)self parentController];
 
-  if (!v7)
+  if (!parentController)
   {
-    [(UIPrintPanelViewController *)self preferredSizeForScene:v6];
+    [(UIPrintPanelViewController *)self preferredSizeForScene:sceneCopy];
     [(UIPrintPanelViewController *)self setPreferredContentSize:?];
-    v12 = [MEMORY[0x277CCA8D8] mainBundle];
-    v13 = [MEMORY[0x277D75418] currentDevice];
-    if ([v13 userInterfaceIdiom] == 1)
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice userInterfaceIdiom] == 1)
     {
-      v14 = [v12 bundleIdentifier];
-      v15 = [v14 isEqualToString:@"com.apple.mobileslideshow"];
+      bundleIdentifier = [mainBundle bundleIdentifier];
+      v15 = [bundleIdentifier isEqualToString:@"com.apple.mobileslideshow"];
 
       if (v15)
       {
-        v16 = [[UIPrintPanelWindow alloc] initWithWindowScene:v6];
+        v16 = [[UIPrintPanelWindow alloc] initWithWindowScene:sceneCopy];
         [(UIPrintPanelViewController *)self setPrintPanelWindow:v16];
 
         v17 = *MEMORY[0x277D768D0];
-        v18 = [(UIPrintPanelViewController *)self printPanelWindow];
-        [v18 setWindowLevel:v17];
+        printPanelWindow = [(UIPrintPanelViewController *)self printPanelWindow];
+        [printPanelWindow setWindowLevel:v17];
 
-        v19 = objc_alloc_init(MEMORY[0x277D75D28]);
+        presentedViewController2 = objc_alloc_init(MEMORY[0x277D75D28]);
         v20 = objc_alloc(MEMORY[0x277D75D18]);
-        v21 = [(UIPrintPanelViewController *)self printPanelWindow];
-        [v21 frame];
+        printPanelWindow2 = [(UIPrintPanelViewController *)self printPanelWindow];
+        [printPanelWindow2 frame];
         v22 = [v20 initWithFrame:?];
 
-        [v19 setView:v22];
-        v23 = [(UIPrintPanelViewController *)self printPanelWindow];
-        [v23 setRootViewController:v19];
+        [presentedViewController2 setView:v22];
+        printPanelWindow3 = [(UIPrintPanelViewController *)self printPanelWindow];
+        [printPanelWindow3 setRootViewController:presentedViewController2];
 
-        v24 = [(UIPrintPanelViewController *)self printPanelWindow];
-        [v24 addSubview:v22];
+        printPanelWindow4 = [(UIPrintPanelViewController *)self printPanelWindow];
+        [printPanelWindow4 addSubview:v22];
 
-        v25 = [(UIPrintPanelViewController *)self printPanelWindow];
-        [v25 makeKeyAndVisible];
+        printPanelWindow5 = [(UIPrintPanelViewController *)self printPanelWindow];
+        [printPanelWindow5 makeKeyAndVisible];
 
-        [(UIPrintPanelViewController *)self setAnimated:v4];
+        [(UIPrintPanelViewController *)self setAnimated:animatedCopy];
         v31[0] = MEMORY[0x277D85DD0];
         v31[1] = 3221225472;
         v31[2] = __69__UIPrintPanelViewController_presentPrintPanelAnimated_hostingScene___block_invoke;
         v31[3] = &unk_279A9BEE0;
         v31[4] = self;
-        [v19 presentViewController:self withTransition:3 completion:v31];
+        [presentedViewController2 presentViewController:self withTransition:3 completion:v31];
 
 LABEL_12:
         goto LABEL_13;
@@ -2027,28 +2027,28 @@ LABEL_12:
     {
     }
 
-    v26 = [v6 keyWindow];
-    v27 = [v26 rootViewController];
+    keyWindow = [sceneCopy keyWindow];
+    rootViewController = [keyWindow rootViewController];
 
-    v28 = [v27 presentedViewController];
+    presentedViewController = [rootViewController presentedViewController];
 
-    if (v28)
+    if (presentedViewController)
     {
       do
       {
-        v19 = [v27 presentedViewController];
+        presentedViewController2 = [rootViewController presentedViewController];
 
-        v29 = [v19 presentedViewController];
+        v19PresentedViewController = [presentedViewController2 presentedViewController];
 
-        v27 = v19;
+        rootViewController = presentedViewController2;
       }
 
-      while (v29);
+      while (v19PresentedViewController);
     }
 
     else
     {
-      v19 = v27;
+      presentedViewController2 = rootViewController;
     }
 
     v30[0] = MEMORY[0x277D85DD0];
@@ -2056,16 +2056,16 @@ LABEL_12:
     v30[2] = __69__UIPrintPanelViewController_presentPrintPanelAnimated_hostingScene___block_invoke_2;
     v30[3] = &unk_279A9BEE0;
     v30[4] = self;
-    [v19 presentViewController:self animated:v4 completion:v30];
+    [presentedViewController2 presentViewController:self animated:animatedCopy completion:v30];
     goto LABEL_12;
   }
 
-  v8 = [(UIPrintPanelViewController *)self parentController];
-  v9 = [v8 view];
-  [v9 frame];
+  parentController2 = [(UIPrintPanelViewController *)self parentController];
+  view = [parentController2 view];
+  [view frame];
   [(UIPrintPanelViewController *)self setPreferredContentSize:v10, v11];
 
-  [(UIPrintPanelViewController *)self _presentInParentAnimated:v4 hostingScene:v6];
+  [(UIPrintPanelViewController *)self _presentInParentAnimated:animatedCopy hostingScene:sceneCopy];
 LABEL_13:
 }
 
@@ -2081,32 +2081,32 @@ void __69__UIPrintPanelViewController_presentPrintPanelAnimated_hostingScene___b
   [v1 _printPanelDidPresent];
 }
 
-- (void)presentPrintPanelFromRect:(CGRect)a3 inView:(id)a4 animated:(BOOL)a5
+- (void)presentPrintPanelFromRect:(CGRect)rect inView:(id)view animated:(BOOL)animated
 {
-  v5 = a5;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v21 = a4;
-  v11 = [(UIPrintPanelViewController *)self printInteractionController];
-  v12 = [v11 hostingWindowScene];
+  animatedCopy = animated;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  viewCopy = view;
+  printInteractionController = [(UIPrintPanelViewController *)self printInteractionController];
+  hostingWindowScene = [printInteractionController hostingWindowScene];
 
-  v13 = [(UIPrintPanelViewController *)self printInteractionController];
-  v14 = [v13 _canPreviewContent];
+  printInteractionController2 = [(UIPrintPanelViewController *)self printInteractionController];
+  _canPreviewContent = [printInteractionController2 _canPreviewContent];
 
-  if (v14)
+  if (_canPreviewContent)
   {
-    [(UIPrintPanelViewController *)self presentPrintPanelAnimated:v5 hostingScene:v12];
+    [(UIPrintPanelViewController *)self presentPrintPanelAnimated:animatedCopy hostingScene:hostingWindowScene];
   }
 
   else
   {
-    v15 = [(UIPrintPanelViewController *)self parentController];
+    parentController = [(UIPrintPanelViewController *)self parentController];
 
-    if (v15)
+    if (parentController)
     {
-      [(UIPrintPanelViewController *)self _presentInParentAnimated:v5 hostingScene:v12];
+      [(UIPrintPanelViewController *)self _presentInParentAnimated:animatedCopy hostingScene:hostingWindowScene];
     }
 
     else
@@ -2114,49 +2114,49 @@ void __69__UIPrintPanelViewController_presentPrintPanelAnimated_hostingScene___b
       v16 = [objc_alloc(MEMORY[0x277D758A0]) initWithContentViewController:self];
       [(UIPrintPanelViewController *)self setPoverController:v16];
 
-      v17 = [(UIPrintPanelViewController *)self poverController];
-      [v17 setDelegate:self];
+      poverController = [(UIPrintPanelViewController *)self poverController];
+      [poverController setDelegate:self];
 
-      v18 = [(UIPrintPanelViewController *)self poverController];
-      [v18 presentPopoverFromRect:v21 inView:15 permittedArrowDirections:v5 animated:{x, y, width, height}];
+      poverController2 = [(UIPrintPanelViewController *)self poverController];
+      [poverController2 presentPopoverFromRect:viewCopy inView:15 permittedArrowDirections:animatedCopy animated:{x, y, width, height}];
 
-      v19 = [(UIPrintPanelViewController *)self printInteractionController];
-      v20 = v19;
-      if (v5)
+      printInteractionController3 = [(UIPrintPanelViewController *)self printInteractionController];
+      v20 = printInteractionController3;
+      if (animatedCopy)
       {
-        [v19 performSelector:sel__printPanelDidPresent withObject:0 afterDelay:0.35];
+        [printInteractionController3 performSelector:sel__printPanelDidPresent withObject:0 afterDelay:0.35];
       }
 
       else
       {
-        [v19 _printPanelDidPresent];
+        [printInteractionController3 _printPanelDidPresent];
       }
     }
   }
 }
 
-- (void)presentPrintPanelFromBarButtonItem:(id)a3 animated:(BOOL)a4
+- (void)presentPrintPanelFromBarButtonItem:(id)item animated:(BOOL)animated
 {
-  v4 = a4;
-  v16 = a3;
-  v6 = [(UIPrintPanelViewController *)self printInteractionController];
-  v7 = [v6 hostingWindowScene];
+  animatedCopy = animated;
+  itemCopy = item;
+  printInteractionController = [(UIPrintPanelViewController *)self printInteractionController];
+  hostingWindowScene = [printInteractionController hostingWindowScene];
 
-  v8 = [(UIPrintPanelViewController *)self printInteractionController];
-  v9 = [v8 _canPreviewContent];
+  printInteractionController2 = [(UIPrintPanelViewController *)self printInteractionController];
+  _canPreviewContent = [printInteractionController2 _canPreviewContent];
 
-  if (v9)
+  if (_canPreviewContent)
   {
-    [(UIPrintPanelViewController *)self presentPrintPanelAnimated:v4 hostingScene:v7];
+    [(UIPrintPanelViewController *)self presentPrintPanelAnimated:animatedCopy hostingScene:hostingWindowScene];
   }
 
   else
   {
-    v10 = [(UIPrintPanelViewController *)self parentController];
+    parentController = [(UIPrintPanelViewController *)self parentController];
 
-    if (v10)
+    if (parentController)
     {
-      [(UIPrintPanelViewController *)self _presentInParentAnimated:v4 hostingScene:v7];
+      [(UIPrintPanelViewController *)self _presentInParentAnimated:animatedCopy hostingScene:hostingWindowScene];
     }
 
     else
@@ -2164,43 +2164,43 @@ void __69__UIPrintPanelViewController_presentPrintPanelAnimated_hostingScene___b
       v11 = [objc_alloc(MEMORY[0x277D758A0]) initWithContentViewController:self];
       [(UIPrintPanelViewController *)self setPoverController:v11];
 
-      v12 = [(UIPrintPanelViewController *)self poverController];
-      [v12 setDelegate:self];
+      poverController = [(UIPrintPanelViewController *)self poverController];
+      [poverController setDelegate:self];
 
-      v13 = [(UIPrintPanelViewController *)self poverController];
-      [v13 presentPopoverFromBarButtonItem:v16 permittedArrowDirections:15 animated:v4];
+      poverController2 = [(UIPrintPanelViewController *)self poverController];
+      [poverController2 presentPopoverFromBarButtonItem:itemCopy permittedArrowDirections:15 animated:animatedCopy];
 
-      v14 = [(UIPrintPanelViewController *)self printInteractionController];
-      v15 = v14;
-      if (v4)
+      printInteractionController3 = [(UIPrintPanelViewController *)self printInteractionController];
+      v15 = printInteractionController3;
+      if (animatedCopy)
       {
-        [v14 performSelector:sel__printPanelDidPresent withObject:0 afterDelay:0.35];
+        [printInteractionController3 performSelector:sel__printPanelDidPresent withObject:0 afterDelay:0.35];
       }
 
       else
       {
-        [v14 _printPanelDidPresent];
+        [printInteractionController3 _printPanelDidPresent];
       }
     }
   }
 }
 
-- (void)dismissPrintPanelWithAction:(int64_t)a3 animated:(BOOL)a4 completionHandler:(id)a5
+- (void)dismissPrintPanelWithAction:(int64_t)action animated:(BOOL)animated completionHandler:(id)handler
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = [(UIPrintPanelViewController *)self printInteractionController];
-  [v9 _printPanelWillDismissWithAction:a3];
+  animatedCopy = animated;
+  handlerCopy = handler;
+  printInteractionController = [(UIPrintPanelViewController *)self printInteractionController];
+  [printInteractionController _printPanelWillDismissWithAction:action];
 
   [(UIPrintPanelViewController *)self setDismissed:1];
   _UIPrinterInfoCancelRequests();
   if (![(UIPrintPanelViewController *)self presentingInParentNavController])
   {
-    v10 = [(UIPrintPanelViewController *)self printPanelWindow];
+    printPanelWindow = [(UIPrintPanelViewController *)self printPanelWindow];
 
-    if (v10)
+    if (printPanelWindow)
     {
-      if (v5)
+      if (animatedCopy)
       {
         v11 = 7;
       }
@@ -2210,63 +2210,63 @@ void __69__UIPrintPanelViewController_presentPrintPanelAnimated_hostingScene___b
         v11 = 0;
       }
 
-      v12 = [(UIPrintPanelViewController *)self presentingViewController];
+      presentingViewController = [(UIPrintPanelViewController *)self presentingViewController];
       v31[0] = MEMORY[0x277D85DD0];
       v31[1] = 3221225472;
       v31[2] = __85__UIPrintPanelViewController_dismissPrintPanelWithAction_animated_completionHandler___block_invoke;
       v31[3] = &unk_279A9CBA8;
       v31[4] = self;
-      v32[1] = a3;
+      v32[1] = action;
       v13 = v32;
-      v32[0] = v8;
-      [v12 dismissViewControllerWithTransition:v11 completion:v31];
+      v32[0] = handlerCopy;
+      [presentingViewController dismissViewControllerWithTransition:v11 completion:v31];
     }
 
     else
     {
-      v12 = [(UIPrintPanelViewController *)self presentingViewController];
+      presentingViewController = [(UIPrintPanelViewController *)self presentingViewController];
       v29[0] = MEMORY[0x277D85DD0];
       v29[1] = 3221225472;
       v29[2] = __85__UIPrintPanelViewController_dismissPrintPanelWithAction_animated_completionHandler___block_invoke_2;
       v29[3] = &unk_279A9CBA8;
       v29[4] = self;
-      v30[1] = a3;
+      v30[1] = action;
       v13 = v30;
-      v30[0] = v8;
-      [v12 dismissViewControllerAnimated:v5 completion:v29];
+      v30[0] = handlerCopy;
+      [presentingViewController dismissViewControllerAnimated:animatedCopy completion:v29];
     }
   }
 
-  v14 = [(UIPrintPanelViewController *)self parentController];
+  parentController = [(UIPrintPanelViewController *)self parentController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v16 = [(UIPrintPanelViewController *)self parentController];
-    v17 = [(UIPrintPanelViewController *)self printInteractionController];
-    v18 = [v17 printActivityDelegate];
+    parentController2 = [(UIPrintPanelViewController *)self parentController];
+    printInteractionController2 = [(UIPrintPanelViewController *)self printInteractionController];
+    printActivityDelegate = [printInteractionController2 printActivityDelegate];
 
-    v19 = a3 != 0;
-    if (v18 && (objc_opt_respondsToSelector() & 1) != 0)
+    v19 = action != 0;
+    if (printActivityDelegate && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      v20 = [(UIPrintPanelViewController *)self printInteractionController];
-      v19 = [v18 shouldDismissParentViewController:v20];
+      printInteractionController3 = [(UIPrintPanelViewController *)self printInteractionController];
+      v19 = [printActivityDelegate shouldDismissParentViewController:printInteractionController3];
     }
 
     else
     {
-      v21 = [v16 _popoverController];
-      if (v21)
+      _popoverController = [parentController2 _popoverController];
+      if (_popoverController)
       {
       }
 
       else
       {
-        v22 = [MEMORY[0x277D75418] currentDevice];
-        v23 = [v22 userInterfaceIdiom];
+        currentDevice = [MEMORY[0x277D75418] currentDevice];
+        userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-        if (v23)
+        if (userInterfaceIdiom)
         {
           goto LABEL_17;
         }
@@ -2281,17 +2281,17 @@ LABEL_17:
     v26[2] = __85__UIPrintPanelViewController_dismissPrintPanelWithAction_animated_completionHandler___block_invoke_3;
     v26[3] = &unk_279A9CBA8;
     v26[4] = self;
-    v28 = a3;
-    v27 = v8;
+    actionCopy = action;
+    v27 = handlerCopy;
     v24 = MEMORY[0x25F8E54A0](v26);
     if (v19)
     {
-      [v16 dismissViewControllerAnimated:v5 completion:v24];
+      [parentController2 dismissViewControllerAnimated:animatedCopy completion:v24];
     }
 
     else
     {
-      v25 = [v16 popViewControllerAnimated:v5];
+      v25 = [parentController2 popViewControllerAnimated:animatedCopy];
       v24[2](v24);
     }
   }
@@ -2348,9 +2348,9 @@ uint64_t __85__UIPrintPanelViewController_dismissPrintPanelWithAction_animated_c
   return [v4 setPrintInteractionController:0];
 }
 
-- (void)generateQuickLookPDFWithCompletionHandler:(id)a3
+- (void)generateQuickLookPDFWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (![(UIPrintPanelViewController *)self quickLookPDFGenerationInProgress])
   {
     objc_initWeak(&location, self);
@@ -2359,7 +2359,7 @@ uint64_t __85__UIPrintPanelViewController_dismissPrintPanelWithAction_animated_c
     v7[2] = __72__UIPrintPanelViewController_generateQuickLookPDFWithCompletionHandler___block_invoke;
     v7[3] = &unk_279A9C428;
     objc_copyWeak(&v9, &location);
-    v8 = v4;
+    v8 = handlerCopy;
     v5 = MEMORY[0x25F8E54A0](v7);
     [(UIPrintPanelViewController *)self setQuickLookPDFGenerationInProgress:1];
     [(UIPrintPanelViewController *)self setQuickLookPDFGenerationCancelled:0];
@@ -2463,35 +2463,35 @@ LABEL_9:
 
 - (void)cancelQuickLookPDFGeneration
 {
-  v3 = [(UIPrintPanelViewController *)self printInteractionController];
-  [v3 _cancelAllPreviewGeneration];
+  printInteractionController = [(UIPrintPanelViewController *)self printInteractionController];
+  [printInteractionController _cancelAllPreviewGeneration];
 
   [(UIPrintPanelViewController *)self setQuickLookPDFGenerationCancelled:1];
   [(UIPrintPanelViewController *)self setQuickLookPDFGenerationInProgress:0];
-  v4 = [(UIPrintPanelViewController *)self pdfCreationProgressController];
+  pdfCreationProgressController = [(UIPrintPanelViewController *)self pdfCreationProgressController];
 
-  if (v4)
+  if (pdfCreationProgressController)
   {
-    v5 = [(UIPrintPanelViewController *)self pdfCreationProgressController];
-    [v5 dismissViewControllerAnimated:1 completion:0];
+    pdfCreationProgressController2 = [(UIPrintPanelViewController *)self pdfCreationProgressController];
+    [pdfCreationProgressController2 dismissViewControllerAnimated:1 completion:0];
   }
 }
 
 - (id)shareableURLForPreviewing
 {
   v26 = *MEMORY[0x277D85DE8];
-  v3 = [(UIPrintPanelViewController *)self printInfo];
-  v4 = [v3 jobName];
-  v5 = [v4 stringByStandardizingPath];
+  printInfo = [(UIPrintPanelViewController *)self printInfo];
+  jobName = [printInfo jobName];
+  stringByStandardizingPath = [jobName stringByStandardizingPath];
 
-  if (!v5 || ![v5 length])
+  if (!stringByStandardizingPath || ![stringByStandardizingPath length])
   {
     v6 = GetDefaultJobName();
 
-    v5 = v6;
+    stringByStandardizingPath = v6;
   }
 
-  v7 = [v5 stringByReplacingOccurrencesOfString:@":" withString:@"-"];
+  v7 = [stringByStandardizingPath stringByReplacingOccurrencesOfString:@":" withString:@"-"];
   v8 = [v7 stringByReplacingOccurrencesOfString:@"/" withString:@":"];
 
   if ([v8 length] >= 0x51)
@@ -2501,13 +2501,13 @@ LABEL_9:
     v8 = v9;
   }
 
-  v10 = [(UIPrintPanelViewController *)self shareablePDFDirectoryPath];
+  shareablePDFDirectoryPath = [(UIPrintPanelViewController *)self shareablePDFDirectoryPath];
 
-  if ((v10 || (memset(out, 0, sizeof(out)), uuid_generate_random(out), uuid_unparse(out, v24), v16 = MEMORY[0x277CCACA8], NSTemporaryDirectory(), v17 = objc_claimAutoreleasedReturnValue(), [MEMORY[0x277CCACA8] stringWithUTF8String:v24], v18 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v16, "stringWithFormat:", @"%@/PrintPreviewPDF/%@", v17, v18), v19 = objc_claimAutoreleasedReturnValue(), -[UIPrintPanelViewController setShareablePDFDirectoryPath:](self, "setShareablePDFDirectoryPath:", v19), v19, v18, v17, objc_msgSend(MEMORY[0x277CCAA00], "defaultManager"), v20 = objc_claimAutoreleasedReturnValue(), -[UIPrintPanelViewController shareablePDFDirectoryPath](self, "shareablePDFDirectoryPath"), v21 = objc_claimAutoreleasedReturnValue(), v23 = 0, objc_msgSend(v20, "createDirectoryAtPath:withIntermediateDirectories:attributes:error:", v21, 1, 0, &v23), v11 = v23, v21, v20, !v11)) && (-[UIPrintPanelViewController shareablePDFDirectoryPath](self, "shareablePDFDirectoryPath"), v11 = objc_claimAutoreleasedReturnValue(), v11, v11))
+  if ((shareablePDFDirectoryPath || (memset(out, 0, sizeof(out)), uuid_generate_random(out), uuid_unparse(out, v24), v16 = MEMORY[0x277CCACA8], NSTemporaryDirectory(), v17 = objc_claimAutoreleasedReturnValue(), [MEMORY[0x277CCACA8] stringWithUTF8String:v24], v18 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v16, "stringWithFormat:", @"%@/PrintPreviewPDF/%@", v17, v18), v19 = objc_claimAutoreleasedReturnValue(), -[UIPrintPanelViewController setShareablePDFDirectoryPath:](self, "setShareablePDFDirectoryPath:", v19), v19, v18, v17, objc_msgSend(MEMORY[0x277CCAA00], "defaultManager"), v20 = objc_claimAutoreleasedReturnValue(), -[UIPrintPanelViewController shareablePDFDirectoryPath](self, "shareablePDFDirectoryPath"), v21 = objc_claimAutoreleasedReturnValue(), v23 = 0, objc_msgSend(v20, "createDirectoryAtPath:withIntermediateDirectories:attributes:error:", v21, 1, 0, &v23), v11 = v23, v21, v20, !v11)) && (-[UIPrintPanelViewController shareablePDFDirectoryPath](self, "shareablePDFDirectoryPath"), v11 = objc_claimAutoreleasedReturnValue(), v11, v11))
   {
     v12 = MEMORY[0x277CCACA8];
-    v13 = [(UIPrintPanelViewController *)self shareablePDFDirectoryPath];
-    v14 = [v12 stringWithFormat:@"%@/%@.pdf", v13, v8];
+    shareablePDFDirectoryPath2 = [(UIPrintPanelViewController *)self shareablePDFDirectoryPath];
+    v14 = [v12 stringWithFormat:@"%@/%@.pdf", shareablePDFDirectoryPath2, v8];
 
     v15 = [MEMORY[0x277CBEBC0] fileURLWithPath:v14 isDirectory:0];
 
@@ -2522,24 +2522,24 @@ LABEL_9:
   return v15;
 }
 
-- (id)createShareablePDFFileURL:(id)a3
+- (id)createShareablePDFFileURL:(id)l
 {
-  v4 = a3;
-  v5 = [(UIPrintPanelViewController *)self shareableURLForPreviewing];
-  v6 = v5;
-  if (v4 && v5)
+  lCopy = l;
+  shareableURLForPreviewing = [(UIPrintPanelViewController *)self shareableURLForPreviewing];
+  v6 = shareableURLForPreviewing;
+  if (lCopy && shareableURLForPreviewing)
   {
-    v7 = [MEMORY[0x277CCAA00] defaultManager];
-    [v7 removeItemAtURL:v6 error:0];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    [defaultManager removeItemAtURL:v6 error:0];
     v15 = 0;
-    v8 = [v7 linkItemAtURL:v4 toURL:v6 error:&v15];
+    v8 = [defaultManager linkItemAtURL:lCopy toURL:v6 error:&v15];
     v9 = v15;
     v10 = v9;
     if ((v8 & 1) == 0)
     {
 
       v14 = 0;
-      v11 = [v7 copyItemAtURL:v4 toURL:v6 error:&v14];
+      v11 = [defaultManager copyItemAtURL:lCopy toURL:v6 error:&v14];
       v12 = v14;
       v10 = v12;
       if ((v11 & 1) == 0)
@@ -2556,19 +2556,19 @@ LABEL_9:
 
 - (void)removeShareablePDFFiles
 {
-  v3 = [(UIPrintPanelViewController *)self shareablePDFDirectoryPath];
+  shareablePDFDirectoryPath = [(UIPrintPanelViewController *)self shareablePDFDirectoryPath];
 
-  if (v3)
+  if (shareablePDFDirectoryPath)
   {
     v4 = objc_opt_new();
-    v5 = [(UIPrintPanelViewController *)self shareablePDFDirectoryPath];
-    v6 = [v4 fileExistsAtPath:v5];
+    shareablePDFDirectoryPath2 = [(UIPrintPanelViewController *)self shareablePDFDirectoryPath];
+    v6 = [v4 fileExistsAtPath:shareablePDFDirectoryPath2];
 
     if (v6)
     {
-      v7 = [(UIPrintPanelViewController *)self shareablePDFDirectoryPath];
+      shareablePDFDirectoryPath3 = [(UIPrintPanelViewController *)self shareablePDFDirectoryPath];
       v10 = 0;
-      v8 = [v4 removeItemAtPath:v7 error:&v10];
+      v8 = [v4 removeItemAtPath:shareablePDFDirectoryPath3 error:&v10];
       v9 = v10;
 
       if ((v8 & 1) == 0)

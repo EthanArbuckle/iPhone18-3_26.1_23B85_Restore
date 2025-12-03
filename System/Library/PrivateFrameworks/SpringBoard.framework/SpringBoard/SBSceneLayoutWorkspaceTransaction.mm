@@ -1,12 +1,12 @@
 @interface SBSceneLayoutWorkspaceTransaction
 - (BOOL)_canBeInterrupted;
-- (BOOL)_overrideInterfaceOrientationForOrientationMismatch:(int64_t *)a3;
+- (BOOL)_overrideInterfaceOrientationForOrientationMismatch:(int64_t *)mismatch;
 - (BOOL)_runningOnManagedDisplay;
-- (BOOL)_sceneEntities:(id)a3 hasEntityRepresentingSceneID:(id)a4;
-- (BOOL)_shouldKeepSceneForSceneHandleForeground:(id)a3;
-- (BOOL)synchronizedTransactionGroup:(id)a3 shouldFailForSynchronizedTransaction:(id)a4;
+- (BOOL)_sceneEntities:(id)entities hasEntityRepresentingSceneID:(id)d;
+- (BOOL)_shouldKeepSceneForSceneHandleForeground:(id)foreground;
+- (BOOL)synchronizedTransactionGroup:(id)group shouldFailForSynchronizedTransaction:(id)transaction;
 - (FBSynchronizedTransactionDelegate)synchronizationDelegate;
-- (SBSceneLayoutWorkspaceTransaction)initWithTransitionRequest:(id)a3 delegate:(id)a4;
+- (SBSceneLayoutWorkspaceTransaction)initWithTransitionRequest:(id)request delegate:(id)delegate;
 - (SBSceneLayoutWorkspaceTransactionDelegate)delegate;
 - (id)_collectSceneIDsOfExternallyHostedApps;
 - (id)_currentFlexibleWindowingAutoLayoutSpace;
@@ -15,7 +15,7 @@
 - (void)_begin;
 - (void)_beginLayoutTransition;
 - (void)_captureAppsForTransition;
-- (void)_childTransactionDidComplete:(id)a3;
+- (void)_childTransactionDidComplete:(id)complete;
 - (void)_completeTransition;
 - (void)_didComplete;
 - (void)_evaluateTransitionCompletion;
@@ -23,24 +23,24 @@
 - (void)_prepareLayoutTransition;
 - (void)_prepareScenesForSceneUpdates;
 - (void)_prepareScenesForTransition;
-- (void)_sendActivationResultWithError:(id)a3;
-- (void)_updateKeyboardContextMaskStyles:(BOOL)a3;
-- (void)_updatePreferredDisplayLayoutTransitionReason:(id)a3;
+- (void)_sendActivationResultWithError:(id)error;
+- (void)_updateKeyboardContextMaskStyles:(BOOL)styles;
+- (void)_updatePreferredDisplayLayoutTransitionReason:(id)reason;
 - (void)_updateScenesForTransitionCompletion;
 - (void)_willBegin;
-- (void)_willFailWithReason:(id)a3;
-- (void)_willInterruptWithReason:(id)a3;
+- (void)_willFailWithReason:(id)reason;
+- (void)_willInterruptWithReason:(id)reason;
 - (void)dealloc;
 - (void)performSynchronizedCommit;
-- (void)synchronizedTransaction:(id)a3 didCommitSynchronizedTransactions:(id)a4;
-- (void)synchronizedTransaction:(id)a3 willCommitSynchronizedTransactions:(id)a4;
-- (void)synchronizedTransactionReadyToCommit:(id)a3;
-- (void)transaction:(id)a3 didCommitSceneUpdate:(id)a4;
-- (void)transaction:(id)a3 didCreateScene:(id)a4;
-- (void)transaction:(id)a3 didLaunchProcess:(id)a4;
-- (void)transaction:(id)a3 willCommitSceneUpdate:(id)a4;
-- (void)transaction:(id)a3 willLaunchProcess:(id)a4;
-- (void)transaction:(id)a3 willUpdateScene:(id)a4;
+- (void)synchronizedTransaction:(id)transaction didCommitSynchronizedTransactions:(id)transactions;
+- (void)synchronizedTransaction:(id)transaction willCommitSynchronizedTransactions:(id)transactions;
+- (void)synchronizedTransactionReadyToCommit:(id)commit;
+- (void)transaction:(id)transaction didCommitSceneUpdate:(id)update;
+- (void)transaction:(id)transaction didCreateScene:(id)scene;
+- (void)transaction:(id)transaction didLaunchProcess:(id)process;
+- (void)transaction:(id)transaction willCommitSceneUpdate:(id)update;
+- (void)transaction:(id)transaction willLaunchProcess:(id)process;
+- (void)transaction:(id)transaction willUpdateScene:(id)scene;
 @end
 
 @implementation SBSceneLayoutWorkspaceTransaction
@@ -51,39 +51,39 @@
   if ([(SBSceneLayoutWorkspaceTransaction *)self _runningOnManagedDisplay])
   {
     v4 = +[SBCoverSheetPresentationManager sharedInstance];
-    v5 = [v4 isVisible];
+    isVisible = [v4 isVisible];
 
-    if (v5)
+    if (isVisible)
     {
       v6 = +[SBLockScreenManager sharedInstance];
-      v7 = [v6 lockScreenEnvironment];
-      v8 = [v7 applicationHoster];
-      [v3 addObject:v8];
+      lockScreenEnvironment = [v6 lockScreenEnvironment];
+      applicationHoster = [lockScreenEnvironment applicationHoster];
+      [v3 addObject:applicationHoster];
     }
 
     v9 = +[SBCoverSheetPresentationManager sharedInstance];
-    v10 = [v9 secureAppViewController];
-    if ([v9 isVisible] && v10)
+    secureAppViewController = [v9 secureAppViewController];
+    if ([v9 isVisible] && secureAppViewController)
     {
-      [v3 addObject:v10];
+      [v3 addObject:secureAppViewController];
     }
 
     v11 = +[SBWorkspace mainWorkspace];
-    v12 = [v11 inCallPresentationManager];
-    if (v12)
+    inCallPresentationManager = [v11 inCallPresentationManager];
+    if (inCallPresentationManager)
     {
-      [v3 addObject:v12];
+      [v3 addObject:inCallPresentationManager];
     }
 
-    v13 = [v11 pipCoordinator];
-    [v3 addObject:v13];
-    v14 = [(SBWorkspaceTransaction *)self windowScene];
-    v15 = [v14 homeScreenController];
+    pipCoordinator = [v11 pipCoordinator];
+    [v3 addObject:pipCoordinator];
+    windowScene = [(SBWorkspaceTransaction *)self windowScene];
+    homeScreenController = [windowScene homeScreenController];
 
-    v16 = [v15 leftOfHomeAppViewController];
-    if (v16)
+    leftOfHomeAppViewController = [homeScreenController leftOfHomeAppViewController];
+    if (leftOfHomeAppViewController)
     {
-      [v3 addObject:v16];
+      [v3 addObject:leftOfHomeAppViewController];
     }
   }
 
@@ -98,8 +98,8 @@
   if (SBSpotlightIsVisible())
   {
     v19 = +[SBSpotlightMultiplexingViewController sharedRemoteSearchViewController];
-    v20 = [v19 sceneIdentifier];
-    [v18 addObject:v20];
+    sceneIdentifier = [v19 sceneIdentifier];
+    [v18 addObject:sceneIdentifier];
   }
 
   return v18;
@@ -118,23 +118,23 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(SBWorkspaceTransaction *)self transitionRequest];
-  v7 = [v6 uniqueID];
-  v8 = [v3 stringWithFormat:@"%@:%@", v5, v7];
+  transitionRequest = [(SBWorkspaceTransaction *)self transitionRequest];
+  uniqueID = [transitionRequest uniqueID];
+  v8 = [v3 stringWithFormat:@"%@:%@", v5, uniqueID];
 
   return v8;
 }
 
 - (void)_willBegin
 {
-  v6 = [MEMORY[0x277CCA890] currentHandler];
-  [v6 handleFailureInMethod:a1 object:a2 file:@"SBSceneLayoutWorkspaceTransaction.m" lineNumber:220 description:{@"No publisher for window scene: %@; self: %@", a3, a2}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"SBSceneLayoutWorkspaceTransaction.m" lineNumber:220 description:{@"No publisher for window scene: %@; self: %@", a3, a2}];
 }
 
 - (void)_performTransition
 {
   OUTLINED_FUNCTION_1_2();
-  v1 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   OUTLINED_FUNCTION_0_3();
   [v0 handleFailureInMethod:@"_sceneUpdateTransactionGroup == nil" object:? file:? lineNumber:? description:?];
 }
@@ -178,8 +178,8 @@ void __62__SBSceneLayoutWorkspaceTransaction__captureAppsForTransition__block_in
 
 - (BOOL)_runningOnManagedDisplay
 {
-  v2 = [(SBWorkspaceTransaction *)self displayIdentity];
-  v3 = [v2 sb_displayWindowingMode] == 1;
+  displayIdentity = [(SBWorkspaceTransaction *)self displayIdentity];
+  v3 = [displayIdentity sb_displayWindowingMode] == 1;
 
   return v3;
 }
@@ -187,18 +187,18 @@ void __62__SBSceneLayoutWorkspaceTransaction__captureAppsForTransition__block_in
 - (void)_captureAppsForTransition
 {
   v60 = *MEMORY[0x277D85DE8];
-  v3 = [(SBWorkspaceTransaction *)self windowScene];
-  v4 = [v3 switcherController];
-  v5 = [(SBWorkspaceTransaction *)self transitionRequest];
-  v6 = [v5 originatingProcess];
+  windowScene = [(SBWorkspaceTransaction *)self windowScene];
+  switcherController = [windowScene switcherController];
+  transitionRequest = [(SBWorkspaceTransaction *)self transitionRequest];
+  originatingProcess = [transitionRequest originatingProcess];
 
-  v7 = v6;
+  v7 = originatingProcess;
   v8 = +[SBApplicationController sharedInstanceIfExists];
-  v9 = [v8 applicationWithPid:{objc_msgSend(v6, "pid")}];
+  v9 = [v8 applicationWithPid:{objc_msgSend(originatingProcess, "pid")}];
 
   if (v9)
   {
-    v10 = [v9 bundleIdentifier];
+    bundleIdentifier = [v9 bundleIdentifier];
     v11 = SBSDisplayLayoutTransitionReasonForSourceApplication();
     [(SBSceneLayoutWorkspaceTransaction *)self _updatePreferredDisplayLayoutTransitionReason:v11];
   }
@@ -210,41 +210,41 @@ void __62__SBSceneLayoutWorkspaceTransaction__captureAppsForTransition__block_in
   [(NSMutableSet *)self->_backgroundingAppSceneEntities removeAllObjects];
   if (SBFIsSwitcherForegroundAppsAvailable())
   {
-    v12 = [v4 _sceneEntitiesToForeground];
-    v13 = [v12 mutableCopy];
+    _sceneEntitiesToForeground = [switcherController _sceneEntitiesToForeground];
+    v13 = [_sceneEntitiesToForeground mutableCopy];
     foregroundingAppSceneEntities = self->_foregroundingAppSceneEntities;
     self->_foregroundingAppSceneEntities = v13;
   }
 
   else
   {
-    v15 = [(SBWorkspaceApplicationSceneTransitionContext *)self->_transitionContext applicationSceneEntities];
+    applicationSceneEntities = [(SBWorkspaceApplicationSceneTransitionContext *)self->_transitionContext applicationSceneEntities];
     v58[0] = MEMORY[0x277D85DD0];
     v58[1] = 3221225472;
     v58[2] = __62__SBSceneLayoutWorkspaceTransaction__captureAppsForTransition__block_invoke;
     v58[3] = &unk_2783BAE80;
     v58[4] = self;
-    [v15 enumerateObjectsUsingBlock:v58];
+    [applicationSceneEntities enumerateObjectsUsingBlock:v58];
   }
 
-  v16 = [(SBWorkspaceApplicationSceneTransitionContext *)self->_transitionContext previousApplicationSceneEntities];
+  previousApplicationSceneEntities = [(SBWorkspaceApplicationSceneTransitionContext *)self->_transitionContext previousApplicationSceneEntities];
   v57[0] = MEMORY[0x277D85DD0];
   v57[1] = 3221225472;
   v57[2] = __62__SBSceneLayoutWorkspaceTransaction__captureAppsForTransition__block_invoke_2;
   v57[3] = &unk_2783BAE80;
   v57[4] = self;
-  [v16 enumerateObjectsUsingBlock:v57];
+  [previousApplicationSceneEntities enumerateObjectsUsingBlock:v57];
 
-  v17 = [(SBSceneLayoutWorkspaceTransaction *)self _collectSceneIDsOfExternallyHostedApps];
-  v18 = [(SBWorkspaceApplicationSceneTransitionContext *)self->_transitionContext applicationSceneEntities];
+  _collectSceneIDsOfExternallyHostedApps = [(SBSceneLayoutWorkspaceTransaction *)self _collectSceneIDsOfExternallyHostedApps];
+  applicationSceneEntities2 = [(SBWorkspaceApplicationSceneTransitionContext *)self->_transitionContext applicationSceneEntities];
   v54[0] = MEMORY[0x277D85DD0];
   v54[1] = 3221225472;
   v54[2] = __62__SBSceneLayoutWorkspaceTransaction__captureAppsForTransition__block_invoke_3;
   v54[3] = &unk_2783BAEA8;
-  v19 = v17;
+  v19 = _collectSceneIDsOfExternallyHostedApps;
   v55 = v19;
-  v56 = self;
-  [v18 enumerateObjectsUsingBlock:v54];
+  selfCopy = self;
+  [applicationSceneEntities2 enumerateObjectsUsingBlock:v54];
 
   v20 = 0x277CBE000uLL;
   v21 = [MEMORY[0x277CBEB58] set];
@@ -255,14 +255,14 @@ void __62__SBSceneLayoutWorkspaceTransaction__captureAppsForTransition__block_in
     v53 = 0u;
     v50 = 0u;
     v51 = 0u;
-    v23 = self->_fromAppSceneEntities;
-    v24 = [(NSMutableSet *)v23 countByEnumeratingWithState:&v50 objects:v59 count:16];
+    layoutStateApplicationSceneHandles = self->_fromAppSceneEntities;
+    v24 = [(NSMutableSet *)layoutStateApplicationSceneHandles countByEnumeratingWithState:&v50 objects:v59 count:16];
     if (v24)
     {
       v25 = v24;
-      v41 = v4;
-      v42 = v6;
-      v26 = v3;
+      v41 = switcherController;
+      v42 = originatingProcess;
+      v26 = windowScene;
       v27 = *v51;
       do
       {
@@ -270,26 +270,26 @@ void __62__SBSceneLayoutWorkspaceTransaction__captureAppsForTransition__block_in
         {
           if (*v51 != v27)
           {
-            objc_enumerationMutation(v23);
+            objc_enumerationMutation(layoutStateApplicationSceneHandles);
           }
 
-          v29 = [*(*(&v50 + 1) + 8 * i) sceneHandle];
-          [v21 addObject:v29];
+          sceneHandle = [*(*(&v50 + 1) + 8 * i) sceneHandle];
+          [v21 addObject:sceneHandle];
         }
 
-        v25 = [(NSMutableSet *)v23 countByEnumeratingWithState:&v50 objects:v59 count:16];
+        v25 = [(NSMutableSet *)layoutStateApplicationSceneHandles countByEnumeratingWithState:&v50 objects:v59 count:16];
       }
 
       while (v25);
-      v3 = v26;
-      v4 = v41;
+      windowScene = v26;
+      switcherController = v41;
       v9 = v22;
       v7 = v42;
     }
 
     else
     {
-      v7 = v6;
+      v7 = originatingProcess;
     }
 
     v20 = 0x277CBE000;
@@ -302,10 +302,10 @@ void __62__SBSceneLayoutWorkspaceTransaction__captureAppsForTransition__block_in
       goto LABEL_21;
     }
 
-    v23 = [v4 layoutStateApplicationSceneHandles];
-    if ([(NSMutableSet *)v23 count])
+    layoutStateApplicationSceneHandles = [switcherController layoutStateApplicationSceneHandles];
+    if ([(NSMutableSet *)layoutStateApplicationSceneHandles count])
     {
-      [v21 unionSet:v23];
+      [v21 unionSet:layoutStateApplicationSceneHandles];
     }
   }
 
@@ -314,20 +314,20 @@ LABEL_21:
   {
     v43 = v7;
     v30 = v9;
-    v31 = v4;
-    v32 = v3;
+    v31 = switcherController;
+    v32 = windowScene;
     v33 = +[SBSceneManagerCoordinator sharedInstance];
-    v34 = [(SBWorkspaceTransaction *)self displayIdentity];
-    v35 = [v33 sceneManagerForDisplayIdentity:v34];
-    v36 = [v35 externalForegroundApplicationSceneHandles];
+    displayIdentity = [(SBWorkspaceTransaction *)self displayIdentity];
+    v35 = [v33 sceneManagerForDisplayIdentity:displayIdentity];
+    externalForegroundApplicationSceneHandles = [v35 externalForegroundApplicationSceneHandles];
 
-    if ([v36 count])
+    if ([externalForegroundApplicationSceneHandles count])
     {
-      [v21 unionSet:v36];
+      [v21 unionSet:externalForegroundApplicationSceneHandles];
     }
 
-    v3 = v32;
-    v4 = v31;
+    windowScene = v32;
+    switcherController = v31;
     v9 = v30;
     v7 = v43;
     v20 = 0x277CBE000uLL;
@@ -338,7 +338,7 @@ LABEL_21:
   v47[2] = __62__SBSceneLayoutWorkspaceTransaction__captureAppsForTransition__block_invoke_4;
   v47[3] = &unk_2783BAED0;
   v48 = v19;
-  v49 = self;
+  selfCopy2 = self;
   v37 = v19;
   v38 = [v21 objectsPassingTest:v47];
   v39 = objc_alloc_init(*(v20 + 2904));
@@ -347,7 +347,7 @@ LABEL_21:
   v44[2] = __62__SBSceneLayoutWorkspaceTransaction__captureAppsForTransition__block_invoke_5;
   v44[3] = &unk_2783BAEF8;
   v45 = v39;
-  v46 = self;
+  selfCopy3 = self;
   v40 = v39;
   [v38 enumerateObjectsUsingBlock:v44];
   [(NSMutableSet *)self->_scenesToBackground unionSet:v40];
@@ -358,22 +358,22 @@ LABEL_21:
   v98 = *MEMORY[0x277D85DE8];
   if (self->_performSceneUpdates && [(SBSceneLayoutWorkspaceTransaction *)self _runningOnManagedDisplay])
   {
-    v71 = self;
-    v3 = [(SBWorkspaceTransaction *)self windowScene];
-    v78 = [v3 switcherController];
+    selfCopy = self;
+    windowScene = [(SBWorkspaceTransaction *)self windowScene];
+    switcherController = [windowScene switcherController];
 
-    v70 = [v78 windowManagementContext];
-    v77 = [v70 isChamoisOrFlexibleWindowing];
-    v74 = [v70 isFlexibleWindowingEnabled];
+    windowManagementContext = [switcherController windowManagementContext];
+    isChamoisOrFlexibleWindowing = [windowManagementContext isChamoisOrFlexibleWindowing];
+    isFlexibleWindowingEnabled = [windowManagementContext isFlexibleWindowingEnabled];
     v4 = objc_opt_class();
-    v5 = [(SBSceneLayoutWorkspaceTransaction *)self transitionContext];
-    v6 = [v5 layoutState];
-    v7 = SBSafeCast(v4, v6);
+    transitionContext = [(SBSceneLayoutWorkspaceTransaction *)self transitionContext];
+    layoutState = [transitionContext layoutState];
+    v7 = SBSafeCast(v4, layoutState);
 
-    v69 = [v7 appLayout];
-    if (v69)
+    appLayout = [v7 appLayout];
+    if (appLayout)
     {
-      v8 = v74;
+      v8 = isFlexibleWindowingEnabled;
     }
 
     else
@@ -390,10 +390,10 @@ LABEL_21:
         v95 = 0u;
         v92 = 0u;
         v93 = 0u;
-        v9 = [obj autoLayoutItems];
+        autoLayoutItems = [obj autoLayoutItems];
         v10 = 0;
         v11 = 0;
-        v12 = [v9 countByEnumeratingWithState:&v92 objects:v97 count:16];
+        v12 = [autoLayoutItems countByEnumeratingWithState:&v92 objects:v97 count:16];
         if (v12)
         {
           v13 = *v93;
@@ -403,22 +403,22 @@ LABEL_10:
           {
             if (*v93 != v13)
             {
-              objc_enumerationMutation(v9);
+              objc_enumerationMutation(autoLayoutItems);
             }
 
             v15 = *(*(&v92 + 1) + 8 * v14);
             if ([v15 ownedDisplayRectCorners])
             {
-              v16 = [v15 displayItem];
+              displayItem = [v15 displayItem];
 
-              v11 = v16;
+              v11 = displayItem;
             }
 
             if (([v15 ownedDisplayRectCorners] & 2) != 0)
             {
-              v17 = [v15 displayItem];
+              displayItem2 = [v15 displayItem];
 
-              v10 = v17;
+              v10 = displayItem2;
             }
 
             if (v11 && v10)
@@ -428,7 +428,7 @@ LABEL_10:
 
             if (v12 == ++v14)
             {
-              v12 = [v9 countByEnumeratingWithState:&v92 objects:v97 count:16];
+              v12 = [autoLayoutItems countByEnumeratingWithState:&v92 objects:v97 count:16];
               if (v12)
               {
                 goto LABEL_10;
@@ -500,22 +500,22 @@ LABEL_10:
           }
 
           v28 = *(*(&v88 + 1) + 8 * i);
-          v29 = [v28 layoutRole];
-          v30 = [v28 sceneHandle];
-          [v30 setLayoutRole:v29];
+          layoutRole = [v28 layoutRole];
+          sceneHandle = [v28 sceneHandle];
+          [sceneHandle setLayoutRole:layoutRole];
 
-          v31 = [v28 sceneHandle];
-          v32 = [v31 isDeviceApplicationSceneHandle];
+          sceneHandle2 = [v28 sceneHandle];
+          isDeviceApplicationSceneHandle = [sceneHandle2 isDeviceApplicationSceneHandle];
 
-          if (v32)
+          if (isDeviceApplicationSceneHandle)
           {
-            if (v29 == 1 || (height = v23, width = v24, y = v25, x = v26, v29 == 2))
+            if (layoutRole == 1 || (height = v23, width = v24, y = v25, x = v26, layoutRole == 2))
             {
-              v37 = [v78 coordinateSpaceForLayoutState:v7];
-              v38 = [v7 elementWithRole:v29];
-              v39 = [v78 coordinateSpaceForLayoutElement:v38 layoutState:v7];
+              v37 = [switcherController coordinateSpaceForLayoutState:v7];
+              v38 = [v7 elementWithRole:layoutRole];
+              v39 = [switcherController coordinateSpaceForLayoutElement:v38 layoutState:v7];
 
-              [v78 statusBarAvoidanceFrameForLayoutRole:v29 layoutState:v7];
+              [switcherController statusBarAvoidanceFrameForLayoutRole:layoutRole layoutState:v7];
               [v37 convertRect:v39 toCoordinateSpace:?];
               v41 = v40;
               v43 = v42;
@@ -537,13 +537,13 @@ LABEL_10:
               height = v100.size.height;
             }
 
-            if (v74)
+            if (isFlexibleWindowingEnabled)
             {
-              v52 = [v28 uniqueIdentifier];
-              v53 = [v73 uniqueIdentifier];
+              uniqueIdentifier = [v28 uniqueIdentifier];
+              uniqueIdentifier2 = [v73 uniqueIdentifier];
               v54 = BSEqualStrings();
 
-              v55 = [v72 uniqueIdentifier];
+              uniqueIdentifier3 = [v72 uniqueIdentifier];
               v56 = BSEqualStrings();
 
               v57 = 2;
@@ -569,27 +569,27 @@ LABEL_10:
               }
             }
 
-            else if (v77)
+            else if (isChamoisOrFlexibleWindowing)
             {
               v84 = 0;
               v85 = &v84;
               v86 = 0x2020000000;
               v87 = 0;
-              v60 = [v7 appLayout];
-              v61 = [(SBWorkspaceTransaction *)v71 windowScene];
-              v62 = [v61 switcherController];
+              appLayout2 = [v7 appLayout];
+              windowScene2 = [(SBWorkspaceTransaction *)selfCopy windowScene];
+              switcherController2 = [windowScene2 switcherController];
 
-              v63 = [v62 displayItemLayoutAttributesProvider];
+              displayItemLayoutAttributesProvider = [switcherController2 displayItemLayoutAttributesProvider];
               v79[0] = MEMORY[0x277D85DD0];
               v79[1] = 3221225472;
               v79[2] = __66__SBSceneLayoutWorkspaceTransaction__prepareScenesForSceneUpdates__block_invoke;
               v79[3] = &unk_2783BAFD8;
               v79[4] = v28;
-              v64 = v63;
+              v64 = displayItemLayoutAttributesProvider;
               v80 = v64;
-              v65 = v60;
+              v65 = appLayout2;
               v81 = v65;
-              v66 = v62;
+              v66 = switcherController2;
               v82 = v66;
               v83 = &v84;
               [v65 enumerate:v79];
@@ -598,7 +598,7 @@ LABEL_10:
               _Block_object_dispose(&v84, 8);
             }
 
-            else if (v29 == 1)
+            else if (layoutRole == 1)
             {
               if ([v7 isFullScreen])
               {
@@ -614,17 +614,17 @@ LABEL_10:
             else
             {
               v67 = 0xFFFFLL;
-              if (v29 == 4)
+              if (layoutRole == 4)
               {
                 v67 = 0;
               }
 
-              if (v29 == 3)
+              if (layoutRole == 3)
               {
                 v67 = 0;
               }
 
-              if (v29 == 2)
+              if (layoutRole == 2)
               {
                 v59 = 2;
               }
@@ -635,10 +635,10 @@ LABEL_10:
               }
             }
 
-            v68 = [v28 sceneHandle];
-            [v68 setStatusBarParts:v59];
-            [v68 setStatusBarAvoidanceFrame:{x, y, width, height}];
-            [v68 setWantsEnhancedWindowingEnabled:v77];
+            sceneHandle3 = [v28 sceneHandle];
+            [sceneHandle3 setStatusBarParts:v59];
+            [sceneHandle3 setStatusBarAvoidanceFrame:{x, y, width, height}];
+            [sceneHandle3 setWantsEnhancedWindowingEnabled:isChamoisOrFlexibleWindowing];
           }
         }
 
@@ -677,8 +677,8 @@ void __55__SBSceneLayoutWorkspaceTransaction__performTransition__block_invoke(ui
 - (void)_beginLayoutTransition
 {
   [(SBSceneLayoutWorkspaceTransaction *)self _prepareScenesForTransition];
-  v3 = [(SBSceneLayoutWorkspaceTransaction *)self delegate];
-  if (v3)
+  delegate = [(SBSceneLayoutWorkspaceTransaction *)self delegate];
+  if (delegate)
   {
     [(SBSceneLayoutWorkspaceTransaction *)self addMilestone:@"waitingForDelegate"];
     v4[0] = MEMORY[0x277D85DD0];
@@ -686,7 +686,7 @@ void __55__SBSceneLayoutWorkspaceTransaction__performTransition__block_invoke(ui
     v4[2] = __59__SBSceneLayoutWorkspaceTransaction__beginLayoutTransition__block_invoke;
     v4[3] = &unk_2783A8C18;
     v4[4] = self;
-    [v3 transaction:self performTransitionWithCompletion:v4];
+    [delegate transaction:self performTransitionWithCompletion:v4];
   }
 
   else
@@ -730,19 +730,19 @@ void __55__SBSceneLayoutWorkspaceTransaction__performTransition__block_invoke(ui
           }
 
           v16 = *(*(&v29 + 1) + 8 * i);
-          v17 = [v16 sceneHandle];
-          v18 = [v17 sceneIfExists];
+          sceneHandle = [v16 sceneHandle];
+          sceneIfExists = [sceneHandle sceneIfExists];
 
-          if ([v18 isValid])
+          if ([sceneIfExists isValid])
           {
-            v19 = [v16 layoutRole];
-            if (SBLayoutRoleIsValidForSplitView(v19))
+            layoutRole = [v16 layoutRole];
+            if (SBLayoutRoleIsValidForSplitView(layoutRole))
             {
-              v20 = [v18 clientSettings];
-              if ([v20 isUISubclass])
+              clientSettings = [sceneIfExists clientSettings];
+              if ([clientSettings isUISubclass])
               {
-                [v20 primaryWindowOverlayInsets];
-                if (v19 == 1)
+                [clientSettings primaryWindowOverlayInsets];
+                if (layoutRole == 1)
                 {
                   v11 = v24;
                   v12 = v23;
@@ -756,7 +756,7 @@ void __55__SBSceneLayoutWorkspaceTransaction__performTransition__block_invoke(ui
                   v4 = v21;
                 }
 
-                if (v19 == 1)
+                if (layoutRole == 1)
                 {
                   v13 = v22;
                   v14 = v21;
@@ -780,13 +780,13 @@ void __55__SBSceneLayoutWorkspaceTransaction__performTransition__block_invoke(ui
       v14 = v4;
     }
 
-    v25 = [SBApp windowSceneManager];
-    v26 = [(SBWorkspaceTransaction *)self displayIdentity];
-    v27 = [v25 windowSceneForDisplayIdentity:v26];
-    v28 = [v27 pictureInPictureManager];
+    windowSceneManager = [SBApp windowSceneManager];
+    displayIdentity = [(SBWorkspaceTransaction *)self displayIdentity];
+    v27 = [windowSceneManager windowSceneForDisplayIdentity:displayIdentity];
+    pictureInPictureManager = [v27 pictureInPictureManager];
 
-    [v28 applyPictureInPictureInsets:2 forSource:{v14, v13, v12, v11}];
-    [v28 applyPictureInPictureInsets:3 forSource:{v4, v3, v6, v5}];
+    [pictureInPictureManager applyPictureInPictureInsets:2 forSource:{v14, v13, v12, v11}];
+    [pictureInPictureManager applyPictureInPictureInsets:3 forSource:{v4, v3, v6, v5}];
   }
 }
 
@@ -795,10 +795,10 @@ void __55__SBSceneLayoutWorkspaceTransaction__performTransition__block_invoke(ui
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained transactionWillBeginLayoutTransition:self];
 
-  v4 = [(SBWorkspaceTransaction *)self windowScene];
-  v5 = [v4 displayLayoutPublisher];
+  windowScene = [(SBWorkspaceTransaction *)self windowScene];
+  displayLayoutPublisher = [windowScene displayLayoutPublisher];
 
-  [v5 flush];
+  [displayLayoutPublisher flush];
 }
 
 void __55__SBSceneLayoutWorkspaceTransaction__performTransition__block_invoke_3(uint64_t a1, uint64_t a2, void *a3)
@@ -897,9 +897,9 @@ void __55__SBSceneLayoutWorkspaceTransaction__performTransition__block_invoke_4(
 {
   v4.receiver = self;
   v4.super_class = SBSceneLayoutWorkspaceTransaction;
-  v2 = [(SBWorkspaceTransaction *)&v4 sceneManager];
+  sceneManager = [(SBWorkspaceTransaction *)&v4 sceneManager];
 
-  return v2;
+  return sceneManager;
 }
 
 - (void)_evaluateTransitionCompletion
@@ -960,7 +960,7 @@ uint64_t __59__SBSceneLayoutWorkspaceTransaction__beginLayoutTransition__block_i
 - (void)_completeTransition
 {
   OUTLINED_FUNCTION_1_2();
-  v1 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   OUTLINED_FUNCTION_0_3();
   [v0 handleFailureInMethod:? object:? file:? lineNumber:? description:?];
 }
@@ -971,15 +971,15 @@ uint64_t __59__SBSceneLayoutWorkspaceTransaction__beginLayoutTransition__block_i
   if (self->_performSceneUpdates)
   {
     [(SBSceneLayoutWorkspaceTransaction *)self _updateKeyboardContextMaskStyles:0];
-    v3 = [(SBWorkspaceTransaction *)self windowScene];
-    v4 = [v3 medusaHostedKeyboardWindowController];
-    [v4 updateMedusaHostedKeyboardWindow];
+    windowScene = [(SBWorkspaceTransaction *)self windowScene];
+    medusaHostedKeyboardWindowController = [windowScene medusaHostedKeyboardWindowController];
+    [medusaHostedKeyboardWindowController updateMedusaHostedKeyboardWindow];
 
     if ([(SBSceneLayoutWorkspaceTransaction *)self isInterrupted]&& (interruptingTransitionRequest = self->_interruptingTransitionRequest) != 0)
     {
-      v6 = [(SBWorkspaceTransitionRequest *)interruptingTransitionRequest applicationContext];
-      v7 = [v6 applicationSceneEntities];
-      v8 = [v7 bs_map:&__block_literal_global_200];
+      applicationContext = [(SBWorkspaceTransitionRequest *)interruptingTransitionRequest applicationContext];
+      applicationSceneEntities = [applicationContext applicationSceneEntities];
+      v8 = [applicationSceneEntities bs_map:&__block_literal_global_200];
     }
 
     else
@@ -987,7 +987,7 @@ uint64_t __59__SBSceneLayoutWorkspaceTransaction__beginLayoutTransition__block_i
       v8 = 0;
     }
 
-    v26 = [(SBSceneLayoutWorkspaceTransaction *)self _collectSceneIDsOfExternallyHostedApps];
+    _collectSceneIDsOfExternallyHostedApps = [(SBSceneLayoutWorkspaceTransaction *)self _collectSceneIDsOfExternallyHostedApps];
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
@@ -1008,12 +1008,12 @@ uint64_t __59__SBSceneLayoutWorkspaceTransaction__beginLayoutTransition__block_i
           }
 
           v14 = *(*(&v34 + 1) + 8 * i);
-          v15 = [v14 identifier];
-          if ([v14 isValid] && (objc_msgSend(v8, "containsObject:", v15) & 1) == 0 && (objc_msgSend(v26, "containsObject:", v15) & 1) == 0)
+          identifier = [v14 identifier];
+          if ([v14 isValid] && (objc_msgSend(v8, "containsObject:", identifier) & 1) == 0 && (objc_msgSend(_collectSceneIDsOfExternallyHostedApps, "containsObject:", identifier) & 1) == 0)
           {
             [v14 updateUISettingsWithBlock:&__block_literal_global_203];
-            v16 = [v14 uiPresentationManager];
-            [v16 modifyDefaultPresentationContext:&__block_literal_global_206];
+            uiPresentationManager = [v14 uiPresentationManager];
+            [uiPresentationManager modifyDefaultPresentationContext:&__block_literal_global_206];
           }
         }
 
@@ -1025,8 +1025,8 @@ uint64_t __59__SBSceneLayoutWorkspaceTransaction__beginLayoutTransition__block_i
 
     if (SBFIsSwitcherForegroundAppsAvailable())
     {
-      v17 = [(SBWorkspaceTransaction *)self windowScene];
-      v18 = [v17 switcherController];
+      windowScene2 = [(SBWorkspaceTransaction *)self windowScene];
+      switcherController = [windowScene2 switcherController];
 
       v32 = 0u;
       v33 = 0u;
@@ -1047,17 +1047,17 @@ uint64_t __59__SBSceneLayoutWorkspaceTransaction__beginLayoutTransition__block_i
               objc_enumerationMutation(v19);
             }
 
-            v24 = [*(*(&v30 + 1) + 8 * j) sceneHandle];
-            v25 = [v24 sceneIfExists];
+            sceneHandle = [*(*(&v30 + 1) + 8 * j) sceneHandle];
+            sceneIfExists = [sceneHandle sceneIfExists];
 
-            if (v25)
+            if (sceneIfExists)
             {
               v27[0] = MEMORY[0x277D85DD0];
               v27[1] = 3221225472;
               v27[2] = __73__SBSceneLayoutWorkspaceTransaction__updateScenesForTransitionCompletion__block_invoke_4;
               v27[3] = &unk_2783B90C8;
-              v28 = v18;
-              v29 = v25;
+              v28 = switcherController;
+              v29 = sceneIfExists;
               [v29 updateSettingsWithBlock:v27];
             }
           }
@@ -1142,7 +1142,7 @@ LABEL_16:
 - (void)_didComplete
 {
   OUTLINED_FUNCTION_1_2();
-  v1 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   OUTLINED_FUNCTION_0_3();
   [v0 handleFailureInMethod:@"_scenesBackgroundedStatusAssertion == nil" object:? file:? lineNumber:? description:?];
 }
@@ -1164,29 +1164,29 @@ uint64_t __62__SBSceneLayoutWorkspaceTransaction__captureAppsForTransition__bloc
   return v5;
 }
 
-- (SBSceneLayoutWorkspaceTransaction)initWithTransitionRequest:(id)a3 delegate:(id)a4
+- (SBSceneLayoutWorkspaceTransaction)initWithTransitionRequest:(id)request delegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 applicationContext];
-  if (!v8)
+  requestCopy = request;
+  delegateCopy = delegate;
+  applicationContext = [requestCopy applicationContext];
+  if (!applicationContext)
   {
     [SBSceneLayoutWorkspaceTransaction initWithTransitionRequest:delegate:];
   }
 
-  if ([v8 isBackground])
+  if ([applicationContext isBackground])
   {
     [SBSceneLayoutWorkspaceTransaction initWithTransitionRequest:delegate:];
   }
 
   v28.receiver = self;
   v28.super_class = SBSceneLayoutWorkspaceTransaction;
-  v9 = [(SBWorkspaceTransaction *)&v28 initWithTransitionRequest:v6];
+  v9 = [(SBWorkspaceTransaction *)&v28 initWithTransitionRequest:requestCopy];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_transitionContext, v8);
-    objc_storeWeak(&v10->_delegate, v7);
+    objc_storeStrong(&v9->_transitionContext, applicationContext);
+    objc_storeWeak(&v10->_delegate, delegateCopy);
     v11 = objc_alloc_init(MEMORY[0x277CBEB58]);
     updateTransactions = v10->_updateTransactions;
     v10->_updateTransactions = v11;
@@ -1211,21 +1211,21 @@ uint64_t __62__SBSceneLayoutWorkspaceTransaction__captureAppsForTransition__bloc
     scenesToBackground = v10->_scenesToBackground;
     v10->_scenesToBackground = v21;
 
-    if (([v8 waitsForSceneUpdates] & 1) == 0)
+    if (([applicationContext waitsForSceneUpdates] & 1) == 0)
     {
       v10->_options |= 4uLL;
     }
 
     if (SBFIsSwitcherForegroundAppsAvailable())
     {
-      v23 = [(SBWorkspaceTransaction *)v10 windowScene];
-      v24 = [v23 switcherController];
-      [v24 _prepareForSceneLayoutTransitionWithTransitionContext:v8];
+      windowScene = [(SBWorkspaceTransaction *)v10 windowScene];
+      switcherController = [windowScene switcherController];
+      [switcherController _prepareForSceneLayoutTransitionWithTransitionContext:applicationContext];
     }
 
-    v25 = [(SBSceneLayoutWorkspaceTransaction *)v10 _defaultDisplayLayoutTransitionReason];
+    _defaultDisplayLayoutTransitionReason = [(SBSceneLayoutWorkspaceTransaction *)v10 _defaultDisplayLayoutTransitionReason];
     preferredDisplayLayoutTransitionReason = v10->_preferredDisplayLayoutTransitionReason;
-    v10->_preferredDisplayLayoutTransitionReason = v25;
+    v10->_preferredDisplayLayoutTransitionReason = _defaultDisplayLayoutTransitionReason;
 
     [(SBSceneLayoutWorkspaceTransaction *)v10 _captureAppsForTransition];
   }
@@ -1239,49 +1239,49 @@ uint64_t __62__SBSceneLayoutWorkspaceTransaction__captureAppsForTransition__bloc
   if ([v2 isInSetupMode])
   {
     v3 = +[SBSetupManager sharedInstance];
-    v4 = [v3 isInSetupModeReadyToExit];
+    isInSetupModeReadyToExit = [v3 isInSetupModeReadyToExit];
   }
 
   else
   {
-    v4 = 1;
+    isInSetupModeReadyToExit = 1;
   }
 
-  return v4;
+  return isInSetupModeReadyToExit;
 }
 
-- (void)_willInterruptWithReason:(id)a3
+- (void)_willInterruptWithReason:(id)reason
 {
   v5.receiver = self;
   v5.super_class = SBSceneLayoutWorkspaceTransaction;
-  [(SBSceneLayoutWorkspaceTransaction *)&v5 _willInterruptWithReason:a3];
+  [(SBSceneLayoutWorkspaceTransaction *)&v5 _willInterruptWithReason:reason];
   self->_transitionFailed = 1;
-  v4 = [(SBWorkspaceTransaction *)self _transitionRequestForInterruption];
-  if (v4)
+  _transitionRequestForInterruption = [(SBWorkspaceTransaction *)self _transitionRequestForInterruption];
+  if (_transitionRequestForInterruption)
   {
-    objc_storeStrong(&self->_interruptingTransitionRequest, v4);
+    objc_storeStrong(&self->_interruptingTransitionRequest, _transitionRequestForInterruption);
   }
 }
 
-- (void)_willFailWithReason:(id)a3
+- (void)_willFailWithReason:(id)reason
 {
   v4.receiver = self;
   v4.super_class = SBSceneLayoutWorkspaceTransaction;
-  [(SBSceneLayoutWorkspaceTransaction *)&v4 _willFailWithReason:a3];
+  [(SBSceneLayoutWorkspaceTransaction *)&v4 _willFailWithReason:reason];
   self->_transitionFailed = 1;
 }
 
-- (void)_childTransactionDidComplete:(id)a3
+- (void)_childTransactionDidComplete:(id)complete
 {
-  v4 = a3;
-  if (self->_sceneUpdateTransactionGroup == v4)
+  completeCopy = complete;
+  if (self->_sceneUpdateTransactionGroup == completeCopy)
   {
     [(SBSceneLayoutWorkspaceTransaction *)self _evaluateTransitionCompletion];
   }
 
   v5.receiver = self;
   v5.super_class = SBSceneLayoutWorkspaceTransaction;
-  [(SBSceneLayoutWorkspaceTransaction *)&v5 _childTransactionDidComplete:v4];
+  [(SBSceneLayoutWorkspaceTransaction *)&v5 _childTransactionDidComplete:completeCopy];
 }
 
 void __62__SBSceneLayoutWorkspaceTransaction__captureAppsForTransition__block_invoke_5(uint64_t a1, void *a2)
@@ -1337,16 +1337,16 @@ void __75__SBSceneLayoutWorkspaceTransaction__collectSceneIDsOfExternallyHostedA
   [v2 addObject:v3];
 }
 
-- (BOOL)_sceneEntities:(id)a3 hasEntityRepresentingSceneID:(id)a4
+- (BOOL)_sceneEntities:(id)entities hasEntityRepresentingSceneID:(id)d
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  entitiesCopy = entities;
+  dCopy = d;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = v5;
+  v7 = entitiesCopy;
   v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
@@ -1360,9 +1360,9 @@ void __75__SBSceneLayoutWorkspaceTransaction__collectSceneIDsOfExternallyHostedA
           objc_enumerationMutation(v7);
         }
 
-        v11 = [*(*(&v15 + 1) + 8 * i) sceneHandle];
-        v12 = [v11 sceneIdentifier];
-        v13 = [v12 isEqualToString:v6];
+        sceneHandle = [*(*(&v15 + 1) + 8 * i) sceneHandle];
+        sceneIdentifier = [sceneHandle sceneIdentifier];
+        v13 = [sceneIdentifier isEqualToString:dCopy];
 
         if (v13)
         {
@@ -1386,24 +1386,24 @@ LABEL_11:
   return v8;
 }
 
-- (BOOL)_shouldKeepSceneForSceneHandleForeground:(id)a3
+- (BOOL)_shouldKeepSceneForSceneHandleForeground:(id)foreground
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = [a3 sceneIfExists];
+  sceneIfExists = [foreground sceneIfExists];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  if (v4 && (objc_opt_respondsToSelector() & 1) != 0)
+  if (sceneIfExists && (objc_opt_respondsToSelector() & 1) != 0)
   {
     v11 = 0;
-    v6 = [WeakRetained transaction:self shouldKeepSceneForeground:v4 withReason:&v11];
+    v6 = [WeakRetained transaction:self shouldKeepSceneForeground:sceneIfExists withReason:&v11];
     v7 = v11;
     if (v7)
     {
       v8 = SBLogTransaction();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
       {
-        v9 = [v4 identifier];
+        identifier = [sceneIfExists identifier];
         *buf = 138543618;
-        v13 = v9;
+        v13 = identifier;
         v14 = 2114;
         v15 = v7;
         _os_log_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_INFO, "Keeping scene %{public}@ foreground for reason:\n%{public}@", buf, 0x16u);
@@ -1428,27 +1428,27 @@ uint64_t __56__SBSceneLayoutWorkspaceTransaction__completeTransition__block_invo
   return v4;
 }
 
-- (void)_updateKeyboardContextMaskStyles:(BOOL)a3
+- (void)_updateKeyboardContextMaskStyles:(BOOL)styles
 {
-  v3 = a3;
+  stylesCopy = styles;
   v39 = *MEMORY[0x277D85DE8];
   v5 = +[SBPlatformController sharedInstance];
-  v6 = [v5 isMedusaCapable];
+  isMedusaCapable = [v5 isMedusaCapable];
 
-  if (v6)
+  if (isMedusaCapable)
   {
-    v7 = [(SBSceneLayoutWorkspaceTransaction *)self transitionContext];
-    v8 = [v7 previousLayoutState];
+    transitionContext = [(SBSceneLayoutWorkspaceTransaction *)self transitionContext];
+    previousLayoutState = [transitionContext previousLayoutState];
 
-    v9 = [(SBSceneLayoutWorkspaceTransaction *)self transitionContext];
-    v10 = [v9 layoutState];
+    transitionContext2 = [(SBSceneLayoutWorkspaceTransaction *)self transitionContext];
+    layoutState = [transitionContext2 layoutState];
 
-    v33 = v8;
-    v11 = [v8 elements];
-    v12 = v11;
-    if (v11)
+    v33 = previousLayoutState;
+    elements = [previousLayoutState elements];
+    v12 = elements;
+    if (elements)
     {
-      v13 = v11;
+      v13 = elements;
     }
 
     else
@@ -1458,11 +1458,11 @@ uint64_t __56__SBSceneLayoutWorkspaceTransaction__completeTransition__block_invo
 
     v14 = v13;
 
-    v15 = [v10 elements];
-    v16 = v15;
-    if (v15)
+    elements2 = [layoutState elements];
+    v16 = elements2;
+    if (elements2)
     {
-      v17 = v15;
+      v17 = elements2;
     }
 
     else
@@ -1471,7 +1471,7 @@ uint64_t __56__SBSceneLayoutWorkspaceTransaction__completeTransition__block_invo
     }
 
     v18 = v17;
-    v32 = v10;
+    v32 = layoutState;
 
     v19 = [v18 setByAddingObjectsFromSet:v14];
     v20 = [MEMORY[0x277CBEB58] set];
@@ -1480,7 +1480,7 @@ uint64_t __56__SBSceneLayoutWorkspaceTransaction__completeTransition__block_invo
       [v20 unionSet:v18];
     }
 
-    if (v3 && [v14 count] >= 2)
+    if (stylesCopy && [v14 count] >= 2)
     {
       [v20 unionSet:v14];
     }
@@ -1576,43 +1576,43 @@ void __66__SBSceneLayoutWorkspaceTransaction__prepareScenesForSceneUpdates__bloc
 - (id)_currentFlexibleWindowingAutoLayoutSpace
 {
   v3 = objc_opt_class();
-  v4 = [(SBSceneLayoutWorkspaceTransaction *)self transitionContext];
-  v5 = [v4 layoutState];
-  v6 = SBSafeCast(v3, v5);
+  transitionContext = [(SBSceneLayoutWorkspaceTransaction *)self transitionContext];
+  layoutState = [transitionContext layoutState];
+  v6 = SBSafeCast(v3, layoutState);
 
-  v7 = [v6 appLayout];
-  if (v7)
+  appLayout = [v6 appLayout];
+  if (appLayout)
   {
-    v8 = [(SBWorkspaceTransaction *)self windowScene];
-    v9 = [v8 switcherController];
+    windowScene = [(SBWorkspaceTransaction *)self windowScene];
+    switcherController = [windowScene switcherController];
 
-    v10 = [v6 interfaceOrientation];
-    [v9 containerBoundsForInterfaceOrientation:v10];
+    interfaceOrientation = [v6 interfaceOrientation];
+    [switcherController containerBoundsForInterfaceOrientation:interfaceOrientation];
     v44 = v12;
     v45 = v11;
     v42 = v14;
     v43 = v13;
-    v15 = [v9 windowScene];
-    v16 = [v15 floatingDockController];
-    [v16 floatingDockHeight];
+    windowScene2 = [switcherController windowScene];
+    floatingDockController = [windowScene2 floatingDockController];
+    [floatingDockController floatingDockHeight];
     v41 = v17;
 
-    v18 = [v9 _prefersStripHidden];
-    v19 = [v9 _prefersDockHidden];
-    [v9 _leftStatusBarPartIntersectionRegion];
+    _prefersStripHidden = [switcherController _prefersStripHidden];
+    _prefersDockHidden = [switcherController _prefersDockHidden];
+    [switcherController _leftStatusBarPartIntersectionRegion];
     v40 = v20;
     v22 = v21;
     v24 = v23;
     v26 = v25;
-    [v9 _rightStatusBarPartIntersectionRegion];
+    [switcherController _rightStatusBarPartIntersectionRegion];
     v28 = v27;
     v30 = v29;
     v32 = v31;
     v34 = v33;
     v35 = objc_alloc_init(SBDisplayItemLayoutAttributesCalculator);
-    v36 = [v15 screen];
-    [v36 scale];
-    v38 = -[SBDisplayItemLayoutAttributesCalculator flexibleWindowingAutoLayoutSpaceForAppLayout:containerOrientation:floatingDockHeight:screenScale:bounds:isEmbeddedDisplay:prefersStripHidden:prefersDockHidden:leftStatusBarPartIntersectionRegion:rightStatusBarPartIntersectionRegion:](v35, "flexibleWindowingAutoLayoutSpaceForAppLayout:containerOrientation:floatingDockHeight:screenScale:bounds:isEmbeddedDisplay:prefersStripHidden:prefersDockHidden:leftStatusBarPartIntersectionRegion:rightStatusBarPartIntersectionRegion:", v7, v10, [v15 isExtendedDisplayWindowScene] ^ 1, v18, v19, v41, v37, v45, v44, v43, v42, v40, v22, v24, v26, v28, v30, v32, v34);
+    screen = [windowScene2 screen];
+    [screen scale];
+    v38 = -[SBDisplayItemLayoutAttributesCalculator flexibleWindowingAutoLayoutSpaceForAppLayout:containerOrientation:floatingDockHeight:screenScale:bounds:isEmbeddedDisplay:prefersStripHidden:prefersDockHidden:leftStatusBarPartIntersectionRegion:rightStatusBarPartIntersectionRegion:](v35, "flexibleWindowingAutoLayoutSpaceForAppLayout:containerOrientation:floatingDockHeight:screenScale:bounds:isEmbeddedDisplay:prefersStripHidden:prefersDockHidden:leftStatusBarPartIntersectionRegion:rightStatusBarPartIntersectionRegion:", appLayout, interfaceOrientation, [windowScene2 isExtendedDisplayWindowScene] ^ 1, _prefersStripHidden, _prefersDockHidden, v41, v37, v45, v44, v43, v42, v40, v22, v24, v26, v28, v30, v32, v34);
   }
 
   else
@@ -1649,7 +1649,7 @@ void __73__SBSceneLayoutWorkspaceTransaction__updateScenesForTransitionCompletio
   [v5 setActivityMode:{objc_msgSend(*(a1 + 32), "_activityModeForScene:", *(a1 + 40))}];
 }
 
-- (BOOL)_overrideInterfaceOrientationForOrientationMismatch:(int64_t *)a3
+- (BOOL)_overrideInterfaceOrientationForOrientationMismatch:(int64_t *)mismatch
 {
   v34 = *MEMORY[0x277D85DE8];
   v29 = 0u;
@@ -1661,8 +1661,8 @@ void __73__SBSceneLayoutWorkspaceTransaction__updateScenesForTransitionCompletio
   if (v6)
   {
     v7 = v6;
-    v25 = a3;
-    v27 = self;
+    mismatchCopy = mismatch;
+    selfCopy = self;
     obj = v5;
     v8 = 0;
     v9 = *v30;
@@ -1677,48 +1677,48 @@ void __73__SBSceneLayoutWorkspaceTransaction__updateScenesForTransitionCompletio
         }
 
         v11 = *(*(&v29 + 1) + 8 * i);
-        v12 = [v11 applicationSceneEntity];
-        v13 = [MEMORY[0x277D0AAD8] sharedInstance];
-        v14 = [v11 sceneIdentifier];
-        v15 = [v13 sceneWithIdentifier:v14];
+        applicationSceneEntity = [v11 applicationSceneEntity];
+        mEMORY[0x277D0AAD8] = [MEMORY[0x277D0AAD8] sharedInstance];
+        sceneIdentifier = [v11 sceneIdentifier];
+        v15 = [mEMORY[0x277D0AAD8] sceneWithIdentifier:sceneIdentifier];
 
-        v16 = [v11 sceneSettings];
-        v17 = [v11 sceneSettings];
-        v18 = [v17 interfaceOrientation];
+        sceneSettings = [v11 sceneSettings];
+        sceneSettings2 = [v11 sceneSettings];
+        interfaceOrientation = [sceneSettings2 interfaceOrientation];
 
-        v19 = [v15 uiClientSettings];
-        v20 = [v19 sb_effectiveInterfaceOrientation];
+        uiClientSettings = [v15 uiClientSettings];
+        sb_effectiveInterfaceOrientation = [uiClientSettings sb_effectiveInterfaceOrientation];
 
-        if ([v15 isValid] && objc_msgSend(v16, "isUISubclass"))
+        if ([v15 isValid] && objc_msgSend(sceneSettings, "isUISubclass"))
         {
-          if (([v16 deviceOrientationEventsEnabled] & 1) == 0)
+          if (([sceneSettings deviceOrientationEventsEnabled] & 1) == 0)
           {
-            if ([(SBSceneLayoutWorkspaceTransaction *)v27 isAuditHistoryEnabled])
+            if ([(SBSceneLayoutWorkspaceTransaction *)selfCopy isAuditHistoryEnabled])
             {
-              [(SBSceneLayoutWorkspaceTransaction *)v27 _addAuditHistoryItem:@"Don't need to do any orientation override, the settings don't have orientation events enabled"];
+              [(SBSceneLayoutWorkspaceTransaction *)selfCopy _addAuditHistoryItem:@"Don't need to do any orientation override, the settings don't have orientation events enabled"];
             }
 
             return 0;
           }
 
-          if (v18 != v20)
+          if (interfaceOrientation != sb_effectiveInterfaceOrientation)
           {
-            if (v8 && v8 != v20)
+            if (v8 && v8 != sb_effectiveInterfaceOrientation)
             {
               [SBSceneLayoutWorkspaceTransaction _overrideInterfaceOrientationForOrientationMismatch:];
             }
 
-            if ([(SBSceneLayoutWorkspaceTransaction *)v27 isAuditHistoryEnabled])
+            if ([(SBSceneLayoutWorkspaceTransaction *)selfCopy isAuditHistoryEnabled])
             {
               v21 = BSInterfaceOrientationDescription();
-              v22 = [v12 application];
-              v23 = [v22 bundleIdentifier];
-              [(SBSceneLayoutWorkspaceTransaction *)v27 _addAuditHistoryItem:@"Scene Layout Transaction needs to override orientation to %@ for %@", v21, v23];
+              application = [applicationSceneEntity application];
+              bundleIdentifier = [application bundleIdentifier];
+              [(SBSceneLayoutWorkspaceTransaction *)selfCopy _addAuditHistoryItem:@"Scene Layout Transaction needs to override orientation to %@ for %@", v21, bundleIdentifier];
 
               v9 = v26;
             }
 
-            v8 = v20;
+            v8 = sb_effectiveInterfaceOrientation;
           }
         }
       }
@@ -1733,11 +1733,11 @@ void __73__SBSceneLayoutWorkspaceTransaction__updateScenesForTransitionCompletio
     }
 
     result = v8 != 0;
-    if (v25)
+    if (mismatchCopy)
     {
       if (v8)
       {
-        *v25 = v8;
+        *mismatchCopy = v8;
         return 1;
       }
     }
@@ -1752,41 +1752,41 @@ void __73__SBSceneLayoutWorkspaceTransaction__updateScenesForTransitionCompletio
   return result;
 }
 
-- (void)_sendActivationResultWithError:(id)a3
+- (void)_sendActivationResultWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   if ([(SBWorkspaceApplicationSceneTransitionContext *)self->_transitionContext needsToSendActivationResult])
   {
     if ([(SBSceneLayoutWorkspaceTransaction *)self isAuditHistoryEnabled])
     {
-      [(SBSceneLayoutWorkspaceTransaction *)self _addAuditHistoryItem:@"Sent activation result; success = %d", v4 == 0];
+      [(SBSceneLayoutWorkspaceTransaction *)self _addAuditHistoryItem:@"Sent activation result; success = %d", errorCopy == 0];
     }
 
-    [(SBWorkspaceApplicationSceneTransitionContext *)self->_transitionContext sendActivationResultError:v4];
+    [(SBWorkspaceApplicationSceneTransitionContext *)self->_transitionContext sendActivationResultError:errorCopy];
   }
 }
 
-- (void)_updatePreferredDisplayLayoutTransitionReason:(id)a3
+- (void)_updatePreferredDisplayLayoutTransitionReason:(id)reason
 {
-  v4 = a3;
-  v11 = v4;
-  if (!v4)
+  reasonCopy = reason;
+  v11 = reasonCopy;
+  if (!reasonCopy)
   {
-    v4 = [(SBSceneLayoutWorkspaceTransaction *)self _defaultDisplayLayoutTransitionReason];
+    reasonCopy = [(SBSceneLayoutWorkspaceTransaction *)self _defaultDisplayLayoutTransitionReason];
   }
 
-  if (v4 != self->_preferredDisplayLayoutTransitionReason)
+  if (reasonCopy != self->_preferredDisplayLayoutTransitionReason)
   {
-    v5 = [(NSString *)v4 copy];
+    v5 = [(NSString *)reasonCopy copy];
     preferredDisplayLayoutTransitionReason = self->_preferredDisplayLayoutTransitionReason;
     self->_preferredDisplayLayoutTransitionReason = v5;
 
     if (self->_displayLayoutTransitionAssertion)
     {
-      v7 = [(SBWorkspaceTransaction *)self windowScene];
-      v8 = [v7 displayLayoutPublisher];
+      windowScene = [(SBWorkspaceTransaction *)self windowScene];
+      displayLayoutPublisher = [windowScene displayLayoutPublisher];
 
-      v9 = [v8 transitionAssertionWithReason:self->_preferredDisplayLayoutTransitionReason];
+      v9 = [displayLayoutPublisher transitionAssertionWithReason:self->_preferredDisplayLayoutTransitionReason];
       [(BSInvalidatable *)self->_displayLayoutTransitionAssertion invalidate];
       displayLayoutTransitionAssertion = self->_displayLayoutTransitionAssertion;
       self->_displayLayoutTransitionAssertion = v9;
@@ -1794,22 +1794,22 @@ void __73__SBSceneLayoutWorkspaceTransaction__updateScenesForTransitionCompletio
   }
 }
 
-- (void)transaction:(id)a3 willLaunchProcess:(id)a4
+- (void)transaction:(id)transaction willLaunchProcess:(id)process
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(NSMutableSet *)self->_updateTransactions count]<= 1 && [(NSMutableSet *)self->_updateTransactions containsObject:v6])
+  transactionCopy = transaction;
+  processCopy = process;
+  if ([(NSMutableSet *)self->_updateTransactions count]<= 1 && [(NSMutableSet *)self->_updateTransactions containsObject:transactionCopy])
   {
-    if ([v7 isRunning])
+    if ([processCopy isRunning])
     {
       [(SBSceneLayoutWorkspaceTransaction *)self _sendActivationResultWithError:0];
     }
 
     else
     {
-      v8 = [v7 exitContext];
-      v9 = [v8 createError];
-      [(SBSceneLayoutWorkspaceTransaction *)self _sendActivationResultWithError:v9];
+      exitContext = [processCopy exitContext];
+      createError = [exitContext createError];
+      [(SBSceneLayoutWorkspaceTransaction *)self _sendActivationResultWithError:createError];
     }
   }
 
@@ -1817,10 +1817,10 @@ void __73__SBSceneLayoutWorkspaceTransaction__updateScenesForTransitionCompletio
   v12[1] = 3221225472;
   v12[2] = __67__SBSceneLayoutWorkspaceTransaction_transaction_willLaunchProcess___block_invoke;
   v12[3] = &unk_2783BB020;
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
+  v13 = transactionCopy;
+  v14 = processCopy;
+  v10 = processCopy;
+  v11 = transactionCopy;
   [(SBSceneLayoutWorkspaceTransaction *)self _enumerateObserversWithBlock:v12];
 }
 
@@ -1833,18 +1833,18 @@ void __67__SBSceneLayoutWorkspaceTransaction_transaction_willLaunchProcess___blo
   }
 }
 
-- (void)transaction:(id)a3 didLaunchProcess:(id)a4
+- (void)transaction:(id)transaction didLaunchProcess:(id)process
 {
-  v6 = a3;
-  v7 = a4;
+  transactionCopy = transaction;
+  processCopy = process;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __66__SBSceneLayoutWorkspaceTransaction_transaction_didLaunchProcess___block_invoke;
   v10[3] = &unk_2783BB020;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = transactionCopy;
+  v12 = processCopy;
+  v8 = processCopy;
+  v9 = transactionCopy;
   [(SBSceneLayoutWorkspaceTransaction *)self _enumerateObserversWithBlock:v10];
 }
 
@@ -1857,18 +1857,18 @@ void __66__SBSceneLayoutWorkspaceTransaction_transaction_didLaunchProcess___bloc
   }
 }
 
-- (void)transaction:(id)a3 didCreateScene:(id)a4
+- (void)transaction:(id)transaction didCreateScene:(id)scene
 {
-  v6 = a3;
-  v7 = a4;
+  transactionCopy = transaction;
+  sceneCopy = scene;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __64__SBSceneLayoutWorkspaceTransaction_transaction_didCreateScene___block_invoke;
   v10[3] = &unk_2783BB020;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = transactionCopy;
+  v12 = sceneCopy;
+  v8 = sceneCopy;
+  v9 = transactionCopy;
   [(SBSceneLayoutWorkspaceTransaction *)self _enumerateObserversWithBlock:v10];
 }
 
@@ -1881,18 +1881,18 @@ void __64__SBSceneLayoutWorkspaceTransaction_transaction_didCreateScene___block_
   }
 }
 
-- (void)transaction:(id)a3 willUpdateScene:(id)a4
+- (void)transaction:(id)transaction willUpdateScene:(id)scene
 {
-  v6 = a3;
-  v7 = a4;
+  transactionCopy = transaction;
+  sceneCopy = scene;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __65__SBSceneLayoutWorkspaceTransaction_transaction_willUpdateScene___block_invoke;
   v10[3] = &unk_2783BB020;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = transactionCopy;
+  v12 = sceneCopy;
+  v8 = sceneCopy;
+  v9 = transactionCopy;
   [(SBSceneLayoutWorkspaceTransaction *)self _enumerateObserversWithBlock:v10];
 }
 
@@ -1905,18 +1905,18 @@ void __65__SBSceneLayoutWorkspaceTransaction_transaction_willUpdateScene___block
   }
 }
 
-- (void)transaction:(id)a3 willCommitSceneUpdate:(id)a4
+- (void)transaction:(id)transaction willCommitSceneUpdate:(id)update
 {
-  v6 = a3;
-  v7 = a4;
+  transactionCopy = transaction;
+  updateCopy = update;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __71__SBSceneLayoutWorkspaceTransaction_transaction_willCommitSceneUpdate___block_invoke;
   v10[3] = &unk_2783BB020;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = transactionCopy;
+  v12 = updateCopy;
+  v8 = updateCopy;
+  v9 = transactionCopy;
   [(SBSceneLayoutWorkspaceTransaction *)self _enumerateObserversWithBlock:v10];
 }
 
@@ -1929,18 +1929,18 @@ void __71__SBSceneLayoutWorkspaceTransaction_transaction_willCommitSceneUpdate__
   }
 }
 
-- (void)transaction:(id)a3 didCommitSceneUpdate:(id)a4
+- (void)transaction:(id)transaction didCommitSceneUpdate:(id)update
 {
-  v6 = a3;
-  v7 = a4;
+  transactionCopy = transaction;
+  updateCopy = update;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __70__SBSceneLayoutWorkspaceTransaction_transaction_didCommitSceneUpdate___block_invoke;
   v10[3] = &unk_2783BB020;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = transactionCopy;
+  v12 = updateCopy;
+  v8 = updateCopy;
+  v9 = transactionCopy;
   [(SBSceneLayoutWorkspaceTransaction *)self _enumerateObserversWithBlock:v10];
 }
 
@@ -1953,7 +1953,7 @@ void __70__SBSceneLayoutWorkspaceTransaction_transaction_didCommitSceneUpdate___
   }
 }
 
-- (void)synchronizedTransactionReadyToCommit:(id)a3
+- (void)synchronizedTransactionReadyToCommit:(id)commit
 {
   if ([(SBSceneLayoutWorkspaceTransaction *)self isAuditHistoryEnabled])
   {
@@ -1962,17 +1962,17 @@ void __70__SBSceneLayoutWorkspaceTransaction_transaction_didCommitSceneUpdate___
 
   [(SBSceneLayoutSynchronizeTransitionTransaction *)self->_synchronizeSendActivationResultTransaction synchronize];
   [(SBSceneLayoutSynchronizeTransitionTransaction *)self->_synchronizePrepareTransitionTransaction synchronize];
-  v5 = [(SBSceneLayoutWorkspaceTransaction *)self synchronizationDelegate];
-  if (v5)
+  synchronizationDelegate = [(SBSceneLayoutWorkspaceTransaction *)self synchronizationDelegate];
+  if (synchronizationDelegate)
   {
     [(SBSceneLayoutWorkspaceTransaction *)self addMilestone:*MEMORY[0x277D0AA58]];
     if ([(SBSceneLayoutWorkspaceTransaction *)self isAuditHistoryEnabled])
     {
-      v4 = [MEMORY[0x277CF0C00] descriptionForObject:v5];
+      v4 = [MEMORY[0x277CF0C00] descriptionForObject:synchronizationDelegate];
       [(SBSceneLayoutWorkspaceTransaction *)self _addAuditHistoryItem:@"Deferring commit to synchronization delegate: %@", v4];
     }
 
-    [v5 synchronizedTransactionReadyToCommit:self];
+    [synchronizationDelegate synchronizedTransactionReadyToCommit:self];
   }
 
   else
@@ -1981,7 +1981,7 @@ void __70__SBSceneLayoutWorkspaceTransaction_transaction_didCommitSceneUpdate___
   }
 }
 
-- (void)synchronizedTransaction:(id)a3 willCommitSynchronizedTransactions:(id)a4
+- (void)synchronizedTransaction:(id)transaction willCommitSynchronizedTransactions:(id)transactions
 {
   v7[1] = *MEMORY[0x277D85DE8];
   WeakRetained = objc_loadWeakRetained(&self->_synchronizationDelegate);
@@ -1990,17 +1990,17 @@ void __70__SBSceneLayoutWorkspaceTransaction_transaction_didCommitSceneUpdate___
   [WeakRetained synchronizedTransaction:self willCommitSynchronizedTransactions:v6];
 }
 
-- (void)synchronizedTransaction:(id)a3 didCommitSynchronizedTransactions:(id)a4
+- (void)synchronizedTransaction:(id)transaction didCommitSynchronizedTransactions:(id)transactions
 {
-  if ([(SBSceneLayoutWorkspaceTransaction *)self isAuditHistoryEnabled:a3])
+  if ([(SBSceneLayoutWorkspaceTransaction *)self isAuditHistoryEnabled:transaction])
   {
     [(SBSceneLayoutWorkspaceTransaction *)self _addAuditHistoryItem:@"Synchronizing with scene updates NOW."];
   }
 
   [(SBSceneLayoutSynchronizeTransitionTransaction *)self->_synchronizeBeginTransitionTransaction synchronize];
   WeakRetained = objc_loadWeakRetained(&self->_synchronizationDelegate);
-  v6 = [(FBSynchronizedTransactionGroup *)self->_sceneUpdateTransactionGroup synchronizedTransactions];
-  [WeakRetained synchronizedTransaction:self didCommitSynchronizedTransactions:v6];
+  synchronizedTransactions = [(FBSynchronizedTransactionGroup *)self->_sceneUpdateTransactionGroup synchronizedTransactions];
+  [WeakRetained synchronizedTransaction:self didCommitSynchronizedTransactions:synchronizedTransactions];
 
   [(SBSceneLayoutSynchronizeTransitionTransaction *)self->_synchronizeAddSlavesTransaction synchronize];
   self->_waitingForSynchronizedCommit = 0;
@@ -2008,13 +2008,13 @@ void __70__SBSceneLayoutWorkspaceTransaction_transaction_didCommitSceneUpdate___
   [(SBSceneLayoutWorkspaceTransaction *)self _evaluateTransitionCompletion];
 }
 
-- (BOOL)synchronizedTransactionGroup:(id)a3 shouldFailForSynchronizedTransaction:(id)a4
+- (BOOL)synchronizedTransactionGroup:(id)group shouldFailForSynchronizedTransaction:(id)transaction
 {
-  v5 = a4;
+  transactionCopy = transaction;
   self->_transitionFailed = 1;
   if ([(SBSceneLayoutWorkspaceTransaction *)self isAuditHistoryEnabled])
   {
-    v6 = [MEMORY[0x277CF0C00] descriptionForObject:v5];
+    v6 = [MEMORY[0x277CF0C00] descriptionForObject:transactionCopy];
     [(SBSceneLayoutWorkspaceTransaction *)self _addAuditHistoryItem:@"Update transaction failed: %@", v6];
   }
 

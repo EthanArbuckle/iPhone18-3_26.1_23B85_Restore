@@ -1,25 +1,25 @@
 @interface NLXSchemaCDMUserWantedToPause
-- (BOOL)isEqual:(id)a3;
-- (NLXSchemaCDMUserWantedToPause)initWithDictionary:(id)a3;
-- (NLXSchemaCDMUserWantedToPause)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (NLXSchemaCDMUserWantedToPause)initWithDictionary:(id)dictionary;
+- (NLXSchemaCDMUserWantedToPause)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NLXSchemaCDMUserWantedToPause
 
-- (NLXSchemaCDMUserWantedToPause)initWithDictionary:(id)a3
+- (NLXSchemaCDMUserWantedToPause)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = NLXSchemaCDMUserWantedToPause;
   v5 = [(NLXSchemaCDMUserWantedToPause *)&v10 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"taskId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"taskId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -33,30 +33,30 @@
   return v5;
 }
 
-- (NLXSchemaCDMUserWantedToPause)initWithJSON:(id)a3
+- (NLXSchemaCDMUserWantedToPause)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(NLXSchemaCDMUserWantedToPause *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(NLXSchemaCDMUserWantedToPause *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(NLXSchemaCDMUserWantedToPause *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -69,40 +69,40 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_taskId)
   {
-    v4 = [(NLXSchemaCDMUserWantedToPause *)self taskId];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    taskId = [(NLXSchemaCDMUserWantedToPause *)self taskId];
+    dictionaryRepresentation = [taskId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"taskId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"taskId"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"taskId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"taskId"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(NLXSchemaCDMUserWantedToPause *)self taskId];
-    v6 = [v4 taskId];
-    v7 = v6;
-    if ((v5 != 0) != (v6 == 0))
+    taskId = [(NLXSchemaCDMUserWantedToPause *)self taskId];
+    taskId2 = [equalCopy taskId];
+    v7 = taskId2;
+    if ((taskId != 0) != (taskId2 == 0))
     {
-      v8 = [(NLXSchemaCDMUserWantedToPause *)self taskId];
-      if (!v8)
+      taskId3 = [(NLXSchemaCDMUserWantedToPause *)self taskId];
+      if (!taskId3)
       {
 
 LABEL_10:
@@ -110,10 +110,10 @@ LABEL_10:
         goto LABEL_8;
       }
 
-      v9 = v8;
-      v10 = [(NLXSchemaCDMUserWantedToPause *)self taskId];
-      v11 = [v4 taskId];
-      v12 = [v10 isEqual:v11];
+      v9 = taskId3;
+      taskId4 = [(NLXSchemaCDMUserWantedToPause *)self taskId];
+      taskId5 = [equalCopy taskId];
+      v12 = [taskId4 isEqual:taskId5];
 
       if (v12)
       {
@@ -132,29 +132,29 @@ LABEL_8:
   return v13;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
-  v4 = [(NLXSchemaCDMUserWantedToPause *)self taskId];
+  toCopy = to;
+  taskId = [(NLXSchemaCDMUserWantedToPause *)self taskId];
 
-  if (v4)
+  if (taskId)
   {
-    v5 = [(NLXSchemaCDMUserWantedToPause *)self taskId];
+    taskId2 = [(NLXSchemaCDMUserWantedToPause *)self taskId];
     PBDataWriterWriteSubmessage();
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = NLXSchemaCDMUserWantedToPause;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(NLXSchemaCDMUserWantedToPause *)self taskId:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(NLXSchemaCDMUserWantedToPause *)self deleteTaskId];
   }

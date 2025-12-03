@@ -1,6 +1,6 @@
 @interface MotionAssetDownload.Downloader
 - (_TtCO11MediaCoreUI19MotionAssetDownload10Downloader)init;
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5;
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error;
 @end
 
 @implementation MotionAssetDownload.Downloader
@@ -15,7 +15,7 @@
   return [(MotionAssetDownload.Downloader *)&v5 init];
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error
 {
   v8 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EC1930A0);
   MEMORY[0x1EEE9AC00](v8 - 8);
@@ -23,12 +23,12 @@
   v11 = sub_1C5BCB214();
   (*(*(v11 - 8) + 56))(v10, 1, 1, v11);
   v12 = qword_1EC1909D0;
-  v13 = a4;
-  v14 = self;
-  v15 = a5;
-  v16 = v13;
-  v17 = v14;
-  v18 = v15;
+  taskCopy = task;
+  selfCopy = self;
+  errorCopy = error;
+  v16 = taskCopy;
+  v17 = selfCopy;
+  v18 = errorCopy;
   if (v12 != -1)
   {
     swift_once();

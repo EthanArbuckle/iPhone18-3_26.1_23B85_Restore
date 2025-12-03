@@ -1,20 +1,20 @@
 @interface PGGraphIngestEventLabelingProcessor
-- (BOOL)shouldRunWithGraphUpdate:(id)a3;
-- (PGGraphIngestEventLabelingProcessor)initWithGraphBuilder:(id)a3;
-- (void)runWithGraphUpdate:(id)a3 progressBlock:(id)a4;
+- (BOOL)shouldRunWithGraphUpdate:(id)update;
+- (PGGraphIngestEventLabelingProcessor)initWithGraphBuilder:(id)builder;
+- (void)runWithGraphUpdate:(id)update progressBlock:(id)block;
 @end
 
 @implementation PGGraphIngestEventLabelingProcessor
 
-- (void)runWithGraphUpdate:(id)a3 progressBlock:(id)a4
+- (void)runWithGraphUpdate:(id)update progressBlock:(id)block
 {
   v34 = *MEMORY[0x277D85DE8];
   graphBuilder = self->_graphBuilder;
-  v7 = a4;
-  v8 = a3;
-  v9 = [(PGGraphBuilder *)graphBuilder loggingConnection];
-  v10 = os_signpost_id_generate(v9);
-  v11 = v9;
+  blockCopy = block;
+  updateCopy = update;
+  loggingConnection = [(PGGraphBuilder *)graphBuilder loggingConnection];
+  v10 = os_signpost_id_generate(loggingConnection);
+  v11 = loggingConnection;
   v12 = v11;
   if (v10 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v11))
   {
@@ -25,10 +25,10 @@
   info = 0;
   mach_timebase_info(&info);
   v13 = mach_absolute_time();
-  v14 = [MEMORY[0x277D22C80] progressReporterWithProgressBlock:v7];
+  v14 = [MEMORY[0x277D22C80] progressReporterWithProgressBlock:blockCopy];
 
-  v15 = [(PGGraphBuilder *)self->_graphBuilder graph];
-  v16 = [v8 momentNodesToProcessInGraph:v15 forMomentUpdateTypes:objc_msgSend(objc_opt_class() includeInsertedNodes:{"requiredMomentUpdateTypes"), 1}];
+  graph = [(PGGraphBuilder *)self->_graphBuilder graph];
+  v16 = [updateCopy momentNodesToProcessInGraph:graph forMomentUpdateTypes:objc_msgSend(objc_opt_class() includeInsertedNodes:{"requiredMomentUpdateTypes"), 1}];
 
   v17 = self->_graphBuilder;
   v28 = 0;
@@ -37,13 +37,13 @@
   if (!v18)
   {
     v20 = +[PGLogging sharedLogging];
-    v21 = [v20 loggingConnection];
+    loggingConnection2 = [v20 loggingConnection];
 
-    if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(loggingConnection2, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
       v31 = v19;
-      _os_log_error_impl(&dword_22F0FC000, v21, OS_LOG_TYPE_ERROR, "[PGGraphIngestEventLabelingProcessor] Error processing events: %@", buf, 0xCu);
+      _os_log_error_impl(&dword_22F0FC000, loggingConnection2, OS_LOG_TYPE_ERROR, "[PGGraphIngestEventLabelingProcessor] Error processing events: %@", buf, 0xCu);
     }
   }
 
@@ -70,48 +70,48 @@
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)shouldRunWithGraphUpdate:(id)a3
+- (BOOL)shouldRunWithGraphUpdate:(id)update
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  updateCopy = update;
   if (+[PGEventLabelingConfiguration isEventLabelingEnabled])
   {
-    v5 = [(PGGraphBuilder *)self->_graphBuilder photoLibrary];
+    photoLibrary = [(PGGraphBuilder *)self->_graphBuilder photoLibrary];
     v20 = 0;
-    v6 = [v5 urlForApplicationDataFolderIdentifier:1 error:&v20];
+    v6 = [photoLibrary urlForApplicationDataFolderIdentifier:1 error:&v20];
     v7 = v20;
 
     if (v6)
     {
-      v8 = [(PGGraphBuilder *)self->_graphBuilder eventLabelingFeaturesCache];
-      v9 = [v8 isCacheEmptyAtGraphServiceURL:v6];
+      eventLabelingFeaturesCache = [(PGGraphBuilder *)self->_graphBuilder eventLabelingFeaturesCache];
+      v9 = [eventLabelingFeaturesCache isCacheEmptyAtGraphServiceURL:v6];
 
-      if ([v4 hasMomentsToInsert])
+      if ([updateCopy hasMomentsToInsert])
       {
-        v10 = 1;
+        hasMomentsToUpdate = 1;
       }
 
       else
       {
-        v10 = [v4 hasMomentsToUpdate];
+        hasMomentsToUpdate = [updateCopy hasMomentsToUpdate];
       }
 
-      if ((v9 & v10) == 1)
+      if ((v9 & hasMomentsToUpdate) == 1)
       {
         v16 = +[PGLogging sharedLogging];
-        v12 = [v16 loggingConnection];
+        loggingConnection = [v16 loggingConnection];
 
-        if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+        if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
         {
           *buf = 0;
-          _os_log_error_impl(&dword_22F0FC000, v12, OS_LOG_TYPE_ERROR, "[PGGraphIngestEventLabelingProcessor] GraphUpdate has moments to insert or update, but processor will not run due to missing feature cache.", buf, 2u);
+          _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "[PGGraphIngestEventLabelingProcessor] GraphUpdate has moments to insert or update, but processor will not run due to missing feature cache.", buf, 2u);
         }
 
-        LOBYTE(v10) = 1;
+        LOBYTE(hasMomentsToUpdate) = 1;
         goto LABEL_16;
       }
 
-      if ((v9 | v10))
+      if ((v9 | hasMomentsToUpdate))
       {
 LABEL_17:
 
@@ -119,12 +119,12 @@ LABEL_17:
       }
 
       v17 = +[PGLogging sharedLogging];
-      v12 = [v17 loggingConnection];
+      loggingConnection = [v17 loggingConnection];
 
-      if (!os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+      if (!os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
       {
 LABEL_15:
-        LOBYTE(v10) = 0;
+        LOBYTE(hasMomentsToUpdate) = 0;
 LABEL_16:
 
         goto LABEL_17;
@@ -132,16 +132,16 @@ LABEL_16:
 
       *buf = 0;
       v13 = "[PGGraphIngestEventLabelingProcessor] Found features in the event labeling cache, but processor will not run because the GraphUpdate does not have moments to insert or update.";
-      v14 = v12;
+      v14 = loggingConnection;
       v15 = 2;
     }
 
     else
     {
       v11 = +[PGLogging sharedLogging];
-      v12 = [v11 loggingConnection];
+      loggingConnection = [v11 loggingConnection];
 
-      if (!os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+      if (!os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
       {
         goto LABEL_15;
       }
@@ -149,7 +149,7 @@ LABEL_16:
       *buf = 138412290;
       v22 = v7;
       v13 = "Failed to access the graph service URL. Error: %@";
-      v14 = v12;
+      v14 = loggingConnection;
       v15 = 12;
     }
 
@@ -157,23 +157,23 @@ LABEL_16:
     goto LABEL_15;
   }
 
-  LOBYTE(v10) = 0;
+  LOBYTE(hasMomentsToUpdate) = 0;
 LABEL_18:
 
   v18 = *MEMORY[0x277D85DE8];
-  return v10;
+  return hasMomentsToUpdate;
 }
 
-- (PGGraphIngestEventLabelingProcessor)initWithGraphBuilder:(id)a3
+- (PGGraphIngestEventLabelingProcessor)initWithGraphBuilder:(id)builder
 {
-  v5 = a3;
+  builderCopy = builder;
   v9.receiver = self;
   v9.super_class = PGGraphIngestEventLabelingProcessor;
   v6 = [(PGGraphIngestEventLabelingProcessor *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_graphBuilder, a3);
+    objc_storeStrong(&v6->_graphBuilder, builder);
   }
 
   return v7;

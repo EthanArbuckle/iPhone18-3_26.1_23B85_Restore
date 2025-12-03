@@ -1,21 +1,21 @@
 @interface CARBluetoothClassicDevice
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BluetoothDevice)btDevice;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
 @implementation CARBluetoothClassicDevice
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(CARBluetoothClassicDevice *)self bluetoothAddress];
-    v6 = [v4 bluetoothAddress];
-    v7 = [v5 isEqual:v6];
+    bluetoothAddress = [(CARBluetoothClassicDevice *)self bluetoothAddress];
+    bluetoothAddress2 = [equalCopy bluetoothAddress];
+    v7 = [bluetoothAddress isEqual:bluetoothAddress2];
   }
 
   else
@@ -28,25 +28,25 @@
 
 - (unint64_t)hash
 {
-  v2 = [(CARBluetoothClassicDevice *)self bluetoothAddress];
-  v3 = [v2 hash];
+  bluetoothAddress = [(CARBluetoothClassicDevice *)self bluetoothAddress];
+  v3 = [bluetoothAddress hash];
 
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_alloc_init(objc_opt_class());
   if (v5)
   {
-    v6 = [(CARBluetoothClassicDevice *)self bluetoothAddress];
-    v7 = [v6 copyWithZone:a3];
+    bluetoothAddress = [(CARBluetoothClassicDevice *)self bluetoothAddress];
+    v7 = [bluetoothAddress copyWithZone:zone];
     [v5 setBluetoothAddress:v7];
 
     [v5 setPaired:{-[CARBluetoothClassicDevice isPaired](self, "isPaired")}];
     [v5 setConnectionStatus:{-[CARBluetoothClassicDevice connectionStatus](self, "connectionStatus")}];
-    v8 = [(CARBluetoothClassicDevice *)self btDevice];
-    [v5 setBtDevice:v8];
+    btDevice = [(CARBluetoothClassicDevice *)self btDevice];
+    [v5 setBtDevice:btDevice];
   }
 
   return v5;

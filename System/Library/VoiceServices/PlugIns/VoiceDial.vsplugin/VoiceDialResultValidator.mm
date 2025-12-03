@@ -1,7 +1,7 @@
 @interface VoiceDialResultValidator
 - (id)_nameSource;
-- (id)validRecognitionResultFromRecognitionResult:(id)a3;
-- (id)validRecognitionResultFromRecognitionResult:(id)a3 knownDisambiguationValues:(id)a4;
+- (id)validRecognitionResultFromRecognitionResult:(id)result;
+- (id)validRecognitionResultFromRecognitionResult:(id)result knownDisambiguationValues:(id)values;
 - (void)_addressBook;
 - (void)dealloc;
 @end
@@ -65,19 +65,19 @@
   return nameSource;
 }
 
-- (id)validRecognitionResultFromRecognitionResult:(id)a3
+- (id)validRecognitionResultFromRecognitionResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v19 = 0;
   VoiceDialConfigureSpokenLocalizedLabel(1);
   v17 = 0;
   v18 = 0;
   v16 = 0;
-  VoiceDialCopyNameLabelAndTypeFromRecognitionResult(v4, &v18, &v17, &v16, 0);
+  VoiceDialCopyNameLabelAndTypeFromRecognitionResult(resultCopy, &v18, &v17, &v16, 0);
   v5 = v18;
   v6 = v17;
   v7 = v16;
-  v8 = [v4 valueOfFirstElementWithClassIdentifier:@"command"];
+  v8 = [resultCopy valueOfFirstElementWithClassIdentifier:@"command"];
   if (v8)
   {
     v9 = @"labeltype-phone";
@@ -89,42 +89,42 @@
   {
     if (v5)
     {
-      v10 = [(VoiceDialResultValidator *)self _addressBook];
-      if (v10)
+      _addressBook = [(VoiceDialResultValidator *)self _addressBook];
+      if (_addressBook)
       {
-        v11 = v10;
-        v12 = [(VoiceDialResultValidator *)self _nameSource];
-        VoiceDialSendNameAndExtendedLabelMatches(v11, v12, 0, 1, v5, v6, v7, _ResultValidationAddressBookCallback, &v19);
+        v11 = _addressBook;
+        _nameSource = [(VoiceDialResultValidator *)self _nameSource];
+        VoiceDialSendNameAndExtendedLabelMatches(v11, _nameSource, 0, 1, v5, v6, v7, _ResultValidationAddressBookCallback, &v19);
 
         if ((v19 & 1) == 0)
         {
-          v13 = [v4 recognitionResultByReplacingValueForClassIdentifier:@"label" withValue:0];
+          v13 = [resultCopy recognitionResultByReplacingValueForClassIdentifier:@"label" withValue:0];
 
           v14 = [v13 recognitionResultByReplacingValueForClassIdentifier:@"labeltype-phone" withValue:0];
 
-          v4 = [v14 recognitionResultByReplacingValueForClassIdentifier:@"labeltype-email" withValue:0];
+          resultCopy = [v14 recognitionResultByReplacingValueForClassIdentifier:@"labeltype-email" withValue:0];
         }
       }
     }
   }
 
-  return v4;
+  return resultCopy;
 }
 
-- (id)validRecognitionResultFromRecognitionResult:(id)a3 knownDisambiguationValues:(id)a4
+- (id)validRecognitionResultFromRecognitionResult:(id)result knownDisambiguationValues:(id)values
 {
-  v6 = a3;
-  location = v6;
-  v7 = a4;
+  resultCopy = result;
+  location = resultCopy;
+  valuesCopy = values;
   v8 = objc_alloc_init(VoiceDialDisambiguationAddressBookContext);
   v40 = v8;
   VoiceDialConfigureSpokenLocalizedLabel(1);
-  if (!v7)
+  if (!valuesCopy)
   {
     goto LABEL_28;
   }
 
-  v9 = [v7 objectForKey:@"firstname"];
+  v9 = [valuesCopy objectForKey:@"firstname"];
   if (v9)
   {
     v10 = v9;
@@ -133,7 +133,7 @@
 
   else
   {
-    v10 = [v7 objectForKey:@"lastname"];
+    v10 = [valuesCopy objectForKey:@"lastname"];
     if (v10)
     {
       v11 = *MEMORY[0x29EDBE210];
@@ -150,7 +150,7 @@
   {
 
 LABEL_28:
-    v33 = [(VoiceDialResultValidator *)self validRecognitionResultFromRecognitionResult:v6];
+    v33 = [(VoiceDialResultValidator *)self validRecognitionResultFromRecognitionResult:resultCopy];
     location = v33;
 
     v15 = 0;
@@ -160,22 +160,22 @@ LABEL_28:
   }
 
   v13 = v12;
-  v36 = v7;
-  v14 = [(VoiceDialResultValidator *)self _addressBook];
+  v36 = valuesCopy;
+  _addressBook = [(VoiceDialResultValidator *)self _addressBook];
   v38 = 0;
   v39 = 0;
   v37 = 0;
-  VoiceDialCopyNameLabelAndTypeFromRecognitionResult(v6, &v39, &v38, &v37, 0);
+  VoiceDialCopyNameLabelAndTypeFromRecognitionResult(resultCopy, &v39, &v38, &v37, 0);
   v15 = v39;
   v16 = v38;
   v17 = v37;
-  if (v14)
+  if (_addressBook)
   {
     [(VoiceDialDisambiguationAddressBookContext *)v8 setPreviousNameProperty:v11];
     [(VoiceDialDisambiguationAddressBookContext *)v8 setMatchedName:v15];
     [(VoiceDialDisambiguationAddressBookContext *)v8 setResult:&location];
     [(VoiceDialDisambiguationAddressBookContext *)v8 setResultFound:0];
-    v18 = [(VoiceDialResultValidator *)self _nameSource];
+    _nameSource = [(VoiceDialResultValidator *)self _nameSource];
     if (![(VoiceDialDisambiguationAddressBookContext *)v8 resultFound])
     {
       v19 = 1;
@@ -185,7 +185,7 @@ LABEL_28:
         [(VoiceDialDisambiguationAddressBookContext *)v40 setPreviousName:v20];
 
         [(VoiceDialDisambiguationAddressBookContext *)v40 setResultFound:0];
-        VoiceDialSendNameAndExtendedLabelMatches(v14, v18, 1, 1, v15, v16, v17, _ResultDisambiguationAddressBookCallback, v40);
+        VoiceDialSendNameAndExtendedLabelMatches(_addressBook, _nameSource, 1, 1, v15, v16, v17, _ResultDisambiguationAddressBookCallback, v40);
         if (![(VoiceDialDisambiguationAddressBookContext *)v40 resultFound]&& v17)
         {
           v21 = location;
@@ -198,7 +198,7 @@ LABEL_28:
           v26 = location;
           location = v25;
 
-          VoiceDialSendNameAndExtendedLabelMatches(v14, v18, 1, 1, v15, v16, 0, _ResultDisambiguationAddressBookCallback, v40);
+          VoiceDialSendNameAndExtendedLabelMatches(_addressBook, _nameSource, 1, 1, v15, v16, 0, _ResultDisambiguationAddressBookCallback, v40);
           if (![(VoiceDialDisambiguationAddressBookContext *)v40 resultFound])
           {
             objc_storeStrong(&location, v21);
@@ -213,7 +213,7 @@ LABEL_28:
           v30 = location;
           location = v29;
 
-          VoiceDialSendNameAndExtendedLabelMatches(v14, v18, 1, 1, v15, 0, 0, _ResultDisambiguationAddressBookCallback, &v40);
+          VoiceDialSendNameAndExtendedLabelMatches(_addressBook, _nameSource, 1, 1, v15, 0, 0, _ResultDisambiguationAddressBookCallback, &v40);
           if (![(VoiceDialDisambiguationAddressBookContext *)v40 resultFound])
           {
             objc_storeStrong(&location, v27);
@@ -239,10 +239,10 @@ LABEL_28:
 
   else
   {
-    v18 = 0;
+    _nameSource = 0;
   }
 
-  v7 = v36;
+  valuesCopy = v36;
 
   v33 = location;
 LABEL_31:

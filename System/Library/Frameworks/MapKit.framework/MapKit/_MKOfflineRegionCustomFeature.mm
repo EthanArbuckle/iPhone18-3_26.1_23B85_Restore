@@ -1,7 +1,7 @@
 @interface _MKOfflineRegionCustomFeature
 - ($F24F406B2B787EFB06265DBA3D28CBD5)coordinate;
 - (_MKOfflineRegionCustomFeature)init;
-- (_MKOfflineRegionCustomFeature)initWithSubscription:(id)a3;
+- (_MKOfflineRegionCustomFeature)initWithSubscription:(id)subscription;
 @end
 
 @implementation _MKOfflineRegionCustomFeature
@@ -15,21 +15,21 @@
   return result;
 }
 
-- (_MKOfflineRegionCustomFeature)initWithSubscription:(id)a3
+- (_MKOfflineRegionCustomFeature)initWithSubscription:(id)subscription
 {
-  v5 = a3;
+  subscriptionCopy = subscription;
   v23.receiver = self;
   v23.super_class = _MKOfflineRegionCustomFeature;
   v6 = [(_MKOfflineRegionCustomFeature *)&v23 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_subscription, a3);
-    v8 = [v5 region];
-    [v8 centerLat];
+    objc_storeStrong(&v6->_subscription, subscription);
+    region = [subscriptionCopy region];
+    [region centerLat];
     v10 = v9;
-    v11 = [v5 region];
-    [v11 centerLng];
+    region2 = [subscriptionCopy region];
+    [region2 centerLng];
     v7->_coordinate.latitude = v10;
     v7->_coordinate.longitude = v12;
 
@@ -42,12 +42,12 @@
     [(VKCustomFeature *)v15 setStyleAttributes:v16];
 
     v17 = v7->_feature;
-    v18 = [v5 displayName];
-    [(VKCustomFeature *)v17 setText:v18 locale:0];
+    displayName = [subscriptionCopy displayName];
+    [(VKCustomFeature *)v17 setText:displayName locale:0];
 
     v19 = v7->_feature;
-    v20 = [v5 region];
-    [(VKCustomFeature *)v19 setFeatureRegion:v20];
+    region3 = [subscriptionCopy region];
+    [(VKCustomFeature *)v19 setFeatureRegion:region3];
 
     v21 = v7;
   }

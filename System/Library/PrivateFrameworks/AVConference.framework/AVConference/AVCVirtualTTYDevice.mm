@@ -1,11 +1,11 @@
 @interface AVCVirtualTTYDevice
-- (AVCVirtualTTYDevice)initWithMode:(int64_t)a3 error:(id *)a4 streamToken:(int64_t)a5;
-- (BOOL)sendText:(id)a3;
-- (id)sendCharacter:(unsigned __int16)a3;
+- (AVCVirtualTTYDevice)initWithMode:(int64_t)mode error:(id *)error streamToken:(int64_t)token;
+- (BOOL)sendText:(id)text;
+- (id)sendCharacter:(unsigned __int16)character;
 - (void)dealloc;
 - (void)deregisterBlocksForDelegateNotifications;
 - (void)registerBlocksForDelegateNotifications;
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 - (void)start;
 - (void)stop;
 - (void)terminateSession;
@@ -13,7 +13,7 @@
 
 @implementation AVCVirtualTTYDevice
 
-- (AVCVirtualTTYDevice)initWithMode:(int64_t)a3 error:(id *)a4 streamToken:(int64_t)a5
+- (AVCVirtualTTYDevice)initWithMode:(int64_t)mode error:(id *)error streamToken:(int64_t)token
 {
   v39 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -22,9 +22,9 @@
     v10 = *MEMORY[0x1E6986650];
     if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
     {
-      if (a4)
+      if (error)
       {
-        v11 = *a4;
+        v11 = *error;
       }
 
       else
@@ -39,9 +39,9 @@
       v32 = 1024;
       v33 = 47;
       v34 = 1024;
-      *v35 = a3;
+      *v35 = mode;
       *&v35[4] = 1024;
-      *&v35[6] = a5;
+      *&v35[6] = token;
       *v36 = 2112;
       *&v36[2] = v11;
       _os_log_impl(&dword_1DB56E000, v10, OS_LOG_TYPE_DEFAULT, "AVCVirtualTTYDevice [%s] %s:%d mode=%d, streamToken=%u error=%@", buf, 0x32u);
@@ -57,9 +57,9 @@
     VRTracePrintLoggingInfo();
     v12->_connection = objc_alloc_init(AVConferenceXPCClient);
     v13 = objc_alloc(MEMORY[0x1E695DF20]);
-    v14 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-    v15 = [v13 initWithObjectsAndKeys:{v14, @"vcMediaStreamDictionary", objc_msgSend(MEMORY[0x1E696AD98], "numberWithInteger:", a5), @"vcMediaStreamToken", 0}];
-    if (a3 == 3)
+    v14 = [MEMORY[0x1E696AD98] numberWithInteger:mode];
+    v15 = [v13 initWithObjectsAndKeys:{v14, @"vcMediaStreamDictionary", objc_msgSend(MEMORY[0x1E696AD98], "numberWithInteger:", token), @"vcMediaStreamToken", 0}];
+    if (mode == 3)
     {
       v16 = "vcVirtualRTTDeviceInitialize";
     }
@@ -76,9 +76,9 @@
       v18 = [v17 objectForKeyedSubscript:@"ERROR"];
       if (v18 || [v17 objectForKeyedSubscript:@"TIMEOUT"])
       {
-        if (a4)
+        if (error)
         {
-          *a4 = v18;
+          *error = v18;
         }
 
         if (VRTraceGetErrorLogLevelForModule() >= 3)
@@ -123,9 +123,9 @@
       v22 = *MEMORY[0x1E6986650];
       if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
       {
-        if (a4)
+        if (error)
         {
-          v23 = *a4;
+          v23 = *error;
         }
 
         else
@@ -142,9 +142,9 @@
         v34 = 2048;
         *v35 = v12;
         *&v35[8] = 1024;
-        *v36 = a3;
+        *v36 = mode;
         *&v36[4] = 1024;
-        *&v36[6] = a5;
+        *&v36[6] = token;
         v37 = 2112;
         v38 = v23;
         _os_log_impl(&dword_1DB56E000, v22, OS_LOG_TYPE_DEFAULT, "AVCVirtualTTYDevice [%s] %s:%d @:@ AVCVirtualTTYDevice-init (%p) mode=%d, streamToken=%d, error=%@", buf, 0x3Cu);
@@ -193,7 +193,7 @@
       v14 = 1024;
       v15 = 87;
       v16 = 2048;
-      v17 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1DB56E000, v8, OS_LOG_TYPE_DEFAULT, "AVCVirtualTTYDevice [%s] %s:%d @:@ AVCVirtualTTYDevice-dealloc (%p)", buf, 0x26u);
     }
   }
@@ -203,7 +203,7 @@
   [(AVCVirtualTTYDevice *)&v9 dealloc];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v15 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 6)
@@ -219,12 +219,12 @@
       v11 = 1024;
       v12 = 96;
       v13 = 2112;
-      v14 = a3;
+      delegateCopy = delegate;
       _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, "AVCVirtualTTYDevice [%s] %s:%d delegate=%@", &v7, 0x26u);
     }
   }
 
-  objc_storeWeak(&self->_delegate, a3);
+  objc_storeWeak(&self->_delegate, delegate);
 }
 
 - (void)start
@@ -264,7 +264,7 @@
       v13 = 1024;
       v14 = 104;
       v15 = 2048;
-      v16 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1DB56E000, v8, OS_LOG_TYPE_DEFAULT, "AVCVirtualTTYDevice [%s] %s:%d @:@ AVCVirtualTTYDevice-start (%p)", &v9, 0x26u);
     }
   }
@@ -307,15 +307,15 @@
       v13 = 1024;
       v14 = 111;
       v15 = 2048;
-      v16 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1DB56E000, v8, OS_LOG_TYPE_DEFAULT, "AVCVirtualTTYDevice [%s] %s:%d @:@ AVCVirtualTTYDevice-stop (%p)", &v9, 0x26u);
     }
   }
 }
 
-- (id)sendCharacter:(unsigned __int16)a3
+- (id)sendCharacter:(unsigned __int16)character
 {
-  v3 = a3;
+  characterCopy = character;
   v25 = *MEMORY[0x1E69E9840];
   ErrorLogLevelForModule = VRTraceGetErrorLogLevelForModule();
   v6 = MEMORY[0x1E6986650];
@@ -335,9 +335,9 @@
         v20 = 1024;
         v21 = 115;
         v22 = 1024;
-        *v23 = v3;
+        *v23 = characterCopy;
         *&v23[4] = 1024;
-        *&v23[6] = v3;
+        *&v23[6] = characterCopy;
         _os_log_impl(&dword_1DB56E000, v8, OS_LOG_TYPE_DEFAULT, "AVCVirtualTTYDevice [%s] %s:%d Sending text:0x%04x '%C'", buf, 0x28u);
       }
     }
@@ -350,7 +350,7 @@
 
   if (self->_isStarted)
   {
-    v10 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:v3];
+    v10 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:characterCopy];
     v11 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{v10, @"vcMediaStreamDictionary", 0}];
     [(AVConferenceXPCClient *)self->_connection sendMessageSync:"vcVirtualTTYDeviceSendCharacter" arguments:v11];
 
@@ -386,7 +386,7 @@
   return v12;
 }
 
-- (BOOL)sendText:(id)a3
+- (BOOL)sendText:(id)text
 {
   v37 = *MEMORY[0x1E69E9840];
   ErrorLogLevelForModule = VRTraceGetErrorLogLevelForModule();
@@ -408,7 +408,7 @@
         v29 = 1024;
         v30 = 130;
         v31 = 2112;
-        *v32 = a3;
+        *v32 = text;
         _os_log_impl(&dword_1DB56E000, v8, OS_LOG_TYPE_DEFAULT, "AVCVirtualTTYDevice [%s] %s:%d Sending text:%@", buf, 0x26u);
       }
     }
@@ -419,12 +419,12 @@
     }
   }
 
-  if ([a3 length])
+  if ([text length])
   {
     v10 = 0;
     do
     {
-      v11 = [a3 characterAtIndex:v10];
+      v11 = [text characterAtIndex:v10];
       if (VRTraceGetErrorLogLevelForModule() >= 8)
       {
         v12 = VRTraceErrorLogLevelToCSTR();
@@ -434,7 +434,7 @@
         {
           if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
           {
-            v15 = [a3 length];
+            v15 = [text length];
             *buf = 136316674;
             v26 = v12;
             v27 = 2080;
@@ -455,7 +455,7 @@
 
         else if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
         {
-          v16 = [a3 length];
+          v16 = [text length];
           *buf = 136316674;
           v26 = v12;
           v27 = 2080;
@@ -477,13 +477,13 @@
       ++v10;
     }
 
-    while (v10 < [a3 length]);
+    while (v10 < [text length]);
   }
 
   isStarted = self->_isStarted;
   if (isStarted)
   {
-    v18 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{a3, @"vcMediaStreamDictionary", 0}];
+    v18 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{text, @"vcMediaStreamDictionary", 0}];
     [(AVConferenceXPCClient *)self->_connection sendMessageSync:"vcVirtualTTYDeviceSendText" arguments:v18];
 
     MEMORY[0x1E128B580](&dword_1DB56E000, "@:@ AVCVirtualTTYDevice-sendText");

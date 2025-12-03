@@ -1,32 +1,32 @@
 @interface TSPDocumentProperties
-+ (BOOL)documentIsEncryptedAtURL:(id)a3;
++ (BOOL)documentIsEncryptedAtURL:(id)l;
 + (id)documentPropertiesRelativePath;
-+ (id)documentRevisionAtURL:(id)a3;
-+ (id)documentUUIDAtURL:(id)a3;
-+ (id)keychainGenericItemForDocumentUUID:(id)a3;
++ (id)documentRevisionAtURL:(id)l;
++ (id)documentUUIDAtURL:(id)l;
++ (id)keychainGenericItemForDocumentUUID:(id)d;
 + (id)shareIdentifierRelativePath;
-- (BOOL)writeToDocumentBundleURL:(id)a3 error:(id *)a4;
-- (BOOL)writeToDocumentURL:(id)a3 writerBlock:(id)a4 error:(id *)a5;
-- (BOOL)writeToPackageWriter:(id)a3 error:(id *)a4;
-- (BOOL)writeToPropertiesURL:(id)a3 error:(id *)a4;
+- (BOOL)writeToDocumentBundleURL:(id)l error:(id *)error;
+- (BOOL)writeToDocumentURL:(id)l writerBlock:(id)block error:(id *)error;
+- (BOOL)writeToPackageWriter:(id)writer error:(id *)error;
+- (BOOL)writeToPropertiesURL:(id)l error:(id *)error;
 - (NSUUID)shareUUID;
 - (NSUUID)stableDocumentUUID;
 - (NSUUID)versionUUID;
 - (TSPDocumentProperties)init;
-- (TSPDocumentProperties)initWithDocumentBundleURL:(id)a3 allowMissingPropertyList:(BOOL)a4 error:(id *)a5;
-- (TSPDocumentProperties)initWithFilePackageURL:(id)a3 zipArchive:(id)a4 allowMissingPropertyList:(BOOL)a5 error:(id *)a6;
-- (TSPDocumentProperties)initWithPropertiesURL:(id)a3 error:(id *)a4;
-- (id)UUIDFromDocumentProperties:(id)a3 key:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (TSPDocumentProperties)initWithDocumentBundleURL:(id)l allowMissingPropertyList:(BOOL)list error:(id *)error;
+- (TSPDocumentProperties)initWithFilePackageURL:(id)l zipArchive:(id)archive allowMissingPropertyList:(BOOL)list error:(id *)error;
+- (TSPDocumentProperties)initWithPropertiesURL:(id)l error:(id *)error;
+- (id)UUIDFromDocumentProperties:(id)properties key:(id)key;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)encodedPropertyListWithError:(id *)a3;
-- (id)hashPrivateUUIDWithDigest:(id)a3;
+- (id)encodedPropertyListWithError:(id *)error;
+- (id)hashPrivateUUIDWithDigest:(id)digest;
 - (void)clearIsNotClean;
-- (void)readDocumentPropertiesFromDictionary:(id)a3;
+- (void)readDocumentPropertiesFromDictionary:(id)dictionary;
 - (void)resetDocumentRevision;
-- (void)setAdditionalProperties:(id)a3;
+- (void)setAdditionalProperties:(id)properties;
 - (void)updateDocumentUUID;
-- (void)updateDocumentUUIDAndPreserveShareUUID:(BOOL)a3 preserveStableDocumentUUID:(BOOL)a4;
+- (void)updateDocumentUUIDAndPreserveShareUUID:(BOOL)d preserveStableDocumentUUID:(BOOL)iD;
 - (void)updateVersionUUID;
 @end
 
@@ -46,19 +46,19 @@
   return v3;
 }
 
-- (TSPDocumentProperties)initWithDocumentBundleURL:(id)a3 allowMissingPropertyList:(BOOL)a4 error:(id *)a5
+- (TSPDocumentProperties)initWithDocumentBundleURL:(id)l allowMissingPropertyList:(BOOL)list error:(id *)error
 {
-  v6 = a4;
-  v8 = a3;
+  listCopy = list;
+  lCopy = l;
   v14.receiver = self;
   v14.super_class = TSPDocumentProperties;
   v9 = [(TSPDocumentProperties *)&v14 init];
   if (v9)
   {
-    v10 = [objc_opt_class() documentPropertiesRelativePath];
-    v11 = [v8 URLByAppendingPathComponent:v10 isDirectory:0];
+    documentPropertiesRelativePath = [objc_opt_class() documentPropertiesRelativePath];
+    v11 = [lCopy URLByAppendingPathComponent:documentPropertiesRelativePath isDirectory:0];
 
-    v12 = [NSPropertyListSerialization tsu_propertyListWithContentsOfURL:v11 options:0 error:a5];
+    v12 = [NSPropertyListSerialization tsu_propertyListWithContentsOfURL:v11 options:0 error:error];
     if (v12)
     {
       objc_opt_class();
@@ -71,7 +71,7 @@ LABEL_8:
       }
     }
 
-    else if (v6)
+    else if (listCopy)
     {
       [(TSPDocumentProperties *)v9 updateDocumentUUIDAndPreserveShareUUID:0 preserveStableDocumentUUID:1];
       goto LABEL_8;
@@ -86,12 +86,12 @@ LABEL_9:
   return v9;
 }
 
-- (TSPDocumentProperties)initWithFilePackageURL:(id)a3 zipArchive:(id)a4 allowMissingPropertyList:(BOOL)a5 error:(id *)a6
+- (TSPDocumentProperties)initWithFilePackageURL:(id)l zipArchive:(id)archive allowMissingPropertyList:(BOOL)list error:(id *)error
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
-  if (!v11)
+  listCopy = list;
+  lCopy = l;
+  archiveCopy = archive;
+  if (!archiveCopy)
   {
     +[TSUAssertionHandler _atomicIncrementAssertCount];
     if (TSUAssertCat_init_token != -1)
@@ -116,18 +116,18 @@ LABEL_9:
   v14 = [(TSPDocumentProperties *)&v22 init];
   if (v14)
   {
-    v15 = [objc_opt_class() documentPropertiesRelativePath];
-    v16 = [v11 entryForName:v15];
+    documentPropertiesRelativePath = [objc_opt_class() documentPropertiesRelativePath];
+    v16 = [archiveCopy entryForName:documentPropertiesRelativePath];
 
-    v17 = [v11 tsp_dataForEntry:v16];
-    if (v17 && (v18 = objc_opt_class(), [NSPropertyListSerialization propertyListWithData:v17 options:0 format:0 error:a6], v19 = objc_claimAutoreleasedReturnValue(), TSUDynamicCast(v18, v19), v20 = objc_claimAutoreleasedReturnValue(), v19, v20))
+    v17 = [archiveCopy tsp_dataForEntry:v16];
+    if (v17 && (v18 = objc_opt_class(), [NSPropertyListSerialization propertyListWithData:v17 options:0 format:0 error:error], v19 = objc_claimAutoreleasedReturnValue(), TSUDynamicCast(v18, v19), v20 = objc_claimAutoreleasedReturnValue(), v19, v20))
     {
       [(TSPDocumentProperties *)v14 readDocumentPropertiesFromDictionary:v20];
     }
 
     else
     {
-      if (v7)
+      if (listCopy)
       {
         [(TSPDocumentProperties *)v14 updateDocumentUUIDAndPreserveShareUUID:0 preserveStableDocumentUUID:1];
 LABEL_15:
@@ -147,11 +147,11 @@ LABEL_16:
   return v14;
 }
 
-- (TSPDocumentProperties)initWithPropertiesURL:(id)a3 error:(id *)a4
+- (TSPDocumentProperties)initWithPropertiesURL:(id)l error:(id *)error
 {
-  v6 = a3;
+  lCopy = l;
   v7 = objc_opt_class();
-  v8 = [NSPropertyListSerialization tsu_propertyListWithContentsOfURL:v6 options:0 error:a4];
+  v8 = [NSPropertyListSerialization tsu_propertyListWithContentsOfURL:lCopy options:0 error:error];
   v9 = TSUDynamicCast(v7, v8);
 
   if (v9)
@@ -175,34 +175,34 @@ LABEL_16:
   return v11;
 }
 
-- (void)readDocumentPropertiesFromDictionary:(id)a3
+- (void)readDocumentPropertiesFromDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [(TSPDocumentProperties *)self UUIDFromDocumentProperties:v4 key:@"documentUUID"];
+  dictionaryCopy = dictionary;
+  v5 = [(TSPDocumentProperties *)self UUIDFromDocumentProperties:dictionaryCopy key:@"documentUUID"];
   documentUUID = self->_documentUUID;
   self->_documentUUID = v5;
 
-  v7 = [(TSPDocumentProperties *)self UUIDFromDocumentProperties:v4 key:@"versionUUID"];
+  v7 = [(TSPDocumentProperties *)self UUIDFromDocumentProperties:dictionaryCopy key:@"versionUUID"];
   versionUUID = self->_versionUUID;
   self->_versionUUID = v7;
 
-  v9 = [(TSPDocumentProperties *)self UUIDFromDocumentProperties:v4 key:@"shareUUID"];
+  v9 = [(TSPDocumentProperties *)self UUIDFromDocumentProperties:dictionaryCopy key:@"shareUUID"];
   shareUUID = self->_shareUUID;
   self->_shareUUID = v9;
 
-  v11 = [(TSPDocumentProperties *)self UUIDFromDocumentProperties:v4 key:@"stableDocumentUUID"];
+  v11 = [(TSPDocumentProperties *)self UUIDFromDocumentProperties:dictionaryCopy key:@"stableDocumentUUID"];
   stableDocumentUUID = self->_stableDocumentUUID;
   self->_stableDocumentUUID = v11;
 
-  v13 = [(TSPDocumentProperties *)self UUIDFromDocumentProperties:v4 key:@"privateUUID"];
+  v13 = [(TSPDocumentProperties *)self UUIDFromDocumentProperties:dictionaryCopy key:@"privateUUID"];
   privateUUID = self->_privateUUID;
   self->_privateUUID = v13;
 
-  v15 = [v4 objectForKeyedSubscript:@"fileFormatVersion"];
+  v15 = [dictionaryCopy objectForKeyedSubscript:@"fileFormatVersion"];
   self->_fileFormatVersion = UnsafePointer(v15);
 
   v16 = [TSPDocumentRevision alloc];
-  v17 = [v4 objectForKeyedSubscript:@"revision"];
+  v17 = [dictionaryCopy objectForKeyedSubscript:@"revision"];
   v18 = [(TSPDocumentRevision *)v16 initWithRevisionString:v17];
   revision = self->_revision;
   self->_revision = v18;
@@ -229,7 +229,7 @@ LABEL_16:
     self->_privateUUID = v20;
   }
 
-  v22 = [v4 mutableCopy];
+  v22 = [dictionaryCopy mutableCopy];
   v30 = 0u;
   v31 = 0u;
   v28 = 0u;
@@ -261,13 +261,13 @@ LABEL_16:
   self->_additionalProperties = v22;
 }
 
-- (id)UUIDFromDocumentProperties:(id)a3 key:(id)a4
+- (id)UUIDFromDocumentProperties:(id)properties key:(id)key
 {
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  propertiesCopy = properties;
+  keyCopy = key;
+  if (keyCopy)
   {
-    v7 = [v5 objectForKeyedSubscript:v6];
+    v7 = [propertiesCopy objectForKeyedSubscript:keyCopy];
     if (v7)
     {
       v8 = [[NSUUID alloc] initWithUUIDString:v7];
@@ -287,20 +287,20 @@ LABEL_16:
   return v8;
 }
 
-- (BOOL)writeToDocumentURL:(id)a3 writerBlock:(id)a4 error:(id *)a5
+- (BOOL)writeToDocumentURL:(id)l writerBlock:(id)block error:(id *)error
 {
-  v7 = a4;
-  v8 = [(TSPDocumentProperties *)self encodedPropertyListWithError:a5];
-  if (v8 && ([objc_opt_class() documentPropertiesRelativePath], v9 = objc_claimAutoreleasedReturnValue(), v10 = v7[2](v7, v8, v9), v9, v10))
+  blockCopy = block;
+  v8 = [(TSPDocumentProperties *)self encodedPropertyListWithError:error];
+  if (v8 && ([objc_opt_class() documentPropertiesRelativePath], v9 = objc_claimAutoreleasedReturnValue(), v10 = blockCopy[2](blockCopy, v8, v9), v9, v10))
   {
-    v11 = [(TSPDocumentProperties *)self shareUUID];
-    v12 = [v11 UUIDString];
-    v13 = [v12 dataUsingEncoding:4];
+    shareUUID = [(TSPDocumentProperties *)self shareUUID];
+    uUIDString = [shareUUID UUIDString];
+    v13 = [uUIDString dataUsingEncoding:4];
 
-    v14 = [objc_opt_class() shareIdentifierRelativePath];
-    v15 = v7[2](v7, v13, v14);
+    shareIdentifierRelativePath = [objc_opt_class() shareIdentifierRelativePath];
+    v15 = blockCopy[2](blockCopy, v13, shareIdentifierRelativePath);
 
-    if (a5)
+    if (error)
     {
       v16 = v15;
     }
@@ -312,7 +312,7 @@ LABEL_16:
 
     if ((v16 & 1) == 0)
     {
-      *a5 = [NSError tsp_saveDocumentErrorWithUserInfo:0];
+      *error = [NSError tsp_saveDocumentErrorWithUserInfo:0];
     }
   }
 
@@ -324,58 +324,58 @@ LABEL_16:
   return v15;
 }
 
-- (BOOL)writeToPackageWriter:(id)a3 error:(id *)a4
+- (BOOL)writeToPackageWriter:(id)writer error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 URL];
+  writerCopy = writer;
+  v7 = [writerCopy URL];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10002CDDC;
   v10[3] = &unk_1001C74E8;
-  v8 = v6;
+  v8 = writerCopy;
   v11 = v8;
-  v12 = a4;
-  LOBYTE(a4) = [(TSPDocumentProperties *)self writeToDocumentURL:v7 writerBlock:v10 error:a4];
+  errorCopy = error;
+  LOBYTE(error) = [(TSPDocumentProperties *)self writeToDocumentURL:v7 writerBlock:v10 error:error];
 
-  return a4;
+  return error;
 }
 
-- (BOOL)writeToDocumentBundleURL:(id)a3 error:(id *)a4
+- (BOOL)writeToDocumentBundleURL:(id)l error:(id *)error
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10002CEBC;
   v8[3] = &unk_1001C74E8;
-  v9 = a3;
-  v10 = a4;
-  v6 = v9;
-  LOBYTE(a4) = [(TSPDocumentProperties *)self writeToDocumentURL:v6 writerBlock:v8 error:a4];
+  lCopy = l;
+  errorCopy = error;
+  v6 = lCopy;
+  LOBYTE(error) = [(TSPDocumentProperties *)self writeToDocumentURL:v6 writerBlock:v8 error:error];
 
-  return a4;
+  return error;
 }
 
-- (id)encodedPropertyListWithError:(id *)a3
+- (id)encodedPropertyListWithError:(id *)error
 {
   v5 = self->_additionalProperties;
   v6 = [[NSMutableDictionary alloc] initWithCapacity:{-[NSDictionary count](v5, "count") + 5}];
-  v7 = [(TSPDocumentProperties *)self documentUUID];
-  v8 = [v7 UUIDString];
-  [v6 setObject:v8 forKeyedSubscript:@"documentUUID"];
+  documentUUID = [(TSPDocumentProperties *)self documentUUID];
+  uUIDString = [documentUUID UUIDString];
+  [v6 setObject:uUIDString forKeyedSubscript:@"documentUUID"];
 
-  v9 = [(TSPDocumentProperties *)self versionUUID];
-  v10 = [v9 UUIDString];
-  [v6 setObject:v10 forKeyedSubscript:@"versionUUID"];
+  versionUUID = [(TSPDocumentProperties *)self versionUUID];
+  uUIDString2 = [versionUUID UUIDString];
+  [v6 setObject:uUIDString2 forKeyedSubscript:@"versionUUID"];
 
-  v11 = [(TSPDocumentProperties *)self shareUUID];
-  v12 = [v11 UUIDString];
-  [v6 setObject:v12 forKeyedSubscript:@"shareUUID"];
+  shareUUID = [(TSPDocumentProperties *)self shareUUID];
+  uUIDString3 = [shareUUID UUIDString];
+  [v6 setObject:uUIDString3 forKeyedSubscript:@"shareUUID"];
 
-  v13 = [(TSPDocumentProperties *)self stableDocumentUUID];
-  v14 = [v13 UUIDString];
-  [v6 setObject:v14 forKeyedSubscript:@"stableDocumentUUID"];
+  stableDocumentUUID = [(TSPDocumentProperties *)self stableDocumentUUID];
+  uUIDString4 = [stableDocumentUUID UUIDString];
+  [v6 setObject:uUIDString4 forKeyedSubscript:@"stableDocumentUUID"];
 
-  v15 = [(NSUUID *)self->_privateUUID UUIDString];
-  [v6 setObject:v15 forKeyedSubscript:@"privateUUID"];
+  uUIDString5 = [(NSUUID *)self->_privateUUID UUIDString];
+  [v6 setObject:uUIDString5 forKeyedSubscript:@"privateUUID"];
 
   v16 = NSStringFromTSPVersion([(TSPDocumentProperties *)self fileFormatVersion]);
   [v6 setObject:v16 forKeyedSubscript:@"fileFormatVersion"];
@@ -384,8 +384,8 @@ LABEL_16:
   v18 = v17;
   if (v17)
   {
-    v19 = [(TSPDocumentRevision *)v17 revisionString];
-    [v6 setObject:v19 forKeyedSubscript:@"revision"];
+    revisionString = [(TSPDocumentRevision *)v17 revisionString];
+    [v6 setObject:revisionString forKeyedSubscript:@"revision"];
   }
 
   if (v5)
@@ -393,19 +393,19 @@ LABEL_16:
     [v6 addEntriesFromDictionary:v5];
   }
 
-  v20 = [NSPropertyListSerialization dataWithPropertyList:v6 format:200 options:0 error:a3];
+  v20 = [NSPropertyListSerialization dataWithPropertyList:v6 format:200 options:0 error:error];
 
   return v20;
 }
 
-- (BOOL)writeToPropertiesURL:(id)a3 error:(id *)a4
+- (BOOL)writeToPropertiesURL:(id)l error:(id *)error
 {
-  v6 = a3;
-  v7 = [(TSPDocumentProperties *)self encodedPropertyListWithError:a4];
+  lCopy = l;
+  v7 = [(TSPDocumentProperties *)self encodedPropertyListWithError:error];
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 writeToURL:v6 options:0 error:a4];
+    v9 = [v7 writeToURL:lCopy options:0 error:error];
   }
 
   else
@@ -416,33 +416,33 @@ LABEL_16:
   return v9;
 }
 
-+ (id)documentUUIDAtURL:(id)a3
++ (id)documentUUIDAtURL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   value[0] = 0;
   value[1] = 0;
-  v4 = [v3 path];
-  v5 = getxattr([v4 UTF8String], "com.apple.iwork.documentUUID", value, 0x10uLL, 0, 0) == 16;
+  path = [lCopy path];
+  v5 = getxattr([path UTF8String], "com.apple.iwork.documentUUID", value, 0x10uLL, 0, 0) == 16;
 
   if (v5)
   {
-    v6 = [[NSUUID alloc] initWithUUIDBytes:value];
+    documentUUID = [[NSUUID alloc] initWithUUIDBytes:value];
   }
 
   else
   {
-    v7 = [[TSPDocumentProperties alloc] initWithDocumentURL:v3 error:0];
-    v6 = [(TSPDocumentProperties *)v7 documentUUID];
+    v7 = [[TSPDocumentProperties alloc] initWithDocumentURL:lCopy error:0];
+    documentUUID = [(TSPDocumentProperties *)v7 documentUUID];
   }
 
-  return v6;
+  return documentUUID;
 }
 
-+ (id)documentRevisionAtURL:(id)a3
++ (id)documentRevisionAtURL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   v13 = 0;
-  v4 = [[TSPDocumentProperties alloc] initWithDocumentURL:v3 error:&v13];
+  v4 = [[TSPDocumentProperties alloc] initWithDocumentURL:lCopy error:&v13];
   v5 = v13;
   if (v5)
   {
@@ -456,46 +456,46 @@ LABEL_16:
     {
       v9 = objc_opt_class();
       v10 = NSStringFromClass(v9);
-      v11 = [v5 domain];
-      v12 = [v5 code];
+      domain = [v5 domain];
+      code = [v5 code];
       *buf = 138544130;
       v15 = v10;
       v16 = 2114;
-      v17 = v11;
+      v17 = domain;
       v18 = 2048;
-      v19 = v12;
+      v19 = code;
       v20 = 2112;
       v21 = v5;
       _os_log_error_impl(&_mh_execute_header, v6, OS_LOG_TYPE_ERROR, "Failed to read TSPDocumentProperties with error: errorClass=%{public}@, domain=%{public}@, code=%zd (%@) ", buf, 0x2Au);
     }
 
-    v7 = 0;
+    revision = 0;
   }
 
   else
   {
-    v7 = [(TSPDocumentProperties *)v4 revision];
+    revision = [(TSPDocumentProperties *)v4 revision];
   }
 
-  return v7;
+  return revision;
 }
 
-+ (BOOL)documentIsEncryptedAtURL:(id)a3
++ (BOOL)documentIsEncryptedAtURL:(id)l
 {
-  v3 = a3;
-  v4 = [v3 path];
+  lCopy = l;
+  path = [lCopy path];
   v5 = +[NSFileManager defaultManager];
   v11 = 0;
-  if (![v5 fileExistsAtPath:v4 isDirectory:&v11])
+  if (![v5 fileExistsAtPath:path isDirectory:&v11])
   {
     goto LABEL_10;
   }
 
   if (v11 != 1)
   {
-    if ([SFUZipArchive isZipArchiveAtPath:v4])
+    if ([SFUZipArchive isZipArchiveAtPath:path])
     {
-      v6 = [[SFUZipArchive alloc] initWithPath:v4 collapseCommonRootDirectory:1];
+      v6 = [[SFUZipArchive alloc] initWithPath:path collapseCommonRootDirectory:1];
       if (![(SFUZipArchive *)v6 isEncrypted])
       {
         v9 = [(SFUZipArchive *)v6 entryWithName:@".iwpv2"];
@@ -512,7 +512,7 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v6 = [v4 stringByAppendingPathComponent:@".iwpv2"];
+  v6 = [path stringByAppendingPathComponent:@".iwpv2"];
   if ([v5 fileExistsAtPath:v6])
   {
 LABEL_7:
@@ -520,7 +520,7 @@ LABEL_7:
     goto LABEL_9;
   }
 
-  v7 = [v4 stringByAppendingPathComponent:@".iwpv"];
+  v7 = [path stringByAppendingPathComponent:@".iwpv"];
   v8 = [v5 fileExistsAtPath:v7];
 
 LABEL_9:
@@ -529,10 +529,10 @@ LABEL_11:
   return v8;
 }
 
-+ (id)keychainGenericItemForDocumentUUID:(id)a3
++ (id)keychainGenericItemForDocumentUUID:(id)d
 {
-  v3 = [a3 UUIDString];
-  v4 = [v3 dataUsingEncoding:4];
+  uUIDString = [d UUIDString];
+  v4 = [uUIDString dataUsingEncoding:4];
 
   return v4;
 }
@@ -574,15 +574,15 @@ LABEL_11:
   _objc_release_x1();
 }
 
-- (void)updateDocumentUUIDAndPreserveShareUUID:(BOOL)a3 preserveStableDocumentUUID:(BOOL)a4
+- (void)updateDocumentUUIDAndPreserveShareUUID:(BOOL)d preserveStableDocumentUUID:(BOOL)iD
 {
   [(TSPDocumentProperties *)self updateDocumentUUID];
-  if (!a3)
+  if (!d)
   {
     objc_storeStrong(&self->_shareUUID, self->_documentUUID);
   }
 
-  if (!a4)
+  if (!iD)
   {
     documentUUID = self->_documentUUID;
 
@@ -639,9 +639,9 @@ LABEL_11:
   return v4;
 }
 
-- (id)hashPrivateUUIDWithDigest:(id)a3
+- (id)hashPrivateUUIDWithDigest:(id)digest
 {
-  v4 = a3;
+  digestCopy = digest;
   if (!self->_privateUUID)
   {
     +[TSUAssertionHandler _atomicIncrementAssertCount];
@@ -662,7 +662,7 @@ LABEL_11:
     +[TSUAssertionHandler logBacktraceThrottled];
   }
 
-  if (!v4)
+  if (!digestCopy)
   {
     +[TSUAssertionHandler _atomicIncrementAssertCount];
     if (TSUAssertCat_init_token != -1)
@@ -682,14 +682,14 @@ LABEL_11:
     +[TSUAssertionHandler logBacktraceThrottled];
   }
 
-  v9 = +[NSUUID tsu_UUIDWithNamespaceUUID:bytes:size:](NSUUID, "tsu_UUIDWithNamespaceUUID:bytes:size:", self->_privateUUID, [v4 digestData], 20);
+  v9 = +[NSUUID tsu_UUIDWithNamespaceUUID:bytes:size:](NSUUID, "tsu_UUIDWithNamespaceUUID:bytes:size:", self->_privateUUID, [digestCopy digestData], 20);
 
   return v9;
 }
 
-- (void)setAdditionalProperties:(id)a3
+- (void)setAdditionalProperties:(id)properties
 {
-  v3 = a3;
+  propertiesCopy = properties;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
@@ -710,7 +710,7 @@ LABEL_11:
         }
 
         v7 = *(*(&v18 + 1) + 8 * v6);
-        v8 = [v3 objectForKeyedSubscript:v7];
+        v8 = [propertiesCopy objectForKeyedSubscript:v7];
         v9 = v8 == 0;
 
         if (!v9)
@@ -754,7 +754,7 @@ LABEL_11:
     while (v4);
   }
 
-  v14 = [v3 copy];
+  v14 = [propertiesCopy copy];
   additionalProperties = self->_additionalProperties;
   self->_additionalProperties = v14;
 }
@@ -763,7 +763,7 @@ LABEL_11:
 {
   [(TSPDocumentProperties *)self updateVersionUUID];
   v3 = [TSPDocumentRevision alloc];
-  v6 = [(TSPDocumentProperties *)self versionUUID];
+  versionUUID = [(TSPDocumentProperties *)self versionUUID];
   v4 = [(TSPDocumentRevision *)v3 initWithSequence:0 identifier:?];
   revision = self->_revision;
   self->_revision = v4;
@@ -777,37 +777,37 @@ LABEL_11:
   self->_additionalProperties = v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_alloc_init(TSPDocumentProperties);
   if (v5)
   {
-    v6 = [(NSUUID *)self->_documentUUID copyWithZone:a3];
+    v6 = [(NSUUID *)self->_documentUUID copyWithZone:zone];
     documentUUID = v5->_documentUUID;
     v5->_documentUUID = v6;
 
-    v8 = [(NSUUID *)self->_versionUUID copyWithZone:a3];
+    v8 = [(NSUUID *)self->_versionUUID copyWithZone:zone];
     versionUUID = v5->_versionUUID;
     v5->_versionUUID = v8;
 
-    v10 = [(NSUUID *)self->_shareUUID copyWithZone:a3];
+    v10 = [(NSUUID *)self->_shareUUID copyWithZone:zone];
     shareUUID = v5->_shareUUID;
     v5->_shareUUID = v10;
 
-    v12 = [(NSUUID *)self->_stableDocumentUUID copyWithZone:a3];
+    v12 = [(NSUUID *)self->_stableDocumentUUID copyWithZone:zone];
     stableDocumentUUID = v5->_stableDocumentUUID;
     v5->_stableDocumentUUID = v12;
 
-    v14 = [(NSUUID *)self->_privateUUID copyWithZone:a3];
+    v14 = [(NSUUID *)self->_privateUUID copyWithZone:zone];
     privateUUID = v5->_privateUUID;
     v5->_privateUUID = v14;
 
     v5->_fileFormatVersion = self->_fileFormatVersion;
-    v16 = [(TSPDocumentRevision *)self->_revision copyWithZone:a3];
+    v16 = [(TSPDocumentRevision *)self->_revision copyWithZone:zone];
     revision = v5->_revision;
     v5->_revision = v16;
 
-    v18 = [(NSDictionary *)self->_additionalProperties copyWithZone:a3];
+    v18 = [(NSDictionary *)self->_additionalProperties copyWithZone:zone];
     additionalProperties = v5->_additionalProperties;
     v5->_additionalProperties = v18;
   }
@@ -819,12 +819,12 @@ LABEL_11:
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(TSPDocumentProperties *)self documentUUID];
-  v6 = [(TSPDocumentProperties *)self versionUUID];
-  v7 = [(TSPDocumentProperties *)self shareUUID];
-  v8 = [(TSPDocumentProperties *)self stableDocumentUUID];
-  v9 = [(TSPDocumentProperties *)self revision];
-  v10 = [NSString stringWithFormat:@"<%@ %p documentUUID:%@, versionUUID:%@, shareUUID:%@, stableDocumentUUID:%@, revision:%@>", v4, self, v5, v6, v7, v8, v9];
+  documentUUID = [(TSPDocumentProperties *)self documentUUID];
+  versionUUID = [(TSPDocumentProperties *)self versionUUID];
+  shareUUID = [(TSPDocumentProperties *)self shareUUID];
+  stableDocumentUUID = [(TSPDocumentProperties *)self stableDocumentUUID];
+  revision = [(TSPDocumentProperties *)self revision];
+  v10 = [NSString stringWithFormat:@"<%@ %p documentUUID:%@, versionUUID:%@, shareUUID:%@, stableDocumentUUID:%@, revision:%@>", v4, self, documentUUID, versionUUID, shareUUID, stableDocumentUUID, revision];
 
   return v10;
 }

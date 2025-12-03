@@ -1,24 +1,24 @@
 @interface DIClientService
 - (BOOL)hasIDs;
 - (BOOL)haveAllCharacteristicsBeenRead;
-- (DIClientService)initWithManager:(id)a3 peripheral:(id)a4 service:(id)a5;
+- (DIClientService)initWithManager:(id)manager peripheral:(id)peripheral service:(id)service;
 - (id)vendorIDSourceString;
-- (void)addReadCompleteListener:(id)a3;
+- (void)addReadCompleteListener:(id)listener;
 - (void)extractIDs;
-- (void)notifyListeners:(int)a3;
-- (void)peripheral:(id)a3 didDiscoverCharacteristicsForService:(id)a4 error:(id)a5;
-- (void)peripheral:(id)a3 didUpdateValueForCharacteristic:(id)a4 error:(id)a5;
-- (void)removeReadCompleteListener:(id)a3;
+- (void)notifyListeners:(int)listeners;
+- (void)peripheral:(id)peripheral didDiscoverCharacteristicsForService:(id)service error:(id)error;
+- (void)peripheral:(id)peripheral didUpdateValueForCharacteristic:(id)characteristic error:(id)error;
+- (void)removeReadCompleteListener:(id)listener;
 - (void)start;
 @end
 
 @implementation DIClientService
 
-- (DIClientService)initWithManager:(id)a3 peripheral:(id)a4 service:(id)a5
+- (DIClientService)initWithManager:(id)manager peripheral:(id)peripheral service:(id)service
 {
   v8.receiver = self;
   v8.super_class = DIClientService;
-  v5 = [(ClientService *)&v8 initWithManager:a3 peripheral:a4 service:a5];
+  v5 = [(ClientService *)&v8 initWithManager:manager peripheral:peripheral service:service];
   v6 = v5;
   if (v5)
   {
@@ -54,16 +54,16 @@
   v15[7] = v10;
   v11 = [NSArray arrayWithObjects:v15 count:8];
 
-  v12 = [(ClientService *)self peripheral];
-  v13 = [(ClientService *)self service];
-  [v12 discoverCharacteristics:v11 forService:v13];
+  peripheral = [(ClientService *)self peripheral];
+  service = [(ClientService *)self service];
+  [peripheral discoverCharacteristics:v11 forService:service];
 }
 
 - (BOOL)hasIDs
 {
-  v2 = [(DIClientService *)self pnpIDCharacteristic];
-  v3 = [v2 value];
-  v4 = v3 != 0;
+  pnpIDCharacteristic = [(DIClientService *)self pnpIDCharacteristic];
+  value = [pnpIDCharacteristic value];
+  v4 = value != 0;
 
   return v4;
 }
@@ -79,39 +79,39 @@
   return unreadCharacteristics;
 }
 
-- (void)addReadCompleteListener:(id)a3
+- (void)addReadCompleteListener:(id)listener
 {
-  v4 = a3;
+  listenerCopy = listener;
   if (_os_feature_enabled_impl())
   {
     if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEBUG))
     {
-      sub_100076AAC(v4, self);
-      if (!v4)
+      sub_100076AAC(listenerCopy, self);
+      if (!listenerCopy)
       {
         goto LABEL_8;
       }
     }
 
-    else if (!v4)
+    else if (!listenerCopy)
     {
       goto LABEL_8;
     }
 
-    v5 = [(DIClientService *)self readCompleteListeners];
-    v6 = [v5 containsObject:v4];
+    readCompleteListeners = [(DIClientService *)self readCompleteListeners];
+    v6 = [readCompleteListeners containsObject:listenerCopy];
 
     if ((v6 & 1) == 0)
     {
       v7 = [(NSArray *)self->_readCompleteListeners mutableCopy];
-      [v7 addObject:v4];
+      [v7 addObject:listenerCopy];
       v8 = [v7 copy];
       readCompleteListeners = self->_readCompleteListeners;
       self->_readCompleteListeners = v8;
 
       if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEBUG))
       {
-        sub_100076B20(v4, &self->_readCompleteListeners);
+        sub_100076B20(listenerCopy, &self->_readCompleteListeners);
       }
     }
   }
@@ -119,39 +119,39 @@
 LABEL_8:
 }
 
-- (void)removeReadCompleteListener:(id)a3
+- (void)removeReadCompleteListener:(id)listener
 {
-  v4 = a3;
+  listenerCopy = listener;
   if (_os_feature_enabled_impl())
   {
     if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEBUG))
     {
-      sub_100076B8C(v4, self);
-      if (!v4)
+      sub_100076B8C(listenerCopy, self);
+      if (!listenerCopy)
       {
         goto LABEL_8;
       }
     }
 
-    else if (!v4)
+    else if (!listenerCopy)
     {
       goto LABEL_8;
     }
 
-    v5 = [(DIClientService *)self readCompleteListeners];
-    v6 = [v5 containsObject:v4];
+    readCompleteListeners = [(DIClientService *)self readCompleteListeners];
+    v6 = [readCompleteListeners containsObject:listenerCopy];
 
     if (v6)
     {
       v7 = [(NSArray *)self->_readCompleteListeners mutableCopy];
-      [v7 removeObject:v4];
+      [v7 removeObject:listenerCopy];
       v8 = [v7 copy];
       readCompleteListeners = self->_readCompleteListeners;
       self->_readCompleteListeners = v8;
 
       if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEBUG))
       {
-        sub_100076C00(v4, &self->_readCompleteListeners);
+        sub_100076C00(listenerCopy, &self->_readCompleteListeners);
       }
     }
   }
@@ -161,9 +161,9 @@ LABEL_8:
 
 - (void)extractIDs
 {
-  v3 = [(DIClientService *)self pnpIDCharacteristic];
-  v4 = [v3 value];
-  v5 = [DataInputStream inputStreamWithData:v4 byteOrder:1];
+  pnpIDCharacteristic = [(DIClientService *)self pnpIDCharacteristic];
+  value = [pnpIDCharacteristic value];
+  v5 = [DataInputStream inputStreamWithData:value byteOrder:1];
 
   if ([v5 readUint8:&self->_vendorIDSource])
   {
@@ -177,19 +177,19 @@ LABEL_8:
           if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
           {
             v7 = v6;
-            v8 = [(ClientService *)self peripheral];
-            v9 = [v8 name];
-            v10 = [(DIClientService *)self vendorIDSourceString];
+            peripheral = [(ClientService *)self peripheral];
+            name = [peripheral name];
+            vendorIDSourceString = [(DIClientService *)self vendorIDSourceString];
             v11 = 138413314;
-            v12 = v9;
+            v12 = name;
             v13 = 2112;
-            v14 = v10;
+            v14 = vendorIDSourceString;
             v15 = 1024;
-            v16 = [(DIClientService *)self vendorID];
+            vendorID = [(DIClientService *)self vendorID];
             v17 = 1024;
-            v18 = [(DIClientService *)self productID];
+            productID = [(DIClientService *)self productID];
             v19 = 1024;
-            v20 = [(DIClientService *)self productVersion];
+            productVersion = [(DIClientService *)self productVersion];
             _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "PnP ID for peripheral %@: %@ / 0x%04X / 0x%04X / 0x%04X", &v11, 0x28u);
           }
         }
@@ -198,13 +198,13 @@ LABEL_8:
   }
 }
 
-- (void)peripheral:(id)a3 didDiscoverCharacteristicsForService:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didDiscoverCharacteristicsForService:(id)service error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  if (!a5)
+  peripheralCopy = peripheral;
+  serviceCopy = service;
+  if (!error)
   {
-    v56 = v9;
+    v56 = serviceCopy;
     if (_os_feature_enabled_impl())
     {
       v10 = objc_opt_new();
@@ -212,8 +212,8 @@ LABEL_8:
       v72 = 0u;
       v73 = 0u;
       v74 = 0u;
-      v11 = [v9 characteristics];
-      v12 = [v11 countByEnumeratingWithState:&v71 objects:v76 count:16];
+      characteristics = [serviceCopy characteristics];
+      v12 = [characteristics countByEnumeratingWithState:&v71 objects:v76 count:16];
       if (v12)
       {
         v13 = v12;
@@ -225,17 +225,17 @@ LABEL_8:
           {
             if (*v72 != v14)
             {
-              objc_enumerationMutation(v11);
+              objc_enumerationMutation(characteristics);
             }
 
-            v16 = [*(*(&v71 + 1) + 8 * v15) UUID];
-            [v10 addObject:v16];
+            uUID = [*(*(&v71 + 1) + 8 * v15) UUID];
+            [v10 addObject:uUID];
 
             v15 = v15 + 1;
           }
 
           while (v13 != v15);
-          v13 = [v11 countByEnumeratingWithState:&v71 objects:v76 count:16];
+          v13 = [characteristics countByEnumeratingWithState:&v71 objects:v76 count:16];
         }
 
         while (v13);
@@ -245,14 +245,14 @@ LABEL_8:
       unreadCharacteristics = self->_unreadCharacteristics;
       self->_unreadCharacteristics = v17;
 
-      v9 = v56;
+      serviceCopy = v56;
     }
 
     v69 = 0u;
     v70 = 0u;
     v67 = 0u;
     v68 = 0u;
-    obj = [v9 characteristics];
+    obj = [serviceCopy characteristics];
     v19 = [obj countByEnumeratingWithState:&v67 objects:v75 count:16];
     if (v19)
     {
@@ -277,36 +277,36 @@ LABEL_8:
           }
 
           v23 = *(*(&v67 + 1) + 8 * v22);
-          v24 = [(DIClientService *)self pnpIDCharacteristic];
-          if (v24)
+          pnpIDCharacteristic = [(DIClientService *)self pnpIDCharacteristic];
+          if (pnpIDCharacteristic)
           {
           }
 
           else
           {
-            v25 = [v23 UUID];
+            uUID2 = [v23 UUID];
             v26 = [CBUUID UUIDWithString:v65];
-            v27 = [v25 isEqual:v26];
+            v27 = [uUID2 isEqual:v26];
 
             if (v27)
             {
               [(DIClientService *)self setPnpIDCharacteristic:v23];
 LABEL_48:
-              [v8 readValueForCharacteristic:v23];
+              [peripheralCopy readValueForCharacteristic:v23];
               goto LABEL_49;
             }
           }
 
-          v28 = [(DIClientService *)self swRevisionCharacteristic];
-          if (v28)
+          swRevisionCharacteristic = [(DIClientService *)self swRevisionCharacteristic];
+          if (swRevisionCharacteristic)
           {
           }
 
           else
           {
-            v29 = [v23 UUID];
+            uUID3 = [v23 UUID];
             v30 = [CBUUID UUIDWithString:v64];
-            v31 = [v29 isEqual:v30];
+            v31 = [uUID3 isEqual:v30];
 
             if (v31)
             {
@@ -315,16 +315,16 @@ LABEL_48:
             }
           }
 
-          v32 = [(DIClientService *)self fwRevisionCharacteristic];
-          if (v32)
+          fwRevisionCharacteristic = [(DIClientService *)self fwRevisionCharacteristic];
+          if (fwRevisionCharacteristic)
           {
           }
 
           else
           {
-            v33 = [v23 UUID];
+            uUID4 = [v23 UUID];
             v34 = [CBUUID UUIDWithString:v63];
-            v35 = [v33 isEqual:v34];
+            v35 = [uUID4 isEqual:v34];
 
             if (v35)
             {
@@ -333,16 +333,16 @@ LABEL_48:
             }
           }
 
-          v36 = [(DIClientService *)self hwRevisionCharacteristic];
-          if (v36)
+          hwRevisionCharacteristic = [(DIClientService *)self hwRevisionCharacteristic];
+          if (hwRevisionCharacteristic)
           {
           }
 
           else
           {
-            v37 = [v23 UUID];
+            uUID5 = [v23 UUID];
             v38 = [CBUUID UUIDWithString:v62];
-            v39 = [v37 isEqual:v38];
+            v39 = [uUID5 isEqual:v38];
 
             if (v39)
             {
@@ -351,16 +351,16 @@ LABEL_48:
             }
           }
 
-          v40 = [(DIClientService *)self serialNumberCharacteristic];
-          if (v40)
+          serialNumberCharacteristic = [(DIClientService *)self serialNumberCharacteristic];
+          if (serialNumberCharacteristic)
           {
           }
 
           else
           {
-            v41 = [v23 UUID];
+            uUID6 = [v23 UUID];
             v42 = [CBUUID UUIDWithString:v61];
-            v43 = [v41 isEqual:v42];
+            v43 = [uUID6 isEqual:v42];
 
             if (v43)
             {
@@ -369,16 +369,16 @@ LABEL_48:
             }
           }
 
-          v44 = [(DIClientService *)self modelNumberCharacteristic];
-          if (v44)
+          modelNumberCharacteristic = [(DIClientService *)self modelNumberCharacteristic];
+          if (modelNumberCharacteristic)
           {
           }
 
           else
           {
-            v45 = [v23 UUID];
+            uUID7 = [v23 UUID];
             v46 = [CBUUID UUIDWithString:v60];
-            v47 = [v45 isEqual:v46];
+            v47 = [uUID7 isEqual:v46];
 
             if (v47)
             {
@@ -387,16 +387,16 @@ LABEL_48:
             }
           }
 
-          v48 = [(DIClientService *)self manufacturerNameCharacteristic];
-          if (v48)
+          manufacturerNameCharacteristic = [(DIClientService *)self manufacturerNameCharacteristic];
+          if (manufacturerNameCharacteristic)
           {
           }
 
           else
           {
-            v49 = [v23 UUID];
+            uUID8 = [v23 UUID];
             v50 = [CBUUID UUIDWithString:v59];
-            v51 = [v49 isEqual:v50];
+            v51 = [uUID8 isEqual:v50];
 
             if (v51)
             {
@@ -405,16 +405,16 @@ LABEL_48:
             }
           }
 
-          v52 = [(DIClientService *)self udiForMedicalDevicesCharacteristic];
-          if (v52)
+          udiForMedicalDevicesCharacteristic = [(DIClientService *)self udiForMedicalDevicesCharacteristic];
+          if (udiForMedicalDevicesCharacteristic)
           {
 
             goto LABEL_49;
           }
 
-          v53 = [v23 UUID];
+          uUID9 = [v23 UUID];
           v54 = [CBUUID UUIDWithString:v58];
-          v55 = [v53 isEqual:v54];
+          v55 = [uUID9 isEqual:v54];
 
           if (v55)
           {
@@ -435,26 +435,26 @@ LABEL_49:
     }
 
     [(ClientService *)self notifyDidStart];
-    v9 = v57;
+    serviceCopy = v57;
   }
 }
 
-- (void)peripheral:(id)a3 didUpdateValueForCharacteristic:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didUpdateValueForCharacteristic:(id)characteristic error:(id)error
 {
-  v53 = a4;
-  v6 = [v53 value];
-  v7 = [v6 length];
+  characteristicCopy = characteristic;
+  value = [characteristicCopy value];
+  v7 = [value length];
 
   if (!v7)
   {
     goto LABEL_26;
   }
 
-  if (_os_feature_enabled_impl() && (v8 = self->_unreadCharacteristics) != 0 && ([v53 UUID], v9 = objc_claimAutoreleasedReturnValue(), v10 = -[NSArray containsObject:](v8, "containsObject:", v9), v9, v10))
+  if (_os_feature_enabled_impl() && (v8 = self->_unreadCharacteristics) != 0 && ([characteristicCopy UUID], v9 = objc_claimAutoreleasedReturnValue(), v10 = -[NSArray containsObject:](v8, "containsObject:", v9), v9, v10))
   {
     v11 = [(NSArray *)self->_unreadCharacteristics mutableCopy];
-    v12 = [v53 UUID];
-    [v11 removeObject:v12];
+    uUID = [characteristicCopy UUID];
+    [v11 removeObject:uUID];
 
     v13 = [v11 copy];
     unreadCharacteristics = self->_unreadCharacteristics;
@@ -468,9 +468,9 @@ LABEL_49:
     v15 = 1;
   }
 
-  v16 = [(DIClientService *)self pnpIDCharacteristic];
+  pnpIDCharacteristic = [(DIClientService *)self pnpIDCharacteristic];
 
-  if (v16 == v53)
+  if (pnpIDCharacteristic == characteristicCopy)
   {
     [(DIClientService *)self extractIDs];
     v28 = 0;
@@ -478,13 +478,13 @@ LABEL_49:
 
   else
   {
-    v17 = [(DIClientService *)self swRevisionCharacteristic];
+    swRevisionCharacteristic = [(DIClientService *)self swRevisionCharacteristic];
 
-    if (v17 == v53)
+    if (swRevisionCharacteristic == characteristicCopy)
     {
       v29 = [NSString alloc];
-      v30 = [v53 value];
-      v31 = [v29 initWithData:v30 encoding:4];
+      value2 = [characteristicCopy value];
+      v31 = [v29 initWithData:value2 encoding:4];
       softwareRevision = self->_softwareRevision;
       self->_softwareRevision = v31;
 
@@ -493,13 +493,13 @@ LABEL_49:
 
     else
     {
-      v18 = [(DIClientService *)self fwRevisionCharacteristic];
+      fwRevisionCharacteristic = [(DIClientService *)self fwRevisionCharacteristic];
 
-      if (v18 == v53)
+      if (fwRevisionCharacteristic == characteristicCopy)
       {
         v33 = [NSString alloc];
-        v34 = [v53 value];
-        v35 = [v33 initWithData:v34 encoding:4];
+        value3 = [characteristicCopy value];
+        v35 = [v33 initWithData:value3 encoding:4];
         firmwareRevision = self->_firmwareRevision;
         self->_firmwareRevision = v35;
 
@@ -508,13 +508,13 @@ LABEL_49:
 
       else
       {
-        v19 = [(DIClientService *)self hwRevisionCharacteristic];
+        hwRevisionCharacteristic = [(DIClientService *)self hwRevisionCharacteristic];
 
-        if (v19 == v53)
+        if (hwRevisionCharacteristic == characteristicCopy)
         {
           v37 = [NSString alloc];
-          v38 = [v53 value];
-          v39 = [v37 initWithData:v38 encoding:4];
+          value4 = [characteristicCopy value];
+          v39 = [v37 initWithData:value4 encoding:4];
           hardwareRevision = self->_hardwareRevision;
           self->_hardwareRevision = v39;
 
@@ -523,27 +523,27 @@ LABEL_49:
 
         else
         {
-          v20 = [(DIClientService *)self serialNumberCharacteristic];
+          serialNumberCharacteristic = [(DIClientService *)self serialNumberCharacteristic];
 
-          if (v20 == v53)
+          if (serialNumberCharacteristic == characteristicCopy)
           {
             v41 = [NSString alloc];
-            v42 = [v53 value];
+            value5 = [characteristicCopy value];
             v28 = 4;
-            v43 = [v41 initWithData:v42 encoding:4];
+            v43 = [v41 initWithData:value5 encoding:4];
             serialNumber = self->_serialNumber;
             self->_serialNumber = v43;
           }
 
           else
           {
-            v21 = [(DIClientService *)self modelNumberCharacteristic];
+            modelNumberCharacteristic = [(DIClientService *)self modelNumberCharacteristic];
 
-            if (v21 == v53)
+            if (modelNumberCharacteristic == characteristicCopy)
             {
               v45 = [NSString alloc];
-              v46 = [v53 value];
-              v47 = [v45 initWithData:v46 encoding:4];
+              value6 = [characteristicCopy value];
+              v47 = [v45 initWithData:value6 encoding:4];
               modelNumber = self->_modelNumber;
               self->_modelNumber = v47;
 
@@ -552,13 +552,13 @@ LABEL_49:
 
             else
             {
-              v22 = [(DIClientService *)self manufacturerNameCharacteristic];
+              manufacturerNameCharacteristic = [(DIClientService *)self manufacturerNameCharacteristic];
 
-              if (v22 == v53)
+              if (manufacturerNameCharacteristic == characteristicCopy)
               {
                 v49 = [NSString alloc];
-                v50 = [v53 value];
-                v51 = [v49 initWithData:v50 encoding:4];
+                value7 = [characteristicCopy value];
+                v51 = [v49 initWithData:value7 encoding:4];
                 manufacturerName = self->_manufacturerName;
                 self->_manufacturerName = v51;
 
@@ -567,16 +567,16 @@ LABEL_49:
 
               else
               {
-                v23 = [(DIClientService *)self udiForMedicalDevicesCharacteristic];
+                udiForMedicalDevicesCharacteristic = [(DIClientService *)self udiForMedicalDevicesCharacteristic];
 
-                if (v23 != v53)
+                if (udiForMedicalDevicesCharacteristic != characteristicCopy)
                 {
                   goto LABEL_24;
                 }
 
                 v24 = [NSString alloc];
-                v25 = [v53 value];
-                v26 = [v24 initWithData:v25 encoding:4];
+                value8 = [characteristicCopy value];
+                v26 = [v24 initWithData:value8 encoding:4];
                 udiForMedicalDevices = self->_udiForMedicalDevices;
                 self->_udiForMedicalDevices = v26;
 
@@ -599,19 +599,19 @@ LABEL_24:
 LABEL_26:
 }
 
-- (void)notifyListeners:(int)a3
+- (void)notifyListeners:(int)listeners
 {
-  v4 = &stru_1000BEA00;
+  firmwareRevision = &stru_1000BEA00;
   v5 = @"Unknown";
-  if (a3 <= 3)
+  if (listeners <= 3)
   {
-    if (a3 > 1)
+    if (listeners > 1)
     {
-      if (a3 == 2)
+      if (listeners == 2)
       {
-        v4 = [(DIClientService *)self firmwareRevision];
+        firmwareRevision = [(DIClientService *)self firmwareRevision];
         v5 = @"FirmwareRevision";
-        if (v4)
+        if (firmwareRevision)
         {
           goto LABEL_33;
         }
@@ -619,25 +619,25 @@ LABEL_26:
 
       else
       {
-        v4 = [(DIClientService *)self hardwareRevision];
+        firmwareRevision = [(DIClientService *)self hardwareRevision];
         v5 = @"HardwareRevision";
-        if (v4)
+        if (firmwareRevision)
         {
           goto LABEL_33;
         }
       }
     }
 
-    else if (a3)
+    else if (listeners)
     {
-      if (a3 != 1)
+      if (listeners != 1)
       {
         goto LABEL_33;
       }
 
-      v4 = [(DIClientService *)self softwareRevision];
+      firmwareRevision = [(DIClientService *)self softwareRevision];
       v5 = @"SoftwareRevision";
-      if (v4)
+      if (firmwareRevision)
       {
         goto LABEL_33;
       }
@@ -645,22 +645,22 @@ LABEL_26:
 
     else
     {
-      v4 = [NSString stringWithFormat:@"PID:0x%04X VID:0x%04X", self->_productID, self->_vendorID];
+      firmwareRevision = [NSString stringWithFormat:@"PID:0x%04X VID:0x%04X", self->_productID, self->_vendorID];
       v5 = @"PnP";
-      if (v4)
+      if (firmwareRevision)
       {
         goto LABEL_33;
       }
     }
   }
 
-  else if (a3 <= 5)
+  else if (listeners <= 5)
   {
-    if (a3 == 4)
+    if (listeners == 4)
     {
-      v4 = [(DIClientService *)self serialNumber];
+      firmwareRevision = [(DIClientService *)self serialNumber];
       v5 = @"SerialNumber";
-      if (v4)
+      if (firmwareRevision)
       {
         goto LABEL_33;
       }
@@ -668,20 +668,20 @@ LABEL_26:
 
     else
     {
-      v4 = [(DIClientService *)self modelNumber];
+      firmwareRevision = [(DIClientService *)self modelNumber];
       v5 = @"ModelNumber";
-      if (v4)
+      if (firmwareRevision)
       {
         goto LABEL_33;
       }
     }
   }
 
-  else if (a3 == 6)
+  else if (listeners == 6)
   {
-    v4 = [(DIClientService *)self manufacturerName];
+    firmwareRevision = [(DIClientService *)self manufacturerName];
     v5 = @"ManufacturerName";
-    if (v4)
+    if (firmwareRevision)
     {
       goto LABEL_33;
     }
@@ -689,9 +689,9 @@ LABEL_26:
 
   else
   {
-    if (a3 != 7)
+    if (listeners != 7)
     {
-      if (a3 == 8 && _os_feature_enabled_impl())
+      if (listeners == 8 && _os_feature_enabled_impl())
       {
         v26 = 0u;
         v27 = 0u;
@@ -713,10 +713,10 @@ LABEL_26:
               }
 
               v11 = *(*(&v24 + 1) + 8 * i);
-              v12 = [(ClientService *)self peripheral];
-              v13 = [v12 identifier];
-              v14 = [v13 UUIDString];
-              [v11 deviceInformation:self readCompleteForDeviceUUID:v14];
+              peripheral = [(ClientService *)self peripheral];
+              identifier = [peripheral identifier];
+              uUIDString = [identifier UUIDString];
+              [v11 deviceInformation:self readCompleteForDeviceUUID:uUIDString];
             }
 
             v8 = [(NSArray *)v6 countByEnumeratingWithState:&v24 objects:v30 count:16];
@@ -729,47 +729,47 @@ LABEL_26:
       }
 
 LABEL_33:
-      v15 = [(ClientService *)self peripheral];
-      v16 = [v15 name];
-      NSLog(@"Updated DeviceInformation for %@‘s %@ - %@", v16, v5, v4);
+      peripheral2 = [(ClientService *)self peripheral];
+      name = [peripheral2 name];
+      NSLog(@"Updated DeviceInformation for %@‘s %@ - %@", name, v5, firmwareRevision);
 
       v17 = +[NSNotificationCenter defaultCenter];
       v28[0] = @"UUID";
-      v18 = [(ClientService *)self peripheral];
-      v19 = [v18 identifier];
-      v20 = [v19 UUIDString];
+      peripheral3 = [(ClientService *)self peripheral];
+      identifier2 = [peripheral3 identifier];
+      uUIDString2 = [identifier2 UUIDString];
       v28[1] = v5;
-      v29[0] = v20;
-      v29[1] = v4;
+      v29[0] = uUIDString2;
+      v29[1] = firmwareRevision;
       v21 = [NSDictionary dictionaryWithObjects:v29 forKeys:v28 count:2];
       [v17 postNotificationName:@"DeviceInformationUpdate" object:self userInfo:v21];
 
       return;
     }
 
-    v4 = [(DIClientService *)self udiForMedicalDevices];
+    firmwareRevision = [(DIClientService *)self udiForMedicalDevices];
     v5 = @"UDIForMedicalDevices";
-    if (v4)
+    if (firmwareRevision)
     {
       goto LABEL_33;
     }
   }
 
-  v23 = [(ClientService *)self peripheral];
-  v22 = [v23 name];
-  NSLog(@"Error updating DeviceInformation for %@‘s %@ - %@", v22, v5, 0);
+  peripheral4 = [(ClientService *)self peripheral];
+  name2 = [peripheral4 name];
+  NSLog(@"Error updating DeviceInformation for %@‘s %@ - %@", name2, v5, 0);
 }
 
 - (id)vendorIDSourceString
 {
-  v2 = [(DIClientService *)self vendorIDSource];
+  vendorIDSource = [(DIClientService *)self vendorIDSource];
   v3 = @"Unknown";
-  if (v2 == 2)
+  if (vendorIDSource == 2)
   {
     v3 = @"USB";
   }
 
-  if (v2 == 1)
+  if (vendorIDSource == 1)
   {
     return @"BT";
   }

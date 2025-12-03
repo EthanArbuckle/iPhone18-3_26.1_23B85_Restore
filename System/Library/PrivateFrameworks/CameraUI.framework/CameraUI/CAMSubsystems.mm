@@ -1,12 +1,12 @@
 @interface CAMSubsystems
-- (CAMSubsystems)initWithLaunchOptions:(id)a3;
+- (CAMSubsystems)initWithLaunchOptions:(id)options;
 @end
 
 @implementation CAMSubsystems
 
-- (CAMSubsystems)initWithLaunchOptions:(id)a3
+- (CAMSubsystems)initWithLaunchOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v75.receiver = self;
   v75.super_class = CAMSubsystems;
   v5 = [(CAMSubsystems *)&v75 init];
@@ -15,43 +15,43 @@
     v74 = +[CAMCaptureCapabilities capabilities];
     if ([v74 hasSystemTelephonyOfAnyKind])
     {
-      v6 = [[CAMCallStatusMonitor alloc] initDisabledForLaunch];
+      initDisabledForLaunch = [[CAMCallStatusMonitor alloc] initDisabledForLaunch];
     }
 
     else
     {
-      v6 = 0;
+      initDisabledForLaunch = 0;
     }
 
-    v66 = v4;
-    v7 = [[CAMUserPreferenceOverrides alloc] initWithLaunchOptions:v4];
+    v66 = optionsCopy;
+    v7 = [[CAMUserPreferenceOverrides alloc] initWithLaunchOptions:optionsCopy];
     v8 = +[CAMUserPreferences preferences];
-    v73 = v6;
+    v73 = initDisabledForLaunch;
     v65 = v7;
-    v63 = [v8 readPreferencesWithOverrides:v7 emulationMode:0 callActive:objc_msgSend(v6 shouldResetCaptureConfiguration:{"isCallActive"), 0}];
-    v9 = [v8 captureConfiguration];
-    v71 = [v8 conflictingControlConfiguration];
+    v63 = [v8 readPreferencesWithOverrides:v7 emulationMode:0 callActive:objc_msgSend(initDisabledForLaunch shouldResetCaptureConfiguration:{"isCallActive"), 0}];
+    captureConfiguration = [v8 captureConfiguration];
+    conflictingControlConfiguration = [v8 conflictingControlConfiguration];
     v10 = objc_alloc_init(CAMMotionController);
     v11 = objc_alloc_init(CAMLocationController);
     v12 = objc_alloc_init(CAMPowerController);
     v13 = objc_alloc_init(CAMProtectionController);
     v60 = objc_alloc_init(CAMKeepAliveController);
     v57 = objc_alloc_init(CAMCameraRollController);
-    v14 = [[CAMRemoteShutterController alloc] initWithCaptureConfiguration:v9 motionController:v10];
+    v14 = [[CAMRemoteShutterController alloc] initWithCaptureConfiguration:captureConfiguration motionController:v10];
     v70 = objc_alloc_init(CAMNebulaDaemonProxyManager);
     v15 = [[CAMBurstController alloc] initWithProtectionController:v13 powerController:v12 remoteShutterController:v14];
     v51 = [[CAMPersistenceController alloc] initWithLocationController:v11 burstController:v15 protectionController:v13 powerController:v12 irisVideoController:0];
     [(CAMBurstController *)v15 setPersistenceController:?];
-    [CAMCaptureConfiguration captureGraphConfigurationUsingConfiguration:v9 outputToExternalStorage:0 captureOrientation:[(CAMMotionController *)v10 captureOrientation]];
+    [CAMCaptureConfiguration captureGraphConfigurationUsingConfiguration:captureConfiguration outputToExternalStorage:0 captureOrientation:[(CAMMotionController *)v10 captureOrientation]];
     v62 = v64 = v8;
     [v8 defaultZoomFactorForGraphConfiguration:v62 captureOrientation:-[CAMMotionController captureOrientation](v10 outputToExternalStorage:{"captureOrientation"), 0}];
     v69 = v14;
     v67 = v12;
     v61 = v13;
-    v72 = v9;
+    v72 = captureConfiguration;
     v16 = v11;
     v59 = v15;
-    v18 = [[CUCaptureController alloc] initWithCaptureConfiguration:v9 zoomFactor:0 outputToExternalStorage:0 engineOptions:v11 locationController:v10 motionController:v15 burstController:v17 protectionController:v13 powerController:v12 irisVideoController:0 remoteShutterController:v14];
+    v18 = [[CUCaptureController alloc] initWithCaptureConfiguration:captureConfiguration zoomFactor:0 outputToExternalStorage:0 engineOptions:v11 locationController:v10 motionController:v15 burstController:v17 protectionController:v13 powerController:v12 irisVideoController:0 remoteShutterController:v14];
     v19 = objc_alloc_init(CAMStorageController);
     v20 = 0;
     if ([v74 librarySelectionSupported])
@@ -60,12 +60,12 @@
     }
 
     v21 = [[CAMTimelapseController alloc] initWithCaptureController:v18 locationController:v11 motionController:v10 persistenceController:v51 storageController:v19 librarySelectionController:v20 nebulaDaemonProxyManager:v70];
-    v22 = [MEMORY[0x1E69DC938] currentDevice];
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
     v23 = v20;
     v53 = v20;
-    v24 = [v22 cam_initialLayoutStyle];
+    cam_initialLayoutStyle = [currentDevice cam_initialLayoutStyle];
 
-    v25 = [[CAMViewfinderViewController alloc] initWithCaptureController:v18 captureConfiguration:v72 conflictingControlConfiguration:v71 locationController:v11 motionController:v10 timelapseController:v21 keepAliveController:v60 remoteShutterController:v69 powerController:v67 cameraRollController:v57 librarySelectionController:v23 callStatusMonitor:v73 storageController:v19 usingEmulationMode:0 initialLayoutStyle:v24 options:0];
+    v25 = [[CAMViewfinderViewController alloc] initWithCaptureController:v18 captureConfiguration:v72 conflictingControlConfiguration:conflictingControlConfiguration locationController:v11 motionController:v10 timelapseController:v21 keepAliveController:v60 remoteShutterController:v69 powerController:v67 cameraRollController:v57 librarySelectionController:v23 callStatusMonitor:v73 storageController:v19 usingEmulationMode:0 initialLayoutStyle:cam_initialLayoutStyle options:0];
     [(CAMRemoteShutterController *)v69 setDelegate:v25];
     [(CAMTimelapseController *)v21 restoreConfiguration];
     [(CUCaptureController *)v18 registerCaptureService:v51];
@@ -131,7 +131,7 @@
     v5->_configuredFromLaunchOptions = v63;
     v48 = v5;
 
-    v4 = v66;
+    optionsCopy = v66;
   }
 
   return v5;

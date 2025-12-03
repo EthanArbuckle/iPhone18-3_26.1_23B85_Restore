@@ -1,24 +1,24 @@
 @interface AADeviceListResponse
-- (AADeviceListResponse)initWithHTTPResponse:(id)a3 data:(id)a4;
+- (AADeviceListResponse)initWithHTTPResponse:(id)response data:(id)data;
 @end
 
 @implementation AADeviceListResponse
 
-- (AADeviceListResponse)initWithHTTPResponse:(id)a3 data:(id)a4
+- (AADeviceListResponse)initWithHTTPResponse:(id)response data:(id)data
 {
   v34 = *MEMORY[0x1E69E9840];
   v28.receiver = self;
   v28.super_class = AADeviceListResponse;
-  v4 = [(AAResponse *)&v28 initWithHTTPResponse:a3 data:a4];
+  v4 = [(AAResponse *)&v28 initWithHTTPResponse:response data:data];
   v5 = v4;
   if (v4)
   {
-    v6 = [(AAResponse *)v4 responseDictionary];
-    v7 = [v6 objectForKeyedSubscript:@"devices"];
+    responseDictionary = [(AAResponse *)v4 responseDictionary];
+    v7 = [responseDictionary objectForKeyedSubscript:@"devices"];
 
     if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v8 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       v24 = 0u;
       v25 = 0u;
       v26 = 0u;
@@ -45,7 +45,7 @@
             {
               v15 = [AADevice alloc];
               v16 = [(AADevice *)v15 initWithDictionary:v14, v24];
-              [(NSArray *)v8 addObject:v16];
+              [(NSArray *)array addObject:v16];
             }
 
             ++v13;
@@ -59,16 +59,16 @@
       }
 
       devices = v5->_devices;
-      v5->_devices = v8;
+      v5->_devices = array;
     }
 
     else
     {
-      v18 = [(AAResponse *)v5 responseDictionary];
-      devices = [v18 objectForKeyedSubscript:@"status"];
+      responseDictionary2 = [(AAResponse *)v5 responseDictionary];
+      devices = [responseDictionary2 objectForKeyedSubscript:@"status"];
 
-      v19 = [(AAResponse *)v5 responseDictionary];
-      v20 = [v19 objectForKeyedSubscript:@"status-message"];
+      responseDictionary3 = [(AAResponse *)v5 responseDictionary];
+      v20 = [responseDictionary3 objectForKeyedSubscript:@"status-message"];
 
       v21 = _AALogSystem();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))

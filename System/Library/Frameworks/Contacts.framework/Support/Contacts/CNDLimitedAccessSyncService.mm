@@ -4,16 +4,16 @@
 - (BOOL)startLimitedAccessTableUpdateEventNotifyWatchTimer;
 - (CNDLimitedAccessSyncService)init;
 - (id)beginService;
-- (id)convertStringtoIntArray:(id)a3;
+- (id)convertStringtoIntArray:(id)array;
 - (void)cancelLimitedAccessTableUpdateEventNotifyWatchTimer;
 - (void)connectWithCompanionDevice;
-- (void)handleBundleIdentifiers:(id)a3;
-- (void)handleNotificationName:(id)a3;
+- (void)handleBundleIdentifiers:(id)identifiers;
+- (void)handleNotificationName:(id)name;
 - (void)invalidateCompanionClient;
 - (void)notifyConnectedWatch;
-- (void)onEventhandler:(id)a3;
-- (void)onRapportDeviceFound:(id)a3;
-- (void)onRapportDeviceLost:(id)a3;
+- (void)onEventhandler:(id)eventhandler;
+- (void)onRapportDeviceFound:(id)found;
+- (void)onRapportDeviceLost:(id)lost;
 - (void)sendSyncRequest;
 @end
 
@@ -37,7 +37,7 @@
   block[1] = 3221225472;
   block[2] = sub_100012B38;
   block[3] = &unk_100045580;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10004E1E0 != -1)
   {
     dispatch_once(&qword_10004E1E0, block);
@@ -59,15 +59,15 @@
     fDispatchQueue = v2->_fDispatchQueue;
     v2->_fDispatchQueue = v3;
 
-    v5 = [(CNDLimitedAccessSyncService *)v2 beginService];
+    beginService = [(CNDLimitedAccessSyncService *)v2 beginService];
   }
 
   else
   {
-    v5 = 0;
+    beginService = 0;
   }
 
-  return v5;
+  return beginService;
 }
 
 - (id)beginService
@@ -117,47 +117,47 @@
   return self;
 }
 
-- (void)onRapportDeviceFound:(id)a3
+- (void)onRapportDeviceFound:(id)found
 {
-  v5 = a3;
+  foundCopy = found;
   v6 = [objc_opt_class() log];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
-    v7 = [v5 model];
-    v8 = [v5 name];
-    v9 = [v5 effectiveIdentifier];
+    model = [foundCopy model];
+    name = [foundCopy name];
+    effectiveIdentifier = [foundCopy effectiveIdentifier];
     v12 = 138412803;
-    v13 = v7;
+    v13 = model;
     v14 = 2112;
-    v15 = v8;
+    v15 = name;
     v16 = 2113;
-    v17 = v9;
+    v17 = effectiveIdentifier;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "#Rapport discovered nearby device model:%@, name:%@,effectiveID:%{private}@ ", &v12, 0x20u);
   }
 
-  v10 = [v5 effectiveIdentifier];
-  v11 = [v10 hasPrefix:@"BTPipe"];
+  effectiveIdentifier2 = [foundCopy effectiveIdentifier];
+  v11 = [effectiveIdentifier2 hasPrefix:@"BTPipe"];
 
   if (v11)
   {
-    objc_storeStrong(&self->_linkedDevice, a3);
+    objc_storeStrong(&self->_linkedDevice, found);
   }
 }
 
-- (void)onRapportDeviceLost:(id)a3
+- (void)onRapportDeviceLost:(id)lost
 {
-  v4 = a3;
+  lostCopy = lost;
   v5 = [objc_opt_class() log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [(RPCompanionLinkDevice *)v4 name];
+    name = [(RPCompanionLinkDevice *)lostCopy name];
     v9 = 138412290;
-    v10 = v6;
+    v10 = name;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Device Lost:name:%@", &v9, 0xCu);
   }
 
   linkedDevice = self->_linkedDevice;
-  if (linkedDevice == v4)
+  if (linkedDevice == lostCopy)
   {
     self->_linkedDevice = 0;
 
@@ -175,21 +175,21 @@
   self->_companionClient = 0;
 }
 
-- (void)onEventhandler:(id)a3
+- (void)onEventhandler:(id)eventhandler
 {
-  v4 = a3;
+  eventhandlerCopy = eventhandler;
   v5 = [objc_opt_class() log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [v4 objectForKeyedSubscript:@"kABLimitedAccessEventKeyType"];
+    v6 = [eventhandlerCopy objectForKeyedSubscript:@"kABLimitedAccessEventKeyType"];
     v10 = 138412290;
     v11 = v6;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "onEventhandler eventDict %@", &v10, 0xCu);
   }
 
-  if (v4)
+  if (eventhandlerCopy)
   {
-    v7 = [v4 objectForKeyedSubscript:@"kABLimitedAccessEventKeyType"];
+    v7 = [eventhandlerCopy objectForKeyedSubscript:@"kABLimitedAccessEventKeyType"];
     v8 = [v7 isEqualToString:@"SyncTableUpdate"];
 
     if (v8)
@@ -222,12 +222,12 @@
   {
     if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
     {
-      v5 = [(RPCompanionLinkDevice *)self->_linkedDevice effectiveIdentifier];
-      v6 = [(RPCompanionLinkDevice *)self->_linkedDevice model];
+      effectiveIdentifier = [(RPCompanionLinkDevice *)self->_linkedDevice effectiveIdentifier];
+      model = [(RPCompanionLinkDevice *)self->_linkedDevice model];
       *buf = 138478083;
-      v17 = v5;
+      v17 = effectiveIdentifier;
       v18 = 2112;
-      v19 = v6;
+      v19 = model;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "connecting with companion device, activating %{private}@ %@", buf, 0x16u);
     }
 
@@ -250,7 +250,7 @@
     v11[2] = sub_1000138C8;
     v11[3] = &unk_100045D68;
     v12 = v9;
-    v13 = self;
+    selfCopy = self;
     [(RPCompanionLinkClient *)v10 activateWithCompletion:v11];
   }
 
@@ -270,12 +270,12 @@
   {
     if (v6)
     {
-      v7 = [(RPCompanionLinkDevice *)self->_linkedDevice effectiveIdentifier];
-      v8 = [(RPCompanionLinkDevice *)self->_linkedDevice model];
+      effectiveIdentifier = [(RPCompanionLinkDevice *)self->_linkedDevice effectiveIdentifier];
+      model = [(RPCompanionLinkDevice *)self->_linkedDevice model];
       *buf = 138478083;
-      v16 = v7;
+      v16 = effectiveIdentifier;
       v17 = 2112;
-      v18 = v8;
+      v18 = model;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Activating connection with device %{private}@ %@", buf, 0x16u);
     }
 
@@ -308,18 +308,18 @@
   }
 }
 
-- (void)handleNotificationName:(id)a3
+- (void)handleNotificationName:(id)name
 {
-  if ([a3 isEqualToString:@"CNContactStoreLimitedAccessDidChangeNotification"])
+  if ([name isEqualToString:@"CNContactStoreLimitedAccessDidChangeNotification"])
   {
 
     [(CNDLimitedAccessSyncService *)self startLimitedAccessTableUpdateEventNotifyWatchTimer];
   }
 }
 
-- (void)handleBundleIdentifiers:(id)a3
+- (void)handleBundleIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   v5 = [objc_opt_class() log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -327,20 +327,20 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "handleBundleIdentifiers unregistered app", buf, 2u);
   }
 
-  v6 = [(CNDLimitedAccessSyncService *)self fDispatchQueue];
+  fDispatchQueue = [(CNDLimitedAccessSyncService *)self fDispatchQueue];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1000140B0;
   v8[3] = &unk_100045690;
-  v9 = v4;
-  v10 = self;
-  v7 = v4;
-  dispatch_async(v6, v8);
+  v9 = identifiersCopy;
+  selfCopy = self;
+  v7 = identifiersCopy;
+  dispatch_async(fDispatchQueue, v8);
 }
 
-- (id)convertStringtoIntArray:(id)a3
+- (id)convertStringtoIntArray:(id)array
 {
-  v3 = [a3 componentsSeparatedByString:{@", "}];
+  v3 = [array componentsSeparatedByString:{@", "}];
   v4 = +[NSMutableArray array];
   v12 = 0u;
   v13 = 0u;
@@ -408,10 +408,10 @@
     v9 = [objc_opt_class() log];
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
-      v10 = [(RPCompanionLinkClient *)self->_companionClient destinationDevice];
-      v11 = [v10 effectiveIdentifier];
+      destinationDevice = [(RPCompanionLinkClient *)self->_companionClient destinationDevice];
+      effectiveIdentifier = [destinationDevice effectiveIdentifier];
       *buf = 138478083;
-      v17 = v11;
+      v17 = effectiveIdentifier;
       v18 = 2112;
       v19 = v5;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "sendRequest device %{private}@ last sequence num %@", buf, 0x16u);

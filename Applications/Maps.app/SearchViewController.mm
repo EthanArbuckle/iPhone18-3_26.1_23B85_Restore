@@ -1,11 +1,11 @@
 @interface SearchViewController
-- (BOOL)shouldInjectVenueSearchResult:(id)a3;
-- (BOOL)shouldQuickActionMenuPresenter:(id)a3 showDirectionsToPlace:(id)a4;
+- (BOOL)shouldInjectVenueSearchResult:(id)result;
+- (BOOL)shouldQuickActionMenuPresenter:(id)presenter showDirectionsToPlace:(id)place;
 - (BOOL)shouldShowSearchOverlay;
 - (BOOL)supportsFullTextSearch;
-- (BOOL)textFieldShouldBeginEditing:(id)a3;
-- (BOOL)textFieldShouldClear:(id)a3;
-- (BOOL)textFieldShouldReturn:(id)a3;
+- (BOOL)textFieldShouldBeginEditing:(id)editing;
+- (BOOL)textFieldShouldClear:(id)clear;
+- (BOOL)textFieldShouldReturn:(id)return;
 - (BOOL)useSingleColumnLayout;
 - (Class)viewClass;
 - (MapsDragDestinationHandler)mapsDragDestinationHandler;
@@ -15,8 +15,8 @@
 - (PersonalizedItemManager)personalizedItemManager;
 - (PersonalizedItemSource)suggestionsItemSource;
 - (SearchViewController)init;
-- (SearchViewController)initWithHomeActionDelegate:(id)a3 searchDataSourceDelegate:(id)a4;
-- (SearchViewController)initWithSearchAlongRoute:(BOOL)a3;
+- (SearchViewController)initWithHomeActionDelegate:(id)delegate searchDataSourceDelegate:(id)sourceDelegate;
+- (SearchViewController)initWithSearchAlongRoute:(BOOL)route;
 - (ShareDelegate)homeShareDelegate;
 - (UIEdgeInsets)_calculateAccessoryTouchInsets;
 - (UIEdgeInsets)_calculateSearchBarInsets;
@@ -26,20 +26,20 @@
 - (double)_contentAlphaForCurrentLayout;
 - (double)_searchBarAccessoryWidth;
 - (double)heightForContaineeLayoutMedium;
-- (double)heightForLayout:(unint64_t)a3;
+- (double)heightForLayout:(unint64_t)layout;
 - (double)topSpaceForScrollPocket;
 - (id)_homeViewController;
 - (id)browseModeHeaderView;
 - (id)browseOfflineMapsString;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4 itemIdentifier:(id)a5;
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5;
-- (id)createConstraintsForSearchBarAccessoryView:(id)a3;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path itemIdentifier:(id)identifier;
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path;
+- (id)createConstraintsForSearchBarAccessoryView:(id)view;
 - (id)currentSearchSession;
 - (id)defaultSearchQueryToRetain;
 - (id)keyCommands;
 - (id)lastViewportChangeDate;
 - (id)localSearchViewController;
-- (id)mapServiceTraitsForQuickActionPresenter:(id)a3;
+- (id)mapServiceTraitsForQuickActionPresenter:(id)presenter;
 - (id)newTraits;
 - (id)offlinePlaceholderKey;
 - (id)offlinePlaceholderQueue;
@@ -47,80 +47,80 @@
 - (id)searchDataSource;
 - (id)searchHomeDataSource;
 - (id)searchResultsViewController;
-- (id)targetForAction:(SEL)a3 withSender:(id)a4;
-- (id)textDroppableView:(id)a3 proposalForDrop:(id)a4;
+- (id)targetForAction:(SEL)action withSender:(id)sender;
+- (id)textDroppableView:(id)view proposalForDrop:(id)drop;
 - (int)currentMapViewTargetForAnalytics;
 - (int)currentUITargetForAnalytics;
-- (int)listForDataSource:(id)a3;
+- (int)listForDataSource:(id)source;
 - (int64_t)currentDataSourceType;
 - (int64_t)floatingControlsOptions;
-- (void)_addRecentPlaceForSearchResult:(id)a3;
+- (void)_addRecentPlaceForSearchResult:(id)result;
 - (void)_addVenueObserver;
 - (void)_configureForceTouchIfNeeded;
 - (void)_configureSearchBarIfNeeded;
-- (void)_continueUpdateSearchFieldWithUpdatingSearchText:(BOOL)a3;
-- (void)_enableTextFieldNotification:(BOOL)a3;
+- (void)_continueUpdateSearchFieldWithUpdatingSearchText:(BOOL)text;
+- (void)_enableTextFieldNotification:(BOOL)notification;
 - (void)_hideSearchHereControl;
-- (void)_initOfflinePlaceHolderWithCompletion:(id)a3;
-- (void)_initPlaceholderWithSubmitTicketIfNeeded:(BOOL)a3;
+- (void)_initOfflinePlaceHolderWithCompletion:(id)completion;
+- (void)_initPlaceholderWithSubmitTicketIfNeeded:(BOOL)needed;
 - (void)_internalViewDidAppear;
 - (void)_internalViewDidDisappear;
 - (void)_internalViewWillAppear;
 - (void)_internalViewWillDisappear;
-- (void)_invalidateSearchSession:(id)a3;
+- (void)_invalidateSearchSession:(id)session;
 - (void)_offlineSettingChangeHandler;
-- (void)_popToHomeWithCompletion:(id)a3;
+- (void)_popToHomeWithCompletion:(id)completion;
 - (void)_preventAutoPresentingKeyboard_rdar_126940251;
 - (void)_restoreRetainedQueryIfNeeded;
 - (void)_setPlaceHolder;
 - (void)_setupOfflinePlaceholder;
 - (void)_setupOnlinePlaceholder;
-- (void)_shouldHideOfflineHeaderView:(BOOL)a3;
+- (void)_shouldHideOfflineHeaderView:(BOOL)view;
 - (void)_startMonitoringCoreRoutine;
-- (void)_textFieldDidChange:(id)a3;
-- (void)_textFieldDidChange:(id)a3 tappedQuerySuggestionCompletion:(id)a4;
-- (void)_updateDefaultLayoutWithContainerStyle:(unint64_t)a3;
-- (void)_updateHeaderHairlineAlphaWithContentAlpha:(double)a3 animated:(BOOL)a4;
+- (void)_textFieldDidChange:(id)change;
+- (void)_textFieldDidChange:(id)change tappedQuerySuggestionCompletion:(id)completion;
+- (void)_updateDefaultLayoutWithContainerStyle:(unint64_t)style;
+- (void)_updateHeaderHairlineAlphaWithContentAlpha:(double)alpha animated:(BOOL)animated;
 - (void)_updateSearchFieldText;
-- (void)_updateSearchFieldWithItem:(id)a3 updatingSearchText:(BOOL)a4;
+- (void)_updateSearchFieldWithItem:(id)item updatingSearchText:(BOOL)text;
 - (void)_updateUserProfileEntryPointButton;
 - (void)_updateUserProfileEntryPointImage;
 - (void)addCloseSearchResultsButtonBesidesSearchBar;
-- (void)addRefreshFooter:(BOOL)a3 animated:(BOOL)a4;
-- (void)addSupportedChildActionToTraits:(id)a3;
-- (void)applyAlphaToContent:(double)a3;
+- (void)addRefreshFooter:(BOOL)footer animated:(BOOL)animated;
+- (void)addSupportedChildActionToTraits:(id)traits;
+- (void)applyAlphaToContent:(double)content;
 - (void)cleanSearch;
-- (void)closeSearchResultsButtonAction:(id)a3;
-- (void)dataSource:(id)a3 itemTapped:(id)a4 childItemParent:(id)a5;
-- (void)dataSourceUpdated:(id)a3;
+- (void)closeSearchResultsButtonAction:(id)action;
+- (void)dataSource:(id)source itemTapped:(id)tapped childItemParent:(id)parent;
+- (void)dataSourceUpdated:(id)updated;
 - (void)didBecomeCurrent;
-- (void)didChangeFocusedVenue:(id)a3 focusedBuilding:(id)a4 displayedFloorOrdinal:(signed __int16)a5;
-- (void)didChangeLayout:(unint64_t)a3;
+- (void)didChangeFocusedVenue:(id)venue focusedBuilding:(id)building displayedFloorOrdinal:(signed __int16)ordinal;
+- (void)didChangeLayout:(unint64_t)layout;
 - (void)didResignCurrent;
-- (void)didSelectBrowseCategoryAtIndex:(unint64_t)a3;
-- (void)didSelectCompactGuideModelAtIndex:(unint64_t)a3;
-- (void)didSelectGuideModelAtIndex:(unint64_t)a3 sectionIndex:(int64_t)a4;
-- (void)didSelectRecentAtIndex:(unint64_t)a3;
+- (void)didSelectBrowseCategoryAtIndex:(unint64_t)index;
+- (void)didSelectCompactGuideModelAtIndex:(unint64_t)index;
+- (void)didSelectGuideModelAtIndex:(unint64_t)index sectionIndex:(int64_t)sectionIndex;
+- (void)didSelectRecentAtIndex:(unint64_t)index;
 - (void)didStartDownloadFromAutocomplete;
-- (void)didTapOnCuratedGuide:(id)a3;
-- (void)didTapOnCuratedGuides:(id)a3;
-- (void)didTapOnHomePinnedLibraryItem:(id)a3;
-- (void)didTapOnUserGeneratedGuide:(id)a3;
-- (void)didTapToUnpinLibraryItem:(id)a3;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
+- (void)didTapOnCuratedGuide:(id)guide;
+- (void)didTapOnCuratedGuides:(id)guides;
+- (void)didTapOnHomePinnedLibraryItem:(id)item;
+- (void)didTapOnUserGeneratedGuide:(id)guide;
+- (void)didTapToUnpinLibraryItem:(id)item;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
 - (void)didUpdateSearchResults;
-- (void)displaySearchResultsWithViewController:(id)a3 searchBar:(id)a4;
-- (void)editCollection:(id)a3;
+- (void)displaySearchResultsWithViewController:(id)controller searchBar:(id)bar;
+- (void)editCollection:(id)collection;
 - (void)endEditing;
 - (void)endSearch;
 - (void)endSearchForTesting;
-- (void)fetchMapItemWithIdentifier:(id)a3 completion:(id)a4;
-- (void)fetchSearchCompletion:(id)a3 completion:(id)a4;
-- (void)handleDismissAction:(id)a3;
-- (void)headerViewButtonTapped:(id)a3 buttonType:(unint64_t)a4;
+- (void)fetchMapItemWithIdentifier:(id)identifier completion:(id)completion;
+- (void)fetchSearchCompletion:(id)completion completion:(id)a4;
+- (void)handleDismissAction:(id)action;
+- (void)headerViewButtonTapped:(id)tapped buttonType:(unint64_t)type;
 - (void)homeContentDidUpdate;
 - (void)homeDidTapMarkMyLocation;
-- (void)homeDidTapOnContainment:(id)a3 forResults:(id)a4;
+- (void)homeDidTapOnContainment:(id)containment forResults:(id)results;
 - (void)homeDidTapPinnedPlaces;
 - (void)homeDidTapPlaces;
 - (void)homeDidTapRecentlyAdded;
@@ -130,96 +130,96 @@
 - (void)homeDidTapShareMyLocation;
 - (void)homeDidTapTermsAndConditions;
 - (void)homeDidTapVisitedPlaces;
-- (void)homeSectionHeaderButtonTapped:(int64_t)a3;
+- (void)homeSectionHeaderButtonTapped:(int64_t)tapped;
 - (void)invalidateSearchSession;
-- (void)localSearchViewControllerSizeDidChange:(id)a3;
-- (void)localSearchViewShouldBeVisibleDidChange:(id)a3;
-- (void)logOfflineBrowseMode:(BOOL)a3;
-- (void)macMenuPresentationControllerDidDismiss:(id)a3;
-- (void)mapView:(id)a3 didChangeMapType:(unint64_t)a4;
-- (void)mapView:(id)a3 didChangeUserTrackingMode:(int64_t)a4 animated:(BOOL)a5 fromTrackingButton:(BOOL)a6;
-- (void)mapView:(id)a3 didStopRespondingToGesture:(int64_t)a4 zoomDirection:(int64_t)a5 zoomGestureType:(int64_t)a6 didDecelerate:(BOOL)a7 tiltDirection:(int64_t)a8;
-- (void)mapView:(id)a3 regionDidChangeAnimated:(BOOL)a4;
-- (void)mapView:(id)a3 willStartRespondingToGesture:(int64_t)a4 animated:(BOOL)a5;
-- (void)mapViewDidChangeVisibleRegion:(id)a3;
-- (void)popoverDismissed:(id)a3;
+- (void)localSearchViewControllerSizeDidChange:(id)change;
+- (void)localSearchViewShouldBeVisibleDidChange:(id)change;
+- (void)logOfflineBrowseMode:(BOOL)mode;
+- (void)macMenuPresentationControllerDidDismiss:(id)dismiss;
+- (void)mapView:(id)view didChangeMapType:(unint64_t)type;
+- (void)mapView:(id)view didChangeUserTrackingMode:(int64_t)mode animated:(BOOL)animated fromTrackingButton:(BOOL)button;
+- (void)mapView:(id)view didStopRespondingToGesture:(int64_t)gesture zoomDirection:(int64_t)direction zoomGestureType:(int64_t)type didDecelerate:(BOOL)decelerate tiltDirection:(int64_t)tiltDirection;
+- (void)mapView:(id)view regionDidChangeAnimated:(BOOL)animated;
+- (void)mapView:(id)view willStartRespondingToGesture:(int64_t)gesture animated:(BOOL)animated;
+- (void)mapViewDidChangeVisibleRegion:(id)region;
+- (void)popoverDismissed:(id)dismissed;
 - (void)pptSearchBarShouldProvideTextChangeNotification;
-- (void)pptSelectACSuggestionMatchingAddress:(id)a3;
+- (void)pptSelectACSuggestionMatchingAddress:(id)address;
 - (void)pptSelectFirstCuratedCollection;
 - (void)pptSelectFirstGuidePublisher;
 - (void)pptSelectSeeAllCuratedCollections;
 - (void)pptSetSearchDataSource;
-- (void)preferredContentSizeChanged:(id)a3;
+- (void)preferredContentSizeChanged:(id)changed;
 - (void)presentUserProfile;
-- (void)quickActionMenuPresenter:(id)a3 selectedCall:(id)a4;
-- (void)quickActionMenuPresenter:(id)a3 selectedDirectionsTo:(id)a4;
-- (void)quickActionMenuPresenter:(id)a3 selectedRemoveDroppedPinOf:(id)a4;
-- (void)quickActionMenuPresenter:(id)a3 selectedShareLocationOf:(id)a4;
-- (void)quickActionMenuPresenter:(id)a3 selectedShowPlaceCard:(id)a4;
-- (void)quickActionMenuPresenter:(id)a3 selectedViewWebsiteFor:(id)a4;
+- (void)quickActionMenuPresenter:(id)presenter selectedCall:(id)call;
+- (void)quickActionMenuPresenter:(id)presenter selectedDirectionsTo:(id)to;
+- (void)quickActionMenuPresenter:(id)presenter selectedRemoveDroppedPinOf:(id)of;
+- (void)quickActionMenuPresenter:(id)presenter selectedShareLocationOf:(id)of;
+- (void)quickActionMenuPresenter:(id)presenter selectedShowPlaceCard:(id)card;
+- (void)quickActionMenuPresenter:(id)presenter selectedViewWebsiteFor:(id)for;
 - (void)refreshCurrentSearch;
 - (void)reloadContentTableView;
 - (void)resetMapServiceTicket;
 - (void)resetOfflineTextSearchSupport;
-- (void)restoreSearchItem:(id)a3;
+- (void)restoreSearchItem:(id)item;
 - (void)retainSearchQuery;
-- (void)retainSearchQueryForSelectedAutocompleteItem:(id)a3 forTimeInterval:(double)a4;
-- (void)retainSearchQueryForSelectedSearchResult:(id)a3;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
-- (void)searchBar:(id)a3 didPasteMapsLink:(id)a4;
+- (void)retainSearchQueryForSelectedAutocompleteItem:(id)item forTimeInterval:(double)interval;
+- (void)retainSearchQueryForSelectedSearchResult:(id)result;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
+- (void)searchBar:(id)bar didPasteMapsLink:(id)link;
 - (void)searchBarBecomeFirstResponder;
-- (void)searchBarCancelButtonClicked:(id)a3;
-- (void)searchBarTextDidBeginEditing:(id)a3;
-- (void)searchDataSource:(id)a3 replaceQueryWithItem:(id)a4;
+- (void)searchBarCancelButtonClicked:(id)clicked;
+- (void)searchBarTextDidBeginEditing:(id)editing;
+- (void)searchDataSource:(id)source replaceQueryWithItem:(id)item;
 - (void)seeAllTappedForCollections;
 - (void)seeAllTappedForRecents;
 - (void)seeAllTappedForUserGuides;
-- (void)selectNearbyCategoryAtIndex:(unint64_t)a3;
-- (void)sendACRequestWithTappedQuerySuggestionCompletion:(id)a3 retainQueryMetadata:(id)a4;
+- (void)selectNearbyCategoryAtIndex:(unint64_t)index;
+- (void)sendACRequestWithTappedQuerySuggestionCompletion:(id)completion retainQueryMetadata:(id)metadata;
 - (void)sendSearchRequest;
-- (void)setCurrentDataSource:(id)a3;
+- (void)setCurrentDataSource:(id)source;
 - (void)setNeedsUpdateContentState;
-- (void)setPersonalizedItemManager:(id)a3;
-- (void)shareCollection:(id)a3 collection:(id)a4;
+- (void)setPersonalizedItemManager:(id)manager;
+- (void)shareCollection:(id)collection collection:(id)a4;
 - (void)showCitySelector;
-- (void)showCollection:(id)a3;
-- (void)showDropDownIfNeeded:(BOOL)a3;
-- (void)showGuidesHomeFromExploreGuides:(id)a3;
-- (void)showRegionSelectorForMapItem:(id)a3;
-- (void)showSearchResults:(id)a3;
-- (void)showSearchingHereIfNeeded:(BOOL)a3;
-- (void)showTitleBarSeparatorWhenScrolling:(BOOL)a3;
-- (void)textDroppableView:(id)a3 dropSessionDidEnd:(id)a4;
-- (void)textDroppableView:(id)a3 willPerformDrop:(id)a4;
-- (void)textFieldDidBeginEditing:(id)a3;
-- (void)textFieldDidEndEditing:(id)a3;
-- (void)triggerAutocompleteByReplacingQueryWithCompletion:(id)a3;
+- (void)showCollection:(id)collection;
+- (void)showDropDownIfNeeded:(BOOL)needed;
+- (void)showGuidesHomeFromExploreGuides:(id)guides;
+- (void)showRegionSelectorForMapItem:(id)item;
+- (void)showSearchResults:(id)results;
+- (void)showSearchingHereIfNeeded:(BOOL)needed;
+- (void)showTitleBarSeparatorWhenScrolling:(BOOL)scrolling;
+- (void)textDroppableView:(id)view dropSessionDidEnd:(id)end;
+- (void)textDroppableView:(id)view willPerformDrop:(id)drop;
+- (void)textFieldDidBeginEditing:(id)editing;
+- (void)textFieldDidEndEditing:(id)editing;
+- (void)triggerAutocompleteByReplacingQueryWithCompletion:(id)completion;
 - (void)updateCloseSearchResultEntryPointButton;
-- (void)updateConstraintsForHideableFooterForWasVisible:(BOOL)a3 isVisible:(BOOL)a4;
+- (void)updateConstraintsForHideableFooterForWasVisible:(BOOL)visible isVisible:(BOOL)isVisible;
 - (void)updateContentState;
 - (void)updateDataSource;
 - (void)updateIsTouristHereValue;
-- (void)updateRefreshFooterAnimated:(BOOL)a3;
+- (void)updateRefreshFooterAnimated:(BOOL)animated;
 - (void)updateRowHeightForCurrentDataSource;
 - (void)updateSearchBarContentInsets;
-- (void)updateSearchFieldWithItem:(id)a3;
+- (void)updateSearchFieldWithItem:(id)item;
 - (void)updateTheme;
-- (void)viewControllerDidSelectBrowseVenue:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewControllerDidSelectBrowseVenue:(id)venue;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 - (void)viewLayoutMarginsDidChange;
 - (void)viewSafeAreaInsetsDidChange;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)willBecomeCurrent:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)willBecomeCurrent:(BOOL)current;
 - (void)willBecomeCurrentByGesture;
-- (void)willChangeContainerStyle:(unint64_t)a3;
-- (void)willChangeLayout:(unint64_t)a3;
-- (void)willResignCurrent:(BOOL)a3;
+- (void)willChangeContainerStyle:(unint64_t)style;
+- (void)willChangeLayout:(unint64_t)layout;
+- (void)willResignCurrent:(BOOL)current;
 @end
 
 @implementation SearchViewController
@@ -242,7 +242,7 @@
 {
   if ((_UISolariumEnabled() & 1) != 0 || sub_10000FA08(self) != 5)
   {
-    v4 = [(SearchViewController *)self childViewControllers];
+    childViewControllers = [(SearchViewController *)self childViewControllers];
     v7 = 0;
     v8 = &v7;
     v9 = 0x3032000000;
@@ -254,7 +254,7 @@
     v6[2] = sub_10003FFE4;
     v6[3] = &unk_101655CC0;
     v6[4] = &v7;
-    [v4 enumerateObjectsUsingBlock:v6];
+    [childViewControllers enumerateObjectsUsingBlock:v6];
     v3 = v8[5];
     _Block_object_dispose(&v7, 8);
   }
@@ -276,10 +276,10 @@
     v5 = v4;
     sub_100068BB8();
     v7 = v6;
-    v8 = [(ContaineeViewController *)self cardPresentationController];
-    v9 = [v8 containerStyle];
+    cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+    containerStyle = [cardPresentationController containerStyle];
 
-    if (v9 == 6)
+    if (containerStyle == 6)
     {
       if (self->_currentDataSource)
       {
@@ -329,24 +329,24 @@
   self->_mapsSuggestionsLoadingSearchQueue = v4;
 
   self->_isConfigured = 0;
-  v6 = [(SearchViewController *)self isSearchingAlongTheRoute];
-  v7 = [(ContaineeViewController *)self cardPresentationController];
-  v8 = v7;
-  if (v6)
+  isSearchingAlongTheRoute = [(SearchViewController *)self isSearchingAlongTheRoute];
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  v8 = cardPresentationController;
+  if (isSearchingAlongTheRoute)
   {
-    [v7 setBlurInCardView:0];
+    [cardPresentationController setBlurInCardView:0];
 
-    v9 = [UIColor colorNamed:@"NavigationMaterialColor"];
-    v10 = [(ContaineeViewController *)self cardPresentationController];
-    [v10 setCardColor:v9];
+    cardPresentationController3 = [UIColor colorNamed:@"NavigationMaterialColor"];
+    cardPresentationController2 = [(ContaineeViewController *)self cardPresentationController];
+    [cardPresentationController2 setCardColor:cardPresentationController3];
   }
 
   else
   {
-    [v7 setAllowResizeInFloatingStyle:1];
+    [cardPresentationController setAllowResizeInFloatingStyle:1];
 
-    v9 = [(ContaineeViewController *)self cardPresentationController];
-    [v9 setFirstCard:1];
+    cardPresentationController3 = [(ContaineeViewController *)self cardPresentationController];
+    [cardPresentationController3 setFirstCard:1];
   }
 
   v11 = objc_alloc_init(RetainedQueryController);
@@ -360,25 +360,25 @@
   [(PassthruSearchBar *)self->_searchBar setTranslatesAutoresizingMaskIntoConstraints:0];
   [(PassthruSearchBar *)self->_searchBar setDelegate:self];
   [(PassthruSearchBar *)self->_searchBar setTextFieldDelegate:self];
-  v15 = [(ContaineeViewController *)self headerView];
-  v16 = [v15 heightAnchor];
-  v17 = [v16 constraintEqualToConstant:0.0];
+  headerView = [(ContaineeViewController *)self headerView];
+  heightAnchor = [headerView heightAnchor];
+  v17 = [heightAnchor constraintEqualToConstant:0.0];
   collapsedHeaderHeightConstraint = self->_collapsedHeaderHeightConstraint;
   self->_collapsedHeaderHeightConstraint = v17;
 
   v136 = sub_10000FA08(self);
-  v19 = [(ContaineeViewController *)self headerView];
-  [v19 addSubview:self->_searchBar];
+  headerView2 = [(ContaineeViewController *)self headerView];
+  [headerView2 addSubview:self->_searchBar];
 
-  v20 = [(PassthruSearchBar *)self->_searchBar searchTextField];
+  searchTextField = [(PassthruSearchBar *)self->_searchBar searchTextField];
   searchField = self->_searchField;
-  self->_searchField = v20;
+  self->_searchField = searchTextField;
 
   self->_isOfflineBrowseRecordedAlready = 0;
   v22 = +[MapsOfflineUIHelper sharedHelper];
-  v23 = [v22 isUsingOfflineMaps];
+  isUsingOfflineMaps = [v22 isUsingOfflineMaps];
 
-  if (v23)
+  if (isUsingOfflineMaps)
   {
     [(SearchViewController *)self _setupOfflinePlaceholder];
     [(SearchViewController *)self _initOfflinePlaceHolderWithCompletion:0];
@@ -391,10 +391,10 @@
   }
 
   [(UITextField *)self->_searchField setTextDropDelegate:self];
-  v24 = [(SearchViewController *)self theme];
-  v25 = [v24 searchBarPlaceHolderColor];
-  v26 = [(UITextField *)self->_searchField _placeholderLabel];
-  [v26 setTextColor:v25];
+  theme = [(SearchViewController *)self theme];
+  searchBarPlaceHolderColor = [theme searchBarPlaceHolderColor];
+  _placeholderLabel = [(UITextField *)self->_searchField _placeholderLabel];
+  [_placeholderLabel setTextColor:searchBarPlaceHolderColor];
 
   self->_searchFieldWantsFocus = 1;
   if (sub_10000FA08(self) == 5)
@@ -412,28 +412,28 @@
 
     [(UIButton *)self->_userProfileButton setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIButton *)self->_userProfileButton setAccessibilityIdentifier:@"userProfileButton"];
-    v29 = [(UIButton *)self->_userProfileButton imageView];
+    imageView = [(UIButton *)self->_userProfileButton imageView];
     v30 = +[UIColor systemGrayColor];
-    [v29 setTintColor:v30];
+    [imageView setTintColor:v30];
 
-    v31 = [(UIButton *)self->_userProfileButton imageView];
+    imageView2 = [(UIButton *)self->_userProfileButton imageView];
     v32 = [UIImageSymbolConfiguration configurationWithPointSize:UIFontWeightRegular weight:44.0];
-    [v31 setPreferredSymbolConfiguration:v32];
+    [imageView2 setPreferredSymbolConfiguration:v32];
 
     [(UIButton *)self->_userProfileButton addTarget:self action:"presentUserProfile" forControlEvents:64];
     [(SearchViewController *)self _calculateAccessoryTouchInsets];
     [(UIButton *)self->_userProfileButton _setTouchInsets:?];
-    v33 = [(ContaineeViewController *)self headerView];
-    [v33 addSubview:self->_userProfileButton];
+    headerView3 = [(ContaineeViewController *)self headerView];
+    [headerView3 addSubview:self->_userProfileButton];
 
     [(SearchViewController *)self _updateUserProfileEntryPointImage];
     v34 = objc_alloc_init(NSMutableArray);
-    v35 = [(UIButton *)self->_userProfileButton widthAnchor];
-    v36 = [v35 constraintEqualToConstant:44.0];
+    widthAnchor = [(UIButton *)self->_userProfileButton widthAnchor];
+    v36 = [widthAnchor constraintEqualToConstant:44.0];
     v148[0] = v36;
-    v37 = [(UIButton *)self->_userProfileButton heightAnchor];
-    v38 = [(UIButton *)self->_userProfileButton widthAnchor];
-    v39 = [v37 constraintEqualToAnchor:v38];
+    heightAnchor2 = [(UIButton *)self->_userProfileButton heightAnchor];
+    widthAnchor2 = [(UIButton *)self->_userProfileButton widthAnchor];
+    v39 = [heightAnchor2 constraintEqualToAnchor:widthAnchor2];
     v148[1] = v39;
     v40 = [NSArray arrayWithObjects:v148 count:2];
     [v34 addObjectsFromArray:v40];
@@ -454,8 +454,8 @@
   searchFieldLayoutGuide = self->_searchFieldLayoutGuide;
   self->_searchFieldLayoutGuide = v43;
 
-  v45 = [(SearchViewController *)self view];
-  [v45 addLayoutGuide:self->_searchFieldLayoutGuide];
+  view = [(SearchViewController *)self view];
+  [view addLayoutGuide:self->_searchFieldLayoutGuide];
 
   v46 = objc_opt_new();
   if (v136 == 5)
@@ -470,14 +470,14 @@ LABEL_23:
 
   if ([(SearchViewController *)self isSearchingAlongTheRoute])
   {
-    v50 = [(SearchViewController *)self traitCollection];
-    v51 = [v50 preferredContentSizeCategory];
+    traitCollection = [(SearchViewController *)self traitCollection];
+    preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
 
     bottom = 5.0;
     right = 0.0;
     v52 = _UISolariumEnabled();
     v53 = 54.0;
-    if (v51 > UIContentSizeCategoryExtraLarge)
+    if (preferredContentSizeCategory > UIContentSizeCategoryExtraLarge)
     {
       v53 = 72.0;
     }
@@ -500,9 +500,9 @@ LABEL_23:
   top = UIEdgeInsetsZero.top;
   left = UIEdgeInsetsZero.left;
 LABEL_25:
-  v55 = [(PassthruSearchBar *)self->_searchBar superview];
+  superview = [(PassthruSearchBar *)self->_searchBar superview];
 
-  if (!v55)
+  if (!superview)
   {
     v129 = sub_10006D178();
     if (os_log_type_enabled(v129, OS_LOG_TYPE_ERROR))
@@ -532,20 +532,20 @@ LABEL_25:
   }
 
   v56 = self->_searchBar;
-  v57 = [(ContaineeViewController *)self headerView];
+  headerView4 = [(ContaineeViewController *)self headerView];
   LODWORD(v58) = 1148846080;
-  v59 = [(PassthruSearchBar *)v56 _maps_constraintsEqualToEdgesOfView:v57 insets:top priority:left, bottom, right, v58];
+  v59 = [(PassthruSearchBar *)v56 _maps_constraintsEqualToEdgesOfView:headerView4 insets:top priority:left, bottom, right, v58];
   searchBarEdgeConstraints = self->_searchBarEdgeConstraints;
   self->_searchBarEdgeConstraints = v59;
 
-  v61 = [(MapsEdgeConstraints *)self->_searchBarEdgeConstraints allConstraints];
-  [v46 addObjectsFromArray:v61];
+  allConstraints = [(MapsEdgeConstraints *)self->_searchBarEdgeConstraints allConstraints];
+  [v46 addObjectsFromArray:allConstraints];
 
   if ([(SearchViewController *)self _showsContentInDropDownMenu])
   {
-    v62 = [(PassthruSearchBar *)self->_searchBar superview];
+    superview2 = [(PassthruSearchBar *)self->_searchBar superview];
 
-    if (!v62)
+    if (!superview2)
     {
       v132 = sub_10006D178();
       if (os_log_type_enabled(v132, OS_LOG_TYPE_ERROR))
@@ -574,37 +574,37 @@ LABEL_25:
       }
     }
 
-    v63 = [(UILayoutGuide *)self->_searchFieldLayoutGuide widthAnchor];
-    v64 = [v63 constraintGreaterThanOrEqualToConstant:282.0];
+    widthAnchor3 = [(UILayoutGuide *)self->_searchFieldLayoutGuide widthAnchor];
+    v64 = [widthAnchor3 constraintGreaterThanOrEqualToConstant:282.0];
     [v46 addObject:v64];
 
-    v65 = [(UILayoutGuide *)self->_searchFieldLayoutGuide widthAnchor];
-    v66 = [(UITextField *)self->_searchField widthAnchor];
-    v67 = [v65 constraintEqualToAnchor:v66];
+    widthAnchor4 = [(UILayoutGuide *)self->_searchFieldLayoutGuide widthAnchor];
+    widthAnchor5 = [(UITextField *)self->_searchField widthAnchor];
+    leadingAnchor3 = [widthAnchor4 constraintEqualToAnchor:widthAnchor5];
 
     LODWORD(v68) = 1148829696;
-    [v67 setPriority:v68];
-    [v46 addObject:v67];
-    v69 = [(UILayoutGuide *)self->_searchFieldLayoutGuide leadingAnchor];
-    v70 = [(UITextField *)self->_searchField leadingAnchor];
-    v71 = [v69 constraintEqualToAnchor:v70];
+    [leadingAnchor3 setPriority:v68];
+    [v46 addObject:leadingAnchor3];
+    leadingAnchor = [(UILayoutGuide *)self->_searchFieldLayoutGuide leadingAnchor];
+    leadingAnchor2 = [(UITextField *)self->_searchField leadingAnchor];
+    v71 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     [v46 addObject:v71];
 
-    v72 = [(UILayoutGuide *)self->_searchFieldLayoutGuide topAnchor];
-    v73 = [(UITextField *)self->_searchField bottomAnchor];
-    v74 = [v72 constraintEqualToAnchor:v73];
+    topAnchor = [(UILayoutGuide *)self->_searchFieldLayoutGuide topAnchor];
+    bottomAnchor = [(UITextField *)self->_searchField bottomAnchor];
+    v74 = [topAnchor constraintEqualToAnchor:bottomAnchor];
   }
 
   else
   {
-    v75 = [(UILayoutGuide *)self->_searchFieldLayoutGuide widthAnchor];
-    v76 = [v75 constraintEqualToConstant:282.0];
+    widthAnchor6 = [(UILayoutGuide *)self->_searchFieldLayoutGuide widthAnchor];
+    v76 = [widthAnchor6 constraintEqualToConstant:282.0];
     [v46 addObject:v76];
 
-    v67 = [(UILayoutGuide *)self->_searchFieldLayoutGuide leadingAnchor];
-    v72 = [(ContaineeViewController *)self headerView];
-    v73 = [v72 leadingAnchor];
-    v74 = [v67 constraintEqualToAnchor:v73 constant:left];
+    leadingAnchor3 = [(UILayoutGuide *)self->_searchFieldLayoutGuide leadingAnchor];
+    topAnchor = [(ContaineeViewController *)self headerView];
+    bottomAnchor = [topAnchor leadingAnchor];
+    v74 = [leadingAnchor3 constraintEqualToAnchor:bottomAnchor constant:left];
   }
 
   v77 = v74;
@@ -613,16 +613,16 @@ LABEL_25:
   [(SearchViewController *)self _initPlaceholderWithSubmitTicketIfNeeded:0];
   if (v136 != 5)
   {
-    v78 = [(ContaineeViewController *)self headerView];
-    v79 = [v78 _maps_addHairlineAtBottomWithMargin:0.0];
+    headerView5 = [(ContaineeViewController *)self headerView];
+    v79 = [headerView5 _maps_addHairlineAtBottomWithMargin:0.0];
     bottomHeaderHairline = self->_bottomHeaderHairline;
     self->_bottomHeaderHairline = v79;
   }
 
-  v81 = [(UIView *)self->_hideableFooterView bottomAnchor];
-  v82 = [(SearchViewController *)self view];
-  v83 = [v82 bottomAnchor];
-  v84 = [v81 constraintEqualToAnchor:v83];
+  bottomAnchor2 = [(UIView *)self->_hideableFooterView bottomAnchor];
+  view2 = [(SearchViewController *)self view];
+  bottomAnchor3 = [view2 bottomAnchor];
+  v84 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
   bottomHideableFooterConstraint = self->_bottomHideableFooterConstraint;
   self->_bottomHideableFooterConstraint = v84;
 
@@ -665,9 +665,9 @@ LABEL_25:
     v96 = 0;
   }
 
-  v97 = [[MapsThemeTableView alloc] initWithFrame:v96 style:CGRectZero.origin.x, y, width, height];
+  height = [[MapsThemeTableView alloc] initWithFrame:v96 style:CGRectZero.origin.x, y, width, height];
   contentTableView = self->_contentTableView;
-  self->_contentTableView = &v97->super;
+  self->_contentTableView = &height->super;
 
   [(UITableView *)self->_contentTableView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UITableView *)self->_contentTableView setEstimatedSectionHeaderHeight:0.0];
@@ -678,8 +678,8 @@ LABEL_25:
   v100 = +[UIColor clearColor];
   [(UITableView *)self->_contentTableView setBackgroundColor:v100];
 
-  v101 = [(UITableView *)self->_contentTableView layer];
-  [v101 setAllowsGroupOpacity:0];
+  layer = [(UITableView *)self->_contentTableView layer];
+  [layer setAllowsGroupOpacity:0];
 
   if (sub_10000FA08(self) == 5)
   {
@@ -711,36 +711,36 @@ LABEL_25:
     v105 = [(UIView *)self->_hideableFooterView _maps_addHairlineAtTopWithMargin:0.0];
   }
 
-  v106 = [(SearchViewController *)self view];
+  view3 = [(SearchViewController *)self view];
   v107 = self->_hideableFooterView;
-  v108 = [(ContaineeViewController *)self headerView];
-  [v106 insertSubview:v107 belowSubview:v108];
+  headerView6 = [(ContaineeViewController *)self headerView];
+  [view3 insertSubview:v107 belowSubview:headerView6];
 
-  v109 = [(UIView *)self->_hideableFooterView bottomAnchor];
-  v110 = [(SearchViewController *)self view];
-  v111 = [v110 bottomAnchor];
-  v112 = [v109 constraintEqualToAnchor:v111];
+  bottomAnchor4 = [(UIView *)self->_hideableFooterView bottomAnchor];
+  view4 = [(SearchViewController *)self view];
+  bottomAnchor5 = [view4 bottomAnchor];
+  v112 = [bottomAnchor4 constraintEqualToAnchor:bottomAnchor5];
   v113 = self->_bottomHideableFooterConstraint;
   self->_bottomHideableFooterConstraint = v112;
 
-  v137 = [(UIView *)self->_hideableFooterView trailingAnchor];
-  v114 = [(SearchViewController *)self view];
-  v115 = [v114 trailingAnchor];
-  v116 = [v137 constraintEqualToAnchor:v115];
+  trailingAnchor = [(UIView *)self->_hideableFooterView trailingAnchor];
+  view5 = [(SearchViewController *)self view];
+  trailingAnchor2 = [view5 trailingAnchor];
+  v116 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v117 = self->_bottomHideableFooterConstraint;
   v139[0] = v116;
   v139[1] = v117;
-  v118 = [(UIView *)self->_hideableFooterView leadingAnchor];
-  v119 = [(SearchViewController *)self view];
-  v120 = [v119 leadingAnchor];
-  v121 = [v118 constraintEqualToAnchor:v120];
+  leadingAnchor4 = [(UIView *)self->_hideableFooterView leadingAnchor];
+  view6 = [(SearchViewController *)self view];
+  leadingAnchor5 = [view6 leadingAnchor];
+  v121 = [leadingAnchor4 constraintEqualToAnchor:leadingAnchor5];
   v139[2] = v121;
   v122 = [NSArray arrayWithObjects:v139 count:3];
   [v135 addObjectsFromArray:v122];
 
   [NSLayoutConstraint activateConstraints:v135];
-  v123 = [(PassthruSearchBar *)self->_searchBar searchTextField];
-  [v123 addTarget:self action:"didSelectSearchBar:" forControlEvents:1];
+  searchTextField2 = [(PassthruSearchBar *)self->_searchBar searchTextField];
+  [searchTextField2 addTarget:self action:"didSelectSearchBar:" forControlEvents:1];
 
   v124 = +[NSNotificationCenter defaultCenter];
   [v124 addObserver:self selector:"preferredContentSizeChanged:" name:UIContentSizeCategoryDidChangeNotification object:0];
@@ -768,8 +768,8 @@ LABEL_25:
   v4.receiver = self;
   v4.super_class = SearchViewController;
   [(SearchViewController *)&v4 viewLayoutMarginsDidChange];
-  v3 = [(ContaineeViewController *)self cardPresentationController];
-  [v3 bottomSafeOffset];
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  [cardPresentationController bottomSafeOffset];
   [(LocalSearchViewController *)self->_localSearchViewController setBottomInset:?];
 }
 
@@ -777,8 +777,8 @@ LABEL_25:
 {
   v5 = +[UserInformationManager sharedInstance];
   userProfileButton = self->_userProfileButton;
-  v4 = [v5 userIcon];
-  [(UIButton *)userProfileButton setImage:v4 forState:0];
+  userIcon = [v5 userIcon];
+  [(UIButton *)userProfileButton setImage:userIcon forState:0];
 }
 
 - (void)_setPlaceHolder
@@ -796,16 +796,16 @@ LABEL_25:
   else
   {
     [(SearchViewController *)self _setupOnlinePlaceholder];
-    v4 = [(UITextField *)self->_searchField _placeholderLabel];
-    [v4 setAllowsDefaultTighteningForTruncation:1];
+    _placeholderLabel = [(UITextField *)self->_searchField _placeholderLabel];
+    [_placeholderLabel setAllowsDefaultTighteningForTruncation:1];
   }
 }
 
 - (void)_setupOnlinePlaceholder
 {
   v3 = +[NSLocale preferredLanguages];
-  v4 = [v3 firstObject];
-  v10 = [NSString stringWithFormat:@"%@-%@", @"__internal__searchBarPlaceholderV2", v4];
+  firstObject = [v3 firstObject];
+  v10 = [NSString stringWithFormat:@"%@-%@", @"__internal__searchBarPlaceholderV2", firstObject];
 
   v5 = +[NSUserDefaults standardUserDefaults];
   v6 = [v5 objectForKey:v10];
@@ -833,8 +833,8 @@ LABEL_25:
 
 - (double)_contentAlphaForCurrentLayout
 {
-  v2 = [(ContaineeViewController *)self cardPresentationController];
-  [v2 contentAlpha];
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  [cardPresentationController contentAlpha];
   v4 = v3;
 
   return v4;
@@ -853,8 +853,8 @@ LABEL_25:
   }
 
   v4 = +[UserInformationManager sharedInstance];
-  v3 = [v4 observers];
-  [v3 registerObserver:self queue:&_dispatch_main_q];
+  observers = [v4 observers];
+  [observers registerObserver:self queue:&_dispatch_main_q];
 }
 
 - (void)updateDataSource
@@ -864,9 +864,9 @@ LABEL_25:
     return;
   }
 
-  v3 = [(UITextField *)self->_searchField text];
-  v4 = [v3 _maps_stringByTrimmingLeadingWhitespace];
-  if ([v4 length])
+  text = [(UITextField *)self->_searchField text];
+  _maps_stringByTrimmingLeadingWhitespace = [text _maps_stringByTrimmingLeadingWhitespace];
+  if ([_maps_stringByTrimmingLeadingWhitespace length])
   {
     v5 = 1;
   }
@@ -878,18 +878,18 @@ LABEL_25:
 
   else
   {
-    v6 = [(SearchViewController *)self searchResultsViewController];
-    v5 = v6 != 0;
+    searchResultsViewController = [(SearchViewController *)self searchResultsViewController];
+    v5 = searchResultsViewController != 0;
   }
 
   if (([(UITextField *)self->_searchField isFirstResponder]& 1) != 0 || ([(PassthruSearchBar *)self->_searchBar showsCancelButton]& 1) != 0)
   {
-    v7 = 1;
+    isSearchingAlongTheRoute = 1;
   }
 
   else
   {
-    v7 = [(SearchViewController *)self isSearchingAlongTheRoute];
+    isSearchingAlongTheRoute = [(SearchViewController *)self isSearchingAlongTheRoute];
   }
 
   if (sub_10000FA08(self) == 5)
@@ -898,31 +898,31 @@ LABEL_25:
     {
       if (v5)
       {
-        v8 = [(SearchViewController *)self menuController];
-        v9 = [v8 macMenuPresentationController];
-        v10 = [v9 isPresented];
+        menuController = [(SearchViewController *)self menuController];
+        macMenuPresentationController = [menuController macMenuPresentationController];
+        isPresented = [macMenuPresentationController isPresented];
       }
 
       else
       {
-        v10 = 0;
+        isPresented = 0;
       }
 
-      v12 = [(SearchViewController *)self menuController];
-      v13 = [v12 macMenuPresentationController];
-      v7 = [v13 isPresented];
+      menuController2 = [(SearchViewController *)self menuController];
+      macMenuPresentationController2 = [menuController2 macMenuPresentationController];
+      isSearchingAlongTheRoute = [macMenuPresentationController2 isPresented];
 
-      if ((v10 & 1) == 0)
+      if ((isPresented & 1) == 0)
       {
         goto LABEL_21;
       }
 
 LABEL_18:
-      v11 = [(SearchViewController *)self searchDataSource];
+      searchDataSource = [(SearchViewController *)self searchDataSource];
       goto LABEL_23;
     }
 
-    v7 = 0;
+    isSearchingAlongTheRoute = 0;
   }
 
   if (v5)
@@ -931,7 +931,7 @@ LABEL_18:
   }
 
 LABEL_21:
-  if (!v7)
+  if (!isSearchingAlongTheRoute)
   {
     v15 = +[MapsOfflineUIHelper sharedHelper];
     if ([v15 isUsingOfflineMaps])
@@ -953,9 +953,9 @@ LABEL_21:
     goto LABEL_29;
   }
 
-  v11 = [(SearchViewController *)self searchHomeDataSource];
+  searchDataSource = [(SearchViewController *)self searchHomeDataSource];
 LABEL_23:
-  v14 = v11;
+  v14 = searchDataSource;
 LABEL_29:
   v19 = v14;
   [(SearchViewController *)self setCurrentDataSource:v14];
@@ -979,9 +979,9 @@ LABEL_29:
 {
   if (sub_10000FA08(self) != 5 && ![(SearchViewController *)self isSearchingAlongTheRoute])
   {
-    v3 = [(SearchViewController *)self searchResultsViewController];
+    searchResultsViewController = [(SearchViewController *)self searchResultsViewController];
 
-    if (!v3)
+    if (!searchResultsViewController)
     {
 
       [(SearchViewController *)self updateSearchBarContentInsets];
@@ -1012,15 +1012,15 @@ LABEL_29:
       v6 = WeakRetained;
       if (WeakRetained)
       {
-        v7 = WeakRetained;
+        selfCopy = WeakRetained;
       }
 
       else
       {
-        v7 = self;
+        selfCopy = self;
       }
 
-      v8 = [(HomeViewController *)v4 initWithDelegate:v7];
+      v8 = [(HomeViewController *)v4 initWithDelegate:selfCopy];
       v9 = self->_homeViewController;
       self->_homeViewController = v8;
 
@@ -1041,17 +1041,17 @@ LABEL_29:
 
 - (id)newTraits
 {
-  v2 = [(ControlContaineeViewController *)self delegate];
-  v3 = [v2 newTraits];
+  delegate = [(ControlContaineeViewController *)self delegate];
+  newTraits = [delegate newTraits];
 
-  return v3;
+  return newTraits;
 }
 
 - (void)_restoreRetainedQueryIfNeeded
 {
-  v3 = [(SearchViewController *)self currentSearchSession];
+  currentSearchSession = [(SearchViewController *)self currentSearchSession];
 
-  if (!v3)
+  if (!currentSearchSession)
   {
     objc_initWeak(&location, self);
     retainedQueryController = self->_retainedQueryController;
@@ -1068,24 +1068,24 @@ LABEL_29:
 
 - (id)currentSearchSession
 {
-  v2 = [(ControlContaineeViewController *)self delegate];
-  v3 = [v2 currentSearchSession];
+  delegate = [(ControlContaineeViewController *)self delegate];
+  currentSearchSession = [delegate currentSearchSession];
 
-  return v3;
+  return currentSearchSession;
 }
 
 - (void)cleanSearch
 {
-  v7 = [(SearchViewController *)self searchResultsViewController];
-  if (v7)
+  searchResultsViewController = [(SearchViewController *)self searchResultsViewController];
+  if (searchResultsViewController)
   {
-    [v7 willMoveToParentViewController:0];
-    v3 = [v7 view];
-    [v3 removeFromSuperview];
+    [searchResultsViewController willMoveToParentViewController:0];
+    view = [searchResultsViewController view];
+    [view removeFromSuperview];
 
-    [v7 removeFromParentViewController];
-    v4 = [(SearchViewController *)self closeSearchResultsButton];
-    [v4 setHidden:1];
+    [searchResultsViewController removeFromParentViewController];
+    closeSearchResultsButton = [(SearchViewController *)self closeSearchResultsButton];
+    [closeSearchResultsButton setHidden:1];
   }
 
   [(SearchDataSource *)self->_searchDataSource reset];
@@ -1100,36 +1100,36 @@ LABEL_29:
 
 - (void)_updateSearchFieldText
 {
-  v3 = [(SearchViewController *)self currentSearchSession];
-  v4 = [v3 suggestion];
-  v10 = [v4 searchBarDisplayToken];
+  currentSearchSession = [(SearchViewController *)self currentSearchSession];
+  suggestion = [currentSearchSession suggestion];
+  searchBarDisplayToken = [suggestion searchBarDisplayToken];
 
-  if (v10)
+  if (searchBarDisplayToken)
   {
-    v5 = v10;
+    searchString = searchBarDisplayToken;
   }
 
   else
   {
-    v5 = [(SearchFieldItem *)self->_searchItem searchString];
+    searchString = [(SearchFieldItem *)self->_searchItem searchString];
   }
 
-  v6 = v5;
-  v7 = [(PassthruSearchBar *)self->_searchBar searchField];
-  v8 = [v7 text];
-  if (![v8 isEqualToString:v6])
+  v6 = searchString;
+  searchField = [(PassthruSearchBar *)self->_searchBar searchField];
+  text = [searchField text];
+  if (![text isEqualToString:v6])
   {
 
     goto LABEL_8;
   }
 
-  v9 = [v7 isFirstResponder];
+  isFirstResponder = [searchField isFirstResponder];
 
-  if ((v9 & 1) == 0)
+  if ((isFirstResponder & 1) == 0)
   {
 LABEL_8:
     [CATransaction setFrameStallSkipRequest:1];
-    [v7 setText:v6];
+    [searchField setText:v6];
   }
 }
 
@@ -1149,13 +1149,13 @@ LABEL_8:
 
 - (void)_hideSearchHereControl
 {
-  v2 = [(ControlContaineeViewController *)self delegate];
-  v3 = [v2 containerViewController];
-  v5 = [v3 chromeViewController];
+  delegate = [(ControlContaineeViewController *)self delegate];
+  containerViewController = [delegate containerViewController];
+  chromeViewController = [containerViewController chromeViewController];
 
-  [v5 setNeedsUpdateComponent:@"floatingSearchButton" animated:1];
-  v4 = [v5 redoSearchOverlay];
-  [v4 shouldHideFloatingControl:1 animated:0];
+  [chromeViewController setNeedsUpdateComponent:@"floatingSearchButton" animated:1];
+  redoSearchOverlay = [chromeViewController redoSearchOverlay];
+  [redoSearchOverlay shouldHideFloatingControl:1 animated:0];
 }
 
 - (void)_configureSearchBarIfNeeded
@@ -1183,15 +1183,15 @@ LABEL_8:
 
 - (void)_addVenueObserver
 {
-  v3 = [(ControlContaineeViewController *)self delegate];
-  v4 = [v3 venuesManager];
-  [v4 addChangeObserver:self];
+  delegate = [(ControlContaineeViewController *)self delegate];
+  venuesManager = [delegate venuesManager];
+  [venuesManager addChangeObserver:self];
 
-  v8 = [(LocalSearchViewController *)self->_localSearchViewController browseVenueBusinessController];
-  v5 = [(ControlContaineeViewController *)self delegate];
-  v6 = [v5 venuesManager];
-  v7 = [v6 venueWithFocus];
-  [v8 handleVenueWithFocusDidChange:v7];
+  browseVenueBusinessController = [(LocalSearchViewController *)self->_localSearchViewController browseVenueBusinessController];
+  delegate2 = [(ControlContaineeViewController *)self delegate];
+  venuesManager2 = [delegate2 venuesManager];
+  venueWithFocus = [venuesManager2 venueWithFocus];
+  [browseVenueBusinessController handleVenueWithFocusDidChange:venueWithFocus];
 }
 
 - (VisitedPlacesCommonActionsHandlingDelegate)visitedPlacesCommonActionsHandlingDelegate
@@ -1217,8 +1217,8 @@ LABEL_8:
 
 - (BOOL)shouldShowSearchOverlay
 {
-  v3 = [(SearchViewController *)self searchResultsViewController];
-  if ([v3 isPresentingAddStopResultsFromWaypointEditor] && (GEOConfigGetBOOL() & 1) != 0)
+  searchResultsViewController = [(SearchViewController *)self searchResultsViewController];
+  if ([searchResultsViewController isPresentingAddStopResultsFromWaypointEditor] && (GEOConfigGetBOOL() & 1) != 0)
   {
     LOBYTE(v4) = 0;
   }
@@ -1230,17 +1230,17 @@ LABEL_8:
 
   else
   {
-    v5 = [(ControlContaineeViewController *)self delegate];
-    v6 = [v5 currentSearchSession];
-    v7 = [v6 searchInfo];
+    delegate = [(ControlContaineeViewController *)self delegate];
+    currentSearchSession = [delegate currentSearchSession];
+    searchInfo = [currentSearchSession searchInfo];
 
-    if (v7 && ([v7 searchRedoButtonThreshold], v8 = objc_claimAutoreleasedReturnValue(), v8, v8))
+    if (searchInfo && ([searchInfo searchRedoButtonThreshold], v8 = objc_claimAutoreleasedReturnValue(), v8, v8))
     {
-      v9 = [(SearchViewController *)self localSearchViewController];
-      v10 = [v9 refreshSearchHereBusinessController];
-      v11 = [v10 shouldShowManualRedoButton];
+      localSearchViewController = [(SearchViewController *)self localSearchViewController];
+      refreshSearchHereBusinessController = [localSearchViewController refreshSearchHereBusinessController];
+      shouldShowManualRedoButton = [refreshSearchHereBusinessController shouldShowManualRedoButton];
 
-      v4 = v11 & [v7 shouldAllowManualRedoButton];
+      v4 = shouldShowManualRedoButton & [searchInfo shouldAllowManualRedoButton];
     }
 
     else
@@ -1255,9 +1255,9 @@ LABEL_8:
 - (BOOL)supportsFullTextSearch
 {
   v3 = +[MapsOfflineUIHelper sharedHelper];
-  v4 = [v3 isUsingOfflineMaps];
+  isUsingOfflineMaps = [v3 isUsingOfflineMaps];
 
-  return v4 && self->_supportsFullTextSearch;
+  return isUsingOfflineMaps && self->_supportsFullTextSearch;
 }
 
 - (void)didStartDownloadFromAutocomplete
@@ -1265,8 +1265,8 @@ LABEL_8:
   if (self->_downloadedSearchResult)
   {
     [(SearchViewController *)self endSearch];
-    v3 = [(ControlContaineeViewController *)self delegate];
-    [v3 viewController:self selectSearchResult:self->_downloadedSearchResult addToHistory:1 source:2 saveSelectionState:1 replaceCurrentCard:1];
+    delegate = [(ControlContaineeViewController *)self delegate];
+    [delegate viewController:self selectSearchResult:self->_downloadedSearchResult addToHistory:1 source:2 saveSelectionState:1 replaceCurrentCard:1];
 
     downloadedSearchResult = self->_downloadedSearchResult;
     self->_downloadedSearchResult = 0;
@@ -1282,19 +1282,19 @@ LABEL_8:
   }
 }
 
-- (void)pptSelectACSuggestionMatchingAddress:(id)a3
+- (void)pptSelectACSuggestionMatchingAddress:(id)address
 {
-  v21 = a3;
-  v3 = [(SearchViewController *)self currentDataSource];
-  v4 = [v3 objectsForAnalytics];
-  v5 = [v4 firstObject];
-  v6 = [v5 items];
+  addressCopy = address;
+  currentDataSource = [(SearchViewController *)self currentDataSource];
+  objectsForAnalytics = [currentDataSource objectsForAnalytics];
+  firstObject = [objectsForAnalytics firstObject];
+  items = [firstObject items];
 
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v7 = v6;
+  v7 = items;
   v8 = [v7 countByEnumeratingWithState:&v23 objects:v29 count:16];
   if (v8)
   {
@@ -1313,16 +1313,16 @@ LABEL_8:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v13 = [v12 autocompleteObject];
+          autocompleteObject = [v12 autocompleteObject];
           if (objc_opt_respondsToSelector())
           {
-            v14 = [v13 mapItem];
-            if (v14)
+            mapItem = [autocompleteObject mapItem];
+            if (mapItem)
             {
-              v15 = v14;
-              v16 = [v13 mapItem];
-              v17 = [v16 _shortAddress];
-              v22 = [v17 isEqualToString:v21];
+              v15 = mapItem;
+              mapItem2 = [autocompleteObject mapItem];
+              _shortAddress = [mapItem2 _shortAddress];
+              v22 = [_shortAddress isEqualToString:addressCopy];
 
               if (v22)
               {
@@ -1330,11 +1330,11 @@ LABEL_8:
                 if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
                 {
                   *buf = 138412290;
-                  v28 = v21;
+                  v28 = addressCopy;
                   _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEBUG, "PPT: Found map item matching address: %@", buf, 0xCu);
                 }
 
-                [(SearchViewController *)self dataSource:self->_searchDataSource itemTapped:v13];
+                [(SearchViewController *)self dataSource:self->_searchDataSource itemTapped:autocompleteObject];
                 goto LABEL_18;
               }
             }
@@ -1343,7 +1343,7 @@ LABEL_8:
 
         else
         {
-          v13 = 0;
+          autocompleteObject = 0;
         }
       }
 
@@ -1362,26 +1362,26 @@ LABEL_18:
 
 - (void)pptSelectFirstCuratedCollection
 {
-  v2 = [(SearchViewController *)self searchHomeDataSource];
-  [v2 _ppt_selectFirstCuratedGuide];
+  searchHomeDataSource = [(SearchViewController *)self searchHomeDataSource];
+  [searchHomeDataSource _ppt_selectFirstCuratedGuide];
 }
 
 - (void)pptSelectFirstGuidePublisher
 {
-  v2 = [(SearchViewController *)self searchHomeDataSource];
-  [v2 _ppt_selectFirstGuidePublisher];
+  searchHomeDataSource = [(SearchViewController *)self searchHomeDataSource];
+  [searchHomeDataSource _ppt_selectFirstGuidePublisher];
 }
 
 - (void)pptSelectSeeAllCuratedCollections
 {
-  v2 = [(SearchViewController *)self searchHomeDataSource];
-  [v2 _ppt_selectSeeAllCuratedCollections];
+  searchHomeDataSource = [(SearchViewController *)self searchHomeDataSource];
+  [searchHomeDataSource _ppt_selectSeeAllCuratedCollections];
 }
 
 - (void)pptSetSearchDataSource
 {
-  v3 = [(SearchViewController *)self searchDataSource];
-  [(SearchViewController *)self setCurrentDataSource:v3];
+  searchDataSource = [(SearchViewController *)self searchDataSource];
+  [(SearchViewController *)self setCurrentDataSource:searchDataSource];
 }
 
 - (void)pptSearchBarShouldProvideTextChangeNotification
@@ -1392,13 +1392,13 @@ LABEL_18:
 
 - (UIScrollView)pptTestScrollView
 {
-  v3 = [(SearchViewController *)self searchResultsViewController];
-  if ([(SearchViewController *)self isShowingOmnipresentSearchBar]&& v3)
+  searchResultsViewController = [(SearchViewController *)self searchResultsViewController];
+  if ([(SearchViewController *)self isShowingOmnipresentSearchBar]&& searchResultsViewController)
   {
-    v4 = v3;
+    v4 = searchResultsViewController;
     if (objc_opt_respondsToSelector())
     {
-      v5 = [v4 pptTestScrollView];
+      pptTestScrollView = [v4 pptTestScrollView];
 
       goto LABEL_14;
     }
@@ -1406,17 +1406,17 @@ LABEL_18:
 
   if (self->_currentDataSource)
   {
-    v5 = [(SearchViewController *)self currentDataSource];
-    v6 = [v5 presentationStyle];
+    pptTestScrollView = [(SearchViewController *)self currentDataSource];
+    presentationStyle = [pptTestScrollView presentationStyle];
 
-    if (v6 == 1)
+    if (presentationStyle == 1)
     {
       v7 = 240;
     }
 
     else
     {
-      if (v6)
+      if (presentationStyle)
       {
         goto LABEL_14;
       }
@@ -1424,35 +1424,35 @@ LABEL_18:
       v7 = 232;
     }
 
-    v8 = *(&self->super.super.super.super.super.super.isa + v7);
+    scrollView = *(&self->super.super.super.super.super.super.isa + v7);
   }
 
   else
   {
-    v8 = [(HomeViewController *)self->_homeViewController scrollView];
+    scrollView = [(HomeViewController *)self->_homeViewController scrollView];
   }
 
-  v5 = v8;
+  pptTestScrollView = scrollView;
 LABEL_14:
 
-  return v5;
+  return pptTestScrollView;
 }
 
-- (void)headerViewButtonTapped:(id)a3 buttonType:(unint64_t)a4
+- (void)headerViewButtonTapped:(id)tapped buttonType:(unint64_t)type
 {
-  if ([(SearchViewController *)self isSearchingAlongTheRoute:a3])
+  if ([(SearchViewController *)self isSearchingAlongTheRoute:tapped])
   {
-    v5 = [(SearchViewController *)self navContaineeDelegate];
-    [v5 dismissAddStop];
+    navContaineeDelegate = [(SearchViewController *)self navContaineeDelegate];
+    [navContaineeDelegate dismissAddStop];
 
     v6 = +[MKMapService sharedService];
     [v6 captureUserAction:4 onTarget:-[SearchViewController currentUITargetForAnalytics](self eventValue:{"currentUITargetForAnalytics"), 0}];
   }
 
-  v7 = [(SearchViewController *)self browseModeHeaderView];
-  v8 = [v7 isHidden];
+  browseModeHeaderView = [(SearchViewController *)self browseModeHeaderView];
+  isHidden = [browseModeHeaderView isHidden];
 
-  if ((v8 & 1) == 0)
+  if ((isHidden & 1) == 0)
   {
     [(SearchViewController *)self endSearch];
 
@@ -1460,7 +1460,7 @@ LABEL_14:
   }
 }
 
-- (void)macMenuPresentationControllerDidDismiss:(id)a3
+- (void)macMenuPresentationControllerDidDismiss:(id)dismiss
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
@@ -1468,14 +1468,14 @@ LABEL_14:
   v7[3] = &unk_101661B18;
   v7[4] = self;
   [UIView animateWithDuration:v7 animations:0.25];
-  v4 = [(SearchViewController *)self homeActionCoordinator];
+  homeActionCoordinator = [(SearchViewController *)self homeActionCoordinator];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v6 = [(SearchViewController *)self homeActionCoordinator];
-    [v6 makeMapViewFirstResponder];
+    homeActionCoordinator2 = [(SearchViewController *)self homeActionCoordinator];
+    [homeActionCoordinator2 makeMapViewFirstResponder];
   }
 
   [(SearchViewController *)self updateDataSource];
@@ -1483,131 +1483,131 @@ LABEL_14:
 
 - (int)currentMapViewTargetForAnalytics
 {
-  v3 = [(SearchViewController *)self searchResultsViewController];
-  v4 = [(SearchViewController *)self isShowingOmnipresentSearchBar];
-  v5 = 502;
-  if (v4 && v3 && sub_100010C34(v3, &OBJC_PROTOCOL___GEOLogContextDelegate))
+  searchResultsViewController = [(SearchViewController *)self searchResultsViewController];
+  isShowingOmnipresentSearchBar = [(SearchViewController *)self isShowingOmnipresentSearchBar];
+  currentMapViewTargetForAnalytics = 502;
+  if (isShowingOmnipresentSearchBar && searchResultsViewController && sub_100010C34(searchResultsViewController, &OBJC_PROTOCOL___GEOLogContextDelegate))
   {
-    v6 = v3;
+    v6 = searchResultsViewController;
     if (objc_opt_respondsToSelector())
     {
-      v5 = [v6 currentMapViewTargetForAnalytics];
+      currentMapViewTargetForAnalytics = [v6 currentMapViewTargetForAnalytics];
     }
   }
 
-  return v5;
+  return currentMapViewTargetForAnalytics;
 }
 
-- (BOOL)shouldQuickActionMenuPresenter:(id)a3 showDirectionsToPlace:(id)a4
+- (BOOL)shouldQuickActionMenuPresenter:(id)presenter showDirectionsToPlace:(id)place
 {
-  v5 = a4;
-  v6 = [(ControlContaineeViewController *)self delegate];
-  v7 = [v6 venuesManager];
-  v8 = [v5 mapItem];
+  placeCopy = place;
+  delegate = [(ControlContaineeViewController *)self delegate];
+  venuesManager = [delegate venuesManager];
+  mapItem = [placeCopy mapItem];
 
-  LOBYTE(v5) = [v7 isUserAtSameVenueAsMapItem:v8];
-  return v5 ^ 1;
+  LOBYTE(placeCopy) = [venuesManager isUserAtSameVenueAsMapItem:mapItem];
+  return placeCopy ^ 1;
 }
 
-- (void)quickActionMenuPresenter:(id)a3 selectedRemoveDroppedPinOf:(id)a4
+- (void)quickActionMenuPresenter:(id)presenter selectedRemoveDroppedPinOf:(id)of
 {
-  v5 = [a3 searchResult];
-  if (v5)
+  searchResult = [presenter searchResult];
+  if (searchResult)
   {
-    v7 = v5;
-    v6 = [(ControlContaineeViewController *)self delegate];
-    [v6 viewController:0 removeDroppedPin:v7];
+    v7 = searchResult;
+    delegate = [(ControlContaineeViewController *)self delegate];
+    [delegate viewController:0 removeDroppedPin:v7];
 
-    v5 = v7;
+    searchResult = v7;
   }
 }
 
-- (id)mapServiceTraitsForQuickActionPresenter:(id)a3
+- (id)mapServiceTraitsForQuickActionPresenter:(id)presenter
 {
-  v3 = [(ControlContaineeViewController *)self delegate];
-  v4 = [v3 newTraits];
+  delegate = [(ControlContaineeViewController *)self delegate];
+  newTraits = [delegate newTraits];
 
-  return v4;
+  return newTraits;
 }
 
-- (void)quickActionMenuPresenter:(id)a3 selectedShowPlaceCard:(id)a4
+- (void)quickActionMenuPresenter:(id)presenter selectedShowPlaceCard:(id)card
 {
-  v5 = [(SearchResultQuickActionMenuPresenter *)self->_quickActionMenuPresenter indexPath:a3];
+  v5 = [(SearchResultQuickActionMenuPresenter *)self->_quickActionMenuPresenter indexPath:presenter];
   if (v5)
   {
     v10 = v5;
-    v6 = [(SearchViewController *)self currentDataSource];
-    v7 = [(SearchResultQuickActionMenuPresenter *)self->_quickActionMenuPresenter indexPath];
-    v8 = [v6 objectAtIndexPath:v7];
+    currentDataSource = [(SearchViewController *)self currentDataSource];
+    indexPath = [(SearchResultQuickActionMenuPresenter *)self->_quickActionMenuPresenter indexPath];
+    v8 = [currentDataSource objectAtIndexPath:indexPath];
 
-    v9 = [(SearchViewController *)self currentDataSource];
-    [(SearchViewController *)self dataSource:v9 itemTapped:v8];
+    currentDataSource2 = [(SearchViewController *)self currentDataSource];
+    [(SearchViewController *)self dataSource:currentDataSource2 itemTapped:v8];
 
     v5 = v10;
   }
 }
 
-- (void)quickActionMenuPresenter:(id)a3 selectedShareLocationOf:(id)a4
+- (void)quickActionMenuPresenter:(id)presenter selectedShareLocationOf:(id)of
 {
-  v5 = [a3 searchResult];
-  v6 = v5;
-  if (v5)
+  searchResult = [presenter searchResult];
+  v6 = searchResult;
+  if (searchResult)
   {
-    v7 = [v5 contactForSharingToMessages];
-    v8 = [ShareItem shareItemWithSearchResult:v6 contact:v7 includePrintActivity:0];
+    contactForSharingToMessages = [searchResult contactForSharingToMessages];
+    v8 = [ShareItem shareItemWithSearchResult:v6 contact:contactForSharingToMessages includePrintActivity:0];
 
     self->_maintainSearchStateWhenDisappearing = 1;
-    v9 = [(ControlContaineeViewController *)self delegate];
+    delegate = [(ControlContaineeViewController *)self delegate];
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_10098EF4C;
     v10[3] = &unk_101661B18;
     v10[4] = self;
-    [v9 viewController:0 doShareSheetForShareItem:v8 completion:v10];
+    [delegate viewController:0 doShareSheetForShareItem:v8 completion:v10];
 
     [(SearchViewController *)self _addRecentPlaceForSearchResult:v6];
   }
 }
 
-- (void)quickActionMenuPresenter:(id)a3 selectedViewWebsiteFor:(id)a4
+- (void)quickActionMenuPresenter:(id)presenter selectedViewWebsiteFor:(id)for
 {
-  v5 = [a3 searchResult];
-  if (v5)
+  searchResult = [presenter searchResult];
+  if (searchResult)
   {
-    v7 = v5;
-    v6 = [(ControlContaineeViewController *)self delegate];
-    [v6 viewController:0 openWebsiteForSearchResult:v7];
+    v7 = searchResult;
+    delegate = [(ControlContaineeViewController *)self delegate];
+    [delegate viewController:0 openWebsiteForSearchResult:v7];
 
     [(SearchViewController *)self _addRecentPlaceForSearchResult:v7];
-    v5 = v7;
+    searchResult = v7;
   }
 }
 
-- (void)quickActionMenuPresenter:(id)a3 selectedCall:(id)a4
+- (void)quickActionMenuPresenter:(id)presenter selectedCall:(id)call
 {
-  v5 = [a3 searchResult];
-  if (v5)
+  searchResult = [presenter searchResult];
+  if (searchResult)
   {
-    v7 = v5;
-    v6 = [(ControlContaineeViewController *)self delegate];
-    [v6 viewController:0 doAudioCallToSearchResult:v7];
+    v7 = searchResult;
+    delegate = [(ControlContaineeViewController *)self delegate];
+    [delegate viewController:0 doAudioCallToSearchResult:v7];
 
     [(SearchViewController *)self _addRecentPlaceForSearchResult:v7];
-    v5 = v7;
+    searchResult = v7;
   }
 }
 
-- (void)quickActionMenuPresenter:(id)a3 selectedDirectionsTo:(id)a4
+- (void)quickActionMenuPresenter:(id)presenter selectedDirectionsTo:(id)to
 {
-  v5 = [a3 searchResult];
-  if (v5)
+  searchResult = [presenter searchResult];
+  if (searchResult)
   {
     v6 = objc_alloc_init(SearchFieldItem);
     v7 = +[SearchResult currentLocationSearchResult];
     [(SearchFieldItem *)v6 setSearchResult:v7];
 
     v8 = objc_alloc_init(SearchFieldItem);
-    [(SearchFieldItem *)v8 setSearchResult:v5];
+    [(SearchFieldItem *)v8 setSearchResult:searchResult];
     v9 = [DirectionItem alloc];
     v16[0] = v6;
     v16[1] = v8;
@@ -1617,27 +1617,27 @@ LABEL_14:
     v14 = @"DirectionsSessionInitiatorKey";
     v15 = &off_1016E7DF0;
     v12 = [NSDictionary dictionaryWithObjects:&v15 forKeys:&v14 count:1];
-    v13 = [(ControlContaineeViewController *)self delegate];
-    [v13 viewController:0 doDirectionItem:v11 withUserInfo:v12];
+    delegate = [(ControlContaineeViewController *)self delegate];
+    [delegate viewController:0 doDirectionItem:v11 withUserInfo:v12];
 
-    [(SearchViewController *)self _addRecentPlaceForSearchResult:v5];
+    [(SearchViewController *)self _addRecentPlaceForSearchResult:searchResult];
   }
 }
 
-- (void)_addRecentPlaceForSearchResult:(id)a3
+- (void)_addRecentPlaceForSearchResult:(id)result
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  resultCopy = result;
+  v4 = resultCopy;
+  if (resultCopy)
   {
-    v8 = v3;
-    v5 = [v3 isHomeOrWork];
+    v8 = resultCopy;
+    isHomeOrWork = [resultCopy isHomeOrWork];
     v4 = v8;
-    if ((v5 & 1) == 0)
+    if ((isHomeOrWork & 1) == 0)
     {
-      v6 = [v8 mapItem];
-      v7 = [v8 searchToSupersedeIfRecordedInHistory];
-      [HistoryEntryRecentsItem saveMapItem:v6 superseedUUID:v7];
+      mapItem = [v8 mapItem];
+      searchToSupersedeIfRecordedInHistory = [v8 searchToSupersedeIfRecordedInHistory];
+      [HistoryEntryRecentsItem saveMapItem:mapItem superseedUUID:searchToSupersedeIfRecordedInHistory];
 
       v4 = v8;
     }
@@ -1674,12 +1674,12 @@ LABEL_14:
   }
 }
 
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
-  y = a4.y;
+  y = velocity.y;
   v9.receiver = self;
   v9.super_class = SearchViewController;
-  [(ContaineeViewController *)&v9 scrollViewWillEndDragging:a3 withVelocity:a5 targetContentOffset:a4.x];
+  [(ContaineeViewController *)&v9 scrollViewWillEndDragging:dragging withVelocity:offset targetContentOffset:velocity.x];
   if (y <= 0.0)
   {
     v7 = 7;
@@ -1694,26 +1694,26 @@ LABEL_14:
   [v8 captureUserAction:v7 onTarget:-[SearchViewController currentUITargetForAnalytics](self eventValue:{"currentUITargetForAnalytics"), 0}];
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
   v3.receiver = self;
   v3.super_class = SearchViewController;
-  [(ContaineeViewController *)&v3 scrollViewWillBeginDragging:a3];
+  [(ContaineeViewController *)&v3 scrollViewWillBeginDragging:dragging];
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
   v4.receiver = self;
   v4.super_class = SearchViewController;
-  [(ContaineeViewController *)&v4 scrollViewDidScroll:a3];
+  [(ContaineeViewController *)&v4 scrollViewDidScroll:scroll];
   [(SearchViewController *)self _contentAlphaForCurrentLayout];
   [(SearchViewController *)self _updateHeaderHairlineAlphaWithContentAlpha:1 animated:?];
 }
 
-- (void)_updateHeaderHairlineAlphaWithContentAlpha:(double)a3 animated:(BOOL)a4
+- (void)_updateHeaderHairlineAlphaWithContentAlpha:(double)alpha animated:(BOOL)animated
 {
-  v4 = a4;
-  v7 = 0.0;
+  animatedCopy = animated;
+  alphaCopy2 = 0.0;
   if (sub_10000FA08(self) == 5)
   {
     goto LABEL_16;
@@ -1728,27 +1728,27 @@ LABEL_14:
       goto LABEL_16;
     }
 
-    v10 = [(SearchViewController *)self currentDataSource];
-    v11 = [v10 presentationStyle];
+    currentDataSource = [(SearchViewController *)self currentDataSource];
+    presentationStyle = [currentDataSource presentationStyle];
 
-    if (v11 == 1)
+    if (presentationStyle == 1)
     {
       v12 = 240;
 LABEL_13:
       if ([*(&self->super.super.super.super.super.super.isa + v12) _maps_shouldShowTopHairline])
       {
-        v7 = a3;
+        alphaCopy2 = alpha;
       }
 
       else
       {
-        v7 = 0.0;
+        alphaCopy2 = 0.0;
       }
 
       goto LABEL_16;
     }
 
-    if (!v11)
+    if (!presentationStyle)
     {
       v12 = 232;
       goto LABEL_13;
@@ -1757,19 +1757,19 @@ LABEL_13:
 
   else
   {
-    v13 = [(HomeViewController *)self->_homeViewController shouldShowTopHairline];
-    if (v13)
+    shouldShowTopHairline = [(HomeViewController *)self->_homeViewController shouldShowTopHairline];
+    if (shouldShowTopHairline)
     {
-      v7 = a3;
+      alphaCopy2 = alpha;
     }
 
     else
     {
-      v7 = 0.0;
+      alphaCopy2 = 0.0;
     }
 
-    v14 = [(HomeViewController *)self->_homeViewController scrollView];
-    [v14 setClipsToBounds:v13];
+    scrollView = [(HomeViewController *)self->_homeViewController scrollView];
+    [scrollView setClipsToBounds:shouldShowTopHairline];
   }
 
 LABEL_16:
@@ -1780,7 +1780,7 @@ LABEL_16:
 
   else
   {
-    v15 = v7;
+    v15 = alphaCopy2;
   }
 
   v17[0] = _NSConcreteStackBlock;
@@ -1793,7 +1793,7 @@ LABEL_16:
   v16[2] = sub_10098F61C;
   v16[3] = &unk_101638478;
   v16[4] = self;
-  [UIScrollView _maps_updateTopHairlineAlpha:v4 animated:v17 getter:v16 setter:v15];
+  [UIScrollView _maps_updateTopHairlineAlpha:animatedCopy animated:v17 getter:v16 setter:v15];
 }
 
 - (void)refreshCurrentSearch
@@ -1803,61 +1803,61 @@ LABEL_16:
     goto LABEL_8;
   }
 
-  v8 = [(SearchViewController *)self searchResultsViewController];
-  if (!v8 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  searchResultsViewController = [(SearchViewController *)self searchResultsViewController];
+  if (!searchResultsViewController || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
 
 LABEL_8:
-    v3 = [(ControlContaineeViewController *)self delegate];
-    v4 = [(ControlContaineeViewController *)self delegate];
-    v5 = [v4 currentSearchSession];
-    v6 = [v5 searchFieldItem];
+    delegate = [(ControlContaineeViewController *)self delegate];
+    delegate2 = [(ControlContaineeViewController *)self delegate];
+    currentSearchSession = [delegate2 currentSearchSession];
+    searchFieldItem = [currentSearchSession searchFieldItem];
     v9 = @"SearchSessionIsAutoRedoSearch";
     v10 = &__kCFBooleanTrue;
     v7 = [NSDictionary dictionaryWithObjects:&v10 forKeys:&v9 count:1];
-    [v3 viewController:self doSearchItem:v6 withUserInfo:v7];
+    [delegate viewController:self doSearchItem:searchFieldItem withUserInfo:v7];
 
     return;
   }
 
-  [v8 refreshCurrentSearch];
+  [searchResultsViewController refreshCurrentSearch];
 }
 
-- (void)selectNearbyCategoryAtIndex:(unint64_t)a3
+- (void)selectNearbyCategoryAtIndex:(unint64_t)index
 {
-  v4 = [(SearchViewController *)self searchHomeDataSource];
-  [v4 _ppt_selectCategoryAtIndex:a3];
+  searchHomeDataSource = [(SearchViewController *)self searchHomeDataSource];
+  [searchHomeDataSource _ppt_selectCategoryAtIndex:index];
 }
 
-- (void)textDroppableView:(id)a3 dropSessionDidEnd:(id)a4
+- (void)textDroppableView:(id)view dropSessionDidEnd:(id)end
 {
-  v5 = a4;
-  v6 = [(SearchViewController *)self mapsDragDestinationHandler];
-  [v6 endDrop:v5];
+  endCopy = end;
+  mapsDragDestinationHandler = [(SearchViewController *)self mapsDragDestinationHandler];
+  [mapsDragDestinationHandler endDrop:endCopy];
 }
 
-- (void)textDroppableView:(id)a3 willPerformDrop:(id)a4
+- (void)textDroppableView:(id)view willPerformDrop:(id)drop
 {
-  v6 = a4;
-  v7 = a3;
-  [v7 bounds];
+  dropCopy = drop;
+  viewCopy = view;
+  [viewCopy bounds];
   v10 = v8 + v9 * 0.5;
   v13 = v11 + v12 * 0.5;
-  v15 = [(SearchViewController *)self mapsDragDestinationHandler];
-  v14 = [v6 dropSession];
+  mapsDragDestinationHandler = [(SearchViewController *)self mapsDragDestinationHandler];
+  dropSession = [dropCopy dropSession];
 
-  [v15 performDrop:v14 finishingAtLocation:v7 inView:{v10, v13}];
+  [mapsDragDestinationHandler performDrop:dropSession finishingAtLocation:viewCopy inView:{v10, v13}];
 }
 
-- (id)textDroppableView:(id)a3 proposalForDrop:(id)a4
+- (id)textDroppableView:(id)view proposalForDrop:(id)drop
 {
-  v5 = a4;
+  dropCopy = drop;
   [0 setDropPerformer:1];
-  v6 = [v5 dropSession];
-  v7 = [v6 localDragSession];
+  dropSession = [dropCopy dropSession];
+  localDragSession = [dropSession localDragSession];
 
   v8 = [UITextDropProposal alloc];
-  if (v7)
+  if (localDragSession)
   {
     v9 = [v8 initWithDropOperation:0];
   }
@@ -1865,30 +1865,30 @@ LABEL_8:
   else
   {
     v9 = [v8 initWithDropOperation:2];
-    v10 = [(SearchViewController *)self mapsDragDestinationHandler];
-    v11 = [v5 dropSession];
-    [v10 beginDrop:v11];
+    mapsDragDestinationHandler = [(SearchViewController *)self mapsDragDestinationHandler];
+    dropSession2 = [dropCopy dropSession];
+    [mapsDragDestinationHandler beginDrop:dropSession2];
   }
 
   return v9;
 }
 
-- (void)_textFieldDidChange:(id)a3 tappedQuerySuggestionCompletion:(id)a4
+- (void)_textFieldDidChange:(id)change tappedQuerySuggestionCompletion:(id)completion
 {
-  v11 = a4;
-  v5 = [(UITextField *)self->_searchField text];
-  v6 = [v5 _maps_stringByTrimmingLeadingWhitespace];
+  completionCopy = completion;
+  text = [(UITextField *)self->_searchField text];
+  _maps_stringByTrimmingLeadingWhitespace = [text _maps_stringByTrimmingLeadingWhitespace];
 
-  if ([v6 length] == 1 && !self->_noTypingSent && self->_currentDataSource == &self->_searchHomeDataSource->super)
+  if ([_maps_stringByTrimmingLeadingWhitespace length] == 1 && !self->_noTypingSent && self->_currentDataSource == &self->_searchHomeDataSource->super)
   {
     self->_noTypingSent = 1;
     [(SearchHomeDataSource *)self->_searchHomeDataSource sendNoTypingACAnalytics];
   }
 
   self->_hasEdited = 1;
-  if ([v6 length])
+  if ([_maps_stringByTrimmingLeadingWhitespace length])
   {
-    v7 = v6;
+    v7 = _maps_stringByTrimmingLeadingWhitespace;
   }
 
   else
@@ -1898,7 +1898,7 @@ LABEL_8:
 
   objc_storeStrong(&self->_userTypedSearchString, v7);
   v8 = +[NSCharacterSet whitespaceAndNewlineCharacterSet];
-  v9 = [v6 stringByTrimmingCharactersInSet:v8];
+  v9 = [_maps_stringByTrimmingLeadingWhitespace stringByTrimmingCharactersInSet:v8];
   v10 = [v9 length];
 
   if (!v10)
@@ -1906,34 +1906,34 @@ LABEL_8:
     [(SearchViewController *)self clearRetainedSearchQuery];
   }
 
-  [(SearchViewController *)self sendACRequestWithTappedQuerySuggestionCompletion:v11 retainQueryMetadata:0];
+  [(SearchViewController *)self sendACRequestWithTappedQuerySuggestionCompletion:completionCopy retainQueryMetadata:0];
 }
 
-- (void)_textFieldDidChange:(id)a3
+- (void)_textFieldDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v5 = sub_100067540();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [(UITextField *)self->_searchField text];
+    text = [(UITextField *)self->_searchField text];
     v14 = 138412290;
-    v15 = v6;
+    v15 = text;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Processing autocomplete query: %@", &v14, 0xCu);
   }
 
-  [(SearchViewController *)self _textFieldDidChange:v4 tappedQuerySuggestionCompletion:0];
+  [(SearchViewController *)self _textFieldDidChange:changeCopy tappedQuerySuggestionCompletion:0];
   v7 = +[UIKeyboardInputModeController sharedInputModeController];
-  v8 = [v7 currentInputMode];
+  currentInputMode = [v7 currentInputMode];
 
-  v9 = [v8 identifier];
+  identifier = [currentInputMode identifier];
   v10 = UIKeyboardInputModeGetBaseLanguage();
   v11 = [v10 isEqualToString:@"ja"];
 
   if (v11)
   {
-    v12 = [(UITextField *)self->_searchField markedTextRange];
+    markedTextRange = [(UITextField *)self->_searchField markedTextRange];
 
-    if (!v12)
+    if (!markedTextRange)
     {
       v13 = +[MKMapService sharedService];
       [v13 captureUserAction:458 onTarget:127 eventValue:0];
@@ -1941,9 +1941,9 @@ LABEL_8:
   }
 }
 
-- (BOOL)textFieldShouldReturn:(id)a3
+- (BOOL)textFieldShouldReturn:(id)return
 {
-  v4 = a3;
+  returnCopy = return;
   v5 = sub_100067540();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -1951,17 +1951,17 @@ LABEL_8:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Keyboard search button pressed", v11, 2u);
   }
 
-  v6 = [v4 text];
+  text = [returnCopy text];
 
-  v7 = [v6 _maps_stringByTrimmingLeadingWhitespace];
-  v8 = [v7 length];
+  _maps_stringByTrimmingLeadingWhitespace = [text _maps_stringByTrimmingLeadingWhitespace];
+  v8 = [_maps_stringByTrimmingLeadingWhitespace length];
 
   if (v8)
   {
     if (sub_10000FA08(self) == 5)
     {
-      v9 = [(ControlContaineeViewController *)self delegate];
-      [v9 clearSearchPins];
+      delegate = [(ControlContaineeViewController *)self delegate];
+      [delegate clearSearchPins];
     }
 
     [(SearchViewController *)self sendSearchRequest];
@@ -1971,7 +1971,7 @@ LABEL_8:
   return v8 != 0;
 }
 
-- (BOOL)textFieldShouldClear:(id)a3
+- (BOOL)textFieldShouldClear:(id)clear
 {
   v4 = sub_100067540();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -1984,11 +1984,11 @@ LABEL_8:
   [v5 captureUserAction:2002 onTarget:-[SearchViewController currentUITargetForAnalytics](self eventValue:{"currentUITargetForAnalytics"), 0}];
 
   [(SearchViewController *)self clearRetainedSearchQuery];
-  v6 = [(SearchDataSource *)self->_searchDataSource searchDataProvider];
-  [v6 clearMKLocalSearchCompleterQueryState];
+  searchDataProvider = [(SearchDataSource *)self->_searchDataSource searchDataProvider];
+  [searchDataProvider clearMKLocalSearchCompleterQueryState];
 
-  v7 = [(ControlContaineeViewController *)self delegate];
-  [v7 clearSearch];
+  delegate = [(ControlContaineeViewController *)self delegate];
+  [delegate clearSearch];
 
   [(SearchDataSource *)self->_searchDataSource clearAutocompleteResults];
   if (sub_10000FA08(self) != 5)
@@ -1999,16 +1999,16 @@ LABEL_8:
   return 1;
 }
 
-- (void)textFieldDidEndEditing:(id)a3
+- (void)textFieldDidEndEditing:(id)editing
 {
   [(SearchViewController *)self setNeedsUpdateContentState];
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 postNotificationName:@"SearchTextFieldDidEndEditingNotification" object:self];
 }
 
-- (void)textFieldDidBeginEditing:(id)a3
+- (void)textFieldDidBeginEditing:(id)editing
 {
-  v4 = a3;
+  editingCopy = editing;
   v5 = sub_100067540();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -2016,24 +2016,24 @@ LABEL_8:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Search bar selected", buf, 2u);
   }
 
-  v6 = [(ContaineeViewController *)self cardPresentationController];
-  if ([v6 containeeLayout] == 1)
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  if ([cardPresentationController containeeLayout] == 1)
   {
   }
 
   else
   {
-    v7 = [(ContaineeViewController *)self cardPresentationController];
-    v8 = [v7 containeeLayout];
+    cardPresentationController2 = [(ContaineeViewController *)self cardPresentationController];
+    containeeLayout = [cardPresentationController2 containeeLayout];
 
-    if (v8 != 2)
+    if (containeeLayout != 2)
     {
       goto LABEL_7;
     }
   }
 
-  v9 = [(ContaineeViewController *)self cardPresentationController];
-  [v9 wantsLayout:3];
+  cardPresentationController3 = [(ContaineeViewController *)self cardPresentationController];
+  [cardPresentationController3 wantsLayout:3];
 
 LABEL_7:
   if (!self->_searchItem)
@@ -2057,27 +2057,27 @@ LABEL_7:
 
   else
   {
-    v13 = [(ContaineeViewController *)self cardPresentationController];
-    [v13 applyWithAnimations:v12 completion:&stru_101630738];
+    cardPresentationController4 = [(ContaineeViewController *)self cardPresentationController];
+    [cardPresentationController4 applyWithAnimations:v12 completion:&stru_101630738];
   }
 
   [(SearchViewController *)self updateDataSource];
   if (sub_10000FA08(self) == 5)
   {
-    v14 = [v4 text];
-    v15 = [v14 length];
+    text = [editingCopy text];
+    v15 = [text length];
 
     if (v15)
     {
-      v16 = [(SearchViewController *)self currentDataSource];
-      v17 = [v16 conformsToProtocol:&OBJC_PROTOCOL___SearchDataProviding];
+      currentDataSource = [(SearchViewController *)self currentDataSource];
+      v17 = [currentDataSource conformsToProtocol:&OBJC_PROTOCOL___SearchDataProviding];
 
       if (v17)
       {
-        v18 = [(SearchViewController *)self currentDataSource];
-        v19 = [v18 hasResults];
+        currentDataSource2 = [(SearchViewController *)self currentDataSource];
+        hasResults = [currentDataSource2 hasResults];
 
-        if ((v19 & 1) == 0)
+        if ((hasResults & 1) == 0)
         {
           [(SearchViewController *)self _textFieldDidChange:0];
         }
@@ -2089,34 +2089,34 @@ LABEL_7:
   [v20 postNotificationName:@"SearchTextFieldDidBeginEditingNotification" object:self];
 }
 
-- (BOOL)textFieldShouldBeginEditing:(id)a3
+- (BOOL)textFieldShouldBeginEditing:(id)editing
 {
   self->_noTypingSent = 0;
   v4 = +[MKMapService sharedService];
   [v4 captureUserAction:2001 onTarget:-[SearchViewController currentUITargetForAnalytics](self eventValue:{"currentUITargetForAnalytics"), 0}];
 
-  v5 = [(ControlContaineeViewController *)self delegate];
-  v6 = [v5 newTraits];
+  delegate = [(ControlContaineeViewController *)self delegate];
+  newTraits = [delegate newTraits];
   v7 = +[BrowseManager sharedManager];
-  [v7 setTraits:v6];
+  [v7 setTraits:newTraits];
 
   return 1;
 }
 
-- (void)searchBar:(id)a3 didPasteMapsLink:(id)a4
+- (void)searchBar:(id)bar didPasteMapsLink:(id)link
 {
-  v5 = a4;
-  v13 = [(SearchViewController *)self _maps_platformController];
-  v6 = [v13 entryPointsCoordinator];
-  v7 = [(SearchViewController *)self _maps_uiScene];
-  v8 = [v7 session];
-  v9 = [(SearchViewController *)self view];
-  v10 = [v9 window];
-  [v10 bounds];
-  [v6 openURL:v5 session:v8 sceneOptions:0 mkOptions:0 windowSize:{v11, v12}];
+  linkCopy = link;
+  _maps_platformController = [(SearchViewController *)self _maps_platformController];
+  entryPointsCoordinator = [_maps_platformController entryPointsCoordinator];
+  _maps_uiScene = [(SearchViewController *)self _maps_uiScene];
+  session = [_maps_uiScene session];
+  view = [(SearchViewController *)self view];
+  window = [view window];
+  [window bounds];
+  [entryPointsCoordinator openURL:linkCopy session:session sceneOptions:0 mkOptions:0 windowSize:{v11, v12}];
 }
 
-- (void)searchBarCancelButtonClicked:(id)a3
+- (void)searchBarCancelButtonClicked:(id)clicked
 {
   v4 = +[MKMapService sharedService];
   [v4 captureUserAction:2003 onTarget:-[SearchViewController currentUITargetForAnalytics](self eventValue:{"currentUITargetForAnalytics"), 0}];
@@ -2126,18 +2126,18 @@ LABEL_7:
 
 - (ParkedCarActionDelegate)homeParkedCarActionDelegate
 {
-  v2 = [(ControlContaineeViewController *)self delegate];
-  v3 = [v2 appCoordinator];
+  delegate = [(ControlContaineeViewController *)self delegate];
+  appCoordinator = [delegate appCoordinator];
 
-  return v3;
+  return appCoordinator;
 }
 
 - (ShareDelegate)homeShareDelegate
 {
-  v2 = [(ControlContaineeViewController *)self delegate];
-  v3 = [v2 appCoordinator];
+  delegate = [(ControlContaineeViewController *)self delegate];
+  appCoordinator = [delegate appCoordinator];
 
-  return v3;
+  return appCoordinator;
 }
 
 - (void)homeDidTapTermsAndConditions
@@ -2145,14 +2145,14 @@ LABEL_7:
   v3 = GEOConfigGetString();
   v5 = [NSURL URLWithString:v3];
 
-  v4 = [(SearchViewController *)self homeActionCoordinator];
-  [v4 viewController:self openURL:v5];
+  homeActionCoordinator = [(SearchViewController *)self homeActionCoordinator];
+  [homeActionCoordinator viewController:self openURL:v5];
 }
 
 - (void)homeDidTapReportAProblem
 {
-  v3 = [(ControlContaineeViewController *)self delegate];
-  [v3 viewControllerShowReports:self];
+  delegate = [(ControlContaineeViewController *)self delegate];
+  [delegate viewControllerShowReports:self];
 }
 
 - (void)homeDidTapMarkMyLocation
@@ -2161,9 +2161,9 @@ LABEL_7:
   v7 = [v3 localizedStringForKey:@"Mark My Location [App Delegate]" value:@"localized string not found" table:0];
 
   v4 = [[UIApplicationShortcutItem alloc] initWithType:@"com.apple.Maps.action.mark-my-location-from-app-delegate" localizedTitle:v7 localizedSubtitle:0 icon:0 userInfo:0];
-  v5 = [(SearchViewController *)self _maps_mapsSceneDelegate];
-  v6 = [v5 entryPointsCoordinator];
-  [v6 openShortcutItem:v4];
+  _maps_mapsSceneDelegate = [(SearchViewController *)self _maps_mapsSceneDelegate];
+  entryPointsCoordinator = [_maps_mapsSceneDelegate entryPointsCoordinator];
+  [entryPointsCoordinator openShortcutItem:v4];
 }
 
 - (void)homeDidTapShareMyLocation
@@ -2172,22 +2172,22 @@ LABEL_7:
   v7 = [v3 localizedStringForKey:@"Share My Location [App Delegate]" value:@"localized string not found" table:0];
 
   v4 = [[UIApplicationShortcutItem alloc] initWithType:@"com.apple.Maps.action.share-location-from-app-delegate" localizedTitle:v7 localizedSubtitle:0 icon:0 userInfo:0];
-  v5 = [(SearchViewController *)self _maps_mapsSceneDelegate];
-  v6 = [v5 entryPointsCoordinator];
-  [v6 openShortcutItem:v4];
+  _maps_mapsSceneDelegate = [(SearchViewController *)self _maps_mapsSceneDelegate];
+  entryPointsCoordinator = [_maps_mapsSceneDelegate entryPointsCoordinator];
+  [entryPointsCoordinator openShortcutItem:v4];
 }
 
-- (void)homeDidTapOnContainment:(id)a3 forResults:(id)a4
+- (void)homeDidTapOnContainment:(id)containment forResults:(id)results
 {
-  v6 = a4;
-  v7 = a3;
-  v11 = [[SearchResult alloc] initWithMapItem:v7];
+  resultsCopy = results;
+  containmentCopy = containment;
+  v11 = [[SearchResult alloc] initWithMapItem:containmentCopy];
 
-  v8 = [v6 arrayByAddingObject:v11];
+  v8 = [resultsCopy arrayByAddingObject:v11];
 
-  v9 = [(ControlContaineeViewController *)self delegate];
-  v10 = [v9 searchPinsManager];
-  [v10 setSearchPins:v8 selectedPin:v11 animated:1];
+  delegate = [(ControlContaineeViewController *)self delegate];
+  searchPinsManager = [delegate searchPinsManager];
+  [searchPinsManager setSearchPins:v8 selectedPin:v11 animated:1];
 }
 
 - (void)homeContentDidUpdate
@@ -2195,40 +2195,40 @@ LABEL_7:
   [(SearchViewController *)self _contentAlphaForCurrentLayout];
   [(SearchViewController *)self _updateHeaderHairlineAlphaWithContentAlpha:0 animated:?];
   [(SearchViewController *)self _invalidateMediumHeightCache];
-  v3 = [(ContaineeViewController *)self cardPresentationController];
-  v4 = [v3 containerStyle];
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  containerStyle = [cardPresentationController containerStyle];
 
-  if (v4 == 6)
+  if (containerStyle == 6)
   {
-    v5 = [(ContaineeViewController *)self cardPresentationController];
-    [v5 updateHeightForCurrentLayout];
+    cardPresentationController2 = [(ContaineeViewController *)self cardPresentationController];
+    [cardPresentationController2 updateHeightForCurrentLayout];
   }
 }
 
-- (void)homeSectionHeaderButtonTapped:(int64_t)a3
+- (void)homeSectionHeaderButtonTapped:(int64_t)tapped
 {
-  switch(a3)
+  switch(tapped)
   {
     case 5:
-      v6 = [(ControlContaineeViewController *)self delegate];
-      [v6 viewControllerShowMyRecents:self includeRecentSearches:0];
+      delegate = [(ControlContaineeViewController *)self delegate];
+      [delegate viewControllerShowMyRecents:self includeRecentSearches:0];
       break;
     case 3:
-      v6 = [(ControlContaineeViewController *)self delegate];
-      [v6 viewControllerShowCollections:self];
+      delegate = [(ControlContaineeViewController *)self delegate];
+      [delegate viewControllerShowCollections:self];
       break;
     case 2:
       v4 = _UISolariumEnabled();
-      v5 = [(ControlContaineeViewController *)self delegate];
-      v6 = v5;
+      delegate2 = [(ControlContaineeViewController *)self delegate];
+      delegate = delegate2;
       if (v4)
       {
-        [v5 viewControllerShowLibraryRootView:self];
+        [delegate2 viewControllerShowLibraryRootView:self];
       }
 
       else
       {
-        [v5 viewControllerShowMyShortcuts:self];
+        [delegate2 viewControllerShowMyShortcuts:self];
       }
 
       break;
@@ -2239,84 +2239,84 @@ LABEL_7:
 
 - (void)homeDidTapRecentlyAdded
 {
-  v2 = [(ControlContaineeViewController *)self delegate];
-  [v2 toggleTopLevelRecentlyAdded];
+  delegate = [(ControlContaineeViewController *)self delegate];
+  [delegate toggleTopLevelRecentlyAdded];
 }
 
 - (void)homeDidTapVisitedPlaces
 {
-  v2 = [(ControlContaineeViewController *)self delegate];
-  [v2 toggleTopLevelVisitedPlaces];
+  delegate = [(ControlContaineeViewController *)self delegate];
+  [delegate toggleTopLevelVisitedPlaces];
 }
 
 - (void)homeDidTapSavedRoutes
 {
-  v2 = [(ControlContaineeViewController *)self delegate];
-  [v2 toggleTopLevelSavedRoutes];
+  delegate = [(ControlContaineeViewController *)self delegate];
+  [delegate toggleTopLevelSavedRoutes];
 }
 
 - (void)homeDidTapSeeAllUserGuides
 {
-  v2 = [(ControlContaineeViewController *)self delegate];
-  [v2 toggleTopLevelGuides];
+  delegate = [(ControlContaineeViewController *)self delegate];
+  [delegate toggleTopLevelGuides];
 }
 
 - (void)homeDidTapPlaces
 {
-  v2 = [(ControlContaineeViewController *)self delegate];
-  [v2 toggleTopLevelPlaces];
+  delegate = [(ControlContaineeViewController *)self delegate];
+  [delegate toggleTopLevelPlaces];
 }
 
 - (void)homeDidTapPinnedPlaces
 {
-  v2 = [(ControlContaineeViewController *)self delegate];
-  [v2 toggleTopLevelPinned];
+  delegate = [(ControlContaineeViewController *)self delegate];
+  [delegate toggleTopLevelPinned];
 }
 
-- (void)showGuidesHomeFromExploreGuides:(id)a3
+- (void)showGuidesHomeFromExploreGuides:(id)guides
 {
-  v4 = a3;
-  v6 = [(ControlContaineeViewController *)self delegate];
-  v5 = [v4 guideLocation];
+  guidesCopy = guides;
+  delegate = [(ControlContaineeViewController *)self delegate];
+  guideLocation = [guidesCopy guideLocation];
 
-  [v6 viewController:self showGuidesHome:v5];
+  [delegate viewController:self showGuidesHome:guideLocation];
 }
 
 - (void)showCitySelector
 {
-  v2 = [(ControlContaineeViewController *)self delegate];
-  [v2 viewControllerShowCitySelectorFromGuideLocation:0];
+  delegate = [(ControlContaineeViewController *)self delegate];
+  [delegate viewControllerShowCitySelectorFromGuideLocation:0];
 }
 
-- (void)shareCollection:(id)a3 collection:(id)a4
+- (void)shareCollection:(id)collection collection:(id)a4
 {
   v6 = a4;
-  v7 = a3;
+  collectionCopy = collection;
   v11 = [[PersonalCollectionShareItemSource alloc] initWithCollectionHandlerInfo:v6];
 
-  v8 = [MUPresentationOptions optionsWithSender:v7];
+  v8 = [MUPresentationOptions optionsWithSender:collectionCopy];
 
-  v9 = [(ControlContaineeViewController *)self delegate];
-  v10 = [v9 appCoordinator];
-  [v10 shareItem:v11 presentationOptions:v8 completion:0];
+  delegate = [(ControlContaineeViewController *)self delegate];
+  appCoordinator = [delegate appCoordinator];
+  [appCoordinator shareItem:v11 presentationOptions:v8 completion:0];
 }
 
 - (void)seeAllTappedForUserGuides
 {
-  v2 = [(ControlContaineeViewController *)self delegate];
-  [v2 viewControllerShowCollections:0];
+  delegate = [(ControlContaineeViewController *)self delegate];
+  [delegate viewControllerShowCollections:0];
 }
 
 - (void)seeAllTappedForRecents
 {
-  v3 = [(ControlContaineeViewController *)self delegate];
-  [v3 viewControllerShowMyRecents:self includeRecentSearches:1];
+  delegate = [(ControlContaineeViewController *)self delegate];
+  [delegate viewControllerShowMyRecents:self includeRecentSearches:1];
 
   if (sub_10000FA08(self) == 5)
   {
     [(SearchViewController *)self showDropDownIfNeeded:0];
-    v4 = [(SearchViewController *)self view];
-    [v4 endEditing:1];
+    view = [(SearchViewController *)self view];
+    [view endEditing:1];
   }
 }
 
@@ -2325,59 +2325,59 @@ LABEL_7:
   if (sub_10000FA08(self) == 5)
   {
     [(SearchViewController *)self showDropDownIfNeeded:0];
-    v3 = [(SearchViewController *)self view];
-    [v3 endEditing:1];
+    view = [(SearchViewController *)self view];
+    [view endEditing:1];
   }
 
-  v4 = [(ControlContaineeViewController *)self delegate];
-  [v4 viewControllerShowAllCollections];
+  delegate = [(ControlContaineeViewController *)self delegate];
+  [delegate viewControllerShowAllCollections];
 }
 
 - (id)recentAutocompleteSessionData
 {
-  v2 = [(SearchDataSource *)self->_searchDataSource searchDataProvider];
-  v3 = [v2 _recentAutocompleteSessionData];
+  searchDataProvider = [(SearchDataSource *)self->_searchDataSource searchDataProvider];
+  _recentAutocompleteSessionData = [searchDataProvider _recentAutocompleteSessionData];
 
-  return v3;
+  return _recentAutocompleteSessionData;
 }
 
-- (void)didSelectRecentAtIndex:(unint64_t)a3
+- (void)didSelectRecentAtIndex:(unint64_t)index
 {
-  v4 = [(SearchViewController *)self searchHomeDataSource];
-  [v4 didSelectRecentAtIndex:a3];
+  searchHomeDataSource = [(SearchViewController *)self searchHomeDataSource];
+  [searchHomeDataSource didSelectRecentAtIndex:index];
 }
 
-- (void)didSelectCompactGuideModelAtIndex:(unint64_t)a3
+- (void)didSelectCompactGuideModelAtIndex:(unint64_t)index
 {
-  v4 = [(SearchViewController *)self searchHomeDataSource];
-  [v4 didSelectCompactGuideModelAtIndex:a3];
+  searchHomeDataSource = [(SearchViewController *)self searchHomeDataSource];
+  [searchHomeDataSource didSelectCompactGuideModelAtIndex:index];
 }
 
 - (BOOL)useSingleColumnLayout
 {
-  v2 = [(SearchViewController *)self searchHomeDataSource];
-  v3 = [v2 useSingleColumnLayout];
+  searchHomeDataSource = [(SearchViewController *)self searchHomeDataSource];
+  useSingleColumnLayout = [searchHomeDataSource useSingleColumnLayout];
 
-  return v3;
+  return useSingleColumnLayout;
 }
 
-- (void)didSelectBrowseCategoryAtIndex:(unint64_t)a3
+- (void)didSelectBrowseCategoryAtIndex:(unint64_t)index
 {
-  v4 = [(SearchViewController *)self searchHomeDataSource];
-  [v4 didSelectBrowseCategoryAtIndex:a3];
+  searchHomeDataSource = [(SearchViewController *)self searchHomeDataSource];
+  [searchHomeDataSource didSelectBrowseCategoryAtIndex:index];
 }
 
-- (void)didSelectGuideModelAtIndex:(unint64_t)a3 sectionIndex:(int64_t)a4
+- (void)didSelectGuideModelAtIndex:(unint64_t)index sectionIndex:(int64_t)sectionIndex
 {
-  v6 = [(SearchViewController *)self searchHomeDataSource];
-  [v6 didSelectGuideModelAtIndex:a3 sectionIndex:a4];
+  searchHomeDataSource = [(SearchViewController *)self searchHomeDataSource];
+  [searchHomeDataSource didSelectGuideModelAtIndex:index sectionIndex:sectionIndex];
 }
 
-- (void)didTapOnCuratedGuides:(id)a3
+- (void)didTapOnCuratedGuides:(id)guides
 {
-  v4 = a3;
-  v5 = [(SearchViewController *)self view];
-  [v5 endEditing:1];
+  guidesCopy = guides;
+  view = [(SearchViewController *)self view];
+  [view endEditing:1];
 
   if (sub_10000FA08(self) == 5)
   {
@@ -2385,45 +2385,45 @@ LABEL_7:
   }
 
   self->_maintainSearchStateWhenDisappearing = 1;
-  v6 = [(ControlContaineeViewController *)self delegate];
-  [v6 viewController:self showCuratedCollectionsList:v4 usingTitle:0 usingCollectionIds:0 completion:0];
+  delegate = [(ControlContaineeViewController *)self delegate];
+  [delegate viewController:self showCuratedCollectionsList:guidesCopy usingTitle:0 usingCollectionIds:0 completion:0];
 }
 
-- (void)didTapOnCuratedGuide:(id)a3
+- (void)didTapOnCuratedGuide:(id)guide
 {
-  v4 = a3;
-  v5 = [(SearchViewController *)self view];
-  [v5 endEditing:1];
+  guideCopy = guide;
+  view = [(SearchViewController *)self view];
+  [view endEditing:1];
 
   self->_maintainSearchStateWhenDisappearing = 1;
-  v6 = [(ControlContaineeViewController *)self delegate];
-  [v6 viewController:self showCuratedCollection:v4];
+  delegate = [(ControlContaineeViewController *)self delegate];
+  [delegate viewController:self showCuratedCollection:guideCopy];
 }
 
-- (void)didTapOnUserGeneratedGuide:(id)a3
+- (void)didTapOnUserGeneratedGuide:(id)guide
 {
-  v4 = a3;
-  v5 = [(SearchViewController *)self view];
-  [v5 endEditing:1];
+  guideCopy = guide;
+  view = [(SearchViewController *)self view];
+  [view endEditing:1];
 
   self->_maintainSearchStateWhenDisappearing = 1;
-  v6 = [(ControlContaineeViewController *)self delegate];
-  [v6 viewController:self showCollection:v4];
+  delegate = [(ControlContaineeViewController *)self delegate];
+  [delegate viewController:self showCollection:guideCopy];
 }
 
-- (void)fetchMapItemWithIdentifier:(id)a3 completion:(id)a4
+- (void)fetchMapItemWithIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   [(SearchViewController *)self resetMapServiceTicket];
-  v8 = [[MKMapItemIdentifier alloc] initWithGEOMapItemIdentifier:v6];
+  v8 = [[MKMapItemIdentifier alloc] initWithGEOMapItemIdentifier:identifierCopy];
   objc_initWeak(&location, self);
   v9 = +[MKMapService sharedService];
   v21 = v8;
   v10 = [NSArray arrayWithObjects:&v21 count:1];
-  v11 = [(ControlContaineeViewController *)self delegate];
-  v12 = [v11 newTraits];
-  v13 = [v9 ticketForIdentifiers:v10 traits:v12];
+  delegate = [(ControlContaineeViewController *)self delegate];
+  newTraits = [delegate newTraits];
+  v13 = [v9 ticketForIdentifiers:v10 traits:newTraits];
   mapServiceTicket = self->_mapServiceTicket;
   self->_mapServiceTicket = v13;
 
@@ -2433,7 +2433,7 @@ LABEL_7:
   v17[2] = sub_1009913E8;
   v17[3] = &unk_10165E308;
   objc_copyWeak(&v19, &location);
-  v16 = v7;
+  v16 = completionCopy;
   v18 = v16;
   [(MKMapServiceTicket *)v15 submitWithHandler:v17 networkActivity:0];
 
@@ -2441,24 +2441,24 @@ LABEL_7:
   objc_destroyWeak(&location);
 }
 
-- (void)fetchSearchCompletion:(id)a3 completion:(id)a4
+- (void)fetchSearchCompletion:(id)completion completion:(id)a4
 {
-  v6 = a3;
+  completionCopy = completion;
   v7 = a4;
   [(SearchViewController *)self resetMapServiceTicket];
   objc_initWeak(&location, self);
-  v8 = [(ControlContaineeViewController *)self delegate];
-  v9 = [v8 newTraits];
+  delegate = [(ControlContaineeViewController *)self delegate];
+  newTraits = [delegate newTraits];
 
   if (self->_currentDataSource == &self->_searchDataSource->super)
   {
-    [v9 setSource:7];
+    [newTraits setSource:7];
   }
 
   v10 = +[MKMapService sharedService];
-  v11 = [v6 queryLine];
-  v12 = [v6 geoCompletionItem];
-  v13 = [v10 ticketForSearchQuery:v11 completionItem:v12 traits:v9 searchSessionData:0];
+  queryLine = [completionCopy queryLine];
+  geoCompletionItem = [completionCopy geoCompletionItem];
+  v13 = [v10 ticketForSearchQuery:queryLine completionItem:geoCompletionItem traits:newTraits searchSessionData:0];
   mapServiceTicket = self->_mapServiceTicket;
   self->_mapServiceTicket = v13;
 
@@ -2476,16 +2476,16 @@ LABEL_7:
   objc_destroyWeak(&location);
 }
 
-- (void)showRegionSelectorForMapItem:(id)a3
+- (void)showRegionSelectorForMapItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_100991958;
   v16[3] = &unk_10165D2D8;
   v16[4] = self;
   v5 = objc_retainBlock(v16);
-  v6 = v4;
+  v6 = itemCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -2526,81 +2526,81 @@ LABEL_7:
 
     v11 = v10;
 
-    v12 = [v11 mapItem];
+    mapItem = [v11 mapItem];
 
-    if (v12)
+    if (mapItem)
     {
-      v13 = [v11 mapItem];
-      (v5[2])(v5, v13);
+      mapItem2 = [v11 mapItem];
+      (v5[2])(v5, mapItem2);
     }
 
     else
     {
-      v13 = sub_100067540();
-      if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
+      mapItem2 = sub_100067540();
+      if (os_log_type_enabled(mapItem2, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412290;
         v18 = v9;
-        _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEBUG, "Offline: This type of poi item is not handled :%@.", buf, 0xCu);
+        _os_log_impl(&_mh_execute_header, mapItem2, OS_LOG_TYPE_DEBUG, "Offline: This type of poi item is not handled :%@.", buf, 0xCu);
       }
     }
   }
 }
 
-- (void)searchDataSource:(id)a3 replaceQueryWithItem:(id)a4
+- (void)searchDataSource:(id)source replaceQueryWithItem:(id)item
 {
-  v5 = a4;
+  itemCopy = item;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(SearchViewController *)self triggerAutocompleteByReplacingQueryWithCompletion:v5];
+    [(SearchViewController *)self triggerAutocompleteByReplacingQueryWithCompletion:itemCopy];
   }
 }
 
-- (void)didTapToUnpinLibraryItem:(id)a3
+- (void)didTapToUnpinLibraryItem:(id)item
 {
-  v4 = a3;
-  v6 = [(ControlContaineeViewController *)self delegate];
-  v5 = [ShortcutEditSession editSessionWithShortcut:v4];
+  itemCopy = item;
+  delegate = [(ControlContaineeViewController *)self delegate];
+  v5 = [ShortcutEditSession editSessionWithShortcut:itemCopy];
 
-  [v6 viewController:self removeShortcut:v5];
+  [delegate viewController:self removeShortcut:v5];
 }
 
-- (void)didTapOnHomePinnedLibraryItem:(id)a3
+- (void)didTapOnHomePinnedLibraryItem:(id)item
 {
-  v4 = a3;
-  v6 = [(ControlContaineeViewController *)self delegate];
-  v5 = [ShortcutEditSession editSessionWithShortcut:v4];
+  itemCopy = item;
+  delegate = [(ControlContaineeViewController *)self delegate];
+  v5 = [ShortcutEditSession editSessionWithShortcut:itemCopy];
 
-  [v6 viewController:self editShortcut:v5];
+  [delegate viewController:self editShortcut:v5];
 }
 
-- (void)dataSource:(id)a3 itemTapped:(id)a4 childItemParent:(id)a5
+- (void)dataSource:(id)source itemTapped:(id)tapped childItemParent:(id)parent
 {
-  v209 = a3;
-  v7 = a4;
-  v210 = a5;
+  sourceCopy = source;
+  tappedCopy = tapped;
+  parentCopy = parent;
   v8 = sub_1000410AC();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     *buf = 138412802;
-    v247 = v209;
+    v247 = sourceCopy;
     v248 = 2112;
-    v249 = v7;
+    v249 = tappedCopy;
     v250 = 2112;
-    v251 = v210;
+    v251 = parentCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "dataSource: %@ itemTapped: %@ childItemParent: %@", buf, 0x20u);
   }
 
   [(SearchViewController *)self resetMapServiceTicket];
-  if (v210)
+  if (parentCopy)
   {
-    v9 = v210;
+    v9 = parentCopy;
   }
 
   else
   {
-    v9 = v7;
+    v9 = tappedCopy;
   }
 
   [(SearchViewController *)self retainSearchQueryForSelectedAutocompleteItem:v9 forTimeInterval:0.0];
@@ -2609,7 +2609,7 @@ LABEL_7:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v10 = [(DirectionItem *)v7 historyEntry];
+      historyEntry = [(DirectionItem *)tappedCopy historyEntry];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
@@ -2621,27 +2621,27 @@ LABEL_7:
   }
 
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || [(DirectionItem *)v7 entryTapBehavior]!= 1)
+  if ((objc_opt_isKindOfClass() & 1) == 0 || [(DirectionItem *)tappedCopy entryTapBehavior]!= 1)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v13 = v7;
+      childItemPlace = tappedCopy;
       goto LABEL_48;
     }
 
-    v7 = v7;
-    v12 = [(DirectionItem *)v7 childItemType];
-    if (v12 == 3)
+    tappedCopy = tappedCopy;
+    childItemType = [(DirectionItem *)tappedCopy childItemType];
+    if (childItemType == 3)
     {
-      v13 = v210;
+      childItemPlace = parentCopy;
 
 LABEL_47:
 LABEL_48:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v208 = v210;
+        v208 = parentCopy;
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
@@ -2660,7 +2660,7 @@ LABEL_48:
           goto LABEL_95;
         }
 
-        v223 = v13;
+        v223 = childItemPlace;
         v216 = objc_alloc_init(GEOPDResultRefinementQuery);
         [v216 setResultRefinementOriginType:3];
         v230 = 0u;
@@ -2685,34 +2685,34 @@ LABEL_48:
               if ([v24 isEqual:v223])
               {
                 v214 = [GEOResultRefinementToggle alloc];
-                v222 = [(DirectionItem *)v223 toggle];
-                v219 = [v222 displayName];
-                v221 = [(DirectionItem *)v223 toggle];
-                v213 = [v221 isSelected];
-                v220 = [(DirectionItem *)v223 toggle];
-                v218 = [v220 metadata];
-                v25 = [(DirectionItem *)v223 toggle];
-                v26 = [v25 toggleType];
-                v27 = [(DirectionItem *)v223 toggle];
-                v28 = [v27 evChargingConnectorType];
-                v29 = [(DirectionItem *)v223 toggle];
-                v30 = [v29 selectionFromView];
-                v31 = [(DirectionItem *)v223 toggle];
-                v32 = [v31 refinementKey];
-                v33 = [(DirectionItem *)v223 toggle];
-                LOBYTE(v206) = [v33 showAsSelected];
-                LOBYTE(v205) = v30;
-                v34 = [v214 initWithDisplayName:v219 isSelected:v213 ^ 1 metadata:v218 toggleType:v26 evChargingConnectorType:v28 selectionSequenceNumber:&off_1016E7DD8 selectionFromView:v205 refinementKey:v32 showAsSelected:v206];
+                toggle = [(DirectionItem *)v223 toggle];
+                displayName = [toggle displayName];
+                toggle2 = [(DirectionItem *)v223 toggle];
+                isSelected = [toggle2 isSelected];
+                toggle3 = [(DirectionItem *)v223 toggle];
+                metadata = [toggle3 metadata];
+                toggle4 = [(DirectionItem *)v223 toggle];
+                toggleType = [toggle4 toggleType];
+                toggle5 = [(DirectionItem *)v223 toggle];
+                evChargingConnectorType = [toggle5 evChargingConnectorType];
+                toggle6 = [(DirectionItem *)v223 toggle];
+                selectionFromView = [toggle6 selectionFromView];
+                toggle7 = [(DirectionItem *)v223 toggle];
+                refinementKey = [toggle7 refinementKey];
+                toggle8 = [(DirectionItem *)v223 toggle];
+                LOBYTE(v206) = [toggle8 showAsSelected];
+                LOBYTE(v205) = selectionFromView;
+                convertToGEOPDResultRefinement2 = [v214 initWithDisplayName:displayName isSelected:isSelected ^ 1 metadata:metadata toggleType:toggleType evChargingConnectorType:evChargingConnectorType selectionSequenceNumber:&off_1016E7DD8 selectionFromView:v205 refinementKey:refinementKey showAsSelected:v206];
 
-                v35 = [[GEOResultRefinement alloc] initWithToggle:v34];
-                v36 = [v35 convertToGEOPDResultRefinement];
-                [v216 addRefinement:v36];
+                v35 = [[GEOResultRefinement alloc] initWithToggle:convertToGEOPDResultRefinement2];
+                convertToGEOPDResultRefinement = [v35 convertToGEOPDResultRefinement];
+                [v216 addRefinement:convertToGEOPDResultRefinement];
               }
 
               else
               {
-                v34 = [v24 convertToGEOPDResultRefinement];
-                [v216 addRefinement:v34];
+                convertToGEOPDResultRefinement2 = [v24 convertToGEOPDResultRefinement];
+                [v216 addRefinement:convertToGEOPDResultRefinement2];
               }
             }
 
@@ -2723,7 +2723,7 @@ LABEL_48:
         }
 
         v37 = v207;
-        v13 = v208;
+        childItemPlace = v208;
       }
 
       else
@@ -2740,19 +2740,19 @@ LABEL_48:
         v226[2] = sub_100993DE8;
         v226[3] = &unk_101630688;
         objc_copyWeak(&v227, buf);
-        [(SearchViewController *)self fetchMapItemWithIdentifier:v13 completion:v226];
+        [(SearchViewController *)self fetchMapItemWithIdentifier:childItemPlace completion:v226];
         objc_destroyWeak(&v227);
         objc_destroyWeak(buf);
 LABEL_94:
 
 LABEL_95:
-        v7 = v13;
+        tappedCopy = childItemPlace;
         goto LABEL_96;
       }
 
       [(SearchViewController *)self showDropDownIfNeeded:0];
-      v38 = [(SearchViewController *)self view];
-      [v38 endEditing:1];
+      view = [(SearchViewController *)self view];
+      [view endEditing:1];
 
       v39 = +[NSMutableDictionary dictionary];
       v40 = [NSNumber numberWithBool:[(SearchViewController *)self isSearchingAlongTheRoute]];
@@ -2761,21 +2761,21 @@ LABEL_95:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v41 = v13;
+        v41 = childItemPlace;
         [v39 setObject:&__kCFBooleanTrue forKeyedSubscript:@"SearchSessionSuppressHistoryEntry"];
-        v42 = [(SearchViewController *)self currentDataSource];
+        currentDataSource = [(SearchViewController *)self currentDataSource];
         objc_opt_class();
         v43 = [NSNumber numberWithBool:objc_opt_isKindOfClass() & 1];
         [v39 setObject:v43 forKeyedSubscript:@"MSGEntryForceShowPlacecardOnTap"];
 
         if ([(DirectionItem *)v41 isShortcut])
         {
-          v44 = [(DirectionItem *)v41 shortcutIdentifier];
-          [v39 setObject:v44 forKeyedSubscript:@"ShortcutIdentifier"];
+          shortcutIdentifier = [(DirectionItem *)v41 shortcutIdentifier];
+          [v39 setObject:shortcutIdentifier forKeyedSubscript:@"ShortcutIdentifier"];
         }
 
-        v45 = [(ControlContaineeViewController *)self delegate];
-        [v45 viewController:self openMapsSuggestionEntry:v41 withUserInfo:v39];
+        delegate = [(ControlContaineeViewController *)self delegate];
+        [delegate viewController:self openMapsSuggestionEntry:v41 withUserInfo:v39];
 
         goto LABEL_93;
       }
@@ -2783,8 +2783,8 @@ LABEL_95:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v46 = [(ControlContaineeViewController *)self delegate];
-        [v46 viewControllerShowVisitHistoryHome:0];
+        delegate2 = [(ControlContaineeViewController *)self delegate];
+        [delegate2 viewControllerShowVisitHistoryHome:0];
 
 LABEL_93:
         goto LABEL_94;
@@ -2793,37 +2793,37 @@ LABEL_93:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v47 = v13;
+        v47 = childItemPlace;
         [v39 setObject:&__kCFBooleanTrue forKeyedSubscript:@"SearchSessionSuppressHistoryEntry"];
-        v48 = [(SearchViewController *)self currentDataSource];
+        currentDataSource2 = [(SearchViewController *)self currentDataSource];
         objc_opt_class();
         v49 = [NSNumber numberWithBool:objc_opt_isKindOfClass() & 1];
         [v39 setObject:v49 forKeyedSubscript:@"MSGEntryForceShowPlacecardOnTap"];
 
-        v50 = [(DirectionItem *)v47 identifier];
-        [v39 setObject:v50 forKeyedSubscript:@"ShortcutIdentifier"];
+        identifier = [(DirectionItem *)v47 identifier];
+        [v39 setObject:identifier forKeyedSubscript:@"ShortcutIdentifier"];
 
-        v51 = [(ControlContaineeViewController *)self delegate];
-        [v51 viewController:self openFavoriteItem:v47 withUserInfo:v39];
-
-        goto LABEL_93;
-      }
-
-      objc_opt_class();
-      if ((objc_opt_isKindOfClass() & 1) != 0 && [(DirectionItem *)v13 isEqualToString:@"FavoritesEntry"])
-      {
-        v52 = [(ControlContaineeViewController *)self delegate];
-        [v52 viewControllerShowCollections:self];
+        delegate3 = [(ControlContaineeViewController *)self delegate];
+        [delegate3 viewController:self openFavoriteItem:v47 withUserInfo:v39];
 
         goto LABEL_93;
       }
 
       objc_opt_class();
-      if ((objc_opt_isKindOfClass() & 1) != 0 && [(DirectionItem *)v13 isEqualToString:@"newShortcutEntry"])
+      if ((objc_opt_isKindOfClass() & 1) != 0 && [(DirectionItem *)childItemPlace isEqualToString:@"FavoritesEntry"])
       {
-        v53 = [(ControlContaineeViewController *)self delegate];
+        delegate4 = [(ControlContaineeViewController *)self delegate];
+        [delegate4 viewControllerShowCollections:self];
+
+        goto LABEL_93;
+      }
+
+      objc_opt_class();
+      if ((objc_opt_isKindOfClass() & 1) != 0 && [(DirectionItem *)childItemPlace isEqualToString:@"newShortcutEntry"])
+      {
+        delegate5 = [(ControlContaineeViewController *)self delegate];
         v54 = +[ShortcutEditSession addSession];
-        [v53 viewController:self showAddShortcut:v54];
+        [delegate5 viewController:self showAddShortcut:v54];
 
         goto LABEL_93;
       }
@@ -2831,22 +2831,22 @@ LABEL_93:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v55 = v13;
-        v56 = [(DirectionItem *)v55 sharedTrips];
-        v57 = [v56 count] == 1;
+        v55 = childItemPlace;
+        sharedTrips = [(DirectionItem *)v55 sharedTrips];
+        v57 = [sharedTrips count] == 1;
 
-        v58 = [(ControlContaineeViewController *)self delegate];
-        v59 = v58;
+        delegate6 = [(ControlContaineeViewController *)self delegate];
+        v59 = delegate6;
         if (v57)
         {
-          v60 = [(DirectionItem *)v55 sharedTrips];
-          v61 = [v60 firstObject];
-          [v59 presentSharedTrip:v61];
+          sharedTrips2 = [(DirectionItem *)v55 sharedTrips];
+          firstObject = [sharedTrips2 firstObject];
+          [v59 presentSharedTrip:firstObject];
         }
 
         else
         {
-          [v58 presentSharedTrips];
+          [delegate6 presentSharedTrips];
         }
 
         goto LABEL_93;
@@ -2856,15 +2856,15 @@ LABEL_93:
       if (objc_opt_isKindOfClass())
       {
         [v39 setObject:&off_1016E7DF0 forKeyedSubscript:@"DirectionsSessionInitiatorKey"];
-        v62 = self;
+        selfCopy2 = self;
         if (self->_currentDataSource == &self->_searchDataSource->super)
         {
           [v39 setObject:&off_1016E7E08 forKeyedSubscript:@"SearchSessionTraitsSource"];
-          v62 = self;
+          selfCopy2 = self;
         }
 
-        v63 = [(ControlContaineeViewController *)v62 delegate];
-        [v63 viewController:self doDirectionItem:v13 withUserInfo:v39];
+        delegate7 = [(ControlContaineeViewController *)selfCopy2 delegate];
+        [delegate7 viewController:self doDirectionItem:childItemPlace withUserInfo:v39];
 
         goto LABEL_93;
       }
@@ -2872,13 +2872,13 @@ LABEL_93:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v64 = v13;
-        v65 = [(DirectionItem *)v64 directionIntent];
+        v64 = childItemPlace;
+        directionIntent = [(DirectionItem *)v64 directionIntent];
 
-        if (v65)
+        if (directionIntent)
         {
-          v66 = [(ControlContaineeViewController *)self delegate];
-          [v66 viewController:self doDirectionIntentWithLocalSearchCompletion:v64];
+          delegate8 = [(ControlContaineeViewController *)self delegate];
+          [delegate8 viewController:self doDirectionIntentWithLocalSearchCompletion:v64];
 
           goto LABEL_93;
         }
@@ -2887,8 +2887,8 @@ LABEL_93:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v67 = [(ControlContaineeViewController *)self delegate];
-        [v67 viewControllerShowLibraryRootView:self];
+        delegate9 = [(ControlContaineeViewController *)self delegate];
+        [delegate9 viewControllerShowLibraryRootView:self];
 
         goto LABEL_93;
       }
@@ -2896,7 +2896,7 @@ LABEL_93:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v68 = v13;
+        v68 = childItemPlace;
         v69 = &OBJC_PROTOCOL___MSPHistoryEntryRoute;
         objc_opt_class();
         v70 = v68;
@@ -2950,46 +2950,46 @@ LABEL_93:
             v85 = 0;
           }
 
-          v87 = [(DirectionItem *)v85 historyEntry];
-          v88 = [v87 endWaypoint];
+          historyEntry2 = [(DirectionItem *)v85 historyEntry];
+          endWaypoint = [historyEntry2 endWaypoint];
           objc_opt_class();
           v89 = objc_opt_isKindOfClass();
 
           if (v89)
           {
-            v90 = [v87 endWaypoint];
-            v91 = [(ControlContaineeViewController *)self delegate];
-            v92 = [v90 route];
+            endWaypoint2 = [historyEntry2 endWaypoint];
+            delegate10 = [(ControlContaineeViewController *)self delegate];
+            route = [endWaypoint2 route];
             v243 = @"DirectionsRouteUUIDKey";
-            v93 = [v87 identifier];
-            v244 = v93;
+            identifier2 = [historyEntry2 identifier];
+            v244 = identifier2;
             v94 = [NSDictionary dictionaryWithObjects:&v244 forKeys:&v243 count:1];
-            [(DirectionItem *)v91 viewController:self enterRouteCreationWithRoute:v92 withUserInfo:v94];
+            [(DirectionItem *)delegate10 viewController:self enterRouteCreationWithRoute:route withUserInfo:v94];
           }
 
           else
           {
-            v90 = [SearchFieldItem searchFieldItemsForRouteHistoryEntry:v87];
-            if (([v87 navigationWasInterrupted] & 1) != 0 || objc_msgSend(v90, "count") >= 3)
+            endWaypoint2 = [SearchFieldItem searchFieldItemsForRouteHistoryEntry:historyEntry2];
+            if (([historyEntry2 navigationWasInterrupted] & 1) != 0 || objc_msgSend(endWaypoint2, "count") >= 3)
             {
-              v107 = [v87 transportType];
+              transportType = [historyEntry2 transportType];
             }
 
             else
             {
-              v107 = 0;
+              transportType = 0;
             }
 
-            v91 = [[DirectionItem alloc] initWithItems:v90 transportType:v107];
+            delegate10 = [[DirectionItem alloc] initWithItems:endWaypoint2 transportType:transportType];
             v241[0] = @"DirectionsSessionInitiatorKey";
             v241[1] = @"DirectionsRouteUUIDKey";
             v242[0] = &off_1016E7DF0;
-            v138 = [v87 identifier];
-            v242[1] = v138;
-            v92 = [NSDictionary dictionaryWithObjects:v242 forKeys:v241 count:2];
+            identifier3 = [historyEntry2 identifier];
+            v242[1] = identifier3;
+            route = [NSDictionary dictionaryWithObjects:v242 forKeys:v241 count:2];
 
-            v93 = [(ControlContaineeViewController *)self delegate];
-            [v93 viewController:self doDirectionItem:v91 withUserInfo:v92];
+            identifier2 = [(ControlContaineeViewController *)self delegate];
+            [identifier2 viewController:self doDirectionItem:delegate10 withUserInfo:route];
           }
 
           goto LABEL_93;
@@ -3049,10 +3049,10 @@ LABEL_93:
             v116 = 0;
           }
 
-          v117 = [(ControlContaineeViewController *)self delegate];
-          v118 = [(DirectionItem *)v116 historyEntry];
-          v119 = [v118 lineItem];
-          [v117 viewController:self selectTransitLineItem:v119 zoomToMapRegion:1];
+          delegate11 = [(ControlContaineeViewController *)self delegate];
+          historyEntry3 = [(DirectionItem *)v116 historyEntry];
+          lineItem = [historyEntry3 lineItem];
+          [delegate11 viewController:self selectTransitLineItem:lineItem zoomToMapRegion:1];
 
           goto LABEL_93;
         }
@@ -3111,11 +3111,11 @@ LABEL_93:
             v137 = 0;
           }
 
-          v140 = [v137 historyEntry];
-          v141 = [v140 placeCollection];
+          historyEntry4 = [v137 historyEntry];
+          placeCollection = [historyEntry4 placeCollection];
 
-          v142 = [(ControlContaineeViewController *)self delegate];
-          [v142 viewController:self showCuratedCollection:v141];
+          delegate12 = [(ControlContaineeViewController *)self delegate];
+          [delegate12 viewController:self showCuratedCollection:placeCollection];
 
           goto LABEL_93;
         }
@@ -3127,14 +3127,14 @@ LABEL_93:
         if (objc_opt_isKindOfClass())
         {
           objc_initWeak(buf, self);
-          v76 = [(SearchViewController *)self _maps_mapsSceneDelegate];
-          v77 = [v76 rapPresenter];
+          _maps_mapsSceneDelegate = [(SearchViewController *)self _maps_mapsSceneDelegate];
+          rapPresenter = [_maps_mapsSceneDelegate rapPresenter];
           v224[0] = _NSConcreteStackBlock;
           v224[1] = 3221225472;
           v224[2] = sub_100993EB4;
           v224[3] = &unk_101661B98;
           objc_copyWeak(&v225, buf);
-          [v77 presentAddToMapsFromSearchEntryPoint:11 result:v13 completion:v224];
+          [rapPresenter presentAddToMapsFromSearchEntryPoint:11 result:childItemPlace completion:v224];
 
           objc_destroyWeak(&v225);
           objc_destroyWeak(buf);
@@ -3142,10 +3142,10 @@ LABEL_93:
         }
 
         objc_opt_class();
-        if ((objc_opt_isKindOfClass() & 1) != 0 && [(DirectionItem *)v13 type]== 3)
+        if ((objc_opt_isKindOfClass() & 1) != 0 && [(DirectionItem *)childItemPlace type]== 3)
         {
-          v86 = [(ControlContaineeViewController *)self delegate];
-          [v86 viewController:self selectDroppedPin:v13];
+          delegate13 = [(ControlContaineeViewController *)self delegate];
+          [delegate13 viewController:self selectDroppedPin:childItemPlace];
 
           goto LABEL_93;
         }
@@ -3153,14 +3153,14 @@ LABEL_93:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v95 = [(DirectionItem *)v13 clientResolved];
-          v96 = v95 == 0;
+          clientResolved = [(DirectionItem *)childItemPlace clientResolved];
+          v96 = clientResolved == 0;
 
           if (!v96)
           {
-            v97 = [(DirectionItem *)v13 clientResolved];
-            v98 = [(ControlContaineeViewController *)self delegate];
-            [v98 viewController:self selectClientResolvedItem:v97 fromSearchInfo:0 withUserInfo:0];
+            clientResolved2 = [(DirectionItem *)childItemPlace clientResolved];
+            delegate14 = [(ControlContaineeViewController *)self delegate];
+            [delegate14 viewController:self selectClientResolvedItem:clientResolved2 fromSearchInfo:0 withUserInfo:0];
 
             goto LABEL_93;
           }
@@ -3169,26 +3169,17 @@ LABEL_93:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v108 = [(ControlContaineeViewController *)self delegate];
-          [v108 viewController:self showCollection:v13];
+          delegate15 = [(ControlContaineeViewController *)self delegate];
+          [delegate15 viewController:self showCollection:childItemPlace];
 
           goto LABEL_93;
         }
 
-        if ([(DirectionItem *)v13 conformsToProtocol:&OBJC_PROTOCOL___GEOTransitLine])
+        if ([(DirectionItem *)childItemPlace conformsToProtocol:&OBJC_PROTOCOL___GEOTransitLine])
         {
-          v128 = [[IncompleteTransitLineItem alloc] initWithTransitLine:v13];
-          v129 = [(ControlContaineeViewController *)self delegate];
-          [v129 viewController:self selectTransitLineItem:v128 zoomToMapRegion:1];
-
-          goto LABEL_93;
-        }
-
-        objc_opt_class();
-        if (objc_opt_isKindOfClass())
-        {
-          v139 = [(ControlContaineeViewController *)self delegate];
-          [v139 viewController:self showCuratedCollection:v13];
+          v128 = [[IncompleteTransitLineItem alloc] initWithTransitLine:childItemPlace];
+          delegate16 = [(ControlContaineeViewController *)self delegate];
+          [delegate16 viewController:self selectTransitLineItem:v128 zoomToMapRegion:1];
 
           goto LABEL_93;
         }
@@ -3196,8 +3187,17 @@ LABEL_93:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v143 = [(ControlContaineeViewController *)self delegate];
-          [v143 viewControllerShowPublisher:v13];
+          delegate17 = [(ControlContaineeViewController *)self delegate];
+          [delegate17 viewController:self showCuratedCollection:childItemPlace];
+
+          goto LABEL_93;
+        }
+
+        objc_opt_class();
+        if (objc_opt_isKindOfClass())
+        {
+          delegate18 = [(ControlContaineeViewController *)self delegate];
+          [delegate18 viewControllerShowPublisher:childItemPlace];
 
           goto LABEL_93;
         }
@@ -3206,8 +3206,8 @@ LABEL_93:
         if (objc_opt_isKindOfClass())
         {
           self->_maintainSearchStateWhenDisappearing = 1;
-          v144 = [(ControlContaineeViewController *)self delegate];
-          [v144 viewController:self showGuidesHome:v13];
+          delegate19 = [(ControlContaineeViewController *)self delegate];
+          [delegate19 viewController:self showGuidesHome:childItemPlace];
 
           goto LABEL_93;
         }
@@ -3215,42 +3215,42 @@ LABEL_93:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v145 = v13;
+          v145 = childItemPlace;
           if (-[DirectionItem type](v145, "type") != 11 || (-[DirectionItem relatedSection](v145, "relatedSection"), v146 = objc_claimAutoreleasedReturnValue(), [v146 relatedCollectionSection], v147 = objc_claimAutoreleasedReturnValue(), v148 = v147 == 0, v147, v146, v148))
           {
             if (!self->_isSearchAndDiscoveryEnabled || ([(DirectionItem *)v145 placeCollection], v158 = objc_claimAutoreleasedReturnValue(), v159 = v158 == 0, v158, v159))
             {
               if ([(SearchViewController *)self shouldInjectVenueSearchResult:v145])
               {
-                v193 = [(ControlContaineeViewController *)self delegate];
-                [v193 viewController:self selectSearchResult:v145 addToHistory:1 source:2 saveSelectionState:1 replaceCurrentCard:0];
+                delegate20 = [(ControlContaineeViewController *)self delegate];
+                [delegate20 viewController:self selectSearchResult:v145 addToHistory:1 source:2 saveSelectionState:1 replaceCurrentCard:0];
 
-                v194 = [(ControlContaineeViewController *)self delegate];
-                v195 = [v194 searchPinsManager];
+                delegate21 = [(ControlContaineeViewController *)self delegate];
+                searchPinsManager = [delegate21 searchPinsManager];
                 v240 = v145;
                 v196 = [NSArray arrayWithObjects:&v240 count:1];
-                [v195 setSearchPins:v196 selectedPin:v145 animated:1];
+                [searchPinsManager setSearchPins:v196 selectedPin:v145 animated:1];
               }
 
               else
               {
-                v197 = [(DirectionItem *)v145 mapItem];
-                v198 = [v197 _hasHikeInfo];
+                mapItem = [(DirectionItem *)v145 mapItem];
+                _hasHikeInfo = [mapItem _hasHikeInfo];
 
-                v199 = [(ControlContaineeViewController *)self delegate];
-                v200 = v199;
-                if (v198)
+                delegate22 = [(ControlContaineeViewController *)self delegate];
+                v200 = delegate22;
+                if (_hasHikeInfo)
                 {
-                  v201 = [v199 appCoordinator];
-                  v202 = [(DirectionItem *)v145 mapItem];
-                  [v201 enterRouteCreationWithMapItem:v202 completion:0];
+                  appCoordinator = [delegate22 appCoordinator];
+                  mapItem2 = [(DirectionItem *)v145 mapItem];
+                  [appCoordinator enterRouteCreationWithMapItem:mapItem2 completion:0];
                 }
 
                 else
                 {
                   v203 = [SearchFieldItem searchFieldItemWithObject:v145];
-                  v204 = [(SearchViewController *)self recentAutocompleteSessionData];
-                  [v200 viewController:self doSearchItem:v203 withUserInfo:v39 refinementsQuery:v216 autocompleteSessionData:v204];
+                  recentAutocompleteSessionData = [(SearchViewController *)self recentAutocompleteSessionData];
+                  [v200 viewController:self doSearchItem:v203 withUserInfo:v39 refinementsQuery:v216 autocompleteSessionData:recentAutocompleteSessionData];
 
                   [(SearchDataSource *)self->_searchDataSource clearAutocompleteResults];
                 }
@@ -3259,20 +3259,20 @@ LABEL_93:
 
             else
             {
-              v160 = [(ControlContaineeViewController *)self delegate];
-              v161 = [(DirectionItem *)v145 placeCollection];
-              [v160 viewController:self showCuratedCollection:v161];
+              delegate23 = [(ControlContaineeViewController *)self delegate];
+              placeCollection2 = [(DirectionItem *)v145 placeCollection];
+              [delegate23 viewController:self showCuratedCollection:placeCollection2];
             }
           }
 
           else
           {
-            v149 = [(ControlContaineeViewController *)self delegate];
-            v150 = [(DirectionItem *)v145 relatedSection];
-            v151 = [v150 relatedPlaceCollections];
+            delegate24 = [(ControlContaineeViewController *)self delegate];
+            relatedSection = [(DirectionItem *)v145 relatedSection];
+            relatedPlaceCollections = [relatedSection relatedPlaceCollections];
             v152 = +[NSBundle mainBundle];
             v153 = [v152 localizedStringForKey:@"Related Guides" value:@"localized string not found" table:0];
-            [v149 viewController:self showCuratedCollectionsList:v151 usingTitle:v153 usingCollectionIds:0 completion:0];
+            [delegate24 viewController:self showCuratedCollectionsList:relatedPlaceCollections usingTitle:v153 usingCollectionIds:0 completion:0];
           }
 
           goto LABEL_222;
@@ -3281,12 +3281,12 @@ LABEL_93:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v154 = [[SearchResult alloc] initWithMapItem:v13];
-          v155 = [(ControlContaineeViewController *)self delegate];
-          v156 = [v155 searchPinsManager];
+          v154 = [[SearchResult alloc] initWithMapItem:childItemPlace];
+          delegate25 = [(ControlContaineeViewController *)self delegate];
+          searchPinsManager2 = [delegate25 searchPinsManager];
           v239 = v154;
           v157 = [NSArray arrayWithObjects:&v239 count:1];
-          [v156 setSearchPins:v157 selectedPin:v154 animated:1];
+          [searchPinsManager2 setSearchPins:v157 selectedPin:v154 animated:1];
 
           goto LABEL_93;
         }
@@ -3294,7 +3294,7 @@ LABEL_93:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v162 = v13;
+          v162 = childItemPlace;
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
@@ -3311,9 +3311,9 @@ LABEL_93:
           if (v164)
           {
             v165 = [[GEORouteBuilder_PersistentData alloc] initWithPersistentData:v164];
-            v166 = [v165 buildRoute];
-            v167 = [(ControlContaineeViewController *)self delegate];
-            [v167 viewController:self enterRouteCreationWithRoute:v166 withUserInfo:0];
+            buildRoute = [v165 buildRoute];
+            delegate26 = [(ControlContaineeViewController *)self delegate];
+            [delegate26 viewController:self enterRouteCreationWithRoute:buildRoute withUserInfo:0];
           }
 
           goto LABEL_93;
@@ -3321,17 +3321,17 @@ LABEL_93:
       }
 
       objc_opt_class();
-      if ((objc_opt_isKindOfClass() & 1) == 0 || (-[DirectionItem category](v13, "category"), v168 = objc_claimAutoreleasedReturnValue(), [v168 venueIdentifier], v169 = objc_claimAutoreleasedReturnValue(), v170 = v169 == 0, v169, v168, v170))
+      if ((objc_opt_isKindOfClass() & 1) == 0 || (-[DirectionItem category](childItemPlace, "category"), v168 = objc_claimAutoreleasedReturnValue(), [v168 venueIdentifier], v169 = objc_claimAutoreleasedReturnValue(), v170 = v169 == 0, v169, v168, v170))
       {
-        v145 = [SearchFieldItem searchFieldItemWithObject:v13];
+        v145 = [SearchFieldItem searchFieldItemWithObject:childItemPlace];
       }
 
       else
       {
-        v171 = [(DirectionItem *)v13 category];
+        category = [(DirectionItem *)childItemPlace category];
         v172 = [VenueCategoryItem alloc];
-        v173 = [v171 venueIdentifier];
-        v174 = -[VenueCategoryItem initWithSearchCategory:venueIdentifier:displayMode:isAutoCompleteCategory:shouldFrameMapViewport:](v172, "initWithSearchCategory:venueIdentifier:displayMode:isAutoCompleteCategory:shouldFrameMapViewport:", v171, v173, [v171 displayMode], 1, 0);
+        venueIdentifier = [category venueIdentifier];
+        v174 = -[VenueCategoryItem initWithSearchCategory:venueIdentifier:displayMode:isAutoCompleteCategory:shouldFrameMapViewport:](v172, "initWithSearchCategory:venueIdentifier:displayMode:isAutoCompleteCategory:shouldFrameMapViewport:", category, venueIdentifier, [category displayMode], 1, 0);
 
         v145 = [SearchFieldItem searchFieldItemWithObject:v174];
       }
@@ -3351,7 +3351,7 @@ LABEL_93:
           if (objc_opt_isKindOfClass())
           {
             [v39 setObject:&__kCFBooleanTrue forKeyedSubscript:@"SearchSessionSuppressHistoryEntry"];
-            v175 = v13;
+            v175 = childItemPlace;
             v176 = +[Recents sharedRecents];
             [v176 recordCoreRecentContact:v175];
           }
@@ -3370,7 +3370,7 @@ LABEL_93:
 LABEL_205:
             if (sub_10000FA08(self) == 5)
             {
-              v179 = v13;
+              v179 = childItemPlace;
               v180 = &OBJC_PROTOCOL___MSPHistoryEntrySearch;
               objc_opt_class();
               v181 = v179;
@@ -3400,17 +3400,17 @@ LABEL_205:
 
               if (v186, objc_opt_class(), (objc_opt_isKindOfClass()) && ((v188 = [(DirectionItem *)v181 _type]) == 0 || v188 == 3) || (v187)
               {
-                v189 = [(ControlContaineeViewController *)self delegate];
-                [v189 clearSearchPins];
+                delegate27 = [(ControlContaineeViewController *)self delegate];
+                [delegate27 clearSearchPins];
 
-                v190 = [(DirectionItem *)v145 searchString];
-                [(UITextField *)self->_searchField setText:v190];
+                searchString = [(DirectionItem *)v145 searchString];
+                [(UITextField *)self->_searchField setText:searchString];
               }
             }
 
-            v191 = [(ControlContaineeViewController *)self delegate];
-            v192 = [(SearchViewController *)self recentAutocompleteSessionData];
-            [v191 viewController:self doSearchItem:v145 withUserInfo:v39 refinementsQuery:v216 autocompleteSessionData:v192];
+            delegate28 = [(ControlContaineeViewController *)self delegate];
+            recentAutocompleteSessionData2 = [(SearchViewController *)self recentAutocompleteSessionData];
+            [delegate28 viewController:self doSearchItem:v145 withUserInfo:v39 refinementsQuery:v216 autocompleteSessionData:recentAutocompleteSessionData2];
 
             [(SearchDataSource *)self->_searchDataSource clearAutocompleteResults];
             goto LABEL_222;
@@ -3428,28 +3428,28 @@ LABEL_222:
       goto LABEL_93;
     }
 
-    if (v12 != 2)
+    if (childItemType != 2)
     {
-      v13 = v7;
-      if (v12 == 1)
+      childItemPlace = tappedCopy;
+      if (childItemType == 1)
       {
-        v13 = [(DirectionItem *)v7 childItemPlace];
+        childItemPlace = [(DirectionItem *)tappedCopy childItemPlace];
       }
 
       goto LABEL_47;
     }
 
     objc_initWeak(&location, self);
-    v14 = [(DirectionItem *)v7 childItemAction];
-    v15 = [v14 childActionType];
+    childItemAction = [(DirectionItem *)tappedCopy childItemAction];
+    childActionType = [childItemAction childActionType];
 
-    if (v15 > 4)
+    if (childActionType > 4)
     {
-      if (v15 <= 6)
+      if (childActionType <= 6)
       {
-        if (v15 == 5)
+        if (childActionType == 5)
         {
-          [(SearchViewController *)self fetchSearchCompletion:v210 completion:&stru_1016306C8];
+          [(SearchViewController *)self fetchSearchCompletion:parentCopy completion:&stru_1016306C8];
           goto LABEL_37;
         }
 
@@ -3459,33 +3459,33 @@ LABEL_222:
         v232[3] = &unk_101630688;
         v16 = &v233;
         objc_copyWeak(&v233, &location);
-        [(SearchViewController *)self fetchSearchCompletion:v210 completion:v232];
+        [(SearchViewController *)self fetchSearchCompletion:parentCopy completion:v232];
         goto LABEL_30;
       }
 
-      if (v15 != 7)
+      if (childActionType != 7)
       {
-        v13 = v7;
-        if (v15 == 8)
+        childItemPlace = tappedCopy;
+        if (childActionType == 8)
         {
-          [(SearchViewController *)self showRegionSelectorForMapItem:v210];
+          [(SearchViewController *)self showRegionSelectorForMapItem:parentCopy];
           goto LABEL_37;
         }
 
         goto LABEL_46;
       }
 
-      [(SearchViewController *)self fetchSearchCompletion:v210 completion:0];
-      v17 = [(DirectionItem *)v7 childItemAction];
-      v13 = [(SearchFieldItem *)v17 guideLocation];
-      v19 = v7;
+      [(SearchViewController *)self fetchSearchCompletion:parentCopy completion:0];
+      childItemAction2 = [(DirectionItem *)tappedCopy childItemAction];
+      childItemPlace = [(SearchFieldItem *)childItemAction2 guideLocation];
+      childActionSearch = tappedCopy;
     }
 
     else
     {
-      if (v15 > 2)
+      if (childActionType > 2)
       {
-        if (v15 != 3)
+        if (childActionType != 3)
         {
           v234[0] = _NSConcreteStackBlock;
           v234[1] = 3221225472;
@@ -3493,22 +3493,22 @@ LABEL_222:
           v234[3] = &unk_101630688;
           v16 = &v235;
           objc_copyWeak(&v235, &location);
-          [(SearchViewController *)self fetchSearchCompletion:v210 completion:v234];
+          [(SearchViewController *)self fetchSearchCompletion:parentCopy completion:v234];
           goto LABEL_30;
         }
 
-        v17 = [(DirectionItem *)v7 childItemAction];
-        v19 = [(SearchFieldItem *)v17 childActionSearch];
-        v13 = [v19 relatedSearchSuggestion];
-        v20 = v7;
+        childItemAction2 = [(DirectionItem *)tappedCopy childItemAction];
+        childActionSearch = [(SearchFieldItem *)childItemAction2 childActionSearch];
+        childItemPlace = [childActionSearch relatedSearchSuggestion];
+        v20 = tappedCopy;
       }
 
       else
       {
-        if (v15 != 1)
+        if (childActionType != 1)
         {
-          v13 = v7;
-          if (v15 == 2)
+          childItemPlace = tappedCopy;
+          if (childActionType == 2)
           {
             v236[0] = _NSConcreteStackBlock;
             v236[1] = 3221225472;
@@ -3516,7 +3516,7 @@ LABEL_222:
             v236[3] = &unk_101630688;
             v16 = &v237;
             objc_copyWeak(&v237, &location);
-            [(SearchViewController *)self fetchSearchCompletion:v210 completion:v236];
+            [(SearchViewController *)self fetchSearchCompletion:parentCopy completion:v236];
 LABEL_30:
             objc_destroyWeak(v16);
 LABEL_37:
@@ -3528,16 +3528,16 @@ LABEL_37:
           goto LABEL_46;
         }
 
-        v17 = objc_alloc_init(SearchFieldItem);
+        childItemAction2 = objc_alloc_init(SearchFieldItem);
         v18 = +[SearchResult currentLocationSearchResult];
-        [(SearchFieldItem *)v17 setSearchResult:v18];
+        [(SearchFieldItem *)childItemAction2 setSearchResult:v18];
 
-        v19 = [SearchFieldItem searchFieldItemWithObject:v210];
+        childActionSearch = [SearchFieldItem searchFieldItemWithObject:parentCopy];
         v20 = [[NSMutableArray alloc] initWithCapacity:2];
-        [(DirectionItem *)v20 addObject:v17];
-        if (v19)
+        [(DirectionItem *)v20 addObject:childItemAction2];
+        if (childActionSearch)
         {
-          [(DirectionItem *)v20 addObject:v19];
+          [(DirectionItem *)v20 addObject:childActionSearch];
         }
 
         else
@@ -3546,12 +3546,12 @@ LABEL_37:
           if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
           {
             *buf = 138412290;
-            v247 = v210;
+            v247 = parentCopy;
             _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_INFO, "Cannot select Directions child item with childItemParent: %@", buf, 0xCu);
           }
         }
 
-        v13 = [[DirectionItem alloc] initWithItems:v20 ignoreMapType:0 transportType:0];
+        childItemPlace = [[DirectionItem alloc] initWithItems:v20 ignoreMapType:0 transportType:0];
       }
     }
 
@@ -3560,24 +3560,24 @@ LABEL_46:
     goto LABEL_47;
   }
 
-  [(SearchViewController *)self triggerAutocompleteByReplacingQueryWithCompletion:v7];
+  [(SearchViewController *)self triggerAutocompleteByReplacingQueryWithCompletion:tappedCopy];
 LABEL_96:
 }
 
-- (void)dataSourceUpdated:(id)a3
+- (void)dataSourceUpdated:(id)updated
 {
-  v4 = a3;
-  v5 = [(SearchViewController *)self currentDataSource];
+  updatedCopy = updated;
+  currentDataSource = [(SearchViewController *)self currentDataSource];
 
   v6 = sub_1000410AC();
   v7 = v6;
-  if (v5 == v4)
+  if (currentDataSource == updatedCopy)
   {
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       contentTableView = self->_contentTableView;
       v11 = 138412546;
-      v12 = v4;
+      v12 = updatedCopy;
       v13 = 2112;
       v14 = contentTableView;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "SVC dataSource %@ reloading %@", &v11, 0x16u);
@@ -3591,19 +3591,19 @@ LABEL_96:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
       v8 = self->_contentTableView;
-      v9 = [(UITableView *)v8 dataSource];
+      dataSource = [(UITableView *)v8 dataSource];
       v11 = 138412802;
-      v12 = v4;
+      v12 = updatedCopy;
       v13 = 2112;
       v14 = v8;
       v15 = 2112;
-      v16 = v9;
+      v16 = dataSource;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_ERROR, "SVC dataSource %@ not current delegate of %@. Current DataSource: %@", &v11, 0x20u);
     }
   }
 }
 
-- (int)listForDataSource:(id)a3
+- (int)listForDataSource:(id)source
 {
   currentDataSource = self->_currentDataSource;
   if (currentDataSource == self->_searchHomeDataSource)
@@ -3617,94 +3617,94 @@ LABEL_96:
   }
 }
 
-- (void)didChangeFocusedVenue:(id)a3 focusedBuilding:(id)a4 displayedFloorOrdinal:(signed __int16)a5
+- (void)didChangeFocusedVenue:(id)venue focusedBuilding:(id)building displayedFloorOrdinal:(signed __int16)ordinal
 {
-  v8 = a3;
-  v6 = [(SearchViewController *)self searchResultsViewController];
-  if (![(SearchViewController *)self isShowingOmnipresentSearchBar]|| !v6)
+  venueCopy = venue;
+  searchResultsViewController = [(SearchViewController *)self searchResultsViewController];
+  if (![(SearchViewController *)self isShowingOmnipresentSearchBar]|| !searchResultsViewController)
   {
-    v7 = [(LocalSearchViewController *)self->_localSearchViewController browseVenueBusinessController];
-    [v7 handleVenueWithFocusDidChange:v8];
+    browseVenueBusinessController = [(LocalSearchViewController *)self->_localSearchViewController browseVenueBusinessController];
+    [browseVenueBusinessController handleVenueWithFocusDidChange:venueCopy];
   }
 }
 
-- (void)mapView:(id)a3 didChangeUserTrackingMode:(int64_t)a4 animated:(BOOL)a5 fromTrackingButton:(BOOL)a6
+- (void)mapView:(id)view didChangeUserTrackingMode:(int64_t)mode animated:(BOOL)animated fromTrackingButton:(BOOL)button
 {
-  v6 = a6;
-  v8 = a3;
-  if (v6)
+  buttonCopy = button;
+  viewCopy = view;
+  if (buttonCopy)
   {
     v9 = sub_1007991E4();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
-      v10 = [(ControlContaineeViewController *)self delegate];
-      v11 = [v10 currentSearchSession];
+      delegate = [(ControlContaineeViewController *)self delegate];
+      currentSearchSession = [delegate currentSearchSession];
       v14 = 138412546;
-      v15 = v8;
+      v15 = viewCopy;
       v16 = 2112;
-      v17 = v11;
+      v17 = currentSearchSession;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "[SearchVC] didChangeUserTrackingMode:%@, searchSession:%@", &v14, 0x16u);
     }
 
     self->_tappedTrackingButton = 1;
-    v12 = [(SearchViewController *)self localSearchViewController];
-    v13 = [v12 refreshSearchHereBusinessController];
-    [v13 didStartRespondingToGesture:v8];
+    localSearchViewController = [(SearchViewController *)self localSearchViewController];
+    refreshSearchHereBusinessController = [localSearchViewController refreshSearchHereBusinessController];
+    [refreshSearchHereBusinessController didStartRespondingToGesture:viewCopy];
   }
 }
 
-- (void)mapView:(id)a3 didStopRespondingToGesture:(int64_t)a4 zoomDirection:(int64_t)a5 zoomGestureType:(int64_t)a6 didDecelerate:(BOOL)a7 tiltDirection:(int64_t)a8
+- (void)mapView:(id)view didStopRespondingToGesture:(int64_t)gesture zoomDirection:(int64_t)direction zoomGestureType:(int64_t)type didDecelerate:(BOOL)decelerate tiltDirection:(int64_t)tiltDirection
 {
-  v10 = a3;
+  viewCopy = view;
   v11 = sub_1007991E4();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
-    v12 = [(ControlContaineeViewController *)self delegate];
-    v13 = [v12 currentSearchSession];
+    delegate = [(ControlContaineeViewController *)self delegate];
+    currentSearchSession = [delegate currentSearchSession];
     v17 = 138412546;
-    v18 = v10;
+    v18 = viewCopy;
     v19 = 2112;
-    v20 = v13;
+    v20 = currentSearchSession;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "[SearchVC] didStopRespondingToGesture:%@, searchSession:%@", &v17, 0x16u);
   }
 
-  if (!a4)
+  if (!gesture)
   {
-    v14 = [(SearchViewController *)self localSearchViewController];
-    v15 = [v14 refreshSearchHereBusinessController];
-    v16 = [v15 didStopRespondingToGesture:v10];
+    localSearchViewController = [(SearchViewController *)self localSearchViewController];
+    refreshSearchHereBusinessController = [localSearchViewController refreshSearchHereBusinessController];
+    v16 = [refreshSearchHereBusinessController didStopRespondingToGesture:viewCopy];
 
     [(SearchViewController *)self showSearchingHereIfNeeded:v16];
   }
 }
 
-- (void)mapView:(id)a3 willStartRespondingToGesture:(int64_t)a4 animated:(BOOL)a5
+- (void)mapView:(id)view willStartRespondingToGesture:(int64_t)gesture animated:(BOOL)animated
 {
-  v7 = a3;
+  viewCopy = view;
   v8 = sub_1007991E4();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
-    v9 = [(ControlContaineeViewController *)self delegate];
-    v10 = [v9 currentSearchSession];
+    delegate = [(ControlContaineeViewController *)self delegate];
+    currentSearchSession = [delegate currentSearchSession];
     v13 = 138412546;
-    v14 = v7;
+    v14 = viewCopy;
     v15 = 2112;
-    v16 = v10;
+    v16 = currentSearchSession;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "[SearchVC] willStartRespondingToGesture:%@, searchSession:%@", &v13, 0x16u);
   }
 
-  if (!a4)
+  if (!gesture)
   {
-    v11 = [(SearchViewController *)self localSearchViewController];
-    v12 = [v11 refreshSearchHereBusinessController];
-    [v12 didStartRespondingToGesture:v7];
+    localSearchViewController = [(SearchViewController *)self localSearchViewController];
+    refreshSearchHereBusinessController = [localSearchViewController refreshSearchHereBusinessController];
+    [refreshSearchHereBusinessController didStartRespondingToGesture:viewCopy];
   }
 }
 
-- (void)mapView:(id)a3 didChangeMapType:(unint64_t)a4
+- (void)mapView:(id)view didChangeMapType:(unint64_t)type
 {
-  v5 = [(LocalSearchViewController *)self->_localSearchViewController browseVenueBusinessController];
-  [v5 handleMapTypeDidChange:a4];
+  browseVenueBusinessController = [(LocalSearchViewController *)self->_localSearchViewController browseVenueBusinessController];
+  [browseVenueBusinessController handleMapTypeDidChange:type];
 }
 
 - (void)didUpdateSearchResults
@@ -3715,73 +3715,73 @@ LABEL_96:
   }
 }
 
-- (void)showSearchingHereIfNeeded:(BOOL)a3
+- (void)showSearchingHereIfNeeded:(BOOL)needed
 {
-  v3 = a3;
-  v5 = [(ControlContaineeViewController *)self delegate];
-  v6 = [v5 currentSearchSession];
+  neededCopy = needed;
+  delegate = [(ControlContaineeViewController *)self delegate];
+  currentSearchSession = [delegate currentSearchSession];
 
-  v7 = [v6 searchInfo];
-  if (v7)
+  searchInfo = [currentSearchSession searchInfo];
+  if (searchInfo)
   {
-    v8 = v7;
-    v9 = [v6 isLoading];
+    v8 = searchInfo;
+    isLoading = [currentSearchSession isLoading];
 
-    if (!v9)
+    if (!isLoading)
     {
-      v10 = [(SearchViewController *)self searchResultsViewController];
-      v13 = [v10 view];
-      v14 = [v13 superview];
+      searchResultsViewController = [(SearchViewController *)self searchResultsViewController];
+      view = [searchResultsViewController view];
+      superview = [view superview];
 
-      if (!v14)
+      if (!superview)
       {
-        [(SearchViewController *)self _invalidateSearchSession:v6];
-        v11 = sub_1007991E4();
-        if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
+        [(SearchViewController *)self _invalidateSearchSession:currentSearchSession];
+        chromeViewController = sub_1007991E4();
+        if (os_log_type_enabled(chromeViewController, OS_LOG_TYPE_INFO))
         {
           v29 = 134218242;
-          v30 = [(SearchViewController *)self currentDataSourceType];
+          currentDataSourceType = [(SearchViewController *)self currentDataSourceType];
           v31 = 2112;
-          v32 = v6;
-          _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "[SearchVC] Not showing search here overlay. Autocomplete is active: %ld, Search session : %@", &v29, 0x16u);
+          v32 = currentSearchSession;
+          _os_log_impl(&_mh_execute_header, chromeViewController, OS_LOG_TYPE_INFO, "[SearchVC] Not showing search here overlay. Autocomplete is active: %ld, Search session : %@", &v29, 0x16u);
         }
 
         goto LABEL_6;
       }
 
-      v15 = [(ControlContaineeViewController *)self delegate];
-      v16 = [v15 containerViewController];
-      v11 = [v16 chromeViewController];
+      delegate2 = [(ControlContaineeViewController *)self delegate];
+      containerViewController = [delegate2 containerViewController];
+      chromeViewController = [containerViewController chromeViewController];
 
-      if (v3)
+      if (neededCopy)
       {
         v17 = sub_1007991E4();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
         {
-          v18 = [(ControlContaineeViewController *)self delegate];
-          v19 = [v18 currentSearchSession];
+          delegate3 = [(ControlContaineeViewController *)self delegate];
+          currentSearchSession2 = [delegate3 currentSearchSession];
           v29 = 138412290;
-          v30 = v19;
+          currentDataSourceType = currentSearchSession2;
           _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_INFO, "[SearchVC] Trigerred auto-redo search: %@", &v29, 0xCu);
         }
 
-        [v11 setNeedsUpdateComponent:@"floatingSearchButton" animated:1];
-        v20 = [v11 redoSearchOverlay];
-        [v20 updateSearchOverlayWithState:0];
+        [chromeViewController setNeedsUpdateComponent:@"floatingSearchButton" animated:1];
+        redoSearchOverlay = [chromeViewController redoSearchOverlay];
+        [redoSearchOverlay updateSearchOverlayWithState:0];
 
-        v21 = [v11 redoSearchOverlay];
-        [v21 shouldHideFloatingControl:0 animated:1];
+        redoSearchOverlay2 = [chromeViewController redoSearchOverlay];
+        [redoSearchOverlay2 shouldHideFloatingControl:0 animated:1];
 
         self->_didTriggerAutoRedoSearch = 1;
         [(SearchViewController *)self refreshCurrentSearch];
         goto LABEL_6;
       }
 
-      v22 = [(SearchViewController *)self localSearchViewController];
-      v23 = [v22 refreshSearchHereBusinessController];
-      v24 = [v23 shouldShowManualRedoButton];
+      localSearchViewController = [(SearchViewController *)self localSearchViewController];
+      refreshSearchHereBusinessController = [localSearchViewController refreshSearchHereBusinessController];
+      shouldShowManualRedoButton = [refreshSearchHereBusinessController shouldShowManualRedoButton];
 
-      if (!self->_isSearchAndDiscoveryEnabled || !v24)
+      if (!self->_isSearchAndDiscoveryEnabled || !shouldShowManualRedoButton)
       {
 LABEL_6:
 
@@ -3791,83 +3791,83 @@ LABEL_6:
       v25 = sub_1007991E4();
       if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
       {
-        v26 = [(ControlContaineeViewController *)self delegate];
-        v27 = [v26 currentSearchSession];
+        delegate4 = [(ControlContaineeViewController *)self delegate];
+        currentSearchSession3 = [delegate4 currentSearchSession];
         v29 = 138412290;
-        v30 = v27;
+        currentDataSourceType = currentSearchSession3;
         _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_INFO, "[SearchVC] Showing search here button as we did not trigger Auto-Redo: %@", &v29, 0xCu);
       }
 
-      [v11 setNeedsUpdateComponent:@"floatingSearchButton" animated:1];
-      v28 = [v11 redoSearchOverlay];
-      [v28 updateSearchOverlayWithState:1];
+      [chromeViewController setNeedsUpdateComponent:@"floatingSearchButton" animated:1];
+      redoSearchOverlay3 = [chromeViewController redoSearchOverlay];
+      [redoSearchOverlay3 updateSearchOverlayWithState:1];
 
-      v12 = +[MKMapService sharedService];
-      [v12 captureUserAction:460 onTarget:503 eventValue:0];
+      searchInfo2 = +[MKMapService sharedService];
+      [searchInfo2 captureUserAction:460 onTarget:503 eventValue:0];
 LABEL_5:
 
       goto LABEL_6;
     }
   }
 
-  v10 = sub_1007991E4();
-  if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
+  searchResultsViewController = sub_1007991E4();
+  if (os_log_type_enabled(searchResultsViewController, OS_LOG_TYPE_INFO))
   {
-    [v6 isLoading];
-    v11 = NSStringFromBOOL();
-    v12 = [v6 searchInfo];
+    [currentSearchSession isLoading];
+    chromeViewController = NSStringFromBOOL();
+    searchInfo2 = [currentSearchSession searchInfo];
     v29 = 138412546;
-    v30 = v11;
+    currentDataSourceType = chromeViewController;
     v31 = 2112;
-    v32 = v12;
-    _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "[SearchVC] Not showing search here overlay. Search session loading:(%@) or doesn't have searchInfo: %@", &v29, 0x16u);
+    v32 = searchInfo2;
+    _os_log_impl(&_mh_execute_header, searchResultsViewController, OS_LOG_TYPE_INFO, "[SearchVC] Not showing search here overlay. Search session loading:(%@) or doesn't have searchInfo: %@", &v29, 0x16u);
     goto LABEL_5;
   }
 
 LABEL_7:
 }
 
-- (void)mapView:(id)a3 regionDidChangeAnimated:(BOOL)a4
+- (void)mapView:(id)view regionDidChangeAnimated:(BOOL)animated
 {
   if (self->_tappedTrackingButton)
   {
     self->_tappedTrackingButton = 0;
-    v6 = a3;
-    v7 = [(SearchViewController *)self localSearchViewController];
-    v8 = [v7 refreshSearchHereBusinessController];
-    v9 = [v8 didStopRespondingToGesture:v6];
+    viewCopy = view;
+    localSearchViewController = [(SearchViewController *)self localSearchViewController];
+    refreshSearchHereBusinessController = [localSearchViewController refreshSearchHereBusinessController];
+    v9 = [refreshSearchHereBusinessController didStopRespondingToGesture:viewCopy];
 
     [(SearchViewController *)self showSearchingHereIfNeeded:v9];
   }
 }
 
-- (void)mapViewDidChangeVisibleRegion:(id)a3
+- (void)mapViewDidChangeVisibleRegion:(id)region
 {
-  v22 = a3;
+  regionCopy = region;
   v4 = +[MapsOfflineUIHelper sharedHelper];
-  v5 = [v4 isUsingOfflineMaps];
+  isUsingOfflineMaps = [v4 isUsingOfflineMaps];
 
-  if (v5)
+  if (isUsingOfflineMaps)
   {
     v6 = [[CLLocation alloc] initWithLatitude:self->_mapViewRegion.center.latitude longitude:self->_mapViewRegion.center.longitude];
     v7 = [CLLocation alloc];
-    [v22 region];
+    [regionCopy region];
     v9 = v8;
-    [v22 region];
+    [regionCopy region];
     v10 = [v7 initWithLatitude:v9 longitude:?];
     [v6 distanceFromLocation:v10];
     v12 = v11;
     Integer = GEOConfigGetInteger();
     GEOConfigGetDouble();
     v15 = v14;
-    if (v12 > Integer || ([v22 _zoomLevel], vabdd_f64(v16, self->_zoomLevel) > v15))
+    if (v12 > Integer || ([regionCopy _zoomLevel], vabdd_f64(v16, self->_zoomLevel) > v15))
     {
-      [v22 region];
+      [regionCopy region];
       self->_mapViewRegion.center.latitude = v17;
       self->_mapViewRegion.center.longitude = v18;
       self->_mapViewRegion.span.latitudeDelta = v19;
       self->_mapViewRegion.span.longitudeDelta = v20;
-      [v22 _zoomLevel];
+      [regionCopy _zoomLevel];
       self->_zoomLevel = v21;
       [(SearchViewController *)self _initOfflinePlaceHolderWithCompletion:0];
     }
@@ -3883,15 +3883,15 @@ LABEL_7:
     v5 = self->_localSearchViewController;
     self->_localSearchViewController = v4;
 
-    v6 = [(LocalSearchViewController *)self->_localSearchViewController view];
-    [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
+    view = [(LocalSearchViewController *)self->_localSearchViewController view];
+    [view setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v7 = [(ContaineeViewController *)self cardPresentationController];
-    [v7 bottomSafeOffset];
+    cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+    [cardPresentationController bottomSafeOffset];
     [(LocalSearchViewController *)self->_localSearchViewController setBottomInset:?];
 
-    v8 = [(ContaineeViewController *)self cardPresentationController];
-    -[LocalSearchViewController setEnable:](self->_localSearchViewController, "setEnable:", [v8 containerStyle] != 6);
+    cardPresentationController2 = [(ContaineeViewController *)self cardPresentationController];
+    -[LocalSearchViewController setEnable:](self->_localSearchViewController, "setEnable:", [cardPresentationController2 containerStyle] != 6);
 
     [(LocalSearchViewController *)self->_localSearchViewController setDelegate:self];
     localSearchViewController = self->_localSearchViewController;
@@ -3900,18 +3900,18 @@ LABEL_7:
   return localSearchViewController;
 }
 
-- (BOOL)shouldInjectVenueSearchResult:(id)a3
+- (BOOL)shouldInjectVenueSearchResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   if (sub_10000FA08(self) == 5)
   {
-    v5 = [v4 mapItem];
-    if ([v5 _venueFeatureType])
+    mapItem = [resultCopy mapItem];
+    if ([mapItem _venueFeatureType])
     {
-      v6 = [(ControlContaineeViewController *)self delegate];
-      v7 = [v6 currentSearchSession];
-      v8 = [v7 currentResultsSearchInfo];
-      v9 = [v8 shouldInjectSearchResults] ^ 1;
+      delegate = [(ControlContaineeViewController *)self delegate];
+      currentSearchSession = [delegate currentSearchSession];
+      currentResultsSearchInfo = [currentSearchSession currentResultsSearchInfo];
+      v9 = [currentResultsSearchInfo shouldInjectSearchResults] ^ 1;
     }
 
     else
@@ -3928,57 +3928,57 @@ LABEL_7:
   return v9;
 }
 
-- (void)viewControllerDidSelectBrowseVenue:(id)a3
+- (void)viewControllerDidSelectBrowseVenue:(id)venue
 {
-  v4 = [(ControlContaineeViewController *)self delegate];
-  v3 = [v4 venuesManager];
-  [v3 presentPlaceCardForVenueWithFocusAndAddToHistory:1 source:7 centeringOnVenue:0];
+  delegate = [(ControlContaineeViewController *)self delegate];
+  venuesManager = [delegate venuesManager];
+  [venuesManager presentPlaceCardForVenueWithFocusAndAddToHistory:1 source:7 centeringOnVenue:0];
 }
 
 - (VKVenueFeatureMarker)venueWithFocus
 {
-  v2 = [(ControlContaineeViewController *)self delegate];
-  v3 = [v2 venuesManager];
-  v4 = [v3 venueWithFocus];
+  delegate = [(ControlContaineeViewController *)self delegate];
+  venuesManager = [delegate venuesManager];
+  venueWithFocus = [venuesManager venueWithFocus];
 
-  return v4;
+  return venueWithFocus;
 }
 
-- (void)updateConstraintsForHideableFooterForWasVisible:(BOOL)a3 isVisible:(BOOL)a4
+- (void)updateConstraintsForHideableFooterForWasVisible:(BOOL)visible isVisible:(BOOL)isVisible
 {
-  if (a4 && !a3)
+  if (isVisible && !visible)
   {
     [(UIView *)self->_hideableFooterView layoutIfNeeded];
   }
 
-  v7 = [(SearchViewController *)self view];
-  [v7 frame];
+  view = [(SearchViewController *)self view];
+  [view frame];
   Height = CGRectGetHeight(v15);
 
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_100994FD0;
   v12[3] = &unk_101630638;
-  v13 = a3;
-  v14 = a4;
+  visibleCopy = visible;
+  isVisibleCopy = isVisible;
   v12[4] = self;
   *&v12[5] = Height;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1009950E4;
   v9[3] = &unk_101630660;
-  v10 = a3;
-  v11 = a4;
+  visibleCopy2 = visible;
+  isVisibleCopy2 = isVisible;
   v9[4] = self;
   [UIView animateWithDuration:v12 animations:v9 completion:0.25];
 }
 
-- (void)localSearchViewControllerSizeDidChange:(id)a3
+- (void)localSearchViewControllerSizeDidChange:(id)change
 {
-  v8 = [a3 view];
-  v4 = [v8 superview];
+  view = [change view];
+  superview = [view superview];
 
-  if (v4)
+  if (superview)
   {
     [(NSLayoutConstraint *)self->_bottomHideableFooterConstraint constant];
     if (v5 == 0.0)
@@ -3991,18 +3991,18 @@ LABEL_7:
       [(UIView *)self->_hideableFooterView layoutIfNeeded];
       [(UIView *)self->_hideableFooterView frame];
       [(NSLayoutConstraint *)self->_bottomHideableFooterConstraint setConstant:v6];
-      v7 = [(ContaineeViewController *)self cardPresentationController];
-      [v7 updateHeightForCurrentLayout];
+      cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+      [cardPresentationController updateHeightForCurrentLayout];
     }
   }
 }
 
-- (void)localSearchViewShouldBeVisibleDidChange:(id)a3
+- (void)localSearchViewShouldBeVisibleDidChange:(id)change
 {
-  v4 = a3;
-  v10 = [v4 view];
-  v5 = [v10 superview];
-  if (v5)
+  changeCopy = change;
+  view = [changeCopy view];
+  superview = [view superview];
+  if (superview)
   {
     [(NSLayoutConstraint *)self->_bottomHideableFooterConstraint constant];
     v7 = v6 == 0.0;
@@ -4013,14 +4013,14 @@ LABEL_7:
     v7 = 0;
   }
 
-  v8 = [v4 shouldBeVisible];
-  if (v7 != v8)
+  shouldBeVisible = [changeCopy shouldBeVisible];
+  if (v7 != shouldBeVisible)
   {
-    v9 = [v10 superview];
+    superview2 = [view superview];
 
-    if (v9)
+    if (superview2)
     {
-      [(SearchViewController *)self updateConstraintsForHideableFooterForWasVisible:v7 isVisible:v8];
+      [(SearchViewController *)self updateConstraintsForHideableFooterForWasVisible:v7 isVisible:shouldBeVisible];
     }
 
     else
@@ -4030,42 +4030,42 @@ LABEL_7:
   }
 }
 
-- (void)addRefreshFooter:(BOOL)a3 animated:(BOOL)a4
+- (void)addRefreshFooter:(BOOL)footer animated:(BOOL)animated
 {
-  if (a3)
+  if (footer)
   {
-    v6 = a4;
-    v7 = [(SearchViewController *)self localSearchViewController];
-    v8 = [v7 view];
+    animatedCopy = animated;
+    localSearchViewController = [(SearchViewController *)self localSearchViewController];
+    view = [localSearchViewController view];
 
-    v9 = [v8 superview];
+    superview = [view superview];
 
-    if (!v9)
+    if (!superview)
     {
       [(SearchViewController *)self addChildViewController:self->_localSearchViewController];
-      [(UIView *)self->_hideableFooterView insertSubview:v8 atIndex:0];
+      [(UIView *)self->_hideableFooterView insertSubview:view atIndex:0];
       [(LocalSearchViewController *)self->_localSearchViewController didMoveToParentViewController:self];
-      v28 = [v8 leadingAnchor];
-      v27 = [(UIView *)self->_hideableFooterView leadingAnchor];
-      v26 = [v28 constraintEqualToAnchor:v27];
+      leadingAnchor = [view leadingAnchor];
+      leadingAnchor2 = [(UIView *)self->_hideableFooterView leadingAnchor];
+      v26 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
       v34[0] = v26;
-      v25 = [v8 trailingAnchor];
-      v24 = [(UIView *)self->_hideableFooterView trailingAnchor];
-      v23 = [v25 constraintEqualToAnchor:v24];
+      trailingAnchor = [view trailingAnchor];
+      trailingAnchor2 = [(UIView *)self->_hideableFooterView trailingAnchor];
+      v23 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
       v34[1] = v23;
-      v22 = [v8 bottomAnchor];
+      bottomAnchor = [view bottomAnchor];
       [(UIView *)self->_hideableFooterView bottomAnchor];
-      v12 = v29 = v6;
-      v13 = [v22 constraintEqualToAnchor:v12];
+      v12 = v29 = animatedCopy;
+      v13 = [bottomAnchor constraintEqualToAnchor:v12];
       v34[2] = v13;
-      v14 = [v8 topAnchor];
-      v15 = [(UIView *)self->_hideableFooterView topAnchor];
-      v16 = [v14 constraintEqualToAnchor:v15];
+      topAnchor = [view topAnchor];
+      topAnchor2 = [(UIView *)self->_hideableFooterView topAnchor];
+      v16 = [topAnchor constraintEqualToAnchor:topAnchor2];
       v34[3] = v16;
       v17 = [NSArray arrayWithObjects:v34 count:4];
       [NSLayoutConstraint activateConstraints:v17];
 
-      v6 = v29;
+      animatedCopy = v29;
     }
 
     [(UIView *)self->_hideableFooterView layoutIfNeeded];
@@ -4079,7 +4079,7 @@ LABEL_7:
     [(NSLayoutConstraint *)self->_bottomHideableFooterConstraint constant];
     v21 = v20;
 
-    if (v6 && v21 != 0.0)
+    if (animatedCopy && v21 != 0.0)
     {
       goto LABEL_12;
     }
@@ -4087,39 +4087,39 @@ LABEL_7:
 
   else
   {
-    v10 = [(LocalSearchViewController *)self->_localSearchViewController view:a3];
-    v11 = [v10 superview];
+    v10 = [(LocalSearchViewController *)self->_localSearchViewController view:footer];
+    superview2 = [v10 superview];
 
-    if (v11)
+    if (superview2)
     {
 LABEL_12:
       v32[0] = _NSConcreteStackBlock;
       v32[1] = 3221225472;
       v32[2] = sub_100995694;
       v32[3] = &unk_101661AE0;
-      v33 = a3;
+      footerCopy = footer;
       v32[4] = self;
       v30[0] = _NSConcreteStackBlock;
       v30[1] = 3221225472;
       v30[2] = sub_100995738;
       v30[3] = &unk_1016574C0;
-      v31 = a3;
+      footerCopy2 = footer;
       v30[4] = self;
       [UIView animateWithDuration:v32 animations:v30 completion:0.25];
       return;
     }
   }
 
-  self->_showRefreshFooter = a3;
+  self->_showRefreshFooter = footer;
 }
 
-- (void)updateRefreshFooterAnimated:(BOOL)a3
+- (void)updateRefreshFooterAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(ContaineeViewController *)self cardPresentationController];
-  v6 = [v5 containerStyle];
+  animatedCopy = animated;
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  containerStyle = [cardPresentationController containerStyle];
 
-  v7 = (v6 < 6) & (0x3Au >> v6);
+  v7 = (containerStyle < 6) & (0x3Au >> containerStyle);
   if ([(LocalSearchViewController *)self->_localSearchViewController showInCardFooterWhenCardHasExpandedLayout])
   {
     v8 = 0;
@@ -4127,51 +4127,51 @@ LABEL_12:
 
   else
   {
-    v9 = [(ContaineeViewController *)self cardPresentationController];
-    v8 = [v9 containeeLayout] != 1;
+    cardPresentationController2 = [(ContaineeViewController *)self cardPresentationController];
+    v8 = [cardPresentationController2 containeeLayout] != 1;
   }
 
   if (self->_refreshFooterEnabled != v7 && !v8)
   {
     self->_refreshFooterEnabled = v7;
 
-    [(SearchViewController *)self addRefreshFooter:v7 animated:v3];
+    [(SearchViewController *)self addRefreshFooter:v7 animated:animatedCopy];
   }
 }
 
-- (void)applyAlphaToContent:(double)a3
+- (void)applyAlphaToContent:(double)content
 {
   v12.receiver = self;
   v12.super_class = SearchViewController;
   [(ContaineeViewController *)&v12 applyAlphaToContent:?];
-  [(SearchViewController *)self _updateHeaderHairlineAlphaWithContentAlpha:0 animated:a3];
-  v5 = [(ControlContaineeViewController *)self delegate];
-  v6 = [v5 currentSearchSession];
+  [(SearchViewController *)self _updateHeaderHairlineAlphaWithContentAlpha:0 animated:content];
+  delegate = [(ControlContaineeViewController *)self delegate];
+  currentSearchSession = [delegate currentSearchSession];
 
-  if (v6)
+  if (currentSearchSession)
   {
-    v7 = [(SearchViewController *)self searchResultsViewController];
-    v8 = v7;
-    if (v7)
+    searchResultsViewController = [(SearchViewController *)self searchResultsViewController];
+    v8 = searchResultsViewController;
+    if (searchResultsViewController)
     {
-      v9 = [v7 parentViewController];
-      if (v9)
+      parentViewController = [searchResultsViewController parentViewController];
+      if (parentViewController)
       {
-        v10 = v9;
+        v10 = parentViewController;
         v11 = objc_opt_respondsToSelector();
 
         if (v11)
         {
-          [v8 applyAlphaToContent:a3];
+          [v8 applyAlphaToContent:content];
         }
       }
     }
   }
 }
 
-- (void)_updateDefaultLayoutWithContainerStyle:(unint64_t)a3
+- (void)_updateDefaultLayoutWithContainerStyle:(unint64_t)style
 {
-  if (a3 == 6)
+  if (style == 6)
   {
     v4 = 3;
   }
@@ -4181,65 +4181,65 @@ LABEL_12:
     v4 = 0;
   }
 
-  v5 = [(ContaineeViewController *)self cardPresentationController];
-  [v5 setDefaultContaineeLayout:v4];
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  [cardPresentationController setDefaultContaineeLayout:v4];
 
   if ([(PassthruSearchBar *)self->_searchBar isFirstResponder])
   {
-    v6 = [(ContaineeViewController *)self cardPresentationController];
-    [v6 wantsLayout:3];
+    cardPresentationController2 = [(ContaineeViewController *)self cardPresentationController];
+    [cardPresentationController2 wantsLayout:3];
   }
 }
 
-- (void)willChangeContainerStyle:(unint64_t)a3
+- (void)willChangeContainerStyle:(unint64_t)style
 {
   v6.receiver = self;
   v6.super_class = SearchViewController;
   [(ContaineeViewController *)&v6 willChangeContainerStyle:?];
-  v5 = [(SearchViewController *)self view];
+  view = [(SearchViewController *)self view];
 
-  if (v5)
+  if (view)
   {
     [(SearchViewController *)self _invalidateMediumHeightCache];
-    [(LocalSearchViewController *)self->_localSearchViewController setEnable:a3 != 6];
-    [(SearchViewController *)self _updateDefaultLayoutWithContainerStyle:a3];
+    [(LocalSearchViewController *)self->_localSearchViewController setEnable:style != 6];
+    [(SearchViewController *)self _updateDefaultLayoutWithContainerStyle:style];
   }
 }
 
-- (void)didChangeLayout:(unint64_t)a3
+- (void)didChangeLayout:(unint64_t)layout
 {
   v7.receiver = self;
   v7.super_class = SearchViewController;
   [(ContaineeViewController *)&v7 didChangeLayout:?];
   if ([(SearchViewController *)self isShowingOmnipresentSearchBar])
   {
-    v5 = [(SearchViewController *)self searchResultsViewController];
-    v6 = v5;
-    if (v5)
+    searchResultsViewController = [(SearchViewController *)self searchResultsViewController];
+    v6 = searchResultsViewController;
+    if (searchResultsViewController)
     {
-      [v5 didChangeLayout:a3];
+      [searchResultsViewController didChangeLayout:layout];
     }
   }
 
   [(SearchViewController *)self updateRefreshFooter];
 }
 
-- (double)heightForLayout:(unint64_t)a3
+- (double)heightForLayout:(unint64_t)layout
 {
-  if (a3 - 3 < 2)
+  if (layout - 3 < 2)
   {
-    v13 = [(ContaineeViewController *)self cardPresentationController];
-    [v13 availableHeight];
+    cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+    [cardPresentationController availableHeight];
 LABEL_8:
     v15 = v14;
 
     return v15;
   }
 
-  if (a3 != 2)
+  if (layout != 2)
   {
     result = -1.0;
-    if (a3 == 1)
+    if (layout == 1)
     {
       if (![(LocalSearchViewController *)self->_localSearchViewController shouldBeVisible])
       {
@@ -4249,20 +4249,20 @@ LABEL_8:
       [(UIView *)self->_hideableFooterView frame];
       Height = CGRectGetHeight(v24);
       v6 = self->_hideableFooterView;
-      v7 = [(UIView *)v6 window];
-      v8 = [v7 screen];
-      if (v8)
+      window = [(UIView *)v6 window];
+      screen = [window screen];
+      if (screen)
       {
-        v9 = [(UIView *)v6 window];
-        v10 = [v9 screen];
-        [v10 nativeScale];
+        window2 = [(UIView *)v6 window];
+        screen2 = [window2 screen];
+        [screen2 nativeScale];
         v12 = v11;
       }
 
       else
       {
-        v9 = +[UIScreen mainScreen];
-        [v9 nativeScale];
+        window2 = +[UIScreen mainScreen];
+        [window2 nativeScale];
         v12 = v17;
       }
 
@@ -4271,8 +4271,8 @@ LABEL_8:
       if (v19 == 0.0)
       {
 LABEL_20:
-        v20 = [(ContaineeViewController *)self cardPresentationController];
-        [v20 bottomSafeOffset];
+        cardPresentationController2 = [(ContaineeViewController *)self cardPresentationController];
+        [cardPresentationController2 bottomSafeOffset];
         v19 = v21;
       }
 
@@ -4285,12 +4285,12 @@ LABEL_20:
 
   if ([(SearchViewController *)self isShowingOmnipresentSearchBar])
   {
-    v16 = [(SearchViewController *)self searchResultsViewController];
+    searchResultsViewController = [(SearchViewController *)self searchResultsViewController];
 
-    if (v16)
+    if (searchResultsViewController)
     {
-      v13 = +[UIScreen mainScreen];
-      [v13 bounds];
+      cardPresentationController = +[UIScreen mainScreen];
+      [cardPresentationController bounds];
       UIRoundToScreenScale();
       goto LABEL_8;
     }
@@ -4300,7 +4300,7 @@ LABEL_20:
   return result;
 }
 
-- (void)willChangeLayout:(unint64_t)a3
+- (void)willChangeLayout:(unint64_t)layout
 {
   v12.receiver = self;
   v12.super_class = SearchViewController;
@@ -4310,7 +4310,7 @@ LABEL_20:
     [(PassthruSearchBar *)self->_searchBar setShowsCancelButton:0 animated:1];
   }
 
-  if (a3 - 1 <= 1)
+  if (layout - 1 <= 1)
   {
     if ([(SearchViewController *)self isShowingOmnipresentSearchBar]&& ([(SearchViewController *)self searchResultsViewController], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
     {
@@ -4324,21 +4324,21 @@ LABEL_20:
 
     else
     {
-      v7 = [(SearchViewController *)self currentDataSource];
+      currentDataSource = [(SearchViewController *)self currentDataSource];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
       if (isKindOfClass)
       {
-        v9 = [(SearchViewController *)self presentedViewController];
+        presentedViewController = [(SearchViewController *)self presentedViewController];
 
-        if (!v9)
+        if (!presentedViewController)
         {
           [(SearchViewController *)self clearRetainedSearchQuery];
         }
 
-        v10 = [(SearchDataSource *)self->_searchDataSource searchDataProvider];
-        [v10 clearMKLocalSearchCompleterQueryState];
+        searchDataProvider = [(SearchDataSource *)self->_searchDataSource searchDataProvider];
+        [searchDataProvider clearMKLocalSearchCompleterQueryState];
       }
 
       else
@@ -4356,25 +4356,25 @@ LABEL_20:
 {
   v7.receiver = self;
   v7.super_class = SearchViewController;
-  v3 = [(ControlContaineeViewController *)&v7 floatingControlsOptions];
-  v4 = [(ContaineeViewController *)self cardPresentationController];
-  v5 = [v4 containerStyle];
+  floatingControlsOptions = [(ControlContaineeViewController *)&v7 floatingControlsOptions];
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  containerStyle = [cardPresentationController containerStyle];
 
-  if (v5 == 6)
+  if (containerStyle == 6)
   {
-    return v3 | 4;
+    return floatingControlsOptions | 4;
   }
 
   else
   {
-    return v3;
+    return floatingControlsOptions;
   }
 }
 
-- (void)restoreSearchItem:(id)a3
+- (void)restoreSearchItem:(id)item
 {
-  v4 = a3;
-  if (v4)
+  itemCopy = item;
+  if (itemCopy)
   {
     self->_hasEdited = 1;
     userTypedSearchString = self->_userTypedSearchString;
@@ -4382,17 +4382,17 @@ LABEL_20:
 
     [(UITextField *)self->_searchField setTextSelectionBehavior:0];
     [(SearchDataSource *)self->_searchDataSource reset];
-    [(SearchViewController *)self updateSearchFieldWithItem:v4];
-    v6 = [(ContaineeViewController *)self cardPresentationController];
-    [v6 wantsLayout:3];
+    [(SearchViewController *)self updateSearchFieldWithItem:itemCopy];
+    cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+    [cardPresentationController wantsLayout:3];
 
     if (!self->_shouldPreventPresentingKeyboardOnRestore)
     {
       [(UITextField *)self->_searchField becomeFirstResponder];
     }
 
-    v7 = [v4 retainedSearchMetadata];
-    [(SearchViewController *)self sendACRequestWithTappedQuerySuggestionCompletion:0 retainQueryMetadata:v7];
+    retainedSearchMetadata = [itemCopy retainedSearchMetadata];
+    [(SearchViewController *)self sendACRequestWithTappedQuerySuggestionCompletion:0 retainQueryMetadata:retainedSearchMetadata];
   }
 
   else
@@ -4406,46 +4406,46 @@ LABEL_20:
   }
 }
 
-- (void)retainSearchQueryForSelectedSearchResult:(id)a3
+- (void)retainSearchQueryForSelectedSearchResult:(id)result
 {
   retainedQueryController = self->_retainedQueryController;
-  v5 = a3;
-  v7 = [(SearchViewController *)self defaultSearchQueryToRetain];
-  v6 = [(SearchDataSource *)self->_searchDataSource searchDataProvider];
-  [v6 retainSearchTime];
-  [(RetainedQueryController *)retainedQueryController retainSearchQueryForSelectedSearchResult:v5 query:v7 forTimeInterval:?];
+  resultCopy = result;
+  defaultSearchQueryToRetain = [(SearchViewController *)self defaultSearchQueryToRetain];
+  searchDataProvider = [(SearchDataSource *)self->_searchDataSource searchDataProvider];
+  [searchDataProvider retainSearchTime];
+  [(RetainedQueryController *)retainedQueryController retainSearchQueryForSelectedSearchResult:resultCopy query:defaultSearchQueryToRetain forTimeInterval:?];
 }
 
-- (void)retainSearchQueryForSelectedAutocompleteItem:(id)a3 forTimeInterval:(double)a4
+- (void)retainSearchQueryForSelectedAutocompleteItem:(id)item forTimeInterval:(double)interval
 {
-  v9 = a3;
+  itemCopy = item;
   retainedQueryController = self->_retainedQueryController;
-  v7 = [(SearchViewController *)self defaultSearchQueryToRetain];
-  if (a4 == 0.0)
+  defaultSearchQueryToRetain = [(SearchViewController *)self defaultSearchQueryToRetain];
+  if (interval == 0.0)
   {
-    v8 = [(SearchDataSource *)self->_searchDataSource searchDataProvider];
-    [v8 retainSearchTime];
-    [(RetainedQueryController *)retainedQueryController retainSearchQueryForSelectedAutocompleteItem:v9 query:v7 forTimeInterval:?];
+    searchDataProvider = [(SearchDataSource *)self->_searchDataSource searchDataProvider];
+    [searchDataProvider retainSearchTime];
+    [(RetainedQueryController *)retainedQueryController retainSearchQueryForSelectedAutocompleteItem:itemCopy query:defaultSearchQueryToRetain forTimeInterval:?];
   }
 
   else
   {
-    [(RetainedQueryController *)retainedQueryController retainSearchQueryForSelectedAutocompleteItem:v9 query:v7 forTimeInterval:1.0];
+    [(RetainedQueryController *)retainedQueryController retainSearchQueryForSelectedAutocompleteItem:itemCopy query:defaultSearchQueryToRetain forTimeInterval:1.0];
   }
 }
 
 - (void)retainSearchQuery
 {
-  v3 = [(SearchViewController *)self defaultSearchQueryToRetain];
-  if (v3)
+  defaultSearchQueryToRetain = [(SearchViewController *)self defaultSearchQueryToRetain];
+  if (defaultSearchQueryToRetain)
   {
     retainedQueryController = self->_retainedQueryController;
-    v6 = v3;
-    v5 = [(SearchDataSource *)self->_searchDataSource searchDataProvider];
-    [v5 retainSearchTime];
+    v6 = defaultSearchQueryToRetain;
+    searchDataProvider = [(SearchDataSource *)self->_searchDataSource searchDataProvider];
+    [searchDataProvider retainSearchTime];
     [(RetainedQueryController *)retainedQueryController retainSearchQuery:v6 metadata:0 forTimeInterval:?];
 
-    v3 = v6;
+    defaultSearchQueryToRetain = v6;
   }
 }
 
@@ -4467,91 +4467,91 @@ LABEL_20:
   self->_mapServiceTicket = 0;
 }
 
-- (void)addSupportedChildActionToTraits:(id)a3
+- (void)addSupportedChildActionToTraits:(id)traits
 {
-  v8 = a3;
-  [v8 addSupportedChildAction:1];
+  traitsCopy = traits;
+  [traitsCopy addSupportedChildAction:1];
   v4 = +[MKSystemController sharedInstance];
-  v5 = [v4 supports3DImagery];
+  supports3DImagery = [v4 supports3DImagery];
 
-  if (v5)
+  if (supports3DImagery)
   {
-    [v8 addSupportedChildAction:2];
+    [traitsCopy addSupportedChildAction:2];
   }
 
-  [v8 addSupportedChildAction:3];
+  [traitsCopy addSupportedChildAction:3];
   v6 = +[GEOResourceManifestManager modernManager];
-  v7 = [v6 isMuninEnabled];
+  isMuninEnabled = [v6 isMuninEnabled];
 
-  if (v7)
+  if (isMuninEnabled)
   {
-    [v8 addSupportedChildAction:4];
+    [traitsCopy addSupportedChildAction:4];
   }
 
   if (+[TUCallCapabilities supportsTelephonyCalls])
   {
-    [v8 addSupportedChildAction:5];
+    [traitsCopy addSupportedChildAction:5];
   }
 
-  [v8 addSupportedChildAction:6];
+  [traitsCopy addSupportedChildAction:6];
   if (MapsFeature_IsEnabled_Maps269() && sub_10000FA08(self) != 5)
   {
-    [v8 addSupportedChildAction:7];
+    [traitsCopy addSupportedChildAction:7];
   }
 
   if (GEOSupportsOfflineMaps())
   {
-    [v8 addSupportedChildAction:8];
+    [traitsCopy addSupportedChildAction:8];
   }
 }
 
-- (void)sendACRequestWithTappedQuerySuggestionCompletion:(id)a3 retainQueryMetadata:(id)a4
+- (void)sendACRequestWithTappedQuerySuggestionCompletion:(id)completion retainQueryMetadata:(id)metadata
 {
-  v6 = a3;
-  v7 = a4;
+  completionCopy = completion;
+  metadataCopy = metadata;
   [(SearchViewController *)self updateDataSource];
   [(SearchViewController *)self setNeedsUpdateContentState];
   if (self->_currentDataSource == &self->_searchDataSource->super)
   {
-    v8 = [(ControlContaineeViewController *)self delegate];
-    v9 = [v8 newTraits];
+    delegate = [(ControlContaineeViewController *)self delegate];
+    newTraits = [delegate newTraits];
 
-    [v9 setNavigating:{-[SearchViewController isSearchingAlongTheRoute](self, "isSearchingAlongTheRoute")}];
-    [v9 setSupportDirectionIntentAutocomplete:{-[SearchViewController isSearchingAlongTheRoute](self, "isSearchingAlongTheRoute") ^ 1}];
-    [v9 setSupportUnresolvedDirectionIntent:{-[SearchViewController isSearchingAlongTheRoute](self, "isSearchingAlongTheRoute") ^ 1}];
-    [v9 setSupportAutocompletePublisherResults:{-[SearchViewController isSearchingAlongTheRoute](self, "isSearchingAlongTheRoute") ^ 1}];
-    [v9 setSupportAutocompleteGuideResults:{-[SearchViewController isSearchingAlongTheRoute](self, "isSearchingAlongTheRoute") ^ 1}];
-    [v9 addSupportedAutocompleteListType:2];
-    [v9 setSupportClientRankingFeatureMetadata:1];
-    [v9 setSupportClientRankingCompositeFeatures:1];
-    [v9 setSupportChildItems:{-[SearchViewController isSearchingAlongTheRoute](self, "isSearchingAlongTheRoute") ^ 1}];
-    [v9 useOnlineToOfflineFailoverRequestModeIfAllowed];
+    [newTraits setNavigating:{-[SearchViewController isSearchingAlongTheRoute](self, "isSearchingAlongTheRoute")}];
+    [newTraits setSupportDirectionIntentAutocomplete:{-[SearchViewController isSearchingAlongTheRoute](self, "isSearchingAlongTheRoute") ^ 1}];
+    [newTraits setSupportUnresolvedDirectionIntent:{-[SearchViewController isSearchingAlongTheRoute](self, "isSearchingAlongTheRoute") ^ 1}];
+    [newTraits setSupportAutocompletePublisherResults:{-[SearchViewController isSearchingAlongTheRoute](self, "isSearchingAlongTheRoute") ^ 1}];
+    [newTraits setSupportAutocompleteGuideResults:{-[SearchViewController isSearchingAlongTheRoute](self, "isSearchingAlongTheRoute") ^ 1}];
+    [newTraits addSupportedAutocompleteListType:2];
+    [newTraits setSupportClientRankingFeatureMetadata:1];
+    [newTraits setSupportClientRankingCompositeFeatures:1];
+    [newTraits setSupportChildItems:{-[SearchViewController isSearchingAlongTheRoute](self, "isSearchingAlongTheRoute") ^ 1}];
+    [newTraits useOnlineToOfflineFailoverRequestModeIfAllowed];
     if (![(SearchViewController *)self isSearchingAlongTheRoute])
     {
-      [(SearchViewController *)self addSupportedChildActionToTraits:v9];
+      [(SearchViewController *)self addSupportedChildActionToTraits:newTraits];
     }
 
     v10 = +[NSDate date];
-    v11 = [(SearchViewController *)self lastViewportChangeDate];
-    [v10 timeIntervalSinceDate:v11];
+    lastViewportChangeDate = [(SearchViewController *)self lastViewportChangeDate];
+    [v10 timeIntervalSinceDate:lastViewportChangeDate];
     LODWORD(v13) = vcvtad_u64_f64(v12);
-    [v9 setTimeSinceMapViewportChanged:v13];
+    [newTraits setTimeSinceMapViewportChanged:v13];
 
     v14 = sub_10079927C();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       v21[0] = 67109120;
-      v21[1] = [v9 timeSinceMapViewportChanged];
+      v21[1] = [newTraits timeSinceMapViewportChanged];
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Sending AC Request with timeSinceMapViewportChanged: %d", v21, 8u);
     }
 
-    [v9 setAutocompleteRequestSupportsSectionHeader:1];
-    [v9 addSupportedAutocompleteResultCellType:0];
-    [v9 addSupportedAutocompleteResultCellType:3];
+    [newTraits setAutocompleteRequestSupportsSectionHeader:1];
+    [newTraits addSupportedAutocompleteResultCellType:0];
+    [newTraits addSupportedAutocompleteResultCellType:3];
     if (![(SearchViewController *)self isSearchingAlongTheRoute])
     {
-      [v9 addSupportedAutocompleteResultCellType:1];
-      [v9 addSupportedAutocompleteResultCellType:2];
+      [newTraits addSupportedAutocompleteResultCellType:1];
+      [newTraits addSupportedAutocompleteResultCellType:2];
     }
 
     if (MapsFeature_IsEnabled_VisitedPlaces())
@@ -4564,15 +4564,15 @@ LABEL_20:
       v15 = 35;
     }
 
-    [v9 setPlaceSummaryRevision:v15];
+    [newTraits setPlaceSummaryRevision:v15];
     [(SearchViewController *)self isTouristHereValue];
-    [v9 setIsTourist:?];
-    [v9 addKnownRefinementType:1];
-    [v9 addSupportedPlaceSummaryFormatType:1];
-    [v9 addSupportedPlaceSummaryFormatType:2];
-    [v9 addSupportedPlaceSummaryFormatType:3];
-    [v9 setSupportStructuredRapAffordance:{-[SearchViewController isSearchingAlongTheRoute](self, "isSearchingAlongTheRoute") ^ 1}];
-    [(SearchDataSource *)self->_searchDataSource setRetainedSearchMetadata:v7];
+    [newTraits setIsTourist:?];
+    [newTraits addKnownRefinementType:1];
+    [newTraits addSupportedPlaceSummaryFormatType:1];
+    [newTraits addSupportedPlaceSummaryFormatType:2];
+    [newTraits addSupportedPlaceSummaryFormatType:3];
+    [newTraits setSupportStructuredRapAffordance:{-[SearchViewController isSearchingAlongTheRoute](self, "isSearchingAlongTheRoute") ^ 1}];
+    [(SearchDataSource *)self->_searchDataSource setRetainedSearchMetadata:metadataCopy];
     if ([(SearchViewController *)self isSearchingAlongTheRoute])
     {
       v16 = 14;
@@ -4584,9 +4584,9 @@ LABEL_20:
     }
 
     searchDataSource = self->_searchDataSource;
-    v18 = [(UITextField *)self->_searchField text];
-    v19 = [v18 _maps_stringByTrimmingLeadingWhitespace];
-    [(SearchDataSource *)searchDataSource setInputText:v19 tappedQuerySuggestionCompletion:v6 isRetainQuery:v7 != 0 traits:v9 source:v16];
+    text = [(UITextField *)self->_searchField text];
+    _maps_stringByTrimmingLeadingWhitespace = [text _maps_stringByTrimmingLeadingWhitespace];
+    [(SearchDataSource *)searchDataSource setInputText:_maps_stringByTrimmingLeadingWhitespace tappedQuerySuggestionCompletion:completionCopy isRetainQuery:metadataCopy != 0 traits:newTraits source:v16];
 
     if (MapsFeature_IsEnabled_NaturalSearchMaps())
     {
@@ -4604,29 +4604,29 @@ LABEL_20:
 
 - (id)lastViewportChangeDate
 {
-  v2 = [(ControlContaineeViewController *)self delegate];
-  v3 = [v2 containerViewController];
-  v4 = [v3 chromeViewController];
-  v5 = [v4 lastMapViewportChangedDate];
+  delegate = [(ControlContaineeViewController *)self delegate];
+  containerViewController = [delegate containerViewController];
+  chromeViewController = [containerViewController chromeViewController];
+  lastMapViewportChangedDate = [chromeViewController lastMapViewportChangedDate];
 
-  return v5;
+  return lastMapViewportChangedDate;
 }
 
 - (void)sendSearchRequest
 {
-  v3 = [(UITextField *)self->_searchField text];
-  v4 = [v3 _maps_stringByTrimmingLeadingWhitespace];
-  [(SearchFieldItem *)self->_searchItem setSearchString:v4];
+  text = [(UITextField *)self->_searchField text];
+  _maps_stringByTrimmingLeadingWhitespace = [text _maps_stringByTrimmingLeadingWhitespace];
+  [(SearchFieldItem *)self->_searchItem setSearchString:_maps_stringByTrimmingLeadingWhitespace];
 
   [(SearchFieldItem *)self->_searchItem setUserTypedStringForRAP:self->_userTypedSearchString];
-  v5 = [(RetainedQueryController *)self->_retainedQueryController restoredRetainedSearchQueryMetadata];
-  [(SearchFieldItem *)self->_searchItem setRetainedSearchMetadata:v5];
+  restoredRetainedSearchQueryMetadata = [(RetainedQueryController *)self->_retainedQueryController restoredRetainedSearchQueryMetadata];
+  [(SearchFieldItem *)self->_searchItem setRetainedSearchMetadata:restoredRetainedSearchQueryMetadata];
 
   [(RetainedQueryController *)self->_retainedQueryController setRestoredRetainedSearchQueryMetadata:0];
   v6 = +[MKMapService sharedService];
-  v7 = [(SearchViewController *)self currentUITargetForAnalytics];
-  v8 = [(SearchFieldItem *)self->_searchItem searchString];
-  [v6 captureUserAction:2014 onTarget:v7 queryString:v8];
+  currentUITargetForAnalytics = [(SearchViewController *)self currentUITargetForAnalytics];
+  searchString = [(SearchFieldItem *)self->_searchItem searchString];
+  [v6 captureUserAction:2014 onTarget:currentUITargetForAnalytics queryString:searchString];
 
   [(SearchViewController *)self retainSearchQuery];
   [(SearchViewController *)self setNeedsUpdateContentState];
@@ -4643,10 +4643,10 @@ LABEL_20:
   v11 = [NSNumber numberWithBool:[(SearchViewController *)self isSearchingAlongTheRoute]];
   [v10 setObject:v11 forKeyedSubscript:@"SearchSessionIsSearchAlongRoute"];
 
-  v12 = [(ControlContaineeViewController *)self delegate];
+  delegate = [(ControlContaineeViewController *)self delegate];
   searchItem = self->_searchItem;
   v14 = [v10 copy];
-  [v12 viewController:self doSearchItem:searchItem withUserInfo:v14];
+  [delegate viewController:self doSearchItem:searchItem withUserInfo:v14];
 
   [(SearchViewController *)self endEditing];
   [(SearchDataSource *)self->_searchDataSource clearAutocompleteResults];
@@ -4657,14 +4657,14 @@ LABEL_20:
   }
 }
 
-- (void)_popToHomeWithCompletion:(id)a3
+- (void)_popToHomeWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(SearchViewController *)self menuController];
-  v6 = [v5 macMenuPresentationController];
-  v7 = [v6 isPresented];
+  completionCopy = completion;
+  menuController = [(SearchViewController *)self menuController];
+  macMenuPresentationController = [menuController macMenuPresentationController];
+  isPresented = [macMenuPresentationController isPresented];
 
-  if (v7)
+  if (isPresented)
   {
     [(SearchViewController *)self endEditing];
     v8 = dispatch_time(0, 200000000);
@@ -4672,26 +4672,26 @@ LABEL_20:
     block[1] = 3221225472;
     block[2] = sub_100996C50;
     block[3] = &unk_101661760;
-    v10 = v4;
+    v10 = completionCopy;
     dispatch_after(v8, &_dispatch_main_q, block);
   }
 
   else
   {
-    v4[2](v4);
+    completionCopy[2](completionCopy);
   }
 }
 
-- (void)editCollection:(id)a3
+- (void)editCollection:(id)collection
 {
-  v4 = a3;
+  collectionCopy = collection;
   objc_initWeak(&location, self);
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100996D64;
   v6[3] = &unk_101661340;
   objc_copyWeak(&v8, &location);
-  v5 = v4;
+  v5 = collectionCopy;
   v7 = v5;
   [(SearchViewController *)self _popToHomeWithCompletion:v6];
 
@@ -4699,16 +4699,16 @@ LABEL_20:
   objc_destroyWeak(&location);
 }
 
-- (void)showCollection:(id)a3
+- (void)showCollection:(id)collection
 {
-  v4 = a3;
+  collectionCopy = collection;
   objc_initWeak(&location, self);
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100996EA8;
   v6[3] = &unk_101661340;
   objc_copyWeak(&v8, &location);
-  v5 = v4;
+  v5 = collectionCopy;
   v7 = v5;
   [(SearchViewController *)self _popToHomeWithCompletion:v6];
 
@@ -4716,69 +4716,69 @@ LABEL_20:
   objc_destroyWeak(&location);
 }
 
-- (void)triggerAutocompleteByReplacingQueryWithCompletion:(id)a3
+- (void)triggerAutocompleteByReplacingQueryWithCompletion:(id)completion
 {
-  v6 = a3;
-  v4 = [v6 queryAcceleratorCompletionString];
-  if ([v4 length])
+  completionCopy = completion;
+  queryAcceleratorCompletionString = [completionCopy queryAcceleratorCompletionString];
+  if ([queryAcceleratorCompletionString length])
   {
-    [v6 queryAcceleratorCompletionString];
+    [completionCopy queryAcceleratorCompletionString];
   }
 
   else
   {
-    [v6 title];
+    [completionCopy title];
   }
   v5 = ;
   [(UITextField *)self->_searchField setText:v5];
 
-  [(SearchViewController *)self _textFieldDidChange:0 tappedQuerySuggestionCompletion:v6];
+  [(SearchViewController *)self _textFieldDidChange:0 tappedQuerySuggestionCompletion:completionCopy];
   [(SearchViewController *)self searchBarBecomeFirstResponder];
 }
 
-- (void)searchBarTextDidBeginEditing:(id)a3
+- (void)searchBarTextDidBeginEditing:(id)editing
 {
-  v4 = [(SearchViewController *)self currentSearchSession];
+  currentSearchSession = [(SearchViewController *)self currentSearchSession];
   v5 = sub_100067540();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v18 = 138412290;
-    v19 = v4;
+    v19 = currentSearchSession;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Search bar begins editing and invalidate the current active search session if there is any: %@", &v18, 0xCu);
   }
 
   if (sub_10000FA08(self) == 5 && !_UISolariumEnabled())
   {
-    [(SearchViewController *)self _invalidateSearchSession:v4];
+    [(SearchViewController *)self _invalidateSearchSession:currentSearchSession];
   }
 
   else
   {
     if (self->_isSearchAndDiscoveryEnabled)
     {
-      v6 = [(SearchViewController *)self searchResultsViewController];
-      v7 = v6;
-      if (v6)
+      searchResultsViewController = [(SearchViewController *)self searchResultsViewController];
+      v7 = searchResultsViewController;
+      if (searchResultsViewController)
       {
-        [v6 willMoveToParentViewController:0];
-        v8 = [v7 view];
-        [v8 removeFromSuperview];
+        [searchResultsViewController willMoveToParentViewController:0];
+        view = [v7 view];
+        [view removeFromSuperview];
 
         [v7 removeFromParentViewController];
-        v9 = [(SearchViewController *)self closeSearchResultsButton];
-        [v9 setHidden:1];
+        closeSearchResultsButton = [(SearchViewController *)self closeSearchResultsButton];
+        [closeSearchResultsButton setHidden:1];
 
         v10 = +[MKMapService sharedService];
-        v11 = [(SearchFieldItem *)self->_searchItem searchString];
-        [v10 captureUserAction:2001 onTarget:101 queryString:v11];
+        searchString = [(SearchFieldItem *)self->_searchItem searchString];
+        [v10 captureUserAction:2001 onTarget:101 queryString:searchString];
 
-        [(SearchViewController *)self _invalidateSearchSession:v4];
-        v12 = [v4 searchFieldItem];
-        [(SearchViewController *)self restoreSearchItem:v12];
+        [(SearchViewController *)self _invalidateSearchSession:currentSearchSession];
+        searchFieldItem = [currentSearchSession searchFieldItem];
+        [(SearchViewController *)self restoreSearchItem:searchFieldItem];
 
         [(SearchViewController *)self clearRetainedSearchQuery];
-        v13 = [(ControlContaineeViewController *)self delegate];
-        [v13 clearSearchPins];
+        delegate = [(ControlContaineeViewController *)self delegate];
+        [delegate clearSearchPins];
       }
     }
 
@@ -4792,9 +4792,9 @@ LABEL_20:
       v14 = [(SearchViewController *)self isSearchingAlongTheRoute]^ 1;
     }
 
-    v15 = [(SearchViewController *)self isSearchingAlongTheRoute];
+    isSearchingAlongTheRoute = [(SearchViewController *)self isSearchingAlongTheRoute];
     [(PassthruSearchBar *)self->_searchBar setShowsCancelButton:v14 animated:1];
-    [(UIButton *)self->_userProfileButton setHidden:v15 ^ 1];
+    [(UIButton *)self->_userProfileButton setHidden:isSearchingAlongTheRoute ^ 1];
     [(SearchViewController *)self _updateUserProfileEntryPointButton];
   }
 
@@ -4802,9 +4802,9 @@ LABEL_20:
   v16 = +[MapsOfflineUIHelper sharedHelper];
   if ([v16 isUsingOfflineMaps] && !self->_supportsFullTextSearch)
   {
-    v17 = [(SearchViewController *)self isSearchingAlongTheRoute];
+    isSearchingAlongTheRoute2 = [(SearchViewController *)self isSearchingAlongTheRoute];
 
-    if ((v17 & 1) == 0)
+    if ((isSearchingAlongTheRoute2 & 1) == 0)
     {
       [(SearchViewController *)self _shouldHideOfflineHeaderView:self->_supportsFullTextSearch];
     }
@@ -4834,8 +4834,8 @@ LABEL_20:
   if ([(SearchViewController *)self isViewLoaded])
   {
     [(SearchViewController *)self endEditing];
-    v3 = [(SearchViewController *)self view];
-    [v3 endEditing:1];
+    view = [(SearchViewController *)self view];
+    [view endEditing:1];
 
     self->_shouldPreventPresentingKeyboardOnRestore = 1;
     v4 = dispatch_time(0, 2000000000);
@@ -4848,48 +4848,48 @@ LABEL_20:
   }
 }
 
-- (void)_invalidateSearchSession:(id)a3
+- (void)_invalidateSearchSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v5 = sub_100067540();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v11 = 134218242;
-    v12 = self;
+    selfCopy2 = self;
     v13 = 2080;
     v14 = "[SearchViewController _invalidateSearchSession:]";
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[%p] %s", &v11, 0x16u);
   }
 
-  v6 = sub_100067540();
-  v7 = os_log_type_enabled(v6, OS_LOG_TYPE_INFO);
-  if (v4)
+  searchResultsViewController = sub_100067540();
+  v7 = os_log_type_enabled(searchResultsViewController, OS_LOG_TYPE_INFO);
+  if (sessionCopy)
   {
     if (v7)
     {
       v11 = 138412290;
-      v12 = v4;
-      _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Invalidating search session: %@", &v11, 0xCu);
+      selfCopy2 = sessionCopy;
+      _os_log_impl(&_mh_execute_header, searchResultsViewController, OS_LOG_TYPE_INFO, "Invalidating search session: %@", &v11, 0xCu);
     }
 
-    v6 = [(SearchViewController *)self searchResultsViewController];
-    if ((-[SearchViewController isLoading](v4, "isLoading") & 1) != 0 || (-[NSObject view](v6, "view"), v8 = objc_claimAutoreleasedReturnValue(), [v8 superview], v9 = objc_claimAutoreleasedReturnValue(), v9, v8, !v9))
+    searchResultsViewController = [(SearchViewController *)self searchResultsViewController];
+    if ((-[SearchViewController isLoading](sessionCopy, "isLoading") & 1) != 0 || (-[NSObject view](searchResultsViewController, "view"), v8 = objc_claimAutoreleasedReturnValue(), [v8 superview], v9 = objc_claimAutoreleasedReturnValue(), v9, v8, !v9))
     {
       v10 = sub_100067540();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
       {
         v11 = 138412290;
-        v12 = v4;
+        selfCopy2 = sessionCopy;
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "If we are showing the SearchAC or a search request is in process, then invalidate the current search and cancel the request: %@", &v11, 0xCu);
       }
 
-      [(SearchViewController *)v4 invalidate];
-      [(SearchViewController *)v4 cancelSearch];
+      [(SearchViewController *)sessionCopy invalidate];
+      [(SearchViewController *)sessionCopy cancelSearch];
       [(SearchViewController *)self _hideSearchHereControl];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [v6 searchDidCancel:0];
+        [searchResultsViewController searchDidCancel:0];
       }
     }
   }
@@ -4897,8 +4897,8 @@ LABEL_20:
   else if (v7)
   {
     v11 = 134217984;
-    v12 = self;
-    _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "[%p] No search session to invalidate.", &v11, 0xCu);
+    selfCopy2 = self;
+    _os_log_impl(&_mh_execute_header, searchResultsViewController, OS_LOG_TYPE_INFO, "[%p] No search session to invalidate.", &v11, 0xCu);
   }
 }
 
@@ -4908,8 +4908,8 @@ LABEL_20:
   self->_searchFieldWantsFocus = 0;
   [(PassthruSearchBar *)self->_searchBar setShowsCancelButton:0 animated:1];
   [(SearchViewController *)self clearRetainedSearchQuery];
-  v3 = [(SearchDataSource *)self->_searchDataSource searchDataProvider];
-  [v3 clearMKLocalSearchCompleterQueryState];
+  searchDataProvider = [(SearchDataSource *)self->_searchDataSource searchDataProvider];
+  [searchDataProvider clearMKLocalSearchCompleterQueryState];
 
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
@@ -4926,8 +4926,8 @@ LABEL_20:
   {
     [(UIButton *)self->_userProfileButton setHidden:[(PassthruSearchBar *)self->_searchBar isHidden]];
     [(SearchViewController *)self _updateUserProfileEntryPointButton];
-    v5 = [(ContaineeViewController *)self cardPresentationController];
-    [v5 applyWithAnimations:v4 completion:&stru_1016305E8];
+    cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+    [cardPresentationController applyWithAnimations:v4 completion:&stru_1016305E8];
   }
 }
 
@@ -4936,13 +4936,13 @@ LABEL_20:
   if ([(UITextField *)self->_searchField isFirstResponder])
   {
     [(PassthruSearchBar *)self->_searchBar resignFirstResponder];
-    v3 = [(ContaineeViewController *)self cardPresentationController];
-    v4 = [v3 containerStyle];
+    cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+    containerStyle = [cardPresentationController containerStyle];
 
-    if (v4 == 1)
+    if (containerStyle == 1)
     {
-      v5 = [(ContaineeViewController *)self cardPresentationController];
-      [v5 wantsLayout:2];
+      cardPresentationController2 = [(ContaineeViewController *)self cardPresentationController];
+      [cardPresentationController2 wantsLayout:2];
     }
   }
 
@@ -4951,22 +4951,22 @@ LABEL_20:
 
 - (void)invalidateSearchSession
 {
-  v3 = [(SearchViewController *)self currentSearchSession];
-  [(SearchViewController *)self _invalidateSearchSession:v3];
+  currentSearchSession = [(SearchViewController *)self currentSearchSession];
+  [(SearchViewController *)self _invalidateSearchSession:currentSearchSession];
 }
 
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(SearchViewController *)self currentDataSource];
-  v12 = [v11 conformsToProtocol:&OBJC_PROTOCOL___MapsUICollectionViewDiffableDataSourceCellProviding];
+  viewCopy = view;
+  kindCopy = kind;
+  pathCopy = path;
+  currentDataSource = [(SearchViewController *)self currentDataSource];
+  v12 = [currentDataSource conformsToProtocol:&OBJC_PROTOCOL___MapsUICollectionViewDiffableDataSourceCellProviding];
 
   if (v12)
   {
-    v13 = [(SearchViewController *)self currentDataSource];
-    v14 = [v13 collectionView:v8 viewForSupplementaryElementOfKind:v9 atIndexPath:v10];
+    currentDataSource2 = [(SearchViewController *)self currentDataSource];
+    v14 = [currentDataSource2 collectionView:viewCopy viewForSupplementaryElementOfKind:kindCopy atIndexPath:pathCopy];
   }
 
   else
@@ -4977,18 +4977,18 @@ LABEL_20:
   return v14;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4 itemIdentifier:(id)a5
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path itemIdentifier:(id)identifier
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(SearchViewController *)self currentDataSource];
-  v12 = [v11 conformsToProtocol:&OBJC_PROTOCOL___MapsUICollectionViewDiffableDataSourceCellProviding];
+  viewCopy = view;
+  pathCopy = path;
+  identifierCopy = identifier;
+  currentDataSource = [(SearchViewController *)self currentDataSource];
+  v12 = [currentDataSource conformsToProtocol:&OBJC_PROTOCOL___MapsUICollectionViewDiffableDataSourceCellProviding];
 
   if (v12)
   {
-    v13 = [(SearchViewController *)self currentDataSource];
-    v14 = [v13 collectionView:v8 cellForItemAtIndexPath:v9 itemIdentifier:v10];
+    currentDataSource2 = [(SearchViewController *)self currentDataSource];
+    v14 = [currentDataSource2 collectionView:viewCopy cellForItemAtIndexPath:pathCopy itemIdentifier:identifierCopy];
   }
 
   else
@@ -5024,16 +5024,16 @@ LABEL_20:
 
 - (void)reloadContentTableView
 {
-  v3 = [(SearchViewController *)self currentDataSource];
-  v4 = [v3 presentationStyle];
+  currentDataSource = [(SearchViewController *)self currentDataSource];
+  presentationStyle = [currentDataSource presentationStyle];
 
-  if (!v4)
+  if (!presentationStyle)
   {
     [(SearchViewController *)self updateRowHeightForCurrentDataSource];
     [(SearchViewController *)self _invalidateMediumHeightCache];
-    v5 = [(SearchViewController *)self currentDataSource];
+    currentDataSource2 = [(SearchViewController *)self currentDataSource];
 
-    if (v5)
+    if (currentDataSource2)
     {
       [(UITableView *)self->_contentTableView reloadData];
     }
@@ -5044,17 +5044,17 @@ LABEL_20:
   [(SearchViewController *)self _updateHeaderHairlineAlphaWithContentAlpha:0 animated:?];
 }
 
-- (void)showSearchResults:(id)a3
+- (void)showSearchResults:(id)results
 {
-  v4 = a3;
-  v5 = [(SearchViewController *)self currentSearchSession];
-  if ([v5 isInvalidated])
+  resultsCopy = results;
+  currentSearchSession = [(SearchViewController *)self currentSearchSession];
+  if ([currentSearchSession isInvalidated])
   {
     v6 = sub_100067540();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       v11 = 138412290;
-      v12 = v5;
+      v12 = currentSearchSession;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "[SearchVC] The current search session : %@ was invalidated. Not showing any search results.", &v11, 0xCu);
     }
   }
@@ -5062,23 +5062,23 @@ LABEL_20:
   else if ([(SearchViewController *)self isShowingOmnipresentSearchBar])
   {
     [(UIButton *)self->_userProfileButton setHidden:1];
-    [(SearchViewController *)self displaySearchResultsWithViewController:v4 searchBar:self->_searchBar];
-    v7 = [v4 _resultsTableView];
-    [(ContaineeViewController *)self setContentScrollView:v7 forEdge:1];
+    [(SearchViewController *)self displaySearchResultsWithViewController:resultsCopy searchBar:self->_searchBar];
+    _resultsTableView = [resultsCopy _resultsTableView];
+    [(ContaineeViewController *)self setContentScrollView:_resultsTableView forEdge:1];
 
     [(SearchViewController *)self updateCloseSearchResultEntryPointButton];
     [(SearchViewController *)self endEditing];
-    v8 = [(SearchViewController *)self currentSearchSession];
-    v9 = [(SearchViewController *)self localSearchViewController];
-    v10 = [v9 refreshSearchHereBusinessController];
-    [v10 setSearchSession:v8];
+    currentSearchSession2 = [(SearchViewController *)self currentSearchSession];
+    localSearchViewController = [(SearchViewController *)self localSearchViewController];
+    refreshSearchHereBusinessController = [localSearchViewController refreshSearchHereBusinessController];
+    [refreshSearchHereBusinessController setSearchSession:currentSearchSession2];
   }
 }
 
-- (void)showTitleBarSeparatorWhenScrolling:(BOOL)a3
+- (void)showTitleBarSeparatorWhenScrolling:(BOOL)scrolling
 {
   v3 = -1.0;
-  if (a3)
+  if (scrolling)
   {
     v3 = 0.0;
   }
@@ -5086,11 +5086,11 @@ LABEL_20:
   [(NSLayoutConstraint *)self->_homeViewControllerBottomConstraint setConstant:v3];
 }
 
-- (void)_continueUpdateSearchFieldWithUpdatingSearchText:(BOOL)a3
+- (void)_continueUpdateSearchFieldWithUpdatingSearchText:(BOOL)text
 {
-  v3 = a3;
+  textCopy = text;
   [(SearchViewController *)self loadViewIfNeeded];
-  if (v3)
+  if (textCopy)
   {
     [(SearchViewController *)self _updateSearchFieldText];
   }
@@ -5103,52 +5103,52 @@ LABEL_20:
   [(SearchDataSource *)searchDataSource reset];
 }
 
-- (void)_updateSearchFieldWithItem:(id)a3 updatingSearchText:(BOOL)a4
+- (void)_updateSearchFieldWithItem:(id)item updatingSearchText:(BOOL)text
 {
-  v4 = a4;
-  v7 = a3;
-  if (self->_searchItem != v7)
+  textCopy = text;
+  itemCopy = item;
+  if (self->_searchItem != itemCopy)
   {
-    v8 = v7;
-    objc_storeStrong(&self->_searchItem, a3);
-    [(SearchViewController *)self _continueUpdateSearchFieldWithUpdatingSearchText:v4];
-    v7 = v8;
+    v8 = itemCopy;
+    objc_storeStrong(&self->_searchItem, item);
+    [(SearchViewController *)self _continueUpdateSearchFieldWithUpdatingSearchText:textCopy];
+    itemCopy = v8;
   }
 }
 
-- (void)updateSearchFieldWithItem:(id)a3
+- (void)updateSearchFieldWithItem:(id)item
 {
-  v6 = a3;
-  if (sub_10000FA08(self) == 5 && ([v6 isSpotlightSearch] & 1) == 0)
+  itemCopy = item;
+  if (sub_10000FA08(self) == 5 && ([itemCopy isSpotlightSearch] & 1) == 0)
   {
     v5 = +[UIApplication sharedApplication];
-    v4 = [v5 isRunningTest];
+    isRunningTest = [v5 isRunningTest];
   }
 
   else
   {
-    v4 = 1;
+    isRunningTest = 1;
   }
 
-  [(SearchViewController *)self _updateSearchFieldWithItem:v6 updatingSearchText:v4];
+  [(SearchViewController *)self _updateSearchFieldWithItem:itemCopy updatingSearchText:isRunningTest];
 }
 
-- (void)showDropDownIfNeeded:(BOOL)a3
+- (void)showDropDownIfNeeded:(BOOL)needed
 {
-  v3 = a3;
+  neededCopy = needed;
   if ([(SearchViewController *)self _showsContentInDropDownMenu])
   {
-    if (v3)
+    if (neededCopy)
     {
-      v5 = [(SearchViewController *)self menuController];
-      v6 = [v5 macMenuPresentationController];
-      v7 = [v6 isPresented];
+      menuController = [(SearchViewController *)self menuController];
+      macMenuPresentationController = [menuController macMenuPresentationController];
+      isPresented = [macMenuPresentationController isPresented];
 
-      if ((v7 & 1) == 0)
+      if ((isPresented & 1) == 0)
       {
-        v9 = [(ControlContaineeViewController *)self delegate];
-        v10 = [(SearchViewController *)self menuController];
-        [v9 viewController:self presentMenuController:v10 animated:1 fromChrome:1 completion:0];
+        delegate = [(ControlContaineeViewController *)self delegate];
+        menuController2 = [(SearchViewController *)self menuController];
+        [delegate viewController:self presentMenuController:menuController2 animated:1 fromChrome:1 completion:0];
 
         [(SearchViewController *)self showTitleBarSeparatorWhenScrolling:0];
       }
@@ -5157,9 +5157,9 @@ LABEL_20:
     else
     {
       self->_userSelectedSearchBar = 0;
-      v11 = [(ControlContaineeViewController *)self delegate];
-      v8 = [(SearchViewController *)self menuController];
-      [v11 viewController:v8 dismissMenuControllerAnimated:1];
+      delegate2 = [(ControlContaineeViewController *)self delegate];
+      menuController3 = [(SearchViewController *)self menuController];
+      [delegate2 viewController:menuController3 dismissMenuControllerAnimated:1];
     }
   }
 }
@@ -5175,20 +5175,20 @@ LABEL_20:
 
     [(MenuContaineeViewController *)self->_menuController setTrackedScrollview:self->_collectionView];
     searchFieldLayoutGuide = self->_searchFieldLayoutGuide;
-    v7 = [(ContaineeViewController *)self->_menuController macMenuPresentationController];
-    [v7 setAnchorLayoutGuide:searchFieldLayoutGuide];
+    macMenuPresentationController = [(ContaineeViewController *)self->_menuController macMenuPresentationController];
+    [macMenuPresentationController setAnchorLayoutGuide:searchFieldLayoutGuide];
 
     v8 = self->_searchFieldLayoutGuide;
-    v9 = [(ContaineeViewController *)self->_menuController macMenuPresentationController];
-    [v9 setWidthLayoutGuide:v8];
+    macMenuPresentationController2 = [(ContaineeViewController *)self->_menuController macMenuPresentationController];
+    [macMenuPresentationController2 setWidthLayoutGuide:v8];
 
     searchBar = self->_searchBar;
     v10 = [NSArray arrayWithObjects:&searchBar count:1];
-    v11 = [(ContaineeViewController *)self->_menuController macMenuPresentationController];
-    [v11 setPassThroughViews:v10];
+    macMenuPresentationController3 = [(ContaineeViewController *)self->_menuController macMenuPresentationController];
+    [macMenuPresentationController3 setPassThroughViews:v10];
 
-    v12 = [(ContaineeViewController *)self->_menuController macMenuPresentationController];
-    [v12 addObserver:self];
+    macMenuPresentationController4 = [(ContaineeViewController *)self->_menuController macMenuPresentationController];
+    [macMenuPresentationController4 addObserver:self];
 
     menuController = self->_menuController;
   }
@@ -5198,26 +5198,26 @@ LABEL_20:
 
 - (int64_t)currentDataSourceType
 {
-  v3 = [(SearchViewController *)self currentDataSource];
-  v4 = [(SearchViewController *)self searchDataSource];
+  currentDataSource = [(SearchViewController *)self currentDataSource];
+  searchDataSource = [(SearchViewController *)self searchDataSource];
 
-  if (v3 == v4)
+  if (currentDataSource == searchDataSource)
   {
     return 2;
   }
 
-  v5 = [(SearchViewController *)self currentDataSource];
-  v6 = [(SearchViewController *)self searchHomeDataSource];
-  v7 = v5 == v6;
+  currentDataSource2 = [(SearchViewController *)self currentDataSource];
+  searchHomeDataSource = [(SearchViewController *)self searchHomeDataSource];
+  v7 = currentDataSource2 == searchHomeDataSource;
 
   return v7;
 }
 
-- (void)setCurrentDataSource:(id)a3
+- (void)setCurrentDataSource:(id)source
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_currentDataSource != v5 || !v5 && ![(HomeViewController *)self->_homeViewController isActive])
+  sourceCopy = source;
+  v6 = sourceCopy;
+  if (self->_currentDataSource != sourceCopy || !sourceCopy && ![(HomeViewController *)self->_homeViewController isActive])
   {
     v7 = sub_1000410AC();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
@@ -5258,46 +5258,46 @@ LABEL_20:
 
       [(UITableView *)self->_contentTableView removeFromSuperview];
       [(UICollectionView *)self->_collectionView removeFromSuperview];
-      v20 = [(HomeViewController *)self->_homeViewController parentViewController];
+      parentViewController = [(HomeViewController *)self->_homeViewController parentViewController];
 
-      if (!v20)
+      if (!parentViewController)
       {
-        v21 = [(SearchViewController *)self _homeViewController];
-        [(SearchViewController *)self addChildViewController:v21];
+        _homeViewController = [(SearchViewController *)self _homeViewController];
+        [(SearchViewController *)self addChildViewController:_homeViewController];
 
-        v22 = [(ContaineeViewController *)self contentView];
-        v23 = [(HomeViewController *)self->_homeViewController view];
-        [v22 insertSubview:v23 atIndex:0];
+        contentView = [(ContaineeViewController *)self contentView];
+        view = [(HomeViewController *)self->_homeViewController view];
+        [contentView insertSubview:view atIndex:0];
 
         [(HomeViewController *)self->_homeViewController didMoveToParentViewController:self];
-        v24 = [(HomeViewController *)self->_homeViewController view];
-        [v24 setTranslatesAutoresizingMaskIntoConstraints:0];
+        view2 = [(HomeViewController *)self->_homeViewController view];
+        [view2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-        v25 = [(HomeViewController *)self->_homeViewController view];
-        v26 = [v25 bottomAnchor];
-        v27 = [(ContaineeViewController *)self contentView];
-        v28 = [v27 bottomAnchor];
-        v29 = [v26 constraintEqualToAnchor:v28];
+        view3 = [(HomeViewController *)self->_homeViewController view];
+        bottomAnchor = [view3 bottomAnchor];
+        contentView2 = [(ContaineeViewController *)self contentView];
+        bottomAnchor2 = [contentView2 bottomAnchor];
+        v29 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
         homeViewControllerBottomConstraint = self->_homeViewControllerBottomConstraint;
         self->_homeViewControllerBottomConstraint = v29;
 
-        v81 = [(HomeViewController *)self->_homeViewController view];
-        v77 = [v81 topAnchor];
-        v79 = [(ContaineeViewController *)self contentView];
-        v75 = [v79 topAnchor];
-        v73 = [v77 constraintEqualToAnchor:v75];
+        view4 = [(HomeViewController *)self->_homeViewController view];
+        topAnchor = [view4 topAnchor];
+        contentView3 = [(ContaineeViewController *)self contentView];
+        topAnchor2 = [contentView3 topAnchor];
+        v73 = [topAnchor constraintEqualToAnchor:topAnchor2];
         v83[0] = v73;
-        v71 = [(HomeViewController *)self->_homeViewController view];
-        v68 = [v71 leadingAnchor];
-        v69 = [(ContaineeViewController *)self contentView];
-        v67 = [v69 leadingAnchor];
-        v31 = [v68 constraintEqualToAnchor:v67];
+        view5 = [(HomeViewController *)self->_homeViewController view];
+        leadingAnchor = [view5 leadingAnchor];
+        contentView4 = [(ContaineeViewController *)self contentView];
+        leadingAnchor2 = [contentView4 leadingAnchor];
+        v31 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
         v83[1] = v31;
-        v32 = [(HomeViewController *)self->_homeViewController view];
-        v33 = [v32 trailingAnchor];
-        v34 = [(ContaineeViewController *)self contentView];
-        v35 = [v34 trailingAnchor];
-        v36 = [v33 constraintEqualToAnchor:v35];
+        view6 = [(HomeViewController *)self->_homeViewController view];
+        trailingAnchor = [view6 trailingAnchor];
+        contentView5 = [(ContaineeViewController *)self contentView];
+        trailingAnchor2 = [contentView5 trailingAnchor];
+        v36 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
         v37 = self->_homeViewControllerBottomConstraint;
         v83[2] = v36;
         v83[3] = v37;
@@ -5309,54 +5309,54 @@ LABEL_20:
 
       [(HomeViewController *)self->_homeViewController setActive:1];
       [(UIButton *)self->_userProfileButton setHidden:[(PassthruSearchBar *)self->_searchBar isHidden]];
-      v39 = [(SearchViewController *)self closeSearchResultsButton];
-      v40 = [(SearchViewController *)self searchResultsViewController];
-      [v39 setHidden:v40 == 0];
+      closeSearchResultsButton = [(SearchViewController *)self closeSearchResultsButton];
+      searchResultsViewController = [(SearchViewController *)self searchResultsViewController];
+      [closeSearchResultsButton setHidden:searchResultsViewController == 0];
 
       [(SearchViewController *)self _updateUserProfileEntryPointButton];
       if (sub_10000FA08(self) == 5)
       {
-        v41 = [(HomeViewController *)self->_homeViewController view];
-        [v41 setAlpha:1.0];
+        view7 = [(HomeViewController *)self->_homeViewController view];
+        [view7 setAlpha:1.0];
       }
 
-      v11 = [(HomeViewController *)self->_homeViewController scrollView];
-      [(ContaineeViewController *)self setContentScrollView:v11 forEdge:1];
+      scrollView = [(HomeViewController *)self->_homeViewController scrollView];
+      [(ContaineeViewController *)self setContentScrollView:scrollView forEdge:1];
       goto LABEL_42;
     }
 
     [(SearchViewController *)self updateIsTouristHereValue];
-    objc_storeStrong(&self->_currentDataSource, a3);
+    objc_storeStrong(&self->_currentDataSource, source);
     if ([(SearchViewController *)self _showsContentInDropDownMenu]&& (dropDownView = self->_dropDownView) != 0)
     {
-      v10 = dropDownView;
+      contentView6 = dropDownView;
     }
 
     else
     {
-      v10 = [(ContaineeViewController *)self contentView];
+      contentView6 = [(ContaineeViewController *)self contentView];
     }
 
-    v11 = v10;
-    v12 = [(DataSource *)v6 presentationStyle];
-    if (v12 == 1)
+    scrollView = contentView6;
+    presentationStyle = [(DataSource *)v6 presentationStyle];
+    if (presentationStyle == 1)
     {
       p_collectionView = &self->_collectionView;
       [(UICollectionView *)self->_collectionView setDelegate:v6];
       if ([(DataSource *)v6 conformsToProtocol:&OBJC_PROTOCOL___DataSourceCollectionView])
       {
-        v42 = [(DataSource *)v6 collectionViewDiffableDataSource];
-        [*p_collectionView setDataSource:v42];
+        collectionViewDiffableDataSource = [(DataSource *)v6 collectionViewDiffableDataSource];
+        [*p_collectionView setDataSource:collectionViewDiffableDataSource];
 
-        v43 = [(DataSource *)v6 collectionViewLayout];
-        [*p_collectionView setCollectionViewLayout:v43];
+        collectionViewLayout = [(DataSource *)v6 collectionViewLayout];
+        [*p_collectionView setCollectionViewLayout:collectionViewLayout];
       }
 
       [(UITableView *)self->_contentTableView removeFromSuperview];
       v16 = *p_collectionView;
       v44 = *p_collectionView;
-      v45 = [(SearchViewController *)self menuController];
-      [v45 setTrackedScrollview:v44];
+      menuController = [(SearchViewController *)self menuController];
+      [menuController setTrackedScrollview:v44];
 
       if ([(SearchViewController *)self _showsContentInDropDownMenu])
       {
@@ -5366,7 +5366,7 @@ LABEL_20:
 
     else
     {
-      if (v12)
+      if (presentationStyle)
       {
         v16 = 0;
         goto LABEL_38;
@@ -5380,9 +5380,9 @@ LABEL_20:
       }
 
       v14 = +[MapsDragAndDropManager sharedManager];
-      v15 = [v14 deviceSupportsDragAndDrop];
+      deviceSupportsDragAndDrop = [v14 deviceSupportsDragAndDrop];
 
-      if (v15)
+      if (deviceSupportsDragAndDrop)
       {
         [*p_collectionView setDragDelegate:v6];
       }
@@ -5395,8 +5395,8 @@ LABEL_20:
       }
 
       v17 = *p_collectionView;
-      v18 = [(SearchViewController *)self menuController];
-      [v18 setTrackedScrollview:v17];
+      menuController2 = [(SearchViewController *)self menuController];
+      [menuController2 setTrackedScrollview:v17];
     }
 
     [(ContaineeViewController *)self setContentScrollView:*p_collectionView forEdge:1];
@@ -5406,39 +5406,39 @@ LABEL_38:
     v82 = v6;
     if (v46 == 5)
     {
-      v48 = [(HomeViewController *)homeViewController view];
-      [v48 setAlpha:0.300000012];
+      view8 = [(HomeViewController *)homeViewController view];
+      [view8 setAlpha:0.300000012];
     }
 
     else
     {
       [(HomeViewController *)homeViewController scrollContentToOriginalPosition];
       [(HomeViewController *)self->_homeViewController willMoveToParentViewController:0];
-      v49 = [(HomeViewController *)self->_homeViewController view];
-      [v49 removeFromSuperview];
+      view9 = [(HomeViewController *)self->_homeViewController view];
+      [view9 removeFromSuperview];
 
       [(HomeViewController *)self->_homeViewController removeFromParentViewController];
     }
 
-    [v11 insertSubview:v16 atIndex:0];
-    v80 = [v16 topAnchor];
-    v78 = [v11 topAnchor];
-    v76 = [v80 constraintEqualToAnchor:v78];
+    [scrollView insertSubview:v16 atIndex:0];
+    topAnchor3 = [v16 topAnchor];
+    topAnchor4 = [scrollView topAnchor];
+    v76 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
     v84[0] = v76;
-    v72 = [v16 leadingAnchor];
-    v70 = [v11 leadingAnchor];
-    v50 = [v72 constraintEqualToAnchor:v70];
+    leadingAnchor3 = [v16 leadingAnchor];
+    leadingAnchor4 = [scrollView leadingAnchor];
+    v50 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     v84[1] = v50;
-    v51 = [v16 trailingAnchor];
-    v52 = [v11 trailingAnchor];
-    v53 = [v51 constraintEqualToAnchor:v52];
+    trailingAnchor3 = [v16 trailingAnchor];
+    trailingAnchor4 = [scrollView trailingAnchor];
+    v53 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     v54 = v16;
     v74 = v16;
     v55 = v53;
     v84[2] = v53;
-    v56 = [v54 bottomAnchor];
-    v57 = [v11 bottomAnchor];
-    v58 = [v56 constraintEqualToAnchor:v57];
+    bottomAnchor3 = [v54 bottomAnchor];
+    bottomAnchor4 = [scrollView bottomAnchor];
+    v58 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
     v84[3] = v58;
     v59 = [NSArray arrayWithObjects:v84 count:4];
     [NSLayoutConstraint activateConstraints:v59];
@@ -5451,19 +5451,19 @@ LABEL_42:
   }
 
   v60 = +[MapsOfflineUIHelper sharedHelper];
-  v61 = [v60 isUsingOfflineMaps];
+  isUsingOfflineMaps = [v60 isUsingOfflineMaps];
 
-  if (v61)
+  if (isUsingOfflineMaps)
   {
     if ([(HomeViewController *)self->_homeViewController isActive])
     {
       [(UIButton *)self->_userProfileButton setHidden:0];
       [(PassthruSearchBar *)self->_searchBar setHidden:0];
-      v62 = [(SearchViewController *)self closeSearchResultsButton];
-      [v62 setHidden:1];
+      closeSearchResultsButton2 = [(SearchViewController *)self closeSearchResultsButton];
+      [closeSearchResultsButton2 setHidden:1];
 
-      v63 = [(SearchViewController *)self browseModeHeaderView];
-      [v63 setHidden:1];
+      browseModeHeaderView = [(SearchViewController *)self browseModeHeaderView];
+      [browseModeHeaderView setHidden:1];
     }
 
     else
@@ -5471,16 +5471,16 @@ LABEL_42:
       v64 = 1;
       [(PassthruSearchBar *)self->_searchBar setHidden:!self->_supportsFullTextSearch];
       supportsFullTextSearch = self->_supportsFullTextSearch;
-      v66 = [(SearchViewController *)self browseModeHeaderView];
-      [v66 setHidden:supportsFullTextSearch];
+      browseModeHeaderView2 = [(SearchViewController *)self browseModeHeaderView];
+      [browseModeHeaderView2 setHidden:supportsFullTextSearch];
 
       if (![(SearchViewController *)self isSearchingAlongTheRoute])
       {
         v64 = self->_supportsFullTextSearch;
       }
 
-      v63 = [(SearchViewController *)self browseModeHeaderView];
-      [v63 setButtonHidden:v64];
+      browseModeHeaderView = [(SearchViewController *)self browseModeHeaderView];
+      [browseModeHeaderView setButtonHidden:v64];
     }
   }
 }
@@ -5497,26 +5497,26 @@ LABEL_42:
 
 - (PersonalizedItemSource)suggestionsItemSource
 {
-  v2 = [(SearchViewController *)self _homeViewController];
-  v3 = [v2 suggestionsItemSource];
+  _homeViewController = [(SearchViewController *)self _homeViewController];
+  suggestionsItemSource = [_homeViewController suggestionsItemSource];
 
-  return v3;
+  return suggestionsItemSource;
 }
 
-- (void)setPersonalizedItemManager:(id)a3
+- (void)setPersonalizedItemManager:(id)manager
 {
-  v5 = a3;
-  objc_storeWeak(&self->_personalizedItemManager, v5);
+  managerCopy = manager;
+  objc_storeWeak(&self->_personalizedItemManager, managerCopy);
   searchDataSource = self->_searchDataSource;
   if (searchDataSource)
   {
-    [(SearchDataSource *)searchDataSource setMapPersonalizedItems:v5];
+    [(SearchDataSource *)searchDataSource setMapPersonalizedItems:managerCopy];
   }
 }
 
-- (void)popoverDismissed:(id)a3
+- (void)popoverDismissed:(id)dismissed
 {
-  v4 = a3;
+  dismissedCopy = dismissed;
   if (__PAIR64__(self->_didPresentPopover, self->_userSelectedSearchBar) == 0x100000001)
   {
     v5[0] = _NSConcreteStackBlock;
@@ -5530,11 +5530,11 @@ LABEL_42:
   }
 }
 
-- (void)preferredContentSizeChanged:(id)a3
+- (void)preferredContentSizeChanged:(id)changed
 {
   [(PassthruSearchBar *)self->_searchBar invalidateIntrinsicContentSize];
-  v4 = [(SearchViewController *)self view];
-  [v4 setNeedsLayout];
+  view = [(SearchViewController *)self view];
+  [view setNeedsLayout];
 
   [(SearchViewController *)self reloadContentTableView];
 }
@@ -5551,22 +5551,22 @@ LABEL_42:
       v6 = WeakRetained;
       if (WeakRetained)
       {
-        v7 = WeakRetained;
+        selfCopy = WeakRetained;
       }
 
       else
       {
-        v7 = self;
+        selfCopy = self;
       }
 
-      [(DataSource *)v4 setDelegate:v7];
+      [(DataSource *)v4 setDelegate:selfCopy];
 
-      v8 = [(SearchViewController *)self personalizedItemManager];
-      [(SearchDataSource *)v4 setMapPersonalizedItems:v8];
+      personalizedItemManager = [(SearchViewController *)self personalizedItemManager];
+      [(SearchDataSource *)v4 setMapPersonalizedItems:personalizedItemManager];
 
-      v9 = [(ControlContaineeViewController *)self delegate];
-      v10 = [v9 userLocationSearchResult];
-      [(SearchDataSource *)v4 setUserLocationSearchResult:v10];
+      delegate = [(ControlContaineeViewController *)self delegate];
+      userLocationSearchResult = [delegate userLocationSearchResult];
+      [(SearchDataSource *)v4 setUserLocationSearchResult:userLocationSearchResult];
 
       [(SearchDataSource *)v4 setSearchAlongRoute:[(SearchViewController *)self isSearchingAlongTheRoute]];
       [(SearchDataSource *)v4 setCanShowQueryAccelerator:1];
@@ -5620,11 +5620,11 @@ LABEL_42:
   [(SearchViewController *)self _internalViewDidDisappear];
   if ([(SearchViewController *)self isShowingOmnipresentSearchBar])
   {
-    v3 = [(SearchViewController *)self searchResultsViewController];
-    v4 = v3;
-    if (v3)
+    searchResultsViewController = [(SearchViewController *)self searchResultsViewController];
+    v4 = searchResultsViewController;
+    if (searchResultsViewController)
     {
-      [v3 didResignCurrent];
+      [searchResultsViewController didResignCurrent];
     }
   }
 
@@ -5633,13 +5633,13 @@ LABEL_42:
   [(ContaineeViewController *)&v5 didResignCurrent];
 }
 
-- (void)willResignCurrent:(BOOL)a3
+- (void)willResignCurrent:(BOOL)current
 {
-  v3 = a3;
+  currentCopy = current;
   [(SearchViewController *)self _internalViewWillDisappear];
   v7.receiver = self;
   v7.super_class = SearchViewController;
-  [(ContaineeViewController *)&v7 willResignCurrent:v3];
+  [(ContaineeViewController *)&v7 willResignCurrent:currentCopy];
   if (!self->_maintainSearchStateWhenDisappearing)
   {
     currentDataSource = self->_currentDataSource;
@@ -5665,11 +5665,11 @@ LABEL_42:
   [(SearchViewController *)self _internalViewDidAppear];
   if ([(SearchViewController *)self isShowingOmnipresentSearchBar])
   {
-    v3 = [(SearchViewController *)self searchResultsViewController];
-    v4 = v3;
-    if (v3)
+    searchResultsViewController = [(SearchViewController *)self searchResultsViewController];
+    v4 = searchResultsViewController;
+    if (searchResultsViewController)
     {
-      [v3 didBecomeCurrent];
+      [searchResultsViewController didBecomeCurrent];
     }
   }
 }
@@ -5682,24 +5682,24 @@ LABEL_42:
   [(SearchViewController *)self _restoreRetainedQueryIfNeeded];
   if ([(SearchViewController *)self isShowingOmnipresentSearchBar])
   {
-    v3 = [(SearchViewController *)self searchResultsViewController];
-    v4 = v3;
-    if (v3)
+    searchResultsViewController = [(SearchViewController *)self searchResultsViewController];
+    v4 = searchResultsViewController;
+    if (searchResultsViewController)
     {
-      [v3 willBecomeCurrentByGesture];
+      [searchResultsViewController willBecomeCurrentByGesture];
     }
   }
 }
 
-- (void)willBecomeCurrent:(BOOL)a3
+- (void)willBecomeCurrent:(BOOL)current
 {
-  v3 = a3;
+  currentCopy = current;
   v10.receiver = self;
   v10.super_class = SearchViewController;
   [(ContaineeViewController *)&v10 willBecomeCurrent:?];
   [(SearchViewController *)self _internalViewWillAppear];
-  v5 = [(ControlContaineeViewController *)self delegate];
-  [v5 updateHistoricalLocations];
+  delegate = [(ControlContaineeViewController *)self delegate];
+  [delegate updateHistoricalLocations];
 
   currentDataSource = self->_currentDataSource;
   if (!currentDataSource)
@@ -5710,11 +5710,11 @@ LABEL_42:
   [currentDataSource setActive:1];
   if ([(SearchViewController *)self isShowingOmnipresentSearchBar])
   {
-    v7 = [(SearchViewController *)self searchResultsViewController];
-    v8 = v7;
-    if (v7)
+    searchResultsViewController = [(SearchViewController *)self searchResultsViewController];
+    v8 = searchResultsViewController;
+    if (searchResultsViewController)
     {
-      [v7 willBecomeCurrent:v3];
+      [searchResultsViewController willBecomeCurrent:currentCopy];
     }
   }
 
@@ -5724,11 +5724,11 @@ LABEL_42:
 
 - (double)topSpaceForScrollPocket
 {
-  v3 = [(SearchViewController *)self searchResultsViewController];
-  v4 = v3;
-  if (v3)
+  searchResultsViewController = [(SearchViewController *)self searchResultsViewController];
+  v4 = searchResultsViewController;
+  if (searchResultsViewController)
   {
-    [v3 topSpaceForScrollPocket];
+    [searchResultsViewController topSpaceForScrollPocket];
 LABEL_6:
     v10 = v5;
     goto LABEL_7;
@@ -5742,22 +5742,22 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  v6 = [(ContaineeViewController *)self headerView];
-  [v6 frame];
+  headerView = [(ContaineeViewController *)self headerView];
+  [headerView frame];
   MaxY = CGRectGetMaxY(v13);
-  v8 = [(SearchViewController *)self view];
-  [v8 safeAreaInsets];
+  view = [(SearchViewController *)self view];
+  [view safeAreaInsets];
   v10 = MaxY - v9;
 
 LABEL_7:
   return v10;
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v16 = a3;
-  v5 = [v16 nextFocusedItem];
-  if (!v5)
+  contextCopy = context;
+  nextFocusedItem = [contextCopy nextFocusedItem];
+  if (!nextFocusedItem)
   {
     goto LABEL_5;
   }
@@ -5768,16 +5768,16 @@ LABEL_7:
     goto LABEL_5;
   }
 
-  v7 = [v16 nextFocusedItem];
-  if ([UIFocusSystem environment:dropDownView containsEnvironment:v7])
+  nextFocusedItem2 = [contextCopy nextFocusedItem];
+  if ([UIFocusSystem environment:dropDownView containsEnvironment:nextFocusedItem2])
   {
 
 LABEL_5:
     goto LABEL_6;
   }
 
-  v12 = [v16 nextFocusedItem];
-  v13 = [UIFocusSystem environment:self containsEnvironment:v12];
+  nextFocusedItem3 = [contextCopy nextFocusedItem];
+  v13 = [UIFocusSystem environment:self containsEnvironment:nextFocusedItem3];
 
   if ((v13 & 1) == 0)
   {
@@ -5788,29 +5788,29 @@ LABEL_6:
   if (sub_10000FA08(self) != 5 && self->_homeViewController)
   {
     v8 = [UIFocusSystem focusSystemForEnvironment:?];
-    v9 = [v8 focusedItem];
+    focusedItem = [v8 focusedItem];
 
-    if (!v9)
+    if (!focusedItem)
     {
 LABEL_18:
 
       goto LABEL_19;
     }
 
-    v10 = [(ContaineeViewController *)self cardPresentationController];
-    if ([v10 containerStyle] == 6)
+    cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+    if ([cardPresentationController containerStyle] == 6)
     {
-      v11 = [(ContaineeViewController *)self cardPresentationController];
-      if ([v11 containeeLayout] == 1)
+      cardPresentationController2 = [(ContaineeViewController *)self cardPresentationController];
+      if ([cardPresentationController2 containeeLayout] == 1)
       {
       }
 
       else
       {
-        v14 = [(ContaineeViewController *)self cardPresentationController];
-        v15 = [v14 containeeLayout];
+        cardPresentationController3 = [(ContaineeViewController *)self cardPresentationController];
+        containeeLayout = [cardPresentationController3 containeeLayout];
 
-        if (v15 != 2)
+        if (containeeLayout != 2)
         {
 LABEL_17:
           self->_searchFieldWantsFocus = 1;
@@ -5818,8 +5818,8 @@ LABEL_17:
         }
       }
 
-      v10 = [(ContaineeViewController *)self cardPresentationController];
-      [v10 wantsLayout:3];
+      cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+      [cardPresentationController wantsLayout:3];
     }
 
     goto LABEL_17;
@@ -5828,16 +5828,16 @@ LABEL_17:
 LABEL_19:
 }
 
-- (void)handleDismissAction:(id)a3
+- (void)handleDismissAction:(id)action
 {
   if ([(HomeViewController *)self->_homeViewController isActive])
   {
-    v4 = [(SearchViewController *)self presentedViewController];
-    v5 = v4;
-    if (v4)
+    presentedViewController = [(SearchViewController *)self presentedViewController];
+    v5 = presentedViewController;
+    if (presentedViewController)
     {
-      v7 = v4;
-      v6 = [v4 conformsToProtocol:&OBJC_PROTOCOL___ContaineeProtocol];
+      v7 = presentedViewController;
+      v6 = [presentedViewController conformsToProtocol:&OBJC_PROTOCOL___ContaineeProtocol];
       v5 = v7;
       if ((v6 & 1) == 0)
       {
@@ -5857,8 +5857,8 @@ LABEL_19:
 - (id)offlinePlaceholderKey
 {
   v2 = +[NSLocale preferredLanguages];
-  v3 = [v2 firstObject];
-  v4 = [NSString stringWithFormat:@"%@-%@", @"__internal__searchBarOfflinePlaceholder", v3];
+  firstObject = [v2 firstObject];
+  v4 = [NSString stringWithFormat:@"%@-%@", @"__internal__searchBarOfflinePlaceholder", firstObject];
 
   return v4;
 }
@@ -5880,8 +5880,8 @@ LABEL_19:
     v5 = self->_mapsDragDestinationHandler;
     self->_mapsDragDestinationHandler = v4;
 
-    v6 = [(ControlContaineeViewController *)self delegate];
-    [(MapsDragDestinationHandler *)self->_mapsDragDestinationHandler setDelegate:v6];
+    delegate = [(ControlContaineeViewController *)self delegate];
+    [(MapsDragDestinationHandler *)self->_mapsDragDestinationHandler setDelegate:delegate];
 
     mapsDragDestinationHandler = self->_mapsDragDestinationHandler;
   }
@@ -5892,17 +5892,17 @@ LABEL_19:
 - (void)presentUserProfile
 {
   +[UserProfileAnalyticsManager captureEnterAccountTapAction];
-  v3 = [(SearchViewController *)self homeActionCoordinator];
-  [v3 viewControllerPresentUserProfile:self];
+  homeActionCoordinator = [(SearchViewController *)self homeActionCoordinator];
+  [homeActionCoordinator viewControllerPresentUserProfile:self];
 }
 
 - (UIEdgeInsets)_calculateAccessoryTouchInsets
 {
-  v2 = [(SearchViewController *)self view];
-  v3 = [v2 effectiveUserInterfaceLayoutDirection];
+  view = [(SearchViewController *)self view];
+  effectiveUserInterfaceLayoutDirection = [view effectiveUserInterfaceLayoutDirection];
 
   v4 = -16.0;
-  if (v3 == 1)
+  if (effectiveUserInterfaceLayoutDirection == 1)
   {
     v5 = -16.0;
   }
@@ -5912,7 +5912,7 @@ LABEL_19:
     v5 = -8.0;
   }
 
-  if (v3 == 1)
+  if (effectiveUserInterfaceLayoutDirection == 1)
   {
     v6 = -8.0;
   }
@@ -5935,10 +5935,10 @@ LABEL_19:
   v3 = 0.0;
   if (sub_10000FA08(self) != 5 && ![(SearchViewController *)self isSearchingAlongTheRoute])
   {
-    v4 = [(SearchViewController *)self closeSearchResultsButton];
-    v5 = [v4 isHidden];
+    closeSearchResultsButton = [(SearchViewController *)self closeSearchResultsButton];
+    isHidden = [closeSearchResultsButton isHidden];
 
-    if (v5)
+    if (isHidden)
     {
       if ([(UIButton *)self->_userProfileButton isHidden])
       {
@@ -5964,8 +5964,8 @@ LABEL_19:
 {
   if (sub_10000FA08(self) == 5)
   {
-    v3 = [(SearchViewController *)self view];
-    [v3 safeAreaInsets];
+    view = [(SearchViewController *)self view];
+    [view safeAreaInsets];
     v4 = 3.0;
     v6 = v5 + 3.0;
 
@@ -5987,10 +5987,10 @@ LABEL_19:
       v10 = v9 + 24.0;
     }
 
-    v11 = [(SearchViewController *)self view];
-    v12 = [v11 effectiveUserInterfaceLayoutDirection];
+    view2 = [(SearchViewController *)self view];
+    effectiveUserInterfaceLayoutDirection = [view2 effectiveUserInterfaceLayoutDirection];
 
-    if (v12 == 1)
+    if (effectiveUserInterfaceLayoutDirection == 1)
     {
       v7 = v10;
     }
@@ -6000,7 +6000,7 @@ LABEL_19:
       v7 = 16.0;
     }
 
-    if (v12 == 1)
+    if (effectiveUserInterfaceLayoutDirection == 1)
     {
       v8 = 16.0;
     }
@@ -6037,8 +6037,8 @@ LABEL_19:
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(SearchViewController *)self searchBar];
-  [v11 contentInset];
+  searchBar = [(SearchViewController *)self searchBar];
+  [searchBar contentInset];
   if (v6 == v15 && v4 == v12 && v10 == v14)
   {
     v18 = v13;
@@ -6053,23 +6053,23 @@ LABEL_19:
   {
   }
 
-  v19 = [(SearchViewController *)self searchBar];
-  [v19 setContentInset:{v4, v6, v8, v10}];
+  searchBar2 = [(SearchViewController *)self searchBar];
+  [searchBar2 setContentInset:{v4, v6, v8, v10}];
 }
 
-- (id)createConstraintsForSearchBarAccessoryView:(id)a3
+- (id)createConstraintsForSearchBarAccessoryView:(id)view
 {
-  v4 = a3;
-  v5 = [v4 centerYAnchor];
-  v6 = [(ContaineeViewController *)self headerView];
-  v7 = [v6 centerYAnchor];
-  v8 = [v5 constraintEqualToAnchor:v7];
+  viewCopy = view;
+  centerYAnchor = [viewCopy centerYAnchor];
+  headerView = [(ContaineeViewController *)self headerView];
+  centerYAnchor2 = [headerView centerYAnchor];
+  v8 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v15[0] = v8;
-  v9 = [v4 trailingAnchor];
+  trailingAnchor = [viewCopy trailingAnchor];
 
-  v10 = [(ContaineeViewController *)self headerView];
-  v11 = [v10 trailingAnchor];
-  v12 = [v9 constraintEqualToAnchor:v11 constant:-16.0];
+  headerView2 = [(ContaineeViewController *)self headerView];
+  trailingAnchor2 = [headerView2 trailingAnchor];
+  v12 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-16.0];
   v15[1] = v12;
   v13 = [NSArray arrayWithObjects:v15 count:2];
 
@@ -6081,13 +6081,13 @@ LABEL_19:
   v7.receiver = self;
   v7.super_class = SearchViewController;
   [(ContaineeViewController *)&v7 viewDidLayoutSubviews];
-  v3 = [(SearchViewController *)self currentDataSource];
+  currentDataSource = [(SearchViewController *)self currentDataSource];
   searchDataSource = self->_searchDataSource;
-  if (v3 == searchDataSource)
+  if (currentDataSource == searchDataSource)
   {
-    v5 = [(SearchDataSource *)searchDataSource shouldReloadOnHeightChange];
+    shouldReloadOnHeightChange = [(SearchDataSource *)searchDataSource shouldReloadOnHeightChange];
 
-    if (v5)
+    if (shouldReloadOnHeightChange)
     {
       [(SearchViewController *)self reloadContentTableView];
     }
@@ -6097,46 +6097,46 @@ LABEL_19:
   {
   }
 
-  v6 = [(ContaineeViewController *)self cardPresentationController];
-  -[SearchViewController _updateDefaultLayoutWithContainerStyle:](self, "_updateDefaultLayoutWithContainerStyle:", [v6 containerStyle]);
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  -[SearchViewController _updateDefaultLayoutWithContainerStyle:](self, "_updateDefaultLayoutWithContainerStyle:", [cardPresentationController containerStyle]);
 }
 
 - (Class)viewClass
 {
   if (sub_10000FA08(self) == 5)
   {
-    v3 = objc_opt_class();
+    viewClass = objc_opt_class();
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = SearchViewController;
-    v3 = [(ContaineeViewController *)&v5 viewClass];
+    viewClass = [(ContaineeViewController *)&v5 viewClass];
   }
 
-  return v3;
+  return viewClass;
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5 = +[UIDevice currentDevice];
-  v6 = [v5 userInterfaceIdiom];
+  userInterfaceIdiom = [v5 userInterfaceIdiom];
 
-  if (v6 == 5)
+  if (userInterfaceIdiom == 5)
   {
     [(SearchViewController *)self _internalViewDidDisappear];
   }
 
   v7.receiver = self;
   v7.super_class = SearchViewController;
-  [(SearchViewController *)&v7 viewDidDisappear:v3];
+  [(SearchViewController *)&v7 viewDidDisappear:disappearCopy];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5 = sub_1000410AC();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -6145,22 +6145,22 @@ LABEL_19:
   }
 
   v6 = +[UIDevice currentDevice];
-  v7 = [v6 userInterfaceIdiom];
+  userInterfaceIdiom = [v6 userInterfaceIdiom];
 
-  if (v7 == 5)
+  if (userInterfaceIdiom == 5)
   {
     [(SearchViewController *)self _internalViewWillDisappear];
   }
 
   v8.receiver = self;
   v8.super_class = SearchViewController;
-  [(ContaineeViewController *)&v8 viewWillDisappear:v3];
+  [(ContaineeViewController *)&v8 viewWillDisappear:disappearCopy];
   [(SearchViewController *)self _hideSearchHereControl];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5 = sub_1000410AC();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -6170,25 +6170,25 @@ LABEL_19:
 
   v8.receiver = self;
   v8.super_class = SearchViewController;
-  [(ContaineeViewController *)&v8 viewWillAppear:v3];
+  [(ContaineeViewController *)&v8 viewWillAppear:appearCopy];
   v6 = +[UIDevice currentDevice];
-  v7 = [v6 userInterfaceIdiom];
+  userInterfaceIdiom = [v6 userInterfaceIdiom];
 
-  if (v7 == 5)
+  if (userInterfaceIdiom == 5)
   {
     [(SearchViewController *)self _internalViewWillAppear];
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = SearchViewController;
-  [(SearchViewController *)&v6 viewDidAppear:a3];
+  [(SearchViewController *)&v6 viewDidAppear:appear];
   v4 = +[UIDevice currentDevice];
-  v5 = [v4 userInterfaceIdiom];
+  userInterfaceIdiom = [v4 userInterfaceIdiom];
 
-  if (v5 == 5)
+  if (userInterfaceIdiom == 5)
   {
     [(SearchViewController *)self _internalViewDidAppear];
   }
@@ -6196,9 +6196,9 @@ LABEL_19:
 
 - (void)_internalViewDidDisappear
 {
-  v3 = [(ControlContaineeViewController *)self delegate];
-  v4 = [v3 venuesManager];
-  [v4 removeChangeObserver:self];
+  delegate = [(ControlContaineeViewController *)self delegate];
+  venuesManager = [delegate venuesManager];
+  [venuesManager removeChangeObserver:self];
 
   objc_initWeak(&location, self);
   v5 = dispatch_time(0, 250000000);
@@ -6230,12 +6230,12 @@ LABEL_19:
   }
 }
 
-- (void)_enableTextFieldNotification:(BOOL)a3
+- (void)_enableTextFieldNotification:(BOOL)notification
 {
-  v3 = a3;
+  notificationCopy = notification;
   v5 = +[NSNotificationCenter defaultCenter];
   v6 = v5;
-  if (v3)
+  if (notificationCopy)
   {
     [v5 addObserver:self selector:"_textFieldDidChange:" name:UITextFieldTextDidChangeNotification object:self->_searchField];
   }
@@ -6246,12 +6246,12 @@ LABEL_19:
   }
 }
 
-- (void)_initPlaceholderWithSubmitTicketIfNeeded:(BOOL)a3
+- (void)_initPlaceholderWithSubmitTicketIfNeeded:(BOOL)needed
 {
-  v3 = a3;
+  neededCopy = needed;
   if ((+[UIApplication shouldMakeUIForDefaultPNG]& 1) == 0)
   {
-    if (v3)
+    if (neededCopy)
     {
       v5 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
       v6 = dispatch_queue_create("com.apple.Maps.search.placeholder", v5);
@@ -6278,30 +6278,30 @@ LABEL_19:
   }
 }
 
-- (void)_initOfflinePlaceHolderWithCompletion:(id)a3
+- (void)_initOfflinePlaceHolderWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (!self->_isOfflineServiceRunning)
   {
     self->_isOfflineServiceRunning = 1;
     objc_initWeak(&location, self);
-    v5 = [(SearchViewController *)self offlinePlaceholderQueue];
+    offlinePlaceholderQueue = [(SearchViewController *)self offlinePlaceholderQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_10099A894;
     block[3] = &unk_101660648;
     objc_copyWeak(&v8, &location);
-    v7 = v4;
-    dispatch_async(v5, block);
+    v7 = completionCopy;
+    dispatch_async(offlinePlaceholderQueue, block);
 
     objc_destroyWeak(&v8);
     objc_destroyWeak(&location);
   }
 }
 
-- (void)logOfflineBrowseMode:(BOOL)a3
+- (void)logOfflineBrowseMode:(BOOL)mode
 {
-  if (!a3 && (!self->_isOfflineBrowseRecordedAlready || self->_supportsFullTextSearch))
+  if (!mode && (!self->_isOfflineBrowseRecordedAlready || self->_supportsFullTextSearch))
   {
     v4 = +[MKMapService sharedService];
     [v4 captureUserAction:45 onTarget:1708 eventValue:0];
@@ -6324,8 +6324,8 @@ LABEL_19:
 - (void)_setupOfflinePlaceholder
 {
   v3 = +[NSLocale preferredLanguages];
-  v4 = [v3 firstObject];
-  v9 = [NSString stringWithFormat:@"%@-%@", @"__internal__searchBarOfflinePlaceholder", v4];
+  firstObject = [v3 firstObject];
+  v9 = [NSString stringWithFormat:@"%@-%@", @"__internal__searchBarOfflinePlaceholder", firstObject];
 
   v5 = +[NSUserDefaults standardUserDefaults];
   v6 = [v5 objectForKey:v9];
@@ -6337,12 +6337,12 @@ LABEL_19:
 
   else
   {
-    v7 = [(SearchViewController *)self browseOfflineMapsString];
-    [(UITextField *)self->_searchField setPlaceholder:v7];
+    browseOfflineMapsString = [(SearchViewController *)self browseOfflineMapsString];
+    [(UITextField *)self->_searchField setPlaceholder:browseOfflineMapsString];
   }
 
-  v8 = [(UITextField *)self->_searchField _placeholderLabel];
-  [v8 setAllowsDefaultTighteningForTruncation:1];
+  _placeholderLabel = [(UITextField *)self->_searchField _placeholderLabel];
+  [_placeholderLabel setAllowsDefaultTighteningForTruncation:1];
 }
 
 - (void)_offlineSettingChangeHandler
@@ -6351,9 +6351,9 @@ LABEL_19:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     v4 = +[MapsOfflineUIHelper sharedHelper];
-    v5 = [v4 isUsingOfflineMaps];
+    isUsingOfflineMaps = [v4 isUsingOfflineMaps];
     v6 = @"NO";
-    if (v5)
+    if (isUsingOfflineMaps)
     {
       v6 = @"YES";
     }
@@ -6365,9 +6365,9 @@ LABEL_19:
   }
 
   v8 = +[MapsOfflineUIHelper sharedHelper];
-  v9 = [v8 isUsingOfflineMaps];
+  isUsingOfflineMaps2 = [v8 isUsingOfflineMaps];
 
-  if (v9)
+  if (isUsingOfflineMaps2)
   {
     [(SearchViewController *)self _setupOfflinePlaceholder];
     [(SearchViewController *)self _initOfflinePlaceHolderWithCompletion:0];
@@ -6388,14 +6388,14 @@ LABEL_19:
   self->_searchHomeDataSource = 0;
 }
 
-- (void)_shouldHideOfflineHeaderView:(BOOL)a3
+- (void)_shouldHideOfflineHeaderView:(BOOL)view
 {
-  v3 = a3;
-  v5 = [(SearchViewController *)self browseModeHeaderView];
-  [v5 setHidden:v3];
+  viewCopy = view;
+  browseModeHeaderView = [(SearchViewController *)self browseModeHeaderView];
+  [browseModeHeaderView setHidden:viewCopy];
 
-  [(PassthruSearchBar *)self->_searchBar setHidden:v3 ^ 1];
-  [(UIButton *)self->_userProfileButton setHidden:v3 ^ 1];
+  [(PassthruSearchBar *)self->_searchBar setHidden:viewCopy ^ 1];
+  [(UIButton *)self->_userProfileButton setHidden:viewCopy ^ 1];
 
   [(SearchViewController *)self _updateUserProfileEntryPointButton];
 }
@@ -6436,13 +6436,13 @@ LABEL_19:
     v8 = [v7 localizedStringForKey:@"Browse" value:@"localized string not found" table:@"Offline"];
     [(ContainerHeaderView *)self->_offlineBrowseHeaderView setTitle:v8];
 
-    v9 = [(ContaineeViewController *)self headerView];
-    v10 = [(SearchViewController *)self browseModeHeaderView];
-    [v9 addSubview:v10];
+    headerView = [(ContaineeViewController *)self headerView];
+    browseModeHeaderView = [(SearchViewController *)self browseModeHeaderView];
+    [headerView addSubview:browseModeHeaderView];
 
-    v11 = [(SearchViewController *)self browseModeHeaderView];
-    v12 = [(ContaineeViewController *)self headerView];
-    v13 = [v11 _maps_constraintsForCenteringInView:v12 edgeInsets:{UIEdgeInsetsZero.top, UIEdgeInsetsZero.left, UIEdgeInsetsZero.bottom, UIEdgeInsetsZero.right}];
+    browseModeHeaderView2 = [(SearchViewController *)self browseModeHeaderView];
+    headerView2 = [(ContaineeViewController *)self headerView];
+    v13 = [browseModeHeaderView2 _maps_constraintsForCenteringInView:headerView2 edgeInsets:{UIEdgeInsetsZero.top, UIEdgeInsetsZero.left, UIEdgeInsetsZero.bottom, UIEdgeInsetsZero.right}];
     [NSLayoutConstraint activateConstraints:v13];
 
     offlineBrowseHeaderView = self->_offlineBrowseHeaderView;
@@ -6451,20 +6451,20 @@ LABEL_19:
   return offlineBrowseHeaderView;
 }
 
-- (id)targetForAction:(SEL)a3 withSender:(id)a4
+- (id)targetForAction:(SEL)action withSender:(id)sender
 {
   homeViewController = self->_homeViewController;
-  v7 = a4;
+  senderCopy = sender;
   if ([(HomeViewController *)homeViewController isActive])
   {
-    v8 = [(HomeViewController *)self->_homeViewController targetForAction:a3 withSender:v7];
+    v8 = [(HomeViewController *)self->_homeViewController targetForAction:action withSender:senderCopy];
   }
 
   else
   {
     v11.receiver = self;
     v11.super_class = SearchViewController;
-    v8 = [(SearchViewController *)&v11 targetForAction:a3 withSender:v7];
+    v8 = [(SearchViewController *)&v11 targetForAction:action withSender:senderCopy];
   }
 
   v9 = v8;
@@ -6476,29 +6476,29 @@ LABEL_19:
 {
   if ([(HomeViewController *)self->_homeViewController isActive]&& ([(SearchViewController *)self presentedViewController], v3 = objc_claimAutoreleasedReturnValue(), v3, !v3))
   {
-    v4 = [(HomeViewController *)self->_homeViewController keyCommands];
+    keyCommands = [(HomeViewController *)self->_homeViewController keyCommands];
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = SearchViewController;
-    v4 = [(ContaineeViewController *)&v9 keyCommands];
+    keyCommands = [(ContaineeViewController *)&v9 keyCommands];
     if (self->_currentDataSource == &self->_searchHomeDataSource->super)
     {
-      v5 = [(SearchViewController *)self presentedViewController];
+      presentedViewController = [(SearchViewController *)self presentedViewController];
 
-      if (!v5)
+      if (!presentedViewController)
       {
-        v6 = [(SearchHomeDataSource *)self->_searchHomeDataSource keyCommands];
-        v7 = [v4 arrayByAddingObjectsFromArray:v6];
+        keyCommands2 = [(SearchHomeDataSource *)self->_searchHomeDataSource keyCommands];
+        v7 = [keyCommands arrayByAddingObjectsFromArray:keyCommands2];
 
-        v4 = v7;
+        keyCommands = v7;
       }
     }
   }
 
-  return v4;
+  return keyCommands;
 }
 
 - (void)updateTheme
@@ -6506,48 +6506,48 @@ LABEL_19:
   v7.receiver = self;
   v7.super_class = SearchViewController;
   [(MapsThemeViewController *)&v7 updateTheme];
-  v3 = [(SearchViewController *)self theme];
-  v4 = [v3 searchBarPlaceHolderColor];
-  v5 = [(UITextField *)self->_searchField _placeholderLabel];
-  [v5 setTextColor:v4];
+  theme = [(SearchViewController *)self theme];
+  searchBarPlaceHolderColor = [theme searchBarPlaceHolderColor];
+  _placeholderLabel = [(UITextField *)self->_searchField _placeholderLabel];
+  [_placeholderLabel setTextColor:searchBarPlaceHolderColor];
 
-  v6 = [(SearchViewController *)self theme];
-  -[UITextField setKeyboardAppearance:](self->_searchField, "setKeyboardAppearance:", [v6 textFieldKeyboardAppearance]);
+  theme2 = [(SearchViewController *)self theme];
+  -[UITextField setKeyboardAppearance:](self->_searchField, "setKeyboardAppearance:", [theme2 textFieldKeyboardAppearance]);
 
   [(UITableView *)self->_contentTableView reloadData];
 }
 
-- (SearchViewController)initWithHomeActionDelegate:(id)a3 searchDataSourceDelegate:(id)a4
+- (SearchViewController)initWithHomeActionDelegate:(id)delegate searchDataSourceDelegate:(id)sourceDelegate
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  sourceDelegateCopy = sourceDelegate;
   v8 = [(SearchViewController *)self init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_deferredHomeActionDelegate, v6);
-    objc_storeWeak(&v9->_deferredSearchDataSourceDelegate, v7);
+    objc_storeWeak(&v8->_deferredHomeActionDelegate, delegateCopy);
+    objc_storeWeak(&v9->_deferredSearchDataSourceDelegate, sourceDelegateCopy);
   }
 
   return v9;
 }
 
-- (SearchViewController)initWithSearchAlongRoute:(BOOL)a3
+- (SearchViewController)initWithSearchAlongRoute:(BOOL)route
 {
-  v3 = a3;
+  routeCopy = route;
   v4 = [(SearchViewController *)self init];
   v5 = v4;
   if (v4)
   {
-    [(SearchViewController *)v4 setSearchingAlongTheRoute:v3];
-    v6 = [[SearchHomeAnalyticsManager alloc] initWithSearchAlongRoute:v3];
+    [(SearchViewController *)v4 setSearchingAlongTheRoute:routeCopy];
+    v6 = [[SearchHomeAnalyticsManager alloc] initWithSearchAlongRoute:routeCopy];
     [(SearchViewController *)v5 setAnalyticsManager:v6];
 
     v5->_isOfflineBrowseRecordedAlready = 0;
     v7 = +[MapsOfflineUIHelper sharedHelper];
-    v8 = [v7 isUsingOfflineMaps];
+    isUsingOfflineMaps = [v7 isUsingOfflineMaps];
 
-    if (v8)
+    if (isUsingOfflineMaps)
     {
       [(SearchViewController *)v5 _initOfflinePlaceHolderWithCompletion:0];
     }
@@ -6559,23 +6559,23 @@ LABEL_19:
 - (void)endSearchForTesting
 {
   [(SearchViewController *)self endSearch];
-  v3 = [(SearchViewController *)self searchBar];
-  [v3 setText:&stru_1016631F0];
+  searchBar = [(SearchViewController *)self searchBar];
+  [searchBar setText:&stru_1016631F0];
 }
 
-- (void)closeSearchResultsButtonAction:(id)a3
+- (void)closeSearchResultsButtonAction:(id)action
 {
-  v4 = [(SearchViewController *)self searchResultsViewController];
-  if (v4)
+  searchResultsViewController = [(SearchViewController *)self searchResultsViewController];
+  if (searchResultsViewController)
   {
     +[SearchResultsAnalyticsManager logCloseSearchResults];
-    [v4 willMoveToParentViewController:0];
-    v5 = [v4 view];
-    [v5 removeFromSuperview];
+    [searchResultsViewController willMoveToParentViewController:0];
+    view = [searchResultsViewController view];
+    [view removeFromSuperview];
 
-    [v4 removeFromParentViewController];
-    v6 = [(SearchViewController *)self closeSearchResultsButton];
-    [v6 setHidden:1];
+    [searchResultsViewController removeFromParentViewController];
+    closeSearchResultsButton = [(SearchViewController *)self closeSearchResultsButton];
+    [closeSearchResultsButton setHidden:1];
 
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
@@ -6583,8 +6583,8 @@ LABEL_19:
     v11[3] = &unk_101661B18;
     v11[4] = self;
     v7 = objc_retainBlock(v11);
-    v8 = [(ContaineeViewController *)self cardPresentationController];
-    [v8 applyWithAnimations:v7 completion:&stru_101655C98];
+    cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+    [cardPresentationController applyWithAnimations:v7 completion:&stru_101655C98];
   }
 
   else
@@ -6614,30 +6614,30 @@ LABEL_19:
     v3 = +[UIButton _maps_cardButtonCloseButton];
     [(SearchViewController *)self setCloseSearchResultsButton:v3];
 
-    v4 = [(SearchViewController *)self closeSearchResultsButton];
-    [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
+    closeSearchResultsButton = [(SearchViewController *)self closeSearchResultsButton];
+    [closeSearchResultsButton setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v5 = [(SearchViewController *)self closeSearchResultsButton];
-    [v5 setAccessibilityIdentifier:@"closeSearchResultsButton"];
+    closeSearchResultsButton2 = [(SearchViewController *)self closeSearchResultsButton];
+    [closeSearchResultsButton2 setAccessibilityIdentifier:@"closeSearchResultsButton"];
 
-    v6 = [(SearchViewController *)self closeSearchResultsButton];
-    [v6 addTarget:self action:"closeSearchResultsButtonAction:" forControlEvents:64];
+    closeSearchResultsButton3 = [(SearchViewController *)self closeSearchResultsButton];
+    [closeSearchResultsButton3 addTarget:self action:"closeSearchResultsButtonAction:" forControlEvents:64];
 
-    v7 = [(ContaineeViewController *)self headerView];
-    v8 = [(SearchViewController *)self closeSearchResultsButton];
-    [v7 addSubview:v8];
+    headerView = [(ContaineeViewController *)self headerView];
+    closeSearchResultsButton4 = [(SearchViewController *)self closeSearchResultsButton];
+    [headerView addSubview:closeSearchResultsButton4];
 
-    v9 = [(SearchViewController *)self closeSearchResultsButton];
-    v10 = [(SearchViewController *)self createConstraintsForSearchBarAccessoryView:v9];
+    closeSearchResultsButton5 = [(SearchViewController *)self closeSearchResultsButton];
+    v10 = [(SearchViewController *)self createConstraintsForSearchBarAccessoryView:closeSearchResultsButton5];
 
     [NSLayoutConstraint activateConstraints:v10];
   }
 }
 
-- (void)displaySearchResultsWithViewController:(id)a3 searchBar:(id)a4
+- (void)displaySearchResultsWithViewController:(id)controller searchBar:(id)bar
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  barCopy = bar;
   v8 = +[MapsOfflineUIHelper sharedHelper];
   if ([v8 isUsingOfflineMaps] && !-[SearchViewController supportsFullTextSearch](self, "supportsFullTextSearch"))
   {
@@ -6649,12 +6649,12 @@ LABEL_19:
     IsEnabled_SearchAndDiscovery = 0;
   }
 
-  v10 = [(SearchViewController *)self closeSearchResultsButton];
-  [v10 setHidden:IsEnabled_SearchAndDiscovery];
+  closeSearchResultsButton = [(SearchViewController *)self closeSearchResultsButton];
+  [closeSearchResultsButton setHidden:IsEnabled_SearchAndDiscovery];
 
-  v11 = [(SearchViewController *)self searchResultsViewController];
+  searchResultsViewController = [(SearchViewController *)self searchResultsViewController];
 
-  if (!v11)
+  if (!searchResultsViewController)
   {
     v12 = sub_100067540();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
@@ -6665,7 +6665,7 @@ LABEL_19:
       v56.super_class = SearchViewController;
       [(ContaineeViewController *)&v56 topSpaceForScrollPocket];
       v16 = v15;
-      [v7 frame];
+      [barCopy frame];
       *buf = 134218496;
       v59 = v14;
       v60 = 2048;
@@ -6693,59 +6693,59 @@ LABEL_19:
     }
 
     v22 = v21;
-    [v7 frame];
+    [barCopy frame];
     if (v23 > v22)
     {
-      [v7 frame];
+      [barCopy frame];
       v22 = v24;
     }
 
-    [v6 setTopSpaceForRefinements:v22];
-    v25 = [v6 view];
-    [v25 removeFromSuperview];
+    [controllerCopy setTopSpaceForRefinements:v22];
+    view = [controllerCopy view];
+    [view removeFromSuperview];
 
-    [(SearchViewController *)self addChildViewController:v6];
-    v26 = [(ContaineeViewController *)self contentView];
-    v27 = [v6 view];
-    [v26 addSubview:v27];
+    [(SearchViewController *)self addChildViewController:controllerCopy];
+    contentView = [(ContaineeViewController *)self contentView];
+    view2 = [controllerCopy view];
+    [contentView addSubview:view2];
 
-    v28 = [v6 view];
-    [v28 setTranslatesAutoresizingMaskIntoConstraints:0];
+    view3 = [controllerCopy view];
+    [view3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v52 = [v6 view];
-    v50 = [v52 leadingAnchor];
-    v51 = [(ContaineeViewController *)self contentView];
-    v49 = [v51 leadingAnchor];
-    v48 = [v50 constraintEqualToAnchor:v49];
+    view4 = [controllerCopy view];
+    leadingAnchor = [view4 leadingAnchor];
+    contentView2 = [(ContaineeViewController *)self contentView];
+    leadingAnchor2 = [contentView2 leadingAnchor];
+    v48 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v57[0] = v48;
-    v47 = [v6 view];
-    v45 = [v47 trailingAnchor];
-    v46 = [(ContaineeViewController *)self contentView];
-    v44 = [v46 trailingAnchor];
-    v43 = [v45 constraintEqualToAnchor:v44];
+    view5 = [controllerCopy view];
+    trailingAnchor = [view5 trailingAnchor];
+    contentView3 = [(ContaineeViewController *)self contentView];
+    trailingAnchor2 = [contentView3 trailingAnchor];
+    v43 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v57[1] = v43;
-    v42 = [v6 view];
-    v40 = [v42 topAnchor];
-    v41 = [(ContaineeViewController *)self contentView];
-    v29 = [v41 topAnchor];
-    v30 = [v40 constraintEqualToAnchor:v29];
+    view6 = [controllerCopy view];
+    topAnchor = [view6 topAnchor];
+    contentView4 = [(ContaineeViewController *)self contentView];
+    topAnchor2 = [contentView4 topAnchor];
+    v30 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v57[2] = v30;
-    v31 = [v6 view];
-    [v31 bottomAnchor];
-    v32 = v53 = v6;
-    v33 = [(ContaineeViewController *)self contentView];
-    v34 = [v33 bottomAnchor];
-    v35 = [v32 constraintEqualToAnchor:v34];
+    view7 = [controllerCopy view];
+    [view7 bottomAnchor];
+    v32 = v53 = controllerCopy;
+    contentView5 = [(ContaineeViewController *)self contentView];
+    bottomAnchor = [contentView5 bottomAnchor];
+    v35 = [v32 constraintEqualToAnchor:bottomAnchor];
     v57[3] = v35;
     v36 = [NSArray arrayWithObjects:v57 count:4];
     [NSLayoutConstraint activateConstraints:v36];
 
-    v6 = v53;
+    controllerCopy = v53;
     [v53 didMoveToParentViewController:self];
   }
 
-  v37 = [(ContaineeViewController *)self cardPresentationController];
-  if ([v37 containeeLayout] != 3)
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  if ([cardPresentationController containeeLayout] != 3)
   {
     goto LABEL_17;
   }
@@ -6754,15 +6754,15 @@ LABEL_19:
 
   if (v38 != 5)
   {
-    v37 = [(ContaineeViewController *)self cardPresentationController];
-    [v37 wantsLayout:2 animated:1];
+    cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+    [cardPresentationController wantsLayout:2 animated:1];
 LABEL_17:
   }
 
-  v39 = [(ContaineeViewController *)self cardPresentationController];
-  [v39 updateHeightForCurrentLayout];
+  cardPresentationController2 = [(ContaineeViewController *)self cardPresentationController];
+  [cardPresentationController2 updateHeightForCurrentLayout];
 
-  [v7 setShowsCancelButton:0 animated:1];
+  [barCopy setShowsCancelButton:0 animated:1];
 }
 
 @end

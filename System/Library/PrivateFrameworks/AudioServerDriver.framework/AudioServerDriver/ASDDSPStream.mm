@@ -1,42 +1,42 @@
 @interface ASDDSPStream
 - (ASDDSPGraph)hardwareDSP;
-- (ASDDSPStream)initWithDirection:(unsigned int)a3 withPlugin:(id)a4;
+- (ASDDSPStream)initWithDirection:(unsigned int)direction withPlugin:(id)plugin;
 - (BOOL)_allocateStreamingResources;
-- (BOOL)addClientDSP:(id)a3 withKey:(unint64_t)a4;
-- (BOOL)addHardwareDSP:(id)a3;
-- (BOOL)enableBasicDSPCaptureOnGraph:(id)a3 withLevel:(id)a4 andDebugType:(int64_t)a5 andMode:(int64_t)a6;
-- (BOOL)graphStructureIsValid:(id)a3 clientID:(unint64_t)a4;
-- (BOOL)removeClientDSPwithKey:(unint64_t)a3;
+- (BOOL)addClientDSP:(id)p withKey:(unint64_t)key;
+- (BOOL)addHardwareDSP:(id)p;
+- (BOOL)enableBasicDSPCaptureOnGraph:(id)graph withLevel:(id)level andDebugType:(int64_t)type andMode:(int64_t)mode;
+- (BOOL)graphStructureIsValid:(id)valid clientID:(unint64_t)d;
+- (BOOL)removeClientDSPwithKey:(unint64_t)key;
 - (BOOL)removeHardwareDSP;
 - (NSArray)underlyingStreams;
 - (id).cxx_construct;
 - (id)_hardwareDSP;
-- (id)clientDSPForClient:(unsigned int)a3;
+- (id)clientDSPForClient:(unsigned int)client;
 - (id)processOutputBlock;
 - (id)readInputBlock;
 - (id)readIsolatedInputBlock;
 - (id)writeMixBlock;
-- (int64_t)getAudioCaptureRingBufferModeWithDict:(id)a3;
-- (int64_t)getAudioDebugTypeWithDict:(id)a3;
+- (int64_t)getAudioCaptureRingBufferModeWithDict:(id)dict;
+- (int64_t)getAudioDebugTypeWithDict:(id)dict;
 - (int64_t)getDSPCaptureTypeFromDefault;
 - (int64_t)graphAudioValidationMode;
 - (int64_t)maximumFramesPerIOCycle;
-- (void)_allocateStreamingResourcesForGraphHelper:(void *)a3;
+- (void)_allocateStreamingResourcesForGraphHelper:(void *)helper;
 - (void)_deallocateStreamingResources;
 - (void)_resumeProcessing;
 - (void)_suspendProcessing;
 - (void)_updateLatency;
 - (void)_updateMaximumFramesPerIOCycle;
 - (void)dealloc;
-- (void)doSetUnderlyingStreams:(id)a3;
-- (void)enableDSPCaptureByType:(int64_t)a3 withGraph:(id)a4;
+- (void)doSetUnderlyingStreams:(id)streams;
+- (void)enableDSPCaptureByType:(int64_t)type withGraph:(id)graph;
 - (void)enableDSPCaptureInAction;
-- (void)enableDSPFileInjectionOnGraph:(id)a3 withFormat:(id)a4;
+- (void)enableDSPFileInjectionOnGraph:(id)graph withFormat:(id)format;
 - (void)resumeProcessing;
-- (void)setBypassMode:(BOOL)a3;
-- (void)setGraphAudioValidationMode:(int64_t)a3;
-- (void)setUnderlyingStreams:(id)a3;
-- (void)sleepForNumberOfSamples:(unint64_t)a3;
+- (void)setBypassMode:(BOOL)mode;
+- (void)setGraphAudioValidationMode:(int64_t)mode;
+- (void)setUnderlyingStreams:(id)streams;
+- (void)sleepForNumberOfSamples:(unint64_t)samples;
 - (void)startStream;
 - (void)stopStream;
 - (void)suspendProcessing;
@@ -106,16 +106,16 @@
   return v4;
 }
 
-- (int64_t)getAudioDebugTypeWithDict:(id)a3
+- (int64_t)getAudioDebugTypeWithDict:(id)dict
 {
-  v3 = a3;
+  dictCopy = dict;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
     _os_log_impl(&dword_2415D8000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "Getting Audio Debug Type...", buf, 2u);
   }
 
-  v4 = [v3 valueForKey:@"DebugType"];
+  v4 = [dictCopy valueForKey:@"DebugType"];
   v5 = v4;
   if (!v4)
   {
@@ -161,16 +161,16 @@ LABEL_15:
   return v6;
 }
 
-- (int64_t)getAudioCaptureRingBufferModeWithDict:(id)a3
+- (int64_t)getAudioCaptureRingBufferModeWithDict:(id)dict
 {
-  v3 = a3;
+  dictCopy = dict;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
     _os_log_impl(&dword_2415D8000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "Getting Audio Capture Ring Buffer Mode...", buf, 2u);
   }
 
-  v4 = [v3 valueForKey:@"RingBufferMode"];
+  v4 = [dictCopy valueForKey:@"RingBufferMode"];
   v5 = v4;
   if (!v4)
   {
@@ -239,8 +239,8 @@ LABEL_18:
     _os_log_impl(&dword_2415D8000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "enableDSPCaptureInAction!", buf, 2u);
   }
 
-  v3 = [(ASDDSPStream *)self hardwareDSP];
-  if (v3)
+  hardwareDSP = [(ASDDSPStream *)self hardwareDSP];
+  if (hardwareDSP)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
@@ -248,26 +248,26 @@ LABEL_18:
       _os_log_impl(&dword_2415D8000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "Found graph, enabling DSP Capture in action!", v5, 2u);
     }
 
-    v4 = [(ASDDSPStream *)self getDSPCaptureTypeFromDefault];
-    self->_DSPCaptureType = v4;
-    [(ASDDSPStream *)self enableDSPCaptureByType:v4 withGraph:v3];
+    getDSPCaptureTypeFromDefault = [(ASDDSPStream *)self getDSPCaptureTypeFromDefault];
+    self->_DSPCaptureType = getDSPCaptureTypeFromDefault;
+    [(ASDDSPStream *)self enableDSPCaptureByType:getDSPCaptureTypeFromDefault withGraph:hardwareDSP];
   }
 }
 
-- (ASDDSPStream)initWithDirection:(unsigned int)a3 withPlugin:(id)a4
+- (ASDDSPStream)initWithDirection:(unsigned int)direction withPlugin:(id)plugin
 {
   v5 = MEMORY[0x277CBEAD8];
-  v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"-[ASDDSPStream initWithDirection:withPlugin:]", a4}];
+  v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"-[ASDDSPStream initWithDirection:withPlugin:]", plugin}];
   [v5 raise:*MEMORY[0x277CBE660] format:{@"Do not call %@", v6}];
 
   return 0;
 }
 
-- (void)doSetUnderlyingStreams:(id)a3
+- (void)doSetUnderlyingStreams:(id)streams
 {
   v21 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  objc_storeStrong(&self->_underlyingStreams, a3);
+  streamsCopy = streams;
+  objc_storeStrong(&self->_underlyingStreams, streams);
   self->_underlyingInputStreamCount = 0;
   self->_underlyingOutputStreamCount = 0;
   v16 = 0u;
@@ -289,16 +289,16 @@ LABEL_18:
           objc_enumerationMutation(v5);
         }
 
-        v9 = [*(*(&v16 + 1) + 8 * v8) direction];
+        direction = [*(*(&v16 + 1) + 8 * v8) direction];
         p_underlyingInputStreamCount = &self->_underlyingInputStreamCount;
-        if (v9 == 1869968496)
+        if (direction == 1869968496)
         {
-          v11 = [(ASDStream *)self direction];
+          direction2 = [(ASDStream *)self direction];
           p_underlyingInputStreamCount = &self->_underlyingOutputStreamCount;
-          if (v11 == 1768845428)
+          if (direction2 == 1768845428)
           {
-            v12 = [MEMORY[0x277CCA890] currentHandler];
-            [v12 handleFailureInMethod:a2 object:self file:@"ASDDSPStream.mm" lineNumber:248 description:@"Underlying stream has a different direction than the DSP stream"];
+            currentHandler = [MEMORY[0x277CCA890] currentHandler];
+            [currentHandler handleFailureInMethod:a2 object:self file:@"ASDDSPStream.mm" lineNumber:248 description:@"Underlying stream has a different direction than the DSP stream"];
 
             p_underlyingInputStreamCount = &self->_underlyingOutputStreamCount;
           }
@@ -324,17 +324,17 @@ void __72__ASDDSPStream_initWithOwningDevice_underlyingStreams_direction_plugin_
   [WeakRetained enableDSPCaptureInAction];
 }
 
-- (void)setUnderlyingStreams:(id)a3
+- (void)setUnderlyingStreams:(id)streams
 {
-  v4 = a3;
+  streamsCopy = streams;
   dspQueue = self->_dspQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __37__ASDDSPStream_setUnderlyingStreams___block_invoke;
   v7[3] = &unk_278CE3BE8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = streamsCopy;
+  v6 = streamsCopy;
   dispatch_sync(dspQueue, v7);
 }
 
@@ -360,7 +360,7 @@ void __72__ASDDSPStream_initWithOwningDevice_underlyingStreams_direction_plugin_
   return v3;
 }
 
-- (void)setGraphAudioValidationMode:(int64_t)a3
+- (void)setGraphAudioValidationMode:(int64_t)mode
 {
   dspQueue = self->_dspQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -368,7 +368,7 @@ void __72__ASDDSPStream_initWithOwningDevice_underlyingStreams_direction_plugin_
   v4[2] = __44__ASDDSPStream_setGraphAudioValidationMode___block_invoke;
   v4[3] = &unk_278CE3C60;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = mode;
   dispatch_sync(dspQueue, v4);
 }
 
@@ -478,11 +478,11 @@ uint64_t __27__ASDDSPStream_startStream__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)sleepForNumberOfSamples:(unint64_t)a3
+- (void)sleepForNumberOfSamples:(unint64_t)samples
 {
-  v4 = [(ASDStream *)self physicalFormat];
-  [v4 sampleRate];
-  v6 = a3 / v5 * 1000000.0;
+  physicalFormat = [(ASDStream *)self physicalFormat];
+  [physicalFormat sampleRate];
+  v6 = samples / v5 * 1000000.0;
 
   usleep(v6);
 }
@@ -704,10 +704,10 @@ ASDDSPStreamHelper *__45__ASDDSPStream__deallocateStreamingResources__block_invo
   return std::unique_ptr<ASDDSPStreamHelper>::reset[abi:ne200100](v5, 0);
 }
 
-- (void)_allocateStreamingResourcesForGraphHelper:(void *)a3
+- (void)_allocateStreamingResourcesForGraphHelper:(void *)helper
 {
   v5[4] = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!helper)
   {
     [ASDDSPStream _allocateStreamingResourcesForGraphHelper:];
   }
@@ -717,7 +717,7 @@ ASDDSPStreamHelper *__45__ASDDSPStream__deallocateStreamingResources__block_invo
   v4[2] = __58__ASDDSPStream__allocateStreamingResourcesForGraphHelper___block_invoke;
   v4[3] = &unk_278CE3C60;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = helper;
   v5[0] = &unk_285344558;
   v5[3] = v5;
   ASDDSP::exceptionBarrier<void({block_pointer} {__strong})(void)>(v4);
@@ -782,12 +782,12 @@ void __58__ASDDSPStream__allocateStreamingResourcesForGraphHelper___block_invoke
   }
 }
 
-- (BOOL)enableBasicDSPCaptureOnGraph:(id)a3 withLevel:(id)a4 andDebugType:(int64_t)a5 andMode:(int64_t)a6
+- (BOOL)enableBasicDSPCaptureOnGraph:(id)graph withLevel:(id)level andDebugType:(int64_t)type andMode:(int64_t)mode
 {
   v30 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  if (!v11)
+  graphCopy = graph;
+  levelCopy = level;
+  if (!levelCopy)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
@@ -799,15 +799,15 @@ void __58__ASDDSPStream__allocateStreamingResourcesForGraphHelper___block_invoke
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [v10 name];
+    name = [graphCopy name];
     *buf = 138412546;
-    *&buf[4] = v12;
+    *&buf[4] = name;
     *&buf[12] = 2112;
-    *&buf[14] = v11;
+    *&buf[14] = levelCopy;
     _os_log_impl(&dword_2415D8000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "Enabling basic DSP Capture on dsp graph: %@ with level: %@", buf, 0x16u);
   }
 
-  if ([v11 isEqualToString:@"Light"])
+  if ([levelCopy isEqualToString:@"Light"])
   {
     *buf = 0;
     *&buf[8] = buf;
@@ -815,21 +815,21 @@ void __58__ASDDSPStream__allocateStreamingResourcesForGraphHelper___block_invoke
     v27 = __Block_byref_object_copy_;
     v28 = __Block_byref_object_dispose_;
     v29 = objc_opt_new();
-    v13 = [v10 inputs];
+    inputs = [graphCopy inputs];
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __76__ASDDSPStream_enableBasicDSPCaptureOnGraph_withLevel_andDebugType_andMode___block_invoke;
     v23[3] = &unk_278CE3C88;
     v23[4] = buf;
-    [v13 enumerateObjectsUsingBlock:v23];
+    [inputs enumerateObjectsUsingBlock:v23];
 
-    v14 = [v10 outputs];
+    outputs = [graphCopy outputs];
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
     v22[2] = __76__ASDDSPStream_enableBasicDSPCaptureOnGraph_withLevel_andDebugType_andMode___block_invoke_2;
     v22[3] = &unk_278CE3C88;
     v22[4] = buf;
-    [v14 enumerateObjectsUsingBlock:v22];
+    [outputs enumerateObjectsUsingBlock:v22];
 
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
@@ -839,7 +839,7 @@ void __58__ASDDSPStream__allocateStreamingResourcesForGraphHelper___block_invoke
       _os_log_impl(&dword_2415D8000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "Enabling basic DSP Capture on dsp graph box names:%@", v24, 0xCu);
     }
 
-    v16 = [ASDDSPGraphUtilities startRecordingBoxes:*(*&buf[8] + 40) inGraph:v10 fromStream:self toDirectory:self->_DSPCaptureDirectory withType:a5 andMode:a6 error:0];
+    v16 = [ASDDSPGraphUtilities startRecordingBoxes:*(*&buf[8] + 40) inGraph:graphCopy fromStream:self toDirectory:self->_DSPCaptureDirectory withType:type andMode:mode error:0];
     _Block_object_dispose(buf, 8);
 
     if (!v16)
@@ -850,7 +850,7 @@ void __58__ASDDSPStream__allocateStreamingResourcesForGraphHelper___block_invoke
 
   else
   {
-    if (![v11 isEqualToString:@"Heavy"])
+    if (![levelCopy isEqualToString:@"Heavy"])
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
       {
@@ -860,13 +860,13 @@ void __58__ASDDSPStream__allocateStreamingResourcesForGraphHelper___block_invoke
       goto LABEL_18;
     }
 
-    if (![ASDDSPGraphUtilities startRecordingAllBoxesInGraph:v10 fromStream:self toDirectory:self->_DSPCaptureDirectory withType:a5 error:0])
+    if (![ASDDSPGraphUtilities startRecordingAllBoxesInGraph:graphCopy fromStream:self toDirectory:self->_DSPCaptureDirectory withType:type error:0])
     {
 LABEL_18:
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
       {
-        v19 = [v10 name];
-        [ASDDSPStream enableBasicDSPCaptureOnGraph:v19 withLevel:buf andDebugType:? andMode:?];
+        name2 = [graphCopy name];
+        [ASDDSPStream enableBasicDSPCaptureOnGraph:name2 withLevel:buf andDebugType:? andMode:?];
       }
 
 LABEL_20:
@@ -877,9 +877,9 @@ LABEL_20:
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
-    v17 = [v10 name];
+    name3 = [graphCopy name];
     *buf = 138412290;
-    *&buf[4] = v17;
+    *&buf[4] = name3;
     _os_log_impl(&dword_2415D8000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "Successfully enabled DSP Capture on dsp graph: %@", buf, 0xCu);
   }
 
@@ -904,20 +904,20 @@ void __76__ASDDSPStream_enableBasicDSPCaptureOnGraph_withLevel_andDebugType_andM
   [v2 addObject:?];
 }
 
-- (void)enableDSPCaptureByType:(int64_t)a3 withGraph:(id)a4
+- (void)enableDSPCaptureByType:(int64_t)type withGraph:(id)graph
 {
   v41 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  if (a3)
+  graphCopy = graph;
+  if (type)
   {
-    if (a3)
+    if (type)
     {
       v7 = [(NSUserDefaults *)self->_defaults dictionaryForKey:@"EnableDSPCapture"];
       v8 = [v7 valueForKey:@"Level"];
-      [(ASDDSPStream *)self enableBasicDSPCaptureOnGraph:v6 withLevel:v8 andDebugType:[(ASDDSPStream *)self getAudioDebugTypeWithDict:v7] andMode:[(ASDDSPStream *)self getAudioCaptureRingBufferModeWithDict:v7]];
+      [(ASDDSPStream *)self enableBasicDSPCaptureOnGraph:graphCopy withLevel:v8 andDebugType:[(ASDDSPStream *)self getAudioDebugTypeWithDict:v7] andMode:[(ASDDSPStream *)self getAudioCaptureRingBufferModeWithDict:v7]];
     }
 
-    if ((a3 & 2) != 0)
+    if ((type & 2) != 0)
     {
       v9 = [(NSUserDefaults *)self->_defaults dictionaryForKey:@"EnableDSPCaptureOnPluginDevice"];
       v10 = [v9 valueForKey:@"PluginDevice"];
@@ -927,25 +927,25 @@ void __76__ASDDSPStream_enableBasicDSPCaptureOnGraph_withLevel_andDebugType_andM
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
       {
         WeakRetained = objc_loadWeakRetained(&self->_owningDevice);
-        v14 = [WeakRetained deviceUID];
+        deviceUID = [WeakRetained deviceUID];
         *buf = 138412546;
-        v38 = v14;
+        v38 = deviceUID;
         v39 = 2112;
         v40 = v10;
         _os_log_impl(&dword_2415D8000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "OwningDeviceUID: %@, tagetPluginDeviceUID: %@", buf, 0x16u);
       }
 
       v15 = objc_loadWeakRetained(&self->_owningDevice);
-      v16 = [v15 deviceUID];
-      v17 = [v16 isEqualToString:v10];
+      deviceUID2 = [v15 deviceUID];
+      v17 = [deviceUID2 isEqualToString:v10];
 
       if (v17)
       {
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
         {
-          v18 = [v6 name];
+          name = [graphCopy name];
           *buf = 138412546;
-          v38 = v18;
+          v38 = name;
           v39 = 2112;
           v40 = v10;
           _os_log_impl(&dword_2415D8000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "Enabling DSP capture on dsp graph: %@ within Plugin Device: %@", buf, 0x16u);
@@ -953,34 +953,34 @@ void __76__ASDDSPStream_enableBasicDSPCaptureOnGraph_withLevel_andDebugType_andM
 
         if (v11)
         {
-          v19 = [(ASDDSPStream *)self enableBasicDSPCaptureOnGraph:v6 withLevel:v11 andDebugType:v12];
+          v19 = [(ASDDSPStream *)self enableBasicDSPCaptureOnGraph:graphCopy withLevel:v11 andDebugType:v12];
         }
 
         else
         {
-          v19 = [ASDDSPGraphUtilities startRecordingBoxes:v35 inGraph:v6 fromStream:self toDirectory:self->_DSPCaptureDirectory withType:v12 error:0];
+          v19 = [ASDDSPGraphUtilities startRecordingBoxes:v35 inGraph:graphCopy fromStream:self toDirectory:self->_DSPCaptureDirectory withType:v12 error:0];
         }
 
         if (v19)
         {
           if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
           {
-            v20 = [v6 name];
+            name2 = [graphCopy name];
             *buf = 138412290;
-            v38 = v20;
+            v38 = name2;
             _os_log_impl(&dword_2415D8000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "Successfully enabled DSP Capture on dsp graph: %@", buf, 0xCu);
           }
         }
 
         else if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
         {
-          v21 = [v6 name];
-          [ASDDSPStream enableBasicDSPCaptureOnGraph:v21 withLevel:v36 andDebugType:? andMode:?];
+          name3 = [graphCopy name];
+          [ASDDSPStream enableBasicDSPCaptureOnGraph:name3 withLevel:v36 andDebugType:? andMode:?];
         }
       }
     }
 
-    if ((a3 & 4) != 0)
+    if ((type & 4) != 0)
     {
       v22 = [(NSUserDefaults *)self->_defaults dictionaryForKey:@"EnableDSPCaptureOnDSPGraph"];
       v23 = [v22 valueForKey:@"DSPGraph"];
@@ -989,52 +989,52 @@ void __76__ASDDSPStream_enableBasicDSPCaptureOnGraph_withLevel_andDebugType_andM
       v26 = [(ASDDSPStream *)self getAudioDebugTypeWithDict:v22];
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
       {
-        v27 = [v6 name];
+        name4 = [graphCopy name];
         *buf = 138412546;
-        v38 = v27;
+        v38 = name4;
         v39 = 2112;
         v40 = v23;
         _os_log_impl(&dword_2415D8000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "DSP graph name: %@, targetGraphName: %@", buf, 0x16u);
       }
 
-      v28 = [v6 name];
-      v29 = [v28 isEqualToString:v23];
+      name5 = [graphCopy name];
+      v29 = [name5 isEqualToString:v23];
 
       if (v29)
       {
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
         {
-          v30 = [v6 name];
+          name6 = [graphCopy name];
           *buf = 138412290;
-          v38 = v30;
+          v38 = name6;
           _os_log_impl(&dword_2415D8000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "Enabling DSP Capture on dsp graph: %@", buf, 0xCu);
         }
 
         if (v24)
         {
-          v31 = [(ASDDSPStream *)self enableBasicDSPCaptureOnGraph:v6 withLevel:v24 andDebugType:v26];
+          v31 = [(ASDDSPStream *)self enableBasicDSPCaptureOnGraph:graphCopy withLevel:v24 andDebugType:v26];
         }
 
         else
         {
-          v31 = [ASDDSPGraphUtilities startRecordingBoxes:v25 inGraph:v6 fromStream:self toDirectory:self->_DSPCaptureDirectory withType:v26 error:0];
+          v31 = [ASDDSPGraphUtilities startRecordingBoxes:v25 inGraph:graphCopy fromStream:self toDirectory:self->_DSPCaptureDirectory withType:v26 error:0];
         }
 
         if (v31)
         {
           if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
           {
-            v32 = [v6 name];
+            name7 = [graphCopy name];
             *buf = 138412290;
-            v38 = v32;
+            v38 = name7;
             _os_log_impl(&dword_2415D8000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "Successfully enabled DSP Capture on dsp graph: %@", buf, 0xCu);
           }
         }
 
         else if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
         {
-          v33 = [v6 name];
-          [ASDDSPStream enableBasicDSPCaptureOnGraph:v33 withLevel:buf andDebugType:? andMode:?];
+          name8 = [graphCopy name];
+          [ASDDSPStream enableBasicDSPCaptureOnGraph:name8 withLevel:buf andDebugType:? andMode:?];
         }
       }
     }
@@ -1042,35 +1042,35 @@ void __76__ASDDSPStream_enableBasicDSPCaptureOnGraph_withLevel_andDebugType_andM
 
   else
   {
-    [ASDDSPGraphUtilities stopRecordingBoxesInGraph:v6];
+    [ASDDSPGraphUtilities stopRecordingBoxesInGraph:graphCopy];
   }
 
   v34 = *MEMORY[0x277D85DE8];
 }
 
-- (void)enableDSPFileInjectionOnGraph:(id)a3 withFormat:(id)a4
+- (void)enableDSPFileInjectionOnGraph:(id)graph withFormat:(id)format
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v11[0] = v6;
+  graphCopy = graph;
+  formatCopy = format;
+  v11[0] = formatCopy;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:1];
-  if (![ASDDSPGraphUtilities startInjectingBoxes:v7 inGraph:v5 error:0]&& os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  if (![ASDDSPGraphUtilities startInjectingBoxes:v7 inGraph:graphCopy error:0]&& os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
-    v8 = [v5 name];
-    [(ASDDSPStream *)v8 enableDSPFileInjectionOnGraph:v6 withFormat:v10];
+    name = [graphCopy name];
+    [(ASDDSPStream *)name enableDSPFileInjectionOnGraph:formatCopy withFormat:v10];
   }
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)addClientDSP:(id)a3 withKey:(unint64_t)a4
+- (BOOL)addClientDSP:(id)p withKey:(unint64_t)key
 {
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  pCopy = p;
+  v7 = pCopy;
+  if (pCopy)
   {
-    [v6 uninitialize];
+    [pCopy uninitialize];
     [v7 unconfigure];
     v15 = 0;
     v16 = &v15;
@@ -1083,7 +1083,7 @@ void __76__ASDDSPStream_enableBasicDSPCaptureOnGraph_withLevel_andDebugType_andM
     v11[3] = &unk_278CE3CB0;
     v11[4] = self;
     v13 = &v15;
-    v14 = a4;
+    keyCopy = key;
     v12 = v7;
     dispatch_sync(dspQueue, v11);
     v9 = *(v16 + 24);
@@ -1306,7 +1306,7 @@ LABEL_42:
   v39 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)removeClientDSPwithKey:(unint64_t)a3
+- (BOOL)removeClientDSPwithKey:(unint64_t)key
 {
   v7 = 0;
   v8 = &v7;
@@ -1318,7 +1318,7 @@ LABEL_42:
   block[2] = __39__ASDDSPStream_removeClientDSPwithKey___block_invoke;
   block[3] = &unk_278CE3CF8;
   block[5] = &v7;
-  block[6] = a3;
+  block[6] = key;
   block[4] = self;
   dispatch_sync(dspQueue, block);
   v4 = *(v8 + 24);
@@ -1407,17 +1407,17 @@ LABEL_19:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)graphStructureIsValid:(id)a3 clientID:(unint64_t)a4
+- (BOOL)graphStructureIsValid:(id)valid clientID:(unint64_t)d
 {
-  v6 = a3;
-  v7 = v6;
-  if (a4 == -1)
+  validCopy = valid;
+  v7 = validCopy;
+  if (d == -1)
   {
     if ([(ASDStream *)self direction]== 1768845428)
     {
-      v11 = [v7 numberOfInputs];
+      numberOfInputs = [v7 numberOfInputs];
       v12 = [(NSArray *)self->_underlyingStreams count];
-      v10 = [v7 numberOfOutputs] == 1 && v11 == v12;
+      v10 = [v7 numberOfOutputs] == 1 && numberOfInputs == v12;
     }
 
     else
@@ -1428,17 +1428,17 @@ LABEL_19:
         goto LABEL_16;
       }
 
-      v13 = [v7 numberOfOutputs];
+      numberOfOutputs = [v7 numberOfOutputs];
       underlyingOutputStreamCount = self->_underlyingOutputStreamCount;
-      v10 = [v7 numberOfInputs] == self->_underlyingInputStreamCount + 1 && v13 == underlyingOutputStreamCount;
+      v10 = [v7 numberOfInputs] == self->_underlyingInputStreamCount + 1 && numberOfOutputs == underlyingOutputStreamCount;
     }
   }
 
   else
   {
-    v8 = [v6 numberOfInputs];
-    v9 = [v7 numberOfOutputs];
-    v10 = [v7 numberOfInputs] == 1 && v8 == v9;
+    numberOfInputs2 = [validCopy numberOfInputs];
+    numberOfOutputs2 = [v7 numberOfOutputs];
+    v10 = [v7 numberOfInputs] == 1 && numberOfInputs2 == numberOfOutputs2;
   }
 
   v15 = v10;
@@ -1538,7 +1538,7 @@ uint64_t __39__ASDDSPStream_maximumFramesPerIOCycle__block_invoke(uint64_t a1)
   v28 = 0u;
   v29 = 0u;
   v3 = self->_underlyingStreams;
-  v4 = 0;
+  latency = 0;
   v5 = [(NSArray *)v3 countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v5)
   {
@@ -1553,9 +1553,9 @@ uint64_t __39__ASDDSPStream_maximumFramesPerIOCycle__block_invoke(uint64_t a1)
         }
 
         v8 = *(*(&v26 + 1) + 8 * i);
-        if ([v8 latency] > v4)
+        if ([v8 latency] > latency)
         {
-          v4 = [v8 latency];
+          latency = [v8 latency];
         }
       }
 
@@ -1658,7 +1658,7 @@ LABEL_23:
   v11 = 0;
   v17 = 0;
 LABEL_30:
-  [(ASDStream *)self setLatency:v11 + v4 + v17, self];
+  [(ASDStream *)self setLatency:v11 + latency + v17, self];
   v16 = *MEMORY[0x277D85DE8];
 }
 
@@ -1694,13 +1694,13 @@ uint64_t __30__ASDDSPStream__updateLatency__block_invoke_2(uint64_t a1)
   return result;
 }
 
-- (BOOL)addHardwareDSP:(id)a3
+- (BOOL)addHardwareDSP:(id)p
 {
-  v4 = a3;
+  pCopy = p;
   WeakRetained = objc_loadWeakRetained(&self->_owningDevice);
-  v6 = [WeakRetained isRunning];
+  isRunning = [WeakRetained isRunning];
 
-  if (v6)
+  if (isRunning)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
@@ -1712,7 +1712,7 @@ uint64_t __30__ASDDSPStream__updateLatency__block_invoke_2(uint64_t a1)
 
   else
   {
-    v7 = [(ASDDSPStream *)self addClientDSP:v4 withKey:-1];
+    v7 = [(ASDDSPStream *)self addClientDSP:pCopy withKey:-1];
   }
 
   return v7;
@@ -1721,9 +1721,9 @@ uint64_t __30__ASDDSPStream__updateLatency__block_invoke_2(uint64_t a1)
 - (BOOL)removeHardwareDSP
 {
   WeakRetained = objc_loadWeakRetained(&self->_owningDevice);
-  v4 = [WeakRetained isRunning];
+  isRunning = [WeakRetained isRunning];
 
-  if (v4)
+  if (isRunning)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
@@ -1844,7 +1844,7 @@ LABEL_12:
   return v10;
 }
 
-- (id)clientDSPForClient:(unsigned int)a3
+- (id)clientDSPForClient:(unsigned int)client
 {
   v8 = 0;
   v9 = &v8;
@@ -1857,7 +1857,7 @@ LABEL_12:
   block[1] = 3221225472;
   block[2] = __35__ASDDSPStream_clientDSPForClient___block_invoke;
   block[3] = &unk_278CE3DB0;
-  v7 = a3;
+  clientCopy = client;
   block[4] = self;
   block[5] = &v8;
   dispatch_sync(dspQueue, block);
@@ -2058,13 +2058,13 @@ uint64_t __29__ASDDSPStream_writeMixBlock__block_invoke(uint64_t a1, unsigned in
   [(ASDObject *)&v5 dealloc];
 }
 
-- (void)setBypassMode:(BOOL)a3
+- (void)setBypassMode:(BOOL)mode
 {
-  self->_bypassMode = a3;
+  self->_bypassMode = mode;
   ptr = self->_streamHelper.__ptr_;
   if (ptr)
   {
-    ASDDSPStreamHelper::setBypassGraphMode(ptr, a3);
+    ASDDSPStreamHelper::setBypassGraphMode(ptr, mode);
   }
 }
 

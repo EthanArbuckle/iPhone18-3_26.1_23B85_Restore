@@ -1,31 +1,31 @@
 @interface NPKTapToRadarManager
-- (void)_openTapToRadarWithRequest:(id)a3 completion:(id)a4;
-- (void)_requestUserPermissionToFileRadarWithRequest:(id)a3 completion:(id)a4;
-- (void)fileRadarWithRequest:(id)a3 requestUserPermission:(BOOL)a4 completion:(id)a5;
+- (void)_openTapToRadarWithRequest:(id)request completion:(id)completion;
+- (void)_requestUserPermissionToFileRadarWithRequest:(id)request completion:(id)completion;
+- (void)fileRadarWithRequest:(id)request requestUserPermission:(BOOL)permission completion:(id)completion;
 @end
 
 @implementation NPKTapToRadarManager
 
-- (void)fileRadarWithRequest:(id)a3 requestUserPermission:(BOOL)a4 completion:(id)a5
+- (void)fileRadarWithRequest:(id)request requestUserPermission:(BOOL)permission completion:(id)completion
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  if (v6)
+  permissionCopy = permission;
+  requestCopy = request;
+  completionCopy = completion;
+  if (permissionCopy)
   {
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __78__NPKTapToRadarManager_fileRadarWithRequest_requestUserPermission_completion___block_invoke;
     v10[3] = &unk_2799451C8;
     v10[4] = self;
-    v11 = v8;
-    v12 = v9;
+    v11 = requestCopy;
+    v12 = completionCopy;
     [(NPKTapToRadarManager *)self _requestUserPermissionToFileRadarWithRequest:v11 completion:v10];
   }
 
   else
   {
-    [(NPKTapToRadarManager *)self _openTapToRadarWithRequest:v8 completion:v9];
+    [(NPKTapToRadarManager *)self _openTapToRadarWithRequest:requestCopy completion:completionCopy];
   }
 }
 
@@ -42,14 +42,14 @@ uint64_t __78__NPKTapToRadarManager_fileRadarWithRequest_requestUserPermission_c
   }
 }
 
-- (void)_requestUserPermissionToFileRadarWithRequest:(id)a3 completion:(id)a4
+- (void)_requestUserPermissionToFileRadarWithRequest:(id)request completion:(id)completion
 {
   v21[4] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   v8 = MEMORY[0x277CCACA8];
-  v9 = [v6 title];
-  v10 = [v8 stringWithFormat:@"(Internal Only)\n\nPlease file a radar to help us improve the product.\n\nIssue detected:\n%@", v9];
+  title = [requestCopy title];
+  v10 = [v8 stringWithFormat:@"(Internal Only)\n\nPlease file a radar to help us improve the product.\n\nIssue detected:\n%@", title];
 
   v11 = *MEMORY[0x277CBF198];
   v20[0] = *MEMORY[0x277CBF188];
@@ -68,7 +68,7 @@ uint64_t __78__NPKTapToRadarManager_fileRadarWithRequest_requestUserPermission_c
   v16[2] = __80__NPKTapToRadarManager__requestUserPermissionToFileRadarWithRequest_completion___block_invoke;
   v16[3] = &unk_279946828;
   objc_copyWeak(&v18, &location);
-  v14 = v7;
+  v14 = completionCopy;
   v17 = v14;
   NPKPresentUserNotification(v13, v16);
 
@@ -127,10 +127,10 @@ void __80__NPKTapToRadarManager__requestUserPermissionToFileRadarWithRequest_com
   objc_destroyWeak(&to);
 }
 
-- (void)_openTapToRadarWithRequest:(id)a3 completion:(id)a4
+- (void)_openTapToRadarWithRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   v8 = pk_General_log();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
 
@@ -144,17 +144,17 @@ void __80__NPKTapToRadarManager__requestUserPermissionToFileRadarWithRequest_com
     }
   }
 
-  v11 = [(NPKTapToRadarManager *)self _applicationWorkSpace];
-  v12 = [v6 tapToRadarURL];
+  _applicationWorkSpace = [(NPKTapToRadarManager *)self _applicationWorkSpace];
+  tapToRadarURL = [requestCopy tapToRadarURL];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __62__NPKTapToRadarManager__openTapToRadarWithRequest_completion___block_invoke;
   v15[3] = &unk_279946850;
-  v16 = v6;
-  v17 = v7;
-  v13 = v7;
-  v14 = v6;
-  [v11 openURL:v12 configuration:0 completionHandler:v15];
+  v16 = requestCopy;
+  v17 = completionCopy;
+  v13 = completionCopy;
+  v14 = requestCopy;
+  [_applicationWorkSpace openURL:tapToRadarURL configuration:0 completionHandler:v15];
 }
 
 void __62__NPKTapToRadarManager__openTapToRadarWithRequest_completion___block_invoke(uint64_t a1, uint64_t a2, void *a3)

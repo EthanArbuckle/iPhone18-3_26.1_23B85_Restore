@@ -1,15 +1,15 @@
 @interface VCPVideoCaptionEncoder
-+ (id)sharedModel:(id)a3 properties:(id)a4;
-- (VCPVideoCaptionEncoder)initWithModelPath:(id)a3;
-- (int)inference:(float *)a3;
++ (id)sharedModel:(id)model properties:(id)properties;
+- (VCPVideoCaptionEncoder)initWithModelPath:(id)path;
+- (int)inference:(float *)inference;
 @end
 
 @implementation VCPVideoCaptionEncoder
 
-- (VCPVideoCaptionEncoder)initWithModelPath:(id)a3
+- (VCPVideoCaptionEncoder)initWithModelPath:(id)path
 {
   v57[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  pathCopy = path;
   v36.receiver = self;
   v36.super_class = VCPVideoCaptionEncoder;
   v5 = [(VCPVideoCaptionEncoder *)&v36 init];
@@ -18,14 +18,14 @@
     if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      *&buf[4] = v4;
+      *&buf[4] = pathCopy;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "[VideoCaption] VCPVideoCaptionEncoder: start loading model at: %@", buf, 0xCu);
     }
 
-    if (v4)
+    if (pathCopy)
     {
       v5->_forceNNGraph = !DeviceGeqD5x();
-      v6 = [MEMORY[0x1E695DFF8] URLWithString:@"model_info.json" relativeToURL:v4];
+      v6 = [MEMORY[0x1E695DFF8] URLWithString:@"model_info.json" relativeToURL:pathCopy];
       v7 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:v6];
       v8 = [MEMORY[0x1E696ACB0] JSONObjectWithData:v7 options:0 error:0];
       v9 = v8;
@@ -42,7 +42,7 @@
       }
       v12 = ;
 
-      v13 = [MEMORY[0x1E695DFF8] URLWithString:v12 relativeToURL:v4];
+      v13 = [MEMORY[0x1E695DFF8] URLWithString:v12 relativeToURL:pathCopy];
       if (MediaAnalysisLogLevel() >= 5 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
@@ -172,21 +172,21 @@ LABEL_17:
   return v20;
 }
 
-+ (id)sharedModel:(id)a3 properties:(id)a4
++ (id)sharedModel:(id)model properties:(id)properties
 {
-  v5 = a3;
-  v6 = a4;
+  modelCopy = model;
+  propertiesCopy = properties;
   v7 = +[VCPSharedInstanceManager sharedManager];
   v8 = MEMORY[0x1E696AEC0];
-  v9 = [v5 absoluteString];
-  v10 = [v8 stringWithFormat:@"%@_%@", @"VCPVideoCaptionEncoder", v9];
+  absoluteString = [modelCopy absoluteString];
+  v10 = [v8 stringWithFormat:@"%@_%@", @"VCPVideoCaptionEncoder", absoluteString];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __49__VCPVideoCaptionEncoder_sharedModel_properties___block_invoke;
   v15[3] = &unk_1E834CD98;
-  v11 = v5;
+  v11 = modelCopy;
   v16 = v11;
-  v12 = v6;
+  v12 = propertiesCopy;
   v17 = v12;
   v13 = [v7 sharedInstanceWithIdentifier:v10 andCreationBlock:v15];
 
@@ -200,9 +200,9 @@ VCPCNNModelEspresso *__49__VCPVideoCaptionEncoder_sharedModel_properties___block
   return v1;
 }
 
-- (int)inference:(float *)a3
+- (int)inference:(float *)inference
 {
-  v4 = [(VCPCNNModelEspresso *)self->_modelEspresso espressoForward:a3];
+  v4 = [(VCPCNNModelEspresso *)self->_modelEspresso espressoForward:inference];
   if (!v4)
   {
     modelEspresso = self->_modelEspresso;

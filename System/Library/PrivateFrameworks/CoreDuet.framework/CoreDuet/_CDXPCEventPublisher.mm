@@ -1,50 +1,50 @@
 @interface _CDXPCEventPublisher
-+ (_CDXPCEventPublisher)eventPublisherWithStreamName:(const char *)a3 delegate:(id)a4 queue:(id)a5 log:(id)a6;
-+ (_CDXPCEventPublisher)eventPublisherWithStreamName:(const char *)a3 delegate:(id)a4 queue:(id)a5 log:(id)a6 os_variant_diagnostic_subsystem:(const char *)a7;
-- (_CDXPCEventPublisher)initWithStreamName:(id)a3 delegate:(id)a4 queue:(id)a5 log:(id)a6 os_variant_diagnostic_subsystem:(const char *)a7;
-- (void)activatePublisherWithStreamName:(const char *)a3;
-- (void)handleEventWithAction:(unsigned int)a3 token:(unint64_t)a4 descriptor:(id)a5;
-- (void)removeToken:(unint64_t)a3;
-- (void)sendEvent:(id)a3 toSubscriber:(id)a4 handler:(id)a5;
-- (void)sendEvent:(id)a3 toSubscriber:(id)a4 replyHandler:(id)a5;
++ (_CDXPCEventPublisher)eventPublisherWithStreamName:(const char *)name delegate:(id)delegate queue:(id)queue log:(id)log;
++ (_CDXPCEventPublisher)eventPublisherWithStreamName:(const char *)name delegate:(id)delegate queue:(id)queue log:(id)log os_variant_diagnostic_subsystem:(const char *)os_variant_diagnostic_subsystem;
+- (_CDXPCEventPublisher)initWithStreamName:(id)name delegate:(id)delegate queue:(id)queue log:(id)log os_variant_diagnostic_subsystem:(const char *)os_variant_diagnostic_subsystem;
+- (void)activatePublisherWithStreamName:(const char *)name;
+- (void)handleEventWithAction:(unsigned int)action token:(unint64_t)token descriptor:(id)descriptor;
+- (void)removeToken:(unint64_t)token;
+- (void)sendEvent:(id)event toSubscriber:(id)subscriber handler:(id)handler;
+- (void)sendEvent:(id)event toSubscriber:(id)subscriber replyHandler:(id)handler;
 @end
 
 @implementation _CDXPCEventPublisher
 
-+ (_CDXPCEventPublisher)eventPublisherWithStreamName:(const char *)a3 delegate:(id)a4 queue:(id)a5 log:(id)a6 os_variant_diagnostic_subsystem:(const char *)a7
++ (_CDXPCEventPublisher)eventPublisherWithStreamName:(const char *)name delegate:(id)delegate queue:(id)queue log:(id)log os_variant_diagnostic_subsystem:(const char *)os_variant_diagnostic_subsystem
 {
-  v11 = a6;
-  v12 = a5;
-  v13 = a4;
+  logCopy = log;
+  queueCopy = queue;
+  delegateCopy = delegate;
   v14 = objc_alloc(objc_opt_class());
-  v15 = [MEMORY[0x1E696AEC0] stringWithUTF8String:a3];
-  v16 = [v14 initWithStreamName:v15 delegate:v13 queue:v12 log:v11 os_variant_diagnostic_subsystem:a7];
+  v15 = [MEMORY[0x1E696AEC0] stringWithUTF8String:name];
+  v16 = [v14 initWithStreamName:v15 delegate:delegateCopy queue:queueCopy log:logCopy os_variant_diagnostic_subsystem:os_variant_diagnostic_subsystem];
 
-  [v16 activatePublisherWithStreamName:a3];
+  [v16 activatePublisherWithStreamName:name];
 
   return v16;
 }
 
-+ (_CDXPCEventPublisher)eventPublisherWithStreamName:(const char *)a3 delegate:(id)a4 queue:(id)a5 log:(id)a6
++ (_CDXPCEventPublisher)eventPublisherWithStreamName:(const char *)name delegate:(id)delegate queue:(id)queue log:(id)log
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
+  logCopy = log;
+  queueCopy = queue;
+  delegateCopy = delegate;
   v12 = objc_alloc(objc_opt_class());
-  v13 = [MEMORY[0x1E696AEC0] stringWithUTF8String:a3];
-  v14 = [v12 initWithStreamName:v13 delegate:v11 queue:v10 log:v9 os_variant_diagnostic_subsystem:0];
+  v13 = [MEMORY[0x1E696AEC0] stringWithUTF8String:name];
+  v14 = [v12 initWithStreamName:v13 delegate:delegateCopy queue:queueCopy log:logCopy os_variant_diagnostic_subsystem:0];
 
-  [v14 activatePublisherWithStreamName:a3];
+  [v14 activatePublisherWithStreamName:name];
 
   return v14;
 }
 
-- (_CDXPCEventPublisher)initWithStreamName:(id)a3 delegate:(id)a4 queue:(id)a5 log:(id)a6 os_variant_diagnostic_subsystem:(const char *)a7
+- (_CDXPCEventPublisher)initWithStreamName:(id)name delegate:(id)delegate queue:(id)queue log:(id)log os_variant_diagnostic_subsystem:(const char *)os_variant_diagnostic_subsystem
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
+  nameCopy = name;
+  delegateCopy = delegate;
+  queueCopy = queue;
+  logCopy = log;
   v22.receiver = self;
   v22.super_class = _CDXPCEventPublisher;
   v17 = [(_CDXPCEventPublisher *)&v22 init];
@@ -54,12 +54,12 @@
     pendingSendEvents = v17->_pendingSendEvents;
     v17->_pendingSendEvents = v18;
 
-    objc_storeStrong(&v17->_streamName, a3);
-    objc_storeStrong(&v17->_delegate, a4);
-    objc_storeStrong(&v17->_queue, a5);
-    objc_storeStrong(&v17->_log, a6);
+    objc_storeStrong(&v17->_streamName, name);
+    objc_storeStrong(&v17->_delegate, delegate);
+    objc_storeStrong(&v17->_queue, queue);
+    objc_storeStrong(&v17->_log, log);
     v20 = "com.apple.CoreDuet";
-    if (!a7)
+    if (!os_variant_diagnostic_subsystem)
     {
       v20 = 0;
     }
@@ -70,7 +70,7 @@
   return v17;
 }
 
-- (void)activatePublisherWithStreamName:(const char *)a3
+- (void)activatePublisherWithStreamName:(const char *)name
 {
   queue = self->_queue;
   v6 = xpc_event_publisher_create();
@@ -102,21 +102,21 @@
     log = self->_log;
     if (os_log_type_enabled(log, OS_LOG_TYPE_ERROR))
     {
-      [(_CDXPCEventPublisher *)a3 activatePublisherWithStreamName:?];
+      [(_CDXPCEventPublisher *)name activatePublisherWithStreamName:?];
     }
   }
 }
 
-- (void)handleEventWithAction:(unsigned int)a3 token:(unint64_t)a4 descriptor:(id)a5
+- (void)handleEventWithAction:(unsigned int)action token:(unint64_t)token descriptor:(id)descriptor
 {
   v37 = *MEMORY[0x1E69E9840];
-  v8 = a5;
+  descriptorCopy = descriptor;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEBUG))
   {
-    if (v8)
+    if (descriptorCopy)
     {
-      v10 = MEMORY[0x193B01150](v8);
+      v10 = MEMORY[0x193B01150](descriptorCopy);
       v11 = self->_log;
       if (!os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
       {
@@ -132,9 +132,9 @@
       *buf = 138544130;
       v34 = streamName;
       v35 = 1024;
-      *v36 = a3;
+      *v36 = action;
       *&v36[4] = 2048;
-      *&v36[6] = a4;
+      *&v36[6] = token;
       *&v36[14] = 2080;
       *&v36[16] = v10;
       _os_log_debug_impl(&dword_191750000, v11, OS_LOG_TYPE_DEBUG, "Publisher for stream %{public}@ received xpc event with action %d and token %llu: %s", buf, 0x26u);
@@ -151,28 +151,28 @@ LABEL_5:
       *buf = 138543874;
       v34 = v27;
       v35 = 1024;
-      *v36 = a3;
+      *v36 = action;
       *&v36[4] = 2048;
-      *&v36[6] = a4;
+      *&v36[6] = token;
       _os_log_debug_impl(&dword_191750000, log, OS_LOG_TYPE_DEBUG, "Publisher for stream %{public}@ received xpc event with action %d and token %llu", buf, 0x1Cu);
     }
   }
 
 LABEL_7:
-  if (a3)
+  if (action)
   {
-    if (a3 == 1)
+    if (action == 1)
     {
       v21 = self->_log;
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
       {
-        [_CDXPCEventPublisher handleEventWithAction:a4 token:v21 descriptor:?];
+        [_CDXPCEventPublisher handleEventWithAction:token token:v21 descriptor:?];
       }
 
-      [(_CDXPCEventPublisher *)self removeToken:a4];
+      [(_CDXPCEventPublisher *)self removeToken:token];
     }
 
-    else if (a3 == 2)
+    else if (action == 2)
     {
       v12 = self->_log;
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -180,14 +180,14 @@ LABEL_7:
         [_CDXPCEventPublisher handleEventWithAction:v12 token:? descriptor:?];
       }
 
-      v13 = self;
-      objc_sync_enter(v13);
-      pendingSendEvents = v13->_pendingSendEvents;
+      selfCopy = self;
+      objc_sync_enter(selfCopy);
+      pendingSendEvents = selfCopy->_pendingSendEvents;
       if (pendingSendEvents)
       {
         v15 = pendingSendEvents;
-        v16 = v13->_pendingSendEvents;
-        v13->_pendingSendEvents = 0;
+        v16 = selfCopy->_pendingSendEvents;
+        selfCopy->_pendingSendEvents = 0;
 
         v30 = 0u;
         v31 = 0u;
@@ -217,7 +217,7 @@ LABEL_7:
         }
       }
 
-      objc_sync_exit(v13);
+      objc_sync_exit(selfCopy);
     }
   }
 
@@ -233,30 +233,30 @@ LABEL_7:
       v35 = 2048;
       *v36 = v22;
       *&v36[8] = 2048;
-      *&v36[10] = a4;
+      *&v36[10] = token;
       _os_log_debug_impl(&dword_191750000, v23, OS_LOG_TYPE_DEBUG, "Publisher for stream %{public}@ received new subscription for uid %lld with token %llu", buf, 0x20u);
     }
 
-    [(_CDXPCEventPublisher *)self addToken:a4 descriptor:v8 userID:v22];
+    [(_CDXPCEventPublisher *)self addToken:token descriptor:descriptorCopy userID:v22];
   }
 
   v24 = *MEMORY[0x1E69E9840];
 }
 
-- (void)sendEvent:(id)a3 toSubscriber:(id)a4 handler:(id)a5
+- (void)sendEvent:(id)event toSubscriber:(id)subscriber handler:(id)handler
 {
   v46 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  objc_sync_enter(v11);
-  if (v11->_pendingSendEvents)
+  eventCopy = event;
+  subscriberCopy = subscriber;
+  handlerCopy = handler;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_pendingSendEvents)
   {
-    v12 = v11->_log;
+    v12 = selfCopy->_log;
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
-      v13 = [_CDXPCCodecs messageTypeFromEvent:v8];
+      v13 = [_CDXPCCodecs messageTypeFromEvent:eventCopy];
       v14 = v13;
       v15 = @"unknown";
       if (v13)
@@ -269,45 +269,45 @@ LABEL_7:
       _os_log_impl(&dword_191750000, v12, OS_LOG_TYPE_INFO, "Pending %@ sendEvent until barrier is received.", buf, 0xCu);
     }
 
-    objc_initWeak(buf, v11);
-    pendingSendEvents = v11->_pendingSendEvents;
+    objc_initWeak(buf, selfCopy);
+    pendingSendEvents = selfCopy->_pendingSendEvents;
     v30 = MEMORY[0x1E69E9820];
     v31 = 3221225472;
     v32 = __55___CDXPCEventPublisher_sendEvent_toSubscriber_handler___block_invoke;
     v33 = &unk_1E73675A8;
     objc_copyWeak(&v37, buf);
-    v34 = v8;
-    v35 = v9;
-    v36 = v10;
+    v34 = eventCopy;
+    v35 = subscriberCopy;
+    v36 = handlerCopy;
     v17 = MEMORY[0x193B00C50](&v30);
     [(NSMutableArray *)pendingSendEvents addObject:v17, v30, v31, v32, v33];
 
     objc_destroyWeak(&v37);
     objc_destroyWeak(buf);
-    objc_sync_exit(v11);
+    objc_sync_exit(selfCopy);
   }
 
   else
   {
-    objc_sync_exit(v11);
+    objc_sync_exit(selfCopy);
 
-    if (os_log_type_enabled(v11->_log, OS_LOG_TYPE_DEBUG))
+    if (os_log_type_enabled(selfCopy->_log, OS_LOG_TYPE_DEBUG))
     {
-      os_variant_diagnostic_subsystem = v11->_os_variant_diagnostic_subsystem;
+      os_variant_diagnostic_subsystem = selfCopy->_os_variant_diagnostic_subsystem;
       if (os_variant_has_internal_diagnostics())
       {
-        v19 = MEMORY[0x193B01150](v8);
-        log = v11->_log;
+        v19 = MEMORY[0x193B01150](eventCopy);
+        log = selfCopy->_log;
         if (os_log_type_enabled(log, OS_LOG_TYPE_DEBUG))
         {
-          streamName = v11->_streamName;
+          streamName = selfCopy->_streamName;
           v27 = log;
           *buf = 138544130;
           v39 = streamName;
           v40 = 2114;
-          v41 = v9;
+          v41 = subscriberCopy;
           v42 = 1024;
-          count = xpc_dictionary_get_count(v8);
+          count = xpc_dictionary_get_count(eventCopy);
           v44 = 2080;
           v45 = v19;
           _os_log_debug_impl(&dword_191750000, v27, OS_LOG_TYPE_DEBUG, "Sending event on stream %{public}@ to subscriber %{public}@ with %d keys: %s", buf, 0x26u);
@@ -321,59 +321,59 @@ LABEL_7:
 
       else
       {
-        v21 = v11->_log;
+        v21 = selfCopy->_log;
         if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
         {
-          v28 = v11->_streamName;
+          v28 = selfCopy->_streamName;
           v29 = v21;
           *buf = 138543874;
           v39 = v28;
           v40 = 2114;
-          v41 = v9;
+          v41 = subscriberCopy;
           v42 = 1024;
-          count = xpc_dictionary_get_count(v8);
+          count = xpc_dictionary_get_count(eventCopy);
           _os_log_debug_impl(&dword_191750000, v29, OS_LOG_TYPE_DEBUG, "Sending event on stream %{public}@ to subscriber %{public}@ with %d keys", buf, 0x1Cu);
         }
       }
     }
 
-    [v9 token];
-    publisher = v11->_publisher;
+    [subscriberCopy token];
+    publisher = selfCopy->_publisher;
     if (xpc_event_publisher_fire())
     {
-      v23 = v11->_log;
+      v23 = selfCopy->_log;
       if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
       {
-        [_CDXPCEventPublisher sendEvent:v11 toSubscriber:v23 handler:?];
+        [_CDXPCEventPublisher sendEvent:selfCopy toSubscriber:v23 handler:?];
       }
 
       v24 = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.coreduetd" code:3 userInfo:0];
-      (*(v10 + 2))(v10, v24);
+      (*(handlerCopy + 2))(handlerCopy, v24);
     }
 
     else
     {
-      (*(v10 + 2))(v10, 0);
+      (*(handlerCopy + 2))(handlerCopy, 0);
     }
   }
 
   v25 = *MEMORY[0x1E69E9840];
 }
 
-- (void)sendEvent:(id)a3 toSubscriber:(id)a4 replyHandler:(id)a5
+- (void)sendEvent:(id)event toSubscriber:(id)subscriber replyHandler:(id)handler
 {
   v46[2] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  objc_sync_enter(v11);
-  if (v11->_pendingSendEvents)
+  eventCopy = event;
+  subscriberCopy = subscriber;
+  handlerCopy = handler;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_pendingSendEvents)
   {
-    v12 = v11->_log;
+    v12 = selfCopy->_log;
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [_CDXPCCodecs messageTypeFromEvent:v8];
+      v13 = [_CDXPCCodecs messageTypeFromEvent:eventCopy];
       v14 = v13;
       v15 = @"unknown";
       if (v13)
@@ -386,45 +386,45 @@ LABEL_7:
       _os_log_impl(&dword_191750000, v12, OS_LOG_TYPE_DEFAULT, "Pending %@ sendEvent until barrier is received.", buf, 0xCu);
     }
 
-    objc_initWeak(buf, v11);
-    pendingSendEvents = v11->_pendingSendEvents;
+    objc_initWeak(buf, selfCopy);
+    pendingSendEvents = selfCopy->_pendingSendEvents;
     v36[0] = MEMORY[0x1E69E9820];
     v36[1] = 3221225472;
     v36[2] = __60___CDXPCEventPublisher_sendEvent_toSubscriber_replyHandler___block_invoke;
     v36[3] = &unk_1E73675A8;
     objc_copyWeak(&v40, buf);
-    v37 = v8;
-    v38 = v9;
-    v39 = v10;
+    v37 = eventCopy;
+    v38 = subscriberCopy;
+    v39 = handlerCopy;
     v17 = MEMORY[0x193B00C50](v36);
     [(NSMutableArray *)pendingSendEvents addObject:v17];
 
     objc_destroyWeak(&v40);
     objc_destroyWeak(buf);
-    objc_sync_exit(v11);
+    objc_sync_exit(selfCopy);
   }
 
   else
   {
-    objc_sync_exit(v11);
+    objc_sync_exit(selfCopy);
 
-    if (os_log_type_enabled(v11->_log, OS_LOG_TYPE_DEBUG))
+    if (os_log_type_enabled(selfCopy->_log, OS_LOG_TYPE_DEBUG))
     {
-      os_variant_diagnostic_subsystem = v11->_os_variant_diagnostic_subsystem;
+      os_variant_diagnostic_subsystem = selfCopy->_os_variant_diagnostic_subsystem;
       if (os_variant_has_internal_diagnostics())
       {
-        v19 = MEMORY[0x193B01150](v8);
-        log = v11->_log;
+        v19 = MEMORY[0x193B01150](eventCopy);
+        log = selfCopy->_log;
         if (os_log_type_enabled(log, OS_LOG_TYPE_DEBUG))
         {
-          streamName = v11->_streamName;
+          streamName = selfCopy->_streamName;
           v33 = log;
           *buf = 138544130;
           v42 = streamName;
           v43 = 2114;
-          v44 = v9;
+          v44 = subscriberCopy;
           v45 = 1024;
-          LODWORD(v46[0]) = xpc_dictionary_get_count(v8);
+          LODWORD(v46[0]) = xpc_dictionary_get_count(eventCopy);
           WORD2(v46[0]) = 2080;
           *(v46 + 6) = v19;
           _os_log_debug_impl(&dword_191750000, v33, OS_LOG_TYPE_DEBUG, "Sending event on stream %{public}@ to subscriber %{public}@ with %d keys: %s", buf, 0x26u);
@@ -438,33 +438,33 @@ LABEL_7:
 
       else
       {
-        v21 = v11->_log;
+        v21 = selfCopy->_log;
         if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
         {
-          v34 = v11->_streamName;
+          v34 = selfCopy->_streamName;
           v35 = v21;
           *buf = 138543874;
           v42 = v34;
           v43 = 2114;
-          v44 = v9;
+          v44 = subscriberCopy;
           v45 = 1024;
-          LODWORD(v46[0]) = xpc_dictionary_get_count(v8);
+          LODWORD(v46[0]) = xpc_dictionary_get_count(eventCopy);
           _os_log_debug_impl(&dword_191750000, v35, OS_LOG_TYPE_DEBUG, "Sending event on stream %{public}@ to subscriber %{public}@ with %d keys", buf, 0x1Cu);
         }
       }
     }
 
-    [v9 token];
-    publisher = v11->_publisher;
-    queue = v11->_queue;
-    v24 = v9;
-    v25 = v10;
+    [subscriberCopy token];
+    publisher = selfCopy->_publisher;
+    queue = selfCopy->_queue;
+    v24 = subscriberCopy;
+    v25 = handlerCopy;
     if (xpc_event_publisher_fire_with_reply())
     {
-      v26 = v11->_log;
+      v26 = selfCopy->_log;
       if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
       {
-        v29 = v11->_streamName;
+        v29 = selfCopy->_streamName;
         v30 = v26;
         v31 = xpc_strerror();
         *buf = 138543874;
@@ -484,7 +484,7 @@ LABEL_7:
   v28 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeToken:(unint64_t)a3
+- (void)removeToken:(unint64_t)token
 {
   if (self->_delegate)
   {
@@ -494,7 +494,7 @@ LABEL_7:
     v4[2] = __36___CDXPCEventPublisher_removeToken___block_invoke;
     v4[3] = &unk_1E7368B18;
     v4[4] = self;
-    v4[5] = a3;
+    v4[5] = token;
     dispatch_async(queue, v4);
   }
 }

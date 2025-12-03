@@ -1,22 +1,22 @@
 @interface MNTransitStepInstruction
-+ (id)instructionForStep:(id)a3 overrides:(id)a4 context:(int64_t)a5;
-- (MNTransitStepInstruction)initWithStep:(id)a3 overrides:(id)a4 context:(int64_t)a5;
++ (id)instructionForStep:(id)step overrides:(id)overrides context:(int64_t)context;
+- (MNTransitStepInstruction)initWithStep:(id)step overrides:(id)overrides context:(int64_t)context;
 @end
 
 @implementation MNTransitStepInstruction
 
-- (MNTransitStepInstruction)initWithStep:(id)a3 overrides:(id)a4 context:(int64_t)a5
+- (MNTransitStepInstruction)initWithStep:(id)step overrides:(id)overrides context:(int64_t)context
 {
-  v9 = a3;
-  v10 = a4;
+  stepCopy = step;
+  overridesCopy = overrides;
   v15.receiver = self;
   v15.super_class = MNTransitStepInstruction;
-  v11 = [(MNTransitInstruction *)&v15 initWithContext:a5];
+  v11 = [(MNTransitInstruction *)&v15 initWithContext:context];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_step, a3);
-    objc_storeStrong(&v12->_overridenInstructionsMapping, a4);
+    objc_storeStrong(&v11->_step, step);
+    objc_storeStrong(&v12->_overridenInstructionsMapping, overrides);
     [(MNTransitInstruction *)v12 _fillInInstructions];
     v13 = v12;
   }
@@ -24,11 +24,11 @@
   return v12;
 }
 
-+ (id)instructionForStep:(id)a3 overrides:(id)a4 context:(int64_t)a5
++ (id)instructionForStep:(id)step overrides:(id)overrides context:(int64_t)context
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [[a1 alloc] initWithStep:v9 overrides:v8 context:a5];
+  overridesCopy = overrides;
+  stepCopy = step;
+  v10 = [[self alloc] initWithStep:stepCopy overrides:overridesCopy context:context];
 
   return v10;
 }

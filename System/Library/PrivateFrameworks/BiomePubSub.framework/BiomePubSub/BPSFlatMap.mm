@@ -1,33 +1,33 @@
 @interface BPSFlatMap
-+ (id)publisherWithPublisher:(id)a3 upstreams:(id)a4 bookmarkState:(id)a5;
++ (id)publisherWithPublisher:(id)publisher upstreams:(id)upstreams bookmarkState:(id)state;
 - (BOOL)completed;
-- (BPSFlatMap)initWithUpstream:(id)a3 maxPublishers:(int64_t)a4 transform:(id)a5;
+- (BPSFlatMap)initWithUpstream:(id)upstream maxPublishers:(int64_t)publishers transform:(id)transform;
 - (id)bookmark;
 - (id)bookmarkableUpstreams;
 - (id)nextEvent;
-- (id)startWithSubscriber:(id)a3;
+- (id)startWithSubscriber:(id)subscriber;
 - (id)upstreamPublishers;
-- (id)validateBookmark:(id)a3;
-- (void)applyBookmark:(id)a3;
+- (id)validateBookmark:(id)bookmark;
+- (void)applyBookmark:(id)bookmark;
 - (void)reset;
-- (void)subscribe:(id)a3;
+- (void)subscribe:(id)subscribe;
 @end
 
 @implementation BPSFlatMap
 
-- (BPSFlatMap)initWithUpstream:(id)a3 maxPublishers:(int64_t)a4 transform:(id)a5
+- (BPSFlatMap)initWithUpstream:(id)upstream maxPublishers:(int64_t)publishers transform:(id)transform
 {
-  v9 = a3;
-  v10 = a5;
+  upstreamCopy = upstream;
+  transformCopy = transform;
   v16.receiver = self;
   v16.super_class = BPSFlatMap;
   v11 = [(BPSFlatMap *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_upstream, a3);
-    v12->_maxPublishers = a4;
-    v13 = [v10 copy];
+    objc_storeStrong(&v11->_upstream, upstream);
+    v12->_maxPublishers = publishers;
+    v13 = [transformCopy copy];
     transform = v12->_transform;
     v12->_transform = v13;
   }
@@ -35,26 +35,26 @@
   return v12;
 }
 
-- (void)subscribe:(id)a3
+- (void)subscribe:(id)subscribe
 {
-  v4 = a3;
+  subscribeCopy = subscribe;
   v5 = [_BPSFlatMapOuter alloc];
-  v6 = [(BPSFlatMap *)self maxPublishers];
-  v7 = [(BPSFlatMap *)self transform];
-  v9 = [(_BPSFlatMapOuter *)v5 initWithDownstream:v4 maxPublishers:v6 map:v7];
+  maxPublishers = [(BPSFlatMap *)self maxPublishers];
+  transform = [(BPSFlatMap *)self transform];
+  v9 = [(_BPSFlatMapOuter *)v5 initWithDownstream:subscribeCopy maxPublishers:maxPublishers map:transform];
 
-  [v4 receiveSubscription:v9];
-  v8 = [(BPSFlatMap *)self upstream];
-  [v8 subscribe:v9];
+  [subscribeCopy receiveSubscription:v9];
+  upstream = [(BPSFlatMap *)self upstream];
+  [upstream subscribe:v9];
 }
 
-- (id)startWithSubscriber:(id)a3
+- (id)startWithSubscriber:(id)subscriber
 {
-  v4 = a3;
-  [(BPSFlatMap *)self setSubscriber:v4];
+  subscriberCopy = subscriber;
+  [(BPSFlatMap *)self setSubscriber:subscriberCopy];
   v7.receiver = self;
   v7.super_class = BPSFlatMap;
-  v5 = [(BPSPublisher *)&v7 startWithSubscriber:v4];
+  v5 = [(BPSPublisher *)&v7 startWithSubscriber:subscriberCopy];
 
   return v5;
 }
@@ -62,8 +62,8 @@
 - (id)upstreamPublishers
 {
   v6[1] = *MEMORY[0x1E69E9840];
-  v2 = [(BPSFlatMap *)self upstream];
-  v6[0] = v2;
+  upstream = [(BPSFlatMap *)self upstream];
+  v6[0] = upstream;
   v3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:1];
 
   v4 = *MEMORY[0x1E69E9840];
@@ -73,59 +73,59 @@
 
 - (id)nextEvent
 {
-  v3 = [(BPSFlatMap *)self currentPublisher];
-  if (!v3)
+  currentPublisher = [(BPSFlatMap *)self currentPublisher];
+  if (!currentPublisher)
   {
     goto LABEL_16;
   }
 
-  v4 = v3;
-  v5 = [(BPSFlatMap *)self currentPublisher];
-  v6 = [v5 completed];
+  v4 = currentPublisher;
+  currentPublisher2 = [(BPSFlatMap *)self currentPublisher];
+  completed = [currentPublisher2 completed];
 
-  if ((v6 & 1) != 0 || (-[BPSFlatMap currentPublisher](self, "currentPublisher"), v7 = objc_claimAutoreleasedReturnValue(), [v7 nextEvent], v8 = objc_claimAutoreleasedReturnValue(), v7, !v8))
+  if ((completed & 1) != 0 || (-[BPSFlatMap currentPublisher](self, "currentPublisher"), v7 = objc_claimAutoreleasedReturnValue(), [v7 nextEvent], nextEvent2 = objc_claimAutoreleasedReturnValue(), v7, !nextEvent2))
   {
 LABEL_16:
     while (1)
     {
-      v9 = [(BPSFlatMap *)self currentPublisher];
-      if (v9)
+      currentPublisher3 = [(BPSFlatMap *)self currentPublisher];
+      if (currentPublisher3)
       {
-        v10 = v9;
-        v11 = [(BPSFlatMap *)self currentPublisher];
-        v12 = [v11 completed];
+        v10 = currentPublisher3;
+        currentPublisher4 = [(BPSFlatMap *)self currentPublisher];
+        completed2 = [currentPublisher4 completed];
 
-        if (!v12)
+        if (!completed2)
         {
           goto LABEL_9;
         }
       }
 
-      v13 = [(BPSFlatMap *)self upstream];
-      v14 = [v13 nextEvent];
+      upstream = [(BPSFlatMap *)self upstream];
+      nextEvent = [upstream nextEvent];
 
-      if (!v14)
+      if (!nextEvent)
       {
 LABEL_9:
-        v8 = 0;
+        nextEvent2 = 0;
         goto LABEL_11;
       }
 
-      v15 = [(BPSFlatMap *)self transform];
-      v16 = (v15)[2](v15, v14);
+      transform = [(BPSFlatMap *)self transform];
+      v16 = (transform)[2](transform, nextEvent);
 
-      v17 = [(BPSFlatMap *)self subscriber];
-      v18 = [v16 startWithSubscriber:v17];
+      subscriber = [(BPSFlatMap *)self subscriber];
+      v18 = [v16 startWithSubscriber:subscriber];
 
-      v19 = [(BPSFlatMap *)self currentPublisher];
-      [v19 reset];
+      currentPublisher5 = [(BPSFlatMap *)self currentPublisher];
+      [currentPublisher5 reset];
 
       [(BPSFlatMap *)self setCurrentPublisher:v16];
-      [(BPSFlatMap *)self setCurrentEvent:v14];
-      v20 = [(BPSFlatMap *)self currentPublisher];
-      v8 = [v20 nextEvent];
+      [(BPSFlatMap *)self setCurrentEvent:nextEvent];
+      currentPublisher6 = [(BPSFlatMap *)self currentPublisher];
+      nextEvent2 = [currentPublisher6 nextEvent];
 
-      if (v8)
+      if (nextEvent2)
       {
         break;
       }
@@ -134,28 +134,28 @@ LABEL_9:
 
 LABEL_11:
 
-  return v8;
+  return nextEvent2;
 }
 
 - (BOOL)completed
 {
-  v3 = [(BPSFlatMap *)self currentPublisher];
-  if (v3)
+  currentPublisher = [(BPSFlatMap *)self currentPublisher];
+  if (currentPublisher)
   {
-    v4 = v3;
-    v5 = [(BPSFlatMap *)self currentPublisher];
-    v6 = [v5 completed];
+    v4 = currentPublisher;
+    currentPublisher2 = [(BPSFlatMap *)self currentPublisher];
+    completed = [currentPublisher2 completed];
 
-    if (!v6)
+    if (!completed)
     {
       return 0;
     }
   }
 
-  v7 = [(BPSFlatMap *)self upstream];
-  v8 = [v7 completed];
+  upstream = [(BPSFlatMap *)self upstream];
+  completed2 = [upstream completed];
 
-  return v8;
+  return completed2;
 }
 
 - (void)reset
@@ -171,28 +171,28 @@ LABEL_11:
 - (id)bookmark
 {
   v15[2] = *MEMORY[0x1E69E9840];
-  v3 = [(BPSFlatMap *)self currentPublisher];
-  if (v3)
+  currentPublisher = [(BPSFlatMap *)self currentPublisher];
+  if (currentPublisher)
   {
-    v4 = v3;
-    v5 = [(BPSFlatMap *)self currentEvent];
+    v4 = currentPublisher;
+    currentEvent = [(BPSFlatMap *)self currentEvent];
 
-    if (v5)
+    if (currentEvent)
     {
-      v6 = [(BPSFlatMap *)self currentPublisher];
-      v7 = [v6 conformsToProtocol:&unk_1F4872E18];
+      currentPublisher2 = [(BPSFlatMap *)self currentPublisher];
+      v7 = [currentPublisher2 conformsToProtocol:&unk_1F4872E18];
 
       if (v7)
       {
-        v8 = [(BPSFlatMap *)self currentPublisher];
-        if ([objc_opt_class() isPipelineBookmarkable:v8])
+        currentPublisher3 = [(BPSFlatMap *)self currentPublisher];
+        if ([objc_opt_class() isPipelineBookmarkable:currentPublisher3])
         {
-          v9 = [v8 bookmarkNode];
+          bookmarkNode = [currentPublisher3 bookmarkNode];
           v14[0] = @"currentEvent";
-          v10 = [(BPSFlatMap *)self currentEvent];
+          currentEvent2 = [(BPSFlatMap *)self currentEvent];
           v14[1] = @"currentPublisherBookmark";
-          v15[0] = v10;
-          v15[1] = v9;
+          v15[0] = currentEvent2;
+          v15[1] = bookmarkNode;
           v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:v14 count:2];
 
           goto LABEL_8;
@@ -208,11 +208,11 @@ LABEL_8:
   return v11;
 }
 
-- (id)validateBookmark:(id)a3
+- (id)validateBookmark:(id)bookmark
 {
   v24[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (!v3)
+  bookmarkCopy = bookmark;
+  if (!bookmarkCopy)
   {
     v7 = 0;
     goto LABEL_13;
@@ -221,11 +221,11 @@ LABEL_8:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
-    v5 = [v4 objectForKeyedSubscript:@"currentEvent"];
+    bookmarkCopy = bookmarkCopy;
+    v5 = [bookmarkCopy objectForKeyedSubscript:@"currentEvent"];
     if (v5)
     {
-      v6 = [v4 objectForKeyedSubscript:@"currentPublisherBookmark"];
+      v6 = [bookmarkCopy objectForKeyedSubscript:@"currentPublisherBookmark"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -237,7 +237,7 @@ LABEL_11:
 
       v13 = objc_alloc(MEMORY[0x1E696AEC0]);
       v14 = objc_opt_class();
-      v12 = [v13 initWithFormat:@"%@ expected current publisher bookmark node of class %@, but received %@", v14, objc_opt_class(), v4];
+      v12 = [v13 initWithFormat:@"%@ expected current publisher bookmark node of class %@, but received %@", v14, objc_opt_class(), bookmarkCopy];
       v15 = MEMORY[0x1E696ABC0];
       v19 = *MEMORY[0x1E696A578];
       v20 = v12;
@@ -260,10 +260,10 @@ LABEL_11:
 
   v8 = objc_alloc(MEMORY[0x1E696AEC0]);
   v9 = objc_opt_class();
-  v4 = [v8 initWithFormat:@"%@ expected bookmark dictionary of class %@, but received %@", v9, objc_opt_class(), v3];
+  bookmarkCopy = [v8 initWithFormat:@"%@ expected bookmark dictionary of class %@, but received %@", v9, objc_opt_class(), bookmarkCopy];
   v10 = MEMORY[0x1E696ABC0];
   v23 = *MEMORY[0x1E696A578];
-  v24[0] = v4;
+  v24[0] = bookmarkCopy;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v24 forKeys:&v23 count:1];
   v7 = [v10 errorWithDomain:@"BiomePubSubError" code:2 userInfo:v5];
 LABEL_12:
@@ -274,46 +274,46 @@ LABEL_13:
   return v7;
 }
 
-- (void)applyBookmark:(id)a3
+- (void)applyBookmark:(id)bookmark
 {
-  v4 = a3;
-  if (v4)
+  bookmarkCopy = bookmark;
+  if (bookmarkCopy)
   {
-    v13 = v4;
-    v5 = [v4 objectForKeyedSubscript:@"currentEvent"];
+    v13 = bookmarkCopy;
+    v5 = [bookmarkCopy objectForKeyedSubscript:@"currentEvent"];
     v6 = [v13 objectForKeyedSubscript:@"currentPublisherBookmark"];
     [(BPSFlatMap *)self setCurrentEvent:v5];
-    v7 = [(BPSFlatMap *)self transform];
-    v8 = [(BPSFlatMap *)self currentEvent];
-    v9 = (v7)[2](v7, v8);
+    transform = [(BPSFlatMap *)self transform];
+    currentEvent = [(BPSFlatMap *)self currentEvent];
+    v9 = (transform)[2](transform, currentEvent);
     [(BPSFlatMap *)self setCurrentPublisher:v9];
 
     if (v6)
     {
-      v10 = [(BPSFlatMap *)self currentPublisher];
-      v11 = [v10 conformsToProtocol:&unk_1F4872E18];
+      currentPublisher = [(BPSFlatMap *)self currentPublisher];
+      v11 = [currentPublisher conformsToProtocol:&unk_1F4872E18];
 
       if (v11)
       {
-        v12 = [(BPSFlatMap *)self currentPublisher];
-        [v12 applyBookmarkNode:v6];
+        currentPublisher2 = [(BPSFlatMap *)self currentPublisher];
+        [currentPublisher2 applyBookmarkNode:v6];
       }
     }
 
-    v4 = v13;
+    bookmarkCopy = v13;
   }
 }
 
-+ (id)publisherWithPublisher:(id)a3 upstreams:(id)a4 bookmarkState:(id)a5
++ (id)publisherWithPublisher:(id)publisher upstreams:(id)upstreams bookmarkState:(id)state
 {
-  v6 = a3;
-  v7 = a4;
+  publisherCopy = publisher;
+  upstreamsCopy = upstreams;
   v8 = [BPSFlatMap alloc];
-  v9 = [v7 objectAtIndexedSubscript:0];
+  v9 = [upstreamsCopy objectAtIndexedSubscript:0];
 
-  v10 = [v6 maxPublishers];
-  v11 = [v6 transform];
-  v12 = [(BPSFlatMap *)v8 initWithUpstream:v9 maxPublishers:v10 transform:v11];
+  maxPublishers = [publisherCopy maxPublishers];
+  transform = [publisherCopy transform];
+  v12 = [(BPSFlatMap *)v8 initWithUpstream:v9 maxPublishers:maxPublishers transform:transform];
 
   return v12;
 }
@@ -321,11 +321,11 @@ LABEL_13:
 - (id)bookmarkableUpstreams
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  v3 = [(BPSFlatMap *)self upstream];
-  if (v3)
+  upstream = [(BPSFlatMap *)self upstream];
+  if (upstream)
   {
-    v4 = [(BPSFlatMap *)self upstream];
-    v8[0] = v4;
+    upstream2 = [(BPSFlatMap *)self upstream];
+    v8[0] = upstream2;
     v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:1];
   }
 

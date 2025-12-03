@@ -1,52 +1,52 @@
 @interface IXPromisedInMemoryDictionary
-- (IXPromisedInMemoryDictionary)initWithCoder:(id)a3;
-- (IXPromisedInMemoryDictionary)initWithName:(id)a3 client:(unint64_t)a4 dictionary:(id)a5;
-- (IXPromisedInMemoryDictionary)initWithName:(id)a3 client:(unint64_t)a4 dictionary:(id)a5 location:(id)a6;
-- (IXPromisedInMemoryDictionary)initWithSeed:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)resetWithCompletion:(id)a3;
+- (IXPromisedInMemoryDictionary)initWithCoder:(id)coder;
+- (IXPromisedInMemoryDictionary)initWithName:(id)name client:(unint64_t)client dictionary:(id)dictionary;
+- (IXPromisedInMemoryDictionary)initWithName:(id)name client:(unint64_t)client dictionary:(id)dictionary location:(id)location;
+- (IXPromisedInMemoryDictionary)initWithSeed:(id)seed;
+- (void)encodeWithCoder:(id)coder;
+- (void)resetWithCompletion:(id)completion;
 @end
 
 @implementation IXPromisedInMemoryDictionary
 
-- (IXPromisedInMemoryDictionary)initWithCoder:(id)a3
+- (IXPromisedInMemoryDictionary)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = IXPromisedInMemoryDictionary;
-  return [(IXOwnedDataPromise *)&v4 initWithCoder:a3];
+  return [(IXOwnedDataPromise *)&v4 initWithCoder:coder];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = IXPromisedInMemoryDictionary;
-  [(IXDataPromise *)&v3 encodeWithCoder:a3];
+  [(IXDataPromise *)&v3 encodeWithCoder:coder];
 }
 
-- (IXPromisedInMemoryDictionary)initWithName:(id)a3 client:(unint64_t)a4 dictionary:(id)a5
+- (IXPromisedInMemoryDictionary)initWithName:(id)name client:(unint64_t)client dictionary:(id)dictionary
 {
-  v8 = a5;
-  v9 = a3;
+  dictionaryCopy = dictionary;
+  nameCopy = name;
   v10 = objc_opt_new();
-  v11 = [(IXPromisedInMemoryDictionary *)self initWithName:v9 client:a4 dictionary:v8 location:v10];
+  v11 = [(IXPromisedInMemoryDictionary *)self initWithName:nameCopy client:client dictionary:dictionaryCopy location:v10];
 
   return v11;
 }
 
-- (IXPromisedInMemoryDictionary)initWithName:(id)a3 client:(unint64_t)a4 dictionary:(id)a5 location:(id)a6
+- (IXPromisedInMemoryDictionary)initWithName:(id)name client:(unint64_t)client dictionary:(id)dictionary location:(id)location
 {
   v30 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  nameCopy = name;
+  dictionaryCopy = dictionary;
+  locationCopy = location;
   v27 = 0;
-  v13 = [MEMORY[0x1E696AE40] dataWithPropertyList:v11 format:200 options:0 error:&v27];
+  v13 = [MEMORY[0x1E696AE40] dataWithPropertyList:dictionaryCopy format:200 options:0 error:&v27];
   v14 = v27;
   if (v13)
   {
     v26.receiver = self;
     v26.super_class = IXPromisedInMemoryDictionary;
-    self = -[IXOwnedDataPromise initWithName:client:diskSpaceNeeded:location:](&v26, sel_initWithName_client_diskSpaceNeeded_location_, v10, a4, [v13 length], v12);
+    self = -[IXOwnedDataPromise initWithName:client:diskSpaceNeeded:location:](&v26, sel_initWithName_client_diskSpaceNeeded_location_, nameCopy, client, [v13 length], locationCopy);
     if (!self)
     {
       goto LABEL_9;
@@ -62,37 +62,37 @@
     v25[2] = __72__IXPromisedInMemoryDictionary_initWithName_client_dictionary_location___block_invoke;
     v25[3] = &unk_1E85C5560;
     v25[4] = buf;
-    v16 = [v15 synchronousRemoteObjectProxyWithErrorHandler:v25];
+    selfCopy2 = [v15 synchronousRemoteObjectProxyWithErrorHandler:v25];
 
-    if (!v16)
+    if (!selfCopy2)
     {
       _Block_object_dispose(buf, 8);
       goto LABEL_11;
     }
 
-    v17 = [(IXDataPromise *)self seed];
+    seed = [(IXDataPromise *)self seed];
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
     v22[2] = __72__IXPromisedInMemoryDictionary_initWithName_client_dictionary_location___block_invoke_7;
     v22[3] = &unk_1E85C6A00;
     v24 = buf;
-    v18 = self;
-    v23 = v18;
-    [(IXPromisedInMemoryDictionary *)v16 _remote_createInMemoryDictionaryPromiseWithSeed:v17 dictionary:v11 completion:v22];
+    selfCopy = self;
+    v23 = selfCopy;
+    [(IXPromisedInMemoryDictionary *)selfCopy2 _remote_createInMemoryDictionaryPromiseWithSeed:seed dictionary:dictionaryCopy completion:v22];
 
-    LOBYTE(v17) = *(*&buf[8] + 24);
+    LOBYTE(seed) = *(*&buf[8] + 24);
     _Block_object_dispose(buf, 8);
-    if (v17)
+    if (seed)
     {
-      v16 = 0;
-      self = v18;
+      selfCopy2 = 0;
+      self = selfCopy;
     }
 
     else
     {
 LABEL_9:
       self = self;
-      v16 = self;
+      selfCopy2 = self;
     }
   }
 
@@ -108,13 +108,13 @@ LABEL_9:
       _os_log_impl(&dword_1DA47A000, v19, OS_LOG_TYPE_DEFAULT, "%s: Failed to serialize dictionary: %@", buf, 0x16u);
     }
 
-    v16 = 0;
+    selfCopy2 = 0;
   }
 
 LABEL_11:
 
   v20 = *MEMORY[0x1E69E9840];
-  return v16;
+  return selfCopy2;
 }
 
 void __72__IXPromisedInMemoryDictionary_initWithName_client_dictionary_location___block_invoke(uint64_t a1, void *a2)
@@ -162,10 +162,10 @@ void __72__IXPromisedInMemoryDictionary_initWithName_client_dictionary_location_
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)resetWithCompletion:(id)a3
+- (void)resetWithCompletion:(id)completion
 {
   v3 = kIXLoggingSubsystem;
-  v4 = a3;
+  completionCopy = completion;
   v5 = IXGetLoggingHandle(v3);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
@@ -173,14 +173,14 @@ void __72__IXPromisedInMemoryDictionary_initWithName_client_dictionary_location_
   }
 
   v7 = _CreateError("[IXPromisedInMemoryDictionary resetWithCompletion:]", 96, @"IXErrorDomain", 4uLL, 0, 0, @"Resetting an in-memory dictionary promise doesn't make sense.", v6, v8);
-  v4[2](v4, v7);
+  completionCopy[2](completionCopy, v7);
 }
 
-- (IXPromisedInMemoryDictionary)initWithSeed:(id)a3
+- (IXPromisedInMemoryDictionary)initWithSeed:(id)seed
 {
   v4.receiver = self;
   v4.super_class = IXPromisedInMemoryDictionary;
-  return [(IXOwnedDataPromise *)&v4 initWithSeed:a3];
+  return [(IXOwnedDataPromise *)&v4 initWithSeed:seed];
 }
 
 - (void)resetWithCompletion:(os_log_t)log .cold.1(os_log_t log)

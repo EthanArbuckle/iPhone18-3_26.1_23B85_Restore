@@ -1,40 +1,40 @@
 @interface AppTelemetryStuckStatus
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasItemPendingReconciliationIsLocked:(BOOL)a3;
-- (void)setHasItemPendingReconciliationIsLockedInDB:(BOOL)a3;
-- (void)setHasItemPendingReconciliationJobCode:(BOOL)a3;
-- (void)setHasItemPendingReconciliationJobSchedulingState:(BOOL)a3;
-- (void)setHasItemPendingScanningDiskEnumerationStatus:(BOOL)a3;
-- (void)setHasItemPendingScanningDiskHasMultiplePagesEnumeration:(BOOL)a3;
-- (void)setHasItemPendingScanningDiskNumberOfChildrenNotPendingReconciliation:(BOOL)a3;
-- (void)setHasItemPendingScanningDiskNumberOfChildrenPendingReconciliation:(BOOL)a3;
-- (void)setHasItemPendingScanningDiskNumberOfChildrenPendingRejection:(BOOL)a3;
-- (void)setHasItemPendingScanningDiskNumberOfChildrenPendingSyncDown:(BOOL)a3;
-- (void)setHasItemPendingScanningDiskNumberOfChildrenPendingSyncDownDeletion:(BOOL)a3;
-- (void)setHasItemPendingScanningDiskNumberOfChildrenPendingSyncDownReparent:(BOOL)a3;
-- (void)setHasItemPendingScanningDiskNumberOfChildrenPendingSyncUp:(BOOL)a3;
-- (void)setHasItemPendingScanningDiskNumberOfChildrenPendingSyncUpDeletion:(BOOL)a3;
-- (void)setHasItemPendingScanningDiskNumberOfChildrenPendingSyncUpReparent:(BOOL)a3;
-- (void)setHasItemPendingScanningProviderEnumerationStatus:(BOOL)a3;
-- (void)setHasItemPendingScanningProviderHasMultiplePagesEnumeration:(BOOL)a3;
-- (void)setHasItemPendingScanningProviderNumberOfChildren:(BOOL)a3;
-- (void)setHasItemPendingScanningProviderNumberOfChildrenFailingCreation:(BOOL)a3;
-- (void)setHasItemPendingScanningProviderNumberOfChildrenPendingCreation:(BOOL)a3;
-- (void)setHasItemPendingScanningProviderRemovalOfDatalessBitStatus:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasItemPendingReconciliationIsLocked:(BOOL)locked;
+- (void)setHasItemPendingReconciliationIsLockedInDB:(BOOL)b;
+- (void)setHasItemPendingReconciliationJobCode:(BOOL)code;
+- (void)setHasItemPendingReconciliationJobSchedulingState:(BOOL)state;
+- (void)setHasItemPendingScanningDiskEnumerationStatus:(BOOL)status;
+- (void)setHasItemPendingScanningDiskHasMultiplePagesEnumeration:(BOOL)enumeration;
+- (void)setHasItemPendingScanningDiskNumberOfChildrenNotPendingReconciliation:(BOOL)reconciliation;
+- (void)setHasItemPendingScanningDiskNumberOfChildrenPendingReconciliation:(BOOL)reconciliation;
+- (void)setHasItemPendingScanningDiskNumberOfChildrenPendingRejection:(BOOL)rejection;
+- (void)setHasItemPendingScanningDiskNumberOfChildrenPendingSyncDown:(BOOL)down;
+- (void)setHasItemPendingScanningDiskNumberOfChildrenPendingSyncDownDeletion:(BOOL)deletion;
+- (void)setHasItemPendingScanningDiskNumberOfChildrenPendingSyncDownReparent:(BOOL)reparent;
+- (void)setHasItemPendingScanningDiskNumberOfChildrenPendingSyncUp:(BOOL)up;
+- (void)setHasItemPendingScanningDiskNumberOfChildrenPendingSyncUpDeletion:(BOOL)deletion;
+- (void)setHasItemPendingScanningDiskNumberOfChildrenPendingSyncUpReparent:(BOOL)reparent;
+- (void)setHasItemPendingScanningProviderEnumerationStatus:(BOOL)status;
+- (void)setHasItemPendingScanningProviderHasMultiplePagesEnumeration:(BOOL)enumeration;
+- (void)setHasItemPendingScanningProviderNumberOfChildren:(BOOL)children;
+- (void)setHasItemPendingScanningProviderNumberOfChildrenFailingCreation:(BOOL)creation;
+- (void)setHasItemPendingScanningProviderNumberOfChildrenPendingCreation:(BOOL)creation;
+- (void)setHasItemPendingScanningProviderRemovalOfDatalessBitStatus:(BOOL)status;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AppTelemetryStuckStatus
 
-- (void)setHasItemPendingReconciliationIsLocked:(BOOL)a3
+- (void)setHasItemPendingReconciliationIsLocked:(BOOL)locked
 {
-  if (a3)
+  if (locked)
   {
     v3 = 0x40000;
   }
@@ -47,9 +47,9 @@
   self->_has = (*&self->_has & 0xFFFBFFFF | v3);
 }
 
-- (void)setHasItemPendingReconciliationIsLockedInDB:(BOOL)a3
+- (void)setHasItemPendingReconciliationIsLockedInDB:(BOOL)b
 {
-  if (a3)
+  if (b)
   {
     v3 = 0x80000;
   }
@@ -62,9 +62,9 @@
   self->_has = (*&self->_has & 0xFFF7FFFF | v3);
 }
 
-- (void)setHasItemPendingReconciliationJobCode:(BOOL)a3
+- (void)setHasItemPendingReconciliationJobCode:(BOOL)code
 {
-  if (a3)
+  if (code)
   {
     v3 = 2;
   }
@@ -77,9 +77,9 @@
   self->_has = (*&self->_has & 0xFFFFFFFD | v3);
 }
 
-- (void)setHasItemPendingReconciliationJobSchedulingState:(BOOL)a3
+- (void)setHasItemPendingReconciliationJobSchedulingState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 4;
   }
@@ -92,9 +92,9 @@
   self->_has = (*&self->_has & 0xFFFFFFFB | v3);
 }
 
-- (void)setHasItemPendingScanningDiskEnumerationStatus:(BOOL)a3
+- (void)setHasItemPendingScanningDiskEnumerationStatus:(BOOL)status
 {
-  if (a3)
+  if (status)
   {
     v3 = 8;
   }
@@ -107,9 +107,9 @@
   self->_has = (*&self->_has & 0xFFFFFFF7 | v3);
 }
 
-- (void)setHasItemPendingScanningDiskHasMultiplePagesEnumeration:(BOOL)a3
+- (void)setHasItemPendingScanningDiskHasMultiplePagesEnumeration:(BOOL)enumeration
 {
-  if (a3)
+  if (enumeration)
   {
     v3 = 0x100000;
   }
@@ -122,9 +122,9 @@
   self->_has = (*&self->_has & 0xFFEFFFFF | v3);
 }
 
-- (void)setHasItemPendingScanningDiskNumberOfChildrenPendingReconciliation:(BOOL)a3
+- (void)setHasItemPendingScanningDiskNumberOfChildrenPendingReconciliation:(BOOL)reconciliation
 {
-  if (a3)
+  if (reconciliation)
   {
     v3 = 32;
   }
@@ -137,9 +137,9 @@
   self->_has = (*&self->_has & 0xFFFFFFDF | v3);
 }
 
-- (void)setHasItemPendingScanningDiskNumberOfChildrenNotPendingReconciliation:(BOOL)a3
+- (void)setHasItemPendingScanningDiskNumberOfChildrenNotPendingReconciliation:(BOOL)reconciliation
 {
-  if (a3)
+  if (reconciliation)
   {
     v3 = 16;
   }
@@ -152,9 +152,9 @@
   self->_has = (*&self->_has & 0xFFFFFFEF | v3);
 }
 
-- (void)setHasItemPendingScanningDiskNumberOfChildrenPendingSyncUpDeletion:(BOOL)a3
+- (void)setHasItemPendingScanningDiskNumberOfChildrenPendingSyncUpDeletion:(BOOL)deletion
 {
-  if (a3)
+  if (deletion)
   {
     v3 = 2048;
   }
@@ -167,9 +167,9 @@
   self->_has = (*&self->_has & 0xFFFFF7FF | v3);
 }
 
-- (void)setHasItemPendingScanningDiskNumberOfChildrenPendingSyncDownDeletion:(BOOL)a3
+- (void)setHasItemPendingScanningDiskNumberOfChildrenPendingSyncDownDeletion:(BOOL)deletion
 {
-  if (a3)
+  if (deletion)
   {
     v3 = 256;
   }
@@ -182,9 +182,9 @@
   self->_has = (*&self->_has & 0xFFFFFEFF | v3);
 }
 
-- (void)setHasItemPendingScanningDiskNumberOfChildrenPendingSyncUpReparent:(BOOL)a3
+- (void)setHasItemPendingScanningDiskNumberOfChildrenPendingSyncUpReparent:(BOOL)reparent
 {
-  if (a3)
+  if (reparent)
   {
     v3 = 4096;
   }
@@ -197,9 +197,9 @@
   self->_has = (*&self->_has & 0xFFFFEFFF | v3);
 }
 
-- (void)setHasItemPendingScanningDiskNumberOfChildrenPendingSyncUp:(BOOL)a3
+- (void)setHasItemPendingScanningDiskNumberOfChildrenPendingSyncUp:(BOOL)up
 {
-  if (a3)
+  if (up)
   {
     v3 = 1024;
   }
@@ -212,9 +212,9 @@
   self->_has = (*&self->_has & 0xFFFFFBFF | v3);
 }
 
-- (void)setHasItemPendingScanningDiskNumberOfChildrenPendingSyncDownReparent:(BOOL)a3
+- (void)setHasItemPendingScanningDiskNumberOfChildrenPendingSyncDownReparent:(BOOL)reparent
 {
-  if (a3)
+  if (reparent)
   {
     v3 = 512;
   }
@@ -227,9 +227,9 @@
   self->_has = (*&self->_has & 0xFFFFFDFF | v3);
 }
 
-- (void)setHasItemPendingScanningDiskNumberOfChildrenPendingSyncDown:(BOOL)a3
+- (void)setHasItemPendingScanningDiskNumberOfChildrenPendingSyncDown:(BOOL)down
 {
-  if (a3)
+  if (down)
   {
     v3 = 128;
   }
@@ -242,9 +242,9 @@
   self->_has = (*&self->_has & 0xFFFFFF7F | v3);
 }
 
-- (void)setHasItemPendingScanningDiskNumberOfChildrenPendingRejection:(BOOL)a3
+- (void)setHasItemPendingScanningDiskNumberOfChildrenPendingRejection:(BOOL)rejection
 {
-  if (a3)
+  if (rejection)
   {
     v3 = 64;
   }
@@ -257,9 +257,9 @@
   self->_has = (*&self->_has & 0xFFFFFFBF | v3);
 }
 
-- (void)setHasItemPendingScanningProviderEnumerationStatus:(BOOL)a3
+- (void)setHasItemPendingScanningProviderEnumerationStatus:(BOOL)status
 {
-  if (a3)
+  if (status)
   {
     v3 = 0x2000;
   }
@@ -272,9 +272,9 @@
   self->_has = (*&self->_has & 0xFFFFDFFF | v3);
 }
 
-- (void)setHasItemPendingScanningProviderHasMultiplePagesEnumeration:(BOOL)a3
+- (void)setHasItemPendingScanningProviderHasMultiplePagesEnumeration:(BOOL)enumeration
 {
-  if (a3)
+  if (enumeration)
   {
     v3 = 0x200000;
   }
@@ -287,9 +287,9 @@
   self->_has = (*&self->_has & 0xFFDFFFFF | v3);
 }
 
-- (void)setHasItemPendingScanningProviderNumberOfChildren:(BOOL)a3
+- (void)setHasItemPendingScanningProviderNumberOfChildren:(BOOL)children
 {
-  if (a3)
+  if (children)
   {
     v3 = 0x4000;
   }
@@ -302,9 +302,9 @@
   self->_has = (*&self->_has & 0xFFFFBFFF | v3);
 }
 
-- (void)setHasItemPendingScanningProviderNumberOfChildrenPendingCreation:(BOOL)a3
+- (void)setHasItemPendingScanningProviderNumberOfChildrenPendingCreation:(BOOL)creation
 {
-  if (a3)
+  if (creation)
   {
     v3 = 0x10000;
   }
@@ -317,9 +317,9 @@
   self->_has = (*&self->_has & 0xFFFEFFFF | v3);
 }
 
-- (void)setHasItemPendingScanningProviderNumberOfChildrenFailingCreation:(BOOL)a3
+- (void)setHasItemPendingScanningProviderNumberOfChildrenFailingCreation:(BOOL)creation
 {
-  if (a3)
+  if (creation)
   {
     v3 = 0x8000;
   }
@@ -332,9 +332,9 @@
   self->_has = (*&self->_has & 0xFFFF7FFF | v3);
 }
 
-- (void)setHasItemPendingScanningProviderRemovalOfDatalessBitStatus:(BOOL)a3
+- (void)setHasItemPendingScanningProviderRemovalOfDatalessBitStatus:(BOOL)status
 {
-  if (a3)
+  if (status)
   {
     v3 = 0x20000;
   }
@@ -353,20 +353,20 @@
   v8.receiver = self;
   v8.super_class = AppTelemetryStuckStatus;
   v4 = [(AppTelemetryStuckStatus *)&v8 description];
-  v5 = [(AppTelemetryStuckStatus *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(AppTelemetryStuckStatus *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if ((*&has & 0x40000) != 0)
   {
     v7 = [MEMORY[0x277CCABB0] numberWithBool:self->_itemPendingReconciliationIsLocked];
-    [v3 setObject:v7 forKey:@"itemPendingReconciliationIsLocked"];
+    [dictionary setObject:v7 forKey:@"itemPendingReconciliationIsLocked"];
 
     has = self->_has;
     if ((*&has & 0x80000) == 0)
@@ -387,7 +387,7 @@ LABEL_3:
   }
 
   v8 = [MEMORY[0x277CCABB0] numberWithBool:self->_itemPendingReconciliationIsLockedInDB];
-  [v3 setObject:v8 forKey:@"itemPendingReconciliationIsLockedInDB"];
+  [dictionary setObject:v8 forKey:@"itemPendingReconciliationIsLockedInDB"];
 
   has = self->_has;
   if ((*&has & 2) == 0)
@@ -403,7 +403,7 @@ LABEL_4:
 
 LABEL_29:
   v9 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_itemPendingReconciliationJobCode];
-  [v3 setObject:v9 forKey:@"itemPendingReconciliationJobCode"];
+  [dictionary setObject:v9 forKey:@"itemPendingReconciliationJobCode"];
 
   has = self->_has;
   if ((*&has & 4) == 0)
@@ -419,7 +419,7 @@ LABEL_5:
 
 LABEL_30:
   v10 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_itemPendingReconciliationJobSchedulingState];
-  [v3 setObject:v10 forKey:@"itemPendingReconciliationJobSchedulingState"];
+  [dictionary setObject:v10 forKey:@"itemPendingReconciliationJobSchedulingState"];
 
   has = self->_has;
   if ((*&has & 1) == 0)
@@ -435,7 +435,7 @@ LABEL_6:
 
 LABEL_31:
   v11 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_itemPendingReconciliationJobBlockingCode];
-  [v3 setObject:v11 forKey:@"itemPendingReconciliationJobBlockingCode"];
+  [dictionary setObject:v11 forKey:@"itemPendingReconciliationJobBlockingCode"];
 
   has = self->_has;
   if ((*&has & 8) == 0)
@@ -451,7 +451,7 @@ LABEL_7:
 
 LABEL_32:
   v12 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_itemPendingScanningDiskEnumerationStatus];
-  [v3 setObject:v12 forKey:@"itemPendingScanningDiskEnumerationStatus"];
+  [dictionary setObject:v12 forKey:@"itemPendingScanningDiskEnumerationStatus"];
 
   has = self->_has;
   if ((*&has & 0x100000) == 0)
@@ -467,7 +467,7 @@ LABEL_8:
 
 LABEL_33:
   v13 = [MEMORY[0x277CCABB0] numberWithBool:self->_itemPendingScanningDiskHasMultiplePagesEnumeration];
-  [v3 setObject:v13 forKey:@"itemPendingScanningDiskHasMultiplePagesEnumeration"];
+  [dictionary setObject:v13 forKey:@"itemPendingScanningDiskHasMultiplePagesEnumeration"];
 
   has = self->_has;
   if ((*&has & 0x20) == 0)
@@ -483,7 +483,7 @@ LABEL_9:
 
 LABEL_34:
   v14 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_itemPendingScanningDiskNumberOfChildrenPendingReconciliation];
-  [v3 setObject:v14 forKey:@"itemPendingScanningDiskNumberOfChildrenPendingReconciliation"];
+  [dictionary setObject:v14 forKey:@"itemPendingScanningDiskNumberOfChildrenPendingReconciliation"];
 
   has = self->_has;
   if ((*&has & 0x10) == 0)
@@ -499,7 +499,7 @@ LABEL_10:
 
 LABEL_35:
   v15 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_itemPendingScanningDiskNumberOfChildrenNotPendingReconciliation];
-  [v3 setObject:v15 forKey:@"itemPendingScanningDiskNumberOfChildrenNotPendingReconciliation"];
+  [dictionary setObject:v15 forKey:@"itemPendingScanningDiskNumberOfChildrenNotPendingReconciliation"];
 
   has = self->_has;
   if ((*&has & 0x800) == 0)
@@ -515,7 +515,7 @@ LABEL_11:
 
 LABEL_36:
   v16 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_itemPendingScanningDiskNumberOfChildrenPendingSyncUpDeletion];
-  [v3 setObject:v16 forKey:@"itemPendingScanningDiskNumberOfChildrenPendingSyncUpDeletion"];
+  [dictionary setObject:v16 forKey:@"itemPendingScanningDiskNumberOfChildrenPendingSyncUpDeletion"];
 
   has = self->_has;
   if ((*&has & 0x100) == 0)
@@ -531,7 +531,7 @@ LABEL_12:
 
 LABEL_37:
   v17 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_itemPendingScanningDiskNumberOfChildrenPendingSyncDownDeletion];
-  [v3 setObject:v17 forKey:@"itemPendingScanningDiskNumberOfChildrenPendingSyncDownDeletion"];
+  [dictionary setObject:v17 forKey:@"itemPendingScanningDiskNumberOfChildrenPendingSyncDownDeletion"];
 
   has = self->_has;
   if ((*&has & 0x1000) == 0)
@@ -547,7 +547,7 @@ LABEL_13:
 
 LABEL_38:
   v18 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_itemPendingScanningDiskNumberOfChildrenPendingSyncUpReparent];
-  [v3 setObject:v18 forKey:@"itemPendingScanningDiskNumberOfChildrenPendingSyncUpReparent"];
+  [dictionary setObject:v18 forKey:@"itemPendingScanningDiskNumberOfChildrenPendingSyncUpReparent"];
 
   has = self->_has;
   if ((*&has & 0x400) == 0)
@@ -563,7 +563,7 @@ LABEL_14:
 
 LABEL_39:
   v19 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_itemPendingScanningDiskNumberOfChildrenPendingSyncUp];
-  [v3 setObject:v19 forKey:@"itemPendingScanningDiskNumberOfChildrenPendingSyncUp"];
+  [dictionary setObject:v19 forKey:@"itemPendingScanningDiskNumberOfChildrenPendingSyncUp"];
 
   has = self->_has;
   if ((*&has & 0x200) == 0)
@@ -579,7 +579,7 @@ LABEL_15:
 
 LABEL_40:
   v20 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_itemPendingScanningDiskNumberOfChildrenPendingSyncDownReparent];
-  [v3 setObject:v20 forKey:@"itemPendingScanningDiskNumberOfChildrenPendingSyncDownReparent"];
+  [dictionary setObject:v20 forKey:@"itemPendingScanningDiskNumberOfChildrenPendingSyncDownReparent"];
 
   has = self->_has;
   if ((*&has & 0x80) == 0)
@@ -595,7 +595,7 @@ LABEL_16:
 
 LABEL_41:
   v21 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_itemPendingScanningDiskNumberOfChildrenPendingSyncDown];
-  [v3 setObject:v21 forKey:@"itemPendingScanningDiskNumberOfChildrenPendingSyncDown"];
+  [dictionary setObject:v21 forKey:@"itemPendingScanningDiskNumberOfChildrenPendingSyncDown"];
 
   has = self->_has;
   if ((*&has & 0x40) == 0)
@@ -611,7 +611,7 @@ LABEL_17:
 
 LABEL_42:
   v22 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_itemPendingScanningDiskNumberOfChildrenPendingRejection];
-  [v3 setObject:v22 forKey:@"itemPendingScanningDiskNumberOfChildrenPendingRejection"];
+  [dictionary setObject:v22 forKey:@"itemPendingScanningDiskNumberOfChildrenPendingRejection"];
 
   has = self->_has;
   if ((*&has & 0x2000) == 0)
@@ -627,7 +627,7 @@ LABEL_18:
 
 LABEL_43:
   v23 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_itemPendingScanningProviderEnumerationStatus];
-  [v3 setObject:v23 forKey:@"itemPendingScanningProviderEnumerationStatus"];
+  [dictionary setObject:v23 forKey:@"itemPendingScanningProviderEnumerationStatus"];
 
   has = self->_has;
   if ((*&has & 0x200000) == 0)
@@ -643,7 +643,7 @@ LABEL_19:
 
 LABEL_44:
   v24 = [MEMORY[0x277CCABB0] numberWithBool:self->_itemPendingScanningProviderHasMultiplePagesEnumeration];
-  [v3 setObject:v24 forKey:@"itemPendingScanningProviderHasMultiplePagesEnumeration"];
+  [dictionary setObject:v24 forKey:@"itemPendingScanningProviderHasMultiplePagesEnumeration"];
 
   has = self->_has;
   if ((*&has & 0x4000) == 0)
@@ -659,7 +659,7 @@ LABEL_20:
 
 LABEL_45:
   v25 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_itemPendingScanningProviderNumberOfChildren];
-  [v3 setObject:v25 forKey:@"itemPendingScanningProviderNumberOfChildren"];
+  [dictionary setObject:v25 forKey:@"itemPendingScanningProviderNumberOfChildren"];
 
   has = self->_has;
   if ((*&has & 0x10000) == 0)
@@ -675,7 +675,7 @@ LABEL_21:
 
 LABEL_46:
   v26 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_itemPendingScanningProviderNumberOfChildrenPendingCreation];
-  [v3 setObject:v26 forKey:@"itemPendingScanningProviderNumberOfChildrenPendingCreation"];
+  [dictionary setObject:v26 forKey:@"itemPendingScanningProviderNumberOfChildrenPendingCreation"];
 
   has = self->_has;
   if ((*&has & 0x8000) == 0)
@@ -691,23 +691,23 @@ LABEL_22:
 
 LABEL_47:
   v27 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_itemPendingScanningProviderNumberOfChildrenFailingCreation];
-  [v3 setObject:v27 forKey:@"itemPendingScanningProviderNumberOfChildrenFailingCreation"];
+  [dictionary setObject:v27 forKey:@"itemPendingScanningProviderNumberOfChildrenFailingCreation"];
 
   if ((*&self->_has & 0x20000) != 0)
   {
 LABEL_23:
     v5 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_itemPendingScanningProviderRemovalOfDatalessBitStatus];
-    [v3 setObject:v5 forKey:@"itemPendingScanningProviderRemovalOfDatalessBitStatus"];
+    [dictionary setObject:v5 forKey:@"itemPendingScanningProviderRemovalOfDatalessBitStatus"];
   }
 
 LABEL_24:
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v27 = a3;
+  toCopy = to;
   has = self->_has;
   if ((*&has & 0x40000) != 0)
   {
@@ -1028,14 +1028,14 @@ LABEL_23:
 LABEL_24:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((*&has & 0x40000) != 0)
   {
-    v4[152] = self->_itemPendingReconciliationIsLocked;
-    *(v4 + 39) |= 0x40000u;
+    toCopy[152] = self->_itemPendingReconciliationIsLocked;
+    *(toCopy + 39) |= 0x40000u;
     has = self->_has;
     if ((*&has & 0x80000) == 0)
     {
@@ -1054,8 +1054,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[153] = self->_itemPendingReconciliationIsLockedInDB;
-  *(v4 + 39) |= 0x80000u;
+  toCopy[153] = self->_itemPendingReconciliationIsLockedInDB;
+  *(toCopy + 39) |= 0x80000u;
   has = self->_has;
   if ((*&has & 2) == 0)
   {
@@ -1069,8 +1069,8 @@ LABEL_4:
   }
 
 LABEL_29:
-  *(v4 + 2) = self->_itemPendingReconciliationJobCode;
-  *(v4 + 39) |= 2u;
+  *(toCopy + 2) = self->_itemPendingReconciliationJobCode;
+  *(toCopy + 39) |= 2u;
   has = self->_has;
   if ((*&has & 4) == 0)
   {
@@ -1084,8 +1084,8 @@ LABEL_5:
   }
 
 LABEL_30:
-  *(v4 + 3) = self->_itemPendingReconciliationJobSchedulingState;
-  *(v4 + 39) |= 4u;
+  *(toCopy + 3) = self->_itemPendingReconciliationJobSchedulingState;
+  *(toCopy + 39) |= 4u;
   has = self->_has;
   if ((*&has & 1) == 0)
   {
@@ -1099,8 +1099,8 @@ LABEL_6:
   }
 
 LABEL_31:
-  *(v4 + 1) = self->_itemPendingReconciliationJobBlockingCode;
-  *(v4 + 39) |= 1u;
+  *(toCopy + 1) = self->_itemPendingReconciliationJobBlockingCode;
+  *(toCopy + 39) |= 1u;
   has = self->_has;
   if ((*&has & 8) == 0)
   {
@@ -1114,8 +1114,8 @@ LABEL_7:
   }
 
 LABEL_32:
-  *(v4 + 4) = self->_itemPendingScanningDiskEnumerationStatus;
-  *(v4 + 39) |= 8u;
+  *(toCopy + 4) = self->_itemPendingScanningDiskEnumerationStatus;
+  *(toCopy + 39) |= 8u;
   has = self->_has;
   if ((*&has & 0x100000) == 0)
   {
@@ -1129,8 +1129,8 @@ LABEL_8:
   }
 
 LABEL_33:
-  v4[154] = self->_itemPendingScanningDiskHasMultiplePagesEnumeration;
-  *(v4 + 39) |= 0x100000u;
+  toCopy[154] = self->_itemPendingScanningDiskHasMultiplePagesEnumeration;
+  *(toCopy + 39) |= 0x100000u;
   has = self->_has;
   if ((*&has & 0x20) == 0)
   {
@@ -1144,8 +1144,8 @@ LABEL_9:
   }
 
 LABEL_34:
-  *(v4 + 6) = self->_itemPendingScanningDiskNumberOfChildrenPendingReconciliation;
-  *(v4 + 39) |= 0x20u;
+  *(toCopy + 6) = self->_itemPendingScanningDiskNumberOfChildrenPendingReconciliation;
+  *(toCopy + 39) |= 0x20u;
   has = self->_has;
   if ((*&has & 0x10) == 0)
   {
@@ -1159,8 +1159,8 @@ LABEL_10:
   }
 
 LABEL_35:
-  *(v4 + 5) = self->_itemPendingScanningDiskNumberOfChildrenNotPendingReconciliation;
-  *(v4 + 39) |= 0x10u;
+  *(toCopy + 5) = self->_itemPendingScanningDiskNumberOfChildrenNotPendingReconciliation;
+  *(toCopy + 39) |= 0x10u;
   has = self->_has;
   if ((*&has & 0x800) == 0)
   {
@@ -1174,8 +1174,8 @@ LABEL_11:
   }
 
 LABEL_36:
-  *(v4 + 12) = self->_itemPendingScanningDiskNumberOfChildrenPendingSyncUpDeletion;
-  *(v4 + 39) |= 0x800u;
+  *(toCopy + 12) = self->_itemPendingScanningDiskNumberOfChildrenPendingSyncUpDeletion;
+  *(toCopy + 39) |= 0x800u;
   has = self->_has;
   if ((*&has & 0x100) == 0)
   {
@@ -1189,8 +1189,8 @@ LABEL_12:
   }
 
 LABEL_37:
-  *(v4 + 9) = self->_itemPendingScanningDiskNumberOfChildrenPendingSyncDownDeletion;
-  *(v4 + 39) |= 0x100u;
+  *(toCopy + 9) = self->_itemPendingScanningDiskNumberOfChildrenPendingSyncDownDeletion;
+  *(toCopy + 39) |= 0x100u;
   has = self->_has;
   if ((*&has & 0x1000) == 0)
   {
@@ -1204,8 +1204,8 @@ LABEL_13:
   }
 
 LABEL_38:
-  *(v4 + 13) = self->_itemPendingScanningDiskNumberOfChildrenPendingSyncUpReparent;
-  *(v4 + 39) |= 0x1000u;
+  *(toCopy + 13) = self->_itemPendingScanningDiskNumberOfChildrenPendingSyncUpReparent;
+  *(toCopy + 39) |= 0x1000u;
   has = self->_has;
   if ((*&has & 0x400) == 0)
   {
@@ -1219,8 +1219,8 @@ LABEL_14:
   }
 
 LABEL_39:
-  *(v4 + 11) = self->_itemPendingScanningDiskNumberOfChildrenPendingSyncUp;
-  *(v4 + 39) |= 0x400u;
+  *(toCopy + 11) = self->_itemPendingScanningDiskNumberOfChildrenPendingSyncUp;
+  *(toCopy + 39) |= 0x400u;
   has = self->_has;
   if ((*&has & 0x200) == 0)
   {
@@ -1234,8 +1234,8 @@ LABEL_15:
   }
 
 LABEL_40:
-  *(v4 + 10) = self->_itemPendingScanningDiskNumberOfChildrenPendingSyncDownReparent;
-  *(v4 + 39) |= 0x200u;
+  *(toCopy + 10) = self->_itemPendingScanningDiskNumberOfChildrenPendingSyncDownReparent;
+  *(toCopy + 39) |= 0x200u;
   has = self->_has;
   if ((*&has & 0x80) == 0)
   {
@@ -1249,8 +1249,8 @@ LABEL_16:
   }
 
 LABEL_41:
-  *(v4 + 8) = self->_itemPendingScanningDiskNumberOfChildrenPendingSyncDown;
-  *(v4 + 39) |= 0x80u;
+  *(toCopy + 8) = self->_itemPendingScanningDiskNumberOfChildrenPendingSyncDown;
+  *(toCopy + 39) |= 0x80u;
   has = self->_has;
   if ((*&has & 0x40) == 0)
   {
@@ -1264,8 +1264,8 @@ LABEL_17:
   }
 
 LABEL_42:
-  *(v4 + 7) = self->_itemPendingScanningDiskNumberOfChildrenPendingRejection;
-  *(v4 + 39) |= 0x40u;
+  *(toCopy + 7) = self->_itemPendingScanningDiskNumberOfChildrenPendingRejection;
+  *(toCopy + 39) |= 0x40u;
   has = self->_has;
   if ((*&has & 0x2000) == 0)
   {
@@ -1279,8 +1279,8 @@ LABEL_18:
   }
 
 LABEL_43:
-  *(v4 + 14) = self->_itemPendingScanningProviderEnumerationStatus;
-  *(v4 + 39) |= 0x2000u;
+  *(toCopy + 14) = self->_itemPendingScanningProviderEnumerationStatus;
+  *(toCopy + 39) |= 0x2000u;
   has = self->_has;
   if ((*&has & 0x200000) == 0)
   {
@@ -1294,8 +1294,8 @@ LABEL_19:
   }
 
 LABEL_44:
-  v4[155] = self->_itemPendingScanningProviderHasMultiplePagesEnumeration;
-  *(v4 + 39) |= 0x200000u;
+  toCopy[155] = self->_itemPendingScanningProviderHasMultiplePagesEnumeration;
+  *(toCopy + 39) |= 0x200000u;
   has = self->_has;
   if ((*&has & 0x4000) == 0)
   {
@@ -1309,8 +1309,8 @@ LABEL_20:
   }
 
 LABEL_45:
-  *(v4 + 15) = self->_itemPendingScanningProviderNumberOfChildren;
-  *(v4 + 39) |= 0x4000u;
+  *(toCopy + 15) = self->_itemPendingScanningProviderNumberOfChildren;
+  *(toCopy + 39) |= 0x4000u;
   has = self->_has;
   if ((*&has & 0x10000) == 0)
   {
@@ -1324,8 +1324,8 @@ LABEL_21:
   }
 
 LABEL_46:
-  *(v4 + 17) = self->_itemPendingScanningProviderNumberOfChildrenPendingCreation;
-  *(v4 + 39) |= 0x10000u;
+  *(toCopy + 17) = self->_itemPendingScanningProviderNumberOfChildrenPendingCreation;
+  *(toCopy + 39) |= 0x10000u;
   has = self->_has;
   if ((*&has & 0x8000) == 0)
   {
@@ -1339,21 +1339,21 @@ LABEL_22:
   }
 
 LABEL_47:
-  *(v4 + 16) = self->_itemPendingScanningProviderNumberOfChildrenFailingCreation;
-  *(v4 + 39) |= 0x8000u;
+  *(toCopy + 16) = self->_itemPendingScanningProviderNumberOfChildrenFailingCreation;
+  *(toCopy + 39) |= 0x8000u;
   if ((*&self->_has & 0x20000) != 0)
   {
 LABEL_23:
-    *(v4 + 18) = self->_itemPendingScanningProviderRemovalOfDatalessBitStatus;
-    *(v4 + 39) |= 0x20000u;
+    *(toCopy + 18) = self->_itemPendingScanningProviderRemovalOfDatalessBitStatus;
+    *(toCopy + 39) |= 0x20000u;
   }
 
 LABEL_24:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if ((*&has & 0x40000) != 0)
   {
@@ -1675,16 +1675,16 @@ LABEL_23:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_124;
   }
 
   has = self->_has;
-  v6 = *(v4 + 39);
+  v6 = *(equalCopy + 39);
   if ((*&has & 0x40000) != 0)
   {
     if ((v6 & 0x40000) == 0)
@@ -1692,16 +1692,16 @@ LABEL_23:
       goto LABEL_124;
     }
 
-    v7 = *(v4 + 152);
+    v7 = *(equalCopy + 152);
     if (self->_itemPendingReconciliationIsLocked)
     {
-      if ((*(v4 + 152) & 1) == 0)
+      if ((*(equalCopy + 152) & 1) == 0)
       {
         goto LABEL_124;
       }
     }
 
-    else if (*(v4 + 152))
+    else if (*(equalCopy + 152))
     {
       goto LABEL_124;
     }
@@ -1719,16 +1719,16 @@ LABEL_23:
       goto LABEL_124;
     }
 
-    v8 = *(v4 + 153);
+    v8 = *(equalCopy + 153);
     if (self->_itemPendingReconciliationIsLockedInDB)
     {
-      if ((*(v4 + 153) & 1) == 0)
+      if ((*(equalCopy + 153) & 1) == 0)
       {
         goto LABEL_124;
       }
     }
 
-    else if (*(v4 + 153))
+    else if (*(equalCopy + 153))
     {
       goto LABEL_124;
     }
@@ -1741,7 +1741,7 @@ LABEL_23:
 
   if ((*&has & 2) != 0)
   {
-    if ((v6 & 2) == 0 || self->_itemPendingReconciliationJobCode != *(v4 + 2))
+    if ((v6 & 2) == 0 || self->_itemPendingReconciliationJobCode != *(equalCopy + 2))
     {
       goto LABEL_124;
     }
@@ -1754,7 +1754,7 @@ LABEL_23:
 
   if ((*&has & 4) != 0)
   {
-    if ((v6 & 4) == 0 || self->_itemPendingReconciliationJobSchedulingState != *(v4 + 3))
+    if ((v6 & 4) == 0 || self->_itemPendingReconciliationJobSchedulingState != *(equalCopy + 3))
     {
       goto LABEL_124;
     }
@@ -1767,7 +1767,7 @@ LABEL_23:
 
   if (*&has)
   {
-    if ((v6 & 1) == 0 || self->_itemPendingReconciliationJobBlockingCode != *(v4 + 1))
+    if ((v6 & 1) == 0 || self->_itemPendingReconciliationJobBlockingCode != *(equalCopy + 1))
     {
       goto LABEL_124;
     }
@@ -1780,7 +1780,7 @@ LABEL_23:
 
   if ((*&has & 8) != 0)
   {
-    if ((v6 & 8) == 0 || self->_itemPendingScanningDiskEnumerationStatus != *(v4 + 4))
+    if ((v6 & 8) == 0 || self->_itemPendingScanningDiskEnumerationStatus != *(equalCopy + 4))
     {
       goto LABEL_124;
     }
@@ -1798,16 +1798,16 @@ LABEL_23:
       goto LABEL_124;
     }
 
-    v9 = *(v4 + 154);
+    v9 = *(equalCopy + 154);
     if (self->_itemPendingScanningDiskHasMultiplePagesEnumeration)
     {
-      if ((*(v4 + 154) & 1) == 0)
+      if ((*(equalCopy + 154) & 1) == 0)
       {
         goto LABEL_124;
       }
     }
 
-    else if (*(v4 + 154))
+    else if (*(equalCopy + 154))
     {
       goto LABEL_124;
     }
@@ -1820,7 +1820,7 @@ LABEL_23:
 
   if ((*&has & 0x20) != 0)
   {
-    if ((v6 & 0x20) == 0 || self->_itemPendingScanningDiskNumberOfChildrenPendingReconciliation != *(v4 + 6))
+    if ((v6 & 0x20) == 0 || self->_itemPendingScanningDiskNumberOfChildrenPendingReconciliation != *(equalCopy + 6))
     {
       goto LABEL_124;
     }
@@ -1833,7 +1833,7 @@ LABEL_23:
 
   if ((*&has & 0x10) != 0)
   {
-    if ((v6 & 0x10) == 0 || self->_itemPendingScanningDiskNumberOfChildrenNotPendingReconciliation != *(v4 + 5))
+    if ((v6 & 0x10) == 0 || self->_itemPendingScanningDiskNumberOfChildrenNotPendingReconciliation != *(equalCopy + 5))
     {
       goto LABEL_124;
     }
@@ -1846,7 +1846,7 @@ LABEL_23:
 
   if ((*&has & 0x800) != 0)
   {
-    if ((v6 & 0x800) == 0 || self->_itemPendingScanningDiskNumberOfChildrenPendingSyncUpDeletion != *(v4 + 12))
+    if ((v6 & 0x800) == 0 || self->_itemPendingScanningDiskNumberOfChildrenPendingSyncUpDeletion != *(equalCopy + 12))
     {
       goto LABEL_124;
     }
@@ -1859,7 +1859,7 @@ LABEL_23:
 
   if ((*&has & 0x100) != 0)
   {
-    if ((v6 & 0x100) == 0 || self->_itemPendingScanningDiskNumberOfChildrenPendingSyncDownDeletion != *(v4 + 9))
+    if ((v6 & 0x100) == 0 || self->_itemPendingScanningDiskNumberOfChildrenPendingSyncDownDeletion != *(equalCopy + 9))
     {
       goto LABEL_124;
     }
@@ -1872,7 +1872,7 @@ LABEL_23:
 
   if ((*&has & 0x1000) != 0)
   {
-    if ((v6 & 0x1000) == 0 || self->_itemPendingScanningDiskNumberOfChildrenPendingSyncUpReparent != *(v4 + 13))
+    if ((v6 & 0x1000) == 0 || self->_itemPendingScanningDiskNumberOfChildrenPendingSyncUpReparent != *(equalCopy + 13))
     {
       goto LABEL_124;
     }
@@ -1885,7 +1885,7 @@ LABEL_23:
 
   if ((*&has & 0x400) != 0)
   {
-    if ((v6 & 0x400) == 0 || self->_itemPendingScanningDiskNumberOfChildrenPendingSyncUp != *(v4 + 11))
+    if ((v6 & 0x400) == 0 || self->_itemPendingScanningDiskNumberOfChildrenPendingSyncUp != *(equalCopy + 11))
     {
       goto LABEL_124;
     }
@@ -1898,7 +1898,7 @@ LABEL_23:
 
   if ((*&has & 0x200) != 0)
   {
-    if ((v6 & 0x200) == 0 || self->_itemPendingScanningDiskNumberOfChildrenPendingSyncDownReparent != *(v4 + 10))
+    if ((v6 & 0x200) == 0 || self->_itemPendingScanningDiskNumberOfChildrenPendingSyncDownReparent != *(equalCopy + 10))
     {
       goto LABEL_124;
     }
@@ -1911,7 +1911,7 @@ LABEL_23:
 
   if ((*&has & 0x80) != 0)
   {
-    if ((v6 & 0x80) == 0 || self->_itemPendingScanningDiskNumberOfChildrenPendingSyncDown != *(v4 + 8))
+    if ((v6 & 0x80) == 0 || self->_itemPendingScanningDiskNumberOfChildrenPendingSyncDown != *(equalCopy + 8))
     {
       goto LABEL_124;
     }
@@ -1924,7 +1924,7 @@ LABEL_23:
 
   if ((*&has & 0x40) != 0)
   {
-    if ((v6 & 0x40) == 0 || self->_itemPendingScanningDiskNumberOfChildrenPendingRejection != *(v4 + 7))
+    if ((v6 & 0x40) == 0 || self->_itemPendingScanningDiskNumberOfChildrenPendingRejection != *(equalCopy + 7))
     {
       goto LABEL_124;
     }
@@ -1937,7 +1937,7 @@ LABEL_23:
 
   if ((*&has & 0x2000) != 0)
   {
-    if ((v6 & 0x2000) == 0 || self->_itemPendingScanningProviderEnumerationStatus != *(v4 + 14))
+    if ((v6 & 0x2000) == 0 || self->_itemPendingScanningProviderEnumerationStatus != *(equalCopy + 14))
     {
       goto LABEL_124;
     }
@@ -1965,16 +1965,16 @@ LABEL_124:
     goto LABEL_124;
   }
 
-  v10 = *(v4 + 155);
+  v10 = *(equalCopy + 155);
   if (self->_itemPendingScanningProviderHasMultiplePagesEnumeration)
   {
-    if ((*(v4 + 155) & 1) == 0)
+    if ((*(equalCopy + 155) & 1) == 0)
     {
       goto LABEL_124;
     }
   }
 
-  else if (*(v4 + 155))
+  else if (*(equalCopy + 155))
   {
     goto LABEL_124;
   }
@@ -1982,7 +1982,7 @@ LABEL_124:
 LABEL_98:
   if ((*&has & 0x4000) != 0)
   {
-    if ((v6 & 0x4000) == 0 || self->_itemPendingScanningProviderNumberOfChildren != *(v4 + 15))
+    if ((v6 & 0x4000) == 0 || self->_itemPendingScanningProviderNumberOfChildren != *(equalCopy + 15))
     {
       goto LABEL_124;
     }
@@ -1995,7 +1995,7 @@ LABEL_98:
 
   if ((*&has & 0x10000) != 0)
   {
-    if ((v6 & 0x10000) == 0 || self->_itemPendingScanningProviderNumberOfChildrenPendingCreation != *(v4 + 17))
+    if ((v6 & 0x10000) == 0 || self->_itemPendingScanningProviderNumberOfChildrenPendingCreation != *(equalCopy + 17))
     {
       goto LABEL_124;
     }
@@ -2008,7 +2008,7 @@ LABEL_98:
 
   if ((*&has & 0x8000) != 0)
   {
-    if ((v6 & 0x8000) == 0 || self->_itemPendingScanningProviderNumberOfChildrenFailingCreation != *(v4 + 16))
+    if ((v6 & 0x8000) == 0 || self->_itemPendingScanningProviderNumberOfChildrenFailingCreation != *(equalCopy + 16))
     {
       goto LABEL_124;
     }
@@ -2021,7 +2021,7 @@ LABEL_98:
 
   if ((*&has & 0x20000) != 0)
   {
-    if ((v6 & 0x20000) == 0 || self->_itemPendingScanningProviderRemovalOfDatalessBitStatus != *(v4 + 18))
+    if ((v6 & 0x20000) == 0 || self->_itemPendingScanningProviderRemovalOfDatalessBitStatus != *(equalCopy + 18))
     {
       goto LABEL_124;
     }
@@ -2340,15 +2340,15 @@ LABEL_39:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13 ^ v14 ^ v15 ^ v16 ^ v17 ^ v18 ^ v19 ^ v20 ^ v21 ^ v22 ^ v23 ^ v24;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 39);
+  fromCopy = from;
+  v5 = *(fromCopy + 39);
   if ((v5 & 0x40000) != 0)
   {
-    self->_itemPendingReconciliationIsLocked = *(v4 + 152);
+    self->_itemPendingReconciliationIsLocked = *(fromCopy + 152);
     *&self->_has |= 0x40000u;
-    v5 = *(v4 + 39);
+    v5 = *(fromCopy + 39);
     if ((v5 & 0x80000) == 0)
     {
 LABEL_3:
@@ -2366,9 +2366,9 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  self->_itemPendingReconciliationIsLockedInDB = *(v4 + 153);
+  self->_itemPendingReconciliationIsLockedInDB = *(fromCopy + 153);
   *&self->_has |= 0x80000u;
-  v5 = *(v4 + 39);
+  v5 = *(fromCopy + 39);
   if ((v5 & 2) == 0)
   {
 LABEL_4:
@@ -2381,9 +2381,9 @@ LABEL_4:
   }
 
 LABEL_29:
-  self->_itemPendingReconciliationJobCode = *(v4 + 2);
+  self->_itemPendingReconciliationJobCode = *(fromCopy + 2);
   *&self->_has |= 2u;
-  v5 = *(v4 + 39);
+  v5 = *(fromCopy + 39);
   if ((v5 & 4) == 0)
   {
 LABEL_5:
@@ -2396,9 +2396,9 @@ LABEL_5:
   }
 
 LABEL_30:
-  self->_itemPendingReconciliationJobSchedulingState = *(v4 + 3);
+  self->_itemPendingReconciliationJobSchedulingState = *(fromCopy + 3);
   *&self->_has |= 4u;
-  v5 = *(v4 + 39);
+  v5 = *(fromCopy + 39);
   if ((v5 & 1) == 0)
   {
 LABEL_6:
@@ -2411,9 +2411,9 @@ LABEL_6:
   }
 
 LABEL_31:
-  self->_itemPendingReconciliationJobBlockingCode = *(v4 + 1);
+  self->_itemPendingReconciliationJobBlockingCode = *(fromCopy + 1);
   *&self->_has |= 1u;
-  v5 = *(v4 + 39);
+  v5 = *(fromCopy + 39);
   if ((v5 & 8) == 0)
   {
 LABEL_7:
@@ -2426,9 +2426,9 @@ LABEL_7:
   }
 
 LABEL_32:
-  self->_itemPendingScanningDiskEnumerationStatus = *(v4 + 4);
+  self->_itemPendingScanningDiskEnumerationStatus = *(fromCopy + 4);
   *&self->_has |= 8u;
-  v5 = *(v4 + 39);
+  v5 = *(fromCopy + 39);
   if ((v5 & 0x100000) == 0)
   {
 LABEL_8:
@@ -2441,9 +2441,9 @@ LABEL_8:
   }
 
 LABEL_33:
-  self->_itemPendingScanningDiskHasMultiplePagesEnumeration = *(v4 + 154);
+  self->_itemPendingScanningDiskHasMultiplePagesEnumeration = *(fromCopy + 154);
   *&self->_has |= 0x100000u;
-  v5 = *(v4 + 39);
+  v5 = *(fromCopy + 39);
   if ((v5 & 0x20) == 0)
   {
 LABEL_9:
@@ -2456,9 +2456,9 @@ LABEL_9:
   }
 
 LABEL_34:
-  self->_itemPendingScanningDiskNumberOfChildrenPendingReconciliation = *(v4 + 6);
+  self->_itemPendingScanningDiskNumberOfChildrenPendingReconciliation = *(fromCopy + 6);
   *&self->_has |= 0x20u;
-  v5 = *(v4 + 39);
+  v5 = *(fromCopy + 39);
   if ((v5 & 0x10) == 0)
   {
 LABEL_10:
@@ -2471,9 +2471,9 @@ LABEL_10:
   }
 
 LABEL_35:
-  self->_itemPendingScanningDiskNumberOfChildrenNotPendingReconciliation = *(v4 + 5);
+  self->_itemPendingScanningDiskNumberOfChildrenNotPendingReconciliation = *(fromCopy + 5);
   *&self->_has |= 0x10u;
-  v5 = *(v4 + 39);
+  v5 = *(fromCopy + 39);
   if ((v5 & 0x800) == 0)
   {
 LABEL_11:
@@ -2486,9 +2486,9 @@ LABEL_11:
   }
 
 LABEL_36:
-  self->_itemPendingScanningDiskNumberOfChildrenPendingSyncUpDeletion = *(v4 + 12);
+  self->_itemPendingScanningDiskNumberOfChildrenPendingSyncUpDeletion = *(fromCopy + 12);
   *&self->_has |= 0x800u;
-  v5 = *(v4 + 39);
+  v5 = *(fromCopy + 39);
   if ((v5 & 0x100) == 0)
   {
 LABEL_12:
@@ -2501,9 +2501,9 @@ LABEL_12:
   }
 
 LABEL_37:
-  self->_itemPendingScanningDiskNumberOfChildrenPendingSyncDownDeletion = *(v4 + 9);
+  self->_itemPendingScanningDiskNumberOfChildrenPendingSyncDownDeletion = *(fromCopy + 9);
   *&self->_has |= 0x100u;
-  v5 = *(v4 + 39);
+  v5 = *(fromCopy + 39);
   if ((v5 & 0x1000) == 0)
   {
 LABEL_13:
@@ -2516,9 +2516,9 @@ LABEL_13:
   }
 
 LABEL_38:
-  self->_itemPendingScanningDiskNumberOfChildrenPendingSyncUpReparent = *(v4 + 13);
+  self->_itemPendingScanningDiskNumberOfChildrenPendingSyncUpReparent = *(fromCopy + 13);
   *&self->_has |= 0x1000u;
-  v5 = *(v4 + 39);
+  v5 = *(fromCopy + 39);
   if ((v5 & 0x400) == 0)
   {
 LABEL_14:
@@ -2531,9 +2531,9 @@ LABEL_14:
   }
 
 LABEL_39:
-  self->_itemPendingScanningDiskNumberOfChildrenPendingSyncUp = *(v4 + 11);
+  self->_itemPendingScanningDiskNumberOfChildrenPendingSyncUp = *(fromCopy + 11);
   *&self->_has |= 0x400u;
-  v5 = *(v4 + 39);
+  v5 = *(fromCopy + 39);
   if ((v5 & 0x200) == 0)
   {
 LABEL_15:
@@ -2546,9 +2546,9 @@ LABEL_15:
   }
 
 LABEL_40:
-  self->_itemPendingScanningDiskNumberOfChildrenPendingSyncDownReparent = *(v4 + 10);
+  self->_itemPendingScanningDiskNumberOfChildrenPendingSyncDownReparent = *(fromCopy + 10);
   *&self->_has |= 0x200u;
-  v5 = *(v4 + 39);
+  v5 = *(fromCopy + 39);
   if ((v5 & 0x80) == 0)
   {
 LABEL_16:
@@ -2561,9 +2561,9 @@ LABEL_16:
   }
 
 LABEL_41:
-  self->_itemPendingScanningDiskNumberOfChildrenPendingSyncDown = *(v4 + 8);
+  self->_itemPendingScanningDiskNumberOfChildrenPendingSyncDown = *(fromCopy + 8);
   *&self->_has |= 0x80u;
-  v5 = *(v4 + 39);
+  v5 = *(fromCopy + 39);
   if ((v5 & 0x40) == 0)
   {
 LABEL_17:
@@ -2576,9 +2576,9 @@ LABEL_17:
   }
 
 LABEL_42:
-  self->_itemPendingScanningDiskNumberOfChildrenPendingRejection = *(v4 + 7);
+  self->_itemPendingScanningDiskNumberOfChildrenPendingRejection = *(fromCopy + 7);
   *&self->_has |= 0x40u;
-  v5 = *(v4 + 39);
+  v5 = *(fromCopy + 39);
   if ((v5 & 0x2000) == 0)
   {
 LABEL_18:
@@ -2591,9 +2591,9 @@ LABEL_18:
   }
 
 LABEL_43:
-  self->_itemPendingScanningProviderEnumerationStatus = *(v4 + 14);
+  self->_itemPendingScanningProviderEnumerationStatus = *(fromCopy + 14);
   *&self->_has |= 0x2000u;
-  v5 = *(v4 + 39);
+  v5 = *(fromCopy + 39);
   if ((v5 & 0x200000) == 0)
   {
 LABEL_19:
@@ -2606,9 +2606,9 @@ LABEL_19:
   }
 
 LABEL_44:
-  self->_itemPendingScanningProviderHasMultiplePagesEnumeration = *(v4 + 155);
+  self->_itemPendingScanningProviderHasMultiplePagesEnumeration = *(fromCopy + 155);
   *&self->_has |= 0x200000u;
-  v5 = *(v4 + 39);
+  v5 = *(fromCopy + 39);
   if ((v5 & 0x4000) == 0)
   {
 LABEL_20:
@@ -2621,9 +2621,9 @@ LABEL_20:
   }
 
 LABEL_45:
-  self->_itemPendingScanningProviderNumberOfChildren = *(v4 + 15);
+  self->_itemPendingScanningProviderNumberOfChildren = *(fromCopy + 15);
   *&self->_has |= 0x4000u;
-  v5 = *(v4 + 39);
+  v5 = *(fromCopy + 39);
   if ((v5 & 0x10000) == 0)
   {
 LABEL_21:
@@ -2636,9 +2636,9 @@ LABEL_21:
   }
 
 LABEL_46:
-  self->_itemPendingScanningProviderNumberOfChildrenPendingCreation = *(v4 + 17);
+  self->_itemPendingScanningProviderNumberOfChildrenPendingCreation = *(fromCopy + 17);
   *&self->_has |= 0x10000u;
-  v5 = *(v4 + 39);
+  v5 = *(fromCopy + 39);
   if ((v5 & 0x8000) == 0)
   {
 LABEL_22:
@@ -2651,12 +2651,12 @@ LABEL_22:
   }
 
 LABEL_47:
-  self->_itemPendingScanningProviderNumberOfChildrenFailingCreation = *(v4 + 16);
+  self->_itemPendingScanningProviderNumberOfChildrenFailingCreation = *(fromCopy + 16);
   *&self->_has |= 0x8000u;
-  if ((*(v4 + 39) & 0x20000) != 0)
+  if ((*(fromCopy + 39) & 0x20000) != 0)
   {
 LABEL_23:
-    self->_itemPendingScanningProviderRemovalOfDatalessBitStatus = *(v4 + 18);
+    self->_itemPendingScanningProviderRemovalOfDatalessBitStatus = *(fromCopy + 18);
     *&self->_has |= 0x20000u;
   }
 

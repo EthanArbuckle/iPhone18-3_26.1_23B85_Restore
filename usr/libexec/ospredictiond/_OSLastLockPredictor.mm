@@ -4,8 +4,8 @@
 - (NSString)description;
 - (_OSLastLockPredictor)init;
 - (double)presentDuration;
-- (id)lastLockPredictionResultAtDate:(id)a3 withTimeSinceActive:(double)a4 withError:(id *)a5;
-- (id)lastLockPredictionResultWithError:(id *)a3;
+- (id)lastLockPredictionResultAtDate:(id)date withTimeSinceActive:(double)active withError:(id *)error;
+- (id)lastLockPredictionResultWithError:(id *)error;
 - (id)metadata;
 @end
 
@@ -50,7 +50,7 @@
     if (v5)
     {
       v6 = [v4 integerForKey:@"modelType"];
-      v7 = [a1 log];
+      v7 = [self log];
       v8 = v7;
       if (v6 == 2)
       {
@@ -66,7 +66,7 @@
           goto LABEL_23;
         }
 
-        v8 = [a1 log];
+        v8 = [self log];
         if (!os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
         {
           goto LABEL_34;
@@ -102,7 +102,7 @@ LABEL_20:
 
   if (!+[OSIntelligenceUtilities hasEnoughInactivityHistory])
   {
-    v8 = [a1 log];
+    v8 = [self log];
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *v21 = 0;
@@ -117,7 +117,7 @@ LABEL_20:
   if (!+[OSIntelligenceUtilities isDeviceRarelyUsedRecently])
   {
     v14 = +[OSIntelligenceUtilities hasRecentTravelHistory];
-    v8 = [a1 log];
+    v8 = [self log];
     v15 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
     if (v14)
     {
@@ -147,7 +147,7 @@ LABEL_33:
     goto LABEL_34;
   }
 
-  v8 = [a1 log];
+  v8 = [self log];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v20 = 0;
@@ -161,9 +161,9 @@ LABEL_21:
 LABEL_22:
 
 LABEL_23:
-  v12 = [(__objc2_class *)*v11 predictor];
+  predictor = [(__objc2_class *)*v11 predictor];
 
-  return v12;
+  return predictor;
 }
 
 + (unint64_t)readEvaluatedPredictorTypeFromDefaults
@@ -174,11 +174,11 @@ LABEL_23:
   return v3;
 }
 
-- (id)lastLockPredictionResultWithError:(id *)a3
+- (id)lastLockPredictionResultWithError:(id *)error
 {
   v5 = +[NSDate now];
   [(_OSLastLockPredictor *)self presentDuration];
-  v6 = [(_OSLastLockPredictor *)self lastLockPredictionResultAtDate:v5 withTimeSinceActive:a3 withError:?];
+  v6 = [(_OSLastLockPredictor *)self lastLockPredictionResultAtDate:v5 withTimeSinceActive:error withError:?];
 
   return v6;
 }
@@ -192,9 +192,9 @@ LABEL_23:
   return v4;
 }
 
-- (id)lastLockPredictionResultAtDate:(id)a3 withTimeSinceActive:(double)a4 withError:(id *)a5
+- (id)lastLockPredictionResultAtDate:(id)date withTimeSinceActive:(double)active withError:(id *)error
 {
-  v5 = a3;
+  dateCopy = date;
   v6 = [objc_opt_class() log];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
@@ -211,8 +211,8 @@ LABEL_23:
 
 - (NSString)description
 {
-  v2 = [(_OSLastLockPredictor *)self metadata];
-  v3 = [v2 description];
+  metadata = [(_OSLastLockPredictor *)self metadata];
+  v3 = [metadata description];
 
   return v3;
 }

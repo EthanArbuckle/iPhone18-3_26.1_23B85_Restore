@@ -1,30 +1,30 @@
 @interface IPAAggregateLargestImageSizePolicy
 - (BOOL)isBestFitPolicy;
-- (CGSize)transformSize:(CGSize)a3;
-- (IPAAggregateLargestImageSizePolicy)initWithCoder:(id)a3;
-- (IPAAggregateLargestImageSizePolicy)initWithPolicies:(id)a3;
-- (double)transformScaleForSize:(CGSize)a3;
-- (void)encodeWithCoder:(id)a3;
+- (CGSize)transformSize:(CGSize)size;
+- (IPAAggregateLargestImageSizePolicy)initWithCoder:(id)coder;
+- (IPAAggregateLargestImageSizePolicy)initWithPolicies:(id)policies;
+- (double)transformScaleForSize:(CGSize)size;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IPAAggregateLargestImageSizePolicy
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = IPAAggregateLargestImageSizePolicy;
-  v4 = a3;
-  [(IPAImageSizePolicy *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_policies forKey:{@"policies", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(IPAImageSizePolicy *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_policies forKey:{@"policies", v5.receiver, v5.super_class}];
 }
 
-- (IPAAggregateLargestImageSizePolicy)initWithCoder:(id)a3
+- (IPAAggregateLargestImageSizePolicy)initWithCoder:(id)coder
 {
   v8.receiver = self;
   v8.super_class = IPAAggregateLargestImageSizePolicy;
-  v3 = a3;
-  v4 = [(IPAImageSizePolicy *)&v8 initWithCoder:v3];
-  v5 = [v3 decodeObjectForKey:{@"policies", v8.receiver, v8.super_class}];
+  coderCopy = coder;
+  v4 = [(IPAImageSizePolicy *)&v8 initWithCoder:coderCopy];
+  v5 = [coderCopy decodeObjectForKey:{@"policies", v8.receiver, v8.super_class}];
 
   policies = v4->_policies;
   v4->_policies = v5;
@@ -32,14 +32,14 @@
   return v4;
 }
 
-- (double)transformScaleForSize:(CGSize)a3
+- (double)transformScaleForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v18 = *MEMORY[0x277D85DE8];
-  if (a3.width < 0.0 || a3.height < 0.0)
+  if (size.width < 0.0 || size.height < 0.0)
   {
-    NSStringFromSize(a3);
+    NSStringFromSize(size);
     objc_claimAutoreleasedReturnValue();
     _PFAssertFailHandler();
   }
@@ -85,14 +85,14 @@
   return v9;
 }
 
-- (CGSize)transformSize:(CGSize)a3
+- (CGSize)transformSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v22 = *MEMORY[0x277D85DE8];
-  if (a3.width < 0.0 || a3.height < 0.0)
+  if (size.width < 0.0 || size.height < 0.0)
   {
-    NSStringFromSize(a3);
+    NSStringFromSize(size);
     objc_claimAutoreleasedReturnValue();
     _PFAssertFailHandler();
   }
@@ -192,10 +192,10 @@ LABEL_11:
   return v7;
 }
 
-- (IPAAggregateLargestImageSizePolicy)initWithPolicies:(id)a3
+- (IPAAggregateLargestImageSizePolicy)initWithPolicies:(id)policies
 {
-  v5 = a3;
-  if ([v5 count])
+  policiesCopy = policies;
+  if ([policiesCopy count])
   {
     v12.receiver = self;
     v12.super_class = IPAAggregateLargestImageSizePolicy;
@@ -203,7 +203,7 @@ LABEL_11:
     v7 = v6;
     if (v6)
     {
-      objc_storeStrong(&v6->_policies, a3);
+      objc_storeStrong(&v6->_policies, policies);
     }
 
     return v7;

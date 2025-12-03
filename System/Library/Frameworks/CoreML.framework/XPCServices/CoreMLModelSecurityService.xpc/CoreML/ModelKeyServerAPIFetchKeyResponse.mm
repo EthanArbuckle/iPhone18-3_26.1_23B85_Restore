@@ -1,39 +1,39 @@
 @interface ModelKeyServerAPIFetchKeyResponse
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (int)StringAsResult:(id)a3;
+- (int)StringAsResult:(id)result;
 - (int)result;
 - (unint64_t)hash;
 - (void)clearOneofValuesForResult;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setError:(id)a3;
-- (void)setSuccess:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setError:(id)error;
+- (void)setSuccess:(id)success;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ModelKeyServerAPIFetchKeyResponse
 
-- (void)setSuccess:(id)a3
+- (void)setSuccess:(id)success
 {
-  v4 = a3;
+  successCopy = success;
   [(ModelKeyServerAPIFetchKeyResponse *)self clearOneofValuesForResult];
   *&self->_has |= 1u;
   self->_result = 1;
   success = self->_success;
-  self->_success = v4;
+  self->_success = successCopy;
 }
 
-- (void)setError:(id)a3
+- (void)setError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   [(ModelKeyServerAPIFetchKeyResponse *)self clearOneofValuesForResult];
   *&self->_has |= 1u;
   self->_result = 2;
   error = self->_error;
-  self->_error = v4;
+  self->_error = errorCopy;
 }
 
 - (int)result
@@ -49,20 +49,20 @@
   }
 }
 
-- (int)StringAsResult:(id)a3
+- (int)StringAsResult:(id)result
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"PBUNSET"])
+  resultCopy = result;
+  if ([resultCopy isEqualToString:@"PBUNSET"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"success"])
+  else if ([resultCopy isEqualToString:@"success"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"error"])
+  else if ([resultCopy isEqualToString:@"error"])
   {
     v4 = 2;
   }
@@ -91,8 +91,8 @@
   v7.receiver = self;
   v7.super_class = ModelKeyServerAPIFetchKeyResponse;
   v3 = [(ModelKeyServerAPIFetchKeyResponse *)&v7 description];
-  v4 = [(ModelKeyServerAPIFetchKeyResponse *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(ModelKeyServerAPIFetchKeyResponse *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -103,15 +103,15 @@
   success = self->_success;
   if (success)
   {
-    v5 = [(ModelKeyServerAPIFetchKeyResult *)success dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"success"];
+    dictionaryRepresentation = [(ModelKeyServerAPIFetchKeyResult *)success dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation forKey:@"success"];
   }
 
   error = self->_error;
   if (error)
   {
-    v7 = [(ModelKeyServerAPIResultError *)error dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"error"];
+    dictionaryRepresentation2 = [(ModelKeyServerAPIResultError *)error dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation2 forKey:@"error"];
   }
 
   if (*&self->_has)
@@ -133,49 +133,49 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_success)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_error)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[4] = self->_result;
-    *(v4 + 32) |= 1u;
+    toCopy[4] = self->_result;
+    *(toCopy + 32) |= 1u;
   }
 
-  v5 = v4;
+  v5 = toCopy;
   if (self->_success)
   {
-    [v4 setSuccess:?];
-    v4 = v5;
+    [toCopy setSuccess:?];
+    toCopy = v5;
   }
 
   if (self->_error)
   {
     [v5 setError:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -183,35 +183,35 @@
     *(v5 + 32) |= 1u;
   }
 
-  v7 = [(ModelKeyServerAPIFetchKeyResult *)self->_success copyWithZone:a3];
+  v7 = [(ModelKeyServerAPIFetchKeyResult *)self->_success copyWithZone:zone];
   v8 = v6[3];
   v6[3] = v7;
 
-  v9 = [(ModelKeyServerAPIResultError *)self->_error copyWithZone:a3];
+  v9 = [(ModelKeyServerAPIResultError *)self->_error copyWithZone:zone];
   v10 = v6[1];
   v6[1] = v9;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_11;
   }
 
-  v5 = *(v4 + 32);
+  v5 = *(equalCopy + 32);
   if (*&self->_has)
   {
-    if ((*(v4 + 32) & 1) == 0 || self->_result != *(v4 + 4))
+    if ((*(equalCopy + 32) & 1) == 0 || self->_result != *(equalCopy + 4))
     {
       goto LABEL_11;
     }
   }
 
-  else if (*(v4 + 32))
+  else if (*(equalCopy + 32))
   {
 LABEL_11:
     v8 = 0;
@@ -219,13 +219,13 @@ LABEL_11:
   }
 
   success = self->_success;
-  if (success | *(v4 + 3) && ![(ModelKeyServerAPIFetchKeyResult *)success isEqual:?])
+  if (success | *(equalCopy + 3) && ![(ModelKeyServerAPIFetchKeyResult *)success isEqual:?])
   {
     goto LABEL_11;
   }
 
   error = self->_error;
-  if (error | *(v4 + 1))
+  if (error | *(equalCopy + 1))
   {
     v8 = [(ModelKeyServerAPIResultError *)error isEqual:?];
   }
@@ -256,13 +256,13 @@ LABEL_12:
   return v4 ^ [(ModelKeyServerAPIResultError *)self->_error hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4[8])
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy[8])
   {
-    self->_result = v4[4];
+    self->_result = fromCopy[4];
     *&self->_has |= 1u;
   }
 

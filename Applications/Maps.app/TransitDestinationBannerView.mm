@@ -1,27 +1,27 @@
 @interface TransitDestinationBannerView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (TransitDestinationBannerView)initWithTarget:(id)a3 item:(id)a4 aperturePresentation:(BOOL)a5;
-- (void)setExpanded:(BOOL)a3;
-- (void)setShowsControls:(BOOL)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (TransitDestinationBannerView)initWithTarget:(id)target item:(id)item aperturePresentation:(BOOL)presentation;
+- (void)setExpanded:(BOOL)expanded;
+- (void)setShowsControls:(BOOL)controls;
 - (void)updateFromBannerItem;
 @end
 
 @implementation TransitDestinationBannerView
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   cachedHeight = self->_cachedHeight;
-  if (cachedHeight == -1.0 || self->_calculatedWidth != a3.width)
+  if (cachedHeight == -1.0 || self->_calculatedWidth != fits.width)
   {
     if ([(MapsBannerView *)self aperturePresentation])
     {
-      v7 = [(TransitDestinationBannerView *)self SBUISA_systemApertureObstructedAreaLayoutGuide];
-      [v7 layoutFrame];
+      sBUISA_systemApertureObstructedAreaLayoutGuide = [(TransitDestinationBannerView *)self SBUISA_systemApertureObstructedAreaLayoutGuide];
+      [sBUISA_systemApertureObstructedAreaLayoutGuide layoutFrame];
       MaxY = CGRectGetMaxY(v25);
-      v9 = [(MapsBannerView *)self contentView];
-      [v9 _maps_compressedSizeForWidth:0 withBlock:width];
+      contentView = [(MapsBannerView *)self contentView];
+      [contentView _maps_compressedSizeForWidth:0 withBlock:width];
       v11 = v10 + 17.0 + MaxY;
     }
 
@@ -43,12 +43,12 @@
       v13 = sub_100032C3C();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_FAULT))
       {
-        v14 = [(MapsBannerView *)self item];
+        item = [(MapsBannerView *)self item];
         v23.width = width;
         v23.height = height;
         v15 = NSStringFromCGSize(v23);
         v17 = 138412802;
-        v18 = v14;
+        v18 = item;
         v19 = 2112;
         v20 = v15;
         v21 = 2048;
@@ -66,13 +66,13 @@
   return result;
 }
 
-- (void)setExpanded:(BOOL)a3
+- (void)setExpanded:(BOOL)expanded
 {
-  v3 = a3;
-  self->_expanded = a3;
-  v5 = [(TransitDestinationBannerView *)self leadingView];
-  v6 = v5;
-  if (v3)
+  expandedCopy = expanded;
+  self->_expanded = expanded;
+  leadingView = [(TransitDestinationBannerView *)self leadingView];
+  v6 = leadingView;
+  if (expandedCopy)
   {
     v7 = 0.0;
   }
@@ -82,7 +82,7 @@
     v7 = 1.0;
   }
 
-  if (v3)
+  if (expandedCopy)
   {
     v8 = 1.0;
   }
@@ -92,69 +92,69 @@
     v8 = 0.0;
   }
 
-  [v5 setAlpha:v7];
+  [leadingView setAlpha:v7];
 
-  v9 = [(TransitDestinationBannerView *)self trailingView];
-  [v9 setAlpha:v7];
+  trailingView = [(TransitDestinationBannerView *)self trailingView];
+  [trailingView setAlpha:v7];
 
-  v10 = [(TransitDestinationBannerView *)self minimalView];
-  [v10 setAlpha:v7];
+  minimalView = [(TransitDestinationBannerView *)self minimalView];
+  [minimalView setAlpha:v7];
 
-  v11 = [(TransitDestinationBannerView *)self detachedMinimalView];
-  [v11 setAlpha:v7];
+  detachedMinimalView = [(TransitDestinationBannerView *)self detachedMinimalView];
+  [detachedMinimalView setAlpha:v7];
 
-  v12 = [(MapsBannerView *)self contentView];
-  [v12 setAlpha:v8];
+  contentView = [(MapsBannerView *)self contentView];
+  [contentView setAlpha:v8];
 
   topConstraint = self->_topConstraint;
 
-  [(NSLayoutConstraint *)topConstraint setActive:v3];
+  [(NSLayoutConstraint *)topConstraint setActive:expandedCopy];
 }
 
-- (void)setShowsControls:(BOOL)a3
+- (void)setShowsControls:(BOOL)controls
 {
-  v3 = a3;
-  v5 = [(MapsBannerView *)self aperturePresentation];
-  if (self->_showsControls != (v5 & v3))
+  controlsCopy = controls;
+  aperturePresentation = [(MapsBannerView *)self aperturePresentation];
+  if (self->_showsControls != (aperturePresentation & controlsCopy))
   {
-    self->_showsControls = v5 & v3;
-    [(UIView *)self->_controlsView setHidden:v5 & v3 ^ 1];
+    self->_showsControls = aperturePresentation & controlsCopy;
+    [(UIView *)self->_controlsView setHidden:aperturePresentation & controlsCopy ^ 1];
     self->_cachedHeight = -1.0;
   }
 }
 
 - (void)updateFromBannerItem
 {
-  v5 = [(MapsBannerView *)self item];
-  v3 = [v5 title];
-  v4 = [(TransitDestinationBannerView *)self primaryLabel];
-  [v4 setText:v3];
+  item = [(MapsBannerView *)self item];
+  title = [item title];
+  primaryLabel = [(TransitDestinationBannerView *)self primaryLabel];
+  [primaryLabel setText:title];
 
   self->_cachedHeight = -1.0;
 }
 
-- (TransitDestinationBannerView)initWithTarget:(id)a3 item:(id)a4 aperturePresentation:(BOOL)a5
+- (TransitDestinationBannerView)initWithTarget:(id)target item:(id)item aperturePresentation:(BOOL)presentation
 {
-  v5 = a5;
+  presentationCopy = presentation;
   v101.receiver = self;
   v101.super_class = TransitDestinationBannerView;
-  v6 = [(MapsBannerView *)&v101 initWithTarget:a3 item:a4 aperturePresentation:?];
+  v6 = [(MapsBannerView *)&v101 initWithTarget:target item:item aperturePresentation:?];
   if (v6)
   {
     v7 = objc_opt_class();
     v8 = NSStringFromClass(v7);
     [(TransitDestinationBannerView *)v6 setAccessibilityIdentifier:v8];
 
-    if (v5)
+    if (presentationCopy)
     {
-      v96 = v5;
+      v96 = presentationCopy;
       v9 = [EmptyApertureView alloc];
       y = CGRectZero.origin.y;
       width = CGRectZero.size.width;
       height = CGRectZero.size.height;
-      v13 = [(EmptyApertureView *)v9 initWithFrame:CGRectZero.origin.x, y, width, height];
+      height = [(EmptyApertureView *)v9 initWithFrame:CGRectZero.origin.x, y, width, height];
       trailingView = v6->_trailingView;
-      v6->_trailingView = v13;
+      v6->_trailingView = height;
 
       [(EmptyApertureView *)v6->_trailingView setTranslatesAutoresizingMaskIntoConstraints:0];
       [(TransitDestinationBannerView *)v6 addSubview:v6->_trailingView];
@@ -177,22 +177,22 @@
 
       [(TransitApertureElementWrapperView *)v6->_leadingView setTranslatesAutoresizingMaskIntoConstraints:0];
       [(TransitDestinationBannerView *)v6 addSubview:v6->_leadingView];
-      v94 = [(TransitApertureElementWrapperView *)v6->_leadingView widthAnchor];
-      v92 = [v94 constraintEqualToConstant:20.0];
+      widthAnchor = [(TransitApertureElementWrapperView *)v6->_leadingView widthAnchor];
+      v92 = [widthAnchor constraintEqualToConstant:20.0];
       v104[0] = v92;
-      v90 = [(TransitApertureElementWrapperView *)v6->_leadingView heightAnchor];
-      v89 = [v90 constraintEqualToConstant:20.0];
+      heightAnchor = [(TransitApertureElementWrapperView *)v6->_leadingView heightAnchor];
+      v89 = [heightAnchor constraintEqualToConstant:20.0];
       v104[1] = v89;
-      v21 = [(TransitApertureElementWrapperView *)v6->_leadingView leadingAnchor];
-      v22 = [(TransitDestinationBannerView *)v6 SBUISA_systemApertureLeadingConcentricContentLayoutGuide];
-      v23 = [v22 leadingAnchor];
+      leadingAnchor = [(TransitApertureElementWrapperView *)v6->_leadingView leadingAnchor];
+      sBUISA_systemApertureLeadingConcentricContentLayoutGuide = [(TransitDestinationBannerView *)v6 SBUISA_systemApertureLeadingConcentricContentLayoutGuide];
+      leadingAnchor2 = [sBUISA_systemApertureLeadingConcentricContentLayoutGuide leadingAnchor];
       [(MapsBannerView *)v6 bannerAccessoryViewLeadingInset];
-      v24 = [v21 constraintEqualToAnchor:v23 constant:?];
+      v24 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:?];
       v104[2] = v24;
-      v25 = [(EmptyApertureView *)v6->_trailingView trailingAnchor];
-      v26 = [(TransitDestinationBannerView *)v6 SBUISA_systemApertureTrailingConcentricContentLayoutGuide];
-      v27 = [v26 trailingAnchor];
-      v28 = [v25 constraintEqualToAnchor:v27];
+      trailingAnchor = [(EmptyApertureView *)v6->_trailingView trailingAnchor];
+      sBUISA_systemApertureTrailingConcentricContentLayoutGuide = [(TransitDestinationBannerView *)v6 SBUISA_systemApertureTrailingConcentricContentLayoutGuide];
+      trailingAnchor2 = [sBUISA_systemApertureTrailingConcentricContentLayoutGuide trailingAnchor];
+      v28 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
       v104[3] = v28;
       v29 = [NSArray arrayWithObjects:v104 count:4];
 
@@ -265,7 +265,7 @@
       [(TransitApertureElementWrapperView *)v6->_detachedMinimalView setTranslatesAutoresizingMaskIntoConstraints:0];
       [(TransitDestinationBannerView *)v6 addSubview:v6->_detachedMinimalView];
 
-      v5 = v96;
+      presentationCopy = v96;
     }
 
     v48 = [UILabel alloc];
@@ -304,7 +304,7 @@
 
     [(UIImageView *)v6->_primaryImageView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIImageView *)v6->_primaryImageView setContentMode:4];
-    if (v5)
+    if (presentationCopy)
     {
       v64 = +[NSBundle mainBundle];
       v65 = [v64 localizedStringForKey:@"[Nav Banner] End Route" value:@"localized string not found" table:0];
@@ -327,11 +327,11 @@
       v91 = v70;
 
       v72 = v6->_controlsView;
-      v73 = [(UILabel *)v6->_primaryLabel _tightBoundingBoxLayoutGuide];
-      v74 = [v73 topAnchor];
-      v75 = [(TransitDestinationBannerView *)v6 SBUISA_systemApertureObstructedAreaLayoutGuide];
-      v76 = [v75 bottomAnchor];
-      v77 = [v74 constraintEqualToAnchor:v76];
+      _tightBoundingBoxLayoutGuide = [(UILabel *)v6->_primaryLabel _tightBoundingBoxLayoutGuide];
+      topAnchor = [_tightBoundingBoxLayoutGuide topAnchor];
+      sBUISA_systemApertureObstructedAreaLayoutGuide = [(TransitDestinationBannerView *)v6 SBUISA_systemApertureObstructedAreaLayoutGuide];
+      bottomAnchor = [sBUISA_systemApertureObstructedAreaLayoutGuide bottomAnchor];
+      v77 = [topAnchor constraintEqualToAnchor:bottomAnchor];
       topConstraint = v6->_topConstraint;
       v6->_topConstraint = v77;
 
@@ -346,18 +346,18 @@
       v79 = &_s10MapsDesign17ListCellViewModelCMa_ptr_0;
     }
 
-    v81 = [(UIImageView *)v6->_primaryImageView heightAnchor];
-    v82 = [v81 constraintEqualToConstant:36.0];
+    heightAnchor2 = [(UIImageView *)v6->_primaryImageView heightAnchor];
+    v82 = [heightAnchor2 constraintEqualToConstant:36.0];
     v102[0] = v82;
-    v83 = [(UIImageView *)v6->_primaryImageView widthAnchor];
-    v84 = [v83 constraintEqualToConstant:36.0];
+    widthAnchor2 = [(UIImageView *)v6->_primaryImageView widthAnchor];
+    v84 = [widthAnchor2 constraintEqualToConstant:36.0];
     v102[1] = v84;
     v85 = [v79[286] arrayWithObjects:v102 count:2];
     [NSLayoutConstraint activateConstraints:v85];
 
     v86 = [[MapsBannerContent alloc] initWithHeaderView:0 iconView:v6->_primaryImageView leadingTopView:v6->_primaryLabel trailingTopView:0 bottomView:0 footerView:v72];
-    v87 = [(MapsBannerView *)v6 contentView];
-    [v87 setContent:v86];
+    contentView = [(MapsBannerView *)v6 contentView];
+    [contentView setContent:v86];
 
     [(TransitDestinationBannerView *)v6 updateFromBannerItem];
     v6->_cachedHeight = -1.0;

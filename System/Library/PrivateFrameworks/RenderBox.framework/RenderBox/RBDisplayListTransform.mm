@@ -1,12 +1,12 @@
 @interface RBDisplayListTransform
 + (id)transform;
 - (id).cxx_construct;
-- (id)applyingToDisplayList:(id)a3;
-- (id)copyApplyingToDisplayList:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)addColorReplacementFrom:(id)a3 to:(id)a4 colorSpace:(int)a5;
-- (void)addColorReplacementTo:(id)a3 colorSpace:(int)a4;
-- (void)applyToDisplayList:(id)a3;
+- (id)applyingToDisplayList:(id)list;
+- (id)copyApplyingToDisplayList:(id)list;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)addColorReplacementFrom:(id)from to:(id)to colorSpace:(int)space;
+- (void)addColorReplacementTo:(id)to colorSpace:(int)space;
+- (void)applyToDisplayList:(id)list;
 @end
 
 @implementation RBDisplayListTransform
@@ -25,7 +25,7 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_new();
   v5 = v4;
@@ -102,17 +102,17 @@ LABEL_18:
   return v5;
 }
 
-- (void)addColorReplacementFrom:(id)a3 to:(id)a4 colorSpace:(int)a5
+- (void)addColorReplacementFrom:(id)from to:(id)to colorSpace:(int)space
 {
-  _S8 = a4.var3;
-  _S9 = a4.var2;
-  _S10 = a4.var1;
-  _S11 = a4.var0;
-  _S12 = a3.var3;
-  _S13 = a3.var2;
-  _S14 = a3.var1;
-  _S15 = a3.var0;
-  v14 = rb_color_space(a5);
+  _S8 = to.var3;
+  _S9 = to.var2;
+  _S10 = to.var1;
+  _S11 = to.var0;
+  _S12 = from.var3;
+  _S13 = from.var2;
+  _S14 = from.var1;
+  _S15 = from.var0;
+  v14 = rb_color_space(space);
   __asm { FCVT            H0, S15 }
 
   v30[0] = _H0;
@@ -146,13 +146,13 @@ LABEL_18:
   RB::DisplayList::Transform::add_color_from_to(self->_transform._terms._p, v30, v27);
 }
 
-- (void)addColorReplacementTo:(id)a3 colorSpace:(int)a4
+- (void)addColorReplacementTo:(id)to colorSpace:(int)space
 {
-  _S8 = a3.var3;
-  _S9 = a3.var2;
-  _S10 = a3.var1;
-  _S11 = a3.var0;
-  v9 = rb_color_space(a4);
+  _S8 = to.var3;
+  _S9 = to.var2;
+  _S10 = to.var1;
+  _S11 = to.var0;
+  v9 = rb_color_space(space);
   __asm
   {
     FCVT            H0, S11
@@ -171,33 +171,33 @@ LABEL_18:
   RB::DisplayList::Transform::add_color_to(self->_transform._terms._p, v18);
 }
 
-- (void)applyToDisplayList:(id)a3
+- (void)applyToDisplayList:(id)list
 {
-  v4 = [a3 _rb_contents];
-  if (v4)
+  _rb_contents = [list _rb_contents];
+  if (_rb_contents)
   {
 
-    RB::DisplayList::Contents::apply_transform(v4, &self->_transform);
+    RB::DisplayList::Contents::apply_transform(_rb_contents, &self->_transform);
   }
 }
 
-- (id)copyApplyingToDisplayList:(id)a3
+- (id)copyApplyingToDisplayList:(id)list
 {
   v17 = *MEMORY[0x1E69E9840];
   v13 = 0;
   v14 = 0;
-  v5 = [a3 _rb_contents];
-  if (v5)
+  _rb_contents = [list _rb_contents];
+  if (_rb_contents)
   {
     RB::DisplayList::Builder::Builder(v15);
-    RB::DisplayList::Builder::draw(v15, v5, v16, 1.0, 0, 0);
+    RB::DisplayList::Builder::draw(v15, _rb_contents, v16, 1.0, 0, 0);
     RB::DisplayList::Builder::move_contents(v15, v6, &v12);
     v14 = v12;
     RB::DisplayList::Contents::apply_transform(v12, &self->_transform);
     RB::DisplayList::Builder::~Builder(v15);
   }
 
-  if ([a3 _rb_xml_document])
+  if ([list _rb_xml_document])
   {
     operator new();
   }
@@ -211,9 +211,9 @@ LABEL_18:
   return v9;
 }
 
-- (id)applyingToDisplayList:(id)a3
+- (id)applyingToDisplayList:(id)list
 {
-  v3 = [(RBDisplayListTransform *)self copyApplyingToDisplayList:a3];
+  v3 = [(RBDisplayListTransform *)self copyApplyingToDisplayList:list];
 
   return v3;
 }

@@ -1,42 +1,42 @@
 @interface PCLocationUtils
-+ (BOOL)isLocation:(id)a3 withinThreshold:(id)a4;
-+ (double)boundValue:(double)a3 toMin:(double)a4 max:(double)a5;
-+ (double)cosineSimilarityBetween:(id)a3 and:(id)a4;
-+ (double)distanceInMetersBetweenLocation:(id)a3 andLocation:(id)a4;
-+ (id)cartesianFromProtoLocation:(id)a3;
-+ (id)currentLocationWithLocationHistory:(id)a3 currentTime:(double)a4;
-+ (id)currentLocationWithLocationHistory:(id)a3 visitHistory:(id)a4 currentTime:(double)a5;
-+ (id)latLonToCartesianWithLatLon:(id)a3;
-+ (id)vectorFrom:(id)a3 to:(id)a4;
-+ (void)cleanCurrentVisitWithMissingData:(id)a3;
++ (BOOL)isLocation:(id)location withinThreshold:(id)threshold;
++ (double)boundValue:(double)value toMin:(double)min max:(double)max;
++ (double)cosineSimilarityBetween:(id)between and:(id)and;
++ (double)distanceInMetersBetweenLocation:(id)location andLocation:(id)andLocation;
++ (id)cartesianFromProtoLocation:(id)location;
++ (id)currentLocationWithLocationHistory:(id)history currentTime:(double)time;
++ (id)currentLocationWithLocationHistory:(id)history visitHistory:(id)visitHistory currentTime:(double)time;
++ (id)latLonToCartesianWithLatLon:(id)lon;
++ (id)vectorFrom:(id)from to:(id)to;
++ (void)cleanCurrentVisitWithMissingData:(id)data;
 @end
 
 @implementation PCLocationUtils
 
-+ (void)cleanCurrentVisitWithMissingData:(id)a3
++ (void)cleanCurrentVisitWithMissingData:(id)data
 {
   v87 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 visits];
-  if ([v4 count])
+  dataCopy = data;
+  visits = [dataCopy visits];
+  if ([visits count])
   {
-    v5 = [v3 locationHistorys];
-    v6 = [v5 count];
+    locationHistorys = [dataCopy locationHistorys];
+    v6 = [locationHistorys count];
 
     if (v6)
     {
-      v7 = [v3 visits];
-      v8 = [v7 count] - 1;
+      visits2 = [dataCopy visits];
+      v8 = [visits2 count] - 1;
 
-      v9 = [v3 visits];
-      v10 = [v9 objectAtIndexedSubscript:v8];
+      visits3 = [dataCopy visits];
+      v10 = [visits3 objectAtIndexedSubscript:v8];
 
-      [v3 currentTimeCFAbsolute];
+      [dataCopy currentTimeCFAbsolute];
       v12 = v11;
       if ([v10 hasLoiIdentifier])
       {
-        v13 = [v10 loiIdentifier];
-        v14 = v13 != 0;
+        loiIdentifier = [v10 loiIdentifier];
+        v14 = loiIdentifier != 0;
       }
 
       else
@@ -55,13 +55,13 @@
         v16 = 0;
       }
 
-      v17 = [v3 locationHistorys];
-      v18 = [v17 count] - 1;
+      locationHistorys2 = [dataCopy locationHistorys];
+      v18 = [locationHistorys2 count] - 1;
 
-      v19 = [v3 locationHistorys];
-      v20 = [v19 objectAtIndexedSubscript:v18];
+      locationHistorys3 = [dataCopy locationHistorys];
+      v20 = [locationHistorys3 objectAtIndexedSubscript:v18];
 
-      v21 = [v20 location];
+      location = [v20 location];
       if (![v10 hasEntryTimeCFAbsolute])
       {
         goto LABEL_45;
@@ -90,8 +90,8 @@
       v78 = 0u;
       v75 = 0u;
       v76 = 0u;
-      v26 = [v3 locationOfInterests];
-      v27 = [v26 countByEnumeratingWithState:&v75 objects:v86 count:16];
+      locationOfInterests = [dataCopy locationOfInterests];
+      v27 = [locationOfInterests countByEnumeratingWithState:&v75 objects:v86 count:16];
       if (v27)
       {
         v28 = v27;
@@ -108,22 +108,22 @@
           {
             if (*v76 != v30)
             {
-              objc_enumerationMutation(v26);
+              objc_enumerationMutation(locationOfInterests);
             }
 
             v33 = *(*(&v75 + 1) + 8 * i);
             if ([v33 hasLocation])
             {
-              v34 = [v33 location];
+              location2 = [v33 location];
 
-              if (v34)
+              if (location2)
               {
-                v35 = [v33 location];
-                [PCLocationUtils distanceInMetersBetweenLocation:v35 andLocation:v21];
+                location3 = [v33 location];
+                [PCLocationUtils distanceInMetersBetweenLocation:location3 andLocation:location];
                 v37 = v36;
 
-                v38 = [v33 location];
-                [v38 locationHorizontalUncertaintyMeters];
+                location4 = [v33 location];
+                [location4 locationHorizontalUncertaintyMeters];
                 v40 = v39 * 3.0;
 
                 if (v37 <= v40)
@@ -153,8 +153,8 @@
                   v44 = _plc_log_get_normal_handle(PCLogCategoryVisitHistoryPredictor);
                   if (os_log_type_enabled(v44, OS_LOG_TYPE_ERROR))
                   {
-                    v45 = [v33 location];
-                    [v45 locationHorizontalUncertaintyMeters];
+                    location5 = [v33 location];
+                    [location5 locationHorizontalUncertaintyMeters];
                     *buf = 138413058;
                     *v80 = v33;
                     *&v80[8] = 2048;
@@ -170,7 +170,7 @@
             }
           }
 
-          v28 = [v26 countByEnumeratingWithState:&v75 objects:v86 count:16];
+          v28 = [locationOfInterests countByEnumeratingWithState:&v75 objects:v86 count:16];
         }
 
         while (v28);
@@ -179,15 +179,15 @@
         if (v29)
         {
           v47 = v29;
-          v48 = [v3 visits];
-          v49 = [v48 objectAtIndexedSubscript:v72];
-          v50 = [v29 loiIdentifier];
-          [v49 setLoiIdentifier:v50];
+          visits4 = [dataCopy visits];
+          v49 = [visits4 objectAtIndexedSubscript:v72];
+          loiIdentifier2 = [v29 loiIdentifier];
+          [v49 setLoiIdentifier:loiIdentifier2];
 
-          v51 = [v3 visits];
-          v52 = [v51 objectAtIndexedSubscript:v72];
-          v53 = [v29 location];
-          [v52 setLocation:v53];
+          visits5 = [dataCopy visits];
+          v52 = [visits5 objectAtIndexedSubscript:v72];
+          location6 = [v29 location];
+          [v52 setLocation:location6];
 
           v54 = _plc_log_get_normal_handle(PCLogCategoryVisitHistoryPredictor);
           v20 = v70;
@@ -207,15 +207,15 @@
           v47 = v74;
           if (v74)
           {
-            v56 = [v3 visits];
-            v57 = [v56 objectAtIndexedSubscript:v72];
-            v58 = [v74 loiIdentifier];
-            [v57 setLoiIdentifier:v58];
+            visits6 = [dataCopy visits];
+            v57 = [visits6 objectAtIndexedSubscript:v72];
+            loiIdentifier3 = [v74 loiIdentifier];
+            [v57 setLoiIdentifier:loiIdentifier3];
 
-            v59 = [v3 visits];
-            v60 = [v59 objectAtIndexedSubscript:v72];
-            v61 = [v74 location];
-            [v60 setLocation:v61];
+            visits7 = [dataCopy visits];
+            v60 = [visits7 objectAtIndexedSubscript:v72];
+            location7 = [v74 location];
+            [v60 setLocation:location7];
 
             v62 = _plc_log_get_normal_handle(PCLogCategoryVisitHistoryPredictor);
             if (os_log_type_enabled(v62, OS_LOG_TYPE_ERROR))
@@ -233,15 +233,15 @@
               goto LABEL_45;
             }
 
-            v64 = [v3 visits];
-            v65 = [v64 objectAtIndexedSubscript:v72];
-            v66 = [v73 loiIdentifier];
-            [v65 setLoiIdentifier:v66];
+            visits8 = [dataCopy visits];
+            v65 = [visits8 objectAtIndexedSubscript:v72];
+            loiIdentifier4 = [v73 loiIdentifier];
+            [v65 setLoiIdentifier:loiIdentifier4];
 
-            v67 = [v3 visits];
-            v68 = [v67 objectAtIndexedSubscript:v72];
-            v69 = [v73 location];
-            [v68 setLocation:v69];
+            visits9 = [dataCopy visits];
+            v68 = [visits9 objectAtIndexedSubscript:v72];
+            location8 = [v73 location];
+            [v68 setLocation:location8];
 
             v47 = _plc_log_get_normal_handle(PCLogCategoryVisitHistoryPredictor);
             if (os_log_type_enabled(v47, OS_LOG_TYPE_ERROR))
@@ -256,7 +256,7 @@
 
       else
       {
-        v55 = v26;
+        v55 = locationOfInterests;
       }
 
 LABEL_45:
@@ -270,30 +270,30 @@ LABEL_45:
   v63 = *MEMORY[0x1E69E9840];
 }
 
-+ (double)boundValue:(double)a3 toMin:(double)a4 max:(double)a5
++ (double)boundValue:(double)value toMin:(double)min max:(double)max
 {
-  if (a3 <= a5)
+  if (value <= max)
   {
-    a5 = a3;
+    max = value;
   }
 
-  if (a3 >= a4)
+  if (value >= min)
   {
-    return a5;
+    return max;
   }
 
   else
   {
-    return a4;
+    return min;
   }
 }
 
-+ (id)currentLocationWithLocationHistory:(id)a3 currentTime:(double)a4
++ (id)currentLocationWithLocationHistory:(id)history currentTime:(double)time
 {
   v63 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = v6;
-  if (!v6 || ![v6 count])
+  historyCopy = history;
+  v7 = historyCopy;
+  if (!historyCopy || ![historyCopy count])
   {
     v31 = _plc_log_get_normal_handle(PCLogCategoryGeneral);
     if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
@@ -369,10 +369,10 @@ LABEL_19:
         goto LABEL_20;
       }
 
-      v15 = [v14 location];
-      v16 = [v15 hasLocationHorizontalUncertaintyMeters];
+      location = [v14 location];
+      hasLocationHorizontalUncertaintyMeters = [location hasLocationHorizontalUncertaintyMeters];
 
-      if ((v16 & 1) == 0)
+      if ((hasLocationHorizontalUncertaintyMeters & 1) == 0)
       {
         v20 = _plc_log_get_normal_handle(PCLogCategoryGeneral);
         if (!os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -391,8 +391,8 @@ LABEL_17:
         goto LABEL_18;
       }
 
-      v17 = [v14 location];
-      [v17 locationHorizontalUncertaintyMeters];
+      location2 = [v14 location];
+      [location2 locationHorizontalUncertaintyMeters];
       v19 = v18;
 
       if (v19 > 100.0)
@@ -421,7 +421,7 @@ LABEL_18:
       }
 
       [v14 timeCFAbsolute];
-      if (v26 <= a4 && v26 > v12)
+      if (v26 <= time && v26 > v12)
       {
         v28 = v26;
         v29 = v14;
@@ -449,13 +449,13 @@ LABEL_20:
     goto LABEL_36;
   }
 
-  v32 = [v49 location];
-  if ([v32 hasLocationLatitudeDeg] && objc_msgSend(v32, "hasLocationLongitudeDeg"))
+  location3 = [v49 location];
+  if ([location3 hasLocationLatitudeDeg] && objc_msgSend(location3, "hasLocationLongitudeDeg"))
   {
     v33 = [PCLatLon alloc];
-    [v32 locationLatitudeDeg];
+    [location3 locationLatitudeDeg];
     v35 = v34;
-    [v32 locationLongitudeDeg];
+    [location3 locationLongitudeDeg];
     v37 = [(PCLatLon *)v33 initWithLatitude:v35 longitude:v36];
     v38 = _plc_log_get_normal_handle(PCLogCategoryGeneral);
     if (os_log_type_enabled(v38, OS_LOG_TYPE_INFO))
@@ -471,7 +471,7 @@ LABEL_20:
       v58 = 2053;
       v59 = v42;
       v60 = 2048;
-      v61 = a4;
+      timeCopy = time;
       _os_log_impl(&dword_1CEE74000, v38, OS_LOG_TYPE_INFO, "[%@] current location, lat: %{sensitive}.5f, lon: %{sensitive}.5f, current time: %f", buf, 0x2Au);
     }
   }
@@ -496,16 +496,16 @@ LABEL_40:
   return v37;
 }
 
-+ (id)latLonToCartesianWithLatLon:(id)a3
++ (id)latLonToCartesianWithLatLon:(id)lon
 {
   v25 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  [v3 latitudeDeg];
-  if (v4 >= -90.0 && ([v3 latitudeDeg], v5 <= 90.0) && (objc_msgSend(v3, "longitudeDeg"), v6 >= -180.0) && (objc_msgSend(v3, "longitudeDeg"), v7 <= 180.0))
+  lonCopy = lon;
+  [lonCopy latitudeDeg];
+  if (v4 >= -90.0 && ([lonCopy latitudeDeg], v5 <= 90.0) && (objc_msgSend(lonCopy, "longitudeDeg"), v6 >= -180.0) && (objc_msgSend(lonCopy, "longitudeDeg"), v7 <= 180.0))
   {
-    [v3 latitudeDeg];
+    [lonCopy latitudeDeg];
     v18 = v17 * 3.14159265 / 180.0;
-    [v3 longitudeDeg];
+    [lonCopy longitudeDeg];
     v20 = v19 * 3.14159265 / 180.0;
     v21 = __sincos_stret(v18);
     v22 = __sincos_stret(v20);
@@ -520,7 +520,7 @@ LABEL_40:
     v8 = _plc_log_get_normal_handle(PCLogCategoryGeneral);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [v3 description];
+      v9 = [lonCopy description];
       v23 = 138739971;
       v24 = v9;
       _os_log_impl(&dword_1CEE74000, v8, OS_LOG_TYPE_DEFAULT, "invalid latitude or longitude values, %{sensitive}@", &v23, 0xCu);
@@ -539,22 +539,22 @@ LABEL_40:
   return v14;
 }
 
-+ (double)distanceInMetersBetweenLocation:(id)a3 andLocation:(id)a4
++ (double)distanceInMetersBetweenLocation:(id)location andLocation:(id)andLocation
 {
-  v5 = a3;
-  v6 = a4;
+  locationCopy = location;
+  andLocationCopy = andLocation;
   v7 = -1.0;
-  if ([v5 hasLocationLatitudeDeg] && objc_msgSend(v5, "hasLocationLongitudeDeg") && objc_msgSend(v6, "hasLocationLatitudeDeg") && objc_msgSend(v6, "hasLocationLongitudeDeg"))
+  if ([locationCopy hasLocationLatitudeDeg] && objc_msgSend(locationCopy, "hasLocationLongitudeDeg") && objc_msgSend(andLocationCopy, "hasLocationLatitudeDeg") && objc_msgSend(andLocationCopy, "hasLocationLongitudeDeg"))
   {
-    [v5 locationLatitudeDeg];
+    [locationCopy locationLatitudeDeg];
     v9 = v8;
-    [v6 locationLatitudeDeg];
+    [andLocationCopy locationLatitudeDeg];
     v11 = vabdd_f64(v9, v10) * 111319.9;
-    [v5 locationLongitudeDeg];
+    [locationCopy locationLongitudeDeg];
     v13 = v12;
-    [v6 locationLongitudeDeg];
+    [andLocationCopy locationLongitudeDeg];
     v15 = vabdd_f64(v13, v14) * 111319.9;
-    [v5 locationLatitudeDeg];
+    [locationCopy locationLatitudeDeg];
     v17 = cos(v16 * 3.14159265 / 180.0);
     v7 = sqrt(v15 * v17 * (v15 * v17) + v11 * v11);
   }
@@ -562,38 +562,38 @@ LABEL_40:
   return v7;
 }
 
-+ (id)cartesianFromProtoLocation:(id)a3
++ (id)cartesianFromProtoLocation:(id)location
 {
-  v4 = a3;
+  locationCopy = location;
   v5 = [PCLatLon alloc];
-  [v4 locationLatitudeDeg];
+  [locationCopy locationLatitudeDeg];
   v7 = v6;
-  [v4 locationLongitudeDeg];
+  [locationCopy locationLongitudeDeg];
   v9 = v8;
 
   v10 = [(PCLatLon *)v5 initWithLatitude:v7 longitude:v9];
-  v11 = [a1 latLonToCartesianWithLatLon:v10];
+  v11 = [self latLonToCartesianWithLatLon:v10];
 
   return v11;
 }
 
-+ (id)vectorFrom:(id)a3 to:(id)a4
++ (id)vectorFrom:(id)from to:(id)to
 {
-  v5 = a4;
-  v6 = a3;
+  toCopy = to;
+  fromCopy = from;
   v7 = [PCXYZCoordinate alloc];
-  [v5 x];
+  [toCopy x];
   v9 = v8;
-  [v6 x];
+  [fromCopy x];
   v11 = v9 - v10;
-  [v5 y];
+  [toCopy y];
   v13 = v12;
-  [v6 y];
+  [fromCopy y];
   v15 = v13 - v14;
-  [v5 z];
+  [toCopy z];
   v17 = v16;
 
-  [v6 z];
+  [fromCopy z];
   v19 = v18;
 
   v20 = [(PCXYZCoordinate *)v7 initWithX:v11 y:v15 z:v17 - v19];
@@ -601,47 +601,47 @@ LABEL_40:
   return v20;
 }
 
-+ (double)cosineSimilarityBetween:(id)a3 and:(id)a4
++ (double)cosineSimilarityBetween:(id)between and:(id)and
 {
-  v5 = a4;
-  v6 = a3;
-  [v6 x];
+  andCopy = and;
+  betweenCopy = between;
+  [betweenCopy x];
   v45 = v7;
-  [v5 x];
+  [andCopy x];
   v44 = v8;
-  [v6 y];
+  [betweenCopy y];
   v43 = v9;
-  [v5 y];
+  [andCopy y];
   v42 = v10;
-  [v6 z];
+  [betweenCopy z];
   v41 = v11;
-  [v5 z];
+  [andCopy z];
   v13 = v12;
-  [v6 x];
+  [betweenCopy x];
   v15 = v14;
-  [v6 x];
+  [betweenCopy x];
   v17 = v16;
-  [v6 y];
+  [betweenCopy y];
   v19 = v18;
-  [v6 y];
+  [betweenCopy y];
   v21 = v19 * v20 + v15 * v17;
-  [v6 z];
+  [betweenCopy z];
   v23 = v22;
-  [v6 z];
+  [betweenCopy z];
   v25 = v24;
 
   v26 = sqrt(v21 + v23 * v25);
-  [v5 x];
+  [andCopy x];
   v28 = v27;
-  [v5 x];
+  [andCopy x];
   v30 = v29;
-  [v5 y];
+  [andCopy y];
   v32 = v31;
-  [v5 y];
+  [andCopy y];
   v34 = v33;
-  [v5 z];
+  [andCopy z];
   v36 = v35;
-  [v5 z];
+  [andCopy z];
   v38 = v37;
 
   result = 1.0;
@@ -657,11 +657,11 @@ LABEL_40:
   return result;
 }
 
-+ (id)currentLocationWithLocationHistory:(id)a3 visitHistory:(id)a4 currentTime:(double)a5
++ (id)currentLocationWithLocationHistory:(id)history visitHistory:(id)visitHistory currentTime:(double)time
 {
   v43 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  historyCopy = history;
+  visitHistoryCopy = visitHistory;
   v29 = 0;
   v30 = &v29;
   v31 = 0x3032000000;
@@ -672,9 +672,9 @@ LABEL_40:
   v28[1] = 3221225472;
   v28[2] = __79__PCLocationUtils_currentLocationWithLocationHistory_visitHistory_currentTime___block_invoke;
   v28[3] = &unk_1E83B8078;
-  *&v28[5] = a5;
+  *&v28[5] = time;
   v28[4] = &v29;
-  [v9 enumerateObjectsUsingBlock:v28];
+  [visitHistoryCopy enumerateObjectsUsingBlock:v28];
   v10 = v30[5];
   if (v10 && [v10 hasLocation])
   {
@@ -682,11 +682,11 @@ LABEL_40:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
       v12 = NSStringFromSelector(a2);
-      v13 = [v30[5] location];
-      [v13 locationLatitudeDeg];
+      location = [v30[5] location];
+      [location locationLatitudeDeg];
       v15 = v14;
-      v16 = [v30[5] location];
-      [v16 locationLongitudeDeg];
+      location2 = [v30[5] location];
+      [location2 locationLongitudeDeg];
       *buf = 138413059;
       v36 = v12;
       v37 = 2053;
@@ -694,30 +694,30 @@ LABEL_40:
       v39 = 2053;
       v40 = v17;
       v41 = 2048;
-      v42 = a5;
+      timeCopy2 = time;
       _os_log_impl(&dword_1CEE74000, v11, OS_LOG_TYPE_INFO, "[%@] current location from active visit, lat: %{sensitive}.5f, lon: %{sensitive}.5f, current time: %f", buf, 0x2Au);
     }
 
-    v18 = [v30[5] location];
+    location3 = [v30[5] location];
   }
 
   else
   {
-    v19 = [PCLocationUtils currentLocationWithLocationHistory:v8 currentTime:a5];
+    v19 = [PCLocationUtils currentLocationWithLocationHistory:historyCopy currentTime:time];
     if (v19)
     {
-      v18 = objc_alloc_init(PCPLocation);
+      location3 = objc_alloc_init(PCPLocation);
       [v19 latitudeDeg];
-      [(PCPLocation *)v18 setLocationLatitudeDeg:?];
+      [(PCPLocation *)location3 setLocationLatitudeDeg:?];
       [v19 longitudeDeg];
-      [(PCPLocation *)v18 setLocationLongitudeDeg:?];
+      [(PCPLocation *)location3 setLocationLongitudeDeg:?];
       v20 = _plc_log_get_normal_handle(PCLogCategoryGeneral);
       if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
       {
         v21 = NSStringFromSelector(a2);
-        [(PCPLocation *)v18 locationLatitudeDeg];
+        [(PCPLocation *)location3 locationLatitudeDeg];
         v23 = v22;
-        [(PCPLocation *)v18 locationLongitudeDeg];
+        [(PCPLocation *)location3 locationLongitudeDeg];
         *buf = 138413059;
         v36 = v21;
         v37 = 2053;
@@ -725,7 +725,7 @@ LABEL_40:
         v39 = 2053;
         v40 = v24;
         v41 = 2048;
-        v42 = a5;
+        timeCopy2 = time;
         _os_log_impl(&dword_1CEE74000, v20, OS_LOG_TYPE_INFO, "[%@] current location from location history, lat: %{sensitive}.5f, lon: %{sensitive}.5f, current time: %f", buf, 0x2Au);
       }
     }
@@ -741,7 +741,7 @@ LABEL_40:
         _os_log_impl(&dword_1CEE74000, v20, OS_LOG_TYPE_DEFAULT, "%@ - no valid location found from visit or location history", buf, 0xCu);
       }
 
-      v18 = 0;
+      location3 = 0;
     }
   }
 
@@ -749,7 +749,7 @@ LABEL_40:
 
   v26 = *MEMORY[0x1E69E9840];
 
-  return v18;
+  return location3;
 }
 
 void __79__PCLocationUtils_currentLocationWithLocationHistory_visitHistory_currentTime___block_invoke(uint64_t a1, void *a2)
@@ -799,21 +799,21 @@ void __79__PCLocationUtils_currentLocationWithLocationHistory_visitHistory_curre
 LABEL_12:
 }
 
-+ (BOOL)isLocation:(id)a3 withinThreshold:(id)a4
++ (BOOL)isLocation:(id)location withinThreshold:(id)threshold
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 hasLocationLatitudeDeg] && objc_msgSend(v5, "hasLocationLongitudeDeg") && objc_msgSend(v6, "hasLocationLatitudeDeg") && objc_msgSend(v6, "hasLocationLongitudeDeg"))
+  locationCopy = location;
+  thresholdCopy = threshold;
+  if ([locationCopy hasLocationLatitudeDeg] && objc_msgSend(locationCopy, "hasLocationLongitudeDeg") && objc_msgSend(thresholdCopy, "hasLocationLatitudeDeg") && objc_msgSend(thresholdCopy, "hasLocationLongitudeDeg"))
   {
-    [v5 locationLatitudeDeg];
+    [locationCopy locationLatitudeDeg];
     v8 = v7;
-    [v6 locationLatitudeDeg];
+    [thresholdCopy locationLatitudeDeg];
     v10 = vabdd_f64(v8, v9) * 111319.9;
-    [v5 locationLongitudeDeg];
+    [locationCopy locationLongitudeDeg];
     v12 = v11;
-    [v6 locationLongitudeDeg];
+    [thresholdCopy locationLongitudeDeg];
     v14 = vabdd_f64(v12, v13) * 111319.9;
-    [v5 locationLatitudeDeg];
+    [locationCopy locationLatitudeDeg];
     v16 = cos(v15 * 3.14159265 / 180.0);
     v17 = sqrt(v14 * v16 * (v14 * v16) + v10 * v10) <= 250.0;
   }

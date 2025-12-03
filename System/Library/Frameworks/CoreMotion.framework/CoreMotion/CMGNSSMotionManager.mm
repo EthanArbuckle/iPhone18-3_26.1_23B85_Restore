@@ -2,7 +2,7 @@
 - (CMGNSSMotionManager)init;
 - (uint64_t)isGNSSMotionAvailable;
 - (void)dealloc;
-- (void)startGNSSMotionUpdatesWithUpdateFrequency:(int64_t)a3;
+- (void)startGNSSMotionUpdatesWithUpdateFrequency:(int64_t)frequency;
 - (void)stopGNSSMotionUpdates;
 @end
 
@@ -41,10 +41,10 @@
   [(CMGNSSMotionManager *)&v3 dealloc];
 }
 
-- (void)startGNSSMotionUpdatesWithUpdateFrequency:(int64_t)a3
+- (void)startGNSSMotionUpdatesWithUpdateFrequency:(int64_t)frequency
 {
   v21 = *MEMORY[0x1E69E9840];
-  if ((objc_msgSend_isGNSSMotionAvailable(self, a2, a3) & 1) == 0)
+  if ((objc_msgSend_isGNSSMotionAvailable(self, a2, frequency) & 1) == 0)
   {
     if (qword_1EAFE2B18 != -1)
     {
@@ -104,13 +104,13 @@
     abort_report_np();
   }
 
-  v5 = 0xA040201u >> (8 * a3);
+  v5 = 0xA040201u >> (8 * frequency);
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = sub_19B674EE0;
   block[3] = &unk_1E75337D0;
-  if (a3 >= 4)
+  if (frequency >= 4)
   {
     LOBYTE(v5) = 1;
   }

@@ -1,5 +1,5 @@
 @interface MCAPNConfiguration
-- (MCAPNConfiguration)initWithDictionary:(id)a3 outError:(id *)a4;
+- (MCAPNConfiguration)initWithDictionary:(id)dictionary outError:(id *)error;
 - (NSDictionary)telephonyRepresentation;
 - (id)description;
 - (id)localizedAuthenticationType;
@@ -8,10 +8,10 @@
 
 @implementation MCAPNConfiguration
 
-- (MCAPNConfiguration)initWithDictionary:(id)a3 outError:(id *)a4
+- (MCAPNConfiguration)initWithDictionary:(id)dictionary outError:(id *)error
 {
   v57 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  dictionaryCopy = dictionary;
   v52.receiver = self;
   v52.super_class = MCAPNConfiguration;
   v7 = [(MCAPNConfiguration *)&v52 init];
@@ -21,7 +21,7 @@
   }
 
   v51 = 0;
-  v8 = [MCProfile removeRequiredNonZeroLengthStringInDictionary:v6 key:@"Name" errorDomain:@"MCPayloadErrorDomain" missingDataCode:2002 missingDataErrorString:@"ERROR_PAYLOAD_REQUIRED_FIELD_MISSING_P_FIELD" invalidDataCode:2003 invalidDataErrorString:@"ERROR_PAYLOAD_FIELD_INVALID_P_FIELD" outError:&v51];
+  v8 = [MCProfile removeRequiredNonZeroLengthStringInDictionary:dictionaryCopy key:@"Name" errorDomain:@"MCPayloadErrorDomain" missingDataCode:2002 missingDataErrorString:@"ERROR_PAYLOAD_REQUIRED_FIELD_MISSING_P_FIELD" invalidDataCode:2003 invalidDataErrorString:@"ERROR_PAYLOAD_FIELD_INVALID_P_FIELD" outError:&v51];
   enableXLAT464 = v51;
   name = v7->_name;
   v7->_name = v8;
@@ -29,7 +29,7 @@
   if (!enableXLAT464)
   {
     v50 = 0;
-    v11 = [MCProfile removeOptionalNonZeroLengthStringInDictionary:v6 key:@"AuthenticationType" errorDomain:@"MCPayloadErrorDomain" invalidDataCode:2003 invalidDataErrorString:@"ERROR_PAYLOAD_FIELD_INVALID_P_FIELD" outError:&v50];
+    v11 = [MCProfile removeOptionalNonZeroLengthStringInDictionary:dictionaryCopy key:@"AuthenticationType" errorDomain:@"MCPayloadErrorDomain" invalidDataCode:2003 invalidDataErrorString:@"ERROR_PAYLOAD_FIELD_INVALID_P_FIELD" outError:&v50];
     enableXLAT464 = v50;
     authenticationType = v7->_authenticationType;
     v7->_authenticationType = v11;
@@ -53,7 +53,7 @@
   if (!enableXLAT464)
   {
     v49 = 0;
-    v15 = [MCProfile removeOptionalNonZeroLengthStringInDictionary:v6 key:@"Username" errorDomain:@"MCPayloadErrorDomain" invalidDataCode:2003 invalidDataErrorString:@"ERROR_PAYLOAD_FIELD_INVALID_P_FIELD" outError:&v49];
+    v15 = [MCProfile removeOptionalNonZeroLengthStringInDictionary:dictionaryCopy key:@"Username" errorDomain:@"MCPayloadErrorDomain" invalidDataCode:2003 invalidDataErrorString:@"ERROR_PAYLOAD_FIELD_INVALID_P_FIELD" outError:&v49];
     enableXLAT464 = v49;
     username = v7->_username;
     v7->_username = v15;
@@ -61,7 +61,7 @@
     if (!enableXLAT464)
     {
       v48 = 0;
-      v17 = [MCProfile removeOptionalNonZeroLengthStringInDictionary:v6 key:@"Password" errorDomain:@"MCPayloadErrorDomain" invalidDataCode:2003 invalidDataErrorString:@"ERROR_PAYLOAD_FIELD_INVALID_P_FIELD" outError:&v48];
+      v17 = [MCProfile removeOptionalNonZeroLengthStringInDictionary:dictionaryCopy key:@"Password" errorDomain:@"MCPayloadErrorDomain" invalidDataCode:2003 invalidDataErrorString:@"ERROR_PAYLOAD_FIELD_INVALID_P_FIELD" outError:&v48];
       enableXLAT464 = v48;
       password = v7->_password;
       v7->_password = v17;
@@ -69,7 +69,7 @@
       if (!enableXLAT464)
       {
         v47 = 0;
-        v19 = [MCProfile removeOptionalNonZeroLengthStringInDictionary:v6 key:@"ProxyServer" errorDomain:@"MCPayloadErrorDomain" invalidDataCode:2003 invalidDataErrorString:@"ERROR_PAYLOAD_FIELD_INVALID_P_FIELD" outError:&v47];
+        v19 = [MCProfile removeOptionalNonZeroLengthStringInDictionary:dictionaryCopy key:@"ProxyServer" errorDomain:@"MCPayloadErrorDomain" invalidDataCode:2003 invalidDataErrorString:@"ERROR_PAYLOAD_FIELD_INVALID_P_FIELD" outError:&v47];
         enableXLAT464 = v47;
         proxyServer = v7->_proxyServer;
         v7->_proxyServer = v19;
@@ -77,7 +77,7 @@
         if (!enableXLAT464)
         {
           v46 = 0;
-          v21 = [MCProfile removeOptionalObjectInDictionary:v6 key:@"ProxyPort" type:objc_opt_class() errorDomain:@"MCPayloadErrorDomain" invalidDataCode:2003 invalidDataErrorString:@"ERROR_PAYLOAD_FIELD_INVALID_P_FIELD" outError:&v46];
+          v21 = [MCProfile removeOptionalObjectInDictionary:dictionaryCopy key:@"ProxyPort" type:objc_opt_class() errorDomain:@"MCPayloadErrorDomain" invalidDataCode:2003 invalidDataErrorString:@"ERROR_PAYLOAD_FIELD_INVALID_P_FIELD" outError:&v46];
           enableXLAT464 = v46;
           proxyPort = v7->_proxyPort;
           v7->_proxyPort = v21;
@@ -87,7 +87,7 @@
   }
 
   v45 = enableXLAT464;
-  v23 = [v6 MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"DefaultProtocolMask" isRequired:0 outError:&v45];
+  v23 = [dictionaryCopy MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"DefaultProtocolMask" isRequired:0 outError:&v45];
   v14 = v45;
 
   defaultProtocolMask = v7->_defaultProtocolMask;
@@ -99,7 +99,7 @@
   }
 
   v44 = 0;
-  v25 = [v6 MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"AllowedProtocolMask" isRequired:0 outError:&v44];
+  v25 = [dictionaryCopy MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"AllowedProtocolMask" isRequired:0 outError:&v44];
   v14 = v44;
   allowedProtocolMask = v7->_allowedProtocolMask;
   v7->_allowedProtocolMask = v25;
@@ -110,7 +110,7 @@
   }
 
   v43 = 0;
-  v27 = [v6 MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"AllowedProtocolMaskInRoaming" isRequired:0 outError:&v43];
+  v27 = [dictionaryCopy MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"AllowedProtocolMaskInRoaming" isRequired:0 outError:&v43];
   v14 = v43;
   allowedProtocolMaskInRoaming = v7->_allowedProtocolMaskInRoaming;
   v7->_allowedProtocolMaskInRoaming = v27;
@@ -121,7 +121,7 @@
   }
 
   v42 = 0;
-  v29 = [v6 MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"AllowedProtocolMaskInDomesticRoaming" isRequired:0 outError:&v42];
+  v29 = [dictionaryCopy MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"AllowedProtocolMaskInDomesticRoaming" isRequired:0 outError:&v42];
   v14 = v42;
   allowedProtocolMaskInDomesticRoaming = v7->_allowedProtocolMaskInDomesticRoaming;
   v7->_allowedProtocolMaskInDomesticRoaming = v29;
@@ -132,7 +132,7 @@
   }
 
   v41 = 0;
-  v40 = [v6 MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"EnableXLAT464" isRequired:0 outError:&v41];
+  v40 = [dictionaryCopy MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"EnableXLAT464" isRequired:0 outError:&v41];
   v14 = v41;
   enableXLAT464 = v7->_enableXLAT464;
   v7->_enableXLAT464 = v40;
@@ -147,30 +147,30 @@ LABEL_20:
       v32 = v31;
       v33 = objc_opt_class();
       v34 = v33;
-      v35 = [(NSNumber *)v14 MCVerboseDescription];
+      mCVerboseDescription = [(NSNumber *)v14 MCVerboseDescription];
       *buf = 138543618;
       v54 = v33;
       v55 = 2114;
-      v56 = v35;
+      v56 = mCVerboseDescription;
       _os_log_impl(&dword_1A795B000, v32, OS_LOG_TYPE_ERROR, "%{public}@ Can't parse APN dictionary: %{public}@", buf, 0x16u);
     }
 
-    if (a4)
+    if (error)
     {
       v36 = v14;
-      *a4 = v14;
+      *error = v14;
     }
 
     v7 = 0;
   }
 
-  if ([v6 count])
+  if ([dictionaryCopy count])
   {
     v37 = _MCLogObjects;
     if (os_log_type_enabled(_MCLogObjects, OS_LOG_TYPE_INFO))
     {
       *buf = 138543362;
-      v54 = v6;
+      v54 = dictionaryCopy;
       _os_log_impl(&dword_1A795B000, v37, OS_LOG_TYPE_INFO, "APN dictionary contains ignored fields. They are: %{public}@", buf, 0xCu);
     }
   }
@@ -182,92 +182,92 @@ LABEL_29:
 
 - (id)stubDictionary
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(MCAPNConfiguration *)self name];
-  [v3 setObject:v4 forKeyedSubscript:@"Name"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  name = [(MCAPNConfiguration *)self name];
+  [dictionary setObject:name forKeyedSubscript:@"Name"];
 
-  v5 = [(MCAPNConfiguration *)self authenticationType];
-  [v3 setObject:v5 forKeyedSubscript:@"AuthenticationType"];
+  authenticationType = [(MCAPNConfiguration *)self authenticationType];
+  [dictionary setObject:authenticationType forKeyedSubscript:@"AuthenticationType"];
 
-  v6 = [(MCAPNConfiguration *)self username];
-  [v3 setObject:v6 forKeyedSubscript:@"Username"];
+  username = [(MCAPNConfiguration *)self username];
+  [dictionary setObject:username forKeyedSubscript:@"Username"];
 
-  v7 = [(MCAPNConfiguration *)self proxyServer];
-  [v3 setObject:v7 forKeyedSubscript:@"ProxyServer"];
+  proxyServer = [(MCAPNConfiguration *)self proxyServer];
+  [dictionary setObject:proxyServer forKeyedSubscript:@"ProxyServer"];
 
-  v8 = [(MCAPNConfiguration *)self proxyPort];
-  [v3 setObject:v8 forKeyedSubscript:@"ProxyPort"];
+  proxyPort = [(MCAPNConfiguration *)self proxyPort];
+  [dictionary setObject:proxyPort forKeyedSubscript:@"ProxyPort"];
 
-  v9 = [(MCAPNConfiguration *)self defaultProtocolMask];
-  [v3 setObject:v9 forKeyedSubscript:@"DefaultProtocolMask"];
+  defaultProtocolMask = [(MCAPNConfiguration *)self defaultProtocolMask];
+  [dictionary setObject:defaultProtocolMask forKeyedSubscript:@"DefaultProtocolMask"];
 
-  v10 = [(MCAPNConfiguration *)self allowedProtocolMask];
-  [v3 setObject:v10 forKeyedSubscript:@"AllowedProtocolMask"];
+  allowedProtocolMask = [(MCAPNConfiguration *)self allowedProtocolMask];
+  [dictionary setObject:allowedProtocolMask forKeyedSubscript:@"AllowedProtocolMask"];
 
-  v11 = [(MCAPNConfiguration *)self allowedProtocolMaskInRoaming];
-  [v3 setObject:v11 forKeyedSubscript:@"AllowedProtocolMaskInRoaming"];
+  allowedProtocolMaskInRoaming = [(MCAPNConfiguration *)self allowedProtocolMaskInRoaming];
+  [dictionary setObject:allowedProtocolMaskInRoaming forKeyedSubscript:@"AllowedProtocolMaskInRoaming"];
 
-  v12 = [(MCAPNConfiguration *)self allowedProtocolMaskInDomesticRoaming];
-  [v3 setObject:v12 forKeyedSubscript:@"AllowedProtocolMaskInDomesticRoaming"];
+  allowedProtocolMaskInDomesticRoaming = [(MCAPNConfiguration *)self allowedProtocolMaskInDomesticRoaming];
+  [dictionary setObject:allowedProtocolMaskInDomesticRoaming forKeyedSubscript:@"AllowedProtocolMaskInDomesticRoaming"];
 
-  v13 = [(MCAPNConfiguration *)self enableXLAT464];
-  [v3 setObject:v13 forKeyedSubscript:@"EnableXLAT464"];
+  enableXLAT464 = [(MCAPNConfiguration *)self enableXLAT464];
+  [dictionary setObject:enableXLAT464 forKeyedSubscript:@"EnableXLAT464"];
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
 {
-  v3 = [MEMORY[0x1E696AD60] string];
-  v4 = [(MCAPNConfiguration *)self name];
+  string = [MEMORY[0x1E696AD60] string];
+  name = [(MCAPNConfiguration *)self name];
 
-  if (v4)
+  if (name)
   {
-    v5 = [(MCAPNConfiguration *)self name];
-    [v3 appendFormat:@"  Name        : %@\n", v5];
+    name2 = [(MCAPNConfiguration *)self name];
+    [string appendFormat:@"  Name        : %@\n", name2];
   }
 
-  v6 = [(MCAPNConfiguration *)self authenticationType];
+  authenticationType = [(MCAPNConfiguration *)self authenticationType];
 
-  if (v6)
+  if (authenticationType)
   {
-    v7 = [(MCAPNConfiguration *)self authenticationType];
-    [v3 appendFormat:@"  Auth        : %@\n", v7];
+    authenticationType2 = [(MCAPNConfiguration *)self authenticationType];
+    [string appendFormat:@"  Auth        : %@\n", authenticationType2];
   }
 
-  v8 = [(MCAPNConfiguration *)self username];
+  username = [(MCAPNConfiguration *)self username];
 
-  if (v8)
+  if (username)
   {
-    v9 = [(MCAPNConfiguration *)self username];
-    [v3 appendFormat:@"  Username    : %@\n", v9];
+    username2 = [(MCAPNConfiguration *)self username];
+    [string appendFormat:@"  Username    : %@\n", username2];
   }
 
-  v10 = [(MCAPNConfiguration *)self proxyServer];
+  proxyServer = [(MCAPNConfiguration *)self proxyServer];
 
-  if (v10)
+  if (proxyServer)
   {
-    v11 = [(MCAPNConfiguration *)self proxyServer];
-    [v3 appendFormat:@"  Proxy       : %@\n", v11];
+    proxyServer2 = [(MCAPNConfiguration *)self proxyServer];
+    [string appendFormat:@"  Proxy       : %@\n", proxyServer2];
   }
 
-  v12 = [(MCAPNConfiguration *)self proxyPort];
+  proxyPort = [(MCAPNConfiguration *)self proxyPort];
 
-  if (v12)
+  if (proxyPort)
   {
-    v13 = [(MCAPNConfiguration *)self proxyPort];
-    [v3 appendFormat:@"  Port        : %@\n", v13];
+    proxyPort2 = [(MCAPNConfiguration *)self proxyPort];
+    [string appendFormat:@"  Port        : %@\n", proxyPort2];
   }
 
-  v14 = [(MCAPNConfiguration *)self enableXLAT464];
+  enableXLAT464 = [(MCAPNConfiguration *)self enableXLAT464];
 
-  if (v14)
+  if (enableXLAT464)
   {
-    v15 = [(MCAPNConfiguration *)self enableXLAT464];
-    [v3 appendFormat:@"  XLAT464     : %@\n", v15];
+    enableXLAT4642 = [(MCAPNConfiguration *)self enableXLAT464];
+    [string appendFormat:@"  XLAT464     : %@\n", enableXLAT4642];
   }
 
-  return v3;
+  return string;
 }
 
 - (id)localizedAuthenticationType
@@ -295,59 +295,59 @@ LABEL_7:
 - (NSDictionary)telephonyRepresentation
 {
   v3 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:10];
-  v4 = [(MCAPNConfiguration *)self name];
-  [v3 setObject:v4 forKeyedSubscript:@"apn"];
+  name = [(MCAPNConfiguration *)self name];
+  [v3 setObject:name forKeyedSubscript:@"apn"];
 
-  v5 = [(MCAPNConfiguration *)self authenticationType];
-  [v3 setObject:v5 forKeyedSubscript:@"auth_type"];
+  authenticationType = [(MCAPNConfiguration *)self authenticationType];
+  [v3 setObject:authenticationType forKeyedSubscript:@"auth_type"];
 
-  v6 = [(MCAPNConfiguration *)self username];
-  [v3 setObject:v6 forKeyedSubscript:@"username"];
+  username = [(MCAPNConfiguration *)self username];
+  [v3 setObject:username forKeyedSubscript:@"username"];
 
-  v7 = [(MCAPNConfiguration *)self password];
-  [v3 setObject:v7 forKeyedSubscript:@"password"];
+  password = [(MCAPNConfiguration *)self password];
+  [v3 setObject:password forKeyedSubscript:@"password"];
 
-  v8 = [(MCAPNConfiguration *)self proxyServer];
+  proxyServer = [(MCAPNConfiguration *)self proxyServer];
 
-  if (v8)
+  if (proxyServer)
   {
     v9 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:6];
     [v9 setObject:&unk_1F1AA55D8 forKeyedSubscript:@"HTTPEnable"];
     [v9 setObject:&unk_1F1AA55D8 forKeyedSubscript:@"HTTPSEnable"];
-    v10 = [(MCAPNConfiguration *)self proxyServer];
-    [v9 setObject:v10 forKeyedSubscript:@"HTTPProxy"];
+    proxyServer2 = [(MCAPNConfiguration *)self proxyServer];
+    [v9 setObject:proxyServer2 forKeyedSubscript:@"HTTPProxy"];
 
-    v11 = [(MCAPNConfiguration *)self proxyServer];
-    [v9 setObject:v11 forKeyedSubscript:@"HTTPSProxy"];
+    proxyServer3 = [(MCAPNConfiguration *)self proxyServer];
+    [v9 setObject:proxyServer3 forKeyedSubscript:@"HTTPSProxy"];
 
-    v12 = [(MCAPNConfiguration *)self proxyPort];
+    proxyPort = [(MCAPNConfiguration *)self proxyPort];
 
-    if (v12)
+    if (proxyPort)
     {
-      v13 = [(MCAPNConfiguration *)self proxyPort];
-      [v9 setObject:v13 forKeyedSubscript:@"HTTPPort"];
+      proxyPort2 = [(MCAPNConfiguration *)self proxyPort];
+      [v9 setObject:proxyPort2 forKeyedSubscript:@"HTTPPort"];
 
-      v14 = [(MCAPNConfiguration *)self proxyPort];
-      [v9 setObject:v14 forKeyedSubscript:@"HTTPSPort"];
+      proxyPort3 = [(MCAPNConfiguration *)self proxyPort];
+      [v9 setObject:proxyPort3 forKeyedSubscript:@"HTTPSPort"];
     }
 
     [v3 setObject:v9 forKeyedSubscript:@"ProxyConfiguration"];
   }
 
-  v15 = [(MCAPNConfiguration *)self defaultProtocolMask];
-  [v3 setObject:v15 forKeyedSubscript:@"DefaultProtocolMask"];
+  defaultProtocolMask = [(MCAPNConfiguration *)self defaultProtocolMask];
+  [v3 setObject:defaultProtocolMask forKeyedSubscript:@"DefaultProtocolMask"];
 
-  v16 = [(MCAPNConfiguration *)self allowedProtocolMask];
-  [v3 setObject:v16 forKeyedSubscript:@"AllowedProtocolMask"];
+  allowedProtocolMask = [(MCAPNConfiguration *)self allowedProtocolMask];
+  [v3 setObject:allowedProtocolMask forKeyedSubscript:@"AllowedProtocolMask"];
 
-  v17 = [(MCAPNConfiguration *)self allowedProtocolMaskInRoaming];
-  [v3 setObject:v17 forKeyedSubscript:@"AllowedProtocolMaskInRoaming"];
+  allowedProtocolMaskInRoaming = [(MCAPNConfiguration *)self allowedProtocolMaskInRoaming];
+  [v3 setObject:allowedProtocolMaskInRoaming forKeyedSubscript:@"AllowedProtocolMaskInRoaming"];
 
-  v18 = [(MCAPNConfiguration *)self allowedProtocolMaskInDomesticRoaming];
-  [v3 setObject:v18 forKeyedSubscript:@"AllowedProtocolMaskInDomesticRoaming"];
+  allowedProtocolMaskInDomesticRoaming = [(MCAPNConfiguration *)self allowedProtocolMaskInDomesticRoaming];
+  [v3 setObject:allowedProtocolMaskInDomesticRoaming forKeyedSubscript:@"AllowedProtocolMaskInDomesticRoaming"];
 
-  v19 = [(MCAPNConfiguration *)self enableXLAT464];
-  [v3 setObject:v19 forKeyedSubscript:@"enableXLAT464"];
+  enableXLAT464 = [(MCAPNConfiguration *)self enableXLAT464];
+  [v3 setObject:enableXLAT464 forKeyedSubscript:@"enableXLAT464"];
 
   return v3;
 }

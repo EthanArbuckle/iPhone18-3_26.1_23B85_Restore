@@ -7,16 +7,16 @@
 - (id)accessibilityLabel
 {
   v2 = [(AVTomatoRatingViewAccessibility *)self safeValueForKey:@"tomatoFreshness"];
-  v3 = [v2 unsignedIntegerValue];
+  unsignedIntegerValue = [v2 unsignedIntegerValue];
 
-  if (v3 > 2)
+  if (unsignedIntegerValue > 2)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = accessibilityLocalizedString(off_29F299088[v3]);
+    v4 = accessibilityLocalizedString(off_29F299088[unsignedIntegerValue]);
   }
 
   return v4;

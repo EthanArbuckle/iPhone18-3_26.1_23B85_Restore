@@ -1,15 +1,15 @@
 @interface ReadingListContentUnavailableView
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 @end
 
 @implementation ReadingListContentUnavailableView
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  if ([v7 type] == 9)
+  y = inside.y;
+  x = inside.x;
+  eventCopy = event;
+  if ([eventCopy type] == 9)
   {
     v8 = 0;
   }
@@ -18,7 +18,7 @@
   {
     v10.receiver = self;
     v10.super_class = ReadingListContentUnavailableView;
-    v8 = [(ReadingListContentUnavailableView *)&v10 pointInside:v7 withEvent:x, y];
+    v8 = [(ReadingListContentUnavailableView *)&v10 pointInside:eventCopy withEvent:x, y];
   }
 
   return v8;

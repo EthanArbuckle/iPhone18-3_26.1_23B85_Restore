@@ -1,17 +1,17 @@
 @interface PLDetectedFaceJournalEntryPayload
-+ (BOOL)isValidForPersistenceWithObjectDictionary:(id)a3 additionalEntityName:(id)a4;
++ (BOOL)isValidForPersistenceWithObjectDictionary:(id)dictionary additionalEntityName:(id)name;
 + (id)modelProperties;
 + (id)modelPropertiesDescription;
 + (id)nonPersistedModelPropertiesDescription;
 + (id)persistedPropertyNamesForEntityNames;
-- (BOOL)comparePayloadValue:(id)a3 toObjectDictionaryValue:(id)a4 forPayloadProperty:(id)a5;
-- (BOOL)insertFaceFromDataInManagedObjectContext:(id)a3 allowDeferred:(BOOL *)a4;
-- (BOOL)insertWithAssets:(id)a3 inManagedObjectContext:(id)a4;
+- (BOOL)comparePayloadValue:(id)value toObjectDictionaryValue:(id)dictionaryValue forPayloadProperty:(id)property;
+- (BOOL)insertFaceFromDataInManagedObjectContext:(id)context allowDeferred:(BOOL *)deferred;
+- (BOOL)insertWithAssets:(id)assets inManagedObjectContext:(id)context;
 - (BOOL)isDeferrable;
 - (BOOL)isHidden;
 - (BOOL)isKeyFace;
 - (BOOL)isManual;
-- (BOOL)updatePayloadAttributes:(id)a3 andNilAttributes:(id)a4 withManagedObject:(id)a5 forPayloadProperty:(id)a6;
+- (BOOL)updatePayloadAttributes:(id)attributes andNilAttributes:(id)nilAttributes withManagedObject:(id)object forPayloadProperty:(id)property;
 - (NSSet)assetIdentifiers;
 - (NSString)assetUUID;
 - (double)bodyCenterX;
@@ -21,11 +21,11 @@
 - (double)centerX;
 - (double)centerY;
 - (double)size;
-- (id)_insertDeferredRebuildFaceForPersonUUID:(id)a3 inManagedObjectContext:(id)a4;
-- (id)_insertDeferredRebuildFacesFromDataInManagedObjectContext:(id)a3;
-- (id)_insertDetectedFaceWithAsset:(id)a3 inManagedObjectContext:(id)a4 checkExisting:(BOOL)a5;
+- (id)_insertDeferredRebuildFaceForPersonUUID:(id)d inManagedObjectContext:(id)context;
+- (id)_insertDeferredRebuildFacesFromDataInManagedObjectContext:(id)context;
+- (id)_insertDetectedFaceWithAsset:(id)asset inManagedObjectContext:(id)context checkExisting:(BOOL)existing;
 - (id)clusterRejectedPersonsUUIDs;
-- (id)payloadValueFromAttributes:(id)a3 forPayloadProperty:(id)a4;
+- (id)payloadValueFromAttributes:(id)attributes forPayloadProperty:(id)property;
 - (id)personUUID;
 - (id)rejectedPersonsUUIDs;
 - (int)cloudNameSource;
@@ -33,9 +33,9 @@
 - (int)nameSource;
 - (int64_t)assetIdentifierType;
 - (unint64_t)assetIdentifierCount;
-- (void)appendAttributeKey:(id)a3 value:(id)a4 toDescriptionBuilder:(id)a5;
-- (void)setAssetUUID:(id)a3;
-- (void)setLocalAssetIdentifierForCloudIdentifiers:(id)a3;
+- (void)appendAttributeKey:(id)key value:(id)value toDescriptionBuilder:(id)builder;
+- (void)setAssetUUID:(id)d;
+- (void)setLocalAssetIdentifierForCloudIdentifiers:(id)identifiers;
 @end
 
 @implementation PLDetectedFaceJournalEntryPayload
@@ -118,18 +118,18 @@
   return v14;
 }
 
-- (BOOL)comparePayloadValue:(id)a3 toObjectDictionaryValue:(id)a4 forPayloadProperty:(id)a5
+- (BOOL)comparePayloadValue:(id)value toObjectDictionaryValue:(id)dictionaryValue forPayloadProperty:(id)property
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v10 isEqualToKey:@"asset"])
+  valueCopy = value;
+  dictionaryValueCopy = dictionaryValue;
+  propertyCopy = property;
+  if ([propertyCopy isEqualToKey:@"asset"])
   {
     if ([(PLDetectedFaceJournalEntryPayload *)self assetIdentifierType])
     {
       if ([(PLDetectedFaceJournalEntryPayload *)self assetIdentifierType]!= 1)
       {
-        v12 = 0;
+        personUUID = 0;
         goto LABEL_11;
       }
 
@@ -141,9 +141,9 @@
       v11 = @"uuid";
     }
 
-    v12 = [v9 objectForKeyedSubscript:v11];
+    personUUID = [dictionaryValueCopy objectForKeyedSubscript:v11];
 LABEL_11:
-    if (!(v8 | v12))
+    if (!(valueCopy | personUUID))
     {
       v14 = 1;
 LABEL_16:
@@ -151,46 +151,46 @@ LABEL_16:
       goto LABEL_17;
     }
 
-    v15 = v12;
-    v16 = v8;
+    v15 = personUUID;
+    v16 = valueCopy;
     goto LABEL_14;
   }
 
-  if (([v10 isEqualToKey:@"rejectedPersons"] & 1) != 0 || objc_msgSend(v10, "isEqualToKey:", @"clusterRejectedPersons"))
+  if (([propertyCopy isEqualToKey:@"rejectedPersons"] & 1) != 0 || objc_msgSend(propertyCopy, "isEqualToKey:", @"clusterRejectedPersons"))
   {
-    v12 = [MEMORY[0x1E695DFD8] setWithArray:v9];
-    v13 = [v12 isEqualToSet:v8];
+    personUUID = [MEMORY[0x1E695DFD8] setWithArray:dictionaryValueCopy];
+    v13 = [personUUID isEqualToSet:valueCopy];
 LABEL_15:
     v14 = v13;
     goto LABEL_16;
   }
 
-  if ([v10 isEqualToKey:@"personBeingKeyFace"])
+  if ([propertyCopy isEqualToKey:@"personBeingKeyFace"])
   {
-    if (![v8 BOOLValue])
+    if (![valueCopy BOOLValue])
     {
       v14 = 0;
       goto LABEL_17;
     }
 
-    v12 = [(PLDetectedFaceJournalEntryPayload *)self personUUID];
-    v15 = v9;
-    v16 = v12;
+    personUUID = [(PLDetectedFaceJournalEntryPayload *)self personUUID];
+    v15 = dictionaryValueCopy;
+    v16 = personUUID;
 LABEL_14:
     v13 = [v15 isEqualToString:v16];
     goto LABEL_15;
   }
 
-  if ([v10 isEqualToKey:@"person"])
+  if ([propertyCopy isEqualToKey:@"person"])
   {
-    v18 = [v9 isEqualToString:v8];
+    v18 = [dictionaryValueCopy isEqualToString:valueCopy];
   }
 
   else
   {
     v19.receiver = self;
     v19.super_class = PLDetectedFaceJournalEntryPayload;
-    v18 = [(PLManagedObjectJournalEntryPayload *)&v19 comparePayloadValue:v8 toObjectDictionaryValue:v9 forPayloadProperty:v10];
+    v18 = [(PLManagedObjectJournalEntryPayload *)&v19 comparePayloadValue:valueCopy toObjectDictionaryValue:dictionaryValueCopy forPayloadProperty:propertyCopy];
   }
 
   v14 = v18;
@@ -199,14 +199,14 @@ LABEL_17:
   return v14;
 }
 
-- (id)payloadValueFromAttributes:(id)a3 forPayloadProperty:(id)a4
+- (id)payloadValueFromAttributes:(id)attributes forPayloadProperty:(id)property
 {
-  v6 = a3;
-  v7 = a4;
-  if (([v7 isEqualToKey:@"asset"] & 1) != 0 || objc_msgSend(v7, "isEqualToKey:", @"person"))
+  attributesCopy = attributes;
+  propertyCopy = property;
+  if (([propertyCopy isEqualToKey:@"asset"] & 1) != 0 || objc_msgSend(propertyCopy, "isEqualToKey:", @"person"))
   {
-    v8 = [v7 key];
-    v9 = [v6 objectForKeyedSubscript:v8];
+    v8 = [propertyCopy key];
+    v9 = [attributesCopy objectForKeyedSubscript:v8];
     v10 = [(PLManagedObjectJournalEntryPayload *)self UUIDStringForData:v9];
 LABEL_4:
     v11 = v10;
@@ -214,66 +214,66 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  if (([v7 isEqualToKey:@"rejectedPersons"] & 1) != 0 || objc_msgSend(v7, "isEqualToKey:", @"clusterRejectedPersons"))
+  if (([propertyCopy isEqualToKey:@"rejectedPersons"] & 1) != 0 || objc_msgSend(propertyCopy, "isEqualToKey:", @"clusterRejectedPersons"))
   {
-    v8 = [v7 key];
-    v9 = [v6 objectForKeyedSubscript:v8];
+    v8 = [propertyCopy key];
+    v9 = [attributesCopy objectForKeyedSubscript:v8];
     v10 = [(PLManagedObjectJournalEntryPayload *)self setForUUIDEncodedData:v9];
     goto LABEL_4;
   }
 
   v13.receiver = self;
   v13.super_class = PLDetectedFaceJournalEntryPayload;
-  v11 = [(PLManagedObjectJournalEntryPayload *)&v13 payloadValueFromAttributes:v6 forPayloadProperty:v7];
+  v11 = [(PLManagedObjectJournalEntryPayload *)&v13 payloadValueFromAttributes:attributesCopy forPayloadProperty:propertyCopy];
 LABEL_5:
 
   return v11;
 }
 
-- (void)appendAttributeKey:(id)a3 value:(id)a4 toDescriptionBuilder:(id)a5
+- (void)appendAttributeKey:(id)key value:(id)value toDescriptionBuilder:(id)builder
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (([v8 isEqualToString:@"asset"] & 1) != 0 || objc_msgSend(v8, "isEqualToString:", @"person"))
+  keyCopy = key;
+  valueCopy = value;
+  builderCopy = builder;
+  if (([keyCopy isEqualToString:@"asset"] & 1) != 0 || objc_msgSend(keyCopy, "isEqualToString:", @"person"))
   {
-    v11 = [(PLManagedObjectJournalEntryPayload *)self UUIDStringForData:v9];
+    v11 = [(PLManagedObjectJournalEntryPayload *)self UUIDStringForData:valueCopy];
     v14.receiver = self;
     v14.super_class = PLDetectedFaceJournalEntryPayload;
-    [(PLManagedObjectJournalEntryPayload *)&v14 appendAttributeKey:v8 value:v11 toDescriptionBuilder:v10];
+    [(PLManagedObjectJournalEntryPayload *)&v14 appendAttributeKey:keyCopy value:v11 toDescriptionBuilder:builderCopy];
   }
 
   else
   {
-    if (([v8 isEqualToString:@"rejectedPersons"] & 1) == 0 && !objc_msgSend(v8, "isEqualToString:", @"clusterRejectedPersons"))
+    if (([keyCopy isEqualToString:@"rejectedPersons"] & 1) == 0 && !objc_msgSend(keyCopy, "isEqualToString:", @"clusterRejectedPersons"))
     {
       v12.receiver = self;
       v12.super_class = PLDetectedFaceJournalEntryPayload;
-      [(PLManagedObjectJournalEntryPayload *)&v12 appendAttributeKey:v8 value:v9 toDescriptionBuilder:v10];
+      [(PLManagedObjectJournalEntryPayload *)&v12 appendAttributeKey:keyCopy value:valueCopy toDescriptionBuilder:builderCopy];
       goto LABEL_5;
     }
 
-    v11 = [(PLManagedObjectJournalEntryPayload *)self setForUUIDEncodedData:v9];
+    v11 = [(PLManagedObjectJournalEntryPayload *)self setForUUIDEncodedData:valueCopy];
     v13.receiver = self;
     v13.super_class = PLDetectedFaceJournalEntryPayload;
-    [(PLManagedObjectJournalEntryPayload *)&v13 appendAttributeKey:v8 value:v11 toDescriptionBuilder:v10];
+    [(PLManagedObjectJournalEntryPayload *)&v13 appendAttributeKey:keyCopy value:v11 toDescriptionBuilder:builderCopy];
   }
 
 LABEL_5:
 }
 
-- (BOOL)updatePayloadAttributes:(id)a3 andNilAttributes:(id)a4 withManagedObject:(id)a5 forPayloadProperty:(id)a6
+- (BOOL)updatePayloadAttributes:(id)attributes andNilAttributes:(id)nilAttributes withManagedObject:(id)object forPayloadProperty:(id)property
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = v12;
-  if (![v13 isEqualToKey:@"asset"])
+  attributesCopy = attributes;
+  nilAttributesCopy = nilAttributes;
+  objectCopy = object;
+  propertyCopy = property;
+  v14 = objectCopy;
+  if (![propertyCopy isEqualToKey:@"asset"])
   {
-    if (([v13 isEqualToKey:@"rejectedPersons"] & 1) != 0 || objc_msgSend(v13, "isEqualToKey:", @"clusterRejectedPersons"))
+    if (([propertyCopy isEqualToKey:@"rejectedPersons"] & 1) != 0 || objc_msgSend(propertyCopy, "isEqualToKey:", @"clusterRejectedPersons"))
     {
-      if ([v13 isEqualToKey:@"clusterRejectedPersons"])
+      if ([propertyCopy isEqualToKey:@"clusterRejectedPersons"])
       {
         [v14 clusterRejectedPersons];
       }
@@ -282,39 +282,39 @@ LABEL_5:
       {
         [v14 rejectedPersons];
       }
-      v16 = ;
-      v18 = [v13 relatedEntityPropertyNames];
-      v19 = [v18 anyObject];
-      v20 = [v16 valueForKey:v19];
+      personBeingKeyFace = ;
+      relatedEntityPropertyNames = [propertyCopy relatedEntityPropertyNames];
+      anyObject = [relatedEntityPropertyNames anyObject];
+      personUUID = [personBeingKeyFace valueForKey:anyObject];
 
-      v21 = [(PLManagedObjectJournalEntryPayload *)self encodedDataForUUIDStringSet:v20];
-      [(PLManagedObjectJournalEntryPayload *)self updatePayloadAttributes:v10 andNilAttributes:v11 forPayloadProperty:v13 withUUIDStringData:v21];
+      v21 = [(PLManagedObjectJournalEntryPayload *)self encodedDataForUUIDStringSet:personUUID];
+      [(PLManagedObjectJournalEntryPayload *)self updatePayloadAttributes:attributesCopy andNilAttributes:nilAttributesCopy forPayloadProperty:propertyCopy withUUIDStringData:v21];
     }
 
     else
     {
-      if ([v13 isEqualToKey:@"person"])
+      if ([propertyCopy isEqualToKey:@"person"])
       {
-        v16 = [v14 associatedPersonForFaceOrTorso:1 orTemporal:0];
-        v20 = [v16 personUUID];
-        v28 = [(PLManagedObjectJournalEntryPayload *)self UUIDDataForString:v20];
-        v29 = [v13 key];
-        [v10 setObject:v28 forKeyedSubscript:v29];
+        personBeingKeyFace = [v14 associatedPersonForFaceOrTorso:1 orTemporal:0];
+        personUUID = [personBeingKeyFace personUUID];
+        v28 = [(PLManagedObjectJournalEntryPayload *)self UUIDDataForString:personUUID];
+        v29 = [propertyCopy key];
+        [attributesCopy setObject:v28 forKeyedSubscript:v29];
       }
 
       else
       {
-        if (![v13 isEqualToKey:@"personBeingKeyFace"])
+        if (![propertyCopy isEqualToKey:@"personBeingKeyFace"])
         {
           v26 = 0;
           goto LABEL_17;
         }
 
         v30 = MEMORY[0x1E696AD98];
-        v16 = [v14 personBeingKeyFace];
-        v20 = [v30 numberWithInt:v16 != 0];
-        v28 = [v13 key];
-        [v10 setObject:v20 forKeyedSubscript:v28];
+        personBeingKeyFace = [v14 personBeingKeyFace];
+        personUUID = [v30 numberWithInt:personBeingKeyFace != 0];
+        v28 = [propertyCopy key];
+        [attributesCopy setObject:personUUID forKeyedSubscript:v28];
       }
     }
 
@@ -329,24 +329,24 @@ LABEL_17:
   v15 = [v14 associatedAssetForFaceOrTorso:1 orTemporal:0];
   if (v15)
   {
-    v16 = v15;
-    v17 = [v15 cloudAssetGUID];
-    if (v17)
+    personBeingKeyFace = v15;
+    cloudAssetGUID = [v15 cloudAssetGUID];
+    if (cloudAssetGUID)
     {
-      [v16 cloudAssetGUID];
+      [personBeingKeyFace cloudAssetGUID];
     }
 
     else
     {
-      [v16 uuid];
+      [personBeingKeyFace uuid];
     }
     v22 = ;
     v23 = [(PLManagedObjectJournalEntryPayload *)self UUIDDataForString:v22];
-    v24 = [v13 key];
-    [v10 setObject:v23 forKeyedSubscript:v24];
+    v24 = [propertyCopy key];
+    [attributesCopy setObject:v23 forKeyedSubscript:v24];
 
-    v20 = [v16 cloudAssetGUID];
-    if (v20)
+    personUUID = [personBeingKeyFace cloudAssetGUID];
+    if (personUUID)
     {
       v25 = &unk_1F0FBD7F8;
     }
@@ -356,7 +356,7 @@ LABEL_17:
       v25 = &unk_1F0FBD810;
     }
 
-    [v10 setObject:v25 forKeyedSubscript:@"assetIDType"];
+    [attributesCopy setObject:v25 forKeyedSubscript:@"assetIDType"];
     goto LABEL_16;
   }
 
@@ -367,9 +367,9 @@ LABEL_17:
 - (int)faceAlgorithmVersion
 {
   v2 = [(NSMutableDictionary *)self->super._payloadAttributes objectForKeyedSubscript:@"faceAlgorithmVersion"];
-  v3 = [v2 intValue];
+  intValue = [v2 intValue];
 
-  return v3;
+  return intValue;
 }
 
 - (BOOL)isDeferrable
@@ -386,11 +386,11 @@ LABEL_17:
     return 0;
   }
 
-  v5 = [(PLDetectedFaceJournalEntryPayload *)self detectionType];
-  if (v5)
+  detectionType = [(PLDetectedFaceJournalEntryPayload *)self detectionType];
+  if (detectionType)
   {
-    v6 = [(PLDetectedFaceJournalEntryPayload *)self detectionType];
-    v7 = [v6 integerValue] == 1;
+    detectionType2 = [(PLDetectedFaceJournalEntryPayload *)self detectionType];
+    v7 = [detectionType2 integerValue] == 1;
   }
 
   else
@@ -420,33 +420,33 @@ LABEL_17:
 - (int)cloudNameSource
 {
   v2 = [(NSMutableDictionary *)self->super._payloadAttributes objectForKeyedSubscript:@"cloudNameSource"];
-  v3 = [v2 intValue];
+  intValue = [v2 intValue];
 
-  return v3;
+  return intValue;
 }
 
 - (int)nameSource
 {
   v2 = [(NSMutableDictionary *)self->super._payloadAttributes objectForKeyedSubscript:@"nameSource"];
-  v3 = [v2 intValue];
+  intValue = [v2 intValue];
 
-  return v3;
+  return intValue;
 }
 
 - (BOOL)isManual
 {
   v2 = [(NSMutableDictionary *)self->super._payloadAttributes objectForKeyedSubscript:@"manual"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)isHidden
 {
   v2 = [(NSMutableDictionary *)self->super._payloadAttributes objectForKeyedSubscript:@"hidden"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (double)bodyHeight
@@ -512,9 +512,9 @@ LABEL_17:
   return v4;
 }
 
-- (void)setAssetUUID:(id)a3
+- (void)setAssetUUID:(id)d
 {
-  v4 = [(PLManagedObjectJournalEntryPayload *)self UUIDDataForString:a3];
+  v4 = [(PLManagedObjectJournalEntryPayload *)self UUIDDataForString:d];
   [(NSMutableDictionary *)self->super._payloadAttributes setObject:v4 forKeyedSubscript:@"asset"];
 }
 
@@ -529,9 +529,9 @@ LABEL_17:
 - (BOOL)isKeyFace
 {
   v2 = [(NSMutableDictionary *)self->super._payloadAttributes objectForKeyedSubscript:@"personBeingKeyFace"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (id)personUUID
@@ -545,22 +545,22 @@ LABEL_17:
 - (int64_t)assetIdentifierType
 {
   v2 = [(NSMutableDictionary *)self->super._payloadAttributes objectForKeyedSubscript:@"assetIDType"];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
-- (void)setLocalAssetIdentifierForCloudIdentifiers:(id)a3
+- (void)setLocalAssetIdentifierForCloudIdentifiers:(id)identifiers
 {
-  v5 = [a3 allValues];
-  v4 = [v5 firstObject];
-  [(PLDetectedFaceJournalEntryPayload *)self setAssetUUID:v4];
+  allValues = [identifiers allValues];
+  firstObject = [allValues firstObject];
+  [(PLDetectedFaceJournalEntryPayload *)self setAssetUUID:firstObject];
 }
 
 - (unint64_t)assetIdentifierCount
 {
-  v2 = [(PLDetectedFaceJournalEntryPayload *)self assetUUID];
-  v3 = v2 != 0;
+  assetUUID = [(PLDetectedFaceJournalEntryPayload *)self assetUUID];
+  v3 = assetUUID != 0;
 
   return v3;
 }
@@ -568,41 +568,41 @@ LABEL_17:
 - (NSSet)assetIdentifiers
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-  v4 = [(PLDetectedFaceJournalEntryPayload *)self assetUUID];
-  if (v4)
+  assetUUID = [(PLDetectedFaceJournalEntryPayload *)self assetUUID];
+  if (assetUUID)
   {
-    [v3 addObject:v4];
+    [v3 addObject:assetUUID];
   }
 
   return v3;
 }
 
-- (BOOL)insertWithAssets:(id)a3 inManagedObjectContext:(id)a4
+- (BOOL)insertWithAssets:(id)assets inManagedObjectContext:(id)context
 {
-  v6 = a4;
-  v7 = [a3 anyObject];
-  v8 = [(PLDetectedFaceJournalEntryPayload *)self _insertDetectedFaceWithAsset:v7 inManagedObjectContext:v6 checkExisting:1];
+  contextCopy = context;
+  anyObject = [assets anyObject];
+  v8 = [(PLDetectedFaceJournalEntryPayload *)self _insertDetectedFaceWithAsset:anyObject inManagedObjectContext:contextCopy checkExisting:1];
 
   return v8 != 0;
 }
 
-- (BOOL)insertFaceFromDataInManagedObjectContext:(id)a3 allowDeferred:(BOOL *)a4
+- (BOOL)insertFaceFromDataInManagedObjectContext:(id)context allowDeferred:(BOOL *)deferred
 {
-  v6 = a3;
-  v7 = [PLCloudAssetPayloadRestore assetForPayload:self inManagedObjectContext:v6];
+  contextCopy = context;
+  v7 = [PLCloudAssetPayloadRestore assetForPayload:self inManagedObjectContext:contextCopy];
   if (v7)
   {
-    v8 = [(PLDetectedFaceJournalEntryPayload *)self _insertDetectedFaceWithAsset:v7 inManagedObjectContext:v6 checkExisting:0];
+    v8 = [(PLDetectedFaceJournalEntryPayload *)self _insertDetectedFaceWithAsset:v7 inManagedObjectContext:contextCopy checkExisting:0];
     v9 = v8;
   }
 
   else
   {
-    if (a4)
+    if (deferred)
     {
-      if (*a4)
+      if (*deferred)
       {
-        v9 = [(PLDetectedFaceJournalEntryPayload *)self _insertDeferredRebuildFacesFromDataInManagedObjectContext:v6];
+        v9 = [(PLDetectedFaceJournalEntryPayload *)self _insertDeferredRebuildFacesFromDataInManagedObjectContext:contextCopy];
       }
 
       else
@@ -610,7 +610,7 @@ LABEL_17:
         v9 = 0;
       }
 
-      *a4 = [v9 count] != 0;
+      *deferred = [v9 count] != 0;
     }
 
     else
@@ -626,21 +626,21 @@ LABEL_17:
   return v10;
 }
 
-- (id)_insertDeferredRebuildFacesFromDataInManagedObjectContext:(id)a3
+- (id)_insertDeferredRebuildFacesFromDataInManagedObjectContext:(id)context
 {
   v36 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  contextCopy = context;
   if ([(PLDetectedFaceJournalEntryPayload *)self isDeferrable])
   {
     v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
     if ([(PLDetectedFaceJournalEntryPayload *)self assetIdentifierType]== 1)
     {
-      v6 = [(PLDetectedFaceJournalEntryPayload *)self personUUID];
+      personUUID = [(PLDetectedFaceJournalEntryPayload *)self personUUID];
 
-      if (v6)
+      if (personUUID)
       {
-        v7 = [(PLDetectedFaceJournalEntryPayload *)self personUUID];
-        v8 = [(PLDetectedFaceJournalEntryPayload *)self _insertDeferredRebuildFaceForPersonUUID:v7 inManagedObjectContext:v4];
+        personUUID2 = [(PLDetectedFaceJournalEntryPayload *)self personUUID];
+        v8 = [(PLDetectedFaceJournalEntryPayload *)self _insertDeferredRebuildFaceForPersonUUID:personUUID2 inManagedObjectContext:contextCopy];
 
         if (v8)
         {
@@ -653,13 +653,13 @@ LABEL_17:
         }
       }
 
-      v9 = [(PLDetectedFaceJournalEntryPayload *)self rejectedPersonsUUIDs];
-      v10 = [(PLDetectedFaceJournalEntryPayload *)self clusterRejectedPersonsUUIDs];
+      rejectedPersonsUUIDs = [(PLDetectedFaceJournalEntryPayload *)self rejectedPersonsUUIDs];
+      clusterRejectedPersonsUUIDs = [(PLDetectedFaceJournalEntryPayload *)self clusterRejectedPersonsUUIDs];
       v30 = 0u;
       v31 = 0u;
       v32 = 0u;
       v33 = 0u;
-      v11 = [v10 countByEnumeratingWithState:&v30 objects:v35 count:16];
+      v11 = [clusterRejectedPersonsUUIDs countByEnumeratingWithState:&v30 objects:v35 count:16];
       if (v11)
       {
         v12 = v11;
@@ -670,10 +670,10 @@ LABEL_17:
           {
             if (*v31 != v13)
             {
-              objc_enumerationMutation(v10);
+              objc_enumerationMutation(clusterRejectedPersonsUUIDs);
             }
 
-            v15 = [(PLDetectedFaceJournalEntryPayload *)self _insertDeferredRebuildFaceForPersonUUID:*(*(&v30 + 1) + 8 * i) inManagedObjectContext:v4];
+            v15 = [(PLDetectedFaceJournalEntryPayload *)self _insertDeferredRebuildFaceForPersonUUID:*(*(&v30 + 1) + 8 * i) inManagedObjectContext:contextCopy];
             v16 = v15;
             if (v15)
             {
@@ -683,7 +683,7 @@ LABEL_17:
             }
           }
 
-          v12 = [v10 countByEnumeratingWithState:&v30 objects:v35 count:16];
+          v12 = [clusterRejectedPersonsUUIDs countByEnumeratingWithState:&v30 objects:v35 count:16];
         }
 
         while (v12);
@@ -693,7 +693,7 @@ LABEL_17:
       v29 = 0u;
       v26 = 0u;
       v27 = 0u;
-      v17 = v9;
+      v17 = rejectedPersonsUUIDs;
       v18 = [v17 countByEnumeratingWithState:&v26 objects:v34 count:16];
       if (v18)
       {
@@ -709,9 +709,9 @@ LABEL_17:
             }
 
             v22 = *(*(&v26 + 1) + 8 * j);
-            if (([v10 containsObject:{v22, v26}] & 1) == 0)
+            if (([clusterRejectedPersonsUUIDs containsObject:{v22, v26}] & 1) == 0)
             {
-              v23 = [(PLDetectedFaceJournalEntryPayload *)self _insertDeferredRebuildFaceForPersonUUID:v22 inManagedObjectContext:v4];
+              v23 = [(PLDetectedFaceJournalEntryPayload *)self _insertDeferredRebuildFaceForPersonUUID:v22 inManagedObjectContext:contextCopy];
               v24 = v23;
               if (v23)
               {
@@ -737,58 +737,58 @@ LABEL_17:
   return v5;
 }
 
-- (id)_insertDetectedFaceWithAsset:(id)a3 inManagedObjectContext:(id)a4 checkExisting:(BOOL)a5
+- (id)_insertDetectedFaceWithAsset:(id)asset inManagedObjectContext:(id)context checkExisting:(BOOL)existing
 {
-  v5 = a5;
+  existingCopy = existing;
   v68 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = [[PLFaceRebuildHelper alloc] initWithContext:v9];
+  assetCopy = asset;
+  contextCopy = context;
+  v10 = [[PLFaceRebuildHelper alloc] initWithContext:contextCopy];
   v11 = v10;
-  if (v5 && ([(PLFaceRebuildHelper *)v10 findExistingDetectedFaceForRebuildFace:self onAsset:v8], (v12 = objc_claimAutoreleasedReturnValue()) != 0))
+  if (existingCopy && ([(PLFaceRebuildHelper *)v10 findExistingDetectedFaceForRebuildFace:self onAsset:assetCopy], (v12 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v13 = v12;
     v14 = PLMigrationGetLog();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
-      v15 = [v13 uuid];
+      uuid = [v13 uuid];
       *buf = 138543618;
-      v63 = v15;
+      v63 = uuid;
       v64 = 2112;
-      v65 = self;
+      selfCopy = self;
       _os_log_impl(&dword_19BF1F000, v14, OS_LOG_TYPE_INFO, "Found existing DetectedFace (%{public}@) for payload: %@", buf, 0x16u);
     }
   }
 
   else
   {
-    v13 = [(PLFaceRebuildHelper *)v11 insertDetectedFaceForRebuildFace:self onAsset:v8];
+    v13 = [(PLFaceRebuildHelper *)v11 insertDetectedFaceForRebuildFace:self onAsset:assetCopy];
     if (!v13)
     {
       goto LABEL_47;
     }
 
     v47 = v11;
-    v16 = [(PLManagedObjectJournalEntryPayload *)self payloadID];
-    v17 = [v16 payloadIDString];
-    [v13 setUuid:v17];
+    payloadID = [(PLManagedObjectJournalEntryPayload *)self payloadID];
+    payloadIDString = [payloadID payloadIDString];
+    [v13 setUuid:payloadIDString];
 
-    v18 = [(PLDetectedFaceJournalEntryPayload *)self personUUID];
+    personUUID = [(PLDetectedFaceJournalEntryPayload *)self personUUID];
 
     v19 = off_1E7560000;
-    if (v18)
+    if (personUUID)
     {
-      v20 = [(PLDetectedFaceJournalEntryPayload *)self personUUID];
-      v21 = [PLPerson personWithUUID:v20 inManagedObjectContext:v9];
+      personUUID2 = [(PLDetectedFaceJournalEntryPayload *)self personUUID];
+      v21 = [PLPerson personWithUUID:personUUID2 inManagedObjectContext:contextCopy];
 
       if (v21)
       {
         [v13 setAssociatedPerson:v21];
         if ([(PLDetectedFaceJournalEntryPayload *)self isKeyFace])
         {
-          v22 = [v21 keyFace];
+          keyFace = [v21 keyFace];
 
-          if (!v22)
+          if (!keyFace)
           {
             [v21 setKeyFace:v13 pickSource:{objc_msgSend(v21, "keyFacePickSource")}];
           }
@@ -805,29 +805,29 @@ LABEL_17:
         v23 = PLMigrationGetLog();
         if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
         {
-          v24 = [(PLDetectedFaceJournalEntryPayload *)self personUUID];
-          v25 = [(PLManagedObjectJournalEntryPayload *)self payloadID];
+          personUUID3 = [(PLDetectedFaceJournalEntryPayload *)self personUUID];
+          payloadID2 = [(PLManagedObjectJournalEntryPayload *)self payloadID];
           *buf = 138543874;
-          v63 = v24;
+          v63 = personUUID3;
           v64 = 2114;
-          v65 = v25;
+          selfCopy = payloadID2;
           v66 = 2112;
-          v67 = self;
+          selfCopy2 = self;
           _os_log_impl(&dword_19BF1F000, v23, OS_LOG_TYPE_ERROR, "Person with %{public}@ not found for face %{public}@ with payload: %@", buf, 0x20u);
         }
       }
     }
 
-    v48 = v8;
-    v46 = [(PLDetectedFaceJournalEntryPayload *)self rejectedPersonsUUIDs];
-    v51 = self;
-    v26 = [(PLDetectedFaceJournalEntryPayload *)self clusterRejectedPersonsUUIDs];
+    v48 = assetCopy;
+    rejectedPersonsUUIDs = [(PLDetectedFaceJournalEntryPayload *)self rejectedPersonsUUIDs];
+    selfCopy3 = self;
+    clusterRejectedPersonsUUIDs = [(PLDetectedFaceJournalEntryPayload *)self clusterRejectedPersonsUUIDs];
     v56 = 0u;
     v57 = 0u;
     v58 = 0u;
     v59 = 0u;
-    v27 = [v26 countByEnumeratingWithState:&v56 objects:v61 count:16];
-    v50 = v9;
+    v27 = [clusterRejectedPersonsUUIDs countByEnumeratingWithState:&v56 objects:v61 count:16];
+    v50 = contextCopy;
     if (v27)
     {
       v28 = v27;
@@ -838,10 +838,10 @@ LABEL_17:
         {
           if (*v57 != v29)
           {
-            objc_enumerationMutation(v26);
+            objc_enumerationMutation(clusterRejectedPersonsUUIDs);
           }
 
-          v31 = [PLPerson personWithUUID:*(*(&v56 + 1) + 8 * i) inManagedObjectContext:v9];
+          v31 = [PLPerson personWithUUID:*(*(&v56 + 1) + 8 * i) inManagedObjectContext:contextCopy];
           if (v31)
           {
             [v13 addRejectedPerson:v31];
@@ -854,15 +854,15 @@ LABEL_17:
             v32 = PLMigrationGetLog();
             if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
             {
-              v33 = [(PLDetectedFaceJournalEntryPayload *)v51 personUUID];
-              v34 = [(PLManagedObjectJournalEntryPayload *)v51 payloadID];
+              personUUID4 = [(PLDetectedFaceJournalEntryPayload *)selfCopy3 personUUID];
+              payloadID3 = [(PLManagedObjectJournalEntryPayload *)selfCopy3 payloadID];
               *buf = 138543874;
-              v63 = v33;
+              v63 = personUUID4;
               v64 = 2114;
-              v65 = v34;
+              selfCopy = payloadID3;
               v66 = 2112;
-              v67 = v51;
-              v9 = v50;
+              selfCopy2 = selfCopy3;
+              contextCopy = v50;
               _os_log_impl(&dword_19BF1F000, v32, OS_LOG_TYPE_ERROR, "Cluster rejected person with %{public}@ not found for face %{public}@ with payload: %@", buf, 0x20u);
 
               v19 = off_1E7560000;
@@ -870,7 +870,7 @@ LABEL_17:
           }
         }
 
-        v28 = [v26 countByEnumeratingWithState:&v56 objects:v61 count:16];
+        v28 = [clusterRejectedPersonsUUIDs countByEnumeratingWithState:&v56 objects:v61 count:16];
       }
 
       while (v28);
@@ -880,7 +880,7 @@ LABEL_17:
     v55 = 0u;
     v52 = 0u;
     v53 = 0u;
-    v14 = v46;
+    v14 = rejectedPersonsUUIDs;
     v35 = [v14 countByEnumeratingWithState:&v52 objects:v60 count:16];
     if (v35)
     {
@@ -897,9 +897,9 @@ LABEL_17:
           }
 
           v39 = *(*(&v52 + 1) + 8 * j);
-          if (([v26 containsObject:v39] & 1) == 0)
+          if (([clusterRejectedPersonsUUIDs containsObject:v39] & 1) == 0)
           {
-            v40 = [(__objc2_class *)v19[315] personWithUUID:v39 inManagedObjectContext:v9];
+            v40 = [(__objc2_class *)v19[315] personWithUUID:v39 inManagedObjectContext:contextCopy];
             if (v40)
             {
               [v13 addRejectedPerson:v40];
@@ -910,16 +910,16 @@ LABEL_17:
               v41 = PLMigrationGetLog();
               if (os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
               {
-                v42 = [(PLDetectedFaceJournalEntryPayload *)v51 personUUID];
-                [(PLManagedObjectJournalEntryPayload *)v51 payloadID];
+                personUUID5 = [(PLDetectedFaceJournalEntryPayload *)selfCopy3 personUUID];
+                [(PLManagedObjectJournalEntryPayload *)selfCopy3 payloadID];
                 v44 = v43 = v14;
                 *buf = 138543874;
-                v63 = v42;
+                v63 = personUUID5;
                 v64 = 2114;
-                v65 = v44;
+                selfCopy = v44;
                 v66 = 2112;
-                v67 = v51;
-                v9 = v50;
+                selfCopy2 = selfCopy3;
+                contextCopy = v50;
                 _os_log_impl(&dword_19BF1F000, v41, OS_LOG_TYPE_ERROR, "Rejected person with %{public}@ not found for face %{public}@ with payload: %@", buf, 0x20u);
 
                 v14 = v43;
@@ -938,7 +938,7 @@ LABEL_17:
     }
 
     v11 = v47;
-    v8 = v48;
+    assetCopy = v48;
   }
 
 LABEL_47:
@@ -946,16 +946,16 @@ LABEL_47:
   return v13;
 }
 
-- (id)_insertDeferredRebuildFaceForPersonUUID:(id)a3 inManagedObjectContext:(id)a4
+- (id)_insertDeferredRebuildFaceForPersonUUID:(id)d inManagedObjectContext:(id)context
 {
-  v6 = a3;
-  v7 = [(PLManagedObject *)PLDeferredRebuildFace insertInManagedObjectContext:a4];
-  v8 = [(PLManagedObjectJournalEntryPayload *)self payloadID];
-  v9 = [v8 payloadIDString];
-  [v7 setFaceUUID:v9];
+  dCopy = d;
+  v7 = [(PLManagedObject *)PLDeferredRebuildFace insertInManagedObjectContext:context];
+  payloadID = [(PLManagedObjectJournalEntryPayload *)self payloadID];
+  payloadIDString = [payloadID payloadIDString];
+  [v7 setFaceUUID:payloadIDString];
 
-  v10 = [MEMORY[0x1E69BF320] UUIDString];
-  [v7 setUuid:v10];
+  uUIDString = [MEMORY[0x1E69BF320] UUIDString];
+  [v7 setUuid:uUIDString];
 
   [(PLDetectedFaceJournalEntryPayload *)self centerX];
   [v7 setCenterX:?];
@@ -967,46 +967,46 @@ LABEL_47:
   [v7 setHidden:{-[PLDetectedFaceJournalEntryPayload isHidden](self, "isHidden")}];
   [v7 setNameSource:{-[PLDetectedFaceJournalEntryPayload nameSource](self, "nameSource")}];
   [v7 setCloudNameSource:{-[PLDetectedFaceJournalEntryPayload cloudNameSource](self, "cloudNameSource")}];
-  v11 = [(PLDetectedFaceJournalEntryPayload *)self assetUUID];
-  [v7 setAssetCloudGUID:v11];
+  assetUUID = [(PLDetectedFaceJournalEntryPayload *)self assetUUID];
+  [v7 setAssetCloudGUID:assetUUID];
 
-  v12 = [(PLDetectedFaceJournalEntryPayload *)self assetUUID];
-  [v7 setAssetUUID:v12];
+  assetUUID2 = [(PLDetectedFaceJournalEntryPayload *)self assetUUID];
+  [v7 setAssetUUID:assetUUID2];
 
-  [v7 setPersonUUID:v6];
+  [v7 setPersonUUID:dCopy];
   if ([(PLDetectedFaceJournalEntryPayload *)self faceAlgorithmVersion])
   {
-    v13 = [(PLDetectedFaceJournalEntryPayload *)self faceAlgorithmVersion];
+    faceAlgorithmVersion = [(PLDetectedFaceJournalEntryPayload *)self faceAlgorithmVersion];
   }
 
   else
   {
-    v13 = 1;
+    faceAlgorithmVersion = 1;
   }
 
-  [v7 setFaceAlgorithmVersion:v13];
+  [v7 setFaceAlgorithmVersion:faceAlgorithmVersion];
 
   return v7;
 }
 
-+ (BOOL)isValidForPersistenceWithObjectDictionary:(id)a3 additionalEntityName:(id)a4
++ (BOOL)isValidForPersistenceWithObjectDictionary:(id)dictionary additionalEntityName:(id)name
 {
-  v6 = a3;
-  v7 = v6;
-  if (!a4)
+  dictionaryCopy = dictionary;
+  v7 = dictionaryCopy;
+  if (!name)
   {
-    v9 = [v6 objectForKeyedSubscript:@"nameSource"];
-    v10 = [v9 integerValue];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"nameSource"];
+    integerValue = [v9 integerValue];
 
     v11 = [v7 objectForKeyedSubscript:@"manual"];
-    v12 = [v11 BOOLValue];
-    if ((v12 & 1) != 0 || (v8 = 0, v10 <= 5) && ((1 << v10) & 0x2A) != 0)
+    bOOLValue = [v11 BOOLValue];
+    if ((bOOLValue & 1) != 0 || (v8 = 0, integerValue <= 5) && ((1 << integerValue) & 0x2A) != 0)
     {
       v4 = [v7 objectForKeyedSubscript:@"assetForFace.uuid"];
       if (v4)
       {
         v8 = 1;
-        if (v12)
+        if (bOOLValue)
         {
           goto LABEL_12;
         }
@@ -1017,7 +1017,7 @@ LABEL_47:
         v13 = [v7 objectForKeyedSubscript:@"assetForFace.cloudAssetGUID"];
         v8 = v13 != 0;
 
-        if (v12)
+        if (bOOLValue)
         {
 LABEL_12:
 
@@ -1027,7 +1027,7 @@ LABEL_13:
       }
     }
 
-    if (v10 > 5 || ((1 << v10) & 0x2A) == 0)
+    if (integerValue > 5 || ((1 << integerValue) & 0x2A) == 0)
     {
       goto LABEL_13;
     }
@@ -1047,7 +1047,7 @@ LABEL_14:
   block[1] = 3221225472;
   block[2] = __73__PLDetectedFaceJournalEntryPayload_persistedPropertyNamesForEntityNames__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (persistedPropertyNamesForEntityNames_onceToken_72304 != -1)
   {
     dispatch_once(&persistedPropertyNamesForEntityNames_onceToken_72304, block);
@@ -1071,7 +1071,7 @@ void __73__PLDetectedFaceJournalEntryPayload_persistedPropertyNamesForEntityName
   block[1] = 3221225472;
   block[2] = __52__PLDetectedFaceJournalEntryPayload_modelProperties__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (modelProperties_onceToken_72306 != -1)
   {
     dispatch_once(&modelProperties_onceToken_72306, block);

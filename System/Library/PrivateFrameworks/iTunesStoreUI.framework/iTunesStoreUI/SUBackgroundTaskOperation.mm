@@ -1,7 +1,7 @@
 @interface SUBackgroundTaskOperation
 - (ISOperation)operation;
 - (NSString)permissionIdentifier;
-- (SUBackgroundTaskOperation)initWithOperation:(id)a3 identifier:(id)a4;
+- (SUBackgroundTaskOperation)initWithOperation:(id)operation identifier:(id)identifier;
 - (void)_cancelBackgroundAssertion;
 - (void)_removeBackgroundAssertion;
 - (void)_takeBackgroundAssertion;
@@ -11,15 +11,15 @@
 
 @implementation SUBackgroundTaskOperation
 
-- (SUBackgroundTaskOperation)initWithOperation:(id)a3 identifier:(id)a4
+- (SUBackgroundTaskOperation)initWithOperation:(id)operation identifier:(id)identifier
 {
   v8.receiver = self;
   v8.super_class = SUBackgroundTaskOperation;
   v6 = [(SUBackgroundTaskOperation *)&v8 init];
   if (v6)
   {
-    v6->_operation = a3;
-    v6->_permissionIdentifier = a4;
+    v6->_operation = operation;
+    v6->_permissionIdentifier = identifier;
     v6->_taskIdentifier = *MEMORY[0x1E69DDBE8];
   }
 
@@ -69,19 +69,19 @@
   v2 = *MEMORY[0x1E69DDBE8];
   if (self->_taskIdentifier != *MEMORY[0x1E69DDBE8])
   {
-    v4 = [MEMORY[0x1E69D4938] sharedConfig];
-    v5 = [v4 shouldLog];
-    if ([v4 shouldLogToDisk])
+    mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+    shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+    if ([mEMORY[0x1E69D4938] shouldLogToDisk])
     {
-      v6 = v5 | 2;
+      v6 = shouldLog | 2;
     }
 
     else
     {
-      v6 = v5;
+      v6 = shouldLog;
     }
 
-    if (!os_log_type_enabled([v4 OSLogObject], OS_LOG_TYPE_DEFAULT))
+    if (!os_log_type_enabled([mEMORY[0x1E69D4938] OSLogObject], OS_LOG_TYPE_DEFAULT))
     {
       v6 &= 2u;
     }
@@ -118,19 +118,19 @@
 - (void)_takeBackgroundAssertion
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E69D4938] sharedConfig];
-  v4 = [v3 shouldLog];
-  if ([v3 shouldLogToDisk])
+  mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+  shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+  if ([mEMORY[0x1E69D4938] shouldLogToDisk])
   {
-    v5 = v4 | 2;
+    v5 = shouldLog | 2;
   }
 
   else
   {
-    v5 = v4;
+    v5 = shouldLog;
   }
 
-  if (!os_log_type_enabled([v3 OSLogObject], OS_LOG_TYPE_DEFAULT))
+  if (!os_log_type_enabled([mEMORY[0x1E69D4938] OSLogObject], OS_LOG_TYPE_DEFAULT))
   {
     v5 &= 2u;
   }
@@ -159,13 +159,13 @@
     }
   }
 
-  v12 = [MEMORY[0x1E69DC668] sharedApplication];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __53__SUBackgroundTaskOperation__takeBackgroundAssertion__block_invoke;
   v15[3] = &unk_1E8164348;
   v15[4] = self;
-  self->_taskIdentifier = [v12 beginBackgroundTaskWithExpirationHandler:v15];
+  self->_taskIdentifier = [mEMORY[0x1E69DC668] beginBackgroundTaskWithExpirationHandler:v15];
 }
 
 @end

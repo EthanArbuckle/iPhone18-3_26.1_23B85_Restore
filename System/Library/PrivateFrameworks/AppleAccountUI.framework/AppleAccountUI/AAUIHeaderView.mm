@@ -1,19 +1,19 @@
 @interface AAUIHeaderView
-- (AAUIHeaderView)initWithCoder:(id)a3;
-- (AAUIHeaderView)initWithFrame:(CGRect)a3;
+- (AAUIHeaderView)initWithCoder:(id)coder;
+- (AAUIHeaderView)initWithFrame:(CGRect)frame;
 - (void)_updateLabelFonts;
 - (void)_updateStackViewSpacing;
-- (void)setHeaderImage:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setHeaderImage:(id)image;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation AAUIHeaderView
 
-- (AAUIHeaderView)initWithFrame:(CGRect)a3
+- (AAUIHeaderView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = AAUIHeaderView;
-  v3 = [(AAUIBuddyView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(AAUIBuddyView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -23,11 +23,11 @@
   return v4;
 }
 
-- (AAUIHeaderView)initWithCoder:(id)a3
+- (AAUIHeaderView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = AAUIHeaderView;
-  v3 = [(AAUIBuddyView *)&v6 initWithCoder:a3];
+  v3 = [(AAUIBuddyView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -37,32 +37,32 @@
   return v4;
 }
 
-- (void)setHeaderImage:(id)a3
+- (void)setHeaderImage:(id)image
 {
   [(UIImageView *)self->_headerImageView setImage:?];
   headerImageView = self->_headerImageView;
 
-  [(UIImageView *)headerImageView setHidden:a3 == 0];
+  [(UIImageView *)headerImageView setHidden:image == 0];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = AAUIHeaderView;
-  [(AAUIHeaderView *)&v4 traitCollectionDidChange:a3];
+  [(AAUIHeaderView *)&v4 traitCollectionDidChange:change];
   [(AAUIHeaderView *)self _updateStackViewSpacing];
   [(AAUIHeaderView *)self _updateLabelFonts];
 }
 
 - (void)_updateStackViewSpacing
 {
-  v3 = [(AAUIHeaderView *)self traitCollection];
-  if ([v3 horizontalSizeClass] == 2)
+  traitCollection = [(AAUIHeaderView *)self traitCollection];
+  if ([traitCollection horizontalSizeClass] == 2)
   {
-    v4 = [(AAUIHeaderView *)self traitCollection];
-    v5 = [v4 verticalSizeClass];
+    traitCollection2 = [(AAUIHeaderView *)self traitCollection];
+    verticalSizeClass = [traitCollection2 verticalSizeClass];
 
-    if (v5 == 2)
+    if (verticalSizeClass == 2)
     {
       v6 = 44.0;
       goto LABEL_6;
@@ -84,14 +84,14 @@ LABEL_6:
 {
   titleLabel = self->_titleLabel;
   v4 = MEMORY[0x1E69DB878];
-  v5 = [(AAUIHeaderView *)self traitCollection];
-  v6 = [v4 aa_titleFontForTraitCollection:v5];
+  traitCollection = [(AAUIHeaderView *)self traitCollection];
+  v6 = [v4 aa_titleFontForTraitCollection:traitCollection];
   [(UILabel *)titleLabel setFont:v6];
 
   messageLabel = self->_messageLabel;
   v8 = MEMORY[0x1E69DB878];
-  v10 = [(AAUIHeaderView *)self traitCollection];
-  v9 = [v8 aa_messageFontForTraitCollection:v10];
+  traitCollection2 = [(AAUIHeaderView *)self traitCollection];
+  v9 = [v8 aa_messageFontForTraitCollection:traitCollection2];
   [(UILabel *)messageLabel setFont:v9];
 }
 

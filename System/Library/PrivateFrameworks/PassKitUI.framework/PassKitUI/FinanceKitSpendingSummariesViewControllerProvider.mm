@@ -1,15 +1,15 @@
 @interface FinanceKitSpendingSummariesViewControllerProvider
-+ (id)makeViewControllerForDataProvider:(id)a3 navigationController:(id)a4;
++ (id)makeViewControllerForDataProvider:(id)provider navigationController:(id)controller;
 - (_TtC9PassKitUI49FinanceKitSpendingSummariesViewControllerProvider)init;
 @end
 
 @implementation FinanceKitSpendingSummariesViewControllerProvider
 
-+ (id)makeViewControllerForDataProvider:(id)a3 navigationController:(id)a4
++ (id)makeViewControllerForDataProvider:(id)provider navigationController:(id)controller
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = _s9PassKitUI07FinanceB39SpendingSummariesViewControllerProviderC04makegH04with010navigationH0So06UIViewH0CAA0dbe11SummaryDataI7WrapperC_So012UINavigationH0CtFZ_0(v5, v6);
+  providerCopy = provider;
+  controllerCopy = controller;
+  v7 = _s9PassKitUI07FinanceB39SpendingSummariesViewControllerProviderC04makegH04with010navigationH0So06UIViewH0CAA0dbe11SummaryDataI7WrapperC_So012UINavigationH0CtFZ_0(providerCopy, controllerCopy);
 
   return v7;
 }

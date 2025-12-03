@@ -1,12 +1,12 @@
 @interface CPLCloudKitIgnoredZoneIdentification
-+ (int64_t)scopeTypeForCloudKitScope:(id)a3 proposedScopeType:(int64_t)a4 fetchedRecords:(id)a5 currentUserID:(id)a6;
++ (int64_t)scopeTypeForCloudKitScope:(id)scope proposedScopeType:(int64_t)type fetchedRecords:(id)records currentUserID:(id)d;
 @end
 
 @implementation CPLCloudKitIgnoredZoneIdentification
 
-+ (int64_t)scopeTypeForCloudKitScope:(id)a3 proposedScopeType:(int64_t)a4 fetchedRecords:(id)a5 currentUserID:(id)a6
++ (int64_t)scopeTypeForCloudKitScope:(id)scope proposedScopeType:(int64_t)type fetchedRecords:(id)records currentUserID:(id)d
 {
-  if (a4 == 0x7FFFFFFF)
+  if (type == 0x7FFFFFFF)
   {
     return 0x7FFFFFFFLL;
   }

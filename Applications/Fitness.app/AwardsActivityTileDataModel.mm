@@ -1,7 +1,7 @@
 @interface AwardsActivityTileDataModel
 - (_TtC10FitnessApp27AwardsActivityTileDataModel)init;
-- (void)achievementsDataProviderDidFinishInitialLoad:(id)a3;
-- (void)achievementsDataProviderDidUpdate:(id)a3;
+- (void)achievementsDataProviderDidFinishInitialLoad:(id)load;
+- (void)achievementsDataProviderDidUpdate:(id)update;
 @end
 
 @implementation AwardsActivityTileDataModel
@@ -13,17 +13,17 @@
   return result;
 }
 
-- (void)achievementsDataProviderDidFinishInitialLoad:(id)a3
+- (void)achievementsDataProviderDidFinishInitialLoad:(id)load
 {
-  v4 = a3;
-  v5 = self;
+  loadCopy = load;
+  selfCopy = self;
   sub_1003242C8(sub_100324650, &unk_100852D40);
 }
 
-- (void)achievementsDataProviderDidUpdate:(id)a3
+- (void)achievementsDataProviderDidUpdate:(id)update
 {
-  v4 = a3;
-  v5 = self;
+  updateCopy = update;
+  selfCopy = self;
   sub_1003242C8(sub_100324584, &unk_100852D18);
 }
 

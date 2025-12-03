@@ -1,48 +1,48 @@
 @interface MIPMultiverseIdentifier
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)mediaObjectTypeAsString:(int)a3;
-- (id)mediaTypeAsString:(int)a3;
-- (int)StringAsMediaObjectType:(id)a3;
-- (int)StringAsMediaType:(id)a3;
+- (id)mediaObjectTypeAsString:(int)string;
+- (id)mediaTypeAsString:(int)string;
+- (int)StringAsMediaObjectType:(id)type;
+- (int)StringAsMediaType:(id)type;
 - (int)mediaObjectType;
 - (int)mediaType;
 - (unint64_t)hash;
-- (void)addLibraryIdentifiers:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasMediaObjectType:(BOOL)a3;
-- (void)setHasMediaType:(BOOL)a3;
-- (void)setHasPurchaseHistoryId:(BOOL)a3;
-- (void)setHasSagaId:(BOOL)a3;
-- (void)setHasStoreId:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addLibraryIdentifiers:(id)identifiers;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasMediaObjectType:(BOOL)type;
+- (void)setHasMediaType:(BOOL)type;
+- (void)setHasPurchaseHistoryId:(BOOL)id;
+- (void)setHasSagaId:(BOOL)id;
+- (void)setHasStoreId:(BOOL)id;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MIPMultiverseIdentifier
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  v6 = *(v4 + 80);
+  fromCopy = from;
+  v5 = fromCopy;
+  v6 = *(fromCopy + 80);
   if ((v6 & 0x10) != 0)
   {
-    self->_mediaObjectType = v4[16];
+    self->_mediaObjectType = fromCopy[16];
     *&self->_has |= 0x10u;
-    v6 = *(v4 + 80);
+    v6 = *(fromCopy + 80);
   }
 
   if ((v6 & 0x20) != 0)
   {
-    self->_mediaType = v4[17];
+    self->_mediaType = fromCopy[17];
     *&self->_has |= 0x20u;
   }
 
-  if (*(v4 + 9))
+  if (*(fromCopy + 9))
   {
     [(MIPMultiverseIdentifier *)self setName:?];
   }
@@ -215,44 +215,44 @@ LABEL_15:
   return v12 ^ [(NSMutableArray *)self->_libraryIdentifiers hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_41;
   }
 
   has = self->_has;
-  v6 = *(v4 + 80);
+  v6 = *(equalCopy + 80);
   if ((has & 0x10) != 0)
   {
-    if ((*(v4 + 80) & 0x10) == 0 || self->_mediaObjectType != *(v4 + 16))
+    if ((*(equalCopy + 80) & 0x10) == 0 || self->_mediaObjectType != *(equalCopy + 16))
     {
       goto LABEL_41;
     }
   }
 
-  else if ((*(v4 + 80) & 0x10) != 0)
+  else if ((*(equalCopy + 80) & 0x10) != 0)
   {
     goto LABEL_41;
   }
 
   if ((*&self->_has & 0x20) != 0)
   {
-    if ((*(v4 + 80) & 0x20) == 0 || self->_mediaType != *(v4 + 17))
+    if ((*(equalCopy + 80) & 0x20) == 0 || self->_mediaType != *(equalCopy + 17))
     {
       goto LABEL_41;
     }
   }
 
-  else if ((*(v4 + 80) & 0x20) != 0)
+  else if ((*(equalCopy + 80) & 0x20) != 0)
   {
     goto LABEL_41;
   }
 
   name = self->_name;
-  if (name | *(v4 + 9))
+  if (name | *(equalCopy + 9))
   {
     if (![(NSString *)name isEqual:?])
     {
@@ -262,12 +262,12 @@ LABEL_41:
     }
 
     has = self->_has;
-    v6 = *(v4 + 80);
+    v6 = *(equalCopy + 80);
   }
 
   if (has)
   {
-    if ((v6 & 1) == 0 || self->_accountId != *(v4 + 1))
+    if ((v6 & 1) == 0 || self->_accountId != *(equalCopy + 1))
     {
       goto LABEL_41;
     }
@@ -280,7 +280,7 @@ LABEL_41:
 
   if ((has & 8) != 0)
   {
-    if ((v6 & 8) == 0 || self->_storeId != *(v4 + 4))
+    if ((v6 & 8) == 0 || self->_storeId != *(equalCopy + 4))
     {
       goto LABEL_41;
     }
@@ -293,7 +293,7 @@ LABEL_41:
 
   if ((has & 4) != 0)
   {
-    if ((v6 & 4) == 0 || self->_sagaId != *(v4 + 3))
+    if ((v6 & 4) == 0 || self->_sagaId != *(equalCopy + 3))
     {
       goto LABEL_41;
     }
@@ -306,7 +306,7 @@ LABEL_41:
 
   if ((has & 2) != 0)
   {
-    if ((v6 & 2) == 0 || self->_purchaseHistoryId != *(v4 + 2))
+    if ((v6 & 2) == 0 || self->_purchaseHistoryId != *(equalCopy + 2))
     {
       goto LABEL_41;
     }
@@ -318,13 +318,13 @@ LABEL_41:
   }
 
   cloudUniversalLibraryId = self->_cloudUniversalLibraryId;
-  if (cloudUniversalLibraryId | *(v4 + 6) && ![(NSString *)cloudUniversalLibraryId isEqual:?])
+  if (cloudUniversalLibraryId | *(equalCopy + 6) && ![(NSString *)cloudUniversalLibraryId isEqual:?])
   {
     goto LABEL_41;
   }
 
   cloudLibraryId = self->_cloudLibraryId;
-  if (cloudLibraryId | *(v4 + 5))
+  if (cloudLibraryId | *(equalCopy + 5))
   {
     if (![(NSString *)cloudLibraryId isEqual:?])
     {
@@ -333,7 +333,7 @@ LABEL_41:
   }
 
   libraryIdentifiers = self->_libraryIdentifiers;
-  if (libraryIdentifiers | *(v4 + 7))
+  if (libraryIdentifiers | *(equalCopy + 7))
   {
     v11 = [(NSMutableArray *)libraryIdentifiers isEqual:?];
   }
@@ -348,10 +348,10 @@ LABEL_42:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v27 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 0x10) != 0)
@@ -367,7 +367,7 @@ LABEL_42:
     *(v5 + 80) |= 0x20u;
   }
 
-  v8 = [(NSString *)self->_name copyWithZone:a3];
+  v8 = [(NSString *)self->_name copyWithZone:zone];
   v9 = *(v6 + 72);
   *(v6 + 72) = v8;
 
@@ -419,11 +419,11 @@ LABEL_9:
   }
 
 LABEL_10:
-  v11 = [(NSString *)self->_cloudUniversalLibraryId copyWithZone:a3];
+  v11 = [(NSString *)self->_cloudUniversalLibraryId copyWithZone:zone];
   v12 = *(v6 + 48);
   *(v6 + 48) = v11;
 
-  v13 = [(NSString *)self->_cloudLibraryId copyWithZone:a3];
+  v13 = [(NSString *)self->_cloudLibraryId copyWithZone:zone];
   v14 = *(v6 + 40);
   *(v6 + 40) = v13;
 
@@ -446,7 +446,7 @@ LABEL_10:
           objc_enumerationMutation(v15);
         }
 
-        v20 = [*(*(&v22 + 1) + 8 * i) copyWithZone:{a3, v22}];
+        v20 = [*(*(&v22 + 1) + 8 * i) copyWithZone:{zone, v22}];
         [v6 addLibraryIdentifiers:v20];
       }
 
@@ -459,35 +459,35 @@ LABEL_10:
   return v6;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 0x10) != 0)
   {
-    v4[16] = self->_mediaObjectType;
-    *(v4 + 80) |= 0x10u;
+    toCopy[16] = self->_mediaObjectType;
+    *(toCopy + 80) |= 0x10u;
     has = self->_has;
   }
 
   if ((has & 0x20) != 0)
   {
-    v4[17] = self->_mediaType;
-    *(v4 + 80) |= 0x20u;
+    toCopy[17] = self->_mediaType;
+    *(toCopy + 80) |= 0x20u;
   }
 
-  v11 = v4;
+  v11 = toCopy;
   if (self->_name)
   {
-    [v4 setName:?];
-    v4 = v11;
+    [toCopy setName:?];
+    toCopy = v11;
   }
 
   v6 = self->_has;
   if (v6)
   {
-    *(v4 + 1) = self->_accountId;
-    *(v4 + 80) |= 1u;
+    *(toCopy + 1) = self->_accountId;
+    *(toCopy + 80) |= 1u;
     v6 = self->_has;
     if ((v6 & 8) == 0)
     {
@@ -506,8 +506,8 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  *(v4 + 4) = self->_storeId;
-  *(v4 + 80) |= 8u;
+  *(toCopy + 4) = self->_storeId;
+  *(toCopy + 80) |= 8u;
   v6 = self->_has;
   if ((v6 & 4) == 0)
   {
@@ -521,13 +521,13 @@ LABEL_10:
   }
 
 LABEL_25:
-  *(v4 + 3) = self->_sagaId;
-  *(v4 + 80) |= 4u;
+  *(toCopy + 3) = self->_sagaId;
+  *(toCopy + 80) |= 4u;
   if ((*&self->_has & 2) != 0)
   {
 LABEL_11:
-    *(v4 + 2) = self->_purchaseHistoryId;
-    *(v4 + 80) |= 2u;
+    *(toCopy + 2) = self->_purchaseHistoryId;
+    *(toCopy + 80) |= 2u;
   }
 
 LABEL_12:
@@ -544,10 +544,10 @@ LABEL_12:
   if ([(MIPMultiverseIdentifier *)self libraryIdentifiersCount])
   {
     [v11 clearLibraryIdentifiers];
-    v7 = [(MIPMultiverseIdentifier *)self libraryIdentifiersCount];
-    if (v7)
+    libraryIdentifiersCount = [(MIPMultiverseIdentifier *)self libraryIdentifiersCount];
+    if (libraryIdentifiersCount)
     {
-      v8 = v7;
+      v8 = libraryIdentifiersCount;
       for (i = 0; i != v8; ++i)
       {
         v10 = [(MIPMultiverseIdentifier *)self libraryIdentifiersAtIndex:i];
@@ -557,10 +557,10 @@ LABEL_12:
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 0x10) != 0)
   {
@@ -664,7 +664,7 @@ LABEL_12:
 - (id)dictionaryRepresentation
 {
   v30 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if ((has & 0x10) != 0)
   {
@@ -679,7 +679,7 @@ LABEL_12:
       v6 = off_278763AF0[v5];
     }
 
-    [v3 setObject:v6 forKey:@"mediaObjectType"];
+    [dictionary setObject:v6 forKey:@"mediaObjectType"];
 
     has = self->_has;
   }
@@ -697,20 +697,20 @@ LABEL_12:
       v8 = off_278763B38[v7];
     }
 
-    [v3 setObject:v8 forKey:@"mediaType"];
+    [dictionary setObject:v8 forKey:@"mediaType"];
   }
 
   name = self->_name;
   if (name)
   {
-    [v3 setObject:name forKey:@"name"];
+    [dictionary setObject:name forKey:@"name"];
   }
 
   v10 = self->_has;
   if (v10)
   {
     v22 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_accountId];
-    [v3 setObject:v22 forKey:@"accountId"];
+    [dictionary setObject:v22 forKey:@"accountId"];
 
     v10 = self->_has;
     if ((v10 & 8) == 0)
@@ -731,7 +731,7 @@ LABEL_15:
   }
 
   v23 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_storeId];
-  [v3 setObject:v23 forKey:@"storeId"];
+  [dictionary setObject:v23 forKey:@"storeId"];
 
   v10 = self->_has;
   if ((v10 & 4) == 0)
@@ -747,26 +747,26 @@ LABEL_16:
 
 LABEL_36:
   v24 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_sagaId];
-  [v3 setObject:v24 forKey:@"sagaId"];
+  [dictionary setObject:v24 forKey:@"sagaId"];
 
   if ((*&self->_has & 2) != 0)
   {
 LABEL_17:
     v11 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_purchaseHistoryId];
-    [v3 setObject:v11 forKey:@"purchaseHistoryId"];
+    [dictionary setObject:v11 forKey:@"purchaseHistoryId"];
   }
 
 LABEL_18:
   cloudUniversalLibraryId = self->_cloudUniversalLibraryId;
   if (cloudUniversalLibraryId)
   {
-    [v3 setObject:cloudUniversalLibraryId forKey:@"cloudUniversalLibraryId"];
+    [dictionary setObject:cloudUniversalLibraryId forKey:@"cloudUniversalLibraryId"];
   }
 
   cloudLibraryId = self->_cloudLibraryId;
   if (cloudLibraryId)
   {
-    [v3 setObject:cloudLibraryId forKey:@"cloudLibraryId"];
+    [dictionary setObject:cloudLibraryId forKey:@"cloudLibraryId"];
   }
 
   if ([(NSMutableArray *)self->_libraryIdentifiers count])
@@ -791,8 +791,8 @@ LABEL_18:
             objc_enumerationMutation(v15);
           }
 
-          v20 = [*(*(&v25 + 1) + 8 * i) dictionaryRepresentation];
-          [v14 addObject:v20];
+          dictionaryRepresentation = [*(*(&v25 + 1) + 8 * i) dictionaryRepresentation];
+          [v14 addObject:dictionaryRepresentation];
         }
 
         v17 = [(NSMutableArray *)v15 countByEnumeratingWithState:&v25 objects:v29 count:16];
@@ -801,10 +801,10 @@ LABEL_18:
       while (v17);
     }
 
-    [v3 setObject:v14 forKey:@"libraryIdentifiers"];
+    [dictionary setObject:v14 forKey:@"libraryIdentifiers"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -813,33 +813,33 @@ LABEL_18:
   v8.receiver = self;
   v8.super_class = MIPMultiverseIdentifier;
   v4 = [(MIPMultiverseIdentifier *)&v8 description];
-  v5 = [(MIPMultiverseIdentifier *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(MIPMultiverseIdentifier *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)addLibraryIdentifiers:(id)a3
+- (void)addLibraryIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   libraryIdentifiers = self->_libraryIdentifiers;
-  v8 = v4;
+  v8 = identifiersCopy;
   if (!libraryIdentifiers)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_libraryIdentifiers;
     self->_libraryIdentifiers = v6;
 
-    v4 = v8;
+    identifiersCopy = v8;
     libraryIdentifiers = self->_libraryIdentifiers;
   }
 
-  [(NSMutableArray *)libraryIdentifiers addObject:v4];
+  [(NSMutableArray *)libraryIdentifiers addObject:identifiersCopy];
 }
 
-- (void)setHasPurchaseHistoryId:(BOOL)a3
+- (void)setHasPurchaseHistoryId:(BOOL)id
 {
-  if (a3)
+  if (id)
   {
     v3 = 2;
   }
@@ -852,9 +852,9 @@ LABEL_18:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasSagaId:(BOOL)a3
+- (void)setHasSagaId:(BOOL)id
 {
-  if (a3)
+  if (id)
   {
     v3 = 4;
   }
@@ -867,9 +867,9 @@ LABEL_18:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasStoreId:(BOOL)a3
+- (void)setHasStoreId:(BOOL)id
 {
-  if (a3)
+  if (id)
   {
     v3 = 8;
   }
@@ -882,70 +882,70 @@ LABEL_18:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (int)StringAsMediaType:(id)a3
+- (int)StringAsMediaType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Song"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"Song"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Movie"])
+  else if ([typeCopy isEqualToString:@"Movie"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"TVShow"])
+  else if ([typeCopy isEqualToString:@"TVShow"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"Podcast"])
+  else if ([typeCopy isEqualToString:@"Podcast"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"VoiceMemo"])
+  else if ([typeCopy isEqualToString:@"VoiceMemo"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"VideoPodcast"])
+  else if ([typeCopy isEqualToString:@"VideoPodcast"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"MusicVideo"])
+  else if ([typeCopy isEqualToString:@"MusicVideo"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"AudioBook"])
+  else if ([typeCopy isEqualToString:@"AudioBook"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"DigitalBooklet"])
+  else if ([typeCopy isEqualToString:@"DigitalBooklet"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"ITunesUAudio"])
+  else if ([typeCopy isEqualToString:@"ITunesUAudio"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"ITunesUVideo"])
+  else if ([typeCopy isEqualToString:@"ITunesUVideo"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"HomeVideo"])
+  else if ([typeCopy isEqualToString:@"HomeVideo"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"MusicQuiz"])
+  else if ([typeCopy isEqualToString:@"MusicQuiz"])
   {
     v4 = 13;
   }
@@ -958,24 +958,24 @@ LABEL_18:
   return v4;
 }
 
-- (id)mediaTypeAsString:(int)a3
+- (id)mediaTypeAsString:(int)string
 {
-  if ((a3 - 1) >= 0xD)
+  if ((string - 1) >= 0xD)
   {
-    v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"(unknown: %i)", *&a3];
+    v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   else
   {
-    v4 = off_278763B38[a3 - 1];
+    v4 = off_278763B38[string - 1];
   }
 
   return v4;
 }
 
-- (void)setHasMediaType:(BOOL)a3
+- (void)setHasMediaType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 32;
   }
@@ -1001,50 +1001,50 @@ LABEL_18:
   }
 }
 
-- (int)StringAsMediaObjectType:(id)a3
+- (int)StringAsMediaObjectType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Album"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"Album"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Artist"])
+  else if ([typeCopy isEqualToString:@"Artist"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Composer"])
+  else if ([typeCopy isEqualToString:@"Composer"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"Genre"])
+  else if ([typeCopy isEqualToString:@"Genre"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"Series"])
+  else if ([typeCopy isEqualToString:@"Series"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"MediaItem"])
+  else if ([typeCopy isEqualToString:@"MediaItem"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"Playlist"])
+  else if ([typeCopy isEqualToString:@"Playlist"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"AlbumArtist"])
+  else if ([typeCopy isEqualToString:@"AlbumArtist"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"LibraryPin"])
+  else if ([typeCopy isEqualToString:@"LibraryPin"])
   {
     v4 = 9;
   }
@@ -1057,24 +1057,24 @@ LABEL_18:
   return v4;
 }
 
-- (id)mediaObjectTypeAsString:(int)a3
+- (id)mediaObjectTypeAsString:(int)string
 {
-  if ((a3 - 1) >= 9)
+  if ((string - 1) >= 9)
   {
-    v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"(unknown: %i)", *&a3];
+    v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   else
   {
-    v4 = off_278763AF0[a3 - 1];
+    v4 = off_278763AF0[string - 1];
   }
 
   return v4;
 }
 
-- (void)setHasMediaObjectType:(BOOL)a3
+- (void)setHasMediaObjectType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 16;
   }

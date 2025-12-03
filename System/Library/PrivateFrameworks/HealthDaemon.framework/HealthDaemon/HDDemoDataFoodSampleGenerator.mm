@@ -1,16 +1,16 @@
 @interface HDDemoDataFoodSampleGenerator
-- (BOOL)_isDemoPersonConsumingCaffeine:(id)a3 atTime:(double)a4;
+- (BOOL)_isDemoPersonConsumingCaffeine:(id)caffeine atTime:(double)time;
 - (HDDemoDataFoodSampleGenerator)init;
-- (HDDemoDataFoodSampleGenerator)initWithCoder:(id)a3;
-- (double)_computeMealTimeForDemoPerson:(id)a3 fromTime:(double)a4 mealTimeType:(int64_t)a5 timeMean:(double)a6 stdDev:(double)a7;
-- (double)_computeNutrientForDemoPerson:(void *)a3 atTime:(void *)a4 mealItem:(double)a5 quantityType:;
-- (double)_nextMealTimeForDemoPerson:(double)a3 atTime:;
+- (HDDemoDataFoodSampleGenerator)initWithCoder:(id)coder;
+- (double)_computeMealTimeForDemoPerson:(id)person fromTime:(double)time mealTimeType:(int64_t)type timeMean:(double)mean stdDev:(double)dev;
+- (double)_computeNutrientForDemoPerson:(void *)person atTime:(void *)time mealItem:(double)item quantityType:;
+- (double)_nextMealTimeForDemoPerson:(double)person atTime:;
 - (uint64_t)mealTypeForTime:(uint64_t)result;
 - (void)_generateRandomLastMeal;
-- (void)encodeWithCoder:(id)a3;
-- (void)generateFirstRunObjectsForDemoPerson:(id)a3 firstDate:(id)a4 objectCollection:(id)a5;
-- (void)generateObjectsForDemoPerson:(id)a3 fromTime:(double)a4 toTime:(double)a5 currentDate:(id)a6 objectCollection:(id)a7;
-- (void)setupWithDemoDataGenerator:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)generateFirstRunObjectsForDemoPerson:(id)person firstDate:(id)date objectCollection:(id)collection;
+- (void)generateObjectsForDemoPerson:(id)person fromTime:(double)time toTime:(double)toTime currentDate:(id)date objectCollection:(id)collection;
+- (void)setupWithDemoDataGenerator:(id)generator;
 @end
 
 @implementation HDDemoDataFoodSampleGenerator
@@ -49,53 +49,53 @@
   return v3;
 }
 
-- (HDDemoDataFoodSampleGenerator)initWithCoder:(id)a3
+- (HDDemoDataFoodSampleGenerator)initWithCoder:(id)coder
 {
   v29[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v28.receiver = self;
   v28.super_class = HDDemoDataFoodSampleGenerator;
-  v5 = [(HDDemoDataBaseSampleGenerator *)&v28 initWithCoder:v4];
+  v5 = [(HDDemoDataBaseSampleGenerator *)&v28 initWithCoder:coderCopy];
   if (v5)
   {
-    [v4 decodeDoubleForKey:@"HDDemoDataFoodSampleGeneratorNextMealTimeKey"];
+    [coderCopy decodeDoubleForKey:@"HDDemoDataFoodSampleGeneratorNextMealTimeKey"];
     v5->_nextMealTime = v6;
-    [v4 decodeDoubleForKey:@"HDDemoDataFoodSampleGeneratorNextBreakfastTimeKey"];
+    [coderCopy decodeDoubleForKey:@"HDDemoDataFoodSampleGeneratorNextBreakfastTimeKey"];
     v5->_nextBreakfastTime = v7;
-    [v4 decodeDoubleForKey:@"HDDemoDataFoodSampleGeneratorNextLunchTimeKey"];
+    [coderCopy decodeDoubleForKey:@"HDDemoDataFoodSampleGeneratorNextLunchTimeKey"];
     v5->_nextLunchTime = v8;
-    [v4 decodeDoubleForKey:@"HDDemoDataFoodSampleGeneratorNextSnackTimeKey"];
+    [coderCopy decodeDoubleForKey:@"HDDemoDataFoodSampleGeneratorNextSnackTimeKey"];
     v5->_nextSnackTime = v9;
-    [v4 decodeDoubleForKey:@"HDDemoDataFoodSampleGeneratorNextDinnerTimeKey"];
+    [coderCopy decodeDoubleForKey:@"HDDemoDataFoodSampleGeneratorNextDinnerTimeKey"];
     v5->_nextDinnerTime = v10;
-    [v4 decodeDoubleForKey:@"HDDemoDataFoodSampleGeneratorLastMealTimeKey"];
+    [coderCopy decodeDoubleForKey:@"HDDemoDataFoodSampleGeneratorLastMealTimeKey"];
     v5->_lastMealTime = v11;
     v12 = MEMORY[0x277CBEB98];
     v29[0] = objc_opt_class();
     v29[1] = objc_opt_class();
     v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v29 count:2];
     v14 = [v12 setWithArray:v13];
-    v15 = [v4 decodeObjectOfClasses:v14 forKey:@"HDDemoDataFoodSampleGeneratorLastMealKey"];
+    v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"HDDemoDataFoodSampleGeneratorLastMealKey"];
     lastMeal = v5->_lastMeal;
     v5->_lastMeal = v15;
 
-    [v4 decodeDoubleForKey:@"HDDemoDataFoodSampleGeneratorNextBloodGlucoseSampleTimeKey"];
+    [coderCopy decodeDoubleForKey:@"HDDemoDataFoodSampleGeneratorNextBloodGlucoseSampleTimeKey"];
     v5->_nextBloodGlucoseSampleTime = v17;
-    [v4 decodeDoubleForKey:@"HDDemoDataFoodSampleGeneratorNextBloodGlucoseFingerStickSampleTimeKey"];
+    [coderCopy decodeDoubleForKey:@"HDDemoDataFoodSampleGeneratorNextBloodGlucoseFingerStickSampleTimeKey"];
     v5->_nextBloodGlucoseFingerStickSampleTime = v18;
-    [v4 decodeDoubleForKey:@"HDDemoDataFoodSampleGeneratorNextBloodGlucoseMealTimeKey"];
+    [coderCopy decodeDoubleForKey:@"HDDemoDataFoodSampleGeneratorNextBloodGlucoseMealTimeKey"];
     v5->_nextBloodGlucoseMealTime = v19;
-    [v4 decodeDoubleForKey:@"HDDemoDataFoodSampleGeneratorLastBloodGlucoseKey"];
+    [coderCopy decodeDoubleForKey:@"HDDemoDataFoodSampleGeneratorLastBloodGlucoseKey"];
     v5->_lastBloodGlucose = v20;
-    [v4 decodeDoubleForKey:@"HDDemoDataFoodSampleGeneratorNextInsulinPumpBasalSampleKey"];
+    [coderCopy decodeDoubleForKey:@"HDDemoDataFoodSampleGeneratorNextInsulinPumpBasalSampleKey"];
     v5->_nextInsulinPumpBasalSampleTime = v21;
-    [v4 decodeDoubleForKey:@"HDDemoDataFoodSampleGeneratorCarbohydratesLeftToDigestKey"];
+    [coderCopy decodeDoubleForKey:@"HDDemoDataFoodSampleGeneratorCarbohydratesLeftToDigestKey"];
     v5->_carbohydratesLeftToDigest = v22;
-    [v4 decodeDoubleForKey:@"HDDemoDataFoodSampleGeneratorBloodGlucoseCarbohydrateGlycemicRateKey"];
+    [coderCopy decodeDoubleForKey:@"HDDemoDataFoodSampleGeneratorBloodGlucoseCarbohydrateGlycemicRateKey"];
     v5->_bloodGlucoseCarbohydrateGlycemicRate = v23;
-    [v4 decodeDoubleForKey:@"HDDemoDataFoodSampleGeneratorBloodGlucoseDecreaseRateDueToInsulinKey"];
+    [coderCopy decodeDoubleForKey:@"HDDemoDataFoodSampleGeneratorBloodGlucoseDecreaseRateDueToInsulinKey"];
     v5->_bloodGlucoseDecreaseRateDueToInsulin = v24;
-    [v4 decodeDoubleForKey:@"HDDemoDataFoodSampleGeneratorNextWaterConsumeSampleTimeKey"];
+    [coderCopy decodeDoubleForKey:@"HDDemoDataFoodSampleGeneratorNextWaterConsumeSampleTimeKey"];
     v5->_nextWaterConsumedSampleTime = v25;
   }
 
@@ -103,97 +103,97 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = HDDemoDataFoodSampleGenerator;
-  v4 = a3;
-  [(HDDemoDataBaseSampleGenerator *)&v5 encodeWithCoder:v4];
-  [v4 encodeDouble:@"HDDemoDataFoodSampleGeneratorNextMealTimeKey" forKey:{self->_nextMealTime, v5.receiver, v5.super_class}];
-  [v4 encodeDouble:@"HDDemoDataFoodSampleGeneratorNextBreakfastTimeKey" forKey:self->_nextBreakfastTime];
-  [v4 encodeDouble:@"HDDemoDataFoodSampleGeneratorNextLunchTimeKey" forKey:self->_nextLunchTime];
-  [v4 encodeDouble:@"HDDemoDataFoodSampleGeneratorNextSnackTimeKey" forKey:self->_nextSnackTime];
-  [v4 encodeDouble:@"HDDemoDataFoodSampleGeneratorNextDinnerTimeKey" forKey:self->_nextDinnerTime];
-  [v4 encodeDouble:@"HDDemoDataFoodSampleGeneratorLastMealTimeKey" forKey:self->_lastMealTime];
-  [v4 encodeObject:self->_lastMeal forKey:@"HDDemoDataFoodSampleGeneratorLastMealKey"];
-  [v4 encodeDouble:@"HDDemoDataFoodSampleGeneratorNextBloodGlucoseSampleTimeKey" forKey:self->_nextBloodGlucoseSampleTime];
-  [v4 encodeDouble:@"HDDemoDataFoodSampleGeneratorNextBloodGlucoseFingerStickSampleTimeKey" forKey:self->_nextBloodGlucoseFingerStickSampleTime];
-  [v4 encodeDouble:@"HDDemoDataFoodSampleGeneratorNextBloodGlucoseMealTimeKey" forKey:self->_nextBloodGlucoseMealTime];
-  [v4 encodeDouble:@"HDDemoDataFoodSampleGeneratorLastBloodGlucoseKey" forKey:self->_lastBloodGlucose];
-  [v4 encodeDouble:@"HDDemoDataFoodSampleGeneratorNextInsulinPumpBasalSampleKey" forKey:self->_nextInsulinPumpBasalSampleTime];
-  [v4 encodeDouble:@"HDDemoDataFoodSampleGeneratorCarbohydratesLeftToDigestKey" forKey:self->_carbohydratesLeftToDigest];
-  [v4 encodeDouble:@"HDDemoDataFoodSampleGeneratorBloodGlucoseCarbohydrateGlycemicRateKey" forKey:self->_bloodGlucoseCarbohydrateGlycemicRate];
-  [v4 encodeDouble:@"HDDemoDataFoodSampleGeneratorBloodGlucoseDecreaseRateDueToInsulinKey" forKey:self->_bloodGlucoseDecreaseRateDueToInsulin];
-  [v4 encodeDouble:@"HDDemoDataFoodSampleGeneratorNextWaterConsumeSampleTimeKey" forKey:self->_nextWaterConsumedSampleTime];
+  coderCopy = coder;
+  [(HDDemoDataBaseSampleGenerator *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeDouble:@"HDDemoDataFoodSampleGeneratorNextMealTimeKey" forKey:{self->_nextMealTime, v5.receiver, v5.super_class}];
+  [coderCopy encodeDouble:@"HDDemoDataFoodSampleGeneratorNextBreakfastTimeKey" forKey:self->_nextBreakfastTime];
+  [coderCopy encodeDouble:@"HDDemoDataFoodSampleGeneratorNextLunchTimeKey" forKey:self->_nextLunchTime];
+  [coderCopy encodeDouble:@"HDDemoDataFoodSampleGeneratorNextSnackTimeKey" forKey:self->_nextSnackTime];
+  [coderCopy encodeDouble:@"HDDemoDataFoodSampleGeneratorNextDinnerTimeKey" forKey:self->_nextDinnerTime];
+  [coderCopy encodeDouble:@"HDDemoDataFoodSampleGeneratorLastMealTimeKey" forKey:self->_lastMealTime];
+  [coderCopy encodeObject:self->_lastMeal forKey:@"HDDemoDataFoodSampleGeneratorLastMealKey"];
+  [coderCopy encodeDouble:@"HDDemoDataFoodSampleGeneratorNextBloodGlucoseSampleTimeKey" forKey:self->_nextBloodGlucoseSampleTime];
+  [coderCopy encodeDouble:@"HDDemoDataFoodSampleGeneratorNextBloodGlucoseFingerStickSampleTimeKey" forKey:self->_nextBloodGlucoseFingerStickSampleTime];
+  [coderCopy encodeDouble:@"HDDemoDataFoodSampleGeneratorNextBloodGlucoseMealTimeKey" forKey:self->_nextBloodGlucoseMealTime];
+  [coderCopy encodeDouble:@"HDDemoDataFoodSampleGeneratorLastBloodGlucoseKey" forKey:self->_lastBloodGlucose];
+  [coderCopy encodeDouble:@"HDDemoDataFoodSampleGeneratorNextInsulinPumpBasalSampleKey" forKey:self->_nextInsulinPumpBasalSampleTime];
+  [coderCopy encodeDouble:@"HDDemoDataFoodSampleGeneratorCarbohydratesLeftToDigestKey" forKey:self->_carbohydratesLeftToDigest];
+  [coderCopy encodeDouble:@"HDDemoDataFoodSampleGeneratorBloodGlucoseCarbohydrateGlycemicRateKey" forKey:self->_bloodGlucoseCarbohydrateGlycemicRate];
+  [coderCopy encodeDouble:@"HDDemoDataFoodSampleGeneratorBloodGlucoseDecreaseRateDueToInsulinKey" forKey:self->_bloodGlucoseDecreaseRateDueToInsulin];
+  [coderCopy encodeDouble:@"HDDemoDataFoodSampleGeneratorNextWaterConsumeSampleTimeKey" forKey:self->_nextWaterConsumedSampleTime];
 }
 
-- (void)setupWithDemoDataGenerator:(id)a3
+- (void)setupWithDemoDataGenerator:(id)generator
 {
-  v4 = a3;
+  generatorCopy = generator;
   v19.receiver = self;
   v19.super_class = HDDemoDataFoodSampleGenerator;
-  [(HDDemoDataBaseSampleGenerator *)&v19 setupWithDemoDataGenerator:v4];
+  [(HDDemoDataBaseSampleGenerator *)&v19 setupWithDemoDataGenerator:generatorCopy];
   v5 = objc_alloc_init(HDDemoDataFoodDatabase);
   foodDatabase = self->_foodDatabase;
   self->_foodDatabase = v5;
 
   if (![(HDDemoDataBaseSampleGenerator *)self createdFromNSKeyedUnarchiver])
   {
-    v7 = [v4 demoPerson];
-    [v7 breakfastTime];
+    demoPerson = [generatorCopy demoPerson];
+    [demoPerson breakfastTime];
     self->_nextMealTime = v8;
 
-    v9 = [v4 demoPerson];
-    [v9 breakfastTime];
+    demoPerson2 = [generatorCopy demoPerson];
+    [demoPerson2 breakfastTime];
     self->_nextBreakfastTime = v10;
 
-    v11 = [v4 demoPerson];
-    [v11 lunchTime];
+    demoPerson3 = [generatorCopy demoPerson];
+    [demoPerson3 lunchTime];
     self->_nextLunchTime = v12;
 
-    v13 = [v4 demoPerson];
-    [v13 snackTime];
+    demoPerson4 = [generatorCopy demoPerson];
+    [demoPerson4 snackTime];
     self->_nextSnackTime = v14;
 
-    v15 = [v4 demoPerson];
-    [v15 dinnerTime];
+    demoPerson5 = [generatorCopy demoPerson];
+    [demoPerson5 dinnerTime];
     self->_nextDinnerTime = v16;
 
-    v17 = [v4 demoPerson];
-    [v17 breakfastTime];
+    demoPerson6 = [generatorCopy demoPerson];
+    [demoPerson6 breakfastTime];
     self->_nextBloodGlucoseMealTime = v18;
   }
 }
 
-- (void)generateFirstRunObjectsForDemoPerson:(id)a3 firstDate:(id)a4 objectCollection:(id)a5
+- (void)generateFirstRunObjectsForDemoPerson:(id)person firstDate:(id)date objectCollection:(id)collection
 {
   v29[2] = *MEMORY[0x277D85DE8];
   v28.receiver = self;
   v28.super_class = HDDemoDataFoodSampleGenerator;
-  v8 = a5;
-  [(HDDemoDataBaseSampleGenerator *)&v28 generateFirstRunObjectsForDemoPerson:a3 firstDate:a4 objectCollection:v8];
-  v9 = v8;
+  collectionCopy = collection;
+  [(HDDemoDataBaseSampleGenerator *)&v28 generateFirstRunObjectsForDemoPerson:person firstDate:date objectCollection:collectionCopy];
+  v9 = collectionCopy;
   if (self)
   {
-    v10 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v11 = [HDDemoDataGeneratorConfiguration configurationFromDefaults:v10];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v11 = [HDDemoDataGeneratorConfiguration configurationFromDefaults:standardUserDefaults];
 
     if ([v11 shouldGenerateRecentLiquidsIntake])
     {
       v26 = [MEMORY[0x277CCD830] quantityTypeForIdentifier:*MEMORY[0x277CCCAF8]];
       v27 = [MEMORY[0x277CCD830] quantityTypeForIdentifier:*MEMORY[0x277CCC9D8]];
       v12 = MEMORY[0x277CCD7E8];
-      v13 = [MEMORY[0x277CCDAB0] fluidOunceUSUnit];
-      v14 = [v12 quantityWithUnit:v13 doubleValue:8.0];
+      fluidOunceUSUnit = [MEMORY[0x277CCDAB0] fluidOunceUSUnit];
+      v14 = [v12 quantityWithUnit:fluidOunceUSUnit doubleValue:8.0];
 
       v15 = MEMORY[0x277CCD7E8];
-      v16 = [MEMORY[0x277CCDAB0] gramUnit];
-      v17 = [v15 quantityWithUnit:v16 doubleValue:0.12];
+      gramUnit = [MEMORY[0x277CCDAB0] gramUnit];
+      v17 = [v15 quantityWithUnit:gramUnit doubleValue:0.12];
 
       v18 = objc_alloc(MEMORY[0x277CBEA80]);
       v19 = [v18 initWithCalendarIdentifier:*MEMORY[0x277CBE5C0]];
-      v20 = [MEMORY[0x277CBEAA8] date];
-      v21 = [v19 dateBySettingHour:8 minute:0 second:0 ofDate:v20 options:0];
+      date = [MEMORY[0x277CBEAA8] date];
+      v21 = [v19 dateBySettingHour:8 minute:0 second:0 ofDate:date options:0];
 
       v22 = [MEMORY[0x277CCD800] quantitySampleWithType:v26 quantity:v14 startDate:v21 endDate:v21];
       v23 = [MEMORY[0x277CCD800] quantitySampleWithType:v27 quantity:v17 startDate:v21 endDate:v21];
@@ -207,92 +207,92 @@
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)generateObjectsForDemoPerson:(id)a3 fromTime:(double)a4 toTime:(double)a5 currentDate:(id)a6 objectCollection:(id)a7
+- (void)generateObjectsForDemoPerson:(id)person fromTime:(double)time toTime:(double)toTime currentDate:(id)date objectCollection:(id)collection
 {
   v194 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a6;
-  v14 = self;
-  v15 = v13;
-  v180.receiver = v14;
+  personCopy = person;
+  dateCopy = date;
+  selfCopy = self;
+  v15 = dateCopy;
+  v180.receiver = selfCopy;
   v180.super_class = HDDemoDataFoodSampleGenerator;
-  v165 = a7;
+  collectionCopy = collection;
   v166 = v15;
-  [(HDDemoDataBaseSampleGenerator *)&v180 generateObjectsForDemoPerson:v12 fromTime:v15 toTime:a5 currentDate:a5 objectCollection:?];
+  [(HDDemoDataBaseSampleGenerator *)&v180 generateObjectsForDemoPerson:personCopy fromTime:v15 toTime:toTime currentDate:toTime objectCollection:?];
   if (qword_280D67B00 != -1)
   {
     dispatch_once(&qword_280D67B00, &__block_literal_global_23);
   }
 
-  v167 = v14;
-  v159 = v12;
-  if (!v14)
+  v167 = selfCopy;
+  v159 = personCopy;
+  if (!selfCopy)
   {
-    v157 = v12;
+    v157 = personCopy;
     v23 = 0.0;
     goto LABEL_8;
   }
 
-  v16 = v12;
-  v17 = [(HDDemoDataBaseSampleGenerator *)v14 demoDataGenerator];
-  v18 = [v17 bodySampleGenerator];
-  [v18 lastWeightInKg];
+  v16 = personCopy;
+  demoDataGenerator = [(HDDemoDataBaseSampleGenerator *)selfCopy demoDataGenerator];
+  bodySampleGenerator = [demoDataGenerator bodySampleGenerator];
+  [bodySampleGenerator lastWeightInKg];
   v20 = v19 * 0.55;
 
   [v16 insulinProduction];
   v22 = v21;
 
   v23 = v20 * fmax(1.0 - v22, 0.0);
-  v24 = [(HDDemoDataFoodSampleGenerator *)v14 mealTypeForTime:a5];
+  v24 = [(HDDemoDataFoodSampleGenerator *)selfCopy mealTypeForTime:toTime];
   v25 = v16;
   v158 = v24;
-  if (v14->_nextDinnerTime <= a5)
+  if (selfCopy->_nextDinnerTime <= toTime)
   {
-    v27 = v14->_foodDatabase;
+    v27 = selfCopy->_foodDatabase;
     v28 = [(HDDemoDataFoodDatabase *)v27 randomFoodForType:4];
 
-    v29 = v14->_foodDatabase;
+    v29 = selfCopy->_foodDatabase;
     v30 = [(HDDemoDataFoodDatabase *)v29 randomFoodForType:5];
 
-    v14->_nextDinnerTime = [(HDDemoDataFoodSampleGenerator *)v14 _nextMealTimeForDemoPerson:v25 atTime:a5];
-    v14->_nextMealTime = v14->_nextBreakfastTime;
+    selfCopy->_nextDinnerTime = [(HDDemoDataFoodSampleGenerator *)selfCopy _nextMealTimeForDemoPerson:v25 atTime:toTime];
+    selfCopy->_nextMealTime = selfCopy->_nextBreakfastTime;
     v189[0] = v28;
     v31 = v189;
   }
 
-  else if (v14->_nextSnackTime <= a5)
+  else if (selfCopy->_nextSnackTime <= toTime)
   {
-    v32 = v14->_foodDatabase;
+    v32 = selfCopy->_foodDatabase;
     v28 = [(HDDemoDataFoodDatabase *)v32 randomFoodForType:3];
 
-    v33 = v14->_foodDatabase;
+    v33 = selfCopy->_foodDatabase;
     v30 = [(HDDemoDataFoodDatabase *)v33 randomFoodForType:5];
 
     [v28 recommendedNumServings];
     [v28 setRecommendedNumServings:v34 * 0.5];
-    v14->_nextSnackTime = [(HDDemoDataFoodSampleGenerator *)v14 _nextMealTimeForDemoPerson:v25 atTime:a5];
-    v14->_nextMealTime = v14->_nextDinnerTime;
+    selfCopy->_nextSnackTime = [(HDDemoDataFoodSampleGenerator *)selfCopy _nextMealTimeForDemoPerson:v25 atTime:toTime];
+    selfCopy->_nextMealTime = selfCopy->_nextDinnerTime;
     *&v190 = v28;
     v31 = &v190;
   }
 
-  else if (v14->_nextLunchTime <= a5)
+  else if (selfCopy->_nextLunchTime <= toTime)
   {
-    v35 = v14->_foodDatabase;
+    v35 = selfCopy->_foodDatabase;
     v28 = [(HDDemoDataFoodDatabase *)v35 randomFoodForType:2];
 
-    v36 = v14->_foodDatabase;
+    v36 = selfCopy->_foodDatabase;
     v30 = [(HDDemoDataFoodDatabase *)v36 randomFoodForType:5];
 
-    v14->_nextLunchTime = [(HDDemoDataFoodSampleGenerator *)v14 _nextMealTimeForDemoPerson:v25 atTime:a5];
-    v14->_nextMealTime = v14->_nextSnackTime;
+    selfCopy->_nextLunchTime = [(HDDemoDataFoodSampleGenerator *)selfCopy _nextMealTimeForDemoPerson:v25 atTime:toTime];
+    selfCopy->_nextMealTime = selfCopy->_nextSnackTime;
     v188 = v28;
     v31 = &v188;
   }
 
   else
   {
-    if (v14->_nextBreakfastTime > a5)
+    if (selfCopy->_nextBreakfastTime > toTime)
     {
 LABEL_8:
       v26 = v159;
@@ -301,14 +301,14 @@ LABEL_8:
       goto LABEL_60;
     }
 
-    v37 = v14->_foodDatabase;
+    v37 = selfCopy->_foodDatabase;
     v28 = [(HDDemoDataFoodDatabase *)v37 randomFoodForType:1];
 
-    v38 = v14->_foodDatabase;
+    v38 = selfCopy->_foodDatabase;
     v30 = [(HDDemoDataFoodDatabase *)v38 randomFoodForType:5];
 
-    v14->_nextBreakfastTime = [(HDDemoDataFoodSampleGenerator *)v14 _nextMealTimeForDemoPerson:v25 atTime:a5];
-    v14->_nextMealTime = v14->_nextLunchTime;
+    selfCopy->_nextBreakfastTime = [(HDDemoDataFoodSampleGenerator *)selfCopy _nextMealTimeForDemoPerson:v25 atTime:toTime];
+    selfCopy->_nextMealTime = selfCopy->_nextLunchTime;
     v187 = v28;
     v31 = &v187;
   }
@@ -322,7 +322,7 @@ LABEL_8:
     goto LABEL_59;
   }
 
-  objc_storeStrong(&v14->_lastMeal, v39);
+  objc_storeStrong(&selfCopy->_lastMeal, v39);
   v178 = 0u;
   v179 = 0u;
   v177 = 0u;
@@ -350,8 +350,8 @@ LABEL_8:
         v173 = 0u;
         v174 = 0u;
         v175 = 0u;
-        v42 = [v41 nutritionFacts];
-        v43 = [v42 countByEnumeratingWithState:&v172 objects:v185 count:16];
+        nutritionFacts = [v41 nutritionFacts];
+        v43 = [nutritionFacts countByEnumeratingWithState:&v172 objects:v185 count:16];
         if (v43)
         {
           v44 = v43;
@@ -363,7 +363,7 @@ LABEL_8:
             {
               if (*v173 != v45)
               {
-                objc_enumerationMutation(v42);
+                objc_enumerationMutation(nutritionFacts);
               }
 
               v47 = *(*(&v172 + 1) + 8 * v46);
@@ -383,17 +383,17 @@ LABEL_8:
               if (v49)
               {
 LABEL_28:
-                v50 = [(HDDemoDataFoodSampleGenerator *)&v14->super.super.isa _computeNutrientForDemoPerson:v25 atTime:v41 mealItem:v47 quantityType:a5]* 1.3;
+                v50 = [(HDDemoDataFoodSampleGenerator *)&selfCopy->super.super.isa _computeNutrientForDemoPerson:v25 atTime:v41 mealItem:v47 quantityType:toTime]* 1.3;
                 if (v50 != 0.0 && v50 != -2147483650.0)
                 {
                   v52 = [MEMORY[0x277CCD830] quantityTypeForIdentifier:v47];
-                  v53 = [(HDDemoDataFoodDatabase *)v14->_foodDatabase canonicalDietaryUnitForQuantityTypeIdentifier:v47];
+                  v53 = [(HDDemoDataFoodDatabase *)selfCopy->_foodDatabase canonicalDietaryUnitForQuantityTypeIdentifier:v47];
                   v54 = [MEMORY[0x277CCD7E8] quantityWithUnit:v53 doubleValue:v50];
                   v55 = [MEMORY[0x277CCD800] quantitySampleWithType:v52 quantity:v54 startDate:v166 endDate:v166];
-                  [v165 addObjectFromPhone:v55];
+                  [collectionCopy addObjectFromPhone:v55];
                   [v168 addObject:v55];
 
-                  v14 = v167;
+                  selfCopy = v167;
                 }
               }
 
@@ -401,7 +401,7 @@ LABEL_28:
             }
 
             while (v44 != v46);
-            v44 = [v42 countByEnumeratingWithState:&v172 objects:v185 count:16];
+            v44 = [nutritionFacts countByEnumeratingWithState:&v172 objects:v185 count:16];
           }
 
           while (v44);
@@ -410,14 +410,14 @@ LABEL_28:
         if ([v168 count])
         {
           v183 = v160;
-          v56 = [v41 brandName];
-          v184 = v56;
+          brandName = [v41 brandName];
+          v184 = brandName;
           v57 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v184 forKeys:&v183 count:1];
 
           v58 = [MEMORY[0x277CCD240] correlationWithType:_MergedGlobals_9 startDate:v166 endDate:v166 objects:v168 metadata:v57];
-          [v165 addObjectFromPhone:v58];
+          [collectionCopy addObjectFromPhone:v58];
 
-          v14 = v167;
+          selfCopy = v167;
         }
 
         v40 = v164 + 1;
@@ -456,8 +456,8 @@ LABEL_59:
   else
   {
     v152 = MEMORY[0x277CCD7E8];
-    v153 = [MEMORY[0x277CCDAB0] internationalUnit];
-    v154 = [v152 quantityWithUnit:v153 doubleValue:floor(v23 * 0.5)];
+    internationalUnit = [MEMORY[0x277CCDAB0] internationalUnit];
+    v154 = [v152 quantityWithUnit:internationalUnit doubleValue:floor(v23 * 0.5)];
 
     v155 = MEMORY[0x277CCD800];
     *&v190 = *MEMORY[0x277CCC4C8];
@@ -465,12 +465,12 @@ LABEL_59:
     v156 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v189 forKeys:&v190 count:1];
     v64 = [v155 quantitySampleWithType:v62 quantity:v154 startDate:v63 endDate:v63 metadata:v156];
 
-    v14 = v167;
+    selfCopy = v167;
   }
 
   if (v64)
   {
-    [v165 addObjectFromPhone:v64];
+    [collectionCopy addObjectFromPhone:v64];
   }
 
   v59 = obj;
@@ -505,8 +505,8 @@ LABEL_47:
         objc_enumerationMutation(obj);
       }
 
-      v71 = [*(*(&v190 + 1) + 8 * i) nutritionFacts];
-      v72 = [v71 objectForKeyedSubscript:v68];
+      nutritionFacts2 = [*(*(&v190 + 1) + 8 * i) nutritionFacts];
+      v72 = [nutritionFacts2 objectForKeyedSubscript:v68];
       [v72 doubleValue];
       v69 = v69 + v73;
     }
@@ -515,7 +515,7 @@ LABEL_47:
   }
 
   while (v66);
-  v14 = v167;
+  selfCopy = v167;
   v65 = obj;
   if (v69 == 0.0)
   {
@@ -527,8 +527,8 @@ LABEL_56:
   else
   {
     v146 = MEMORY[0x277CCD7E8];
-    v147 = [MEMORY[0x277CCDAB0] internationalUnit];
-    v74 = [v146 quantityWithUnit:v147 doubleValue:floor(v69 / (500.0 / v23))];
+    internationalUnit2 = [MEMORY[0x277CCDAB0] internationalUnit];
+    v74 = [v146 quantityWithUnit:internationalUnit2 doubleValue:floor(v69 / (500.0 / v23))];
 
     if (v74)
     {
@@ -539,10 +539,10 @@ LABEL_56:
       v150 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v182 forKeys:&v181 count:1];
       v151 = [v148 quantitySampleWithType:v149 quantity:v74 startDate:v166 endDate:v166 metadata:v150];
 
-      [v165 addObjectFromPhone:v151];
+      [collectionCopy addObjectFromPhone:v151];
     }
 
-    v14 = v167;
+    selfCopy = v167;
   }
 
   v26 = v159;
@@ -552,24 +552,24 @@ LABEL_60:
   aBlock[1] = 3221225472;
   aBlock[2] = __107__HDDemoDataFoodSampleGenerator_generateObjectsForDemoPerson_fromTime_toTime_currentDate_objectCollection___block_invoke_370;
   aBlock[3] = &unk_278616268;
-  aBlock[4] = v14;
+  aBlock[4] = selfCopy;
   v75 = v26;
   v170 = v75;
-  v76 = v165;
+  v76 = collectionCopy;
   v171 = v76;
   v77 = _Block_copy(aBlock);
   if ([v75 useContinuousGlucoseMonitoring])
   {
-    for (; a4 <= a5; a4 = a4 + v78)
+    for (; time <= toTime; time = time + v78)
     {
-      v77[2](v77, a4);
+      v77[2](v77, time);
       [v75 continuousGlucoseMonitoringSampleFrequency];
     }
   }
 
   else
   {
-    v77[2](v77, a5);
+    v77[2](v77, toTime);
   }
 
   v79 = qword_280D67AF0;
@@ -579,15 +579,15 @@ LABEL_60:
   v83 = 0;
   if (v167 && v23 != 0.0)
   {
-    if ([v80 insulinTherapy] == 1 && v167[11] <= a5)
+    if ([v80 insulinTherapy] == 1 && v167[11] <= toTime)
     {
       [v80 timeIncrement];
-      v167[11] = v84 + a5;
+      v167[11] = v84 + toTime;
       [v80 timeIncrement];
       v86 = floor(v23 * 0.5 * v85 * 40.0) / 40.0;
       v87 = MEMORY[0x277CCD7E8];
-      v88 = [MEMORY[0x277CCDAB0] internationalUnit];
-      v89 = [v87 quantityWithUnit:v88 doubleValue:v86];
+      internationalUnit3 = [MEMORY[0x277CCDAB0] internationalUnit];
+      v89 = [v87 quantityWithUnit:internationalUnit3 doubleValue:v86];
 
       [v80 timeIncrement];
       v91 = [v82 dateByAddingTimeInterval:v90 * -86400.0];
@@ -618,16 +618,16 @@ LABEL_60:
     goto LABEL_76;
   }
 
-  if (v167[15] > a5)
+  if (v167[15] > toTime)
   {
     goto LABEL_76;
   }
 
   [v96 waterConsumedSampleFrequency];
-  v167[15] = v98 + a5;
-  v99 = [v167 demoDataGenerator];
-  v100 = [v99 sleepSampleGenerator];
-  v101 = [v100 isDemoPersonSleeping:v97 atTime:a5];
+  v167[15] = v98 + toTime;
+  demoDataGenerator2 = [v167 demoDataGenerator];
+  sleepSampleGenerator = [demoDataGenerator2 sleepSampleGenerator];
+  v101 = [sleepSampleGenerator isDemoPersonSleeping:v97 atTime:toTime];
 
   if (v101)
   {
@@ -639,9 +639,9 @@ LABEL_77:
     goto LABEL_78;
   }
 
-  v105 = [v167 demoDataGenerator];
-  v106 = [MEMORY[0x277CBEA80] currentCalendar];
-  v107 = [v105 isDemoDataTimeInWeekend:v106 calendar:a5];
+  demoDataGenerator3 = [v167 demoDataGenerator];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  v107 = [demoDataGenerator3 isDemoDataTimeInWeekend:currentCalendar calendar:toTime];
 
   if (v107)
   {
@@ -653,20 +653,20 @@ LABEL_77:
     [v97 weekdaySleepParameters];
   }
   v108 = ;
-  v109 = [v167 demoDataGenerator];
-  v110 = [v109 sleepSampleGenerator];
+  demoDataGenerator4 = [v167 demoDataGenerator];
+  sleepSampleGenerator2 = [demoDataGenerator4 sleepSampleGenerator];
   [v108 bedtime];
   v112 = v111;
   [v97 bedtimeNoiseStdDev];
-  [v110 computeSleepTimeFromCurrentTime:a5 mean:v112 stdDev:v113];
+  [sleepSampleGenerator2 computeSleepTimeFromCurrentTime:toTime mean:v112 stdDev:v113];
   v115 = v114;
 
-  v116 = [v167 demoDataGenerator];
-  v117 = [v116 sleepSampleGenerator];
+  demoDataGenerator5 = [v167 demoDataGenerator];
+  sleepSampleGenerator3 = [demoDataGenerator5 sleepSampleGenerator];
   [v108 wakeUpTime];
   v119 = v118;
   [v97 wakeUpTimeNoiseStdDev];
-  [v117 computeSleepTimeFromCurrentTime:a5 mean:v119 stdDev:v120];
+  [sleepSampleGenerator3 computeSleepTimeFromCurrentTime:toTime mean:v119 stdDev:v120];
   v122 = v121;
 
   [v97 waterConsumedSampleFrequency];
@@ -675,9 +675,9 @@ LABEL_77:
   v126 = v125;
   [v97 waterConsumedIntervalMean];
   v128 = ((v126 / v127) / v124);
-  v129 = [v167 demoDataGenerator];
-  v130 = [v129 statisticsSampleGenerator];
-  [v130 pseudoRandomDoubleFromTime:a5];
+  demoDataGenerator6 = [v167 demoDataGenerator];
+  statisticsSampleGenerator = [demoDataGenerator6 statisticsSampleGenerator];
+  [statisticsSampleGenerator pseudoRandomDoubleFromTime:toTime];
   v132 = v131;
 
   if (v132 >= v128)
@@ -689,10 +689,10 @@ LABEL_77:
   {
     [v97 waterConsumedIntervalMean];
     v134 = v133;
-    v135 = [v167 demoDataGenerator];
-    v136 = [v135 statisticsSampleGenerator];
+    demoDataGenerator7 = [v167 demoDataGenerator];
+    statisticsSampleGenerator2 = [demoDataGenerator7 statisticsSampleGenerator];
     [v97 waterConsumedIntervalStdDev];
-    [v136 computeNoiseFromTime:a5 stdDev:v137];
+    [statisticsSampleGenerator2 computeNoiseFromTime:toTime stdDev:v137];
     v139 = v134 + v138;
 
     v140 = 100 * (v139 / 100.0);
@@ -787,15 +787,15 @@ uint64_t __107__HDDemoDataFoodSampleGenerator_generateObjectsForDemoPerson_fromT
   return result;
 }
 
-- (double)_computeNutrientForDemoPerson:(void *)a3 atTime:(void *)a4 mealItem:(double)a5 quantityType:
+- (double)_computeNutrientForDemoPerson:(void *)person atTime:(void *)time mealItem:(double)item quantityType:
 {
   v9 = a2;
-  v10 = a3;
-  v11 = a4;
+  personCopy = person;
+  timeCopy = time;
   v12 = 0.0;
-  if (a1)
+  if (self)
   {
-    v13 = a5 - a5;
+    v13 = item - item;
     v14 = 1.0;
     if ([v9 biologicalSex] == 2)
     {
@@ -809,10 +809,10 @@ uint64_t __107__HDDemoDataFoodSampleGenerator_generateObjectsForDemoPerson_fromT
 
     [v9 numCupsOfCoffeeDailyMean];
     v17 = v16;
-    v18 = [a1 demoDataGenerator];
-    v19 = [v18 statisticsSampleGenerator];
+    demoDataGenerator = [self demoDataGenerator];
+    statisticsSampleGenerator = [demoDataGenerator statisticsSampleGenerator];
     [v9 numCupsOfCoffeeStdDev];
-    [v19 computeNoiseFromTime:a5 stdDev:v20];
+    [statisticsSampleGenerator computeNoiseFromTime:item stdDev:v20];
     v22 = v21;
 
     [v9 dinnerTime];
@@ -851,37 +851,37 @@ uint64_t __107__HDDemoDataFoodSampleGenerator_generateObjectsForDemoPerson_fromT
       }
     }
 
-    v28 = [v10 nutritionFacts];
-    v29 = [v28 objectForKeyedSubscript:v11];
+    nutritionFacts = [personCopy nutritionFacts];
+    v29 = [nutritionFacts objectForKeyedSubscript:timeCopy];
     [v29 doubleValue];
     v31 = v14 * v30;
-    [v10 recommendedNumServings];
+    [personCopy recommendedNumServings];
     v33 = v31 * v32;
 
     if (v33 != 0.0)
     {
-      if (v27 <= (v17 + v22) && [v10 foodType] != 5)
+      if (v27 <= (v17 + v22) && [personCopy foodType] != 5)
       {
-        v34 = [a1[4] coffee];
-        v35 = [v34 nutritionFacts];
-        v36 = [v35 objectForKeyedSubscript:v11];
+        coffee = [self[4] coffee];
+        nutritionFacts2 = [coffee nutritionFacts];
+        v36 = [nutritionFacts2 objectForKeyedSubscript:timeCopy];
         [v36 doubleValue];
         v33 = v33 + v37;
       }
 
       [v9 weightLossStartDay];
-      if (v38 > a5)
+      if (v38 > item)
       {
         [v9 preDietIntakeMultiplier];
         v33 = v33 * v39;
       }
 
-      v40 = [a1 demoDataGenerator];
-      v41 = [v40 statisticsSampleGenerator];
-      [v41 pseudoRandomDoubleFromTime:a5];
+      demoDataGenerator2 = [self demoDataGenerator];
+      statisticsSampleGenerator2 = [demoDataGenerator2 statisticsSampleGenerator];
+      [statisticsSampleGenerator2 pseudoRandomDoubleFromTime:item];
       v43 = v15 * v33 * (v42 * 0.07 + 0.95);
 
-      v44 = [v11 isEqualToString:*MEMORY[0x277CCCAF8]];
+      v44 = [timeCopy isEqualToString:*MEMORY[0x277CCCAF8]];
       v45 = 10.0;
       if (v43 >= 10.0)
       {
@@ -1366,19 +1366,19 @@ void __73__HDDemoDataFoodSampleGenerator__isTypicalNutritionTrackingQuantityType
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_isDemoPersonConsumingCaffeine:(id)a3 atTime:(double)a4
+- (BOOL)_isDemoPersonConsumingCaffeine:(id)caffeine atTime:(double)time
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = a4 - v7;
-  [v6 numCupsOfCoffeeDailyMean];
+  caffeineCopy = caffeine;
+  timeCopy = time;
+  v8 = time - timeCopy;
+  [caffeineCopy numCupsOfCoffeeDailyMean];
   v10 = v9;
-  v11 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
-  v12 = [v11 statisticsSampleGenerator];
-  [v6 numCupsOfCoffeeStdDev];
+  demoDataGenerator = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
+  statisticsSampleGenerator = [demoDataGenerator statisticsSampleGenerator];
+  [caffeineCopy numCupsOfCoffeeStdDev];
   v14 = v13;
 
-  [v12 computeNoiseFromTime:v7 stdDev:v14];
+  [statisticsSampleGenerator computeNoiseFromTime:timeCopy stdDev:v14];
   v16 = fabs(v10 + v15);
 
   v17 = [(HDDemoDataFoodSampleGenerator *)self mealTypeForTime:v8];
@@ -1441,81 +1441,81 @@ LABEL_14:
   return v21 && v23;
 }
 
-- (double)_computeMealTimeForDemoPerson:(id)a3 fromTime:(double)a4 mealTimeType:(int64_t)a5 timeMean:(double)a6 stdDev:(double)a7
+- (double)_computeMealTimeForDemoPerson:(id)person fromTime:(double)time mealTimeType:(int64_t)type timeMean:(double)mean stdDev:(double)dev
 {
-  v9 = a5;
-  v10 = a4;
-  v11 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
-  v12 = [v11 statisticsSampleGenerator];
-  [v12 computeStatisticalTimeFromCurrentTime:v9 + v10 * 4.0 mean:a6 stdDev:a7];
+  typeCopy = type;
+  timeCopy = time;
+  demoDataGenerator = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
+  statisticsSampleGenerator = [demoDataGenerator statisticsSampleGenerator];
+  [statisticsSampleGenerator computeStatisticalTimeFromCurrentTime:typeCopy + timeCopy * 4.0 mean:mean stdDev:dev];
   v14 = v13;
 
   return v14;
 }
 
-- (double)_nextMealTimeForDemoPerson:(double)a3 atTime:
+- (double)_nextMealTimeForDemoPerson:(double)person atTime:
 {
   v5 = a2;
   v6 = v5;
-  v7 = a3;
-  v8 = a3 + 1;
-  if (a1[19] <= a3)
+  personCopy = person;
+  v8 = person + 1;
+  if (self[19] <= person)
   {
-    v10 = v7;
+    v10 = personCopy;
     [v5 dinnerTime];
     v12 = v11;
     [v6 mealTimeSampleNoiseStdDev];
     v14 = v13;
-    v15 = a1;
+    selfCopy3 = self;
     v16 = v6;
     v17 = v10;
     v18 = 4;
 LABEL_9:
-    [v15 _computeMealTimeForDemoPerson:v16 fromTime:v18 mealTimeType:v17 timeMean:v12 stdDev:v14];
+    [selfCopy3 _computeMealTimeForDemoPerson:v16 fromTime:v18 mealTimeType:v17 timeMean:v12 stdDev:v14];
     v9 = v25 + v8;
     goto LABEL_10;
   }
 
-  if (a1[18] <= a3)
+  if (self[18] <= person)
   {
-    v19 = v7;
+    v19 = personCopy;
     [v5 snackTime];
     v12 = v20;
     [v6 mealTimeSampleNoiseStdDev];
     v14 = v21;
-    v15 = a1;
+    selfCopy3 = self;
     v16 = v6;
     v17 = v19;
     v18 = 3;
     goto LABEL_9;
   }
 
-  if (a1[17] <= a3)
+  if (self[17] <= person)
   {
-    v22 = v7;
+    v22 = personCopy;
     [v5 lunchTime];
     v12 = v23;
     [v6 mealTimeSampleNoiseStdDev];
     v14 = v24;
-    v15 = a1;
+    selfCopy3 = self;
     v16 = v6;
     v17 = v22;
     v18 = 2;
     goto LABEL_9;
   }
 
-  if (a1[16] <= a3)
+  if (self[16] <= person)
   {
     [v5 breakfastTime];
     v28 = v27;
     [v6 breakfastTimeSampleNoiseStdDev];
-    [a1 _computeMealTimeForDemoPerson:v6 fromTime:1 mealTimeType:v8 timeMean:v28 stdDev:v29];
+    [self _computeMealTimeForDemoPerson:v6 fromTime:1 mealTimeType:v8 timeMean:v28 stdDev:v29];
     v9 = v30 + v8;
   }
 
   else
   {
-    v9 = a1[5];
+    v9 = self[5];
   }
 
 LABEL_10:

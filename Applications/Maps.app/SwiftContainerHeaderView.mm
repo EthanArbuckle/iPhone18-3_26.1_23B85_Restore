@@ -2,31 +2,31 @@
 - (NSArray)trailingButtons;
 - (_TtP4Maps23SwiftHeaderViewDelegate_)delegate;
 - (double)trailingButtonInset;
-- (void)setDelegate:(id)a3;
-- (void)setHeaderSize:(int64_t)a3;
-- (void)setLeadingImage:(id)a3;
-- (void)setParentViewController:(id)a3;
-- (void)setTrailingButtons:(id)a3;
+- (void)setDelegate:(id)delegate;
+- (void)setHeaderSize:(int64_t)size;
+- (void)setLeadingImage:(id)image;
+- (void)setParentViewController:(id)controller;
+- (void)setTrailingButtons:(id)buttons;
 @end
 
 @implementation SwiftContainerHeaderView
 
-- (void)setHeaderSize:(int64_t)a3
+- (void)setHeaderSize:(int64_t)size
 {
   v4 = *(self + OBJC_IVAR____TtC4Maps24SwiftContainerHeaderView_headerSize);
-  *(self + OBJC_IVAR____TtC4Maps24SwiftContainerHeaderView_headerSize) = a3;
-  if (v4 != a3)
+  *(self + OBJC_IVAR____TtC4Maps24SwiftContainerHeaderView_headerSize) = size;
+  if (v4 != size)
   {
-    v5 = self;
+    selfCopy = self;
     sub_100519EEC();
   }
 }
 
-- (void)setLeadingImage:(id)a3
+- (void)setLeadingImage:(id)image
 {
-  v5 = a3;
-  v6 = self;
-  sub_100519770(a3);
+  imageCopy = image;
+  selfCopy = self;
+  sub_100519770(image);
 }
 
 - (NSArray)trailingButtons
@@ -38,13 +38,13 @@
   return v2.super.isa;
 }
 
-- (void)setTrailingButtons:(id)a3
+- (void)setTrailingButtons:(id)buttons
 {
   sub_100014C84(0, &qword_101909920);
   v4 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   v5 = *(self + OBJC_IVAR____TtC4Maps24SwiftContainerHeaderView_trailingButtons);
   *(self + OBJC_IVAR____TtC4Maps24SwiftContainerHeaderView_trailingButtons) = v4;
-  v7 = self;
+  selfCopy = self;
 
   LOBYTE(self) = sub_1001F1224(v6, v5);
 
@@ -61,26 +61,26 @@
   return v2;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  *(self + OBJC_IVAR____TtC4Maps24SwiftContainerHeaderView_delegate) = a3;
+  *(self + OBJC_IVAR____TtC4Maps24SwiftContainerHeaderView_delegate) = delegate;
   swift_unknownObjectRetain_n();
-  v4 = self;
+  selfCopy = self;
   swift_unknownObjectRelease();
   sub_100519EEC();
   swift_unknownObjectRelease();
 }
 
-- (void)setParentViewController:(id)a3
+- (void)setParentViewController:(id)controller
 {
-  v5 = a3;
-  v6 = self;
-  sub_100519A58(a3);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_100519A58(controller);
 }
 
 - (double)trailingButtonInset
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10051AF64();
 
   return v3;

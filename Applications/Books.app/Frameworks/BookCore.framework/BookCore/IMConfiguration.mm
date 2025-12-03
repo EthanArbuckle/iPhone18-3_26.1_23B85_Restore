@@ -1,18 +1,18 @@
 @interface IMConfiguration
-- (CGPoint)pointForKey:(id)a3 context:(id)a4;
-- (CGRect)rectForKey:(id)a3 context:(id)a4;
-- (CGSize)sizeForKey:(id)a3 context:(id)a4;
+- (CGPoint)pointForKey:(id)key context:(id)context;
+- (CGRect)rectForKey:(id)key context:(id)context;
+- (CGSize)sizeForKey:(id)key context:(id)context;
 - (IMConfiguration)init;
-- (UIEdgeInsets)edgeInsetsForKey:(id)a3 context:(id)a4;
-- (double)BOOLForKey:(id)a3 context:(id)a4;
-- (double)floatForKey:(id)a3 context:(id)a4;
-- (id)_predicateValuePairsForKey:(id)a3;
-- (id)_selectTopScoringPairInArray:(id)a3;
+- (UIEdgeInsets)edgeInsetsForKey:(id)key context:(id)context;
+- (double)BOOLForKey:(id)key context:(id)context;
+- (double)floatForKey:(id)key context:(id)context;
+- (id)_predicateValuePairsForKey:(id)key;
+- (id)_selectTopScoringPairInArray:(id)array;
 - (id)description;
-- (id)valueForKey:(id)a3 context:(id)a4;
-- (int64_t)integerForKey:(id)a3 context:(id)a4;
-- (void)addValue:(id)a3 predicate:(id)a4 forKey:(id)a5;
-- (void)addWithPredicate:(id)a3 adder:(id)a4;
+- (id)valueForKey:(id)key context:(id)context;
+- (int64_t)integerForKey:(id)key context:(id)context;
+- (void)addValue:(id)value predicate:(id)predicate forKey:(id)key;
+- (void)addWithPredicate:(id)predicate adder:(id)adder;
 - (void)invalidate;
 @end
 
@@ -42,24 +42,24 @@
   v7.receiver = self;
   v7.super_class = IMConfiguration;
   v3 = [(IMConfiguration *)&v7 description];
-  v4 = [(IMConfiguration *)self pairsToKeyMap];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  pairsToKeyMap = [(IMConfiguration *)self pairsToKeyMap];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, pairsToKeyMap];
 
   return v5;
 }
 
-- (id)valueForKey:(id)a3 context:(id)a4
+- (id)valueForKey:(id)key context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(IMConfiguration *)self cache];
-  v9 = [v8 objectForKeyedSubscript:v6];
+  keyCopy = key;
+  contextCopy = context;
+  cache = [(IMConfiguration *)self cache];
+  value = [cache objectForKeyedSubscript:keyCopy];
 
-  if (!v9)
+  if (!value)
   {
     v10 = +[NSMutableArray array];
-    v23 = v6;
-    v11 = [(IMConfiguration *)self _predicateValuePairsForKey:v6];
+    v23 = keyCopy;
+    v11 = [(IMConfiguration *)self _predicateValuePairsForKey:keyCopy];
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
@@ -79,8 +79,8 @@
           }
 
           v16 = *(*(&v24 + 1) + 8 * i);
-          v17 = [v16 predicate];
-          v18 = [v17 evaluateWithContext:v7];
+          predicate = [v16 predicate];
+          v18 = [predicate evaluateWithContext:contextCopy];
 
           if (v18)
           {
@@ -106,12 +106,12 @@
         [(IMConfiguration *)self _selectTopScoringPairInArray:v10];
       }
       v20 = ;
-      v6 = v23;
-      v9 = [v20 value];
-      if (v9)
+      keyCopy = v23;
+      value = [v20 value];
+      if (value)
       {
-        v21 = [(IMConfiguration *)self cache];
-        [v21 setObject:v9 forKeyedSubscript:v23];
+        cache2 = [(IMConfiguration *)self cache];
+        [cache2 setObject:value forKeyedSubscript:v23];
       }
     }
 
@@ -130,7 +130,7 @@
       }
 
       v20 = BCIMLog();
-      v6 = v23;
+      keyCopy = v23;
       if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
       {
         *buf = 138412802;
@@ -138,45 +138,45 @@
         v30 = 2112;
         v31 = v11;
         v32 = 2112;
-        v33 = v7;
+        v33 = contextCopy;
         _os_log_impl(&dword_0, v20, OS_LOG_TYPE_INFO, "@Failed to match for {%@} in {%@} ctx {%@}", buf, 0x20u);
       }
 
-      v9 = 0;
+      value = 0;
     }
   }
 
-  return v9;
+  return value;
 }
 
-- (double)floatForKey:(id)a3 context:(id)a4
+- (double)floatForKey:(id)key context:(id)context
 {
-  v4 = [(IMConfiguration *)self valueForKey:a3 context:a4];
+  v4 = [(IMConfiguration *)self valueForKey:key context:context];
   [v4 doubleValue];
   v6 = v5;
 
   return v6;
 }
 
-- (double)BOOLForKey:(id)a3 context:(id)a4
+- (double)BOOLForKey:(id)key context:(id)context
 {
-  v4 = [(IMConfiguration *)self valueForKey:a3 context:a4];
-  v5 = [v4 BOOLValue];
+  v4 = [(IMConfiguration *)self valueForKey:key context:context];
+  bOOLValue = [v4 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
-- (int64_t)integerForKey:(id)a3 context:(id)a4
+- (int64_t)integerForKey:(id)key context:(id)context
 {
-  v4 = [(IMConfiguration *)self valueForKey:a3 context:a4];
-  v5 = [v4 integerValue];
+  v4 = [(IMConfiguration *)self valueForKey:key context:context];
+  integerValue = [v4 integerValue];
 
-  return v5;
+  return integerValue;
 }
 
-- (CGPoint)pointForKey:(id)a3 context:(id)a4
+- (CGPoint)pointForKey:(id)key context:(id)context
 {
-  v4 = [(IMConfiguration *)self valueForKey:a3 context:a4];
+  v4 = [(IMConfiguration *)self valueForKey:key context:context];
   [v4 CGPointValue];
   v6 = v5;
   v8 = v7;
@@ -188,9 +188,9 @@
   return result;
 }
 
-- (CGSize)sizeForKey:(id)a3 context:(id)a4
+- (CGSize)sizeForKey:(id)key context:(id)context
 {
-  v4 = [(IMConfiguration *)self valueForKey:a3 context:a4];
+  v4 = [(IMConfiguration *)self valueForKey:key context:context];
   [v4 CGSizeValue];
   v6 = v5;
   v8 = v7;
@@ -202,9 +202,9 @@
   return result;
 }
 
-- (CGRect)rectForKey:(id)a3 context:(id)a4
+- (CGRect)rectForKey:(id)key context:(id)context
 {
-  v4 = [(IMConfiguration *)self valueForKey:a3 context:a4];
+  v4 = [(IMConfiguration *)self valueForKey:key context:context];
   [v4 CGRectValue];
   v6 = v5;
   v8 = v7;
@@ -222,9 +222,9 @@
   return result;
 }
 
-- (UIEdgeInsets)edgeInsetsForKey:(id)a3 context:(id)a4
+- (UIEdgeInsets)edgeInsetsForKey:(id)key context:(id)context
 {
-  v4 = [(IMConfiguration *)self valueForKey:a3 context:a4];
+  v4 = [(IMConfiguration *)self valueForKey:key context:context];
   [v4 uiEdgeInsetsValue];
   v6 = v5;
   v8 = v7;
@@ -242,61 +242,61 @@
   return result;
 }
 
-- (void)addValue:(id)a3 predicate:(id)a4 forKey:(id)a5
+- (void)addValue:(id)value predicate:(id)predicate forKey:(id)key
 {
-  v13 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [(IMConfiguration *)self _predicateValuePairsForKey:v13];
+  keyCopy = key;
+  predicateCopy = predicate;
+  valueCopy = value;
+  v10 = [(IMConfiguration *)self _predicateValuePairsForKey:keyCopy];
   if (!v10)
   {
     v10 = objc_alloc_init(NSMutableArray);
-    v11 = [(IMConfiguration *)self pairsToKeyMap];
-    [v11 setObject:v10 forKeyedSubscript:v13];
+    pairsToKeyMap = [(IMConfiguration *)self pairsToKeyMap];
+    [pairsToKeyMap setObject:v10 forKeyedSubscript:keyCopy];
   }
 
   v12 = objc_alloc_init(IMConfigurationPredicateValuePair);
-  [(IMConfigurationPredicateValuePair *)v12 setPredicate:v8];
+  [(IMConfigurationPredicateValuePair *)v12 setPredicate:predicateCopy];
 
-  [(IMConfigurationPredicateValuePair *)v12 setValue:v9];
+  [(IMConfigurationPredicateValuePair *)v12 setValue:valueCopy];
   [v10 addObject:v12];
 }
 
-- (void)addWithPredicate:(id)a3 adder:(id)a4
+- (void)addWithPredicate:(id)predicate adder:(id)adder
 {
-  v8 = a3;
-  v6 = a4;
+  predicateCopy = predicate;
+  adderCopy = adder;
   if (self->_addProhibited)
   {
     [NSException raise:@"IMConfigurationWrongAdderCalledError" format:@"IMConfiguration addWithPredicate can't be called within an adder block"];
   }
 
-  v7 = [[IMConfigurationAdder alloc] initWithConfiguration:self predicate:v8];
+  v7 = [[IMConfigurationAdder alloc] initWithConfiguration:self predicate:predicateCopy];
   [(IMConfiguration *)self setAddProhibited:1];
   [(IMConfigurationAdder *)v7 setAddProhibited:0];
-  v6[2](v6, v7);
+  adderCopy[2](adderCopy, v7);
   [(IMConfigurationAdder *)v7 setAddProhibited:1];
   [(IMConfiguration *)self setAddProhibited:0];
 }
 
 - (void)invalidate
 {
-  v2 = [(IMConfiguration *)self cache];
-  [v2 removeAllObjects];
+  cache = [(IMConfiguration *)self cache];
+  [cache removeAllObjects];
 }
 
-- (id)_predicateValuePairsForKey:(id)a3
+- (id)_predicateValuePairsForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(IMConfiguration *)self pairsToKeyMap];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  keyCopy = key;
+  pairsToKeyMap = [(IMConfiguration *)self pairsToKeyMap];
+  v6 = [pairsToKeyMap objectForKeyedSubscript:keyCopy];
 
   return v6;
 }
 
-- (id)_selectTopScoringPairInArray:(id)a3
+- (id)_selectTopScoringPairInArray:(id)array
 {
-  v3 = a3;
+  arrayCopy = array;
   v11[0] = 0;
   v11[1] = v11;
   v11[2] = 0x2020000000;
@@ -311,7 +311,7 @@
   v6[3] = &unk_2C82D8;
   v6[4] = v11;
   v6[5] = &v7;
-  [v3 enumerateObjectsUsingBlock:v6];
+  [arrayCopy enumerateObjectsUsingBlock:v6];
   if (v8[3] == 0x7FFFFFFFFFFFFFFFLL)
   {
     v4 = 0;
@@ -319,7 +319,7 @@
 
   else
   {
-    v4 = [v3 objectAtIndexedSubscript:?];
+    v4 = [arrayCopy objectAtIndexedSubscript:?];
   }
 
   _Block_object_dispose(&v7, 8);

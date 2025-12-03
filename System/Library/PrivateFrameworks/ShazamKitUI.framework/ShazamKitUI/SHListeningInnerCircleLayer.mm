@@ -1,5 +1,5 @@
 @interface SHListeningInnerCircleLayer
-- (CGPath)circlePathForRect:(CGRect)a3;
+- (CGPath)circlePathForRect:(CGRect)rect;
 - (void)layoutSublayers;
 - (void)setup;
 @end
@@ -18,23 +18,23 @@
 
   +[SHPalette contentsScale];
   v6 = v5;
-  v7 = [(SHListeningInnerCircleLayer *)self circle];
-  [v7 setContentsScale:v6];
+  circle = [(SHListeningInnerCircleLayer *)self circle];
+  [circle setContentsScale:v6];
 
-  v8 = [(SHListeningInnerCircleLayer *)self circle];
-  [v8 setNeedsDisplayOnBoundsChange:1];
+  circle2 = [(SHListeningInnerCircleLayer *)self circle];
+  [circle2 setNeedsDisplayOnBoundsChange:1];
 
-  v9 = [(SHPaletteLayer *)self palette];
-  v10 = [v9 listeningCircleColor];
-  v11 = [(SHListeningInnerCircleLayer *)self circle];
-  [v11 setFillColor:v10];
+  palette = [(SHPaletteLayer *)self palette];
+  listeningCircleColor = [palette listeningCircleColor];
+  circle3 = [(SHListeningInnerCircleLayer *)self circle];
+  [circle3 setFillColor:listeningCircleColor];
 
-  v12 = [(SHListeningInnerCircleLayer *)self circleContainerLayer];
-  [(SHListeningInnerCircleLayer *)self addSublayer:v12];
+  circleContainerLayer = [(SHListeningInnerCircleLayer *)self circleContainerLayer];
+  [(SHListeningInnerCircleLayer *)self addSublayer:circleContainerLayer];
 
-  v14 = [(SHListeningInnerCircleLayer *)self circleContainerLayer];
-  v13 = [(SHListeningInnerCircleLayer *)self circle];
-  [v14 addSublayer:v13];
+  circleContainerLayer2 = [(SHListeningInnerCircleLayer *)self circleContainerLayer];
+  circle4 = [(SHListeningInnerCircleLayer *)self circle];
+  [circleContainerLayer2 addSublayer:circle4];
 }
 
 - (void)layoutSublayers
@@ -47,40 +47,40 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(SHListeningInnerCircleLayer *)self circleContainerLayer];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  circleContainerLayer = [(SHListeningInnerCircleLayer *)self circleContainerLayer];
+  [circleContainerLayer setFrame:{v4, v6, v8, v10}];
 
-  v12 = [(SHListeningInnerCircleLayer *)self circleContainerLayer];
-  [v12 bounds];
+  circleContainerLayer2 = [(SHListeningInnerCircleLayer *)self circleContainerLayer];
+  [circleContainerLayer2 bounds];
   v14 = v13;
   v16 = v15;
   v18 = v17;
   v20 = v19;
-  v21 = [(SHListeningInnerCircleLayer *)self circle];
-  [v21 setFrame:{v14, v16, v18, v20}];
+  circle = [(SHListeningInnerCircleLayer *)self circle];
+  [circle setFrame:{v14, v16, v18, v20}];
 
-  v22 = [(SHListeningInnerCircleLayer *)self circle];
-  [v22 bounds];
+  circle2 = [(SHListeningInnerCircleLayer *)self circle];
+  [circle2 bounds];
   v23 = [(SHListeningInnerCircleLayer *)self circlePathForRect:?];
 
-  v24 = [(SHListeningInnerCircleLayer *)self circle];
-  [v24 setPath:v23];
+  circle3 = [(SHListeningInnerCircleLayer *)self circle];
+  [circle3 setPath:v23];
 
-  v25 = [(SHPaletteLayer *)self palette];
-  v26 = [v25 listeningCircleColor];
-  v27 = [(SHListeningInnerCircleLayer *)self circle];
-  [v27 setFillColor:v26];
+  palette = [(SHPaletteLayer *)self palette];
+  listeningCircleColor = [palette listeningCircleColor];
+  circle4 = [(SHListeningInnerCircleLayer *)self circle];
+  [circle4 setFillColor:listeningCircleColor];
 
-  v28 = [(SHListeningInnerCircleLayer *)self circle];
-  [v28 setNeedsDisplay];
+  circle5 = [(SHListeningInnerCircleLayer *)self circle];
+  [circle5 setNeedsDisplay];
 }
 
-- (CGPath)circlePathForRect:(CGRect)a3
+- (CGPath)circlePathForRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   Mutable = CGPathCreateMutable();
   v9.origin.x = x;
   v9.origin.y = y;

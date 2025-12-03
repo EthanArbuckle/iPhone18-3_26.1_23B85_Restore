@@ -1,20 +1,20 @@
 @interface PLAppLibraryUninstallSupport
-- (BOOL)isApplicationMissingWithBundleIdentifier:(id)a3;
-- (PLAppLibraryUninstallSupport)initWithLibraryBundleController:(id)a3;
-- (id)_searchCriteriaWithApplicationBundleIdentifier:(id)a3;
-- (id)scanForTombstonedLibrariesWithApplicationBundleIdentifier:(id)a3;
-- (void)_removeAppPhotoLibrariesForApplication:(id)a3;
-- (void)deleteAbandonedLibrariesForApplicationWithBundleIdentifier:(id)a3;
-- (void)handleApplicationUninstalledNotification:(id)a3;
+- (BOOL)isApplicationMissingWithBundleIdentifier:(id)identifier;
+- (PLAppLibraryUninstallSupport)initWithLibraryBundleController:(id)controller;
+- (id)_searchCriteriaWithApplicationBundleIdentifier:(id)identifier;
+- (id)scanForTombstonedLibrariesWithApplicationBundleIdentifier:(id)identifier;
+- (void)_removeAppPhotoLibrariesForApplication:(id)application;
+- (void)deleteAbandonedLibrariesForApplicationWithBundleIdentifier:(id)identifier;
+- (void)handleApplicationUninstalledNotification:(id)notification;
 @end
 
 @implementation PLAppLibraryUninstallSupport
 
-- (void)deleteAbandonedLibrariesForApplicationWithBundleIdentifier:(id)a3
+- (void)deleteAbandonedLibrariesForApplicationWithBundleIdentifier:(id)identifier
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([(PLAppLibraryUninstallSupport *)self isApplicationMissingWithBundleIdentifier:v4])
+  identifierCopy = identifier;
+  if ([(PLAppLibraryUninstallSupport *)self isApplicationMissingWithBundleIdentifier:identifierCopy])
   {
     v5 = PLBackendGetLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -22,11 +22,11 @@
       *buf = 136446466;
       v29 = "[PLAppLibraryUninstallSupport deleteAbandonedLibrariesForApplicationWithBundleIdentifier:]";
       v30 = 2112;
-      v31 = v4;
+      v31 = identifierCopy;
       _os_log_impl(&dword_19BF1F000, v5, OS_LOG_TYPE_DEFAULT, "%{public}s looking for abandoned app libraries to remove for uninstalled app %@", buf, 0x16u);
     }
 
-    [(PLAppLibraryUninstallSupport *)self _removeAppPhotoLibrariesForApplication:v4];
+    [(PLAppLibraryUninstallSupport *)self _removeAppPhotoLibrariesForApplication:identifierCopy];
   }
 
   v6 = PLBackendGetLog();
@@ -35,12 +35,12 @@
     *buf = 136446466;
     v29 = "[PLAppLibraryUninstallSupport deleteAbandonedLibrariesForApplicationWithBundleIdentifier:]";
     v30 = 2112;
-    v31 = v4;
+    v31 = identifierCopy;
     _os_log_impl(&dword_19BF1F000, v6, OS_LOG_TYPE_DEFAULT, "%{public}s checking for tombstoned app libraries for %@", buf, 0x16u);
   }
 
-  v21 = v4;
-  v7 = [(PLAppLibraryUninstallSupport *)self scanForTombstonedLibrariesWithApplicationBundleIdentifier:v4];
+  v21 = identifierCopy;
+  v7 = [(PLAppLibraryUninstallSupport *)self scanForTombstonedLibrariesWithApplicationBundleIdentifier:identifierCopy];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
@@ -109,46 +109,46 @@ LABEL_18:
   }
 }
 
-- (id)scanForTombstonedLibrariesWithApplicationBundleIdentifier:(id)a3
+- (id)scanForTombstonedLibrariesWithApplicationBundleIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   if ((PLIsAssetsd() & 1) == 0 && (MEMORY[0x19EAEE520]() & 1) == 0)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v11 = NSStringFromSelector(a2);
-    [v10 handleFailureInMethod:a2 object:self file:@"PLAppLibraryUninstallSupport.m" lineNumber:189 description:{@"%@ can only be called from assetsd", v11}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLAppLibraryUninstallSupport.m" lineNumber:189 description:{@"%@ can only be called from assetsd", v11}];
   }
 
-  v6 = [(PLAppLibraryUninstallSupport *)self _searchCriteriaWithApplicationBundleIdentifier:v5];
+  v6 = [(PLAppLibraryUninstallSupport *)self _searchCriteriaWithApplicationBundleIdentifier:identifierCopy];
   v7 = [[PLPhotoLibraryFinder alloc] initWithSearchCriteria:v6];
-  v8 = [(PLPhotoLibraryFinder *)v7 findMatchingPhotoLibraryTombstoneURLs];
+  findMatchingPhotoLibraryTombstoneURLs = [(PLPhotoLibraryFinder *)v7 findMatchingPhotoLibraryTombstoneURLs];
 
-  return v8;
+  return findMatchingPhotoLibraryTombstoneURLs;
 }
 
-- (BOOL)isApplicationMissingWithBundleIdentifier:(id)a3
+- (BOOL)isApplicationMissingWithBundleIdentifier:(id)identifier
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  identifierCopy = identifier;
   v12 = 0;
-  v4 = [MEMORY[0x1E6963620] bundleRecordWithApplicationIdentifier:v3 error:&v12];
+  v4 = [MEMORY[0x1E6963620] bundleRecordWithApplicationIdentifier:identifierCopy error:&v12];
   v5 = v12;
   v6 = v5;
   if (!v4)
   {
-    v8 = [v5 domain];
-    if ([v8 isEqualToString:*MEMORY[0x1E696A768]])
+    domain = [v5 domain];
+    if ([domain isEqualToString:*MEMORY[0x1E696A768]])
     {
-      v9 = [v6 code];
+      code = [v6 code];
 
-      if (v9 == -10814)
+      if (code == -10814)
       {
         v10 = PLBackendGetLog();
         v7 = 1;
         if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
         {
           *buf = 138543362;
-          v14 = v3;
+          v14 = identifierCopy;
           _os_log_impl(&dword_19BF1F000, v10, OS_LOG_TYPE_INFO, "Application with bundle identifier %{public}@ is not found", buf, 0xCu);
         }
 
@@ -166,7 +166,7 @@ LABEL_11:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v14 = v3;
+      v14 = identifierCopy;
       v15 = 2112;
       v16 = v6;
       _os_log_impl(&dword_19BF1F000, v10, OS_LOG_TYPE_ERROR, "Failed to validate application bundle for %{public}@: %@", buf, 0x16u);
@@ -182,25 +182,25 @@ LABEL_12:
   return v7;
 }
 
-- (void)_removeAppPhotoLibrariesForApplication:(id)a3
+- (void)_removeAppPhotoLibrariesForApplication:(id)application
 {
   v108 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  applicationCopy = application;
   if ((PLIsAssetsd() & 1) == 0 && (MEMORY[0x19EAEE520]() & 1) == 0)
   {
-    v70 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v71 = NSStringFromSelector(a2);
-    [v70 handleFailureInMethod:a2 object:self file:@"PLAppLibraryUninstallSupport.m" lineNumber:89 description:{@"%@ can only be called from assetsd", v71}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLAppLibraryUninstallSupport.m" lineNumber:89 description:{@"%@ can only be called from assetsd", v71}];
   }
 
-  v79 = self;
-  [(PLAppLibraryUninstallSupport *)self _searchCriteriaWithApplicationBundleIdentifier:v5];
+  selfCopy = self;
+  [(PLAppLibraryUninstallSupport *)self _searchCriteriaWithApplicationBundleIdentifier:applicationCopy];
   v76 = v96 = 0;
   v6 = [PLPhotoLibraryOpener findPhotoLibraryIdentifiersMatchingSearchCriteria:"findPhotoLibraryIdentifiersMatchingSearchCriteria:error:" error:?];
   v73 = 0;
   v7 = [MEMORY[0x1E695DFA8] set];
   v74 = v6;
-  v75 = v5;
+  v75 = applicationCopy;
   if ([v6 count])
   {
     v8 = v7;
@@ -224,10 +224,10 @@ LABEL_12:
           }
 
           v14 = *(*(&v92 + 1) + 8 * i);
-          v15 = [v14 libraryURL];
-          if (v15)
+          libraryURL = [v14 libraryURL];
+          if (libraryURL)
           {
-            [v8 addObject:v15];
+            [v8 addObject:libraryURL];
           }
 
           else
@@ -251,18 +251,18 @@ LABEL_12:
     }
 
     v6 = v74;
-    v5 = v75;
+    applicationCopy = v75;
     v7 = v8;
   }
 
-  if ([v5 isEqualToString:*MEMORY[0x1E69BFEC0]])
+  if ([applicationCopy isEqualToString:*MEMORY[0x1E69BFEC0]])
   {
-    v17 = [v76 containerIdentifier];
-    v18 = [PLPhotoLibraryFinder defaultLibraryURLForLibraryDomain:3 container:v17 uuid:@"00000000-0000-0000-0000-000000000001"];
+    containerIdentifier = [v76 containerIdentifier];
+    v18 = [PLPhotoLibraryFinder defaultLibraryURLForLibraryDomain:3 container:containerIdentifier uuid:@"00000000-0000-0000-0000-000000000001"];
 
-    v19 = [MEMORY[0x1E69BF238] fileManager];
-    v20 = [v18 path];
-    v21 = [v19 fileExistsAtPath:v20 isDirectory:0];
+    fileManager = [MEMORY[0x1E69BF238] fileManager];
+    path = [v18 path];
+    v21 = [fileManager fileExistsAtPath:path isDirectory:0];
 
     if (v21 && ([v7 containsObject:v18] & 1) == 0)
     {
@@ -292,7 +292,7 @@ LABEL_12:
       *buf = 136446466;
       v101 = "[PLAppLibraryUninstallSupport _removeAppPhotoLibrariesForApplication:]";
       v102 = 2112;
-      v103 = v5;
+      v103 = applicationCopy;
       v66 = "%{public}s No libraries found for %@";
       v67 = v32;
       v68 = OS_LOG_TYPE_DEFAULT;
@@ -310,7 +310,7 @@ LABEL_12:
       *buf = 136446722;
       v101 = "[PLAppLibraryUninstallSupport _removeAppPhotoLibrariesForApplication:]";
       v102 = 2112;
-      v103 = v5;
+      v103 = applicationCopy;
       v104 = 2112;
       v105 = v73;
       v66 = "%{public}s Failed to find libraries for %@: %@";
@@ -381,7 +381,7 @@ LABEL_12:
     v35 = *v84;
     v77 = *MEMORY[0x1E696A998];
     v78 = *MEMORY[0x1E69BFF48];
-    v36 = v79;
+    v36 = selfCopy;
     obj = v32;
     do
     {
@@ -397,12 +397,12 @@ LABEL_12:
         v40 = v39;
         if (v39)
         {
-          v41 = [v39 libraryServicesManager];
-          v42 = v41;
-          if (v41)
+          libraryServicesManager = [v39 libraryServicesManager];
+          v42 = libraryServicesManager;
+          if (libraryServicesManager)
           {
             v82 = 0;
-            v43 = [v41 disableiCPLForLibraryDeletionWithError:&v82];
+            v43 = [libraryServicesManager disableiCPLForLibraryDeletionWithError:&v82];
             v44 = v82;
             v45 = v44;
             if (!v43)
@@ -431,7 +431,7 @@ LABEL_12:
           v49 = [v47 errorWithDomain:v78 code:46020 userInfo:v48];
           [(PLPhotoLibraryBundleController *)libraryBundleController shutdownBundle:v40 reason:v49];
 
-          v36 = v79;
+          v36 = selfCopy;
         }
 
         else
@@ -447,9 +447,9 @@ LABEL_12:
           }
         }
 
-        v50 = [MEMORY[0x1E69BF238] fileManager];
-        v51 = [v38 path];
-        v52 = [v50 fileExistsAtPath:v51];
+        fileManager2 = [MEMORY[0x1E69BF238] fileManager];
+        path2 = [v38 path];
+        v52 = [fileManager2 fileExistsAtPath:path2];
 
         if (v52)
         {
@@ -494,8 +494,8 @@ LABEL_57:
             _os_log_impl(&dword_19BF1F000, v58, v59, v60, buf, v61);
           }
 
-          v62 = [MEMORY[0x1E69BF278] sharedBookmarkManager];
-          [v62 removeSSBForLibraryURL:v38];
+          mEMORY[0x1E69BF278] = [MEMORY[0x1E69BF278] sharedBookmarkManager];
+          [mEMORY[0x1E69BF278] removeSSBForLibraryURL:v38];
 
           goto LABEL_64;
         }
@@ -522,33 +522,33 @@ LABEL_64:
   }
 
   v6 = v74;
-  v5 = v75;
+  applicationCopy = v75;
   v7 = v72;
   v64 = v73;
 LABEL_73:
 }
 
-- (id)_searchCriteriaWithApplicationBundleIdentifier:(id)a3
+- (id)_searchCriteriaWithApplicationBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = objc_alloc_init(PLPhotoLibrarySearchCriteria);
-  v6 = [(PLAppLibraryUninstallSupport *)self internalTestOptions];
+  internalTestOptions = [(PLAppLibraryUninstallSupport *)self internalTestOptions];
 
-  if (v6)
+  if (internalTestOptions)
   {
-    v7 = [(PLAppLibraryUninstallSupport *)self internalTestOptions];
-    [(PLPhotoLibrarySearchCriteria *)v5 setInternalTestOptions:v7];
+    internalTestOptions2 = [(PLAppLibraryUninstallSupport *)self internalTestOptions];
+    [(PLPhotoLibrarySearchCriteria *)v5 setInternalTestOptions:internalTestOptions2];
   }
 
   [(PLPhotoLibrarySearchCriteria *)v5 setDomain:3];
-  if ([(__CFString *)v4 isEqualToString:*MEMORY[0x1E69BFEC0]])
+  if ([(__CFString *)identifierCopy isEqualToString:*MEMORY[0x1E69BFEC0]])
   {
     v8 = @"com.apple.GenerativePlayground";
   }
 
   else
   {
-    v8 = v4;
+    v8 = identifierCopy;
   }
 
   [(PLPhotoLibrarySearchCriteria *)v5 setContainerIdentifier:v8];
@@ -556,41 +556,41 @@ LABEL_73:
   return v5;
 }
 
-- (void)handleApplicationUninstalledNotification:(id)a3
+- (void)handleApplicationUninstalledNotification:(id)notification
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  notificationCopy = notification;
   v5 = PLBackendGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v24 = v4;
+    v24 = notificationCopy;
     _os_log_impl(&dword_19BF1F000, v5, OS_LOG_TYPE_DEFAULT, "Handling application uninstall event with %@", buf, 0xCu);
   }
 
-  v6 = [v4 objectForKeyedSubscript:@"bundleIDs"];
-  v7 = [objc_opt_class() applicationBundlesToValidateForUninstallCleanup];
+  v6 = [notificationCopy objectForKeyedSubscript:@"bundleIDs"];
+  applicationBundlesToValidateForUninstallCleanup = [objc_opt_class() applicationBundlesToValidateForUninstallCleanup];
   if ([v6 count])
   {
     v8 = [MEMORY[0x1E695DFA8] setWithArray:v6];
-    [v8 intersectSet:v7];
+    [v8 intersectSet:applicationBundlesToValidateForUninstallCleanup];
 
-    v7 = v8;
+    applicationBundlesToValidateForUninstallCleanup = v8;
   }
 
-  if ([v7 count])
+  if ([applicationBundlesToValidateForUninstallCleanup count])
   {
     v20 = 0u;
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v9 = v7;
+    v9 = applicationBundlesToValidateForUninstallCleanup;
     v10 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v10)
     {
       v11 = v10;
       v16 = v6;
-      v17 = v4;
+      v17 = notificationCopy;
       v12 = *v19;
       do
       {
@@ -621,7 +621,7 @@ LABEL_73:
 
       while (v11);
       v6 = v16;
-      v4 = v17;
+      notificationCopy = v17;
     }
   }
 
@@ -637,16 +637,16 @@ LABEL_73:
   }
 }
 
-- (PLAppLibraryUninstallSupport)initWithLibraryBundleController:(id)a3
+- (PLAppLibraryUninstallSupport)initWithLibraryBundleController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v10.receiver = self;
   v10.super_class = PLAppLibraryUninstallSupport;
   v6 = [(PLAppLibraryUninstallSupport *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_libraryBundleController, a3);
+    objc_storeStrong(&v6->_libraryBundleController, controller);
     v8 = v7;
   }
 

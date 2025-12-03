@@ -1,16 +1,16 @@
 @interface HFLocationEventBuilderItem
 - (HFLocationEventBuilder)locationEventBuilder;
-- (id)_subclass_updateWithOptions:(id)a3;
-- (void)setLocationEventBuilder:(id)a3;
+- (id)_subclass_updateWithOptions:(id)options;
+- (void)setLocationEventBuilder:(id)builder;
 @end
 
 @implementation HFLocationEventBuilderItem
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
   v8.receiver = self;
   v8.super_class = HFLocationEventBuilderItem;
-  v4 = [(HFEventBuilderItem *)&v8 _subclass_updateWithOptions:a3];
+  v4 = [(HFEventBuilderItem *)&v8 _subclass_updateWithOptions:options];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __58__HFLocationEventBuilderItem__subclass_updateWithOptions___block_invoke;
@@ -87,15 +87,15 @@ __CFString *__58__HFLocationEventBuilderItem__subclass_updateWithOptions___block
 
 - (HFLocationEventBuilder)locationEventBuilder
 {
-  v2 = [(HFEventBuilderItem *)self eventBuilders];
-  v3 = [v2 anyObject];
+  eventBuilders = [(HFEventBuilderItem *)self eventBuilders];
+  anyObject = [eventBuilders anyObject];
 
-  return v3;
+  return anyObject;
 }
 
-- (void)setLocationEventBuilder:(id)a3
+- (void)setLocationEventBuilder:(id)builder
 {
-  v4 = [MEMORY[0x277CBEB98] setWithObject:a3];
+  v4 = [MEMORY[0x277CBEB98] setWithObject:builder];
   [(HFEventBuilderItem *)self setEventBuilders:v4];
 }
 

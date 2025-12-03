@@ -1,20 +1,20 @@
 @interface PAEVariableBlur
 - (BOOL)addParameters;
-- (BOOL)canThrowRenderOutput:(id)a3 withInput:(id)a4 withInfo:(id *)a5;
-- (BOOL)frameSetup:(id *)a3 inputInfo:(id *)a4 hardware:(BOOL *)a5 software:(BOOL *)a6;
-- (BOOL)getOutputWidth:(unint64_t *)a3 height:(unint64_t *)a4 withInput:(id *)a5 withInfo:(id *)a6;
-- (PAEVariableBlur)initWithAPIManager:(id)a3;
+- (BOOL)canThrowRenderOutput:(id)output withInput:(id)input withInfo:(id *)info;
+- (BOOL)frameSetup:(id *)setup inputInfo:(id *)info hardware:(BOOL *)hardware software:(BOOL *)software;
+- (BOOL)getOutputWidth:(unint64_t *)width height:(unint64_t *)height withInput:(id *)input withInfo:(id *)info;
+- (PAEVariableBlur)initWithAPIManager:(id)manager;
 - (id)properties;
 - (void)dealloc;
 @end
 
 @implementation PAEVariableBlur
 
-- (PAEVariableBlur)initWithAPIManager:(id)a3
+- (PAEVariableBlur)initWithAPIManager:(id)manager
 {
   v4.receiver = self;
   v4.super_class = PAEVariableBlur;
-  return [(PAESharedDefaultBase *)&v4 initWithAPIManager:a3];
+  return [(PAESharedDefaultBase *)&v4 initWithAPIManager:manager];
 }
 
 - (void)dealloc
@@ -54,12 +54,12 @@
   return v3 != 0;
 }
 
-- (BOOL)getOutputWidth:(unint64_t *)a3 height:(unint64_t *)a4 withInput:(id *)a5 withInfo:(id *)a6
+- (BOOL)getOutputWidth:(unint64_t *)width height:(unint64_t *)height withInput:(id *)input withInfo:(id *)info
 {
   v10 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_28735E258];
-  if (a3)
+  if (width)
   {
-    v11 = a4 == 0;
+    v11 = height == 0;
   }
 
   else
@@ -72,23 +72,23 @@
   {
     v13 = v10;
     v17 = 0;
-    [v10 getBoolValue:&v17 fromParm:5 atFxTime:a6->var0.var1];
+    [v10 getBoolValue:&v17 fromParm:5 atFxTime:info->var0.var1];
     v16 = 0.0;
     v14 = 0.0;
     if ((v17 & 1) == 0)
     {
-      [v13 getFloatValue:&v16 fromParm:2 atFxTime:{a6->var0.var1, 0.0}];
+      [v13 getFloatValue:&v16 fromParm:2 atFxTime:{info->var0.var1, 0.0}];
       v14 = v16 + v16;
     }
 
-    *a3 = (v14 + a5->var0);
-    *a4 = (v14 + a5->var1);
+    *width = (v14 + input->var0);
+    *height = (v14 + input->var1);
   }
 
   return v12;
 }
 
-- (BOOL)canThrowRenderOutput:(id)a3 withInput:(id)a4 withInfo:(id *)a5
+- (BOOL)canThrowRenderOutput:(id)output withInput:(id)input withInfo:(id *)info
 {
   v111 = *MEMORY[0x277D85DE8];
   v9 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_28735E258];
@@ -114,12 +114,12 @@
   v106 = 100.0;
   v105 = 0;
   v104 = 0uLL;
-  [v9 getXValue:&v104 YValue:&v104 + 8 fromParm:1 atFxTime:a5->var0.var1];
-  [(PAESharedDefaultBase *)self convertRelativeToImageCoordinates:&v104 withImage:a4];
+  [v9 getXValue:&v104 YValue:&v104 + 8 fromParm:1 atFxTime:info->var0.var1];
+  [(PAESharedDefaultBase *)self convertRelativeToImageCoordinates:&v104 withImage:input];
   v104 = *v96;
-  [v9 getFloatValue:&v108 fromParm:2 atFxTime:a5->var0.var1];
-  [v9 getFloatValue:&v107 fromParm:3 atFxTime:a5->var0.var1];
-  [v9 getFloatValue:&v106 fromParm:4 atFxTime:a5->var0.var1];
+  [v9 getFloatValue:&v108 fromParm:2 atFxTime:info->var0.var1];
+  [v9 getFloatValue:&v107 fromParm:3 atFxTime:info->var0.var1];
+  [v9 getFloatValue:&v106 fromParm:4 atFxTime:info->var0.var1];
   if (v13)
   {
     v14 = v106;
@@ -127,15 +127,15 @@
     v107 = v14;
   }
 
-  [v9 getBoolValue:&v105 fromParm:5 atFxTime:a5->var0.var1];
-  [(PAESharedDefaultBase *)self getPixelTransformForImage:a4];
-  [(PAESharedDefaultBase *)self getInversePixelTransformForImage:a4];
+  [v9 getBoolValue:&v105 fromParm:5 atFxTime:info->var0.var1];
+  [(PAESharedDefaultBase *)self getPixelTransformForImage:input];
+  [(PAESharedDefaultBase *)self getInversePixelTransformForImage:input];
   v15 = v96[0];
   v16 = v99;
-  v17 = [a4 imageType];
-  if ([(PAESharedDefaultBase *)self getRenderMode:a5->var0.var1])
+  imageType = [input imageType];
+  if ([(PAESharedDefaultBase *)self getRenderMode:info->var0.var1])
   {
-    v18 = v17 == 3;
+    v18 = imageType == 3;
   }
 
   else
@@ -148,9 +148,9 @@
   {
     if (v108 <= 0.0)
     {
-      if (a4)
+      if (input)
       {
-        [a4 heliumRef];
+        [input heliumRef];
       }
 
       else
@@ -158,7 +158,7 @@
         *&v109 = 0;
       }
 
-      [a3 setHeliumRef:&v109];
+      [output setHeliumRef:&v109];
       if (v109)
       {
         (*(*v109 + 24))(v109);
@@ -167,9 +167,9 @@
 
     else
     {
-      if (a4)
+      if (input)
       {
-        [a4 heliumRef];
+        [input heliumRef];
       }
 
       else
@@ -185,7 +185,7 @@
           (*(*v87 + 16))(v87);
         }
 
-        [(PAESharedDefaultBase *)self smear:&v86 fromImage:a4 toImage:a4];
+        [(PAESharedDefaultBase *)self smear:&v86 fromImage:input toImage:input];
         v19 = v109;
         if (v87 == v109)
         {
@@ -280,7 +280,7 @@
       v44 = v107;
       if (v107 <= v106)
       {
-        if ((v75 = v37, v76 = v35, v46 = v104, v47 = v101, v48 = v102, v49 = v103, v50 = v96[0], v51 = v98, v79 = v96[1], v80 = v97, v77 = v99, v78 = v100, [(PAESharedDefaultBase *)self getImageBoundary:a3], v83 = vcvtq_f64_f32(v81), v84 = vcvtq_f64_f32(v82), PCMatrix44Tmpl<double>::transformRect<double>(v96, v83.f64, &v83), v44 = *(&v46 + 1) - v45, v52 = (*&v46 - v45) * v47, v53 = (v45 + *(&v46 + 1)) * v48, v54 = (v45 + *(&v46 + 1)) * v79, v55 = (v80 + (*&v46 - v45) * v50 + v54) / (v49 + v52 + v53), v56 = (v45 + *&v46) * v47, v57 = v49 + v56 + v53, v58 = (v45 + *&v46) * v50, v59 = (v45 + *&v46) * v51, v60 = (*(&v46 + 1) - v45) * v48, v61 = v49 + v56 + v60, v62 = (*(&v46 + 1) - v45) * v77, v63 = (v78 + v59 + v62) / v61, v64 = (v78 + (*&v46 - v45) * v51 + v62) / (v49 + v52 + v60), v83.f64[0] < v55) && v55 < v83.f64[0] + v84.f64[0] || (v65 = (v80 + v58 + v54) / v57, v83.f64[0] < v65) && v65 < v83.f64[0] + v84.f64[0] || v83.f64[1] < v64 && v64 < v83.f64[1] + v84.f64[1] || v83.f64[1] < v63 && v63 < v83.f64[1] + v84.f64[1])
+        if ((v75 = v37, v76 = v35, v46 = v104, v47 = v101, v48 = v102, v49 = v103, v50 = v96[0], v51 = v98, v79 = v96[1], v80 = v97, v77 = v99, v78 = v100, [(PAESharedDefaultBase *)self getImageBoundary:output], v83 = vcvtq_f64_f32(v81), v84 = vcvtq_f64_f32(v82), PCMatrix44Tmpl<double>::transformRect<double>(v96, v83.f64, &v83), v44 = *(&v46 + 1) - v45, v52 = (*&v46 - v45) * v47, v53 = (v45 + *(&v46 + 1)) * v48, v54 = (v45 + *(&v46 + 1)) * v79, v55 = (v80 + (*&v46 - v45) * v50 + v54) / (v49 + v52 + v53), v56 = (v45 + *&v46) * v47, v57 = v49 + v56 + v53, v58 = (v45 + *&v46) * v50, v59 = (v45 + *&v46) * v51, v60 = (*(&v46 + 1) - v45) * v48, v61 = v49 + v56 + v60, v62 = (*(&v46 + 1) - v45) * v77, v63 = (v78 + v59 + v62) / v61, v64 = (v78 + (*&v46 - v45) * v51 + v62) / (v49 + v52 + v60), v83.f64[0] < v55) && v55 < v83.f64[0] + v84.f64[0] || (v65 = (v80 + v58 + v54) / v57, v83.f64[0] < v65) && v65 < v83.f64[0] + v84.f64[0] || v83.f64[1] < v64 && v64 < v83.f64[1] + v84.f64[1] || v83.f64[1] < v63 && v63 < v83.f64[1] + v84.f64[1])
         {
           v66 = HGRectMake4i(vcvtmd_s64_f64(v55), vcvtmd_s64_f64(v64), vcvtpd_s64_f64(v55 + (v80 + v58 + v44 * v79) / v61 - v55), vcvtpd_s64_f64(v64 + (v78 + v59 + (v45 + *(&v46 + 1)) * v77) / v57 - v63));
           v68 = v67;
@@ -321,10 +321,10 @@
 
       if (v105 == 1)
       {
-        [(PAESharedDefaultBase *)self crop:&v85 fromImage:a4 toImage:a3, v44];
+        [(PAESharedDefaultBase *)self crop:&v85 fromImage:input toImage:output, v44];
       }
 
-      [a3 setHeliumRef:&v85];
+      [output setHeliumRef:&v85];
       if (v85)
       {
         (*(*v85 + 24))(v85);
@@ -342,15 +342,15 @@
   return v12;
 }
 
-- (BOOL)frameSetup:(id *)a3 inputInfo:(id *)a4 hardware:(BOOL *)a5 software:(BOOL *)a6
+- (BOOL)frameSetup:(id *)setup inputInfo:(id *)info hardware:(BOOL *)hardware software:(BOOL *)software
 {
-  *a6 = 0;
-  *a5 = 0;
-  v6 = *&a3->var2;
-  v8[0] = *&a3->var0.var0;
+  *software = 0;
+  *hardware = 0;
+  v6 = *&setup->var2;
+  v8[0] = *&setup->var0.var0;
   v8[1] = v6;
-  v8[2] = *&a3->var4;
-  [(PAESharedDefaultBase *)self overrideFrameSetupForRenderMode:v8 hardware:a5 software:a6];
+  v8[2] = *&setup->var4;
+  [(PAESharedDefaultBase *)self overrideFrameSetupForRenderMode:v8 hardware:hardware software:software];
   return 1;
 }
 

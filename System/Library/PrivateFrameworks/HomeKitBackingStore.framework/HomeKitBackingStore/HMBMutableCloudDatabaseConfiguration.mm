@@ -1,25 +1,25 @@
 @interface HMBMutableCloudDatabaseConfiguration
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation HMBMutableCloudDatabaseConfiguration
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [HMBCloudDatabaseConfiguration alloc];
-  v5 = [(HMBCloudDatabaseConfiguration *)self containerID];
-  v6 = [(HMBCloudDatabaseConfiguration *)v4 initWithContainerID:v5];
+  containerID = [(HMBCloudDatabaseConfiguration *)self containerID];
+  v6 = [(HMBCloudDatabaseConfiguration *)v4 initWithContainerID:containerID];
 
-  v7 = [(HMBCloudDatabaseConfiguration *)self sourceApplicationBundleIdentifier];
-  [(HMBCloudDatabaseConfiguration *)v6 setSourceApplicationBundleIdentifier:v7];
+  sourceApplicationBundleIdentifier = [(HMBCloudDatabaseConfiguration *)self sourceApplicationBundleIdentifier];
+  [(HMBCloudDatabaseConfiguration *)v6 setSourceApplicationBundleIdentifier:sourceApplicationBundleIdentifier];
 
   [(HMBCloudDatabaseConfiguration *)v6 setManateeContainer:[(HMBCloudDatabaseConfiguration *)self isManateeContainer]];
-  v8 = [(HMBCloudDatabaseConfiguration *)self defaultOperationConfiguration];
-  [(HMBCloudDatabaseConfiguration *)v6 setDefaultOperationConfiguration:v8];
+  defaultOperationConfiguration = [(HMBCloudDatabaseConfiguration *)self defaultOperationConfiguration];
+  [(HMBCloudDatabaseConfiguration *)v6 setDefaultOperationConfiguration:defaultOperationConfiguration];
 
   [(HMBCloudDatabaseConfiguration *)v6 setSubscriptionPushRegistrationAction:[(HMBCloudDatabaseConfiguration *)self subscriptionPushRegistrationAction]];
-  v9 = [(HMBCloudDatabaseConfiguration *)self operationQueue];
-  [(HMBCloudDatabaseConfiguration *)v6 setOperationQueue:v9];
+  operationQueue = [(HMBCloudDatabaseConfiguration *)self operationQueue];
+  [(HMBCloudDatabaseConfiguration *)v6 setOperationQueue:operationQueue];
 
   return v6;
 }

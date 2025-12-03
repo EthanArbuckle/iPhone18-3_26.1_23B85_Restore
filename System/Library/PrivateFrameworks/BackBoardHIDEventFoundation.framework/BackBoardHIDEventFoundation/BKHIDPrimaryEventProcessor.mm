@@ -1,27 +1,27 @@
 @interface BKHIDPrimaryEventProcessor
-- (BKHIDPrimaryEventProcessor)initWithSubProcessors:(id)a3[44] defaultProcessor:(id)a4;
-- (id)_eventProcessorsForEventType:(unsigned int)a3;
-- (int64_t)processEvent:(__IOHIDEvent *)a3 sender:(id)a4 dispatcher:(id)a5;
-- (int64_t)processEvent:(__IOHIDEvent *)a3 withContext:(id)a4 buffer:(id)a5 sequence:(id)a6 sender:(id)a7 dispatcher:(id)a8 resolution:(id)a9;
-- (void)bufferDidEndDraining:(id)a3;
-- (void)bufferWillBeginDraining:(id)a3;
-- (void)bufferingDidAddNewBuffers:(id)a3;
-- (void)postEvent:(__IOHIDEvent *)a3 withContext:(id)a4 toResolution:(id)a5 fromSequence:(id)a6;
+- (BKHIDPrimaryEventProcessor)initWithSubProcessors:(id)processors[44] defaultProcessor:(id)processor;
+- (id)_eventProcessorsForEventType:(unsigned int)type;
+- (int64_t)processEvent:(__IOHIDEvent *)event sender:(id)sender dispatcher:(id)dispatcher;
+- (int64_t)processEvent:(__IOHIDEvent *)event withContext:(id)context buffer:(id)buffer sequence:(id)sequence sender:(id)sender dispatcher:(id)dispatcher resolution:(id)resolution;
+- (void)bufferDidEndDraining:(id)draining;
+- (void)bufferWillBeginDraining:(id)draining;
+- (void)bufferingDidAddNewBuffers:(id)buffers;
+- (void)postEvent:(__IOHIDEvent *)event withContext:(id)context toResolution:(id)resolution fromSequence:(id)sequence;
 @end
 
 @implementation BKHIDPrimaryEventProcessor
 
-- (id)_eventProcessorsForEventType:(unsigned int)a3
+- (id)_eventProcessorsForEventType:(unsigned int)type
 {
-  v3 = [(NSArray *)self->_subProcessors[a3] copy];
+  v3 = [(NSArray *)self->_subProcessors[type] copy];
 
   return v3;
 }
 
-- (void)bufferDidEndDraining:(id)a3
+- (void)bufferDidEndDraining:(id)draining
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  drainingCopy = draining;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -42,7 +42,7 @@
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v11 + 1) + 8 * v9++) bufferDidEndDraining:{v4, v11}];
+        [*(*(&v11 + 1) + 8 * v9++) bufferDidEndDraining:{drainingCopy, v11}];
       }
 
       while (v7 != v9);
@@ -55,10 +55,10 @@
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)bufferWillBeginDraining:(id)a3
+- (void)bufferWillBeginDraining:(id)draining
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  drainingCopy = draining;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -79,7 +79,7 @@
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v11 + 1) + 8 * v9++) bufferWillBeginDraining:{v4, v11}];
+        [*(*(&v11 + 1) + 8 * v9++) bufferWillBeginDraining:{drainingCopy, v11}];
       }
 
       while (v7 != v9);
@@ -92,10 +92,10 @@
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)bufferingDidAddNewBuffers:(id)a3
+- (void)bufferingDidAddNewBuffers:(id)buffers
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  buffersCopy = buffers;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -116,7 +116,7 @@
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v11 + 1) + 8 * v9++) bufferingDidAddNewBuffers:{v4, v11}];
+        [*(*(&v11 + 1) + 8 * v9++) bufferingDidAddNewBuffers:{buffersCopy, v11}];
       }
 
       while (v7 != v9);
@@ -129,11 +129,11 @@
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)postEvent:(__IOHIDEvent *)a3 withContext:(id)a4 toResolution:(id)a5 fromSequence:(id)a6
+- (void)postEvent:(__IOHIDEvent *)event withContext:(id)context toResolution:(id)resolution fromSequence:(id)sequence
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  contextCopy = context;
+  resolutionCopy = resolution;
+  sequenceCopy = sequence;
   v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"Something is misconfigured --BKHIDPrimaryEventProcessor should never be messaged directly by a sequence"];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
@@ -145,7 +145,7 @@
     v19 = 2114;
     v20 = v16;
     v21 = 2048;
-    v22 = self;
+    selfCopy = self;
     v23 = 2114;
     v24 = @"BKHIDPrimaryEventProcessor.m";
     v25 = 1024;
@@ -160,14 +160,14 @@
   __break(0);
 }
 
-- (int64_t)processEvent:(__IOHIDEvent *)a3 withContext:(id)a4 buffer:(id)a5 sequence:(id)a6 sender:(id)a7 dispatcher:(id)a8 resolution:(id)a9
+- (int64_t)processEvent:(__IOHIDEvent *)event withContext:(id)context buffer:(id)buffer sequence:(id)sequence sender:(id)sender dispatcher:(id)dispatcher resolution:(id)resolution
 {
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = a9;
+  contextCopy = context;
+  bufferCopy = buffer;
+  sequenceCopy = sequence;
+  senderCopy = sender;
+  dispatcherCopy = dispatcher;
+  resolutionCopy = resolution;
   v21 = [MEMORY[0x277CCACA8] stringWithFormat:@"Something is misconfigured --BKHIDPrimaryEventProcessor should never be messaged directly by a sequence"];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
@@ -179,7 +179,7 @@
     v28 = 2114;
     v29 = v24;
     v30 = 2048;
-    v31 = self;
+    selfCopy = self;
     v32 = 2114;
     v33 = @"BKHIDPrimaryEventProcessor.m";
     v34 = 1024;
@@ -195,12 +195,12 @@
   return result;
 }
 
-- (int64_t)processEvent:(__IOHIDEvent *)a3 sender:(id)a4 dispatcher:(id)a5
+- (int64_t)processEvent:(__IOHIDEvent *)event sender:(id)sender dispatcher:(id)dispatcher
 {
   v26 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
-  v10 = *a3;
+  senderCopy = sender;
+  dispatcherCopy = dispatcher;
+  v10 = *event;
   v11 = self->_subProcessors[IOHIDEventGetType()];
   v21 = 0u;
   v22 = 0u;
@@ -215,7 +215,7 @@ LABEL_13:
     defaultProcessor = self->_defaultProcessor;
     if (defaultProcessor)
     {
-      v17 = [(BKHIDEventProcessor *)defaultProcessor processEvent:a3 sender:v8 dispatcher:v9];
+      v17 = [(BKHIDEventProcessor *)defaultProcessor processEvent:event sender:senderCopy dispatcher:dispatcherCopy];
     }
 
     else
@@ -237,7 +237,7 @@ LABEL_13:
         objc_enumerationMutation(v12);
       }
 
-      v17 = [*(*(&v21 + 1) + 8 * i) processEvent:a3 sender:v8 dispatcher:{v9, v21}];
+      v17 = [*(*(&v21 + 1) + 8 * i) processEvent:event sender:senderCopy dispatcher:{dispatcherCopy, v21}];
       if (v17 == 1)
       {
 
@@ -265,16 +265,16 @@ LABEL_16:
   return v17;
 }
 
-- (BKHIDPrimaryEventProcessor)initWithSubProcessors:(id)a3[44] defaultProcessor:(id)a4
+- (BKHIDPrimaryEventProcessor)initWithSubProcessors:(id)processors[44] defaultProcessor:(id)processor
 {
   v33 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  processorCopy = processor;
   v31.receiver = self;
   v31.super_class = BKHIDPrimaryEventProcessor;
   v7 = [(BKHIDPrimaryEventProcessor *)&v31 init];
   if (v7)
   {
-    v23 = v6;
+    v23 = processorCopy;
     v8 = [MEMORY[0x277CBEB58] set];
     v9 = 0;
     p_isa = &v7->super.isa;
@@ -282,10 +282,10 @@ LABEL_16:
     subProcessors = v7->_subProcessors;
     do
     {
-      v10 = a3[v9];
+      v10 = processors[v9];
       v11 = v10;
       objc_storeStrong(&subProcessors[v9], v10);
-      v12 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
       v27 = 0u;
       v28 = 0u;
       v29 = 0u;
@@ -309,7 +309,7 @@ LABEL_16:
             if (objc_opt_respondsToSelector())
             {
               [v8 addObject:v18];
-              [(NSArray *)v12 addObject:v18];
+              [(NSArray *)array addObject:v18];
             }
           }
 
@@ -320,7 +320,7 @@ LABEL_16:
       }
 
       v19 = bufferedSubProcessors[v9];
-      bufferedSubProcessors[v9] = v12;
+      bufferedSubProcessors[v9] = array;
 
       ++v9;
     }
@@ -328,11 +328,11 @@ LABEL_16:
     while (v9 != 44);
     v7 = p_isa;
     objc_storeStrong(p_isa + 90, v8);
-    objc_storeStrong(p_isa + 45, a4);
-    v6 = v23;
+    objc_storeStrong(p_isa + 45, processor);
+    processorCopy = v23;
     if (objc_opt_respondsToSelector())
     {
-      objc_storeStrong(p_isa + 91, a4);
+      objc_storeStrong(p_isa + 91, processor);
     }
   }
 

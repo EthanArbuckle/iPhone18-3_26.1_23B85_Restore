@@ -1,54 +1,54 @@
 @interface STSSession
-+ (id)requestAssertionForKeyID:(id)a3 options:(id)a4 outError:(id *)a5;
++ (id)requestAssertionForKeyID:(id)d options:(id)options outError:(id *)error;
 - (BOOL)supportsSecureRanging;
 - (STSSession)init;
-- (id)_translateXPCClientNotificationStatus:(unint64_t)a3;
+- (id)_translateXPCClientNotificationStatus:(unint64_t)status;
 - (id)canStartSession;
-- (id)createHandlerForCredential:(id)a3;
-- (id)enableExpressModeForActiveCredential:(BOOL)a3;
-- (id)felicaCredentialState:(id)a3 error:(id *)a4;
-- (id)releaseCredential:(id)a3 withAuthorization:(id)a4;
-- (id)releaseCredential:(id)a3 withAuthorization:(id)a4 iso18013Selection:(id)a5;
-- (id)rkeCancelFunction:(id)a3;
-- (id)rkeGetVehicleReports:(id *)a3;
-- (id)rkePauseRangingForReaderIdentifier:(id)a3 durationInSec:(id)a4;
-- (id)rkeResumeRangingForReaderIdentifier:(id)a3;
-- (id)rkeSendPassthroughMessage:(id)a3;
-- (id)setAuxiliaryCredentials:(id)a3;
+- (id)createHandlerForCredential:(id)credential;
+- (id)enableExpressModeForActiveCredential:(BOOL)credential;
+- (id)felicaCredentialState:(id)state error:(id *)error;
+- (id)releaseCredential:(id)credential withAuthorization:(id)authorization;
+- (id)releaseCredential:(id)credential withAuthorization:(id)authorization iso18013Selection:(id)selection;
+- (id)rkeCancelFunction:(id)function;
+- (id)rkeGetVehicleReports:(id *)reports;
+- (id)rkePauseRangingForReaderIdentifier:(id)identifier durationInSec:(id)sec;
+- (id)rkeResumeRangingForReaderIdentifier:(id)identifier;
+- (id)rkeSendPassthroughMessage:(id)message;
+- (id)setAuxiliaryCredentials:(id)credentials;
 - (id)startHandoff;
-- (id)startTransactionWithAuthorization:(id)a3 options:(unint64_t)a4;
-- (id)startWithDelegate:(id)a3;
-- (id)startWithDelegate:(id)a3 callback:(id)a4;
-- (id)startWithNotificationTesterDelegate:(id)a3 outNotificationListener:(id *)a4;
+- (id)startTransactionWithAuthorization:(id)authorization options:(unint64_t)options;
+- (id)startWithDelegate:(id)delegate;
+- (id)startWithDelegate:(id)delegate callback:(id)callback;
+- (id)startWithNotificationTesterDelegate:(id)delegate outNotificationListener:(id *)listener;
 - (id)stopTransaction;
-- (id)transitCredentialState:(id)a3 error:(id *)a4;
-- (void)_activateInvalidationHandler:(id)a3;
-- (void)fireDidPerformAuxiliaryTransactions:(id)a3;
-- (void)fireDidReceive18013Requests:(id)a3 readerAuthInfo:(id)a4;
-- (void)fireDidReceiveActivityTimeout:(id)a3;
-- (void)fireDidReceivePassthroughMessage:(id)a3;
-- (void)fireDigitalCarKeyEventPayload:(id)a3;
-- (void)fireExpressModeStateChangeWithInfo:(id)a3;
-- (void)fireFieldNotificationEvent:(id)a3;
+- (id)transitCredentialState:(id)state error:(id *)error;
+- (void)_activateInvalidationHandler:(id)handler;
+- (void)fireDidPerformAuxiliaryTransactions:(id)transactions;
+- (void)fireDidReceive18013Requests:(id)requests readerAuthInfo:(id)info;
+- (void)fireDidReceiveActivityTimeout:(id)timeout;
+- (void)fireDidReceivePassthroughMessage:(id)message;
+- (void)fireDigitalCarKeyEventPayload:(id)payload;
+- (void)fireExpressModeStateChangeWithInfo:(id)info;
+- (void)fireFieldNotificationEvent:(id)event;
 - (void)fireRequestHandoverConfirmation;
 - (void)fireSessionDidConsumeAuthorizationEvent;
-- (void)fireSessionEndEvent:(id)a3;
-- (void)fireTransactionEndEvent:(id)a3;
-- (void)fireTransactionStartEvent:(id)a3;
-- (void)generateHandoverRequestForQRCodeWithConfiguration:(unint64_t)a3 responseHandler:(id)a4;
+- (void)fireSessionEndEvent:(id)event;
+- (void)fireTransactionEndEvent:(id)event;
+- (void)fireTransactionStartEvent:(id)event;
+- (void)generateHandoverRequestForQRCodeWithConfiguration:(unint64_t)configuration responseHandler:(id)handler;
 - (void)relinquishSEProxy;
-- (void)rkeSendFunction:(id)a3 action:(id)a4 authorization:(id)a5 completion:(id)a6;
-- (void)testSendToAlternativeCarrier:(id)a3 completion:(id)a4;
+- (void)rkeSendFunction:(id)function action:(id)action authorization:(id)authorization completion:(id)completion;
+- (void)testSendToAlternativeCarrier:(id)carrier completion:(id)completion;
 @end
 
 @implementation STSSession
 
-- (void)generateHandoverRequestForQRCodeWithConfiguration:(unint64_t)a3 responseHandler:(id)a4
+- (void)generateHandoverRequestForQRCodeWithConfiguration:(unint64_t)configuration responseHandler:(id)handler
 {
   v52[4] = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  sub_265398094(OS_LOG_TYPE_INFO, 0, "[STSSession(Identity) generateHandoverRequestForQRCodeWithConfiguration:responseHandler:]", 64, self, @"dataRetrievalType = 0x%x", v8, v9, a3);
-  v10 = [(STSSessionBase *)self handler];
+  handlerCopy = handler;
+  sub_265398094(OS_LOG_TYPE_INFO, 0, "[STSSession(Identity) generateHandoverRequestForQRCodeWithConfiguration:responseHandler:]", 64, self, @"dataRetrievalType = 0x%x", v8, v9, configuration);
+  handler = [(STSSessionBase *)self handler];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -58,8 +58,8 @@
     v32 = MEMORY[0x277CCA9B8];
     v17 = [MEMORY[0x277CCACA8] stringWithUTF8String:"STS.fwk"];
     v51[0] = *MEMORY[0x277CCA450];
-    v19 = [MEMORY[0x277CCACA8] stringWithUTF8String:"Invalid State"];
-    v52[0] = v19;
+    activeSTSCredential = [MEMORY[0x277CCACA8] stringWithUTF8String:"Invalid State"];
+    v52[0] = activeSTSCredential;
     v52[1] = &unk_2876ED128;
     v51[1] = @"Line";
     v51[2] = @"Method";
@@ -70,27 +70,27 @@
     v52[3] = v33;
     v34 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v52 forKeys:v51 count:4];
     v35 = [v32 errorWithDomain:v17 code:9 userInfo:v34];
-    v7[2](v7, 0, v35);
+    handlerCopy[2](handlerCopy, 0, v35);
 
     goto LABEL_13;
   }
 
   v14 = [ISO18013Handler alloc];
-  v15 = [(STSSessionBase *)self callbackQueue];
-  v16 = v15;
+  callbackQueue = [(STSSessionBase *)self callbackQueue];
+  v16 = callbackQueue;
   if (!v14)
   {
 
     goto LABEL_12;
   }
 
-  v17 = sub_265380088(v14, self, v14, 1, v15);
+  v17 = sub_265380088(v14, self, v14, 1, callbackQueue);
 
   if (!v17)
   {
 LABEL_12:
     v40 = MEMORY[0x277CCA9B8];
-    v19 = [MEMORY[0x277CCACA8] stringWithUTF8String:"STS.fwk"];
+    activeSTSCredential = [MEMORY[0x277CCACA8] stringWithUTF8String:"STS.fwk"];
     v49[0] = *MEMORY[0x277CCA450];
     v29 = [MEMORY[0x277CCACA8] stringWithUTF8String:"Unexpected Result"];
     v50[0] = v29;
@@ -103,51 +103,51 @@ LABEL_12:
     v42 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d", sel_getName(a2), 76];
     v50[3] = v42;
     v43 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v50 forKeys:v49 count:4];
-    v44 = [v40 errorWithDomain:v19 code:10 userInfo:v43];
-    v7[2](v7, 0, v44);
+    v44 = [v40 errorWithDomain:activeSTSCredential code:10 userInfo:v43];
+    handlerCopy[2](handlerCopy, 0, v44);
 
     v17 = 0;
     goto LABEL_13;
   }
 
-  v18 = [(STSSessionBase *)self handler];
-  v19 = [v18 activeSTSCredential];
+  handler2 = [(STSSessionBase *)self handler];
+  activeSTSCredential = [handler2 activeSTSCredential];
 
-  v20 = [(STSSessionBase *)self handler];
-  v21 = [v20 consumeHandoffToken];
-  [v17 retainUnusedHandoffToken:v21];
+  handler3 = [(STSSessionBase *)self handler];
+  consumeHandoffToken = [handler3 consumeHandoffToken];
+  [v17 retainUnusedHandoffToken:consumeHandoffToken];
 
-  v22 = [(STSSessionBase *)self handler];
-  [v22 tearDownWithCompletion:0];
+  handler4 = [(STSSessionBase *)self handler];
+  [handler4 tearDownWithCompletion:0];
 
   [(STSSessionBase *)self setHandler:v17];
-  v23 = [(STSSessionBase *)self handler];
-  v24 = [v23 setActiveCredential:v19];
+  handler5 = [(STSSessionBase *)self handler];
+  v24 = [handler5 setActiveCredential:activeSTSCredential];
 
-  [(STSSession *)self setSendRequestCompletion:v7];
+  [(STSSession *)self setSendRequestCompletion:handlerCopy];
   v25 = [[NFSecureElementProxyListener alloc] initWithSTSSession:self];
   [(STSSession *)self setSeProxyListener:v25];
 
   v26 = v17[10];
-  v27 = [(STSSession *)self seProxyListener];
-  v28 = [(STSSessionBase *)self callbackQueue];
-  v29 = [v26 startSEProxyListener:v27 parameters:MEMORY[0x277CBEC10] workQueue:v28];
+  seProxyListener = [(STSSession *)self seProxyListener];
+  callbackQueue2 = [(STSSessionBase *)self callbackQueue];
+  v29 = [v26 startSEProxyListener:seProxyListener parameters:MEMORY[0x277CBEC10] workQueue:callbackQueue2];
 
   if (v29)
   {
     sub_265398094(OS_LOG_TYPE_ERROR, 0, "[STSSession(Identity) generateHandoverRequestForQRCodeWithConfiguration:responseHandler:]", 113, self, @"SE proxy listener start error=%{public}@", v30, v31, v29);
-    v7[2](v7, 0, v29);
+    handlerCopy[2](handlerCopy, 0, v29);
   }
 
   else
   {
-    v36 = a3 & 7 | 0x40;
+    v36 = configuration & 7 | 0x40;
     v37 = v17[10];
     v38 = [v37 startISO18013WithConnectionHandoverConfiguration:v36 type:0 credentialType:2 delegate:self];
 
     if (v38)
     {
-      v7[2](v7, 0, v38);
+      handlerCopy[2](handlerCopy, 0, v38);
     }
 
     else
@@ -158,7 +158,7 @@ LABEL_12:
       v47[2] = sub_26537E740;
       v47[3] = &unk_279B93C08;
       v47[4] = self;
-      v48 = v7;
+      v48 = handlerCopy;
       [v39 generateQRCodeCHRequestAndStartACWithQueue:0 responseHandler:v47];
     }
 
@@ -173,11 +173,11 @@ LABEL_13:
 - (void)relinquishSEProxy
 {
   sub_265398094(OS_LOG_TYPE_INFO, 0, "[STSSession(Identity) relinquishSEProxy]", 145, self, &stru_2876E3E50, v2, v3, v9);
-  v5 = [(STSSessionBase *)self handler];
-  v6 = v5;
-  if (v5)
+  handler = [(STSSessionBase *)self handler];
+  v6 = handler;
+  if (handler)
   {
-    v7 = *(v5 + 80);
+    v7 = *(handler + 80);
   }
 
   else
@@ -191,34 +191,34 @@ LABEL_13:
   [(STSSession *)self setSeProxyListener:0];
 }
 
-- (void)_activateInvalidationHandler:(id)a3
+- (void)_activateInvalidationHandler:(id)handler
 {
-  v4 = a3;
-  sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[STSSession(Identity) _activateInvalidationHandler:]", 166, self, @"error=%@", v5, v6, v4);
+  handlerCopy = handler;
+  sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[STSSession(Identity) _activateInvalidationHandler:]", 166, self, @"error=%@", v5, v6, handlerCopy);
   objc_initWeak(&location, self);
-  v7 = [(STSSessionBase *)self callbackQueue];
+  callbackQueue = [(STSSessionBase *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_26537EA28;
   block[3] = &unk_279B93B68;
   objc_copyWeak(&v11, &location);
-  v10 = v4;
-  v8 = v4;
-  dispatch_async(v7, block);
+  v10 = handlerCopy;
+  v8 = handlerCopy;
+  dispatch_async(callbackQueue, block);
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
 }
 
-- (id)_translateXPCClientNotificationStatus:(unint64_t)a3
+- (id)_translateXPCClientNotificationStatus:(unint64_t)status
 {
   v4 = 0;
   v34[4] = *MEMORY[0x277D85DE8];
-  if (a3 > 5)
+  if (status > 5)
   {
-    if (a3 > 7)
+    if (status > 7)
     {
-      if (a3 == 8)
+      if (status == 8)
       {
         v18 = MEMORY[0x277CCA9B8];
         v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"STS.fwk"];
@@ -241,7 +241,7 @@ LABEL_13:
 
       else
       {
-        if (a3 != 9)
+        if (status != 9)
         {
           goto LABEL_18;
         }
@@ -269,7 +269,7 @@ LABEL_13:
     else
     {
       v14 = MEMORY[0x277CCA9B8];
-      if (a3 == 6)
+      if (status == 6)
       {
         v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"STS.fwk"];
         v27[0] = *MEMORY[0x277CCA450];
@@ -313,11 +313,11 @@ LABEL_13:
 
   else
   {
-    if (a3 <= 3)
+    if (status <= 3)
     {
-      if (a3 - 1 >= 2)
+      if (status - 1 >= 2)
       {
-        if (a3 != 3)
+        if (status != 3)
         {
           goto LABEL_18;
         }
@@ -345,7 +345,7 @@ LABEL_13:
       goto LABEL_14;
     }
 
-    if (a3 == 4)
+    if (status == 4)
     {
 LABEL_14:
       v17 = MEMORY[0x277CCA9B8];
@@ -396,173 +396,173 @@ LABEL_18:
   return v4;
 }
 
-- (void)fireFieldNotificationEvent:(id)a3
+- (void)fireFieldNotificationEvent:(id)event
 {
-  v5 = a3;
-  v4 = [(STSSessionBase *)self delegate];
+  eventCopy = event;
+  delegate = [(STSSessionBase *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 stsSession:self didReceiveFieldNotification:v5];
+    [delegate stsSession:self didReceiveFieldNotification:eventCopy];
   }
 }
 
 - (void)fireSessionDidConsumeAuthorizationEvent
 {
-  v3 = [(STSSessionBase *)self delegate];
+  delegate = [(STSSessionBase *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v3 stsSessionDidConsumeAuthorization:self];
+    [delegate stsSessionDidConsumeAuthorization:self];
   }
 }
 
-- (void)fireTransactionStartEvent:(id)a3
+- (void)fireTransactionStartEvent:(id)event
 {
-  v5 = a3;
-  v4 = [(STSSessionBase *)self delegate];
+  eventCopy = event;
+  delegate = [(STSSessionBase *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 stsSession:self didStartTransaction:v5];
+    [delegate stsSession:self didStartTransaction:eventCopy];
   }
 }
 
-- (void)fireTransactionEndEvent:(id)a3
+- (void)fireTransactionEndEvent:(id)event
 {
-  v5 = a3;
-  v4 = [(STSSessionBase *)self delegate];
+  eventCopy = event;
+  delegate = [(STSSessionBase *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 stsSession:self didEndTransaction:v5];
+    [delegate stsSession:self didEndTransaction:eventCopy];
   }
 }
 
-- (void)fireExpressModeStateChangeWithInfo:(id)a3
+- (void)fireExpressModeStateChangeWithInfo:(id)info
 {
-  v8 = a3;
-  v4 = [(STSSessionBase *)self delegate];
+  infoCopy = info;
+  delegate = [(STSSessionBase *)self delegate];
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 && (objc_opt_respondsToSelector())
   {
-    v5 = v8;
-    v6 = [v5 state];
-    v7 = [v5 detail];
+    v5 = infoCopy;
+    state = [v5 state];
+    detail = [v5 detail];
 
-    [v4 stsSession:self didChangeExpressModeState:v6 withObject:v7];
+    [delegate stsSession:self didChangeExpressModeState:state withObject:detail];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    [v4 stsSession:self didChangeExpressModeWithInfo:v8];
+    [delegate stsSession:self didChangeExpressModeWithInfo:infoCopy];
   }
 }
 
-- (void)fireDidReceiveActivityTimeout:(id)a3
+- (void)fireDidReceiveActivityTimeout:(id)timeout
 {
-  v5 = a3;
-  v4 = [(STSSessionBase *)self delegate];
+  timeoutCopy = timeout;
+  delegate = [(STSSessionBase *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 stsSession:self didReceiveActivityTimeout:v5];
+    [delegate stsSession:self didReceiveActivityTimeout:timeoutCopy];
   }
 }
 
-- (void)fireDidPerformAuxiliaryTransactions:(id)a3
+- (void)fireDidPerformAuxiliaryTransactions:(id)transactions
 {
-  v5 = a3;
-  v4 = [(STSSessionBase *)self delegate];
+  transactionsCopy = transactions;
+  delegate = [(STSSessionBase *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 stsSession:self didPerformAuxiliaryTransactions:v5];
+    [delegate stsSession:self didPerformAuxiliaryTransactions:transactionsCopy];
   }
 }
 
-- (void)fireSessionEndEvent:(id)a3
+- (void)fireSessionEndEvent:(id)event
 {
-  v5 = a3;
+  eventCopy = event;
   if ([(STSSessionBase *)self hasStartedWithDelegate])
   {
-    v4 = [(STSSessionBase *)self delegate];
+    delegate = [(STSSessionBase *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v4 stsSession:self didEnd:v5];
+      [delegate stsSession:self didEnd:eventCopy];
     }
   }
 }
 
-- (void)fireDidReceive18013Requests:(id)a3 readerAuthInfo:(id)a4
+- (void)fireDidReceive18013Requests:(id)requests readerAuthInfo:(id)info
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [(STSSessionBase *)self delegate];
+  requestsCopy = requests;
+  infoCopy = info;
+  delegate = [(STSSessionBase *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v7 stsSession:self didReceive18013Requests:v8];
+    [delegate stsSession:self didReceive18013Requests:requestsCopy];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    [v7 stsSession:self didReceive18013Requests:v8 readerAuthInfo:v6];
-  }
-}
-
-- (void)fireDidReceivePassthroughMessage:(id)a3
-{
-  v5 = a3;
-  v4 = [(STSSessionBase *)self delegate];
-  if (objc_opt_respondsToSelector())
-  {
-    [v4 stsSession:self didReceivePassthroughMessage:v5];
+    [delegate stsSession:self didReceive18013Requests:requestsCopy readerAuthInfo:infoCopy];
   }
 }
 
-- (void)fireDigitalCarKeyEventPayload:(id)a3
+- (void)fireDidReceivePassthroughMessage:(id)message
 {
-  v5 = a3;
-  v4 = [(STSSessionBase *)self delegate];
+  messageCopy = message;
+  delegate = [(STSSessionBase *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 stsSession:self digitalCarKeyEventPayload:v5];
+    [delegate stsSession:self didReceivePassthroughMessage:messageCopy];
+  }
+}
+
+- (void)fireDigitalCarKeyEventPayload:(id)payload
+{
+  payloadCopy = payload;
+  delegate = [(STSSessionBase *)self delegate];
+  if (objc_opt_respondsToSelector())
+  {
+    [delegate stsSession:self digitalCarKeyEventPayload:payloadCopy];
   }
 }
 
 - (void)fireRequestHandoverConfirmation
 {
-  v3 = [(STSSessionBase *)self delegate];
+  delegate = [(STSSessionBase *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v3 stsSessionRequestHandoffConfirmation:self];
+    [delegate stsSessionRequestHandoffConfirmation:self];
   }
 }
 
-- (id)setAuxiliaryCredentials:(id)a3
+- (id)setAuxiliaryCredentials:(id)credentials
 {
   v40[4] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  credentialsCopy = credentials;
   v6 = _os_activity_create(&dword_26536F000, "setAuxiliaryCredentials:", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_IF_NONE_PRESENT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v6, &state);
   os_activity_scope_leave(&state);
 
-  sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[STSSession(Auxiliary) setAuxiliaryCredentials:]", 23, self, @"%@", v7, v8, v5);
-  v9 = [(STSSessionBase *)self handler];
+  sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[STSSession(Auxiliary) setAuxiliaryCredentials:]", 23, self, @"%@", v7, v8, credentialsCopy);
+  handler = [(STSSessionBase *)self handler];
 
-  if (v9)
+  if (handler)
   {
-    v12 = [(STSSessionBase *)self handler];
-    v13 = [v12 supportedCredentialType];
+    handler2 = [(STSSessionBase *)self handler];
+    supportedCredentialType = [handler2 supportedCredentialType];
 
-    if (v13 == 1)
+    if (supportedCredentialType == 1)
     {
       goto LABEL_6;
     }
 
-    v14 = [(STSSessionBase *)self handler];
-    v15 = [v14 activeSTSCredential];
-    sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[STSSession(Auxiliary) setAuxiliaryCredentials:]", 33, self, @"new handler required, switching credential from %@ to STSCredentialTypeApplet", v16, v17, v15);
+    handler3 = [(STSSessionBase *)self handler];
+    activeSTSCredential = [handler3 activeSTSCredential];
+    sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[STSSession(Auxiliary) setAuxiliaryCredentials:]", 33, self, @"new handler required, switching credential from %@ to STSCredentialTypeApplet", v16, v17, activeSTSCredential);
 
     v18 = [(STSTransactionHandler *)[PaymentHandler alloc] initWithParent:self];
-    v19 = [(STSSessionBase *)self handler];
-    [v19 tearDownWithCompletion:0];
+    handler4 = [(STSSessionBase *)self handler];
+    [handler4 tearDownWithCompletion:0];
   }
 
   else
@@ -574,23 +574,23 @@ LABEL_18:
   [(STSSessionBase *)self setHandler:v18];
 
 LABEL_6:
-  v20 = [(STSSessionBase *)self handler];
+  handler5 = [(STSSessionBase *)self handler];
 
-  if (v20)
+  if (handler5)
   {
-    v23 = [(STSSessionBase *)self activateChildSession];
-    if (v23)
+    activateChildSession = [(STSSessionBase *)self activateChildSession];
+    if (activateChildSession)
     {
-      v26 = v23;
-      sub_265398094(OS_LOG_TYPE_ERROR, 0, "[STSSession(Auxiliary) setAuxiliaryCredentials:]", 43, self, @"Handler activation failure: %@", v24, v25, v23);
+      v26 = activateChildSession;
+      sub_265398094(OS_LOG_TYPE_ERROR, 0, "[STSSession(Auxiliary) setAuxiliaryCredentials:]", 43, self, @"Handler activation failure: %@", v24, v25, activateChildSession);
       v27 = v26;
       v28 = v27;
     }
 
     else
     {
-      v34 = [(STSSessionBase *)self handler];
-      v28 = sub_2653888E8(v34, v5);
+      handler6 = [(STSSessionBase *)self handler];
+      v28 = sub_2653888E8(handler6, credentialsCopy);
 
       v27 = 0;
     }
@@ -623,19 +623,19 @@ LABEL_6:
 
 - (BOOL)supportsSecureRanging
 {
-  v3 = [(STSSessionBase *)self handler];
+  handler = [(STSSessionBase *)self handler];
 
-  if (v3)
+  if (handler)
   {
-    v6 = [(STSSessionBase *)self handler];
+    handler2 = [(STSSessionBase *)self handler];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
-    v8 = [(STSSessionBase *)self handler];
-    v16 = v8;
+    handler3 = [(STSSessionBase *)self handler];
+    v16 = handler3;
     if (isKindOfClass)
     {
-      v17 = sub_265396254(v8, v9, v10, v11, v12, v13, v14, v15);
+      v17 = sub_265396254(handler3, v9, v10, v11, v12, v13, v14, v15);
 
       return v17;
     }
@@ -653,29 +653,29 @@ LABEL_6:
   return 0;
 }
 
-- (id)rkeSendPassthroughMessage:(id)a3
+- (id)rkeSendPassthroughMessage:(id)message
 {
   v35[4] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  messageCopy = message;
   v6 = _os_activity_create(&dword_26536F000, "rkeSendPassthroughMessage:", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_IF_NONE_PRESENT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v6, &state);
   os_activity_scope_leave(&state);
 
-  v7 = [(STSSessionBase *)self handler];
+  handler = [(STSSessionBase *)self handler];
 
-  if (v7)
+  if (handler)
   {
-    v10 = [(STSSessionBase *)self handler];
+    handler2 = [(STSSessionBase *)self handler];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
-    v12 = [(STSSessionBase *)self handler];
-    v13 = v12;
+    handler3 = [(STSSessionBase *)self handler];
+    v13 = handler3;
     if (isKindOfClass)
     {
-      v14 = sub_265396464(v12, v5);
+      v14 = sub_265396464(handler3, messageCopy);
       goto LABEL_7;
     }
 
@@ -732,13 +732,13 @@ LABEL_7:
   return v14;
 }
 
-- (void)rkeSendFunction:(id)a3 action:(id)a4 authorization:(id)a5 completion:(id)a6
+- (void)rkeSendFunction:(id)function action:(id)action authorization:(id)authorization completion:(id)completion
 {
   v52[4] = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  functionCopy = function;
+  actionCopy = action;
+  authorizationCopy = authorization;
+  completionCopy = completion;
   v15 = _os_activity_create(&dword_26536F000, "rkeSendFunction:action:authorization:completion:", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_IF_NONE_PRESENT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -750,12 +750,12 @@ LABEL_7:
   aBlock[2] = sub_26539A1F0;
   aBlock[3] = &unk_279B94180;
   aBlock[4] = self;
-  v16 = v14;
+  v16 = completionCopy;
   v47 = v16;
   v17 = _Block_copy(aBlock);
-  v18 = [(STSSessionBase *)self handler];
+  handler = [(STSSessionBase *)self handler];
 
-  if (!v18)
+  if (!handler)
   {
     sub_265398094(OS_LOG_TYPE_ERROR, 0, "[STSSession(RKE) rkeSendFunction:action:authorization:completion:]", 74, self, @"No handler available", v19, v20, v43);
     v25 = MEMORY[0x277CCA9B8];
@@ -766,9 +766,9 @@ LABEL_7:
     v52[1] = &unk_2876EDA28;
     v51[1] = @"Line";
     v51[2] = @"Method";
-    v45 = v13;
-    v27 = v12;
-    v28 = v11;
+    v45 = authorizationCopy;
+    v27 = actionCopy;
+    v28 = functionCopy;
     v29 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", sel_getName(a2)];
     v52[2] = v29;
     v51[3] = *MEMORY[0x277CCA068];
@@ -778,20 +778,20 @@ LABEL_7:
     v32 = [v25 errorWithDomain:v24 code:9 userInfo:v31];
     v17[2](v17, 0, v32);
 
-    v11 = v28;
-    v12 = v27;
+    functionCopy = v28;
+    actionCopy = v27;
 LABEL_7:
-    v13 = v45;
+    authorizationCopy = v45;
 
     goto LABEL_8;
   }
 
-  v21 = [(STSSessionBase *)self handler];
+  handler2 = [(STSSessionBase *)self handler];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  v23 = [(STSSessionBase *)self handler];
-  v24 = v23;
+  handler3 = [(STSSessionBase *)self handler];
+  v24 = handler3;
   if ((isKindOfClass & 1) == 0)
   {
     v33 = objc_opt_class();
@@ -807,8 +807,8 @@ LABEL_7:
     v49[1] = @"Line";
     v49[2] = @"Method";
     [MEMORY[0x277CCACA8] stringWithFormat:@"%s", sel_getName(a2)];
-    v45 = v13;
-    v38 = v37 = v11;
+    v45 = authorizationCopy;
+    v38 = v37 = functionCopy;
     v50[2] = v38;
     v49[3] = *MEMORY[0x277CCA068];
     v39 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d", sel_getName(a2), 78];
@@ -817,13 +817,13 @@ LABEL_7:
     v41 = [v44 errorWithDomain:v24 code:11 userInfo:v40];
     v17[2](v17, 0, v41);
 
-    v11 = v37;
+    functionCopy = v37;
     goto LABEL_7;
   }
 
-  if (v23)
+  if (handler3)
   {
-    [*(v23 + 64) sendRKEFunction:v11 action:v12 authorization:v13 completion:v17];
+    [*(handler3 + 64) sendRKEFunction:functionCopy action:actionCopy authorization:authorizationCopy completion:v17];
   }
 
 LABEL_8:
@@ -831,29 +831,29 @@ LABEL_8:
   v42 = *MEMORY[0x277D85DE8];
 }
 
-- (id)rkeCancelFunction:(id)a3
+- (id)rkeCancelFunction:(id)function
 {
   v35[4] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  functionCopy = function;
   v6 = _os_activity_create(&dword_26536F000, "rkeCancelFunction:", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_IF_NONE_PRESENT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v6, &state);
   os_activity_scope_leave(&state);
 
-  v7 = [(STSSessionBase *)self handler];
+  handler = [(STSSessionBase *)self handler];
 
-  if (v7)
+  if (handler)
   {
-    v10 = [(STSSessionBase *)self handler];
+    handler2 = [(STSSessionBase *)self handler];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
-    v12 = [(STSSessionBase *)self handler];
-    v13 = v12;
+    handler3 = [(STSSessionBase *)self handler];
+    v13 = handler3;
     if (isKindOfClass)
     {
-      v14 = sub_2653968C0(v12, v5);
+      v14 = sub_2653968C0(handler3, functionCopy);
       goto LABEL_7;
     }
 
@@ -910,30 +910,30 @@ LABEL_7:
   return v14;
 }
 
-- (id)rkePauseRangingForReaderIdentifier:(id)a3 durationInSec:(id)a4
+- (id)rkePauseRangingForReaderIdentifier:(id)identifier durationInSec:(id)sec
 {
   v38[4] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  secCopy = sec;
   v9 = _os_activity_create(&dword_26536F000, "rkePauseRangingForReaderIdentifier:durationInSec:", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_IF_NONE_PRESENT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v9, &state);
   os_activity_scope_leave(&state);
 
-  v10 = [(STSSessionBase *)self handler];
+  handler = [(STSSessionBase *)self handler];
 
-  if (v10)
+  if (handler)
   {
-    v13 = [(STSSessionBase *)self handler];
+    handler2 = [(STSSessionBase *)self handler];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
-    v15 = [(STSSessionBase *)self handler];
-    v16 = v15;
+    handler3 = [(STSSessionBase *)self handler];
+    v16 = handler3;
     if (isKindOfClass)
     {
-      v17 = sub_265396900(v15, v7, v8);
+      v17 = sub_265396900(handler3, identifierCopy, secCopy);
       goto LABEL_7;
     }
 
@@ -990,29 +990,29 @@ LABEL_7:
   return v17;
 }
 
-- (id)rkeResumeRangingForReaderIdentifier:(id)a3
+- (id)rkeResumeRangingForReaderIdentifier:(id)identifier
 {
   v35[4] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  identifierCopy = identifier;
   v6 = _os_activity_create(&dword_26536F000, "rkeResumeRangingForReaderIdentifier:", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_IF_NONE_PRESENT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v6, &state);
   os_activity_scope_leave(&state);
 
-  v7 = [(STSSessionBase *)self handler];
+  handler = [(STSSessionBase *)self handler];
 
-  if (v7)
+  if (handler)
   {
-    v10 = [(STSSessionBase *)self handler];
+    handler2 = [(STSSessionBase *)self handler];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
-    v12 = [(STSSessionBase *)self handler];
-    v13 = v12;
+    handler3 = [(STSSessionBase *)self handler];
+    v13 = handler3;
     if (isKindOfClass)
     {
-      v14 = sub_265396940(v12, v5);
+      v14 = sub_265396940(handler3, identifierCopy);
       goto LABEL_7;
     }
 
@@ -1069,7 +1069,7 @@ LABEL_7:
   return v14;
 }
 
-- (id)rkeGetVehicleReports:(id *)a3
+- (id)rkeGetVehicleReports:(id *)reports
 {
   v34[4] = *MEMORY[0x277D85DE8];
   v6 = _os_activity_create(&dword_26536F000, "rkeGetVehicleReports:", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_IF_NONE_PRESENT);
@@ -1078,12 +1078,12 @@ LABEL_7:
   os_activity_scope_enter(v6, &state);
   os_activity_scope_leave(&state);
 
-  v7 = [(STSSessionBase *)self handler];
+  handler = [(STSSessionBase *)self handler];
 
-  if (!v7)
+  if (!handler)
   {
     sub_265398094(OS_LOG_TYPE_ERROR, 0, "[STSSession(RKE) rkeGetVehicleReports:]", 135, self, @"No handler available", v8, v9, v29);
-    if (!a3)
+    if (!reports)
     {
       goto LABEL_10;
     }
@@ -1106,25 +1106,25 @@ LABEL_7:
     v20 = v13;
     v21 = 9;
 LABEL_8:
-    *a3 = [v19 errorWithDomain:v20 code:v21 userInfo:v18];
+    *reports = [v19 errorWithDomain:v20 code:v21 userInfo:v18];
 
-    a3 = 0;
+    reports = 0;
     goto LABEL_9;
   }
 
-  v10 = [(STSSessionBase *)self handler];
+  handler2 = [(STSSessionBase *)self handler];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  v12 = [(STSSessionBase *)self handler];
-  v13 = v12;
+  handler3 = [(STSSessionBase *)self handler];
+  v13 = handler3;
   if ((isKindOfClass & 1) == 0)
   {
     v22 = objc_opt_class();
     v23 = NSStringFromClass(v22);
     sub_265398094(OS_LOG_TYPE_ERROR, 0, "[STSSession(RKE) rkeGetVehicleReports:]", 141, self, @"Invalid handler - %@", v24, v25, v23);
 
-    if (!a3)
+    if (!reports)
     {
       goto LABEL_10;
     }
@@ -1149,22 +1149,22 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  a3 = sub_2653962B8(v12, a3);
+  reports = sub_2653962B8(handler3, reports);
 LABEL_9:
 
 LABEL_10:
   v27 = *MEMORY[0x277D85DE8];
 
-  return a3;
+  return reports;
 }
 
-+ (id)requestAssertionForKeyID:(id)a3 options:(id)a4 outError:(id *)a5
++ (id)requestAssertionForKeyID:(id)d options:(id)options outError:(id *)error
 {
   v16[4] = *MEMORY[0x277D85DE8];
-  if (a5)
+  if (error)
   {
     v7 = MEMORY[0x277CCA9B8];
-    v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"STS.fwk", a4}];
+    v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"STS.fwk", options}];
     v15[0] = *MEMORY[0x277CCA450];
     v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"Feature Not Supported"];
     v16[0] = v9;
@@ -1177,21 +1177,21 @@ LABEL_10:
     v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d", sel_getName(a2), 155];
     v16[3] = v11;
     v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:v15 count:4];
-    *a5 = [v7 errorWithDomain:v8 code:11 userInfo:v12];
+    *error = [v7 errorWithDomain:v8 code:11 userInfo:v12];
   }
 
   v13 = *MEMORY[0x277D85DE8];
   return 0;
 }
 
-- (id)createHandlerForCredential:(id)a3
+- (id)createHandlerForCredential:(id)credential
 {
-  v4 = a3;
-  v5 = [v4 type];
+  credentialCopy = credential;
+  type = [credentialCopy type];
   v6 = 0;
-  if (v5 > 2)
+  if (type > 2)
   {
-    switch(v5)
+    switch(type)
     {
       case 3:
         v12 = UnifiedAccessHandler;
@@ -1201,13 +1201,13 @@ LABEL_10:
         break;
       case 5:
         v6 = [ISO18013HybridHandler alloc];
-        v7 = [(STSSessionBase *)self callbackQueue];
+        callbackQueue = [(STSSessionBase *)self callbackQueue];
         if (!v6)
         {
           goto LABEL_13;
         }
 
-        v8 = sub_26538C184(v6, self, v6, 0, v7);
+        v8 = sub_26538C184(v6, self, v6, 0, callbackQueue);
         goto LABEL_12;
       default:
         goto LABEL_19;
@@ -1216,29 +1216,29 @@ LABEL_10:
 
   else
   {
-    if (!v5)
+    if (!type)
     {
-      v9 = [v4 type];
-      sub_265398094(OS_LOG_TYPE_ERROR, 0, "[STSSession createHandlerForCredential:]", 42, self, @"Unsupported credential type %02x", v10, v11, v9);
+      type2 = [credentialCopy type];
+      sub_265398094(OS_LOG_TYPE_ERROR, 0, "[STSSession createHandlerForCredential:]", 42, self, @"Unsupported credential type %02x", v10, v11, type2);
       v6 = 0;
       goto LABEL_19;
     }
 
-    if (v5 != 1)
+    if (type != 1)
     {
-      if (v5 != 2)
+      if (type != 2)
       {
         goto LABEL_19;
       }
 
       v6 = [ISO18013Handler alloc];
-      v7 = [(STSSessionBase *)self callbackQueue];
+      callbackQueue = [(STSSessionBase *)self callbackQueue];
       if (!v6)
       {
         goto LABEL_13;
       }
 
-      v8 = sub_265380088(v6, self, v6, 0, v7);
+      v8 = sub_265380088(v6, self, v6, 0, callbackQueue);
 LABEL_12:
       v6 = v8;
 LABEL_13:
@@ -1262,10 +1262,10 @@ LABEL_19:
   return [(STSSessionBase *)&v3 init];
 }
 
-- (id)startWithDelegate:(id)a3 callback:(id)a4
+- (id)startWithDelegate:(id)delegate callback:(id)callback
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  callbackCopy = callback;
   v8 = _os_activity_create(&dword_26536F000, "startWithDelegate:callback:", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_IF_NONE_PRESENT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -1273,18 +1273,18 @@ LABEL_19:
   os_activity_scope_leave(&state);
 
   sub_265398094(OS_LOG_TYPE_INFO, 0, "[STSSession startWithDelegate:callback:]", 60, self, &stru_2876E3E50, v9, v10, v16[0]);
-  v11 = [(STSSession *)self canStartSession];
-  if (v11)
+  canStartSession = [(STSSession *)self canStartSession];
+  if (canStartSession)
   {
-    v12 = [(STSSessionBase *)self callbackQueue];
+    callbackQueue = [(STSSessionBase *)self callbackQueue];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = sub_26539BCD8;
     v16[3] = &unk_279B93848;
-    v18 = v7;
-    v13 = v11;
+    v18 = callbackCopy;
+    v13 = canStartSession;
     v17 = v13;
-    dispatch_async(v12, v16);
+    dispatch_async(callbackQueue, v16);
 
     v14 = v13;
   }
@@ -1292,16 +1292,16 @@ LABEL_19:
   else
   {
     LOBYTE(state.opaque[0]) = 0;
-    [(STSSessionBase *)self setTheStartCallback:v7];
-    [(STSSessionBase *)self startWithDelegate:v6 isFirstInQueue:&state];
+    [(STSSessionBase *)self setTheStartCallback:callbackCopy];
+    [(STSSessionBase *)self startWithDelegate:delegateCopy isFirstInQueue:&state];
   }
 
-  return v11;
+  return canStartSession;
 }
 
-- (id)startWithDelegate:(id)a3
+- (id)startWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v5 = _os_activity_create(&dword_26536F000, "startWithDelegate:", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_IF_NONE_PRESENT);
   v12.opaque[0] = 0;
   v12.opaque[1] = 0;
@@ -1309,17 +1309,17 @@ LABEL_19:
   os_activity_scope_leave(&v12);
 
   sub_265398094(OS_LOG_TYPE_INFO, 0, "[STSSession startWithDelegate:]", 79, self, &stru_2876E3E50, v6, v7, v12.opaque[0]);
-  v8 = [(STSSession *)self canStartSession];
-  v9 = v8;
-  if (v8)
+  canStartSession = [(STSSession *)self canStartSession];
+  v9 = canStartSession;
+  if (canStartSession)
   {
-    v10 = v8;
+    v10 = canStartSession;
   }
 
   else
   {
     LOBYTE(v12.opaque[0]) = 0;
-    [(STSSessionBase *)self startWithDelegate:v4 isFirstInQueue:&v12];
+    [(STSSessionBase *)self startWithDelegate:delegateCopy isFirstInQueue:&v12];
   }
 
   return v9;
@@ -1328,11 +1328,11 @@ LABEL_19:
 - (id)canStartSession
 {
   v30[4] = *MEMORY[0x277D85DE8];
-  v4 = [(STSSessionBase *)self nfHardwareManager];
-  if ([v4 getHwSupport] == 2)
+  nfHardwareManager = [(STSSessionBase *)self nfHardwareManager];
+  if ([nfHardwareManager getHwSupport] == 2)
   {
     v26 = 1;
-    v7 = [v4 getRadioEnabledState:&v26];
+    v7 = [nfHardwareManager getRadioEnabledState:&v26];
     v10 = v7;
     if (!v7 && v26)
     {
@@ -1390,32 +1390,32 @@ LABEL_10:
   return v11;
 }
 
-- (id)startTransactionWithAuthorization:(id)a3 options:(unint64_t)a4
+- (id)startTransactionWithAuthorization:(id)authorization options:(unint64_t)options
 {
   v28[4] = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  authorizationCopy = authorization;
   v8 = _os_activity_create(&dword_26536F000, "startTransactionWithAuthorization:options:", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_IF_NONE_PRESENT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v8, &state);
   os_activity_scope_leave(&state);
 
-  v9 = [(STSSessionBase *)self handler];
+  handler = [(STSSessionBase *)self handler];
 
-  if (v9)
+  if (handler)
   {
-    v12 = [(STSSessionBase *)self activateChildSession];
-    if (v12)
+    activateChildSession = [(STSSessionBase *)self activateChildSession];
+    if (activateChildSession)
     {
-      v15 = v12;
+      v15 = activateChildSession;
       v16 = v15;
     }
 
     else
     {
-      sub_265398094(OS_LOG_TYPE_INFO, 0, "[STSSession startTransactionWithAuthorization:options:]", 124, self, @"options: 0x%04x", v13, v14, a4);
-      v22 = [(STSSessionBase *)self handler];
-      v16 = [v22 startTransactionWithAuthorization:v7 options:a4];
+      sub_265398094(OS_LOG_TYPE_INFO, 0, "[STSSession startTransactionWithAuthorization:options:]", 124, self, @"options: 0x%04x", v13, v14, options);
+      handler2 = [(STSSessionBase *)self handler];
+      v16 = [handler2 startTransactionWithAuthorization:authorizationCopy options:options];
 
       v15 = 0;
     }
@@ -1455,20 +1455,20 @@ LABEL_10:
   os_activity_scope_enter(v4, &state);
   os_activity_scope_leave(&state);
 
-  v5 = [(STSSessionBase *)self handler];
+  handler = [(STSSessionBase *)self handler];
 
-  if (v5)
+  if (handler)
   {
     sub_265398094(OS_LOG_TYPE_INFO, 0, "[STSSession stopTransaction]", 136, self, &stru_2876E3E50, v6, v7, v17);
-    v8 = [(STSSessionBase *)self handler];
-    v9 = [v8 stopTransaction];
+    handler2 = [(STSSessionBase *)self handler];
+    stopTransaction = [handler2 stopTransaction];
   }
 
   else
   {
     sub_265398094(OS_LOG_TYPE_ERROR, 0, "[STSSession stopTransaction]", 132, self, @"Handler invalid", v6, v7, v17);
     v10 = MEMORY[0x277CCA9B8];
-    v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"STS.fwk"];
+    handler2 = [MEMORY[0x277CCACA8] stringWithUTF8String:"STS.fwk"];
     v19[0] = *MEMORY[0x277CCA450];
     v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"Invalid State"];
     v20[0] = v11;
@@ -1481,15 +1481,15 @@ LABEL_10:
     v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d", sel_getName(a2), 133];
     v20[3] = v13;
     v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:v19 count:4];
-    v9 = [v10 errorWithDomain:v8 code:9 userInfo:v14];
+    stopTransaction = [v10 errorWithDomain:handler2 code:9 userInfo:v14];
   }
 
   v15 = *MEMORY[0x277D85DE8];
 
-  return v9;
+  return stopTransaction;
 }
 
-- (id)enableExpressModeForActiveCredential:(BOOL)a3
+- (id)enableExpressModeForActiveCredential:(BOOL)credential
 {
   v14[4] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CCA9B8];
@@ -1513,11 +1513,11 @@ LABEL_10:
   return v10;
 }
 
-- (id)releaseCredential:(id)a3 withAuthorization:(id)a4
+- (id)releaseCredential:(id)credential withAuthorization:(id)authorization
 {
   v15[4] = *MEMORY[0x277D85DE8];
   v5 = MEMORY[0x277CCA9B8];
-  v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"STS.fwk", a4}];
+  v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"STS.fwk", authorization}];
   v14[0] = *MEMORY[0x277CCA450];
   v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"Feature Not Supported"];
   v15[0] = v7;
@@ -1537,27 +1537,27 @@ LABEL_10:
   return v11;
 }
 
-- (id)releaseCredential:(id)a3 withAuthorization:(id)a4 iso18013Selection:(id)a5
+- (id)releaseCredential:(id)credential withAuthorization:(id)authorization iso18013Selection:(id)selection
 {
   v29[4] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  credentialCopy = credential;
+  authorizationCopy = authorization;
+  selectionCopy = selection;
   v12 = _os_activity_create(&dword_26536F000, "releaseCredential:withAuthorization:iso18013Selection:", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_IF_NONE_PRESENT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v12, &state);
   os_activity_scope_leave(&state);
 
-  v13 = [(STSSessionBase *)self handler];
+  handler = [(STSSessionBase *)self handler];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  v15 = [(STSSessionBase *)self handler];
-  v16 = v15;
+  handler2 = [(STSSessionBase *)self handler];
+  handler3 = handler2;
   if (isKindOfClass)
   {
-    v17 = sub_2653812A0(v15, v9, v10, v11);
+    v17 = sub_2653812A0(handler2, credentialCopy, authorizationCopy, selectionCopy);
 LABEL_5:
     v19 = v17;
     goto LABEL_7;
@@ -1568,13 +1568,13 @@ LABEL_5:
 
   if (v18)
   {
-    v16 = [(STSSessionBase *)self handler];
-    v17 = sub_26538E56C(v16, v9, v10, v11);
+    handler3 = [(STSSessionBase *)self handler];
+    v17 = sub_26538E56C(handler3, credentialCopy, authorizationCopy, selectionCopy);
     goto LABEL_5;
   }
 
   v20 = MEMORY[0x277CCA9B8];
-  v16 = [MEMORY[0x277CCACA8] stringWithUTF8String:"STS.fwk"];
+  handler3 = [MEMORY[0x277CCACA8] stringWithUTF8String:"STS.fwk"];
   v28[0] = *MEMORY[0x277CCA450];
   v21 = [MEMORY[0x277CCACA8] stringWithUTF8String:"Feature Not Supported"];
   v29[0] = v21;
@@ -1587,7 +1587,7 @@ LABEL_5:
   v23 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d", sel_getName(a2), 163];
   v29[3] = v23;
   v24 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v29 forKeys:v28 count:4];
-  v19 = [v20 errorWithDomain:v16 code:11 userInfo:v24];
+  v19 = [v20 errorWithDomain:handler3 code:11 userInfo:v24];
 
 LABEL_7:
   v25 = *MEMORY[0x277D85DE8];
@@ -1598,17 +1598,17 @@ LABEL_7:
 - (id)startHandoff
 {
   v23[4] = *MEMORY[0x277D85DE8];
-  v4 = [(STSSessionBase *)self handler];
+  handler = [(STSSessionBase *)self handler];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  v6 = [(STSSessionBase *)self handler];
-  v7 = v6;
+  handler2 = [(STSSessionBase *)self handler];
+  v7 = handler2;
   if (isKindOfClass)
   {
-    if (v6)
+    if (handler2)
     {
-      v8 = *(v6 + 72);
+      v8 = *(handler2 + 72);
     }
 
     else
@@ -1617,7 +1617,7 @@ LABEL_7:
     }
 
     v9 = v8;
-    v10 = [v9 startHandoff];
+    startHandoff = [v9 startHandoff];
   }
 
   else
@@ -1627,11 +1627,11 @@ LABEL_7:
 
     if (v11)
     {
-      v12 = [(STSSessionBase *)self handler];
-      v13 = v12;
-      if (v12)
+      handler3 = [(STSSessionBase *)self handler];
+      v13 = handler3;
+      if (handler3)
       {
-        v14 = *(v12 + 72);
+        v14 = *(handler3 + 72);
       }
 
       else
@@ -1640,7 +1640,7 @@ LABEL_7:
       }
 
       v15 = v14;
-      v10 = [v15 startHandoff];
+      startHandoff = [v15 startHandoff];
     }
 
     else
@@ -1659,18 +1659,18 @@ LABEL_7:
       v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d", sel_getName(a2), 176];
       v23[3] = v18;
       v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v23 forKeys:v22 count:4];
-      v10 = [v16 errorWithDomain:v13 code:9 userInfo:v19];
+      startHandoff = [v16 errorWithDomain:v13 code:9 userInfo:v19];
     }
   }
 
   v20 = *MEMORY[0x277D85DE8];
 
-  return v10;
+  return startHandoff;
 }
 
-- (id)startWithNotificationTesterDelegate:(id)a3 outNotificationListener:(id *)a4
+- (id)startWithNotificationTesterDelegate:(id)delegate outNotificationListener:(id *)listener
 {
-  v6 = a3;
+  delegateCopy = delegate;
   v7 = _os_activity_create(&dword_26536F000, "startWithNotificationTesterDelegate:outNotificationListener:", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_IF_NONE_PRESENT);
   v16.opaque[0] = 0;
   v16.opaque[1] = 0;
@@ -1678,11 +1678,11 @@ LABEL_7:
   os_activity_scope_leave(&v16);
 
   v8 = [ISO18013Handler alloc];
-  v9 = [(STSSessionBase *)self callbackQueue];
-  v10 = sub_265380234(v8, v6, self, v9);
+  callbackQueue = [(STSSessionBase *)self callbackQueue];
+  v10 = sub_265380234(v8, delegateCopy, self, callbackQueue);
 
   [(STSSessionBase *)self setHandler:v10];
-  if (a4)
+  if (listener)
   {
     if (v10)
     {
@@ -1694,7 +1694,7 @@ LABEL_7:
       v11 = 0;
     }
 
-    *a4 = v11;
+    *listener = v11;
   }
 
   if (v10)
@@ -1708,38 +1708,38 @@ LABEL_7:
   }
 
   v13 = v12;
-  v14 = [v13 xpcEndpoint];
+  xpcEndpoint = [v13 xpcEndpoint];
 
-  return v14;
+  return xpcEndpoint;
 }
 
-- (void)testSendToAlternativeCarrier:(id)a3 completion:(id)a4
+- (void)testSendToAlternativeCarrier:(id)carrier completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  carrierCopy = carrier;
+  completionCopy = completion;
   v9 = _os_activity_create(&dword_26536F000, "testSendToAlternativeCarrier:completion:", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_IF_NONE_PRESENT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v9, &state);
   os_activity_scope_leave(&state);
 
-  v10 = [(STSSessionBase *)self handler];
-  if (!v10)
+  handler = [(STSSessionBase *)self handler];
+  if (!handler)
   {
     goto LABEL_6;
   }
 
-  v11 = v10;
-  v12 = [(STSSessionBase *)self handler];
-  v13 = sub_2653837C8(ISO18013Handler, v12);
+  v11 = handler;
+  handler2 = [(STSSessionBase *)self handler];
+  v13 = sub_2653837C8(ISO18013Handler, handler2);
 
   if (v13)
   {
-    v14 = [(STSSessionBase *)self handler];
-    v15 = v14;
-    if (v14)
+    handler3 = [(STSSessionBase *)self handler];
+    callbackQueue = handler3;
+    if (handler3)
     {
-      v16 = *(v14 + 72);
+      v16 = *(handler3 + 72);
     }
 
     else
@@ -1753,42 +1753,42 @@ LABEL_7:
     v21[2] = sub_26539D468;
     v21[3] = &unk_279B93E00;
     v18 = &v22;
-    v22 = v8;
-    v19 = v8;
-    [v17 alternativerCarrierSend:v7 completion:v21];
+    v22 = completionCopy;
+    v19 = completionCopy;
+    [v17 alternativerCarrierSend:carrierCopy completion:v21];
   }
 
   else
   {
 LABEL_6:
-    v15 = [(STSSessionBase *)self callbackQueue];
+    callbackQueue = [(STSSessionBase *)self callbackQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = sub_26539D2B8;
     block[3] = &unk_279B93AF8;
     v18 = v24;
-    v24[0] = v8;
+    v24[0] = completionCopy;
     v24[1] = a2;
-    v20 = v8;
-    dispatch_async(v15, block);
+    v20 = completionCopy;
+    dispatch_async(callbackQueue, block);
   }
 }
 
-- (id)felicaCredentialState:(id)a3 error:(id *)a4
+- (id)felicaCredentialState:(id)state error:(id *)error
 {
   v20[4] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = [(STSSessionBase *)self handler];
+  stateCopy = state;
+  handler = [(STSSessionBase *)self handler];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v10 = [(STSSessionBase *)self handler];
-    a4 = sub_265389320(v10, v7, a4);
+    handler2 = [(STSSessionBase *)self handler];
+    error = sub_265389320(handler2, stateCopy, error);
   }
 
-  else if (a4)
+  else if (error)
   {
     v11 = MEMORY[0x277CCA9B8];
     v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"STS.fwk"];
@@ -1804,31 +1804,31 @@ LABEL_6:
     v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d", sel_getName(a2), 26];
     v20[3] = v15;
     v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:v19 count:4];
-    *a4 = [v11 errorWithDomain:v12 code:11 userInfo:v16];
+    *error = [v11 errorWithDomain:v12 code:11 userInfo:v16];
 
-    a4 = 0;
+    error = 0;
   }
 
   v17 = *MEMORY[0x277D85DE8];
 
-  return a4;
+  return error;
 }
 
-- (id)transitCredentialState:(id)a3 error:(id *)a4
+- (id)transitCredentialState:(id)state error:(id *)error
 {
   v20[4] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = [(STSSessionBase *)self handler];
+  stateCopy = state;
+  handler = [(STSSessionBase *)self handler];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v10 = [(STSSessionBase *)self handler];
-    a4 = sub_265389920(v10, v7, a4);
+    handler2 = [(STSSessionBase *)self handler];
+    error = sub_265389920(handler2, stateCopy, error);
   }
 
-  else if (a4)
+  else if (error)
   {
     v11 = MEMORY[0x277CCA9B8];
     v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"STS.fwk"];
@@ -1844,14 +1844,14 @@ LABEL_6:
     v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d", sel_getName(a2), 38];
     v20[3] = v15;
     v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:v19 count:4];
-    *a4 = [v11 errorWithDomain:v12 code:11 userInfo:v16];
+    *error = [v11 errorWithDomain:v12 code:11 userInfo:v16];
 
-    a4 = 0;
+    error = 0;
   }
 
   v17 = *MEMORY[0x277D85DE8];
 
-  return a4;
+  return error;
 }
 
 @end

@@ -1,31 +1,31 @@
 @interface TSWPShapeRep
-- (BOOL)canBeginEditingChildRepOnDoubleTap:(id)a3;
-- (BOOL)handleSingleTapAtPoint:(CGPoint)a3;
+- (BOOL)canBeginEditingChildRepOnDoubleTap:(id)tap;
+- (BOOL)handleSingleTapAtPoint:(CGPoint)point;
 - (BOOL)isDraggable;
 - (BOOL)isInvisible;
-- (BOOL)mustDrawTilingLayerOnMainThread:(id)a3;
+- (BOOL)mustDrawTilingLayerOnMainThread:(id)thread;
 - (BOOL)p_shouldShowTextOverflowGlyph;
-- (BOOL)shouldIgnoreEditMenuTapAtPoint:(CGPoint)a3 withRecognizer:(id)a4;
+- (BOOL)shouldIgnoreEditMenuTapAtPoint:(CGPoint)point withRecognizer:(id)recognizer;
 - (BOOL)shouldShowKnobs;
 - (BOOL)shouldShowSelectionHighlight;
 - (BOOL)wantsToHandleTapsOnContainingGroup;
 - (BOOL)wantsToHandleTapsWhenLocked;
 - (TSDContainerInfo)containerInfo;
-- (TSWPShapeRep)initWithLayout:(id)a3 canvas:(id)a4;
+- (TSWPShapeRep)initWithLayout:(id)layout canvas:(id)canvas;
 - (double)pParagraphAlignmentOffset;
-- (id)actionForLayer:(id)a3 forKey:(id)a4;
+- (id)actionForLayer:(id)layer forKey:(id)key;
 - (id)additionalLayersOverLayer;
 - (id)childReps;
-- (id)hitRep:(CGPoint)a3;
-- (id)hitReps:(CGPoint)a3 withSlop:(CGSize)a4;
+- (id)hitRep:(CGPoint)rep;
+- (id)hitReps:(CGPoint)reps withSlop:(CGSize)slop;
 - (id)hyperlinkRegions;
 - (id)overlayLayers;
 - (id)p_overflowKnobImage;
 - (unint64_t)enabledKnobMask;
 - (void)dealloc;
 - (void)p_resetOverflowGlyphLayerIfNecessary;
-- (void)processChangedProperty:(int)a3;
-- (void)shapeLayoutDidChangeContainedStorage:(id)a3;
+- (void)processChangedProperty:(int)property;
+- (void)shapeLayoutDidChangeContainedStorage:(id)storage;
 - (void)updateChildrenFromLayout;
 - (void)willBeRemoved;
 - (void)willBeginEditingContainedRep;
@@ -34,19 +34,19 @@
 
 @implementation TSWPShapeRep
 
-- (TSWPShapeRep)initWithLayout:(id)a3 canvas:(id)a4
+- (TSWPShapeRep)initWithLayout:(id)layout canvas:(id)canvas
 {
   objc_opt_class();
   if (!TSUDynamicCast())
   {
-    v7 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPShapeRep initWithLayout:canvas:]"];
-    [v7 handleFailureInFunction:v8 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPShapeRep.mm"), 69, @"bad layout class"}];
+    [currentHandler handleFailureInFunction:v8 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPShapeRep.mm"), 69, @"bad layout class"}];
   }
 
   v12.receiver = self;
   v12.super_class = TSWPShapeRep;
-  v9 = [(TSDShapeRep *)&v12 initWithLayout:a3 canvas:a4];
+  v9 = [(TSDShapeRep *)&v12 initWithLayout:layout canvas:canvas];
   v10 = v9;
   if (v9)
   {
@@ -68,10 +68,10 @@
 
 - (void)updateChildrenFromLayout
 {
-  v3 = [(CALayer *)self->_overflowGlyphLayer layout];
-  v4 = [(TSDLayout *)[(TSDRep *)self layout] containedLayout];
+  layout = [(CALayer *)self->_overflowGlyphLayer layout];
+  containedLayout = [(TSDLayout *)[(TSDRep *)self layout] containedLayout];
   overflowGlyphLayer = self->_overflowGlyphLayer;
-  if (v3 != v4)
+  if (layout != containedLayout)
   {
     [(CALayer *)overflowGlyphLayer setParentRep:0];
 
@@ -115,27 +115,27 @@ LABEL_5:
   *(&self->super.mShadowOnChildrenDisabled + 1) = 0;
 }
 
-- (id)hitRep:(CGPoint)a3
+- (id)hitRep:(CGPoint)rep
 {
   overflowGlyphLayer = self->_overflowGlyphLayer;
-  if (!overflowGlyphLayer || ((x = a3.x, y = a3.y, (v5 = [-[CALayer layout](overflowGlyphLayer "layout")]) == 0) ? (v8 = 0uLL, v6 = 0uLL, v7 = 0uLL) : (objc_msgSend(v5, "inverseTransform"), v6 = v13, v7 = v14, v8 = v15), result = -[CALayer hitRep:](self->_overflowGlyphLayer, "hitRep:", vaddq_f64(v8, vmlaq_n_f64(vmulq_n_f64(v7, y), v6, x))), a3.x = x, a3.y = y, !result))
+  if (!overflowGlyphLayer || ((x = rep.x, y = rep.y, (v5 = [-[CALayer layout](overflowGlyphLayer "layout")]) == 0) ? (v8 = 0uLL, v6 = 0uLL, v7 = 0uLL) : (objc_msgSend(v5, "inverseTransform"), v6 = v13, v7 = v14, v8 = v15), result = -[CALayer hitRep:](self->_overflowGlyphLayer, "hitRep:", vaddq_f64(v8, vmlaq_n_f64(vmulq_n_f64(v7, y), v6, x))), rep.x = x, rep.y = y, !result))
   {
     v12.receiver = self;
     v12.super_class = TSWPShapeRep;
-    return [(TSDRep *)&v12 hitRep:a3.x, a3.y];
+    return [(TSDRep *)&v12 hitRep:rep.x, rep.y];
   }
 
   return result;
 }
 
-- (id)hitReps:(CGPoint)a3 withSlop:(CGSize)a4
+- (id)hitReps:(CGPoint)reps withSlop:(CGSize)slop
 {
-  height = a4.height;
-  width = a4.width;
+  height = slop.height;
+  width = slop.width;
   v21.receiver = self;
   v21.super_class = TSWPShapeRep;
-  y = a3.y;
-  x = a3.x;
+  y = reps.y;
+  x = reps.x;
   v7 = [TSDRep hitReps:sel_hitReps_withSlop_ withSlop:?];
   if (v7)
   {
@@ -158,13 +158,13 @@ LABEL_5:
         v11 = 0uLL;
       }
 
-      v13 = [(CALayer *)self->_overflowGlyphLayer hitReps:vaddq_f64(v12 withSlop:vmlaq_n_f64(vmulq_n_f64(v11, y), v10, x)), width, height];
-      if ([v13 count])
+      height = [(CALayer *)self->_overflowGlyphLayer hitReps:vaddq_f64(v12 withSlop:vmlaq_n_f64(vmulq_n_f64(v11, y), v10, x)), width, height];
+      if ([height count])
       {
-        v14 = [MEMORY[0x277CBEB18] array];
-        [v14 addObjectsFromArray:v13];
-        [v14 addObjectsFromArray:v7];
-        return v14;
+        array = [MEMORY[0x277CBEB18] array];
+        [array addObjectsFromArray:height];
+        [array addObjectsFromArray:v7];
+        return array;
       }
     }
   }
@@ -172,9 +172,9 @@ LABEL_5:
   return v7;
 }
 
-- (BOOL)shouldIgnoreEditMenuTapAtPoint:(CGPoint)a3 withRecognizer:(id)a4
+- (BOOL)shouldIgnoreEditMenuTapAtPoint:(CGPoint)point withRecognizer:(id)recognizer
 {
-  [(CALayer *)self->_overflowGlyphLayer convertNaturalPointFromUnscaledCanvas:a4, a3.x, a3.y];
+  [(CALayer *)self->_overflowGlyphLayer convertNaturalPointFromUnscaledCanvas:recognizer, point.x, point.y];
   v6 = v5;
   v8 = v7;
   objc_opt_class();
@@ -182,10 +182,10 @@ LABEL_5:
   return TSUDynamicCast() != 0;
 }
 
-- (BOOL)handleSingleTapAtPoint:(CGPoint)a3
+- (BOOL)handleSingleTapAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   if (([(CALayer *)self->_overflowGlyphLayer handleSingleTapAtPoint:?]& 1) != 0)
   {
     return 1;
@@ -233,11 +233,11 @@ LABEL_5:
 
 - (id)hyperlinkRegions
 {
-  v3 = [(CALayer *)self->_overflowGlyphLayer hyperlinkRegions];
+  hyperlinkRegions = [(CALayer *)self->_overflowGlyphLayer hyperlinkRegions];
   v7.receiver = self;
   v7.super_class = TSWPShapeRep;
   result = [(TSDRep *)&v7 hyperlinkRegions];
-  if (v3)
+  if (hyperlinkRegions)
   {
     v5 = result == 0;
   }
@@ -249,12 +249,12 @@ LABEL_5:
 
   if (!v5)
   {
-    return [v3 arrayByAddingObjectsFromArray:result];
+    return [hyperlinkRegions arrayByAddingObjectsFromArray:result];
   }
 
   if (result)
   {
-    v6 = v3 == 0;
+    v6 = hyperlinkRegions == 0;
   }
 
   else
@@ -264,7 +264,7 @@ LABEL_5:
 
   if (!v6)
   {
-    return v3;
+    return hyperlinkRegions;
   }
 
   return result;
@@ -296,27 +296,27 @@ LABEL_5:
 
 - (BOOL)p_shouldShowTextOverflowGlyph
 {
-  v3 = [(TSDCanvas *)[(TSDRep *)self canvas] shouldShowTextOverflowGlyphs];
-  if (v3)
+  shouldShowTextOverflowGlyphs = [(TSDCanvas *)[(TSDRep *)self canvas] shouldShowTextOverflowGlyphs];
+  if (shouldShowTextOverflowGlyphs)
   {
     if ([(TSDShapeRep *)self isEditingPath])
     {
-      LOBYTE(v3) = 0;
+      LOBYTE(shouldShowTextOverflowGlyphs) = 0;
     }
 
     else
     {
-      v3 = [(CALayer *)self->_overflowGlyphLayer isOverflowing];
-      if (v3)
+      shouldShowTextOverflowGlyphs = [(CALayer *)self->_overflowGlyphLayer isOverflowing];
+      if (shouldShowTextOverflowGlyphs)
       {
         v5.receiver = self;
         v5.super_class = TSWPShapeRep;
-        LOBYTE(v3) = [(TSDRep *)&v5 shouldShowKnobs];
+        LOBYTE(shouldShowTextOverflowGlyphs) = [(TSDRep *)&v5 shouldShowKnobs];
       }
     }
   }
 
-  return v3;
+  return shouldShowTextOverflowGlyphs;
 }
 
 - (TSDContainerInfo)containerInfo
@@ -338,9 +338,9 @@ LABEL_5:
   return [MEMORY[0x277CBEA60] arrayWithObjects:v3 count:1];
 }
 
-- (id)actionForLayer:(id)a3 forKey:(id)a4
+- (id)actionForLayer:(id)layer forKey:(id)key
 {
-  if (*&self->_editingContainedRep == a3 && [a4 isEqualToString:@"position"])
+  if (*&self->_editingContainedRep == layer && [key isEqualToString:@"position"])
   {
     v7 = MEMORY[0x277CBEB68];
 
@@ -351,31 +351,31 @@ LABEL_5:
   {
     v9.receiver = self;
     v9.super_class = TSWPShapeRep;
-    return [(TSDStyledRep *)&v9 actionForLayer:a3 forKey:a4];
+    return [(TSDStyledRep *)&v9 actionForLayer:layer forKey:key];
   }
 }
 
-- (BOOL)mustDrawTilingLayerOnMainThread:(id)a3
+- (BOOL)mustDrawTilingLayerOnMainThread:(id)thread
 {
-  if ([(TSDStyledRep *)self shadowLayer]!= a3 && [(TSDStyledRep *)self reflectionLayer]!= a3)
+  if ([(TSDStyledRep *)self shadowLayer]!= thread && [(TSDStyledRep *)self reflectionLayer]!= thread)
   {
-    v5 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPShapeRep mustDrawTilingLayerOnMainThread:]"];
-    [v5 handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPShapeRep.mm"), 347, @"image rep's tiling layer delegate being called for wrong layer"}];
+    [currentHandler handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPShapeRep.mm"), 347, @"image rep's tiling layer delegate being called for wrong layer"}];
   }
 
   return -[TSDInteractiveCanvasController allowLayoutAndRenderOnThread](-[TSDRep interactiveCanvasController](self, "interactiveCanvasController"), "allowLayoutAndRenderOnThread") || [objc_msgSend(-[TSDLayout containedLayout](-[TSDRep layout](self "layout")] != 0;
 }
 
-- (BOOL)canBeginEditingChildRepOnDoubleTap:(id)a3
+- (BOOL)canBeginEditingChildRepOnDoubleTap:(id)tap
 {
   v18 = *MEMORY[0x277D85DE8];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(TSDEditorController *)[(TSDInteractiveCanvasController *)[(TSDRep *)self interactiveCanvasController] editorController] currentEditors];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  currentEditors = [(TSDEditorController *)[(TSDInteractiveCanvasController *)[(TSDRep *)self interactiveCanvasController] editorController] currentEditors];
+  v6 = [currentEditors countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -386,14 +386,14 @@ LABEL_3:
     {
       if (*v14 != v8)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(currentEditors);
       }
 
       v10 = *(*(&v13 + 1) + 8 * v9);
       if (objc_opt_respondsToSelector())
       {
-        v11 = [v10 canBeginEditingRepOnDoubleTap:self];
-        if (!v11)
+        isInTopLevelContainerForEditing = [v10 canBeginEditingRepOnDoubleTap:self];
+        if (!isInTopLevelContainerForEditing)
         {
           break;
         }
@@ -401,7 +401,7 @@ LABEL_3:
 
       if (v7 == ++v9)
       {
-        v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v7 = [currentEditors countByEnumeratingWithState:&v13 objects:v17 count:16];
         if (v7)
         {
           goto LABEL_3;
@@ -415,25 +415,25 @@ LABEL_3:
   else
   {
 LABEL_10:
-    if (self->_overflowGlyphLayer == a3)
+    if (self->_overflowGlyphLayer == tap)
     {
-      v11 = [(TSDLayout *)[(TSDRep *)self layout] isInTopLevelContainerForEditing];
-      if (!v11)
+      isInTopLevelContainerForEditing = [(TSDLayout *)[(TSDRep *)self layout] isInTopLevelContainerForEditing];
+      if (!isInTopLevelContainerForEditing)
       {
-        return v11;
+        return isInTopLevelContainerForEditing;
       }
 
       if ((![-[TSDRep info](self "info")] || objc_msgSend(objc_msgSend(objc_msgSend(-[TSDRep info](self, "info"), "owningAttachment"), "parentStorage"), "wpKind") <= 2) && (objc_msgSend(-[TSDShapeRep shapeLayout](self, "shapeLayout"), "pathIsLineSegment") & 1) == 0)
       {
-        LOBYTE(v11) = ![(TSDRep *)self isLocked];
-        return v11;
+        LOBYTE(isInTopLevelContainerForEditing) = ![(TSDRep *)self isLocked];
+        return isInTopLevelContainerForEditing;
       }
     }
 
-    LOBYTE(v11) = 0;
+    LOBYTE(isInTopLevelContainerForEditing) = 0;
   }
 
-  return v11;
+  return isInTopLevelContainerForEditing;
 }
 
 - (void)p_resetOverflowGlyphLayerIfNecessary
@@ -459,11 +459,11 @@ LABEL_10:
     }
   }
 
-  v7 = [(TSWPShapeRep *)self p_overflowKnobImage];
+  p_overflowKnobImage = [(TSWPShapeRep *)self p_overflowKnobImage];
   *&self->_editingContainedRep = objc_alloc_init(MEMORY[0x277CD9ED0]);
   [(TSDCanvas *)[(TSDRep *)self canvas] contentsScale];
-  [*&self->_editingContainedRep setContents:{objc_msgSend(v7, "CGImageForContentsScale:")}];
-  [v7 size];
+  [*&self->_editingContainedRep setContents:{objc_msgSend(p_overflowKnobImage, "CGImageForContentsScale:")}];
+  [p_overflowKnobImage size];
   [*&self->_editingContainedRep setBounds:TSDRectWithSize()];
   v8 = *&self->_editingContainedRep;
 
@@ -478,17 +478,17 @@ LABEL_10:
   if ([(TSWPShapeRep *)self p_shouldShowTextOverflowGlyph]&& [(TSDRep *)self isSelectedIgnoringLocking])
   {
     [(TSWPShapeRep *)self p_resetOverflowGlyphLayerIfNecessary];
-    v4 = [(TSDRep *)self interactiveCanvasController];
+    interactiveCanvasController = [(TSDRep *)self interactiveCanvasController];
     [(TSDRep *)self boundsForStandardKnobs];
     [(TSDRep *)self convertNaturalPointToUnscaledCanvas:TSDPositionOfKnobOnRectangle(8, v5, v6, v7, v8)];
-    [(TSDInteractiveCanvasController *)v4 convertUnscaledToBoundsPoint:?];
+    [(TSDInteractiveCanvasController *)interactiveCanvasController convertUnscaledToBoundsPoint:?];
     v10 = v9;
     v12 = v11;
     [*&self->_editingContainedRep bounds];
     v17 = TSDCenterOfRect(v13, v14, v15, v16);
     v18 = TSDSubtractPoints(v10, v12, v17);
     v20 = v19;
-    [(TSDCanvas *)[(TSDInteractiveCanvasController *)v4 canvas] contentsScale];
+    [(TSDCanvas *)[(TSDInteractiveCanvasController *)interactiveCanvasController canvas] contentsScale];
     v22 = TSDRoundedPointForScale(v18, v20, v21);
     [*&self->_editingContainedRep setPosition:{TSDAddPoints(v22, v23, v17)}];
     [v3 addObject:*&self->_editingContainedRep];
@@ -501,25 +501,25 @@ LABEL_10:
 {
   v28.receiver = self;
   v28.super_class = TSWPShapeRep;
-  v3 = [(TSDShapeRep *)&v28 additionalLayersOverLayer];
+  additionalLayersOverLayer = [(TSDShapeRep *)&v28 additionalLayersOverLayer];
   if ([(TSWPShapeRep *)self p_shouldShowTextOverflowGlyph]&& ![(TSDRep *)self isSelectedIgnoringLocking])
   {
-    if (v3)
+    if (additionalLayersOverLayer)
     {
-      v4 = [v3 mutableCopy];
+      array = [additionalLayersOverLayer mutableCopy];
     }
 
     else
     {
-      v4 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
     }
 
-    v3 = v4;
+    additionalLayersOverLayer = array;
     [(TSWPShapeRep *)self p_resetOverflowGlyphLayerIfNecessary];
-    v5 = [(TSDRep *)self interactiveCanvasController];
+    interactiveCanvasController = [(TSDRep *)self interactiveCanvasController];
     [(TSDRep *)self boundsForStandardKnobs];
     [(TSDRep *)self convertNaturalPointToUnscaledCanvas:TSDPositionOfKnobOnRectangle(8, v6, v7, v8, v9)];
-    [(TSDInteractiveCanvasController *)v5 convertUnscaledToBoundsPoint:?];
+    [(TSDInteractiveCanvasController *)interactiveCanvasController convertUnscaledToBoundsPoint:?];
     v11 = v10;
     v13 = v12;
     [*&self->_editingContainedRep bounds];
@@ -533,26 +533,26 @@ LABEL_10:
       v21 = v23;
     }
 
-    [(TSDCanvas *)[(TSDInteractiveCanvasController *)v5 canvas] contentsScale];
+    [(TSDCanvas *)[(TSDInteractiveCanvasController *)interactiveCanvasController canvas] contentsScale];
     v25 = TSDRoundedPointForScale(v19, v21, v24);
     [*&self->_editingContainedRep setPosition:{TSDAddPoints(v25, v26, v18)}];
-    [v3 addObject:*&self->_editingContainedRep];
+    [additionalLayersOverLayer addObject:*&self->_editingContainedRep];
   }
 
-  return v3;
+  return additionalLayersOverLayer;
 }
 
 - (BOOL)isDraggable
 {
   v5.receiver = self;
   v5.super_class = TSWPShapeRep;
-  v3 = [(TSDShapeRep *)&v5 isDraggable];
-  if (v3)
+  isDraggable = [(TSDShapeRep *)&v5 isDraggable];
+  if (isDraggable)
   {
-    LOBYTE(v3) = [-[TSDRep info](self "info")];
+    LOBYTE(isDraggable) = [-[TSDRep info](self "info")];
   }
 
-  return v3;
+  return isDraggable;
 }
 
 - (BOOL)isInvisible
@@ -575,10 +575,10 @@ LABEL_10:
   return v3;
 }
 
-- (void)processChangedProperty:(int)a3
+- (void)processChangedProperty:(int)property
 {
-  v3 = *&a3;
-  switch(a3)
+  v3 = *&property;
+  switch(property)
   {
     case 146:
       goto LABEL_4;
@@ -645,9 +645,9 @@ LABEL_4:
   result = 0.0;
   if (v3 == 4)
   {
-    v5 = [objc_msgSend(-[TSDRep info](self info];
+    info = [objc_msgSend(-[TSDRep info](self info];
     result = 0.0;
-    if (v5)
+    if (info)
     {
       return 1.0;
     }
@@ -656,7 +656,7 @@ LABEL_4:
   return result;
 }
 
-- (void)shapeLayoutDidChangeContainedStorage:(id)a3
+- (void)shapeLayoutDidChangeContainedStorage:(id)storage
 {
   if ([(TSDRep *)self texture]&& self->super.super.super.mTextureDeliveryStyle)
   {
@@ -665,9 +665,9 @@ LABEL_4:
 
   if ([(TSDStyledRep *)self reflectionLayer])
   {
-    v4 = [(TSDStyledRep *)self reflectionLayer];
+    reflectionLayer = [(TSDStyledRep *)self reflectionLayer];
 
-    [(CALayer *)v4 setNeedsDisplay];
+    [(CALayer *)reflectionLayer setNeedsDisplay];
   }
 }
 

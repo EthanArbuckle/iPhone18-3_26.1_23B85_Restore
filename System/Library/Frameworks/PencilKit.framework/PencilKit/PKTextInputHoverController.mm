@@ -1,107 +1,107 @@
 @interface PKTextInputHoverController
 - (id)_cursorController;
 - (id)_ibeamLayerCreateIfNecessary;
-- (id)initWithDelegate:(id *)a1;
+- (id)initWithDelegate:(id *)delegate;
 - (id)view;
-- (uint64_t)performLineBreakAfterTapIfPossibleForElement:(double)a3 location:(CGFloat)a4;
-- (void)didReceiveNormalTouch:(uint64_t *)a1;
+- (uint64_t)performLineBreakAfterTapIfPossibleForElement:(double)element location:(CGFloat)location;
+- (void)didReceiveNormalTouch:(uint64_t *)touch;
 - (void)hideIBeamLayer;
-- (void)hoverController:(id)a3 didBegin:(id *)a4;
-- (void)hoverController:(id)a3 didUpdate:(id *)a4;
-- (void)hoverController:(id)a3 holdGestureMeanInputPoint:(id *)a4 latestInputPoint:(id *)a5;
-- (void)hoverControllerDidEnd:(id)a3;
-- (void)hoverControllerDidLift:(id)a3;
-- (void)hoverControllerHoldGestureEnded:(id)a3;
-- (void)set_hidePlaceholderElement:(uint64_t)a1;
+- (void)hoverController:(id)controller didBegin:(id *)begin;
+- (void)hoverController:(id)controller didUpdate:(id *)update;
+- (void)hoverController:(id)controller holdGestureMeanInputPoint:(id *)point latestInputPoint:(id *)inputPoint;
+- (void)hoverControllerDidEnd:(id)end;
+- (void)hoverControllerDidLift:(id)lift;
+- (void)hoverControllerHoldGestureEnded:(id)ended;
+- (void)set_hidePlaceholderElement:(uint64_t)element;
 - (void)unhidePlaceholderElementIfNecessary;
 @end
 
 @implementation PKTextInputHoverController
 
-- (id)initWithDelegate:(id *)a1
+- (id)initWithDelegate:(id *)delegate
 {
   v3 = a2;
-  if (a1)
+  if (delegate)
   {
-    v13.receiver = a1;
+    v13.receiver = delegate;
     v13.super_class = PKTextInputHoverController;
     v4 = objc_msgSendSuper2(&v13, sel_init);
-    a1 = v4;
+    delegate = v4;
     if (v4)
     {
       objc_storeWeak(v4 + 2, v3);
-      v5 = [v3 hoverControllerContainerView:a1];
-      v6 = [[PKHoverController alloc] initWithDelegate:a1 view:v5];
-      v7 = a1[3];
-      a1[3] = v6;
+      v5 = [v3 hoverControllerContainerView:delegate];
+      v6 = [[PKHoverController alloc] initWithDelegate:delegate view:v5];
+      v7 = delegate[3];
+      delegate[3] = v6;
 
       v8 = +[PKHoverSettings sharedSettings];
-      v9 = [v8 showDebugLayer];
-      v10 = a1[3];
+      showDebugLayer = [v8 showDebugLayer];
+      v10 = delegate[3];
       if (v10)
       {
-        v10[432] = v9;
+        v10[432] = showDebugLayer;
       }
 
       v11 = *(MEMORY[0x1E695F058] + 16);
-      *(a1 + 10) = *MEMORY[0x1E695F058];
-      *(a1 + 11) = v11;
+      *(delegate + 10) = *MEMORY[0x1E695F058];
+      *(delegate + 11) = v11;
     }
   }
 
-  return a1;
+  return delegate;
 }
 
-- (void)didReceiveNormalTouch:(uint64_t *)a1
+- (void)didReceiveNormalTouch:(uint64_t *)touch
 {
-  if (a1)
+  if (touch)
   {
     v3 = MEMORY[0x1E69E58C0];
     v4 = a2;
-    [v3 cancelPreviousPerformRequestsWithTarget:a1 selector:sel_unhidePlaceholderElementIfNecessary object:0];
-    [a1 performSelector:sel_unhidePlaceholderElementIfNecessary withObject:0 afterDelay:1.0];
-    [(PKHoverController *)a1[3] didReceiveNormalTouch:v4];
+    [v3 cancelPreviousPerformRequestsWithTarget:touch selector:sel_unhidePlaceholderElementIfNecessary object:0];
+    [touch performSelector:sel_unhidePlaceholderElementIfNecessary withObject:0 afterDelay:1.0];
+    [(PKHoverController *)touch[3] didReceiveNormalTouch:v4];
   }
 }
 
 - (id)view
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    WeakRetained = objc_loadWeakRetained(a1 + 2);
-    v1 = [WeakRetained hoverControllerContainerView:v1];
+    WeakRetained = objc_loadWeakRetained(self + 2);
+    selfCopy = [WeakRetained hoverControllerContainerView:selfCopy];
   }
 
-  return v1;
+  return selfCopy;
 }
 
 - (id)_cursorController
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    WeakRetained = objc_loadWeakRetained(a1 + 2);
-    v1 = [WeakRetained hoverControllerCursorController:v1];
+    WeakRetained = objc_loadWeakRetained(self + 2);
+    selfCopy = [WeakRetained hoverControllerCursorController:selfCopy];
   }
 
-  return v1;
+  return selfCopy;
 }
 
-- (void)hoverController:(id)a3 didBegin:(id *)a4
+- (void)hoverController:(id)controller didBegin:(id *)begin
 {
-  v6 = a3;
+  controllerCopy = controller;
   v7 = +[PKHoverSettings sharedSettings];
-  v8 = [v7 showDebugLayer];
-  if (!v6)
+  showDebugLayer = [v7 showDebugLayer];
+  if (!controllerCopy)
   {
 
     goto LABEL_11;
   }
 
-  v6[432] = v8;
+  controllerCopy[432] = showDebugLayer;
 
-  if (v6[432] == 1)
+  if (controllerCopy[432] == 1)
   {
     if (self)
     {
@@ -109,20 +109,20 @@
       if (hoverDebugLayer)
       {
 LABEL_10:
-        v18 = *&a4->var13;
-        v22[6] = *&a4->var11;
+        v18 = *&begin->var13;
+        v22[6] = *&begin->var11;
         v22[7] = v18;
-        var15 = a4->var15;
-        v19 = *&a4->var5;
-        v22[2] = *&a4->var3;
+        var15 = begin->var15;
+        v19 = *&begin->var5;
+        v22[2] = *&begin->var3;
         v22[3] = v19;
-        v20 = *&a4->var9;
-        v22[4] = *&a4->var7;
+        v20 = *&begin->var9;
+        v22[4] = *&begin->var7;
         v22[5] = v20;
-        v21 = *&a4->var1;
-        v22[0] = a4->var0;
+        v21 = *&begin->var1;
+        v22[0] = begin->var0;
         v22[1] = v21;
-        [(PKHoverController *)v6 updateShapeLayer:v22 inputPoint:?];
+        [(PKHoverController *)controllerCopy updateShapeLayer:v22 inputPoint:?];
         goto LABEL_11;
       }
 
@@ -136,36 +136,36 @@ LABEL_10:
       v10 = objc_alloc_init(MEMORY[0x1E69794A0]);
     }
 
-    v12 = [MEMORY[0x1E69DC888] clearColor];
-    v13 = [v12 CGColor];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    cGColor = [clearColor CGColor];
     if (self)
     {
-      [(CAShapeLayer *)self->__hoverDebugLayer setFillColor:v13];
+      [(CAShapeLayer *)self->__hoverDebugLayer setFillColor:cGColor];
 
       v14 = self->__hoverDebugLayer;
     }
 
     else
     {
-      [0 setFillColor:v13];
+      [0 setFillColor:cGColor];
 
       v14 = 0;
     }
 
     [(CAShapeLayer *)v14 setAllowsHitTesting:0];
-    v15 = [(PKTextInputHoverController *)&self->super.isa view];
-    v16 = [v15 layer];
-    v17 = v16;
+    view = [(PKTextInputHoverController *)&self->super.isa view];
+    layer = [view layer];
+    v17 = layer;
     if (self)
     {
-      [v16 addSublayer:self->__hoverDebugLayer];
+      [layer addSublayer:self->__hoverDebugLayer];
 
       hoverDebugLayer = self->__hoverDebugLayer;
     }
 
     else
     {
-      [v16 addSublayer:0];
+      [layer addSublayer:0];
 
       hoverDebugLayer = 0;
     }
@@ -176,10 +176,10 @@ LABEL_10:
 LABEL_11:
 }
 
-- (void)hoverController:(id)a3 didUpdate:(id *)a4
+- (void)hoverController:(id)controller didUpdate:(id *)update
 {
-  v6 = a3;
-  v7 = v6;
+  controllerCopy = controller;
+  v7 = controllerCopy;
   if (!self)
   {
     goto LABEL_61;
@@ -188,27 +188,27 @@ LABEL_11:
   hoverDebugLayer = self->__hoverDebugLayer;
   if (hoverDebugLayer)
   {
-    v9 = *&a4->var13;
-    v240 = *&a4->var11;
+    v9 = *&update->var13;
+    v240 = *&update->var11;
     v241 = v9;
-    var15 = a4->var15;
-    v10 = *&a4->var5;
-    v236 = *&a4->var3;
+    var15 = update->var15;
+    v10 = *&update->var5;
+    v236 = *&update->var3;
     v237 = v10;
-    v11 = *&a4->var9;
-    v238 = *&a4->var7;
+    v11 = *&update->var9;
+    v238 = *&update->var7;
     v239 = v11;
-    v12 = *&a4->var1;
-    *&rect[1] = a4->var0;
+    v12 = *&update->var1;
+    *&rect[1] = update->var0;
     *&rect[3] = v12;
-    [(PKHoverController *)v6 updateShapeLayer:&rect[1] inputPoint:?];
+    [(PKHoverController *)controllerCopy updateShapeLayer:&rect[1] inputPoint:?];
   }
 
   hoverFlashElements = self->__hoverFlashElements;
   if (hoverFlashElements)
   {
-    x = a4->var0.var0.x;
-    y = a4->var0.var0.y;
+    x = update->var0.var0.x;
+    y = update->var0.var0.y;
     v16 = hoverFlashElements;
     if (![(NSArray *)v16 count])
     {
@@ -219,8 +219,8 @@ LABEL_23:
 
     v17 = self->__hoverFlashElements;
     v18 = [(NSArray *)v17 count];
-    v19 = [(UIView *)self->__hoverFlashElementsView subviews];
-    v20 = [v19 count];
+    subviews = [(UIView *)self->__hoverFlashElementsView subviews];
+    v20 = [subviews count];
 
     if (v18 == v20)
     {
@@ -237,16 +237,16 @@ LABEL_23:
         {
           v23 = [(NSArray *)self->__hoverFlashElements objectAtIndexedSubscript:v22];
           v24 = self->__hoverFlashElementsView;
-          v25 = [(UIView *)v24 subviews];
-          v26 = [v25 objectAtIndexedSubscript:v22];
+          subviews2 = [(UIView *)v24 subviews];
+          v26 = [subviews2 objectAtIndexedSubscript:v22];
 
-          v27 = [(PKTextInputElement *)v23 frame];
+          frame = [(PKTextInputElement *)v23 frame];
           v29 = v28;
           v31 = v30;
           v33 = v32;
-          v34 = [(PKTextInputElement *)v23 coordinateSpace];
-          v35 = [(PKTextInputHoverController *)&self->super.isa view];
-          v36 = PK_convertRectFromCoordinateSpaceToCoordinateSpace(v34, v35, v27, v29, v31, v33);
+          coordinateSpace = [(PKTextInputElement *)v23 coordinateSpace];
+          view = [(PKTextInputHoverController *)&self->super.isa view];
+          v36 = PK_convertRectFromCoordinateSpaceToCoordinateSpace(coordinateSpace, view, frame, v29, v31, v33);
           v38 = v37;
           v40 = v39;
           v42 = v41;
@@ -257,14 +257,14 @@ LABEL_23:
           v249.size.height = v42;
           v250 = CGRectInset(v249, -4.0, -4.0);
           [v26 setFrame:{v250.origin.x, v250.origin.y, v250.size.width, v250.size.height}];
-          v43 = [(PKTextInputElement *)v23 frame];
-          v47 = [(PKTextInputElement *)v23 hitToleranceFrameFromElementFrame:v43, v44, v45, v46];
+          frame2 = [(PKTextInputElement *)v23 frame];
+          v47 = [(PKTextInputElement *)v23 hitToleranceFrameFromElementFrame:frame2, v44, v45, v46];
           v49 = v48;
           v51 = v50;
           v53 = v52;
-          v54 = [(PKTextInputElement *)v23 coordinateSpace];
-          v55 = [(PKTextInputHoverController *)&self->super.isa view];
-          v56 = PK_convertRectFromCoordinateSpaceToCoordinateSpace(v54, v55, v47, v49, v51, v53);
+          coordinateSpace2 = [(PKTextInputElement *)v23 coordinateSpace];
+          view2 = [(PKTextInputHoverController *)&self->super.isa view];
+          v56 = PK_convertRectFromCoordinateSpaceToCoordinateSpace(coordinateSpace2, view2, v47, v49, v51, v53);
           v58 = v57;
           v231 = v60;
           v233 = v59;
@@ -307,48 +307,48 @@ LABEL_16:
       if (v16 != currentHoverFlashElementView)
       {
         v68 = currentHoverFlashElementView;
-        v69 = [(UIView *)v68 subviews];
-        [v69 makeObjectsPerformSelector:sel_removeFromSuperview];
+        subviews3 = [(UIView *)v68 subviews];
+        [subviews3 makeObjectsPerformSelector:sel_removeFromSuperview];
 
-        v70 = [MEMORY[0x1E69DC888] clearColor];
-        v71 = [v70 CGColor];
-        v72 = [(UIView *)*p_currentHoverFlashElementView layer];
-        [v72 setBorderColor:v71];
+        clearColor = [MEMORY[0x1E69DC888] clearColor];
+        cGColor = [clearColor CGColor];
+        layer = [(UIView *)*p_currentHoverFlashElementView layer];
+        [layer setBorderColor:cGColor];
 
-        v73 = [MEMORY[0x1E69DC888] clearColor];
-        [(UIView *)*p_currentHoverFlashElementView setBackgroundColor:v73];
+        clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+        [(UIView *)*p_currentHoverFlashElementView setBackgroundColor:clearColor2];
 
         objc_storeStrong(&self->__currentHoverFlashElementView, v16);
         if (v16)
         {
-          v74 = [(PKTextInputElement *)v21 referenceView];
-          v75 = [v74 tintColor];
-          v76 = v75;
-          if (v75)
+          referenceView = [(PKTextInputElement *)v21 referenceView];
+          tintColor = [referenceView tintColor];
+          v76 = tintColor;
+          if (tintColor)
           {
-            v77 = v75;
+            systemBlueColor = tintColor;
           }
 
           else
           {
-            v77 = [MEMORY[0x1E69DC888] systemBlueColor];
+            systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
           }
 
-          v78 = v77;
+          v78 = systemBlueColor;
 
           v79 = [v78 colorWithAlphaComponent:0.2];
 
-          v80 = [MEMORY[0x1E69DC888] labelColor];
-          v81 = [v80 CGColor];
-          v82 = [(NSArray *)v16 layer];
-          [v82 setBorderColor:v81];
+          labelColor = [MEMORY[0x1E69DC888] labelColor];
+          cGColor2 = [labelColor CGColor];
+          layer2 = [(NSArray *)v16 layer];
+          [layer2 setBorderColor:cGColor2];
 
-          v83 = [(PKTextInputHoverController *)&self->super.isa view];
-          v84 = [v83 _screen];
-          [v84 scale];
+          view3 = [(PKTextInputHoverController *)&self->super.isa view];
+          _screen = [view3 _screen];
+          [_screen scale];
           v86 = 1.0 / v85;
-          v87 = [(NSArray *)v16 layer];
-          [v87 setBorderWidth:v86];
+          layer3 = [(NSArray *)v16 layer];
+          [layer3 setBorderWidth:v86];
 
           v88 = MEMORY[0x1E69DD250];
           *&rect[1] = MEMORY[0x1E69E9820];
@@ -377,22 +377,22 @@ LABEL_16:
 LABEL_24:
   if (self->__lineBreakTimestamp > 0.0)
   {
-    self->__lineBreakPosition = a4->var0;
+    self->__lineBreakPosition = update->var0;
     if (!self->__lineBreakWaitingForElement)
     {
       v92 = CACurrentMediaTime();
       if (self->__lineBreakTimestamp + 0.1 <= v92)
       {
         self->__lineBreakWaitingForElement = 1;
-        v93 = [(PKTextInputHoverController *)&self->super.isa view];
-        v94 = [v93 window];
-        v95 = [v94 windowScene];
-        v96 = [v95 _visibleWindows];
-        v97 = v96;
+        view4 = [(PKTextInputHoverController *)&self->super.isa view];
+        window = [view4 window];
+        windowScene = [window windowScene];
+        _visibleWindows = [windowScene _visibleWindows];
+        v97 = _visibleWindows;
         v98 = MEMORY[0x1E695E0F0];
-        if (v96)
+        if (_visibleWindows)
         {
-          v98 = v96;
+          v98 = _visibleWindows;
         }
 
         v99 = v98;
@@ -407,7 +407,7 @@ LABEL_24:
         v101 = _Block_copy(&block);
         v102 = self->__lineBreakPosition.x;
         v103 = self->__lineBreakPosition.y;
-        v104 = [(PKTextInputHoverController *)&self->super.isa view];
+        view5 = [(PKTextInputHoverController *)&self->super.isa view];
         *&rect[1] = MEMORY[0x1E69E9820];
         *&rect[2] = 3221225472;
         *&rect[3] = __63__PKTextInputHoverController__checklineBreakGestureIfNecessary__block_invoke_2;
@@ -420,7 +420,7 @@ LABEL_24:
         *(&v238 + 1) = v92;
         v106 = v101;
         *&v237 = v106;
-        [v105 findSingleElementAtPosition:v104 coordinateSpace:&rect[1] completion:{v102, v103}];
+        [v105 findSingleElementAtPosition:view5 coordinateSpace:&rect[1] completion:{v102, v103}];
 
         objc_destroyWeak(&v247);
         objc_destroyWeak(location);
@@ -430,22 +430,22 @@ LABEL_24:
 
   if (self->__ibeamElement)
   {
-    v107 = a4->var0.var0.x;
-    v108 = a4->var0.var0.y;
-    v109 = [(PKTextInputHoverController *)&self->super.isa view];
-    v110 = [(PKTextInputElement *)self->__ibeamElement coordinateSpace];
+    v107 = update->var0.var0.x;
+    v108 = update->var0.var0.y;
+    view6 = [(PKTextInputHoverController *)&self->super.isa view];
+    coordinateSpace3 = [(PKTextInputElement *)self->__ibeamElement coordinateSpace];
     v111 = *MEMORY[0x1E695F060];
     v112 = *(MEMORY[0x1E695F060] + 8);
-    v113 = PK_convertRectFromCoordinateSpaceToCoordinateSpace(v109, v110, v107, v108, *MEMORY[0x1E695F060], v112);
+    v113 = PK_convertRectFromCoordinateSpaceToCoordinateSpace(view6, coordinateSpace3, v107, v108, *MEMORY[0x1E695F060], v112);
     v115 = v114;
 
-    v116 = [(PKTextInputElement *)self->__ibeamElement frame];
-    v120 = v116;
+    frame3 = [(PKTextInputElement *)self->__ibeamElement frame];
+    v120 = frame3;
     v121 = v117;
-    if (v113 >= v116)
+    if (v113 >= frame3)
     {
-      v120 = v116 + v118;
-      if (v113 <= v116 + v118)
+      v120 = frame3 + v118;
+      if (v113 <= frame3 + v118)
       {
         v120 = v113;
       }
@@ -460,19 +460,19 @@ LABEL_24:
       }
     }
 
-    v122 = [(PKTextInputElement *)self->__ibeamElement coordinateSpace];
-    v123 = [(PKTextInputHoverController *)&self->super.isa view];
-    v124 = PK_convertRectFromCoordinateSpaceToCoordinateSpace(v122, v123, v120, v121, v111, v112);
+    coordinateSpace4 = [(PKTextInputElement *)self->__ibeamElement coordinateSpace];
+    view7 = [(PKTextInputHoverController *)&self->super.isa view];
+    v124 = PK_convertRectFromCoordinateSpaceToCoordinateSpace(coordinateSpace4, view7, v120, v121, v111, v112);
     v126 = v125;
 
     v127 = self->__ibeamElementContent;
-    v128 = [(PKTextInputHoverController *)&self->super.isa view];
-    v129 = v128;
+    view8 = [(PKTextInputHoverController *)&self->super.isa view];
+    v129 = view8;
     if (v127)
     {
-      v130 = [(PKTextInputElementContent *)&v127->super.isa characterIndexClosestToPoint:v128 inCoordinateSpace:1 forInsertingText:1 adjustForLastCharacter:v124, v126];
+      v126 = [(PKTextInputElementContent *)&v127->super.isa characterIndexClosestToPoint:view8 inCoordinateSpace:1 forInsertingText:1 adjustForLastCharacter:v124, v126];
 
-      if (v130 == 0x7FFFFFFFFFFFFFFFLL)
+      if (v126 == 0x7FFFFFFFFFFFFFFFLL)
       {
         goto LABEL_55;
       }
@@ -481,14 +481,14 @@ LABEL_24:
     else
     {
 
-      v130 = 0;
+      v126 = 0;
     }
 
     if ([(PKTextInputElementContent *)self->__ibeamElementContent contentLength])
     {
       v131 = self->__ibeamElementContent;
-      v132 = [(PKTextInputHoverController *)&self->super.isa view];
-      [(PKTextInputElementContent *)&v131->super.isa firstRectForRange:v130 inCoordinateSpace:1uLL, v132];
+      view9 = [(PKTextInputHoverController *)&self->super.isa view];
+      [(PKTextInputElementContent *)&v131->super.isa firstRectForRange:v126 inCoordinateSpace:1uLL, view9];
       v134 = v133;
       v136 = v135;
       v138 = v137;
@@ -498,7 +498,7 @@ LABEL_24:
       v232 = v126;
       v234 = v124;
       rect[0] = v134;
-      if (v130 < 1)
+      if (v126 < 1)
       {
         v153 = v136;
         v156 = v141;
@@ -508,8 +508,8 @@ LABEL_24:
       {
         v142 = v141;
         v143 = self->__ibeamElementContent;
-        v144 = [(PKTextInputHoverController *)&self->super.isa view];
-        [(PKTextInputElementContent *)&v143->super.isa firstRectForRange:1uLL inCoordinateSpace:v144];
+        view10 = [(PKTextInputHoverController *)&self->super.isa view];
+        [(PKTextInputElementContent *)&v143->super.isa firstRectForRange:1uLL inCoordinateSpace:view10];
         v146 = v145;
         v226 = v147;
         v229 = v138;
@@ -555,36 +555,36 @@ LABEL_24:
         rect[0] = v157;
         if (v155)
         {
-          --v130;
+          --v126;
         }
       }
 
       v158 = self->__ibeamElementContent;
-      v159 = [(PKTextInputHoverController *)&self->super.isa view];
-      v160 = [(PKTextInputElementContent *)v158 caretRectForCharacterIndex:v130 inCoordinateSpace:v159];
+      view11 = [(PKTextInputHoverController *)&self->super.isa view];
+      v160 = [(PKTextInputElementContent *)v158 caretRectForCharacterIndex:v126 inCoordinateSpace:view11];
       v162 = v161;
       v164 = v163;
       v166 = v165;
 
-      if (v156 > 20.0 || (v251.origin.x = v160, v251.origin.y = v162, v251.size.width = v164, v251.size.height = v166, CGRectIsNull(v251)) || (v167 = self->__ibeamElementContent, [(PKTextInputHoverController *)&self->super.isa view], v168 = objc_claimAutoreleasedReturnValue(), v169 = [(PKTextInputElementContent *)v167 hasLinkAtCharacterIndex:v130 location:v168 coordinateSpace:v234, v232], v167, v168, v169))
+      if (v156 > 20.0 || (v251.origin.x = v160, v251.origin.y = v162, v251.size.width = v164, v251.size.height = v166, CGRectIsNull(v251)) || (v167 = self->__ibeamElementContent, [(PKTextInputHoverController *)&self->super.isa view], v168 = objc_claimAutoreleasedReturnValue(), v169 = [(PKTextInputElementContent *)v167 hasLinkAtCharacterIndex:v126 location:v168 coordinateSpace:v234, v232], v167, v168, v169))
       {
         v170 = *(MEMORY[0x1E695F050] + 16);
         self->__ibeamFrame.origin = *MEMORY[0x1E695F050];
         self->__ibeamFrame.size = v170;
-        v171 = [MEMORY[0x1E69DC888] clearColor];
-        -[CALayer setBackgroundColor:](self->__ibeamLayer, "setBackgroundColor:", [v171 CGColor]);
+        clearColor3 = [MEMORY[0x1E69DC888] clearColor];
+        -[CALayer setBackgroundColor:](self->__ibeamLayer, "setBackgroundColor:", [clearColor3 CGColor]);
 
         goto LABEL_61;
       }
 
-      v172 = [(PKTextInputHoverController *)&self->super.isa _ibeamLayerCreateIfNecessary];
-      v173 = [MEMORY[0x1E69DC888] grayColor];
-      v174 = v130 == 0;
+      _ibeamLayerCreateIfNecessary = [(PKTextInputHoverController *)&self->super.isa _ibeamLayerCreateIfNecessary];
+      grayColor = [MEMORY[0x1E69DC888] grayColor];
+      v174 = v126 == 0;
       v175 = [(PKTextInputElementContent *)self->__ibeamElementContent contentLength]- 1;
-      v176 = v130 >= v175;
-      v177 = v130 - 1;
+      v176 = v126 >= v175;
+      v177 = v126 - 1;
       v230 = v162;
-      if (v130 < 1)
+      if (v126 < 1)
       {
         v181 = v153;
         v183 = v232;
@@ -654,21 +654,21 @@ LABEL_84:
 
           [MEMORY[0x1E6979518] begin];
           [MEMORY[0x1E6979518] setDisableActions:1];
-          [v172 setFrame:{v182, v220, 2.0, v166}];
+          [_ibeamLayerCreateIfNecessary setFrame:{v182, v220, 2.0, v166}];
           if (v219)
           {
             [MEMORY[0x1E6979518] commit];
-            if (!CGColorEqualToColor([v172 backgroundColor], objc_msgSend(v173, "CGColor")))
+            if (!CGColorEqualToColor([_ibeamLayerCreateIfNecessary backgroundColor], objc_msgSend(grayColor, "CGColor")))
             {
-              [v172 setBackgroundColor:{objc_msgSend(v173, "CGColor")}];
+              [_ibeamLayerCreateIfNecessary setBackgroundColor:{objc_msgSend(grayColor, "CGColor")}];
             }
           }
 
           else
           {
-            if (!CGColorEqualToColor([v172 backgroundColor], objc_msgSend(v173, "CGColor")))
+            if (!CGColorEqualToColor([_ibeamLayerCreateIfNecessary backgroundColor], objc_msgSend(grayColor, "CGColor")))
             {
-              [v172 setBackgroundColor:{objc_msgSend(v173, "CGColor")}];
+              [_ibeamLayerCreateIfNecessary setBackgroundColor:{objc_msgSend(grayColor, "CGColor")}];
             }
 
             [MEMORY[0x1E6979518] commit];
@@ -686,23 +686,23 @@ LABEL_84:
           v212 = *(MEMORY[0x1E695F050] + 16);
           self->__ibeamFrame.origin = *MEMORY[0x1E695F050];
           self->__ibeamFrame.size = v212;
-          v213 = [MEMORY[0x1E69DC888] clearColor];
-          -[CALayer setBackgroundColor:](self->__ibeamLayer, "setBackgroundColor:", [v213 CGColor]);
+          clearColor4 = [MEMORY[0x1E69DC888] clearColor];
+          -[CALayer setBackgroundColor:](self->__ibeamLayer, "setBackgroundColor:", [clearColor4 CGColor]);
         }
 
         goto LABEL_61;
       }
 
-      v227 = v172;
-      if (v130 >= [(PKTextInputElementContent *)self->__ibeamElementContent contentLength]- 1)
+      v227 = _ibeamLayerCreateIfNecessary;
+      if (v126 >= [(PKTextInputElementContent *)self->__ibeamElementContent contentLength]- 1)
       {
 LABEL_77:
         v181 = v153;
         v174 = 1;
         v196 = [(PKTextInputElementContent *)self->__ibeamElementContent stringInRange:1];
         v197 = [v196 characterAtIndex:0];
-        v198 = [MEMORY[0x1E696AB08] newlineCharacterSet];
-        LOBYTE(v197) = [v198 characterIsMember:v197];
+        newlineCharacterSet = [MEMORY[0x1E696AB08] newlineCharacterSet];
+        LOBYTE(v197) = [newlineCharacterSet characterIsMember:v197];
 
         v183 = v232;
         v182 = v234;
@@ -711,8 +711,8 @@ LABEL_77:
           v221 = v140;
           v224 = v166;
           v199 = self->__ibeamElementContent;
-          v200 = [(PKTextInputHoverController *)&self->super.isa view];
-          [(PKTextInputElementContent *)&v199->super.isa firstRectForRange:v177 inCoordinateSpace:1uLL, v200];
+          view12 = [(PKTextInputHoverController *)&self->super.isa view];
+          [(PKTextInputElementContent *)&v199->super.isa firstRectForRange:v177 inCoordinateSpace:1uLL, view12];
           v202 = v201;
           v204 = v203;
           v206 = v205;
@@ -743,7 +743,7 @@ LABEL_77:
           }
         }
 
-        v172 = v227;
+        _ibeamLayerCreateIfNecessary = v227;
         goto LABEL_84;
       }
 
@@ -751,17 +751,17 @@ LABEL_77:
       if ([v178 length] == 1)
       {
         v179 = [v178 characterAtIndex:0];
-        v180 = [MEMORY[0x1E696AB08] newlineCharacterSet];
-        LOBYTE(v179) = [v180 characterIsMember:v179];
+        newlineCharacterSet2 = [MEMORY[0x1E696AB08] newlineCharacterSet];
+        LOBYTE(v179) = [newlineCharacterSet2 characterIsMember:v179];
 
         v176 = 1;
-        if ((v179 & 1) != 0 || v130 >= v175)
+        if ((v179 & 1) != 0 || v126 >= v175)
         {
           goto LABEL_76;
         }
       }
 
-      else if (v130 >= v175)
+      else if (v126 >= v175)
       {
         v176 = 1;
 LABEL_76:
@@ -772,8 +772,8 @@ LABEL_76:
       v184 = v140;
       v223 = v166;
       v185 = self->__ibeamElementContent;
-      v186 = [(PKTextInputHoverController *)&self->super.isa view];
-      [(PKTextInputElementContent *)&v185->super.isa firstRectForRange:1uLL inCoordinateSpace:v186];
+      view13 = [(PKTextInputHoverController *)&self->super.isa view];
+      [(PKTextInputElementContent *)&v185->super.isa firstRectForRange:1uLL inCoordinateSpace:view13];
       v188 = v187;
       v190 = v189;
       v192 = v191;
@@ -813,11 +813,11 @@ LABEL_55:
 LABEL_61:
 }
 
-- (void)hoverControllerDidEnd:(id)a3
+- (void)hoverControllerDidEnd:(id)end
 {
   [(PKTextInputHoverController *)self hideIBeamLayer];
-  v4 = [(PKTextInputHoverController *)&self->super.isa _cursorController];
-  [v4 setForceVisible:0];
+  _cursorController = [(PKTextInputHoverController *)&self->super.isa _cursorController];
+  [_cursorController setForceVisible:0];
 
   if (self)
   {
@@ -836,10 +836,10 @@ LABEL_61:
     [0 removeFromSuperview];
   }
 
-  v5 = [(PKTextInputHoverController *)&self->super.isa _cursorController];
-  v6 = [v5 forceStrong];
+  _cursorController2 = [(PKTextInputHoverController *)&self->super.isa _cursorController];
+  forceStrong = [_cursorController2 forceStrong];
 
-  if (v6)
+  if (forceStrong)
   {
     objc_initWeak(&location, self);
     v7 = dispatch_time(0, 2000000000);
@@ -865,20 +865,20 @@ LABEL_61:
 
 - (void)hideIBeamLayer
 {
-  if (a1)
+  if (self)
   {
     v2 = *(MEMORY[0x1E695F050] + 16);
-    *(a1 + 160) = *MEMORY[0x1E695F050];
-    *(a1 + 176) = v2;
-    v3 = *(a1 + 112);
-    *(a1 + 112) = 0;
+    *(self + 160) = *MEMORY[0x1E695F050];
+    *(self + 176) = v2;
+    v3 = *(self + 112);
+    *(self + 112) = 0;
 
-    v4 = *(a1 + 120);
-    *(a1 + 120) = 0;
+    v4 = *(self + 120);
+    *(self + 120) = 0;
 
-    [*(a1 + 128) removeFromSuperlayer];
-    v5 = *(a1 + 128);
-    *(a1 + 128) = 0;
+    [*(self + 128) removeFromSuperlayer];
+    v5 = *(self + 128);
+    *(self + 128) = 0;
   }
 }
 
@@ -900,15 +900,15 @@ void __52__PKTextInputHoverController_hoverControllerDidEnd___block_invoke(uint6
       hoverController = self->__hoverController;
       if (hoverController && LOBYTE(hoverController->_waitingForHoverHoldTimestamp) == 1)
       {
-        v5 = [(PKTextInputHoverController *)&self->super.isa view];
-        v6 = [v5 window];
-        v7 = [v6 windowScene];
-        v8 = [v7 _visibleWindows];
-        v9 = v8;
+        view = [(PKTextInputHoverController *)&self->super.isa view];
+        window = [view window];
+        windowScene = [window windowScene];
+        _visibleWindows = [windowScene _visibleWindows];
+        v9 = _visibleWindows;
         v10 = MEMORY[0x1E695E0F0];
-        if (v8)
+        if (_visibleWindows)
         {
-          v10 = v8;
+          v10 = _visibleWindows;
         }
 
         v11 = v10;
@@ -942,15 +942,15 @@ void __52__PKTextInputHoverController_hoverControllerDidEnd___block_invoke(uint6
           v20 = 0.0;
         }
 
-        v21 = [(PKTextInputHoverController *)&self->super.isa view];
+        view2 = [(PKTextInputHoverController *)&self->super.isa view];
         v23[0] = MEMORY[0x1E69E9820];
         v23[1] = 3221225472;
         v23[2] = __65__PKTextInputHoverController_unhidePlaceholderElementIfNecessary__block_invoke;
         v23[3] = &unk_1E82D6E70;
         v24 = v12;
-        v25 = self;
+        selfCopy = self;
         v22 = v12;
-        [v22 findSingleElementAtPosition:v21 coordinateSpace:v23 completion:{v19, v20}];
+        [v22 findSingleElementAtPosition:view2 coordinateSpace:v23 completion:{v19, v20}];
       }
 
       else
@@ -1010,17 +1010,17 @@ void __65__PKTextInputHoverController_unhidePlaceholderElementIfNecessary__block
 LABEL_10:
 }
 
-- (void)set_hidePlaceholderElement:(uint64_t)a1
+- (void)set_hidePlaceholderElement:(uint64_t)element
 {
-  if (a1)
+  if (element)
   {
-    objc_storeStrong((a1 + 104), a2);
+    objc_storeStrong((element + 104), a2);
   }
 }
 
-- (void)hoverControllerDidLift:(id)a3
+- (void)hoverControllerDidLift:(id)lift
 {
-  v6 = a3;
+  liftCopy = lift;
   if (self)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -1040,13 +1040,13 @@ LABEL_10:
   }
 }
 
-- (void)hoverController:(id)a3 holdGestureMeanInputPoint:(id *)a4 latestInputPoint:(id *)a5
+- (void)hoverController:(id)controller holdGestureMeanInputPoint:(id *)point latestInputPoint:(id *)inputPoint
 {
-  v8 = a3;
+  controllerCopy = controller;
   if (self)
   {
-    x = a4->var0.var0.x;
-    y = a4->var0.var0.y;
+    x = point->var0.var0.x;
+    y = point->var0.var0.y;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v12 = [WeakRetained hoverController:self topLevelHitViewAt:{x, y}];
   }
@@ -1059,58 +1059,58 @@ LABEL_10:
   v13 = off_1E82D4000;
   v14 = [PKTextInputElementsFinder isResponderEditableTextInput:v12];
   v15 = +[PKHoverSettings sharedSettings];
-  v16 = [v15 tooltipsActive];
+  tooltipsActive = [v15 tooltipsActive];
 
-  v61 = v8;
-  if (v16)
+  v61 = controllerCopy;
+  if (tooltipsActive)
   {
-    v17 = [v12 pk_hoverLabelAttributedString];
-    if (!v17)
+    pk_hoverLabelAttributedString = [v12 pk_hoverLabelAttributedString];
+    if (!pk_hoverLabelAttributedString)
     {
       v60 = MEMORY[0x1E69DD250];
       v18 = v12;
       v19 = v18;
       if (self)
       {
-        v20 = [v18 window];
-        v21 = [(PKTextInputHoverController *)&self->super.isa view];
-        v22 = [v21 window];
+        window = [v18 window];
+        view = [(PKTextInputHoverController *)&self->super.isa view];
+        window2 = [view window];
 
-        if (v20 == v22)
+        if (window == window2)
         {
-          v23 = [v19 accessibilityLabel];
+          accessibilityLabel = [v19 accessibilityLabel];
           v13 = off_1E82D4000;
-          if (!v23)
+          if (!accessibilityLabel)
           {
-            v23 = [v19 accessibilityHint];
+            accessibilityLabel = [v19 accessibilityHint];
           }
         }
 
         else
         {
-          v23 = 0;
+          accessibilityLabel = 0;
           v13 = off_1E82D4000;
         }
       }
 
       else
       {
-        v23 = 0;
+        accessibilityLabel = 0;
       }
 
-      v17 = [v60 pk_hoverAttributedStringFromString:v23];
+      pk_hoverLabelAttributedString = [v60 pk_hoverAttributedStringFromString:accessibilityLabel];
 
-      v8 = v61;
+      controllerCopy = v61;
     }
 
-    if ([v17 length])
+    if ([pk_hoverLabelAttributedString length])
     {
-      [(PKHoverController *)self->__hoverController showAttributedLabel:v17 atLocation:a5->var0.var0.x, a5->var0.var0.y];
+      [(PKHoverController *)self->__hoverController showAttributedLabel:pk_hoverLabelAttributedString atLocation:inputPoint->var0.var0.x, inputPoint->var0.var0.y];
     }
   }
 
-  v24 = [(PKHoverController *)v8 hoverDebugLayerColor];
-  v25 = [v24 CGColor];
+  hoverDebugLayerColor = [(PKHoverController *)controllerCopy hoverDebugLayerColor];
+  cGColor = [hoverDebugLayerColor CGColor];
   if (self)
   {
     hoverDebugLayer = self->__hoverDebugLayer;
@@ -1121,7 +1121,7 @@ LABEL_10:
     hoverDebugLayer = 0;
   }
 
-  [(CAShapeLayer *)hoverDebugLayer setFillColor:v25];
+  [(CAShapeLayer *)hoverDebugLayer setFillColor:cGColor];
 
   v27 = +[PKHoverSettings sharedSettings];
   v28 = [v27 scribbleLineBreakHandling] & v14;
@@ -1133,7 +1133,7 @@ LABEL_10:
       if (!self->__lineBreakWaitingForElement && self->__lineBreakTimestamp == 0.0)
       {
         self->__lineBreakTimestamp = CACurrentMediaTime();
-        self->__lineBreakPosition = a4->var0;
+        self->__lineBreakPosition = point->var0;
       }
     }
 
@@ -1146,19 +1146,19 @@ LABEL_10:
   else
   {
     v29 = +[PKHoverSettings sharedSettings];
-    v30 = [v29 scribbleFlashCursorActive];
+    scribbleFlashCursorActive = [v29 scribbleFlashCursorActive];
 
-    if (v30)
+    if (scribbleFlashCursorActive)
     {
-      v31 = [(PKTextInputHoverController *)&self->super.isa _cursorController];
-      [v31 flashCursor];
+      _cursorController = [(PKTextInputHoverController *)&self->super.isa _cursorController];
+      [_cursorController flashCursor];
     }
   }
 
   v32 = +[PKHoverSettings sharedSettings];
-  v33 = [v32 scribbleIBeamActive];
+  scribbleIBeamActive = [v32 scribbleIBeamActive];
   v34 = MEMORY[0x1E695E0F0];
-  if (!v33)
+  if (!scribbleIBeamActive)
   {
 
     goto LABEL_30;
@@ -1174,15 +1174,15 @@ LABEL_10:
   if (!self)
   {
 LABEL_37:
-    v48 = [(PKTextInputHoverController *)&self->super.isa view];
-    v49 = [v48 window];
-    v50 = [v49 windowScene];
-    v51 = [v50 _visibleWindows];
-    v52 = v51;
+    view2 = [(PKTextInputHoverController *)&self->super.isa view];
+    window3 = [view2 window];
+    windowScene = [window3 windowScene];
+    _visibleWindows = [windowScene _visibleWindows];
+    v52 = _visibleWindows;
     v53 = MEMORY[0x1E695E0F0];
-    if (v51)
+    if (_visibleWindows)
     {
-      v53 = v51;
+      v53 = _visibleWindows;
     }
 
     v54 = v53;
@@ -1193,9 +1193,9 @@ LABEL_37:
       v55[4] = 257;
     }
 
-    v56 = a5->var0.var0.x;
-    v57 = a5->var0.var0.y;
-    v58 = [(PKTextInputHoverController *)&self->super.isa view];
+    v56 = inputPoint->var0.var0.x;
+    v57 = inputPoint->var0.var0.y;
+    view3 = [(PKTextInputHoverController *)&self->super.isa view];
     v70[0] = MEMORY[0x1E69E9820];
     v70[1] = 3221225472;
     v70[2] = __89__PKTextInputHoverController_hoverController_holdGestureMeanInputPoint_latestInputPoint___block_invoke;
@@ -1203,22 +1203,22 @@ LABEL_37:
     v73 = v56;
     v74 = v57;
     v71 = v55;
-    v72 = self;
+    selfCopy = self;
     v59 = v55;
-    [v59 findSingleElementAtPosition:v58 coordinateSpace:v70 completion:{v56, v57}];
+    [v59 findSingleElementAtPosition:view3 coordinateSpace:v70 completion:{v56, v57}];
 
     v34 = MEMORY[0x1E695E0F0];
 LABEL_30:
-    v36 = a5->var0.var0.x;
-    v37 = a5->var0.var0.y;
-    v66 = *&a5->var9;
-    v67 = *&a5->var11;
-    v68 = *&a5->var13;
-    var15 = a5->var15;
-    v62 = *&a5->var1;
-    v63 = *&a5->var3;
-    v64 = *&a5->var5;
-    v65 = *&a5->var7;
+    v36 = inputPoint->var0.var0.x;
+    v37 = inputPoint->var0.var0.y;
+    v66 = *&inputPoint->var9;
+    v67 = *&inputPoint->var11;
+    v68 = *&inputPoint->var13;
+    var15 = inputPoint->var15;
+    v62 = *&inputPoint->var1;
+    v63 = *&inputPoint->var3;
+    v64 = *&inputPoint->var5;
+    v65 = *&inputPoint->var7;
     if (!self)
     {
       goto LABEL_35;
@@ -1233,27 +1233,27 @@ LABEL_30:
     goto LABEL_37;
   }
 
-  v36 = a5->var0.var0.x;
-  v37 = a5->var0.var0.y;
-  v66 = *&a5->var9;
-  v67 = *&a5->var11;
-  v68 = *&a5->var13;
-  var15 = a5->var15;
-  v62 = *&a5->var1;
-  v63 = *&a5->var3;
-  v64 = *&a5->var5;
-  v65 = *&a5->var7;
+  v36 = inputPoint->var0.var0.x;
+  v37 = inputPoint->var0.var0.y;
+  v66 = *&inputPoint->var9;
+  v67 = *&inputPoint->var11;
+  v68 = *&inputPoint->var13;
+  var15 = inputPoint->var15;
+  v62 = *&inputPoint->var1;
+  v63 = *&inputPoint->var3;
+  v64 = *&inputPoint->var5;
+  v65 = *&inputPoint->var7;
 LABEL_31:
   [MEMORY[0x1E69E58C0] cancelPreviousPerformRequestsWithTarget:self selector:sel_unhidePlaceholderElementIfNecessary object:0];
   [(PKTextInputHoverController *)self performSelector:sel_unhidePlaceholderElementIfNecessary withObject:0 afterDelay:1.0];
-  v38 = [(PKTextInputHoverController *)&self->super.isa view];
-  v39 = [v38 window];
-  v40 = [v39 windowScene];
-  v41 = [v40 _visibleWindows];
-  v42 = v41;
-  if (v41)
+  view4 = [(PKTextInputHoverController *)&self->super.isa view];
+  window4 = [view4 window];
+  windowScene2 = [window4 windowScene];
+  _visibleWindows2 = [windowScene2 _visibleWindows];
+  v42 = _visibleWindows2;
+  if (_visibleWindows2)
   {
-    v43 = v41;
+    v43 = _visibleWindows2;
   }
 
   else
@@ -1264,13 +1264,13 @@ LABEL_31:
   v44 = v43;
 
   v45 = [(PKTextInputElementsFinder *)[PKTextInputSingleElementFinder alloc] initWithWindowsToSearch:v44];
-  v46 = [(PKTextInputHoverController *)&self->super.isa view];
+  view5 = [(PKTextInputHoverController *)&self->super.isa view];
   v75[0] = MEMORY[0x1E69E9820];
   v75[1] = 3221225472;
   v75[2] = __47__PKTextInputHoverController__handleHoverHold___block_invoke;
   v75[3] = &unk_1E82DAC50;
   v76 = v45;
-  v77 = self;
+  selfCopy2 = self;
   v78 = v36;
   v79 = v37;
   v84 = v66;
@@ -1282,7 +1282,7 @@ LABEL_31:
   v82 = v64;
   v83 = v65;
   v47 = v45;
-  [v47 findSingleElementAtPosition:v46 coordinateSpace:v75 completion:{v36, v37}];
+  [v47 findSingleElementAtPosition:view5 coordinateSpace:v75 completion:{v36, v37}];
 
 LABEL_35:
 }
@@ -1361,7 +1361,7 @@ void __89__PKTextInputHoverController_hoverController_holdGestureMeanInputPoint_
   }
 }
 
-- (void)hoverControllerHoldGestureEnded:(id)a3
+- (void)hoverControllerHoldGestureEnded:(id)ended
 {
   if (self)
   {
@@ -1369,8 +1369,8 @@ void __89__PKTextInputHoverController_hoverController_holdGestureMeanInputPoint_
   }
 
   [(PKSqueezePaletteViewContext *)self setSelectedColor:?];
-  v4 = [MEMORY[0x1E69DC888] clearColor];
-  v5 = [v4 CGColor];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  cGColor = [clearColor CGColor];
   if (self)
   {
     hoverDebugLayer = self->__hoverDebugLayer;
@@ -1381,7 +1381,7 @@ void __89__PKTextInputHoverController_hoverController_holdGestureMeanInputPoint_
     hoverDebugLayer = 0;
   }
 
-  [(CAShapeLayer *)hoverDebugLayer setFillColor:v5];
+  [(CAShapeLayer *)hoverDebugLayer setFillColor:cGColor];
 
   [(PKHoverController *)self->__hoverController hideLabel];
   self->__shouldHoverFlashElements = 0;
@@ -2203,21 +2203,21 @@ LABEL_63:
 LABEL_64:
 }
 
-- (uint64_t)performLineBreakAfterTapIfPossibleForElement:(double)a3 location:(CGFloat)a4
+- (uint64_t)performLineBreakAfterTapIfPossibleForElement:(double)element location:(CGFloat)location
 {
   v7 = a2;
-  if (a1)
+  if (self)
   {
-    v8 = *(a1 + 96);
-    v9 = *(a1 + 11);
-    v10 = *(a1 + 80);
-    v11 = *(a1 + 96);
-    *(a1 + 96) = 0;
+    v8 = *(self + 96);
+    v9 = *(self + 11);
+    v10 = *(self + 80);
+    v11 = *(self + 96);
+    *(self + 96) = 0;
 
-    *(a1 + 11) = 0;
-    *(a1 + 72) = 0;
-    *(a1 + 80) = 0;
-    [(PKTextInputHoverController *)a1 hideIBeamLayer];
+    *(self + 11) = 0;
+    *(self + 72) = 0;
+    *(self + 80) = 0;
+    [(PKTextInputHoverController *)self hideIBeamLayer];
     v12 = [(PKTextInputElement *)v8 isEquivalentToElement:v7]& v9;
     if (v10 > 0)
     {
@@ -2231,14 +2231,14 @@ LABEL_64:
 
     if (v13 == 1)
     {
-      v14 = [(PKTextInputHoverController *)a1 _cursorController];
-      v15 = [v14 isCursorWeak];
+      _cursorController = [(PKTextInputHoverController *)self _cursorController];
+      isCursorWeak = [_cursorController isCursorWeak];
       v17[0] = MEMORY[0x1E69E9820];
       v17[1] = 3221225472;
       v17[2] = __84__PKTextInputHoverController_performLineBreakAfterTapIfPossibleForElement_location___block_invoke;
       v17[3] = &__block_descriptor_40_e35_v16__0__PKTextInputElementContent_8l;
       v17[4] = v10;
-      [(PKTextInputElement *)v7 evaluateLineBreakForTapAtLocation:v15 weakCursor:0 allowTrailingWhitespace:v17 completion:a3, a4];
+      [(PKTextInputElement *)v7 evaluateLineBreakForTapAtLocation:isCursorWeak weakCursor:0 allowTrailingWhitespace:v17 completion:element, location];
     }
   }
 
@@ -2279,16 +2279,16 @@ void __84__PKTextInputHoverController_performLineBreakAfterTapIfPossibleForEleme
 
 - (id)_ibeamLayerCreateIfNecessary
 {
-  v2 = a1 + 16;
-  v3 = a1[16];
+  v2 = self + 16;
+  v3 = self[16];
   if (!v3)
   {
     v3 = objc_alloc_init(MEMORY[0x1E6979398]);
     [v3 setAllowsHitTesting:0];
     [v3 setCornerRadius:1.0];
-    v4 = [(PKTextInputHoverController *)a1 view];
-    v5 = [v4 layer];
-    [v5 addSublayer:v3];
+    view = [(PKTextInputHoverController *)self view];
+    layer = [view layer];
+    [layer addSublayer:v3];
 
     objc_storeStrong(v2, v3);
   }

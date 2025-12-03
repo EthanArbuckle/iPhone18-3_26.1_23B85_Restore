@@ -1,12 +1,12 @@
 @interface NCNotificationListViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_axHasMultipleViews;
 - (BOOL)_axShouldForwardToListCell;
 - (BOOL)accessibilityActivate;
-- (BOOL)accessibilityScrollToVisibleWithChild:(id)a3;
+- (BOOL)accessibilityScrollToVisibleWithChild:(id)child;
 - (CGPoint)accessibilityActivationPoint;
 - (UIEdgeInsets)_accessibilityVisibleContentInset;
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event;
 - (id)_accessibilityListCell;
 - (id)_accessibilityRevealHintView;
 - (id)_accessibilitySubviews;
@@ -18,26 +18,26 @@
 - (id)accessibilityPath;
 - (id)automationElements;
 - (unint64_t)accessibilityTraits;
-- (void)_recycleViewIfNecessary:(id)a3 withDataSource:(id)a4;
+- (void)_recycleViewIfNecessary:(id)necessary withDataSource:(id)source;
 @end
 
 @implementation NCNotificationListViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"NCNotificationListView"];
-  [v3 validateClass:@"NCDigestSummaryPlatterView"];
-  [v3 validateClass:@"NCNotificationSummaryPlatterView"];
-  [v3 validateClass:@"NCNotificationListSectionRevealHintView"];
-  [v3 validateClass:@"_UIScrollViewScrollIndicator"];
-  [v3 validateClass:@"NCNotificationListView" isKindOfClass:@"UIView"];
-  [v3 validateClass:@"NCNotificationListView" isKindOfClass:@"UIScrollView"];
-  [v3 validateClass:@"NCNotificationListView" hasInstanceMethod:@"isGrouped" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"UIScrollView" hasInstanceMethod:@"_minimumContentOffset" withFullSignature:{"{CGPoint=dd}", 0}];
-  [v3 validateClass:@"NCNotificationListView" hasInstanceMethod:@"_recycleViewIfNecessary:withDataSource:" withFullSignature:{"v", "@", "@", 0}];
-  [v3 validateClass:@"NCNotificationListView" hasInstanceMethod:@"headerView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NCNotificationListView" hasInstanceMethod:@"isHiddenBelowStack" withFullSignature:{"B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"NCNotificationListView"];
+  [validationsCopy validateClass:@"NCDigestSummaryPlatterView"];
+  [validationsCopy validateClass:@"NCNotificationSummaryPlatterView"];
+  [validationsCopy validateClass:@"NCNotificationListSectionRevealHintView"];
+  [validationsCopy validateClass:@"_UIScrollViewScrollIndicator"];
+  [validationsCopy validateClass:@"NCNotificationListView" isKindOfClass:@"UIView"];
+  [validationsCopy validateClass:@"NCNotificationListView" isKindOfClass:@"UIScrollView"];
+  [validationsCopy validateClass:@"NCNotificationListView" hasInstanceMethod:@"isGrouped" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"UIScrollView" hasInstanceMethod:@"_minimumContentOffset" withFullSignature:{"{CGPoint=dd}", 0}];
+  [validationsCopy validateClass:@"NCNotificationListView" hasInstanceMethod:@"_recycleViewIfNecessary:withDataSource:" withFullSignature:{"v", "@", "@", 0}];
+  [validationsCopy validateClass:@"NCNotificationListView" hasInstanceMethod:@"headerView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NCNotificationListView" hasInstanceMethod:@"isHiddenBelowStack" withFullSignature:{"B", 0}];
 }
 
 - (UIEdgeInsets)_accessibilityVisibleContentInset
@@ -45,7 +45,7 @@
   v18 = 0;
   objc_opt_class();
   v3 = __UIAccessibilityCastAsClass();
-  v4 = [v3 superview];
+  superview = [v3 superview];
   NSClassFromString(&cfstr_Ncnotification_46.isa);
   if (objc_opt_isKindOfClass())
   {
@@ -84,50 +84,50 @@
     return *MEMORY[0x29EDC7FA0];
   }
 
-  v3 = [(NCNotificationListViewAccessibility *)self _accessibilityListCell];
-  v4 = [v3 accessibilityTraits];
+  _accessibilityListCell = [(NCNotificationListViewAccessibility *)self _accessibilityListCell];
+  accessibilityTraits = [_accessibilityListCell accessibilityTraits];
 
-  return v4;
+  return accessibilityTraits;
 }
 
 - (id)accessibilityPath
 {
   if ([(NCNotificationListViewAccessibility *)self _axShouldForwardToListCell])
   {
-    v3 = [(NCNotificationListViewAccessibility *)self _accessibilityListCell];
-    v4 = [v3 accessibilityPath];
+    _accessibilityListCell = [(NCNotificationListViewAccessibility *)self _accessibilityListCell];
+    accessibilityPath = [_accessibilityListCell accessibilityPath];
   }
 
   else
   {
-    v4 = 0;
+    accessibilityPath = 0;
   }
 
-  return v4;
+  return accessibilityPath;
 }
 
 - (id)accessibilityLabel
 {
   if ([(NCNotificationListViewAccessibility *)self _axShouldForwardToListCell])
   {
-    v3 = [(NCNotificationListViewAccessibility *)self _accessibilityListCell];
-    v4 = [v3 accessibilityLabel];
+    _accessibilityListCell = [(NCNotificationListViewAccessibility *)self _accessibilityListCell];
+    accessibilityLabel = [_accessibilityListCell accessibilityLabel];
   }
 
   else
   {
-    v4 = 0;
+    accessibilityLabel = 0;
   }
 
-  return v4;
+  return accessibilityLabel;
 }
 
 - (CGPoint)accessibilityActivationPoint
 {
   if ([(NCNotificationListViewAccessibility *)self _axShouldForwardToListCell]&& ([(NCNotificationListViewAccessibility *)self _accessibilityListCell], v3 = objc_claimAutoreleasedReturnValue(), NSClassFromString(&cfstr_Ncdigestsummar_0.isa), isKindOfClass = objc_opt_isKindOfClass(), v3, (isKindOfClass & 1) != 0))
   {
-    v5 = [(NCNotificationListViewAccessibility *)self _accessibilityListCell];
-    [v5 accessibilityActivationPoint];
+    _accessibilityListCell = [(NCNotificationListViewAccessibility *)self _accessibilityListCell];
+    [_accessibilityListCell accessibilityActivationPoint];
     v7 = v6;
     v9 = v8;
 
@@ -151,8 +151,8 @@
 {
   if ([(NCNotificationListViewAccessibility *)self _axShouldForwardToListCell])
   {
-    v3 = [(NCNotificationListViewAccessibility *)self _accessibilityListCell];
-    v4 = [(NCNotificationListViewAccessibility *)self _accessibilityListCell];
+    _accessibilityListCell = [(NCNotificationListViewAccessibility *)self _accessibilityListCell];
+    _accessibilityListCell2 = [(NCNotificationListViewAccessibility *)self _accessibilityListCell];
     NSClassFromString(&cfstr_Ncdigestsummar_0.isa);
     if (objc_opt_isKindOfClass())
     {
@@ -160,14 +160,14 @@
 
     else
     {
-      v5 = [(NCNotificationListViewAccessibility *)self _accessibilityListCell];
+      _accessibilityListCell3 = [(NCNotificationListViewAccessibility *)self _accessibilityListCell];
       NSClassFromString(&cfstr_Ncnotification_32.isa);
       isKindOfClass = objc_opt_isKindOfClass();
 
       if ((isKindOfClass & 1) == 0)
       {
 LABEL_8:
-        UIAccessibilityPostNotification(*MEMORY[0x29EDC7ED8], v3);
+        UIAccessibilityPostNotification(*MEMORY[0x29EDC7ED8], _accessibilityListCell);
 
         goto LABEL_9;
       }
@@ -180,7 +180,7 @@ LABEL_8:
     {
       v9 = v8;
 
-      v3 = v9;
+      _accessibilityListCell = v9;
     }
 
     goto LABEL_8;
@@ -211,34 +211,34 @@ LABEL_9:
 {
   if ([(NCNotificationListViewAccessibility *)self _axShouldForwardToListCell])
   {
-    v3 = [(NCNotificationListViewAccessibility *)self _accessibilityListCell];
-    v4 = [v3 accessibilityCustomActions];
+    _accessibilityListCell = [(NCNotificationListViewAccessibility *)self _accessibilityListCell];
+    accessibilityCustomActions = [_accessibilityListCell accessibilityCustomActions];
   }
 
   else
   {
-    v4 = 0;
+    accessibilityCustomActions = 0;
   }
 
-  return v4;
+  return accessibilityCustomActions;
 }
 
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [(NCNotificationListViewAccessibility *)self _accessibilityRevealHintView];
-  if ([v8 _accessibilityIsHintTitleVisible] && (objc_msgSend(v8, "accessibilityContainer"), v9 = objc_claimAutoreleasedReturnValue(), v9, v9 == self) && (objc_msgSend(v8, "bounds"), v15.x = x, v15.y = y, CGRectContainsPoint(v16, v15)))
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  _accessibilityRevealHintView = [(NCNotificationListViewAccessibility *)self _accessibilityRevealHintView];
+  if ([_accessibilityRevealHintView _accessibilityIsHintTitleVisible] && (objc_msgSend(_accessibilityRevealHintView, "accessibilityContainer"), v9 = objc_claimAutoreleasedReturnValue(), v9, v9 == self) && (objc_msgSend(_accessibilityRevealHintView, "bounds"), v15.x = x, v15.y = y, CGRectContainsPoint(v16, v15)))
   {
-    v10 = v8;
+    v10 = _accessibilityRevealHintView;
   }
 
   else
   {
     v13.receiver = self;
     v13.super_class = NCNotificationListViewAccessibility;
-    v10 = [(NCNotificationListViewAccessibility *)&v13 _accessibilityHitTest:v7 withEvent:x, y];
+    v10 = [(NCNotificationListViewAccessibility *)&v13 _accessibilityHitTest:eventCopy withEvent:x, y];
   }
 
   v11 = v10;
@@ -248,82 +248,82 @@ LABEL_9:
 
 - (id)_accessibilitySubviews
 {
-  v3 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   v8.receiver = self;
   v8.super_class = NCNotificationListViewAccessibility;
-  v4 = [(NCNotificationListViewAccessibility *)&v8 _accessibilitySubviews];
-  [v3 axSafelyAddObjectsFromArray:v4];
+  _accessibilitySubviews = [(NCNotificationListViewAccessibility *)&v8 _accessibilitySubviews];
+  [array axSafelyAddObjectsFromArray:_accessibilitySubviews];
 
-  v5 = [(NCNotificationListViewAccessibility *)self _accessibilityRevealHintView];
-  if ([v5 _accessibilityIsHintTitleVisible])
+  _accessibilityRevealHintView = [(NCNotificationListViewAccessibility *)self _accessibilityRevealHintView];
+  if ([_accessibilityRevealHintView _accessibilityIsHintTitleVisible])
   {
-    v6 = [v5 accessibilityContainer];
+    accessibilityContainer = [_accessibilityRevealHintView accessibilityContainer];
 
-    if (v6 != self)
+    if (accessibilityContainer != self)
     {
-      [v3 axSafelyAddObject:v5];
+      [array axSafelyAddObject:_accessibilityRevealHintView];
     }
   }
 
-  return v3;
+  return array;
 }
 
 - (id)accessibilityIdentifier
 {
   if ([(NCNotificationListViewAccessibility *)self _axShouldForwardToListCell])
   {
-    v3 = [(NCNotificationListViewAccessibility *)self _accessibilityListCell];
-    v4 = [v3 accessibilityIdentifier];
+    _accessibilityListCell = [(NCNotificationListViewAccessibility *)self _accessibilityListCell];
+    accessibilityIdentifier = [_accessibilityListCell accessibilityIdentifier];
   }
 
   else
   {
-    v4 = 0;
+    accessibilityIdentifier = 0;
   }
 
-  return v4;
+  return accessibilityIdentifier;
 }
 
 - (id)automationElements
 {
   if ([(NCNotificationListViewAccessibility *)self _axShouldForwardToListCell])
   {
-    v3 = [(NCNotificationListViewAccessibility *)self _accessibilityListCell];
-    v4 = [v3 automationElements];
+    _accessibilityListCell = [(NCNotificationListViewAccessibility *)self _accessibilityListCell];
+    automationElements = [_accessibilityListCell automationElements];
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = NCNotificationListViewAccessibility;
-    v4 = [(NCNotificationListViewAccessibility *)&v6 automationElements];
+    automationElements = [(NCNotificationListViewAccessibility *)&v6 automationElements];
   }
 
-  return v4;
+  return automationElements;
 }
 
 - (id)_accessibilitySupplementaryFooterViews
 {
   if ([(NCNotificationListViewAccessibility *)self _axShouldForwardToListCell])
   {
-    v3 = [(NCNotificationListViewAccessibility *)self _accessibilityListCell];
-    v4 = [v3 _accessibilitySupplementaryFooterViews];
+    _accessibilityListCell = [(NCNotificationListViewAccessibility *)self _accessibilityListCell];
+    _accessibilitySupplementaryFooterViews = [_accessibilityListCell _accessibilitySupplementaryFooterViews];
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = NCNotificationListViewAccessibility;
-    v4 = [(NCNotificationListViewAccessibility *)&v6 _accessibilitySupplementaryFooterViews];
+    _accessibilitySupplementaryFooterViews = [(NCNotificationListViewAccessibility *)&v6 _accessibilitySupplementaryFooterViews];
   }
 
-  return v4;
+  return _accessibilitySupplementaryFooterViews;
 }
 
-- (BOOL)accessibilityScrollToVisibleWithChild:(id)a3
+- (BOOL)accessibilityScrollToVisibleWithChild:(id)child
 {
   v65 = *MEMORY[0x29EDCA608];
-  v4 = a3;
+  childCopy = child;
   NSClassFromString(&cfstr_Uiscrollviewsc.isa);
   if (objc_opt_isKindOfClass())
   {
@@ -340,14 +340,14 @@ LABEL_9:
     v9 = v8;
     v11 = v10;
     v13 = v12;
-    [v4 accessibilityFrame];
+    [childCopy accessibilityFrame];
     UIAccessibilityFrameToBounds();
     v15 = v14;
     v17 = v16;
     v19 = v18;
     v21 = v20;
-    v22 = [MEMORY[0x29EDC7C40] mainScreen];
-    [v22 bounds];
+    mainScreen = [MEMORY[0x29EDC7C40] mainScreen];
+    [mainScreen bounds];
     v24 = v23;
 
     v25 = v24 / 3.0;
@@ -464,8 +464,8 @@ uint64_t __67__NCNotificationListViewAccessibility__accessibilityRevealHintView_
 
 - (BOOL)_axShouldForwardToListCell
 {
-  v3 = [(NCNotificationListViewAccessibility *)self _accessibilityListCell];
-  v4 = v3 && [(NCNotificationListViewAccessibility *)self safeBoolForKey:@"isGrouped"]&& [(NCNotificationListViewAccessibility *)self _axHasMultipleViews];
+  _accessibilityListCell = [(NCNotificationListViewAccessibility *)self _accessibilityListCell];
+  v4 = _accessibilityListCell && [(NCNotificationListViewAccessibility *)self safeBoolForKey:@"isGrouped"]&& [(NCNotificationListViewAccessibility *)self _axHasMultipleViews];
 
   return v4;
 }
@@ -497,16 +497,16 @@ uint64_t __67__NCNotificationListViewAccessibility__accessibilityRevealHintView_
   return v3;
 }
 
-- (void)_recycleViewIfNecessary:(id)a3 withDataSource:(id)a4
+- (void)_recycleViewIfNecessary:(id)necessary withDataSource:(id)source
 {
   v9.receiver = self;
   v9.super_class = NCNotificationListViewAccessibility;
-  v6 = a3;
-  [(NCNotificationListViewAccessibility *)&v9 _recycleViewIfNecessary:v6 withDataSource:a4];
+  necessaryCopy = necessary;
+  [(NCNotificationListViewAccessibility *)&v9 _recycleViewIfNecessary:necessaryCopy withDataSource:source];
   NSClassFromString(&cfstr_Ncnotification_32.isa);
-  LOBYTE(a4) = objc_opt_isKindOfClass();
+  LOBYTE(source) = objc_opt_isKindOfClass();
 
-  if (a4)
+  if (source)
   {
     v7 = *MEMORY[0x29EDC7ED8];
     v8 = [(NCNotificationListViewAccessibility *)self safeValueForKey:@"headerView", v9.receiver, v9.super_class];

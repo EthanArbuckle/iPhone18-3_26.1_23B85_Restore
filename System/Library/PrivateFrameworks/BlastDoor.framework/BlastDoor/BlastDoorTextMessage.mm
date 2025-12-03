@@ -262,7 +262,7 @@
 
 - (int64_t)scheduleType
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_21457FFB0();
 
   return v3;

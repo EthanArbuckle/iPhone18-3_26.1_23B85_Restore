@@ -1,21 +1,21 @@
 @interface OTICDPRecordSilentContext
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation OTICDPRecordSilentContext
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   cdpInfo = self->_cdpInfo;
-  v6 = v4[2];
-  v9 = v4;
+  v6 = fromCopy[2];
+  v9 = fromCopy;
   if (cdpInfo)
   {
     if (!v6)
@@ -36,10 +36,10 @@
     [(OTICDPRecordSilentContext *)self setCdpInfo:?];
   }
 
-  v4 = v9;
+  fromCopy = v9;
 LABEL_7:
   authInfo = self->_authInfo;
-  v8 = v4[1];
+  v8 = fromCopy[1];
   if (authInfo)
   {
     if (v8)
@@ -56,13 +56,13 @@ LABEL_7:
   MEMORY[0x1EEE66BB8]();
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((cdpInfo = self->_cdpInfo, !(cdpInfo | v4[2])) || -[OTCDPRecoveryInformation isEqual:](cdpInfo, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((cdpInfo = self->_cdpInfo, !(cdpInfo | equalCopy[2])) || -[OTCDPRecoveryInformation isEqual:](cdpInfo, "isEqual:")))
   {
     authInfo = self->_authInfo;
-    if (authInfo | v4[1])
+    if (authInfo | equalCopy[1])
     {
       v7 = [(OTEscrowAuthenticationInformation *)authInfo isEqual:?];
     }
@@ -81,72 +81,72 @@ LABEL_7:
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(OTCDPRecoveryInformation *)self->_cdpInfo copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(OTCDPRecoveryInformation *)self->_cdpInfo copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
-  v8 = [(OTEscrowAuthenticationInformation *)self->_authInfo copyWithZone:a3];
+  v8 = [(OTEscrowAuthenticationInformation *)self->_authInfo copyWithZone:zone];
   v9 = v5[1];
   v5[1] = v8;
 
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_cdpInfo)
   {
-    [v4 setCdpInfo:?];
-    v4 = v5;
+    [toCopy setCdpInfo:?];
+    toCopy = v5;
   }
 
   if (self->_authInfo)
   {
     [v5 setAuthInfo:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_cdpInfo)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_authInfo)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   cdpInfo = self->_cdpInfo;
   if (cdpInfo)
   {
-    v5 = [(OTCDPRecoveryInformation *)cdpInfo dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"cdpInfo"];
+    dictionaryRepresentation = [(OTCDPRecoveryInformation *)cdpInfo dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"cdpInfo"];
   }
 
   authInfo = self->_authInfo;
   if (authInfo)
   {
-    v7 = [(OTEscrowAuthenticationInformation *)authInfo dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"authInfo"];
+    dictionaryRepresentation2 = [(OTEscrowAuthenticationInformation *)authInfo dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"authInfo"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -155,8 +155,8 @@ LABEL_7:
   v8.receiver = self;
   v8.super_class = OTICDPRecordSilentContext;
   v4 = [(OTICDPRecordSilentContext *)&v8 description];
-  v5 = [(OTICDPRecordSilentContext *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(OTICDPRecordSilentContext *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }

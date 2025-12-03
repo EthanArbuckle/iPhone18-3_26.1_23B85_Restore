@@ -1,12 +1,12 @@
 @interface CPSimulatedDataCryptor
 - (CPSimulatedDataCryptor)init;
-- (CPSimulatedDataCryptor)initWithCoder:(id)a3;
+- (CPSimulatedDataCryptor)initWithCoder:(id)coder;
 - (NSArray)decryptionKeyIDSet;
 - (NSUUID)encryptionKeyID;
-- (id)decryptData:(id)a3 keyID:(id)a4 seqNum:(unint64_t)a5 error:(id *)a6;
-- (id)encryptData:(id)a3 seqNum:(unint64_t)a4 error:(id *)a5;
-- (void)setDecryptionKeyIDSet:(id)a3;
-- (void)setEncryptionKeyID:(id)a3;
+- (id)decryptData:(id)data keyID:(id)d seqNum:(unint64_t)num error:(id *)error;
+- (id)encryptData:(id)data seqNum:(unint64_t)num error:(id *)error;
+- (void)setDecryptionKeyIDSet:(id)set;
+- (void)setEncryptionKeyID:(id)d;
 @end
 
 @implementation CPSimulatedDataCryptor
@@ -27,7 +27,7 @@
   return v9.super.isa;
 }
 
-- (void)setEncryptionKeyID:(id)a3
+- (void)setEncryptionKeyID:(id)d
 {
   v4 = type metadata accessor for UUID();
   v5 = *(v4 - 8);
@@ -38,7 +38,7 @@
   v9 = OBJC_IVAR___CPSimulatedDataCryptor_encryptionKeyID;
   swift_beginAccess();
   v10 = *(v5 + 40);
-  v11 = self;
+  selfCopy = self;
   v10(self + v9, v8, v4);
   swift_endAccess();
 }
@@ -55,7 +55,7 @@
   return v5.super.isa;
 }
 
-- (void)setDecryptionKeyIDSet:(id)a3
+- (void)setDecryptionKeyIDSet:(id)set
 {
   type metadata accessor for UUID();
   v4 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
@@ -65,11 +65,11 @@
   *(self + v5) = v4;
 }
 
-- (id)encryptData:(id)a3 seqNum:(unint64_t)a4 error:(id *)a5
+- (id)encryptData:(id)data seqNum:(unint64_t)num error:(id *)error
 {
-  if (a3)
+  if (data)
   {
-    v5 = a3;
+    dataCopy = data;
     v6 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
     v8 = v7;
 
@@ -87,20 +87,20 @@
   return self;
 }
 
-- (id)decryptData:(id)a3 keyID:(id)a4 seqNum:(unint64_t)a5 error:(id *)a6
+- (id)decryptData:(id)data keyID:(id)d seqNum:(unint64_t)num error:(id *)error
 {
   v8 = __swift_instantiateConcreteTypeFromMangledNameV2(&_s10Foundation4UUIDVSgMd, &_s10Foundation4UUIDVSgMR);
   v9 = *(*(v8 - 8) + 64);
   MEMORY[0x1EEE9AC00](v8 - 8);
   v11 = &v21 - v10;
-  if (a3)
+  if (data)
   {
-    v12 = a4;
-    v13 = a3;
-    a3 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
+    dCopy = d;
+    dataCopy = data;
+    data = static Data._unconditionallyBridgeFromObjectiveC(_:)();
     v15 = v14;
 
-    if (a4)
+    if (d)
     {
 LABEL_3:
       static UUID._unconditionallyBridgeFromObjectiveC(_:)();
@@ -113,9 +113,9 @@ LABEL_3:
 
   else
   {
-    v18 = a4;
+    dCopy2 = d;
     v15 = 0xF000000000000000;
-    if (a4)
+    if (d)
     {
       goto LABEL_3;
     }
@@ -133,7 +133,7 @@ LABEL_6:
   {
     outlined destroy of UUID?(v11);
     v20.super.isa = Data._bridgeToObjectiveC()().super.isa;
-    outlined consume of Data?(a3, v15);
+    outlined consume of Data?(data, v15);
 
     return v20.super.isa;
   }
@@ -158,9 +158,9 @@ LABEL_6:
   return [(CPSimulatedDataCryptor *)&v9 init];
 }
 
-- (CPSimulatedDataCryptor)initWithCoder:(id)a3
+- (CPSimulatedDataCryptor)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   UUID.init()();
   v5 = OBJC_IVAR___CPSimulatedDataCryptor_decryptionKeyIDSet;
   __swift_instantiateConcreteTypeFromMangledNameV2(&_ss23_ContiguousArrayStorageCy10Foundation4UUIDVGMd, &_ss23_ContiguousArrayStorageCy10Foundation4UUIDVGMR);

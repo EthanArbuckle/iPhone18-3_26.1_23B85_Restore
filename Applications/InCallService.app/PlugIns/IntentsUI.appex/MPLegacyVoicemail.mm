@@ -1,7 +1,7 @@
 @interface MPLegacyVoicemail
 + (MPLegacyVoicemail)mock;
 - (MPLegacyVoicemail)init;
-- (MPLegacyVoicemail)initWithAccountID:(id)a3 label:(id)a4 hasUnreadMessages:(BOOL)a5;
+- (MPLegacyVoicemail)initWithAccountID:(id)d label:(id)label hasUnreadMessages:(BOOL)messages;
 - (NSUUID)accountID;
 @end
 
@@ -20,7 +20,7 @@
   return v8.super.isa;
 }
 
-- (MPLegacyVoicemail)initWithAccountID:(id)a3 label:(id)a4 hasUnreadMessages:(BOOL)a5
+- (MPLegacyVoicemail)initWithAccountID:(id)d label:(id)label hasUnreadMessages:(BOOL)messages
 {
   ObjectType = swift_getObjectType();
   v8 = sub_10007AE28();
@@ -34,7 +34,7 @@
   v16 = (self + OBJC_IVAR___MPLegacyVoicemail_label);
   *v16 = v13;
   v16[1] = v15;
-  *(self + OBJC_IVAR___MPLegacyVoicemail_hasUnreadMessages) = a5;
+  *(self + OBJC_IVAR___MPLegacyVoicemail_hasUnreadMessages) = messages;
   v19.receiver = self;
   v19.super_class = ObjectType;
   v17 = [(MPLegacyVoicemail *)&v19 init];

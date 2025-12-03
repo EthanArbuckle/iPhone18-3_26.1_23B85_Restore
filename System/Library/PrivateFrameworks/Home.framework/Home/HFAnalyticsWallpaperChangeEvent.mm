@@ -1,32 +1,32 @@
 @interface HFAnalyticsWallpaperChangeEvent
-- (HFAnalyticsWallpaperChangeEvent)initWithData:(id)a3;
+- (HFAnalyticsWallpaperChangeEvent)initWithData:(id)data;
 @end
 
 @implementation HFAnalyticsWallpaperChangeEvent
 
-- (HFAnalyticsWallpaperChangeEvent)initWithData:(id)a3
+- (HFAnalyticsWallpaperChangeEvent)initWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v9.receiver = self;
   v9.super_class = HFAnalyticsWallpaperChangeEvent;
   v5 = [(HFAnalyticsEvent *)&v9 initWithEventType:32];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"NamedWallpaperCount"];
+    v6 = [dataCopy objectForKeyedSubscript:@"NamedWallpaperCount"];
 
     if (!v6)
     {
       NSLog(&cfstr_MissingNamedWa.isa);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"CustomWallpaperCount"];
+    v7 = [dataCopy objectForKeyedSubscript:@"CustomWallpaperCount"];
 
     if (!v7)
     {
       NSLog(&cfstr_MissingCustomW.isa);
     }
 
-    [(HFAnalyticsWallpaperChangeEvent *)v5 setPayloadDictionary:v4];
+    [(HFAnalyticsWallpaperChangeEvent *)v5 setPayloadDictionary:dataCopy];
   }
 
   return v5;

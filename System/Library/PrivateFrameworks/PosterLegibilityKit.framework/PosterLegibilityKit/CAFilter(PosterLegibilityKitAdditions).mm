@@ -32,9 +32,9 @@
   v4 = *MEMORY[0x277CDA5B0];
   v5 = a3;
   v6 = [v3 filterWithType:v4];
-  v7 = [v5 CGColor];
+  cGColor = [v5 CGColor];
 
-  [v6 setValue:v7 forKey:*MEMORY[0x277CDA430]];
+  [v6 setValue:cGColor forKey:*MEMORY[0x277CDA430]];
 
   return v6;
 }

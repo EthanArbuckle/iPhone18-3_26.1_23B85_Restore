@@ -1,53 +1,53 @@
 @interface CRLRotorSearchController
 + (id)searchTargetSearchSelectors;
-+ (void)recursiveSearchWithSearchTarget:(id)a3 inFlowMode:(BOOL)a4 withHitBlock:(id)a5;
++ (void)recursiveSearchWithSearchTarget:(id)target inFlowMode:(BOOL)mode withHitBlock:(id)block;
 - (CRLInteractiveCanvasController)interactiveCanvasController;
-- (CRLRotorSearchController)initWithInteractiveCanvasController:(id)a3;
-- (id)searchReferenceAfterReference:(id)a3 inRotorDirection:(int64_t)a4;
+- (CRLRotorSearchController)initWithInteractiveCanvasController:(id)controller;
+- (id)searchReferenceAfterReference:(id)reference inRotorDirection:(int64_t)direction;
 - (void)_addObservers;
-- (void)locateSearchReference:(id)a3;
-- (void)performSearchWithSearchTarget:(id)a3 resultsArray:(id)a4;
-- (void)setInteractiveCanvasController:(id)a3;
+- (void)locateSearchReference:(id)reference;
+- (void)performSearchWithSearchTarget:(id)target resultsArray:(id)array;
+- (void)setInteractiveCanvasController:(id)controller;
 @end
 
 @implementation CRLRotorSearchController
 
-- (CRLRotorSearchController)initWithInteractiveCanvasController:(id)a3
+- (CRLRotorSearchController)initWithInteractiveCanvasController:(id)controller
 {
-  v4 = a3;
-  v5 = [v4 delegate];
-  v12 = sub_1003035DC(v5, 1, v6, v7, v8, v9, v10, v11, &OBJC_PROTOCOL___CRLFindReplaceDelegate);
+  controllerCopy = controller;
+  delegate = [controllerCopy delegate];
+  v12 = sub_1003035DC(delegate, 1, v6, v7, v8, v9, v10, v11, &OBJC_PROTOCOL___CRLFindReplaceDelegate);
 
-  v13 = [v4 editingCoordinator];
+  editingCoordinator = [controllerCopy editingCoordinator];
   v16.receiver = self;
   v16.super_class = CRLRotorSearchController;
-  v14 = [(CRLModelSearchController *)&v16 initWithEditingCoordinator:v13 delegate:v12 modelSearchesRunSynchronously:1];
+  v14 = [(CRLModelSearchController *)&v16 initWithEditingCoordinator:editingCoordinator delegate:v12 modelSearchesRunSynchronously:1];
 
   if (v14)
   {
-    [(CRLRotorSearchController *)v14 setInteractiveCanvasController:v4];
+    [(CRLRotorSearchController *)v14 setInteractiveCanvasController:controllerCopy];
     [(CRLModelSearchController *)v14 invalidateSearchResults];
   }
 
   return v14;
 }
 
-+ (void)recursiveSearchWithSearchTarget:(id)a3 inFlowMode:(BOOL)a4 withHitBlock:(id)a5
++ (void)recursiveSearchWithSearchTarget:(id)target inFlowMode:(BOOL)mode withHitBlock:(id)block
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
+  modeCopy = mode;
+  targetCopy = target;
+  blockCopy = block;
   if (objc_opt_respondsToSelector())
   {
-    v10 = [a1 searchTargetSearchSelectors];
-    if (v10)
+    searchTargetSearchSelectors = [self searchTargetSearchSelectors];
+    if (searchTargetSearchSelectors)
     {
-      v11 = v10;
+      v11 = searchTargetSearchSelectors;
       v29 = 0u;
       v30 = 0u;
       v27 = 0u;
       v28 = 0u;
-      v12 = [v10 countByEnumeratingWithState:&v27 objects:v32 count:16];
+      v12 = [searchTargetSearchSelectors countByEnumeratingWithState:&v27 objects:v32 count:16];
       if (v12)
       {
         v13 = v12;
@@ -62,13 +62,13 @@
               objc_enumerationMutation(v11);
             }
 
-            v16 = [*(*(&v27 + 1) + 8 * v15) pointerValue];
-            if (v16)
+            pointerValue = [*(*(&v27 + 1) + 8 * v15) pointerValue];
+            if (pointerValue)
             {
-              v17 = v16;
+              v17 = pointerValue;
               if (objc_opt_respondsToSelector())
               {
-                ([v8 methodForSelector:v17])(v8, v17, v9);
+                ([targetCopy methodForSelector:v17])(targetCopy, v17, blockCopy);
               }
             }
 
@@ -82,7 +82,7 @@
         while (v13);
       }
 
-      v18 = [a1 childTargetsForSearchTarget:v8];
+      v18 = [self childTargetsForSearchTarget:targetCopy];
       v23 = 0u;
       v24 = 0u;
       v25 = 0u;
@@ -102,7 +102,7 @@
               objc_enumerationMutation(v18);
             }
 
-            [a1 recursiveSearchWithSearchTarget:*(*(&v23 + 1) + 8 * v22) inFlowMode:v6 withHitBlock:v9];
+            [self recursiveSearchWithSearchTarget:*(*(&v23 + 1) + 8 * v22) inFlowMode:modeCopy withHitBlock:blockCopy];
             v22 = v22 + 1;
           }
 
@@ -116,9 +116,9 @@
   }
 }
 
-- (void)setInteractiveCanvasController:(id)a3
+- (void)setInteractiveCanvasController:(id)controller
 {
-  objc_storeWeak(&self->_interactiveCanvasController, a3);
+  objc_storeWeak(&self->_interactiveCanvasController, controller);
 
   [(CRLRotorSearchController *)self _addObservers];
 }
@@ -182,48 +182,48 @@
   objc_exception_throw(v17);
 }
 
-- (void)performSearchWithSearchTarget:(id)a3 resultsArray:(id)a4
+- (void)performSearchWithSearchTarget:(id)target resultsArray:(id)array
 {
-  v5 = a4;
-  v6 = a3;
+  arrayCopy = array;
+  targetCopy = target;
   v7 = objc_opt_class();
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10056FEFC;
   v9[3] = &unk_101861A10;
-  v10 = v5;
-  v8 = v5;
-  [v7 recursiveSearchWithSearchTarget:v6 inFlowMode:0 withHitBlock:v9];
+  v10 = arrayCopy;
+  v8 = arrayCopy;
+  [v7 recursiveSearchWithSearchTarget:targetCopy inFlowMode:0 withHitBlock:v9];
 }
 
-- (void)locateSearchReference:(id)a3
+- (void)locateSearchReference:(id)reference
 {
-  v4 = a3;
-  v5 = [(CRLRotorSearchController *)self interactiveCanvasController];
-  v6 = [v4 selectionPath];
+  referenceCopy = reference;
+  interactiveCanvasController = [(CRLRotorSearchController *)self interactiveCanvasController];
+  selectionPath = [referenceCopy selectionPath];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10056FFD4;
   v8[3] = &unk_101846288;
-  v9 = v4;
-  v7 = v4;
-  [v5 forLayoutNearestVisibleRectForInfosForSelectionPath:v6 performBlock:v8];
+  v9 = referenceCopy;
+  v7 = referenceCopy;
+  [interactiveCanvasController forLayoutNearestVisibleRectForInfosForSelectionPath:selectionPath performBlock:v8];
 }
 
-- (id)searchReferenceAfterReference:(id)a3 inRotorDirection:(int64_t)a4
+- (id)searchReferenceAfterReference:(id)reference inRotorDirection:(int64_t)direction
 {
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  referenceCopy = reference;
+  v7 = referenceCopy;
+  if (referenceCopy)
   {
-    [v6 searchReferencePoint];
+    [referenceCopy searchReferencePoint];
     if (v9 == CGPointZero.x && v8 == CGPointZero.y)
     {
       [(CRLRotorSearchController *)self locateSearchReference:v7];
     }
   }
 
-  v11 = [(CRLModelSearchController *)self searchReferenceAfterReference:v7 inDirection:a4 == 0];
+  v11 = [(CRLModelSearchController *)self searchReferenceAfterReference:v7 inDirection:direction == 0];
 
   return v11;
 }
@@ -231,17 +231,17 @@
 - (void)_addObservers
 {
   WeakRetained = objc_loadWeakRetained(&self->_interactiveCanvasController);
-  v4 = [WeakRetained changeNotifier];
+  changeNotifier = [WeakRetained changeNotifier];
   v5 = objc_loadWeakRetained(&self->_interactiveCanvasController);
-  v6 = [v5 board];
-  v7 = [v6 rootContainer];
-  [v4 addObserver:self forChangeSource:v7];
+  board = [v5 board];
+  rootContainer = [board rootContainer];
+  [changeNotifier addObserver:self forChangeSource:rootContainer];
 
   v11 = +[NSNotificationCenter defaultCenter];
   v8 = +[NSNotification CRLCommandControllerHistoryStateDidChange];
   v9 = objc_loadWeakRetained(&self->_interactiveCanvasController);
-  v10 = [v9 commandController];
-  [v11 addObserver:self selector:"_commandHistoryChanged:" name:v8 object:v10];
+  commandController = [v9 commandController];
+  [v11 addObserver:self selector:"_commandHistoryChanged:" name:v8 object:commandController];
 }
 
 - (CRLInteractiveCanvasController)interactiveCanvasController

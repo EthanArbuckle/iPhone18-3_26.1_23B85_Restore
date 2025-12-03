@@ -1,19 +1,19 @@
 @interface _TVRMatchPointArtworkViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)layoutSubviews;
 @end
 
 @implementation _TVRMatchPointArtworkViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"_TVRMatchPointArtworkView" hasInstanceVariable:@"_selectIndicator" withType:"UIView"];
-  [v3 validateClass:@"_TVRMatchPointArtworkView" hasInstanceVariable:@"_upImageView" withType:"UIImageView"];
-  [v3 validateClass:@"_TVRMatchPointArtworkView" hasInstanceVariable:@"_rightImageView" withType:"UIImageView"];
-  [v3 validateClass:@"_TVRMatchPointArtworkView" hasInstanceVariable:@"_downImageView" withType:"UIImageView"];
-  [v3 validateClass:@"_TVRMatchPointArtworkView" hasInstanceVariable:@"_leftImageView" withType:"UIImageView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"_TVRMatchPointArtworkView" hasInstanceVariable:@"_selectIndicator" withType:"UIView"];
+  [validationsCopy validateClass:@"_TVRMatchPointArtworkView" hasInstanceVariable:@"_upImageView" withType:"UIImageView"];
+  [validationsCopy validateClass:@"_TVRMatchPointArtworkView" hasInstanceVariable:@"_rightImageView" withType:"UIImageView"];
+  [validationsCopy validateClass:@"_TVRMatchPointArtworkView" hasInstanceVariable:@"_downImageView" withType:"UIImageView"];
+  [validationsCopy validateClass:@"_TVRMatchPointArtworkView" hasInstanceVariable:@"_leftImageView" withType:"UIImageView"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

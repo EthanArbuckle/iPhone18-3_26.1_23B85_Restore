@@ -1,37 +1,37 @@
 @interface BKSHIDEventDeferringSelectionChangeRequest
-+ (id)build:(id)a3;
++ (id)build:(id)build;
 + (id)new;
 - (BKSHIDEventDeferringSelectionChangeRequest)init;
-- (BKSHIDEventDeferringSelectionChangeRequest)initWithCoder:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)_initWithCopyOf:(id *)a1;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (BKSHIDEventDeferringSelectionChangeRequest)initWithCoder:(id)coder;
+- (BOOL)isEqual:(id)equal;
+- (id)_initWithCopyOf:(id *)of;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 - (void)_init;
-- (void)appendDescriptionToStream:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)appendDescriptionToStream:(id)stream;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BKSHIDEventDeferringSelectionChangeRequest
 
-- (id)_initWithCopyOf:(id *)a1
+- (id)_initWithCopyOf:(id *)of
 {
   v3 = a2;
-  if (a1)
+  if (of)
   {
-    v4 = [(BKSHIDEventDeferringSelectionChangeRequest *)a1 _init];
-    a1 = v4;
-    if (v4)
+    _init = [(BKSHIDEventDeferringSelectionChangeRequest *)of _init];
+    of = _init;
+    if (_init)
     {
-      objc_storeStrong(v4 + 1, v3[1]);
-      objc_storeStrong(a1 + 2, v3[2]);
-      objc_storeStrong(a1 + 3, v3[3]);
-      a1[4] = v3[4];
-      *(a1 + 40) = *(v3 + 40);
+      objc_storeStrong(_init + 1, v3[1]);
+      objc_storeStrong(of + 2, v3[2]);
+      objc_storeStrong(of + 3, v3[3]);
+      of[4] = v3[4];
+      *(of + 40) = *(v3 + 40);
     }
   }
 
-  return a1;
+  return of;
 }
 
 - (void)_init
@@ -85,30 +85,30 @@
   return result;
 }
 
-- (void)appendDescriptionToStream:(id)a3
+- (void)appendDescriptionToStream:(id)stream
 {
-  v9 = a3;
-  v4 = [v9 appendObject:self->_pathIdentifier withName:@"pathIdentifier"];
-  v5 = [v9 appendObject:self->_selectionTarget withName:@"selectionTarget"];
-  v6 = [v9 appendObject:self->_basis withName:@"basis"];
-  v7 = [v9 appendTimeInterval:@"timestamp" withName:0 decomposeUnits:self->_timestamp];
-  v8 = [v9 appendBool:self->_ignoreModalities withName:@"ignoreModalities"];
+  streamCopy = stream;
+  v4 = [streamCopy appendObject:self->_pathIdentifier withName:@"pathIdentifier"];
+  v5 = [streamCopy appendObject:self->_selectionTarget withName:@"selectionTarget"];
+  v6 = [streamCopy appendObject:self->_basis withName:@"basis"];
+  v7 = [streamCopy appendTimeInterval:@"timestamp" withName:0 decomposeUnits:self->_timestamp];
+  v8 = [streamCopy appendBool:self->_ignoreModalities withName:@"ignoreModalities"];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [BKSMutableHIDEventDeferringSelectionChangeRequest alloc];
 
   return [(BKSHIDEventDeferringSelectionChangeRequest *)&v4->super.super.isa _initWithCopyOf:?];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = v5[1];
     pathIdentifier = self->_pathIdentifier;
     v14 = BSEqualObjects() && (v8 = v5[2], selectionTarget = self->_selectionTarget, BSEqualObjects()) && (v10 = v5[3], basis = self->_basis, BSEqualObjects()) && (v12 = v5[4], timestamp = self->_timestamp, BSFloatEqualToFloat()) && *(v5 + 40) == self->_ignoreModalities;
@@ -135,59 +135,59 @@
   return BSHashPurifyNS();
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   pathIdentifier = self->_pathIdentifier;
-  v8 = v4;
+  v8 = coderCopy;
   if (pathIdentifier)
   {
-    [v4 encodeObject:pathIdentifier forKey:@"pathIdentifier"];
-    v4 = v8;
+    [coderCopy encodeObject:pathIdentifier forKey:@"pathIdentifier"];
+    coderCopy = v8;
   }
 
   selectionTarget = self->_selectionTarget;
   if (selectionTarget)
   {
     [v8 encodeObject:selectionTarget forKey:@"selectionTarget"];
-    v4 = v8;
+    coderCopy = v8;
   }
 
   basis = self->_basis;
   if (basis)
   {
     [v8 encodeObject:basis forKey:@"basis"];
-    v4 = v8;
+    coderCopy = v8;
   }
 
-  [v4 encodeDouble:@"timestamp" forKey:self->_timestamp];
+  [coderCopy encodeDouble:@"timestamp" forKey:self->_timestamp];
   [v8 encodeBool:self->_ignoreModalities forKey:@"ignoreModalities"];
 }
 
-- (BKSHIDEventDeferringSelectionChangeRequest)initWithCoder:(id)a3
+- (BKSHIDEventDeferringSelectionChangeRequest)initWithCoder:(id)coder
 {
   v16.receiver = self;
   v16.super_class = BKSHIDEventDeferringSelectionChangeRequest;
-  v3 = a3;
+  coderCopy = coder;
   v4 = [(BKSHIDEventDeferringSelectionChangeRequest *)&v16 init];
   v5 = MEMORY[0x1E695DFD8];
   v6 = objc_opt_class();
   v7 = [v5 setWithObjects:{v6, objc_opt_class(), 0, v16.receiver, v16.super_class}];
-  v8 = [v3 decodeObjectOfClasses:v7 forKey:@"pathIdentifier"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"pathIdentifier"];
   pathIdentifier = v4->_pathIdentifier;
   v4->_pathIdentifier = v8;
 
-  v10 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"selectionTarget"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"selectionTarget"];
   selectionTarget = v4->_selectionTarget;
   v4->_selectionTarget = v10;
 
-  v12 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"basis"];
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"basis"];
   basis = v4->_basis;
   v4->_basis = v12;
 
-  [v3 decodeDoubleForKey:@"timestamp"];
+  [coderCopy decodeDoubleForKey:@"timestamp"];
   v4->_timestamp = v14;
-  LOBYTE(v7) = [v3 decodeBoolForKey:@"ignoreModalities"];
+  LOBYTE(v7) = [coderCopy decodeBoolForKey:@"ignoreModalities"];
 
   v4->_ignoreModalities = v7;
   return v4;
@@ -239,13 +239,13 @@
   return result;
 }
 
-+ (id)build:(id)a3
++ (id)build:(id)build
 {
-  v3 = a3;
-  v4 = [(BKSHIDEventDeferringSelectionChangeRequest *)[BKSMutableHIDEventDeferringSelectionChangeRequest alloc] _init];
-  v3[2](v3, v4);
+  buildCopy = build;
+  _init = [(BKSHIDEventDeferringSelectionChangeRequest *)[BKSMutableHIDEventDeferringSelectionChangeRequest alloc] _init];
+  buildCopy[2](buildCopy, _init);
 
-  v5 = [v4 copy];
+  v5 = [_init copy];
 
   return v5;
 }

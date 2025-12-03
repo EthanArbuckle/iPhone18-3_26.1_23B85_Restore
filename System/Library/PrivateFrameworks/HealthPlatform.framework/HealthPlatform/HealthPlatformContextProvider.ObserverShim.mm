@@ -1,11 +1,11 @@
 @interface HealthPlatformContextProvider.ObserverShim
 - (_TtCC14HealthPlatform29HealthPlatformContextProvider12ObserverShim)init;
-- (void)profileListDidUpdateForProfileStore:(id)a3;
+- (void)profileListDidUpdateForProfileStore:(id)store;
 @end
 
 @implementation HealthPlatformContextProvider.ObserverShim
 
-- (void)profileListDidUpdateForProfileStore:(id)a3
+- (void)profileListDidUpdateForProfileStore:(id)store
 {
   Strong = swift_weakLoadStrong();
   if (Strong)
@@ -15,7 +15,7 @@
     v7 = Strong;
     __swift_project_boxed_opaque_existential_1(Strong + 2, v5);
     v8 = *(v6 + 24);
-    v9 = self;
+    selfCopy = self;
 
     v8(sub_228531788, v7, v5, v6);
   }

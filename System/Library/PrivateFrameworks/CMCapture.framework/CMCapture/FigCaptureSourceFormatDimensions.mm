@@ -1,25 +1,25 @@
 @interface FigCaptureSourceFormatDimensions
-+ (id)identifyDimensionsFromFlavor:(int)a3 availableHighResStillImageDimensions:(id)a4;
-+ (id)identifySourceFormatDimensionsFromDimensions:(id)a3 availableHighResStillImageDimensions:(id)a4 aspectRatio:(int)a5;
-+ (int)identifyResolutionFlavorFromDimensions:(id)a3 availableHighResStillImageDimensions:(id)a4 aspectRatio:(int)a5;
-- (FigCaptureSourceFormatDimensions)initWithDimensions:(id)a3 deferredPhotoProxyDimensions:(id)a4 isPrivate:(BOOL)a5 flavor:(int)a6 maxUpscalingDimensions:(id)a7;
++ (id)identifyDimensionsFromFlavor:(int)flavor availableHighResStillImageDimensions:(id)dimensions;
++ (id)identifySourceFormatDimensionsFromDimensions:(id)dimensions availableHighResStillImageDimensions:(id)imageDimensions aspectRatio:(int)ratio;
++ (int)identifyResolutionFlavorFromDimensions:(id)dimensions availableHighResStillImageDimensions:(id)imageDimensions aspectRatio:(int)ratio;
+- (FigCaptureSourceFormatDimensions)initWithDimensions:(id)dimensions deferredPhotoProxyDimensions:(id)proxyDimensions isPrivate:(BOOL)private flavor:(int)flavor maxUpscalingDimensions:(id)upscalingDimensions;
 - (id)description;
 @end
 
 @implementation FigCaptureSourceFormatDimensions
 
-- (FigCaptureSourceFormatDimensions)initWithDimensions:(id)a3 deferredPhotoProxyDimensions:(id)a4 isPrivate:(BOOL)a5 flavor:(int)a6 maxUpscalingDimensions:(id)a7
+- (FigCaptureSourceFormatDimensions)initWithDimensions:(id)dimensions deferredPhotoProxyDimensions:(id)proxyDimensions isPrivate:(BOOL)private flavor:(int)flavor maxUpscalingDimensions:(id)upscalingDimensions
 {
   v13.receiver = self;
   v13.super_class = FigCaptureSourceFormatDimensions;
   result = [(FigCaptureSourceFormatDimensions *)&v13 init];
   if (result)
   {
-    result->_dimensions = a3;
-    result->_deferredPhotoProxyDimensions = a4;
-    result->_isPrivate = a5;
-    result->_flavor = a6;
-    result->_maxUpscalingDimensions = a7;
+    result->_dimensions = dimensions;
+    result->_deferredPhotoProxyDimensions = proxyDimensions;
+    result->_isPrivate = private;
+    result->_flavor = flavor;
+    result->_maxUpscalingDimensions = upscalingDimensions;
   }
 
   return result;
@@ -31,12 +31,12 @@
   height = self->_deferredPhotoProxyDimensions.height;
   if (width < 1 || height < 1)
   {
-    v6 = &stru_1F216A3D0;
+    height = &stru_1F216A3D0;
   }
 
   else
   {
-    v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"proxy dims: %d x %d, ", width, height];
+    height = [MEMORY[0x1E696AEC0] stringWithFormat:@"proxy dims: %d x %d, ", width, height];
   }
 
   v7 = self->_maxUpscalingDimensions.height;
@@ -63,23 +63,23 @@
     v16 = &stru_1F216A3D0;
   }
 
-  return [v10 stringWithFormat:@"<%@ %p> %d x %d, %@%@flavor: %@%@", v12, self, v13, v14, v6, v9, v15, v16];
+  return [v10 stringWithFormat:@"<%@ %p> %d x %d, %@%@flavor: %@%@", v12, self, v13, v14, height, v9, v15, v16];
 }
 
-+ (id)identifySourceFormatDimensionsFromDimensions:(id)a3 availableHighResStillImageDimensions:(id)a4 aspectRatio:(int)a5
++ (id)identifySourceFormatDimensionsFromDimensions:(id)dimensions availableHighResStillImageDimensions:(id)imageDimensions aspectRatio:(int)ratio
 {
-  v8 = BWAspectRatioValueFromAspectRatio(a5);
+  v8 = BWAspectRatioValueFromAspectRatio(ratio);
   v9 = v8;
-  if (a5)
+  if (ratio)
   {
-    a3 = FigCaptureMetadataUtilitiesEnforceAspectRatioWithStillImageDimensions(*&a3, v8);
+    dimensions = FigCaptureMetadataUtilitiesEnforceAspectRatioWithStillImageDimensions(*&dimensions, v8);
   }
 
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v10 = [a4 countByEnumeratingWithState:&v18 objects:v17 count:16];
+  v10 = [imageDimensions countByEnumeratingWithState:&v18 objects:v17 count:16];
   if (!v10)
   {
     return 0;
@@ -93,24 +93,24 @@ LABEL_5:
   {
     if (*v19 != v12)
     {
-      objc_enumerationMutation(a4);
+      objc_enumerationMutation(imageDimensions);
     }
 
     v14 = *(*(&v18 + 1) + 8 * v13);
-    v15 = [v14 dimensions];
-    if (a5)
+    dimensions = [v14 dimensions];
+    if (ratio)
     {
-      v15 = FigCaptureMetadataUtilitiesEnforceAspectRatioWithStillImageDimensions(v15, v9);
+      dimensions = FigCaptureMetadataUtilitiesEnforceAspectRatioWithStillImageDimensions(dimensions, v9);
     }
 
-    if (v15 == a3)
+    if (dimensions == dimensions)
     {
       return v14;
     }
 
     if (v11 == ++v13)
     {
-      v11 = [a4 countByEnumeratingWithState:&v18 objects:v17 count:16];
+      v11 = [imageDimensions countByEnumeratingWithState:&v18 objects:v17 count:16];
       if (v11)
       {
         goto LABEL_5;
@@ -121,13 +121,13 @@ LABEL_5:
   }
 }
 
-+ (id)identifyDimensionsFromFlavor:(int)a3 availableHighResStillImageDimensions:(id)a4
++ (id)identifyDimensionsFromFlavor:(int)flavor availableHighResStillImageDimensions:(id)dimensions
 {
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = [a4 countByEnumeratingWithState:&v13 objects:v12 count:16];
+  v6 = [dimensions countByEnumeratingWithState:&v13 objects:v12 count:16];
   if (!v6)
   {
     return 0;
@@ -141,18 +141,18 @@ LABEL_3:
   {
     if (*v14 != v8)
     {
-      objc_enumerationMutation(a4);
+      objc_enumerationMutation(dimensions);
     }
 
     v10 = *(*(&v13 + 1) + 8 * v9);
-    if ([v10 flavor] == a3)
+    if ([v10 flavor] == flavor)
     {
       return v10;
     }
 
     if (v7 == ++v9)
     {
-      v7 = [a4 countByEnumeratingWithState:&v13 objects:v12 count:16];
+      v7 = [dimensions countByEnumeratingWithState:&v13 objects:v12 count:16];
       if (v7)
       {
         goto LABEL_3;
@@ -163,9 +163,9 @@ LABEL_3:
   }
 }
 
-+ (int)identifyResolutionFlavorFromDimensions:(id)a3 availableHighResStillImageDimensions:(id)a4 aspectRatio:(int)a5
++ (int)identifyResolutionFlavorFromDimensions:(id)dimensions availableHighResStillImageDimensions:(id)imageDimensions aspectRatio:(int)ratio
 {
-  v5 = [a1 identifySourceFormatDimensionsFromDimensions:a3 availableHighResStillImageDimensions:a4 aspectRatio:*&a5];
+  v5 = [self identifySourceFormatDimensionsFromDimensions:dimensions availableHighResStillImageDimensions:imageDimensions aspectRatio:*&ratio];
   if (v5)
   {
 

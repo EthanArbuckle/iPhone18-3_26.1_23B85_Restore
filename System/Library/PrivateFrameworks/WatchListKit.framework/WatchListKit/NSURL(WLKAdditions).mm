@@ -16,24 +16,24 @@
   v14 = v13;
   if (v13)
   {
-    v15 = [v13 requiredKVPType];
-    v16 = [v10 requiredRequestKeyValuePairsForType:v15];
-    v17 = [v16 mutableCopy];
+    requiredKVPType = [v13 requiredKVPType];
+    v16 = [v10 requiredRequestKeyValuePairsForType:requiredKVPType];
+    dictionary = [v16 mutableCopy];
 
-    if (!v17)
+    if (!dictionary)
     {
-      v17 = [MEMORY[0x277CBEB38] dictionary];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
     }
 
     if ([v14 requiresLocation])
     {
       v18 = +[WLKLocationManager defaultLocationManager];
-      v19 = [v18 _locationQueryParameters];
-      [v17 addEntriesFromDictionary:v19];
+      _locationQueryParameters = [v18 _locationQueryParameters];
+      [dictionary addEntriesFromDictionary:_locationQueryParameters];
     }
 
-    [v17 addEntriesFromDictionary:v12];
-    v20 = [a1 wlk_sortedQueryItemsFromDictionary:v17];
+    [dictionary addEntriesFromDictionary:v12];
+    v20 = [self wlk_sortedQueryItemsFromDictionary:dictionary];
     v21 = objc_alloc(MEMORY[0x277CCACE0]);
     v22 = [v14 URL];
     v23 = [v21 initWithURL:v22 resolvingAgainstBaseURL:0];
@@ -114,12 +114,12 @@
     if (!v20)
     {
 LABEL_19:
-      v22 = WLKNetworkingLogObject();
-      if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
+      dictionary = WLKNetworkingLogObject();
+      if (os_log_type_enabled(dictionary, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
         v31 = v15;
-        _os_log_impl(&dword_272A0F000, v22, OS_LOG_TYPE_DEFAULT, "NSURL-WLKAdditions: Could not construct url with endpoint: %@", buf, 0xCu);
+        _os_log_impl(&dword_272A0F000, dictionary, OS_LOG_TYPE_DEFAULT, "NSURL-WLKAdditions: Could not construct url with endpoint: %@", buf, 0xCu);
       }
 
       v27 = 0;
@@ -128,11 +128,11 @@ LABEL_19:
   }
 
   v21 = [v14 requiredRequestKeyValuePairsDictionary:v20];
-  v22 = [v21 mutableCopy];
+  dictionary = [v21 mutableCopy];
 
-  if (!v22)
+  if (!dictionary)
   {
-    v22 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     if (a8)
     {
       goto LABEL_8;
@@ -145,13 +145,13 @@ LABEL_19:
   {
 LABEL_7:
     v23 = +[WLKLocationManager defaultLocationManager];
-    v24 = [v23 _locationQueryParameters];
-    [v22 addEntriesFromDictionary:v24];
+    _locationQueryParameters = [v23 _locationQueryParameters];
+    [dictionary addEntriesFromDictionary:_locationQueryParameters];
   }
 
 LABEL_8:
-  [v22 addEntriesFromDictionary:v16];
-  v25 = [a1 wlk_sortedQueryItemsFromDictionary:v22];
+  [dictionary addEntriesFromDictionary:v16];
+  v25 = [self wlk_sortedQueryItemsFromDictionary:dictionary];
   v26 = [objc_alloc(MEMORY[0x277CCACE0]) initWithString:v20];
   if ([v25 count])
   {
@@ -178,13 +178,13 @@ LABEL_22:
 {
   v28 = *MEMORY[0x277D85DE8];
   v3 = a3;
-  v20 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v4 = [v3 allKeys];
-  v5 = [v4 sortedArrayUsingSelector:sel_caseInsensitiveCompare_];
+  allKeys = [v3 allKeys];
+  v5 = [allKeys sortedArrayUsingSelector:sel_caseInsensitiveCompare_];
 
   v6 = [v5 countByEnumeratingWithState:&v21 objects:v27 count:16];
   if (v6)
@@ -207,16 +207,16 @@ LABEL_22:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v13 = v12;
+          stringValue = v12;
           goto LABEL_10;
         }
 
         if (objc_opt_respondsToSelector())
         {
-          v13 = [v12 stringValue];
+          stringValue = [v12 stringValue];
 LABEL_10:
-          v14 = v13;
-          if (v13)
+          v14 = stringValue;
+          if (stringValue)
           {
             goto LABEL_11;
           }
@@ -235,7 +235,7 @@ LABEL_11:
             v15 = [objc_alloc(MEMORY[0x277CCAD18]) initWithName:v11 value:v14];
             if (v15)
             {
-              [v20 addObject:v15];
+              [array addObject:v15];
             }
 
             goto LABEL_21;
@@ -262,7 +262,7 @@ LABEL_21:
 
   v17 = *MEMORY[0x277D85DE8];
 
-  return v20;
+  return array;
 }
 
 @end

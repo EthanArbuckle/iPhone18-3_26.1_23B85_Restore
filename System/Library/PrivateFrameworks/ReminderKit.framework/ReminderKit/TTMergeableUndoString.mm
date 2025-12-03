@@ -1,47 +1,47 @@
 @interface TTMergeableUndoString
-- (TopoIDRange)insertAttributedString:(SEL)a3 after:(id)a4 before:(void *)a5;
-- (void)addUndoCommand:(id)a3;
-- (void)deleteSubstrings:(void *)a3 withCharacterRanges:(void *)a4;
-- (void)undeleteSubstrings:(void *)a3;
+- (TopoIDRange)insertAttributedString:(SEL)string after:(id)after before:(void *)before;
+- (void)addUndoCommand:(id)command;
+- (void)deleteSubstrings:(void *)substrings withCharacterRanges:(void *)ranges;
+- (void)undeleteSubstrings:(void *)substrings;
 @end
 
 @implementation TTMergeableUndoString
 
-- (void)addUndoCommand:(id)a3
+- (void)addUndoCommand:(id)command
 {
-  v7 = a3;
-  v4 = [(TTMergeableString *)self objectsNeedingUpdatedRanges];
-  [v4 addObject:v7];
+  commandCopy = command;
+  objectsNeedingUpdatedRanges = [(TTMergeableString *)self objectsNeedingUpdatedRanges];
+  [objectsNeedingUpdatedRanges addObject:commandCopy];
 
-  v5 = [(TTMergeableString *)self delegate];
-  [v5 addUndoCommand:v7];
+  delegate = [(TTMergeableString *)self delegate];
+  [delegate addUndoCommand:commandCopy];
 
-  v6 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v6 postNotificationName:TTMergeableUndoStringDidAddUndoNotification object:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:TTMergeableUndoStringDidAddUndoNotification object:self];
 }
 
-- (void)deleteSubstrings:(void *)a3 withCharacterRanges:(void *)a4
+- (void)deleteSubstrings:(void *)substrings withCharacterRanges:(void *)ranges
 {
-  v7 = [(TTMergeableString *)self delegate];
-  if (v7)
+  delegate = [(TTMergeableString *)self delegate];
+  if (delegate)
   {
-    v8 = v7;
-    v9 = [(TTMergeableString *)self delegate];
-    v10 = [v9 wantsUndoCommands];
+    v8 = delegate;
+    delegate2 = [(TTMergeableString *)self delegate];
+    wantsUndoCommands = [delegate2 wantsUndoCommands];
 
-    if (v10)
+    if (wantsUndoCommands)
     {
       v11 = objc_alloc_init(TTMergeableStringUndoEditCommand);
-      v12 = *a3;
-      v13 = *(a3 + 1);
+      v12 = *substrings;
+      v13 = *(substrings + 1);
       while (v12 != v13)
       {
         v14 = *v12;
         if ((*(*v12 + 44) & 1) == 0)
         {
-          v15 = [(TTMergeableStringUndoEditCommand *)v11 insertStrings];
-          v16 = [(TTMergeableString *)self attributedString];
-          v17 = v16;
+          insertStrings = [(TTMergeableStringUndoEditCommand *)v11 insertStrings];
+          attributedString = [(TTMergeableString *)self attributedString];
+          v17 = attributedString;
           if (*(v14 + 44))
           {
             v18 = 0;
@@ -52,13 +52,13 @@
             v18 = *(v14 + 16);
           }
 
-          v19 = [v16 attributedSubstringFromRange:{*(v14 + 40), v18}];
+          v19 = [attributedString attributedSubstringFromRange:{*(v14 + 40), v18}];
           v22 = *v14;
           v20 = *(v14 + 16);
           v23 = *(v14 + 8);
           v24 = v20;
           v25 = v19;
-          std::vector<std::pair<TopoIDRange,NSAttributedString * {__strong}>>::push_back[abi:ne200100](v15, &v22);
+          std::vector<std::pair<TopoIDRange,NSAttributedString * {__strong}>>::push_back[abi:ne200100](insertStrings, &v22);
         }
 
         ++v12;
@@ -70,23 +70,23 @@
 
   v21.receiver = self;
   v21.super_class = TTMergeableUndoString;
-  [(TTMergeableString *)&v21 deleteSubstrings:a3 withCharacterRanges:a4];
+  [(TTMergeableString *)&v21 deleteSubstrings:substrings withCharacterRanges:ranges];
 }
 
-- (void)undeleteSubstrings:(void *)a3
+- (void)undeleteSubstrings:(void *)substrings
 {
-  v5 = [(TTMergeableString *)self delegate];
-  if (v5)
+  delegate = [(TTMergeableString *)self delegate];
+  if (delegate)
   {
-    v6 = v5;
-    v7 = [(TTMergeableString *)self delegate];
-    v8 = [v7 wantsUndoCommands];
+    v6 = delegate;
+    delegate2 = [(TTMergeableString *)self delegate];
+    wantsUndoCommands = [delegate2 wantsUndoCommands];
 
-    if (v8)
+    if (wantsUndoCommands)
     {
       v9 = objc_alloc_init(TTMergeableStringUndoEditCommand);
-      v10 = *a3;
-      v11 = *(a3 + 1);
+      v10 = *substrings;
+      v11 = *(substrings + 1);
       while (v10 != v11)
       {
         *&v46 = *v10;
@@ -108,8 +108,8 @@
         v10 += 32;
       }
 
-      v14 = [(TTMergeableStringUndoEditCommand *)v9 deleteRanges];
-      if (v14[1] == *v14)
+      deleteRanges = [(TTMergeableStringUndoEditCommand *)v9 deleteRanges];
+      if (deleteRanges[1] == *deleteRanges)
       {
 
         return;
@@ -122,9 +122,9 @@
   v46 = 0u;
   v47 = 0u;
   v48 = 1065353216;
-  v15 = *a3;
-  v38 = *(a3 + 1);
-  if (*a3 != v38)
+  v15 = *substrings;
+  v38 = *(substrings + 1);
+  if (*substrings != v38)
   {
     do
     {
@@ -161,9 +161,9 @@
           {
             v24 = *(v22 + 8);
             v25 = *(v22 + 16);
-            v26 = [(TTMergeableString *)self attributedString];
+            attributedString = [(TTMergeableString *)self attributedString];
             v27 = [v19 attributedSubstringFromRange:{(v24 - v17), v25}];
-            [v26 insertAttributedString:v27 atIndex:*(v39 + 40)];
+            [attributedString insertAttributedString:v27 atIndex:*(v39 + 40)];
 
             *(v39 + 44) = 0;
             v28 = +[TTMergeableString unserialisedReplicaID];
@@ -188,14 +188,14 @@
     while (v15 != v38);
   }
 
-  v30 = [(TTMergeableString *)self delegate];
+  delegate3 = [(TTMergeableString *)self delegate];
 
-  if (v30)
+  if (delegate3)
   {
-    v31 = [(TTMergeableString *)self orderedSubstrings];
-    v32 = *v31;
-    v33 = v31[1];
-    if (*v31 != v33)
+    orderedSubstrings = [(TTMergeableString *)self orderedSubstrings];
+    v32 = *orderedSubstrings;
+    v33 = orderedSubstrings[1];
+    if (*orderedSubstrings != v33)
     {
       v34 = 0;
       do
@@ -204,8 +204,8 @@
         if (std::__hash_table<std::__hash_value_type<TopoSubstring *,unsigned long>,std::__unordered_map_hasher<TopoSubstring *,std::__hash_value_type<TopoSubstring *,unsigned long>,std::hash<TopoSubstring *>,std::equal_to<TopoSubstring *>,true>,std::__unordered_map_equal<TopoSubstring *,std::__hash_value_type<TopoSubstring *,unsigned long>,std::equal_to<TopoSubstring *>,std::hash<TopoSubstring *>,true>,std::allocator<std::__hash_value_type<TopoSubstring *,unsigned long>>>::find<TopoSubstring *>(&v46, &__p))
         {
           v35 = *(__p + 4);
-          v36 = [(TTMergeableString *)self delegate];
-          [v36 edited:2 range:v34 changeInLength:{0, v35}];
+          delegate4 = [(TTMergeableString *)self delegate];
+          [delegate4 edited:2 range:v34 changeInLength:{0, v35}];
         }
 
         if (*(__p + 44))
@@ -232,21 +232,21 @@
   std::__hash_table<std::__hash_value_type<TopoSubstring *,unsigned long>,std::__unordered_map_hasher<TopoSubstring *,std::__hash_value_type<TopoSubstring *,unsigned long>,std::hash<TopoSubstring *>,std::equal_to<TopoSubstring *>,true>,std::__unordered_map_equal<TopoSubstring *,std::__hash_value_type<TopoSubstring *,unsigned long>,std::equal_to<TopoSubstring *>,std::hash<TopoSubstring *>,true>,std::allocator<std::__hash_value_type<TopoSubstring *,unsigned long>>>::~__hash_table(&v46);
 }
 
-- (TopoIDRange)insertAttributedString:(SEL)a3 after:(id)a4 before:(void *)a5
+- (TopoIDRange)insertAttributedString:(SEL)string after:(id)after before:(void *)before
 {
   v13.receiver = self;
   v13.super_class = TTMergeableUndoString;
-  result = [(TopoIDRange *)&v13 insertAttributedString:a4 after:a5 before:a6];
+  result = [(TopoIDRange *)&v13 insertAttributedString:after after:before before:a6];
   if (retstr->var1)
   {
     result = [(TTMergeableString *)self delegate];
     v9 = result;
     if (result)
     {
-      v10 = [(TTMergeableString *)self delegate];
-      v11 = [v10 wantsUndoCommands];
+      delegate = [(TTMergeableString *)self delegate];
+      wantsUndoCommands = [delegate wantsUndoCommands];
 
-      if (v11)
+      if (wantsUndoCommands)
       {
         v12 = objc_alloc_init(TTMergeableStringUndoEditCommand);
         std::vector<TopoIDRange>::push_back[abi:ne200100](-[TTMergeableStringUndoEditCommand deleteRanges](v12, "deleteRanges"), retstr);

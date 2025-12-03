@@ -1,17 +1,17 @@
 @interface CRLiOSPrintCoordinator
 - (id)appOptionsViewController;
-- (void)printInteractionControllerDidFinishJob:(id)a3;
+- (void)printInteractionControllerDidFinishJob:(id)job;
 @end
 
 @implementation CRLiOSPrintCoordinator
 
-- (void)printInteractionControllerDidFinishJob:(id)a3
+- (void)printInteractionControllerDidFinishJob:(id)job
 {
   v3 = *(&self->super.isa + OBJC_IVAR____TtC8Freeform22CRLiOSPrintCoordinator_printInteractionController);
   *(&self->super.isa + OBJC_IVAR____TtC8Freeform22CRLiOSPrintCoordinator_printInteractionController) = 0;
-  v4 = self;
+  selfCopy = self;
 
-  *(&v4->super.isa + OBJC_IVAR____TtC8Freeform22CRLiOSPrintCoordinator_isPresenting) = 0;
+  *(&selfCopy->super.isa + OBJC_IVAR____TtC8Freeform22CRLiOSPrintCoordinator_isPresenting) = 0;
 }
 
 - (id)appOptionsViewController

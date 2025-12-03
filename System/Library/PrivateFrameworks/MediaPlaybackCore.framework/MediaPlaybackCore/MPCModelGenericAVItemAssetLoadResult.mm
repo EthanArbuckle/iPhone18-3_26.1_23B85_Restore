@@ -1,5 +1,5 @@
 @interface MPCModelGenericAVItemAssetLoadResult
-+ (id)assetLoadResultWithStoreAssetPlaybackResponse:(id)a3 assetLoadProperties:(id)a4 source:(int64_t)a5 error:(id *)a6;
++ (id)assetLoadResultWithStoreAssetPlaybackResponse:(id)response assetLoadProperties:(id)properties source:(int64_t)source error:(id *)error;
 - (BOOL)hasValidAsset;
 - (id)description;
 - (id)descriptionDictionary;
@@ -7,28 +7,28 @@
 
 @implementation MPCModelGenericAVItemAssetLoadResult
 
-+ (id)assetLoadResultWithStoreAssetPlaybackResponse:(id)a3 assetLoadProperties:(id)a4 source:(int64_t)a5 error:(id *)a6
++ (id)assetLoadResultWithStoreAssetPlaybackResponse:(id)response assetLoadProperties:(id)properties source:(int64_t)source error:(id *)error
 {
   v104 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v83 = a5;
-  if (![v9 isLiveRadioStream])
+  responseCopy = response;
+  propertiesCopy = properties;
+  sourceCopy = source;
+  if (![responseCopy isLiveRadioStream])
   {
     goto LABEL_11;
   }
 
   v11 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v12 = v10;
-  if ([v10 prefersHighQualityContent])
+  v12 = propertiesCopy;
+  if ([propertiesCopy prefersHighQualityContent])
   {
     [v11 addObject:&unk_1F4599238];
   }
 
   [v11 addObject:&unk_1F4599250];
   v13 = [MEMORY[0x1E696AE18] predicateWithFormat:@"flavor IN %@ AND streamURL != nil", v11];
-  v14 = [v9 radioStreamAssetInfoList];
-  v15 = [v14 filteredArrayUsingPredicate:v13];
+  radioStreamAssetInfoList = [responseCopy radioStreamAssetInfoList];
+  v15 = [radioStreamAssetInfoList filteredArrayUsingPredicate:v13];
   v16 = [v15 mutableCopy];
 
   v98[0] = MEMORY[0x1E69E9820];
@@ -38,52 +38,52 @@
   v99 = v11;
   v17 = v11;
   [v16 sortUsingComparator:v98];
-  v18 = [v16 firstObject];
-  if (v18)
+  firstObject = [v16 firstObject];
+  if (firstObject)
   {
-    v19 = v18;
+    firstObject2 = firstObject;
   }
 
   else
   {
-    v20 = [v9 radioStreamAssetInfoList];
-    v19 = [v20 firstObject];
+    radioStreamAssetInfoList2 = [responseCopy radioStreamAssetInfoList];
+    firstObject2 = [radioStreamAssetInfoList2 firstObject];
 
-    if (!v19)
+    if (!firstObject2)
     {
       v21 = 0;
       goto LABEL_10;
     }
   }
 
-  v21 = objc_alloc_init(a1);
-  v22 = [v19 streamURL];
-  [v21 setAssetURL:v22];
+  v21 = objc_alloc_init(self);
+  streamURL = [firstObject2 streamURL];
+  [v21 setAssetURL:streamURL];
 
-  v23 = [v19 keyServerURL];
-  [v21 setStreamingKeyServerURL:v23];
+  keyServerURL = [firstObject2 keyServerURL];
+  [v21 setStreamingKeyServerURL:keyServerURL];
 
-  v24 = [v19 keyCertificateURL];
-  [v21 setStreamingKeyCertificateURL:v24];
+  keyCertificateURL = [firstObject2 keyCertificateURL];
+  [v21 setStreamingKeyCertificateURL:keyCertificateURL];
 
-  [v21 setITunesStoreStream:{objc_msgSend(v19, "isiTunesStoreStream")}];
+  [v21 setITunesStoreStream:{objc_msgSend(firstObject2, "isiTunesStoreStream")}];
   [v21 setAllowsAssetInfoCaching:1];
   [v21 setIsCloudStreamingAsset:1];
-  [v21 setIsHLSAsset:{objc_msgSend(v19, "streamProtocol") == 1}];
+  [v21 setIsHLSAsset:{objc_msgSend(firstObject2, "streamProtocol") == 1}];
   if ([v21 isHLSAsset])
   {
-    v25 = [v9 hlsAssetInfo];
-    v26 = [v25 keyServerAdamID];
-    [v21 setStreamingKeyAdamID:v26];
+    hlsAssetInfo = [responseCopy hlsAssetInfo];
+    keyServerAdamID = [hlsAssetInfo keyServerAdamID];
+    [v21 setStreamingKeyAdamID:keyServerAdamID];
 
-    v27 = [v25 keyServerProtocolType];
-    [v21 setKeyServerProtocolType:v27];
+    keyServerProtocolType = [hlsAssetInfo keyServerProtocolType];
+    [v21 setKeyServerProtocolType:keyServerProtocolType];
   }
 
 LABEL_10:
 
-  v10 = v12;
-  a5 = v83;
+  propertiesCopy = v12;
+  source = sourceCopy;
   if (v21)
   {
 LABEL_23:
@@ -92,56 +92,56 @@ LABEL_23:
   }
 
 LABEL_11:
-  if (([v10 allowsHLSContent] & 1) != 0 || objc_msgSend(v10, "preferredAudioAssetType") >= 2)
+  if (([propertiesCopy allowsHLSContent] & 1) != 0 || objc_msgSend(propertiesCopy, "preferredAudioAssetType") >= 2)
   {
-    v28 = [v9 hlsAssetInfo];
-    if (v28)
+    hlsAssetInfo2 = [responseCopy hlsAssetInfo];
+    if (hlsAssetInfo2)
     {
-      v29 = v28;
-      v21 = objc_alloc_init(a1);
-      v30 = [v29 playlistURL];
-      [v21 setAssetURL:v30];
+      v29 = hlsAssetInfo2;
+      v21 = objc_alloc_init(self);
+      playlistURL = [v29 playlistURL];
+      [v21 setAssetURL:playlistURL];
 
-      v31 = [v29 keyServerURL];
-      [v21 setStreamingKeyServerURL:v31];
+      keyServerURL2 = [v29 keyServerURL];
+      [v21 setStreamingKeyServerURL:keyServerURL2];
 
-      v32 = [v29 keyCertificateURL];
-      [v21 setStreamingKeyCertificateURL:v32];
+      keyCertificateURL2 = [v29 keyCertificateURL];
+      [v21 setStreamingKeyCertificateURL:keyCertificateURL2];
 
-      v33 = [v29 keyServerProtocolType];
-      [v21 setKeyServerProtocolType:v33];
+      keyServerProtocolType2 = [v29 keyServerProtocolType];
+      [v21 setKeyServerProtocolType:keyServerProtocolType2];
 
       [v21 setITunesStoreStream:{objc_msgSend(v29, "isiTunesStoreStream")}];
-      v34 = [v29 alternatePlaylistURL];
-      [v21 setAlternateHLSPlaylistURL:v34];
+      alternatePlaylistURL = [v29 alternatePlaylistURL];
+      [v21 setAlternateHLSPlaylistURL:alternatePlaylistURL];
 
-      v35 = [v29 alternateKeyServerURL];
-      [v21 setAlternateHLSKeyServerURL:v35];
+      alternateKeyServerURL = [v29 alternateKeyServerURL];
+      [v21 setAlternateHLSKeyServerURL:alternateKeyServerURL];
 
-      v36 = [v29 alternateKeyCertificateURL];
-      [v21 setAlternateHLSKeyCertificateURL:v36];
+      alternateKeyCertificateURL = [v29 alternateKeyCertificateURL];
+      [v21 setAlternateHLSKeyCertificateURL:alternateKeyCertificateURL];
 
       [v21 setIsHLSAsset:1];
       [v21 setAllowsAssetInfoCaching:1];
       [v21 setIsCloudStreamingAsset:1];
       [v21 setAssetPathExtension:*MEMORY[0x1E69E41A0]];
       [v21 setAssetQualityType:2];
-      v37 = [v29 keyServerAdamID];
-      [v21 setStreamingKeyAdamID:v37];
+      keyServerAdamID2 = [v29 keyServerAdamID];
+      [v21 setStreamingKeyAdamID:keyServerAdamID2];
 
-      [v21 setAllowsAssetCaching:{objc_msgSend(v10, "prefersVideoContent") ^ 1}];
-      v38 = [v10 storeAsset];
-      v39 = [v38 endpointType];
+      [v21 setAllowsAssetCaching:{objc_msgSend(propertiesCopy, "prefersVideoContent") ^ 1}];
+      storeAsset = [propertiesCopy storeAsset];
+      endpointType = [storeAsset endpointType];
 
-      if ((v39 - 1) >= 2)
+      if ((endpointType - 1) >= 2)
       {
-        v41 = v39 == 3 ? 2 : 0;
+        v41 = endpointType == 3 ? 2 : 0;
       }
 
       else
       {
-        v40 = [v29 keyServerProtocolType];
-        v41 = [v40 isEqualToString:*MEMORY[0x1E69703F0]] ? 2 : 1;
+        keyServerProtocolType3 = [v29 keyServerProtocolType];
+        v41 = [keyServerProtocolType3 isEqualToString:*MEMORY[0x1E69703F0]] ? 2 : 1;
       }
 
       [v21 setAssetProtectionType:v41];
@@ -154,10 +154,10 @@ LABEL_11:
   }
 
   v43 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v44 = [v10 prefersHighQualityContent];
-  if ([v10 prefersVideoContent])
+  prefersHighQualityContent = [propertiesCopy prefersHighQualityContent];
+  if ([propertiesCopy prefersVideoContent])
   {
-    if (v44)
+    if (prefersHighQualityContent)
     {
       [v43 addObject:&unk_1F4599268];
       [v43 addObject:&unk_1F4599280];
@@ -166,8 +166,8 @@ LABEL_11:
     [v43 addObject:&unk_1F4599298];
   }
 
-  v81 = v10;
-  if (v44)
+  v81 = propertiesCopy;
+  if (prefersHighQualityContent)
   {
     [v43 addObject:&unk_1F45992B0];
     [v43 addObject:&unk_1F45992C8];
@@ -179,9 +179,9 @@ LABEL_11:
   v97 = 0u;
   v94 = 0u;
   v95 = 0u;
-  v82 = v9;
-  v45 = [v9 fileAssetInfoList];
-  v46 = [v45 countByEnumeratingWithState:&v94 objects:v103 count:16];
+  v82 = responseCopy;
+  fileAssetInfoList = [responseCopy fileAssetInfoList];
+  v46 = [fileAssetInfoList countByEnumeratingWithState:&v94 objects:v103 count:16];
   if (v46)
   {
     v47 = v46;
@@ -193,13 +193,13 @@ LABEL_11:
       {
         if (*v95 != v49)
         {
-          objc_enumerationMutation(v45);
+          objc_enumerationMutation(fileAssetInfoList);
         }
 
         v51 = *(*(&v94 + 1) + 8 * i);
-        v52 = [v51 assetURL];
+        assetURL = [v51 assetURL];
 
-        if (v52)
+        if (assetURL)
         {
           if (!v48)
           {
@@ -210,7 +210,7 @@ LABEL_11:
         }
       }
 
-      v47 = [v45 countByEnumeratingWithState:&v94 objects:v103 count:16];
+      v47 = [fileAssetInfoList countByEnumeratingWithState:&v94 objects:v103 count:16];
     }
 
     while (v47);
@@ -228,17 +228,17 @@ LABEL_11:
   v53 = v43;
   v93 = v53;
   [v48 sortUsingComparator:v92];
-  v54 = [v48 firstObject];
-  if (v54)
+  firstObject3 = [v48 firstObject];
+  if (firstObject3)
   {
     v80 = v53;
-    v21 = objc_alloc_init(a1);
-    v55 = [v54 assetURL];
-    [v21 setAssetURL:v55];
+    v21 = objc_alloc_init(self);
+    assetURL2 = [firstObject3 assetURL];
+    [v21 setAssetURL:assetURL2];
 
-    v56 = [v54 flavorType];
+    flavorType = [firstObject3 flavorType];
     v57 = [v48 count];
-    if ((v56 - 101) < 2 || v57 == 1 || (v56 & 0xFFFFFFFFFFFFFFFELL) == 202)
+    if ((flavorType - 101) < 2 || v57 == 1 || (flavorType & 0xFFFFFFFFFFFFFFFELL) == 202)
     {
       v60 = 2;
     }
@@ -249,8 +249,8 @@ LABEL_11:
     }
 
     [v21 setAssetQualityType:v60];
-    v61 = [v54 fileExtension];
-    [v21 setAssetPathExtension:v61];
+    fileExtension = [firstObject3 fileExtension];
+    [v21 setAssetPathExtension:fileExtension];
 
     [v21 setIsCloudStreamingAsset:1];
     [v21 setOnlineSubscriptionKeysRequired:{objc_msgSend(v82, "onlineSubscriptionKeysRequired")}];
@@ -258,12 +258,12 @@ LABEL_11:
     v91 = 0u;
     v88 = 0u;
     v89 = 0u;
-    v62 = [v54 fairPlayInfoList];
-    v63 = [v62 countByEnumeratingWithState:&v88 objects:v102 count:16];
+    fairPlayInfoList = [firstObject3 fairPlayInfoList];
+    v63 = [fairPlayInfoList countByEnumeratingWithState:&v88 objects:v102 count:16];
     if (v63)
     {
       v64 = v63;
-      v65 = 0;
+      fileAssetInfoList2 = 0;
       v66 = *v89;
       do
       {
@@ -271,22 +271,22 @@ LABEL_11:
         {
           if (*v89 != v66)
           {
-            objc_enumerationMutation(v62);
+            objc_enumerationMutation(fairPlayInfoList);
           }
 
-          v68 = [*(*(&v88 + 1) + 8 * j) purchaseBundleSinfDictionary];
-          if ([v68 count])
+          purchaseBundleSinfDictionary = [*(*(&v88 + 1) + 8 * j) purchaseBundleSinfDictionary];
+          if ([purchaseBundleSinfDictionary count])
           {
-            if (!v65)
+            if (!fileAssetInfoList2)
             {
-              v65 = objc_alloc_init(MEMORY[0x1E695DF70]);
+              fileAssetInfoList2 = objc_alloc_init(MEMORY[0x1E695DF70]);
             }
 
-            [v65 addObject:v68];
+            [fileAssetInfoList2 addObject:purchaseBundleSinfDictionary];
           }
         }
 
-        v64 = [v62 countByEnumeratingWithState:&v88 objects:v102 count:16];
+        v64 = [fairPlayInfoList countByEnumeratingWithState:&v88 objects:v102 count:16];
       }
 
       while (v64);
@@ -294,36 +294,36 @@ LABEL_11:
 
     else
     {
-      v65 = 0;
+      fileAssetInfoList2 = 0;
     }
 
-    v10 = v81;
-    if ([v65 count])
+    propertiesCopy = v81;
+    if ([fileAssetInfoList2 count])
     {
       v100 = @"sinfs";
-      v101 = v65;
+      v101 = fileAssetInfoList2;
       v70 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v101 forKeys:&v100 count:1];
       [v21 setPurchaseBundleDictionary:v70];
     }
 
-    v71 = [v54 protectionType];
-    if (v71 == 3)
+    protectionType = [firstObject3 protectionType];
+    if (protectionType == 3)
     {
       v72 = 2;
     }
 
     else
     {
-      v72 = v71 == 2;
+      v72 = protectionType == 2;
     }
 
     [v21 setAssetProtectionType:v72];
-    v9 = v82;
-    v73 = [v82 suzeLeaseID];
-    [v21 setSuzeLeaseID:v73];
-    [v21 setAllowsAssetInfoCaching:v73 == 0];
-    v74 = [v54 protectionType];
-    if (!v73 && v74 != 4)
+    responseCopy = v82;
+    suzeLeaseID = [v82 suzeLeaseID];
+    [v21 setSuzeLeaseID:suzeLeaseID];
+    [v21 setAllowsAssetInfoCaching:suzeLeaseID == 0];
+    protectionType2 = [firstObject3 protectionType];
+    if (!suzeLeaseID && protectionType2 != 4)
     {
       [v21 setAllowsAssetCaching:1];
     }
@@ -332,7 +332,7 @@ LABEL_11:
     v85[1] = 3221225472;
     v85[2] = __119__MPCModelGenericAVItemAssetLoadResult_assetLoadResultWithStoreAssetPlaybackResponse_assetLoadProperties_source_error___block_invoke_2;
     v85[3] = &unk_1E82392C0;
-    v86 = v54;
+    v86 = firstObject3;
     v87 = v82;
     [v21 setWillBecomeActivePlayerItemHandler:v85];
 
@@ -343,41 +343,41 @@ LABEL_11:
   else
   {
     v69 = MEMORY[0x1E696ABC0];
-    v9 = v82;
-    v65 = [v82 fileAssetInfoList];
-    v42 = [v69 msv_errorWithDomain:@"MPCError" code:15 debugDescription:{@"Playback response has no valid file asset: %@", v65}];
+    responseCopy = v82;
+    fileAssetInfoList2 = [v82 fileAssetInfoList];
+    v42 = [v69 msv_errorWithDomain:@"MPCError" code:15 debugDescription:{@"Playback response has no valid file asset: %@", fileAssetInfoList2}];
     v21 = 0;
-    v10 = v81;
+    propertiesCopy = v81;
   }
 
-  a5 = v83;
+  source = sourceCopy;
 LABEL_77:
-  v75 = [v21 isHLSAsset];
-  v76 = [v10 preferredAudioAssetType];
-  if (v75)
+  isHLSAsset = [v21 isHLSAsset];
+  preferredAudioAssetType = [propertiesCopy preferredAudioAssetType];
+  if (isHLSAsset)
   {
-    if (v76 < 2)
+    if (preferredAudioAssetType < 2)
     {
-      v77 = 2;
+      preferredAudioAssetType2 = 2;
     }
 
     else
     {
-      v77 = [v10 preferredAudioAssetType];
+      preferredAudioAssetType2 = [propertiesCopy preferredAudioAssetType];
     }
   }
 
   else
   {
-    v77 = v76 != 0;
+    preferredAudioAssetType2 = preferredAudioAssetType != 0;
   }
 
-  [v21 setAudioAssetType:v77];
-  [v21 setSource:a5];
-  if (a6)
+  [v21 setAudioAssetType:preferredAudioAssetType2];
+  [v21 setSource:source];
+  if (error)
   {
     v78 = v42;
-    *a6 = v42;
+    *error = v42;
   }
 
   return v21;
@@ -510,26 +510,26 @@ void __119__MPCModelGenericAVItemAssetLoadResult_assetLoadResultWithStoreAssetPl
   v12 = [v10 stringWithFormat:@"online keys required: %@", v11];
   v55[3] = v12;
   v13 = MEMORY[0x1E696AEC0];
-  v14 = [(MPCModelGenericAVItemAssetLoadResult *)self assetPathExtension];
-  v15 = v14;
+  assetPathExtension = [(MPCModelGenericAVItemAssetLoadResult *)self assetPathExtension];
+  v15 = assetPathExtension;
   v16 = @"N/A";
-  if (v14)
+  if (assetPathExtension)
   {
-    v16 = v14;
+    v16 = assetPathExtension;
   }
 
   v17 = [v13 stringWithFormat:@"path extension: %@", v16];
   v55[4] = v17;
   v18 = MEMORY[0x1E696AEC0];
-  v19 = [(MPCModelGenericAVItemAssetLoadResult *)self audioAssetType];
-  if ((v19 - 1) > 4)
+  audioAssetType = [(MPCModelGenericAVItemAssetLoadResult *)self audioAssetType];
+  if ((audioAssetType - 1) > 4)
   {
     v20 = @"Unspecified";
   }
 
   else
   {
-    v20 = off_1E82333D8[v19 - 1];
+    v20 = off_1E82333D8[audioAssetType - 1];
   }
 
   v21 = [v18 stringWithFormat:@"audio asset type: %@", v20];
@@ -552,103 +552,103 @@ void __119__MPCModelGenericAVItemAssetLoadResult_assetLoadResultWithStoreAssetPl
   v26 = [v25 componentsJoinedByString:@" - "];
   [v54 setObject:v26 forKeyedSubscript:@"Overview"];
 
-  v27 = [(MPCModelGenericAVItemAssetLoadResult *)self purchaseBundleDictionary];
+  purchaseBundleDictionary = [(MPCModelGenericAVItemAssetLoadResult *)self purchaseBundleDictionary];
 
-  if (v27)
+  if (purchaseBundleDictionary)
   {
-    v28 = [(MPCModelGenericAVItemAssetLoadResult *)self purchaseBundleDictionary];
-    [v54 setObject:v28 forKeyedSubscript:@"Purchase bundle dictionary"];
+    purchaseBundleDictionary2 = [(MPCModelGenericAVItemAssetLoadResult *)self purchaseBundleDictionary];
+    [v54 setObject:purchaseBundleDictionary2 forKeyedSubscript:@"Purchase bundle dictionary"];
   }
 
-  v29 = [(MPCModelGenericAVItemAssetLoadResult *)self assetURL];
-  if (v29 || ([(MPCModelGenericAVItemAssetLoadResult *)self alternateHLSPlaylistURL], (v29 = objc_claimAutoreleasedReturnValue()) != 0))
+  assetURL = [(MPCModelGenericAVItemAssetLoadResult *)self assetURL];
+  if (assetURL || ([(MPCModelGenericAVItemAssetLoadResult *)self alternateHLSPlaylistURL], (assetURL = objc_claimAutoreleasedReturnValue()) != 0))
   {
   }
 
   else
   {
-    v50 = [(MPCModelGenericAVItemAssetLoadResult *)self protectedContentSupportStorageFileURL];
+    protectedContentSupportStorageFileURL = [(MPCModelGenericAVItemAssetLoadResult *)self protectedContentSupportStorageFileURL];
 
-    if (!v50)
+    if (!protectedContentSupportStorageFileURL)
     {
       goto LABEL_27;
     }
   }
 
   v30 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:3];
-  v31 = [(MPCModelGenericAVItemAssetLoadResult *)self assetURL];
-  [v30 setObject:v31 forKeyedSubscript:@"assetURL"];
+  assetURL2 = [(MPCModelGenericAVItemAssetLoadResult *)self assetURL];
+  [v30 setObject:assetURL2 forKeyedSubscript:@"assetURL"];
 
-  v32 = [(MPCModelGenericAVItemAssetLoadResult *)self alternateHLSPlaylistURL];
-  [v30 setObject:v32 forKeyedSubscript:@"alt. HLS playlist URL"];
+  alternateHLSPlaylistURL = [(MPCModelGenericAVItemAssetLoadResult *)self alternateHLSPlaylistURL];
+  [v30 setObject:alternateHLSPlaylistURL forKeyedSubscript:@"alt. HLS playlist URL"];
 
-  v33 = [(MPCModelGenericAVItemAssetLoadResult *)self protectedContentSupportStorageFileURL];
-  [v30 setObject:v33 forKeyedSubscript:@"protected content support storage URL"];
+  protectedContentSupportStorageFileURL2 = [(MPCModelGenericAVItemAssetLoadResult *)self protectedContentSupportStorageFileURL];
+  [v30 setObject:protectedContentSupportStorageFileURL2 forKeyedSubscript:@"protected content support storage URL"];
 
   [v54 setObject:v30 forKeyedSubscript:@"URLs"];
 LABEL_27:
-  v34 = [(MPCModelGenericAVItemAssetLoadResult *)self streamingKeyCertificateURL];
-  if (v34 || ([(MPCModelGenericAVItemAssetLoadResult *)self alternateHLSKeyCertificateURL], (v34 = objc_claimAutoreleasedReturnValue()) != 0) || ([(MPCModelGenericAVItemAssetLoadResult *)self streamingKeyServerURL], (v34 = objc_claimAutoreleasedReturnValue()) != 0))
+  streamingKeyCertificateURL = [(MPCModelGenericAVItemAssetLoadResult *)self streamingKeyCertificateURL];
+  if (streamingKeyCertificateURL || ([(MPCModelGenericAVItemAssetLoadResult *)self alternateHLSKeyCertificateURL], (streamingKeyCertificateURL = objc_claimAutoreleasedReturnValue()) != 0) || ([(MPCModelGenericAVItemAssetLoadResult *)self streamingKeyServerURL], (streamingKeyCertificateURL = objc_claimAutoreleasedReturnValue()) != 0))
   {
   }
 
   else
   {
-    v51 = [(MPCModelGenericAVItemAssetLoadResult *)self alternateHLSKeyServerURL];
+    alternateHLSKeyServerURL = [(MPCModelGenericAVItemAssetLoadResult *)self alternateHLSKeyServerURL];
 
-    if (!v51)
+    if (!alternateHLSKeyServerURL)
     {
       goto LABEL_44;
     }
   }
 
   v35 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:6];
-  v36 = [(MPCModelGenericAVItemAssetLoadResult *)self streamingKeyCertificateURL];
+  streamingKeyCertificateURL2 = [(MPCModelGenericAVItemAssetLoadResult *)self streamingKeyCertificateURL];
 
-  if (v36)
+  if (streamingKeyCertificateURL2)
   {
-    v37 = [(MPCModelGenericAVItemAssetLoadResult *)self streamingKeyCertificateURL];
-    [v35 setObject:v37 forKeyedSubscript:@"key certificate URL"];
+    streamingKeyCertificateURL3 = [(MPCModelGenericAVItemAssetLoadResult *)self streamingKeyCertificateURL];
+    [v35 setObject:streamingKeyCertificateURL3 forKeyedSubscript:@"key certificate URL"];
   }
 
-  v38 = [(MPCModelGenericAVItemAssetLoadResult *)self streamingKeyServerURL];
+  streamingKeyServerURL = [(MPCModelGenericAVItemAssetLoadResult *)self streamingKeyServerURL];
 
-  if (v38)
+  if (streamingKeyServerURL)
   {
-    v39 = [(MPCModelGenericAVItemAssetLoadResult *)self streamingKeyServerURL];
-    [v35 setObject:v39 forKeyedSubscript:@"key server URL"];
+    streamingKeyServerURL2 = [(MPCModelGenericAVItemAssetLoadResult *)self streamingKeyServerURL];
+    [v35 setObject:streamingKeyServerURL2 forKeyedSubscript:@"key server URL"];
   }
 
-  v40 = [(MPCModelGenericAVItemAssetLoadResult *)self alternateHLSKeyCertificateURL];
+  alternateHLSKeyCertificateURL = [(MPCModelGenericAVItemAssetLoadResult *)self alternateHLSKeyCertificateURL];
 
-  if (v40)
+  if (alternateHLSKeyCertificateURL)
   {
-    v41 = [(MPCModelGenericAVItemAssetLoadResult *)self alternateHLSKeyCertificateURL];
-    [v35 setObject:v41 forKeyedSubscript:@"alt. HLS key certificate URL"];
+    alternateHLSKeyCertificateURL2 = [(MPCModelGenericAVItemAssetLoadResult *)self alternateHLSKeyCertificateURL];
+    [v35 setObject:alternateHLSKeyCertificateURL2 forKeyedSubscript:@"alt. HLS key certificate URL"];
   }
 
-  v42 = [(MPCModelGenericAVItemAssetLoadResult *)self alternateHLSKeyServerURL];
+  alternateHLSKeyServerURL2 = [(MPCModelGenericAVItemAssetLoadResult *)self alternateHLSKeyServerURL];
 
-  if (v42)
+  if (alternateHLSKeyServerURL2)
   {
-    v43 = [(MPCModelGenericAVItemAssetLoadResult *)self alternateHLSKeyServerURL];
-    [v35 setObject:v43 forKeyedSubscript:@"alt. HLS key server URL"];
+    alternateHLSKeyServerURL3 = [(MPCModelGenericAVItemAssetLoadResult *)self alternateHLSKeyServerURL];
+    [v35 setObject:alternateHLSKeyServerURL3 forKeyedSubscript:@"alt. HLS key server URL"];
   }
 
-  v44 = [(MPCModelGenericAVItemAssetLoadResult *)self keyServerProtocolType];
+  keyServerProtocolType = [(MPCModelGenericAVItemAssetLoadResult *)self keyServerProtocolType];
 
-  if (v44)
+  if (keyServerProtocolType)
   {
-    v45 = [(MPCModelGenericAVItemAssetLoadResult *)self keyServerProtocolType];
-    [v35 setObject:v45 forKeyedSubscript:@"key server protocol type"];
+    keyServerProtocolType2 = [(MPCModelGenericAVItemAssetLoadResult *)self keyServerProtocolType];
+    [v35 setObject:keyServerProtocolType2 forKeyedSubscript:@"key server protocol type"];
   }
 
-  v46 = [(MPCModelGenericAVItemAssetLoadResult *)self streamingKeyAdamID];
+  streamingKeyAdamID = [(MPCModelGenericAVItemAssetLoadResult *)self streamingKeyAdamID];
 
-  if (v46)
+  if (streamingKeyAdamID)
   {
-    v47 = [(MPCModelGenericAVItemAssetLoadResult *)self streamingKeyAdamID];
-    [v35 setObject:v47 forKeyedSubscript:@"streaming key adam ID"];
+    streamingKeyAdamID2 = [(MPCModelGenericAVItemAssetLoadResult *)self streamingKeyAdamID];
+    [v35 setObject:streamingKeyAdamID2 forKeyedSubscript:@"streaming key adam ID"];
   }
 
   [v54 setObject:v35 forKeyedSubscript:@"SKD"];
@@ -663,16 +663,16 @@ LABEL_44:
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(MPCModelGenericAVItemAssetLoadResult *)self descriptionDictionary];
-  v6 = [v3 stringWithFormat:@"<%@: %p %@>", v4, self, v5];
+  descriptionDictionary = [(MPCModelGenericAVItemAssetLoadResult *)self descriptionDictionary];
+  v6 = [v3 stringWithFormat:@"<%@: %p %@>", v4, self, descriptionDictionary];
 
   return v6;
 }
 
 - (BOOL)hasValidAsset
 {
-  v2 = [(MPCModelGenericAVItemAssetLoadResult *)self assetURL];
-  v3 = v2 != 0;
+  assetURL = [(MPCModelGenericAVItemAssetLoadResult *)self assetURL];
+  v3 = assetURL != 0;
 
   return v3;
 }

@@ -1,13 +1,13 @@
 @interface AUVerticalSegmentControl.SegmentAccessibilityElement
 - (BOOL)accessibilityActivate;
-- (BOOL)selectAccessibilitySegmentWithAction:(id)a3;
+- (BOOL)selectAccessibilitySegmentWithAction:(id)action;
 - (_TtCC12CoreAudioKit24AUVerticalSegmentControl27SegmentAccessibilityElement)init;
-- (_TtCC12CoreAudioKit24AUVerticalSegmentControl27SegmentAccessibilityElement)initWithAccessibilityContainer:(id)a3;
+- (_TtCC12CoreAudioKit24AUVerticalSegmentControl27SegmentAccessibilityElement)initWithAccessibilityContainer:(id)container;
 @end
 
 @implementation AUVerticalSegmentControl.SegmentAccessibilityElement
 
-- (_TtCC12CoreAudioKit24AUVerticalSegmentControl27SegmentAccessibilityElement)initWithAccessibilityContainer:(id)a3
+- (_TtCC12CoreAudioKit24AUVerticalSegmentControl27SegmentAccessibilityElement)initWithAccessibilityContainer:(id)container
 {
   swift_unknownObjectRetain();
   sub_23719682C();
@@ -17,16 +17,16 @@
 
 - (BOOL)accessibilityActivate
 {
-  v2 = self;
+  selfCopy = self;
   sub_237111A38();
 
   return 1;
 }
 
-- (BOOL)selectAccessibilitySegmentWithAction:(id)a3
+- (BOOL)selectAccessibilitySegmentWithAction:(id)action
 {
-  v4 = a3;
-  v5 = self;
+  actionCopy = action;
+  selfCopy = self;
   LOBYTE(self) = sub_237114D68();
 
   return self & 1;

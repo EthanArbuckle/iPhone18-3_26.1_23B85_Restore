@@ -1,9 +1,9 @@
 @interface EVChargerAvailabilityDownloader
 - (BOOL)isActive;
 - (_TtC6MapsUI31EVChargerAvailabilityDownloader)init;
-- (_TtC6MapsUI31EVChargerAvailabilityDownloader)initWithMapItemIdentifier:(id)a3;
+- (_TtC6MapsUI31EVChargerAvailabilityDownloader)initWithMapItemIdentifier:(id)identifier;
 - (_TtP6MapsUI39EVChargerAvailabilityDownloaderDelegate_)delegate;
-- (void)setIsActive:(BOOL)a3;
+- (void)setIsActive:(BOOL)active;
 @end
 
 @implementation EVChargerAvailabilityDownloader
@@ -23,26 +23,26 @@
   return *(self + v3);
 }
 
-- (void)setIsActive:(BOOL)a3
+- (void)setIsActive:(BOOL)active
 {
   v5 = OBJC_IVAR____TtC6MapsUI31EVChargerAvailabilityDownloader_isActive;
   swift_beginAccess();
-  *(self + v5) = a3;
-  v6 = self;
+  *(self + v5) = active;
+  selfCopy = self;
   sub_1C57443D8();
 }
 
-- (_TtC6MapsUI31EVChargerAvailabilityDownloader)initWithMapItemIdentifier:(id)a3
+- (_TtC6MapsUI31EVChargerAvailabilityDownloader)initWithMapItemIdentifier:(id)identifier
 {
   ObjectType = swift_getObjectType();
   swift_unknownObjectWeakInit();
   *(self + OBJC_IVAR____TtC6MapsUI31EVChargerAvailabilityDownloader_isActive) = 0;
   *(self + OBJC_IVAR____TtC6MapsUI31EVChargerAvailabilityDownloader_timer) = 0;
   *(self + OBJC_IVAR____TtC6MapsUI31EVChargerAvailabilityDownloader_isDownloadInProgress) = 0;
-  *(self + OBJC_IVAR____TtC6MapsUI31EVChargerAvailabilityDownloader_mapItemIdentifier) = a3;
+  *(self + OBJC_IVAR____TtC6MapsUI31EVChargerAvailabilityDownloader_mapItemIdentifier) = identifier;
   v8.receiver = self;
   v8.super_class = ObjectType;
-  v6 = a3;
+  identifierCopy = identifier;
   return [(EVChargerAvailabilityDownloader *)&v8 init];
 }
 

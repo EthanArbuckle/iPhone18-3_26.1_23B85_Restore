@@ -1,23 +1,23 @@
 @interface DBSDisplayZoomMode
 - (CGSize)size;
-- (DBSDisplayZoomMode)initWithDisplayZoomOption:(unint64_t)a3 localizedName:(id)a4 size:(CGSize)a5;
+- (DBSDisplayZoomMode)initWithDisplayZoomOption:(unint64_t)option localizedName:(id)name size:(CGSize)size;
 @end
 
 @implementation DBSDisplayZoomMode
 
-- (DBSDisplayZoomMode)initWithDisplayZoomOption:(unint64_t)a3 localizedName:(id)a4 size:(CGSize)a5
+- (DBSDisplayZoomMode)initWithDisplayZoomOption:(unint64_t)option localizedName:(id)name size:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
-  v9 = a4;
+  height = size.height;
+  width = size.width;
+  nameCopy = name;
   v15.receiver = self;
   v15.super_class = DBSDisplayZoomMode;
   v10 = [(DBSDisplayZoomMode *)&v15 init];
   v11 = v10;
   if (v10)
   {
-    v10->_displayZoomOption = a3;
-    v12 = [v9 copy];
+    v10->_displayZoomOption = option;
+    v12 = [nameCopy copy];
     localizedName = v11->_localizedName;
     v11->_localizedName = v12;
 

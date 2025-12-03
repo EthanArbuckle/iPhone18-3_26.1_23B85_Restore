@@ -29,12 +29,12 @@
   }
   v6 = ;
   v7 = objc_alloc(MEMORY[0x277D7C788]);
-  v8 = [v6 symbol];
-  v9 = [v7 initWithMagnitudeState:v5 unitString:v8];
+  symbol = [v6 symbol];
+  v9 = [v7 initWithMagnitudeState:v5 unitString:symbol];
 
-  v10 = [v9 serializedRepresentation];
+  serializedRepresentation = [v9 serializedRepresentation];
 
-  return v10;
+  return serializedRepresentation;
 }
 
 @end

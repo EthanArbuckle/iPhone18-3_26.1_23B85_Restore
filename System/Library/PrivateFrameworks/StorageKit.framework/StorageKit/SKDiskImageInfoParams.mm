@@ -1,19 +1,19 @@
 @interface SKDiskImageInfoParams
-+ (id)getDictDescriptionWithDisk:(id)a3;
-- (id)getInfoDictWithDisk:(id)a3;
++ (id)getDictDescriptionWithDisk:(id)disk;
+- (id)getInfoDictWithDisk:(id)disk;
 @end
 
 @implementation SKDiskImageInfoParams
 
-+ (id)getDictDescriptionWithDisk:(id)a3
++ (id)getDictDescriptionWithDisk:(id)disk
 {
-  v3 = a3;
+  diskCopy = disk;
   v4 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:4];
-  v5 = [v3 ioContent];
-  if (v5)
+  ioContent = [diskCopy ioContent];
+  if (ioContent)
   {
-    v6 = [v3 ioContent];
-    [v4 setObject:v6 forKey:@"content-hint"];
+    ioContent2 = [diskCopy ioContent];
+    [v4 setObject:ioContent2 forKey:@"content-hint"];
   }
 
   else
@@ -21,11 +21,11 @@
     [v4 setObject:@"N/A" forKey:@"content-hint"];
   }
 
-  v7 = [v3 volumeName];
-  if (v7)
+  volumeName = [diskCopy volumeName];
+  if (volumeName)
   {
-    v8 = [v3 volumeName];
-    [v4 setObject:v8 forKey:@"volume-name"];
+    volumeName2 = [diskCopy volumeName];
+    [v4 setObject:volumeName2 forKey:@"volume-name"];
   }
 
   else
@@ -33,12 +33,12 @@
     [v4 setObject:@"N/A" forKey:@"volume-name"];
   }
 
-  v9 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v3, "totalSpace")}];
+  v9 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(diskCopy, "totalSpace")}];
   [v4 setObject:v9 forKey:@"total-space"];
 
-  if ([v3 isMemberOfClass:objc_opt_class()])
+  if ([diskCopy isMemberOfClass:objc_opt_class()])
   {
-    v10 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v3, "usedSpace")}];
+    v10 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(diskCopy, "usedSpace")}];
     [v4 setObject:v10 forKey:@"used-space"];
   }
 
@@ -50,16 +50,16 @@
   return v4;
 }
 
-- (id)getInfoDictWithDisk:(id)a3
+- (id)getInfoDictWithDisk:(id)disk
 {
-  v4 = a3;
-  v5 = [(SKDiskImageInfoParams *)self imageInfo];
-  v6 = [v5 mutableCopy];
+  diskCopy = disk;
+  imageInfo = [(SKDiskImageInfoParams *)self imageInfo];
+  v6 = [imageInfo mutableCopy];
 
   if (v6)
   {
     v7 = [MEMORY[0x277CBEB18] arrayWithCapacity:4];
-    v8 = [MEMORY[0x277CBEB18] arrayWithObject:v4];
+    v8 = [MEMORY[0x277CBEB18] arrayWithObject:diskCopy];
     while ([v8 count])
     {
       v9 = [v8 objectAtIndex:0];
@@ -72,11 +72,11 @@
 
       if ([v9 isMemberOfClass:objc_opt_class()])
       {
-        v13 = [v9 container];
-        v14 = [v13 volumes];
-        [v8 addObjectsFromArray:v14];
+        container = [v9 container];
+        volumes = [container volumes];
+        [v8 addObjectsFromArray:volumes];
 
-        v15 = [SKDiskImageInfoParams getDictDescriptionWithDisk:v13];
+        v15 = [SKDiskImageInfoParams getDictDescriptionWithDisk:container];
         [v7 addObject:v15];
       }
 

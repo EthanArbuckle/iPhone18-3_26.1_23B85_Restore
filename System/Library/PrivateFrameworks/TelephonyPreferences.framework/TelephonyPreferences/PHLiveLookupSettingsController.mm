@@ -1,28 +1,28 @@
 @interface PHLiveLookupSettingsController
-- (BOOL)_isUniqueExtension:(id)a3;
+- (BOOL)_isUniqueExtension:(id)extension;
 - (BOOL)canEditExtensions;
 - (BOOL)hasExtensions;
-- (PHLiveLookupSettingsController)initWithParent:(id)a3;
-- (id)_extensionFrom:(id)a3;
-- (id)_localizedExtensionTitleForExtension:(id)a3 unique:(BOOL)a4;
+- (PHLiveLookupSettingsController)initWithParent:(id)parent;
+- (id)_extensionFrom:(id)from;
+- (id)_localizedExtensionTitleForExtension:(id)extension unique:(BOOL)unique;
 - (id)createExtensionsGroupSpecifiers;
-- (id)extensionForSpecifier:(id)a3;
-- (id)readPreferenceValue:(id)a3;
+- (id)extensionForSpecifier:(id)specifier;
+- (id)readPreferenceValue:(id)value;
 - (id)specifiers;
 - (void)_updateExtensions;
 - (void)dealloc;
-- (void)handleUIApplicationWillEnterForegroundNotification:(id)a3;
-- (void)presentError:(id)a3 fromSettingEnabled:(BOOL)a4 forExtension:(id)a5;
+- (void)handleUIApplicationWillEnterForegroundNotification:(id)notification;
+- (void)presentError:(id)error fromSettingEnabled:(BOOL)enabled forExtension:(id)extension;
 - (void)refreshView;
-- (void)setPreferenceValue:(id)a3 specifier:(id)a4;
-- (void)tableView:(id)a3 moveRowAtIndexPath:(id)a4 toIndexPath:(id)a5;
+- (void)setPreferenceValue:(id)value specifier:(id)specifier;
+- (void)tableView:(id)view moveRowAtIndexPath:(id)path toIndexPath:(id)indexPath;
 @end
 
 @implementation PHLiveLookupSettingsController
 
-- (PHLiveLookupSettingsController)initWithParent:(id)a3
+- (PHLiveLookupSettingsController)initWithParent:(id)parent
 {
-  v5 = a3;
+  parentCopy = parent;
   v15.receiver = self;
   v15.super_class = PHLiveLookupSettingsController;
   v6 = [(PHLiveLookupSettingsController *)&v15 init];
@@ -32,12 +32,12 @@
     extensionManager = v6->_extensionManager;
     v6->_extensionManager = v7;
 
-    objc_storeStrong(&v6->_parent, a3);
+    objc_storeStrong(&v6->_parent, parent);
     [(PHLiveLookupSettingsController *)v6 _updateExtensions];
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
     CFNotificationCenterAddObserver(DarwinNotifyCenter, v6, _handleLLExtensionsChangedNotification, +[LiveLookupManagerProxy LLExtensionsChangedNotification], 0, CFNotificationSuspensionBehaviorDeliverImmediately);
-    v10 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v10 addObserver:v6 selector:sel_handleUIApplicationWillEnterForegroundNotification_ name:*MEMORY[0x277D76758] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v6 selector:sel_handleUIApplicationWillEnterForegroundNotification_ name:*MEMORY[0x277D76758] object:0];
 
     v11 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_BACKGROUND, 0);
     v12 = dispatch_queue_create("PHLiveLookupSettingsControllerQueue", v11);
@@ -52,28 +52,28 @@
 {
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterRemoveEveryObserver(DarwinNotifyCenter, self);
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v5.receiver = self;
   v5.super_class = PHLiveLookupSettingsController;
   [(PHLiveLookupSettingsController *)&v5 dealloc];
 }
 
-- (void)tableView:(id)a3 moveRowAtIndexPath:(id)a4 toIndexPath:(id)a5
+- (void)tableView:(id)view moveRowAtIndexPath:(id)path toIndexPath:(id)indexPath
 {
   v27 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
-  v9 = [v7 section];
-  if (v9 == [v8 section])
+  pathCopy = path;
+  indexPathCopy = indexPath;
+  section = [pathCopy section];
+  if (section == [indexPathCopy section])
   {
-    v10 = [(PHLiveLookupSettingsController *)self extensions];
-    v11 = [v10 mutableCopy];
+    extensions = [(PHLiveLookupSettingsController *)self extensions];
+    v11 = [extensions mutableCopy];
 
-    v12 = [v11 objectAtIndexedSubscript:{objc_msgSend(v7, "row")}];
-    [v11 removeObjectAtIndex:{objc_msgSend(v7, "row")}];
-    [v11 insertObject:v12 atIndex:{objc_msgSend(v8, "row")}];
+    v12 = [v11 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
+    [v11 removeObjectAtIndex:{objc_msgSend(pathCopy, "row")}];
+    [v11 insertObject:v12 atIndex:{objc_msgSend(indexPathCopy, "row")}];
     [(PHLiveLookupSettingsController *)self setExtensions:v11];
     v13 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v11, "count")}];
     v22 = 0u;
@@ -96,8 +96,8 @@
             objc_enumerationMutation(v14);
           }
 
-          v19 = [*(*(&v22 + 1) + 8 * v18) identifier];
-          [v13 addObject:v19];
+          identifier = [*(*(&v22 + 1) + 8 * v18) identifier];
+          [v13 addObject:identifier];
 
           ++v18;
         }
@@ -109,8 +109,8 @@
       while (v16);
     }
 
-    v20 = [(PHLiveLookupSettingsController *)self extensionManager];
-    [v20 setWithPrioritizedExtensionIdentifiers:v13];
+    extensionManager = [(PHLiveLookupSettingsController *)self extensionManager];
+    [extensionManager setWithPrioritizedExtensionIdentifiers:v13];
   }
 
   v21 = *MEMORY[0x277D85DE8];
@@ -119,26 +119,26 @@
 - (id)specifiers
 {
   v3 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v4 = [(PHLiveLookupSettingsController *)self extensions];
-  v5 = [v4 count];
+  extensions = [(PHLiveLookupSettingsController *)self extensions];
+  v5 = [extensions count];
 
   if (v5)
   {
-    v6 = [(PHLiveLookupSettingsController *)self createExtensionsGroupSpecifiers];
-    [v3 addObjectsFromArray:v6];
+    createExtensionsGroupSpecifiers = [(PHLiveLookupSettingsController *)self createExtensionsGroupSpecifiers];
+    [v3 addObjectsFromArray:createExtensionsGroupSpecifiers];
   }
 
   return v3;
 }
 
-- (id)readPreferenceValue:(id)a3
+- (id)readPreferenceValue:(id)value
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = [(PHLiveLookupSettingsController *)self extensionForSpecifier:a3];
+  v4 = [(PHLiveLookupSettingsController *)self extensionForSpecifier:value];
   if (v4)
   {
-    v5 = [(PHLiveLookupSettingsController *)self extensionManager];
-    v6 = [v5 extensionEnabled:v4];
+    extensionManager = [(PHLiveLookupSettingsController *)self extensionManager];
+    v6 = [extensionManager extensionEnabled:v4];
 
     v7 = TPSLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -169,33 +169,33 @@
   return v9;
 }
 
-- (void)setPreferenceValue:(id)a3 specifier:(id)a4
+- (void)setPreferenceValue:(id)value specifier:(id)specifier
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PHLiveLookupSettingsController *)self extensionForSpecifier:v7];
+  valueCopy = value;
+  specifierCopy = specifier;
+  v8 = [(PHLiveLookupSettingsController *)self extensionForSpecifier:specifierCopy];
   if (v8)
   {
-    v9 = [(PHLiveLookupSettingsController *)self extensionManager];
-    v10 = [v9 extensionEnabled:v8];
+    extensionManager = [(PHLiveLookupSettingsController *)self extensionManager];
+    v10 = [extensionManager extensionEnabled:v8];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v11 = [v6 BOOLValue];
+      bOOLValue = [valueCopy BOOLValue];
     }
 
     else
     {
-      v11 = 0;
+      bOOLValue = 0;
     }
 
     v12 = TPSLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v13 = @"DISABLED";
-      if (v11)
+      if (bOOLValue)
       {
         v13 = @"ENABLED";
       }
@@ -208,19 +208,19 @@
     }
 
     objc_initWeak(buf, self);
-    v14 = [(PHLiveLookupSettingsController *)self extensionManager];
+    extensionManager2 = [(PHLiveLookupSettingsController *)self extensionManager];
     v17 = MEMORY[0x277D85DD0];
     v18 = 3221225472;
     v19 = __63__PHLiveLookupSettingsController_setPreferenceValue_specifier___block_invoke;
     v20 = &unk_2782E3A20;
     objc_copyWeak(&v23, buf);
-    v15 = v7;
+    v15 = specifierCopy;
     v21 = v15;
-    v24 = v11;
+    v24 = bOOLValue;
     v22 = v8;
-    [v14 setEnabled:v11 forExtension:v22 completion:&v17];
+    [extensionManager2 setEnabled:bOOLValue forExtension:v22 completion:&v17];
 
-    if (v10 != v11)
+    if (v10 != bOOLValue)
     {
       [v15 setProperty:MEMORY[0x277CBEC38] forKey:{*MEMORY[0x277D3FEA8], v17, v18, v19, v20, v21}];
     }
@@ -278,9 +278,9 @@ void __63__PHLiveLookupSettingsController_setPreferenceValue_specifier___block_i
   }
 }
 
-- (id)extensionForSpecifier:(id)a3
+- (id)extensionForSpecifier:(id)specifier
 {
-  v3 = [a3 propertyForKey:@"LiveLookupDBExtension"];
+  v3 = [specifier propertyForKey:@"LiveLookupDBExtension"];
   v4 = v3;
   if (v3)
   {
@@ -290,20 +290,20 @@ void __63__PHLiveLookupSettingsController_setPreferenceValue_specifier___block_i
   return v4;
 }
 
-- (void)handleUIApplicationWillEnterForegroundNotification:(id)a3
+- (void)handleUIApplicationWillEnterForegroundNotification:(id)notification
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  notificationCopy = notification;
   v5 = TPSLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = objc_opt_class();
     v7 = v6;
-    v8 = [v4 name];
+    name = [notificationCopy name];
     v10 = 138412546;
     v11 = v6;
     v12 = 2112;
-    v13 = v8;
+    v13 = name;
     _os_log_impl(&dword_21B8E9000, v5, OS_LOG_TYPE_DEFAULT, "%@ is handling <%@>", &v10, 0x16u);
   }
 
@@ -412,23 +412,23 @@ void __51__PHLiveLookupSettingsController__updateExtensions__block_invoke(uint64
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_extensionFrom:(id)a3
+- (id)_extensionFrom:(id)from
 {
   v4 = MEMORY[0x277CCA9C8];
-  v5 = a3;
-  v6 = [(PHLiveLookupSettingsController *)self extensionManager];
-  v7 = [v6 extensionName:v5];
+  fromCopy = from;
+  extensionManager = [(PHLiveLookupSettingsController *)self extensionManager];
+  v7 = [extensionManager extensionName:fromCopy];
 
   v8 = [v4 extensionWithIdentifier:v7 error:0];
 
   return v8;
 }
 
-- (BOOL)_isUniqueExtension:(id)a3
+- (BOOL)_isUniqueExtension:(id)extension
 {
   v27 = *MEMORY[0x277D85DE8];
-  v20 = a3;
-  v21 = self;
+  extensionCopy = extension;
+  selfCopy = self;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
@@ -449,15 +449,15 @@ void __51__PHLiveLookupSettingsController__updateExtensions__block_invoke(uint64
           objc_enumerationMutation(obj);
         }
 
-        v9 = [(PHLiveLookupSettingsController *)v21 _extensionFrom:*(*(&v22 + 1) + 8 * i)];
+        v9 = [(PHLiveLookupSettingsController *)selfCopy _extensionFrom:*(*(&v22 + 1) + 8 * i)];
         v10 = v9;
         if (v9)
         {
-          v11 = [v9 containingAppURL];
-          v12 = [v11 absoluteString];
-          v13 = [v20 containingAppURL];
-          v14 = [v13 absoluteString];
-          v15 = [v12 isEqualToString:v14];
+          containingAppURL = [v9 containingAppURL];
+          absoluteString = [containingAppURL absoluteString];
+          containingAppURL2 = [extensionCopy containingAppURL];
+          absoluteString2 = [containingAppURL2 absoluteString];
+          v15 = [absoluteString isEqualToString:absoluteString2];
 
           if (v15)
           {
@@ -504,7 +504,7 @@ LABEL_14:
     _os_log_impl(&dword_21B8E9000, v3, OS_LOG_TYPE_DEFAULT, "live lookup createExtensionsGroupSpecifiers", buf, 2u);
   }
 
-  v4 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v5 = MEMORY[0x277D3FAD8];
   v6 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v7 = [v6 localizedStringForKey:@"LIVE_LOOKUP_EXTENSIONS_LIST_HEADER" value:&stru_282D54710 table:@"CallDirectorySettings"];
@@ -514,28 +514,28 @@ LABEL_14:
   v10 = [v9 localizedStringForKey:@"LIVE_LOOKUP_EXTENSIONS_LIST_FOOTER" value:&stru_282D54710 table:@"CallDirectorySettings"];
   [v8 setProperty:v10 forKey:*MEMORY[0x277D3FF88]];
 
-  v43 = v4;
+  v43 = array;
   v39 = v8;
-  [v4 insertObject:v8 atIndex:0];
+  [array insertObject:v8 atIndex:0];
   v11 = TPSLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [(PHLiveLookupSettingsController *)self extensions];
+    extensions = [(PHLiveLookupSettingsController *)self extensions];
     *buf = 138412290;
-    v55 = v12;
+    v55 = extensions;
     _os_log_impl(&dword_21B8E9000, v11, OS_LOG_TYPE_DEFAULT, "live lookup extensions=%@", buf, 0xCu);
   }
 
   v13 = objc_alloc(MEMORY[0x277CBEB18]);
-  v14 = [(PHLiveLookupSettingsController *)self extensions];
-  v42 = [v13 initWithCapacity:{objc_msgSend(v14, "count")}];
+  extensions2 = [(PHLiveLookupSettingsController *)self extensions];
+  v42 = [v13 initWithCapacity:{objc_msgSend(extensions2, "count")}];
 
   v50 = 0u;
   v51 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v15 = [(PHLiveLookupSettingsController *)self extensions];
-  v16 = [v15 countByEnumeratingWithState:&v48 objects:v53 count:16];
+  extensions3 = [(PHLiveLookupSettingsController *)self extensions];
+  v16 = [extensions3 countByEnumeratingWithState:&v48 objects:v53 count:16];
   if (v16)
   {
     v17 = v16;
@@ -546,13 +546,13 @@ LABEL_14:
       {
         if (*v49 != v18)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(extensions3);
         }
 
         v20 = *(*(&v48 + 1) + 8 * i);
         v21 = MEMORY[0x277CCA9C8];
-        v22 = [(PHLiveLookupSettingsController *)self extensionManager];
-        v23 = [v22 extensionName:v20];
+        extensionManager = [(PHLiveLookupSettingsController *)self extensionManager];
+        v23 = [extensionManager extensionName:v20];
         v24 = [v21 extensionWithIdentifier:v23 error:0];
 
         if (v24)
@@ -561,7 +561,7 @@ LABEL_14:
         }
       }
 
-      v17 = [v15 countByEnumeratingWithState:&v48 objects:v53 count:16];
+      v17 = [extensions3 countByEnumeratingWithState:&v48 objects:v53 count:16];
     }
 
     while (v17);
@@ -594,8 +594,8 @@ LABEL_14:
           v31 = [(PHLiveLookupSettingsController *)self _localizedExtensionTitleForExtension:v30 unique:[(PHLiveLookupSettingsController *)self _isUniqueExtension:v30]];
           v32 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:v31 target:self set:sel_setPreferenceValue_specifier_ get:sel_readPreferenceValue_ detail:0 cell:6 edit:0];
           v33 = MEMORY[0x277D755B8];
-          v34 = [v30 plugInKitProxy];
-          v35 = [v33 _iconForResourceProxy:v34 format:0];
+          plugInKitProxy = [v30 plugInKitProxy];
+          v35 = [v33 _iconForResourceProxy:plugInKitProxy format:0];
 
           [v32 setProperty:v35 forKey:v41];
           [v32 setProperty:v29 forKey:@"LiveLookupDBExtension"];
@@ -615,42 +615,42 @@ LABEL_14:
   return v36;
 }
 
-- (id)_localizedExtensionTitleForExtension:(id)a3 unique:(BOOL)a4
+- (id)_localizedExtensionTitleForExtension:(id)extension unique:(BOOL)unique
 {
-  if (a4)
+  if (unique)
   {
-    v4 = a3;
-    v5 = [v4 localizedName];
+    extensionCopy = extension;
+    localizedName = [extensionCopy localizedName];
   }
 
   else
   {
     v6 = MEMORY[0x277CCACA8];
     v7 = MEMORY[0x277CCA8D8];
-    v8 = a3;
-    v4 = [v7 bundleForClass:objc_opt_class()];
-    v9 = [v4 localizedStringForKey:@"CALL_DIRECTORY_APP_%@_EXTENSION_%@" value:&stru_282D54710 table:@"CallDirectorySettings"];
-    v10 = [v8 localizedContainingAppName];
-    v11 = [v8 localizedName];
+    extensionCopy2 = extension;
+    extensionCopy = [v7 bundleForClass:objc_opt_class()];
+    v9 = [extensionCopy localizedStringForKey:@"CALL_DIRECTORY_APP_%@_EXTENSION_%@" value:&stru_282D54710 table:@"CallDirectorySettings"];
+    localizedContainingAppName = [extensionCopy2 localizedContainingAppName];
+    localizedName2 = [extensionCopy2 localizedName];
 
-    v5 = [v6 stringWithFormat:v9, v10, v11];
+    localizedName = [v6 stringWithFormat:v9, localizedContainingAppName, localizedName2];
   }
 
-  return v5;
+  return localizedName;
 }
 
 - (BOOL)hasExtensions
 {
-  v2 = [(PHLiveLookupSettingsController *)self extensions];
-  v3 = [v2 count] != 0;
+  extensions = [(PHLiveLookupSettingsController *)self extensions];
+  v3 = [extensions count] != 0;
 
   return v3;
 }
 
 - (BOOL)canEditExtensions
 {
-  v2 = [(PHLiveLookupSettingsController *)self extensions];
-  v3 = [v2 count] > 1;
+  extensions = [(PHLiveLookupSettingsController *)self extensions];
+  v3 = [extensions count] > 1;
 
   return v3;
 }
@@ -664,20 +664,20 @@ LABEL_14:
     _os_log_impl(&dword_21B8E9000, v3, OS_LOG_TYPE_DEFAULT, "live lookup refreshView", v5, 2u);
   }
 
-  v4 = [(PHLiveLookupSettingsController *)self parent];
-  [v4 reloadSpecifiers];
+  parent = [(PHLiveLookupSettingsController *)self parent];
+  [parent reloadSpecifiers];
 }
 
-- (void)presentError:(id)a3 fromSettingEnabled:(BOOL)a4 forExtension:(id)a5
+- (void)presentError:(id)error fromSettingEnabled:(BOOL)enabled forExtension:(id)extension
 {
   v7 = @"CALL_DIRECTORY_DISABLE_EXTENSION_ALERT_UNKNOWN_%@";
-  if (a4)
+  if (enabled)
   {
     v7 = @"CALL_DIRECTORY_ENABLE_EXTENSION_ALERT_UNKNOWN_%@";
   }
 
   v8 = MEMORY[0x277CCA8D8];
-  if (a4)
+  if (enabled)
   {
     v9 = @"CALL_DIRECTORY_ENABLE_EXTENSION_ALERT_TITLE";
   }
@@ -688,11 +688,11 @@ LABEL_14:
   }
 
   v10 = v7;
-  v11 = a5;
+  extensionCopy = extension;
   v12 = [v8 bundleForClass:objc_opt_class()];
   v25 = [v12 localizedStringForKey:v9 value:&stru_282D54710 table:@"CallDirectorySettings"];
 
-  v13 = [(PHLiveLookupSettingsController *)self _extensionFrom:v11];
+  v13 = [(PHLiveLookupSettingsController *)self _extensionFrom:extensionCopy];
 
   v14 = MEMORY[0x277CCACA8];
   v15 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -708,8 +708,8 @@ LABEL_14:
   v23 = [v20 actionWithTitle:v22 style:0 handler:0];
 
   [v19 addAction:v23];
-  v24 = [(PHLiveLookupSettingsController *)self parent];
-  [v24 presentViewController:v19 animated:1 completion:0];
+  parent = [(PHLiveLookupSettingsController *)self parent];
+  [parent presentViewController:v19 animated:1 completion:0];
 }
 
 void __63__PHLiveLookupSettingsController_setPreferenceValue_specifier___block_invoke_2_cold_1(uint64_t a1, uint64_t *a2, os_log_t log)

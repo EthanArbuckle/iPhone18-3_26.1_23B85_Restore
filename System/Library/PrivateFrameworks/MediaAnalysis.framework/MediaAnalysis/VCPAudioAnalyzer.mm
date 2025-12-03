@@ -1,22 +1,22 @@
 @interface VCPAudioAnalyzer
-- (VCPAudioAnalyzer)initWithAnalysisTypes:(unint64_t)a3 forStreaming:(BOOL)a4 andResultHandler:(id)a5;
+- (VCPAudioAnalyzer)initWithAnalysisTypes:(unint64_t)types forStreaming:(BOOL)streaming andResultHandler:(id)handler;
 - (id)audioFormatRequirements;
 - (id)voiceDetections;
-- (int)analyzeAsset:(id)a3 cancel:(id)a4 results:(id *)a5;
-- (int)analyzeSampleBuffer:(opaqueCMSampleBuffer *)a3;
-- (int)finalizeAnalysisAtTime:(id *)a3;
-- (int)processAudioSamples:(AudioBufferList *)a3 timestamp:(AudioTimeStamp *)a4;
-- (int)processSampleBuffer:(opaqueCMSampleBuffer *)a3;
-- (int)setupWithSample:(opaqueCMSampleBuffer *)a3 andTrackDuration:(id *)a4;
+- (int)analyzeAsset:(id)asset cancel:(id)cancel results:(id *)results;
+- (int)analyzeSampleBuffer:(opaqueCMSampleBuffer *)buffer;
+- (int)finalizeAnalysisAtTime:(id *)time;
+- (int)processAudioSamples:(AudioBufferList *)samples timestamp:(AudioTimeStamp *)timestamp;
+- (int)processSampleBuffer:(opaqueCMSampleBuffer *)buffer;
+- (int)setupWithSample:(opaqueCMSampleBuffer *)sample andTrackDuration:(id *)duration;
 - (void)dealloc;
 @end
 
 @implementation VCPAudioAnalyzer
 
-- (VCPAudioAnalyzer)initWithAnalysisTypes:(unint64_t)a3 forStreaming:(BOOL)a4 andResultHandler:(id)a5
+- (VCPAudioAnalyzer)initWithAnalysisTypes:(unint64_t)types forStreaming:(BOOL)streaming andResultHandler:(id)handler
 {
-  v5 = a4;
-  v8 = a5;
+  streamingCopy = streaming;
+  handlerCopy = handler;
   v26.receiver = self;
   v26.super_class = VCPAudioAnalyzer;
   v9 = [(VCPAudioAnalyzer *)&v26 init];
@@ -25,7 +25,7 @@
     goto LABEL_25;
   }
 
-  if ((a3 & 0x10) != 0 && v5)
+  if ((types & 0x10) != 0 && streamingCopy)
   {
     v10 = +[VCPVoiceDetector detector];
     voiceDetector = v9->_voiceDetector;
@@ -49,9 +49,9 @@ LABEL_25:
     }
   }
 
-  else if ((a3 & 0x820400200010) != 0)
+  else if ((types & 0x820400200010) != 0)
   {
-    v14 = [[VCPAudioClassifier alloc] initWithTypes:a3];
+    v14 = [[VCPAudioClassifier alloc] initWithTypes:types];
     audioClassifier = v9->_audioClassifier;
     v9->_audioClassifier = v14;
 
@@ -69,7 +69,7 @@ LABEL_25:
     }
   }
 
-  if ((a3 & 0x800000) != 0)
+  if ((types & 0x800000) != 0)
   {
     v16 = objc_alloc_init(VCPLoudnessAnalyzer);
     loudnessAnalyzer = v9->_loudnessAnalyzer;
@@ -89,7 +89,7 @@ LABEL_25:
     }
   }
 
-  if ((a3 & 0x8000000) != 0)
+  if ((types & 0x8000000) != 0)
   {
     v18 = objc_alloc_init(VCPSongDetector);
     songDetector = v9->_songDetector;
@@ -113,7 +113,7 @@ LABEL_25:
   v9->_bufferedSamples = 0;
   v9->_sampleBatchSize = 320;
   v9->_initialized = 0;
-  v20 = _Block_copy(v8);
+  v20 = _Block_copy(handlerCopy);
   resultHandler = v9->_resultHandler;
   v9->_resultHandler = v20;
 
@@ -162,25 +162,25 @@ LABEL_26:
   return v5;
 }
 
-- (int)setupWithSample:(opaqueCMSampleBuffer *)a3 andTrackDuration:(id *)a4
+- (int)setupWithSample:(opaqueCMSampleBuffer *)sample andTrackDuration:(id *)duration
 {
-  FormatDescription = CMSampleBufferGetFormatDescription(a3);
+  FormatDescription = CMSampleBufferGetFormatDescription(sample);
   if (!CMAudioFormatDescriptionGetStreamBasicDescription(FormatDescription))
   {
     return -50;
   }
 
   voiceDetector = self->_voiceDetector;
-  if (!voiceDetector || (result = [(VCPVoiceDetector *)voiceDetector setupWithSample:a3 andSampleBatchSize:self->_sampleBatchSize]) == 0)
+  if (!voiceDetector || (result = [(VCPVoiceDetector *)voiceDetector setupWithSample:sample andSampleBatchSize:self->_sampleBatchSize]) == 0)
   {
     audioClassifier = self->_audioClassifier;
-    if (!audioClassifier || (v15 = *&a4->var0, var3 = a4->var3, (result = [(VCPAudioClassifier *)audioClassifier setupWithSample:a3 trackDuration:&v15 resultHandler:self->_resultHandler andSampleBatchSize:self->_sampleBatchSize]) == 0))
+    if (!audioClassifier || (v15 = *&duration->var0, var3 = duration->var3, (result = [(VCPAudioClassifier *)audioClassifier setupWithSample:sample trackDuration:&v15 resultHandler:self->_resultHandler andSampleBatchSize:self->_sampleBatchSize]) == 0))
     {
       loudnessAnalyzer = self->_loudnessAnalyzer;
-      if (!loudnessAnalyzer || (result = [(VCPLoudnessAnalyzer *)loudnessAnalyzer setupWithSample:a3 andSampleBatchSize:self->_sampleBatchSize]) == 0)
+      if (!loudnessAnalyzer || (result = [(VCPLoudnessAnalyzer *)loudnessAnalyzer setupWithSample:sample andSampleBatchSize:self->_sampleBatchSize]) == 0)
       {
         songDetector = self->_songDetector;
-        if (!songDetector || (result = [(VCPSongDetector *)songDetector setupWithSample:a3 andSampleBatchSize:self->_sampleBatchSize]) == 0)
+        if (!songDetector || (result = [(VCPSongDetector *)songDetector setupWithSample:sample andSampleBatchSize:self->_sampleBatchSize]) == 0)
         {
           if (self->_inputBuffer)
           {
@@ -212,16 +212,16 @@ LABEL_13:
   return result;
 }
 
-- (int)processAudioSamples:(AudioBufferList *)a3 timestamp:(AudioTimeStamp *)a4
+- (int)processAudioSamples:(AudioBufferList *)samples timestamp:(AudioTimeStamp *)timestamp
 {
   voiceDetector = self->_voiceDetector;
-  if (!voiceDetector || (v8 = *&a4->mRateScalar, v20 = *&a4->mSampleTime, v21 = v8, v9 = *&a4->mSMPTETime.mHours, v22 = *&a4->mSMPTETime.mSubframes, v23 = v9, (result = [(VCPVoiceDetector *)voiceDetector processAudioSamples:a3 timestamp:&v20]) == 0))
+  if (!voiceDetector || (v8 = *&timestamp->mRateScalar, v20 = *&timestamp->mSampleTime, v21 = v8, v9 = *&timestamp->mSMPTETime.mHours, v22 = *&timestamp->mSMPTETime.mSubframes, v23 = v9, (result = [(VCPVoiceDetector *)voiceDetector processAudioSamples:samples timestamp:&v20]) == 0))
   {
     audioClassifier = self->_audioClassifier;
-    if (!audioClassifier || (v12 = *&a4->mRateScalar, v20 = *&a4->mSampleTime, v21 = v12, v13 = *&a4->mSMPTETime.mHours, v22 = *&a4->mSMPTETime.mSubframes, v23 = v13, (result = [(VCPAudioClassifier *)audioClassifier processAudioSamples:a3 timestamp:&v20]) == 0))
+    if (!audioClassifier || (v12 = *&timestamp->mRateScalar, v20 = *&timestamp->mSampleTime, v21 = v12, v13 = *&timestamp->mSMPTETime.mHours, v22 = *&timestamp->mSMPTETime.mSubframes, v23 = v13, (result = [(VCPAudioClassifier *)audioClassifier processAudioSamples:samples timestamp:&v20]) == 0))
     {
       loudnessAnalyzer = self->_loudnessAnalyzer;
-      if (!loudnessAnalyzer || (v15 = *&a4->mRateScalar, v20 = *&a4->mSampleTime, v21 = v15, v16 = *&a4->mSMPTETime.mHours, v22 = *&a4->mSMPTETime.mSubframes, v23 = v16, (result = [(VCPLoudnessAnalyzer *)loudnessAnalyzer processAudioSamples:a3 timestamp:&v20]) == 0))
+      if (!loudnessAnalyzer || (v15 = *&timestamp->mRateScalar, v20 = *&timestamp->mSampleTime, v21 = v15, v16 = *&timestamp->mSMPTETime.mHours, v22 = *&timestamp->mSMPTETime.mSubframes, v23 = v16, (result = [(VCPLoudnessAnalyzer *)loudnessAnalyzer processAudioSamples:samples timestamp:&v20]) == 0))
       {
         songDetector = self->_songDetector;
         if (!songDetector)
@@ -229,13 +229,13 @@ LABEL_13:
           return 0;
         }
 
-        v18 = *&a4->mRateScalar;
-        v20 = *&a4->mSampleTime;
+        v18 = *&timestamp->mRateScalar;
+        v20 = *&timestamp->mSampleTime;
         v21 = v18;
-        v19 = *&a4->mSMPTETime.mHours;
-        v22 = *&a4->mSMPTETime.mSubframes;
+        v19 = *&timestamp->mSMPTETime.mHours;
+        v22 = *&timestamp->mSMPTETime.mSubframes;
         v23 = v19;
-        result = [(VCPSongDetector *)songDetector processAudioSamples:a3 timestamp:&v20];
+        result = [(VCPSongDetector *)songDetector processAudioSamples:samples timestamp:&v20];
         if (!result)
         {
           return 0;
@@ -247,16 +247,16 @@ LABEL_13:
   return result;
 }
 
-- (int)finalizeAnalysisAtTime:(id *)a3
+- (int)finalizeAnalysisAtTime:(id *)time
 {
   voiceDetector = self->_voiceDetector;
-  if (!voiceDetector || (result = [(VCPVoiceDetector *)voiceDetector finalizeAnalysisAtTime:a3]) == 0)
+  if (!voiceDetector || (result = [(VCPVoiceDetector *)voiceDetector finalizeAnalysisAtTime:time]) == 0)
   {
     audioClassifier = self->_audioClassifier;
-    if (!audioClassifier || (result = [(VCPAudioClassifier *)audioClassifier finalizeAnalysisAtTime:a3]) == 0)
+    if (!audioClassifier || (result = [(VCPAudioClassifier *)audioClassifier finalizeAnalysisAtTime:time]) == 0)
     {
       loudnessAnalyzer = self->_loudnessAnalyzer;
-      if (!loudnessAnalyzer || (result = [(VCPLoudnessAnalyzer *)loudnessAnalyzer finalizeAnalysisAtTime:a3]) == 0)
+      if (!loudnessAnalyzer || (result = [(VCPLoudnessAnalyzer *)loudnessAnalyzer finalizeAnalysisAtTime:time]) == 0)
       {
         songDetector = self->_songDetector;
         if (!songDetector)
@@ -264,7 +264,7 @@ LABEL_13:
           return 0;
         }
 
-        result = [(VCPSongDetector *)songDetector finalizeAnalysisAtTime:a3];
+        result = [(VCPSongDetector *)songDetector finalizeAnalysisAtTime:time];
         if (!result)
         {
           return 0;
@@ -276,16 +276,16 @@ LABEL_13:
   return result;
 }
 
-- (int)processSampleBuffer:(opaqueCMSampleBuffer *)a3
+- (int)processSampleBuffer:(opaqueCMSampleBuffer *)buffer
 {
-  FormatDescription = CMSampleBufferGetFormatDescription(a3);
+  FormatDescription = CMSampleBufferGetFormatDescription(buffer);
   if (!CMAudioFormatDescriptionGetStreamBasicDescription(FormatDescription))
   {
     return -50;
   }
 
-  NumSamples = CMSampleBufferGetNumSamples(a3);
-  DataBuffer = CMSampleBufferGetDataBuffer(a3);
+  NumSamples = CMSampleBufferGetNumSamples(buffer);
+  DataBuffer = CMSampleBufferGetDataBuffer(buffer);
   dataPointerOut = 0;
   mData = self->_audioBufferList.mBuffers[0].mData;
   result = CMBlockBufferGetDataPointer(DataBuffer, 0, 0, 0, &dataPointerOut);
@@ -348,17 +348,17 @@ LABEL_13:
   return result;
 }
 
-- (int)analyzeAsset:(id)a3 cancel:(id)a4 results:(id *)a5
+- (int)analyzeAsset:(id)asset cancel:(id)cancel results:(id *)results
 {
   v55 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v44 = [MEMORY[0x1E695DF90] dictionary];
+  assetCopy = asset;
+  cancelCopy = cancel;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v51 = 0u;
   v52 = 0u;
   v49 = 0u;
   v50 = 0u;
-  obj = [v7 vcp_enabledTracksWithMediaType:*MEMORY[0x1E69875A0]];
+  obj = [assetCopy vcp_enabledTracksWithMediaType:*MEMORY[0x1E69875A0]];
   v9 = [obj countByEnumeratingWithState:&v49 objects:v54 count:16];
   if (v9)
   {
@@ -388,8 +388,8 @@ LABEL_13:
         CMTimeRangeGetEnd(&v46, range);
         if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
         {
-          v38 = v7;
-          v11 = [v10 trackID];
+          v38 = assetCopy;
+          trackID = [v10 trackID];
           v12 = v47;
           v13 = DWORD2(v47);
           *&time.value = v47;
@@ -400,7 +400,7 @@ LABEL_13:
           time = v46;
           v17 = CMTimeGetSeconds(&time);
           *range = 67110656;
-          *&range[4] = v11;
+          *&range[4] = trackID;
           *&range[8] = 2048;
           *&range[10] = v12;
           *&range[18] = 1024;
@@ -414,40 +414,40 @@ LABEL_13:
           *&range[50] = 2048;
           *&range[52] = v17;
           _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "[AudioAnalyzer] Analyzing Audio Track - ID: %d Start: %lld/%d (%0.3fs) End: %lld/%d (%0.3fs)", range, 0x3Cu);
-          v7 = v38;
+          assetCopy = v38;
         }
 
-        v18 = [objc_alloc(MEMORY[0x1E6987E78]) initWithAsset:v7 error:0];
+        v18 = [objc_alloc(MEMORY[0x1E6987E78]) initWithAsset:assetCopy error:0];
         v19 = MEMORY[0x1E6987EA8];
-        v20 = [(VCPAudioAnalyzer *)self audioFormatRequirements];
-        v21 = [v19 assetReaderTrackOutputWithTrack:v10 outputSettings:v20];
+        audioFormatRequirements = [(VCPAudioAnalyzer *)self audioFormatRequirements];
+        v21 = [v19 assetReaderTrackOutputWithTrack:v10 outputSettings:audioFormatRequirements];
 
         [v18 addOutput:v21];
         if (([v18 startReading] & 1) == 0)
         {
 LABEL_44:
-          v22 = 0;
+          copyNextSampleBuffer = 0;
 LABEL_45:
           v23 = -19;
 LABEL_36:
 
-          if (v22)
+          if (copyNextSampleBuffer)
           {
-            CFRelease(v22);
+            CFRelease(copyNextSampleBuffer);
           }
 
           goto LABEL_39;
         }
 
-        v22 = [v21 copyNextSampleBuffer];
-        if (!v22)
+        copyNextSampleBuffer = [v21 copyNextSampleBuffer];
+        if (!copyNextSampleBuffer)
         {
           goto LABEL_45;
         }
 
         *range = *(v48 + 8);
         *&range[16] = *(&v48[1] + 1);
-        v23 = [(VCPAudioAnalyzer *)self setupWithSample:v22 andTrackDuration:range];
+        v23 = [(VCPAudioAnalyzer *)self setupWithSample:copyNextSampleBuffer andTrackDuration:range];
         if (v23)
         {
           goto LABEL_36;
@@ -455,20 +455,20 @@ LABEL_36:
 
         do
         {
-          if (v8[2](v8))
+          if (cancelCopy[2](cancelCopy))
           {
             v23 = -128;
             goto LABEL_36;
           }
 
           v24 = objc_autoreleasePoolPush();
-          [(VCPAudioAnalyzer *)self processSampleBuffer:v22];
+          [(VCPAudioAnalyzer *)self processSampleBuffer:copyNextSampleBuffer];
           objc_autoreleasePoolPop(v24);
-          CFRelease(v22);
-          v22 = [v21 copyNextSampleBuffer];
+          CFRelease(copyNextSampleBuffer);
+          copyNextSampleBuffer = [v21 copyNextSampleBuffer];
         }
 
-        while (v22);
+        while (copyNextSampleBuffer);
         if ([v18 status] != 2)
         {
           goto LABEL_44;
@@ -507,36 +507,36 @@ LABEL_36:
         v23 = [(VCPAudioAnalyzer *)self finalizeAnalysisAtTime:&range[24]];
         if (v23)
         {
-          v22 = 0;
+          copyNextSampleBuffer = 0;
           goto LABEL_36;
         }
 
         voiceDetector = self->_voiceDetector;
         if (voiceDetector)
         {
-          v29 = [(VCPVoiceDetector *)voiceDetector results];
-          [v44 addEntriesFromDictionary:v29];
+          results = [(VCPVoiceDetector *)voiceDetector results];
+          [dictionary addEntriesFromDictionary:results];
         }
 
         audioClassifier = self->_audioClassifier;
         if (audioClassifier)
         {
-          v31 = [(VCPAudioClassifier *)audioClassifier results];
-          [v44 addEntriesFromDictionary:v31];
+          results2 = [(VCPAudioClassifier *)audioClassifier results];
+          [dictionary addEntriesFromDictionary:results2];
         }
 
         loudnessAnalyzer = self->_loudnessAnalyzer;
         if (loudnessAnalyzer)
         {
-          v33 = [(VCPLoudnessAnalyzer *)loudnessAnalyzer results];
-          [v44 addEntriesFromDictionary:v33];
+          results3 = [(VCPLoudnessAnalyzer *)loudnessAnalyzer results];
+          [dictionary addEntriesFromDictionary:results3];
         }
 
         songDetector = self->_songDetector;
         if (songDetector)
         {
-          v35 = [(VCPSongDetector *)songDetector results];
-          [v44 addEntriesFromDictionary:v35];
+          results4 = [(VCPSongDetector *)songDetector results];
+          [dictionary addEntriesFromDictionary:results4];
         }
       }
 
@@ -559,22 +559,22 @@ LABEL_39:
 
   else
   {
-    v36 = v44;
+    v36 = dictionary;
   }
 
-  *a5 = v36;
+  *results = v36;
 LABEL_43:
 
   return v23;
 }
 
-- (int)analyzeSampleBuffer:(opaqueCMSampleBuffer *)a3
+- (int)analyzeSampleBuffer:(opaqueCMSampleBuffer *)buffer
 {
   if (!self->_initialized)
   {
     v9 = *MEMORY[0x1E6960C70];
     *&v10 = *(MEMORY[0x1E6960C70] + 16);
-    result = [(VCPAudioAnalyzer *)self setupWithSample:a3 andTrackDuration:&v9];
+    result = [(VCPAudioAnalyzer *)self setupWithSample:buffer andTrackDuration:&v9];
     if (result)
     {
       return result;
@@ -583,7 +583,7 @@ LABEL_43:
     self->_initialized = 1;
   }
 
-  result = [(VCPAudioAnalyzer *)self processSampleBuffer:a3];
+  result = [(VCPAudioAnalyzer *)self processSampleBuffer:buffer];
   if (!result)
   {
     bufferedSamples = self->_bufferedSamples;

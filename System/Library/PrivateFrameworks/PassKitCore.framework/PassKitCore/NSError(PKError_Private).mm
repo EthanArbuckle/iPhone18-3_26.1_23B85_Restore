@@ -6,45 +6,45 @@
 
 - (id)pk_paymentErrorWithLocalizedDescription
 {
-  v2 = [a1 domain];
-  if (([v2 isEqualToString:@"PKPaymentErrorDomain"] & 1) == 0)
+  domain = [self domain];
+  if (([domain isEqualToString:@"PKPaymentErrorDomain"] & 1) == 0)
   {
 
     goto LABEL_6;
   }
 
-  v3 = [a1 localizedDescription];
-  if (!v3)
+  localizedDescription = [self localizedDescription];
+  if (!localizedDescription)
   {
 
     goto LABEL_8;
   }
 
-  v4 = v3;
-  v5 = [a1 localizedDescription];
-  v6 = [v5 length];
+  v4 = localizedDescription;
+  localizedDescription2 = [self localizedDescription];
+  v6 = [localizedDescription2 length];
 
   if (v6)
   {
 LABEL_6:
-    v7 = a1;
+    selfCopy = self;
     goto LABEL_39;
   }
 
 LABEL_8:
-  v8 = [a1 userInfo];
-  v9 = [v8 mutableCopy];
+  userInfo = [self userInfo];
+  v9 = [userInfo mutableCopy];
 
-  v10 = [a1 code];
-  if (v10 > 3)
+  code = [self code];
+  if (code > 3)
   {
-    if (v10 == 4)
+    if (code == 4)
     {
       v14 = @"IN_APP_PAYMENT_COUPON_CODE_INVALID";
       goto LABEL_36;
     }
 
-    if (v10 == 5)
+    if (code == 5)
     {
       v14 = @"IN_APP_PAYMENT_COUPON_CODE_EXPIRED";
       goto LABEL_36;
@@ -53,9 +53,9 @@ LABEL_8:
     goto LABEL_38;
   }
 
-  if ((v10 - 1) >= 2)
+  if ((code - 1) >= 2)
   {
-    if (v10 == 3)
+    if (code == 3)
     {
       v15 = [v9 objectForKey:@"PKPaymentErrorContactField"];
 
@@ -71,7 +71,7 @@ LABEL_8:
     goto LABEL_38;
   }
 
-  if ([a1 code] == 2)
+  if ([self code] == 2)
   {
     v11 = [v9 objectForKey:@"PKPaymentErrorContactField"];
 
@@ -153,12 +153,12 @@ LABEL_36:
 
 LABEL_38:
   v30 = MEMORY[0x1E696ABC0];
-  v31 = [a1 domain];
-  v7 = [v30 errorWithDomain:v31 code:objc_msgSend(a1 userInfo:{"code"), v9}];
+  domain2 = [self domain];
+  selfCopy = [v30 errorWithDomain:domain2 code:objc_msgSend(self userInfo:{"code"), v9}];
 
 LABEL_39:
 
-  return v7;
+  return selfCopy;
 }
 
 @end

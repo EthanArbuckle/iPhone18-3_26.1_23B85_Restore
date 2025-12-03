@@ -1,19 +1,19 @@
 @interface MTMediaTask
-- (MTMediaTask)initWithType:(int64_t)a3;
-- (void)perform:(id)a3;
-- (void)setCharts:(BOOL)a3;
+- (MTMediaTask)initWithType:(int64_t)type;
+- (void)perform:(id)perform;
+- (void)setCharts:(BOOL)charts;
 @end
 
 @implementation MTMediaTask
 
-- (MTMediaTask)initWithType:(int64_t)a3
+- (MTMediaTask)initWithType:(int64_t)type
 {
   v13.receiver = self;
   v13.super_class = MTMediaTask;
   v4 = [(MTMediaTask *)&v13 init];
   if (v4)
   {
-    if (a3)
+    if (type)
     {
       v5 = 301;
     }
@@ -31,7 +31,7 @@
     mediaTask = v4->_mediaTask;
     v4->_mediaTask = v10;
 
-    if (a3)
+    if (type)
     {
       [(AMSMediaTask *)v4->_mediaTask setIncludedResultKeys:&off_1005023E0];
     }
@@ -40,28 +40,28 @@
   return v4;
 }
 
-- (void)setCharts:(BOOL)a3
+- (void)setCharts:(BOOL)charts
 {
-  v3 = a3;
+  chartsCopy = charts;
   if (objc_opt_respondsToSelector())
   {
     mediaTask = self->_mediaTask;
 
-    [(AMSMediaTask *)mediaTask setCharts:v3];
+    [(AMSMediaTask *)mediaTask setCharts:chartsCopy];
   }
 }
 
-- (void)perform:(id)a3
+- (void)perform:(id)perform
 {
-  v4 = a3;
-  v5 = [(AMSMediaTask *)self->_mediaTask perform];
+  performCopy = perform;
+  perform = [(AMSMediaTask *)self->_mediaTask perform];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000CA980;
   v7[3] = &unk_1004DB690;
-  v8 = v4;
-  v6 = v4;
-  [v5 addFinishBlock:v7];
+  v8 = performCopy;
+  v6 = performCopy;
+  [perform addFinishBlock:v7];
 }
 
 @end

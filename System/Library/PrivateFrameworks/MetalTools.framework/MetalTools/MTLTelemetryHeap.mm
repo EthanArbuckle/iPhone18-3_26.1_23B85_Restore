@@ -1,25 +1,25 @@
 @interface MTLTelemetryHeap
-- (MTLTelemetryHeap)initWithHeap:(id)a3 descriptor:(id)a4 device:(id)a5;
-- (id)newBufferWithLength:(unint64_t)a3 options:(unint64_t)a4;
-- (id)newBufferWithLength:(unint64_t)a3 options:(unint64_t)a4 offset:(unint64_t)a5;
-- (id)newTextureWithDescriptor:(id)a3;
-- (id)newTextureWithDescriptor:(id)a3 offset:(unint64_t)a4;
-- (unint64_t)setPurgeableState:(unint64_t)a3;
+- (MTLTelemetryHeap)initWithHeap:(id)heap descriptor:(id)descriptor device:(id)device;
+- (id)newBufferWithLength:(unint64_t)length options:(unint64_t)options;
+- (id)newBufferWithLength:(unint64_t)length options:(unint64_t)options offset:(unint64_t)offset;
+- (id)newTextureWithDescriptor:(id)descriptor;
+- (id)newTextureWithDescriptor:(id)descriptor offset:(unint64_t)offset;
+- (unint64_t)setPurgeableState:(unint64_t)state;
 @end
 
 @implementation MTLTelemetryHeap
 
-- (MTLTelemetryHeap)initWithHeap:(id)a3 descriptor:(id)a4 device:(id)a5
+- (MTLTelemetryHeap)initWithHeap:(id)heap descriptor:(id)descriptor device:(id)device
 {
   v16 = *MEMORY[0x277D85DE8];
   v13.receiver = self;
   v13.super_class = MTLTelemetryHeap;
-  v7 = [(MTLToolsObject *)&v13 initWithBaseObject:a3 parent:a5];
+  v7 = [(MTLToolsObject *)&v13 initWithBaseObject:heap parent:device];
   v8 = v7;
   if (v7)
   {
-    v7->_telemetryDevice = a5;
-    if ([a5 enableTelemetry])
+    v7->_telemetryDevice = device;
+    if ([device enableTelemetry])
     {
       if (*MEMORY[0x277CD7168])
       {
@@ -28,16 +28,16 @@
           goto LABEL_8;
         }
 
-        printf("\n\nHeap, size=%u", [a4 size]);
+        printf("\n\nHeap, size=%u", [descriptor size]);
       }
 
-      v9 = [a5 telemetryLog];
-      if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+      telemetryLog = [device telemetryLog];
+      if (os_log_type_enabled(telemetryLog, OS_LOG_TYPE_DEFAULT))
       {
-        v10 = [a4 size];
+        v10 = [descriptor size];
         *buf = 67109120;
         v15 = v10;
-        _os_log_impl(&dword_22E0FF000, v9, OS_LOG_TYPE_DEFAULT, "Heap, size=%u", buf, 8u);
+        _os_log_impl(&dword_22E0FF000, telemetryLog, OS_LOG_TYPE_DEFAULT, "Heap, size=%u", buf, 8u);
       }
     }
   }
@@ -47,13 +47,13 @@ LABEL_8:
   return v8;
 }
 
-- (id)newBufferWithLength:(unint64_t)a3 options:(unint64_t)a4
+- (id)newBufferWithLength:(unint64_t)length options:(unint64_t)options
 {
   result = [-[MTLToolsObject baseObject](self "baseObject")];
   if (result)
   {
     v7 = result;
-    v8 = [[MTLTelemetryBuffer alloc] initWithBuffer:result device:self->_telemetryDevice options:a4];
+    v8 = [[MTLTelemetryBuffer alloc] initWithBuffer:result device:self->_telemetryDevice options:options];
 
     return v8;
   }
@@ -61,13 +61,13 @@ LABEL_8:
   return result;
 }
 
-- (id)newTextureWithDescriptor:(id)a3
+- (id)newTextureWithDescriptor:(id)descriptor
 {
   result = [-[MTLToolsObject baseObject](self "baseObject")];
   if (result)
   {
     v6 = result;
-    v7 = [[MTLTelemetryTexture alloc] initWithBaseTexture:result device:self->_telemetryDevice descriptor:a3];
+    v7 = [[MTLTelemetryTexture alloc] initWithBaseTexture:result device:self->_telemetryDevice descriptor:descriptor];
 
     return v7;
   }
@@ -75,20 +75,20 @@ LABEL_8:
   return result;
 }
 
-- (unint64_t)setPurgeableState:(unint64_t)a3
+- (unint64_t)setPurgeableState:(unint64_t)state
 {
-  v4 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v4 setPurgeableState:a3];
+  return [baseObject setPurgeableState:state];
 }
 
-- (id)newBufferWithLength:(unint64_t)a3 options:(unint64_t)a4 offset:(unint64_t)a5
+- (id)newBufferWithLength:(unint64_t)length options:(unint64_t)options offset:(unint64_t)offset
 {
   result = [-[MTLToolsObject baseObject](self "baseObject")];
   if (result)
   {
     v8 = result;
-    v9 = [[MTLTelemetryBuffer alloc] initWithBuffer:result device:self->_telemetryDevice options:a4];
+    v9 = [[MTLTelemetryBuffer alloc] initWithBuffer:result device:self->_telemetryDevice options:options];
 
     return v9;
   }
@@ -96,13 +96,13 @@ LABEL_8:
   return result;
 }
 
-- (id)newTextureWithDescriptor:(id)a3 offset:(unint64_t)a4
+- (id)newTextureWithDescriptor:(id)descriptor offset:(unint64_t)offset
 {
   result = [-[MTLToolsObject baseObject](self "baseObject")];
   if (result)
   {
     v7 = result;
-    v8 = [[MTLTelemetryTexture alloc] initWithBaseTexture:result device:self->_telemetryDevice descriptor:a3];
+    v8 = [[MTLTelemetryTexture alloc] initWithBaseTexture:result device:self->_telemetryDevice descriptor:descriptor];
 
     return v8;
   }

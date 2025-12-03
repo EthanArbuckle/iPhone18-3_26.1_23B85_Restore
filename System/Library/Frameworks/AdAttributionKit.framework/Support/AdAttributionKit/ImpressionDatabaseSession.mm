@@ -1,6 +1,6 @@
 @interface ImpressionDatabaseSession
 - (_TtC20AttributionKitDaemon25ImpressionDatabaseSession)init;
-- (_TtC20AttributionKitDaemon25ImpressionDatabaseSession)initWithConnection:(id)a3;
+- (_TtC20AttributionKitDaemon25ImpressionDatabaseSession)initWithConnection:(id)connection;
 @end
 
 @implementation ImpressionDatabaseSession
@@ -12,11 +12,11 @@
   return [(ImpressionDatabaseSession *)&v3 init];
 }
 
-- (_TtC20AttributionKitDaemon25ImpressionDatabaseSession)initWithConnection:(id)a3
+- (_TtC20AttributionKitDaemon25ImpressionDatabaseSession)initWithConnection:(id)connection
 {
   v5.receiver = self;
   v5.super_class = type metadata accessor for ImpressionDatabaseSession();
-  return [(SQLiteDatabaseSession *)&v5 initWithConnection:a3];
+  return [(SQLiteDatabaseSession *)&v5 initWithConnection:connection];
 }
 
 @end

@@ -3,27 +3,27 @@
 - (AVMediaTimelineControlLabelsConfiguration)labelsConfiguration;
 - (UIVisualEffect)currentValueVisualEffect;
 - (UIVisualEffect)maxValueVisualEffect;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setCurrentValueVisualEffect:(id)a3;
-- (void)setLabelsConfiguration:(id)a3;
-- (void)setMaxValueVisualEffect:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setCurrentValueVisualEffect:(id)effect;
+- (void)setLabelsConfiguration:(id)configuration;
+- (void)setMaxValueVisualEffect:(id)effect;
 @end
 
 @implementation AVMediaTimelineControlConfiguration
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(AVMediaTimelineControlConfiguration);
   [(AVMediaTimelineControlConfiguration *)self extendedDynamicRangeGain];
   [(AVMediaTimelineControlConfiguration *)v4 setExtendedDynamicRangeGain:?];
-  v5 = [(AVMediaTimelineControlConfiguration *)self labelsConfiguration];
-  [(AVMediaTimelineControlConfiguration *)v4 setLabelsConfiguration:v5];
+  labelsConfiguration = [(AVMediaTimelineControlConfiguration *)self labelsConfiguration];
+  [(AVMediaTimelineControlConfiguration *)v4 setLabelsConfiguration:labelsConfiguration];
 
-  v6 = [(AVMediaTimelineControlConfiguration *)self currentValueVisualEffect];
-  [(AVMediaTimelineControlConfiguration *)v4 setCurrentValueVisualEffect:v6];
+  currentValueVisualEffect = [(AVMediaTimelineControlConfiguration *)self currentValueVisualEffect];
+  [(AVMediaTimelineControlConfiguration *)v4 setCurrentValueVisualEffect:currentValueVisualEffect];
 
-  v7 = [(AVMediaTimelineControlConfiguration *)self maxValueVisualEffect];
-  [(AVMediaTimelineControlConfiguration *)v4 setMaxValueVisualEffect:v7];
+  maxValueVisualEffect = [(AVMediaTimelineControlConfiguration *)self maxValueVisualEffect];
+  [(AVMediaTimelineControlConfiguration *)v4 setMaxValueVisualEffect:maxValueVisualEffect];
 
   return v4;
 }
@@ -35,16 +35,16 @@
   return v2;
 }
 
-- (void)setMaxValueVisualEffect:(id)a3
+- (void)setMaxValueVisualEffect:(id)effect
 {
-  v5 = a3;
+  effectCopy = effect;
   maxValueVisualEffect = self->_maxValueVisualEffect;
   p_maxValueVisualEffect = &self->_maxValueVisualEffect;
-  if (maxValueVisualEffect != v5)
+  if (maxValueVisualEffect != effectCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_maxValueVisualEffect, a3);
-    v5 = v8;
+    v8 = effectCopy;
+    objc_storeStrong(p_maxValueVisualEffect, effect);
+    effectCopy = v8;
   }
 }
 
@@ -55,16 +55,16 @@
   return v2;
 }
 
-- (void)setCurrentValueVisualEffect:(id)a3
+- (void)setCurrentValueVisualEffect:(id)effect
 {
-  v5 = a3;
+  effectCopy = effect;
   currentValueVisualEffect = self->_currentValueVisualEffect;
   p_currentValueVisualEffect = &self->_currentValueVisualEffect;
-  if (currentValueVisualEffect != v5)
+  if (currentValueVisualEffect != effectCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_currentValueVisualEffect, a3);
-    v5 = v8;
+    v8 = effectCopy;
+    objc_storeStrong(p_currentValueVisualEffect, effect);
+    effectCopy = v8;
   }
 }
 
@@ -75,11 +75,11 @@
   return v2;
 }
 
-- (void)setLabelsConfiguration:(id)a3
+- (void)setLabelsConfiguration:(id)configuration
 {
-  if (self->_labelsConfiguration != a3)
+  if (self->_labelsConfiguration != configuration)
   {
-    v5 = [a3 copy];
+    v5 = [configuration copy];
     labelsConfiguration = self->_labelsConfiguration;
     self->_labelsConfiguration = v5;
 

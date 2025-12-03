@@ -1,29 +1,29 @@
 @interface _TUIDynamicArrayEmpty
-- (_TUIDynamicArrayEmpty)initWithArray:(id)a3;
-- (id)newInstanceWithObserver:(id)a3;
+- (_TUIDynamicArrayEmpty)initWithArray:(id)array;
+- (id)newInstanceWithObserver:(id)observer;
 @end
 
 @implementation _TUIDynamicArrayEmpty
 
-- (_TUIDynamicArrayEmpty)initWithArray:(id)a3
+- (_TUIDynamicArrayEmpty)initWithArray:(id)array
 {
-  v5 = a3;
+  arrayCopy = array;
   v9.receiver = self;
   v9.super_class = _TUIDynamicArrayEmpty;
   v6 = [(TUIDynamicValue *)&v9 initWithValue:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_array, a3);
+    objc_storeStrong(&v6->_array, array);
   }
 
   return v7;
 }
 
-- (id)newInstanceWithObserver:(id)a3
+- (id)newInstanceWithObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [[_TUIDynamicArrayEmptyInstance alloc] initWithDynamicValue:self observer:v4];
+  observerCopy = observer;
+  v5 = [[_TUIDynamicArrayEmptyInstance alloc] initWithDynamicValue:self observer:observerCopy];
 
   return v5;
 }

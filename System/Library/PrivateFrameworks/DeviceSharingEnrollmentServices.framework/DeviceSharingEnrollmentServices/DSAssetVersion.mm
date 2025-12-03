@@ -1,5 +1,5 @@
 @interface DSAssetVersion
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (DSAssetVersion)init;
 - (NSString)description;
 - (int64_t)hash;
@@ -9,7 +9,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   AssetVersion.description.getter();
 
   v3 = sub_248A42C68();
@@ -17,11 +17,11 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_248A42E08();
     swift_unknownObjectRelease();
@@ -30,7 +30,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = AssetVersion.isEqual(_:)(v8);

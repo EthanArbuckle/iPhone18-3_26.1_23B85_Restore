@@ -1,31 +1,31 @@
 @interface OFCLLocationValueTransformer
-- (id)reverseTransformedValue:(id)a3;
-- (id)transformedValue:(id)a3;
+- (id)reverseTransformedValue:(id)value;
+- (id)transformedValue:(id)value;
 @end
 
 @implementation OFCLLocationValueTransformer
 
-- (id)transformedValue:(id)a3
+- (id)transformedValue:(id)value
 {
-  [a3 coordinate];
-  [a3 coordinate];
+  [value coordinate];
+  [value coordinate];
   v4 = MEMORY[0x277CCACA8];
-  [a3 coordinate];
+  [value coordinate];
   v6 = v5;
-  [a3 coordinate];
+  [value coordinate];
   v8 = [v4 stringWithFormat:@"%lf:%lf", v6, v7];
 
   return [v8 dataUsingEncoding:4 allowLossyConversion:0];
 }
 
-- (id)reverseTransformedValue:(id)a3
+- (id)reverseTransformedValue:(id)value
 {
-  if (!a3)
+  if (!value)
   {
     return 0;
   }
 
-  v3 = [objc_msgSend(a3 stringWithEncoding:{4), "componentsSeparatedByString:", @":"}];
+  v3 = [objc_msgSend(value stringWithEncoding:{4), "componentsSeparatedByString:", @":"}];
   if ([v3 count] != 2)
   {
     return 0;

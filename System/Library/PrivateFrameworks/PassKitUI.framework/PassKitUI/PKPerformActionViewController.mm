@@ -1,58 +1,58 @@
 @interface PKPerformActionViewController
-+ (id)alertControllerForUnableReason:(unint64_t)a3 action:(id)a4 displayableError:(id)a5 addCardActionHandler:(id)a6 unavailableActionHandler:(id)a7 cancelActionHandler:(id)a8;
++ (id)alertControllerForUnableReason:(unint64_t)reason action:(id)action displayableError:(id)error addCardActionHandler:(id)handler unavailableActionHandler:(id)actionHandler cancelActionHandler:(id)cancelActionHandler;
 - (BOOL)shouldHidePassView;
-- (PKPerformActionViewController)initWithPass:(id)a3 action:(id)a4;
-- (PKPerformActionViewController)initWithPass:(id)a3 action:(id)a4 viewStyle:(int64_t)a5 paymentDataProvider:(id)a6;
+- (PKPerformActionViewController)initWithPass:(id)pass action:(id)action;
+- (PKPerformActionViewController)initWithPass:(id)pass action:(id)action viewStyle:(int64_t)style paymentDataProvider:(id)provider;
 - (PKPerformActionViewControllerDelegate)delegate;
-- (id)_actionViewForPass:(id)a3 action:(id)a4;
-- (id)_generateGenericAlertWithCompletion:(id)a3;
-- (id)_generateNoActionsAvailableDueToConflictErrorAlertWithCompletion:(id)a3;
-- (id)_generateNoActionsAvailableDueToRemoteActionFailureAlertWithCompletion:(id)a3;
-- (id)presentationSceneIdentifierForPaymentAuthorizationCoordinator:(id)a3;
-- (void)_canPerformPaymentWithCompletion:(id)a3;
-- (void)_cancelButtonPressed:(id)a3;
+- (id)_actionViewForPass:(id)pass action:(id)action;
+- (id)_generateGenericAlertWithCompletion:(id)completion;
+- (id)_generateNoActionsAvailableDueToConflictErrorAlertWithCompletion:(id)completion;
+- (id)_generateNoActionsAvailableDueToRemoteActionFailureAlertWithCompletion:(id)completion;
+- (id)presentationSceneIdentifierForPaymentAuthorizationCoordinator:(id)coordinator;
+- (void)_canPerformPaymentWithCompletion:(id)completion;
+- (void)_cancelButtonPressed:(id)pressed;
 - (void)_fetchRemoteContentIfNeeded;
-- (void)_presentAddAnotherCardFlowWithTransitNetworkIdentifiers:(id)a3;
-- (void)_presentPaymentSetupControllerWithAllowedPaymentNetworks:(id)a3;
+- (void)_presentAddAnotherCardFlowWithTransitNetworkIdentifiers:(id)identifiers;
+- (void)_presentPaymentSetupControllerWithAllowedPaymentNetworks:(id)networks;
 - (void)_reloadActionView;
-- (void)_rightBarButtonPressed:(id)a3;
-- (void)_showGenericErrorAlert:(id)a3;
-- (void)_showLoadingView:(BOOL)a3;
+- (void)_rightBarButtonPressed:(id)pressed;
+- (void)_showGenericErrorAlert:(id)alert;
+- (void)_showLoadingView:(BOOL)view;
 - (void)_showNoActionsAvailableDueToConflictErrorAlert;
 - (void)_showNoActionsAvailableDueToRemoteActionFailureAlert;
-- (void)_showSpinner:(BOOL)a3;
-- (void)autoReloadSetupControllerDidCompleteWithAmount:(id)a3 threshold:(id)a4;
-- (void)paymentAuthorizationCoordinator:(id)a3 didAuthorizePayment:(id)a4 handler:(id)a5;
-- (void)paymentAuthorizationCoordinator:(id)a3 didAuthorizePurchase:(id)a4 completion:(id)a5;
-- (void)paymentAuthorizationCoordinatorDidFinish:(id)a3;
-- (void)paymentSetupDidFinish:(id)a3;
-- (void)preflightWithCompletion:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)_showSpinner:(BOOL)spinner;
+- (void)autoReloadSetupControllerDidCompleteWithAmount:(id)amount threshold:(id)threshold;
+- (void)paymentAuthorizationCoordinator:(id)coordinator didAuthorizePayment:(id)payment handler:(id)handler;
+- (void)paymentAuthorizationCoordinator:(id)coordinator didAuthorizePurchase:(id)purchase completion:(id)completion;
+- (void)paymentAuthorizationCoordinatorDidFinish:(id)finish;
+- (void)paymentSetupDidFinish:(id)finish;
+- (void)preflightWithCompletion:(id)completion;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateFirstResponder;
 - (void)updatePassViewVisibility;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation PKPerformActionViewController
 
-+ (id)alertControllerForUnableReason:(unint64_t)a3 action:(id)a4 displayableError:(id)a5 addCardActionHandler:(id)a6 unavailableActionHandler:(id)a7 cancelActionHandler:(id)a8
++ (id)alertControllerForUnableReason:(unint64_t)reason action:(id)action displayableError:(id)error addCardActionHandler:(id)handler unavailableActionHandler:(id)actionHandler cancelActionHandler:(id)cancelActionHandler
 {
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
-  if (a3 == 6)
+  actionCopy = action;
+  errorCopy = error;
+  handlerCopy = handler;
+  actionHandlerCopy = actionHandler;
+  cancelActionHandlerCopy = cancelActionHandler;
+  if (reason == 6)
   {
     v18 = PKCreateAlertControllerForWalletUninstalled(0);
     goto LABEL_21;
   }
 
-  if (!v14)
+  if (!errorCopy)
   {
     v18 = 0;
     goto LABEL_21;
@@ -60,10 +60,10 @@
 
   v19 = MEMORY[0x1E69DC650];
   v20 = PKTitleForDisplayableError();
-  v21 = MEMORY[0x1BFB42D10](v14);
+  v21 = MEMORY[0x1BFB42D10](errorCopy);
   v18 = [v19 alertControllerWithTitle:v20 message:v21 preferredStyle:1];
 
-  if (a3 == 5)
+  if (reason == 5)
   {
     v22 = @"PASS_ACTION_UNAVAILABLE_OK_BUTTON_TITLE";
   }
@@ -79,13 +79,13 @@
   v43[1] = 3221225472;
   v43[2] = __154__PKPerformActionViewController_alertControllerForUnableReason_action_displayableError_addCardActionHandler_unavailableActionHandler_cancelActionHandler___block_invoke;
   v43[3] = &unk_1E8011248;
-  v44 = v17;
+  v44 = cancelActionHandlerCopy;
   v25 = [v24 actionWithTitle:v23 style:1 handler:v43];
   [v18 addAction:v25];
-  if (a3 == 2 && v15)
+  if (reason == 2 && handlerCopy)
   {
     v37 = v23;
-    if (([v13 serviceProviderCapabilities] & 0xC) == 8)
+    if (([actionCopy serviceProviderCapabilities] & 0xC) == 8)
     {
       v26 = @"PASS_ACTION_UNAVAILABLE_ADD_DEBIT_CARD_BUTTON_TITLE";
     }
@@ -101,7 +101,7 @@
     v41[1] = 3221225472;
     v41[2] = __154__PKPerformActionViewController_alertControllerForUnableReason_action_displayableError_addCardActionHandler_unavailableActionHandler_cancelActionHandler___block_invoke_2;
     v41[3] = &unk_1E8011248;
-    v42 = v15;
+    v42 = handlerCopy;
     v29 = [v27 actionWithTitle:v28 style:0 handler:v41];
 
     [v18 addAction:v29];
@@ -114,14 +114,14 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  if (a3 == 7)
+  if (reason == 7)
   {
     v37 = v23;
-    v31 = [v13 unavailableActionTitle];
-    v32 = v31;
-    if (v31)
+    unavailableActionTitle = [actionCopy unavailableActionTitle];
+    v32 = unavailableActionTitle;
+    if (unavailableActionTitle)
     {
-      v33 = v31;
+      v33 = unavailableActionTitle;
     }
 
     else
@@ -136,8 +136,8 @@ LABEL_19:
     v38[1] = 3221225472;
     v38[2] = __154__PKPerformActionViewController_alertControllerForUnableReason_action_displayableError_addCardActionHandler_unavailableActionHandler_cancelActionHandler___block_invoke_3;
     v38[3] = &unk_1E8016458;
-    v39 = v13;
-    v40 = v16;
+    v39 = actionCopy;
+    v40 = actionHandlerCopy;
     v35 = [v34 actionWithTitle:v30 style:0 handler:v38];
     [v18 addAction:v35];
     [v18 setPreferredAction:v35];
@@ -228,40 +228,40 @@ void __154__PKPerformActionViewController_alertControllerForUnableReason_action_
   }
 }
 
-- (PKPerformActionViewController)initWithPass:(id)a3 action:(id)a4
+- (PKPerformActionViewController)initWithPass:(id)pass action:(id)action
 {
   v6 = MEMORY[0x1E69B8BD8];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 defaultDataProvider];
-  v10 = [(PKPerformActionViewController *)self initWithPass:v8 action:v7 paymentDataProvider:v9];
+  actionCopy = action;
+  passCopy = pass;
+  defaultDataProvider = [v6 defaultDataProvider];
+  v10 = [(PKPerformActionViewController *)self initWithPass:passCopy action:actionCopy paymentDataProvider:defaultDataProvider];
 
   return v10;
 }
 
-- (PKPerformActionViewController)initWithPass:(id)a3 action:(id)a4 viewStyle:(int64_t)a5 paymentDataProvider:(id)a6
+- (PKPerformActionViewController)initWithPass:(id)pass action:(id)action viewStyle:(int64_t)style paymentDataProvider:(id)provider
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  v14 = [v12 type];
-  if (v14)
+  passCopy = pass;
+  actionCopy = action;
+  providerCopy = provider;
+  type = [actionCopy type];
+  if (type)
   {
-    v15 = v14;
+    v15 = type;
     v33.receiver = self;
     v33.super_class = PKPerformActionViewController;
     v16 = [(PKPerformActionViewController *)&v33 init];
     v17 = v16;
     if (v16)
     {
-      objc_storeStrong(&v16->_pass, a3);
-      objc_storeStrong(&v17->_action, a4);
-      v18 = [MEMORY[0x1E69B8EF8] sharedService];
+      objc_storeStrong(&v16->_pass, pass);
+      objc_storeStrong(&v17->_action, action);
+      mEMORY[0x1E69B8EF8] = [MEMORY[0x1E69B8EF8] sharedService];
       webService = v17->_webService;
-      v17->_webService = v18;
+      v17->_webService = mEMORY[0x1E69B8EF8];
 
-      objc_storeStrong(&v17->_paymentDataProvider, a6);
-      v20 = [(PKPerformActionViewController *)v17 navigationItem];
+      objc_storeStrong(&v17->_paymentDataProvider, provider);
+      navigationItem = [(PKPerformActionViewController *)v17 navigationItem];
       if ((_UISolariumFeatureFlagEnabled() & 1) == 0)
       {
         v21 = objc_alloc_init(MEMORY[0x1E69DCCC8]);
@@ -269,22 +269,22 @@ void __154__PKPerformActionViewController_alertControllerForUnableReason_action_
         v22 = PKProvisioningBackgroundColor();
         [v21 setBackgroundColor:v22];
 
-        [v20 setStandardAppearance:v21];
-        [v20 setScrollEdgeAppearance:v21];
+        [navigationItem setStandardAppearance:v21];
+        [navigationItem setScrollEdgeAppearance:v21];
       }
 
       if (v15 != 5)
       {
-        v23 = [(PKPaymentPassAction *)v17->_action title];
-        [v20 setTitle:v23];
+        title = [(PKPaymentPassAction *)v17->_action title];
+        [navigationItem setTitle:title];
       }
 
-      v24 = [(PKPaymentPassAction *)v17->_action confirmationTitle];
-      v25 = [objc_alloc(MEMORY[0x1E69DC708]) initWithTitle:v24 style:2 target:v17 action:sel__rightBarButtonPressed_];
+      confirmationTitle = [(PKPaymentPassAction *)v17->_action confirmationTitle];
+      v25 = [objc_alloc(MEMORY[0x1E69DC708]) initWithTitle:confirmationTitle style:2 target:v17 action:sel__rightBarButtonPressed_];
       button = v17->_button;
       v17->_button = v25;
 
-      [v20 setRightBarButtonItem:v17->_button];
+      [navigationItem setRightBarButtonItem:v17->_button];
       v27 = [objc_alloc(MEMORY[0x1E69DC638]) initWithActivityIndicatorStyle:100];
       v28 = [objc_alloc(MEMORY[0x1E69DC708]) initWithCustomView:v27];
       spinner = v17->_spinner;
@@ -292,9 +292,9 @@ void __154__PKPerformActionViewController_alertControllerForUnableReason_action_
 
       [v27 startAnimating];
       v17->_fieldsVerified = 1;
-      if ([PKPaymentAutoReloadSetupController shouldOfferAutoReloadForPass:v11])
+      if ([PKPaymentAutoReloadSetupController shouldOfferAutoReloadForPass:passCopy])
       {
-        v30 = [[PKPaymentAutoReloadSetupController alloc] initWithPass:v11 paymentDataProvider:v13 viewStyle:a5 delegate:v17];
+        v30 = [[PKPaymentAutoReloadSetupController alloc] initWithPass:passCopy paymentDataProvider:providerCopy viewStyle:style delegate:v17];
         autoReloadSetupController = v17->_autoReloadSetupController;
         v17->_autoReloadSetupController = v30;
       }
@@ -310,7 +310,7 @@ void __154__PKPerformActionViewController_alertControllerForUnableReason_action_
   return v17;
 }
 
-- (void)autoReloadSetupControllerDidCompleteWithAmount:(id)a3 threshold:(id)a4
+- (void)autoReloadSetupControllerDidCompleteWithAmount:(id)amount threshold:(id)threshold
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
@@ -320,7 +320,7 @@ void __154__PKPerformActionViewController_alertControllerForUnableReason_action_
     v7 = objc_opt_respondsToSelector();
 
     v8 = objc_loadWeakRetained(&self->_delegate);
-    v9 = v8;
+    navigationController = v8;
     if (v7)
     {
       [v8 performActionViewControllerDidCompleteAutoReload:self];
@@ -334,17 +334,17 @@ void __154__PKPerformActionViewController_alertControllerForUnableReason_action_
 
   else
   {
-    v9 = [(PKPerformActionViewController *)self navigationController];
-    [v9 dismissViewControllerAnimated:1 completion:0];
+    navigationController = [(PKPerformActionViewController *)self navigationController];
+    [navigationController dismissViewControllerAnimated:1 completion:0];
   }
 }
 
-- (id)_actionViewForPass:(id)a3 action:(id)a4
+- (id)_actionViewForPass:(id)pass action:(id)action
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 type];
-  switch(v8)
+  passCopy = pass;
+  actionCopy = action;
+  type = [actionCopy type];
+  switch(type)
   {
     case 1:
       v9 = off_1E80060B8;
@@ -355,7 +355,7 @@ void __154__PKPerformActionViewController_alertControllerForUnableReason_action_
     case 2:
       v9 = off_1E80060E0;
 LABEL_7:
-      v10 = [objc_alloc(*v9) initWithPass:v6 action:v7 paymentDataProvider:self->_paymentDataProvider];
+      v10 = [objc_alloc(*v9) initWithPass:passCopy action:actionCopy paymentDataProvider:self->_paymentDataProvider];
       goto LABEL_9;
   }
 
@@ -365,44 +365,44 @@ LABEL_9:
   return v10;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v11.receiver = self;
   v11.super_class = PKPerformActionViewController;
-  [(PKPerformActionViewController *)&v11 viewWillAppear:a3];
+  [(PKPerformActionViewController *)&v11 viewWillAppear:appear];
   [(PKPerformActionViewController *)self _fetchRemoteContentIfNeeded];
-  v4 = [(PKPerformActionViewController *)self navigationController];
-  if ([v4 pk_settings_useStateDrivenNavigation])
+  navigationController = [(PKPerformActionViewController *)self navigationController];
+  if ([navigationController pk_settings_useStateDrivenNavigation])
   {
-    v5 = [v4 pk_settings_viewControllerCount];
+    pk_settings_viewControllerCount = [navigationController pk_settings_viewControllerCount];
   }
 
   else
   {
-    v6 = [v4 viewControllers];
-    v7 = [v6 count];
+    viewControllers = [navigationController viewControllers];
+    v7 = [viewControllers count];
 
-    v5 = v7 == 1;
+    pk_settings_viewControllerCount = v7 == 1;
   }
 
-  v8 = [(PKPerformActionViewController *)self presentingViewController];
-  if (v8)
+  presentingViewController = [(PKPerformActionViewController *)self presentingViewController];
+  if (presentingViewController)
   {
 
-    if ((v4 == 0) | v5 & 1)
+    if ((navigationController == 0) | pk_settings_viewControllerCount & 1)
     {
-      v9 = [(PKPerformActionViewController *)self navigationItem];
+      navigationItem = [(PKPerformActionViewController *)self navigationItem];
       v10 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:1 target:self action:sel__cancelButtonPressed_];
-      [v9 setLeftBarButtonItem:v10];
+      [navigationItem setLeftBarButtonItem:v10];
     }
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = PKPerformActionViewController;
-  [(PKPerformActionViewController *)&v4 viewWillDisappear:a3];
+  [(PKPerformActionViewController *)&v4 viewWillDisappear:disappear];
   if (objc_opt_respondsToSelector())
   {
     [(PKPerformActionView *)self->_actionView willDismissViewController];
@@ -414,44 +414,44 @@ LABEL_9:
   v10.receiver = self;
   v10.super_class = PKPerformActionViewController;
   [(PKPerformActionViewController *)&v10 viewDidLoad];
-  v3 = [(PKPerformActionViewController *)self view];
+  view = [(PKPerformActionViewController *)self view];
   v4 = PKProvisioningBackgroundColor();
-  [v3 setBackgroundColor:v4];
+  [view setBackgroundColor:v4];
 
   v5 = [PKPerformActionPassView alloc];
   pass = self->_pass;
-  v7 = [(PKPerformActionViewController *)self view];
-  [v7 bounds];
+  view2 = [(PKPerformActionViewController *)self view];
+  [view2 bounds];
   v8 = [(PKPerformActionPassView *)v5 initWithPass:pass frame:?];
   passView = self->_passView;
   self->_passView = v8;
 
   [(PKPerformActionPassView *)self->_passView setHidden:[(PKPerformActionViewController *)self shouldHidePassView]];
-  [v3 addSubview:self->_passView];
+  [view addSubview:self->_passView];
   [(PKPerformActionViewController *)self _reloadActionView];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = PKPerformActionViewController;
-  [(PKPerformActionViewController *)&v4 viewDidAppear:a3];
+  [(PKPerformActionViewController *)&v4 viewDidAppear:appear];
   [(PKPerformActionViewController *)self updateFirstResponder];
 }
 
 - (void)updateFirstResponder
 {
-  v3 = [(PKPaymentPassAction *)self->_action type];
-  v4 = [(PKPerformActionView *)self->_actionView amountTextField];
-  v5 = v4;
-  if (v3 == 1)
+  type = [(PKPaymentPassAction *)self->_action type];
+  amountTextField = [(PKPerformActionView *)self->_actionView amountTextField];
+  v5 = amountTextField;
+  if (type == 1)
   {
-    [v4 becomeFirstResponder];
+    [amountTextField becomeFirstResponder];
   }
 
   else
   {
-    [v4 resignFirstResponder];
+    [amountTextField resignFirstResponder];
   }
 }
 
@@ -460,13 +460,13 @@ LABEL_9:
   v28.receiver = self;
   v28.super_class = PKPerformActionViewController;
   [(PKPerformActionViewController *)&v28 viewWillLayoutSubviews];
-  v3 = [(PKPerformActionViewController *)self view];
-  [v3 bounds];
+  view = [(PKPerformActionViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   width = v8;
   v11 = v10;
-  [v3 safeAreaInsets];
+  [view safeAreaInsets];
   v13 = v12;
   v15 = v14;
   x = v5 + 0.0;
@@ -505,50 +505,50 @@ LABEL_9:
     return 1;
   }
 
-  v3 = [(PKPerformActionViewController *)self traitCollection];
-  v4 = [v3 verticalSizeClass] == 1;
+  traitCollection = [(PKPerformActionViewController *)self traitCollection];
+  v4 = [traitCollection verticalSizeClass] == 1;
 
   return v4;
 }
 
 - (void)updatePassViewVisibility
 {
-  v3 = [(PKPerformActionViewController *)self shouldHidePassView];
-  if (v3 != [(PKPerformActionPassView *)self->_passView isHidden])
+  shouldHidePassView = [(PKPerformActionViewController *)self shouldHidePassView];
+  if (shouldHidePassView != [(PKPerformActionPassView *)self->_passView isHidden])
   {
-    [(PKPerformActionPassView *)self->_passView setHidden:v3];
-    v4 = [(PKPerformActionViewController *)self viewIfLoaded];
-    [v4 setNeedsLayout];
+    [(PKPerformActionPassView *)self->_passView setHidden:shouldHidePassView];
+    viewIfLoaded = [(PKPerformActionViewController *)self viewIfLoaded];
+    [viewIfLoaded setNeedsLayout];
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = PKPerformActionViewController;
-  [(PKPerformActionViewController *)&v4 traitCollectionDidChange:a3];
+  [(PKPerformActionViewController *)&v4 traitCollectionDidChange:change];
   [(PKPerformActionViewController *)self updatePassViewVisibility];
 }
 
-- (void)_showSpinner:(BOOL)a3
+- (void)_showSpinner:(BOOL)spinner
 {
-  v3 = a3;
-  v5 = [(PKPerformActionViewController *)self navigationItem];
-  v7 = v5;
+  spinnerCopy = spinner;
+  navigationItem = [(PKPerformActionViewController *)self navigationItem];
+  v7 = navigationItem;
   v6 = 4;
-  if (v3)
+  if (spinnerCopy)
   {
     v6 = 5;
   }
 
-  [v5 setRightBarButtonItem:*(&self->super.super.super.isa + OBJC_IVAR___PKPerformActionViewController__pass[v6])];
+  [navigationItem setRightBarButtonItem:*(&self->super.super.super.isa + OBJC_IVAR___PKPerformActionViewController__pass[v6])];
 }
 
-- (void)preflightWithCompletion:(id)a3
+- (void)preflightWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(PKPaymentPassAction *)self->_action remoteContentConfiguration];
-  if (v5 && (remoteContentFetched = self->_remoteContentFetched, v5, !remoteContentFetched))
+  completionCopy = completion;
+  remoteContentConfiguration = [(PKPaymentPassAction *)self->_action remoteContentConfiguration];
+  if (remoteContentConfiguration && (remoteContentFetched = self->_remoteContentFetched, remoteContentConfiguration, !remoteContentFetched))
   {
     self->_remoteContentFetched = 1;
     objc_initWeak(&location, self);
@@ -560,16 +560,16 @@ LABEL_9:
     v10[2] = __57__PKPerformActionViewController_preflightWithCompletion___block_invoke;
     v10[3] = &unk_1E8022610;
     objc_copyWeak(&v12, &location);
-    v11 = v4;
+    v11 = completionCopy;
     [(PKPaymentWebService *)webService passActionWithRemoteContentPassAction:action forPass:pass completion:v10];
 
     objc_destroyWeak(&v12);
     objc_destroyWeak(&location);
   }
 
-  else if (v4)
+  else if (completionCopy)
   {
-    (*(v4 + 2))(v4, 1, 0);
+    (*(completionCopy + 2))(completionCopy, 1, 0);
   }
 }
 
@@ -694,8 +694,8 @@ LABEL_23:
 
 - (void)_fetchRemoteContentIfNeeded
 {
-  v3 = [(PKPaymentPassAction *)self->_action remoteContentConfiguration];
-  if (v3)
+  remoteContentConfiguration = [(PKPaymentPassAction *)self->_action remoteContentConfiguration];
+  if (remoteContentConfiguration)
   {
     remoteContentFetched = self->_remoteContentFetched;
 
@@ -813,10 +813,10 @@ void __60__PKPerformActionViewController__fetchRemoteContentIfNeeded__block_invo
   [v2 performActionViewControllerDidCancel:v3];
 }
 
-- (void)_showLoadingView:(BOOL)a3
+- (void)_showLoadingView:(BOOL)view
 {
   loadingView = self->_loadingView;
-  if (a3)
+  if (view)
   {
     if (!loadingView)
     {
@@ -827,8 +827,8 @@ void __60__PKPerformActionViewController__fetchRemoteContentIfNeeded__block_invo
       self->_loadingView = v6;
     }
 
-    v8 = [(PKPerformActionViewController *)self view];
-    [v8 addSubview:self->_loadingView];
+    view = [(PKPerformActionViewController *)self view];
+    [view addSubview:self->_loadingView];
 
     [(PKPerformActionView *)self->_actionView setDelegate:0];
     [(PKPerformActionView *)self->_actionView removeFromSuperview];
@@ -852,32 +852,32 @@ void __60__PKPerformActionViewController__fetchRemoteContentIfNeeded__block_invo
   self->_actionView = v3;
 
   [(PKPerformActionView *)self->_actionView setDelegate:self];
-  v5 = [(PKPerformActionViewController *)self view];
-  [v5 insertSubview:self->_actionView belowSubview:self->_passView];
+  view = [(PKPerformActionViewController *)self view];
+  [view insertSubview:self->_actionView belowSubview:self->_passView];
 }
 
-- (void)_rightBarButtonPressed:(id)a3
+- (void)_rightBarButtonPressed:(id)pressed
 {
-  v4 = a3;
+  pressedCopy = pressed;
   if (self->_fieldsVerified)
   {
     if ([MEMORY[0x1E69B8B60] canMakePayments])
     {
       [(PKPerformActionViewController *)self setModalInPresentation:1];
       [(PKPerformActionViewController *)self setRightBarButtonEnabled:0];
-      v5 = [(PKPerformActionView *)self->_actionView amountTextField];
-      [v5 resignFirstResponder];
+      amountTextField = [(PKPerformActionView *)self->_actionView amountTextField];
+      [amountTextField resignFirstResponder];
 
-      v6 = [(PKPerformActionViewController *)self actionView];
+      actionView = [(PKPerformActionViewController *)self actionView];
       objc_initWeak(location, self);
       v9[0] = MEMORY[0x1E69E9820];
       v9[1] = 3221225472;
       v9[2] = __56__PKPerformActionViewController__rightBarButtonPressed___block_invoke;
       v9[3] = &unk_1E8022688;
-      v7 = v6;
+      v7 = actionView;
       v10 = v7;
       objc_copyWeak(&v12, location);
-      v11 = self;
+      selfCopy = self;
       [(PKPerformActionViewController *)self _canPerformPaymentWithCompletion:v9];
       objc_destroyWeak(&v12);
 
@@ -1070,21 +1070,21 @@ uint64_t __56__PKPerformActionViewController__rightBarButtonPressed___block_invo
   }
 }
 
-- (void)_canPerformPaymentWithCompletion:(id)a3
+- (void)_canPerformPaymentWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
     if ([(PKPaymentPassAction *)self->_action type]== 5)
     {
-      (*(v4 + 2))(v4, 0, 0);
+      (*(completionCopy + 2))(completionCopy, 0, 0);
       goto LABEL_15;
     }
 
     if ([(PKPaymentPassAction *)self->_action type]== 2)
     {
-      v5 = [(PKPaymentPass *)self->_pass uniqueID];
-      v6 = [(PKPaymentPass *)self->_pass devicePrimaryPaymentApplication];
+      uniqueID = [(PKPaymentPass *)self->_pass uniqueID];
+      devicePrimaryPaymentApplication = [(PKPaymentPass *)self->_pass devicePrimaryPaymentApplication];
       if (objc_opt_respondsToSelector())
       {
         paymentDataProvider = self->_paymentDataProvider;
@@ -1092,15 +1092,15 @@ uint64_t __56__PKPerformActionViewController__rightBarButtonPressed___block_invo
         v16[1] = 3221225472;
         v16[2] = __66__PKPerformActionViewController__canPerformPaymentWithCompletion___block_invoke;
         v16[3] = &unk_1E801EB70;
-        v17 = v6;
-        v18 = self;
-        v19 = v4;
-        [(PKPaymentDataProvider *)paymentDataProvider transitStateWithPassUniqueIdentifier:v5 paymentApplication:v17 completion:v16];
+        v17 = devicePrimaryPaymentApplication;
+        selfCopy = self;
+        v19 = completionCopy;
+        [(PKPaymentDataProvider *)paymentDataProvider transitStateWithPassUniqueIdentifier:uniqueID paymentApplication:v17 completion:v16];
       }
 
       else
       {
-        (*(v4 + 2))(v4, 0, 0);
+        (*(completionCopy + 2))(completionCopy, 0, 0);
       }
     }
 
@@ -1109,10 +1109,10 @@ uint64_t __56__PKPerformActionViewController__rightBarButtonPressed___block_invo
       v14 = 0;
       v15 = 0;
       v8 = [(PKPaymentPass *)self->_pass canPerformAction:self->_action unableReason:&v15 displayableError:&v14];
-      v5 = v14;
+      uniqueID = v14;
       if (v8)
       {
-        (*(v4 + 2))(v4, 0, 0);
+        (*(completionCopy + 2))(completionCopy, 0, 0);
 LABEL_14:
 
         goto LABEL_15;
@@ -1129,15 +1129,15 @@ LABEL_14:
       v12[1] = 3221225472;
       v12[2] = __66__PKPerformActionViewController__canPerformPaymentWithCompletion___block_invoke_3;
       v12[3] = &unk_1E8010970;
-      v6 = [PKPerformActionViewController alertControllerForUnableReason:v15 action:action displayableError:v5 addCardActionHandler:v13 unavailableActionHandler:0 cancelActionHandler:v12];
+      devicePrimaryPaymentApplication = [PKPerformActionViewController alertControllerForUnableReason:v15 action:action displayableError:uniqueID addCardActionHandler:v13 unavailableActionHandler:0 cancelActionHandler:v12];
       if ([(PKPaymentPass *)self->_pass isTransitPass])
       {
         v10 = [objc_opt_class() displayableErrorForTransitAction:self->_action andReason:v15];
         v11 = MEMORY[0x1BFB42D10]();
-        [v6 setMessage:v11];
+        [devicePrimaryPaymentApplication setMessage:v11];
       }
 
-      (*(v4 + 2))(v4, v6, v15);
+      (*(completionCopy + 2))(completionCopy, devicePrimaryPaymentApplication, v15);
     }
 
     goto LABEL_14;
@@ -1213,14 +1213,14 @@ void __66__PKPerformActionViewController__canPerformPaymentWithCompletion___bloc
   [v1 _presentPaymentSetupControllerWithAllowedPaymentNetworks:v2];
 }
 
-- (id)_generateGenericAlertWithCompletion:(id)a3
+- (id)_generateGenericAlertWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = [MEMORY[0x1E69B8D08] displayableErrorForAction:self->_action andReason:1];
   v6 = MEMORY[0x1E69DC650];
-  v7 = [v5 localizedDescription];
-  v8 = [v5 localizedRecoverySuggestion];
-  v9 = [v6 alertControllerWithTitle:v7 message:v8 preferredStyle:1];
+  localizedDescription = [v5 localizedDescription];
+  localizedRecoverySuggestion = [v5 localizedRecoverySuggestion];
+  v9 = [v6 alertControllerWithTitle:localizedDescription message:localizedRecoverySuggestion preferredStyle:1];
 
   v10 = MEMORY[0x1E69DC648];
   v11 = PKLocalizedPaymentString(&cfstr_PassActionUnav.isa);
@@ -1228,8 +1228,8 @@ void __66__PKPerformActionViewController__canPerformPaymentWithCompletion___bloc
   v15[1] = 3221225472;
   v15[2] = __69__PKPerformActionViewController__generateGenericAlertWithCompletion___block_invoke;
   v15[3] = &unk_1E8011248;
-  v16 = v4;
-  v12 = v4;
+  v16 = completionCopy;
+  v12 = completionCopy;
   v13 = [v10 actionWithTitle:v11 style:1 handler:v15];
   [v9 addAction:v13];
 
@@ -1247,18 +1247,18 @@ uint64_t __69__PKPerformActionViewController__generateGenericAlertWithCompletion
   return result;
 }
 
-- (void)_showGenericErrorAlert:(id)a3
+- (void)_showGenericErrorAlert:(id)alert
 {
-  v4 = [(PKPerformActionViewController *)self _generateGenericAlertWithCompletion:a3];
+  v4 = [(PKPerformActionViewController *)self _generateGenericAlertWithCompletion:alert];
   [(PKPerformActionViewController *)self presentViewController:v4 animated:1 completion:0];
 }
 
-- (id)_generateNoActionsAvailableDueToRemoteActionFailureAlertWithCompletion:(id)a3
+- (id)_generateNoActionsAvailableDueToRemoteActionFailureAlertWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(PKPaymentPass *)self->_pass localizedDescription];
+  completionCopy = completion;
+  localizedDescription = [(PKPaymentPass *)self->_pass localizedDescription];
   v6 = PKLocalizedPaymentString(&cfstr_PassActionUnav_7.isa);
-  v7 = PKLocalizedPaymentString(&cfstr_PassActionUnav_8.isa, &stru_1F3BD5BF0.isa, v5);
+  v7 = PKLocalizedPaymentString(&cfstr_PassActionUnav_8.isa, &stru_1F3BD5BF0.isa, localizedDescription);
   v8 = [MEMORY[0x1E69DC650] alertControllerWithTitle:v6 message:v7 preferredStyle:1];
   v9 = MEMORY[0x1E69DC648];
   v10 = PKLocalizedPaymentString(&cfstr_PassActionUnav.isa);
@@ -1266,8 +1266,8 @@ uint64_t __69__PKPerformActionViewController__generateGenericAlertWithCompletion
   v14[1] = 3221225472;
   v14[2] = __104__PKPerformActionViewController__generateNoActionsAvailableDueToRemoteActionFailureAlertWithCompletion___block_invoke;
   v14[3] = &unk_1E8011248;
-  v15 = v4;
-  v11 = v4;
+  v15 = completionCopy;
+  v11 = completionCopy;
   v12 = [v9 actionWithTitle:v10 style:1 handler:v14];
   [v8 addAction:v12];
 
@@ -1285,17 +1285,17 @@ uint64_t __104__PKPerformActionViewController__generateNoActionsAvailableDueToRe
   return result;
 }
 
-- (id)_generateNoActionsAvailableDueToConflictErrorAlertWithCompletion:(id)a3
+- (id)_generateNoActionsAvailableDueToConflictErrorAlertWithCompletion:(id)completion
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   v5 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v6 = [(PKPaymentPass *)self->_pass devicePaymentApplications];
-  v7 = [v6 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  devicePaymentApplications = [(PKPaymentPass *)self->_pass devicePaymentApplications];
+  v7 = [devicePaymentApplications countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1306,17 +1306,17 @@ uint64_t __104__PKPerformActionViewController__generateNoActionsAvailableDueToRe
       {
         if (*v24 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(devicePaymentApplications);
         }
 
-        v11 = [*(*(&v23 + 1) + 8 * i) supportedTransitNetworkIdentifiers];
-        if (v11)
+        supportedTransitNetworkIdentifiers = [*(*(&v23 + 1) + 8 * i) supportedTransitNetworkIdentifiers];
+        if (supportedTransitNetworkIdentifiers)
         {
-          [v5 addObjectsFromArray:v11];
+          [v5 addObjectsFromArray:supportedTransitNetworkIdentifiers];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v8 = [devicePaymentApplications countByEnumeratingWithState:&v23 objects:v27 count:16];
     }
 
     while (v8);
@@ -1333,7 +1333,7 @@ uint64_t __104__PKPerformActionViewController__generateNoActionsAvailableDueToRe
     v20[1] = 3221225472;
     v20[2] = __98__PKPerformActionViewController__generateNoActionsAvailableDueToConflictErrorAlertWithCompletion___block_invoke;
     v20[3] = &unk_1E8011248;
-    v21 = v4;
+    v21 = completionCopy;
     v17 = [v15 actionWithTitle:v16 style:1 handler:v20];
 
     [v14 addAction:v17];
@@ -1348,7 +1348,7 @@ uint64_t __104__PKPerformActionViewController__generateNoActionsAvailableDueToRe
       _os_log_impl(&dword_1BD026000, v18, OS_LOG_TYPE_DEFAULT, "PKPerformActionViewController unable to find transit network identifiers for pass", buf, 2u);
     }
 
-    v14 = [(PKPerformActionViewController *)self _generateGenericAlertWithCompletion:v4];
+    v14 = [(PKPerformActionViewController *)self _generateGenericAlertWithCompletion:completionCopy];
   }
 
   return v14;
@@ -1413,12 +1413,12 @@ void __79__PKPerformActionViewController__showNoActionsAvailableDueToConflictErr
   [v2 performActionViewControllerDidCancel:v3];
 }
 
-- (void)_presentPaymentSetupControllerWithAllowedPaymentNetworks:(id)a3
+- (void)_presentPaymentSetupControllerWithAllowedPaymentNetworks:(id)networks
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E69B8EF8] sharedService];
-  v6 = [objc_alloc(MEMORY[0x1E69B8D48]) initWithWebService:v5];
-  [v6 setAllowedPaymentNetworks:v4];
+  networksCopy = networks;
+  mEMORY[0x1E69B8EF8] = [MEMORY[0x1E69B8EF8] sharedService];
+  v6 = [objc_alloc(MEMORY[0x1E69B8D48]) initWithWebService:mEMORY[0x1E69B8EF8]];
+  [v6 setAllowedPaymentNetworks:networksCopy];
   [(PKPerformActionViewController *)self _showSpinner:1];
   objc_initWeak(&location, self);
   v8[0] = MEMORY[0x1E69E9820];
@@ -1492,12 +1492,12 @@ void __90__PKPerformActionViewController__presentPaymentSetupControllerWithAllow
   [v2 performActionViewControllerDidCancel:*(a1 + 32)];
 }
 
-- (void)_presentAddAnotherCardFlowWithTransitNetworkIdentifiers:(id)a3
+- (void)_presentAddAnotherCardFlowWithTransitNetworkIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E69B8EF8] sharedService];
-  v6 = [objc_alloc(MEMORY[0x1E69B8D48]) initWithWebService:v5];
-  [v6 setRequiredTransitNetworkIdentifiers:v4];
+  identifiersCopy = identifiers;
+  mEMORY[0x1E69B8EF8] = [MEMORY[0x1E69B8EF8] sharedService];
+  v6 = [objc_alloc(MEMORY[0x1E69B8D48]) initWithWebService:mEMORY[0x1E69B8EF8]];
+  [v6 setRequiredTransitNetworkIdentifiers:identifiersCopy];
   [(PKPerformActionViewController *)self _showSpinner:1];
   objc_initWeak(&location, self);
   v8[0] = MEMORY[0x1E69E9820];
@@ -1573,23 +1573,23 @@ void __89__PKPerformActionViewController__presentAddAnotherCardFlowWithTransitNe
   [v2 performActionViewControllerDidCancel:*(a1 + 32)];
 }
 
-- (void)paymentAuthorizationCoordinator:(id)a3 didAuthorizePayment:(id)a4 handler:(id)a5
+- (void)paymentAuthorizationCoordinator:(id)coordinator didAuthorizePayment:(id)payment handler:(id)handler
 {
   v5 = MEMORY[0x1E69B8B80];
-  v6 = a5;
+  handlerCopy = handler;
   v7 = objc_alloc_init(v5);
   [v7 setStatus:1];
-  v6[2](v6, v7);
+  handlerCopy[2](handlerCopy, v7);
 }
 
-- (void)paymentAuthorizationCoordinatorDidFinish:(id)a3
+- (void)paymentAuthorizationCoordinatorDidFinish:(id)finish
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __74__PKPerformActionViewController_paymentAuthorizationCoordinatorDidFinish___block_invoke;
   v3[3] = &unk_1E8010970;
   v3[4] = self;
-  [a3 dismissWithCompletion:v3];
+  [finish dismissWithCompletion:v3];
 }
 
 void __74__PKPerformActionViewController_paymentAuthorizationCoordinatorDidFinish___block_invoke(uint64_t a1)
@@ -1636,40 +1636,40 @@ void __74__PKPerformActionViewController_paymentAuthorizationCoordinatorDidFinis
   }
 }
 
-- (id)presentationSceneIdentifierForPaymentAuthorizationCoordinator:(id)a3
+- (id)presentationSceneIdentifierForPaymentAuthorizationCoordinator:(id)coordinator
 {
-  v3 = [(PKPerformActionViewController *)self view];
-  v4 = [v3 window];
-  v5 = [v4 windowScene];
-  v6 = [v5 _sceneIdentifier];
+  view = [(PKPerformActionViewController *)self view];
+  window = [view window];
+  windowScene = [window windowScene];
+  _sceneIdentifier = [windowScene _sceneIdentifier];
 
-  return v6;
+  return _sceneIdentifier;
 }
 
-- (void)paymentAuthorizationCoordinator:(id)a3 didAuthorizePurchase:(id)a4 completion:(id)a5
+- (void)paymentAuthorizationCoordinator:(id)coordinator didAuthorizePurchase:(id)purchase completion:(id)completion
 {
-  v9 = a4;
-  if (v9)
+  purchaseCopy = purchase;
+  if (purchaseCopy)
   {
-    objc_storeStrong(&self->_completedPurchase, a4);
-    v8 = a5;
+    objc_storeStrong(&self->_completedPurchase, purchase);
+    completionCopy = completion;
     [(PKPerformActionView *)self->_actionView saveLastInputValues];
-    v8[2](v8, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
   else
   {
-    (*(a5 + 2))(a5, 1);
+    (*(completion + 2))(completion, 1);
   }
 }
 
-- (void)paymentSetupDidFinish:(id)a3
+- (void)paymentSetupDidFinish:(id)finish
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained performActionViewControllerDidCancel:self];
 }
 
-- (void)_cancelButtonPressed:(id)a3
+- (void)_cancelButtonPressed:(id)pressed
 {
   if (objc_opt_respondsToSelector())
   {

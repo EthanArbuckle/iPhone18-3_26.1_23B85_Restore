@@ -1,27 +1,27 @@
 @interface ARTrackedRaycastPostProcessor
 - (ARSession)session;
-- (ARTrackedRaycastPostProcessor)initWithSession:(id)a3;
-- (BOOL)result:(id)a3 isCloseEnoughToInitialResultForRaycast:(id)a4;
+- (ARTrackedRaycastPostProcessor)initWithSession:(id)session;
+- (BOOL)result:(id)result isCloseEnoughToInitialResultForRaycast:(id)raycast;
 - (NSArray)trackedRaycasts;
-- (double)updatePose:(__n128)a3 referenceOriginTransform:(__n128)a4 oldRayOrigin:(simd_float4)a5 oldRayDirection:(simd_float4)a6 newRayOrigin:(simd_float4)a7 newRayDirection:(simd_float4)a8;
-- (void)addTrackedRaycast:(id)a3 andProcessInitialResults:(id)a4;
+- (double)updatePose:(__n128)pose referenceOriginTransform:(__n128)transform oldRayOrigin:(simd_float4)origin oldRayDirection:(simd_float4)direction newRayOrigin:(simd_float4)rayOrigin newRayDirection:(simd_float4)rayDirection;
+- (void)addTrackedRaycast:(id)raycast andProcessInitialResults:(id)results;
 - (void)dealloc;
 - (void)invalidateAllRaycasts;
-- (void)invalidateRaycastWithIdentifier:(id)a3;
-- (void)performBlockWhileLockingRaycasts:(id)a3;
-- (void)processInitialResults:(id)a3 forRaycast:(id)a4;
-- (void)processUpdatedResults:(id)a3;
-- (void)removeTrackedRaycastWithIdentifier:(id)a3;
+- (void)invalidateRaycastWithIdentifier:(id)identifier;
+- (void)performBlockWhileLockingRaycasts:(id)raycasts;
+- (void)processInitialResults:(id)results forRaycast:(id)raycast;
+- (void)processUpdatedResults:(id)results;
+- (void)removeTrackedRaycastWithIdentifier:(id)identifier;
 - (void)startUpdateTimer;
-- (void)updateFromPoseGraphEventWithData:(__n128)a3 referenceOriginTransform:(__n128)a4;
-- (void)updateFromTimer:(id)a3;
+- (void)updateFromPoseGraphEventWithData:(__n128)data referenceOriginTransform:(__n128)transform;
+- (void)updateFromTimer:(id)timer;
 @end
 
 @implementation ARTrackedRaycastPostProcessor
 
-- (ARTrackedRaycastPostProcessor)initWithSession:(id)a3
+- (ARTrackedRaycastPostProcessor)initWithSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v17.receiver = self;
   v17.super_class = ARTrackedRaycastPostProcessor;
   v5 = [(ARTrackedRaycastPostProcessor *)&v17 init];
@@ -47,7 +47,7 @@
     v15 = _resultsHistory;
     _resultsHistory = v14;
 
-    objc_storeWeak(&v5->_session, v4);
+    objc_storeWeak(&v5->_session, sessionCopy);
   }
 
   return v5;
@@ -70,36 +70,36 @@
 - (NSArray)trackedRaycasts
 {
   dispatch_semaphore_wait(_trackedRaycastSemaphore, 0xFFFFFFFFFFFFFFFFLL);
-  v2 = [_trackedRaycasts allValues];
+  allValues = [_trackedRaycasts allValues];
   dispatch_semaphore_signal(_trackedRaycastSemaphore);
 
-  return v2;
+  return allValues;
 }
 
-- (void)addTrackedRaycast:(id)a3 andProcessInitialResults:(id)a4
+- (void)addTrackedRaycast:(id)raycast andProcessInitialResults:(id)results
 {
   v6 = _trackedRaycastSemaphore;
-  v7 = a4;
-  v8 = a3;
+  resultsCopy = results;
+  raycastCopy = raycast;
   dispatch_semaphore_wait(v6, 0xFFFFFFFFFFFFFFFFLL);
   v9 = _trackedRaycasts;
-  v10 = [v8 identifier];
-  [v9 setObject:v8 forKeyedSubscript:v10];
+  identifier = [raycastCopy identifier];
+  [v9 setObject:raycastCopy forKeyedSubscript:identifier];
 
-  [(ARTrackedRaycastPostProcessor *)self processInitialResults:v7 forRaycast:v8];
+  [(ARTrackedRaycastPostProcessor *)self processInitialResults:resultsCopy forRaycast:raycastCopy];
   v11 = _trackedRaycastSemaphore;
 
   dispatch_semaphore_signal(v11);
 }
 
-- (void)removeTrackedRaycastWithIdentifier:(id)a3
+- (void)removeTrackedRaycastWithIdentifier:(id)identifier
 {
   v3 = _trackedRaycasts;
-  v4 = a3;
-  [v3 setObject:0 forKeyedSubscript:v4];
-  [_initialRaycastResults setObject:0 forKeyedSubscript:v4];
-  [_targetRaycastResultUpdates setObject:0 forKeyedSubscript:v4];
-  [_resultsHistory setObject:0 forKeyedSubscript:v4];
+  identifierCopy = identifier;
+  [v3 setObject:0 forKeyedSubscript:identifierCopy];
+  [_initialRaycastResults setObject:0 forKeyedSubscript:identifierCopy];
+  [_targetRaycastResultUpdates setObject:0 forKeyedSubscript:identifierCopy];
+  [_resultsHistory setObject:0 forKeyedSubscript:identifierCopy];
 }
 
 - (void)invalidateAllRaycasts
@@ -109,8 +109,8 @@
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [_trackedRaycasts allKeys];
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  allKeys = [_trackedRaycasts allKeys];
+  v4 = [allKeys countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -122,34 +122,34 @@
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allKeys);
         }
 
         [(ARTrackedRaycastPostProcessor *)self invalidateRaycastWithIdentifier:*(*(&v8 + 1) + 8 * v7++)];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [allKeys countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);
   }
 }
 
-- (void)invalidateRaycastWithIdentifier:(id)a3
+- (void)invalidateRaycastWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   WeakRetained = objc_loadWeakRetained(&self->_session);
 
   if (WeakRetained)
   {
-    v6 = [_trackedRaycasts objectForKeyedSubscript:v4];
+    v6 = [_trackedRaycasts objectForKeyedSubscript:identifierCopy];
     if (v6)
     {
       v7 = objc_loadWeakRetained(&self->_session);
-      v8 = [v7 delegateQueue];
-      v9 = v8;
-      if (!v8)
+      delegateQueue = [v7 delegateQueue];
+      v9 = delegateQueue;
+      if (!delegateQueue)
       {
         v9 = MEMORY[0x1E69E96A0];
         v10 = MEMORY[0x1E69E96A0];
@@ -160,9 +160,9 @@
       v11[2] = __65__ARTrackedRaycastPostProcessor_invalidateRaycastWithIdentifier___block_invoke;
       v11[3] = &unk_1E817BEC8;
       v12 = v6;
-      v13 = v4;
+      v13 = identifierCopy;
       dispatch_async(v9, v11);
-      if (!v8)
+      if (!delegateQueue)
       {
       }
     }
@@ -181,47 +181,47 @@ void __65__ARTrackedRaycastPostProcessor_invalidateRaycastWithIdentifier___block
   [v3 setObject:0 forKeyedSubscript:v4];
 }
 
-- (void)processInitialResults:(id)a3 forRaycast:(id)a4
+- (void)processInitialResults:(id)results forRaycast:(id)raycast
 {
-  v6 = a3;
-  v7 = a4;
+  resultsCopy = results;
+  raycastCopy = raycast;
   WeakRetained = objc_loadWeakRetained(&self->_session);
 
   if (WeakRetained)
   {
     v9 = objc_loadWeakRetained(&self->_session);
-    v10 = [v9 annotateAnchorToRaycastResults:v6];
+    v10 = [v9 annotateAnchorToRaycastResults:resultsCopy];
 
-    v11 = [v7 identifier];
-    v12 = [v10 firstObject];
-    [_initialRaycastResults setObject:v12 forKeyedSubscript:v11];
+    identifier = [raycastCopy identifier];
+    firstObject = [v10 firstObject];
+    [_initialRaycastResults setObject:firstObject forKeyedSubscript:identifier];
 
-    v13 = [v7 query];
-    v14 = [v13 target];
+    query = [raycastCopy query];
+    target = [query target];
 
-    if (v14 == 2)
+    if (target == 2)
     {
       v15 = objc_alloc_init(MEMORY[0x1E695DF70]);
       v16 = 10;
       do
       {
-        v17 = [v10 firstObject];
-        [v15 addObject:v17];
+        firstObject2 = [v10 firstObject];
+        [v15 addObject:firstObject2];
 
         --v16;
       }
 
       while (v16);
-      [_resultsHistory setObject:v15 forKeyedSubscript:v11];
+      [_resultsHistory setObject:v15 forKeyedSubscript:identifier];
       v18 = _targetRaycastResultUpdates;
-      v19 = [v7 identifier];
-      [v18 setObject:0 forKeyedSubscript:v19];
+      identifier2 = [raycastCopy identifier];
+      [v18 setObject:0 forKeyedSubscript:identifier2];
     }
 
     v20 = objc_loadWeakRetained(&self->_session);
-    v21 = [v20 delegateQueue];
-    v22 = v21;
-    if (!v21)
+    delegateQueue = [v20 delegateQueue];
+    v22 = delegateQueue;
+    if (!delegateQueue)
     {
       v22 = MEMORY[0x1E69E96A0];
       v23 = MEMORY[0x1E69E96A0];
@@ -231,11 +231,11 @@ void __65__ARTrackedRaycastPostProcessor_invalidateRaycastWithIdentifier___block
     v24[1] = 3221225472;
     v24[2] = __66__ARTrackedRaycastPostProcessor_processInitialResults_forRaycast___block_invoke;
     v24[3] = &unk_1E817BEC8;
-    v25 = v7;
-    v6 = v10;
-    v26 = v6;
+    v25 = raycastCopy;
+    resultsCopy = v10;
+    v26 = resultsCopy;
     dispatch_async(v22, v24);
-    if (!v21)
+    if (!delegateQueue)
     {
     }
   }
@@ -247,9 +247,9 @@ void __66__ARTrackedRaycastPostProcessor_processInitialResults_forRaycast___bloc
   v2[2](v2, *(a1 + 40));
 }
 
-- (void)processUpdatedResults:(id)a3
+- (void)processUpdatedResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   WeakRetained = objc_loadWeakRetained(&self->_session);
 
   if (WeakRetained)
@@ -265,7 +265,7 @@ void __66__ARTrackedRaycastPostProcessor_processInitialResults_forRaycast___bloc
     v6[3] = &unk_1E817CF78;
     v6[4] = self;
     v6[5] = &v7;
-    [v4 enumerateKeysAndObjectsUsingBlock:v6];
+    [resultsCopy enumerateKeysAndObjectsUsingBlock:v6];
     dispatch_semaphore_signal(_trackedRaycastSemaphore);
     if (*(v8 + 24) == 1)
     {
@@ -339,24 +339,24 @@ void __55__ARTrackedRaycastPostProcessor_processUpdatedResults___block_invoke_2(
   v2[2](v2, *(a1 + 40));
 }
 
-- (void)performBlockWhileLockingRaycasts:(id)a3
+- (void)performBlockWhileLockingRaycasts:(id)raycasts
 {
   v3 = _trackedRaycastSemaphore;
-  v4 = a3;
+  raycastsCopy = raycasts;
   dispatch_semaphore_wait(v3, 0xFFFFFFFFFFFFFFFFLL);
-  v4[2](v4);
+  raycastsCopy[2](raycastsCopy);
 
   v5 = _trackedRaycastSemaphore;
 
   dispatch_semaphore_signal(v5);
 }
 
-- (void)updateFromPoseGraphEventWithData:(__n128)a3 referenceOriginTransform:(__n128)a4
+- (void)updateFromPoseGraphEventWithData:(__n128)data referenceOriginTransform:(__n128)transform
 {
-  *&v97[32] = a4;
+  *&v97[32] = transform;
   *&v97[48] = a5;
   *v97 = a2;
-  *&v97[16] = a3;
+  *&v97[16] = data;
   v112 = *MEMORY[0x1E69E9840];
   v8 = a7;
   dispatch_semaphore_wait(_trackedRaycastSemaphore, 0xFFFFFFFFFFFFFFFFLL);
@@ -370,7 +370,7 @@ void __55__ARTrackedRaycastPostProcessor_processUpdatedResults___block_invoke_2(
   if (v72)
   {
     v71 = *v99;
-    v69 = a1;
+    selfCopy = self;
     do
     {
       for (i = 0; i != v72; ++i)
@@ -381,8 +381,8 @@ void __55__ARTrackedRaycastPostProcessor_processUpdatedResults___block_invoke_2(
         }
 
         v10 = *(*(&v98 + 1) + 8 * i);
-        v11 = [v10 identifier];
-        v12 = [_trackedRaycasts objectForKeyedSubscript:v11];
+        identifier = [v10 identifier];
+        v12 = [_trackedRaycasts objectForKeyedSubscript:identifier];
         if (v12)
         {
           *v13.i64 = ARRenderingToVisionCoordinateTransform();
@@ -433,8 +433,8 @@ void __55__ARTrackedRaycastPostProcessor_processUpdatedResults___block_invoke_2(
           *v111.columns[1].i64 = v77.f32[2];
           v107 = vcvtq_f64_f32(*v80.f32);
           *&v108 = v80.f32[2];
-          v27 = [v12 query];
-          [v27 direction];
+          query = [v12 query];
+          [query direction];
           v81 = v28;
 
           v114 = __invert_f4(*v97);
@@ -445,8 +445,8 @@ void __55__ARTrackedRaycastPostProcessor_processUpdatedResults___block_invoke_2(
           v82 = vmlaq_f32(vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(v114.columns[0], v81.f32[0]), v114.columns[1], *v81.f32, 1), v114.columns[2], v81, 2), 0, v114.columns[3]);
           *v29.i64 = ARRenderingToVisionCoordinateTransform();
           v83 = vmlaq_laneq_f32(vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(v29, v82.f32[0]), v30, *v82.f32, 1), v31, v82, 2), v32, v82, 3);
-          v33 = [v12 query];
-          [v33 origin];
+          query2 = [v12 query];
+          [query2 origin];
           v73 = v34;
 
           v79 = vaddq_f32(v74, vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(v75, v73.f32[0]), v76, *v73.f32, 1), v78, v73, 2));
@@ -464,44 +464,44 @@ void __55__ARTrackedRaycastPostProcessor_processUpdatedResults___block_invoke_2(
           v92.i64[0] = v41;
           v95.i64[0] = v40;
           v42 = [ARRaycastQuery alloc];
-          v43 = [v12 query];
-          v44 = [v43 target];
-          v45 = [v12 query];
-          v46 = -[ARRaycastQuery initWithOrigin:direction:allowingTarget:alignment:](v42, "initWithOrigin:direction:allowingTarget:alignment:", v44, [v45 targetAlignment], *v92.i64, *v95.i64);
+          query3 = [v12 query];
+          target = [query3 target];
+          query4 = [v12 query];
+          v46 = -[ARRaycastQuery initWithOrigin:direction:allowingTarget:alignment:](v42, "initWithOrigin:direction:allowingTarget:alignment:", target, [query4 targetAlignment], *v92.i64, *v95.i64);
 
           v96 = v46;
           [v12 setTrackedQuery:v46];
-          v47 = [_initialRaycastResults objectForKeyedSubscript:v11];
+          v47 = [_initialRaycastResults objectForKeyedSubscript:identifier];
           v48 = v47;
           if (v47)
           {
             [v47 worldTransform];
-            [a1 updatePose:&v104 referenceOriginTransform:&v102 oldRayOrigin:&v111 oldRayDirection:&v107 newRayOrigin:? newRayDirection:?];
+            [self updatePose:&v104 referenceOriginTransform:&v102 oldRayOrigin:&v111 oldRayDirection:&v107 newRayOrigin:? newRayDirection:?];
             v53 = -[ARRaycastResult initWithWorldTransform:target:targetAlignment:]([ARRaycastResult alloc], "initWithWorldTransform:target:targetAlignment:", [v48 target], objc_msgSend(v48, "targetAlignment"), v49, v50, v51, v52);
-            v54 = [v48 anchor];
-            [(ARRaycastResult *)v53 setAnchor:v54];
+            anchor = [v48 anchor];
+            [(ARRaycastResult *)v53 setAnchor:anchor];
 
-            v55 = [v48 anchorIdentifier];
-            [(ARRaycastResult *)v53 setAnchorIdentifier:v55];
+            anchorIdentifier = [v48 anchorIdentifier];
+            [(ARRaycastResult *)v53 setAnchorIdentifier:anchorIdentifier];
 
-            [_initialRaycastResults setObject:v53 forKeyedSubscript:v11];
+            [_initialRaycastResults setObject:v53 forKeyedSubscript:identifier];
           }
 
-          v56 = [_targetRaycastResultUpdates objectForKeyedSubscript:v11];
+          v56 = [_targetRaycastResultUpdates objectForKeyedSubscript:identifier];
           v57 = v56;
           if (v56)
           {
             [v56 worldTransform];
-            [a1 updatePose:&v104 referenceOriginTransform:&v102 oldRayOrigin:&v111 oldRayDirection:&v107 newRayOrigin:? newRayDirection:?];
+            [self updatePose:&v104 referenceOriginTransform:&v102 oldRayOrigin:&v111 oldRayDirection:&v107 newRayOrigin:? newRayDirection:?];
             v62 = -[ARRaycastResult initWithWorldTransform:target:targetAlignment:]([ARRaycastResult alloc], "initWithWorldTransform:target:targetAlignment:", [v57 target], objc_msgSend(v57, "targetAlignment"), v58, v59, v60, v61);
-            v63 = [v57 anchor];
-            [(ARRaycastResult *)v62 setAnchor:v63];
+            anchor2 = [v57 anchor];
+            [(ARRaycastResult *)v62 setAnchor:anchor2];
 
-            v64 = [v57 anchorIdentifier];
-            [(ARRaycastResult *)v62 setAnchorIdentifier:v64];
+            anchorIdentifier2 = [v57 anchorIdentifier];
+            [(ARRaycastResult *)v62 setAnchorIdentifier:anchorIdentifier2];
 
-            [_targetRaycastResultUpdates setObject:v62 forKeyedSubscript:v11];
-            v65 = [_resultsHistory objectForKeyedSubscript:v11];
+            [_targetRaycastResultUpdates setObject:v62 forKeyedSubscript:identifier];
+            v65 = [_resultsHistory objectForKeyedSubscript:identifier];
             v66 = v65;
             if (v65)
             {
@@ -516,7 +516,7 @@ void __55__ARTrackedRaycastPostProcessor_processUpdatedResults___block_invoke_2(
               while (v67);
             }
 
-            a1 = v69;
+            self = selfCopy;
           }
         }
       }
@@ -530,33 +530,33 @@ void __55__ARTrackedRaycastPostProcessor_processUpdatedResults___block_invoke_2(
   dispatch_semaphore_signal(_trackedRaycastSemaphore);
 }
 
-- (double)updatePose:(__n128)a3 referenceOriginTransform:(__n128)a4 oldRayOrigin:(simd_float4)a5 oldRayDirection:(simd_float4)a6 newRayOrigin:(simd_float4)a7 newRayDirection:(simd_float4)a8
+- (double)updatePose:(__n128)pose referenceOriginTransform:(__n128)transform oldRayOrigin:(simd_float4)origin oldRayDirection:(simd_float4)direction newRayOrigin:(simd_float4)rayOrigin newRayDirection:(simd_float4)rayDirection
 {
   v20 = *MEMORY[0x1E69E9840];
-  *v8.i64 = ARVisionTransformFromWorldTransform(a1, a2, a3, a4, a5, a6, a7, a8);
+  *v8.i64 = ARVisionTransformFromWorldTransform(self, a2, pose, transform, origin, direction, rayOrigin, rayDirection);
   ARMatrix4x4RowMajorRotationAndTranslation(v19, &v18, v8, v9, v10, v11);
   CV3DUpdateHitTestResultPose();
   *v21.columns[0].i64 = ARMatrix4x4MakeRowMajorTransform(v17);
-  return ARWorldTransformFromVisionTransform(v21, a5, a6, a7, a8);
+  return ARWorldTransformFromVisionTransform(v21, origin, direction, rayOrigin, rayDirection);
 }
 
-- (BOOL)result:(id)a3 isCloseEnoughToInitialResultForRaycast:(id)a4
+- (BOOL)result:(id)result isCloseEnoughToInitialResultForRaycast:(id)raycast
 {
-  v5 = a3;
-  v6 = a4;
+  resultCopy = result;
+  raycastCopy = raycast;
   v7 = _initialRaycastResults;
-  v8 = [v6 identifier];
-  v9 = [v7 objectForKeyedSubscript:v8];
+  identifier = [raycastCopy identifier];
+  v9 = [v7 objectForKeyedSubscript:identifier];
 
   v10 = 1;
-  if (v5 && v9)
+  if (resultCopy && v9)
   {
     [v9 worldTransform];
     v23 = v11;
-    [v5 worldTransform];
+    [resultCopy worldTransform];
     v22 = v12;
-    v13 = [v6 query];
-    [v13 origin];
+    query = [raycastCopy query];
+    [query origin];
     v15 = vsubq_f32(v14, v23);
     v16 = vmulq_f32(v15, v15);
     v17 = sqrtf(v16.f32[2] + vaddv_f32(*v16.f32));
@@ -591,9 +591,9 @@ uint64_t __49__ARTrackedRaycastPostProcessor_startUpdateTimer__block_invoke(uint
   return [v3 fire];
 }
 
-- (void)updateFromTimer:(id)a3
+- (void)updateFromTimer:(id)timer
 {
-  if (_updateTimer == a3)
+  if (_updateTimer == timer)
   {
     v6[7] = v3;
     v6[8] = v4;
@@ -610,7 +610,7 @@ uint64_t __49__ARTrackedRaycastPostProcessor_startUpdateTimer__block_invoke(uint
   else
   {
 
-    [a3 invalidate];
+    [timer invalidate];
   }
 }
 

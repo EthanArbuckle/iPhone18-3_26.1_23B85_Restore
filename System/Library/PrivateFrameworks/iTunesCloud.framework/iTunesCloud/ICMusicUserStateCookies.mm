@@ -1,60 +1,60 @@
 @interface ICMusicUserStateCookies
-- (ICMusicUserStateCookies)initWithBlock:(id)a3;
-- (ICMusicUserStateCookies)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setItfe:(id)a3;
-- (void)setXpab:(id)a3;
+- (ICMusicUserStateCookies)initWithBlock:(id)block;
+- (ICMusicUserStateCookies)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
+- (void)setItfe:(id)itfe;
+- (void)setXpab:(id)xpab;
 @end
 
 @implementation ICMusicUserStateCookies
 
-- (void)setXpab:(id)a3
+- (void)setXpab:(id)xpab
 {
-  v5 = a3;
-  v9 = v5;
+  xpabCopy = xpab;
+  v9 = xpabCopy;
   if (self->_frozen)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"ICMusicUserStateCookies.m" lineNumber:67 description:@"Attempt to mutate after being initialized."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ICMusicUserStateCookies.m" lineNumber:67 description:@"Attempt to mutate after being initialized."];
 
-    v5 = v9;
+    xpabCopy = v9;
   }
 
-  v6 = [v5 copy];
+  v6 = [xpabCopy copy];
   xpab = self->_xpab;
   self->_xpab = v6;
 }
 
-- (void)setItfe:(id)a3
+- (void)setItfe:(id)itfe
 {
-  v5 = a3;
-  v9 = v5;
+  itfeCopy = itfe;
+  v9 = itfeCopy;
   if (self->_frozen)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"ICMusicUserStateCookies.m" lineNumber:62 description:@"Attempt to mutate after being initialized."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ICMusicUserStateCookies.m" lineNumber:62 description:@"Attempt to mutate after being initialized."];
 
-    v5 = v9;
+    itfeCopy = v9;
   }
 
-  v6 = [v5 copy];
+  v6 = [itfeCopy copy];
   itfe = self->_itfe;
   self->_itfe = v6;
 }
 
-- (ICMusicUserStateCookies)initWithCoder:(id)a3
+- (ICMusicUserStateCookies)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = ICMusicUserStateCookies;
   v5 = [(ICMusicUserStateCookies *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"xpab"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"xpab"];
     xpab = v5->_xpab;
     v5->_xpab = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"itfe"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"itfe"];
     itfe = v5->_itfe;
     v5->_itfe = v8;
   }
@@ -62,23 +62,23 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   xpab = self->_xpab;
-  v5 = a3;
-  [v5 encodeObject:xpab forKey:@"xpab"];
-  [v5 encodeObject:self->_itfe forKey:@"itfe"];
+  coderCopy = coder;
+  [coderCopy encodeObject:xpab forKey:@"xpab"];
+  [coderCopy encodeObject:self->_itfe forKey:@"itfe"];
 }
 
-- (ICMusicUserStateCookies)initWithBlock:(id)a3
+- (ICMusicUserStateCookies)initWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v7.receiver = self;
   v7.super_class = ICMusicUserStateCookies;
   v5 = [(ICMusicUserStateCookies *)&v7 init];
   if (v5)
   {
-    v4[2](v4, v5);
+    blockCopy[2](blockCopy, v5);
     v5->_frozen = 1;
   }
 

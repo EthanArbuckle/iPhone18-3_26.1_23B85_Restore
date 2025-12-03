@@ -1,24 +1,24 @@
 @interface BKPageCurlManager
 - (BKPageCurlConfiguration)pageCurlConfiguration;
 - (BKPageCurlManager)init;
-- (BKPageCurlManager)initWithContext:(id)a3;
+- (BKPageCurlManager)initWithContext:(id)context;
 - (BKPageCurlManagerDelegate)delegate;
-- (BOOL)killACurl:(BOOL)a3;
+- (BOOL)killACurl:(BOOL)curl;
 - (IMFrameEnvironment)configurationContext;
-- (id)beginManualCurl:(BOOL)a3 atLocation:(CGPoint)a4 inPage:(id)a5 fromPages:(id)a6 backPage:(id)a7 inContainer:(id)a8;
-- (id)enqueuePageCurlWithType:(int)a3;
+- (id)beginManualCurl:(BOOL)curl atLocation:(CGPoint)location inPage:(id)page fromPages:(id)pages backPage:(id)backPage inContainer:(id)container;
+- (id)enqueuePageCurlWithType:(int)type;
 - (void)_startQueuedCurls;
-- (void)cancelManualCurl:(id)a3;
-- (void)curlPages:(id)a3 backPage:(id)a4 inContainer:(id)a5;
-- (void)curlPages:(id)a3 backPage:(id)a4 inContainer:(id)a5 curlPage:(BOOL)a6;
-- (void)curlPages:(id)a3 backPages:(id)a4 inContainer:(id)a5;
-- (void)curlPages:(id)a3 backPages:(id)a4 inContainer:(id)a5 curlPage:(BOOL)a6;
+- (void)cancelManualCurl:(id)curl;
+- (void)curlPages:(id)pages backPage:(id)page inContainer:(id)container;
+- (void)curlPages:(id)pages backPage:(id)page inContainer:(id)container curlPage:(BOOL)curlPage;
+- (void)curlPages:(id)pages backPages:(id)backPages inContainer:(id)container;
+- (void)curlPages:(id)pages backPages:(id)backPages inContainer:(id)container curlPage:(BOOL)page;
 - (void)dealloc;
 - (void)killAllCurls;
-- (void)pageCurl:(id)a3 finished:(BOOL)a4;
-- (void)setDelegate:(id)a3;
-- (void)unCurlPages:(id)a3 backPages:(id)a4 inContainer:(id)a5;
-- (void)uncurlPages:(id)a3 backPage:(id)a4 inContainer:(id)a5;
+- (void)pageCurl:(id)curl finished:(BOOL)finished;
+- (void)setDelegate:(id)delegate;
+- (void)unCurlPages:(id)pages backPages:(id)backPages inContainer:(id)container;
+- (void)uncurlPages:(id)pages backPage:(id)page inContainer:(id)container;
 @end
 
 @implementation BKPageCurlManager
@@ -33,9 +33,9 @@
   return 0;
 }
 
-- (BKPageCurlManager)initWithContext:(id)a3
+- (BKPageCurlManager)initWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v9.receiver = self;
   v9.super_class = BKPageCurlManager;
   v5 = [(BKPageCurlManager *)&v9 init];
@@ -46,7 +46,7 @@
     v5->_queue = v6;
 
     v5->_spineLocation = 1;
-    objc_storeWeak(&v5->_configurationContext, v4);
+    objc_storeWeak(&v5->_configurationContext, contextCopy);
   }
 
   return v5;
@@ -78,10 +78,10 @@
   return pageCurlConfiguration;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v18 = a3;
-  v4 = objc_storeWeak(&self->_delegate, v18);
+  delegateCopy = delegate;
+  v4 = objc_storeWeak(&self->_delegate, delegateCopy);
   v5 = objc_opt_respondsToSelector();
 
   *&self->_delegateFlags = *&self->_delegateFlags & 0xFE | v5 & 1;
@@ -164,29 +164,29 @@
   *&self->_delegateFlags = *&self->_delegateFlags & 0xBF | v17;
 }
 
-- (id)enqueuePageCurlWithType:(int)a3
+- (id)enqueuePageCurlWithType:(int)type
 {
-  v3 = *&a3;
+  v3 = *&type;
   v5 = objc_alloc_init(BKPageCurl);
   [(BKPageCurl *)v5 setType:v3];
   [(BKPageCurl *)v5 setDelegate:self];
-  v6 = [(BKPageCurlManager *)self pageColor];
-  [(BKPageCurl *)v5 setPageColor:v6];
+  pageColor = [(BKPageCurlManager *)self pageColor];
+  [(BKPageCurl *)v5 setPageColor:pageColor];
 
-  v7 = [(BKPageCurlManager *)self backColor];
-  [(BKPageCurl *)v5 setBackColor:v7];
+  backColor = [(BKPageCurlManager *)self backColor];
+  [(BKPageCurl *)v5 setBackColor:backColor];
 
   [(BKPageCurl *)v5 setSpineLocation:[(BKPageCurlManager *)self spineLocation]];
-  v8 = [(BKPageCurlManager *)self pageCurlConfiguration];
-  [(BKPageCurl *)v5 setConfiguration:v8];
+  pageCurlConfiguration = [(BKPageCurlManager *)self pageCurlConfiguration];
+  [(BKPageCurl *)v5 setConfiguration:pageCurlConfiguration];
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v10 = objc_opt_respondsToSelector();
 
   if (v10)
   {
-    v11 = [(BKPageCurlManager *)self delegate];
-    [v11 pageCurlManagerStabilizationFactor];
+    delegate = [(BKPageCurlManager *)self delegate];
+    [delegate pageCurlManagerStabilizationFactor];
     [(BKPageCurl *)v5 setStabilization:?];
   }
 
@@ -231,17 +231,17 @@
           goto LABEL_25;
         }
 
-        v11 = [v9 state];
-        if (!v11)
+        state = [v9 state];
+        if (!state)
         {
-          v12 = [(BKPageCurlManager *)self delegate];
-          [v12 pageCurlManager:self willBeginCurl:v9];
+          delegate = [(BKPageCurlManager *)self delegate];
+          [delegate pageCurlManager:self willBeginCurl:v9];
 
           delegateFlags = self->_delegateFlags;
           if (delegateFlags)
           {
-            v14 = [(BKPageCurlManager *)self delegate];
-            [v14 pageCurlManager:self delayForCurl:v9];
+            delegate2 = [(BKPageCurlManager *)self delegate];
+            [delegate2 pageCurlManager:self delayForCurl:v9];
             [v9 setDelay:?];
 
             delegateFlags = self->_delegateFlags;
@@ -249,8 +249,8 @@
 
           if ((delegateFlags & 2) != 0)
           {
-            v15 = [(BKPageCurlManager *)self delegate];
-            [v15 pageCurlManager:self durationForCurl:v9];
+            delegate3 = [(BKPageCurlManager *)self delegate];
+            [delegate3 pageCurlManager:self durationForCurl:v9];
             [v9 setDuration:?];
           }
 
@@ -260,7 +260,7 @@ LABEL_22:
           continue;
         }
 
-        if (v11 == &dword_0 + 1)
+        if (state == &dword_0 + 1)
         {
           goto LABEL_22;
         }
@@ -275,9 +275,9 @@ LABEL_22:
 LABEL_25:
 }
 
-- (BOOL)killACurl:(BOOL)a3
+- (BOOL)killACurl:(BOOL)curl
 {
-  v3 = a3;
+  curlCopy = curl;
   if ((*&self->_delegateFlags & 0x20) != 0)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -290,40 +290,40 @@ LABEL_25:
   }
 
   queue = self->_queue;
-  v8 = [NSPredicate predicateWithFormat:@"type == %d", v3];
-  v9 = [(NSMutableArray *)queue filteredArrayUsingPredicate:v8];
+  curlCopy = [NSPredicate predicateWithFormat:@"type == %d", curlCopy];
+  v9 = [(NSMutableArray *)queue filteredArrayUsingPredicate:curlCopy];
 
   v10 = [v9 count];
   v11 = v10 != 0;
   if (v10)
   {
-    v12 = [v9 lastObject];
-    [v12 killCurl];
+    lastObject = [v9 lastObject];
+    [lastObject killCurl];
   }
 
   return v11;
 }
 
-- (void)curlPages:(id)a3 backPages:(id)a4 inContainer:(id)a5 curlPage:(BOOL)a6
+- (void)curlPages:(id)pages backPages:(id)backPages inContainer:(id)container curlPage:(BOOL)page
 {
-  if (a6)
+  if (page)
   {
-    [(BKPageCurlManager *)self curlPages:a3 backPages:a4 inContainer:a5];
+    [(BKPageCurlManager *)self curlPages:pages backPages:backPages inContainer:container];
   }
 
   else
   {
-    [(BKPageCurlManager *)self unCurlPages:a3 backPages:a4 inContainer:a5];
+    [(BKPageCurlManager *)self unCurlPages:pages backPages:backPages inContainer:container];
   }
 }
 
-- (void)curlPages:(id)a3 backPages:(id)a4 inContainer:(id)a5
+- (void)curlPages:(id)pages backPages:(id)backPages inContainer:(id)container
 {
-  v14 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v14 count];
-  if (v9 && v10 && [v8 count] && objc_msgSend(v8, "count") >= 2 && !-[BKPageCurlManager killACurl:](self, "killACurl:", 1))
+  pagesCopy = pages;
+  backPagesCopy = backPages;
+  containerCopy = container;
+  v10 = [pagesCopy count];
+  if (containerCopy && v10 && [backPagesCopy count] && objc_msgSend(backPagesCopy, "count") >= 2 && !-[BKPageCurlManager killACurl:](self, "killACurl:", 1))
   {
     v11 = +[AETestDriver shared];
     [v11 postEvent:kBETestDriverPageTurnSetupEnd sender:self];
@@ -332,10 +332,10 @@ LABEL_25:
     [v12 postEvent:kBETestDriverPageTurnAnimationStart sender:self];
 
     v13 = [(BKPageCurlManager *)self enqueuePageCurlWithType:0];
-    [v13 setExistingPages:v14];
-    [v13 setBackPages:v8];
-    [v13 setContainer:v9];
-    if ([v14 count] >= 2)
+    [v13 setExistingPages:pagesCopy];
+    [v13 setBackPages:backPagesCopy];
+    [v13 setContainer:containerCopy];
+    if ([pagesCopy count] >= 2)
     {
       [v13 setSpineLocation:2];
     }
@@ -344,13 +344,13 @@ LABEL_25:
   }
 }
 
-- (void)unCurlPages:(id)a3 backPages:(id)a4 inContainer:(id)a5
+- (void)unCurlPages:(id)pages backPages:(id)backPages inContainer:(id)container
 {
-  v14 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v14 count];
-  if (v9 && v10 && [v8 count] && objc_msgSend(v8, "count") >= 2 && !-[BKPageCurlManager killACurl:](self, "killACurl:", 0))
+  pagesCopy = pages;
+  backPagesCopy = backPages;
+  containerCopy = container;
+  v10 = [pagesCopy count];
+  if (containerCopy && v10 && [backPagesCopy count] && objc_msgSend(backPagesCopy, "count") >= 2 && !-[BKPageCurlManager killACurl:](self, "killACurl:", 0))
   {
     v11 = +[AETestDriver shared];
     [v11 postEvent:kBETestDriverPageTurnSetupEnd sender:self];
@@ -359,10 +359,10 @@ LABEL_25:
     [v12 postEvent:kBETestDriverPageTurnAnimationStart sender:self];
 
     v13 = [(BKPageCurlManager *)self enqueuePageCurlWithType:1];
-    [v13 setExistingPages:v14];
-    [v13 setBackPages:v8];
-    [v13 setContainer:v9];
-    if ([v14 count] >= 2)
+    [v13 setExistingPages:pagesCopy];
+    [v13 setBackPages:backPagesCopy];
+    [v13 setContainer:containerCopy];
+    if ([pagesCopy count] >= 2)
     {
       [v13 setSpineLocation:2];
     }
@@ -371,26 +371,26 @@ LABEL_25:
   }
 }
 
-- (void)curlPages:(id)a3 backPage:(id)a4 inContainer:(id)a5 curlPage:(BOOL)a6
+- (void)curlPages:(id)pages backPage:(id)page inContainer:(id)container curlPage:(BOOL)curlPage
 {
-  if (a6)
+  if (curlPage)
   {
-    [(BKPageCurlManager *)self curlPages:a3 backPage:a4 inContainer:a5];
+    [(BKPageCurlManager *)self curlPages:pages backPage:page inContainer:container];
   }
 
   else
   {
-    [(BKPageCurlManager *)self uncurlPages:a3 backPage:a4 inContainer:a5];
+    [(BKPageCurlManager *)self uncurlPages:pages backPage:page inContainer:container];
   }
 }
 
-- (void)curlPages:(id)a3 backPage:(id)a4 inContainer:(id)a5
+- (void)curlPages:(id)pages backPage:(id)page inContainer:(id)container
 {
-  v14 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v14 count];
-  if (v9 && v10 && ![(BKPageCurlManager *)self killACurl:1])
+  pagesCopy = pages;
+  pageCopy = page;
+  containerCopy = container;
+  v10 = [pagesCopy count];
+  if (containerCopy && v10 && ![(BKPageCurlManager *)self killACurl:1])
   {
     v11 = +[AETestDriver shared];
     [v11 postEvent:kBETestDriverPageTurnSetupEnd sender:self];
@@ -399,10 +399,10 @@ LABEL_25:
     [v12 postEvent:kBETestDriverPageTurnAnimationStart sender:self];
 
     v13 = [(BKPageCurlManager *)self enqueuePageCurlWithType:0];
-    [v13 setExistingPages:v14];
-    [v13 setBackPage:v8];
-    [v13 setContainer:v9];
-    if ([v14 count] >= 2)
+    [v13 setExistingPages:pagesCopy];
+    [v13 setBackPage:pageCopy];
+    [v13 setContainer:containerCopy];
+    if ([pagesCopy count] >= 2)
     {
       [v13 setSpineLocation:2];
     }
@@ -411,13 +411,13 @@ LABEL_25:
   }
 }
 
-- (void)uncurlPages:(id)a3 backPage:(id)a4 inContainer:(id)a5
+- (void)uncurlPages:(id)pages backPage:(id)page inContainer:(id)container
 {
-  v14 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v14 count];
-  if (v9 && v10 && ![(BKPageCurlManager *)self killACurl:0])
+  pagesCopy = pages;
+  pageCopy = page;
+  containerCopy = container;
+  v10 = [pagesCopy count];
+  if (containerCopy && v10 && ![(BKPageCurlManager *)self killACurl:0])
   {
     v11 = +[AETestDriver shared];
     [v11 postEvent:kBETestDriverPageTurnSetupEnd sender:self];
@@ -426,10 +426,10 @@ LABEL_25:
     [v12 postEvent:kBETestDriverPageTurnAnimationStart sender:self];
 
     v13 = [(BKPageCurlManager *)self enqueuePageCurlWithType:1];
-    [v13 setExistingPages:v14];
-    [v13 setBackPage:v8];
-    [v13 setContainer:v9];
-    if ([v14 count] >= 2)
+    [v13 setExistingPages:pagesCopy];
+    [v13 setBackPage:pageCopy];
+    [v13 setContainer:containerCopy];
+    if ([pagesCopy count] >= 2)
     {
       [v13 setSpineLocation:2];
     }
@@ -438,22 +438,22 @@ LABEL_25:
   }
 }
 
-- (id)beginManualCurl:(BOOL)a3 atLocation:(CGPoint)a4 inPage:(id)a5 fromPages:(id)a6 backPage:(id)a7 inContainer:(id)a8
+- (id)beginManualCurl:(BOOL)curl atLocation:(CGPoint)location inPage:(id)page fromPages:(id)pages backPage:(id)backPage inContainer:(id)container
 {
-  y = a4.y;
-  x = a4.x;
-  v13 = a3;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  if (v15)
+  y = location.y;
+  x = location.x;
+  curlCopy = curl;
+  pageCopy = page;
+  pagesCopy = pages;
+  backPageCopy = backPage;
+  containerCopy = container;
+  if (pageCopy)
   {
-    v19 = [v16 count];
+    v19 = [pagesCopy count];
     v20 = 0;
-    if (v18 && v19)
+    if (containerCopy && v19)
     {
-      if (v13)
+      if (curlCopy)
       {
         v21 = 2;
       }
@@ -464,19 +464,19 @@ LABEL_25:
       }
 
       v20 = [(BKPageCurlManager *)self enqueuePageCurlWithType:v21];
-      v22 = [NSArray arrayWithObject:v15];
+      v22 = [NSArray arrayWithObject:pageCopy];
       [v20 setCurlPages:v22];
 
-      [v20 setExistingPages:v16];
-      [v20 setBackPage:v17];
-      [v20 setContainer:v18];
-      if ([v16 count] >= 2)
+      [v20 setExistingPages:pagesCopy];
+      [v20 setBackPage:backPageCopy];
+      [v20 setContainer:containerCopy];
+      if ([pagesCopy count] >= 2)
       {
         [v20 setSpineLocation:2];
       }
 
-      v23 = [(BKPageCurlManager *)self delegate];
-      [v23 pageCurlManager:self willBeginCurl:v20];
+      delegate = [(BKPageCurlManager *)self delegate];
+      [delegate pageCurlManager:self willBeginCurl:v20];
 
       [v20 beginManualCurlAtLocation:{x, y}];
     }
@@ -490,21 +490,21 @@ LABEL_25:
   return v20;
 }
 
-- (void)cancelManualCurl:(id)a3
+- (void)cancelManualCurl:(id)curl
 {
-  v5 = a3;
+  curlCopy = curl;
   if ((*&self->_delegateFlags & 0x40) != 0)
   {
-    v4 = [(BKPageCurlManager *)self delegate];
-    [v4 pageCurlManager:self willCancelCurl:v5];
+    delegate = [(BKPageCurlManager *)self delegate];
+    [delegate pageCurlManager:self willCancelCurl:curlCopy];
   }
 
-  [v5 cancelManualCurl];
+  [curlCopy cancelManualCurl];
 }
 
-- (void)pageCurl:(id)a3 finished:(BOOL)a4
+- (void)pageCurl:(id)curl finished:(BOOL)finished
 {
-  v5 = [(NSMutableArray *)self->_queue copy:a3];
+  v5 = [(NSMutableArray *)self->_queue copy:curl];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
@@ -541,8 +541,8 @@ LABEL_3:
       [(NSMutableArray *)self->_queue removeObject:v12];
       [v12 setDelegate:0];
       v15 = [v12 state] == &dword_0 + 2 || objc_msgSend(v12, "state") == &dword_4;
-      v16 = [(BKPageCurlManager *)self delegate];
-      [v16 pageCurlManager:self didFinishCurl:v12 transitionCompleted:v15];
+      delegate = [(BKPageCurlManager *)self delegate];
+      [delegate pageCurlManager:self didFinishCurl:v12 transitionCompleted:v15];
 
       if ((*&self->_delegateFlags & 0x10) != 0 && (-[BKPageCurlManager delegate](self, "delegate"), v17 = objc_claimAutoreleasedReturnValue(), v18 = [v17 pageCurlManagerRemovesViews:self], v17, !v18))
       {

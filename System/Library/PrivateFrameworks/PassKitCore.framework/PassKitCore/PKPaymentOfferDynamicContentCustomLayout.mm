@@ -1,26 +1,26 @@
 @interface PKPaymentOfferDynamicContentCustomLayout
-- (BOOL)isEqual:(id)a3;
-- (PKPaymentOfferDynamicContentCustomLayout)initWithArray:(id)a3;
-- (PKPaymentOfferDynamicContentCustomLayout)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (PKPaymentOfferDynamicContentCustomLayout)initWithArray:(id)array;
+- (PKPaymentOfferDynamicContentCustomLayout)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation PKPaymentOfferDynamicContentCustomLayout
 
-- (PKPaymentOfferDynamicContentCustomLayout)initWithArray:(id)a3
+- (PKPaymentOfferDynamicContentCustomLayout)initWithArray:(id)array
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 count])
+  arrayCopy = array;
+  if ([arrayCopy count])
   {
     v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v6 = v4;
+    v6 = arrayCopy;
     v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v7)
     {
@@ -62,33 +62,33 @@
       }
 
       self = v12;
-      v15 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v15 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v15 = 0;
+    selfCopy = 0;
   }
 
-  return v15;
+  return selfCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     items = self->_items;
     v7 = v5->_items;
@@ -134,9 +134,9 @@
   return v3;
 }
 
-- (PKPaymentOfferDynamicContentCustomLayout)initWithCoder:(id)a3
+- (PKPaymentOfferDynamicContentCustomLayout)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = PKPaymentOfferDynamicContentCustomLayout;
   v5 = [(PKPaymentOfferDynamicContentCustomLayout *)&v12 init];
@@ -145,7 +145,7 @@
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"customLayoutItem"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"customLayoutItem"];
     items = v5->_items;
     v5->_items = v9;
   }
@@ -153,10 +153,10 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[PKPaymentOfferDynamicContentCustomLayout allocWithZone:](PKPaymentOfferDynamicContentCustomLayout init];
-  v6 = [(NSArray *)self->_items copyWithZone:a3];
+  v6 = [(NSArray *)self->_items copyWithZone:zone];
   items = v5->_items;
   v5->_items = v6;
 

@@ -1,10 +1,10 @@
 @interface KeyValueDomainPinnedContentUpdateNotifier
-- (void)didUpdateKeyValueDomain:(id)a3;
+- (void)didUpdateKeyValueDomain:(id)domain;
 @end
 
 @implementation KeyValueDomainPinnedContentUpdateNotifier
 
-- (void)didUpdateKeyValueDomain:(id)a3
+- (void)didUpdateKeyValueDomain:(id)domain
 {
   v3 = *self->publisher;
   sub_2283F2234();

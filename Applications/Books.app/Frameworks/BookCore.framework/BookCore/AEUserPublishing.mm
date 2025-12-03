@@ -4,21 +4,21 @@
 - (BOOL)hasRecentlyTriedToFetchShortStoreURLFromNetwork;
 - (BOOL)hasRecentlyTriedToFetchStoreURLFromNetwork;
 - (BOOL)p_isConnectedToInternet;
-- (BOOL)p_isDownloadEnabledForStoreId:(id)a3 dataSource:(id)a4;
-- (BOOL)p_isLocalGenerationEnabledForStoreId:(id)a3 dataSource:(id)a4;
-- (id)bookInfoHTMLForStoreId:(id)a3 dataSource:(id)a4;
-- (id)p_assetAuthorForStoreId:(id)a3 dataSource:(id)a4;
-- (id)p_assetCategoryForStoreId:(id)a3 dataSource:(id)a4;
-- (id)p_assetTitleForStoreId:(id)a3 dataSource:(id)a4;
-- (id)p_downloadEmailContentForStoreId:(id)a3 dataSource:(id)a4 overrideClientVersion:(id)a5;
-- (id)p_downloadedStoreUrlForStoreId:(id)a3 keyProfile:(id)a4 path:(id)a5 dataSource:(id)a6;
-- (id)p_generatedEmailBodyForStoreId:(id)a3 dataSource:(id)a4;
-- (id)p_storeShortURLForStoreId:(id)a3 dataSource:(id)a4;
-- (id)p_storeURLForStoreId:(id)a3 dataSource:(id)a4;
-- (id)storeShortURLForStoreId:(id)a3 dataSource:(id)a4;
-- (id)storeURLForStoreId:(id)a3 dataSource:(id)a4;
-- (id)wholeHTMLForStoreId:(id)a3 dataSource:(id)a4;
-- (void)profilesForStoreIDs:(id)a3 keyProfile:(id)a4 completion:(id)a5;
+- (BOOL)p_isDownloadEnabledForStoreId:(id)id dataSource:(id)source;
+- (BOOL)p_isLocalGenerationEnabledForStoreId:(id)id dataSource:(id)source;
+- (id)bookInfoHTMLForStoreId:(id)id dataSource:(id)source;
+- (id)p_assetAuthorForStoreId:(id)id dataSource:(id)source;
+- (id)p_assetCategoryForStoreId:(id)id dataSource:(id)source;
+- (id)p_assetTitleForStoreId:(id)id dataSource:(id)source;
+- (id)p_downloadEmailContentForStoreId:(id)id dataSource:(id)source overrideClientVersion:(id)version;
+- (id)p_downloadedStoreUrlForStoreId:(id)id keyProfile:(id)profile path:(id)path dataSource:(id)source;
+- (id)p_generatedEmailBodyForStoreId:(id)id dataSource:(id)source;
+- (id)p_storeShortURLForStoreId:(id)id dataSource:(id)source;
+- (id)p_storeURLForStoreId:(id)id dataSource:(id)source;
+- (id)storeShortURLForStoreId:(id)id dataSource:(id)source;
+- (id)storeURLForStoreId:(id)id dataSource:(id)source;
+- (id)wholeHTMLForStoreId:(id)id dataSource:(id)source;
+- (void)profilesForStoreIDs:(id)ds keyProfile:(id)profile completion:(id)completion;
 @end
 
 @implementation AEUserPublishing
@@ -29,7 +29,7 @@
   block[1] = 3221225472;
   block[2] = sub_16D5C4;
   block[3] = &unk_2C7CA8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_346030 != -1)
   {
     dispatch_once(&qword_346030, block);
@@ -62,11 +62,11 @@
   return v2;
 }
 
-- (id)bookInfoHTMLForStoreId:(id)a3 dataSource:(id)a4
+- (id)bookInfoHTMLForStoreId:(id)id dataSource:(id)source
 {
-  if (a4)
+  if (source)
   {
-    v5 = [(AEUserPublishing *)self p_generatedEmailBodyForStoreId:a3 dataSource:?];
+    v5 = [(AEUserPublishing *)self p_generatedEmailBodyForStoreId:id dataSource:?];
   }
 
   else
@@ -77,31 +77,31 @@
   return v5;
 }
 
-- (id)wholeHTMLForStoreId:(id)a3 dataSource:(id)a4
+- (id)wholeHTMLForStoreId:(id)id dataSource:(id)source
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 longLongValue])
+  idCopy = id;
+  sourceCopy = source;
+  if ([idCopy longLongValue])
   {
-    v8 = [objc_opt_class() p_keyForPrefix:@"kWholeHTMLPrefix~" storeId:v6];
-    v9 = [(AEUserPublishing *)self cache];
-    v10 = [v9 objectForKey:v8];
+    v8 = [objc_opt_class() p_keyForPrefix:@"kWholeHTMLPrefix~" storeId:idCopy];
+    cache = [(AEUserPublishing *)self cache];
+    v10 = [cache objectForKey:v8];
 
     if (!v10)
     {
       if ([(AEUserPublishing *)self p_isConnectedToInternet])
       {
-        v11 = [NSString stringWithFormat:@"%.1f", 0x4014000000000000];
-        v10 = [(AEUserPublishing *)self p_downloadEmailContentForStoreId:v6 dataSource:v7 overrideClientVersion:v11];
+        0x4014000000000000 = [NSString stringWithFormat:@"%.1f", 0x4014000000000000];
+        v10 = [(AEUserPublishing *)self p_downloadEmailContentForStoreId:idCopy dataSource:sourceCopy overrideClientVersion:0x4014000000000000];
         if ([v10 length])
         {
-          v12 = [(AEUserPublishing *)self cache];
-          [v12 setObject:v10 forKey:v8];
+          cache2 = [(AEUserPublishing *)self cache];
+          [cache2 setObject:v10 forKey:v8];
         }
 
         else
         {
-          v12 = v10;
+          cache2 = v10;
           v10 = 0;
         }
       }
@@ -121,28 +121,28 @@
   return v10;
 }
 
-- (id)storeURLForStoreId:(id)a3 dataSource:(id)a4
+- (id)storeURLForStoreId:(id)id dataSource:(id)source
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 longLongValue])
+  idCopy = id;
+  sourceCopy = source;
+  if ([idCopy longLongValue])
   {
-    v8 = [objc_opt_class() p_keyForPrefix:@"kStoreURLPrefix~" storeId:v6];
-    v9 = [(AEUserPublishing *)self cache];
-    v10 = [v9 objectForKey:v8];
+    v8 = [objc_opt_class() p_keyForPrefix:@"kStoreURLPrefix~" storeId:idCopy];
+    cache = [(AEUserPublishing *)self cache];
+    v10 = [cache objectForKey:v8];
 
     if (!v10)
     {
-      if ([(AEUserPublishing *)self p_isConnectedToInternet]&& ![(AEUserPublishing *)self hasRecentlyTriedToFetchStoreURLFromNetwork]&& (+[NSDate now], v11 = objc_claimAutoreleasedReturnValue(), lastFetchStoreURLDate = self->lastFetchStoreURLDate, self->lastFetchStoreURLDate = v11, lastFetchStoreURLDate, [(AEUserPublishing *)self p_downloadedStoreUrlForStoreId:v6 keyProfile:@"kAEUserPublishingLookProfileURL" path:@"url" dataSource:v7], (v13 = objc_claimAutoreleasedReturnValue()) != 0))
+      if ([(AEUserPublishing *)self p_isConnectedToInternet]&& ![(AEUserPublishing *)self hasRecentlyTriedToFetchStoreURLFromNetwork]&& (+[NSDate now], v11 = objc_claimAutoreleasedReturnValue(), lastFetchStoreURLDate = self->lastFetchStoreURLDate, self->lastFetchStoreURLDate = v11, lastFetchStoreURLDate, [(AEUserPublishing *)self p_downloadedStoreUrlForStoreId:idCopy keyProfile:@"kAEUserPublishingLookProfileURL" path:@"url" dataSource:sourceCopy], (v13 = objc_claimAutoreleasedReturnValue()) != 0))
       {
         v10 = v13;
-        v14 = [(AEUserPublishing *)self cache];
-        [v14 setObject:v10 forKey:v8];
+        cache2 = [(AEUserPublishing *)self cache];
+        [cache2 setObject:v10 forKey:v8];
       }
 
       else
       {
-        v10 = [(AEUserPublishing *)self p_storeURLForStoreId:v6 dataSource:v7];
+        v10 = [(AEUserPublishing *)self p_storeURLForStoreId:idCopy dataSource:sourceCopy];
       }
     }
   }
@@ -169,28 +169,28 @@
   return v5 < 30.0;
 }
 
-- (id)storeShortURLForStoreId:(id)a3 dataSource:(id)a4
+- (id)storeShortURLForStoreId:(id)id dataSource:(id)source
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 longLongValue])
+  idCopy = id;
+  sourceCopy = source;
+  if ([idCopy longLongValue])
   {
-    v8 = [objc_opt_class() p_keyForPrefix:@"kStoreShortURLPrefix~" storeId:v6];
-    v9 = [(AEUserPublishing *)self cache];
-    v10 = [v9 objectForKey:v8];
+    v8 = [objc_opt_class() p_keyForPrefix:@"kStoreShortURLPrefix~" storeId:idCopy];
+    cache = [(AEUserPublishing *)self cache];
+    v10 = [cache objectForKey:v8];
 
     if (!v10)
     {
-      if ([(AEUserPublishing *)self p_isConnectedToInternet]&& ![(AEUserPublishing *)self hasRecentlyTriedToFetchShortStoreURLFromNetwork]&& (+[NSDate now], v11 = objc_claimAutoreleasedReturnValue(), lastFetchShortStoreURLDate = self->lastFetchShortStoreURLDate, self->lastFetchShortStoreURLDate = v11, lastFetchShortStoreURLDate, [(AEUserPublishing *)self p_downloadedStoreUrlForStoreId:v6 keyProfile:@"kAEUserPublishingLookProfileURL" path:@"shortUrl" dataSource:v7], (v13 = objc_claimAutoreleasedReturnValue()) != 0))
+      if ([(AEUserPublishing *)self p_isConnectedToInternet]&& ![(AEUserPublishing *)self hasRecentlyTriedToFetchShortStoreURLFromNetwork]&& (+[NSDate now], v11 = objc_claimAutoreleasedReturnValue(), lastFetchShortStoreURLDate = self->lastFetchShortStoreURLDate, self->lastFetchShortStoreURLDate = v11, lastFetchShortStoreURLDate, [(AEUserPublishing *)self p_downloadedStoreUrlForStoreId:idCopy keyProfile:@"kAEUserPublishingLookProfileURL" path:@"shortUrl" dataSource:sourceCopy], (v13 = objc_claimAutoreleasedReturnValue()) != 0))
       {
         v10 = v13;
-        v14 = [(AEUserPublishing *)self cache];
-        [v14 setObject:v10 forKey:v8];
+        cache2 = [(AEUserPublishing *)self cache];
+        [cache2 setObject:v10 forKey:v8];
       }
 
       else
       {
-        v10 = [(AEUserPublishing *)self p_storeShortURLForStoreId:v6 dataSource:v7];
+        v10 = [(AEUserPublishing *)self p_storeShortURLForStoreId:idCopy dataSource:sourceCopy];
       }
     }
   }
@@ -217,38 +217,38 @@
   return v5 < 30.0;
 }
 
-- (void)profilesForStoreIDs:(id)a3 keyProfile:(id)a4 completion:(id)a5
+- (void)profilesForStoreIDs:(id)ds keyProfile:(id)profile completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dsCopy = ds;
+  profileCopy = profile;
+  completionCopy = completion;
   v11 = NSClassFromString(@"AEUserPublishingLookUpRequest");
   if ([(objc_class *)v11 isEnabled])
   {
-    if ([v8 count])
+    if ([dsCopy count])
     {
-      v12 = [(AEUserPublishing *)self workQueue];
+      workQueue = [(AEUserPublishing *)self workQueue];
       v14[0] = _NSConcreteStackBlock;
       v14[1] = 3221225472;
       v14[2] = sub_16DD78;
       v14[3] = &unk_2CEBD8;
-      v15 = v8;
+      v15 = dsCopy;
       v18 = v11;
-      v16 = v9;
-      v17 = v10;
-      dispatch_async(v12, v14);
+      v16 = profileCopy;
+      v17 = completionCopy;
+      dispatch_async(workQueue, v14);
     }
 
     else
     {
-      (*(v10 + 2))(v10, 0, 0, 0);
+      (*(completionCopy + 2))(completionCopy, 0, 0, 0);
     }
   }
 
   else
   {
     v13 = [NSError errorWithDomain:@"AEUserPublishingErrorDomain" code:-1000 userInfo:0];
-    (*(v10 + 2))(v10, 0, 0, v13);
+    (*(completionCopy + 2))(completionCopy, 0, 0, v13);
   }
 }
 
@@ -268,15 +268,15 @@
   return v3;
 }
 
-- (id)p_downloadEmailContentForStoreId:(id)a3 dataSource:(id)a4 overrideClientVersion:(id)a5
+- (id)p_downloadEmailContentForStoreId:(id)id dataSource:(id)source overrideClientVersion:(id)version
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(AEUserPublishing *)self p_downloadedStoreUrlForStoreId:v8 keyProfile:@"kAEUserPublishingLookProfileProduct" path:@"tellAFriendMessageContentsUrl" dataSource:0];
+  idCopy = id;
+  sourceCopy = source;
+  versionCopy = version;
+  v11 = [(AEUserPublishing *)self p_downloadedStoreUrlForStoreId:idCopy keyProfile:@"kAEUserPublishingLookProfileProduct" path:@"tellAFriendMessageContentsUrl" dataSource:0];
   if (!v11)
   {
-    v12 = [v9 userPublishing:self tellAFriendEmailBaseURLForStoreId:v8];
+    v12 = [sourceCopy userPublishing:self tellAFriendEmailBaseURLForStoreId:idCopy];
     v13 = v12;
     if (v12)
     {
@@ -290,16 +290,16 @@
 
     v15 = v14;
 
-    v16 = [v15 absoluteString];
-    v17 = [NSString stringWithFormat:@"%@&id=%@", v16, v8];
+    absoluteString = [v15 absoluteString];
+    idCopy = [NSString stringWithFormat:@"%@&id=%@", absoluteString, idCopy];
 
-    v11 = [NSURL URLWithString:v17];
+    v11 = [NSURL URLWithString:idCopy];
   }
 
   v18 = [NSMutableURLRequest requestWithURL:v11];
   [(AEUserPublishing *)self timeoutInterval];
   [v18 setTimeoutInterval:?];
-  v19 = [BCUserAgent clientUserAgentWithOverrideVersion:v10];
+  v19 = [BCUserAgent clientUserAgentWithOverrideVersion:versionCopy];
   [v18 setValue:v19 forHTTPHeaderField:@"User-Agent"];
 
   v43 = 0;
@@ -360,11 +360,11 @@
   return v26;
 }
 
-- (id)p_generatedEmailBodyForStoreId:(id)a3 dataSource:(id)a4
+- (id)p_generatedEmailBodyForStoreId:(id)id dataSource:(id)source
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(AEUserPublishing *)self p_isLocalGenerationEnabledForStoreId:v6 dataSource:v7])
+  idCopy = id;
+  sourceCopy = source;
+  if ([(AEUserPublishing *)self p_isLocalGenerationEnabledForStoreId:idCopy dataSource:sourceCopy])
   {
     v8 = [NSBundle bundleForClass:objc_opt_class()];
     v9 = [v8 pathForResource:@"AEAssetInfo.html" ofType:@"tmpl"];
@@ -375,10 +375,10 @@
       v10 = [NSMutableString stringWithContentsOfFile:v9 encoding:4 error:&v27];
       if (v10)
       {
-        v11 = [(AEUserPublishing *)self p_assetAuthorForStoreId:v6 dataSource:v7];
-        v12 = [(AEUserPublishing *)self p_assetTitleForStoreId:v6 dataSource:v7];
-        v26 = [(AEUserPublishing *)self p_storeURLForStoreId:v6 dataSource:v7];
-        v13 = [(AEUserPublishing *)self p_assetCategoryForStoreId:v6 dataSource:v7];
+        v11 = [(AEUserPublishing *)self p_assetAuthorForStoreId:idCopy dataSource:sourceCopy];
+        v12 = [(AEUserPublishing *)self p_assetTitleForStoreId:idCopy dataSource:sourceCopy];
+        v26 = [(AEUserPublishing *)self p_storeURLForStoreId:idCopy dataSource:sourceCopy];
+        v13 = [(AEUserPublishing *)self p_assetCategoryForStoreId:idCopy dataSource:sourceCopy];
         v14 = &_s5JSApp18ProcessEnvironmentC7currentACvgZ_ptr;
         if ([v11 length])
         {
@@ -395,8 +395,8 @@
           v18 = v12;
           if (v26)
           {
-            v19 = [v26 absoluteString];
-            v20 = [NSString stringWithFormat:@"<a href=%@>%@</a>", v19, v18];
+            absoluteString = [v26 absoluteString];
+            v20 = [NSString stringWithFormat:@"<a href=%@>%@</a>", absoluteString, v18];
 
             v18 = v20;
             v14 = &_s5JSApp18ProcessEnvironmentC7currentACvgZ_ptr;
@@ -443,17 +443,17 @@
   return v24;
 }
 
-- (id)p_downloadedStoreUrlForStoreId:(id)a3 keyProfile:(id)a4 path:(id)a5 dataSource:(id)a6
+- (id)p_downloadedStoreUrlForStoreId:(id)id keyProfile:(id)profile path:(id)path dataSource:(id)source
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if ([(AEUserPublishing *)self p_isDownloadEnabledForStoreId:v10 dataSource:a6]&& (v13 = NSClassFromString(@"AEUserPublishingLookUpRequest"), [(objc_class *)v13 isEnabled]))
+  idCopy = id;
+  profileCopy = profile;
+  pathCopy = path;
+  if ([(AEUserPublishing *)self p_isDownloadEnabledForStoreId:idCopy dataSource:source]&& (v13 = NSClassFromString(@"AEUserPublishingLookUpRequest"), [(objc_class *)v13 isEnabled]))
   {
     v14 = [v13 alloc];
-    v32 = v10;
+    v32 = idCopy;
     v15 = [NSArray arrayWithObjects:&v32 count:1];
-    v16 = [v14 initWithAdamIDs:v15 keyProfile:v11];
+    v16 = [v14 initWithAdamIDs:v15 keyProfile:profileCopy];
 
     [(AEUserPublishing *)self timeoutInterval];
     v25 = 0;
@@ -487,8 +487,8 @@
     else
     {
       v20 = [objc_opt_class() resultsDictionaryFromLookupResult:v17];
-      v22 = [v20 objectForKey:v10];
-      v23 = [v22 objectForKey:v12];
+      v22 = [v20 objectForKey:idCopy];
+      v23 = [v22 objectForKey:pathCopy];
       if ([v23 length])
       {
         v21 = [[NSURL alloc] initWithString:v23];
@@ -509,13 +509,13 @@
   return v21;
 }
 
-- (BOOL)p_isDownloadEnabledForStoreId:(id)a3 dataSource:(id)a4
+- (BOOL)p_isDownloadEnabledForStoreId:(id)id dataSource:(id)source
 {
-  v6 = a3;
-  v7 = a4;
+  idCopy = id;
+  sourceCopy = source;
   if (objc_opt_respondsToSelector())
   {
-    v8 = [v7 userPublishing:self isDownloadEnabledForStoreId:v6];
+    v8 = [sourceCopy userPublishing:self isDownloadEnabledForStoreId:idCopy];
   }
 
   else
@@ -526,13 +526,13 @@
   return v8;
 }
 
-- (BOOL)p_isLocalGenerationEnabledForStoreId:(id)a3 dataSource:(id)a4
+- (BOOL)p_isLocalGenerationEnabledForStoreId:(id)id dataSource:(id)source
 {
-  v6 = a3;
-  v7 = a4;
+  idCopy = id;
+  sourceCopy = source;
   if (objc_opt_respondsToSelector())
   {
-    v8 = [v7 userPublishing:self isLocalGenerationEnabledForStoreId:v6];
+    v8 = [sourceCopy userPublishing:self isLocalGenerationEnabledForStoreId:idCopy];
   }
 
   else
@@ -543,13 +543,13 @@
   return v8;
 }
 
-- (id)p_assetAuthorForStoreId:(id)a3 dataSource:(id)a4
+- (id)p_assetAuthorForStoreId:(id)id dataSource:(id)source
 {
-  v6 = a3;
-  v7 = a4;
+  idCopy = id;
+  sourceCopy = source;
   if (objc_opt_respondsToSelector())
   {
-    v8 = [v7 userPublishing:self assetAuthorForStoreId:v6];
+    v8 = [sourceCopy userPublishing:self assetAuthorForStoreId:idCopy];
   }
 
   else
@@ -560,13 +560,13 @@
   return v8;
 }
 
-- (id)p_assetTitleForStoreId:(id)a3 dataSource:(id)a4
+- (id)p_assetTitleForStoreId:(id)id dataSource:(id)source
 {
-  v6 = a3;
-  v7 = a4;
+  idCopy = id;
+  sourceCopy = source;
   if (objc_opt_respondsToSelector())
   {
-    v8 = [v7 userPublishing:self assetTitleForStoreId:v6];
+    v8 = [sourceCopy userPublishing:self assetTitleForStoreId:idCopy];
   }
 
   else
@@ -577,13 +577,13 @@
   return v8;
 }
 
-- (id)p_assetCategoryForStoreId:(id)a3 dataSource:(id)a4
+- (id)p_assetCategoryForStoreId:(id)id dataSource:(id)source
 {
-  v6 = a3;
-  v7 = a4;
+  idCopy = id;
+  sourceCopy = source;
   if (objc_opt_respondsToSelector())
   {
-    v8 = [v7 userPublishing:self assetCategoryForStoreId:v6];
+    v8 = [sourceCopy userPublishing:self assetCategoryForStoreId:idCopy];
   }
 
   else
@@ -594,13 +594,13 @@
   return v8;
 }
 
-- (id)p_storeURLForStoreId:(id)a3 dataSource:(id)a4
+- (id)p_storeURLForStoreId:(id)id dataSource:(id)source
 {
-  v6 = a3;
-  v7 = a4;
+  idCopy = id;
+  sourceCopy = source;
   if (objc_opt_respondsToSelector())
   {
-    v8 = [v7 userPublishing:self storeURLForStoreId:v6];
+    v8 = [sourceCopy userPublishing:self storeURLForStoreId:idCopy];
   }
 
   else
@@ -611,13 +611,13 @@
   return v8;
 }
 
-- (id)p_storeShortURLForStoreId:(id)a3 dataSource:(id)a4
+- (id)p_storeShortURLForStoreId:(id)id dataSource:(id)source
 {
-  v6 = a3;
-  v7 = a4;
+  idCopy = id;
+  sourceCopy = source;
   if (objc_opt_respondsToSelector())
   {
-    v8 = [v7 userPublishing:self storeShortURLForStoreId:v6];
+    v8 = [sourceCopy userPublishing:self storeShortURLForStoreId:idCopy];
   }
 
   else

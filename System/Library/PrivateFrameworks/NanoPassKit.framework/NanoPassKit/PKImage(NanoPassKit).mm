@@ -10,16 +10,16 @@
 {
   values[1] = *MEMORY[0x277D85DE8];
   v4 = a3;
-  v5 = [a1 imageHash];
-  v6 = [v5 fileSafeBase64Encoding];
+  imageHash = [self imageHash];
+  fileSafeBase64Encoding = [imageHash fileSafeBase64Encoding];
 
-  v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%@", v4, v6];
+  v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%@", v4, fileSafeBase64Encoding];
 
   v8 = NSTemporaryDirectory();
   v9 = [v8 stringByAppendingPathComponent:v7];
 
-  v10 = [MEMORY[0x277CCAA00] defaultManager];
-  v11 = [v10 fileExistsAtPath:v9];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v11 = [defaultManager fileExistsAtPath:v9];
 
   v12 = pk_General_log();
   v13 = os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT);
@@ -38,8 +38,8 @@
     }
 
 LABEL_12:
-    v17 = [a1 imageRef];
-    if (!v17)
+    imageRef = [self imageRef];
+    if (!imageRef)
     {
 LABEL_21:
       v23 = pk_Payment_log();
@@ -56,11 +56,11 @@ LABEL_21:
         }
       }
 
-      v15 = a1;
+      selfCopy = self;
       goto LABEL_26;
     }
 
-    values[0] = v17;
+    values[0] = imageRef;
     Default = CFAllocatorGetDefault();
     v19 = CFArrayCreate(Default, values, 1, MEMORY[0x277CBF128]);
     if (CPBitmapWriteImagesToPath())
@@ -79,7 +79,7 @@ LABEL_21:
         }
       }
 
-      v15 = [a1 _npkMemoryMappedImageWithPath:v9];
+      selfCopy = [self _npkMemoryMappedImageWithPath:v9];
       if (v19)
       {
 LABEL_19:
@@ -105,14 +105,14 @@ LABEL_19:
         }
       }
 
-      v15 = 0;
+      selfCopy = 0;
       if (v19)
       {
         goto LABEL_19;
       }
     }
 
-    if (v15)
+    if (selfCopy)
     {
       goto LABEL_26;
     }
@@ -131,8 +131,8 @@ LABEL_19:
     }
   }
 
-  v15 = [a1 _npkMemoryMappedImageWithPath:v9];
-  if (!v15)
+  selfCopy = [self _npkMemoryMappedImageWithPath:v9];
+  if (!selfCopy)
   {
     goto LABEL_12;
   }
@@ -141,7 +141,7 @@ LABEL_26:
 
   v26 = *MEMORY[0x277D85DE8];
 
-  return v15;
+  return selfCopy;
 }
 
 - (id)_npkMemoryMappedImageWithPath:()NanoPassKit
@@ -170,8 +170,8 @@ LABEL_26:
 
       ValueAtIndex = CFArrayGetValueAtIndex(v6, 0);
       v11 = objc_alloc(MEMORY[0x277D37F10]);
-      [a1 scale];
-      v13 = [v11 initWithCGImage:ValueAtIndex scale:objc_msgSend(a1 orientation:{"orientation"), v12}];
+      [self scale];
+      v13 = [v11 initWithCGImage:ValueAtIndex scale:objc_msgSend(self orientation:{"orientation"), v12}];
     }
 
     else
@@ -226,7 +226,7 @@ LABEL_26:
 {
   v46 = *MEMORY[0x277D85DE8];
   v9 = objc_autoreleasePoolPush();
-  [a1 size];
+  [self size];
   if (a5)
   {
     PKSizeAspectFitToCover();
@@ -239,8 +239,8 @@ LABEL_26:
 
   v12 = v10;
   v13 = v11;
-  [a1 size];
-  if (v12 >= v14 || ([a1 size], v13 >= v15))
+  [self size];
+  if (v12 >= v14 || ([self size], v13 >= v15))
   {
     v24 = pk_General_log();
     v25 = os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT);
@@ -250,11 +250,11 @@ LABEL_26:
       v26 = pk_General_log();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
       {
-        [a1 size];
+        [self size];
         v28 = v27;
-        [a1 size];
+        [self size];
         v32 = 138413314;
-        v33 = a1;
+        selfCopy3 = self;
         v34 = 2048;
         v35 = v28;
         v36 = 2048;
@@ -267,7 +267,7 @@ LABEL_26:
       }
     }
 
-    v23 = a1;
+    selfCopy2 = self;
   }
 
   else
@@ -281,11 +281,11 @@ LABEL_26:
       v19 = pk_General_log();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
-        [a1 size];
+        [self size];
         v21 = v20;
-        [a1 size];
+        [self size];
         v32 = 138413826;
-        v33 = a1;
+        selfCopy3 = self;
         v34 = 2048;
         v35 = v21;
         v36 = 2048;
@@ -302,13 +302,13 @@ LABEL_26:
       }
     }
 
-    v23 = [v16 resizedImage:a1];
+    selfCopy2 = [v16 resizedImage:self];
   }
 
   objc_autoreleasePoolPop(v9);
   v30 = *MEMORY[0x277D85DE8];
 
-  return v23;
+  return selfCopy2;
 }
 
 @end

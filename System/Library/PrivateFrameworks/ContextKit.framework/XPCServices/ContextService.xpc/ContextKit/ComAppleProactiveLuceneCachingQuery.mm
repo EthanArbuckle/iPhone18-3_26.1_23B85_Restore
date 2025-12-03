@@ -1,17 +1,17 @@
 @interface ComAppleProactiveLuceneCachingQuery
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (float)getBoost;
 - (id)clone;
-- (id)createWeightWithOrgApacheLuceneSearchIndexSearcher:(id)a3 withBoolean:(BOOL)a4;
-- (id)toStringWithNSString:(id)a3;
+- (id)createWeightWithOrgApacheLuceneSearchIndexSearcher:(id)searcher withBoolean:(BOOL)boolean;
+- (id)toStringWithNSString:(id)string;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)setBoostWithFloat:(float)a3;
+- (void)setBoostWithFloat:(float)float;
 @end
 
 @implementation ComAppleProactiveLuceneCachingQuery
 
-- (void)setBoostWithFloat:(float)a3
+- (void)setBoostWithFloat:(float)float
 {
   v4 = *(&self->super.boost_ + 1);
   if (!v4)
@@ -34,9 +34,9 @@
   return result;
 }
 
-- (id)createWeightWithOrgApacheLuceneSearchIndexSearcher:(id)a3 withBoolean:(BOOL)a4
+- (id)createWeightWithOrgApacheLuceneSearchIndexSearcher:(id)searcher withBoolean:(BOOL)boolean
 {
-  if (a4)
+  if (boolean)
   {
     v4 = (&self->is_ + 4);
     if (!*(&self->is_ + 4))
@@ -46,7 +46,7 @@
       {
         v6 = 1;
 LABEL_8:
-        v7 = new_ComAppleProactiveLuceneCachingWeight_initWithOrgApacheLuceneSearchWeight_([v5 createWeightWithOrgApacheLuceneSearchIndexSearcher:a3 withBoolean:v6]);
+        v7 = new_ComAppleProactiveLuceneCachingWeight_initWithOrgApacheLuceneSearchWeight_([v5 createWeightWithOrgApacheLuceneSearchIndexSearcher:searcher withBoolean:v6]);
         JreStrongAssignAndConsume(v4, v7);
         return *v4;
       }
@@ -97,9 +97,9 @@ LABEL_10:
   return [v2 hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
@@ -113,7 +113,7 @@ LABEL_10:
   return [v4 isEqual:?];
 }
 
-- (id)toStringWithNSString:(id)a3
+- (id)toStringWithNSString:(id)string
 {
   v4 = *(&self->super.boost_ + 1);
   if (!v4)
@@ -121,7 +121,7 @@ LABEL_10:
     JreThrowNullPointerException();
   }
 
-  return [v4 toStringWithNSString:a3];
+  return [v4 toStringWithNSString:string];
 }
 
 - (void)dealloc

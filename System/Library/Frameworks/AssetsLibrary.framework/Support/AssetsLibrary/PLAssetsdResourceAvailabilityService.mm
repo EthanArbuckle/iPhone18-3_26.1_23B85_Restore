@@ -1,18 +1,18 @@
 @interface PLAssetsdResourceAvailabilityService
-- (PLAssetsdResourceAvailabilityService)initWithLibraryServicesManager:(id)a3 shellObject:(id)a4 trustedCallerBundleID:(id)a5 clientPid:(int)a6;
-- (id)appyCorrectionsToAssetWithRequest:(id)a3 errorCodes:(id)a4 reply:(id)a5;
-- (id)appyCorrectionsToResourceWithRequest:(id)a3 errorCodes:(id)a4 reply:(id)a5;
-- (id)makeResourceAvailableWithRequest:(id)a3 reply:(id)a4;
-- (id)runVideoRequest:(id)a3 reply:(id)a4;
-- (void)initializeSharedMemoryForCacheMetricsCollector:(id)a3;
-- (void)makeResourceUnavailableWithRequest:(id)a3;
+- (PLAssetsdResourceAvailabilityService)initWithLibraryServicesManager:(id)manager shellObject:(id)object trustedCallerBundleID:(id)d clientPid:(int)pid;
+- (id)appyCorrectionsToAssetWithRequest:(id)request errorCodes:(id)codes reply:(id)reply;
+- (id)appyCorrectionsToResourceWithRequest:(id)request errorCodes:(id)codes reply:(id)reply;
+- (id)makeResourceAvailableWithRequest:(id)request reply:(id)reply;
+- (id)runVideoRequest:(id)request reply:(id)reply;
+- (void)initializeSharedMemoryForCacheMetricsCollector:(id)collector;
+- (void)makeResourceUnavailableWithRequest:(id)request;
 @end
 
 @implementation PLAssetsdResourceAvailabilityService
 
-- (void)initializeSharedMemoryForCacheMetricsCollector:(id)a3
+- (void)initializeSharedMemoryForCacheMetricsCollector:(id)collector
 {
-  v4 = a3;
+  collectorCopy = collector;
   v13 = 0u;
   *sel = 0u;
   v11 = 0u;
@@ -25,8 +25,8 @@
     os_activity_scope_enter(*(&v11 + 1), (&v13 + 8));
   }
 
-  v6 = [v4 object];
-  v7 = [[PLCacheMetricsCollectorServer alloc] initWithXPCObject:v6];
+  object = [collectorCopy object];
+  v7 = [[PLCacheMetricsCollectorServer alloc] initWithXPCObject:object];
   [(PLCacheMetricsCollectorServerShell *)self->_cacheMetricsShellObject setCacheMetricsCollectorServer:v7];
 
   if (v12 == 1)
@@ -48,11 +48,11 @@
   }
 }
 
-- (id)appyCorrectionsToAssetWithRequest:(id)a3 errorCodes:(id)a4 reply:(id)a5
+- (id)appyCorrectionsToAssetWithRequest:(id)request errorCodes:(id)codes reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestCopy = request;
+  codesCopy = codes;
+  replyCopy = reply;
   v11 = [(PLAssetsdResourceAvailabilityService *)self newShortLivedLibraryWithName:"[PLAssetsdResourceAvailabilityService appyCorrectionsToAssetWithRequest:errorCodes:reply:]"];
   v23 = 0;
   v12 = sub_100008718(v11, &v23);
@@ -60,8 +60,8 @@
   if (v12)
   {
     v14 = [PHServerResourceRequestRunner alloc];
-    v15 = [v8 taskIdentifier];
-    v16 = [(PLAssetsdResourceAvailabilityService *)self _clientPidPrefixedTaskIdentifierWithTaskIdentifier:v15];
+    taskIdentifier = [requestCopy taskIdentifier];
+    v16 = [(PLAssetsdResourceAvailabilityService *)self _clientPidPrefixedTaskIdentifierWithTaskIdentifier:taskIdentifier];
     v17 = [v14 initWithTaskIdentifier:v16];
 
     trustedCallerBundleID = self->_trustedCallerBundleID;
@@ -69,24 +69,24 @@
     v21[1] = 3221225472;
     v21[2] = sub_1000089A0;
     v21[3] = &unk_10002CF50;
-    v22 = v10;
-    v19 = [v17 applyAssetScopeCorrectionsWithRequest:v8 errorCodes:v9 clientBundleID:trustedCallerBundleID library:v11 reply:v21];
+    v22 = replyCopy;
+    v19 = [v17 applyAssetScopeCorrectionsWithRequest:requestCopy errorCodes:codesCopy clientBundleID:trustedCallerBundleID library:v11 reply:v21];
   }
 
   else
   {
-    (*(v10 + 2))(v10, 0, v13);
+    (*(replyCopy + 2))(replyCopy, 0, v13);
     v19 = 0;
   }
 
   return v19;
 }
 
-- (id)appyCorrectionsToResourceWithRequest:(id)a3 errorCodes:(id)a4 reply:(id)a5
+- (id)appyCorrectionsToResourceWithRequest:(id)request errorCodes:(id)codes reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestCopy = request;
+  codesCopy = codes;
+  replyCopy = reply;
   v11 = [(PLAssetsdResourceAvailabilityService *)self newShortLivedLibraryWithName:"[PLAssetsdResourceAvailabilityService appyCorrectionsToResourceWithRequest:errorCodes:reply:]"];
   v23 = 0;
   v12 = sub_100008718(v11, &v23);
@@ -94,8 +94,8 @@
   if (v12)
   {
     v14 = [PHServerResourceRequestRunner alloc];
-    v15 = [v8 taskIdentifier];
-    v16 = [(PLAssetsdResourceAvailabilityService *)self _clientPidPrefixedTaskIdentifierWithTaskIdentifier:v15];
+    taskIdentifier = [requestCopy taskIdentifier];
+    v16 = [(PLAssetsdResourceAvailabilityService *)self _clientPidPrefixedTaskIdentifierWithTaskIdentifier:taskIdentifier];
     v17 = [v14 initWithTaskIdentifier:v16];
 
     trustedCallerBundleID = self->_trustedCallerBundleID;
@@ -103,23 +103,23 @@
     v21[1] = 3221225472;
     v21[2] = sub_100008BC0;
     v21[3] = &unk_10002CF50;
-    v22 = v10;
-    v19 = [v17 applyResourceScopeCorrectionsWithRequest:v8 errorCodes:v9 clientBundleID:trustedCallerBundleID library:v11 reply:v21];
+    v22 = replyCopy;
+    v19 = [v17 applyResourceScopeCorrectionsWithRequest:requestCopy errorCodes:codesCopy clientBundleID:trustedCallerBundleID library:v11 reply:v21];
   }
 
   else
   {
-    (*(v10 + 2))(v10, 0, v13);
+    (*(replyCopy + 2))(replyCopy, 0, v13);
     v19 = 0;
   }
 
   return v19;
 }
 
-- (id)runVideoRequest:(id)a3 reply:(id)a4
+- (id)runVideoRequest:(id)request reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  replyCopy = reply;
   v8 = [(PLAssetsdResourceAvailabilityService *)self newShortLivedLibraryWithName:"[PLAssetsdResourceAvailabilityService runVideoRequest:reply:]"];
   v24 = 0;
   v9 = sub_100008718(v8, &v24);
@@ -127,8 +127,8 @@
   if (v9)
   {
     v11 = +[NSDate date];
-    v12 = [v6 taskIdentifier];
-    v13 = [(PLAssetsdResourceAvailabilityService *)self _clientPidPrefixedTaskIdentifierWithTaskIdentifier:v12];
+    taskIdentifier = [requestCopy taskIdentifier];
+    v13 = [(PLAssetsdResourceAvailabilityService *)self _clientPidPrefixedTaskIdentifierWithTaskIdentifier:taskIdentifier];
 
     v14 = [[PHServerResourceRequestRunner alloc] initWithTaskIdentifier:v13];
     trustedCallerBundleID = self->_trustedCallerBundleID;
@@ -138,40 +138,40 @@
     v20[3] = &unk_10002CF28;
     v21 = v11;
     v22 = v13;
-    v23 = v7;
+    v23 = replyCopy;
     v16 = v13;
     v17 = v11;
-    v18 = [v14 chooseVideoWithRequest:v6 library:v8 clientBundleID:trustedCallerBundleID reply:v20];
+    v18 = [v14 chooseVideoWithRequest:requestCopy library:v8 clientBundleID:trustedCallerBundleID reply:v20];
   }
 
   else
   {
-    (*(v7 + 2))(v7, 0, 0, 0, 0, 0, v10);
+    (*(replyCopy + 2))(replyCopy, 0, 0, 0, 0, 0, v10);
     v18 = 0;
   }
 
   return v18;
 }
 
-- (void)makeResourceUnavailableWithRequest:(id)a3
+- (void)makeResourceUnavailableWithRequest:(id)request
 {
-  v9 = a3;
+  requestCopy = request;
   v4 = [(PLAssetsdResourceAvailabilityService *)self newShortLivedLibraryWithName:"[PLAssetsdResourceAvailabilityService makeResourceUnavailableWithRequest:]"];
   if (sub_100008718(v4, 0))
   {
     v5 = [PHServerResourceRequestRunner alloc];
-    v6 = [v9 taskIdentifier];
-    v7 = [(PLAssetsdResourceAvailabilityService *)self _clientPidPrefixedTaskIdentifierWithTaskIdentifier:v6];
+    taskIdentifier = [requestCopy taskIdentifier];
+    v7 = [(PLAssetsdResourceAvailabilityService *)self _clientPidPrefixedTaskIdentifierWithTaskIdentifier:taskIdentifier];
     v8 = [v5 initWithTaskIdentifier:v7];
 
-    [v8 makeResourceUnavailableWithRequest:v9 library:v4];
+    [v8 makeResourceUnavailableWithRequest:requestCopy library:v4];
   }
 }
 
-- (id)makeResourceAvailableWithRequest:(id)a3 reply:(id)a4
+- (id)makeResourceAvailableWithRequest:(id)request reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  replyCopy = reply;
   v8 = [(PLAssetsdResourceAvailabilityService *)self newShortLivedLibraryWithName:"[PLAssetsdResourceAvailabilityService makeResourceAvailableWithRequest:reply:]"];
   v25 = 0;
   v9 = sub_100008718(v8, &v25);
@@ -179,8 +179,8 @@
   if (v9)
   {
     v11 = +[NSDate date];
-    v12 = [v6 taskIdentifier];
-    v13 = [(PLAssetsdResourceAvailabilityService *)self _clientPidPrefixedTaskIdentifierWithTaskIdentifier:v12];
+    taskIdentifier = [requestCopy taskIdentifier];
+    v13 = [(PLAssetsdResourceAvailabilityService *)self _clientPidPrefixedTaskIdentifierWithTaskIdentifier:taskIdentifier];
 
     v14 = [[PHServerResourceRequestRunner alloc] initWithTaskIdentifier:v13];
     trustedCallerBundleID = self->_trustedCallerBundleID;
@@ -190,8 +190,8 @@
     v20[3] = &unk_10002CF00;
     v21 = v11;
     v22 = v13;
-    v23 = v6;
-    v24 = v7;
+    v23 = requestCopy;
+    v24 = replyCopy;
     v16 = v13;
     v17 = v11;
     v18 = [v14 makeResourceAvailableWithRequest:v23 library:v8 clientBundleID:trustedCallerBundleID reply:v20];
@@ -199,26 +199,26 @@
 
   else
   {
-    (*(v7 + 2))(v7, 0, 0, 0, 0, v10);
+    (*(replyCopy + 2))(replyCopy, 0, 0, 0, 0, v10);
     v18 = 0;
   }
 
   return v18;
 }
 
-- (PLAssetsdResourceAvailabilityService)initWithLibraryServicesManager:(id)a3 shellObject:(id)a4 trustedCallerBundleID:(id)a5 clientPid:(int)a6
+- (PLAssetsdResourceAvailabilityService)initWithLibraryServicesManager:(id)manager shellObject:(id)object trustedCallerBundleID:(id)d clientPid:(int)pid
 {
-  v11 = a4;
-  v12 = a5;
+  objectCopy = object;
+  dCopy = d;
   v16.receiver = self;
   v16.super_class = PLAssetsdResourceAvailabilityService;
-  v13 = [(PLAssetsdResourceAvailabilityService *)&v16 initWithLibraryServicesManager:a3];
+  v13 = [(PLAssetsdResourceAvailabilityService *)&v16 initWithLibraryServicesManager:manager];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_cacheMetricsShellObject, a4);
-    objc_storeStrong(&v14->_trustedCallerBundleID, a5);
-    v14->_clientPid = a6;
+    objc_storeStrong(&v13->_cacheMetricsShellObject, object);
+    objc_storeStrong(&v14->_trustedCallerBundleID, d);
+    v14->_clientPid = pid;
   }
 
   return v14;

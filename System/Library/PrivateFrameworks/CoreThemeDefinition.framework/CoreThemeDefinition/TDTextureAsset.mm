@@ -1,15 +1,15 @@
 @interface TDTextureAsset
-- (CGSize)sourceImageSizeWithDocument:(id)a3;
-- (id)sourceImageWithDocument:(id)a3;
+- (CGSize)sourceImageSizeWithDocument:(id)document;
+- (id)sourceImageWithDocument:(id)document;
 @end
 
 @implementation TDTextureAsset
 
-- (CGSize)sourceImageSizeWithDocument:(id)a3
+- (CGSize)sourceImageSizeWithDocument:(id)document
 {
   v22[3] = *MEMORY[0x277D85DE8];
   *v20 = *MEMORY[0x277CBF3A8];
-  v4 = [(TDAsset *)self fileURLWithDocument:a3];
+  v4 = [(TDAsset *)self fileURLWithDocument:document];
   if ([(TDAsset *)self scaleFactor]< 1)
   {
     v5 = 72;
@@ -67,10 +67,10 @@
   return result;
 }
 
-- (id)sourceImageWithDocument:(id)a3
+- (id)sourceImageWithDocument:(id)document
 {
   v22[1] = *MEMORY[0x277D85DE8];
-  v4 = [(TDAsset *)self fileURLWithDocument:a3];
+  v4 = [(TDAsset *)self fileURLWithDocument:document];
   v5 = CGImageSourceCreateWithURL(v4, 0);
   v21 = *MEMORY[0x277CD3648];
   v22[0] = *MEMORY[0x277CBED28];

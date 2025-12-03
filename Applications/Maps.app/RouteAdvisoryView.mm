@@ -1,8 +1,8 @@
 @interface RouteAdvisoryView
 + (id)_stringAttributes;
 - (CGSize)intrinsicContentSize;
-- (RouteAdvisoryView)initWithFrame:(CGRect)a3;
-- (RouteAdvisoryView)initWithViewModel:(id)a3;
+- (RouteAdvisoryView)initWithFrame:(CGRect)frame;
+- (RouteAdvisoryView)initWithViewModel:(id)model;
 - (int64_t)_numberOfLinesForContentSizeCategory;
 - (void)_refreshClickability;
 - (void)_refreshNumberOfLinesIfNeeded;
@@ -10,9 +10,9 @@
 - (void)_updateAdvisoryImage;
 - (void)advisoryDetailPressed;
 - (void)layoutSubviews;
-- (void)setActionHandler:(id)a3;
-- (void)setOverrideTextColor:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setActionHandler:(id)handler;
+- (void)setOverrideTextColor:(id)color;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation RouteAdvisoryView
@@ -24,15 +24,15 @@
     return 2;
   }
 
-  v4 = [(RouteAdvisoryView *)self traitCollection];
-  v5 = [v4 preferredContentSizeCategory];
+  traitCollection = [(RouteAdvisoryView *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
 
-  if ([v5 isEqualToString:UIContentSizeCategoryAccessibilityExtraLarge] & 1) != 0 || (objc_msgSend(v5, "isEqualToString:", UIContentSizeCategoryAccessibilityExtraExtraLarge) & 1) != 0 || (objc_msgSend(v5, "isEqualToString:", UIContentSizeCategoryAccessibilityExtraExtraExtraLarge))
+  if ([preferredContentSizeCategory isEqualToString:UIContentSizeCategoryAccessibilityExtraLarge] & 1) != 0 || (objc_msgSend(preferredContentSizeCategory, "isEqualToString:", UIContentSizeCategoryAccessibilityExtraExtraLarge) & 1) != 0 || (objc_msgSend(preferredContentSizeCategory, "isEqualToString:", UIContentSizeCategoryAccessibilityExtraExtraExtraLarge))
   {
     v3 = 4;
   }
 
-  else if ([v5 isEqualToString:UIContentSizeCategoryAccessibilityLarge])
+  else if ([preferredContentSizeCategory isEqualToString:UIContentSizeCategoryAccessibilityLarge])
   {
     v3 = 3;
   }
@@ -47,11 +47,11 @@
 
 - (void)_refreshNumberOfLinesIfNeeded
 {
-  v3 = [(RouteAdvisoryView *)self _numberOfLinesForContentSizeCategory];
-  if (v3 != self->_numberOfLines)
+  _numberOfLinesForContentSizeCategory = [(RouteAdvisoryView *)self _numberOfLinesForContentSizeCategory];
+  if (_numberOfLinesForContentSizeCategory != self->_numberOfLines)
   {
-    self->_numberOfLines = v3;
-    [(UILabel *)self->_advisoryLabel setNumberOfLines:v3];
+    self->_numberOfLines = _numberOfLinesForContentSizeCategory;
+    [(UILabel *)self->_advisoryLabel setNumberOfLines:_numberOfLinesForContentSizeCategory];
 
     [(RouteAdvisoryView *)self _refreshClickability];
   }
@@ -63,8 +63,8 @@
   advisory = self->_advisory;
   if (advisory)
   {
-    v11 = [(GEOComposedRouteAdvisory *)self->_advisory advisoryItems];
-    if (![v11 count] || (p_advisoryLabel = &self->_advisoryLabel, !self->_advisoryLabel))
+    advisoryItems = [(GEOComposedRouteAdvisory *)self->_advisory advisoryItems];
+    if (![advisoryItems count] || (p_advisoryLabel = &self->_advisoryLabel, !self->_advisoryLabel))
     {
 LABEL_13:
 
@@ -81,8 +81,8 @@ LABEL_13:
     }
   }
 
-  v5 = [(RouteAdvisoryView *)self advisoryText];
-  if (![v5 length])
+  advisoryText = [(RouteAdvisoryView *)self advisoryText];
+  if (![advisoryText length])
   {
 
     if (!advisory)
@@ -104,16 +104,16 @@ LABEL_13:
     if ([(UILabel *)*p_advisoryLabel isTextTruncated])
     {
       objc_initWeak(&location, self);
-      v7 = [(RouteAdvisoryView *)self _maps_mapsSceneDelegate];
-      v8 = [v7 appCoordinator];
-      v9 = [v8 baseActionCoordinator];
+      _maps_mapsSceneDelegate = [(RouteAdvisoryView *)self _maps_mapsSceneDelegate];
+      appCoordinator = [_maps_mapsSceneDelegate appCoordinator];
+      baseActionCoordinator = [appCoordinator baseActionCoordinator];
 
       v12[0] = _NSConcreteStackBlock;
       v12[1] = 3221225472;
       v12[2] = sub_100E17698;
       v12[3] = &unk_101661340;
       objc_copyWeak(&v14, &location);
-      v10 = v9;
+      v10 = baseActionCoordinator;
       v13 = v10;
       [(RouteAdvisoryView *)self setActionHandler:v12];
 
@@ -142,7 +142,7 @@ LABEL_13:
 {
   if (self->_artwork)
   {
-    v3 = [(RouteAdvisoryView *)self traitCollection];
+    traitCollection = [(RouteAdvisoryView *)self traitCollection];
     v6 = ImageForArtworkDataSource();
 
     v4 = v6;
@@ -254,72 +254,72 @@ LABEL_13:
 
   [(UIButton *)self->_advisoryDetailButton setAccessibilityIdentifier:@"AdvisoryDetailButton"];
   [(RouteAdvisoryView *)self addSubview:self->_advisoryDetailButton];
-  v26 = [(UILabel *)self->_advisoryLabel font];
-  [v26 lineHeight];
+  font = [(UILabel *)self->_advisoryLabel font];
+  [font lineHeight];
   v28 = v27;
 
   v29 = fmin(v28, 17.0);
-  v78 = [(UIView *)self->_advisoryImageContainer widthAnchor];
-  v77 = [v78 constraintEqualToConstant:v28];
+  widthAnchor = [(UIView *)self->_advisoryImageContainer widthAnchor];
+  v77 = [widthAnchor constraintEqualToConstant:v28];
   v79[0] = v77;
-  v76 = [(UIView *)self->_advisoryImageContainer heightAnchor];
-  v75 = [v76 constraintEqualToConstant:v28];
+  heightAnchor = [(UIView *)self->_advisoryImageContainer heightAnchor];
+  v75 = [heightAnchor constraintEqualToConstant:v28];
   v79[1] = v75;
-  v74 = [(UIView *)self->_advisoryImageContainer topAnchor];
-  v73 = [(UILabel *)self->_advisoryLabel topAnchor];
-  v72 = [v74 constraintEqualToAnchor:v73];
+  topAnchor = [(UIView *)self->_advisoryImageContainer topAnchor];
+  topAnchor2 = [(UILabel *)self->_advisoryLabel topAnchor];
+  v72 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v79[2] = v72;
-  v71 = [(UIView *)self->_advisoryImageContainer bottomAnchor];
-  v70 = [(RouteAdvisoryView *)self bottomAnchor];
-  v69 = [v71 constraintLessThanOrEqualToAnchor:v70];
+  bottomAnchor = [(UIView *)self->_advisoryImageContainer bottomAnchor];
+  bottomAnchor2 = [(RouteAdvisoryView *)self bottomAnchor];
+  v69 = [bottomAnchor constraintLessThanOrEqualToAnchor:bottomAnchor2];
   v79[3] = v69;
-  v68 = [(UIView *)self->_advisoryImageContainer leadingAnchor];
-  v67 = [(RouteAdvisoryView *)self leadingAnchor];
-  v66 = [v68 constraintEqualToAnchor:v67];
+  leadingAnchor = [(UIView *)self->_advisoryImageContainer leadingAnchor];
+  leadingAnchor2 = [(RouteAdvisoryView *)self leadingAnchor];
+  v66 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v79[4] = v66;
-  v65 = [(UIView *)self->_advisoryImageContainer trailingAnchor];
-  v64 = [(UILabel *)self->_advisoryLabel leadingAnchor];
-  v63 = [v65 constraintEqualToAnchor:v64 constant:-5.0];
+  trailingAnchor = [(UIView *)self->_advisoryImageContainer trailingAnchor];
+  leadingAnchor3 = [(UILabel *)self->_advisoryLabel leadingAnchor];
+  v63 = [trailingAnchor constraintEqualToAnchor:leadingAnchor3 constant:-5.0];
   v79[5] = v63;
-  v62 = [(UIImageView *)self->_advisoryImageView widthAnchor];
-  v61 = [v62 constraintEqualToConstant:v29];
+  widthAnchor2 = [(UIImageView *)self->_advisoryImageView widthAnchor];
+  v61 = [widthAnchor2 constraintEqualToConstant:v29];
   v79[6] = v61;
-  v60 = [(UIImageView *)self->_advisoryImageView heightAnchor];
-  v59 = [v60 constraintEqualToConstant:v29];
+  heightAnchor2 = [(UIImageView *)self->_advisoryImageView heightAnchor];
+  v59 = [heightAnchor2 constraintEqualToConstant:v29];
   v79[7] = v59;
-  v58 = [(UIImageView *)self->_advisoryImageView centerYAnchor];
-  v57 = [(UIView *)self->_advisoryImageContainer centerYAnchor];
-  v56 = [v58 constraintEqualToAnchor:v57];
+  centerYAnchor = [(UIImageView *)self->_advisoryImageView centerYAnchor];
+  centerYAnchor2 = [(UIView *)self->_advisoryImageContainer centerYAnchor];
+  v56 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v79[8] = v56;
-  v55 = [(UIImageView *)self->_advisoryImageView centerXAnchor];
-  v54 = [(UIView *)self->_advisoryImageContainer centerXAnchor];
-  v53 = [v55 constraintEqualToAnchor:v54];
+  centerXAnchor = [(UIImageView *)self->_advisoryImageView centerXAnchor];
+  centerXAnchor2 = [(UIView *)self->_advisoryImageContainer centerXAnchor];
+  v53 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v79[9] = v53;
-  v52 = [(UILabel *)self->_advisoryLabel trailingAnchor];
-  v51 = [(UIButton *)self->_advisoryDetailButton leadingAnchor];
-  v50 = [v52 constraintEqualToAnchor:v51];
+  trailingAnchor2 = [(UILabel *)self->_advisoryLabel trailingAnchor];
+  leadingAnchor4 = [(UIButton *)self->_advisoryDetailButton leadingAnchor];
+  v50 = [trailingAnchor2 constraintEqualToAnchor:leadingAnchor4];
   v79[10] = v50;
-  v49 = [(UILabel *)self->_advisoryLabel topAnchor];
-  v48 = [(RouteAdvisoryView *)self topAnchor];
-  v47 = [v49 constraintEqualToAnchor:v48];
+  topAnchor3 = [(UILabel *)self->_advisoryLabel topAnchor];
+  topAnchor4 = [(RouteAdvisoryView *)self topAnchor];
+  v47 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   v79[11] = v47;
-  v46 = [(UILabel *)self->_advisoryLabel bottomAnchor];
-  v45 = [(RouteAdvisoryView *)self bottomAnchor];
-  v44 = [v46 constraintEqualToAnchor:v45];
+  bottomAnchor3 = [(UILabel *)self->_advisoryLabel bottomAnchor];
+  bottomAnchor4 = [(RouteAdvisoryView *)self bottomAnchor];
+  v44 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   v79[12] = v44;
-  v43 = [(UIButton *)self->_advisoryDetailButton centerYAnchor];
-  v42 = [(UIView *)self->_advisoryImageContainer centerYAnchor];
-  v30 = [v43 constraintEqualToAnchor:v42];
+  centerYAnchor3 = [(UIButton *)self->_advisoryDetailButton centerYAnchor];
+  centerYAnchor4 = [(UIView *)self->_advisoryImageContainer centerYAnchor];
+  v30 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
   v79[13] = v30;
-  v31 = [(UIButton *)self->_advisoryDetailButton trailingAnchor];
-  v32 = [(RouteAdvisoryView *)self trailingAnchor];
-  v33 = [v31 constraintEqualToAnchor:v32];
+  trailingAnchor3 = [(UIButton *)self->_advisoryDetailButton trailingAnchor];
+  trailingAnchor4 = [(RouteAdvisoryView *)self trailingAnchor];
+  v33 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v79[14] = v33;
-  v34 = [(UIButton *)self->_advisoryDetailButton widthAnchor];
-  v35 = [(UIButton *)self->_advisoryDetailButton heightAnchor];
-  v36 = [v34 constraintEqualToAnchor:v35];
+  widthAnchor3 = [(UIButton *)self->_advisoryDetailButton widthAnchor];
+  heightAnchor3 = [(UIButton *)self->_advisoryDetailButton heightAnchor];
+  v36 = [widthAnchor3 constraintEqualToAnchor:heightAnchor3];
   v79[15] = v36;
-  v37 = [(UIButton *)self->_advisoryDetailButton widthAnchor];
+  widthAnchor4 = [(UIButton *)self->_advisoryDetailButton widthAnchor];
   v38 = sub_10000FA08(self);
   v39 = 0.0;
   if (v38 == 5)
@@ -327,25 +327,25 @@ LABEL_13:
     v39 = 18.0;
   }
 
-  v40 = [v37 constraintEqualToConstant:v39];
+  v40 = [widthAnchor4 constraintEqualToConstant:v39];
   v79[16] = v40;
   v41 = [NSArray arrayWithObjects:v79 count:17];
   [NSLayoutConstraint activateConstraints:v41];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v8.receiver = self;
   v8.super_class = RouteAdvisoryView;
-  [(RouteAdvisoryView *)&v8 traitCollectionDidChange:v4];
+  [(RouteAdvisoryView *)&v8 traitCollectionDidChange:changeCopy];
   if (self->_artwork)
   {
-    v5 = [(RouteAdvisoryView *)self traitCollection];
-    v6 = [v5 userInterfaceStyle];
-    v7 = [v4 userInterfaceStyle];
+    traitCollection = [(RouteAdvisoryView *)self traitCollection];
+    userInterfaceStyle = [traitCollection userInterfaceStyle];
+    userInterfaceStyle2 = [changeCopy userInterfaceStyle];
 
-    if (v6 != v7)
+    if (userInterfaceStyle != userInterfaceStyle2)
     {
       [(RouteAdvisoryView *)self _updateAdvisoryImage];
     }
@@ -368,13 +368,13 @@ LABEL_13:
   }
 }
 
-- (void)setOverrideTextColor:(id)a3
+- (void)setOverrideTextColor:(id)color
 {
-  v5 = a3;
-  if (self->_overrideTextColor != v5)
+  colorCopy = color;
+  if (self->_overrideTextColor != colorCopy)
   {
-    v8 = v5;
-    objc_storeStrong(&self->_overrideTextColor, a3);
+    v8 = colorCopy;
+    objc_storeStrong(&self->_overrideTextColor, color);
     if (self->_overrideTextColor)
     {
       [(UILabel *)self->_advisoryLabel setTextColor:?];
@@ -397,17 +397,17 @@ LABEL_13:
       [(UIButton *)self->_advisoryDetailButton setTintColor:v7];
     }
 
-    v5 = v8;
+    colorCopy = v8;
   }
 }
 
-- (void)setActionHandler:(id)a3
+- (void)setActionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_actionHandler != v4)
+  handlerCopy = handler;
+  v5 = handlerCopy;
+  if (self->_actionHandler != handlerCopy)
   {
-    v6 = objc_retainBlock(v4);
+    v6 = objc_retainBlock(handlerCopy);
     actionHandler = self->_actionHandler;
     self->_actionHandler = v6;
 
@@ -479,11 +479,11 @@ LABEL_6:
 LABEL_14:
 }
 
-- (RouteAdvisoryView)initWithFrame:(CGRect)a3
+- (RouteAdvisoryView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = RouteAdvisoryView;
-  v3 = [(RouteAdvisoryView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(RouteAdvisoryView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -495,29 +495,29 @@ LABEL_14:
   return v4;
 }
 
-- (RouteAdvisoryView)initWithViewModel:(id)a3
+- (RouteAdvisoryView)initWithViewModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   v5 = [(RouteAdvisoryView *)self initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
   if (v5)
   {
-    v6 = [v4 advisory];
+    advisory = [modelCopy advisory];
     advisory = v5->_advisory;
-    v5->_advisory = v6;
+    v5->_advisory = advisory;
 
-    v8 = [v4 artwork];
+    artwork = [modelCopy artwork];
     artwork = v5->_artwork;
-    v5->_artwork = v8;
+    v5->_artwork = artwork;
 
-    v10 = [v4 text];
+    text = [modelCopy text];
     advisoryText = v5->_advisoryText;
-    v5->_advisoryText = v10;
+    v5->_advisoryText = text;
 
-    v12 = [v4 image];
+    image = [modelCopy image];
     advisoryImage = v5->_advisoryImage;
-    v5->_advisoryImage = v12;
+    v5->_advisoryImage = image;
 
-    v5->_buttonRange.location = [v4 buttonRange];
+    v5->_buttonRange.location = [modelCopy buttonRange];
     v5->_buttonRange.length = v14;
     [(UILabel *)v5->_advisoryLabel setAttributedText:v5->_advisoryText];
     [(RouteAdvisoryView *)v5 setAccessibilityIdentifier:@"Advisory"];

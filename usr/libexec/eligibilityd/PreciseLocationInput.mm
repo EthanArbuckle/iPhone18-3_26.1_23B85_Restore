@@ -1,24 +1,24 @@
 @interface PreciseLocationInput
-- (BOOL)anyInArray:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)anyInArray:(id)array;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (PreciseLocationInput)initWithCoder:(id)a3;
-- (PreciseLocationInput)initWithLocations:(id)a3 status:(unint64_t)a4 process:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PreciseLocationInput)initWithCoder:(id)coder;
+- (PreciseLocationInput)initWithLocations:(id)locations status:(unint64_t)status process:(id)process;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PreciseLocationInput
 
-- (BOOL)anyInArray:(id)a3
+- (BOOL)anyInArray:(id)array
 {
-  v4 = a3;
-  v5 = [(PreciseLocationInput *)self countryCodes];
-  if (v5)
+  arrayCopy = array;
+  countryCodes = [(PreciseLocationInput *)self countryCodes];
+  if (countryCodes)
   {
     objc_opt_class();
-    v6 = v4;
+    v6 = arrayCopy;
     if (objc_opt_isKindOfClass())
     {
       if (v6)
@@ -27,7 +27,7 @@
         if (sub_100027870(v6))
         {
           v7 = [NSSet setWithArray:v6];
-          v8 = [v5 intersectsSet:v7];
+          v8 = [countryCodes intersectsSet:v7];
         }
 
         else
@@ -76,26 +76,26 @@ LABEL_12:
 
 - (NSString)description
 {
-  v3 = [(PreciseLocationInput *)self countryCodes];
+  countryCodes = [(PreciseLocationInput *)self countryCodes];
   v7.receiver = self;
   v7.super_class = PreciseLocationInput;
   v4 = [(EligibilityInput *)&v7 description];
-  v5 = [NSString stringWithFormat:@"[PreciseLocationInput countryCodes:%@ %@]", v3, v4];
+  v5 = [NSString stringWithFormat:@"[PreciseLocationInput countryCodes:%@ %@]", countryCodes, v4];
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v11.receiver = self;
   v11.super_class = PreciseLocationInput;
-  if (![(EligibilityInput *)&v11 isEqual:v4])
+  if (![(EligibilityInput *)&v11 isEqual:equalCopy])
   {
     goto LABEL_9;
   }
 
-  if (v4 == self)
+  if (equalCopy == self)
   {
     v8 = 1;
     goto LABEL_11;
@@ -104,10 +104,10 @@ LABEL_12:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(PreciseLocationInput *)self countryCodes];
-    v7 = [(PreciseLocationInput *)v5 countryCodes];
-    v8 = sub_1000277EC(v6, v7);
+    v5 = equalCopy;
+    countryCodes = [(PreciseLocationInput *)self countryCodes];
+    countryCodes2 = [(PreciseLocationInput *)v5 countryCodes];
+    v8 = sub_1000277EC(countryCodes, countryCodes2);
 
     if ((v8 & 1) == 0)
     {
@@ -139,35 +139,35 @@ LABEL_11:
   v7.receiver = self;
   v7.super_class = PreciseLocationInput;
   v3 = [(EligibilityInput *)&v7 hash];
-  v4 = [(PreciseLocationInput *)self countryCodes];
-  v5 = [v4 hash];
+  countryCodes = [(PreciseLocationInput *)self countryCodes];
+  v5 = [countryCodes hash];
 
   return v5 ^ v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v9.receiver = self;
   v9.super_class = PreciseLocationInput;
   v5 = [(EligibilityInput *)&v9 copyWithZone:?];
-  v6 = [(PreciseLocationInput *)self countryCodes];
-  v7 = [v6 copyWithZone:a3];
+  countryCodes = [(PreciseLocationInput *)self countryCodes];
+  v7 = [countryCodes copyWithZone:zone];
   [v5 setCountryCodes:v7];
 
   return v5;
 }
 
-- (PreciseLocationInput)initWithCoder:(id)a3
+- (PreciseLocationInput)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = PreciseLocationInput;
-  v5 = [(EligibilityInput *)&v11 initWithCoder:v4];
+  v5 = [(EligibilityInput *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = objc_opt_class();
     v7 = [NSSet setWithObjects:v6, objc_opt_class(), 0];
-    v8 = [v4 decodeObjectOfClasses:v7 forKey:@"countryCodes"];
+    v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"countryCodes"];
     countryCodes = v5->_countryCodes;
     v5->_countryCodes = v8;
   }
@@ -175,23 +175,23 @@ LABEL_11:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = PreciseLocationInput;
-  v4 = a3;
-  [(EligibilityInput *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(EligibilityInput *)&v6 encodeWithCoder:coderCopy];
   v5 = [(PreciseLocationInput *)self countryCodes:v6.receiver];
-  [v4 encodeObject:v5 forKey:@"countryCodes"];
+  [coderCopy encodeObject:v5 forKey:@"countryCodes"];
 }
 
-- (PreciseLocationInput)initWithLocations:(id)a3 status:(unint64_t)a4 process:(id)a5
+- (PreciseLocationInput)initWithLocations:(id)locations status:(unint64_t)status process:(id)process
 {
-  v8 = a3;
-  v9 = a5;
-  if (v8)
+  locationsCopy = locations;
+  processCopy = process;
+  if (locationsCopy)
   {
-    type = xpc_get_type(v8);
+    type = xpc_get_type(locationsCopy);
     if (type != &_xpc_type_array)
     {
       v11 = type;
@@ -206,7 +206,7 @@ LABEL_11:
       }
 
 LABEL_14:
-      v16 = 0;
+      selfCopy = 0;
       goto LABEL_15;
     }
 
@@ -237,7 +237,7 @@ LABEL_14:
 
   v19.receiver = self;
   v19.super_class = PreciseLocationInput;
-  v14 = [(EligibilityInput *)&v19 initWithInputType:16 status:a4 process:v9];
+  v14 = [(EligibilityInput *)&v19 initWithInputType:16 status:status process:processCopy];
   v15 = v14;
   if (v14)
   {
@@ -245,10 +245,10 @@ LABEL_14:
   }
 
   self = v15;
-  v16 = self;
+  selfCopy = self;
 LABEL_15:
 
-  return v16;
+  return selfCopy;
 }
 
 @end

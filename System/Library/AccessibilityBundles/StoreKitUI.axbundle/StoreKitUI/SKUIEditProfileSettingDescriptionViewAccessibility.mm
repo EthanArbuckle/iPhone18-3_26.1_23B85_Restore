@@ -1,19 +1,19 @@
 @interface SKUIEditProfileSettingDescriptionViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)reloadWithSettingDescription:(id)a3 width:(double)a4 context:(id)a5;
+- (void)reloadWithSettingDescription:(id)description width:(double)width context:(id)context;
 @end
 
 @implementation SKUIEditProfileSettingDescriptionViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SKUIEditProfileSettingDescriptionView" hasInstanceVariable:@"_imageView" withType:"SKUIImageView"];
-  [v3 validateClass:@"SKUIEditProfileSettingDescriptionView" hasInstanceVariable:@"_editButton" withType:"UIButton"];
-  [v3 validateClass:@"SKUIEditProfileSettingDescriptionView" hasInstanceVariable:@"_nameField" withType:"UITextField"];
-  [v3 validateClass:@"SKUIEditProfileSettingDescriptionView" hasInstanceVariable:@"_handleField" withType:"UITextField"];
-  [v3 validateClass:@"SKUIEditProfileSettingDescriptionView" hasInstanceMethod:@"reloadWithSettingDescription: width: context:" withFullSignature:{"v", "@", "d", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SKUIEditProfileSettingDescriptionView" hasInstanceVariable:@"_imageView" withType:"SKUIImageView"];
+  [validationsCopy validateClass:@"SKUIEditProfileSettingDescriptionView" hasInstanceVariable:@"_editButton" withType:"UIButton"];
+  [validationsCopy validateClass:@"SKUIEditProfileSettingDescriptionView" hasInstanceVariable:@"_nameField" withType:"UITextField"];
+  [validationsCopy validateClass:@"SKUIEditProfileSettingDescriptionView" hasInstanceVariable:@"_handleField" withType:"UITextField"];
+  [validationsCopy validateClass:@"SKUIEditProfileSettingDescriptionView" hasInstanceMethod:@"reloadWithSettingDescription: width: context:" withFullSignature:{"v", "@", "d", "@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -33,22 +33,22 @@
   v7 = [(SKUIEditProfileSettingDescriptionViewAccessibility *)self safeValueForKey:@"_nameField"];
   v8 = __UIAccessibilityCastAsClass();
 
-  v9 = [v8 placeholder];
-  [v8 setAccessibilityLabel:v9];
+  placeholder = [v8 placeholder];
+  [v8 setAccessibilityLabel:placeholder];
 
   objc_opt_class();
   v10 = [(SKUIEditProfileSettingDescriptionViewAccessibility *)self safeValueForKey:@"_handleField"];
   v11 = __UIAccessibilityCastAsClass();
 
-  v12 = [v11 placeholder];
-  [v11 setAccessibilityLabel:v12];
+  placeholder2 = [v11 placeholder];
+  [v11 setAccessibilityLabel:placeholder2];
 }
 
-- (void)reloadWithSettingDescription:(id)a3 width:(double)a4 context:(id)a5
+- (void)reloadWithSettingDescription:(id)description width:(double)width context:(id)context
 {
   v6.receiver = self;
   v6.super_class = SKUIEditProfileSettingDescriptionViewAccessibility;
-  [(SKUIEditProfileSettingDescriptionViewAccessibility *)&v6 reloadWithSettingDescription:a3 width:a5 context:a4];
+  [(SKUIEditProfileSettingDescriptionViewAccessibility *)&v6 reloadWithSettingDescription:description width:context context:width];
   [(SKUIEditProfileSettingDescriptionViewAccessibility *)self _accessibilityLoadAccessibilityInformation];
 }
 

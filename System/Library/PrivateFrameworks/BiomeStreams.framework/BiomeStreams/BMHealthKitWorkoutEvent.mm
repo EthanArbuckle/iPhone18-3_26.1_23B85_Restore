@@ -1,9 +1,9 @@
 @interface BMHealthKitWorkoutEvent
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
-- (BMHealthKitWorkoutEvent)initWithIsFirstPartyDonation:(BOOL)a3 isIndoor:(BOOL)a4 activityType:(id)a5 activityUUID:(id)a6 eventType:(unint64_t)a7 isUpdate:(BOOL)a8;
-- (BMHealthKitWorkoutEvent)initWithProto:(id)a3;
-- (BMHealthKitWorkoutEvent)initWithProtoData:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
+- (BMHealthKitWorkoutEvent)initWithIsFirstPartyDonation:(BOOL)donation isIndoor:(BOOL)indoor activityType:(id)type activityUUID:(id)d eventType:(unint64_t)eventType isUpdate:(BOOL)update;
+- (BMHealthKitWorkoutEvent)initWithProto:(id)proto;
+- (BMHealthKitWorkoutEvent)initWithProtoData:(id)data;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (id)encodeAsProto;
 - (id)proto;
@@ -11,22 +11,22 @@
 
 @implementation BMHealthKitWorkoutEvent
 
-- (BMHealthKitWorkoutEvent)initWithIsFirstPartyDonation:(BOOL)a3 isIndoor:(BOOL)a4 activityType:(id)a5 activityUUID:(id)a6 eventType:(unint64_t)a7 isUpdate:(BOOL)a8
+- (BMHealthKitWorkoutEvent)initWithIsFirstPartyDonation:(BOOL)donation isIndoor:(BOOL)indoor activityType:(id)type activityUUID:(id)d eventType:(unint64_t)eventType isUpdate:(BOOL)update
 {
-  v15 = a5;
-  v16 = a6;
+  typeCopy = type;
+  dCopy = d;
   v20.receiver = self;
   v20.super_class = BMHealthKitWorkoutEvent;
   v17 = [(BMEventBase *)&v20 init];
   v18 = v17;
   if (v17)
   {
-    v17->_isFirstPartyDonation = a3;
-    v17->_isIndoor = a4;
-    objc_storeStrong(&v17->_activityType, a5);
-    objc_storeStrong(&v18->_activityUUID, a6);
-    v18->_eventType = a7;
-    v18->_isUpdate = a8;
+    v17->_isFirstPartyDonation = donation;
+    v17->_isIndoor = indoor;
+    objc_storeStrong(&v17->_activityType, type);
+    objc_storeStrong(&v18->_activityUUID, d);
+    v18->_eventType = eventType;
+    v18->_isUpdate = update;
   }
 
   return v18;
@@ -46,48 +46,48 @@
   return v10;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4 == 1)
+  if (version == 1)
   {
-    v4 = BMHealthKitWorkoutEvent_v1;
+    selfCopy = BMHealthKitWorkoutEvent_v1;
   }
 
   else
   {
-    v4 = a1;
+    selfCopy = self;
   }
 
-  v5 = a3;
-  v6 = [[v4 alloc] initWithProtoData:v5];
+  dataCopy = data;
+  v6 = [[selfCopy alloc] initWithProtoData:dataCopy];
 
   return v6;
 }
 
 - (id)encodeAsProto
 {
-  v2 = [(BMHealthKitWorkoutEvent *)self proto];
-  v3 = [v2 data];
+  proto = [(BMHealthKitWorkoutEvent *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
-- (BMHealthKitWorkoutEvent)initWithProto:(id)a3
+- (BMHealthKitWorkoutEvent)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (v4)
+  protoCopy = proto;
+  if (protoCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [v5 isFirstPartyDonation];
-      v7 = [v5 isIndoor];
-      v8 = [v5 activityType];
-      v9 = [v5 activityUUID];
-      v10 = [v5 eventType];
-      v11 = v10;
-      if (v10 >= 4)
+      v5 = protoCopy;
+      isFirstPartyDonation = [v5 isFirstPartyDonation];
+      isIndoor = [v5 isIndoor];
+      activityType = [v5 activityType];
+      activityUUID = [v5 activityUUID];
+      eventType = [v5 eventType];
+      v11 = eventType;
+      if (eventType >= 4)
       {
         v14 = __biome_log_for_category();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -100,12 +100,12 @@
 
       else
       {
-        v12 = v10;
+        v12 = eventType;
       }
 
-      self = [(BMHealthKitWorkoutEvent *)self initWithIsFirstPartyDonation:v6 isIndoor:v7 activityType:v8 activityUUID:v9 eventType:v12 isUpdate:[v5 isUpdate]];
+      self = [(BMHealthKitWorkoutEvent *)self initWithIsFirstPartyDonation:isFirstPartyDonation isIndoor:isIndoor activityType:activityType activityUUID:activityUUID eventType:v12 isUpdate:[v5 isUpdate]];
 
-      v13 = self;
+      selfCopy = self;
     }
 
     else
@@ -116,35 +116,35 @@
         [BMHealthKitWorkoutEvent initWithProto:];
       }
 
-      v13 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v13 = 0;
+    selfCopy = 0;
   }
 
-  return v13;
+  return selfCopy;
 }
 
-- (BMHealthKitWorkoutEvent)initWithProtoData:(id)a3
+- (BMHealthKitWorkoutEvent)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[BMPBHealthKitWorkoutEvent alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[BMPBHealthKitWorkoutEvent alloc] initWithData:dataCopy];
 
     self = [(BMHealthKitWorkoutEvent *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)proto
@@ -152,19 +152,19 @@
   v3 = objc_opt_new();
   [v3 setIsFirstPartyDonation:{-[BMHealthKitWorkoutEvent isFirstPartyDonation](self, "isFirstPartyDonation")}];
   [v3 setIsIndoor:{-[BMHealthKitWorkoutEvent isIndoor](self, "isIndoor")}];
-  v4 = [(BMHealthKitWorkoutEvent *)self activityType];
-  [v3 setActivityType:v4];
+  activityType = [(BMHealthKitWorkoutEvent *)self activityType];
+  [v3 setActivityType:activityType];
 
-  v5 = [(BMHealthKitWorkoutEvent *)self activityUUID];
-  [v3 setActivityUUID:v5];
+  activityUUID = [(BMHealthKitWorkoutEvent *)self activityUUID];
+  [v3 setActivityUUID:activityUUID];
 
-  v6 = [(BMHealthKitWorkoutEvent *)self eventType];
-  if (v6 >= 4)
+  eventType = [(BMHealthKitWorkoutEvent *)self eventType];
+  if (eventType >= 4)
   {
     v8 = __biome_log_for_category();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      [(BMHealthKitWorkoutEvent *)v6 proto];
+      [(BMHealthKitWorkoutEvent *)eventType proto];
     }
 
     v7 = 0;
@@ -172,7 +172,7 @@
 
   else
   {
-    [v3 setEventType:v6];
+    [v3 setEventType:eventType];
     [v3 setIsUpdate:{-[BMHealthKitWorkoutEvent isUpdate](self, "isUpdate")}];
     v7 = v3;
   }
@@ -180,23 +180,23 @@
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     isFirstPartyDonation = self->_isFirstPartyDonation;
     if (isFirstPartyDonation == [v5 isFirstPartyDonation] && (isIndoor = self->_isIndoor, isIndoor == objc_msgSend(v5, "isIndoor")))
     {
       activityType = self->_activityType;
-      v9 = [v5 activityType];
-      if ([(NSString *)activityType isEqualToString:v9])
+      activityType = [v5 activityType];
+      if ([(NSString *)activityType isEqualToString:activityType])
       {
         activityUUID = self->_activityUUID;
-        v11 = [v5 activityUUID];
-        if (-[NSString isEqualToString:](activityUUID, "isEqualToString:", v11) && (eventType = self->_eventType, eventType == [v5 eventType]))
+        activityUUID = [v5 activityUUID];
+        if (-[NSString isEqualToString:](activityUUID, "isEqualToString:", activityUUID) && (eventType = self->_eventType, eventType == [v5 eventType]))
         {
           isUpdate = self->_isUpdate;
           v14 = isUpdate == [v5 isUpdate];

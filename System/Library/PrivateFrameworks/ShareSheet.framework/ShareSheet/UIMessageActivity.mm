@@ -1,13 +1,13 @@
 @interface UIMessageActivity
 + (unint64_t)_xpcAttributes;
 + (void)_preheatAsyncIfNeeded;
-- (BOOL)canPerformWithActivityItems:(id)a3;
+- (BOOL)canPerformWithActivityItems:(id)items;
 - (id)_bundleIdentifierForActivityImageCreation;
 - (id)activityTitle;
 - (void)_cleanup;
-- (void)_prepareWithActivityItems:(id)a3 completion:(id)a4;
+- (void)_prepareWithActivityItems:(id)items completion:(id)completion;
 - (void)dealloc;
-- (void)prepareWithActivityItems:(id)a3;
+- (void)prepareWithActivityItems:(id)items;
 @end
 
 @implementation UIMessageActivity
@@ -49,54 +49,54 @@
   return v3;
 }
 
-- (BOOL)canPerformWithActivityItems:(id)a3
+- (BOOL)canPerformWithActivityItems:(id)items
 {
   v85 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(UIMessageActivity *)self sourceApplicationBundleID];
-  v6 = v5;
-  if (v5)
+  itemsCopy = items;
+  sourceApplicationBundleID = [(UIMessageActivity *)self sourceApplicationBundleID];
+  v6 = sourceApplicationBundleID;
+  if (sourceApplicationBundleID)
   {
-    v7 = v5;
+    bundleIdentifier = sourceApplicationBundleID;
   }
 
   else
   {
-    v8 = [MEMORY[0x1E696AAE8] mainBundle];
-    v7 = [v8 bundleIdentifier];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
   }
 
-  v9 = [objc_opt_class() applicationBundleID];
-  CanDisplayActivityForApplicationWithBundleID = _UIActivityCanDisplayActivityForApplicationWithBundleID(v9);
+  applicationBundleID = [objc_opt_class() applicationBundleID];
+  CanDisplayActivityForApplicationWithBundleID = _UIActivityCanDisplayActivityForApplicationWithBundleID(applicationBundleID);
 
   if ((CanDisplayActivityForApplicationWithBundleID & 1) == 0)
   {
-    v11 = share_sheet_log();
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+    sharedInstance = share_sheet_log();
+    if (os_log_type_enabled(sharedInstance, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_18B359000, v11, OS_LOG_TYPE_DEFAULT, "UIMessageActivity: Can't display activity", buf, 2u);
+      _os_log_impl(&dword_18B359000, sharedInstance, OS_LOG_TYPE_DEFAULT, "UIMessageActivity: Can't display activity", buf, 2u);
     }
 
     v31 = 0;
     goto LABEL_44;
   }
 
-  v11 = [(objc_class *)getIMSharedMessageSendingUtilitiesClass() sharedInstance];
-  if (([v11 canSendText]& 1) == 0)
+  sharedInstance = [(objc_class *)getIMSharedMessageSendingUtilitiesClass() sharedInstance];
+  if (([sharedInstance canSendText]& 1) == 0)
   {
-    v12 = share_sheet_log();
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+    sharedConnection = share_sheet_log();
+    if (os_log_type_enabled(sharedConnection, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_18B359000, v12, OS_LOG_TYPE_DEFAULT, "UIMessageActivity: Can't send text", buf, 2u);
+      _os_log_impl(&dword_18B359000, sharedConnection, OS_LOG_TYPE_DEFAULT, "UIMessageActivity: Can't send text", buf, 2u);
     }
 
     goto LABEL_42;
   }
 
-  v12 = [(objc_class *)getMCProfileConnectionClass_1() sharedConnection];
-  if (([v12 mayShareToMessagesForOriginatingAppBundleID:v7 originatingAccountIsManaged:[(UIMessageActivity *)self isContentManaged]]& 1) == 0)
+  sharedConnection = [(objc_class *)getMCProfileConnectionClass_1() sharedConnection];
+  if (([sharedConnection mayShareToMessagesForOriginatingAppBundleID:bundleIdentifier originatingAccountIsManaged:[(UIMessageActivity *)self isContentManaged]]& 1) == 0)
   {
     v32 = share_sheet_log();
     if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
@@ -114,10 +114,10 @@ LABEL_42:
     goto LABEL_43;
   }
 
-  v13 = [v11 isMMSEnabled];
-  v14 = [v11 isRichMessagingEnabled];
-  v15 = [v11 isMessagingEnabled];
-  if (v13)
+  isMMSEnabled = [sharedInstance isMMSEnabled];
+  isRichMessagingEnabled = [sharedInstance isRichMessagingEnabled];
+  isMessagingEnabled = [sharedInstance isMessagingEnabled];
+  if (isMMSEnabled)
   {
     v16 = 18511;
   }
@@ -127,7 +127,7 @@ LABEL_42:
     v16 = 18437;
   }
 
-  if (v14)
+  if (isRichMessagingEnabled)
   {
     v17 = 202;
   }
@@ -137,7 +137,7 @@ LABEL_42:
     v17 = 0;
   }
 
-  if (v14)
+  if (isRichMessagingEnabled)
   {
     v18 = 0;
   }
@@ -148,16 +148,16 @@ LABEL_42:
   }
 
   v19 = 74;
-  if (v15)
+  if (isMessagingEnabled)
   {
     v19 = 0;
   }
 
   v59 = v19;
   v60 = v18;
-  v20 = _UIActivityItemCountOfType(v4, 2);
-  v21 = _UIActivityItemCountOfType(v4, 64);
-  if (([v11 canSendPhotos:v20 videos:v21 audioClips:_UIActivityItemCountOfType(v4, 4096)]& 1) == 0)
+  v20 = _UIActivityItemCountOfType(itemsCopy, 2);
+  v21 = _UIActivityItemCountOfType(itemsCopy, 64);
+  if (([sharedInstance canSendPhotos:v20 videos:v21 audioClips:_UIActivityItemCountOfType(itemsCopy, 4096)]& 1) == 0)
   {
     v32 = share_sheet_log();
     if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
@@ -171,15 +171,15 @@ LABEL_42:
   }
 
   v22 = v16 | v17;
-  v57 = v12;
-  v58 = v7;
+  v57 = sharedConnection;
+  v58 = bundleIdentifier;
   if ((_UIActivityItemTypes() & 8) != 0)
   {
     v77 = 0u;
     v78 = 0u;
     v75 = 0u;
     v76 = 0u;
-    v23 = v4;
+    v23 = itemsCopy;
     v24 = [v23 countByEnumeratingWithState:&v75 objects:v84 count:16];
     if (v24)
     {
@@ -202,13 +202,13 @@ LABEL_42:
             if ([v28 isFileURL])
             {
               v29 = _UIActivityUTIForURL(v28);
-              v30 = [v11 isSupportedAttachmentUTI:v29];
+              v30 = [sharedInstance isSupportedAttachmentUTI:v29];
 
               if (v30)
               {
 
-                v12 = v57;
-                v7 = v58;
+                sharedConnection = v57;
+                bundleIdentifier = v58;
                 v22 = v55;
                 goto LABEL_47;
               }
@@ -225,9 +225,9 @@ LABEL_42:
         break;
       }
 
-      v12 = v57;
+      sharedConnection = v57;
       v22 = v55 & 0x48C7;
-      v7 = v58;
+      bundleIdentifier = v58;
     }
 
     else
@@ -247,7 +247,7 @@ LABEL_47:
   v74 = 0u;
   v71 = 0u;
   v72 = 0u;
-  v35 = v4;
+  v35 = itemsCopy;
   v36 = [v35 countByEnumeratingWithState:&v71 objects:v83 count:16];
   if (!v36)
   {
@@ -260,7 +260,7 @@ LABEL_47:
   v56 = v22;
   v38 = 0;
   v39 = *v72;
-  v62 = v4;
+  v62 = itemsCopy;
   while (2)
   {
     for (j = 0; j != v37; ++j)
@@ -274,8 +274,8 @@ LABEL_47:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v42 = [(UIActivity *)self _dataTypeIdentifierForActivityItem:v41];
-        if ([v11 isSupportedAttachmentUTI:v42])
+        registeredTypeIdentifiers = [(UIActivity *)self _dataTypeIdentifierForActivityItem:v41];
+        if ([sharedInstance isSupportedAttachmentUTI:registeredTypeIdentifiers])
         {
 
           goto LABEL_75;
@@ -285,7 +285,7 @@ LABEL_47:
         if (os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v82 = v42;
+          v82 = registeredTypeIdentifiers;
           _os_log_impl(&dword_18B359000, v43, OS_LOG_TYPE_DEFAULT, "UIMessageActivity: Unsupported attachment type %@", buf, 0xCu);
         }
       }
@@ -302,8 +302,8 @@ LABEL_47:
         v70 = 0u;
         v67 = 0u;
         v68 = 0u;
-        v42 = [v41 registeredTypeIdentifiers];
-        v44 = [v42 countByEnumeratingWithState:&v67 objects:v80 count:16];
+        registeredTypeIdentifiers = [v41 registeredTypeIdentifiers];
+        v44 = [registeredTypeIdentifiers countByEnumeratingWithState:&v67 objects:v80 count:16];
         if (v44)
         {
           v45 = v44;
@@ -316,19 +316,19 @@ LABEL_47:
             {
               if (*v68 != v47)
               {
-                objc_enumerationMutation(v42);
+                objc_enumerationMutation(registeredTypeIdentifiers);
               }
 
-              if (([v11 isSupportedAttachmentUTI:*(*(&v67 + 1) + 8 * k)]& 1) != 0)
+              if (([sharedInstance isSupportedAttachmentUTI:*(*(&v67 + 1) + 8 * k)]& 1) != 0)
               {
                 v38 = 1;
                 v35 = v46;
-                v4 = v62;
+                itemsCopy = v62;
                 goto LABEL_69;
               }
             }
 
-            v45 = [v42 countByEnumeratingWithState:&v67 objects:v80 count:16];
+            v45 = [registeredTypeIdentifiers countByEnumeratingWithState:&v67 objects:v80 count:16];
             if (v45)
             {
               continue;
@@ -338,7 +338,7 @@ LABEL_47:
           }
 
           v35 = v46;
-          v4 = v62;
+          itemsCopy = v62;
           v38 = v61;
         }
       }
@@ -357,15 +357,15 @@ LABEL_69:
 
   if ((v38 & 1) == 0)
   {
-    v12 = v57;
+    sharedConnection = v57;
     v22 = v56 & 0xFFFFFFFFFFFFF7FFLL;
-    v7 = v58;
+    bundleIdentifier = v58;
     goto LABEL_77;
   }
 
 LABEL_75:
-  v12 = v57;
-  v7 = v58;
+  sharedConnection = v57;
+  bundleIdentifier = v58;
   v22 = v56;
 LABEL_77:
   if ((_UIActivityItemTypes() & 0x4000) != 0)
@@ -374,7 +374,7 @@ LABEL_77:
     v66 = 0u;
     v63 = 0u;
     v64 = 0u;
-    v49 = v4;
+    v49 = itemsCopy;
     v50 = [v49 countByEnumeratingWithState:&v63 objects:v79 count:16];
     if (v50)
     {
@@ -409,8 +409,8 @@ LABEL_77:
 
       v22 &= ~0x4000uLL;
 LABEL_89:
-      v12 = v57;
-      v7 = v58;
+      sharedConnection = v57;
+      bundleIdentifier = v58;
     }
 
     else
@@ -467,7 +467,7 @@ uint64_t __44__UIMessageActivity__backgroundPreheatBlock__block_invoke_2(uint64_
     block[1] = 3221225472;
     block[2] = __42__UIMessageActivity__preheatAsyncIfNeeded__block_invoke;
     block[3] = &__block_descriptor_40_e5_v8__0l;
-    block[4] = a1;
+    block[4] = self;
     dispatch_async(v4, block);
   }
 }
@@ -545,37 +545,37 @@ void __42__UIMessageActivity__preheatAsyncIfNeeded__block_invoke(uint64_t a1)
   }
 }
 
-- (void)prepareWithActivityItems:(id)a3
+- (void)prepareWithActivityItems:(id)items
 {
   v133 = *MEMORY[0x1E69E9840];
-  v95 = a3;
+  itemsCopy = items;
   atomic_store(0, __shouldPreheatMessageActivity);
   v4 = objc_alloc_init(getMFMessageComposeViewControllerClass());
   messageComposeViewController = self->_messageComposeViewController;
   self->_messageComposeViewController = v4;
 
   [(MFMessageComposeViewController *)self->_messageComposeViewController setMessageComposeDelegate:self];
-  v6 = [(UIActivity *)self sessionIdentifier];
+  sessionIdentifier = [(UIActivity *)self sessionIdentifier];
 
-  if (v6)
+  if (sessionIdentifier)
   {
-    v7 = [(UIActivity *)self sessionIdentifier];
-    [(MFMessageComposeViewController *)self->_messageComposeViewController setShareSheetSessionID:v7];
+    sessionIdentifier2 = [(UIActivity *)self sessionIdentifier];
+    [(MFMessageComposeViewController *)self->_messageComposeViewController setShareSheetSessionID:sessionIdentifier2];
   }
 
-  v8 = [(UIMessageActivity *)self collaborationItem];
-  v105 = v8;
-  if (-[UIMessageActivity isCollaborative](self, "isCollaborative") || ![v8 type])
+  collaborationItem = [(UIMessageActivity *)self collaborationItem];
+  v105 = collaborationItem;
+  if (-[UIMessageActivity isCollaborative](self, "isCollaborative") || ![collaborationItem type])
   {
     v11 = 0;
   }
 
   else
   {
-    v9 = [v8 itemProvider];
-    if ([v9 supportsMessagesSendCopyRepresentation])
+    itemProvider = [collaborationItem itemProvider];
+    if ([itemProvider supportsMessagesSendCopyRepresentation])
     {
-      v10 = [v95 count] > 1;
+      v10 = [itemsCopy count] > 1;
     }
 
     else
@@ -583,44 +583,44 @@ void __42__UIMessageActivity__preheatAsyncIfNeeded__block_invoke(uint64_t a1)
       v10 = 0;
     }
 
-    v12 = [v8 itemProvider];
-    v13 = [v12 supportsMessagesSendCopyRepresentation] ^ 1;
+    itemProvider2 = [collaborationItem itemProvider];
+    v13 = [itemProvider2 supportsMessagesSendCopyRepresentation] ^ 1;
 
     v11 = v13 | v10;
-    v8 = v105;
+    collaborationItem = v105;
   }
 
-  v104 = self;
-  v106 = (v8 == 0) | v11;
-  if (!((v8 == 0) | v11 & 1))
+  selfCopy = self;
+  v106 = (collaborationItem == 0) | v11;
+  if (!((collaborationItem == 0) | v11 & 1))
   {
-    v14 = self;
+    selfCopy2 = self;
     if (objc_opt_respondsToSelector())
     {
       v15 = self->_messageComposeViewController;
       v16 = share_sheet_log();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
-        v17 = [v105 itemProvider];
-        v18 = [v105 shareOptions];
-        v19 = [v105 metadata];
-        [(UIMessageActivity *)v104 isCollaborative];
+        itemProvider3 = [v105 itemProvider];
+        shareOptions = [v105 shareOptions];
+        metadata = [v105 metadata];
+        [(UIMessageActivity *)selfCopy isCollaborative];
         v20 = NSStringFromBOOL();
         *buf = 138413058;
-        v126 = v17;
+        v126 = itemProvider3;
         v127 = 2112;
-        v128 = v18;
+        v128 = shareOptions;
         v129 = 2112;
-        v130 = v19;
+        v130 = metadata;
         v131 = 2112;
         v132 = v20;
         _os_log_impl(&dword_18B359000, v16, OS_LOG_TYPE_DEFAULT, "insertCollaborationItemProvider:%@ collaborationShareOptions:%@ collaborationMetadata:%@ isCollaboration:%@", buf, 0x2Au);
       }
 
-      v21 = [v105 itemProvider];
-      v22 = [v105 shareOptions];
-      v23 = [v105 metadata];
-      [(MFMessageComposeViewController *)v15 insertCollaborationItemProvider:v21 collaborationShareOptions:v22 collaborationMetadata:v23 isCollaboration:[(UIMessageActivity *)v104 isCollaborative]];
+      itemProvider4 = [v105 itemProvider];
+      shareOptions2 = [v105 shareOptions];
+      metadata2 = [v105 metadata];
+      [(MFMessageComposeViewController *)v15 insertCollaborationItemProvider:itemProvider4 collaborationShareOptions:shareOptions2 collaborationMetadata:metadata2 isCollaboration:[(UIMessageActivity *)selfCopy isCollaborative]];
     }
 
     else
@@ -629,35 +629,35 @@ void __42__UIMessageActivity__preheatAsyncIfNeeded__block_invoke(uint64_t a1)
       v25 = v105;
       if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
       {
-        v26 = [v105 itemProvider];
-        v27 = [v105 options];
-        v28 = [v105 metadata];
-        [(UIMessageActivity *)v104 isCollaborative];
+        itemProvider5 = [v105 itemProvider];
+        options = [v105 options];
+        metadata3 = [v105 metadata];
+        [(UIMessageActivity *)selfCopy isCollaborative];
         v29 = NSStringFromBOOL();
         *buf = 138413058;
-        v126 = v26;
+        v126 = itemProvider5;
         v127 = 2112;
-        v128 = v27;
+        v128 = options;
         v129 = 2112;
-        v130 = v28;
+        v130 = metadata3;
         v131 = 2112;
         v132 = v29;
         _os_log_impl(&dword_18B359000, v24, OS_LOG_TYPE_DEFAULT, "insertCollaborationItemProvider:%@ collaborationOptions:%@ collaborationMetadata:%@ isCollaboration:%@", buf, 0x2Au);
 
-        v14 = v104;
+        selfCopy2 = selfCopy;
         v25 = v105;
       }
 
-      v30 = v14->_messageComposeViewController;
+      v30 = selfCopy2->_messageComposeViewController;
       [v25 itemProvider];
       v15 = v31 = v25;
-      v21 = [v31 options];
-      v22 = [v31 metadata];
-      [(MFMessageComposeViewController *)v30 insertCollaborationItemProvider:v15 collaborationOptions:v21 collaborationMetadata:v22 isCollaboration:[(UIMessageActivity *)v14 isCollaborative]];
+      itemProvider4 = [v31 options];
+      shareOptions2 = [v31 metadata];
+      [(MFMessageComposeViewController *)v30 insertCollaborationItemProvider:v15 collaborationOptions:itemProvider4 collaborationMetadata:shareOptions2 isCollaboration:[(UIMessageActivity *)selfCopy2 isCollaborative]];
     }
   }
 
-  v32 = _UIActivityItemsGetStringsAndURLs(v95, 0);
+  v32 = _UIActivityItemsGetStringsAndURLs(itemsCopy, 0);
   v33 = objc_opt_new();
   v118 = 0u;
   v119 = 0u;
@@ -689,15 +689,15 @@ void __42__UIMessageActivity__preheatAsyncIfNeeded__block_invoke(uint64_t a1)
           goto LABEL_29;
         }
 
-        v42 = [v40 scheme];
-        if (!v42)
+        scheme = [v40 scheme];
+        if (!scheme)
         {
           goto LABEL_29;
         }
 
-        v43 = v42;
-        v44 = [v41 host];
-        if (!v44 || ([v41 isFileURL] & 1) != 0)
+        v43 = scheme;
+        host = [v41 host];
+        if (!host || ([v41 isFileURL] & 1) != 0)
         {
 
 LABEL_29:
@@ -705,8 +705,8 @@ LABEL_29:
           goto LABEL_30;
         }
 
-        v45 = [(LPLinkMetadata *)v104->_linkMetadata originalURL];
-        if ([v41 isEqual:v45])
+        originalURL = [(LPLinkMetadata *)selfCopy->_linkMetadata originalURL];
+        if ([v41 isEqual:originalURL])
         {
 
           v33 = v99;
@@ -714,7 +714,7 @@ LABEL_29:
 
         else
         {
-          v46 = [(LPLinkMetadata *)v104->_linkMetadata URL];
+          v46 = [(LPLinkMetadata *)selfCopy->_linkMetadata URL];
           v107 = [v41 isEqual:v46];
 
           v33 = v99;
@@ -727,13 +727,13 @@ LABEL_29:
 
         v47 = objc_alloc_init(getLPSharingMetadataWrapperClass());
         [v47 setHasFetchedSubresources:1];
-        [v47 setMetadata:v104->_linkMetadata];
-        v48 = v104->_messageComposeViewController;
+        [v47 setMetadata:selfCopy->_linkMetadata];
+        v48 = selfCopy->_messageComposeViewController;
         v49 = v41;
-        v50 = [v47 dataRepresentation];
+        dataRepresentation = [v47 dataRepresentation];
         v51 = v48;
         v35 = 0x1E695D000;
-        [(MFMessageComposeViewController *)v51 addRichLinkData:v50 withWebpageURL:v49];
+        [(MFMessageComposeViewController *)v51 addRichLinkData:dataRepresentation withWebpageURL:v49];
 
 LABEL_30:
         ++v38;
@@ -748,11 +748,11 @@ LABEL_30:
   }
 
   [v33 componentsJoinedByString:@" "];
-  v94 = p_isa = &v104->super.super.isa;
-  [(MFMessageComposeViewController *)v104->_messageComposeViewController setBody:?];
-  v54 = [MEMORY[0x1E695DF70] array];
-  v100 = [MEMORY[0x1E695DF70] array];
-  _UIActivityItemsGetAttachments(v95);
+  v94 = p_isa = &selfCopy->super.super.isa;
+  [(MFMessageComposeViewController *)selfCopy->_messageComposeViewController setBody:?];
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
+  _UIActivityItemsGetAttachments(itemsCopy);
   v114 = 0u;
   v115 = 0u;
   v116 = 0u;
@@ -771,7 +771,7 @@ LABEL_30:
   v58 = *MEMORY[0x1E6963870];
   v103 = 1;
   v101 = *MEMORY[0x1E6963870];
-  v102 = v54;
+  v102 = array;
   do
   {
     for (i = 0; i != v56; ++i)
@@ -806,19 +806,19 @@ LABEL_30:
         if ([(UIImage *)v65 isEqualToString:v58])
         {
           v66 = MEMORY[0x1E696AEC0];
-          v67 = [v60 path];
-          v68 = [v66 stringWithContentsOfFile:v67 encoding:4 error:0];
+          path = [v60 path];
+          v68 = [v66 stringWithContentsOfFile:path encoding:4 error:0];
 
           if (v68)
           {
-            [v100 addObject:v68];
+            [array2 addObject:v68];
           }
 
-          v54 = v102;
+          array = v102;
           goto LABEL_84;
         }
 
-        v77 = v54;
+        v77 = array;
         v78 = v65;
 LABEL_83:
         [v77 addObject:v78];
@@ -838,13 +838,13 @@ LABEL_51:
           v65 = [p_isa _attachmentNameForActivityItem:v60];
           if (![(UIImage *)v65 length])
           {
-            v81 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Attachment-%ld", v103];
+            v103 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Attachment-%ld", v103];
 
             v82 = UTTypeCopyPreferredTagWithClass(v63, inTagClass);
             if (v82)
             {
               v83 = v82;
-              v65 = [(UIImage *)v81 stringByAppendingPathExtension:v82];
+              v65 = [(UIImage *)v103 stringByAppendingPathExtension:v82];
 
               CFRelease(v83);
               ++v103;
@@ -853,11 +853,11 @@ LABEL_51:
             else
             {
               ++v103;
-              v65 = v81;
+              v65 = v103;
             }
 
             v58 = v101;
-            v54 = v102;
+            array = v102;
           }
 
           [p_isa[21] addAttachmentData:v60 typeIdentifier:v63 filename:v65];
@@ -866,13 +866,13 @@ LABEL_51:
             v84 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:v60 encoding:4];
             if (v84)
             {
-              [v100 addObject:v84];
+              [array2 addObject:v84];
             }
 
             goto LABEL_84;
           }
 
-          v77 = v54;
+          v77 = array;
           v78 = v63;
           goto LABEL_83;
         }
@@ -917,7 +917,7 @@ LABEL_51:
           v74 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Image-%ld.%@", v103, v73];
 
           ++v103;
-          p_isa = &v104->super.super.isa;
+          p_isa = &selfCopy->super.super.isa;
           v72 = v74;
         }
 
@@ -935,7 +935,7 @@ LABEL_51:
           v76 = v97;
         }
 
-        [v54 addObject:v76];
+        [array addObject:v76];
 
         v58 = v101;
       }
@@ -952,7 +952,7 @@ LABEL_88:
   v113 = 0u;
   v110 = 0u;
   v111 = 0u;
-  v85 = v95;
+  v85 = itemsCopy;
   v86 = [v85 countByEnumeratingWithState:&v110 objects:v122 count:16];
   if (v86)
   {
@@ -967,19 +967,19 @@ LABEL_88:
           objc_enumerationMutation(v85);
         }
 
-        v90 = [(UIActivity *)v104 _subjectForActivityItem:*(*(&v110 + 1) + 8 * j)];
+        v90 = [(UIActivity *)selfCopy _subjectForActivityItem:*(*(&v110 + 1) + 8 * j)];
         if (v90)
         {
           v91 = v90;
-          p_isa = &v104->super.super.isa;
-          [(MFMessageComposeViewController *)v104->_messageComposeViewController setSubject:v90];
+          p_isa = &selfCopy->super.super.isa;
+          [(MFMessageComposeViewController *)selfCopy->_messageComposeViewController setSubject:v90];
 
           goto LABEL_98;
         }
       }
 
       v87 = [v85 countByEnumeratingWithState:&v110 objects:v122 count:16];
-      p_isa = &v104->super.super.isa;
+      p_isa = &selfCopy->super.super.isa;
       if (v87)
       {
         continue;
@@ -994,12 +994,12 @@ LABEL_98:
   v92 = _UIActivityItemsGetStrings(v85, 0);
   if (v92)
   {
-    [v100 addObjectsFromArray:v92];
+    [array2 addObjectsFromArray:v92];
   }
 
-  if ([v54 count])
+  if ([array count])
   {
-    [p_isa[21] setUTITypes:v54];
+    [p_isa[21] setUTITypes:array];
   }
 
   v93 = _UIActivityItemsGetWebURLs(v85, 1);
@@ -1008,23 +1008,23 @@ LABEL_98:
     [p_isa[21] setContentURLs:v93];
   }
 
-  if ([v100 count])
+  if ([array2 count])
   {
-    [p_isa[21] setContentText:v100];
+    [p_isa[21] setContentText:array2];
   }
 }
 
-- (void)_prepareWithActivityItems:(id)a3 completion:(id)a4
+- (void)_prepareWithActivityItems:(id)items completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __58__UIMessageActivity__prepareWithActivityItems_completion___block_invoke;
   v8[3] = &unk_1E71F9718;
   v8[4] = self;
-  v9 = v6;
-  v7 = v6;
-  [(UIActivity *)self _loadItemProvidersFromActivityItems:a3 completion:v8];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [(UIActivity *)self _loadItemProvidersFromActivityItems:items completion:v8];
 }
 
 uint64_t __58__UIMessageActivity__prepareWithActivityItems_completion___block_invoke(uint64_t a1, uint64_t a2)

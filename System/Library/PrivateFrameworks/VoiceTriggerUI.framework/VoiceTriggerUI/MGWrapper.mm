@@ -1,7 +1,7 @@
 @interface MGWrapper
 + (id)sharedMGWrapper;
-- (BOOL)MGIsDeviceOneOfType:(int64_t)a3;
-- (BOOL)MGIsDeviceOneOfTypes:(id)a3;
+- (BOOL)MGIsDeviceOneOfType:(int64_t)type;
+- (BOOL)MGIsDeviceOneOfTypes:(id)types;
 - (BOOL)isDeviceIPad;
 - (BOOL)isDeviceIPhone;
 - (BOOL)isDeviceIPod;
@@ -24,7 +24,7 @@
   block[1] = 3221225472;
   block[2] = __28__MGWrapper_sharedMGWrapper__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedMGWrapper_onceToken != -1)
   {
     dispatch_once(&sharedMGWrapper_onceToken, block);
@@ -86,17 +86,17 @@ uint64_t __28__MGWrapper_sharedMGWrapper__block_invoke(uint64_t a1)
 {
   v2 = [MEMORY[0x277CCACA8] stringWithUTF8String:getenv("SIMULATOR_DEVICE_NAME")];
   v3 = [&unk_2881EEF40 objectForKey:v2];
-  v4 = [v3 integerValue];
+  integerValue = [v3 integerValue];
 
-  return v4;
+  return integerValue;
 }
 
 - (BOOL)isHeySiriAlwaysOn
 {
   if ([(MGWrapper *)self isRunningOnSimulator])
   {
-    v3 = [(MGWrapper *)self getSimulatorDevice];
-    v4 = [MEMORY[0x277CCABB0] numberWithInteger:v3];
+    getSimulatorDevice = [(MGWrapper *)self getSimulatorDevice];
+    v4 = [MEMORY[0x277CCABB0] numberWithInteger:getSimulatorDevice];
     v5 = [&unk_2881EEE30 containsObject:v4];
 
     return v5;
@@ -113,10 +113,10 @@ uint64_t __28__MGWrapper_sharedMGWrapper__block_invoke(uint64_t a1)
 {
   if ([(MGWrapper *)self isRunningOnSimulator])
   {
-    v3 = [MEMORY[0x277D75418] currentDevice];
-    v4 = [v3 model];
-    v5 = [(MGWrapper *)self deviceClassiPad];
-    v6 = [v4 containsString:v5];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    model = [currentDevice model];
+    deviceClassiPad = [(MGWrapper *)self deviceClassiPad];
+    v6 = [model containsString:deviceClassiPad];
 
     if (v6)
     {
@@ -140,32 +140,32 @@ uint64_t __28__MGWrapper_sharedMGWrapper__block_invoke(uint64_t a1)
 
 - (BOOL)isDeviceIPad
 {
-  v2 = [(MGWrapper *)self deviceClass];
-  v3 = [v2 isEqualToString:@"iPad"];
+  deviceClass = [(MGWrapper *)self deviceClass];
+  v3 = [deviceClass isEqualToString:@"iPad"];
 
   return v3;
 }
 
 - (BOOL)isDeviceIPhone
 {
-  v2 = [(MGWrapper *)self deviceClass];
-  v3 = [v2 isEqualToString:@"iPhone"];
+  deviceClass = [(MGWrapper *)self deviceClass];
+  v3 = [deviceClass isEqualToString:@"iPhone"];
 
   return v3;
 }
 
 - (BOOL)isDeviceIPod
 {
-  v2 = [(MGWrapper *)self deviceClass];
-  v3 = [v2 isEqualToString:@"iPod"];
+  deviceClass = [(MGWrapper *)self deviceClass];
+  v3 = [deviceClass isEqualToString:@"iPod"];
 
   return v3;
 }
 
 - (BOOL)isDeviceVision
 {
-  v2 = [(MGWrapper *)self deviceClass];
-  v3 = [v2 isEqualToString:@"RealityDevice"];
+  deviceClass = [(MGWrapper *)self deviceClass];
+  v3 = [deviceClass isEqualToString:@"RealityDevice"];
 
   return v3;
 }
@@ -180,15 +180,15 @@ uint64_t __28__MGWrapper_sharedMGWrapper__block_invoke(uint64_t a1)
   return [(MGWrapper *)self MGIsDeviceOneOfType:32];
 }
 
-- (BOOL)MGIsDeviceOneOfTypes:(id)a3
+- (BOOL)MGIsDeviceOneOfTypes:(id)types
 {
   v17 = *MEMORY[0x277D85DE8];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  typesCopy = types;
+  v5 = [typesCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -199,7 +199,7 @@ uint64_t __28__MGWrapper_sharedMGWrapper__block_invoke(uint64_t a1)
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(typesCopy);
         }
 
         if (-[MGWrapper MGIsDeviceOneOfType:](self, "MGIsDeviceOneOfType:", [*(*(&v12 + 1) + 8 * i) integerValue]))
@@ -209,7 +209,7 @@ uint64_t __28__MGWrapper_sharedMGWrapper__block_invoke(uint64_t a1)
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [typesCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v6)
       {
         continue;
@@ -226,10 +226,10 @@ LABEL_11:
   return v9;
 }
 
-- (BOOL)MGIsDeviceOneOfType:(int64_t)a3
+- (BOOL)MGIsDeviceOneOfType:(int64_t)type
 {
   v8 = *MEMORY[0x277D85DE8];
-  switch(a3)
+  switch(type)
   {
     case 0:
     case 1:
@@ -260,20 +260,20 @@ LABEL_11:
     case 30:
     case 31:
     case 32:
-      LOBYTE(v5) = MGIsDeviceOneOfType();
+      LOBYTE(isRunningOnSimulator) = MGIsDeviceOneOfType();
       break;
     default:
-      v5 = [(MGWrapper *)self isRunningOnSimulator];
-      if (v5)
+      isRunningOnSimulator = [(MGWrapper *)self isRunningOnSimulator];
+      if (isRunningOnSimulator)
       {
-        LOBYTE(v5) = [(MGWrapper *)self getSimulatorDevice]== a3;
+        LOBYTE(isRunningOnSimulator) = [(MGWrapper *)self getSimulatorDevice]== type;
       }
 
       break;
   }
 
   v6 = *MEMORY[0x277D85DE8];
-  return v5;
+  return isRunningOnSimulator;
 }
 
 @end

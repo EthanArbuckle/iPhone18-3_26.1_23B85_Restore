@@ -1,28 +1,28 @@
 @interface GKContentPropertyList
-+ (id)localPropertyListForGameDescriptor:(id)a3;
++ (id)localPropertyListForGameDescriptor:(id)descriptor;
 - (id)_mainBundle;
 - (id)_rootDictionary;
-- (id)achievementDescriptionForIdentifier:(id)a3;
+- (id)achievementDescriptionForIdentifier:(id)identifier;
 - (id)achievementDescriptions;
 - (id)imageNameForDashboardLogo;
-- (id)leaderboardDescriptionForIdentifier:(id)a3;
+- (id)leaderboardDescriptionForIdentifier:(id)identifier;
 - (id)leaderboardDescriptions;
-- (id)leaderboardSetDescriptionForIdentifier:(id)a3;
+- (id)leaderboardSetDescriptionForIdentifier:(id)identifier;
 - (id)leaderboardSetDescriptions;
-- (id)localizedStringForKey:(id)a3;
+- (id)localizedStringForKey:(id)key;
 @end
 
 @implementation GKContentPropertyList
 
-+ (id)localPropertyListForGameDescriptor:(id)a3
++ (id)localPropertyListForGameDescriptor:(id)descriptor
 {
-  v4 = a3;
-  v5 = objc_alloc_init(a1);
-  v6 = [v5 _rootDictionary];
-  v7 = [v6 objectForKeyedSubscript:@"GKPropertyListVersion"];
+  descriptorCopy = descriptor;
+  v5 = objc_alloc_init(self);
+  _rootDictionary = [v5 _rootDictionary];
+  v7 = [_rootDictionary objectForKeyedSubscript:@"GKPropertyListVersion"];
   if (v7 && (objc_opt_respondsToSelector() & 1) != 0 && [v7 intValue] <= 0)
   {
-    v10 = [v4 objectForKeyedSubscript:@"bundle-id"];
+    v10 = [descriptorCopy objectForKeyedSubscript:@"bundle-id"];
     [v5 setBundleID:v10];
 
     v8 = v5;
@@ -40,24 +40,24 @@
 {
   v3 = +[GKApplicationWorkspace defaultWorkspace];
   v4 = [v3 applicationProxyForBundleID:self->_bundleID];
-  v5 = [v4 bundle];
+  bundle = [v4 bundle];
 
-  return v5;
+  return bundle;
 }
 
-- (id)localizedStringForKey:(id)a3
+- (id)localizedStringForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(GKContentPropertyList *)self _mainBundle];
-  v6 = [v5 _gkSystemLocalizedStringForKey:v4 value:v4 table:@"GKGameCenter"];
+  keyCopy = key;
+  _mainBundle = [(GKContentPropertyList *)self _mainBundle];
+  v6 = [_mainBundle _gkSystemLocalizedStringForKey:keyCopy value:keyCopy table:@"GKGameCenter"];
 
   return v6;
 }
 
 - (id)imageNameForDashboardLogo
 {
-  v2 = [(GKContentPropertyList *)self _rootDictionary];
-  v3 = [v2 objectForKeyedSubscript:@"GKDashboardImages"];
+  _rootDictionary = [(GKContentPropertyList *)self _rootDictionary];
+  v3 = [_rootDictionary objectForKeyedSubscript:@"GKDashboardImages"];
   v4 = [v3 objectForKeyedSubscript:@"logoImageName"];
 
   return v4;
@@ -66,8 +66,8 @@
 - (id)_rootDictionary
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = [(GKContentPropertyList *)self root];
-  if (!v3)
+  root = [(GKContentPropertyList *)self root];
+  if (!root)
   {
     v4 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:self->_bundleID];
     v5 = v4;
@@ -78,9 +78,9 @@
       if (v7)
       {
         v18 = 0;
-        v3 = [MEMORY[0x277CCAC58] propertyListWithData:v7 options:0 format:0 error:&v18];
+        root = [MEMORY[0x277CCAC58] propertyListWithData:v7 options:0 format:0 error:&v18];
         v8 = v18;
-        if (!v3)
+        if (!root)
         {
           v9 = os_log_GKGeneral;
           if (!os_log_GKGeneral)
@@ -97,7 +97,7 @@
           }
         }
 
-        [(GKContentPropertyList *)self setRoot:v3];
+        [(GKContentPropertyList *)self setRoot:root];
       }
 
       else
@@ -116,7 +116,7 @@
           _os_log_impl(&dword_227904000, v14, OS_LOG_TYPE_INFO, "can't read file from path: %@", buf, 0xCu);
         }
 
-        v3 = 0;
+        root = 0;
       }
     }
 
@@ -137,34 +137,34 @@
         _os_log_impl(&dword_227904000, v11, OS_LOG_TYPE_INFO, "no bundle for bundleID: %@", buf, 0xCu);
       }
 
-      v3 = 0;
+      root = 0;
     }
   }
 
   v16 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return root;
 }
 
 - (id)leaderboardDescriptions
 {
-  v2 = [(GKContentPropertyList *)self _rootDictionary];
-  v3 = [v2 objectForKeyedSubscript:@"GKLeaderboards"];
+  _rootDictionary = [(GKContentPropertyList *)self _rootDictionary];
+  v3 = [_rootDictionary objectForKeyedSubscript:@"GKLeaderboards"];
 
   return v3;
 }
 
 - (id)leaderboardSetDescriptions
 {
-  v2 = [(GKContentPropertyList *)self _rootDictionary];
-  v3 = [v2 objectForKeyedSubscript:@"GKLeaderboardSets"];
+  _rootDictionary = [(GKContentPropertyList *)self _rootDictionary];
+  v3 = [_rootDictionary objectForKeyedSubscript:@"GKLeaderboardSets"];
 
   return v3;
 }
 
-- (id)achievementDescriptionForIdentifier:(id)a3
+- (id)achievementDescriptionForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   achievementsByIdentifier = self->_achievementsByIdentifier;
   if (!achievementsByIdentifier)
   {
@@ -176,14 +176,14 @@
     achievementsByIdentifier = self->_achievementsByIdentifier;
   }
 
-  v9 = [(NSDictionary *)achievementsByIdentifier objectForKeyedSubscript:v4];
+  v9 = [(NSDictionary *)achievementsByIdentifier objectForKeyedSubscript:identifierCopy];
 
   return v9;
 }
 
-- (id)leaderboardDescriptionForIdentifier:(id)a3
+- (id)leaderboardDescriptionForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   leaderboardsByIdentifier = self->_leaderboardsByIdentifier;
   if (!leaderboardsByIdentifier)
   {
@@ -195,14 +195,14 @@
     leaderboardsByIdentifier = self->_leaderboardsByIdentifier;
   }
 
-  v9 = [(NSDictionary *)leaderboardsByIdentifier objectForKeyedSubscript:v4];
+  v9 = [(NSDictionary *)leaderboardsByIdentifier objectForKeyedSubscript:identifierCopy];
 
   return v9;
 }
 
-- (id)leaderboardSetDescriptionForIdentifier:(id)a3
+- (id)leaderboardSetDescriptionForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   leaderboardSetsByIdentifier = self->_leaderboardSetsByIdentifier;
   if (!leaderboardSetsByIdentifier)
   {
@@ -214,15 +214,15 @@
     leaderboardSetsByIdentifier = self->_leaderboardSetsByIdentifier;
   }
 
-  v9 = [(NSDictionary *)leaderboardSetsByIdentifier objectForKeyedSubscript:v4];
+  v9 = [(NSDictionary *)leaderboardSetsByIdentifier objectForKeyedSubscript:identifierCopy];
 
   return v9;
 }
 
 - (id)achievementDescriptions
 {
-  v2 = [(GKContentPropertyList *)self _rootDictionary];
-  v3 = [v2 objectForKeyedSubscript:@"GKAchievements"];
+  _rootDictionary = [(GKContentPropertyList *)self _rootDictionary];
+  v3 = [_rootDictionary objectForKeyedSubscript:@"GKAchievements"];
 
   return v3;
 }

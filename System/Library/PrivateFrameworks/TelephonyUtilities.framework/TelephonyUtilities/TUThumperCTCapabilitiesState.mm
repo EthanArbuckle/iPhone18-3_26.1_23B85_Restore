@@ -1,15 +1,15 @@
 @interface TUThumperCTCapabilitiesState
 + (id)unarchivedObjectClasses;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToCapabilitiesState:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToCapabilitiesState:(id)state;
 - (NSString)description;
 - (TUThumperCTCapabilitiesState)init;
-- (TUThumperCTCapabilitiesState)initWithCapabilityInfo:(id)a3;
-- (TUThumperCTCapabilitiesState)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)publiclyAccessibleCopyWithZone:(_NSZone *)a3;
+- (TUThumperCTCapabilitiesState)initWithCapabilityInfo:(id)info;
+- (TUThumperCTCapabilitiesState)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)publiclyAccessibleCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TUThumperCTCapabilitiesState
@@ -38,8 +38,8 @@
   v5 = [v3 stringWithFormat:@"<%@", v4];
 
   v6 = NSStringFromSelector(sel_accountID);
-  v7 = [(TUThumperCTCapabilitiesState *)self accountID];
-  [v5 appendFormat:@" %@=%@", v6, v7];
+  accountID = [(TUThumperCTCapabilitiesState *)self accountID];
+  [v5 appendFormat:@" %@=%@", v6, accountID];
 
   v8 = NSStringFromSelector(sel_isApproved);
   [v5 appendFormat:@" %@=%d", v8, -[TUThumperCTCapabilitiesState isApproved](self, "isApproved")];
@@ -48,12 +48,12 @@
   [v5 appendFormat:@" %@=%d", v9, -[TUThumperCTCapabilitiesState isAssociated](self, "isAssociated")];
 
   v10 = NSStringFromSelector(sel_approvedSecondaryDeviceIDs);
-  v11 = [(TUThumperCTCapabilitiesState *)self approvedSecondaryDeviceIDs];
-  [v5 appendFormat:@" %@=%@", v10, v11];
+  approvedSecondaryDeviceIDs = [(TUThumperCTCapabilitiesState *)self approvedSecondaryDeviceIDs];
+  [v5 appendFormat:@" %@=%@", v10, approvedSecondaryDeviceIDs];
 
   v12 = NSStringFromSelector(sel_localDeviceID);
-  v13 = [(TUThumperCTCapabilitiesState *)self localDeviceID];
-  [v5 appendFormat:@" %@=%@", v12, v13];
+  localDeviceID = [(TUThumperCTCapabilitiesState *)self localDeviceID];
+  [v5 appendFormat:@" %@=%@", v12, localDeviceID];
 
   v14 = NSStringFromSelector(sel_supportsDefaultPairedDevice);
   [v5 appendFormat:@" %@=%d", v14, -[TUThumperCTCapabilitiesState supportsDefaultPairedDevice](self, "supportsDefaultPairedDevice")];
@@ -63,16 +63,16 @@
   return v5;
 }
 
-- (TUThumperCTCapabilitiesState)initWithCapabilityInfo:(id)a3
+- (TUThumperCTCapabilitiesState)initWithCapabilityInfo:(id)info
 {
   v39 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  infoCopy = info;
   v37.receiver = self;
   v37.super_class = TUThumperCTCapabilitiesState;
-  v5 = [(TUCTCapabilitiesState *)&v37 initWithCapabilityInfo:v4];
+  v5 = [(TUCTCapabilitiesState *)&v37 initWithCapabilityInfo:infoCopy];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:*MEMORY[0x1E6965500]];
+    v6 = [infoCopy objectForKeyedSubscript:*MEMORY[0x1E6965500]];
     v7 = v6;
     if (!v6)
     {
@@ -96,9 +96,9 @@ LABEL_20:
     v16 = v15;
     if (v15)
     {
-      v17 = [v15 firstObject];
+      firstObject = [v15 firstObject];
       v18 = *MEMORY[0x1E6965520];
-      v19 = [v17 objectForKeyedSubscript:*MEMORY[0x1E6965520]];
+      v19 = [firstObject objectForKeyedSubscript:*MEMORY[0x1E6965520]];
 
       if (v19)
       {
@@ -167,27 +167,27 @@ LABEL_21:
   return v5;
 }
 
-- (BOOL)isEqualToCapabilitiesState:(id)a3
+- (BOOL)isEqualToCapabilitiesState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v16.receiver = self;
   v16.super_class = TUThumperCTCapabilitiesState;
-  if ([(TUCTCapabilitiesState *)&v16 isEqualToCapabilitiesState:v4])
+  if ([(TUCTCapabilitiesState *)&v16 isEqualToCapabilitiesState:stateCopy])
   {
-    v5 = [(TUThumperCTCapabilitiesState *)self accountID];
-    v6 = [v4 accountID];
-    if (TUObjectsAreEqualOrNil(v5, v6) && (v7 = -[TUThumperCTCapabilitiesState isApproved](self, "isApproved"), v7 == [v4 isApproved]))
+    accountID = [(TUThumperCTCapabilitiesState *)self accountID];
+    accountID2 = [stateCopy accountID];
+    if (TUObjectsAreEqualOrNil(accountID, accountID2) && (v7 = -[TUThumperCTCapabilitiesState isApproved](self, "isApproved"), v7 == [stateCopy isApproved]))
     {
-      v9 = [(TUThumperCTCapabilitiesState *)self approvedSecondaryDeviceIDs];
-      v10 = [v4 approvedSecondaryDeviceIDs];
-      if (TUObjectsAreEqualOrNil(v9, v10) && (v11 = -[TUThumperCTCapabilitiesState isAssociated](self, "isAssociated"), v11 == [v4 isAssociated]))
+      approvedSecondaryDeviceIDs = [(TUThumperCTCapabilitiesState *)self approvedSecondaryDeviceIDs];
+      approvedSecondaryDeviceIDs2 = [stateCopy approvedSecondaryDeviceIDs];
+      if (TUObjectsAreEqualOrNil(approvedSecondaryDeviceIDs, approvedSecondaryDeviceIDs2) && (v11 = -[TUThumperCTCapabilitiesState isAssociated](self, "isAssociated"), v11 == [stateCopy isAssociated]))
       {
-        v12 = [(TUThumperCTCapabilitiesState *)self localDeviceID];
-        v13 = [v4 localDeviceID];
-        if (TUObjectsAreEqualOrNil(v12, v13))
+        localDeviceID = [(TUThumperCTCapabilitiesState *)self localDeviceID];
+        localDeviceID2 = [stateCopy localDeviceID];
+        if (TUObjectsAreEqualOrNil(localDeviceID, localDeviceID2))
         {
-          v14 = [(TUThumperCTCapabilitiesState *)self supportsDefaultPairedDevice];
-          v8 = v14 ^ [v4 supportsDefaultPairedDevice] ^ 1;
+          supportsDefaultPairedDevice = [(TUThumperCTCapabilitiesState *)self supportsDefaultPairedDevice];
+          v8 = supportsDefaultPairedDevice ^ [stateCopy supportsDefaultPairedDevice] ^ 1;
         }
 
         else
@@ -216,23 +216,23 @@ LABEL_21:
   return v8;
 }
 
-- (TUThumperCTCapabilitiesState)initWithCoder:(id)a3
+- (TUThumperCTCapabilitiesState)initWithCoder:(id)coder
 {
   v26[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v25.receiver = self;
   v25.super_class = TUThumperCTCapabilitiesState;
-  v5 = [(TUCTCapabilitiesState *)&v25 initWithCoder:v4];
+  v5 = [(TUCTCapabilitiesState *)&v25 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = objc_opt_class();
     v7 = NSStringFromSelector(sel_accountID);
-    v8 = [v4 decodeObjectOfClass:v6 forKey:v7];
+    v8 = [coderCopy decodeObjectOfClass:v6 forKey:v7];
     accountID = v5->_accountID;
     v5->_accountID = v8;
 
     v10 = NSStringFromSelector(sel_isApproved);
-    v5->_approved = [v4 decodeBoolForKey:v10];
+    v5->_approved = [coderCopy decodeBoolForKey:v10];
 
     v11 = MEMORY[0x1E695DFD8];
     v26[0] = objc_opt_class();
@@ -240,75 +240,75 @@ LABEL_21:
     v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:2];
     v13 = [v11 setWithArray:v12];
     v14 = NSStringFromSelector(sel_approvedSecondaryDeviceIDs);
-    v15 = [v4 decodeObjectOfClasses:v13 forKey:v14];
+    v15 = [coderCopy decodeObjectOfClasses:v13 forKey:v14];
     approvedSecondaryDeviceIDs = v5->_approvedSecondaryDeviceIDs;
     v5->_approvedSecondaryDeviceIDs = v15;
 
     v17 = NSStringFromSelector(sel_isAssociated);
-    v5->_associated = [v4 decodeBoolForKey:v17];
+    v5->_associated = [coderCopy decodeBoolForKey:v17];
 
     v18 = objc_opt_class();
     v19 = NSStringFromSelector(sel_localDeviceID);
-    v20 = [v4 decodeObjectOfClass:v18 forKey:v19];
+    v20 = [coderCopy decodeObjectOfClass:v18 forKey:v19];
     localDeviceID = v5->_localDeviceID;
     v5->_localDeviceID = v20;
 
     v22 = NSStringFromSelector(sel_supportsDefaultPairedDevice);
-    v5->_supportsDefaultPairedDevice = [v4 decodeBoolForKey:v22];
+    v5->_supportsDefaultPairedDevice = [coderCopy decodeBoolForKey:v22];
   }
 
   v23 = *MEMORY[0x1E69E9840];
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v17.receiver = self;
   v17.super_class = TUThumperCTCapabilitiesState;
-  v4 = a3;
-  [(TUCTCapabilitiesState *)&v17 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(TUCTCapabilitiesState *)&v17 encodeWithCoder:coderCopy];
   v5 = [(TUThumperCTCapabilitiesState *)self accountID:v17.receiver];
   v6 = NSStringFromSelector(sel_accountID);
-  [v4 encodeObject:v5 forKey:v6];
+  [coderCopy encodeObject:v5 forKey:v6];
 
-  v7 = [(TUThumperCTCapabilitiesState *)self isApproved];
+  isApproved = [(TUThumperCTCapabilitiesState *)self isApproved];
   v8 = NSStringFromSelector(sel_isApproved);
-  [v4 encodeBool:v7 forKey:v8];
+  [coderCopy encodeBool:isApproved forKey:v8];
 
-  v9 = [(TUThumperCTCapabilitiesState *)self approvedSecondaryDeviceIDs];
+  approvedSecondaryDeviceIDs = [(TUThumperCTCapabilitiesState *)self approvedSecondaryDeviceIDs];
   v10 = NSStringFromSelector(sel_approvedSecondaryDeviceIDs);
-  [v4 encodeObject:v9 forKey:v10];
+  [coderCopy encodeObject:approvedSecondaryDeviceIDs forKey:v10];
 
-  v11 = [(TUThumperCTCapabilitiesState *)self isAssociated];
+  isAssociated = [(TUThumperCTCapabilitiesState *)self isAssociated];
   v12 = NSStringFromSelector(sel_isAssociated);
-  [v4 encodeBool:v11 forKey:v12];
+  [coderCopy encodeBool:isAssociated forKey:v12];
 
-  v13 = [(TUThumperCTCapabilitiesState *)self localDeviceID];
+  localDeviceID = [(TUThumperCTCapabilitiesState *)self localDeviceID];
   v14 = NSStringFromSelector(sel_localDeviceID);
-  [v4 encodeObject:v13 forKey:v14];
+  [coderCopy encodeObject:localDeviceID forKey:v14];
 
-  v15 = [(TUThumperCTCapabilitiesState *)self supportsDefaultPairedDevice];
+  supportsDefaultPairedDevice = [(TUThumperCTCapabilitiesState *)self supportsDefaultPairedDevice];
   v16 = NSStringFromSelector(sel_supportsDefaultPairedDevice);
-  [v4 encodeBool:v15 forKey:v16];
+  [coderCopy encodeBool:supportsDefaultPairedDevice forKey:v16];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v16.receiver = self;
   v16.super_class = TUThumperCTCapabilitiesState;
   v5 = [(TUCTCapabilitiesState *)&v16 copyWithZone:?];
-  v6 = [(TUThumperCTCapabilitiesState *)self accountID];
-  v7 = [v6 copyWithZone:a3];
+  accountID = [(TUThumperCTCapabilitiesState *)self accountID];
+  v7 = [accountID copyWithZone:zone];
   v8 = v5[7];
   v5[7] = v7;
 
-  v9 = [(TUThumperCTCapabilitiesState *)self approvedSecondaryDeviceIDs];
-  v10 = [v9 copyWithZone:a3];
+  approvedSecondaryDeviceIDs = [(TUThumperCTCapabilitiesState *)self approvedSecondaryDeviceIDs];
+  v10 = [approvedSecondaryDeviceIDs copyWithZone:zone];
   v11 = v5[6];
   v5[6] = v10;
 
-  v12 = [(TUThumperCTCapabilitiesState *)self localDeviceID];
-  v13 = [v12 copyWithZone:a3];
+  localDeviceID = [(TUThumperCTCapabilitiesState *)self localDeviceID];
+  v13 = [localDeviceID copyWithZone:zone];
   v14 = v5[8];
   v5[8] = v13;
 
@@ -320,8 +320,8 @@ LABEL_21:
   v17.receiver = self;
   v17.super_class = TUThumperCTCapabilitiesState;
   v3 = [(TUCTCapabilitiesState *)&v17 hash];
-  v4 = [(TUThumperCTCapabilitiesState *)self accountID];
-  v5 = [v4 hash];
+  accountID = [(TUThumperCTCapabilitiesState *)self accountID];
+  v5 = [accountID hash];
   if ([(TUThumperCTCapabilitiesState *)self isApproved])
   {
     v6 = 1231;
@@ -333,8 +333,8 @@ LABEL_21:
   }
 
   v7 = v5 ^ v6;
-  v8 = [(TUThumperCTCapabilitiesState *)self approvedSecondaryDeviceIDs];
-  v9 = v7 ^ [v8 hash];
+  approvedSecondaryDeviceIDs = [(TUThumperCTCapabilitiesState *)self approvedSecondaryDeviceIDs];
+  v9 = v7 ^ [approvedSecondaryDeviceIDs hash];
   if ([(TUThumperCTCapabilitiesState *)self isAssociated])
   {
     v10 = 1231;
@@ -346,8 +346,8 @@ LABEL_21:
   }
 
   v11 = v9 ^ v10 ^ v3;
-  v12 = [(TUThumperCTCapabilitiesState *)self localDeviceID];
-  v13 = [v12 hash];
+  localDeviceID = [(TUThumperCTCapabilitiesState *)self localDeviceID];
+  v13 = [localDeviceID hash];
   if ([(TUThumperCTCapabilitiesState *)self supportsDefaultPairedDevice])
   {
     v14 = 1231;
@@ -363,10 +363,10 @@ LABEL_21:
   return v11 ^ v15;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -374,17 +374,17 @@ LABEL_21:
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(TUThumperCTCapabilitiesState *)self isEqualToCapabilitiesState:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(TUThumperCTCapabilitiesState *)self isEqualToCapabilitiesState:equalCopy];
   }
 
   return v5;
 }
 
-- (id)publiclyAccessibleCopyWithZone:(_NSZone *)a3
+- (id)publiclyAccessibleCopyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = TUThumperCTCapabilitiesState;
-  v4 = [(TUCTCapabilitiesState *)&v6 publiclyAccessibleCopyWithZone:a3];
+  v4 = [(TUCTCapabilitiesState *)&v6 publiclyAccessibleCopyWithZone:zone];
   v4[40] = [(TUThumperCTCapabilitiesState *)self isApproved];
   v4[41] = [(TUThumperCTCapabilitiesState *)self isAssociated];
   v4[42] = [(TUThumperCTCapabilitiesState *)self supportsDefaultPairedDevice];
@@ -398,7 +398,7 @@ LABEL_21:
   v4 = objc_opt_class();
   v5 = objc_opt_class();
   v6 = [v3 setWithObjects:{v4, v5, objc_opt_class(), 0}];
-  v10.receiver = a1;
+  v10.receiver = self;
   v10.super_class = &OBJC_METACLASS___TUThumperCTCapabilitiesState;
   v7 = objc_msgSendSuper2(&v10, sel_unarchivedObjectClasses);
   v8 = [v7 setByAddingObjectsFromSet:v6];

@@ -2,13 +2,13 @@
 - (GKTurnBasedMatchesDataSourceDelegate)delegate;
 - (SEL)detailPressedAction;
 - (UIEdgeInsets)cellMarginInsets;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
 - (unint64_t)numberOfMatches;
-- (void)collectionViewWillBecomeActive:(id)a3;
-- (void)configureCollectionView:(id)a3;
+- (void)collectionViewWillBecomeActive:(id)active;
+- (void)configureCollectionView:(id)view;
 - (void)configureDataSource;
-- (void)removeItemAtIndexPath:(id)a3 completionHandler:(id)a4;
-- (void)setDetailPressedAction:(SEL)a3;
+- (void)removeItemAtIndexPath:(id)path completionHandler:(id)handler;
+- (void)setDetailPressedAction:(SEL)action;
 @end
 
 @implementation GKTurnBasedMatchesDataSource
@@ -53,11 +53,11 @@
   [(GKSplittingDataSource *)self addSectionWithTitle:v17 sortDescriptors:v19];
 }
 
-- (void)collectionViewWillBecomeActive:(id)a3
+- (void)collectionViewWillBecomeActive:(id)active
 {
   v12.receiver = self;
   v12.super_class = GKTurnBasedMatchesDataSource;
-  [(GKCollectionViewDataSource *)&v12 collectionViewWillBecomeActive:a3];
+  [(GKCollectionViewDataSource *)&v12 collectionViewWillBecomeActive:active];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __63__GKTurnBasedMatchesDataSource_collectionViewWillBecomeActive___block_invoke;
@@ -175,25 +175,25 @@ BOOL __63__GKTurnBasedMatchesDataSource_collectionViewWillBecomeActive___block_i
   return v8;
 }
 
-- (void)configureCollectionView:(id)a3
+- (void)configureCollectionView:(id)view
 {
   v4.receiver = self;
   v4.super_class = GKTurnBasedMatchesDataSource;
-  v3 = a3;
-  [(GKCollectionViewDataSource *)&v4 configureCollectionView:v3];
-  [GKTurnParticipantCell registerCellClassesForCollectionView:v3, v4.receiver, v4.super_class];
+  viewCopy = view;
+  [(GKCollectionViewDataSource *)&v4 configureCollectionView:viewCopy];
+  [GKTurnParticipantCell registerCellClassesForCollectionView:viewCopy, v4.receiver, v4.super_class];
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
   v27[1] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
-  v8 = -[GKSplittingDataSource sectionInfoForSection:](self, "sectionInfoForSection:", [v6 section]);
-  v9 = [v8 items];
-  v10 = [v9 objectAtIndexedSubscript:{objc_msgSend(v6, "item")}];
+  pathCopy = path;
+  viewCopy = view;
+  v8 = -[GKSplittingDataSource sectionInfoForSection:](self, "sectionInfoForSection:", [pathCopy section]);
+  items = [v8 items];
+  v10 = [items objectAtIndexedSubscript:{objc_msgSend(pathCopy, "item")}];
 
-  v11 = [v7 _gkDequeueCellForClass:objc_opt_class() forIndexPath:v6];
+  v11 = [viewCopy _gkDequeueCellForClass:objc_opt_class() forIndexPath:pathCopy];
   v12 = v11;
   if (self->_detailPressedAction)
   {
@@ -208,8 +208,8 @@ BOOL __63__GKTurnBasedMatchesDataSource_collectionViewWillBecomeActive___block_i
   [v11 setDetailPressedAction:detailPressedAction];
 
   [v12 setMatch:v10];
-  v14 = [v10 playingWithParticipantOrFirstKnownPlayer];
-  [v12 setParticipant:v14];
+  playingWithParticipantOrFirstKnownPlayer = [v10 playingWithParticipantOrFirstKnownPlayer];
+  [v12 setParticipant:playingWithParticipantOrFirstKnownPlayer];
 
   v15 = GKGameCenterUIFrameworkBundle();
   v16 = GKGetLocalizedStringFromTableInBundle();
@@ -219,41 +219,41 @@ BOOL __63__GKTurnBasedMatchesDataSource_collectionViewWillBecomeActive___block_i
   [v12 setEditActions:v18];
 
   [v12 setInsets:{self->_cellMarginInsets.top, self->_cellMarginInsets.left, self->_cellMarginInsets.bottom, self->_cellMarginInsets.right}];
-  v19 = [v6 item];
-  v20 = [v8 items];
-  v21 = [v20 count] - 1;
+  item = [pathCopy item];
+  items2 = [v8 items];
+  v21 = [items2 count] - 1;
 
-  if (v19 == v21)
+  if (item == v21)
   {
-    v22 = [v12 layer];
-    [v22 setCornerRadius:10.0];
+    layer = [v12 layer];
+    [layer setCornerRadius:10.0];
 
-    v23 = [v12 layer];
-    [v23 setMaskedCorners:12];
+    layer2 = [v12 layer];
+    [layer2 setMaskedCorners:12];
 
-    v24 = [v12 divider];
-    [v24 setHidden:1];
+    divider = [v12 divider];
+    [divider setHidden:1];
   }
 
   else
   {
-    v25 = [v12 divider];
-    [v25 setHidden:0];
+    divider2 = [v12 divider];
+    [divider2 setHidden:0];
 
-    v24 = [v12 layer];
-    [v24 setCornerRadius:0.0];
+    divider = [v12 layer];
+    [divider setCornerRadius:0.0];
   }
 
   return v12;
 }
 
-- (void)removeItemAtIndexPath:(id)a3 completionHandler:(id)a4
+- (void)removeItemAtIndexPath:(id)path completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = -[GKSplittingDataSource sectionInfoForSection:](self, "sectionInfoForSection:", [v6 section]);
-  v9 = [v8 items];
-  v10 = [v9 objectAtIndexedSubscript:{objc_msgSend(v6, "item")}];
+  pathCopy = path;
+  handlerCopy = handler;
+  v8 = -[GKSplittingDataSource sectionInfoForSection:](self, "sectionInfoForSection:", [pathCopy section]);
+  items = [v8 items];
+  v10 = [items objectAtIndexedSubscript:{objc_msgSend(pathCopy, "item")}];
 
   if ([v10 state] == 1)
   {
@@ -272,8 +272,8 @@ BOOL __63__GKTurnBasedMatchesDataSource_collectionViewWillBecomeActive___block_i
 
   else
   {
-    v11 = [(GKTurnBasedMatchesDataSource *)self delegate];
-    [v11 turnBasedMatchesDataSource:self didQuitMatch:v10];
+    delegate = [(GKTurnBasedMatchesDataSource *)self delegate];
+    [delegate turnBasedMatchesDataSource:self didQuitMatch:v10];
   }
 
   v32 = 0;
@@ -287,15 +287,15 @@ BOOL __63__GKTurnBasedMatchesDataSource_collectionViewWillBecomeActive___block_i
   v13 = v33[5];
   v33[5] = v12;
 
-  v14 = [v8 items];
-  v15 = [v14 count];
+  items2 = [v8 items];
+  v15 = [items2 count];
 
   if (v15)
   {
     for (i = 0; i != v15; ++i)
     {
       v17 = _Block_copy(v33[5]);
-      if (i == [v6 item])
+      if (i == [pathCopy item])
       {
         v18 = v31;
         v31[0] = MEMORY[0x277D85DD0];
@@ -318,7 +318,7 @@ BOOL __63__GKTurnBasedMatchesDataSource_collectionViewWillBecomeActive___block_i
         v30[4] = self;
       }
 
-      v18[5] = v6;
+      v18[5] = pathCopy;
       v19 = _Block_copy(v18);
       v20 = v33[5];
       v33[5] = v19;
@@ -329,14 +329,14 @@ BOOL __63__GKTurnBasedMatchesDataSource_collectionViewWillBecomeActive___block_i
     }
   }
 
-  v23 = [v6 item];
-  v24 = [v8 items];
+  item = [pathCopy item];
+  items3 = [v8 items];
   v29[0] = MEMORY[0x277D85DD0];
   v29[1] = 3221225472;
   v29[2] = __72__GKTurnBasedMatchesDataSource_removeItemAtIndexPath_completionHandler___block_invoke_4;
   v29[3] = &__block_descriptor_40_e11__24__0_8Q16l;
-  v29[4] = v23;
-  v25 = [v24 _gkFilterWithBlock:v29];
+  v29[4] = item;
+  v25 = [items3 _gkFilterWithBlock:v29];
   [v8 setItems:v25];
 
   v28[0] = MEMORY[0x277D85DD0];
@@ -345,9 +345,9 @@ BOOL __63__GKTurnBasedMatchesDataSource_collectionViewWillBecomeActive___block_i
   v28[3] = &unk_279669DD0;
   v28[4] = &v32;
   [(GKCollectionViewDataSource *)self notifyBatchUpdate:v28];
-  if (v7)
+  if (handlerCopy)
   {
-    v7[2](v7, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 
   _Block_object_dispose(&v32, 8);
@@ -421,19 +421,19 @@ id __72__GKTurnBasedMatchesDataSource_removeItemAtIndexPath_completionHandler___
   }
 }
 
-- (void)setDetailPressedAction:(SEL)a3
+- (void)setDetailPressedAction:(SEL)action
 {
-  if (a3)
+  if (action)
   {
-    v3 = a3;
+    actionCopy = action;
   }
 
   else
   {
-    v3 = 0;
+    actionCopy = 0;
   }
 
-  self->_detailPressedAction = v3;
+  self->_detailPressedAction = actionCopy;
 }
 
 - (UIEdgeInsets)cellMarginInsets

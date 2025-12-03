@@ -9,35 +9,35 @@
 
 - (char)_init
 {
-  v18.receiver = a1;
+  v18.receiver = self;
   v18.super_class = &off_284627D08;
   v1 = objc_msgSendSuper2(&v18, sel_init);
   if (v1)
   {
-    v2 = [objc_opt_class() _defaultIntervalHistogram];
+    _defaultIntervalHistogram = [objc_opt_class() _defaultIntervalHistogram];
     v3 = *MEMORY[0x277D81B08];
     v4 = *&v1[v3];
-    *&v1[v3] = v2;
+    *&v1[v3] = _defaultIntervalHistogram;
 
-    v5 = [objc_opt_class() _defaultIntervalHistogram];
+    _defaultIntervalHistogram2 = [objc_opt_class() _defaultIntervalHistogram];
     v6 = *MEMORY[0x277D81B10];
     v7 = *&v1[v6];
-    *&v1[v6] = v5;
+    *&v1[v6] = _defaultIntervalHistogram2;
 
-    v8 = [objc_opt_class() _defaultIntervalHistogram];
+    _defaultIntervalHistogram3 = [objc_opt_class() _defaultIntervalHistogram];
     v9 = *MEMORY[0x277D81B20];
     v10 = *&v1[v9];
-    *&v1[v9] = v8;
+    *&v1[v9] = _defaultIntervalHistogram3;
 
-    v11 = [objc_opt_class() _defaultIntervalHistogram];
+    _defaultIntervalHistogram4 = [objc_opt_class() _defaultIntervalHistogram];
     v12 = *MEMORY[0x277D81B28];
     v13 = *&v1[v12];
-    *&v1[v12] = v11;
+    *&v1[v12] = _defaultIntervalHistogram4;
 
-    v14 = [objc_opt_class() _defaultIntervalHistogram];
+    _defaultIntervalHistogram5 = [objc_opt_class() _defaultIntervalHistogram];
     v15 = *MEMORY[0x277D81B18];
     v16 = *&v1[v15];
-    *&v1[v15] = v14;
+    *&v1[v15] = _defaultIntervalHistogram5;
   }
 
   return v1;
@@ -46,19 +46,19 @@
 - (BOOL)valid:()MetricManager
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  if ([a1 conformsToProtocol:&unk_284624910])
+  if ([self conformsToProtocol:&unk_284624910])
   {
     if (objc_opt_respondsToSelector())
     {
-      if ([objc_opt_class() checkIntervalHistogramDimensions:*&a1[*MEMORY[0x277D81B08]]])
+      if ([objc_opt_class() checkIntervalHistogramDimensions:*&self[*MEMORY[0x277D81B08]]])
       {
-        if ([objc_opt_class() checkIntervalHistogramDimensions:*&a1[*MEMORY[0x277D81B10]]])
+        if ([objc_opt_class() checkIntervalHistogramDimensions:*&self[*MEMORY[0x277D81B10]]])
         {
-          if ([objc_opt_class() checkIntervalHistogramDimensions:*&a1[*MEMORY[0x277D81B20]]])
+          if ([objc_opt_class() checkIntervalHistogramDimensions:*&self[*MEMORY[0x277D81B20]]])
           {
-            if ([objc_opt_class() checkIntervalHistogramDimensions:*&a1[*MEMORY[0x277D81B28]]])
+            if ([objc_opt_class() checkIntervalHistogramDimensions:*&self[*MEMORY[0x277D81B28]]])
             {
-              if ([objc_opt_class() checkIntervalHistogramDimensions:*&a1[*MEMORY[0x277D81B18]]])
+              if ([objc_opt_class() checkIntervalHistogramDimensions:*&self[*MEMORY[0x277D81B18]]])
               {
                 v5 = 0;
                 goto LABEL_21;

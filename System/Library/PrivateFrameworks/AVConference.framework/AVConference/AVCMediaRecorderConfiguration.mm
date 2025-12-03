@@ -1,15 +1,15 @@
 @interface AVCMediaRecorderConfiguration
-+ (id)newClientDictionary:(id)a3 clientPid:(int)a4;
++ (id)newClientDictionary:(id)dictionary clientPid:(int)pid;
 - (id)dictionary;
 @end
 
 @implementation AVCMediaRecorderConfiguration
 
-+ (id)newClientDictionary:(id)a3 clientPid:(int)a4
++ (id)newClientDictionary:(id)dictionary clientPid:(int)pid
 {
-  v4 = *&a4;
+  v4 = *&pid;
   v6 = objc_alloc_init(VCMediaRecorderConfiguration);
-  -[VCMediaRecorderConfiguration setMediaAvailability:](v6, "setMediaAvailability:", [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMomentsMediaAvailability", "unsignedIntValue"}]);
+  -[VCMediaRecorderConfiguration setMediaAvailability:](v6, "setMediaAvailability:", [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMomentsMediaAvailability", "unsignedIntValue"}]);
   [(VCMediaRecorderConfiguration *)v6 setClientPid:v4];
   return v6;
 }

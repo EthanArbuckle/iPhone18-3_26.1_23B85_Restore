@@ -1,17 +1,17 @@
 @interface UIInputSwitcherSelectionExtraView
 - (CGRect)keyRect;
-- (UIInputSwitcherSelectionExtraView)initWithFrame:(CGRect)a3;
-- (void)drawRect:(CGRect)a3;
-- (void)setFrame:(CGRect)a3;
+- (UIInputSwitcherSelectionExtraView)initWithFrame:(CGRect)frame;
+- (void)drawRect:(CGRect)rect;
+- (void)setFrame:(CGRect)frame;
 @end
 
 @implementation UIInputSwitcherSelectionExtraView
 
-- (UIInputSwitcherSelectionExtraView)initWithFrame:(CGRect)a3
+- (UIInputSwitcherSelectionExtraView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = UIInputSwitcherSelectionExtraView;
-  v3 = [(UIView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -23,16 +23,16 @@
   return v4;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v3.receiver = self;
   v3.super_class = UIInputSwitcherSelectionExtraView;
-  [(UIView *)&v3 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height + 80.0];
+  [(UIView *)&v3 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height + 80.0];
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  [(UIView *)self bounds:a3.origin.x];
+  [(UIView *)self bounds:rect.origin.x];
   v5 = v4;
   ContextStack = GetContextStack(0);
   if (*ContextStack < 1)
@@ -46,22 +46,22 @@
   }
 
   CGContextSaveGState(v7);
-  v8 = [(UIInputSwitcherSelectionExtraView *)self menu];
-  v9 = [v8 containerView];
+  menu = [(UIInputSwitcherSelectionExtraView *)self menu];
+  containerView = [menu containerView];
   [(UIInputSwitcherSelectionExtraView *)self keyRect];
-  [v9 convertRect:self toView:?];
+  [containerView convertRect:self toView:?];
   v11 = v10;
   v13 = v12;
   v15 = v14;
   v17 = v16;
 
-  v18 = [(UIInputSwitcherSelectionExtraView *)self menu];
-  v19 = [v18 table];
-  v20 = [v19 isScrollEnabled];
+  menu2 = [(UIInputSwitcherSelectionExtraView *)self menu];
+  table = [menu2 table];
+  isScrollEnabled = [table isScrollEnabled];
 
   v21 = v11 + 0.0;
   v22 = v13 + -4.0;
-  if (v20)
+  if (isScrollEnabled)
   {
     v17 = v17 + 4.0;
     v13 = v13 + -4.0;
@@ -79,9 +79,9 @@
     v24 = 8.0;
   }
 
-  v25 = [(UIInputSwitcherSelectionExtraView *)self menu];
-  v26 = [v25 table];
-  [v26 frame];
+  menu3 = [(UIInputSwitcherSelectionExtraView *)self menu];
+  table2 = [menu3 table];
+  [table2 frame];
   v28 = v27;
 
   v38.origin.x = v11;
@@ -97,14 +97,14 @@
   y = v40.origin.y;
   width = v40.size.width;
   height = v40.size.height;
-  v33 = [(UIInputSwitcherSelectionExtraView *)self menu];
-  PopupPath = UIInputSwitcherCreatePopupPath([v33 usesStraightLeftEdge], 1, -[UIInputSwitcherSelectionExtraView roundedCorners](self, "roundedCorners"), -[UIView _keyboardOrientation](self, "_keyboardOrientation"), x, y, width, height, v11, v13, v15, v17);
+  menu4 = [(UIInputSwitcherSelectionExtraView *)self menu];
+  PopupPath = UIInputSwitcherCreatePopupPath([menu4 usesStraightLeftEdge], 1, -[UIInputSwitcherSelectionExtraView roundedCorners](self, "roundedCorners"), -[UIView _keyboardOrientation](self, "_keyboardOrientation"), x, y, width, height, v11, v13, v15, v17);
 
   CGContextAddPath(v7, PopupPath);
   v35 = +[UIColor systemBlueColor];
-  v36 = [v35 CGColor];
+  cGColor = [v35 CGColor];
 
-  CGContextSetFillColorWithColor(v7, v36);
+  CGContextSetFillColorWithColor(v7, cGColor);
   CGContextFillPath(v7);
   CGContextRestoreGState(v7);
 

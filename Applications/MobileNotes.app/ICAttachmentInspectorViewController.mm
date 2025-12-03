@@ -1,46 +1,46 @@
 @interface ICAttachmentInspectorViewController
-- (BOOL)canCopy:(id)a3;
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
-- (ICAttachmentInspectorViewController)initWithAttachment:(id)a3;
+- (BOOL)canCopy:(id)copy;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
+- (ICAttachmentInspectorViewController)initWithAttachment:(id)attachment;
 - (NSSet)subAttachmentIdentifiers;
 - (NSSet)subAttachments;
 - (NSString)subAttachmentIdentifiersString;
 - (UIImageView)attachmentImageView;
-- (id)attachmentInfoAtRow:(int64_t)a3;
-- (id)attachmentInfoCellAtRow:(int64_t)a3;
-- (id)attachmentInfoTypeAtRow:(int64_t)a3;
-- (id)defaultCellForRowInSection:(int64_t)a3;
-- (id)defaultCellTextAtSection:(int64_t)a3;
-- (id)dequeueOrRegisterCellWithIdentifier:(id)a3 style:(int64_t)a4;
-- (id)editMenuInteraction:(id)a3 menuForConfiguration:(id)a4 suggestedActions:(id)a5;
-- (id)spotlightAttributeCellAtRow:(int64_t)a3;
-- (id)spotlightAttributeValueToCopyAtRow:(int64_t)a3;
-- (id)stringToCopyAtIndexPath:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)titleForHeaderInSection:(int64_t)a3;
+- (id)attachmentInfoAtRow:(int64_t)row;
+- (id)attachmentInfoCellAtRow:(int64_t)row;
+- (id)attachmentInfoTypeAtRow:(int64_t)row;
+- (id)defaultCellForRowInSection:(int64_t)section;
+- (id)defaultCellTextAtSection:(int64_t)section;
+- (id)dequeueOrRegisterCellWithIdentifier:(id)identifier style:(int64_t)style;
+- (id)editMenuInteraction:(id)interaction menuForConfiguration:(id)configuration suggestedActions:(id)actions;
+- (id)spotlightAttributeCellAtRow:(int64_t)row;
+- (id)spotlightAttributeValueToCopyAtRow:(int64_t)row;
+- (id)stringToCopyAtIndexPath:(id)path;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)titleForHeaderInSection:(int64_t)section;
 - (int64_t)numberOfSections;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)clearAtIndexPath:(id)a3;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)clearAtIndexPath:(id)path;
 - (void)confirmShowSubAttachmentsIfNeeded;
-- (void)copy:(id)a3;
-- (void)doneAction:(id)a3;
-- (void)editMenuInteraction:(id)a3 willDismissMenuForConfiguration:(id)a4 animator:(id)a5;
-- (void)presentEditMenuAtIndexPath:(id)a3;
+- (void)copy:(id)copy;
+- (void)doneAction:(id)action;
+- (void)editMenuInteraction:(id)interaction willDismissMenuForConfiguration:(id)configuration animator:(id)animator;
+- (void)presentEditMenuAtIndexPath:(id)path;
 - (void)savePKDrawingData;
-- (void)setAttachment:(id)a3;
+- (void)setAttachment:(id)attachment;
 - (void)setUpViews;
 - (void)startCoreSpotlightSearch;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)updateViews;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
 @end
 
 @implementation ICAttachmentInspectorViewController
 
-- (ICAttachmentInspectorViewController)initWithAttachment:(id)a3
+- (ICAttachmentInspectorViewController)initWithAttachment:(id)attachment
 {
-  v5 = a3;
+  attachmentCopy = attachment;
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
   v8 = [NSBundle bundleForClass:v6];
@@ -50,7 +50,7 @@
 
   if (v9)
   {
-    objc_storeStrong(&v9->_attachment, a3);
+    objc_storeStrong(&v9->_attachment, attachment);
     spotlightResults = v9->_spotlightResults;
     v9->_spotlightResults = &__NSArray0__struct;
 
@@ -71,11 +71,11 @@
   [(ICAttachmentInspectorViewController *)self startCoreSpotlightSearch];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = ICAttachmentInspectorViewController;
-  [(ICAttachmentInspectorViewController *)&v4 viewDidDisappear:a3];
+  [(ICAttachmentInspectorViewController *)&v4 viewDidDisappear:disappear];
   if ([(ICAttachmentInspectorViewController *)self regenerateMetadataOnClose])
   {
     dispatchMainAfterDelay();
@@ -83,37 +83,37 @@
   }
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  if ((a4 - 1) < 6 || a4 == 8)
+  if ((section - 1) < 6 || section == 8)
   {
     return 1;
   }
 
-  if (a4 != 7)
+  if (section != 7)
   {
     return 13;
   }
 
-  v6 = [(ICAttachmentInspectorViewController *)self spotlightResults];
-  v7 = [v6 count];
+  spotlightResults = [(ICAttachmentInspectorViewController *)self spotlightResults];
+  v7 = [spotlightResults count];
 
   return v7;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [v6 section];
-  if (v7 > 6)
+  pathCopy = path;
+  section = [pathCopy section];
+  if (section > 6)
   {
-    if (v7 == 7)
+    if (section == 7)
     {
-      v8 = -[ICAttachmentInspectorViewController spotlightAttributeCellAtRow:](self, "spotlightAttributeCellAtRow:", [v6 row]);
+      v8 = -[ICAttachmentInspectorViewController spotlightAttributeCellAtRow:](self, "spotlightAttributeCellAtRow:", [pathCopy row]);
       goto LABEL_4;
     }
 
-    if (v7 == 8)
+    if (section == 8)
     {
       goto LABEL_3;
     }
@@ -121,18 +121,18 @@
 
   else
   {
-    if ((v7 - 1) < 6)
+    if ((section - 1) < 6)
     {
 LABEL_3:
-      v8 = [(ICAttachmentInspectorViewController *)self defaultCellForRowInSection:v7];
+      v8 = [(ICAttachmentInspectorViewController *)self defaultCellForRowInSection:section];
 LABEL_4:
       v4 = v8;
       goto LABEL_5;
     }
 
-    if (!v7)
+    if (!section)
     {
-      v8 = -[ICAttachmentInspectorViewController attachmentInfoCellAtRow:](self, "attachmentInfoCellAtRow:", [v6 row]);
+      v8 = -[ICAttachmentInspectorViewController attachmentInfoCellAtRow:](self, "attachmentInfoCellAtRow:", [pathCopy row]);
       goto LABEL_4;
     }
   }
@@ -142,18 +142,18 @@ LABEL_5:
   return v4;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v9 = a4;
-  if ([v9 section])
+  pathCopy = path;
+  if ([pathCopy section])
   {
-    v5 = [v9 section];
+    section = [pathCopy section];
   }
 
   else
   {
-    v6 = [v9 row];
-    v5 = [v9 section];
+    v6 = [pathCopy row];
+    section = [pathCopy section];
     if (v6 == 9)
     {
       [(ICAttachmentInspectorViewController *)self confirmShowSubAttachmentsIfNeeded];
@@ -161,46 +161,46 @@ LABEL_5:
     }
   }
 
-  if (v5 == 8)
+  if (section == 8)
   {
     [(ICAttachmentInspectorViewController *)self savePKDrawingData];
   }
 
   else
   {
-    v7 = [v9 section];
-    v8 = v9;
-    if (!v7)
+    section2 = [pathCopy section];
+    v8 = pathCopy;
+    if (!section2)
     {
       goto LABEL_10;
     }
 
-    [(ICAttachmentInspectorViewController *)self presentEditMenuAtIndexPath:v9];
+    [(ICAttachmentInspectorViewController *)self presentEditMenuAtIndexPath:pathCopy];
   }
 
 LABEL_9:
-  v8 = v9;
+  v8 = pathCopy;
 LABEL_10:
 }
 
-- (id)editMenuInteraction:(id)a3 menuForConfiguration:(id)a4 suggestedActions:(id)a5
+- (id)editMenuInteraction:(id)interaction menuForConfiguration:(id)configuration suggestedActions:(id)actions
 {
-  v6 = [a5 mutableCopy];
-  v7 = [(ICAttachmentInspectorViewController *)self tableView];
-  v8 = [v7 indexPathForSelectedRow];
+  v6 = [actions mutableCopy];
+  tableView = [(ICAttachmentInspectorViewController *)self tableView];
+  indexPathForSelectedRow = [tableView indexPathForSelectedRow];
 
-  if ([(ICAttachmentInspectorViewController *)self canClear:v8])
+  if ([(ICAttachmentInspectorViewController *)self canClear:indexPathForSelectedRow])
   {
     v9 = [UIImage systemImageNamed:@"trash"];
     v14 = _NSConcreteStackBlock;
     v15 = 3221225472;
     v16 = sub_100157AF8;
     v17 = &unk_100646870;
-    v18 = self;
-    v19 = v8;
+    selfCopy = self;
+    v19 = indexPathForSelectedRow;
     v10 = [UIAction actionWithTitle:@"Clear" image:v9 identifier:0 handler:&v14];
 
-    [v10 setAttributes:{objc_msgSend(v10, "attributes", v14, v15, v16, v17, v18) | 2}];
+    [v10 setAttributes:{objc_msgSend(v10, "attributes", v14, v15, v16, v17, selfCopy) | 2}];
     [v6 addObject:v10];
   }
 
@@ -210,48 +210,48 @@ LABEL_10:
   return v12;
 }
 
-- (void)editMenuInteraction:(id)a3 willDismissMenuForConfiguration:(id)a4 animator:(id)a5
+- (void)editMenuInteraction:(id)interaction willDismissMenuForConfiguration:(id)configuration animator:(id)animator
 {
-  v8 = [(ICAttachmentInspectorViewController *)self tableView:a3];
-  v6 = [(ICAttachmentInspectorViewController *)self tableView];
-  v7 = [v6 indexPathForSelectedRow];
-  [v8 deselectRowAtIndexPath:v7 animated:1];
+  v8 = [(ICAttachmentInspectorViewController *)self tableView:interaction];
+  tableView = [(ICAttachmentInspectorViewController *)self tableView];
+  indexPathForSelectedRow = [tableView indexPathForSelectedRow];
+  [v8 deselectRowAtIndexPath:indexPathForSelectedRow animated:1];
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  v6 = [(ICAttachmentInspectorViewController *)self tableView:a3];
-  v7 = [v6 indexPathForSelectedRow];
+  v6 = [(ICAttachmentInspectorViewController *)self tableView:action];
+  indexPathForSelectedRow = [v6 indexPathForSelectedRow];
 
-  v8 = [(ICAttachmentInspectorViewController *)self stringToCopyAtIndexPath:v7];
+  v8 = [(ICAttachmentInspectorViewController *)self stringToCopyAtIndexPath:indexPathForSelectedRow];
 
   if (!v8)
   {
-    v10 = [(ICAttachmentInspectorViewController *)self tableView];
-    [v10 deselectRowAtIndexPath:v7 animated:1];
+    tableView = [(ICAttachmentInspectorViewController *)self tableView];
+    [tableView deselectRowAtIndexPath:indexPathForSelectedRow animated:1];
 
     goto LABEL_5;
   }
 
-  if ("copy:" != a3)
+  if ("copy:" != action)
   {
 LABEL_5:
     v9 = 0;
     goto LABEL_6;
   }
 
-  v9 = [(ICAttachmentInspectorViewController *)self canCopy:v7];
+  v9 = [(ICAttachmentInspectorViewController *)self canCopy:indexPathForSelectedRow];
 LABEL_6:
 
   return v9;
 }
 
-- (void)copy:(id)a3
+- (void)copy:(id)copy
 {
-  v4 = [(ICAttachmentInspectorViewController *)self tableView];
-  v7 = [v4 indexPathForSelectedRow];
+  tableView = [(ICAttachmentInspectorViewController *)self tableView];
+  indexPathForSelectedRow = [tableView indexPathForSelectedRow];
 
-  v5 = [(ICAttachmentInspectorViewController *)self stringToCopyAtIndexPath:v7];
+  v5 = [(ICAttachmentInspectorViewController *)self stringToCopyAtIndexPath:indexPathForSelectedRow];
   if (v5)
   {
     v6 = +[UIPasteboard generalPasteboard];
@@ -259,14 +259,14 @@ LABEL_6:
   }
 }
 
-- (void)presentEditMenuAtIndexPath:(id)a3
+- (void)presentEditMenuAtIndexPath:(id)path
 {
-  v10 = a3;
-  v4 = [(ICAttachmentInspectorViewController *)self tableView];
-  v5 = [v4 cellForRowAtIndexPath:v10];
+  pathCopy = path;
+  tableView = [(ICAttachmentInspectorViewController *)self tableView];
+  v5 = [tableView cellForRowAtIndexPath:pathCopy];
 
-  v6 = [v5 interactions];
-  v7 = [v6 ic_firstObjectOfClass:objc_opt_class()];
+  interactions = [v5 interactions];
+  v7 = [interactions ic_firstObjectOfClass:objc_opt_class()];
 
   if (!v7)
   {
@@ -274,7 +274,7 @@ LABEL_6:
     [v5 addInteraction:v7];
   }
 
-  v8 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v10 section]);
+  v8 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [pathCopy section]);
   [v5 center];
   v9 = [UIEditMenuConfiguration configurationWithIdentifier:v8 sourcePoint:?];
 
@@ -284,50 +284,50 @@ LABEL_6:
 - (void)savePKDrawingData
 {
   objc_opt_class();
-  v3 = [(ICAttachmentInspectorViewController *)self attachment];
-  v4 = [v3 attachmentModel];
+  attachment = [(ICAttachmentInspectorViewController *)self attachment];
+  attachmentModel = [attachment attachmentModel];
   v5 = ICDynamicCast();
 
   if (v5)
   {
     objc_opt_class();
-    v6 = [(ICAttachmentInspectorViewController *)self attachment];
-    v7 = [v6 attachmentModel];
+    attachment2 = [(ICAttachmentInspectorViewController *)self attachment];
+    attachmentModel2 = [attachment2 attachmentModel];
     v8 = ICDynamicCast();
-    v9 = [v8 newDrawingFromMergeableData];
+    newDrawingFromMergeableData = [v8 newDrawingFromMergeableData];
 
     goto LABEL_5;
   }
 
-  v10 = [(ICAttachmentInspectorViewController *)self attachment];
-  v11 = [v10 attachmentType];
+  attachment3 = [(ICAttachmentInspectorViewController *)self attachment];
+  attachmentType = [attachment3 attachmentType];
 
-  if (v11 == 13)
+  if (attachmentType == 13)
   {
-    v6 = [(ICAttachmentInspectorViewController *)self attachment];
-    v9 = [ICSystemPaperDocumentHelper drawingForPaperAttachment:v6];
+    attachment2 = [(ICAttachmentInspectorViewController *)self attachment];
+    newDrawingFromMergeableData = [ICSystemPaperDocumentHelper drawingForPaperAttachment:attachment2];
 LABEL_5:
 
-    v12 = [v9 dataRepresentation];
-    v13 = v12;
-    if (v9)
+    dataRepresentation = [newDrawingFromMergeableData dataRepresentation];
+    v13 = dataRepresentation;
+    if (newDrawingFromMergeableData)
     {
-      if (v12)
+      if (dataRepresentation)
       {
 LABEL_7:
         v30 = NSTemporaryDirectory();
         +[NSFileManager defaultManager];
         v14 = v31 = v5;
         v15 = [NSURL fileURLWithPath:v30];
-        v16 = [(ICAttachmentInspectorViewController *)self attachment];
-        v17 = [v16 title];
-        v18 = [v17 ic_trimmedString];
-        v19 = [v18 ic_stringByReplacingNewlineCharactersWithWhiteSpace];
-        v20 = [v19 ic_sanitizedFilenameString];
+        attachment4 = [(ICAttachmentInspectorViewController *)self attachment];
+        title = [attachment4 title];
+        ic_trimmedString = [title ic_trimmedString];
+        ic_stringByReplacingNewlineCharactersWithWhiteSpace = [ic_trimmedString ic_stringByReplacingNewlineCharactersWithWhiteSpace];
+        ic_sanitizedFilenameString = [ic_stringByReplacingNewlineCharactersWithWhiteSpace ic_sanitizedFilenameString];
 
-        if ([(__CFString *)v20 length])
+        if ([(__CFString *)ic_sanitizedFilenameString length])
         {
-          v21 = v20;
+          v21 = ic_sanitizedFilenameString;
         }
 
         else
@@ -352,9 +352,9 @@ LABEL_7:
         v27 = [NSArray arrayWithObjects:v32 count:3];
         [v26 setExcludedActivityTypes:v27];
 
-        v28 = [(ICAttachmentInspectorViewController *)self view];
-        v29 = [v26 popoverPresentationController];
-        [v29 setSourceView:v28];
+        view = [(ICAttachmentInspectorViewController *)self view];
+        popoverPresentationController = [v26 popoverPresentationController];
+        [popoverPresentationController setSourceView:view];
 
         [(ICAttachmentInspectorViewController *)self presentViewController:v26 animated:1 completion:0];
         v5 = v31;
@@ -379,17 +379,17 @@ LABEL_13:
 
 - (int64_t)numberOfSections
 {
-  v3 = [(ICAttachmentInspectorViewController *)self attachment];
-  if ([v3 attachmentType] == 10)
+  attachment = [(ICAttachmentInspectorViewController *)self attachment];
+  if ([attachment attachmentType] == 10)
   {
 
     return 9;
   }
 
-  v4 = [(ICAttachmentInspectorViewController *)self attachment];
-  v5 = [v4 attachmentType];
+  attachment2 = [(ICAttachmentInspectorViewController *)self attachment];
+  attachmentType = [attachment2 attachmentType];
 
-  if (v5 == 13)
+  if (attachmentType == 13)
   {
     return 9;
   }
@@ -397,35 +397,35 @@ LABEL_13:
   return 8;
 }
 
-- (id)attachmentInfoAtRow:(int64_t)a3
+- (id)attachmentInfoAtRow:(int64_t)row
 {
-  v4 = self;
-  v5 = [(ICAttachmentInspectorViewController *)self attachment];
-  v6 = v5;
-  switch(a3)
+  selfCopy = self;
+  attachment = [(ICAttachmentInspectorViewController *)self attachment];
+  v6 = attachment;
+  switch(row)
   {
     case 0:
-      v7 = [v5 title];
+      title = [attachment title];
       goto LABEL_15;
     case 1:
-      v7 = [v5 userTitle];
+      title = [attachment userTitle];
       goto LABEL_15;
     case 2:
-      v7 = [v5 identifier];
+      title = [attachment identifier];
       goto LABEL_15;
     case 3:
-      v7 = [v5 typeUTI];
+      title = [attachment typeUTI];
       goto LABEL_15;
     case 4:
-      [v5 attachmentType];
-      v7 = NSStringFromICAttachmentType();
+      [attachment attachmentType];
+      title = NSStringFromICAttachmentType();
       goto LABEL_15;
     case 5:
-      [v5 minimumSupportedNotesVersion];
-      v7 = NSStringFromNotesVersion();
+      [attachment minimumSupportedNotesVersion];
+      title = NSStringFromNotesVersion();
       goto LABEL_15;
     case 6:
-      [v5 originX];
+      [attachment originX];
       v13 = v12;
       [v6 originY];
       v15 = v14;
@@ -436,42 +436,42 @@ LABEL_13:
       v22.origin.x = v13;
       v22.origin.y = v15;
       v22.size.width = v17;
-      v7 = NSStringFromCGRect(v22);
+      title = NSStringFromCGRect(v22);
       goto LABEL_15;
     case 7:
-      [v5 orientation];
-      v7 = NSStringFromICImageClassOrientation();
+      [attachment orientation];
+      title = NSStringFromICImageClassOrientation();
       goto LABEL_15;
     case 8:
-      v10 = [v5 croppingQuad];
-      v20 = [v10 description];
-      v4 = [v20 ic_trimmedString];
+      croppingQuad = [attachment croppingQuad];
+      v20 = [croppingQuad description];
+      selfCopy = [v20 ic_trimmedString];
 
       goto LABEL_19;
     case 9:
-      v7 = [v4 subAttachmentIdentifiersString];
+      title = [selfCopy subAttachmentIdentifiersString];
 LABEL_15:
-      v4 = v7;
+      selfCopy = title;
       break;
     case 10:
-      v9 = [v5 parentAttachment];
+      parentAttachment = [attachment parentAttachment];
       goto LABEL_17;
     case 11:
-      v8 = [v5 parentAttachment];
+      parentAttachment2 = [attachment parentAttachment];
       goto LABEL_13;
     case 12:
-      v9 = [v5 note];
+      parentAttachment = [attachment note];
 LABEL_17:
-      v10 = v9;
-      v11 = [v9 title];
+      croppingQuad = parentAttachment;
+      title2 = [parentAttachment title];
       goto LABEL_18;
     case 13:
-      v8 = [v5 note];
+      parentAttachment2 = [attachment note];
 LABEL_13:
-      v10 = v8;
-      v11 = [v8 identifier];
+      croppingQuad = parentAttachment2;
+      title2 = [parentAttachment2 identifier];
 LABEL_18:
-      v4 = v11;
+      selfCopy = title2;
 LABEL_19:
 
       break;
@@ -479,88 +479,88 @@ LABEL_19:
       break;
   }
 
-  return v4;
+  return selfCopy;
 }
 
-- (id)spotlightAttributeValueToCopyAtRow:(int64_t)a3
+- (id)spotlightAttributeValueToCopyAtRow:(int64_t)row
 {
-  v5 = [(ICAttachmentInspectorViewController *)self spotlightResults];
-  v6 = [v5 objectAtIndexedSubscript:a3];
+  spotlightResults = [(ICAttachmentInspectorViewController *)self spotlightResults];
+  v6 = [spotlightResults objectAtIndexedSubscript:row];
   v7 = [v6 key];
   v8 = sub_100158580(v7);
-  v9 = [(ICAttachmentInspectorViewController *)self spotlightResults];
-  v10 = [v9 objectAtIndexedSubscript:a3];
-  v11 = [v10 value];
-  v12 = sub_100158580(v11);
+  spotlightResults2 = [(ICAttachmentInspectorViewController *)self spotlightResults];
+  v10 = [spotlightResults2 objectAtIndexedSubscript:row];
+  value = [v10 value];
+  v12 = sub_100158580(value);
   v13 = [NSString stringWithFormat:@"%@: %@", v8, v12];
 
   return v13;
 }
 
-- (id)spotlightAttributeCellAtRow:(int64_t)a3
+- (id)spotlightAttributeCellAtRow:(int64_t)row
 {
   v5 = [(ICAttachmentInspectorViewController *)self dequeueOrRegisterCellWithIdentifier:@"SectionSpotlightAttributeCell" style:3];
-  v6 = [(ICAttachmentInspectorViewController *)self spotlightResults];
-  v7 = [v6 objectAtIndexedSubscript:a3];
+  spotlightResults = [(ICAttachmentInspectorViewController *)self spotlightResults];
+  v7 = [spotlightResults objectAtIndexedSubscript:row];
   v8 = [v7 key];
   v9 = sub_100158580(v8);
-  v10 = [v5 textLabel];
-  [v10 setText:v9];
+  textLabel = [v5 textLabel];
+  [textLabel setText:v9];
 
-  v11 = [(ICAttachmentInspectorViewController *)self spotlightResults];
-  v12 = [v11 objectAtIndexedSubscript:a3];
-  v13 = [v12 value];
-  v14 = sub_100158580(v13);
-  v15 = [v5 detailTextLabel];
-  [v15 setText:v14];
+  spotlightResults2 = [(ICAttachmentInspectorViewController *)self spotlightResults];
+  v12 = [spotlightResults2 objectAtIndexedSubscript:row];
+  value = [v12 value];
+  v14 = sub_100158580(value);
+  detailTextLabel = [v5 detailTextLabel];
+  [detailTextLabel setText:v14];
 
   return v5;
 }
 
-- (id)attachmentInfoCellAtRow:(int64_t)a3
+- (id)attachmentInfoCellAtRow:(int64_t)row
 {
   v5 = [(ICAttachmentInspectorViewController *)self dequeueOrRegisterCellWithIdentifier:@"SectionInfoCell" style:3];
-  v6 = [(ICAttachmentInspectorViewController *)self attachmentInfoTypeAtRow:a3];
-  v7 = [v5 textLabel];
-  [v7 setText:v6];
+  v6 = [(ICAttachmentInspectorViewController *)self attachmentInfoTypeAtRow:row];
+  textLabel = [v5 textLabel];
+  [textLabel setText:v6];
 
-  v8 = [(ICAttachmentInspectorViewController *)self attachmentInfoAtRow:a3];
+  v8 = [(ICAttachmentInspectorViewController *)self attachmentInfoAtRow:row];
   v9 = sub_100158580(v8);
-  v10 = [v5 detailTextLabel];
-  [v10 setText:v9];
+  detailTextLabel = [v5 detailTextLabel];
+  [detailTextLabel setText:v9];
 
-  [v5 setAccessoryType:a3 == 9];
+  [v5 setAccessoryType:row == 9];
 
   return v5;
 }
 
-- (id)attachmentInfoTypeAtRow:(int64_t)a3
+- (id)attachmentInfoTypeAtRow:(int64_t)row
 {
-  if ((a3 - 1) > 0xC)
+  if ((row - 1) > 0xC)
   {
     return @"Title";
   }
 
   else
   {
-    return *(&off_10064B6B0 + a3 - 1);
+    return *(&off_10064B6B0 + row - 1);
   }
 }
 
-- (BOOL)canCopy:(id)a3
+- (BOOL)canCopy:(id)copy
 {
-  v3 = a3;
-  if ([v3 section])
+  copyCopy = copy;
+  if ([copyCopy section])
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 row] != 9;
+    v4 = [copyCopy row] != 9;
   }
 
-  if ([v3 row] == 8)
+  if ([copyCopy row] == 8)
   {
     v4 = 0;
   }
@@ -568,67 +568,67 @@ LABEL_19:
   return v4;
 }
 
-- (void)clearAtIndexPath:(id)a3
+- (void)clearAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(ICAttachmentInspectorViewController *)self attachment];
-  v6 = [v4 section];
-  if (v6 > 3)
+  pathCopy = path;
+  attachment = [(ICAttachmentInspectorViewController *)self attachment];
+  section = [pathCopy section];
+  if (section > 3)
   {
-    if ((v6 - 6) >= 2)
+    if ((section - 6) >= 2)
     {
-      if (v6 != 4)
+      if (section != 4)
       {
-        if (v6 == 5)
+        if (section == 5)
         {
-          [v5 setAdditionalIndexableText:0];
+          [attachment setAdditionalIndexableText:0];
         }
 
         goto LABEL_15;
       }
 
-      [v5 setOcrSummary:0];
+      [attachment setOcrSummary:0];
       goto LABEL_14;
     }
   }
 
   else
   {
-    if (v6 > 1)
+    if (section > 1)
     {
-      if (v6 == 2)
+      if (section == 2)
       {
-        [v5 updateHandwritingSummary:0];
+        [attachment updateHandwritingSummary:0];
       }
 
       else
       {
-        [v5 setImageClassificationSummary:0];
+        [attachment setImageClassificationSummary:0];
       }
 
       goto LABEL_14;
     }
 
-    if (v6)
+    if (section)
     {
-      if (v6 != 1)
+      if (section != 1)
       {
 LABEL_15:
-        [v5 attachmentDidChange];
-        v9 = [v5 managedObjectContext];
+        [attachment attachmentDidChange];
+        managedObjectContext = [attachment managedObjectContext];
         objc_initWeak(&location, self);
         v14[0] = _NSConcreteStackBlock;
         v14[1] = 3221225472;
         v14[2] = sub_100158AD4;
         v14[3] = &unk_100645E30;
-        v10 = v9;
+        v10 = managedObjectContext;
         v15 = v10;
         v11[0] = _NSConcreteStackBlock;
         v11[1] = 3221225472;
         v11[2] = sub_100158ADC;
         v11[3] = &unk_1006459B8;
         objc_copyWeak(&v13, &location);
-        v12 = v4;
+        v12 = pathCopy;
         [v10 ic_performBlock:v14 andPerformBlockOnMainThread:v11];
 
         objc_destroyWeak(&v13);
@@ -637,12 +637,12 @@ LABEL_15:
         goto LABEL_16;
       }
 
-      [v5 setSummary:0];
-      v7 = [v5 parentAttachment];
-      [v7 setSummary:0];
+      [attachment setSummary:0];
+      parentAttachment = [attachment parentAttachment];
+      [parentAttachment setSummary:0];
 
-      v8 = [v5 parentAttachment];
-      [v8 attachmentDidChange];
+      parentAttachment2 = [attachment parentAttachment];
+      [parentAttachment2 attachmentDidChange];
 
 LABEL_14:
       [(ICAttachmentInspectorViewController *)self setRegenerateMetadataOnClose:1];
@@ -655,8 +655,8 @@ LABEL_16:
 
 - (void)confirmShowSubAttachmentsIfNeeded
 {
-  v2 = [(ICAttachmentInspectorViewController *)self subAttachments];
-  v3 = [v2 count];
+  subAttachments = [(ICAttachmentInspectorViewController *)self subAttachments];
+  v3 = [subAttachments count];
 
   if (v3)
   {
@@ -666,8 +666,8 @@ LABEL_16:
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v5 = [(ICAttachmentInspectorViewController *)self subAttachments];
-    v6 = [v5 countByEnumeratingWithState:&v21 objects:v26 count:16];
+    subAttachments2 = [(ICAttachmentInspectorViewController *)self subAttachments];
+    v6 = [subAttachments2 countByEnumeratingWithState:&v21 objects:v26 count:16];
     if (v6)
     {
       v7 = *v22;
@@ -677,24 +677,24 @@ LABEL_16:
         {
           if (*v22 != v7)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(subAttachments2);
           }
 
           v9 = *(*(&v21 + 1) + 8 * i);
-          v10 = [v9 identifier];
+          identifier = [v9 identifier];
           v19[0] = _NSConcreteStackBlock;
           v19[1] = 3221225472;
           v19[2] = sub_100158F34;
           v19[3] = &unk_10064B600;
           objc_copyWeak(&v20, &location);
           v19[4] = v9;
-          v11 = [UIAlertAction actionWithTitle:v10 style:0 handler:v19];
+          v11 = [UIAlertAction actionWithTitle:identifier style:0 handler:v19];
           [v4 addAction:v11];
 
           objc_destroyWeak(&v20);
         }
 
-        v6 = [v5 countByEnumeratingWithState:&v21 objects:v26 count:16];
+        v6 = [subAttachments2 countByEnumeratingWithState:&v21 objects:v26 count:16];
       }
 
       while (v6);
@@ -715,41 +715,41 @@ LABEL_16:
 
   else
   {
-    v15 = [(ICAttachmentInspectorViewController *)self tableView];
-    v13 = [(ICAttachmentInspectorViewController *)self tableView];
-    v14 = [v13 indexPathForSelectedRow];
-    [v15 deselectRowAtIndexPath:v14 animated:1];
+    tableView = [(ICAttachmentInspectorViewController *)self tableView];
+    tableView2 = [(ICAttachmentInspectorViewController *)self tableView];
+    indexPathForSelectedRow = [tableView2 indexPathForSelectedRow];
+    [tableView deselectRowAtIndexPath:indexPathForSelectedRow animated:1];
   }
 }
 
-- (id)defaultCellForRowInSection:(int64_t)a3
+- (id)defaultCellForRowInSection:(int64_t)section
 {
   v5 = [(ICAttachmentInspectorViewController *)self dequeueOrRegisterCellWithIdentifier:@"DefaultCell" style:3];
-  v6 = [(ICAttachmentInspectorViewController *)self defaultCellTextAtSection:a3];
+  v6 = [(ICAttachmentInspectorViewController *)self defaultCellTextAtSection:section];
   v7 = sub_100158580(v6);
-  v8 = [v5 detailTextLabel];
-  [v8 setText:v7];
+  detailTextLabel = [v5 detailTextLabel];
+  [detailTextLabel setText:v7];
 
   return v5;
 }
 
-- (id)defaultCellTextAtSection:(int64_t)a3
+- (id)defaultCellTextAtSection:(int64_t)section
 {
-  v4 = [(ICAttachmentInspectorViewController *)self attachment];
-  v5 = v4;
-  v6 = 0;
-  if (a3 <= 3)
+  attachment = [(ICAttachmentInspectorViewController *)self attachment];
+  v5 = attachment;
+  path = 0;
+  if (section <= 3)
   {
-    switch(a3)
+    switch(section)
     {
       case 1:
-        v7 = [v4 summary];
+        summary = [attachment summary];
         break;
       case 2:
-        v7 = [v4 handwritingSummary];
+        summary = [attachment handwritingSummary];
         break;
       case 3:
-        v7 = [v4 imageClassificationSummary];
+        summary = [attachment imageClassificationSummary];
         break;
       default:
         goto LABEL_19;
@@ -758,73 +758,73 @@ LABEL_16:
     goto LABEL_18;
   }
 
-  if (a3 <= 5)
+  if (section <= 5)
   {
-    if (a3 == 4)
+    if (section == 4)
     {
-      [v4 ocrSummary];
+      [attachment ocrSummary];
     }
 
     else
     {
-      [v4 additionalIndexableText];
+      [attachment additionalIndexableText];
     }
-    v7 = ;
+    summary = ;
 LABEL_18:
-    v6 = v7;
+    path = summary;
     goto LABEL_19;
   }
 
-  if (a3 == 6)
+  if (section == 6)
   {
-    v8 = [v4 media];
-    v9 = [v8 mediaURL];
-    v6 = [v9 path];
+    media = [attachment media];
+    mediaURL = [media mediaURL];
+    path = [mediaURL path];
   }
 
-  else if (a3 == 8)
+  else if (section == 8)
   {
-    v6 = @"Export Drawing";
+    path = @"Export Drawing";
   }
 
   else
   {
-    v6 = 0;
+    path = 0;
   }
 
 LABEL_19:
 
-  return v6;
+  return path;
 }
 
-- (id)dequeueOrRegisterCellWithIdentifier:(id)a3 style:(int64_t)a4
+- (id)dequeueOrRegisterCellWithIdentifier:(id)identifier style:(int64_t)style
 {
-  v6 = a3;
-  v7 = [(ICAttachmentInspectorViewController *)self tableView];
-  v8 = [v7 dequeueReusableCellWithIdentifier:v6];
+  identifierCopy = identifier;
+  tableView = [(ICAttachmentInspectorViewController *)self tableView];
+  v8 = [tableView dequeueReusableCellWithIdentifier:identifierCopy];
 
   if (!v8)
   {
-    v8 = [[UITableViewCell alloc] initWithStyle:a4 reuseIdentifier:v6];
-    v9 = [v8 textLabel];
-    [v9 setNumberOfLines:0];
+    v8 = [[UITableViewCell alloc] initWithStyle:style reuseIdentifier:identifierCopy];
+    textLabel = [v8 textLabel];
+    [textLabel setNumberOfLines:0];
 
-    v10 = [v8 detailTextLabel];
-    [v10 setNumberOfLines:0];
+    detailTextLabel = [v8 detailTextLabel];
+    [detailTextLabel setNumberOfLines:0];
   }
 
   return v8;
 }
 
-- (void)doneAction:(id)a3
+- (void)doneAction:(id)action
 {
-  v3 = [(ICAttachmentInspectorViewController *)self presentingViewController];
-  [v3 dismissViewControllerAnimated:1 completion:0];
+  presentingViewController = [(ICAttachmentInspectorViewController *)self presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)setAttachment:(id)a3
+- (void)setAttachment:(id)attachment
 {
-  objc_storeStrong(&self->_attachment, a3);
+  objc_storeStrong(&self->_attachment, attachment);
 
   [(ICAttachmentInspectorViewController *)self updateViews];
 }
@@ -832,31 +832,31 @@ LABEL_19:
 - (void)setUpViews
 {
   v6 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:0 target:self action:"doneAction:"];
-  v3 = [(ICAttachmentInspectorViewController *)self navigationItem];
-  [v3 setRightBarButtonItem:v6];
+  navigationItem = [(ICAttachmentInspectorViewController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:v6];
 
-  v4 = [(ICAttachmentInspectorViewController *)self tableView];
-  [v4 setRowHeight:UITableViewAutomaticDimension];
+  tableView = [(ICAttachmentInspectorViewController *)self tableView];
+  [tableView setRowHeight:UITableViewAutomaticDimension];
 
-  v5 = [(ICAttachmentInspectorViewController *)self tableView];
-  [v5 setEstimatedRowHeight:44.0];
+  tableView2 = [(ICAttachmentInspectorViewController *)self tableView];
+  [tableView2 setEstimatedRowHeight:44.0];
 
   [(ICAttachmentInspectorViewController *)self updateViews];
 }
 
-- (id)stringToCopyAtIndexPath:(id)a3
+- (id)stringToCopyAtIndexPath:(id)path
 {
-  v5 = a3;
-  v6 = [v5 section];
-  if (v6 > 6)
+  pathCopy = path;
+  section = [pathCopy section];
+  if (section > 6)
   {
-    if (v6 == 7)
+    if (section == 7)
     {
-      v7 = -[ICAttachmentInspectorViewController spotlightAttributeValueToCopyAtRow:](self, "spotlightAttributeValueToCopyAtRow:", [v5 row]);
+      v7 = -[ICAttachmentInspectorViewController spotlightAttributeValueToCopyAtRow:](self, "spotlightAttributeValueToCopyAtRow:", [pathCopy row]);
       goto LABEL_4;
     }
 
-    if (v6 == 8)
+    if (section == 8)
     {
       goto LABEL_3;
     }
@@ -864,18 +864,18 @@ LABEL_19:
 
   else
   {
-    if ((v6 - 1) < 6)
+    if ((section - 1) < 6)
     {
 LABEL_3:
-      v7 = [(ICAttachmentInspectorViewController *)self defaultCellTextAtSection:v6];
+      v7 = [(ICAttachmentInspectorViewController *)self defaultCellTextAtSection:section];
 LABEL_4:
       v3 = v7;
       goto LABEL_5;
     }
 
-    if (!v6)
+    if (!section)
     {
-      v7 = -[ICAttachmentInspectorViewController attachmentInfoAtRow:](self, "attachmentInfoAtRow:", [v5 row]);
+      v7 = -[ICAttachmentInspectorViewController attachmentInfoAtRow:](self, "attachmentInfoAtRow:", [pathCopy row]);
       goto LABEL_4;
     }
   }
@@ -887,82 +887,82 @@ LABEL_5:
 
 - (NSSet)subAttachments
 {
-  v2 = [(ICAttachmentInspectorViewController *)self attachment];
-  v3 = [v2 parentAttachment];
-  v4 = v3;
-  if (v3)
+  attachment = [(ICAttachmentInspectorViewController *)self attachment];
+  parentAttachment = [attachment parentAttachment];
+  v4 = parentAttachment;
+  if (parentAttachment)
   {
-    v5 = v3;
+    v5 = parentAttachment;
   }
 
   else
   {
-    v5 = v2;
+    v5 = attachment;
   }
 
   v6 = v5;
 
-  v7 = [v6 subAttachments];
+  subAttachments = [v6 subAttachments];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10015966C;
   v11[3] = &unk_10064B650;
-  v12 = v2;
-  v8 = v2;
-  v9 = [v7 ic_compactMap:v11];
+  v12 = attachment;
+  v8 = attachment;
+  v9 = [subAttachments ic_compactMap:v11];
 
   return v9;
 }
 
 - (NSSet)subAttachmentIdentifiers
 {
-  v2 = [(ICAttachmentInspectorViewController *)self subAttachments];
-  v3 = [v2 ic_compactMap:&stru_10064B690];
+  subAttachments = [(ICAttachmentInspectorViewController *)self subAttachments];
+  v3 = [subAttachments ic_compactMap:&stru_10064B690];
 
   return v3;
 }
 
 - (NSString)subAttachmentIdentifiersString
 {
-  v2 = [(ICAttachmentInspectorViewController *)self subAttachmentIdentifiers];
-  v3 = [v2 allObjects];
-  v4 = [v3 sortedArrayUsingSelector:"compare:"];
+  subAttachmentIdentifiers = [(ICAttachmentInspectorViewController *)self subAttachmentIdentifiers];
+  allObjects = [subAttachmentIdentifiers allObjects];
+  v4 = [allObjects sortedArrayUsingSelector:"compare:"];
 
   v5 = [v4 componentsJoinedByString:@"\n"];
 
   return v5;
 }
 
-- (id)titleForHeaderInSection:(int64_t)a3
+- (id)titleForHeaderInSection:(int64_t)section
 {
   v3 = @"Attachment";
-  if (a3 > 4)
+  if (section > 4)
   {
     v6 = @"Spotlight Attributes";
     v7 = @"Export Drawing";
-    if (a3 != 8)
+    if (section != 8)
     {
       v7 = @"Attachment";
     }
 
-    if (a3 != 7)
+    if (section != 7)
     {
       v6 = v7;
     }
 
     v8 = @"Additional Indexable";
     v9 = @"Media URL";
-    if (a3 != 6)
+    if (section != 6)
     {
       v9 = @"Attachment";
     }
 
-    if (a3 != 5)
+    if (section != 5)
     {
       v8 = v9;
     }
 
-    if (a3 <= 6)
+    if (section <= 6)
     {
       v3 = v8;
     }
@@ -975,38 +975,38 @@ LABEL_5:
 
   else
   {
-    if (a3 > 2)
+    if (section > 2)
     {
-      if (a3 == 3)
+      if (section == 3)
       {
-        v4 = [(ICAttachmentInspectorViewController *)self attachment];
-        v5 = +[NSNumber numberWithShort:](NSNumber, "numberWithShort:", [v4 imageClassificationSummaryVersion]);
+        attachment = [(ICAttachmentInspectorViewController *)self attachment];
+        v5 = +[NSNumber numberWithShort:](NSNumber, "numberWithShort:", [attachment imageClassificationSummaryVersion]);
         [NSString localizedStringWithFormat:@"Image Classification (v%@)", v5];
       }
 
       else
       {
-        v4 = [(ICAttachmentInspectorViewController *)self attachment];
-        v5 = +[NSNumber numberWithShort:](NSNumber, "numberWithShort:", [v4 ocrSummaryVersion]);
+        attachment = [(ICAttachmentInspectorViewController *)self attachment];
+        v5 = +[NSNumber numberWithShort:](NSNumber, "numberWithShort:", [attachment ocrSummaryVersion]);
         [NSString localizedStringWithFormat:@"OCR Summary (v%@)", v5];
       }
     }
 
     else
     {
-      if (a3 == 1)
+      if (section == 1)
       {
         v3 = @"Summary";
         goto LABEL_22;
       }
 
-      if (a3 != 2)
+      if (section != 2)
       {
         goto LABEL_22;
       }
 
-      v4 = [(ICAttachmentInspectorViewController *)self attachment];
-      v5 = +[NSNumber numberWithShort:](NSNumber, "numberWithShort:", [v4 handwritingSummaryVersion]);
+      attachment = [(ICAttachmentInspectorViewController *)self attachment];
+      v5 = +[NSNumber numberWithShort:](NSNumber, "numberWithShort:", [attachment handwritingSummaryVersion]);
       [NSString localizedStringWithFormat:@"Handwriting Summary (v%@)", v5];
     }
     v3 = ;
@@ -1019,24 +1019,24 @@ LABEL_22:
 
 - (void)updateViews
 {
-  v3 = [(ICAttachmentInspectorViewController *)self attachment];
-  v4 = [v3 image];
-  v5 = [(ICAttachmentInspectorViewController *)self attachmentImageView];
-  [v5 setImage:v4];
+  attachment = [(ICAttachmentInspectorViewController *)self attachment];
+  image = [attachment image];
+  attachmentImageView = [(ICAttachmentInspectorViewController *)self attachmentImageView];
+  [attachmentImageView setImage:image];
 
-  v6 = [(ICAttachmentInspectorViewController *)self tableView];
-  [v6 reloadData];
+  tableView = [(ICAttachmentInspectorViewController *)self tableView];
+  [tableView reloadData];
 }
 
 - (void)startCoreSpotlightSearch
 {
-  v3 = [(ICAttachmentInspectorViewController *)self searchOperationQueue];
-  [v3 cancelAllOperations];
+  searchOperationQueue = [(ICAttachmentInspectorViewController *)self searchOperationQueue];
+  [searchOperationQueue cancelAllOperations];
 
-  v4 = [(ICAttachmentInspectorViewController *)self attachment];
-  v5 = [v4 note];
-  v6 = [v5 searchIndexingIdentifier];
-  v7 = [NSString stringWithFormat:@"(_ICItemRelatedNoteUniqueIdentifier == %@)", v6];
+  attachment = [(ICAttachmentInspectorViewController *)self attachment];
+  note = [attachment note];
+  searchIndexingIdentifier = [note searchIndexingIdentifier];
+  v7 = [NSString stringWithFormat:@"(_ICItemRelatedNoteUniqueIdentifier == %@)", searchIndexingIdentifier];
 
   v8 = [ICSearchQueryOperation alloc];
   v17 = @"_kMDItemSDBInfo";
@@ -1052,8 +1052,8 @@ LABEL_22:
   objc_copyWeak(&v13, &location);
   objc_copyWeak(&v14, &from);
   [v10 setCompletionBlock:v12];
-  v11 = [(ICAttachmentInspectorViewController *)self searchOperationQueue];
-  [v11 addOperation:v10];
+  searchOperationQueue2 = [(ICAttachmentInspectorViewController *)self searchOperationQueue];
+  [searchOperationQueue2 addOperation:v10];
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&v13);

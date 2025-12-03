@@ -1,23 +1,23 @@
 @interface OrgApacheLuceneUtilAutomatonAutomaton_DestMinMaxSorter
-- (OrgApacheLuceneUtilAutomatonAutomaton_DestMinMaxSorter)initWithOrgApacheLuceneUtilAutomatonAutomaton:(id)a3;
-- (int)compareWithInt:(int)a3 withInt:(int)a4;
+- (OrgApacheLuceneUtilAutomatonAutomaton_DestMinMaxSorter)initWithOrgApacheLuceneUtilAutomatonAutomaton:(id)automaton;
+- (int)compareWithInt:(int)int withInt:(int)withInt;
 - (void)__javaClone;
-- (void)swapWithInt:(int)a3 withInt:(int)a4;
+- (void)swapWithInt:(int)int withInt:(int)withInt;
 @end
 
 @implementation OrgApacheLuceneUtilAutomatonAutomaton_DestMinMaxSorter
 
-- (void)swapWithInt:(int)a3 withInt:(int)a4
+- (void)swapWithInt:(int)int withInt:(int)withInt
 {
-  v5 = 3 * a3;
-  v6 = 3 * a4;
-  sub_10007C5CC(self, (3 * a3), (3 * a4));
+  v5 = 3 * int;
+  v6 = 3 * withInt;
+  sub_10007C5CC(self, (3 * int), (3 * withInt));
   sub_10007C5CC(self, (v5 + 1), (v6 + 1));
 
   sub_10007C5CC(self, (v5 + 2), (v6 + 2));
 }
 
-- (int)compareWithInt:(int)a3 withInt:(int)a4
+- (int)compareWithInt:(int)int withInt:(int)withInt
 {
   v7 = *(objc_loadWeak(&self->this$0_) + 5);
   if (!v7)
@@ -25,8 +25,8 @@
     JreThrowNullPointerException();
   }
 
-  v8 = (3 * a3);
-  v9 = (3 * a4);
+  v8 = (3 * int);
+  v9 = (3 * withInt);
   v10 = *(v7 + 8);
   if ((v8 & 0x80000000) != 0 || v8 >= v10)
   {
@@ -112,9 +112,9 @@
   }
 }
 
-- (OrgApacheLuceneUtilAutomatonAutomaton_DestMinMaxSorter)initWithOrgApacheLuceneUtilAutomatonAutomaton:(id)a3
+- (OrgApacheLuceneUtilAutomatonAutomaton_DestMinMaxSorter)initWithOrgApacheLuceneUtilAutomatonAutomaton:(id)automaton
 {
-  objc_storeWeak(&self->this$0_, a3);
+  objc_storeWeak(&self->this$0_, automaton);
   OrgApacheLuceneUtilInPlaceMergeSorter_init(self);
   return self;
 }

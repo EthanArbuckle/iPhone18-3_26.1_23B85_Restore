@@ -1,15 +1,15 @@
 @interface SBSceneHandleResourceElevationAssertion
-- (SBSceneHandleResourceElevationAssertion)initWithReason:(id)a3 resourceElevation:(char)a4 invalidationBlock:(id)a5;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
+- (SBSceneHandleResourceElevationAssertion)initWithReason:(id)reason resourceElevation:(char)elevation invalidationBlock:(id)block;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
 @end
 
 @implementation SBSceneHandleResourceElevationAssertion
 
-- (SBSceneHandleResourceElevationAssertion)initWithReason:(id)a3 resourceElevation:(char)a4 invalidationBlock:(id)a5
+- (SBSceneHandleResourceElevationAssertion)initWithReason:(id)reason resourceElevation:(char)elevation invalidationBlock:(id)block
 {
-  v9 = a3;
-  v10 = a5;
-  if (!v9)
+  reasonCopy = reason;
+  blockCopy = block;
+  if (!reasonCopy)
   {
     [SBSceneHandleResourceElevationAssertion initWithReason:a2 resourceElevation:self invalidationBlock:?];
   }
@@ -20,15 +20,15 @@
   v17[1] = 3221225472;
   v17[2] = __94__SBSceneHandleResourceElevationAssertion_initWithReason_resourceElevation_invalidationBlock___block_invoke;
   v17[3] = &unk_2783A8A70;
-  v18 = v10;
+  v18 = blockCopy;
   v16.receiver = self;
   v16.super_class = SBSceneHandleResourceElevationAssertion;
-  v13 = v10;
-  v14 = [(BSSimpleAssertion *)&v16 initWithIdentifier:v12 forReason:v9 invalidationBlock:v17];
+  v13 = blockCopy;
+  v14 = [(BSSimpleAssertion *)&v16 initWithIdentifier:v12 forReason:reasonCopy invalidationBlock:v17];
 
   if (v14)
   {
-    v14->_resourceElevation = a4;
+    v14->_resourceElevation = elevation;
   }
 
   return v14;
@@ -71,11 +71,11 @@ void __94__SBSceneHandleResourceElevationAssertion_initWithReason_resourceElevat
   (*(*(a1 + 32) + 16))();
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v7.receiver = self;
   v7.super_class = SBSceneHandleResourceElevationAssertion;
-  v4 = [(BSSimpleAssertion *)&v7 descriptionBuilderWithMultilinePrefix:a3];
+  v4 = [(BSSimpleAssertion *)&v7 descriptionBuilderWithMultilinePrefix:prefix];
   v5 = [v4 appendInt:-[SBSceneHandleResourceElevationAssertion resourceElevation](self withName:{"resourceElevation"), @"resourceElevation"}];
 
   return v4;

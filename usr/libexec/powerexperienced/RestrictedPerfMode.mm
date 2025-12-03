@@ -1,11 +1,11 @@
 @interface RestrictedPerfMode
 + (id)powerModeInstance;
-- (BOOL)evaluatePowerModeWithResourceHints:(id)a3 andContext:(id)a4;
+- (BOOL)evaluatePowerModeWithResourceHints:(id)hints andContext:(id)context;
 - (RestrictedPerfMode)init;
 - (void)enterPowerMode;
 - (void)exitPowerMode;
 - (void)logStatusToPowerLog;
-- (void)restoreState:(id)a3;
+- (void)restoreState:(id)state;
 @end
 
 @implementation RestrictedPerfMode
@@ -101,17 +101,17 @@ LABEL_18:
   return v3;
 }
 
-- (void)restoreState:(id)a3
+- (void)restoreState:(id)state
 {
   [(PowerModeObjImpl *)self setState:0];
 
   [(PowerModeObjImpl *)self updatePowerTarget];
 }
 
-- (BOOL)evaluatePowerModeWithResourceHints:(id)a3 andContext:(id)a4
+- (BOOL)evaluatePowerModeWithResourceHints:(id)hints andContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  hintsCopy = hints;
+  contextCopy = context;
   if (![(PowerModeObjImpl *)self supportedPlatform])
   {
     v20 = [(PowerModeObjImpl *)self log];
@@ -141,52 +141,52 @@ LABEL_34:
     goto LABEL_34;
   }
 
-  v8 = [v6 objectForKeyedSubscript:@"Display"];
-  v44 = [v8 state];
+  v8 = [hintsCopy objectForKeyedSubscript:@"Display"];
+  state = [v8 state];
   [v8 state];
-  v9 = [v6 objectForKeyedSubscript:@"CarPlay"];
+  v9 = [hintsCopy objectForKeyedSubscript:@"CarPlay"];
 
-  v49 = [v9 state];
-  v10 = [v6 objectForKeyedSubscript:@"NFCSession"];
+  state2 = [v9 state];
+  v10 = [hintsCopy objectForKeyedSubscript:@"NFCSession"];
 
-  v11 = [v10 state];
-  v12 = [v6 objectForKeyedSubscript:@"AudioPlayback"];
+  state3 = [v10 state];
+  v12 = [hintsCopy objectForKeyedSubscript:@"AudioPlayback"];
 
-  v50 = [v12 state];
-  v13 = [v6 objectForKeyedSubscript:@"SleepInProgress"];
+  state4 = [v12 state];
+  v13 = [hintsCopy objectForKeyedSubscript:@"SleepInProgress"];
 
-  v14 = [v13 state];
-  v15 = [v6 objectForKeyedSubscript:@"WakeInProgress"];
+  state5 = [v13 state];
+  v15 = [hintsCopy objectForKeyedSubscript:@"WakeInProgress"];
 
-  v16 = [v15 state];
-  v17 = [v6 objectForKeyedSubscript:@"OnenessSession"];
+  state6 = [v15 state];
+  v17 = [hintsCopy objectForKeyedSubscript:@"OnenessSession"];
 
-  v48 = [v17 state];
-  v18 = [v6 objectForKeyedSubscript:@"SiriAudio"];
+  state7 = [v17 state];
+  v18 = [hintsCopy objectForKeyedSubscript:@"SiriAudio"];
 
-  v47 = [v18 state];
-  v19 = [v6 objectForKeyedSubscript:@"FitnessIntelligenceWorkoutVoice"];
+  state8 = [v18 state];
+  v19 = [hintsCopy objectForKeyedSubscript:@"FitnessIntelligenceWorkoutVoice"];
 
-  v46 = [v19 state];
-  v20 = [v6 objectForKeyedSubscript:@"DataMigrationInProgress"];
+  state9 = [v19 state];
+  v20 = [hintsCopy objectForKeyedSubscript:@"DataMigrationInProgress"];
 
-  v21 = [v20 state];
-  v22 = [v7 objectForKeyedSubscript:@"kPluggedInContext"];
-  v23 = [v22 BOOLValue];
+  state10 = [v20 state];
+  v22 = [contextCopy objectForKeyedSubscript:@"kPluggedInContext"];
+  bOOLValue = [v22 BOOLValue];
 
   v24 = 0;
-  v43 = v16;
-  if (v16 == 1 || v14 == 1)
+  v43 = state6;
+  if (state6 == 1 || state5 == 1)
   {
-    v25 = v44;
+    v25 = state;
   }
 
   else
   {
-    v25 = v44;
-    if (v21 != 1)
+    v25 = state;
+    if (state10 != 1)
     {
-      v32 = v44 == 101 || v49 == 1 || v11 == 1 || v50 == 1 || v48 == 1 || v47 == 1 || v46 == 1;
+      v32 = state == 101 || state2 == 1 || state3 == 1 || state4 == 1 || state7 == 1 || state8 == 1 || state9 == 1;
       if ([(RestrictedPerfMode *)self allowOnCharger])
       {
         v24 = !v32;
@@ -194,7 +194,7 @@ LABEL_34:
 
       else
       {
-        v24 = (v23 | v32) ^ 1;
+        v24 = (bOOLValue | v32) ^ 1;
       }
     }
   }
@@ -203,8 +203,8 @@ LABEL_34:
   log = [(PowerModeObjImpl *)self log];
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
-    HIDWORD(v41) = v14 == 1;
-    LODWORD(v41) = v50 == 1;
+    HIDWORD(v41) = state5 == 1;
+    LODWORD(v41) = state4 == 1;
     v36 = objc_opt_class();
     v37 = NSStringFromClass(v36);
     *buf = 138415618;
@@ -214,9 +214,9 @@ LABEL_34:
     v55 = 1024;
     v56 = v25 == 101;
     v57 = 1024;
-    v58 = v49 == 1;
+    v58 = state2 == 1;
     v59 = 1024;
-    v60 = v11 == 1;
+    v60 = state3 == 1;
     v61 = 1024;
     v62 = v41;
     v63 = 1024;
@@ -224,37 +224,37 @@ LABEL_34:
     v65 = 1024;
     v66 = v43 == 1;
     v67 = 1024;
-    v68 = v48 == 1;
+    v68 = state7 == 1;
     v69 = 1024;
-    v70 = v47 == 1;
+    v70 = state8 == 1;
     v71 = 1024;
-    v72 = v46 == 1;
+    v72 = state9 == 1;
     v73 = 1024;
-    v74 = v21 == 1;
+    v74 = state10 == 1;
     v75 = 1024;
-    v76 = v23;
-    v25 = v44;
+    v76 = bOOLValue;
+    v25 = state;
     v77 = 1024;
-    v78 = [(RestrictedPerfMode *)self allowOnCharger];
+    allowOnCharger = [(RestrictedPerfMode *)self allowOnCharger];
     _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEFAULT, "evaluatePowerMode: %@: %d display %d, carPlaySession %d, nFCSession %d, audioSession %d, sleepInProgress %d, wakeInProgress %d, onenessSession %d, siriAudio %d, fitnessIntelligence %d, dataMigrationInProgress %d, pluggedIn %d (allowOnCharger: %d)", buf, 0x5Au);
   }
 
-  v38 = (4 * (v25 == 101)) | (8 * (v49 == 1)) | (16 * (v11 == 1)) | (32 * (v50 == 1));
-  if (v14 == 1)
+  v38 = (4 * (v25 == 101)) | (8 * (state2 == 1)) | (16 * (state3 == 1)) | (32 * (state4 == 1));
+  if (state5 == 1)
   {
     ++v38;
   }
 
-  [(RestrictedPerfMode *)self setClientResponsible:(v38 | (2 * (v43 == 1)) | ((v48 == 1) << 7)) + ((v47 == 1) << 10) + ((v46 == 1) << 17) + ((v21 == 1) << 18), v41];
+  [(RestrictedPerfMode *)self setClientResponsible:(v38 | (2 * (v43 == 1)) | ((state7 == 1) << 7)) + ((state8 == 1) << 10) + ((state9 == 1) << 17) + ((state10 == 1) << 18), v41];
   v34 = v45;
   if ((v45 & 1) == 0 && [(PowerModeObjImpl *)self state])
   {
     v39 = [(PowerModeObjImpl *)self log];
     if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
     {
-      v40 = [(RestrictedPerfMode *)self clientResponsible];
+      clientResponsible = [(RestrictedPerfMode *)self clientResponsible];
       *buf = 134217984;
-      v52 = v40;
+      v52 = clientResponsible;
       _os_log_impl(&_mh_execute_header, v39, OS_LOG_TYPE_DEFAULT, "Client responsible %llu", buf, 0xCu);
     }
 
@@ -276,9 +276,9 @@ LABEL_35:
     v3 = [(PowerModeObjImpl *)self log];
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
-      v4 = [(PowerModeObjImpl *)self state];
+      state = [(PowerModeObjImpl *)self state];
       *buf = 67109120;
-      v7 = v4;
+      v7 = state;
       _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Entering restricted perf mode. New state %d", buf, 8u);
     }
 
@@ -296,9 +296,9 @@ LABEL_35:
     v3 = [(PowerModeObjImpl *)self log];
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
-      v4 = [(PowerModeObjImpl *)self state];
+      state = [(PowerModeObjImpl *)self state];
       *buf = 67109120;
-      v7 = v4;
+      v7 = state;
       _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Exiting restricted perf mode. New state %d", buf, 8u);
     }
 

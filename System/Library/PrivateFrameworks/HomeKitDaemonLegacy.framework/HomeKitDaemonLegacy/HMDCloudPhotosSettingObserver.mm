@@ -3,27 +3,27 @@
 + (id)logCategory;
 - (BOOL)isCloudPhotosEnabledOnAccount;
 - (HMDCloudPhotosSettingObserver)init;
-- (HMDCloudPhotosSettingObserver)initWithAccount:(id)a3 notificationCenter:(id)a4 isSupported:(BOOL)a5;
+- (HMDCloudPhotosSettingObserver)initWithAccount:(id)account notificationCenter:(id)center isSupported:(BOOL)supported;
 - (void)configure;
-- (void)handleAccountStoreDidChangeNotification:(id)a3;
+- (void)handleAccountStoreDidChangeNotification:(id)notification;
 @end
 
 @implementation HMDCloudPhotosSettingObserver
 
 - (BOOL)isCloudPhotosEnabledOnAccount
 {
-  v2 = [(HMDCloudPhotosSettingObserver *)self account];
-  v3 = [v2 isEnabledForDataclass:*MEMORY[0x277CB8960]];
+  account = [(HMDCloudPhotosSettingObserver *)self account];
+  v3 = [account isEnabledForDataclass:*MEMORY[0x277CB8960]];
 
   return v3;
 }
 
-- (void)handleAccountStoreDidChangeNotification:(id)a3
+- (void)handleAccountStoreDidChangeNotification:(id)notification
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  notificationCopy = notification;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -34,11 +34,11 @@
   }
 
   objc_autoreleasePoolPop(v5);
-  v9 = [(HMDCloudPhotosSettingObserver *)v6 isCloudPhotosEnabledOnAccount];
-  if (v9 != [(HMDCloudPhotosSettingObserver *)v6 isCloudPhotosEnabled])
+  isCloudPhotosEnabledOnAccount = [(HMDCloudPhotosSettingObserver *)selfCopy isCloudPhotosEnabledOnAccount];
+  if (isCloudPhotosEnabledOnAccount != [(HMDCloudPhotosSettingObserver *)selfCopy isCloudPhotosEnabled])
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = v6;
+    v11 = selfCopy;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
@@ -56,9 +56,9 @@
     }
 
     objc_autoreleasePoolPop(v10);
-    [(HMDCloudPhotosSettingObserver *)v11 setCloudPhotosEnabled:v9];
-    v16 = [(HMDCloudPhotosSettingObserver *)v11 notificationCenter];
-    [v16 postNotificationName:@"HMDCloudPhotoSettingChangedNotification" object:v11];
+    [(HMDCloudPhotosSettingObserver *)v11 setCloudPhotosEnabled:isCloudPhotosEnabledOnAccount];
+    notificationCenter = [(HMDCloudPhotosSettingObserver *)v11 notificationCenter];
+    [notificationCenter postNotificationName:@"HMDCloudPhotoSettingChangedNotification" object:v11];
   }
 
   v17 = *MEMORY[0x277D85DE8];
@@ -68,28 +68,28 @@
 {
   if ([(HMDCloudPhotosSettingObserver *)self isSupported])
   {
-    v3 = [(HMDCloudPhotosSettingObserver *)self notificationCenter];
-    [v3 addObserver:self selector:sel_handleAccountStoreDidChangeNotification_ name:*MEMORY[0x277CB8DB8] object:0];
+    notificationCenter = [(HMDCloudPhotosSettingObserver *)self notificationCenter];
+    [notificationCenter addObserver:self selector:sel_handleAccountStoreDidChangeNotification_ name:*MEMORY[0x277CB8DB8] object:0];
 
-    v4 = [(HMDCloudPhotosSettingObserver *)self isCloudPhotosEnabledOnAccount];
+    isCloudPhotosEnabledOnAccount = [(HMDCloudPhotosSettingObserver *)self isCloudPhotosEnabledOnAccount];
 
-    [(HMDCloudPhotosSettingObserver *)self setCloudPhotosEnabled:v4];
+    [(HMDCloudPhotosSettingObserver *)self setCloudPhotosEnabled:isCloudPhotosEnabledOnAccount];
   }
 }
 
-- (HMDCloudPhotosSettingObserver)initWithAccount:(id)a3 notificationCenter:(id)a4 isSupported:(BOOL)a5
+- (HMDCloudPhotosSettingObserver)initWithAccount:(id)account notificationCenter:(id)center isSupported:(BOOL)supported
 {
-  v9 = a3;
-  v10 = a4;
+  accountCopy = account;
+  centerCopy = center;
   v14.receiver = self;
   v14.super_class = HMDCloudPhotosSettingObserver;
   v11 = [(HMDCloudPhotosSettingObserver *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_account, a3);
-    objc_storeStrong(&v12->_notificationCenter, a4);
-    v12->_supported = a5;
+    objc_storeStrong(&v11->_account, account);
+    objc_storeStrong(&v12->_notificationCenter, center);
+    v12->_supported = supported;
   }
 
   return v12;
@@ -98,10 +98,10 @@
 - (HMDCloudPhotosSettingObserver)init
 {
   v3 = +[HMDAppleAccountManager sharedManager];
-  v4 = [v3 accountStore];
-  v5 = [v4 aa_primaryAppleAccount];
-  v6 = [MEMORY[0x277CCAB98] defaultCenter];
-  v7 = [(HMDCloudPhotosSettingObserver *)self initWithAccount:v5 notificationCenter:v6 isSupported:!isHomePod()];
+  accountStore = [v3 accountStore];
+  aa_primaryAppleAccount = [accountStore aa_primaryAppleAccount];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  v7 = [(HMDCloudPhotosSettingObserver *)self initWithAccount:aa_primaryAppleAccount notificationCenter:defaultCenter isSupported:!isHomePod()];
 
   return v7;
 }

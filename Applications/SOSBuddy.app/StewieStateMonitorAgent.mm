@@ -1,15 +1,15 @@
 @interface StewieStateMonitorAgent
 - (_TtC8SOSBuddy23StewieStateMonitorAgent)init;
-- (void)stateChanged:(id)a3;
+- (void)stateChanged:(id)changed;
 @end
 
 @implementation StewieStateMonitorAgent
 
-- (void)stateChanged:(id)a3
+- (void)stateChanged:(id)changed
 {
-  v4 = a3;
-  v5 = self;
-  sub_1001117D0(v4);
+  changedCopy = changed;
+  selfCopy = self;
+  sub_1001117D0(changedCopy);
 }
 
 - (_TtC8SOSBuddy23StewieStateMonitorAgent)init

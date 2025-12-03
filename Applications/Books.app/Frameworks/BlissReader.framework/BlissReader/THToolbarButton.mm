@@ -1,14 +1,14 @@
 @interface THToolbarButton
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (UIEdgeInsets)touchPadding;
 @end
 
 @implementation THToolbarButton
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   [(THToolbarButton *)self touchPadding];
   v8 = v7;
   v10 = v9;

@@ -1,10 +1,10 @@
 @interface SBProductivityGestureEducationActivationHistory
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation SBProductivityGestureEducationActivationHistory
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(SBProductivityGestureEducationActivationHistory);
   [(SBProductivityGestureEducationActivationHistory *)v4 setCount:self->_count];

@@ -23,9 +23,9 @@
       _os_log_impl(&dword_2263AA000, v4, OS_LOG_TYPE_DEFAULT, "%s: Starting up serial queue: %@", buf, 0x16u);
     }
 
-    v5 = [v3 UTF8String];
+    uTF8String = [v3 UTF8String];
     v6 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v7 = dispatch_queue_create(v5, v6);
+    v7 = dispatch_queue_create(uTF8String, v6);
     serialQueue = v2->_serialQueue;
     v2->_serialQueue = v7;
   }

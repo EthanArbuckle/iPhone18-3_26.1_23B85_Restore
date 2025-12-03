@@ -1,7 +1,7 @@
 @interface EDChartSheet
 - (CGRect)bounds;
-- (void)addDrawable:(id)a3;
-- (void)setMainChart:(id)a3;
+- (void)addDrawable:(id)drawable;
+- (void)setMainChart:(id)chart;
 - (void)teardown;
 @end
 
@@ -31,26 +31,26 @@
   [(EDSheet *)&v4 teardown];
 }
 
-- (void)setMainChart:(id)a3
+- (void)setMainChart:(id)chart
 {
-  v5 = a3;
+  chartCopy = chart;
   mMainChart = self->mMainChart;
-  v7 = v5;
-  if (mMainChart != v5)
+  v7 = chartCopy;
+  if (mMainChart != chartCopy)
   {
     [(CHDChart *)mMainChart setSheet:0];
-    objc_storeStrong(&self->mMainChart, a3);
+    objc_storeStrong(&self->mMainChart, chart);
     [(CHDChart *)self->mMainChart setSheet:self];
   }
 }
 
-- (void)addDrawable:(id)a3
+- (void)addDrawable:(id)drawable
 {
-  v4 = a3;
+  drawableCopy = drawable;
   mMainChart = self->mMainChart;
   if (mMainChart)
   {
-    [(CHDChart *)mMainChart addChild:v4];
+    [(CHDChart *)mMainChart addChild:drawableCopy];
   }
 
   else
@@ -58,14 +58,14 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(EDChartSheet *)self setMainChart:v4];
+      [(EDChartSheet *)self setMainChart:drawableCopy];
     }
 
     else
     {
       v6.receiver = self;
       v6.super_class = EDChartSheet;
-      [(EDSheet *)&v6 addDrawable:v4];
+      [(EDSheet *)&v6 addDrawable:drawableCopy];
     }
   }
 }

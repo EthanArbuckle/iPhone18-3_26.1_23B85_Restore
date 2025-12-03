@@ -1,26 +1,26 @@
 @interface ODBATCHSiriSchemaODBATCHClientEventMetadata
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (ODBATCHSiriSchemaODBATCHClientEventMetadata)initWithDictionary:(id)a3;
-- (ODBATCHSiriSchemaODBATCHClientEventMetadata)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (ODBATCHSiriSchemaODBATCHClientEventMetadata)initWithDictionary:(id)dictionary;
+- (ODBATCHSiriSchemaODBATCHClientEventMetadata)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ODBATCHSiriSchemaODBATCHClientEventMetadata
 
-- (ODBATCHSiriSchemaODBATCHClientEventMetadata)initWithDictionary:(id)a3
+- (ODBATCHSiriSchemaODBATCHClientEventMetadata)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = ODBATCHSiriSchemaODBATCHClientEventMetadata;
   v5 = [(ODBATCHSiriSchemaODBATCHClientEventMetadata *)&v13 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"odbatchId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"odbatchId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -28,7 +28,7 @@
       [(ODBATCHSiriSchemaODBATCHClientEventMetadata *)v5 setOdbatchId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"aggregationInterval"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"aggregationInterval"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -36,7 +36,7 @@
       [(ODBATCHSiriSchemaODBATCHClientEventMetadata *)v5 setAggregationInterval:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"eventTimestampInMsSince1970"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"eventTimestampInMsSince1970"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -49,30 +49,30 @@
   return v5;
 }
 
-- (ODBATCHSiriSchemaODBATCHClientEventMetadata)initWithJSON:(id)a3
+- (ODBATCHSiriSchemaODBATCHClientEventMetadata)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(ODBATCHSiriSchemaODBATCHClientEventMetadata *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(ODBATCHSiriSchemaODBATCHClientEventMetadata *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(ODBATCHSiriSchemaODBATCHClientEventMetadata *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -85,48 +85,48 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_aggregationInterval)
   {
-    v4 = [(ODBATCHSiriSchemaODBATCHClientEventMetadata *)self aggregationInterval];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    aggregationInterval = [(ODBATCHSiriSchemaODBATCHClientEventMetadata *)self aggregationInterval];
+    dictionaryRepresentation = [aggregationInterval dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"aggregationInterval"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"aggregationInterval"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"aggregationInterval"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"aggregationInterval"];
     }
   }
 
   if (*&self->_has)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[ODBATCHSiriSchemaODBATCHClientEventMetadata eventTimestampInMsSince1970](self, "eventTimestampInMsSince1970")}];
-    [v3 setObject:v7 forKeyedSubscript:@"eventTimestampInMsSince1970"];
+    [dictionary setObject:v7 forKeyedSubscript:@"eventTimestampInMsSince1970"];
   }
 
   if (self->_odbatchId)
   {
-    v8 = [(ODBATCHSiriSchemaODBATCHClientEventMetadata *)self odbatchId];
-    v9 = [v8 dictionaryRepresentation];
-    if (v9)
+    odbatchId = [(ODBATCHSiriSchemaODBATCHClientEventMetadata *)self odbatchId];
+    dictionaryRepresentation2 = [odbatchId dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v9 forKeyedSubscript:@"odbatchId"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"odbatchId"];
     }
 
     else
     {
-      v10 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v10 forKeyedSubscript:@"odbatchId"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"odbatchId"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -146,28 +146,28 @@
   return v4 ^ v3 ^ v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(ODBATCHSiriSchemaODBATCHClientEventMetadata *)self odbatchId];
-  v6 = [v4 odbatchId];
-  if ((v5 != 0) == (v6 == 0))
+  odbatchId = [(ODBATCHSiriSchemaODBATCHClientEventMetadata *)self odbatchId];
+  odbatchId2 = [equalCopy odbatchId];
+  if ((odbatchId != 0) == (odbatchId2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(ODBATCHSiriSchemaODBATCHClientEventMetadata *)self odbatchId];
-  if (v7)
+  odbatchId3 = [(ODBATCHSiriSchemaODBATCHClientEventMetadata *)self odbatchId];
+  if (odbatchId3)
   {
-    v8 = v7;
-    v9 = [(ODBATCHSiriSchemaODBATCHClientEventMetadata *)self odbatchId];
-    v10 = [v4 odbatchId];
-    v11 = [v9 isEqual:v10];
+    v8 = odbatchId3;
+    odbatchId4 = [(ODBATCHSiriSchemaODBATCHClientEventMetadata *)self odbatchId];
+    odbatchId5 = [equalCopy odbatchId];
+    v11 = [odbatchId4 isEqual:odbatchId5];
 
     if (!v11)
     {
@@ -179,22 +179,22 @@
   {
   }
 
-  v5 = [(ODBATCHSiriSchemaODBATCHClientEventMetadata *)self aggregationInterval];
-  v6 = [v4 aggregationInterval];
-  if ((v5 != 0) == (v6 == 0))
+  odbatchId = [(ODBATCHSiriSchemaODBATCHClientEventMetadata *)self aggregationInterval];
+  odbatchId2 = [equalCopy aggregationInterval];
+  if ((odbatchId != 0) == (odbatchId2 == 0))
   {
 LABEL_11:
 
     goto LABEL_12;
   }
 
-  v12 = [(ODBATCHSiriSchemaODBATCHClientEventMetadata *)self aggregationInterval];
-  if (v12)
+  aggregationInterval = [(ODBATCHSiriSchemaODBATCHClientEventMetadata *)self aggregationInterval];
+  if (aggregationInterval)
   {
-    v13 = v12;
-    v14 = [(ODBATCHSiriSchemaODBATCHClientEventMetadata *)self aggregationInterval];
-    v15 = [v4 aggregationInterval];
-    v16 = [v14 isEqual:v15];
+    v13 = aggregationInterval;
+    aggregationInterval2 = [(ODBATCHSiriSchemaODBATCHClientEventMetadata *)self aggregationInterval];
+    aggregationInterval3 = [equalCopy aggregationInterval];
+    v16 = [aggregationInterval2 isEqual:aggregationInterval3];
 
     if (!v16)
     {
@@ -206,9 +206,9 @@ LABEL_11:
   {
   }
 
-  if ((*&self->_has & 1) == (v4[32] & 1))
+  if ((*&self->_has & 1) == (equalCopy[32] & 1))
   {
-    if ((*&self->_has & 1) == 0 || (eventTimestampInMsSince1970 = self->_eventTimestampInMsSince1970, eventTimestampInMsSince1970 == [v4 eventTimestampInMsSince1970]))
+    if ((*&self->_has & 1) == 0 || (eventTimestampInMsSince1970 = self->_eventTimestampInMsSince1970, eventTimestampInMsSince1970 == [equalCopy eventTimestampInMsSince1970]))
     {
       v17 = 1;
       goto LABEL_13;
@@ -222,22 +222,22 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
-  v4 = [(ODBATCHSiriSchemaODBATCHClientEventMetadata *)self odbatchId];
+  toCopy = to;
+  odbatchId = [(ODBATCHSiriSchemaODBATCHClientEventMetadata *)self odbatchId];
 
-  if (v4)
+  if (odbatchId)
   {
-    v5 = [(ODBATCHSiriSchemaODBATCHClientEventMetadata *)self odbatchId];
+    odbatchId2 = [(ODBATCHSiriSchemaODBATCHClientEventMetadata *)self odbatchId];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(ODBATCHSiriSchemaODBATCHClientEventMetadata *)self aggregationInterval];
+  aggregationInterval = [(ODBATCHSiriSchemaODBATCHClientEventMetadata *)self aggregationInterval];
 
-  if (v6)
+  if (aggregationInterval)
   {
-    v7 = [(ODBATCHSiriSchemaODBATCHClientEventMetadata *)self aggregationInterval];
+    aggregationInterval2 = [(ODBATCHSiriSchemaODBATCHClientEventMetadata *)self aggregationInterval];
     PBDataWriterWriteSubmessage();
   }
 
@@ -247,26 +247,26 @@ LABEL_13:
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v13.receiver = self;
   v13.super_class = ODBATCHSiriSchemaODBATCHClientEventMetadata;
-  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:v4];
-  v6 = [(ODBATCHSiriSchemaODBATCHClientEventMetadata *)self odbatchId];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:policyCopy];
+  odbatchId = [(ODBATCHSiriSchemaODBATCHClientEventMetadata *)self odbatchId];
+  v7 = [odbatchId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(ODBATCHSiriSchemaODBATCHClientEventMetadata *)self deleteOdbatchId];
   }
 
-  v9 = [(ODBATCHSiriSchemaODBATCHClientEventMetadata *)self aggregationInterval];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  aggregationInterval = [(ODBATCHSiriSchemaODBATCHClientEventMetadata *)self aggregationInterval];
+  v10 = [aggregationInterval applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(ODBATCHSiriSchemaODBATCHClientEventMetadata *)self deleteAggregationInterval];
   }

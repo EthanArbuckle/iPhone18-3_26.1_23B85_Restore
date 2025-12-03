@@ -1,14 +1,14 @@
 @interface FigCaptureInterruptionStatus
-- (FigCaptureInterruptionStatus)initWithReason:(int)a3 systemWide:(BOOL)a4 delegate:(id)a5 context:(id)a6;
+- (FigCaptureInterruptionStatus)initWithReason:(int)reason systemWide:(BOOL)wide delegate:(id)delegate context:(id)context;
 - (id)description;
 - (void)dealloc;
 - (void)resolve;
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation FigCaptureInterruptionStatus
 
-- (FigCaptureInterruptionStatus)initWithReason:(int)a3 systemWide:(BOOL)a4 delegate:(id)a5 context:(id)a6
+- (FigCaptureInterruptionStatus)initWithReason:(int)reason systemWide:(BOOL)wide delegate:(id)delegate context:(id)context
 {
   v13.receiver = self;
   v13.super_class = FigCaptureInterruptionStatus;
@@ -16,10 +16,10 @@
   v11 = v10;
   if (v10)
   {
-    v10->_reason = a3;
-    v10->_systemWide = a4;
-    objc_storeWeak(&v10->_delegate, a5);
-    v11->_context = a6;
+    v10->_reason = reason;
+    v10->_systemWide = wide;
+    objc_storeWeak(&v10->_delegate, delegate);
+    v11->_context = context;
   }
 
   return v11;
@@ -47,10 +47,10 @@
   return [MEMORY[0x1E696AEC0] stringWithFormat:@"[Interrupt %p:%s reason=%d systemWide=%d delegate=%p context=%@]", self, v2, self->_reason, self->_systemWide, objc_loadWeak(&self->_delegate), self->_context];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  objc_storeWeak(&self->_delegate, a3);
-  if (!a3)
+  objc_storeWeak(&self->_delegate, delegate);
+  if (!delegate)
   {
 
     self->_context = 0;

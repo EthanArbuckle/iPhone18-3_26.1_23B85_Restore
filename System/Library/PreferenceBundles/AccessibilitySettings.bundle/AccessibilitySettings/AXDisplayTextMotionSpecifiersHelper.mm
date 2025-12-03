@@ -3,60 +3,60 @@
 - (AccessibilitySettingsBaseController)settingsController;
 - (BOOL)_reduceMotionAvailable;
 - (id)_accessibilitySettingsBaseController;
-- (id)_generateSpecifierForName:(id)a3 set:(SEL)a4 get:(SEL)a5 inBuddy:(BOOL)a6;
-- (id)autoplayAnimatedImages:(id)a3;
-- (id)autoplayMessagesEffects:(id)a3;
-- (id)autoplayVideoPreviews:(id)a3;
-- (id)boldTextEnabled:(id)a3;
-- (id)buttonShapesEnabled:(id)a3;
-- (id)darkenColorsEnabled:(id)a3;
-- (id)differentiateWithoutColor:(id)a3;
-- (id)displayTextSpecifiersIncludingSmartInvert:(BOOL)a3 isPerApp:(BOOL)a4;
-- (id)largerTextEnabled:(id)a3;
-- (id)motionCuesEnabled:(id)a3;
+- (id)_generateSpecifierForName:(id)name set:(SEL)set get:(SEL)get inBuddy:(BOOL)buddy;
+- (id)autoplayAnimatedImages:(id)images;
+- (id)autoplayMessagesEffects:(id)effects;
+- (id)autoplayVideoPreviews:(id)previews;
+- (id)boldTextEnabled:(id)enabled;
+- (id)buttonShapesEnabled:(id)enabled;
+- (id)darkenColorsEnabled:(id)enabled;
+- (id)differentiateWithoutColor:(id)color;
+- (id)displayTextSpecifiersIncludingSmartInvert:(BOOL)invert isPerApp:(BOOL)app;
+- (id)largerTextEnabled:(id)enabled;
+- (id)motionCuesEnabled:(id)enabled;
 - (id)motionSpecifiers;
-- (id)onOffLabelsEnabled:(id)a3;
-- (id)preferHorizontalText:(id)a3;
-- (id)preferNonBlinkingCursor:(id)a3;
-- (id)preferenceValue:(id)a3;
-- (id)reduceMotionEnabled:(id)a3;
-- (id)reduceMotionReduceSlideTransitionsEnabled:(id)a3;
-- (id)reduceTransparencyEnabled:(id)a3;
-- (id)refreshRateEnabled:(id)a3;
-- (id)smartInvertEnabled:(id)a3;
+- (id)onOffLabelsEnabled:(id)enabled;
+- (id)preferHorizontalText:(id)text;
+- (id)preferNonBlinkingCursor:(id)cursor;
+- (id)preferenceValue:(id)value;
+- (id)reduceMotionEnabled:(id)enabled;
+- (id)reduceMotionReduceSlideTransitionsEnabled:(id)enabled;
+- (id)reduceTransparencyEnabled:(id)enabled;
+- (id)refreshRateEnabled:(id)enabled;
+- (id)smartInvertEnabled:(id)enabled;
 - (int)largerTextPerAppValue;
-- (void)_motionCuesLearnMoreLinkTapped:(id)a3;
-- (void)_setupSpecifierIfNeeded:(id)a3 setBlock:(id)a4 getBlock:(id)a5;
-- (void)_updateReduceSlideTransitionsSpecifiersAnimated:(BOOL)a3;
-- (void)_updateSpecifierState:(id)a3;
-- (void)handleGlobalSmartInvertEnabled:(BOOL)a3;
-- (void)setAutoplayAnimatedImages:(id)a3 specifier:(id)a4;
-- (void)setAutoplayMessagesEffects:(id)a3 specifier:(id)a4;
-- (void)setAutoplayVideoPreviews:(id)a3 specifier:(id)a4;
-- (void)setBoldTextEnabled:(id)a3 specifier:(id)a4;
-- (void)setButtonShapesEnabled:(id)a3 specifier:(id)a4;
-- (void)setDarkenColorsEnabled:(id)a3 specifier:(id)a4;
-- (void)setDifferentiateWithoutColorEnabled:(id)a3 specifier:(id)a4;
-- (void)setOnOffLabelsEnabled:(id)a3 specifier:(id)a4;
-- (void)setPreferHorizontalText:(id)a3 specifier:(id)a4;
-- (void)setPreferNonBlinkingCursor:(id)a3 specifier:(id)a4;
-- (void)setPreferenceValue:(id)a3 specifier:(id)a4;
-- (void)setReduceMotionEnabled:(id)a3 specifier:(id)a4;
-- (void)setReduceMotionReduceSlideTransitionsEnabled:(id)a3 specifier:(id)a4;
-- (void)setReduceTransparencyEnabled:(id)a3 specifier:(id)a4;
-- (void)setRefreshRateEnabled:(id)a3 specifier:(id)a4;
-- (void)setSmartInvertEnabled:(id)a3 specifier:(id)a4;
+- (void)_motionCuesLearnMoreLinkTapped:(id)tapped;
+- (void)_setupSpecifierIfNeeded:(id)needed setBlock:(id)block getBlock:(id)getBlock;
+- (void)_updateReduceSlideTransitionsSpecifiersAnimated:(BOOL)animated;
+- (void)_updateSpecifierState:(id)state;
+- (void)handleGlobalSmartInvertEnabled:(BOOL)enabled;
+- (void)setAutoplayAnimatedImages:(id)images specifier:(id)specifier;
+- (void)setAutoplayMessagesEffects:(id)effects specifier:(id)specifier;
+- (void)setAutoplayVideoPreviews:(id)previews specifier:(id)specifier;
+- (void)setBoldTextEnabled:(id)enabled specifier:(id)specifier;
+- (void)setButtonShapesEnabled:(id)enabled specifier:(id)specifier;
+- (void)setDarkenColorsEnabled:(id)enabled specifier:(id)specifier;
+- (void)setDifferentiateWithoutColorEnabled:(id)enabled specifier:(id)specifier;
+- (void)setOnOffLabelsEnabled:(id)enabled specifier:(id)specifier;
+- (void)setPreferHorizontalText:(id)text specifier:(id)specifier;
+- (void)setPreferNonBlinkingCursor:(id)cursor specifier:(id)specifier;
+- (void)setPreferenceValue:(id)value specifier:(id)specifier;
+- (void)setReduceMotionEnabled:(id)enabled specifier:(id)specifier;
+- (void)setReduceMotionReduceSlideTransitionsEnabled:(id)enabled specifier:(id)specifier;
+- (void)setReduceTransparencyEnabled:(id)enabled specifier:(id)specifier;
+- (void)setRefreshRateEnabled:(id)enabled specifier:(id)specifier;
+- (void)setSmartInvertEnabled:(id)enabled specifier:(id)specifier;
 @end
 
 @implementation AXDisplayTextMotionSpecifiersHelper
 
-- (id)displayTextSpecifiersIncludingSmartInvert:(BOOL)a3 isPerApp:(BOOL)a4
+- (id)displayTextSpecifiersIncludingSmartInvert:(BOOL)invert isPerApp:(BOOL)app
 {
-  v56 = a3;
+  invertCopy = invert;
   v62 = [objc_allocWithZone(NSMutableArray) init];
-  v63 = self;
+  selfCopy = self;
   objc_initWeak(&location, self);
-  v5 = self;
+  selfCopy3 = self;
   self->_isService = [(NSString *)self->_appID isEqualToString:AX_LiveTranscriptionBundleName];
   appID = self->_appID;
   if (appID)
@@ -73,7 +73,7 @@
   if (appID)
   {
 
-    v5 = self;
+    selfCopy3 = self;
   }
 
   v60 = AXInBuddySetupKey;
@@ -129,12 +129,12 @@
 
           v21 = *(*(&v108 + 1) + 8 * i);
           v113[0] = @"headerLabel";
-          v22 = [v21 itemTitle];
-          v114[0] = v22;
+          itemTitle = [v21 itemTitle];
+          v114[0] = itemTitle;
           v113[1] = @"contentLabel";
-          v23 = [v21 itemDescription];
+          itemDescription = [v21 itemDescription];
           v113[2] = @"alreadyLocalized";
-          v114[1] = v23;
+          v114[1] = itemDescription;
           v114[2] = &__kCFBooleanTrue;
           v24 = [NSDictionary dictionaryWithObjects:v114 forKeys:v113 count:3];
           [v14 addObject:v24];
@@ -150,11 +150,11 @@
     [v58 addObject:v57];
     [v61 setProperty:v58 forKey:@"content"];
 
-    v5 = v63;
+    selfCopy3 = selfCopy;
   }
 
   [v62 addObject:v61];
-  v25 = [(AXDisplayTextMotionSpecifiersHelper *)v5 _generateSpecifierForName:@"ENHANCE_TEXT_LEGIBILITY" set:"setBoldTextEnabled:specifier:" get:"boldTextEnabled:" inBuddy:1];
+  v25 = [(AXDisplayTextMotionSpecifiersHelper *)selfCopy3 _generateSpecifierForName:@"ENHANCE_TEXT_LEGIBILITY" set:"setBoldTextEnabled:specifier:" get:"boldTextEnabled:" inBuddy:1];
 
   v105[0] = _NSConcreteStackBlock;
   v105[1] = 3221225472;
@@ -168,14 +168,14 @@
   v103[2] = __90__AXDisplayTextMotionSpecifiersHelper_displayTextSpecifiersIncludingSmartInvert_isPerApp___block_invoke_2;
   v103[3] = &unk_255E60;
   objc_copyWeak(&v104, &location);
-  [(AXDisplayTextMotionSpecifiersHelper *)v63 _setupSpecifierIfNeeded:v26 setBlock:v105 getBlock:v103];
+  [(AXDisplayTextMotionSpecifiersHelper *)selfCopy _setupSpecifierIfNeeded:v26 setBlock:v105 getBlock:v103];
   [v62 addObject:v26];
   v27 = settingsLocString(@"LARGER_TEXT", @"Accessibility");
-  v28 = [PSSpecifier preferenceSpecifierNamed:v27 target:v63 set:0 get:"largerTextEnabled:" detail:objc_opt_class() cell:2 edit:0];
+  v28 = [PSSpecifier preferenceSpecifierNamed:v27 target:selfCopy set:0 get:"largerTextEnabled:" detail:objc_opt_class() cell:2 edit:0];
 
   [v28 setProperty:&__kCFBooleanTrue forKey:v60];
   [v28 setProperty:@"LARGER_TEXT" forKey:PSIDKey];
-  [v28 setProperty:v63->_appID forKey:@"BundleIdentifier"];
+  [v28 setProperty:selfCopy->_appID forKey:@"BundleIdentifier"];
   v100[0] = _NSConcreteStackBlock;
   v100[1] = 3221225472;
   v100[2] = __90__AXDisplayTextMotionSpecifiersHelper_displayTextSpecifiersIncludingSmartInvert_isPerApp___block_invoke_3;
@@ -187,15 +187,15 @@
   v99[1] = 3221225472;
   v99[2] = __90__AXDisplayTextMotionSpecifiersHelper_displayTextSpecifiersIncludingSmartInvert_isPerApp___block_invoke_4;
   v99[3] = &unk_258558;
-  v99[4] = v63;
-  [(AXDisplayTextMotionSpecifiersHelper *)v63 _setupSpecifierIfNeeded:v29 setBlock:v100 getBlock:v99];
+  v99[4] = selfCopy;
+  [(AXDisplayTextMotionSpecifiersHelper *)selfCopy _setupSpecifierIfNeeded:v29 setBlock:v100 getBlock:v99];
   [v62 addObject:v29];
 
   objc_destroyWeak(&v102);
-  v30 = v63;
-  if (!v63->_isService)
+  v30 = selfCopy;
+  if (!selfCopy->_isService)
   {
-    v31 = [(AXDisplayTextMotionSpecifiersHelper *)v63 _generateSpecifierForName:@"BUTTON_SHAPES" set:"setButtonShapesEnabled:specifier:" get:"buttonShapesEnabled:" inBuddy:0];
+    v31 = [(AXDisplayTextMotionSpecifiersHelper *)selfCopy _generateSpecifierForName:@"BUTTON_SHAPES" set:"setButtonShapesEnabled:specifier:" get:"buttonShapesEnabled:" inBuddy:0];
 
     v96[0] = _NSConcreteStackBlock;
     v96[1] = 3221225472;
@@ -209,11 +209,11 @@
     v94[2] = __90__AXDisplayTextMotionSpecifiersHelper_displayTextSpecifiersIncludingSmartInvert_isPerApp___block_invoke_6;
     v94[3] = &unk_255E60;
     objc_copyWeak(&v95, &location);
-    [(AXDisplayTextMotionSpecifiersHelper *)v63 _setupSpecifierIfNeeded:v32 setBlock:v96 getBlock:v94];
+    [(AXDisplayTextMotionSpecifiersHelper *)selfCopy _setupSpecifierIfNeeded:v32 setBlock:v96 getBlock:v94];
     [v62 addObject:v32];
-    v33 = [(AXDisplayTextMotionSpecifiersHelper *)v63 _generateSpecifierForName:@"ON_OFF_LABELS" set:"setOnOffLabelsEnabled:specifier:" get:"onOffLabelsEnabled:" inBuddy:0];
+    v33 = [(AXDisplayTextMotionSpecifiersHelper *)selfCopy _generateSpecifierForName:@"ON_OFF_LABELS" set:"setOnOffLabelsEnabled:specifier:" get:"onOffLabelsEnabled:" inBuddy:0];
 
-    if (!v63->_appID)
+    if (!selfCopy->_appID)
     {
       [v33 setObject:objc_opt_class() forKeyedSubscript:PSCellClassKey];
     }
@@ -230,7 +230,7 @@
     v89[2] = __90__AXDisplayTextMotionSpecifiersHelper_displayTextSpecifiersIncludingSmartInvert_isPerApp___block_invoke_8;
     v89[3] = &unk_255E60;
     objc_copyWeak(&v90, &location);
-    [(AXDisplayTextMotionSpecifiersHelper *)v63 _setupSpecifierIfNeeded:v34 setBlock:v91 getBlock:v89];
+    [(AXDisplayTextMotionSpecifiersHelper *)selfCopy _setupSpecifierIfNeeded:v34 setBlock:v91 getBlock:v89];
     [v34 setProperty:@"OnOffLabels" forKey:PSKeyNameKey];
     [v62 addObject:v34];
     v35 = +[PSSpecifier emptyGroupSpecifier];
@@ -241,7 +241,7 @@
 
     [v35 setProperty:&__kCFBooleanTrue forKey:v60];
     [v62 addObject:v35];
-    v38 = [(AXDisplayTextMotionSpecifiersHelper *)v63 _generateSpecifierForName:@"REDUCE_TRANSPARENCY" set:"setReduceTransparencyEnabled:specifier:" get:"reduceTransparencyEnabled:" inBuddy:1];
+    v38 = [(AXDisplayTextMotionSpecifiersHelper *)selfCopy _generateSpecifierForName:@"REDUCE_TRANSPARENCY" set:"setReduceTransparencyEnabled:specifier:" get:"reduceTransparencyEnabled:" inBuddy:1];
 
     v86[0] = _NSConcreteStackBlock;
     v86[1] = 3221225472;
@@ -255,7 +255,7 @@
     v84[2] = __90__AXDisplayTextMotionSpecifiersHelper_displayTextSpecifiersIncludingSmartInvert_isPerApp___block_invoke_10;
     v84[3] = &unk_255E60;
     objc_copyWeak(&v85, &location);
-    [(AXDisplayTextMotionSpecifiersHelper *)v63 _setupSpecifierIfNeeded:v39 setBlock:v86 getBlock:v84];
+    [(AXDisplayTextMotionSpecifiersHelper *)selfCopy _setupSpecifierIfNeeded:v39 setBlock:v86 getBlock:v84];
     [v62 addObject:v39];
     objc_destroyWeak(&v85);
 
@@ -267,7 +267,7 @@
 
     [v40 setProperty:&__kCFBooleanTrue forKey:v60];
     [v62 addObject:v40];
-    v42 = [(AXDisplayTextMotionSpecifiersHelper *)v63 _generateSpecifierForName:@"TEXT_COLORS_DARKEN" set:"setDarkenColorsEnabled:specifier:" get:"darkenColorsEnabled:" inBuddy:1];
+    v42 = [(AXDisplayTextMotionSpecifiersHelper *)selfCopy _generateSpecifierForName:@"TEXT_COLORS_DARKEN" set:"setDarkenColorsEnabled:specifier:" get:"darkenColorsEnabled:" inBuddy:1];
 
     v81[0] = _NSConcreteStackBlock;
     v81[1] = 3221225472;
@@ -281,7 +281,7 @@
     v79[2] = __90__AXDisplayTextMotionSpecifiersHelper_displayTextSpecifiersIncludingSmartInvert_isPerApp___block_invoke_12;
     v79[3] = &unk_255E60;
     objc_copyWeak(&v80, &location);
-    [(AXDisplayTextMotionSpecifiersHelper *)v63 _setupSpecifierIfNeeded:v43 setBlock:v81 getBlock:v79];
+    [(AXDisplayTextMotionSpecifiersHelper *)selfCopy _setupSpecifierIfNeeded:v43 setBlock:v81 getBlock:v79];
     [v62 addObject:v43];
     v44 = +[PSSpecifier emptyGroupSpecifier];
 
@@ -290,7 +290,7 @@
 
     [v44 setProperty:&__kCFBooleanTrue forKey:v60];
     [v62 addObject:v44];
-    v46 = [(AXDisplayTextMotionSpecifiersHelper *)v63 _generateSpecifierForName:@"DIFFERENTIATE_WITHOUT_COLOR" set:"setDifferentiateWithoutColorEnabled:specifier:" get:"differentiateWithoutColor:" inBuddy:1];
+    v46 = [(AXDisplayTextMotionSpecifiersHelper *)selfCopy _generateSpecifierForName:@"DIFFERENTIATE_WITHOUT_COLOR" set:"setDifferentiateWithoutColorEnabled:specifier:" get:"differentiateWithoutColor:" inBuddy:1];
 
     v76[0] = _NSConcreteStackBlock;
     v76[1] = 3221225472;
@@ -304,7 +304,7 @@
     v74[2] = __90__AXDisplayTextMotionSpecifiersHelper_displayTextSpecifiersIncludingSmartInvert_isPerApp___block_invoke_14;
     v74[3] = &unk_255E60;
     objc_copyWeak(&v75, &location);
-    [(AXDisplayTextMotionSpecifiersHelper *)v63 _setupSpecifierIfNeeded:v47 setBlock:v76 getBlock:v74];
+    [(AXDisplayTextMotionSpecifiersHelper *)selfCopy _setupSpecifierIfNeeded:v47 setBlock:v76 getBlock:v74];
     [v62 addObject:v47];
     v48 = +[PSSpecifier emptyGroupSpecifier];
 
@@ -313,7 +313,7 @@
 
     [v48 setProperty:&__kCFBooleanTrue forKey:v60];
     [v62 addObject:v48];
-    v50 = [(AXDisplayTextMotionSpecifiersHelper *)v63 _generateSpecifierForName:@"PREFER_HORIZONTAL_TEXT" set:"setPreferHorizontalText:specifier:" get:"preferHorizontalText:" inBuddy:1];
+    v50 = [(AXDisplayTextMotionSpecifiersHelper *)selfCopy _generateSpecifierForName:@"PREFER_HORIZONTAL_TEXT" set:"setPreferHorizontalText:specifier:" get:"preferHorizontalText:" inBuddy:1];
 
     v71[0] = _NSConcreteStackBlock;
     v71[1] = 3221225472;
@@ -327,9 +327,9 @@
     v69[2] = __90__AXDisplayTextMotionSpecifiersHelper_displayTextSpecifiersIncludingSmartInvert_isPerApp___block_invoke_16;
     v69[3] = &unk_255E60;
     objc_copyWeak(&v70, &location);
-    [(AXDisplayTextMotionSpecifiersHelper *)v63 _setupSpecifierIfNeeded:v29 setBlock:v71 getBlock:v69];
+    [(AXDisplayTextMotionSpecifiersHelper *)selfCopy _setupSpecifierIfNeeded:v29 setBlock:v71 getBlock:v69];
     [v62 addObject:v29];
-    if (v56)
+    if (invertCopy)
     {
       v51 = +[PSSpecifier emptyGroupSpecifier];
 
@@ -338,7 +338,7 @@
 
       [v51 setProperty:&__kCFBooleanTrue forKey:v60];
       [v62 addObject:v51];
-      v53 = [(AXDisplayTextMotionSpecifiersHelper *)v63 _generateSpecifierForName:@"SMART_INVERT" set:"setSmartInvertEnabled:specifier:" get:"smartInvertEnabled:" inBuddy:1];
+      v53 = [(AXDisplayTextMotionSpecifiersHelper *)selfCopy _generateSpecifierForName:@"SMART_INVERT" set:"setSmartInvertEnabled:specifier:" get:"smartInvertEnabled:" inBuddy:1];
 
       v66[0] = _NSConcreteStackBlock;
       v66[1] = 3221225472;
@@ -352,7 +352,7 @@
       v64[2] = __90__AXDisplayTextMotionSpecifiersHelper_displayTextSpecifiersIncludingSmartInvert_isPerApp___block_invoke_18;
       v64[3] = &unk_255E60;
       objc_copyWeak(&v65, &location);
-      [(AXDisplayTextMotionSpecifiersHelper *)v63 _setupSpecifierIfNeeded:v29 setBlock:v66 getBlock:v64];
+      [(AXDisplayTextMotionSpecifiersHelper *)selfCopy _setupSpecifierIfNeeded:v29 setBlock:v66 getBlock:v64];
       [v62 addObject:v29];
       objc_destroyWeak(&v65);
 
@@ -374,7 +374,7 @@
     objc_destroyWeak(&v95);
 
     objc_destroyWeak(&v98);
-    v30 = v63;
+    v30 = selfCopy;
   }
 
   WeakRetained = objc_loadWeakRetained(&v30->_settingsController);
@@ -524,7 +524,7 @@ id __90__AXDisplayTextMotionSpecifiersHelper_displayTextSpecifiersIncludingSmart
 - (id)motionSpecifiers
 {
   v80 = [objc_allocWithZone(NSMutableArray) init];
-  v81 = self;
+  selfCopy = self;
   objc_initWeak(&location, self);
   appID = self->_appID;
   if (appID)
@@ -559,7 +559,7 @@ id __90__AXDisplayTextMotionSpecifiersHelper_displayTextSpecifiersIncludingSmart
   [v5 setProperty:&__kCFBooleanTrue forKey:v79];
   v77 = PSFooterTextGroupKey;
   [v5 setProperty:v6 forKey:?];
-  v9 = [(AXDisplayTextMotionSpecifiersHelper *)v81 _generateSpecifierForName:@"REDUCE_MOTION" set:"setReduceMotionEnabled:specifier:" get:"reduceMotionEnabled:" inBuddy:1];
+  v9 = [(AXDisplayTextMotionSpecifiersHelper *)selfCopy _generateSpecifierForName:@"REDUCE_MOTION" set:"setReduceMotionEnabled:specifier:" get:"reduceMotionEnabled:" inBuddy:1];
   v76 = v6;
 
   v103[0] = _NSConcreteStackBlock;
@@ -574,12 +574,12 @@ id __90__AXDisplayTextMotionSpecifiersHelper_displayTextSpecifiersIncludingSmart
   v101[2] = __55__AXDisplayTextMotionSpecifiersHelper_motionSpecifiers__block_invoke_2;
   v101[3] = &unk_255E60;
   objc_copyWeak(&v102, &location);
-  [(AXDisplayTextMotionSpecifiersHelper *)v81 _setupSpecifierIfNeeded:v10 setBlock:v103 getBlock:v101];
+  [(AXDisplayTextMotionSpecifiersHelper *)selfCopy _setupSpecifierIfNeeded:v10 setBlock:v103 getBlock:v101];
   [v80 addObject:v10];
-  v11 = [(AXDisplayTextMotionSpecifiersHelper *)v81 _generateSpecifierForName:@"REDUCE_MOTION_REDUCE_SLIDE_ANIMATIONS" set:"setReduceMotionReduceSlideTransitionsEnabled:specifier:" get:"reduceMotionReduceSlideTransitionsEnabled:" inBuddy:1];
-  [(AXDisplayTextMotionSpecifiersHelper *)v81 setReduceMotionReduceSlideTransitionsSpecifier:v11];
+  v11 = [(AXDisplayTextMotionSpecifiersHelper *)selfCopy _generateSpecifierForName:@"REDUCE_MOTION_REDUCE_SLIDE_ANIMATIONS" set:"setReduceMotionReduceSlideTransitionsEnabled:specifier:" get:"reduceMotionReduceSlideTransitionsEnabled:" inBuddy:1];
+  [(AXDisplayTextMotionSpecifiersHelper *)selfCopy setReduceMotionReduceSlideTransitionsSpecifier:v11];
 
-  v12 = [(AXDisplayTextMotionSpecifiersHelper *)v81 reduceMotionReduceSlideTransitionsSpecifier];
+  reduceMotionReduceSlideTransitionsSpecifier = [(AXDisplayTextMotionSpecifiersHelper *)selfCopy reduceMotionReduceSlideTransitionsSpecifier];
   v99[0] = _NSConcreteStackBlock;
   v99[1] = 3221225472;
   v99[2] = __55__AXDisplayTextMotionSpecifiersHelper_motionSpecifiers__block_invoke_3;
@@ -590,32 +590,32 @@ id __90__AXDisplayTextMotionSpecifiersHelper_displayTextSpecifiersIncludingSmart
   v97[2] = __55__AXDisplayTextMotionSpecifiersHelper_motionSpecifiers__block_invoke_4;
   v97[3] = &unk_255E60;
   objc_copyWeak(&v98, &location);
-  [(AXDisplayTextMotionSpecifiersHelper *)v81 _setupSpecifierIfNeeded:v12 setBlock:v99 getBlock:v97];
+  [(AXDisplayTextMotionSpecifiersHelper *)selfCopy _setupSpecifierIfNeeded:reduceMotionReduceSlideTransitionsSpecifier setBlock:v99 getBlock:v97];
 
   v13 = +[PSSpecifier emptyGroupSpecifier];
-  [(AXDisplayTextMotionSpecifiersHelper *)v81 setReduceMotionReduceSlideTransitionsFooterSpecifier:v13];
+  [(AXDisplayTextMotionSpecifiersHelper *)selfCopy setReduceMotionReduceSlideTransitionsFooterSpecifier:v13];
 
-  v14 = [(AXDisplayTextMotionSpecifiersHelper *)v81 reduceMotionReduceSlideTransitionsFooterSpecifier];
+  reduceMotionReduceSlideTransitionsFooterSpecifier = [(AXDisplayTextMotionSpecifiersHelper *)selfCopy reduceMotionReduceSlideTransitionsFooterSpecifier];
   v15 = settingsLocString(@"REDUCE_MOTION_REDUCE_SLIDE_ANIMATIONS_FOOTER", @"Accessibility");
-  [v14 setProperty:v15 forKey:v77];
+  [reduceMotionReduceSlideTransitionsFooterSpecifier setProperty:v15 forKey:v77];
 
-  v16 = [(AXDisplayTextMotionSpecifiersHelper *)v81 reduceMotionReduceSlideTransitionsFooterSpecifier];
-  [v16 setProperty:&__kCFBooleanTrue forKey:v79];
+  reduceMotionReduceSlideTransitionsFooterSpecifier2 = [(AXDisplayTextMotionSpecifiersHelper *)selfCopy reduceMotionReduceSlideTransitionsFooterSpecifier];
+  [reduceMotionReduceSlideTransitionsFooterSpecifier2 setProperty:&__kCFBooleanTrue forKey:v79];
 
-  v17 = [(AXDisplayTextMotionSpecifiersHelper *)v81 reduceMotionReduceSlideTransitionsFooterSpecifier];
-  [v17 setProperty:@"ReduceMotionReduceSlideAnimationsFooter" forKey:v78];
+  reduceMotionReduceSlideTransitionsFooterSpecifier3 = [(AXDisplayTextMotionSpecifiersHelper *)selfCopy reduceMotionReduceSlideTransitionsFooterSpecifier];
+  [reduceMotionReduceSlideTransitionsFooterSpecifier3 setProperty:@"ReduceMotionReduceSlideAnimationsFooter" forKey:v78];
 
-  if ([(AXDisplayTextMotionSpecifiersHelper *)v81 _reduceMotionAvailable])
+  if ([(AXDisplayTextMotionSpecifiersHelper *)selfCopy _reduceMotionAvailable])
   {
-    v18 = [(AXDisplayTextMotionSpecifiersHelper *)v81 reduceMotionReduceSlideTransitionsFooterSpecifier];
-    v118[0] = v18;
-    v19 = [(AXDisplayTextMotionSpecifiersHelper *)v81 reduceMotionReduceSlideTransitionsSpecifier];
-    v118[1] = v19;
+    reduceMotionReduceSlideTransitionsFooterSpecifier4 = [(AXDisplayTextMotionSpecifiersHelper *)selfCopy reduceMotionReduceSlideTransitionsFooterSpecifier];
+    v118[0] = reduceMotionReduceSlideTransitionsFooterSpecifier4;
+    reduceMotionReduceSlideTransitionsSpecifier2 = [(AXDisplayTextMotionSpecifiersHelper *)selfCopy reduceMotionReduceSlideTransitionsSpecifier];
+    v118[1] = reduceMotionReduceSlideTransitionsSpecifier2;
     v20 = [NSArray arrayWithObjects:v118 count:2];
     [v80 addObjectsFromArray:v20];
   }
 
-  if (AXDeviceSupportsMotionCues() && !v81->_appID)
+  if (AXDeviceSupportsMotionCues() && !selfCopy->_appID)
   {
     v75 = +[PSSpecifier emptyGroupSpecifier];
 
@@ -646,7 +646,7 @@ id __90__AXDisplayTextMotionSpecifiersHelper_displayTextSpecifiersIncludingSmart
     v96[1] = 3221225472;
     v96[2] = __55__AXDisplayTextMotionSpecifiersHelper_motionSpecifiers__block_invoke_5;
     v96[3] = &unk_2553B0;
-    v96[4] = v81;
+    v96[4] = selfCopy;
     v27 = objc_retainBlock(v96);
     v117[4] = v27;
     v28 = [NSDictionary dictionaryWithObjects:v117 forKeys:v116 count:5];
@@ -707,12 +707,12 @@ id __90__AXDisplayTextMotionSpecifiersHelper_displayTextSpecifiersIncludingSmart
 
             v42 = *(*(&v92 + 1) + 8 * i);
             v107[0] = @"headerLabel";
-            v43 = [v42 itemTitle];
-            v108[0] = v43;
+            itemTitle = [v42 itemTitle];
+            v108[0] = itemTitle;
             v107[1] = @"contentLabel";
-            v44 = [v42 itemDescription];
+            itemDescription = [v42 itemDescription];
             v107[2] = @"alreadyLocalized";
-            v108[1] = v44;
+            v108[1] = itemDescription;
             v108[2] = &__kCFBooleanTrue;
             v45 = [NSDictionary dictionaryWithObjects:v108 forKeys:v107 count:3];
             [v35 addObject:v45];
@@ -731,14 +731,14 @@ id __90__AXDisplayTextMotionSpecifiersHelper_displayTextSpecifiersIncludingSmart
     [v75 setProperty:v74 forKey:@"content"];
     [v80 addObject:v75];
     v46 = settingsLocString(@"MotionCuesTitle", @"Accessibility-MotionCues");
-    v10 = [PSSpecifier preferenceSpecifierNamed:v46 target:v81 set:0 get:"motionCuesEnabled:" detail:objc_opt_class() cell:2 edit:0];
+    v10 = [PSSpecifier preferenceSpecifierNamed:v46 target:selfCopy set:0 get:"motionCuesEnabled:" detail:objc_opt_class() cell:2 edit:0];
 
     [v10 setProperty:&__kCFBooleanFalse forKey:v79];
     [v10 setProperty:@"MotionCues" forKey:v78];
     [v80 addObject:v10];
   }
 
-  if (AXDeviceSupportsPhotosensitiveMitigation() && !v81->_appID)
+  if (AXDeviceSupportsPhotosensitiveMitigation() && !selfCopy->_appID)
   {
     v47 = +[PSSpecifier emptyGroupSpecifier];
     v48 = PSESettingsFooterText();
@@ -747,7 +747,7 @@ id __90__AXDisplayTextMotionSpecifiersHelper_displayTextSpecifiersIncludingSmart
     [v10 setProperty:&__kCFBooleanTrue forKey:v79];
     [v80 addObject:v47];
     v49 = settingsLocString(@"PHOTOSENSITIVE_MITIGATION_TITLE", @"Accessibility-PSE");
-    v50 = [PSSpecifier preferenceSpecifierNamed:v49 target:v81 set:"setPreferenceValue:specifier:" get:"preferenceValue:" detail:0 cell:6 edit:0];
+    v50 = [PSSpecifier preferenceSpecifierNamed:v49 target:selfCopy set:"setPreferenceValue:specifier:" get:"preferenceValue:" detail:0 cell:6 edit:0];
 
     [v50 setProperty:@"PHOTOSENSITIVE_MITIGATION" forKey:v78];
     [v50 setProperty:&__kCFBooleanTrue forKey:v79];
@@ -763,14 +763,14 @@ id __90__AXDisplayTextMotionSpecifiersHelper_displayTextSpecifiersIncludingSmart
 
   [v80 addObject:v51];
   v53 = settingsLocString(@"REDUCE_MOTION_AUTOPLAY_ANIMATED_IMAGES", @"Accessibility-AnimatedImages");
-  v54 = [PSSpecifier preferenceSpecifierNamed:v53 target:v81 set:"setAutoplayAnimatedImages:specifier:" get:"autoplayAnimatedImages:" detail:0 cell:6 edit:0];
+  v54 = [PSSpecifier preferenceSpecifierNamed:v53 target:selfCopy set:"setAutoplayAnimatedImages:specifier:" get:"autoplayAnimatedImages:" detail:0 cell:6 edit:0];
 
   [v54 setProperty:@"REDUCE_MOTION_AUTOPLAY_ANIMATED_IMAGES" forKey:v78];
   v55 = PSAllowMultilineTitleKey;
   [v51 setProperty:&__kCFBooleanTrue forKey:PSAllowMultilineTitleKey];
   [v51 setProperty:&__kCFBooleanTrue forKey:v79];
   [v80 addObject:v54];
-  v56 = [(AXDisplayTextMotionSpecifiersHelper *)v81 _generateSpecifierForName:@"REDUCE_MOTION_AUTOPLAY_VIDEO_PREVIEWS" set:"setAutoplayVideoPreviews:specifier:" get:"autoplayVideoPreviews:" inBuddy:0];
+  v56 = [(AXDisplayTextMotionSpecifiersHelper *)selfCopy _generateSpecifierForName:@"REDUCE_MOTION_AUTOPLAY_VIDEO_PREVIEWS" set:"setAutoplayVideoPreviews:specifier:" get:"autoplayVideoPreviews:" inBuddy:0];
 
   v89[0] = _NSConcreteStackBlock;
   v89[1] = 3221225472;
@@ -784,10 +784,10 @@ id __90__AXDisplayTextMotionSpecifiersHelper_displayTextSpecifiersIncludingSmart
   v87[2] = __55__AXDisplayTextMotionSpecifiersHelper_motionSpecifiers__block_invoke_7;
   v87[3] = &unk_255E60;
   objc_copyWeak(&v88, &location);
-  [(AXDisplayTextMotionSpecifiersHelper *)v81 _setupSpecifierIfNeeded:v57 setBlock:v89 getBlock:v87];
+  [(AXDisplayTextMotionSpecifiersHelper *)selfCopy _setupSpecifierIfNeeded:v57 setBlock:v89 getBlock:v87];
   [v57 setProperty:&__kCFBooleanTrue forKey:v55];
   [v80 addObject:v57];
-  if (v81->_appID)
+  if (selfCopy->_appID)
   {
     v58 = v57;
   }
@@ -795,7 +795,7 @@ id __90__AXDisplayTextMotionSpecifiersHelper_displayTextSpecifiersIncludingSmart
   else
   {
     v59 = settingsLocString(@"REDUCE_MOTION_AUTOPLAY_MESSAGES_EFFECTS", @"Accessibility");
-    v58 = [PSSpecifier preferenceSpecifierNamed:v59 target:v81 set:"setAutoplayMessagesEffects:specifier:" get:"autoplayMessagesEffects:" detail:0 cell:6 edit:0];
+    v58 = [PSSpecifier preferenceSpecifierNamed:v59 target:selfCopy set:"setAutoplayMessagesEffects:specifier:" get:"autoplayMessagesEffects:" detail:0 cell:6 edit:0];
 
     [v58 setProperty:&__kCFBooleanFalse forKey:v79];
     [v58 setProperty:@"ReduceMotionAutoplayMessagesEffects" forKey:v78];
@@ -809,7 +809,7 @@ id __90__AXDisplayTextMotionSpecifiersHelper_displayTextSpecifiersIncludingSmart
 
   [v60 setProperty:&__kCFBooleanTrue forKey:v79];
   [v80 addObject:v60];
-  v62 = [(AXDisplayTextMotionSpecifiersHelper *)v81 _generateSpecifierForName:@"PREFER_NONBLINKING_CURSOR" set:"setPreferNonBlinkingCursor:specifier:" get:"preferNonBlinkingCursor:" inBuddy:1];
+  v62 = [(AXDisplayTextMotionSpecifiersHelper *)selfCopy _generateSpecifierForName:@"PREFER_NONBLINKING_CURSOR" set:"setPreferNonBlinkingCursor:specifier:" get:"preferNonBlinkingCursor:" inBuddy:1];
 
   v84[0] = _NSConcreteStackBlock;
   v84[1] = 3221225472;
@@ -823,9 +823,9 @@ id __90__AXDisplayTextMotionSpecifiersHelper_displayTextSpecifiersIncludingSmart
   v82[2] = __55__AXDisplayTextMotionSpecifiersHelper_motionSpecifiers__block_invoke_9;
   v82[3] = &unk_255E60;
   objc_copyWeak(&v83, &location);
-  [(AXDisplayTextMotionSpecifiersHelper *)v81 _setupSpecifierIfNeeded:v63 setBlock:v84 getBlock:v82];
+  [(AXDisplayTextMotionSpecifiersHelper *)selfCopy _setupSpecifierIfNeeded:v63 setBlock:v84 getBlock:v82];
   [v80 addObject:v63];
-  if (AXHasCapability() && !v81->_appID)
+  if (AXHasCapability() && !selfCopy->_appID)
   {
     v64 = +[PSSpecifier emptyGroupSpecifier];
 
@@ -835,7 +835,7 @@ id __90__AXDisplayTextMotionSpecifiersHelper_displayTextSpecifiersIncludingSmart
     [v64 setProperty:&__kCFBooleanTrue forKey:v79];
     [v80 addObject:v64];
     v66 = settingsLocString(@"RefreshRateSlider", @"Accessibility");
-    v63 = [PSSpecifier preferenceSpecifierNamed:v66 target:v81 set:"setRefreshRateEnabled:specifier:" get:"refreshRateEnabled:" detail:0 cell:6 edit:0];
+    v63 = [PSSpecifier preferenceSpecifierNamed:v66 target:selfCopy set:"setRefreshRateEnabled:specifier:" get:"refreshRateEnabled:" detail:0 cell:6 edit:0];
 
     [v63 setProperty:@"REFRESH_RATE" forKey:v78];
     [v63 setProperty:&__kCFBooleanTrue forKey:v55];
@@ -843,7 +843,7 @@ id __90__AXDisplayTextMotionSpecifiersHelper_displayTextSpecifiersIncludingSmart
     [v80 addObject:v63];
   }
 
-  WeakRetained = objc_loadWeakRetained(&v81->_settingsController);
+  WeakRetained = objc_loadWeakRetained(&selfCopy->_settingsController);
   [WeakRetained setupLongTitleSpecifiers:v80];
 
   objc_destroyWeak(&v83);
@@ -922,9 +922,9 @@ id __55__AXDisplayTextMotionSpecifiersHelper_motionSpecifiers__block_invoke_9(ui
   return v2;
 }
 
-- (void)_motionCuesLearnMoreLinkTapped:(id)a3
+- (void)_motionCuesLearnMoreLinkTapped:(id)tapped
 {
-  v4 = a3;
+  tappedCopy = tapped;
   v5 = +[AXMotionCuesLearnMoreController learnMoreController];
   objc_initWeak(&location, self);
   v10 = _NSConcreteStackBlock;
@@ -959,7 +959,7 @@ void __70__AXDisplayTextMotionSpecifiersHelper__motionCuesLearnMoreLinkTapped___
   }
 }
 
-- (id)motionCuesEnabled:(id)a3
+- (id)motionCuesEnabled:(id)enabled
 {
   if (_AXSMotionCuesEnabled())
   {
@@ -978,36 +978,36 @@ void __70__AXDisplayTextMotionSpecifiersHelper__motionCuesLearnMoreLinkTapped___
   return settingsLocString(v3, @"Accessibility");
 }
 
-- (void)setPreferNonBlinkingCursor:(id)a3 specifier:(id)a4
+- (void)setPreferNonBlinkingCursor:(id)cursor specifier:(id)specifier
 {
-  v7 = a4;
+  specifierCopy = specifier;
   if (self->_appID)
   {
-    [a3 integerValue];
+    [cursor integerValue];
     [(AXDisplayTextMotionSpecifiersHelper *)self _cfAppID];
     _AXSSetPrefersNonBlinkingCursorIndicatorApp();
-    [(AXDisplayTextMotionSpecifiersHelper *)self _updateSpecifierState:v7];
+    [(AXDisplayTextMotionSpecifiersHelper *)self _updateSpecifierState:specifierCopy];
     v6 = +[AXSettings sharedInstance];
     [v6 aggregatePerAppSettingsStatistics];
   }
 
   else
   {
-    [a3 BOOLValue];
+    [cursor BOOLValue];
     _AXSSetPrefersNonBlinkingCursorIndicator();
   }
 }
 
-- (void)setRefreshRateEnabled:(id)a3 specifier:(id)a4
+- (void)setRefreshRateEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = a3;
+  enabledCopy = enabled;
   v6 = +[AXSettings sharedInstance];
-  v5 = [v4 BOOLValue];
+  bOOLValue = [enabledCopy BOOLValue];
 
-  [v6 setShouldLimitDisplayRefreshRate:v5];
+  [v6 setShouldLimitDisplayRefreshRate:bOOLValue];
 }
 
-- (id)refreshRateEnabled:(id)a3
+- (id)refreshRateEnabled:(id)enabled
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 shouldLimitDisplayRefreshRate]);
@@ -1015,14 +1015,14 @@ void __70__AXDisplayTextMotionSpecifiersHelper__motionCuesLearnMoreLinkTapped___
   return v4;
 }
 
-- (id)preferNonBlinkingCursor:(id)a3
+- (id)preferNonBlinkingCursor:(id)cursor
 {
   if (self->_appID)
   {
     [(AXDisplayTextMotionSpecifiersHelper *)self _cfAppID];
     v4 = [NSNumber numberWithInt:_AXSPrefersNonBlinkingCursorIndicatorApp()];
     v5 = v4;
-    if (a3)
+    if (cursor)
     {
       v6 = [AXDefaultOnOffViewController stringValueForNumber:v4];
     }
@@ -1043,34 +1043,34 @@ void __70__AXDisplayTextMotionSpecifiersHelper__motionCuesLearnMoreLinkTapped___
   return v7;
 }
 
-- (void)setPreferHorizontalText:(id)a3 specifier:(id)a4
+- (void)setPreferHorizontalText:(id)text specifier:(id)specifier
 {
-  v7 = a4;
+  specifierCopy = specifier;
   if (self->_appID)
   {
-    [a3 integerValue];
+    [text integerValue];
     [(AXDisplayTextMotionSpecifiersHelper *)self _cfAppID];
     _AXSSetPrefersHorizontalTextLayoutApp();
-    [(AXDisplayTextMotionSpecifiersHelper *)self _updateSpecifierState:v7];
+    [(AXDisplayTextMotionSpecifiersHelper *)self _updateSpecifierState:specifierCopy];
     v6 = +[AXSettings sharedInstance];
     [v6 aggregatePerAppSettingsStatistics];
   }
 
   else
   {
-    [a3 BOOLValue];
+    [text BOOLValue];
     _AXSSetPrefersHorizontalTextLayout();
   }
 }
 
-- (id)preferHorizontalText:(id)a3
+- (id)preferHorizontalText:(id)text
 {
   if (self->_appID)
   {
     [(AXDisplayTextMotionSpecifiersHelper *)self _cfAppID];
     v4 = [NSNumber numberWithInt:_AXSPrefersHorizontalTextLayoutApp()];
     v5 = v4;
-    if (a3)
+    if (text)
     {
       v6 = [AXDefaultOnOffViewController stringValueForNumber:v4];
     }
@@ -1091,126 +1091,126 @@ void __70__AXDisplayTextMotionSpecifiersHelper__motionCuesLearnMoreLinkTapped___
   return v7;
 }
 
-- (void)setPreferenceValue:(id)a3 specifier:(id)a4
+- (void)setPreferenceValue:(id)value specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [value BOOLValue];
 
-  __AXSPhotosensitiveMitigationSetEnabled(v4);
+  __AXSPhotosensitiveMitigationSetEnabled(bOOLValue);
 }
 
-- (id)preferenceValue:(id)a3
+- (id)preferenceValue:(id)value
 {
   v3 = _AXSPhotosensitiveMitigationEnabled();
 
   return [NSNumber numberWithUnsignedChar:v3];
 }
 
-- (id)_generateSpecifierForName:(id)a3 set:(SEL)a4 get:(SEL)a5 inBuddy:(BOOL)a6
+- (id)_generateSpecifierForName:(id)name set:(SEL)set get:(SEL)get inBuddy:(BOOL)buddy
 {
-  v6 = a6;
+  buddyCopy = buddy;
   appID = self->_appID;
-  v11 = a3;
-  v12 = settingsLocString(v11, @"Accessibility");
+  nameCopy = name;
+  v12 = settingsLocString(nameCopy, @"Accessibility");
   if (appID)
   {
-    v13 = [PSSpecifier preferenceSpecifierNamed:v12 target:self set:0 get:a5 detail:objc_opt_class() cell:2 edit:0];
+    v13 = [PSSpecifier preferenceSpecifierNamed:v12 target:self set:0 get:get detail:objc_opt_class() cell:2 edit:0];
   }
 
   else
   {
-    v13 = [PSSpecifier preferenceSpecifierNamed:v12 target:self set:a4 get:a5 detail:0 cell:6 edit:0];
+    v13 = [PSSpecifier preferenceSpecifierNamed:v12 target:self set:set get:get detail:0 cell:6 edit:0];
 
-    v12 = [NSNumber numberWithBool:v6];
+    v12 = [NSNumber numberWithBool:buddyCopy];
     [v13 setProperty:v12 forKey:AXInBuddySetupKey];
   }
 
-  [v13 setProperty:v11 forKey:PSIDKey];
+  [v13 setProperty:nameCopy forKey:PSIDKey];
   [v13 setObject:&__kCFBooleanTrue forKeyedSubscript:PSAllowMultilineTitleKey];
 
   return v13;
 }
 
-- (void)_setupSpecifierIfNeeded:(id)a3 setBlock:(id)a4 getBlock:(id)a5
+- (void)_setupSpecifierIfNeeded:(id)needed setBlock:(id)block getBlock:(id)getBlock
 {
   if (self->_appID)
   {
-    v7 = a5;
-    v8 = a3;
-    v9 = objc_retainBlock(a4);
-    [v8 setProperty:v9 forKey:@"setValueSelectedBlock"];
+    getBlockCopy = getBlock;
+    neededCopy = needed;
+    v9 = objc_retainBlock(block);
+    [neededCopy setProperty:v9 forKey:@"setValueSelectedBlock"];
 
-    v10 = objc_retainBlock(v7);
-    [v8 setProperty:v10 forKey:@"getValueSelectedBlock"];
+    v10 = objc_retainBlock(getBlockCopy);
+    [neededCopy setProperty:v10 forKey:@"getValueSelectedBlock"];
   }
 }
 
-- (void)_updateSpecifierState:(id)a3
+- (void)_updateSpecifierState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   WeakRetained = objc_loadWeakRetained(&self->_settingsController);
-  [WeakRetained reloadSpecifier:v4];
+  [WeakRetained reloadSpecifier:stateCopy];
 }
 
-- (void)_updateReduceSlideTransitionsSpecifiersAnimated:(BOOL)a3
+- (void)_updateReduceSlideTransitionsSpecifiersAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(AXDisplayTextMotionSpecifiersHelper *)self _reduceMotionAvailable];
+  animatedCopy = animated;
+  _reduceMotionAvailable = [(AXDisplayTextMotionSpecifiersHelper *)self _reduceMotionAvailable];
   WeakRetained = objc_loadWeakRetained(&self->_settingsController);
   v20 = WeakRetained;
-  if (v5)
+  if (_reduceMotionAvailable)
   {
-    v7 = [WeakRetained specifiers];
-    v8 = [(AXDisplayTextMotionSpecifiersHelper *)self reduceMotionReduceSlideTransitionsSpecifier];
-    if ([v7 containsObject:v8])
+    specifiers = [WeakRetained specifiers];
+    reduceMotionReduceSlideTransitionsSpecifier = [(AXDisplayTextMotionSpecifiersHelper *)self reduceMotionReduceSlideTransitionsSpecifier];
+    if ([specifiers containsObject:reduceMotionReduceSlideTransitionsSpecifier])
     {
     }
 
     else
     {
       v12 = objc_loadWeakRetained(&self->_settingsController);
-      v13 = [v12 specifiers];
-      v14 = [(AXDisplayTextMotionSpecifiersHelper *)self reduceMotionReduceSlideTransitionsFooterSpecifier];
-      v15 = [v13 containsObject:v14];
+      specifiers2 = [v12 specifiers];
+      reduceMotionReduceSlideTransitionsFooterSpecifier = [(AXDisplayTextMotionSpecifiersHelper *)self reduceMotionReduceSlideTransitionsFooterSpecifier];
+      v15 = [specifiers2 containsObject:reduceMotionReduceSlideTransitionsFooterSpecifier];
 
       if ((v15 & 1) == 0)
       {
         v16 = objc_loadWeakRetained(&self->_settingsController);
-        v17 = [(AXDisplayTextMotionSpecifiersHelper *)self reduceMotionReduceSlideTransitionsFooterSpecifier];
-        v21[0] = v17;
-        v18 = [(AXDisplayTextMotionSpecifiersHelper *)self reduceMotionReduceSlideTransitionsSpecifier];
-        v21[1] = v18;
+        reduceMotionReduceSlideTransitionsFooterSpecifier2 = [(AXDisplayTextMotionSpecifiersHelper *)self reduceMotionReduceSlideTransitionsFooterSpecifier];
+        v21[0] = reduceMotionReduceSlideTransitionsFooterSpecifier2;
+        reduceMotionReduceSlideTransitionsSpecifier2 = [(AXDisplayTextMotionSpecifiersHelper *)self reduceMotionReduceSlideTransitionsSpecifier];
+        v21[1] = reduceMotionReduceSlideTransitionsSpecifier2;
         v19 = [NSArray arrayWithObjects:v21 count:2];
-        [v16 insertContiguousSpecifiers:v19 afterSpecifierID:@"REDUCE_MOTION" animated:v3];
+        [v16 insertContiguousSpecifiers:v19 afterSpecifierID:@"REDUCE_MOTION" animated:animatedCopy];
       }
     }
   }
 
   else
   {
-    v9 = [(AXDisplayTextMotionSpecifiersHelper *)self reduceMotionReduceSlideTransitionsFooterSpecifier];
-    v22[0] = v9;
-    v10 = [(AXDisplayTextMotionSpecifiersHelper *)self reduceMotionReduceSlideTransitionsSpecifier];
-    v22[1] = v10;
+    reduceMotionReduceSlideTransitionsFooterSpecifier3 = [(AXDisplayTextMotionSpecifiersHelper *)self reduceMotionReduceSlideTransitionsFooterSpecifier];
+    v22[0] = reduceMotionReduceSlideTransitionsFooterSpecifier3;
+    reduceMotionReduceSlideTransitionsSpecifier3 = [(AXDisplayTextMotionSpecifiersHelper *)self reduceMotionReduceSlideTransitionsSpecifier];
+    v22[1] = reduceMotionReduceSlideTransitionsSpecifier3;
     v11 = [NSArray arrayWithObjects:v22 count:2];
-    [v20 removeContiguousSpecifiers:v11 animated:v3];
+    [v20 removeContiguousSpecifiers:v11 animated:animatedCopy];
   }
 }
 
 - (id)_accessibilitySettingsBaseController
 {
-  v3 = [(AXDisplayTextMotionSpecifiersHelper *)self settingsController];
+  settingsController = [(AXDisplayTextMotionSpecifiersHelper *)self settingsController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [(AXDisplayTextMotionSpecifiersHelper *)self settingsController];
+    settingsController2 = [(AXDisplayTextMotionSpecifiersHelper *)self settingsController];
   }
 
   else
   {
-    v4 = 0;
+    settingsController2 = 0;
   }
 
-  return v4;
+  return settingsController2;
 }
 
 - (BOOL)_reduceMotionAvailable
@@ -1238,14 +1238,14 @@ LABEL_5:
   return v3;
 }
 
-- (id)boldTextEnabled:(id)a3
+- (id)boldTextEnabled:(id)enabled
 {
   if (self->_appID)
   {
     [(AXDisplayTextMotionSpecifiersHelper *)self _cfAppID];
     v4 = [NSNumber numberWithInt:_AXSEnhanceTextLegibilityEnabledApp()];
     v5 = v4;
-    if (a3)
+    if (enabled)
     {
       v6 = [AXDefaultOnOffViewController stringValueForNumber:v4];
     }
@@ -1266,39 +1266,39 @@ LABEL_5:
   return v7;
 }
 
-- (void)setBoldTextEnabled:(id)a3 specifier:(id)a4
+- (void)setBoldTextEnabled:(id)enabled specifier:(id)specifier
 {
-  v7 = a4;
+  specifierCopy = specifier;
   if (self->_appID)
   {
-    [a3 integerValue];
+    [enabled integerValue];
     [(AXDisplayTextMotionSpecifiersHelper *)self _cfAppID];
     _AXSSetEnhanceTextLegibilityEnabledApp();
-    [(AXDisplayTextMotionSpecifiersHelper *)self _updateSpecifierState:v7];
+    [(AXDisplayTextMotionSpecifiersHelper *)self _updateSpecifierState:specifierCopy];
     v6 = +[AXSettings sharedInstance];
     [v6 aggregatePerAppSettingsStatistics];
   }
 
   else
   {
-    [a3 BOOLValue];
+    [enabled BOOLValue];
     _AXSSetEnhanceTextLegibilityEnabled();
   }
 }
 
-- (id)largerTextEnabled:(id)a3
+- (id)largerTextEnabled:(id)enabled
 {
   if (self->_appID)
   {
-    v3 = [(AXDisplayTextMotionSpecifiersHelper *)self largerTextPerAppValue];
+    largerTextPerAppValue = [(AXDisplayTextMotionSpecifiersHelper *)self largerTextPerAppValue];
   }
 
   else
   {
-    v3 = _AXSLargeTextUsesExtendedRange() != 0;
+    largerTextPerAppValue = _AXSLargeTextUsesExtendedRange() != 0;
   }
 
-  v4 = [NSNumber numberWithInt:v3];
+  v4 = [NSNumber numberWithInt:largerTextPerAppValue];
   v5 = [AXDefaultOnOffViewController stringValueForNumber:v4];
 
   return v5;
@@ -1320,14 +1320,14 @@ LABEL_5:
   return v3;
 }
 
-- (id)buttonShapesEnabled:(id)a3
+- (id)buttonShapesEnabled:(id)enabled
 {
   if (self->_appID)
   {
     [(AXDisplayTextMotionSpecifiersHelper *)self _cfAppID];
     v4 = [NSNumber numberWithInt:_AXSButtonShapesEnabledApp()];
     v5 = v4;
-    if (a3)
+    if (enabled)
     {
       v6 = [AXDefaultOnOffViewController stringValueForNumber:v4];
     }
@@ -1348,34 +1348,34 @@ LABEL_5:
   return v7;
 }
 
-- (void)setButtonShapesEnabled:(id)a3 specifier:(id)a4
+- (void)setButtonShapesEnabled:(id)enabled specifier:(id)specifier
 {
-  v7 = a4;
+  specifierCopy = specifier;
   if (self->_appID)
   {
-    [a3 integerValue];
+    [enabled integerValue];
     [(AXDisplayTextMotionSpecifiersHelper *)self _cfAppID];
     _AXSSetButtonShapesEnabledApp();
-    [(AXDisplayTextMotionSpecifiersHelper *)self _updateSpecifierState:v7];
+    [(AXDisplayTextMotionSpecifiersHelper *)self _updateSpecifierState:specifierCopy];
     v6 = +[AXSettings sharedInstance];
     [v6 aggregatePerAppSettingsStatistics];
   }
 
   else
   {
-    [a3 BOOLValue];
+    [enabled BOOLValue];
     _AXSSetButtonShapesEnabled();
   }
 }
 
-- (id)onOffLabelsEnabled:(id)a3
+- (id)onOffLabelsEnabled:(id)enabled
 {
   if (self->_appID)
   {
     [(AXDisplayTextMotionSpecifiersHelper *)self _cfAppID];
     v4 = [NSNumber numberWithInt:_AXSIncreaseButtonLegibilityApp()];
     v5 = v4;
-    if (a3)
+    if (enabled)
     {
       v6 = [AXDefaultOnOffViewController stringValueForNumber:v4];
     }
@@ -1396,34 +1396,34 @@ LABEL_5:
   return v7;
 }
 
-- (void)setOnOffLabelsEnabled:(id)a3 specifier:(id)a4
+- (void)setOnOffLabelsEnabled:(id)enabled specifier:(id)specifier
 {
-  v7 = a4;
+  specifierCopy = specifier;
   if (self->_appID)
   {
-    [a3 integerValue];
+    [enabled integerValue];
     [(AXDisplayTextMotionSpecifiersHelper *)self _cfAppID];
     _AXSSetIncreaseButtonLegibilityApp();
-    [(AXDisplayTextMotionSpecifiersHelper *)self _updateSpecifierState:v7];
+    [(AXDisplayTextMotionSpecifiersHelper *)self _updateSpecifierState:specifierCopy];
     v6 = +[AXSettings sharedInstance];
     [v6 aggregatePerAppSettingsStatistics];
   }
 
   else
   {
-    [a3 BOOLValue];
+    [enabled BOOLValue];
     _AXSSetIncreaseButtonLegibility();
   }
 }
 
-- (id)reduceTransparencyEnabled:(id)a3
+- (id)reduceTransparencyEnabled:(id)enabled
 {
   if (self->_appID)
   {
     [(AXDisplayTextMotionSpecifiersHelper *)self _cfAppID];
     v4 = [NSNumber numberWithInt:_AXSEnhanceBackgroundContrastEnabledApp()];
     v5 = v4;
-    if (a3)
+    if (enabled)
     {
       v6 = [AXDefaultOnOffViewController stringValueForNumber:v4];
     }
@@ -1444,34 +1444,34 @@ LABEL_5:
   return v7;
 }
 
-- (void)setReduceTransparencyEnabled:(id)a3 specifier:(id)a4
+- (void)setReduceTransparencyEnabled:(id)enabled specifier:(id)specifier
 {
-  v7 = a4;
+  specifierCopy = specifier;
   if (self->_appID)
   {
-    [a3 integerValue];
+    [enabled integerValue];
     [(AXDisplayTextMotionSpecifiersHelper *)self _cfAppID];
     _AXSSetEnhanceBackgroundContrastEnabledApp();
-    [(AXDisplayTextMotionSpecifiersHelper *)self _updateSpecifierState:v7];
+    [(AXDisplayTextMotionSpecifiersHelper *)self _updateSpecifierState:specifierCopy];
     v6 = +[AXSettings sharedInstance];
     [v6 aggregatePerAppSettingsStatistics];
   }
 
   else
   {
-    [a3 BOOLValue];
+    [enabled BOOLValue];
     _AXSSetEnhanceBackgroundContrastEnabled();
   }
 }
 
-- (id)darkenColorsEnabled:(id)a3
+- (id)darkenColorsEnabled:(id)enabled
 {
   if (self->_appID)
   {
     [(AXDisplayTextMotionSpecifiersHelper *)self _cfAppID];
     v4 = [NSNumber numberWithInt:_AXDarkenSystemColorsApp()];
     v5 = v4;
-    if (a3)
+    if (enabled)
     {
       v6 = [AXDefaultOnOffViewController stringValueForNumber:v4];
     }
@@ -1492,12 +1492,12 @@ LABEL_5:
   return v7;
 }
 
-- (void)setDarkenColorsEnabled:(id)a3 specifier:(id)a4
+- (void)setDarkenColorsEnabled:(id)enabled specifier:(id)specifier
 {
-  v5 = a3;
-  v8 = a4;
-  v6 = v8;
-  v7 = v5;
+  enabledCopy = enabled;
+  specifierCopy = specifier;
+  v6 = specifierCopy;
+  v7 = enabledCopy;
   AXPerformBlockOnMainThreadAfterDelay();
 }
 
@@ -1523,14 +1523,14 @@ void __72__AXDisplayTextMotionSpecifiersHelper_setDarkenColorsEnabled_specifier_
   }
 }
 
-- (id)differentiateWithoutColor:(id)a3
+- (id)differentiateWithoutColor:(id)color
 {
   if (self->_appID)
   {
     [(AXDisplayTextMotionSpecifiersHelper *)self _cfAppID];
     v4 = [NSNumber numberWithInt:_AXSDifferentiateWithoutColorEnabledApp()];
     v5 = v4;
-    if (a3)
+    if (color)
     {
       v6 = [AXDefaultOnOffViewController stringValueForNumber:v4];
     }
@@ -1551,34 +1551,34 @@ void __72__AXDisplayTextMotionSpecifiersHelper_setDarkenColorsEnabled_specifier_
   return v7;
 }
 
-- (void)setDifferentiateWithoutColorEnabled:(id)a3 specifier:(id)a4
+- (void)setDifferentiateWithoutColorEnabled:(id)enabled specifier:(id)specifier
 {
-  v7 = a4;
+  specifierCopy = specifier;
   if (self->_appID)
   {
-    [a3 integerValue];
+    [enabled integerValue];
     [(AXDisplayTextMotionSpecifiersHelper *)self _cfAppID];
     _AXSSetDifferentiateWithoutColorEnabledApp();
-    [(AXDisplayTextMotionSpecifiersHelper *)self _updateSpecifierState:v7];
+    [(AXDisplayTextMotionSpecifiersHelper *)self _updateSpecifierState:specifierCopy];
     v6 = +[AXSettings sharedInstance];
     [v6 aggregatePerAppSettingsStatistics];
   }
 
   else
   {
-    [a3 BOOLValue];
+    [enabled BOOLValue];
     _AXSSetDifferentiateWithoutColorEnabled();
   }
 }
 
-- (id)reduceMotionEnabled:(id)a3
+- (id)reduceMotionEnabled:(id)enabled
 {
   if (self->_appID)
   {
     [(AXDisplayTextMotionSpecifiersHelper *)self _cfAppID];
     v4 = [NSNumber numberWithInt:_AXSReduceMotionEnabledApp()];
     v5 = v4;
-    if (a3)
+    if (enabled)
     {
       v6 = [AXDefaultOnOffViewController stringValueForNumber:v4];
     }
@@ -1599,18 +1599,18 @@ void __72__AXDisplayTextMotionSpecifiersHelper_setDarkenColorsEnabled_specifier_
   return v7;
 }
 
-- (void)setReduceMotionEnabled:(id)a3 specifier:(id)a4
+- (void)setReduceMotionEnabled:(id)enabled specifier:(id)specifier
 {
-  v15 = a3;
-  v6 = a4;
+  enabledCopy = enabled;
+  specifierCopy = specifier;
   if (self->_appID)
   {
-    v7 = [v15 integerValue];
+    integerValue = [enabledCopy integerValue];
     [(AXDisplayTextMotionSpecifiersHelper *)self _cfAppID];
     _AXSSetReduceMotionEnabledApp();
-    if (v7)
+    if (integerValue)
     {
-      if (v7 != -1 || [(AXDisplayTextMotionSpecifiersHelper *)self _reduceMotionAvailable])
+      if (integerValue != -1 || [(AXDisplayTextMotionSpecifiersHelper *)self _reduceMotionAvailable])
       {
         goto LABEL_13;
       }
@@ -1625,7 +1625,7 @@ void __72__AXDisplayTextMotionSpecifiersHelper_setDarkenColorsEnabled_specifier_
 
     [(AXDisplayTextMotionSpecifiersHelper *)self setReduceMotionReduceSlideTransitionsEnabled:v8 specifier:0];
 LABEL_13:
-    [(AXDisplayTextMotionSpecifiersHelper *)self _updateSpecifierState:v6];
+    [(AXDisplayTextMotionSpecifiersHelper *)self _updateSpecifierState:specifierCopy];
     [(AXDisplayTextMotionSpecifiersHelper *)self _updateReduceSlideTransitionsSpecifiersAnimated:0];
     v12 = +[AXSettings sharedInstance];
     [v12 aggregatePerAppSettingsStatistics];
@@ -1633,15 +1633,15 @@ LABEL_13:
     goto LABEL_17;
   }
 
-  v9 = [v15 BOOLValue];
+  bOOLValue = [enabledCopy BOOLValue];
   _AXSSetReduceMotionEnabled();
-  if (v9 && (AXDeviceHasHomeButton() & 1) == 0)
+  if (bOOLValue && (AXDeviceHasHomeButton() & 1) == 0)
   {
     v10 = +[AXSettings sharedInstance];
     [v10 setDidResetD22Preferences:1];
   }
 
-  if ([v15 BOOLValue])
+  if ([enabledCopy BOOLValue])
   {
     v11 = _AXSReduceMotionAutoplayMessagesEffectsEnabled() != 0;
   }
@@ -1651,26 +1651,26 @@ LABEL_13:
     v11 = 1;
   }
 
-  v13 = [(AXDisplayTextMotionSpecifiersHelper *)self _accessibilitySettingsBaseController];
+  _accessibilitySettingsBaseController = [(AXDisplayTextMotionSpecifiersHelper *)self _accessibilitySettingsBaseController];
   v14 = [NSNumber numberWithBool:v11];
-  [v13 setGizmoPref:v14 forKey:@"ReduceMotionAutoplayMessagesEffectsEnabled" domain:kAXSAccessibilityPreferenceDomain];
+  [_accessibilitySettingsBaseController setGizmoPref:v14 forKey:@"ReduceMotionAutoplayMessagesEffectsEnabled" domain:kAXSAccessibilityPreferenceDomain];
 
-  if ((v9 & 1) == 0)
+  if ((bOOLValue & 1) == 0)
   {
-    [(AXDisplayTextMotionSpecifiersHelper *)self setReduceMotionReduceSlideTransitionsEnabled:v15 specifier:0];
+    [(AXDisplayTextMotionSpecifiersHelper *)self setReduceMotionReduceSlideTransitionsEnabled:enabledCopy specifier:0];
   }
 
 LABEL_17:
 }
 
-- (id)smartInvertEnabled:(id)a3
+- (id)smartInvertEnabled:(id)enabled
 {
   if (self->_appID)
   {
     [(AXDisplayTextMotionSpecifiersHelper *)self _cfAppID];
     v4 = [NSNumber numberWithInt:_AXSInvertColorsEnabledApp()];
     v5 = v4;
-    if (a3)
+    if (enabled)
     {
       v6 = [AXDefaultOnOffViewController stringValueForNumber:v4];
     }
@@ -1691,42 +1691,42 @@ LABEL_17:
   return v7;
 }
 
-- (void)setSmartInvertEnabled:(id)a3 specifier:(id)a4
+- (void)setSmartInvertEnabled:(id)enabled specifier:(id)specifier
 {
-  v6 = a3;
-  v7 = a4;
+  enabledCopy = enabled;
+  specifierCopy = specifier;
   if (self->_appID)
   {
-    [v6 integerValue];
+    [enabledCopy integerValue];
     [(AXDisplayTextMotionSpecifiersHelper *)self _cfAppID];
     _AXSInvertColorsSetEnabledApp();
-    [(AXDisplayTextMotionSpecifiersHelper *)self _updateSpecifierState:v7];
+    [(AXDisplayTextMotionSpecifiersHelper *)self _updateSpecifierState:specifierCopy];
     v8 = +[AXSettings sharedInstance];
     [v8 aggregatePerAppSettingsStatistics];
   }
 
   else
   {
-    v9 = [(AXDisplayTextMotionSpecifiersHelper *)self settingsController];
-    v10 = [v9 traitCollection];
-    v11 = [v10 userInterfaceStyle];
+    settingsController = [(AXDisplayTextMotionSpecifiersHelper *)self settingsController];
+    traitCollection = [settingsController traitCollection];
+    userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-    if (v11 == &dword_0 + 2)
+    if (userInterfaceStyle == &dword_0 + 2)
     {
-      v12 = [(AXDisplayTextMotionSpecifiersHelper *)self displayFilterUIClient];
+      displayFilterUIClient = [(AXDisplayTextMotionSpecifiersHelper *)self displayFilterUIClient];
       v13 = +[AXAccessQueue mainAccessQueue];
       v14[0] = _NSConcreteStackBlock;
       v14[1] = 3221225472;
       v14[2] = __71__AXDisplayTextMotionSpecifiersHelper_setSmartInvertEnabled_specifier___block_invoke;
       v14[3] = &unk_257890;
       v14[4] = self;
-      v15 = v6;
-      [v12 sendAsynchronousMessage:&__NSDictionary0__struct withIdentifier:1 targetAccessQueue:v13 completion:v14];
+      v15 = enabledCopy;
+      [displayFilterUIClient sendAsynchronousMessage:&__NSDictionary0__struct withIdentifier:1 targetAccessQueue:v13 completion:v14];
     }
 
     else
     {
-      -[AXDisplayTextMotionSpecifiersHelper handleGlobalSmartInvertEnabled:](self, "handleGlobalSmartInvertEnabled:", [v6 BOOLValue]);
+      -[AXDisplayTextMotionSpecifiersHelper handleGlobalSmartInvertEnabled:](self, "handleGlobalSmartInvertEnabled:", [enabledCopy BOOLValue]);
     }
   }
 }
@@ -1748,16 +1748,16 @@ id __71__AXDisplayTextMotionSpecifiersHelper_setSmartInvertEnabled_specifier___b
   return [v1 handleGlobalSmartInvertEnabled:v2];
 }
 
-- (void)handleGlobalSmartInvertEnabled:(BOOL)a3
+- (void)handleGlobalSmartInvertEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   _AXSInvertColorsSetEnabled();
   v5 = +[AXSettings sharedInstance];
-  v6 = [v5 classicInvertColors];
+  classicInvertColors = [v5 classicInvertColors];
 
-  if (v6)
+  if (classicInvertColors)
   {
-    v7 = !v3;
+    v7 = !enabledCopy;
   }
 
   else
@@ -1771,7 +1771,7 @@ id __71__AXDisplayTextMotionSpecifiersHelper_setSmartInvertEnabled_specifier___b
     [v8 setClassicInvertColors:0];
   }
 
-  if (v3)
+  if (enabledCopy)
   {
     Current = CFAbsoluteTimeGetCurrent();
     v10 = +[AXSettings sharedInstance];
@@ -1782,14 +1782,14 @@ id __71__AXDisplayTextMotionSpecifiersHelper_setSmartInvertEnabled_specifier___b
   [WeakRetained reloadSpecifierID:@"classInvert"];
 }
 
-- (id)reduceMotionReduceSlideTransitionsEnabled:(id)a3
+- (id)reduceMotionReduceSlideTransitionsEnabled:(id)enabled
 {
   if (self->_appID)
   {
     [(AXDisplayTextMotionSpecifiersHelper *)self _cfAppID];
     v4 = [NSNumber numberWithInt:_AXSReduceMotionReduceSlideTransitionsEnabledApp()];
     v5 = v4;
-    if (a3)
+    if (enabled)
     {
       v6 = [AXDefaultOnOffViewController stringValueForNumber:v4];
     }
@@ -1810,66 +1810,66 @@ id __71__AXDisplayTextMotionSpecifiersHelper_setSmartInvertEnabled_specifier___b
   return v7;
 }
 
-- (void)setReduceMotionReduceSlideTransitionsEnabled:(id)a3 specifier:(id)a4
+- (void)setReduceMotionReduceSlideTransitionsEnabled:(id)enabled specifier:(id)specifier
 {
-  v7 = a4;
+  specifierCopy = specifier;
   if (self->_appID)
   {
-    [a3 integerValue];
+    [enabled integerValue];
     [(AXDisplayTextMotionSpecifiersHelper *)self _cfAppID];
     _AXSSetReduceMotionReduceSlideTransitionsEnabledApp();
-    [(AXDisplayTextMotionSpecifiersHelper *)self _updateSpecifierState:v7];
+    [(AXDisplayTextMotionSpecifiersHelper *)self _updateSpecifierState:specifierCopy];
     v6 = +[AXSettings sharedInstance];
     [v6 aggregatePerAppSettingsStatistics];
   }
 
   else
   {
-    [a3 BOOLValue];
+    [enabled BOOLValue];
     _AXSSetReduceMotionReduceSlideTransitionsEnabled();
   }
 }
 
-- (id)autoplayMessagesEffects:(id)a3
+- (id)autoplayMessagesEffects:(id)effects
 {
   v3 = _AXSReduceMotionAutoplayMessagesEffectsEnabled();
 
   return [NSNumber numberWithUnsignedChar:v3];
 }
 
-- (void)setAutoplayMessagesEffects:(id)a3 specifier:(id)a4
+- (void)setAutoplayMessagesEffects:(id)effects specifier:(id)specifier
 {
-  v5 = a3;
-  [v5 BOOLValue];
+  effectsCopy = effects;
+  [effectsCopy BOOLValue];
   _AXSSetReduceMotionAutoplayMessagesEffectsEnabled();
-  v6 = [(AXDisplayTextMotionSpecifiersHelper *)self _accessibilitySettingsBaseController];
-  [v6 setGizmoPref:v5 forKey:@"ReduceMotionAutoplayMessagesEffectsEnabled" domain:kAXSAccessibilityPreferenceDomain];
+  _accessibilitySettingsBaseController = [(AXDisplayTextMotionSpecifiersHelper *)self _accessibilitySettingsBaseController];
+  [_accessibilitySettingsBaseController setGizmoPref:effectsCopy forKey:@"ReduceMotionAutoplayMessagesEffectsEnabled" domain:kAXSAccessibilityPreferenceDomain];
 }
 
-- (id)autoplayAnimatedImages:(id)a3
+- (id)autoplayAnimatedImages:(id)images
 {
   v3 = _AXSReduceMotionAutoplayAnimatedImagesEnabled();
 
   return [NSNumber numberWithUnsignedChar:v3];
 }
 
-- (void)setAutoplayAnimatedImages:(id)a3 specifier:(id)a4
+- (void)setAutoplayAnimatedImages:(id)images specifier:(id)specifier
 {
-  v5 = a3;
-  [v5 BOOLValue];
+  imagesCopy = images;
+  [imagesCopy BOOLValue];
   _AXSSetReduceMotionAutoplayAnimatedImagesEnabled();
-  v6 = [(AXDisplayTextMotionSpecifiersHelper *)self _accessibilitySettingsBaseController];
-  [v6 setGizmoPref:v5 forKey:@"ReduceMotionAutoplayAnimatedImagesEnabled" domain:kAXSAccessibilityPreferenceDomain];
+  _accessibilitySettingsBaseController = [(AXDisplayTextMotionSpecifiersHelper *)self _accessibilitySettingsBaseController];
+  [_accessibilitySettingsBaseController setGizmoPref:imagesCopy forKey:@"ReduceMotionAutoplayAnimatedImagesEnabled" domain:kAXSAccessibilityPreferenceDomain];
 }
 
-- (id)autoplayVideoPreviews:(id)a3
+- (id)autoplayVideoPreviews:(id)previews
 {
   if (self->_appID)
   {
     [(AXDisplayTextMotionSpecifiersHelper *)self _cfAppID];
     v4 = [NSNumber numberWithInt:_AXSReduceMotionAutoplayVideoPreviewsEnabledApp()];
     v5 = v4;
-    if (a3)
+    if (previews)
     {
       v6 = [AXDefaultOnOffViewController stringValueForNumber:v4];
     }
@@ -1890,22 +1890,22 @@ id __71__AXDisplayTextMotionSpecifiersHelper_setSmartInvertEnabled_specifier___b
   return v7;
 }
 
-- (void)setAutoplayVideoPreviews:(id)a3 specifier:(id)a4
+- (void)setAutoplayVideoPreviews:(id)previews specifier:(id)specifier
 {
-  v7 = a4;
+  specifierCopy = specifier;
   if (self->_appID)
   {
-    [a3 integerValue];
+    [previews integerValue];
     [(AXDisplayTextMotionSpecifiersHelper *)self _cfAppID];
     _AXSSetReduceMotionAutoplayVideoPreviewsEnabledApp();
-    [(AXDisplayTextMotionSpecifiersHelper *)self _updateSpecifierState:v7];
+    [(AXDisplayTextMotionSpecifiersHelper *)self _updateSpecifierState:specifierCopy];
     v6 = +[AXSettings sharedInstance];
     [v6 aggregatePerAppSettingsStatistics];
   }
 
   else
   {
-    [a3 BOOLValue];
+    [previews BOOLValue];
     _AXSSetReduceMotionAutoplayVideoPreviewsEnabled();
   }
 }

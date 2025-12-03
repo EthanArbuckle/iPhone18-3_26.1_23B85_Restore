@@ -1,39 +1,39 @@
 @interface PKAMSTopUpController
 - (AMSURLProtocolDelegate)taskDelegate;
-- (void)_executeAMSURLRequestForBagKey:(id)a3 method:(int64_t)a4 parameters:(id)a5 completion:(id)a6;
-- (void)requestDTUAvailable:(id)a3;
-- (void)requestDTUConfigurationWithCompletion:(id)a3;
-- (void)requestPurchaseWithAmount:(id)a3 promotionConfiguration:(id)a4 completion:(id)a5;
+- (void)_executeAMSURLRequestForBagKey:(id)key method:(int64_t)method parameters:(id)parameters completion:(id)completion;
+- (void)requestDTUAvailable:(id)available;
+- (void)requestDTUConfigurationWithCompletion:(id)completion;
+- (void)requestPurchaseWithAmount:(id)amount promotionConfiguration:(id)configuration completion:(id)completion;
 @end
 
 @implementation PKAMSTopUpController
 
-- (void)_executeAMSURLRequestForBagKey:(id)a3 method:(int64_t)a4 parameters:(id)a5 completion:(id)a6
+- (void)_executeAMSURLRequestForBagKey:(id)key method:(int64_t)method parameters:(id)parameters completion:(id)completion
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a3;
-  v13 = [(PKAMSTopUpController *)self _bag];
-  v14 = [v13 URLForKey:v12];
+  completionCopy = completion;
+  parametersCopy = parameters;
+  keyCopy = key;
+  _bag = [(PKAMSTopUpController *)self _bag];
+  v14 = [_bag URLForKey:keyCopy];
 
-  v15 = [objc_alloc(MEMORY[0x1E698CB88]) initWithBag:v13];
+  v15 = [objc_alloc(MEMORY[0x1E698CB88]) initWithBag:_bag];
   [v15 setRequestEncoding:3];
-  v16 = [MEMORY[0x1E6959A48] ams_sharedAccountStore];
-  v17 = [v16 ams_activeiTunesAccount];
+  ams_sharedAccountStore = [MEMORY[0x1E6959A48] ams_sharedAccountStore];
+  ams_activeiTunesAccount = [ams_sharedAccountStore ams_activeiTunesAccount];
 
-  [v15 setAccount:v17];
+  [v15 setAccount:ams_activeiTunesAccount];
   v18 = AMSLogKey();
   [v15 setLogUUID:v18];
 
-  v19 = [v15 requestWithMethod:a4 bagURL:v14 parameters:v11];
+  v19 = [v15 requestWithMethod:method bagURL:v14 parameters:parametersCopy];
 
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __84__PKAMSTopUpController__executeAMSURLRequestForBagKey_method_parameters_completion___block_invoke;
   v22[3] = &unk_1E79D5BE0;
   v22[4] = self;
-  v23 = v10;
-  v20 = v10;
+  v23 = completionCopy;
+  v20 = completionCopy;
   v21 = [v19 thenWithBlock:v22];
 }
 
@@ -86,10 +86,10 @@ void __84__PKAMSTopUpController__executeAMSURLRequestForBagKey_method_parameters
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)requestDTUConfigurationWithCompletion:(id)a3
+- (void)requestDTUConfigurationWithCompletion:(id)completion
 {
   v10[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   v9[0] = @"useApplePayForWalletTopUp";
   v9[1] = @"isForAppleAccountPassDashboard";
   v10[0] = MEMORY[0x1E695E118];
@@ -99,8 +99,8 @@ void __84__PKAMSTopUpController__executeAMSURLRequestForBagKey_method_parameters
   v7[1] = 3221225472;
   v7[2] = __62__PKAMSTopUpController_requestDTUConfigurationWithCompletion___block_invoke;
   v7[3] = &unk_1E79C5688;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   [(PKAMSTopUpController *)self _executeAMSURLRequestForBagKey:@"addFundsInfoSrv" method:4 parameters:v5 completion:v7];
 }
 
@@ -122,60 +122,60 @@ void __62__PKAMSTopUpController_requestDTUConfigurationWithCompletion___block_in
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)requestPurchaseWithAmount:(id)a3 promotionConfiguration:(id)a4 completion:(id)a5
+- (void)requestPurchaseWithAmount:(id)amount promotionConfiguration:(id)configuration completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v28 = a5;
-  v29 = [(PKAMSTopUpController *)self _bag];
+  amountCopy = amount;
+  configurationCopy = configuration;
+  completionCopy = completion;
+  _bag = [(PKAMSTopUpController *)self _bag];
   v10 = [objc_alloc(MEMORY[0x1E696AB90]) initWithInt:1000];
-  v27 = v8;
-  v11 = [v8 decimalNumberByMultiplyingBy:v10];
+  v27 = amountCopy;
+  v11 = [amountCopy decimalNumberByMultiplyingBy:v10];
 
-  v12 = [v11 stringValue];
+  stringValue = [v11 stringValue];
   v13 = objc_alloc_init(MEMORY[0x1E698C818]);
-  [v13 setParameter:v12 forKey:@"price"];
-  [v13 setParameter:v12 forKey:@"amount"];
+  [v13 setParameter:stringValue forKey:@"price"];
+  [v13 setParameter:stringValue forKey:@"amount"];
   v14 = [MEMORY[0x1E696AD98] numberWithBool:1];
   [v13 setParameter:v14 forKey:@"addFunds"];
 
   v15 = [MEMORY[0x1E696AD98] numberWithInt:4];
   [v13 setParameter:v15 forKey:*MEMORY[0x1E698C528]];
 
-  if (v9)
+  if (configurationCopy)
   {
-    v16 = [v9 programIdentifier];
-    [v13 setParameter:v16 forKey:@"programId"];
+    programIdentifier = [configurationCopy programIdentifier];
+    [v13 setParameter:programIdentifier forKey:@"programId"];
 
-    v17 = [v9 versionIdentifier];
-    [v13 setParameter:v17 forKey:@"versionId"];
+    versionIdentifier = [configurationCopy versionIdentifier];
+    [v13 setParameter:versionIdentifier forKey:@"versionId"];
 
-    v18 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v9, "stamp")}];
+    v18 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(configurationCopy, "stamp")}];
     [v13 setParameter:v18 forKey:@"stamp"];
   }
 
-  v19 = [MEMORY[0x1E6959A48] ams_sharedAccountStore];
-  v20 = [v19 ams_activeiTunesAccount];
+  ams_sharedAccountStore = [MEMORY[0x1E6959A48] ams_sharedAccountStore];
+  ams_activeiTunesAccount = [ams_sharedAccountStore ams_activeiTunesAccount];
 
   v21 = [objc_alloc(MEMORY[0x1E698CAE0]) initWithPurchaseType:0 buyParams:v13];
-  [v21 setAccount:v20];
+  [v21 setAccount:ams_activeiTunesAccount];
   v22 = AMSLogKey();
   [v21 setLogUUID:v22];
 
-  v23 = [objc_alloc(MEMORY[0x1E698CAF8]) initWithPurchase:v21 bag:v29];
-  v24 = [(PKAMSTopUpController *)self taskDelegate];
-  [v23 setDelegate:v24];
+  v23 = [objc_alloc(MEMORY[0x1E698CAF8]) initWithPurchase:v21 bag:_bag];
+  taskDelegate = [(PKAMSTopUpController *)self taskDelegate];
+  [v23 setDelegate:taskDelegate];
 
-  v25 = [v23 performPurchase];
+  performPurchase = [v23 performPurchase];
   objc_initWeak(&location, self);
   v30[0] = MEMORY[0x1E69E9820];
   v30[1] = 3221225472;
   v30[2] = __84__PKAMSTopUpController_requestPurchaseWithAmount_promotionConfiguration_completion___block_invoke;
   v30[3] = &unk_1E79D5C08;
   objc_copyWeak(&v32, &location);
-  v26 = v28;
+  v26 = completionCopy;
   v31 = v26;
-  [v25 addFinishBlock:v30];
+  [performPurchase addFinishBlock:v30];
 
   objc_destroyWeak(&v32);
   objc_destroyWeak(&location);
@@ -217,14 +217,14 @@ uint64_t __84__PKAMSTopUpController_requestPurchaseWithAmount_promotionConfigura
   return result;
 }
 
-- (void)requestDTUAvailable:(id)a3
+- (void)requestDTUAvailable:(id)available
 {
-  v4 = a3;
-  if (v4)
+  availableCopy = available;
+  if (availableCopy)
   {
     v5 = objc_alloc_init(PKAsyncUnaryOperationComposer);
     [(PKAsyncUnaryOperationComposer *)v5 addOperation:&__block_literal_global_116];
-    v6 = [(PKAMSTopUpController *)self _bag];
+    _bag = [(PKAMSTopUpController *)self _bag];
     v23[0] = 0;
     v23[1] = v23;
     v23[2] = 0x3032000000;
@@ -241,7 +241,7 @@ uint64_t __84__PKAMSTopUpController_requestPurchaseWithAmount_promotionConfigura
     v18[1] = 3221225472;
     v18[2] = __44__PKAMSTopUpController_requestDTUAvailable___block_invoke_95;
     v18[3] = &unk_1E79CD7C0;
-    v7 = v6;
+    v7 = _bag;
     v19 = v7;
     v20 = v23;
     [(PKAsyncUnaryOperationComposer *)v5 addOperation:v18];
@@ -266,13 +266,13 @@ uint64_t __84__PKAMSTopUpController_requestPurchaseWithAmount_promotionConfigura
     v13[3] = &unk_1E79D5CF0;
     v13[4] = self;
     [(PKAsyncUnaryOperationComposer *)v5 addOperation:v13];
-    v9 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __44__PKAMSTopUpController_requestDTUAvailable___block_invoke_113;
     v11[3] = &unk_1E79D04A0;
-    v12 = v4;
-    v10 = [(PKAsyncUnaryOperationComposer *)v5 evaluateWithInput:v9 completion:v11];
+    v12 = availableCopy;
+    v10 = [(PKAsyncUnaryOperationComposer *)v5 evaluateWithInput:null completion:v11];
 
     _Block_object_dispose(v21, 8);
     _Block_object_dispose(v23, 8);

@@ -1,9 +1,9 @@
 @interface FCPersonalizationPublisherDampeningConfig
 - (FCPersonalizationPublisherDampeningConfig)init;
-- (FCPersonalizationPublisherDampeningConfig)initWithCoder:(id)a3;
-- (FCPersonalizationPublisherDampeningConfig)initWithConfig:(id)a3;
-- (FCPersonalizationPublisherDampeningConfig)initWithDampeningFactorMapping:(id)a3 dampeningStrategy:(unint64_t)a4 defaultDampeningFactor:(double)a5;
-- (void)encodeWithCoder:(id)a3;
+- (FCPersonalizationPublisherDampeningConfig)initWithCoder:(id)coder;
+- (FCPersonalizationPublisherDampeningConfig)initWithConfig:(id)config;
+- (FCPersonalizationPublisherDampeningConfig)initWithDampeningFactorMapping:(id)mapping dampeningStrategy:(unint64_t)strategy defaultDampeningFactor:(double)factor;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FCPersonalizationPublisherDampeningConfig
@@ -34,33 +34,33 @@
   objc_exception_throw(v6);
 }
 
-- (FCPersonalizationPublisherDampeningConfig)initWithConfig:(id)a3
+- (FCPersonalizationPublisherDampeningConfig)initWithConfig:(id)config
 {
-  v4 = a3;
+  configCopy = config;
   v9.receiver = self;
   v9.super_class = FCPersonalizationPublisherDampeningConfig;
   v5 = [(FCPersonalizationPublisherDampeningConfig *)&v9 init];
   if (v5)
   {
-    v6 = FCAppConfigurationDictionaryValueWithDefaultValue(v4, @"mapping", 0);
-    v7 = FCAppConfigurationIntegerValue(v4, @"strategy", 0);
-    v5 = [(FCPersonalizationPublisherDampeningConfig *)v5 initWithDampeningFactorMapping:v6 dampeningStrategy:v7 defaultDampeningFactor:FCAppConfigurationDoubleValue(v4, @"defaultDampeningFactor", 1.0)];
+    v6 = FCAppConfigurationDictionaryValueWithDefaultValue(configCopy, @"mapping", 0);
+    v7 = FCAppConfigurationIntegerValue(configCopy, @"strategy", 0);
+    v5 = [(FCPersonalizationPublisherDampeningConfig *)v5 initWithDampeningFactorMapping:v6 dampeningStrategy:v7 defaultDampeningFactor:FCAppConfigurationDoubleValue(configCopy, @"defaultDampeningFactor", 1.0)];
   }
 
   return v5;
 }
 
-- (FCPersonalizationPublisherDampeningConfig)initWithDampeningFactorMapping:(id)a3 dampeningStrategy:(unint64_t)a4 defaultDampeningFactor:(double)a5
+- (FCPersonalizationPublisherDampeningConfig)initWithDampeningFactorMapping:(id)mapping dampeningStrategy:(unint64_t)strategy defaultDampeningFactor:(double)factor
 {
-  v8 = a3;
+  mappingCopy = mapping;
   v13.receiver = self;
   v13.super_class = FCPersonalizationPublisherDampeningConfig;
   v9 = [(FCPersonalizationPublisherDampeningConfig *)&v13 init];
   if (v9)
   {
-    if (v8)
+    if (mappingCopy)
     {
-      v10 = v8;
+      v10 = mappingCopy;
     }
 
     else
@@ -71,34 +71,34 @@
     dampeningFactorMapping = v9->_dampeningFactorMapping;
     v9->_dampeningFactorMapping = v10;
 
-    v9->_dampeningStrategy = a4;
-    v9->_defaultDampeningFactor = a5;
+    v9->_dampeningStrategy = strategy;
+    v9->_defaultDampeningFactor = factor;
   }
 
   return v9;
 }
 
-- (FCPersonalizationPublisherDampeningConfig)initWithCoder:(id)a3
+- (FCPersonalizationPublisherDampeningConfig)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectForKey:@"dampeningFactorMapping"];
-  v6 = [v4 decodeIntegerForKey:@"dampeningStrategy"];
-  [v4 decodeDoubleForKey:@"defaultDampeningFactor"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectForKey:@"dampeningFactorMapping"];
+  v6 = [coderCopy decodeIntegerForKey:@"dampeningStrategy"];
+  [coderCopy decodeDoubleForKey:@"defaultDampeningFactor"];
   v8 = v7;
 
   v9 = [(FCPersonalizationPublisherDampeningConfig *)self initWithDampeningFactorMapping:v5 dampeningStrategy:v6 defaultDampeningFactor:v8];
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  v4 = [(FCPersonalizationPublisherDampeningConfig *)self dampeningFactorMapping];
-  [v5 encodeObject:v4 forKey:@"dampeningFactorMapping"];
+  coderCopy = coder;
+  dampeningFactorMapping = [(FCPersonalizationPublisherDampeningConfig *)self dampeningFactorMapping];
+  [coderCopy encodeObject:dampeningFactorMapping forKey:@"dampeningFactorMapping"];
 
-  [v5 encodeInteger:-[FCPersonalizationPublisherDampeningConfig dampeningStrategy](self forKey:{"dampeningStrategy"), @"dampeningStrategy"}];
+  [coderCopy encodeInteger:-[FCPersonalizationPublisherDampeningConfig dampeningStrategy](self forKey:{"dampeningStrategy"), @"dampeningStrategy"}];
   [(FCPersonalizationPublisherDampeningConfig *)self defaultDampeningFactor];
-  [v5 encodeDouble:@"defaultDampeningFactor" forKey:?];
+  [coderCopy encodeDouble:@"defaultDampeningFactor" forKey:?];
 }
 
 @end

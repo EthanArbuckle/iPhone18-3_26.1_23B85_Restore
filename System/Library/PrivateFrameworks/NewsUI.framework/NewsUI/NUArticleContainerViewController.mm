@@ -1,14 +1,14 @@
 @interface NUArticleContainerViewController
 - (NUArticleContainerViewController)init;
-- (NUArticleContainerViewController)initWithPagingFactory:(id)a3 router:(id)a4;
+- (NUArticleContainerViewController)initWithPagingFactory:(id)factory router:(id)router;
 - (NUArticleContainerViewControllerDelegate)delegate;
 - (UIEdgeInsets)overrideSafeAreaInsets;
-- (id)pageViewController:(id)a3 viewControllerAfterViewController:(id)a4;
-- (id)pageViewController:(id)a3 viewControllerBeforeViewController:(id)a4;
-- (id)viewControllerPageableForViewController:(id)a3;
+- (id)pageViewController:(id)controller viewControllerAfterViewController:(id)viewController;
+- (id)pageViewController:(id)controller viewControllerBeforeViewController:(id)viewController;
+- (id)viewControllerPageableForViewController:(id)controller;
 - (void)didReceiveMemoryWarning;
-- (void)loadWithArticleIDs:(id)a3;
-- (void)loadingDidFinishWithError:(id)a3;
+- (void)loadWithArticleIDs:(id)ds;
+- (void)loadingDidFinishWithError:(id)error;
 - (void)loadingWillStart;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
@@ -22,10 +22,10 @@
   objc_exception_throw(v2);
 }
 
-- (NUArticleContainerViewController)initWithPagingFactory:(id)a3 router:(id)a4
+- (NUArticleContainerViewController)initWithPagingFactory:(id)factory router:(id)router
 {
-  v7 = a3;
-  v8 = a4;
+  factoryCopy = factory;
+  routerCopy = router;
   v14.receiver = self;
   v14.super_class = NUArticleContainerViewController;
   v9 = [(NUArticleContainerViewController *)&v14 init];
@@ -33,8 +33,8 @@
   if (v9)
   {
     v9->_linkPreviewing = 0;
-    objc_storeStrong(&v9->_pagingFactory, a3);
-    objc_storeStrong(&v10->_router, a4);
+    objc_storeStrong(&v9->_pagingFactory, factory);
+    objc_storeStrong(&v10->_router, router);
     v11 = [[NUPageViewController alloc] initWithNibName:0 bundle:0];
     pageViewController = v10->_pageViewController;
     v10->_pageViewController = v11;
@@ -51,16 +51,16 @@
   v8.receiver = self;
   v8.super_class = NUArticleContainerViewController;
   [(NUArticleContainerViewController *)&v8 viewDidLoad];
-  v3 = [(NUArticleContainerViewController *)self pageViewController];
-  [(NUArticleContainerViewController *)self addChildViewController:v3];
+  pageViewController = [(NUArticleContainerViewController *)self pageViewController];
+  [(NUArticleContainerViewController *)self addChildViewController:pageViewController];
 
-  v4 = [(NUArticleContainerViewController *)self view];
-  v5 = [(NUArticleContainerViewController *)self pageViewController];
-  v6 = [v5 view];
-  [v4 addSubview:v6];
+  view = [(NUArticleContainerViewController *)self view];
+  pageViewController2 = [(NUArticleContainerViewController *)self pageViewController];
+  view2 = [pageViewController2 view];
+  [view addSubview:view2];
 
-  v7 = [(NUArticleContainerViewController *)self pageViewController];
-  [v7 didMoveToParentViewController:self];
+  pageViewController3 = [(NUArticleContainerViewController *)self pageViewController];
+  [pageViewController3 didMoveToParentViewController:self];
 }
 
 - (void)viewDidLayoutSubviews
@@ -68,15 +68,15 @@
   v14.receiver = self;
   v14.super_class = NUArticleContainerViewController;
   [(NUArticleContainerViewController *)&v14 viewDidLayoutSubviews];
-  v3 = [(NUArticleContainerViewController *)self view];
-  [v3 bounds];
+  view = [(NUArticleContainerViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(NUArticleContainerViewController *)self pageViewController];
-  v13 = [v12 view];
-  [v13 setBounds:{v5, v7, v9, v11}];
+  pageViewController = [(NUArticleContainerViewController *)self pageViewController];
+  view2 = [pageViewController view];
+  [view2 setBounds:{v5, v7, v9, v11}];
 }
 
 - (void)didReceiveMemoryWarning
@@ -84,19 +84,19 @@
   v11.receiver = self;
   v11.super_class = NUArticleContainerViewController;
   [(NUArticleContainerViewController *)&v11 didReceiveMemoryWarning];
-  v3 = [(NUArticleContainerViewController *)self pageViewController];
-  v4 = [v3 visibleViewController];
-  v5 = [(NUArticleContainerViewController *)self viewControllerPageableForViewController:v4];
+  pageViewController = [(NUArticleContainerViewController *)self pageViewController];
+  visibleViewController = [pageViewController visibleViewController];
+  v5 = [(NUArticleContainerViewController *)self viewControllerPageableForViewController:visibleViewController];
 
-  v6 = [(NUArticleContainerViewController *)self paging];
+  paging = [(NUArticleContainerViewController *)self paging];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __59__NUArticleContainerViewController_didReceiveMemoryWarning__block_invoke;
   v8[3] = &unk_2799A3470;
   v9 = v5;
-  v10 = self;
+  selfCopy = self;
   v7 = v5;
-  [v6 forEachPage:v8];
+  [paging forEachPage:v8];
 }
 
 void __59__NUArticleContainerViewController_didReceiveMemoryWarning__block_invoke(uint64_t a1, void *a2)
@@ -140,42 +140,42 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)loadWithArticleIDs:(id)a3
+- (void)loadWithArticleIDs:(id)ds
 {
-  v4 = a3;
-  v5 = [(NUArticleContainerViewController *)self pagingFactory];
-  v6 = [v5 createPagingForArticleIDs:v4];
+  dsCopy = ds;
+  pagingFactory = [(NUArticleContainerViewController *)self pagingFactory];
+  v6 = [pagingFactory createPagingForArticleIDs:dsCopy];
 
   [(NUArticleContainerViewController *)self setPaging:v6];
-  v7 = [(NUArticleContainerViewController *)self paging];
-  v12 = [v7 firstPage];
+  paging = [(NUArticleContainerViewController *)self paging];
+  firstPage = [paging firstPage];
 
-  if (v12)
+  if (firstPage)
   {
-    v8 = [(NUArticleContainerViewController *)self paging];
-    v9 = [v8 firstPage];
-    v10 = [v9 viewController];
+    paging2 = [(NUArticleContainerViewController *)self paging];
+    firstPage2 = [paging2 firstPage];
+    viewController = [firstPage2 viewController];
 
-    [v10 setLoadingDelegate:self];
-    v11 = [(NUArticleContainerViewController *)self pageViewController];
-    [v11 setVisibleViewController:v10];
+    [viewController setLoadingDelegate:self];
+    pageViewController = [(NUArticleContainerViewController *)self pageViewController];
+    [pageViewController setVisibleViewController:viewController];
   }
 }
 
-- (id)pageViewController:(id)a3 viewControllerBeforeViewController:(id)a4
+- (id)pageViewController:(id)controller viewControllerBeforeViewController:(id)viewController
 {
-  v5 = [(NUArticleContainerViewController *)self viewControllerPageableForViewController:a4];
+  v5 = [(NUArticleContainerViewController *)self viewControllerPageableForViewController:viewController];
   if (v5)
   {
-    v6 = [(NUArticleContainerViewController *)self paging];
-    v7 = [v5 pageIdentifier];
-    v8 = [v6 pageBeforeForIdentifier:v7];
+    paging = [(NUArticleContainerViewController *)self paging];
+    pageIdentifier = [v5 pageIdentifier];
+    v8 = [paging pageBeforeForIdentifier:pageIdentifier];
 
     if (v8)
     {
-      v9 = [(NUArticleContainerViewController *)self paging];
-      v10 = [v8 identifier];
-      v11 = [v9 pageBeforeForIdentifier:v10];
+      paging2 = [(NUArticleContainerViewController *)self paging];
+      identifier = [v8 identifier];
+      v11 = [paging2 pageBeforeForIdentifier:identifier];
 
       if (v11)
       {
@@ -187,37 +187,37 @@ LABEL_9:
         dispatch_async(MEMORY[0x277D85CD0], block);
       }
 
-      v12 = [v8 viewController];
+      viewController = [v8 viewController];
     }
 
     else
     {
-      v12 = 0;
+      viewController = 0;
     }
   }
 
   else
   {
-    v12 = 0;
+    viewController = 0;
   }
 
-  return v12;
+  return viewController;
 }
 
-- (id)pageViewController:(id)a3 viewControllerAfterViewController:(id)a4
+- (id)pageViewController:(id)controller viewControllerAfterViewController:(id)viewController
 {
-  v5 = [(NUArticleContainerViewController *)self viewControllerPageableForViewController:a4];
+  v5 = [(NUArticleContainerViewController *)self viewControllerPageableForViewController:viewController];
   if (v5)
   {
-    v6 = [(NUArticleContainerViewController *)self paging];
-    v7 = [v5 pageIdentifier];
-    v8 = [v6 pageAfterIdentifier:v7];
+    paging = [(NUArticleContainerViewController *)self paging];
+    pageIdentifier = [v5 pageIdentifier];
+    v8 = [paging pageAfterIdentifier:pageIdentifier];
 
     if (v8)
     {
-      v9 = [(NUArticleContainerViewController *)self paging];
-      v10 = [v8 identifier];
-      v11 = [v9 pageAfterIdentifier:v10];
+      paging2 = [(NUArticleContainerViewController *)self paging];
+      identifier = [v8 identifier];
+      v11 = [paging2 pageAfterIdentifier:identifier];
 
       if (v11)
       {
@@ -229,61 +229,61 @@ LABEL_9:
         dispatch_async(MEMORY[0x277D85CD0], block);
       }
 
-      v12 = [v8 viewController];
+      viewController = [v8 viewController];
     }
 
     else
     {
-      v12 = 0;
+      viewController = 0;
     }
   }
 
   else
   {
-    v12 = 0;
+    viewController = 0;
   }
 
-  return v12;
+  return viewController;
 }
 
 - (void)loadingWillStart
 {
-  v3 = [(NUArticleContainerViewController *)self delegate];
+  delegate = [(NUArticleContainerViewController *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(NUArticleContainerViewController *)self paging];
-    v8 = [v5 firstPage];
+    paging = [(NUArticleContainerViewController *)self paging];
+    firstPage = [paging firstPage];
 
-    v6 = [(NUArticleContainerViewController *)self delegate];
-    v7 = [v8 identifier];
-    [v6 articleContainerViewController:self willLoadFirstPageWithIdentifier:v7];
+    delegate2 = [(NUArticleContainerViewController *)self delegate];
+    identifier = [firstPage identifier];
+    [delegate2 articleContainerViewController:self willLoadFirstPageWithIdentifier:identifier];
   }
 }
 
-- (void)loadingDidFinishWithError:(id)a3
+- (void)loadingDidFinishWithError:(id)error
 {
-  v10 = a3;
-  v4 = [(NUArticleContainerViewController *)self delegate];
+  errorCopy = error;
+  delegate = [(NUArticleContainerViewController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(NUArticleContainerViewController *)self paging];
-    v7 = [v6 firstPage];
+    paging = [(NUArticleContainerViewController *)self paging];
+    firstPage = [paging firstPage];
 
-    v8 = [(NUArticleContainerViewController *)self delegate];
-    v9 = [v7 identifier];
-    [v8 articleContainerViewController:self didLoadFirstPageWithIdentifier:v9 error:v10];
+    delegate2 = [(NUArticleContainerViewController *)self delegate];
+    identifier = [firstPage identifier];
+    [delegate2 articleContainerViewController:self didLoadFirstPageWithIdentifier:identifier error:errorCopy];
   }
 }
 
-- (id)viewControllerPageableForViewController:(id)a3
+- (id)viewControllerPageableForViewController:(id)controller
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && [v3 conformsToProtocol:&unk_286E322C8])
+  controllerCopy = controller;
+  v4 = controllerCopy;
+  if (controllerCopy && [controllerCopy conformsToProtocol:&unk_286E322C8])
   {
     v5 = v4;
   }

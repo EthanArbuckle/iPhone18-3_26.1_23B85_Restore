@@ -1,30 +1,30 @@
 @interface OSASystemConfiguration
-+ (BOOL)BOOLValForMCSetting:(id)a3;
++ (BOOL)BOOLValForMCSetting:(id)setting;
 + (id)automatedDeviceGroup;
-+ (id)ensureUsablePath:(id)a3 component:(id)a4 options:(id)a5;
++ (id)ensureUsablePath:(id)path component:(id)component options:(id)options;
 + (id)sharedInstance;
 + (id)sharedMCProfileConnection;
-+ (id)uidForUser:(id)a3;
++ (id)uidForUser:(id)user;
 + (int64_t)fastLane;
-+ (void)ensureConformanceOfFile:(int)a3 options:(id)a4;
++ (void)ensureConformanceOfFile:(int)file options:(id)options;
 + (void)fastLane;
-+ (void)setAutomatedDeviceGroup:(id)a3;
++ (void)setAutomatedDeviceGroup:(id)group;
 - ($A7169D069963E6D826465C174652914F)logDomain;
 - (BOOL)appleInternal;
 - (BOOL)carrierInstall;
 - (BOOL)factoryDevice;
-- (BOOL)isAllowed:(id)a3 forDomain:(id)a4;
+- (BOOL)isAllowed:(id)allowed forDomain:(id)domain;
 - (BOOL)isComputeController;
 - (BOOL)isComputeNode;
-- (BOOL)isConfigEnabled:(id)a3;
+- (BOOL)isConfigEnabled:(id)enabled;
 - (BOOL)isInDeviceRecoveryEnvironment;
-- (BOOL)isWhitelisted:(id)a3 forDomain:(id)a4;
+- (BOOL)isWhitelisted:(id)whitelisted forDomain:(id)domain;
 - (BOOL)multiUserMode;
 - (BOOL)optIn3rdParty;
 - (BOOL)optInApple;
 - (BOOL)optInDRE;
 - (BOOL)overrideMountPath;
-- (BOOL)setPrefsKey:(id)a3 value:(id)a4 forDomain:(id)a5 withSync:(BOOL)a6;
+- (BOOL)setPrefsKey:(id)key value:(id)value forDomain:(id)domain withSync:(BOOL)sync;
 - (BOOL)submissionsDisabled;
 - (NSMutableDictionary)submissionMetadata;
 - (NSString)automatedDeviceGroup;
@@ -38,24 +38,24 @@
 - (id)awdReporterKey;
 - (id)buildVersion;
 - (id)crashReporterKey;
-- (id)createReportMetadata:(id)a3 with:(id)a4 at:(double)a5 usingOptions:(id)a6;
+- (id)createReportMetadata:(id)metadata with:(id)with at:(double)at usingOptions:(id)options;
 - (id)experimentGroup;
 - (id)getLogBlacklist;
-- (id)getPrefsKey:(id)a3 forDomain:(id)a4 withOptions:(id)a5;
-- (id)getPropsForLogType:(id)a3;
+- (id)getPrefsKey:(id)key forDomain:(id)domain withOptions:(id)options;
+- (id)getPropsForLogType:(id)type;
 - (id)hwModel;
 - (id)internalKey;
 - (id)legacyAutomatedDeviceGroup;
-- (id)logExt:(id)a3;
-- (id)logPathForType:(id)a3 at:(double)a4 options:(id)a5;
-- (id)logPrefix:(id)a3;
+- (id)logExt:(id)ext;
+- (id)logPathForType:(id)type at:(double)at options:(id)options;
+- (id)logPrefix:(id)prefix;
 - (id)modelCode;
 - (id)osTrain;
 - (id)pairedWatchOS;
 - (id)pathSubmission;
 - (id)pathSubmissionDataVault;
 - (id)pathSubmissionSubdirDiagnosticLogs;
-- (id)pathSubmissionWithHomeDirectory:(id)a3;
+- (id)pathSubmissionWithHomeDirectory:(id)directory;
 - (id)productBuildString;
 - (id)productName;
 - (id)productNameVersionBuildString;
@@ -65,15 +65,15 @@
 - (id)releaseType;
 - (id)seedGroup;
 - (id)serialNumber;
-- (id)submissionParam:(id)a3;
+- (id)submissionParam:(id)param;
 - (id)systemId;
 - (id)targetAudience;
 - (id)uiCountryCode;
 - (void)onceConfig;
-- (void)saveToPath:(id)a3;
-- (void)setAutomatedDeviceGroup:(id)a3;
-- (void)setDREOptIn:(BOOL)a3;
-- (void)setPathRoot:(id)a3;
+- (void)saveToPath:(id)path;
+- (void)setAutomatedDeviceGroup:(id)group;
+- (void)setDREOptIn:(BOOL)in;
+- (void)setPathRoot:(id)root;
 - (void)sysVersionData;
 @end
 
@@ -174,9 +174,9 @@ LABEL_5:
 - (BOOL)optInApple
 {
   v2 = +[OSASystemConfiguration sharedInstance];
-  v3 = [v2 optInDRE];
+  optInDRE = [v2 optInDRE];
 
-  if (v3)
+  if (optInDRE)
   {
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
     {
@@ -230,7 +230,7 @@ LABEL_5:
 
 - (id)pathSubmission
 {
-  v3 = [(OSASystemConfiguration *)self pathRoot];
+  pathRoot = [(OSASystemConfiguration *)self pathRoot];
   if ([(OSASystemConfiguration *)self multiUserMode])
   {
     v4 = @"Library/Logs/DiagnosticReports";
@@ -241,7 +241,7 @@ LABEL_5:
     v4 = @"Logs/CrashReporter";
   }
 
-  v5 = [OSASystemConfiguration ensureUsablePath:v3 component:v4 options:0];
+  v5 = [OSASystemConfiguration ensureUsablePath:pathRoot component:v4 options:0];
 
   return v5;
 }
@@ -287,11 +287,11 @@ LABEL_5:
 - (id)pathSubmissionDataVault
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  v2 = [(OSASystemConfiguration *)self pathContainerRoot];
+  pathContainerRoot = [(OSASystemConfiguration *)self pathContainerRoot];
   v7 = kPathOptionNoBackup;
   v8[0] = MEMORY[0x1E695E118];
   v3 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v8 forKeys:&v7 count:1];
-  v4 = [OSASystemConfiguration ensureUsablePath:v2 component:@"DiagnosticReports" options:v3];
+  v4 = [OSASystemConfiguration ensureUsablePath:pathContainerRoot component:@"DiagnosticReports" options:v3];
 
   v5 = *MEMORY[0x1E69E9840];
 
@@ -383,10 +383,10 @@ LABEL_5:
 
 - (id)crashReporterKey
 {
-  v3 = [MEMORY[0x1E69B7BD8] sharedClient];
-  v4 = [v3 crashreporterKey];
+  mEMORY[0x1E69B7BD8] = [MEMORY[0x1E69B7BD8] sharedClient];
+  crashreporterKey = [mEMORY[0x1E69B7BD8] crashreporterKey];
   crashReporterKey = self->super._crashReporterKey;
-  self->super._crashReporterKey = v4;
+  self->super._crashReporterKey = crashreporterKey;
 
   v6 = self->super._crashReporterKey;
 
@@ -456,16 +456,16 @@ LABEL_5:
 + (id)automatedDeviceGroup
 {
   v2 = +[OSASystemConfiguration sharedInstance];
-  v3 = [v2 automatedDeviceGroup];
+  automatedDeviceGroup = [v2 automatedDeviceGroup];
 
-  return v3;
+  return automatedDeviceGroup;
 }
 
-+ (void)setAutomatedDeviceGroup:(id)a3
++ (void)setAutomatedDeviceGroup:(id)group
 {
-  v3 = a3;
+  groupCopy = group;
   v4 = +[OSASystemConfiguration sharedInstance];
-  [v4 setAutomatedDeviceGroup:v3];
+  [v4 setAutomatedDeviceGroup:groupCopy];
 }
 
 uint64_t __40__OSASystemConfiguration_sharedInstance__block_invoke()
@@ -579,9 +579,9 @@ LABEL_6:
     goto LABEL_14;
   }
 
-  v4 = [(OSASystemConfiguration *)self factoryDevice];
+  factoryDevice = [(OSASystemConfiguration *)self factoryDevice];
   v5 = 0;
-  if (v4 && v3)
+  if (factoryDevice && v3)
   {
     goto LABEL_6;
   }
@@ -990,15 +990,15 @@ void __44__OSASystemConfiguration_recoveryModeReason__block_invoke(uint64_t a1)
   }
 }
 
-- (BOOL)setPrefsKey:(id)a3 value:(id)a4 forDomain:(id)a5 withSync:(BOOL)a6
+- (BOOL)setPrefsKey:(id)key value:(id)value forDomain:(id)domain withSync:(BOOL)sync
 {
-  v6 = a6;
+  syncCopy = sync;
   v39[1] = *MEMORY[0x1E69E9840];
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [(OSASystemConfiguration *)self pathPreferences];
-  v14 = [v13 stringByAppendingPathComponent:@"/Library/Preferences/com.apple.OTACrashCopier.plist"];
+  domainCopy = domain;
+  valueCopy = value;
+  keyCopy = key;
+  pathPreferences = [(OSASystemConfiguration *)self pathPreferences];
+  v14 = [pathPreferences stringByAppendingPathComponent:@"/Library/Preferences/com.apple.OTACrashCopier.plist"];
 
   v15 = open_dprotected_np([v14 fileSystemRepresentation], 0, 0, 1);
   if (v15 < 0)
@@ -1016,11 +1016,11 @@ LABEL_11:
     }
 
     unlink([v14 fileSystemRepresentation]);
-    v18 = [(OSASystemConfiguration *)self pathPreferences];
+    pathPreferences2 = [(OSASystemConfiguration *)self pathPreferences];
     v38 = kPathOptionNoBackup;
     v39[0] = MEMORY[0x1E695E118];
     v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v39 forKeys:&v38 count:1];
-    v20 = [OSASystemConfiguration ensureUsablePath:v18 component:@"/Library/Preferences" options:v19];
+    v20 = [OSASystemConfiguration ensureUsablePath:pathPreferences2 component:@"/Library/Preferences" options:v19];
 
     if (v20)
     {
@@ -1079,12 +1079,12 @@ LABEL_11:
   }
 
 LABEL_19:
-  v25 = [(OSASystemConfiguration *)self pathPreferences];
+  pathPreferences3 = [(OSASystemConfiguration *)self pathPreferences];
   _CFPreferencesSetAppValueWithContainer();
 
-  if (v6)
+  if (syncCopy)
   {
-    v26 = [(OSASystemConfiguration *)self pathPreferences];
+    pathPreferences4 = [(OSASystemConfiguration *)self pathPreferences];
     v27 = _CFPreferencesAppSynchronizeWithContainer() != 0;
   }
 
@@ -1097,13 +1097,13 @@ LABEL_19:
   return v27;
 }
 
-- (id)getPrefsKey:(id)a3 forDomain:(id)a4 withOptions:(id)a5
+- (id)getPrefsKey:(id)key forDomain:(id)domain withOptions:(id)options
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(OSASystemConfiguration *)self pathPreferences];
+  keyCopy = key;
+  domainCopy = domain;
+  pathPreferences = [(OSASystemConfiguration *)self pathPreferences];
 
-  if (!v9 || ([(OSASystemConfiguration *)self pathPreferences], v10 = objc_claimAutoreleasedReturnValue(), v11 = _CFPreferencesCopyAppValueWithContainer(), v10, !v11))
+  if (!pathPreferences || ([(OSASystemConfiguration *)self pathPreferences], v10 = objc_claimAutoreleasedReturnValue(), v11 = _CFPreferencesCopyAppValueWithContainer(), v10, !v11))
   {
     if (xpc_user_sessions_enabled())
     {
@@ -1112,7 +1112,7 @@ LABEL_19:
       {
         if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
         {
-          [OSASystemConfiguration getPrefsKey:v7 forDomain:&v17 withOptions:?];
+          [OSASystemConfiguration getPrefsKey:keyCopy forDomain:&v17 withOptions:?];
         }
 
         goto LABEL_15;
@@ -1137,7 +1137,7 @@ LABEL_15:
       UserIdentifierForUID = @"mobile";
     }
 
-    v13 = CFPreferencesCopyValue(v7, v8, UserIdentifierForUID, *MEMORY[0x1E695E8B0]);
+    v13 = CFPreferencesCopyValue(keyCopy, domainCopy, UserIdentifierForUID, *MEMORY[0x1E695E8B0]);
     if (v13)
     {
       v11 = v13;
@@ -1151,11 +1151,11 @@ LABEL_15:
 
 LABEL_18:
 
-    v14 = [(__CFString *)v8 stringByAppendingPathExtension:@"plist"];
+    v14 = [(__CFString *)domainCopy stringByAppendingPathExtension:@"plist"];
     UserIdentifierForUID = [@"/Library/Managed Preferences/mobile/" stringByAppendingPathComponent:v14];
 
     v15 = [MEMORY[0x1E695DF20] dictionaryWithContentsOfFile:UserIdentifierForUID];
-    v11 = [v15 objectForKeyedSubscript:v7];
+    v11 = [v15 objectForKeyedSubscript:keyCopy];
 
     if (v11 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
     {
@@ -1185,7 +1185,7 @@ LABEL_22:
   if (!v3)
   {
 LABEL_7:
-    v4 = 0;
+    integerValue = 0;
     goto LABEL_8;
   }
 
@@ -1204,10 +1204,10 @@ LABEL_7:
     }
   }
 
-  v4 = [v3 integerValue];
+  integerValue = [v3 integerValue];
 LABEL_8:
 
-  return v4;
+  return integerValue;
 }
 
 - (id)experimentGroup
@@ -1259,12 +1259,12 @@ void __46__OSASystemConfiguration_automatedDeviceGroup__block_invoke(uint64_t a1
   objc_storeStrong((*(a1 + 32) + 176), v2);
 }
 
-- (void)setAutomatedDeviceGroup:(id)a3
+- (void)setAutomatedDeviceGroup:(id)group
 {
-  v4 = a3;
-  [OSADefaults setObject:v4 forKey:@"AutomatedDeviceGroup"];
+  groupCopy = group;
+  [OSADefaults setObject:groupCopy forKey:@"AutomatedDeviceGroup"];
   automatedDeviceGroup = self->super._automatedDeviceGroup;
-  self->super._automatedDeviceGroup = v4;
+  self->super._automatedDeviceGroup = groupCopy;
 }
 
 - (id)legacyAutomatedDeviceGroup
@@ -1744,13 +1744,13 @@ uint64_t __55__OSASystemConfiguration_isInDeviceRecoveryEnvironment__block_invok
   return result;
 }
 
-- (void)saveToPath:(id)a3
+- (void)saveToPath:(id)path
 {
-  v4 = a3;
-  v6 = [(OSAProxyConfiguration *)self metadata];
-  v5 = [v4 stringByAppendingPathComponent:@"deviceMetadata.proxy"];
+  pathCopy = path;
+  metadata = [(OSAProxyConfiguration *)self metadata];
+  v5 = [pathCopy stringByAppendingPathComponent:@"deviceMetadata.proxy"];
 
-  [v6 writeToFile:v5 atomically:1];
+  [metadata writeToFile:v5 atomically:1];
 }
 
 void __36__OSASystemConfiguration_onceConfig__block_invoke(uint64_t a1)
@@ -1862,14 +1862,14 @@ LABEL_18:
   return logBlacklist;
 }
 
-- (id)getPropsForLogType:(id)a3
+- (id)getPropsForLogType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   [(OSASystemConfiguration *)self onceConfig];
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [v4 length])
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [typeCopy length])
   {
-    v5 = [(NSDictionary *)self->_logConfig objectForKeyedSubscript:v4];
+    v5 = [(NSDictionary *)self->_logConfig objectForKeyedSubscript:typeCopy];
   }
 
   else
@@ -1880,46 +1880,46 @@ LABEL_18:
   return v5;
 }
 
-- (BOOL)isConfigEnabled:(id)a3
+- (BOOL)isConfigEnabled:(id)enabled
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"eOS"];
+  enabledCopy = enabled;
+  v4 = [enabledCopy objectForKeyedSubscript:@"eOS"];
   if (v4)
   {
-    v5 = [v3 objectForKeyedSubscript:@"eOS"];
-    v6 = [v5 BOOLValue];
+    v5 = [enabledCopy objectForKeyedSubscript:@"eOS"];
+    bOOLValue = [v5 BOOLValue];
   }
 
   else
   {
-    v6 = 1;
+    bOOLValue = 1;
   }
 
-  return v6;
+  return bOOLValue;
 }
 
-+ (id)ensureUsablePath:(id)a3 component:(id)a4 options:(id)a5
++ (id)ensureUsablePath:(id)path component:(id)component options:(id)options
 {
   v59 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = v7;
+  pathCopy = path;
+  componentCopy = component;
+  optionsCopy = options;
+  v10 = pathCopy;
   v11 = v10;
   v12 = v10;
-  if (v8)
+  if (componentCopy)
   {
-    v12 = [v10 stringByAppendingPathComponent:v8];
+    v12 = [v10 stringByAppendingPathComponent:componentCopy];
   }
 
-  v13 = [v9 objectForKeyedSubscript:kPathOptionUntrusted];
-  v14 = [v13 BOOLValue];
+  v13 = [optionsCopy objectForKeyedSubscript:kPathOptionUntrusted];
+  bOOLValue = [v13 BOOLValue];
 
-  if (v14)
+  if (bOOLValue)
   {
     v15 = +[OSASystemConfiguration sharedInstance];
-    v16 = [v15 pathSubmission];
-    v17 = [v16 stringByAppendingPathComponent:@"ProxiedDevice-"];
+    pathSubmission = [v15 pathSubmission];
+    v17 = [pathSubmission stringByAppendingPathComponent:@"ProxiedDevice-"];
 
     if (realpath_DARWIN_EXTSN([v12 UTF8String], v55) || *__error() == 2)
     {
@@ -1963,18 +1963,18 @@ LABEL_14:
 LABEL_15:
   if ([v12 length])
   {
-    v22 = [MEMORY[0x1E696AC08] defaultManager];
-    if ([v22 fileExistsAtPath:v12])
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    if ([defaultManager fileExistsAtPath:v12])
     {
-      v23 = [v12 fileSystemRepresentation];
+      fileSystemRepresentation = [v12 fileSystemRepresentation];
       v42[0] = MEMORY[0x1E69E9820];
       v42[1] = 3221225472;
       v42[2] = __61__OSASystemConfiguration_ensureUsablePath_component_options___block_invoke;
       v42[3] = &unk_1E7A27450;
-      v43 = v9;
+      v43 = optionsCopy;
       v12 = v12;
       v44 = v12;
-      if ((OSASafeOpenReadOnly(v23, v42) & 1) == 0)
+      if ((OSASafeOpenReadOnly(fileSystemRepresentation, v42) & 1) == 0)
       {
         if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
         {
@@ -1992,7 +1992,7 @@ LABEL_15:
     {
       v25 = objc_alloc_init(OSASafeCreateDirectoryOptions);
       [(OSASafeCreateDirectoryOptions *)v25 setCreateIntermediates:1];
-      v26 = [v9 objectForKeyedSubscript:@"file-owner-uid"];
+      v26 = [optionsCopy objectForKeyedSubscript:@"file-owner-uid"];
       [(OSASafeCreateDirectoryOptions *)v25 setUserID:v26];
 
       [(OSASafeCreateDirectoryOptions *)v25 setGroupID:&unk_1F241E878];
@@ -2030,12 +2030,12 @@ LABEL_15:
 
     if (v12)
     {
-      if ([v22 isWritableFileAtPath:v12])
+      if ([defaultManager isWritableFileAtPath:v12])
       {
-        v30 = [v9 objectForKeyedSubscript:kPathOptionNoBackup];
-        v31 = [v30 BOOLValue];
+        v30 = [optionsCopy objectForKeyedSubscript:kPathOptionNoBackup];
+        bOOLValue2 = [v30 BOOLValue];
 
-        if (v31)
+        if (bOOLValue2)
         {
           v32 = [MEMORY[0x1E695DFF8] fileURLWithPath:v12];
           v40 = 0;
@@ -2291,24 +2291,24 @@ id __61__OSASystemConfiguration_ensureUsablePath_component_options___block_invok
   return v12;
 }
 
-+ (void)ensureConformanceOfFile:(int)a3 options:(id)a4
++ (void)ensureConformanceOfFile:(int)file options:(id)options
 {
   memset(&v14, 0, sizeof(v14));
-  v5 = a4;
-  fstat(a3, &v14);
+  optionsCopy = options;
+  fstat(file, &v14);
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
   {
     [OSASystemConfiguration ensureConformanceOfFile:? options:?];
   }
 
-  v6 = [v5 objectForKeyedSubscript:{@"file-owner-uid", *&v14.st_dev}];
+  v6 = [optionsCopy objectForKeyedSubscript:{@"file-owner-uid", *&v14.st_dev}];
 
-  v7 = [v6 intValue];
-  if (!geteuid() && v7)
+  intValue = [v6 intValue];
+  if (!geteuid() && intValue)
   {
     st_uid = v14.st_uid;
     v9 = os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG);
-    if (st_uid == v7)
+    if (st_uid == intValue)
     {
       if (v9)
       {
@@ -2323,7 +2323,7 @@ id __61__OSASystemConfiguration_ensureUsablePath_component_options___block_invok
         +[OSASystemConfiguration ensureConformanceOfFile:options:];
       }
 
-      fchown(a3, v7, 0xFFFFFFFF);
+      fchown(file, intValue, 0xFFFFFFFF);
     }
   }
 
@@ -2344,7 +2344,7 @@ id __61__OSASystemConfiguration_ensureUsablePath_component_options___block_invok
       +[OSASystemConfiguration ensureConformanceOfFile:options:];
     }
 
-    fchown(a3, 0xFFFFFFFF, 0xFAu);
+    fchown(file, 0xFFFFFFFF, 0xFAu);
   }
 
   st_mode = v14.st_mode;
@@ -2364,21 +2364,21 @@ id __61__OSASystemConfiguration_ensureUsablePath_component_options___block_invok
       +[OSASystemConfiguration ensureConformanceOfFile:options:];
     }
 
-    fchmod(a3, 0x1B0u);
+    fchmod(file, 0x1B0u);
   }
 }
 
-- (void)setPathRoot:(id)a3
+- (void)setPathRoot:(id)root
 {
-  v4 = a3;
+  rootCopy = root;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __38__OSASystemConfiguration_setPathRoot___block_invoke;
   v7[3] = &unk_1E7A27478;
   v7[4] = self;
-  v8 = v4;
+  v8 = rootCopy;
   v5 = setPathRoot__onceToken;
-  v6 = v4;
+  v6 = rootCopy;
   if (v5 != -1)
   {
     dispatch_once(&setPathRoot__onceToken, v7);
@@ -2626,15 +2626,15 @@ void __43__OSASystemConfiguration_pathContainerRoot__block_invoke(uint64_t a1)
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (id)pathSubmissionWithHomeDirectory:(id)a3
+- (id)pathSubmissionWithHomeDirectory:(id)directory
 {
-  v4 = a3;
-  v5 = [(OSASystemConfiguration *)self pathSubmission];
-  if (v5)
+  directoryCopy = directory;
+  pathSubmission = [(OSASystemConfiguration *)self pathSubmission];
+  if (pathSubmission)
   {
-    v6 = [v4 stringByStandardizingPath];
-    v7 = [(OSASystemConfiguration *)self pathSubmission];
-    v8 = [v6 stringByAppendingPathComponent:v7];
+    stringByStandardizingPath = [directoryCopy stringByStandardizingPath];
+    pathSubmission2 = [(OSASystemConfiguration *)self pathSubmission];
+    v8 = [stringByStandardizingPath stringByAppendingPathComponent:pathSubmission2];
   }
 
   else
@@ -2647,17 +2647,17 @@ void __43__OSASystemConfiguration_pathContainerRoot__block_invoke(uint64_t a1)
 
 - (id)pathSubmissionSubdirDiagnosticLogs
 {
-  v2 = [(OSASystemConfiguration *)self pathSubmission];
-  v3 = [OSASystemConfiguration ensureUsablePath:v2 component:@"DiagnosticLogs" options:0];
+  pathSubmission = [(OSASystemConfiguration *)self pathSubmission];
+  v3 = [OSASystemConfiguration ensureUsablePath:pathSubmission component:@"DiagnosticLogs" options:0];
 
   return v3;
 }
 
-+ (id)uidForUser:(id)a3
++ (id)uidForUser:(id)user
 {
   v10 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = getpwnam([v3 UTF8String]);
+  userCopy = user;
+  v4 = getpwnam([userCopy UTF8String]);
   if (v4)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v4->pw_uid];
@@ -2668,7 +2668,7 @@ void __43__OSASystemConfiguration_pathContainerRoot__block_invoke(uint64_t a1)
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
     {
       v8 = 138412290;
-      v9 = v3;
+      v9 = userCopy;
       _os_log_impl(&dword_1AE4F7000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "Failed to fetch UID from unknown user '%@'", &v8, 0xCu);
     }
 
@@ -2805,19 +2805,19 @@ void __40__OSASystemConfiguration_pathAWDTasking__block_invoke(uint64_t a1)
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (id)submissionParam:(id)a3
+- (id)submissionParam:(id)param
 {
-  v4 = a3;
+  paramCopy = param;
   [(OSASystemConfiguration *)self onceConfig];
-  v5 = [(NSDictionary *)self->_submissionParams objectForKeyedSubscript:v4];
+  v5 = [(NSDictionary *)self->_submissionParams objectForKeyedSubscript:paramCopy];
 
   return v5;
 }
 
-- (BOOL)isWhitelisted:(id)a3 forDomain:(id)a4
+- (BOOL)isWhitelisted:(id)whitelisted forDomain:(id)domain
 {
-  v6 = a3;
-  v7 = a4;
+  whitelistedCopy = whitelisted;
+  domainCopy = domain;
   [(OSASystemConfiguration *)self onceConfig];
   if ([(OSASystemConfiguration *)self appleInternal])
   {
@@ -2826,32 +2826,32 @@ void __40__OSASystemConfiguration_pathAWDTasking__block_invoke(uint64_t a1)
 
   else
   {
-    v9 = [(NSDictionary *)self->_whitelistedDomains objectForKeyedSubscript:v7];
-    v8 = [v9 containsObject:v6];
+    v9 = [(NSDictionary *)self->_whitelistedDomains objectForKeyedSubscript:domainCopy];
+    v8 = [v9 containsObject:whitelistedCopy];
   }
 
   return v8;
 }
 
-- (BOOL)isAllowed:(id)a3 forDomain:(id)a4
+- (BOOL)isAllowed:(id)allowed forDomain:(id)domain
 {
-  v6 = a4;
-  v7 = a3;
+  domainCopy = domain;
+  allowedCopy = allowed;
   [(OSASystemConfiguration *)self onceConfig];
-  v8 = [(NSDictionary *)self->_whitelistedDomains objectForKeyedSubscript:v6];
+  v8 = [(NSDictionary *)self->_whitelistedDomains objectForKeyedSubscript:domainCopy];
 
-  LOBYTE(v6) = [v8 containsObject:v7];
-  return v6;
+  LOBYTE(domainCopy) = [v8 containsObject:allowedCopy];
+  return domainCopy;
 }
 
-- (id)createReportMetadata:(id)a3 with:(id)a4 at:(double)a5 usingOptions:(id)a6
+- (id)createReportMetadata:(id)metadata with:(id)with at:(double)at usingOptions:(id)options
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  if (v11)
+  metadataCopy = metadata;
+  withCopy = with;
+  optionsCopy = options;
+  if (withCopy)
   {
-    v13 = [v11 mutableCopy];
+    v13 = [withCopy mutableCopy];
   }
 
   else
@@ -2864,36 +2864,36 @@ void __40__OSASystemConfiguration_pathAWDTasking__block_invoke(uint64_t a1)
 
   if (!v15)
   {
-    v16 = [(OSASystemConfiguration *)self productNameVersionBuildString];
-    [v14 setObject:v16 forKeyedSubscript:@"os_version"];
+    productNameVersionBuildString = [(OSASystemConfiguration *)self productNameVersionBuildString];
+    [v14 setObject:productNameVersionBuildString forKeyedSubscript:@"os_version"];
   }
 
-  [v14 setObject:v10 forKeyedSubscript:@"bug_type"];
-  if ([v10 isEqualToString:@"211"])
+  [v14 setObject:metadataCopy forKeyedSubscript:@"bug_type"];
+  if ([metadataCopy isEqualToString:@"211"])
   {
-    a5 = OSATimeIntervalApproximate(a5);
+    at = OSATimeIntervalApproximate(at);
   }
 
-  v17 = OSADateFormat(1u, a5);
+  v17 = OSADateFormat(1u, at);
   [v14 setObject:v17 forKeyedSubscript:@"timestamp"];
 
   v18 = [v14 objectForKeyedSubscript:@"incident_id"];
 
   if (!v18)
   {
-    v19 = [MEMORY[0x1E696AFB0] UUID];
-    v20 = [v19 UUIDString];
-    [v14 setObject:v20 forKeyedSubscript:@"incident_id"];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
+    [v14 setObject:uUIDString forKeyedSubscript:@"incident_id"];
   }
 
   return v14;
 }
 
-- (id)logPrefix:(id)a3
+- (id)logPrefix:(id)prefix
 {
-  v4 = a3;
+  prefixCopy = prefix;
   [(OSASystemConfiguration *)self onceConfig];
-  v5 = [(OSASystemConfiguration *)self getPropsForLogType:v4];
+  v5 = [(OSASystemConfiguration *)self getPropsForLogType:prefixCopy];
 
   if (v5)
   {
@@ -2908,18 +2908,18 @@ void __40__OSASystemConfiguration_pathAWDTasking__block_invoke(uint64_t a1)
   return v6;
 }
 
-- (id)logExt:(id)a3
+- (id)logExt:(id)ext
 {
   v16[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  extCopy = ext;
   [(OSASystemConfiguration *)self onceConfig];
-  v5 = [(OSASystemConfiguration *)self getPropsForLogType:v4];
+  v5 = [(OSASystemConfiguration *)self getPropsForLogType:extCopy];
   v6 = [v5 objectForKeyedSubscript:@"ext"];
 
-  v7 = [(OSASystemConfiguration *)self getPropsForLogType:v4];
+  v7 = [(OSASystemConfiguration *)self getPropsForLogType:extCopy];
   v8 = [v7 objectForKeyedSubscript:@"routing"];
 
-  v9 = [(OSASystemConfiguration *)self getPropsForLogType:v4];
+  v9 = [(OSASystemConfiguration *)self getPropsForLogType:extCopy];
 
   v10 = [v9 objectForKeyedSubscript:@"subrouting"];
 
@@ -2951,20 +2951,20 @@ LABEL_8:
   return v13;
 }
 
-- (id)logPathForType:(id)a3 at:(double)a4 options:(id)a5
+- (id)logPathForType:(id)type at:(double)at options:(id)options
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [v9 objectForKeyedSubscript:@"override-fileName"];
+  typeCopy = type;
+  optionsCopy = options;
+  v10 = [optionsCopy objectForKeyedSubscript:@"override-fileName"];
 
   if (v10)
   {
-    v11 = [v9 objectForKeyedSubscript:@"override-fileName"];
+    v11 = [optionsCopy objectForKeyedSubscript:@"override-fileName"];
   }
 
   else
   {
-    if (logPathForType_at_options__lastAbsoluteTimeSeconds == a4)
+    if (logPathForType_at_options__lastAbsoluteTimeSeconds == at)
     {
       v12 = 4;
     }
@@ -2974,8 +2974,8 @@ LABEL_8:
       v12 = 3;
     }
 
-    v13 = OSADateFormat(v12, a4);
-    if (logPathForType_at_options__lastAbsoluteTimeSeconds == a4)
+    v13 = OSADateFormat(v12, at);
+    if (logPathForType_at_options__lastAbsoluteTimeSeconds == at)
     {
       v14 = logPathForType_at_options__collisionCount + 1;
     }
@@ -2986,28 +2986,28 @@ LABEL_8:
     }
 
     logPathForType_at_options__collisionCount = v14;
-    logPathForType_at_options__lastAbsoluteTimeSeconds = a4;
-    v15 = [v9 objectForKeyedSubscript:@"override-fileExt"];
-    if (!v15 || (v16 = v15, [v9 objectForKeyedSubscript:@"override-fileExt"], v17 = objc_claimAutoreleasedReturnValue(), v16, !v17))
+    logPathForType_at_options__lastAbsoluteTimeSeconds = at;
+    v15 = [optionsCopy objectForKeyedSubscript:@"override-fileExt"];
+    if (!v15 || (v16 = v15, [optionsCopy objectForKeyedSubscript:@"override-fileExt"], v17 = objc_claimAutoreleasedReturnValue(), v16, !v17))
     {
-      v17 = [(OSASystemConfiguration *)self logExt:v8];
+      v17 = [(OSASystemConfiguration *)self logExt:typeCopy];
     }
 
-    v18 = [v9 objectForKeyedSubscript:@"override-filePrefix"];
+    v18 = [optionsCopy objectForKeyedSubscript:@"override-filePrefix"];
     if (v18)
     {
-      [v9 objectForKeyedSubscript:@"override-filePrefix"];
+      [optionsCopy objectForKeyedSubscript:@"override-filePrefix"];
     }
 
     else
     {
-      [(OSASystemConfiguration *)self logPrefix:v8];
+      [(OSASystemConfiguration *)self logPrefix:typeCopy];
     }
     v19 = ;
 
     if (![v19 length])
     {
-      v20 = v8;
+      v20 = typeCopy;
 
       v19 = v20;
     }
@@ -3032,33 +3032,33 @@ LABEL_8:
     }
   }
 
-  v25 = [v11 stringByStandardizingPath];
-  v26 = [v25 pathComponents];
+  stringByStandardizingPath = [v11 stringByStandardizingPath];
+  pathComponents = [stringByStandardizingPath pathComponents];
 
-  v27 = [v9 objectForKeyedSubscript:@"override-filePath"];
+  v27 = [optionsCopy objectForKeyedSubscript:@"override-filePath"];
 
   if (v27)
   {
-    v28 = [v9 objectForKeyedSubscript:@"override-filePath"];
+    pathSubmissionDataVault = [optionsCopy objectForKeyedSubscript:@"override-filePath"];
 LABEL_27:
-    v31 = v28;
+    v31 = pathSubmissionDataVault;
     goto LABEL_28;
   }
 
-  v29 = [v9 objectForKeyedSubscript:@"datavault-filePath"];
-  v30 = [v29 BOOLValue];
+  v29 = [optionsCopy objectForKeyedSubscript:@"datavault-filePath"];
+  bOOLValue = [v29 BOOLValue];
 
-  if (v30)
+  if (bOOLValue)
   {
-    v28 = [(OSASystemConfiguration *)self pathSubmissionDataVault];
+    pathSubmissionDataVault = [(OSASystemConfiguration *)self pathSubmissionDataVault];
     goto LABEL_27;
   }
 
-  v34 = [v9 objectForKeyedSubscript:@"file-owner"];
+  v34 = [optionsCopy objectForKeyedSubscript:@"file-owner"];
   v31 = [(OSASystemConfiguration *)self pathSubmissionForOwner:v34];
 
 LABEL_28:
-  if ([v26 count] == 1)
+  if ([pathComponents count] == 1)
   {
     v32 = [v31 stringByAppendingPathComponent:v11];
   }
@@ -3133,17 +3133,17 @@ void __58__OSASystemConfiguration_optIn__sharedMCProfileConnection__block_invoke
   }
 }
 
-+ (BOOL)BOOLValForMCSetting:(id)a3
++ (BOOL)BOOLValForMCSetting:(id)setting
 {
-  v3 = a3;
+  settingCopy = setting;
   v4 = +[OSASystemConfiguration sharedInstance];
-  v5 = [v4 isInDeviceRecoveryEnvironment];
+  isInDeviceRecoveryEnvironment = [v4 isInDeviceRecoveryEnvironment];
 
-  if (v5)
+  if (isInDeviceRecoveryEnvironment)
   {
     v6 = [@"/private/var/mnt" stringByAppendingPathComponent:@"containers/Shared/SystemGroup/systemgroup.com.apple.configurationprofiles/Library/ConfigurationProfiles/UserSettings.plist"];
-    v7 = [MEMORY[0x1E696AC08] defaultManager];
-    if ([v7 fileExistsAtPath:v6])
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    if ([defaultManager fileExistsAtPath:v6])
     {
       v8 = [MEMORY[0x1E695DF20] dictionaryWithContentsOfFile:v6];
       v9 = v8;
@@ -3153,7 +3153,7 @@ void __58__OSASystemConfiguration_optIn__sharedMCProfileConnection__block_invoke
         v11 = v10;
         if (v10)
         {
-          v12 = [v10 objectForKeyedSubscript:v3];
+          v12 = [v10 objectForKeyedSubscript:settingCopy];
           v13 = v12;
           if (v12)
           {
@@ -3189,9 +3189,9 @@ void __58__OSASystemConfiguration_optIn__sharedMCProfileConnection__block_invoke
   {
     v16 = +[OSASystemConfiguration sharedMCProfileConnection];
     v6 = v16;
-    if (v3 && v16)
+    if (settingCopy && v16)
     {
-      LOBYTE(v15) = [v16 effectiveBoolValueForSetting:v3] == 1;
+      LOBYTE(v15) = [v16 effectiveBoolValueForSetting:settingCopy] == 1;
     }
 
     else
@@ -3313,9 +3313,9 @@ LABEL_21:
   return 0;
 }
 
-- (void)setDREOptIn:(BOOL)a3
+- (void)setDREOptIn:(BOOL)in
 {
-  v3 = a3;
+  inCopy = in;
   v11 = *MEMORY[0x1E69E9840];
   if ([(OSASystemConfiguration *)self isInDeviceRecoveryEnvironment])
   {
@@ -3325,7 +3325,7 @@ LABEL_21:
       empty = xpc_dictionary_create_empty();
       xpc_dictionary_set_uint64(empty, "operation", 0xBuLL);
       xpc_dictionary_set_uint64(empty, "dre_optIn_operation", 1uLL);
-      xpc_dictionary_set_BOOL(empty, "dre_optInValue", v3);
+      xpc_dictionary_set_BOOL(empty, "dre_optInValue", inCopy);
       v6 = xpc_connection_send_message_with_reply_sync(v4, empty);
       v7 = v6;
       if (v6)
@@ -3346,7 +3346,7 @@ LABEL_21:
             if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
             {
               v10[0] = 67109120;
-              v10[1] = v3;
+              v10[1] = inCopy;
               _os_log_impl(&dword_1AE4F7000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "Successfully set DRE opt-in value to %d", v10, 8u);
             }
           }
@@ -3493,7 +3493,7 @@ void __46__OSASystemConfiguration_optIn__optIn3rdParty__block_invoke()
   v3 = NSStringFromClass(v2);
   OUTLINED_FUNCTION_1();
   v6 = 2114;
-  v7 = a1;
+  selfCopy = self;
   _os_log_fault_impl(&dword_1AE4F7000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_FAULT, "Unexpected tasking value type for key 'fastLane' (type: %{public}@, value: %{public}@) encountered", v5, 0x16u);
 
   v4 = *MEMORY[0x1E69E9840];

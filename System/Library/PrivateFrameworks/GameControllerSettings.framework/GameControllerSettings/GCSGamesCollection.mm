@@ -1,28 +1,28 @@
 @interface GCSGamesCollection
 - (BOOL)storeVersionIsCompatible;
-- (GCSGamesCollection)initWithSettingsStore:(id)a3 userDefaults:(id)a4;
+- (GCSGamesCollection)initWithSettingsStore:(id)store userDefaults:(id)defaults;
 - (GCSSettingsStoreService)settingsStore;
-- (id)gameWithBundleIdentifier:(id)a3;
+- (id)gameWithBundleIdentifier:(id)identifier;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)updateGames:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)updateGames:(id)games;
 @end
 
 @implementation GCSGamesCollection
 
-- (GCSGamesCollection)initWithSettingsStore:(id)a3 userDefaults:(id)a4
+- (GCSGamesCollection)initWithSettingsStore:(id)store userDefaults:(id)defaults
 {
   v19[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  storeCopy = store;
+  defaultsCopy = defaults;
   v18.receiver = self;
   v18.super_class = GCSGamesCollection;
   v8 = [(GCSGamesCollection *)&v18 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_settingsStore, v6);
-    objc_storeStrong(&v9->_userDefaults, a4);
+    objc_storeWeak(&v8->_settingsStore, storeCopy);
+    objc_storeStrong(&v9->_userDefaults, defaults);
     v10 = +[GCSGame defaultGame];
     v19[0] = v10;
     v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v19 count:1];
@@ -53,10 +53,10 @@
   return v3;
 }
 
-- (id)gameWithBundleIdentifier:(id)a3
+- (id)gameWithBundleIdentifier:(id)identifier
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -76,8 +76,8 @@
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 bundleIdentifier];
-        v11 = [v10 isEqualToString:v4];
+        bundleIdentifier = [v9 bundleIdentifier];
+        v11 = [bundleIdentifier isEqualToString:identifierCopy];
 
         if (v11)
         {
@@ -103,18 +103,18 @@ LABEL_11:
   return v6;
 }
 
-- (void)updateGames:(id)a3
+- (void)updateGames:(id)games
 {
   v31[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  gamesCopy = games;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && [(GCSGamesCollection *)self storeVersionIsCompatible])
   {
-    v5 = [v4 objectForKeyedSubscript:@"data"];
+    v5 = [gamesCopy objectForKeyedSubscript:@"data"];
     if (v5)
     {
-      v22 = v4;
-      v23 = self;
+      v22 = gamesCopy;
+      selfCopy = self;
       v6 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{-[NSObject count](v5, "count")}];
       v24 = 0u;
       v25 = 0u;
@@ -136,13 +136,13 @@ LABEL_11:
             }
 
             v11 = [[GCSGame alloc] initWithJSONObject:*(*(&v24 + 1) + 8 * i)];
-            v12 = [(GCSGame *)v11 bundleIdentifier];
+            bundleIdentifier = [(GCSGame *)v11 bundleIdentifier];
             v13 = +[GCSGame defaultIdentifier];
-            v14 = [v12 isEqualToString:v13];
+            v14 = [bundleIdentifier isEqualToString:v13];
 
             if (v14)
             {
-              objc_storeStrong(&v23->_defaultGame, v11);
+              objc_storeStrong(&selfCopy->_defaultGame, v11);
             }
 
             [v6 addObject:{v11, v22}];
@@ -154,17 +154,17 @@ LABEL_11:
         while (v8);
       }
 
-      [(GCSGamesCollection *)v23 setValues:v6];
+      [(GCSGamesCollection *)selfCopy setValues:v6];
       v15 = getGCSLogger();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
       {
-        v16 = [(GCSGamesCollection *)v23 values];
+        values = [(GCSGamesCollection *)selfCopy values];
         *buf = 138412290;
-        v30 = v16;
+        v30 = values;
         _os_log_impl(&dword_24E4FA000, v15, OS_LOG_TYPE_INFO, "GCSGamesCollection.values = %@", buf, 0xCu);
       }
 
-      v4 = v22;
+      gamesCopy = v22;
     }
   }
 
@@ -181,9 +181,9 @@ LABEL_11:
     v5 = getGCSLogger();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
-      v20 = [(GCSGamesCollection *)self values];
+      values2 = [(GCSGamesCollection *)self values];
       *buf = 138412290;
-      v30 = v20;
+      v30 = values2;
       _os_log_impl(&dword_24E4FA000, v5, OS_LOG_TYPE_INFO, "GCSGamesCollection.values = %@", buf, 0xCu);
     }
   }
@@ -191,23 +191,23 @@ LABEL_11:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if ([v10 isEqualToString:@"games"])
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if ([pathCopy isEqualToString:@"games"])
   {
-    v13 = [v12 objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
+    v13 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
   }
 
   else
   {
-    if (![v10 isEqualToString:@"settingsVersion"])
+    if (![pathCopy isEqualToString:@"settingsVersion"])
     {
       v15.receiver = self;
       v15.super_class = GCSGamesCollection;
-      [(GCSGamesCollection *)&v15 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+      [(GCSGamesCollection *)&v15 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
       goto LABEL_7;
     }
 

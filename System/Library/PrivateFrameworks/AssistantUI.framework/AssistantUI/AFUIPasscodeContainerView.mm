@@ -1,34 +1,34 @@
 @interface AFUIPasscodeContainerView
-- (AFUIPasscodeContainerView)initWithFrame:(CGRect)a3 backdropView:(id)a4 mode:(int64_t)a5 passcodeViewFactoryClass:(Class)a6;
+- (AFUIPasscodeContainerView)initWithFrame:(CGRect)frame backdropView:(id)view mode:(int64_t)mode passcodeViewFactoryClass:(Class)class;
 - (AFUIPasscodeContainerViewDelegate)delegate;
 - (_UIBackdropView)backdropView;
 - (id)_lockViewLegibilityProvider;
 - (void)cancelShowingPasscodeUnlock;
-- (void)cleanupWithResult:(int64_t)a3;
-- (void)passcodeLockViewCancelButtonPressed:(id)a3;
-- (void)passcodeLockViewPasscodeEntered:(id)a3;
-- (void)passcodeLockViewPasscodeEnteredViaMesa:(id)a3;
-- (void)showPasscodeUnlockWithStatusText:(id)a3 subtitle:(id)a4 completionHandler:(id)a5 unlockCompletionHandler:(id)a6;
+- (void)cleanupWithResult:(int64_t)result;
+- (void)passcodeLockViewCancelButtonPressed:(id)pressed;
+- (void)passcodeLockViewPasscodeEntered:(id)entered;
+- (void)passcodeLockViewPasscodeEnteredViaMesa:(id)mesa;
+- (void)showPasscodeUnlockWithStatusText:(id)text subtitle:(id)subtitle completionHandler:(id)handler unlockCompletionHandler:(id)completionHandler;
 @end
 
 @implementation AFUIPasscodeContainerView
 
-- (AFUIPasscodeContainerView)initWithFrame:(CGRect)a3 backdropView:(id)a4 mode:(int64_t)a5 passcodeViewFactoryClass:(Class)a6
+- (AFUIPasscodeContainerView)initWithFrame:(CGRect)frame backdropView:(id)view mode:(int64_t)mode passcodeViewFactoryClass:(Class)class
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v13 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  viewCopy = view;
   v17.receiver = self;
   v17.super_class = AFUIPasscodeContainerView;
-  v14 = [(AFUIPasscodeContainerView *)&v17 initWithFrame:x, y, width, height];
-  v15 = v14;
-  if (v14)
+  height = [(AFUIPasscodeContainerView *)&v17 initWithFrame:x, y, width, height];
+  v15 = height;
+  if (height)
   {
-    objc_storeWeak(&v14->_backdropView, v13);
-    v15->_mode = a5;
-    v15->_factoryClass = a6;
+    objc_storeWeak(&height->_backdropView, viewCopy);
+    v15->_mode = mode;
+    v15->_factoryClass = class;
   }
 
   return v15;
@@ -67,36 +67,36 @@ void __56__AFUIPasscodeContainerView_cancelShowingPasscodeUnlock__block_invoke(u
   return v5;
 }
 
-- (void)showPasscodeUnlockWithStatusText:(id)a3 subtitle:(id)a4 completionHandler:(id)a5 unlockCompletionHandler:(id)a6
+- (void)showPasscodeUnlockWithStatusText:(id)text subtitle:(id)subtitle completionHandler:(id)handler unlockCompletionHandler:(id)completionHandler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  textCopy = text;
+  subtitleCopy = subtitle;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
   if (!objc_opt_class() || ((mode = self->_mode, v15 = mode > 8, v16 = (1 << mode) & 0x191, !v15) ? (v17 = v16 == 0) : (v17 = 1), v17))
   {
     v19 = *MEMORY[0x277CEF098];
     if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_ERROR))
     {
       [AFUIPasscodeContainerView showPasscodeUnlockWithStatusText:v19 subtitle:? completionHandler:? unlockCompletionHandler:?];
-      if (!v12)
+      if (!handlerCopy)
       {
 LABEL_13:
-        if (v13)
+        if (completionHandlerCopy)
         {
-          v13[2](v13, 1);
+          completionHandlerCopy[2](completionHandlerCopy, 1);
         }
 
         goto LABEL_23;
       }
 
 LABEL_12:
-      v12[2](v12, 0);
+      handlerCopy[2](handlerCopy, 0);
       goto LABEL_13;
     }
 
 LABEL_11:
-    if (!v12)
+    if (!handlerCopy)
     {
       goto LABEL_13;
     }
@@ -110,7 +110,7 @@ LABEL_11:
     if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_ERROR))
     {
       [AFUIPasscodeContainerView showPasscodeUnlockWithStatusText:v18 subtitle:? completionHandler:? unlockCompletionHandler:?];
-      if (!v12)
+      if (!handlerCopy)
       {
         goto LABEL_13;
       }
@@ -122,28 +122,28 @@ LABEL_11:
   }
 
   self->_unlockAttemptCount = 0;
-  v20 = _Block_copy(v13);
+  v20 = _Block_copy(completionHandlerCopy);
   unlockCompletion = self->_unlockCompletion;
   self->_unlockCompletion = v20;
 
-  v22 = [(objc_class *)self->_factoryClass lockView];
-  [v22 setDelegate:self];
-  [v22 setShowsEmergencyCallButton:0];
-  [v22 setShowsStatusField:0];
-  [v22 setUsesBiometricPresentation:1];
-  [v22 setBiometricPresentationAncillaryButtonsVisible:1];
-  [v22 setShowsProudLock:1];
-  v23 = [MEMORY[0x277D75348] clearColor];
-  [v22 setCustomBackgroundColor:v23];
+  lockView = [(objc_class *)self->_factoryClass lockView];
+  [lockView setDelegate:self];
+  [lockView setShowsEmergencyCallButton:0];
+  [lockView setShowsStatusField:0];
+  [lockView setUsesBiometricPresentation:1];
+  [lockView setBiometricPresentationAncillaryButtonsVisible:1];
+  [lockView setShowsProudLock:1];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [lockView setCustomBackgroundColor:clearColor];
 
-  v24 = [(AFUIPasscodeContainerView *)self _lockViewLegibilityProvider];
-  [v22 setBackgroundLegibilitySettingsProvider:v24];
+  _lockViewLegibilityProvider = [(AFUIPasscodeContainerView *)self _lockViewLegibilityProvider];
+  [lockView setBackgroundLegibilitySettingsProvider:_lockViewLegibilityProvider];
   [(AFUIPasscodeContainerView *)self bounds];
-  [v22 setFrame:?];
-  objc_storeStrong(&self->_lockView, v22);
-  [(AFUIPasscodeContainerView *)self addSubview:v22];
-  [v22 setAutoresizingMask:18];
-  [v22 becomeFirstResponder];
+  [lockView setFrame:?];
+  objc_storeStrong(&self->_lockView, lockView);
+  [(AFUIPasscodeContainerView *)self addSubview:lockView];
+  [lockView setAutoresizingMask:18];
+  [lockView becomeFirstResponder];
   v25 = self->_mode;
   if (v25 == 7 || !v25)
   {
@@ -162,43 +162,43 @@ LABEL_11:
       passcodeBlurView = self->_passcodeBlurView;
     }
 
-    [(AFUIPasscodeContainerView *)self insertSubview:passcodeBlurView belowSubview:v22];
+    [(AFUIPasscodeContainerView *)self insertSubview:passcodeBlurView belowSubview:lockView];
   }
 
-  [v22 setShowsStatusField:1];
-  if ([v10 length])
+  [lockView setShowsStatusField:1];
+  if ([textCopy length])
   {
-    [v22 updateStatusText:v10 subtitle:v11 animated:0];
+    [lockView updateStatusText:textCopy subtitle:subtitleCopy animated:0];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained passcodeView:self animateShowPasscodeWithCompletionHandler:v12];
+  [WeakRetained passcodeView:self animateShowPasscodeWithCompletionHandler:handlerCopy];
 
 LABEL_23:
 }
 
-- (void)cleanupWithResult:(int64_t)a3
+- (void)cleanupWithResult:(int64_t)result
 {
-  v6 = [(AFUIPasscodeContainerView *)self unlockCompletion];
-  if (v6)
+  unlockCompletion = [(AFUIPasscodeContainerView *)self unlockCompletion];
+  if (unlockCompletion)
   {
-    v6[2](v6, a3);
+    unlockCompletion[2](unlockCompletion, result);
   }
 
-  v5 = [(AFUIPasscodeContainerView *)self lockView];
-  [v5 removeFromSuperview];
+  lockView = [(AFUIPasscodeContainerView *)self lockView];
+  [lockView removeFromSuperview];
 
   [(AFUIPasscodeContainerView *)self setLockView:0];
   [(AFUIPasscodeContainerView *)self setUnlockCompletion:0];
 }
 
-- (void)passcodeLockViewPasscodeEntered:(id)a3
+- (void)passcodeLockViewPasscodeEntered:(id)entered
 {
-  v4 = a3;
+  enteredCopy = entered;
   ++self->_unlockAttemptCount;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v6 = [v4 passcode];
-  v7 = [WeakRetained passcodeView:self attemptUnlockWithPassword:v6];
+  passcode = [enteredCopy passcode];
+  v7 = [WeakRetained passcodeView:self attemptUnlockWithPassword:passcode];
 
   if (v7)
   {
@@ -219,7 +219,7 @@ LABEL_5:
   }
 
   unlockAttemptCount = self->_unlockAttemptCount;
-  [v4 resetForFailedPasscode];
+  [enteredCopy resetForFailedPasscode];
   if (unlockAttemptCount >= 3)
   {
     objc_initWeak(&location, self);
@@ -249,9 +249,9 @@ void __61__AFUIPasscodeContainerView_passcodeLockViewPasscodeEntered___block_inv
   [WeakRetained cleanupWithResult:a2];
 }
 
-- (void)passcodeLockViewCancelButtonPressed:(id)a3
+- (void)passcodeLockViewCancelButtonPressed:(id)pressed
 {
-  v4 = a3;
+  pressedCopy = pressed;
   objc_initWeak(&location, self);
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v6[0] = MEMORY[0x277D85DD0];
@@ -271,9 +271,9 @@ void __65__AFUIPasscodeContainerView_passcodeLockViewCancelButtonPressed___block
   [WeakRetained cleanupWithResult:a2];
 }
 
-- (void)passcodeLockViewPasscodeEnteredViaMesa:(id)a3
+- (void)passcodeLockViewPasscodeEnteredViaMesa:(id)mesa
 {
-  v4 = a3;
+  mesaCopy = mesa;
   objc_initWeak(&location, self);
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v6[0] = MEMORY[0x277D85DD0];

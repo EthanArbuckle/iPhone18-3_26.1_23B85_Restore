@@ -2,27 +2,27 @@
 - (BOOL)adjustForContentSizeCategoryChange;
 - (BOOL)adjustsFontForContentSizeCategory;
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PLPillContentWrapperView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PLPillContentWrapperView)initWithFrame:(CGRect)frame;
 - (id)_contentLabel;
 - (void)_makeBottomConstraintBreakable;
 - (void)_makeTopConstraintBreakable;
-- (void)_setContentView:(id)a3 transitionCoordinator:(id)a4;
+- (void)_setContentView:(id)view transitionCoordinator:(id)coordinator;
 - (void)_updateConstraintsPriority;
-- (void)beginAppearanceTransition:(BOOL)a3;
-- (void)endAppearanceTransition:(BOOL)a3;
-- (void)setContentItem:(id)a3 transitionCoordinator:(id)a4;
-- (void)setTopConstraintBreakable:(BOOL)a3;
-- (void)updateWithContentItem:(id)a3;
+- (void)beginAppearanceTransition:(BOOL)transition;
+- (void)endAppearanceTransition:(BOOL)transition;
+- (void)setContentItem:(id)item transitionCoordinator:(id)coordinator;
+- (void)setTopConstraintBreakable:(BOOL)breakable;
+- (void)updateWithContentItem:(id)item;
 @end
 
 @implementation PLPillContentWrapperView
 
-- (PLPillContentWrapperView)initWithFrame:(CGRect)a3
+- (PLPillContentWrapperView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = PLPillContentWrapperView;
-  v3 = [(PLPillContentWrapperView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PLPillContentWrapperView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -35,39 +35,39 @@
   return v4;
 }
 
-- (void)setTopConstraintBreakable:(BOOL)a3
+- (void)setTopConstraintBreakable:(BOOL)breakable
 {
-  if (self->_topConstraintBreakable != a3)
+  if (self->_topConstraintBreakable != breakable)
   {
-    self->_topConstraintBreakable = a3;
+    self->_topConstraintBreakable = breakable;
     [(PLPillContentWrapperView *)self _updateConstraintsPriority];
   }
 }
 
-- (void)setContentItem:(id)a3 transitionCoordinator:(id)a4
+- (void)setContentItem:(id)item transitionCoordinator:(id)coordinator
 {
-  v12 = a3;
-  v7 = a4;
-  if (([v12 isEqual:self->_contentItem] & 1) == 0)
+  itemCopy = item;
+  coordinatorCopy = coordinator;
+  if (([itemCopy isEqual:self->_contentItem] & 1) == 0)
   {
-    objc_storeStrong(&self->_contentItem, a3);
+    objc_storeStrong(&self->_contentItem, item);
     if (self->_adjustsFontForContentSizeCategory)
     {
-      v8 = [(PLPillContentWrapperView *)self traitCollection];
-      v9 = [v8 preferredContentSizeCategory];
+      traitCollection = [(PLPillContentWrapperView *)self traitCollection];
+      preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
       preferredContentSizeCategory = self->_preferredContentSizeCategory;
-      self->_preferredContentSizeCategory = v9;
+      self->_preferredContentSizeCategory = preferredContentSizeCategory;
     }
 
-    v11 = UIViewForPLPillContentItem(v12, self->_preferredContentSizeCategory);
-    [(PLPillContentWrapperView *)self _setContentView:v11 transitionCoordinator:v7];
+    v11 = UIViewForPLPillContentItem(itemCopy, self->_preferredContentSizeCategory);
+    [(PLPillContentWrapperView *)self _setContentView:v11 transitionCoordinator:coordinatorCopy];
   }
 }
 
-- (void)beginAppearanceTransition:(BOOL)a3
+- (void)beginAppearanceTransition:(BOOL)transition
 {
   appearState = self->_appearState;
-  if (a3)
+  if (transition)
   {
     if (appearState)
     {
@@ -100,16 +100,16 @@
   self->_appearState = v6;
   if (![(PLPillContentItem *)self->_contentItem isSolo]&& self->_appearState == 3)
   {
-    v7 = [(PLPillContentWrapperView *)self _contentLabel];
-    [v7 setMarqueeRunning:0];
-    [v7 _setMarqueeUpdatable:0];
+    _contentLabel = [(PLPillContentWrapperView *)self _contentLabel];
+    [_contentLabel setMarqueeRunning:0];
+    [_contentLabel _setMarqueeUpdatable:0];
   }
 }
 
-- (void)endAppearanceTransition:(BOOL)a3
+- (void)endAppearanceTransition:(BOOL)transition
 {
   appearState = self->_appearState;
-  if (a3)
+  if (transition)
   {
     if (appearState != 1)
     {
@@ -132,24 +132,24 @@
   self->_appearState = v5;
   if (![(PLPillContentItem *)self->_contentItem isSolo]&& self->_appearState == 2)
   {
-    v6 = [(PLPillContentWrapperView *)self _contentLabel];
-    [v6 setMarqueeRunning:1];
+    _contentLabel = [(PLPillContentWrapperView *)self _contentLabel];
+    [_contentLabel setMarqueeRunning:1];
   }
 }
 
-- (void)updateWithContentItem:(id)a3
+- (void)updateWithContentItem:(id)item
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
+  itemCopy = item;
+  v5 = itemCopy;
   if (self->_contentView)
   {
-    v6 = [v4 text];
+    text = [itemCopy text];
 
-    if (v6)
+    if (text)
     {
-      v7 = [(PLPillContentWrapperView *)self _contentLabel];
-      if (!v7)
+      _contentLabel = [(PLPillContentWrapperView *)self _contentLabel];
+      if (!_contentLabel)
       {
         objc_opt_class();
         if (objc_opt_isKindOfClass())
@@ -158,30 +158,30 @@
           v37 = 0u;
           v34 = 0u;
           v35 = 0u;
-          v8 = [(UIView *)self->_contentView arrangedSubviews];
-          v7 = [v8 countByEnumeratingWithState:&v34 objects:v38 count:16];
-          if (v7)
+          arrangedSubviews = [(UIView *)self->_contentView arrangedSubviews];
+          _contentLabel = [arrangedSubviews countByEnumeratingWithState:&v34 objects:v38 count:16];
+          if (_contentLabel)
           {
             v9 = *v35;
             while (2)
             {
-              for (i = 0; i != v7; i = i + 1)
+              for (i = 0; i != _contentLabel; i = i + 1)
               {
                 if (*v35 != v9)
                 {
-                  objc_enumerationMutation(v8);
+                  objc_enumerationMutation(arrangedSubviews);
                 }
 
                 v11 = *(*(&v34 + 1) + 8 * i);
                 if (objc_opt_respondsToSelector())
                 {
-                  v7 = v11;
+                  _contentLabel = v11;
                   goto LABEL_16;
                 }
               }
 
-              v7 = [v8 countByEnumeratingWithState:&v34 objects:v38 count:16];
-              if (v7)
+              _contentLabel = [arrangedSubviews countByEnumeratingWithState:&v34 objects:v38 count:16];
+              if (_contentLabel)
               {
                 continue;
               }
@@ -195,17 +195,17 @@ LABEL_16:
 
         else
         {
-          v7 = 0;
+          _contentLabel = 0;
         }
       }
 
-      [v7 _setMarqueeUpdatable:1];
-      v12 = [v5 text];
-      [v7 setText:v12];
+      [_contentLabel _setMarqueeUpdatable:1];
+      text2 = [v5 text];
+      [_contentLabel setText:text2];
     }
 
-    v13 = [v5 accessoryView];
-    v14 = v13 == 0;
+    accessoryView = [v5 accessoryView];
+    v14 = accessoryView == 0;
 
     if (!v14)
     {
@@ -244,14 +244,14 @@ LABEL_16:
 
       if (v19)
       {
-        v20 = [(UIView *)v19 arrangedSubviews];
+        arrangedSubviews2 = [(UIView *)v19 arrangedSubviews];
         v27[0] = MEMORY[0x277D85DD0];
         v27[1] = 3221225472;
         v27[2] = __50__PLPillContentWrapperView_updateWithContentItem___block_invoke;
         v27[3] = &unk_2784253F0;
         v27[4] = &v30;
         v27[5] = v28;
-        [v20 enumerateObjectsUsingBlock:v27];
+        [arrangedSubviews2 enumerateObjectsUsingBlock:v27];
 
         if (v31[3] != 0x7FFFFFFFFFFFFFFFLL)
         {
@@ -302,16 +302,16 @@ uint64_t __50__PLPillContentWrapperView_updateWithContentItem___block_invoke_2(u
   [(UIView *)self->_contentView intrinsicContentSize];
   v4 = v3;
   v6 = v5;
-  v7 = [(PLPillContentWrapperView *)self _contentLabel];
-  v8 = v7;
-  if (v7)
+  _contentLabel = [(PLPillContentWrapperView *)self _contentLabel];
+  v8 = _contentLabel;
+  if (_contentLabel)
   {
-    v9 = [v7 font];
-    [v9 capHeight];
+    font = [_contentLabel font];
+    [font capHeight];
     v11 = v10;
-    [v9 descender];
+    [font descender];
     v13 = v11 - v12;
-    [v9 _scaledValueForValue:2.0];
+    [font _scaledValueForValue:2.0];
     v6 = ceil(v13 + v14);
   }
 
@@ -322,9 +322,9 @@ uint64_t __50__PLPillContentWrapperView_updateWithContentItem___block_invoke_2(u
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(UIView *)self->_contentView sizeThatFits:a3.width, a3.height];
+  [(UIView *)self->_contentView sizeThatFits:fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
@@ -337,24 +337,24 @@ uint64_t __50__PLPillContentWrapperView_updateWithContentItem___block_invoke_2(u
     return 0;
   }
 
-  v2 = [(PLPillContentWrapperView *)self _contentLabel];
-  v3 = v2 != 0;
+  _contentLabel = [(PLPillContentWrapperView *)self _contentLabel];
+  v3 = _contentLabel != 0;
 
   return v3;
 }
 
 - (BOOL)adjustForContentSizeCategoryChange
 {
-  v3 = [(PLPillContentWrapperView *)self traitCollection];
-  v4 = [v3 preferredContentSizeCategory];
+  traitCollection = [(PLPillContentWrapperView *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
 
   if (self->_adjustsFontForContentSizeCategory && (BSEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_preferredContentSizeCategory, v4);
-    v6 = [(PLPillContentWrapperView *)self _contentLabel];
-    if (v6)
+    objc_storeStrong(&self->_preferredContentSizeCategory, preferredContentSizeCategory);
+    _contentLabel = [(PLPillContentWrapperView *)self _contentLabel];
+    if (_contentLabel)
     {
-      PLConfigureUILabelWithPLPillContentItemStyle(v6, [(PLPillContentItem *)self->_contentItem style], [(PLPillContentItem *)self->_contentItem isSolo]^ 1, self->_preferredContentSizeCategory);
+      PLConfigureUILabelWithPLPillContentItemStyle(_contentLabel, [(PLPillContentItem *)self->_contentItem style], [(PLPillContentItem *)self->_contentItem isSolo]^ 1, self->_preferredContentSizeCategory);
     }
 
     [(PLPillContentWrapperView *)self invalidateIntrinsicContentSize];
@@ -404,35 +404,35 @@ uint64_t __50__PLPillContentWrapperView_updateWithContentItem___block_invoke_2(u
   [(NSLayoutConstraint *)topConstraint setPriority:v5];
 }
 
-- (void)_setContentView:(id)a3 transitionCoordinator:(id)a4
+- (void)_setContentView:(id)view transitionCoordinator:(id)coordinator
 {
-  v7 = a3;
-  v8 = a4;
+  viewCopy = view;
+  coordinatorCopy = coordinator;
   contentView = self->_contentView;
-  if (contentView != v7)
+  if (contentView != viewCopy)
   {
     v32 = contentView;
-    objc_storeStrong(&self->_contentView, a3);
-    [(UIView *)v7 setTranslatesAutoresizingMaskIntoConstraints:0];
-    [(PLPillContentWrapperView *)self addSubview:v7];
-    v10 = [(PLPillContentWrapperView *)self leftAnchor];
-    v11 = [(UIView *)v7 leftAnchor];
-    v12 = [v10 constraintEqualToAnchor:v11];
+    objc_storeStrong(&self->_contentView, view);
+    [(UIView *)viewCopy setTranslatesAutoresizingMaskIntoConstraints:0];
+    [(PLPillContentWrapperView *)self addSubview:viewCopy];
+    leftAnchor = [(PLPillContentWrapperView *)self leftAnchor];
+    leftAnchor2 = [(UIView *)viewCopy leftAnchor];
+    v12 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
 
-    v13 = [(PLPillContentWrapperView *)self rightAnchor];
-    v14 = [(UIView *)v7 rightAnchor];
-    v15 = [v13 constraintEqualToAnchor:v14];
+    rightAnchor = [(PLPillContentWrapperView *)self rightAnchor];
+    rightAnchor2 = [(UIView *)viewCopy rightAnchor];
+    v15 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
 
     LODWORD(v16) = 1144750080;
     [(PLPillContentWrapperView *)self setContentHuggingPriority:1 forAxis:v16];
     v17 = [objc_alloc(MEMORY[0x277CBEB18]) initWithObjects:{v12, v15, 0}];
-    v18 = [(PLPillContentWrapperView *)self _contentLabel];
+    _contentLabel = [(PLPillContentWrapperView *)self _contentLabel];
 
-    if (v18)
+    if (_contentLabel)
     {
-      v19 = [(PLPillContentWrapperView *)self centerYAnchor];
-      v20 = [(UIView *)v7 centerYAnchor];
-      v21 = [v19 constraintEqualToAnchor:v20];
+      centerYAnchor = [(PLPillContentWrapperView *)self centerYAnchor];
+      centerYAnchor2 = [(UIView *)viewCopy centerYAnchor];
+      v21 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
 
       LODWORD(v22) = 1148846080;
       [(NSLayoutConstraint *)v21 setPriority:v22];
@@ -440,17 +440,17 @@ uint64_t __50__PLPillContentWrapperView_updateWithContentItem___block_invoke_2(u
 
     else
     {
-      v23 = [(PLPillContentWrapperView *)self topAnchor];
-      v24 = [(UIView *)v7 topAnchor];
-      v25 = [v23 constraintEqualToAnchor:v24];
+      topAnchor = [(PLPillContentWrapperView *)self topAnchor];
+      topAnchor2 = [(UIView *)viewCopy topAnchor];
+      v25 = [topAnchor constraintEqualToAnchor:topAnchor2];
 
       topConstraint = self->_topConstraint;
       self->_topConstraint = v25;
       v27 = v25;
 
-      v28 = [(PLPillContentWrapperView *)self bottomAnchor];
-      v29 = [(UIView *)v7 bottomAnchor];
-      v30 = [v28 constraintEqualToAnchor:v29];
+      bottomAnchor = [(PLPillContentWrapperView *)self bottomAnchor];
+      bottomAnchor2 = [(UIView *)viewCopy bottomAnchor];
+      v30 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
 
       bottomConstraint = self->_bottomConstraint;
       self->_bottomConstraint = v30;
@@ -464,7 +464,7 @@ uint64_t __50__PLPillContentWrapperView_updateWithContentItem___block_invoke_2(u
     [MEMORY[0x277CCAAD0] activateConstraints:v17];
     [(PLPillContentWrapperView *)self _updateConstraintsPriority];
     [(PLPillContentWrapperView *)self invalidateIntrinsicContentSize];
-    if (v8)
+    if (coordinatorCopy)
     {
       v38[0] = MEMORY[0x277D85DD0];
       v38[1] = 3221225472;
@@ -477,13 +477,13 @@ uint64_t __50__PLPillContentWrapperView_updateWithContentItem___block_invoke_2(u
       v35[2] = __66__PLPillContentWrapperView__setContentView_transitionCoordinator___block_invoke_2;
       v35[3] = &unk_278425440;
       v36 = v32;
-      v37 = self;
+      selfCopy = self;
       v33[0] = MEMORY[0x277D85DD0];
       v33[1] = 3221225472;
       v33[2] = __66__PLPillContentWrapperView__setContentView_transitionCoordinator___block_invoke_3;
       v33[3] = &unk_2784251C8;
       v34 = v36;
-      [v8 animateAlongsideTransition:v35 completion:v33];
+      [coordinatorCopy animateAlongsideTransition:v35 completion:v33];
     }
 
     else

@@ -1,34 +1,34 @@
 @interface NTKUpNextElement
-+ (id)elementWithREElement:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (NTKUpNextElement)initWithREElement:(id)a3;
++ (id)elementWithREElement:(id)element;
+- (BOOL)isEqual:(id)equal;
+- (NTKUpNextElement)initWithREElement:(id)element;
 - (id)description;
 - (unint64_t)hash;
-- (void)setElement:(id)a3;
+- (void)setElement:(id)element;
 @end
 
 @implementation NTKUpNextElement
 
-+ (id)elementWithREElement:(id)a3
++ (id)elementWithREElement:(id)element
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithREElement:v4];
+  elementCopy = element;
+  v5 = [[self alloc] initWithREElement:elementCopy];
 
   return v5;
 }
 
-- (NTKUpNextElement)initWithREElement:(id)a3
+- (NTKUpNextElement)initWithREElement:(id)element
 {
-  v5 = a3;
+  elementCopy = element;
   v12.receiver = self;
   v12.super_class = NTKUpNextElement;
   v6 = [(NTKUpNextElement *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_element, a3);
-    v8 = [v5 identifier];
-    v9 = [v8 copy];
+    objc_storeStrong(&v6->_element, element);
+    identifier = [elementCopy identifier];
+    v9 = [identifier copy];
     elementIdentifier = v7->_elementIdentifier;
     v7->_elementIdentifier = v9;
   }
@@ -36,46 +36,46 @@
   return v7;
 }
 
-- (void)setElement:(id)a3
+- (void)setElement:(id)element
 {
-  v5 = a3;
+  elementCopy = element;
   p_element = &self->_element;
-  if (self->_element != v5)
+  if (self->_element != elementCopy)
   {
-    v7 = [(NTKUpNextElement *)self elementIdentifier];
-    v8 = [(REElement *)v5 identifier];
-    v9 = [v7 isEqual:v8];
+    elementIdentifier = [(NTKUpNextElement *)self elementIdentifier];
+    identifier = [(REElement *)elementCopy identifier];
+    v9 = [elementIdentifier isEqual:identifier];
 
     if ((v9 & 1) == 0)
     {
       v10 = _NTKLoggingObjectForDomain();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
       {
-        sub_BEE4(p_element, v5, v10);
+        sub_BEE4(p_element, elementCopy, v10);
       }
     }
 
-    objc_storeStrong(p_element, a3);
+    objc_storeStrong(p_element, element);
   }
 }
 
 - (unint64_t)hash
 {
-  v2 = [(NTKUpNextElement *)self elementIdentifier];
-  v3 = [v2 hash];
+  elementIdentifier = [(NTKUpNextElement *)self elementIdentifier];
+  v3 = [elementIdentifier hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 elementIdentifier];
-    v6 = [(NTKUpNextElement *)self elementIdentifier];
-    v7 = [v5 isEqual:v6];
+    elementIdentifier = [equalCopy elementIdentifier];
+    elementIdentifier2 = [(NTKUpNextElement *)self elementIdentifier];
+    v7 = [elementIdentifier isEqual:elementIdentifier2];
   }
 
   else
@@ -88,8 +88,8 @@
 
 - (id)description
 {
-  v3 = [(NTKUpNextElement *)self elementIdentifier];
-  v4 = [NSString stringWithFormat:@"<Wrapped %p: %@>", self, v3];
+  elementIdentifier = [(NTKUpNextElement *)self elementIdentifier];
+  v4 = [NSString stringWithFormat:@"<Wrapped %p: %@>", self, elementIdentifier];
 
   return v4;
 }

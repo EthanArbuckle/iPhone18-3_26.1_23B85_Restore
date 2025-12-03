@@ -11,27 +11,27 @@
 - (NSSet)roiNodes;
 - (NSSet)specialPOINodes;
 - (PGGraphPublicEventCategoryNodeCollection)publicEventCategoryNodes;
-- (PGMeaningCriteriaMomentNodeCache)initWithMomentNode:(id)a3;
+- (PGMeaningCriteriaMomentNodeCache)initWithMomentNode:(id)node;
 - (id)preciseAddressNodeCollection;
 - (unint64_t)partsOfDay;
 - (unint64_t)significantPartsOfDay;
 - (void)_computeHomeWork;
-- (void)enumerateSceneEdgesAndNodesUsingBlock:(id)a3;
+- (void)enumerateSceneEdgesAndNodesUsingBlock:(id)block;
 @end
 
 @implementation PGMeaningCriteriaMomentNodeCache
 
-- (void)enumerateSceneEdgesAndNodesUsingBlock:(id)a3
+- (void)enumerateSceneEdgesAndNodesUsingBlock:(id)block
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  blockCopy = block;
   sceneEdges = self->_sceneEdges;
   if (!sceneEdges)
   {
     v6 = [(PGGraphEdgeCollection *)PGGraphSceneEdgeCollection edgesFromNodes:self->_momentNodeAsCollection];
-    v7 = [v6 array];
+    array = [v6 array];
     v8 = self->_sceneEdges;
-    self->_sceneEdges = v7;
+    self->_sceneEdges = array;
 
     sceneEdges = self->_sceneEdges;
   }
@@ -58,7 +58,7 @@ LABEL_5:
       v14 = *(*(&v18 + 1) + 8 * v13);
       v15 = [v14 oppositeNode:self->_momentNode];
       v17 = 0;
-      v4[2](v4, v14, v15, &v17);
+      blockCopy[2](blockCopy, v14, v15, &v17);
       LOBYTE(v14) = v17;
 
       if (v14)
@@ -87,10 +87,10 @@ LABEL_5:
   publicEventCategoryNodes = self->_publicEventCategoryNodes;
   if (!publicEventCategoryNodes)
   {
-    v4 = [(PGGraphMomentNodeCollection *)self->_momentNodeAsCollection publicEventNodes];
-    v5 = [v4 categoryNodes];
+    publicEventNodes = [(PGGraphMomentNodeCollection *)self->_momentNodeAsCollection publicEventNodes];
+    categoryNodes = [publicEventNodes categoryNodes];
     v6 = self->_publicEventCategoryNodes;
-    self->_publicEventCategoryNodes = v5;
+    self->_publicEventCategoryNodes = categoryNodes;
 
     publicEventCategoryNodes = self->_publicEventCategoryNodes;
   }
@@ -103,8 +103,8 @@ LABEL_5:
   roiNodes = self->_roiNodes;
   if (!roiNodes)
   {
-    v4 = [(PGGraphMomentNodeCollection *)self->_momentNodeAsCollection roiNodes];
-    v5 = [v4 set];
+    roiNodes = [(PGGraphMomentNodeCollection *)self->_momentNodeAsCollection roiNodes];
+    v5 = [roiNodes set];
     v6 = self->_roiNodes;
     self->_roiNodes = v5;
 
@@ -119,8 +119,8 @@ LABEL_5:
   specialPOINodes = self->_specialPOINodes;
   if (!specialPOINodes)
   {
-    v4 = [(PGGraphMomentNodeCollection *)self->_momentNodeAsCollection specialPOINodes];
-    v5 = [v4 set];
+    specialPOINodes = [(PGGraphMomentNodeCollection *)self->_momentNodeAsCollection specialPOINodes];
+    v5 = [specialPOINodes set];
     v6 = self->_specialPOINodes;
     self->_specialPOINodes = v5;
 
@@ -135,8 +135,8 @@ LABEL_5:
   poiNodes = self->_poiNodes;
   if (!poiNodes)
   {
-    v4 = [(PGGraphMomentNodeCollection *)self->_momentNodeAsCollection poiNodes];
-    v5 = [v4 set];
+    poiNodes = [(PGGraphMomentNodeCollection *)self->_momentNodeAsCollection poiNodes];
+    v5 = [poiNodes set];
     v6 = self->_poiNodes;
     self->_poiNodes = v5;
 
@@ -151,9 +151,9 @@ LABEL_5:
   preciseAreaNodes = self->_preciseAreaNodes;
   if (!preciseAreaNodes)
   {
-    v4 = [(PGMeaningCriteriaMomentNodeCache *)self preciseAddressNodeCollection];
-    v5 = [v4 areaNodes];
-    v6 = [v5 set];
+    preciseAddressNodeCollection = [(PGMeaningCriteriaMomentNodeCache *)self preciseAddressNodeCollection];
+    areaNodes = [preciseAddressNodeCollection areaNodes];
+    v6 = [areaNodes set];
     v7 = self->_preciseAreaNodes;
     self->_preciseAreaNodes = v6;
 
@@ -168,8 +168,8 @@ LABEL_5:
   preciseAddressNodes = self->_preciseAddressNodes;
   if (!preciseAddressNodes)
   {
-    v4 = [(PGMeaningCriteriaMomentNodeCache *)self preciseAddressNodeCollection];
-    v5 = [v4 set];
+    preciseAddressNodeCollection = [(PGMeaningCriteriaMomentNodeCache *)self preciseAddressNodeCollection];
+    v5 = [preciseAddressNodeCollection set];
     v6 = self->_preciseAddressNodes;
     self->_preciseAddressNodes = v5;
 
@@ -184,8 +184,8 @@ LABEL_5:
   personNodes = self->_personNodes;
   if (!personNodes)
   {
-    v4 = [(PGGraphMomentNodeCollection *)self->_momentNodeAsCollection personNodes];
-    v5 = [v4 set];
+    personNodes = [(PGGraphMomentNodeCollection *)self->_momentNodeAsCollection personNodes];
+    v5 = [personNodes set];
     v6 = self->_personNodes;
     self->_personNodes = v5;
 
@@ -234,8 +234,8 @@ LABEL_5:
   happensAtFrequentLocation = self->_happensAtFrequentLocation;
   if (!happensAtFrequentLocation)
   {
-    v4 = [(PGGraphMomentNodeCollection *)self->_momentNodeAsCollection frequentLocationNodes];
-    v5 = [v4 count];
+    frequentLocationNodes = [(PGGraphMomentNodeCollection *)self->_momentNodeAsCollection frequentLocationNodes];
+    v5 = [frequentLocationNodes count];
 
     if (v5)
     {
@@ -279,10 +279,10 @@ LABEL_5:
 
 - (void)_computeHomeWork
 {
-  v11 = [(PGMeaningCriteriaMomentNodeCache *)self preciseAddressNodeCollection];
-  v3 = [(PGGraphPersonNodeCollection *)self->_meNodeAsCollection homeNodes];
-  v4 = [v3 addressNodes];
-  v5 = [v11 intersectsCollection:v4];
+  preciseAddressNodeCollection = [(PGMeaningCriteriaMomentNodeCache *)self preciseAddressNodeCollection];
+  homeNodes = [(PGGraphPersonNodeCollection *)self->_meNodeAsCollection homeNodes];
+  addressNodes = [homeNodes addressNodes];
+  v5 = [preciseAddressNodeCollection intersectsCollection:addressNodes];
 
   if (v5)
   {
@@ -295,9 +295,9 @@ LABEL_5:
   }
 
   self->_happensPartiallyAtMyHome = v6;
-  v7 = [(PGGraphPersonNodeCollection *)self->_meNodeAsCollection workNodes];
-  v8 = [v7 addressNodes];
-  v9 = [v11 intersectsCollection:v8];
+  workNodes = [(PGGraphPersonNodeCollection *)self->_meNodeAsCollection workNodes];
+  addressNodes2 = [workNodes addressNodes];
+  v9 = [preciseAddressNodeCollection intersectsCollection:addressNodes2];
 
   if (v9)
   {
@@ -317,8 +317,8 @@ LABEL_5:
   hasAddressNodes = self->_hasAddressNodes;
   if (!hasAddressNodes)
   {
-    v4 = [(PGGraphMomentNodeCollection *)self->_momentNodeAsCollection addressNodes];
-    v5 = [v4 count];
+    addressNodes = [(PGGraphMomentNodeCollection *)self->_momentNodeAsCollection addressNodes];
+    v5 = [addressNodes count];
 
     if (v5)
     {
@@ -341,9 +341,9 @@ LABEL_5:
   preciseAddressNodeCollection = self->_preciseAddressNodeCollection;
   if (!preciseAddressNodeCollection)
   {
-    v4 = [(PGGraphMomentNodeCollection *)self->_momentNodeAsCollection preciseAddressNodes];
+    preciseAddressNodes = [(PGGraphMomentNodeCollection *)self->_momentNodeAsCollection preciseAddressNodes];
     v5 = self->_preciseAddressNodeCollection;
-    self->_preciseAddressNodeCollection = v4;
+    self->_preciseAddressNodeCollection = preciseAddressNodes;
 
     preciseAddressNodeCollection = self->_preciseAddressNodeCollection;
   }
@@ -351,22 +351,22 @@ LABEL_5:
   return preciseAddressNodeCollection;
 }
 
-- (PGMeaningCriteriaMomentNodeCache)initWithMomentNode:(id)a3
+- (PGMeaningCriteriaMomentNodeCache)initWithMomentNode:(id)node
 {
-  v5 = a3;
+  nodeCopy = node;
   v14.receiver = self;
   v14.super_class = PGMeaningCriteriaMomentNodeCache;
   v6 = [(PGMeaningCriteriaMomentNodeCache *)&v14 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_momentNode, a3);
-    v8 = [(PGGraphMomentNode *)v7->_momentNode collection];
+    objc_storeStrong(&v6->_momentNode, node);
+    collection = [(PGGraphMomentNode *)v7->_momentNode collection];
     momentNodeAsCollection = v7->_momentNodeAsCollection;
-    v7->_momentNodeAsCollection = v8;
+    v7->_momentNodeAsCollection = collection;
 
-    v10 = [(MANode *)v7->_momentNode graph];
-    v11 = [(PGGraphNodeCollection *)PGGraphMeNodeCollection nodesInGraph:v10];
+    graph = [(MANode *)v7->_momentNode graph];
+    v11 = [(PGGraphNodeCollection *)PGGraphMeNodeCollection nodesInGraph:graph];
     meNodeAsCollection = v7->_meNodeAsCollection;
     v7->_meNodeAsCollection = v11;
   }

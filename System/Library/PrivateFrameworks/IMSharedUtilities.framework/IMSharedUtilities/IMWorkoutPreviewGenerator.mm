@@ -1,20 +1,20 @@
 @interface IMWorkoutPreviewGenerator
-+ (BOOL)generateWorkoutPreview:(id)a3 andWriteToURL:(id)a4 maxPxWidth:(double)a5 scale:(double)a6 imagePxSize:(CGSize *)a7;
-+ (id)generateAndPersistPreviewFromSourceURL:(id)a3 senderContext:(id)a4 balloonBundleID:(id)a5 withPreviewConstraints:(IMPreviewConstraints *)a6 outSize:(CGSize *)a7 error:(id *)a8;
++ (BOOL)generateWorkoutPreview:(id)preview andWriteToURL:(id)l maxPxWidth:(double)width scale:(double)scale imagePxSize:(CGSize *)size;
++ (id)generateAndPersistPreviewFromSourceURL:(id)l senderContext:(id)context balloonBundleID:(id)d withPreviewConstraints:(IMPreviewConstraints *)constraints outSize:(CGSize *)size error:(id *)error;
 @end
 
 @implementation IMWorkoutPreviewGenerator
 
-+ (BOOL)generateWorkoutPreview:(id)a3 andWriteToURL:(id)a4 maxPxWidth:(double)a5 scale:(double)a6 imagePxSize:(CGSize *)a7
++ (BOOL)generateWorkoutPreview:(id)preview andWriteToURL:(id)l maxPxWidth:(double)width scale:(double)scale imagePxSize:(CGSize *)size
 {
   v44 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v35 = a4;
-  *a7 = *MEMORY[0x1E695F060];
+  previewCopy = preview;
+  lCopy = l;
+  *size = *MEMORY[0x1E695F060];
   MEMORY[0x1AC570AA0](@"BlastDoorWorkoutPreview", @"BlastDoor");
   if (objc_opt_isKindOfClass())
   {
-    v11 = v10;
+    v11 = previewCopy;
   }
 
   else
@@ -23,11 +23,11 @@
   }
 
   v12 = v11;
-  v13 = [v12 activityType];
-  v14 = [v12 isIndoor];
-  v15 = [v12 configurationType];
-  v16 = [v12 configurationName];
-  v17 = [v12 goalTypeIdentifier];
+  activityType = [v12 activityType];
+  isIndoor = [v12 isIndoor];
+  configurationType = [v12 configurationType];
+  configurationName = [v12 configurationName];
+  goalTypeIdentifier = [v12 goalTypeIdentifier];
   v40 = 0;
   v41 = &v40;
   v42 = 0x2050000000;
@@ -46,7 +46,7 @@
 
   v19 = v18;
   _Block_object_dispose(&v40, 8);
-  v20 = [[v18 alloc] initWithActivityType:v13 isIndoor:v14 configurationType:v15 configurationName:v16 goalTypeIdentifier:v17];
+  v20 = [[v18 alloc] initWithActivityType:activityType isIndoor:isIndoor configurationType:configurationType configurationName:configurationName goalTypeIdentifier:goalTypeIdentifier];
   v40 = 0;
   v41 = &v40;
   v42 = 0x2050000000;
@@ -65,19 +65,19 @@
 
   v22 = v21;
   _Block_object_dispose(&v40, 8);
-  v23 = [v21 uiImageRepresentationForBlastDoorDataSource:v20 scale:a6];
+  v23 = [v21 uiImageRepresentationForBlastDoorDataSource:v20 scale:scale];
   v24 = v23;
   if (v23 && (v25 = CGDataProviderCreateWithCFData(v23), v26 = CGImageCreateWithPNGDataProvider(v25, 0, 1, kCGRenderingIntentDefault), CGDataProviderRelease(v25), v26))
   {
     v36 = 0;
-    v27 = [IMImageUtilities persistPreviewToDiskCache:v26 previewURL:v35 error:&v36];
+    v27 = [IMImageUtilities persistPreviewToDiskCache:v26 previewURL:lCopy error:&v36];
     v28 = v36;
     if (v27)
     {
       Width = CGImageGetWidth(v26);
       Height = CGImageGetHeight(v26);
-      a7->width = Width;
-      a7->height = Height;
+      size->width = Width;
+      size->height = Height;
     }
 
     else if (IMOSLoggingEnabled())
@@ -86,7 +86,7 @@
       if (os_log_type_enabled(v33, OS_LOG_TYPE_INFO))
       {
         *buf = 138412546;
-        *&buf[4] = v35;
+        *&buf[4] = lCopy;
         *&buf[12] = 2112;
         *&buf[14] = v28;
         _os_log_impl(&dword_1A85E5000, v33, OS_LOG_TYPE_INFO, "IMWorkoutPreviewGenerator - Failed to write decorated image to URL %@: %@", buf, 0x16u);
@@ -122,15 +122,15 @@
   return v27;
 }
 
-+ (id)generateAndPersistPreviewFromSourceURL:(id)a3 senderContext:(id)a4 balloonBundleID:(id)a5 withPreviewConstraints:(IMPreviewConstraints *)a6 outSize:(CGSize *)a7 error:(id *)a8
++ (id)generateAndPersistPreviewFromSourceURL:(id)l senderContext:(id)context balloonBundleID:(id)d withPreviewConstraints:(IMPreviewConstraints *)constraints outSize:(CGSize *)size error:(id *)error
 {
   v54[2] = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  if (v13 && a7 && a8)
+  lCopy = l;
+  contextCopy = context;
+  dCopy = d;
+  if (lCopy && size && error)
   {
-    v33 = a7;
+    sizeCopy = size;
     v16 = MEMORY[0x1E695DFF8];
     v17 = NSTemporaryDirectory();
     v54[0] = v17;
@@ -138,11 +138,11 @@
     v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v54 count:2];
     v19 = [v16 fileURLWithPathComponents:v18];
 
-    v20 = [MEMORY[0x1E696AC08] defaultManager];
-    [v20 createDirectoryAtURL:v19 withIntermediateDirectories:1 attributes:0 error:0];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    [defaultManager createDirectoryAtURL:v19 withIntermediateDirectories:1 attributes:0 error:0];
 
-    v21 = [MEMORY[0x1E696AEC0] stringGUID];
-    v22 = [v19 URLByAppendingPathComponent:v21 isDirectory:0];
+    stringGUID = [MEMORY[0x1E696AEC0] stringGUID];
+    v22 = [v19 URLByAppendingPathComponent:stringGUID isDirectory:0];
     v23 = [v22 URLByAppendingPathExtension:@"ktx"];
 
     if (v23)
@@ -165,8 +165,8 @@
       v44 = 0;
       v24 = dispatch_group_create();
       dispatch_group_enter(v24);
-      var0 = a6->var0;
-      var2 = a6->var2;
+      var0 = constraints->var0;
+      var2 = constraints->var2;
       v34[0] = MEMORY[0x1E69E9820];
       v34[1] = 3221225472;
       v34[2] = sub_1A86B87DC;
@@ -176,11 +176,11 @@
       p_buf = &buf;
       v27 = v24;
       v35 = v27;
-      [IMAttachmentBlastdoor generateWorkoutPreview:v13 senderContext:v14 maxPxWidth:v34 scale:var0 withCompletionBlock:var2];
+      [IMAttachmentBlastdoor generateWorkoutPreview:lCopy senderContext:contextCopy maxPxWidth:v34 scale:var0 withCompletionBlock:var2];
       dispatch_group_wait(v27, 0xFFFFFFFFFFFFFFFFLL);
       if (v40[5] && *(v46 + 24) == 1 && !*(*(&buf + 1) + 40))
       {
-        [objc_opt_class() generateWorkoutPreview:v40[5] andWriteToURL:v23 maxPxWidth:v33 scale:a6->var0 imagePxSize:a6->var2];
+        [objc_opt_class() generateWorkoutPreview:v40[5] andWriteToURL:v23 maxPxWidth:sizeCopy scale:constraints->var0 imagePxSize:constraints->var2];
       }
 
       else
@@ -190,7 +190,7 @@
         v23 = 0;
         if (v28)
         {
-          *a8 = v28;
+          *error = v28;
         }
       }
 
@@ -210,13 +210,13 @@
         if (os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
         {
           LODWORD(buf) = 138412290;
-          *(&buf + 4) = v21;
+          *(&buf + 4) = stringGUID;
           _os_log_impl(&dword_1A85E5000, v31, OS_LOG_TYPE_INFO, "Failed to get a temporaryPreviewURL %@", &buf, 0xCu);
         }
       }
 
       [MEMORY[0x1E696ABC0] errorWithDomain:@"__kIMPreviewGenerationErrorDomain" code:12 userInfo:0];
-      *a8 = v30 = 0;
+      *error = v30 = 0;
     }
   }
 

@@ -2,19 +2,19 @@
 - (BOOL)hasChanges;
 - (SUUISettingValueStore)init;
 - (id)modifiedKeys;
-- (id)originalValueForKey:(id)a3;
-- (id)resolvedValueForKey:(id)a3;
-- (id)valueForKey:(id)a3;
-- (id)valueForKeyPath:(id)a3;
-- (id)valueForUndefinedKey:(id)a3;
-- (void)clearValueForKey:(id)a3;
+- (id)originalValueForKey:(id)key;
+- (id)resolvedValueForKey:(id)key;
+- (id)valueForKey:(id)key;
+- (id)valueForKeyPath:(id)path;
+- (id)valueForUndefinedKey:(id)key;
+- (void)clearValueForKey:(id)key;
 - (void)commitChanges;
 - (void)discardChanges;
-- (void)setModifiedValue:(id)a3 forKey:(id)a4;
-- (void)setOriginalValue:(id)a3 forKey:(id)a4;
-- (void)setValue:(id)a3 forKey:(id)a4;
-- (void)setValue:(id)a3 forKeyPath:(id)a4;
-- (void)setValue:(id)a3 forUndefinedKey:(id)a4;
+- (void)setModifiedValue:(id)value forKey:(id)key;
+- (void)setOriginalValue:(id)value forKey:(id)key;
+- (void)setValue:(id)value forKey:(id)key;
+- (void)setValue:(id)value forKeyPath:(id)path;
+- (void)setValue:(id)value forUndefinedKey:(id)key;
 @end
 
 @implementation SUUISettingValueStore
@@ -34,17 +34,17 @@
   return v2;
 }
 
-- (void)clearValueForKey:(id)a3
+- (void)clearValueForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   mutexQueue = self->_mutexQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __42__SUUISettingValueStore_clearValueForKey___block_invoke;
   v7[3] = &unk_2798F5AF8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = keyCopy;
+  v6 = keyCopy;
   dispatch_sync(mutexQueue, v7);
 }
 
@@ -184,9 +184,9 @@ void *__37__SUUISettingValueStore_modifiedKeys__block_invoke(uint64_t a1)
   return result;
 }
 
-- (id)originalValueForKey:(id)a3
+- (id)originalValueForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -198,10 +198,10 @@ void *__37__SUUISettingValueStore_modifiedKeys__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __45__SUUISettingValueStore_originalValueForKey___block_invoke;
   block[3] = &unk_2798FD2A0;
-  v10 = v4;
+  v10 = keyCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = keyCopy;
   dispatch_sync(mutexQueue, block);
   v7 = v13[5];
 
@@ -226,9 +226,9 @@ void *__45__SUUISettingValueStore_originalValueForKey___block_invoke(void *a1)
   return result;
 }
 
-- (id)resolvedValueForKey:(id)a3
+- (id)resolvedValueForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -240,10 +240,10 @@ void *__45__SUUISettingValueStore_originalValueForKey___block_invoke(void *a1)
   block[1] = 3221225472;
   block[2] = __45__SUUISettingValueStore_resolvedValueForKey___block_invoke;
   block[3] = &unk_2798FD2A0;
-  v10 = v4;
+  v10 = keyCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = keyCopy;
   dispatch_sync(mutexQueue, block);
   v7 = v13[5];
 
@@ -278,20 +278,20 @@ void __45__SUUISettingValueStore_resolvedValueForKey___block_invoke(void *a1)
   }
 }
 
-- (void)setModifiedValue:(id)a3 forKey:(id)a4
+- (void)setModifiedValue:(id)value forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  valueCopy = value;
+  keyCopy = key;
   mutexQueue = self->_mutexQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __49__SUUISettingValueStore_setModifiedValue_forKey___block_invoke;
   block[3] = &unk_2798F5BC0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = valueCopy;
+  v13 = keyCopy;
+  v9 = keyCopy;
+  v10 = valueCopy;
   dispatch_sync(mutexQueue, block);
 }
 
@@ -321,20 +321,20 @@ uint64_t __49__SUUISettingValueStore_setModifiedValue_forKey___block_invoke(void
   }
 }
 
-- (void)setOriginalValue:(id)a3 forKey:(id)a4
+- (void)setOriginalValue:(id)value forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  valueCopy = value;
+  keyCopy = key;
   mutexQueue = self->_mutexQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __49__SUUISettingValueStore_setOriginalValue_forKey___block_invoke;
   block[3] = &unk_2798F5BC0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = valueCopy;
+  v13 = keyCopy;
+  v9 = keyCopy;
+  v10 = valueCopy;
   dispatch_sync(mutexQueue, block);
 }
 
@@ -364,44 +364,44 @@ uint64_t __49__SUUISettingValueStore_setOriginalValue_forKey___block_invoke(void
   }
 }
 
-- (void)setValue:(id)a3 forKey:(id)a4
+- (void)setValue:(id)value forKey:(id)key
 {
-  v6 = [MEMORY[0x277CCA890] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"SUUISettingValueStore.m" lineNumber:146 description:@"setValue:forKey: is unimplemented. Use setOriginalValue:forKey: or setModifiedValue:forKey: instead."];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SUUISettingValueStore.m" lineNumber:146 description:@"setValue:forKey: is unimplemented. Use setOriginalValue:forKey: or setModifiedValue:forKey: instead."];
 }
 
-- (void)setValue:(id)a3 forKeyPath:(id)a4
+- (void)setValue:(id)value forKeyPath:(id)path
 {
-  v6 = [MEMORY[0x277CCA890] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"SUUISettingValueStore.m" lineNumber:150 description:@"setValue:forKeyPath: is unimplemented. Use setOriginalValue:forKey: or setModifiedValue:forKey: instead."];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SUUISettingValueStore.m" lineNumber:150 description:@"setValue:forKeyPath: is unimplemented. Use setOriginalValue:forKey: or setModifiedValue:forKey: instead."];
 }
 
-- (void)setValue:(id)a3 forUndefinedKey:(id)a4
+- (void)setValue:(id)value forUndefinedKey:(id)key
 {
-  v6 = [MEMORY[0x277CCA890] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"SUUISettingValueStore.m" lineNumber:154 description:@"setValue:forUndefinedKey: is unimplemented. Use setOriginalValue:forKey: or setModifiedValue:forKey: instead."];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SUUISettingValueStore.m" lineNumber:154 description:@"setValue:forUndefinedKey: is unimplemented. Use setOriginalValue:forKey: or setModifiedValue:forKey: instead."];
 }
 
-- (id)valueForKey:(id)a3
+- (id)valueForKey:(id)key
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"SUUISettingValueStore.m" lineNumber:158 description:@"valueForKey: is unimplemented. Use resolvedValueForKey: instead."];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SUUISettingValueStore.m" lineNumber:158 description:@"valueForKey: is unimplemented. Use resolvedValueForKey: instead."];
 
   return 0;
 }
 
-- (id)valueForKeyPath:(id)a3
+- (id)valueForKeyPath:(id)path
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"SUUISettingValueStore.m" lineNumber:163 description:@"valueForKeyPath: is unimplemented. Use resolvedValueForKey: instead."];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SUUISettingValueStore.m" lineNumber:163 description:@"valueForKeyPath: is unimplemented. Use resolvedValueForKey: instead."];
 
   return 0;
 }
 
-- (id)valueForUndefinedKey:(id)a3
+- (id)valueForUndefinedKey:(id)key
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"SUUISettingValueStore.m" lineNumber:168 description:@"valueForUndefinedKey: is unimplemented. Use resolvedValueForKey: instead."];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SUUISettingValueStore.m" lineNumber:168 description:@"valueForUndefinedKey: is unimplemented. Use resolvedValueForKey: instead."];
 
   return 0;
 }

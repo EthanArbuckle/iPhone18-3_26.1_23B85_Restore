@@ -1,10 +1,10 @@
 @interface SearchFindMyFriendshipCoordinator
 - (_TtC4Maps33SearchFindMyFriendshipCoordinator)init;
-- (_TtC4Maps33SearchFindMyFriendshipCoordinator)initWith:(id)a3;
+- (_TtC4Maps33SearchFindMyFriendshipCoordinator)initWith:(id)with;
 - (_TtP4Maps30SearchFindMyFriendshipDelegate_)delegate;
-- (void)getLatestLocationsFor:(id)a3 completion:(id)a4;
+- (void)getLatestLocationsFor:(id)for completion:(id)completion;
 - (void)startMonitoringHandles;
-- (void)stopMonitoringHandlesWithCompletionHandler:(id)a3;
+- (void)stopMonitoringHandlesWithCompletionHandler:(id)handler;
 @end
 
 @implementation SearchFindMyFriendshipCoordinator
@@ -16,7 +16,7 @@
   return Strong;
 }
 
-- (_TtC4Maps33SearchFindMyFriendshipCoordinator)initWith:(id)a3
+- (_TtC4Maps33SearchFindMyFriendshipCoordinator)initWith:(id)with
 {
   v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v6 = v5;
@@ -33,14 +33,14 @@
   return [(SearchFindMyFriendshipCoordinator *)&v11 init];
 }
 
-- (void)getLatestLocationsFor:(id)a3 completion:(id)a4
+- (void)getLatestLocationsFor:(id)for completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
-  v8 = a3;
-  v9 = self;
-  sub_1002F8D4C(v8, sub_1000D2C9C, v7);
+  forCopy = for;
+  selfCopy = self;
+  sub_1002F8D4C(forCopy, sub_1000D2C9C, v7);
 }
 
 - (void)startMonitoringHandles
@@ -54,16 +54,16 @@
   v7[2] = 0;
   v7[3] = 0;
   v7[4] = self;
-  v8 = self;
+  selfCopy = self;
   sub_10020AAE4(0, 0, v5, &unk_1011F97F8, v7);
 }
 
-- (void)stopMonitoringHandlesWithCompletionHandler:(id)a3
+- (void)stopMonitoringHandlesWithCompletionHandler:(id)handler
 {
   v5 = sub_1000CE6B8(&unk_10190BA50);
   __chkstk_darwin(v5 - 8);
   v7 = &v14 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   *(v9 + 24) = self;
@@ -79,7 +79,7 @@
   v12[3] = 0;
   v12[4] = &unk_1011F9360;
   v12[5] = v11;
-  v13 = self;
+  selfCopy = self;
   sub_10054DB08(0, 0, v7, &unk_1011F66B0, v12);
 }
 

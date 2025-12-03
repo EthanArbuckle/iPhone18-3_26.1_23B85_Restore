@@ -1,30 +1,30 @@
 @interface CellularLqmDataStall
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasDataStallOccured:(BOOL)a3;
-- (void)setHasDnsFailureOccured:(BOOL)a3;
-- (void)setHasIsDcActive:(BOOL)a3;
-- (void)setHasLqmState:(BOOL)a3;
-- (void)setHasMediaPreWarningHint:(BOOL)a3;
-- (void)setHasNumSubs:(BOOL)a3;
-- (void)setHasPsPref:(BOOL)a3;
-- (void)setHasRrcState:(BOOL)a3;
-- (void)setHasServCellState:(BOOL)a3;
-- (void)setHasSubsId:(BOOL)a3;
-- (void)setHasSysMode:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasDataStallOccured:(BOOL)occured;
+- (void)setHasDnsFailureOccured:(BOOL)occured;
+- (void)setHasIsDcActive:(BOOL)active;
+- (void)setHasLqmState:(BOOL)state;
+- (void)setHasMediaPreWarningHint:(BOOL)hint;
+- (void)setHasNumSubs:(BOOL)subs;
+- (void)setHasPsPref:(BOOL)pref;
+- (void)setHasRrcState:(BOOL)state;
+- (void)setHasServCellState:(BOOL)state;
+- (void)setHasSubsId:(BOOL)id;
+- (void)setHasSysMode:(BOOL)mode;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CellularLqmDataStall
 
-- (void)setHasDataStallOccured:(BOOL)a3
+- (void)setHasDataStallOccured:(BOOL)occured
 {
-  if (a3)
+  if (occured)
   {
     v3 = 256;
   }
@@ -37,9 +37,9 @@
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasDnsFailureOccured:(BOOL)a3
+- (void)setHasDnsFailureOccured:(BOOL)occured
 {
-  if (a3)
+  if (occured)
   {
     v3 = 512;
   }
@@ -52,9 +52,9 @@
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)setHasMediaPreWarningHint:(BOOL)a3
+- (void)setHasMediaPreWarningHint:(BOOL)hint
 {
-  if (a3)
+  if (hint)
   {
     v3 = 2048;
   }
@@ -67,9 +67,9 @@
   *&self->_has = *&self->_has & 0xF7FF | v3;
 }
 
-- (void)setHasSysMode:(BOOL)a3
+- (void)setHasSysMode:(BOOL)mode
 {
-  if (a3)
+  if (mode)
   {
     v3 = 128;
   }
@@ -82,9 +82,9 @@
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasLqmState:(BOOL)a3
+- (void)setHasLqmState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 2;
   }
@@ -97,9 +97,9 @@
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (void)setHasServCellState:(BOOL)a3
+- (void)setHasServCellState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 32;
   }
@@ -112,9 +112,9 @@
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasRrcState:(BOOL)a3
+- (void)setHasRrcState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 16;
   }
@@ -127,9 +127,9 @@
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasIsDcActive:(BOOL)a3
+- (void)setHasIsDcActive:(BOOL)active
 {
-  if (a3)
+  if (active)
   {
     v3 = 1024;
   }
@@ -142,9 +142,9 @@
   *&self->_has = *&self->_has & 0xFBFF | v3;
 }
 
-- (void)setHasNumSubs:(BOOL)a3
+- (void)setHasNumSubs:(BOOL)subs
 {
-  if (a3)
+  if (subs)
   {
     v3 = 4;
   }
@@ -157,9 +157,9 @@
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasPsPref:(BOOL)a3
+- (void)setHasPsPref:(BOOL)pref
 {
-  if (a3)
+  if (pref)
   {
     v3 = 8;
   }
@@ -172,9 +172,9 @@
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasSubsId:(BOOL)a3
+- (void)setHasSubsId:(BOOL)id
 {
-  if (a3)
+  if (id)
   {
     v3 = 64;
   }
@@ -192,8 +192,8 @@
   v7.receiver = self;
   v7.super_class = CellularLqmDataStall;
   v3 = [(CellularLqmDataStall *)&v7 description];
-  v4 = [(CellularLqmDataStall *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(CellularLqmDataStall *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -372,9 +372,9 @@ LABEL_12:
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v18 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -533,14 +533,14 @@ LABEL_12:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[1] = self->_timestamp;
-    *(v4 + 28) |= 1u;
+    toCopy[1] = self->_timestamp;
+    *(toCopy + 28) |= 1u;
     has = self->_has;
     if ((has & 0x100) == 0)
     {
@@ -559,8 +559,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(v4 + 52) = self->_dataStallOccured;
-  *(v4 + 28) |= 0x100u;
+  *(toCopy + 52) = self->_dataStallOccured;
+  *(toCopy + 28) |= 0x100u;
   has = self->_has;
   if ((has & 0x200) == 0)
   {
@@ -574,8 +574,8 @@ LABEL_4:
   }
 
 LABEL_23:
-  *(v4 + 53) = self->_dnsFailureOccured;
-  *(v4 + 28) |= 0x200u;
+  *(toCopy + 53) = self->_dnsFailureOccured;
+  *(toCopy + 28) |= 0x200u;
   has = self->_has;
   if ((has & 0x800) == 0)
   {
@@ -589,8 +589,8 @@ LABEL_5:
   }
 
 LABEL_24:
-  *(v4 + 55) = self->_mediaPreWarningHint;
-  *(v4 + 28) |= 0x800u;
+  *(toCopy + 55) = self->_mediaPreWarningHint;
+  *(toCopy + 28) |= 0x800u;
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -604,8 +604,8 @@ LABEL_6:
   }
 
 LABEL_25:
-  *(v4 + 12) = self->_sysMode;
-  *(v4 + 28) |= 0x80u;
+  *(toCopy + 12) = self->_sysMode;
+  *(toCopy + 28) |= 0x80u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -619,8 +619,8 @@ LABEL_7:
   }
 
 LABEL_26:
-  *(v4 + 4) = self->_lqmState;
-  *(v4 + 28) |= 2u;
+  *(toCopy + 4) = self->_lqmState;
+  *(toCopy + 28) |= 2u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -634,8 +634,8 @@ LABEL_8:
   }
 
 LABEL_27:
-  *(v4 + 10) = self->_servCellState;
-  *(v4 + 28) |= 0x20u;
+  *(toCopy + 10) = self->_servCellState;
+  *(toCopy + 28) |= 0x20u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -649,8 +649,8 @@ LABEL_9:
   }
 
 LABEL_28:
-  *(v4 + 9) = self->_rrcState;
-  *(v4 + 28) |= 0x10u;
+  *(toCopy + 9) = self->_rrcState;
+  *(toCopy + 28) |= 0x10u;
   has = self->_has;
   if ((has & 0x400) == 0)
   {
@@ -664,41 +664,41 @@ LABEL_10:
   }
 
 LABEL_29:
-  *(v4 + 54) = self->_isDcActive;
-  *(v4 + 28) |= 0x400u;
+  *(toCopy + 54) = self->_isDcActive;
+  *(toCopy + 28) |= 0x400u;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_11:
-    *(v4 + 5) = self->_numSubs;
-    *(v4 + 28) |= 4u;
+    *(toCopy + 5) = self->_numSubs;
+    *(toCopy + 28) |= 4u;
   }
 
 LABEL_12:
   if (self->_plmn)
   {
-    v7 = v4;
-    [v4 setPlmn:?];
-    v4 = v7;
+    v7 = toCopy;
+    [toCopy setPlmn:?];
+    toCopy = v7;
   }
 
   v6 = self->_has;
   if ((v6 & 8) != 0)
   {
-    *(v4 + 8) = self->_psPref;
-    *(v4 + 28) |= 8u;
+    *(toCopy + 8) = self->_psPref;
+    *(toCopy + 28) |= 8u;
     v6 = self->_has;
   }
 
   if ((v6 & 0x40) != 0)
   {
-    *(v4 + 11) = self->_subsId;
-    *(v4 + 28) |= 0x40u;
+    *(toCopy + 11) = self->_subsId;
+    *(toCopy + 28) |= 0x40u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if (has)
@@ -838,7 +838,7 @@ LABEL_11:
   }
 
 LABEL_12:
-  v8 = [(NSData *)self->_plmn copyWithZone:a3];
+  v8 = [(NSData *)self->_plmn copyWithZone:zone];
   v9 = v6[3];
   v6[3] = v8;
 
@@ -859,19 +859,19 @@ LABEL_12:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_77;
   }
 
   has = self->_has;
-  v6 = *(v4 + 28);
+  v6 = *(equalCopy + 28);
   if (has)
   {
-    if ((v6 & 1) == 0 || self->_timestamp != *(v4 + 1))
+    if ((v6 & 1) == 0 || self->_timestamp != *(equalCopy + 1))
     {
       goto LABEL_77;
     }
@@ -884,88 +884,88 @@ LABEL_12:
 
   if ((*&self->_has & 0x100) != 0)
   {
-    if ((*(v4 + 28) & 0x100) == 0)
+    if ((*(equalCopy + 28) & 0x100) == 0)
     {
       goto LABEL_77;
     }
 
-    v7 = *(v4 + 52);
+    v7 = *(equalCopy + 52);
     if (self->_dataStallOccured)
     {
-      if ((*(v4 + 52) & 1) == 0)
+      if ((*(equalCopy + 52) & 1) == 0)
       {
         goto LABEL_77;
       }
     }
 
-    else if (*(v4 + 52))
+    else if (*(equalCopy + 52))
     {
       goto LABEL_77;
     }
   }
 
-  else if ((*(v4 + 28) & 0x100) != 0)
+  else if ((*(equalCopy + 28) & 0x100) != 0)
   {
     goto LABEL_77;
   }
 
   if ((*&self->_has & 0x200) != 0)
   {
-    if ((*(v4 + 28) & 0x200) == 0)
+    if ((*(equalCopy + 28) & 0x200) == 0)
     {
       goto LABEL_77;
     }
 
-    v8 = *(v4 + 53);
+    v8 = *(equalCopy + 53);
     if (self->_dnsFailureOccured)
     {
-      if ((*(v4 + 53) & 1) == 0)
+      if ((*(equalCopy + 53) & 1) == 0)
       {
         goto LABEL_77;
       }
     }
 
-    else if (*(v4 + 53))
+    else if (*(equalCopy + 53))
     {
       goto LABEL_77;
     }
   }
 
-  else if ((*(v4 + 28) & 0x200) != 0)
+  else if ((*(equalCopy + 28) & 0x200) != 0)
   {
     goto LABEL_77;
   }
 
   if ((*&self->_has & 0x800) != 0)
   {
-    if ((*(v4 + 28) & 0x800) == 0)
+    if ((*(equalCopy + 28) & 0x800) == 0)
     {
       goto LABEL_77;
     }
 
-    v9 = *(v4 + 55);
+    v9 = *(equalCopy + 55);
     if (self->_mediaPreWarningHint)
     {
-      if ((*(v4 + 55) & 1) == 0)
+      if ((*(equalCopy + 55) & 1) == 0)
       {
         goto LABEL_77;
       }
     }
 
-    else if (*(v4 + 55))
+    else if (*(equalCopy + 55))
     {
       goto LABEL_77;
     }
   }
 
-  else if ((*(v4 + 28) & 0x800) != 0)
+  else if ((*(equalCopy + 28) & 0x800) != 0)
   {
     goto LABEL_77;
   }
 
   if ((has & 0x80) != 0)
   {
-    if ((v6 & 0x80) == 0 || self->_sysMode != *(v4 + 12))
+    if ((v6 & 0x80) == 0 || self->_sysMode != *(equalCopy + 12))
     {
       goto LABEL_77;
     }
@@ -978,7 +978,7 @@ LABEL_12:
 
   if ((has & 2) != 0)
   {
-    if ((v6 & 2) == 0 || self->_lqmState != *(v4 + 4))
+    if ((v6 & 2) == 0 || self->_lqmState != *(equalCopy + 4))
     {
       goto LABEL_77;
     }
@@ -991,7 +991,7 @@ LABEL_12:
 
   if ((has & 0x20) != 0)
   {
-    if ((v6 & 0x20) == 0 || self->_servCellState != *(v4 + 10))
+    if ((v6 & 0x20) == 0 || self->_servCellState != *(equalCopy + 10))
     {
       goto LABEL_77;
     }
@@ -1004,7 +1004,7 @@ LABEL_12:
 
   if ((has & 0x10) != 0)
   {
-    if ((v6 & 0x10) == 0 || self->_rrcState != *(v4 + 9))
+    if ((v6 & 0x10) == 0 || self->_rrcState != *(equalCopy + 9))
     {
       goto LABEL_77;
     }
@@ -1017,34 +1017,34 @@ LABEL_12:
 
   if ((*&self->_has & 0x400) != 0)
   {
-    if ((*(v4 + 28) & 0x400) == 0)
+    if ((*(equalCopy + 28) & 0x400) == 0)
     {
       goto LABEL_77;
     }
 
-    v10 = *(v4 + 54);
+    v10 = *(equalCopy + 54);
     if (self->_isDcActive)
     {
-      if ((*(v4 + 54) & 1) == 0)
+      if ((*(equalCopy + 54) & 1) == 0)
       {
         goto LABEL_77;
       }
     }
 
-    else if (*(v4 + 54))
+    else if (*(equalCopy + 54))
     {
       goto LABEL_77;
     }
   }
 
-  else if ((*(v4 + 28) & 0x400) != 0)
+  else if ((*(equalCopy + 28) & 0x400) != 0)
   {
     goto LABEL_77;
   }
 
   if ((has & 4) != 0)
   {
-    if ((v6 & 4) == 0 || self->_numSubs != *(v4 + 5))
+    if ((v6 & 4) == 0 || self->_numSubs != *(equalCopy + 5))
     {
       goto LABEL_77;
     }
@@ -1056,7 +1056,7 @@ LABEL_12:
   }
 
   plmn = self->_plmn;
-  if (plmn | *(v4 + 3))
+  if (plmn | *(equalCopy + 3))
   {
     if ([(NSData *)plmn isEqual:?])
     {
@@ -1070,10 +1070,10 @@ LABEL_77:
   }
 
 LABEL_65:
-  v12 = *(v4 + 28);
+  v12 = *(equalCopy + 28);
   if ((has & 8) != 0)
   {
-    if ((v12 & 8) == 0 || self->_psPref != *(v4 + 8))
+    if ((v12 & 8) == 0 || self->_psPref != *(equalCopy + 8))
     {
       goto LABEL_77;
     }
@@ -1086,7 +1086,7 @@ LABEL_65:
 
   if ((has & 0x40) != 0)
   {
-    if ((v12 & 0x40) == 0 || self->_subsId != *(v4 + 11))
+    if ((v12 & 0x40) == 0 || self->_subsId != *(equalCopy + 11))
     {
       goto LABEL_77;
     }
@@ -1267,15 +1267,15 @@ LABEL_24:
   return v17 ^ v18 ^ v16 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v13 ^ v14 ^ v11;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 28);
+  fromCopy = from;
+  v5 = *(fromCopy + 28);
   if (v5)
   {
-    self->_timestamp = *(v4 + 1);
+    self->_timestamp = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v5 = *(v4 + 28);
+    v5 = *(fromCopy + 28);
     if ((v5 & 0x100) == 0)
     {
 LABEL_3:
@@ -1288,14 +1288,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 28) & 0x100) == 0)
+  else if ((*(fromCopy + 28) & 0x100) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_dataStallOccured = *(v4 + 52);
+  self->_dataStallOccured = *(fromCopy + 52);
   *&self->_has |= 0x100u;
-  v5 = *(v4 + 28);
+  v5 = *(fromCopy + 28);
   if ((v5 & 0x200) == 0)
   {
 LABEL_4:
@@ -1308,9 +1308,9 @@ LABEL_4:
   }
 
 LABEL_23:
-  self->_dnsFailureOccured = *(v4 + 53);
+  self->_dnsFailureOccured = *(fromCopy + 53);
   *&self->_has |= 0x200u;
-  v5 = *(v4 + 28);
+  v5 = *(fromCopy + 28);
   if ((v5 & 0x800) == 0)
   {
 LABEL_5:
@@ -1323,9 +1323,9 @@ LABEL_5:
   }
 
 LABEL_24:
-  self->_mediaPreWarningHint = *(v4 + 55);
+  self->_mediaPreWarningHint = *(fromCopy + 55);
   *&self->_has |= 0x800u;
-  v5 = *(v4 + 28);
+  v5 = *(fromCopy + 28);
   if ((v5 & 0x80) == 0)
   {
 LABEL_6:
@@ -1338,9 +1338,9 @@ LABEL_6:
   }
 
 LABEL_25:
-  self->_sysMode = *(v4 + 12);
+  self->_sysMode = *(fromCopy + 12);
   *&self->_has |= 0x80u;
-  v5 = *(v4 + 28);
+  v5 = *(fromCopy + 28);
   if ((v5 & 2) == 0)
   {
 LABEL_7:
@@ -1353,9 +1353,9 @@ LABEL_7:
   }
 
 LABEL_26:
-  self->_lqmState = *(v4 + 4);
+  self->_lqmState = *(fromCopy + 4);
   *&self->_has |= 2u;
-  v5 = *(v4 + 28);
+  v5 = *(fromCopy + 28);
   if ((v5 & 0x20) == 0)
   {
 LABEL_8:
@@ -1368,9 +1368,9 @@ LABEL_8:
   }
 
 LABEL_27:
-  self->_servCellState = *(v4 + 10);
+  self->_servCellState = *(fromCopy + 10);
   *&self->_has |= 0x20u;
-  v5 = *(v4 + 28);
+  v5 = *(fromCopy + 28);
   if ((v5 & 0x10) == 0)
   {
 LABEL_9:
@@ -1383,9 +1383,9 @@ LABEL_9:
   }
 
 LABEL_28:
-  self->_rrcState = *(v4 + 9);
+  self->_rrcState = *(fromCopy + 9);
   *&self->_has |= 0x10u;
-  v5 = *(v4 + 28);
+  v5 = *(fromCopy + 28);
   if ((v5 & 0x400) == 0)
   {
 LABEL_10:
@@ -1398,34 +1398,34 @@ LABEL_10:
   }
 
 LABEL_29:
-  self->_isDcActive = *(v4 + 54);
+  self->_isDcActive = *(fromCopy + 54);
   *&self->_has |= 0x400u;
-  if ((*(v4 + 28) & 4) != 0)
+  if ((*(fromCopy + 28) & 4) != 0)
   {
 LABEL_11:
-    self->_numSubs = *(v4 + 5);
+    self->_numSubs = *(fromCopy + 5);
     *&self->_has |= 4u;
   }
 
 LABEL_12:
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
-    v7 = v4;
+    v7 = fromCopy;
     [(CellularLqmDataStall *)self setPlmn:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  v6 = *(v4 + 28);
+  v6 = *(fromCopy + 28);
   if ((v6 & 8) != 0)
   {
-    self->_psPref = *(v4 + 8);
+    self->_psPref = *(fromCopy + 8);
     *&self->_has |= 8u;
-    v6 = *(v4 + 28);
+    v6 = *(fromCopy + 28);
   }
 
   if ((v6 & 0x40) != 0)
   {
-    self->_subsId = *(v4 + 11);
+    self->_subsId = *(fromCopy + 11);
     *&self->_has |= 0x40u;
   }
 }

@@ -1,29 +1,29 @@
 @interface _DASRemoteDeviceWakeMonitor
-+ (BOOL)appliesToActivity:(id)a3;
-+ (id)sharedMonitorWithDaemon:(id)a3;
-- (BOOL)isRemoteDeviceAwake:(id)a3;
-- (BOOL)unprotectedIsAlreadyPendingActivity:(id)a3;
-- (_DASRemoteDeviceWakeMonitor)initWithDaemon:(id)a3;
-- (id)unprotectedInitializeMonitorForDevice:(id)a3;
-- (void)deviceIsAsleepDidChange:(id)a3 isAsleep:(BOOL)a4;
-- (void)deviceIsConnectedDidChange:(id)a3 isConnected:(BOOL)a4;
-- (void)deviceIsNearbyDidChange:(id)a3 isNearby:(BOOL)a4;
-- (void)registerRemoteDeviceWakeStateWithActivity:(id)a3;
-- (void)unregisterRemoteDeviceWakeStateWithActivity:(id)a3;
++ (BOOL)appliesToActivity:(id)activity;
++ (id)sharedMonitorWithDaemon:(id)daemon;
+- (BOOL)isRemoteDeviceAwake:(id)awake;
+- (BOOL)unprotectedIsAlreadyPendingActivity:(id)activity;
+- (_DASRemoteDeviceWakeMonitor)initWithDaemon:(id)daemon;
+- (id)unprotectedInitializeMonitorForDevice:(id)device;
+- (void)deviceIsAsleepDidChange:(id)change isAsleep:(BOOL)asleep;
+- (void)deviceIsConnectedDidChange:(id)change isConnected:(BOOL)connected;
+- (void)deviceIsNearbyDidChange:(id)change isNearby:(BOOL)nearby;
+- (void)registerRemoteDeviceWakeStateWithActivity:(id)activity;
+- (void)unregisterRemoteDeviceWakeStateWithActivity:(id)activity;
 @end
 
 @implementation _DASRemoteDeviceWakeMonitor
 
-- (_DASRemoteDeviceWakeMonitor)initWithDaemon:(id)a3
+- (_DASRemoteDeviceWakeMonitor)initWithDaemon:(id)daemon
 {
-  v5 = a3;
+  daemonCopy = daemon;
   v18.receiver = self;
   v18.super_class = _DASRemoteDeviceWakeMonitor;
   v6 = [(_DASRemoteDeviceWakeMonitor *)&v18 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_daemon, a3);
+    objc_storeStrong(&v6->_daemon, daemon);
     v8 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v9 = dispatch_queue_create("com.apple.remoteWakeMonitor.queue", v8);
     queue = v7->_queue;
@@ -45,15 +45,15 @@
   return v7;
 }
 
-+ (id)sharedMonitorWithDaemon:(id)a3
++ (id)sharedMonitorWithDaemon:(id)daemon
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000412C0;
   block[3] = &unk_1001B5668;
-  v9 = a3;
+  daemonCopy = daemon;
   v3 = qword_10020B000;
-  v4 = v9;
+  v4 = daemonCopy;
   if (v3 != -1)
   {
     dispatch_once(&qword_10020B000, block);
@@ -65,19 +65,19 @@
   return v5;
 }
 
-+ (BOOL)appliesToActivity:(id)a3
++ (BOOL)appliesToActivity:(id)activity
 {
-  v3 = a3;
-  v4 = [v3 remoteDevice];
-  if (!v4 || [v3 targetDevice] != 1)
+  activityCopy = activity;
+  remoteDevice = [activityCopy remoteDevice];
+  if (!remoteDevice || [activityCopy targetDevice] != 1)
   {
 
     goto LABEL_6;
   }
 
-  v5 = [v3 requiresRemoteDeviceWake];
+  requiresRemoteDeviceWake = [activityCopy requiresRemoteDeviceWake];
 
-  if ((v5 & 1) == 0)
+  if ((requiresRemoteDeviceWake & 1) == 0)
   {
 LABEL_6:
     v6 = 0;
@@ -90,23 +90,23 @@ LABEL_7:
   return v6;
 }
 
-- (BOOL)isRemoteDeviceAwake:(id)a3
+- (BOOL)isRemoteDeviceAwake:(id)awake
 {
-  v4 = a3;
+  awakeCopy = awake;
   v5 = self->_deviceMonitors;
   objc_sync_enter(v5);
-  v6 = [(NSMutableDictionary *)self->_deviceMonitors objectForKeyedSubscript:v4];
+  v6 = [(NSMutableDictionary *)self->_deviceMonitors objectForKeyedSubscript:awakeCopy];
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 isAsleep];
+    isAsleep = [v6 isAsleep];
     v9 = [(_DASRemoteDeviceWakeMonitor *)self unprotectedIsRemoteDeviceConnected:v7];
     v10 = [(_DASRemoteDeviceWakeMonitor *)self unprotectedIsRemoteDeviceNearby:v7];
     v11 = [_DASDaemonLogger logForCategory:@"remoteScreenMonitor"];
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v12 = @"awake";
-      if (v8)
+      if (isAsleep)
       {
         v12 = @"asleep";
       }
@@ -122,7 +122,7 @@ LABEL_7:
       }
 
       v19 = 138413058;
-      v20 = v4;
+      v20 = awakeCopy;
       v22 = v12;
       v21 = 2112;
       v23 = 2112;
@@ -142,7 +142,7 @@ LABEL_7:
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%@ is %@, %@, %@", &v19, 0x2Au);
     }
 
-    v15 = (v8 ^ 1) & v10;
+    v15 = (isAsleep ^ 1) & v10;
   }
 
   else
@@ -153,9 +153,9 @@ LABEL_7:
       sub_10011E294();
     }
 
-    v17 = [NRDeviceIdentifier copyDeviceIdentifierWithIDSDeviceID:v4];
+    v17 = [NRDeviceIdentifier copyDeviceIdentifierWithIDSDeviceID:awakeCopy];
     v7 = [(_DASRemoteDeviceWakeMonitor *)self unprotectedInitializeMonitorForDevice:v17];
-    [(NSMutableDictionary *)self->_deviceMonitors setObject:v7 forKeyedSubscript:v4];
+    [(NSMutableDictionary *)self->_deviceMonitors setObject:v7 forKeyedSubscript:awakeCopy];
 
     v15 = 0;
   }
@@ -164,22 +164,22 @@ LABEL_7:
   return v15;
 }
 
-- (void)registerRemoteDeviceWakeStateWithActivity:(id)a3
+- (void)registerRemoteDeviceWakeStateWithActivity:(id)activity
 {
-  v15 = a3;
+  activityCopy = activity;
   if ([_DASRemoteDeviceWakeMonitor appliesToActivity:?])
   {
-    v4 = [v15 startAfter];
-    [v4 timeIntervalSinceNow];
+    startAfter = [activityCopy startAfter];
+    [startAfter timeIntervalSinceNow];
     v6 = v5;
 
     if (v6 <= 0.0)
     {
       v7 = self->_deviceMonitors;
       objc_sync_enter(v7);
-      if (![(_DASRemoteDeviceWakeMonitor *)self unprotectedIsAlreadyPendingActivity:v15])
+      if (![(_DASRemoteDeviceWakeMonitor *)self unprotectedIsAlreadyPendingActivity:activityCopy])
       {
-        v8 = [v15 remoteDevice];
+        remoteDevice = [activityCopy remoteDevice];
         deviceMonitors = self->_deviceMonitors;
         if (!deviceMonitors)
         {
@@ -190,17 +190,17 @@ LABEL_7:
           deviceMonitors = self->_deviceMonitors;
         }
 
-        v12 = [(NSMutableDictionary *)deviceMonitors objectForKeyedSubscript:v8];
+        v12 = [(NSMutableDictionary *)deviceMonitors objectForKeyedSubscript:remoteDevice];
 
         if (!v12)
         {
-          v13 = [NRDeviceIdentifier copyDeviceIdentifierWithIDSDeviceID:v8];
+          v13 = [NRDeviceIdentifier copyDeviceIdentifierWithIDSDeviceID:remoteDevice];
           v14 = [(_DASRemoteDeviceWakeMonitor *)self unprotectedInitializeMonitorForDevice:v13];
           if (v14)
           {
-            [(NSMutableDictionary *)self->_deviceMonitors setObject:v14 forKeyedSubscript:v8];
-            [(NSCountedSet *)self->_monitorCount addObject:v8];
-            [(NSMutableSet *)self->_pendingActivities addObject:v15];
+            [(NSMutableDictionary *)self->_deviceMonitors setObject:v14 forKeyedSubscript:remoteDevice];
+            [(NSCountedSet *)self->_monitorCount addObject:remoteDevice];
+            [(NSMutableSet *)self->_pendingActivities addObject:activityCopy];
           }
         }
       }
@@ -210,17 +210,17 @@ LABEL_7:
   }
 }
 
-- (void)unregisterRemoteDeviceWakeStateWithActivity:(id)a3
+- (void)unregisterRemoteDeviceWakeStateWithActivity:(id)activity
 {
-  v4 = a3;
-  if ([_DASRemoteDeviceWakeMonitor appliesToActivity:v4])
+  activityCopy = activity;
+  if ([_DASRemoteDeviceWakeMonitor appliesToActivity:activityCopy])
   {
     v5 = self->_deviceMonitors;
     objc_sync_enter(v5);
-    if (![(_DASRemoteDeviceWakeMonitor *)self unprotectedIsAlreadyPendingActivity:v4])
+    if (![(_DASRemoteDeviceWakeMonitor *)self unprotectedIsAlreadyPendingActivity:activityCopy])
     {
-      v6 = [_DASDaemonLogger logForCategory:@"remoteScreenMonitor"];
-      if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+      remoteDevice = [_DASDaemonLogger logForCategory:@"remoteScreenMonitor"];
+      if (os_log_type_enabled(remoteDevice, OS_LOG_TYPE_ERROR))
       {
         sub_10011E2FC();
       }
@@ -228,14 +228,14 @@ LABEL_7:
       goto LABEL_12;
     }
 
-    v6 = [v4 remoteDevice];
-    [(NSMutableSet *)self->_pendingActivities removeObject:v4];
-    [(NSCountedSet *)self->_monitorCount removeObject:v6];
-    v7 = [(NSMutableDictionary *)self->_deviceMonitors objectForKeyedSubscript:v6];
+    remoteDevice = [activityCopy remoteDevice];
+    [(NSMutableSet *)self->_pendingActivities removeObject:activityCopy];
+    [(NSCountedSet *)self->_monitorCount removeObject:remoteDevice];
+    v7 = [(NSMutableDictionary *)self->_deviceMonitors objectForKeyedSubscript:remoteDevice];
 
     if (v7)
     {
-      if (([(NSCountedSet *)self->_monitorCount containsObject:v6]& 1) != 0)
+      if (([(NSCountedSet *)self->_monitorCount containsObject:remoteDevice]& 1) != 0)
       {
 LABEL_12:
 
@@ -243,12 +243,12 @@ LABEL_12:
         goto LABEL_13;
       }
 
-      [(NSMutableDictionary *)self->_deviceMonitors removeObjectForKey:v6];
+      [(NSMutableDictionary *)self->_deviceMonitors removeObjectForKey:remoteDevice];
       v8 = [_DASDaemonLogger logForCategory:@"remoteScreenMonitor"];
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
         v9 = 138412290;
-        v10 = v4;
+        v10 = activityCopy;
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Stop monitoring screen wake state for %@", &v9, 0xCu);
       }
     }
@@ -268,21 +268,21 @@ LABEL_12:
 LABEL_13:
 }
 
-- (BOOL)unprotectedIsAlreadyPendingActivity:(id)a3
+- (BOOL)unprotectedIsAlreadyPendingActivity:(id)activity
 {
-  v4 = a3;
-  v5 = [(_DASRemoteDeviceWakeMonitor *)self pendingActivities];
-  v6 = [v5 containsObject:v4];
+  activityCopy = activity;
+  pendingActivities = [(_DASRemoteDeviceWakeMonitor *)self pendingActivities];
+  v6 = [pendingActivities containsObject:activityCopy];
 
   return v6;
 }
 
-- (id)unprotectedInitializeMonitorForDevice:(id)a3
+- (id)unprotectedInitializeMonitorForDevice:(id)device
 {
-  v4 = a3;
-  if (v4)
+  deviceCopy = device;
+  if (deviceCopy)
   {
-    v5 = [[NRDeviceMonitor alloc] initWithDeviceIdentifier:v4 delegate:self queue:self->_queue];
+    v5 = [[NRDeviceMonitor alloc] initWithDeviceIdentifier:deviceCopy delegate:self queue:self->_queue];
     v6 = [_DASDaemonLogger logForCategory:@"remoteScreenMonitor"];
     v7 = v6;
     if (v5)
@@ -290,7 +290,7 @@ LABEL_13:
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
         v17 = 138412290;
-        v18 = v4;
+        v18 = deviceCopy;
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Started monitoring screen wake state with identifier %@", &v17, 0xCu);
       }
 
@@ -323,26 +323,26 @@ LABEL_13:
   return v8;
 }
 
-- (void)deviceIsAsleepDidChange:(id)a3 isAsleep:(BOOL)a4
+- (void)deviceIsAsleepDidChange:(id)change isAsleep:(BOOL)asleep
 {
-  v5 = a3;
-  v30 = v5;
-  if (a4)
+  changeCopy = change;
+  v30 = changeCopy;
+  if (asleep)
   {
     v6 = [_DASDaemonLogger logForCategory:@"remoteScreenMonitor"];
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [v30 deviceIdentifier];
+      deviceIdentifier = [v30 deviceIdentifier];
       *buf = 138412290;
-      v42 = v7;
+      v42 = deviceIdentifier;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%@ is now asleep", buf, 0xCu);
     }
   }
 
   else
   {
-    v8 = v5;
-    if ([v5 isConnected])
+    v8 = changeCopy;
+    if ([changeCopy isConnected])
     {
       if ([v8 isNearby])
       {
@@ -353,11 +353,11 @@ LABEL_13:
         v37 = 0u;
         v38 = 0u;
         v39 = 0u;
-        v9 = [(_DASRemoteDeviceWakeMonitor *)self pendingActivities];
-        v10 = [v9 countByEnumeratingWithState:&v36 objects:v40 count:16];
+        pendingActivities = [(_DASRemoteDeviceWakeMonitor *)self pendingActivities];
+        v10 = [pendingActivities countByEnumeratingWithState:&v36 objects:v40 count:16];
         if (v10)
         {
-          obj = v9;
+          obj = pendingActivities;
           v27 = *v37;
           do
           {
@@ -370,15 +370,15 @@ LABEL_13:
               }
 
               v31 = *(*(&v36 + 1) + 8 * i);
-              v12 = [v31 remoteDevice];
-              v13 = [(NSMutableDictionary *)self->_deviceMonitors objectForKeyedSubscript:v12];
-              v14 = [v13 deviceIdentifier];
-              v15 = [v14 nrDeviceIdentifier];
-              v16 = [v15 UUIDString];
-              v17 = [v30 deviceIdentifier];
-              v18 = [v17 nrDeviceIdentifier];
-              v19 = [v18 UUIDString];
-              v20 = [v16 isEqualToString:v19];
+              remoteDevice = [v31 remoteDevice];
+              v13 = [(NSMutableDictionary *)self->_deviceMonitors objectForKeyedSubscript:remoteDevice];
+              deviceIdentifier2 = [v13 deviceIdentifier];
+              nrDeviceIdentifier = [deviceIdentifier2 nrDeviceIdentifier];
+              uUIDString = [nrDeviceIdentifier UUIDString];
+              deviceIdentifier3 = [v30 deviceIdentifier];
+              nrDeviceIdentifier2 = [deviceIdentifier3 nrDeviceIdentifier];
+              uUIDString2 = [nrDeviceIdentifier2 UUIDString];
+              v20 = [uUIDString isEqualToString:uUIDString2];
 
               if (v20)
               {
@@ -386,7 +386,7 @@ LABEL_13:
               }
             }
 
-            v9 = obj;
+            pendingActivities = obj;
             v10 = [obj countByEnumeratingWithState:&v36 objects:v40 count:16];
           }
 
@@ -401,7 +401,7 @@ LABEL_13:
         block[3] = &unk_1001B56B8;
         v33 = v30;
         v34 = v25;
-        v35 = self;
+        selfCopy = self;
         v6 = v25;
         dispatch_async(v21, block);
       }
@@ -411,9 +411,9 @@ LABEL_13:
         v6 = [_DASDaemonLogger logForCategory:@"remoteScreenMonitor"];
         if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
         {
-          v23 = [v30 deviceIdentifier];
+          deviceIdentifier4 = [v30 deviceIdentifier];
           *buf = 138412290;
-          v42 = v23;
+          v42 = deviceIdentifier4;
           _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%@ awake, connected, but not nearby", buf, 0xCu);
         }
       }
@@ -424,55 +424,55 @@ LABEL_13:
       v6 = [_DASDaemonLogger logForCategory:@"remoteScreenMonitor"];
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
-        v22 = [v30 deviceIdentifier];
+        deviceIdentifier5 = [v30 deviceIdentifier];
         *buf = 138412290;
-        v42 = v22;
+        v42 = deviceIdentifier5;
         _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%@ awake but disconnected", buf, 0xCu);
       }
     }
   }
 }
 
-- (void)deviceIsConnectedDidChange:(id)a3 isConnected:(BOOL)a4
+- (void)deviceIsConnectedDidChange:(id)change isConnected:(BOOL)connected
 {
-  v4 = a4;
-  v5 = a3;
+  connectedCopy = connected;
+  changeCopy = change;
   v6 = [_DASDaemonLogger logForCategory:@"remoteScreenMonitor"];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v5 deviceIdentifier];
-    v8 = v7;
+    deviceIdentifier = [changeCopy deviceIdentifier];
+    v8 = deviceIdentifier;
     v9 = @"disconnected";
-    if (v4)
+    if (connectedCopy)
     {
       v9 = @"connected";
     }
 
     v10 = 138412546;
-    v11 = v7;
+    v11 = deviceIdentifier;
     v12 = 2112;
     v13 = v9;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%@ is now %@", &v10, 0x16u);
   }
 }
 
-- (void)deviceIsNearbyDidChange:(id)a3 isNearby:(BOOL)a4
+- (void)deviceIsNearbyDidChange:(id)change isNearby:(BOOL)nearby
 {
-  v4 = a4;
-  v5 = a3;
+  nearbyCopy = nearby;
+  changeCopy = change;
   v6 = [_DASDaemonLogger logForCategory:@"remoteScreenMonitor"];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v5 deviceIdentifier];
-    v8 = v7;
+    deviceIdentifier = [changeCopy deviceIdentifier];
+    v8 = deviceIdentifier;
     v9 = @"not nearby";
-    if (v4)
+    if (nearbyCopy)
     {
       v9 = @"nearby";
     }
 
     v10 = 138412546;
-    v11 = v7;
+    v11 = deviceIdentifier;
     v12 = 2112;
     v13 = v9;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%@ is now %@", &v10, 0x16u);

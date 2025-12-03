@@ -1,11 +1,11 @@
 @interface SiriTTSVoiceSubscription
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (SiriTTSSynthesisVoice)voice;
-- (SiriTTSVoiceSubscription)initWithVoice:(id)a3 clientId:(id)a4 accessoryId:(id)a5;
+- (SiriTTSVoiceSubscription)initWithVoice:(id)voice clientId:(id)id accessoryId:(id)accessoryId;
 - (int64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setClientId:(id)a3;
-- (void)setVoice:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setClientId:(id)id;
+- (void)setVoice:(id)voice;
 @end
 
 @implementation SiriTTSVoiceSubscription
@@ -17,27 +17,27 @@
   return v2;
 }
 
-- (void)setVoice:(id)a3
+- (void)setVoice:(id)voice
 {
-  v4 = a3;
-  v5 = self;
-  sub_1B1BE9F1C(v4);
+  voiceCopy = voice;
+  selfCopy = self;
+  sub_1B1BE9F1C(voiceCopy);
 }
 
-- (void)setClientId:(id)a3
+- (void)setClientId:(id)id
 {
   sub_1B1C2CB58();
-  v4 = self;
+  selfCopy = self;
   sub_1B1BEA0B4();
 }
 
-- (SiriTTSVoiceSubscription)initWithVoice:(id)a3 clientId:(id)a4 accessoryId:(id)a5
+- (SiriTTSVoiceSubscription)initWithVoice:(id)voice clientId:(id)id accessoryId:(id)accessoryId
 {
   v7 = sub_1B1C2CB58();
   v9 = v8;
-  if (a5)
+  if (accessoryId)
   {
-    a5 = sub_1B1C2CB58();
+    accessoryId = sub_1B1C2CB58();
     v11 = v10;
   }
 
@@ -46,14 +46,14 @@
     v11 = 0;
   }
 
-  return SynthesisVoiceSubscription.init(voice:clientId:accessoryId:)(a3, v7, v9, a5, v11);
+  return SynthesisVoiceSubscription.init(voice:clientId:accessoryId:)(voice, v7, v9, accessoryId, v11);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_1B1C2D3F8();
     swift_unknownObjectRelease();
@@ -62,7 +62,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = sub_1B1BEA32C(v8);
@@ -73,17 +73,17 @@
 
 - (int64_t)hash
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1B1BEA5D0();
 
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_1B1BEA880(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_1B1BEA880(coderCopy);
 }
 
 @end

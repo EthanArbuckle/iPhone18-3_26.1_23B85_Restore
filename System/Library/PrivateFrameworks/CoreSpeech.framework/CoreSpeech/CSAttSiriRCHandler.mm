@@ -1,9 +1,9 @@
 @interface CSAttSiriRCHandler
 - (CSAttSiriEndpointerNode)endpointerNode;
-- (CSAttSiriRCHandler)initWithEndpointerNode:(id)a3 uresNode:(id)a4;
+- (CSAttSiriRCHandler)initWithEndpointerNode:(id)node uresNode:(id)uresNode;
 - (CSAttSiriUresNode)uresNode;
-- (void)addResultCandidateReceiver:(id)a3;
-- (void)getMitigationDecisionForRCIdWithCompletion:(unint64_t)a3 requestId:(id)a4 completion:(id)a5;
+- (void)addResultCandidateReceiver:(id)receiver;
+- (void)getMitigationDecisionForRCIdWithCompletion:(unint64_t)completion requestId:(id)id completion:(id)a5;
 @end
 
 @implementation CSAttSiriRCHandler
@@ -22,9 +22,9 @@
   return WeakRetained;
 }
 
-- (void)getMitigationDecisionForRCIdWithCompletion:(unint64_t)a3 requestId:(id)a4 completion:(id)a5
+- (void)getMitigationDecisionForRCIdWithCompletion:(unint64_t)completion requestId:(id)id completion:(id)a5
 {
-  v8 = a4;
+  idCopy = id;
   v9 = a5;
   v10 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
@@ -32,12 +32,12 @@
     v13 = 136315394;
     v14 = "[CSAttSiriRCHandler getMitigationDecisionForRCIdWithCompletion:requestId:completion:]";
     v15 = 2048;
-    v16 = a3;
+    completionCopy = completion;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%s rcId: %lu", &v13, 0x16u);
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_uresNode);
-  v12 = [WeakRetained getMitigationDecisionForRCId:a3 forRequestId:v8];
+  v12 = [WeakRetained getMitigationDecisionForRCId:completion forRequestId:idCopy];
 
   if (v9)
   {
@@ -45,24 +45,24 @@
   }
 }
 
-- (void)addResultCandidateReceiver:(id)a3
+- (void)addResultCandidateReceiver:(id)receiver
 {
-  v4 = a3;
+  receiverCopy = receiver;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000E7568;
   v7[3] = &unk_100253C48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = receiverCopy;
+  v6 = receiverCopy;
   dispatch_async(queue, v7);
 }
 
-- (CSAttSiriRCHandler)initWithEndpointerNode:(id)a3 uresNode:(id)a4
+- (CSAttSiriRCHandler)initWithEndpointerNode:(id)node uresNode:(id)uresNode
 {
-  v6 = a3;
-  v7 = a4;
+  nodeCopy = node;
+  uresNodeCopy = uresNode;
   v15.receiver = self;
   v15.super_class = CSAttSiriRCHandler;
   v8 = [(CSAttSiriRCHandler *)&v15 init];
@@ -76,8 +76,8 @@
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%s ", buf, 0xCu);
     }
 
-    objc_storeWeak(&v8->_endpointerNode, v6);
-    objc_storeWeak(&v8->_uresNode, v7);
+    objc_storeWeak(&v8->_endpointerNode, nodeCopy);
+    objc_storeWeak(&v8->_uresNode, uresNodeCopy);
     v10 = +[NSHashTable weakObjectsHashTable];
     resultCandidateReceivers = v8->_resultCandidateReceivers;
     v8->_resultCandidateReceivers = v10;

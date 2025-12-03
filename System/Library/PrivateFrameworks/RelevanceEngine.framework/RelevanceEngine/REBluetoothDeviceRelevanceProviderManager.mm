@@ -1,20 +1,20 @@
 @interface REBluetoothDeviceRelevanceProviderManager
 + (id)_features;
-- (REBluetoothDeviceRelevanceProviderManager)initWithQueue:(id)a3;
-- (id)_valueForProvider:(id)a3 feature:(id)a4;
+- (REBluetoothDeviceRelevanceProviderManager)initWithQueue:(id)queue;
+- (id)_valueForProvider:(id)provider feature:(id)feature;
 - (void)_prepareForUpdate;
 - (void)pause;
-- (void)predictorDidUpdate:(id)a3;
+- (void)predictorDidUpdate:(id)update;
 - (void)resume;
 @end
 
 @implementation REBluetoothDeviceRelevanceProviderManager
 
-- (REBluetoothDeviceRelevanceProviderManager)initWithQueue:(id)a3
+- (REBluetoothDeviceRelevanceProviderManager)initWithQueue:(id)queue
 {
   v4.receiver = self;
   v4.super_class = REBluetoothDeviceRelevanceProviderManager;
-  result = [(RERelevanceProviderManager *)&v4 initWithQueue:a3];
+  result = [(RERelevanceProviderManager *)&v4 initWithQueue:queue];
   if (result)
   {
     result->_connectedToSpeaker = 0;
@@ -36,15 +36,15 @@
   return v3;
 }
 
-- (id)_valueForProvider:(id)a3 feature:(id)a4
+- (id)_valueForProvider:(id)provider feature:(id)feature
 {
-  v5 = a3;
-  if ([v5 connectedToSpeaker] && self->_connectedToSpeaker)
+  providerCopy = provider;
+  if ([providerCopy connectedToSpeaker] && self->_connectedToSpeaker)
   {
     connectedToCar = 1;
   }
 
-  else if ([v5 connectedToCar])
+  else if ([providerCopy connectedToCar])
   {
     connectedToCar = self->_connectedToCar;
   }
@@ -80,7 +80,7 @@
   self->_connectedToSpeaker = [v4 connectedToSpeaker];
 }
 
-- (void)predictorDidUpdate:(id)a3
+- (void)predictorDidUpdate:(id)update
 {
   v4 = +[RERelevanceProviderManagerUpdate immediateUpdateForAllProviders];
   [(RERelevanceProviderManager *)self _scheduleUpdate:v4];

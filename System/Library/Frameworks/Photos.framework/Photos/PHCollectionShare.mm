@@ -1,31 +1,31 @@
 @interface PHCollectionShare
 + (id)entityKeyMap;
-+ (id)fetchCollectionSharesWithScopeIdentifiers:(id)a3 options:(id)a4;
-+ (id)localIdentifierWithUUID:(id)a3;
-+ (id)propertiesToFetchWithHint:(unint64_t)a3;
-+ (id)transformValueExpression:(id)a3 forKeyPath:(id)a4;
-+ (void)fetchCollectionShareFromShareURL:(id)a3 ignoreExistingShare:(BOOL)a4 photoLibrary:(id)a5 completionHandler:(id)a6;
-- (BOOL)canPerformEditOperation:(int64_t)a3;
-- (PHCollectionShare)initWithFetchDictionary:(id)a3 propertyHint:(unint64_t)a4 photoLibrary:(id)a5;
-- (void)declineWithCompletion:(id)a3;
-- (void)reportWithCompletion:(id)a3;
-- (void)sendInvitationsForParticipants:(id)a3 completion:(id)a4;
++ (id)fetchCollectionSharesWithScopeIdentifiers:(id)identifiers options:(id)options;
++ (id)localIdentifierWithUUID:(id)d;
++ (id)propertiesToFetchWithHint:(unint64_t)hint;
++ (id)transformValueExpression:(id)expression forKeyPath:(id)path;
++ (void)fetchCollectionShareFromShareURL:(id)l ignoreExistingShare:(BOOL)share photoLibrary:(id)library completionHandler:(id)handler;
+- (BOOL)canPerformEditOperation:(int64_t)operation;
+- (PHCollectionShare)initWithFetchDictionary:(id)dictionary propertyHint:(unint64_t)hint photoLibrary:(id)library;
+- (void)declineWithCompletion:(id)completion;
+- (void)reportWithCompletion:(id)completion;
+- (void)sendInvitationsForParticipants:(id)participants completion:(id)completion;
 @end
 
 @implementation PHCollectionShare
 
-- (void)sendInvitationsForParticipants:(id)a3 completion:(id)a4
+- (void)sendInvitationsForParticipants:(id)participants completion:(id)completion
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PHObject *)self uuid];
+  participantsCopy = participants;
+  completionCopy = completion;
+  uuid = [(PHObject *)self uuid];
   v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v10 = v6;
+  v10 = participantsCopy;
   v11 = [v10 countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v11)
   {
@@ -41,12 +41,12 @@
         }
 
         v15 = *(*(&v24 + 1) + 8 * i);
-        v16 = [v15 uuid];
+        uuid2 = [v15 uuid];
 
-        if (v16)
+        if (uuid2)
         {
-          v17 = [v15 uuid];
-          [v9 addObject:v17];
+          uuid3 = [v15 uuid];
+          [v9 addObject:uuid3];
         }
       }
 
@@ -56,17 +56,17 @@
     while (v12);
   }
 
-  v18 = [(PHObject *)self photoLibrary];
-  v19 = [v18 assetsdClient];
+  photoLibrary = [(PHObject *)self photoLibrary];
+  assetsdClient = [photoLibrary assetsdClient];
 
-  v20 = [v19 cloudInternalClient];
+  cloudInternalClient = [assetsdClient cloudInternalClient];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __63__PHCollectionShare_sendInvitationsForParticipants_completion___block_invoke;
   v22[3] = &unk_1E75AAA50;
-  v23 = v7;
-  v21 = v7;
-  [v20 sendInvitationsForCollectionShareWithUUID:v8 participantUUIDs:v9 completionHandler:v22];
+  v23 = completionCopy;
+  v21 = completionCopy;
+  [cloudInternalClient sendInvitationsForCollectionShareWithUUID:uuid participantUUIDs:v9 completionHandler:v22];
 }
 
 void __63__PHCollectionShare_sendInvitationsForParticipants_completion___block_invoke(uint64_t a1, uint64_t a2)
@@ -76,21 +76,21 @@ void __63__PHCollectionShare_sendInvitationsForParticipants_completion___block_i
   (*(v2 + 16))(v2, v3);
 }
 
-- (void)reportWithCompletion:(id)a3
+- (void)reportWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(PHObject *)self uuid];
-  v6 = [(PHObject *)self photoLibrary];
-  v7 = [v6 assetsdClient];
+  completionCopy = completion;
+  uuid = [(PHObject *)self uuid];
+  photoLibrary = [(PHObject *)self photoLibrary];
+  assetsdClient = [photoLibrary assetsdClient];
 
-  v8 = [v7 cloudInternalClient];
+  cloudInternalClient = [assetsdClient cloudInternalClient];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __42__PHCollectionShare_reportWithCompletion___block_invoke;
   v10[3] = &unk_1E75AAA50;
-  v11 = v4;
-  v9 = v4;
-  [v8 reportInvitationAsSpamForCollectionShareWithUUID:v5 completionHandler:v10];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [cloudInternalClient reportInvitationAsSpamForCollectionShareWithUUID:uuid completionHandler:v10];
 }
 
 void __42__PHCollectionShare_reportWithCompletion___block_invoke(uint64_t a1, uint64_t a2)
@@ -100,21 +100,21 @@ void __42__PHCollectionShare_reportWithCompletion___block_invoke(uint64_t a1, ui
   (*(v2 + 16))(v2, v3);
 }
 
-- (void)declineWithCompletion:(id)a3
+- (void)declineWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(PHObject *)self uuid];
-  v6 = [(PHObject *)self photoLibrary];
-  v7 = [v6 assetsdClient];
+  completionCopy = completion;
+  uuid = [(PHObject *)self uuid];
+  photoLibrary = [(PHObject *)self photoLibrary];
+  assetsdClient = [photoLibrary assetsdClient];
 
-  v8 = [v7 cloudInternalClient];
+  cloudInternalClient = [assetsdClient cloudInternalClient];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __43__PHCollectionShare_declineWithCompletion___block_invoke;
   v10[3] = &unk_1E75AAA50;
-  v11 = v4;
-  v9 = v4;
-  [v8 declineCollectionShareWithUUID:v5 completionHandler:v10];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [cloudInternalClient declineCollectionShareWithUUID:uuid completionHandler:v10];
 }
 
 void __43__PHCollectionShare_declineWithCompletion___block_invoke(uint64_t a1, uint64_t a2)
@@ -124,105 +124,105 @@ void __43__PHCollectionShare_declineWithCompletion___block_invoke(uint64_t a1, u
   (*(v2 + 16))(v2, v3);
 }
 
-- (PHCollectionShare)initWithFetchDictionary:(id)a3 propertyHint:(unint64_t)a4 photoLibrary:(id)a5
+- (PHCollectionShare)initWithFetchDictionary:(id)dictionary propertyHint:(unint64_t)hint photoLibrary:(id)library
 {
-  v8 = a3;
+  dictionaryCopy = dictionary;
   v51.receiver = self;
   v51.super_class = PHCollectionShare;
-  v9 = [(PHAssetCollection *)&v51 initWithFetchDictionary:v8 propertyHint:a4 photoLibrary:a5];
+  v9 = [(PHAssetCollection *)&v51 initWithFetchDictionary:dictionaryCopy propertyHint:hint photoLibrary:library];
   if (v9)
   {
-    v10 = [v8 objectForKeyedSubscript:@"title"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"title"];
     title = v9->_title;
     v9->_title = v10;
 
-    v12 = [v8 objectForKeyedSubscript:@"creationDate"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"creationDate"];
     creationDate = v9->_creationDate;
     v9->_creationDate = v12;
 
-    v14 = [v8 objectForKeyedSubscript:@"ckShareData"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"ckShareData"];
     ckShareData = v9->_ckShareData;
     v9->_ckShareData = v14;
 
-    v16 = [v8 objectForKeyedSubscript:@"status"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"status"];
     v9->_status = [v16 integerValue];
 
-    v17 = [v8 objectForKeyedSubscript:@"shareURL"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"shareURL"];
     shareURL = v9->_shareURL;
     v9->_shareURL = v17;
 
-    v19 = [v8 objectForKeyedSubscript:@"assetCount"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"assetCount"];
     v9->_assetCount = [v19 unsignedIntegerValue];
 
-    v20 = [v8 objectForKeyedSubscript:@"photosCount"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"photosCount"];
     v9->_photosCount = [v20 unsignedIntegerValue];
 
-    v21 = [v8 objectForKeyedSubscript:@"videosCount"];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"videosCount"];
     v9->_videosCount = [v21 unsignedIntegerValue];
 
-    v22 = [v8 objectForKeyedSubscript:@"cloudPhotoCount"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"cloudPhotoCount"];
     v9->_cloudPhotoCount = [v22 unsignedIntegerValue];
 
-    v23 = [v8 objectForKeyedSubscript:@"cloudVideoCount"];
+    v23 = [dictionaryCopy objectForKeyedSubscript:@"cloudVideoCount"];
     v9->_cloudVideoCount = [v23 unsignedIntegerValue];
 
-    v24 = [v8 objectForKeyedSubscript:@"scopeIdentifier"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"scopeIdentifier"];
     scopeIdentifier = v9->_scopeIdentifier;
     v9->_scopeIdentifier = v24;
 
-    v26 = [v8 objectForKeyedSubscript:@"expiryDate"];
+    v26 = [dictionaryCopy objectForKeyedSubscript:@"expiryDate"];
     expiryDate = v9->_expiryDate;
     v9->_expiryDate = v26;
 
-    v28 = [v8 objectForKeyedSubscript:@"trashedState"];
+    v28 = [dictionaryCopy objectForKeyedSubscript:@"trashedState"];
     v9->_trashedState = [v28 unsignedIntegerValue];
 
-    v29 = [v8 objectForKeyedSubscript:@"localPublishState"];
+    v29 = [dictionaryCopy objectForKeyedSubscript:@"localPublishState"];
     v9->_publishState = [v29 unsignedIntegerValue];
 
-    v30 = [v8 objectForKeyedSubscript:@"publicPermission"];
+    v30 = [dictionaryCopy objectForKeyedSubscript:@"publicPermission"];
     v9->_publicPermission = [v30 unsignedIntegerValue];
 
-    v31 = [v8 objectForKeyedSubscript:@"cloudSubscriptionDate"];
+    v31 = [dictionaryCopy objectForKeyedSubscript:@"cloudSubscriptionDate"];
     cloudSubscriptionDate = v9->_cloudSubscriptionDate;
     v9->_cloudSubscriptionDate = v31;
 
-    v33 = [v8 objectForKeyedSubscript:@"unseenContentState"];
+    v33 = [dictionaryCopy objectForKeyedSubscript:@"unseenContentState"];
     v9->_unseenContentState = [v33 unsignedIntegerValue];
 
-    v34 = [v8 objectForKeyedSubscript:@"unseenAssetsCount"];
+    v34 = [dictionaryCopy objectForKeyedSubscript:@"unseenAssetsCount"];
     v9->_unseenAssetsCount = [v34 unsignedIntegerValue];
 
-    v35 = [v8 objectForKeyedSubscript:@"notificationState"];
+    v35 = [dictionaryCopy objectForKeyedSubscript:@"notificationState"];
     v9->_notificationState = [v35 unsignedIntegerValue];
 
-    v36 = [v8 objectForKeyedSubscript:@"publicURLState"];
+    v36 = [dictionaryCopy objectForKeyedSubscript:@"publicURLState"];
     v9->_publicURLState = [v36 unsignedIntegerValue];
 
-    v37 = [v8 objectForKeyedSubscript:@"lastModifiedDate"];
+    v37 = [dictionaryCopy objectForKeyedSubscript:@"lastModifiedDate"];
     lastModifiedDate = v9->_lastModifiedDate;
     v9->_lastModifiedDate = v37;
 
-    v39 = [v8 objectForKeyedSubscript:@"cloudPersonID"];
+    v39 = [dictionaryCopy objectForKeyedSubscript:@"cloudPersonID"];
     cloudPersonID = v9->_cloudPersonID;
     v9->_cloudPersonID = v39;
 
-    v41 = [v8 objectForKeyedSubscript:@"creationType"];
+    v41 = [dictionaryCopy objectForKeyedSubscript:@"creationType"];
     v9->_creationType = [v41 unsignedIntegerValue];
 
-    v42 = [v8 objectForKeyedSubscript:@"startDate"];
+    v42 = [dictionaryCopy objectForKeyedSubscript:@"startDate"];
     startDate = v9->super._startDate;
     v9->super._startDate = v42;
 
-    v44 = [v8 objectForKeyedSubscript:@"endDate"];
+    v44 = [dictionaryCopy objectForKeyedSubscript:@"endDate"];
     endDate = v9->super._endDate;
     v9->super._endDate = v44;
 
-    v46 = [v8 objectForKeyedSubscript:@"collectionShareCurrentUserContributionState"];
+    v46 = [dictionaryCopy objectForKeyedSubscript:@"collectionShareCurrentUserContributionState"];
     v9->_currentUserContributionEnabled = [v46 unsignedIntegerValue] == 1;
 
-    v47 = [v8 objectForKeyedSubscript:@"collectionShareKind"];
-    v48 = [v47 unsignedIntegerValue];
+    v47 = [dictionaryCopy objectForKeyedSubscript:@"collectionShareKind"];
+    unsignedIntegerValue = [v47 unsignedIntegerValue];
 
     if (![MEMORY[0x1E69BF2F0] clientIsAllowedToFetchCollectionShares])
     {
@@ -232,13 +232,13 @@ void __43__PHCollectionShare_declineWithCompletion___block_invoke(uint64_t a1, u
     }
 
     v9->super._assetCollectionType = 12;
-    if (v48 == 1)
+    if (unsignedIntegerValue == 1)
     {
       v49 = 103;
       goto LABEL_8;
     }
 
-    if (v48 == 2)
+    if (unsignedIntegerValue == 2)
     {
       v49 = 102;
 LABEL_8:
@@ -249,33 +249,33 @@ LABEL_8:
   return v9;
 }
 
-- (BOOL)canPerformEditOperation:(int64_t)a3
+- (BOOL)canPerformEditOperation:(int64_t)operation
 {
   if ([MEMORY[0x1E69BF2F0] isEntitledForPhotoKit] && !-[PHCollection isDeleted](self, "isDeleted"))
   {
     creationType = self->_creationType;
-    v8 = [(PHCollectionShare *)self status];
+    status = [(PHCollectionShare *)self status];
     if (creationType == 1)
     {
-      return a3 == 6 && v8 == 1 || (a3 & 0xFFFFFFFFFFFFFFFDLL) == 1;
+      return operation == 6 && status == 1 || (operation & 0xFFFFFFFFFFFFFFFDLL) == 1;
     }
 
-    else if (v8 == 1)
+    else if (status == 1)
     {
-      return a3 != 5 && a3 != 2;
+      return operation != 5 && operation != 2;
     }
 
     else
     {
-      v12 = [(PHCollectionShare *)self currentUserContributionEnabled];
-      v5 = a3 == 6 || a3 == 1;
-      v14 = 0x4Au >> a3;
-      if (a3 >= 7)
+      currentUserContributionEnabled = [(PHCollectionShare *)self currentUserContributionEnabled];
+      v5 = operation == 6 || operation == 1;
+      v14 = 0x4Au >> operation;
+      if (operation >= 7)
       {
         LOBYTE(v14) = 0;
       }
 
-      if (v12)
+      if (currentUserContributionEnabled)
       {
         return v14;
       }
@@ -290,27 +290,27 @@ LABEL_8:
   return v5;
 }
 
-+ (void)fetchCollectionShareFromShareURL:(id)a3 ignoreExistingShare:(BOOL)a4 photoLibrary:(id)a5 completionHandler:(id)a6
++ (void)fetchCollectionShareFromShareURL:(id)l ignoreExistingShare:(BOOL)share photoLibrary:(id)library completionHandler:(id)handler
 {
-  v8 = a4;
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  if (!v12)
+  shareCopy = share;
+  lCopy = l;
+  libraryCopy = library;
+  handlerCopy = handler;
+  if (!libraryCopy)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:a1 file:@"PHCollectionShare.m" lineNumber:315 description:@"Valid PHPhotoLibrary must be specified"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHCollectionShare.m" lineNumber:315 description:@"Valid PHPhotoLibrary must be specified"];
   }
 
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __105__PHCollectionShare_fetchCollectionShareFromShareURL_ignoreExistingShare_photoLibrary_completionHandler___block_invoke;
   v17[3] = &unk_1E75A8558;
-  v18 = v12;
-  v19 = v13;
-  v14 = v12;
-  v15 = v13;
-  [PHShare fetchShareFromShareURL:v11 ignoreExistingShare:v8 photoLibrary:v14 completionHandler:v17];
+  v18 = libraryCopy;
+  v19 = handlerCopy;
+  v14 = libraryCopy;
+  v15 = handlerCopy;
+  [PHShare fetchShareFromShareURL:lCopy ignoreExistingShare:shareCopy photoLibrary:v14 completionHandler:v17];
 }
 
 void __105__PHCollectionShare_fetchCollectionShareFromShareURL_ignoreExistingShare_photoLibrary_completionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -357,45 +357,45 @@ void __105__PHCollectionShare_fetchCollectionShareFromShareURL_ignoreExistingSha
   }
 }
 
-+ (id)fetchCollectionSharesWithScopeIdentifiers:(id)a3 options:(id)a4
++ (id)fetchCollectionSharesWithScopeIdentifiers:(id)identifiers options:(id)options
 {
   v5 = MEMORY[0x1E696AE18];
-  v6 = a4;
-  v7 = [v5 predicateWithFormat:@"%K IN %@", @"scopeIdentifier", a3];
-  [v6 setPredicate:v7];
+  optionsCopy = options;
+  identifiers = [v5 predicateWithFormat:@"%K IN %@", @"scopeIdentifier", identifiers];
+  [optionsCopy setPredicate:identifiers];
 
-  v8 = [PHAssetCollection fetchAssetCollectionsWithType:12 subtype:0x7FFFFFFFFFFFFFFFLL options:v6];
+  v8 = [PHAssetCollection fetchAssetCollectionsWithType:12 subtype:0x7FFFFFFFFFFFFFFFLL options:optionsCopy];
 
   return v8;
 }
 
-+ (id)localIdentifierWithUUID:(id)a3
++ (id)localIdentifierWithUUID:(id)d
 {
   v4 = MEMORY[0x1E696AEC0];
-  v5 = a3;
-  v6 = [a1 identifierCode];
-  v7 = [v4 stringWithFormat:@"%@/L0/%@", v5, v6];
+  dCopy = d;
+  identifierCode = [self identifierCode];
+  v7 = [v4 stringWithFormat:@"%@/L0/%@", dCopy, identifierCode];
 
   return v7;
 }
 
-+ (id)transformValueExpression:(id)a3 forKeyPath:(id)a4
++ (id)transformValueExpression:(id)expression forKeyPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  expressionCopy = expression;
+  pathCopy = path;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __57__PHCollectionShare_transformValueExpression_forKeyPath___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (transformValueExpression_forKeyPath__onceToken_27815 != -1)
   {
     dispatch_once(&transformValueExpression_forKeyPath__onceToken_27815, block);
   }
 
-  if ([transformValueExpression_forKeyPath___passThroughSet_27816 containsObject:v7])
+  if ([transformValueExpression_forKeyPath___passThroughSet_27816 containsObject:pathCopy])
   {
-    v8 = v6;
+    v8 = expressionCopy;
   }
 
   else
@@ -571,7 +571,7 @@ void __33__PHCollectionShare_entityKeyMap__block_invoke()
   entityKeyMap_pl_once_object_15_27840 = v10;
 }
 
-+ (id)propertiesToFetchWithHint:(unint64_t)a3
++ (id)propertiesToFetchWithHint:(unint64_t)hint
 {
   if (propertiesToFetchWithHint__onceToken_27848 != -1)
   {

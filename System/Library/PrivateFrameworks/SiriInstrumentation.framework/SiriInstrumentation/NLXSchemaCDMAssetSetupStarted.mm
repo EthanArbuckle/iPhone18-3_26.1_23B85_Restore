@@ -1,27 +1,27 @@
 @interface NLXSchemaCDMAssetSetupStarted
-- (BOOL)isEqual:(id)a3;
-- (NLXSchemaCDMAssetSetupStarted)initWithDictionary:(id)a3;
-- (NLXSchemaCDMAssetSetupStarted)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (NLXSchemaCDMAssetSetupStarted)initWithDictionary:(id)dictionary;
+- (NLXSchemaCDMAssetSetupStarted)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (int)servicesAtIndex:(unint64_t)a3;
-- (void)addServices:(int)a3;
-- (void)writeTo:(id)a3;
+- (int)servicesAtIndex:(unint64_t)index;
+- (void)addServices:(int)services;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NLXSchemaCDMAssetSetupStarted
 
-- (NLXSchemaCDMAssetSetupStarted)initWithDictionary:(id)a3
+- (NLXSchemaCDMAssetSetupStarted)initWithDictionary:(id)dictionary
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v19.receiver = self;
   v19.super_class = NLXSchemaCDMAssetSetupStarted;
   v5 = [(NLXSchemaCDMAssetSetupStarted *)&v19 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"services"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"services"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -69,30 +69,30 @@
   return v5;
 }
 
-- (NLXSchemaCDMAssetSetupStarted)initWithJSON:(id)a3
+- (NLXSchemaCDMAssetSetupStarted)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(NLXSchemaCDMAssetSetupStarted *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(NLXSchemaCDMAssetSetupStarted *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(NLXSchemaCDMAssetSetupStarted *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -105,31 +105,31 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_services count])
   {
-    v4 = [(NLXSchemaCDMAssetSetupStarted *)self services];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"services"];
+    services = [(NLXSchemaCDMAssetSetupStarted *)self services];
+    v5 = [services copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"services"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(NLXSchemaCDMAssetSetupStarted *)self services];
-    v6 = [v4 services];
-    v7 = v6;
-    if ((v5 != 0) != (v6 == 0))
+    services = [(NLXSchemaCDMAssetSetupStarted *)self services];
+    services2 = [equalCopy services];
+    v7 = services2;
+    if ((services != 0) != (services2 == 0))
     {
-      v8 = [(NLXSchemaCDMAssetSetupStarted *)self services];
-      if (!v8)
+      services3 = [(NLXSchemaCDMAssetSetupStarted *)self services];
+      if (!services3)
       {
 
 LABEL_10:
@@ -137,10 +137,10 @@ LABEL_10:
         goto LABEL_8;
       }
 
-      v9 = v8;
-      v10 = [(NLXSchemaCDMAssetSetupStarted *)self services];
-      v11 = [v4 services];
-      v12 = [v10 isEqual:v11];
+      v9 = services3;
+      services4 = [(NLXSchemaCDMAssetSetupStarted *)self services];
+      services5 = [equalCopy services];
+      v12 = [services4 isEqual:services5];
 
       if (v12)
       {
@@ -159,10 +159,10 @@ LABEL_8:
   return v13;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -196,23 +196,23 @@ LABEL_8:
   }
 }
 
-- (int)servicesAtIndex:(unint64_t)a3
+- (int)servicesAtIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_services objectAtIndexedSubscript:a3];
-  v4 = [v3 intValue];
+  v3 = [(NSArray *)self->_services objectAtIndexedSubscript:index];
+  intValue = [v3 intValue];
 
-  return v4;
+  return intValue;
 }
 
-- (void)addServices:(int)a3
+- (void)addServices:(int)services
 {
-  v3 = *&a3;
+  v3 = *&services;
   services = self->_services;
   if (!services)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_services;
-    self->_services = v6;
+    self->_services = array;
 
     services = self->_services;
   }

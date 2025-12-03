@@ -1,19 +1,19 @@
 @interface EKEventDetailItem
-- (BOOL)hasDetailViewControllerAtIndex:(unint64_t)a3;
+- (BOOL)hasDetailViewControllerAtIndex:(unint64_t)index;
 - (BOOL)isReadOnlyDelegateCalendar;
-- (BOOL)saveAndDismissWithForce:(BOOL)a3;
+- (BOOL)saveAndDismissWithForce:(BOOL)force;
 - (EKEventDetailItemDelegate)delegate;
 - (EKUINavigationDelegateProvider)viewControllerToPresentFrom;
 - (void)dealloc;
-- (void)editItemViewController:(id)a3 didCompleteWithAction:(int)a4;
-- (void)eventViewController:(id)a3 didSelectSubitem:(unint64_t)a4;
-- (void)eventViewControllerDidTapInfoButton:(id)a3;
-- (void)layoutCellsForWidth:(double)a3 position:(int)a4;
+- (void)editItemViewController:(id)controller didCompleteWithAction:(int)action;
+- (void)eventViewController:(id)controller didSelectSubitem:(unint64_t)subitem;
+- (void)eventViewControllerDidTapInfoButton:(id)button;
+- (void)layoutCellsForWidth:(double)width position:(int)position;
 - (void)notifyDidCommit;
 - (void)notifyDidEndEditing;
 - (void)notifyDidStartEditing;
-- (void)notifySubitemDidSave:(unint64_t)a3;
-- (void)setEvent:(id)a3 reminder:(id)a4 store:(id)a5;
+- (void)notifySubitemDidSave:(unint64_t)save;
+- (void)setEvent:(id)event reminder:(id)reminder store:(id)store;
 @end
 
 @implementation EKEventDetailItem
@@ -26,16 +26,16 @@
   [(EKEventDetailItem *)&v3 dealloc];
 }
 
-- (void)setEvent:(id)a3 reminder:(id)a4 store:(id)a5
+- (void)setEvent:(id)event reminder:(id)reminder store:(id)store
 {
-  v12 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (self->_event != v12 || self->_reminder != v9)
+  eventCopy = event;
+  reminderCopy = reminder;
+  storeCopy = store;
+  if (self->_event != eventCopy || self->_reminder != reminderCopy)
   {
-    objc_storeStrong(&self->_event, a3);
-    objc_storeStrong(&self->_reminder, a4);
-    if (v9 | self->_event)
+    objc_storeStrong(&self->_event, event);
+    objc_storeStrong(&self->_reminder, reminder);
+    if (reminderCopy | self->_event)
     {
       [(EKEventDetailItem *)self reset];
     }
@@ -43,12 +43,12 @@
 
   [(EKEventDetailItem *)self setAllowsEditing:0];
   store = self->_store;
-  self->_store = v10;
+  self->_store = storeCopy;
 }
 
-- (void)layoutCellsForWidth:(double)a3 position:(int)a4
+- (void)layoutCellsForWidth:(double)width position:(int)position
 {
-  v4 = *&a4;
+  v4 = *&position;
   if ([(EKEventDetailItem *)self numberOfSubitems])
   {
     v7 = 0;
@@ -57,7 +57,7 @@
       v8 = [(EKEventDetailItem *)self cellForSubitemAtIndex:v7];
       if (objc_opt_respondsToSelector())
       {
-        [v8 layoutForWidth:v4 position:a3];
+        [v8 layoutForWidth:v4 position:width];
       }
 
       ++v7;
@@ -67,20 +67,20 @@
   }
 }
 
-- (BOOL)hasDetailViewControllerAtIndex:(unint64_t)a3
+- (BOOL)hasDetailViewControllerAtIndex:(unint64_t)index
 {
-  v3 = [(EKEventDetailItem *)self cellForSubitemAtIndex:a3];
+  v3 = [(EKEventDetailItem *)self cellForSubitemAtIndex:index];
   v4 = [v3 accessoryType] == 1;
 
   return v4;
 }
 
-- (void)eventViewController:(id)a3 didSelectSubitem:(unint64_t)a4
+- (void)eventViewController:(id)controller didSelectSubitem:(unint64_t)subitem
 {
-  v9 = a3;
-  v6 = [v9 view];
-  [v6 frame];
-  v7 = [(EKEventDetailItem *)self detailViewControllerWithFrame:a4 forSubitemAtIndex:?];
+  controllerCopy = controller;
+  view = [controllerCopy view];
+  [view frame];
+  v7 = [(EKEventDetailItem *)self detailViewControllerWithFrame:subitem forSubitemAtIndex:?];
 
   if (v7)
   {
@@ -90,8 +90,8 @@
       [(EKEditItemViewControllerProtocol *)self->_viewController setEditDelegate:self];
     }
 
-    v8 = [v9 navigationDelegate];
-    [v8 pushViewController:v7 animated:1];
+    navigationDelegate = [controllerCopy navigationDelegate];
+    [navigationDelegate pushViewController:v7 animated:1];
   }
 
   if ([(EKEventDetailItem *)self allowsEditing])
@@ -100,11 +100,11 @@
   }
 }
 
-- (void)eventViewControllerDidTapInfoButton:(id)a3
+- (void)eventViewControllerDidTapInfoButton:(id)button
 {
-  v7 = a3;
-  v4 = [v7 view];
-  [v4 frame];
+  buttonCopy = button;
+  view = [buttonCopy view];
+  [view frame];
   v5 = [(EKEventDetailItem *)self infoDetailViewControllerWithFrame:?];
 
   if (v5)
@@ -115,8 +115,8 @@
       [(EKEditItemViewControllerProtocol *)self->_viewController setEditDelegate:self];
     }
 
-    v6 = [v7 navigationDelegate];
-    [v6 pushViewController:v5 animated:1];
+    navigationDelegate = [buttonCopy navigationDelegate];
+    [navigationDelegate pushViewController:v5 animated:1];
   }
 
   if ([(EKEventDetailItem *)self allowsEditing])
@@ -149,7 +149,7 @@
   }
 }
 
-- (void)notifySubitemDidSave:(unint64_t)a3
+- (void)notifySubitemDidSave:(unint64_t)save
 {
   [(EKEventDetailItem *)self reset];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -162,11 +162,11 @@
   }
 }
 
-- (BOOL)saveAndDismissWithForce:(BOOL)a3
+- (BOOL)saveAndDismissWithForce:(BOOL)force
 {
   if (self->_viewController)
   {
-    v4 = !a3;
+    v4 = !force;
   }
 
   else
@@ -184,13 +184,13 @@
 
 - (BOOL)isReadOnlyDelegateCalendar
 {
-  v3 = [(EKEvent *)self->_event calendar];
-  v4 = [v3 source];
-  if ([v4 isDelegate])
+  calendar = [(EKEvent *)self->_event calendar];
+  source = [calendar source];
+  if ([source isDelegate])
   {
-    v5 = [(EKEvent *)self->_event calendar];
-    v6 = [v5 source];
-    v7 = [v6 isWritable] ^ 1;
+    calendar2 = [(EKEvent *)self->_event calendar];
+    source2 = [calendar2 source];
+    v7 = [source2 isWritable] ^ 1;
   }
 
   else
@@ -201,19 +201,19 @@
   return v7;
 }
 
-- (void)editItemViewController:(id)a3 didCompleteWithAction:(int)a4
+- (void)editItemViewController:(id)controller didCompleteWithAction:(int)action
 {
-  v23 = a3;
+  controllerCopy = controller;
   if ([(EKEvent *)self->_event hasChanges])
   {
-    v6 = [(EKEventDetailItem *)self delegate];
-    v7 = [v6 editorForEventDetailItem:self];
+    delegate = [(EKEventDetailItem *)self delegate];
+    v7 = [delegate editorForEventDetailItem:self];
 
-    if (a4 <= 2)
+    if (action <= 2)
     {
-      if (a4)
+      if (action)
       {
-        if (a4 == 2)
+        if (action == 2)
         {
           if ([(EKEvent *)self->_event isOrWasPartOfRecurringSeries]&& [(EKEvent *)self->_event isExternallyOrganizedInvitation])
           {
@@ -250,7 +250,7 @@
       goto LABEL_19;
     }
 
-    switch(a4)
+    switch(action)
     {
       case 3:
         v8 = self->_event;
@@ -288,10 +288,10 @@ LABEL_20:
     [v19 eventItemDidEndEditing:self];
   }
 
-  if ([v23 modal])
+  if ([controllerCopy modal])
   {
-    v20 = [(EKEditItemViewControllerProtocol *)self->_viewController navigationController];
-    v21 = [v20 popViewControllerAnimated:1];
+    navigationController = [(EKEditItemViewControllerProtocol *)self->_viewController navigationController];
+    v21 = [navigationController popViewControllerAnimated:1];
   }
 
   viewController = self->_viewController;

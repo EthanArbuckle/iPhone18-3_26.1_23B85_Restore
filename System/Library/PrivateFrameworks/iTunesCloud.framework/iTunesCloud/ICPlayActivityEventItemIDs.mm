@@ -1,16 +1,16 @@
 @interface ICPlayActivityEventItemIDs
-- (ICPlayActivityEventItemIDs)initWithCoder:(id)a3;
-- (id)_copyWithClass:(Class)a3;
+- (ICPlayActivityEventItemIDs)initWithCoder:(id)coder;
+- (id)_copyWithClass:(Class)class;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ICPlayActivityEventItemIDs
 
-- (id)_copyWithClass:(Class)a3
+- (id)_copyWithClass:(Class)class
 {
-  v4 = objc_alloc_init(a3);
+  v4 = objc_alloc_init(class);
   v5 = v4;
   if (v4)
   {
@@ -26,42 +26,42 @@
   return v5;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_class();
 
   return [(ICPlayActivityEventItemIDs *)self _copyWithClass:v4];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   cloudID = self->_cloudID;
-  v5 = a3;
-  [v5 encodeInt64:cloudID forKey:@"ICPlayActivityEventItemIDsCloudID"];
-  [v5 encodeObject:self->_lyricsID forKey:@"ICPlayActivityEventItemIDsLyricsID"];
-  [v5 encodeInt64:self->_purchasedAdamID forKey:@"ICPlayActivityEventItemIDsPurchasedAdamID"];
-  [v5 encodeInt64:self->_radioAdamID forKey:@"ICPlayActivityEventItemIDsRadioAdamID"];
-  [v5 encodeInt64:self->_equivalencySourceAdamID forKey:@"ICPlayActivityEventItemIDsEquivalencySourceAdamID"];
-  [v5 encodeInt64:self->_reportingAdamID forKey:@"ICPlayActivityEventItemIDsReportingAdamID"];
-  [v5 encodeInt64:self->_subscriptionAdamID forKey:@"ICPlayActivityEventItemIDsSubscriptionAdamID"];
+  coderCopy = coder;
+  [coderCopy encodeInt64:cloudID forKey:@"ICPlayActivityEventItemIDsCloudID"];
+  [coderCopy encodeObject:self->_lyricsID forKey:@"ICPlayActivityEventItemIDsLyricsID"];
+  [coderCopy encodeInt64:self->_purchasedAdamID forKey:@"ICPlayActivityEventItemIDsPurchasedAdamID"];
+  [coderCopy encodeInt64:self->_radioAdamID forKey:@"ICPlayActivityEventItemIDsRadioAdamID"];
+  [coderCopy encodeInt64:self->_equivalencySourceAdamID forKey:@"ICPlayActivityEventItemIDsEquivalencySourceAdamID"];
+  [coderCopy encodeInt64:self->_reportingAdamID forKey:@"ICPlayActivityEventItemIDsReportingAdamID"];
+  [coderCopy encodeInt64:self->_subscriptionAdamID forKey:@"ICPlayActivityEventItemIDsSubscriptionAdamID"];
 }
 
-- (ICPlayActivityEventItemIDs)initWithCoder:(id)a3
+- (ICPlayActivityEventItemIDs)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(ICPlayActivityEventItemIDs *)self init];
   if (v5)
   {
-    v5->_cloudID = [v4 decodeInt64ForKey:@"ICPlayActivityEventItemIDsCloudID"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ICPlayActivityEventItemIDsLyricsID"];
+    v5->_cloudID = [coderCopy decodeInt64ForKey:@"ICPlayActivityEventItemIDsCloudID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ICPlayActivityEventItemIDsLyricsID"];
     lyricsID = v5->_lyricsID;
     v5->_lyricsID = v6;
 
-    v5->_purchasedAdamID = [v4 decodeInt64ForKey:@"ICPlayActivityEventItemIDsPurchasedAdamID"];
-    v5->_radioAdamID = [v4 decodeInt64ForKey:@"ICPlayActivityEventItemIDsRadioAdamID"];
-    v5->_equivalencySourceAdamID = [v4 decodeInt64ForKey:@"ICPlayActivityEventItemIDsEquivalencySourceAdamID"];
-    v5->_reportingAdamID = [v4 decodeInt64ForKey:@"ICPlayActivityEventItemIDsReportingAdamID"];
-    v5->_subscriptionAdamID = [v4 decodeInt64ForKey:@"ICPlayActivityEventItemIDsSubscriptionAdamID"];
+    v5->_purchasedAdamID = [coderCopy decodeInt64ForKey:@"ICPlayActivityEventItemIDsPurchasedAdamID"];
+    v5->_radioAdamID = [coderCopy decodeInt64ForKey:@"ICPlayActivityEventItemIDsRadioAdamID"];
+    v5->_equivalencySourceAdamID = [coderCopy decodeInt64ForKey:@"ICPlayActivityEventItemIDsEquivalencySourceAdamID"];
+    v5->_reportingAdamID = [coderCopy decodeInt64ForKey:@"ICPlayActivityEventItemIDsReportingAdamID"];
+    v5->_subscriptionAdamID = [coderCopy decodeInt64ForKey:@"ICPlayActivityEventItemIDsSubscriptionAdamID"];
   }
 
   return v5;

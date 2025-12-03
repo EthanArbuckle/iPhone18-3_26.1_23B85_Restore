@@ -1,7 +1,7 @@
 @interface PHASENumberMetaParameter
 - (PHASENumberMetaParameter)init;
-- (PHASENumberMetaParameter)initWithUID:(id)a3 delegate:(id)a4;
-- (PHASENumberMetaParameter)initWithUID:(id)a3 value:(double)a4 rangeMin:(double)a5 rangeMax:(double)a6 delegate:(id)a7;
+- (PHASENumberMetaParameter)initWithUID:(id)d delegate:(id)delegate;
+- (PHASENumberMetaParameter)initWithUID:(id)d value:(double)value rangeMin:(double)min rangeMax:(double)max delegate:(id)delegate;
 - (void)fadeToValue:(double)value duration:(NSTimeInterval)duration;
 @end
 
@@ -14,26 +14,26 @@
   return 0;
 }
 
-- (PHASENumberMetaParameter)initWithUID:(id)a3 delegate:(id)a4
+- (PHASENumberMetaParameter)initWithUID:(id)d delegate:(id)delegate
 {
-  [(PHASENumberMetaParameter *)self doesNotRecognizeSelector:a2, a4];
+  [(PHASENumberMetaParameter *)self doesNotRecognizeSelector:a2, delegate];
 
   return 0;
 }
 
-- (PHASENumberMetaParameter)initWithUID:(id)a3 value:(double)a4 rangeMin:(double)a5 rangeMax:(double)a6 delegate:(id)a7
+- (PHASENumberMetaParameter)initWithUID:(id)d value:(double)value rangeMin:(double)min rangeMax:(double)max delegate:(id)delegate
 {
-  v12 = a3;
-  v13 = a7;
+  dCopy = d;
+  delegateCopy = delegate;
   v19.receiver = self;
   v19.super_class = PHASENumberMetaParameter;
-  v14 = [(PHASEMetaParameter *)&v19 initWithUID:v12 delegate:v13];
+  v14 = [(PHASEMetaParameter *)&v19 initWithUID:dCopy delegate:delegateCopy];
   v15 = v14;
   if (v14)
   {
-    v14->_minimum = a5;
-    v14->_maximum = a6;
-    v16 = [MEMORY[0x277CCABB0] numberWithDouble:a4];
+    v14->_minimum = min;
+    v14->_maximum = max;
+    v16 = [MEMORY[0x277CCABB0] numberWithDouble:value];
     [(PHASEMetaParameter *)v15 setValue:v16];
 
     v17 = v15;
@@ -47,9 +47,9 @@
   v8 = [MEMORY[0x277CCABB0] numberWithDouble:?];
   [(PHASEMetaParameter *)self setLocalValueOnly:?];
 
-  v9 = [(PHASEMetaParameter *)self delegate];
-  v7 = [(PHASEMetaParameter *)self identifier];
-  [v9 setMetaParameter:v7 value:value withTimeInterval:duration];
+  delegate = [(PHASEMetaParameter *)self delegate];
+  identifier = [(PHASEMetaParameter *)self identifier];
+  [delegate setMetaParameter:identifier value:value withTimeInterval:duration];
 }
 
 @end

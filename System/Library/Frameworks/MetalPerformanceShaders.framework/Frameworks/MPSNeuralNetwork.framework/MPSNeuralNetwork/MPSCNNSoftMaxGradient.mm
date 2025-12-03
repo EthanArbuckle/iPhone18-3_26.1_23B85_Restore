@@ -1,9 +1,9 @@
 @interface MPSCNNSoftMaxGradient
 - (MPSCNNSoftMaxGradient)initWithCoder:(NSCoder *)aDecoder device:(id)device;
 - (MPSCNNSoftMaxGradient)initWithDevice:(id)device;
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4;
+- (id)copyWithZone:(_NSZone *)zone device:(id)device;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MPSCNNSoftMaxGradient
@@ -61,19 +61,19 @@
   return 0;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   *(&self->super.super.super.super.isa + *MEMORY[0x277CD7358] + 2) = 1;
   v3.receiver = self;
   v3.super_class = MPSCNNSoftMaxGradient;
-  [(MPSCNNGradientKernel *)&v3 encodeWithCoder:a3];
+  [(MPSCNNGradientKernel *)&v3 encodeWithCoder:coder];
 }
 
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4
+- (id)copyWithZone:(_NSZone *)zone device:(id)device
 {
   v24.receiver = self;
   v24.super_class = MPSCNNSoftMaxGradient;
-  v6 = [(MPSCNNGradientKernel *)&v24 copyWithZone:a3 device:a4];
+  v6 = [(MPSCNNGradientKernel *)&v24 copyWithZone:zone device:device];
   v13 = v6;
   if (v6)
   {
@@ -92,7 +92,7 @@
 
     else
     {
-      v22 = objc_msgSend_copyWithZone_device_(reductionKernel, v14, a3, v20, v15, v16, v17, v18);
+      v22 = objc_msgSend_copyWithZone_device_(reductionKernel, v14, zone, v20, v15, v16, v17, v18);
     }
 
     v13[54] = v22;

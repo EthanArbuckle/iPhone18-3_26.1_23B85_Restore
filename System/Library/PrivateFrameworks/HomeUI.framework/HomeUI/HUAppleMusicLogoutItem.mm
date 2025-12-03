@@ -1,16 +1,16 @@
 @interface HUAppleMusicLogoutItem
-- (id)_subclass_updateWithOptions:(id)a3;
+- (id)_subclass_updateWithOptions:(id)options;
 @end
 
 @implementation HUAppleMusicLogoutItem
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   objc_initWeak(&location, self);
   v10.receiver = self;
   v10.super_class = HUAppleMusicLogoutItem;
-  v5 = [(HUAppleMusicItem *)&v10 _subclass_updateWithOptions:v4];
+  v5 = [(HUAppleMusicItem *)&v10 _subclass_updateWithOptions:optionsCopy];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __54__HUAppleMusicLogoutItem__subclass_updateWithOptions___block_invoke;

@@ -1,38 +1,38 @@
 @interface NETSchemaNETSessionConnectionNetwork
-- (BOOL)isEqual:(id)a3;
-- (NETSchemaNETSessionConnectionNetwork)initWithDictionary:(id)a3;
-- (NETSchemaNETSessionConnectionNetwork)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (NETSchemaNETSessionConnectionNetwork)initWithDictionary:(id)dictionary;
+- (NETSchemaNETSessionConnectionNetwork)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasAttempCount:(BOOL)a3;
-- (void)setHasClearChannelAssessmentScore:(BOOL)a3;
-- (void)setHasConnectionEstablishmentTime:(BOOL)a3;
-- (void)setHasConnectionStartToEstablishmentTime:(BOOL)a3;
-- (void)setHasConnectionStartToTLSHandshake:(BOOL)a3;
-- (void)setHasDnsResolutionTime:(BOOL)a3;
-- (void)setHasFirstByteTime:(BOOL)a3;
-- (void)setHasIsCaptive:(BOOL)a3;
-- (void)setHasRssi:(BOOL)a3;
-- (void)setHasSnr:(BOOL)a3;
-- (void)setHasStartToDNSResolution:(BOOL)a3;
-- (void)setHasTlsHandshakeTime:(BOOL)a3;
-- (void)setHasTlsVersion:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasAttempCount:(BOOL)count;
+- (void)setHasClearChannelAssessmentScore:(BOOL)score;
+- (void)setHasConnectionEstablishmentTime:(BOOL)time;
+- (void)setHasConnectionStartToEstablishmentTime:(BOOL)time;
+- (void)setHasConnectionStartToTLSHandshake:(BOOL)handshake;
+- (void)setHasDnsResolutionTime:(BOOL)time;
+- (void)setHasFirstByteTime:(BOOL)time;
+- (void)setHasIsCaptive:(BOOL)captive;
+- (void)setHasRssi:(BOOL)rssi;
+- (void)setHasSnr:(BOOL)snr;
+- (void)setHasStartToDNSResolution:(BOOL)resolution;
+- (void)setHasTlsHandshakeTime:(BOOL)time;
+- (void)setHasTlsVersion:(BOOL)version;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NETSchemaNETSessionConnectionNetwork
 
-- (NETSchemaNETSessionConnectionNetwork)initWithDictionary:(id)a3
+- (NETSchemaNETSessionConnectionNetwork)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v35.receiver = self;
   v35.super_class = NETSchemaNETSessionConnectionNetwork;
   v5 = [(NETSchemaNETSessionConnectionNetwork *)&v35 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"carrierName"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"carrierName"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -40,14 +40,14 @@
       [(NETSchemaNETSessionConnectionNetwork *)v5 setCarrierName:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"connectionMethod"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"connectionMethod"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[NETSchemaNETSessionConnectionNetwork setConnectionMethod:](v5, "setConnectionMethod:", [v8 intValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"primarySubflowInterfaceName"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"primarySubflowInterfaceName"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -55,14 +55,14 @@
       [(NETSchemaNETSessionConnectionNetwork *)v5 setPrimarySubflowInterfaceName:v10];
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"isCaptive"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"isCaptive"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[NETSchemaNETSessionConnectionNetwork setIsCaptive:](v5, "setIsCaptive:", [v11 BOOLValue]);
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"rssi"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"rssi"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -70,7 +70,7 @@
       [(NETSchemaNETSessionConnectionNetwork *)v5 setRssi:?];
     }
 
-    v13 = [v4 objectForKeyedSubscript:@"snr"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"snr"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -78,14 +78,14 @@
       [(NETSchemaNETSessionConnectionNetwork *)v5 setSnr:?];
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"attempCount"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"attempCount"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[NETSchemaNETSessionConnectionNetwork setAttempCount:](v5, "setAttempCount:", [v14 unsignedIntValue]);
     }
 
-    v15 = [v4 objectForKeyedSubscript:@"firstByteTime"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"firstByteTime"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -93,7 +93,7 @@
     }
 
     v32 = v11;
-    v16 = [v4 objectForKeyedSubscript:@"startToDNSResolution"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"startToDNSResolution"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -101,7 +101,7 @@
     }
 
     v31 = v12;
-    v17 = [v4 objectForKeyedSubscript:@"dnsResolutionTime"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"dnsResolutionTime"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -110,7 +110,7 @@
 
     v27 = v17;
     v34 = v8;
-    v18 = [v4 objectForKeyedSubscript:@"tlsVersion"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"tlsVersion"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -118,7 +118,7 @@
     }
 
     v33 = v9;
-    v19 = [v4 objectForKeyedSubscript:@"tlsHandshakeTime"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"tlsHandshakeTime"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -126,7 +126,7 @@
     }
 
     v30 = v13;
-    v20 = [v4 objectForKeyedSubscript:@"connectionEstablishmentTime"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"connectionEstablishmentTime"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -135,7 +135,7 @@
 
     v28 = v16;
     v29 = v14;
-    v21 = [v4 objectForKeyedSubscript:@"connectionStartToEstablishmentTime"];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"connectionStartToEstablishmentTime"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -143,14 +143,14 @@
     }
 
     v22 = v15;
-    v23 = [v4 objectForKeyedSubscript:@"connectionStartToTLSHandshake"];
+    v23 = [dictionaryCopy objectForKeyedSubscript:@"connectionStartToTLSHandshake"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[NETSchemaNETSessionConnectionNetwork setConnectionStartToTLSHandshake:](v5, "setConnectionStartToTLSHandshake:", [v23 unsignedLongLongValue]);
     }
 
-    v24 = [v4 objectForKeyedSubscript:@"clearChannelAssessmentScore"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"clearChannelAssessmentScore"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -164,30 +164,30 @@
   return v5;
 }
 
-- (NETSchemaNETSessionConnectionNetwork)initWithJSON:(id)a3
+- (NETSchemaNETSessionConnectionNetwork)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(NETSchemaNETSessionConnectionNetwork *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(NETSchemaNETSessionConnectionNetwork *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(NETSchemaNETSessionConnectionNetwork *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -200,18 +200,18 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ((*&self->_has & 0x10) != 0)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[NETSchemaNETSessionConnectionNetwork attempCount](self, "attempCount")}];
-    [v3 setObject:v4 forKeyedSubscript:@"attempCount"];
+    [dictionary setObject:v4 forKeyedSubscript:@"attempCount"];
   }
 
   if (self->_carrierName)
   {
-    v5 = [(NETSchemaNETSessionConnectionNetwork *)self carrierName];
-    v6 = [v5 copy];
-    [v3 setObject:v6 forKeyedSubscript:@"carrierName"];
+    carrierName = [(NETSchemaNETSessionConnectionNetwork *)self carrierName];
+    v6 = [carrierName copy];
+    [dictionary setObject:v6 forKeyedSubscript:@"carrierName"];
   }
 
   has = self->_has;
@@ -220,7 +220,7 @@
     v12 = MEMORY[0x1E696AD98];
     [(NETSchemaNETSessionConnectionNetwork *)self clearChannelAssessmentScore];
     v13 = [v12 numberWithDouble:?];
-    [v3 setObject:v13 forKeyedSubscript:@"clearChannelAssessmentScore"];
+    [dictionary setObject:v13 forKeyedSubscript:@"clearChannelAssessmentScore"];
 
     has = self->_has;
     if ((has & 0x400) == 0)
@@ -241,7 +241,7 @@ LABEL_7:
   }
 
   v14 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[NETSchemaNETSessionConnectionNetwork connectionEstablishmentTime](self, "connectionEstablishmentTime")}];
-  [v3 setObject:v14 forKeyedSubscript:@"connectionEstablishmentTime"];
+  [dictionary setObject:v14 forKeyedSubscript:@"connectionEstablishmentTime"];
 
   has = self->_has;
   if ((has & 1) == 0)
@@ -267,7 +267,7 @@ LABEL_24:
     v16 = off_1E78DB3A0[v15];
   }
 
-  [v3 setObject:v16 forKeyedSubscript:@"connectionMethod"];
+  [dictionary setObject:v16 forKeyedSubscript:@"connectionMethod"];
   has = self->_has;
   if ((has & 0x800) == 0)
   {
@@ -282,7 +282,7 @@ LABEL_9:
 
 LABEL_34:
   v25 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[NETSchemaNETSessionConnectionNetwork connectionStartToEstablishmentTime](self, "connectionStartToEstablishmentTime")}];
-  [v3 setObject:v25 forKeyedSubscript:@"connectionStartToEstablishmentTime"];
+  [dictionary setObject:v25 forKeyedSubscript:@"connectionStartToEstablishmentTime"];
 
   has = self->_has;
   if ((has & 0x1000) == 0)
@@ -298,7 +298,7 @@ LABEL_10:
 
 LABEL_35:
   v26 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[NETSchemaNETSessionConnectionNetwork connectionStartToTLSHandshake](self, "connectionStartToTLSHandshake")}];
-  [v3 setObject:v26 forKeyedSubscript:@"connectionStartToTLSHandshake"];
+  [dictionary setObject:v26 forKeyedSubscript:@"connectionStartToTLSHandshake"];
 
   has = self->_has;
   if ((has & 0x80) == 0)
@@ -314,7 +314,7 @@ LABEL_11:
 
 LABEL_36:
   v27 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[NETSchemaNETSessionConnectionNetwork dnsResolutionTime](self, "dnsResolutionTime")}];
-  [v3 setObject:v27 forKeyedSubscript:@"dnsResolutionTime"];
+  [dictionary setObject:v27 forKeyedSubscript:@"dnsResolutionTime"];
 
   has = self->_has;
   if ((has & 0x20) == 0)
@@ -330,21 +330,21 @@ LABEL_12:
 
 LABEL_37:
   v28 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[NETSchemaNETSessionConnectionNetwork firstByteTime](self, "firstByteTime")}];
-  [v3 setObject:v28 forKeyedSubscript:@"firstByteTime"];
+  [dictionary setObject:v28 forKeyedSubscript:@"firstByteTime"];
 
   if ((*&self->_has & 2) != 0)
   {
 LABEL_13:
     v8 = [MEMORY[0x1E696AD98] numberWithBool:{-[NETSchemaNETSessionConnectionNetwork isCaptive](self, "isCaptive")}];
-    [v3 setObject:v8 forKeyedSubscript:@"isCaptive"];
+    [dictionary setObject:v8 forKeyedSubscript:@"isCaptive"];
   }
 
 LABEL_14:
   if (self->_primarySubflowInterfaceName)
   {
-    v9 = [(NETSchemaNETSessionConnectionNetwork *)self primarySubflowInterfaceName];
-    v10 = [v9 copy];
-    [v3 setObject:v10 forKeyedSubscript:@"primarySubflowInterfaceName"];
+    primarySubflowInterfaceName = [(NETSchemaNETSessionConnectionNetwork *)self primarySubflowInterfaceName];
+    v10 = [primarySubflowInterfaceName copy];
+    [dictionary setObject:v10 forKeyedSubscript:@"primarySubflowInterfaceName"];
   }
 
   v11 = self->_has;
@@ -353,7 +353,7 @@ LABEL_14:
     v17 = MEMORY[0x1E696AD98];
     [(NETSchemaNETSessionConnectionNetwork *)self rssi];
     v18 = [v17 numberWithDouble:?];
-    [v3 setObject:v18 forKeyedSubscript:@"rssi"];
+    [dictionary setObject:v18 forKeyedSubscript:@"rssi"];
 
     v11 = self->_has;
     if ((v11 & 8) == 0)
@@ -376,7 +376,7 @@ LABEL_18:
   v19 = MEMORY[0x1E696AD98];
   [(NETSchemaNETSessionConnectionNetwork *)self snr];
   v20 = [v19 numberWithDouble:?];
-  [v3 setObject:v20 forKeyedSubscript:@"snr"];
+  [dictionary setObject:v20 forKeyedSubscript:@"snr"];
 
   v11 = self->_has;
   if ((v11 & 0x40) == 0)
@@ -389,7 +389,7 @@ LABEL_19:
 
 LABEL_29:
     v22 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[NETSchemaNETSessionConnectionNetwork tlsHandshakeTime](self, "tlsHandshakeTime")}];
-    [v3 setObject:v22 forKeyedSubscript:@"tlsHandshakeTime"];
+    [dictionary setObject:v22 forKeyedSubscript:@"tlsHandshakeTime"];
 
     if ((*&self->_has & 0x100) == 0)
     {
@@ -408,13 +408,13 @@ LABEL_30:
       v24 = off_1E78DB3D8[v23];
     }
 
-    [v3 setObject:v24 forKeyedSubscript:@"tlsVersion"];
+    [dictionary setObject:v24 forKeyedSubscript:@"tlsVersion"];
     goto LABEL_41;
   }
 
 LABEL_28:
   v21 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[NETSchemaNETSessionConnectionNetwork startToDNSResolution](self, "startToDNSResolution")}];
-  [v3 setObject:v21 forKeyedSubscript:@"startToDNSResolution"];
+  [dictionary setObject:v21 forKeyedSubscript:@"startToDNSResolution"];
 
   v11 = self->_has;
   if ((v11 & 0x200) != 0)
@@ -429,9 +429,9 @@ LABEL_20:
   }
 
 LABEL_41:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -690,28 +690,28 @@ LABEL_32:
   return v4 ^ v3 ^ v5 ^ v9 ^ v13 ^ v14 ^ v18 ^ v19 ^ v20 ^ v21 ^ v22 ^ v23 ^ v24 ^ v25 ^ v26 ^ v30;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_15;
   }
 
-  v5 = [(NETSchemaNETSessionConnectionNetwork *)self carrierName];
-  v6 = [v4 carrierName];
-  if ((v5 != 0) == (v6 == 0))
+  carrierName = [(NETSchemaNETSessionConnectionNetwork *)self carrierName];
+  carrierName2 = [equalCopy carrierName];
+  if ((carrierName != 0) == (carrierName2 == 0))
   {
     goto LABEL_14;
   }
 
-  v7 = [(NETSchemaNETSessionConnectionNetwork *)self carrierName];
-  if (v7)
+  carrierName3 = [(NETSchemaNETSessionConnectionNetwork *)self carrierName];
+  if (carrierName3)
   {
-    v8 = v7;
-    v9 = [(NETSchemaNETSessionConnectionNetwork *)self carrierName];
-    v10 = [v4 carrierName];
-    v11 = [v9 isEqual:v10];
+    v8 = carrierName3;
+    carrierName4 = [(NETSchemaNETSessionConnectionNetwork *)self carrierName];
+    carrierName5 = [equalCopy carrierName];
+    v11 = [carrierName4 isEqual:carrierName5];
 
     if (!v11)
     {
@@ -723,7 +723,7 @@ LABEL_32:
   {
   }
 
-  if ((*&self->_has & 1) != (v4[68] & 1))
+  if ((*&self->_has & 1) != (equalCopy[68] & 1))
   {
     goto LABEL_15;
   }
@@ -731,28 +731,28 @@ LABEL_32:
   if (*&self->_has)
   {
     connectionMethod = self->_connectionMethod;
-    if (connectionMethod != [v4 connectionMethod])
+    if (connectionMethod != [equalCopy connectionMethod])
     {
       goto LABEL_15;
     }
   }
 
-  v5 = [(NETSchemaNETSessionConnectionNetwork *)self primarySubflowInterfaceName];
-  v6 = [v4 primarySubflowInterfaceName];
-  if ((v5 != 0) == (v6 == 0))
+  carrierName = [(NETSchemaNETSessionConnectionNetwork *)self primarySubflowInterfaceName];
+  carrierName2 = [equalCopy primarySubflowInterfaceName];
+  if ((carrierName != 0) == (carrierName2 == 0))
   {
 LABEL_14:
 
     goto LABEL_15;
   }
 
-  v13 = [(NETSchemaNETSessionConnectionNetwork *)self primarySubflowInterfaceName];
-  if (v13)
+  primarySubflowInterfaceName = [(NETSchemaNETSessionConnectionNetwork *)self primarySubflowInterfaceName];
+  if (primarySubflowInterfaceName)
   {
-    v14 = v13;
-    v15 = [(NETSchemaNETSessionConnectionNetwork *)self primarySubflowInterfaceName];
-    v16 = [v4 primarySubflowInterfaceName];
-    v17 = [v15 isEqual:v16];
+    v14 = primarySubflowInterfaceName;
+    primarySubflowInterfaceName2 = [(NETSchemaNETSessionConnectionNetwork *)self primarySubflowInterfaceName];
+    primarySubflowInterfaceName3 = [equalCopy primarySubflowInterfaceName];
+    v17 = [primarySubflowInterfaceName2 isEqual:primarySubflowInterfaceName3];
 
     if (!v17)
     {
@@ -766,19 +766,19 @@ LABEL_14:
 
   has = self->_has;
   v21 = (*&has >> 1) & 1;
-  v22 = v4[68];
+  v22 = equalCopy[68];
   if (v21 == ((v22 >> 1) & 1))
   {
     if (v21)
     {
       isCaptive = self->_isCaptive;
-      if (isCaptive != [v4 isCaptive])
+      if (isCaptive != [equalCopy isCaptive])
       {
         goto LABEL_15;
       }
 
       has = self->_has;
-      v22 = v4[68];
+      v22 = equalCopy[68];
     }
 
     v24 = (*&has >> 2) & 1;
@@ -787,14 +787,14 @@ LABEL_14:
       if (v24)
       {
         rssi = self->_rssi;
-        [v4 rssi];
+        [equalCopy rssi];
         if (rssi != v26)
         {
           goto LABEL_15;
         }
 
         has = self->_has;
-        v22 = v4[68];
+        v22 = equalCopy[68];
       }
 
       v27 = (*&has >> 3) & 1;
@@ -803,14 +803,14 @@ LABEL_14:
         if (v27)
         {
           snr = self->_snr;
-          [v4 snr];
+          [equalCopy snr];
           if (snr != v29)
           {
             goto LABEL_15;
           }
 
           has = self->_has;
-          v22 = v4[68];
+          v22 = equalCopy[68];
         }
 
         v30 = (*&has >> 4) & 1;
@@ -819,13 +819,13 @@ LABEL_14:
           if (v30)
           {
             attempCount = self->_attempCount;
-            if (attempCount != [v4 attempCount])
+            if (attempCount != [equalCopy attempCount])
             {
               goto LABEL_15;
             }
 
             has = self->_has;
-            v22 = v4[68];
+            v22 = equalCopy[68];
           }
 
           v32 = (*&has >> 5) & 1;
@@ -834,13 +834,13 @@ LABEL_14:
             if (v32)
             {
               firstByteTime = self->_firstByteTime;
-              if (firstByteTime != [v4 firstByteTime])
+              if (firstByteTime != [equalCopy firstByteTime])
               {
                 goto LABEL_15;
               }
 
               has = self->_has;
-              v22 = v4[68];
+              v22 = equalCopy[68];
             }
 
             v34 = (*&has >> 6) & 1;
@@ -849,13 +849,13 @@ LABEL_14:
               if (v34)
               {
                 startToDNSResolution = self->_startToDNSResolution;
-                if (startToDNSResolution != [v4 startToDNSResolution])
+                if (startToDNSResolution != [equalCopy startToDNSResolution])
                 {
                   goto LABEL_15;
                 }
 
                 has = self->_has;
-                v22 = v4[68];
+                v22 = equalCopy[68];
               }
 
               v36 = (*&has >> 7) & 1;
@@ -864,13 +864,13 @@ LABEL_14:
                 if (v36)
                 {
                   dnsResolutionTime = self->_dnsResolutionTime;
-                  if (dnsResolutionTime != [v4 dnsResolutionTime])
+                  if (dnsResolutionTime != [equalCopy dnsResolutionTime])
                   {
                     goto LABEL_15;
                   }
 
                   has = self->_has;
-                  v22 = v4[68];
+                  v22 = equalCopy[68];
                 }
 
                 v38 = (*&has >> 8) & 1;
@@ -879,13 +879,13 @@ LABEL_14:
                   if (v38)
                   {
                     tlsVersion = self->_tlsVersion;
-                    if (tlsVersion != [v4 tlsVersion])
+                    if (tlsVersion != [equalCopy tlsVersion])
                     {
                       goto LABEL_15;
                     }
 
                     has = self->_has;
-                    v22 = v4[68];
+                    v22 = equalCopy[68];
                   }
 
                   v40 = (*&has >> 9) & 1;
@@ -894,13 +894,13 @@ LABEL_14:
                     if (v40)
                     {
                       tlsHandshakeTime = self->_tlsHandshakeTime;
-                      if (tlsHandshakeTime != [v4 tlsHandshakeTime])
+                      if (tlsHandshakeTime != [equalCopy tlsHandshakeTime])
                       {
                         goto LABEL_15;
                       }
 
                       has = self->_has;
-                      v22 = v4[68];
+                      v22 = equalCopy[68];
                     }
 
                     v42 = (*&has >> 10) & 1;
@@ -909,13 +909,13 @@ LABEL_14:
                       if (v42)
                       {
                         connectionEstablishmentTime = self->_connectionEstablishmentTime;
-                        if (connectionEstablishmentTime != [v4 connectionEstablishmentTime])
+                        if (connectionEstablishmentTime != [equalCopy connectionEstablishmentTime])
                         {
                           goto LABEL_15;
                         }
 
                         has = self->_has;
-                        v22 = v4[68];
+                        v22 = equalCopy[68];
                       }
 
                       v44 = (*&has >> 11) & 1;
@@ -924,13 +924,13 @@ LABEL_14:
                         if (v44)
                         {
                           connectionStartToEstablishmentTime = self->_connectionStartToEstablishmentTime;
-                          if (connectionStartToEstablishmentTime != [v4 connectionStartToEstablishmentTime])
+                          if (connectionStartToEstablishmentTime != [equalCopy connectionStartToEstablishmentTime])
                           {
                             goto LABEL_15;
                           }
 
                           has = self->_has;
-                          v22 = v4[68];
+                          v22 = equalCopy[68];
                         }
 
                         v46 = (*&has >> 12) & 1;
@@ -939,19 +939,19 @@ LABEL_14:
                           if (v46)
                           {
                             connectionStartToTLSHandshake = self->_connectionStartToTLSHandshake;
-                            if (connectionStartToTLSHandshake != [v4 connectionStartToTLSHandshake])
+                            if (connectionStartToTLSHandshake != [equalCopy connectionStartToTLSHandshake])
                             {
                               goto LABEL_15;
                             }
 
                             has = self->_has;
-                            v22 = v4[68];
+                            v22 = equalCopy[68];
                           }
 
                           v48 = (*&has >> 13) & 1;
                           if (v48 == ((v22 >> 13) & 1))
                           {
-                            if (!v48 || (clearChannelAssessmentScore = self->_clearChannelAssessmentScore, [v4 clearChannelAssessmentScore], clearChannelAssessmentScore == v50))
+                            if (!v48 || (clearChannelAssessmentScore = self->_clearChannelAssessmentScore, [equalCopy clearChannelAssessmentScore], clearChannelAssessmentScore == v50))
                             {
                               v18 = 1;
                               goto LABEL_16;
@@ -977,12 +977,12 @@ LABEL_16:
   return v18;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
-  v4 = [(NETSchemaNETSessionConnectionNetwork *)self carrierName];
+  toCopy = to;
+  carrierName = [(NETSchemaNETSessionConnectionNetwork *)self carrierName];
 
-  if (v4)
+  if (carrierName)
   {
     PBDataWriterWriteStringField();
   }
@@ -992,19 +992,19 @@ LABEL_16:
     PBDataWriterWriteInt32Field();
   }
 
-  v5 = [(NETSchemaNETSessionConnectionNetwork *)self primarySubflowInterfaceName];
+  primarySubflowInterfaceName = [(NETSchemaNETSessionConnectionNetwork *)self primarySubflowInterfaceName];
 
-  if (v5)
+  if (primarySubflowInterfaceName)
   {
     PBDataWriterWriteStringField();
   }
 
   has = self->_has;
-  v7 = v8;
+  v7 = toCopy;
   if ((has & 2) != 0)
   {
     PBDataWriterWriteBOOLField();
-    v7 = v8;
+    v7 = toCopy;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -1024,7 +1024,7 @@ LABEL_9:
   }
 
   PBDataWriterWriteDoubleField();
-  v7 = v8;
+  v7 = toCopy;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -1039,7 +1039,7 @@ LABEL_10:
 
 LABEL_26:
   PBDataWriterWriteDoubleField();
-  v7 = v8;
+  v7 = toCopy;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -1054,7 +1054,7 @@ LABEL_11:
 
 LABEL_27:
   PBDataWriterWriteUint32Field();
-  v7 = v8;
+  v7 = toCopy;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -1069,7 +1069,7 @@ LABEL_12:
 
 LABEL_28:
   PBDataWriterWriteUint64Field();
-  v7 = v8;
+  v7 = toCopy;
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -1084,7 +1084,7 @@ LABEL_13:
 
 LABEL_29:
   PBDataWriterWriteUint64Field();
-  v7 = v8;
+  v7 = toCopy;
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -1099,7 +1099,7 @@ LABEL_14:
 
 LABEL_30:
   PBDataWriterWriteUint64Field();
-  v7 = v8;
+  v7 = toCopy;
   has = self->_has;
   if ((has & 0x100) == 0)
   {
@@ -1114,7 +1114,7 @@ LABEL_15:
 
 LABEL_31:
   PBDataWriterWriteInt32Field();
-  v7 = v8;
+  v7 = toCopy;
   has = self->_has;
   if ((has & 0x200) == 0)
   {
@@ -1129,7 +1129,7 @@ LABEL_16:
 
 LABEL_32:
   PBDataWriterWriteUint64Field();
-  v7 = v8;
+  v7 = toCopy;
   has = self->_has;
   if ((has & 0x400) == 0)
   {
@@ -1144,7 +1144,7 @@ LABEL_17:
 
 LABEL_33:
   PBDataWriterWriteUint64Field();
-  v7 = v8;
+  v7 = toCopy;
   has = self->_has;
   if ((has & 0x800) == 0)
   {
@@ -1159,7 +1159,7 @@ LABEL_18:
 
 LABEL_34:
   PBDataWriterWriteUint64Field();
-  v7 = v8;
+  v7 = toCopy;
   has = self->_has;
   if ((has & 0x1000) == 0)
   {
@@ -1174,20 +1174,20 @@ LABEL_19:
 
 LABEL_35:
   PBDataWriterWriteUint64Field();
-  v7 = v8;
+  v7 = toCopy;
   if ((*&self->_has & 0x2000) != 0)
   {
 LABEL_20:
     PBDataWriterWriteDoubleField();
-    v7 = v8;
+    v7 = toCopy;
   }
 
 LABEL_21:
 }
 
-- (void)setHasClearChannelAssessmentScore:(BOOL)a3
+- (void)setHasClearChannelAssessmentScore:(BOOL)score
 {
-  if (a3)
+  if (score)
   {
     v3 = 0x2000;
   }
@@ -1200,9 +1200,9 @@ LABEL_21:
   *&self->_has = *&self->_has & 0xDFFF | v3;
 }
 
-- (void)setHasConnectionStartToTLSHandshake:(BOOL)a3
+- (void)setHasConnectionStartToTLSHandshake:(BOOL)handshake
 {
-  if (a3)
+  if (handshake)
   {
     v3 = 4096;
   }
@@ -1215,9 +1215,9 @@ LABEL_21:
   *&self->_has = *&self->_has & 0xEFFF | v3;
 }
 
-- (void)setHasConnectionStartToEstablishmentTime:(BOOL)a3
+- (void)setHasConnectionStartToEstablishmentTime:(BOOL)time
 {
-  if (a3)
+  if (time)
   {
     v3 = 2048;
   }
@@ -1230,9 +1230,9 @@ LABEL_21:
   *&self->_has = *&self->_has & 0xF7FF | v3;
 }
 
-- (void)setHasConnectionEstablishmentTime:(BOOL)a3
+- (void)setHasConnectionEstablishmentTime:(BOOL)time
 {
-  if (a3)
+  if (time)
   {
     v3 = 1024;
   }
@@ -1245,9 +1245,9 @@ LABEL_21:
   *&self->_has = *&self->_has & 0xFBFF | v3;
 }
 
-- (void)setHasTlsHandshakeTime:(BOOL)a3
+- (void)setHasTlsHandshakeTime:(BOOL)time
 {
-  if (a3)
+  if (time)
   {
     v3 = 512;
   }
@@ -1260,9 +1260,9 @@ LABEL_21:
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)setHasTlsVersion:(BOOL)a3
+- (void)setHasTlsVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 256;
   }
@@ -1275,9 +1275,9 @@ LABEL_21:
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasDnsResolutionTime:(BOOL)a3
+- (void)setHasDnsResolutionTime:(BOOL)time
 {
-  if (a3)
+  if (time)
   {
     v3 = 128;
   }
@@ -1290,9 +1290,9 @@ LABEL_21:
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasStartToDNSResolution:(BOOL)a3
+- (void)setHasStartToDNSResolution:(BOOL)resolution
 {
-  if (a3)
+  if (resolution)
   {
     v3 = 64;
   }
@@ -1305,9 +1305,9 @@ LABEL_21:
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasFirstByteTime:(BOOL)a3
+- (void)setHasFirstByteTime:(BOOL)time
 {
-  if (a3)
+  if (time)
   {
     v3 = 32;
   }
@@ -1320,9 +1320,9 @@ LABEL_21:
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasAttempCount:(BOOL)a3
+- (void)setHasAttempCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 16;
   }
@@ -1335,9 +1335,9 @@ LABEL_21:
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasSnr:(BOOL)a3
+- (void)setHasSnr:(BOOL)snr
 {
-  if (a3)
+  if (snr)
   {
     v3 = 8;
   }
@@ -1350,9 +1350,9 @@ LABEL_21:
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasRssi:(BOOL)a3
+- (void)setHasRssi:(BOOL)rssi
 {
-  if (a3)
+  if (rssi)
   {
     v3 = 4;
   }
@@ -1365,9 +1365,9 @@ LABEL_21:
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasIsCaptive:(BOOL)a3
+- (void)setHasIsCaptive:(BOOL)captive
 {
-  if (a3)
+  if (captive)
   {
     v3 = 2;
   }

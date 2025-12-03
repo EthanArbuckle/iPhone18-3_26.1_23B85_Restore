@@ -1,25 +1,25 @@
 @interface TSCHPolarElementBuilderCoordinateAdapter
-- ($9E5495ABC9D17321C375100FE022AE0A)cartesianPointsWithSeries:(id)a3 groupIndexSet:(id)a4 nullsUseIntercept:(BOOL)a5 plotAreaFrame:(CGRect)a6;
-- (CGRect)constrainedRectWithSeries:(id)a3 elementBoundingBox:(CGRect)a4 seriesAreaFrame:(CGRect)a5;
+- ($9E5495ABC9D17321C375100FE022AE0A)cartesianPointsWithSeries:(id)series groupIndexSet:(id)set nullsUseIntercept:(BOOL)intercept plotAreaFrame:(CGRect)frame;
+- (CGRect)constrainedRectWithSeries:(id)series elementBoundingBox:(CGRect)box seriesAreaFrame:(CGRect)frame;
 @end
 
 @implementation TSCHPolarElementBuilderCoordinateAdapter
 
-- ($9E5495ABC9D17321C375100FE022AE0A)cartesianPointsWithSeries:(id)a3 groupIndexSet:(id)a4 nullsUseIntercept:(BOOL)a5 plotAreaFrame:(CGRect)a6
+- ($9E5495ABC9D17321C375100FE022AE0A)cartesianPointsWithSeries:(id)series groupIndexSet:(id)set nullsUseIntercept:(BOOL)intercept plotAreaFrame:(CGRect)frame
 {
-  width = a6.size.width;
-  height = a6.size.height;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v9 = a3;
-  v10 = a4;
-  v15 = objc_msgSend_count(v10, v11, v12, v13, v14);
-  v89 = self;
+  width = frame.size.width;
+  height = frame.size.height;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  seriesCopy = series;
+  setCopy = set;
+  v15 = objc_msgSend_count(setCopy, v11, v12, v13, v14);
+  selfCopy = self;
   v90 = objc_msgSend_p_pointArrayWithCount_(self, v16, v17, v18, v19, v15);
-  v24 = objc_msgSend_axisForAxisType_(v9, v20, v21, v22, v23, 5);
-  v29 = objc_msgSend_axisForAxisType_(v9, v25, v26, v27, v28, 6);
+  v24 = objc_msgSend_axisForAxisType_(seriesCopy, v20, v21, v22, v23, 5);
+  v29 = objc_msgSend_axisForAxisType_(seriesCopy, v25, v26, v27, v28, 6);
   v88 = v24;
-  v34 = objc_msgSend_unitSpaceValuesForSeries_groupIndexSet_(v24, v30, v31, v32, v33, v9, v10);
+  v34 = objc_msgSend_unitSpaceValuesForSeries_groupIndexSet_(v24, v30, v31, v32, v33, seriesCopy, setCopy);
   v87 = v29;
   v39 = objc_msgSend_unitSpaceValuesForCountSpaceValuesWithCount_(v29, v35, v36, v37, v38, v15);
   v44 = objc_msgSend_dataWithLength_(MEMORY[0x277CBEB28], v40, v41, v42, v43, 8 * v15);
@@ -30,7 +30,7 @@
   v56 = v55;
   v61 = objc_msgSend_mutableBytes(v56, v57, v58, v59, v60);
 
-  v66 = objc_msgSend_model(v9, v62, v63, v64, v65);
+  v66 = objc_msgSend_model(seriesCopy, v62, v63, v64, v65);
   v71 = objc_msgSend_chart(v66, v67, v68, v69, v70);
   objc_msgSend_floatValueForProperty_defaultValue_(v71, v72, 0.0, v73, v74, 1109);
   v76 = v75;
@@ -55,22 +55,22 @@
     while (v81);
   }
 
-  objc_msgSend_p_iterateWithXValues_yValues_points_pointCount_plotAreaFrame_yValueModifierBlock_(v89, v77, x, y, width, v50, v61, v90, v15, 0, height);
+  objc_msgSend_p_iterateWithXValues_yValues_points_pointCount_plotAreaFrame_yValueModifierBlock_(selfCopy, v77, x, y, width, v50, v61, v90, v15, 0, height);
 
   return v90;
 }
 
-- (CGRect)constrainedRectWithSeries:(id)a3 elementBoundingBox:(CGRect)a4 seriesAreaFrame:(CGRect)a5
+- (CGRect)constrainedRectWithSeries:(id)series elementBoundingBox:(CGRect)box seriesAreaFrame:(CGRect)frame
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v9 = a4.size.height;
-  v10 = a4.size.width;
-  v11 = a4.origin.y;
-  v12 = a4.origin.x;
-  v13 = a3;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  v9 = box.size.height;
+  v10 = box.size.width;
+  v11 = box.origin.y;
+  v12 = box.origin.x;
+  seriesCopy = series;
   rect.origin.x = v12;
   rect.origin.y = v11;
   v58.origin.x = v12;
@@ -106,8 +106,8 @@
   v62.size.height = v18;
   CGRectGetMaxY(v62);
   objc_opt_class();
-  v23 = objc_msgSend_model(v13, v19, v20, v21, v22);
-  v28 = objc_msgSend_axisIDForAxisType_(v13, v24, v25, v26, v27, 5);
+  v23 = objc_msgSend_model(seriesCopy, v19, v20, v21, v22);
+  v28 = objc_msgSend_axisIDForAxisType_(seriesCopy, v24, v25, v26, v27, 5);
 
   v33 = objc_msgSend_axisForID_(v23, v29, v30, v31, v32, v28);
   v34 = TSUDynamicCast();

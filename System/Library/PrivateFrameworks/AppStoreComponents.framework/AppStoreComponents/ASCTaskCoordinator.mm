@@ -1,14 +1,14 @@
 @interface ASCTaskCoordinator
 + (OS_os_log)log;
-- (ASCTaskCoordinator)initWithName:(id)a3;
-- (BOOL)hasTaskForKey:(id)a3;
-- (id)taskForKey:(id)a3;
-- (id)taskForKey:(id)a3 withCreatorBlock:(id)a4;
+- (ASCTaskCoordinator)initWithName:(id)name;
+- (BOOL)hasTaskForKey:(id)key;
+- (id)taskForKey:(id)key;
+- (id)taskForKey:(id)key withCreatorBlock:(id)block;
 - (void)removeAllFinishedTasks;
-- (void)removeTaskForKey:(id)a3;
-- (void)taskForKey:(id)a3 didCompleteWithResult:(id)a4;
-- (void)taskForKey:(id)a3 didFailWithError:(id)a4;
-- (void)withLock:(id)a3;
+- (void)removeTaskForKey:(id)key;
+- (void)taskForKey:(id)key didCompleteWithResult:(id)result;
+- (void)taskForKey:(id)key didFailWithError:(id)error;
+- (void)withLock:(id)lock;
 @end
 
 @implementation ASCTaskCoordinator
@@ -32,15 +32,15 @@ uint64_t __25__ASCTaskCoordinator_log__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (ASCTaskCoordinator)initWithName:(id)a3
+- (ASCTaskCoordinator)initWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v15.receiver = self;
   v15.super_class = ASCTaskCoordinator;
   v5 = [(ASCTaskCoordinator *)&v15 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [nameCopy copy];
     name = v5->_name;
     v5->_name = v6;
 
@@ -48,7 +48,7 @@ uint64_t __25__ASCTaskCoordinator_log__block_invoke()
     consistencyLock = v5->_consistencyLock;
     v5->_consistencyLock = v8;
 
-    [(NSRecursiveLock *)v5->_consistencyLock setName:v4];
+    [(NSRecursiveLock *)v5->_consistencyLock setName:nameCopy];
     v10 = objc_alloc_init(MEMORY[0x277CBEB38]);
     pendingResults = v5->_pendingResults;
     v5->_pendingResults = v10;
@@ -57,52 +57,52 @@ uint64_t __25__ASCTaskCoordinator_log__block_invoke()
     loadedResults = v5->_loadedResults;
     v5->_loadedResults = v12;
 
-    [(NSCache *)v5->_loadedResults setName:v4];
+    [(NSCache *)v5->_loadedResults setName:nameCopy];
     [(NSCache *)v5->_loadedResults setCountLimit:50];
   }
 
   return v5;
 }
 
-- (void)withLock:(id)a3
+- (void)withLock:(id)lock
 {
-  v6 = a3;
-  v4 = [(ASCTaskCoordinator *)self consistencyLock];
-  [v4 lock];
+  lockCopy = lock;
+  consistencyLock = [(ASCTaskCoordinator *)self consistencyLock];
+  [consistencyLock lock];
 
-  v6[2]();
-  v5 = [(ASCTaskCoordinator *)self consistencyLock];
-  [v5 unlock];
+  lockCopy[2]();
+  consistencyLock2 = [(ASCTaskCoordinator *)self consistencyLock];
+  [consistencyLock2 unlock];
 }
 
-- (void)taskForKey:(id)a3 didCompleteWithResult:(id)a4
+- (void)taskForKey:(id)key didCompleteWithResult:(id)result
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  resultCopy = result;
   v8 = +[ASCTaskCoordinator log];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
-    v9 = [(ASCTaskCoordinator *)self name];
+    name = [(ASCTaskCoordinator *)self name];
     *buf = 138543874;
-    v15 = v9;
+    v15 = name;
     v16 = 2112;
-    v17 = v6;
+    v17 = keyCopy;
     v18 = 2112;
-    v19 = v7;
+    v19 = resultCopy;
     _os_log_impl(&dword_21571A000, v8, OS_LOG_TYPE_INFO, "%{public}@: Task for %@ did complete with %@", buf, 0x20u);
   }
 
-  v10 = [(ASCTaskCoordinator *)self loadedResults];
-  [v10 setObject:v7 forKey:v6];
+  loadedResults = [(ASCTaskCoordinator *)self loadedResults];
+  [loadedResults setObject:resultCopy forKey:keyCopy];
 
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __55__ASCTaskCoordinator_taskForKey_didCompleteWithResult___block_invoke;
   v12[3] = &unk_2781CC1F8;
   v12[4] = self;
-  v13 = v6;
-  v11 = v6;
+  v13 = keyCopy;
+  v11 = keyCopy;
   [(ASCTaskCoordinator *)self withLock:v12];
 }
 
@@ -112,17 +112,17 @@ void __55__ASCTaskCoordinator_taskForKey_didCompleteWithResult___block_invoke(ui
   [v2 removeObjectForKey:*(a1 + 40)];
 }
 
-- (void)taskForKey:(id)a3 didFailWithError:(id)a4
+- (void)taskForKey:(id)key didFailWithError:(id)error
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 domain];
-  if ([v8 isEqualToString:*MEMORY[0x277CCA050]])
+  keyCopy = key;
+  errorCopy = error;
+  domain = [errorCopy domain];
+  if ([domain isEqualToString:*MEMORY[0x277CCA050]])
   {
-    v9 = [v7 code];
+    code = [errorCopy code];
 
-    if (v9 == 3072)
+    if (code == 3072)
     {
       goto LABEL_8;
     }
@@ -135,12 +135,12 @@ void __55__ASCTaskCoordinator_taskForKey_didCompleteWithResult___block_invoke(ui
   v10 = +[ASCTaskCoordinator log];
   if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
   {
-    v12 = [(ASCTaskCoordinator *)self name];
+    name = [(ASCTaskCoordinator *)self name];
     v13 = AMSLogableError();
     *buf = 138543874;
-    v17 = v12;
+    v17 = name;
     v18 = 2112;
-    v19 = v6;
+    v19 = keyCopy;
     v20 = 2114;
     v21 = v13;
     _os_log_error_impl(&dword_21571A000, v10, OS_LOG_TYPE_ERROR, "%{public}@: Task for %@ did fail with %{public}@", buf, 0x20u);
@@ -152,8 +152,8 @@ LABEL_8:
   v14[2] = __50__ASCTaskCoordinator_taskForKey_didFailWithError___block_invoke;
   v14[3] = &unk_2781CC1F8;
   v14[4] = self;
-  v15 = v6;
-  v11 = v6;
+  v15 = keyCopy;
+  v11 = keyCopy;
   [(ASCTaskCoordinator *)self withLock:v14];
 }
 
@@ -163,19 +163,19 @@ void __50__ASCTaskCoordinator_taskForKey_didFailWithError___block_invoke(uint64_
   [v2 removeObjectForKey:*(a1 + 40)];
 }
 
-- (BOOL)hasTaskForKey:(id)a3
+- (BOOL)hasTaskForKey:(id)key
 {
-  v3 = [(ASCTaskCoordinator *)self taskForKey:a3];
+  v3 = [(ASCTaskCoordinator *)self taskForKey:key];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (id)taskForKey:(id)a3
+- (id)taskForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(ASCTaskCoordinator *)self loadedResults];
-  v6 = [v5 objectForKey:v4];
+  keyCopy = key;
+  loadedResults = [(ASCTaskCoordinator *)self loadedResults];
+  v6 = [loadedResults objectForKey:keyCopy];
 
   if (v6)
   {
@@ -196,7 +196,7 @@ void __50__ASCTaskCoordinator_taskForKey_didFailWithError___block_invoke(uint64_
     v9[3] = &unk_2781CC5F8;
     v11 = &v12;
     v9[4] = self;
-    v10 = v4;
+    v10 = keyCopy;
     [(ASCTaskCoordinator *)self withLock:v9];
     v7 = v13[5];
 
@@ -215,24 +215,24 @@ void __33__ASCTaskCoordinator_taskForKey___block_invoke(uint64_t a1)
   *(v3 + 40) = v2;
 }
 
-- (id)taskForKey:(id)a3 withCreatorBlock:(id)a4
+- (id)taskForKey:(id)key withCreatorBlock:(id)block
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ASCTaskCoordinator *)self loadedResults];
-  v9 = [v8 objectForKey:v6];
+  keyCopy = key;
+  blockCopy = block;
+  loadedResults = [(ASCTaskCoordinator *)self loadedResults];
+  v9 = [loadedResults objectForKey:keyCopy];
 
   if (v9)
   {
     v10 = +[ASCTaskCoordinator log];
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
-      v11 = [(ASCTaskCoordinator *)self name];
+      name = [(ASCTaskCoordinator *)self name];
       *buf = 138543618;
-      *&buf[4] = v11;
+      *&buf[4] = name;
       *&buf[12] = 2112;
-      *&buf[14] = v6;
+      *&buf[14] = keyCopy;
       _os_log_impl(&dword_21571A000, v10, OS_LOG_TYPE_INFO, "%{public}@: Using cached result to satisfy %@", buf, 0x16u);
     }
 
@@ -252,9 +252,9 @@ void __33__ASCTaskCoordinator_taskForKey___block_invoke(uint64_t a1)
     v14[2] = __50__ASCTaskCoordinator_taskForKey_withCreatorBlock___block_invoke;
     v14[3] = &unk_2781CC750;
     v14[4] = self;
-    v15 = v6;
+    v15 = keyCopy;
     v17 = buf;
-    v16 = v7;
+    v16 = blockCopy;
     [(ASCTaskCoordinator *)self withLock:v14];
     v12 = *(*&buf[8] + 40);
 
@@ -348,18 +348,18 @@ void __50__ASCTaskCoordinator_taskForKey_withCreatorBlock___block_invoke_2(uint6
   [WeakRetained taskForKey:*(a1 + 32) didFailWithError:v3];
 }
 
-- (void)removeTaskForKey:(id)a3
+- (void)removeTaskForKey:(id)key
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  keyCopy = key;
   v5 = +[ASCTaskCoordinator log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [(ASCTaskCoordinator *)self name];
+    name = [(ASCTaskCoordinator *)self name];
     *buf = 138543618;
-    v16 = v6;
+    v16 = name;
     v17 = 2112;
-    v18 = v4;
+    v18 = keyCopy;
     _os_log_impl(&dword_21571A000, v5, OS_LOG_TYPE_INFO, "%{public}@: Removing task for key %@", buf, 0x16u);
   }
 
@@ -367,9 +367,9 @@ void __50__ASCTaskCoordinator_taskForKey_withCreatorBlock___block_invoke_2(uint6
   v10 = 3221225472;
   v11 = __39__ASCTaskCoordinator_removeTaskForKey___block_invoke;
   v12 = &unk_2781CC1F8;
-  v13 = self;
-  v14 = v4;
-  v7 = v4;
+  selfCopy = self;
+  v14 = keyCopy;
+  v7 = keyCopy;
   [(ASCTaskCoordinator *)self withLock:&v9];
   v8 = [(ASCTaskCoordinator *)self loadedResults:v9];
   [v8 removeObjectForKey:v7];
@@ -397,14 +397,14 @@ void __39__ASCTaskCoordinator_removeTaskForKey___block_invoke(uint64_t a1)
   v3 = +[ASCTaskCoordinator log];
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
-    v4 = [(ASCTaskCoordinator *)self name];
+    name = [(ASCTaskCoordinator *)self name];
     v6 = 138543362;
-    v7 = v4;
+    v7 = name;
     _os_log_impl(&dword_21571A000, v3, OS_LOG_TYPE_INFO, "%{public}@: Removing all finished tasks", &v6, 0xCu);
   }
 
-  v5 = [(ASCTaskCoordinator *)self loadedResults];
-  [v5 removeAllObjects];
+  loadedResults = [(ASCTaskCoordinator *)self loadedResults];
+  [loadedResults removeAllObjects];
 }
 
 @end

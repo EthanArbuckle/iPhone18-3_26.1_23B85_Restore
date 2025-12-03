@@ -1,23 +1,23 @@
 @interface EGStillImageProcessorControllerSourceNode
-+ (int)enqueueProcessorControllersToGraph:(id)a3 fromResourceCoordinator:(id)a4;
-- (EGStillImageProcessorControllerSourceNode)initWithType:(unint64_t)a3;
-- (int)enqueueProcessorControllerFromResourceCoordinator:(id)a3;
-- (uint64_t)_emitProcessorController:(uint64_t)result forType:(uint64_t)a2;
++ (int)enqueueProcessorControllersToGraph:(id)graph fromResourceCoordinator:(id)coordinator;
+- (EGStillImageProcessorControllerSourceNode)initWithType:(unint64_t)type;
+- (int)enqueueProcessorControllerFromResourceCoordinator:(id)coordinator;
+- (uint64_t)_emitProcessorController:(uint64_t)result forType:(uint64_t)type;
 - (void)dealloc;
 @end
 
 @implementation EGStillImageProcessorControllerSourceNode
 
-- (EGStillImageProcessorControllerSourceNode)initWithType:(unint64_t)a3
+- (EGStillImageProcessorControllerSourceNode)initWithType:(unint64_t)type
 {
-  v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@PCSource", BWStillImageProcessorTypeToShortString(a3)];
+  v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@PCSource", BWStillImageProcessorTypeToShortString(type)];
   v10.receiver = self;
   v10.super_class = EGStillImageProcessorControllerSourceNode;
   v6 = [(EGNode *)&v10 initWithName:v5];
   v7 = v6;
   if (v6)
   {
-    v6->_processorType = a3;
+    v6->_processorType = type;
     v8 = [(EGOutput *)[EGStillImageOutput alloc] initWithName:@"ProcessorController"];
     v7->_processorControllerOutput = v8;
     [(EGNode *)v7 installOutput:v8];
@@ -49,10 +49,10 @@ uint64_t __95__EGStillImageProcessorControllerSourceNode_enqueueProcessorControl
   return result;
 }
 
-- (int)enqueueProcessorControllerFromResourceCoordinator:(id)a3
+- (int)enqueueProcessorControllerFromResourceCoordinator:(id)coordinator
 {
-  v5 = [a3 postponedProcessorTypes];
-  v6 = [v5 containsObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedLongLong:", self->_processorType)}];
+  postponedProcessorTypes = [coordinator postponedProcessorTypes];
+  v6 = [postponedProcessorTypes containsObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedLongLong:", self->_processorType)}];
   processorType = self->_processorType;
   if (v6)
   {
@@ -62,13 +62,13 @@ uint64_t __95__EGStillImageProcessorControllerSourceNode_enqueueProcessorControl
     v10[3] = &unk_1E799B5A8;
     v10[4] = self;
     v11 = 0;
-    [a3 postponedProcessorForType:processorType safelyExecuteBlockWhenReady:v10];
+    [coordinator postponedProcessorForType:processorType safelyExecuteBlockWhenReady:v10];
     return 0;
   }
 
   else
   {
-    v9 = [a3 controllerForType:processorType];
+    v9 = [coordinator controllerForType:processorType];
     if (v9)
     {
 
@@ -82,14 +82,14 @@ uint64_t __95__EGStillImageProcessorControllerSourceNode_enqueueProcessorControl
   }
 }
 
-- (uint64_t)_emitProcessorController:(uint64_t)result forType:(uint64_t)a2
+- (uint64_t)_emitProcessorController:(uint64_t)result forType:(uint64_t)type
 {
   if (result)
   {
-    if (a2)
+    if (type)
     {
       v2 = result;
-      v3 = [[EGStillImageGraphPayload alloc] initWithProcessorController:a2];
+      v3 = [[EGStillImageGraphPayload alloc] initWithProcessorController:type];
       [*(v2 + 80) emitPayload:v3];
 
       return 0;
@@ -104,13 +104,13 @@ uint64_t __95__EGStillImageProcessorControllerSourceNode_enqueueProcessorControl
   return result;
 }
 
-+ (int)enqueueProcessorControllersToGraph:(id)a3 fromResourceCoordinator:(id)a4
++ (int)enqueueProcessorControllersToGraph:(id)graph fromResourceCoordinator:(id)coordinator
 {
   v27 = 0u;
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v7 = [objc_msgSend(a3 "egNodesByName")];
+  v7 = [objc_msgSend(graph "egNodesByName")];
   v8 = [v7 countByEnumeratingWithState:&v25 objects:v24 count:16];
   if (v8)
   {
@@ -129,7 +129,7 @@ LABEL_3:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        LODWORD(v13) = [v12 enqueueProcessorControllerFromResourceCoordinator:a4];
+        LODWORD(v13) = [v12 enqueueProcessorControllerFromResourceCoordinator:coordinator];
         if (v13)
         {
           break;
@@ -156,7 +156,7 @@ LABEL_10:
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v14 = [objc_msgSend(a3 "egSubgraphsByName")];
+    v14 = [objc_msgSend(graph "egSubgraphsByName")];
     v13 = [v14 countByEnumeratingWithState:&v20 objects:v19 count:16];
     if (v13)
     {
@@ -171,7 +171,7 @@ LABEL_12:
           objc_enumerationMutation(v14);
         }
 
-        LODWORD(v13) = [a1 enqueueProcessorControllersToGraph:*(*(&v20 + 1) + 8 * v17) fromResourceCoordinator:a4];
+        LODWORD(v13) = [self enqueueProcessorControllersToGraph:*(*(&v20 + 1) + 8 * v17) fromResourceCoordinator:coordinator];
         if (v13)
         {
           break;

@@ -1,9 +1,9 @@
 @interface CSLPRFAppIconCellHelper
 - (CSLPRFAppIconCellHelper)init;
 - (CSLPRFAppIconCellHelperDelegate)delegate;
-- (id)fetchLazyIconForSpecifier:(id)a3;
-- (void)didCompleteLoadForIdentifier:(id)a3;
-- (void)loadIconForSpecifier:(id)a3 iconIdentifier:(id)a4;
+- (id)fetchLazyIconForSpecifier:(id)specifier;
+- (void)didCompleteLoadForIdentifier:(id)identifier;
+- (void)loadIconForSpecifier:(id)specifier iconIdentifier:(id)identifier;
 @end
 
 @implementation CSLPRFAppIconCellHelper
@@ -15,12 +15,12 @@
   return WeakRetained;
 }
 
-- (void)didCompleteLoadForIdentifier:(id)a3
+- (void)didCompleteLoadForIdentifier:(id)identifier
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_outstandingRequests objectForKey:v4];
-  [(NSMutableDictionary *)self->_outstandingRequests removeObjectForKey:v4];
+  identifierCopy = identifier;
+  v5 = [(NSMutableDictionary *)self->_outstandingRequests objectForKey:identifierCopy];
+  [(NSMutableDictionary *)self->_outstandingRequests removeObjectForKey:identifierCopy];
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
@@ -43,12 +43,12 @@
 
         v12 = *(*(&v17 + 1) + 8 * i);
         v13 = [v12 propertyForKey:{v10, v17}];
-        v14 = [v13 isEqual:v4];
+        v14 = [v13 isEqual:identifierCopy];
 
         if (v14)
         {
-          v15 = [(CSLPRFAppIconCellHelper *)self delegate];
-          [v15 appIconCellHelper:self reloadSpecifier:v12];
+          delegate = [(CSLPRFAppIconCellHelper *)self delegate];
+          [delegate appIconCellHelper:self reloadSpecifier:v12];
         }
       }
 
@@ -61,30 +61,30 @@
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)loadIconForSpecifier:(id)a3 iconIdentifier:(id)a4
+- (void)loadIconForSpecifier:(id)specifier iconIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NSMutableDictionary *)self->_outstandingRequests objectForKey:v7];
+  specifierCopy = specifier;
+  identifierCopy = identifier;
+  v8 = [(NSMutableDictionary *)self->_outstandingRequests objectForKey:identifierCopy];
   if (!v8)
   {
     v8 = [MEMORY[0x277CBEB58] set];
-    [(NSMutableDictionary *)self->_outstandingRequests setObject:v8 forKey:v7];
+    [(NSMutableDictionary *)self->_outstandingRequests setObject:v8 forKey:identifierCopy];
   }
 
-  if (([v8 containsObject:v6] & 1) == 0)
+  if (([v8 containsObject:specifierCopy] & 1) == 0)
   {
     v9 = [v8 count];
-    [v8 addObject:v6];
+    [v8 addObject:specifierCopy];
     if (!v9)
     {
       objc_initWeak(&location, self);
-      v10 = [MEMORY[0x277D759A0] mainScreen];
-      v11 = [v10 traitCollection];
-      [v11 displayScale];
+      mainScreen = [MEMORY[0x277D759A0] mainScreen];
+      traitCollection = [mainScreen traitCollection];
+      [traitCollection displayScale];
       v13 = v12;
 
-      v14 = [MEMORY[0x277D2BD60] sharedInstance];
+      mEMORY[0x277D2BD60] = [MEMORY[0x277D2BD60] sharedInstance];
       if (v13 <= 2.0)
       {
         v15 = 47;
@@ -101,8 +101,8 @@
       v17[2] = __63__CSLPRFAppIconCellHelper_loadIconForSpecifier_iconIdentifier___block_invoke;
       v17[3] = &unk_278744E40;
       objc_copyWeak(&v19, &location);
-      v18 = v7;
-      [v14 getIconForBundleID:v18 iconVariant:v15 queue:v16 block:v17 timeout:60.0];
+      v18 = identifierCopy;
+      [mEMORY[0x277D2BD60] getIconForBundleID:v18 iconVariant:v15 queue:v16 block:v17 timeout:60.0];
 
       objc_destroyWeak(&v19);
       objc_destroyWeak(&location);
@@ -132,23 +132,23 @@ void __63__CSLPRFAppIconCellHelper_loadIconForSpecifier_iconIdentifier___block_i
   }
 }
 
-- (id)fetchLazyIconForSpecifier:(id)a3
+- (id)fetchLazyIconForSpecifier:(id)specifier
 {
-  v4 = a3;
-  v5 = [v4 propertyForKey:*MEMORY[0x277D40020]];
-  v6 = [v5 BOOLValue];
+  specifierCopy = specifier;
+  v5 = [specifierCopy propertyForKey:*MEMORY[0x277D40020]];
+  bOOLValue = [v5 BOOLValue];
 
-  if (v6)
+  if (bOOLValue)
   {
-    v7 = [v4 propertyForKey:*MEMORY[0x277D40008]];
+    v7 = [specifierCopy propertyForKey:*MEMORY[0x277D40008]];
     if (v7)
     {
       v8 = +[CSLPRFIconCache sharedIconCache];
       v9 = [v8 iconForName:v7 fallBackToPersistentStoreIfNecessary:0];
 
-      if (v9 || (-[CSLPRFAppIconCellHelper loadIconForSpecifier:iconIdentifier:](self, "loadIconForSpecifier:iconIdentifier:", v4, v7), +[CSLPRFIconCache sharedIconCache](CSLPRFIconCache, "sharedIconCache"), v10 = objc_claimAutoreleasedReturnValue(), [v10 iconForName:v7 fallBackToPersistentStoreIfNecessary:1], v9 = objc_claimAutoreleasedReturnValue(), v10, v9))
+      if (v9 || (-[CSLPRFAppIconCellHelper loadIconForSpecifier:iconIdentifier:](self, "loadIconForSpecifier:iconIdentifier:", specifierCopy, v7), +[CSLPRFIconCache sharedIconCache](CSLPRFIconCache, "sharedIconCache"), v10 = objc_claimAutoreleasedReturnValue(), [v10 iconForName:v7 fallBackToPersistentStoreIfNecessary:1], v9 = objc_claimAutoreleasedReturnValue(), v10, v9))
       {
-        [v4 setProperty:v9 forKey:*MEMORY[0x277D3FFC0]];
+        [specifierCopy setProperty:v9 forKey:*MEMORY[0x277D3FFC0]];
       }
     }
 
@@ -173,9 +173,9 @@ void __63__CSLPRFAppIconCellHelper_loadIconForSpecifier_iconIdentifier___block_i
   v2 = [(CSLPRFAppIconCellHelper *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     outstandingRequests = v2->_outstandingRequests;
-    v2->_outstandingRequests = v3;
+    v2->_outstandingRequests = dictionary;
   }
 
   return v2;

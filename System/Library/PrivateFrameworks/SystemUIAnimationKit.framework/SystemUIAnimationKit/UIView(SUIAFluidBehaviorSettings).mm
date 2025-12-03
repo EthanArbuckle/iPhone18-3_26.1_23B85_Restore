@@ -31,7 +31,7 @@
     switch(a4)
     {
       case 3:
-        v13 = a1;
+        selfCopy2 = self;
         v14 = v18;
         v15 = 0;
         break;
@@ -42,7 +42,7 @@
 
         goto LABEL_18;
       case 5:
-        v13 = a1;
+        selfCopy2 = self;
         v14 = v18;
         v15 = 1;
         break;
@@ -50,7 +50,7 @@
         goto LABEL_18;
     }
 
-    [v13 suia_animateWithSettings:v14 interactive:v15 animations:v10 completion:v12];
+    [selfCopy2 suia_animateWithSettings:v14 interactive:v15 animations:v10 completion:v12];
     goto LABEL_18;
   }
 
@@ -110,7 +110,7 @@ LABEL_18:
     v9 = 0;
   }
 
-  [a1 suia_replaceInProcessAnimationForKeyPath:v10 settings:v8 interactive:v9];
+  [self suia_replaceInProcessAnimationForKeyPath:v10 settings:v8 interactive:v9];
 LABEL_6:
 }
 
@@ -120,7 +120,7 @@ LABEL_6:
   v8 = a4;
   if ([v8 behaviorType] <= 1 && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [a1 _replaceInProcessAnimationForKey:v9 behavior:v8 interactive:a5];
+    [self _replaceInProcessAnimationForKey:v9 behavior:v8 interactive:a5];
   }
 }
 

@@ -1,28 +1,28 @@
 @interface CKTextReplyPreviewBalloonView
 - (CGSize)_minimumFittingSize;
-- (CGSize)_textSizeThatFits:(CGSize)a3 translationSecondaryTextSize:(CGSize *)a4 textAlignmentInsets:(UIEdgeInsets *)a5 isSingleLine:(BOOL *)a6;
+- (CGSize)_textSizeThatFits:(CGSize)fits translationSecondaryTextSize:(CGSize *)size textAlignmentInsets:(UIEdgeInsets *)insets isSingleLine:(BOOL *)line;
 - (CKBalloonDescriptor_t)balloonDescriptor;
-- (CKTextReplyPreviewBalloonView)initWithFrame:(CGRect)a3;
+- (CKTextReplyPreviewBalloonView)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)balloonTypePillContentInsets;
 - (UIEdgeInsets)targetTextContainerInsets;
 - (id)description;
-- (void)addFilter:(id)a3;
+- (void)addFilter:(id)filter;
 - (void)clearFilters;
-- (void)configureForMessagePart:(id)a3;
+- (void)configureForMessagePart:(id)part;
 - (void)prepareForReuse;
 @end
 
 @implementation CKTextReplyPreviewBalloonView
 
-- (void)configureForMessagePart:(id)a3
+- (void)configureForMessagePart:(id)part
 {
-  v4 = a3;
+  partCopy = part;
   v6.receiver = self;
   v6.super_class = CKTextReplyPreviewBalloonView;
-  [(CKTextBalloonView *)&v6 configureForMessagePart:v4];
-  if (v4)
+  [(CKTextBalloonView *)&v6 configureForMessagePart:partCopy];
+  if (partCopy)
   {
-    [v4 balloonDescriptor];
+    [partCopy balloonDescriptor];
   }
 
   else
@@ -31,7 +31,7 @@
   }
 
   [(CKColoredBalloonView *)self setBalloonDescriptor:v5];
-  -[CKTextReplyPreviewBalloonView setIsFromMe:](self, "setIsFromMe:", [v4 isFromMe]);
+  -[CKTextReplyPreviewBalloonView setIsFromMe:](self, "setIsFromMe:", [partCopy isFromMe]);
 }
 
 - (id)description
@@ -39,35 +39,35 @@
   v3 = MEMORY[0x1E696AEC0];
   v9.receiver = self;
   v9.super_class = CKTextReplyPreviewBalloonView;
-  v4 = [(CKTextBalloonView *)&v9 textView];
+  textView = [(CKTextBalloonView *)&v9 textView];
   v8.receiver = self;
   v8.super_class = CKTextReplyPreviewBalloonView;
   v5 = [(CKTextBalloonView *)&v8 description];
-  v6 = [v3 stringWithFormat:@"[CKTextReplyPreviewBalloonView textView:%@ %@]", v4, v5];
+  v6 = [v3 stringWithFormat:@"[CKTextReplyPreviewBalloonView textView:%@ %@]", textView, v5];
 
   return v6;
 }
 
-- (CKTextReplyPreviewBalloonView)initWithFrame:(CGRect)a3
+- (CKTextReplyPreviewBalloonView)initWithFrame:(CGRect)frame
 {
   v10.receiver = self;
   v10.super_class = CKTextReplyPreviewBalloonView;
-  v3 = [(CKTextBalloonView *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CKTextBalloonView *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(CKTextBalloonView *)v3 textView];
+    textView = [(CKTextBalloonView *)v3 textView];
     [(CKTextReplyPreviewBalloonView *)v4 targetTextContainerInsets];
-    [v5 setTextContainerInset:?];
-    [v5 setSelectable:0];
-    v6 = [v5 textContainer];
+    [textView setTextContainerInset:?];
+    [textView setSelectable:0];
+    textContainer = [textView textContainer];
     v7 = +[CKUIBehavior sharedBehaviors];
-    [v6 setMaximumNumberOfLines:{objc_msgSend(v7, "replyBalloonMaximumNumberOfLines")}];
+    [textContainer setMaximumNumberOfLines:{objc_msgSend(v7, "replyBalloonMaximumNumberOfLines")}];
 
-    [v6 setLineBreakMode:4];
+    [textContainer setLineBreakMode:4];
     [(CKTextReplyPreviewBalloonView *)v4 setIsFromMe:0];
-    v8 = [(CKBalloonView *)v4 doubleTapGestureRecognizer];
-    [v8 setEnabled:0];
+    doubleTapGestureRecognizer = [(CKBalloonView *)v4 doubleTapGestureRecognizer];
+    [doubleTapGestureRecognizer setEnabled:0];
   }
 
   return v4;
@@ -98,18 +98,18 @@
   v4.receiver = self;
   v4.super_class = CKTextReplyPreviewBalloonView;
   [(CKTextBalloonView *)&v4 prepareForReuse];
-  v3 = [(CKTextBalloonView *)self textView];
-  [v3 setHidden:0];
+  textView = [(CKTextBalloonView *)self textView];
+  [textView setHidden:0];
 
   [(CKTextBalloonView *)self setContainsExcessiveLineHeightCharacters:0];
 }
 
-- (CGSize)_textSizeThatFits:(CGSize)a3 translationSecondaryTextSize:(CGSize *)a4 textAlignmentInsets:(UIEdgeInsets *)a5 isSingleLine:(BOOL *)a6
+- (CGSize)_textSizeThatFits:(CGSize)fits translationSecondaryTextSize:(CGSize *)size textAlignmentInsets:(UIEdgeInsets *)insets isSingleLine:(BOOL *)line
 {
-  height = a3.height;
-  width = a3.width;
-  v10 = [(CKTextBalloonView *)self textView];
-  [v10 sizeThatFits:a5 textAlignmentInsets:a6 isSingleLine:{width, height}];
+  height = fits.height;
+  width = fits.width;
+  textView = [(CKTextBalloonView *)self textView];
+  [textView sizeThatFits:insets textAlignmentInsets:line isSingleLine:{width, height}];
   v12 = v11;
   v14 = v13;
 
@@ -124,16 +124,16 @@
 {
   if ([(CKBalloonView *)self hasTail])
   {
-    v3 = [(CKBalloonView *)self balloonTailShape];
+    balloonTailShape = [(CKBalloonView *)self balloonTailShape];
   }
 
   else
   {
-    v3 = 0;
+    balloonTailShape = 0;
   }
 
   v4 = +[CKUIBehavior sharedBehaviors];
-  [v4 skinnyReplyBalloonMaskSizeWithTailShape:v3];
+  [v4 skinnyReplyBalloonMaskSizeWithTailShape:balloonTailShape];
   v6 = v5;
   v8 = v7;
 
@@ -192,14 +192,14 @@
   return result;
 }
 
-- (void)addFilter:(id)a3
+- (void)addFilter:(id)filter
 {
-  v4 = a3;
+  filterCopy = filter;
   [(CKTextReplyPreviewBalloonView *)self setShouldUseFilledBalloonStyle:1];
   [(CKTextBalloonView *)self prepareForDisplay];
   v5.receiver = self;
   v5.super_class = CKTextReplyPreviewBalloonView;
-  [(CKTextBalloonView *)&v5 addFilter:v4];
+  [(CKTextBalloonView *)&v5 addFilter:filterCopy];
 }
 
 - (void)clearFilters

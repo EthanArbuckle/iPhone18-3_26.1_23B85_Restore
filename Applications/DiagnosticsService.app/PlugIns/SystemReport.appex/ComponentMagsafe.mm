@@ -2,7 +2,7 @@
 - (BOOL)isPresent;
 - (id)controllerInfo;
 - (id)dieId;
-- (void)populateAttributes:(id)a3;
+- (void)populateAttributes:(id)attributes;
 @end
 
 @implementation ComponentMagsafe
@@ -12,9 +12,9 @@
   v3 = +[NFAccessoryHardwareManager sharedHardwareManager];
   [(ComponentMagsafe *)self setHwManager:v3];
 
-  v4 = [(ComponentMagsafe *)self hwManager];
+  hwManager = [(ComponentMagsafe *)self hwManager];
 
-  if (!v4)
+  if (!hwManager)
   {
     v7 = DiagnosticLogHandleForCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -26,9 +26,9 @@
     goto LABEL_12;
   }
 
-  v5 = [(ComponentMagsafe *)self hwManager];
+  hwManager2 = [(ComponentMagsafe *)self hwManager];
   v15 = 0;
-  v6 = [v5 getHwSupport:1 error:&v15];
+  v6 = [hwManager2 getHwSupport:1 error:&v15];
   v7 = v15;
 
   if (v6 != 2 || v7)
@@ -55,9 +55,9 @@ LABEL_15:
     goto LABEL_11;
   }
 
-  v8 = [(ComponentMagsafe *)self dieId];
+  dieId = [(ComponentMagsafe *)self dieId];
 
-  if (!v8)
+  if (!dieId)
   {
     v10 = DiagnosticLogHandleForCategory();
     if (!os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -79,21 +79,21 @@ LABEL_13:
   return v9;
 }
 
-- (void)populateAttributes:(id)a3
+- (void)populateAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = [(ComponentMagsafe *)self dieId];
-  [v4 setObject:v5 forKeyedSubscript:@"dieId"];
+  attributesCopy = attributes;
+  dieId = [(ComponentMagsafe *)self dieId];
+  [attributesCopy setObject:dieId forKeyedSubscript:@"dieId"];
 
-  v6 = [(ComponentMagsafe *)self controllerInfo];
-  [v4 setObject:v6 forKeyedSubscript:@"controllerInfo"];
+  controllerInfo = [(ComponentMagsafe *)self controllerInfo];
+  [attributesCopy setObject:controllerInfo forKeyedSubscript:@"controllerInfo"];
 }
 
 - (id)dieId
 {
-  v2 = [(ComponentMagsafe *)self hwManager];
+  hwManager = [(ComponentMagsafe *)self hwManager];
   v8 = 0;
-  v3 = [v2 getDieId:&v8];
+  v3 = [hwManager getDieId:&v8];
   v4 = v8;
 
   if (!v3 || v4)
@@ -120,12 +120,12 @@ LABEL_13:
 - (id)controllerInfo
 {
   v3 = objc_alloc_init(NSMutableDictionary);
-  v4 = [(ComponentMagsafe *)self hwManager];
-  v5 = [v4 getInfo];
+  hwManager = [(ComponentMagsafe *)self hwManager];
+  getInfo = [hwManager getInfo];
 
-  if (v5)
+  if (getInfo)
   {
-    v6 = [v5 objectForKeyedSubscript:@"Controller"];
+    v6 = [getInfo objectForKeyedSubscript:@"Controller"];
     if (v6)
     {
       v7 = v6;

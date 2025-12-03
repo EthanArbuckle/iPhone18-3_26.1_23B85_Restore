@@ -1,24 +1,24 @@
 @interface ICBulkLyricsInfoRequest
-- (id)_bodyDataForItemIDs:(id)a3 useLongIDs:(BOOL)a4;
-- (id)canonicalResponseForResponse:(id)a3;
+- (id)_bodyDataForItemIDs:(id)ds useLongIDs:(BOOL)iDs;
+- (id)canonicalResponseForResponse:(id)response;
 @end
 
 @implementation ICBulkLyricsInfoRequest
 
-- (id)_bodyDataForItemIDs:(id)a3 useLongIDs:(BOOL)a4
+- (id)_bodyDataForItemIDs:(id)ds useLongIDs:(BOOL)iDs
 {
-  v7 = a3;
-  v4 = v7;
+  dsCopy = ds;
+  v4 = dsCopy;
   v5 = ICDAAPUtilitiesCreateDataForItemKindContainer();
 
   return v5;
 }
 
-- (id)canonicalResponseForResponse:(id)a3
+- (id)canonicalResponseForResponse:(id)response
 {
-  v3 = [(ICDResponse *)ICBulkLyricsInfoResponse responseWithResponse:a3];
-  v4 = [v3 responseData];
-  v5 = [ICDResponseDataParser parseResponseData:v4];
+  v3 = [(ICDResponse *)ICBulkLyricsInfoResponse responseWithResponse:response];
+  responseData = [v3 responseData];
+  v5 = [ICDResponseDataParser parseResponseData:responseData];
 
   [v3 setLyricsInfoDictionaries:v5];
 

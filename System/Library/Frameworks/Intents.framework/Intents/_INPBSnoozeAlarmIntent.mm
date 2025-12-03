@@ -1,12 +1,12 @@
 @interface _INPBSnoozeAlarmIntent
-- (BOOL)isEqual:(id)a3;
-- (_INPBSnoozeAlarmIntent)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBSnoozeAlarmIntent)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (void)addAlarms:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setAlarms:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addAlarms:(id)alarms;
+- (void)encodeWithCoder:(id)coder;
+- (void)setAlarms:(id)alarms;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBSnoozeAlarmIntent
@@ -14,10 +14,10 @@
 - (id)dictionaryRepresentation
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_alarms count])
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
@@ -37,8 +37,8 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
-          [v4 addObject:v10];
+          dictionaryRepresentation = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
+          [array addObject:dictionaryRepresentation];
         }
 
         v7 = [(NSArray *)v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -47,40 +47,40 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKeyedSubscript:@"alarms"];
+    [dictionary setObject:array forKeyedSubscript:@"alarms"];
   }
 
-  v11 = [(_INPBSnoozeAlarmIntent *)self intentMetadata];
-  v12 = [v11 dictionaryRepresentation];
-  [v3 setObject:v12 forKeyedSubscript:@"intentMetadata"];
+  intentMetadata = [(_INPBSnoozeAlarmIntent *)self intentMetadata];
+  dictionaryRepresentation2 = [intentMetadata dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"intentMetadata"];
 
   v13 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(_INPBSnoozeAlarmIntent *)self alarms];
-  v6 = [v4 alarms];
-  if ((v5 != 0) == (v6 == 0))
+  alarms = [(_INPBSnoozeAlarmIntent *)self alarms];
+  alarms2 = [equalCopy alarms];
+  if ((alarms != 0) == (alarms2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(_INPBSnoozeAlarmIntent *)self alarms];
-  if (v7)
+  alarms3 = [(_INPBSnoozeAlarmIntent *)self alarms];
+  if (alarms3)
   {
-    v8 = v7;
-    v9 = [(_INPBSnoozeAlarmIntent *)self alarms];
-    v10 = [v4 alarms];
-    v11 = [v9 isEqual:v10];
+    v8 = alarms3;
+    alarms4 = [(_INPBSnoozeAlarmIntent *)self alarms];
+    alarms5 = [equalCopy alarms];
+    v11 = [alarms4 isEqual:alarms5];
 
     if (!v11)
     {
@@ -92,12 +92,12 @@
   {
   }
 
-  v5 = [(_INPBSnoozeAlarmIntent *)self intentMetadata];
-  v6 = [v4 intentMetadata];
-  if ((v5 != 0) != (v6 == 0))
+  alarms = [(_INPBSnoozeAlarmIntent *)self intentMetadata];
+  alarms2 = [equalCopy intentMetadata];
+  if ((alarms != 0) != (alarms2 == 0))
   {
-    v12 = [(_INPBSnoozeAlarmIntent *)self intentMetadata];
-    if (!v12)
+    intentMetadata = [(_INPBSnoozeAlarmIntent *)self intentMetadata];
+    if (!intentMetadata)
     {
 
 LABEL_15:
@@ -105,10 +105,10 @@ LABEL_15:
       goto LABEL_13;
     }
 
-    v13 = v12;
-    v14 = [(_INPBSnoozeAlarmIntent *)self intentMetadata];
-    v15 = [v4 intentMetadata];
-    v16 = [v14 isEqual:v15];
+    v13 = intentMetadata;
+    intentMetadata2 = [(_INPBSnoozeAlarmIntent *)self intentMetadata];
+    intentMetadata3 = [equalCopy intentMetadata];
+    v16 = [intentMetadata2 isEqual:intentMetadata3];
 
     if (v16)
     {
@@ -128,46 +128,46 @@ LABEL_13:
   return v17;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBSnoozeAlarmIntent allocWithZone:](_INPBSnoozeAlarmIntent init];
-  v6 = [(NSArray *)self->_alarms copyWithZone:a3];
+  v6 = [(NSArray *)self->_alarms copyWithZone:zone];
   [(_INPBSnoozeAlarmIntent *)v5 setAlarms:v6];
 
-  v7 = [(_INPBIntentMetadata *)self->_intentMetadata copyWithZone:a3];
+  v7 = [(_INPBIntentMetadata *)self->_intentMetadata copyWithZone:zone];
   [(_INPBSnoozeAlarmIntent *)v5 setIntentMetadata:v7];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBSnoozeAlarmIntent *)self data];
+  coderCopy = coder;
+  data = [(_INPBSnoozeAlarmIntent *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBSnoozeAlarmIntent)initWithCoder:(id)a3
+- (_INPBSnoozeAlarmIntent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBSnoozeAlarmIntent *)self initWithData:v6];
+    self = [(_INPBSnoozeAlarmIntent *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -200,38 +200,38 @@ LABEL_13:
     while (v7);
   }
 
-  v11 = [(_INPBSnoozeAlarmIntent *)self intentMetadata];
+  intentMetadata = [(_INPBSnoozeAlarmIntent *)self intentMetadata];
 
-  if (v11)
+  if (intentMetadata)
   {
-    v12 = [(_INPBSnoozeAlarmIntent *)self intentMetadata];
+    intentMetadata2 = [(_INPBSnoozeAlarmIntent *)self intentMetadata];
     PBDataWriterWriteSubmessage();
   }
 
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addAlarms:(id)a3
+- (void)addAlarms:(id)alarms
 {
-  v4 = a3;
+  alarmsCopy = alarms;
   alarms = self->_alarms;
-  v8 = v4;
+  v8 = alarmsCopy;
   if (!alarms)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_alarms;
-    self->_alarms = v6;
+    self->_alarms = array;
 
-    v4 = v8;
+    alarmsCopy = v8;
     alarms = self->_alarms;
   }
 
-  [(NSArray *)alarms addObject:v4];
+  [(NSArray *)alarms addObject:alarmsCopy];
 }
 
-- (void)setAlarms:(id)a3
+- (void)setAlarms:(id)alarms
 {
-  v4 = [a3 mutableCopy];
+  v4 = [alarms mutableCopy];
   alarms = self->_alarms;
   self->_alarms = v4;
 

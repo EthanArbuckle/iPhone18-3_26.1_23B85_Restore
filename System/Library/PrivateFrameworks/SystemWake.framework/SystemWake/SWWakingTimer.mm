@@ -1,41 +1,41 @@
 @interface SWWakingTimer
 - (BOOL)isScheduled;
 - (NSString)description;
-- (SWWakingTimer)initWithIdentifier:(id)a3;
-- (SWWakingTimer)initWithIdentifier:(id)a3 sleepMonitor:(id)a4 sleepAssertionProvider:(id)a5;
+- (SWWakingTimer)initWithIdentifier:(id)identifier;
+- (SWWakingTimer)initWithIdentifier:(id)identifier sleepMonitor:(id)monitor sleepAssertionProvider:(id)provider;
 - (double)timeRemaining;
 - (uint64_t)_updateScheduledWakeAndCheckCanSleep;
 - (void)_lock_cancel;
-- (void)_lock_setPreventSleepAssertion:(uint64_t)a1;
-- (void)_setPreventSleepAssertion:(uint64_t)a1;
-- (void)_timerFired:(uint64_t)a1;
+- (void)_lock_setPreventSleepAssertion:(uint64_t)assertion;
+- (void)_setPreventSleepAssertion:(uint64_t)assertion;
+- (void)_timerFired:(uint64_t)fired;
 - (void)_updateScheduledWakeAndAcquireSystemActivityAssertionIfNeeded;
 - (void)cancel;
 - (void)dealloc;
 - (void)invalidate;
-- (void)scheduleForDate:(id)a3 leewayInterval:(double)a4 queue:(id)a5 handler:(id)a6;
-- (void)scheduleWithFireInterval:(double)a3 leewayInterval:(double)a4 queue:(id)a5 handler:(id)a6;
-- (void)systemSleepMonitor:(id)a3 prepareForSleepWithCompletion:(id)a4;
-- (void)systemSleepMonitor:(id)a3 sleepRequestedWithResult:(id)a4;
+- (void)scheduleForDate:(id)date leewayInterval:(double)interval queue:(id)queue handler:(id)handler;
+- (void)scheduleWithFireInterval:(double)interval leewayInterval:(double)leewayInterval queue:(id)queue handler:(id)handler;
+- (void)systemSleepMonitor:(id)monitor prepareForSleepWithCompletion:(id)completion;
+- (void)systemSleepMonitor:(id)monitor sleepRequestedWithResult:(id)result;
 @end
 
 @implementation SWWakingTimer
 
-- (SWWakingTimer)initWithIdentifier:(id)a3
+- (SWWakingTimer)initWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = +[SWSystemSleepMonitor monitorUsingMainQueue];
   v6 = +[SWSystemSleepAssertionProvider sharedProvider];
-  v7 = [(SWWakingTimer *)self initWithIdentifier:v4 sleepMonitor:v5 sleepAssertionProvider:v6];
+  v7 = [(SWWakingTimer *)self initWithIdentifier:identifierCopy sleepMonitor:v5 sleepAssertionProvider:v6];
 
   return v7;
 }
 
-- (SWWakingTimer)initWithIdentifier:(id)a3 sleepMonitor:(id)a4 sleepAssertionProvider:(id)a5
+- (SWWakingTimer)initWithIdentifier:(id)identifier sleepMonitor:(id)monitor sleepAssertionProvider:(id)provider
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  identifierCopy = identifier;
+  monitorCopy = monitor;
+  providerCopy = provider;
   v17.receiver = self;
   v17.super_class = SWWakingTimer;
   v12 = [(SWWakingTimer *)&v17 init];
@@ -43,14 +43,14 @@
   if (v12)
   {
     v12->_lock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v12->_identifier, a3);
-    objc_storeStrong(&v13->_sleepMonitor, a4);
-    objc_storeStrong(&v13->_sleepAssertionProvider, a5);
-    v14 = [[SWScheduledSystemWake alloc] initWithIdentifier:v9];
+    objc_storeStrong(&v12->_identifier, identifier);
+    objc_storeStrong(&v13->_sleepMonitor, monitor);
+    objc_storeStrong(&v13->_sleepAssertionProvider, provider);
+    v14 = [[SWScheduledSystemWake alloc] initWithIdentifier:identifierCopy];
     scheduledWake = v13->_scheduledWake;
     v13->_scheduledWake = v14;
 
-    [v10 addObserver:v13];
+    [monitorCopy addObserver:v13];
   }
 
   return v13;
@@ -63,9 +63,9 @@
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134218242;
-    v13 = self;
+    selfCopy = self;
     v14 = 2114;
-    v15 = self;
+    selfCopy2 = self;
     _os_log_debug_impl(&dword_26C657000, v4, OS_LOG_TYPE_DEBUG, "%p dealloc %{public}@", buf, 0x16u);
   }
 
@@ -78,11 +78,11 @@
       v8 = objc_opt_class();
       v9 = NSStringFromClass(v8);
       *buf = 138544642;
-      v13 = v7;
+      selfCopy = v7;
       v14 = 2114;
-      v15 = v9;
+      selfCopy2 = v9;
       v16 = 2048;
-      v17 = self;
+      selfCopy3 = self;
       v18 = 2114;
       v19 = @"SWWakingTimer.m";
       v20 = 1024;
@@ -111,16 +111,16 @@
   lock_timer = self->_lock_timer;
   if (lock_timer)
   {
-    v4 = [(BSTimerScheduleQuerying *)lock_timer isScheduled];
+    isScheduled = [(BSTimerScheduleQuerying *)lock_timer isScheduled];
   }
 
   else
   {
-    v4 = 0;
+    isScheduled = 0;
   }
 
   os_unfair_lock_unlock(&self->_lock);
-  return v4;
+  return isScheduled;
 }
 
 - (double)timeRemaining
@@ -148,17 +148,17 @@
   [v3 appendString:self->_identifier withName:@"identifier"];
   v4 = [v3 appendObject:self->_lock_timer withName:@"timer"];
   v5 = [v3 appendBool:self->_lock_invalidated withName:@"isInvalidated"];
-  v6 = [v3 build];
+  build = [v3 build];
 
-  return v6;
+  return build;
 }
 
-- (void)scheduleWithFireInterval:(double)a3 leewayInterval:(double)a4 queue:(id)a5 handler:(id)a6
+- (void)scheduleWithFireInterval:(double)interval leewayInterval:(double)leewayInterval queue:(id)queue handler:(id)handler
 {
   v46 = *MEMORY[0x277D85DE8];
-  v11 = a5;
-  v12 = a6;
-  if (!v12)
+  queueCopy = queue;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"Invalid condition not satisfying: %@", @"handler != nil"];
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
@@ -169,9 +169,9 @@
       *location = 138544642;
       *&location[4] = v19;
       v36 = 2114;
-      v37 = v21;
+      selfCopy4 = v21;
       v38 = 2048;
-      v39 = self;
+      selfCopy3 = self;
       v40 = 2114;
       v41 = @"SWWakingTimer.m";
       v42 = 1024;
@@ -190,7 +190,7 @@
 
   if ((BSFloatGreaterThanOrEqualToFloat() & 1) == 0)
   {
-    v23 = [MEMORY[0x277CCACA8] stringWithFormat:@"leeway cannot be negative: %f", *&a4];
+    v23 = [MEMORY[0x277CCACA8] stringWithFormat:@"leeway cannot be negative: %f", *&leewayInterval];
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
       v24 = NSStringFromSelector(a2);
@@ -199,9 +199,9 @@
       *location = 138544642;
       *&location[4] = v24;
       v36 = 2114;
-      v37 = v26;
+      selfCopy4 = v26;
       v38 = 2048;
-      v39 = self;
+      selfCopy3 = self;
       v40 = 2114;
       v41 = @"SWWakingTimer.m";
       v42 = 1024;
@@ -231,9 +231,9 @@
       *location = 138544642;
       *&location[4] = v29;
       v36 = 2114;
-      v37 = v31;
+      selfCopy4 = v31;
       v38 = 2048;
-      v39 = self;
+      selfCopy3 = self;
       v40 = 2114;
       v41 = @"SWWakingTimer.m";
       v42 = 1024;
@@ -252,8 +252,8 @@
 
   [(BSTimerScheduleQuerying *)self->_lock_timer invalidate];
   objc_storeStrong(&self->_lock_timer, v13);
-  self->_lock_leeway = a4;
-  v14 = MEMORY[0x26D6A63C0](v12);
+  self->_lock_leeway = leewayInterval;
+  v14 = MEMORY[0x26D6A63C0](handlerCopy);
   lock_handler = self->_lock_handler;
   self->_lock_handler = v14;
 
@@ -265,7 +265,7 @@
     *location = 134218242;
     *&location[4] = self;
     v36 = 2114;
-    v37 = self;
+    selfCopy4 = self;
     _os_log_debug_impl(&dword_26C657000, v16, OS_LOG_TYPE_DEBUG, "%p scheduling %{public}@", location, 0x16u);
   }
 
@@ -275,7 +275,7 @@
   v33[2] = __71__SWWakingTimer_scheduleWithFireInterval_leewayInterval_queue_handler___block_invoke;
   v33[3] = &unk_279D433A0;
   objc_copyWeak(&v34, location);
-  [v13 scheduleWithFireInterval:v11 leewayInterval:v33 queue:a3 handler:a4];
+  [v13 scheduleWithFireInterval:queueCopy leewayInterval:v33 queue:interval handler:leewayInterval];
   if ([(SWSystemSleepMonitor *)self->_sleepMonitor hasSleepBeenRequested])
   {
     [(SWWakingTimer *)self _updateScheduledWakeAndCheckCanSleep];
@@ -287,16 +287,16 @@
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_lock_setPreventSleepAssertion:(uint64_t)a1
+- (void)_lock_setPreventSleepAssertion:(uint64_t)assertion
 {
   v3 = a2;
-  if (a1)
+  if (assertion)
   {
-    v4 = *(a1 + 40);
+    v4 = *(assertion + 40);
     v8 = v3;
     v5 = v3;
-    v6 = *(a1 + 40);
-    *(a1 + 40) = v5;
+    v6 = *(assertion + 40);
+    *(assertion + 40) = v5;
     v7 = v4;
 
     [v7 invalidate];
@@ -311,14 +311,14 @@ void __71__SWWakingTimer_scheduleWithFireInterval_leewayInterval_queue_handler__
   [(SWWakingTimer *)WeakRetained _timerFired:v3];
 }
 
-- (void)_timerFired:(uint64_t)a1
+- (void)_timerFired:(uint64_t)fired
 {
   v13 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (fired)
   {
     v3 = a2;
-    os_unfair_lock_lock((a1 + 48));
-    v4 = *(a1 + 56);
+    os_unfair_lock_lock((fired + 48));
+    v4 = *(fired + 56);
 
     v5 = SWLogTimer();
     v6 = os_log_type_enabled(v5, OS_LOG_TYPE_INFO);
@@ -327,18 +327,18 @@ void __71__SWWakingTimer_scheduleWithFireInterval_leewayInterval_queue_handler__
       if (v6)
       {
         v9 = 134218242;
-        v10 = a1;
+        firedCopy3 = fired;
         v11 = 2114;
-        v12 = a1;
+        firedCopy4 = fired;
         _os_log_impl(&dword_26C657000, v5, OS_LOG_TYPE_INFO, "%p timer fired:%{public}@", &v9, 0x16u);
       }
 
-      v7 = MEMORY[0x26D6A63C0](*(a1 + 64));
-      os_unfair_lock_unlock((a1 + 48));
+      v7 = MEMORY[0x26D6A63C0](*(fired + 64));
+      os_unfair_lock_unlock((fired + 48));
       if (v7)
       {
-        v7[2](v7, a1);
-        [(SWWakingTimer *)a1 _setPreventSleepAssertion:?];
+        v7[2](v7, fired);
+        [(SWWakingTimer *)fired _setPreventSleepAssertion:?];
       }
     }
 
@@ -347,13 +347,13 @@ void __71__SWWakingTimer_scheduleWithFireInterval_leewayInterval_queue_handler__
       if (v6)
       {
         v9 = 134218242;
-        v10 = a1;
+        firedCopy3 = fired;
         v11 = 2114;
-        v12 = a1;
+        firedCopy4 = fired;
         _os_log_impl(&dword_26C657000, v5, OS_LOG_TYPE_INFO, "%p obsolete timer fired:%{public}@", &v9, 0x16u);
       }
 
-      os_unfair_lock_unlock((a1 + 48));
+      os_unfair_lock_unlock((fired + 48));
       v7 = 0;
     }
   }
@@ -364,17 +364,17 @@ void __71__SWWakingTimer_scheduleWithFireInterval_leewayInterval_queue_handler__
 - (uint64_t)_updateScheduledWakeAndCheckCanSleep
 {
   v24 = *MEMORY[0x277D85DE8];
-  if (!a1)
+  if (!self)
   {
     v14 = 0;
     goto LABEL_25;
   }
 
-  os_unfair_lock_lock((a1 + 48));
-  [*(a1 + 56) timeRemaining];
-  if (!*(a1 + 56))
+  os_unfair_lock_lock((self + 48));
+  [*(self + 56) timeRemaining];
+  if (!*(self + 56))
   {
-    if (![*(a1 + 16) isScheduled])
+    if (![*(self + 16) isScheduled])
     {
       goto LABEL_23;
     }
@@ -384,15 +384,15 @@ void __71__SWWakingTimer_scheduleWithFireInterval_leewayInterval_queue_handler__
     {
 LABEL_22:
 
-      [*(a1 + 16) cancelWake];
+      [*(self + 16) cancelWake];
       goto LABEL_23;
     }
 
 LABEL_29:
     v18 = 134218242;
-    v19 = a1;
+    selfCopy5 = self;
     v20 = 2114;
-    v21 = a1;
+    selfCopy6 = self;
     _os_log_debug_impl(&dword_26C657000, v3, OS_LOG_TYPE_DEBUG, "%p unscheduled, cancelling wake %{public}@", &v18, 0x16u);
     goto LABEL_22;
   }
@@ -400,10 +400,10 @@ LABEL_29:
   v4 = v2;
   v5 = v2 + CFAbsoluteTimeGetCurrent();
   v6 = fabs(v5);
-  v7 = [*(a1 + 16) isScheduled];
+  isScheduled = [*(self + 16) isScheduled];
   if (v6 == INFINITY)
   {
-    if (!v7)
+    if (!isScheduled)
     {
       goto LABEL_23;
     }
@@ -417,9 +417,9 @@ LABEL_29:
     goto LABEL_29;
   }
 
-  if (!v7 || ([*(a1 + 16) wakeTime], vabdd_f64(v5, v8) >= 0.25))
+  if (!isScheduled || ([*(self + 16) wakeTime], vabdd_f64(v5, v8) >= 0.25))
   {
-    v9 = *(a1 + 72);
+    v9 = *(self + 72);
     if (v9 <= 1)
     {
       v10 = 1;
@@ -430,12 +430,12 @@ LABEL_29:
       v10 = v9;
     }
 
-    [*(a1 + 16) scheduleWake:v10 leeway:v5];
+    [*(self + 16) scheduleWake:v10 leeway:v5];
   }
 
   if (v4 <= 0.5)
   {
-    v11 = *(a1 + 72);
+    v11 = *(self + 72);
     v12 = SWLogTimer();
     v13 = v12;
     if (v11 >= 0.0 && v11 < 10.0)
@@ -443,9 +443,9 @@ LABEL_29:
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
         v18 = 134218242;
-        v19 = a1;
+        selfCopy5 = self;
         v20 = 2114;
-        v21 = a1;
+        selfCopy6 = self;
         _os_log_impl(&dword_26C657000, v13, OS_LOG_TYPE_DEFAULT, "%p preventing sleep for:%{public}@", &v18, 0x16u);
       }
 
@@ -455,11 +455,11 @@ LABEL_29:
 
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
-      v17 = *(a1 + 72);
+      v17 = *(self + 72);
       v18 = 134218498;
-      v19 = a1;
+      selfCopy5 = self;
       v20 = 2114;
-      v21 = a1;
+      selfCopy6 = self;
       v22 = 2048;
       v23 = v17;
       _os_log_impl(&dword_26C657000, v13, OS_LOG_TYPE_INFO, "%p not preventing sleep with fire imminent for %{public}@ because leeway is too large: %fs", &v18, 0x20u);
@@ -469,19 +469,19 @@ LABEL_29:
 LABEL_23:
   v14 = 1;
 LABEL_24:
-  os_unfair_lock_unlock((a1 + 48));
+  os_unfair_lock_unlock((self + 48));
 LABEL_25:
   v15 = *MEMORY[0x277D85DE8];
   return v14;
 }
 
-- (void)scheduleForDate:(id)a3 leewayInterval:(double)a4 queue:(id)a5 handler:(id)a6
+- (void)scheduleForDate:(id)date leewayInterval:(double)interval queue:(id)queue handler:(id)handler
 {
   v42 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  if (!v13)
+  dateCopy = date;
+  queueCopy = queue;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"Invalid condition not satisfying: %@", @"handler != nil"];
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
@@ -492,9 +492,9 @@ LABEL_25:
       *location = 138544642;
       *&location[4] = v20;
       v32 = 2114;
-      v33 = v22;
+      selfCopy3 = v22;
       v34 = 2048;
-      v35 = self;
+      selfCopy2 = self;
       v36 = 2114;
       v37 = @"SWWakingTimer.m";
       v38 = 1024;
@@ -524,9 +524,9 @@ LABEL_25:
       *location = 138544642;
       *&location[4] = v25;
       v32 = 2114;
-      v33 = v27;
+      selfCopy3 = v27;
       v34 = 2048;
-      v35 = self;
+      selfCopy2 = self;
       v36 = 2114;
       v37 = @"SWWakingTimer.m";
       v38 = 1024;
@@ -545,7 +545,7 @@ LABEL_25:
 
   [(BSTimerScheduleQuerying *)self->_lock_timer invalidate];
   objc_storeStrong(&self->_lock_timer, v14);
-  v15 = MEMORY[0x26D6A63C0](v13);
+  v15 = MEMORY[0x26D6A63C0](handlerCopy);
   lock_handler = self->_lock_handler;
   self->_lock_handler = v15;
 
@@ -557,7 +557,7 @@ LABEL_25:
     *location = 134218242;
     *&location[4] = self;
     v32 = 2114;
-    v33 = self;
+    selfCopy3 = self;
     _os_log_debug_impl(&dword_26C657000, v17, OS_LOG_TYPE_DEBUG, "%p scheduling %{public}@", location, 0x16u);
   }
 
@@ -567,7 +567,7 @@ LABEL_25:
   v29[2] = __62__SWWakingTimer_scheduleForDate_leewayInterval_queue_handler___block_invoke;
   v29[3] = &unk_279D433C8;
   objc_copyWeak(&v30, location);
-  [v14 scheduleForDate:v11 leewayInterval:v12 queue:v29 handler:a4];
+  [v14 scheduleForDate:dateCopy leewayInterval:queueCopy queue:v29 handler:interval];
   if ([(SWSystemSleepMonitor *)self->_sleepMonitor isSleepImminent])
   {
     [(SWWakingTimer *)self _updateScheduledWakeAndAcquireSystemActivityAssertionIfNeeded];
@@ -588,10 +588,10 @@ void __62__SWWakingTimer_scheduleForDate_leewayInterval_queue_handler___block_in
 
 - (void)_updateScheduledWakeAndAcquireSystemActivityAssertionIfNeeded
 {
-  if (a1 && ([(SWWakingTimer *)a1 _updateScheduledWakeAndCheckCanSleep]& 1) == 0)
+  if (self && ([(SWWakingTimer *)self _updateScheduledWakeAndCheckCanSleep]& 1) == 0)
   {
-    v2 = [*(a1 + 32) acquireSystemActivityAssertionWithIdentifier:*(a1 + 8)];
-    [(SWWakingTimer *)a1 _setPreventSleepAssertion:v2];
+    v2 = [*(self + 32) acquireSystemActivityAssertionWithIdentifier:*(self + 8)];
+    [(SWWakingTimer *)self _setPreventSleepAssertion:v2];
   }
 }
 
@@ -606,27 +606,27 @@ void __62__SWWakingTimer_scheduleForDate_leewayInterval_queue_handler___block_in
 - (void)_lock_cancel
 {
   v10 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 56);
+    v2 = *(self + 56);
     if (v2 && [v2 isScheduled])
     {
       v3 = SWLogTimer();
       if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
       {
         v6 = 134218242;
-        v7 = a1;
+        selfCopy = self;
         v8 = 2114;
-        v9 = a1;
+        selfCopy2 = self;
         _os_log_debug_impl(&dword_26C657000, v3, OS_LOG_TYPE_DEBUG, "%p canceling %{public}@", &v6, 0x16u);
       }
     }
 
-    [*(a1 + 56) invalidate];
-    v4 = *(a1 + 56);
-    *(a1 + 56) = 0;
+    [*(self + 56) invalidate];
+    v4 = *(self + 56);
+    *(self + 56) = 0;
 
-    [(SWWakingTimer *)a1 _lock_setPreventSleepAssertion:?];
+    [(SWWakingTimer *)self _lock_setPreventSleepAssertion:?];
   }
 
   v5 = *MEMORY[0x277D85DE8];
@@ -645,29 +645,29 @@ void __62__SWWakingTimer_scheduleForDate_leewayInterval_queue_handler___block_in
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)systemSleepMonitor:(id)a3 sleepRequestedWithResult:(id)a4
+- (void)systemSleepMonitor:(id)monitor sleepRequestedWithResult:(id)result
 {
-  v7 = a4;
-  v5 = [(SWWakingTimer *)self _updateScheduledWakeAndCheckCanSleep];
-  v6 = v7[2](v7, v5, self->_identifier);
+  resultCopy = result;
+  _updateScheduledWakeAndCheckCanSleep = [(SWWakingTimer *)self _updateScheduledWakeAndCheckCanSleep];
+  v6 = resultCopy[2](resultCopy, _updateScheduledWakeAndCheckCanSleep, self->_identifier);
   [(SWWakingTimer *)self _setPreventSleepAssertion:v6];
 }
 
-- (void)_setPreventSleepAssertion:(uint64_t)a1
+- (void)_setPreventSleepAssertion:(uint64_t)assertion
 {
   v10 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  if (a1)
+  if (assertion)
   {
-    os_unfair_lock_lock((a1 + 48));
-    if (*(a1 + 80))
+    os_unfair_lock_lock((assertion + 48));
+    if (*(assertion + 80))
     {
-      os_unfair_lock_unlock((a1 + 48));
+      os_unfair_lock_unlock((assertion + 48));
       v4 = SWLogTimer();
       if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
       {
         v6 = 134218242;
-        v7 = a1;
+        assertionCopy = assertion;
         v8 = 2114;
         v9 = v3;
         _os_log_impl(&dword_26C657000, v4, OS_LOG_TYPE_DEFAULT, "%p timer invalidated while taking power assertion, will invalidate it immediately %{public}@", &v6, 0x16u);
@@ -678,19 +678,19 @@ void __62__SWWakingTimer_scheduleForDate_leewayInterval_queue_handler___block_in
 
     else
     {
-      [(SWWakingTimer *)a1 _lock_setPreventSleepAssertion:v3];
-      os_unfair_lock_unlock((a1 + 48));
+      [(SWWakingTimer *)assertion _lock_setPreventSleepAssertion:v3];
+      os_unfair_lock_unlock((assertion + 48));
     }
   }
 
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)systemSleepMonitor:(id)a3 prepareForSleepWithCompletion:(id)a4
+- (void)systemSleepMonitor:(id)monitor prepareForSleepWithCompletion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   [(SWWakingTimer *)self _updateScheduledWakeAndAcquireSystemActivityAssertionIfNeeded];
-  v5[2]();
+  completionCopy[2]();
 }
 
 @end

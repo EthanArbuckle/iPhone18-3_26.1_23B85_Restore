@@ -1,61 +1,61 @@
 @interface WFWallpaperConfiguration
 - (NSURL)assetURL;
-- (WFWallpaperConfiguration)initWithAssetURL:(id)a3 localIdentifier:(id)a4 location:(int64_t)a5 legibilityBlur:(id)a6 smartCrop:(id)a7 usePreview:(id)a8;
-- (WFWallpaperConfiguration)initWithCoder:(id)a3;
-- (WFWallpaperConfiguration)initWithUserInfo:(id)a3;
+- (WFWallpaperConfiguration)initWithAssetURL:(id)l localIdentifier:(id)identifier location:(int64_t)location legibilityBlur:(id)blur smartCrop:(id)crop usePreview:(id)preview;
+- (WFWallpaperConfiguration)initWithCoder:(id)coder;
+- (WFWallpaperConfiguration)initWithUserInfo:(id)info;
 - (id)description;
 - (id)userInfoRepresentation;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFWallpaperConfiguration
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(WFWallpaperConfiguration *)self assetURLWrapper];
-  [v4 encodeObject:v5 forKey:@"assetURLWrapper"];
+  coderCopy = coder;
+  assetURLWrapper = [(WFWallpaperConfiguration *)self assetURLWrapper];
+  [coderCopy encodeObject:assetURLWrapper forKey:@"assetURLWrapper"];
 
-  v6 = [(WFWallpaperConfiguration *)self assetIdentifier];
-  [v4 encodeObject:v6 forKey:@"assetIdentifier"];
+  assetIdentifier = [(WFWallpaperConfiguration *)self assetIdentifier];
+  [coderCopy encodeObject:assetIdentifier forKey:@"assetIdentifier"];
 
-  [v4 encodeInteger:-[WFWallpaperConfiguration location](self forKey:{"location"), @"location"}];
-  v7 = [(WFWallpaperConfiguration *)self legibilityBlur];
-  [v4 encodeObject:v7 forKey:@"legibilityBlur"];
+  [coderCopy encodeInteger:-[WFWallpaperConfiguration location](self forKey:{"location"), @"location"}];
+  legibilityBlur = [(WFWallpaperConfiguration *)self legibilityBlur];
+  [coderCopy encodeObject:legibilityBlur forKey:@"legibilityBlur"];
 
-  v8 = [(WFWallpaperConfiguration *)self smartCrop];
-  [v4 encodeObject:v8 forKey:@"smartCrop"];
+  smartCrop = [(WFWallpaperConfiguration *)self smartCrop];
+  [coderCopy encodeObject:smartCrop forKey:@"smartCrop"];
 
-  v9 = [(WFWallpaperConfiguration *)self usePreview];
-  [v4 encodeObject:v9 forKey:@"usePreview"];
+  usePreview = [(WFWallpaperConfiguration *)self usePreview];
+  [coderCopy encodeObject:usePreview forKey:@"usePreview"];
 }
 
-- (WFWallpaperConfiguration)initWithCoder:(id)a3
+- (WFWallpaperConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v18.receiver = self;
   v18.super_class = WFWallpaperConfiguration;
   v5 = [(WFWallpaperConfiguration *)&v18 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"assetURLWrapper"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"assetURLWrapper"];
     assetURLWrapper = v5->_assetURLWrapper;
     v5->_assetURLWrapper = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"assetIdentifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"assetIdentifier"];
     assetIdentifier = v5->_assetIdentifier;
     v5->_assetIdentifier = v8;
 
-    v5->_location = [v4 decodeIntegerForKey:@"location"];
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"legibilityBlur"];
+    v5->_location = [coderCopy decodeIntegerForKey:@"location"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"legibilityBlur"];
     legibilityBlur = v5->_legibilityBlur;
     v5->_legibilityBlur = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"smartCrop"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"smartCrop"];
     smartCrop = v5->_smartCrop;
     v5->_smartCrop = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"usePreview"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"usePreview"];
     usePreview = v5->_usePreview;
     v5->_usePreview = v14;
 
@@ -71,31 +71,31 @@
   v14.receiver = self;
   v14.super_class = WFWallpaperConfiguration;
   v4 = [(WFWallpaperConfiguration *)&v14 description];
-  v5 = [(WFWallpaperConfiguration *)self assetURL];
-  v6 = [(WFWallpaperConfiguration *)self assetIdentifier];
-  v7 = [(WFWallpaperConfiguration *)self location];
-  if (v7 > 2)
+  assetURL = [(WFWallpaperConfiguration *)self assetURL];
+  assetIdentifier = [(WFWallpaperConfiguration *)self assetIdentifier];
+  location = [(WFWallpaperConfiguration *)self location];
+  if (location > 2)
   {
     v8 = @"invalid";
   }
 
   else
   {
-    v8 = off_1E7B015C8[v7];
+    v8 = off_1E7B015C8[location];
   }
 
-  v9 = [(WFWallpaperConfiguration *)self legibilityBlur];
-  v10 = [(WFWallpaperConfiguration *)self smartCrop];
-  v11 = [(WFWallpaperConfiguration *)self usePreview];
-  v12 = [v3 stringWithFormat:@"<%@, assetURL: %@, assetID: %@, location: %@, legibilityBlur: %@, smartCrop: %@, usePreview: %@", v4, v5, v6, v8, v9, v10, v11];
+  legibilityBlur = [(WFWallpaperConfiguration *)self legibilityBlur];
+  smartCrop = [(WFWallpaperConfiguration *)self smartCrop];
+  usePreview = [(WFWallpaperConfiguration *)self usePreview];
+  v12 = [v3 stringWithFormat:@"<%@, assetURL: %@, assetID: %@, location: %@, legibilityBlur: %@, smartCrop: %@, usePreview: %@", v4, assetURL, assetIdentifier, v8, legibilityBlur, smartCrop, usePreview];
 
   return v12;
 }
 
 - (NSURL)assetURL
 {
-  v2 = [(WFWallpaperConfiguration *)self assetURLWrapper];
-  v3 = [v2 url];
+  assetURLWrapper = [(WFWallpaperConfiguration *)self assetURLWrapper];
+  v3 = [assetURLWrapper url];
 
   return v3;
 }
@@ -103,28 +103,28 @@
 - (id)userInfoRepresentation
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(WFWallpaperConfiguration *)self assetIdentifier];
-  [v3 if_setObjectIfNonNil:v4 forKey:@"wf_assetIdentifier"];
+  assetIdentifier = [(WFWallpaperConfiguration *)self assetIdentifier];
+  [v3 if_setObjectIfNonNil:assetIdentifier forKey:@"wf_assetIdentifier"];
 
   v5 = [MEMORY[0x1E696AD98] numberWithInteger:{-[WFWallpaperConfiguration location](self, "location")}];
   [v3 if_setObjectIfNonNil:v5 forKey:@"wf_wallpaperLocation"];
 
-  v6 = [(WFWallpaperConfiguration *)self legibilityBlur];
-  [v3 if_setObjectIfNonNil:v6 forKey:@"wf_legibilityBlur"];
+  legibilityBlur = [(WFWallpaperConfiguration *)self legibilityBlur];
+  [v3 if_setObjectIfNonNil:legibilityBlur forKey:@"wf_legibilityBlur"];
 
-  v7 = [(WFWallpaperConfiguration *)self smartCrop];
-  [v3 if_setObjectIfNonNil:v7 forKey:@"wf_smartCrop"];
+  smartCrop = [(WFWallpaperConfiguration *)self smartCrop];
+  [v3 if_setObjectIfNonNil:smartCrop forKey:@"wf_smartCrop"];
 
-  v8 = [(WFWallpaperConfiguration *)self usePreview];
-  [v3 if_setObjectIfNonNil:v8 forKey:@"wf_usePreview"];
+  usePreview = [(WFWallpaperConfiguration *)self usePreview];
+  [v3 if_setObjectIfNonNil:usePreview forKey:@"wf_usePreview"];
 
-  v9 = [(WFWallpaperConfiguration *)self assetURLWrapper];
+  assetURLWrapper = [(WFWallpaperConfiguration *)self assetURLWrapper];
 
-  if (v9)
+  if (assetURLWrapper)
   {
     v10 = MEMORY[0x1E696ACC8];
-    v11 = [(WFWallpaperConfiguration *)self assetURLWrapper];
-    v12 = [v10 archivedDataWithRootObject:v11 requiringSecureCoding:1 error:0];
+    assetURLWrapper2 = [(WFWallpaperConfiguration *)self assetURLWrapper];
+    v12 = [v10 archivedDataWithRootObject:assetURLWrapper2 requiringSecureCoding:1 error:0];
 
     [v3 if_setObjectIfNonNil:v12 forKey:@"wf_assetURLWrapper"];
   }
@@ -134,10 +134,10 @@
   return v13;
 }
 
-- (WFWallpaperConfiguration)initWithUserInfo:(id)a3
+- (WFWallpaperConfiguration)initWithUserInfo:(id)info
 {
   v40 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  infoCopy = info;
   v37.receiver = self;
   v37.super_class = WFWallpaperConfiguration;
   v5 = [(WFWallpaperConfiguration *)&v37 init];
@@ -150,7 +150,7 @@ LABEL_38:
 
   v6 = MEMORY[0x1E696ACD0];
   v7 = objc_opt_class();
-  v8 = [v4 objectForKey:@"wf_assetURLWrapper"];
+  v8 = [infoCopy objectForKey:@"wf_assetURLWrapper"];
   if (v8)
   {
     objc_opt_class();
@@ -177,7 +177,7 @@ LABEL_38:
   assetURLWrapper = v5->_assetURLWrapper;
   v5->_assetURLWrapper = v11;
 
-  v13 = [v4 objectForKey:@"wf_assetIdentifier"];
+  v13 = [infoCopy objectForKey:@"wf_assetIdentifier"];
   if (v13)
   {
     objc_opt_class();
@@ -202,7 +202,7 @@ LABEL_38:
   assetIdentifier = v5->_assetIdentifier;
   v5->_assetIdentifier = v15;
 
-  v17 = [v4 objectForKey:@"wf_wallpaperLocation"];
+  v17 = [infoCopy objectForKey:@"wf_wallpaperLocation"];
   if (v17)
   {
     objc_opt_class();
@@ -224,9 +224,9 @@ LABEL_38:
 
   v19 = v18;
 
-  v20 = [v19 integerValue];
-  v5->_location = v20;
-  v21 = [v4 objectForKey:@"wf_legibilityBlur"];
+  integerValue = [v19 integerValue];
+  v5->_location = integerValue;
+  v21 = [infoCopy objectForKey:@"wf_legibilityBlur"];
   if (v21)
   {
     objc_opt_class();
@@ -251,7 +251,7 @@ LABEL_38:
   legibilityBlur = v5->_legibilityBlur;
   v5->_legibilityBlur = v23;
 
-  v25 = [v4 objectForKey:@"wf_smartCrop"];
+  v25 = [infoCopy objectForKey:@"wf_smartCrop"];
   if (v25)
   {
     objc_opt_class();
@@ -276,7 +276,7 @@ LABEL_38:
   smartCrop = v5->_smartCrop;
   v5->_smartCrop = v27;
 
-  v29 = [v4 objectForKey:@"wf_usePreview"];
+  v29 = [infoCopy objectForKey:@"wf_usePreview"];
   if (v29)
   {
     objc_opt_class();
@@ -307,7 +307,7 @@ LABEL_38:
     if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v39 = v4;
+      v39 = infoCopy;
       _os_log_impl(&dword_1B1DE3000, v34, OS_LOG_TYPE_DEFAULT, "Unable to make wallpaper configuration from userInfo due to missing asset URL and identifier: %@", buf, 0xCu);
     }
 
@@ -321,21 +321,21 @@ LABEL_39:
   return v33;
 }
 
-- (WFWallpaperConfiguration)initWithAssetURL:(id)a3 localIdentifier:(id)a4 location:(int64_t)a5 legibilityBlur:(id)a6 smartCrop:(id)a7 usePreview:(id)a8
+- (WFWallpaperConfiguration)initWithAssetURL:(id)l localIdentifier:(id)identifier location:(int64_t)location legibilityBlur:(id)blur smartCrop:(id)crop usePreview:(id)preview
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
+  lCopy = l;
+  identifierCopy = identifier;
+  blurCopy = blur;
+  cropCopy = crop;
+  previewCopy = preview;
   v26.receiver = self;
   v26.super_class = WFWallpaperConfiguration;
   v19 = [(WFWallpaperConfiguration *)&v26 init];
   if (v19)
   {
-    if (v14)
+    if (lCopy)
     {
-      v20 = [objc_alloc(MEMORY[0x1E696AE98]) initWithURL:v14 readonly:1];
+      v20 = [objc_alloc(MEMORY[0x1E696AE98]) initWithURL:lCopy readonly:1];
     }
 
     else
@@ -346,14 +346,14 @@ LABEL_39:
     assetURLWrapper = v19->_assetURLWrapper;
     v19->_assetURLWrapper = v20;
 
-    v22 = [v15 copy];
+    v22 = [identifierCopy copy];
     assetIdentifier = v19->_assetIdentifier;
     v19->_assetIdentifier = v22;
 
-    v19->_location = a5;
-    objc_storeStrong(&v19->_legibilityBlur, a6);
-    objc_storeStrong(&v19->_smartCrop, a7);
-    objc_storeStrong(&v19->_usePreview, a8);
+    v19->_location = location;
+    objc_storeStrong(&v19->_legibilityBlur, blur);
+    objc_storeStrong(&v19->_smartCrop, crop);
+    objc_storeStrong(&v19->_usePreview, preview);
     v24 = v19;
   }
 

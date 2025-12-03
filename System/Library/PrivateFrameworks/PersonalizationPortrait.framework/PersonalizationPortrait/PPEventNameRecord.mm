@@ -1,28 +1,28 @@
 @interface PPEventNameRecord
-+ (id)describeChangeType:(unsigned __int8)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToEventNameRecord:(id)a3;
-- (PPEventNameRecord)initWithCoder:(id)a3;
-- (PPEventNameRecord)initWithIdentifier:(id)a3 score:(double)a4 eventIdentifier:(id)a5 changeType:(unsigned __int8)a6 title:(id)a7 location:(id)a8 participantNames:(id)a9;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)describeChangeType:(unsigned __int8)type;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToEventNameRecord:(id)record;
+- (PPEventNameRecord)initWithCoder:(id)coder;
+- (PPEventNameRecord)initWithIdentifier:(id)identifier score:(double)score eventIdentifier:(id)eventIdentifier changeType:(unsigned __int8)type title:(id)title location:(id)location participantNames:(id)names;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PPEventNameRecord
 
-- (BOOL)isEqualToEventNameRecord:(id)a3
+- (BOOL)isEqualToEventNameRecord:(id)record
 {
-  v4 = a3;
-  if (!v4)
+  recordCopy = record;
+  if (!recordCopy)
   {
     goto LABEL_14;
   }
 
   v5 = self->_title;
   v6 = v5;
-  if (v5 == v4[5])
+  if (v5 == recordCopy[5])
   {
   }
 
@@ -36,14 +36,14 @@
     }
   }
 
-  if (self->_score != *(v4 + 3) || self->_changeType != *(v4 + 8))
+  if (self->_score != *(recordCopy + 3) || self->_changeType != *(recordCopy + 8))
   {
     goto LABEL_14;
   }
 
   v8 = self->_eventIdentifier;
   v9 = v8;
-  if (v8 == v4[4])
+  if (v8 == recordCopy[4])
   {
   }
 
@@ -59,7 +59,7 @@
 
   v11 = self->_location;
   v12 = v11;
-  if (v11 == v4[6])
+  if (v11 == recordCopy[6])
   {
   }
 
@@ -77,7 +77,7 @@ LABEL_14:
 
   v16 = self->_participantNames;
   v17 = v16;
-  if (v16 == v4[7])
+  if (v16 == recordCopy[7])
   {
     v14 = 1;
   }
@@ -91,48 +91,48 @@ LABEL_15:
   return v14;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PPEventNameRecord *)self isEqualToEventNameRecord:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PPEventNameRecord *)self isEqualToEventNameRecord:v5];
   }
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   objc_opt_class();
   v5 = objc_opt_new();
   if (v5)
   {
-    v6 = [(NSString *)self->_identifier copyWithZone:a3];
+    v6 = [(NSString *)self->_identifier copyWithZone:zone];
     v7 = *(v5 + 16);
     *(v5 + 16) = v6;
 
     *(v5 + 8) = self->_changeType;
     *(v5 + 24) = self->_score;
-    v8 = [(NSString *)self->_eventIdentifier copyWithZone:a3];
+    v8 = [(NSString *)self->_eventIdentifier copyWithZone:zone];
     v9 = *(v5 + 32);
     *(v5 + 32) = v8;
 
-    v10 = [(NSString *)self->_title copyWithZone:a3];
+    v10 = [(NSString *)self->_title copyWithZone:zone];
     v11 = *(v5 + 40);
     *(v5 + 40) = v10;
 
-    v12 = [(NSString *)self->_location copyWithZone:a3];
+    v12 = [(NSString *)self->_location copyWithZone:zone];
     v13 = *(v5 + 48);
     *(v5 + 48) = v12;
 
-    v14 = [(NSArray *)self->_participantNames copyWithZone:a3];
+    v14 = [(NSArray *)self->_participantNames copyWithZone:zone];
     v15 = *(v5 + 56);
     *(v5 + 56) = v14;
   }
@@ -140,27 +140,27 @@ LABEL_15:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"ide"];
-  [v5 encodeDouble:@"scr" forKey:self->_score];
-  [v5 encodeObject:self->_eventIdentifier forKey:@"eid"];
-  [v5 encodeInt32:self->_changeType forKey:@"cht"];
-  [v5 encodeObject:self->_title forKey:@"ttl"];
-  [v5 encodeObject:self->_location forKey:@"loc"];
-  [v5 encodeObject:self->_participantNames forKey:@"pnm"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"ide"];
+  [coderCopy encodeDouble:@"scr" forKey:self->_score];
+  [coderCopy encodeObject:self->_eventIdentifier forKey:@"eid"];
+  [coderCopy encodeInt32:self->_changeType forKey:@"cht"];
+  [coderCopy encodeObject:self->_title forKey:@"ttl"];
+  [coderCopy encodeObject:self->_location forKey:@"loc"];
+  [coderCopy encodeObject:self->_participantNames forKey:@"pnm"];
 }
 
-- (PPEventNameRecord)initWithCoder:(id)a3
+- (PPEventNameRecord)initWithCoder:(id)coder
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
   v6 = objc_opt_class();
-  v7 = [v4 decodeObjectOfClass:v5 forKey:@"ide"];
-  v8 = [v4 decodeObjectOfClass:v5 forKey:@"eid"];
+  v7 = [coderCopy decodeObjectOfClass:v5 forKey:@"ide"];
+  v8 = [coderCopy decodeObjectOfClass:v5 forKey:@"eid"];
   v9 = v8;
   if (v7)
   {
@@ -178,31 +178,31 @@ LABEL_15:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v24 = v4;
+      v24 = coderCopy;
       _os_log_error_impl(&dword_1A7FD3000, v11, OS_LOG_TYPE_ERROR, "failed to decode identifier or eventIdentifier from %@", buf, 0xCu);
     }
 
-    v20 = 0;
+    selfCopy = 0;
   }
 
   else
   {
-    [v4 decodeDoubleForKey:@"scr"];
+    [coderCopy decodeDoubleForKey:@"scr"];
     v13 = v12;
-    v14 = [v4 decodeInt32ForKey:@"cht"];
-    v15 = [v4 decodeObjectOfClass:v5 forKey:@"ttl"];
-    v16 = [v4 decodeObjectOfClass:v5 forKey:@"loc"];
+    v14 = [coderCopy decodeInt32ForKey:@"cht"];
+    v15 = [coderCopy decodeObjectOfClass:v5 forKey:@"ttl"];
+    v16 = [coderCopy decodeObjectOfClass:v5 forKey:@"loc"];
     v17 = objc_autoreleasePoolPush();
     v18 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{v6, v5, 0}];
     objc_autoreleasePoolPop(v17);
-    v19 = [v4 decodeObjectOfClasses:v18 forKey:@"pnm"];
+    v19 = [coderCopy decodeObjectOfClasses:v18 forKey:@"pnm"];
     self = [(PPEventNameRecord *)self initWithIdentifier:v7 score:v9 eventIdentifier:v14 changeType:v15 title:v16 location:v19 participantNames:v13];
 
-    v20 = self;
+    selfCopy = self;
   }
 
   v21 = *MEMORY[0x1E69E9840];
-  return v20;
+  return selfCopy;
 }
 
 - (unint64_t)hash
@@ -228,55 +228,55 @@ LABEL_15:
   return v7;
 }
 
-- (PPEventNameRecord)initWithIdentifier:(id)a3 score:(double)a4 eventIdentifier:(id)a5 changeType:(unsigned __int8)a6 title:(id)a7 location:(id)a8 participantNames:(id)a9
+- (PPEventNameRecord)initWithIdentifier:(id)identifier score:(double)score eventIdentifier:(id)eventIdentifier changeType:(unsigned __int8)type title:(id)title location:(id)location participantNames:(id)names
 {
-  v16 = a3;
-  v17 = a5;
-  v18 = a7;
-  v19 = a8;
-  v20 = a9;
+  identifierCopy = identifier;
+  eventIdentifierCopy = eventIdentifier;
+  titleCopy = title;
+  locationCopy = location;
+  namesCopy = names;
   v31.receiver = self;
   v31.super_class = PPEventNameRecord;
   v21 = [(PPEventNameRecord *)&v31 init];
   if (v21)
   {
-    v22 = [v16 copy];
+    v22 = [identifierCopy copy];
     identifier = v21->_identifier;
     v21->_identifier = v22;
 
-    v21->_score = a4;
-    v24 = [v17 copy];
+    v21->_score = score;
+    v24 = [eventIdentifierCopy copy];
     eventIdentifier = v21->_eventIdentifier;
     v21->_eventIdentifier = v24;
 
-    v21->_changeType = a6;
-    v26 = [v18 copy];
+    v21->_changeType = type;
+    v26 = [titleCopy copy];
     title = v21->_title;
     v21->_title = v26;
 
-    v28 = [v19 copy];
+    v28 = [locationCopy copy];
     location = v21->_location;
     v21->_location = v28;
 
-    objc_storeStrong(&v21->_participantNames, a9);
+    objc_storeStrong(&v21->_participantNames, names);
   }
 
   return v21;
 }
 
-+ (id)describeChangeType:(unsigned __int8)a3
++ (id)describeChangeType:(unsigned __int8)type
 {
-  if (a3 >= 4u)
+  if (type >= 4u)
   {
-    v3 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid (%lu)", a3];
+    type = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid (%lu)", type];
   }
 
   else
   {
-    v3 = off_1E77F69B0[a3];
+    type = off_1E77F69B0[type];
   }
 
-  return v3;
+  return type;
 }
 
 @end

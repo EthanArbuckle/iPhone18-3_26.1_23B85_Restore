@@ -1,18 +1,18 @@
 @interface PLSinopeBBMetricUtility
-+ (id)convertToStringData:(id)a3;
++ (id)convertToStringData:(id)data;
 @end
 
 @implementation PLSinopeBBMetricUtility
 
-+ (id)convertToStringData:(id)a3
++ (id)convertToStringData:(id)data
 {
-  v3 = a3;
-  v4 = [v3 length];
+  dataCopy = data;
+  v4 = [dataCopy length];
   v5 = [objc_alloc(MEMORY[0x277CCAB68]) initWithCapacity:2 * v4];
-  v6 = [v3 bytes];
+  bytes = [dataCopy bytes];
   if (v4)
   {
-    v7 = v6;
+    v7 = bytes;
     do
     {
       v8 = *v7++;

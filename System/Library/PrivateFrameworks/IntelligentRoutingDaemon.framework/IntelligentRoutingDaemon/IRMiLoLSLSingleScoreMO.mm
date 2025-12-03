@@ -1,35 +1,35 @@
 @interface IRMiLoLSLSingleScoreMO
-+ (id)miLoLSLSingleScoreMOWithMiLoLSLSingleScoreDO:(id)a3 miloPrediction:(id)a4 inManagedObjectContext:(id)a5;
-+ (void)setPropertiesOfMiLoLSLSingleScoreMO:(id)a3 IRMiLoLSLSingleScoreDO:(id)a4;
++ (id)miLoLSLSingleScoreMOWithMiLoLSLSingleScoreDO:(id)o miloPrediction:(id)prediction inManagedObjectContext:(id)context;
++ (void)setPropertiesOfMiLoLSLSingleScoreMO:(id)o IRMiLoLSLSingleScoreDO:(id)dO;
 - (id)convert;
 @end
 
 @implementation IRMiLoLSLSingleScoreMO
 
-+ (id)miLoLSLSingleScoreMOWithMiLoLSLSingleScoreDO:(id)a3 miloPrediction:(id)a4 inManagedObjectContext:(id)a5
++ (id)miLoLSLSingleScoreMOWithMiLoLSLSingleScoreDO:(id)o miloPrediction:(id)prediction inManagedObjectContext:(id)context
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[IRMiLoLSLSingleScoreMO alloc] initWithContext:v7];
+  contextCopy = context;
+  predictionCopy = prediction;
+  oCopy = o;
+  v10 = [[IRMiLoLSLSingleScoreMO alloc] initWithContext:contextCopy];
 
-  [(IRMiLoLSLSingleScoreMO *)v10 setPrediction:v8];
-  [IRMiLoLSLSingleScoreMO setPropertiesOfMiLoLSLSingleScoreMO:v10 IRMiLoLSLSingleScoreDO:v9];
+  [(IRMiLoLSLSingleScoreMO *)v10 setPrediction:predictionCopy];
+  [IRMiLoLSLSingleScoreMO setPropertiesOfMiLoLSLSingleScoreMO:v10 IRMiLoLSLSingleScoreDO:oCopy];
 
   return v10;
 }
 
-+ (void)setPropertiesOfMiLoLSLSingleScoreMO:(id)a3 IRMiLoLSLSingleScoreDO:(id)a4
++ (void)setPropertiesOfMiLoLSLSingleScoreMO:(id)o IRMiLoLSLSingleScoreDO:(id)dO
 {
-  v5 = a4;
-  v9 = a3;
-  v6 = [v5 eventID];
-  [v9 setEventId:v6];
+  dOCopy = dO;
+  oCopy = o;
+  eventID = [dOCopy eventID];
+  [oCopy setEventId:eventID];
 
-  [v5 score];
+  [dOCopy score];
   v8 = v7;
 
-  [v9 setScore:v8];
+  [oCopy setScore:v8];
 }
 
 - (id)convert
@@ -37,8 +37,8 @@
   v3 = [IRMiloLslSingleScoreDO alloc];
   [(IRMiLoLSLSingleScoreMO *)self score];
   v5 = v4;
-  v6 = [(IRMiLoLSLSingleScoreMO *)self eventId];
-  v7 = [(IRMiloLslSingleScoreDO *)v3 initWithScore:v6 eventID:v5];
+  eventId = [(IRMiLoLSLSingleScoreMO *)self eventId];
+  v7 = [(IRMiloLslSingleScoreDO *)v3 initWithScore:eventId eventID:v5];
 
   return v7;
 }

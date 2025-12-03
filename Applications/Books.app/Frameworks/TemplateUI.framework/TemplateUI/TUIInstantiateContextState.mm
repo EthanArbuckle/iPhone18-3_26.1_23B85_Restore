@@ -1,18 +1,18 @@
 @interface TUIInstantiateContextState
-- (TUIInstantiateContextState)initWithViewStateMapping:(id)a3;
+- (TUIInstantiateContextState)initWithViewStateMapping:(id)mapping;
 @end
 
 @implementation TUIInstantiateContextState
 
-- (TUIInstantiateContextState)initWithViewStateMapping:(id)a3
+- (TUIInstantiateContextState)initWithViewStateMapping:(id)mapping
 {
-  v4 = a3;
+  mappingCopy = mapping;
   v9.receiver = self;
   v9.super_class = TUIInstantiateContextState;
   v5 = [(TUIInstantiateContextState *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [mappingCopy copy];
     viewStateMapping = v5->_viewStateMapping;
     v5->_viewStateMapping = v6;
   }

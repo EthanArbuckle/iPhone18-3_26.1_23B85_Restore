@@ -1,51 +1,51 @@
 @interface CTXPCServer
-- (BOOL)_sendNotification_sync:(id)a3 connection:(id)a4;
-- (BOOL)clientHandler:(id)a3 hasEntitlement:(int)a4;
-- (CTXPCServer)initWithRegistry:(shared_ptr<const Registry>)a3 factory:(id)a4 queue:(queue)a5;
+- (BOOL)_sendNotification_sync:(id)notification_sync connection:(id)connection;
+- (BOOL)clientHandler:(id)handler hasEntitlement:(int)entitlement;
+- (CTXPCServer)initWithRegistry:(shared_ptr<const Registry>)registry factory:(id)factory queue:(queue)queue;
 - (CTXPCServerDelegate)delegate;
 - (id).cxx_construct;
-- (id)clientProxyForConnection:(id)a3;
-- (id)contextForSlot:(int)a3;
-- (id)contextForUUID:(id)a3;
-- (id)existingContextInfoForUUID:(id)a3;
-- (id)findExistingSubscriptionContextInfo:(id)a3;
-- (id)resolveContext:(id)a3;
+- (id)clientProxyForConnection:(id)connection;
+- (id)contextForSlot:(int)slot;
+- (id)contextForUUID:(id)d;
+- (id)existingContextInfoForUUID:(id)d;
+- (id)findExistingSubscriptionContextInfo:(id)info;
+- (id)resolveContext:(id)context;
 - (map<NSXPCConnection)clients;
-- (os_state_data_s)_dumpState_sync:(os_state_hints_s *)a3;
+- (os_state_data_s)_dumpState_sync:(os_state_hints_s *)state_sync;
 - (shared_ptr<(anonymous)_getOrCreateProcInfo_sync:(anonymous)namespace;
 - (shared_ptr<(anonymous)_getProcInfo_sync:(anonymous)namespace;
 - (shared_ptr<const)registry;
-- (void)_handleActiveSubscriptionsChanged_sync:(const void *)a3;
-- (void)_handleAppRunningTransitioned_sync:(const void *)a3 isForeground:(BOOL)a4;
-- (void)_handleAppSuspended_sync:(int)a3;
-- (void)_handleGetClientsQuery_sync:(command_responder_t<xpc::dict> *)a3;
-- (void)_handleSubscriptionInfoChanged_sync:(const void *)a3;
-- (void)_processAppEntitlement_sync:(const void *)a3 appInfo:(const AppInfoResponse *)a4;
-- (void)_processAppState_sync:(int)a3 state:(int)a4 isDaemon:(BOOL)a5 isBackgroundEntitled:(BOOL)a6;
+- (void)_handleActiveSubscriptionsChanged_sync:(const void *)changed_sync;
+- (void)_handleAppRunningTransitioned_sync:(const void *)transitioned_sync isForeground:(BOOL)foreground;
+- (void)_handleAppSuspended_sync:(int)suspended_sync;
+- (void)_handleGetClientsQuery_sync:(command_responder_t<xpc::dict> *)query_sync;
+- (void)_handleSubscriptionInfoChanged_sync:(const void *)changed_sync;
+- (void)_processAppEntitlement_sync:(const void *)entitlement_sync appInfo:(const AppInfoResponse *)info;
+- (void)_processAppState_sync:(int)state_sync state:(int)state isDaemon:(BOOL)daemon isBackgroundEntitled:(BOOL)entitled;
 - (void)_registerRestObservers_sync;
 - (void)_registerRestProviders_sync;
-- (void)_setupAppState_sync:(const void *)a3;
-- (void)anyClientRespondsToSelector:(SEL)a3 completion:(id)a4;
-- (void)bootstrap:(group_session)a3;
-- (void)connection:(id)a3 handleInvocation:(id)a4 isReply:(BOOL)a5;
-- (void)connectionDidBecomeInterrupted:(id)a3;
-- (void)connectionDidBecomeInvalidated:(id)a3;
-- (void)connectionDidTriggerFault:(id)a3 logString:(id)a4;
-- (void)processNotification:(id)a3;
-- (void)receivedSelectors:(id)a3 forConnection:(id)a4;
-- (void)resetAppCategory:(void *)a3;
-- (void)resetAvsTrafficStatus:(void *)a3;
-- (void)resetIdsTrafficStatus:(void *)a3;
-- (void)resetVoipCallTrafficStatus:(void *)a3;
-- (void)setApplicationCategory:(shared_ptr<CTXPCConnectionWrapper>)a3 category:(unint64_t)a4;
-- (void)setAssertionForConnection:(shared_ptr<CTXPCConnectionWrapper>)a3 dataConnectionType:(int)a4 enable:(BOOL)a5;
+- (void)_setupAppState_sync:(const void *)state_sync;
+- (void)anyClientRespondsToSelector:(SEL)selector completion:(id)completion;
+- (void)bootstrap:(group_session)bootstrap;
+- (void)connection:(id)connection handleInvocation:(id)invocation isReply:(BOOL)reply;
+- (void)connectionDidBecomeInterrupted:(id)interrupted;
+- (void)connectionDidBecomeInvalidated:(id)invalidated;
+- (void)connectionDidTriggerFault:(id)fault logString:(id)string;
+- (void)processNotification:(id)notification;
+- (void)receivedSelectors:(id)selectors forConnection:(id)connection;
+- (void)resetAppCategory:(void *)category;
+- (void)resetAvsTrafficStatus:(void *)status;
+- (void)resetIdsTrafficStatus:(void *)status;
+- (void)resetVoipCallTrafficStatus:(void *)status;
+- (void)setApplicationCategory:(shared_ptr<CTXPCConnectionWrapper>)category category:(unint64_t)a4;
+- (void)setAssertionForConnection:(shared_ptr<CTXPCConnectionWrapper>)connection dataConnectionType:(int)type enable:(BOOL)enable;
 - (void)setClients:(map<NSXPCConnection *);
-- (void)setRegistry:(shared_ptr<const Registry>)a3;
-- (void)shutdown:(group_session)a3;
+- (void)setRegistry:(shared_ptr<const Registry>)registry;
+- (void)shutdown:(group_session)shutdown;
 - (void)start;
-- (void)updateAvsTrafficStatus:(shared_ptr<CTXPCConnectionWrapper>)a3 CTDataAvsTrafficStatus:(int)a4 dataType:(int)a5 completion:(id)a6;
-- (void)updateIdsTrafficStatus:(shared_ptr<CTXPCConnectionWrapper>)a3 isStart:(BOOL)a4 dataType:(int)a5 completion:(id)a6;
-- (void)updateVoipCallTrafficStatus:(shared_ptr<CTXPCConnectionWrapper>)a3 isStart:(BOOL)a4 completion:(id)a5;
+- (void)updateAvsTrafficStatus:(shared_ptr<CTXPCConnectionWrapper>)status CTDataAvsTrafficStatus:(int)trafficStatus dataType:(int)type completion:(id)completion;
+- (void)updateIdsTrafficStatus:(shared_ptr<CTXPCConnectionWrapper>)status isStart:(BOOL)start dataType:(int)type completion:(id)completion;
+- (void)updateVoipCallTrafficStatus:(shared_ptr<CTXPCConnectionWrapper>)status isStart:(BOOL)start completion:(id)completion;
 @end
 
 @implementation CTXPCServer
@@ -65,13 +65,13 @@
   return result;
 }
 
-- (CTXPCServer)initWithRegistry:(shared_ptr<const Registry>)a3 factory:(id)a4 queue:(queue)a5
+- (CTXPCServer)initWithRegistry:(shared_ptr<const Registry>)registry factory:(id)factory queue:(queue)queue
 {
-  cntrl = a3.__cntrl_;
-  ptr = a3.__ptr_;
-  v9 = a3.__cntrl_;
-  object = *a4;
-  *a4 = 0;
+  cntrl = registry.__cntrl_;
+  ptr = registry.__ptr_;
+  v9 = registry.__cntrl_;
+  object = *factory;
+  *factory = 0;
   ctu::OsLogContext::OsLogContext(v19, kCtLoggingSystemName, "ct.server");
   v18.receiver = self;
   v18.super_class = CTXPCServer;
@@ -95,10 +95,10 @@
     }
 
     objc_storeStrong(v10 + 17, cntrl);
-    v13 = [v10 factory];
+    factory = [v10 factory];
     [v10 getQueue];
     [v10 getLogContext];
-    v14 = [v13 createListener:v21 name:"CTXPCServer" logContext:v17];
+    v14 = [factory createListener:v21 name:"CTXPCServer" logContext:v17];
     v15 = *(v10 + 18);
     *(v10 + 18) = v14;
 
@@ -115,10 +115,10 @@
   return 0;
 }
 
-- (void)bootstrap:(group_session)a3
+- (void)bootstrap:(group_session)bootstrap
 {
-  v4 = self;
-  v5 = *a3.var0.fObj;
+  selfCopy = self;
+  v5 = *bootstrap.var0.fObj;
   if (v5)
   {
     dispatch_retain(v5);
@@ -126,7 +126,7 @@
   }
 
   v7[0] = off_101F23CB0;
-  v6 = v4;
+  v6 = selfCopy;
   v7[1] = v6;
   v7[2] = v5;
   v7[3] = v7;
@@ -137,16 +137,16 @@
 - (void)start
 {
   v2 = off_101F23E58;
-  v3 = self;
+  selfCopy = self;
   v4 = &v2;
-  [(CTXPCServer *)v3 executeFunction:&v2];
+  [(CTXPCServer *)selfCopy executeFunction:&v2];
   sub_10002B644(&v2);
 }
 
-- (void)shutdown:(group_session)a3
+- (void)shutdown:(group_session)shutdown
 {
-  v4 = self;
-  v5 = *a3.var0.fObj;
+  selfCopy = self;
+  v5 = *shutdown.var0.fObj;
   if (v5)
   {
     dispatch_retain(v5);
@@ -154,7 +154,7 @@
   }
 
   v7[0] = off_101F23ED8;
-  v6 = v4;
+  v6 = selfCopy;
   v7[1] = v6;
   v7[2] = v5;
   v7[3] = v7;
@@ -162,12 +162,12 @@
   sub_10002B644(v7);
 }
 
-- (void)setAssertionForConnection:(shared_ptr<CTXPCConnectionWrapper>)a3 dataConnectionType:(int)a4 enable:(BOOL)a5
+- (void)setAssertionForConnection:(shared_ptr<CTXPCConnectionWrapper>)connection dataConnectionType:(int)type enable:(BOOL)enable
 {
-  if (*a3.var0)
+  if (*connection.var0)
   {
-    var0 = a3.var0;
-    v6 = self;
+    var0 = connection.var0;
+    selfCopy = self;
     v7 = *(var0 + 1);
     if (v7)
     {
@@ -188,12 +188,12 @@
   }
 }
 
-- (void)setApplicationCategory:(shared_ptr<CTXPCConnectionWrapper>)a3 category:(unint64_t)a4
+- (void)setApplicationCategory:(shared_ptr<CTXPCConnectionWrapper>)category category:(unint64_t)a4
 {
-  if (*a3.var0)
+  if (*category.var0)
   {
-    var0 = a3.var0;
-    v5 = self;
+    var0 = category.var0;
+    selfCopy = self;
     v6 = *(var0 + 1);
     if (v6)
     {
@@ -214,9 +214,9 @@
   }
 }
 
-- (void)resetAppCategory:(void *)a3
+- (void)resetAppCategory:(void *)category
 {
-  if (*a3)
+  if (*category)
   {
     ServiceMap = Registry::getServiceMap(self->_registry.__ptr_);
     v5 = ServiceMap;
@@ -263,7 +263,7 @@ LABEL_11:
         v14 = (*(*v12 + 904))(v12);
         if (v14)
         {
-          (*(*v14 + 120))(v14, **a3, 0);
+          (*(*v14 + 120))(v14, **category, 0);
         }
 
         goto LABEL_13;
@@ -287,11 +287,11 @@ LABEL_11:
   }
 }
 
-- (void)updateIdsTrafficStatus:(shared_ptr<CTXPCConnectionWrapper>)a3 isStart:(BOOL)a4 dataType:(int)a5 completion:(id)a6
+- (void)updateIdsTrafficStatus:(shared_ptr<CTXPCConnectionWrapper>)status isStart:(BOOL)start dataType:(int)type completion:(id)completion
 {
-  v6 = *&a5;
-  var0 = a3.var0;
-  v8 = self;
+  v6 = *&type;
+  var0 = status.var0;
+  selfCopy = self;
   v9 = *(var0 + 1);
   if (v9)
   {
@@ -302,9 +302,9 @@ LABEL_11:
   operator new();
 }
 
-- (void)resetIdsTrafficStatus:(void *)a3
+- (void)resetIdsTrafficStatus:(void *)status
 {
-  if (*a3)
+  if (*status)
   {
     ServiceMap = Registry::getServiceMap(self->_registry.__ptr_);
     v5 = ServiceMap;
@@ -348,22 +348,22 @@ LABEL_12:
         }
 
 LABEL_11:
-        v14 = **a3;
+        v14 = **status;
         v22[0] = off_101F24158;
         v22[3] = v22;
         (*(*v12 + 936))(v12, v14, 0, 1, v22);
         sub_10000FF50(v22);
-        v15 = **a3;
+        v15 = **status;
         v21[0] = off_101F241D8;
         v21[3] = v21;
         (*(*v12 + 936))(v12, v15, 0, 2, v21);
         sub_10000FF50(v21);
-        v16 = **a3;
+        v16 = **status;
         v20[0] = off_101F24258;
         v20[3] = v20;
         (*(*v12 + 936))(v12, v16, 0, 4, v20);
         sub_10000FF50(v20);
-        v17 = **a3;
+        v17 = **status;
         v19[0] = off_101F242D8;
         v19[3] = v19;
         (*(*v12 + 936))(v12, v17, 0, 3, v19);
@@ -389,11 +389,11 @@ LABEL_11:
   }
 }
 
-- (void)updateAvsTrafficStatus:(shared_ptr<CTXPCConnectionWrapper>)a3 CTDataAvsTrafficStatus:(int)a4 dataType:(int)a5 completion:(id)a6
+- (void)updateAvsTrafficStatus:(shared_ptr<CTXPCConnectionWrapper>)status CTDataAvsTrafficStatus:(int)trafficStatus dataType:(int)type completion:(id)completion
 {
-  v6 = *&a5;
-  var0 = a3.var0;
-  v8 = self;
+  v6 = *&type;
+  var0 = status.var0;
+  selfCopy = self;
   v9 = *(var0 + 1);
   if (v9)
   {
@@ -404,9 +404,9 @@ LABEL_11:
   operator new();
 }
 
-- (void)resetAvsTrafficStatus:(void *)a3
+- (void)resetAvsTrafficStatus:(void *)status
 {
-  if (*a3)
+  if (*status)
   {
     ServiceMap = Registry::getServiceMap(self->_registry.__ptr_);
     v5 = ServiceMap;
@@ -450,12 +450,12 @@ LABEL_12:
         }
 
 LABEL_11:
-        v14 = **a3;
+        v14 = **status;
         v18[0] = off_101F24458;
         v18[3] = v18;
         (*(*v12 + 944))(v12, v14, 3, 1, v18);
         sub_10000FF50(v18);
-        v15 = **a3;
+        v15 = **status;
         v17[0] = off_101F244D8;
         v17[3] = v17;
         (*(*v12 + 944))(v12, v15, 3, 2, v17);
@@ -481,24 +481,24 @@ LABEL_11:
   }
 }
 
-- (void)updateVoipCallTrafficStatus:(shared_ptr<CTXPCConnectionWrapper>)a3 isStart:(BOOL)a4 completion:(id)a5
+- (void)updateVoipCallTrafficStatus:(shared_ptr<CTXPCConnectionWrapper>)status isStart:(BOOL)start completion:(id)completion
 {
-  v5 = a4;
-  var0 = a3.var0;
-  v7 = self;
+  startCopy = start;
+  var0 = status.var0;
+  selfCopy = self;
   v8 = *(var0 + 1);
   if (v8)
   {
     atomic_fetch_add_explicit((v8 + 8), 1uLL, memory_order_relaxed);
   }
 
-  objc_retainBlock(v5);
+  objc_retainBlock(startCopy);
   operator new();
 }
 
-- (void)resetVoipCallTrafficStatus:(void *)a3
+- (void)resetVoipCallTrafficStatus:(void *)status
 {
-  if (*a3)
+  if (*status)
   {
     ServiceMap = Registry::getServiceMap(self->_registry.__ptr_);
     v5 = ServiceMap;
@@ -542,7 +542,7 @@ LABEL_12:
         }
 
 LABEL_11:
-        v14 = **a3;
+        v14 = **status;
         v16[0] = off_101F24658;
         v16[3] = v16;
         (*(*v12 + 952))(v12, v14, 0, v16);
@@ -647,9 +647,9 @@ LABEL_11:
 LABEL_10:
   if ((*(*v11 + 32))(v11))
   {
-    v13 = self;
+    selfCopy = self;
     sub_10000501C(&__p, "/cc/requests/get_xpc_clients");
-    v14 = v13;
+    v14 = selfCopy;
     v17[0] = off_101F24758;
     v17[1] = v14;
     v17[3] = v17;
@@ -668,7 +668,7 @@ LABEL_14:
   }
 }
 
-- (void)_handleGetClientsQuery_sync:(command_responder_t<xpc::dict> *)a3
+- (void)_handleGetClientsQuery_sync:(command_responder_t<xpc::dict> *)query_sync
 {
   sub_10128CF00(&object, &self->_clients.__tree_.__begin_node_);
   v4 = object;
@@ -684,14 +684,14 @@ LABEL_14:
   }
 
   v6 = xpc_null_create();
-  fObj = a3->var0.fObj.fObj;
-  a3->var0.fObj.fObj = v5;
+  fObj = query_sync->var0.fObj.fObj;
+  query_sync->var0.fObj.fObj = v5;
   xpc_release(fObj);
   xpc_release(v6);
   xpc_release(v4);
 }
 
-- (void)_handleSubscriptionInfoChanged_sync:(const void *)a3
+- (void)_handleSubscriptionInfoChanged_sync:(const void *)changed_sync
 {
   p_subInfoSink = &self->_subInfoSink;
   if (rest::operator==())
@@ -784,7 +784,7 @@ LABEL_14:
   }
 }
 
-- (void)_handleActiveSubscriptionsChanged_sync:(const void *)a3
+- (void)_handleActiveSubscriptionsChanged_sync:(const void *)changed_sync
 {
   v4 = self->_activeSubInfo;
   v28 = objc_opt_new();
@@ -966,17 +966,17 @@ LABEL_15:
   return result;
 }
 
-- (void)_setupAppState_sync:(const void *)a3
+- (void)_setupAppState_sync:(const void *)state_sync
 {
   v13 = 0;
   v12 = 0u;
   *__p = 0u;
-  v10 = **a3;
+  v10 = **state_sync;
   LOBYTE(__p[0]) = 1;
   objc_initWeak(&location, self);
   objc_copyWeak(&v6, &location);
-  v5 = *(a3 + 1);
-  v7 = *a3;
+  v5 = *(state_sync + 1);
+  v7 = *state_sync;
   v8 = v5;
   if (v5)
   {
@@ -1002,25 +1002,25 @@ LABEL_15:
   operator new();
 }
 
-- (void)_processAppEntitlement_sync:(const void *)a3 appInfo:(const AppInfoResponse *)a4
+- (void)_processAppEntitlement_sync:(const void *)entitlement_sync appInfo:(const AppInfoResponse *)info
 {
-  v7 = (*(**(*a3 + 32) + 16))(*(*a3 + 32), 6);
-  v8 = (*(**(*a3 + 32) + 16))(*(*a3 + 32), 3);
+  v7 = (*(**(*entitlement_sync + 32) + 16))(*(*entitlement_sync + 32), 6);
+  v8 = (*(**(*entitlement_sync + 32) + 16))(*(*entitlement_sync + 32), 3);
   if (v7 != 1 && v8 != 1)
   {
 LABEL_8:
-    [(CTXPCServer *)self _processAppState_sync:**a3 state:a4->var0 isDaemon:a4->var2 isBackgroundEntitled:a4->var1];
+    [(CTXPCServer *)self _processAppState_sync:**entitlement_sync state:info->var0 isDaemon:info->var2 isBackgroundEntitled:info->var1];
     return;
   }
 
-  if (a4->var3)
+  if (info->var3)
   {
     [(CTXPCServer *)self getLogContext];
     v10 = v18;
     ctu::OsLogContext::~OsLogContext(&__p);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
-      sub_10000A318(&__p, *a3);
+      sub_10000A318(&__p, *entitlement_sync);
       if (v19 >= 0)
       {
         p_p = &__p;
@@ -1048,7 +1048,7 @@ LABEL_8:
   ctu::OsLogContext::~OsLogContext(&__p);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
-    sub_10000A318(&__p, *a3);
+    sub_10000A318(&__p, *entitlement_sync);
     v13 = v19;
     v14 = __p;
     v15 = asString();
@@ -1069,21 +1069,21 @@ LABEL_8:
     }
   }
 
-  *(*a3 + 48) = 1;
+  *(*entitlement_sync + 48) = 1;
 }
 
-- (void)_processAppState_sync:(int)a3 state:(int)a4 isDaemon:(BOOL)a5 isBackgroundEntitled:(BOOL)a6
+- (void)_processAppState_sync:(int)state_sync state:(int)state isDaemon:(BOOL)daemon isBackgroundEntitled:(BOOL)entitled
 {
-  v6 = a6;
-  v7 = *&a3;
-  if ([(CTXPCServer *)self _handleAppStateChanged_sync:*&a3 state:*&a4 isDaemon:a5])
+  entitledCopy = entitled;
+  v7 = *&state_sync;
+  if ([(CTXPCServer *)self _handleAppStateChanged_sync:*&state_sync state:*&state isDaemon:daemon])
   {
 
-    [(CTXPCServer *)self _updateAppNotificationState_sync:v7 isBackgroundEntitled:v6];
+    [(CTXPCServer *)self _updateAppNotificationState_sync:v7 isBackgroundEntitled:entitledCopy];
   }
 }
 
-- (void)_handleAppSuspended_sync:(int)a3
+- (void)_handleAppSuspended_sync:(int)suspended_sync
 {
   p_end_node = &self->_clients.__tree_.__end_node_;
   begin_node = self->_clients.__tree_.__begin_node_;
@@ -1094,7 +1094,7 @@ LABEL_8:
     v14 = v3;
     do
     {
-      if (*begin_node[5].__left_ == a3)
+      if (*begin_node[5].__left_ == suspended_sync)
       {
         if ((v8 & 1) == 0)
         {
@@ -1150,22 +1150,22 @@ LABEL_8:
   }
 }
 
-- (void)_handleAppRunningTransitioned_sync:(const void *)a3 isForeground:(BOOL)a4
+- (void)_handleAppRunningTransitioned_sync:(const void *)transitioned_sync isForeground:(BOOL)foreground
 {
-  v6 = *a3;
-  v7 = *(*a3 + 48);
+  v6 = *transitioned_sync;
+  v7 = *(*transitioned_sync + 48);
   if (v7 <= 5)
   {
     if (((1 << v7) & 0xD) != 0)
     {
-      v8 = !a4;
+      v8 = !foreground;
       v9 = 2;
       goto LABEL_6;
     }
 
     if (((1 << v7) & 0x30) != 0)
     {
-      v8 = !a4;
+      v8 = !foreground;
       v9 = 4;
 LABEL_6:
       if (v8)
@@ -1185,7 +1185,7 @@ LABEL_6:
     v14 = *&buf[8];
     ctu::OsLogContext::~OsLogContext(buf);
     v15 = os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG);
-    v6 = *a3;
+    v6 = *transitioned_sync;
     if (v15)
     {
       sub_10000A318(buf, v6);
@@ -1207,7 +1207,7 @@ LABEL_6:
         operator delete(*buf);
       }
 
-      v6 = *a3;
+      v6 = *transitioned_sync;
     }
 
     v7 = 1;
@@ -1221,7 +1221,7 @@ LABEL_9:
     ctu::OsLogContext::~OsLogContext(buf);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      sub_10000A318(__p, *a3);
+      sub_10000A318(__p, *transitioned_sync);
       if (v18 >= 0)
       {
         v11 = __p;
@@ -1247,15 +1247,15 @@ LABEL_9:
       }
     }
 
-    *(*a3 + 48) = v7;
+    *(*transitioned_sync + 48) = v7;
   }
 }
 
-- (BOOL)_sendNotification_sync:(id)a3 connection:(id)a4
+- (BOOL)_sendNotification_sync:(id)notification_sync connection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  notification_syncCopy = notification_sync;
+  connectionCopy = connection;
+  v8 = connectionCopy;
   left = self->_clients.__tree_.__end_node_.__left_;
   if (!left)
   {
@@ -1266,8 +1266,8 @@ LABEL_9:
   do
   {
     v11 = left[4].__left_;
-    v12 = v11 >= v7;
-    v13 = v11 < v7;
+    v12 = v11 >= connectionCopy;
+    v13 = v11 < connectionCopy;
     if (v12)
     {
       p_end_node = left;
@@ -1277,17 +1277,17 @@ LABEL_9:
   }
 
   while (left);
-  if (p_end_node == &self->_clients.__tree_.__end_node_ || p_end_node[4].__left_ > v7)
+  if (p_end_node == &self->_clients.__tree_.__end_node_ || p_end_node[4].__left_ > connectionCopy)
   {
     goto LABEL_25;
   }
 
   v14 = p_end_node[7].__left_;
   v15 = p_end_node[8].__left_;
-  v16 = [v6 selector];
+  selector = [notification_syncCopy selector];
   if (v14 != v15)
   {
-    while (*v14 != v16)
+    while (*v14 != selector)
     {
       if (++v14 == v15)
       {
@@ -1355,8 +1355,8 @@ LABEL_9:
       }
 
       LOBYTE(p_end_node[13].__left_) = 1;
-      v22 = [(CTXPCServer *)self factory];
-      v23 = [v22 createSensitiveObjectClassifier];
+      factory = [(CTXPCServer *)self factory];
+      createSensitiveObjectClassifier = [factory createSensitiveObjectClassifier];
 
       v27[0] = _NSConcreteStackBlock;
       v27[1] = 3221225472;
@@ -1365,9 +1365,9 @@ LABEL_9:
       v27[4] = self;
       v31 = p_end_node;
       v28 = v8;
-      v29 = v6;
-      v30 = v23;
-      v24 = v23;
+      v29 = notification_syncCopy;
+      v30 = createSensitiveObjectClassifier;
+      v24 = createSensitiveObjectClassifier;
       [v28 scheduleSendBarrierBlock:v27];
     }
 
@@ -1377,8 +1377,8 @@ LABEL_25:
   }
 
   ++p_end_node[14].__left_;
-  v19 = [v8 remoteObjectProxy];
-  [v6 invokeWithTarget:v19];
+  remoteObjectProxy = [v8 remoteObjectProxy];
+  [notification_syncCopy invokeWithTarget:remoteObjectProxy];
 
   v20 = 1;
 LABEL_26:
@@ -1386,10 +1386,10 @@ LABEL_26:
   return v20;
 }
 
-- (id)clientProxyForConnection:(id)a3
+- (id)clientProxyForConnection:(id)connection
 {
-  v4 = a3;
-  v5 = v4;
+  connectionCopy = connection;
+  v5 = connectionCopy;
   p_clients = &self->_clients;
   left = self->_clients.__tree_.__end_node_.__left_;
   if (!left)
@@ -1404,7 +1404,7 @@ LABEL_7:
     {
       v8 = left;
       v9 = left[4];
-      if (v9 <= v4)
+      if (v9 <= connectionCopy)
       {
         break;
       }
@@ -1416,7 +1416,7 @@ LABEL_7:
       }
     }
 
-    if (v9 >= v4)
+    if (v9 >= connectionCopy)
     {
       break;
     }
@@ -1428,7 +1428,7 @@ LABEL_7:
     }
   }
 
-  [(CTXPCServer *)self _getOrCreateProcInfo_sync:v4];
+  [(CTXPCServer *)self _getOrCreateProcInfo_sync:connectionCopy];
   v10 = *buf;
   *buf = 0;
   *&buf[8] = 0;
@@ -1474,7 +1474,7 @@ LABEL_7:
     sub_10000A318(__p, v8[5]);
     v17 = v24;
     v18 = __p[0];
-    v19 = [(CTXPCClientHandler *)v15 clientID];
+    clientID = [(CTXPCClientHandler *)v15 clientID];
     v20 = __p;
     size = p_clients->__tree_.__size_;
     if (v17 < 0)
@@ -1485,7 +1485,7 @@ LABEL_7:
     *buf = 136315650;
     *&buf[4] = v20;
     *&buf[12] = 2048;
-    *&buf[14] = v19;
+    *&buf[14] = clientID;
     v27 = 2048;
     v28 = size;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Added new client [%s] (cid=%lu), client list size %zu", buf, 0x20u);
@@ -1498,12 +1498,12 @@ LABEL_7:
   return v15;
 }
 
-- (void)connectionDidBecomeInvalidated:(id)a3
+- (void)connectionDidBecomeInvalidated:(id)invalidated
 {
-  v4 = a3;
+  invalidatedCopy = invalidated;
   v48 = 0;
   v49 = 0;
-  [(CTXPCServer *)self _getOrCreateProcInfo_sync:v4];
+  [(CTXPCServer *)self _getOrCreateProcInfo_sync:invalidatedCopy];
   p_clients = &self->_clients;
   p_end_node = &self->_clients.__tree_.__end_node_;
   left = self->_clients.__tree_.__end_node_.__left_;
@@ -1514,8 +1514,8 @@ LABEL_7:
     do
     {
       v10 = v9[4].__left_;
-      v11 = v10 >= v4;
-      v12 = v10 < v4;
+      v11 = v10 >= invalidatedCopy;
+      v12 = v10 < invalidatedCopy;
       if (v11)
       {
         v8 = v9;
@@ -1525,7 +1525,7 @@ LABEL_7:
     }
 
     while (v9);
-    if (v8 != p_end_node && v8[4].__left_ <= v4)
+    if (v8 != p_end_node && v8[4].__left_ <= invalidatedCopy)
     {
       v41 = &self->_clients.__tree_.__end_node_;
       v43 = &self->_clients;
@@ -1621,7 +1621,7 @@ LABEL_23:
         }
 
 LABEL_24:
-        (*(*v25 + 1112))(v25, [v4 processIdentifier]);
+        (*(*v25 + 1112))(v25, [invalidatedCopy processIdentifier]);
         goto LABEL_25;
       }
 
@@ -1642,8 +1642,8 @@ LABEL_30:
       do
       {
         v29 = v28[4];
-        v11 = v29 >= v4;
-        v30 = v29 < v4;
+        v11 = v29 >= invalidatedCopy;
+        v30 = v29 < invalidatedCopy;
         if (v11)
         {
           v27 = v28;
@@ -1653,7 +1653,7 @@ LABEL_30:
       }
 
       while (v28);
-      if (v27 != p_end_node && v27[4] <= v4)
+      if (v27 != p_end_node && v27[4] <= invalidatedCopy)
       {
         v31 = v27[1];
         if (v31)
@@ -1701,7 +1701,7 @@ LABEL_30:
     sub_10000A318(__p, v48);
     v36 = v47;
     v37 = __p[0];
-    v38 = [v4 ct_clientID];
+    ct_clientID = [invalidatedCopy ct_clientID];
     v39 = __p;
     size = p_clients->__tree_.__size_;
     if (v36 < 0)
@@ -1712,7 +1712,7 @@ LABEL_30:
     *buf = 136315650;
     *&buf[4] = v39;
     *&buf[12] = 2048;
-    *&buf[14] = v38;
+    *&buf[14] = ct_clientID;
     v51 = 2048;
     v52 = size;
     _os_log_impl(&_mh_execute_header, v35, OS_LOG_TYPE_DEFAULT, "Client [%s] disconnected (cid=%lu), client list size %zu", buf, 0x20u);
@@ -1728,12 +1728,12 @@ LABEL_30:
   }
 }
 
-- (void)connectionDidBecomeInterrupted:(id)a3
+- (void)connectionDidBecomeInterrupted:(id)interrupted
 {
-  v4 = a3;
+  interruptedCopy = interrupted;
   v19 = 0;
   v20 = 0;
-  [(CTXPCServer *)self _getOrCreateProcInfo_sync:v4];
+  [(CTXPCServer *)self _getOrCreateProcInfo_sync:interruptedCopy];
   p_clients = &self->_clients;
   left = self->_clients.__tree_.__end_node_.__left_;
   if (left)
@@ -1742,8 +1742,8 @@ LABEL_30:
     do
     {
       v8 = left[4].__left_;
-      v9 = v8 >= v4;
-      v10 = v8 < v4;
+      v9 = v8 >= interruptedCopy;
+      v10 = v8 < interruptedCopy;
       if (v9)
       {
         p_end_node = left;
@@ -1753,7 +1753,7 @@ LABEL_30:
     }
 
     while (left);
-    if (p_end_node != &self->_clients.__tree_.__end_node_ && p_end_node[4].__left_ <= v4)
+    if (p_end_node != &self->_clients.__tree_.__end_node_ && p_end_node[4].__left_ <= interruptedCopy)
     {
       sub_100021348(&p_end_node[10]);
       [(CTXPCServer *)self resetAppCategory:&p_end_node[5]];
@@ -1768,7 +1768,7 @@ LABEL_30:
         sub_10000A318(__p, v19);
         v12 = v18;
         v13 = __p[0];
-        v14 = [v4 ct_clientID];
+        ct_clientID = [interruptedCopy ct_clientID];
         v15 = __p;
         size = p_clients->__tree_.__size_;
         if (v12 < 0)
@@ -1779,7 +1779,7 @@ LABEL_30:
         *buf = 136315650;
         *v22 = v15;
         *&v22[8] = 2048;
-        *&v22[10] = v14;
+        *&v22[10] = ct_clientID;
         v23 = 2048;
         v24 = size;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Client [%s] interrupted (cid=%lu), client list size %zu", buf, 0x20u);
@@ -1797,19 +1797,19 @@ LABEL_30:
   }
 }
 
-- (id)contextForUUID:(id)a3
+- (id)contextForUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(CTXPCServiceSubscriptionInfo *)self->_activeSubInfo subscriptions];
+  dCopy = d;
+  subscriptions = [(CTXPCServiceSubscriptionInfo *)self->_activeSubInfo subscriptions];
 
-  if (v5)
+  if (subscriptions)
   {
     v27 = 0u;
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v6 = [(CTXPCServiceSubscriptionInfo *)self->_activeSubInfo subscriptions];
-    v7 = [v6 countByEnumeratingWithState:&v25 objects:v30 count:16];
+    subscriptions2 = [(CTXPCServiceSubscriptionInfo *)self->_activeSubInfo subscriptions];
+    v7 = [subscriptions2 countByEnumeratingWithState:&v25 objects:v30 count:16];
     if (v7)
     {
       v8 = *v26;
@@ -1819,12 +1819,12 @@ LABEL_4:
       {
         if (*v26 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(subscriptions2);
         }
 
         v10 = *(*(&v25 + 1) + 8 * v9);
-        v11 = [v10 uuid];
-        v12 = [v11 isEqual:v4];
+        uuid = [v10 uuid];
+        v12 = [uuid isEqual:dCopy];
 
         if (v12)
         {
@@ -1833,7 +1833,7 @@ LABEL_4:
 
         if (v7 == ++v9)
         {
-          v7 = [v6 countByEnumeratingWithState:&v25 objects:v30 count:16];
+          v7 = [subscriptions2 countByEnumeratingWithState:&v25 objects:v30 count:16];
           if (v7)
           {
             goto LABEL_4;
@@ -1845,8 +1845,8 @@ LABEL_4:
     }
   }
 
-  v13 = [(CTXPCServiceSubscriptionInfo *)self->_subInfo subscriptions];
-  v14 = v13 == 0;
+  subscriptions3 = [(CTXPCServiceSubscriptionInfo *)self->_subInfo subscriptions];
+  v14 = subscriptions3 == 0;
 
   if (!v14)
   {
@@ -1854,8 +1854,8 @@ LABEL_4:
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v6 = [(CTXPCServiceSubscriptionInfo *)self->_subInfo subscriptions];
-    v15 = [v6 countByEnumeratingWithState:&v21 objects:v29 count:16];
+    subscriptions2 = [(CTXPCServiceSubscriptionInfo *)self->_subInfo subscriptions];
+    v15 = [subscriptions2 countByEnumeratingWithState:&v21 objects:v29 count:16];
     if (!v15)
     {
 LABEL_22:
@@ -1870,12 +1870,12 @@ LABEL_14:
     {
       if (*v22 != v16)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(subscriptions2);
       }
 
       v10 = *(*(&v21 + 1) + 8 * v17);
-      v18 = [v10 uuid];
-      v19 = [v18 isEqual:v4];
+      uuid2 = [v10 uuid];
+      v19 = [uuid2 isEqual:dCopy];
 
       if (v19)
       {
@@ -1884,7 +1884,7 @@ LABEL_14:
 
       if (v15 == ++v17)
       {
-        v15 = [v6 countByEnumeratingWithState:&v21 objects:v29 count:16];
+        v15 = [subscriptions2 countByEnumeratingWithState:&v21 objects:v29 count:16];
         if (v15)
         {
           goto LABEL_14;
@@ -1905,9 +1905,9 @@ LABEL_24:
   return v15;
 }
 
-- (id)existingContextInfoForUUID:(id)a3
+- (id)existingContextInfoForUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   activeCtxs = self->_activeCtxs;
   if (activeCtxs)
   {
@@ -1915,8 +1915,8 @@ LABEL_24:
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v6 = [(CTXPCContexts *)activeCtxs existingUserSubscriptions];
-    v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    existingUserSubscriptions = [(CTXPCContexts *)activeCtxs existingUserSubscriptions];
+    v7 = [existingUserSubscriptions countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v7)
     {
       v8 = *v15;
@@ -1926,12 +1926,12 @@ LABEL_24:
         {
           if (*v15 != v8)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(existingUserSubscriptions);
           }
 
           v10 = *(*(&v14 + 1) + 8 * i);
-          v11 = [v10 uuid];
-          v12 = [v11 isEqual:v4];
+          uuid = [v10 uuid];
+          v12 = [uuid isEqual:dCopy];
 
           if (v12)
           {
@@ -1940,7 +1940,7 @@ LABEL_24:
           }
         }
 
-        v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v7 = [existingUserSubscriptions countByEnumeratingWithState:&v14 objects:v18 count:16];
         if (v7)
         {
           continue;
@@ -1961,18 +1961,18 @@ LABEL_12:
   return v7;
 }
 
-- (id)contextForSlot:(int)a3
+- (id)contextForSlot:(int)slot
 {
-  v5 = [(CTXPCServiceSubscriptionInfo *)self->_subInfo subscriptions];
+  subscriptions = [(CTXPCServiceSubscriptionInfo *)self->_subInfo subscriptions];
 
-  if (v5)
+  if (subscriptions)
   {
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v6 = [(CTXPCServiceSubscriptionInfo *)self->_subInfo subscriptions];
-    v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    subscriptions2 = [(CTXPCServiceSubscriptionInfo *)self->_subInfo subscriptions];
+    v7 = [subscriptions2 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v7)
     {
       v8 = *v15;
@@ -1982,19 +1982,19 @@ LABEL_12:
         {
           if (*v15 != v8)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(subscriptions2);
           }
 
           v10 = *(*(&v14 + 1) + 8 * i);
-          v11 = [v10 slotID];
-          if (v11 == sub_10000FD54(a3))
+          slotID = [v10 slotID];
+          if (slotID == sub_10000FD54(slot))
           {
             v12 = v10;
             goto LABEL_12;
           }
         }
 
-        v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v7 = [subscriptions2 countByEnumeratingWithState:&v14 objects:v18 count:16];
         if (v7)
         {
           continue;
@@ -2016,18 +2016,18 @@ LABEL_12:
   return v12;
 }
 
-- (id)resolveContext:(id)a3
+- (id)resolveContext:(id)context
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  contextCopy = context;
+  v5 = contextCopy;
+  if (contextCopy)
   {
-    v6 = [v4 uuid];
+    uuid = [contextCopy uuid];
 
-    if (v6)
+    if (uuid)
     {
-      v7 = [v5 uuid];
-      v8 = [(CTXPCServer *)self contextForUUID:v7];
+      uuid2 = [v5 uuid];
+      v8 = [(CTXPCServer *)self contextForUUID:uuid2];
     }
 
     else
@@ -2044,14 +2044,14 @@ LABEL_12:
   return v8;
 }
 
-- (id)findExistingSubscriptionContextInfo:(id)a3
+- (id)findExistingSubscriptionContextInfo:(id)info
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && ([v4 uuid], v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
+  infoCopy = info;
+  v5 = infoCopy;
+  if (infoCopy && ([infoCopy uuid], v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
   {
-    v7 = [v5 uuid];
-    v8 = [(CTXPCServer *)self existingContextInfoForUUID:v7];
+    uuid = [v5 uuid];
+    v8 = [(CTXPCServer *)self existingContextInfoForUUID:uuid];
   }
 
   else
@@ -2062,44 +2062,44 @@ LABEL_12:
   return v8;
 }
 
-- (void)processNotification:(id)a3
+- (void)processNotification:(id)notification
 {
-  v4 = a3;
-  [v4 retainArguments];
-  v5 = self;
-  v6 = v4;
+  notificationCopy = notification;
+  [notificationCopy retainArguments];
+  selfCopy = self;
+  v6 = notificationCopy;
   v7[0] = off_101F248A8;
-  v7[1] = v5;
+  v7[1] = selfCopy;
   v7[2] = v6;
   v7[3] = v7;
-  [(CTXPCServer *)v5 executeFunction:v7];
+  [(CTXPCServer *)selfCopy executeFunction:v7];
   sub_10002B644(v7);
 }
 
-- (void)anyClientRespondsToSelector:(SEL)a3 completion:(id)a4
+- (void)anyClientRespondsToSelector:(SEL)selector completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_101290A64;
   v8[3] = &unk_101F23C58;
   objc_copyWeak(v10, &location);
-  v10[1] = a3;
+  v10[1] = selector;
   v8[4] = self;
-  v9 = v6;
-  v7 = v6;
+  v9 = completionCopy;
+  v7 = completionCopy;
   [(CTXPCServer *)self executeBlock:v8];
 
   objc_destroyWeak(v10);
   objc_destroyWeak(&location);
 }
 
-- (void)receivedSelectors:(id)a3 forConnection:(id)a4
+- (void)receivedSelectors:(id)selectors forConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  selectorsCopy = selectors;
+  connectionCopy = connection;
+  v8 = connectionCopy;
   left = self->_clients.__tree_.__end_node_.__left_;
   if (left)
   {
@@ -2107,8 +2107,8 @@ LABEL_12:
     do
     {
       v11 = left[4].__left_;
-      v12 = v11 >= v7;
-      v13 = v11 < v7;
+      v12 = v11 >= connectionCopy;
+      v13 = v11 < connectionCopy;
       if (v12)
       {
         p_end_node = left;
@@ -2118,13 +2118,13 @@ LABEL_12:
     }
 
     while (left);
-    if (p_end_node != &self->_clients.__tree_.__end_node_ && p_end_node[4].__left_ <= v7)
+    if (p_end_node != &self->_clients.__tree_.__end_node_ && p_end_node[4].__left_ <= connectionCopy)
     {
-      if (v6)
+      if (selectorsCopy)
       {
-        v36 = v6;
-        v38 = v7;
-        v14 = [v6 count];
+        v36 = selectorsCopy;
+        v38 = connectionCopy;
+        v14 = [selectorsCopy count];
         if (v14)
         {
           if (!(v14 >> 61))
@@ -2139,7 +2139,7 @@ LABEL_12:
         v42 = 0u;
         v39 = 0u;
         v40 = 0u;
-        v20 = v6;
+        v20 = selectorsCopy;
         v21 = [v20 countByEnumeratingWithState:&v39 objects:v50 count:16];
         if (v21)
         {
@@ -2168,7 +2168,7 @@ LABEL_12:
                 sub_10000A318(buf, p_end_node[5].__left_);
                 v26 = v46;
                 v27 = *buf;
-                v28 = [v38 ct_clientID];
+                ct_clientID = [v38 ct_clientID];
                 *__p = 138412802;
                 v29 = buf;
                 if (v26 < 0)
@@ -2180,7 +2180,7 @@ LABEL_12:
                 *&__p[12] = 2080;
                 *&__p[14] = v29;
                 v48 = 2048;
-                v49 = v28;
+                v49 = ct_clientID;
                 _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "Received selector %@ from [%s] (cid=%lu), but it was not found", __p, 0x20u);
                 if (v46 < 0)
                 {
@@ -2197,7 +2197,7 @@ LABEL_12:
           while (v21);
         }
 
-        v6 = v36;
+        selectorsCopy = v36;
         v8 = v38;
         [(CTXPCServer *)self getLogContext];
         v30 = *&__p[8];
@@ -2207,7 +2207,7 @@ LABEL_12:
           sub_10000A318(buf, p_end_node[5].__left_);
           v31 = v46;
           v32 = *buf;
-          v33 = [v38 ct_clientID];
+          ct_clientID2 = [v38 ct_clientID];
           v34 = buf;
           if (v31 < 0)
           {
@@ -2217,7 +2217,7 @@ LABEL_12:
           *__p = 136315650;
           *&__p[4] = v34;
           *&__p[12] = 2048;
-          *&__p[14] = v33;
+          *&__p[14] = ct_clientID2;
           v48 = 2048;
           v49 = 0;
           _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEFAULT, "Client [%s] (cid=%lu) registered for %zu notification(s)", __p, 0x20u);
@@ -2255,7 +2255,7 @@ LABEL_12:
           sub_10000A318(__p, p_end_node[5].__left_);
           v16 = SHIBYTE(v48);
           v17 = *__p;
-          v18 = [v8 ct_clientID];
+          ct_clientID3 = [v8 ct_clientID];
           v19 = __p;
           if (v16 < 0)
           {
@@ -2265,7 +2265,7 @@ LABEL_12:
           *buf = 136315394;
           *&buf[4] = v19;
           v44 = 2048;
-          v45 = v18;
+          v45 = ct_clientID3;
           _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Client [%s] (cid=%lu) deregistered for all notifications", buf, 0x16u);
           if (SHIBYTE(v48) < 0)
           {
@@ -2277,22 +2277,22 @@ LABEL_12:
   }
 }
 
-- (BOOL)clientHandler:(id)a3 hasEntitlement:(int)a4
+- (BOOL)clientHandler:(id)handler hasEntitlement:(int)entitlement
 {
-  v5 = a3;
-  v6 = [v5 connection];
-  v7 = v6;
-  if (v6)
+  handlerCopy = handler;
+  connection = [handlerCopy connection];
+  v7 = connection;
+  if (connection)
   {
-    v8 = [v6 processIdentifier];
-    [(CTXPCServer *)self _getProcInfo_sync:v8];
+    processIdentifier = [connection processIdentifier];
+    [(CTXPCServer *)self _getProcInfo_sync:processIdentifier];
     [(CTXPCServer *)self getLogContext];
     v9 = v13;
     ctu::OsLogContext::~OsLogContext(buf);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109120;
-      v12 = v8;
+      v12 = processIdentifier;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Received request with no process info from pid %d!", buf, 8u);
     }
   }
@@ -2300,15 +2300,15 @@ LABEL_12:
   return 0;
 }
 
-- (void)connection:(id)a3 handleInvocation:(id)a4 isReply:(BOOL)a5
+- (void)connection:(id)connection handleInvocation:(id)invocation isReply:(BOOL)reply
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (v5)
+  replyCopy = reply;
+  connectionCopy = connection;
+  invocationCopy = invocation;
+  v10 = invocationCopy;
+  if (replyCopy)
   {
-    [v9 invoke];
+    [invocationCopy invoke];
     goto LABEL_17;
   }
 
@@ -2371,26 +2371,26 @@ LABEL_13:
     sub_100004A34(v19);
   }
 
-  v21 = [v8 processIdentifier];
+  processIdentifier = [connectionCopy processIdentifier];
   v23 = 0;
   v24 = 0;
-  [(CTXPCServer *)self _getProcInfo_sync:v21];
+  [(CTXPCServer *)self _getProcInfo_sync:processIdentifier];
   [(CTXPCServer *)self getLogContext];
   v22 = *&buf[8];
   ctu::OsLogContext::~OsLogContext(buf);
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    *&buf[4] = v21;
+    *&buf[4] = processIdentifier;
     _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "Received request with no process info from pid %d!", buf, 8u);
   }
 
 LABEL_17:
 }
 
-- (os_state_data_s)_dumpState_sync:(os_state_hints_s *)a3
+- (os_state_data_s)_dumpState_sync:(os_state_hints_s *)state_sync
 {
-  if (a3->var2 == 3)
+  if (state_sync->var2 == 3)
   {
     v20 = 0;
     sub_10128CF00(&v20, &self->_clients.__tree_.__begin_node_);
@@ -2456,7 +2456,7 @@ LABEL_17:
     ctu::OsLogContext::~OsLogContext(&error);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      var2 = a3->var2;
+      var2 = state_sync->var2;
       LODWORD(error) = 67109120;
       DWORD1(error) = var2;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Skipping state handler for %d", &error, 8u);
@@ -2468,10 +2468,10 @@ LABEL_17:
   return v9;
 }
 
-- (void)connectionDidTriggerFault:(id)a3 logString:(id)a4
+- (void)connectionDidTriggerFault:(id)fault logString:(id)string
 {
-  v6 = a3;
-  v7 = a4;
+  faultCopy = fault;
+  stringCopy = string;
   left = self->_clients.__tree_.__end_node_.__left_;
   if (!left)
   {
@@ -2482,8 +2482,8 @@ LABEL_17:
   do
   {
     v10 = left[4].__left_;
-    v11 = v10 >= v6;
-    v12 = v10 < v6;
+    v11 = v10 >= faultCopy;
+    v12 = v10 < faultCopy;
     if (v11)
     {
       p_end_node = left;
@@ -2493,7 +2493,7 @@ LABEL_17:
   }
 
   while (left);
-  if (p_end_node != &self->_clients.__tree_.__end_node_ && p_end_node[4].__left_ <= v6)
+  if (p_end_node != &self->_clients.__tree_.__end_node_ && p_end_node[4].__left_ <= faultCopy)
   {
     [(CTXPCServer *)self getLogContext];
     v15 = *&v24[4];
@@ -2503,7 +2503,7 @@ LABEL_17:
       sub_10000A318(__p, p_end_node[5].__left_);
       v16 = v22;
       v17 = __p[0];
-      v18 = [v6 ct_clientID];
+      ct_clientID = [faultCopy ct_clientID];
       v19 = __p;
       *buf = 136315650;
       if (v16 < 0)
@@ -2513,9 +2513,9 @@ LABEL_17:
 
       *v24 = v19;
       *&v24[8] = 2048;
-      *&v24[10] = v18;
+      *&v24[10] = ct_clientID;
       v25 = 2112;
-      v26 = v7;
+      v26 = stringCopy;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Triggering fault for client [%s] (cid=%lu): %@", buf, 0x20u);
       if (v22 < 0)
       {
@@ -2523,8 +2523,8 @@ LABEL_17:
       }
     }
 
-    v20 = [v6 remoteObjectProxy];
-    [v20 clientDidTriggerFault:v7];
+    remoteObjectProxy = [faultCopy remoteObjectProxy];
+    [remoteObjectProxy clientDidTriggerFault:stringCopy];
   }
 
   else
@@ -2535,9 +2535,9 @@ LABEL_9:
     ctu::OsLogContext::~OsLogContext(buf);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      v14 = [v6 ct_clientID];
+      ct_clientID2 = [faultCopy ct_clientID];
       *buf = 134217984;
-      *v24 = v14;
+      *v24 = ct_clientID2;
       _os_log_error_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "Failed to send fault to client %lu", buf, 0xCu);
     }
   }
@@ -2550,11 +2550,11 @@ LABEL_9:
   return WeakRetained;
 }
 
-- (void)setRegistry:(shared_ptr<const Registry>)a3
+- (void)setRegistry:(shared_ptr<const Registry>)registry
 {
   p_registry = &self->_registry;
-  v5 = *a3.__ptr_;
-  v4 = *(a3.__ptr_ + 1);
+  v5 = *registry.__ptr_;
+  v4 = *(registry.__ptr_ + 1);
   if (v4)
   {
     atomic_fetch_add_explicit((v4 + 8), 1uLL, memory_order_relaxed);

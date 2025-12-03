@@ -18,7 +18,7 @@
   v14 = [MEMORY[0x277D10860] crystalMigrateCardioFitnessOnboardingTileDismissalDateToKeyValueStorageWithUserDefaults:v12];
   v19[1] = v14;
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v19 count:2];
-  v16 = [a1 initWithProfile:v11 identifier:@"HeartHealthDaemon" currentMigrationVersion:18002 migrationSteps:v15 delegate:v9 loggingCategory:*MEMORY[0x277CCC2D0]];
+  v16 = [self initWithProfile:v11 identifier:@"HeartHealthDaemon" currentMigrationVersion:18002 migrationSteps:v15 delegate:v9 loggingCategory:*MEMORY[0x277CCC2D0]];
 
   v17 = *MEMORY[0x277D85DE8];
   return v16;

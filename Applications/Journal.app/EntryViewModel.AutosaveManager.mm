@@ -1,12 +1,12 @@
 @interface EntryViewModel.AutosaveManager
-- (void)receivedNotification:(id)a3;
+- (void)receivedNotification:(id)notification;
 - (void)startAutosaveTimer;
 - (void)stopAutosaveTimer;
 @end
 
 @implementation EntryViewModel.AutosaveManager
 
-- (void)receivedNotification:(id)a3
+- (void)receivedNotification:(id)notification
 {
   v3 = type metadata accessor for Notification();
   v4 = *(v3 - 8);

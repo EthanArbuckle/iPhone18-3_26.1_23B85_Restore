@@ -2,19 +2,19 @@
 - (BOOL)_lock_isUsable;
 - (BOOL)isUsable;
 - (BOOL)isValid;
-- (BOOL)matchesPortOfRight:(id)a3;
+- (BOOL)matchesPortOfRight:(id)right;
 - (BSMachPortRight)init;
-- (BSMachPortRight)initWithCoder:(id)a3;
-- (BSMachPortRight)initWithXPCDictionary:(id)a3;
+- (BSMachPortRight)initWithCoder:(id)coder;
+- (BSMachPortRight)initWithXPCDictionary:(id)dictionary;
 - (NSString)description;
 - (uint64_t)_port;
 - (unsigned)extractPortAndIKnowWhatImDoingISwear;
-- (void)_initWithPort:(char)a3 type:(int)a4 owner:(void *)a5 trace:;
-- (void)_lock_invalidateForOwner:(uint64_t)a1;
-- (void)accessPort:(id)a3;
+- (void)_initWithPort:(char)port type:(int)type owner:(void *)owner trace:;
+- (void)_lock_invalidateForOwner:(uint64_t)owner;
+- (void)accessPort:(id)port;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)encodeWithXPCDictionary:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)encodeWithXPCDictionary:(id)dictionary;
 - (void)invalidate;
 @end
 
@@ -22,19 +22,19 @@
 
 - (BOOL)_lock_isUsable
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  os_unfair_lock_assert_owner((a1 + 20));
-  if (*(a1 + 32) - 1 > 2)
+  os_unfair_lock_assert_owner((self + 20));
+  if (*(self + 32) - 1 > 2)
   {
     return 0;
   }
 
-  v2 = *(a1 + 24);
-  v3 = dword_18FFA2FB0[(*(a1 + 32) - 1)];
+  v2 = *(self + 24);
+  v3 = dword_18FFA2FB0[(*(self + 32) - 1)];
 
   return BSMachPortIsType(v2, v3);
 }
@@ -60,21 +60,21 @@
 - (BOOL)isUsable
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(BSMachPortRight *)self _lock_isUsable];
+  _lock_isUsable = [(BSMachPortRight *)self _lock_isUsable];
   os_unfair_lock_unlock(&self->_lock);
-  return v3;
+  return _lock_isUsable;
 }
 
 - (uint64_t)_port
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  os_unfair_lock_lock(a1 + 5);
-  os_unfair_lock_assert_owner(a1 + 5);
-  os_unfair_lock_opaque = a1[6]._os_unfair_lock_opaque;
+  os_unfair_lock_lock(self + 5);
+  os_unfair_lock_assert_owner(self + 5);
+  os_unfair_lock_opaque = self[6]._os_unfair_lock_opaque;
   if (os_unfair_lock_opaque + 1 >= 2)
   {
     v3 = os_unfair_lock_opaque;
@@ -85,7 +85,7 @@
     v3 = 0;
   }
 
-  os_unfair_lock_unlock(a1 + 5);
+  os_unfair_lock_unlock(self + 5);
   return v3;
 }
 
@@ -99,9 +99,9 @@
     v6 = [v3 appendObject:trace withName:0];
   }
 
-  v7 = [v3 build];
+  build = [v3 build];
 
-  return v7;
+  return build;
 }
 
 - (unsigned)extractPortAndIKnowWhatImDoingISwear
@@ -123,54 +123,54 @@
   return lock_port;
 }
 
-- (void)_initWithPort:(char)a3 type:(int)a4 owner:(void *)a5 trace:
+- (void)_initWithPort:(char)port type:(int)type owner:(void *)owner trace:
 {
   v25 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v18.receiver = a1;
+  v18.receiver = self;
   v18.super_class = BSMachPortRight;
   v9 = objc_msgSendSuper2(&v18, sel_init);
   if (v9)
   {
-    v10 = [a5 copy];
+    v10 = [owner copy];
     v11 = v9[1];
     v9[1] = v10;
 
     v9[2] = 0;
     *(v9 + 6) = a2;
     *(v9 + 7) = a2;
-    *(v9 + 32) = a3;
-    *(v9 + 33) = a4;
+    *(v9 + 32) = port;
+    *(v9 + 33) = type;
     v12 = BSLogMachPort();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
-      v13 = [MEMORY[0x1E696AF00] currentThread];
-      v14 = [MEMORY[0x1E696AF00] callStackSymbols];
+      currentThread = [MEMORY[0x1E696AF00] currentThread];
+      callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
       *buf = 138543874;
       v20 = v9;
       v21 = 2114;
-      v22 = v13;
+      v22 = currentThread;
       v23 = 2114;
-      v24 = v14;
+      v24 = callStackSymbols;
       _os_log_debug_impl(&dword_18FEF6000, v12, OS_LOG_TYPE_DEBUG, " *|machport|* %{public}@ -> (%{public}@) %{public}@", buf, 0x20u);
     }
   }
 
   else
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    v12 = v15;
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    v12 = currentHandler;
     v16 = @"external ";
-    if (!a4)
+    if (!type)
     {
       v16 = &stru_1F03A1A98;
     }
 
-    [v15 handleFailureInMethod:sel__initWithPort_type_owner_trace_ object:0 file:@"BSMachPortRight.m" lineNumber:161 description:@"failed to create wrapping object for %@port=%x with trace=%@", v16, a2, a5];
+    [currentHandler handleFailureInMethod:sel__initWithPort_type_owner_trace_ object:0 file:@"BSMachPortRight.m" lineNumber:161 description:@"failed to create wrapping object for %@port=%x with trace=%@", v16, a2, owner];
   }
 
   return v9;
@@ -178,8 +178,8 @@
 
 - (BSMachPortRight)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"BSMachPortRight.m" lineNumber:167 description:@"you cannot alloc a BSMachPortRight directly - use one of the exposed initializers instead"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"BSMachPortRight.m" lineNumber:167 description:@"you cannot alloc a BSMachPortRight directly - use one of the exposed initializers instead"];
 
   return [(BSMachPortRight *)self _initWithPort:0 type:0 owner:0 trace:?];
 }
@@ -192,14 +192,14 @@
   return v3;
 }
 
-- (void)accessPort:(id)a3
+- (void)accessPort:(id)port
 {
   os_unfair_lock_lock(&self->_lock);
   lock_accessCount = self->_lock_accessCount;
   if (lock_accessCount == 255)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"BSMachPortRight.m" lineNumber:193 description:@"_lock_accessCount overflow"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"BSMachPortRight.m" lineNumber:193 description:@"_lock_accessCount overflow"];
 
     lock_accessCount = self->_lock_accessCount;
   }
@@ -225,13 +225,13 @@
   }
 
   os_unfair_lock_unlock(&self->_lock);
-  (*(a3 + 2))(a3, v8);
+  (*(port + 2))(port, v8);
   os_unfair_lock_lock(&self->_lock);
   v9 = self->_lock_accessCount;
   if (!self->_lock_accessCount)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"BSMachPortRight.m" lineNumber:203 description:@"_lock_accessCount underflow"];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"BSMachPortRight.m" lineNumber:203 description:@"_lock_accessCount underflow"];
 
     v9 = self->_lock_accessCount;
   }
@@ -245,13 +245,13 @@
   }
 }
 
-- (BOOL)matchesPortOfRight:(id)a3
+- (BOOL)matchesPortOfRight:(id)right
 {
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  if (a3)
+  if (right)
   {
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
@@ -259,7 +259,7 @@
     v5[3] = &unk_1E72CB700;
     v5[4] = self;
     v5[5] = &v6;
-    [a3 accessPort:v5];
+    [right accessPort:v5];
     v3 = *(v7 + 24);
   }
 
@@ -291,20 +291,20 @@ uint64_t __38__BSMachPortRight_matchesPortOfRight___block_invoke(uint64_t result
   return result;
 }
 
-- (void)_lock_invalidateForOwner:(uint64_t)a1
+- (void)_lock_invalidateForOwner:(uint64_t)owner
 {
   v24 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (owner)
   {
-    os_unfair_lock_assert_owner((a1 + 16));
-    os_unfair_lock_assert_owner((a1 + 20));
-    if (*(a1 + 24))
+    os_unfair_lock_assert_owner((owner + 16));
+    os_unfair_lock_assert_owner((owner + 20));
+    if (*(owner + 24))
     {
       v4 = BSLogMachPort();
       if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
       {
         v7 = objc_opt_class();
-        if ([(BSMachPortRight *)a1 _lock_isUsable])
+        if ([(BSMachPortRight *)owner _lock_isUsable])
         {
           v8 = @"YES";
         }
@@ -314,28 +314,28 @@ uint64_t __38__BSMachPortRight_matchesPortOfRight___block_invoke(uint64_t result
           v8 = @"NO";
         }
 
-        v9 = *(a1 + 8);
-        v10 = [MEMORY[0x1E696AF00] currentThread];
-        v11 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v9 = *(owner + 8);
+        currentThread = [MEMORY[0x1E696AF00] currentThread];
+        callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
         v12 = 138544642;
         v13 = v7;
         v14 = 2048;
-        v15 = a1;
+        ownerCopy = owner;
         v16 = 2112;
         v17 = v8;
         v18 = 2114;
         v19 = v9;
         v20 = 2114;
-        v21 = v10;
+        v21 = currentThread;
         v22 = 2114;
-        v23 = v11;
+        v23 = callStackSymbols;
         _os_log_debug_impl(&dword_18FEF6000, v4, OS_LOG_TYPE_DEBUG, " *|machport|* invalidate <%{public}@:%p usable=%@ %{public}@> -> (%{public}@) %{public}@", &v12, 0x3Eu);
       }
 
       if (!a2)
       {
-        v5 = *(a1 + 32);
-        v6 = *(a1 + 24);
+        v5 = *(owner + 32);
+        v6 = *(owner + 24);
         if ((v5 - 2) >= 2)
         {
           if (v5 == 1)
@@ -350,27 +350,27 @@ uint64_t __38__BSMachPortRight_matchesPortOfRight___block_invoke(uint64_t result
         }
       }
 
-      *(a1 + 24) = 0;
+      *(owner + 24) = 0;
     }
   }
 }
 
-- (BSMachPortRight)initWithXPCDictionary:(id)a3
+- (BSMachPortRight)initWithXPCDictionary:(id)dictionary
 {
-  v5 = [objc_opt_class() _type];
-  v6 = xpc_dictionary_get_value(a3, "bsmpr_p");
-  v7 = _BSMachPortTypeDecode(v5, v6);
+  _type = [objc_opt_class() _type];
+  v6 = xpc_dictionary_get_value(dictionary, "bsmpr_p");
+  v7 = _BSMachPortTypeDecode(_type, v6);
 
-  v8 = BSCreateDeserializedStringFromXPCDictionaryWithKey(a3, "bsmpr_t");
-  v9 = _BSMachPortRightDescription(v5, 0, @"xpcCode", v7, v8);
-  v10 = [(BSMachPortRight *)self _initWithPort:v7 type:v5 owner:0 trace:v9];
+  v8 = BSCreateDeserializedStringFromXPCDictionaryWithKey(dictionary, "bsmpr_t");
+  v9 = _BSMachPortRightDescription(_type, 0, @"xpcCode", v7, v8);
+  v10 = [(BSMachPortRight *)self _initWithPort:v7 type:_type owner:0 trace:v9];
 
   return v10;
 }
 
-- (void)encodeWithXPCDictionary:(id)a3
+- (void)encodeWithXPCDictionary:(id)dictionary
 {
-  if (a3)
+  if (dictionary)
   {
     os_unfair_lock_lock(&self->_invalidationLock);
     os_unfair_lock_lock(&self->_lock);
@@ -385,7 +385,7 @@ uint64_t __38__BSMachPortRight_matchesPortOfRight___block_invoke(uint64_t result
 
       if (v5)
       {
-        xpc_dictionary_set_value(a3, "bsmpr_p", v5);
+        xpc_dictionary_set_value(dictionary, "bsmpr_p", v5);
       }
     }
 
@@ -393,29 +393,29 @@ uint64_t __38__BSMachPortRight_matchesPortOfRight___block_invoke(uint64_t result
     os_unfair_lock_unlock(&self->_invalidationLock);
     trace = self->_trace;
 
-    BSSerializeStringToXPCDictionaryWithKey(trace, a3, "bsmpr_t");
+    BSSerializeStringToXPCDictionaryWithKey(trace, dictionary, "bsmpr_t");
   }
 }
 
-- (BSMachPortRight)initWithCoder:(id)a3
+- (BSMachPortRight)initWithCoder:(id)coder
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = [objc_opt_class() _type];
+  _type = [objc_opt_class() _type];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (v5 - 1 > 2)
+    if (_type - 1 > 2)
     {
       v6 = MEMORY[0x1E69E9ED0];
     }
 
     else
     {
-      v6 = qword_1E72CB790[(v5 - 1)];
+      v6 = qword_1E72CB790[(_type - 1)];
     }
 
-    v9 = [a3 decodeXPCObjectOfType:v6 forKey:@"bsmpr_p"];
-    v8 = _BSMachPortTypeDecode(v5, v9);
+    v9 = [coder decodeXPCObjectOfType:v6 forKey:@"bsmpr_p"];
+    v8 = _BSMachPortTypeDecode(_type, v9);
   }
 
   else
@@ -437,14 +437,14 @@ uint64_t __38__BSMachPortRight_matchesPortOfRight___block_invoke(uint64_t result
     v8 = 0;
   }
 
-  v10 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"bsmpr_t"];
-  v11 = _BSMachPortRightDescription(v5, 0, @"secCode", v8, v10);
-  v12 = [(BSMachPortRight *)self _initWithPort:v8 type:v5 owner:0 trace:v11];
+  v10 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"bsmpr_t"];
+  v11 = _BSMachPortRightDescription(_type, 0, @"secCode", v8, v10);
+  v12 = [(BSMachPortRight *)self _initWithPort:v8 type:_type owner:0 trace:v11];
 
   return v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -462,7 +462,7 @@ uint64_t __38__BSMachPortRight_matchesPortOfRight___block_invoke(uint64_t result
 
       if (v5)
       {
-        [a3 encodeXPCObject:v5 forKey:@"bsmpr_p"];
+        [coder encodeXPCObject:v5 forKey:@"bsmpr_p"];
       }
     }
 
@@ -470,7 +470,7 @@ uint64_t __38__BSMachPortRight_matchesPortOfRight___block_invoke(uint64_t result
     os_unfair_lock_unlock(&self->_invalidationLock);
     trace = self->_trace;
 
-    [a3 encodeObject:trace forKey:@"bsmpr_t"];
+    [coder encodeObject:trace forKey:@"bsmpr_t"];
   }
 
   else

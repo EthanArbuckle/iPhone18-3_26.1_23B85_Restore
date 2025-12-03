@@ -3,18 +3,18 @@
 - (LSApplicationRecord)hostApplicationRecord;
 - (NSURL)settingsDocumentsAndDataURL;
 - (UIViewController)viewController;
-- (void)applicationDidBecomeActive:(id)a3;
-- (void)cleanupAlert:(id)a3;
+- (void)applicationDidBecomeActive:(id)active;
+- (void)cleanupAlert:(id)alert;
 - (void)dealloc;
 - (void)dismissAlert;
-- (void)getIsICloudDriveEnabledWithCompletion:(id)a3;
+- (void)getIsICloudDriveEnabledWithCompletion:(id)completion;
 - (void)presentAlert;
 - (void)promptToUseICloudOrLocal;
 - (void)promptToUseOtherOrLocal;
-- (void)setAlert:(id)a3;
-- (void)ubiquityIdentityDidChange:(id)a3;
+- (void)setAlert:(id)alert;
+- (void)ubiquityIdentityDidChange:(id)change;
 - (void)updateAlertState;
-- (void)updateAlertStateFor:(id)a3;
+- (void)updateAlertStateFor:(id)for;
 @end
 
 @implementation DOCDefaultSourceUIManager
@@ -26,23 +26,23 @@
   return Strong;
 }
 
-- (void)setAlert:(id)a3
+- (void)setAlert:(id)alert
 {
   v5 = type metadata accessor for DispatchPredicate();
   v6 = *(v5 - 8);
   MEMORY[0x28223BE20](v5, v7);
   v9 = (&v13 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0));
   type metadata accessor for NSMutableAttributedString(0, &lazy cache variable for type metadata for OS_dispatch_queue);
-  v10 = a3;
-  v11 = self;
+  alertCopy = alert;
+  selfCopy = self;
   *v9 = static OS_dispatch_queue.main.getter();
   (*(v6 + 104))(v9, *MEMORY[0x277D85200], v5);
-  LOBYTE(a3) = _dispatchPreconditionTest(_:)();
+  LOBYTE(alert) = _dispatchPreconditionTest(_:)();
   (*(v6 + 8))(v9, v5);
-  if (a3)
+  if (alert)
   {
-    v12 = *(v11 + OBJC_IVAR___DOCDefaultSourceUIManager_alert);
-    *(v11 + OBJC_IVAR___DOCDefaultSourceUIManager_alert) = v10;
+    v12 = *(selfCopy + OBJC_IVAR___DOCDefaultSourceUIManager_alert);
+    *(selfCopy + OBJC_IVAR___DOCDefaultSourceUIManager_alert) = alertCopy;
   }
 
   else
@@ -53,9 +53,9 @@
 
 - (LSApplicationRecord)hostApplicationRecord
 {
-  v2 = self;
-  v3 = [(DOCDefaultSourceUIManager *)v2 configuration];
-  v4 = [(DOCConfiguration *)v3 hostIdentifier];
+  selfCopy = self;
+  configuration = [(DOCDefaultSourceUIManager *)selfCopy configuration];
+  hostIdentifier = [(DOCConfiguration *)configuration hostIdentifier];
 
   v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v7 = v6;
@@ -72,7 +72,7 @@
   v4 = *(v3 - 8);
   MEMORY[0x28223BE20](v3, v5);
   v7 = &v13 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v8 = self;
+  selfCopy = self;
   DOCDefaultSourceUIManager.settingsDocumentsAndDataURL.getter(v7);
 
   URL._bridgeToObjectiveC()(v9);
@@ -85,17 +85,17 @@
 - (void)dealloc
 {
   v3 = objc_opt_self();
-  v4 = self;
-  v5 = [v3 defaultCenter];
-  [v5 removeObserver_];
+  selfCopy = self;
+  defaultCenter = [v3 defaultCenter];
+  [defaultCenter removeObserver_];
 
   DistributedCenter = CFNotificationCenterGetDistributedCenter();
   if (DistributedCenter)
   {
     v7 = DistributedCenter;
-    CFNotificationCenterRemoveEveryObserver(v7, v4);
+    CFNotificationCenterRemoveEveryObserver(v7, selfCopy);
 
-    v8.receiver = v4;
+    v8.receiver = selfCopy;
     v8.super_class = DOCDefaultSourceUIManager;
     [(DOCDefaultSourceUIManager *)&v8 dealloc];
   }
@@ -106,17 +106,17 @@
   }
 }
 
-- (void)ubiquityIdentityDidChange:(id)a3
+- (void)ubiquityIdentityDidChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
+  changeCopy = change;
+  selfCopy = self;
   specialized DOCDefaultSourceUIManager.ubiquityIdentityDidChange(_:)(&unk_285C91140, partial apply for closure #1 in DOCDefaultSourceUIManager.ubiquityIdentityDidChange(_:), &block_descriptor_145_0);
 }
 
-- (void)applicationDidBecomeActive:(id)a3
+- (void)applicationDidBecomeActive:(id)active
 {
-  v4 = a3;
-  v5 = self;
+  activeCopy = active;
+  selfCopy = self;
   specialized DOCDefaultSourceUIManager.ubiquityIdentityDidChange(_:)(&unk_285C910F0, partial apply for closure #1 in DOCDefaultSourceUIManager.applicationDidBecomeActive(_:), &block_descriptor_139);
 }
 
@@ -142,60 +142,60 @@
 
 - (void)dismissAlert
 {
-  v4 = self;
-  v2 = [(DOCDefaultSourceUIManager *)v4 alert];
-  if (v2)
+  selfCopy = self;
+  alert = [(DOCDefaultSourceUIManager *)selfCopy alert];
+  if (alert)
   {
-    v3 = v2;
-    [(UIAlertController *)v2 dismissViewControllerAnimated:1 completion:0];
+    v3 = alert;
+    [(UIAlertController *)alert dismissViewControllerAnimated:1 completion:0];
   }
 
-  [(DOCDefaultSourceUIManager *)v4 setAlert:0];
+  [(DOCDefaultSourceUIManager *)selfCopy setAlert:0];
 }
 
-- (void)cleanupAlert:(id)a3
+- (void)cleanupAlert:(id)alert
 {
-  v4 = a3;
-  v5 = self;
-  DOCDefaultSourceUIManager.cleanupAlert(_:)(v4);
+  alertCopy = alert;
+  selfCopy = self;
+  DOCDefaultSourceUIManager.cleanupAlert(_:)(alertCopy);
 }
 
 - (void)promptToUseICloudOrLocal
 {
-  v2 = self;
+  selfCopy = self;
   DOCDefaultSourceUIManager.promptToUseICloudOrLocal()();
 }
 
 - (void)promptToUseOtherOrLocal
 {
-  v2 = self;
+  selfCopy = self;
   DOCDefaultSourceUIManager.promptToUseOtherOrLocal()();
 }
 
-- (void)getIsICloudDriveEnabledWithCompletion:(id)a3
+- (void)getIsICloudDriveEnabledWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   v6 = swift_allocObject();
   *(v6 + 16) = partial apply for thunk for @escaping @callee_unowned @convention(block) (@unowned ObjCBool) -> ();
   *(v6 + 24) = v5;
-  v7 = self;
+  selfCopy = self;
 
   DOCDefaultSourceUIManager.getICloudSourcesIfEnabled(completion:)(partial apply for closure #1 in DOCDefaultSourceUIManager.getIsICloudDriveEnabled(completion:), v6);
 }
 
 - (void)updateAlertState
 {
-  v2 = self;
+  selfCopy = self;
   DOCDefaultSourceUIManager.updateAlertState()();
 }
 
-- (void)updateAlertStateFor:(id)a3
+- (void)updateAlertStateFor:(id)for
 {
-  v4 = a3;
-  v5 = self;
-  DOCDefaultSourceUIManager.updateAlertState(for:)(v4);
+  forCopy = for;
+  selfCopy = self;
+  DOCDefaultSourceUIManager.updateAlertState(for:)(forCopy);
 }
 
 - (DOCDefaultSourceUIManager)init

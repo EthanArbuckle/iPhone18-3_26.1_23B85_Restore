@@ -1,14 +1,14 @@
 @interface RAPSelfLoadedPlace
 - (CLLocationCoordinate2D)coordinate;
-- (RAPSelfLoadedPlace)initWithMapItem:(id)a3;
+- (RAPSelfLoadedPlace)initWithMapItem:(id)item;
 @end
 
 @implementation RAPSelfLoadedPlace
 
 - (CLLocationCoordinate2D)coordinate
 {
-  v2 = [(MKMapItem *)self->_mapItem location];
-  [v2 coordinate];
+  location = [(MKMapItem *)self->_mapItem location];
+  [location coordinate];
   v4 = v3;
   v6 = v5;
 
@@ -19,16 +19,16 @@
   return result;
 }
 
-- (RAPSelfLoadedPlace)initWithMapItem:(id)a3
+- (RAPSelfLoadedPlace)initWithMapItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   v9.receiver = self;
   v9.super_class = RAPSelfLoadedPlace;
   v6 = [(RAPSelfLoadedPlace *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_mapItem, a3);
+    objc_storeStrong(&v6->_mapItem, item);
   }
 
   return v7;

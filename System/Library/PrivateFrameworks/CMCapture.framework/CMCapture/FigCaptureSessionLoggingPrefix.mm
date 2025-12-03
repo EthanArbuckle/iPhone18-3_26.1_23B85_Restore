@@ -1,5 +1,5 @@
 @interface FigCaptureSessionLoggingPrefix
-- (char)initWithClientAuditToken:(uint64_t)a3 captureSession:;
+- (char)initWithClientAuditToken:(uint64_t)token captureSession:;
 - (id)description;
 - (void)_updateLoggingPrefix;
 - (void)dealloc;
@@ -45,20 +45,20 @@
   [(FigCaptureSessionLoggingPrefix *)&v3 dealloc];
 }
 
-- (char)initWithClientAuditToken:(uint64_t)a3 captureSession:
+- (char)initWithClientAuditToken:(uint64_t)token captureSession:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v10.receiver = a1;
+  v10.receiver = self;
   v10.super_class = FigCaptureSessionLoggingPrefix;
   v5 = objc_msgSendSuper2(&v10, sel_init);
   v6 = v5;
   if (v5)
   {
-    *(v5 + 6) = a3;
+    *(v5 + 6) = token;
     pthread_rwlock_init((v5 + 56), 0);
     v8 = *a2;
     v9 = a2[1];

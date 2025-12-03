@@ -1,9 +1,9 @@
 @interface SKView
 + (Class)layerClass;
 + (id)debugHierarchyAdditionalGroupingIDs;
-+ (id)debugHierarchyObjectsInGroupWithID:(id)a3 onObject:(id)a4 outOptions:(id *)a5;
++ (id)debugHierarchyObjectsInGroupWithID:(id)d onObject:(id)object outOptions:(id *)options;
 + (id)debugHierarchyPropertyDescriptions;
-+ (id)debugHierarchyValueForPropertyWithName:(id)a3 onObject:(id)a4 outOptions:(id *)a5 outError:(id *)a6;
++ (id)debugHierarchyValueForPropertyWithName:(id)name onObject:(id)object outOptions:(id *)options outError:(id *)error;
 - (BOOL)_renderUpdateEnabled;
 - (BOOL)_showsCPUStats;
 - (BOOL)_showsGPUStats;
@@ -11,7 +11,7 @@
 - (BOOL)hasValidViewFramebuffer;
 - (BOOL)ignoresSiblingOrder;
 - (BOOL)isAsynchronous;
-- (BOOL)isEqualToView:(id)a3;
+- (BOOL)isEqualToView:(id)view;
 - (BOOL)shouldCullNonVisibleNodes;
 - (BOOL)showsDrawCount;
 - (BOOL)showsFPS;
@@ -26,8 +26,8 @@
 - (NSObject)delegate;
 - (SKTexture)textureFromNode:(SKNode *)node;
 - (SKTexture)textureFromNode:(SKNode *)node crop:(CGRect)crop;
-- (SKView)initWithCoder:(id)a3;
-- (SKView)initWithFrame:(CGRect)a3;
+- (SKView)initWithCoder:(id)coder;
+- (SKView)initWithFrame:(CGRect)frame;
 - (double)_fps;
 - (double)alphaValue;
 - (double)getViewTransform;
@@ -35,40 +35,40 @@
 - (float)_getViewContentsScale;
 - (id).cxx_construct;
 - (id)_getPerformanceStats;
-- (id)archiveToFile:(id)a3;
-- (id)captureToFile:(id)a3;
-- (id)focusItemsInRect:(CGRect)a3;
+- (id)archiveToFile:(id)file;
+- (id)captureToFile:(id)file;
+- (id)focusItemsInRect:(CGRect)rect;
 - (id)getRenderOptions;
 - (id)snapshot;
-- (id)textureFromNode:(id)a3 withOptions:(id)a4;
+- (id)textureFromNode:(id)node withOptions:(id)options;
 - (shared_ptr<jet_framebuffer>)nextFramebuffer;
 - (unint64_t)_getEffectivePreferredFramesPerSecond;
 - (void)CBApplicationDidBecomeActive;
 - (void)CBApplicationWillResignActive;
 - (void)_commonInit;
-- (void)_dispatchRenderToIOSurfaceID:(unsigned int)a3 async:(BOOL)a4 onQueue:(id)a5 waitOnFence:(BOOL)a6 preRender:(id)a7 postRender:(id)a8;
+- (void)_dispatchRenderToIOSurfaceID:(unsigned int)d async:(BOOL)async onQueue:(id)queue waitOnFence:(BOOL)fence preRender:(id)render postRender:(id)postRender;
 - (void)_endFrameStats;
 - (void)_ensureRenderer;
-- (void)_renderSynchronouslyForTime:(double)a3 preRender:(id)a4 postRender:(id)a5 withMTLScheduleHandler:(id)a6;
-- (void)_renderToIOSurfaceID:(unsigned int)a3 scaleFactor:(float)a4 asynchronous:(BOOL)a5 waitOnFence:(BOOL)a6 preRender:(id)a7 postRender:(id)a8;
+- (void)_renderSynchronouslyForTime:(double)time preRender:(id)render postRender:(id)postRender withMTLScheduleHandler:(id)handler;
+- (void)_renderToIOSurfaceID:(unsigned int)d scaleFactor:(float)factor asynchronous:(BOOL)asynchronous waitOnFence:(BOOL)fence preRender:(id)render postRender:(id)postRender;
 - (void)_reshape;
-- (void)_update:(double)a3;
-- (void)_vsyncRenderForTime:(double)a3 preRender:(id)a4 postRender:(id)a5;
+- (void)_update:(double)_update;
+- (void)_vsyncRenderForTime:(double)time preRender:(id)render postRender:(id)postRender;
 - (void)dealloc;
 - (void)debugPrint;
 - (void)didMoveToWindow;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)getRootNode;
 - (void)layoutSubviews;
 - (void)notifyWillRenderContent;
-- (void)overrideMetalCommandQueue:(id)a3;
+- (void)overrideMetalCommandQueue:(id)queue;
 - (void)presentScene:(SKScene *)scene;
 - (void)presentScene:(SKScene *)scene transition:(SKTransition *)transition;
 - (void)remakeFramebuffer;
 - (void)setAllowsTransparency:(BOOL)allowsTransparency;
 - (void)setAsynchronous:(BOOL)asynchronous;
 - (void)setDisableDepthStencilBuffer:(BOOL)disableDepthStencilBuffer;
-- (void)setDynamicRenderBlock:(id)a3;
+- (void)setDynamicRenderBlock:(id)block;
 - (void)setFrameInterval:(NSInteger)frameInterval;
 - (void)setIgnoresSiblingOrder:(BOOL)ignoresSiblingOrder;
 - (void)setPaused:(BOOL)paused;
@@ -81,22 +81,22 @@
 - (void)setShowsPhysics:(BOOL)showsPhysics;
 - (void)setShowsQuadCount:(BOOL)showsQuadCount;
 - (void)setUpRenderCallback;
-- (void)set_renderUpdateEnabled:(BOOL)a3;
-- (void)set_showsCPUStats:(BOOL)a3;
-- (void)set_showsGPUStats:(BOOL)a3;
-- (void)set_viewScale:(double)a3;
-- (void)set_viewTranslation:(CGPoint)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)set_renderUpdateEnabled:(BOOL)enabled;
+- (void)set_showsCPUStats:(BOOL)stats;
+- (void)set_showsGPUStats:(BOOL)stats;
+- (void)set_viewScale:(double)scale;
+- (void)set_viewTranslation:(CGPoint)translation;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation SKView
 
-- (void)setDynamicRenderBlock:(id)a3
+- (void)setDynamicRenderBlock:(id)block
 {
-  v4 = MEMORY[0x21CF0AB10](a3, a2);
+  v4 = MEMORY[0x21CF0AB10](block, a2);
   v5 = *&self->_checkForDrawables;
   *&self->_checkForDrawables = v4;
 }
@@ -110,9 +110,9 @@
 - (BOOL)shouldCullNonVisibleNodes
 {
   v2 = [(NSMapTable *)self->_touchMap objectForKeyedSubscript:@"cullNonVisibleNodes"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (void)setIgnoresSiblingOrder:(BOOL)ignoresSiblingOrder
@@ -130,17 +130,17 @@
 - (BOOL)disableDepthStencilBuffer
 {
   v2 = [(NSMapTable *)self->_touchMap valueForKey:@"disableStencilBuffers"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)ignoresSiblingOrder
 {
   v2 = [(NSMapTable *)self->_touchMap objectForKeyedSubscript:@"ignoresSiblingOrder"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (void)setShowsFPS:(BOOL)showsFPS
@@ -152,9 +152,9 @@
 - (BOOL)showsFPS
 {
   v2 = [(NSMapTable *)self->_touchMap valueForKey:@"debugDrawStats_FPS"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (void)setShowsPhysics:(BOOL)showsPhysics
@@ -166,9 +166,9 @@
 - (BOOL)showsPhysics
 {
   v2 = [(NSMapTable *)self->_touchMap valueForKey:@"debugDrawPhysics"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (void)setShowsFields:(BOOL)showsFields
@@ -180,9 +180,9 @@
 - (BOOL)showsFields
 {
   v2 = [(NSMapTable *)self->_touchMap objectForKeyedSubscript:@"debugDrawPhysicsFields"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (void)setShowsQuadCount:(BOOL)showsQuadCount
@@ -194,9 +194,9 @@
 - (BOOL)showsQuadCount
 {
   v2 = [(NSMapTable *)self->_touchMap objectForKeyedSubscript:@"debugDrawStats_QuadCount"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (void)setShowsNodeCount:(BOOL)showsNodeCount
@@ -208,9 +208,9 @@
 - (BOOL)showsNodeCount
 {
   v2 = [(NSMapTable *)self->_touchMap objectForKeyedSubscript:@"debugDrawStats_NodeCount"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (void)setShowsDrawCount:(BOOL)showsDrawCount
@@ -222,63 +222,63 @@
 - (BOOL)showsDrawCount
 {
   v2 = [(NSMapTable *)self->_touchMap objectForKeyedSubscript:@"debugDrawStats_DrawCount"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-- (void)set_showsGPUStats:(BOOL)a3
+- (void)set_showsGPUStats:(BOOL)stats
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithBool:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithBool:stats];
   [NSMapTable setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
 }
 
 - (BOOL)_showsGPUStats
 {
   v2 = [(NSMapTable *)self->_touchMap objectForKeyedSubscript:@"debugDrawStats_GPU"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-- (void)set_showsCPUStats:(BOOL)a3
+- (void)set_showsCPUStats:(BOOL)stats
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithBool:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithBool:stats];
   [NSMapTable setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
 }
 
 - (BOOL)_showsCPUStats
 {
   v2 = [(NSMapTable *)self->_touchMap objectForKeyedSubscript:@"debugDrawStats_CPU"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-- (id)archiveToFile:(id)a3
+- (id)archiveToFile:(id)file
 {
-  v4 = a3;
-  v5 = [(SKView *)self scene];
+  fileCopy = file;
+  scene = [(SKView *)self scene];
 
-  if (v5)
+  if (scene)
   {
-    v6 = [(SKView *)self scene];
-    v7 = [v6 _info];
+    scene2 = [(SKView *)self scene];
+    _info = [scene2 _info];
 
-    if (!v7)
+    if (!_info)
     {
-      v8 = [MEMORY[0x277CBEB38] dictionary];
-      v9 = [(SKView *)self scene];
-      [v9 set_info:v8];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
+      scene3 = [(SKView *)self scene];
+      [scene3 set_info:dictionary];
     }
 
-    v10 = [(SKView *)self scene];
-    v11 = [v10 _info];
+    scene4 = [(SKView *)self scene];
+    _info2 = [scene4 _info];
     v12 = [(SKView *)self description];
-    [v11 setValue:v12 forKey:@"SKView"];
+    [_info2 setValue:v12 forKey:@"SKView"];
 
-    v13 = [(SKView *)self scene];
-    v14 = [v13 archiveToFile:v4];
+    scene5 = [(SKView *)self scene];
+    v14 = [scene5 archiveToFile:fileCopy];
   }
 
   else
@@ -290,28 +290,28 @@
   return v14;
 }
 
-- (id)captureToFile:(id)a3
+- (id)captureToFile:(id)file
 {
-  v4 = a3;
+  fileCopy = file;
   v5 = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, 1uLL, 1);
   v6 = [v5 objectAtIndex:0];
-  if (!v4)
+  if (!fileCopy)
   {
-    v7 = [MEMORY[0x277CBEAA8] date];
-    v4 = [v7 description];
+    date = [MEMORY[0x277CBEAA8] date];
+    fileCopy = [date description];
   }
 
-  v8 = [v4 pathExtension];
-  v9 = [v8 length];
+  pathExtension = [fileCopy pathExtension];
+  v9 = [pathExtension length];
 
   if (!v9)
   {
-    v10 = [v4 stringByAppendingPathExtension:@"skc"];
+    v10 = [fileCopy stringByAppendingPathExtension:@"skc"];
 
-    v4 = v10;
+    fileCopy = v10;
   }
 
-  v11 = v4;
+  v11 = fileCopy;
   v12 = v11;
   if (([v11 isAbsolutePath] & 1) == 0)
   {
@@ -320,53 +320,53 @@
     v12 = v13;
   }
 
-  v14 = [MEMORY[0x277CCAA00] defaultManager];
-  v15 = [v12 stringByDeletingLastPathComponent];
-  [v14 createDirectoryAtPath:v15 withIntermediateDirectories:1 attributes:0 error:0];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  stringByDeletingLastPathComponent = [v12 stringByDeletingLastPathComponent];
+  [defaultManager createDirectoryAtPath:stringByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:0];
 
-  v16 = [(SKView *)self scene];
+  scene = [(SKView *)self scene];
 
-  if (!v16)
+  if (!scene)
   {
     goto LABEL_21;
   }
 
-  v17 = [(SKView *)self scene];
-  v18 = [v17 _info];
+  scene2 = [(SKView *)self scene];
+  _info = [scene2 _info];
 
-  if (!v18)
+  if (!_info)
   {
-    v19 = [MEMORY[0x277CBEB38] dictionary];
-    v20 = [(SKView *)self scene];
-    [v20 set_info:v19];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    scene3 = [(SKView *)self scene];
+    [scene3 set_info:dictionary];
   }
 
-  v21 = [(SKView *)self scene];
-  v22 = [v21 _info];
-  [v22 setValue:MEMORY[0x277CBEC38] forKey:@"SKCapture"];
+  scene4 = [(SKView *)self scene];
+  _info2 = [scene4 _info];
+  [_info2 setValue:MEMORY[0x277CBEC38] forKey:@"SKCapture"];
 
-  v23 = [(SKView *)self scene];
-  v24 = [v23 _info];
+  scene5 = [(SKView *)self scene];
+  _info3 = [scene5 _info];
   v25 = [(SKView *)self description];
-  [v24 setValue:v25 forKey:@"SKView"];
+  [_info3 setValue:v25 forKey:@"SKView"];
 
-  v26 = [(SKView *)self scene];
-  v27 = [v26 _info];
+  scene6 = [(SKView *)self scene];
+  _info4 = [scene6 _info];
   [(SKView *)self bounds];
   v28 = NSStringFromCGRect(v50);
-  [v27 setValue:v28 forKey:@"SKView_Bounds"];
+  [_info4 setValue:v28 forKey:@"SKView_Bounds"];
 
-  v29 = [(SKView *)self scene];
-  v30 = [v29 _info];
+  scene7 = [(SKView *)self scene];
+  _info5 = [scene7 _info];
   v31 = SKGetVersionString();
-  [v30 setValue:v31 forKey:@"SKVersion"];
+  [_info5 setValue:v31 forKey:@"SKVersion"];
 
-  v32 = [(SKView *)self scene];
-  v33 = [v32 _info];
+  scene8 = [(SKView *)self scene];
+  _info6 = [scene8 _info];
   v34 = MEMORY[0x277CCABB0];
   [(SKView *)self _getViewContentsScale];
   v35 = [v34 numberWithFloat:?];
-  [v33 setValue:v35 forKey:@"SKView_ScaleFactor"];
+  [_info6 setValue:v35 forKey:@"SKView_ScaleFactor"];
 
   renderer = self->_renderer;
   if (renderer)
@@ -385,39 +385,39 @@
         goto LABEL_19;
       }
 
-      v38 = [(SKView *)self scene];
-      v39 = [v38 _info];
-      [v39 setValue:@"Metal" forKey:@"SKView_ContextType"];
+      scene9 = [(SKView *)self scene];
+      _info7 = [scene9 _info];
+      [_info7 setValue:@"Metal" forKey:@"SKView_ContextType"];
     }
 
     else
     {
-      v38 = [(SKView *)self scene];
-      v39 = [v38 _info];
-      [v39 setValue:@"OpenGL" forKey:@"SKView_ContextType"];
+      scene9 = [(SKView *)self scene];
+      _info7 = [scene9 _info];
+      [_info7 setValue:@"OpenGL" forKey:@"SKView_ContextType"];
     }
   }
 
   else
   {
-    v38 = [(SKView *)self scene];
-    v39 = [v38 _info];
-    [v39 setValue:@"None" forKey:@"SKView_ContextType"];
+    scene9 = [(SKView *)self scene];
+    _info7 = [scene9 _info];
+    [_info7 setValue:@"None" forKey:@"SKView_ContextType"];
   }
 
 LABEL_19:
   v40 = objc_opt_new();
-  v41 = [MEMORY[0x277CBEB28] data];
-  v42 = [objc_alloc(MEMORY[0x277CCAAB0]) initForWritingWithMutableData:v41];
+  data = [MEMORY[0x277CBEB28] data];
+  v42 = [objc_alloc(MEMORY[0x277CCAAB0]) initForWritingWithMutableData:data];
   [v42 setDelegate:v40];
   [v42 setRequiresSecureCoding:0];
-  v43 = [(SKView *)self scene];
-  [v42 encodeObject:v43 forKey:*MEMORY[0x277CCA308]];
+  scene10 = [(SKView *)self scene];
+  [v42 encodeObject:scene10 forKey:*MEMORY[0x277CCA308]];
 
   [v42 finishEncoding];
-  LOBYTE(v43) = [v41 writeToFile:v12 atomically:1];
+  LOBYTE(scene10) = [data writeToFile:v12 atomically:1];
 
-  if (v43)
+  if (scene10)
   {
     v44 = [MEMORY[0x277CCACA8] stringWithFormat:@"Archived %@ to %@", self, v12];
     goto LABEL_22;
@@ -436,8 +436,8 @@ LABEL_22:
 {
   NSLog(&cfstr_DebugprintP.isa, a2, self, self);
   NSLog(&stru_282E19A38.isa);
-  v3 = [(SKView *)self scene];
-  [v3 debugPrint];
+  scene = [(SKView *)self scene];
+  [scene debugPrint];
 }
 
 + (Class)layerClass
@@ -456,10 +456,10 @@ LABEL_22:
 {
   kdebug_trace();
   *&self->_viewFramebufferPixelSize[5] = 0;
-  v3 = [(SKView *)self chooseViewRenderer];
-  if (v3)
+  chooseViewRenderer = [(SKView *)self chooseViewRenderer];
+  if (chooseViewRenderer)
   {
-    v4 = v3;
+    v4 = chooseViewRenderer;
     if (!self->_framebuffer.__ptr_)
     {
       SKCRenderer::getBackingContext(self->_renderer, &v38);
@@ -467,15 +467,15 @@ LABEL_22:
       std::shared_ptr<jet_framebuffer>::shared_ptr[abi:ne200100]<jet_framebuffer,0>(&v39, v5);
     }
 
-    v6 = [(SKView *)self window];
+    window = [(SKView *)self window];
 
-    if (!v6)
+    if (!window)
     {
-      v7 = [(SKView *)self getRenderOptions];
-      v8 = [v7 objectForKeyedSubscript:@"ingnoreMissingWindow"];
-      v9 = [v8 BOOLValue];
+      getRenderOptions = [(SKView *)self getRenderOptions];
+      v8 = [getRenderOptions objectForKeyedSubscript:@"ingnoreMissingWindow"];
+      bOOLValue = [v8 BOOLValue];
 
-      if ((v9 & 1) == 0)
+      if ((bOOLValue & 1) == 0)
       {
         self->_viewFramebufferIsValid = 0;
         kdebug_trace();
@@ -675,9 +675,9 @@ LABEL_26:
   self->_prevRenderTime = -1.0;
   self->_displayLink = SKDisplayGetDefaultFramerate(0);
   self->_preferredFramesPerSecond = 1;
-  v9 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   touchMap = self->_touchMap;
-  self->_touchMap = v9;
+  self->_touchMap = dictionary;
 
   v11 = [MEMORY[0x277D75348] colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.3];
   [(NSMapTable *)self->_touchMap setObject:v11 forKeyedSubscript:@"debugDrawStats_BGColor"];
@@ -685,8 +685,8 @@ LABEL_26:
   [(NSMapTable *)self->_touchMap setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"debugDisablePresentationTime"];
   [(SKView *)self setShouldCullNonVisibleNodes:1];
   [(SKView *)self setIgnoresSiblingOrder:0];
-  v12 = [MEMORY[0x277CBEB38] dictionary];
-  [(SKView *)self set_info:v12];
+  dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+  [(SKView *)self set_info:dictionary2];
 
   if ((SKGetLinkedOnOrAfter(589824) & 1) == 0)
   {
@@ -720,9 +720,9 @@ LABEL_26:
   *&self->_viewTranslation[8] = 0;
   [(SKView *)self onInit];
   [(SKView *)self _ensureRenderer];
-  v20 = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
+  strongToWeakObjectsMapTable = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
   v21 = *&self->_prevBackingScaleFactor;
-  *&self->_prevBackingScaleFactor = v20;
+  *&self->_prevBackingScaleFactor = strongToWeakObjectsMapTable;
 
   *&self->_prefersLowPowerGPU = 0xBFF0000000000000;
   BYTE1(self->_transition) = 0;
@@ -733,20 +733,20 @@ LABEL_26:
   [(SKView *)self startRenderCallbacks];
   BYTE2(self->_frameInterval) = [(SKView *)self isPaused];
   LOBYTE(self->_frameInterval) = 0;
-  v23 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v23 addObserver:self selector:sel_CBApplicationWillResignActive name:*MEMORY[0x277D76768] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_CBApplicationWillResignActive name:*MEMORY[0x277D76768] object:0];
 
-  v24 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v24 addObserver:self selector:sel_CBApplicationDidBecomeActive name:*MEMORY[0x277D76648] object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel_CBApplicationDidBecomeActive name:*MEMORY[0x277D76648] object:0];
 }
 
 - (void)CBApplicationWillResignActive
 {
-  v6 = [(SKView *)self getRenderOptions];
-  v3 = [v6 objectForKeyedSubscript:@"ignoreBackgroundNotifications"];
-  v4 = [v3 BOOLValue];
+  getRenderOptions = [(SKView *)self getRenderOptions];
+  v3 = [getRenderOptions objectForKeyedSubscript:@"ignoreBackgroundNotifications"];
+  bOOLValue = [v3 BOOLValue];
 
-  if ((v4 & 1) == 0)
+  if ((bOOLValue & 1) == 0)
   {
     BYTE2(self->_frameInterval) = self->_spriteArrayHint;
     [(SKView *)self setPaused:1];
@@ -759,11 +759,11 @@ LABEL_26:
 
 - (void)CBApplicationDidBecomeActive
 {
-  v6 = [(SKView *)self getRenderOptions];
-  v3 = [v6 objectForKeyedSubscript:@"ignoreBackgroundNotifications"];
-  v4 = [v3 BOOLValue];
+  getRenderOptions = [(SKView *)self getRenderOptions];
+  v3 = [getRenderOptions objectForKeyedSubscript:@"ignoreBackgroundNotifications"];
+  bOOLValue = [v3 BOOLValue];
 
-  if ((v4 & 1) == 0 && LOBYTE(self->_frameInterval) == 1)
+  if ((bOOLValue & 1) == 0 && LOBYTE(self->_frameInterval) == 1)
   {
     LOBYTE(self->_frameInterval) = 0;
     [(SKView *)self setPaused:BYTE2(self->_frameInterval)];
@@ -772,10 +772,10 @@ LABEL_26:
   }
 }
 
-- (void)_vsyncRenderForTime:(double)a3 preRender:(id)a4 postRender:(id)a5
+- (void)_vsyncRenderForTime:(double)time preRender:(id)render postRender:(id)postRender
 {
-  v8 = a4;
-  v9 = a5;
+  renderCopy = render;
+  postRenderCopy = postRender;
   v10 = objc_autoreleasePoolPush();
   sk_debug_check_optional();
   if (sk_debug_option_exists(&cfstr_Preferredframe_0.isa))
@@ -789,7 +789,7 @@ LABEL_26:
     goto LABEL_6;
   }
 
-  *&self->_delegate = a3;
+  *&self->_delegate = time;
   self->_prevRenderTime = v11;
   if (atomic_fetch_add_explicit(&self->_prevVsyncRenderTime, 1u, memory_order_relaxed) > 0)
   {
@@ -815,16 +815,16 @@ LABEL_6:
   v22[2] = __51__SKView__vsyncRenderForTime_preRender_postRender___block_invoke;
   v22[3] = &unk_27830FC98;
   v22[4] = self;
-  v23 = v8;
-  v25 = a3;
-  v24 = v9;
+  v23 = renderCopy;
+  timeCopy = time;
+  v24 = postRenderCopy;
   v14 = MEMORY[0x21CF0AB10](v22);
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __51__SKView__vsyncRenderForTime_preRender_postRender___block_invoke_2;
   v18[3] = &unk_27830FCC0;
   v18[4] = self;
-  v20 = a3;
+  timeCopy2 = time;
   v21 = v13;
   v15 = v14;
   v19 = v15;
@@ -1074,25 +1074,25 @@ void __51__SKView__vsyncRenderForTime_preRender_postRender___block_invoke_2(uint
   }
 }
 
-- (void)_renderSynchronouslyForTime:(double)a3 preRender:(id)a4 postRender:(id)a5 withMTLScheduleHandler:(id)a6
+- (void)_renderSynchronouslyForTime:(double)time preRender:(id)render postRender:(id)postRender withMTLScheduleHandler:(id)handler
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  renderCopy = render;
+  postRenderCopy = postRender;
+  handlerCopy = handler;
   v13 = objc_autoreleasePoolPush();
-  *&self->_delegate = a3;
+  *&self->_delegate = time;
   kdebug_trace();
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __82__SKView__renderSynchronouslyForTime_preRender_postRender_withMTLScheduleHandler___block_invoke;
   v19[3] = &unk_27830FCE8;
   v19[4] = self;
-  v23 = a3;
-  v14 = v10;
+  timeCopy = time;
+  v14 = renderCopy;
   v20 = v14;
-  v15 = v12;
+  v15 = handlerCopy;
   v21 = v15;
-  v16 = v11;
+  v16 = postRenderCopy;
   v22 = v16;
   v17 = MEMORY[0x21CF0AB10](v19);
   timePreviousUpdate = self->_timePreviousUpdate;
@@ -1228,33 +1228,33 @@ intptr_t __82__SKView__renderSynchronouslyForTime_preRender_postRender_withMTLSc
   return dispatch_semaphore_signal(*(*(a1 + 32) + 1232));
 }
 
-- (void)_renderToIOSurfaceID:(unsigned int)a3 scaleFactor:(float)a4 asynchronous:(BOOL)a5 waitOnFence:(BOOL)a6 preRender:(id)a7 postRender:(id)a8
+- (void)_renderToIOSurfaceID:(unsigned int)d scaleFactor:(float)factor asynchronous:(BOOL)asynchronous waitOnFence:(BOOL)fence preRender:(id)render postRender:(id)postRender
 {
-  v9 = a5;
-  v10 = *&a3;
-  v12 = a7;
-  v13 = a8;
+  asynchronousCopy = asynchronous;
+  v10 = *&d;
+  renderCopy = render;
+  postRenderCopy = postRender;
   v14 = objc_autoreleasePoolPush();
   kdebug_trace();
-  if (v9)
+  if (asynchronousCopy)
   {
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __89__SKView__renderToIOSurfaceID_scaleFactor_asynchronous_waitOnFence_preRender_postRender___block_invoke;
     block[3] = &unk_27830FD10;
     block[4] = self;
-    v25 = v12;
+    v25 = renderCopy;
     v27 = v10;
-    v26 = v13;
+    v26 = postRenderCopy;
     dispatch_async(MEMORY[0x277D85CD0], block);
   }
 
   else
   {
     dispatch_semaphore_wait(*&self->_queuedFrameCount, 0xFFFFFFFFFFFFFFFFLL);
-    if (v12)
+    if (renderCopy)
     {
-      v12[2](v12);
+      renderCopy[2](renderCopy);
     }
 
     if (v10)
@@ -1274,10 +1274,10 @@ intptr_t __82__SKView__renderSynchronouslyForTime_preRender_postRender_withMTLSc
             [(SKView *)self runOnce];
           }
 
-          v18 = [(SKView *)self chooseViewRenderer];
-          if (v18)
+          chooseViewRenderer = [(SKView *)self chooseViewRenderer];
+          if (chooseViewRenderer)
           {
-            v19 = v18;
+            v19 = chooseViewRenderer;
             [(SKView *)self getRootNode];
             SKCRenderer::getBackingContext(v19, &v22);
             v20 = (*(*v22 + 32))(v22, v10, Width, Height, 4, 0);
@@ -1289,9 +1289,9 @@ intptr_t __82__SKView__renderSynchronouslyForTime_preRender_postRender_withMTLSc
       }
     }
 
-    if (v13)
+    if (postRenderCopy)
     {
-      v13[2](v13);
+      postRenderCopy[2](postRenderCopy);
     }
 
     dispatch_semaphore_signal(*&self->_queuedFrameCount);
@@ -1356,15 +1356,15 @@ intptr_t __89__SKView__renderToIOSurfaceID_scaleFactor_asynchronous_waitOnFence_
   return dispatch_semaphore_signal(*(*(a1 + 32) + 1232));
 }
 
-- (void)_dispatchRenderToIOSurfaceID:(unsigned int)a3 async:(BOOL)a4 onQueue:(id)a5 waitOnFence:(BOOL)a6 preRender:(id)a7 postRender:(id)a8
+- (void)_dispatchRenderToIOSurfaceID:(unsigned int)d async:(BOOL)async onQueue:(id)queue waitOnFence:(BOOL)fence preRender:(id)render postRender:(id)postRender
 {
-  v10 = a4;
-  v13 = a5;
-  v14 = a7;
-  v15 = a8;
+  asyncCopy = async;
+  queueCopy = queue;
+  renderCopy = render;
+  postRenderCopy = postRender;
   v16 = objc_autoreleasePoolPush();
   kdebug_trace();
-  if (v13 && v10)
+  if (queueCopy && asyncCopy)
   {
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
@@ -1372,17 +1372,17 @@ intptr_t __89__SKView__renderToIOSurfaceID_scaleFactor_asynchronous_waitOnFence_
     block[3] = &unk_27830FD10;
     block[4] = self;
     v17 = &v24;
-    v24 = v14;
-    v26 = a3;
+    v24 = renderCopy;
+    dCopy = d;
     v18 = &v25;
-    v25 = v15;
-    dispatch_async(v13, block);
+    v25 = postRenderCopy;
+    dispatch_async(queueCopy, block);
 LABEL_6:
 
     goto LABEL_7;
   }
 
-  if (v13)
+  if (queueCopy)
   {
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
@@ -1390,11 +1390,11 @@ LABEL_6:
     v19[3] = &unk_27830FD10;
     v19[4] = self;
     v17 = &v20;
-    v20 = v14;
-    v22 = a3;
+    v20 = renderCopy;
+    dCopy2 = d;
     v18 = &v21;
-    v21 = v15;
-    dispatch_sync(v13, v19);
+    v21 = postRenderCopy;
+    dispatch_sync(queueCopy, v19);
     goto LABEL_6;
   }
 
@@ -1514,9 +1514,9 @@ intptr_t __86__SKView__dispatchRenderToIOSurfaceID_async_onQueue_waitOnFence_pre
   return dispatch_semaphore_signal(*(*(a1 + 32) + 1232));
 }
 
-- (void)overrideMetalCommandQueue:(id)a3
+- (void)overrideMetalCommandQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   SKCRenderer::getBackingContext(self->_renderer, &lpsrc);
   if (!lpsrc)
   {
@@ -1558,21 +1558,21 @@ LABEL_7:
 - (void)setAsynchronous:(BOOL)asynchronous
 {
   v3 = asynchronous;
-  v4 = [(SKView *)self layer];
+  layer = [(SKView *)self layer];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v4 setPresentsWithTransaction:!v3];
+    [layer setPresentsWithTransaction:!v3];
   }
 }
 
 - (BOOL)isAsynchronous
 {
-  v2 = [(SKView *)self layer];
+  layer = [(SKView *)self layer];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [v2 presentsWithTransaction] ^ 1;
+    v3 = [layer presentsWithTransaction] ^ 1;
   }
 
   else
@@ -1637,9 +1637,9 @@ void __29__SKView_setUpRenderCallback__block_invoke(uint64_t a1, double a2)
   return updateQueue;
 }
 
-- (void)set_renderUpdateEnabled:(BOOL)a3
+- (void)set_renderUpdateEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     [(SKView *)self startRenderCallbacks];
   }
@@ -1692,23 +1692,23 @@ void __29__SKView_setUpRenderCallback__block_invoke(uint64_t a1, double a2)
   }
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   v40 = *MEMORY[0x277D85DE8];
-  v27 = a3;
-  v6 = a4;
-  v7 = v6;
+  beganCopy = began;
+  eventCopy = event;
+  v7 = eventCopy;
   if ((BYTE4(self->_transition) & 1) == 0 && *&self->_paused)
   {
     v38[0] = 0;
     v38[1] = 0;
-    v29 = v6;
+    v29 = eventCopy;
     v37 = v38;
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v8 = v27;
+    v8 = beganCopy;
     v9 = [v8 countByEnumeratingWithState:&v32 objects:v39 count:16];
     if (v9)
     {
@@ -1723,7 +1723,7 @@ void __29__SKView_setUpRenderCallback__block_invoke(uint64_t a1, double a2)
           }
 
           v36 = *(*(&v32 + 1) + 8 * i);
-          v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v36, "hash", v27)}];
+          v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v36, "hash", beganCopy)}];
           v13 = *&self->_paused;
           [v36 locationInNode:v13];
           v14 = [v13 nodeAtPoint:1 recursive:?];
@@ -1732,9 +1732,9 @@ void __29__SKView_setUpRenderCallback__block_invoke(uint64_t a1, double a2)
           {
             while (([v14 isUserInteractionEnabled] & 1) == 0)
             {
-              v15 = [v31 parent];
+              parent = [v31 parent];
               v16 = v31;
-              v31 = v15;
+              v31 = parent;
 
               v14 = v31;
               if (!v31)
@@ -1816,14 +1816,14 @@ LABEL_14:
 
   v30.receiver = self;
   v30.super_class = SKView;
-  [(SKView *)&v30 touchesBegan:v27 withEvent:v7, v27];
+  [(SKView *)&v30 touchesBegan:beganCopy withEvent:v7, beganCopy];
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
   v34 = *MEMORY[0x277D85DE8];
-  v22 = a3;
-  v6 = a4;
+  movedCopy = moved;
+  eventCopy = event;
   if ((BYTE4(self->_transition) & 1) == 0 && *&self->_paused)
   {
     v32[0] = 0;
@@ -1833,7 +1833,7 @@ LABEL_14:
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v7 = v22;
+    v7 = movedCopy;
     v8 = [v7 countByEnumeratingWithState:&v26 objects:v33 count:16];
     if (v8)
     {
@@ -1848,7 +1848,7 @@ LABEL_14:
           }
 
           v30 = *(*(&v26 + 1) + 8 * i);
-          v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v30, "hash", v22)}];
+          v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v30, "hash", movedCopy)}];
           v25 = [*&self->_prevBackingScaleFactor objectForKey:v11];
           if (v25)
           {
@@ -1881,7 +1881,7 @@ LABEL_14:
           ++v16;
         }
 
-        [v14 touchesMoved:v15 withEvent:v6];
+        [v14 touchesMoved:v15 withEvent:eventCopy];
 
         v19 = v13[1];
         if (v19)
@@ -1918,26 +1918,26 @@ LABEL_14:
 
   v24.receiver = self;
   v24.super_class = SKView;
-  [(SKView *)&v24 touchesMoved:v22 withEvent:v6, v22];
+  [(SKView *)&v24 touchesMoved:movedCopy withEvent:eventCopy, movedCopy];
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
   v47 = *MEMORY[0x277D85DE8];
-  v28 = a3;
-  v6 = a4;
-  v7 = v6;
+  endedCopy = ended;
+  eventCopy = event;
+  v7 = eventCopy;
   if ((BYTE4(self->_transition) & 1) == 0 && *&self->_paused)
   {
     v44[0] = 0;
     v44[1] = 0;
-    v30 = v6;
+    v30 = eventCopy;
     v43 = v44;
     v38 = 0u;
     v39 = 0u;
     v40 = 0u;
     v41 = 0u;
-    v8 = v28;
+    v8 = endedCopy;
     v9 = [v8 countByEnumeratingWithState:&v38 objects:v46 count:16];
     if (v9)
     {
@@ -1952,7 +1952,7 @@ LABEL_14:
           }
 
           v42 = *(*(&v38 + 1) + 8 * i);
-          v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v42, "hash", v28)}];
+          v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v42, "hash", endedCopy)}];
           v37 = [*&self->_prevBackingScaleFactor objectForKey:v12];
           if (v37)
           {
@@ -2008,7 +2008,7 @@ LABEL_14:
                 objc_enumerationMutation(v21);
               }
 
-              [*&self->_prevBackingScaleFactor removeObjectForKey:{*(*(&v33 + 1) + 8 * j), v28}];
+              [*&self->_prevBackingScaleFactor removeObjectForKey:{*(*(&v33 + 1) + 8 * j), endedCopy}];
             }
 
             v22 = [v21 countByEnumeratingWithState:&v33 objects:v45 count:16];
@@ -2053,26 +2053,26 @@ LABEL_14:
 
   v32.receiver = self;
   v32.super_class = SKView;
-  [(SKView *)&v32 touchesEnded:v28 withEvent:v7, v28];
+  [(SKView *)&v32 touchesEnded:endedCopy withEvent:v7, endedCopy];
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
   v47 = *MEMORY[0x277D85DE8];
-  v28 = a3;
-  v6 = a4;
-  v7 = v6;
+  cancelledCopy = cancelled;
+  eventCopy = event;
+  v7 = eventCopy;
   if ((BYTE4(self->_transition) & 1) == 0 && *&self->_paused)
   {
     v44[0] = 0;
     v44[1] = 0;
-    v30 = v6;
+    v30 = eventCopy;
     v43 = v44;
     v38 = 0u;
     v39 = 0u;
     v40 = 0u;
     v41 = 0u;
-    v8 = v28;
+    v8 = cancelledCopy;
     v9 = [v8 countByEnumeratingWithState:&v38 objects:v46 count:16];
     if (v9)
     {
@@ -2087,7 +2087,7 @@ LABEL_14:
           }
 
           v42 = *(*(&v38 + 1) + 8 * i);
-          v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v42, "hash", v28)}];
+          v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v42, "hash", cancelledCopy)}];
           v37 = [*&self->_prevBackingScaleFactor objectForKey:v12];
           if (v37)
           {
@@ -2143,7 +2143,7 @@ LABEL_14:
                 objc_enumerationMutation(v21);
               }
 
-              [*&self->_prevBackingScaleFactor removeObjectForKey:{*(*(&v33 + 1) + 8 * j), v28}];
+              [*&self->_prevBackingScaleFactor removeObjectForKey:{*(*(&v33 + 1) + 8 * j), cancelledCopy}];
             }
 
             v22 = [v21 countByEnumeratingWithState:&v33 objects:v45 count:16];
@@ -2188,7 +2188,7 @@ LABEL_14:
 
   v32.receiver = self;
   v32.super_class = SKView;
-  [(SKView *)&v32 touchesCancelled:v28 withEvent:v7, v28];
+  [(SKView *)&v32 touchesCancelled:cancelledCopy withEvent:v7, cancelledCopy];
 }
 
 - (CGPoint)convertPoint:(CGPoint)point toScene:(SKScene *)scene
@@ -2210,11 +2210,11 @@ LABEL_14:
 - (void)dealloc
 {
   kdebug_trace();
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277D76768] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76768] object:0];
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 removeObserver:self name:*MEMORY[0x277D76648] object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 removeObserver:self name:*MEMORY[0x277D76648] object:0];
 
   [(SKView *)self stopRenderCallbacks];
   updateQueue = self->_updateQueue;
@@ -2258,29 +2258,29 @@ LABEL_14:
 {
   BYTE1(self->_frameInterval) = allowsTransparency;
   [(SKView *)self setOpaque:!allowsTransparency];
-  v4 = [(SKView *)self layer];
+  layer = [(SKView *)self layer];
 
-  if (v4)
+  if (layer)
   {
     v5 = BYTE1(self->_frameInterval);
-    v8 = [(SKView *)self layer];
-    [v8 setOpaque:(v5 & 1) == 0];
+    layer2 = [(SKView *)self layer];
+    [layer2 setOpaque:(v5 & 1) == 0];
 
-    v9 = [MEMORY[0x277D75348] clearColor];
-    v6 = [v9 CGColor];
-    v7 = [(SKView *)self layer];
-    [v7 setBackgroundColor:v6];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    cGColor = [clearColor CGColor];
+    layer3 = [(SKView *)self layer];
+    [layer3 setBackgroundColor:cGColor];
   }
 }
 
 - (void)presentScene:(SKScene *)scene
 {
   v23 = scene;
-  v5 = [(SKView *)self getRenderOptions];
-  v6 = [v5 objectForKeyedSubscript:@"ignoreBackgroundNotifications"];
-  v7 = [v6 BOOLValue];
+  getRenderOptions = [(SKView *)self getRenderOptions];
+  v6 = [getRenderOptions objectForKeyedSubscript:@"ignoreBackgroundNotifications"];
+  bOOLValue = [v6 BOOLValue];
 
-  if ((v7 & 1) == 0)
+  if ((bOOLValue & 1) == 0)
   {
     [(SKView *)self setPaused:0];
   }
@@ -2385,11 +2385,11 @@ LABEL_9:
   v6.super_class = SKView;
   [(SKView *)&v6 layoutSubviews];
   [(SKView *)self _reshape];
-  v3 = [(SKView *)self getRenderOptions];
-  v4 = [v3 objectForKeyedSubscript:@"ignoreRenderSyncInLayoutSubviews"];
-  v5 = [v4 BOOLValue];
+  getRenderOptions = [(SKView *)self getRenderOptions];
+  v4 = [getRenderOptions objectForKeyedSubscript:@"ignoreRenderSyncInLayoutSubviews"];
+  bOOLValue = [v4 BOOLValue];
 
-  if ((v5 & 1) == 0)
+  if ((bOOLValue & 1) == 0)
   {
     [(SKView *)self _renderSynchronouslyForTime:0 preRender:0 postRender:0.0];
   }
@@ -2431,11 +2431,11 @@ LABEL_9:
   }
 }
 
-- (void)_update:(double)a3
+- (void)_update:(double)_update
 {
   if (LOBYTE(self->_spriteArrayHint) != 1 || (p_needsInitialUpdate = &self->_needsInitialUpdate, self->_needsInitialUpdate))
   {
-    v6 = a3 - skCurrentTime();
+    v6 = _update - skCurrentTime();
     if (v6 < 0.0)
     {
       return;
@@ -2443,7 +2443,7 @@ LABEL_9:
 
     if (v6 <= 1.0)
     {
-      skSetTime(a3);
+      skSetTime(_update);
       goto LABEL_15;
     }
 
@@ -2451,36 +2451,36 @@ LABEL_9:
     scene = self->_scene;
     if (v7)
     {
-      v9 = [*&self->_paused isPaused];
+      isPaused = [*&self->_paused isPaused];
       [*&self->_paused setPaused:1];
       if (scene)
       {
 LABEL_7:
-        v10 = [(SKNode *)self->_scene isPaused];
+        isPaused2 = [(SKNode *)self->_scene isPaused];
         [(SKScene *)self->_scene setPaused:1];
 LABEL_11:
-        skSetTime(a3);
+        skSetTime(_update);
         if (v7)
         {
           [*&self->_paused setPaused:0];
-          [*&self->_paused setPaused:v9];
+          [*&self->_paused setPaused:isPaused];
         }
 
         if (scene)
         {
           [(SKScene *)self->_scene setPaused:0];
-          [(SKScene *)self->_scene setPaused:v10];
+          [(SKScene *)self->_scene setPaused:isPaused2];
         }
 
 LABEL_15:
         nextScene = self->_nextScene;
         if (nextScene)
         {
-          v12 = [(SKNode *)nextScene _backingNode];
-          *(v12 + 584) = *(v12 + 584) + v6;
-          v13 = [(SKNode *)self->_nextScene _backingNode];
+          _backingNode = [(SKNode *)nextScene _backingNode];
+          *(_backingNode + 584) = *(_backingNode + 584) + v6;
+          _backingNode2 = [(SKNode *)self->_nextScene _backingNode];
           v14 = *([(SKNode *)self->_nextScene _backingNode]+ 584);
-          v13[180] = v14 / *([(SKNode *)self->_nextScene _backingNode]+ 580);
+          _backingNode2[180] = v14 / *([(SKNode *)self->_nextScene _backingNode]+ 580);
           v15 = *([(SKNode *)self->_nextScene _backingNode]+ 584);
           if (v15 >= *([(SKNode *)self->_nextScene _backingNode]+ 580))
           {
@@ -2524,7 +2524,7 @@ LABEL_15:
           if (![v21 _usesExplicitUpdate])
           {
 LABEL_30:
-            [v21 _update:a3];
+            [v21 _update:_update];
             BYTE3(self->_transition) = 0;
             goto LABEL_31;
           }
@@ -2544,7 +2544,7 @@ LABEL_31:
           if (![(SKScene *)v23 _usesExplicitUpdate])
           {
 LABEL_36:
-            [(SKScene *)v23 _update:a3];
+            [(SKScene *)v23 _update:_update];
             BYTE3(self->_transition) = 0;
             goto LABEL_37;
           }
@@ -2582,14 +2582,14 @@ LABEL_37:
 
     else
     {
-      v9 = 0;
+      isPaused = 0;
       if (scene)
       {
         goto LABEL_7;
       }
     }
 
-    v10 = 0;
+    isPaused2 = 0;
     goto LABEL_11;
   }
 
@@ -2604,23 +2604,23 @@ LABEL_43:
   return v3;
 }
 
-- (id)textureFromNode:(id)a3 withOptions:(id)a4
+- (id)textureFromNode:(id)node withOptions:(id)options
 {
-  v6 = a3;
-  v7 = a4;
+  nodeCopy = node;
+  optionsCopy = options;
   [(SKView *)self _ensureRenderer];
-  v8 = [v6 _backingNode];
+  _backingNode = [nodeCopy _backingNode];
   [(SKView *)self _getViewContentsScale];
-  v10 = SKCRenderer::textureFromNode(self->_renderer, v8, v9, v7);
+  v10 = SKCRenderer::textureFromNode(self->_renderer, _backingNode, v9, optionsCopy);
 
   return v10;
 }
 
-- (SKView)initWithFrame:(CGRect)a3
+- (SKView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = SKView;
-  v3 = [(SKView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SKView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -2630,18 +2630,18 @@ LABEL_43:
   return v4;
 }
 
-- (SKView)initWithCoder:(id)a3
+- (SKView)initWithCoder:(id)coder
 {
   v18[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = SKView;
-  v5 = [(SKView *)&v17 initWithCoder:v4];
+  v5 = [(SKView *)&v17 initWithCoder:coderCopy];
   v6 = v5;
   if (v5)
   {
     [(SKView *)v5 _commonInit];
-    if ([v4 decodeIntegerForKey:@"_version"] >= 1)
+    if ([coderCopy decodeIntegerForKey:@"_version"] >= 1)
     {
       v7 = objc_alloc_init(MEMORY[0x277CBEB58]);
       v18[0] = objc_opt_class();
@@ -2649,47 +2649,47 @@ LABEL_43:
       v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v18 count:2];
       [v7 addObjectsFromArray:v8];
 
-      v9 = [v4 allowedClasses];
-      [v7 unionSet:v9];
+      allowedClasses = [coderCopy allowedClasses];
+      [v7 unionSet:allowedClasses];
 
-      v10 = [v4 decodeObjectOfClasses:v7 forKey:@"_info"];
+      v10 = [coderCopy decodeObjectOfClasses:v7 forKey:@"_info"];
       [(SKView *)v6 set_info:v10];
 
-      [v4 decodeCGRectForKey:@"_frame"];
+      [coderCopy decodeCGRectForKey:@"_frame"];
       [(SKView *)v6 setFrame:?];
-      -[SKView setPreferredFramesPerSecond:](v6, "setPreferredFramesPerSecond:", [v4 decodeIntegerForKey:@"_preferredFramesPerSecond"]);
-      if ([v4 containsValueForKey:@"_paused"])
+      -[SKView setPreferredFramesPerSecond:](v6, "setPreferredFramesPerSecond:", [coderCopy decodeIntegerForKey:@"_preferredFramesPerSecond"]);
+      if ([coderCopy containsValueForKey:@"_paused"])
       {
-        -[SKView setPaused:](v6, "setPaused:", [v4 decodeBoolForKey:@"_paused"]);
+        -[SKView setPaused:](v6, "setPaused:", [coderCopy decodeBoolForKey:@"_paused"]);
       }
 
-      if ([v4 containsValueForKey:@"_asynchronous"])
+      if ([coderCopy containsValueForKey:@"_asynchronous"])
       {
-        -[SKView setAsynchronous:](v6, "setAsynchronous:", [v4 decodeBoolForKey:@"_asynchronous"]);
+        -[SKView setAsynchronous:](v6, "setAsynchronous:", [coderCopy decodeBoolForKey:@"_asynchronous"]);
       }
 
-      if ([v4 containsValueForKey:@"_allowsTransparency"])
+      if ([coderCopy containsValueForKey:@"_allowsTransparency"])
       {
-        -[SKView setAllowsTransparency:](v6, "setAllowsTransparency:", [v4 decodeBoolForKey:@"_allowsTransparency"]);
+        -[SKView setAllowsTransparency:](v6, "setAllowsTransparency:", [coderCopy decodeBoolForKey:@"_allowsTransparency"]);
       }
 
-      if ([v4 containsValueForKey:@"_ignoresSiblingOrder"])
+      if ([coderCopy containsValueForKey:@"_ignoresSiblingOrder"])
       {
-        -[SKView setIgnoresSiblingOrder:](v6, "setIgnoresSiblingOrder:", [v4 decodeBoolForKey:@"_ignoresSiblingOrder"]);
+        -[SKView setIgnoresSiblingOrder:](v6, "setIgnoresSiblingOrder:", [coderCopy decodeBoolForKey:@"_ignoresSiblingOrder"]);
       }
 
-      if ([v4 containsValueForKey:@"_shouldCullNonVisibleNodes"])
+      if ([coderCopy containsValueForKey:@"_shouldCullNonVisibleNodes"])
       {
-        -[SKView setShouldCullNonVisibleNodes:](v6, "setShouldCullNonVisibleNodes:", [v4 decodeBoolForKey:@"_shouldCullNonVisibleNodes"]);
+        -[SKView setShouldCullNonVisibleNodes:](v6, "setShouldCullNonVisibleNodes:", [coderCopy decodeBoolForKey:@"_shouldCullNonVisibleNodes"]);
       }
 
-      v11 = [(SKView *)v6 _info];
-      v12 = v11 == 0;
+      _info = [(SKView *)v6 _info];
+      v12 = _info == 0;
 
       if (!v12)
       {
-        v13 = [(SKView *)v6 _info];
-        v14 = [v13 objectForKey:@"_ib_SceneName"];
+        _info2 = [(SKView *)v6 _info];
+        v14 = [_info2 objectForKey:@"_ib_SceneName"];
 
         if (v14 && [v14 length])
         {
@@ -2709,7 +2709,7 @@ LABEL_20:
         }
       }
 
-      v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_scene"];
+      v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_scene"];
       goto LABEL_20;
     }
   }
@@ -2719,61 +2719,61 @@ LABEL_21:
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = SKView;
-  [(SKView *)&v7 encodeWithCoder:v4];
-  [v4 encodeInteger:1 forKey:@"_version"];
+  [(SKView *)&v7 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:1 forKey:@"_version"];
   [(SKView *)self frame];
-  [v4 encodeCGRect:@"_frame" forKey:?];
-  v5 = [(SKView *)self _info];
-  [v4 encodeObject:v5 forKey:@"_info"];
+  [coderCopy encodeCGRect:@"_frame" forKey:?];
+  _info = [(SKView *)self _info];
+  [coderCopy encodeObject:_info forKey:@"_info"];
 
-  v6 = [(SKView *)self scene];
-  [v4 encodeObject:v6 forKey:@"_scene"];
+  scene = [(SKView *)self scene];
+  [coderCopy encodeObject:scene forKey:@"_scene"];
 
-  [v4 encodeInteger:-[SKView preferredFramesPerSecond](self forKey:{"preferredFramesPerSecond"), @"_preferredFramesPerSecond"}];
-  [v4 encodeBool:-[SKView isPaused](self forKey:{"isPaused"), @"_paused"}];
-  [v4 encodeBool:-[SKView isAsynchronous](self forKey:{"isAsynchronous"), @"_asynchronous"}];
-  [v4 encodeBool:-[SKView allowsTransparency](self forKey:{"allowsTransparency"), @"_allowsTransparency"}];
-  [v4 encodeBool:-[SKView ignoresSiblingOrder](self forKey:{"ignoresSiblingOrder"), @"_ignoresSiblingOrder"}];
-  [v4 encodeBool:-[SKView shouldCullNonVisibleNodes](self forKey:{"shouldCullNonVisibleNodes"), @"_shouldCullNonVisibleNodes"}];
+  [coderCopy encodeInteger:-[SKView preferredFramesPerSecond](self forKey:{"preferredFramesPerSecond"), @"_preferredFramesPerSecond"}];
+  [coderCopy encodeBool:-[SKView isPaused](self forKey:{"isPaused"), @"_paused"}];
+  [coderCopy encodeBool:-[SKView isAsynchronous](self forKey:{"isAsynchronous"), @"_asynchronous"}];
+  [coderCopy encodeBool:-[SKView allowsTransparency](self forKey:{"allowsTransparency"), @"_allowsTransparency"}];
+  [coderCopy encodeBool:-[SKView ignoresSiblingOrder](self forKey:{"ignoresSiblingOrder"), @"_ignoresSiblingOrder"}];
+  [coderCopy encodeBool:-[SKView shouldCullNonVisibleNodes](self forKey:{"shouldCullNonVisibleNodes"), @"_shouldCullNonVisibleNodes"}];
 }
 
-- (BOOL)isEqualToView:(id)a3
+- (BOOL)isEqualToView:(id)view
 {
-  v4 = a3;
-  if (self == v4)
+  viewCopy = view;
+  if (self == viewCopy)
   {
     goto LABEL_14;
   }
 
-  v5 = [(SKView *)self isPaused];
-  if (v5 == [(SKView *)v4 isPaused])
+  isPaused = [(SKView *)self isPaused];
+  if (isPaused == [(SKView *)viewCopy isPaused])
   {
-    v6 = [(SKView *)self isAsynchronous];
-    if (v6 == [(SKView *)v4 isAsynchronous])
+    isAsynchronous = [(SKView *)self isAsynchronous];
+    if (isAsynchronous == [(SKView *)viewCopy isAsynchronous])
     {
-      v7 = [(SKView *)self allowsTransparency];
-      if (v7 == [(SKView *)v4 allowsTransparency])
+      allowsTransparency = [(SKView *)self allowsTransparency];
+      if (allowsTransparency == [(SKView *)viewCopy allowsTransparency])
       {
-        v8 = [(SKView *)self ignoresSiblingOrder];
-        if (v8 == [(SKView *)v4 ignoresSiblingOrder])
+        ignoresSiblingOrder = [(SKView *)self ignoresSiblingOrder];
+        if (ignoresSiblingOrder == [(SKView *)viewCopy ignoresSiblingOrder])
         {
-          v9 = [(SKView *)self shouldCullNonVisibleNodes];
-          if (v9 == [(SKView *)v4 shouldCullNonVisibleNodes])
+          shouldCullNonVisibleNodes = [(SKView *)self shouldCullNonVisibleNodes];
+          if (shouldCullNonVisibleNodes == [(SKView *)viewCopy shouldCullNonVisibleNodes])
           {
-            v10 = [(SKView *)self preferredFramesPerSecond];
-            if (v10 == [(SKView *)v4 preferredFramesPerSecond])
+            preferredFramesPerSecond = [(SKView *)self preferredFramesPerSecond];
+            if (preferredFramesPerSecond == [(SKView *)viewCopy preferredFramesPerSecond])
             {
               [(SKView *)self frame];
               v12 = v11;
               v14 = v13;
               v16 = v15;
               v18 = v17;
-              [(SKView *)v4 frame];
+              [(SKView *)viewCopy frame];
               v30.origin.x = v19;
               v30.origin.y = v20;
               v30.size.width = v21;
@@ -2784,21 +2784,21 @@ LABEL_21:
               v29.size.height = v18;
               if (CGRectEqualToRect(v29, v30))
               {
-                v23 = [(SKView *)self scene];
-                if (v23)
+                scene = [(SKView *)self scene];
+                if (scene)
                 {
 
 LABEL_13:
-                  v26 = [(SKView *)self scene];
-                  v27 = [(SKView *)v4 scene];
-                  v24 = [v26 isEqualToNode:v27];
+                  scene2 = [(SKView *)self scene];
+                  scene3 = [(SKView *)viewCopy scene];
+                  v24 = [scene2 isEqualToNode:scene3];
 
                   goto LABEL_15;
                 }
 
-                v25 = [(SKView *)v4 scene];
+                scene4 = [(SKView *)viewCopy scene];
 
-                if (v25)
+                if (scene4)
                 {
                   goto LABEL_13;
                 }
@@ -2823,19 +2823,19 @@ LABEL_15:
 - (void)setFrameInterval:(NSInteger)frameInterval
 {
   self->_preferredFramesPerSecond = frameInterval;
-  v4 = [(SKView *)self _getEffectivePreferredFramesPerSecond];
+  _getEffectivePreferredFramesPerSecond = [(SKView *)self _getEffectivePreferredFramesPerSecond];
   updateQueue = self->_updateQueue;
 
-  [(OS_dispatch_queue *)updateQueue setPreferredFramesPerSecond:v4];
+  [(OS_dispatch_queue *)updateQueue setPreferredFramesPerSecond:_getEffectivePreferredFramesPerSecond];
 }
 
 - (void)setPreferredFramesPerSecond:(NSInteger)preferredFramesPerSecond
 {
   self->_displayLink = preferredFramesPerSecond;
-  v4 = [(SKView *)self _getEffectivePreferredFramesPerSecond];
+  _getEffectivePreferredFramesPerSecond = [(SKView *)self _getEffectivePreferredFramesPerSecond];
   updateQueue = self->_updateQueue;
 
-  [(OS_dispatch_queue *)updateQueue setPreferredFramesPerSecond:v4];
+  [(OS_dispatch_queue *)updateQueue setPreferredFramesPerSecond:_getEffectivePreferredFramesPerSecond];
 }
 
 - (unint64_t)_getEffectivePreferredFramesPerSecond
@@ -2862,7 +2862,7 @@ LABEL_15:
   v18[1] = *MEMORY[0x277D85DE8];
   v9 = node;
   [(SKView *)self _ensureRenderer];
-  v10 = [(SKNode *)v9 _backingNode];
+  _backingNode = [(SKNode *)v9 _backingNode];
   [(SKView *)self _getViewContentsScale];
   v12 = v11;
   v20.origin.x = x;
@@ -2886,7 +2886,7 @@ LABEL_15:
     v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:&v17 count:1];
   }
 
-  v15 = SKCRenderer::textureFromNode(self->_renderer, v10, v12, v13);
+  v15 = SKCRenderer::textureFromNode(self->_renderer, _backingNode, v12, v13);
 
   return v15;
 }
@@ -2896,7 +2896,7 @@ LABEL_15:
   v3 = v2;
   if (self->_viewFramebufferIsValid)
   {
-    v4 = self;
+    selfCopy = self;
     ptr = self->_frameBufferDepthStencilTexture.__ptr_;
     p_framebuffer = &self->_framebuffer;
     v7 = self->_framebuffer.__ptr_;
@@ -2912,7 +2912,7 @@ LABEL_15:
 
     if (v8 == 1)
     {
-      SKCRenderer::getBackingContext(v4->_renderer, &v18);
+      SKCRenderer::getBackingContext(selfCopy->_renderer, &v18);
       v9 = v18;
       if (*(&v18 + 1))
       {
@@ -2930,10 +2930,10 @@ LABEL_15:
 
       v10 = CACurrentMediaTime();
       _perfStartRequestDrawable(v10);
-      if (LOBYTE(v4->_machTimeTimebase) == 1 && ([(CAMetalLayer *)v4->_metalLayer isDrawableAvailable]& 1) == 0)
+      if (LOBYTE(selfCopy->_machTimeTimebase) == 1 && ([(CAMetalLayer *)selfCopy->_metalLayer isDrawableAvailable]& 1) == 0)
       {
         v17 = mach_approximate_time();
-        if ((*&v4->_renderQueue * (v17 - [SKView nextFramebuffer]::lastLoggingTimeCheckForDrawables)) >= 0x12A05F201)
+        if ((*&selfCopy->_renderQueue * (v17 - [SKView nextFramebuffer]::lastLoggingTimeCheckForDrawables)) >= 0x12A05F201)
         {
           [SKView nextFramebuffer]::lastLoggingTimeCheckForDrawables = v17;
           NSLog(&cfstr_SkviewNoDrawab.isa);
@@ -2941,9 +2941,9 @@ LABEL_15:
 
         kdebug_trace();
         *(p_framebuffer->__ptr_ + 2) = 0;
-        self = v4->_frameBufferColorTexture.__cntrl_;
-        v4->_frameBufferColorTexture.__ptr_ = 0;
-        v4->_frameBufferColorTexture.__cntrl_ = 0;
+        self = selfCopy->_frameBufferColorTexture.__cntrl_;
+        selfCopy->_frameBufferColorTexture.__ptr_ = 0;
+        selfCopy->_frameBufferColorTexture.__cntrl_ = 0;
         if (self)
         {
           std::__shared_weak_count::__release_shared[abi:ne200100](self);
@@ -2959,7 +2959,7 @@ LABEL_15:
 
       else
       {
-        v11 = [(CAMetalLayer *)v4->_metalLayer nextDrawable];
+        nextDrawable = [(CAMetalLayer *)selfCopy->_metalLayer nextDrawable];
         v12 = CACurrentMediaTime();
         _perfEndRequestDrawable(v12);
         if (sk_debug_get_optional())
@@ -2967,17 +2967,17 @@ LABEL_15:
           kdebug_trace();
         }
 
-        if (v11)
+        if (nextDrawable)
         {
-          v13 = (*(*v9 + 416))(v9, v11);
+          v13 = (*(*v9 + 416))(v9, nextDrawable);
           std::shared_ptr<jet_texture>::shared_ptr[abi:ne200100]<jet_texture,0>(&v18, v13);
         }
 
         kdebug_trace();
         *(p_framebuffer->__ptr_ + 2) = 0;
-        cntrl = v4->_frameBufferColorTexture.__cntrl_;
-        v4->_frameBufferColorTexture.__ptr_ = 0;
-        v4->_frameBufferColorTexture.__cntrl_ = 0;
+        cntrl = selfCopy->_frameBufferColorTexture.__cntrl_;
+        selfCopy->_frameBufferColorTexture.__ptr_ = 0;
+        selfCopy->_frameBufferColorTexture.__cntrl_ = 0;
         if (cntrl)
         {
           std::__shared_weak_count::__release_shared[abi:ne200100](cntrl);
@@ -2997,7 +2997,7 @@ LABEL_22:
     else
     {
       v14 = p_framebuffer->__ptr_;
-      *(v14 + 2) = v4->_frameBufferColorTexture.__ptr_;
+      *(v14 + 2) = selfCopy->_frameBufferColorTexture.__ptr_;
       v15 = p_framebuffer->__cntrl_;
       *v3 = v14;
       v3[1] = v15;
@@ -3021,37 +3021,37 @@ LABEL_22:
 
 - (void)getRootNode
 {
-  v3 = [(SKView *)self scene];
+  scene = [(SKView *)self scene];
   v4 = self->_scene;
-  nextScene = v3;
+  nextScene = scene;
   if (self->_nextScene)
   {
-    v6 = [(SKNode *)self->_nextScene _backingNode];
-    v6[74] = [(SKNode *)v3 _backingNode];
-    v7 = [(SKNode *)self->_nextScene _backingNode];
-    v7[75] = [(SKNode *)v4 _backingNode];
+    _backingNode = [(SKNode *)self->_nextScene _backingNode];
+    _backingNode[74] = [(SKNode *)scene _backingNode];
+    _backingNode2 = [(SKNode *)self->_nextScene _backingNode];
+    _backingNode2[75] = [(SKNode *)v4 _backingNode];
     SKCNode::recomputeFlags([(SKNode *)self->_nextScene _backingNode], 1);
     nextScene = self->_nextScene;
   }
 
-  v8 = [(SKNode *)nextScene _backingNode];
+  _backingNode3 = [(SKNode *)nextScene _backingNode];
 
-  return v8;
+  return _backingNode3;
 }
 
 - (double)getViewport
 {
-  [a1 frame];
-  [a1 _getViewContentsScale];
+  [self frame];
+  [self _getViewContentsScale];
   return 0.0;
 }
 
 - (double)getViewTransform
 {
-  [a1 frame];
+  [self frame];
   v2 = 0;
   v4.f64[1] = v3;
-  v5 = vdiv_f32(*(a1 + 960), vcvt_f32_f64(v4));
+  v5 = vdiv_f32(*(self + 960), vcvt_f32_f64(v4));
   __asm { FMOV            V1.2S, #1.0 }
 
   *&v11 = vsub_f32(_D1, vadd_f32(v5, v5));
@@ -3063,9 +3063,9 @@ LABEL_22:
   v16 = *(MEMORY[0x277D860B8] + 16);
   *(&v11 + 1) = vextq_s8(v14, v14, 8uLL).u64[0];
   v17 = *MEMORY[0x277D860B8];
-  v17.i32[0] = *(a1 + 944);
+  v17.i32[0] = *(self + 944);
   v18 = v16;
-  v18.i32[1] = HIDWORD(*(a1 + 944));
+  v18.i32[1] = HIDWORD(*(self + 944));
   v19 = v12;
   v19.i32[2] = 1.0;
   v23 = *MEMORY[0x277D860B8];
@@ -3142,8 +3142,8 @@ LABEL_22:
   v3 = *&self->_paused;
   if (v3 && ([v3 delegate], v4 = objc_claimAutoreleasedReturnValue(), v3 = *&self->_paused, v4) && (objc_msgSend(v3, "delegate"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_opt_respondsToSelector(), v5, v4, v3 = *&self->_paused, (v6 & 1) != 0))
   {
-    v7 = [v3 delegate];
-    [v7 willRenderContentForScene:*&self->_paused];
+    delegate = [v3 delegate];
+    [delegate willRenderContentForScene:*&self->_paused];
   }
 
   else
@@ -3154,8 +3154,8 @@ LABEL_22:
   scene = self->_scene;
   if (scene && ([(SKScene *)scene delegate], v9 = objc_claimAutoreleasedReturnValue(), scene = self->_scene, v9) && ([(SKScene *)scene delegate], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_opt_respondsToSelector(), v10, v9, scene = self->_scene, (v11 & 1) != 0))
   {
-    v12 = [(SKScene *)scene delegate];
-    [v12 willRenderContentForScene:self->_scene];
+    delegate2 = [(SKScene *)scene delegate];
+    [delegate2 willRenderContentForScene:self->_scene];
   }
 
   else
@@ -3166,18 +3166,18 @@ LABEL_22:
   [(SKView *)self _renderContent];
 }
 
-- (void)set_viewScale:(double)a3
+- (void)set_viewScale:(double)scale
 {
-  *&a3 = a3;
-  *&v4 = vdupq_lane_s32(*&a3, 0).u64[0];
+  *&scale = scale;
+  *&v4 = vdupq_lane_s32(*&scale, 0).u64[0];
   *(&v4 + 1) = *&self->_viewScale[8];
   *self->_viewScale = v4;
-  v5 = [(SKView *)self scene];
+  scene = [(SKView *)self scene];
 
-  if (v5)
+  if (scene)
   {
-    v6 = [(SKView *)self scene];
-    [v6 _setDirty];
+    scene2 = [(SKView *)self scene];
+    [scene2 _setDirty];
   }
 }
 
@@ -3190,37 +3190,37 @@ LABEL_22:
   return result;
 }
 
-- (void)set_viewTranslation:(CGPoint)a3
+- (void)set_viewTranslation:(CGPoint)translation
 {
-  y = a3.y;
-  *&v5 = vcvt_f32_f64(a3);
+  y = translation.y;
+  *&v5 = vcvt_f32_f64(translation);
   *(&v5 + 1) = vextq_s8(*self->_viewTranslation, *self->_viewTranslation, 8uLL).u64[0];
   *self->_viewTranslation = v5;
-  v6 = [(SKView *)self scene];
+  scene = [(SKView *)self scene];
 
-  if (v6)
+  if (scene)
   {
-    v7 = [(SKView *)self scene];
-    [v7 _setDirty];
+    scene2 = [(SKView *)self scene];
+    [scene2 _setDirty];
   }
 }
 
 - (id)snapshot
 {
-  v3 = [(SKView *)self scene];
+  scene = [(SKView *)self scene];
 
-  if (v3)
+  if (scene)
   {
-    v4 = [(SKView *)self scene];
+    scene2 = [(SKView *)self scene];
     [(SKView *)self frame];
-    v5 = [(SKView *)self textureFromNode:v4 crop:?];
+    v5 = [(SKView *)self textureFromNode:scene2 crop:?];
 
     if (v5)
     {
-      v6 = [v5 CGImage];
-      if (v6)
+      cGImage = [v5 CGImage];
+      if (cGImage)
       {
-        v7 = [MEMORY[0x277D755B8] imageWithCGImage:v6];
+        v7 = [MEMORY[0x277D755B8] imageWithCGImage:cGImage];
       }
 
       else
@@ -3228,7 +3228,7 @@ LABEL_22:
         v7 = 0;
       }
 
-      CGImageRelease(v6);
+      CGImageRelease(cGImage);
     }
 
     else
@@ -3236,27 +3236,27 @@ LABEL_22:
       v7 = 0;
     }
 
-    v3 = v7;
+    scene = v7;
   }
 
-  return v3;
+  return scene;
 }
 
 - (float)_getViewContentsScale
 {
-  v2 = [(SKView *)self window];
-  v3 = [v2 screen];
+  window = [(SKView *)self window];
+  screen = [window screen];
 
-  if (v3)
+  if (screen)
   {
-    [v3 nativeScale];
+    [screen nativeScale];
     v5 = v4;
   }
 
   else
   {
-    v6 = [MEMORY[0x277D759A0] mainScreen];
-    [v6 nativeScale];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen nativeScale];
     v5 = v7;
   }
 
@@ -3339,14 +3339,14 @@ LABEL_7:
   return v3;
 }
 
-- (id)focusItemsInRect:(CGRect)a3
+- (id)focusItemsInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v18[1] = *MEMORY[0x277D85DE8];
-  v8 = [(SKView *)self scene];
+  scene = [(SKView *)self scene];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __27__SKView_focusItemsInRect___block_invoke;
@@ -3356,7 +3356,7 @@ LABEL_7:
   *&v17[6] = y;
   *&v17[7] = width;
   *&v17[8] = height;
-  v9 = [v8 _descendantsWithPredicate:v17];
+  v9 = [scene _descendantsWithPredicate:v17];
   v10 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"zPosition" ascending:1];
   v18[0] = v10;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v18 count:1];
@@ -3364,8 +3364,8 @@ LABEL_7:
 
   v16.receiver = self;
   v16.super_class = SKView;
-  v13 = [(SKView *)&v16 focusItemsInRect:x, y, width, height];
-  v14 = [v13 arrayByAddingObjectsFromArray:v12];
+  height = [(SKView *)&v16 focusItemsInRect:x, y, width, height];
+  v14 = [height arrayByAddingObjectsFromArray:v12];
 
   return v14;
 }
@@ -3404,29 +3404,29 @@ BOOL __27__SKView_focusItemsInRect___block_invoke(uint64_t a1, void *a2)
   return v2;
 }
 
-+ (id)debugHierarchyObjectsInGroupWithID:(id)a3 onObject:(id)a4 outOptions:(id *)a5
++ (id)debugHierarchyObjectsInGroupWithID:(id)d onObject:(id)object outOptions:(id *)options
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isEqualToString:@"com.apple.SpriteKit.SKScene"])
+  dCopy = d;
+  objectCopy = object;
+  if ([dCopy isEqualToString:@"com.apple.SpriteKit.SKScene"])
   {
-    v8 = [v7 scene];
+    scene = [objectCopy scene];
 
-    if (v8)
+    if (scene)
     {
-      v9 = [v7 scene];
-      v11[0] = v9;
-      v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:1];
+      scene2 = [objectCopy scene];
+      v11[0] = scene2;
+      scene = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:1];
     }
   }
 
   else
   {
-    v8 = 0;
+    scene = 0;
   }
 
-  return v8;
+  return scene;
 }
 
 + (id)debugHierarchyPropertyDescriptions
@@ -3474,12 +3474,12 @@ BOOL __27__SKView_focusItemsInRect___block_invoke(uint64_t a1, void *a2)
   return v10;
 }
 
-+ (id)debugHierarchyValueForPropertyWithName:(id)a3 onObject:(id)a4 outOptions:(id *)a5 outError:(id *)a6
++ (id)debugHierarchyValueForPropertyWithName:(id)name onObject:(id)object outOptions:(id *)options outError:(id *)error
 {
   v27[3] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = v8;
+  nameCopy = name;
+  objectCopy = object;
+  v10 = nameCopy;
   if (![v10 length])
   {
     goto LABEL_12;
@@ -3490,18 +3490,18 @@ BOOL __27__SKView_focusItemsInRect___block_invoke(uint64_t a1, void *a2)
   {
     if ([v10 length] < 2)
     {
-      v15 = [v10 uppercaseString];
+      uppercaseString = [v10 uppercaseString];
     }
 
     else
     {
       v12 = [v10 substringToIndex:1];
-      v13 = [v12 uppercaseString];
+      uppercaseString2 = [v12 uppercaseString];
       v14 = [v10 substringFromIndex:1];
-      v15 = [v13 stringByAppendingString:v14];
+      uppercaseString = [uppercaseString2 stringByAppendingString:v14];
     }
 
-    v16 = [@"is" stringByAppendingString:v15];
+    v16 = [@"is" stringByAppendingString:uppercaseString];
     NSSelectorFromString(v16);
     if (objc_opt_respondsToSelector())
     {
@@ -3519,9 +3519,9 @@ BOOL __27__SKView_focusItemsInRect___block_invoke(uint64_t a1, void *a2)
     }
 
 LABEL_12:
-    if (a6)
+    if (error)
     {
-      v17 = v9;
+      v17 = objectCopy;
       v18 = v10;
       if (v17)
       {
@@ -3554,10 +3554,10 @@ LABEL_12:
       v23 = [MEMORY[0x277CCA9B8] errorWithDomain:@"DebugHierarchyErrorDomain" code:100 userInfo:v22];
 
       v24 = v23;
-      *a6 = v23;
+      *error = v23;
 
       v11 = 0;
-      a6 = 0;
+      error = 0;
     }
 
     else
@@ -3575,10 +3575,10 @@ LABEL_12:
   }
 
 LABEL_4:
-  a6 = [v9 valueForKey:v11];
+  error = [objectCopy valueForKey:v11];
 LABEL_21:
 
-  return a6;
+  return error;
 }
 
 - (NSObject)delegate

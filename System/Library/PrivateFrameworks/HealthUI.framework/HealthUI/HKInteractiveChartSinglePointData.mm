@@ -37,18 +37,18 @@
     v5 = v4;
     [(HKInteractiveChartSinglePointData *)self maxValue];
     v7 = v6;
-    v8 = [(HKInteractiveChartSinglePointData *)self unit];
-    v9 = [v8 unitString];
-    [v3 stringWithFormat:@"HKInteractiveChartSinglePointData(%lg - %lg, %@)", v5, v7, v9];
+    unit = [(HKInteractiveChartSinglePointData *)self unit];
+    unitString = [unit unitString];
+    [v3 stringWithFormat:@"HKInteractiveChartSinglePointData(%lg - %lg, %@)", v5, v7, unitString];
   }
 
   else
   {
     [(HKInteractiveChartSinglePointData *)self value];
     v11 = v10;
-    v8 = [(HKInteractiveChartSinglePointData *)self unit];
-    v9 = [v8 unitString];
-    [v3 stringWithFormat:@"HKInteractiveChartSinglePointData(%lg, %@)", v11, v9, v14];
+    unit = [(HKInteractiveChartSinglePointData *)self unit];
+    unitString = [unit unitString];
+    [v3 stringWithFormat:@"HKInteractiveChartSinglePointData(%lg, %@)", v11, unitString, v14];
   }
   v12 = ;
 

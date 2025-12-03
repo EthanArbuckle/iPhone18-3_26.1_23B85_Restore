@@ -1,17 +1,17 @@
 @interface MPSNNPadGradientState
-+ (id)temporaryStateWithCommandBuffer:(id)a3;
-- (MPSNNPadGradientState)initWithResource:(id)a3;
++ (id)temporaryStateWithCommandBuffer:(id)buffer;
+- (MPSNNPadGradientState)initWithResource:(id)resource;
 - (id)debugDescription;
 - (void)dealloc;
 @end
 
 @implementation MPSNNPadGradientState
 
-- (MPSNNPadGradientState)initWithResource:(id)a3
+- (MPSNNPadGradientState)initWithResource:(id)resource
 {
   v4.receiver = self;
   v4.super_class = MPSNNPadGradientState;
-  result = [(MPSState *)&v4 initWithResource:a3];
+  result = [(MPSState *)&v4 initWithResource:resource];
   if (result)
   {
     result->_fwdPadBefore.y = 0;
@@ -26,11 +26,11 @@
   return result;
 }
 
-+ (id)temporaryStateWithCommandBuffer:(id)a3
++ (id)temporaryStateWithCommandBuffer:(id)buffer
 {
-  v4.receiver = a1;
+  v4.receiver = self;
   v4.super_class = &OBJC_METACLASS___MPSNNPadGradientState;
-  result = objc_msgSendSuper2(&v4, sel_temporaryStateWithCommandBuffer_, a3);
+  result = objc_msgSendSuper2(&v4, sel_temporaryStateWithCommandBuffer_, buffer);
   if (result)
   {
     *(result + 36) = 0;

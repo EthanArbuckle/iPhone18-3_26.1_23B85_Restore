@@ -1,12 +1,12 @@
 @interface EXPlaceholderViewController
 - (EXPlaceholderViewController)init;
-- (EXPlaceholderViewController)initWithCoder:(id)a3;
+- (EXPlaceholderViewController)initWithCoder:(id)coder;
 - (NSTimer)timer;
-- (void)hostViewController:(id)a3 didBeginHosting:(id)a4;
-- (void)hostViewController:(id)a3 didEndHosting:(id)a4 error:(id)a5;
-- (void)hostViewController:(id)a3 didPrepareToHost:(id)a4;
+- (void)hostViewController:(id)controller didBeginHosting:(id)hosting;
+- (void)hostViewController:(id)controller didEndHosting:(id)hosting error:(id)error;
+- (void)hostViewController:(id)controller didPrepareToHost:(id)host;
 - (void)loadView;
-- (void)setState:(unint64_t)a3;
+- (void)setState:(unint64_t)state;
 @end
 
 @implementation EXPlaceholderViewController
@@ -25,11 +25,11 @@
   return v3;
 }
 
-- (EXPlaceholderViewController)initWithCoder:(id)a3
+- (EXPlaceholderViewController)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = EXPlaceholderViewController;
-  v3 = [(EXPlaceholderViewController *)&v6 initWithCoder:a3];
+  v3 = [(EXPlaceholderViewController *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -44,10 +44,10 @@
   v33[2] = *MEMORY[0x1E69E9840];
   v3 = objc_opt_new();
   [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v4 = [MEMORY[0x1E6966CA0] sharedInstance];
-  v5 = [v4 defaultPlaceholderViewControllerShowsState];
+  mEMORY[0x1E6966CA0] = [MEMORY[0x1E6966CA0] sharedInstance];
+  defaultPlaceholderViewControllerShowsState = [mEMORY[0x1E6966CA0] defaultPlaceholderViewControllerShowsState];
 
-  if (v5)
+  if (defaultPlaceholderViewControllerShowsState)
   {
     v6 = [objc_alloc(MEMORY[0x1E69DC638]) initWithActivityIndicatorStyle:100];
     [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -55,13 +55,13 @@
     [(EXPlaceholderViewController *)self setActivityView:v6];
     [v3 addSubview:v6];
     v30 = MEMORY[0x1E696ACD8];
-    v7 = [v6 centerXAnchor];
-    v8 = [v3 centerXAnchor];
-    v9 = [v7 constraintEqualToAnchor:v8];
+    centerXAnchor = [v6 centerXAnchor];
+    centerXAnchor2 = [v3 centerXAnchor];
+    v9 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v33[0] = v9;
-    v10 = [v6 centerYAnchor];
-    v11 = [v3 centerYAnchor];
-    v12 = [v10 constraintEqualToAnchor:v11];
+    centerYAnchor = [v6 centerYAnchor];
+    centerYAnchor2 = [v3 centerYAnchor];
+    v12 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v33[1] = v12;
     v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v33 count:2];
     [v30 activateConstraints:v13];
@@ -75,20 +75,20 @@
     [(UIImageView *)self->_completeIcon setHidden:1];
     [v3 addSubview:self->_completeIcon];
     v25 = MEMORY[0x1E696ACD8];
-    v29 = [(UIImageView *)self->_completeIcon heightAnchor];
-    v28 = [v29 constraintEqualToConstant:64.0];
+    heightAnchor = [(UIImageView *)self->_completeIcon heightAnchor];
+    v28 = [heightAnchor constraintEqualToConstant:64.0];
     v32[0] = v28;
-    v27 = [(UIImageView *)self->_completeIcon widthAnchor];
-    v26 = [(UIImageView *)self->_completeIcon heightAnchor];
-    v16 = [v27 constraintEqualToAnchor:v26];
+    widthAnchor = [(UIImageView *)self->_completeIcon widthAnchor];
+    heightAnchor2 = [(UIImageView *)self->_completeIcon heightAnchor];
+    v16 = [widthAnchor constraintEqualToAnchor:heightAnchor2];
     v32[1] = v16;
-    v17 = [(UIImageView *)self->_completeIcon centerXAnchor];
-    v18 = [v3 centerXAnchor];
-    v19 = [v17 constraintEqualToAnchor:v18];
+    centerXAnchor3 = [(UIImageView *)self->_completeIcon centerXAnchor];
+    centerXAnchor4 = [v3 centerXAnchor];
+    v19 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
     v32[2] = v19;
-    v20 = [(UIImageView *)self->_completeIcon centerYAnchor];
-    v21 = [v3 centerYAnchor];
-    v22 = [v20 constraintEqualToAnchor:v21];
+    centerYAnchor3 = [(UIImageView *)self->_completeIcon centerYAnchor];
+    centerYAnchor4 = [v3 centerYAnchor];
+    v22 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
     v32[3] = v22;
     v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:v32 count:4];
     [v25 activateConstraints:v23];
@@ -99,7 +99,7 @@
   v24 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setState:(unint64_t)a3
+- (void)setState:(unint64_t)state
 {
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
   objc_initWeak(&location, self);
@@ -109,16 +109,16 @@
     [EXPlaceholderViewController setState:];
   }
 
-  v6 = [MEMORY[0x1E6966CA0] sharedInstance];
-  v7 = [v6 defaultPlaceholderViewControllerShowsState];
+  mEMORY[0x1E6966CA0] = [MEMORY[0x1E6966CA0] sharedInstance];
+  defaultPlaceholderViewControllerShowsState = [mEMORY[0x1E6966CA0] defaultPlaceholderViewControllerShowsState];
 
-  if (v7)
+  if (defaultPlaceholderViewControllerShowsState)
   {
-    if (a3 == 1)
+    if (state == 1)
     {
       v8 = MEMORY[0x1E695DFF0];
-      v9 = [MEMORY[0x1E6966CA0] sharedInstance];
-      [v9 defaultPlaceholderDelayBeforeShowingLoadingIndicator];
+      mEMORY[0x1E6966CA0]2 = [MEMORY[0x1E6966CA0] sharedInstance];
+      [mEMORY[0x1E6966CA0]2 defaultPlaceholderDelayBeforeShowingLoadingIndicator];
       v11 = v10;
       v18 = MEMORY[0x1E69E9820];
       v19 = 3221225472;
@@ -133,10 +133,10 @@
 
     else
     {
-      v13 = [(EXPlaceholderViewController *)self timer];
-      [v13 invalidate];
+      timer = [(EXPlaceholderViewController *)self timer];
+      [timer invalidate];
 
-      if (a3 == 2)
+      if (state == 2)
       {
         v14 = _EXDefaultLog();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
@@ -170,7 +170,7 @@ LABEL_19:
     }
 
     [(UIActivityIndicatorView *)self->_activityView stopAnimating];
-    if (a3 - 3 <= 1)
+    if (state - 3 <= 1)
     {
       v16 = _EXDefaultLog();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
@@ -186,7 +186,7 @@ LABEL_19:
   }
 
 LABEL_24:
-  self->_state = a3;
+  self->_state = state;
   objc_destroyWeak(&location);
 }
 
@@ -196,7 +196,7 @@ void __40__EXPlaceholderViewController_setState___block_invoke(uint64_t a1)
   [WeakRetained setState:2];
 }
 
-- (void)hostViewController:(id)a3 didPrepareToHost:(id)a4
+- (void)hostViewController:(id)controller didPrepareToHost:(id)host
 {
   v4 = _EXDefaultLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -205,7 +205,7 @@ void __40__EXPlaceholderViewController_setState___block_invoke(uint64_t a1)
   }
 }
 
-- (void)hostViewController:(id)a3 didBeginHosting:(id)a4
+- (void)hostViewController:(id)controller didBeginHosting:(id)hosting
 {
   v4 = _EXDefaultLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -214,16 +214,16 @@ void __40__EXPlaceholderViewController_setState___block_invoke(uint64_t a1)
   }
 }
 
-- (void)hostViewController:(id)a3 didEndHosting:(id)a4 error:(id)a5
+- (void)hostViewController:(id)controller didEndHosting:(id)hosting error:(id)error
 {
-  v6 = a5;
+  errorCopy = error;
   v7 = _EXDefaultLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     [EXPlaceholderViewController hostViewController:didEndHosting:error:];
   }
 
-  if (v6)
+  if (errorCopy)
   {
     v8 = 3;
   }

@@ -8,14 +8,14 @@
 
 + (CBPreferencesSettingsProvider)sharedInstance
 {
-  objc_sync_enter(a1);
+  objc_sync_enter(self);
   if (sharedInstance_onceToken_8 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_8, &__block_literal_global_16);
   }
 
   v3 = sharedInstance__sharedObject_7;
-  objc_sync_exit(a1);
+  objc_sync_exit(self);
   return v3;
 }
 
@@ -42,18 +42,18 @@ CBPreferencesSettingsProvider *__47__CBPreferencesSettingsProvider_sharedInstanc
 
 - (unint64_t)aabUpdateStrategyType
 {
-  v5 = 2;
+  intValue = 2;
   v3 = MEMORY[0x1E695E8B8];
   CFPreferencesSynchronize(@"com.apple.CoreBrightness", *MEMORY[0x1E695E8B8], *MEMORY[0x1E695E898]);
   v4 = CFPreferencesCopyValue(@"CBAABCurveUpdateStrategyType", @"com.apple.CoreBrightness", *v3, *MEMORY[0x1E695E8B0]);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 intValue];
+    intValue = [v4 intValue];
   }
 
   MEMORY[0x1E69E5920](v4);
-  return v5;
+  return intValue;
 }
 
 @end

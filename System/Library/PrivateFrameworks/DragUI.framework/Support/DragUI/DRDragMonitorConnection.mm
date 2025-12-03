@@ -1,28 +1,28 @@
 @interface DRDragMonitorConnection
-- (BOOL)_shouldNotifyForSession:(id)a3;
-- (DRDragMonitorConnection)initWithQueue:(id)a3 machServiceName:(id)a4 serviceDisplayName:(id)a5 options:(unint64_t)a6;
-- (void)notifySessionDidEnd:(id)a3;
-- (void)notifySessionWillBegin:(id)a3 configuration:(id)a4 completion:(id)a5;
+- (BOOL)_shouldNotifyForSession:(id)session;
+- (DRDragMonitorConnection)initWithQueue:(id)queue machServiceName:(id)name serviceDisplayName:(id)displayName options:(unint64_t)options;
+- (void)notifySessionDidEnd:(id)end;
+- (void)notifySessionWillBegin:(id)begin configuration:(id)configuration completion:(id)completion;
 - (void)setUp;
 @end
 
 @implementation DRDragMonitorConnection
 
-- (DRDragMonitorConnection)initWithQueue:(id)a3 machServiceName:(id)a4 serviceDisplayName:(id)a5 options:(unint64_t)a6
+- (DRDragMonitorConnection)initWithQueue:(id)queue machServiceName:(id)name serviceDisplayName:(id)displayName options:(unint64_t)options
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  queueCopy = queue;
+  nameCopy = name;
+  displayNameCopy = displayName;
   v17.receiver = self;
   v17.super_class = DRDragMonitorConnection;
   v14 = [(DRDragMonitorConnection *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_queue, a3);
-    v15->_options = a6;
-    objc_storeStrong(&v15->_machServiceName, a4);
-    objc_storeStrong(&v15->_serviceDisplayName, a5);
+    objc_storeStrong(&v14->_queue, queue);
+    v15->_options = options;
+    objc_storeStrong(&v15->_machServiceName, name);
+    objc_storeStrong(&v15->_serviceDisplayName, displayName);
   }
 
   return v15;
@@ -57,17 +57,17 @@
   objc_destroyWeak(&location);
 }
 
-- (BOOL)_shouldNotifyForSession:(id)a3
+- (BOOL)_shouldNotifyForSession:(id)session
 {
-  v4 = a3;
-  if ([v4 sourceRestrictsDragToSelf] & 1) != 0 || (objc_msgSend(v4, "sourceRestrictsDragToLocalDevice"))
+  sessionCopy = session;
+  if ([sessionCopy sourceRestrictsDragToSelf] & 1) != 0 || (objc_msgSend(sessionCopy, "sourceRestrictsDragToLocalDevice"))
   {
 LABEL_8:
     v5 = 0;
     goto LABEL_9;
   }
 
-  if (([v4 originatedFromPointer] & 1) == 0)
+  if (([sessionCopy originatedFromPointer] & 1) == 0)
   {
     v6 = DRLogTarget();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -87,11 +87,11 @@ LABEL_9:
   return v5;
 }
 
-- (void)notifySessionWillBegin:(id)a3 configuration:(id)a4 completion:(id)a5
+- (void)notifySessionWillBegin:(id)begin configuration:(id)configuration completion:(id)completion
 {
-  v7 = a3;
-  v8 = a5;
-  if ([(DRDragMonitorConnection *)self _shouldNotifyForSession:v7])
+  beginCopy = begin;
+  completionCopy = completion;
+  if ([(DRDragMonitorConnection *)self _shouldNotifyForSession:beginCopy])
   {
     connection = self->_connection;
     if (!connection)
@@ -105,41 +105,41 @@ LABEL_9:
     v18[2] = sub_10000515C;
     v18[3] = &unk_100054CC8;
     v18[4] = self;
-    v10 = v8;
+    v10 = completionCopy;
     v19 = v10;
     v11 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:v18];
     v12 = DRLogTarget();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       serviceDisplayName = self->_serviceDisplayName;
-      v14 = [v7 identifier];
+      identifier = [beginCopy identifier];
       *buf = 138412546;
       v21 = serviceDisplayName;
       v22 = 1024;
-      v23 = v14;
+      v23 = identifier;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Notifying %@ of new drag session 0x%x", buf, 0x12u);
     }
 
-    v15 = [v7 identifier];
+    identifier2 = [beginCopy identifier];
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
     v16[2] = sub_1000051DC;
     v16[3] = &unk_100054CF0;
     v16[4] = self;
     v17 = v10;
-    [v11 dragDidBeginWithSession:v7 identifier:v15 reply:v16];
+    [v11 dragDidBeginWithSession:beginCopy identifier:identifier2 reply:v16];
   }
 
   else
   {
-    v8[2](v8);
+    completionCopy[2](completionCopy);
   }
 }
 
-- (void)notifySessionDidEnd:(id)a3
+- (void)notifySessionDidEnd:(id)end
 {
-  v4 = a3;
-  if ([(DRDragMonitorConnection *)self _shouldNotifyForSession:v4])
+  endCopy = end;
+  if ([(DRDragMonitorConnection *)self _shouldNotifyForSession:endCopy])
   {
     connection = self->_connection;
     if (!connection)
@@ -156,12 +156,12 @@ LABEL_9:
     v6 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:v7];
     if (([(DRDragMonitorConnection *)self options]& 1) != 0)
     {
-      [v6 dragDidEndWithSession:v4];
+      [v6 dragDidEndWithSession:endCopy];
     }
 
     else
     {
-      [v6 dragDidEndWithSession:v4 identifier:{objc_msgSend(v4, "identifier")}];
+      [v6 dragDidEndWithSession:endCopy identifier:{objc_msgSend(endCopy, "identifier")}];
     }
   }
 }

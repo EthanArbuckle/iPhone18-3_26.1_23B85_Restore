@@ -1,19 +1,19 @@
 @interface MUWebPlacecardMessageHandlerWithReply
 - (_TtC6MapsUI37MUWebPlacecardMessageHandlerWithReply)init;
-- (void)userContentController:(id)a3 didReceiveScriptMessage:(id)a4 replyHandler:(id)a5;
+- (void)userContentController:(id)controller didReceiveScriptMessage:(id)message replyHandler:(id)handler;
 @end
 
 @implementation MUWebPlacecardMessageHandlerWithReply
 
-- (void)userContentController:(id)a3 didReceiveScriptMessage:(id)a4 replyHandler:(id)a5
+- (void)userContentController:(id)controller didReceiveScriptMessage:(id)message replyHandler:(id)handler
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
-  v10 = a3;
-  v11 = a4;
-  v12 = self;
-  sub_1C566E4DC(v11, sub_1C566EA18, v9);
+  controllerCopy = controller;
+  messageCopy = message;
+  selfCopy = self;
+  sub_1C566E4DC(messageCopy, sub_1C566EA18, v9);
 }
 
 - (_TtC6MapsUI37MUWebPlacecardMessageHandlerWithReply)init

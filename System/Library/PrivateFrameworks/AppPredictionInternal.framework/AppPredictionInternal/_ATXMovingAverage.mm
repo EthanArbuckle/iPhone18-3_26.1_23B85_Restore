@@ -1,21 +1,21 @@
 @interface _ATXMovingAverage
-- (_ATXMovingAverage)initWithAlpha:(double)a3;
-- (_ATXMovingAverage)initWithCoder:(id)a3;
+- (_ATXMovingAverage)initWithAlpha:(double)alpha;
+- (_ATXMovingAverage)initWithCoder:(id)coder;
 - (id)description;
-- (void)addElement:(double)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)addElement:(double)element;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _ATXMovingAverage
 
-- (_ATXMovingAverage)initWithAlpha:(double)a3
+- (_ATXMovingAverage)initWithAlpha:(double)alpha
 {
   v5.receiver = self;
   v5.super_class = _ATXMovingAverage;
   result = [(_ATXMovingAverage *)&v5 init];
   if (result)
   {
-    result->_alpha = a3;
+    result->_alpha = alpha;
     result->_count = 0;
   }
 
@@ -32,45 +32,45 @@
   return v6;
 }
 
-- (_ATXMovingAverage)initWithCoder:(id)a3
+- (_ATXMovingAverage)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = _ATXMovingAverage;
   v5 = [(_ATXMovingAverage *)&v10 init];
   if (v5)
   {
-    [v4 decodeDoubleForKey:@"avgError"];
+    [coderCopy decodeDoubleForKey:@"avgError"];
     v5->_movingError = v6;
-    [v4 decodeDoubleForKey:@"avgDuration"];
+    [coderCopy decodeDoubleForKey:@"avgDuration"];
     v5->_movingAverage = v7;
-    [v4 decodeDoubleForKey:@"alpha"];
+    [coderCopy decodeDoubleForKey:@"alpha"];
     v5->_alpha = v8;
-    v5->_count = [v4 decodeIntegerForKey:@"count"];
+    v5->_count = [coderCopy decodeIntegerForKey:@"count"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   movingAverage = self->_movingAverage;
-  v5 = a3;
-  [v5 encodeDouble:@"avgDuration" forKey:movingAverage];
-  [v5 encodeDouble:@"avgError" forKey:self->_movingError];
-  [v5 encodeDouble:@"alpha" forKey:self->_alpha];
-  [v5 encodeInteger:self->_count forKey:@"count"];
+  coderCopy = coder;
+  [coderCopy encodeDouble:@"avgDuration" forKey:movingAverage];
+  [coderCopy encodeDouble:@"avgError" forKey:self->_movingError];
+  [coderCopy encodeDouble:@"alpha" forKey:self->_alpha];
+  [coderCopy encodeInteger:self->_count forKey:@"count"];
 }
 
-- (void)addElement:(double)a3
+- (void)addElement:(double)element
 {
   count = self->_count;
   if (count)
   {
     alpha = self->_alpha;
-    v5 = (1.0 - alpha) * self->_movingAverage + alpha * a3;
+    v5 = (1.0 - alpha) * self->_movingAverage + alpha * element;
     self->_movingAverage = v5;
-    v6 = vabdd_f64(a3, v5);
+    v6 = vabdd_f64(element, v5);
     if (count != 1)
     {
       v6 = (1.0 - alpha) * self->_movingError + alpha * v6;
@@ -81,7 +81,7 @@
 
   else
   {
-    self->_movingAverage = a3;
+    self->_movingAverage = element;
     self->_movingError = 0.0;
   }
 

@@ -1,12 +1,12 @@
 @interface ICNoteTimelineControllerInternal
-+ (id)ascendingTimelineSectionsForNoteObjectIds:(id)a3 dates:(id)a4 referenceDate:(id)a5 direction:(int64_t)a6;
-+ (void)setTimeZone:(id)a3;
++ (id)ascendingTimelineSectionsForNoteObjectIds:(id)ids dates:(id)dates referenceDate:(id)date direction:(int64_t)direction;
++ (void)setTimeZone:(id)zone;
 - (_TtC7NotesUI32ICNoteTimelineControllerInternal)init;
 @end
 
 @implementation ICNoteTimelineControllerInternal
 
-+ (id)ascendingTimelineSectionsForNoteObjectIds:(id)a3 dates:(id)a4 referenceDate:(id)a5 direction:(int64_t)a6
++ (id)ascendingTimelineSectionsForNoteObjectIds:(id)ids dates:(id)dates referenceDate:(id)date direction:(int64_t)direction
 {
   v7 = sub_1D4417434();
   v8 = *(v7 - 8);
@@ -16,7 +16,7 @@
   v11 = sub_1D4419E44();
   v12 = sub_1D4419E44();
   sub_1D44173F4();
-  _s7NotesUI32ICNoteTimelineControllerInternalC09ascendingD8Sections3for5dates13referenceDate9directionSaySo0cD7SectionCGSaySo17NSManagedObjectIDCG_Say10Foundation0L0VGAQSo35ICFolderCustomNoteSortTypeDirectionVtFZ_0(v11, v12, v10, a6);
+  _s7NotesUI32ICNoteTimelineControllerInternalC09ascendingD8Sections3for5dates13referenceDate9directionSaySo0cD7SectionCGSaySo17NSManagedObjectIDCG_Say10Foundation0L0VGAQSo35ICFolderCustomNoteSortTypeDirectionVtFZ_0(v11, v12, v10, direction);
 
   (*(v8 + 8))(v10, v7);
   sub_1D41766C0(0, &qword_1EDE326C8);
@@ -25,7 +25,7 @@
   return v13;
 }
 
-+ (void)setTimeZone:(id)a3
++ (void)setTimeZone:(id)zone
 {
   v3 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EC7CC118);
   MEMORY[0x1EEE9AC00](v3);

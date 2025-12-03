@@ -1,22 +1,22 @@
 @interface HMDCameraSnapshotRequestHandler
-+ (id)_snapshotRequestOptions:(unint64_t)a3 resolution:(id)a4 accessory:(id)a5;
++ (id)_snapshotRequestOptions:(unint64_t)options resolution:(id)resolution accessory:(id)accessory;
 + (id)logCategory;
-- (HMDCameraSnapshotFile)_saveSnapshot:(uint64_t)a1;
-- (HMDCameraSnapshotRequestHandler)initWithAccessory:(id)a3 workQueue:(id)a4 streamSnapshotHandler:(id)a5 imageCacheDirectory:(id)a6 logID:(id)a7;
-- (void)_handleSnapshot:(void *)a3 error:;
-- (void)_sendSnapshotRequest:(unint64_t)a3 streamingTierType:;
-- (void)requestSnapshot:(id)a3 streamingTierType:(unint64_t)a4 completionHandler:(id)a5;
-- (void)streamSnapshotHandler:(id)a3 didGetLastSnapshot:(id)a4;
-- (void)streamSnapshotHandler:(id)a3 didGetNewSnapshot:(id)a4;
-- (void)timerDidFire:(id)a3;
+- (HMDCameraSnapshotFile)_saveSnapshot:(uint64_t)snapshot;
+- (HMDCameraSnapshotRequestHandler)initWithAccessory:(id)accessory workQueue:(id)queue streamSnapshotHandler:(id)handler imageCacheDirectory:(id)directory logID:(id)d;
+- (void)_handleSnapshot:(void *)snapshot error:;
+- (void)_sendSnapshotRequest:(unint64_t)request streamingTierType:;
+- (void)requestSnapshot:(id)snapshot streamingTierType:(unint64_t)type completionHandler:(id)handler;
+- (void)streamSnapshotHandler:(id)handler didGetLastSnapshot:(id)snapshot;
+- (void)streamSnapshotHandler:(id)handler didGetNewSnapshot:(id)snapshot;
+- (void)timerDidFire:(id)fire;
 @end
 
 @implementation HMDCameraSnapshotRequestHandler
 
-- (void)timerDidFire:(id)a3
+- (void)timerDidFire:(id)fire
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fireCopy = fire;
   if (self)
   {
     dispatch_assert_queue_V2(self->_workQueue);
@@ -29,10 +29,10 @@
     mostRecentSnapshotInvalidationTimer = 0;
   }
 
-  if (mostRecentSnapshotInvalidationTimer == v4)
+  if (mostRecentSnapshotInvalidationTimer == fireCopy)
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = self;
+    selfCopy = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
@@ -45,19 +45,19 @@
     objc_autoreleasePoolPop(v6);
     if (self)
     {
-      objc_storeStrong(&v7->_mostRecentSnapshot, 0);
-      objc_storeStrong(&v7->_mostRecentSnapshotInvalidationTimer, 0);
+      objc_storeStrong(&selfCopy->_mostRecentSnapshot, 0);
+      objc_storeStrong(&selfCopy->_mostRecentSnapshotInvalidationTimer, 0);
     }
   }
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)streamSnapshotHandler:(id)a3 didGetLastSnapshot:(id)a4
+- (void)streamSnapshotHandler:(id)handler didGetLastSnapshot:(id)snapshot
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  handlerCopy = handler;
+  snapshotCopy = snapshot;
   if (self)
   {
     workQueue = self->_workQueue;
@@ -70,7 +70,7 @@
 
   dispatch_assert_queue_V2(workQueue);
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy = self;
   v11 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
@@ -81,44 +81,44 @@
   }
 
   objc_autoreleasePoolPop(v9);
-  v13 = [(HMDCameraSnapshotRequestHandler *)v10 _saveSnapshot:v7];
+  v13 = [(HMDCameraSnapshotRequestHandler *)selfCopy _saveSnapshot:snapshotCopy];
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDCameraSnapshotFile)_saveSnapshot:(uint64_t)a1
+- (HMDCameraSnapshotFile)_saveSnapshot:(uint64_t)snapshot
 {
   v26 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  if (a1)
+  if (snapshot)
   {
-    dispatch_assert_queue_V2(*(a1 + 16));
+    dispatch_assert_queue_V2(*(snapshot + 16));
     v4 = [HMDCameraSnapshotFile alloc];
-    v5 = [a1 imageCacheDirectory];
+    imageCacheDirectory = [snapshot imageCacheDirectory];
     v19 = 0;
-    v6 = [(HMDCameraSnapshotFile *)v4 initWithDirectory:v5 snapshot:v3 error:&v19];
+    v6 = [(HMDCameraSnapshotFile *)v4 initWithDirectory:imageCacheDirectory snapshot:v3 error:&v19];
     v7 = v19;
 
     if (v6)
     {
-      objc_storeStrong((a1 + 56), v6);
+      objc_storeStrong((snapshot + 56), v6);
       v8 = [objc_alloc(MEMORY[0x277D0F920]) initWithTimeInterval:0 options:2.0];
-      v9 = *(a1 + 48);
-      *(a1 + 48) = v8;
+      v9 = *(snapshot + 48);
+      *(snapshot + 48) = v8;
 
-      [*(a1 + 48) setDelegate:a1];
-      v10 = *(a1 + 48);
-      v11 = *(a1 + 16);
+      [*(snapshot + 48) setDelegate:snapshot];
+      v10 = *(snapshot + 48);
+      v11 = *(snapshot + 16);
       [v10 setDelegateQueue:v11];
 
-      [*(a1 + 48) resume];
+      [*(snapshot + 48) resume];
       v12 = v6;
     }
 
     else
     {
       v13 = objc_autoreleasePoolPush();
-      v14 = a1;
+      snapshotCopy = snapshot;
       v15 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
@@ -146,11 +146,11 @@
   return v6;
 }
 
-- (void)streamSnapshotHandler:(id)a3 didGetNewSnapshot:(id)a4
+- (void)streamSnapshotHandler:(id)handler didGetNewSnapshot:(id)snapshot
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  handlerCopy = handler;
+  snapshotCopy = snapshot;
   if (self)
   {
     workQueue = self->_workQueue;
@@ -163,10 +163,10 @@
 
   dispatch_assert_queue_V2(workQueue);
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy = self;
   v11 = HMFGetOSLogHandle();
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_INFO);
-  if (v7)
+  if (snapshotCopy)
   {
     if (v12)
     {
@@ -177,7 +177,7 @@
     }
 
     objc_autoreleasePoolPop(v9);
-    v14 = [(HMDCameraSnapshotRequestHandler *)v10 _saveSnapshot:v7];
+    v14 = [(HMDCameraSnapshotRequestHandler *)selfCopy _saveSnapshot:snapshotCopy];
   }
 
   else
@@ -196,11 +196,11 @@
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)requestSnapshot:(id)a3 streamingTierType:(unint64_t)a4 completionHandler:(id)a5
+- (void)requestSnapshot:(id)snapshot streamingTierType:(unint64_t)type completionHandler:(id)handler
 {
   v71 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  aBlock = a5;
+  snapshotCopy = snapshot;
+  aBlock = handler;
   if (self)
   {
     workQueue = self->_workQueue;
@@ -212,10 +212,10 @@
   }
 
   dispatch_assert_queue_V2(workQueue);
-  v56 = v7;
-  v9 = [v7 snapshotCharacteristicEventUUID];
+  v56 = snapshotCopy;
+  snapshotCharacteristicEventUUID = [snapshotCopy snapshotCharacteristicEventUUID];
 
-  if (v9)
+  if (snapshotCharacteristicEventUUID)
   {
     if (self)
     {
@@ -236,17 +236,17 @@ LABEL_44:
 LABEL_6:
     if ([(NSMutableArray *)pendingCompletionHandlers count]< 2)
     {
-      v22 = [(HMDCameraSnapshotRequestHandler *)self supportedResolutions];
+      supportedResolutions = [(HMDCameraSnapshotRequestHandler *)self supportedResolutions];
 
-      if (v22)
+      if (supportedResolutions)
       {
-        [(HMDCameraSnapshotRequestHandler *)self _sendSnapshotRequest:v7 streamingTierType:a4];
+        [(HMDCameraSnapshotRequestHandler *)self _sendSnapshotRequest:snapshotCopy streamingTierType:type];
       }
 
       else
       {
         v27 = objc_autoreleasePoolPush();
-        v28 = self;
+        selfCopy = self;
         v29 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
         {
@@ -257,12 +257,12 @@ LABEL_6:
         }
 
         objc_autoreleasePoolPop(v27);
-        v52 = v7;
+        v52 = snapshotCopy;
         if (self)
         {
-          dispatch_assert_queue_V2(v28->_workQueue);
+          dispatch_assert_queue_V2(selfCopy->_workQueue);
           v31 = objc_autoreleasePoolPush();
-          val = v28;
+          val = selfCopy;
           v32 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v32, OS_LOG_TYPE_INFO))
           {
@@ -276,13 +276,13 @@ LABEL_6:
           WeakRetained = objc_loadWeakRetained(val + 3);
           if (WeakRetained)
           {
-            v58 = [MEMORY[0x277CBEB18] array];
+            array = [MEMORY[0x277CBEB18] array];
             v65 = 0u;
             v66 = 0u;
             v63 = 0u;
             v64 = 0u;
-            v34 = [WeakRetained services];
-            v35 = [v34 countByEnumeratingWithState:&v63 objects:buf count:16];
+            services = [WeakRetained services];
+            v35 = [services countByEnumeratingWithState:&v63 objects:buf count:16];
             if (v35)
             {
               v36 = *v64;
@@ -294,12 +294,12 @@ LABEL_6:
                 {
                   if (*v64 != v36)
                   {
-                    objc_enumerationMutation(v34);
+                    objc_enumerationMutation(services);
                   }
 
                   v40 = *(*(&v63 + 1) + 8 * i);
-                  v41 = [v40 serviceType];
-                  v42 = [v41 isEqualToString:v37];
+                  serviceType = [v40 serviceType];
+                  v42 = [serviceType isEqualToString:v37];
 
                   if (v42)
                   {
@@ -307,12 +307,12 @@ LABEL_6:
                     if (v43)
                     {
                       v44 = [HMDCharacteristicRequest requestWithCharacteristic:v43];
-                      [v58 addObject:v44];
+                      [array addObject:v44];
                     }
                   }
                 }
 
-                v35 = [v34 countByEnumeratingWithState:&v63 objects:buf count:16];
+                v35 = [services countByEnumeratingWithState:&v63 objects:buf count:16];
               }
 
               while (v35);
@@ -326,8 +326,8 @@ LABEL_6:
             v59[3] = &unk_279735AA8;
             objc_copyWeak(v61, &location);
             v60 = v52;
-            v61[1] = a4;
-            [WeakRetained readCharacteristicValues:v58 source:1070 queue:v45 completionHandler:v59];
+            v61[1] = type;
+            [WeakRetained readCharacteristicValues:array source:1070 queue:v45 completionHandler:v59];
 
             objc_destroyWeak(v61);
             objc_destroyWeak(&location);
@@ -347,8 +347,8 @@ LABEL_6:
             }
 
             objc_autoreleasePoolPop(v46);
-            v58 = [MEMORY[0x277CCA9B8] hmInternalErrorWithCode:1011];
-            [(HMDCameraSnapshotRequestHandler *)v47 _handleSnapshot:v58 error:?];
+            array = [MEMORY[0x277CCA9B8] hmInternalErrorWithCode:1011];
+            [(HMDCameraSnapshotRequestHandler *)v47 _handleSnapshot:array error:?];
           }
         }
       }
@@ -357,7 +357,7 @@ LABEL_6:
     else
     {
       v13 = objc_autoreleasePoolPush();
-      v14 = self;
+      selfCopy2 = self;
       v15 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
       {
@@ -370,12 +370,12 @@ LABEL_6:
 
         else
         {
-          v18 = v14->_pendingCompletionHandlers;
+          v18 = selfCopy2->_pendingCompletionHandlers;
         }
 
         v19 = v18;
-        v20 = [(NSMutableArray *)v19 firstObject];
-        v21 = _Block_copy(v20);
+        firstObject = [(NSMutableArray *)v19 firstObject];
+        v21 = _Block_copy(firstObject);
         *buf = 138543618;
         v68 = v17;
         v69 = 2112;
@@ -400,7 +400,7 @@ LABEL_6:
   }
 
   v23 = objc_autoreleasePoolPush();
-  v24 = self;
+  selfCopy3 = self;
   v25 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
   {
@@ -411,24 +411,24 @@ LABEL_6:
   }
 
   objc_autoreleasePoolPop(v23);
-  (*(aBlock + 2))(aBlock, v24->_mostRecentSnapshot, 0);
+  (*(aBlock + 2))(aBlock, selfCopy3->_mostRecentSnapshot, 0);
 LABEL_42:
 
   v50 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_sendSnapshotRequest:(unint64_t)a3 streamingTierType:
+- (void)_sendSnapshotRequest:(unint64_t)request streamingTierType:
 {
   v76 = *MEMORY[0x277D85DE8];
   v59 = a2;
-  if (a1)
+  if (self)
   {
-    dispatch_assert_queue_V2(*(a1 + 16));
-    WeakRetained = objc_loadWeakRetained((a1 + 24));
+    dispatch_assert_queue_V2(*(self + 16));
+    WeakRetained = objc_loadWeakRetained((self + 24));
     if (!WeakRetained)
     {
       v14 = objc_autoreleasePoolPush();
-      v15 = a1;
+      selfCopy = self;
       v16 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
       {
@@ -440,28 +440,28 @@ LABEL_42:
 
       objc_autoreleasePoolPop(v14);
       v18 = [MEMORY[0x277CCA9B8] hmInternalErrorWithCode:1011];
-      [(HMDCameraSnapshotRequestHandler *)v15 _handleSnapshot:v18 error:?];
+      [(HMDCameraSnapshotRequestHandler *)selfCopy _handleSnapshot:v18 error:?];
       goto LABEL_41;
     }
 
-    dispatch_assert_queue_V2(*(a1 + 16));
+    dispatch_assert_queue_V2(*(self + 16));
     v5 = snapshotResolution;
-    v56 = a3;
-    v57 = a1;
+    requestCopy = request;
+    selfCopy2 = self;
     v55 = v5;
     if (v5)
     {
-      v6 = [v5 unsignedIntegerValue];
+      unsignedIntegerValue = [v5 unsignedIntegerValue];
       v7 = objc_autoreleasePoolPush();
-      v8 = a1;
+      selfCopy3 = self;
       v9 = HMFGetOSLogHandle();
       v10 = os_log_type_enabled(v9, OS_LOG_TYPE_INFO);
-      if ((v6 - 1) < 0xA)
+      if ((unsignedIntegerValue - 1) < 0xA)
       {
         if (v10)
         {
           v11 = HMFGetLogIdentifier();
-          v12 = HMDVideoResolutionTypeAsString(v6);
+          v12 = HMDVideoResolutionTypeAsString(unsignedIntegerValue);
           *buf = 138543618;
           *&buf[4] = v11;
           *&buf[12] = 2112;
@@ -470,7 +470,7 @@ LABEL_42:
         }
 
         objc_autoreleasePoolPop(v7);
-        v13 = [[HMDVideoResolution alloc] initWithResolution:v6];
+        v13 = [[HMDVideoResolution alloc] initWithResolution:unsignedIntegerValue];
 LABEL_38:
 
         v48 = [objc_opt_class() _snapshotRequestOptions:objc_msgSend(v59 resolution:"snapshotReason") accessory:{v13, WeakRetained}];
@@ -482,7 +482,7 @@ LABEL_38:
         v72 = [objc_alloc(MEMORY[0x277D0F880]) initWithName:@"com.apple.homed.snapshot-request"];
         [v59 markMilestoneFor:@"SentSnapshotRequestToAccessory"];
         v49 = objc_autoreleasePoolPush();
-        v50 = v57;
+        v50 = selfCopy2;
         v51 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v51, OS_LOG_TYPE_INFO))
         {
@@ -520,23 +520,23 @@ LABEL_41:
         *buf = 138543618;
         *&buf[4] = v19;
         *&buf[12] = 2048;
-        *&buf[14] = v6;
+        *&buf[14] = unsignedIntegerValue;
         _os_log_impl(&dword_2531F8000, v9, OS_LOG_TYPE_INFO, "%{public}@Not overriding the resolution requested to %tu", buf, 0x16u);
       }
 
       objc_autoreleasePoolPop(v7);
     }
 
-    v20 = [HMDCameraVideoParameterSelection videoResolutionPreferenceForStreamingTierType:a3];
+    v20 = [HMDCameraVideoParameterSelection videoResolutionPreferenceForStreamingTierType:request];
     v21 = v20;
-    if (a3 - 1 < 2)
+    if (request - 1 < 2)
     {
       v22 = [v20 na_filter:&__block_literal_global_15_194421];
     }
 
-    else if (a3 - 3 >= 2)
+    else if (request - 3 >= 2)
     {
-      if (a3)
+      if (request)
       {
         v23 = v20;
         goto LABEL_21;
@@ -554,12 +554,12 @@ LABEL_41:
 
 LABEL_21:
     v24 = objc_autoreleasePoolPush();
-    v25 = a1;
+    selfCopy4 = self;
     v26 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
     {
       v27 = HMFGetLogIdentifier();
-      v28 = HMDStreamingTierTypeAsString(v56);
+      v28 = HMDStreamingTierTypeAsString(requestCopy);
       *buf = 138543874;
       *&buf[4] = v27;
       *&buf[12] = 2112;
@@ -589,15 +589,15 @@ LABEL_25:
         }
 
         v33 = *(*&v73[8] + 8 * v32);
-        v34 = [v33 resolutionType];
-        dispatch_assert_queue_V2(v25[2]);
-        v35 = [(dispatch_queue_t *)v25 supportedResolutions];
+        resolutionType = [v33 resolutionType];
+        dispatch_assert_queue_V2(selfCopy4[2]);
+        supportedResolutions = [(dispatch_queue_t *)selfCopy4 supportedResolutions];
         *v66 = v31;
         *&v66[8] = 3221225472;
         *&v66[16] = __64__HMDCameraSnapshotRequestHandler__supportedResolutionWithType___block_invoke;
         v67 = &__block_descriptor_40_e28_B16__0__HMDVideoResolution_8l;
-        v68[0] = v34;
-        v36 = [v35 na_firstObjectPassingTest:v66];
+        v68[0] = resolutionType;
+        v36 = [supportedResolutions na_firstObjectPassingTest:v66];
 
         if (v36)
         {
@@ -624,13 +624,13 @@ LABEL_25:
       }
 
       v37 = objc_autoreleasePoolPush();
-      v38 = v25;
+      v38 = selfCopy4;
       v39 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v39, OS_LOG_TYPE_INFO))
       {
         v40 = HMFGetLogIdentifier();
         v41 = HMDVideoResolutionTypeAsString([(HMDVideoResolution *)v13 resolutionType]);
-        v42 = HMDStreamingTierTypeAsString(v56);
+        v42 = HMDStreamingTierTypeAsString(requestCopy);
         *v66 = 138543874;
         *&v66[4] = v40;
         *&v66[12] = 2112;
@@ -648,18 +648,18 @@ LABEL_31:
 LABEL_35:
       v13 = [[HMDVideoResolution alloc] initWithResolution:1];
       v37 = objc_autoreleasePoolPush();
-      v43 = v25;
+      v43 = selfCopy4;
       v39 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v39, OS_LOG_TYPE_INFO))
       {
         v44 = HMFGetLogIdentifier();
-        v45 = [(dispatch_queue_t *)v43 supportedResolutions];
-        v46 = HMDStreamingTierTypeAsString(v56);
+        supportedResolutions2 = [(dispatch_queue_t *)v43 supportedResolutions];
+        v46 = HMDStreamingTierTypeAsString(requestCopy);
         v47 = HMDVideoResolutionTypeAsString([(HMDVideoResolution *)v13 resolutionType]);
         *v66 = 138544130;
         *&v66[4] = v44;
         *&v66[12] = 2112;
-        *&v66[14] = v45;
+        *&v66[14] = supportedResolutions2;
         *&v66[22] = 2112;
         v67 = v46;
         LOWORD(v68[0]) = 2112;
@@ -677,17 +677,17 @@ LABEL_42:
   v54 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleSnapshot:(void *)a3 error:
+- (void)_handleSnapshot:(void *)snapshot error:
 {
   v27 = *MEMORY[0x277D85DE8];
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  snapshotCopy = snapshot;
+  if (self)
   {
-    dispatch_assert_queue_V2(*(a1 + 16));
+    dispatch_assert_queue_V2(*(self + 16));
     if (v5)
     {
-      v7 = [(HMDCameraSnapshotRequestHandler *)a1 _saveSnapshot:v5];
+      v7 = [(HMDCameraSnapshotRequestHandler *)self _saveSnapshot:v5];
       if (v7)
       {
         v8 = v7;
@@ -696,7 +696,7 @@ LABEL_42:
       else
       {
         v9 = objc_autoreleasePoolPush();
-        v10 = a1;
+        selfCopy = self;
         v11 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
         {
@@ -710,7 +710,7 @@ LABEL_42:
         v13 = [MEMORY[0x277CCA9B8] hmInternalErrorWithCode:1038];
 
         v8 = 0;
-        v6 = v13;
+        snapshotCopy = v13;
       }
     }
 
@@ -723,7 +723,7 @@ LABEL_42:
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v14 = *(a1 + 32);
+    v14 = *(self + 32);
     v15 = [v14 countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v15)
     {
@@ -750,7 +750,7 @@ LABEL_42:
       while (v16);
     }
 
-    [*(a1 + 32) removeAllObjects];
+    [*(self + 32) removeAllObjects];
   }
 
   v19 = *MEMORY[0x277D85DE8];
@@ -1007,61 +1007,61 @@ void __83__HMDCameraSnapshotRequestHandler__getSupportedVideoResolutions_streami
   v51 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDCameraSnapshotRequestHandler)initWithAccessory:(id)a3 workQueue:(id)a4 streamSnapshotHandler:(id)a5 imageCacheDirectory:(id)a6 logID:(id)a7
+- (HMDCameraSnapshotRequestHandler)initWithAccessory:(id)accessory workQueue:(id)queue streamSnapshotHandler:(id)handler imageCacheDirectory:(id)directory logID:(id)d
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  accessoryCopy = accessory;
+  queueCopy = queue;
+  handlerCopy = handler;
+  directoryCopy = directory;
+  dCopy = d;
   v22.receiver = self;
   v22.super_class = HMDCameraSnapshotRequestHandler;
   v17 = [(HMDCameraSnapshotRequestHandler *)&v22 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeWeak(&v17->_accessory, v12);
-    objc_storeStrong(&v18->_workQueue, a4);
-    v19 = [MEMORY[0x277CBEB18] array];
+    objc_storeWeak(&v17->_accessory, accessoryCopy);
+    objc_storeStrong(&v18->_workQueue, queue);
+    array = [MEMORY[0x277CBEB18] array];
     pendingCompletionHandlers = v18->_pendingCompletionHandlers;
-    v18->_pendingCompletionHandlers = v19;
+    v18->_pendingCompletionHandlers = array;
 
-    objc_storeStrong(&v18->_logIdentifier, a7);
-    objc_storeStrong(&v18->_streamSnapshotHandler, a5);
-    objc_storeStrong(&v18->_imageCacheDirectory, a6);
+    objc_storeStrong(&v18->_logIdentifier, d);
+    objc_storeStrong(&v18->_streamSnapshotHandler, handler);
+    objc_storeStrong(&v18->_imageCacheDirectory, directory);
     [(HMDCameraStreamSnapshotHandler *)v18->_streamSnapshotHandler addDelegate:v18];
   }
 
   return v18;
 }
 
-+ (id)_snapshotRequestOptions:(unint64_t)a3 resolution:(id)a4 accessory:(id)a5
++ (id)_snapshotRequestOptions:(unint64_t)options resolution:(id)resolution accessory:(id)accessory
 {
   v55 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
-  v9 = [MEMORY[0x277CBEB38] dictionary];
-  [v9 setObject:*MEMORY[0x277CFE960] forKeyedSubscript:*MEMORY[0x277CFE980]];
-  v10 = [v7 imageWidth];
-  [v9 setObject:v10 forKeyedSubscript:*MEMORY[0x277CFE970]];
+  resolutionCopy = resolution;
+  accessoryCopy = accessory;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  [dictionary setObject:*MEMORY[0x277CFE960] forKeyedSubscript:*MEMORY[0x277CFE980]];
+  imageWidth = [resolutionCopy imageWidth];
+  [dictionary setObject:imageWidth forKeyedSubscript:*MEMORY[0x277CFE970]];
 
-  v11 = [v7 imageHeight];
-  [v9 setObject:v11 forKeyedSubscript:*MEMORY[0x277CFE968]];
+  imageHeight = [resolutionCopy imageHeight];
+  [dictionary setObject:imageHeight forKeyedSubscript:*MEMORY[0x277CFE968]];
 
-  v12 = [v8 bridge];
+  bridge = [accessoryCopy bridge];
 
-  if (v12)
+  if (bridge)
   {
-    v13 = [v8 hapInstanceId];
-    if (v13)
+    hapInstanceId = [accessoryCopy hapInstanceId];
+    if (hapInstanceId)
     {
-      [v9 setObject:v13 forKeyedSubscript:*MEMORY[0x277CFE598]];
+      [dictionary setObject:hapInstanceId forKeyedSubscript:*MEMORY[0x277CFE598]];
     }
 
     else
     {
       v14 = objc_autoreleasePoolPush();
-      v15 = a1;
+      selfCopy = self;
       v16 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
       {
@@ -1075,15 +1075,15 @@ void __83__HMDCameraSnapshotRequestHandler__getSupportedVideoResolutions_streami
     }
   }
 
-  v42 = a1;
-  v43 = v8;
-  v18 = v7;
+  selfCopy2 = self;
+  v43 = accessoryCopy;
+  v18 = resolutionCopy;
   v46 = 0u;
   v47 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v19 = [v8 services];
-  v20 = [v19 countByEnumeratingWithState:&v44 objects:v54 count:16];
+  services = [accessoryCopy services];
+  v20 = [services countByEnumeratingWithState:&v44 objects:v54 count:16];
   if (v20)
   {
     v21 = v20;
@@ -1095,12 +1095,12 @@ LABEL_10:
     {
       if (*v45 != v22)
       {
-        objc_enumerationMutation(v19);
+        objc_enumerationMutation(services);
       }
 
       v25 = *(*(&v44 + 1) + 8 * v24);
-      v26 = [v25 type];
-      v27 = [v26 isEqualToString:v23];
+      type = [v25 type];
+      v27 = [type isEqualToString:v23];
 
       if (v27)
       {
@@ -1109,7 +1109,7 @@ LABEL_10:
 
       if (v21 == ++v24)
       {
-        v21 = [v19 countByEnumeratingWithState:&v44 objects:v54 count:16];
+        v21 = [services countByEnumeratingWithState:&v44 objects:v54 count:16];
         if (v21)
         {
           goto LABEL_10;
@@ -1137,8 +1137,8 @@ LABEL_10:
 
     if (!v32)
     {
-      v37 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-      [v9 setObject:v37 forKeyedSubscript:*MEMORY[0x277CFE978]];
+      v37 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:options];
+      [dictionary setObject:v37 forKeyedSubscript:*MEMORY[0x277CFE978]];
 
       goto LABEL_25;
     }
@@ -1153,7 +1153,7 @@ LABEL_16:
   }
 
   v33 = objc_autoreleasePoolPush();
-  v34 = v42;
+  v34 = selfCopy2;
   v35 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v35, OS_LOG_TYPE_INFO))
   {
@@ -1169,7 +1169,7 @@ LABEL_16:
 
   objc_autoreleasePoolPop(v33);
 LABEL_25:
-  v38 = [v9 copy];
+  v38 = [dictionary copy];
 
   v39 = *MEMORY[0x277D85DE8];
 

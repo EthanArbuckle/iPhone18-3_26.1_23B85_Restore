@@ -1,6 +1,6 @@
 @interface STNotificationsPickupSummaryView
-- (STNotificationsPickupSummaryView)initWithUsageReport:(id)a3;
-- (id)_attributedString:(id)a3 withFont:(id)a4;
+- (STNotificationsPickupSummaryView)initWithUsageReport:(id)report;
+- (id)_attributedString:(id)string withFont:(id)font;
 - (id)_attributedStringForNotificationsDetailText;
 - (id)_attributedStringForNotificationsTitle;
 - (id)_attributedStringForPickUpDetailText;
@@ -9,23 +9,23 @@
 
 @implementation STNotificationsPickupSummaryView
 
-- (STNotificationsPickupSummaryView)initWithUsageReport:(id)a3
+- (STNotificationsPickupSummaryView)initWithUsageReport:(id)report
 {
   v40[4] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  reportCopy = report;
   v39.receiver = self;
   v39.super_class = STNotificationsPickupSummaryView;
   v6 = [(STNotificationsPickupSummaryView *)&v39 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_usageReport, a3);
+    objc_storeStrong(&v6->_usageReport, report);
     v8 = objc_opt_new();
     stackView = v7->_stackView;
     v7->_stackView = v8;
 
-    v10 = [MEMORY[0x277D75348] tableSeparatorLightColor];
-    [(STNotificationsPickupSummaryView *)v7 setBackgroundColor:v10];
+    tableSeparatorLightColor = [MEMORY[0x277D75348] tableSeparatorLightColor];
+    [(STNotificationsPickupSummaryView *)v7 setBackgroundColor:tableSeparatorLightColor];
 
     [(UIStackView *)v7->_stackView setAxis:0];
     [(UIStackView *)v7->_stackView setAlignment:0];
@@ -33,45 +33,45 @@
     [(UIStackView *)v7->_stackView setTranslatesAutoresizingMaskIntoConstraints:0];
     v11 = [STSummationView alloc];
     [(STNotificationsPickupSummaryView *)v7 _attributedStringForNotificationsTitle];
-    v12 = v38 = v5;
-    v13 = [(STNotificationsPickupSummaryView *)v7 _attributedStringForNotificationsDetailText];
-    v14 = [(STSummationView *)v11 initWithTitle:v12 detailText:v13];
+    v12 = v38 = reportCopy;
+    _attributedStringForNotificationsDetailText = [(STNotificationsPickupSummaryView *)v7 _attributedStringForNotificationsDetailText];
+    v14 = [(STSummationView *)v11 initWithTitle:v12 detailText:_attributedStringForNotificationsDetailText];
 
     v15 = [STSummationView alloc];
-    v16 = [(STNotificationsPickupSummaryView *)v7 _attributedStringForPickUpTitle];
-    v17 = [(STNotificationsPickupSummaryView *)v7 _attributedStringForPickUpDetailText];
-    v36 = [(STSummationView *)v15 initWithTitle:v16 detailText:v17];
+    _attributedStringForPickUpTitle = [(STNotificationsPickupSummaryView *)v7 _attributedStringForPickUpTitle];
+    _attributedStringForPickUpDetailText = [(STNotificationsPickupSummaryView *)v7 _attributedStringForPickUpDetailText];
+    v36 = [(STSummationView *)v15 initWithTitle:_attributedStringForPickUpTitle detailText:_attributedStringForPickUpDetailText];
 
     v37 = v14;
     [(UIStackView *)v7->_stackView addArrangedSubview:v14];
     v18 = v7->_stackView;
-    v19 = [MEMORY[0x277D759A0] mainScreen];
-    [v19 scale];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
     [(UIStackView *)v18 setCustomSpacing:v14 afterView:1.0 / v20];
 
     [(UIStackView *)v7->_stackView addArrangedSubview:v36];
     [(STNotificationsPickupSummaryView *)v7 addSubview:v7->_stackView];
     v31 = MEMORY[0x277CCAAD0];
-    v35 = [(STNotificationsPickupSummaryView *)v7 topAnchor];
-    v34 = [(UIStackView *)v7->_stackView topAnchor];
-    v33 = [v35 constraintEqualToAnchor:v34];
+    topAnchor = [(STNotificationsPickupSummaryView *)v7 topAnchor];
+    topAnchor2 = [(UIStackView *)v7->_stackView topAnchor];
+    v33 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v40[0] = v33;
-    v32 = [(STNotificationsPickupSummaryView *)v7 bottomAnchor];
-    v21 = [(UIStackView *)v7->_stackView bottomAnchor];
-    v22 = [v32 constraintEqualToAnchor:v21];
+    bottomAnchor = [(STNotificationsPickupSummaryView *)v7 bottomAnchor];
+    bottomAnchor2 = [(UIStackView *)v7->_stackView bottomAnchor];
+    v22 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v40[1] = v22;
-    v23 = [(STNotificationsPickupSummaryView *)v7 leadingAnchor];
-    v24 = [(UIStackView *)v7->_stackView leadingAnchor];
-    v25 = [v23 constraintEqualToAnchor:v24];
+    leadingAnchor = [(STNotificationsPickupSummaryView *)v7 leadingAnchor];
+    leadingAnchor2 = [(UIStackView *)v7->_stackView leadingAnchor];
+    v25 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v40[2] = v25;
-    v26 = [(STNotificationsPickupSummaryView *)v7 trailingAnchor];
-    v27 = [(UIStackView *)v7->_stackView trailingAnchor];
-    v28 = [v26 constraintEqualToAnchor:v27];
+    trailingAnchor = [(STNotificationsPickupSummaryView *)v7 trailingAnchor];
+    trailingAnchor2 = [(UIStackView *)v7->_stackView trailingAnchor];
+    v28 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v40[3] = v28;
     v29 = [MEMORY[0x277CBEA60] arrayWithObjects:v40 count:4];
     [v31 activateConstraints:v29];
 
-    v5 = v38;
+    reportCopy = v38;
   }
 
   return v7;
@@ -90,9 +90,9 @@
 - (id)_attributedStringForNotificationsDetailText
 {
   v34[1] = *MEMORY[0x277D85DE8];
-  v2 = [(STUsageReport *)self->_usageReport totalNotifications];
+  totalNotifications = [(STUsageReport *)self->_usageReport totalNotifications];
   v3 = MEMORY[0x277CCABB8];
-  v4 = [MEMORY[0x277CCABB0] numberWithInt:llround(v2 / 7.0)];
+  v4 = [MEMORY[0x277CCABB0] numberWithInt:llround(totalNotifications / 7.0)];
   v5 = [v3 localizedStringFromNumber:v4 numberStyle:0];
 
   v6 = MEMORY[0x277CCACA8];
@@ -114,8 +114,8 @@
   v34[0] = v14;
   v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v34 forKeys:&v33 count:1];
 
-  v16 = [v11 fontDescriptor];
-  v17 = [v16 fontDescriptorByAddingAttributes:v15];
+  fontDescriptor = [v11 fontDescriptor];
+  v17 = [fontDescriptor fontDescriptorByAddingAttributes:v15];
 
   v18 = [MEMORY[0x277D74300] fontWithDescriptor:v17 size:0.0];
 
@@ -150,13 +150,13 @@
 
 - (id)_attributedStringForPickUpDetailText
 {
-  v3 = [(STUsageReport *)self->_usageReport totalPickups];
+  totalPickups = [(STUsageReport *)self->_usageReport totalPickups];
   v4 = objc_opt_new();
   [v4 setAllowedUnits:96];
   [v4 setUnitsStyle:1];
-  if (v3)
+  if (totalPickups)
   {
-    v5 = 604800.0 / v3;
+    v5 = 604800.0 / totalPickups;
   }
 
   else
@@ -176,16 +176,16 @@
   return v12;
 }
 
-- (id)_attributedString:(id)a3 withFont:(id)a4
+- (id)_attributedString:(id)string withFont:(id)font
 {
   v5 = MEMORY[0x277CCAB48];
-  v6 = a4;
-  v7 = a3;
-  v8 = [[v5 alloc] initWithString:v7];
+  fontCopy = font;
+  stringCopy = string;
+  v8 = [[v5 alloc] initWithString:stringCopy];
   [v8 beginEditing];
-  v9 = [v7 length];
+  v9 = [stringCopy length];
 
-  [v8 addAttribute:*MEMORY[0x277D740A8] value:v6 range:{0, v9}];
+  [v8 addAttribute:*MEMORY[0x277D740A8] value:fontCopy range:{0, v9}];
   [v8 endEditing];
 
   return v8;

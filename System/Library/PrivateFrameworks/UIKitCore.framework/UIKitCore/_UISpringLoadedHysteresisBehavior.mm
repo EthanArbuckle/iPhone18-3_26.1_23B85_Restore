@@ -1,17 +1,17 @@
 @interface _UISpringLoadedHysteresisBehavior
-- (BOOL)shouldAllowInteraction:(id)a3 withContext:(id)a4;
+- (BOOL)shouldAllowInteraction:(id)interaction withContext:(id)context;
 - (UISpringLoadedInteractionBehaviorDelegate)delegate;
 - (UISpringLoadedInteractionContext)context;
-- (void)_tick:(id)a3;
-- (void)interactionDidFinish:(id)a3;
+- (void)_tick:(id)_tick;
+- (void)interactionDidFinish:(id)finish;
 - (void)setupDisplayLink;
 @end
 
 @implementation _UISpringLoadedHysteresisBehavior
 
-- (BOOL)shouldAllowInteraction:(id)a3 withContext:(id)a4
+- (BOOL)shouldAllowInteraction:(id)interaction withContext:(id)context
 {
-  objc_storeWeak(&self->_context, a4);
+  objc_storeWeak(&self->_context, context);
   if (!self->_displayLink)
   {
     [(_UISpringLoadedHysteresisBehavior *)self setupDisplayLink];
@@ -35,7 +35,7 @@
   return velocityIntegrator;
 }
 
-- (void)interactionDidFinish:(id)a3
+- (void)interactionDidFinish:(id)finish
 {
   objc_storeWeak(&self->_context, 0);
   [(CADisplayLink *)self->_displayLink invalidate];
@@ -55,21 +55,21 @@
   [WeakRetained locationInView:0];
   [(_UIVelocityIntegrator *)v5 addSample:?];
 
-  v7 = [objc_opt_self() mainScreen];
-  v8 = [v7 displayLinkWithTarget:self selector:sel__tick_];
+  mainScreen = [objc_opt_self() mainScreen];
+  v8 = [mainScreen displayLinkWithTarget:self selector:sel__tick_];
   displayLink = self->_displayLink;
   self->_displayLink = v8;
 
   v10 = self->_displayLink;
-  v11 = [MEMORY[0x1E695DFD0] mainRunLoop];
-  [(CADisplayLink *)v10 addToRunLoop:v11 forMode:*MEMORY[0x1E695DA28]];
+  mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
+  [(CADisplayLink *)v10 addToRunLoop:mainRunLoop forMode:*MEMORY[0x1E695DA28]];
 
   v12 = self->_displayLink;
-  v13 = [MEMORY[0x1E695DFD0] mainRunLoop];
-  [(CADisplayLink *)v12 addToRunLoop:v13 forMode:@"UITrackingRunLoopMode"];
+  mainRunLoop2 = [MEMORY[0x1E695DFD0] mainRunLoop];
+  [(CADisplayLink *)v12 addToRunLoop:mainRunLoop2 forMode:@"UITrackingRunLoopMode"];
 }
 
-- (void)_tick:(id)a3
+- (void)_tick:(id)_tick
 {
   velocityIntegrator = self->_velocityIntegrator;
   WeakRetained = objc_loadWeakRetained(&self->_context);
@@ -79,8 +79,8 @@
   v6 = self->_velocityIntegrator;
   if (v6 && v6->_samples.__size_ >= 4)
   {
-    v7 = [(_UISpringLoadedHysteresisBehavior *)self delegate];
-    [v7 _reloadSpringLoadedInteractionBehavior];
+    delegate = [(_UISpringLoadedHysteresisBehavior *)self delegate];
+    [delegate _reloadSpringLoadedInteractionBehavior];
   }
 }
 

@@ -1,31 +1,31 @@
 @interface MXDeliveryDataCacher
-- (BOOL)_writeDiagnosticReport:(id)a3 atAppContainerPath:(id)a4 forClient:(id)a5 withError:(id *)a6;
-- (BOOL)_writeMetricReport:(id)a3 atAppContainerPath:(id)a4 forClient:(id)a5 withError:(id *)a6;
-- (BOOL)saveDiagnostic:(id)a3 toDeliveryDirectoryForBundleID:(id)a4;
-- (BOOL)saveMetrics:(id)a3 toDeliveryDirectoryForBundleID:(id)a4;
-- (MXDeliveryDataCacher)initWithClientUtil:(id)a3 andDeliveryPathUtil:(id)a4 andStorageUtil:(id)a5;
-- (id)_diagnosticsFromFilepaths:(id)a3;
-- (id)_metricsFromFilepaths:(id)a3;
-- (id)diagnosticsForClient:(id)a3;
-- (id)metricsForClient:(id)a3;
+- (BOOL)_writeDiagnosticReport:(id)report atAppContainerPath:(id)path forClient:(id)client withError:(id *)error;
+- (BOOL)_writeMetricReport:(id)report atAppContainerPath:(id)path forClient:(id)client withError:(id *)error;
+- (BOOL)saveDiagnostic:(id)diagnostic toDeliveryDirectoryForBundleID:(id)d;
+- (BOOL)saveMetrics:(id)metrics toDeliveryDirectoryForBundleID:(id)d;
+- (MXDeliveryDataCacher)initWithClientUtil:(id)util andDeliveryPathUtil:(id)pathUtil andStorageUtil:(id)storageUtil;
+- (id)_diagnosticsFromFilepaths:(id)filepaths;
+- (id)_metricsFromFilepaths:(id)filepaths;
+- (id)diagnosticsForClient:(id)client;
+- (id)metricsForClient:(id)client;
 @end
 
 @implementation MXDeliveryDataCacher
 
-- (MXDeliveryDataCacher)initWithClientUtil:(id)a3 andDeliveryPathUtil:(id)a4 andStorageUtil:(id)a5
+- (MXDeliveryDataCacher)initWithClientUtil:(id)util andDeliveryPathUtil:(id)pathUtil andStorageUtil:(id)storageUtil
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  utilCopy = util;
+  pathUtilCopy = pathUtil;
+  storageUtilCopy = storageUtil;
   v17.receiver = self;
   v17.super_class = MXDeliveryDataCacher;
   v12 = [(MXDeliveryDataCacher *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_clientUtil, a3);
-    objc_storeStrong(&v13->_deliveryPathUtil, a4);
-    objc_storeStrong(&v13->_storageUtil, a5);
+    objc_storeStrong(&v12->_clientUtil, util);
+    objc_storeStrong(&v13->_deliveryPathUtil, pathUtil);
+    objc_storeStrong(&v13->_storageUtil, storageUtil);
     v14 = os_log_create("com.apple.metrickit", "delivery.cache.manager");
     logHandle = v13->_logHandle;
     v13->_logHandle = v14;
@@ -39,17 +39,17 @@
   return v13;
 }
 
-- (BOOL)saveMetrics:(id)a3 toDeliveryDirectoryForBundleID:(id)a4
+- (BOOL)saveMetrics:(id)metrics toDeliveryDirectoryForBundleID:(id)d
 {
   v38 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MXDeliveryPathUtilProtocol *)self->_deliveryPathUtil applicationContainerPathForBundleID:v7];
+  metricsCopy = metrics;
+  dCopy = d;
+  v8 = [(MXDeliveryPathUtilProtocol *)self->_deliveryPathUtil applicationContainerPathForBundleID:dCopy];
   if (v8)
   {
     deliveryPathUtil = self->_deliveryPathUtil;
     v32 = 0;
-    v10 = [(MXDeliveryPathUtilProtocol *)deliveryPathUtil createMetricDirectoryAtPath:v8 forClient:v7 withError:&v32];
+    v10 = [(MXDeliveryPathUtilProtocol *)deliveryPathUtil createMetricDirectoryAtPath:v8 forClient:dCopy withError:&v32];
     v11 = v32;
     if (v10)
     {
@@ -57,7 +57,7 @@
       v31 = 0u;
       v28 = 0u;
       v29 = 0u;
-      v12 = v6;
+      v12 = metricsCopy;
       v13 = [v12 countByEnumeratingWithState:&v28 objects:v37 count:16];
       if (!v13)
       {
@@ -67,7 +67,7 @@
       }
 
       v14 = v13;
-      v26 = v6;
+      v26 = metricsCopy;
       v15 = 0;
       v16 = *v29;
       do
@@ -83,7 +83,7 @@
 
           v19 = *(*(&v28 + 1) + 8 * v17);
           v27 = v18;
-          [(MXDeliveryDataCacher *)self _writeMetricReport:v19 atAppContainerPath:v8 forClient:v7 withError:&v27];
+          [(MXDeliveryDataCacher *)self _writeMetricReport:v19 atAppContainerPath:v8 forClient:dCopy withError:&v27];
           v11 = v27;
 
           if (v11)
@@ -94,7 +94,7 @@
               *buf = 138412546;
               v34 = v11;
               v35 = 2112;
-              v36 = v7;
+              v36 = dCopy;
               _os_log_error_impl(&dword_258D6F000, logHandle, OS_LOG_TYPE_ERROR, "Encountered error: %@ while writing payload for client: %@", buf, 0x16u);
             }
 
@@ -114,7 +114,7 @@
       if (v15 < 1)
       {
         v23 = 1;
-        v6 = v26;
+        metricsCopy = v26;
         goto LABEL_27;
       }
 
@@ -125,10 +125,10 @@
       }
 
       v22 = self->_logHandle;
-      v6 = v26;
+      metricsCopy = v26;
       if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
       {
-        [(MXDeliveryDataCacher *)v11 saveMetrics:v7 toDeliveryDirectoryForBundleID:v22];
+        [(MXDeliveryDataCacher *)v11 saveMetrics:dCopy toDeliveryDirectoryForBundleID:v22];
       }
     }
 
@@ -148,7 +148,7 @@ LABEL_27:
     [MXDeliveryDataCacher saveMetrics:toDeliveryDirectoryForBundleID:];
   }
 
-  [(MXClientUtilProtocol *)self->_clientUtil removeClientFromPersistenceForBundleID:v7];
+  [(MXClientUtilProtocol *)self->_clientUtil removeClientFromPersistenceForBundleID:dCopy];
   v23 = 0;
 LABEL_28:
 
@@ -156,14 +156,14 @@ LABEL_28:
   return v23;
 }
 
-- (BOOL)saveDiagnostic:(id)a3 toDeliveryDirectoryForBundleID:(id)a4
+- (BOOL)saveDiagnostic:(id)diagnostic toDeliveryDirectoryForBundleID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MXDeliveryPathUtilProtocol *)self->_deliveryPathUtil applicationContainerPathForBundleID:v7];
+  diagnosticCopy = diagnostic;
+  dCopy = d;
+  v8 = [(MXDeliveryPathUtilProtocol *)self->_deliveryPathUtil applicationContainerPathForBundleID:dCopy];
   deliveryPathUtil = self->_deliveryPathUtil;
   v16 = 0;
-  v10 = [(MXDeliveryPathUtilProtocol *)deliveryPathUtil createDiagnosticDirectoryAtPath:v8 forClient:v7 withError:&v16];
+  v10 = [(MXDeliveryPathUtilProtocol *)deliveryPathUtil createDiagnosticDirectoryAtPath:v8 forClient:dCopy withError:&v16];
   v11 = v16;
   if ((v10 & 1) == 0 && os_log_type_enabled(self->_logHandle, OS_LOG_TYPE_ERROR))
   {
@@ -171,7 +171,7 @@ LABEL_28:
   }
 
   v15 = v11;
-  v12 = [(MXDeliveryDataCacher *)self _writeDiagnosticReport:v6 atAppContainerPath:v8 forClient:v7 withError:&v15];
+  v12 = [(MXDeliveryDataCacher *)self _writeDiagnosticReport:diagnosticCopy atAppContainerPath:v8 forClient:dCopy withError:&v15];
   v13 = v15;
 
   if (!v12 && os_log_type_enabled(self->_logHandle, OS_LOG_TYPE_ERROR))
@@ -182,15 +182,15 @@ LABEL_28:
   return v12;
 }
 
-- (BOOL)_writeMetricReport:(id)a3 atAppContainerPath:(id)a4 forClient:(id)a5 withError:(id *)a6
+- (BOOL)_writeMetricReport:(id)report atAppContainerPath:(id)path forClient:(id)client withError:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (v10)
+  reportCopy = report;
+  pathCopy = path;
+  clientCopy = client;
+  if (reportCopy)
   {
-    v13 = [(MXStorageUtilProtocol *)self->_storageUtil archivedDataWithObject:v10 error:a6];
-    if (v13 && !*a6)
+    v13 = [(MXStorageUtilProtocol *)self->_storageUtil archivedDataWithObject:reportCopy error:error];
+    if (v13 && !*error)
     {
       logHandle = self->_logHandle;
       if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEBUG))
@@ -204,8 +204,8 @@ LABEL_28:
       }
 
       deliveryPathUtil = self->_deliveryPathUtil;
-      v24 = [v10 timeStampEnd];
-      v25 = [(MXDeliveryPathUtilProtocol *)deliveryPathUtil filepathOfMetricForDeliveryFromAppContainerPath:v11 forClient:v12 atDate:v24];
+      timeStampEnd = [reportCopy timeStampEnd];
+      v25 = [(MXDeliveryPathUtilProtocol *)deliveryPathUtil filepathOfMetricForDeliveryFromAppContainerPath:pathCopy forClient:clientCopy atDate:timeStampEnd];
 
       if (os_log_type_enabled(self->_logHandle, OS_LOG_TYPE_ERROR))
       {
@@ -228,7 +228,7 @@ LABEL_28:
       v14 = self->_logHandle;
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
-        [(MXDeliveryDataCacher *)a6 _writeMetricReport:v14 atAppContainerPath:v15 forClient:v16 withError:v17, v18, v19, v20];
+        [(MXDeliveryDataCacher *)error _writeMetricReport:v14 atAppContainerPath:v15 forClient:v16 withError:v17, v18, v19, v20];
       }
 
       v21 = 0;
@@ -243,19 +243,19 @@ LABEL_28:
   return v21;
 }
 
-- (BOOL)_writeDiagnosticReport:(id)a3 atAppContainerPath:(id)a4 forClient:(id)a5 withError:(id *)a6
+- (BOOL)_writeDiagnosticReport:(id)report atAppContainerPath:(id)path forClient:(id)client withError:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (v10)
+  reportCopy = report;
+  pathCopy = path;
+  clientCopy = client;
+  if (reportCopy)
   {
-    v13 = [(MXStorageUtilProtocol *)self->_storageUtil archivedDataWithObject:v10 error:a6];
-    if (v13 && !*a6)
+    v13 = [(MXStorageUtilProtocol *)self->_storageUtil archivedDataWithObject:reportCopy error:error];
+    if (v13 && !*error)
     {
       deliveryPathUtil = self->_deliveryPathUtil;
-      v23 = [v10 timeStampEnd];
-      v24 = [(MXDeliveryPathUtilProtocol *)deliveryPathUtil filepathOfDiagnosticForDeliveryFromAppContainerPath:v11 forClient:v12 atDate:v23];
+      timeStampEnd = [reportCopy timeStampEnd];
+      v24 = [(MXDeliveryPathUtilProtocol *)deliveryPathUtil filepathOfDiagnosticForDeliveryFromAppContainerPath:pathCopy forClient:clientCopy atDate:timeStampEnd];
 
       if (os_log_type_enabled(self->_logHandle, OS_LOG_TYPE_DEBUG))
       {
@@ -274,7 +274,7 @@ LABEL_28:
       logHandle = self->_logHandle;
       if (os_log_type_enabled(logHandle, OS_LOG_TYPE_ERROR))
       {
-        [(MXDeliveryDataCacher *)a6 _writeMetricReport:v15 atAppContainerPath:v16 forClient:v17 withError:v18, v19, v20];
+        [(MXDeliveryDataCacher *)error _writeMetricReport:v15 atAppContainerPath:v16 forClient:v17 withError:v18, v19, v20];
       }
 
       v21 = 0;
@@ -289,9 +289,9 @@ LABEL_28:
   return v21;
 }
 
-- (id)metricsForClient:(id)a3
+- (id)metricsForClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   if (os_log_type_enabled(self->_logHandle, OS_LOG_TYPE_DEBUG))
   {
     [MXDeliveryDataCacher metricsForClient:];
@@ -299,7 +299,7 @@ LABEL_28:
 
   deliveryPathUtil = self->_deliveryPathUtil;
   v9 = 0;
-  v6 = [(MXDeliveryPathUtilProtocol *)deliveryPathUtil metricReportFilepathsFromClient:v4 withError:&v9];
+  v6 = [(MXDeliveryPathUtilProtocol *)deliveryPathUtil metricReportFilepathsFromClient:clientCopy withError:&v9];
   v7 = 0;
   if (!v9)
   {
@@ -314,16 +314,16 @@ LABEL_28:
   return v7;
 }
 
-- (id)_metricsFromFilepaths:(id)a3
+- (id)_metricsFromFilepaths:(id)filepaths
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  filepathsCopy = filepaths;
   v25 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  obj = v4;
+  obj = filepathsCopy;
   v5 = [obj countByEnumeratingWithState:&v29 objects:v37 count:16];
   if (v5)
   {
@@ -400,9 +400,9 @@ LABEL_28:
   return v21;
 }
 
-- (id)diagnosticsForClient:(id)a3
+- (id)diagnosticsForClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   if (os_log_type_enabled(self->_logHandle, OS_LOG_TYPE_DEBUG))
   {
     [MXDeliveryDataCacher diagnosticsForClient:];
@@ -410,7 +410,7 @@ LABEL_28:
 
   deliveryPathUtil = self->_deliveryPathUtil;
   v9 = 0;
-  v6 = [(MXDeliveryPathUtilProtocol *)deliveryPathUtil diagnosticReportFilepathsFromClient:v4 withError:&v9];
+  v6 = [(MXDeliveryPathUtilProtocol *)deliveryPathUtil diagnosticReportFilepathsFromClient:clientCopy withError:&v9];
   v7 = 0;
   if (!v9)
   {
@@ -425,16 +425,16 @@ LABEL_28:
   return v7;
 }
 
-- (id)_diagnosticsFromFilepaths:(id)a3
+- (id)_diagnosticsFromFilepaths:(id)filepaths
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  filepathsCopy = filepaths;
   v25 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  obj = v4;
+  obj = filepathsCopy;
   v5 = [obj countByEnumeratingWithState:&v29 objects:v37 count:16];
   if (v5)
   {

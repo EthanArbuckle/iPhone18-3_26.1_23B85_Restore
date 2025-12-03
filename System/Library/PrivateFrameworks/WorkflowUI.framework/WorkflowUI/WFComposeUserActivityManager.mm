@@ -1,10 +1,10 @@
 @interface WFComposeUserActivityManager
 - (UIResponder)responder;
-- (WFComposeUserActivityManager)initWithWorkflow:(id)a3 targetResponder:(id)a4;
+- (WFComposeUserActivityManager)initWithWorkflow:(id)workflow targetResponder:(id)responder;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setActive:(BOOL)a3;
-- (void)updateUserActivityState:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setActive:(BOOL)active;
+- (void)updateUserActivityState:(id)state;
 @end
 
 @implementation WFComposeUserActivityManager
@@ -16,25 +16,25 @@
   return WeakRetained;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (WFWorkflowNameContext == a6 || WFWorkflowIconContext == a6)
+  if (WFWorkflowNameContext == context || WFWorkflowIconContext == context)
   {
-    v13 = [(WFComposeUserActivityManager *)self responder:a3];
-    v8 = [(WFComposeUserActivityManager *)self workflow];
-    v9 = [v8 createUserActivityForViewing];
+    v13 = [(WFComposeUserActivityManager *)self responder:path];
+    workflow = [(WFComposeUserActivityManager *)self workflow];
+    createUserActivityForViewing = [workflow createUserActivityForViewing];
 
-    v10 = [v9 userInfo];
-    [(WFComposeUserActivityManager *)self setUserInfo:v10];
+    userInfo = [createUserActivityForViewing userInfo];
+    [(WFComposeUserActivityManager *)self setUserInfo:userInfo];
 
-    v11 = [v13 userActivity];
-    [v11 invalidate];
+    userActivity = [v13 userActivity];
+    [userActivity invalidate];
 
-    [v13 setUserActivity:v9];
+    [v13 setUserActivity:createUserActivityForViewing];
     if ([(WFComposeUserActivityManager *)self isActive])
     {
-      v12 = [v13 userActivity];
-      [v12 becomeCurrent];
+      userActivity2 = [v13 userActivity];
+      [userActivity2 becomeCurrent];
     }
   }
 
@@ -42,61 +42,61 @@
   {
     v14.receiver = self;
     v14.super_class = WFComposeUserActivityManager;
-    [(WFComposeUserActivityManager *)&v14 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(WFComposeUserActivityManager *)&v14 observeValueForKeyPath:path ofObject:object change:change context:?];
   }
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
-  self->_active = a3;
-  v4 = [(WFComposeUserActivityManager *)self isActive];
-  v7 = [(WFComposeUserActivityManager *)self responder];
-  v5 = [v7 userActivity];
-  v6 = v5;
-  if (v4)
+  self->_active = active;
+  isActive = [(WFComposeUserActivityManager *)self isActive];
+  responder = [(WFComposeUserActivityManager *)self responder];
+  userActivity = [responder userActivity];
+  v6 = userActivity;
+  if (isActive)
   {
-    [v5 becomeCurrent];
+    [userActivity becomeCurrent];
   }
 
   else
   {
-    [v5 resignCurrent];
+    [userActivity resignCurrent];
   }
 }
 
-- (void)updateUserActivityState:(id)a3
+- (void)updateUserActivityState:(id)state
 {
-  v6 = a3;
-  v4 = [(WFComposeUserActivityManager *)self userInfo];
+  stateCopy = state;
+  userInfo = [(WFComposeUserActivityManager *)self userInfo];
 
-  if (v4)
+  if (userInfo)
   {
-    v5 = [(WFComposeUserActivityManager *)self userInfo];
-    [v6 addUserInfoEntriesFromDictionary:v5];
+    userInfo2 = [(WFComposeUserActivityManager *)self userInfo];
+    [stateCopy addUserInfoEntriesFromDictionary:userInfo2];
   }
 }
 
 - (void)dealloc
 {
-  v3 = [(WFComposeUserActivityManager *)self workflow];
-  [v3 removeObserver:self forKeyPath:@"name" context:WFWorkflowNameContext];
+  workflow = [(WFComposeUserActivityManager *)self workflow];
+  [workflow removeObserver:self forKeyPath:@"name" context:WFWorkflowNameContext];
 
-  v4 = [(WFComposeUserActivityManager *)self workflow];
-  [v4 removeObserver:self forKeyPath:@"icon" context:WFWorkflowIconContext];
+  workflow2 = [(WFComposeUserActivityManager *)self workflow];
+  [workflow2 removeObserver:self forKeyPath:@"icon" context:WFWorkflowIconContext];
 
   v5.receiver = self;
   v5.super_class = WFComposeUserActivityManager;
   [(WFComposeUserActivityManager *)&v5 dealloc];
 }
 
-- (WFComposeUserActivityManager)initWithWorkflow:(id)a3 targetResponder:(id)a4
+- (WFComposeUserActivityManager)initWithWorkflow:(id)workflow targetResponder:(id)responder
 {
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  workflowCopy = workflow;
+  responderCopy = responder;
+  if (!workflowCopy)
   {
-    v17 = [MEMORY[0x277CCA890] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"WFComposeUserActivityManager.m" lineNumber:31 description:{@"Invalid parameter not satisfying: %@", @"workflow"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFComposeUserActivityManager.m" lineNumber:31 description:{@"Invalid parameter not satisfying: %@", @"workflow"}];
   }
 
   v18.receiver = self;
@@ -105,18 +105,18 @@
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_workflow, a3);
-    objc_storeWeak(&v11->_responder, v9);
-    v12 = [v9 userActivity];
-    [v12 invalidate];
+    objc_storeStrong(&v10->_workflow, workflow);
+    objc_storeWeak(&v11->_responder, responderCopy);
+    userActivity = [responderCopy userActivity];
+    [userActivity invalidate];
 
-    v13 = [v8 createUserActivityForViewing];
-    v14 = [v13 userInfo];
-    [(WFComposeUserActivityManager *)v11 setUserInfo:v14];
+    createUserActivityForViewing = [workflowCopy createUserActivityForViewing];
+    userInfo = [createUserActivityForViewing userInfo];
+    [(WFComposeUserActivityManager *)v11 setUserInfo:userInfo];
 
-    [v9 setUserActivity:v13];
-    [v8 addObserver:v11 forKeyPath:@"name" options:0 context:WFWorkflowNameContext];
-    [v8 addObserver:v11 forKeyPath:@"icon" options:0 context:WFWorkflowIconContext];
+    [responderCopy setUserActivity:createUserActivityForViewing];
+    [workflowCopy addObserver:v11 forKeyPath:@"name" options:0 context:WFWorkflowNameContext];
+    [workflowCopy addObserver:v11 forKeyPath:@"icon" options:0 context:WFWorkflowIconContext];
     v15 = v11;
   }
 

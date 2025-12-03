@@ -1,8 +1,8 @@
 @interface _CNContactPosterFetchRequestPredicateBuilder
 - (id)build;
-- (void)setContactIdentifiers:(id)a3;
-- (void)setDeletedItemPolicy:(int64_t)a3;
-- (void)setRecencyType:(int64_t)a3;
+- (void)setContactIdentifiers:(id)identifiers;
+- (void)setDeletedItemPolicy:(int64_t)policy;
+- (void)setRecencyType:(int64_t)type;
 @end
 
 @implementation _CNContactPosterFetchRequestPredicateBuilder
@@ -28,33 +28,33 @@
   return v5;
 }
 
-- (void)setContactIdentifiers:(id)a3
+- (void)setContactIdentifiers:(id)identifiers
 {
-  if (a3)
+  if (identifiers)
   {
-    v4 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K IN %@", @"contactIdentifier", a3];
+    identifiers = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K IN %@", @"contactIdentifier", identifiers];
   }
 
   else
   {
-    v4 = 0;
+    identifiers = 0;
   }
 
   contactIdentifierClause = self->_contactIdentifierClause;
-  self->_contactIdentifierClause = v4;
+  self->_contactIdentifierClause = identifiers;
 
-  MEMORY[0x1EEE66BB8](v4, contactIdentifierClause);
+  MEMORY[0x1EEE66BB8](identifiers, contactIdentifierClause);
 }
 
-- (void)setRecencyType:(int64_t)a3
+- (void)setRecencyType:(int64_t)type
 {
-  if (a3 == 1)
+  if (type == 1)
   {
     [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == YES", @"isCurrent", v6];
     goto LABEL_5;
   }
 
-  if (!a3)
+  if (!type)
   {
     [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == NO OR %K == nil", @"isCurrent", @"isCurrent"];
     v4 = LABEL_5:;
@@ -69,15 +69,15 @@ LABEL_7:
   MEMORY[0x1EEE66BB8](v4, recencyTypeClause);
 }
 
-- (void)setDeletedItemPolicy:(int64_t)a3
+- (void)setDeletedItemPolicy:(int64_t)policy
 {
-  if (!a3)
+  if (!policy)
   {
     v4 = @"%K == NULL";
     goto LABEL_5;
   }
 
-  if (a3 == 2)
+  if (policy == 2)
   {
     v4 = @"%K != NULL";
 LABEL_5:

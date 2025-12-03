@@ -1,40 +1,40 @@
 @interface ATXProactiveSuggestionUIFeedbackQuery
-- (ATXProactiveSuggestionUIFeedbackQuery)initWithClientModelIds:(id)a3 consumerSubTypeToConsider:(unsigned __int8)a4 startDateForResults:(id)a5 bookmarkURLPath:(id)a6 uiPublisher:(id)a7 blendingModelPublisher:(id)a8 contextPublisher:(id)a9 hyperParameters:(id)a10;
+- (ATXProactiveSuggestionUIFeedbackQuery)initWithClientModelIds:(id)ids consumerSubTypeToConsider:(unsigned __int8)consider startDateForResults:(id)results bookmarkURLPath:(id)path uiPublisher:(id)publisher blendingModelPublisher:(id)modelPublisher contextPublisher:(id)contextPublisher hyperParameters:(id)self0;
 - (id)uiFeedbackPublisher;
 - (id)uiFeedbackPublisherChain;
-- (void)enumerateUIFeedbackResultsWithBlock:(id)a3 completionBlock:(id)a4;
+- (void)enumerateUIFeedbackResultsWithBlock:(id)block completionBlock:(id)completionBlock;
 @end
 
 @implementation ATXProactiveSuggestionUIFeedbackQuery
 
-- (ATXProactiveSuggestionUIFeedbackQuery)initWithClientModelIds:(id)a3 consumerSubTypeToConsider:(unsigned __int8)a4 startDateForResults:(id)a5 bookmarkURLPath:(id)a6 uiPublisher:(id)a7 blendingModelPublisher:(id)a8 contextPublisher:(id)a9 hyperParameters:(id)a10
+- (ATXProactiveSuggestionUIFeedbackQuery)initWithClientModelIds:(id)ids consumerSubTypeToConsider:(unsigned __int8)consider startDateForResults:(id)results bookmarkURLPath:(id)path uiPublisher:(id)publisher blendingModelPublisher:(id)modelPublisher contextPublisher:(id)contextPublisher hyperParameters:(id)self0
 {
-  v28 = a3;
-  v27 = a5;
-  v15 = a6;
-  v26 = a7;
-  v16 = a8;
-  v17 = a9;
-  v18 = a10;
+  idsCopy = ids;
+  resultsCopy = results;
+  pathCopy = path;
+  publisherCopy = publisher;
+  modelPublisherCopy = modelPublisher;
+  contextPublisherCopy = contextPublisher;
+  parametersCopy = parameters;
   v29.receiver = self;
   v29.super_class = ATXProactiveSuggestionUIFeedbackQuery;
   v19 = [(ATXProactiveSuggestionUIFeedbackQuery *)&v29 init];
   if (v19)
   {
-    v20 = [v28 copy];
+    v20 = [idsCopy copy];
     clientModelIds = v19->_clientModelIds;
     v19->_clientModelIds = v20;
 
-    v19->_consumerSubTypeToConsider = a4;
-    objc_storeStrong(&v19->_startDateForResults, a5);
-    v22 = [v15 copy];
+    v19->_consumerSubTypeToConsider = consider;
+    objc_storeStrong(&v19->_startDateForResults, results);
+    v22 = [pathCopy copy];
     bookmarkURLPath = v19->_bookmarkURLPath;
     v19->_bookmarkURLPath = v22;
 
-    objc_storeStrong(&v19->_uiPublisher, a7);
-    objc_storeStrong(&v19->_blendingModelPublisher, a8);
-    objc_storeStrong(&v19->_contextPublisher, a9);
-    objc_storeStrong(&v19->_hyperParameters, a10);
+    objc_storeStrong(&v19->_uiPublisher, publisher);
+    objc_storeStrong(&v19->_blendingModelPublisher, modelPublisher);
+    objc_storeStrong(&v19->_contextPublisher, contextPublisher);
+    objc_storeStrong(&v19->_hyperParameters, parameters);
   }
 
   return v19;
@@ -54,34 +54,34 @@
 
 - (id)uiFeedbackPublisherChain
 {
-  v2 = [(ATXProactiveSuggestionUIFeedbackQuery *)self uiFeedbackPublisher];
-  v3 = [v2 uiFeedbackPublisher];
+  uiFeedbackPublisher = [(ATXProactiveSuggestionUIFeedbackQuery *)self uiFeedbackPublisher];
+  v2UiFeedbackPublisher = [uiFeedbackPublisher uiFeedbackPublisher];
 
-  return v3;
+  return v2UiFeedbackPublisher;
 }
 
-- (void)enumerateUIFeedbackResultsWithBlock:(id)a3 completionBlock:(id)a4
+- (void)enumerateUIFeedbackResultsWithBlock:(id)block completionBlock:(id)completionBlock
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ATXProactiveSuggestionUIFeedbackQuery *)self uiFeedbackPublisherChain];
-  if (v8)
+  blockCopy = block;
+  completionBlockCopy = completionBlock;
+  uiFeedbackPublisherChain = [(ATXProactiveSuggestionUIFeedbackQuery *)self uiFeedbackPublisherChain];
+  if (uiFeedbackPublisherChain)
   {
     v9 = [MEMORY[0x1E698AFE0] bookmarkFromURLPath:self->_bookmarkURLPath maxFileSize:3000000 versionNumber:&unk_1F5A40E10];
-    v10 = [v9 bookmark];
+    bookmark = [v9 bookmark];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __93__ATXProactiveSuggestionUIFeedbackQuery_enumerateUIFeedbackResultsWithBlock_completionBlock___block_invoke;
     v18[3] = &unk_1E86A3CE8;
     v18[4] = self;
-    v19 = v7;
+    v19 = completionBlockCopy;
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __93__ATXProactiveSuggestionUIFeedbackQuery_enumerateUIFeedbackResultsWithBlock_completionBlock___block_invoke_15;
     v16[3] = &unk_1E86A3D10;
     v16[4] = self;
-    v17 = v6;
-    v11 = [v8 sinkWithBookmark:v10 completion:v18 receiveInput:v16];
+    v17 = blockCopy;
+    v11 = [uiFeedbackPublisherChain sinkWithBookmark:bookmark completion:v18 receiveInput:v16];
   }
 
   else
@@ -96,7 +96,7 @@
     v14 = objc_opt_class();
     v9 = NSStringFromClass(v14);
     v15 = [v13 errorWithDomain:v9 code:1 userInfo:0];
-    (*(v7 + 2))(v7, v15);
+    (*(completionBlockCopy + 2))(completionBlockCopy, v15);
   }
 }
 

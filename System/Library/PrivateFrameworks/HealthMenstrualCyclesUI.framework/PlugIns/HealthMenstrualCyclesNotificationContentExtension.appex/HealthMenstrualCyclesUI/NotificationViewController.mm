@@ -1,7 +1,7 @@
 @interface NotificationViewController
-- (_TtC49HealthMenstrualCyclesNotificationContentExtension26NotificationViewController)initWithCoder:(id)a3;
-- (_TtC49HealthMenstrualCyclesNotificationContentExtension26NotificationViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)didReceiveNotification:(id)a3;
+- (_TtC49HealthMenstrualCyclesNotificationContentExtension26NotificationViewController)initWithCoder:(id)coder;
+- (_TtC49HealthMenstrualCyclesNotificationContentExtension26NotificationViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)didReceiveNotification:(id)notification;
 - (void)viewDidLoad;
 @end
 
@@ -17,11 +17,11 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = self;
+  selfCopy = self;
   sub_1000012F0();
 }
 
-- (void)didReceiveNotification:(id)a3
+- (void)didReceiveNotification:(id)notification
 {
   sub_100002B58();
   sub_100002B48();
@@ -31,12 +31,12 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v5 = a3;
-  v6 = self;
-  sub_1000014C8(v5);
+  notificationCopy = notification;
+  selfCopy = self;
+  sub_1000014C8(notificationCopy);
 }
 
-- (_TtC49HealthMenstrualCyclesNotificationContentExtension26NotificationViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC49HealthMenstrualCyclesNotificationContentExtension26NotificationViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   sub_100002B58();
   sub_100002B48();
@@ -46,26 +46,26 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  if (a3)
+  if (name)
   {
     sub_100002AB8();
-    v7 = a4;
-    a3 = sub_100002A88();
+    bundleCopy = bundle;
+    name = sub_100002A88();
   }
 
   else
   {
-    v8 = a4;
+    bundleCopy2 = bundle;
   }
 
   v11.receiver = self;
   v11.super_class = type metadata accessor for NotificationViewController();
-  v9 = [(NotificationViewController *)&v11 initWithNibName:a3 bundle:a4];
+  v9 = [(NotificationViewController *)&v11 initWithNibName:name bundle:bundle];
 
   return v9;
 }
 
-- (_TtC49HealthMenstrualCyclesNotificationContentExtension26NotificationViewController)initWithCoder:(id)a3
+- (_TtC49HealthMenstrualCyclesNotificationContentExtension26NotificationViewController)initWithCoder:(id)coder
 {
   sub_100002B58();
   sub_100002B48();
@@ -77,8 +77,8 @@
 
   v8.receiver = self;
   v8.super_class = type metadata accessor for NotificationViewController();
-  v5 = a3;
-  v6 = [(NotificationViewController *)&v8 initWithCoder:v5];
+  coderCopy = coder;
+  v6 = [(NotificationViewController *)&v8 initWithCoder:coderCopy];
 
   if (v6)
   {

@@ -1,14 +1,14 @@
 @interface SBUIContinuitySessionTransitionContext
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (SBUIContinuitySessionTransitionContext)init;
-- (SBUIContinuitySessionTransitionContext)initWithBSXPCCoder:(id)a3;
-- (id)_initWithBSSettings:(id)a3;
-- (id)keyDescriptionForSetting:(unint64_t)a3;
+- (SBUIContinuitySessionTransitionContext)initWithBSXPCCoder:(id)coder;
+- (id)_initWithBSSettings:(id)settings;
+- (id)keyDescriptionForSetting:(unint64_t)setting;
 - (id)succinctDescription;
 - (unint64_t)hash;
-- (void)appendDescriptionToStream:(id)a3;
+- (void)appendDescriptionToStream:(id)stream;
 - (void)dealloc;
-- (void)encodeWithBSXPCCoder:(id)a3;
+- (void)encodeWithBSXPCCoder:(id)coder;
 @end
 
 @implementation SBUIContinuitySessionTransitionContext
@@ -21,10 +21,10 @@
   return v4;
 }
 
-- (id)_initWithBSSettings:(id)a3
+- (id)_initWithBSSettings:(id)settings
 {
-  v5 = a3;
-  if (!v5)
+  settingsCopy = settings;
+  if (!settingsCopy)
   {
     [(SBUIContinuitySessionTransitionContext *)a2 _initWithBSSettings:?];
   }
@@ -34,7 +34,7 @@
   v6 = [(SBUIContinuitySessionTransitionContext *)&v10 init];
   if (v6)
   {
-    v7 = [v5 mutableCopy];
+    v7 = [settingsCopy mutableCopy];
     mutableSettings = v6->_mutableSettings;
     v6->_mutableSettings = v7;
 
@@ -52,24 +52,24 @@
   [(SBUIContinuitySessionTransitionContext *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
 
   else
   {
-    v5 = [MEMORY[0x1E698E6A0] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
-    v6 = [(SBUIContinuitySessionTransitionContext *)self animationSettings];
+    v5 = [MEMORY[0x1E698E6A0] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
+    animationSettings = [(SBUIContinuitySessionTransitionContext *)self animationSettings];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __50__SBUIContinuitySessionTransitionContext_isEqual___block_invoke;
     v10[3] = &unk_1E789FB20;
-    v11 = v4;
-    v7 = [v5 appendObject:v6 counterpart:v10];
+    v11 = equalCopy;
+    v7 = [v5 appendObject:animationSettings counterpart:v10];
 
     v8 = [v5 isEqual];
   }
@@ -79,26 +79,26 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E698E6B8] builder];
-  v4 = [(SBUIContinuitySessionTransitionContext *)self animationSettings];
-  v5 = [v3 appendObject:v4];
+  builder = [MEMORY[0x1E698E6B8] builder];
+  animationSettings = [(SBUIContinuitySessionTransitionContext *)self animationSettings];
+  v5 = [builder appendObject:animationSettings];
 
-  v6 = [v3 hash];
+  v6 = [builder hash];
   return v6;
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
   mutableSettings = self->_mutableSettings;
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(BSMutableSettings *)mutableSettings copy];
-  [v4 encodeObject:v5 forKey:@"settings"];
+  [coderCopy encodeObject:v5 forKey:@"settings"];
 }
 
-- (SBUIContinuitySessionTransitionContext)initWithBSXPCCoder:(id)a3
+- (SBUIContinuitySessionTransitionContext)initWithBSXPCCoder:(id)coder
 {
-  v5 = a3;
-  v6 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"settings"];
+  coderCopy = coder;
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"settings"];
 
   if (!v6)
   {
@@ -110,9 +110,9 @@
   return v7;
 }
 
-- (id)keyDescriptionForSetting:(unint64_t)a3
+- (id)keyDescriptionForSetting:(unint64_t)setting
 {
-  if (a3 == 1)
+  if (setting == 1)
   {
     return @"animationSettings";
   }
@@ -126,22 +126,22 @@
 - (id)succinctDescription
 {
   v3 = MEMORY[0x1E698E688];
-  v4 = [MEMORY[0x1E698E690] succinctStyle];
-  v5 = [v3 descriptionForRootObject:self withStyle:v4];
+  succinctStyle = [MEMORY[0x1E698E690] succinctStyle];
+  v5 = [v3 descriptionForRootObject:self withStyle:succinctStyle];
 
   return v5;
 }
 
-- (void)appendDescriptionToStream:(id)a3
+- (void)appendDescriptionToStream:(id)stream
 {
-  v4 = a3;
+  streamCopy = stream;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __68__SBUIContinuitySessionTransitionContext_appendDescriptionToStream___block_invoke;
   v6[3] = &unk_1E789DD98;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = streamCopy;
+  selfCopy = self;
+  v5 = streamCopy;
   [v5 appendProem:self block:v6];
 }
 

@@ -1,5 +1,5 @@
 @interface VKInternedString
-+ (id)stringWithString:(id)a3;
++ (id)stringWithString:(id)string;
 + (void)initialize;
 - (void)dealloc;
 @end
@@ -16,22 +16,22 @@
   [(VKInternedString *)&v3 dealloc];
 }
 
-+ (id)stringWithString:(id)a3
++ (id)stringWithString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = stringCopy;
   }
 
   else
   {
     [_lock lock];
-    v4 = [_strings member:v3];
+    v4 = [_strings member:stringCopy];
     if (!v4)
     {
-      v4 = [[VKInternedString alloc] initWithString:v3];
+      v4 = [[VKInternedString alloc] initWithString:stringCopy];
       [_strings addObject:?];
     }
 
@@ -43,11 +43,11 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
-    v2 = [MEMORY[0x1E695DFA8] _vk_newWeakSet];
+    _vk_newWeakSet = [MEMORY[0x1E695DFA8] _vk_newWeakSet];
     v3 = _strings;
-    _strings = v2;
+    _strings = _vk_newWeakSet;
 
     v4 = objc_alloc_init(MEMORY[0x1E696AD10]);
     v5 = _lock;

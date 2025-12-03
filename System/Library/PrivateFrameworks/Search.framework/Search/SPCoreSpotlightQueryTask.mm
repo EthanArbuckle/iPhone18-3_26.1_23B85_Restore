@@ -1,28 +1,28 @@
 @interface SPCoreSpotlightQueryTask
 - (SDSearchQuery)resultPipe;
-- (SPCoreSpotlightQueryTask)initWithStore:(id)a3 resultPipe:(id)a4;
-- (void)beginQuery:(id)a3;
+- (SPCoreSpotlightQueryTask)initWithStore:(id)store resultPipe:(id)pipe;
+- (void)beginQuery:(id)query;
 - (void)cancel;
-- (void)finishWithSections:(id)a3 suggestionResults:(id)a4;
-- (void)progressWithSections:(id)a3 suggestionResults:(id)a4;
+- (void)finishWithSections:(id)sections suggestionResults:(id)results;
+- (void)progressWithSections:(id)sections suggestionResults:(id)results;
 - (void)reset;
-- (void)sendCompletions:(id)a3;
+- (void)sendCompletions:(id)completions;
 @end
 
 @implementation SPCoreSpotlightQueryTask
 
-- (SPCoreSpotlightQueryTask)initWithStore:(id)a3 resultPipe:(id)a4
+- (SPCoreSpotlightQueryTask)initWithStore:(id)store resultPipe:(id)pipe
 {
-  v7 = a3;
-  v8 = a4;
+  storeCopy = store;
+  pipeCopy = pipe;
   v25.receiver = self;
   v25.super_class = SPCoreSpotlightQueryTask;
   v9 = [(SPCoreSpotlightQueryTask *)&v25 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_store, a3);
-    objc_storeWeak(&v10->_resultPipe, v8);
+    objc_storeStrong(&v9->_store, store);
+    objc_storeWeak(&v10->_resultPipe, pipeCopy);
     v11 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v12 = dispatch_queue_create("Query Queue", v11);
     queue = v10->_queue;
@@ -64,11 +64,11 @@
   [(SPCoreSpotlightQueryTask *)self setCanceled:0];
   if (self->_priorityIndexEnabled)
   {
-    v9 = [(SPCoreSpotlightQueryTask *)self timeoutTimer];
-    v10 = v9;
-    if (v9)
+    timeoutTimer = [(SPCoreSpotlightQueryTask *)self timeoutTimer];
+    v10 = timeoutTimer;
+    if (timeoutTimer)
     {
-      dispatch_source_cancel(v9);
+      dispatch_source_cancel(timeoutTimer);
       [(SPCoreSpotlightQueryTask *)self setTimeoutTimer:0];
     }
   }
@@ -78,10 +78,10 @@
 
   atomic_fetch_add(&dword_1000A8420, 0xFFFFFFFF);
   v12 = SPLogForSPLogCategoryTelemetry();
-  v13 = [(SPCoreSpotlightTask *)self->_job queryID];
-  if ((v13 - 1) <= 0xFFFFFFFFFFFFFFFDLL)
+  queryID = [(SPCoreSpotlightTask *)self->_job queryID];
+  if ((queryID - 1) <= 0xFFFFFFFFFFFFFFFDLL)
   {
-    v14 = v13;
+    v14 = queryID;
     if (os_signpost_enabled(v12))
     {
       LOWORD(v15[0]) = 0;
@@ -123,13 +123,13 @@
   *(v3 + 32) = v19;
 }
 
-- (void)beginQuery:(id)a3
+- (void)beginQuery:(id)query
 {
-  v4 = a3;
-  v5 = [v4 queryContext];
-  v6 = [v5 isSearchToolClient];
+  queryCopy = query;
+  queryContext = [queryCopy queryContext];
+  isSearchToolClient = [queryContext isSearchToolClient];
 
-  if ((v6 & 1) == 0)
+  if ((isSearchToolClient & 1) == 0)
   {
     v7 = si_tracing_current_span();
     v40 = *v7;
@@ -145,38 +145,38 @@
     *(v7 + 28) = 102;
     *(v7 + 32) = "[SPCoreSpotlightQueryTask beginQuery:]";
     si_tracing_log_span_begin();
-    v12 = [v4 queryContext];
-    v13 = [v12 searchEntities];
-    v14 = [v13 firstObject];
+    queryContext2 = [queryCopy queryContext];
+    searchEntities = [queryContext2 searchEntities];
+    firstObject = [searchEntities firstObject];
 
-    if (v14)
+    if (firstObject)
     {
-      v15 = [v14 currentSearchString];
-      v16 = [v14 command];
-      if (v16)
+      currentSearchString = [firstObject currentSearchString];
+      command = [firstObject command];
+      if (command)
       {
-        v17 = [v14 command];
+        command2 = [firstObject command];
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
 
         if (isKindOfClass)
         {
-          v19 = [v14 command];
-          v20 = [v19 copy];
+          command3 = [firstObject command];
+          v20 = [command3 copy];
 
           [v20 setSearchString:0];
           [v20 setTokenString:0];
           v37 = [SFStartLocalSearchFeedback alloc];
-          v36 = [v12 whyQuery];
-          v21 = [v4 queryIdent];
-          v22 = [v4 connection];
-          v23 = [v22 bundleID];
-          v24 = [v37 initWithEntityQueryCommand:v20 triggerEvent:v36 searchType:3 indexType:1 queryId:v21 originatingApp:v23];
+          whyQuery = [queryContext2 whyQuery];
+          queryIdent = [queryCopy queryIdent];
+          connection = [queryCopy connection];
+          bundleID = [connection bundleID];
+          v24 = [v37 initWithEntityQueryCommand:v20 triggerEvent:whyQuery searchType:3 indexType:1 queryId:queryIdent originatingApp:bundleID];
 
 LABEL_13:
           queue = self->_queue;
           v38 = v24;
-          v39 = v4;
+          v39 = queryCopy;
           md_tracing_dispatch_async_propagating();
 
           v30 = *v7;
@@ -197,36 +197,36 @@ LABEL_13:
     else
     {
       WeakRetained = objc_loadWeakRetained(&self->_resultPipe);
-      v26 = [WeakRetained queryContext];
-      v15 = [v26 searchString];
+      queryContext3 = [WeakRetained queryContext];
+      currentSearchString = [queryContext3 searchString];
     }
 
     v27 = [SFStartLocalSearchFeedback alloc];
-    if ([v14 isContactEntitySearch])
+    if ([firstObject isContactEntitySearch])
     {
       v28 = 0;
     }
 
-    else if ([v14 isPhotosEntitySearch])
+    else if ([firstObject isPhotosEntitySearch])
     {
       v28 = 0;
     }
 
     else
     {
-      v28 = v15;
+      v28 = currentSearchString;
     }
 
-    v24 = [v27 initWithInput:v28 triggerEvent:objc_msgSend(v12 indexType:"whyQuery") queryId:{1, objc_msgSend(v4, "queryIdent")}];
+    v24 = [v27 initWithInput:v28 triggerEvent:objc_msgSend(queryContext2 indexType:"whyQuery") queryId:{1, objc_msgSend(queryCopy, "queryIdent")}];
     goto LABEL_13;
   }
 
 LABEL_14:
 }
 
-- (void)sendCompletions:(id)a3
+- (void)sendCompletions:(id)completions
 {
-  v4 = a3;
+  completionsCopy = completions;
   v5 = si_tracing_current_span();
   v6 = *(v5 + 16);
   v27 = *v5;
@@ -268,7 +268,7 @@ LABEL_14:
     WeakRetained = objc_loadWeakRetained(&self->_resultPipe);
     v15 = +[SDController workQueue];
     v12 = WeakRetained;
-    v25 = v4;
+    v25 = completionsCopy;
     tracing_dispatch_async();
 
     v16 = SPLogForSPLogCategoryTelemetry();
@@ -293,10 +293,10 @@ LABEL_14:
   *(v5 + 32) = v29;
 }
 
-- (void)progressWithSections:(id)a3 suggestionResults:(id)a4
+- (void)progressWithSections:(id)sections suggestionResults:(id)results
 {
-  v6 = a3;
-  v7 = a4;
+  sectionsCopy = sections;
+  resultsCopy = results;
   v8 = si_tracing_current_span();
   v9 = *(v8 + 16);
   v35 = *v8;
@@ -345,9 +345,9 @@ LABEL_14:
     v30[3] = &unk_100093178;
     v21 = WeakRetained;
     v31 = v21;
-    v32 = self;
-    v33 = v6;
-    v34 = v7;
+    selfCopy = self;
+    v33 = sectionsCopy;
+    v34 = resultsCopy;
     v22 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, v20, 0, v30);
     tracing_dispatch_async();
   }
@@ -365,10 +365,10 @@ LABEL_14:
   *(v8 + 32) = v37;
 }
 
-- (void)finishWithSections:(id)a3 suggestionResults:(id)a4
+- (void)finishWithSections:(id)sections suggestionResults:(id)results
 {
-  v6 = a3;
-  v7 = a4;
+  sectionsCopy = sections;
+  resultsCopy = results;
   v8 = si_tracing_current_span();
   v9 = *(v8 + 16);
   v48 = *v8;
@@ -409,14 +409,14 @@ LABEL_14:
   if (!self->_done && !self->_canceled)
   {
     WeakRetained = objc_loadWeakRetained(&self->_resultPipe);
-    v19 = [WeakRetained queryContext];
-    v20 = [v19 queryUnderstandingOutput];
-    v21 = [SSQueryUnderstandingUtilities queryUnderstandingParseWithQueryUnderstanding:v20];
+    queryContext = [WeakRetained queryContext];
+    queryUnderstandingOutput = [queryContext queryUnderstandingOutput];
+    v21 = [SSQueryUnderstandingUtilities queryUnderstandingParseWithQueryUnderstanding:queryUnderstandingOutput];
 
-    v22 = [WeakRetained queryContext];
-    LOBYTE(v20) = [v22 isSearchToolClient];
+    queryContext2 = [WeakRetained queryContext];
+    LOBYTE(queryUnderstandingOutput) = [queryContext2 isSearchToolClient];
 
-    if ((v20 & 1) == 0)
+    if ((queryUnderstandingOutput & 1) == 0)
     {
       v23 = [[SFEndLocalSearchFeedback alloc] initWithStartSearch:self->_feedback queryUnderstandingParse:v21];
       queue = self->_queue;
@@ -426,7 +426,7 @@ LABEL_14:
       v44 = &unk_100093150;
       v45 = v23;
       v46 = WeakRetained;
-      v47 = self;
+      selfCopy = self;
       md_tracing_dispatch_async_propagating();
     }
 
@@ -438,9 +438,9 @@ LABEL_14:
     block[3] = &unk_100093178;
     v27 = WeakRetained;
     v37 = v27;
-    v38 = self;
-    v39 = v6;
-    v40 = v7;
+    selfCopy2 = self;
+    v39 = sectionsCopy;
+    v40 = resultsCopy;
     v28 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, v26, 0, block);
     tracing_dispatch_async();
 

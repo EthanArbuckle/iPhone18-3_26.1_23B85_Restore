@@ -1,19 +1,19 @@
 @interface FedStatsSQLiteDatabaseQueryResult
-- (FedStatsSQLiteDatabaseQueryResult)initWithQueryStatement:(sqlite3_stmt *)a3;
+- (FedStatsSQLiteDatabaseQueryResult)initWithQueryStatement:(sqlite3_stmt *)statement;
 - (id)next;
 - (void)dealloc;
 @end
 
 @implementation FedStatsSQLiteDatabaseQueryResult
 
-- (FedStatsSQLiteDatabaseQueryResult)initWithQueryStatement:(sqlite3_stmt *)a3
+- (FedStatsSQLiteDatabaseQueryResult)initWithQueryStatement:(sqlite3_stmt *)statement
 {
   v5.receiver = self;
   v5.super_class = FedStatsSQLiteDatabaseQueryResult;
   result = [(FedStatsSQLiteDatabaseQueryResult *)&v5 init];
   if (result)
   {
-    result->_queryStatement = a3;
+    result->_queryStatement = statement;
   }
 
   return result;

@@ -1,18 +1,18 @@
 @interface ACM2SVDigitCodeView
-- (ACM2SVDigitCodeView)initWithFrame:(CGRect)a3;
+- (ACM2SVDigitCodeView)initWithFrame:(CGRect)frame;
 - (void)dealloc;
-- (void)drawRect:(CGRect)a3;
-- (void)setFillType:(int64_t)a3;
-- (void)setFrame:(CGRect)a3;
+- (void)drawRect:(CGRect)rect;
+- (void)setFillType:(int64_t)type;
+- (void)setFrame:(CGRect)frame;
 @end
 
 @implementation ACM2SVDigitCodeView
 
-- (ACM2SVDigitCodeView)initWithFrame:(CGRect)a3
+- (ACM2SVDigitCodeView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = ACM2SVDigitCodeView;
-  v3 = [(ACM2SVDigitCodeView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(ACM2SVDigitCodeView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -30,32 +30,32 @@
   [(ACM2SVDigitCodeView *)&v3 dealloc];
 }
 
-- (void)setFillType:(int64_t)a3
+- (void)setFillType:(int64_t)type
 {
-  if (self->_fillType != a3)
+  if (self->_fillType != type)
   {
-    self->_fillType = a3;
+    self->_fillType = type;
     [(ACM2SVDigitCodeView *)self setNeedsDisplay];
   }
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = ACM2SVDigitCodeView;
-  [(ACM2SVDigitCodeView *)&v4 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(ACM2SVDigitCodeView *)&v4 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(ACM2SVDigitCodeView *)self setNeedsDisplay];
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   v4 = MEMORY[0x29EDC7948];
-  [(ACM2SVDigitCodeView *)self bounds:a3.origin.x];
+  [(ACM2SVDigitCodeView *)self bounds:rect.origin.x];
   v5 = [v4 bezierPathWithRect:?];
   [-[ACM2SVDigitCodeView backgroundColor](self "backgroundColor")];
   [v5 fill];
-  v6 = [(ACM2SVDigitCodeView *)self fillType];
-  if (v6 == 1)
+  fillType = [(ACM2SVDigitCodeView *)self fillType];
+  if (fillType == 1)
   {
     v10 = MEMORY[0x29EDC7948];
     [(ACM2SVDigitCodeView *)self bounds];
@@ -66,7 +66,7 @@
 
   else
   {
-    if (v6)
+    if (fillType)
     {
       return;
     }

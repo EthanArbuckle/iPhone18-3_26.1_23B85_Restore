@@ -1,8 +1,8 @@
 @interface OPTTSTextToSpeechRequest_ContextInfoEntry
 - (NSString)key;
 - (NSString)value;
-- (OPTTSTextToSpeechRequest_ContextInfoEntry)initWithFlatbuffData:(id)a3 root:(const ContextInfoEntry *)a4 verify:(BOOL)a5;
-- (Offset<siri::speech::schema_fb::TextToSpeechRequest_::ContextInfoEntry>)addObjectToBuffer:(void *)a3;
+- (OPTTSTextToSpeechRequest_ContextInfoEntry)initWithFlatbuffData:(id)data root:(const ContextInfoEntry *)root verify:(BOOL)verify;
+- (Offset<siri::speech::schema_fb::TextToSpeechRequest_::ContextInfoEntry>)addObjectToBuffer:(void *)buffer;
 - (id)flatbuffData;
 @end
 
@@ -24,7 +24,7 @@
   operator new();
 }
 
-- (Offset<siri::speech::schema_fb::TextToSpeechRequest_::ContextInfoEntry>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::schema_fb::TextToSpeechRequest_::ContextInfoEntry>)addObjectToBuffer:(void *)buffer
 {
   v5 = [(OPTTSTextToSpeechRequest_ContextInfoEntry *)self key];
   v6 = v5;
@@ -33,29 +33,29 @@
     v5 = &stru_2881CBD18;
   }
 
-  v7 = [(__CFString *)v5 UTF8String];
-  v8 = strlen(v7);
-  String = flatbuffers::FlatBufferBuilder::CreateString(a3, v7, v8);
+  uTF8String = [(__CFString *)v5 UTF8String];
+  v8 = strlen(uTF8String);
+  String = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String, v8);
 
-  v10 = [(OPTTSTextToSpeechRequest_ContextInfoEntry *)self value];
-  v11 = v10;
-  if (!v10)
+  value = [(OPTTSTextToSpeechRequest_ContextInfoEntry *)self value];
+  v11 = value;
+  if (!value)
   {
-    v10 = &stru_2881CBD18;
+    value = &stru_2881CBD18;
   }
 
-  v12 = [(__CFString *)v10 UTF8String];
-  v13 = strlen(v12);
-  LODWORD(v12) = flatbuffers::FlatBufferBuilder::CreateString(a3, v12, v13);
+  uTF8String2 = [(__CFString *)value UTF8String];
+  v13 = strlen(uTF8String2);
+  LODWORD(uTF8String2) = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String2, v13);
 
-  flatbuffers::FlatBufferBuilder::NotNested(a3);
-  *(a3 + 70) = 1;
-  v14 = *(a3 + 10);
-  v15 = *(a3 + 8) - *(a3 + 12);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::String>(a3, 4, String);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::String>(a3, 6, v12);
+  flatbuffers::FlatBufferBuilder::NotNested(buffer);
+  *(buffer + 70) = 1;
+  v14 = *(buffer + 10);
+  v15 = *(buffer + 8) - *(buffer + 12);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::String>(buffer, 4, String);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::String>(buffer, 6, uTF8String2);
 
-  return flatbuffers::FlatBufferBuilder::EndTable(a3, v15 + v14);
+  return flatbuffers::FlatBufferBuilder::EndTable(buffer, v15 + v14);
 }
 
 - (NSString)value
@@ -104,42 +104,42 @@
   return v6;
 }
 
-- (OPTTSTextToSpeechRequest_ContextInfoEntry)initWithFlatbuffData:(id)a3 root:(const ContextInfoEntry *)a4 verify:(BOOL)a5
+- (OPTTSTextToSpeechRequest_ContextInfoEntry)initWithFlatbuffData:(id)data root:(const ContextInfoEntry *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v29.receiver = self;
   v29.super_class = OPTTSTextToSpeechRequest_ContextInfoEntry;
   v10 = [(OPTTSTextToSpeechRequest_ContextInfoEntry *)&v29 init];
   v11 = v10;
   if (v10)
   {
-    if (!v9 || ![v9 length])
+    if (!dataCopy || ![dataCopy length])
     {
       goto LABEL_16;
     }
 
-    objc_storeStrong(&v10->_data, a3);
-    if (!a4)
+    objc_storeStrong(&v10->_data, data);
+    if (!root)
     {
-      v12 = [(NSData *)v10->_data bytes];
-      a4 = v12 + *v12;
+      bytes = [(NSData *)v10->_data bytes];
+      root = bytes + *bytes;
     }
 
-    v10->_root = a4;
-    if (v5)
+    v10->_root = root;
+    if (verifyCopy)
     {
-      v13 = [(NSData *)v10->_data bytes];
+      bytes2 = [(NSData *)v10->_data bytes];
       v14 = [(NSData *)v10->_data length];
       root = v10->_root;
-      if (root < v13 || root > v13 + v14)
+      if (root < bytes2 || root > bytes2 + v14)
       {
         goto LABEL_16;
       }
 
-      v17 = [(NSData *)v10->_data bytes];
+      bytes3 = [(NSData *)v10->_data bytes];
       v18 = [(NSData *)v10->_data length];
-      v24 = v17;
+      v24 = bytes3;
       v25 = v18;
       v26 = xmmword_2728326B0;
       v27 = 0;
@@ -161,9 +161,9 @@ LABEL_16:
       }
     }
 
-    v20 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     storage = v10->_storage;
-    v10->_storage = v20;
+    v10->_storage = dictionary;
   }
 
   v22 = v10;

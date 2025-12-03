@@ -1,24 +1,24 @@
 @interface CAMRealtimeMetadataCommand
-- (CAMRealtimeMetadataCommand)initWithCoder:(id)a3;
-- (CAMRealtimeMetadataCommand)initWithTypes:(id)a3;
-- (id)_metadataObjectTypeForRealtimeMetadataType:(int64_t)a3;
-- (id)_metadataObjectTypesForRealtimeMetadataTypes:(id)a3 withAvailableMetadataTypes:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)executeWithContext:(id)a3;
+- (CAMRealtimeMetadataCommand)initWithCoder:(id)coder;
+- (CAMRealtimeMetadataCommand)initWithTypes:(id)types;
+- (id)_metadataObjectTypeForRealtimeMetadataType:(int64_t)type;
+- (id)_metadataObjectTypesForRealtimeMetadataTypes:(id)types withAvailableMetadataTypes:(id)metadataTypes;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
+- (void)executeWithContext:(id)context;
 @end
 
 @implementation CAMRealtimeMetadataCommand
 
-- (CAMRealtimeMetadataCommand)initWithTypes:(id)a3
+- (CAMRealtimeMetadataCommand)initWithTypes:(id)types
 {
-  v4 = a3;
+  typesCopy = types;
   v10.receiver = self;
   v10.super_class = CAMRealtimeMetadataCommand;
   v5 = [(CAMCaptureCommand *)&v10 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [typesCopy copy];
     desiredTypes = v5->__desiredTypes;
     v5->__desiredTypes = v6;
 
@@ -28,15 +28,15 @@
   return v5;
 }
 
-- (CAMRealtimeMetadataCommand)initWithCoder:(id)a3
+- (CAMRealtimeMetadataCommand)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = CAMRealtimeMetadataCommand;
-  v5 = [(CAMCaptureCommand *)&v10 initWithCoder:v4];
+  v5 = [(CAMCaptureCommand *)&v10 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectForKey:@"CAMRealtimeMetadataCommandTypes"];
+    v6 = [coderCopy decodeObjectForKey:@"CAMRealtimeMetadataCommandTypes"];
     desiredTypes = v5->__desiredTypes;
     v5->__desiredTypes = v6;
 
@@ -46,57 +46,57 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = CAMRealtimeMetadataCommand;
-  v4 = a3;
-  [(CAMCaptureCommand *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(CAMCaptureCommand *)&v6 encodeWithCoder:coderCopy];
   v5 = [(CAMRealtimeMetadataCommand *)self _desiredTypes:v6.receiver];
-  [v4 encodeObject:v5 forKey:@"CAMRealtimeMetadataCommandTypes"];
+  [coderCopy encodeObject:v5 forKey:@"CAMRealtimeMetadataCommandTypes"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = CAMRealtimeMetadataCommand;
-  v4 = [(CAMCaptureCommand *)&v8 copyWithZone:a3];
-  v5 = [(CAMRealtimeMetadataCommand *)self _desiredTypes];
+  v4 = [(CAMCaptureCommand *)&v8 copyWithZone:zone];
+  _desiredTypes = [(CAMRealtimeMetadataCommand *)self _desiredTypes];
   v6 = v4[3];
-  v4[3] = v5;
+  v4[3] = _desiredTypes;
 
   return v4;
 }
 
-- (void)executeWithContext:(id)a3
+- (void)executeWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [v4 currentVideoDevice];
-  if ([v5 isFaceDetectionSupported])
+  contextCopy = context;
+  currentVideoDevice = [contextCopy currentVideoDevice];
+  if ([currentVideoDevice isFaceDetectionSupported])
   {
-    v29 = v5;
-    v6 = [v4 currentCaptureSession];
-    v7 = [v4 currentMetadataOutput];
-    v8 = [(CAMRealtimeMetadataCommand *)self _desiredTypes];
-    v9 = [v8 containsObject:&unk_1F16C7B20];
-    v10 = [v7 isVideoPreviewHistogramMetadataSupported];
-    if (v9 && v10)
+    v29 = currentVideoDevice;
+    currentCaptureSession = [contextCopy currentCaptureSession];
+    currentMetadataOutput = [contextCopy currentMetadataOutput];
+    _desiredTypes = [(CAMRealtimeMetadataCommand *)self _desiredTypes];
+    v9 = [_desiredTypes containsObject:&unk_1F16C7B20];
+    isVideoPreviewHistogramMetadataSupported = [currentMetadataOutput isVideoPreviewHistogramMetadataSupported];
+    if (v9 && isVideoPreviewHistogramMetadataSupported)
     {
-      [v7 setVideoPreviewHistogramMetadataObjectTypesAvailable:1];
+      [currentMetadataOutput setVideoPreviewHistogramMetadataObjectTypesAvailable:1];
     }
 
-    v11 = [v8 containsObject:&unk_1F16C7B38];
-    v12 = [v7 isAppClipCodeMetadataSupported];
-    if (v11 && v12)
+    v11 = [_desiredTypes containsObject:&unk_1F16C7B38];
+    isAppClipCodeMetadataSupported = [currentMetadataOutput isAppClipCodeMetadataSupported];
+    if (v11 && isAppClipCodeMetadataSupported)
     {
-      [v7 setAppClipCodeMetadataObjectTypeAvailable:1];
+      [currentMetadataOutput setAppClipCodeMetadataObjectTypeAvailable:1];
     }
 
-    v13 = [v8 containsObject:&unk_1F16C7B50];
-    v14 = [v7 isTextRegionMetadataSupported];
-    if (v13 && v14)
+    v13 = [_desiredTypes containsObject:&unk_1F16C7B50];
+    isTextRegionMetadataSupported = [currentMetadataOutput isTextRegionMetadataSupported];
+    if (v13 && isTextRegionMetadataSupported)
     {
-      [v7 setTextRegionMetadataObjectTypeAvailable:1];
+      [currentMetadataOutput setTextRegionMetadataObjectTypeAvailable:1];
     }
 
     else if (v13)
@@ -108,31 +108,31 @@
       }
     }
 
-    if ([v8 containsObject:&unk_1F16C7B68] & 1) != 0 || (objc_msgSend(v8, "containsObject:", &unk_1F16C7B80))
+    if ([_desiredTypes containsObject:&unk_1F16C7B68] & 1) != 0 || (objc_msgSend(_desiredTypes, "containsObject:", &unk_1F16C7B80))
     {
       v17 = 1;
     }
 
     else
     {
-      v17 = [v8 containsObject:&unk_1F16C7B98];
+      v17 = [_desiredTypes containsObject:&unk_1F16C7B98];
     }
 
-    v18 = [v7 isHeadMetadataSupported];
-    if (v17 && v18)
+    isHeadMetadataSupported = [currentMetadataOutput isHeadMetadataSupported];
+    if (v17 && isHeadMetadataSupported)
     {
-      [v7 setHeadMetadataObjectTypesAvailable:1];
+      [currentMetadataOutput setHeadMetadataObjectTypesAvailable:1];
     }
 
-    v27 = [v7 availableMetadataObjectTypes];
-    v19 = [(CAMRealtimeMetadataCommand *)self _metadataObjectTypesForRealtimeMetadataTypes:v8 withAvailableMetadataTypes:?];
-    v20 = [v7 metadataObjectTypes];
+    availableMetadataObjectTypes = [currentMetadataOutput availableMetadataObjectTypes];
+    v19 = [(CAMRealtimeMetadataCommand *)self _metadataObjectTypesForRealtimeMetadataTypes:_desiredTypes withAvailableMetadataTypes:?];
+    metadataObjectTypes = [currentMetadataOutput metadataObjectTypes];
     v21 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithArray:v19];
-    v22 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithArray:v20];
+    v22 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithArray:metadataObjectTypes];
     v23 = [v21 isEqual:v22];
-    v24 = [v6 isBeingConfigured];
-    v28 = v6;
-    if (v23 & 1) != 0 || (v24)
+    isBeingConfigured = [currentCaptureSession isBeingConfigured];
+    v28 = currentCaptureSession;
+    if (v23 & 1) != 0 || (isBeingConfigured)
     {
       if (v23)
       {
@@ -144,18 +144,18 @@
     {
 LABEL_28:
       v25 = [v19 count];
-      v26 = [v7 connectionWithMediaType:*MEMORY[0x1E69875D0]];
+      v26 = [currentMetadataOutput connectionWithMediaType:*MEMORY[0x1E69875D0]];
       if ((v25 != 0) != [v26 isEnabled])
       {
         [v26 setEnabled:v25 != 0];
       }
 
       v15 = v28;
-      v5 = v29;
+      currentVideoDevice = v29;
       goto LABEL_31;
     }
 
-    [v7 setMetadataObjectTypes:v19];
+    [currentMetadataOutput setMetadataObjectTypes:v19];
     goto LABEL_28;
   }
 
@@ -168,17 +168,17 @@ LABEL_28:
 LABEL_31:
 }
 
-- (id)_metadataObjectTypesForRealtimeMetadataTypes:(id)a3 withAvailableMetadataTypes:(id)a4
+- (id)_metadataObjectTypesForRealtimeMetadataTypes:(id)types withAvailableMetadataTypes:(id)metadataTypes
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  typesCopy = types;
+  metadataTypesCopy = metadataTypes;
   v20 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v8 = v6;
+  v8 = typesCopy;
   v9 = [v8 countByEnumeratingWithState:&v21 objects:v29 count:16];
   if (v9)
   {
@@ -199,7 +199,7 @@ LABEL_31:
         v15 = -[CAMRealtimeMetadataCommand _metadataObjectTypeForRealtimeMetadataType:](self, "_metadataObjectTypeForRealtimeMetadataType:", [v14 integerValue]);
         if (v15)
         {
-          if ([v7 containsObject:v15])
+          if ([metadataTypesCopy containsObject:v15])
           {
             [v20 addObject:v15];
           }
@@ -235,16 +235,16 @@ LABEL_31:
   return v20;
 }
 
-- (id)_metadataObjectTypeForRealtimeMetadataType:(int64_t)a3
+- (id)_metadataObjectTypeForRealtimeMetadataType:(int64_t)type
 {
-  if (a3 > 0xB)
+  if (type > 0xB)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = **(&unk_1E76FACA8 + a3);
+    v4 = **(&unk_1E76FACA8 + type);
   }
 
   return v4;

@@ -1,36 +1,36 @@
 @interface TSPLazyReference
-+ (id)referenceForObject:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)referenceForObject:(id)object;
+- (BOOL)isEqual:(id)equal;
 - (TSPComponent)component;
 - (TSPLazyReference)init;
-- (TSPLazyReference)initWithDelegate:(id)a3 identifier:(int64_t)a4 isWeak:(BOOL)a5 allowUnknownObject:(BOOL)a6;
-- (TSPLazyReference)initWithTSPObject:(id)a3;
+- (TSPLazyReference)initWithDelegate:(id)delegate identifier:(int64_t)identifier isWeak:(BOOL)weak allowUnknownObject:(BOOL)object;
+- (TSPLazyReference)initWithTSPObject:(id)object;
 - (TSPLazyReferenceDelegate)delegate;
 - (TSPObject)weakObject;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
 - (id)object;
 - (id)objectIfLoaded;
 - (void)resetIdentifier;
-- (void)setStrongObject:(id)a3;
+- (void)setStrongObject:(id)object;
 @end
 
 @implementation TSPLazyReference
 
-+ (id)referenceForObject:(id)a3
++ (id)referenceForObject:(id)object
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithTSPObject:v4];
+  objectCopy = object;
+  v5 = [[self alloc] initWithTSPObject:objectCopy];
 
   return v5;
 }
 
 - (TSPLazyReference)init
 {
-  v2 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v3 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSPLazyReference init]"];
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/persistence/src/TSPLazyReference.mm"];
-  [v2 handleFailureInFunction:v3 file:v4 lineNumber:39 description:@"Do not call method"];
+  [currentHandler handleFailureInFunction:v3 file:v4 lineNumber:39 description:@"Do not call method"];
 
   v5 = MEMORY[0x277CBEAD8];
   v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@: %s", @"Do not call method", "-[TSPLazyReference init]"];
@@ -40,15 +40,15 @@
   objc_exception_throw(v7);
 }
 
-- (TSPLazyReference)initWithDelegate:(id)a3 identifier:(int64_t)a4 isWeak:(BOOL)a5 allowUnknownObject:(BOOL)a6
+- (TSPLazyReference)initWithDelegate:(id)delegate identifier:(int64_t)identifier isWeak:(BOOL)weak allowUnknownObject:(BOOL)object
 {
-  v10 = a3;
-  if (!v10)
+  delegateCopy = delegate;
+  if (!delegateCopy)
   {
-    v11 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSPLazyReference initWithDelegate:identifier:isWeak:allowUnknownObject:]"];
     v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/persistence/src/TSPLazyReference.mm"];
-    [v11 handleFailureInFunction:v12 file:v13 lineNumber:44 description:{@"invalid nil value for '%s'", "delegate"}];
+    [currentHandler handleFailureInFunction:v12 file:v13 lineNumber:44 description:{@"invalid nil value for '%s'", "delegate"}];
   }
 
   v17.receiver = self;
@@ -57,42 +57,42 @@
   v15 = v14;
   if (v14)
   {
-    objc_storeWeak(&v14->_delegate, v10);
-    v15->_identifier = a4;
-    v15->_isWeak = a5;
-    v15->_allowUnknownObject = a6;
+    objc_storeWeak(&v14->_delegate, delegateCopy);
+    v15->_identifier = identifier;
+    v15->_isWeak = weak;
+    v15->_allowUnknownObject = object;
   }
 
   return v15;
 }
 
-- (TSPLazyReference)initWithTSPObject:(id)a3
+- (TSPLazyReference)initWithTSPObject:(id)object
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  objectCopy = object;
+  v6 = objectCopy;
+  if (objectCopy)
   {
-    v7 = [v5 context];
-    v8 = [v6 tsp_identifier];
+    context = [objectCopy context];
+    tsp_identifier = [v6 tsp_identifier];
     objc_opt_class();
-    v9 = [(TSPLazyReference *)self initWithDelegate:v7 identifier:v8 isWeak:0 allowUnknownObject:objc_opt_isKindOfClass() & 1];
+    v9 = [(TSPLazyReference *)self initWithDelegate:context identifier:tsp_identifier isWeak:0 allowUnknownObject:objc_opt_isKindOfClass() & 1];
 
     if (v9)
     {
-      objc_storeStrong(&v9->_strongObject, a3);
+      objc_storeStrong(&v9->_strongObject, object);
       objc_storeWeak(&v9->_weakObject, v6);
     }
 
     self = v9;
-    v10 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
 - (id)object
@@ -137,20 +137,20 @@
   return WeakRetained;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(TSPLazyReference *)self isEqualToLazyReference:v4];
+    v5 = [(TSPLazyReference *)self isEqualToLazyReference:equalCopy];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = TSPLazyReference;
-    v5 = [(TSPLazyReference *)&v8 isEqual:v4];
+    v5 = [(TSPLazyReference *)&v8 isEqual:equalCopy];
   }
 
   v6 = v5;
@@ -158,7 +158,7 @@
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v6 = [[TSPLazyReference allocWithZone:?]identifier:"initWithDelegate:identifier:isWeak:allowUnknownObject:" isWeak:WeakRetained allowUnknownObject:self->_identifier, self->_isWeak, self->_allowUnknownObject];
@@ -187,9 +187,9 @@
   return WeakRetained;
 }
 
-- (void)setStrongObject:(id)a3
+- (void)setStrongObject:(id)object
 {
-  obj = a3;
+  obj = object;
   if (!self->_allowUnknownObject)
   {
     objc_opt_class();
@@ -214,34 +214,34 @@
 
 - (void)resetIdentifier
 {
-  v3 = [(TSPLazyReference *)self weakObject];
-  v7 = v3;
-  if (v3)
+  weakObject = [(TSPLazyReference *)self weakObject];
+  v7 = weakObject;
+  if (weakObject)
   {
-    self->_identifier = [v3 tsp_identifier];
+    self->_identifier = [weakObject tsp_identifier];
   }
 
   else
   {
-    v4 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSPLazyReference resetIdentifier]"];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/persistence/src/TSPLazyReference.mm"];
-    [v4 handleFailureInFunction:v5 file:v6 lineNumber:256 description:@"You should not reset the lazy reference's identifier when its object isn't loaded in memory."];
+    [currentHandler handleFailureInFunction:v5 file:v6 lineNumber:256 description:@"You should not reset the lazy reference's identifier when its object isn't loaded in memory."];
   }
 }
 
 - (id)debugDescription
 {
-  v3 = [(TSPLazyReference *)self weakObject];
+  weakObject = [(TSPLazyReference *)self weakObject];
   v4 = MEMORY[0x277CCACA8];
-  if (v3)
+  if (weakObject)
   {
     v11.receiver = self;
     v11.super_class = TSPLazyReference;
     v5 = [(TSPLazyReference *)&v11 debugDescription];
     v6 = objc_opt_class();
     v7 = NSStringFromClass(v6);
-    v8 = [v4 stringWithFormat:@"%@ object class: %@; identifier: %qu", v5, v7, objc_msgSend(v3, "tsp_identifier")];;
+    v8 = [v4 stringWithFormat:@"%@ object class: %@; identifier: %qu", v5, v7, objc_msgSend(weakObject, "tsp_identifier")];;
   }
 
   else

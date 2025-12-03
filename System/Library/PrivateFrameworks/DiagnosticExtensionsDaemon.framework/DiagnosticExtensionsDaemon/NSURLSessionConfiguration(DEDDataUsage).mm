@@ -9,16 +9,16 @@
   v14 = *MEMORY[0x277D85DE8];
   v4 = a3;
   v5 = +[DEDConfiguration sharedInstance];
-  v6 = [v5 identifier];
+  identifier = [v5 identifier];
 
-  v7 = [v4 finishingMove];
-  if (v7 == 1)
+  finishingMove = [v4 finishingMove];
+  if (finishingMove == 1)
   {
     v8 = @"com.apple.appleseed.FeedbackAssistant";
     goto LABEL_6;
   }
 
-  if (v7 != 2)
+  if (finishingMove != 2)
   {
     v9 = +[DEDUtils sharedLog];
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -27,7 +27,7 @@
     }
 
 LABEL_10:
-    if (!v6)
+    if (!identifier)
     {
       goto LABEL_12;
     }
@@ -43,15 +43,15 @@ LABEL_10:
   v8 = @"com.apple.TapToRadar";
 LABEL_6:
 
-  v6 = v8;
+  identifier = v8;
 LABEL_11:
-  [a1 set_sourceApplicationBundleIdentifier:v6];
+  [self set_sourceApplicationBundleIdentifier:identifier];
 LABEL_12:
   v10 = +[DEDUtils sharedLog];
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     v12 = 138412290;
-    v13 = v6;
+    v13 = identifier;
     _os_log_impl(&dword_248AD7000, v10, OS_LOG_TYPE_INFO, "Bundle identifier responsible data usage: [%@]", &v12, 0xCu);
   }
 

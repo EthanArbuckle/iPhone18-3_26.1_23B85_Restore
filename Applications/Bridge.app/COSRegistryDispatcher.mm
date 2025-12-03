@@ -1,28 +1,28 @@
 @interface COSRegistryDispatcher
-- (COSRegistryDispatcher)initWithBecameReadyCompletion:(id)a3 andTimeout:(double)a4;
+- (COSRegistryDispatcher)initWithBecameReadyCompletion:(id)completion andTimeout:(double)timeout;
 - (void)invalidate;
 - (void)nanoRegistryBecameActive;
-- (void)nanoRegistryStatusChanged:(id)a3;
+- (void)nanoRegistryStatusChanged:(id)changed;
 @end
 
 @implementation COSRegistryDispatcher
 
-- (COSRegistryDispatcher)initWithBecameReadyCompletion:(id)a3 andTimeout:(double)a4
+- (COSRegistryDispatcher)initWithBecameReadyCompletion:(id)completion andTimeout:(double)timeout
 {
-  v6 = a3;
+  completionCopy = completion;
   v27.receiver = self;
   v27.super_class = COSRegistryDispatcher;
   v7 = [(COSRegistryDispatcher *)&v27 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [completionCopy copy];
     v9 = *(v7 + 2);
     *(v7 + 2) = v8;
 
     v10 = +[NRPairedDeviceRegistry sharedInstance];
-    v11 = [v10 status];
+    status = [v10 status];
 
-    if (v11 == 2)
+    if (status == 2)
     {
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
@@ -38,7 +38,7 @@
       v13 = pbb_bridge_log();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
-        v14 = [NSNumber numberWithUnsignedInteger:v11];
+        v14 = [NSNumber numberWithUnsignedInteger:status];
         *buf = 138412290;
         v29 = v14;
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "(COSRegistryBecameActiveDispatcher) NR is not ready (State was %@). Waiting for NR...", buf, 0xCu);
@@ -52,7 +52,7 @@
       *(v7 + 1) = v16;
 
       v18 = *(v7 + 1);
-      v19 = a4 * 1000000000.0;
+      v19 = timeout * 1000000000.0;
       v20 = dispatch_time(0, v19);
       dispatch_source_set_timer(v18, v20, 0xFFFFFFFFFFFFFFFFLL, (v19 * 0.1 * 1000000000.0));
       v21 = *(v7 + 1);
@@ -71,10 +71,10 @@
   return v7;
 }
 
-- (void)nanoRegistryStatusChanged:(id)a3
+- (void)nanoRegistryStatusChanged:(id)changed
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:NRPairedDeviceRegistryStatusKey];
+  userInfo = [changed userInfo];
+  v5 = [userInfo objectForKey:NRPairedDeviceRegistryStatusKey];
 
   v6 = pbb_bridge_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))

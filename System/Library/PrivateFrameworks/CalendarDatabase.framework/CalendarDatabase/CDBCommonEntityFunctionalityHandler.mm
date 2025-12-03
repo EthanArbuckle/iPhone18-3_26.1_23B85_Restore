@@ -1,10 +1,10 @@
 @interface CDBCommonEntityFunctionalityHandler
-+ (void)_notifyDestructionObservers:(id)a3;
++ (void)_notifyDestructionObservers:(id)observers;
 - (CDBCommonEntityFunctionalityHandler)init;
-- (void)addDestructionObserver:(CalRelation *)a3;
+- (void)addDestructionObserver:(CalRelation *)observer;
 - (void)dealloc;
 - (void)notifyOfEntityDestruction;
-- (void)removeDestructionObserver:(CalRelation *)a3;
+- (void)removeDestructionObserver:(CalRelation *)observer;
 @end
 
 @implementation CDBCommonEntityFunctionalityHandler
@@ -35,14 +35,14 @@
   v8 = __Block_byref_object_copy__3;
   v9 = __Block_byref_object_dispose__3;
   v10 = 0;
-  v3 = [(CDBCommonEntityFunctionalityHandler *)self lock];
+  lock = [(CDBCommonEntityFunctionalityHandler *)self lock];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __64__CDBCommonEntityFunctionalityHandler_notifyOfEntityDestruction__block_invoke;
   v4[3] = &unk_1E86934B0;
   v4[4] = self;
   v4[5] = &v5;
-  dispatch_sync(v3, v4);
+  dispatch_sync(lock, v4);
 
   [objc_opt_class() _notifyDestructionObservers:v6[5]];
   _Block_object_dispose(&v5, 8);
@@ -62,10 +62,10 @@ void __64__CDBCommonEntityFunctionalityHandler_notifyOfEntityDestruction__block_
 
 - (void)dealloc
 {
-  v3 = [(CDBCommonEntityFunctionalityHandler *)self destructionObservers];
-  if ([v3 count])
+  destructionObservers = [(CDBCommonEntityFunctionalityHandler *)self destructionObservers];
+  if ([destructionObservers count])
   {
-    [objc_opt_class() _notifyDestructionObservers:v3];
+    [objc_opt_class() _notifyDestructionObservers:destructionObservers];
   }
 
   v4.receiver = self;
@@ -73,18 +73,18 @@ void __64__CDBCommonEntityFunctionalityHandler_notifyOfEntityDestruction__block_
   [(CDBCommonEntityFunctionalityHandler *)&v4 dealloc];
 }
 
-- (void)addDestructionObserver:(CalRelation *)a3
+- (void)addDestructionObserver:(CalRelation *)observer
 {
-  if (a3)
+  if (observer)
   {
-    v5 = [(CDBCommonEntityFunctionalityHandler *)self lock];
+    lock = [(CDBCommonEntityFunctionalityHandler *)self lock];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __62__CDBCommonEntityFunctionalityHandler_addDestructionObserver___block_invoke;
     v7[3] = &unk_1E8693488;
     v7[4] = self;
-    v7[5] = a3;
-    dispatch_sync(v5, v7);
+    v7[5] = observer;
+    dispatch_sync(lock, v7);
   }
 
   else
@@ -104,21 +104,21 @@ void __62__CDBCommonEntityFunctionalityHandler_addDestructionObserver___block_in
   [v2 addObject:*(a1 + 40)];
 }
 
-- (void)removeDestructionObserver:(CalRelation *)a3
+- (void)removeDestructionObserver:(CalRelation *)observer
 {
-  if (a3)
+  if (observer)
   {
-    CFRetain(a3);
-    v5 = [(CDBCommonEntityFunctionalityHandler *)self lock];
+    CFRetain(observer);
+    lock = [(CDBCommonEntityFunctionalityHandler *)self lock];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __65__CDBCommonEntityFunctionalityHandler_removeDestructionObserver___block_invoke;
     v7[3] = &unk_1E8693488;
     v7[4] = self;
-    v7[5] = a3;
-    dispatch_sync(v5, v7);
+    v7[5] = observer;
+    dispatch_sync(lock, v7);
 
-    CFRelease(a3);
+    CFRelease(observer);
   }
 
   else
@@ -138,15 +138,15 @@ void __65__CDBCommonEntityFunctionalityHandler_removeDestructionObserver___block
   [v2 removeObject:*(a1 + 40)];
 }
 
-+ (void)_notifyDestructionObservers:(id)a3
++ (void)_notifyDestructionObservers:(id)observers
 {
   v14 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  observersCopy = observers;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v4 = [observersCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -158,14 +158,14 @@ void __65__CDBCommonEntityFunctionalityHandler_removeDestructionObserver___block
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(observersCopy);
         }
 
         CDBRelationEliminateRelatedObjectReference(*(*(&v9 + 1) + 8 * v7++));
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [observersCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);

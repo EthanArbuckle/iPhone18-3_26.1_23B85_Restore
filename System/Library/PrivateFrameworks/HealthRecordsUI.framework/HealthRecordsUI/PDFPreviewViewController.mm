@@ -1,13 +1,13 @@
 @interface PDFPreviewViewController
-- (_TtC15HealthRecordsUI24PDFPreviewViewController)initWithCoder:(id)a3;
-- (_TtC15HealthRecordsUI24PDFPreviewViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC15HealthRecordsUI24PDFPreviewViewController)initWithCoder:(id)coder;
+- (_TtC15HealthRecordsUI24PDFPreviewViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation PDFPreviewViewController
 
-- (_TtC15HealthRecordsUI24PDFPreviewViewController)initWithCoder:(id)a3
+- (_TtC15HealthRecordsUI24PDFPreviewViewController)initWithCoder:(id)coder
 {
   result = sub_1D13913BC();
   __break(1u);
@@ -16,17 +16,17 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D11B5DDC();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_1D11B5EF0(a3);
+  selfCopy = self;
+  sub_1D11B5EF0(appear);
 }
 
-- (_TtC15HealthRecordsUI24PDFPreviewViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC15HealthRecordsUI24PDFPreviewViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

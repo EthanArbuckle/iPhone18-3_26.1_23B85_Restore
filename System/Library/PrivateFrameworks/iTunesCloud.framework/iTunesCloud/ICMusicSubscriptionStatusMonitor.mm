@@ -1,24 +1,24 @@
 @interface ICMusicSubscriptionStatusMonitor
 + (id)_sharedInstanceManager;
-+ (id)sharedMonitorForIdentity:(id)a3;
-+ (id)sharedMonitorForIdentity:(id)a3 identityStore:(id)a4;
++ (id)sharedMonitorForIdentity:(id)identity;
++ (id)sharedMonitorForIdentity:(id)identity identityStore:(id)store;
 - (BOOL)_isMonitoringSubscriptionStatusForAutoupdatingIdentity;
 - (id)_effectiveIdentityForRequestingSubscriptionStatus;
-- (id)_initWithIdentityContext:(id)a3;
-- (id)beginObservingSubscriptionStatusWithHandler:(id)a3;
+- (id)_initWithIdentityContext:(id)context;
+- (id)beginObservingSubscriptionStatusWithHandler:(id)handler;
 - (id)description;
 - (void)_beginObservingSubscriptionStatus;
 - (void)_endObservingSubscriptionStatus;
 - (void)_handleActiveUserIdentityDidChangeRemoteNotification;
-- (void)_handleHomeManagerPropertiesDidChange:(id)a3;
-- (void)_handleSubscriptionStatusDidChange:(id)a3;
-- (void)_handleUserIdentityStoreDidChange:(id)a3;
-- (void)_invokeAccessHandlersWithSubscriptionStatus:(id)a3 error:(id)a4;
-- (void)_requestSubscriptionStatusWithCachingPolicy:(unint64_t)a3 completion:(id)a4;
-- (void)_updateWithSubscriptionStatus:(id)a3;
+- (void)_handleHomeManagerPropertiesDidChange:(id)change;
+- (void)_handleSubscriptionStatusDidChange:(id)change;
+- (void)_handleUserIdentityStoreDidChange:(id)change;
+- (void)_invokeAccessHandlersWithSubscriptionStatus:(id)status error:(id)error;
+- (void)_requestSubscriptionStatusWithCachingPolicy:(unint64_t)policy completion:(id)completion;
+- (void)_updateWithSubscriptionStatus:(id)status;
 - (void)dealloc;
-- (void)endObservingSubscriptionStatusWithToken:(id)a3;
-- (void)performBlockWithLoadedSubscriptionStatus:(id)a3;
+- (void)endObservingSubscriptionStatusWithToken:(id)token;
+- (void)performBlockWithLoadedSubscriptionStatus:(id)status;
 - (void)refreshSubscriptionStatus;
 @end
 
@@ -45,9 +45,9 @@ uint64_t __58__ICMusicSubscriptionStatusMonitor__sharedInstanceManager__block_in
 
 - (id)_effectiveIdentityForRequestingSubscriptionStatus
 {
-  v2 = [(ICUserIdentityContext *)self->_identityContext identity];
-  v3 = [v2 type];
-  switch(v3)
+  identity = [(ICUserIdentityContext *)self->_identityContext identity];
+  type = [identity type];
+  switch(type)
   {
     case 9:
       v4 = +[ICUserIdentity defaultMediaIdentity];
@@ -59,7 +59,7 @@ uint64_t __58__ICMusicSubscriptionStatusMonitor__sharedInstanceManager__block_in
       v4 = +[ICUserIdentity activeAccount];
       break;
     default:
-      v4 = v2;
+      v4 = identity;
       break;
   }
 
@@ -76,12 +76,12 @@ uint64_t __58__ICMusicSubscriptionStatusMonitor__sharedInstanceManager__block_in
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v22 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B4491000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@: Beginning to observe subscription status.", buf, 0xCu);
   }
 
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  v5 = [MEMORY[0x1E695DF70] array];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  array = [MEMORY[0x1E695DF70] array];
   objc_initWeak(buf, self);
   v6 = +[ICMusicSubscriptionStatusController sharedStatusController];
   v19[0] = MEMORY[0x1E69E9820];
@@ -89,37 +89,37 @@ uint64_t __58__ICMusicSubscriptionStatusMonitor__sharedInstanceManager__block_in
   v19[2] = __69__ICMusicSubscriptionStatusMonitor__beginObservingSubscriptionStatus__block_invoke;
   v19[3] = &unk_1E7BF9368;
   objc_copyWeak(&v20, buf);
-  v7 = [v4 addObserverForName:@"ICMusicSubscriptionStatusDidChangeNotification" object:v6 queue:0 usingBlock:v19];
-  [v5 addObject:v7];
+  v7 = [defaultCenter addObserverForName:@"ICMusicSubscriptionStatusDidChangeNotification" object:v6 queue:0 usingBlock:v19];
+  [array addObject:v7];
 
-  v8 = [(ICUserIdentityContext *)self->_identityContext identityStore];
+  identityStore = [(ICUserIdentityContext *)self->_identityContext identityStore];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __69__ICMusicSubscriptionStatusMonitor__beginObservingSubscriptionStatus__block_invoke_2;
   v17[3] = &unk_1E7BF9368;
   objc_copyWeak(&v18, buf);
-  v9 = [v4 addObserverForName:@"ICUserIdentityStoreDidChangeNotification" object:v8 queue:0 usingBlock:v17];
-  [v5 addObject:v9];
+  v9 = [defaultCenter addObserverForName:@"ICUserIdentityStoreDidChangeNotification" object:identityStore queue:0 usingBlock:v17];
+  [array addObject:v9];
 
-  v10 = [(ICUserIdentityContext *)self->_identityContext identity];
-  v11 = [v10 type];
+  identity = [(ICUserIdentityContext *)self->_identityContext identity];
+  type = [identity type];
 
-  if (v11 == 9)
+  if (type == 9)
   {
-    v12 = [(ICUserIdentityContext *)self->_identityContext identityStore];
+    identityStore2 = [(ICUserIdentityContext *)self->_identityContext identityStore];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __69__ICMusicSubscriptionStatusMonitor__beginObservingSubscriptionStatus__block_invoke_3;
     v15[3] = &unk_1E7BF9368;
     objc_copyWeak(&v16, buf);
-    v13 = [v4 addObserverForName:@"com.apple.iTunesCloud.ICHomeManager.ICHomeManagerPropertiesDidChangeNotification" object:v12 queue:0 usingBlock:v15];
-    [v5 addObject:v13];
+    v13 = [defaultCenter addObserverForName:@"com.apple.iTunesCloud.ICHomeManager.ICHomeManagerPropertiesDidChangeNotification" object:identityStore2 queue:0 usingBlock:v15];
+    [array addObject:v13];
 
     objc_destroyWeak(&v16);
   }
 
   os_unfair_lock_lock(&self->_lock);
-  objc_storeStrong(&self->_notificationHandlers, v5);
+  objc_storeStrong(&self->_notificationHandlers, array);
   os_unfair_lock_unlock(&self->_lock);
   if ([(ICMusicSubscriptionStatusMonitor *)self _isMonitoringSubscriptionStatusForAutoupdatingIdentity])
   {
@@ -142,10 +142,10 @@ id __58__ICMusicSubscriptionStatusMonitor__sharedInstanceManager__block_invoke_2
 
 - (BOOL)_isMonitoringSubscriptionStatusForAutoupdatingIdentity
 {
-  v2 = [(ICUserIdentityContext *)self->_identityContext identity];
-  v3 = [v2 type];
+  identity = [(ICUserIdentityContext *)self->_identityContext identity];
+  type = [identity type];
 
-  return (v3 < 0xA) & (0x20Cu >> v3);
+  return (type < 0xA) & (0x20Cu >> type);
 }
 
 - (id)description
@@ -156,13 +156,13 @@ id __58__ICMusicSubscriptionStatusMonitor__sharedInstanceManager__block_invoke_2
   v5 = NSStringFromClass(v4);
   v6 = [v3 initWithFormat:@"<%@: %p", v5, self];
 
-  v7 = [(ICUserIdentityContext *)self->_identityContext identity];
-  [v6 appendFormat:@"; identity = %@", v7];
+  identity = [(ICUserIdentityContext *)self->_identityContext identity];
+  [v6 appendFormat:@"; identity = %@", identity];
 
-  v8 = [(ICUserIdentityContext *)self->_identityContext identityStore];
-  if ([v8 identityStoreStyle])
+  identityStore = [(ICUserIdentityContext *)self->_identityContext identityStore];
+  if ([identityStore identityStoreStyle])
   {
-    [v6 appendFormat:@"; identityStore = %@", v8];
+    [v6 appendFormat:@"; identityStore = %@", identityStore];
   }
 
   os_unfair_lock_lock(&self->_lock);
@@ -178,11 +178,11 @@ id __58__ICMusicSubscriptionStatusMonitor__sharedInstanceManager__block_invoke_2
   return v6;
 }
 
-- (void)_invokeAccessHandlersWithSubscriptionStatus:(id)a3 error:(id)a4
+- (void)_invokeAccessHandlersWithSubscriptionStatus:(id)status error:(id)error
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  statusCopy = status;
+  errorCopy = error;
   os_unfair_lock_lock(&self->_lock);
   v8 = [(NSMutableArray *)self->_accessHandlers copy];
   accessHandlers = self->_accessHandlers;
@@ -221,24 +221,24 @@ id __58__ICMusicSubscriptionStatusMonitor__sharedInstanceManager__block_invoke_2
   }
 }
 
-- (void)_updateWithSubscriptionStatus:(id)a3
+- (void)_updateWithSubscriptionStatus:(id)status
 {
   v28 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  statusCopy = status;
   os_unfair_lock_lock(&self->_lock);
   v6 = self->_subscriptionStatus;
   v7 = v6;
-  if (v6 == v5)
+  if (v6 == statusCopy)
   {
   }
 
   else
   {
-    v8 = [(ICMusicSubscriptionStatus *)v6 isEqual:v5];
+    v8 = [(ICMusicSubscriptionStatus *)v6 isEqual:statusCopy];
 
     if (!v8)
     {
-      objc_storeStrong(&self->_subscriptionStatus, a3);
+      objc_storeStrong(&self->_subscriptionStatus, status);
       v9 = [(NSMutableDictionary *)self->_observers copy];
       os_unfair_lock_unlock(&self->_lock);
       v10 = [v9 count];
@@ -248,13 +248,13 @@ id __58__ICMusicSubscriptionStatusMonitor__sharedInstanceManager__block_invoke_2
         v12 = "s";
         *buf = 138544130;
         v22 = 2114;
-        v21 = self;
+        selfCopy3 = self;
         if (v10 == 1)
         {
           v12 = "";
         }
 
-        v23 = v5;
+        v23 = statusCopy;
         v24 = 2048;
         v25 = v10;
         v26 = 2080;
@@ -268,8 +268,8 @@ id __58__ICMusicSubscriptionStatusMonitor__sharedInstanceManager__block_invoke_2
         v15 = 3221225472;
         v16 = __66__ICMusicSubscriptionStatusMonitor__updateWithSubscriptionStatus___block_invoke;
         v17 = &unk_1E7BF93E8;
-        v18 = self;
-        v19 = v5;
+        selfCopy2 = self;
+        v19 = statusCopy;
         [v9 enumerateKeysAndObjectsUsingBlock:&v14];
       }
 
@@ -282,13 +282,13 @@ id __58__ICMusicSubscriptionStatusMonitor__sharedInstanceManager__block_invoke_2
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v21 = self;
+    selfCopy3 = self;
     _os_log_impl(&dword_1B4491000, v13, OS_LOG_TYPE_DEFAULT, "%{public}@: Subscription status did not change. Skipping invoking observation handlers.", buf, 0xCu);
   }
 
   v9 = 0;
 LABEL_13:
-  [(ICMusicSubscriptionStatusMonitor *)self _invokeAccessHandlersWithSubscriptionStatus:v5 error:0, v14, v15, v16, v17, v18];
+  [(ICMusicSubscriptionStatusMonitor *)self _invokeAccessHandlersWithSubscriptionStatus:statusCopy error:0, v14, v15, v16, v17, selfCopy2];
 }
 
 void __66__ICMusicSubscriptionStatusMonitor__updateWithSubscriptionStatus___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -317,38 +317,38 @@ void __66__ICMusicSubscriptionStatusMonitor__updateWithSubscriptionStatus___bloc
   (*(v6 + 2))(v6, *(a1 + 32), *(a1 + 40));
 }
 
-- (void)_requestSubscriptionStatusWithCachingPolicy:(unint64_t)a3 completion:(id)a4
+- (void)_requestSubscriptionStatusWithCachingPolicy:(unint64_t)policy completion:(id)completion
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  completionCopy = completion;
   os_unfair_lock_assert_not_owner(&self->_lock);
-  v7 = [(ICMusicSubscriptionStatusMonitor *)self _effectiveIdentityForRequestingSubscriptionStatus];
+  _effectiveIdentityForRequestingSubscriptionStatus = [(ICMusicSubscriptionStatusMonitor *)self _effectiveIdentityForRequestingSubscriptionStatus];
   v8 = [ICStoreRequestContext alloc];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __91__ICMusicSubscriptionStatusMonitor__requestSubscriptionStatusWithCachingPolicy_completion___block_invoke;
   v22[3] = &unk_1E7BF9398;
   v22[4] = self;
-  v9 = v7;
+  v9 = _effectiveIdentityForRequestingSubscriptionStatus;
   v23 = v9;
   v10 = [(ICStoreRequestContext *)v8 initWithBlock:v22];
   v11 = [[ICMusicSubscriptionStatusRequest alloc] initWithStoreRequestContext:v10];
   [(ICMusicSubscriptionStatusRequest *)v11 setAllowsFallbackToExpiredStatus:1];
   [(ICMusicSubscriptionStatusRequest *)v11 setAllowsFallbackToStatusNeedingReload:1];
   [(ICMusicSubscriptionStatusRequest *)v11 setCarrierBundleProvisioningStyle:1];
-  if (a3 == 2)
+  if (policy == 2)
   {
     [(ICMusicSubscriptionStatusRequest *)v11 setShouldReturnLastKnownStatusOnly:1];
     v12 = @"required";
   }
 
-  else if (a3 == 1)
+  else if (policy == 1)
   {
     [(ICMusicSubscriptionStatusRequest *)v11 setShouldIgnoreCache:1];
     v12 = @"restricted";
   }
 
-  else if (a3)
+  else if (policy)
   {
     v12 = 0;
   }
@@ -362,7 +362,7 @@ void __66__ICMusicSubscriptionStatusMonitor__updateWithSubscriptionStatus___bloc
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
-    v25 = self;
+    selfCopy = self;
     v26 = 2114;
     v27 = v12;
     v28 = 2114;
@@ -378,8 +378,8 @@ void __66__ICMusicSubscriptionStatusMonitor__updateWithSubscriptionStatus___bloc
   v18[4] = self;
   v19 = v11;
   v20 = v9;
-  v21 = v6;
-  v15 = v6;
+  v21 = completionCopy;
+  v15 = completionCopy;
   v16 = v9;
   v17 = v11;
   [v14 performSubscriptionStatusRequest:v17 withCompletionHandler:v18];
@@ -480,7 +480,7 @@ void __91__ICMusicSubscriptionStatusMonitor__requestSubscriptionStatusWithCachin
 {
   v19 = *MEMORY[0x1E69E9840];
   os_unfair_lock_assert_not_owner(&self->_lock);
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -501,7 +501,7 @@ void __91__ICMusicSubscriptionStatusMonitor__requestSubscriptionStatusWithCachin
           objc_enumerationMutation(v4);
         }
 
-        [v3 removeObserver:{*(*(&v12 + 1) + 8 * v8++), v12}];
+        [defaultCenter removeObserver:{*(*(&v12 + 1) + 8 * v8++), v12}];
       }
 
       while (v6 != v8);
@@ -526,7 +526,7 @@ void __91__ICMusicSubscriptionStatusMonitor__requestSubscriptionStatusWithCachin
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v17 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B4491000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@: Stopped observing subscription status.", buf, 0xCu);
   }
 }
@@ -552,19 +552,19 @@ void __69__ICMusicSubscriptionStatusMonitor__beginObservingSubscriptionStatus__b
   [WeakRetained _handleHomeManagerPropertiesDidChange:v3];
 }
 
-- (void)_handleHomeManagerPropertiesDidChange:(id)a3
+- (void)_handleHomeManagerPropertiesDidChange:(id)change
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  changeCopy = change;
   os_unfair_lock_assert_not_owner(&self->_lock);
   v5 = os_log_create("com.apple.amp.iTunesCloud", "Subscription");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 name];
+    name = [changeCopy name];
     v8 = 138543618;
-    v9 = self;
+    selfCopy = self;
     v10 = 2114;
-    v11 = v6;
+    v11 = name;
     _os_log_impl(&dword_1B4491000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: Handling %{public}@.", &v8, 0x16u);
   }
 
@@ -576,15 +576,15 @@ void __69__ICMusicSubscriptionStatusMonitor__beginObservingSubscriptionStatus__b
   [(ICMusicSubscriptionStatusMonitor *)self _requestSubscriptionStatusWithCachingPolicy:0 completion:0];
 }
 
-- (void)_handleUserIdentityStoreDidChange:(id)a3
+- (void)_handleUserIdentityStoreDidChange:(id)change
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  changeCopy = change;
   os_unfair_lock_assert_not_owner(&self->_lock);
-  v5 = [(ICMusicSubscriptionStatusMonitor *)self _effectiveIdentityForRequestingSubscriptionStatus];
-  v6 = [(ICUserIdentityContext *)self->_identityContext identityStore];
+  _effectiveIdentityForRequestingSubscriptionStatus = [(ICMusicSubscriptionStatusMonitor *)self _effectiveIdentityForRequestingSubscriptionStatus];
+  identityStore = [(ICUserIdentityContext *)self->_identityContext identityStore];
   v22 = 0;
-  v7 = [v6 DSIDForUserIdentity:v5 outError:&v22];
+  v7 = [identityStore DSIDForUserIdentity:_effectiveIdentityForRequestingSubscriptionStatus outError:&v22];
   v8 = v22;
 
   if (v8)
@@ -592,13 +592,13 @@ void __69__ICMusicSubscriptionStatusMonitor__beginObservingSubscriptionStatus__b
     v9 = os_log_create("com.apple.amp.iTunesCloud", "Subscription");
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      v10 = [v4 name];
+      name = [changeCopy name];
       *buf = 138544130;
-      v24 = self;
+      selfCopy4 = self;
       v25 = 2114;
-      v26 = v10;
+      v26 = name;
       v27 = 2112;
-      v28 = v5;
+      v28 = _effectiveIdentityForRequestingSubscriptionStatus;
       v29 = 2114;
       v30 = v8;
       _os_log_impl(&dword_1B4491000, v9, OS_LOG_TYPE_ERROR, "%{public}@: Upon handling %{public}@, encountered unexpected error while resolving DSID for effective user identity %@: %{public}@.", buf, 0x2Au);
@@ -624,11 +624,11 @@ void __69__ICMusicSubscriptionStatusMonitor__beginObservingSubscriptionStatus__b
       v15 = os_log_create("com.apple.amp.iTunesCloud", "Subscription");
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
-        v16 = [v4 name];
+        name2 = [changeCopy name];
         *buf = 138544130;
-        v24 = self;
+        selfCopy4 = self;
         v25 = 2114;
-        v26 = v16;
+        v26 = name2;
         v27 = 2112;
         v28 = v14;
         v29 = 2112;
@@ -636,15 +636,15 @@ void __69__ICMusicSubscriptionStatusMonitor__beginObservingSubscriptionStatus__b
         _os_log_impl(&dword_1B4491000, v15, OS_LOG_TYPE_DEFAULT, "%{public}@: Handling %{public}@. DSID changed from %@ to %@. Checking to see if the subscription status has changed.", buf, 0x2Au);
       }
 
-      v17 = [(ICUserIdentityContext *)self->_identityContext identity];
-      v18 = [v17 type];
-      if (v18 == 9 || v18 == 2)
+      identity = [(ICUserIdentityContext *)self->_identityContext identity];
+      type = [identity type];
+      if (type == 9 || type == 2)
       {
         v19 = os_log_create("com.apple.amp.iTunesCloud", "Subscription");
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543362;
-          v24 = self;
+          selfCopy4 = self;
           _os_log_impl(&dword_1B4491000, v19, OS_LOG_TYPE_DEFAULT, "%{public}@: clearing current subscription status for dsid change", buf, 0xCu);
         }
 
@@ -671,11 +671,11 @@ LABEL_18:
   v14 = os_log_create("com.apple.amp.iTunesCloud", "Subscription");
   if (os_log_type_enabled(&v14->super.super, OS_LOG_TYPE_DEFAULT))
   {
-    v21 = [v4 name];
+    name3 = [changeCopy name];
     *buf = 138543874;
-    v24 = self;
+    selfCopy4 = self;
     v25 = 2114;
-    v26 = v21;
+    v26 = name3;
     v27 = 2112;
     v28 = v7;
     _os_log_impl(&dword_1B4491000, &v14->super.super, OS_LOG_TYPE_DEFAULT, "%{public}@: Handling %{public}@. DSID has not changed (it is still equal to %@). Ignoring this notification.", buf, 0x20u);
@@ -684,24 +684,24 @@ LABEL_18:
 LABEL_19:
 }
 
-- (void)_handleSubscriptionStatusDidChange:(id)a3
+- (void)_handleSubscriptionStatusDidChange:(id)change
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  changeCopy = change;
   os_unfair_lock_assert_not_owner(&self->_lock);
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKey:@"ICUserIdentityForMusicSubscriptionStatusDidChangeKey"];
+  userInfo = [changeCopy userInfo];
+  v6 = [userInfo objectForKey:@"ICUserIdentityForMusicSubscriptionStatusDidChangeKey"];
 
   if (v6 && (-[ICMusicSubscriptionStatusMonitor _effectiveIdentityForRequestingSubscriptionStatus](self, "_effectiveIdentityForRequestingSubscriptionStatus"), v7 = objc_claimAutoreleasedReturnValue(), -[ICUserIdentityContext identityStore](self->_identityContext, "identityStore"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v7 isEqualToIdentity:v6 inStore:v8], v8, v7, (v9 & 1) == 0))
   {
     v12 = os_log_create("com.apple.amp.iTunesCloud", "Subscription");
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [v4 name];
+      name = [changeCopy name];
       v14 = 138543874;
-      v15 = self;
+      selfCopy2 = self;
       v16 = 2114;
-      v17 = v13;
+      v17 = name;
       v18 = 2114;
       v19 = v6;
       _os_log_impl(&dword_1B4491000, v12, OS_LOG_TYPE_DEFAULT, "%{public}@: Ignoring %{public}@ because it specifically refers to a different user identity: %{public}@.", &v14, 0x20u);
@@ -713,11 +713,11 @@ LABEL_19:
     v10 = os_log_create("com.apple.amp.iTunesCloud", "Subscription");
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [v4 name];
+      name2 = [changeCopy name];
       v14 = 138543618;
-      v15 = self;
+      selfCopy2 = self;
       v16 = 2114;
-      v17 = v11;
+      v17 = name2;
       _os_log_impl(&dword_1B4491000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@: Handling %{public}@.", &v14, 0x16u);
     }
 
@@ -733,7 +733,7 @@ LABEL_19:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v4 = 138543618;
-    v5 = self;
+    selfCopy = self;
     v6 = 2114;
     v7 = @"com.apple.itunescloudd.activeUserIdentityDidChangeNotification";
     _os_log_impl(&dword_1B4491000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@: Handling %{public}@. The active user identity has changed in the daemon. Checking to see if the subscription status has changed.", &v4, 0x16u);
@@ -749,15 +749,15 @@ LABEL_19:
   [(ICMusicSubscriptionStatusMonitor *)self _requestSubscriptionStatusWithCachingPolicy:1 completion:0];
 }
 
-- (void)performBlockWithLoadedSubscriptionStatus:(id)a3
+- (void)performBlockWithLoadedSubscriptionStatus:(id)status
 {
-  v10 = a3;
+  statusCopy = status;
   os_unfair_lock_lock(&self->_lock);
   v4 = [(ICMusicSubscriptionStatus *)self->_subscriptionStatus copy];
   if (v4)
   {
     os_unfair_lock_unlock(&self->_lock);
-    v10[2](v10, v4, 0);
+    statusCopy[2](statusCopy, v4, 0);
   }
 
   else
@@ -765,14 +765,14 @@ LABEL_19:
     accessHandlers = self->_accessHandlers;
     if (!accessHandlers)
     {
-      v6 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       v7 = self->_accessHandlers;
-      self->_accessHandlers = v6;
+      self->_accessHandlers = array;
 
       accessHandlers = self->_accessHandlers;
     }
 
-    v8 = [v10 copy];
+    v8 = [statusCopy copy];
     v9 = MEMORY[0x1B8C781E0]();
     [(NSMutableArray *)accessHandlers addObject:v9];
 
@@ -780,12 +780,12 @@ LABEL_19:
   }
 }
 
-- (void)endObservingSubscriptionStatusWithToken:(id)a3
+- (void)endObservingSubscriptionStatusWithToken:(id)token
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  tokenCopy = token;
   os_unfair_lock_lock(&self->_lock);
-  [(NSMutableDictionary *)self->_observers removeObjectForKey:v4];
+  [(NSMutableDictionary *)self->_observers removeObjectForKey:tokenCopy];
   v5 = [(NSMutableDictionary *)self->_observers count];
   if (!v5)
   {
@@ -798,9 +798,9 @@ LABEL_19:
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138543874;
-    v10 = self;
+    selfCopy = self;
     v11 = 2114;
-    v12 = v4;
+    v12 = tokenCopy;
     v13 = 1024;
     v14 = v5 == 0;
     _os_log_impl(&dword_1B4491000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: Removed subscription status observer with token: %{public}@. wasLastObserver=%{BOOL}u", &v9, 0x1Cu);
@@ -811,32 +811,32 @@ LABEL_19:
     [(ICMusicSubscriptionStatusMonitor *)self _endObservingSubscriptionStatus];
   }
 
-  v8 = [objc_opt_class() _sharedInstanceManager];
-  [v8 decrementUsageCountForKey:self->_identityContext];
+  _sharedInstanceManager = [objc_opt_class() _sharedInstanceManager];
+  [_sharedInstanceManager decrementUsageCountForKey:self->_identityContext];
 }
 
-- (id)beginObservingSubscriptionStatusWithHandler:(id)a3
+- (id)beginObservingSubscriptionStatusWithHandler:(id)handler
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [objc_opt_class() _sharedInstanceManager];
-  [v5 incrementUsageCountForKey:self->_identityContext];
+  handlerCopy = handler;
+  _sharedInstanceManager = [objc_opt_class() _sharedInstanceManager];
+  [_sharedInstanceManager incrementUsageCountForKey:self->_identityContext];
 
-  v6 = [(ICMusicSubscriptionStatusMonitor *)self _effectiveIdentityForRequestingSubscriptionStatus];
-  v7 = [MEMORY[0x1E696AFB0] UUID];
+  _effectiveIdentityForRequestingSubscriptionStatus = [(ICMusicSubscriptionStatusMonitor *)self _effectiveIdentityForRequestingSubscriptionStatus];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
   os_unfair_lock_lock(&self->_lock);
   observers = self->_observers;
-  v9 = [v4 copy];
+  v9 = [handlerCopy copy];
 
   v10 = MEMORY[0x1B8C781E0](v9);
-  [(NSMutableDictionary *)observers setObject:v10 forKey:v7];
+  [(NSMutableDictionary *)observers setObject:v10 forKey:uUID];
 
   v11 = [(NSMutableDictionary *)self->_observers count];
   if (v11 == 1)
   {
-    v12 = [(ICUserIdentityContext *)self->_identityContext identityStore];
+    identityStore = [(ICUserIdentityContext *)self->_identityContext identityStore];
     v20 = 0;
-    v13 = [v12 DSIDForUserIdentity:v6 outError:&v20];
+    v13 = [identityStore DSIDForUserIdentity:_effectiveIdentityForRequestingSubscriptionStatus outError:&v20];
     v14 = v20;
     DSID = self->_DSID;
     self->_DSID = v13;
@@ -852,9 +852,9 @@ LABEL_19:
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v22 = self;
+    selfCopy2 = self;
     v23 = 2114;
-    v24 = v7;
+    v24 = uUID;
     _os_log_impl(&dword_1B4491000, v16, OS_LOG_TYPE_DEFAULT, "%{public}@: Registered new subscription status observer with token: %{public}@.", buf, 0x16u);
   }
 
@@ -864,9 +864,9 @@ LABEL_19:
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543874;
-      v22 = self;
+      selfCopy2 = self;
       v23 = 2112;
-      v24 = v6;
+      v24 = _effectiveIdentityForRequestingSubscriptionStatus;
       v25 = 2114;
       v26 = v14;
       _os_log_impl(&dword_1B4491000, v17, OS_LOG_TYPE_ERROR, "%{public}@: Encountered unexpected error while resolving DSID for effective user identity %@: %{public}@.", buf, 0x20u);
@@ -884,7 +884,7 @@ LABEL_19:
     [(ICMusicSubscriptionStatusMonitor *)self _requestSubscriptionStatusWithCachingPolicy:2 completion:v19];
   }
 
-  return v7;
+  return uUID;
 }
 
 - (void)dealloc
@@ -898,7 +898,7 @@ LABEL_19:
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v7 = self;
+    selfCopy = self;
     v8 = 1024;
     v9 = v3 != 0;
     _os_log_impl(&dword_1B4491000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@ is being deallocated. wasObservingSubscriptionStatus=%{BOOL}u", buf, 0x12u);
@@ -914,10 +914,10 @@ LABEL_19:
   [(ICMusicSubscriptionStatusMonitor *)&v5 dealloc];
 }
 
-- (id)_initWithIdentityContext:(id)a3
+- (id)_initWithIdentityContext:(id)context
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  contextCopy = context;
   v13.receiver = self;
   v13.super_class = ICMusicSubscriptionStatusMonitor;
   v6 = [(ICMusicSubscriptionStatusMonitor *)&v13 init];
@@ -925,7 +925,7 @@ LABEL_19:
   if (v6)
   {
     v6->_lock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v6->_identityContext, a3);
+    objc_storeStrong(&v6->_identityContext, context);
     v8 = objc_alloc_init(MEMORY[0x1E695DF90]);
     observers = v7->_observers;
     v7->_observers = v8;
@@ -945,23 +945,23 @@ LABEL_19:
   return v7;
 }
 
-+ (id)sharedMonitorForIdentity:(id)a3 identityStore:(id)a4
++ (id)sharedMonitorForIdentity:(id)identity identityStore:(id)store
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[ICUserIdentityContext alloc] initWithIdentity:v7 identityStore:v6];
+  storeCopy = store;
+  identityCopy = identity;
+  v8 = [[ICUserIdentityContext alloc] initWithIdentity:identityCopy identityStore:storeCopy];
 
-  v9 = [a1 _sharedInstanceManager];
-  v10 = [v9 sharedInstanceForKey:v8];
+  _sharedInstanceManager = [self _sharedInstanceManager];
+  v10 = [_sharedInstanceManager sharedInstanceForKey:v8];
 
   return v10;
 }
 
-+ (id)sharedMonitorForIdentity:(id)a3
++ (id)sharedMonitorForIdentity:(id)identity
 {
-  v4 = a3;
+  identityCopy = identity;
   v5 = +[ICUserIdentityStore defaultIdentityStore];
-  v6 = [a1 sharedMonitorForIdentity:v4 identityStore:v5];
+  v6 = [self sharedMonitorForIdentity:identityCopy identityStore:v5];
 
   return v6;
 }

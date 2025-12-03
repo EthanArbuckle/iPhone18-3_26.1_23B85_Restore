@@ -1,19 +1,19 @@
 @interface PDSafeSerialQueueRunner
 - (PDSafeSerialQueueRunner)init;
 - (void)invalidate;
-- (void)runBlock:(id)a3;
+- (void)runBlock:(id)block;
 @end
 
 @implementation PDSafeSerialQueueRunner
 
-- (void)runBlock:(id)a3
+- (void)runBlock:(id)block
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  if (v4->_shouldRun)
+  blockCopy = block;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_shouldRun)
   {
-    v5[2]();
+    blockCopy[2]();
   }
 
   else
@@ -21,7 +21,7 @@
     peridot_depth_log("Safe serial queue was already invalidated: block will not run");
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)invalidate

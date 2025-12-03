@@ -1,6 +1,6 @@
 @interface MPCAssistantStoreTracklistPlaybackQueue
-+ (id)storeTracklistQueueWithContextID:(id)a3 storeItemIDs:(id)a4 collectionIdentifierSet:(id)a5;
-- (MPCAssistantStoreTracklistPlaybackQueue)initWithContextID:(id)a3 storeItemIDs:(id)a4 collectionIdentifierSet:(id)a5;
++ (id)storeTracklistQueueWithContextID:(id)d storeItemIDs:(id)ds collectionIdentifierSet:(id)set;
+- (MPCAssistantStoreTracklistPlaybackQueue)initWithContextID:(id)d storeItemIDs:(id)ds collectionIdentifierSet:(id)set;
 - (_MRSystemAppPlaybackQueue)createRemotePlaybackQueue;
 - (id)description;
 @end
@@ -25,16 +25,16 @@
   MRSystemAppPlaybackQueueSetShouldOverrideManuallyCuratedQueue();
   [(MPCAssistantPlaybackQueue *)self shouldImmediatelyStartPlayback];
   MRSystemAppPlaybackQueueSetIsRequestingImmediatePlayback();
-  v6 = [(MPCAssistantPlaybackQueue *)self siriRecommendationID];
+  siriRecommendationID = [(MPCAssistantPlaybackQueue *)self siriRecommendationID];
   MRSystemAppPlaybackQueueSetSiriRecommendationIdentifier();
 
-  v7 = [(MPCAssistantPlaybackQueue *)self siriAssetInfo];
+  siriAssetInfo = [(MPCAssistantPlaybackQueue *)self siriAssetInfo];
   MRSystemAppPlaybackQueueSetSiriAssetInfo();
 
-  v8 = [(MPCAssistantPlaybackQueue *)self featureName];
+  featureName = [(MPCAssistantPlaybackQueue *)self featureName];
   MRSystemAppPlaybackQueueSetFeatureName();
 
-  v9 = [(MPCAssistantPlaybackQueue *)self siriWHAMetricsInfo];
+  siriWHAMetricsInfo = [(MPCAssistantPlaybackQueue *)self siriWHAMetricsInfo];
   MRSystemAppPlaybackQueueSetSiriWHAMetricsInfo();
 
   return v3;
@@ -51,31 +51,31 @@
   return v5;
 }
 
-- (MPCAssistantStoreTracklistPlaybackQueue)initWithContextID:(id)a3 storeItemIDs:(id)a4 collectionIdentifierSet:(id)a5
+- (MPCAssistantStoreTracklistPlaybackQueue)initWithContextID:(id)d storeItemIDs:(id)ds collectionIdentifierSet:(id)set
 {
-  v8 = a4;
-  v9 = a5;
+  dsCopy = ds;
+  setCopy = set;
   v14.receiver = self;
   v14.super_class = MPCAssistantStoreTracklistPlaybackQueue;
-  v10 = [(MPCAssistantPlaybackQueue *)&v14 initWithContextID:a3];
+  v10 = [(MPCAssistantPlaybackQueue *)&v14 initWithContextID:d];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [dsCopy copy];
     storeItemIDs = v10->_storeItemIDs;
     v10->_storeItemIDs = v11;
 
-    objc_storeStrong(&v10->_collectionIdentifierSet, a5);
+    objc_storeStrong(&v10->_collectionIdentifierSet, set);
   }
 
   return v10;
 }
 
-+ (id)storeTracklistQueueWithContextID:(id)a3 storeItemIDs:(id)a4 collectionIdentifierSet:(id)a5
++ (id)storeTracklistQueueWithContextID:(id)d storeItemIDs:(id)ds collectionIdentifierSet:(id)set
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[a1 alloc] initWithContextID:v10 storeItemIDs:v9 collectionIdentifierSet:v8];
+  setCopy = set;
+  dsCopy = ds;
+  dCopy = d;
+  v11 = [[self alloc] initWithContextID:dCopy storeItemIDs:dsCopy collectionIdentifierSet:setCopy];
 
   return v11;
 }

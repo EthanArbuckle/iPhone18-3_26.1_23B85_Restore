@@ -1,8 +1,8 @@
 @interface SFSafariViewControllerConfiguration
 - (SFSafariViewControllerConfiguration)init;
-- (SFSafariViewControllerConfiguration)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (SFSafariViewControllerConfiguration)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFSafariViewControllerConfiguration
@@ -24,9 +24,9 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   objc_storeStrong((v5 + 48), self->_activityButton);
   *(v5 + 13) = self->_barCollapsingEnabled;
   *(v5 + 12) = self->_entersReaderIfAvailable;
@@ -36,7 +36,7 @@
   objc_storeStrong((v5 + 24), self->_personaUniqueIdentifier);
   *(v5 + 16) = self->_redirectNotificationBehavior;
   *(v5 + 11) = self->_isBeingUsedForCellularServiceBootstrap;
-  v6 = [(UIEventAttribution *)self->_eventAttribution copyWithZone:a3];
+  v6 = [(UIEventAttribution *)self->_eventAttribution copyWithZone:zone];
   v7 = *(v5 + 56);
   *(v5 + 56) = v6;
 
@@ -45,37 +45,37 @@
   return v5;
 }
 
-- (SFSafariViewControllerConfiguration)initWithCoder:(id)a3
+- (SFSafariViewControllerConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v18.receiver = self;
   v18.super_class = SFSafariViewControllerConfiguration;
   v5 = [(SFSafariViewControllerConfiguration *)&v18 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"customActivityButton"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"customActivityButton"];
     activityButton = v5->_activityButton;
     v5->_activityButton = v6;
 
-    v5->_barCollapsingEnabled = [v4 decodeBoolForKey:@"barCollapsingEnabled"];
-    v5->_entersReaderIfAvailable = [v4 decodeBoolForKey:@"entersReaderIfAvailable"];
-    v5->_ephemeral = [v4 decodeBoolForKey:@"isEphemeral"];
-    v5->_jitEnabled = [v4 decodeBoolForKey:@"jitEnabled"];
-    v5->_performingAccountSecurityUpgrade = [v4 decodeBoolForKey:@"performingAccountSecurityUpgrade"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"personaUniqueIdentifier"];
+    v5->_barCollapsingEnabled = [coderCopy decodeBoolForKey:@"barCollapsingEnabled"];
+    v5->_entersReaderIfAvailable = [coderCopy decodeBoolForKey:@"entersReaderIfAvailable"];
+    v5->_ephemeral = [coderCopy decodeBoolForKey:@"isEphemeral"];
+    v5->_jitEnabled = [coderCopy decodeBoolForKey:@"jitEnabled"];
+    v5->_performingAccountSecurityUpgrade = [coderCopy decodeBoolForKey:@"performingAccountSecurityUpgrade"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"personaUniqueIdentifier"];
     personaUniqueIdentifier = v5->_personaUniqueIdentifier;
     v5->_personaUniqueIdentifier = v8;
 
-    v5->_redirectNotificationBehavior = [v4 decodeIntegerForKey:@"redirectNotificationBehavior"];
-    v5->_isBeingUsedForCellularServiceBootstrap = [v4 decodeBoolForKey:@"isBeingUsedForCellularServiceBootstrap"];
+    v5->_redirectNotificationBehavior = [coderCopy decodeIntegerForKey:@"redirectNotificationBehavior"];
+    v5->_isBeingUsedForCellularServiceBootstrap = [coderCopy decodeBoolForKey:@"isBeingUsedForCellularServiceBootstrap"];
     v10 = objc_alloc(MEMORY[0x1E69DC9F0]);
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"eventAttribution"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"eventAttribution"];
     v12 = [v10 initWithUISClickAttribution:v11];
     eventAttribution = v5->_eventAttribution;
     v5->_eventAttribution = v12;
 
-    v5->_storageModeForAuthenticationSession = [v4 decodeIntegerForKey:@"storageModeForAuthenticationSession"];
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"networkAttributionApplicationBundleIdentifier"];
+    v5->_storageModeForAuthenticationSession = [coderCopy decodeIntegerForKey:@"storageModeForAuthenticationSession"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"networkAttributionApplicationBundleIdentifier"];
     networkAttributionApplicationBundleIdentifier = v5->_networkAttributionApplicationBundleIdentifier;
     v5->_networkAttributionApplicationBundleIdentifier = v14;
 
@@ -85,24 +85,24 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   activityButton = self->_activityButton;
-  v6 = a3;
-  [v6 encodeObject:activityButton forKey:@"customActivityButton"];
-  [v6 encodeBool:self->_barCollapsingEnabled forKey:@"barCollapsingEnabled"];
-  [v6 encodeBool:self->_entersReaderIfAvailable forKey:@"entersReaderIfAvailable"];
-  [v6 encodeBool:self->_ephemeral forKey:@"isEphemeral"];
-  [v6 encodeBool:self->_jitEnabled forKey:@"jitEnabled"];
-  [v6 encodeBool:self->_performingAccountSecurityUpgrade forKey:@"performingAccountSecurityUpgrade"];
-  [v6 encodeObject:self->_personaUniqueIdentifier forKey:@"personaUniqueIdentifier"];
-  [v6 encodeInteger:self->_redirectNotificationBehavior forKey:@"redirectNotificationBehavior"];
-  [v6 encodeBool:self->_isBeingUsedForCellularServiceBootstrap forKey:@"isBeingUsedForCellularServiceBootstrap"];
-  v5 = [(UIEventAttribution *)self->_eventAttribution toUISClickAttribution];
-  [v6 encodeObject:v5 forKey:@"eventAttribution"];
+  coderCopy = coder;
+  [coderCopy encodeObject:activityButton forKey:@"customActivityButton"];
+  [coderCopy encodeBool:self->_barCollapsingEnabled forKey:@"barCollapsingEnabled"];
+  [coderCopy encodeBool:self->_entersReaderIfAvailable forKey:@"entersReaderIfAvailable"];
+  [coderCopy encodeBool:self->_ephemeral forKey:@"isEphemeral"];
+  [coderCopy encodeBool:self->_jitEnabled forKey:@"jitEnabled"];
+  [coderCopy encodeBool:self->_performingAccountSecurityUpgrade forKey:@"performingAccountSecurityUpgrade"];
+  [coderCopy encodeObject:self->_personaUniqueIdentifier forKey:@"personaUniqueIdentifier"];
+  [coderCopy encodeInteger:self->_redirectNotificationBehavior forKey:@"redirectNotificationBehavior"];
+  [coderCopy encodeBool:self->_isBeingUsedForCellularServiceBootstrap forKey:@"isBeingUsedForCellularServiceBootstrap"];
+  toUISClickAttribution = [(UIEventAttribution *)self->_eventAttribution toUISClickAttribution];
+  [coderCopy encodeObject:toUISClickAttribution forKey:@"eventAttribution"];
 
-  [v6 encodeInteger:self->_storageModeForAuthenticationSession forKey:@"storageModeForAuthenticationSession"];
-  [v6 encodeObject:self->_networkAttributionApplicationBundleIdentifier forKey:@"networkAttributionApplicationBundleIdentifier"];
+  [coderCopy encodeInteger:self->_storageModeForAuthenticationSession forKey:@"storageModeForAuthenticationSession"];
+  [coderCopy encodeObject:self->_networkAttributionApplicationBundleIdentifier forKey:@"networkAttributionApplicationBundleIdentifier"];
 }
 
 @end

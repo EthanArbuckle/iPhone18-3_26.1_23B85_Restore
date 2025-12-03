@@ -1,26 +1,26 @@
 @interface PKInstallmentPlanProgressCollectionViewCell
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKInstallmentPlanProgressCollectionViewCell)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKInstallmentPlanProgressCollectionViewCell)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setComplete:(BOOL)a3;
-- (void)setLeadingAmount:(id)a3;
-- (void)setLeadingTitle:(id)a3;
-- (void)setSubtitleText:(id)a3;
-- (void)setTrailingAmount:(id)a3;
-- (void)setTrailingTitle:(id)a3;
+- (void)setComplete:(BOOL)complete;
+- (void)setLeadingAmount:(id)amount;
+- (void)setLeadingTitle:(id)title;
+- (void)setSubtitleText:(id)text;
+- (void)setTrailingAmount:(id)amount;
+- (void)setTrailingTitle:(id)title;
 @end
 
 @implementation PKInstallmentPlanProgressCollectionViewCell
 
-- (PKInstallmentPlanProgressCollectionViewCell)initWithFrame:(CGRect)a3
+- (PKInstallmentPlanProgressCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v62.receiver = self;
   v62.super_class = PKInstallmentPlanProgressCollectionViewCell;
-  v3 = [(PKDashboardCollectionViewCell *)&v62 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PKDashboardCollectionViewCell *)&v62 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(PKInstallmentPlanProgressCollectionViewCell *)v3 contentView];
+    contentView = [(PKInstallmentPlanProgressCollectionViewCell *)v3 contentView];
     v6 = objc_alloc_init(MEMORY[0x1E69DCC10]);
     leadingTitleLabel = v4->_leadingTitleLabel;
     v4->_leadingTitleLabel = v6;
@@ -28,8 +28,8 @@
     [(UILabel *)v4->_leadingTitleLabel setNumberOfLines:1];
     [(UILabel *)v4->_leadingTitleLabel setAdjustsFontSizeToFitWidth:1];
     v8 = v4->_leadingTitleLabel;
-    v9 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [(UILabel *)v8 setTextColor:v9];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [(UILabel *)v8 setTextColor:secondaryLabelColor];
 
     v10 = v4->_leadingTitleLabel;
     v11 = *MEMORY[0x1E69DDD80];
@@ -39,7 +39,7 @@
     [(UILabel *)v10 setFont:v13];
 
     [(UILabel *)v4->_leadingTitleLabel setAccessibilityIdentifier:*MEMORY[0x1E69B9D20]];
-    [v5 addSubview:v4->_leadingTitleLabel];
+    [contentView addSubview:v4->_leadingTitleLabel];
     v14 = objc_alloc_init(MEMORY[0x1E69DCC10]);
     leadingAmountLabel = v4->_leadingAmountLabel;
     v4->_leadingAmountLabel = v14;
@@ -54,7 +54,7 @@
     [(UILabel *)v16 setFont:v19];
 
     [(UILabel *)v4->_leadingAmountLabel setAccessibilityIdentifier:*MEMORY[0x1E69B9CC8]];
-    [v5 addSubview:v4->_leadingAmountLabel];
+    [contentView addSubview:v4->_leadingAmountLabel];
     v20 = objc_alloc_init(MEMORY[0x1E69DCC10]);
     trailingTitleLabel = v4->_trailingTitleLabel;
     v4->_trailingTitleLabel = v20;
@@ -62,15 +62,15 @@
     [(UILabel *)v4->_trailingTitleLabel setNumberOfLines:1];
     [(UILabel *)v4->_trailingTitleLabel setAdjustsFontSizeToFitWidth:1];
     v22 = v4->_trailingTitleLabel;
-    v23 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [(UILabel *)v22 setTextColor:v23];
+    secondaryLabelColor2 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [(UILabel *)v22 setTextColor:secondaryLabelColor2];
 
     v24 = v4->_trailingTitleLabel;
     v25 = PKFontForDefaultDesign(v11, v12);
     [(UILabel *)v24 setFont:v25];
 
     [(UILabel *)v4->_trailingTitleLabel setAccessibilityIdentifier:*MEMORY[0x1E69B9BF0]];
-    [v5 addSubview:v4->_trailingTitleLabel];
+    [contentView addSubview:v4->_trailingTitleLabel];
     v26 = objc_alloc_init(MEMORY[0x1E69DCC10]);
     trailingAmountLabel = v4->_trailingAmountLabel;
     v4->_trailingAmountLabel = v26;
@@ -82,7 +82,7 @@
     [(UILabel *)v28 setFont:v29];
 
     [(UILabel *)v4->_trailingAmountLabel setAccessibilityIdentifier:*MEMORY[0x1E69B9BE8]];
-    [v5 addSubview:v4->_trailingAmountLabel];
+    [contentView addSubview:v4->_trailingAmountLabel];
     v30 = [PKProgressBar alloc];
     v31 = *MEMORY[0x1E695F058];
     v32 = *(MEMORY[0x1E695F058] + 8);
@@ -100,7 +100,7 @@
     v40 = [MEMORY[0x1E69DC888] colorWithRed:0.643137255 green:0.901960784 blue:0.42745098 alpha:1.0];
     [(PKProgressBar *)v39 setGradientEndColor:v40];
 
-    [v5 addSubview:v4->_progressBar];
+    [contentView addSubview:v4->_progressBar];
     v41 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"checkmark.circle.fill"];
     v42 = [v41 imageWithRenderingMode:2];
 
@@ -109,11 +109,11 @@
     v4->_completeCheckmark = v43;
 
     v45 = v4->_completeCheckmark;
-    v46 = [MEMORY[0x1E69DC888] systemGreenColor];
-    [(UIImageView *)v45 setTintColor:v46];
+    systemGreenColor = [MEMORY[0x1E69DC888] systemGreenColor];
+    [(UIImageView *)v45 setTintColor:systemGreenColor];
 
     [(UIImageView *)v4->_completeCheckmark setHidden:1];
-    [v5 addSubview:v4->_completeCheckmark];
+    [contentView addSubview:v4->_completeCheckmark];
     v47 = [objc_alloc(MEMORY[0x1E69DCC10]) initWithFrame:{v31, v32, v33, v34}];
     completeLabel = v4->_completeLabel;
     v4->_completeLabel = v47;
@@ -129,14 +129,14 @@
     [(UILabel *)v4->_completeLabel setNumberOfLines:1];
     [(UILabel *)v4->_completeLabel setHidden:1];
     [(UILabel *)v4->_completeLabel setAccessibilityIdentifier:*MEMORY[0x1E69B9610]];
-    [v5 addSubview:v4->_completeLabel];
+    [contentView addSubview:v4->_completeLabel];
     v53 = objc_alloc_init(MEMORY[0x1E69DCC10]);
     detailLabel = v4->_detailLabel;
     v4->_detailLabel = v53;
 
     v55 = v4->_detailLabel;
-    v56 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [(UILabel *)v55 setTextColor:v56];
+    secondaryLabelColor3 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [(UILabel *)v55 setTextColor:secondaryLabelColor3];
 
     v57 = v4->_detailLabel;
     v58 = PKFontForDefaultDesign(v61, v12);
@@ -144,19 +144,19 @@
 
     [(UILabel *)v4->_detailLabel setNumberOfLines:0];
     [(UILabel *)v4->_detailLabel setAccessibilityIdentifier:*MEMORY[0x1E69B96F8]];
-    [v5 addSubview:v4->_detailLabel];
+    [contentView addSubview:v4->_detailLabel];
     [(PKInstallmentPlanProgressCollectionViewCell *)v4 setAccessibilityIdentifier:*MEMORY[0x1E69B9888]];
   }
 
   return v4;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
+  width = fits.width;
   if (self->_leadingTitle)
   {
-    v5 = [(UILabel *)self->_leadingTitleLabel font:a3.width];
+    v5 = [(UILabel *)self->_leadingTitleLabel font:fits.width];
     [v5 _bodyLeading];
     PKFloatCeilToPixel(v6, v7);
     v9 = v8;
@@ -164,15 +164,15 @@
 
   else
   {
-    a3.width = 0.0;
-    PKFloatCeilToPixel(a3, *&a3.height);
+    fits.width = 0.0;
+    PKFloatCeilToPixel(fits, *&fits.height);
     v9 = v10.n128_f64[0];
   }
 
   if (self->_leadingAmount)
   {
-    v12 = [(UILabel *)self->_leadingAmountLabel font];
-    [v12 _bodyLeading];
+    font = [(UILabel *)self->_leadingAmountLabel font];
+    [font _bodyLeading];
     PKFloatCeilToPixel(v13, v14);
     v16 = v15;
   }
@@ -186,8 +186,8 @@
 
   if (self->_complete)
   {
-    v19 = [(UILabel *)self->_completeLabel font];
-    [v19 _bodyLeading];
+    font2 = [(UILabel *)self->_completeLabel font];
+    [font2 _bodyLeading];
     PKFloatCeilToPixel(v20, v21);
     v23 = v22;
   }
@@ -199,8 +199,8 @@
     v23 = v24;
   }
 
-  v25 = [(UILabel *)self->_detailLabel text];
-  if (v25)
+  text = [(UILabel *)self->_detailLabel text];
+  if (text)
   {
     [(UILabel *)self->_detailLabel pkui_sizeThatFits:1 forceWordWrap:width + -32.0, 1.79769313e308];
     v27 = v26;
@@ -223,14 +223,14 @@
   v51.receiver = self;
   v51.super_class = PKInstallmentPlanProgressCollectionViewCell;
   [(PKDashboardCollectionViewCell *)&v51 layoutSubviews];
-  v3 = [(PKInstallmentPlanProgressCollectionViewCell *)self contentView];
-  [v3 bounds];
+  contentView = [(PKInstallmentPlanProgressCollectionViewCell *)self contentView];
+  [contentView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
 
-  v12 = [(PKInstallmentPlanProgressCollectionViewCell *)self _shouldReverseLayoutDirection];
+  _shouldReverseLayoutDirection = [(PKInstallmentPlanProgressCollectionViewCell *)self _shouldReverseLayoutDirection];
   v13 = v5 + 16.0;
   v14 = v7 + 16.0;
   v15 = v9 + -32.0;
@@ -240,7 +240,7 @@
   remainder.size.width = v15;
   remainder.size.height = v16;
   memset(&v49, 0, sizeof(v49));
-  if (v12)
+  if (_shouldReverseLayoutDirection)
   {
     v17 = CGRectMaxXEdge;
   }
@@ -250,7 +250,7 @@
     v17 = CGRectMinXEdge;
   }
 
-  if (v12)
+  if (_shouldReverseLayoutDirection)
   {
     v18 = CGRectMinXEdge;
   }
@@ -304,8 +304,8 @@
   CGRectDivide(v54, &v47, &remainder, v25 + 10.0, CGRectMinYEdge);
   if (self->_complete)
   {
-    v35 = [(UILabel *)self->_completeLabel font];
-    [v35 _bodyLeading];
+    font = [(UILabel *)self->_completeLabel font];
+    [font _bodyLeading];
     v37 = v36;
 
     CGRectDivide(remainder, &v47, &remainder, v37, CGRectMinYEdge);
@@ -332,9 +332,9 @@
   }
 
   [completeLabel setFrame:{x, y, width, height}];
-  v43 = [(UILabel *)self->_detailLabel text];
+  text = [(UILabel *)self->_detailLabel text];
 
-  if (v43)
+  if (text)
   {
     p_remainder = &remainder;
     CGRectDivide(remainder, &v47, &remainder, 10.0, CGRectMinYEdge);
@@ -348,11 +348,11 @@
   [(UILabel *)self->_detailLabel setFrame:p_remainder->origin.x, p_remainder->origin.y, p_remainder->size.width, p_remainder->size.height];
 }
 
-- (void)setLeadingTitle:(id)a3
+- (void)setLeadingTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   v5 = self->_leadingTitle;
-  v6 = v4;
+  v6 = titleCopy;
   v10 = v6;
   if (v5 == v6)
   {
@@ -382,25 +382,25 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)setLeadingAmount:(id)a3
+- (void)setLeadingAmount:(id)amount
 {
-  v7 = a3;
+  amountCopy = amount;
   if ((PKEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_leadingAmount, a3);
+    objc_storeStrong(&self->_leadingAmount, amount);
     leadingAmountLabel = self->_leadingAmountLabel;
-    v6 = [(PKCurrencyAmount *)self->_leadingAmount formattedStringValue];
-    [(UILabel *)leadingAmountLabel setText:v6];
+    formattedStringValue = [(PKCurrencyAmount *)self->_leadingAmount formattedStringValue];
+    [(UILabel *)leadingAmountLabel setText:formattedStringValue];
 
     [(PKInstallmentPlanProgressCollectionViewCell *)self setNeedsLayout];
   }
 }
 
-- (void)setTrailingTitle:(id)a3
+- (void)setTrailingTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   v5 = self->_trailingTitle;
-  v6 = v4;
+  v6 = titleCopy;
   v10 = v6;
   if (v5 == v6)
   {
@@ -430,25 +430,25 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)setTrailingAmount:(id)a3
+- (void)setTrailingAmount:(id)amount
 {
-  v7 = a3;
+  amountCopy = amount;
   if ((PKEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_trailingAmount, a3);
+    objc_storeStrong(&self->_trailingAmount, amount);
     trailingAmountLabel = self->_trailingAmountLabel;
-    v6 = [(PKCurrencyAmount *)self->_trailingAmount formattedStringValue];
-    [(UILabel *)trailingAmountLabel setText:v6];
+    formattedStringValue = [(PKCurrencyAmount *)self->_trailingAmount formattedStringValue];
+    [(UILabel *)trailingAmountLabel setText:formattedStringValue];
 
     [(PKInstallmentPlanProgressCollectionViewCell *)self setNeedsLayout];
   }
 }
 
-- (void)setSubtitleText:(id)a3
+- (void)setSubtitleText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   v5 = self->_subtitleText;
-  v6 = v4;
+  v6 = textCopy;
   v10 = v6;
   if (v5 == v6)
   {
@@ -478,11 +478,11 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)setComplete:(BOOL)a3
+- (void)setComplete:(BOOL)complete
 {
-  if (self->_complete == !a3)
+  if (self->_complete == !complete)
   {
-    self->_complete = a3;
+    self->_complete = complete;
     [(UIImageView *)self->_completeCheckmark setHidden:?];
     [(UILabel *)self->_completeLabel setHidden:!self->_complete];
     [(PKProgressBar *)self->_progressBar setHidden:self->_complete];

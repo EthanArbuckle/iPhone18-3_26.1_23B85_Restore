@@ -1,17 +1,17 @@
 @interface CKQuickLookThumbnailMediaObject
 - (BOOL)shouldSuppressPreview;
-- (id)attachmentSummary:(unint64_t)a3;
-- (id)diskCachedThumbnailForOrientation:(char)a3;
-- (id)previewForWidth:(double)a3 orientation:(char)a4;
+- (id)attachmentSummary:(unint64_t)summary;
+- (id)diskCachedThumbnailForOrientation:(char)orientation;
+- (id)previewForWidth:(double)width orientation:(char)orientation;
 @end
 
 @implementation CKQuickLookThumbnailMediaObject
 
 - (BOOL)shouldSuppressPreview
 {
-  v3 = [(CKMediaObject *)self messageContext];
-  v4 = [v3 chatContext];
-  v5 = [v4 serviceVariant];
+  messageContext = [(CKMediaObject *)self messageContext];
+  chatContext = [messageContext chatContext];
+  serviceVariant = [chatContext serviceVariant];
 
   v10.receiver = self;
   v10.super_class = CKQuickLookThumbnailMediaObject;
@@ -20,11 +20,11 @@
     return 1;
   }
 
-  v7 = [(CKMediaObject *)self messageContext];
-  v8 = [v7 isSenderUnauthenticated];
-  if (v5 == 1)
+  messageContext2 = [(CKMediaObject *)self messageContext];
+  isSenderUnauthenticated = [messageContext2 isSenderUnauthenticated];
+  if (serviceVariant == 1)
   {
-    v6 = v8;
+    v6 = isSenderUnauthenticated;
   }
 
   else
@@ -35,44 +35,44 @@
   return v6;
 }
 
-- (id)attachmentSummary:(unint64_t)a3
+- (id)attachmentSummary:(unint64_t)summary
 {
   v4 = MEMORY[0x1E696AEC0];
   v5 = IMSharedUtilitiesFrameworkBundle();
   v6 = [v5 localizedStringForKey:@"%lu AR Models" value:&stru_1F04268F8 table:@"IMSharedUtilities"];
-  v7 = [v4 localizedStringWithFormat:v6, a3];
+  summary = [v4 localizedStringWithFormat:v6, summary];
 
-  return v7;
+  return summary;
 }
 
-- (id)previewForWidth:(double)a3 orientation:(char)a4
+- (id)previewForWidth:(double)width orientation:(char)orientation
 {
-  v4 = a4;
+  orientationCopy = orientation;
   v40 = *MEMORY[0x1E69E9840];
-  v6 = [(CKMediaObject *)self previewCacheKeyWithOrientation:a3];
+  v6 = [(CKMediaObject *)self previewCacheKeyWithOrientation:width];
   v32 = 0;
   v33 = &v32;
   v34 = 0x3032000000;
   v35 = __Block_byref_object_copy__53;
   v36 = __Block_byref_object_dispose__53;
   v37 = 0;
-  v7 = [(CKMediaObject *)self transfer];
-  if (-[CKQuickLookThumbnailMediaObject isPreviewable](self, "isPreviewable") && (([v7 isFileDataReady] & 1) != 0 || (objc_msgSend(v7, "isRestoring") & 1) != 0))
+  transfer = [(CKMediaObject *)self transfer];
+  if (-[CKQuickLookThumbnailMediaObject isPreviewable](self, "isPreviewable") && (([transfer isFileDataReady] & 1) != 0 || (objc_msgSend(transfer, "isRestoring") & 1) != 0))
   {
-    v8 = [(CKMediaObject *)self previewDispatchCache];
-    v9 = [v8 cachedPreviewForKey:v6];
+    previewDispatchCache = [(CKMediaObject *)self previewDispatchCache];
+    v9 = [previewDispatchCache cachedPreviewForKey:v6];
     v10 = v33[5];
     v33[5] = v9;
 
     v11 = v33[5];
     if (!v11)
     {
-      v12 = [(CKQuickLookThumbnailMediaObject *)self diskCachedThumbnailForOrientation:v4];
+      v12 = [(CKQuickLookThumbnailMediaObject *)self diskCachedThumbnailForOrientation:orientationCopy];
       v13 = v33[5];
       v33[5] = v12;
 
-      v14 = [MEMORY[0x1E69A8168] sharedInstance];
-      [v14 trackEvent:*MEMORY[0x1E69A7578]];
+      mEMORY[0x1E69A8168] = [MEMORY[0x1E69A8168] sharedInstance];
+      [mEMORY[0x1E69A8168] trackEvent:*MEMORY[0x1E69A7578]];
 
       if (!v33[5])
       {
@@ -81,7 +81,7 @@
         v21 = v20;
         v23 = v22;
 
-        if (([v8 isGeneratingPreviewForKey:v6] & 1) == 0)
+        if (([previewDispatchCache isGeneratingPreviewForKey:v6] & 1) == 0)
         {
           v31[0] = MEMORY[0x1E69E9820];
           v31[1] = 3221225472;
@@ -96,10 +96,10 @@
           v25[2] = __63__CKQuickLookThumbnailMediaObject_previewForWidth_orientation___block_invoke_66;
           v25[3] = &unk_1E72F5B00;
           v29 = &v32;
-          v26 = v8;
+          v26 = previewDispatchCache;
           v27 = v6;
-          v28 = self;
-          v30 = v4;
+          selfCopy = self;
+          v30 = orientationCopy;
           [v26 enqueueGenerationBlock:v31 completion:v25 withPriority:-1 forKey:v27];
         }
 
@@ -114,18 +114,18 @@
         if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
         {
           *buf = 138412290;
-          v39 = self;
+          selfCopy4 = self;
           _os_log_impl(&dword_19020E000, v15, OS_LOG_TYPE_DEBUG, "%@ quicklook preview read from disk.", buf, 0xCu);
         }
       }
 
       if (os_log_shim_legacy_logging_enabled() && _CKShouldLog())
       {
-        v24 = self;
+        selfCopy3 = self;
         _CKLog();
       }
 
-      [v8 setCachedPreview:v33[5] key:{v6, v24}];
+      [previewDispatchCache setCachedPreview:v33[5] key:{v6, selfCopy3}];
       v11 = v33[5];
     }
 
@@ -142,7 +142,7 @@ LABEL_15:
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      v39 = self;
+      selfCopy4 = self;
       _os_log_impl(&dword_19020E000, v17, OS_LOG_TYPE_DEBUG, "%@ isn't previewable.", buf, 0xCu);
     }
   }
@@ -301,11 +301,11 @@ void __63__CKQuickLookThumbnailMediaObject_previewForWidth_orientation___block_i
   [v5 savePreview:*(*(*(a1 + 40) + 8) + 40) toURL:v7 forOrientation:*(a1 + 48)];
 }
 
-- (id)diskCachedThumbnailForOrientation:(char)a3
+- (id)diskCachedThumbnailForOrientation:(char)orientation
 {
-  v3 = a3;
-  v5 = [(CKMediaObject *)self previewFilenameExtension];
-  v6 = [(CKMediaObject *)self previewCachesFileURLWithOrientation:v3 extension:v5 generateIntermediaries:0];
+  orientationCopy = orientation;
+  previewFilenameExtension = [(CKMediaObject *)self previewFilenameExtension];
+  v6 = [(CKMediaObject *)self previewCachesFileURLWithOrientation:orientationCopy extension:previewFilenameExtension generateIntermediaries:0];
 
   if (v6 && (v7 = CGImageSourceCreateWithURL(v6, 0)) != 0)
   {
@@ -315,8 +315,8 @@ void __63__CKQuickLookThumbnailMediaObject_previewForWidth_orientation___block_i
     {
       v10 = ImageAtIndex;
       v11 = MEMORY[0x1E69DCAB8];
-      v12 = [MEMORY[0x1E69DCEB0] mainScreen];
-      [v12 scale];
+      mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+      [mainScreen scale];
       v13 = [v11 imageWithCGImage:v10 scale:0 orientation:?];
 
       CGImageRelease(v10);

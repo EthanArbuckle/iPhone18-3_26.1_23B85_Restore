@@ -1,8 +1,8 @@
 @interface BugSession
 - (_TtC16enhancedloggingd10BugSession)init;
-- (void)bugSession:(id)a3 didFinishUploadingWithError:(id)a4;
-- (void)compressionProgress:(unint64_t)a3 total:(unint64_t)a4 session:(id)a5;
-- (void)uploadProgress:(unint64_t)a3 total:(int64_t)a4 session:(id)a5;
+- (void)bugSession:(id)session didFinishUploadingWithError:(id)error;
+- (void)compressionProgress:(unint64_t)progress total:(unint64_t)total session:(id)session;
+- (void)uploadProgress:(unint64_t)progress total:(int64_t)total session:(id)session;
 @end
 
 @implementation BugSession
@@ -14,26 +14,26 @@
   return result;
 }
 
-- (void)compressionProgress:(unint64_t)a3 total:(unint64_t)a4 session:(id)a5
+- (void)compressionProgress:(unint64_t)progress total:(unint64_t)total session:(id)session
 {
-  v8 = a5;
-  v9 = self;
-  sub_100034C24(a3, a4);
+  sessionCopy = session;
+  selfCopy = self;
+  sub_100034C24(progress, total);
 }
 
-- (void)uploadProgress:(unint64_t)a3 total:(int64_t)a4 session:(id)a5
+- (void)uploadProgress:(unint64_t)progress total:(int64_t)total session:(id)session
 {
-  v8 = a5;
-  v9 = self;
-  sub_100031CE8(a3, a4, v8);
+  sessionCopy = session;
+  selfCopy = self;
+  sub_100031CE8(progress, total, sessionCopy);
 }
 
-- (void)bugSession:(id)a3 didFinishUploadingWithError:(id)a4
+- (void)bugSession:(id)session didFinishUploadingWithError:(id)error
 {
-  v6 = a3;
-  v7 = self;
-  v8 = a4;
-  sub_100034D20(a4);
+  sessionCopy = session;
+  selfCopy = self;
+  errorCopy = error;
+  sub_100034D20(error);
 }
 
 @end

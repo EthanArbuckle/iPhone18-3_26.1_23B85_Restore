@@ -1,33 +1,33 @@
 @interface _ASWebsiteNameProvider
-+ (BOOL)_candidateWebsiteNameHasObviousFlaw:(id)a3;
-+ (id)_bestTitleFromCandidateTitles:(id)a3;
-+ (id)_candidateWebsiteNameForLinkMetadata:(id)a3;
-+ (id)_siteNameFromOpenGraphSiteName:(id)a3 withURL:(id)a4;
-+ (id)_siteNameFromTitle:(id)a3 withURL:(id)a4;
-+ (id)_siteNameFromTitleLikeString:(id)a3 withURL:(id)a4 useHostAndTitlePrefixMatch:(BOOL)a5;
-+ (id)_trimErrantLeadingAndTrailingCharacters:(id)a3;
++ (BOOL)_candidateWebsiteNameHasObviousFlaw:(id)flaw;
++ (id)_bestTitleFromCandidateTitles:(id)titles;
++ (id)_candidateWebsiteNameForLinkMetadata:(id)metadata;
++ (id)_siteNameFromOpenGraphSiteName:(id)name withURL:(id)l;
++ (id)_siteNameFromTitle:(id)title withURL:(id)l;
++ (id)_siteNameFromTitleLikeString:(id)string withURL:(id)l useHostAndTitlePrefixMatch:(BOOL)match;
++ (id)_trimErrantLeadingAndTrailingCharacters:(id)characters;
 + (id)_undesirableCharactersCharacterSet;
-+ (id)siteNameForDomain:(id)a3 fromBusinessName:(id)a4 title:(id)a5 openGraphSiteName:(id)a6 applicationName:(id)a7;
-+ (id)websiteNameForLinkMetadata:(id)a3;
++ (id)siteNameForDomain:(id)domain fromBusinessName:(id)name title:(id)title openGraphSiteName:(id)siteName applicationName:(id)applicationName;
++ (id)websiteNameForLinkMetadata:(id)metadata;
 + (uint64_t)_undesirableCharactersCharacterSet;
-+ (void)fetchWebsiteNameForDomain:(id)a3 completionHandler:(id)a4;
-- (BOOL)_canRefreshDataForDateLastRefreshed:(id)a3;
++ (void)fetchWebsiteNameForDomain:(id)domain completionHandler:(id)handler;
+- (BOOL)_canRefreshDataForDateLastRefreshed:(id)refreshed;
 - (BOOL)_openDatabaseIfNeeded;
-- (id)_initWithShouldLoadQuirksList:(BOOL)a3;
-- (id)knownWebsiteNameForDomain:(id)a3;
-- (id)test_initWithWebsiteNameDictionary:(id)a3;
-- (void)_cacheDatabaseBackedWebsiteName:(id)a3 forDomain:(id)a4;
-- (void)_cacheFetchedAndKeychainBackedWebsiteName:(id)a3 forDomain:(id)a4 dateLastRefreshed:(id)a5;
-- (void)_fetchDataForDomainIfNeeded:(id)a3 metadataEntry:(id)a4;
-- (void)_processMetadataEntryFetchedFromKeychain:(id)a3 forDomain:(id)a4 allowRefreshingDataFromNetwork:(BOOL)a5;
+- (id)_initWithShouldLoadQuirksList:(BOOL)list;
+- (id)knownWebsiteNameForDomain:(id)domain;
+- (id)test_initWithWebsiteNameDictionary:(id)dictionary;
+- (void)_cacheDatabaseBackedWebsiteName:(id)name forDomain:(id)domain;
+- (void)_cacheFetchedAndKeychainBackedWebsiteName:(id)name forDomain:(id)domain dateLastRefreshed:(id)refreshed;
+- (void)_fetchDataForDomainIfNeeded:(id)needed metadataEntry:(id)entry;
+- (void)_processMetadataEntryFetchedFromKeychain:(id)keychain forDomain:(id)domain allowRefreshingDataFromNetwork:(BOOL)network;
 - (void)_suspendOrResumeWebsiteFetchingOperationQueue;
 - (void)beginLoadingBuiltInAndRemotelyUpdatableWebsiteNames;
 - (void)dealloc;
-- (void)debug_fetchWebsiteNamesForDomains:(id)a3 completionHandler:(id)a4;
-- (void)fetchOperation:(id)a3 finishedWithResult:(id)a4 completion:(id)a5;
+- (void)debug_fetchWebsiteNamesForDomains:(id)domains completionHandler:(id)handler;
+- (void)fetchOperation:(id)operation finishedWithResult:(id)result completion:(id)completion;
 - (void)prewarm;
-- (void)setIsForTesting:(BOOL)a3;
-- (void)setWebsiteNameConsumer:(id)a3 completion:(id)a4;
+- (void)setIsForTesting:(BOOL)testing;
+- (void)setWebsiteNameConsumer:(id)consumer completion:(id)completion;
 - (void)test_waitUntilBuiltInAndRemotelyUpdatableWebsiteNamesAreLoaded;
 @end
 
@@ -38,12 +38,12 @@
   v12 = *MEMORY[0x1E69E9840];
   if (!self->_isForTesting)
   {
-    v3 = [(WBSPrivacyProxyAvailabilityManager *)self->_availabilityManager shouldFetchPasswordManagerWebsiteDataUsingPrivacyProxy];
+    shouldFetchPasswordManagerWebsiteDataUsingPrivacyProxy = [(WBSPrivacyProxyAvailabilityManager *)self->_availabilityManager shouldFetchPasswordManagerWebsiteDataUsingPrivacyProxy];
     v4 = WBS_LOG_CHANNEL_PREFIXWebsiteNameProvider();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
       v10 = 67109120;
-      v11 = v3;
+      v11 = shouldFetchPasswordManagerWebsiteDataUsingPrivacyProxy;
       _os_log_impl(&dword_1B1C8D000, v4, OS_LOG_TYPE_INFO, "_ASWebsiteNameProvider shouldFetchPasswordManagerWebsiteDataUsingPrivacyProxy: %d", &v10, 8u);
     }
 
@@ -56,7 +56,7 @@
       _os_log_impl(&dword_1B1C8D000, v6, OS_LOG_TYPE_INFO, "_ASWebsiteNameProvider consumerExists: %d", &v10, 8u);
     }
 
-    v7 = (websiteNameConsumer != 0) & v3;
+    v7 = (websiteNameConsumer != 0) & shouldFetchPasswordManagerWebsiteDataUsingPrivacyProxy;
     v8 = WBS_LOG_CHANNEL_PREFIXWebsiteNameProvider();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
@@ -93,19 +93,19 @@
   [(WBSPasswordManagerWebsiteMetadataStore *)websiteMetadataStore allMetadataWithCompletionHandler:v3];
 }
 
-- (id)test_initWithWebsiteNameDictionary:(id)a3
+- (id)test_initWithWebsiteNameDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = [(_ASWebsiteNameProvider *)self _initWithShouldLoadQuirksList:0];
   v6 = v5[2];
-  v5[2] = v4;
+  v5[2] = dictionaryCopy;
 
   return v5;
 }
 
-- (id)_initWithShouldLoadQuirksList:(BOOL)a3
+- (id)_initWithShouldLoadQuirksList:(BOOL)list
 {
-  v3 = a3;
+  listCopy = list;
   v46.receiver = self;
   v46.super_class = _ASWebsiteNameProvider;
   v4 = [(_ASWebsiteNameProvider *)&v46 init];
@@ -114,13 +114,13 @@
     goto LABEL_16;
   }
 
-  if (v3)
+  if (listCopy)
   {
     v5 = objc_alloc(MEMORY[0x1E69C89E0]);
-    v6 = [MEMORY[0x1E696AC08] defaultManager];
-    v7 = [v6 safari_autoFillQuirksDownloadDirectoryURL];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    safari_autoFillQuirksDownloadDirectoryURL = [defaultManager safari_autoFillQuirksDownloadDirectoryURL];
     v8 = objc_opt_class();
-    v9 = [v5 initWithDataFormat:1 builtInListURL:0 downloadsDirectoryURL:v7 resourceName:@"WebsiteNamesForPasswordManager" resourceVersion:@"1" updateDateDefaultsKey:@"WebsiteNameProviderLastUpdateTime" updateInterval:86400.0 snapshotClass:v8 snapshotTransformerClass:objc_opt_class()];
+    v9 = [v5 initWithDataFormat:1 builtInListURL:0 downloadsDirectoryURL:safari_autoFillQuirksDownloadDirectoryURL resourceName:@"WebsiteNamesForPasswordManager" resourceVersion:@"1" updateDateDefaultsKey:@"WebsiteNameProviderLastUpdateTime" updateInterval:86400.0 snapshotClass:v8 snapshotTransformerClass:objc_opt_class()];
     remotelyUpdatableDataController = v4->_remotelyUpdatableDataController;
     v4->_remotelyUpdatableDataController = v9;
 
@@ -208,9 +208,9 @@ LABEL_16:
 
   v27 = v26;
   _Block_object_dispose(&v52, 8);
-  v28 = [v26 sharedManager];
+  sharedManager = [v26 sharedManager];
   availabilityManager = v4->_availabilityManager;
-  v4->_availabilityManager = v28;
+  v4->_availabilityManager = sharedManager;
 
   v52 = 0;
   v53 = &v52;
@@ -237,16 +237,16 @@ LABEL_16:
     v33 = *v30;
     if (v33)
     {
-      v34 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v34 addObserver:v4 selector:sel__privacyProxyDidChange_ name:v33 object:v4->_availabilityManager];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter addObserver:v4 selector:sel__privacyProxyDidChange_ name:v33 object:v4->_availabilityManager];
     }
 
     goto LABEL_15;
   }
 
-  v40 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v41 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSNotificationName getWBSPrivacyProxyChangeNotification()"];
-  [v40 handleFailureInFunction:v41 file:@"_ASSafariSharedUISoftLinking.h" lineNumber:24 description:{@"%s", dlerror()}];
+  [currentHandler handleFailureInFunction:v41 file:@"_ASSafariSharedUISoftLinking.h" lineNumber:24 description:{@"%s", dlerror()}];
 
   __break(1u);
   return result;
@@ -281,17 +281,17 @@ LABEL_16:
   dispatch_sync(databaseQueue, &__block_literal_global_102);
 }
 
-- (void)debug_fetchWebsiteNamesForDomains:(id)a3 completionHandler:(id)a4
+- (void)debug_fetchWebsiteNamesForDomains:(id)domains completionHandler:(id)handler
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  domainsCopy = domains;
+  handlerCopy = handler;
   [(NSOperationQueue *)self->_websiteFetchingQueue setSuspended:0];
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v8 = v6;
+  v8 = domainsCopy;
   v9 = [v8 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v9)
   {
@@ -326,7 +326,7 @@ LABEL_16:
   v16[2] = __78___ASWebsiteNameProvider_debug_fetchWebsiteNamesForDomains_completionHandler___block_invoke;
   v16[3] = &unk_1E7AF81D0;
   objc_copyWeak(&v18, &location);
-  v14 = v7;
+  v14 = handlerCopy;
   v17 = v14;
   [(NSOperationQueue *)websiteFetchingQueue addBarrierBlock:v16];
 
@@ -336,12 +336,12 @@ LABEL_16:
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setIsForTesting:(BOOL)a3
+- (void)setIsForTesting:(BOOL)testing
 {
-  if (self->_isForTesting != a3)
+  if (self->_isForTesting != testing)
   {
-    self->_isForTesting = a3;
-    if (a3)
+    self->_isForTesting = testing;
+    if (testing)
     {
       [(NSOperationQueue *)self->_websiteFetchingQueue setSuspended:0];
     }
@@ -366,14 +366,14 @@ LABEL_16:
   return v4;
 }
 
-+ (id)_bestTitleFromCandidateTitles:(id)a3
++ (id)_bestTitleFromCandidateTitles:(id)titles
 {
-  v4 = a3;
+  titlesCopy = titles;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __56___ASWebsiteNameProvider__bestTitleFromCandidateTitles___block_invoke;
   aBlock[3] = &__block_descriptor_40_e18_q16__0__NSString_8l;
-  aBlock[4] = a1;
+  aBlock[4] = self;
   v5 = _Block_copy(aBlock);
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
@@ -381,57 +381,57 @@ LABEL_16:
   v9[3] = &unk_1E7AF8238;
   v10 = v5;
   v6 = v5;
-  v7 = [v4 safari_maximumUsingComparator:v9];
+  v7 = [titlesCopy safari_maximumUsingComparator:v9];
 
   return v7;
 }
 
-+ (id)siteNameForDomain:(id)a3 fromBusinessName:(id)a4 title:(id)a5 openGraphSiteName:(id)a6 applicationName:(id)a7
++ (id)siteNameForDomain:(id)domain fromBusinessName:(id)name title:(id)title openGraphSiteName:(id)siteName applicationName:(id)applicationName
 {
-  v12 = a4;
-  v29 = a5;
-  v13 = a6;
-  v14 = a7;
+  nameCopy = name;
+  titleCopy = title;
+  siteNameCopy = siteName;
+  applicationNameCopy = applicationName;
   v15 = MEMORY[0x1E695DFF8];
-  v28 = v12;
-  v16 = [@"https://" stringByAppendingString:a3];
+  v28 = nameCopy;
+  v16 = [@"https://" stringByAppendingString:domain];
   v17 = [v15 URLWithString:v16];
 
   v18 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v19 = [a1 _siteNameFromTitle:v12 withURL:v17];
-  if (([a1 _candidateWebsiteNameHasObviousFlaw:v19] & 1) == 0)
+  v19 = [self _siteNameFromTitle:nameCopy withURL:v17];
+  if (([self _candidateWebsiteNameHasObviousFlaw:v19] & 1) == 0)
   {
-    v20 = [a1 _trimErrantLeadingAndTrailingCharacters:v19];
+    v20 = [self _trimErrantLeadingAndTrailingCharacters:v19];
     [v18 addObject:v20];
   }
 
   v21 = objc_alloc_init(MEMORY[0x1E696ECA0]);
   [v21 setOriginalURL:v17];
-  [v21 setTitle:v29];
-  [v21 setSiteName:v13];
-  v22 = [a1 _candidateWebsiteNameForLinkMetadata:v21];
-  if (([a1 _candidateWebsiteNameHasObviousFlaw:v22] & 1) == 0)
+  [v21 setTitle:titleCopy];
+  [v21 setSiteName:siteNameCopy];
+  v22 = [self _candidateWebsiteNameForLinkMetadata:v21];
+  if (([self _candidateWebsiteNameHasObviousFlaw:v22] & 1) == 0)
   {
-    v23 = [a1 _trimErrantLeadingAndTrailingCharacters:v22];
+    v23 = [self _trimErrantLeadingAndTrailingCharacters:v22];
     [v18 addObject:v23];
   }
 
-  v24 = [a1 _siteNameFromTitle:v14 withURL:v17];
-  if (([a1 _candidateWebsiteNameHasObviousFlaw:v24] & 1) == 0)
+  v24 = [self _siteNameFromTitle:applicationNameCopy withURL:v17];
+  if (([self _candidateWebsiteNameHasObviousFlaw:v24] & 1) == 0)
   {
-    v25 = [a1 _trimErrantLeadingAndTrailingCharacters:v24];
+    v25 = [self _trimErrantLeadingAndTrailingCharacters:v24];
     [v18 addObject:v25];
   }
 
-  v26 = [a1 _bestTitleFromCandidateTitles:v18];
+  v26 = [self _bestTitleFromCandidateTitles:v18];
 
   return v26;
 }
 
-+ (void)fetchWebsiteNameForDomain:(id)a3 completionHandler:(id)a4
++ (void)fetchWebsiteNameForDomain:(id)domain completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  domainCopy = domain;
+  handlerCopy = handler;
   v8 = objc_alloc_init(MEMORY[0x1E696ECE0]);
   [v8 setTimeout:5.0];
   [v8 setShouldFetchSubresources:0];
@@ -439,22 +439,22 @@ LABEL_16:
   {
     [v8 setSourceApplicationSecondaryIdentifierForRequiringPrivacyProxyFailingClosed:@"com.apple.Passwords.PRIconFetching"];
     v9 = MEMORY[0x1E695DFF8];
-    v10 = [@"https://" stringByAppendingString:v6];
+    v10 = [@"https://" stringByAppendingString:domainCopy];
     v11 = [v9 URLWithString:v10];
 
     v12 = WBS_LOG_CHANNEL_PREFIXWebsiteNameProvider();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
-      [_ASWebsiteNameProvider fetchWebsiteNameForDomain:v6 completionHandler:v12];
+      [_ASWebsiteNameProvider fetchWebsiteNameForDomain:domainCopy completionHandler:v12];
     }
 
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __70___ASWebsiteNameProvider_fetchWebsiteNameForDomain_completionHandler___block_invoke;
     v14[3] = &unk_1E7AF8260;
-    v15 = v6;
-    v16 = v7;
-    v17 = a1;
+    v15 = domainCopy;
+    v16 = handlerCopy;
+    selfCopy = self;
     [v8 startFetchingMetadataForURL:v11 completionHandler:v14];
   }
 
@@ -463,30 +463,30 @@ LABEL_16:
     v13 = WBS_LOG_CHANNEL_PREFIXWebsiteNameProvider();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      [_ASWebsiteNameProvider fetchWebsiteNameForDomain:v6 completionHandler:v13];
+      [_ASWebsiteNameProvider fetchWebsiteNameForDomain:domainCopy completionHandler:v13];
     }
 
-    (*(v7 + 2))(v7, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 
-+ (id)_candidateWebsiteNameForLinkMetadata:(id)a3
++ (id)_candidateWebsiteNameForLinkMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = [v4 siteName];
-  if (v5)
+  metadataCopy = metadata;
+  siteName = [metadataCopy siteName];
+  if (siteName)
   {
-    v6 = [v4 originalURL];
-    v7 = [a1 _siteNameFromOpenGraphSiteName:v5 withURL:v6];
+    originalURL = [metadataCopy originalURL];
+    originalTitle = [self _siteNameFromOpenGraphSiteName:siteName withURL:originalURL];
 
-    if (v7)
+    if (originalTitle)
     {
-      v8 = v7;
+      v8 = originalTitle;
     }
 
     else
     {
-      v8 = v5;
+      v8 = siteName;
     }
 
     v9 = v8;
@@ -494,8 +494,8 @@ LABEL_16:
 
   else
   {
-    v7 = [v4 originalTitle];
-    if (!v7 && ([v4 title], (v7 = objc_claimAutoreleasedReturnValue()) == 0) || (objc_msgSend(v4, "originalURL"), v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(a1, "_siteNameFromTitle:withURL:", v7, v10), v9 = objc_claimAutoreleasedReturnValue(), v10, !v9))
+    originalTitle = [metadataCopy originalTitle];
+    if (!originalTitle && ([metadataCopy title], (originalTitle = objc_claimAutoreleasedReturnValue()) == 0) || (objc_msgSend(metadataCopy, "originalURL"), v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(self, "_siteNameFromTitle:withURL:", originalTitle, v10), v9 = objc_claimAutoreleasedReturnValue(), v10, !v9))
     {
       v9 = 0;
     }
@@ -504,11 +504,11 @@ LABEL_16:
   return v9;
 }
 
-+ (BOOL)_candidateWebsiteNameHasObviousFlaw:(id)a3
++ (BOOL)_candidateWebsiteNameHasObviousFlaw:(id)flaw
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 length];
+  flawCopy = flaw;
+  v4 = [flawCopy length];
   if (v4 - 33 >= 0xFFFFFFFFFFFFFFE0)
   {
     v18 = 0u;
@@ -536,9 +536,9 @@ LABEL_6:
       v12 = [v11 length];
       if (v4 >= v12)
       {
-        v13 = [v3 substringToIndex:v12];
-        v14 = [v13 lowercaseString];
-        v15 = [v11 isEqualToString:v14];
+        v13 = [flawCopy substringToIndex:v12];
+        lowercaseString = [v13 lowercaseString];
+        v15 = [v11 isEqualToString:lowercaseString];
 
         if (v15)
         {
@@ -567,16 +567,16 @@ LABEL_3:
   return v5;
 }
 
-+ (id)_trimErrantLeadingAndTrailingCharacters:(id)a3
++ (id)_trimErrantLeadingAndTrailingCharacters:(id)characters
 {
   v46 = *MEMORY[0x1E69E9840];
-  v4 = [a3 safari_stringByTrimmingWhitespace];
-  v5 = [a1 _commonTitleDelimiters];
-  v6 = v5;
+  safari_stringByTrimmingWhitespace = [characters safari_stringByTrimmingWhitespace];
+  _commonTitleDelimiters = [self _commonTitleDelimiters];
+  v6 = _commonTitleDelimiters;
   v7 = +[_ASWebsiteNameProvider _trimErrantLeadingAndTrailingCharacters:]::prefixesToRemove;
   if (!+[_ASWebsiteNameProvider _trimErrantLeadingAndTrailingCharacters:]::prefixesToRemove)
   {
-    v8 = [v5 safari_mapObjectsUsingBlock:&__block_literal_global_144];
+    v8 = [_commonTitleDelimiters safari_mapObjectsUsingBlock:&__block_literal_global_144];
     v9 = [v8 arrayByAddingObjectsFromArray:v6];
     v10 = +[_ASWebsiteNameProvider _trimErrantLeadingAndTrailingCharacters:]::prefixesToRemove;
     +[_ASWebsiteNameProvider _trimErrantLeadingAndTrailingCharacters:]::prefixesToRemove = v9;
@@ -602,11 +602,11 @@ LABEL_3:
           objc_enumerationMutation(v11);
         }
 
-        v15 = [v4 safari_substringFromPrefix:*(*(&v40 + 1) + 8 * i)];
+        v15 = [safari_stringByTrimmingWhitespace safari_substringFromPrefix:*(*(&v40 + 1) + 8 * i)];
         if (v15)
         {
 
-          v4 = v15;
+          safari_stringByTrimmingWhitespace = v15;
           goto LABEL_13;
         }
       }
@@ -625,8 +625,8 @@ LABEL_13:
 
   if (!+[_ASWebsiteNameProvider _trimErrantLeadingAndTrailingCharacters:]::suffixesToRemove)
   {
-    v16 = [a1 _commonTitleDelimiters];
-    v17 = [v16 safari_mapObjectsUsingBlock:&__block_literal_global_146];
+    _commonTitleDelimiters2 = [self _commonTitleDelimiters];
+    v17 = [_commonTitleDelimiters2 safari_mapObjectsUsingBlock:&__block_literal_global_146];
     v18 = [v17 arrayByAddingObjectsFromArray:v6];
     v19 = +[_ASWebsiteNameProvider _trimErrantLeadingAndTrailingCharacters:]::suffixesToRemove;
     +[_ASWebsiteNameProvider _trimErrantLeadingAndTrailingCharacters:]::suffixesToRemove = v18;
@@ -636,7 +636,7 @@ LABEL_13:
     +[_ASWebsiteNameProvider _trimErrantLeadingAndTrailingCharacters:]::suffixesToRemove = v20;
   }
 
-  v22 = [v4 length];
+  v22 = [safari_stringByTrimmingWhitespace length];
   v38 = 0u;
   v39 = 0u;
   v36 = 0u;
@@ -660,15 +660,15 @@ LABEL_13:
         v29 = v22 - v28;
         if (v22 > v28)
         {
-          v30 = [v4 substringFromIndex:v29];
+          v30 = [safari_stringByTrimmingWhitespace substringFromIndex:v29];
           v31 = [v27 isEqualToString:v30];
 
           if (v31)
           {
-            v32 = [v4 substringWithRange:{0, v29}];
-            v33 = [v32 safari_stringByTrimmingWhitespace];
+            v32 = [safari_stringByTrimmingWhitespace substringWithRange:{0, v29}];
+            safari_stringByTrimmingWhitespace2 = [v32 safari_stringByTrimmingWhitespace];
 
-            v4 = v33;
+            safari_stringByTrimmingWhitespace = safari_stringByTrimmingWhitespace2;
             goto LABEL_26;
           }
         }
@@ -688,65 +688,65 @@ LABEL_26:
 
   v34 = *MEMORY[0x1E69E9840];
 
-  return v4;
+  return safari_stringByTrimmingWhitespace;
 }
 
-+ (id)websiteNameForLinkMetadata:(id)a3
++ (id)websiteNameForLinkMetadata:(id)metadata
 {
-  v4 = [a1 _candidateWebsiteNameForLinkMetadata:a3];
-  if ([a1 _candidateWebsiteNameHasObviousFlaw:v4])
+  v4 = [self _candidateWebsiteNameForLinkMetadata:metadata];
+  if ([self _candidateWebsiteNameHasObviousFlaw:v4])
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [a1 _trimErrantLeadingAndTrailingCharacters:v4];
+    v5 = [self _trimErrantLeadingAndTrailingCharacters:v4];
   }
 
   return v5;
 }
 
-+ (id)_siteNameFromOpenGraphSiteName:(id)a3 withURL:(id)a4
++ (id)_siteNameFromOpenGraphSiteName:(id)name withURL:(id)l
 {
-  v4 = [a1 _siteNameFromTitleLikeString:a3 withURL:a4 useHostAndTitlePrefixMatch:0];
+  v4 = [self _siteNameFromTitleLikeString:name withURL:l useHostAndTitlePrefixMatch:0];
 
   return v4;
 }
 
-+ (id)_siteNameFromTitle:(id)a3 withURL:(id)a4
++ (id)_siteNameFromTitle:(id)title withURL:(id)l
 {
-  v4 = [a1 _siteNameFromTitleLikeString:a3 withURL:a4 useHostAndTitlePrefixMatch:1];
+  v4 = [self _siteNameFromTitleLikeString:title withURL:l useHostAndTitlePrefixMatch:1];
 
   return v4;
 }
 
-+ (id)_siteNameFromTitleLikeString:(id)a3 withURL:(id)a4 useHostAndTitlePrefixMatch:(BOOL)a5
++ (id)_siteNameFromTitleLikeString:(id)string withURL:(id)l useHostAndTitlePrefixMatch:(BOOL)match
 {
-  v60 = a5;
+  matchCopy = match;
   v72 = *MEMORY[0x1E69E9840];
-  v65 = a3;
-  v61 = a4;
-  v7 = [v61 _lp_highLevelDomain];
-  v8 = v7;
-  if (!v7)
+  stringCopy = string;
+  lCopy = l;
+  _lp_highLevelDomain = [lCopy _lp_highLevelDomain];
+  v8 = _lp_highLevelDomain;
+  if (!_lp_highLevelDomain)
   {
-    v8 = [v61 _lp_simplifiedStringForDisplayOnly:0];
+    v8 = [lCopy _lp_simplifiedStringForDisplayOnly:0];
   }
 
-  v66 = [v8 lowercaseString];
-  if (!v7)
+  lowercaseString = [v8 lowercaseString];
+  if (!_lp_highLevelDomain)
   {
   }
 
-  v9 = [v66 _lp_hostByStrippingTopLevelDomain];
+  _lp_hostByStrippingTopLevelDomain = [lowercaseString _lp_hostByStrippingTopLevelDomain];
   v69 = 0u;
   v70 = 0u;
   v67 = 0u;
   v68 = 0u;
-  v10 = [a1 _commonTitleDelimiters];
-  obj = v10;
-  v11 = [v10 countByEnumeratingWithState:&v67 objects:v71 count:16];
+  _commonTitleDelimiters = [self _commonTitleDelimiters];
+  obj = _commonTitleDelimiters;
+  v11 = [_commonTitleDelimiters countByEnumeratingWithState:&v67 objects:v71 count:16];
   if (v11)
   {
     v62 = 0;
@@ -761,78 +761,78 @@ LABEL_26:
           objc_enumerationMutation(obj);
         }
 
-        v14 = [v65 componentsSeparatedByString:*(*(&v67 + 1) + 8 * i)];
-        v15 = [v14 count];
+        lowercaseString7 = [stringCopy componentsSeparatedByString:*(*(&v67 + 1) + 8 * i)];
+        v15 = [lowercaseString7 count];
         if (v15 >= 3)
         {
-          v16 = [v14 objectAtIndexedSubscript:0];
-          v17 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-          v18 = [v16 stringByTrimmingCharactersInSet:v17];
+          v16 = [lowercaseString7 objectAtIndexedSubscript:0];
+          whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+          v18 = [v16 stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
-          v19 = [v18 lowercaseString];
-          LOBYTE(v17) = [v19 isEqualToString:v9];
+          lowercaseString2 = [v18 lowercaseString];
+          LOBYTE(whitespaceCharacterSet) = [lowercaseString2 isEqualToString:_lp_hostByStrippingTopLevelDomain];
 
-          if (v17)
+          if (whitespaceCharacterSet)
           {
             goto LABEL_57;
           }
 
-          v20 = [v14 objectAtIndexedSubscript:v15 - 1];
-          v21 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-          v22 = [v20 stringByTrimmingCharactersInSet:v21];
+          v20 = [lowercaseString7 objectAtIndexedSubscript:v15 - 1];
+          whitespaceCharacterSet2 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+          v22 = [v20 stringByTrimmingCharactersInSet:whitespaceCharacterSet2];
 
-          v23 = [v22 lowercaseString];
-          v24 = [v23 isEqualToString:v9];
+          lowercaseString3 = [v22 lowercaseString];
+          v24 = [lowercaseString3 isEqualToString:_lp_hostByStrippingTopLevelDomain];
 
           v25 = v24 ? 0 : v22;
           if (v24)
           {
-            v48 = v65;
+            v48 = stringCopy;
             v18 = v22;
             goto LABEL_58;
           }
         }
 
-        if ([v14 count] == 2)
+        if ([lowercaseString7 count] == 2)
         {
-          v26 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-          v27 = [v14 objectAtIndexedSubscript:0];
-          v28 = [v27 stringByTrimmingCharactersInSet:v26];
+          whitespaceCharacterSet3 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+          v27 = [lowercaseString7 objectAtIndexedSubscript:0];
+          v28 = [v27 stringByTrimmingCharactersInSet:whitespaceCharacterSet3];
 
-          v29 = [v14 objectAtIndexedSubscript:1];
-          v30 = [v29 stringByTrimmingCharactersInSet:v26];
+          v29 = [lowercaseString7 objectAtIndexedSubscript:1];
+          v30 = [v29 stringByTrimmingCharactersInSet:whitespaceCharacterSet3];
 
-          v31 = [v28 lowercaseString];
-          v32 = [v30 lowercaseString];
-          [v31 _lp_similarityToString:v66];
+          lowercaseString4 = [v28 lowercaseString];
+          lowercaseString5 = [v30 lowercaseString];
+          [lowercaseString4 _lp_similarityToString:lowercaseString];
           v34 = v33;
-          [v31 _lp_similarityToString:v9];
+          [lowercaseString4 _lp_similarityToString:_lp_hostByStrippingTopLevelDomain];
           if (v34 <= v35)
           {
-            v36 = v9;
+            v36 = _lp_hostByStrippingTopLevelDomain;
           }
 
           else
           {
-            v36 = v66;
+            v36 = lowercaseString;
           }
 
-          [v31 _lp_similarityToString:v36];
+          [lowercaseString4 _lp_similarityToString:v36];
           v38 = v37;
-          [v32 _lp_similarityToString:v66];
+          [lowercaseString5 _lp_similarityToString:lowercaseString];
           v40 = v39;
-          [v32 _lp_similarityToString:v9];
+          [lowercaseString5 _lp_similarityToString:_lp_hostByStrippingTopLevelDomain];
           if (v40 <= v41)
           {
-            v42 = v9;
+            v42 = _lp_hostByStrippingTopLevelDomain;
           }
 
           else
           {
-            v42 = v66;
+            v42 = lowercaseString;
           }
 
-          [v32 _lp_similarityToString:v42];
+          [lowercaseString5 _lp_similarityToString:v42];
           if (v38 <= v43)
           {
             v44 = v43;
@@ -891,54 +891,54 @@ LABEL_26:
     v62 = 0;
   }
 
-  v47 = [v66 uppercaseString];
-  if ([v47 isEqualToString:v65] & 1) != 0 || (objc_msgSend(v66, "isEqualToString:", v65))
+  uppercaseString = [lowercaseString uppercaseString];
+  if ([uppercaseString isEqualToString:stringCopy] & 1) != 0 || (objc_msgSend(lowercaseString, "isEqualToString:", stringCopy))
   {
     v18 = 0;
   }
 
   else
   {
-    v49 = [v65 length];
-    obj = v47;
-    if (v49 < [v66 length])
+    v49 = [stringCopy length];
+    obj = uppercaseString;
+    if (v49 < [lowercaseString length])
     {
       goto LABEL_48;
     }
 
-    v18 = [v65 substringToIndex:{objc_msgSend(v66, "length")}];
-    v50 = [v18 lowercaseString];
-    v51 = [v50 isEqualToString:v66];
+    v18 = [stringCopy substringToIndex:{objc_msgSend(lowercaseString, "length")}];
+    lowercaseString6 = [v18 lowercaseString];
+    v51 = [lowercaseString6 isEqualToString:lowercaseString];
 
     v52 = v51 ? 0 : v18;
     if ((v51 & 1) == 0)
     {
 LABEL_48:
-      v53 = [v65 stringByReplacingOccurrencesOfString:@" " withString:&stru_1F28DE020];
-      v14 = [v53 lowercaseString];
+      v53 = [stringCopy stringByReplacingOccurrencesOfString:@" " withString:&stru_1F28DE020];
+      lowercaseString7 = [v53 lowercaseString];
 
-      if ([v14 isEqualToString:v9])
+      if ([lowercaseString7 isEqualToString:_lp_hostByStrippingTopLevelDomain])
       {
         v48 = 0;
-        v18 = v65;
+        v18 = stringCopy;
       }
 
       else
       {
-        if (!v60)
+        if (!matchCopy)
         {
           goto LABEL_56;
         }
 
-        v54 = [v65 length];
-        if (v54 < [v9 length])
+        v54 = [stringCopy length];
+        if (v54 < [_lp_hostByStrippingTopLevelDomain length])
         {
           goto LABEL_56;
         }
 
-        v18 = [v65 substringToIndex:{objc_msgSend(v9, "length")}];
-        v55 = [v18 lowercaseString];
-        v56 = [v55 isEqualToString:v9];
+        v18 = [stringCopy substringToIndex:{objc_msgSend(_lp_hostByStrippingTopLevelDomain, "length")}];
+        lowercaseString8 = [v18 lowercaseString];
+        v56 = [lowercaseString8 isEqualToString:_lp_hostByStrippingTopLevelDomain];
 
         v57 = v56 ? 0 : v18;
         if ((v56 & 1) == 0)
@@ -948,13 +948,13 @@ LABEL_56:
         }
 
 LABEL_57:
-        v48 = v65;
+        v48 = stringCopy;
       }
 
 LABEL_58:
 
-      v65 = v48;
-      v47 = obj;
+      stringCopy = v48;
+      uppercaseString = obj;
     }
   }
 
@@ -992,28 +992,28 @@ LABEL_60:
   return v3 & 1;
 }
 
-- (void)setWebsiteNameConsumer:(id)a3 completion:(id)a4
+- (void)setWebsiteNameConsumer:(id)consumer completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  consumerCopy = consumer;
+  completionCopy = completion;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __60___ASWebsiteNameProvider_setWebsiteNameConsumer_completion___block_invoke;
   block[3] = &unk_1E7AF82D0;
   block[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = consumerCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = consumerCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-- (id)knownWebsiteNameForDomain:(id)a3
+- (id)knownWebsiteNameForDomain:(id)domain
 {
-  v4 = a3;
-  if ([v4 length])
+  domainCopy = domain;
+  if ([domainCopy length])
   {
-    v5 = [(_ASWebsiteNameDictionary *)self->_websiteNameDictionary websiteNameForDomain:v4];
+    v5 = [(_ASWebsiteNameDictionary *)self->_websiteNameDictionary websiteNameForDomain:domainCopy];
     if (v5)
     {
       goto LABEL_21;
@@ -1032,7 +1032,7 @@ LABEL_60:
     block[3] = &unk_1E7AF82F8;
     v47 = &v48;
     block[4] = self;
-    v7 = v4;
+    v7 = domainCopy;
     v46 = v7;
     dispatch_sync(internalQueueForCachedWebsiteNames, block);
     v8 = v49[5];
@@ -1154,54 +1154,54 @@ LABEL_21:
   return v5;
 }
 
-- (void)fetchOperation:(id)a3 finishedWithResult:(id)a4 completion:(id)a5
+- (void)fetchOperation:(id)operation finishedWithResult:(id)result completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  operationCopy = operation;
+  resultCopy = result;
+  completionCopy = completion;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __71___ASWebsiteNameProvider_fetchOperation_finishedWithResult_completion___block_invoke;
   v14[3] = &unk_1E7AF8398;
-  v15 = v8;
-  v16 = v9;
-  v17 = self;
-  v18 = v10;
-  v11 = v10;
-  v12 = v9;
-  v13 = v8;
+  v15 = operationCopy;
+  v16 = resultCopy;
+  selfCopy = self;
+  v18 = completionCopy;
+  v11 = completionCopy;
+  v12 = resultCopy;
+  v13 = operationCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v14);
 }
 
-- (void)_processMetadataEntryFetchedFromKeychain:(id)a3 forDomain:(id)a4 allowRefreshingDataFromNetwork:(BOOL)a5
+- (void)_processMetadataEntryFetchedFromKeychain:(id)keychain forDomain:(id)domain allowRefreshingDataFromNetwork:(BOOL)network
 {
-  v11 = a3;
-  v8 = a4;
-  v9 = [v11 websiteName];
-  v10 = [v11 websiteNameDateLastRefreshed];
-  [(_ASWebsiteNameProvider *)self _cacheFetchedAndKeychainBackedWebsiteName:v9 forDomain:v8 dateLastRefreshed:v10];
+  keychainCopy = keychain;
+  domainCopy = domain;
+  websiteName = [keychainCopy websiteName];
+  websiteNameDateLastRefreshed = [keychainCopy websiteNameDateLastRefreshed];
+  [(_ASWebsiteNameProvider *)self _cacheFetchedAndKeychainBackedWebsiteName:websiteName forDomain:domainCopy dateLastRefreshed:websiteNameDateLastRefreshed];
 
   if (isProcessAllowedToFetchWebsiteNames(void)::onceToken != -1)
   {
     [_ASWebsiteNameProvider _processMetadataEntryFetchedFromKeychain:forDomain:allowRefreshingDataFromNetwork:];
   }
 
-  if (isProcessAllowedToFetchWebsiteNames(void)::isProcessAllowedToFetchWebsiteNames == 1 && a5 && [MEMORY[0x1E69C8880] isNetworkFetchingForPasswordsEnabled])
+  if (isProcessAllowedToFetchWebsiteNames(void)::isProcessAllowedToFetchWebsiteNames == 1 && network && [MEMORY[0x1E69C8880] isNetworkFetchingForPasswordsEnabled])
   {
-    [(_ASWebsiteNameProvider *)self _fetchDataForDomainIfNeeded:v8 metadataEntry:v11];
+    [(_ASWebsiteNameProvider *)self _fetchDataForDomainIfNeeded:domainCopy metadataEntry:keychainCopy];
   }
 }
 
-- (BOOL)_canRefreshDataForDateLastRefreshed:(id)a3
+- (BOOL)_canRefreshDataForDateLastRefreshed:(id)refreshed
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DEE8] currentCalendar];
+  refreshedCopy = refreshed;
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
   v5 = [MEMORY[0x1E695DF00] now];
-  v6 = [v4 dateByAddingUnit:16 value:-7 toDate:v5 options:0];
+  v6 = [currentCalendar dateByAddingUnit:16 value:-7 toDate:v5 options:0];
 
-  if (v3)
+  if (refreshedCopy)
   {
-    v7 = [v3 safari_isEarlierThanDate:v6];
+    v7 = [refreshedCopy safari_isEarlierThanDate:v6];
   }
 
   else
@@ -1212,73 +1212,73 @@ LABEL_21:
   return v7;
 }
 
-- (void)_fetchDataForDomainIfNeeded:(id)a3 metadataEntry:(id)a4
+- (void)_fetchDataForDomainIfNeeded:(id)needed metadataEntry:(id)entry
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 websiteNameDateLastRefreshed];
-  v9 = [(_ASWebsiteNameProvider *)self _canRefreshDataForDateLastRefreshed:v8];
+  neededCopy = needed;
+  entryCopy = entry;
+  websiteNameDateLastRefreshed = [entryCopy websiteNameDateLastRefreshed];
+  v9 = [(_ASWebsiteNameProvider *)self _canRefreshDataForDateLastRefreshed:websiteNameDateLastRefreshed];
 
   if (v9)
   {
-    v10 = [(NSOperationQueue *)self->_websiteFetchingQueue operations];
+    operations = [(NSOperationQueue *)self->_websiteFetchingQueue operations];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __68___ASWebsiteNameProvider__fetchDataForDomainIfNeeded_metadataEntry___block_invoke;
     v14[3] = &unk_1E7AF83C0;
-    v11 = v6;
+    v11 = neededCopy;
     v15 = v11;
-    v12 = [v10 safari_containsObjectPassingTest:v14];
+    v12 = [operations safari_containsObjectPassingTest:v14];
 
     if ((v12 & 1) == 0 && ([v11 safari_looksLikeIPAddress] & 1) == 0)
     {
-      v13 = [[_ASWebsiteNameFetchOperation alloc] initWithDomain:v11 metadataEntry:v7 provider:self];
+      v13 = [[_ASWebsiteNameFetchOperation alloc] initWithDomain:v11 metadataEntry:entryCopy provider:self];
       [(NSOperationQueue *)self->_websiteFetchingQueue addOperation:v13];
     }
   }
 }
 
-- (void)_cacheDatabaseBackedWebsiteName:(id)a3 forDomain:(id)a4
+- (void)_cacheDatabaseBackedWebsiteName:(id)name forDomain:(id)domain
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  domainCopy = domain;
   internalQueueForCachedWebsiteNames = self->_internalQueueForCachedWebsiteNames;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __68___ASWebsiteNameProvider__cacheDatabaseBackedWebsiteName_forDomain___block_invoke;
   block[3] = &unk_1E7AF83E8;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = nameCopy;
+  selfCopy = self;
+  v14 = domainCopy;
+  v9 = domainCopy;
+  v10 = nameCopy;
   dispatch_async(internalQueueForCachedWebsiteNames, block);
 }
 
-- (void)_cacheFetchedAndKeychainBackedWebsiteName:(id)a3 forDomain:(id)a4 dateLastRefreshed:(id)a5
+- (void)_cacheFetchedAndKeychainBackedWebsiteName:(id)name forDomain:(id)domain dateLastRefreshed:(id)refreshed
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  nameCopy = name;
+  domainCopy = domain;
+  refreshedCopy = refreshed;
   internalQueueForCachedWebsiteNames = self->_internalQueueForCachedWebsiteNames;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __96___ASWebsiteNameProvider__cacheFetchedAndKeychainBackedWebsiteName_forDomain_dateLastRefreshed___block_invoke;
   v15[3] = &unk_1E7AF8410;
-  v16 = v8;
-  v17 = self;
-  v18 = v9;
-  v19 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = nameCopy;
+  selfCopy = self;
+  v18 = domainCopy;
+  v19 = refreshedCopy;
+  v12 = refreshedCopy;
+  v13 = domainCopy;
+  v14 = nameCopy;
   dispatch_async(internalQueueForCachedWebsiteNames, v15);
 }
 
 + (uint64_t)_undesirableCharactersCharacterSet
 {
   result = [MEMORY[0x1E696AB08] characterSetWithCharactersInString:@"©®™℠"];
-  *a1 = result;
+  *self = result;
   qword_1EB7761F0 = result;
   _MergedGlobals = 1;
   return result;

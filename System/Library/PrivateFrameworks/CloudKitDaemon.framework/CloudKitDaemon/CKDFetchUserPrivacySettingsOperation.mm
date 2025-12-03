@@ -1,17 +1,17 @@
 @interface CKDFetchUserPrivacySettingsOperation
-- (CKDFetchUserPrivacySettingsOperation)initWithOperationInfo:(id)a3 container:(id)a4;
+- (CKDFetchUserPrivacySettingsOperation)initWithOperationInfo:(id)info container:(id)container;
 - (id)activityCreate;
-- (void)_handleRetrievedPrivacySettings:(id)a3;
+- (void)_handleRetrievedPrivacySettings:(id)settings;
 - (void)main;
 @end
 
 @implementation CKDFetchUserPrivacySettingsOperation
 
-- (CKDFetchUserPrivacySettingsOperation)initWithOperationInfo:(id)a3 container:(id)a4
+- (CKDFetchUserPrivacySettingsOperation)initWithOperationInfo:(id)info container:(id)container
 {
   v5.receiver = self;
   v5.super_class = CKDFetchUserPrivacySettingsOperation;
-  return [(CKDOperation *)&v5 initWithOperationInfo:a3 container:a4];
+  return [(CKDOperation *)&v5 initWithOperationInfo:info container:container];
 }
 
 - (id)activityCreate
@@ -21,10 +21,10 @@
   return v2;
 }
 
-- (void)_handleRetrievedPrivacySettings:(id)a3
+- (void)_handleRetrievedPrivacySettings:(id)settings
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  settingsCopy = settings;
   if (*MEMORY[0x277CBC880] != -1)
   {
     dispatch_once(MEMORY[0x277CBC880], *MEMORY[0x277CBC878]);
@@ -34,13 +34,13 @@
   if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_INFO))
   {
     v13 = 138412290;
-    v14 = v4;
+    v14 = settingsCopy;
     _os_log_impl(&dword_22506F000, v5, OS_LOG_TYPE_INFO, "Found user privacy settings %@", &v13, 0xCu);
   }
 
-  if (objc_msgSend_hasDiscoverable(v4, v6, v7))
+  if (objc_msgSend_hasDiscoverable(settingsCopy, v6, v7))
   {
-    if (objc_msgSend_discoverable(v4, v8, v9))
+    if (objc_msgSend_discoverable(settingsCopy, v8, v9))
     {
       objc_msgSend_setDiscoverable_(self, v10, 1);
     }

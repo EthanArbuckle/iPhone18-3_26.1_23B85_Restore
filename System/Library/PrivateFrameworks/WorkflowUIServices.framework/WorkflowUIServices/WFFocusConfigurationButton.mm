@@ -1,44 +1,44 @@
 @interface WFFocusConfigurationButton
-- (BOOL)isEqual:(id)a3;
-- (WFFocusConfigurationButton)initWithCoder:(id)a3;
-- (WFFocusConfigurationButton)initWithIdentifier:(id)a3 localizedTitle:(id)a4 isDestructive:(BOOL)a5;
+- (BOOL)isEqual:(id)equal;
+- (WFFocusConfigurationButton)initWithCoder:(id)coder;
+- (WFFocusConfigurationButton)initWithIdentifier:(id)identifier localizedTitle:(id)title isDestructive:(BOOL)destructive;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFFocusConfigurationButton
 
-- (WFFocusConfigurationButton)initWithCoder:(id)a3
+- (WFFocusConfigurationButton)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localizedTitle"];
-  v7 = [v4 decodeBoolForKey:@"isDestructive"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localizedTitle"];
+  v7 = [coderCopy decodeBoolForKey:@"isDestructive"];
 
   v8 = [(WFFocusConfigurationButton *)self initWithIdentifier:v5 localizedTitle:v6 isDestructive:v7];
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  v4 = [(WFFocusConfigurationButton *)self identifier];
-  [v6 encodeObject:v4 forKey:@"identifier"];
+  coderCopy = coder;
+  identifier = [(WFFocusConfigurationButton *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 
-  v5 = [(WFFocusConfigurationButton *)self localizedTitle];
-  [v6 encodeObject:v5 forKey:@"localizedTitle"];
+  localizedTitle = [(WFFocusConfigurationButton *)self localizedTitle];
+  [coderCopy encodeObject:localizedTitle forKey:@"localizedTitle"];
 
-  [v6 encodeBool:-[WFFocusConfigurationButton isDestructive](self forKey:{"isDestructive"), @"isDestructive"}];
+  [coderCopy encodeBool:-[WFFocusConfigurationButton isDestructive](self forKey:{"isDestructive"), @"isDestructive"}];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  equalCopy = equal;
+  if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = [(WFFocusConfigurationButton *)self identifier];
-    v6 = [v4 identifier];
-    v7 = [v5 isEqualToString:v6];
+    identifier = [(WFFocusConfigurationButton *)self identifier];
+    identifier2 = [equalCopy identifier];
+    v7 = [identifier isEqualToString:identifier2];
   }
 
   else
@@ -51,25 +51,25 @@
 
 - (unint64_t)hash
 {
-  v2 = [(WFFocusConfigurationButton *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(WFFocusConfigurationButton *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }
 
-- (WFFocusConfigurationButton)initWithIdentifier:(id)a3 localizedTitle:(id)a4 isDestructive:(BOOL)a5
+- (WFFocusConfigurationButton)initWithIdentifier:(id)identifier localizedTitle:(id)title isDestructive:(BOOL)destructive
 {
-  v9 = a3;
-  v10 = a4;
+  identifierCopy = identifier;
+  titleCopy = title;
   v15.receiver = self;
   v15.super_class = WFFocusConfigurationButton;
   v11 = [(WFFocusConfigurationButton *)&v15 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_identifier, a3);
-    objc_storeStrong(&v12->_localizedTitle, a4);
-    v12->_isDestructive = a5;
+    objc_storeStrong(&v11->_identifier, identifier);
+    objc_storeStrong(&v12->_localizedTitle, title);
+    v12->_isDestructive = destructive;
     v13 = v12;
   }
 

@@ -1,63 +1,63 @@
 @interface PPSTimestampConverter
-- (PPSTimestampConverter)initWithFilepath:(id)a3;
-- (PPSTimestampConverter)initWithSubsystem:(id)a3 category:(id)a4;
-- (double)localTimeFromMonotonicTime:(double)a3;
-- (double)monotonicTimeFromEpochTime:(double)a3;
-- (double)systemOffsetFromMonotonicTime:(double)a3;
-- (double)timeZoneOffsetForMonotonicTime:(double)a3;
+- (PPSTimestampConverter)initWithFilepath:(id)filepath;
+- (PPSTimestampConverter)initWithSubsystem:(id)subsystem category:(id)category;
+- (double)localTimeFromMonotonicTime:(double)time;
+- (double)monotonicTimeFromEpochTime:(double)time;
+- (double)systemOffsetFromMonotonicTime:(double)time;
+- (double)timeZoneOffsetForMonotonicTime:(double)time;
 - (id).cxx_construct;
 - (id)_tableNameForSystemOffset;
 - (id)_tableNameForTimeZoneOffset;
-- (vector<std::pair<double,)_systemOffsetsForTableName:()std:(double>>> *__return_ptr)retstr :(PPSTimestampConverter *)self allocator<std:(SEL)a3 :(id)a4 pair<double;
-- (vector<std::pair<double,)_timeZoneOffsetsForTableName:()std:(double>>> *__return_ptr)retstr :(PPSTimestampConverter *)self allocator<std:(SEL)a3 :(id)a4 pair<double;
+- (vector<std::pair<double,)_systemOffsetsForTableName:()std:(double>>> *__return_ptr)retstr :(PPSTimestampConverter *)self allocator<std:(SEL)std :(id)a4 pair<double;
+- (vector<std::pair<double,)_timeZoneOffsetsForTableName:()std:(double>>> *__return_ptr)retstr :(PPSTimestampConverter *)self allocator<std:(SEL)std :(id)a4 pair<double;
 - (vector<std::pair<double,)systemOffsets;
 - (vector<std::pair<double,)timeZoneOffsets;
-- (void)_addSystemOffset:(double)a3 withMonotonicTime:(double)a4;
+- (void)_addSystemOffset:(double)offset withMonotonicTime:(double)time;
 @end
 
 @implementation PPSTimestampConverter
 
 - (vector<std::pair<double,)systemOffsets
 {
-  v4 = self;
-  objc_sync_enter(v4);
-  p_begin = &v4->_systemOffsets.__begin_;
-  if (v4->_systemOffsets.__begin_ == v4->_systemOffsets.__end_)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  p_begin = &selfCopy->_systemOffsets.__begin_;
+  if (selfCopy->_systemOffsets.__begin_ == selfCopy->_systemOffsets.__end_)
   {
-    v6 = [(PPSTimestampConverter *)v4 _tableNameForSystemOffset];
-    [(PPSTimestampConverter *)v4 _systemOffsetsForTableName:v6];
+    _tableNameForSystemOffset = [(PPSTimestampConverter *)selfCopy _tableNameForSystemOffset];
+    [(PPSTimestampConverter *)selfCopy _systemOffsetsForTableName:_tableNameForSystemOffset];
     v7 = *p_begin;
     if (*p_begin)
     {
-      v4->_systemOffsets.__end_ = v7;
+      selfCopy->_systemOffsets.__end_ = v7;
       operator delete(v7);
       *p_begin = 0;
-      v4->_systemOffsets.__end_ = 0;
-      v4->_systemOffsets.__cap_ = 0;
+      selfCopy->_systemOffsets.__end_ = 0;
+      selfCopy->_systemOffsets.__cap_ = 0;
     }
 
-    *&v4->_systemOffsets.__begin_ = v9;
-    v4->_systemOffsets.__cap_ = v10;
+    *&selfCopy->_systemOffsets.__begin_ = v9;
+    selfCopy->_systemOffsets.__cap_ = v10;
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
   retstr->__begin_ = 0;
   retstr->__end_ = 0;
   retstr->__cap_ = 0;
-  return std::vector<std::pair<double,double>>::__init_with_size[abi:ne200100]<std::pair<double,double>*,std::pair<double,double>*>(retstr, v4->_systemOffsets.__begin_, v4->_systemOffsets.__end_, (v4->_systemOffsets.__end_ - v4->_systemOffsets.__begin_) >> 4);
+  return std::vector<std::pair<double,double>>::__init_with_size[abi:ne200100]<std::pair<double,double>*,std::pair<double,double>*>(retstr, selfCopy->_systemOffsets.__begin_, selfCopy->_systemOffsets.__end_, (selfCopy->_systemOffsets.__end_ - selfCopy->_systemOffsets.__begin_) >> 4);
 }
 
-- (PPSTimestampConverter)initWithSubsystem:(id)a3 category:(id)a4
+- (PPSTimestampConverter)initWithSubsystem:(id)subsystem category:(id)category
 {
-  v6 = a3;
-  v7 = a4;
+  subsystemCopy = subsystem;
+  categoryCopy = category;
   v12.receiver = self;
   v12.super_class = PPSTimestampConverter;
   v8 = [(PPSTimestampConverter *)&v12 init];
   if (v8)
   {
-    v9 = [PPSOnDeviceIngesterUtilities filepathForSubsystem:v6 category:v7];
+    v9 = [PPSOnDeviceIngesterUtilities filepathForSubsystem:subsystemCopy category:categoryCopy];
     filepath = v8->_filepath;
     v8->_filepath = v9;
   }
@@ -65,16 +65,16 @@
   return v8;
 }
 
-- (PPSTimestampConverter)initWithFilepath:(id)a3
+- (PPSTimestampConverter)initWithFilepath:(id)filepath
 {
-  v5 = a3;
+  filepathCopy = filepath;
   v9.receiver = self;
   v9.super_class = PPSTimestampConverter;
   v6 = [(PPSTimestampConverter *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_filepath, a3);
+    objc_storeStrong(&v6->_filepath, filepath);
   }
 
   return v7;
@@ -82,47 +82,47 @@
 
 - (vector<std::pair<double,)timeZoneOffsets
 {
-  v4 = self;
-  objc_sync_enter(v4);
-  p_begin = &v4->_timeZoneOffsets.__begin_;
-  if (v4->_timeZoneOffsets.__begin_ == v4->_timeZoneOffsets.__end_)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  p_begin = &selfCopy->_timeZoneOffsets.__begin_;
+  if (selfCopy->_timeZoneOffsets.__begin_ == selfCopy->_timeZoneOffsets.__end_)
   {
-    v6 = [(PPSTimestampConverter *)v4 _tableNameForTimeZoneOffset];
-    [(PPSTimestampConverter *)v4 _timeZoneOffsetsForTableName:v6];
+    _tableNameForTimeZoneOffset = [(PPSTimestampConverter *)selfCopy _tableNameForTimeZoneOffset];
+    [(PPSTimestampConverter *)selfCopy _timeZoneOffsetsForTableName:_tableNameForTimeZoneOffset];
     v7 = *p_begin;
     if (*p_begin)
     {
-      v4->_timeZoneOffsets.__end_ = v7;
+      selfCopy->_timeZoneOffsets.__end_ = v7;
       operator delete(v7);
       *p_begin = 0;
-      v4->_timeZoneOffsets.__end_ = 0;
-      v4->_timeZoneOffsets.__cap_ = 0;
+      selfCopy->_timeZoneOffsets.__end_ = 0;
+      selfCopy->_timeZoneOffsets.__cap_ = 0;
     }
 
-    *&v4->_timeZoneOffsets.__begin_ = v9;
-    v4->_timeZoneOffsets.__cap_ = v10;
+    *&selfCopy->_timeZoneOffsets.__begin_ = v9;
+    selfCopy->_timeZoneOffsets.__cap_ = v10;
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
   retstr->__begin_ = 0;
   retstr->__end_ = 0;
   retstr->__cap_ = 0;
-  return std::vector<std::pair<double,double>>::__init_with_size[abi:ne200100]<std::pair<double,double>*,std::pair<double,double>*>(retstr, v4->_timeZoneOffsets.__begin_, v4->_timeZoneOffsets.__end_, (v4->_timeZoneOffsets.__end_ - v4->_timeZoneOffsets.__begin_) >> 4);
+  return std::vector<std::pair<double,double>>::__init_with_size[abi:ne200100]<std::pair<double,double>*,std::pair<double,double>*>(retstr, selfCopy->_timeZoneOffsets.__begin_, selfCopy->_timeZoneOffsets.__end_, (selfCopy->_timeZoneOffsets.__end_ - selfCopy->_timeZoneOffsets.__begin_) >> 4);
 }
 
-- (double)localTimeFromMonotonicTime:(double)a3
+- (double)localTimeFromMonotonicTime:(double)time
 {
   [(PPSTimestampConverter *)self epochTimeFromMonotonicTime:?];
   v6 = v5;
-  [(PPSTimestampConverter *)self timeZoneOffsetForMonotonicTime:a3];
+  [(PPSTimestampConverter *)self timeZoneOffsetForMonotonicTime:time];
   return v6 + v7;
 }
 
-- (double)monotonicTimeFromEpochTime:(double)a3
+- (double)monotonicTimeFromEpochTime:(double)time
 {
   v3 = 0.0;
-  if (a3 > 0.0)
+  if (time > 0.0)
   {
     [(PPSTimestampConverter *)self systemOffsets];
     if (v14 != v15)
@@ -137,7 +137,7 @@
         v11 = v8[1];
         v9 = v8 + 2;
         v5 += ~(v5 >> 1);
-        if (v10 + v11 > a3)
+        if (v10 + v11 > time)
         {
           v5 = v7;
         }
@@ -155,7 +155,7 @@
         v12 = 0;
       }
 
-      v3 = a3 - v6[v12 + 1];
+      v3 = time - v6[v12 + 1];
     }
 
     if (v14)
@@ -167,7 +167,7 @@
   return v3;
 }
 
-- (double)systemOffsetFromMonotonicTime:(double)a3
+- (double)systemOffsetFromMonotonicTime:(double)time
 {
   [(PPSTimestampConverter *)self systemOffsets];
   if (v13 == v14)
@@ -190,7 +190,7 @@
     v9 = *v7;
     v8 = v7 + 2;
     v4 += ~(v4 >> 1);
-    if (v9 > a3)
+    if (v9 > time)
     {
       v4 = v6;
     }
@@ -218,7 +218,7 @@ LABEL_10:
   return v11;
 }
 
-- (double)timeZoneOffsetForMonotonicTime:(double)a3
+- (double)timeZoneOffsetForMonotonicTime:(double)time
 {
   [(PPSTimestampConverter *)self timeZoneOffsets];
   if (v13 == v14)
@@ -241,7 +241,7 @@ LABEL_10:
     v9 = *v7;
     v8 = v7 + 2;
     v4 += ~(v4 >> 1);
-    if (v9 > a3)
+    if (v9 > time)
     {
       v4 = v6;
     }
@@ -269,7 +269,7 @@ LABEL_10:
   return v11;
 }
 
-- (vector<std::pair<double,)_systemOffsetsForTableName:()std:(double>>> *__return_ptr)retstr :(PPSTimestampConverter *)self allocator<std:(SEL)a3 :(id)a4 pair<double
+- (vector<std::pair<double,)_systemOffsetsForTableName:()std:(double>>> *__return_ptr)retstr :(PPSTimestampConverter *)self allocator<std:(SEL)std :(id)a4 pair<double
 {
   v39[1] = *MEMORY[0x277D85DE8];
   v6 = a4;
@@ -465,7 +465,7 @@ uint64_t __52__PPSTimestampConverter__systemOffsetsForTableName___block_invoke(u
   return v4;
 }
 
-- (vector<std::pair<double,)_timeZoneOffsetsForTableName:()std:(double>>> *__return_ptr)retstr :(PPSTimestampConverter *)self allocator<std:(SEL)a3 :(id)a4 pair<double
+- (vector<std::pair<double,)_timeZoneOffsetsForTableName:()std:(double>>> *__return_ptr)retstr :(PPSTimestampConverter *)self allocator<std:(SEL)std :(id)a4 pair<double
 {
   v39[1] = *MEMORY[0x277D85DE8];
   v6 = a4;
@@ -614,7 +614,7 @@ uint64_t __54__PPSTimestampConverter__timeZoneOffsetsForTableName___block_invoke
   return 1;
 }
 
-- (void)_addSystemOffset:(double)a3 withMonotonicTime:(double)a4
+- (void)_addSystemOffset:(double)offset withMonotonicTime:(double)time
 {
   end = self->_systemOffsets.__end_;
   cap = self->_systemOffsets.__cap_;
@@ -648,8 +648,8 @@ uint64_t __54__PPSTimestampConverter__timeZoneOffsetsForTableName___block_invoke
     }
 
     v15 = (16 * v10);
-    *v15 = a4;
-    v15[1] = a3;
+    *v15 = time;
+    v15[1] = offset;
     v7 = (16 * v10 + 16);
     memcpy(0, begin, v9);
     v16 = self->_systemOffsets.__begin_;
@@ -664,8 +664,8 @@ uint64_t __54__PPSTimestampConverter__timeZoneOffsetsForTableName___block_invoke
 
   else
   {
-    *end = a4;
-    end[1] = a3;
+    *end = time;
+    end[1] = offset;
     v7 = end + 2;
   }
 

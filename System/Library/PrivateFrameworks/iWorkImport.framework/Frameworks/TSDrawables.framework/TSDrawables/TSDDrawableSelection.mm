@@ -1,48 +1,48 @@
 @interface TSDDrawableSelection
-- (BOOL)containsKindOfClass:(Class)a3;
-- (BOOL)containsUnlockedKindOfClass:(Class)a3;
+- (BOOL)containsKindOfClass:(Class)class;
+- (BOOL)containsUnlockedKindOfClass:(Class)class;
 - (BOOL)isEmpty;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSSet)infos;
 - (NSSet)infosWithNonInteractiveInfos;
 - (NSSet)nonInteractiveInfos;
 - (NSSet)unlockedInfos;
-- (TSDDrawableSelection)initWithArchive:(const void *)a3 unarchiver:(id)a4;
-- (TSDDrawableSelection)initWithInfos:(id)a3;
-- (TSDDrawableSelection)initWithInteractiveInfos:(id)a3 nonInteractiveInfos:(id)a4;
+- (TSDDrawableSelection)initWithArchive:(const void *)archive unarchiver:(id)unarchiver;
+- (TSDDrawableSelection)initWithInfos:(id)infos;
+- (TSDDrawableSelection)initWithInteractiveInfos:(id)infos nonInteractiveInfos:(id)interactiveInfos;
 - (id)UUIDDescription;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)infosOfClass:(Class)a3;
+- (id)infosOfClass:(Class)class;
 - (unint64_t)hash;
 - (unint64_t)infoCount;
 - (unint64_t)unlockedInfoCount;
-- (void)saveToArchive:(void *)a3 archiver:(id)a4;
+- (void)saveToArchive:(void *)archive archiver:(id)archiver;
 @end
 
 @implementation TSDDrawableSelection
 
-- (TSDDrawableSelection)initWithInfos:(id)a3
+- (TSDDrawableSelection)initWithInfos:(id)infos
 {
   v4 = MEMORY[0x277CBEB98];
-  v5 = a3;
+  infosCopy = infos;
   v8 = objc_msgSend_set(v4, v6, v7);
-  v10 = objc_msgSend_initWithInteractiveInfos_nonInteractiveInfos_(self, v9, v5, v8);
+  v10 = objc_msgSend_initWithInteractiveInfos_nonInteractiveInfos_(self, v9, infosCopy, v8);
 
   return v10;
 }
 
-- (TSDDrawableSelection)initWithInteractiveInfos:(id)a3 nonInteractiveInfos:(id)a4
+- (TSDDrawableSelection)initWithInteractiveInfos:(id)infos nonInteractiveInfos:(id)interactiveInfos
 {
-  v6 = a3;
-  v7 = a4;
+  infosCopy = infos;
+  interactiveInfosCopy = interactiveInfos;
   v27.receiver = self;
   v27.super_class = TSDDrawableSelection;
   v10 = [(TSDDrawableSelection *)&v27 init];
   if (v10)
   {
-    v11 = objc_msgSend_count(v6, v8, v9);
-    if (!(v11 + objc_msgSend_count(v7, v12, v13)))
+    v11 = objc_msgSend_count(infosCopy, v8, v9);
+    if (!(v11 + objc_msgSend_count(interactiveInfosCopy, v12, v13)))
     {
       v15 = MEMORY[0x277D81150];
       v16 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v14, "[TSDDrawableSelection initWithInteractiveInfos:nonInteractiveInfos:]");
@@ -53,7 +53,7 @@
     }
 
     v22 = [TSDInfoCollectionSelectionHelper alloc];
-    v24 = objc_msgSend_initWithInteractiveInfos_nonInteractiveInfos_(v22, v23, v6, v7);
+    v24 = objc_msgSend_initWithInteractiveInfos_nonInteractiveInfos_(v22, v23, infosCopy, interactiveInfosCopy);
     selectionHelper = v10->_selectionHelper;
     v10->_selectionHelper = v24;
   }
@@ -61,7 +61,7 @@
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   v7 = objc_msgSend_selectionHelper(self, v5, v6);
@@ -73,10 +73,10 @@
   return v18;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     isEqual = 1;
   }
@@ -84,9 +84,9 @@
   else
   {
     v5 = objc_opt_class();
-    if (objc_msgSend_isMemberOfClass_(v4, v6, v5))
+    if (objc_msgSend_isMemberOfClass_(equalCopy, v6, v5))
     {
-      v7 = v4;
+      v7 = equalCopy;
       v10 = objc_msgSend_selectionHelper(self, v8, v9);
       v13 = objc_msgSend_selectionHelper(v7, v11, v12);
 
@@ -150,13 +150,13 @@
   return v6;
 }
 
-- (BOOL)containsKindOfClass:(Class)a3
+- (BOOL)containsKindOfClass:(Class)class
 {
   v17 = *MEMORY[0x277D85DE8];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = objc_msgSend_infos(self, a2, a3, 0, 0);
+  v3 = objc_msgSend_infos(self, a2, class, 0, 0);
   v5 = objc_msgSend_countByEnumeratingWithState_objects_count_(v3, v4, &v12, v16, 16);
   if (v5)
   {
@@ -216,14 +216,14 @@ LABEL_11:
   return v6;
 }
 
-- (BOOL)containsUnlockedKindOfClass:(Class)a3
+- (BOOL)containsUnlockedKindOfClass:(Class)class
 {
   v19 = *MEMORY[0x277D85DE8];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v3 = objc_msgSend_infos(self, a2, a3, 0);
+  v3 = objc_msgSend_infos(self, a2, class, 0);
   v5 = objc_msgSend_countByEnumeratingWithState_objects_count_(v3, v4, &v14, v18, 16);
   if (v5)
   {
@@ -266,14 +266,14 @@ LABEL_13:
   return v12;
 }
 
-- (id)infosOfClass:(Class)a3
+- (id)infosOfClass:(Class)class
 {
-  v4 = objc_msgSend_infos(self, a2, a3);
+  v4 = objc_msgSend_infos(self, a2, class);
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = sub_27670D368;
   v8[3] = &unk_27A6CD348;
-  v8[4] = a3;
+  v8[4] = class;
   v6 = objc_msgSend_objectsPassingTest_(v4, v5, v8);
 
   return v6;
@@ -303,9 +303,9 @@ LABEL_13:
   return v13;
 }
 
-- (TSDDrawableSelection)initWithArchive:(const void *)a3 unarchiver:(id)a4
+- (TSDDrawableSelection)initWithArchive:(const void *)archive unarchiver:(id)unarchiver
 {
-  v6 = a4;
+  unarchiverCopy = unarchiver;
   v21.receiver = self;
   v21.super_class = TSDDrawableSelection;
   v7 = [(TSDDrawableSelection *)&v21 init];
@@ -323,15 +323,15 @@ LABEL_13:
     v17[3] = sub_27679B144;
     v17[4] = sub_27679B154;
     v18 = objc_alloc_init(MEMORY[0x277CBEB98]);
-    v8 = *(a3 + 12);
-    if (*(a3 + 6) >= 1)
+    v8 = *(archive + 12);
+    if (*(archive + 6) >= 1)
     {
       v16[0] = MEMORY[0x277D85DD0];
       v16[1] = 3221225472;
       v16[2] = sub_27679B208;
       v16[3] = &unk_27A6CDD58;
       v16[4] = v19;
-      sub_27679B15C(v6, a3 + 16, &unk_2885A16B8, v16);
+      sub_27679B15C(unarchiverCopy, archive + 16, &unk_2885A16B8, v16);
     }
 
     if (v8 >= 1)
@@ -341,7 +341,7 @@ LABEL_13:
       v15[2] = sub_27679B288;
       v15[3] = &unk_27A6CDD58;
       v15[4] = v17;
-      sub_27679B15C(v6, a3 + 40, &unk_2885A16B8, v15);
+      sub_27679B15C(unarchiverCopy, archive + 40, &unk_2885A16B8, v15);
     }
 
     v11[0] = MEMORY[0x277D85DD0];
@@ -351,7 +351,7 @@ LABEL_13:
     v12 = v7;
     v13 = v19;
     v14 = v17;
-    objc_msgSend_addFinalizeHandler_(v6, v9, v11);
+    objc_msgSend_addFinalizeHandler_(unarchiverCopy, v9, v11);
 
     _Block_object_dispose(v17, 8);
     _Block_object_dispose(v19, 8);
@@ -360,14 +360,14 @@ LABEL_13:
   return v7;
 }
 
-- (void)saveToArchive:(void *)a3 archiver:(id)a4
+- (void)saveToArchive:(void *)archive archiver:(id)archiver
 {
-  v14 = a4;
+  archiverCopy = archiver;
   v6 = objc_opt_class();
   v8 = objc_msgSend_infosOfClass_(self, v7, v6);
-  objc_msgSend_setWeakReferenceSet_message_(v14, v9, v8, a3 + 16);
+  objc_msgSend_setWeakReferenceSet_message_(archiverCopy, v9, v8, archive + 16);
   v12 = objc_msgSend_nonInteractiveInfos(self, v10, v11);
-  objc_msgSend_setWeakReferenceSet_message_(v14, v13, v12, a3 + 40);
+  objc_msgSend_setWeakReferenceSet_message_(archiverCopy, v13, v12, archive + 40);
 }
 
 @end

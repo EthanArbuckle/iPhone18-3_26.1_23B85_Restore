@@ -1,38 +1,38 @@
 @interface NTKZeudleComplicationBackgroundView
 - (CGRect)contentFrame;
-- (id)complicationColorForBlancEditMode:(int64_t)a3;
-- (void)setBlancEditModePalette:(id)a3;
-- (void)setPalette:(id)a3;
+- (id)complicationColorForBlancEditMode:(int64_t)mode;
+- (void)setBlancEditModePalette:(id)palette;
+- (void)setPalette:(id)palette;
 @end
 
 @implementation NTKZeudleComplicationBackgroundView
 
-- (void)setBlancEditModePalette:(id)a3
+- (void)setBlancEditModePalette:(id)palette
 {
-  objc_storeStrong(&self->_palette, a3);
+  objc_storeStrong(&self->_palette, palette);
 
   [(NTKZeudleComplicationBackgroundView *)self applyBlancEditModeStyleChange];
 }
 
-- (void)setPalette:(id)a3
+- (void)setPalette:(id)palette
 {
-  objc_storeStrong(&self->_palette, a3);
+  objc_storeStrong(&self->_palette, palette);
 
   [(NTKZeudleComplicationBackgroundView *)self applyStyleChange];
 }
 
-- (id)complicationColorForBlancEditMode:(int64_t)a3
+- (id)complicationColorForBlancEditMode:(int64_t)mode
 {
-  v4 = [(NTKZeudleComplicationBackgroundView *)self palette];
-  v5 = v4;
-  if (a3 == 1)
+  palette = [(NTKZeudleComplicationBackgroundView *)self palette];
+  v5 = palette;
+  if (mode == 1)
   {
-    [v4 editMode];
+    [palette editMode];
   }
 
   else
   {
-    [v4 bottomComplication];
+    [palette bottomComplication];
   }
   v6 = ;
 

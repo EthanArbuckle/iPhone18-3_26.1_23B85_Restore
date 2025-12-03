@@ -1,142 +1,142 @@
 @interface PKPaymentTransactionGroup
-+ (id)transactionGroupFromFKTransactionGroup:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)transactionGroupFromFKTransactionGroup:(id)group;
+- (BOOL)isEqual:(id)equal;
 - (CNContact)userContact;
 - (NSString)identifier;
 - (NSString)userDisplayName;
-- (PKPaymentTransactionGroup)initWithCoder:(id)a3;
+- (PKPaymentTransactionGroup)initWithCoder:(id)coder;
 - (id)description;
-- (id)transactionForCashbackGroupWithSourceIdentifier:(id)a3;
+- (id)transactionForCashbackGroupWithSourceIdentifier:(id)identifier;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPaymentTransactionGroup
 
-- (PKPaymentTransactionGroup)initWithCoder:(id)a3
+- (PKPaymentTransactionGroup)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v52.receiver = self;
   v52.super_class = PKPaymentTransactionGroup;
   v5 = [(PKPaymentTransactionGroup *)&v52 init];
   if (v5)
   {
-    v5->_type = [v4 decodeIntegerForKey:@"type"];
-    v5->_secondaryType = [v4 decodeIntegerForKey:@"secondaryType"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"startDate"];
+    v5->_type = [coderCopy decodeIntegerForKey:@"type"];
+    v5->_secondaryType = [coderCopy decodeIntegerForKey:@"secondaryType"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"startDate"];
     startDate = v5->_startDate;
     v5->_startDate = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"endDate"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"endDate"];
     endDate = v5->_endDate;
     v5->_endDate = v8;
 
-    v5->_merchantCategory = [v4 decodeIntegerForKey:@"merchantCategory"];
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"merchant"];
+    v5->_merchantCategory = [coderCopy decodeIntegerForKey:@"merchantCategory"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"merchant"];
     merchant = v5->_merchant;
     v5->_merchant = v10;
 
-    v5->_transactionCount = [v4 decodeIntegerForKey:@"transactionCount"];
-    v5->_secondaryGroupCount = [v4 decodeIntegerForKey:@"secondaryGroupCount"];
+    v5->_transactionCount = [coderCopy decodeIntegerForKey:@"transactionCount"];
+    v5->_secondaryGroupCount = [coderCopy decodeIntegerForKey:@"secondaryGroupCount"];
     v12 = MEMORY[0x1E695DFD8];
     v13 = objc_opt_class();
     v14 = [v12 setWithObjects:{v13, objc_opt_class(), 0}];
-    v15 = [v4 decodeObjectOfClasses:v14 forKey:@"handles"];
+    v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"handles"];
     handles = v5->_handles;
     v5->_handles = v15;
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"accountUser"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accountUser"];
     accountUser = v5->_accountUser;
     v5->_accountUser = v17;
 
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"familyMember"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"familyMember"];
     familyMember = v5->_familyMember;
     v5->_familyMember = v19;
 
     v21 = MEMORY[0x1E695DFD8];
     v22 = objc_opt_class();
     v23 = [v21 setWithObjects:{v22, objc_opt_class(), 0}];
-    v24 = [v4 decodeObjectOfClasses:v23 forKey:@"regions"];
+    v24 = [coderCopy decodeObjectOfClasses:v23 forKey:@"regions"];
     regions = v5->_regions;
     v5->_regions = v24;
 
-    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"amount"];
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"amount"];
     totalAmount = v5->_totalAmount;
     v5->_totalAmount = v26;
 
-    v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"rewardsAmount"];
+    v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"rewardsAmount"];
     totalRewardsAmount = v5->_totalRewardsAmount;
     v5->_totalRewardsAmount = v28;
 
     v30 = MEMORY[0x1E695DFD8];
     v31 = objc_opt_class();
     v32 = [v30 setWithObjects:{v31, objc_opt_class(), 0}];
-    v33 = [v4 decodeObjectOfClasses:v32 forKey:@"transactions"];
+    v33 = [coderCopy decodeObjectOfClasses:v32 forKey:@"transactions"];
     transactions = v5->_transactions;
     v5->_transactions = v33;
 
     v35 = MEMORY[0x1E695DFD8];
     v36 = objc_opt_class();
     v37 = [v35 setWithObjects:{v36, objc_opt_class(), 0}];
-    v38 = [v4 decodeObjectOfClasses:v37 forKey:@"groups"];
+    v38 = [coderCopy decodeObjectOfClasses:v37 forKey:@"groups"];
     groups = v5->_groups;
     v5->_groups = v38;
 
-    v40 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"searchQuery"];
+    v40 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"searchQuery"];
     searchQuery = v5->_searchQuery;
     v5->_searchQuery = v40;
 
-    v42 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"tag"];
+    v42 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"tag"];
     tag = v5->_tag;
     v5->_tag = v42;
 
     v44 = MEMORY[0x1E695DFD8];
     v45 = objc_opt_class();
     v46 = [v44 setWithObjects:{v45, objc_opt_class(), 0}];
-    v47 = [v4 decodeObjectOfClasses:v46 forKey:@"transactionTypes"];
+    v47 = [coderCopy decodeObjectOfClasses:v46 forKey:@"transactionTypes"];
     transactionTypes = v5->_transactionTypes;
     v5->_transactionTypes = v47;
 
-    v49 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bankConnectSectionIdentifier"];
+    v49 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bankConnectSectionIdentifier"];
     bankConnectSectionIdentifier = v5->_bankConnectSectionIdentifier;
     v5->_bankConnectSectionIdentifier = v49;
 
-    v5->_trend = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"trend"];
+    v5->_trend = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"trend"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   type = self->_type;
-  v5 = a3;
-  [v5 encodeInteger:type forKey:@"type"];
-  [v5 encodeInteger:self->_secondaryType forKey:@"secondaryType"];
-  [v5 encodeInteger:self->_secondaryGroupCount forKey:@"secondaryGroupCount"];
-  [v5 encodeObject:self->_startDate forKey:@"startDate"];
-  [v5 encodeObject:self->_endDate forKey:@"endDate"];
-  [v5 encodeInteger:self->_merchantCategory forKey:@"merchantCategory"];
-  [v5 encodeObject:self->_merchant forKey:@"merchant"];
-  [v5 encodeInteger:self->_transactionCount forKey:@"transactionCount"];
-  [v5 encodeObject:self->_totalAmount forKey:@"amount"];
-  [v5 encodeObject:self->_totalRewardsAmount forKey:@"rewardsAmount"];
-  [v5 encodeObject:self->_transactions forKey:@"transactions"];
-  [v5 encodeObject:self->_groups forKey:@"groups"];
-  [v5 encodeObject:self->_handles forKey:@"handles"];
-  [v5 encodeObject:self->_accountUser forKey:@"accountUser"];
-  [v5 encodeObject:self->_familyMember forKey:@"familyMember"];
-  [v5 encodeObject:self->_regions forKey:@"regions"];
-  [v5 encodeObject:self->_searchQuery forKey:@"searchQuery"];
-  [v5 encodeObject:self->_tag forKey:@"tag"];
-  [v5 encodeObject:self->_transactionTypes forKey:@"transactionTypes"];
-  [v5 encodeObject:self->_bankConnectSectionIdentifier forKey:@"bankConnectSectionIdentifier"];
-  [v5 encodeObject:self->_trend forKey:@"trend"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:type forKey:@"type"];
+  [coderCopy encodeInteger:self->_secondaryType forKey:@"secondaryType"];
+  [coderCopy encodeInteger:self->_secondaryGroupCount forKey:@"secondaryGroupCount"];
+  [coderCopy encodeObject:self->_startDate forKey:@"startDate"];
+  [coderCopy encodeObject:self->_endDate forKey:@"endDate"];
+  [coderCopy encodeInteger:self->_merchantCategory forKey:@"merchantCategory"];
+  [coderCopy encodeObject:self->_merchant forKey:@"merchant"];
+  [coderCopy encodeInteger:self->_transactionCount forKey:@"transactionCount"];
+  [coderCopy encodeObject:self->_totalAmount forKey:@"amount"];
+  [coderCopy encodeObject:self->_totalRewardsAmount forKey:@"rewardsAmount"];
+  [coderCopy encodeObject:self->_transactions forKey:@"transactions"];
+  [coderCopy encodeObject:self->_groups forKey:@"groups"];
+  [coderCopy encodeObject:self->_handles forKey:@"handles"];
+  [coderCopy encodeObject:self->_accountUser forKey:@"accountUser"];
+  [coderCopy encodeObject:self->_familyMember forKey:@"familyMember"];
+  [coderCopy encodeObject:self->_regions forKey:@"regions"];
+  [coderCopy encodeObject:self->_searchQuery forKey:@"searchQuery"];
+  [coderCopy encodeObject:self->_tag forKey:@"tag"];
+  [coderCopy encodeObject:self->_transactionTypes forKey:@"transactionTypes"];
+  [coderCopy encodeObject:self->_bankConnectSectionIdentifier forKey:@"bankConnectSectionIdentifier"];
+  [coderCopy encodeObject:self->_trend forKey:@"trend"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -144,7 +144,7 @@
   }
 
   startDate = self->_startDate;
-  v6 = v4[2];
+  v6 = equalCopy[2];
   if (startDate && v6)
   {
     if (([(NSDate *)startDate isEqual:?]& 1) == 0)
@@ -159,7 +159,7 @@
   }
 
   endDate = self->_endDate;
-  v8 = v4[3];
+  v8 = equalCopy[3];
   if (endDate && v8)
   {
     if (([(NSDate *)endDate isEqual:?]& 1) == 0)
@@ -174,7 +174,7 @@
   }
 
   totalAmount = self->_totalAmount;
-  v10 = v4[14];
+  v10 = equalCopy[14];
   if (totalAmount && v10)
   {
     if (![(PKCurrencyAmount *)totalAmount isEqual:?])
@@ -189,7 +189,7 @@
   }
 
   totalRewardsAmount = self->_totalRewardsAmount;
-  v12 = v4[15];
+  v12 = equalCopy[15];
   if (totalRewardsAmount && v12)
   {
     if (![(PKCurrencyAmount *)totalRewardsAmount isEqual:?])
@@ -204,7 +204,7 @@
   }
 
   merchant = self->_merchant;
-  v14 = v4[7];
+  v14 = equalCopy[7];
   if (merchant && v14)
   {
     if (![(PKMerchant *)merchant isEqual:?])
@@ -219,7 +219,7 @@
   }
 
   handles = self->_handles;
-  v16 = v4[8];
+  v16 = equalCopy[8];
   if (handles && v16)
   {
     if (([(NSSet *)handles isEqual:?]& 1) == 0)
@@ -234,7 +234,7 @@
   }
 
   accountUser = self->_accountUser;
-  v18 = v4[11];
+  v18 = equalCopy[11];
   if (accountUser && v18)
   {
     if (![(PKAccountUser *)accountUser isEqual:?])
@@ -249,7 +249,7 @@
   }
 
   familyMember = self->_familyMember;
-  v20 = v4[12];
+  v20 = equalCopy[12];
   if (familyMember && v20)
   {
     if (![(PKFamilyMember *)familyMember isEqual:?])
@@ -264,7 +264,7 @@
   }
 
   regions = self->_regions;
-  v22 = v4[9];
+  v22 = equalCopy[9];
   if (regions && v22)
   {
     if (([(NSArray *)regions isEqual:?]& 1) == 0)
@@ -279,7 +279,7 @@
   }
 
   searchQuery = self->_searchQuery;
-  v24 = v4[10];
+  v24 = equalCopy[10];
   if (searchQuery && v24)
   {
     if (![(PKSearchQuery *)searchQuery isEqual:?])
@@ -293,13 +293,13 @@
     goto LABEL_79;
   }
 
-  if (self->_merchantCategory != v4[4] || self->_type != v4[1] || self->_secondaryType != v4[20] || self->_transactionCount != v4[13] || self->_secondaryGroupCount != v4[21])
+  if (self->_merchantCategory != equalCopy[4] || self->_type != equalCopy[1] || self->_secondaryType != equalCopy[20] || self->_transactionCount != equalCopy[13] || self->_secondaryGroupCount != equalCopy[21])
   {
     goto LABEL_79;
   }
 
   groups = self->_groups;
-  v26 = v4[18];
+  v26 = equalCopy[18];
   if (groups && v26)
   {
     if (([(NSArray *)groups isEqual:?]& 1) == 0)
@@ -314,7 +314,7 @@
   }
 
   tag = self->_tag;
-  v28 = v4[6];
+  v28 = equalCopy[6];
   if (tag && v28)
   {
     if (![(PKPaymentTransactionTag *)tag isEqual:?])
@@ -329,7 +329,7 @@
   }
 
   bankConnectSectionIdentifier = self->_bankConnectSectionIdentifier;
-  v30 = v4[22];
+  v30 = equalCopy[22];
   if (bankConnectSectionIdentifier && v30)
   {
     if (([(NSString *)bankConnectSectionIdentifier isEqual:?]& 1) == 0)
@@ -344,7 +344,7 @@
   }
 
   transactionTypes = self->_transactionTypes;
-  v32 = v4[19];
+  v32 = equalCopy[19];
   if (!transactionTypes || !v32)
   {
     if (transactionTypes == v32)
@@ -364,7 +364,7 @@ LABEL_79:
 
 LABEL_75:
   trend = self->_trend;
-  v34 = v4[5];
+  v34 = equalCopy[5];
   if (trend && v34)
   {
     v35 = [(PKSpendingInsightTrend *)trend isEqual:?];
@@ -445,8 +445,8 @@ LABEL_80:
 - (CNContact)userContact
 {
   familyMember = self->_familyMember;
-  v3 = [(PKAccountUser *)self->_accountUser nameComponents];
-  v4 = [PKContactResolver contactForFamilyMember:familyMember nameComponents:v3 imageData:0];
+  nameComponents = [(PKAccountUser *)self->_accountUser nameComponents];
+  v4 = [PKContactResolver contactForFamilyMember:familyMember nameComponents:nameComponents imageData:0];
 
   return v4;
 }
@@ -454,8 +454,8 @@ LABEL_80:
 - (NSString)userDisplayName
 {
   v2 = MEMORY[0x1E695CD80];
-  v3 = [(PKPaymentTransactionGroup *)self userContact];
-  v4 = [v2 stringFromContact:v3 style:0];
+  userContact = [(PKPaymentTransactionGroup *)self userContact];
+  v4 = [v2 stringFromContact:userContact style:0];
 
   return v4;
 }
@@ -483,41 +483,41 @@ LABEL_80:
   return v7;
 }
 
-- (id)transactionForCashbackGroupWithSourceIdentifier:(id)a3
+- (id)transactionForCashbackGroupWithSourceIdentifier:(id)identifier
 {
   if (self->_type == 5)
   {
-    v4 = a3;
+    identifierCopy = identifier;
     v5 = objc_alloc_init(PKPaymentTransaction);
     [(PKPaymentTransaction *)v5 setTransactionType:9];
     v6 = self->_totalAmount;
-    v7 = [(PKCurrencyAmount *)v6 amount];
-    [(PKPaymentTransaction *)v5 setAmount:v7];
+    amount = [(PKCurrencyAmount *)v6 amount];
+    [(PKPaymentTransaction *)v5 setAmount:amount];
 
-    v8 = [(PKCurrencyAmount *)v6 currency];
-    [(PKPaymentTransaction *)v5 setCurrencyCode:v8];
+    currency = [(PKCurrencyAmount *)v6 currency];
+    [(PKPaymentTransaction *)v5 setCurrencyCode:currency];
 
     [(PKPaymentTransaction *)v5 setTransactionDate:self->_endDate];
     [(PKPaymentTransaction *)v5 setTransactionStatus:1];
-    [(PKPaymentTransaction *)v5 setTransactionSourceIdentifier:v4];
+    [(PKPaymentTransaction *)v5 setTransactionSourceIdentifier:identifierCopy];
 
-    v9 = [(NSArray *)self->_transactions firstObject];
+    firstObject = [(NSArray *)self->_transactions firstObject];
 
-    v10 = [v9 redemptionType];
-    v11 = v10;
-    if (v10 != 3 && v10 != 1)
+    redemptionType = [firstObject redemptionType];
+    accountType = redemptionType;
+    if (redemptionType != 3 && redemptionType != 1)
     {
-      if (v10)
+      if (redemptionType)
       {
 LABEL_7:
 
         goto LABEL_9;
       }
 
-      v11 = [v9 accountType];
+      accountType = [firstObject accountType];
     }
 
-    [(PKPaymentTransaction *)v5 setAccountType:v11];
+    [(PKPaymentTransaction *)v5 setAccountType:accountType];
     goto LABEL_7;
   }
 
@@ -527,22 +527,22 @@ LABEL_9:
   return v5;
 }
 
-+ (id)transactionGroupFromFKTransactionGroup:(id)a3
++ (id)transactionGroupFromFKTransactionGroup:(id)group
 {
-  v3 = a3;
+  groupCopy = group;
   v4 = objc_alloc_init(PKPaymentTransactionGroup);
-  v5 = [v3 startDate];
-  [(PKPaymentTransactionGroup *)v4 setStartDate:v5];
+  startDate = [groupCopy startDate];
+  [(PKPaymentTransactionGroup *)v4 setStartDate:startDate];
 
-  v6 = [v3 endDate];
-  [(PKPaymentTransactionGroup *)v4 setEndDate:v6];
+  endDate = [groupCopy endDate];
+  [(PKPaymentTransactionGroup *)v4 setEndDate:endDate];
 
-  -[PKPaymentTransactionGroup setTransactionCount:](v4, "setTransactionCount:", [v3 transactionCount]);
-  v7 = [v3 bankConnectSectionIdentifier];
-  [(PKPaymentTransactionGroup *)v4 setBankConnectSectionIdentifier:v7];
+  -[PKPaymentTransactionGroup setTransactionCount:](v4, "setTransactionCount:", [groupCopy transactionCount]);
+  bankConnectSectionIdentifier = [groupCopy bankConnectSectionIdentifier];
+  [(PKPaymentTransactionGroup *)v4 setBankConnectSectionIdentifier:bankConnectSectionIdentifier];
 
-  v8 = [v3 type];
-  if (v8)
+  type = [groupCopy type];
+  if (type)
   {
     v9 = 3;
   }

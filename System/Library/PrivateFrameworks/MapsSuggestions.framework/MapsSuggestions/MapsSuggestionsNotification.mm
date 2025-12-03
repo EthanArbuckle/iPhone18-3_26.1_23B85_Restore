@@ -1,13 +1,13 @@
 @interface MapsSuggestionsNotification
-- (MapsSuggestionsNotification)initWithCppNotification:(const void *)a3;
+- (MapsSuggestionsNotification)initWithCppNotification:(const void *)notification;
 - (const)darwinNotification;
 - (id).cxx_construct;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation MapsSuggestionsNotification
 
-- (MapsSuggestionsNotification)initWithCppNotification:(const void *)a3
+- (MapsSuggestionsNotification)initWithCppNotification:(const void *)notification
 {
   v7.receiver = self;
   v7.super_class = MapsSuggestionsNotification;
@@ -15,8 +15,8 @@
 
   if (v5)
   {
-    std::string::operator=((v5 + 8), a3);
-    *(v5 + 32) = *(a3 + 24);
+    std::string::operator=((v5 + 8), notification);
+    *(v5 + 32) = *(notification + 24);
   }
 
   return v5;
@@ -33,9 +33,9 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [MapsSuggestionsNotification allocWithZone:a3];
+  v4 = [MapsSuggestionsNotification allocWithZone:zone];
 
   return [(MapsSuggestionsNotification *)v4 initWithCppNotification:&self->_notification];
 }

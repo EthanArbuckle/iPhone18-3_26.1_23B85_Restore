@@ -10,140 +10,140 @@
 - (UIColor)textColor;
 - (UIImage)image;
 - (id)makeContentView;
-- (id)updatedConfigurationForState:(id)a3;
-- (void)setImage:(id)a3;
-- (void)setSecondaryText:(id)a3;
-- (void)setText:(id)a3;
-- (void)setTextColor:(id)a3;
+- (id)updatedConfigurationForState:(id)state;
+- (void)setImage:(id)image;
+- (void)setSecondaryText:(id)text;
+- (void)setText:(id)text;
+- (void)setTextColor:(id)color;
 @end
 
 @implementation DOCContentUnavailableConfiguration
 
 + (id)emptyConfiguration
 {
-  v2 = [MEMORY[0x277D75390] emptyConfiguration];
-  v3 = [v2 asDOC];
+  emptyConfiguration = [MEMORY[0x277D75390] emptyConfiguration];
+  asDOC = [emptyConfiguration asDOC];
 
-  return v3;
+  return asDOC;
 }
 
 + (id)emptyProminentConfiguration
 {
-  v2 = [MEMORY[0x277D75390] emptyProminentConfiguration];
-  v3 = [v2 asDOC];
+  emptyProminentConfiguration = [MEMORY[0x277D75390] emptyProminentConfiguration];
+  asDOC = [emptyProminentConfiguration asDOC];
 
-  return v3;
+  return asDOC;
 }
 
 + (id)emptyExtraProminentConfiguration
 {
-  v2 = [MEMORY[0x277D75390] emptyExtraProminentConfiguration];
-  v3 = [v2 asDOC];
+  emptyExtraProminentConfiguration = [MEMORY[0x277D75390] emptyExtraProminentConfiguration];
+  asDOC = [emptyExtraProminentConfiguration asDOC];
 
-  return v3;
+  return asDOC;
 }
 
 + (id)loadingConfiguration
 {
-  v2 = [MEMORY[0x277D75390] loadingConfiguration];
-  v3 = [v2 asDOC];
+  loadingConfiguration = [MEMORY[0x277D75390] loadingConfiguration];
+  asDOC = [loadingConfiguration asDOC];
 
-  return v3;
+  return asDOC;
 }
 
 + (id)searchConfiguration
 {
-  v2 = [MEMORY[0x277D75390] searchConfiguration];
-  v3 = [v2 asDOC];
+  searchConfiguration = [MEMORY[0x277D75390] searchConfiguration];
+  asDOC = [searchConfiguration asDOC];
 
-  return v3;
+  return asDOC;
 }
 
 - (UIImage)image
 {
-  v2 = [(DOCContentUnavailableConfiguration *)self asUIKit];
-  v3 = [v2 image];
+  asUIKit = [(DOCContentUnavailableConfiguration *)self asUIKit];
+  image = [asUIKit image];
 
-  return v3;
+  return image;
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v4 = a3;
-  v5 = [(DOCContentUnavailableConfiguration *)self asUIKit];
-  [v5 setImage:v4];
+  imageCopy = image;
+  asUIKit = [(DOCContentUnavailableConfiguration *)self asUIKit];
+  [asUIKit setImage:imageCopy];
 }
 
 - (UIColor)textColor
 {
-  v2 = [(DOCContentUnavailableConfiguration *)self asUIKit];
-  v3 = [v2 textProperties];
-  v4 = [v3 color];
+  asUIKit = [(DOCContentUnavailableConfiguration *)self asUIKit];
+  textProperties = [asUIKit textProperties];
+  color = [textProperties color];
 
-  return v4;
+  return color;
 }
 
-- (void)setTextColor:(id)a3
+- (void)setTextColor:(id)color
 {
-  v4 = a3;
-  v6 = [(DOCContentUnavailableConfiguration *)self asUIKit];
-  v5 = [v6 textProperties];
-  [v5 setColor:v4];
+  colorCopy = color;
+  asUIKit = [(DOCContentUnavailableConfiguration *)self asUIKit];
+  textProperties = [asUIKit textProperties];
+  [textProperties setColor:colorCopy];
 }
 
 - (NSString)text
 {
-  v2 = [(DOCContentUnavailableConfiguration *)self asUIKit];
-  v3 = [v2 text];
+  asUIKit = [(DOCContentUnavailableConfiguration *)self asUIKit];
+  text = [asUIKit text];
 
-  return v3;
+  return text;
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  v4 = a3;
-  v5 = [(DOCContentUnavailableConfiguration *)self asUIKit];
-  [v5 setText:v4];
+  textCopy = text;
+  asUIKit = [(DOCContentUnavailableConfiguration *)self asUIKit];
+  [asUIKit setText:textCopy];
 }
 
 - (NSString)secondaryText
 {
-  v2 = [(DOCContentUnavailableConfiguration *)self asUIKit];
-  v3 = [v2 secondaryText];
+  asUIKit = [(DOCContentUnavailableConfiguration *)self asUIKit];
+  secondaryText = [asUIKit secondaryText];
 
-  return v3;
+  return secondaryText;
 }
 
-- (void)setSecondaryText:(id)a3
+- (void)setSecondaryText:(id)text
 {
-  v4 = a3;
-  v5 = [(DOCContentUnavailableConfiguration *)self asUIKit];
-  [v5 setSecondaryText:v4];
+  textCopy = text;
+  asUIKit = [(DOCContentUnavailableConfiguration *)self asUIKit];
+  [asUIKit setSecondaryText:textCopy];
 }
 
 - (DOCContentUnavailableButtonProperties)buttonProperties
 {
-  v2 = [(DOCContentUnavailableConfiguration *)self asUIKit];
-  v3 = [v2 buttonProperties];
-  v4 = [v3 asDOC];
+  asUIKit = [(DOCContentUnavailableConfiguration *)self asUIKit];
+  buttonProperties = [asUIKit buttonProperties];
+  asDOC = [buttonProperties asDOC];
 
-  return v4;
+  return asDOC;
 }
 
 - (id)makeContentView
 {
-  v2 = [(DOCContentUnavailableConfiguration *)self asUIKit];
-  v3 = [v2 makeContentView];
+  asUIKit = [(DOCContentUnavailableConfiguration *)self asUIKit];
+  makeContentView = [asUIKit makeContentView];
 
-  return v3;
+  return makeContentView;
 }
 
-- (id)updatedConfigurationForState:(id)a3
+- (id)updatedConfigurationForState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v5 = objc_opt_class();
-  v6 = [(DOCContentUnavailableConfiguration *)self asUIKit];
-  v7 = [v6 updatedConfigurationForState:v4];
+  asUIKit = [(DOCContentUnavailableConfiguration *)self asUIKit];
+  v7 = [asUIKit updatedConfigurationForState:stateCopy];
 
   v8 = [v5 instanceWrappingImpl:v7];
 

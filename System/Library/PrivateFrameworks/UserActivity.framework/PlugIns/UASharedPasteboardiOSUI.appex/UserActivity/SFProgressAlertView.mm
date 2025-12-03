@@ -1,20 +1,20 @@
 @interface SFProgressAlertView
-- (SFProgressAlertView)initWithFrame:(CGRect)a3;
-- (void)addProgress:(id)a3;
+- (SFProgressAlertView)initWithFrame:(CGRect)frame;
+- (void)addProgress:(id)progress;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)removeProgress:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)removeProgress:(id)progress;
 - (void)transferFinishedAnimated;
-- (void)willMoveToWindow:(id)a3;
+- (void)willMoveToWindow:(id)window;
 @end
 
 @implementation SFProgressAlertView
 
-- (SFProgressAlertView)initWithFrame:(CGRect)a3
+- (SFProgressAlertView)initWithFrame:(CGRect)frame
 {
   v19.receiver = self;
   v19.super_class = SFProgressAlertView;
-  v3 = [(SFProgressAlertView *)&v19 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SFProgressAlertView *)&v19 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = os_log_create("com.apple.useractivity", "SPBProgressUI");
@@ -70,12 +70,12 @@
   [(SFProgressAlertView *)&v4 dealloc];
 }
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
   v5.receiver = self;
   v5.super_class = SFProgressAlertView;
   [(SFProgressAlertView *)&v5 willMoveToWindow:?];
-  if (a3)
+  if (window)
   {
     if (self->_finished)
     {
@@ -93,33 +93,33 @@
   }
 }
 
-- (void)addProgress:(id)a3
+- (void)addProgress:(id)progress
 {
-  objc_storeStrong(&self->_progress, a3);
-  v5 = a3;
-  [v5 addObserver:self forKeyPath:@"fractionCompleted" options:0 context:0];
+  objc_storeStrong(&self->_progress, progress);
+  progressCopy = progress;
+  [progressCopy addObserver:self forKeyPath:@"fractionCompleted" options:0 context:0];
 }
 
-- (void)removeProgress:(id)a3
+- (void)removeProgress:(id)progress
 {
-  [a3 removeObserver:self forKeyPath:@"fractionCompleted" context:0];
+  [progress removeObserver:self forKeyPath:@"fractionCompleted" context:0];
   progress = self->_progress;
   self->_progress = 0;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100001C6C;
   v11[3] = &unk_1000041F0;
   v11[4] = self;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v8 = v14;
-  v9 = v13;
-  v10 = v12;
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  v8 = changeCopy;
+  v9 = objectCopy;
+  v10 = pathCopy;
   dispatch_async(&_dispatch_main_q, v11);
 }
 

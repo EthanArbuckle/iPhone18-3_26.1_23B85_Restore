@@ -1,13 +1,13 @@
 @interface _TVStackBackdropView
-- (_TVStackBackdropView)initWithBlurEffectStyle:(int64_t)a3;
+- (_TVStackBackdropView)initWithBlurEffectStyle:(int64_t)style;
 - (void)layoutSubviews;
-- (void)setBlurEffectStyle:(int64_t)a3;
-- (void)setImage:(id)a3;
+- (void)setBlurEffectStyle:(int64_t)style;
+- (void)setImage:(id)image;
 @end
 
 @implementation _TVStackBackdropView
 
-- (_TVStackBackdropView)initWithBlurEffectStyle:(int64_t)a3
+- (_TVStackBackdropView)initWithBlurEffectStyle:(int64_t)style
 {
   v11.receiver = self;
   v11.super_class = _TVStackBackdropView;
@@ -15,9 +15,9 @@
   v5 = v4;
   if (v4)
   {
-    v4->_blurEffectStyle = a3;
+    v4->_blurEffectStyle = style;
     v6 = objc_alloc(MEMORY[0x277D75D68]);
-    v7 = [MEMORY[0x277D75210] effectWithStyle:a3];
+    v7 = [MEMORY[0x277D75210] effectWithStyle:style];
     v8 = [v6 initWithEffect:v7];
     visualEffectView = v5->_visualEffectView;
     v5->_visualEffectView = v8;
@@ -28,26 +28,26 @@
   return v5;
 }
 
-- (void)setBlurEffectStyle:(int64_t)a3
+- (void)setBlurEffectStyle:(int64_t)style
 {
-  if (self->_blurEffectStyle != a3)
+  if (self->_blurEffectStyle != style)
   {
-    self->_blurEffectStyle = a3;
+    self->_blurEffectStyle = style;
     visualEffectView = self->_visualEffectView;
     v5 = [MEMORY[0x277D75210] effectWithStyle:?];
     [(UIVisualEffectView *)visualEffectView setEffect:v5];
   }
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v5 = a3;
-  if (self->_image != v5)
+  imageCopy = image;
+  if (self->_image != imageCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_image, a3);
+    v6 = imageCopy;
+    objc_storeStrong(&self->_image, image);
     [(_TVStackBackdropView *)self setNeedsLayout];
-    v5 = v6;
+    imageCopy = v6;
   }
 }
 
@@ -59,10 +59,10 @@
   [(_TVStackBackdropView *)self bounds];
   v4 = v3;
   v6 = v5;
-  v7 = [(_TVStackBackdropView *)self image];
+  image = [(_TVStackBackdropView *)self image];
 
   imageView = self->_imageView;
-  if (v7)
+  if (image)
   {
     if (!imageView)
     {
@@ -74,8 +74,8 @@
       imageView = self->_imageView;
     }
 
-    v11 = [(_TVStackBackdropView *)self image];
-    [(UIImageView *)imageView setImage:v11];
+    image2 = [(_TVStackBackdropView *)self image];
+    [(UIImageView *)imageView setImage:image2];
 
     [(UIImageView *)self->_imageView setFrame:0.0, 0.0, v4, v6];
   }

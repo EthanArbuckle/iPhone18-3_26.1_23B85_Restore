@@ -1,8 +1,8 @@
 @interface LPTestingOverrides
 + (void)reset;
-+ (void)setAdditionalAllowedFileURLDirectories:(id)a3;
-+ (void)setForceDarkLuminanceThreshold:(id)a3;
-+ (void)setForceSubsampleImagesToScreenSize:(id)a3;
++ (void)setAdditionalAllowedFileURLDirectories:(id)directories;
++ (void)setForceDarkLuminanceThreshold:(id)threshold;
++ (void)setForceSubsampleImagesToScreenSize:(id)size;
 @end
 
 @implementation LPTestingOverrides
@@ -40,25 +40,25 @@
   [v7 _setOverrideCapabilities:1];
 }
 
-+ (void)setForceSubsampleImagesToScreenSize:(id)a3
++ (void)setForceSubsampleImagesToScreenSize:(id)size
 {
-  objc_storeStrong(&_forceSubsampleImagesToScreenSize, a3);
-  v4 = a3;
+  objc_storeStrong(&_forceSubsampleImagesToScreenSize, size);
+  sizeCopy = size;
   +[LPResources clearCachedResources];
 }
 
-+ (void)setAdditionalAllowedFileURLDirectories:(id)a3
++ (void)setAdditionalAllowedFileURLDirectories:(id)directories
 {
-  v5 = a3;
-  v3 = [v5 copy];
+  directoriesCopy = directories;
+  v3 = [directoriesCopy copy];
   v4 = _additionalAllowedFileURLDirectories;
   _additionalAllowedFileURLDirectories = v3;
 }
 
-+ (void)setForceDarkLuminanceThreshold:(id)a3
++ (void)setForceDarkLuminanceThreshold:(id)threshold
 {
-  objc_storeStrong(&_forceDarkLuminanceThreshold, a3);
-  v4 = a3;
+  objc_storeStrong(&_forceDarkLuminanceThreshold, threshold);
+  thresholdCopy = threshold;
   +[LPTheme invalidateThemeCache];
 }
 

@@ -10,8 +10,8 @@
   v8.receiver = self;
   v8.super_class = BLTPBAppearance;
   v4 = [(BLTPBAppearance *)&v8 description];
-  v5 = [(PBCodable *)self redact];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  redact = [(PBCodable *)self redact];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, redact];
 
   return v6;
 }

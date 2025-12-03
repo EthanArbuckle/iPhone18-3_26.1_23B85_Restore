@@ -4,14 +4,14 @@
 - (NSURL)defaultAdTargetingServerURL;
 - (NSURL)defaultToroServerURL;
 - (double)clientSettingsExpirationDate;
-- (id)_fCapParametersFromType:(int64_t)a3;
-- (id)_fCapSettingsFromType:(int64_t)a3;
-- (id)_getParametersForName:(id)a3;
+- (id)_fCapParametersFromType:(int64_t)type;
+- (id)_fCapSettingsFromType:(int64_t)type;
+- (id)_getParametersForName:(id)name;
 - (void)applyClientSettings;
 - (void)checkDefaultsAndSetInternalSettingsOverrides;
 - (void)expireClientSettings;
 - (void)refresh;
-- (void)refreshClientSettings:(id)a3;
+- (void)refreshClientSettings:(id)settings;
 - (void)restoreClientSettings;
 @end
 
@@ -23,7 +23,7 @@
   block[1] = 3221225472;
   block[2] = sub_264E46E08;
   block[3] = &unk_279B88918;
-  block[4] = a1;
+  block[4] = self;
   if (qword_2810C45A0 != -1)
   {
     dispatch_once(&qword_2810C45A0, block);
@@ -193,10 +193,10 @@
   objc_msgSend_refreshClientSettings_(self, v3, 0, v4, v5);
 }
 
-- (void)refreshClientSettings:(id)a3
+- (void)refreshClientSettings:(id)settings
 {
   v89 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  settingsCopy = settings;
   v9 = objc_msgSend_sharedInstance(MEMORY[0x277CE9630], v5, v6, v7, v8);
   v13 = objc_msgSend_BOOLForKey_(v9, v10, @"ClientSettingsForceExpire", v11, v12);
 
@@ -239,7 +239,7 @@ LABEL_7:
     v82[3] = &unk_279B88990;
     v82[4] = self;
     v83 = v49;
-    v84 = v4;
+    v84 = settingsCopy;
     v55 = v49;
     objc_msgSend_addOperationWithBlock_(v54, v56, v82, v57, v58);
   }
@@ -268,21 +268,21 @@ LABEL_7:
       _os_log_impl(&dword_264E42000, v71, OS_LOG_TYPE_DEFAULT, "Current Client Settings: %@", buf, 0xCu);
     }
 
-    if (v4)
+    if (settingsCopy)
     {
-      (*(v4 + 2))(v4, 0);
+      (*(settingsCopy + 2))(settingsCopy, 0);
     }
   }
 
   v59 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_fCapSettingsFromType:(int64_t)a3
+- (id)_fCapSettingsFromType:(int64_t)type
 {
   v6 = 0;
-  if (a3 > 2)
+  if (type > 2)
   {
-    switch(a3)
+    switch(type)
     {
       case 3:
         v6 = objc_msgSend_iris2Settings(self, a2, 3, v3, v4);
@@ -296,14 +296,14 @@ LABEL_7:
     }
   }
 
-  else if (a3)
+  else if (type)
   {
-    if (a3 == 1)
+    if (type == 1)
     {
       v6 = objc_msgSend_landingPageSettings(self, a2, 1, v3, v4);
     }
 
-    else if (a3 == 2)
+    else if (type == 2)
     {
       v6 = objc_msgSend_iris1Settings(self, a2, 2, v3, v4);
     }
@@ -317,12 +317,12 @@ LABEL_7:
   return v6;
 }
 
-- (id)_fCapParametersFromType:(int64_t)a3
+- (id)_fCapParametersFromType:(int64_t)type
 {
   v5 = 0;
-  if (a3 > 2)
+  if (type > 2)
   {
-    switch(a3)
+    switch(type)
     {
       case 3:
         objc_msgSend__getParametersForName_(self, a2, @"iris2", v3, v4);
@@ -340,7 +340,7 @@ LABEL_7:
     goto LABEL_15;
   }
 
-  if (!a3)
+  if (!type)
   {
     v6 = objc_msgSend_clientSettings(self, a2, 0, v3, v4);
     v11 = objc_msgSend_searchAdsSettingsParams(v6, v7, v8, v9, v10);
@@ -350,14 +350,14 @@ LABEL_13:
     goto LABEL_16;
   }
 
-  if (a3 == 1)
+  if (type == 1)
   {
     v6 = objc_msgSend_clientSettings(self, a2, 1, v3, v4);
     v11 = objc_msgSend_searchLandingAdsSettingsParams(v6, v12, v13, v14, v15);
     goto LABEL_13;
   }
 
-  if (a3 != 2)
+  if (type != 2)
   {
     goto LABEL_16;
   }
@@ -371,13 +371,13 @@ LABEL_16:
 
 - (void)applyClientSettings
 {
-  v112 = self;
+  selfCopy = self;
   v4 = 0;
   v119 = *MEMORY[0x277D85DE8];
   do
   {
-    v5 = v112;
-    v6 = objc_msgSend__fCapParametersFromType_(v112, a2, v4, v2, v3, v112);
+    v5 = selfCopy;
+    v6 = objc_msgSend__fCapParametersFromType_(selfCopy, a2, v4, v2, v3, selfCopy);
     v113 = v4;
     v10 = objc_msgSend__fCapSettingsFromType_(v5, v7, v4, v8, v9);
     v114 = 0u;
@@ -461,7 +461,7 @@ LABEL_16:
   }
 
   while (v113 != 5);
-  objc_msgSend_checkDefaultsAndSetInternalSettingsOverrides(v112, a2, v110, v2, v3);
+  objc_msgSend_checkDefaultsAndSetInternalSettingsOverrides(selfCopy, a2, v110, v2, v3);
   v111 = *MEMORY[0x277D85DE8];
 }
 
@@ -990,9 +990,9 @@ LABEL_16:
   v1061 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_getParametersForName:(id)a3
+- (id)_getParametersForName:(id)name
 {
-  v5 = objc_msgSend_clientSettings(self, a2, a3, v3, v4);
+  v5 = objc_msgSend_clientSettings(self, a2, name, v3, v4);
   v10 = objc_msgSend_searchLandingAdsSettingsParams(v5, v6, v7, v8, v9);
 
   return v10;

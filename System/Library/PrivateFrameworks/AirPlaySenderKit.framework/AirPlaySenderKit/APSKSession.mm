@@ -1,49 +1,49 @@
 @interface APSKSession
-- (APSKSession)initWithDelegate:(id)a3 delegateQueue:(id)a4;
+- (APSKSession)initWithDelegate:(id)delegate delegateQueue:(id)queue;
 - (BOOL)active;
-- (int)addAudioStream:(id)a3;
-- (int)addVideoStream:(id)a3;
-- (int)localSendAudioData:(id)a3;
-- (int)localSendAudioDataWithTimestamps:(id)a3 forHostTime:(id *)a4 forSampleTime:(unint64_t)a5 forDiscontinuity:(BOOL)a6;
-- (int)localSendFrame:(__CVBuffer *)a3 forTime:(int64_t)a4;
-- (int)localSetAuthString:(id)a3;
-- (int)localStartToDestination:(id)a3 withOptions:(id)a4;
-- (int)remoteSendAudioData:(id)a3;
-- (int)remoteSendAudioDataWithTimestamps:(id)a3 forHostTime:(id *)a4 forSampleTime:(unint64_t)a5 forDiscontinuity:(BOOL)a6;
-- (int)remoteSendFrame:(__CVBuffer *)a3 forTime:(int64_t)a4;
-- (int)remoteSetAuthString:(id)a3;
-- (int)remoteStartToDestination:(id)a3 withOptions:(id)a4;
-- (int)sendAudioData:(id)a3;
-- (int)sendAudioDataWithTimestamps:(id)a3 forHostTime:(id *)a4 forSampleTime:(unint64_t)a5 forDiscontinuity:(BOOL)a6;
-- (int)sendFrame:(__CVBuffer *)a3 forTime:(int64_t)a4;
-- (int)setAuthString:(id)a3;
+- (int)addAudioStream:(id)stream;
+- (int)addVideoStream:(id)stream;
+- (int)localSendAudioData:(id)data;
+- (int)localSendAudioDataWithTimestamps:(id)timestamps forHostTime:(id *)time forSampleTime:(unint64_t)sampleTime forDiscontinuity:(BOOL)discontinuity;
+- (int)localSendFrame:(__CVBuffer *)frame forTime:(int64_t)time;
+- (int)localSetAuthString:(id)string;
+- (int)localStartToDestination:(id)destination withOptions:(id)options;
+- (int)remoteSendAudioData:(id)data;
+- (int)remoteSendAudioDataWithTimestamps:(id)timestamps forHostTime:(id *)time forSampleTime:(unint64_t)sampleTime forDiscontinuity:(BOOL)discontinuity;
+- (int)remoteSendFrame:(__CVBuffer *)frame forTime:(int64_t)time;
+- (int)remoteSetAuthString:(id)string;
+- (int)remoteStartToDestination:(id)destination withOptions:(id)options;
+- (int)sendAudioData:(id)data;
+- (int)sendAudioDataWithTimestamps:(id)timestamps forHostTime:(id *)time forSampleTime:(unint64_t)sampleTime forDiscontinuity:(BOOL)discontinuity;
+- (int)sendFrame:(__CVBuffer *)frame forTime:(int64_t)time;
+- (int)setAuthString:(id)string;
 - (unsigned)usageModes;
 - (void)dealloc;
-- (void)handleAuthRequired:(int)a3;
-- (void)handleFailure:(int)a3;
-- (void)handleStartCompletion:(int)a3;
-- (void)handleUpdatedDisplayWidth:(int)a3 height:(int)a4 refreshRate:(int)a5;
-- (void)handleVideoStreamErrorNotification:(int)a3;
+- (void)handleAuthRequired:(int)required;
+- (void)handleFailure:(int)failure;
+- (void)handleStartCompletion:(int)completion;
+- (void)handleUpdatedDisplayWidth:(int)width height:(int)height refreshRate:(int)rate;
+- (void)handleVideoStreamErrorNotification:(int)notification;
 - (void)localStop;
 - (void)remoteStop;
-- (void)startToDestination:(id)a3 withOptions:(id)a4;
+- (void)startToDestination:(id)destination withOptions:(id)options;
 - (void)stop;
 @end
 
 @implementation APSKSession
 
-- (APSKSession)initWithDelegate:(id)a3 delegateQueue:(id)a4
+- (APSKSession)initWithDelegate:(id)delegate delegateQueue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  queueCopy = queue;
   v17.receiver = self;
   v17.super_class = APSKSession;
   v8 = [(APSKSession *)&v17 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_delegate, v6);
-    objc_storeStrong(&v9->_delegateQueue, a4);
+    objc_storeWeak(&v8->_delegate, delegateCopy);
+    objc_storeStrong(&v9->_delegateQueue, queue);
     v9->_state = 0;
     v9->_remote = 1;
     v10 = dispatch_queue_create("com.apple.apsksession.stateq", 0);
@@ -104,9 +104,9 @@
   return v3;
 }
 
-- (int)addVideoStream:(id)a3
+- (int)addVideoStream:(id)stream
 {
-  v4 = a3;
+  streamCopy = stream;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -116,10 +116,10 @@
   block[1] = 3221225472;
   block[2] = __30__APSKSession_addVideoStream___block_invoke;
   block[3] = &unk_278C65A10;
-  v9 = v4;
+  v9 = streamCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
+  v6 = streamCopy;
   dispatch_sync(queue, block);
   LODWORD(queue) = *(v12 + 6);
 
@@ -158,9 +158,9 @@ void __30__APSKSession_addVideoStream___block_invoke(uint64_t a1)
   }
 }
 
-- (int)addAudioStream:(id)a3
+- (int)addAudioStream:(id)stream
 {
-  v4 = a3;
+  streamCopy = stream;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -170,10 +170,10 @@ void __30__APSKSession_addVideoStream___block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __30__APSKSession_addAudioStream___block_invoke;
   block[3] = &unk_278C65A10;
-  v9 = v4;
+  v9 = streamCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
+  v6 = streamCopy;
   dispatch_sync(queue, block);
   LODWORD(queue) = *(v12 + 6);
 
@@ -212,9 +212,9 @@ void __30__APSKSession_addAudioStream___block_invoke(uint64_t a1)
   }
 }
 
-- (int)setAuthString:(id)a3
+- (int)setAuthString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -230,9 +230,9 @@ void __30__APSKSession_addAudioStream___block_invoke(uint64_t a1)
   block[2] = __29__APSKSession_setAuthString___block_invoke;
   block[3] = &unk_278C65A38;
   block[4] = self;
-  v10 = v4;
+  v10 = stringCopy;
   v11 = &v12;
-  v6 = v4;
+  v6 = stringCopy;
   dispatch_sync(queue, block);
   v7 = *(v13 + 6);
 
@@ -274,20 +274,20 @@ void __29__APSKSession_setAuthString___block_invoke(void *a1)
   }
 }
 
-- (void)startToDestination:(id)a3 withOptions:(id)a4
+- (void)startToDestination:(id)destination withOptions:(id)options
 {
-  v6 = a3;
-  v7 = a4;
+  destinationCopy = destination;
+  optionsCopy = options;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __46__APSKSession_startToDestination_withOptions___block_invoke;
   block[3] = &unk_278C65A60;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = optionsCopy;
+  v13 = destinationCopy;
+  v9 = destinationCopy;
+  v10 = optionsCopy;
   dispatch_sync(queue, block);
 }
 
@@ -417,7 +417,7 @@ uint64_t __19__APSKSession_stop__block_invoke(uint64_t a1)
   return result;
 }
 
-- (int)sendFrame:(__CVBuffer *)a3 forTime:(int64_t)a4
+- (int)sendFrame:(__CVBuffer *)frame forTime:(int64_t)time
 {
   v8 = 0;
   v9 = &v8;
@@ -430,8 +430,8 @@ uint64_t __19__APSKSession_stop__block_invoke(uint64_t a1)
   v7[3] = &unk_278C65A88;
   v7[4] = self;
   v7[5] = &v8;
-  v7[6] = a3;
-  v7[7] = a4;
+  v7[6] = frame;
+  v7[7] = time;
   dispatch_sync(queue, v7);
   v5 = *(v9 + 6);
   _Block_object_dispose(&v8, 8);
@@ -466,9 +466,9 @@ uint64_t __33__APSKSession_sendFrame_forTime___block_invoke(void *a1)
   }
 }
 
-- (int)sendAudioData:(id)a3
+- (int)sendAudioData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -478,10 +478,10 @@ uint64_t __33__APSKSession_sendFrame_forTime___block_invoke(void *a1)
   block[1] = 3221225472;
   block[2] = __29__APSKSession_sendAudioData___block_invoke;
   block[3] = &unk_278C65A10;
-  v9 = v4;
+  v9 = dataCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
+  v6 = dataCopy;
   dispatch_sync(queue, block);
   LODWORD(queue) = *(v12 + 6);
 
@@ -517,9 +517,9 @@ uint64_t __29__APSKSession_sendAudioData___block_invoke(void *a1)
   return result;
 }
 
-- (int)sendAudioDataWithTimestamps:(id)a3 forHostTime:(id *)a4 forSampleTime:(unint64_t)a5 forDiscontinuity:(BOOL)a6
+- (int)sendAudioDataWithTimestamps:(id)timestamps forHostTime:(id *)time forSampleTime:(unint64_t)sampleTime forDiscontinuity:(BOOL)discontinuity
 {
-  v10 = a3;
+  timestampsCopy = timestamps;
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
@@ -530,17 +530,17 @@ uint64_t __29__APSKSession_sendAudioData___block_invoke(void *a1)
   v14[2] = __86__APSKSession_sendAudioDataWithTimestamps_forHostTime_forSampleTime_forDiscontinuity___block_invoke;
   v14[3] = &unk_278C65AB0;
   v14[4] = self;
-  v15 = v10;
-  v18 = *a4;
+  v15 = timestampsCopy;
+  v18 = *time;
   v16 = &v20;
-  v17 = a5;
-  v19 = a6;
-  v12 = v10;
+  sampleTimeCopy = sampleTime;
+  discontinuityCopy = discontinuity;
+  v12 = timestampsCopy;
   dispatch_sync(queue, v14);
-  LODWORD(a5) = *(v21 + 6);
+  LODWORD(sampleTime) = *(v21 + 6);
 
   _Block_object_dispose(&v20, 8);
-  return a5;
+  return sampleTime;
 }
 
 uint64_t __86__APSKSession_sendAudioDataWithTimestamps_forHostTime_forSampleTime_forDiscontinuity___block_invoke(uint64_t a1)
@@ -603,14 +603,14 @@ uint64_t __86__APSKSession_sendAudioDataWithTimestamps_forHostTime_forSampleTime
   }
 }
 
-- (void)handleAuthRequired:(int)a3
+- (void)handleAuthRequired:(int)required
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = a3 == 1;
+    v7 = required == 1;
     if (gLogCategory_AirPlaySenderKit <= 50 && (gLogCategory_AirPlaySenderKit != -1 || _LogCategory_Initialize()))
     {
       LogPrintF();
@@ -633,7 +633,7 @@ void __34__APSKSession_handleAuthRequired___block_invoke(uint64_t a1)
   [WeakRetained sessionAuthRequired:*(a1 + 32) forAuthType:*(a1 + 40)];
 }
 
-- (void)handleStartCompletion:(int)a3
+- (void)handleStartCompletion:(int)completion
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -641,7 +641,7 @@ void __34__APSKSession_handleAuthRequired___block_invoke(uint64_t a1)
   v4[2] = __37__APSKSession_handleStartCompletion___block_invoke;
   v4[3] = &unk_278C659B8;
   v4[4] = self;
-  v5 = a3;
+  completionCopy = completion;
   dispatch_sync(queue, v4);
 }
 
@@ -734,7 +734,7 @@ void __37__APSKSession_handleStartCompletion___block_invoke_2(uint64_t a1)
   [WeakRetained sessionDidFail:*(a1 + 32) withError:*(a1 + 40)];
 }
 
-- (void)handleFailure:(int)a3
+- (void)handleFailure:(int)failure
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -742,7 +742,7 @@ void __37__APSKSession_handleStartCompletion___block_invoke_2(uint64_t a1)
   v4[2] = __29__APSKSession_handleFailure___block_invoke;
   v4[3] = &unk_278C659B8;
   v4[4] = self;
-  v5 = a3;
+  failureCopy = failure;
   dispatch_sync(queue, v4);
 }
 
@@ -804,7 +804,7 @@ void __29__APSKSession_handleFailure___block_invoke_2(uint64_t a1)
   [WeakRetained sessionDidFail:*(a1 + 32) withError:*(a1 + 40)];
 }
 
-- (void)handleUpdatedDisplayWidth:(int)a3 height:(int)a4 refreshRate:(int)a5
+- (void)handleUpdatedDisplayWidth:(int)width height:(int)height refreshRate:(int)rate
 {
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -812,13 +812,13 @@ void __29__APSKSession_handleFailure___block_invoke_2(uint64_t a1)
   block[2] = __60__APSKSession_handleUpdatedDisplayWidth_height_refreshRate___block_invoke;
   block[3] = &unk_278C659E0;
   block[4] = self;
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  widthCopy = width;
+  heightCopy = height;
+  rateCopy = rate;
   dispatch_sync(queue, block);
 }
 
-- (void)handleVideoStreamErrorNotification:(int)a3
+- (void)handleVideoStreamErrorNotification:(int)notification
 {
   if (gLogCategory_AirPlaySenderKit <= 90 && (gLogCategory_AirPlaySenderKit != -1 || _LogCategory_Initialize()))
   {
@@ -831,17 +831,17 @@ void __29__APSKSession_handleFailure___block_invoke_2(uint64_t a1)
   block[2] = __50__APSKSession_handleVideoStreamErrorNotification___block_invoke;
   block[3] = &unk_278C659B8;
   block[4] = self;
-  v7 = a3;
+  notificationCopy = notification;
   dispatch_sync(queue, block);
 }
 
-- (int)localSetAuthString:(id)a3
+- (int)localSetAuthString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   sender = self->_sender;
   if (sender)
   {
-    v6 = APMediaSenderSetAuthString(sender, v4);
+    v6 = APMediaSenderSetAuthString(sender, stringCopy);
     if (v6)
     {
       [APSKSession localSetAuthString:];
@@ -857,13 +857,13 @@ void __29__APSKSession_handleFailure___block_invoke_2(uint64_t a1)
   return v6;
 }
 
-- (int)localStartToDestination:(id)a3 withOptions:(id)a4
+- (int)localStartToDestination:(id)destination withOptions:(id)options
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(APSKSession *)self usageModes];
-  v9 = [v7 objectForKeyedSubscript:@"APSKSessionOptionsKeyTimeoutSeconds"];
-  v10 = [v9 intValue];
+  destinationCopy = destination;
+  optionsCopy = options;
+  usageModes = [(APSKSession *)self usageModes];
+  v9 = [optionsCopy objectForKeyedSubscript:@"APSKSessionOptionsKeyTimeoutSeconds"];
+  intValue = [v9 intValue];
 
   objc_initWeak(location, self);
   aBlock[0] = MEMORY[0x277D85DD0];
@@ -896,7 +896,7 @@ void __29__APSKSession_handleFailure___block_invoke_2(uint64_t a1)
   v32[3] = &unk_278C65B50;
   objc_copyWeak(&v33, location);
   v13 = _Block_copy(v32);
-  if (!v8)
+  if (!usageModes)
   {
     updated = -6705;
     APSLogErrorAt();
@@ -923,7 +923,7 @@ void __29__APSKSession_handleFailure___block_invoke_2(uint64_t a1)
   {
     if (gLogCategory_AirPlaySenderKit != -1 || (v15 = _LogCategory_Initialize(), sender = self->_sender, v15))
     {
-      v28 = self;
+      selfCopy = self;
       v29 = sender;
       LogPrintF();
       sender = self->_sender;
@@ -953,7 +953,7 @@ LABEL_11:
           if (!self->_videoStream)
           {
 LABEL_21:
-            APMediaSenderStart(self->_sender, [v6 value], objc_msgSend(v6, "destinationType"), v8, v10, v11);
+            APMediaSenderStart(self->_sender, [destinationCopy value], objc_msgSend(destinationCopy, "destinationType"), usageModes, intValue, v11);
             updated = 0;
             goto LABEL_22;
           }
@@ -962,18 +962,18 @@ LABEL_21:
           if (!updated)
           {
             v19 = self->_sender;
-            v20 = [v7 objectForKeyedSubscript:@"_VideoOverrides"];
+            v20 = [optionsCopy objectForKeyedSubscript:@"_VideoOverrides"];
             updated = APMediaSenderSetVideoOverrides(v19, v20);
 
             if (!updated)
             {
-              v21 = [v7 objectForKeyedSubscript:@"_UseVideoPassthrough"];
-              v22 = [v21 BOOLValue];
+              v21 = [optionsCopy objectForKeyedSubscript:@"_UseVideoPassthrough"];
+              bOOLValue = [v21 BOOLValue];
 
-              if (!v22 || (updated = APMediaSenderSetVideoPassthroughMode(self->_sender)) == 0)
+              if (!bOOLValue || (updated = APMediaSenderSetVideoPassthroughMode(self->_sender)) == 0)
               {
-                v23 = [MEMORY[0x277CCAB98] defaultCenter];
-                v24 = [v23 addObserverForName:0x285143258 object:self->_sender queue:0 usingBlock:v13];
+                defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+                v24 = [defaultCenter addObserverForName:0x285143258 object:self->_sender queue:0 usingBlock:v13];
                 senderNotifObserver = self->_senderNotifObserver;
                 self->_senderNotifObserver = v24;
 
@@ -1054,8 +1054,8 @@ void __51__APSKSession_localStartToDestination_withOptions___block_invoke_5(uint
 {
   if (self->_senderNotifObserver)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 removeObserver:self->_senderNotifObserver];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter removeObserver:self->_senderNotifObserver];
 
     senderNotifObserver = self->_senderNotifObserver;
     self->_senderNotifObserver = 0;
@@ -1074,12 +1074,12 @@ void __51__APSKSession_localStartToDestination_withOptions___block_invoke_5(uint
   }
 }
 
-- (int)localSendFrame:(__CVBuffer *)a3 forTime:(int64_t)a4
+- (int)localSendFrame:(__CVBuffer *)frame forTime:(int64_t)time
 {
   sender = self->_sender;
   if (sender)
   {
-    v5 = APMediaSenderSubmitPixelBuffer(sender, a3, a4);
+    v5 = APMediaSenderSubmitPixelBuffer(sender, frame, time);
     if (v5)
     {
       [APSKSession localSendFrame:forTime:];
@@ -1095,13 +1095,13 @@ void __51__APSKSession_localStartToDestination_withOptions___block_invoke_5(uint
   return v5;
 }
 
-- (int)localSendAudioData:(id)a3
+- (int)localSendAudioData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   sender = self->_sender;
   if (sender)
   {
-    v6 = APMediaSenderEnqueueAudioData(sender, v4);
+    v6 = APMediaSenderEnqueueAudioData(sender, dataCopy);
     if (v6)
     {
       [APSKSession localSendAudioData:];
@@ -1117,15 +1117,15 @@ void __51__APSKSession_localStartToDestination_withOptions___block_invoke_5(uint
   return v6;
 }
 
-- (int)localSendAudioDataWithTimestamps:(id)a3 forHostTime:(id *)a4 forSampleTime:(unint64_t)a5 forDiscontinuity:(BOOL)a6
+- (int)localSendAudioDataWithTimestamps:(id)timestamps forHostTime:(id *)time forSampleTime:(unint64_t)sampleTime forDiscontinuity:(BOOL)discontinuity
 {
-  v10 = a3;
+  timestampsCopy = timestamps;
   sender = self->_sender;
   if (sender)
   {
-    v14 = *&a4->var0;
-    var3 = a4->var3;
-    v12 = APMediaSenderEnqueueAudioDataWithTimestamps(sender, v10, &v14, a5, a6);
+    v14 = *&time->var0;
+    var3 = time->var3;
+    v12 = APMediaSenderEnqueueAudioDataWithTimestamps(sender, timestampsCopy, &v14, sampleTime, discontinuity);
     if (v12)
     {
       [APSKSession localSendAudioDataWithTimestamps:forHostTime:forSampleTime:forDiscontinuity:];
@@ -1141,9 +1141,9 @@ void __51__APSKSession_localStartToDestination_withOptions___block_invoke_5(uint
   return v12;
 }
 
-- (int)remoteSetAuthString:(id)a3
+- (int)remoteSetAuthString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   if (self->_objectID && self->_client)
   {
     v5 = FigXPCCreateBasicMessage();
@@ -1155,9 +1155,9 @@ void __51__APSKSession_localStartToDestination_withOptions___block_invoke_5(uint
 
     else
     {
-      if (v4)
+      if (stringCopy)
       {
-        xpc_dictionary_set_string(v6, kAPSKServiceMsgParamC2S_AuthString, [v4 UTF8String]);
+        xpc_dictionary_set_string(v6, kAPSKServiceMsgParamC2S_AuthString, [stringCopy UTF8String]);
       }
 
       client = self->_client;
@@ -1181,15 +1181,15 @@ void __51__APSKSession_localStartToDestination_withOptions___block_invoke_5(uint
   return v5;
 }
 
-- (int)remoteStartToDestination:(id)a3 withOptions:(id)a4
+- (int)remoteStartToDestination:(id)destination withOptions:(id)options
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(APSKSession *)self usageModes];
-  v9 = [v7 objectForKeyedSubscript:@"APSKSessionOptionsKeyTimeoutSeconds"];
-  v10 = [v9 intValue];
+  destinationCopy = destination;
+  optionsCopy = options;
+  usageModes = [(APSKSession *)self usageModes];
+  v9 = [optionsCopy objectForKeyedSubscript:@"APSKSessionOptionsKeyTimeoutSeconds"];
+  intValue = [v9 intValue];
 
-  if (!v8)
+  if (!usageModes)
   {
     [APSKSession remoteStartToDestination:withOptions:];
     v16 = 0;
@@ -1287,7 +1287,7 @@ LABEL_42:
 
     else
     {
-      [v6 value];
+      [destinationCopy value];
       v22 = FigXPCMessageSetCFObject();
       if (v22)
       {
@@ -1297,9 +1297,9 @@ LABEL_42:
 
       else
       {
-        xpc_dictionary_set_uint64(v13, kAPSKServiceMsgParamC2S_DestinationType, [v6 destinationType]);
-        xpc_dictionary_set_uint64(v13, kAPSKServiceMsgParamC2S_UsageModes, v8);
-        xpc_dictionary_set_uint64(v13, kAPSKServiceMsgParamC2S_TimeoutSecs, v10);
+        xpc_dictionary_set_uint64(v13, kAPSKServiceMsgParamC2S_DestinationType, [destinationCopy destinationType]);
+        xpc_dictionary_set_uint64(v13, kAPSKServiceMsgParamC2S_UsageModes, usageModes);
+        xpc_dictionary_set_uint64(v13, kAPSKServiceMsgParamC2S_TimeoutSecs, intValue);
         passcode = self->_passcode;
         if (passcode)
         {
@@ -1315,7 +1315,7 @@ LABEL_42:
 
         if (self->_videoStream)
         {
-          v25 = [v7 objectForKeyedSubscript:@"_VideoOverrides"];
+          v25 = [optionsCopy objectForKeyedSubscript:@"_VideoOverrides"];
 
           if (v25)
           {
@@ -1328,10 +1328,10 @@ LABEL_42:
             }
           }
 
-          v27 = [v7 objectForKeyedSubscript:@"_UseVideoPassthrough"];
-          v28 = [v27 BOOLValue];
+          v27 = [optionsCopy objectForKeyedSubscript:@"_UseVideoPassthrough"];
+          bOOLValue = [v27 BOOLValue];
 
-          if (v28)
+          if (bOOLValue)
           {
             xpc_dictionary_set_BOOL(v13, kAPSKServiceMsgParamC2S_VideoPassthru, 1);
           }
@@ -1370,7 +1370,7 @@ LABEL_31:
   return v12;
 }
 
-- (int)remoteSendFrame:(__CVBuffer *)a3 forTime:(int64_t)a4
+- (int)remoteSendFrame:(__CVBuffer *)frame forTime:(int64_t)time
 {
   if (self->_objectID && self->_client)
   {
@@ -1386,7 +1386,7 @@ LABEL_31:
     else
     {
       v12[0] = 0;
-      v7 = APSKServiceSerializeFrame(a3, a4, v12);
+      v7 = APSKServiceSerializeFrame(frame, time, v12);
       v9 = v12[0];
       if (v7)
       {
@@ -1420,9 +1420,9 @@ LABEL_31:
   return v7;
 }
 
-- (int)remoteSendAudioData:(id)a3
+- (int)remoteSendAudioData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   if (self->_objectID && self->_client)
   {
     v5 = FigXPCCreateBasicMessage();
@@ -1434,9 +1434,9 @@ LABEL_31:
 
     else
     {
-      if (v4)
+      if (dataCopy)
       {
-        xpc_dictionary_set_data(v6, kAPSKServiceMsgParamC2S_AudioData, [v4 bytes], objc_msgSend(v4, "length"));
+        xpc_dictionary_set_data(v6, kAPSKServiceMsgParamC2S_AudioData, [dataCopy bytes], objc_msgSend(dataCopy, "length"));
       }
 
       client = self->_client;
@@ -1460,9 +1460,9 @@ LABEL_31:
   return v5;
 }
 
-- (int)remoteSendAudioDataWithTimestamps:(id)a3 forHostTime:(id *)a4 forSampleTime:(unint64_t)a5 forDiscontinuity:(BOOL)a6
+- (int)remoteSendAudioDataWithTimestamps:(id)timestamps forHostTime:(id *)time forSampleTime:(unint64_t)sampleTime forDiscontinuity:(BOOL)discontinuity
 {
-  v10 = a3;
+  timestampsCopy = timestamps;
   if (self->_objectID && self->_client)
   {
     v11 = FigXPCCreateBasicMessage();
@@ -1474,11 +1474,11 @@ LABEL_31:
 
     else
     {
-      if (v10)
+      if (timestampsCopy)
       {
-        xpc_dictionary_set_data(v12, kAPSKServiceMsgParamC2S_AudioData, [v10 bytes], objc_msgSend(v10, "length"));
-        v16 = *&a4->var0;
-        var3 = a4->var3;
+        xpc_dictionary_set_data(v12, kAPSKServiceMsgParamC2S_AudioData, [timestampsCopy bytes], objc_msgSend(timestampsCopy, "length"));
+        v16 = *&time->var0;
+        var3 = time->var3;
         v13 = FigXPCMessageSetCMTime();
         if (v13)
         {
@@ -1487,8 +1487,8 @@ LABEL_31:
           goto LABEL_9;
         }
 
-        xpc_dictionary_set_uint64(v12, kAPSKServiceMsgParamC2S_AudioSampleTime, a5);
-        xpc_dictionary_set_BOOL(v12, kAPSKServiceMsgParamC2S_AudioDiscontinuity, a6);
+        xpc_dictionary_set_uint64(v12, kAPSKServiceMsgParamC2S_AudioSampleTime, sampleTime);
+        xpc_dictionary_set_BOOL(v12, kAPSKServiceMsgParamC2S_AudioDiscontinuity, discontinuity);
       }
 
       client = self->_client;

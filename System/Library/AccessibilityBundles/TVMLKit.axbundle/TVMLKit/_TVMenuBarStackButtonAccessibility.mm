@@ -11,10 +11,10 @@
   v3 = [(_TVMenuBarStackButtonAccessibility *)self _accessibilityAncestorIsKindOf:NSClassFromString(&cfstr_Tvmenubarstack_1.isa)];
   v4 = __UIAccessibilityCastAsClass();
 
-  v5 = [v4 subviews];
-  v6 = [v5 indexOfObject:self];
-  v7 = [v4 subviews];
-  v8 = [v7 count];
+  subviews = [v4 subviews];
+  v6 = [subviews indexOfObject:self];
+  subviews2 = [v4 subviews];
+  v8 = [subviews2 count];
 
   v9 = v6;
   v10 = v8;

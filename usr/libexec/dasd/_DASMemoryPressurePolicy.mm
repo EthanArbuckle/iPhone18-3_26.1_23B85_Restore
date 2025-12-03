@@ -1,10 +1,10 @@
 @interface _DASMemoryPressurePolicy
 + (id)policyInstance;
-- (BOOL)appliesToActivity:(id)a3;
+- (BOOL)appliesToActivity:(id)activity;
 - (_DASMemoryPressurePolicy)init;
-- (id)responseForActivity:(id)a3 withState:(id)a4;
+- (id)responseForActivity:(id)activity withState:(id)state;
 - (int64_t)systemMemoryPressure;
-- (void)dasTrialManager:(id)a3 hasUpdatedParametersForNamespace:(id)a4;
+- (void)dasTrialManager:(id)manager hasUpdatedParametersForNamespace:(id)namespace;
 - (void)updateTrialParameters;
 @end
 
@@ -73,9 +73,9 @@
   return v3;
 }
 
-- (void)dasTrialManager:(id)a3 hasUpdatedParametersForNamespace:(id)a4
+- (void)dasTrialManager:(id)manager hasUpdatedParametersForNamespace:(id)namespace
 {
-  if ([a4 isEqualToString:@"COREOS_DAS"])
+  if ([namespace isEqualToString:@"COREOS_DAS"])
   {
 
     [(_DASMemoryPressurePolicy *)self updateTrialParameters];
@@ -85,9 +85,9 @@
 - (void)updateTrialParameters
 {
   v3 = [(_DASTrialManager *)self->_trialManager factorWithName:@"PolicyMemoryExemptsAll"];
-  v4 = [v3 BOOLeanValue];
+  bOOLeanValue = [v3 BOOLeanValue];
 
-  self->_trialExemptsAll = v4;
+  self->_trialExemptsAll = bOOLeanValue;
   v5 = [_DASDaemonLogger logForCategory:@"trial"];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -98,9 +98,9 @@
   }
 
   v7 = [(_DASTrialManager *)self->_trialManager factorWithName:@"PolicyMemoryExemptsAllInactive"];
-  v8 = [v7 BOOLeanValue];
+  bOOLeanValue2 = [v7 BOOLeanValue];
 
-  self->_trialExemptsAllInactive = v8;
+  self->_trialExemptsAllInactive = bOOLeanValue2;
   v9 = [_DASDaemonLogger logForCategory:@"trial"];
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -111,9 +111,9 @@
   }
 
   v11 = [(_DASTrialManager *)self->_trialManager factorWithName:@"PolicyMemoryAllCritical"];
-  v12 = [v11 BOOLeanValue];
+  bOOLeanValue3 = [v11 BOOLeanValue];
 
-  self->_trialAllCritical = v12;
+  self->_trialAllCritical = bOOLeanValue3;
   v13 = [_DASDaemonLogger logForCategory:@"trial"];
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
@@ -124,9 +124,9 @@
   }
 
   v15 = [(_DASTrialManager *)self->_trialManager factorWithName:@"PolicyMemoryExemptsiCPL"];
-  v16 = [v15 BOOLeanValue];
+  bOOLeanValue4 = [v15 BOOLeanValue];
 
-  self->_trialExemptsiCPL = v16;
+  self->_trialExemptsiCPL = bOOLeanValue4;
   v17 = [_DASDaemonLogger logForCategory:@"trial"];
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
@@ -137,21 +137,21 @@
   }
 }
 
-- (BOOL)appliesToActivity:(id)a3
+- (BOOL)appliesToActivity:(id)activity
 {
-  v4 = a3;
-  if (!self->_trialExemptsAll && (!self->_trialExemptsiCPL || ![_DASPhotosPolicy isiCPLActivity:v4]))
+  activityCopy = activity;
+  if (!self->_trialExemptsAll && (!self->_trialExemptsiCPL || ![_DASPhotosPolicy isiCPLActivity:activityCopy]))
   {
-    if ([v4 isContinuedProcessingTask])
+    if ([activityCopy isContinuedProcessingTask])
     {
       LOBYTE(v5) = 1;
       goto LABEL_3;
     }
 
-    v7 = [v4 schedulingPriority];
-    if (v7 < _DASSchedulingPriorityUserInitiated && ([v4 triggersRestart] & 1) == 0)
+    schedulingPriority = [activityCopy schedulingPriority];
+    if (schedulingPriority < _DASSchedulingPriorityUserInitiated && ([activityCopy triggersRestart] & 1) == 0)
     {
-      v5 = [v4 requestsImmediateRuntime] ^ 1;
+      v5 = [activityCopy requestsImmediateRuntime] ^ 1;
       goto LABEL_3;
     }
   }
@@ -162,21 +162,21 @@ LABEL_3:
   return v5;
 }
 
-- (id)responseForActivity:(id)a3 withState:(id)a4
+- (id)responseForActivity:(id)activity withState:(id)state
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(_DASMemoryPressurePolicy *)self memoryPressureLevelWithContext:v7];
+  activityCopy = activity;
+  stateCopy = state;
+  v8 = [(_DASMemoryPressurePolicy *)self memoryPressureLevelWithContext:stateCopy];
   v9 = [[_DASPolicyResponseRationale alloc] initWithPolicyName:@"Memory Pressure Policy"];
-  if ([v6 isContinuedProcessingTask] && objc_msgSend(v6, "isRunning"))
+  if ([activityCopy isContinuedProcessingTask] && objc_msgSend(activityCopy, "isRunning"))
   {
     v10 = [_DASPolicyResponse policyResponseWithDecision:0 validityDuration:v9 rationale:0x384uLL];
     goto LABEL_33;
   }
 
   v11 = +[NSDate date];
-  v12 = [v6 startBefore];
-  [v12 timeIntervalSinceDate:v11];
+  startBefore = [activityCopy startBefore];
+  [startBefore timeIntervalSinceDate:v11];
   v14 = v13;
 
   if (self->_trialAllCritical)
@@ -193,28 +193,28 @@ LABEL_31:
     }
   }
 
-  else if (self->_trialExemptsAllInactive && ![_DASDeviceActivityPolicy isDeviceInUse:v7])
+  else if (self->_trialExemptsAllInactive && ![_DASDeviceActivityPolicy isDeviceInUse:stateCopy])
   {
     goto LABEL_21;
   }
 
   if (v14 < 0.0)
   {
-    v15 = [_DASSystemContext isPluggedIn:v7];
-    v16 = [_DASDeviceActivityPolicy isDeviceInUse:v7];
+    v15 = [_DASSystemContext isPluggedIn:stateCopy];
+    v16 = [_DASDeviceActivityPolicy isDeviceInUse:stateCopy];
     if (v15)
     {
       if ((v16 & 1) == 0)
       {
-        v17 = [v6 schedulingPriority];
+        schedulingPriority = [activityCopy schedulingPriority];
         v18 = 2.0;
-        if (v17 > _DASSchedulingPriorityBackground)
+        if (schedulingPriority > _DASSchedulingPriorityBackground)
         {
           v18 = 4.0;
         }
 
         [(_DASPolicyResponseRationale *)v9 addRationaleForCondition:@"memoryPressure" withRequiredValue:v18 withCurrentValue:v8];
-        if ((v8 & 4) == 0 || (v27 = [v6 schedulingPriority], v27 > _DASSchedulingPriorityBackground) || v14 <= -86400.0)
+        if ((v8 & 4) == 0 || (v27 = [activityCopy schedulingPriority], v27 > _DASSchedulingPriorityBackground) || v14 <= -86400.0)
         {
           v19 = 0x384uLL;
           v20 = 0;
@@ -231,13 +231,13 @@ LABEL_29:
     }
   }
 
-  v21 = [v6 schedulingPriority];
+  schedulingPriority2 = [activityCopy schedulingPriority];
   v22 = v8;
-  if (v21 <= _DASSchedulingPriorityBackground)
+  if (schedulingPriority2 <= _DASSchedulingPriorityBackground)
   {
     v23 = 1.0;
     [(_DASPolicyResponseRationale *)v9 addRationaleForCondition:@"memoryPressure" withRequiredValue:1.0 withCurrentValue:v22];
-    v25 = ![_DASDeviceActivityPolicy isDeviceInUse:v7];
+    v25 = ![_DASDeviceActivityPolicy isDeviceInUse:stateCopy];
     if ((v8 & 2) == 0)
     {
       v25 = 1;

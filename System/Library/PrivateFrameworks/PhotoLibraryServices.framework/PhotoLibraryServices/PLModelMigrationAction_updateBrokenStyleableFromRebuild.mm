@@ -1,30 +1,30 @@
 @interface PLModelMigrationAction_updateBrokenStyleableFromRebuild
 - (id)buildFetchRequest;
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
 @end
 
 @implementation PLModelMigrationAction_updateBrokenStyleableFromRebuild
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
-  v6 = a3;
-  v7 = [(PLModelMigrationAction_updateBrokenStyleableFromRebuild *)self buildFetchRequest];
+  contextCopy = context;
+  buildFetchRequest = [(PLModelMigrationAction_updateBrokenStyleableFromRebuild *)self buildFetchRequest];
   v16 = 0;
   v17 = 0;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __103__PLModelMigrationAction_updateBrokenStyleableFromRebuild_performActionWithManagedObjectContext_error___block_invoke;
   v15[3] = &unk_1E756C850;
-  v8 = [PLModelMigrationActionUtility processManagedObjectsWithAction:self managedObjectContext:v6 fetchRequest:v7 pendingParentUnitCount:0 error:&v17 processingBlock:v15];
+  v8 = [PLModelMigrationActionUtility processManagedObjectsWithAction:self managedObjectContext:contextCopy fetchRequest:buildFetchRequest pendingParentUnitCount:0 error:&v17 processingBlock:v15];
 
   v9 = v17;
   [(PLModelMigrationActionCore *)self finalizeProgress];
   v10 = v9;
   v11 = v10;
-  if (v8 != 1 && a4 != 0)
+  if (v8 != 1 && error != 0)
   {
     v13 = v10;
-    *a4 = v11;
+    *error = v11;
   }
 
   return v8;

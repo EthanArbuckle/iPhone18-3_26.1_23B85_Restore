@@ -1,39 +1,39 @@
 @interface RMMDMHelper
-+ (BOOL)_unenrollDDMChannelWithController:(id)a3 enrollmentURL:(id)a4 enrollmentType:(int64_t)a5 error:(id *)a6;
-+ (BOOL)isActiveForScope:(int64_t)a3;
-+ (BOOL)processDeclarativeManagementCommandWithProfileIdentifier:(id)a3 enrollmentType:(int64_t)a4 scope:(int64_t)a5 username:(id)a6 personaID:(id)a7 request:(id)a8 error:(id *)a9;
-+ (BOOL)unenrollWithProfileIdentifier:(id)a3 enrollmentType:(int64_t)a4 scope:(int64_t)a5 error:(id *)a6;
-+ (id)_enrollDDMChannelIfNeededWithController:(id)a3 profileIdentifier:(id)a4 enrollmentType:(int64_t)a5 scope:(int64_t)a6 username:(id)a7 personaID:(id)a8 error:(id *)a9;
-+ (id)_enrolledDDMChannelWithController:(id)a3 profileIdentifier:(id)a4 enrollmentType:(int64_t)a5 scope:(int64_t)a6 username:(id)a7 personaID:(id)a8 error:(id *)a9;
-+ (id)_managementChannelForEnrollmentURL:(id)a3 controller:(id)a4 error:(id *)a5;
-+ (id)enrollmentURLForProfileIdentifier:(id)a3;
++ (BOOL)_unenrollDDMChannelWithController:(id)controller enrollmentURL:(id)l enrollmentType:(int64_t)type error:(id *)error;
++ (BOOL)isActiveForScope:(int64_t)scope;
++ (BOOL)processDeclarativeManagementCommandWithProfileIdentifier:(id)identifier enrollmentType:(int64_t)type scope:(int64_t)scope username:(id)username personaID:(id)d request:(id)request error:(id *)error;
++ (BOOL)unenrollWithProfileIdentifier:(id)identifier enrollmentType:(int64_t)type scope:(int64_t)scope error:(id *)error;
++ (id)_enrollDDMChannelIfNeededWithController:(id)controller profileIdentifier:(id)identifier enrollmentType:(int64_t)type scope:(int64_t)scope username:(id)username personaID:(id)d error:(id *)error;
++ (id)_enrolledDDMChannelWithController:(id)controller profileIdentifier:(id)identifier enrollmentType:(int64_t)type scope:(int64_t)scope username:(id)username personaID:(id)d error:(id *)error;
++ (id)_managementChannelForEnrollmentURL:(id)l controller:(id)controller error:(id *)error;
++ (id)enrollmentURLForProfileIdentifier:(id)identifier;
 @end
 
 @implementation RMMDMHelper
 
-+ (BOOL)isActiveForScope:(int64_t)a3
++ (BOOL)isActiveForScope:(int64_t)scope
 {
   v4 = +[RMManagedDevice currentManagedDevice];
-  v5 = [v4 getPropertyForKey:@"RMDMActive" scope:a3];
-  v6 = [v5 BOOLValue];
+  v5 = [v4 getPropertyForKey:@"RMDMActive" scope:scope];
+  bOOLValue = [v5 BOOLValue];
 
-  return v6;
+  return bOOLValue;
 }
 
-+ (BOOL)processDeclarativeManagementCommandWithProfileIdentifier:(id)a3 enrollmentType:(int64_t)a4 scope:(int64_t)a5 username:(id)a6 personaID:(id)a7 request:(id)a8 error:(id *)a9
++ (BOOL)processDeclarativeManagementCommandWithProfileIdentifier:(id)identifier enrollmentType:(int64_t)type scope:(int64_t)scope username:(id)username personaID:(id)d request:(id)request error:(id *)error
 {
   v41[4] = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
+  identifierCopy = identifier;
+  usernameCopy = username;
+  dCopy = d;
+  requestCopy = request;
   v19 = +[RMLog mdmHelper];
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
   {
-    [RMMDMHelper processDeclarativeManagementCommandWithProfileIdentifier:v15 enrollmentType:a4 scope:? username:? personaID:? request:? error:?];
+    [RMMDMHelper processDeclarativeManagementCommandWithProfileIdentifier:identifierCopy enrollmentType:type scope:? username:? personaID:? request:? error:?];
   }
 
-  v20 = [RMEnrollmentController synchronousEnrollmentControllerForManagementEnrollmentType:a4 scope:a5];
+  v20 = [RMEnrollmentController synchronousEnrollmentControllerForManagementEnrollmentType:type scope:scope];
   v36 = 0;
   v37 = &v36;
   v38 = 0x3032000000;
@@ -41,13 +41,13 @@
   v40 = __Block_byref_object_dispose__0;
   v41[0] = 0;
   obj = 0;
-  v21 = [a1 _enrolledDDMChannelWithController:v20 profileIdentifier:v15 enrollmentType:a4 scope:a5 username:v16 personaID:v17 error:&obj];
+  v21 = [self _enrolledDDMChannelWithController:v20 profileIdentifier:identifierCopy enrollmentType:type scope:scope username:usernameCopy personaID:dCopy error:&obj];
   objc_storeStrong(v41, obj);
   if (!v37[5])
   {
     if (v21)
     {
-      v25 = [v18 objectForKeyedSubscript:@"Data"];
+      v25 = [requestCopy objectForKeyedSubscript:@"Data"];
       if (v25)
       {
         objc_opt_class();
@@ -69,13 +69,13 @@
         }
       }
 
-      v26 = [v21 identifier];
+      identifier = [v21 identifier];
       v34[0] = MEMORY[0x1E69E9820];
       v34[1] = 3221225472;
       v34[2] = __126__RMMDMHelper_processDeclarativeManagementCommandWithProfileIdentifier_enrollmentType_scope_username_personaID_request_error___block_invoke;
       v34[3] = &unk_1E8706248;
       v34[4] = &v36;
-      [v20 updateWithIdentifier:v26 tokensResponse:v25 completionHandler:v34];
+      [v20 updateWithIdentifier:identifier tokensResponse:v25 completionHandler:v34];
 
       if (v37[5])
       {
@@ -88,12 +88,12 @@
         }
 
 LABEL_19:
-        if (a9)
+        if (error)
         {
           v31 = v37[5];
           if (v31)
           {
-            *a9 = v31;
+            *error = v31;
           }
         }
 
@@ -113,7 +113,7 @@ LABEL_19:
     +[RMMDMHelper processDeclarativeManagementCommandWithProfileIdentifier:enrollmentType:scope:username:personaID:request:error:];
   }
 
-  if (!a9 || (v23 = v37[5]) == 0)
+  if (!error || (v23 = v37[5]) == 0)
   {
 LABEL_23:
     v24 = 0;
@@ -121,7 +121,7 @@ LABEL_23:
   }
 
   v24 = 0;
-  *a9 = v23;
+  *error = v23;
 LABEL_26:
 
   _Block_object_dispose(&v36, 8);
@@ -129,25 +129,25 @@ LABEL_26:
   return v24;
 }
 
-+ (BOOL)unenrollWithProfileIdentifier:(id)a3 enrollmentType:(int64_t)a4 scope:(int64_t)a5 error:(id *)a6
++ (BOOL)unenrollWithProfileIdentifier:(id)identifier enrollmentType:(int64_t)type scope:(int64_t)scope error:(id *)error
 {
-  v10 = a3;
-  v11 = [RMMDMHelper isActiveForScope:a5];
+  identifierCopy = identifier;
+  v11 = [RMMDMHelper isActiveForScope:scope];
   v12 = +[RMLog mdmHelper];
   v13 = os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG);
   if (v11)
   {
     if (v13)
     {
-      [RMMDMHelper unenrollWithProfileIdentifier:v10 enrollmentType:a4 scope:? error:?];
+      [RMMDMHelper unenrollWithProfileIdentifier:identifierCopy enrollmentType:type scope:? error:?];
     }
 
-    v12 = [RMEnrollmentController synchronousEnrollmentControllerForManagementEnrollmentType:a4 scope:a5];
-    v14 = [a1 enrollmentURLForProfileIdentifier:v10];
-    v15 = [a1 _unenrollDDMChannelWithController:v12 enrollmentURL:v14 enrollmentType:a4 error:a6];
+    v12 = [RMEnrollmentController synchronousEnrollmentControllerForManagementEnrollmentType:type scope:scope];
+    v14 = [self enrollmentURLForProfileIdentifier:identifierCopy];
+    v15 = [self _unenrollDDMChannelWithController:v12 enrollmentURL:v14 enrollmentType:type error:error];
     if (v15)
     {
-      [RMMDMHelper setActive:0 scope:a5];
+      [RMMDMHelper setActive:0 scope:scope];
     }
   }
 
@@ -164,10 +164,10 @@ LABEL_26:
   return v15;
 }
 
-+ (id)_enrolledDDMChannelWithController:(id)a3 profileIdentifier:(id)a4 enrollmentType:(int64_t)a5 scope:(int64_t)a6 username:(id)a7 personaID:(id)a8 error:(id *)a9
++ (id)_enrolledDDMChannelWithController:(id)controller profileIdentifier:(id)identifier enrollmentType:(int64_t)type scope:(int64_t)scope username:(id)username personaID:(id)d error:(id *)error
 {
   v15 = 0;
-  v9 = [a1 _enrollDDMChannelIfNeededWithController:a3 profileIdentifier:a4 enrollmentType:a5 scope:a6 username:a7 personaID:a8 error:&v15];
+  v9 = [self _enrollDDMChannelIfNeededWithController:controller profileIdentifier:identifier enrollmentType:type scope:scope username:username personaID:d error:&v15];
   v10 = v15;
   if (v10)
   {
@@ -177,11 +177,11 @@ LABEL_26:
       [RMMDMHelper _enrolledDDMChannelWithController:v10 profileIdentifier:? enrollmentType:? scope:? username:? personaID:? error:?];
     }
 
-    if (a9)
+    if (error)
     {
       v12 = v10;
       v13 = 0;
-      *a9 = v10;
+      *error = v10;
     }
 
     else
@@ -198,32 +198,32 @@ LABEL_26:
   return v13;
 }
 
-+ (id)_enrollDDMChannelIfNeededWithController:(id)a3 profileIdentifier:(id)a4 enrollmentType:(int64_t)a5 scope:(int64_t)a6 username:(id)a7 personaID:(id)a8 error:(id *)a9
++ (id)_enrollDDMChannelIfNeededWithController:(id)controller profileIdentifier:(id)identifier enrollmentType:(int64_t)type scope:(int64_t)scope username:(id)username personaID:(id)d error:(id *)error
 {
   v81 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a7;
-  v17 = a8;
+  controllerCopy = controller;
+  identifierCopy = identifier;
+  usernameCopy = username;
+  dCopy = d;
   v69 = 0;
   v70 = &v69;
   v71 = 0x3032000000;
   v72 = __Block_byref_object_copy__0;
   v73 = __Block_byref_object_dispose__0;
   v74 = 0;
-  v18 = [a1 enrollmentURLForProfileIdentifier:v15];
+  v18 = [self enrollmentURLForProfileIdentifier:identifierCopy];
   v19 = (v70 + 5);
   obj = v70[5];
-  v20 = [a1 _managementChannelForEnrollmentURL:v18 controller:v14 error:&obj];
+  v20 = [self _managementChannelForEnrollmentURL:v18 controller:controllerCopy error:&obj];
   objc_storeStrong(v19, obj);
   v21 = v70[5];
   if (v21)
   {
-    if (a9)
+    if (error)
     {
 LABEL_3:
       v22 = 0;
-      *a9 = v21;
+      *error = v21;
       goto LABEL_50;
     }
 
@@ -232,18 +232,18 @@ LABEL_3:
 
   if (!v20)
   {
-    v24 = [MEMORY[0x1E6959A48] rm_defaultStore];
+    rm_defaultStore = [MEMORY[0x1E6959A48] rm_defaultStore];
     v75 = 0;
     v76 = &v75;
     v77 = 0x3032000000;
     v78 = __Block_byref_object_copy__0;
     v79 = __Block_byref_object_dispose__0;
-    v54 = v24;
-    v80 = [v24 rm_remoteManagementAccountForEnrollmentURL:v18];
+    v54 = rm_defaultStore;
+    v80 = [rm_defaultStore rm_remoteManagementAccountForEnrollmentURL:v18];
     v25 = v76[5];
     if (v25)
     {
-      v55 = [v25 identifier];
+      identifier = [v25 identifier];
       v26 = +[RMLog mdmHelper];
       if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
       {
@@ -253,16 +253,16 @@ LABEL_3:
       goto LABEL_13;
     }
 
-    v31 = [v54 dmc_remoteManagementAccountForManagementProfileIdentifier:v15];
+    v31 = [v54 dmc_remoteManagementAccountForManagementProfileIdentifier:identifierCopy];
     v32 = v76[5];
     v76[5] = v31;
 
     if (!v76[5])
     {
       v33 = +[RMManagedDevice currentManagedDevice];
-      v56 = [v33 isSharediPad];
+      isSharediPad = [v33 isSharediPad];
 
-      if (v56)
+      if (isSharediPad)
       {
         v34 = +[RMLog mdmHelper];
         if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
@@ -273,9 +273,9 @@ LABEL_3:
 
         v49 = objc_opt_new();
         v52 = objc_opt_new();
-        v35 = [MEMORY[0x1E69AD420] sharedConfiguration];
-        v57 = [v35 details];
-        v51 = [v57 objectForKeyedSubscript:*MEMORY[0x1E6999788]];
+        mEMORY[0x1E69AD420] = [MEMORY[0x1E69AD420] sharedConfiguration];
+        details = [mEMORY[0x1E69AD420] details];
+        v51 = [details objectForKeyedSubscript:*MEMORY[0x1E6999788]];
         v62[0] = MEMORY[0x1E69E9820];
         v62[1] = 3221225472;
         v62[2] = __119__RMMDMHelper__enrollDDMChannelIfNeededWithController_profileIdentifier_enrollmentType_scope_username_personaID_error___block_invoke;
@@ -285,14 +285,14 @@ LABEL_3:
         v64 = v18;
         v50 = v49;
         v65 = v50;
-        [v52 updateSharediPadUserChannelWithManagedAppleID:v16 profileIdentifier:v15 organizationName:v51 enrollmentURL:v64 completionHandler:v62];
+        [v52 updateSharediPadUserChannelWithManagedAppleID:usernameCopy profileIdentifier:identifierCopy organizationName:v51 enrollmentURL:v64 completionHandler:v62];
 
         [v50 waitForCompletion];
       }
     }
 
     v36 = v76[5];
-    if (a5 || v36)
+    if (type || v36)
     {
       if (!v36)
       {
@@ -302,11 +302,11 @@ LABEL_3:
           +[RMMDMHelper _enrollDDMChannelIfNeededWithController:profileIdentifier:enrollmentType:scope:username:personaID:error:];
         }
 
-        v55 = 0;
+        identifier = 0;
         goto LABEL_13;
       }
 
-      v55 = [v36 identifier];
+      identifier = [v36 identifier];
       v42 = +[RMLog mdmHelper];
       if (os_log_type_enabled(v42, OS_LOG_TYPE_DEBUG))
       {
@@ -315,7 +315,7 @@ LABEL_3:
 
       v43 = (v70 + 5);
       v61 = v70[5];
-      v53 = [RMAccountHelper updateAccountWithIdentifier:v55 enrollmentURL:v18 personaID:v17 error:&v61];
+      v53 = [RMAccountHelper updateAccountWithIdentifier:identifier enrollmentURL:v18 personaID:dCopy error:&v61];
       objc_storeStrong(v43, v61);
       if (v53)
       {
@@ -341,23 +341,23 @@ LABEL_34:
         v60[2] = __119__RMMDMHelper__enrollDDMChannelIfNeededWithController_profileIdentifier_enrollmentType_scope_username_personaID_error___block_invoke_28;
         v60[3] = &unk_1E8706298;
         v60[4] = &v69;
-        [v14 enrollViaMDMWithEnrollmentType:a5 uri:v40 accountIdentifier:v55 personaIdentifier:v17 completionHandler:v60];
+        [controllerCopy enrollViaMDMWithEnrollmentType:type uri:v40 accountIdentifier:identifier personaIdentifier:dCopy completionHandler:v60];
 
         v41 = v70[5];
         if (!v41)
         {
-          [RMMDMHelper setActive:1 scope:a6];
+          [RMMDMHelper setActive:1 scope:scope];
           v45 = (v70 + 5);
           v59 = v70[5];
-          v22 = [a1 _managementChannelForEnrollmentURL:v18 controller:v14 error:&v59];
+          v22 = [self _managementChannelForEnrollmentURL:v18 controller:controllerCopy error:&v59];
           objc_storeStrong(v45, v59);
           goto LABEL_49;
         }
 
-        if (a9)
+        if (error)
         {
           v22 = 0;
-          *a9 = v41;
+          *error = v41;
         }
 
         else
@@ -371,13 +371,13 @@ LABEL_49:
         goto LABEL_50;
       }
 
-      if (a9)
+      if (error)
       {
         v44 = v70[5];
         if (v44)
         {
           v27 = 0;
-          *a9 = v44;
+          *error = v44;
           goto LABEL_34;
         }
       }
@@ -391,24 +391,24 @@ LABEL_49:
         +[RMMDMHelper _enrollDDMChannelIfNeededWithController:profileIdentifier:enrollmentType:scope:username:personaID:error:];
       }
 
-      if (a9)
+      if (error)
       {
-        v38 = [RMErrorUtilities createAccountMissingErrorWithIdentifier:v15];
+        v38 = [RMErrorUtilities createAccountMissingErrorWithIdentifier:identifierCopy];
         if (v38)
         {
           v38 = v38;
-          *a9 = v38;
+          *error = v38;
         }
       }
 
-      v55 = 0;
+      identifier = 0;
     }
 
     v27 = 0;
     goto LABEL_34;
   }
 
-  if ([v20 type] != a5)
+  if ([v20 type] != type)
   {
     v28 = [RMErrorUtilities createMDMRequestFailed:@"Cannot enroll DDM channel because a different enrollment type already exists."];
     v29 = v70[5];
@@ -422,7 +422,7 @@ LABEL_49:
       +[RMMDMHelper _enrollDDMChannelIfNeededWithController:profileIdentifier:enrollmentType:scope:username:personaID:error:];
     }
 
-    if (a9)
+    if (error)
     {
       v21 = v70[5];
       if (v21)
@@ -488,11 +488,11 @@ void __119__RMMDMHelper__enrollDDMChannelIfNeededWithController_profileIdentifie
   }
 }
 
-+ (BOOL)_unenrollDDMChannelWithController:(id)a3 enrollmentURL:(id)a4 enrollmentType:(int64_t)a5 error:(id *)a6
++ (BOOL)_unenrollDDMChannelWithController:(id)controller enrollmentURL:(id)l enrollmentType:(int64_t)type error:(id *)error
 {
   v29[4] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
+  controllerCopy = controller;
+  lCopy = l;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -500,19 +500,19 @@ void __119__RMMDMHelper__enrollDDMChannelIfNeededWithController_profileIdentifie
   v28 = __Block_byref_object_dispose__0;
   v29[0] = 0;
   obj = 0;
-  v12 = [a1 _managementChannelForEnrollmentURL:v11 controller:v10 error:&obj];
+  v12 = [self _managementChannelForEnrollmentURL:lCopy controller:controllerCopy error:&obj];
   objc_storeStrong(v29, obj);
   if (v12)
   {
-    if ([v12 type] == a5)
+    if ([v12 type] == type)
     {
-      v13 = [v12 identifier];
+      identifier = [v12 identifier];
       v22[0] = MEMORY[0x1E69E9820];
       v22[1] = 3221225472;
       v22[2] = __84__RMMDMHelper__unenrollDDMChannelWithController_enrollmentURL_enrollmentType_error___block_invoke;
       v22[3] = &unk_1E8706248;
       v22[4] = &v24;
-      [v10 unenrollViaMDMWithEnrollmentType:a5 identifier:v13 completionHandler:v22];
+      [controllerCopy unenrollViaMDMWithEnrollmentType:type identifier:identifier completionHandler:v22];
 
       if (v25[5])
       {
@@ -562,10 +562,10 @@ LABEL_18:
   }
 
 LABEL_14:
-  if (a6 && (v18 = v25[5]) != 0)
+  if (error && (v18 = v25[5]) != 0)
   {
     v19 = 0;
-    *a6 = v18;
+    *error = v18;
   }
 
   else
@@ -580,10 +580,10 @@ LABEL_19:
   return v19;
 }
 
-+ (id)_managementChannelForEnrollmentURL:(id)a3 controller:(id)a4 error:(id *)a5
++ (id)_managementChannelForEnrollmentURL:(id)l controller:(id)controller error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  lCopy = l;
+  controllerCopy = controller;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -602,13 +602,13 @@ LABEL_19:
   v12[3] = &unk_1E87062C0;
   v12[4] = &v19;
   v12[5] = &v13;
-  [v8 managementChannelWithEnrollmentURL:v7 completionHandler:v12];
-  if (a5)
+  [controllerCopy managementChannelWithEnrollmentURL:lCopy completionHandler:v12];
+  if (error)
   {
     v9 = v20[5];
     if (v9)
     {
-      *a5 = v9;
+      *error = v9;
     }
   }
 
@@ -644,16 +644,16 @@ void __67__RMMDMHelper__managementChannelForEnrollmentURL_controller_error___blo
   objc_storeStrong((*(*(a1 + v9) + 8) + 40), a3);
 }
 
-+ (id)enrollmentURLForProfileIdentifier:(id)a3
++ (id)enrollmentURLForProfileIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = objc_opt_new();
   [v4 setScheme:@"mdm"];
-  [v4 setPath:v3];
+  [v4 setPath:identifierCopy];
 
-  v5 = [v4 string];
+  string = [v4 string];
 
-  return v5;
+  return string;
 }
 
 + (void)processDeclarativeManagementCommandWithProfileIdentifier:(uint64_t)a1 enrollmentType:(uint64_t)a2 scope:username:personaID:request:error:.cold.1(uint64_t a1, uint64_t a2)

@@ -3,7 +3,7 @@
 - (id)detailString;
 - (id)okayButtonTitle;
 - (id)titleString;
-- (void)okayButtonPressed:(id)a3;
+- (void)okayButtonPressed:(id)pressed;
 @end
 
 @implementation COSTinkerFamilyInfoViewController
@@ -46,10 +46,10 @@
   return v3;
 }
 
-- (void)okayButtonPressed:(id)a3
+- (void)okayButtonPressed:(id)pressed
 {
-  v4 = [(COSTinkerFamilyInfoViewController *)self delegate];
-  [v4 buddyControllerDone:self];
+  delegate = [(COSTinkerFamilyInfoViewController *)self delegate];
+  [delegate buddyControllerDone:self];
 }
 
 @end

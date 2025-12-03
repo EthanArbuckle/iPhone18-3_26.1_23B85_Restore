@@ -1,18 +1,18 @@
 @interface _CLVLLocalizationMaps488Details
-- (BOOL)setFrameCount:(unint64_t)a3 perFrameVioStatusCodes:(const int *)a4 perFrameVioPoses:(const float *)a5 perFrameCalibrationMatrices:(const float *)a6 perFrameDistortion:(const float *)a7;
-- (BOOL)setInliersCount:(unint64_t)a3 points2D:(const float *)a4 points3D:(const double *)a5 inlierIndices:(const int *)a6;
-- (BOOL)setSlamTracksCount:(unint64_t)a3 slamTracks:(const float *)a4 descriptorDimension:(unint64_t)a5 slamTrackDescriptors:(const char *)a6 slamTrackObservations:(const signed __int16 *)a7 slamTracks2D:(const float *)a8 slamTrackImageIndices:(const signed __int16 *)a9;
-- (_CLVLLocalizationMaps488Details)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionWithMemberIndent:(id)a3 endIndent:(id)a4;
+- (BOOL)setFrameCount:(unint64_t)count perFrameVioStatusCodes:(const int *)codes perFrameVioPoses:(const float *)poses perFrameCalibrationMatrices:(const float *)matrices perFrameDistortion:(const float *)distortion;
+- (BOOL)setInliersCount:(unint64_t)count points2D:(const float *)d points3D:(const double *)points3D inlierIndices:(const int *)indices;
+- (BOOL)setSlamTracksCount:(unint64_t)count slamTracks:(const float *)tracks descriptorDimension:(unint64_t)dimension slamTrackDescriptors:(const char *)descriptors slamTrackObservations:(const signed __int16 *)observations slamTracks2D:(const float *)d slamTrackImageIndices:(const signed __int16 *)indices;
+- (_CLVLLocalizationMaps488Details)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionWithMemberIndent:(id)indent endIndent:(id)endIndent;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)resetFrames;
 - (void)resetInliers;
 - (void)resetSlamTracks;
-- (void)setResultPoseRotation:(const double *)a3;
-- (void)setResultPoseTranslation:(const double *)a3;
-- (void)setSlamOrigin:(const double *)a3;
+- (void)setResultPoseRotation:(const double *)rotation;
+- (void)setResultPoseTranslation:(const double *)translation;
+- (void)setSlamOrigin:(const double *)origin;
 @end
 
 @implementation _CLVLLocalizationMaps488Details
@@ -128,9 +128,9 @@
   self->_frameCount = 0;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if ([v4 setInliersCount:self->_inliersCount points2D:self->_points2D points3D:self->_points3D inlierIndices:self->_inlierIndices] & 1) != 0 && (v5 = *self->_slamOrigin, v6 = *&self->_slamOrigin[2], *(v4 + 40) = *&self->_slamOrigin[4], *(v4 + 24) = v6, *(v4 + 8) = v5, (objc_msgSend(v4, "setSlamTracksCount:slamTracks:descriptorDimension:slamTrackDescriptors:slamTrackObservations:slamTracks2D:slamTrackImageIndices:", self->_slamTracksCount, self->_slamTracks, self->_descriptorDimension, self->_slamTrackDescriptors, self->_slamTrackObservations, self->_slamTracks2D, self->_slamTrackImageIndices)) && (objc_msgSend(v4, "setFrameCount:perFrameVioStatusCodes:perFrameVioPoses:perFrameCalibrationMatrices:perFrameDistortion:", self->_frameCount, self->_perFrameVioStatusCodes, self->_perFrameVioPoses, self->_perFrameCalibrationMatrices, self->_perFrameDistortion))
   {
     *(v4 + 56) = *&self->_resultPoseRotation[0][0];
@@ -155,7 +155,7 @@
   return v4;
 }
 
-- (_CLVLLocalizationMaps488Details)initWithCoder:(id)a3
+- (_CLVLLocalizationMaps488Details)initWithCoder:(id)coder
 {
   v39.receiver = self;
   v39.super_class = _CLVLLocalizationMaps488Details;
@@ -165,9 +165,9 @@
     v37 = 0;
     v38 = 0;
     v36 = 0;
-    [a3 decodeBytesForKey:@"points2D" returnedLength:&v38];
-    [a3 decodeBytesForKey:@"points3D" returnedLength:&v37];
-    [a3 decodeBytesForKey:@"inlierIndices" returnedLength:&v36];
+    [coder decodeBytesForKey:@"points2D" returnedLength:&v38];
+    [coder decodeBytesForKey:@"points3D" returnedLength:&v37];
+    [coder decodeBytesForKey:@"inlierIndices" returnedLength:&v36];
     if (v38 != 8 * (v36 >> 2))
     {
       goto LABEL_22;
@@ -184,7 +184,7 @@
     }
 
     v35 = 0;
-    v5 = [a3 decodeBytesForKey:@"slamOrigin" returnedLength:&v35];
+    v5 = [coder decodeBytesForKey:@"slamOrigin" returnedLength:&v35];
     if (v35 != 48)
     {
       goto LABEL_22;
@@ -195,17 +195,17 @@
     *(v4 + 40) = v5[2];
     *(v4 + 24) = v7;
     *(v4 + 8) = v6;
-    v8 = [a3 decodeIntegerForKey:@"descriptorDimension"];
+    v8 = [coder decodeIntegerForKey:@"descriptorDimension"];
     v33 = 0;
     v34 = 0;
     v31 = 0;
     v32 = 0;
     v30 = 0;
-    [a3 decodeBytesForKey:@"slamTracks" returnedLength:&v34];
-    [a3 decodeBytesForKey:@"slamTrackDescriptors" returnedLength:&v33];
-    v9 = [a3 decodeBytesForKey:@"slamTrackObservations" returnedLength:&v32];
-    [a3 decodeBytesForKey:@"slamTracks2D" returnedLength:&v31];
-    v10 = [a3 decodeBytesForKey:@"slamTrackImageIndices" returnedLength:&v30];
+    [coder decodeBytesForKey:@"slamTracks" returnedLength:&v34];
+    [coder decodeBytesForKey:@"slamTrackDescriptors" returnedLength:&v33];
+    v9 = [coder decodeBytesForKey:@"slamTrackObservations" returnedLength:&v32];
+    [coder decodeBytesForKey:@"slamTracks2D" returnedLength:&v31];
+    v10 = [coder decodeBytesForKey:@"slamTrackImageIndices" returnedLength:&v30];
     v11 = 0;
     v12 = v32 >> 1;
     if (v9 && v32 >= 2)
@@ -252,17 +252,17 @@
     v29 = 0;
     v26 = 0;
     v27 = 0;
-    [a3 decodeBytesForKey:@"perFrameVioStatusCodes" returnedLength:&v29];
-    [a3 decodeBytesForKey:@"perFrameVioPoses" returnedLength:&v28];
-    [a3 decodeBytesForKey:@"perFrameCalibrationMatrices" returnedLength:&v27];
-    [a3 decodeBytesForKey:@"perFrameDistortion" returnedLength:&v26];
+    [coder decodeBytesForKey:@"perFrameVioStatusCodes" returnedLength:&v29];
+    [coder decodeBytesForKey:@"perFrameVioPoses" returnedLength:&v28];
+    [coder decodeBytesForKey:@"perFrameCalibrationMatrices" returnedLength:&v27];
+    [coder decodeBytesForKey:@"perFrameDistortion" returnedLength:&v26];
     v16 = v29 >> 2;
     if (v28 != 48 * (v29 >> 2))
     {
       goto LABEL_22;
     }
 
-    if (v27 == 36 * v16 && v26 == 8 * v16 && ([v4 setFrameCount:? perFrameVioStatusCodes:? perFrameVioPoses:? perFrameCalibrationMatrices:? perFrameDistortion:?] & 1) != 0 && (v24 = 0, v25 = 0, v17 = objc_msgSend(a3, "decodeBytesForKey:returnedLength:", @"resultPoseRotation", &v25), v18 = objc_msgSend(a3, "decodeBytesForKey:returnedLength:", @"resultPoseTranslation", &v24), v25 == 72) && v24 == 24)
+    if (v27 == 36 * v16 && v26 == 8 * v16 && ([v4 setFrameCount:? perFrameVioStatusCodes:? perFrameVioPoses:? perFrameCalibrationMatrices:? perFrameDistortion:?] & 1) != 0 && (v24 = 0, v25 = 0, v17 = objc_msgSend(coder, "decodeBytesForKey:returnedLength:", @"resultPoseRotation", &v25), v18 = objc_msgSend(coder, "decodeBytesForKey:returnedLength:", @"resultPoseTranslation", &v24), v25 == 72) && v24 == 24)
     {
       *(v4 + 56) = *v17;
       v19 = *(v17 + 16);
@@ -288,20 +288,20 @@ LABEL_22:
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   inliersCount = self->_inliersCount;
   if (inliersCount)
   {
     v6 = 24 * inliersCount;
     v7 = 4 * inliersCount;
-    [a3 encodeBytes:self->_points2D length:8 * inliersCount forKey:@"points2D"];
-    [a3 encodeBytes:self->_points3D length:v6 forKey:@"points3D"];
-    [a3 encodeBytes:self->_inlierIndices length:v7 forKey:@"inlierIndices"];
+    [coder encodeBytes:self->_points2D length:8 * inliersCount forKey:@"points2D"];
+    [coder encodeBytes:self->_points3D length:v6 forKey:@"points3D"];
+    [coder encodeBytes:self->_inlierIndices length:v7 forKey:@"inlierIndices"];
   }
 
-  [a3 encodeBytes:self->_slamOrigin length:48 forKey:@"slamOrigin"];
-  [a3 encodeInteger:self->_descriptorDimension forKey:@"descriptorDimension"];
+  [coder encodeBytes:self->_slamOrigin length:48 forKey:@"slamOrigin"];
+  [coder encodeInteger:self->_descriptorDimension forKey:@"descriptorDimension"];
   slamTracksCount = self->_slamTracksCount;
   if (slamTracksCount)
   {
@@ -311,11 +311,11 @@ LABEL_22:
     totalObservationsCount = self->_totalObservationsCount;
     v13 = 8 * totalObservationsCount;
     v14 = 2 * totalObservationsCount;
-    [a3 encodeBytes:self->_slamTracks length:v9 forKey:@"slamTracks"];
-    [a3 encodeBytes:self->_slamTrackDescriptors length:v10 forKey:@"slamTrackDescriptors"];
-    [a3 encodeBytes:self->_slamTrackObservations length:v11 forKey:@"slamTrackObservations"];
-    [a3 encodeBytes:self->_slamTracks2D length:v13 forKey:@"slamTracks2D"];
-    [a3 encodeBytes:self->_slamTrackImageIndices length:v14 forKey:@"slamTrackImageIndices"];
+    [coder encodeBytes:self->_slamTracks length:v9 forKey:@"slamTracks"];
+    [coder encodeBytes:self->_slamTrackDescriptors length:v10 forKey:@"slamTrackDescriptors"];
+    [coder encodeBytes:self->_slamTrackObservations length:v11 forKey:@"slamTrackObservations"];
+    [coder encodeBytes:self->_slamTracks2D length:v13 forKey:@"slamTracks2D"];
+    [coder encodeBytes:self->_slamTrackImageIndices length:v14 forKey:@"slamTrackImageIndices"];
   }
 
   frameCount = self->_frameCount;
@@ -324,32 +324,32 @@ LABEL_22:
     v16 = 48 * frameCount;
     v17 = 36 * frameCount;
     v18 = 8 * frameCount;
-    [a3 encodeBytes:self->_perFrameVioStatusCodes length:4 * frameCount forKey:@"perFrameVioStatusCodes"];
-    [a3 encodeBytes:self->_perFrameVioPoses length:v16 forKey:@"perFrameVioPoses"];
-    [a3 encodeBytes:self->_perFrameCalibrationMatrices length:v17 forKey:@"perFrameCalibrationMatrices"];
-    [a3 encodeBytes:self->_perFrameDistortion length:v18 forKey:@"perFrameDistortion"];
+    [coder encodeBytes:self->_perFrameVioStatusCodes length:4 * frameCount forKey:@"perFrameVioStatusCodes"];
+    [coder encodeBytes:self->_perFrameVioPoses length:v16 forKey:@"perFrameVioPoses"];
+    [coder encodeBytes:self->_perFrameCalibrationMatrices length:v17 forKey:@"perFrameCalibrationMatrices"];
+    [coder encodeBytes:self->_perFrameDistortion length:v18 forKey:@"perFrameDistortion"];
   }
 
-  [a3 encodeBytes:self->_resultPoseRotation length:72 forKey:@"resultPoseRotation"];
+  [coder encodeBytes:self->_resultPoseRotation length:72 forKey:@"resultPoseRotation"];
 
-  [a3 encodeBytes:self->_resultPoseTranslation length:24 forKey:@"resultPoseTranslation"];
+  [coder encodeBytes:self->_resultPoseTranslation length:24 forKey:@"resultPoseTranslation"];
 }
 
-- (BOOL)setInliersCount:(unint64_t)a3 points2D:(const float *)a4 points3D:(const double *)a5 inlierIndices:(const int *)a6
+- (BOOL)setInliersCount:(unint64_t)count points2D:(const float *)d points3D:(const double *)points3D inlierIndices:(const int *)indices
 {
-  if (!a3)
+  if (!count)
   {
     [(_CLVLLocalizationMaps488Details *)self resetInliers:0];
     return 1;
   }
 
   result = 0;
-  if (a4 && a5 && a6)
+  if (d && points3D && indices)
   {
-    v12 = 8 * a3;
-    v13 = 24 * a3;
-    v14 = 4 * a3;
-    if (self->_inliersCount == a3)
+    v12 = 8 * count;
+    v13 = 24 * count;
+    v14 = 4 * count;
+    if (self->_inliersCount == count)
     {
       points2D = self->_points2D;
     }
@@ -369,32 +369,32 @@ LABEL_22:
       }
     }
 
-    self->_inliersCount = a3;
-    memcpy(points2D, a4, v12);
-    memcpy(self->_points3D, a5, v13);
-    memcpy(self->_inlierIndices, a6, v14);
+    self->_inliersCount = count;
+    memcpy(points2D, d, v12);
+    memcpy(self->_points3D, points3D, v13);
+    memcpy(self->_inlierIndices, indices, v14);
     return 1;
   }
 
   return result;
 }
 
-- (BOOL)setSlamTracksCount:(unint64_t)a3 slamTracks:(const float *)a4 descriptorDimension:(unint64_t)a5 slamTrackDescriptors:(const char *)a6 slamTrackObservations:(const signed __int16 *)a7 slamTracks2D:(const float *)a8 slamTrackImageIndices:(const signed __int16 *)a9
+- (BOOL)setSlamTracksCount:(unint64_t)count slamTracks:(const float *)tracks descriptorDimension:(unint64_t)dimension slamTrackDescriptors:(const char *)descriptors slamTrackObservations:(const signed __int16 *)observations slamTracks2D:(const float *)d slamTrackImageIndices:(const signed __int16 *)indices
 {
-  if (a3 && a7)
+  if (count && observations)
   {
     v16 = 0;
-    v17 = a7;
-    v18 = a3;
+    observationsCopy = observations;
+    countCopy = count;
     do
     {
-      v19 = *v17++;
+      v19 = *observationsCopy++;
       v16 += v19;
-      --v18;
+      --countCopy;
     }
 
-    while (v18);
-    if (!a4)
+    while (countCopy);
+    if (!tracks)
     {
       return 0;
     }
@@ -402,36 +402,36 @@ LABEL_22:
 
   else
   {
-    if (!a3)
+    if (!count)
     {
       [(_CLVLLocalizationMaps488Details *)self resetSlamTracks];
-      self->_descriptorDimension = a5;
+      self->_descriptorDimension = dimension;
       return 1;
     }
 
     v16 = 0;
-    if (!a4)
+    if (!tracks)
     {
       return 0;
     }
   }
 
   result = 0;
-  if (a6)
+  if (descriptors)
   {
     v21 = 1;
   }
 
   else
   {
-    v21 = a5 == 0;
+    v21 = dimension == 0;
   }
 
-  if (v21 && a7)
+  if (v21 && observations)
   {
-    if (a9)
+    if (indices)
     {
-      v22 = a8 == 0;
+      v22 = d == 0;
     }
 
     else
@@ -444,9 +444,9 @@ LABEL_22:
       return 0;
     }
 
-    __n = a5 * a3;
-    size = 12 * a3;
-    if (self->_slamTracksCount == a3)
+    __n = dimension * count;
+    size = 12 * count;
+    if (self->_slamTracksCount == count)
     {
       goto LABEL_22;
     }
@@ -466,17 +466,17 @@ LABEL_22:
     }
 
     self->_slamTracks = malloc_type_malloc(size, 0x76E5DF4AuLL);
-    v25 = malloc_type_malloc(2 * a3, 0x73E6CB26uLL);
+    v25 = malloc_type_malloc(2 * count, 0x73E6CB26uLL);
     self->_slamTrackObservations = v25;
     if (!self->_slamTracks || !v25)
     {
       goto LABEL_44;
     }
 
-    if (self->_slamTracksCount == a3)
+    if (self->_slamTracksCount == count)
     {
 LABEL_22:
-      if (self->_descriptorDimension == a5)
+      if (self->_descriptorDimension == dimension)
       {
         goto LABEL_35;
       }
@@ -494,7 +494,7 @@ LABEL_22:
     if (v27)
     {
 LABEL_35:
-      v31 = 2 * a3;
+      v31 = 2 * count;
       v32 = 2 * v16;
       if (self->_totalObservationsCount == v16)
       {
@@ -523,14 +523,14 @@ LABEL_35:
         if (v30)
         {
 LABEL_42:
-          self->_slamTracksCount = a3;
-          self->_descriptorDimension = a5;
+          self->_slamTracksCount = count;
+          self->_descriptorDimension = dimension;
           self->_totalObservationsCount = v16;
-          memcpy(self->_slamTracks, a4, size);
-          memcpy(self->_slamTrackDescriptors, a6, __n);
-          memcpy(self->_slamTrackObservations, a7, v31);
-          memcpy(self->_slamTracks2D, a8, 8 * v16);
-          memcpy(self->_slamTrackImageIndices, a9, v32);
+          memcpy(self->_slamTracks, tracks, size);
+          memcpy(self->_slamTrackDescriptors, descriptors, __n);
+          memcpy(self->_slamTrackObservations, observations, v31);
+          memcpy(self->_slamTracks2D, d, 8 * v16);
+          memcpy(self->_slamTrackImageIndices, indices, v32);
           return 1;
         }
       }
@@ -544,22 +544,22 @@ LABEL_44:
   return result;
 }
 
-- (BOOL)setFrameCount:(unint64_t)a3 perFrameVioStatusCodes:(const int *)a4 perFrameVioPoses:(const float *)a5 perFrameCalibrationMatrices:(const float *)a6 perFrameDistortion:(const float *)a7
+- (BOOL)setFrameCount:(unint64_t)count perFrameVioStatusCodes:(const int *)codes perFrameVioPoses:(const float *)poses perFrameCalibrationMatrices:(const float *)matrices perFrameDistortion:(const float *)distortion
 {
-  if (!a3)
+  if (!count)
   {
     [(_CLVLLocalizationMaps488Details *)self resetFrames:0];
     return 1;
   }
 
   result = 0;
-  if (a4 && a5 && a6 && a7)
+  if (codes && poses && matrices && distortion)
   {
-    v14 = 4 * a3;
-    v15 = 48 * a3;
-    v16 = 36 * a3;
-    v17 = 8 * a3;
-    if (self->_frameCount == a3)
+    v14 = 4 * count;
+    v15 = 48 * count;
+    v16 = 36 * count;
+    v17 = 8 * count;
+    if (self->_frameCount == count)
     {
       perFrameVioStatusCodes = self->_perFrameVioStatusCodes;
     }
@@ -580,86 +580,86 @@ LABEL_44:
       }
     }
 
-    self->_frameCount = a3;
-    memcpy(perFrameVioStatusCodes, a4, v14);
-    memcpy(self->_perFrameVioPoses, a5, v15);
-    memcpy(self->_perFrameCalibrationMatrices, a6, v16);
-    memcpy(self->_perFrameDistortion, a7, v17);
+    self->_frameCount = count;
+    memcpy(perFrameVioStatusCodes, codes, v14);
+    memcpy(self->_perFrameVioPoses, poses, v15);
+    memcpy(self->_perFrameCalibrationMatrices, matrices, v16);
+    memcpy(self->_perFrameDistortion, distortion, v17);
     return 1;
   }
 
   return result;
 }
 
-- (void)setSlamOrigin:(const double *)a3
+- (void)setSlamOrigin:(const double *)origin
 {
-  v3 = *a3;
-  v4 = *(a3 + 1);
-  *&self->_slamOrigin[4] = *(a3 + 2);
+  v3 = *origin;
+  v4 = *(origin + 1);
+  *&self->_slamOrigin[4] = *(origin + 2);
   *&self->_slamOrigin[2] = v4;
   *self->_slamOrigin = v3;
 }
 
-- (void)setResultPoseRotation:(const double *)a3
+- (void)setResultPoseRotation:(const double *)rotation
 {
-  *&self->_resultPoseRotation[0][0] = *a3;
-  v3 = *(a3 + 1);
-  v4 = *(a3 + 2);
-  v5 = *(a3 + 3);
-  self->_resultPoseRotation[2][2] = a3[8];
+  *&self->_resultPoseRotation[0][0] = *rotation;
+  v3 = *(rotation + 1);
+  v4 = *(rotation + 2);
+  v5 = *(rotation + 3);
+  self->_resultPoseRotation[2][2] = rotation[8];
   *&self->_resultPoseRotation[2][0] = v5;
   *&self->_resultPoseRotation[1][1] = v4;
   *&self->_resultPoseRotation[0][2] = v3;
 }
 
-- (void)setResultPoseTranslation:(const double *)a3
+- (void)setResultPoseTranslation:(const double *)translation
 {
-  v3 = *a3;
-  self->_resultPoseTranslation[2] = a3[2];
+  v3 = *translation;
+  self->_resultPoseTranslation[2] = translation[2];
   *self->_resultPoseTranslation = v3;
 }
 
-- (id)descriptionWithMemberIndent:(id)a3 endIndent:(id)a4
+- (id)descriptionWithMemberIndent:(id)indent endIndent:(id)endIndent
 {
-  v48 = [a3 stringByAppendingString:@"\t"];
+  v48 = [indent stringByAppendingString:@"\t"];
   v57 = MEMORY[0x1E696AEC0];
-  v56 = [(_CLVLLocalizationMaps488Details *)self inliersCount];
-  v55 = [(_CLVLLocalizationMaps488Details *)self points2D];
+  inliersCount = [(_CLVLLocalizationMaps488Details *)self inliersCount];
+  points2D = [(_CLVLLocalizationMaps488Details *)self points2D];
   v54 = 2 * [(_CLVLLocalizationMaps488Details *)self inliersCount];
-  v53 = [(_CLVLLocalizationMaps488Details *)self points3D];
+  points3D = [(_CLVLLocalizationMaps488Details *)self points3D];
   v52 = 3 * [(_CLVLLocalizationMaps488Details *)self inliersCount];
-  v51 = [(_CLVLLocalizationMaps488Details *)self inlierIndices];
-  v50 = [(_CLVLLocalizationMaps488Details *)self inliersCount];
-  v49 = [(_CLVLLocalizationMaps488Details *)self slamOrigin];
+  inlierIndices = [(_CLVLLocalizationMaps488Details *)self inlierIndices];
+  inliersCount2 = [(_CLVLLocalizationMaps488Details *)self inliersCount];
+  slamOrigin = [(_CLVLLocalizationMaps488Details *)self slamOrigin];
   v47 = *[(_CLVLLocalizationMaps488Details *)self slamOrigin];
   v46 = [(_CLVLLocalizationMaps488Details *)self slamOrigin][8];
   v45 = [(_CLVLLocalizationMaps488Details *)self slamOrigin][16];
   v44 = [(_CLVLLocalizationMaps488Details *)self slamOrigin][24];
   v43 = [(_CLVLLocalizationMaps488Details *)self slamOrigin][32];
   v42 = [(_CLVLLocalizationMaps488Details *)self slamOrigin][40];
-  v41 = [(_CLVLLocalizationMaps488Details *)self slamTracksCount];
-  v40 = [(_CLVLLocalizationMaps488Details *)self slamTracks];
+  slamTracksCount = [(_CLVLLocalizationMaps488Details *)self slamTracksCount];
+  slamTracks = [(_CLVLLocalizationMaps488Details *)self slamTracks];
   v39 = 3 * [(_CLVLLocalizationMaps488Details *)self slamTracksCount];
-  v38 = [(_CLVLLocalizationMaps488Details *)self descriptorDimension];
-  v37 = [(_CLVLLocalizationMaps488Details *)self slamTrackDescriptors];
-  v6 = [(_CLVLLocalizationMaps488Details *)self descriptorDimension];
-  v36 = [(_CLVLLocalizationMaps488Details *)self slamTracksCount]* v6;
-  v35 = [(_CLVLLocalizationMaps488Details *)self slamTrackObservations];
-  v34 = [(_CLVLLocalizationMaps488Details *)self slamTracksCount];
-  v33 = [(_CLVLLocalizationMaps488Details *)self slamTracks2D];
+  descriptorDimension = [(_CLVLLocalizationMaps488Details *)self descriptorDimension];
+  slamTrackDescriptors = [(_CLVLLocalizationMaps488Details *)self slamTrackDescriptors];
+  descriptorDimension2 = [(_CLVLLocalizationMaps488Details *)self descriptorDimension];
+  v36 = [(_CLVLLocalizationMaps488Details *)self slamTracksCount]* descriptorDimension2;
+  slamTrackObservations = [(_CLVLLocalizationMaps488Details *)self slamTrackObservations];
+  slamTracksCount2 = [(_CLVLLocalizationMaps488Details *)self slamTracksCount];
+  slamTracks2D = [(_CLVLLocalizationMaps488Details *)self slamTracks2D];
   v32 = 2 * [(_CLVLLocalizationMaps488Details *)self totalObservationsCount];
-  v31 = [(_CLVLLocalizationMaps488Details *)self slamTrackImageIndices];
-  v30 = [(_CLVLLocalizationMaps488Details *)self totalObservationsCount];
-  v29 = [(_CLVLLocalizationMaps488Details *)self frameCount];
-  v28 = [(_CLVLLocalizationMaps488Details *)self perFrameVioStatusCodes];
-  v27 = [(_CLVLLocalizationMaps488Details *)self frameCount];
-  v7 = [(_CLVLLocalizationMaps488Details *)self perFrameVioPoses];
+  slamTrackImageIndices = [(_CLVLLocalizationMaps488Details *)self slamTrackImageIndices];
+  totalObservationsCount = [(_CLVLLocalizationMaps488Details *)self totalObservationsCount];
+  frameCount = [(_CLVLLocalizationMaps488Details *)self frameCount];
+  perFrameVioStatusCodes = [(_CLVLLocalizationMaps488Details *)self perFrameVioStatusCodes];
+  frameCount2 = [(_CLVLLocalizationMaps488Details *)self frameCount];
+  perFrameVioPoses = [(_CLVLLocalizationMaps488Details *)self perFrameVioPoses];
   v8 = 12 * [(_CLVLLocalizationMaps488Details *)self frameCount];
-  v9 = [(_CLVLLocalizationMaps488Details *)self perFrameCalibrationMatrices];
+  perFrameCalibrationMatrices = [(_CLVLLocalizationMaps488Details *)self perFrameCalibrationMatrices];
   v10 = 9 * [(_CLVLLocalizationMaps488Details *)self frameCount];
-  v11 = [(_CLVLLocalizationMaps488Details *)self perFrameDistortion];
+  perFrameDistortion = [(_CLVLLocalizationMaps488Details *)self perFrameDistortion];
   v12 = 2 * [(_CLVLLocalizationMaps488Details *)self frameCount];
-  v13 = [(_CLVLLocalizationMaps488Details *)self resultPoseRotation];
+  resultPoseRotation = [(_CLVLLocalizationMaps488Details *)self resultPoseRotation];
   v26 = *[(_CLVLLocalizationMaps488Details *)self resultPoseRotation];
   v25 = [(_CLVLLocalizationMaps488Details *)self resultPoseRotation][8];
   v24 = [(_CLVLLocalizationMaps488Details *)self resultPoseRotation][16];
@@ -673,7 +673,7 @@ LABEL_44:
   v20 = *[(_CLVLLocalizationMaps488Details *)self resultPoseTranslation];
   v21 = [(_CLVLLocalizationMaps488Details *)self resultPoseTranslation][8];
   v23 = [(_CLVLLocalizationMaps488Details *)self resultPoseTranslation][16];
-  return [v57 stringWithFormat:@"<_CLVLLocalizationMaps488Details: %p> {\n%@.inliersCount = %zu, \n%@.points2D = <float: %p> {length = %zu}, \n%@.points3D = <double: %p> {length = %zu}, \n%@.inlierIndices = <int: %p> {length = %zu}, \n%@.slamOrigin = <double: %p> {length = 6, values = [%f, %f, %f, %f, %f, %f]}, \n%@.slamTracksCount = %zu, \n%@.slamTracks = <float: %p> {length = %zu}, \n%@.descriptorDimension = %zu, \n%@.slamTrackDescriptors = <unsigned char: %p> {length = %zu}, \n%@.slamTrackObservations = <short: %p> {length = %zu}, \n%@.slamTracks2D = <float: %p> {length = %zu}, \n%@.slamTrackImageIndices = <short: %p> {length = %zu}, \n%@.frameCount = %zu, \n%@.perFrameVioStatusCodes = <int: %p> {length = %zu}, \n%@.perFrameVioPoses = <float: %p> {length = %zu}, \n%@.perFrameCalibrationMatrices = <float: %p> {length = %zu}, \n%@.perFrameDistortion = <float: %p> {length = %zu}, \n%@.resultPoseRotation = <double: %p> {length = 9, values = [%f, %f, %f;\n%@%f, %f, %f;\n%@%f, %f, %f]}, \n%@.resultPoseTranslation = <double: %p> {length = 3, values = [%f, %f, %f]}\n%@}", self, a3, v56, a3, v55, v54, a3, v53, v52, a3, v51, v50, a3, v49, v47, v46, v45, v44, v43, v42, a3, v41, a3, v40, v39, a3, v38, a3, v37, v36, a3, v35, v34, a3, v33, v32, a3, v31, v30, a3, v29, a3, v28, v27, a3, v7, v8, a3, v9, v10, a3, v11, v12, a3, v13, v26, v25, v24, v48, v14];
+  return [v57 stringWithFormat:@"<_CLVLLocalizationMaps488Details: %p> {\n%@.inliersCount = %zu, \n%@.points2D = <float: %p> {length = %zu}, \n%@.points3D = <double: %p> {length = %zu}, \n%@.inlierIndices = <int: %p> {length = %zu}, \n%@.slamOrigin = <double: %p> {length = 6, values = [%f, %f, %f, %f, %f, %f]}, \n%@.slamTracksCount = %zu, \n%@.slamTracks = <float: %p> {length = %zu}, \n%@.descriptorDimension = %zu, \n%@.slamTrackDescriptors = <unsigned char: %p> {length = %zu}, \n%@.slamTrackObservations = <short: %p> {length = %zu}, \n%@.slamTracks2D = <float: %p> {length = %zu}, \n%@.slamTrackImageIndices = <short: %p> {length = %zu}, \n%@.frameCount = %zu, \n%@.perFrameVioStatusCodes = <int: %p> {length = %zu}, \n%@.perFrameVioPoses = <float: %p> {length = %zu}, \n%@.perFrameCalibrationMatrices = <float: %p> {length = %zu}, \n%@.perFrameDistortion = <float: %p> {length = %zu}, \n%@.resultPoseRotation = <double: %p> {length = 9, values = [%f, %f, %f;\n%@%f, %f, %f;\n%@%f, %f, %f]}, \n%@.resultPoseTranslation = <double: %p> {length = 3, values = [%f, %f, %f]}\n%@}", self, indent, inliersCount, indent, points2D, v54, indent, points3D, v52, indent, inlierIndices, inliersCount2, indent, slamOrigin, v47, v46, v45, v44, v43, v42, indent, slamTracksCount, indent, slamTracks, v39, indent, descriptorDimension, indent, slamTrackDescriptors, v36, indent, slamTrackObservations, slamTracksCount2, indent, slamTracks2D, v32, indent, slamTrackImageIndices, totalObservationsCount, indent, frameCount, indent, perFrameVioStatusCodes, frameCount2, indent, perFrameVioPoses, v8, indent, perFrameCalibrationMatrices, v10, indent, perFrameDistortion, v12, indent, resultPoseRotation, v26, v25, v24, v48, v14];
 }
 
 @end

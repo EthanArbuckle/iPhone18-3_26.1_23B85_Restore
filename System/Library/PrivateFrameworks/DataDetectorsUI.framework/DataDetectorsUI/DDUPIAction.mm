@@ -1,33 +1,33 @@
 @interface DDUPIAction
-+ (BOOL)actionAvailableForResult:(__DDResult *)a3 url:(id)a4 context:(id)a5;
-+ (id)actionsWithURL:(id)a3 result:(__DDResult *)a4 context:(id)a5;
-- (DDUPIAction)initWithURL:(id)a3 result:(__DDResult *)a4 context:(id)a5 appRecord:(id)a6 upiIdentifier:(id)a7;
++ (BOOL)actionAvailableForResult:(__DDResult *)result url:(id)url context:(id)context;
++ (id)actionsWithURL:(id)l result:(__DDResult *)result context:(id)context;
+- (DDUPIAction)initWithURL:(id)l result:(__DDResult *)result context:(id)context appRecord:(id)record upiIdentifier:(id)identifier;
 - (id)localizedName;
-- (void)performFromView:(id)a3;
+- (void)performFromView:(id)view;
 @end
 
 @implementation DDUPIAction
 
-+ (BOOL)actionAvailableForResult:(__DDResult *)a3 url:(id)a4 context:(id)a5
++ (BOOL)actionAvailableForResult:(__DDResult *)result url:(id)url context:(id)context
 {
-  v5 = [DDUPIAction actionsWithURL:a4 result:a3 context:a5];
+  v5 = [DDUPIAction actionsWithURL:url result:result context:context];
   v6 = [v5 count] != 0;
 
   return v6;
 }
 
-+ (id)actionsWithURL:(id)a3 result:(__DDResult *)a4 context:(id)a5
++ (id)actionsWithURL:(id)l result:(__DDResult *)result context:(id)context
 {
   v62[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
-  v9 = [MEMORY[0x277CCA8D8] mainBundle];
-  v10 = [v9 bundleIdentifier];
-  v11 = [v10 isEqualToString:@"com.apple.MobileSMS"];
+  lCopy = l;
+  contextCopy = context;
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v11 = [bundleIdentifier isEqualToString:@"com.apple.MobileSMS"];
 
   if (v11)
   {
-    v12 = [DDCopyAction actionWithURL:v7 result:a4 context:v8];
+    v12 = [DDCopyAction actionWithURL:lCopy result:result context:contextCopy];
     v62[0] = v12;
     v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v62 count:1];
 
@@ -49,7 +49,7 @@ LABEL_3:
   }
 
   v15 = 0;
-  if (!v7 && a4)
+  if (!lCopy && result)
   {
     v16 = *MEMORY[0x277D041B8];
     if (DDResultHasType())
@@ -59,7 +59,7 @@ LABEL_3:
       {
         v17 = MEMORY[0x277CBEBC0];
         v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"upi://pay?pa=%@", v15];
-        v7 = [v17 URLWithString:v18];
+        lCopy = [v17 URLWithString:v18];
 
         goto LABEL_12;
       }
@@ -70,13 +70,13 @@ LABEL_3:
       v15 = 0;
     }
 
-    v7 = 0;
+    lCopy = 0;
   }
 
 LABEL_12:
-  v19 = [v7 scheme];
-  v20 = [v19 lowercaseString];
-  v21 = [v20 isEqualToString:@"upi"];
+  scheme = [lCopy scheme];
+  lowercaseString = [scheme lowercaseString];
+  v21 = [lowercaseString isEqualToString:@"upi"];
 
   if (v21)
   {
@@ -86,14 +86,14 @@ LABEL_12:
       {
 LABEL_15:
         v50 = v15;
-        v22 = v8;
-        v23 = [MEMORY[0x277CC1E80] defaultWorkspace];
-        v24 = v7;
-        v25 = [v23 applicationsAvailableForOpeningURL:v7];
+        v22 = contextCopy;
+        defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+        v24 = lCopy;
+        v25 = [defaultWorkspace applicationsAvailableForOpeningURL:lCopy];
 
         v48 = objc_alloc_init(MEMORY[0x277CBEB18]);
-        v26 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-        v47 = [v26 stringForKey:@"DDUIUPILastUsed"];
+        standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+        v47 = [standardUserDefaults stringForKey:@"DDUIUPILastUsed"];
 
         v58 = 0u;
         v59 = 0u;
@@ -114,14 +114,14 @@ LABEL_15:
                 objc_enumerationMutation(obj);
               }
 
-              v31 = [*(*(&v56 + 1) + 8 * i) bundleIdentifier];
+              bundleIdentifier2 = [*(*(&v56 + 1) + 8 * i) bundleIdentifier];
               v32 = objc_alloc(MEMORY[0x277CC1E70]);
               v55 = 0;
-              v33 = [v32 initWithBundleIdentifier:v31 allowPlaceholder:1 error:&v55];
+              v33 = [v32 initWithBundleIdentifier:bundleIdentifier2 allowPlaceholder:1 error:&v55];
               v34 = v33;
-              if (!v55 && v33 && v31 != 0)
+              if (!v55 && v33 && bundleIdentifier2 != 0)
               {
-                if ([v47 isEqualToString:v31])
+                if ([v47 isEqualToString:bundleIdentifier2])
                 {
                   [v48 insertObject:v34 atIndex:0];
                 }
@@ -163,7 +163,7 @@ LABEL_15:
                   objc_enumerationMutation(v37);
                 }
 
-                v42 = [[DDUPIAction alloc] initWithURL:v24 result:a4 context:v22 appRecord:*(*(&v51 + 1) + 8 * j) upiIdentifier:v50];
+                v42 = [[DDUPIAction alloc] initWithURL:v24 result:result context:v22 appRecord:*(*(&v51 + 1) + 8 * j) upiIdentifier:v50];
                 [v14 addObject:v42];
               }
 
@@ -173,9 +173,9 @@ LABEL_15:
             while (v39);
           }
 
-          v7 = v24;
-          v8 = v22;
-          v43 = [DDCopyAction actionWithURL:v24 result:a4 context:v22];
+          lCopy = v24;
+          contextCopy = v22;
+          v43 = [DDCopyAction actionWithURL:v24 result:result context:v22];
           if (v43)
           {
             [v14 addObject:v43];
@@ -189,7 +189,7 @@ LABEL_15:
         else
         {
           v14 = v13;
-          v8 = v22;
+          contextCopy = v22;
           v15 = v50;
         }
 
@@ -229,22 +229,22 @@ uint64_t __45__DDUPIAction_actionsWithURL_result_context___block_invoke()
   return result;
 }
 
-- (DDUPIAction)initWithURL:(id)a3 result:(__DDResult *)a4 context:(id)a5 appRecord:(id)a6 upiIdentifier:(id)a7
+- (DDUPIAction)initWithURL:(id)l result:(__DDResult *)result context:(id)context appRecord:(id)record upiIdentifier:(id)identifier
 {
-  v13 = a6;
-  v14 = a7;
+  recordCopy = record;
+  identifierCopy = identifier;
   v20.receiver = self;
   v20.super_class = DDUPIAction;
-  v15 = [(DDAction *)&v20 initWithURL:a3 result:a4 context:a5];
+  v15 = [(DDAction *)&v20 initWithURL:l result:result context:context];
   v16 = v15;
-  if (v13 && v15)
+  if (recordCopy && v15)
   {
-    objc_storeStrong(&v15->_appRecord, a6);
-    v17 = [v13 localizedName];
+    objc_storeStrong(&v15->_appRecord, record);
+    localizedName = [recordCopy localizedName];
     appName = v16->_appName;
-    v16->_appName = v17;
+    v16->_appName = localizedName;
 
-    objc_storeStrong(&v16->_upiIdentifier, a7);
+    objc_storeStrong(&v16->_upiIdentifier, identifier);
   }
 
   return v16;
@@ -269,16 +269,16 @@ uint64_t __45__DDUPIAction_actionsWithURL_result_context___block_invoke()
   return v6;
 }
 
-- (void)performFromView:(id)a3
+- (void)performFromView:(id)view
 {
-  v4 = [MEMORY[0x277CC1E80] defaultWorkspace];
+  defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
   url = self->super._url;
-  v6 = [(LSApplicationRecord *)self->_appRecord bundleIdentifier];
-  v9 = [v4 operationToOpenResource:url usingApplication:v6 uniqueDocumentIdentifier:0 isContentManaged:0 sourceAuditToken:0 userInfo:0 options:0 delegate:0];
+  bundleIdentifier = [(LSApplicationRecord *)self->_appRecord bundleIdentifier];
+  v9 = [defaultWorkspace operationToOpenResource:url usingApplication:bundleIdentifier uniqueDocumentIdentifier:0 isContentManaged:0 sourceAuditToken:0 userInfo:0 options:0 delegate:0];
 
-  v7 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v8 = [(LSApplicationRecord *)self->_appRecord bundleIdentifier];
-  [v7 setObject:v8 forKey:@"DDUIUPILastUsed"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  bundleIdentifier2 = [(LSApplicationRecord *)self->_appRecord bundleIdentifier];
+  [standardUserDefaults setObject:bundleIdentifier2 forKey:@"DDUIUPILastUsed"];
 
   [v9 start];
 }

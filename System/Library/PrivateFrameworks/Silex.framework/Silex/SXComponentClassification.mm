@@ -1,8 +1,8 @@
 @interface SXComponentClassification
-+ (id)classificationForClass:(uint64_t)a1;
-+ (id)classificationForComponentWithRole:(int)a3;
-+ (id)classificationForComponentWithType:(id)a3;
-+ (id)classificationForComponentWithType:(id)a3 role:(id)a4;
++ (id)classificationForClass:(uint64_t)class;
++ (id)classificationForComponentWithRole:(int)role;
++ (id)classificationForComponentWithType:(id)type;
++ (id)classificationForComponentWithType:(id)type role:(id)role;
 + (void)initialize;
 + (void)registerClassification;
 - (SXComponentClassification)init;
@@ -28,23 +28,23 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
-    v2 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v3 = __classificationClasses;
-    __classificationClasses = v2;
+    __classificationClasses = dictionary;
 
-    v4 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     v5 = __classificationClassesByRole;
-    __classificationClassesByRole = v4;
+    __classificationClassesByRole = dictionary2;
 
-    v6 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary3 = [MEMORY[0x1E695DF90] dictionary];
     v7 = __defaultClassificationsByType;
-    __defaultClassificationsByType = v6;
+    __defaultClassificationsByType = dictionary3;
 
-    v8 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary4 = [MEMORY[0x1E695DF90] dictionary];
     v9 = __classifications;
-    __classifications = v8;
+    __classifications = dictionary4;
 
     __unfairLock = 0;
 
@@ -54,33 +54,33 @@
 
 + (void)registerClassification
 {
-  v8 = [a1 typeString];
-  v3 = [a1 roleString];
-  v4 = [a1 role];
-  v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%@", v8, v3];
-  [__classificationClasses setObject:a1 forKey:v5];
-  if (v4)
+  typeString = [self typeString];
+  roleString = [self roleString];
+  role = [self role];
+  v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%@", typeString, roleString];
+  [__classificationClasses setObject:self forKey:v5];
+  if (role)
   {
     v6 = __classificationClassesByRole;
-    v7 = [MEMORY[0x1E696AD98] numberWithInt:v4];
-    [v6 setObject:a1 forKey:v7];
+    v7 = [MEMORY[0x1E696AD98] numberWithInt:role];
+    [v6 setObject:self forKey:v7];
   }
 
   else
   {
-    [__defaultClassificationsByType setObject:a1 forKey:v8];
+    [__defaultClassificationsByType setObject:self forKey:typeString];
   }
 }
 
-+ (id)classificationForComponentWithRole:(int)a3
++ (id)classificationForComponentWithRole:(int)role
 {
-  if (a3)
+  if (role)
   {
     v5 = __classificationClassesByRole;
     v6 = [MEMORY[0x1E696AD98] numberWithInt:?];
     v7 = [v5 objectForKey:v6];
 
-    v8 = [(SXComponentClassification *)a1 classificationForClass:v7];
+    v8 = [(SXComponentClassification *)self classificationForClass:v7];
   }
 
   else
@@ -91,7 +91,7 @@
   return v8;
 }
 
-+ (id)classificationForClass:(uint64_t)a1
++ (id)classificationForClass:(uint64_t)class
 {
   objc_opt_self();
   if (!a2)
@@ -114,65 +114,65 @@
   return v4;
 }
 
-+ (id)classificationForComponentWithType:(id)a3
++ (id)classificationForComponentWithType:(id)type
 {
-  v4 = [__defaultClassificationsByType objectForKey:a3];
+  v4 = [__defaultClassificationsByType objectForKey:type];
 
-  return [(SXComponentClassification *)a1 classificationForClass:v4];
+  return [(SXComponentClassification *)self classificationForClass:v4];
 }
 
-+ (id)classificationForComponentWithType:(id)a3 role:(id)a4
++ (id)classificationForComponentWithType:(id)type role:(id)role
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6 || !v7 || ([MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%@", v6, v7], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(__classificationClasses, "objectForKey:", v9), v9, !v10))
+  typeCopy = type;
+  roleCopy = role;
+  v8 = roleCopy;
+  if (!typeCopy || !roleCopy || ([MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%@", typeCopy, roleCopy], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(__classificationClasses, "objectForKey:", v9), v9, !v10))
   {
-    v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%@", v6, SXComponentClassificationUnknownRoleString];
-    v10 = [__classificationClasses objectForKey:v11];
+    sXComponentClassificationUnknownRoleString = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%@", typeCopy, SXComponentClassificationUnknownRoleString];
+    v10 = [__classificationClasses objectForKey:sXComponentClassificationUnknownRoleString];
   }
 
-  v12 = [(SXComponentClassification *)a1 classificationForClass:v10];
+  v12 = [(SXComponentClassification *)self classificationForClass:v10];
 
   return v12;
 }
 
 - (unint64_t)contentRelevance
 {
-  v2 = [(SXComponentClassification *)self textRules];
-  v3 = [v2 textFlow] == 1;
+  textRules = [(SXComponentClassification *)self textRules];
+  v3 = [textRules textFlow] == 1;
 
   return 2 * v3;
 }
 
 - (void)setupStyleIdentifiers
 {
-  v13 = [objc_opt_class() roleString];
-  v3 = [objc_opt_class() typeString];
+  roleString = [objc_opt_class() roleString];
+  typeString = [objc_opt_class() typeString];
   v4 = [MEMORY[0x1E695DFA0] orderedSetWithObject:@"default"];
-  if (v3 && v3 != SXComponentClassificationUnknownTypeString)
+  if (typeString && typeString != SXComponentClassificationUnknownTypeString)
   {
-    v5 = SXDefaultComponentStyleIdentifierForRole(v3);
+    v5 = SXDefaultComponentStyleIdentifierForRole(typeString);
     [v4 addObject:v5];
 
-    v6 = [v3 stringByReplacingOccurrencesOfString:@"_" withString:@"-"];
+    v6 = [typeString stringByReplacingOccurrencesOfString:@"_" withString:@"-"];
     v7 = SXDefaultComponentStyleIdentifierForRole(v6);
     [v4 addObject:v7];
   }
 
-  if (v13 && v13 != SXComponentClassificationUnknownRoleString)
+  if (roleString && roleString != SXComponentClassificationUnknownRoleString)
   {
-    v8 = SXDefaultComponentStyleIdentifierForRole(v13);
+    v8 = SXDefaultComponentStyleIdentifierForRole(roleString);
     [v4 addObject:v8];
 
-    v9 = [(__CFString *)v13 stringByReplacingOccurrencesOfString:@"_" withString:@"-"];
+    v9 = [(__CFString *)roleString stringByReplacingOccurrencesOfString:@"_" withString:@"-"];
     v10 = SXDefaultComponentStyleIdentifierForRole(v9);
     [v4 addObject:v10];
   }
 
-  v11 = [v4 array];
+  array = [v4 array];
   defaultStyleIdentifiers = self->_defaultStyleIdentifiers;
-  self->_defaultStyleIdentifiers = v11;
+  self->_defaultStyleIdentifiers = array;
 }
 
 @end

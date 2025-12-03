@@ -1,39 +1,39 @@
 @interface LCSExtension
-+ (BOOL)isWarmLaunchAllowedForIdentity:(id)a3;
-+ (LCSExtension)extensionWithHostConfiguration:(id)a3;
-+ (LCSExtension)extensionWithIdentity:(id)a3;
-- (BOOL)hasEntitlements:(id)a3 bundleTarget:(unint64_t)a4;
-- (BOOL)hasImplementedAppIntentProtocol:(id)a3 bundleTarget:(unint64_t)a4;
-- (BOOL)isEqual:(id)a3;
++ (BOOL)isWarmLaunchAllowedForIdentity:(id)identity;
++ (LCSExtension)extensionWithHostConfiguration:(id)configuration;
++ (LCSExtension)extensionWithIdentity:(id)identity;
+- (BOOL)hasEntitlements:(id)entitlements bundleTarget:(unint64_t)target;
+- (BOOL)hasImplementedAppIntentProtocol:(id)protocol bundleTarget:(unint64_t)target;
+- (BOOL)isEqual:(id)equal;
 - (LSApplicationExtensionRecord)applicationExtensionRecord;
 - (NSString)containerBundleIdentifier;
 - (NSString)localizedDisplayName;
-- (id)_initWithHostConfiguration:(id)a3;
+- (id)_initWithHostConfiguration:(id)configuration;
 - (unint64_t)visibilityOverride;
 @end
 
 @implementation LCSExtension
 
-- (id)_initWithHostConfiguration:(id)a3
+- (id)_initWithHostConfiguration:(id)configuration
 {
-  v6 = a3;
-  if (!v6)
+  configurationCopy = configuration;
+  if (!configurationCopy)
   {
     [LCSExtension _initWithHostConfiguration:a2];
   }
 
-  v7 = v6;
-  v8 = [v6 extensionIdentity];
-  v9 = [v7 rbsProcessIdentity];
-  if (!v8)
+  v7 = configurationCopy;
+  extensionIdentity = [configurationCopy extensionIdentity];
+  rbsProcessIdentity = [v7 rbsProcessIdentity];
+  if (!extensionIdentity)
   {
     [LCSExtension _initWithHostConfiguration:a2];
   }
 
-  v10 = v9;
-  v11 = [v8 uniqueIdentifier];
+  v10 = rbsProcessIdentity;
+  uniqueIdentifier = [extensionIdentity uniqueIdentifier];
 
-  if (!v11)
+  if (!uniqueIdentifier)
   {
     [LCSExtension _initWithHostConfiguration:a2];
   }
@@ -49,30 +49,30 @@
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_identity, v8);
-    v14 = [v8 uniqueIdentifier];
+    objc_storeStrong(&v12->_identity, extensionIdentity);
+    uniqueIdentifier2 = [extensionIdentity uniqueIdentifier];
     identityUUID = v13->_identityUUID;
-    v13->_identityUUID = v14;
+    v13->_identityUUID = uniqueIdentifier2;
 
     objc_storeStrong(&v13->_processIdentity, v10);
-    objc_storeStrong(&v13->_hostConfiguration, a3);
-    v16 = [(LCSExtension *)v13 applicationExtensionRecord];
+    objc_storeStrong(&v13->_hostConfiguration, configuration);
+    applicationExtensionRecord = [(LCSExtension *)v13 applicationExtensionRecord];
   }
 
   return v13;
 }
 
-+ (LCSExtension)extensionWithHostConfiguration:(id)a3
++ (LCSExtension)extensionWithHostConfiguration:(id)configuration
 {
-  v4 = a3;
-  if (!v4)
+  configurationCopy = configuration;
+  if (!configurationCopy)
   {
     [LCSExtension extensionWithHostConfiguration:a2];
   }
 
-  v5 = v4;
-  v6 = [v4 rbsProcessIdentity];
-  if (v6)
+  v5 = configurationCopy;
+  rbsProcessIdentity = [configurationCopy rbsProcessIdentity];
+  if (rbsProcessIdentity)
   {
     v7 = [[LCSExtension alloc] _initWithHostConfiguration:v5];
   }
@@ -91,11 +91,11 @@
   return v7;
 }
 
-+ (LCSExtension)extensionWithIdentity:(id)a3
++ (LCSExtension)extensionWithIdentity:(id)identity
 {
-  v5 = a3;
+  identityCopy = identity;
   NSClassFromString(&cfstr_Exextensionide.isa);
-  if (!v5)
+  if (!identityCopy)
   {
     [LCSExtension extensionWithIdentity:a2];
   }
@@ -105,79 +105,79 @@
     [LCSExtension extensionWithIdentity:a2];
   }
 
-  v6 = [a1 isWarmLaunchAllowedForIdentity:v5];
+  v6 = [self isWarmLaunchAllowedForIdentity:identityCopy];
   v7 = objc_alloc(MEMORY[0x277CC5DF0]);
   v8 = v7;
   if (v6)
   {
-    v9 = [v7 initWithExtensionIdentity:v5];
+    v9 = [v7 initWithExtensionIdentity:identityCopy];
   }
 
   else
   {
     v10 = objc_alloc(MEMORY[0x277CC5DE0]);
-    v11 = [MEMORY[0x277CCAD78] UUID];
-    v12 = [v10 initWithIdentifier:v11];
-    v9 = [v8 initWithExtensionIdentity:v5 instanceIdentifier:v12];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    v12 = [v10 initWithIdentifier:uUID];
+    v9 = [v8 initWithExtensionIdentity:identityCopy instanceIdentifier:v12];
   }
 
-  v13 = [a1 extensionWithHostConfiguration:v9];
+  v13 = [self extensionWithHostConfiguration:v9];
 
   return v13;
 }
 
-+ (BOOL)isWarmLaunchAllowedForIdentity:(id)a3
++ (BOOL)isWarmLaunchAllowedForIdentity:(id)identity
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = [a3 bundleIdentifier];
-  if ([v4 isEqualToString:@"com.apple.camera.lockscreen"])
+  bundleIdentifier = [identity bundleIdentifier];
+  if ([bundleIdentifier isEqualToString:@"com.apple.camera.lockscreen"])
   {
-    v5 = 1;
+    bOOLValue = 1;
   }
 
   else
   {
     v13 = 0;
-    v6 = [MEMORY[0x277CC1E90] bundleRecordWithBundleIdentifier:v4 allowPlaceholder:0 error:&v13];
+    v6 = [MEMORY[0x277CC1E90] bundleRecordWithBundleIdentifier:bundleIdentifier allowPlaceholder:0 error:&v13];
     v7 = v13;
     if (v6)
     {
-      v8 = [v6 entitlements];
+      entitlements = [v6 entitlements];
       v9 = objc_opt_self();
-      v10 = [v8 objectForKey:@"com.apple.LockedContentServices.allowWarmLaunch" ofClass:v9];
-      v5 = [v10 BOOLValue];
+      v10 = [entitlements objectForKey:@"com.apple.LockedContentServices.allowWarmLaunch" ofClass:v9];
+      bOOLValue = [v10 BOOLValue];
     }
 
     else
     {
-      v8 = LCSLogExtension();
-      if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+      entitlements = LCSLogExtension();
+      if (os_log_type_enabled(entitlements, OS_LOG_TYPE_ERROR))
       {
         *buf = 134218498;
-        v15 = a1;
+        selfCopy = self;
         v16 = 2114;
-        v17 = v4;
+        v17 = bundleIdentifier;
         v18 = 2114;
         v19 = v7;
-        _os_log_error_impl(&dword_256175000, v8, OS_LOG_TYPE_ERROR, "%p Failure in retrieving the bundle record for %{public}@: %{public}@; Warm launch is not allowed", buf, 0x20u);
+        _os_log_error_impl(&dword_256175000, entitlements, OS_LOG_TYPE_ERROR, "%p Failure in retrieving the bundle record for %{public}@: %{public}@; Warm launch is not allowed", buf, 0x20u);
       }
 
-      v5 = 0;
+      bOOLValue = 0;
     }
   }
 
   v11 = *MEMORY[0x277D85DE8];
-  return v5;
+  return bOOLValue;
 }
 
 - (LSApplicationExtensionRecord)applicationExtensionRecord
 {
   v25 = *MEMORY[0x277D85DE8];
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(_EXExtensionIdentity *)self->_identity applicationExtensionRecord];
-  if (v3)
+  applicationExtensionRecord = [(_EXExtensionIdentity *)self->_identity applicationExtensionRecord];
+  if (applicationExtensionRecord)
   {
-    v4 = v3;
+    v4 = applicationExtensionRecord;
     v5 = 0;
   }
 
@@ -196,8 +196,8 @@
     v4 = 0;
   }
 
-  v8 = [(_EXExtensionIdentity *)self->_identity bundleIdentifier];
-  v9 = v8;
+  bundleIdentifier = [(_EXExtensionIdentity *)self->_identity bundleIdentifier];
+  v9 = bundleIdentifier;
   if (v4)
   {
     v10 = 1;
@@ -205,13 +205,13 @@
 
   else
   {
-    v10 = v8 == 0;
+    v10 = bundleIdentifier == 0;
   }
 
   if (!v10)
   {
     v17 = v5;
-    v4 = [objc_alloc(MEMORY[0x277CC1E50]) initWithBundleIdentifier:v8 error:&v17];
+    v4 = [objc_alloc(MEMORY[0x277CC1E50]) initWithBundleIdentifier:bundleIdentifier error:&v17];
     v11 = v17;
 
     v5 = v11;
@@ -224,7 +224,7 @@
     {
       identity = self->_identity;
       *buf = 134218498;
-      v20 = self;
+      selfCopy = self;
       v21 = 2114;
       v22 = identity;
       v23 = 2114;
@@ -242,11 +242,11 @@
 
 - (NSString)containerBundleIdentifier
 {
-  v2 = [(LCSExtension *)self applicationExtensionRecord];
-  v3 = [v2 containingBundleRecord];
-  v4 = [v3 bundleIdentifier];
+  applicationExtensionRecord = [(LCSExtension *)self applicationExtensionRecord];
+  containingBundleRecord = [applicationExtensionRecord containingBundleRecord];
+  bundleIdentifier = [containingBundleRecord bundleIdentifier];
 
-  return v4;
+  return bundleIdentifier;
 }
 
 - (NSString)localizedDisplayName
@@ -254,10 +254,10 @@
   localizedDisplayName = self->_localizedDisplayName;
   if (!localizedDisplayName)
   {
-    v4 = [(LCSExtension *)self applicationExtensionRecord];
-    v5 = [v4 containingBundleRecord];
+    applicationExtensionRecord = [(LCSExtension *)self applicationExtensionRecord];
+    containingBundleRecord = [applicationExtensionRecord containingBundleRecord];
     v6 = objc_opt_class();
-    v7 = v5;
+    v7 = containingBundleRecord;
     if (v6)
     {
       if (objc_opt_isKindOfClass())
@@ -280,15 +280,15 @@
 
     if (v9)
     {
-      v10 = [v9 localizedName];
+      localizedName = [v9 localizedName];
     }
 
     else
     {
-      v10 = 0;
+      localizedName = 0;
     }
 
-    v11 = [v10 copy];
+    v11 = [localizedName copy];
     v12 = self->_localizedDisplayName;
     self->_localizedDisplayName = v11;
 
@@ -298,10 +298,10 @@
   return localizedDisplayName;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -309,9 +309,9 @@
   else
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && [(NSUUID *)self->_identityUUID isEqual:v4->_identityUUID]&& [(RBSProcessIdentity *)self->_processIdentity isEqual:v4->_processIdentity]&& [(_EXHostConfiguration *)self->_hostConfiguration isEqual:v4->_hostConfiguration])
+    if ((objc_opt_isKindOfClass() & 1) != 0 && [(NSUUID *)self->_identityUUID isEqual:equalCopy->_identityUUID]&& [(RBSProcessIdentity *)self->_processIdentity isEqual:equalCopy->_processIdentity]&& [(_EXHostConfiguration *)self->_hostConfiguration isEqual:equalCopy->_hostConfiguration])
     {
-      v5 = [(_EXExtensionIdentity *)self->_identity isEqual:v4->_identity];
+      v5 = [(_EXExtensionIdentity *)self->_identity isEqual:equalCopy->_identity];
     }
 
     else
@@ -328,25 +328,25 @@
   v45 = *MEMORY[0x277D85DE8];
   v3 = MGGetBoolAnswer();
   v4 = MGGetBoolAnswer();
-  v5 = [(LCSExtension *)self bundleIdentifier];
-  v6 = [(LCSExtension *)self containerBundleIdentifier];
-  if (v6)
+  bundleIdentifier = [(LCSExtension *)self bundleIdentifier];
+  containerBundleIdentifier = [(LCSExtension *)self containerBundleIdentifier];
+  if (containerBundleIdentifier)
   {
     v38 = 0;
-    v7 = [MEMORY[0x277CC1E90] bundleRecordWithBundleIdentifier:v6 allowPlaceholder:0 error:&v38];
+    v7 = [MEMORY[0x277CC1E90] bundleRecordWithBundleIdentifier:containerBundleIdentifier allowPlaceholder:0 error:&v38];
     v8 = v38;
     if (v8)
     {
-      v9 = LCSLogExtension();
-      if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+      infoDictionary = LCSLogExtension();
+      if (os_log_type_enabled(infoDictionary, OS_LOG_TYPE_ERROR))
       {
         *buf = 134218498;
-        v40 = self;
+        selfCopy2 = self;
         v41 = 2114;
-        v42 = v6;
+        v42 = containerBundleIdentifier;
         v43 = 2114;
         v44 = v8;
-        _os_log_error_impl(&dword_256175000, v9, OS_LOG_TYPE_ERROR, "%p Failure in retrieving the bundle record for %{public}@: %{public}@", buf, 0x20u);
+        _os_log_error_impl(&dword_256175000, infoDictionary, OS_LOG_TYPE_ERROR, "%p Failure in retrieving the bundle record for %{public}@: %{public}@", buf, 0x20u);
       }
 
       v10 = 0;
@@ -354,25 +354,25 @@
 
     else
     {
-      v37 = v5;
-      v9 = [v7 infoDictionary];
+      v37 = bundleIdentifier;
+      infoDictionary = [v7 infoDictionary];
       v36 = v7;
-      v11 = [v7 entitlements];
+      entitlements = [v7 entitlements];
       v12 = objc_opt_self();
-      v35 = v11;
-      v13 = [v11 objectForKey:@"com.apple.springboard.allowIconVisibilityChanges" ofClass:v12];
-      v14 = [v13 BOOLValue];
+      v35 = entitlements;
+      v13 = [entitlements objectForKey:@"com.apple.springboard.allowIconVisibilityChanges" ofClass:v12];
+      bOOLValue = [v13 BOOLValue];
 
       v15 = objc_opt_self();
-      v16 = [v9 objectForKey:@"SBIconVisibilitySetByAppPreference" ofClass:v15];
-      LODWORD(v11) = [v16 BOOLValue];
+      v16 = [infoDictionary objectForKey:@"SBIconVisibilitySetByAppPreference" ofClass:v15];
+      LODWORD(entitlements) = [v16 BOOLValue];
 
-      if (v11)
+      if (entitlements)
       {
         v17 = objc_opt_self();
-        v18 = [v9 objectForKey:@"SBIconVisibilityDefaultVisible" ofClass:v17];
+        v18 = [infoDictionary objectForKey:@"SBIconVisibilityDefaultVisible" ofClass:v17];
 
-        if ((v3 | v4 | v14))
+        if ((v3 | v4 | bOOLValue))
         {
           if (v18)
           {
@@ -382,7 +382,7 @@
           else
           {
             v19 = objc_opt_class();
-            v20 = [v9 objectForKey:@"SBIconVisibilityDefaultVisibleInstallTypes" ofClass:v19 valuesOfClass:objc_opt_class()];
+            v20 = [infoDictionary objectForKey:@"SBIconVisibilityDefaultVisibleInstallTypes" ofClass:v19 valuesOfClass:objc_opt_class()];
             v34 = v20;
             if (v20)
             {
@@ -411,14 +411,14 @@
             }
 
             v24 = objc_opt_class();
-            v25 = [v9 objectForKey:@"SBIconVisibilityDefaultVisiblePlatforms" ofClass:v24 valuesOfClass:objc_opt_class()];
+            v25 = [infoDictionary objectForKey:@"SBIconVisibilityDefaultVisiblePlatforms" ofClass:v24 valuesOfClass:objc_opt_class()];
             if (v25)
             {
               v26 = MGCopyAnswer();
               LODWORD(v23) = [v25 containsObject:v26] | v23;
             }
 
-            v27 = [v9 objectForKey:@"SBIconVisibilityDefaultVisibleFeatureFlag" ofClass:objc_opt_class()];
+            v27 = [infoDictionary objectForKey:@"SBIconVisibilityDefaultVisibleFeatureFlag" ofClass:objc_opt_class()];
             v28 = v27;
             if (v27)
             {
@@ -460,7 +460,7 @@
       }
 
       v7 = v36;
-      v5 = v37;
+      bundleIdentifier = v37;
     }
   }
 
@@ -470,9 +470,9 @@
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218242;
-      v40 = self;
+      selfCopy2 = self;
       v41 = 2114;
-      v42 = v5;
+      v42 = bundleIdentifier;
       _os_log_impl(&dword_256175000, v8, OS_LOG_TYPE_DEFAULT, "%p Failure in retrieving the bundle record for extension: %{public}@ because container app can't be determined", buf, 0x16u);
     }
 
@@ -483,24 +483,24 @@
   return v10;
 }
 
-- (BOOL)hasImplementedAppIntentProtocol:(id)a3 bundleTarget:(unint64_t)a4
+- (BOOL)hasImplementedAppIntentProtocol:(id)protocol bundleTarget:(unint64_t)target
 {
   v48 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(LCSExtension *)self containerBundleIdentifier];
-  v8 = [(LCSExtension *)self bundleIdentifier];
+  protocolCopy = protocol;
+  containerBundleIdentifier = [(LCSExtension *)self containerBundleIdentifier];
+  bundleIdentifier = [(LCSExtension *)self bundleIdentifier];
   v9 = [objc_alloc(MEMORY[0x277D23C38]) initWithOptions:0];
   v10 = objc_opt_new();
-  v11 = [v9 actionsConformingToSystemProtocol:v6 withParametersOfTypes:v10 bundleIdentifier:v7 error:0];
+  v11 = [v9 actionsConformingToSystemProtocol:protocolCopy withParametersOfTypes:v10 bundleIdentifier:containerBundleIdentifier error:0];
 
-  v12 = [v11 objectForKeyedSubscript:v7];
-  v13 = [v12 allValues];
+  v12 = [v11 objectForKeyedSubscript:containerBundleIdentifier];
+  allValues = [v12 allValues];
 
-  v14 = v8;
+  v14 = bundleIdentifier;
   v15 = v14;
-  if (!a4)
+  if (!target)
   {
-    v15 = v7;
+    v15 = containerBundleIdentifier;
   }
 
   v37 = v14;
@@ -508,14 +508,14 @@
   v45 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v16 = v13;
+  v16 = allValues;
   v17 = [v16 countByEnumeratingWithState:&v42 objects:v47 count:16];
   if (v17)
   {
     v18 = v17;
     v19 = *v43;
-    v35 = v7;
-    v36 = v6;
+    v35 = containerBundleIdentifier;
+    v36 = protocolCopy;
     v33 = v11;
     v34 = v9;
     v32 = *v43;
@@ -533,8 +533,8 @@
         v39 = 0u;
         v40 = 0u;
         v41 = 0u;
-        v22 = [v21 effectiveBundleIdentifiers];
-        v23 = [v22 countByEnumeratingWithState:&v38 objects:v46 count:16];
+        effectiveBundleIdentifiers = [v21 effectiveBundleIdentifiers];
+        v23 = [effectiveBundleIdentifiers countByEnumeratingWithState:&v38 objects:v46 count:16];
         if (v23)
         {
           v24 = v23;
@@ -545,25 +545,25 @@
             {
               if (*v39 != v25)
               {
-                objc_enumerationMutation(v22);
+                objc_enumerationMutation(effectiveBundleIdentifiers);
               }
 
-              v27 = [*(*(&v38 + 1) + 8 * j) bundleIdentifier];
-              v28 = [v27 isEqualToString:v15];
+              bundleIdentifier2 = [*(*(&v38 + 1) + 8 * j) bundleIdentifier];
+              v28 = [bundleIdentifier2 isEqualToString:v15];
 
               if (v28)
               {
 
                 v29 = 1;
-                v7 = v35;
-                v6 = v36;
+                containerBundleIdentifier = v35;
+                protocolCopy = v36;
                 v11 = v33;
                 v9 = v34;
                 goto LABEL_21;
               }
             }
 
-            v24 = [v22 countByEnumeratingWithState:&v38 objects:v46 count:16];
+            v24 = [effectiveBundleIdentifiers countByEnumeratingWithState:&v38 objects:v46 count:16];
             if (v24)
             {
               continue;
@@ -578,8 +578,8 @@
 
       v18 = [v16 countByEnumeratingWithState:&v42 objects:v47 count:16];
       v29 = 0;
-      v7 = v35;
-      v6 = v36;
+      containerBundleIdentifier = v35;
+      protocolCopy = v36;
       v11 = v33;
       v9 = v34;
     }
@@ -598,27 +598,27 @@ LABEL_21:
   return v29;
 }
 
-- (BOOL)hasEntitlements:(id)a3 bundleTarget:(unint64_t)a4
+- (BOOL)hasEntitlements:(id)entitlements bundleTarget:(unint64_t)target
 {
   v50 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(LCSExtension *)self bundleIdentifier];
-  if (!a4)
+  entitlementsCopy = entitlements;
+  bundleIdentifier = [(LCSExtension *)self bundleIdentifier];
+  if (!target)
   {
-    v8 = [(LCSExtension *)self containerBundleIdentifier];
+    containerBundleIdentifier = [(LCSExtension *)self containerBundleIdentifier];
 
-    v7 = v8;
+    bundleIdentifier = containerBundleIdentifier;
   }
 
   v38 = 0;
-  v9 = [MEMORY[0x277CC1E90] bundleRecordWithBundleIdentifier:v7 allowPlaceholder:0 error:&v38];
+  v9 = [MEMORY[0x277CC1E90] bundleRecordWithBundleIdentifier:bundleIdentifier allowPlaceholder:0 error:&v38];
   v10 = v38;
   if (v10)
   {
-    v11 = LCSLogExtension();
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+    entitlements = LCSLogExtension();
+    if (os_log_type_enabled(entitlements, OS_LOG_TYPE_ERROR))
     {
-      if (a4)
+      if (target)
       {
         v27 = @"extension";
       }
@@ -629,18 +629,18 @@ LABEL_21:
       }
 
       v28 = v27;
-      v29 = [v6 description];
+      v29 = [entitlementsCopy description];
       *buf = 134219010;
-      v41 = self;
+      selfCopy2 = self;
       v42 = 2112;
       v43 = v27;
       v44 = 2114;
-      v45 = v7;
+      v45 = bundleIdentifier;
       v46 = 2114;
       v47 = v10;
       v48 = 2112;
       v49 = v29;
-      _os_log_error_impl(&dword_256175000, v11, OS_LOG_TYPE_ERROR, "%p Failure in retrieving the %@ bundle record for %{public}@: %{public}@; No %@ entitlement found", buf, 0x34u);
+      _os_log_error_impl(&dword_256175000, entitlements, OS_LOG_TYPE_ERROR, "%p Failure in retrieving the %@ bundle record for %{public}@: %{public}@; No %@ entitlement found", buf, 0x34u);
     }
 
     v12 = 0;
@@ -648,20 +648,20 @@ LABEL_21:
 
   else
   {
-    v11 = [v9 entitlements];
+    entitlements = [v9 entitlements];
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v13 = v6;
+    v13 = entitlementsCopy;
     v14 = [v13 countByEnumeratingWithState:&v34 objects:v39 count:16];
     if (v14)
     {
       v15 = v14;
-      v30 = a4;
+      targetCopy = target;
       v31 = v9;
-      v32 = v7;
-      v33 = v6;
+      v32 = bundleIdentifier;
+      v33 = entitlementsCopy;
       v16 = *v35;
       while (2)
       {
@@ -674,20 +674,20 @@ LABEL_21:
 
           v18 = *(*(&v34 + 1) + 8 * i);
           v19 = objc_opt_self();
-          v20 = [v11 objectForKey:v18 ofClass:v19];
-          v21 = [v20 BOOLValue];
+          v20 = [entitlements objectForKey:v18 ofClass:v19];
+          bOOLValue = [v20 BOOLValue];
 
-          if ((v21 & 1) == 0)
+          if ((bOOLValue & 1) == 0)
           {
             v22 = LCSLogExtension();
-            v7 = v32;
+            bundleIdentifier = v32;
             if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
             {
               v23 = @"extension";
               *buf = 134218754;
-              v41 = self;
+              selfCopy2 = self;
               v42 = 2112;
-              if (!v30)
+              if (!targetCopy)
               {
                 v23 = @"container";
               }
@@ -702,7 +702,7 @@ LABEL_21:
             }
 
             v12 = 0;
-            v6 = v33;
+            entitlementsCopy = v33;
             goto LABEL_20;
           }
         }
@@ -717,8 +717,8 @@ LABEL_21:
       }
 
       v12 = 1;
-      v7 = v32;
-      v6 = v33;
+      bundleIdentifier = v32;
+      entitlementsCopy = v33;
 LABEL_20:
       v10 = 0;
       v9 = v31;

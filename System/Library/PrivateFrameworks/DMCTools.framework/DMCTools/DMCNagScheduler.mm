@@ -1,13 +1,13 @@
 @interface DMCNagScheduler
-- (BOOL)evaluateNagsWithBackgroundTask:(id)a3;
+- (BOOL)evaluateNagsWithBackgroundTask:(id)task;
 - (DMCNagScheduler)init;
-- (DMCNagScheduler)initWithTaskName:(id)a3 delegate:(id)a4;
+- (DMCNagScheduler)initWithTaskName:(id)name delegate:(id)delegate;
 - (DMCNagSchedulerDelegate)delegate;
-- (id)launchDeadlineActionFor:(id)a3;
-- (id)nagItemsWithError:(id *)a3;
-- (id)nextNagForItems:(id)a3;
-- (void)launchDeadlineURLString:(id)a3;
-- (void)setBackgroundTask:(id)a3;
+- (id)launchDeadlineActionFor:(id)for;
+- (id)nagItemsWithError:(id *)error;
+- (id)nextNagForItems:(id)items;
+- (void)launchDeadlineURLString:(id)string;
+- (void)setBackgroundTask:(id)task;
 @end
 
 @implementation DMCNagScheduler
@@ -20,14 +20,14 @@
   return Strong;
 }
 
-- (void)setBackgroundTask:(id)a3
+- (void)setBackgroundTask:(id)task
 {
   v4 = *(self + OBJC_IVAR___DMCNagScheduler_backgroundTask);
-  *(self + OBJC_IVAR___DMCNagScheduler_backgroundTask) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___DMCNagScheduler_backgroundTask) = task;
+  taskCopy = task;
 }
 
-- (DMCNagScheduler)initWithTaskName:(id)a3 delegate:(id)a4
+- (DMCNagScheduler)initWithTaskName:(id)name delegate:(id)delegate
 {
   v4 = sub_247F23F3C();
   v6 = v5;
@@ -35,9 +35,9 @@
   return DMCNagScheduler.init(taskName:delegate:)(v4, v6);
 }
 
-- (id)nagItemsWithError:(id *)a3
+- (id)nagItemsWithError:(id *)error
 {
-  v3 = self;
+  selfCopy = self;
   DMCNagScheduler.nagItems()();
 
   type metadata accessor for DMCNagItem(0);
@@ -46,36 +46,36 @@
   return v4;
 }
 
-- (BOOL)evaluateNagsWithBackgroundTask:(id)a3
+- (BOOL)evaluateNagsWithBackgroundTask:(id)task
 {
-  v3 = a3;
-  v5 = a3;
-  v6 = self;
-  LOBYTE(v3) = sub_247F1CBD0(v3);
+  taskCopy = task;
+  taskCopy2 = task;
+  selfCopy = self;
+  LOBYTE(taskCopy) = sub_247F1CBD0(taskCopy);
 
-  return v3 & 1;
+  return taskCopy & 1;
 }
 
-- (id)nextNagForItems:(id)a3
+- (id)nextNagForItems:(id)items
 {
   type metadata accessor for DMCNagItem(0);
   v4 = sub_247F2403C();
-  v5 = self;
+  selfCopy = self;
   v6 = sub_247F1D33C(v4);
 
   return v6;
 }
 
-- (id)launchDeadlineActionFor:(id)a3
+- (id)launchDeadlineActionFor:(id)for
 {
   v5 = sub_247F23DEC();
   v6 = *(v5 - 8);
   v7 = *(v6 + 64);
   MEMORY[0x28223BE20](v5);
   v9 = &v14 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v10 = a3;
-  v11 = self;
-  sub_247F1E138(v10);
+  forCopy = for;
+  selfCopy = self;
+  sub_247F1E138(forCopy);
 
   v12 = sub_247F23D8C();
   (*(v6 + 8))(v9, v5);
@@ -83,11 +83,11 @@
   return v12;
 }
 
-- (void)launchDeadlineURLString:(id)a3
+- (void)launchDeadlineURLString:(id)string
 {
   v4 = sub_247F23F3C();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   sub_247F1FDEC(v4, v6);
 }
 

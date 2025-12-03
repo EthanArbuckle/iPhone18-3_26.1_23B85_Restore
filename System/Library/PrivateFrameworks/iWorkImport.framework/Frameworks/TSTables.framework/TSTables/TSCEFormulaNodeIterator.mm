@@ -1,28 +1,28 @@
 @interface TSCEFormulaNodeIterator
-- (TSCEFormulaNodeIterator)initWithFormulaNodeTree:(id)a3 rewriteContext:(TSCEFormulaRewriteContext *)a4;
+- (TSCEFormulaNodeIterator)initWithFormulaNodeTree:(id)tree rewriteContext:(TSCEFormulaRewriteContext *)context;
 - (TSKUIDStruct)containingTableUID;
 - (id).cxx_construct;
-- (id)findReplacementNode:(id)a3;
+- (id)findReplacementNode:(id)node;
 - (void)depthFirstIteration;
-- (void)p_visitChildrenAndNodePostOrder:(id)a3;
-- (void)replaceNode:(id)a3 withNode:(id)a4;
+- (void)p_visitChildrenAndNodePostOrder:(id)order;
+- (void)replaceNode:(id)node withNode:(id)withNode;
 - (void)topDownIteration;
-- (void)visitNode:(id)a3;
+- (void)visitNode:(id)node;
 @end
 
 @implementation TSCEFormulaNodeIterator
 
-- (TSCEFormulaNodeIterator)initWithFormulaNodeTree:(id)a3 rewriteContext:(TSCEFormulaRewriteContext *)a4
+- (TSCEFormulaNodeIterator)initWithFormulaNodeTree:(id)tree rewriteContext:(TSCEFormulaRewriteContext *)context
 {
-  v7 = a3;
+  treeCopy = tree;
   v11.receiver = self;
   v11.super_class = TSCEFormulaNodeIterator;
   v8 = [(TSCEFormulaNodeIterator *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_rewriteContext = a4;
-    objc_storeStrong(&v8->_formula, a3);
+    v8->_rewriteContext = context;
+    objc_storeStrong(&v8->_formula, tree);
   }
 
   return v9;
@@ -36,14 +36,14 @@
   return result;
 }
 
-- (void)p_visitChildrenAndNodePostOrder:(id)a3
+- (void)p_visitChildrenAndNodePostOrder:(id)order
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v9 = v4;
+  orderCopy = order;
+  v9 = orderCopy;
   if (!self->_aborted)
   {
-    objc_msgSend_children(v4, v5, v6, v7, v8);
+    objc_msgSend_children(orderCopy, v5, v6, v7, v8);
     v23 = 0u;
     v24 = 0u;
     v21 = 0u;
@@ -76,14 +76,14 @@
   }
 }
 
-- (void)replaceNode:(id)a3 withNode:(id)a4
+- (void)replaceNode:(id)node withNode:(id)withNode
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6 != v7)
+  nodeCopy = node;
+  withNodeCopy = withNode;
+  if (nodeCopy != withNodeCopy)
   {
-    v8 = v6;
-    v9 = v7;
+    v8 = nodeCopy;
+    v9 = withNodeCopy;
     v18 = v8;
     v19 = v9;
     sub_2214D154C(&self->_replacedNodes.__begin_, &v18);
@@ -97,15 +97,15 @@
   }
 }
 
-- (id)findReplacementNode:(id)a3
+- (id)findReplacementNode:(id)node
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  nodeCopy = node;
+  v5 = nodeCopy;
+  if (nodeCopy)
   {
     for (i = self->_replacedNodes.__begin_; i != self->_replacedNodes.__end_; i = (i + 16))
     {
-      if (*i == v4)
+      if (*i == nodeCopy)
       {
         v7 = *(i + 1);
         if (v7)
@@ -140,14 +140,14 @@ LABEL_8:
   sub_22107C1F0(v5, 1uLL);
 }
 
-- (void)visitNode:(id)a3
+- (void)visitNode:(id)node
 {
-  v61 = a3;
-  if (v61)
+  nodeCopy = node;
+  if (nodeCopy)
   {
     if (!self->_aborted)
     {
-      switch(objc_msgSend_nodeType(v61, v4, v5, v6, v7))
+      switch(objc_msgSend_nodeType(nodeCopy, v4, v5, v6, v7))
       {
         case 0u:
           v11 = MEMORY[0x277D81150];
@@ -156,28 +156,28 @@ LABEL_8:
           objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v11, v17, v12, v16, 138, 0, "Saw and invalid nodeType");
           goto LABEL_6;
         case 1u:
-          objc_msgSend_numberNode_(self, v8, v61, v9, v10);
+          objc_msgSend_numberNode_(self, v8, nodeCopy, v9, v10);
           break;
         case 2u:
-          objc_msgSend_BOOLeanNode_(self, v8, v61, v9, v10);
+          objc_msgSend_BOOLeanNode_(self, v8, nodeCopy, v9, v10);
           break;
         case 3u:
-          objc_msgSend_stringNode_(self, v8, v61, v9, v10);
+          objc_msgSend_stringNode_(self, v8, nodeCopy, v9, v10);
           break;
         case 4u:
-          objc_msgSend_dateNode_(self, v8, v61, v9, v10);
+          objc_msgSend_dateNode_(self, v8, nodeCopy, v9, v10);
           break;
         case 5u:
-          objc_msgSend_durationNode_(self, v8, v61, v9, v10);
+          objc_msgSend_durationNode_(self, v8, nodeCopy, v9, v10);
           break;
         case 6u:
-          objc_msgSend_emptyArgumentNode_(self, v8, v61, v9, v10);
+          objc_msgSend_emptyArgumentNode_(self, v8, nodeCopy, v9, v10);
           break;
         case 7u:
-          objc_msgSend_tokenNode_(self, v8, v61, v9, v10);
+          objc_msgSend_tokenNode_(self, v8, nodeCopy, v9, v10);
           break;
         case 8u:
-          v40 = v61;
+          v40 = nodeCopy;
           v45 = objc_msgSend_operatorNodeTag(v40, v41, v42, v43, v44);
           v49 = v45;
           if ((v45 - 1) < 0xC)
@@ -226,13 +226,13 @@ LABEL_48:
 
           break;
         case 9u:
-          objc_msgSend_arrayNode_(self, v8, v61, v9, v10);
+          objc_msgSend_arrayNode_(self, v8, nodeCopy, v9, v10);
           break;
         case 0xAu:
-          objc_msgSend_listNode_(self, v8, v61, v9, v10);
+          objc_msgSend_listNode_(self, v8, nodeCopy, v9, v10);
           break;
         case 0xBu:
-          v27 = v61;
+          v27 = nodeCopy;
           if ((objc_msgSend_relativeCellCoord(v27, v28, v29, v30, v31) & 0xFFFFFFFFFFFFLL) == 0x7FFF7FFFFFFFLL)
           {
             v36 = objc_msgSend_undoTractList(v27, v32, v33, v34, v35);
@@ -255,49 +255,49 @@ LABEL_48:
 
           goto LABEL_48;
         case 0xCu:
-          objc_msgSend_colonNode_(self, v8, v61, v9, v10);
+          objc_msgSend_colonNode_(self, v8, nodeCopy, v9, v10);
           break;
         case 0xDu:
-          objc_msgSend_colonTractNode_(self, v8, v61, v9, v10);
+          objc_msgSend_colonTractNode_(self, v8, nodeCopy, v9, v10);
           break;
         case 0xEu:
-          objc_msgSend_functionNode_(self, v8, v61, v9, v10);
+          objc_msgSend_functionNode_(self, v8, nodeCopy, v9, v10);
           break;
         case 0xFu:
-          objc_msgSend_unknownFunctionNode_(self, v8, v61, v9, v10);
+          objc_msgSend_unknownFunctionNode_(self, v8, nodeCopy, v9, v10);
           break;
         case 0x10u:
-          objc_msgSend_combinedReferenceNode_(self, v8, v61, v9, v10);
+          objc_msgSend_combinedReferenceNode_(self, v8, nodeCopy, v9, v10);
           break;
         case 0x11u:
-          objc_msgSend_uidReferenceNode_(self, v8, v61, v9, v10);
+          objc_msgSend_uidReferenceNode_(self, v8, nodeCopy, v9, v10);
           break;
         case 0x12u:
-          objc_msgSend_linkedRefNode_(self, v8, v61, v9, v10);
+          objc_msgSend_linkedRefNode_(self, v8, nodeCopy, v9, v10);
           break;
         case 0x13u:
-          objc_msgSend_categoryRefNode_(self, v8, v61, v9, v10);
+          objc_msgSend_categoryRefNode_(self, v8, nodeCopy, v9, v10);
           break;
         case 0x14u:
-          objc_msgSend_viewTractRefNode_(self, v8, v61, v9, v10);
+          objc_msgSend_viewTractRefNode_(self, v8, nodeCopy, v9, v10);
           break;
         case 0x15u:
-          objc_msgSend_unboundIdentNode_(self, v8, v61, v9, v10);
+          objc_msgSend_unboundIdentNode_(self, v8, nodeCopy, v9, v10);
           break;
         case 0x16u:
-          objc_msgSend_whitespaceNode_(self, v8, v61, v9, v10);
+          objc_msgSend_whitespaceNode_(self, v8, nodeCopy, v9, v10);
           break;
         case 0x17u:
-          objc_msgSend_letBindNode_(self, v8, v61, v9, v10);
+          objc_msgSend_letBindNode_(self, v8, nodeCopy, v9, v10);
           break;
         case 0x18u:
-          objc_msgSend_variableNode_(self, v8, v61, v9, v10);
+          objc_msgSend_variableNode_(self, v8, nodeCopy, v9, v10);
           break;
         case 0x19u:
-          objc_msgSend_endScopeNode_(self, v8, v61, v9, v10);
+          objc_msgSend_endScopeNode_(self, v8, nodeCopy, v9, v10);
           break;
         case 0x1Au:
-          objc_msgSend_lambdaNode_(self, v8, v61, v9, v10);
+          objc_msgSend_lambdaNode_(self, v8, nodeCopy, v9, v10);
           break;
         default:
           break;

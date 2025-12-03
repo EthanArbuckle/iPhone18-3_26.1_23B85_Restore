@@ -1,6 +1,6 @@
 @interface SUScriptStorePageNativeObject
-- (id)_eventNameForNote:(id)a3;
-- (void)_webViewControllerNote:(id)a3;
+- (id)_eventNameForNote:(id)note;
+- (void)_webViewControllerNote:(id)note;
 - (void)destroyNativeObject;
 - (void)setupNativeObject;
 @end
@@ -9,10 +9,10 @@
 
 - (void)setupNativeObject
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 addObserver:self selector:sel__webViewControllerNote_ name:@"SUWebViewControllerDidStartLoad" object:0];
-  [v3 addObserver:self selector:sel__webViewControllerNote_ name:@"SUWebViewControllerDidFinishLoad" object:0];
-  [v3 addObserver:self selector:sel__webViewControllerNote_ name:@"SUWebViewControllerDidFailLoad" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__webViewControllerNote_ name:@"SUWebViewControllerDidStartLoad" object:0];
+  [defaultCenter addObserver:self selector:sel__webViewControllerNote_ name:@"SUWebViewControllerDidFinishLoad" object:0];
+  [defaultCenter addObserver:self selector:sel__webViewControllerNote_ name:@"SUWebViewControllerDidFailLoad" object:0];
   v4.receiver = self;
   v4.super_class = SUScriptStorePageNativeObject;
   [(SUScriptViewControllerNativeObject *)&v4 setupNativeObject];
@@ -20,44 +20,44 @@
 
 - (void)destroyNativeObject
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = SUScriptStorePageNativeObject;
   [(SUScriptViewControllerNativeObject *)&v4 destroyNativeObject];
 }
 
-- (void)_webViewControllerNote:(id)a3
+- (void)_webViewControllerNote:(id)note
 {
-  v10 = a3;
-  v4 = [v10 object];
-  v5 = [(SUScriptNativeObject *)self object];
-  v6 = [v4 isDescendantOfViewController:v5];
+  noteCopy = note;
+  object = [noteCopy object];
+  object2 = [(SUScriptNativeObject *)self object];
+  v6 = [object isDescendantOfViewController:object2];
 
   if (v6)
   {
-    v7 = [(SUScriptNativeObject *)self scriptObject];
-    v8 = [v10 name];
-    v9 = [(SUScriptStorePageNativeObject *)self _eventNameForNote:v8];
-    [v7 dispatchEvent:0 forName:v9];
+    scriptObject = [(SUScriptNativeObject *)self scriptObject];
+    name = [noteCopy name];
+    v9 = [(SUScriptStorePageNativeObject *)self _eventNameForNote:name];
+    [scriptObject dispatchEvent:0 forName:v9];
   }
 }
 
-- (id)_eventNameForNote:(id)a3
+- (id)_eventNameForNote:(id)note
 {
-  v3 = a3;
-  if ([v3 isEqual:@"SUWebViewControllerDidStartLoad"])
+  noteCopy = note;
+  if ([noteCopy isEqual:@"SUWebViewControllerDidStartLoad"])
   {
     v4 = @"didstartload";
   }
 
-  else if ([v3 isEqual:@"SUWebViewControllerDidFinishLoad"])
+  else if ([noteCopy isEqual:@"SUWebViewControllerDidFinishLoad"])
   {
     v4 = @"didfinishload";
   }
 
-  else if ([v3 isEqual:@"SUWebViewControllerDidFailLoad"])
+  else if ([noteCopy isEqual:@"SUWebViewControllerDidFailLoad"])
   {
     v4 = @"didfailload";
   }

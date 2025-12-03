@@ -3,11 +3,11 @@
 + (void)deallocImageCache;
 - (CGImage)composeProgressBar;
 - (CGSize)preferredFrameSize;
-- (TopoProgressBar)initWithOwningView:(id)a3;
+- (TopoProgressBar)initWithOwningView:(id)view;
 - (void)dealloc;
 - (void)layoutSublayers;
-- (void)setOwningView:(id)a3;
-- (void)setProgressValue:(float)a3;
+- (void)setOwningView:(id)view;
+- (void)setProgressValue:(float)value;
 @end
 
 @implementation TopoProgressBar
@@ -41,7 +41,7 @@
   qword_27E3834C8 = 0;
 }
 
-- (TopoProgressBar)initWithOwningView:(id)a3
+- (TopoProgressBar)initWithOwningView:(id)view
 {
   v11.receiver = self;
   v11.super_class = TopoProgressBar;
@@ -49,7 +49,7 @@
   v6 = v4;
   if (v4)
   {
-    objc_msgSend_setOwningView_(v4, v5, a3);
+    objc_msgSend_setOwningView_(v4, v5, view);
     objc_msgSend_setNeedsDisplayOnBoundsChange_(v6, v7, 1);
     objc_msgSend_initImageCache(TopoProgressBar, v8, v9);
   }
@@ -57,10 +57,10 @@
   return v6;
 }
 
-- (void)setOwningView:(id)a3
+- (void)setOwningView:(id)view
 {
-  self->_owningView = a3;
-  v4 = objc_msgSend_mainScreen(MEMORY[0x277D759A0], a2, a3);
+  self->_owningView = view;
+  v4 = objc_msgSend_mainScreen(MEMORY[0x277D759A0], a2, view);
   objc_msgSend_scale(v4, v5, v6);
 
   MEMORY[0x2821F9670](self, sel_setContentsScale_, v7);
@@ -92,17 +92,17 @@
   [(TopoProgressBar *)&v2 dealloc];
 }
 
-- (void)setProgressValue:(float)a3
+- (void)setProgressValue:(float)value
 {
-  if (self->_progressValue != a3)
+  if (self->_progressValue != value)
   {
-    v4 = a3;
-    if (v4 < 0.0)
+    valueCopy = value;
+    if (valueCopy < 0.0)
     {
-      v4 = 0.0;
+      valueCopy = 0.0;
     }
 
-    v5 = fmin(v4, 1.0);
+    v5 = fmin(valueCopy, 1.0);
     self->_progressValue = v5;
     objc_msgSend_setNeedsLayout(self, a2, v3);
   }

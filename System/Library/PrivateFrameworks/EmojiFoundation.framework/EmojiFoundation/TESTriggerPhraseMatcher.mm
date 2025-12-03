@@ -1,26 +1,26 @@
 @interface TESTriggerPhraseMatcher
-- (TESTriggerPhraseMatcher)initWithLocale:(id)a3;
-- (id)createMatchResultForMatchRange:(_NSRange)a3 sourceString:(id)a4 effectType:(int64_t)a5;
-- (id)matchesForString:(id)a3 searchRange:(_NSRange)a4;
+- (TESTriggerPhraseMatcher)initWithLocale:(id)locale;
+- (id)createMatchResultForMatchRange:(_NSRange)range sourceString:(id)string effectType:(int64_t)type;
+- (id)matchesForString:(id)string searchRange:(_NSRange)range;
 @end
 
 @implementation TESTriggerPhraseMatcher
 
-- (TESTriggerPhraseMatcher)initWithLocale:(id)a3
+- (TESTriggerPhraseMatcher)initWithLocale:(id)locale
 {
-  v4 = a3;
+  localeCopy = locale;
   v13.receiver = self;
   v13.super_class = TESTriggerPhraseMatcher;
   v5 = [(TESTriggerPhraseMatcher *)&v13 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [localeCopy copy];
     locale = v5->_locale;
     v5->_locale = v6;
 
     v8 = [TESTriggerPhraseCollection alloc];
-    v9 = [(TESTriggerPhraseMatcher *)v5 locale];
-    v10 = [(TESTriggerPhraseCollection *)v8 initWithLocale:v9];
+    locale = [(TESTriggerPhraseMatcher *)v5 locale];
+    v10 = [(TESTriggerPhraseCollection *)v8 initWithLocale:locale];
     phrases = v5->_phrases;
     v5->_phrases = v10;
   }
@@ -28,16 +28,16 @@
   return v5;
 }
 
-- (id)createMatchResultForMatchRange:(_NSRange)a3 sourceString:(id)a4 effectType:(int64_t)a5
+- (id)createMatchResultForMatchRange:(_NSRange)range sourceString:(id)string effectType:(int64_t)type
 {
-  length = a3.length;
-  location = a3.location;
-  v8 = a4;
+  length = range.length;
+  location = range.location;
+  stringCopy = string;
   v9 = objc_alloc_init(TESMatchResult);
   [(TESMatchResult *)v9 setMatchType:0];
-  [(TESMatchResult *)v9 setEffectType:a5];
+  [(TESMatchResult *)v9 setEffectType:type];
   [(TESMatchResult *)v9 setMatchRange:location, length];
-  [(TESMatchResult *)v9 setSourceString:v8];
+  [(TESMatchResult *)v9 setSourceString:stringCopy];
 
   v10 = objc_opt_class();
   v11 = NSStringFromClass(v10);
@@ -46,11 +46,11 @@
   return v9;
 }
 
-- (id)matchesForString:(id)a3 searchRange:(_NSRange)a4
+- (id)matchesForString:(id)string searchRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v7 = a3;
+  length = range.length;
+  location = range.location;
+  stringCopy = string;
   v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
   phrases = self->_phrases;
   v15[0] = MEMORY[0x1E69E9820];
@@ -58,10 +58,10 @@
   v15[2] = __56__TESTriggerPhraseMatcher_matchesForString_searchRange___block_invoke;
   v15[3] = &unk_1E7A5F7A0;
   v15[4] = self;
-  v16 = v7;
+  v16 = stringCopy;
   v10 = v8;
   v17 = v10;
-  v11 = v7;
+  v11 = stringCopy;
   [(TESTriggerPhraseCollection *)phrases enumerateMatchStringsInString:v11 searchRange:location usingBlock:length, v15];
   v12 = v17;
   v13 = v10;

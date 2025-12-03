@@ -1,25 +1,25 @@
 @interface DKReportManager
-- (DKReportManager)initWithBundleIdentifier:(id)a3;
-- (id)getRequests:(id)a3;
-- (id)retryInterruptedRequests:(BOOL)a3 andWithError:(id *)a4;
+- (DKReportManager)initWithBundleIdentifier:(id)identifier;
+- (id)getRequests:(id)requests;
+- (id)retryInterruptedRequests:(BOOL)requests andWithError:(id *)error;
 - (void)cancelAllReports;
-- (void)reportWithComponentPredicateManifest:(id)a3 completion:(id)a4;
-- (void)reportersWithCompletion:(id)a3;
-- (void)sendRequests:(id)a3 serialRequests:(BOOL)a4 failOnError:(BOOL)a5 completion:(id)a6;
+- (void)reportWithComponentPredicateManifest:(id)manifest completion:(id)completion;
+- (void)reportersWithCompletion:(id)completion;
+- (void)sendRequests:(id)requests serialRequests:(BOOL)serialRequests failOnError:(BOOL)error completion:(id)completion;
 @end
 
 @implementation DKReportManager
 
-- (DKReportManager)initWithBundleIdentifier:(id)a3
+- (DKReportManager)initWithBundleIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v23.receiver = self;
   v23.super_class = DKReportManager;
   v6 = [(DKReportManager *)&v23 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_bundleIdentifier, a3);
+    objc_storeStrong(&v6->_bundleIdentifier, identifier);
     v8 = objc_opt_new();
     registry = v7->_registry;
     v7->_registry = v8;
@@ -34,9 +34,9 @@
     discovery = v7->_discovery;
     v7->_discovery = v14;
 
-    v16 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     requestsToRetry = v7->_requestsToRetry;
-    v7->_requestsToRetry = v16;
+    v7->_requestsToRetry = array;
 
     v18 = dispatch_queue_create("com.apple.DiagnosticsKit.reportManager", MEMORY[0x277D85CD8]);
     reportManagerQueue = v7->_reportManagerQueue;
@@ -51,22 +51,22 @@
   return v7;
 }
 
-- (void)reportWithComponentPredicateManifest:(id)a3 completion:(id)a4
+- (void)reportWithComponentPredicateManifest:(id)manifest completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  manifestCopy = manifest;
+  completionCopy = completion;
   [(DKReportManager *)self setCancelled:0];
-  v8 = [(DKReportManager *)self reportManagerQueue];
+  reportManagerQueue = [(DKReportManager *)self reportManagerQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __67__DKReportManager_reportWithComponentPredicateManifest_completion___block_invoke;
   block[3] = &unk_278F6C1A0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = manifestCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = manifestCopy;
+  dispatch_async(reportManagerQueue, block);
 }
 
 void __67__DKReportManager_reportWithComponentPredicateManifest_completion___block_invoke(uint64_t a1)
@@ -158,9 +158,9 @@ LABEL_8:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (id)retryInterruptedRequests:(BOOL)a3 andWithError:(id *)a4
+- (id)retryInterruptedRequests:(BOOL)requests andWithError:(id *)error
 {
-  v26 = a3;
+  requestsCopy = requests;
   v54 = *MEMORY[0x277D85DE8];
   v49 = 0;
   v50 = &v49;
@@ -183,8 +183,8 @@ LABEL_8:
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v6 = [(DKReportManager *)self requestsToRetry];
-  v7 = [v6 countByEnumeratingWithState:&v33 objects:v53 count:16];
+  requestsToRetry = [(DKReportManager *)self requestsToRetry];
+  v7 = [requestsToRetry countByEnumeratingWithState:&v33 objects:v53 count:16];
   if (v7)
   {
     v8 = *v34;
@@ -194,17 +194,17 @@ LABEL_8:
       {
         if (*v34 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(requestsToRetry);
         }
 
         v10 = *(*(&v33 + 1) + 8 * i);
-        v11 = [v10 type];
-        v12 = [v10 identifier];
-        v13 = [DKComponentPredicate componentPredicateWithType:v11 identifier:v12];
+        type = [v10 type];
+        identifier = [v10 identifier];
+        v13 = [DKComponentPredicate componentPredicateWithType:type identifier:identifier];
         [v5 addObject:v13];
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v33 objects:v53 count:16];
+      v7 = [requestsToRetry countByEnumeratingWithState:&v33 objects:v53 count:16];
     }
 
     while (v7);
@@ -232,7 +232,7 @@ LABEL_8:
   [(DKReportManager *)self sendRequests:v14 serialRequests:1 failOnError:0 completion:v27];
   v18 = dispatch_time(0, 60000000000);
   dispatch_semaphore_wait(v17, v18);
-  if (v26 && (v50[3] & 1) == 0)
+  if (requestsCopy && (v50[3] & 1) == 0)
   {
     v19 = v38[5];
     v38[5] = 0;
@@ -241,11 +241,11 @@ LABEL_8:
   v20 = v44[5];
   if (v20)
   {
-    *a4 = v20;
+    *error = v20;
   }
 
-  v21 = [(DKReportManager *)self requestsToRetry];
-  [v21 removeAllObjects];
+  requestsToRetry2 = [(DKReportManager *)self requestsToRetry];
+  [requestsToRetry2 removeAllObjects];
 
   v22 = v38[5];
   _Block_object_dispose(&v37, 8);
@@ -312,12 +312,12 @@ LABEL_8:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (id)getRequests:(id)a3
+- (id)getRequests:(id)requests
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(DKReportManager *)self planner];
-  v6 = [v5 requestGroupsForPredicateManifest:v4];
+  requestsCopy = requests;
+  planner = [(DKReportManager *)self planner];
+  v6 = [planner requestGroupsForPredicateManifest:requestsCopy];
 
   v7 = [MEMORY[0x277CBEB58] set];
   v25 = 0u;
@@ -344,8 +344,8 @@ LABEL_8:
         v22 = 0u;
         v23 = 0u;
         v24 = 0u;
-        v14 = [v13 requests];
-        v15 = [v14 countByEnumeratingWithState:&v21 objects:v29 count:16];
+        requests = [v13 requests];
+        v15 = [requests countByEnumeratingWithState:&v21 objects:v29 count:16];
         if (v15)
         {
           v16 = v15;
@@ -356,13 +356,13 @@ LABEL_8:
             {
               if (*v22 != v17)
               {
-                objc_enumerationMutation(v14);
+                objc_enumerationMutation(requests);
               }
 
               [v7 addObject:*(*(&v21 + 1) + 8 * j)];
             }
 
-            v16 = [v14 countByEnumeratingWithState:&v21 objects:v29 count:16];
+            v16 = [requests countByEnumeratingWithState:&v21 objects:v29 count:16];
           }
 
           while (v16);
@@ -380,12 +380,12 @@ LABEL_8:
   return v7;
 }
 
-- (void)sendRequests:(id)a3 serialRequests:(BOOL)a4 failOnError:(BOOL)a5 completion:(id)a6
+- (void)sendRequests:(id)requests serialRequests:(BOOL)serialRequests failOnError:(BOOL)error completion:(id)completion
 {
-  v43 = a5;
+  errorCopy = error;
   v119 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v44 = a6;
+  requestsCopy = requests;
+  completionCopy = completion;
   group = dispatch_group_create();
   v50 = dispatch_semaphore_create(0);
   v98 = 0;
@@ -401,8 +401,8 @@ LABEL_8:
   v90 = 0x3032000000;
   v91 = __Block_byref_object_copy_;
   v92 = __Block_byref_object_dispose_;
-  v9 = [MEMORY[0x277CBEA60] array];
-  v93 = [DKReport reportWithComponents:v9];
+  array = [MEMORY[0x277CBEA60] array];
+  v93 = [DKReport reportWithComponents:array];
 
   v82 = 0;
   v83 = &v82;
@@ -414,7 +414,7 @@ LABEL_8:
   v79 = 0u;
   v80 = 0u;
   v81 = 0u;
-  obj = v8;
+  obj = requestsCopy;
   v47 = [obj countByEnumeratingWithState:&v78 objects:v118 count:16];
   if (v47)
   {
@@ -439,9 +439,9 @@ LABEL_3:
       v77 = 0u;
       v74 = 0u;
       v75 = 0u;
-      v11 = [v10 manifest];
-      v12 = [v11 countByEnumeratingWithState:&v74 objects:v117 count:16];
-      v52 = v11;
+      manifest = [v10 manifest];
+      v12 = [manifest countByEnumeratingWithState:&v74 objects:v117 count:16];
+      v52 = manifest;
       if (v12)
       {
         v53 = *v75;
@@ -460,9 +460,9 @@ LABEL_9:
             break;
           }
 
-          v15 = [v10 generator];
-          v16 = [v15 extensionAttributes];
-          v17 = [DKExtensionRequest requestWithExtensionAttributes:v16];
+          generator = [v10 generator];
+          extensionAttributes = [generator extensionAttributes];
+          v17 = [DKExtensionRequest requestWithExtensionAttributes:extensionAttributes];
 
           [v17 setHostServicesDelegate:self];
           if (v17)
@@ -473,8 +473,8 @@ LABEL_9:
             v72[3] = __Block_byref_object_copy_;
             v72[4] = __Block_byref_object_dispose_;
             v18 = MEMORY[0x277CCACA8];
-            v19 = [v17 requestIdentifier];
-            v73 = [v18 stringWithFormat:@"%@", v19];
+            requestIdentifier = [v17 requestIdentifier];
+            v73 = [v18 stringWithFormat:@"%@", requestIdentifier];
 
             v70[0] = 0;
             v70[1] = v70;
@@ -489,10 +489,10 @@ LABEL_9:
             v22 = DiagnosticsKitLogHandleForCategory(1);
             if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
             {
-              v23 = [v17 requestIdentifier];
+              requestIdentifier2 = [v17 requestIdentifier];
               v24 = *(v99[0] + 24);
               *buf = 138413570;
-              v106 = v23;
+              v106 = requestIdentifier2;
               v107 = 1024;
               v108 = v24;
               v109 = 2112;
@@ -520,16 +520,16 @@ LABEL_9:
             v25 = v17;
             v60 = v25;
             v68 = v70;
-            v69 = a4;
+            serialRequestsCopy = serialRequests;
             v26 = group;
             v61 = v26;
             v27 = v50;
             v62 = v27;
             v28 = MEMORY[0x24C1E6340](v59);
-            if (a4)
+            if (serialRequests)
             {
-              v29 = [v10 generator];
-              [v29 beginRequest:v25 payload:v14 completion:v28];
+              generator2 = [v10 generator];
+              [generator2 beginRequest:v25 payload:v14 completion:v28];
 
               v30 = dispatch_time(0, 60000000000);
               dispatch_semaphore_wait(v27, v30);
@@ -538,8 +538,8 @@ LABEL_9:
             else
             {
               dispatch_group_enter(v26);
-              v37 = [(DKReportManager *)self resourceUsage];
-              v38 = [v14 resources];
+              resourceUsage = [(DKReportManager *)self resourceUsage];
+              resources = [v14 resources];
               v55[0] = MEMORY[0x277D85DD0];
               v55[1] = 3221225472;
               v55[2] = __70__DKReportManager_sendRequests_serialRequests_failOnError_completion___block_invoke_78;
@@ -549,7 +549,7 @@ LABEL_9:
               v56 = v25;
               v57 = v14;
               v58 = v28;
-              [v37 executeWhenSafe:v38 withCompletion:v55];
+              [resourceUsage executeWhenSafe:resources withCompletion:v55];
             }
 
             _Block_object_dispose(v70, 8);
@@ -611,13 +611,13 @@ LABEL_9:
     }
   }
 
-  if (v43 && (v95[3] & 1) == 0)
+  if (errorCopy && (v95[3] & 1) == 0)
   {
     v41 = v89[5];
     v89[5] = 0;
   }
 
-  v44[2](v44, v89[5], v83[5]);
+  completionCopy[2](completionCopy, v89[5], v83[5]);
   _Block_object_dispose(&v82, 8);
 
   _Block_object_dispose(&v88, 8);
@@ -709,18 +709,18 @@ void __70__DKReportManager_sendRequests_serialRequests_failOnError_completion___
   [v2 beginRequest:*(a1 + 40) payload:*(a1 + 48) completion:*(a1 + 56)];
 }
 
-- (void)reportersWithCompletion:(id)a3
+- (void)reportersWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(DKReportManager *)self reportManagerQueue];
+  completionCopy = completion;
+  reportManagerQueue = [(DKReportManager *)self reportManagerQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __43__DKReportManager_reportersWithCompletion___block_invoke;
   v7[3] = &unk_278F6C108;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = completionCopy;
+  v6 = completionCopy;
+  dispatch_async(reportManagerQueue, v7);
 }
 
 void __43__DKReportManager_reportersWithCompletion___block_invoke(uint64_t a1)
@@ -736,8 +736,8 @@ void __43__DKReportManager_reportersWithCompletion___block_invoke(uint64_t a1)
 - (void)cancelAllReports
 {
   [(DKReportManager *)self setCancelled:1];
-  v3 = [(DKReportManager *)self registry];
-  [v3 enumerateExtensionAdaptersWithBlock:&__block_literal_global_7];
+  registry = [(DKReportManager *)self registry];
+  [registry enumerateExtensionAdaptersWithBlock:&__block_literal_global_7];
 }
 
 void __57__DKReportManager_retryInterruptedRequests_andWithError___block_invoke_cold_1(uint64_t a1, NSObject *a2)

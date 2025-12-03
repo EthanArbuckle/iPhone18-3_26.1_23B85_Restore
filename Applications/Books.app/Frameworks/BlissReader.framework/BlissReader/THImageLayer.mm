@@ -1,18 +1,18 @@
 @interface THImageLayer
-- (CGImage)p_createImageFromImageProviderBlock:(id)a3 withMaxSize:(CGSize)a4 outNativeSize:(CGSize *)a5;
-- (void)setImageProviderBlock:(id)a3 setLayerBounds:(BOOL)a4 maxSize:(CGSize)a5 outNativeSize:(CGSize *)a6;
+- (CGImage)p_createImageFromImageProviderBlock:(id)block withMaxSize:(CGSize)size outNativeSize:(CGSize *)nativeSize;
+- (void)setImageProviderBlock:(id)block setLayerBounds:(BOOL)bounds maxSize:(CGSize)size outNativeSize:(CGSize *)nativeSize;
 @end
 
 @implementation THImageLayer
 
-- (void)setImageProviderBlock:(id)a3 setLayerBounds:(BOOL)a4 maxSize:(CGSize)a5 outNativeSize:(CGSize *)a6
+- (void)setImageProviderBlock:(id)block setLayerBounds:(BOOL)bounds maxSize:(CGSize)size outNativeSize:(CGSize *)nativeSize
 {
-  if (a3)
+  if (block)
   {
-    v6 = a4;
-    v8 = [(THImageLayer *)self p_createImageFromImageProviderBlock:a3 withMaxSize:a6 outNativeSize:a5.width, a5.height];
+    boundsCopy = bounds;
+    v8 = [(THImageLayer *)self p_createImageFromImageProviderBlock:block withMaxSize:nativeSize outNativeSize:size.width, size.height];
     [(THImageLayer *)self setContents:v8];
-    if (v6)
+    if (boundsCopy)
     {
       Width = CGImageGetWidth(v8);
       [(THImageLayer *)self setBounds:0.0, 0.0, Width, CGImageGetHeight(v8)];
@@ -27,20 +27,20 @@
   }
 }
 
-- (CGImage)p_createImageFromImageProviderBlock:(id)a3 withMaxSize:(CGSize)a4 outNativeSize:(CGSize *)a5
+- (CGImage)p_createImageFromImageProviderBlock:(id)block withMaxSize:(CGSize)size outNativeSize:(CGSize *)nativeSize
 {
-  height = a4.height;
-  width = a4.width;
-  v8 = (*(a3 + 2))(a3, a2);
+  height = size.height;
+  width = size.width;
+  v8 = (*(block + 2))(block, a2);
   v9 = v8;
-  if (a5)
+  if (nativeSize)
   {
     v10 = CGImageSourceCopyPropertiesAtIndex(v8, 0, 0);
     [-[__CFDictionary objectForKey:](v10 objectForKey:{kCGImagePropertyPixelWidth), "floatValue"}];
     v12 = v11;
     [-[__CFDictionary objectForKey:](v10 objectForKey:{kCGImagePropertyPixelHeight), "floatValue"}];
-    a5->width = v12;
-    a5->height = v13;
+    nativeSize->width = v12;
+    nativeSize->height = v13;
   }
 
   v14 = [[NSMutableDictionary alloc] initWithObjectsAndKeys:{kCFBooleanTrue, kCGImageSourceCreateThumbnailFromImageAlways, 0}];

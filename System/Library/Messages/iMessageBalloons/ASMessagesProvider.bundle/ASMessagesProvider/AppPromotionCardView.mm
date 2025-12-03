@@ -1,8 +1,8 @@
 @interface AppPromotionCardView
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (void)dealloc;
-- (void)handleTapWithGestureRecognizer:(id)a3;
+- (void)handleTapWithGestureRecognizer:(id)recognizer;
 - (void)layoutSubviews;
 @end
 
@@ -19,7 +19,7 @@
 
   else
   {
-    v5 = self;
+    selfCopy = self;
   }
 
   v6.receiver = self;
@@ -29,18 +29,18 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_2145D4();
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   v4 = type metadata accessor for AppPromotionCardLayout(0);
   __chkstk_darwin(v4 - 8);
   v6 = (&v13 - ((v5 + 15) & 0xFFFFFFFFFFFFFFF0));
-  v7 = self;
+  selfCopy = self;
   sub_214AA8(v6);
-  v8 = sub_634F2C(v7, v6);
+  v8 = sub_634F2C(selfCopy, v6);
   v10 = v9;
 
   sub_216E5C(v6);
@@ -51,12 +51,12 @@
   return result;
 }
 
-- (void)handleTapWithGestureRecognizer:(id)a3
+- (void)handleTapWithGestureRecognizer:(id)recognizer
 {
   v3 = *(&self->super.super.super.isa + OBJC_IVAR____TtC18ASMessagesProvider20AppPromotionCardView_lockupViewTappedAction);
   if (v3)
   {
-    v4 = self;
+    selfCopy = self;
     v5 = sub_F714(v3);
     v3(v5);
 
@@ -64,12 +64,12 @@
   }
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_216D24(v7);
+  recognizerCopy = recognizer;
+  touchCopy = touch;
+  selfCopy = self;
+  v9 = sub_216D24(touchCopy);
 
   return v9;
 }

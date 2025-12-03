@@ -1,39 +1,39 @@
 @interface SUUIShareTemplateTextItemProvider
-- (SUUIShareTemplateTextItemProvider)initWithTemplateElement:(id)a3 clientContext:(id)a4;
-- (id)activityViewController:(id)a3 subjectForActivityType:(id)a4;
+- (SUUIShareTemplateTextItemProvider)initWithTemplateElement:(id)element clientContext:(id)context;
+- (id)activityViewController:(id)controller subjectForActivityType:(id)type;
 - (id)item;
 @end
 
 @implementation SUUIShareTemplateTextItemProvider
 
-- (SUUIShareTemplateTextItemProvider)initWithTemplateElement:(id)a3 clientContext:(id)a4
+- (SUUIShareTemplateTextItemProvider)initWithTemplateElement:(id)element clientContext:(id)context
 {
-  v7 = a3;
-  v8 = a4;
+  elementCopy = element;
+  contextCopy = context;
   v12.receiver = self;
   v12.super_class = SUUIShareTemplateTextItemProvider;
   v9 = [(UIActivityItemProvider *)&v12 initWithPlaceholderItem:&stru_286AECDE0];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_clientContext, a4);
-    objc_storeStrong(&v10->_templateElement, a3);
+    objc_storeStrong(&v9->_clientContext, context);
+    objc_storeStrong(&v10->_templateElement, element);
   }
 
   return v10;
 }
 
-- (id)activityViewController:(id)a3 subjectForActivityType:(id)a4
+- (id)activityViewController:(id)controller subjectForActivityType:(id)type
 {
   templateElement = self->_templateElement;
-  v5 = [(UIActivityItemProvider *)self activityType:a3];
+  v5 = [(UIActivityItemProvider *)self activityType:controller];
   v6 = [(SUUIShareTemplateViewElement *)templateElement activityForUIActivityType:v5];
 
-  v7 = [v6 title];
-  v8 = [v7 text];
-  v9 = [v8 string];
+  title = [v6 title];
+  text = [title text];
+  string = [text string];
 
-  return v9;
+  return string;
 }
 
 - (id)item
@@ -45,37 +45,37 @@
   v20 = __Block_byref_object_dispose__14;
   v21 = 0;
   templateElement = self->_templateElement;
-  v4 = [(UIActivityItemProvider *)self activityType];
-  v5 = [(SUUIShareTemplateViewElement *)templateElement activityForUIActivityType:v4];
+  activityType = [(UIActivityItemProvider *)self activityType];
+  v5 = [(SUUIShareTemplateViewElement *)templateElement activityForUIActivityType:activityType];
 
   if (v5)
   {
-    v6 = [v5 contentSourceURL];
-    if (v6)
+    contentSourceURL = [v5 contentSourceURL];
+    if (contentSourceURL)
     {
-      v7 = [objc_alloc(MEMORY[0x277D69CD8]) initWithURL:v6];
-      v8 = [MEMORY[0x277D69D40] consumer];
-      [v7 setDataConsumer:v8];
+      message = [objc_alloc(MEMORY[0x277D69CD8]) initWithURL:contentSourceURL];
+      consumer = [MEMORY[0x277D69D40] consumer];
+      [message setDataConsumer:consumer];
 
       v9 = [(SUUIClientContext *)self->_clientContext valueForConfigurationKey:@"sfsuffix"];
-      [v7 setStoreFrontSuffix:v9];
+      [message setStoreFrontSuffix:v9];
 
       v15[0] = MEMORY[0x277D85DD0];
       v15[1] = 3221225472;
       v15[2] = __41__SUUIShareTemplateTextItemProvider_item__block_invoke;
       v15[3] = &unk_2798F7258;
       v15[4] = &v16;
-      [v7 setOutputBlock:v15];
-      [v7 main];
+      [message setOutputBlock:v15];
+      [message main];
     }
 
     else
     {
-      v7 = [v5 message];
-      v10 = [v7 text];
-      v11 = [v10 string];
+      message = [v5 message];
+      text = [message text];
+      string = [text string];
       v12 = v17[5];
-      v17[5] = v11;
+      v17[5] = string;
     }
   }
 

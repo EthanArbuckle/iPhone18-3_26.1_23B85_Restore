@@ -1,29 +1,29 @@
 @interface MADPhotosSceneFastPassProcessingTask
-+ (id)taskWithCancelBlock:(id)a3 progressHandler:(id)a4 andCompletionHandler:(id)a5;
-- (BOOL)run:(id *)a3;
-- (MADPhotosSceneFastPassProcessingTask)initWithCancelBlock:(id)a3 progressHandler:(id)a4 andCompletionHandler:(id)a5;
++ (id)taskWithCancelBlock:(id)block progressHandler:(id)handler andCompletionHandler:(id)completionHandler;
+- (BOOL)run:(id *)run;
+- (MADPhotosSceneFastPassProcessingTask)initWithCancelBlock:(id)block progressHandler:(id)handler andCompletionHandler:(id)completionHandler;
 @end
 
 @implementation MADPhotosSceneFastPassProcessingTask
 
-- (MADPhotosSceneFastPassProcessingTask)initWithCancelBlock:(id)a3 progressHandler:(id)a4 andCompletionHandler:(id)a5
+- (MADPhotosSceneFastPassProcessingTask)initWithCancelBlock:(id)block progressHandler:(id)handler andCompletionHandler:(id)completionHandler
 {
-  v8 = a3;
-  v9 = a4;
+  blockCopy = block;
+  handlerCopy = handler;
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_1001B7C78;
   v17[3] = &unk_100284038;
-  v10 = a5;
-  v18 = v10;
+  completionHandlerCopy = completionHandler;
+  v18 = completionHandlerCopy;
   v16.receiver = self;
   v16.super_class = MADPhotosSceneFastPassProcessingTask;
   v11 = [(MADPhotosSceneFastPassProcessingTask *)&v16 initWithCompletionHandler:v17];
   if (v11)
   {
-    if (v9)
+    if (handlerCopy)
     {
-      v12 = v9;
+      v12 = handlerCopy;
     }
 
     else
@@ -35,23 +35,23 @@
     progressHandler = v11->_progressHandler;
     v11->_progressHandler = v13;
 
-    [(MADPhotosSceneFastPassProcessingTask *)v11 setCancelBlock:v8];
+    [(MADPhotosSceneFastPassProcessingTask *)v11 setCancelBlock:blockCopy];
   }
 
   return v11;
 }
 
-+ (id)taskWithCancelBlock:(id)a3 progressHandler:(id)a4 andCompletionHandler:(id)a5
++ (id)taskWithCancelBlock:(id)block progressHandler:(id)handler andCompletionHandler:(id)completionHandler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [[a1 alloc] initWithCancelBlock:v8 progressHandler:v9 andCompletionHandler:v10];
+  blockCopy = block;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  v11 = [[self alloc] initWithCancelBlock:blockCopy progressHandler:handlerCopy andCompletionHandler:completionHandlerCopy];
 
   return v11;
 }
 
-- (BOOL)run:(id *)a3
+- (BOOL)run:(id *)run
 {
   if (MediaAnalysisLogLevel() >= 5)
   {
@@ -72,7 +72,7 @@
   v16[2] = sub_1001B8038;
   v16[3] = &unk_1002888F8;
   v16[4] = buf;
-  v16[5] = a3;
+  v16[5] = run;
   v6 = objc_retainBlock(v16);
   v7 = +[VCPPhotoLibraryManager sharedManager];
   v8 = +[PHPhotoLibrary systemPhotoLibraryURL];
@@ -80,14 +80,14 @@
 
   v21 = v9;
   v10 = [NSArray arrayWithObjects:&v21 count:1];
-  v11 = [(MADPhotosSceneFastPassProcessingTask *)self cancelBlock];
-  v12 = [VCPMADSceneLibraryProcessingTask taskWithPhotoLibraries:v10 cancelBlock:v11 progressHandler:self->_progressHandler andCompletionHandler:v6];
+  cancelBlock = [(MADPhotosSceneFastPassProcessingTask *)self cancelBlock];
+  v12 = [VCPMADSceneLibraryProcessingTask taskWithPhotoLibraries:v10 cancelBlock:cancelBlock progressHandler:self->_progressHandler andCompletionHandler:v6];
 
   v13 = [v12 run];
   if (v13)
   {
-    v14 = [(MADPhotosSceneFastPassProcessingTask *)self completionHandler];
-    v14[2](v14, 0, 0);
+    completionHandler = [(MADPhotosSceneFastPassProcessingTask *)self completionHandler];
+    completionHandler[2](completionHandler, 0, 0);
   }
 
   _Block_object_dispose(buf, 8);

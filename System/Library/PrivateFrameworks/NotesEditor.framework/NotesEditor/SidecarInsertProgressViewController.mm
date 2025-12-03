@@ -1,5 +1,5 @@
 @interface SidecarInsertProgressViewController
-- (_TtC11NotesEditor35SidecarInsertProgressViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC11NotesEditor35SidecarInsertProgressViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
@@ -17,11 +17,11 @@
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_215332C5C();
 }
 
-- (_TtC11NotesEditor35SidecarInsertProgressViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC11NotesEditor35SidecarInsertProgressViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

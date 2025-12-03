@@ -1,20 +1,20 @@
 @interface PBFEditingZoomAnimationController
 - (CGRect)previewFrame;
-- (PBFEditingZoomAnimationController)initWithPreviewFrame:(CGRect)a3 previewCornerRadius:(double)a4 previewView:(id)a5 complicationsView:(id)a6;
+- (PBFEditingZoomAnimationController)initWithPreviewFrame:(CGRect)frame previewCornerRadius:(double)radius previewView:(id)view complicationsView:(id)complicationsView;
 - (id)buildDimmingView;
-- (id)buildZoomingViewWithPreviewView:(id)a3 previewFrame:(CGRect)a4 editingView:(id)a5 complicationsView:(id)a6;
+- (id)buildZoomingViewWithPreviewView:(id)view previewFrame:(CGRect)frame editingView:(id)editingView complicationsView:(id)complicationsView;
 @end
 
 @implementation PBFEditingZoomAnimationController
 
-- (PBFEditingZoomAnimationController)initWithPreviewFrame:(CGRect)a3 previewCornerRadius:(double)a4 previewView:(id)a5 complicationsView:(id)a6
+- (PBFEditingZoomAnimationController)initWithPreviewFrame:(CGRect)frame previewCornerRadius:(double)radius previewView:(id)view complicationsView:(id)complicationsView
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v14 = a5;
-  v15 = a6;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  viewCopy = view;
+  complicationsViewCopy = complicationsView;
   v19.receiver = self;
   v19.super_class = PBFEditingZoomAnimationController;
   v16 = [(PBFEditingZoomAnimationController *)&v19 init];
@@ -25,34 +25,34 @@
     v16->_previewFrame.origin.y = y;
     v16->_previewFrame.size.width = width;
     v16->_previewFrame.size.height = height;
-    v16->_previewCornerRadius = a4;
-    objc_storeStrong(&v16->_previewView, a5);
-    objc_storeStrong(&v17->_complicationsView, a6);
+    v16->_previewCornerRadius = radius;
+    objc_storeStrong(&v16->_previewView, view);
+    objc_storeStrong(&v17->_complicationsView, complicationsView);
   }
 
   return v17;
 }
 
-- (id)buildZoomingViewWithPreviewView:(id)a3 previewFrame:(CGRect)a4 editingView:(id)a5 complicationsView:(id)a6
+- (id)buildZoomingViewWithPreviewView:(id)view previewFrame:(CGRect)frame editingView:(id)editingView complicationsView:(id)complicationsView
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v12 = a5;
-  v13 = a6;
-  v14 = a3;
-  [v14 setFrame:{x, y, width, height}];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  editingViewCopy = editingView;
+  complicationsViewCopy = complicationsView;
+  viewCopy = view;
+  [viewCopy setFrame:{x, y, width, height}];
   v15 = objc_alloc_init(MEMORY[0x277D75D18]);
   [v15 setClipsToBounds:1];
-  [v15 addSubview:v14];
+  [v15 addSubview:viewCopy];
 
-  if (v13)
+  if (complicationsViewCopy)
   {
-    [v15 addSubview:v13];
+    [v15 addSubview:complicationsViewCopy];
   }
 
-  [v15 addSubview:v12];
+  [v15 addSubview:editingViewCopy];
   [v15 setAccessibilityIgnoresInvertColors:1];
 
   return v15;

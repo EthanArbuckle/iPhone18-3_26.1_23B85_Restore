@@ -1,21 +1,21 @@
 @interface HDSPSleepModeManager
-+ (unint64_t)_sleepModeChangeReasonForBiomeReason:(int)a3 source:(int)a4;
++ (unint64_t)_sleepModeChangeReasonForBiomeReason:(int)reason source:(int)source;
 - (BOOL)_isScheduledSleepModeEnabled;
 - (BOOL)_isSleepModeDuringWindDownEnabled;
-- (BOOL)_shouldHandleBiomeEvent:(id)a3;
-- (BOOL)configureFocusModeWithState:(unint64_t)a3 error:(id *)a4;
-- (BOOL)createFocusModeInState:(unint64_t)a3 error:(id *)a4;
-- (BOOL)deleteFocusModeWithError:(id *)a3;
+- (BOOL)_shouldHandleBiomeEvent:(id)event;
+- (BOOL)configureFocusModeWithState:(unint64_t)state error:(id *)error;
+- (BOOL)createFocusModeInState:(unint64_t)state error:(id *)error;
+- (BOOL)deleteFocusModeWithError:(id *)error;
 - (BOOL)hasSleepFocusMode;
 - (BOOL)inUnscheduledSleepMode;
 - (BOOL)isAppleWatch;
 - (BOOL)isInDemoMode;
-- (BOOL)shouldGoIntoSleepModeDuringState:(unint64_t)a3;
+- (BOOL)shouldGoIntoSleepModeDuringState:(unint64_t)state;
 - (BOOL)sleepFeaturesEnabled;
 - (BOOL)sleepScreenEnabled;
 - (HDSPEnvironment)environment;
-- (HDSPSleepModeManager)initWithEnvironment:(id)a3;
-- (HDSPSleepModeManager)initWithEnvironment:(id)a3 sleepFocusModeBridge:(id)a4 sleepProactiveBridge:(id)a5;
+- (HDSPSleepModeManager)initWithEnvironment:(id)environment;
+- (HDSPSleepModeManager)initWithEnvironment:(id)environment sleepFocusModeBridge:(id)bridge sleepProactiveBridge:(id)proactiveBridge;
 - (HKSPSleepScheduleModel)sleepScheduleModel;
 - (NSDate)currentDate;
 - (id)computeUserVisibleEndDate;
@@ -24,63 +24,63 @@
 - (id)diagnosticInfo;
 - (int64_t)sleepMode;
 - (unint64_t)sleepScheduleState;
-- (void)_automationTurnedOffSleepModeWithReason:(unint64_t)a3;
-- (void)_automationTurnedOnSleepModeWithReason:(unint64_t)a3;
+- (void)_automationTurnedOffSleepModeWithReason:(unint64_t)reason;
+- (void)_automationTurnedOnSleepModeWithReason:(unint64_t)reason;
 - (void)_createFocusModeIfNeeded;
-- (void)_ensureFocusModeCreatedForSleepMode:(int64_t)a3 reason:(unint64_t)a4;
-- (void)_handleFocusModeEvent:(id)a3;
+- (void)_ensureFocusModeCreatedForSleepMode:(int64_t)mode reason:(unint64_t)reason;
+- (void)_handleFocusModeEvent:(id)event;
 - (void)_sleepModeTurnedOffForUnknownReason;
 - (void)_sleepModeTurnedOnForUnknownReason;
-- (void)_userTurnedOffSleepModeWithReason:(unint64_t)a3;
-- (void)_userTurnedOnSleepModeWithReason:(unint64_t)a3;
-- (void)createHomeScreenPageWithCompletion:(id)a3;
-- (void)environmentDidBecomeReady:(id)a3;
-- (void)environmentWillBecomeReady:(id)a3;
-- (void)notifyObserversForSleepModeChange:(int64_t)a3 previousMode:(int64_t)a4 reason:(unint64_t)a5;
-- (void)setSleepMode:(int64_t)a3 reason:(unint64_t)a4;
-- (void)significantTimeChangeDetected:(id)a3;
-- (void)sleepFocusModeBridge:(id)a3 didUpdateSleepFocusConfiguration:(id)a4;
-- (void)sleepModeDidChange:(int64_t)a3 previousMode:(int64_t)a4 reason:(unint64_t)a5;
-- (void)sleepScheduleModelManager:(id)a3 didUpdateSleepScheduleModel:(id)a4;
-- (void)sleepScheduleStateDidChange:(unint64_t)a3 previousState:(unint64_t)a4 reason:(unint64_t)a5;
+- (void)_userTurnedOffSleepModeWithReason:(unint64_t)reason;
+- (void)_userTurnedOnSleepModeWithReason:(unint64_t)reason;
+- (void)createHomeScreenPageWithCompletion:(id)completion;
+- (void)environmentDidBecomeReady:(id)ready;
+- (void)environmentWillBecomeReady:(id)ready;
+- (void)notifyObserversForSleepModeChange:(int64_t)change previousMode:(int64_t)mode reason:(unint64_t)reason;
+- (void)setSleepMode:(int64_t)mode reason:(unint64_t)reason;
+- (void)significantTimeChangeDetected:(id)detected;
+- (void)sleepFocusModeBridge:(id)bridge didUpdateSleepFocusConfiguration:(id)configuration;
+- (void)sleepModeDidChange:(int64_t)change previousMode:(int64_t)mode reason:(unint64_t)reason;
+- (void)sleepScheduleModelManager:(id)manager didUpdateSleepScheduleModel:(id)model;
+- (void)sleepScheduleStateDidChange:(unint64_t)change previousState:(unint64_t)state reason:(unint64_t)reason;
 - (void)updateState;
 @end
 
 @implementation HDSPSleepModeManager
 
-- (HDSPSleepModeManager)initWithEnvironment:(id)a3
+- (HDSPSleepModeManager)initWithEnvironment:(id)environment
 {
   v4 = MEMORY[0x277D62440];
-  v5 = a3;
+  environmentCopy = environment;
   v6 = [v4 sleepFocusConfigurationServiceWithOptions:3];
   v7 = [[HDSPAppPredictionClient alloc] initWithSleepFocusModeBridge:v6];
-  v8 = [(HDSPSleepModeManager *)self initWithEnvironment:v5 sleepFocusModeBridge:v6 sleepProactiveBridge:v7];
+  v8 = [(HDSPSleepModeManager *)self initWithEnvironment:environmentCopy sleepFocusModeBridge:v6 sleepProactiveBridge:v7];
 
   return v8;
 }
 
-- (HDSPSleepModeManager)initWithEnvironment:(id)a3 sleepFocusModeBridge:(id)a4 sleepProactiveBridge:(id)a5
+- (HDSPSleepModeManager)initWithEnvironment:(id)environment sleepFocusModeBridge:(id)bridge sleepProactiveBridge:(id)proactiveBridge
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  environmentCopy = environment;
+  bridgeCopy = bridge;
+  proactiveBridgeCopy = proactiveBridge;
   v40.receiver = self;
   v40.super_class = HDSPSleepModeManager;
   v11 = [(HDSPSleepModeManager *)&v40 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_environment, v8);
-    objc_storeStrong(&v12->_sleepFocusModeBridge, a4);
-    objc_storeStrong(&v12->_sleepProactiveBridge, a5);
+    objc_storeWeak(&v11->_environment, environmentCopy);
+    objc_storeStrong(&v12->_sleepFocusModeBridge, bridge);
+    objc_storeStrong(&v12->_sleepProactiveBridge, proactiveBridge);
     v13 = objc_alloc(MEMORY[0x277D624A0]);
-    v14 = [v8 defaultCallbackScheduler];
-    v15 = [v13 initWithCallbackScheduler:v14];
+    defaultCallbackScheduler = [environmentCopy defaultCallbackScheduler];
+    v15 = [v13 initWithCallbackScheduler:defaultCallbackScheduler];
     sleepModeObservers = v12->_sleepModeObservers;
     v12->_sleepModeObservers = v15;
 
-    v17 = [v8 mutexGenerator];
-    v18 = v17[2]();
+    mutexGenerator = [environmentCopy mutexGenerator];
+    v18 = mutexGenerator[2]();
     mutexProvider = v12->_mutexProvider;
     v12->_mutexProvider = v18;
 
@@ -88,16 +88,16 @@
     v21 = objc_opt_class();
     v22 = NSStringFromClass(v21);
     v23 = objc_alloc(MEMORY[0x277D62558]);
-    v24 = [v8 userDefaults];
-    v25 = [v23 initWithUserDefaults:v24];
-    v26 = [v8 currentDateProvider];
-    v27 = [(HDSPSleepModeStateMachine *)v20 initWithIdentifier:v22 persistence:v25 delegate:v12 infoProvider:v12 currentDateProvider:v26];
+    userDefaults = [environmentCopy userDefaults];
+    v25 = [v23 initWithUserDefaults:userDefaults];
+    currentDateProvider = [environmentCopy currentDateProvider];
+    v27 = [(HDSPSleepModeStateMachine *)v20 initWithIdentifier:v22 persistence:v25 delegate:v12 infoProvider:v12 currentDateProvider:currentDateProvider];
     stateMachine = v12->_stateMachine;
     v12->_stateMachine = v27;
 
     objc_copyWeak(&to, &v12->_environment);
     WeakRetained = objc_loadWeakRetained(&v12->_environment);
-    v30 = [WeakRetained biomeManager];
+    biomeManager = [WeakRetained biomeManager];
     v31 = +[HDSPBiomeManager sleepModePublisher];
     v36[0] = MEMORY[0x277D85DD0];
     v36[1] = 3221225472;
@@ -106,7 +106,7 @@
     v32 = v12;
     v37 = v32;
     objc_copyWeak(&v38, &to);
-    v33 = [v30 subscribe:v31 callback:v36];
+    v33 = [biomeManager subscribe:v31 callback:v36];
 
     v34 = v32;
     objc_destroyWeak(&v38);
@@ -146,10 +146,10 @@ void __86__HDSPSleepModeManager_initWithEnvironment_sleepFocusModeBridge_sleepPr
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)environmentWillBecomeReady:(id)a3
+- (void)environmentWillBecomeReady:(id)ready
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  readyCopy = ready;
   v5 = HKSPLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -159,22 +159,22 @@ void __86__HDSPSleepModeManager_initWithEnvironment_sleepFocusModeBridge_sleepPr
     _os_log_impl(&dword_269B11000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] environmentWillBecomeReady", &v12, 0xCu);
   }
 
-  v7 = [v4 sleepScheduleModelManager];
-  [v7 addObserver:self];
+  sleepScheduleModelManager = [readyCopy sleepScheduleModelManager];
+  [sleepScheduleModelManager addObserver:self];
 
-  v8 = [v4 sleepCoordinator];
-  [v8 addObserver:self];
+  sleepCoordinator = [readyCopy sleepCoordinator];
+  [sleepCoordinator addObserver:self];
 
-  v9 = [v4 timeChangeListener];
-  [v9 addObserver:self];
+  timeChangeListener = [readyCopy timeChangeListener];
+  [timeChangeListener addObserver:self];
 
-  v10 = [v4 diagnostics];
+  diagnostics = [readyCopy diagnostics];
 
-  [v10 addProvider:self];
+  [diagnostics addProvider:self];
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)environmentDidBecomeReady:(id)a3
+- (void)environmentDidBecomeReady:(id)ready
 {
   v10 = *MEMORY[0x277D85DE8];
   v4 = HKSPLogForCategory();
@@ -250,22 +250,22 @@ uint64_t __36__HDSPSleepModeManager_currentState__block_invoke(uint64_t a1)
 
 - (int64_t)sleepMode
 {
-  v2 = [(HDSPSleepModeManager *)self currentState];
-  v3 = [v2 sleepMode];
+  currentState = [(HDSPSleepModeManager *)self currentState];
+  sleepMode = [currentState sleepMode];
 
-  return v3;
+  return sleepMode;
 }
 
 - (BOOL)inUnscheduledSleepMode
 {
-  v2 = [(HDSPSleepModeManager *)self currentState];
+  currentState = [(HDSPSleepModeManager *)self currentState];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   return isKindOfClass & 1;
 }
 
-- (void)setSleepMode:(int64_t)a3 reason:(unint64_t)a4
+- (void)setSleepMode:(int64_t)mode reason:(unint64_t)reason
 {
   v21 = *MEMORY[0x277D85DE8];
   v8 = HKSPLogForCategory();
@@ -284,18 +284,18 @@ uint64_t __36__HDSPSleepModeManager_currentState__block_invoke(uint64_t a1)
     _os_log_impl(&dword_269B11000, v8, OS_LOG_TYPE_DEFAULT, "[%{public}@] setSleepMode: %{public}@ (%{public}@)", &v15, 0x20u);
   }
 
-  [(HDSPSleepModeManager *)self _ensureFocusModeCreatedForSleepMode:a3 reason:a4];
-  switch(a3)
+  [(HDSPSleepModeManager *)self _ensureFocusModeCreatedForSleepMode:mode reason:reason];
+  switch(mode)
   {
     case 2:
       if (HKSPSleepModeChangeReasonTreatedAsAutomation())
       {
-        [(HDSPSleepModeManager *)self _automationTurnedOnSleepModeWithReason:a4];
+        [(HDSPSleepModeManager *)self _automationTurnedOnSleepModeWithReason:reason];
       }
 
       else if (HKSPSleepModeChangeReasonTreatedAsUserRequested())
       {
-        [(HDSPSleepModeManager *)self _userTurnedOnSleepModeWithReason:a4];
+        [(HDSPSleepModeManager *)self _userTurnedOnSleepModeWithReason:reason];
       }
 
       else
@@ -305,19 +305,19 @@ uint64_t __36__HDSPSleepModeManager_currentState__block_invoke(uint64_t a1)
 
       break;
     case 1:
-      v13 = [MEMORY[0x277CCA890] currentHandler];
-      [v13 handleFailureInMethod:a2 object:self file:@"HDSPSleepModeManager.m" lineNumber:174 description:@"Unable to set wind down via this method"];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"HDSPSleepModeManager.m" lineNumber:174 description:@"Unable to set wind down via this method"];
 
       break;
     case 0:
       if (HKSPSleepModeChangeReasonTreatedAsAutomation())
       {
-        [(HDSPSleepModeManager *)self _automationTurnedOffSleepModeWithReason:a4];
+        [(HDSPSleepModeManager *)self _automationTurnedOffSleepModeWithReason:reason];
       }
 
       else if (HKSPSleepModeChangeReasonTreatedAsUserRequested())
       {
-        [(HDSPSleepModeManager *)self _userTurnedOffSleepModeWithReason:a4];
+        [(HDSPSleepModeManager *)self _userTurnedOffSleepModeWithReason:reason];
       }
 
       else
@@ -331,47 +331,47 @@ uint64_t __36__HDSPSleepModeManager_currentState__block_invoke(uint64_t a1)
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_userTurnedOnSleepModeWithReason:(unint64_t)a3
+- (void)_userTurnedOnSleepModeWithReason:(unint64_t)reason
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __57__HDSPSleepModeManager__userTurnedOnSleepModeWithReason___block_invoke;
   v3[3] = &unk_279C7B740;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = reason;
   [(HDSPSleepModeManager *)self _withLock:v3];
 }
 
-- (void)_userTurnedOffSleepModeWithReason:(unint64_t)a3
+- (void)_userTurnedOffSleepModeWithReason:(unint64_t)reason
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __58__HDSPSleepModeManager__userTurnedOffSleepModeWithReason___block_invoke;
   v3[3] = &unk_279C7B740;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = reason;
   [(HDSPSleepModeManager *)self _withLock:v3];
 }
 
-- (void)_automationTurnedOnSleepModeWithReason:(unint64_t)a3
+- (void)_automationTurnedOnSleepModeWithReason:(unint64_t)reason
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __63__HDSPSleepModeManager__automationTurnedOnSleepModeWithReason___block_invoke;
   v3[3] = &unk_279C7B740;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = reason;
   [(HDSPSleepModeManager *)self _withLock:v3];
 }
 
-- (void)_automationTurnedOffSleepModeWithReason:(unint64_t)a3
+- (void)_automationTurnedOffSleepModeWithReason:(unint64_t)reason
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __64__HDSPSleepModeManager__automationTurnedOffSleepModeWithReason___block_invoke;
   v3[3] = &unk_279C7B740;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = reason;
   [(HDSPSleepModeManager *)self _withLock:v3];
 }
 
@@ -395,13 +395,13 @@ uint64_t __36__HDSPSleepModeManager_currentState__block_invoke(uint64_t a1)
   [(HDSPSleepModeManager *)self _withLock:v2];
 }
 
-- (void)_handleFocusModeEvent:(id)a3
+- (void)_handleFocusModeEvent:(id)event
 {
-  v6 = a3;
+  eventCopy = event;
   if ([(HDSPSleepModeManager *)self _shouldHandleBiomeEvent:?])
   {
-    v4 = [objc_opt_class() _sleepModeChangeReasonForBiomeReason:objc_msgSend(v6 source:{"updateReason"), objc_msgSend(v6, "updateSource")}];
-    if ([v6 starting])
+    v4 = [objc_opt_class() _sleepModeChangeReasonForBiomeReason:objc_msgSend(eventCopy source:{"updateReason"), objc_msgSend(eventCopy, "updateSource")}];
+    if ([eventCopy starting])
     {
       v5 = 2;
     }
@@ -415,19 +415,19 @@ uint64_t __36__HDSPSleepModeManager_currentState__block_invoke(uint64_t a1)
   }
 }
 
-- (BOOL)_shouldHandleBiomeEvent:(id)a3
+- (BOOL)_shouldHandleBiomeEvent:(id)event
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HDSPSleepModeManager *)self environment];
-  v6 = [v5 behavior];
-  if ([v6 isAppleWatch])
+  eventCopy = event;
+  environment = [(HDSPSleepModeManager *)self environment];
+  behavior = [environment behavior];
+  if ([behavior isAppleWatch])
   {
-    v7 = [(HDSPSleepModeManager *)self sleepScheduleModel];
-    v8 = [v7 sleepSettings];
-    v9 = [v8 watchSleepFeaturesEnabled];
+    sleepScheduleModel = [(HDSPSleepModeManager *)self sleepScheduleModel];
+    sleepSettings = [sleepScheduleModel sleepSettings];
+    watchSleepFeaturesEnabled = [sleepSettings watchSleepFeaturesEnabled];
 
-    if ((v9 & 1) == 0)
+    if ((watchSleepFeaturesEnabled & 1) == 0)
     {
       v10 = HKSPLogForCategory();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -450,10 +450,10 @@ LABEL_21:
   {
   }
 
-  v13 = [v4 updateReason];
-  if (v13 > 1)
+  updateReason = [eventCopy updateReason];
+  if (updateReason > 1)
   {
-    if (v13 == 2)
+    if (updateReason == 2)
     {
       v10 = HKSPLogForCategory();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -466,11 +466,11 @@ LABEL_21:
       }
 
 LABEL_22:
-      LOBYTE(v6) = 0;
+      LOBYTE(behavior) = 0;
       goto LABEL_23;
     }
 
-    if (v13 == 3)
+    if (updateReason == 3)
     {
       v10 = HKSPLogForCategory();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -483,14 +483,14 @@ LABEL_22:
       }
 
 LABEL_18:
-      LOBYTE(v6) = 1;
+      LOBYTE(behavior) = 1;
 LABEL_23:
     }
   }
 
   else
   {
-    if (!v13)
+    if (!updateReason)
     {
       v10 = HKSPLogForCategory();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -505,7 +505,7 @@ LABEL_23:
       goto LABEL_18;
     }
 
-    if (v13 == 1)
+    if (updateReason == 1)
     {
       v10 = HKSPLogForCategory();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -525,39 +525,39 @@ LABEL_17:
   }
 
   v16 = *MEMORY[0x277D85DE8];
-  return v6 & 1;
+  return behavior & 1;
 }
 
-+ (unint64_t)_sleepModeChangeReasonForBiomeReason:(int)a3 source:(int)a4
++ (unint64_t)_sleepModeChangeReasonForBiomeReason:(int)reason source:(int)source
 {
-  if (a3 == 3)
+  if (reason == 3)
   {
-    if (a4 <= 3)
+    if (source <= 3)
     {
       v4 = &unk_269B983C8;
-      return v4[a4];
+      return v4[source];
     }
   }
 
-  else if (a3 == 1 && a4 < 4)
+  else if (reason == 1 && source < 4)
   {
     v4 = &unk_269B983A8;
-    return v4[a4];
+    return v4[source];
   }
 
   return 10;
 }
 
-- (void)_ensureFocusModeCreatedForSleepMode:(int64_t)a3 reason:(unint64_t)a4
+- (void)_ensureFocusModeCreatedForSleepMode:(int64_t)mode reason:(unint64_t)reason
 {
   v15 = *MEMORY[0x277D85DE8];
-  if (a3 == 2 && a4 == 5)
+  if (mode == 2 && reason == 5)
   {
     v5 = HKSPLogForCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v12 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_269B11000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] sleep mode engaged from Hunter watch, making sure focus mode is created", buf, 0xCu);
     }
 
@@ -570,7 +570,7 @@ LABEL_17:
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543618;
-        v12 = self;
+        selfCopy2 = self;
         v13 = 2114;
         v14 = v7;
         _os_log_error_impl(&dword_269B11000, v8, OS_LOG_TYPE_ERROR, "[%{public}@] failed to create focus mode: %{public}@", buf, 0x16u);
@@ -581,17 +581,17 @@ LABEL_17:
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sleepScheduleModelManager:(id)a3 didUpdateSleepScheduleModel:(id)a4
+- (void)sleepScheduleModelManager:(id)manager didUpdateSleepScheduleModel:(id)model
 {
   v13 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  modelCopy = model;
   v6 = HKSPLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138543618;
     v10 = objc_opt_class();
     v11 = 2114;
-    v12 = v5;
+    v12 = modelCopy;
     v7 = v10;
     _os_log_impl(&dword_269B11000, v6, OS_LOG_TYPE_DEFAULT, "[%{public}@] didUpdateSleepScheduleModel: %{public}@", &v9, 0x16u);
   }
@@ -603,7 +603,7 @@ LABEL_17:
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sleepScheduleStateDidChange:(unint64_t)a3 previousState:(unint64_t)a4 reason:(unint64_t)a5
+- (void)sleepScheduleStateDidChange:(unint64_t)change previousState:(unint64_t)state reason:(unint64_t)reason
 {
   v48 = *MEMORY[0x277D85DE8];
   v9 = HKSPLogForCategory();
@@ -622,28 +622,28 @@ LABEL_17:
     _os_log_impl(&dword_269B11000, v9, OS_LOG_TYPE_DEFAULT, "[%{public}@] sleepScheduleStateChanged: %{public}@ reason: %{public}@", buf, 0x20u);
   }
 
-  if (a3 <= 1)
+  if (change <= 1)
   {
-    if (!a3)
+    if (!change)
     {
       v16 = MEMORY[0x277D85DD0];
       v17 = 3221225472;
       v18 = __73__HDSPSleepModeManager_sleepScheduleStateDidChange_previousState_reason___block_invoke_4;
       v19 = &unk_279C7B108;
-      v20 = self;
+      selfCopy = self;
       v14 = &v16;
       goto LABEL_14;
     }
 
-    if (a3 == 1)
+    if (change == 1)
     {
       v28 = MEMORY[0x277D85DD0];
       v29 = 3221225472;
       v30 = __73__HDSPSleepModeManager_sleepScheduleStateDidChange_previousState_reason___block_invoke_2;
       v31 = &unk_279C7B650;
-      v32 = self;
-      v33 = a5;
-      v34 = a4;
+      selfCopy2 = self;
+      reasonCopy = reason;
+      stateCopy = state;
       v14 = &v28;
       goto LABEL_14;
     }
@@ -651,7 +651,7 @@ LABEL_17:
 
   else
   {
-    switch(a3)
+    switch(change)
     {
       case 6uLL:
         [(HDSPSleepModeManager *)self updateState];
@@ -661,9 +661,9 @@ LABEL_17:
         v22 = 3221225472;
         v23 = __73__HDSPSleepModeManager_sleepScheduleStateDidChange_previousState_reason___block_invoke_3;
         v24 = &unk_279C7B650;
-        v25 = self;
-        v26 = a5;
-        v27 = a4;
+        selfCopy3 = self;
+        reasonCopy2 = reason;
+        stateCopy2 = state;
         v14 = &v21;
         goto LABEL_14;
       case 2uLL:
@@ -671,12 +671,12 @@ LABEL_17:
         v36 = 3221225472;
         v37 = __73__HDSPSleepModeManager_sleepScheduleStateDidChange_previousState_reason___block_invoke;
         v38 = &unk_279C7B650;
-        v39 = self;
-        v40 = a5;
-        v41 = a4;
+        selfCopy4 = self;
+        reasonCopy3 = reason;
+        stateCopy3 = state;
         v14 = &v35;
 LABEL_14:
-        [(HDSPSleepModeManager *)self _withLock:v14, v16, v17, v18, v19, v20, v21, v22, v23, v24, v25, v26, v27, v28, v29, v30, v31, v32, v33, v34, v35, v36, v37, v38, v39, v40, v41];
+        [(HDSPSleepModeManager *)self _withLock:v14, v16, v17, v18, v19, selfCopy, v21, v22, v23, v24, selfCopy3, reasonCopy2, stateCopy2, v28, v29, v30, v31, selfCopy2, reasonCopy, stateCopy, v35, v36, v37, v38, selfCopy4, reasonCopy3, stateCopy3];
         break;
     }
   }
@@ -684,7 +684,7 @@ LABEL_14:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)significantTimeChangeDetected:(id)a3
+- (void)significantTimeChangeDetected:(id)detected
 {
   v9 = *MEMORY[0x277D85DE8];
   v4 = HKSPLogForCategory();
@@ -700,7 +700,7 @@ LABEL_14:
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sleepModeDidChange:(int64_t)a3 previousMode:(int64_t)a4 reason:(unint64_t)a5
+- (void)sleepModeDidChange:(int64_t)change previousMode:(int64_t)mode reason:(unint64_t)reason
 {
   v24 = *MEMORY[0x277D85DE8];
   v9 = HKSPLogForCategory();
@@ -722,27 +722,27 @@ LABEL_14:
     _os_log_impl(&dword_269B11000, v9, OS_LOG_TYPE_DEFAULT, "[%{public}@] sleepModeDidChange: %{public}@ previousMode: %{public}@ reason: %{public}@, notifying observers", &v16, 0x2Au);
   }
 
-  [(HDSPSleepModeManager *)self notifyObserversForSleepModeChange:a3 previousMode:a4 reason:a5];
-  [(HDSPSleepModeManager *)self _powerLogSleepMode:a3 sleepScreenEnabled:[(HDSPSleepModeManager *)self sleepScreenEnabled]];
+  [(HDSPSleepModeManager *)self notifyObserversForSleepModeChange:change previousMode:mode reason:reason];
+  [(HDSPSleepModeManager *)self _powerLogSleepMode:change sleepScreenEnabled:[(HDSPSleepModeManager *)self sleepScreenEnabled]];
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)notifyObserversForSleepModeChange:(int64_t)a3 previousMode:(int64_t)a4 reason:(unint64_t)a5
+- (void)notifyObserversForSleepModeChange:(int64_t)change previousMode:(int64_t)mode reason:(unint64_t)reason
 {
-  v9 = [(HDSPSleepModeManager *)self environment];
-  v10 = [v9 currentContext];
+  environment = [(HDSPSleepModeManager *)self environment];
+  currentContext = [environment currentContext];
 
   sleepModeObservers = self->_sleepModeObservers;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __78__HDSPSleepModeManager_notifyObserversForSleepModeChange_previousMode_reason___block_invoke;
   v13[3] = &unk_279C7D558;
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
+  changeCopy = change;
+  modeCopy = mode;
+  reasonCopy = reason;
   v13[4] = self;
-  v14 = v10;
-  v12 = v10;
+  v14 = currentContext;
+  v12 = currentContext;
   [(HKSPObserverSet *)sleepModeObservers enumerateObserversWithBlock:v13];
 }
 
@@ -765,8 +765,8 @@ void __78__HDSPSleepModeManager_notifyObserversForSleepModeChange_previousMode_r
 - (NSDate)currentDate
 {
   WeakRetained = objc_loadWeakRetained(&self->_environment);
-  v3 = [WeakRetained currentDateProvider];
-  v4 = v3[2]();
+  currentDateProvider = [WeakRetained currentDateProvider];
+  v4 = currentDateProvider[2]();
 
   return v4;
 }
@@ -774,44 +774,44 @@ void __78__HDSPSleepModeManager_notifyObserversForSleepModeChange_previousMode_r
 - (unint64_t)sleepScheduleState
 {
   WeakRetained = objc_loadWeakRetained(&self->_environment);
-  v3 = [WeakRetained sleepCoordinator];
-  v4 = [v3 currentSleepScheduleState];
+  sleepCoordinator = [WeakRetained sleepCoordinator];
+  currentSleepScheduleState = [sleepCoordinator currentSleepScheduleState];
 
-  return v4;
+  return currentSleepScheduleState;
 }
 
 - (HKSPSleepScheduleModel)sleepScheduleModel
 {
   WeakRetained = objc_loadWeakRetained(&self->_environment);
-  v3 = [WeakRetained sleepScheduleModelManager];
-  v4 = [v3 sleepScheduleModel];
+  sleepScheduleModelManager = [WeakRetained sleepScheduleModelManager];
+  sleepScheduleModel = [sleepScheduleModelManager sleepScheduleModel];
 
-  return v4;
+  return sleepScheduleModel;
 }
 
 - (BOOL)isAppleWatch
 {
-  v2 = [(HDSPSleepModeManager *)self environment];
-  v3 = [v2 behavior];
-  v4 = [v3 isAppleWatch];
+  environment = [(HDSPSleepModeManager *)self environment];
+  behavior = [environment behavior];
+  isAppleWatch = [behavior isAppleWatch];
 
-  return v4;
+  return isAppleWatch;
 }
 
 - (BOOL)sleepFeaturesEnabled
 {
-  v2 = [(HDSPSleepModeManager *)self sleepScheduleModel];
-  v3 = [v2 sleepSettings];
-  v4 = [v3 watchSleepFeaturesEnabled];
+  sleepScheduleModel = [(HDSPSleepModeManager *)self sleepScheduleModel];
+  sleepSettings = [sleepScheduleModel sleepSettings];
+  watchSleepFeaturesEnabled = [sleepSettings watchSleepFeaturesEnabled];
 
-  return v4;
+  return watchSleepFeaturesEnabled;
 }
 
 - (BOOL)sleepScreenEnabled
 {
-  v2 = [(HDSPSleepModeManager *)self sleepScheduleModel];
-  v3 = [v2 sleepSettings];
-  v4 = ([v3 sleepModeOptions] >> 14) & 1;
+  sleepScheduleModel = [(HDSPSleepModeManager *)self sleepScheduleModel];
+  sleepSettings = [sleepScheduleModel sleepSettings];
+  v4 = ([sleepSettings sleepModeOptions] >> 14) & 1;
 
   return v4;
 }
@@ -845,14 +845,14 @@ void __78__HDSPSleepModeManager_notifyObserversForSleepModeChange_previousMode_r
 - (id)computeUserVisibleEndDate
 {
   v32 = *MEMORY[0x277D85DE8];
-  v3 = [(HDSPSleepModeManager *)self sleepScheduleModel];
-  v4 = [v3 sleepEventRecord];
-  v5 = [(HDSPSleepModeManager *)self sleepScheduleState];
-  v6 = [(HDSPSleepModeManager *)self currentDate];
-  if (v5 != 6)
+  sleepScheduleModel = [(HDSPSleepModeManager *)self sleepScheduleModel];
+  sleepEventRecord = [sleepScheduleModel sleepEventRecord];
+  sleepScheduleState = [(HDSPSleepModeManager *)self sleepScheduleState];
+  currentDate = [(HDSPSleepModeManager *)self currentDate];
+  if (sleepScheduleState != 6)
   {
-    v12 = [v3 nextEventWithIdentifier:*MEMORY[0x277D621E0] dueAfterDate:v6];
-    [v12 timeIntervalSinceDate:v6];
+    v12 = [sleepScheduleModel nextEventWithIdentifier:*MEMORY[0x277D621E0] dueAfterDate:currentDate];
+    [v12 timeIntervalSinceDate:currentDate];
     if (v13 > *MEMORY[0x277D62320])
     {
       v14 = HKSPLogForCategory();
@@ -883,14 +883,14 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  v7 = [v4 wakeUpAlarmSnoozedUntilDate];
-  v8 = [v7 hksp_isAfterDate:v6];
+  wakeUpAlarmSnoozedUntilDate = [sleepEventRecord wakeUpAlarmSnoozedUntilDate];
+  v8 = [wakeUpAlarmSnoozedUntilDate hksp_isAfterDate:currentDate];
 
   if (!v8)
   {
-    v12 = [v3 previousEventWithIdentifier:*MEMORY[0x277D621E0] dueBeforeDate:v6];
-    v19 = [v4 wakeUpAlarmDismissedDate];
-    v20 = [v12 isEqualToDate:v19];
+    v12 = [sleepScheduleModel previousEventWithIdentifier:*MEMORY[0x277D621E0] dueBeforeDate:currentDate];
+    wakeUpAlarmDismissedDate = [sleepEventRecord wakeUpAlarmDismissedDate];
+    v20 = [v12 isEqualToDate:wakeUpAlarmDismissedDate];
 
     v14 = HKSPLogForCategory();
     v21 = os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT);
@@ -930,7 +930,7 @@ LABEL_17:
     _os_log_impl(&dword_269B11000, v9, OS_LOG_TYPE_DEFAULT, "[%{public}@] wake up alarm was snoozed", &v28, 0xCu);
   }
 
-  v11 = [v3 nextEventWithIdentifier:*MEMORY[0x277D621E0] dueAfterDate:v6];
+  v11 = [sleepScheduleModel nextEventWithIdentifier:*MEMORY[0x277D621E0] dueAfterDate:currentDate];
 LABEL_19:
   v23 = HKSPLogForCategory();
   if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
@@ -949,7 +949,7 @@ LABEL_19:
   return v11;
 }
 
-- (BOOL)shouldGoIntoSleepModeDuringState:(unint64_t)a3
+- (BOOL)shouldGoIntoSleepModeDuringState:(unint64_t)state
 {
   v11 = *MEMORY[0x277D85DE8];
   if ([(HDSPSleepModeManager *)self hasSleepFocusMode])
@@ -1021,17 +1021,17 @@ LABEL_14:
 - (BOOL)_isScheduledSleepModeEnabled
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [(HDSPSleepModeManager *)self sleepScheduleModel];
-  v4 = [v3 sleepSchedule];
+  sleepScheduleModel = [(HDSPSleepModeManager *)self sleepScheduleModel];
+  sleepSchedule = [sleepScheduleModel sleepSchedule];
 
-  if (v4)
+  if (sleepSchedule)
   {
-    if ([v4 isEnabledAndHasOccurrences])
+    if ([sleepSchedule isEnabledAndHasOccurrences])
     {
-      v5 = [(HDSPSleepModeManager *)self sleepScheduleModel];
-      v6 = [v5 sleepSettings];
+      sleepScheduleModel2 = [(HDSPSleepModeManager *)self sleepScheduleModel];
+      sleepSettings = [sleepScheduleModel2 sleepSettings];
 
-      if (([v6 scheduledSleepMode]& 1) != 0)
+      if (([sleepSettings scheduledSleepMode]& 1) != 0)
       {
         if (![(HDSPSleepModeManager *)self isInDemoMode])
         {
@@ -1072,8 +1072,8 @@ LABEL_15:
       goto LABEL_15;
     }
 
-    v6 = HKSPLogForCategory();
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+    sleepSettings = HKSPLogForCategory();
+    if (os_log_type_enabled(sleepSettings, OS_LOG_TYPE_DEFAULT))
     {
       v15 = 138543362;
       v16 = objc_opt_class();
@@ -1085,15 +1085,15 @@ LABEL_15:
 
   else
   {
-    v6 = HKSPLogForCategory();
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+    sleepSettings = HKSPLogForCategory();
+    if (os_log_type_enabled(sleepSettings, OS_LOG_TYPE_DEFAULT))
     {
       v15 = 138543362;
       v16 = objc_opt_class();
       v10 = v16;
       v11 = "[%{public}@] no sleep schedule";
 LABEL_11:
-      _os_log_impl(&dword_269B11000, v6, OS_LOG_TYPE_DEFAULT, v11, &v15, 0xCu);
+      _os_log_impl(&dword_269B11000, sleepSettings, OS_LOG_TYPE_DEFAULT, v11, &v15, 0xCu);
     }
   }
 
@@ -1108,11 +1108,11 @@ LABEL_17:
 - (BOOL)_isSleepModeDuringWindDownEnabled
 {
   v11 = *MEMORY[0x277D85DE8];
-  v2 = [(HDSPSleepModeManager *)self sleepScheduleModel];
-  v3 = [v2 sleepEventRecord];
+  sleepScheduleModel = [(HDSPSleepModeManager *)self sleepScheduleModel];
+  sleepEventRecord = [sleepScheduleModel sleepEventRecord];
 
-  v4 = [v3 isAnySleepCoachingOnboardingCompleted];
-  if ((v4 & 1) == 0)
+  isAnySleepCoachingOnboardingCompleted = [sleepEventRecord isAnySleepCoachingOnboardingCompleted];
+  if ((isAnySleepCoachingOnboardingCompleted & 1) == 0)
   {
     v5 = HKSPLogForCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -1125,18 +1125,18 @@ LABEL_17:
   }
 
   v7 = *MEMORY[0x277D85DE8];
-  return v4;
+  return isAnySleepCoachingOnboardingCompleted;
 }
 
 - (BOOL)isInDemoMode
 {
-  v2 = [(HDSPSleepModeManager *)self environment];
-  v3 = [v2 isDemoEnvironment];
+  environment = [(HDSPSleepModeManager *)self environment];
+  isDemoEnvironment = [environment isDemoEnvironment];
 
-  return v3;
+  return isDemoEnvironment;
 }
 
-- (void)sleepFocusModeBridge:(id)a3 didUpdateSleepFocusConfiguration:(id)a4
+- (void)sleepFocusModeBridge:(id)bridge didUpdateSleepFocusConfiguration:(id)configuration
 {
   v11 = *MEMORY[0x277D85DE8];
   v5 = HKSPLogForCategory();
@@ -1160,19 +1160,19 @@ LABEL_17:
 - (void)_createFocusModeIfNeeded
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [(HDSPSleepModeManager *)self environment];
-  v4 = [v3 currentContext];
+  environment = [(HDSPSleepModeManager *)self environment];
+  currentContext = [environment currentContext];
 
-  v5 = [v4 changeEvaluation];
-  v6 = [v5 topLevelChangeKeys];
-  v7 = [v6 containsObject:*MEMORY[0x277D62158]];
+  changeEvaluation = [currentContext changeEvaluation];
+  topLevelChangeKeys = [changeEvaluation topLevelChangeKeys];
+  v7 = [topLevelChangeKeys containsObject:*MEMORY[0x277D62158]];
 
   if (v7)
   {
-    v8 = [(HDSPSleepModeManager *)self sleepScheduleModel];
-    v9 = [v8 sleepSettings];
+    sleepScheduleModel = [(HDSPSleepModeManager *)self sleepScheduleModel];
+    sleepSettings = [sleepScheduleModel sleepSettings];
 
-    if ([v9 scheduledSleepMode])
+    if ([sleepSettings scheduledSleepMode])
     {
       v10 = HKSPLogForCategory();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -1195,7 +1195,7 @@ LABEL_17:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)createFocusModeInState:(unint64_t)a3 error:(id *)a4
+- (BOOL)createFocusModeInState:(unint64_t)state error:(id *)error
 {
   v24 = *MEMORY[0x277D85DE8];
   v7 = HKSPLogForCategory();
@@ -1211,7 +1211,7 @@ LABEL_17:
     _os_log_impl(&dword_269B11000, v7, OS_LOG_TYPE_DEFAULT, "[%{public}@] creating sleep focus mode (state: %{public}@)", &v20, 0x16u);
   }
 
-  v11 = [(HDSPSleepFocusModeBridge *)self->_sleepFocusModeBridge createSleepFocusModeInState:a3 error:a4];
+  v11 = [(HDSPSleepFocusModeBridge *)self->_sleepFocusModeBridge createSleepFocusModeInState:state error:error];
   v12 = HKSPLogForCategory();
   v13 = v12;
   if ((v11 & 1) == 0)
@@ -1222,7 +1222,7 @@ LABEL_17:
     }
 
     v18 = objc_opt_class();
-    v19 = *a4;
+    v19 = *error;
     v20 = 138543618;
     v21 = v18;
     v22 = 2114;
@@ -1248,7 +1248,7 @@ LABEL_8:
   return v11;
 }
 
-- (BOOL)deleteFocusModeWithError:(id *)a3
+- (BOOL)deleteFocusModeWithError:(id *)error
 {
   v20 = *MEMORY[0x277D85DE8];
   v5 = HKSPLogForCategory();
@@ -1260,7 +1260,7 @@ LABEL_8:
     _os_log_impl(&dword_269B11000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] deleting sleep focus mode", &v16, 0xCu);
   }
 
-  v7 = [(HDSPSleepFocusModeBridge *)self->_sleepFocusModeBridge removeSleepFocusMode:a3];
+  v7 = [(HDSPSleepFocusModeBridge *)self->_sleepFocusModeBridge removeSleepFocusMode:error];
   v8 = HKSPLogForCategory();
   v9 = v8;
   if ((v7 & 1) == 0)
@@ -1271,7 +1271,7 @@ LABEL_8:
     }
 
     v14 = objc_opt_class();
-    v15 = *a3;
+    v15 = *error;
     v16 = 138543618;
     v17 = v14;
     v18 = 2114;
@@ -1297,7 +1297,7 @@ LABEL_8:
   return v7;
 }
 
-- (BOOL)configureFocusModeWithState:(unint64_t)a3 error:(id *)a4
+- (BOOL)configureFocusModeWithState:(unint64_t)state error:(id *)error
 {
   v24 = *MEMORY[0x277D85DE8];
   v7 = HKSPLogForCategory();
@@ -1313,7 +1313,7 @@ LABEL_8:
     _os_log_impl(&dword_269B11000, v7, OS_LOG_TYPE_DEFAULT, "[%{public}@] configuring sleep focus mode (state: %{public}@)", &v20, 0x16u);
   }
 
-  v11 = [(HDSPSleepFocusModeBridge *)self->_sleepFocusModeBridge configureSleepFocusModeWithState:a3 error:a4];
+  v11 = [(HDSPSleepFocusModeBridge *)self->_sleepFocusModeBridge configureSleepFocusModeWithState:state error:error];
   v12 = HKSPLogForCategory();
   v13 = v12;
   if ((v11 & 1) == 0)
@@ -1324,7 +1324,7 @@ LABEL_8:
     }
 
     v18 = objc_opt_class();
-    v19 = *a4;
+    v19 = *error;
     v20 = 138543618;
     v21 = v18;
     v22 = 2114;
@@ -1350,10 +1350,10 @@ LABEL_8:
   return v11;
 }
 
-- (void)createHomeScreenPageWithCompletion:(id)a3
+- (void)createHomeScreenPageWithCompletion:(id)completion
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = HKSPLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1363,15 +1363,15 @@ LABEL_8:
     _os_log_impl(&dword_269B11000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] creating home screen page", &v8, 0xCu);
   }
 
-  [(HDSPSleepProactiveBridge *)self->_sleepProactiveBridge createSuggestedHomeScreenPageWithCompletion:v4];
+  [(HDSPSleepProactiveBridge *)self->_sleepProactiveBridge createSuggestedHomeScreenPageWithCompletion:completionCopy];
   v7 = *MEMORY[0x277D85DE8];
 }
 
 - (id)diagnosticDescription
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(HDSPSleepModeManager *)self currentState];
-  v4 = [v2 stringWithFormat:@"Current State: %@", v3];
+  currentState = [(HDSPSleepModeManager *)self currentState];
+  v4 = [v2 stringWithFormat:@"Current State: %@", currentState];
 
   return v4;
 }
@@ -1380,9 +1380,9 @@ LABEL_8:
 {
   v8[1] = *MEMORY[0x277D85DE8];
   v7 = @"Current State";
-  v2 = [(HDSPSleepModeManager *)self currentState];
-  v3 = [v2 stateName];
-  v8[0] = v3;
+  currentState = [(HDSPSleepModeManager *)self currentState];
+  stateName = [currentState stateName];
+  v8[0] = stateName;
   v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v8 forKeys:&v7 count:1];
 
   v5 = *MEMORY[0x277D85DE8];

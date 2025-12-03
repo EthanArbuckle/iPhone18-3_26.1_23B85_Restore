@@ -6,10 +6,10 @@
 - (int64_t)pageCount;
 - (int64_t)pageOffset;
 - (int64_t)paginationDirection;
-- (void)setNavigationDirection:(int64_t)a3;
-- (void)setPageCount:(int64_t)a3;
-- (void)setPageOffset:(int64_t)a3;
-- (void)setPaginationDirection:(int64_t)a3;
+- (void)setNavigationDirection:(int64_t)direction;
+- (void)setPageCount:(int64_t)count;
+- (void)setPageOffset:(int64_t)offset;
+- (void)setPaginationDirection:(int64_t)direction;
 @end
 
 @implementation BEDocumentPaginationDataInfo
@@ -29,11 +29,11 @@
   return *(self + v3);
 }
 
-- (void)setPageCount:(int64_t)a3
+- (void)setPageCount:(int64_t)count
 {
   v5 = OBJC_IVAR___BEDocumentPaginationDataInfo_pageCount;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = count;
 }
 
 - (CGSize)contentSize
@@ -51,11 +51,11 @@
   return *(self + v3);
 }
 
-- (void)setPageOffset:(int64_t)a3
+- (void)setPageOffset:(int64_t)offset
 {
   v5 = OBJC_IVAR___BEDocumentPaginationDataInfo_pageOffset;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = offset;
 }
 
 - (int64_t)paginationDirection
@@ -65,11 +65,11 @@
   return *(self + v3);
 }
 
-- (void)setPaginationDirection:(int64_t)a3
+- (void)setPaginationDirection:(int64_t)direction
 {
   v5 = OBJC_IVAR___BEDocumentPaginationDataInfo_paginationDirection;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = direction;
 }
 
 - (int64_t)navigationDirection
@@ -79,11 +79,11 @@
   return *(self + v3);
 }
 
-- (void)setNavigationDirection:(int64_t)a3
+- (void)setNavigationDirection:(int64_t)direction
 {
   v5 = OBJC_IVAR___BEDocumentPaginationDataInfo_navigationDirection;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = direction;
 }
 
 - (BEDocumentPaginationDataInfo)init

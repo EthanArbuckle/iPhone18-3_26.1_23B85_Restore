@@ -1,44 +1,44 @@
 @interface HMDHomeActivityStateAggregatorManagerStorage
 + (id)logCategory;
-- (HMDHomeActivityStateAggregatorManagerStorage)initWithDataSource:(id)a3;
+- (HMDHomeActivityStateAggregatorManagerStorage)initWithDataSource:(id)source;
 - (id)logIdentifier;
-- (void)writeEnabledContributors:(id)a3;
-- (void)writeHomeActivityState:(unint64_t)a3 withHoldInfo:(id)a4 transitionalStateEndDate:(id)a5 reason:(int64_t)a6;
+- (void)writeEnabledContributors:(id)contributors;
+- (void)writeHomeActivityState:(unint64_t)state withHoldInfo:(id)info transitionalStateEndDate:(id)date reason:(int64_t)reason;
 @end
 
 @implementation HMDHomeActivityStateAggregatorManagerStorage
 
 - (id)logIdentifier
 {
-  v2 = [(HMDHomeActivityStateAggregatorManagerStorage *)self dataSource];
-  v3 = [v2 logIdentifier];
+  dataSource = [(HMDHomeActivityStateAggregatorManagerStorage *)self dataSource];
+  logIdentifier = [dataSource logIdentifier];
 
-  return v3;
+  return logIdentifier;
 }
 
-- (void)writeEnabledContributors:(id)a3
+- (void)writeEnabledContributors:(id)contributors
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDHomeActivityStateAggregatorManagerStorage *)self dataSource];
-  v6 = [v5 workingStoreContext];
+  contributorsCopy = contributors;
+  dataSource = [(HMDHomeActivityStateAggregatorManagerStorage *)self dataSource];
+  workingStoreContext = [dataSource workingStoreContext];
 
-  if (v6)
+  if (workingStoreContext)
   {
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __73__HMDHomeActivityStateAggregatorManagerStorage_writeEnabledContributors___block_invoke;
     v12[3] = &unk_27868A010;
     v12[4] = self;
-    v13 = v4;
-    v14 = v6;
+    v13 = contributorsCopy;
+    v14 = workingStoreContext;
     [v14 performBlock:v12];
   }
 
   else
   {
     v7 = objc_autoreleasePoolPush();
-    v8 = self;
+    selfCopy = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
@@ -229,33 +229,33 @@ LABEL_33:
   v40 = *MEMORY[0x277D85DE8];
 }
 
-- (void)writeHomeActivityState:(unint64_t)a3 withHoldInfo:(id)a4 transitionalStateEndDate:(id)a5 reason:(int64_t)a6
+- (void)writeHomeActivityState:(unint64_t)state withHoldInfo:(id)info transitionalStateEndDate:(id)date reason:(int64_t)reason
 {
   v27 = *MEMORY[0x277D85DE8];
-  v10 = a4;
-  v11 = a5;
-  v12 = [(HMDHomeActivityStateAggregatorManagerStorage *)self dataSource];
-  v13 = [v12 workingStoreContext];
+  infoCopy = info;
+  dateCopy = date;
+  dataSource = [(HMDHomeActivityStateAggregatorManagerStorage *)self dataSource];
+  workingStoreContext = [dataSource workingStoreContext];
 
-  if (v13)
+  if (workingStoreContext)
   {
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __116__HMDHomeActivityStateAggregatorManagerStorage_writeHomeActivityState_withHoldInfo_transitionalStateEndDate_reason___block_invoke;
     v19[3] = &unk_27867A828;
     v19[4] = self;
-    v23 = a3;
-    v20 = v10;
-    v21 = v13;
-    v24 = a6;
-    v22 = v11;
+    stateCopy = state;
+    v20 = infoCopy;
+    v21 = workingStoreContext;
+    reasonCopy = reason;
+    v22 = dateCopy;
     [v21 performBlock:v19];
   }
 
   else
   {
     v14 = objc_autoreleasePoolPush();
-    v15 = self;
+    selfCopy = self;
     v16 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
@@ -643,20 +643,20 @@ LABEL_60:
   v90 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDHomeActivityStateAggregatorManagerStorage)initWithDataSource:(id)a3
+- (HMDHomeActivityStateAggregatorManagerStorage)initWithDataSource:(id)source
 {
-  v5 = a3;
+  sourceCopy = source;
   v12.receiver = self;
   v12.super_class = HMDHomeActivityStateAggregatorManagerStorage;
   v6 = [(HMDHomeActivityStateAggregatorManagerStorage *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dataSource, a3);
-    v8 = [v5 home];
-    v9 = [v8 uuid];
+    objc_storeStrong(&v6->_dataSource, source);
+    home = [sourceCopy home];
+    uuid = [home uuid];
     homeUUID = v7->_homeUUID;
-    v7->_homeUUID = v9;
+    v7->_homeUUID = uuid;
   }
 
   return v7;

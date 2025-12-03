@@ -1,33 +1,33 @@
 @interface __HMFOSUnfairLock
-- (__HMFOSUnfairLock)initWithOptions:(unint64_t)a3;
-- (void)performBlock:(id)a3;
+- (__HMFOSUnfairLock)initWithOptions:(unint64_t)options;
+- (void)performBlock:(id)block;
 @end
 
 @implementation __HMFOSUnfairLock
 
-- (__HMFOSUnfairLock)initWithOptions:(unint64_t)a3
+- (__HMFOSUnfairLock)initWithOptions:(unint64_t)options
 {
-  v3 = a3;
+  optionsCopy = options;
   v5.receiver = self;
   v5.super_class = __HMFOSUnfairLock;
   result = [(HMFUnfairLock *)&v5 initWithOptions:?];
   if (result)
   {
     result->_internal._os_unfair_lock_opaque = 0;
-    result->_internalOptions = (v3 & 1) << 16;
+    result->_internalOptions = (optionsCopy & 1) << 16;
   }
 
   return result;
 }
 
-- (void)performBlock:(id)a3
+- (void)performBlock:(id)block
 {
-  if (a3)
+  if (block)
   {
     internalOptions = self->_internalOptions;
-    v5 = a3;
+    blockCopy = block;
     os_unfair_lock_lock_with_options();
-    v5[2](v5);
+    blockCopy[2](blockCopy);
 
     os_unfair_lock_unlock(&self->_internal);
   }

@@ -1,30 +1,30 @@
 @interface CKComposeAssetExplorerManagerSavedData
-- (CKComposeAssetExplorerManagerSavedData)initWithFileURL:(id)a3 filename:(id)a4 transcoderUserInfo:(id)a5 fullyRealizedPreview:(id)a6 rawPreview:(id)a7 appendedVideoURL:(id)a8;
+- (CKComposeAssetExplorerManagerSavedData)initWithFileURL:(id)l filename:(id)filename transcoderUserInfo:(id)info fullyRealizedPreview:(id)preview rawPreview:(id)rawPreview appendedVideoURL:(id)rL;
 - (void)dealloc;
 @end
 
 @implementation CKComposeAssetExplorerManagerSavedData
 
-- (CKComposeAssetExplorerManagerSavedData)initWithFileURL:(id)a3 filename:(id)a4 transcoderUserInfo:(id)a5 fullyRealizedPreview:(id)a6 rawPreview:(id)a7 appendedVideoURL:(id)a8
+- (CKComposeAssetExplorerManagerSavedData)initWithFileURL:(id)l filename:(id)filename transcoderUserInfo:(id)info fullyRealizedPreview:(id)preview rawPreview:(id)rawPreview appendedVideoURL:(id)rL
 {
-  v23 = a3;
-  v22 = a4;
-  v21 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  lCopy = l;
+  filenameCopy = filename;
+  infoCopy = info;
+  previewCopy = preview;
+  rawPreviewCopy = rawPreview;
+  rLCopy = rL;
   v24.receiver = self;
   v24.super_class = CKComposeAssetExplorerManagerSavedData;
   v18 = [(CKComposeAssetExplorerManagerSavedData *)&v24 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_fileURL, a3);
-    objc_storeStrong(&v19->_filename, a4);
-    objc_storeStrong(&v19->_transcoderUserInfo, a5);
-    objc_storeStrong(&v19->_fullyRealizedPreview, a6);
-    objc_storeStrong(&v19->_rawPreview, a7);
-    objc_storeStrong(&v19->_appendedVideoURL, a8);
+    objc_storeStrong(&v18->_fileURL, l);
+    objc_storeStrong(&v19->_filename, filename);
+    objc_storeStrong(&v19->_transcoderUserInfo, info);
+    objc_storeStrong(&v19->_fullyRealizedPreview, preview);
+    objc_storeStrong(&v19->_rawPreview, rawPreview);
+    objc_storeStrong(&v19->_appendedVideoURL, rL);
     v19->_fileIsSecurityScoped = [(NSURL *)v19->_fileURL startAccessingSecurityScopedResource];
   }
 

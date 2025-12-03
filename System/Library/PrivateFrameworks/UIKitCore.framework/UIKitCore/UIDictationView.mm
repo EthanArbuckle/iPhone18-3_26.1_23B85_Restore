@@ -9,14 +9,14 @@
 - (CGPoint)contentOffset;
 - (CGPoint)positionForShow;
 - (CGSize)currentScreenSize;
-- (UIDictationView)initWithFrame:(CGRect)a3;
-- (float)audioLevelForFlamesView:(id)a3;
+- (UIDictationView)initWithFrame:(CGRect)frame;
+- (float)audioLevelForFlamesView:(id)view;
 - (id)endpointButton;
 - (void)applicationEnteredBackground;
 - (void)dealloc;
 - (void)endpointButtonPressed;
 - (void)finishReturnToKeyboard;
-- (void)keyboardDidShow:(id)a3;
+- (void)keyboardDidShow:(id)show;
 - (void)prepareForReturnToKeyboard;
 - (void)removeBackgroundView;
 - (void)returnToKeyboard;
@@ -45,9 +45,9 @@
     if (!v2)
     {
       v18 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-      v19 = [v18 scene];
-      v20 = [v19 screen];
-      [v20 bounds];
+      scene = [v18 scene];
+      screen = [scene screen];
+      [screen bounds];
       v5 = v21;
       v23 = v22;
 
@@ -58,12 +58,12 @@
     if (v2 == 1)
     {
       v10 = +[UIKeyboardPreferencesController sharedPreferencesController];
-      v11 = [v10 preferencesActions];
-      [v11 rivenSizeFactor:118.0];
+      preferencesActions = [v10 preferencesActions];
+      [preferencesActions rivenSizeFactor:118.0];
       v5 = v12;
       v13 = +[UIKeyboardPreferencesController sharedPreferencesController];
-      v14 = [v13 preferencesActions];
-      [v14 rivenSizeFactor:118.0];
+      preferencesActions2 = [v13 preferencesActions];
+      [preferencesActions2 rivenSizeFactor:118.0];
       v7 = v15;
 
       goto LABEL_6;
@@ -79,8 +79,8 @@ LABEL_10:
   {
     if (v2 == 6)
     {
-      v16 = [objc_opt_self() mainScreen];
-      [v16 bounds];
+      mainScreen = [objc_opt_self() mainScreen];
+      [mainScreen bounds];
       v5 = v17;
 
       v7 = 100.0;
@@ -111,11 +111,11 @@ LABEL_6:
   if (MGGetBoolAnswer())
   {
     v3 = objc_opt_class();
-    v4 = [a1 dictationViewClass];
+    dictationViewClass = [self dictationViewClass];
     v5 = gDictationViewSharedInstance;
     if (gDictationViewSharedInstance)
     {
-      v6 = v3 == v4;
+      v6 = v3 == dictationViewClass;
     }
 
     else
@@ -125,15 +125,15 @@ LABEL_6:
 
     if (!v6)
     {
-      v7 = v4;
-      v8 = [a1 dictationViewClass];
-      if (!v8)
+      v7 = dictationViewClass;
+      dictationViewClass2 = [self dictationViewClass];
+      if (!dictationViewClass2)
       {
         goto LABEL_12;
       }
 
-      v9 = v8;
-      [(objc_class *)v8 layoutSize];
+      v9 = dictationViewClass2;
+      [(objc_class *)dictationViewClass2 layoutSize];
       v11 = v10;
       v13 = v12;
       if (v3 != v7)
@@ -148,17 +148,17 @@ LABEL_6:
       v5 = gDictationViewSharedInstance;
     }
 
-    v8 = v5;
+    dictationViewClass2 = v5;
   }
 
   else
   {
-    v8 = 0;
+    dictationViewClass2 = 0;
   }
 
 LABEL_12:
 
-  return v8;
+  return dictationViewClass2;
 }
 
 - (id)endpointButton
@@ -171,9 +171,9 @@ LABEL_12:
   else
   {
     v4 = +[UIKeyboard activeKeyboard];
-    v5 = [v4 interfaceOrientation];
+    interfaceOrientation = [v4 interfaceOrientation];
     v6 = 3;
-    if ((v5 - 1) < 2)
+    if ((interfaceOrientation - 1) < 2)
     {
       v6 = 2;
     }
@@ -186,8 +186,8 @@ LABEL_12:
 
 - (CGSize)currentScreenSize
 {
-  v2 = [objc_opt_self() mainScreen];
-  [v2 _referenceBounds];
+  mainScreen = [objc_opt_self() mainScreen];
+  [mainScreen _referenceBounds];
   v4 = v3;
   v6 = v5;
 
@@ -261,7 +261,7 @@ LABEL_12:
   return result;
 }
 
-- (void)keyboardDidShow:(id)a3
+- (void)keyboardDidShow:(id)show
 {
   if (self->_keyboardInTransition)
   {
@@ -275,8 +275,8 @@ LABEL_12:
 - (void)prepareForReturnToKeyboard
 {
   v3 = +[UIKeyboardImpl activeInstance];
-  v2 = [v3 textInteractionAssistant];
-  [v2 selectionChanged];
+  textInteractionAssistant = [v3 textInteractionAssistant];
+  [textInteractionAssistant selectionChanged];
 }
 
 - (void)finishReturnToKeyboard
@@ -292,14 +292,14 @@ LABEL_12:
       goto LABEL_6;
     }
 
-    v5 = [v4 _layout];
-    [v5 didEndTrackpadModeForServerSideDictation];
+    _layout = [v4 _layout];
+    [_layout didEndTrackpadModeForServerSideDictation];
   }
 
   else
   {
-    v5 = [v6 keyboardInputModeToReturn];
-    [v4 setKeyboardInputMode:v5 userInitiated:0];
+    _layout = [v6 keyboardInputModeToReturn];
+    [v4 setKeyboardInputMode:_layout userInitiated:0];
   }
 
 LABEL_6:
@@ -315,17 +315,17 @@ LABEL_6:
 
 - (BOOL)isShowing
 {
-  v2 = [(UIView *)self superview];
-  v3 = v2 != 0;
+  superview = [(UIView *)self superview];
+  v3 = superview != 0;
 
   return v3;
 }
 
-- (UIDictationView)initWithFrame:(CGRect)a3
+- (UIDictationView)initWithFrame:(CGRect)frame
 {
   v11.receiver = self;
   v11.super_class = UIDictationView;
-  v3 = [(UIView *)&v11 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v11 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -337,8 +337,8 @@ LABEL_6:
       background = v4->_background;
       v4->_background = v6;
 
-      v8 = [(UIKeyboardDicationBackground *)v4->_background gradient];
-      [v8 setDictationView:v4];
+      gradient = [(UIKeyboardDicationBackground *)v4->_background gradient];
+      [gradient setDictationView:v4];
 
       [(UIView *)v4->_background setNeedsDisplay];
       [(UIView *)v4 addSubview:v4->_background];
@@ -353,8 +353,8 @@ LABEL_6:
 - (void)removeBackgroundView
 {
   [(UIView *)self->_background removeFromSuperview];
-  v3 = [(UIKeyboardDicationBackground *)self->_background gradient];
-  [v3 setDictationView:0];
+  gradient = [(UIKeyboardDicationBackground *)self->_background gradient];
+  [gradient setDictationView:0];
 
   background = self->_background;
   self->_background = 0;
@@ -363,11 +363,11 @@ LABEL_6:
 - (void)dealloc
 {
   v6[2] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v6[0] = @"UIApplicationDidEnterBackgroundNotification";
   v6[1] = @"UIKeyboardDidShowNotification";
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:2];
-  [(NSNotificationCenter *)v3 _uiRemoveObserver:v4 names:?];
+  [(NSNotificationCenter *)defaultCenter _uiRemoveObserver:v4 names:?];
 
   [(UIDictationView *)self removeBackgroundView];
   v5.receiver = self;
@@ -393,15 +393,15 @@ LABEL_6:
 
 - (BOOL)visible
 {
-  v2 = [(UIView *)self window];
-  v3 = v2 != 0;
+  window = [(UIView *)self window];
+  v3 = window != 0;
 
   return v3;
 }
 
-- (float)audioLevelForFlamesView:(id)a3
+- (float)audioLevelForFlamesView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   if (self->_displayDelegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
     [(UIDictationViewDisplayDelegate *)self->_displayDelegate nextAudioLevel];

@@ -1,5 +1,5 @@
 @interface TITraceLogCandidateGroup
-+ (id)groupFromGroupString:(id)a3;
++ (id)groupFromGroupString:(id)string;
 - (NSArray)candidates;
 - (NSDictionary)dictionaryRepresentation;
 - (TITraceLogCandidateGroup)init;
@@ -12,8 +12,8 @@
   v32 = *MEMORY[0x1E69E9840];
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
   [v3 setObject:@"TITraceLogCandidateGroup" forKey:@"_sourceClass"];
-  v4 = [(TITraceLogCandidateGroup *)self sequenceString];
-  [v3 setObject:v4 forKey:@"sequenceString"];
+  sequenceString = [(TITraceLogCandidateGroup *)self sequenceString];
+  [v3 setObject:sequenceString forKey:@"sequenceString"];
 
   v5 = MEMORY[0x1E696AD98];
   [(TITraceLogCandidateGroup *)self probability];
@@ -40,24 +40,24 @@
   v14 = [v13 numberWithDouble:?];
   [v3 setObject:v14 forKey:@"omegaGeometryScore"];
 
-  v15 = [(TITraceLogCandidateGroup *)self omegaFactorsString];
+  omegaFactorsString = [(TITraceLogCandidateGroup *)self omegaFactorsString];
 
-  if (v15)
+  if (omegaFactorsString)
   {
-    v16 = [(TITraceLogCandidateGroup *)self omegaFactorsString];
-    [v3 setObject:v16 forKey:@"omegaFactorsString"];
+    omegaFactorsString2 = [(TITraceLogCandidateGroup *)self omegaFactorsString];
+    [v3 setObject:omegaFactorsString2 forKey:@"omegaFactorsString"];
   }
 
   v17 = MEMORY[0x1E695DF70];
-  v18 = [(TITraceLogCandidateGroup *)self candidates];
-  v19 = [v17 arrayWithCapacity:{objc_msgSend(v18, "count")}];
+  candidates = [(TITraceLogCandidateGroup *)self candidates];
+  v19 = [v17 arrayWithCapacity:{objc_msgSend(candidates, "count")}];
 
   v29 = 0u;
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v20 = [(TITraceLogCandidateGroup *)self candidates];
-  v21 = [v20 countByEnumeratingWithState:&v27 objects:v31 count:16];
+  candidates2 = [(TITraceLogCandidateGroup *)self candidates];
+  v21 = [candidates2 countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v21)
   {
     v22 = v21;
@@ -68,14 +68,14 @@
       {
         if (*v28 != v23)
         {
-          objc_enumerationMutation(v20);
+          objc_enumerationMutation(candidates2);
         }
 
-        v25 = [*(*(&v27 + 1) + 8 * i) dictionaryRepresentation];
-        [v19 addObject:v25];
+        dictionaryRepresentation = [*(*(&v27 + 1) + 8 * i) dictionaryRepresentation];
+        [v19 addObject:dictionaryRepresentation];
       }
 
-      v22 = [v20 countByEnumeratingWithState:&v27 objects:v31 count:16];
+      v22 = [candidates2 countByEnumeratingWithState:&v27 objects:v31 count:16];
     }
 
     while (v22);
@@ -108,21 +108,21 @@
   return v2;
 }
 
-+ (id)groupFromGroupString:(id)a3
++ (id)groupFromGroupString:(id)string
 {
-  v54 = a3;
-  v3 = [objc_alloc(MEMORY[0x1E696AE88]) initWithString:v54];
+  stringCopy = string;
+  v3 = [objc_alloc(MEMORY[0x1E696AE88]) initWithString:stringCopy];
   v56 = 0;
   [v3 scanUpToString:@"\n" intoString:&v56];
   v4 = v56;
   v53 = [MEMORY[0x1E696AE70] regularExpressionWithPattern:@"\\[(.+)\\] ln\\(omega\\) (.+) = \\[(.+)\\] .+" options:0 error:0];
   v52 = [v53 matchesInString:v4 options:0 range:{0, objc_msgSend(v4, "length")}];
-  v5 = [v52 firstObject];
-  v6 = [v5 rangeAtIndex:1];
+  firstObject = [v52 firstObject];
+  v6 = [firstObject rangeAtIndex:1];
   v8 = [v4 substringWithRange:{v6, v7}];
-  v9 = [v5 rangeAtIndex:2];
+  v9 = [firstObject rangeAtIndex:2];
   v11 = [v4 substringWithRange:{v9, v10}];
-  v12 = [v5 rangeAtIndex:3];
+  v12 = [firstObject rangeAtIndex:3];
   v14 = [v4 substringWithRange:{v12, v13}];
   v15 = objc_alloc_init(TITraceLogCandidateGroup);
   v51 = v8;
@@ -133,14 +133,14 @@
   v16 = v14;
   v17 = [MEMORY[0x1E696AE70] regularExpressionWithPattern:@"^(-?[0-9]+\\.[0-9]+)\\*\\(W (-?[0-9]+\\.[0-9]+)+ \\+ T (-?[0-9]+\\.[0-9]+)\\) \\+ G (-?[0-9]+\\.[0-9]+)$" options:0 error:0];
   v18 = [v17 matchesInString:v16 options:0 range:{0, objc_msgSend(v16, "length")}];
-  v19 = [v18 firstObject];
-  v20 = v19;
+  firstObject2 = [v18 firstObject];
+  v20 = firstObject2;
   v21 = 0.0;
-  if (v18 && [v19 numberOfRanges] == 5)
+  if (v18 && [firstObject2 numberOfRanges] == 5)
   {
     v22 = [v20 rangeAtIndex:1];
     [v16 substringWithRange:{v22, v23}];
-    v24 = v49 = v5;
+    v24 = v49 = firstObject;
     v25 = [v20 rangeAtIndex:2];
     [v16 substringWithRange:{v25, v26}];
     v27 = v48 = v17;
@@ -160,7 +160,7 @@
     v41 = 1;
     v17 = v48;
 
-    v5 = v49;
+    firstObject = v49;
   }
 
   else

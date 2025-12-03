@@ -7,9 +7,9 @@
 - (double)msvl_timeValue
 {
   v12 = *MEMORY[0x1E69E9840];
-  v2 = [a1 componentsSeparatedByString:@":"];
-  v3 = [v2 lastObject];
-  [v3 doubleValue];
+  v2 = [self componentsSeparatedByString:@":"];
+  lastObject = [v2 lastObject];
+  [lastObject doubleValue];
   v5 = v4;
 
   if ([v2 count] >= 2)
@@ -23,7 +23,7 @@
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
         v10 = 138412290;
-        v11 = a1;
+        selfCopy = self;
         _os_log_impl(&dword_1AC81F000, v7, OS_LOG_TYPE_DEFAULT, "Warning: time format should specify [minutes:]seconds only; other components are ignored: %@", &v10, 0xCu);
       }
     }

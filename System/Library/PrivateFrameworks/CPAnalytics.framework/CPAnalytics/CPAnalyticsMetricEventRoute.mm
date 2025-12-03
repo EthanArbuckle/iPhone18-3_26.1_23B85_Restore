@@ -1,28 +1,28 @@
 @interface CPAnalyticsMetricEventRoute
-- (CPAnalyticsMetricEventRoute)initWithConfig:(id)a3;
+- (CPAnalyticsMetricEventRoute)initWithConfig:(id)config;
 @end
 
 @implementation CPAnalyticsMetricEventRoute
 
-- (CPAnalyticsMetricEventRoute)initWithConfig:(id)a3
+- (CPAnalyticsMetricEventRoute)initWithConfig:(id)config
 {
-  v4 = a3;
+  configCopy = config;
   v13.receiver = self;
   v13.super_class = CPAnalyticsMetricEventRoute;
   v5 = [(CPAnalyticsMetricEventRoute *)&v13 init];
   if (v5)
   {
-    v6 = [v4 valueForKey:@"destination"];
+    v6 = [configCopy valueForKey:@"destination"];
     destination = v5->_destination;
     v5->_destination = v6;
 
-    v8 = [v4 valueForKey:@"destinationEventKey"];
+    v8 = [configCopy valueForKey:@"destinationEventKey"];
     if ([v8 length])
     {
       objc_storeStrong(&v5->_destinationEventKey, v8);
     }
 
-    v9 = [v4 objectForKey:@"includeProperties"];
+    v9 = [configCopy objectForKey:@"includeProperties"];
     propertiesToInclude = v5->_propertiesToInclude;
     v5->_propertiesToInclude = v9;
 
@@ -31,7 +31,7 @@
       v5->_propertiesToInclude = MEMORY[0x277CBEBF8];
     }
 
-    v11 = [v4 objectForKey:@"includeEventProperties"];
+    v11 = [configCopy objectForKey:@"includeEventProperties"];
     v5->_includeEventProperties = [v11 BOOLValue];
   }
 

@@ -1,53 +1,53 @@
 @interface CHSGaugeParameters
-- (BOOL)isEqual:(id)a3;
-- (CHSGaugeParameters)initWithBSXPCCoder:(id)a3;
-- (CHSGaugeParameters)initWithLeadingText:(id)a3 trailingText:(id)a4 style:(unint64_t)a5 gradientColors:(id)a6 gradientLocations:(id)a7 fraction:(double)a8;
+- (BOOL)isEqual:(id)equal;
+- (CHSGaugeParameters)initWithBSXPCCoder:(id)coder;
+- (CHSGaugeParameters)initWithLeadingText:(id)text trailingText:(id)trailingText style:(unint64_t)style gradientColors:(id)colors gradientLocations:(id)locations fraction:(double)fraction;
 - (unint64_t)hash;
-- (void)encodeWithBSXPCCoder:(id)a3;
+- (void)encodeWithBSXPCCoder:(id)coder;
 @end
 
 @implementation CHSGaugeParameters
 
-- (CHSGaugeParameters)initWithLeadingText:(id)a3 trailingText:(id)a4 style:(unint64_t)a5 gradientColors:(id)a6 gradientLocations:(id)a7 fraction:(double)a8
+- (CHSGaugeParameters)initWithLeadingText:(id)text trailingText:(id)trailingText style:(unint64_t)style gradientColors:(id)colors gradientLocations:(id)locations fraction:(double)fraction
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a6;
-  v17 = a7;
+  textCopy = text;
+  trailingTextCopy = trailingText;
+  colorsCopy = colors;
+  locationsCopy = locations;
   v28.receiver = self;
   v28.super_class = CHSGaugeParameters;
   v18 = [(CHSGaugeParameters *)&v28 init];
   if (v18)
   {
-    v19 = [v14 copy];
+    v19 = [textCopy copy];
     leadingText = v18->_leadingText;
     v18->_leadingText = v19;
 
-    v21 = [v15 copy];
+    v21 = [trailingTextCopy copy];
     trailingText = v18->_trailingText;
     v18->_trailingText = v21;
 
-    v18->_style = a5;
-    v23 = [v16 copy];
+    v18->_style = style;
+    v23 = [colorsCopy copy];
     gradientColors = v18->_gradientColors;
     v18->_gradientColors = v23;
 
-    v25 = [v17 copy];
+    v25 = [locationsCopy copy];
     gradientLocations = v18->_gradientLocations;
     v18->_gradientLocations = v25;
 
-    v18->_fraction = a8;
+    v18->_fraction = fraction;
   }
 
   return v18;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E698E6A0] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
+  equalCopy = equal;
+  v5 = [MEMORY[0x1E698E6A0] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
   v6 = objc_opt_class();
-  v7 = v4;
+  v7 = equalCopy;
   if (v6)
   {
     if (objc_opt_isKindOfClass())
@@ -123,57 +123,57 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E698E6B8] builder];
-  v4 = [v3 appendObject:self->_leadingText];
-  v5 = [v3 appendObject:self->_trailingText];
-  v6 = [v3 appendUnsignedInteger:self->_style];
-  v7 = [v3 appendObject:self->_gradientColors];
-  v8 = [v3 appendObject:self->_gradientLocations];
-  v9 = [v3 appendDouble:self->_fraction];
-  v10 = [v3 hash];
+  builder = [MEMORY[0x1E698E6B8] builder];
+  v4 = [builder appendObject:self->_leadingText];
+  v5 = [builder appendObject:self->_trailingText];
+  v6 = [builder appendUnsignedInteger:self->_style];
+  v7 = [builder appendObject:self->_gradientColors];
+  v8 = [builder appendObject:self->_gradientLocations];
+  v9 = [builder appendDouble:self->_fraction];
+  v10 = [builder hash];
 
   return v10;
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeObject:self->_leadingText forKey:@"leadingText"];
-  [v4 encodeObject:self->_trailingText forKey:@"trailingText"];
-  [v4 encodeUInt64:self->_style forKey:@"style"];
-  [v4 encodeCollection:self->_gradientColors forKey:@"gradientColors"];
-  [v4 encodeCollection:self->_gradientLocations forKey:@"gradientLocations"];
-  [v4 encodeDouble:@"fraction" forKey:self->_fraction];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_leadingText forKey:@"leadingText"];
+  [coderCopy encodeObject:self->_trailingText forKey:@"trailingText"];
+  [coderCopy encodeUInt64:self->_style forKey:@"style"];
+  [coderCopy encodeCollection:self->_gradientColors forKey:@"gradientColors"];
+  [coderCopy encodeCollection:self->_gradientLocations forKey:@"gradientLocations"];
+  [coderCopy encodeDouble:@"fraction" forKey:self->_fraction];
 }
 
-- (CHSGaugeParameters)initWithBSXPCCoder:(id)a3
+- (CHSGaugeParameters)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v18.receiver = self;
   v18.super_class = CHSGaugeParameters;
   v5 = [(CHSGaugeParameters *)&v18 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"leadingText"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"leadingText"];
     leadingText = v5->_leadingText;
     v5->_leadingText = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"trailingText"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"trailingText"];
     trailingText = v5->_trailingText;
     v5->_trailingText = v8;
 
-    v5->_style = [v4 decodeUInt64ForKey:@"style"];
+    v5->_style = [coderCopy decodeUInt64ForKey:@"style"];
     v10 = objc_opt_class();
-    v11 = [v4 decodeCollectionOfClass:v10 containingClass:objc_opt_class() forKey:@"gradientColors"];
+    v11 = [coderCopy decodeCollectionOfClass:v10 containingClass:objc_opt_class() forKey:@"gradientColors"];
     gradientColors = v5->_gradientColors;
     v5->_gradientColors = v11;
 
     v13 = objc_opt_class();
-    v14 = [v4 decodeCollectionOfClass:v13 containingClass:objc_opt_class() forKey:@"gradientLocations"];
+    v14 = [coderCopy decodeCollectionOfClass:v13 containingClass:objc_opt_class() forKey:@"gradientLocations"];
     gradientLocations = v5->_gradientLocations;
     v5->_gradientLocations = v14;
 
-    [v4 decodeDoubleForKey:@"fraction"];
+    [coderCopy decodeDoubleForKey:@"fraction"];
     v5->_fraction = v16;
   }
 

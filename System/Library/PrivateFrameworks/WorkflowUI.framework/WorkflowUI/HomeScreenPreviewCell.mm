@@ -1,21 +1,21 @@
 @interface HomeScreenPreviewCell
 - (void)layoutSubviews;
-- (void)textDidChange:(id)a3;
+- (void)textDidChange:(id)change;
 @end
 
 @implementation HomeScreenPreviewCell
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_2747BE540();
 }
 
-- (void)textDidChange:(id)a3
+- (void)textDidChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
-  sub_2747BE5F0(v4);
+  changeCopy = change;
+  selfCopy = self;
+  sub_2747BE5F0(changeCopy);
 }
 
 @end

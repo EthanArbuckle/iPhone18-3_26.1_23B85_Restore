@@ -1,29 +1,29 @@
 @interface BKLibraryAudiobookProgress
-- (BKLibraryAudiobookProgress)initWithKind:(id)a3 instance:(id)a4 parameters:(id)a5;
+- (BKLibraryAudiobookProgress)initWithKind:(id)kind instance:(id)instance parameters:(id)parameters;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)registerProgressObserver:(id)a3;
-- (void)setFormattedProgress:(id)a3;
-- (void)setProgress:(id)a3;
-- (void)unregisterProgressObserver:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)registerProgressObserver:(id)observer;
+- (void)setFormattedProgress:(id)progress;
+- (void)setProgress:(id)progress;
+- (void)unregisterProgressObserver:(id)observer;
 @end
 
 @implementation BKLibraryAudiobookProgress
 
-- (BKLibraryAudiobookProgress)initWithKind:(id)a3 instance:(id)a4 parameters:(id)a5
+- (BKLibraryAudiobookProgress)initWithKind:(id)kind instance:(id)instance parameters:(id)parameters
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  kindCopy = kind;
+  instanceCopy = instance;
+  parametersCopy = parameters;
   v29.receiver = self;
   v29.super_class = BKLibraryAudiobookProgress;
   v12 = [(BKLibraryAudiobookProgress *)&v29 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_kind, a3);
-    objc_storeStrong(&v13->_instance, a4);
-    objc_storeStrong(&v13->_parameters, a5);
+    objc_storeStrong(&v12->_kind, kind);
+    objc_storeStrong(&v13->_instance, instance);
+    objc_storeStrong(&v13->_parameters, parameters);
     v14 = +[NSHashTable weakObjectsHashTable];
     observers = v13->_observers;
     v13->_observers = v14;
@@ -37,11 +37,11 @@
     objc_opt_class();
     v19 = BCGetUnsafeAppDelegateReference();
     v20 = BUDynamicCast();
-    v21 = [v20 sceneManager];
+    sceneManager = [v20 sceneManager];
 
-    v22 = [v21 minifiedPresenter];
-    v23 = [v22 minifiedPresenterAssetCurrentPresenterForAssetID:v18];
-    v24 = [v23 minifiedAssetStatus];
+    minifiedPresenter = [sceneManager minifiedPresenter];
+    v23 = [minifiedPresenter minifiedPresenterAssetCurrentPresenterForAssetID:v18];
+    minifiedAssetStatus = [v23 minifiedAssetStatus];
     objc_opt_class();
     v25 = BUClassAndProtocolCast();
 
@@ -98,17 +98,17 @@ LABEL_6:
   [(BKLibraryAudiobookProgress *)&v5 dealloc];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (off_100AD1088 != a6 && off_100AD1090 != a6)
+  if (off_100AD1088 != context && off_100AD1090 != context)
   {
     v10.receiver = self;
     v10.super_class = BKLibraryAudiobookProgress;
-    [(BKLibraryAudiobookProgress *)&v10 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(BKLibraryAudiobookProgress *)&v10 observeValueForKeyPath:path ofObject:object change:change context:?];
     return;
   }
 
-  if ([(NSString *)self->_kind isEqualToString:@"chapterProgress", a4, a5])
+  if ([(NSString *)self->_kind isEqualToString:@"chapterProgress", object, change])
   {
     [(AEAssetAudiobookStatus *)self->_audiobookStatus assetAudiobookStatusTrackProgress];
     v9 = [NSNumber numberWithDouble:?];
@@ -128,9 +128,9 @@ LABEL_6:
   }
 }
 
-- (void)setFormattedProgress:(id)a3
+- (void)setFormattedProgress:(id)progress
 {
-  v5 = a3;
+  progressCopy = progress;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -145,7 +145,7 @@ LABEL_6:
   block[4] = self;
   block[5] = &v16;
   dispatch_sync(access, block);
-  objc_storeStrong(&self->_formattedProgress, a3);
+  objc_storeStrong(&self->_formattedProgress, progress);
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
@@ -179,9 +179,9 @@ LABEL_6:
   _Block_object_dispose(&v16, 8);
 }
 
-- (void)setProgress:(id)a3
+- (void)setProgress:(id)progress
 {
-  v5 = a3;
+  progressCopy = progress;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -196,7 +196,7 @@ LABEL_6:
   block[4] = self;
   block[5] = &v16;
   dispatch_sync(access, block);
-  objc_storeStrong(&self->_progress, a3);
+  objc_storeStrong(&self->_progress, progress);
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
@@ -230,31 +230,31 @@ LABEL_6:
   _Block_object_dispose(&v16, 8);
 }
 
-- (void)registerProgressObserver:(id)a3
+- (void)registerProgressObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   access = self->_access;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1001DFA8C;
   v7[3] = &unk_100A03440;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_sync(access, v7);
 }
 
-- (void)unregisterProgressObserver:(id)a3
+- (void)unregisterProgressObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   access = self->_access;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1001DFB30;
   v7[3] = &unk_100A03440;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_sync(access, v7);
 }
 

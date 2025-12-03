@@ -1,30 +1,30 @@
 @interface _UIViewControllerTransitionCoordinatorContextDescription
-+ (id)descriptionForTransitionCoordinatorContext:(id)a3;
++ (id)descriptionForTransitionCoordinatorContext:(id)context;
 - (CGAffineTransform)targetTransform;
-- (_UIViewControllerTransitionCoordinatorContextDescription)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setTargetTransform:(CGAffineTransform *)a3;
+- (_UIViewControllerTransitionCoordinatorContextDescription)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
+- (void)setTargetTransform:(CGAffineTransform *)transform;
 @end
 
 @implementation _UIViewControllerTransitionCoordinatorContextDescription
 
-+ (id)descriptionForTransitionCoordinatorContext:(id)a3
++ (id)descriptionForTransitionCoordinatorContext:(id)context
 {
-  v4 = a3;
-  v5 = objc_alloc_init(a1);
-  [v5 setAnimated:{objc_msgSend(v4, "isAnimated")}];
-  [v5 setInteractive:{objc_msgSend(v4, "isInteractive")}];
-  [v5 setCancelled:{objc_msgSend(v4, "isCancelled")}];
-  [v4 transitionDuration];
+  contextCopy = context;
+  v5 = objc_alloc_init(self);
+  [v5 setAnimated:{objc_msgSend(contextCopy, "isAnimated")}];
+  [v5 setInteractive:{objc_msgSend(contextCopy, "isInteractive")}];
+  [v5 setCancelled:{objc_msgSend(contextCopy, "isCancelled")}];
+  [contextCopy transitionDuration];
   [v5 setTransitionDuration:?];
-  [v4 percentComplete];
+  [contextCopy percentComplete];
   [v5 setPercentComplete:?];
-  [v4 completionVelocity];
+  [contextCopy completionVelocity];
   [v5 setCompletionVelocity:?];
-  [v5 setCompletionCurve:{objc_msgSend(v4, "completionCurve")}];
-  if (v4)
+  [v5 setCompletionCurve:{objc_msgSend(contextCopy, "completionCurve")}];
+  if (contextCopy)
   {
-    [v4 targetTransform];
+    [contextCopy targetTransform];
   }
 
   else
@@ -44,51 +44,51 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeBool:-[_UIViewControllerTransitionCoordinatorContextDescription isAnimated](self forKey:{"isAnimated"), @"_UIViewControllerTransitionCoordinatorDescriptionIsAnimatedKey"}];
-  [v4 encodeBool:-[_UIViewControllerTransitionCoordinatorContextDescription isInteractive](self forKey:{"isInteractive"), @"_UIViewControllerTransitionCoordinatorDescriptionIsInteractiveKey"}];
-  [v4 encodeBool:-[_UIViewControllerTransitionCoordinatorContextDescription isCancelled](self forKey:{"isCancelled"), @"_UIViewControllerTransitionCoordinatorDescriptionIsCancelledKey"}];
+  coderCopy = coder;
+  [coderCopy encodeBool:-[_UIViewControllerTransitionCoordinatorContextDescription isAnimated](self forKey:{"isAnimated"), @"_UIViewControllerTransitionCoordinatorDescriptionIsAnimatedKey"}];
+  [coderCopy encodeBool:-[_UIViewControllerTransitionCoordinatorContextDescription isInteractive](self forKey:{"isInteractive"), @"_UIViewControllerTransitionCoordinatorDescriptionIsInteractiveKey"}];
+  [coderCopy encodeBool:-[_UIViewControllerTransitionCoordinatorContextDescription isCancelled](self forKey:{"isCancelled"), @"_UIViewControllerTransitionCoordinatorDescriptionIsCancelledKey"}];
   [(_UIViewControllerTransitionCoordinatorContextDescription *)self transitionDuration];
-  [v4 encodeDouble:@"_UIViewControllerTransitionCoordinatorDescriptionTransitionDurationKey" forKey:?];
+  [coderCopy encodeDouble:@"_UIViewControllerTransitionCoordinatorDescriptionTransitionDurationKey" forKey:?];
   [(_UIViewControllerTransitionCoordinatorContextDescription *)self percentComplete];
-  [v4 encodeDouble:@"_UIViewControllerTransitionCoordinatorDescriptionPercentCompleteKey" forKey:?];
+  [coderCopy encodeDouble:@"_UIViewControllerTransitionCoordinatorDescriptionPercentCompleteKey" forKey:?];
   [(_UIViewControllerTransitionCoordinatorContextDescription *)self completionVelocity];
-  [v4 encodeDouble:@"_UIViewControllerTransitionCoordinatorDescriptionCompletionVelocityKey" forKey:?];
-  [v4 encodeInteger:-[_UIViewControllerTransitionCoordinatorContextDescription completionCurve](self forKey:{"completionCurve"), @"_UIViewControllerTransitionCoordinatorDescriptionCompletionCurveKey"}];
+  [coderCopy encodeDouble:@"_UIViewControllerTransitionCoordinatorDescriptionCompletionVelocityKey" forKey:?];
+  [coderCopy encodeInteger:-[_UIViewControllerTransitionCoordinatorContextDescription completionCurve](self forKey:{"completionCurve"), @"_UIViewControllerTransitionCoordinatorDescriptionCompletionCurveKey"}];
   [(_UIViewControllerTransitionCoordinatorContextDescription *)self targetTransform];
   v5 = NSStringFromCGAffineTransform(&v6);
-  [v4 encodeObject:v5 forKey:@"_UIViewControllerTransitionCoordinatorDescriptionTargetTransformKey"];
+  [coderCopy encodeObject:v5 forKey:@"_UIViewControllerTransitionCoordinatorDescriptionTargetTransformKey"];
 
-  [v4 encodeInteger:-[_UIViewControllerTransitionCoordinatorContextDescription toOrientation](self forKey:{"toOrientation"), @"_UIViewControllerTransitionCoordinatorDescriptionToOrientationKey"}];
-  [v4 encodeInteger:-[_UIViewControllerTransitionCoordinatorContextDescription fromOrientation](self forKey:{"fromOrientation"), @"_UIViewControllerTransitionCoordinatorDescriptionFromOrientationKey"}];
+  [coderCopy encodeInteger:-[_UIViewControllerTransitionCoordinatorContextDescription toOrientation](self forKey:{"toOrientation"), @"_UIViewControllerTransitionCoordinatorDescriptionToOrientationKey"}];
+  [coderCopy encodeInteger:-[_UIViewControllerTransitionCoordinatorContextDescription fromOrientation](self forKey:{"fromOrientation"), @"_UIViewControllerTransitionCoordinatorDescriptionFromOrientationKey"}];
 }
 
-- (_UIViewControllerTransitionCoordinatorContextDescription)initWithCoder:(id)a3
+- (_UIViewControllerTransitionCoordinatorContextDescription)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = _UIViewControllerTransitionCoordinatorContextDescription;
   v5 = [(_UIViewControllerTransitionCoordinatorContextDescription *)&v10 init];
   if (v5)
   {
-    -[_UIViewControllerTransitionCoordinatorContextDescription setAnimated:](v5, "setAnimated:", [v4 decodeBoolForKey:@"_UIViewControllerTransitionCoordinatorDescriptionIsAnimatedKey"]);
-    -[_UIViewControllerTransitionCoordinatorContextDescription setInteractive:](v5, "setInteractive:", [v4 decodeBoolForKey:@"_UIViewControllerTransitionCoordinatorDescriptionIsInteractiveKey"]);
-    -[_UIViewControllerTransitionCoordinatorContextDescription setCancelled:](v5, "setCancelled:", [v4 decodeBoolForKey:@"_UIViewControllerTransitionCoordinatorDescriptionIsCancelledKey"]);
-    [v4 decodeDoubleForKey:@"_UIViewControllerTransitionCoordinatorDescriptionTransitionDurationKey"];
+    -[_UIViewControllerTransitionCoordinatorContextDescription setAnimated:](v5, "setAnimated:", [coderCopy decodeBoolForKey:@"_UIViewControllerTransitionCoordinatorDescriptionIsAnimatedKey"]);
+    -[_UIViewControllerTransitionCoordinatorContextDescription setInteractive:](v5, "setInteractive:", [coderCopy decodeBoolForKey:@"_UIViewControllerTransitionCoordinatorDescriptionIsInteractiveKey"]);
+    -[_UIViewControllerTransitionCoordinatorContextDescription setCancelled:](v5, "setCancelled:", [coderCopy decodeBoolForKey:@"_UIViewControllerTransitionCoordinatorDescriptionIsCancelledKey"]);
+    [coderCopy decodeDoubleForKey:@"_UIViewControllerTransitionCoordinatorDescriptionTransitionDurationKey"];
     [(_UIViewControllerTransitionCoordinatorContextDescription *)v5 setTransitionDuration:?];
-    [v4 decodeDoubleForKey:@"_UIViewControllerTransitionCoordinatorDescriptionPercentCompleteKey"];
+    [coderCopy decodeDoubleForKey:@"_UIViewControllerTransitionCoordinatorDescriptionPercentCompleteKey"];
     [(_UIViewControllerTransitionCoordinatorContextDescription *)v5 setPercentComplete:?];
-    [v4 decodeDoubleForKey:@"_UIViewControllerTransitionCoordinatorDescriptionCompletionVelocityKey"];
+    [coderCopy decodeDoubleForKey:@"_UIViewControllerTransitionCoordinatorDescriptionCompletionVelocityKey"];
     [(_UIViewControllerTransitionCoordinatorContextDescription *)v5 setCompletionVelocity:?];
-    -[_UIViewControllerTransitionCoordinatorContextDescription setCompletionCurve:](v5, "setCompletionCurve:", [v4 decodeIntegerForKey:@"_UIViewControllerTransitionCoordinatorDescriptionCompletionCurveKey"]);
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_UIViewControllerTransitionCoordinatorDescriptionTargetTransformKey"];
+    -[_UIViewControllerTransitionCoordinatorContextDescription setCompletionCurve:](v5, "setCompletionCurve:", [coderCopy decodeIntegerForKey:@"_UIViewControllerTransitionCoordinatorDescriptionCompletionCurveKey"]);
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_UIViewControllerTransitionCoordinatorDescriptionTargetTransformKey"];
     CGAffineTransformFromString(&v9, v6);
     [(_UIViewControllerTransitionCoordinatorContextDescription *)v5 setTargetTransform:&v9];
 
-    -[_UIViewControllerTransitionCoordinatorContextDescription setToOrientation:](v5, "setToOrientation:", [v4 decodeIntegerForKey:@"_UIViewControllerTransitionCoordinatorDescriptionToOrientationKey"]);
-    -[_UIViewControllerTransitionCoordinatorContextDescription setFromOrientation:](v5, "setFromOrientation:", [v4 decodeIntegerForKey:@"_UIViewControllerTransitionCoordinatorDescriptionFromOrientationKey"]);
+    -[_UIViewControllerTransitionCoordinatorContextDescription setToOrientation:](v5, "setToOrientation:", [coderCopy decodeIntegerForKey:@"_UIViewControllerTransitionCoordinatorDescriptionToOrientationKey"]);
+    -[_UIViewControllerTransitionCoordinatorContextDescription setFromOrientation:](v5, "setFromOrientation:", [coderCopy decodeIntegerForKey:@"_UIViewControllerTransitionCoordinatorDescriptionFromOrientationKey"]);
     v7 = v5;
   }
 
@@ -104,11 +104,11 @@
   return self;
 }
 
-- (void)setTargetTransform:(CGAffineTransform *)a3
+- (void)setTargetTransform:(CGAffineTransform *)transform
 {
-  v3 = *&a3->a;
-  v4 = *&a3->tx;
-  *&self->_targetTransform.c = *&a3->c;
+  v3 = *&transform->a;
+  v4 = *&transform->tx;
+  *&self->_targetTransform.c = *&transform->c;
   *&self->_targetTransform.tx = v4;
   *&self->_targetTransform.a = v3;
 }

@@ -1,16 +1,16 @@
 @interface MUPlaceReviewPlatterViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation MUPlaceReviewPlatterViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MUPlaceReviewPlatterView" hasInstanceVariable:@"_reviewTextView" withType:"UIView<MULabelViewProtocol>"];
-  [v3 validateClass:@"MUPlaceReviewPlatterView" hasInstanceVariable:@"_userLabel" withType:"UIView<MULabelViewProtocol>"];
-  [v3 validateClass:@"MUPlaceReviewPlatterView" hasInstanceVariable:@"_viewModel" withType:"MUPlaceReviewViewModel"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MUPlaceReviewPlatterView" hasInstanceVariable:@"_reviewTextView" withType:"UIView<MULabelViewProtocol>"];
+  [validationsCopy validateClass:@"MUPlaceReviewPlatterView" hasInstanceVariable:@"_userLabel" withType:"UIView<MULabelViewProtocol>"];
+  [validationsCopy validateClass:@"MUPlaceReviewPlatterView" hasInstanceVariable:@"_viewModel" withType:"MUPlaceReviewViewModel"];
 }
 
 - (id)accessibilityLabel

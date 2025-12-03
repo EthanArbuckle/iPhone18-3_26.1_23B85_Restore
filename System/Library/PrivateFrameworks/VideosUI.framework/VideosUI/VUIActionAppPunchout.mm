@@ -1,32 +1,32 @@
 @interface VUIActionAppPunchout
-- (VUIActionAppPunchout)initWithContextData:(id)a3 appContext:(id)a4;
+- (VUIActionAppPunchout)initWithContextData:(id)data appContext:(id)context;
 - (VUIAppContext)appContext;
-- (id)_addMusicAppMetricsToUrl:(id)a3;
-- (void)_openPunchoutURL:(id)a3;
-- (void)performWithTargetResponder:(id)a3 completionHandler:(id)a4;
+- (id)_addMusicAppMetricsToUrl:(id)url;
+- (void)_openPunchoutURL:(id)l;
+- (void)performWithTargetResponder:(id)responder completionHandler:(id)handler;
 @end
 
 @implementation VUIActionAppPunchout
 
-- (VUIActionAppPunchout)initWithContextData:(id)a3 appContext:(id)a4
+- (VUIActionAppPunchout)initWithContextData:(id)data appContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  contextCopy = context;
   v15.receiver = self;
   v15.super_class = VUIActionAppPunchout;
   v8 = [(VUIActionAppPunchout *)&v15 init];
-  if (v8 && ([v6 vui_URLForKey:@"openUrl"], v9 = objc_claimAutoreleasedReturnValue(), v9, v9))
+  if (v8 && ([dataCopy vui_URLForKey:@"openUrl"], v9 = objc_claimAutoreleasedReturnValue(), v9, v9))
   {
-    v10 = [v6 vui_URLForKey:@"openUrl"];
+    v10 = [dataCopy vui_URLForKey:@"openUrl"];
     punchoutURL = v8->_punchoutURL;
     v8->_punchoutURL = v10;
 
-    v12 = [v6 vui_dictionaryForKey:@"metrics"];
+    v12 = [dataCopy vui_dictionaryForKey:@"metrics"];
     metrics = v8->_metrics;
     v8->_metrics = v12;
 
-    v8->_isSensitiveURL = [v6 vui_BOOLForKey:@"isSensitiveUrl" defaultValue:0];
-    objc_storeWeak(&v8->_appContext, v7);
+    v8->_isSensitiveURL = [dataCopy vui_BOOLForKey:@"isSensitiveUrl" defaultValue:0];
+    objc_storeWeak(&v8->_appContext, contextCopy);
   }
 
   else
@@ -38,16 +38,16 @@
   return v8;
 }
 
-- (void)performWithTargetResponder:(id)a3 completionHandler:(id)a4
+- (void)performWithTargetResponder:(id)responder completionHandler:(id)handler
 {
   v14 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [(VUIActionAppPunchout *)self punchoutURL];
-  v7 = v6;
-  if (v6)
+  handlerCopy = handler;
+  punchoutURL = [(VUIActionAppPunchout *)self punchoutURL];
+  v7 = punchoutURL;
+  if (punchoutURL)
   {
-    v8 = [v6 absoluteString];
-    v9 = [v8 containsString:@"music.apple.com"];
+    absoluteString = [punchoutURL absoluteString];
+    v9 = [absoluteString containsString:@"music.apple.com"];
 
     if (v9)
     {
@@ -70,83 +70,83 @@
     [(VUIActionAppPunchout *)self _openPunchoutURL:v10];
   }
 
-  if (v5)
+  if (handlerCopy)
   {
-    v5[2](v5, v7 != 0);
+    handlerCopy[2](handlerCopy, v7 != 0);
   }
 }
 
-- (id)_addMusicAppMetricsToUrl:(id)a3
+- (id)_addMusicAppMetricsToUrl:(id)url
 {
-  v4 = a3;
+  urlCopy = url;
   v5 = objc_opt_new();
   v6 = +[VUIMetricsController sharedInstance];
-  v7 = [v6 lastRecordedPageEventData];
+  lastRecordedPageEventData = [v6 lastRecordedPageEventData];
 
-  if (v7)
+  if (lastRecordedPageEventData)
   {
-    v8 = [v7 pageId];
-    v9 = [v7 pageType];
-    v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_%@", v8, v9];
+    pageId = [lastRecordedPageEventData pageId];
+    pageType = [lastRecordedPageEventData pageType];
+    v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_%@", pageId, pageType];
     [v5 vui_setObjectIfNotNil:v10 forKey:@"tvAppPage"];
   }
 
-  v11 = [(VUIActionAppPunchout *)self metrics];
-  if (v11)
+  metrics = [(VUIActionAppPunchout *)self metrics];
+  if (metrics)
   {
-    [v5 addEntriesFromDictionary:v11];
+    [v5 addEntriesFromDictionary:metrics];
   }
 
   if ([v5 count])
   {
-    v12 = [v4 vui_URLByAddingQueryParamsDictionary:v5];
+    v12 = [urlCopy vui_URLByAddingQueryParamsDictionary:v5];
 
-    v4 = v12;
+    urlCopy = v12;
   }
 
-  return v4;
+  return urlCopy;
 }
 
-- (void)_openPunchoutURL:(id)a3
+- (void)_openPunchoutURL:(id)l
 {
   v39 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [objc_alloc(MEMORY[0x1E696AF20]) initWithURL:v5 resolvingAgainstBaseURL:0];
-  v7 = [v6 scheme];
-  v8 = [v7 lowercaseString];
-  v9 = [v8 isEqualToString:@"https"];
+  lCopy = l;
+  v6 = [objc_alloc(MEMORY[0x1E696AF20]) initWithURL:lCopy resolvingAgainstBaseURL:0];
+  scheme = [v6 scheme];
+  lowercaseString = [scheme lowercaseString];
+  v9 = [lowercaseString isEqualToString:@"https"];
   if ((v9 & 1) == 0)
   {
-    v10 = [v6 scheme];
-    v3 = [v10 lowercaseString];
-    if (![v3 isEqualToString:@"http"])
+    scheme2 = [v6 scheme];
+    lowercaseString2 = [scheme2 lowercaseString];
+    if (![lowercaseString2 isEqualToString:@"http"])
     {
-      v15 = 0;
+      isTVApp = 0;
 LABEL_10:
 
       goto LABEL_11;
     }
 
-    v27 = v10;
+    v27 = scheme2;
   }
 
-  v11 = v5;
+  v11 = lCopy;
   v12 = v6;
-  v13 = [v6 host];
-  v14 = [v13 lowercaseString];
-  if ([v14 isEqualToString:@"tv.apple.com"])
+  host = [v6 host];
+  lowercaseString3 = [host lowercaseString];
+  if ([lowercaseString3 isEqualToString:@"tv.apple.com"])
   {
-    v15 = [MEMORY[0x1E69DF6D0] isTVApp];
+    isTVApp = [MEMORY[0x1E69DF6D0] isTVApp];
   }
 
   else
   {
-    v15 = 0;
+    isTVApp = 0;
   }
 
   v6 = v12;
-  v5 = v11;
-  v10 = v27;
+  lCopy = v11;
+  scheme2 = v27;
   if ((v9 & 1) == 0)
   {
     goto LABEL_10;
@@ -161,7 +161,7 @@ LABEL_11:
 
   else
   {
-    v16 = [v5 description];
+    v16 = [lCopy description];
   }
 
   v17 = VUIDefaultLogObject();
@@ -170,24 +170,24 @@ LABEL_11:
     *buf = 138412802;
     v34 = v16;
     v35 = 1024;
-    v36 = v15;
+    v36 = isTVApp;
     v37 = 1024;
-    v38 = [(VUIActionAppPunchout *)self isSensitiveURL];
+    isSensitiveURL = [(VUIActionAppPunchout *)self isSensitiveURL];
     _os_log_impl(&dword_1E323F000, v17, OS_LOG_TYPE_DEFAULT, "VUIActionAppPunchout:: open url: %@, punchoutToTVApp: %d, isSensitiveURL: %d", buf, 0x18u);
   }
 
-  if (v15)
+  if (isTVApp)
   {
     v18 = +[VUIInterfaceFactory sharedInstance];
-    v19 = [v18 openURLHandler];
-    v20 = [(VUIActionAppPunchout *)self appContext];
+    openURLHandler = [v18 openURLHandler];
+    appContext = [(VUIActionAppPunchout *)self appContext];
     v21 = +[VUITVAppLauncher sharedInstance];
-    v22 = [v21 deeplinkCompletionHandler];
-    [v19 processDeeplink:v5 appContext:v20 completion:v22];
+    deeplinkCompletionHandler = [v21 deeplinkCompletionHandler];
+    [openURLHandler processDeeplink:lCopy appContext:appContext completion:deeplinkCompletionHandler];
 
     v23 = +[VUIMetricsController sharedInstance];
-    v24 = [v5 absoluteString];
-    [v23 setExitEventDestinationUrl:v24];
+    absoluteString = [lCopy absoluteString];
+    [v23 setExitEventDestinationUrl:absoluteString];
   }
 
   else
@@ -199,16 +199,16 @@ LABEL_11:
     [v23 setFrontBoardOptions:v25];
 
     [v23 setSensitive:self->_isSensitiveURL];
-    v26 = [MEMORY[0x1E6963608] defaultWorkspace];
+    defaultWorkspace = [MEMORY[0x1E6963608] defaultWorkspace];
     v28[0] = MEMORY[0x1E69E9820];
     v28[1] = 3221225472;
     v28[2] = __41__VUIActionAppPunchout__openPunchoutURL___block_invoke;
     v28[3] = &unk_1E8733CC8;
     v29 = v16;
-    v30 = v5;
-    [v26 openURL:v30 configuration:v23 completionHandler:v28];
+    v30 = lCopy;
+    [defaultWorkspace openURL:v30 configuration:v23 completionHandler:v28];
 
-    v24 = v29;
+    absoluteString = v29;
   }
 }
 

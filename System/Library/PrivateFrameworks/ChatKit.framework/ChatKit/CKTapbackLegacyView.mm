@@ -1,11 +1,11 @@
 @interface CKTapbackLegacyView
 - (BOOL)isSelected;
-- (CKTapbackLegacyView)initWithFrame:(CGRect)a3;
+- (CKTapbackLegacyView)initWithFrame:(CGRect)frame;
 - (CKTapbackViewDelegate)delegate;
 - (UIEdgeInsets)platterEdgeInsets;
-- (void)configureForTapback:(id)a3 isSelected:(BOOL)a4;
+- (void)configureForTapback:(id)tapback isSelected:(BOOL)selected;
 - (void)layoutSubviews;
-- (void)setIsSelected:(BOOL)a3;
+- (void)setIsSelected:(BOOL)selected;
 @end
 
 @implementation CKTapbackLegacyView
@@ -38,13 +38,13 @@
   return *(self + v3);
 }
 
-- (void)setIsSelected:(BOOL)a3
+- (void)setIsSelected:(BOOL)selected
 {
   v5 = OBJC_IVAR___CKTapbackLegacyView_isSelected;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = a3;
-  v7 = self;
+  *(self + v5) = selected;
+  selfCopy = self;
   sub_190863FFC(v6);
 }
 
@@ -78,12 +78,12 @@
   }
 }
 
-- (CKTapbackLegacyView)initWithFrame:(CGRect)a3
+- (CKTapbackLegacyView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   *(self + OBJC_IVAR___CKTapbackLegacyView_attributionScaleFactor) = 0x3FECCCCCCCCCCCCDLL;
   v8 = (self + OBJC_IVAR___CKTapbackLegacyView_platterEdgeInsets);
   __asm { FMOV            V0.2D, #1.0 }
@@ -98,11 +98,11 @@
   return [(TapbackView *)&v15 initWithFrame:x, y, width, height];
 }
 
-- (void)configureForTapback:(id)a3 isSelected:(BOOL)a4
+- (void)configureForTapback:(id)tapback isSelected:(BOOL)selected
 {
-  v6 = a3;
-  v7 = self;
-  sub_190864450([v6 associatedMessageType], a4);
+  tapbackCopy = tapback;
+  selfCopy = self;
+  sub_190864450([tapbackCopy associatedMessageType], selected);
 }
 
 @end

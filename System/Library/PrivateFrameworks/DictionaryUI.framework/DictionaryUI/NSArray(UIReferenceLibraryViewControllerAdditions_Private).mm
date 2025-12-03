@@ -6,8 +6,8 @@
 
 - (id)_filteredArrayOfObjectsPassingTest:()UIReferenceLibraryViewControllerAdditions_Private
 {
-  v2 = [a1 indexesOfObjectsPassingTest:?];
-  v3 = [a1 objectsAtIndexes:v2];
+  v2 = [self indexesOfObjectsPassingTest:?];
+  v3 = [self objectsAtIndexes:v2];
 
   return v3;
 }

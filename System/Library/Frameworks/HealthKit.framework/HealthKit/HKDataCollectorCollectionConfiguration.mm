@@ -1,11 +1,11 @@
 @interface HKDataCollectorCollectionConfiguration
 + (HKDataCollectorCollectionConfiguration)new;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HKDataCollectorCollectionConfiguration)init;
-- (HKDataCollectorCollectionConfiguration)initWithCoder:(id)a3;
-- (HKDataCollectorCollectionConfiguration)initWithCollectionInterval:(double)a3 collectionLatency:(double)a4 collectionType:(unint64_t)a5;
+- (HKDataCollectorCollectionConfiguration)initWithCoder:(id)coder;
+- (HKDataCollectorCollectionConfiguration)initWithCollectionInterval:(double)interval collectionLatency:(double)latency collectionType:(unint64_t)type;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKDataCollectorCollectionConfiguration
@@ -30,16 +30,16 @@
   return 0;
 }
 
-- (HKDataCollectorCollectionConfiguration)initWithCollectionInterval:(double)a3 collectionLatency:(double)a4 collectionType:(unint64_t)a5
+- (HKDataCollectorCollectionConfiguration)initWithCollectionInterval:(double)interval collectionLatency:(double)latency collectionType:(unint64_t)type
 {
   v9.receiver = self;
   v9.super_class = HKDataCollectorCollectionConfiguration;
   result = [(HKDataCollectorCollectionConfiguration *)&v9 init];
   if (result)
   {
-    result->_collectionInterval = a3;
-    result->_collectionLatency = a4;
-    result->_collectionType = a5;
+    result->_collectionInterval = interval;
+    result->_collectionLatency = latency;
+    result->_collectionType = type;
   }
 
   return result;
@@ -59,41 +59,41 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && self->_collectionType == *(v4 + 3) && self->_collectionInterval == v4[1] && self->_collectionLatency == v4[2];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && self->_collectionType == *(equalCopy + 3) && self->_collectionInterval == equalCopy[1] && self->_collectionLatency == equalCopy[2];
 
   return v5;
 }
 
-- (HKDataCollectorCollectionConfiguration)initWithCoder:(id)a3
+- (HKDataCollectorCollectionConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = HKDataCollectorCollectionConfiguration;
   v5 = [(HKDataCollectorCollectionConfiguration *)&v10 init];
   if (v5)
   {
-    [v4 decodeDoubleForKey:@"collection_interval"];
+    [coderCopy decodeDoubleForKey:@"collection_interval"];
     v5->_collectionInterval = v6;
-    [v4 decodeDoubleForKey:@"collection_latency"];
+    [coderCopy decodeDoubleForKey:@"collection_latency"];
     v5->_collectionLatency = v7;
-    [v4 decodeDoubleForKey:@"collection_type"];
+    [coderCopy decodeDoubleForKey:@"collection_type"];
     v5->_collectionType = v8;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   collectionInterval = self->_collectionInterval;
-  v5 = a3;
-  [v5 encodeDouble:@"collection_interval" forKey:collectionInterval];
-  [v5 encodeDouble:@"collection_latency" forKey:self->_collectionLatency];
-  [v5 encodeDouble:@"collection_type" forKey:self->_collectionType];
+  coderCopy = coder;
+  [coderCopy encodeDouble:@"collection_interval" forKey:collectionInterval];
+  [coderCopy encodeDouble:@"collection_latency" forKey:self->_collectionLatency];
+  [coderCopy encodeDouble:@"collection_type" forKey:self->_collectionType];
 }
 
 @end

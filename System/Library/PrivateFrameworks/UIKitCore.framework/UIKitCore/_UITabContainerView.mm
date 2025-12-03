@@ -1,103 +1,103 @@
 @interface _UITabContainerView
-- (BOOL)_gestureRecognizer:(id)a3 canBePreventedByGestureRecognizer:(id)a4;
+- (BOOL)_gestureRecognizer:(id)recognizer canBePreventedByGestureRecognizer:(id)gestureRecognizer;
 - (BOOL)_isShowingSidebar;
 - (BOOL)_isTabBarHidden;
-- (BOOL)_sidebarGestureRecognizerShouldReceiveTouch:(id)a3;
+- (BOOL)_sidebarGestureRecognizerShouldReceiveTouch:(id)touch;
 - (BOOL)canShowFloatingTabBar;
 - (BOOL)canShowFloatingUI;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (BOOL)isEditing;
 - (BOOL)isShowingFloatingTabBar;
 - (BOOL)isSidebarOverlappingContent;
 - (BOOL)isSidebarOverlayingContent;
-- (BOOL)outlineViewShouldShowCustomizationHeader:(id)a3;
-- (BOOL)passthroughScrollInteraction:(id)a3 shouldInteractAtLocation:(CGPoint)a4 withEvent:(id)a5;
-- (CGRect)adjustedFrameForContentTransitionViewFrame:(CGRect)a3;
+- (BOOL)outlineViewShouldShowCustomizationHeader:(id)header;
+- (BOOL)passthroughScrollInteraction:(id)interaction shouldInteractAtLocation:(CGPoint)location withEvent:(id)event;
+- (CGRect)adjustedFrameForContentTransitionViewFrame:(CGRect)frame;
 - (CGRect)contentLayoutGuideFrame;
-- (CGRect)floatingTabBarContentFrameInCoordinateSpace:(id)a3;
-- (CGRect)frameForHostedElement:(int64_t)a3 options:(int64_t)a4;
+- (CGRect)floatingTabBarContentFrameInCoordinateSpace:(id)space;
+- (CGRect)frameForHostedElement:(int64_t)element options:(int64_t)options;
 - (UIAction)_sidebarToggleAction;
 - (UIEdgeInsets)absoluteSidebarInsets;
 - (UIEdgeInsets)additionalContentMargins;
 - (UIEdgeInsets)additionalSidebarInsets;
 - (UIEdgeInsets)bottomAccessoryInsets;
-- (UIEdgeInsets)edgeInsetsForChildViewController:(id)a3;
+- (UIEdgeInsets)edgeInsetsForChildViewController:(id)controller;
 - (UITabBarController)tabBarController;
 - (UIView)_dimmingView;
 - (_UIFloatingTabBar)floatingTabBar;
-- (_UITabContainerView)initWithTabBarController:(id)a3;
+- (_UITabContainerView)initWithTabBarController:(id)controller;
 - (_UITabContainerViewDelegate)delegate;
 - (_UITabContainerViewFloatingTabBarHost)floatingTabBarHost;
 - (_UITabOutlineView)sidebarView;
 - (double)_currentSidebarWidth;
 - (double)_floatingTabBarFittingHeight;
 - (double)_floatingTabBarTopOffset;
-- (double)floatingTabBarTopInsetForViewController:(id)a3;
+- (double)floatingTabBarTopInsetForViewController:(id)controller;
 - (id)_configuredGroupCompletion;
 - (id)_currentPlatformMetrics;
-- (id)_morphViewForVisibleItem:(int64_t)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)_morphViewForVisibleItem:(int64_t)item;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (id)preferredFocusEnvironments;
-- (id)resolvedPopoverPresentationControllerSourceItemForTab:(id)a3;
+- (id)resolvedPopoverPresentationControllerSourceItemForTab:(id)tab;
 - (id)sidebar;
 - (id)tabCustomizationStore;
 - (int64_t)_currentVisibleComponents;
-- (int64_t)resolvedAccessoryEnvironmentForEnvironment:(int64_t)a3;
+- (int64_t)resolvedAccessoryEnvironmentForEnvironment:(int64_t)environment;
 - (void)_commitSidebarTranslation;
 - (void)_createViewHierarchy;
 - (void)_finalizeEditingState;
-- (void)_handleDimmingViewTap:(id)a3;
-- (void)_handleSidebarResizePanGestureRecognizer:(id)a3;
-- (void)_handleSidebarResizeTapGestureRecognizer:(id)a3;
+- (void)_handleDimmingViewTap:(id)tap;
+- (void)_handleSidebarResizePanGestureRecognizer:(id)recognizer;
+- (void)_handleSidebarResizeTapGestureRecognizer:(id)recognizer;
 - (void)_horizontalSizeClassDidChange;
 - (void)_updateBottomTabBarFrame;
 - (void)_updateFloatingTabBarFrame;
 - (void)_updatePassthroughScrollInteractionIfNeeded;
-- (void)_updateSidebarAppearanceForMorphTransitionAnimated:(BOOL)a3;
-- (void)_updateSidebarContentMarginsWithTabBarContentFrame:(CGRect)a3;
+- (void)_updateSidebarAppearanceForMorphTransitionAnimated:(BOOL)animated;
+- (void)_updateSidebarContentMarginsWithTabBarContentFrame:(CGRect)frame;
 - (void)_updateSidebarViewFrame;
 - (void)_updateToggleAction;
-- (void)_updateVisibleBarAnimated:(BOOL)a3 requireLayout:(BOOL)a4 updateDimmingView:(BOOL)a5;
-- (void)_updateVisibleItem:(int64_t)a3;
-- (void)dropInteraction:(id)a3 sessionDidEnter:(id)a4;
+- (void)_updateVisibleBarAnimated:(BOOL)animated requireLayout:(BOOL)layout updateDimmingView:(BOOL)view;
+- (void)_updateVisibleItem:(int64_t)item;
+- (void)dropInteraction:(id)interaction sessionDidEnter:(id)enter;
 - (void)layoutSubviews;
-- (void)outlineView:(id)a3 didSelectTab:(id)a4;
-- (void)outlineViewDidChangeCustomizationStore:(id)a3;
+- (void)outlineView:(id)view didSelectTab:(id)tab;
+- (void)outlineViewDidChangeCustomizationStore:(id)store;
 - (void)safeAreaInsetsDidChange;
-- (void)setAbsoluteSidebarInsets:(UIEdgeInsets)a3;
-- (void)setAdditionalSidebarInsets:(UIEdgeInsets)a3;
-- (void)setAvailableComponent:(int64_t)a3 animated:(BOOL)a4;
-- (void)setEditing:(BOOL)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setIsBottomBarSuppressed:(BOOL)a3;
-- (void)setOverrideTidebarButtonAction:(id)a3;
-- (void)setPreferredSidebarLayout:(int64_t)a3;
-- (void)setSupportedComponent:(int64_t)a3;
-- (void)setSupportsResizingSidebar:(BOOL)a3;
-- (void)setSuppressTabBar:(BOOL)a3;
-- (void)setTabBar:(id)a3;
-- (void)updateBottomAccessoryAnimated:(BOOL)a3;
-- (void)updateDimmingViewAnimated:(BOOL)a3;
-- (void)updateEditModeAppearanceAnimated:(BOOL)a3;
-- (void)updateSidebarAppearanceStateAnimated:(BOOL)a3 animator:(id)a4;
+- (void)setAbsoluteSidebarInsets:(UIEdgeInsets)insets;
+- (void)setAdditionalSidebarInsets:(UIEdgeInsets)insets;
+- (void)setAvailableComponent:(int64_t)component animated:(BOOL)animated;
+- (void)setEditing:(BOOL)editing;
+- (void)setFrame:(CGRect)frame;
+- (void)setIsBottomBarSuppressed:(BOOL)suppressed;
+- (void)setOverrideTidebarButtonAction:(id)action;
+- (void)setPreferredSidebarLayout:(int64_t)layout;
+- (void)setSupportedComponent:(int64_t)component;
+- (void)setSupportsResizingSidebar:(BOOL)sidebar;
+- (void)setSuppressTabBar:(BOOL)bar;
+- (void)setTabBar:(id)bar;
+- (void)updateBottomAccessoryAnimated:(BOOL)animated;
+- (void)updateDimmingViewAnimated:(BOOL)animated;
+- (void)updateEditModeAppearanceAnimated:(BOOL)animated;
+- (void)updateSidebarAppearanceStateAnimated:(BOOL)animated animator:(id)animator;
 @end
 
 @implementation _UITabContainerView
 
-- (_UITabContainerView)initWithTabBarController:(id)a3
+- (_UITabContainerView)initWithTabBarController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v12.receiver = self;
   v12.super_class = _UITabContainerView;
   v5 = [(UIView *)&v12 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_tabBarController, v4);
-    if (v4)
+    objc_storeWeak(&v5->_tabBarController, controllerCopy);
+    if (controllerCopy)
     {
-      v7 = v4[150];
+      v7 = controllerCopy[150];
     }
 
     else
@@ -106,8 +106,8 @@
     }
 
     v8 = v7;
-    v9 = [v8 customizationStore];
-    [v9 preferredSidebarWidth];
+    customizationStore = [v8 customizationStore];
+    [customizationStore preferredSidebarWidth];
     v6->_currentSidebarWidth = v10;
 
     *&v6->_additionalSidebarInsets.top = 0u;
@@ -122,19 +122,19 @@
 
 - (id)sidebar
 {
-  v2 = [(_UITabContainerView *)self tabBarController];
-  v3 = [v2 sidebar];
+  tabBarController = [(_UITabContainerView *)self tabBarController];
+  sidebar = [tabBarController sidebar];
 
-  return v3;
+  return sidebar;
 }
 
 - (id)tabCustomizationStore
 {
-  v2 = [(_UITabContainerView *)self tabBarController];
-  v3 = v2;
-  if (v2)
+  tabBarController = [(_UITabContainerView *)self tabBarController];
+  v3 = tabBarController;
+  if (tabBarController)
   {
-    v4 = *(v2 + 1200);
+    v4 = *(tabBarController + 1200);
   }
 
   else
@@ -143,18 +143,18 @@
   }
 
   v5 = v4;
-  v6 = [v5 customizationStore];
+  customizationStore = [v5 customizationStore];
 
-  return v6;
+  return customizationStore;
 }
 
 - (BOOL)isEditing
 {
-  v2 = [(_UITabContainerView *)self tabBarController];
-  v3 = v2;
-  if (v2)
+  tabBarController = [(_UITabContainerView *)self tabBarController];
+  v3 = tabBarController;
+  if (tabBarController)
   {
-    v4 = *(v2 + 1200);
+    v4 = *(tabBarController + 1200);
   }
 
   else
@@ -163,19 +163,19 @@
   }
 
   v5 = v4;
-  v6 = [v5 isEditing];
+  isEditing = [v5 isEditing];
 
-  return v6;
+  return isEditing;
 }
 
-- (void)setEditing:(BOOL)a3
+- (void)setEditing:(BOOL)editing
 {
-  v3 = a3;
-  v4 = [(_UITabContainerView *)self tabBarController];
-  v7 = v4;
-  if (v4)
+  editingCopy = editing;
+  tabBarController = [(_UITabContainerView *)self tabBarController];
+  v7 = tabBarController;
+  if (tabBarController)
   {
-    v5 = *(v4 + 1200);
+    v5 = *(tabBarController + 1200);
   }
 
   else
@@ -184,7 +184,7 @@
   }
 
   v6 = v5;
-  [v6 setEditing:v3];
+  [v6 setEditing:editingCopy];
 }
 
 - (_UIFloatingTabBar)floatingTabBar
@@ -193,11 +193,11 @@
   {
     v3 = [_UIFloatingTabBar alloc];
     v4 = [(_UIFloatingTabBar *)v3 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
-    v5 = [(_UITabContainerView *)self tabBarController];
-    v6 = v5;
-    if (v5)
+    tabBarController = [(_UITabContainerView *)self tabBarController];
+    v6 = tabBarController;
+    if (tabBarController)
     {
-      v7 = *(v5 + 1200);
+      v7 = *(tabBarController + 1200);
     }
 
     else
@@ -230,26 +230,26 @@
 
 - (_UITabOutlineView)sidebarView
 {
-  v2 = [(_UITabContainerView *)self sidebar];
-  v3 = [v2 _outlineView];
+  sidebar = [(_UITabContainerView *)self sidebar];
+  _outlineView = [sidebar _outlineView];
 
-  return v3;
+  return _outlineView;
 }
 
-- (void)setTabBar:(id)a3
+- (void)setTabBar:(id)bar
 {
-  v5 = a3;
+  barCopy = bar;
   tabBar = self->_tabBar;
-  if (tabBar != v5)
+  if (tabBar != barCopy)
   {
-    v7 = v5;
+    v7 = barCopy;
     [(UITabBar *)tabBar _setGlassGroupContainer:?];
     [(UIView *)self->_tabBar removeFromSuperview];
-    objc_storeStrong(&self->_tabBar, a3);
+    objc_storeStrong(&self->_tabBar, bar);
     [(UITabBar *)self->_tabBar _setGlassGroupContainer:?];
     [(_UITabContainerView *)self _updateVisibleBarAnimated:0];
     [(_UITabContainerView *)self _updateBottomTabBarFrame];
-    v5 = v7;
+    barCopy = v7;
   }
 }
 
@@ -259,11 +259,11 @@
   [(UIView *)self setPreservesSuperviewLayoutMargins:1];
   [(UIView *)self setLayoutMargins:0.0, 0.0, 0.0, 0.0];
   WeakRetained = objc_loadWeakRetained(&self->_tabBarController);
-  v4 = [(UITabBarController *)WeakRetained _internalTabBar];
-  v5 = v4;
-  if (v4)
+  _internalTabBar = [(UITabBarController *)WeakRetained _internalTabBar];
+  v5 = _internalTabBar;
+  if (_internalTabBar)
   {
-    v6 = v4;
+    v6 = _internalTabBar;
   }
 
   else
@@ -276,21 +276,21 @@
 
   [(UIView *)v8 setAutoresizingMask:0];
   objc_storeStrong(&self->_tabBar, v8);
-  v9 = [(_UITabContainerView *)self tabBarController];
-  v10 = [(UITabBarController *)v9 _scrollPocketCollectorInteraction];
+  tabBarController = [(_UITabContainerView *)self tabBarController];
+  _scrollPocketCollectorInteraction = [(UITabBarController *)tabBarController _scrollPocketCollectorInteraction];
 
   v11 = [[_UIScrollPocketContainerInteraction alloc] initWithScrollView:0 edge:1];
   floatingTabBarPocketContainerInteraction = self->_floatingTabBarPocketContainerInteraction;
   self->_floatingTabBarPocketContainerInteraction = v11;
 
-  [(_UIScrollPocketContainerInteraction *)self->_floatingTabBarPocketContainerInteraction _setCollectorInteraction:v10];
+  [(_UIScrollPocketContainerInteraction *)self->_floatingTabBarPocketContainerInteraction _setCollectorInteraction:_scrollPocketCollectorInteraction];
   if (_UIScrollPocketAllowHorizontalPockets())
   {
     v13 = [[_UIScrollPocketInteraction alloc] initWithStyle:0];
     sidebarPocketInteraction = self->_sidebarPocketInteraction;
     self->_sidebarPocketInteraction = v13;
 
-    [(_UIScrollPocketInteraction *)self->_sidebarPocketInteraction _setCollectorInteraction:v10];
+    [(_UIScrollPocketInteraction *)self->_sidebarPocketInteraction _setCollectorInteraction:_scrollPocketCollectorInteraction];
     [(UIView *)self addInteraction:self->_sidebarPocketInteraction];
   }
 
@@ -305,19 +305,19 @@
     bottomTabBarPocketContainerInteraction = self->_bottomTabBarPocketContainerInteraction;
     self->_bottomTabBarPocketContainerInteraction = v17;
 
-    [(_UIScrollPocketContainerInteraction *)self->_bottomTabBarPocketContainerInteraction _setCollectorInteraction:v10];
+    [(_UIScrollPocketContainerInteraction *)self->_bottomTabBarPocketContainerInteraction _setCollectorInteraction:_scrollPocketCollectorInteraction];
     [(UIView *)self->_tabBarGroupView addInteraction:self->_bottomTabBarPocketContainerInteraction];
     v19 = [_UITabBarContentLayoutManager alloc];
-    v20 = [(_UIBottomTabBarGroupView *)self->_tabBarGroupView contentView];
-    v21 = [(_UITabBarContentLayoutManager *)v19 initWithLayoutHost:self container:v20];
+    contentView = [(_UIBottomTabBarGroupView *)self->_tabBarGroupView contentView];
+    v21 = [(_UITabBarContentLayoutManager *)v19 initWithLayoutHost:self container:contentView];
     tabBarContentLayoutManager = self->_tabBarContentLayoutManager;
     self->_tabBarContentLayoutManager = v21;
   }
 
-  v23 = [(_UITabContainerView *)self _currentPlatformMetrics];
-  v24 = [v23 sidebarSupportsPassthroughInOverlay];
+  _currentPlatformMetrics = [(_UITabContainerView *)self _currentPlatformMetrics];
+  sidebarSupportsPassthroughInOverlay = [_currentPlatformMetrics sidebarSupportsPassthroughInOverlay];
 
-  if (v24)
+  if (sidebarSupportsPassthroughInOverlay)
   {
     v25 = objc_alloc_init(_UIPassthroughScrollInteraction);
     passthroughInteraction = self->_passthroughInteraction;
@@ -344,16 +344,16 @@
   v4.receiver = self;
   v4.super_class = _UITabContainerView;
   [(UIView *)&v4 safeAreaInsetsDidChange];
-  v3 = [(_UITabContainerView *)self delegate];
-  [v3 safeAreaInsetsDidChange];
+  delegate = [(_UITabContainerView *)self delegate];
+  [delegate safeAreaInsetsDidChange];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(UIView *)self frame];
   v15.origin.x = v8;
   v15.origin.y = v9;
@@ -419,18 +419,18 @@
 
   if ([(_UITabContainerView *)self isEditing])
   {
-    v24 = [(_UITabContainerView *)self _currentPlatformMetrics];
+    _currentPlatformMetrics = [(_UITabContainerView *)self _currentPlatformMetrics];
     remainder.origin.x = x;
     remainder.size.width = width;
     remainder.origin.y = 0.0;
     [(_UITabContainerView *)self _floatingTabBarFittingHeight];
     v26 = v17 + v25;
-    [v24 expandedDropTargetInset];
+    [_currentPlatformMetrics expandedDropTargetInset];
     height = v26 + v27;
     remainder.size.height = height;
-    v29 = [(_UITabContainerView *)self sidebarView];
-    v30 = v29;
-    if (!v29 || (y = 0.0, (vmaxv_u16(vmovn_s32(vmvnq_s8(vuzp1q_s32(vceqzq_f64(v29[46]), vceqzq_f64(v29[47]))))) & 1) == 0))
+    sidebarView = [(_UITabContainerView *)self sidebarView];
+    v30 = sidebarView;
+    if (!sidebarView || (y = 0.0, (vmaxv_u16(vmovn_s32(vmvnq_s8(vuzp1q_s32(vceqzq_f64(sidebarView[46]), vceqzq_f64(sidebarView[47]))))) & 1) == 0))
     {
       [(_UITabContainerView *)self _currentSidebarWidth];
       v33 = v32;
@@ -471,15 +471,15 @@
 
 - (void)_updateSidebarViewFrame
 {
-  v111 = [(_UITabContainerView *)self sidebarView];
-  v3 = [(UIView *)self traitCollection];
-  v4 = _UIFloatingTabBarGetPlatformMetrics([v3 userInterfaceIdiom]);
+  sidebarView = [(_UITabContainerView *)self sidebarView];
+  traitCollection = [(UIView *)self traitCollection];
+  v4 = _UIFloatingTabBarGetPlatformMetrics([traitCollection userInterfaceIdiom]);
 
-  v5 = [(UIView *)self _shouldReverseLayoutDirection];
-  v6 = [v4 supportsFloatingSidebar];
-  if (v111)
+  _shouldReverseLayoutDirection = [(UIView *)self _shouldReverseLayoutDirection];
+  supportsFloatingSidebar = [v4 supportsFloatingSidebar];
+  if (sidebarView)
   {
-    v7 = *(v111 + 53) == 1;
+    v7 = *(sidebarView + 53) == 1;
   }
 
   else
@@ -487,7 +487,7 @@
     v7 = 0;
   }
 
-  v8 = [(_UITabContainerView *)self isEditing]|| [(_UITabContainerView *)self _isShowingSidebar];
+  _isShowingSidebar = [(_UITabContainerView *)self isEditing]|| [(_UITabContainerView *)self _isShowingSidebar];
   [(UIView *)self bounds];
   v10 = v9;
   v12 = v11;
@@ -512,7 +512,7 @@
   [(_UITabContainerView *)self _currentSidebarWidth];
   v24 = v23 - v22;
   v25 = 0.0;
-  if (v5)
+  if (_shouldReverseLayoutDirection)
   {
     v113.origin.x = v10;
     v113.origin.y = v12;
@@ -534,8 +534,8 @@
   {
     v108 = v24;
     v27 = v25;
-    v28 = [(UIView *)self traitCollection];
-    v29 = _UISidebarGetPlatformMetrics([v28 userInterfaceIdiom]);
+    traitCollection2 = [(UIView *)self traitCollection];
+    v29 = _UISidebarGetPlatformMetrics([traitCollection2 userInterfaceIdiom]);
 
     [v29 platterInsets];
     v106 = v31;
@@ -549,7 +549,7 @@
     v42 = v41;
     v44 = v43;
     [(_UITabContainerView *)self additionalSidebarInsets];
-    if (v5)
+    if (_shouldReverseLayoutDirection)
     {
       v49 = 13;
     }
@@ -559,7 +559,7 @@
       v49 = 7;
     }
 
-    if (v5)
+    if (_shouldReverseLayoutDirection)
     {
       v50 = v35;
     }
@@ -569,7 +569,7 @@
       v50 = v33;
     }
 
-    if (v5)
+    if (_shouldReverseLayoutDirection)
     {
       v51 = v33;
     }
@@ -582,13 +582,13 @@
     v52 = v38 + v45;
     v53 = v40 + v46;
     v54 = v44 + v48;
-    if (!v5)
+    if (!_shouldReverseLayoutDirection)
     {
       v54 = v44;
     }
 
     v55 = fmax(v54, v51);
-    if (v5)
+    if (_shouldReverseLayoutDirection)
     {
       v56 = v55;
     }
@@ -678,9 +678,9 @@
 
     v75 = v72 + v70;
     Height = v36 - (v69 + v74);
-    if (v111)
+    if (sidebarView)
     {
-      v111[63] = Height;
+      sidebarView[63] = Height;
     }
 
     v25 = v27 + v70;
@@ -706,27 +706,27 @@
 
   v80 = *MEMORY[0x1E695EFF8];
   v79 = *(MEMORY[0x1E695EFF8] + 8);
-  [v111 setBounds:{*MEMORY[0x1E695EFF8], v79, v24, Height}];
-  [v111 setCenter:{v24 * 0.5 + v25, Height * 0.5 + v21}];
+  [sidebarView setBounds:{*MEMORY[0x1E695EFF8], v79, v24, Height}];
+  [sidebarView setCenter:{v24 * 0.5 + v25, Height * 0.5 + v21}];
   if (+[UIView _isInAnimationBlockWithAnimationsEnabled])
   {
-    [v111 layoutIfNeeded];
+    [sidebarView layoutIfNeeded];
   }
 
   if (!v7 || [(_UITabContainerView *)self supportsResizingSidebar])
   {
-    v81 = [(_UITabContainerView *)self sidebarBorderView];
-    if (v6)
+    sidebarBorderView = [(_UITabContainerView *)self sidebarBorderView];
+    if (supportsFloatingSidebar)
     {
       v82 = +[UIColor clearColor];
-      [v81 setBackgroundColor:v82];
+      [sidebarBorderView setBackgroundColor:v82];
     }
 
     v83 = v25;
     v84 = v21;
     v85 = v24;
     v86 = Height;
-    if (v5)
+    if (_shouldReverseLayoutDirection)
     {
       MinX = CGRectGetMinX(*&v83);
     }
@@ -744,16 +744,16 @@
     v89 = v21;
     v90 = Height;
     v91 = CGRectGetHeight(v115);
-    [v81 setBounds:{v80, v79, v109, v91}];
+    [sidebarBorderView setBounds:{v80, v79, v109, v91}];
     v92 = v91 * 0.5;
     Height = v90;
     v21 = v89;
-    [v81 setCenter:{v109 * 0.5 + v88, v92 + 0.0}];
+    [sidebarBorderView setCenter:{v109 * 0.5 + v88, v92 + 0.0}];
 
     v78 = *&v110[24];
   }
 
-  if (v5)
+  if (_shouldReverseLayoutDirection)
   {
     v93 = 8;
   }
@@ -764,7 +764,7 @@
   }
 
   [(_UIScrollPocketInteraction *)self->_sidebarPocketInteraction _setEdge:v93];
-  if (v5)
+  if (_shouldReverseLayoutDirection)
   {
     v94 = v24;
     v95 = v25;
@@ -806,7 +806,7 @@
   v120.size.width = v94;
   v120.size.height = v96;
   MinY = CGRectGetMinY(v120);
-  if (!v8)
+  if (!_isShowingSidebar)
   {
     v98 = 0.0;
   }
@@ -816,53 +816,53 @@
   v121.size.width = v94;
   v121.size.height = v96;
   v103 = CGRectGetHeight(v121);
-  v104 = [(_UITabContainerView *)self sidebarPocketInteraction];
-  [v104 _setRect:{v99, MinY, v98, v103}];
+  sidebarPocketInteraction = [(_UITabContainerView *)self sidebarPocketInteraction];
+  [sidebarPocketInteraction _setRect:{v99, MinY, v98, v103}];
 
-  v105 = [(_UITabContainerView *)self delegate];
-  [v105 didLayoutSidebarView];
+  delegate = [(_UITabContainerView *)self delegate];
+  [delegate didLayoutSidebarView];
 }
 
 - (void)_updateBottomTabBarFrame
 {
-  v3 = [(_UITabContainerView *)self tabBar];
-  v4 = [v3 window];
-  if (v4)
+  tabBar = [(_UITabContainerView *)self tabBar];
+  window = [tabBar window];
+  if (window)
   {
   }
 
   else
   {
-    v55 = [v3 _expectedSuperviewFollowingAnimation];
+    _expectedSuperviewFollowingAnimation = [tabBar _expectedSuperviewFollowingAnimation];
 
-    if (v55)
+    if (_expectedSuperviewFollowingAnimation)
     {
       goto LABEL_12;
     }
   }
 
-  v5 = [(_UITabContainerView *)self tabBarGroupView];
+  tabBarGroupView = [(_UITabContainerView *)self tabBarGroupView];
   [(UIView *)self bounds];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  v14 = [v5 contentView];
-  [v14 setBounds:{v7, v9, v11, v13}];
+  contentView = [tabBarGroupView contentView];
+  [contentView setBounds:{v7, v9, v11, v13}];
 
-  v15 = [v5 contentView];
-  v16 = v15;
-  if (v15)
+  contentView2 = [tabBarGroupView contentView];
+  v16 = contentView2;
+  if (contentView2)
   {
-    v17 = v15;
+    selfCopy = contentView2;
   }
 
   else
   {
-    v17 = self;
+    selfCopy = self;
   }
 
-  v18 = v17;
+  v18 = selfCopy;
 
   [(UIView *)v18 bounds];
   v20 = v19;
@@ -871,18 +871,18 @@
   v26 = v25;
   v27 = *MEMORY[0x1E695F060];
   v28 = *(MEMORY[0x1E695F060] + 8);
-  [v3 sizeThatFits:{*MEMORY[0x1E695F060], v28}];
+  [tabBar sizeThatFits:{*MEMORY[0x1E695F060], v28}];
   v30 = v29;
   v32 = v31;
   v58.origin.x = v20;
   v58.origin.y = v22;
   v58.size.width = v24;
   v58.size.height = v26;
-  [v3 setFrame:{0.0, CGRectGetMaxY(v58) - v32, v30, v32}];
-  if (v5)
+  [tabBar setFrame:{0.0, CGRectGetMaxY(v58) - v32, v30, v32}];
+  if (tabBarGroupView)
   {
-    v33 = [(_UITabContainerView *)self tabBarContentLayoutManager];
-    [v33 contentSizeForAllHostedElements];
+    tabBarContentLayoutManager = [(_UITabContainerView *)self tabBarContentLayoutManager];
+    [tabBarContentLayoutManager contentSizeForAllHostedElements];
     v35 = v34;
 
     v36 = *(MEMORY[0x1E695F058] + 16);
@@ -895,23 +895,23 @@
     v38 = v24;
     v39 = v26;
     CGRectDivide(*(&v36 - 8), &slice, &v56, v35, CGRectMaxYEdge);
-    [v5 setBounds:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), slice.size.width, slice.size.height}];
+    [tabBarGroupView setBounds:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), slice.size.width, slice.size.height}];
     __asm { FMOV            V2.2D, #0.5 }
 
-    [v5 setCenter:{vaddq_f64(slice.origin, vmulq_f64(slice.size, _Q2))}];
+    [tabBarGroupView setCenter:{vaddq_f64(slice.origin, vmulq_f64(slice.size, _Q2))}];
     [(UIView *)self bounds];
     v46 = v45;
     v48 = v47;
     v51 = v50 * 0.5 + v49 - CGRectGetMinY(slice);
-    v52 = [v5 contentView];
-    [v52 setCenter:{v46 + v48 * 0.5, v51}];
+    contentView3 = [tabBarGroupView contentView];
+    [contentView3 setCenter:{v46 + v48 * 0.5, v51}];
 
     [(UIView *)self _eagerlyUpdateSafeAreaInsetsToDescendant:?];
-    v53 = [(_UITabContainerView *)self tabBarContentLayoutManager];
-    [v53 updateLayout];
+    tabBarContentLayoutManager2 = [(_UITabContainerView *)self tabBarContentLayoutManager];
+    [tabBarContentLayoutManager2 updateLayout];
   }
 
-  [v3 sizeThatFits:{v27, v28}];
+  [tabBar sizeThatFits:{v27, v28}];
   if (v54 != v32)
   {
     [(_UITabContainerView *)self _updateBottomTabBarFrame];
@@ -920,14 +920,14 @@
 LABEL_12:
 }
 
-- (CGRect)frameForHostedElement:(int64_t)a3 options:(int64_t)a4
+- (CGRect)frameForHostedElement:(int64_t)element options:(int64_t)options
 {
   if (([(_UITabContainerView *)self _currentVisibleComponents]& 1) != 0)
   {
     tabBar = self->_tabBar;
     if (tabBar)
     {
-      [(_UITabBarVisualProvider *)tabBar->_visualProvider frameForHostedElement:a3 options:a4];
+      [(_UITabBarVisualProvider *)tabBar->_visualProvider frameForHostedElement:element options:options];
       v22 = v21;
       v24 = v23;
       v26 = v25;
@@ -942,18 +942,18 @@ LABEL_12:
       v22 = 0.0;
     }
 
-    v29 = [(_UITabContainerView *)self tabBarGroupView];
-    v30 = [v29 contentView];
-    [v30 convertRect:self->_tabBar fromView:{v22, v24, v26, v28}];
+    tabBarGroupView = [(_UITabContainerView *)self tabBarGroupView];
+    contentView = [tabBarGroupView contentView];
+    [contentView convertRect:self->_tabBar fromView:{v22, v24, v26, v28}];
     v32 = v31;
     v34 = v33;
     Width = v35;
     v38 = v37;
   }
 
-  else if (a3 == 2)
+  else if (element == 2)
   {
-    v7 = [(UIView *)self _shouldReverseLayoutDirection];
+    _shouldReverseLayoutDirection = [(UIView *)self _shouldReverseLayoutDirection];
     [(UIView *)self safeAreaInsets];
     v9 = v8;
     v11 = v10;
@@ -964,7 +964,7 @@ LABEL_12:
       [(_UITabContainerView *)self _currentSidebarWidth];
       v17 = v16 + 34.0;
       [(UIView *)self safeAreaInsets];
-      if (v7)
+      if (_shouldReverseLayoutDirection)
       {
         v15 = v17 + v19;
       }
@@ -985,11 +985,11 @@ LABEL_12:
     Width = CGRectGetWidth(v65);
     v45 = *MEMORY[0x1E695F058];
     v46 = *(MEMORY[0x1E695F058] + 8);
-    v47 = [(_UITabContainerView *)self tabBarController];
-    v48 = [v47 bottomAccessory];
-    v49 = [v48 contentView];
+    tabBarController = [(_UITabContainerView *)self tabBarController];
+    bottomAccessory = [tabBarController bottomAccessory];
+    contentView2 = [bottomAccessory contentView];
     v38 = 64.0;
-    [v49 sizeThatFits:{Width, 64.0}];
+    [contentView2 sizeThatFits:{Width, 64.0}];
     v51 = v50;
     v53 = v52;
 
@@ -1038,7 +1038,7 @@ LABEL_12:
   return result;
 }
 
-- (int64_t)resolvedAccessoryEnvironmentForEnvironment:(int64_t)a3
+- (int64_t)resolvedAccessoryEnvironmentForEnvironment:(int64_t)environment
 {
   if ([(_UITabContainerView *)self canShowFloatingUI])
   {
@@ -1047,69 +1047,69 @@ LABEL_12:
 
   else
   {
-    return a3;
+    return environment;
   }
 }
 
-- (void)setPreferredSidebarLayout:(int64_t)a3
+- (void)setPreferredSidebarLayout:(int64_t)layout
 {
-  if (self->_preferredSidebarLayout != a3)
+  if (self->_preferredSidebarLayout != layout)
   {
-    self->_preferredSidebarLayout = a3;
+    self->_preferredSidebarLayout = layout;
     [(_UITabContainerView *)self _updateVisibleBarAnimated:0];
 
     [(_UITabContainerView *)self _updateSidebarViewFrame];
   }
 }
 
-- (void)setSupportedComponent:(int64_t)a3
+- (void)setSupportedComponent:(int64_t)component
 {
-  if (self->_supportedComponent != a3)
+  if (self->_supportedComponent != component)
   {
-    v4 = a3;
-    self->_supportedComponent = a3;
-    v6 = [(_UITabContainerView *)self sidebar];
-    v8 = v6;
-    if ((v4 & 2) != 0)
+    componentCopy = component;
+    self->_supportedComponent = component;
+    sidebar = [(_UITabContainerView *)self sidebar];
+    v8 = sidebar;
+    if ((componentCopy & 2) != 0)
     {
-      v7 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v7 = 0;
+      selfCopy = 0;
     }
 
-    [(UITabBarControllerSidebar *)v6 _setSidebarViewDelegate:v7];
+    [(UITabBarControllerSidebar *)sidebar _setSidebarViewDelegate:selfCopy];
   }
 }
 
-- (void)setAvailableComponent:(int64_t)a3 animated:(BOOL)a4
+- (void)setAvailableComponent:(int64_t)component animated:(BOOL)animated
 {
-  if (self->_availableComponent != a3)
+  if (self->_availableComponent != component)
   {
-    v5 = a4;
-    self->_availableComponent = a3;
+    animatedCopy = animated;
+    self->_availableComponent = component;
     [(_UITabContainerView *)self _updateToggleAction];
 
-    [(_UITabContainerView *)self _updateVisibleBarAnimated:v5];
+    [(_UITabContainerView *)self _updateVisibleBarAnimated:animatedCopy];
   }
 }
 
-- (void)setIsBottomBarSuppressed:(BOOL)a3
+- (void)setIsBottomBarSuppressed:(BOOL)suppressed
 {
-  if (self->_isBottomBarSuppressed != a3)
+  if (self->_isBottomBarSuppressed != suppressed)
   {
-    self->_isBottomBarSuppressed = a3;
+    self->_isBottomBarSuppressed = suppressed;
     [(_UITabContainerView *)self _updateVisibleBarAnimated:1];
   }
 }
 
-- (void)setSuppressTabBar:(BOOL)a3
+- (void)setSuppressTabBar:(BOOL)bar
 {
-  if (self->_suppressTabBar != a3)
+  if (self->_suppressTabBar != bar)
   {
-    self->_suppressTabBar = a3;
+    self->_suppressTabBar = bar;
     if ([(_UITabContainerView *)self canShowFloatingUI])
     {
       [(_UITabContainerView *)self _updateVisibleBarAnimated:1];
@@ -1119,40 +1119,40 @@ LABEL_12:
   }
 }
 
-- (void)setOverrideTidebarButtonAction:(id)a3
+- (void)setOverrideTidebarButtonAction:(id)action
 {
-  v5 = a3;
-  if (self->_overrideTidebarButtonAction != v5)
+  actionCopy = action;
+  if (self->_overrideTidebarButtonAction != actionCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_overrideTidebarButtonAction, a3);
+    v6 = actionCopy;
+    objc_storeStrong(&self->_overrideTidebarButtonAction, action);
     [(_UITabContainerView *)self _updateToggleAction];
-    v5 = v6;
+    actionCopy = v6;
   }
 }
 
-- (void)setAdditionalSidebarInsets:(UIEdgeInsets)a3
+- (void)setAdditionalSidebarInsets:(UIEdgeInsets)insets
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = insets.top;
+  v3.f64[1] = insets.left;
+  v4.f64[0] = insets.bottom;
+  v4.f64[1] = insets.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(v3, *&self->_additionalSidebarInsets.top), vceqq_f64(v4, *&self->_additionalSidebarInsets.bottom)))) & 1) == 0)
   {
-    self->_additionalSidebarInsets = a3;
+    self->_additionalSidebarInsets = insets;
     [(UIView *)self setNeedsLayout];
   }
 }
 
-- (void)setAbsoluteSidebarInsets:(UIEdgeInsets)a3
+- (void)setAbsoluteSidebarInsets:(UIEdgeInsets)insets
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = insets.top;
+  v3.f64[1] = insets.left;
+  v4.f64[0] = insets.bottom;
+  v4.f64[1] = insets.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(v3, *&self->_absoluteSidebarInsets.top), vceqq_f64(v4, *&self->_absoluteSidebarInsets.bottom)))) & 1) == 0)
   {
-    self->_absoluteSidebarInsets = a3;
+    self->_absoluteSidebarInsets = insets;
     [(UIView *)self setNeedsLayout];
   }
 }
@@ -1160,8 +1160,8 @@ LABEL_12:
 - (BOOL)canShowFloatingUI
 {
   WeakRetained = objc_loadWeakRetained(&self->_tabBarController);
-  v3 = [WeakRetained traitCollection];
-  v4 = [v3 horizontalSizeClass] == 2;
+  traitCollection = [WeakRetained traitCollection];
+  v4 = [traitCollection horizontalSizeClass] == 2;
 
   return v4;
 }
@@ -1170,19 +1170,19 @@ LABEL_12:
 {
   if ([(_UITabContainerView *)self _hasActiveMorphTransition])
   {
-    LOBYTE(v3) = self->_morphTargetVisibleItem == 0;
+    LOBYTE(canShowFloatingTabBar) = self->_morphTargetVisibleItem == 0;
   }
 
   else
   {
-    v3 = [(_UITabContainerView *)self canShowFloatingTabBar];
-    if (v3)
+    canShowFloatingTabBar = [(_UITabContainerView *)self canShowFloatingTabBar];
+    if (canShowFloatingTabBar)
     {
-      LOBYTE(v3) = ![(_UITabContainerView *)self _isShowingSidebar];
+      LOBYTE(canShowFloatingTabBar) = ![(_UITabContainerView *)self _isShowingSidebar];
     }
   }
 
-  return v3;
+  return canShowFloatingTabBar;
 }
 
 - (BOOL)canShowFloatingTabBar
@@ -1197,20 +1197,20 @@ LABEL_12:
 
 - (BOOL)isSidebarOverlappingContent
 {
-  v3 = [(_UITabContainerView *)self _isShowingSidebar];
-  if (v3)
+  _isShowingSidebar = [(_UITabContainerView *)self _isShowingSidebar];
+  if (_isShowingSidebar)
   {
-    LOBYTE(v3) = [(_UITabContainerView *)self sidebarLayout]== 0;
+    LOBYTE(_isShowingSidebar) = [(_UITabContainerView *)self sidebarLayout]== 0;
   }
 
-  return v3;
+  return _isShowingSidebar;
 }
 
 - (BOOL)isSidebarOverlayingContent
 {
-  v3 = [(_UITabContainerView *)self sidebarView];
-  v4 = [v3 window];
-  if (v4)
+  sidebarView = [(_UITabContainerView *)self sidebarView];
+  window = [sidebarView window];
+  if (window)
   {
     v5 = [(_UITabContainerView *)self sidebarLayout]== 2;
   }
@@ -1225,20 +1225,20 @@ LABEL_12:
 
 - (BOOL)_isShowingSidebar
 {
-  v2 = [(_UITabContainerView *)self sidebar];
-  v3 = [(UITabBarControllerSidebar *)v2 _isSidebarSupportedAndVisible];
+  sidebar = [(_UITabContainerView *)self sidebar];
+  _isSidebarSupportedAndVisible = [(UITabBarControllerSidebar *)sidebar _isSidebarSupportedAndVisible];
 
-  return v3;
+  return _isSidebarSupportedAndVisible;
 }
 
-- (void)_updateVisibleItem:(int64_t)a3
+- (void)_updateVisibleItem:(int64_t)item
 {
-  v5 = [(_UITabContainerView *)self sidebar];
-  v6 = [v5 isHidden];
+  sidebar = [(_UITabContainerView *)self sidebar];
+  isHidden = [sidebar isHidden];
 
-  if (a3)
+  if (item)
   {
-    v7 = v6;
+    v7 = isHidden;
   }
 
   else
@@ -1246,14 +1246,14 @@ LABEL_12:
     v7 = 1;
   }
 
-  if (a3 == 1)
+  if (item == 1)
   {
     v7 = 0;
   }
 
-  if (self->_visibleItem == a3)
+  if (self->_visibleItem == item)
   {
-    v8 = v6;
+    v8 = isHidden;
   }
 
   else
@@ -1261,10 +1261,10 @@ LABEL_12:
     v8 = v7;
   }
 
-  v9 = [(_UITabContainerView *)self sidebar];
-  v10 = [v9 isHidden];
+  sidebar2 = [(_UITabContainerView *)self sidebar];
+  isHidden2 = [sidebar2 isHidden];
 
-  if (v8 == v10)
+  if (v8 == isHidden2)
   {
 
     [(_UITabContainerView *)self _updateSidebarAppearanceForMorphTransitionAnimated:1];
@@ -1272,25 +1272,25 @@ LABEL_12:
 
   else
   {
-    v11 = [(_UITabContainerView *)self sidebar];
-    [(UITabBarControllerSidebar *)v11 _setHidden:v8 source:1];
+    sidebar3 = [(_UITabContainerView *)self sidebar];
+    [(UITabBarControllerSidebar *)sidebar3 _setHidden:v8 source:1];
   }
 }
 
-- (UIEdgeInsets)edgeInsetsForChildViewController:(id)a3
+- (UIEdgeInsets)edgeInsetsForChildViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v5 = 0.0;
   v6 = 0.0;
   if ([(_UITabContainerView *)self isShowingFloatingTabBar])
   {
-    v7 = [(_UITabContainerView *)self tabBarController];
-    v8 = [v7 _tabElements];
-    if ([v8 count])
+    tabBarController = [(_UITabContainerView *)self tabBarController];
+    _tabElements = [tabBarController _tabElements];
+    if ([_tabElements count])
     {
-      v9 = [v4 _shouldOverlayTabBar];
+      _shouldOverlayTabBar = [controllerCopy _shouldOverlayTabBar];
 
-      if ((v9 & 1) == 0)
+      if ((_shouldOverlayTabBar & 1) == 0)
       {
         [(_UITabContainerView *)self _floatingTabBarFittingHeight];
         v6 = v10;
@@ -1307,18 +1307,18 @@ LABEL_12:
   {
     [(_UITabContainerView *)self _currentSidebarWidth];
     v11 = v12;
-    v13 = [(UIView *)self _shouldReverseLayoutDirection];
-    v5 = v13 ? v11 : 0.0;
-    if (v13)
+    _shouldReverseLayoutDirection = [(UIView *)self _shouldReverseLayoutDirection];
+    v5 = _shouldReverseLayoutDirection ? v11 : 0.0;
+    if (_shouldReverseLayoutDirection)
     {
       v11 = 0.0;
     }
   }
 
-  v14 = [(_UITabContainerView *)self tabBarController];
-  v15 = [v14 bottomAccessory];
+  tabBarController2 = [(_UITabContainerView *)self tabBarController];
+  bottomAccessory = [tabBarController2 bottomAccessory];
 
-  if (v15)
+  if (bottomAccessory)
   {
     [(_UITabContainerView *)self frameForHostedElement:2 options:0];
     v16 = CGRectGetHeight(v21) + 10.0;
@@ -1340,22 +1340,22 @@ LABEL_12:
   return result;
 }
 
-- (double)floatingTabBarTopInsetForViewController:(id)a3
+- (double)floatingTabBarTopInsetForViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v5 = 0.0;
   if ([(_UITabContainerView *)self isShowingFloatingTabBar])
   {
-    v6 = [v4 _hostingNavigationBar];
+    _hostingNavigationBar = [controllerCopy _hostingNavigationBar];
 
-    if (v6)
+    if (_hostingNavigationBar)
     {
-      v7 = [(_UITabContainerView *)self _currentPlatformMetrics];
-      [v7 verticalPaddingToNavigationBar];
+      _currentPlatformMetrics = [(_UITabContainerView *)self _currentPlatformMetrics];
+      [_currentPlatformMetrics verticalPaddingToNavigationBar];
       v9 = v8;
 
-      v10 = [(_UITabContainerView *)self floatingTabBar];
-      [v10 contentLayoutFrame];
+      floatingTabBar = [(_UITabContainerView *)self floatingTabBar];
+      [floatingTabBar contentLayoutFrame];
       v5 = v9 + v11;
     }
 
@@ -1378,9 +1378,9 @@ LABEL_12:
   {
     [(_UITabContainerView *)self _currentSidebarWidth];
     v7 = v6;
-    v8 = [(UIView *)self _shouldReverseLayoutDirection];
+    _shouldReverseLayoutDirection = [(UIView *)self _shouldReverseLayoutDirection];
     v9 = v7 + 0.0;
-    if (v8)
+    if (_shouldReverseLayoutDirection)
     {
       v4 = v7 + 0.0;
     }
@@ -1390,7 +1390,7 @@ LABEL_12:
       v4 = 0.0;
     }
 
-    if (v8)
+    if (_shouldReverseLayoutDirection)
     {
       v5 = 0.0;
     }
@@ -1401,10 +1401,10 @@ LABEL_12:
     }
   }
 
-  v10 = [(_UITabContainerView *)self tabBarController];
-  v11 = [v10 bottomAccessory];
+  tabBarController = [(_UITabContainerView *)self tabBarController];
+  bottomAccessory = [tabBarController bottomAccessory];
 
-  if (v11)
+  if (bottomAccessory)
   {
     [(_UITabContainerView *)self frameForHostedElement:2 options:0];
     v3 = CGRectGetHeight(v16) + 10.0;
@@ -1423,10 +1423,10 @@ LABEL_12:
 
 - (UIEdgeInsets)bottomAccessoryInsets
 {
-  v3 = [(_UITabContainerView *)self tabBarController];
-  v4 = [v3 bottomAccessory];
+  tabBarController = [(_UITabContainerView *)self tabBarController];
+  bottomAccessory = [tabBarController bottomAccessory];
 
-  if (v4)
+  if (bottomAccessory)
   {
     [(_UITabContainerView *)self frameForHostedElement:2 options:0];
     v6 = v5;
@@ -1457,19 +1457,19 @@ LABEL_12:
   return result;
 }
 
-- (CGRect)adjustedFrameForContentTransitionViewFrame:(CGRect)a3
+- (CGRect)adjustedFrameForContentTransitionViewFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  remainder = a3;
-  v8 = [(_UITabContainerView *)self sidebar];
-  if ([(UITabBarControllerSidebar *)v8 _isSidebarSupportedAndVisible])
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  remainder = frame;
+  sidebar = [(_UITabContainerView *)self sidebar];
+  if ([(UITabBarControllerSidebar *)sidebar _isSidebarSupportedAndVisible])
   {
-    v9 = [(_UITabContainerView *)self sidebarView];
-    v10 = [v9 superview];
-    v11 = v10 == 0;
+    sidebarView = [(_UITabContainerView *)self sidebarView];
+    superview = [sidebarView superview];
+    v11 = superview == 0;
   }
 
   else
@@ -1519,9 +1519,9 @@ LABEL_12:
   v4 = 0.0;
   if ([(_UITabContainerView *)self isShowingFloatingTabBar])
   {
-    v5 = [(_UITabContainerView *)self tabBarController];
-    v6 = [v5 _tabElements];
-    v7 = [v6 count];
+    tabBarController = [(_UITabContainerView *)self tabBarController];
+    _tabElements = [tabBarController _tabElements];
+    v7 = [_tabElements count];
 
     if (v7)
     {
@@ -1535,18 +1535,18 @@ LABEL_12:
   {
     [(_UITabContainerView *)self _currentSidebarWidth];
     v9 = v10;
-    v11 = [(UIView *)self _shouldReverseLayoutDirection];
-    v3 = v11 ? v9 : 0.0;
-    if (v11)
+    _shouldReverseLayoutDirection = [(UIView *)self _shouldReverseLayoutDirection];
+    v3 = _shouldReverseLayoutDirection ? v9 : 0.0;
+    if (_shouldReverseLayoutDirection)
     {
       v9 = 0.0;
     }
   }
 
-  v12 = [(_UITabContainerView *)self tabBarController];
-  v13 = [v12 bottomAccessory];
+  tabBarController2 = [(_UITabContainerView *)self tabBarController];
+  bottomAccessory = [tabBarController2 bottomAccessory];
 
-  if (v13)
+  if (bottomAccessory)
   {
     [(_UITabContainerView *)self frameForHostedElement:2 options:0];
     v14 = CGRectGetHeight(v33) + 10.0;
@@ -1576,9 +1576,9 @@ LABEL_12:
   return result;
 }
 
-- (CGRect)floatingTabBarContentFrameInCoordinateSpace:(id)a3
+- (CGRect)floatingTabBarContentFrameInCoordinateSpace:(id)space
 {
-  v4 = a3;
+  spaceCopy = space;
   [(_UIFloatingTabBar *)self->_floatingTabBar contentLayoutFrame];
   v6 = v5;
   v8 = v7;
@@ -1607,8 +1607,8 @@ LABEL_12:
 
   if (![(_UITabContainerView *)self isEditing])
   {
-    v20 = [(UIView *)self->_dimmingView superview];
-    if (v20)
+    superview = [(UIView *)self->_dimmingView superview];
+    if (superview)
     {
     }
 
@@ -1628,7 +1628,7 @@ LABEL_12:
   }
 
 LABEL_8:
-  [(UIView *)self convertRect:v4 toCoordinateSpace:MidX, v19, v10, v12];
+  [(UIView *)self convertRect:spaceCopy toCoordinateSpace:MidX, v19, v10, v12];
   x = v21;
   y = v23;
   width = v25;
@@ -1650,36 +1650,36 @@ LABEL_10:
   return result;
 }
 
-- (void)_updateSidebarContentMarginsWithTabBarContentFrame:(CGRect)a3
+- (void)_updateSidebarContentMarginsWithTabBarContentFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(_UITabContainerView *)self floatingTabBar];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  floatingTabBar = [(_UITabContainerView *)self floatingTabBar];
   v39.origin.x = x;
   v39.origin.y = y;
   v39.size.width = width;
   v39.size.height = height;
-  [v8 convertRect:self toView:{x, y, width, height}];
+  [floatingTabBar convertRect:self toView:{x, y, width, height}];
   v10 = v9;
   v12 = v11;
   v14 = v13;
   v16 = v15;
 
-  v17 = [(_UITabContainerView *)self sidebarView];
-  [v17 frame];
+  sidebarView = [(_UITabContainerView *)self sidebarView];
+  [sidebarView frame];
   v19 = v18;
   v21 = v20;
   v23 = v22;
   v25 = v24;
 
-  v26 = [(UIView *)self _shouldReverseLayoutDirection];
+  _shouldReverseLayoutDirection = [(UIView *)self _shouldReverseLayoutDirection];
   v27 = v10;
   v28 = v12;
   v29 = v14;
   v30 = v16;
-  if (v26)
+  if (_shouldReverseLayoutDirection)
   {
     MaxX = CGRectGetMaxX(*&v27);
     v41.origin.x = v19;
@@ -1707,13 +1707,13 @@ LABEL_10:
     }
   }
 
-  v34 = [(_UITabContainerView *)self sidebarView];
-  if (!v34)
+  sidebarView2 = [(_UITabContainerView *)self sidebarView];
+  if (!sidebarView2)
   {
     goto LABEL_8;
   }
 
-  v35 = v34[53];
+  v35 = sidebarView2[53];
 
   if (v35 == 1)
   {
@@ -1759,8 +1759,8 @@ LABEL_10:
 - (double)_currentSidebarWidth
 {
   [(_UITabContainerView *)self currentSidebarWidth];
-  v3 = [(UIView *)self traitCollection];
-  v4 = _UISidebarGetPlatformMetrics([v3 userInterfaceIdiom]);
+  traitCollection = [(UIView *)self traitCollection];
+  v4 = _UISidebarGetPlatformMetrics([traitCollection userInterfaceIdiom]);
 
   [v4 narrowWidthMetrics];
   [(UIView *)self _shouldReverseLayoutDirection];
@@ -1778,18 +1778,18 @@ LABEL_10:
     return 4.0;
   }
 
-  v3 = [(_UITabContainerView *)self _currentPlatformMetrics];
-  v4 = [(UIView *)self traitCollection];
-  v5 = [v4 _presentationSemanticContext];
+  _currentPlatformMetrics = [(_UITabContainerView *)self _currentPlatformMetrics];
+  traitCollection = [(UIView *)self traitCollection];
+  _presentationSemanticContext = [traitCollection _presentationSemanticContext];
 
   [(UIView *)self safeAreaInsets];
   v7 = v6;
-  [v3 safeAreaOffset];
+  [_currentPlatformMetrics safeAreaOffset];
   v9 = v8;
   v10 = 0.0;
-  if (v5 == 2)
+  if (_presentationSemanticContext == 2)
   {
-    [v3 verticalOffsetInSheetPresentationContext];
+    [_currentPlatformMetrics verticalOffsetInSheetPresentationContext];
     v10 = v11;
   }
 
@@ -1799,7 +1799,7 @@ LABEL_10:
 
   [(_UIFloatingTabBar *)self->_floatingTabBar baselineOffsetFromTop];
   v16 = v7 + v9 + v10 + v14 - v15;
-  [v3 minimumEdgeOffset];
+  [_currentPlatformMetrics minimumEdgeOffset];
   v18 = fmax(v16, v17);
 
   return v18;
@@ -1807,10 +1807,10 @@ LABEL_10:
 
 - (double)_floatingTabBarFittingHeight
 {
-  v2 = [(_UITabContainerView *)self availableComponent];
+  availableComponent = [(_UITabContainerView *)self availableComponent];
   v3 = _UITabBarControllerWantsNavigationBarExtensionForFloatingTabBar();
   result = 50.0;
-  if ((v3 & v2) != 0)
+  if ((v3 & availableComponent) != 0)
   {
     return 64.0;
   }
@@ -1820,29 +1820,29 @@ LABEL_10:
 
 - (id)_currentPlatformMetrics
 {
-  v2 = [(UIView *)self traitCollection];
-  v3 = _UIFloatingTabBarGetPlatformMetrics([v2 userInterfaceIdiom]);
+  traitCollection = [(UIView *)self traitCollection];
+  v3 = _UIFloatingTabBarGetPlatformMetrics([traitCollection userInterfaceIdiom]);
 
   return v3;
 }
 
 - (void)_updateToggleAction
 {
-  v5 = [(_UITabContainerView *)self floatingTabBar];
-  v3 = [(_UITabContainerView *)self sidebarView];
-  v4 = [(_UITabContainerView *)self _sidebarToggleAction];
-  [v5 setSidebarButtonAction:v4];
-  [(_UITabOutlineView *)v3 setSidebarButtonAction:v4];
-  [(_UITabOutlineView *)v3 setTransitionsToTabBar:?];
+  floatingTabBar = [(_UITabContainerView *)self floatingTabBar];
+  sidebarView = [(_UITabContainerView *)self sidebarView];
+  _sidebarToggleAction = [(_UITabContainerView *)self _sidebarToggleAction];
+  [floatingTabBar setSidebarButtonAction:_sidebarToggleAction];
+  [(_UITabOutlineView *)sidebarView setSidebarButtonAction:_sidebarToggleAction];
+  [(_UITabOutlineView *)sidebarView setTransitionsToTabBar:?];
 }
 
 - (UIAction)_sidebarToggleAction
 {
-  v3 = [(_UITabContainerView *)self overrideTidebarButtonAction];
+  overrideTidebarButtonAction = [(_UITabContainerView *)self overrideTidebarButtonAction];
 
-  if (v3)
+  if (overrideTidebarButtonAction)
   {
-    v4 = [(_UITabContainerView *)self overrideTidebarButtonAction];
+    overrideTidebarButtonAction2 = [(_UITabContainerView *)self overrideTidebarButtonAction];
   }
 
   else if ([(_UITabContainerView *)self supportedComponent]== 3)
@@ -1865,26 +1865,26 @@ LABEL_10:
       sidebarToggleAction = self->_sidebarToggleAction;
     }
 
-    v4 = sidebarToggleAction;
+    overrideTidebarButtonAction2 = sidebarToggleAction;
   }
 
   else
   {
-    v4 = 0;
+    overrideTidebarButtonAction2 = 0;
   }
 
-  return v4;
+  return overrideTidebarButtonAction2;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v6 = a3;
-  v7 = a4;
-  if (self->_sidebarResizeTapGestureRecognizer == v6 || self->_sidebarResizeDirectPanGestureRecognizer == v6 || self->_sidebarResizeIndirectPanGestureRecognizer == v6)
+  recognizerCopy = recognizer;
+  touchCopy = touch;
+  if (self->_sidebarResizeTapGestureRecognizer == recognizerCopy || self->_sidebarResizeDirectPanGestureRecognizer == recognizerCopy || self->_sidebarResizeIndirectPanGestureRecognizer == recognizerCopy)
   {
     if ([(_UITabContainerView *)self _isShowingSidebar])
     {
-      v8 = [(_UITabContainerView *)self _sidebarGestureRecognizerShouldReceiveTouch:v7];
+      v8 = [(_UITabContainerView *)self _sidebarGestureRecognizerShouldReceiveTouch:touchCopy];
     }
 
     else
@@ -1901,29 +1901,29 @@ LABEL_10:
   return v8;
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = [a3 view];
-  if (v4 == self->_dimmingView)
+  view = [begin view];
+  if (view == self->_dimmingView)
   {
-    v7 = [(_UITabContainerView *)self isEditing];
+    isEditing = [(_UITabContainerView *)self isEditing];
 
-    if (!v7)
+    if (!isEditing)
     {
       LOBYTE(v5) = 1;
       return v5;
     }
 
-    v4 = [(_UITabContainerView *)self floatingTabBar];
-    if (([(UIView *)v4 hasActiveDrag]& 1) != 0)
+    view = [(_UITabContainerView *)self floatingTabBar];
+    if (([(UIView *)view hasActiveDrag]& 1) != 0)
     {
       LOBYTE(v5) = 0;
     }
 
     else
     {
-      v8 = [(_UITabContainerView *)self sidebarView];
-      v5 = [(_UITabOutlineView *)v8 hasActiveDrag]^ 1;
+      sidebarView = [(_UITabContainerView *)self sidebarView];
+      v5 = [(_UITabOutlineView *)sidebarView hasActiveDrag]^ 1;
     }
   }
 
@@ -1935,14 +1935,14 @@ LABEL_10:
   return v5;
 }
 
-- (BOOL)_gestureRecognizer:(id)a3 canBePreventedByGestureRecognizer:(id)a4
+- (BOOL)_gestureRecognizer:(id)recognizer canBePreventedByGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a4;
-  v7 = v6;
-  if (self->_sidebarResizeDirectPanGestureRecognizer == a3 || self->_sidebarResizeIndirectPanGestureRecognizer == a3)
+  gestureRecognizerCopy = gestureRecognizer;
+  v7 = gestureRecognizerCopy;
+  if (self->_sidebarResizeDirectPanGestureRecognizer == recognizer || self->_sidebarResizeIndirectPanGestureRecognizer == recognizer)
   {
-    v9 = [v6 name];
-    v8 = [v9 isEqualToString:@"com.apple.UIKit.UIWindowDraggingPan"];
+    name = [gestureRecognizerCopy name];
+    v8 = [name isEqualToString:@"com.apple.UIKit.UIWindowDraggingPan"];
   }
 
   else
@@ -1953,12 +1953,12 @@ LABEL_10:
   return v8;
 }
 
-- (void)setSupportsResizingSidebar:(BOOL)a3
+- (void)setSupportsResizingSidebar:(BOOL)sidebar
 {
-  if (self->_supportsResizingSidebar != a3)
+  if (self->_supportsResizingSidebar != sidebar)
   {
-    self->_supportsResizingSidebar = a3;
-    if (a3)
+    self->_supportsResizingSidebar = sidebar;
+    if (sidebar)
     {
       v4 = [_UITabSidebarBorderView alloc];
       v5 = [(_UITabSidebarBorderView *)v4 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
@@ -2031,17 +2031,17 @@ LABEL_10:
   }
 }
 
-- (BOOL)_sidebarGestureRecognizerShouldReceiveTouch:(id)a3
+- (BOOL)_sidebarGestureRecognizerShouldReceiveTouch:(id)touch
 {
-  v4 = a3;
-  v5 = [(_UITabContainerView *)self sidebarBorderView];
-  [v5 _touchInsets];
+  touchCopy = touch;
+  sidebarBorderView = [(_UITabContainerView *)self sidebarBorderView];
+  [sidebarBorderView _touchInsets];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  v14 = [v4 _isPointerTouch];
-  if (v14)
+  _isPointerTouch = [touchCopy _isPointerTouch];
+  if (_isPointerTouch)
   {
     v15 = v7;
   }
@@ -2051,7 +2051,7 @@ LABEL_10:
     v15 = 0.0;
   }
 
-  if (v14)
+  if (_isPointerTouch)
   {
     v16 = v9;
   }
@@ -2061,7 +2061,7 @@ LABEL_10:
     v16 = -22.0;
   }
 
-  if (v14)
+  if (_isPointerTouch)
   {
     v17 = v11;
   }
@@ -2071,7 +2071,7 @@ LABEL_10:
     v17 = 0.0;
   }
 
-  if (v14)
+  if (_isPointerTouch)
   {
     v18 = v13;
   }
@@ -2081,12 +2081,12 @@ LABEL_10:
     v18 = -22.0;
   }
 
-  [v5 bounds];
+  [sidebarBorderView bounds];
   v20 = v16 + v19;
   v22 = v15 + v21;
   v24 = v23 - (v16 + v18);
   v26 = v25 - (v15 + v17);
-  [v4 locationInView:v5];
+  [touchCopy locationInView:sidebarBorderView];
   v31.x = v27;
   v31.y = v28;
   v32.origin.x = v20;
@@ -2098,25 +2098,25 @@ LABEL_10:
   return v29;
 }
 
-- (void)_handleSidebarResizePanGestureRecognizer:(id)a3
+- (void)_handleSidebarResizePanGestureRecognizer:(id)recognizer
 {
-  v4 = a3;
-  v10 = [v4 view];
-  [v4 translationInView:?];
+  recognizerCopy = recognizer;
+  view = [recognizerCopy view];
+  [recognizerCopy translationInView:?];
   v6 = v5;
-  v7 = [v4 state];
+  state = [recognizerCopy state];
 
   v8 = 0.0;
-  if ((v7 - 4) >= 2)
+  if ((state - 4) >= 2)
   {
-    if (v7 == 3)
+    if (state == 3)
     {
       [(_UITabContainerView *)self _commitSidebarTranslation];
     }
 
     else
     {
-      if (v7 != 2)
+      if (state != 2)
       {
         goto LABEL_7;
       }
@@ -2128,17 +2128,17 @@ LABEL_10:
   [(_UITabContainerView *)self setPendingSidebarTranslation:v8];
 LABEL_7:
   [(_UITabContainerView *)self _updateSidebarViewFrame];
-  v9 = [(_UITabContainerView *)self delegate];
-  [v9 updateContentLayoutForSidebarAppearanceWithTransitionCoordinator:0];
+  delegate = [(_UITabContainerView *)self delegate];
+  [delegate updateContentLayoutForSidebarAppearanceWithTransitionCoordinator:0];
 }
 
-- (void)_handleSidebarResizeTapGestureRecognizer:(id)a3
+- (void)_handleSidebarResizeTapGestureRecognizer:(id)recognizer
 {
-  if ([a3 state] == 3)
+  if ([recognizer state] == 3)
   {
     [(_UITabContainerView *)self setCurrentSidebarWidth:0.0];
-    v4 = [(_UITabContainerView *)self tabCustomizationStore];
-    [v4 setPreferredSidebarWidth:0.0];
+    tabCustomizationStore = [(_UITabContainerView *)self tabCustomizationStore];
+    [tabCustomizationStore setPreferredSidebarWidth:0.0];
 
     v5 = [[_UITabSidebarTransitionAnimator alloc] initWithContainerView:self duration:0.5];
     v9[0] = MEMORY[0x1E69E9820];
@@ -2162,46 +2162,46 @@ LABEL_7:
   [(_UITabContainerView *)self _currentSidebarWidth];
   v4 = v3;
   [(_UITabContainerView *)self setCurrentSidebarWidth:?];
-  v5 = [(_UITabContainerView *)self tabCustomizationStore];
-  [v5 setPreferredSidebarWidth:v4];
+  tabCustomizationStore = [(_UITabContainerView *)self tabCustomizationStore];
+  [tabCustomizationStore setPreferredSidebarWidth:v4];
 }
 
 - (BOOL)_isTabBarHidden
 {
   if (self->_availableComponent)
   {
-    v2 = [(_UITabContainerView *)self canShowFloatingUI];
-    if (v2)
+    canShowFloatingUI = [(_UITabContainerView *)self canShowFloatingUI];
+    if (canShowFloatingUI)
     {
 
-      LOBYTE(v2) = [(_UITabContainerView *)self suppressTabBar];
+      LOBYTE(canShowFloatingUI) = [(_UITabContainerView *)self suppressTabBar];
     }
   }
 
   else
   {
-    LOBYTE(v2) = 1;
+    LOBYTE(canShowFloatingUI) = 1;
   }
 
-  return v2;
+  return canShowFloatingUI;
 }
 
-- (void)updateBottomAccessoryAnimated:(BOOL)a3
+- (void)updateBottomAccessoryAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   [(_UITabContainerView *)self _updateVisibleBarAnimated:0];
-  v5 = [(_UITabContainerView *)self tabBarContentLayoutManager];
-  [v5 updateHostedElementsAnimated:v3];
+  tabBarContentLayoutManager = [(_UITabContainerView *)self tabBarContentLayoutManager];
+  [tabBarContentLayoutManager updateHostedElementsAnimated:animatedCopy];
 
   [(UIView *)self setNeedsLayout];
 }
 
-- (void)updateSidebarAppearanceStateAnimated:(BOOL)a3 animator:(id)a4
+- (void)updateSidebarAppearanceStateAnimated:(BOOL)animated animator:(id)animator
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(UIView *)self traitCollection];
-  v8 = [v7 horizontalSizeClass];
+  animatedCopy = animated;
+  animatorCopy = animator;
+  traitCollection = [(UIView *)self traitCollection];
+  horizontalSizeClass = [traitCollection horizontalSizeClass];
 
   if ([(_UITabContainerView *)self _isTabBarHidden])
   {
@@ -2210,36 +2210,36 @@ LABEL_7:
 
   else
   {
-    v9 = (v8 == 2) & ~[(_UITabContainerView *)self isEditing];
+    v9 = (horizontalSizeClass == 2) & ~[(_UITabContainerView *)self isEditing];
   }
 
   alongsideAnimator = self->_alongsideAnimator;
-  self->_alongsideAnimator = v6;
-  v12 = v6;
+  self->_alongsideAnimator = animatorCopy;
+  v12 = animatorCopy;
 
   if (v9)
   {
-    [(_UITabContainerView *)self _updateSidebarAppearanceForMorphTransitionAnimated:v4];
+    [(_UITabContainerView *)self _updateSidebarAppearanceForMorphTransitionAnimated:animatedCopy];
   }
 
   else
   {
-    [(_UITabContainerView *)self _updateVisibleBarAnimated:v4];
+    [(_UITabContainerView *)self _updateVisibleBarAnimated:animatedCopy];
   }
 
   v11 = self->_alongsideAnimator;
   self->_alongsideAnimator = 0;
 }
 
-- (void)_updateSidebarAppearanceForMorphTransitionAnimated:(BOOL)a3
+- (void)_updateSidebarAppearanceForMorphTransitionAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   if ([(_UITabContainerView *)self supportedComponent]== 3)
   {
-    if (v3 && +[UIView areAnimationsEnabled])
+    if (animatedCopy && +[UIView areAnimationsEnabled])
     {
-      v5 = [(UIView *)self window];
-      v6 = v5 != 0;
+      window = [(UIView *)self window];
+      v6 = window != 0;
     }
 
     else
@@ -2262,20 +2262,20 @@ LABEL_7:
     if (!v9)
     {
       objc_initWeak(&location, self);
-      v10 = [(_UITabContainerView *)self _configuredGroupCompletion];
+      _configuredGroupCompletion = [(_UITabContainerView *)self _configuredGroupCompletion];
       v23[0] = MEMORY[0x1E69E9820];
       v23[1] = 3221225472;
       v23[2] = __74___UITabContainerView__updateSidebarAppearanceForMorphTransitionAnimated___block_invoke;
       v23[3] = &unk_1E70F5A28;
       objc_copyWeak(&v24, &location);
-      [v10 addNonIncrementingCompletion:v23];
+      [_configuredGroupCompletion addNonIncrementingCompletion:v23];
       v11 = [_UITabMorphTransition alloc];
       v19[0] = MEMORY[0x1E69E9820];
       v19[1] = 3221225472;
       v19[2] = __74___UITabContainerView__updateSidebarAppearanceForMorphTransitionAnimated___block_invoke_2;
       v19[3] = &unk_1E7101A88;
       objc_copyWeak(&v22, &location);
-      v12 = v10;
+      v12 = _configuredGroupCompletion;
       v20 = v12;
       v21 = v7;
       v8 = [(_UITabMorphTransition *)v11 initWithContainer:self groupCompletion:v12 contentAlongsideAnimation:v19];
@@ -2302,9 +2302,9 @@ LABEL_7:
 
       [(_UITabContainerView *)self _updateVisibleItemIfNeeded];
       v15 = [(_UITabContainerView *)self _morphViewForVisibleItem:self->_visibleItem];
-      v16 = [v15 superview];
+      superview = [v15 superview];
 
-      if (!v16)
+      if (!superview)
       {
         [(_UITabContainerView *)self _updateVisibleBarAnimated:0 requireLayout:1 updateDimmingView:0];
       }
@@ -2314,8 +2314,8 @@ LABEL_7:
 
     else
     {
-      v17 = [(_UITabContainerView *)self delegate];
-      [v17 updateContentLayoutForSidebarAppearanceWithTransitionCoordinator:0];
+      delegate = [(_UITabContainerView *)self delegate];
+      [delegate updateContentLayoutForSidebarAppearanceWithTransitionCoordinator:0];
 
       [(_UITabBarControllerSidebarAnimator *)v7 runAnimations];
       [(_UITabBarControllerSidebarAnimator *)v7 runCompletions];
@@ -2335,27 +2335,27 @@ LABEL_7:
   else
   {
 
-    [(_UITabContainerView *)self _updateVisibleBarAnimated:v3];
+    [(_UITabContainerView *)self _updateVisibleBarAnimated:animatedCopy];
   }
 }
 
-- (void)updateEditModeAppearanceAnimated:(BOOL)a3
+- (void)updateEditModeAppearanceAnimated:(BOOL)animated
 {
-  v24 = a3;
-  v4 = [(_UITabContainerView *)self isEditing];
-  v5 = [(_UITabContainerView *)self supportedComponent];
-  v6 = [(_UITabContainerView *)self sidebar];
+  animatedCopy = animated;
+  isEditing = [(_UITabContainerView *)self isEditing];
+  supportedComponent = [(_UITabContainerView *)self supportedComponent];
+  sidebar = [(_UITabContainerView *)self sidebar];
   v7 = 1;
-  v8 = [(UITabBarControllerSidebar *)v6 _sidebarViewForEditing:?];
+  v8 = [(UITabBarControllerSidebar *)sidebar _sidebarViewForEditing:?];
 
-  v9 = [(_UITabContainerView *)self floatingTabBar];
-  v10 = [v8 superview];
+  floatingTabBar = [(_UITabContainerView *)self floatingTabBar];
+  superview = [v8 superview];
 
-  v11 = [v9 superview];
+  superview2 = [floatingTabBar superview];
 
-  if (v4 || !(v7 = [(_UITabContainerView *)self _isShowingSidebar]))
+  if (isEditing || !(v7 = [(_UITabContainerView *)self _isShowingSidebar]))
   {
-    v12 = v5 & 1;
+    v12 = supportedComponent & 1;
   }
 
   else
@@ -2363,18 +2363,18 @@ LABEL_7:
     v12 = 0;
   }
 
-  v13 = [(_UITabContainerView *)self _configuredGroupCompletion];
-  [v13 increment];
+  _configuredGroupCompletion = [(_UITabContainerView *)self _configuredGroupCompletion];
+  [_configuredGroupCompletion increment];
   self->_isAnimatingEditModeAppearance = 1;
   self->_suppressesEditingInsetsChanges = 1;
   [(_UITabOutlineView *)v8 tabModelEditingStateDidChange];
-  [v9 tabModelEditingStateDidChange];
-  if (v4)
+  [floatingTabBar tabModelEditingStateDidChange];
+  if (isEditing)
   {
-    [(_UITabOutlineView *)v8 setEditing:v10 != 0 animated:?];
-    v14 = v9;
+    [(_UITabOutlineView *)v8 setEditing:superview != 0 animated:?];
+    v14 = floatingTabBar;
     v15 = 1;
-    v16 = v11 != 0;
+    v16 = superview2 != 0;
 LABEL_11:
     [v14 setEditing:v15 animated:v16];
     goto LABEL_12;
@@ -2387,29 +2387,29 @@ LABEL_11:
 
   if (v12)
   {
-    v14 = v9;
+    v14 = floatingTabBar;
     v15 = 0;
     v16 = 1;
     goto LABEL_11;
   }
 
 LABEL_12:
-  [(_UITabContainerView *)self _updateVisibleBarAnimated:v24 requireLayout:1 updateDimmingView:1];
-  if (!v10 && v7)
+  [(_UITabContainerView *)self _updateVisibleBarAnimated:animatedCopy requireLayout:1 updateDimmingView:1];
+  if (!superview && v7)
   {
     [v8 setAlpha:0.0];
   }
 
-  if (!v11 && ((v12 ^ 1) & 1) == 0)
+  if (!superview2 && ((v12 ^ 1) & 1) == 0)
   {
-    [v9 setAlpha:0.0];
+    [floatingTabBar setAlpha:0.0];
   }
 
-  [(UIView *)self bringSubviewToFront:v9];
-  v17 = [(_UITabContainerView *)self sidebarView];
-  if (v17)
+  [(UIView *)self bringSubviewToFront:floatingTabBar];
+  sidebarView = [(_UITabContainerView *)self sidebarView];
+  if (sidebarView)
   {
-    v18 = v17[53] == 1;
+    v18 = sidebarView[53] == 1;
   }
 
   else
@@ -2419,7 +2419,7 @@ LABEL_12:
 
   v36 = 0u;
   v37 = 0u;
-  if (v4)
+  if (isEditing)
   {
     v19 = *&self->_sidebarAdditionalEditingInsets.bottom;
     v36 = *&self->_sidebarAdditionalEditingInsets.top;
@@ -2434,18 +2434,18 @@ LABEL_12:
   v27[3] = &unk_1E7120BB0;
   v33 = v7;
   v28 = v8;
-  v29 = v9;
+  v29 = floatingTabBar;
   v34 = v12;
   v35 = v18;
   v32 = v37;
-  v30 = self;
+  selfCopy = self;
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __56___UITabContainerView_updateEditModeAppearanceAnimated___block_invoke_2;
   v25[3] = &unk_1E70F3FD8;
-  v26 = v13;
-  v21 = v13;
-  v22 = v9;
+  v26 = _configuredGroupCompletion;
+  v21 = _configuredGroupCompletion;
+  v22 = floatingTabBar;
   v23 = v8;
   [UIView _animateUsingSpringBehavior:v20 tracking:0 animations:v27 completion:v25];
 }
@@ -2479,13 +2479,13 @@ LABEL_12:
 {
   if (self->_isAnimatingEditModeAppearance)
   {
-    v3 = [(_UITabContainerView *)self isEditing];
-    v5 = [(_UITabContainerView *)self floatingTabBar];
-    v4 = [(_UITabContainerView *)self sidebarView];
-    [v5 setAlpha:1.0];
-    [v4 setAlpha:1.0];
-    [v5 setEditing:v3 animated:0];
-    [(_UITabOutlineView *)v4 setEditing:v3 animated:0];
+    isEditing = [(_UITabContainerView *)self isEditing];
+    floatingTabBar = [(_UITabContainerView *)self floatingTabBar];
+    sidebarView = [(_UITabContainerView *)self sidebarView];
+    [floatingTabBar setAlpha:1.0];
+    [sidebarView setAlpha:1.0];
+    [floatingTabBar setEditing:isEditing animated:0];
+    [(_UITabOutlineView *)sidebarView setEditing:isEditing animated:0];
     self->_isAnimatingEditModeAppearance = 0;
     self->_suppressesEditingInsetsChanges = 0;
   }
@@ -2493,71 +2493,71 @@ LABEL_12:
 
 - (void)_horizontalSizeClassDidChange
 {
-  v3 = [(_UITabContainerView *)self canShowFloatingUI];
-  v4 = [(_UITabContainerView *)self floatingTabBar];
-  [v4 setShowRecentItem:v3];
+  canShowFloatingUI = [(_UITabContainerView *)self canShowFloatingUI];
+  floatingTabBar = [(_UITabContainerView *)self floatingTabBar];
+  [floatingTabBar setShowRecentItem:canShowFloatingUI];
 
   [(_UITabContainerView *)self _updateVisibleBarAnimated:0];
 }
 
-- (void)_updateVisibleBarAnimated:(BOOL)a3 requireLayout:(BOOL)a4 updateDimmingView:(BOOL)a5
+- (void)_updateVisibleBarAnimated:(BOOL)animated requireLayout:(BOOL)layout updateDimmingView:(BOOL)view
 {
-  v55 = a5;
-  v5 = a3;
+  viewCopy = view;
+  animatedCopy = animated;
   self->_isUpdatingVisibleBar = 1;
-  v7 = [(_UITabContainerView *)self _currentVisibleComponents];
-  v58 = [(_UITabContainerView *)self _isTabBarHidden];
-  v8 = v7 & 1;
-  v53 = (v7 >> 1) & 1;
-  v54 = v7 & 4;
-  v51 = (v7 >> 2) & 1;
-  v60 = v7;
-  v10 = (v7 & 9) != 0 && self->_tabBarGroupView != 0;
-  v11 = [(_UITabContainerView *)self sidebarView];
-  v52 = [(_UITabContainerView *)self floatingTabBar];
-  v12 = [(_UITabContainerView *)self tabBarGroupView];
-  v13 = [v12 contentView];
-  v14 = v13;
-  if (v13)
+  _currentVisibleComponents = [(_UITabContainerView *)self _currentVisibleComponents];
+  _isTabBarHidden = [(_UITabContainerView *)self _isTabBarHidden];
+  v8 = _currentVisibleComponents & 1;
+  v53 = (_currentVisibleComponents >> 1) & 1;
+  v54 = _currentVisibleComponents & 4;
+  v51 = (_currentVisibleComponents >> 2) & 1;
+  v60 = _currentVisibleComponents;
+  v10 = (_currentVisibleComponents & 9) != 0 && self->_tabBarGroupView != 0;
+  sidebarView = [(_UITabContainerView *)self sidebarView];
+  floatingTabBar = [(_UITabContainerView *)self floatingTabBar];
+  tabBarGroupView = [(_UITabContainerView *)self tabBarGroupView];
+  contentView = [tabBarGroupView contentView];
+  v14 = contentView;
+  if (contentView)
   {
-    v15 = v13;
+    selfCopy = contentView;
   }
 
   else
   {
-    v15 = self;
+    selfCopy = self;
   }
 
-  v16 = v15;
+  v16 = selfCopy;
 
-  v17 = [(_UITabContainerView *)self sidebarBorderView];
+  sidebarBorderView = [(_UITabContainerView *)self sidebarBorderView];
   v59 = self->_alongsideAnimator;
   v84[0] = MEMORY[0x1E69E9820];
   v84[1] = 3221225472;
   v84[2] = __81___UITabContainerView__updateVisibleBarAnimated_requireLayout_updateDimmingView___block_invoke;
   v84[3] = &unk_1E7102990;
-  v18 = v5 || a4;
+  v18 = animatedCopy || layout;
   v89 = v10;
   v84[4] = self;
   v57 = v8;
   v90 = v8;
   v19 = v16;
-  v20 = v5;
+  v20 = animatedCopy;
   v50 = v19;
   v85 = v19;
   v91 = v18;
   v92 = v51;
-  v21 = v11;
+  v21 = sidebarView;
   v86 = v21;
-  v22 = v17;
+  v22 = sidebarBorderView;
   v87 = v22;
   v93 = v53;
-  v23 = v52;
+  v23 = floatingTabBar;
   v88 = v23;
   [UIView performWithoutAnimation:v84];
-  if (v55)
+  if (viewCopy)
   {
-    [(_UITabContainerView *)self updateDimmingViewAnimated:v5, v50];
+    [(_UITabContainerView *)self updateDimmingViewAnimated:animatedCopy, v50];
   }
 
   v24 = *MEMORY[0x1E695EFD0];
@@ -2570,11 +2570,11 @@ LABEL_12:
   *&v83.a = v24;
   v26 = 1.0;
   v27 = 1.0;
-  if (v54 == 0 && v58)
+  if (v54 == 0 && _isTabBarHidden)
   {
-    v28 = [v21 _shouldReverseLayoutDirection];
+    _shouldReverseLayoutDirection = [v21 _shouldReverseLayoutDirection];
     [(_UITabContainerView *)self _currentSidebarWidth];
-    if (!v28)
+    if (!_shouldReverseLayoutDirection)
     {
       v29 = -v29;
     }
@@ -2594,7 +2594,7 @@ LABEL_12:
     }
   }
 
-  if ((v60 & 2) == 0 && v58)
+  if ((v60 & 2) == 0 && _isTabBarHidden)
   {
     [(_UITabContainerView *)self _floatingTabBarFittingHeight];
     v26 = 0.0;
@@ -2627,22 +2627,22 @@ LABEL_12:
 
   if (v33 != v26)
   {
-    v35 = [(_UITabContainerView *)self floatingTabBarHost];
-    [v35 tabBarContainerWillChangeFloatingTabBarVisibility:self];
+    floatingTabBarHost = [(_UITabContainerView *)self floatingTabBarHost];
+    [floatingTabBarHost tabBarContainerWillChangeFloatingTabBarVisibility:self];
   }
 
   if (v57)
   {
-    v36 = [(_UITabContainerView *)self tabBarContentLayoutManager];
+    tabBarContentLayoutManager = [(_UITabContainerView *)self tabBarContentLayoutManager];
 
-    if (v36)
+    if (tabBarContentLayoutManager)
     {
-      v37 = v58 || [(_UITabContainerView *)self isBottomBarSuppressed];
+      v37 = _isTabBarHidden || [(_UITabContainerView *)self isBottomBarSuppressed];
       if (self->_isHidingBottomTabBar != v37)
       {
         self->_isHidingBottomTabBar = v37;
-        v38 = [(_UITabContainerView *)self tabBarContentLayoutManager];
-        [v38 setBarHidden:v37 animated:v20];
+        tabBarContentLayoutManager2 = [(_UITabContainerView *)self tabBarContentLayoutManager];
+        [tabBarContentLayoutManager2 setBarHidden:v37 animated:v20];
       }
     }
   }
@@ -2741,16 +2741,16 @@ LABEL_12:
       goto LABEL_5;
     }
 
-    v7 = [(_UITabContainerView *)self sidebar];
-    if ([v7 isHidden])
+    sidebar = [(_UITabContainerView *)self sidebar];
+    if ([sidebar isHidden])
     {
 
       goto LABEL_11;
     }
 
-    v8 = [(_UITabContainerView *)self availableComponent];
+    availableComponent = [(_UITabContainerView *)self availableComponent];
 
-    if ((v8 & 2) == 0)
+    if ((availableComponent & 2) == 0)
     {
 LABEL_11:
       if ([(_UITabContainerView *)self suppressTabBar])
@@ -2775,10 +2775,10 @@ LABEL_11:
   }
 
 LABEL_5:
-  v4 = [(_UITabContainerView *)self tabBarController];
-  v5 = [v4 bottomAccessory];
+  tabBarController = [(_UITabContainerView *)self tabBarController];
+  bottomAccessory = [tabBarController bottomAccessory];
 
-  if (v5)
+  if (bottomAccessory)
   {
     return v3 | 8;
   }
@@ -2789,30 +2789,30 @@ LABEL_5:
   }
 }
 
-- (id)_morphViewForVisibleItem:(int64_t)a3
+- (id)_morphViewForVisibleItem:(int64_t)item
 {
-  if (a3 == 1)
+  if (item == 1)
   {
-    v3 = [(_UITabContainerView *)self sidebarView];
+    sidebarView = [(_UITabContainerView *)self sidebarView];
   }
 
   else
   {
-    if (a3)
+    if (item)
     {
       goto LABEL_6;
     }
 
-    v3 = [(_UITabContainerView *)self floatingTabBar];
+    sidebarView = [(_UITabContainerView *)self floatingTabBar];
   }
 
-  a2 = v3;
+  a2 = sidebarView;
 LABEL_6:
 
   return a2;
 }
 
-- (void)_handleDimmingViewTap:(id)a3
+- (void)_handleDimmingViewTap:(id)tap
 {
   if ([(_UITabContainerView *)self isEditing])
   {
@@ -2822,33 +2822,33 @@ LABEL_6:
 
   else
   {
-    v4 = [(_UITabContainerView *)self sidebar];
-    [(UITabBarControllerSidebar *)v4 _setHidden:3 source:?];
+    sidebar = [(_UITabContainerView *)self sidebar];
+    [(UITabBarControllerSidebar *)sidebar _setHidden:3 source:?];
   }
 }
 
-- (void)updateDimmingViewAnimated:(BOOL)a3
+- (void)updateDimmingViewAnimated:(BOOL)animated
 {
-  v4 = [(_UITabContainerView *)self isEditing];
-  v5 = [(_UITabContainerView *)self sidebarLayout];
-  v6 = [(_UITabContainerView *)self sidebar];
-  v7 = [(UITabBarControllerSidebar *)v6 _isSidebarSupportedAndVisible];
+  isEditing = [(_UITabContainerView *)self isEditing];
+  sidebarLayout = [(_UITabContainerView *)self sidebarLayout];
+  sidebar = [(_UITabContainerView *)self sidebar];
+  _isSidebarSupportedAndVisible = [(UITabBarControllerSidebar *)sidebar _isSidebarSupportedAndVisible];
 
   if (![(_UITabContainerView *)self canShowFloatingUI])
   {
     goto LABEL_8;
   }
 
-  v8 = v5 != 2 || v4;
-  if (v8 & 1) != 0 || ((v7 ^ 1))
+  v8 = sidebarLayout != 2 || isEditing;
+  if (v8 & 1) != 0 || ((_isSidebarSupportedAndVisible ^ 1))
   {
-    if (!v4)
+    if (!isEditing)
     {
       goto LABEL_8;
     }
 
 LABEL_11:
-    v10 = [(_UITabContainerView *)self _dimmingView];
+    _dimmingView = [(_UITabContainerView *)self _dimmingView];
     v12 = 1.0;
     v11 = 1;
     goto LABEL_12;
@@ -2860,20 +2860,20 @@ LABEL_11:
   }
 
 LABEL_8:
-  v9 = [(UIView *)self->_dimmingView superview];
+  superview = [(UIView *)self->_dimmingView superview];
 
-  if (!v9)
+  if (!superview)
   {
     return;
   }
 
-  v10 = [(_UITabContainerView *)self _dimmingView];
+  _dimmingView = [(_UITabContainerView *)self _dimmingView];
   v11 = 0;
   v12 = 0.0;
 LABEL_12:
-  v13 = [v10 superview];
+  superview2 = [_dimmingView superview];
 
-  if (!v13)
+  if (!superview2)
   {
     v14 = 1.0;
     if (v11)
@@ -2881,8 +2881,8 @@ LABEL_12:
       v14 = 0.0;
     }
 
-    [v10 setAlpha:v14];
-    [(UIView *)self insertSubview:v10 atIndex:0];
+    [_dimmingView setAlpha:v14];
+    [(UIView *)self insertSubview:_dimmingView atIndex:0];
   }
 
   v15 = [UIViewSpringAnimationBehavior behaviorWithDampingRatio:1.0 response:0.25];
@@ -2890,7 +2890,7 @@ LABEL_12:
   v20[1] = 3221225472;
   v20[2] = __49___UITabContainerView_updateDimmingViewAnimated___block_invoke;
   v20[3] = &unk_1E70F32F0;
-  v21 = v10;
+  v21 = _dimmingView;
   v22 = v12;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
@@ -2934,12 +2934,12 @@ LABEL_12:
 {
   if (self->_passthroughInteraction)
   {
-    v3 = [(_UITabContainerView *)self isSidebarOverlayingContent];
-    v4 = [(_UIPassthroughScrollInteraction *)self->_passthroughInteraction view];
+    isSidebarOverlayingContent = [(_UITabContainerView *)self isSidebarOverlayingContent];
+    view = [(_UIPassthroughScrollInteraction *)self->_passthroughInteraction view];
 
-    if (v3)
+    if (isSidebarOverlayingContent)
     {
-      if (!v4)
+      if (!view)
       {
         passthroughInteraction = self->_passthroughInteraction;
 
@@ -2947,7 +2947,7 @@ LABEL_12:
       }
     }
 
-    else if (v4)
+    else if (view)
     {
       v6 = self->_passthroughInteraction;
 
@@ -2956,33 +2956,33 @@ LABEL_12:
   }
 }
 
-- (BOOL)passthroughScrollInteraction:(id)a3 shouldInteractAtLocation:(CGPoint)a4 withEvent:(id)a5
+- (BOOL)passthroughScrollInteraction:(id)interaction shouldInteractAtLocation:(CGPoint)location withEvent:(id)event
 {
-  y = a4.y;
-  x = a4.x;
-  v9 = a3;
-  v10 = a5;
+  y = location.y;
+  x = location.x;
+  interactionCopy = interaction;
+  eventCopy = event;
   if ([(_UITabContainerView *)self isEditing])
   {
     goto LABEL_8;
   }
 
-  v11 = [(_UITabContainerView *)self sidebarView];
+  sidebarView = [(_UITabContainerView *)self sidebarView];
 
-  if (!v11 || [(_UITabContainerView *)self sidebarLayout]!= 2)
+  if (!sidebarView || [(_UITabContainerView *)self sidebarLayout]!= 2)
   {
     goto LABEL_8;
   }
 
-  v12 = [(_UITabContainerView *)self sidebarView];
-  if (!v12)
+  sidebarView2 = [(_UITabContainerView *)self sidebarView];
+  if (!sidebarView2)
   {
     v21 = 0;
     lastHitTestWasPassedThroughToInteraction = 0;
     goto LABEL_7;
   }
 
-  v13 = v12[53];
+  v13 = sidebarView2[53];
 
   if (!v13)
   {
@@ -2992,14 +2992,14 @@ LABEL_8:
   }
 
   self->_lastHitTestWasPassedThroughToInteraction = 0;
-  v14 = [v9 view];
-  v15 = [(UIView *)self window];
-  [v14 convertPoint:v15 toView:{x, y}];
+  view = [interactionCopy view];
+  window = [(UIView *)self window];
+  [view convertPoint:window toView:{x, y}];
   v17 = v16;
   v19 = v18;
 
-  v20 = [(UIView *)self window];
-  v21 = [v20 hitTest:v10 withEvent:{v17, v19}];
+  window2 = [(UIView *)self window];
+  v21 = [window2 hitTest:eventCopy withEvent:{v17, v19}];
 
   lastHitTestWasPassedThroughToInteraction = self->_lastHitTestWasPassedThroughToInteraction;
 LABEL_7:
@@ -3008,15 +3008,15 @@ LABEL_9:
   return lastHitTestWasPassedThroughToInteraction;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
   self->_lastHitTestWasPassedThroughToInteraction = 0;
   v11.receiver = self;
   v11.super_class = _UITabContainerView;
-  v8 = [(UIView *)&v11 hitTest:v7 withEvent:x, y];
+  v8 = [(UIView *)&v11 hitTest:eventCopy withEvent:x, y];
   if (v8 == self)
   {
     if (self->_passthroughInteraction)
@@ -3025,8 +3025,8 @@ LABEL_9:
       {
         if (![(_UITabContainerView *)self isEditing])
         {
-          v9 = [_UIPassthroughScrollInteraction _shouldEventBePassedThrough:v7];
-          [v7 type];
+          v9 = [_UIPassthroughScrollInteraction _shouldEventBePassedThrough:eventCopy];
+          [eventCopy type];
           if (v9)
           {
             self->_lastHitTestWasPassedThroughToInteraction = 1;
@@ -3044,106 +3044,106 @@ LABEL_9:
 - (id)preferredFocusEnvironments
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v4 = [(_UITabContainerView *)self sidebarView];
-  v5 = [v4 window];
+  sidebarView = [(_UITabContainerView *)self sidebarView];
+  window = [sidebarView window];
 
-  if (v5)
+  if (window)
   {
-    v6 = [(_UITabContainerView *)self sidebarView];
-    [v3 addObject:v6];
+    sidebarView2 = [(_UITabContainerView *)self sidebarView];
+    [v3 addObject:sidebarView2];
   }
 
-  v7 = [(_UITabContainerView *)self floatingTabBar];
-  v8 = [v7 window];
+  floatingTabBar = [(_UITabContainerView *)self floatingTabBar];
+  window2 = [floatingTabBar window];
 
-  if (v8)
+  if (window2)
   {
-    v9 = [(_UITabContainerView *)self floatingTabBar];
-    [v3 addObject:v9];
+    floatingTabBar2 = [(_UITabContainerView *)self floatingTabBar];
+    [v3 addObject:floatingTabBar2];
   }
 
-  v10 = [(_UITabContainerView *)self tabBar];
-  v11 = [v10 window];
+  tabBar = [(_UITabContainerView *)self tabBar];
+  window3 = [tabBar window];
 
-  if (v11)
+  if (window3)
   {
-    v12 = [(_UITabContainerView *)self tabBar];
-    [v3 addObject:v12];
+    tabBar2 = [(_UITabContainerView *)self tabBar];
+    [v3 addObject:tabBar2];
   }
 
   return v3;
 }
 
-- (id)resolvedPopoverPresentationControllerSourceItemForTab:(id)a3
+- (id)resolvedPopoverPresentationControllerSourceItemForTab:(id)tab
 {
-  v4 = a3;
-  v5 = [(_UITabContainerView *)self tabBar];
-  v6 = [v5 window];
+  tabCopy = tab;
+  tabBar = [(_UITabContainerView *)self tabBar];
+  window = [tabBar window];
 
-  if (v6)
+  if (window)
   {
-    v7 = [v4 _parentGroup];
+    _parentGroup = [tabCopy _parentGroup];
 
-    if (!v7)
+    if (!_parentGroup)
     {
-      v13 = [v4 _resolvedTabBarItemSourceItemForPopoverPresentationControllerSourceItem];
+      _resolvedTabBarItemSourceItemForPopoverPresentationControllerSourceItem = [tabCopy _resolvedTabBarItemSourceItemForPopoverPresentationControllerSourceItem];
       goto LABEL_11;
     }
 
-    v8 = [v4 _parentGroup];
-    v9 = self;
-    v10 = v8;
+    _parentGroup2 = [tabCopy _parentGroup];
+    selfCopy = self;
+    v10 = _parentGroup2;
     goto LABEL_10;
   }
 
-  v11 = [(_UITabContainerView *)self sidebarView];
-  v12 = [v11 window];
+  sidebarView = [(_UITabContainerView *)self sidebarView];
+  window2 = [sidebarView window];
 
-  if (v12)
+  if (window2)
   {
-    v9 = [(_UITabContainerView *)self sidebarView];
+    selfCopy = [(_UITabContainerView *)self sidebarView];
 LABEL_9:
-    v8 = v9;
-    v10 = v4;
+    _parentGroup2 = selfCopy;
+    v10 = tabCopy;
 LABEL_10:
-    v13 = [v9 resolvedPopoverPresentationControllerSourceItemForTab:v10];
+    _resolvedTabBarItemSourceItemForPopoverPresentationControllerSourceItem = [selfCopy resolvedPopoverPresentationControllerSourceItemForTab:v10];
 
     goto LABEL_11;
   }
 
-  v14 = [(_UITabContainerView *)self floatingTabBar];
-  v15 = [v14 window];
+  floatingTabBar = [(_UITabContainerView *)self floatingTabBar];
+  window3 = [floatingTabBar window];
 
-  if (v15)
+  if (window3)
   {
-    v9 = [(_UITabContainerView *)self floatingTabBar];
+    selfCopy = [(_UITabContainerView *)self floatingTabBar];
     goto LABEL_9;
   }
 
-  v13 = 0;
+  _resolvedTabBarItemSourceItemForPopoverPresentationControllerSourceItem = 0;
 LABEL_11:
 
-  return v13;
+  return _resolvedTabBarItemSourceItemForPopoverPresentationControllerSourceItem;
 }
 
-- (void)outlineView:(id)a3 didSelectTab:(id)a4
+- (void)outlineView:(id)view didSelectTab:(id)tab
 {
-  if (![(_UITabContainerView *)self isEditing:a3])
+  if (![(_UITabContainerView *)self isEditing:view])
   {
-    v5 = [(UIView *)self->_dimmingView superview];
+    superview = [(UIView *)self->_dimmingView superview];
 
-    if (v5 || [(_UITabContainerView *)self isSidebarOverlayingContent])
+    if (superview || [(_UITabContainerView *)self isSidebarOverlayingContent])
     {
-      v6 = [(_UITabContainerView *)self sidebar];
-      [(UITabBarControllerSidebar *)v6 _setHidden:0 source:?];
+      sidebar = [(_UITabContainerView *)self sidebar];
+      [(UITabBarControllerSidebar *)sidebar _setHidden:0 source:?];
     }
   }
 }
 
-- (void)outlineViewDidChangeCustomizationStore:(id)a3
+- (void)outlineViewDidChangeCustomizationStore:(id)store
 {
-  v4 = [(_UITabContainerView *)self tabCustomizationStore];
-  [v4 preferredSidebarWidth];
+  tabCustomizationStore = [(_UITabContainerView *)self tabCustomizationStore];
+  [tabCustomizationStore preferredSidebarWidth];
   v6 = v5;
 
   [(_UITabContainerView *)self setCurrentSidebarWidth:v6];
@@ -3151,27 +3151,27 @@ LABEL_11:
   [(_UITabContainerView *)self _updateSidebarViewFrame];
 }
 
-- (BOOL)outlineViewShouldShowCustomizationHeader:(id)a3
+- (BOOL)outlineViewShouldShowCustomizationHeader:(id)header
 {
-  v3 = [(_UITabContainerView *)self tabBarController];
-  v4 = [v3 _tabElements];
-  HasAnyCustomizablePlacement = _UITabItemsHasAnyCustomizablePlacement(v4);
+  tabBarController = [(_UITabContainerView *)self tabBarController];
+  _tabElements = [tabBarController _tabElements];
+  HasAnyCustomizablePlacement = _UITabItemsHasAnyCustomizablePlacement(_tabElements);
 
   return HasAnyCustomizablePlacement;
 }
 
-- (void)dropInteraction:(id)a3 sessionDidEnter:(id)a4
+- (void)dropInteraction:(id)interaction sessionDidEnter:(id)enter
 {
-  v5 = a4;
+  enterCopy = enter;
   if ([(_UITabContainerView *)self isEditing])
   {
-    v6 = [v5 items];
-    v7 = [v6 firstObject];
+    items = [enterCopy items];
+    firstObject = [items firstObject];
 
-    v8 = [v5 items];
-    if ([v8 count] == 1)
+    items2 = [enterCopy items];
+    if ([items2 count] == 1)
     {
-      v9 = [v7 localObject];
+      localObject = [firstObject localObject];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
@@ -3182,19 +3182,19 @@ LABEL_11:
         goto LABEL_12;
       }
 
-      v8 = [v7 localObject];
-      v11 = [v7 previewProvider];
-      if (v11)
+      items2 = [firstObject localObject];
+      previewProvider = [firstObject previewProvider];
+      if (previewProvider)
       {
       }
 
       else
       {
-        v12 = [(_UITabContainerView *)self sidebarView];
-        v13 = v12;
-        if (v12)
+        sidebarView = [(_UITabContainerView *)self sidebarView];
+        v13 = sidebarView;
+        if (sidebarView)
         {
-          v14 = *(v12 + 536);
+          v14 = *(sidebarView + 536);
         }
 
         else
@@ -3203,20 +3203,20 @@ LABEL_11:
         }
 
         v15 = v14;
-        v16 = [v5 localDragSession];
+        localDragSession = [enterCopy localDragSession];
 
-        if (v15 == v16)
+        if (v15 == localDragSession)
         {
-          v17 = [(UIView *)self traitCollection];
-          v18 = [v17 userInterfaceStyle];
+          traitCollection = [(UIView *)self traitCollection];
+          userInterfaceStyle = [traitCollection userInterfaceStyle];
 
           v19[0] = MEMORY[0x1E69E9820];
           v19[1] = 3221225472;
           v19[2] = __55___UITabContainerView_dropInteraction_sessionDidEnter___block_invoke;
           v19[3] = &unk_1E7120C50;
-          v20 = v8;
-          v21 = v18;
-          [v7 setPreviewProvider:v19];
+          v20 = items2;
+          v21 = userInterfaceStyle;
+          [firstObject setPreviewProvider:v19];
         }
       }
     }

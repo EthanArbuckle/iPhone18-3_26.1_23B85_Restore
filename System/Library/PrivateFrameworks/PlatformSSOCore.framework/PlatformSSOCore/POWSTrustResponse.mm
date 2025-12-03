@@ -11,19 +11,19 @@
     return 0;
   }
 
-  v3 = [(POWSTrustResponse *)self faultSubCodeValue];
+  faultSubCodeValue = [(POWSTrustResponse *)self faultSubCodeValue];
   v4 = MEMORY[0x277CCACA8];
-  v5 = [(POWSTrustResponse *)self securityExtensionPrefix];
-  v6 = [v4 stringWithFormat:@"%@:FailedAuthentication", v5];
-  if ([v3 isEqualToString:v6])
+  securityExtensionPrefix = [(POWSTrustResponse *)self securityExtensionPrefix];
+  v6 = [v4 stringWithFormat:@"%@:FailedAuthentication", securityExtensionPrefix];
+  if ([faultSubCodeValue isEqualToString:v6])
   {
     v7 = 1;
   }
 
   else
   {
-    v8 = [(POWSTrustResponse *)self faultSubCodeValue];
-    v7 = [v8 hasSuffix:@"FailedAuthentication"];
+    faultSubCodeValue2 = [(POWSTrustResponse *)self faultSubCodeValue];
+    v7 = [faultSubCodeValue2 hasSuffix:@"FailedAuthentication"];
   }
 
   return v7;

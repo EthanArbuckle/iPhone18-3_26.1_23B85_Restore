@@ -1,8 +1,8 @@
 @interface CardTransitioningDelegate
 - (_TtC23ShelfKitCollectionViews25CardTransitioningDelegate)init;
-- (id)animationControllerForDismissedController:(id)a3;
-- (id)animationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5;
-- (id)presentationControllerForPresentedViewController:(id)a3 presentingViewController:(id)a4 sourceViewController:(id)a5;
+- (id)animationControllerForDismissedController:(id)controller;
+- (id)animationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController;
+- (id)presentationControllerForPresentedViewController:(id)controller presentingViewController:(id)viewController sourceViewController:(id)sourceViewController;
 @end
 
 @implementation CardTransitioningDelegate
@@ -30,25 +30,25 @@
   return v5;
 }
 
-- (id)presentationControllerForPresentedViewController:(id)a3 presentingViewController:(id)a4 sourceViewController:(id)a5
+- (id)presentationControllerForPresentedViewController:(id)controller presentingViewController:(id)viewController sourceViewController:(id)sourceViewController
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  v12 = sub_93754(v8, a4, v10);
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  sourceViewControllerCopy = sourceViewController;
+  selfCopy = self;
+  v12 = sub_93754(controllerCopy, viewController, sourceViewControllerCopy);
 
   return v12;
 }
 
-- (id)animationControllerForDismissedController:(id)a3
+- (id)animationControllerForDismissedController:(id)controller
 {
   v3 = [objc_allocWithZone(type metadata accessor for CardDismissalAnimator()) init];
 
   return v3;
 }
 
-- (id)animationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5
+- (id)animationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController
 {
   v5 = [objc_allocWithZone(type metadata accessor for CardPresentationAnimator()) init];
 

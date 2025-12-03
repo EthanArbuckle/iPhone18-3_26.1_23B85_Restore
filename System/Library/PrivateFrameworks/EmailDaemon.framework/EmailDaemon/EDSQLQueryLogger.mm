@@ -1,25 +1,25 @@
 @interface EDSQLQueryLogger
 + (id)_queryPerformanceLogDirectory;
 + (id)log;
-- (BOOL)_createFileIfNeeded:(id)a3;
+- (BOOL)_createFileIfNeeded:(id)needed;
 - (EDSQLQueryLogger)init;
-- (id)_bucketTransactionLabels:(id)a3;
+- (id)_bucketTransactionLabels:(id)labels;
 - (id)_createQueryCountLogFilePath;
 - (id)_createQueryLogDirectoryPath;
 - (id)_createQueryLogFilePath;
-- (id)_createQueryStatisticsDictionary:(id)a3 queryCountByTransactionLabel:(id)a4 queryCountNum:(unint64_t)a5 firstRowExecutionTimeStats:(id)a6 totalExecutionTimeStats:(id)a7 timePerRowExecutionTimeStats:(id)a8;
+- (id)_createQueryStatisticsDictionary:(id)dictionary queryCountByTransactionLabel:(id)label queryCountNum:(unint64_t)num firstRowExecutionTimeStats:(id)stats totalExecutionTimeStats:(id)timeStats timePerRowExecutionTimeStats:(id)executionTimeStats;
 - (id)_sortQueryCountDict;
-- (void)_createQueryCountDict:(id)a3;
+- (void)_createQueryCountDict:(id)dict;
 - (void)_createQueryLogDirectoryPath;
 - (void)_preprocessQueryInfo;
-- (void)_recreateFile:(id)a3;
-- (void)_removeFile:(id)a3;
-- (void)_writeQueryStatistics:(id)a3;
-- (void)countQueryString:(id)a3 executionTime:(double)a4;
+- (void)_recreateFile:(id)file;
+- (void)_removeFile:(id)file;
+- (void)_writeQueryStatistics:(id)statistics;
+- (void)countQueryString:(id)string executionTime:(double)time;
 - (void)flushLogs;
-- (void)logQueryString:(id)a3 executionTime:(double)a4 firstRowExecutionTime:(double)a5 numberOfRows:(unint64_t)a6;
-- (void)logQueryString:(id)a3 label:(id)a4 firstRowExecutionTimeInNanoseconds:(unint64_t)a5 totalExecutionTimeInNanoseconds:(unint64_t)a6 numberOfRows:(unint64_t)a7;
-- (void)logUniqueQueryString:(id)a3;
+- (void)logQueryString:(id)string executionTime:(double)time firstRowExecutionTime:(double)executionTime numberOfRows:(unint64_t)rows;
+- (void)logQueryString:(id)string label:(id)label firstRowExecutionTimeInNanoseconds:(unint64_t)nanoseconds totalExecutionTimeInNanoseconds:(unint64_t)inNanoseconds numberOfRows:(unint64_t)rows;
+- (void)logUniqueQueryString:(id)string;
 - (void)submitQueryLogData;
 @end
 
@@ -31,7 +31,7 @@
   block[1] = 3221225472;
   block[2] = __23__EDSQLQueryLogger_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_99 != -1)
   {
     dispatch_once(&log_onceToken_99, block);
@@ -61,22 +61,22 @@ void __23__EDSQLQueryLogger_log__block_invoke(uint64_t a1)
     queryLoggingScheduler = v2->_queryLoggingScheduler;
     v2->_queryLoggingScheduler = v3;
 
-    v5 = [(EDSQLQueryLogger *)v2 _createQueryLogDirectoryPath];
+    _createQueryLogDirectoryPath = [(EDSQLQueryLogger *)v2 _createQueryLogDirectoryPath];
     queryLogDirectoryPath = v2->_queryLogDirectoryPath;
-    v2->_queryLogDirectoryPath = v5;
+    v2->_queryLogDirectoryPath = _createQueryLogDirectoryPath;
 
-    v7 = [(EDSQLQueryLogger *)v2 _createQueryLogFilePath];
+    _createQueryLogFilePath = [(EDSQLQueryLogger *)v2 _createQueryLogFilePath];
     queryLogFilePath = v2->_queryLogFilePath;
-    v2->_queryLogFilePath = v7;
+    v2->_queryLogFilePath = _createQueryLogFilePath;
 
     [(EDSQLQueryLogger *)v2 _createFileIfNeeded:v2->_queryLogFilePath];
     v9 = [MEMORY[0x1E696AC00] fileHandleForWritingAtPath:v2->_queryLogFilePath];
     rawQueryLogInputFileHandle = v2->_rawQueryLogInputFileHandle;
     v2->_rawQueryLogInputFileHandle = v9;
 
-    v11 = [(EDSQLQueryLogger *)v2 _createQueryCountLogFilePath];
+    _createQueryCountLogFilePath = [(EDSQLQueryLogger *)v2 _createQueryCountLogFilePath];
     queryCountLogFilePath = v2->_queryCountLogFilePath;
-    v2->_queryCountLogFilePath = v11;
+    v2->_queryCountLogFilePath = _createQueryCountLogFilePath;
 
     v13 = objc_alloc_init(MEMORY[0x1E695DF70]);
     queryStatisticsArray = v2->_queryStatisticsArray;
@@ -100,8 +100,8 @@ void __23__EDSQLQueryLogger_log__block_invoke(uint64_t a1)
       v2->_performanceLogger = v19;
     }
 
-    v21 = [MEMORY[0x1E699B7B0] currentDevice];
-    if (![v21 isInternal])
+    currentDevice = [MEMORY[0x1E699B7B0] currentDevice];
+    if (![currentDevice isInternal])
     {
       goto LABEL_9;
     }
@@ -111,8 +111,8 @@ void __23__EDSQLQueryLogger_log__block_invoke(uint64_t a1)
     if (v22)
     {
       v23 = objc_alloc(MEMORY[0x1E699B880]);
-      v21 = +[EDSQLQueryLogger _queryPerformanceLogDirectory];
-      v24 = [v23 initWithBaseFilename:@"MailUniqueQuery" directory:v21];
+      currentDevice = +[EDSQLQueryLogger _queryPerformanceLogDirectory];
+      v24 = [v23 initWithBaseFilename:@"MailUniqueQuery" directory:currentDevice];
       uniqueQueryLogger = v2->_uniqueQueryLogger;
       v2->_uniqueQueryLogger = v24;
 
@@ -123,24 +123,24 @@ LABEL_9:
   return v2;
 }
 
-- (void)logQueryString:(id)a3 label:(id)a4 firstRowExecutionTimeInNanoseconds:(unint64_t)a5 totalExecutionTimeInNanoseconds:(unint64_t)a6 numberOfRows:(unint64_t)a7
+- (void)logQueryString:(id)string label:(id)label firstRowExecutionTimeInNanoseconds:(unint64_t)nanoseconds totalExecutionTimeInNanoseconds:(unint64_t)inNanoseconds numberOfRows:(unint64_t)rows
 {
-  v12 = a3;
-  v13 = a4;
+  stringCopy = string;
+  labelCopy = label;
   if (self->_queryLoggingEnabled)
   {
-    v14 = [(EDSQLQueryLogger *)self queryLoggingScheduler];
+    queryLoggingScheduler = [(EDSQLQueryLogger *)self queryLoggingScheduler];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __121__EDSQLQueryLogger_logQueryString_label_firstRowExecutionTimeInNanoseconds_totalExecutionTimeInNanoseconds_numberOfRows___block_invoke;
     v15[3] = &unk_1E8257D00;
-    v16 = v13;
-    v19 = a5;
-    v20 = a6;
-    v21 = a7;
-    v17 = v12;
-    v18 = self;
-    [v14 performBlock:v15];
+    v16 = labelCopy;
+    nanosecondsCopy = nanoseconds;
+    inNanosecondsCopy = inNanoseconds;
+    rowsCopy = rows;
+    v17 = stringCopy;
+    selfCopy = self;
+    [queryLoggingScheduler performBlock:v15];
   }
 }
 
@@ -205,16 +205,16 @@ void __121__EDSQLQueryLogger_logQueryString_label_firstRowExecutionTimeInNanosec
 - (id)_createQueryLogDirectoryPath
 {
   v12[4] = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E699AE20] mailDataDirectory];
-  v3 = [MEMORY[0x1E695DFF8] fileURLWithPath:@"QueryPerformance" isDirectory:1 relativeToURL:v2];
-  v4 = [MEMORY[0x1E696AC08] defaultManager];
-  v5 = [v3 path];
-  v6 = [v4 fileExistsAtPath:v5];
+  mailDataDirectory = [MEMORY[0x1E699AE20] mailDataDirectory];
+  v3 = [MEMORY[0x1E695DFF8] fileURLWithPath:@"QueryPerformance" isDirectory:1 relativeToURL:mailDataDirectory];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  path = [v3 path];
+  v6 = [defaultManager fileExistsAtPath:path];
 
   if ((v6 & 1) == 0)
   {
     v12[0] = 0;
-    [v4 createDirectoryAtURL:v3 withIntermediateDirectories:1 attributes:0 error:v12];
+    [defaultManager createDirectoryAtURL:v3 withIntermediateDirectories:1 attributes:0 error:v12];
     v7 = v12[0];
     if (v7)
     {
@@ -228,25 +228,25 @@ void __121__EDSQLQueryLogger_logQueryString_label_firstRowExecutionTimeInNanosec
     }
   }
 
-  v9 = [v3 path];
+  path2 = [v3 path];
 
   v10 = *MEMORY[0x1E69E9840];
 
-  return v9;
+  return path2;
 }
 
 - (id)_createQueryLogFilePath
 {
-  v2 = [(EDSQLQueryLogger *)self queryLogDirectoryPath];
-  v3 = [v2 stringByAppendingPathComponent:@"Logs"];
+  queryLogDirectoryPath = [(EDSQLQueryLogger *)self queryLogDirectoryPath];
+  v3 = [queryLogDirectoryPath stringByAppendingPathComponent:@"Logs"];
 
   return v3;
 }
 
 - (id)_createQueryCountLogFilePath
 {
-  v2 = [(EDSQLQueryLogger *)self queryLogDirectoryPath];
-  v3 = [v2 stringByAppendingPathComponent:@"queryCountLogs_"];
+  queryLogDirectoryPath = [(EDSQLQueryLogger *)self queryLogDirectoryPath];
+  v3 = [queryLogDirectoryPath stringByAppendingPathComponent:@"queryCountLogs_"];
 
   v4 = EFSystemBuildVersion();
   v5 = [v3 stringByAppendingString:v4];
@@ -256,39 +256,39 @@ void __121__EDSQLQueryLogger_logQueryString_label_firstRowExecutionTimeInNanosec
   return v6;
 }
 
-- (BOOL)_createFileIfNeeded:(id)a3
+- (BOOL)_createFileIfNeeded:(id)needed
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E696AC08] defaultManager];
-  v5 = [v4 fileExistsAtPath:v3];
+  neededCopy = needed;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v5 = [defaultManager fileExistsAtPath:neededCopy];
   if ((v5 & 1) == 0)
   {
-    [v4 createFileAtPath:v3 contents:0 attributes:0];
+    [defaultManager createFileAtPath:neededCopy contents:0 attributes:0];
   }
 
   return v5 ^ 1;
 }
 
-- (void)_recreateFile:(id)a3
+- (void)_recreateFile:(id)file
 {
-  v6 = a3;
-  v4 = [MEMORY[0x1E696AC08] defaultManager];
-  if ([v4 fileExistsAtPath:v6])
+  fileCopy = file;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  if ([defaultManager fileExistsAtPath:fileCopy])
   {
-    [(EDSQLQueryLogger *)self _removeFile:v6];
+    [(EDSQLQueryLogger *)self _removeFile:fileCopy];
   }
 
-  v5 = [MEMORY[0x1E696AC08] defaultManager];
-  [v5 createFileAtPath:v6 contents:0 attributes:0];
+  defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+  [defaultManager2 createFileAtPath:fileCopy contents:0 attributes:0];
 }
 
-- (void)_removeFile:(id)a3
+- (void)_removeFile:(id)file
 {
   v9[4] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E696AC08] defaultManager];
+  fileCopy = file;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v9[0] = 0;
-  v5 = [v4 removeItemAtPath:v3 error:v9];
+  v5 = [defaultManager removeItemAtPath:fileCopy error:v9];
   v6 = v9[0];
 
   if ((v5 & 1) == 0)
@@ -309,13 +309,13 @@ void __121__EDSQLQueryLogger_logQueryString_label_firstRowExecutionTimeInNanosec
 {
   if (self->_queryLoggingEnabled)
   {
-    v3 = [(EDSQLQueryLogger *)self queryLoggingScheduler];
+    queryLoggingScheduler = [(EDSQLQueryLogger *)self queryLoggingScheduler];
     v4[0] = MEMORY[0x1E69E9820];
     v4[1] = 3221225472;
     v4[2] = __38__EDSQLQueryLogger_submitQueryLogData__block_invoke;
     v4[3] = &unk_1E8250260;
     v4[4] = self;
-    [v3 performBlock:v4];
+    [queryLoggingScheduler performBlock:v4];
   }
 }
 
@@ -577,21 +577,21 @@ LABEL_52:
 - (void)_preprocessQueryInfo
 {
   v50 = *MEMORY[0x1E69E9840];
-  v3 = [(EDSQLQueryLogger *)self queryLoggingScheduler];
-  [v3 assertIsExecuting:1];
+  queryLoggingScheduler = [(EDSQLQueryLogger *)self queryLoggingScheduler];
+  [queryLoggingScheduler assertIsExecuting:1];
 
-  v39 = [(EDSQLQueryLogger *)self _sortQueryCountDict];
-  v4 = [v39 count];
-  v5 = [MEMORY[0x1E699B7B0] currentDevice];
-  v6 = [v5 isInternal];
+  _sortQueryCountDict = [(EDSQLQueryLogger *)self _sortQueryCountDict];
+  v4 = [_sortQueryCountDict count];
+  currentDevice = [MEMORY[0x1E699B7B0] currentDevice];
+  isInternal = [currentDevice isInternal];
 
-  if (v6)
+  if (isInternal)
   {
     v46 = 0u;
     v47 = 0u;
     v44 = 0u;
     v45 = 0u;
-    v7 = v39;
+    v7 = _sortQueryCountDict;
     v8 = [v7 countByEnumeratingWithState:&v44 objects:v49 count:16];
     if (v8)
     {
@@ -606,8 +606,8 @@ LABEL_52:
           }
 
           v11 = *(*(&v44 + 1) + 8 * i);
-          v12 = [(EDSQLQueryLogger *)self queryCountDict];
-          v13 = [v12 objectForKeyedSubscript:v11];
+          queryCountDict = [(EDSQLQueryLogger *)self queryCountDict];
+          v13 = [queryCountDict objectForKeyedSubscript:v11];
 
           [(EDSQLQueryLogger *)self _writeQueryStatistics:v13];
         }
@@ -646,7 +646,7 @@ LABEL_52:
     v43 = 0u;
     v40 = 0u;
     v41 = 0u;
-    v17 = v39;
+    v17 = _sortQueryCountDict;
     v18 = [v17 countByEnumeratingWithState:&v40 objects:v48 count:16];
     if (v18)
     {
@@ -677,8 +677,8 @@ LABEL_52:
           }
 
           v26 = *(*(&v40 + 1) + 8 * v21);
-          v27 = [(EDSQLQueryLogger *)self queryCountDict];
-          v28 = [v27 objectForKeyedSubscript:v26];
+          queryCountDict2 = [(EDSQLQueryLogger *)self queryCountDict];
+          v28 = [queryCountDict2 objectForKeyedSubscript:v26];
 
           if (v25 == v21)
           {
@@ -723,11 +723,11 @@ LABEL_28:
     {
       v31 = arc4random_uniform([v7 count] - 1);
       v32 = [v7 objectAtIndexedSubscript:v31];
-      v33 = [v32 unsignedIntegerValue];
+      unsignedIntegerValue = [v32 unsignedIntegerValue];
 
-      v34 = [v17 objectAtIndexedSubscript:v33];
-      v35 = [(EDSQLQueryLogger *)self queryCountDict];
-      v36 = [v35 objectForKeyedSubscript:v34];
+      v34 = [v17 objectAtIndexedSubscript:unsignedIntegerValue];
+      queryCountDict3 = [(EDSQLQueryLogger *)self queryCountDict];
+      v36 = [queryCountDict3 objectForKeyedSubscript:v34];
       [(EDSQLQueryLogger *)self _writeQueryStatistics:v36];
 
       [v7 removeObjectAtIndex:v31];
@@ -737,50 +737,50 @@ LABEL_28:
   v37 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_writeQueryStatistics:(id)a3
+- (void)_writeQueryStatistics:(id)statistics
 {
   v24[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(EDSQLQueryLogger *)self queryLoggingScheduler];
-  [v5 assertIsExecuting:1];
+  statisticsCopy = statistics;
+  queryLoggingScheduler = [(EDSQLQueryLogger *)self queryLoggingScheduler];
+  [queryLoggingScheduler assertIsExecuting:1];
 
-  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v4, "queryCount")}];
+  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(statisticsCopy, "queryCount")}];
   v7 = [MEMORY[0x1E699B858] bucketValueForQueryLogCount:v6 bucketValues:&unk_1F45E7018];
-  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v4, "firstRowMaxExecutionTime")}];
+  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(statisticsCopy, "firstRowMaxExecutionTime")}];
   v24[0] = v8;
-  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v4, "firstRowMinExecutionTime")}];
+  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(statisticsCopy, "firstRowMinExecutionTime")}];
   v24[1] = v9;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:2];
 
-  v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v4, "timePerRowMaxExecutionTime")}];
+  v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(statisticsCopy, "timePerRowMaxExecutionTime")}];
   v23[0] = v11;
-  v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v4, "timePerRowMinExecutionTime")}];
+  v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(statisticsCopy, "timePerRowMinExecutionTime")}];
   v23[1] = v12;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:2];
 
-  v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v4, "totalMaxExecutionTime")}];
+  v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(statisticsCopy, "totalMaxExecutionTime")}];
   v22[0] = v14;
-  v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v4, "totalMinExecutionTime")}];
+  v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(statisticsCopy, "totalMinExecutionTime")}];
   v22[1] = v15;
   v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:2];
 
-  v17 = [v4 queryCountByTransactionLabel];
-  v18 = [v4 redactedQuery];
-  v19 = [(EDSQLQueryLogger *)self _createQueryStatisticsDictionary:v18 queryCountByTransactionLabel:v17 queryCountNum:v7 firstRowExecutionTimeStats:v10 totalExecutionTimeStats:v16 timePerRowExecutionTimeStats:v13];
+  queryCountByTransactionLabel = [statisticsCopy queryCountByTransactionLabel];
+  redactedQuery = [statisticsCopy redactedQuery];
+  v19 = [(EDSQLQueryLogger *)self _createQueryStatisticsDictionary:redactedQuery queryCountByTransactionLabel:queryCountByTransactionLabel queryCountNum:v7 firstRowExecutionTimeStats:v10 totalExecutionTimeStats:v16 timePerRowExecutionTimeStats:v13];
 
-  v20 = [(EDSQLQueryLogger *)self queryStatisticsArray];
-  [v20 addObject:v19];
+  queryStatisticsArray = [(EDSQLQueryLogger *)self queryStatisticsArray];
+  [queryStatisticsArray addObject:v19];
 
   v21 = *MEMORY[0x1E69E9840];
 }
 
 - (id)_sortQueryCountDict
 {
-  v3 = [(EDSQLQueryLogger *)self queryLoggingScheduler];
-  [v3 assertIsExecuting:1];
+  queryLoggingScheduler = [(EDSQLQueryLogger *)self queryLoggingScheduler];
+  [queryLoggingScheduler assertIsExecuting:1];
 
-  v4 = [(EDSQLQueryLogger *)self queryCountDict];
-  v5 = [v4 keysSortedByValueUsingComparator:&__block_literal_global_89];
+  queryCountDict = [(EDSQLQueryLogger *)self queryCountDict];
+  v5 = [queryCountDict keysSortedByValueUsingComparator:&__block_literal_global_89];
 
   return v5;
 }
@@ -812,21 +812,21 @@ uint64_t __39__EDSQLQueryLogger__sortQueryCountDict__block_invoke(uint64_t a1, v
   return v7;
 }
 
-- (void)_createQueryCountDict:(id)a3
+- (void)_createQueryCountDict:(id)dict
 {
-  v4 = a3;
-  v5 = [(EDSQLQueryLogger *)self queryLoggingScheduler];
-  [v5 assertIsExecuting:1];
+  dictCopy = dict;
+  queryLoggingScheduler = [(EDSQLQueryLogger *)self queryLoggingScheduler];
+  [queryLoggingScheduler assertIsExecuting:1];
 
-  v6 = [(EDSQLQueryLogger *)self queryCountDict];
-  v7 = [v6 allKeys];
+  queryCountDict = [(EDSQLQueryLogger *)self queryCountDict];
+  allKeys = [queryCountDict allKeys];
 
-  v8 = [v4 dataUsingEncoding:4];
+  v8 = [dictCopy dataUsingEncoding:4];
   v9 = [MEMORY[0x1E696ACB0] JSONObjectWithData:v8 options:0 error:0];
   v10 = v9;
   if (v9)
   {
-    v29 = v4;
+    v29 = dictCopy;
     v11 = [v9 objectForKeyedSubscript:@"redactedQuery"];
     v31 = [v10 objectForKeyedSubscript:@"firstRowExecutionTime"];
     v12 = [v10 objectForKeyedSubscript:@"totalExecutionTime"];
@@ -848,25 +848,25 @@ uint64_t __39__EDSQLQueryLogger__sortQueryCountDict__block_invoke(uint64_t a1, v
 
     if (v11 && v31 && v12 && v13)
     {
-      if ([v7 containsObject:v11])
+      if ([allKeys containsObject:v11])
       {
-        v22 = [(EDSQLQueryLogger *)self queryCountDict];
-        v23 = [v22 objectForKeyedSubscript:v11];
+        queryCountDict2 = [(EDSQLQueryLogger *)self queryCountDict];
+        v23 = [queryCountDict2 objectForKeyedSubscript:v11];
 
         [v23 addStatisticWithTransactionLabel:v21 firstRowExecutionTime:v31 timePerRowExecutionTime:v30 totalExecutionTime:v12];
-        v24 = [(EDSQLQueryLogger *)self queryCountDict];
-        [v24 setObject:v23 forKey:v11];
+        queryCountDict3 = [(EDSQLQueryLogger *)self queryCountDict];
+        [queryCountDict3 setObject:v23 forKey:v11];
       }
 
       else
       {
         v26 = [[EDSQLQueryStatistics alloc] initWithQuery:v11 transactionLabel:v21 firstRowExecutionTime:v31 timePerRowExecutionTime:v30 totalExecutionTime:v12];
-        v27 = [v7 arrayByAddingObject:v11];
+        v27 = [allKeys arrayByAddingObject:v11];
 
-        v28 = [(EDSQLQueryLogger *)self queryCountDict];
-        [v28 setObject:v26 forKey:v11];
+        queryCountDict4 = [(EDSQLQueryLogger *)self queryCountDict];
+        [queryCountDict4 setObject:v26 forKey:v11];
 
-        v7 = v27;
+        allKeys = v27;
       }
     }
 
@@ -879,7 +879,7 @@ uint64_t __39__EDSQLQueryLogger__sortQueryCountDict__block_invoke(uint64_t a1, v
       }
     }
 
-    v4 = v29;
+    dictCopy = v29;
   }
 
   else
@@ -892,46 +892,46 @@ uint64_t __39__EDSQLQueryLogger__sortQueryCountDict__block_invoke(uint64_t a1, v
   }
 }
 
-- (id)_createQueryStatisticsDictionary:(id)a3 queryCountByTransactionLabel:(id)a4 queryCountNum:(unint64_t)a5 firstRowExecutionTimeStats:(id)a6 totalExecutionTimeStats:(id)a7 timePerRowExecutionTimeStats:(id)a8
+- (id)_createQueryStatisticsDictionary:(id)dictionary queryCountByTransactionLabel:(id)label queryCountNum:(unint64_t)num firstRowExecutionTimeStats:(id)stats totalExecutionTimeStats:(id)timeStats timePerRowExecutionTimeStats:(id)executionTimeStats
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  v19 = [(EDSQLQueryLogger *)self queryLoggingScheduler];
-  [v19 assertIsExecuting:1];
+  dictionaryCopy = dictionary;
+  labelCopy = label;
+  statsCopy = stats;
+  timeStatsCopy = timeStats;
+  executionTimeStatsCopy = executionTimeStats;
+  queryLoggingScheduler = [(EDSQLQueryLogger *)self queryLoggingScheduler];
+  [queryLoggingScheduler assertIsExecuting:1];
 
   v20 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  [v20 setObject:v14 forKeyedSubscript:@"redactedQuery"];
-  v21 = [(EDSQLQueryLogger *)self _bucketTransactionLabels:v15];
+  [v20 setObject:dictionaryCopy forKeyedSubscript:@"redactedQuery"];
+  v21 = [(EDSQLQueryLogger *)self _bucketTransactionLabels:labelCopy];
   [v20 setObject:v21 forKeyedSubscript:@"transactionLabel"];
 
-  v22 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a5];
+  v22 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:num];
   [v20 setObject:v22 forKeyedSubscript:@"queryCount"];
 
-  [v20 setObject:v16 forKeyedSubscript:@"firstRowExecutionTimeStats"];
-  [v20 setObject:v17 forKeyedSubscript:@"totalExecutionTimeStats"];
-  [v20 setObject:v18 forKeyedSubscript:@"timePerRowExecutionTimeStats"];
+  [v20 setObject:statsCopy forKeyedSubscript:@"firstRowExecutionTimeStats"];
+  [v20 setObject:timeStatsCopy forKeyedSubscript:@"totalExecutionTimeStats"];
+  [v20 setObject:executionTimeStatsCopy forKeyedSubscript:@"timePerRowExecutionTimeStats"];
 
   return v20;
 }
 
-- (id)_bucketTransactionLabels:(id)a3
+- (id)_bucketTransactionLabels:(id)labels
 {
   v23 = *MEMORY[0x1E69E9840];
-  v17 = a3;
-  v4 = [(EDSQLQueryLogger *)self queryLoggingScheduler];
-  [v4 assertIsExecuting:1];
+  labelsCopy = labels;
+  queryLoggingScheduler = [(EDSQLQueryLogger *)self queryLoggingScheduler];
+  [queryLoggingScheduler assertIsExecuting:1];
 
-  v5 = [v17 mutableCopy];
+  v5 = [labelsCopy mutableCopy];
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = [v17 allKeys];
-  obj = v6;
-  v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  allKeys = [labelsCopy allKeys];
+  obj = allKeys;
+  v7 = [allKeys countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v7)
   {
     v8 = *v19;
@@ -945,13 +945,13 @@ uint64_t __39__EDSQLQueryLogger__sortQueryCountDict__block_invoke(uint64_t a1, v
         }
 
         v10 = *(*(&v18 + 1) + 8 * i);
-        v11 = [v17 objectForKey:v10];
+        v11 = [labelsCopy objectForKey:v10];
         v12 = [MEMORY[0x1E699B858] bucketValueForQueryLogCount:v11 bucketValues:&unk_1F45E7030];
         v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v12];
         [v5 setObject:v13 forKeyedSubscript:v10];
       }
 
-      v6 = obj;
+      allKeys = obj;
       v7 = [obj countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
@@ -966,44 +966,44 @@ uint64_t __39__EDSQLQueryLogger__sortQueryCountDict__block_invoke(uint64_t a1, v
 + (id)_queryPerformanceLogDirectory
 {
   v2 = [MEMORY[0x1E695DFF8] fileURLWithPath:@"/var/mobile/Library/Logs/CrashReporter/DataAccess" isDirectory:1];
-  v3 = [v2 path];
+  path = [v2 path];
 
-  return v3;
+  return path;
 }
 
-- (void)logQueryString:(id)a3 executionTime:(double)a4 firstRowExecutionTime:(double)a5 numberOfRows:(unint64_t)a6
+- (void)logQueryString:(id)string executionTime:(double)time firstRowExecutionTime:(double)executionTime numberOfRows:(unint64_t)rows
 {
-  v12 = a3;
+  stringCopy = string;
   performanceLogger = self->_performanceLogger;
   if (performanceLogger)
   {
-    v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Long running query took %0.06f seconds, %lu rows returned, first row took %0.06f seconds\n%@", *&a4, a6, *&a5, v12];
-    [(EFQueryLogger *)performanceLogger logQueryString:v11];
+    stringCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Long running query took %0.06f seconds, %lu rows returned, first row took %0.06f seconds\n%@", *&time, rows, *&executionTime, stringCopy];
+    [(EFQueryLogger *)performanceLogger logQueryString:stringCopy];
 
     [(EFQueryLogger *)self->_performanceLogger flushLogs];
   }
 }
 
-- (void)logUniqueQueryString:(id)a3
+- (void)logUniqueQueryString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   if (self->_uniqueQueryLogger)
   {
-    v6 = v4;
-    v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"EXPLAIN QUERY PLAN %@", v4];;
-    [(EFQueryLogger *)self->_uniqueQueryLogger logUniqueQueryString:v5];
+    v6 = stringCopy;
+    stringCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"EXPLAIN QUERY PLAN %@", stringCopy];;
+    [(EFQueryLogger *)self->_uniqueQueryLogger logUniqueQueryString:stringCopy];
 
-    v4 = v6;
+    stringCopy = v6;
   }
 }
 
-- (void)countQueryString:(id)a3 executionTime:(double)a4
+- (void)countQueryString:(id)string executionTime:(double)time
 {
-  v7 = a3;
+  stringCopy = string;
   performanceLogger = self->_performanceLogger;
   if (performanceLogger)
   {
-    [(EFQueryLogger *)performanceLogger countQueryString:v7 executionTime:a4];
+    [(EFQueryLogger *)performanceLogger countQueryString:stringCopy executionTime:time];
   }
 }
 

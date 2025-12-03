@@ -1,32 +1,32 @@
 @interface DBHomeButton
-- (DBHomeButton)initWithFrame:(CGRect)a3;
+- (DBHomeButton)initWithFrame:(CGRect)frame;
 - (UIColor)buttonColor;
 - (UIColor)focusedButtonColor;
 - (double)_opacityForCurrentState;
 - (void)_setupImagesIfNecessary;
-- (void)_traitEnvironmentDidChange:(id)a3 previousTraitCollection:(id)a4;
+- (void)_traitEnvironmentDidChange:(id)change previousTraitCollection:(id)collection;
 - (void)_updateCompositingFilter;
-- (void)_updateDisplayStateAnimated:(BOOL)a3;
+- (void)_updateDisplayStateAnimated:(BOOL)animated;
 - (void)_updateViewOpacity;
 - (void)_updateViewVisibilities;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
-- (void)pressesBegan:(id)a3 withEvent:(id)a4;
-- (void)pressesCancelled:(id)a3 withEvent:(id)a4;
-- (void)pressesEnded:(id)a3 withEvent:(id)a4;
-- (void)setDisplayState:(unint64_t)a3;
-- (void)setPressed:(BOOL)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
+- (void)pressesBegan:(id)began withEvent:(id)event;
+- (void)pressesCancelled:(id)cancelled withEvent:(id)event;
+- (void)pressesEnded:(id)ended withEvent:(id)event;
+- (void)setDisplayState:(unint64_t)state;
+- (void)setPressed:(BOOL)pressed;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
 @end
 
 @implementation DBHomeButton
 
 - (void)_updateCompositingFilter
 {
-  v3 = [(DBHomeButton *)self focusedImageView];
-  v2 = [v3 layer];
-  [v2 setCompositingFilter:0];
+  focusedImageView = [(DBHomeButton *)self focusedImageView];
+  layer = [focusedImageView layer];
+  [layer setCompositingFilter:0];
 }
 
 - (void)_updateViewOpacity
@@ -54,20 +54,20 @@
 
 - (UIColor)focusedButtonColor
 {
-  v3 = [(DBHomeButton *)self traitCollection];
-  v4 = [v3 wallpaperAppearanceType];
+  traitCollection = [(DBHomeButton *)self traitCollection];
+  wallpaperAppearanceType = [traitCollection wallpaperAppearanceType];
 
-  if (v4 == 2)
+  if (wallpaperAppearanceType == 2)
   {
-    v5 = [MEMORY[0x277D75348] _carSystemFocusColor];
+    _carSystemFocusColor = [MEMORY[0x277D75348] _carSystemFocusColor];
   }
 
   else
   {
-    v6 = [(DBHomeButton *)self traitCollection];
-    v7 = [v6 userInterfaceStyle];
+    traitCollection2 = [(DBHomeButton *)self traitCollection];
+    userInterfaceStyle = [traitCollection2 userInterfaceStyle];
 
-    if (v7 == 1)
+    if (userInterfaceStyle == 1)
     {
       [MEMORY[0x277D75348] systemBlackColor];
     }
@@ -76,10 +76,10 @@
     {
       [MEMORY[0x277D75348] systemWhiteColor];
     }
-    v5 = ;
+    _carSystemFocusColor = ;
   }
 
-  return v5;
+  return _carSystemFocusColor;
 }
 
 - (double)_opacityForCurrentState
@@ -87,25 +87,25 @@
   v3 = 1.0;
   if ([(DBHomeButton *)self displayState]!= 2)
   {
-    v4 = [(DBHomeButton *)self traitCollection];
-    v5 = [v4 wallpaperAppearanceType];
+    traitCollection = [(DBHomeButton *)self traitCollection];
+    wallpaperAppearanceType = [traitCollection wallpaperAppearanceType];
 
-    v6 = [(DBHomeButton *)self traitCollection];
-    v7 = [v6 userInterfaceStyle];
+    traitCollection2 = [(DBHomeButton *)self traitCollection];
+    userInterfaceStyle = [traitCollection2 userInterfaceStyle];
 
-    LODWORD(v6) = [(DBHomeButton *)self isFocused];
-    v8 = [(DBHomeButton *)self isPressed];
-    if (v6)
+    LODWORD(traitCollection2) = [(DBHomeButton *)self isFocused];
+    isPressed = [(DBHomeButton *)self isPressed];
+    if (traitCollection2)
     {
-      if (!v8)
+      if (!isPressed)
       {
         v9 = 0.7;
-        if (v7 == 1)
+        if (userInterfaceStyle == 1)
         {
           v9 = 0.5;
         }
 
-        v10 = v5 == 2;
+        v10 = wallpaperAppearanceType == 2;
         v11 = 1.0;
 LABEL_11:
         if (v10)
@@ -120,18 +120,18 @@ LABEL_11:
       }
     }
 
-    else if (!v8)
+    else if (!isPressed)
     {
       return v3;
     }
 
     v9 = 0.2;
-    if (v7 != 1)
+    if (userInterfaceStyle != 1)
     {
       v9 = 0.25;
     }
 
-    v10 = v5 == 2;
+    v10 = wallpaperAppearanceType == 2;
     v11 = 0.3;
     goto LABEL_11;
   }
@@ -139,18 +139,18 @@ LABEL_11:
   return v3;
 }
 
-- (DBHomeButton)initWithFrame:(CGRect)a3
+- (DBHomeButton)initWithFrame:(CGRect)frame
 {
   v70[14] = *MEMORY[0x277D85DE8];
   v68.receiver = self;
   v68.super_class = DBHomeButton;
-  v3 = [(DBHomeButton *)&v68 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(DBHomeButton *)&v68 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     [(DBHomeButton *)v3 setAccessibilityIdentifier:@"CARStatusBarHomeButton"];
-    v5 = [(DBHomeButton *)v4 layer];
-    [v5 setAllowsGroupBlending:0];
+    layer = [(DBHomeButton *)v4 layer];
+    [layer setAllowsGroupBlending:0];
 
     v6 = objc_alloc(MEMORY[0x277D755E8]);
     v7 = *MEMORY[0x277CBF3A0];
@@ -174,73 +174,73 @@ LABEL_11:
     v4->_elevatedClosePunchthroughView = v14;
 
     [(DBElevatedStatusBarCloseView *)v4->_elevatedClosePunchthroughView setUserInteractionEnabled:0];
-    v16 = [(DBHomeButton *)v4 elevatedClosePunchthroughView];
-    [v16 setTranslatesAutoresizingMaskIntoConstraints:0];
+    elevatedClosePunchthroughView = [(DBHomeButton *)v4 elevatedClosePunchthroughView];
+    [elevatedClosePunchthroughView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v17 = [(DBHomeButton *)v4 elevatedClosePunchthroughView];
-    [v17 setHidden:1];
+    elevatedClosePunchthroughView2 = [(DBHomeButton *)v4 elevatedClosePunchthroughView];
+    [elevatedClosePunchthroughView2 setHidden:1];
 
-    v18 = [(DBHomeButton *)v4 elevatedClosePunchthroughView];
-    [(DBHomeButton *)v4 addSubview:v18];
+    elevatedClosePunchthroughView3 = [(DBHomeButton *)v4 elevatedClosePunchthroughView];
+    [(DBHomeButton *)v4 addSubview:elevatedClosePunchthroughView3];
 
     v48 = MEMORY[0x277CCAAD0];
-    v67 = [(DBHomeButton *)v4 widthAnchor];
-    v65 = [v67 constraintEqualToConstant:45.0];
+    widthAnchor = [(DBHomeButton *)v4 widthAnchor];
+    v65 = [widthAnchor constraintEqualToConstant:45.0];
     v70[0] = v65;
-    v64 = [(DBHomeButton *)v4 heightAnchor];
-    v63 = [v64 constraintEqualToConstant:45.0];
+    heightAnchor = [(DBHomeButton *)v4 heightAnchor];
+    v63 = [heightAnchor constraintEqualToConstant:45.0];
     v70[1] = v63;
-    v62 = [v11 widthAnchor];
-    v61 = [(DBHomeButton *)v4 widthAnchor];
-    v60 = [v62 constraintEqualToAnchor:v61];
+    widthAnchor2 = [v11 widthAnchor];
+    widthAnchor3 = [(DBHomeButton *)v4 widthAnchor];
+    v60 = [widthAnchor2 constraintEqualToAnchor:widthAnchor3];
     v70[2] = v60;
-    v59 = [v11 heightAnchor];
-    v57 = [(DBHomeButton *)v4 heightAnchor];
-    v56 = [v59 constraintEqualToAnchor:v57];
+    heightAnchor2 = [v11 heightAnchor];
+    heightAnchor3 = [(DBHomeButton *)v4 heightAnchor];
+    v56 = [heightAnchor2 constraintEqualToAnchor:heightAnchor3];
     v70[3] = v56;
     v66 = v11;
-    v55 = [v11 centerXAnchor];
-    v54 = [(DBHomeButton *)v4 centerXAnchor];
-    v53 = [v55 constraintEqualToAnchor:v54];
+    centerXAnchor = [v11 centerXAnchor];
+    centerXAnchor2 = [(DBHomeButton *)v4 centerXAnchor];
+    v53 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v70[4] = v53;
-    v52 = [v11 centerYAnchor];
-    v51 = [(DBHomeButton *)v4 centerYAnchor];
-    v50 = [v52 constraintEqualToAnchor:v51];
+    centerYAnchor = [v11 centerYAnchor];
+    centerYAnchor2 = [(DBHomeButton *)v4 centerYAnchor];
+    v50 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v70[5] = v50;
-    v49 = [v13 widthAnchor];
-    v47 = [(DBHomeButton *)v4 widthAnchor];
-    v46 = [v49 constraintEqualToAnchor:v47];
+    widthAnchor4 = [v13 widthAnchor];
+    widthAnchor5 = [(DBHomeButton *)v4 widthAnchor];
+    v46 = [widthAnchor4 constraintEqualToAnchor:widthAnchor5];
     v70[6] = v46;
-    v45 = [v13 heightAnchor];
-    v44 = [(DBHomeButton *)v4 heightAnchor];
-    v43 = [v45 constraintEqualToAnchor:v44];
+    heightAnchor4 = [v13 heightAnchor];
+    heightAnchor5 = [(DBHomeButton *)v4 heightAnchor];
+    v43 = [heightAnchor4 constraintEqualToAnchor:heightAnchor5];
     v70[7] = v43;
     v58 = v13;
-    v42 = [v13 centerXAnchor];
-    v41 = [(DBHomeButton *)v4 centerXAnchor];
-    v40 = [v42 constraintEqualToAnchor:v41];
+    centerXAnchor3 = [v13 centerXAnchor];
+    centerXAnchor4 = [(DBHomeButton *)v4 centerXAnchor];
+    v40 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
     v70[8] = v40;
-    v39 = [v13 centerYAnchor];
-    v38 = [(DBHomeButton *)v4 centerYAnchor];
-    v37 = [v39 constraintEqualToAnchor:v38];
+    centerYAnchor3 = [v13 centerYAnchor];
+    centerYAnchor4 = [(DBHomeButton *)v4 centerYAnchor];
+    v37 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
     v70[9] = v37;
-    v36 = [(DBHomeButton *)v4 elevatedClosePunchthroughView];
-    v35 = [v36 widthAnchor];
-    v34 = [v35 constraintEqualToConstant:22.0];
+    elevatedClosePunchthroughView4 = [(DBHomeButton *)v4 elevatedClosePunchthroughView];
+    widthAnchor6 = [elevatedClosePunchthroughView4 widthAnchor];
+    v34 = [widthAnchor6 constraintEqualToConstant:22.0];
     v70[10] = v34;
-    v33 = [(DBHomeButton *)v4 elevatedClosePunchthroughView];
-    v32 = [v33 heightAnchor];
-    v31 = [v32 constraintEqualToConstant:22.0];
+    elevatedClosePunchthroughView5 = [(DBHomeButton *)v4 elevatedClosePunchthroughView];
+    heightAnchor6 = [elevatedClosePunchthroughView5 heightAnchor];
+    v31 = [heightAnchor6 constraintEqualToConstant:22.0];
     v70[11] = v31;
-    v19 = [(DBHomeButton *)v4 elevatedClosePunchthroughView];
-    v20 = [v19 centerXAnchor];
-    v21 = [(DBHomeButton *)v4 centerXAnchor];
-    v22 = [v20 constraintEqualToAnchor:v21];
+    elevatedClosePunchthroughView6 = [(DBHomeButton *)v4 elevatedClosePunchthroughView];
+    centerXAnchor5 = [elevatedClosePunchthroughView6 centerXAnchor];
+    centerXAnchor6 = [(DBHomeButton *)v4 centerXAnchor];
+    v22 = [centerXAnchor5 constraintEqualToAnchor:centerXAnchor6];
     v70[12] = v22;
-    v23 = [(DBHomeButton *)v4 elevatedClosePunchthroughView];
-    v24 = [v23 centerYAnchor];
-    v25 = [(DBHomeButton *)v4 centerYAnchor];
-    v26 = [v24 constraintEqualToAnchor:v25];
+    elevatedClosePunchthroughView7 = [(DBHomeButton *)v4 elevatedClosePunchthroughView];
+    centerYAnchor5 = [elevatedClosePunchthroughView7 centerYAnchor];
+    centerYAnchor6 = [(DBHomeButton *)v4 centerYAnchor];
+    v26 = [centerYAnchor5 constraintEqualToAnchor:centerYAnchor6];
     v70[13] = v26;
     v27 = [MEMORY[0x277CBEA60] arrayWithObjects:v70 count:14];
     [v48 activateConstraints:v27];
@@ -257,21 +257,21 @@ LABEL_11:
   return v4;
 }
 
-- (void)_traitEnvironmentDidChange:(id)a3 previousTraitCollection:(id)a4
+- (void)_traitEnvironmentDidChange:(id)change previousTraitCollection:(id)collection
 {
-  v15 = a4;
-  v5 = [(DBHomeButton *)self traitCollection];
-  v6 = [v5 userInterfaceIdiom];
-  if (v6 != [v15 userInterfaceIdiom])
+  collectionCopy = collection;
+  traitCollection = [(DBHomeButton *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
+  if (userInterfaceIdiom != [collectionCopy userInterfaceIdiom])
   {
 
     goto LABEL_5;
   }
 
-  v7 = [(DBHomeButton *)self traitCollection];
-  [v7 displayScale];
+  traitCollection2 = [(DBHomeButton *)self traitCollection];
+  [traitCollection2 displayScale];
   v9 = v8;
-  [v15 displayScale];
+  [collectionCopy displayScale];
   v11 = v10;
 
   if (v9 != v11)
@@ -282,11 +282,11 @@ LABEL_5:
 
   [(DBHomeButton *)self _setupImagesIfNecessary];
   [(DBHomeButton *)self _updateDisplayStateAnimated:0];
-  v12 = [(DBHomeButton *)self traitCollection];
-  v13 = [v12 wallpaperAppearanceType];
-  v14 = [v15 wallpaperAppearanceType];
+  traitCollection3 = [(DBHomeButton *)self traitCollection];
+  wallpaperAppearanceType = [traitCollection3 wallpaperAppearanceType];
+  wallpaperAppearanceType2 = [collectionCopy wallpaperAppearanceType];
 
-  if (v13 != v14)
+  if (wallpaperAppearanceType != wallpaperAppearanceType2)
   {
     [(DBHomeButton *)self _updateViewVisibilities];
     [(DBHomeButton *)self _updateViewOpacity];
@@ -295,16 +295,16 @@ LABEL_5:
 
 - (void)_setupImagesIfNecessary
 {
-  v22 = [(DBHomeButton *)self traitCollection];
-  if ([v22 userInterfaceIdiom] == 3)
+  traitCollection = [(DBHomeButton *)self traitCollection];
+  if ([traitCollection userInterfaceIdiom] == 3)
   {
-    v3 = [(DBHomeButton *)self iconsImage];
-    if (v3)
+    iconsImage = [(DBHomeButton *)self iconsImage];
+    if (iconsImage)
     {
-      v4 = v3;
-      v5 = [(DBHomeButton *)self needsImageUpdates];
+      v4 = iconsImage;
+      needsImageUpdates = [(DBHomeButton *)self needsImageUpdates];
 
-      if (!v5)
+      if (!needsImageUpdates)
       {
         return;
       }
@@ -316,26 +316,26 @@ LABEL_5:
 
     v6 = MEMORY[0x277D755B8];
     v7 = [MEMORY[0x277CCA8D8] bundleForClass:NSClassFromString(&cfstr_Dashboard_4.isa)];
-    v8 = [(DBHomeButton *)self traitCollection];
-    v9 = [v6 imageNamed:@"CarStatusBarIconsHomeButton" inBundle:v7 compatibleWithTraitCollection:v8];
+    traitCollection2 = [(DBHomeButton *)self traitCollection];
+    v9 = [v6 imageNamed:@"CarStatusBarIconsHomeButton" inBundle:v7 compatibleWithTraitCollection:traitCollection2];
     [(DBHomeButton *)self setIconsImage:v9];
 
     v10 = MEMORY[0x277D755B8];
     v11 = [MEMORY[0x277CCA8D8] bundleForClass:NSClassFromString(&cfstr_Dashboard_4.isa)];
-    v12 = [(DBHomeButton *)self traitCollection];
-    v13 = [v10 imageNamed:@"CarStatusBarDashboardHomeButton" inBundle:v11 compatibleWithTraitCollection:v12];
+    traitCollection3 = [(DBHomeButton *)self traitCollection];
+    v13 = [v10 imageNamed:@"CarStatusBarDashboardHomeButton" inBundle:v11 compatibleWithTraitCollection:traitCollection3];
     [(DBHomeButton *)self setDashboardImage:v13];
 
     v14 = MEMORY[0x277D755B8];
     v15 = [MEMORY[0x277CCA8D8] bundleForClass:NSClassFromString(&cfstr_Dashboard_4.isa)];
-    v16 = [(DBHomeButton *)self traitCollection];
-    v17 = [v14 imageNamed:@"CarStatusBarIconsHomeButtonFocused" inBundle:v15 compatibleWithTraitCollection:v16];
+    traitCollection4 = [(DBHomeButton *)self traitCollection];
+    v17 = [v14 imageNamed:@"CarStatusBarIconsHomeButtonFocused" inBundle:v15 compatibleWithTraitCollection:traitCollection4];
     [(DBHomeButton *)self setIconsFocusedImage:v17];
 
     v18 = MEMORY[0x277D755B8];
     v19 = [MEMORY[0x277CCA8D8] bundleForClass:NSClassFromString(&cfstr_Dashboard_4.isa)];
-    v20 = [(DBHomeButton *)self traitCollection];
-    v21 = [v18 imageNamed:@"CarStatusBarDashboardHomeButtonFocused" inBundle:v19 compatibleWithTraitCollection:v20];
+    traitCollection5 = [(DBHomeButton *)self traitCollection];
+    v21 = [v18 imageNamed:@"CarStatusBarDashboardHomeButtonFocused" inBundle:v19 compatibleWithTraitCollection:traitCollection5];
     [(DBHomeButton *)self setDashboardFocusedImage:v21];
 
     [(DBHomeButton *)self _updateDisplayStateAnimated:0];
@@ -346,17 +346,17 @@ LABEL_5:
   }
 }
 
-- (void)_updateDisplayStateAnimated:(BOOL)a3
+- (void)_updateDisplayStateAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v38[1] = *MEMORY[0x277D85DE8];
-  v5 = [(DBHomeButton *)self iconsImage];
-  v6 = [(DBHomeButton *)self iconsFocusedImage];
+  iconsImage = [(DBHomeButton *)self iconsImage];
+  iconsFocusedImage = [(DBHomeButton *)self iconsFocusedImage];
   if ([(DBHomeButton *)self displayState]== 1)
   {
-    v7 = [(DBHomeButton *)self dashboardImage];
+    dashboardImage = [(DBHomeButton *)self dashboardImage];
 
-    v8 = [(DBHomeButton *)self dashboardFocusedImage];
+    dashboardFocusedImage = [(DBHomeButton *)self dashboardFocusedImage];
 
     [(DBHomeButton *)self setAccessibilityLabel:@"CarStatusBarDashboardHomeButton"];
     v9 = [MEMORY[0x277CCA8D8] bundleForClass:NSClassFromString(&cfstr_Dashboard_4.isa)];
@@ -365,8 +365,8 @@ LABEL_5:
     v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v38 count:1];
     [(DBHomeButton *)self setAccessibilityUserInputLabels:v11];
 
-    v5 = v7;
-    v6 = v8;
+    iconsImage = dashboardImage;
+    iconsFocusedImage = dashboardFocusedImage;
   }
 
   else if ([(DBHomeButton *)self displayState])
@@ -374,14 +374,14 @@ LABEL_5:
     if ([(DBHomeButton *)self displayState]== 2)
     {
 
-      v12 = [(DBHomeButton *)self elevatedClosePunchthroughView];
-      [v12 setAlpha:0.0];
+      elevatedClosePunchthroughView = [(DBHomeButton *)self elevatedClosePunchthroughView];
+      [elevatedClosePunchthroughView setAlpha:0.0];
 
-      v13 = [(DBHomeButton *)self elevatedClosePunchthroughView];
-      [v13 setHidden:0];
+      elevatedClosePunchthroughView2 = [(DBHomeButton *)self elevatedClosePunchthroughView];
+      [elevatedClosePunchthroughView2 setHidden:0];
 
-      v5 = 0;
-      v6 = 0;
+      iconsImage = 0;
+      iconsFocusedImage = 0;
     }
   }
 
@@ -395,33 +395,33 @@ LABEL_5:
     [(DBHomeButton *)self setAccessibilityUserInputLabels:v16];
   }
 
-  v17 = [(DBHomeButton *)self buttonColor];
-  v18 = [v5 imageWithTintColor:v17];
+  buttonColor = [(DBHomeButton *)self buttonColor];
+  v18 = [iconsImage imageWithTintColor:buttonColor];
 
-  v19 = [(DBHomeButton *)self focusedButtonColor];
-  v20 = [v6 imageWithTintColor:v19];
+  focusedButtonColor = [(DBHomeButton *)self focusedButtonColor];
+  v20 = [iconsFocusedImage imageWithTintColor:focusedButtonColor];
 
-  if (v3)
+  if (animatedCopy)
   {
     v21 = MEMORY[0x277D75D18];
-    v22 = [(DBHomeButton *)self imageView];
+    imageView = [(DBHomeButton *)self imageView];
     v35[0] = MEMORY[0x277D85DD0];
     v35[1] = 3221225472;
     v35[2] = __44__DBHomeButton__updateDisplayStateAnimated___block_invoke;
     v35[3] = &unk_278F014B8;
     v35[4] = self;
     v36 = v18;
-    [v21 transitionWithView:v22 duration:5242880 options:v35 animations:0 completion:0.4];
+    [v21 transitionWithView:imageView duration:5242880 options:v35 animations:0 completion:0.4];
 
     v23 = MEMORY[0x277D75D18];
-    v24 = [(DBHomeButton *)self focusedImageView];
+    focusedImageView = [(DBHomeButton *)self focusedImageView];
     v33[0] = MEMORY[0x277D85DD0];
     v33[1] = 3221225472;
     v33[2] = __44__DBHomeButton__updateDisplayStateAnimated___block_invoke_2;
     v33[3] = &unk_278F014B8;
     v33[4] = self;
     v34 = v20;
-    [v23 transitionWithView:v24 duration:5242880 options:v33 animations:0 completion:0.4];
+    [v23 transitionWithView:focusedImageView duration:5242880 options:v33 animations:0 completion:0.4];
 
     v31[4] = self;
     v32[0] = MEMORY[0x277D85DD0];
@@ -438,24 +438,24 @@ LABEL_5:
 
   else
   {
-    v25 = [(DBHomeButton *)self imageView];
-    [v25 setImage:v18];
+    imageView2 = [(DBHomeButton *)self imageView];
+    [imageView2 setImage:v18];
 
-    v26 = [(DBHomeButton *)self focusedImageView];
-    [v26 setImage:v20];
+    focusedImageView2 = [(DBHomeButton *)self focusedImageView];
+    [focusedImageView2 setImage:v20];
 
-    v27 = [(DBHomeButton *)self elevatedClosePunchthroughView];
-    v28 = [(DBHomeButton *)self displayState];
+    elevatedClosePunchthroughView3 = [(DBHomeButton *)self elevatedClosePunchthroughView];
+    displayState = [(DBHomeButton *)self displayState];
     v29 = 0.0;
-    if (v28 == 2)
+    if (displayState == 2)
     {
       v29 = 1.0;
     }
 
-    [v27 setAlpha:v29];
+    [elevatedClosePunchthroughView3 setAlpha:v29];
 
-    v30 = [(DBHomeButton *)self elevatedClosePunchthroughView];
-    [v30 setHidden:{-[DBHomeButton displayState](self, "displayState") != 2}];
+    elevatedClosePunchthroughView4 = [(DBHomeButton *)self elevatedClosePunchthroughView];
+    [elevatedClosePunchthroughView4 setHidden:{-[DBHomeButton displayState](self, "displayState") != 2}];
 
     [(DBHomeButton *)self _updateCompositingFilter];
     [(DBHomeButton *)self _updateViewOpacity];
@@ -503,62 +503,62 @@ void __44__DBHomeButton__updateDisplayStateAnimated___block_invoke_4(uint64_t a1
 
 - (void)_updateViewVisibilities
 {
-  v3 = [(DBHomeButton *)self isFocused];
-  v4 = [(DBHomeButton *)self imageView];
-  [v4 setHidden:v3];
+  isFocused = [(DBHomeButton *)self isFocused];
+  imageView = [(DBHomeButton *)self imageView];
+  [imageView setHidden:isFocused];
 
-  LODWORD(v3) = [(DBHomeButton *)self isFocused];
-  v5 = [(DBHomeButton *)self focusedImageView];
-  [v5 setHidden:v3 ^ 1];
+  LODWORD(isFocused) = [(DBHomeButton *)self isFocused];
+  focusedImageView = [(DBHomeButton *)self focusedImageView];
+  [focusedImageView setHidden:isFocused ^ 1];
 }
 
-- (void)setDisplayState:(unint64_t)a3
+- (void)setDisplayState:(unint64_t)state
 {
-  if (self->_displayState != a3)
+  if (self->_displayState != state)
   {
-    self->_displayState = a3;
+    self->_displayState = state;
     v5 = !UIAccessibilityIsReduceMotionEnabled();
 
     [(DBHomeButton *)self _updateDisplayStateAnimated:v5];
   }
 }
 
-- (void)setPressed:(BOOL)a3
+- (void)setPressed:(BOOL)pressed
 {
-  if (self->_pressed != a3)
+  if (self->_pressed != pressed)
   {
-    self->_pressed = a3;
+    self->_pressed = pressed;
     [(DBHomeButton *)self _updateViewOpacity];
     pressed = self->_pressed;
-    v5 = [(DBHomeButton *)self elevatedClosePunchthroughView];
-    [v5 setIsPressed:pressed];
+    elevatedClosePunchthroughView = [(DBHomeButton *)self elevatedClosePunchthroughView];
+    [elevatedClosePunchthroughView setIsPressed:pressed];
   }
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
   v7.receiver = self;
   v7.super_class = DBHomeButton;
-  [(DBHomeButton *)&v7 didUpdateFocusInContext:a3 withAnimationCoordinator:a4];
+  [(DBHomeButton *)&v7 didUpdateFocusInContext:context withAnimationCoordinator:coordinator];
   [(DBHomeButton *)self _updateDisplayStateAnimated:0];
   [(DBHomeButton *)self _updateViewVisibilities];
-  v5 = [(DBHomeButton *)self isFocused];
-  v6 = [(DBHomeButton *)self elevatedClosePunchthroughView];
-  [v6 setShowFocusedState:v5];
+  isFocused = [(DBHomeButton *)self isFocused];
+  elevatedClosePunchthroughView = [(DBHomeButton *)self elevatedClosePunchthroughView];
+  [elevatedClosePunchthroughView setShowFocusedState:isFocused];
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   v9.receiver = self;
   v9.super_class = DBHomeButton;
-  v6 = a3;
-  [(DBHomeButton *)&v9 touchesBegan:v6 withEvent:a4];
+  beganCopy = began;
+  [(DBHomeButton *)&v9 touchesBegan:beganCopy withEvent:event];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = ___DBTouchesContainsTouchType_block_invoke;
   v10[3] = &__block_descriptor_40_e21_B24__0__UITouch_8_B16l;
   v10[4] = 0;
-  v7 = [v6 objectsPassingTest:v10];
+  v7 = [beganCopy objectsPassingTest:v10];
 
   v8 = [v7 count];
   if (v8)
@@ -567,34 +567,34 @@ void __44__DBHomeButton__updateDisplayStateAnimated___block_invoke_4(uint64_t a1
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
   v5.receiver = self;
   v5.super_class = DBHomeButton;
-  [(DBHomeButton *)&v5 touchesEnded:a3 withEvent:a4];
+  [(DBHomeButton *)&v5 touchesEnded:ended withEvent:event];
   [(DBHomeButton *)self setPressed:0];
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
   v5.receiver = self;
   v5.super_class = DBHomeButton;
-  [(DBHomeButton *)&v5 touchesCancelled:a3 withEvent:a4];
+  [(DBHomeButton *)&v5 touchesCancelled:cancelled withEvent:event];
   [(DBHomeButton *)self setPressed:0];
 }
 
-- (void)pressesBegan:(id)a3 withEvent:(id)a4
+- (void)pressesBegan:(id)began withEvent:(id)event
 {
   v9.receiver = self;
   v9.super_class = DBHomeButton;
-  v6 = a3;
-  [(DBHomeButton *)&v9 pressesBegan:v6 withEvent:a4];
+  beganCopy = began;
+  [(DBHomeButton *)&v9 pressesBegan:beganCopy withEvent:event];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = ___DBPressesContainsPressType_block_invoke_0;
   v10[3] = &__block_descriptor_40_e21_B24__0__UIPress_8_B16l;
   v10[4] = 4;
-  v7 = [v6 objectsPassingTest:v10];
+  v7 = [beganCopy objectsPassingTest:v10];
 
   v8 = [v7 count];
   if (v8)
@@ -604,19 +604,19 @@ void __44__DBHomeButton__updateDisplayStateAnimated___block_invoke_4(uint64_t a1
   }
 }
 
-- (void)pressesEnded:(id)a3 withEvent:(id)a4
+- (void)pressesEnded:(id)ended withEvent:(id)event
 {
   v9.receiver = self;
   v9.super_class = DBHomeButton;
-  v6 = a3;
-  [(DBHomeButton *)&v9 pressesEnded:v6 withEvent:a4];
+  endedCopy = ended;
+  [(DBHomeButton *)&v9 pressesEnded:endedCopy withEvent:event];
   [(DBHomeButton *)self setPressed:0];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = ___DBPressesContainsPressType_block_invoke_0;
   v10[3] = &__block_descriptor_40_e21_B24__0__UIPress_8_B16l;
   v10[4] = 4;
-  v7 = [v6 objectsPassingTest:v10];
+  v7 = [endedCopy objectsPassingTest:v10];
 
   v8 = [v7 count];
   if (v8)
@@ -625,11 +625,11 @@ void __44__DBHomeButton__updateDisplayStateAnimated___block_invoke_4(uint64_t a1
   }
 }
 
-- (void)pressesCancelled:(id)a3 withEvent:(id)a4
+- (void)pressesCancelled:(id)cancelled withEvent:(id)event
 {
   v5.receiver = self;
   v5.super_class = DBHomeButton;
-  [(DBHomeButton *)&v5 pressesCancelled:a3 withEvent:a4];
+  [(DBHomeButton *)&v5 pressesCancelled:cancelled withEvent:event];
   [(DBHomeButton *)self setPressed:0];
 }
 

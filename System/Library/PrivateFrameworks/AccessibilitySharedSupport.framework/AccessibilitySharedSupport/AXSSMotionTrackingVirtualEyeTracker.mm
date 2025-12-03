@@ -1,31 +1,31 @@
 @interface AXSSMotionTrackingVirtualEyeTracker
 + (NSData)_eyeTrackerHIDReportDescriptorData;
 + (NSDictionary)_eyeTrackerHIDDeviceProperties;
-+ (id)_hidReportWithButtonDown:(BOOL)a3;
-+ (id)_hidReportWithPoint:(CGPoint)a3 reportID:(unint64_t)a4 timestamp:(unint64_t)a5 version:(unint64_t)a6;
-+ (id)_hidReportWithStatusChange:(unint64_t)a3;
-- (AXSSMotionTrackingVirtualEyeTracker)initWithScreenBounds:(CGRect)a3;
++ (id)_hidReportWithButtonDown:(BOOL)down;
++ (id)_hidReportWithPoint:(CGPoint)point reportID:(unint64_t)d timestamp:(unint64_t)timestamp version:(unint64_t)version;
++ (id)_hidReportWithStatusChange:(unint64_t)change;
+- (AXSSMotionTrackingVirtualEyeTracker)initWithScreenBounds:(CGRect)bounds;
 - (CGRect)screenBounds;
 - (void)_activateOnReportingQueue;
-- (void)_changeStatusOnReportingQueueTo:(unint64_t)a3;
+- (void)_changeStatusOnReportingQueueTo:(unint64_t)to;
 - (void)_deactivateOnReportingQueue;
-- (void)_moveOnReportingQueueToPoint:(CGPoint)a3;
+- (void)_moveOnReportingQueueToPoint:(CGPoint)point;
 - (void)activate;
-- (void)changeStatusTo:(unint64_t)a3;
+- (void)changeStatusTo:(unint64_t)to;
 - (void)click;
 - (void)deactivate;
 - (void)dealloc;
-- (void)moveToPoint:(CGPoint)a3;
+- (void)moveToPoint:(CGPoint)point;
 @end
 
 @implementation AXSSMotionTrackingVirtualEyeTracker
 
-- (AXSSMotionTrackingVirtualEyeTracker)initWithScreenBounds:(CGRect)a3
+- (AXSSMotionTrackingVirtualEyeTracker)initWithScreenBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v20.receiver = self;
   v20.super_class = AXSSMotionTrackingVirtualEyeTracker;
   v7 = [(AXSSMotionTrackingVirtualEyeTracker *)&v20 init];
@@ -37,17 +37,17 @@
     v7->_screenBounds.size.width = width;
     v7->_screenBounds.size.height = height;
     v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.accessibility.AXSSMotionTrackingVirtualEyeTracker.%p.hidQueue", v7];
-    v10 = [v9 UTF8String];
+    uTF8String = [v9 UTF8String];
     v11 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v12 = dispatch_queue_create(v10, v11);
+    v12 = dispatch_queue_create(uTF8String, v11);
     hidUserDeviceQueue = v8->__hidUserDeviceQueue;
     v8->__hidUserDeviceQueue = v12;
 
     v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.accessibility.AXSSMotionTrackingVirtualEyeTracker.%p.reportingQueue", v8];
 
-    v15 = [v14 UTF8String];
+    uTF8String2 = [v14 UTF8String];
     v16 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v17 = dispatch_queue_create(v15, v16);
+    v17 = dispatch_queue_create(uTF8String2, v16);
     reportingQueue = v8->__reportingQueue;
     v8->__reportingQueue = v17;
   }
@@ -70,33 +70,33 @@
 
 - (void)activate
 {
-  v3 = [(AXSSMotionTrackingVirtualEyeTracker *)self _reportingQueue];
+  _reportingQueue = [(AXSSMotionTrackingVirtualEyeTracker *)self _reportingQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __47__AXSSMotionTrackingVirtualEyeTracker_activate__block_invoke;
   block[3] = &unk_1E8134870;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(_reportingQueue, block);
 }
 
 - (void)deactivate
 {
-  v3 = [(AXSSMotionTrackingVirtualEyeTracker *)self _reportingQueue];
+  _reportingQueue = [(AXSSMotionTrackingVirtualEyeTracker *)self _reportingQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __49__AXSSMotionTrackingVirtualEyeTracker_deactivate__block_invoke;
   block[3] = &unk_1E8134870;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(_reportingQueue, block);
 }
 
-- (void)moveToPoint:(CGPoint)a3
+- (void)moveToPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   if ([(AXSSMotionTrackingVirtualEyeTracker *)self _activated])
   {
-    v6 = [(AXSSMotionTrackingVirtualEyeTracker *)self _reportingQueue];
+    _reportingQueue = [(AXSSMotionTrackingVirtualEyeTracker *)self _reportingQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __51__AXSSMotionTrackingVirtualEyeTracker_moveToPoint___block_invoke;
@@ -104,7 +104,7 @@
     block[4] = self;
     *&block[5] = x;
     *&block[6] = y;
-    dispatch_sync(v6, block);
+    dispatch_sync(_reportingQueue, block);
   }
 
   else
@@ -125,18 +125,18 @@
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)changeStatusTo:(unint64_t)a3
+- (void)changeStatusTo:(unint64_t)to
 {
   if ([(AXSSMotionTrackingVirtualEyeTracker *)self _activated])
   {
-    v5 = [(AXSSMotionTrackingVirtualEyeTracker *)self _reportingQueue];
+    _reportingQueue = [(AXSSMotionTrackingVirtualEyeTracker *)self _reportingQueue];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __54__AXSSMotionTrackingVirtualEyeTracker_changeStatusTo___block_invoke;
     v7[3] = &unk_1E8134D10;
     v7[4] = self;
-    v7[5] = a3;
-    dispatch_sync(v5, v7);
+    v7[5] = to;
+    dispatch_sync(_reportingQueue, v7);
   }
 
   else
@@ -153,8 +153,8 @@
 {
   v7[6] = *MEMORY[0x1E69E9840];
   v6[0] = @"ReportDescriptor";
-  v2 = [a1 _eyeTrackerHIDReportDescriptorData];
-  v7[0] = v2;
+  _eyeTrackerHIDReportDescriptorData = [self _eyeTrackerHIDReportDescriptorData];
+  v7[0] = _eyeTrackerHIDReportDescriptorData;
   v7[1] = @"Virtual Eye Tracker (Testing Use Only)";
   v6[1] = @"Product";
   v6[2] = @"VendorID";
@@ -213,19 +213,19 @@ void __73__AXSSMotionTrackingVirtualEyeTracker__eyeTrackerHIDReportDescriptorDat
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_moveOnReportingQueueToPoint:(CGPoint)a3
+- (void)_moveOnReportingQueueToPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v33 = *MEMORY[0x1E69E9840];
-  v6 = [(AXSSMotionTrackingVirtualEyeTracker *)self _reportingQueue];
-  dispatch_assert_queue_V2(v6);
+  _reportingQueue = [(AXSSMotionTrackingVirtualEyeTracker *)self _reportingQueue];
+  dispatch_assert_queue_V2(_reportingQueue);
 
   if ([(AXSSMotionTrackingVirtualEyeTracker *)self _activated])
   {
-    v7 = [(AXSSMotionTrackingVirtualEyeTracker *)self _hidUserDevice];
+    _hidUserDevice = [(AXSSMotionTrackingVirtualEyeTracker *)self _hidUserDevice];
 
-    if (v7)
+    if (_hidUserDevice)
     {
       v8 = AXSSLogForCategory(2);
       if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
@@ -272,9 +272,9 @@ void __73__AXSSMotionTrackingVirtualEyeTracker__eyeTrackerHIDReportDescriptorDat
       v20 = v18 / *&_moveOnReportingQueueToPoint__s_unitExponent;
       v21 = objc_opt_class();
       v22 = [v21 _hidReportWithPoint:1 reportID:mach_absolute_time() timestamp:0 version:{v19, v20}];
-      v23 = [(AXSSMotionTrackingVirtualEyeTracker *)self _hidUserDevice];
+      _hidUserDevice2 = [(AXSSMotionTrackingVirtualEyeTracker *)self _hidUserDevice];
       v28 = 0;
-      v24 = [v23 handleReport:v22 error:&v28];
+      v24 = [_hidUserDevice2 handleReport:v22 error:&v28];
       v25 = v28;
 
       if ((v24 & 1) == 0)
@@ -291,35 +291,35 @@ void __73__AXSSMotionTrackingVirtualEyeTracker__eyeTrackerHIDReportDescriptorDat
   v27 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)_hidReportWithPoint:(CGPoint)a3 reportID:(unint64_t)a4 timestamp:(unint64_t)a5 version:(unint64_t)a6
++ (id)_hidReportWithPoint:(CGPoint)point reportID:(unint64_t)d timestamp:(unint64_t)timestamp version:(unint64_t)version
 {
-  v6 = a6;
-  v8 = a4;
-  y = a3.y;
-  x = a3.x;
-  v11 = [MEMORY[0x1E695DF88] data];
-  v18 = v8;
-  v17 = v6;
-  v16 = a5;
+  versionCopy = version;
+  dCopy = d;
+  y = point.y;
+  x = point.x;
+  data = [MEMORY[0x1E695DF88] data];
+  v18 = dCopy;
+  v17 = versionCopy;
+  timestampCopy = timestamp;
   v14 = y;
   v15 = x;
-  [v11 appendBytes:&v18 length:1];
-  [v11 appendBytes:&v17 length:1];
-  [v11 appendBytes:&v16 length:8];
-  [v11 appendBytes:&v15 length:4];
-  [v11 appendBytes:&v14 length:4];
-  v12 = [v11 copy];
+  [data appendBytes:&v18 length:1];
+  [data appendBytes:&v17 length:1];
+  [data appendBytes:&timestampCopy length:8];
+  [data appendBytes:&v15 length:4];
+  [data appendBytes:&v14 length:4];
+  v12 = [data copy];
 
   return v12;
 }
 
-+ (id)_hidReportWithButtonDown:(BOOL)a3
++ (id)_hidReportWithButtonDown:(BOOL)down
 {
   v4 = objc_alloc_init(MEMORY[0x1E695DF88]);
   v10 = 3;
   [v4 appendBytes:&v10 length:1];
-  v9 = a3;
-  [v4 appendBytes:&v9 length:1];
+  downCopy = down;
+  [v4 appendBytes:&downCopy length:1];
   v8 = 0;
   [v4 appendBytes:&v8 length:1];
   v7 = 0;
@@ -329,17 +329,17 @@ void __73__AXSSMotionTrackingVirtualEyeTracker__eyeTrackerHIDReportDescriptorDat
   return v5;
 }
 
-- (void)_changeStatusOnReportingQueueTo:(unint64_t)a3
+- (void)_changeStatusOnReportingQueueTo:(unint64_t)to
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = [(AXSSMotionTrackingVirtualEyeTracker *)self _reportingQueue];
-  dispatch_assert_queue_V2(v5);
+  _reportingQueue = [(AXSSMotionTrackingVirtualEyeTracker *)self _reportingQueue];
+  dispatch_assert_queue_V2(_reportingQueue);
 
   if ([(AXSSMotionTrackingVirtualEyeTracker *)self _activated])
   {
-    v6 = [(AXSSMotionTrackingVirtualEyeTracker *)self _hidUserDevice];
+    _hidUserDevice = [(AXSSMotionTrackingVirtualEyeTracker *)self _hidUserDevice];
 
-    if (v6)
+    if (_hidUserDevice)
     {
       v7 = AXSSLogForCategory(2);
       if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
@@ -347,14 +347,14 @@ void __73__AXSSMotionTrackingVirtualEyeTracker__eyeTrackerHIDReportDescriptorDat
         *buf = 136315394;
         v15 = "[AXSSMotionTrackingVirtualEyeTracker _changeStatusOnReportingQueueTo:]";
         v16 = 2048;
-        v17 = a3;
+        toCopy = to;
         _os_log_impl(&dword_1C0E8A000, v7, OS_LOG_TYPE_INFO, "%s: %lu", buf, 0x16u);
       }
 
-      v8 = [objc_opt_class() _hidReportWithStatusChange:a3];
-      v9 = [(AXSSMotionTrackingVirtualEyeTracker *)self _hidUserDevice];
+      v8 = [objc_opt_class() _hidReportWithStatusChange:to];
+      _hidUserDevice2 = [(AXSSMotionTrackingVirtualEyeTracker *)self _hidUserDevice];
       v13 = 0;
-      v10 = [v9 handleReport:v8 error:&v13];
+      v10 = [_hidUserDevice2 handleReport:v8 error:&v13];
       v11 = v13;
 
       if ((v10 & 1) == 0 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -367,15 +367,15 @@ void __73__AXSSMotionTrackingVirtualEyeTracker__eyeTrackerHIDReportDescriptorDat
   v12 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)_hidReportWithStatusChange:(unint64_t)a3
++ (id)_hidReportWithStatusChange:(unint64_t)change
 {
-  v3 = a3;
+  changeCopy = change;
   v4 = objc_alloc_init(MEMORY[0x1E695DF88]);
   v9 = 2;
   [v4 appendBytes:&v9 length:1];
   v8 = 0;
   [v4 appendBytes:&v8 length:2];
-  v7 = v3;
+  v7 = changeCopy;
   [v4 appendBytes:&v7 length:1];
   v5 = [v4 copy];
 
@@ -384,17 +384,17 @@ void __73__AXSSMotionTrackingVirtualEyeTracker__eyeTrackerHIDReportDescriptorDat
 
 - (void)_deactivateOnReportingQueue
 {
-  v3 = [(AXSSMotionTrackingVirtualEyeTracker *)self _reportingQueue];
-  dispatch_assert_queue_V2(v3);
+  _reportingQueue = [(AXSSMotionTrackingVirtualEyeTracker *)self _reportingQueue];
+  dispatch_assert_queue_V2(_reportingQueue);
 
   if ([(AXSSMotionTrackingVirtualEyeTracker *)self _activated])
   {
-    v4 = [(AXSSMotionTrackingVirtualEyeTracker *)self _hidUserDevice];
+    _hidUserDevice = [(AXSSMotionTrackingVirtualEyeTracker *)self _hidUserDevice];
 
-    if (v4)
+    if (_hidUserDevice)
     {
-      v5 = [(AXSSMotionTrackingVirtualEyeTracker *)self _hidUserDevice];
-      [v5 cancel];
+      _hidUserDevice2 = [(AXSSMotionTrackingVirtualEyeTracker *)self _hidUserDevice];
+      [_hidUserDevice2 cancel];
 
       [(AXSSMotionTrackingVirtualEyeTracker *)self set_hidUserDevice:0];
     }

@@ -1,32 +1,32 @@
 @interface WFChronoControlDialogRequest
-- (WFChronoControlDialogRequest)initWithCoder:(id)a3;
-- (WFChronoControlDialogRequest)initWithControlType:(unint64_t)a3 identity:(id)a4 attribution:(id)a5;
-- (void)encodeWithCoder:(id)a3;
+- (WFChronoControlDialogRequest)initWithCoder:(id)coder;
+- (WFChronoControlDialogRequest)initWithControlType:(unint64_t)type identity:(id)identity attribution:(id)attribution;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFChronoControlDialogRequest
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = WFChronoControlDialogRequest;
-  v4 = a3;
-  [(WFDialogRequest *)&v6 encodeWithCoder:v4];
-  [v4 encodeInteger:-[WFChronoControlDialogRequest controlType](self forKey:{"controlType", v6.receiver, v6.super_class), @"controlType"}];
-  v5 = [(WFChronoControlDialogRequest *)self controlIdentity];
-  [v4 encodeObject:v5 forKey:@"controlIdentity"];
+  coderCopy = coder;
+  [(WFDialogRequest *)&v6 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:-[WFChronoControlDialogRequest controlType](self forKey:{"controlType", v6.receiver, v6.super_class), @"controlType"}];
+  controlIdentity = [(WFChronoControlDialogRequest *)self controlIdentity];
+  [coderCopy encodeObject:controlIdentity forKey:@"controlIdentity"];
 }
 
-- (WFChronoControlDialogRequest)initWithCoder:(id)a3
+- (WFChronoControlDialogRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = WFChronoControlDialogRequest;
-  v5 = [(WFDialogRequest *)&v10 initWithCoder:v4];
+  v5 = [(WFDialogRequest *)&v10 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_controlType = [v4 decodeIntegerForKey:@"controlType"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"controlIdentity"];
+    v5->_controlType = [coderCopy decodeIntegerForKey:@"controlType"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"controlIdentity"];
     controlIdentity = v5->_controlIdentity;
     v5->_controlIdentity = v6;
 
@@ -36,17 +36,17 @@
   return v5;
 }
 
-- (WFChronoControlDialogRequest)initWithControlType:(unint64_t)a3 identity:(id)a4 attribution:(id)a5
+- (WFChronoControlDialogRequest)initWithControlType:(unint64_t)type identity:(id)identity attribution:(id)attribution
 {
-  v9 = a4;
+  identityCopy = identity;
   v14.receiver = self;
   v14.super_class = WFChronoControlDialogRequest;
-  v10 = [(WFDialogRequest *)&v14 initWithAttribution:a5 prompt:0];
+  v10 = [(WFDialogRequest *)&v14 initWithAttribution:attribution prompt:0];
   v11 = v10;
   if (v10)
   {
-    v10->_controlType = a3;
-    objc_storeStrong(&v10->_controlIdentity, a4);
+    v10->_controlType = type;
+    objc_storeStrong(&v10->_controlIdentity, identity);
     v12 = v11;
   }
 

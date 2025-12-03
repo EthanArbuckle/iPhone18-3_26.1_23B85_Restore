@@ -4,23 +4,23 @@
 - (id)accountOperationsQueue;
 - (id)accounts;
 - (id)activeiTunesAccount;
-- (id)ageRangeForAccount:(id)a3;
-- (id)configurationInfoError:(id *)a3;
-- (id)iCloudAnalyticsOptInError:(id *)a3;
+- (id)ageRangeForAccount:(id)account;
+- (id)configurationInfoError:(id *)error;
+- (id)iCloudAnalyticsOptInError:(id *)error;
 - (id)primaryAccount;
 - (id)protoAccount;
-- (int64_t)_determineSignOutOperationForProtoAccountAge:(id)a3;
-- (void)_fetchUserInformation:(id)a3;
-- (void)addAccountHeadersToRequest:(id)a3;
+- (int64_t)_determineSignOutOperationForProtoAccountAge:(id)age;
+- (void)_fetchUserInformation:(id)information;
+- (void)addAccountHeadersToRequest:(id)request;
 - (void)ageAttenstationFlowCompleted;
-- (void)getConfigurationInfoWithCompletion:(id)a3;
-- (void)primaryAccountIsChildAccount:(id)a3;
-- (void)removeAccount:(id)a3 completion:(id)a4;
-- (void)removeAccountsCreatedByProximityWithCompletion:(id)a3;
-- (void)removeAllAccountsWithCompletion:(id)a3;
-- (void)removeIDMSAccount:(id)a3;
-- (void)removePrimaryAccountCompletion:(id)a3;
-- (void)waitUntilSafeToSignInWithCompletion:(id)a3;
+- (void)getConfigurationInfoWithCompletion:(id)completion;
+- (void)primaryAccountIsChildAccount:(id)account;
+- (void)removeAccount:(id)account completion:(id)completion;
+- (void)removeAccountsCreatedByProximityWithCompletion:(id)completion;
+- (void)removeAllAccountsWithCompletion:(id)completion;
+- (void)removeIDMSAccount:(id)account;
+- (void)removePrimaryAccountCompletion:(id)completion;
+- (void)waitUntilSafeToSignInWithCompletion:(id)completion;
 @end
 
 @implementation BuddyAccountTools
@@ -81,26 +81,26 @@
   return v4;
 }
 
-- (void)waitUntilSafeToSignInWithCompletion:(id)a3
+- (void)waitUntilSafeToSignInWithCompletion:(id)completion
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(BuddyAccountTools *)v5 accountOperationsQueue];
-  dispatch_async(v3, location[0]);
+  objc_storeStrong(location, completion);
+  accountOperationsQueue = [(BuddyAccountTools *)selfCopy accountOperationsQueue];
+  dispatch_async(accountOperationsQueue, location[0]);
 
   objc_storeStrong(location, 0);
 }
 
-- (void)removeAccount:(id)a3 completion:(id)a4
+- (void)removeAccount:(id)account completion:(id)completion
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v16 = 0;
-  objc_storeStrong(&v16, a4);
+  objc_storeStrong(&v16, completion);
   oslog = _BYLoggingFacility();
   v14 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
@@ -112,17 +112,17 @@
   objc_storeStrong(&oslog, 0);
   if (location[0])
   {
-    [(NSMutableArray *)v18->_accountsBeingRemoved addObject:location[0]];
-    v5 = [(BuddyAccountTools *)v18 accountOperationsQueue];
+    [(NSMutableArray *)selfCopy->_accountsBeingRemoved addObject:location[0]];
+    accountOperationsQueue = [(BuddyAccountTools *)selfCopy accountOperationsQueue];
     block = _NSConcreteStackBlock;
     v7 = -1073741824;
     v8 = 0;
     v9 = sub_100203F80;
     v10 = &unk_10032BC78;
-    v11 = v18;
+    v11 = selfCopy;
     v12 = location[0];
     v13 = v16;
-    dispatch_async(v5, &block);
+    dispatch_async(accountOperationsQueue, &block);
 
     objc_storeStrong(&v13, 0);
     objc_storeStrong(&v12, 0);
@@ -138,55 +138,55 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)removeIDMSAccount:(id)a3
+- (void)removeIDMSAccount:(id)account
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(BuddyAccountTools *)v15 accounts];
+  objc_storeStrong(location, account);
+  accounts = [(BuddyAccountTools *)selfCopy accounts];
   v4 = [NSPredicate predicateWithBlock:&stru_10032F088];
-  v5 = [v3 filteredArrayUsingPredicate:v4];
-  v13 = [v5 firstObject];
+  v5 = [accounts filteredArrayUsingPredicate:v4];
+  firstObject = [v5 firstObject];
 
-  v6 = v15;
+  v6 = selfCopy;
   v7 = _NSConcreteStackBlock;
   v8 = -1073741824;
   v9 = 0;
   v10 = sub_100204730;
   v11 = &unk_10032AEC8;
   v12 = location[0];
-  [(BuddyAccountTools *)v6 removeAccount:v13 completion:&v7];
+  [(BuddyAccountTools *)v6 removeAccount:firstObject completion:&v7];
   objc_storeStrong(&v12, 0);
-  objc_storeStrong(&v13, 0);
+  objc_storeStrong(&firstObject, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)removePrimaryAccountCompletion:(id)a3
+- (void)removePrimaryAccountCompletion:(id)completion
 {
-  v35 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   v33 = +[ACAccountStore defaultStore];
-  v32 = [v33 aa_primaryAppleAccount];
-  if (v32)
+  aa_primaryAppleAccount = [v33 aa_primaryAppleAccount];
+  if (aa_primaryAppleAccount)
   {
-    v30 = [(BuddyAccountTools *)v35 cachedAccountAge];
-    v29 = [(BuddyAccountTools *)v35 _determineSignOutOperationForProtoAccountAge:v30];
+    cachedAccountAge = [(BuddyAccountTools *)selfCopy cachedAccountAge];
+    v29 = [(BuddyAccountTools *)selfCopy _determineSignOutOperationForProtoAccountAge:cachedAccountAge];
     v28 = objc_retainBlock(&stru_10032F0A8);
     if (v29)
     {
       if (v29 == 1)
       {
-        v7 = v35;
+        v7 = selfCopy;
         v16 = _NSConcreteStackBlock;
         v17 = -1073741824;
         v18 = 0;
         v19 = sub_100204CAC;
         v20 = &unk_10032F0D0;
         v23 = v28;
-        v21 = v30;
+        v21 = cachedAccountAge;
         v22 = v33;
         v24 = location[0];
         [(BuddyAccountTools *)v7 removeAllAccountsWithCompletion:&v16];
@@ -199,7 +199,7 @@
 
       else if (v29 == 2)
       {
-        v8 = v35;
+        v8 = selfCopy;
         v9 = _NSConcreteStackBlock;
         v10 = -1073741824;
         v11 = 0;
@@ -207,7 +207,7 @@
         v13 = &unk_10032F0F8;
         v14 = v28;
         v15 = location[0];
-        [(BuddyAccountTools *)v8 removeAccount:v32 completion:&v9];
+        [(BuddyAccountTools *)v8 removeAccount:aa_primaryAppleAccount completion:&v9];
         v31 = 2;
         objc_storeStrong(&v15, 0);
         objc_storeStrong(&v14, 0);
@@ -236,7 +236,7 @@
     }
 
     objc_storeStrong(&v28, 0);
-    objc_storeStrong(&v30, 0);
+    objc_storeStrong(&cachedAccountAge, 0);
     v31 = 0;
   }
 
@@ -250,19 +250,19 @@
     v31 = 1;
   }
 
-  objc_storeStrong(&v32, 0);
+  objc_storeStrong(&aa_primaryAppleAccount, 0);
   objc_storeStrong(&v33, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)removeAccountsCreatedByProximityWithCompletion:(id)a3
+- (void)removeAccountsCreatedByProximityWithCompletion:(id)completion
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  objc_initWeak(&from, v13);
-  v3 = v13;
+  objc_storeStrong(location, completion);
+  objc_initWeak(&from, selfCopy);
+  v3 = selfCopy;
   v4 = _NSConcreteStackBlock;
   v5 = -1073741824;
   v6 = 0;
@@ -277,12 +277,12 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)removeAllAccountsWithCompletion:(id)a3
+- (void)removeAllAccountsWithCompletion:(id)completion
 {
-  v42 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   v40 = _BYLoggingFacility();
   v39 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
@@ -294,7 +294,7 @@
   }
 
   objc_storeStrong(&v40, 0);
-  v37 = [(BuddyAccountTools *)v42 accounts];
+  accounts = [(BuddyAccountTools *)selfCopy accounts];
   group = dispatch_group_create();
   v30[0] = 0;
   v30[1] = v30;
@@ -307,7 +307,7 @@
   v27 = 0u;
   v26 = 0u;
   v25 = 0u;
-  v5 = v37;
+  v5 = accounts;
   v6 = [v5 countByEnumeratingWithState:&v25 objects:v43 count:16];
   if (v6)
   {
@@ -323,7 +323,7 @@
 
         v29 = *(*(&v25 + 1) + 8 * i);
         dispatch_group_enter(group);
-        v9 = v42;
+        v9 = selfCopy;
         v10 = v29;
         v19 = _NSConcreteStackBlock;
         v20 = -1073741824;
@@ -357,18 +357,18 @@
   _Block_object_dispose(v30, 8);
   objc_storeStrong(&v35, 0);
   objc_storeStrong(&group, 0);
-  objc_storeStrong(&v37, 0);
+  objc_storeStrong(&accounts, 0);
   objc_storeStrong(location, 0);
 }
 
 - (id)primaryAccount
 {
-  v19 = self;
+  selfCopy = self;
   location[1] = a2;
   v2 = +[ACAccountStore defaultStore];
   location[0] = [v2 aa_primaryAppleAccount];
 
-  accountsBeingRemoved = v19->_accountsBeingRemoved;
+  accountsBeingRemoved = selfCopy->_accountsBeingRemoved;
   v11 = _NSConcreteStackBlock;
   v12 = -1073741824;
   v13 = 0;
@@ -408,27 +408,27 @@
 {
   location[2] = self;
   location[1] = a2;
-  v2 = [(BuddyAccountTools *)self accounts];
+  accounts = [(BuddyAccountTools *)self accounts];
   v3 = [NSPredicate predicateWithBlock:&stru_10032F190];
-  location[0] = [v2 filteredArrayUsingPredicate:v3];
+  location[0] = [accounts filteredArrayUsingPredicate:v3];
 
-  v4 = [location[0] firstObject];
+  firstObject = [location[0] firstObject];
   objc_storeStrong(location, 0);
 
-  return v4;
+  return firstObject;
 }
 
 - (id)accounts
 {
-  v21 = self;
+  selfCopy = self;
   location[1] = a2;
   if ([(NSMutableArray *)self->_accountsBeingRemoved count])
   {
     v2 = +[ACAccountStore defaultStore];
-    v3 = [v2 accounts];
-    location[0] = [v3 mutableCopy];
+    accounts = [v2 accounts];
+    location[0] = [accounts mutableCopy];
 
-    [location[0] removeObjectsInArray:v21->_accountsBeingRemoved];
+    [location[0] removeObjectsInArray:selfCopy->_accountsBeingRemoved];
     v22 = location[0];
     objc_storeStrong(location, 0);
   }
@@ -442,14 +442,14 @@
     v17 = sub_1002055BC;
     v18 = sub_100205600;
     v19 = 0;
-    v4 = [(BuddyAccountTools *)v21 accountOperationsQueue];
+    accountOperationsQueue = [(BuddyAccountTools *)selfCopy accountOperationsQueue];
     block = _NSConcreteStackBlock;
     v8 = -1073741824;
     v9 = 0;
     v10 = sub_100205D14;
     v11 = &unk_10032B070;
     v12 = &v13;
-    dispatch_sync(v4, &block);
+    dispatch_sync(accountOperationsQueue, &block);
 
     v22 = v14[5];
     _Block_object_dispose(&v13, 8);
@@ -461,12 +461,12 @@
   return v5;
 }
 
-- (void)addAccountHeadersToRequest:(id)a3
+- (void)addAccountHeadersToRequest:(id)request
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, request);
   v3 = location[0];
   v4 = sub_100195EC4();
   [v3 setValue:v4 forHTTPHeaderField:@"User-Agent"];
@@ -478,8 +478,8 @@
   v7 = location[0];
   v8 = +[NSLocale currentLocale];
   v9 = [(NSLocale *)v8 objectForKey:NSLocaleCountryCode];
-  v10 = [v9 uppercaseString];
-  [v7 setValue:v10 forHTTPHeaderField:@"X-MMe-Country"];
+  uppercaseString = [v9 uppercaseString];
+  [v7 setValue:uppercaseString forHTTPHeaderField:@"X-MMe-Country"];
 
   v15 = _CFNetworkCopyPreferredLanguageCode();
   v12 = v15;
@@ -508,13 +508,13 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)primaryAccountIsChildAccount:(id)a3
+- (void)primaryAccountIsChildAccount:(id)account
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v11;
+  objc_storeStrong(location, account);
+  v3 = selfCopy;
   v4 = _NSConcreteStackBlock;
   v5 = -1073741824;
   v6 = 0;
@@ -526,11 +526,11 @@
   objc_storeStrong(location, 0);
 }
 
-- (id)configurationInfoError:(id *)a3
+- (id)configurationInfoError:(id *)error
 {
-  v33 = self;
+  selfCopy = self;
   v32 = a2;
-  v31 = a3;
+  errorCopy = error;
   v24 = 0;
   v25 = &v24;
   v26 = 838860800;
@@ -546,18 +546,18 @@
   v22 = sub_100205600;
   v23 = 0;
   v3 = +[ACAccountStore defaultStore];
-  v16 = [v3 aa_primaryAppleAccount];
+  aa_primaryAppleAccount = [v3 aa_primaryAppleAccount];
 
-  location = [v16 aa_altDSID];
-  if (v16)
+  location = [aa_primaryAppleAccount aa_altDSID];
+  if (aa_primaryAppleAccount)
   {
-    configurationInfoQueue = v33->_configurationInfoQueue;
+    configurationInfoQueue = selfCopy->_configurationInfoQueue;
     block = _NSConcreteStackBlock;
     v9 = -1073741824;
     v10 = 0;
     v11 = sub_100206538;
     v12 = &unk_10032F208;
-    v13 = v33;
+    v13 = selfCopy;
     v14[0] = location;
     v14[1] = &v17;
     v14[2] = &v24;
@@ -566,15 +566,15 @@
     objc_storeStrong(&v13, 0);
   }
 
-  if (v18[5] && v31)
+  if (v18[5] && errorCopy)
   {
     v5 = v18[5];
-    *v31 = v5;
+    *errorCopy = v5;
   }
 
   v6 = v25[5];
   objc_storeStrong(&location, 0);
-  objc_storeStrong(&v16, 0);
+  objc_storeStrong(&aa_primaryAppleAccount, 0);
   _Block_object_dispose(&v17, 8);
   objc_storeStrong(&v23, 0);
   _Block_object_dispose(&v24, 8);
@@ -583,19 +583,19 @@
   return v6;
 }
 
-- (void)getConfigurationInfoWithCompletion:(id)a3
+- (void)getConfigurationInfoWithCompletion:(id)completion
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   v3 = dispatch_get_global_queue(0, 0);
   block = _NSConcreteStackBlock;
   v5 = -1073741824;
   v6 = 0;
   v7 = sub_100206BF0;
   v8 = &unk_10032AFD0;
-  v9 = v12;
+  v9 = selfCopy;
   v10 = location[0];
   dispatch_async(v3, &block);
 
@@ -604,11 +604,11 @@
   objc_storeStrong(location, 0);
 }
 
-- (id)iCloudAnalyticsOptInError:(id *)a3
+- (id)iCloudAnalyticsOptInError:(id *)error
 {
-  v20 = self;
+  selfCopy = self;
   v19 = a2;
-  v18 = a3;
+  errorCopy = error;
   v17 = 0;
   location = 0;
   obj = 0;
@@ -655,10 +655,10 @@
     objc_storeStrong(&v13, 0);
   }
 
-  if (v18)
+  if (errorCopy)
   {
     v9 = location;
-    *v18 = v9;
+    *errorCopy = v9;
   }
 
   v10 = v17;
@@ -668,12 +668,12 @@
   return v10;
 }
 
-- (void)_fetchUserInformation:(id)a3
+- (void)_fetchUserInformation:(id)information
 {
-  v27 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, information);
   v19 = 0;
   v20 = &v19;
   v21 = 838860800;
@@ -681,14 +681,14 @@
   v23 = sub_1002055BC;
   v24 = sub_100205600;
   v25 = 0;
-  userInformationQueue = v27->_userInformationQueue;
+  userInformationQueue = selfCopy->_userInformationQueue;
   block = _NSConcreteStackBlock;
   v14 = -1073741824;
   v15 = 0;
   v16 = sub_100207270;
   v17 = &unk_10032C290;
   v18[1] = &v19;
-  v18[0] = v27;
+  v18[0] = selfCopy;
   dispatch_sync(userInformationQueue, &block);
   if (v20[5])
   {
@@ -709,7 +709,7 @@
     v8 = sub_1002072AC;
     v9 = &unk_10032F258;
     v11 = location[0];
-    v10 = v27;
+    v10 = selfCopy;
     [v4 aa_primaryAppleAccountWithCompletion:&v5];
 
     objc_storeStrong(&v10, 0);
@@ -726,17 +726,17 @@
 - (id)protoAccount
 {
   v2 = [AKAccountManager sharedInstance:a2];
-  v3 = [(AKAccountManager *)v2 protoAccount];
+  protoAccount = [(AKAccountManager *)v2 protoAccount];
 
-  return v3;
+  return protoAccount;
 }
 
-- (id)ageRangeForAccount:(id)a3
+- (id)ageRangeForAccount:(id)account
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   if (location[0])
   {
     v3 = [BuddyAccountAge alloc];
@@ -756,20 +756,20 @@
 
 - (void)ageAttenstationFlowCompleted
 {
-  v2 = [(BuddyAccountTools *)self protoAccount];
+  protoAccount = [(BuddyAccountTools *)self protoAccount];
 
-  if (v2)
+  if (protoAccount)
   {
-    v3 = [(BuddyAccountTools *)self protoAccount];
-    v4 = [(BuddyAccountTools *)self ageRangeForAccount:v3];
+    protoAccount2 = [(BuddyAccountTools *)self protoAccount];
+    v4 = [(BuddyAccountTools *)self ageRangeForAccount:protoAccount2];
     [(BuddyAccountTools *)self setCachedAccountAge:v4];
   }
 
   else
   {
-    v5 = [(BuddyAccountTools *)self primaryAccount];
+    primaryAccount = [(BuddyAccountTools *)self primaryAccount];
 
-    if (v5)
+    if (primaryAccount)
     {
       v6 = [[BuddyAccountAge alloc] initWithAgeRange:0];
     }
@@ -783,12 +783,12 @@
   }
 }
 
-- (int64_t)_determineSignOutOperationForProtoAccountAge:(id)a3
+- (int64_t)_determineSignOutOperationForProtoAccountAge:(id)age
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, age);
   v10 = location[0] != 0;
   v3 = 0;
   if (location[0])
@@ -797,24 +797,24 @@
   }
 
   v9 = v3;
-  v4 = 1;
+  isAdult = 1;
   if (v10)
   {
-    v4 = [location[0] isAdult];
+    isAdult = [location[0] isAdult];
   }
 
-  v8 = v4 & 1;
-  v5 = 0;
+  v8 = isAdult & 1;
+  isUnder18 = 0;
   if (v10)
   {
-    v5 = [location[0] isUnder18];
+    isUnder18 = [location[0] isUnder18];
   }
 
   v6 = 1;
   if (v9)
   {
     v6 = 1;
-    if ((v5 & 1) == 0)
+    if ((isUnder18 & 1) == 0)
     {
       v6 = v8;
     }
@@ -822,7 +822,7 @@
 
   if (v6)
   {
-    if (v5)
+    if (isUnder18)
     {
       v12 = 1;
     }

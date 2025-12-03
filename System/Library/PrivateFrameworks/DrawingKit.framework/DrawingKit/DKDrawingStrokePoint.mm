@@ -1,7 +1,7 @@
 @interface DKDrawingStrokePoint
 - (CGPoint)location;
 - (DKDrawingStrokePoint)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -22,7 +22,7 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   result = objc_alloc_init(DKDrawingStrokePoint);
   if (result)

@@ -1,62 +1,62 @@
 @interface HDStatisticsCollectionCalculator
-+ (id)calculatorForArchivedRepresentation:(id)a3 error:(id *)a4;
-+ (id)calculatorForCategoryType:(id)a3 intervalCollection:(id)a4 options:(unint64_t)a5 mergeStrategy:(unint64_t)a6;
-+ (id)calculatorForQuantityType:(id)a3 intervalCollection:(id)a4 options:(unint64_t)a5 mergeStrategy:(unint64_t)a6;
-+ (id)calculatorForQuantityType:(id)a3 intervalCollection:(id)a4 options:(unint64_t)a5 mergeStrategy:(unint64_t)a6 computationMethod:(int64_t)a7;
-- (BOOL)addSampleValue:(double)a3 startTime:(double)a4 endTime:(double)a5 sourceID:(int64_t)a6 error:(id *)a7;
-- (BOOL)performInitialStatisticsTransaction:(id)a3 error:(id *)a4;
-- (BOOL)setMaskedIntervals:(id)a3 error:(id *)a4;
-- (HDStatisticsCollectionCalculator)initWithCoder:(id)a3;
++ (id)calculatorForArchivedRepresentation:(id)representation error:(id *)error;
++ (id)calculatorForCategoryType:(id)type intervalCollection:(id)collection options:(unint64_t)options mergeStrategy:(unint64_t)strategy;
++ (id)calculatorForQuantityType:(id)type intervalCollection:(id)collection options:(unint64_t)options mergeStrategy:(unint64_t)strategy;
++ (id)calculatorForQuantityType:(id)type intervalCollection:(id)collection options:(unint64_t)options mergeStrategy:(unint64_t)strategy computationMethod:(int64_t)method;
+- (BOOL)addSampleValue:(double)value startTime:(double)time endTime:(double)endTime sourceID:(int64_t)d error:(id *)error;
+- (BOOL)performInitialStatisticsTransaction:(id)transaction error:(id *)error;
+- (BOOL)setMaskedIntervals:(id)intervals error:(id *)error;
+- (HDStatisticsCollectionCalculator)initWithCoder:(id)coder;
 - (HDStatisticsCollectionCalculatorSourceOrderProvider)sourceOrderProvider;
-- (id)bundleIdentifierForSourceID:(int64_t)a3;
-- (id)sourceForSourceID:(int64_t)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)initForQuantityType:(void *)a3 intervalCollection:(uint64_t)a4 options:(uint64_t)a5 mergeStrategy:(uint64_t)a6 computationMethod:;
-- (void)orderSourceIDs:(void *)a3;
-- (void)setStatisticsHandler:(id)a3;
+- (id)bundleIdentifierForSourceID:(int64_t)d;
+- (id)sourceForSourceID:(int64_t)d;
+- (void)encodeWithCoder:(id)coder;
+- (void)initForQuantityType:(void *)type intervalCollection:(uint64_t)collection options:(uint64_t)options mergeStrategy:(uint64_t)strategy computationMethod:;
+- (void)orderSourceIDs:(void *)ds;
+- (void)setStatisticsHandler:(id)handler;
 @end
 
 @implementation HDStatisticsCollectionCalculator
 
-+ (id)calculatorForQuantityType:(id)a3 intervalCollection:(id)a4 options:(unint64_t)a5 mergeStrategy:(unint64_t)a6
++ (id)calculatorForQuantityType:(id)type intervalCollection:(id)collection options:(unint64_t)options mergeStrategy:(unint64_t)strategy
 {
-  v9 = a3;
-  v10 = a4;
+  typeCopy = type;
+  collectionCopy = collection;
   v11 = [HDStatisticsCollectionCalculator alloc];
-  v12 = _HKStatisticsComputationMethodForQuantityType(v9, a5);
-  v13 = [(HDStatisticsCollectionCalculator *)v11 initForQuantityType:v9 intervalCollection:v10 options:a5 mergeStrategy:a6 computationMethod:v12];
+  v12 = _HKStatisticsComputationMethodForQuantityType(typeCopy, options);
+  v13 = [(HDStatisticsCollectionCalculator *)v11 initForQuantityType:typeCopy intervalCollection:collectionCopy options:options mergeStrategy:strategy computationMethod:v12];
 
   return v13;
 }
 
-- (void)initForQuantityType:(void *)a3 intervalCollection:(uint64_t)a4 options:(uint64_t)a5 mergeStrategy:(uint64_t)a6 computationMethod:
+- (void)initForQuantityType:(void *)type intervalCollection:(uint64_t)collection options:(uint64_t)options mergeStrategy:(uint64_t)strategy computationMethod:
 {
   v10 = a2;
-  v11 = a3;
-  if (a1)
+  typeCopy = type;
+  if (self)
   {
-    v75.receiver = a1;
+    v75.receiver = self;
     v75.super_class = HDStatisticsCollectionCalculator;
     v12 = objc_msgSendSuper2(&v75, sel_init);
-    a1 = v12;
+    self = v12;
     if (v12)
     {
-      v12[3] = a6;
-      if (a6 > 4)
+      v12[3] = strategy;
+      if (strategy > 4)
       {
-        if (a6 <= 6)
+        if (strategy <= 6)
         {
-          if (a6 != 5)
+          if (strategy != 5)
           {
             v31 = v10;
-            v32 = v11;
-            v33 = a1;
+            v32 = typeCopy;
+            selfCopy = self;
             v34 = v31;
             v35 = v32;
-            v36 = v33;
-            if ((a4 & 0x40) == 0)
+            v36 = selfCopy;
+            if ((collection & 0x40) == 0)
             {
-              if ((_HKStatisticsOptionBaselineRelativeQuantities() & a4) != 0)
+              if ((_HKStatisticsOptionBaselineRelativeQuantities() & collection) != 0)
               {
                 operator new();
               }
@@ -64,7 +64,7 @@
               operator new();
             }
 
-            if ((_HKStatisticsOptionBaselineRelativeQuantities() & a4) != 0)
+            if ((_HKStatisticsOptionBaselineRelativeQuantities() & collection) != 0)
             {
               operator new();
             }
@@ -73,14 +73,14 @@
           }
 
           v43 = v10;
-          v44 = v11;
-          v45 = a1;
+          v44 = typeCopy;
+          selfCopy2 = self;
           v46 = v43;
           v47 = v44;
-          v48 = v45;
-          if ((a4 & 0x40) == 0)
+          v48 = selfCopy2;
+          if ((collection & 0x40) == 0)
           {
-            if ((_HKStatisticsOptionBaselineRelativeQuantities() & a4) != 0)
+            if ((_HKStatisticsOptionBaselineRelativeQuantities() & collection) != 0)
             {
               operator new();
             }
@@ -88,7 +88,7 @@
             operator new();
           }
 
-          if ((_HKStatisticsOptionBaselineRelativeQuantities() & a4) != 0)
+          if ((_HKStatisticsOptionBaselineRelativeQuantities() & collection) != 0)
           {
             operator new();
           }
@@ -96,18 +96,18 @@
           operator new();
         }
 
-        switch(a6)
+        switch(strategy)
         {
           case 7:
             v55 = v10;
-            v56 = v11;
-            v57 = a1;
+            v56 = typeCopy;
+            selfCopy3 = self;
             v58 = v55;
             v59 = v56;
-            v60 = v57;
-            if ((a4 & 0x40) == 0)
+            v60 = selfCopy3;
+            if ((collection & 0x40) == 0)
             {
-              if ((_HKStatisticsOptionBaselineRelativeQuantities() & a4) != 0)
+              if ((_HKStatisticsOptionBaselineRelativeQuantities() & collection) != 0)
               {
                 operator new();
               }
@@ -115,7 +115,7 @@
               operator new();
             }
 
-            if ((_HKStatisticsOptionBaselineRelativeQuantities() & a4) != 0)
+            if ((_HKStatisticsOptionBaselineRelativeQuantities() & collection) != 0)
             {
               operator new();
             }
@@ -123,14 +123,14 @@
             operator new();
           case 8:
             v67 = v10;
-            v68 = v11;
-            v69 = a1;
+            v68 = typeCopy;
+            selfCopy4 = self;
             v70 = v67;
             v71 = v68;
-            v72 = v69;
-            if ((a4 & 0x40) == 0)
+            v72 = selfCopy4;
+            if ((collection & 0x40) == 0)
             {
-              if ((_HKStatisticsOptionBaselineRelativeQuantities() & a4) != 0)
+              if ((_HKStatisticsOptionBaselineRelativeQuantities() & collection) != 0)
               {
                 operator new();
               }
@@ -138,7 +138,7 @@
               operator new();
             }
 
-            if ((_HKStatisticsOptionBaselineRelativeQuantities() & a4) != 0)
+            if ((_HKStatisticsOptionBaselineRelativeQuantities() & collection) != 0)
             {
               operator new();
             }
@@ -146,14 +146,14 @@
             operator new();
           case 9:
             v19 = v10;
-            v20 = v11;
-            v21 = a1;
+            v20 = typeCopy;
+            selfCopy5 = self;
             v22 = v19;
             v23 = v20;
-            v24 = v21;
-            if ((a4 & 0x40) == 0)
+            v24 = selfCopy5;
+            if ((collection & 0x40) == 0)
             {
-              if ((_HKStatisticsOptionBaselineRelativeQuantities() & a4) != 0)
+              if ((_HKStatisticsOptionBaselineRelativeQuantities() & collection) != 0)
               {
                 operator new();
               }
@@ -161,7 +161,7 @@
               operator new();
             }
 
-            if ((_HKStatisticsOptionBaselineRelativeQuantities() & a4) != 0)
+            if ((_HKStatisticsOptionBaselineRelativeQuantities() & collection) != 0)
             {
               operator new();
             }
@@ -172,21 +172,21 @@
 
       else
       {
-        if (a6 > 1)
+        if (strategy > 1)
         {
-          if (a6 != 2)
+          if (strategy != 2)
           {
-            if (a6 != 3)
+            if (strategy != 3)
             {
               v13 = v10;
-              v14 = v11;
-              v15 = a1;
+              v14 = typeCopy;
+              selfCopy6 = self;
               v16 = v13;
               v17 = v14;
-              v18 = v15;
-              if ((a4 & 0x40) == 0)
+              v18 = selfCopy6;
+              if ((collection & 0x40) == 0)
               {
-                if ((_HKStatisticsOptionBaselineRelativeQuantities() & a4) != 0)
+                if ((_HKStatisticsOptionBaselineRelativeQuantities() & collection) != 0)
                 {
                   operator new();
                 }
@@ -194,7 +194,7 @@
                 operator new();
               }
 
-              if ((_HKStatisticsOptionBaselineRelativeQuantities() & a4) != 0)
+              if ((_HKStatisticsOptionBaselineRelativeQuantities() & collection) != 0)
               {
                 operator new();
               }
@@ -203,14 +203,14 @@
             }
 
             v61 = v10;
-            v62 = v11;
-            v63 = a1;
+            v62 = typeCopy;
+            selfCopy7 = self;
             v64 = v61;
             v65 = v62;
-            v66 = v63;
-            if ((a4 & 0x40) == 0)
+            v66 = selfCopy7;
+            if ((collection & 0x40) == 0)
             {
-              if ((_HKStatisticsOptionBaselineRelativeQuantities() & a4) != 0)
+              if ((_HKStatisticsOptionBaselineRelativeQuantities() & collection) != 0)
               {
                 operator new();
               }
@@ -218,7 +218,7 @@
               operator new();
             }
 
-            if ((_HKStatisticsOptionBaselineRelativeQuantities() & a4) != 0)
+            if ((_HKStatisticsOptionBaselineRelativeQuantities() & collection) != 0)
             {
               operator new();
             }
@@ -227,14 +227,14 @@
           }
 
           v49 = v10;
-          v50 = v11;
-          v51 = a1;
+          v50 = typeCopy;
+          selfCopy8 = self;
           v52 = v49;
           v53 = v50;
-          v54 = v51;
-          if ((a4 & 0x40) == 0)
+          v54 = selfCopy8;
+          if ((collection & 0x40) == 0)
           {
-            if ((_HKStatisticsOptionBaselineRelativeQuantities() & a4) != 0)
+            if ((_HKStatisticsOptionBaselineRelativeQuantities() & collection) != 0)
             {
               operator new();
             }
@@ -242,7 +242,7 @@
             operator new();
           }
 
-          if ((_HKStatisticsOptionBaselineRelativeQuantities() & a4) != 0)
+          if ((_HKStatisticsOptionBaselineRelativeQuantities() & collection) != 0)
           {
             operator new();
           }
@@ -250,17 +250,17 @@
           operator new();
         }
 
-        if (!a6)
+        if (!strategy)
         {
           v37 = v10;
-          v38 = v11;
-          v39 = a1;
+          v38 = typeCopy;
+          selfCopy9 = self;
           v40 = v37;
           v41 = v38;
-          v42 = v39;
-          if ((a4 & 0x40) == 0)
+          v42 = selfCopy9;
+          if ((collection & 0x40) == 0)
           {
-            if ((_HKStatisticsOptionBaselineRelativeQuantities() & a4) != 0)
+            if ((_HKStatisticsOptionBaselineRelativeQuantities() & collection) != 0)
             {
               operator new();
             }
@@ -268,7 +268,7 @@
             operator new();
           }
 
-          if ((_HKStatisticsOptionBaselineRelativeQuantities() & a4) != 0)
+          if ((_HKStatisticsOptionBaselineRelativeQuantities() & collection) != 0)
           {
             operator new();
           }
@@ -276,17 +276,17 @@
           operator new();
         }
 
-        if (a6 == 1)
+        if (strategy == 1)
         {
           v25 = v10;
-          v26 = v11;
-          v27 = a1;
+          v26 = typeCopy;
+          selfCopy10 = self;
           v28 = v25;
           v29 = v26;
-          v30 = v27;
-          if ((a4 & 0x40) == 0)
+          v30 = selfCopy10;
+          if ((collection & 0x40) == 0)
           {
-            if ((_HKStatisticsOptionBaselineRelativeQuantities() & a4) != 0)
+            if ((_HKStatisticsOptionBaselineRelativeQuantities() & collection) != 0)
             {
               operator new();
             }
@@ -294,7 +294,7 @@
             operator new();
           }
 
-          if ((_HKStatisticsOptionBaselineRelativeQuantities() & a4) != 0)
+          if ((_HKStatisticsOptionBaselineRelativeQuantities() & collection) != 0)
           {
             operator new();
           }
@@ -304,40 +304,40 @@
       }
 
       objc_storeWeak((v12[1] + 8), v12);
-      v73 = a1[4];
-      a1[4] = MEMORY[0x277CBEBF8];
+      v73 = self[4];
+      self[4] = MEMORY[0x277CBEBF8];
     }
   }
 
-  return a1;
+  return self;
 }
 
-+ (id)calculatorForCategoryType:(id)a3 intervalCollection:(id)a4 options:(unint64_t)a5 mergeStrategy:(unint64_t)a6
++ (id)calculatorForCategoryType:(id)type intervalCollection:(id)collection options:(unint64_t)options mergeStrategy:(unint64_t)strategy
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = [MEMORY[0x277CCDAB0] countUnit];
-  v13 = [_HDStatisticsSyntheticQuantityType syntheticQuantityTypeWithUnderlyingSampleType:v10 aggregationStyle:1 canonicalUnit:v12];
+  typeCopy = type;
+  collectionCopy = collection;
+  countUnit = [MEMORY[0x277CCDAB0] countUnit];
+  v13 = [_HDStatisticsSyntheticQuantityType syntheticQuantityTypeWithUnderlyingSampleType:typeCopy aggregationStyle:1 canonicalUnit:countUnit];
 
-  v14 = [a1 calculatorForQuantityType:v13 intervalCollection:v11 options:a5 mergeStrategy:a6];
+  v14 = [self calculatorForQuantityType:v13 intervalCollection:collectionCopy options:options mergeStrategy:strategy];
 
   return v14;
 }
 
-+ (id)calculatorForQuantityType:(id)a3 intervalCollection:(id)a4 options:(unint64_t)a5 mergeStrategy:(unint64_t)a6 computationMethod:(int64_t)a7
++ (id)calculatorForQuantityType:(id)type intervalCollection:(id)collection options:(unint64_t)options mergeStrategy:(unint64_t)strategy computationMethod:(int64_t)method
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = [[HDStatisticsCollectionCalculator alloc] initForQuantityType:v11 intervalCollection:v12 options:a5 mergeStrategy:a6 computationMethod:a7];
+  typeCopy = type;
+  collectionCopy = collection;
+  v13 = [[HDStatisticsCollectionCalculator alloc] initForQuantityType:typeCopy intervalCollection:collectionCopy options:options mergeStrategy:strategy computationMethod:method];
 
   return v13;
 }
 
-- (BOOL)setMaskedIntervals:(id)a3 error:(id *)a4
+- (BOOL)setMaskedIntervals:(id)intervals error:(id *)error
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [v6 copy];
+  intervalsCopy = intervals;
+  v7 = [intervalsCopy copy];
   maskedIntervals = self->_maskedIntervals;
   self->_maskedIntervals = v7;
 
@@ -347,7 +347,7 @@
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v9 = v6;
+  v9 = intervalsCopy;
   v10 = [v9 countByEnumeratingWithState:&v24 objects:v30 count:16];
   if (v10)
   {
@@ -362,11 +362,11 @@
         }
 
         v13 = *(*(&v24 + 1) + 8 * i);
-        v14 = [v13 startDate];
-        [v14 timeIntervalSinceReferenceDate];
+        startDate = [v13 startDate];
+        [startDate timeIntervalSinceReferenceDate];
         v16 = v15;
-        v17 = [v13 endDate];
-        [v17 timeIntervalSinceReferenceDate];
+        endDate = [v13 endDate];
+        [endDate timeIntervalSinceReferenceDate];
         if (v18 >= v16)
         {
           v19 = v16;
@@ -396,7 +396,7 @@
     while (v10);
   }
 
-  v21 = (*(*self->_implementation.__ptr_ + 64))(self->_implementation.__ptr_, &__p, a4);
+  v21 = (*(*self->_implementation.__ptr_ + 64))(self->_implementation.__ptr_, &__p, error);
   if (__p.n128_u64[0])
   {
     __p.n128_u64[1] = __p.n128_u64[0];
@@ -407,14 +407,14 @@
   return v21;
 }
 
-- (void)setStatisticsHandler:(id)a3
+- (void)setStatisticsHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [v4 copy];
+  handlerCopy = handler;
+  v5 = [handlerCopy copy];
   statisticsHandler = self->_statisticsHandler;
   self->_statisticsHandler = v5;
 
-  if (v4)
+  if (handlerCopy)
   {
     objc_initWeak(&location, self);
     ptr = self->_implementation.__ptr_;
@@ -422,7 +422,7 @@
     v8[1] = 3221225472;
     v8[2] = __57__HDStatisticsCollectionCalculator_setStatisticsHandler___block_invoke;
     v8[3] = &unk_278629320;
-    v9 = v4;
+    v9 = handlerCopy;
     objc_copyWeak(&v10, &location);
     (*(*ptr + 72))(ptr, v8);
     objc_destroyWeak(&v10);
@@ -444,35 +444,35 @@ void __57__HDStatisticsCollectionCalculator_setStatisticsHandler___block_invoke(
   (*(v3 + 16))(v3);
 }
 
-- (BOOL)addSampleValue:(double)a3 startTime:(double)a4 endTime:(double)a5 sourceID:(int64_t)a6 error:(id *)a7
+- (BOOL)addSampleValue:(double)value startTime:(double)time endTime:(double)endTime sourceID:(int64_t)d error:(id *)error
 {
-  *v13 = a3;
-  *&v13[1] = a4;
-  *&v13[2] = a5;
-  v13[3] = a6;
+  *v13 = value;
+  *&v13[1] = time;
+  *&v13[2] = endTime;
+  v13[3] = d;
   v14 = 1;
-  v10 = [MEMORY[0x277CBEAA8] distantFuture];
-  [v10 timeIntervalSinceReferenceDate];
-  v15 = v11 <= a5;
+  distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+  [distantFuture timeIntervalSinceReferenceDate];
+  v15 = v11 <= endTime;
 
-  return (*(*self->_implementation.__ptr_ + 104))(self->_implementation.__ptr_, v13, a7);
+  return (*(*self->_implementation.__ptr_ + 104))(self->_implementation.__ptr_, v13, error);
 }
 
-- (BOOL)performInitialStatisticsTransaction:(id)a3 error:(id *)a4
+- (BOOL)performInitialStatisticsTransaction:(id)transaction error:(id *)error
 {
-  v6 = a3;
+  transactionCopy = transaction;
   ptr = self->_implementation.__ptr_;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __78__HDStatisticsCollectionCalculator_performInitialStatisticsTransaction_error___block_invoke;
   v11[3] = &unk_278629348;
   v11[4] = self;
-  v12 = v6;
+  v12 = transactionCopy;
   v8 = *(*ptr + 112);
-  v9 = v6;
-  LOBYTE(a4) = v8(ptr, v11, a4);
+  v9 = transactionCopy;
+  LOBYTE(error) = v8(ptr, v11, error);
 
-  return a4;
+  return error;
 }
 
 uint64_t __78__HDStatisticsCollectionCalculator_performInitialStatisticsTransaction_error___block_invoke(uint64_t a1)
@@ -483,79 +483,79 @@ uint64_t __78__HDStatisticsCollectionCalculator_performInitialStatisticsTransact
   return v2();
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  [v5 encodeObject:*(self->_implementation.__ptr_ + 2) forKey:@"quantity_type"];
-  [v5 encodeInteger:self->_computationMethod forKey:@"computation_method"];
+  coderCopy = coder;
+  [coderCopy encodeObject:*(self->_implementation.__ptr_ + 2) forKey:@"quantity_type"];
+  [coderCopy encodeInteger:self->_computationMethod forKey:@"computation_method"];
   v4 = (*(*self->_implementation.__ptr_ + 32))(self->_implementation.__ptr_);
-  [v5 encodeObject:v4 forKey:@"date_interval"];
+  [coderCopy encodeObject:v4 forKey:@"date_interval"];
 
-  [v5 encodeInteger:*(self->_implementation.__ptr_ + 3) forKey:@"options"];
-  [v5 encodeInteger:*(self->_implementation.__ptr_ + 4) forKey:@"merge_strategy"];
-  [v5 encodeObject:*(self->_implementation.__ptr_ + 5) forKey:@"interval_collection"];
+  [coderCopy encodeInteger:*(self->_implementation.__ptr_ + 3) forKey:@"options"];
+  [coderCopy encodeInteger:*(self->_implementation.__ptr_ + 4) forKey:@"merge_strategy"];
+  [coderCopy encodeObject:*(self->_implementation.__ptr_ + 5) forKey:@"interval_collection"];
   (*(*self->_implementation.__ptr_ + 16))(self->_implementation.__ptr_);
-  [v5 encodeDouble:@"merge_granularity" forKey:?];
-  (*(*self->_implementation.__ptr_ + 152))(self->_implementation.__ptr_, v5);
+  [coderCopy encodeDouble:@"merge_granularity" forKey:?];
+  (*(*self->_implementation.__ptr_ + 152))(self->_implementation.__ptr_, coderCopy);
 }
 
-- (HDStatisticsCollectionCalculator)initWithCoder:(id)a3
+- (HDStatisticsCollectionCalculator)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"quantity_type"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"interval_collection"];
-  v7 = [v4 decodeIntegerForKey:@"options"];
-  v8 = [v4 decodeIntegerForKey:@"merge_strategy"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"quantity_type"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"interval_collection"];
+  v7 = [coderCopy decodeIntegerForKey:@"options"];
+  v8 = [coderCopy decodeIntegerForKey:@"merge_strategy"];
   v9 = _HKStatisticsComputationMethodForQuantityType(v5, v7);
-  if ([v4 containsValueForKey:@"computation_method"])
+  if ([coderCopy containsValueForKey:@"computation_method"])
   {
-    v9 = [v4 decodeIntegerForKey:@"computation_method"];
+    v9 = [coderCopy decodeIntegerForKey:@"computation_method"];
   }
 
   v10 = [objc_opt_class() calculatorForQuantityType:v5 intervalCollection:v6 options:v7 mergeStrategy:v8 computationMethod:v9];
 
   if (v10)
   {
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"date_interval"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"date_interval"];
     if (v11)
     {
       [v10 setDateInterval:v11];
     }
 
-    [v4 decodeDoubleForKey:@"merge_granularity"];
+    [coderCopy decodeDoubleForKey:@"merge_granularity"];
     [v10 setMergeGranularity:?];
-    (*(**(v10 + 8) + 160))(*(v10 + 8), v4);
+    (*(**(v10 + 8) + 160))(*(v10 + 8), coderCopy);
   }
 
   return v10;
 }
 
-+ (id)calculatorForArchivedRepresentation:(id)a3 error:(id *)a4
++ (id)calculatorForArchivedRepresentation:(id)representation error:(id *)error
 {
-  v5 = a3;
-  v6 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:objc_opt_class() fromData:v5 error:a4];
+  representationCopy = representation;
+  v6 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:objc_opt_class() fromData:representationCopy error:error];
 
   return v6;
 }
 
-- (id)bundleIdentifierForSourceID:(int64_t)a3
+- (id)bundleIdentifierForSourceID:(int64_t)d
 {
   WeakRetained = objc_loadWeakRetained(&self->_sourceOrderProvider);
-  v5 = [WeakRetained sourceForSourceID:a3];
-  v6 = [v5 bundleIdentifier];
+  v5 = [WeakRetained sourceForSourceID:d];
+  bundleIdentifier = [v5 bundleIdentifier];
 
-  return v6;
+  return bundleIdentifier;
 }
 
-- (id)sourceForSourceID:(int64_t)a3
+- (id)sourceForSourceID:(int64_t)d
 {
   WeakRetained = objc_loadWeakRetained(&self->_sourceOrderProvider);
-  v5 = [WeakRetained sourceForSourceID:a3];
+  v5 = [WeakRetained sourceForSourceID:d];
 
   return v5;
 }
 
-- (void)orderSourceIDs:(void *)a3
+- (void)orderSourceIDs:(void *)ds
 {
   while (2)
   {
@@ -563,31 +563,31 @@ uint64_t __78__HDStatisticsCollectionCalculator_performInitialStatisticsTransact
     v245 = a2 - 1;
     v240 = a2 - 3;
     v241 = a2 - 2;
-    v8 = a1;
+    selfCopy6 = self;
     while (1)
     {
       while (1)
       {
         while (1)
         {
-          v9 = a2 - v8;
-          a1 = v8;
+          v9 = a2 - selfCopy6;
+          self = selfCopy6;
           if (v9 > 2)
           {
-            v10 = v8;
+            v10 = selfCopy6;
             switch(v9)
             {
               case 3:
 
-                std::__sort3[abi:ne200100]<std::_ClassicAlgPolicy,-[HDStatisticsCollectionCalculator orderSourceIDs:]::$_0 &,long long *,0>(v8, v8 + 1, v245, a3);
+                std::__sort3[abi:ne200100]<std::_ClassicAlgPolicy,-[HDStatisticsCollectionCalculator orderSourceIDs:]::$_0 &,long long *,0>(selfCopy6, selfCopy6 + 1, v245, ds);
                 return;
               case 4:
 
-                std::__sort4[abi:ne200100]<std::_ClassicAlgPolicy,-[HDStatisticsCollectionCalculator orderSourceIDs:]::$_0 &,long long *,0>(v8, v8 + 1, v8 + 2, v245, a3);
+                std::__sort4[abi:ne200100]<std::_ClassicAlgPolicy,-[HDStatisticsCollectionCalculator orderSourceIDs:]::$_0 &,long long *,0>(selfCopy6, selfCopy6 + 1, selfCopy6 + 2, v245, ds);
                 return;
               case 5:
 
-                std::__sort5[abi:ne200100]<std::_ClassicAlgPolicy,-[HDStatisticsCollectionCalculator orderSourceIDs:]::$_0 &,long long *,0>(v8, v8 + 1, v8 + 2, v8 + 3, v245, a3);
+                std::__sort5[abi:ne200100]<std::_ClassicAlgPolicy,-[HDStatisticsCollectionCalculator orderSourceIDs:]::$_0 &,long long *,0>(selfCopy6, selfCopy6 + 1, selfCopy6 + 2, selfCopy6 + 3, v245, ds);
                 return;
             }
           }
@@ -599,21 +599,21 @@ uint64_t __78__HDStatisticsCollectionCalculator_performInitialStatisticsTransact
               return;
             }
 
-            v10 = v8;
+            v10 = selfCopy6;
             if (v9 == 2)
             {
-              v113 = *v8;
-              v114 = *a3;
+              v113 = *selfCopy6;
+              v114 = *ds;
               v115 = [MEMORY[0x277CCABB0] numberWithLongLong:*(a2 - 1)];
               v116 = [v114 indexOfObject:v115];
-              v117 = *a3;
+              v117 = *ds;
               v118 = [MEMORY[0x277CCABB0] numberWithLongLong:v113];
               v119 = [v117 indexOfObject:v118];
 
               if (v116 < v119)
               {
-                v120 = *a1;
-                *a1 = *(a2 - 1);
+                v120 = *self;
+                *self = *(a2 - 1);
                 *(a2 - 1) = v120;
               }
 
@@ -631,16 +631,16 @@ uint64_t __78__HDStatisticsCollectionCalculator_performInitialStatisticsTransact
               if ((v123 & 1) == 0)
               {
                 v124 = 0;
-                v125 = v8;
+                v125 = selfCopy6;
                 do
                 {
                   v127 = *v125;
                   v126 = v125[1];
                   v125 = v121;
-                  v128 = *a3;
+                  v128 = *ds;
                   v129 = [MEMORY[0x277CCABB0] numberWithLongLong:{v126, v240}];
                   v130 = [v128 indexOfObject:v129];
-                  v131 = *a3;
+                  v131 = *ds;
                   v132 = [MEMORY[0x277CCABB0] numberWithLongLong:v127];
                   v133 = [v131 indexOfObject:v132];
 
@@ -650,31 +650,31 @@ uint64_t __78__HDStatisticsCollectionCalculator_performInitialStatisticsTransact
                     v135 = v124;
                     while (1)
                     {
-                      *(a1 + v135 + 8) = *(a1 + v135);
+                      *(self + v135 + 8) = *(self + v135);
                       if (!v135)
                       {
                         break;
                       }
 
-                      v136 = *(a1 + v135 - 8);
-                      v137 = *a3;
+                      v136 = *(self + v135 - 8);
+                      v137 = *ds;
                       v138 = [MEMORY[0x277CCABB0] numberWithLongLong:v134];
                       v139 = [v137 indexOfObject:v138];
-                      v140 = *a3;
+                      v140 = *ds;
                       v141 = [MEMORY[0x277CCABB0] numberWithLongLong:v136];
                       v142 = [v140 indexOfObject:v141];
 
                       v135 -= 8;
                       if (v139 >= v142)
                       {
-                        v143 = (a1 + v135 + 8);
+                        selfCopy2 = (self + v135 + 8);
                         goto LABEL_83;
                       }
                     }
 
-                    v143 = a1;
+                    selfCopy2 = self;
 LABEL_83:
-                    *v143 = v134;
+                    *selfCopy2 = v134;
                     a2 = v243;
                   }
 
@@ -690,12 +690,12 @@ LABEL_83:
             {
               do
               {
-                v223 = *a1;
+                v223 = *self;
                 v224 = v121;
-                v225 = *a3;
-                v226 = [MEMORY[0x277CCABB0] numberWithLongLong:{a1[1], v240}];
+                v225 = *ds;
+                v226 = [MEMORY[0x277CCABB0] numberWithLongLong:{self[1], v240}];
                 v227 = [v225 indexOfObject:v226];
-                v228 = *a3;
+                v228 = *ds;
                 v229 = [MEMORY[0x277CCABB0] numberWithLongLong:v223];
                 v230 = [v228 indexOfObject:v229];
 
@@ -707,10 +707,10 @@ LABEL_83:
                   {
                     v233 = *(v232 - 2);
                     *v232 = *(v232 - 1);
-                    v234 = *a3;
+                    v234 = *ds;
                     v235 = [MEMORY[0x277CCABB0] numberWithLongLong:v231];
                     v236 = [v234 indexOfObject:v235];
-                    v237 = *a3;
+                    v237 = *ds;
                     v238 = [MEMORY[0x277CCABB0] numberWithLongLong:v233];
                     v239 = [v237 indexOfObject:v238];
 
@@ -722,7 +722,7 @@ LABEL_83:
                   a2 = v243;
                 }
 
-                a1 = v224;
+                self = v224;
                 v121 = v224 + 1;
               }
 
@@ -737,16 +737,16 @@ LABEL_83:
             if (v10 != a2)
             {
               v144 = (v9 - 2) >> 1;
-              v252 = a2 - v8;
+              v252 = a2 - selfCopy6;
               v255 = v144;
-              v145 = v8;
+              selfCopy4 = selfCopy6;
               do
               {
                 v146 = v144;
                 if (v255 >= v144)
                 {
                   v147 = (2 * v144) | 1;
-                  v148 = &v145[v147];
+                  v148 = &selfCopy4[v147];
                   v149 = 2 * v144 + 2;
                   v242 = v144;
                   if (v149 < v9)
@@ -754,10 +754,10 @@ LABEL_83:
                     v150 = v148;
                     v152 = v148 + 1;
                     v151 = v148[1];
-                    v153 = *a3;
+                    v153 = *ds;
                     v154 = [MEMORY[0x277CCABB0] numberWithLongLong:*v148];
                     v155 = [v153 indexOfObject:v154];
-                    v156 = *a3;
+                    v156 = *ds;
                     v157 = [MEMORY[0x277CCABB0] numberWithLongLong:v151];
                     v158 = [v156 indexOfObject:v157];
 
@@ -779,14 +779,14 @@ LABEL_83:
                     v146 = v242;
                   }
 
-                  v145 = a1;
-                  v159 = &a1[v146];
+                  selfCopy4 = self;
+                  v159 = &self[v146];
                   v160 = v148;
                   v161 = *v159;
-                  v162 = *a3;
+                  v162 = *ds;
                   v163 = [MEMORY[0x277CCABB0] numberWithLongLong:{*v148, v240}];
                   v164 = [v162 indexOfObject:v163];
-                  v165 = *a3;
+                  v165 = *ds;
                   v166 = [MEMORY[0x277CCABB0] numberWithLongLong:v161];
                   v167 = [v165 indexOfObject:v166];
 
@@ -805,7 +805,7 @@ LABEL_83:
                       }
 
                       v169 = (2 * v147) | 1;
-                      v170 = &a1[v169];
+                      v170 = &self[v169];
                       v147 = 2 * v147 + 2;
                       if (v147 >= v9)
                       {
@@ -816,14 +816,14 @@ LABEL_83:
                       {
                         v172 = v170 + 1;
                         v171 = v170[1];
-                        v173 = *a3;
+                        v173 = *ds;
                         v174 = [MEMORY[0x277CCABB0] numberWithLongLong:*v170];
                         v175 = [v173 indexOfObject:v174];
-                        v176 = *a3;
+                        v176 = *ds;
                         v177 = [MEMORY[0x277CCABB0] numberWithLongLong:v171];
                         v178 = [v176 indexOfObject:v177];
 
-                        v170 = &a1[v169];
+                        v170 = &self[v169];
                         if (v175 >= v178)
                         {
                           v147 = v169;
@@ -836,10 +836,10 @@ LABEL_83:
                       }
 
                       v160 = v170;
-                      v179 = *a3;
+                      v179 = *ds;
                       v180 = [MEMORY[0x277CCABB0] numberWithLongLong:*v170];
                       v181 = [v179 indexOfObject:v180];
-                      v182 = *a3;
+                      v182 = *ds;
                       v183 = [MEMORY[0x277CCABB0] numberWithLongLong:v248];
                       v184 = [v182 indexOfObject:v183];
 
@@ -849,7 +849,7 @@ LABEL_83:
 
                     while (v181 >= v184);
                     *v168 = v248;
-                    v145 = a1;
+                    selfCopy4 = self;
                     v146 = v242;
                   }
                 }
@@ -862,15 +862,15 @@ LABEL_83:
               do
               {
                 v186 = 0;
-                v187 = a1;
+                selfCopy5 = self;
                 v244 = v185;
-                v246 = *a1;
+                v246 = *self;
                 v188 = (v9 - 2) >> 1;
                 v253 = v9;
                 v249 = v188;
                 do
                 {
-                  v189 = &v187[v186];
+                  v189 = &selfCopy5[v186];
                   v190 = v189 + 1;
                   v191 = (2 * v186) | 1;
                   v192 = 2 * v186 + 2;
@@ -884,10 +884,10 @@ LABEL_83:
                     v256 = v189 + 1;
                     v194 = v189[2];
                     v193 = v189 + 2;
-                    v195 = *a3;
+                    v195 = *ds;
                     v196 = [MEMORY[0x277CCABB0] numberWithLongLong:*(v193 - 1)];
                     v197 = [v195 indexOfObject:v196];
-                    v198 = *a3;
+                    v198 = *ds;
                     v199 = [MEMORY[0x277CCABB0] numberWithLongLong:v194];
                     v200 = [v198 indexOfObject:v199];
 
@@ -907,8 +907,8 @@ LABEL_83:
                     v188 = v249;
                   }
 
-                  *v187 = *v190;
-                  v187 = v190;
+                  *selfCopy5 = *v190;
+                  selfCopy5 = v190;
                 }
 
                 while (v186 <= v188);
@@ -924,19 +924,19 @@ LABEL_83:
                   *v190 = *v201;
                   v185 = v244 - 1;
                   *v201 = v246;
-                  v202 = (v190 - a1 + 8) >> 3;
+                  v202 = (v190 - self + 8) >> 3;
                   v203 = v202 < 2;
                   v204 = v202 - 2;
                   if (!v203)
                   {
                     v205 = v204 >> 1;
-                    v206 = &a1[v204 >> 1];
+                    v206 = &self[v204 >> 1];
                     v207 = v190;
                     v208 = *v190;
-                    v209 = *a3;
+                    v209 = *ds;
                     v210 = [MEMORY[0x277CCABB0] numberWithLongLong:*v206];
                     v211 = [v209 indexOfObject:v210];
-                    v212 = *a3;
+                    v212 = *ds;
                     v213 = [MEMORY[0x277CCABB0] numberWithLongLong:v208];
                     v214 = [v212 indexOfObject:v213];
 
@@ -955,11 +955,11 @@ LABEL_83:
                         }
 
                         v205 = (v205 - 1) >> 1;
-                        v206 = &a1[v205];
-                        v217 = *a3;
+                        v206 = &self[v205];
+                        v217 = *ds;
                         v218 = [MEMORY[0x277CCABB0] numberWithLongLong:*v206];
                         v219 = [v217 indexOfObject:v218];
-                        v220 = *a3;
+                        v220 = *ds;
                         v221 = [MEMORY[0x277CCABB0] numberWithLongLong:v257];
                         v222 = [v220 indexOfObject:v221];
 
@@ -986,15 +986,15 @@ LABEL_83:
           v12 = &v10[v9 >> 1];
           if (v9 < 0x81)
           {
-            std::__sort3[abi:ne200100]<std::_ClassicAlgPolicy,-[HDStatisticsCollectionCalculator orderSourceIDs:]::$_0 &,long long *,0>(&v10[v9 >> 1], v10, v245, a3);
+            std::__sort3[abi:ne200100]<std::_ClassicAlgPolicy,-[HDStatisticsCollectionCalculator orderSourceIDs:]::$_0 &,long long *,0>(&v10[v9 >> 1], v10, v245, ds);
           }
 
           else
           {
-            std::__sort3[abi:ne200100]<std::_ClassicAlgPolicy,-[HDStatisticsCollectionCalculator orderSourceIDs:]::$_0 &,long long *,0>(v10, &v10[v9 >> 1], v245, a3);
-            std::__sort3[abi:ne200100]<std::_ClassicAlgPolicy,-[HDStatisticsCollectionCalculator orderSourceIDs:]::$_0 &,long long *,0>(v10 + 1, v12 - 1, v241, a3);
-            std::__sort3[abi:ne200100]<std::_ClassicAlgPolicy,-[HDStatisticsCollectionCalculator orderSourceIDs:]::$_0 &,long long *,0>(v10 + 2, &v10[v11 + 1], v240, a3);
-            std::__sort3[abi:ne200100]<std::_ClassicAlgPolicy,-[HDStatisticsCollectionCalculator orderSourceIDs:]::$_0 &,long long *,0>(v12 - 1, v12, &v10[v11 + 1], a3);
+            std::__sort3[abi:ne200100]<std::_ClassicAlgPolicy,-[HDStatisticsCollectionCalculator orderSourceIDs:]::$_0 &,long long *,0>(v10, &v10[v9 >> 1], v245, ds);
+            std::__sort3[abi:ne200100]<std::_ClassicAlgPolicy,-[HDStatisticsCollectionCalculator orderSourceIDs:]::$_0 &,long long *,0>(v10 + 1, v12 - 1, v241, ds);
+            std::__sort3[abi:ne200100]<std::_ClassicAlgPolicy,-[HDStatisticsCollectionCalculator orderSourceIDs:]::$_0 &,long long *,0>(v10 + 2, &v10[v11 + 1], v240, ds);
+            std::__sort3[abi:ne200100]<std::_ClassicAlgPolicy,-[HDStatisticsCollectionCalculator orderSourceIDs:]::$_0 &,long long *,0>(v12 - 1, v12, &v10[v11 + 1], ds);
             v13 = *v10;
             *v10 = *v12;
             *v12 = v13;
@@ -1007,10 +1007,10 @@ LABEL_83:
           }
 
           v14 = *v10;
-          v15 = *a3;
+          v15 = *ds;
           v16 = [MEMORY[0x277CCABB0] numberWithLongLong:*(v10 - 1)];
           v17 = [v15 indexOfObject:v16];
-          v18 = *a3;
+          v18 = *ds;
           v19 = [MEMORY[0x277CCABB0] numberWithLongLong:v14];
           v20 = [v18 indexOfObject:v19];
 
@@ -1021,35 +1021,35 @@ LABEL_83:
 
           v65 = *v10;
           v66 = *v245;
-          v67 = *a3;
+          v67 = *ds;
           v68 = [MEMORY[0x277CCABB0] numberWithLongLong:v65];
           v69 = [v67 indexOfObject:v68];
-          v70 = *a3;
+          v70 = *ds;
           v71 = [MEMORY[0x277CCABB0] numberWithLongLong:v66];
           v72 = [v70 indexOfObject:v71];
 
           v73 = v69 >= v72;
-          v8 = a1;
+          selfCopy6 = self;
           if (v73)
           {
-            v81 = a1 + 1;
+            v81 = self + 1;
             do
             {
-              v8 = v81;
+              selfCopy6 = v81;
               if (v81 >= a2)
               {
                 break;
               }
 
               v82 = *v81;
-              v83 = *a3;
+              v83 = *ds;
               v84 = [MEMORY[0x277CCABB0] numberWithLongLong:v65];
               v85 = [v83 indexOfObject:v84];
-              v86 = *a3;
+              v86 = *ds;
               v87 = [MEMORY[0x277CCABB0] numberWithLongLong:v82];
               v88 = [v86 indexOfObject:v87];
 
-              v81 = v8 + 1;
+              v81 = selfCopy6 + 1;
             }
 
             while (v85 >= v88);
@@ -1059,12 +1059,12 @@ LABEL_83:
           {
             do
             {
-              v74 = v8[1];
-              ++v8;
-              v75 = *a3;
+              v74 = selfCopy6[1];
+              ++selfCopy6;
+              v75 = *ds;
               v76 = [MEMORY[0x277CCABB0] numberWithLongLong:{v65, v240}];
               v77 = [v75 indexOfObject:v76];
-              v78 = *a3;
+              v78 = *ds;
               v79 = [MEMORY[0x277CCABB0] numberWithLongLong:v74];
               v80 = [v78 indexOfObject:v79];
             }
@@ -1073,16 +1073,16 @@ LABEL_83:
           }
 
           v89 = a2;
-          if (v8 < a2)
+          if (selfCopy6 < a2)
           {
             v89 = a2;
             do
             {
               v90 = *--v89;
-              v91 = *a3;
+              v91 = *ds;
               v92 = [MEMORY[0x277CCABB0] numberWithLongLong:{v65, v240}];
               v93 = [v91 indexOfObject:v92];
-              v94 = *a3;
+              v94 = *ds;
               v95 = [MEMORY[0x277CCABB0] numberWithLongLong:v90];
               v96 = [v94 indexOfObject:v95];
             }
@@ -1090,19 +1090,19 @@ LABEL_83:
             while (v93 < v96);
           }
 
-          while (v8 < v89)
+          while (selfCopy6 < v89)
           {
-            v97 = *v8;
-            *v8 = *v89;
+            v97 = *selfCopy6;
+            *selfCopy6 = *v89;
             *v89 = v97;
             do
             {
-              v98 = v8[1];
-              ++v8;
-              v99 = *a3;
+              v98 = selfCopy6[1];
+              ++selfCopy6;
+              v99 = *ds;
               v100 = [MEMORY[0x277CCABB0] numberWithLongLong:{v65, v240}];
               v101 = [v99 indexOfObject:v100];
-              v102 = *a3;
+              v102 = *ds;
               v103 = [MEMORY[0x277CCABB0] numberWithLongLong:v98];
               v104 = [v102 indexOfObject:v103];
             }
@@ -1111,10 +1111,10 @@ LABEL_83:
             do
             {
               v105 = *--v89;
-              v106 = *a3;
+              v106 = *ds;
               v107 = [MEMORY[0x277CCABB0] numberWithLongLong:v65];
               v108 = [v106 indexOfObject:v107];
-              v109 = *a3;
+              v109 = *ds;
               v110 = [MEMORY[0x277CCABB0] numberWithLongLong:v105];
               v111 = [v109 indexOfObject:v110];
             }
@@ -1122,10 +1122,10 @@ LABEL_83:
             while (v108 < v111);
           }
 
-          v112 = v8 - 1;
-          if (v8 - 1 != a1)
+          v112 = selfCopy6 - 1;
+          if (selfCopy6 - 1 != self)
           {
-            *a1 = *v112;
+            *self = *v112;
           }
 
           a5 = 0;
@@ -1137,10 +1137,10 @@ LABEL_83:
         v22 = *v10;
         do
         {
-          v23 = *a3;
+          v23 = *ds;
           v24 = [MEMORY[0x277CCABB0] numberWithLongLong:{v10[v21 + 1], v240}];
           v25 = [v23 indexOfObject:v24];
-          v26 = *a3;
+          v26 = *ds;
           v27 = [MEMORY[0x277CCABB0] numberWithLongLong:v22];
           v28 = [v26 indexOfObject:v27];
 
@@ -1163,10 +1163,10 @@ LABEL_83:
             }
 
             v39 = *--v30;
-            v40 = *a3;
+            v40 = *ds;
             v41 = [MEMORY[0x277CCABB0] numberWithLongLong:v39];
             v42 = [v40 indexOfObject:v41];
-            v43 = *a3;
+            v43 = *ds;
             v44 = [MEMORY[0x277CCABB0] numberWithLongLong:v22];
             v45 = [v43 indexOfObject:v44];
           }
@@ -1179,10 +1179,10 @@ LABEL_83:
           do
           {
             v32 = *--v30;
-            v33 = *a3;
+            v33 = *ds;
             v34 = [MEMORY[0x277CCABB0] numberWithLongLong:v32];
             v35 = [v33 indexOfObject:v34];
-            v36 = *a3;
+            v36 = *ds;
             v37 = [MEMORY[0x277CCABB0] numberWithLongLong:v22];
             v38 = [v36 indexOfObject:v37];
           }
@@ -1209,10 +1209,10 @@ LABEL_83:
             {
               v49 = v46[1];
               ++v46;
-              v50 = *a3;
+              v50 = *ds;
               v51 = [MEMORY[0x277CCABB0] numberWithLongLong:v49];
               v52 = [v50 indexOfObject:v51];
-              v53 = *a3;
+              v53 = *ds;
               v54 = [MEMORY[0x277CCABB0] numberWithLongLong:v22];
               v55 = [v53 indexOfObject:v54];
             }
@@ -1221,10 +1221,10 @@ LABEL_83:
             do
             {
               v56 = *--v47;
-              v57 = *a3;
+              v57 = *ds;
               v58 = [MEMORY[0x277CCABB0] numberWithLongLong:v56];
               v59 = [v57 indexOfObject:v58];
-              v60 = *a3;
+              v60 = *ds;
               v61 = [MEMORY[0x277CCABB0] numberWithLongLong:v22];
               v62 = [v60 indexOfObject:v61];
             }
@@ -1238,9 +1238,9 @@ LABEL_83:
         }
 
         a4 = v254;
-        if (v63 != a1)
+        if (v63 != self)
         {
-          *a1 = *v63;
+          *self = *v63;
         }
 
         *v63 = v22;
@@ -1250,14 +1250,14 @@ LABEL_83:
         }
 
 LABEL_37:
-        std::__introsort<std::_ClassicAlgPolicy,[HDStatisticsCollectionCalculator orderSourceIDs:]::$_0 &,long long *,false>(a1, v63, a3, v254, a5 & 1);
+        std::__introsort<std::_ClassicAlgPolicy,[HDStatisticsCollectionCalculator orderSourceIDs:]::$_0 &,long long *,false>(self, v63, ds, v254, a5 & 1);
         a5 = 0;
-        v8 = v63 + 1;
+        selfCopy6 = v63 + 1;
       }
 
-      v64 = std::__insertion_sort_incomplete[abi:ne200100]<std::_ClassicAlgPolicy,-[HDStatisticsCollectionCalculator orderSourceIDs:]::$_0 &,long long *>(a1, v63, a3);
-      v8 = v63 + 1;
-      if (std::__insertion_sort_incomplete[abi:ne200100]<std::_ClassicAlgPolicy,-[HDStatisticsCollectionCalculator orderSourceIDs:]::$_0 &,long long *>(v63 + 1, a2, a3))
+      v64 = std::__insertion_sort_incomplete[abi:ne200100]<std::_ClassicAlgPolicy,-[HDStatisticsCollectionCalculator orderSourceIDs:]::$_0 &,long long *>(self, v63, ds);
+      selfCopy6 = v63 + 1;
+      if (std::__insertion_sort_incomplete[abi:ne200100]<std::_ClassicAlgPolicy,-[HDStatisticsCollectionCalculator orderSourceIDs:]::$_0 &,long long *>(v63 + 1, a2, ds))
       {
         break;
       }

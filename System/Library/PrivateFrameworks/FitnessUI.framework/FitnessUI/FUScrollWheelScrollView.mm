@@ -8,10 +8,10 @@
 
 - (BOOL)becomeFirstResponder
 {
-  v3 = [(FUScrollWheelScrollView *)self scrollWheel];
-  v4 = [v3 isActive];
+  scrollWheel = [(FUScrollWheelScrollView *)self scrollWheel];
+  isActive = [scrollWheel isActive];
 
-  if (!v4)
+  if (!isActive)
   {
     return 0;
   }
@@ -25,14 +25,14 @@
 {
   v6.receiver = self;
   v6.super_class = FUScrollWheelScrollView;
-  v3 = [(FUScrollWheelScrollView *)&v6 resignFirstResponder];
-  if (v3)
+  resignFirstResponder = [(FUScrollWheelScrollView *)&v6 resignFirstResponder];
+  if (resignFirstResponder)
   {
-    v4 = [(FUScrollWheelScrollView *)self scrollWheel];
-    [v4 setIsActive:0];
+    scrollWheel = [(FUScrollWheelScrollView *)self scrollWheel];
+    [scrollWheel setIsActive:0];
   }
 
-  return v3;
+  return resignFirstResponder;
 }
 
 - (FUScrollWheel)scrollWheel

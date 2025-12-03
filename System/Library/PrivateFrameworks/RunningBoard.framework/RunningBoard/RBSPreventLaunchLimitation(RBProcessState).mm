@@ -9,19 +9,19 @@
 - (void)applyToSystemState:()RBProcessState attributePath:context:
 {
   v8 = a3;
-  v4 = [a1 predicate];
+  predicate = [self predicate];
 
-  if (v4)
+  if (predicate)
   {
-    v5 = [a1 predicate];
-    [v8 addPreventLaunchPredicate:v5];
+    predicate2 = [self predicate];
+    [v8 addPreventLaunchPredicate:predicate2];
 
-    v6 = [a1 allow];
+    allow = [self allow];
 
-    if (v6)
+    if (allow)
     {
-      v7 = [a1 allow];
-      [v8 addAllowLaunchPredicate:v7];
+      allow2 = [self allow];
+      [v8 addAllowLaunchPredicate:allow2];
     }
   }
 }
@@ -30,13 +30,13 @@
 {
   v25[2] = *MEMORY[0x277D85DE8];
   v6 = a3;
-  v7 = [v6 target];
-  v8 = [v7 isSystem];
+  target = [v6 target];
+  isSystem = [target isSystem];
 
-  if (v8)
+  if (isSystem)
   {
-    v9 = [v6 originatorEntitlements];
-    if ([v6 ignoreRestrictions] & 1) != 0 || (objc_msgSend(v9, "rb_hasEntitlement:", @"com.apple.runningboard.primitiveattribute") & 1) != 0 || (objc_msgSend(v9, "rb_hasEntitlementDomain:", 2) & 1) != 0 || (objc_msgSend(v9, "rb_hasEntitlementDomain:", 4))
+    originatorEntitlements = [v6 originatorEntitlements];
+    if ([v6 ignoreRestrictions] & 1) != 0 || (objc_msgSend(originatorEntitlements, "rb_hasEntitlement:", @"com.apple.runningboard.primitiveattribute") & 1) != 0 || (objc_msgSend(originatorEntitlements, "rb_hasEntitlementDomain:", 2) & 1) != 0 || (objc_msgSend(originatorEntitlements, "rb_hasEntitlementDomain:", 4))
     {
       a4 = 1;
 LABEL_10:
@@ -56,7 +56,7 @@ LABEL_10:
     v20 = *MEMORY[0x277D47048];
     v22[0] = v19;
     v22[1] = v20;
-    v14 = [a1 description];
+    v14 = [self description];
     v23[1] = v14;
     v21 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v23 forKeys:v22 count:2];
     *a4 = [v17 errorWithDomain:v18 code:2 userInfo:v21];
@@ -75,8 +75,8 @@ LABEL_9:
     v13 = *MEMORY[0x277D47048];
     v24[0] = v12;
     v24[1] = v13;
-    v9 = [a1 description];
-    v25[1] = v9;
+    originatorEntitlements = [self description];
+    v25[1] = originatorEntitlements;
     v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v25 forKeys:v24 count:2];
     *a4 = [v10 errorWithDomain:v11 code:2 userInfo:v14];
     goto LABEL_9;
@@ -100,7 +100,7 @@ LABEL_11:
 
   else if (a4)
   {
-    v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"Attribute conflict: attribute %@ conflicts with attribute %@", a1, v6];
+    v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"Attribute conflict: attribute %@ conflicts with attribute %@", self, v6];
     v10 = MEMORY[0x277CCA9B8];
     v11 = *MEMORY[0x277D47050];
     v13 = *MEMORY[0x277CCA470];

@@ -1,28 +1,28 @@
 @interface W5PeerDiagnosticsRequestPayload
-+ (id)payloadFromDictionary:(id)a3;
-- (W5PeerDiagnosticsRequestPayload)initWithRequest:(id)a3;
++ (id)payloadFromDictionary:(id)dictionary;
+- (W5PeerDiagnosticsRequestPayload)initWithRequest:(id)request;
 - (id)encode;
 @end
 
 @implementation W5PeerDiagnosticsRequestPayload
 
-+ (id)payloadFromDictionary:(id)a3
++ (id)payloadFromDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithRequest:v3];
+  dictionaryCopy = dictionary;
+  v4 = [objc_alloc(objc_opt_class()) initWithRequest:dictionaryCopy];
 
   return v4;
 }
 
-- (W5PeerDiagnosticsRequestPayload)initWithRequest:(id)a3
+- (W5PeerDiagnosticsRequestPayload)initWithRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v26.receiver = self;
   v26.super_class = W5PeerDiagnosticsRequestPayload;
   v5 = [(W5PeerDiagnosticsRequestPayload *)&v26 init];
-  if (v5 && (v6 = [v4 objectForKey:@"version"], (v5->_version = v6) != 0))
+  if (v5 && (v6 = [requestCopy objectForKey:@"version"], (v5->_version = v6) != 0))
   {
-    v7 = [v4 objectForKey:@"configuration"];
+    v7 = [requestCopy objectForKey:@"configuration"];
     v8 = [NSSet setWithObjects:objc_opt_class(), 0];
     v25 = 0;
     v9 = [NSKeyedUnarchiver unarchivedObjectOfClasses:v8 fromData:v7 error:&v25];
@@ -30,7 +30,7 @@
     configuration = v5->_configuration;
     v5->_configuration = v9;
 
-    v12 = [v4 objectForKey:@"tests"];
+    v12 = [requestCopy objectForKey:@"tests"];
     v13 = objc_opt_class();
     v14 = [NSSet setWithObjects:v13, objc_opt_class(), 0];
     v24 = v10;
@@ -40,7 +40,7 @@
     tests = v5->_tests;
     v5->_tests = v15;
 
-    v18 = [v4 objectForKey:@"uuid"];
+    v18 = [requestCopy objectForKey:@"uuid"];
     if (v18)
     {
       v19 = v18;
@@ -83,26 +83,26 @@ LABEL_5:
 - (id)encode
 {
   v3 = objc_alloc_init(NSMutableDictionary);
-  v4 = [(W5PeerDiagnosticsRequestPayload *)self version];
+  version = [(W5PeerDiagnosticsRequestPayload *)self version];
 
-  if (v4)
+  if (version)
   {
-    v5 = [(W5PeerDiagnosticsRequestPayload *)self version];
-    [v3 setObject:v5 forKey:@"version"];
+    version2 = [(W5PeerDiagnosticsRequestPayload *)self version];
+    [v3 setObject:version2 forKey:@"version"];
 
-    v6 = [(W5PeerDiagnosticsRequestPayload *)self configuration];
+    configuration = [(W5PeerDiagnosticsRequestPayload *)self configuration];
 
-    if (v6)
+    if (configuration)
     {
-      v7 = [(W5PeerDiagnosticsRequestPayload *)self configuration];
+      configuration2 = [(W5PeerDiagnosticsRequestPayload *)self configuration];
       v27 = 0;
-      v4 = [NSKeyedArchiver archivedDataWithRootObject:v7 requiringSecureCoding:1 error:&v27];
+      version = [NSKeyedArchiver archivedDataWithRootObject:configuration2 requiringSecureCoding:1 error:&v27];
       v8 = v27;
 
-      if (!v4)
+      if (!version)
       {
-        v9 = sub_100098A04();
-        if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+        uuid2 = sub_100098A04();
+        if (os_log_type_enabled(uuid2, OS_LOG_TYPE_DEFAULT))
         {
           v28 = 136315906;
           v29 = "[W5PeerDiagnosticsRequestPayload encode]";
@@ -127,13 +127,13 @@ LABEL_23:
     {
       v10 = +[NSNull null];
       v26 = 0;
-      v4 = [NSKeyedArchiver archivedDataWithRootObject:v10 requiringSecureCoding:1 error:&v26];
+      version = [NSKeyedArchiver archivedDataWithRootObject:v10 requiringSecureCoding:1 error:&v26];
       v8 = v26;
 
-      if (!v4)
+      if (!version)
       {
-        v9 = sub_100098A04();
-        if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+        uuid2 = sub_100098A04();
+        if (os_log_type_enabled(uuid2, OS_LOG_TYPE_DEFAULT))
         {
           v28 = 136315906;
           v29 = "[W5PeerDiagnosticsRequestPayload encode]";
@@ -150,25 +150,25 @@ LABEL_23:
 
 LABEL_24:
         v13 = 0;
-        v4 = 0;
+        version = 0;
         goto LABEL_15;
       }
     }
 
-    [v3 setObject:v4 forKey:@"configuration"];
-    v11 = [(W5PeerDiagnosticsRequestPayload *)self tests];
+    [v3 setObject:version forKey:@"configuration"];
+    tests = [(W5PeerDiagnosticsRequestPayload *)self tests];
 
-    if (v11)
+    if (tests)
     {
-      v12 = [(W5PeerDiagnosticsRequestPayload *)self tests];
+      tests2 = [(W5PeerDiagnosticsRequestPayload *)self tests];
       v25 = v8;
-      v13 = [NSKeyedArchiver archivedDataWithRootObject:v12 requiringSecureCoding:1 error:&v25];
+      v13 = [NSKeyedArchiver archivedDataWithRootObject:tests2 requiringSecureCoding:1 error:&v25];
       v14 = v25;
 
       if (!v13)
       {
-        v9 = sub_100098A04();
-        if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+        uuid2 = sub_100098A04();
+        if (os_log_type_enabled(uuid2, OS_LOG_TYPE_DEFAULT))
         {
           v28 = 136315906;
           v29 = "[W5PeerDiagnosticsRequestPayload encode]";
@@ -198,8 +198,8 @@ LABEL_27:
 
       if (!v13)
       {
-        v9 = sub_100098A04();
-        if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+        uuid2 = sub_100098A04();
+        if (os_log_type_enabled(uuid2, OS_LOG_TYPE_DEFAULT))
         {
           v28 = 136315906;
           v29 = "[W5PeerDiagnosticsRequestPayload encode]";
@@ -226,16 +226,16 @@ LABEL_15:
     }
 
     [v3 setObject:v13 forKey:@"tests"];
-    v16 = [(W5PeerDiagnosticsRequestPayload *)self uuid];
+    uuid = [(W5PeerDiagnosticsRequestPayload *)self uuid];
 
-    if (!v16)
+    if (!uuid)
     {
       goto LABEL_16;
     }
 
-    v9 = [(W5PeerDiagnosticsRequestPayload *)self uuid];
-    v17 = [v9 UUIDString];
-    [v3 setObject:v17 forKey:@"uuid"];
+    uuid2 = [(W5PeerDiagnosticsRequestPayload *)self uuid];
+    uUIDString = [uuid2 UUIDString];
+    [v3 setObject:uUIDString forKey:@"uuid"];
 
     goto LABEL_14;
   }

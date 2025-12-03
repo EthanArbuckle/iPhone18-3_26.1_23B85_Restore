@@ -1,9 +1,9 @@
 @interface CLKUIBezierPathStepper
 - (CLKUIBezierPathStepper)init;
 - (UIBezierPath)path;
-- (id)mapOffsetsToPathPositions:(id)a3;
-- (void)setPath:(id)a3;
-- (void)updateSegmentsWithPath:(id)a3;
+- (id)mapOffsetsToPathPositions:(id)positions;
+- (void)setPath:(id)path;
+- (void)updateSegmentsWithPath:(id)path;
 @end
 
 @implementation CLKUIBezierPathStepper
@@ -15,18 +15,18 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setPath:(id)a3
+- (void)setPath:(id)path
 {
   v5 = OBJC_IVAR___CLKUIBezierPathStepper_path;
   swift_beginAccess();
   v6 = *(&self->super.isa + v5);
-  *(&self->super.isa + v5) = a3;
-  v7 = a3;
-  v8 = self;
+  *(&self->super.isa + v5) = path;
+  pathCopy = path;
+  selfCopy = self;
 
-  if (v7)
+  if (pathCopy)
   {
-    CLKUIBezierPathStepper.updateSegments(path:)(v7);
+    CLKUIBezierPathStepper.updateSegments(path:)(pathCopy);
   }
 }
 
@@ -45,17 +45,17 @@
   return [(CLKUIBezierPathStepper *)&v7 init];
 }
 
-- (void)updateSegmentsWithPath:(id)a3
+- (void)updateSegmentsWithPath:(id)path
 {
-  v4 = a3;
-  v5 = self;
-  CLKUIBezierPathStepper.updateSegments(path:)(v4);
+  pathCopy = path;
+  selfCopy = self;
+  CLKUIBezierPathStepper.updateSegments(path:)(pathCopy);
 }
 
-- (id)mapOffsetsToPathPositions:(id)a3
+- (id)mapOffsetsToPathPositions:(id)positions
 {
   v4 = sub_1E49FE008();
-  v5 = self;
+  selfCopy = self;
   CLKUIBezierPathStepper.mapOffsetsToPathPositions(_:)(v4);
 
   type metadata accessor for SlopedPoint();

@@ -1,27 +1,27 @@
 @interface VMVoicemail
-+ (id)messageForRecord:(void *)a3 forContexts:(id)a4 andIsoCodes:(id)a5;
++ (id)messageForRecord:(void *)record forContexts:(id)contexts andIsoCodes:(id)codes;
 @end
 
 @implementation VMVoicemail
 
-+ (id)messageForRecord:(void *)a3 forContexts:(id)a4 andIsoCodes:(id)a5
++ (id)messageForRecord:(void *)record forContexts:(id)contexts andIsoCodes:(id)codes
 {
-  v7 = a4;
-  v8 = a5;
+  contextsCopy = contexts;
+  codesCopy = codes;
   v9 = objc_alloc_init(VMMutableVoicemail);
   if (!v9)
   {
     goto LABEL_41;
   }
 
-  v10 = [NSDate dateWithTimeIntervalSince1970:VMStoreRecordGetDate(a3)];
+  v10 = [NSDate dateWithTimeIntervalSince1970:VMStoreRecordGetDate(record)];
   [v9 setDate:v10];
 
-  [v9 setDuration:VMStoreRecordGetDuration(a3)];
-  [v9 setFlags:VMStoreRecordGetFlags(a3)];
-  [v9 setIdentifier:VMStoreRecordGetIdentifier(a3)];
-  [v9 setRemoteUID:VMStoreRecordGetRemoteUID(a3)];
-  v11 = VMStoreRecordCopyCallbackNumber(a3);
+  [v9 setDuration:VMStoreRecordGetDuration(record)];
+  [v9 setFlags:VMStoreRecordGetFlags(record)];
+  [v9 setIdentifier:VMStoreRecordGetIdentifier(record)];
+  [v9 setRemoteUID:VMStoreRecordGetRemoteUID(record)];
+  v11 = VMStoreRecordCopyCallbackNumber(record);
   if (v11)
   {
     [v9 setCallbackDestinationID:v11];
@@ -29,7 +29,7 @@
     [v9 setCallbackISOCountryCode:v12];
   }
 
-  v13 = VMStoreRecordCopySender(a3);
+  v13 = VMStoreRecordCopySender(record);
   if (v13)
   {
     [v9 setSenderDestinationID:v13];
@@ -38,28 +38,28 @@
   }
 
   v60 = v13;
-  v15 = VMStoreRecordGetLabel(a3);
-  v16 = [v15 UUIDString];
+  v15 = VMStoreRecordGetLabel(record);
+  uUIDString = [v15 UUIDString];
 
-  if (v16)
+  if (uUIDString)
   {
-    [v9 setReceiverLabelID:v16];
+    [v9 setReceiverLabelID:uUIDString];
   }
 
-  if (v7)
+  if (contextsCopy)
   {
     v65 = 0u;
     v66 = 0u;
     v63 = 0u;
     v64 = 0u;
-    v17 = v7;
+    v17 = contextsCopy;
     v18 = [v17 countByEnumeratingWithState:&v63 objects:v67 count:16];
     if (v18)
     {
       v19 = v18;
       v54 = v11;
-      v56 = v8;
-      v58 = v7;
+      v56 = codesCopy;
+      v58 = contextsCopy;
       v20 = *v64;
 LABEL_11:
       v21 = 0;
@@ -71,8 +71,8 @@ LABEL_11:
         }
 
         v22 = *(*(&v63 + 1) + 8 * v21);
-        v23 = [v22 labelID];
-        v24 = [v23 isEqualToString:v16];
+        labelID = [v22 labelID];
+        v24 = [labelID isEqualToString:uUIDString];
 
         if (v24)
         {
@@ -88,8 +88,8 @@ LABEL_11:
           }
 
           v25 = 0;
-          v8 = v56;
-          v7 = v58;
+          codesCopy = v56;
+          contextsCopy = v58;
           v11 = v54;
           goto LABEL_24;
         }
@@ -99,27 +99,27 @@ LABEL_11:
 
       if (!v25)
       {
-        v8 = v56;
-        v7 = v58;
+        codesCopy = v56;
+        contextsCopy = v58;
         v11 = v54;
         goto LABEL_26;
       }
 
-      v26 = [v25 phoneNumber];
+      phoneNumber = [v25 phoneNumber];
 
-      v8 = v56;
-      v7 = v58;
+      codesCopy = v56;
+      contextsCopy = v58;
       v11 = v54;
-      if (!v26)
+      if (!phoneNumber)
       {
         goto LABEL_26;
       }
 
-      v27 = [v25 phoneNumber];
-      [v9 setReceiverDestinationID:v27];
+      phoneNumber2 = [v25 phoneNumber];
+      [v9 setReceiverDestinationID:phoneNumber2];
 
-      v28 = [v25 uuid];
-      v17 = [v56 objectForKey:v28];
+      uuid = [v25 uuid];
+      v17 = [v56 objectForKey:uuid];
 
       if (v17)
       {
@@ -128,7 +128,7 @@ LABEL_11:
 
       else
       {
-        v48 = [v9 receiverDestinationID];
+        receiverDestinationID = [v9 receiverDestinationID];
         v49 = v25;
         v50 = PNCopyBestGuessCountryCodeForNumber();
         [v9 setReceiverISOCountryCode:v50];
@@ -184,23 +184,23 @@ LABEL_26:
   }
 
   v55 = v11;
-  v57 = v8;
-  v59 = v7;
+  v57 = codesCopy;
+  v59 = contextsCopy;
   v51 = v33;
   v34 = [NSURL fileURLWithPath:v33 isDirectory:0];
   [v9 setSummarizationMetaDataURL:v34];
 
-  v35 = [v9 summarizationMetaDataURL];
+  summarizationMetaDataURL = [v9 summarizationMetaDataURL];
   v62 = 0;
-  v36 = [NSData dataWithContentsOfURL:v35 options:1 error:&v62];
+  v36 = [NSData dataWithContentsOfURL:summarizationMetaDataURL options:1 error:&v62];
   v37 = v62;
 
   if (!v36)
   {
-    v41 = [v37 localizedDescription];
-    v43 = [NSString stringWithFormat:@"%@\n", v41];
-    v45 = [v43 UTF8String];
-    fputs(v45, __stderrp);
+    localizedDescription = [v37 localizedDescription];
+    v43 = [NSString stringWithFormat:@"%@\n", localizedDescription];
+    uTF8String = [v43 UTF8String];
+    fputs(uTF8String, __stderrp);
     v42 = v37;
 LABEL_38:
 
@@ -211,7 +211,7 @@ LABEL_38:
   v39 = objc_opt_class();
   v40 = [NSSet setWithObjects:v38, v39, objc_opt_class(), 0];
   v61 = v37;
-  v41 = [NSKeyedUnarchiver unarchivedObjectOfClasses:v40 fromData:v36 error:&v61];
+  localizedDescription = [NSKeyedUnarchiver unarchivedObjectOfClasses:v40 fromData:v36 error:&v61];
   v42 = v61;
 
   if (v42)
@@ -227,13 +227,13 @@ LABEL_38:
 
 LABEL_39:
 
-  v8 = v57;
-  v7 = v59;
+  codesCopy = v57;
+  contextsCopy = v59;
   v11 = v55;
   v33 = v51;
 LABEL_40:
 
-  v46 = VMStoreRecordGetUUID(a3);
+  v46 = VMStoreRecordGetUUID(record);
   [v9 setUuid:v46];
 
 LABEL_41:

@@ -1,82 +1,82 @@
 @interface MPMediaPickerConfiguration
 - (MPMediaPickerConfiguration)init;
-- (MPMediaPickerConfiguration)initWithCoder:(id)a3;
+- (MPMediaPickerConfiguration)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
-- (void)setShowsCatalogContent:(BOOL)a3;
-- (void)setShowsLibraryContent:(BOOL)a3;
-- (void)setSupportsUnavailableContent:(BOOL)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setShowsCatalogContent:(BOOL)content;
+- (void)setShowsLibraryContent:(BOOL)content;
+- (void)setSupportsUnavailableContent:(BOOL)content;
 @end
 
 @implementation MPMediaPickerConfiguration
 
-- (MPMediaPickerConfiguration)initWithCoder:(id)a3
+- (MPMediaPickerConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v18.receiver = self;
   v18.super_class = MPMediaPickerConfiguration;
   v5 = [(MPMediaPickerConfiguration *)&v18 init];
   if (v5)
   {
-    v5->_mediaTypes = [v4 decodeIntegerForKey:@"mediaTypes"];
-    v5->_allowsPickingMultipleItems = [v4 decodeBoolForKey:@"allowsPickingMultipleItems"];
-    v5->_alwaysShowSearchBarInLibrary = [v4 decodeBoolForKey:@"aslsb"];
-    v5->_automaticallyDrillsToLibrary = [v4 decodeBoolForKey:@"adtl"];
-    v5->_showsCloudItems = [v4 decodeBoolForKey:@"showsCloudItems"];
-    v5->_showsItemsWithProtectedAssets = [v4 decodeBoolForKey:@"showsItemsWithProtectedAssets"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"prompt"];
+    v5->_mediaTypes = [coderCopy decodeIntegerForKey:@"mediaTypes"];
+    v5->_allowsPickingMultipleItems = [coderCopy decodeBoolForKey:@"allowsPickingMultipleItems"];
+    v5->_alwaysShowSearchBarInLibrary = [coderCopy decodeBoolForKey:@"aslsb"];
+    v5->_automaticallyDrillsToLibrary = [coderCopy decodeBoolForKey:@"adtl"];
+    v5->_showsCloudItems = [coderCopy decodeBoolForKey:@"showsCloudItems"];
+    v5->_showsItemsWithProtectedAssets = [coderCopy decodeBoolForKey:@"showsItemsWithProtectedAssets"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"prompt"];
     v7 = [v6 copy];
     prompt = v5->_prompt;
     v5->_prompt = v7;
 
-    v5->_picksSingleCollectionEntity = [v4 decodeBoolForKey:@"picksSingleCollectionEntity"];
-    v5->_watchCompatibilityVersion = [v4 decodeInt32ForKey:@"watchCompatibilityVersion"];
+    v5->_picksSingleCollectionEntity = [coderCopy decodeBoolForKey:@"picksSingleCollectionEntity"];
+    v5->_watchCompatibilityVersion = [coderCopy decodeInt32ForKey:@"watchCompatibilityVersion"];
     v9 = MEMORY[0x1E695DFD8];
     v10 = objc_opt_class();
     v11 = [v9 setWithObjects:{v10, objc_opt_class(), 0}];
-    v12 = [v4 decodeObjectOfClasses:v11 forKey:@"typeIdentifiers"];
+    v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"typeIdentifiers"];
     v13 = [v12 copy];
     typeIdentifiers = v5->_typeIdentifiers;
     v5->_typeIdentifiers = v13;
 
-    v5->_selectionMode = [v4 decodeIntegerForKey:@"selectionMode"];
-    v5->_pickingForExternalPlayer = [v4 decodeBoolForKey:@"pickingForExternalPlayer"];
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pac"];
+    v5->_selectionMode = [coderCopy decodeIntegerForKey:@"selectionMode"];
+    v5->_pickingForExternalPlayer = [coderCopy decodeBoolForKey:@"pickingForExternalPlayer"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pac"];
     playbackArchiveConfiguration = v5->_playbackArchiveConfiguration;
     v5->_playbackArchiveConfiguration = v15;
 
-    v5->_supportedContentOptions = [v4 decodeIntegerForKey:@"sco"];
+    v5->_supportedContentOptions = [coderCopy decodeIntegerForKey:@"sco"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   mediaTypes = self->_mediaTypes;
-  v5 = a3;
-  [v5 encodeInteger:mediaTypes forKey:@"mediaTypes"];
-  [v5 encodeBool:self->_allowsPickingMultipleItems forKey:@"allowsPickingMultipleItems"];
-  [v5 encodeBool:self->_alwaysShowSearchBarInLibrary forKey:@"aslsb"];
-  [v5 encodeBool:self->_automaticallyDrillsToLibrary forKey:@"adtl"];
-  [v5 encodeBool:self->_showsCloudItems forKey:@"showsCloudItems"];
-  [v5 encodeBool:self->_showsItemsWithProtectedAssets forKey:@"showsItemsWithProtectedAssets"];
-  [v5 encodeObject:self->_prompt forKey:@"prompt"];
-  [v5 encodeBool:self->_picksSingleCollectionEntity forKey:@"picksSingleCollectionEntity"];
-  [v5 encodeInt32:self->_watchCompatibilityVersion forKey:@"watchCompatibilityVersion"];
-  [v5 encodeObject:self->_typeIdentifiers forKey:@"typeIdentifiers"];
-  [v5 encodeInteger:self->_selectionMode forKey:@"selectionMode"];
-  [v5 encodeBool:self->_pickingForExternalPlayer forKey:@"pickingForExternalPlayer"];
-  [v5 encodeObject:self->_playbackArchiveConfiguration forKey:@"pac"];
-  [v5 encodeInteger:self->_supportedContentOptions forKey:@"sco"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:mediaTypes forKey:@"mediaTypes"];
+  [coderCopy encodeBool:self->_allowsPickingMultipleItems forKey:@"allowsPickingMultipleItems"];
+  [coderCopy encodeBool:self->_alwaysShowSearchBarInLibrary forKey:@"aslsb"];
+  [coderCopy encodeBool:self->_automaticallyDrillsToLibrary forKey:@"adtl"];
+  [coderCopy encodeBool:self->_showsCloudItems forKey:@"showsCloudItems"];
+  [coderCopy encodeBool:self->_showsItemsWithProtectedAssets forKey:@"showsItemsWithProtectedAssets"];
+  [coderCopy encodeObject:self->_prompt forKey:@"prompt"];
+  [coderCopy encodeBool:self->_picksSingleCollectionEntity forKey:@"picksSingleCollectionEntity"];
+  [coderCopy encodeInt32:self->_watchCompatibilityVersion forKey:@"watchCompatibilityVersion"];
+  [coderCopy encodeObject:self->_typeIdentifiers forKey:@"typeIdentifiers"];
+  [coderCopy encodeInteger:self->_selectionMode forKey:@"selectionMode"];
+  [coderCopy encodeBool:self->_pickingForExternalPlayer forKey:@"pickingForExternalPlayer"];
+  [coderCopy encodeObject:self->_playbackArchiveConfiguration forKey:@"pac"];
+  [coderCopy encodeInteger:self->_supportedContentOptions forKey:@"sco"];
 }
 
-- (void)setSupportsUnavailableContent:(BOOL)a3
+- (void)setSupportsUnavailableContent:(BOOL)content
 {
-  v3 = a3;
+  contentCopy = content;
   v5 = [(MPMediaPickerConfiguration *)self supportedContentOptions]& 0xFFFFFFFFFFFFFFFBLL;
   v6 = 4;
-  if (!v3)
+  if (!contentCopy)
   {
     v6 = 0;
   }
@@ -84,19 +84,19 @@
   [(MPMediaPickerConfiguration *)self setSupportedContentOptions:v5 | v6];
 }
 
-- (void)setShowsLibraryContent:(BOOL)a3
+- (void)setShowsLibraryContent:(BOOL)content
 {
-  v4 = [(MPMediaPickerConfiguration *)self supportedContentOptions]& 0xFFFFFFFFFFFFFFFELL | a3;
+  v4 = [(MPMediaPickerConfiguration *)self supportedContentOptions]& 0xFFFFFFFFFFFFFFFELL | content;
 
   [(MPMediaPickerConfiguration *)self setSupportedContentOptions:v4];
 }
 
-- (void)setShowsCatalogContent:(BOOL)a3
+- (void)setShowsCatalogContent:(BOOL)content
 {
-  v3 = a3;
+  contentCopy = content;
   v5 = [(MPMediaPickerConfiguration *)self supportedContentOptions]& 0xFFFFFFFFFFFFFFFDLL;
   v6 = 2;
-  if (!v3)
+  if (!contentCopy)
   {
     v6 = 0;
   }

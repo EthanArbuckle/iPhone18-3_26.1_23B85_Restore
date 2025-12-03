@@ -8,7 +8,7 @@
 
 - (int)buildType
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_2157FBBC8();
 
   return v3;
@@ -16,7 +16,7 @@
 
 - (id)prefixStoreVersion
 {
-  v2 = self;
+  selfCopy = self;
   sub_2157FBC5C();
   v4 = v3;
 

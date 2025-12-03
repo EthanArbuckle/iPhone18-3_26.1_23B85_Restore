@@ -1,6 +1,6 @@
 @interface SDAirDropHandleriBooksLinks
 - (BOOL)canHandleTransfer;
-- (SDAirDropHandleriBooksLinks)initWithTransfer:(id)a3;
+- (SDAirDropHandleriBooksLinks)initWithTransfer:(id)transfer;
 - (id)candidateIdentifiers;
 - (id)suitableContentsDescription;
 - (int64_t)transferTypes;
@@ -8,23 +8,23 @@
 
 @implementation SDAirDropHandleriBooksLinks
 
-- (SDAirDropHandleriBooksLinks)initWithTransfer:(id)a3
+- (SDAirDropHandleriBooksLinks)initWithTransfer:(id)transfer
 {
   v4.receiver = self;
   v4.super_class = SDAirDropHandleriBooksLinks;
-  return [(SDAirDropHandler *)&v4 initWithTransfer:a3 bundleIdentifier:@"com.apple.iBooks"];
+  return [(SDAirDropHandler *)&v4 initWithTransfer:transfer bundleIdentifier:@"com.apple.iBooks"];
 }
 
 - (id)candidateIdentifiers
 {
   v3 = objc_opt_new();
-  v4 = [(SDAirDropHandler *)self bundleProxy];
+  bundleProxy = [(SDAirDropHandler *)self bundleProxy];
 
-  if (v4)
+  if (bundleProxy)
   {
-    v5 = [(SDAirDropHandler *)self bundleProxy];
-    v6 = [v5 bundleIdentifier];
-    [v3 addObject:v6];
+    bundleProxy2 = [(SDAirDropHandler *)self bundleProxy];
+    bundleIdentifier = [bundleProxy2 bundleIdentifier];
+    [v3 addObject:bundleIdentifier];
   }
 
   return v3;
@@ -37,15 +37,15 @@
     return 0;
   }
 
-  v3 = [(SDAirDropHandleriBooksLinks *)self candidateIdentifiers];
+  candidateIdentifiers = [(SDAirDropHandleriBooksLinks *)self candidateIdentifiers];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(SDAirDropHandler *)self transfer];
-  v5 = [v4 completedURLs];
+  transfer = [(SDAirDropHandler *)self transfer];
+  completedURLs = [transfer completedURLs];
 
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v6 = [completedURLs countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -56,10 +56,10 @@
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(completedURLs);
         }
 
-        v10 = [(SDAirDropHandler *)self bundleProxyFromCandidateIdentifiers:v3 handlesURL:*(*(&v13 + 1) + 8 * i)];
+        v10 = [(SDAirDropHandler *)self bundleProxyFromCandidateIdentifiers:candidateIdentifiers handlesURL:*(*(&v13 + 1) + 8 * i)];
 
         if (!v10)
         {
@@ -68,7 +68,7 @@
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [completedURLs countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v7)
       {
         continue;
@@ -93,10 +93,10 @@ LABEL_13:
 
 - (id)suitableContentsDescription
 {
-  v3 = [(SDAirDropHandler *)self senderName];
+  senderName = [(SDAirDropHandler *)self senderName];
   v4 = [(SDAirDropHandler *)self alertMessageLocalizedKeyForTypeDicts:&off_100910550];
   v5 = SFLocalizedStringForKey();
-  v6 = [NSString localizedStringWithFormat:v5, v3];
+  v6 = [NSString localizedStringWithFormat:v5, senderName];
 
   return v6;
 }

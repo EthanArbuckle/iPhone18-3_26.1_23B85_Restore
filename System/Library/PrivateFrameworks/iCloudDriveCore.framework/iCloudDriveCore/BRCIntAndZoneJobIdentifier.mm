@@ -1,23 +1,23 @@
 @interface BRCIntAndZoneJobIdentifier
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToIntAndZoneJobIdentifier:(id)a3;
-- (BRCIntAndZoneJobIdentifier)initWithIntID:(int64_t)a3 zoneRowID:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToIntAndZoneJobIdentifier:(id)identifier;
+- (BRCIntAndZoneJobIdentifier)initWithIntID:(int64_t)d zoneRowID:(id)iD;
 @end
 
 @implementation BRCIntAndZoneJobIdentifier
 
-- (BRCIntAndZoneJobIdentifier)initWithIntID:(int64_t)a3 zoneRowID:(id)a4
+- (BRCIntAndZoneJobIdentifier)initWithIntID:(int64_t)d zoneRowID:(id)iD
 {
-  v7 = a4;
+  iDCopy = iD;
   v11.receiver = self;
   v11.super_class = BRCIntAndZoneJobIdentifier;
   v8 = [(BRCIntAndZoneJobIdentifier *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_intID = a3;
-    objc_storeStrong(&v8->_zoneRowID, a4);
-    if (!v7)
+    v8->_intID = d;
+    objc_storeStrong(&v8->_zoneRowID, iD);
+    if (!iDCopy)
     {
       [BRCIntAndZoneJobIdentifier initWithIntID:zoneRowID:];
     }
@@ -26,13 +26,13 @@
   return v9;
 }
 
-- (BOOL)isEqualToIntAndZoneJobIdentifier:(id)a3
+- (BOOL)isEqualToIntAndZoneJobIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && self->_intID == *(v4 + 1))
+  identifierCopy = identifier;
+  v5 = identifierCopy;
+  if (identifierCopy && self->_intID == *(identifierCopy + 1))
   {
-    v6 = [(BRCZoneRowID *)self->_zoneRowID br_isEqualToNumber:*(v4 + 2)];
+    v6 = [(BRCZoneRowID *)self->_zoneRowID br_isEqualToNumber:*(identifierCopy + 2)];
   }
 
   else
@@ -43,10 +43,10 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -54,7 +54,7 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(BRCIntAndZoneJobIdentifier *)self isEqualToIntAndZoneJobIdentifier:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(BRCIntAndZoneJobIdentifier *)self isEqualToIntAndZoneJobIdentifier:equalCopy];
   }
 
   return v5;

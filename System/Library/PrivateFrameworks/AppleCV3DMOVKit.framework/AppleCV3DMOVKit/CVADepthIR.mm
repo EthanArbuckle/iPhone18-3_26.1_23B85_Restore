@@ -1,13 +1,13 @@
 @interface CVADepthIR
-- (CVADepthIR)initWithPixelBufferRef:(__CVBuffer *)a3 timestamp:(double)a4;
+- (CVADepthIR)initWithPixelBufferRef:(__CVBuffer *)ref timestamp:(double)timestamp;
 - (void)dealloc;
 @end
 
 @implementation CVADepthIR
 
-- (CVADepthIR)initWithPixelBufferRef:(__CVBuffer *)a3 timestamp:(double)a4
+- (CVADepthIR)initWithPixelBufferRef:(__CVBuffer *)ref timestamp:(double)timestamp
 {
-  if (CVPixelBufferGetPixelFormatType(a3) == 825437747)
+  if (CVPixelBufferGetPixelFormatType(ref) == 825437747)
   {
     v11.receiver = self;
     v11.super_class = CVADepthIR;
@@ -15,20 +15,20 @@
     v8 = v7;
     if (v7)
     {
-      v7->_timestamp = a4;
-      v7->_dataBuffer = CVPixelBufferRetain(a3);
+      v7->_timestamp = timestamp;
+      v7->_dataBuffer = CVPixelBufferRetain(ref);
     }
 
     self = v8;
-    v9 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
 - (void)dealloc

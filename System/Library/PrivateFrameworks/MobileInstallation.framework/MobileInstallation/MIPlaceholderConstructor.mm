@@ -1,32 +1,32 @@
 @interface MIPlaceholderConstructor
 + (id)_infoPlistKeysToLoad;
-- (BOOL)_constructPlaceholdersForDirectory:(id)a3 itemsWithPathExtension:(id)a4 appendingToArray:(id)a5 bundleType:(unint64_t)a6 error:(id *)a7;
-- (BOOL)_copyInfoPlistLoctableToPlaceholder:(id)a3 error:(id *)a4;
-- (BOOL)_copyStringsToPlaceholder:(id)a3 onlyDirectories:(BOOL)a4 error:(id *)a5;
-- (BOOL)_introspectWithError:(id *)a3;
-- (BOOL)_loadInfoPlistContentWithError:(id *)a3;
-- (BOOL)_materializeConstructors:(id)a3 intoBundle:(id)a4 error:(id *)a5;
-- (BOOL)_populateAppExtensionPlaceholderConstructorsWithError:(id *)a3;
-- (BOOL)_populateEmbeddedAppClipPlaceholderConstructorsWithError:(id *)a3;
-- (BOOL)_populateEmbeddedWatchAppPlaceholderConstructorsWithError:(id *)a3;
-- (BOOL)_transferAndUpdateInstallSessionIDsToPlaceholder:(id)a3 error:(id *)a4;
-- (BOOL)_writeIconToPlaceholder:(id)a3 infoPlistIconContent:(id *)a4 error:(id *)a5;
-- (BOOL)_writeInfoPlistToPlaceholder:(id)a3 substitutingIconContent:(id)a4 withError:(id *)a5;
+- (BOOL)_constructPlaceholdersForDirectory:(id)directory itemsWithPathExtension:(id)extension appendingToArray:(id)array bundleType:(unint64_t)type error:(id *)error;
+- (BOOL)_copyInfoPlistLoctableToPlaceholder:(id)placeholder error:(id *)error;
+- (BOOL)_copyStringsToPlaceholder:(id)placeholder onlyDirectories:(BOOL)directories error:(id *)error;
+- (BOOL)_introspectWithError:(id *)error;
+- (BOOL)_loadInfoPlistContentWithError:(id *)error;
+- (BOOL)_materializeConstructors:(id)constructors intoBundle:(id)bundle error:(id *)error;
+- (BOOL)_populateAppExtensionPlaceholderConstructorsWithError:(id *)error;
+- (BOOL)_populateEmbeddedAppClipPlaceholderConstructorsWithError:(id *)error;
+- (BOOL)_populateEmbeddedWatchAppPlaceholderConstructorsWithError:(id *)error;
+- (BOOL)_transferAndUpdateInstallSessionIDsToPlaceholder:(id)placeholder error:(id *)error;
+- (BOOL)_writeIconToPlaceholder:(id)placeholder infoPlistIconContent:(id *)content error:(id *)error;
+- (BOOL)_writeInfoPlistToPlaceholder:(id)placeholder substitutingIconContent:(id)content withError:(id *)error;
 - (BOOL)isLaunchProhibited;
-- (BOOL)materializeIntoBundleDirectory:(id)a3 error:(id *)a4;
+- (BOOL)materializeIntoBundleDirectory:(id)directory error:(id *)error;
 - (MIPlaceholderConstructor)firstNetworkExtension;
 - (NSString)bundleID;
-- (id)_entitlementsForPath:(id)a3 error:(id *)a4;
-- (void)setInstallSessionUUID:(id)a3;
-- (void)setInstallUUID:(id)a3;
+- (id)_entitlementsForPath:(id)path error:(id *)error;
+- (void)setInstallSessionUUID:(id)d;
+- (void)setInstallUUID:(id)d;
 @end
 
 @implementation MIPlaceholderConstructor
 
 - (NSString)bundleID
 {
-  v2 = [(MIPlaceholderConstructor *)self infoPlistContent];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x1E695E4F0]];
+  infoPlistContent = [(MIPlaceholderConstructor *)self infoPlistContent];
+  v3 = [infoPlistContent objectForKeyedSubscript:*MEMORY[0x1E695E4F0]];
   objc_opt_class();
   v4 = v3;
   if (objc_opt_isKindOfClass())
@@ -64,8 +64,8 @@
         }
 
         v6 = *(*(&v11 + 1) + 8 * i);
-        v7 = [v6 entitlements];
-        v8 = MICopyNetworkExtensionEntitlement(v7);
+        entitlements = [v6 entitlements];
+        v8 = MICopyNetworkExtensionEntitlement(entitlements);
 
         if (v8)
         {
@@ -94,23 +94,23 @@ LABEL_11:
 
 - (BOOL)isLaunchProhibited
 {
-  v2 = [(MIPlaceholderConstructor *)self infoPlistContent];
-  v3 = [v2 objectForKeyedSubscript:@"LSApplicationLaunchProhibited"];
+  infoPlistContent = [(MIPlaceholderConstructor *)self infoPlistContent];
+  v3 = [infoPlistContent objectForKeyedSubscript:@"LSApplicationLaunchProhibited"];
   v4 = MIBooleanValue(v3, 0);
 
   return v4;
 }
 
-- (id)_entitlementsForPath:(id)a3 error:(id *)a4
+- (id)_entitlementsForPath:(id)path error:(id *)error
 {
-  v5 = a3;
+  pathCopy = path;
   information = 0;
   staticCode = 0;
-  if (SecStaticCodeCreateWithPath(v5, 0, &staticCode))
+  if (SecStaticCodeCreateWithPath(pathCopy, 0, &staticCode))
   {
     v6 = *MEMORY[0x1E69A8D00];
-    v7 = [v5 path];
-    _CreateAndLogError("[MIPlaceholderConstructor _entitlementsForPath:error:]", 196, v6, 13, 0, 0, @"Failed to construct SecStaticCode for %@ : %d", v8, v7);
+    path = [pathCopy path];
+    _CreateAndLogError("[MIPlaceholderConstructor _entitlementsForPath:error:]", 196, v6, 13, 0, 0, @"Failed to construct SecStaticCode for %@ : %d", v8, path);
     v11 = LABEL_5:;
     v12 = 0;
     v13 = 0;
@@ -122,8 +122,8 @@ LABEL_6:
   if (SecCodeCopySigningInformation(staticCode, 4u, &information))
   {
     v9 = *MEMORY[0x1E69A8D00];
-    v7 = [v5 path];
-    _CreateAndLogError("[MIPlaceholderConstructor _entitlementsForPath:error:]", 202, v9, 13, 0, 0, @"SecCodeCopySigningInformation for %@ returned error %d", v10, v7);
+    path = [pathCopy path];
+    _CreateAndLogError("[MIPlaceholderConstructor _entitlementsForPath:error:]", 202, v9, 13, 0, 0, @"SecCodeCopySigningInformation for %@ returned error %d", v10, path);
     goto LABEL_5;
   }
 
@@ -132,7 +132,7 @@ LABEL_6:
   v16 = [(__CFDictionary *)v12 objectForKeyedSubscript:*MEMORY[0x1E697B068]];
   if (v16)
   {
-    v7 = v16;
+    path = v16;
     v13 = [v16 copy];
     v11 = 0;
     goto LABEL_6;
@@ -153,10 +153,10 @@ LABEL_7:
     staticCode = 0;
   }
 
-  if (a4 && !v13)
+  if (error && !v13)
   {
     v14 = v11;
-    *a4 = v11;
+    *error = v11;
   }
 
   return v13;
@@ -184,9 +184,9 @@ uint64_t __48__MIPlaceholderConstructor__infoPlistKeysToLoad__block_invoke()
   return MEMORY[0x1EEE66BB8](v1, v2);
 }
 
-- (BOOL)_loadInfoPlistContentWithError:(id *)a3
+- (BOOL)_loadInfoPlistContentWithError:(id *)error
 {
-  v5 = [(MIPlaceholderConstructor *)self bundleURL];
+  bundleURL = [(MIPlaceholderConstructor *)self bundleURL];
   if (-[MIPlaceholderConstructor preserveFullInfoPlist](self, "preserveFullInfoPlist") || ([objc_opt_class() _infoPlistKeysToLoad], (v6 = objc_claimAutoreleasedReturnValue()) == 0))
   {
     v7 = MILoadRawInfoPlist();
@@ -213,23 +213,23 @@ uint64_t __48__MIPlaceholderConstructor__infoPlistKeysToLoad__block_invoke()
     }
 
     v15 = *MEMORY[0x1E69A8D00];
-    v13 = [v5 path];
-    _CreateAndLogError("[MIPlaceholderConstructor _loadInfoPlistContentWithError:]", 288, v15, 4, 0, 0, @"Found no keys in Info.plist in bundle at %@", v16, v13);
+    path = [bundleURL path];
+    _CreateAndLogError("[MIPlaceholderConstructor _loadInfoPlistContentWithError:]", 288, v15, 4, 0, 0, @"Found no keys in Info.plist in bundle at %@", v16, path);
   }
 
   else
   {
     v12 = *MEMORY[0x1E69A8D00];
-    v13 = [v5 path];
-    _CreateAndLogError("[MIPlaceholderConstructor _loadInfoPlistContentWithError:]", 283, v12, 4, v9, 0, @"Failed to load Info.plist from %@", v14, v13);
+    path = [bundleURL path];
+    _CreateAndLogError("[MIPlaceholderConstructor _loadInfoPlistContentWithError:]", 283, v12, 4, v9, 0, @"Failed to load Info.plist from %@", v14, path);
   }
   v17 = ;
 
-  if (a3)
+  if (error)
   {
     v18 = v17;
     v11 = 0;
-    *a3 = v17;
+    *error = v17;
   }
 
   else
@@ -243,52 +243,52 @@ LABEL_14:
   return v11;
 }
 
-- (BOOL)_constructPlaceholdersForDirectory:(id)a3 itemsWithPathExtension:(id)a4 appendingToArray:(id)a5 bundleType:(unint64_t)a6 error:(id *)a7
+- (BOOL)_constructPlaceholdersForDirectory:(id)directory itemsWithPathExtension:(id)extension appendingToArray:(id)array bundleType:(unint64_t)type error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
+  directoryCopy = directory;
+  extensionCopy = extension;
+  arrayCopy = array;
   v33 = 0;
   v34 = &v33;
   v35 = 0x3032000000;
   v36 = __Block_byref_object_copy__2;
   v37 = __Block_byref_object_dispose__2;
   v38 = 0;
-  v15 = [MEMORY[0x1E69A8D78] defaultManager];
+  defaultManager = [MEMORY[0x1E69A8D78] defaultManager];
   v27[0] = MEMORY[0x1E69E9820];
   v27[1] = 3221225472;
   v27[2] = __120__MIPlaceholderConstructor__constructPlaceholdersForDirectory_itemsWithPathExtension_appendingToArray_bundleType_error___block_invoke;
   v27[3] = &unk_1E80BA5D8;
-  v16 = v13;
+  v16 = extensionCopy;
   v28 = v16;
-  v29 = self;
+  selfCopy = self;
   v31 = &v33;
-  v32 = a6;
-  v17 = v14;
+  typeCopy = type;
+  v17 = arrayCopy;
   v30 = v17;
-  v18 = [v15 enumerateURLsForItemsInDirectoryAtURL:v12 ignoreSymlinks:1 withBlock:v27];
+  v18 = [defaultManager enumerateURLsForItemsInDirectoryAtURL:directoryCopy ignoreSymlinks:1 withBlock:v27];
 
   v19 = v34[5];
   if (!v19)
   {
-    v20 = [v18 domain];
+    domain = [v18 domain];
     v23 = *MEMORY[0x1E696A798];
-    if ([v20 isEqualToString:*MEMORY[0x1E696A798]] && objc_msgSend(v18, "code") == 20)
+    if ([domain isEqualToString:*MEMORY[0x1E696A798]] && objc_msgSend(v18, "code") == 20)
     {
     }
 
     else
     {
-      v24 = [v18 domain];
-      if (([v24 isEqualToString:v23] & 1) == 0)
+      domain2 = [v18 domain];
+      if (([domain2 isEqualToString:v23] & 1) == 0)
       {
 
         goto LABEL_3;
       }
 
-      v25 = [v18 code];
+      code = [v18 code];
 
-      if (v25 != 2)
+      if (code != 2)
       {
         goto LABEL_4;
       }
@@ -299,17 +299,17 @@ LABEL_14:
     goto LABEL_13;
   }
 
-  v20 = v18;
+  domain = v18;
   v18 = v19;
 LABEL_3:
 
 LABEL_4:
   v21 = v18 == 0;
-  if (a7 && v18)
+  if (error && v18)
   {
     v22 = v18;
     v21 = 0;
-    *a7 = v18;
+    *error = v18;
   }
 
 LABEL_13:
@@ -364,7 +364,7 @@ BOOL __120__MIPlaceholderConstructor__constructPlaceholdersForDirectory_itemsWit
   return v16;
 }
 
-- (BOOL)_populateAppExtensionPlaceholderConstructorsWithError:(id *)a3
+- (BOOL)_populateAppExtensionPlaceholderConstructorsWithError:(id *)error
 {
   v30 = *MEMORY[0x1E69E9840];
   v5 = objc_opt_new();
@@ -376,7 +376,7 @@ BOOL __120__MIPlaceholderConstructor__constructPlaceholdersForDirectory_itemsWit
   if (v6)
   {
     v7 = v6;
-    v23 = a3;
+    errorCopy = error;
     v8 = 0;
     v9 = *v26;
     while (2)
@@ -390,32 +390,32 @@ BOOL __120__MIPlaceholderConstructor__constructPlaceholdersForDirectory_itemsWit
           objc_enumerationMutation(&unk_1F3DE9A68);
         }
 
-        v12 = [*(*(&v25 + 1) + 8 * v10) unsignedIntegerValue];
-        v13 = [(MIPlaceholderConstructor *)self bundleURL];
-        v14 = v13;
-        if ((v12 - 1) > 3)
+        unsignedIntegerValue = [*(*(&v25 + 1) + 8 * v10) unsignedIntegerValue];
+        bundleURL = [(MIPlaceholderConstructor *)self bundleURL];
+        v14 = bundleURL;
+        if ((unsignedIntegerValue - 1) > 3)
         {
           v15 = 0;
         }
 
         else
         {
-          v15 = off_1E80BA670[v12 - 1];
+          v15 = off_1E80BA670[unsignedIntegerValue - 1];
         }
 
-        v16 = [v13 URLByAppendingPathComponent:v15 isDirectory:1];
+        v16 = [bundleURL URLByAppendingPathComponent:v15 isDirectory:1];
 
         v24 = v11;
-        v17 = [(MIPlaceholderConstructor *)self _constructPlaceholdersForDirectory:v16 itemsWithPathExtension:@"appex" appendingToArray:v5 bundleType:v12 error:&v24];
+        v17 = [(MIPlaceholderConstructor *)self _constructPlaceholdersForDirectory:v16 itemsWithPathExtension:@"appex" appendingToArray:v5 bundleType:unsignedIntegerValue error:&v24];
         v8 = v24;
 
         if (!v17)
         {
-          if (v23)
+          if (errorCopy)
           {
             v18 = v8;
             v19 = 0;
-            *v23 = v8;
+            *errorCopy = v8;
           }
 
           else
@@ -456,7 +456,7 @@ LABEL_18:
   return v19;
 }
 
-- (BOOL)_populateEmbeddedWatchAppPlaceholderConstructorsWithError:(id *)a3
+- (BOOL)_populateEmbeddedWatchAppPlaceholderConstructorsWithError:(id *)error
 {
   if ([(MIPlaceholderConstructor *)self placeholderType])
   {
@@ -469,8 +469,8 @@ LABEL_5:
   }
 
   v6 = objc_opt_new();
-  v8 = [(MIPlaceholderConstructor *)self bundleURL];
-  v5 = [v8 URLByAppendingPathComponent:@"Watch" isDirectory:1];
+  bundleURL = [(MIPlaceholderConstructor *)self bundleURL];
+  v5 = [bundleURL URLByAppendingPathComponent:@"Watch" isDirectory:1];
 
   v15 = 0;
   v9 = [(MIPlaceholderConstructor *)self _constructPlaceholdersForDirectory:v5 itemsWithPathExtension:@"app" appendingToArray:v6 bundleType:3 error:&v15];
@@ -484,11 +484,11 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  if (a3)
+  if (error)
   {
     v14 = v10;
     v12 = 0;
-    *a3 = v7;
+    *error = v7;
   }
 
   else
@@ -501,7 +501,7 @@ LABEL_6:
   return v12;
 }
 
-- (BOOL)_populateEmbeddedAppClipPlaceholderConstructorsWithError:(id *)a3
+- (BOOL)_populateEmbeddedAppClipPlaceholderConstructorsWithError:(id *)error
 {
   if ([(MIPlaceholderConstructor *)self placeholderType])
   {
@@ -514,8 +514,8 @@ LABEL_5:
   }
 
   v6 = objc_opt_new();
-  v8 = [(MIPlaceholderConstructor *)self bundleURL];
-  v5 = [v8 URLByAppendingPathComponent:@"AppClips" isDirectory:1];
+  bundleURL = [(MIPlaceholderConstructor *)self bundleURL];
+  v5 = [bundleURL URLByAppendingPathComponent:@"AppClips" isDirectory:1];
 
   v15 = 0;
   v9 = [(MIPlaceholderConstructor *)self _constructPlaceholdersForDirectory:v5 itemsWithPathExtension:@"app" appendingToArray:v6 bundleType:4 error:&v15];
@@ -529,11 +529,11 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  if (a3)
+  if (error)
   {
     v14 = v10;
     v12 = 0;
-    *a3 = v7;
+    *error = v7;
   }
 
   else
@@ -546,16 +546,16 @@ LABEL_6:
   return v12;
 }
 
-- (BOOL)_introspectWithError:(id *)a3
+- (BOOL)_introspectWithError:(id *)error
 {
   v19 = 0;
   v5 = [(MIPlaceholderConstructor *)self _loadInfoPlistContentWithError:&v19];
   v6 = v19;
   if (v5)
   {
-    v7 = [(MIPlaceholderConstructor *)self bundleURL];
+    bundleURL = [(MIPlaceholderConstructor *)self bundleURL];
     v18 = v6;
-    v8 = [(MIPlaceholderConstructor *)self _entitlementsForPath:v7 error:&v18];
+    v8 = [(MIPlaceholderConstructor *)self _entitlementsForPath:bundleURL error:&v18];
     v9 = v18;
 
     if (!v8)
@@ -571,7 +571,7 @@ LABEL_6:
     if (!v10)
     {
       v12 = 0;
-      if (!a3)
+      if (!error)
       {
         goto LABEL_14;
       }
@@ -589,7 +589,7 @@ LABEL_6:
       v12 = [(MIPlaceholderConstructor *)self _populateEmbeddedAppClipPlaceholderConstructorsWithError:&v15];
       v6 = v15;
 
-      if (!a3)
+      if (!error)
       {
         goto LABEL_14;
       }
@@ -600,7 +600,7 @@ LABEL_6:
 LABEL_9:
       v12 = 0;
       v6 = v9;
-      if (!a3)
+      if (!error)
       {
         goto LABEL_14;
       }
@@ -611,7 +611,7 @@ LABEL_9:
   {
     v12 = 0;
     v8 = 0;
-    if (!a3)
+    if (!error)
     {
       goto LABEL_14;
     }
@@ -621,7 +621,7 @@ LABEL_12:
   if (!v12)
   {
     v13 = v6;
-    *a3 = v6;
+    *error = v6;
   }
 
 LABEL_14:
@@ -629,17 +629,17 @@ LABEL_14:
   return v12;
 }
 
-- (void)setInstallUUID:(id)a3
+- (void)setInstallUUID:(id)d
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  objc_storeStrong(&self->_installUUID, a3);
+  dCopy = d;
+  objc_storeStrong(&self->_installUUID, d);
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = [(MIPlaceholderConstructor *)self appExtensionPlaceholderConstructors];
-  v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  appExtensionPlaceholderConstructors = [(MIPlaceholderConstructor *)self appExtensionPlaceholderConstructors];
+  v7 = [appExtensionPlaceholderConstructors countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
     v8 = v7;
@@ -651,14 +651,14 @@ LABEL_14:
       {
         if (*v13 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(appExtensionPlaceholderConstructors);
         }
 
-        [*(*(&v12 + 1) + 8 * v10++) setInstallUUID:v5];
+        [*(*(&v12 + 1) + 8 * v10++) setInstallUUID:dCopy];
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v8 = [appExtensionPlaceholderConstructors countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v8);
@@ -667,17 +667,17 @@ LABEL_14:
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setInstallSessionUUID:(id)a3
+- (void)setInstallSessionUUID:(id)d
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  objc_storeStrong(&self->_installSessionUUID, a3);
+  dCopy = d;
+  objc_storeStrong(&self->_installSessionUUID, d);
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = [(MIPlaceholderConstructor *)self appExtensionPlaceholderConstructors];
-  v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  appExtensionPlaceholderConstructors = [(MIPlaceholderConstructor *)self appExtensionPlaceholderConstructors];
+  v7 = [appExtensionPlaceholderConstructors countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
     v8 = v7;
@@ -689,14 +689,14 @@ LABEL_14:
       {
         if (*v13 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(appExtensionPlaceholderConstructors);
         }
 
-        [*(*(&v12 + 1) + 8 * v10++) setInstallSessionUUID:v5];
+        [*(*(&v12 + 1) + 8 * v10++) setInstallSessionUUID:dCopy];
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v8 = [appExtensionPlaceholderConstructors countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v8);
@@ -705,18 +705,18 @@ LABEL_14:
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_writeInfoPlistToPlaceholder:(id)a3 substitutingIconContent:(id)a4 withError:(id *)a5
+- (BOOL)_writeInfoPlistToPlaceholder:(id)placeholder substitutingIconContent:(id)content withError:(id *)error
 {
   v50 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = [(MIPlaceholderConstructor *)self infoPlistContent];
-  v11 = [v8 URLByAppendingPathComponent:@"Info.plist" isDirectory:0];
-  v12 = [v10 mutableCopy];
+  placeholderCopy = placeholder;
+  contentCopy = content;
+  infoPlistContent = [(MIPlaceholderConstructor *)self infoPlistContent];
+  v11 = [placeholderCopy URLByAppendingPathComponent:@"Info.plist" isDirectory:0];
+  v12 = [infoPlistContent mutableCopy];
   [v12 setObject:@"Executable" forKeyedSubscript:*MEMORY[0x1E695E4E8]];
-  v13 = [(MIPlaceholderConstructor *)self placeholderType];
+  placeholderType = [(MIPlaceholderConstructor *)self placeholderType];
   MIMinimumOSVersionForBundleInfoPlist();
-  v41 = v40 = a5;
+  v41 = v40 = error;
   if (v41)
   {
     v14 = MIBundleMinimumOSVersionIsPreV6() ^ 1;
@@ -727,12 +727,12 @@ LABEL_14:
     LOBYTE(v14) = 0;
   }
 
-  v42 = v10;
-  v43 = v8;
+  v42 = infoPlistContent;
+  v43 = placeholderCopy;
   v15 = v11;
   if (MEMORY[0x1EEE8A788])
   {
-    v16 = v9;
+    v16 = contentCopy;
     v47 = 0u;
     v48 = 0u;
     v45 = 0u;
@@ -761,7 +761,7 @@ LABEL_14:
       while (v19);
     }
 
-    v9 = v16;
+    contentCopy = v16;
     v11 = v15;
     if (v16)
     {
@@ -781,7 +781,7 @@ LABEL_14:
 
   else
   {
-    if (!((v13 != 3) | v14 & 1))
+    if (!((placeholderType != 3) | v14 & 1))
     {
       goto LABEL_22;
     }
@@ -793,12 +793,12 @@ LABEL_14:
   [v12 setObject:v23 forKeyedSubscript:v22];
 
   v11 = v15;
-  if (v13 == 3)
+  if (placeholderType == 3)
   {
 LABEL_22:
-    v24 = [(MIPlaceholderConstructor *)self watchKitExtensionPlaceholderConstructor];
+    watchKitExtensionPlaceholderConstructor = [(MIPlaceholderConstructor *)self watchKitExtensionPlaceholderConstructor];
 
-    if (!v24)
+    if (!watchKitExtensionPlaceholderConstructor)
     {
       goto LABEL_24;
     }
@@ -811,7 +811,7 @@ LABEL_22:
   }
 
 LABEL_24:
-  v25 = [(MIPlaceholderConstructor *)self bundleURL];
+  bundleURL = [(MIPlaceholderConstructor *)self bundleURL];
   v44[1] = 0;
   v26 = MIBundleSupportedArchitecturesForPlaceholderInfoPlist();
   v27 = 0;
@@ -840,8 +840,8 @@ LABEL_27:
   }
 
   v33 = *MEMORY[0x1E69A8D00];
-  v34 = [v11 path];
-  v36 = _CreateAndLogError("[MIPlaceholderConstructor _writeInfoPlistToPlaceholder:substitutingIconContent:withError:]", 602, v33, 4, v27, 0, @"Failed to write Info.plist file to %@", v35, v34);
+  path = [v11 path];
+  v36 = _CreateAndLogError("[MIPlaceholderConstructor _writeInfoPlistToPlaceholder:substitutingIconContent:withError:]", 602, v33, 4, v27, 0, @"Failed to write Info.plist file to %@", v35, path);
 
   v27 = v36;
 LABEL_31:
@@ -863,28 +863,28 @@ LABEL_34:
   return v32;
 }
 
-- (BOOL)_copyStringsToPlaceholder:(id)a3 onlyDirectories:(BOOL)a4 error:(id *)a5
+- (BOOL)_copyStringsToPlaceholder:(id)placeholder onlyDirectories:(BOOL)directories error:(id *)error
 {
-  v8 = a3;
+  placeholderCopy = placeholder;
   v25 = 0;
   v26 = &v25;
   v27 = 0x3032000000;
   v28 = __Block_byref_object_copy__2;
   v29 = __Block_byref_object_dispose__2;
   v30 = 0;
-  v9 = [(MIPlaceholderConstructor *)self bundleURL];
-  v10 = [MEMORY[0x1E69A8D78] defaultManager];
+  bundleURL = [(MIPlaceholderConstructor *)self bundleURL];
+  defaultManager = [MEMORY[0x1E69A8D78] defaultManager];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __76__MIPlaceholderConstructor__copyStringsToPlaceholder_onlyDirectories_error___block_invoke;
   v20[3] = &unk_1E80BA600;
-  v11 = v8;
+  v11 = placeholderCopy;
   v21 = v11;
-  v12 = v10;
+  v12 = defaultManager;
   v22 = v12;
   v23 = &v25;
-  v24 = a4;
-  v13 = [v12 enumerateURLsForItemsInDirectoryAtURL:v9 ignoreSymlinks:1 withBlock:v20];
+  directoriesCopy = directories;
+  v13 = [v12 enumerateURLsForItemsInDirectoryAtURL:bundleURL ignoreSymlinks:1 withBlock:v20];
   v15 = v13;
   if (!v26[5])
   {
@@ -894,11 +894,11 @@ LABEL_34:
       goto LABEL_8;
     }
 
-    v17 = _CreateAndLogError("[MIPlaceholderConstructor _copyStringsToPlaceholder:onlyDirectories:error:]", 663, *MEMORY[0x1E69A8D00], 4, v13, 0, @"Encountered error while enumerating %@ to copy strings", v14, v9);
+    v17 = _CreateAndLogError("[MIPlaceholderConstructor _copyStringsToPlaceholder:onlyDirectories:error:]", 663, *MEMORY[0x1E69A8D00], 4, v13, 0, @"Encountered error while enumerating %@ to copy strings", v14, bundleURL);
     v18 = v26[5];
     v26[5] = v17;
 
-    if (a5)
+    if (error)
     {
       goto LABEL_3;
     }
@@ -908,14 +908,14 @@ LABEL_6:
     goto LABEL_8;
   }
 
-  if (!a5)
+  if (!error)
   {
     goto LABEL_6;
   }
 
 LABEL_3:
   v16 = 0;
-  *a5 = v26[5];
+  *error = v26[5];
 LABEL_8:
 
   _Block_object_dispose(&v25, 8);
@@ -997,32 +997,32 @@ LABEL_11:
   return v15;
 }
 
-- (BOOL)_copyInfoPlistLoctableToPlaceholder:(id)a3 error:(id *)a4
+- (BOOL)_copyInfoPlistLoctableToPlaceholder:(id)placeholder error:(id *)error
 {
-  v6 = a3;
-  v7 = [(MIPlaceholderConstructor *)self bundleURL];
-  v8 = [v7 URLByAppendingPathComponent:@"InfoPlist.loctable" isDirectory:0];
+  placeholderCopy = placeholder;
+  bundleURL = [(MIPlaceholderConstructor *)self bundleURL];
+  v8 = [bundleURL URLByAppendingPathComponent:@"InfoPlist.loctable" isDirectory:0];
 
-  v9 = [v6 URLByAppendingPathComponent:@"InfoPlist.loctable" isDirectory:0];
+  v9 = [placeholderCopy URLByAppendingPathComponent:@"InfoPlist.loctable" isDirectory:0];
 
-  v10 = [MEMORY[0x1E69A8D78] defaultManager];
+  defaultManager = [MEMORY[0x1E69A8D78] defaultManager];
   v16 = 0;
-  v11 = [v10 copyItemAtURL:v8 toURL:v9 error:&v16];
+  v11 = [defaultManager copyItemAtURL:v8 toURL:v9 error:&v16];
   v12 = v16;
   v13 = v12;
-  if (a4 && (v11 & 1) == 0)
+  if (error && (v11 & 1) == 0)
   {
     v14 = v12;
-    *a4 = v13;
+    *error = v13;
   }
 
   return v11;
 }
 
-- (BOOL)_writeIconToPlaceholder:(id)a3 infoPlistIconContent:(id *)a4 error:(id *)a5
+- (BOOL)_writeIconToPlaceholder:(id)placeholder infoPlistIconContent:(id *)content error:(id *)error
 {
-  v8 = a3;
-  v9 = [(MIPlaceholderConstructor *)self bundleURL];
+  placeholderCopy = placeholder;
+  bundleURL = [(MIPlaceholderConstructor *)self bundleURL];
   if (!MEMORY[0x1EEE8A780])
   {
     if (!gLogHandle || *(gLogHandle + 44) >= 3)
@@ -1033,7 +1033,7 @@ LABEL_11:
     v13 = 0;
     v12 = 0;
 LABEL_12:
-    if (!a4)
+    if (!content)
     {
 LABEL_14:
       v15 = 1;
@@ -1042,11 +1042,11 @@ LABEL_14:
 
 LABEL_13:
     v14 = v12;
-    *a4 = v12;
+    *content = v12;
     goto LABEL_14;
   }
 
-  v10 = [(MIPlaceholderConstructor *)self alternateIconName];
+  alternateIconName = [(MIPlaceholderConstructor *)self alternateIconName];
   v11 = IFCaptureIconContent();
   v12 = 0;
   v13 = 0;
@@ -1055,10 +1055,10 @@ LABEL_13:
   {
     if (![v12 count] && (!gLogHandle || *(gLogHandle + 44) >= 5))
     {
-      v18 = [v9 path];
+      path = [bundleURL path];
       MOLogWrite();
 
-      if (!a4)
+      if (!content)
       {
         goto LABEL_14;
       }
@@ -1073,12 +1073,12 @@ LABEL_13:
   {
     if (!gLogHandle || *(gLogHandle + 44) >= 5)
     {
-      v20 = [v9 path];
+      path2 = [bundleURL path];
       MOLogWrite();
     }
 
     v13 = 0;
-    if (!a4)
+    if (!content)
     {
       goto LABEL_14;
     }
@@ -1088,15 +1088,15 @@ LABEL_13:
 
   if (!gLogHandle || *(gLogHandle + 44) >= 3)
   {
-    v19 = [v9 path];
+    path3 = [bundleURL path];
     MOLogWrite();
   }
 
-  if (a5)
+  if (error)
   {
     v17 = v13;
     v15 = 0;
-    *a5 = v13;
+    *error = v13;
   }
 
   else
@@ -1109,17 +1109,17 @@ LABEL_15:
   return v15;
 }
 
-- (BOOL)_transferAndUpdateInstallSessionIDsToPlaceholder:(id)a3 error:(id *)a4
+- (BOOL)_transferAndUpdateInstallSessionIDsToPlaceholder:(id)placeholder error:(id *)error
 {
-  v6 = a3;
-  v7 = [MEMORY[0x1E69A8D78] defaultManager];
-  v8 = [(MIPlaceholderConstructor *)self installSessionUUID];
-  v9 = [(MIPlaceholderConstructor *)self installUUID];
-  v10 = v9;
-  if (v8)
+  placeholderCopy = placeholder;
+  defaultManager = [MEMORY[0x1E69A8D78] defaultManager];
+  installSessionUUID = [(MIPlaceholderConstructor *)self installSessionUUID];
+  installUUID = [(MIPlaceholderConstructor *)self installUUID];
+  v10 = installUUID;
+  if (installSessionUUID)
   {
     v11 = 0;
-    if (v9)
+    if (installUUID)
     {
       goto LABEL_4;
     }
@@ -1127,55 +1127,55 @@ LABEL_15:
     goto LABEL_3;
   }
 
-  v14 = [(MIPlaceholderConstructor *)self infoPlistContent];
-  v15 = [v14 objectForKeyedSubscript:*MEMORY[0x1E695E4E8]];
+  infoPlistContent = [(MIPlaceholderConstructor *)self infoPlistContent];
+  v15 = [infoPlistContent objectForKeyedSubscript:*MEMORY[0x1E695E4E8]];
 
   if (!v15)
   {
     v18 = *MEMORY[0x1E69A8D00];
-    v19 = [(MIPlaceholderConstructor *)self bundleURL];
-    v20 = [v19 path];
-    v11 = _CreateAndLogError("[MIPlaceholderConstructor _transferAndUpdateInstallSessionIDsToPlaceholder:error:]", 762, v18, 4, 0, 0, @"Failed to get CFBundleExecutable key from Info.plist of %@", v21, v20);
+    bundleURL = [(MIPlaceholderConstructor *)self bundleURL];
+    path = [bundleURL path];
+    v11 = _CreateAndLogError("[MIPlaceholderConstructor _transferAndUpdateInstallSessionIDsToPlaceholder:error:]", 762, v18, 4, 0, 0, @"Failed to get CFBundleExecutable key from Info.plist of %@", v21, path);
 
     v13 = 0;
     goto LABEL_15;
   }
 
-  v16 = [(MIPlaceholderConstructor *)self bundleURL];
-  v13 = [v16 URLByAppendingPathComponent:v15 isDirectory:0];
+  bundleURL2 = [(MIPlaceholderConstructor *)self bundleURL];
+  v13 = [bundleURL2 URLByAppendingPathComponent:v15 isDirectory:0];
 
   v28 = 0;
-  v8 = [v7 dataForExtendedAttributeNamed:@"com.apple.install_session_uuid" length:16 fromURL:v13 error:&v28];
+  installSessionUUID = [defaultManager dataForExtendedAttributeNamed:@"com.apple.install_session_uuid" length:16 fromURL:v13 error:&v28];
   v17 = v28;
   v11 = v17;
-  if (v8)
+  if (installSessionUUID)
   {
     goto LABEL_8;
   }
 
-  v22 = [v17 domain];
-  if (![v22 isEqualToString:*MEMORY[0x1E696A798]])
+  domain = [v17 domain];
+  if (![domain isEqualToString:*MEMORY[0x1E696A798]])
   {
 
     goto LABEL_15;
   }
 
-  v23 = [v11 code];
+  code = [v11 code];
 
-  if (v23 != 93)
+  if (code != 93)
   {
 LABEL_15:
 
     LOBYTE(v12) = 0;
-    v8 = 0;
+    installSessionUUID = 0;
     goto LABEL_16;
   }
 
-  v8 = _UUIDData();
+  installSessionUUID = _UUIDData();
 
   v11 = 0;
 LABEL_8:
-  [(MIPlaceholderConstructor *)self setInstallSessionUUID:v8];
+  [(MIPlaceholderConstructor *)self setInstallSessionUUID:installSessionUUID];
 
   if (!v10)
   {
@@ -1186,48 +1186,48 @@ LABEL_3:
 
 LABEL_4:
   v27 = v11;
-  v12 = [v7 setData:v8 forExtendedAttributeNamed:@"com.apple.install_session_uuid" onURL:v6 error:&v27];
+  v12 = [defaultManager setData:installSessionUUID forExtendedAttributeNamed:@"com.apple.install_session_uuid" onURL:placeholderCopy error:&v27];
   v13 = v27;
 
   if (v12)
   {
     v26 = v13;
-    LOBYTE(v12) = [v7 setData:v10 forExtendedAttributeNamed:@"com.apple.install_uuid" onURL:v6 error:&v26];
+    LOBYTE(v12) = [defaultManager setData:v10 forExtendedAttributeNamed:@"com.apple.install_uuid" onURL:placeholderCopy error:&v26];
     v11 = v26;
 LABEL_16:
 
     v13 = v11;
   }
 
-  if (a4 && (v12 & 1) == 0)
+  if (error && (v12 & 1) == 0)
   {
     v24 = v13;
-    *a4 = v13;
+    *error = v13;
   }
 
   return v12;
 }
 
-- (BOOL)_materializeConstructors:(id)a3 intoBundle:(id)a4 error:(id *)a5
+- (BOOL)_materializeConstructors:(id)constructors intoBundle:(id)bundle error:(id *)error
 {
   v40 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v32 = a4;
-  v31 = [MEMORY[0x1E69A8D78] defaultManager];
+  constructorsCopy = constructors;
+  bundleCopy = bundle;
+  defaultManager = [MEMORY[0x1E69A8D78] defaultManager];
   v8 = objc_opt_new();
-  if (v7 && [v7 count])
+  if (constructorsCopy && [constructorsCopy count])
   {
     v37 = 0u;
     v38 = 0u;
     v35 = 0u;
     v36 = 0u;
-    v28 = v7;
-    obj = v7;
+    v28 = constructorsCopy;
+    obj = constructorsCopy;
     v9 = [obj countByEnumeratingWithState:&v35 objects:v39 count:16];
     if (v9)
     {
       v10 = v9;
-      v27 = a5;
+      errorCopy = error;
       v11 = 0;
       v30 = *v36;
       while (2)
@@ -1240,16 +1240,16 @@ LABEL_16:
           }
 
           v13 = *(*(&v35 + 1) + 8 * i);
-          v14 = [v13 placeholderType];
-          if ((v14 - 1) >= 4)
+          placeholderType = [v13 placeholderType];
+          if ((placeholderType - 1) >= 4)
           {
-            v18 = _CreateAndLogError("[MIPlaceholderConstructor _materializeConstructors:intoBundle:error:]", 827, *MEMORY[0x1E69A8D00], 4, 0, 0, @"Unknown placeholder type %lu", v15, v14);
+            v18 = _CreateAndLogError("[MIPlaceholderConstructor _materializeConstructors:intoBundle:error:]", 827, *MEMORY[0x1E69A8D00], 4, 0, 0, @"Unknown placeholder type %lu", v15, placeholderType);
             v17 = v11;
             goto LABEL_23;
           }
 
-          v16 = off_1E80BA670[v14 - 1];
-          v17 = [v32 URLByAppendingPathComponent:v16 isDirectory:1];
+          v16 = off_1E80BA670[placeholderType - 1];
+          v17 = [bundleCopy URLByAppendingPathComponent:v16 isDirectory:1];
           if ([v8 containsObject:v16])
           {
             v18 = v11;
@@ -1258,7 +1258,7 @@ LABEL_16:
           else
           {
             v34 = v11;
-            v19 = [v31 createDirectoryAtURL:v17 withIntermediateDirectories:0 mode:493 error:&v34];
+            v19 = [defaultManager createDirectoryAtURL:v17 withIntermediateDirectories:0 mode:493 error:&v34];
             v18 = v34;
 
             if (!v19)
@@ -1269,25 +1269,25 @@ LABEL_16:
             [v8 addObject:v16];
           }
 
-          v20 = [v13 bundleURL];
-          v21 = [v20 lastPathComponent];
-          v22 = [v17 URLByAppendingPathComponent:v21 isDirectory:1];
+          bundleURL = [v13 bundleURL];
+          lastPathComponent = [bundleURL lastPathComponent];
+          v22 = [v17 URLByAppendingPathComponent:lastPathComponent isDirectory:1];
 
           v33 = v18;
-          LODWORD(v20) = [v13 materializeIntoBundleDirectory:v22 error:&v33];
+          LODWORD(bundleURL) = [v13 materializeIntoBundleDirectory:v22 error:&v33];
           v11 = v33;
 
-          if (!v20)
+          if (!bundleURL)
           {
             v18 = v11;
 LABEL_23:
 
-            v7 = v28;
-            if (v27)
+            constructorsCopy = v28;
+            if (errorCopy)
             {
               v26 = v18;
               v23 = 0;
-              *v27 = v18;
+              *errorCopy = v18;
             }
 
             else
@@ -1316,7 +1316,7 @@ LABEL_23:
 
     v23 = 1;
     v18 = v11;
-    v7 = v28;
+    constructorsCopy = v28;
   }
 
   else
@@ -1331,13 +1331,13 @@ LABEL_18:
   return v23;
 }
 
-- (BOOL)materializeIntoBundleDirectory:(id)a3 error:(id *)a4
+- (BOOL)materializeIntoBundleDirectory:(id)directory error:(id *)error
 {
-  v6 = a3;
-  v7 = [MEMORY[0x1E69A8D78] defaultManager];
-  v8 = [(MIPlaceholderConstructor *)self entitlements];
+  directoryCopy = directory;
+  defaultManager = [MEMORY[0x1E69A8D78] defaultManager];
+  entitlements = [(MIPlaceholderConstructor *)self entitlements];
   v49 = 0;
-  v9 = [v7 createDirectoryAtURL:v6 withIntermediateDirectories:0 mode:493 class:4 error:&v49];
+  v9 = [defaultManager createDirectoryAtURL:directoryCopy withIntermediateDirectories:0 mode:493 class:4 error:&v49];
   v10 = v49;
   if (!v9)
   {
@@ -1347,10 +1347,10 @@ LABEL_6:
     goto LABEL_31;
   }
 
-  if ([v8 count])
+  if ([entitlements count])
   {
     v48 = v10;
-    v11 = MIWritePlaceholderEntitlements(v6, v8, &v48);
+    v11 = MIWritePlaceholderEntitlements(directoryCopy, entitlements, &v48);
     v12 = v48;
 
     if (!v11)
@@ -1369,17 +1369,17 @@ LABEL_30:
   }
 
   v47 = 0;
-  v15 = [(MIPlaceholderConstructor *)self _copyInfoPlistLoctableToPlaceholder:v6 error:&v47];
+  v15 = [(MIPlaceholderConstructor *)self _copyInfoPlistLoctableToPlaceholder:directoryCopy error:&v47];
   v16 = v47;
   v13 = v16;
   if (!v15)
   {
-    v23 = [v16 domain];
-    if ([v23 isEqualToString:*MEMORY[0x1E696A798]])
+    domain = [v16 domain];
+    if ([domain isEqualToString:*MEMORY[0x1E696A798]])
     {
-      v24 = [v13 code];
+      code = [v13 code];
 
-      if (v24 == 2)
+      if (code == 2)
       {
         goto LABEL_9;
       }
@@ -1398,7 +1398,7 @@ LABEL_30:
 
 LABEL_9:
   v46 = v12;
-  v17 = [(MIPlaceholderConstructor *)self _copyStringsToPlaceholder:v6 onlyDirectories:v15 error:&v46];
+  v17 = [(MIPlaceholderConstructor *)self _copyStringsToPlaceholder:directoryCopy onlyDirectories:v15 error:&v46];
   v10 = v46;
 
   if (!v17)
@@ -1408,7 +1408,7 @@ LABEL_9:
 
   v44 = v10;
   v45 = 0;
-  v18 = [(MIPlaceholderConstructor *)self _writeIconToPlaceholder:v6 infoPlistIconContent:&v45 error:&v44];
+  v18 = [(MIPlaceholderConstructor *)self _writeIconToPlaceholder:directoryCopy infoPlistIconContent:&v45 error:&v44];
   v14 = v45;
   v12 = v44;
 
@@ -1418,7 +1418,7 @@ LABEL_9:
   }
 
   v43 = v12;
-  v19 = [(MIPlaceholderConstructor *)self _writeInfoPlistToPlaceholder:v6 substitutingIconContent:v14 withError:&v43];
+  v19 = [(MIPlaceholderConstructor *)self _writeInfoPlistToPlaceholder:directoryCopy substitutingIconContent:v14 withError:&v43];
   v10 = v43;
 
   if (!v19)
@@ -1429,7 +1429,7 @@ LABEL_9:
   if ([(MIPlaceholderConstructor *)self performPlaceholderInstallActions])
   {
     v42 = v10;
-    v20 = [(MIPlaceholderConstructor *)self _transferAndUpdateInstallSessionIDsToPlaceholder:v6 error:&v42];
+    v20 = [(MIPlaceholderConstructor *)self _transferAndUpdateInstallSessionIDsToPlaceholder:directoryCopy error:&v42];
     v12 = v42;
 
     if (!v20)
@@ -1438,7 +1438,7 @@ LABEL_9:
     }
 
     v41 = v12;
-    v21 = [v7 markBundleAsPlaceholder:v6 withError:&v41];
+    v21 = [defaultManager markBundleAsPlaceholder:directoryCopy withError:&v41];
     v10 = v41;
 
     if (!v21)
@@ -1454,9 +1454,9 @@ LABEL_16:
     goto LABEL_38;
   }
 
-  v25 = [(MIPlaceholderConstructor *)self appExtensionPlaceholderConstructors];
+  appExtensionPlaceholderConstructors = [(MIPlaceholderConstructor *)self appExtensionPlaceholderConstructors];
   v40 = v10;
-  v35 = [(MIPlaceholderConstructor *)self _materializeConstructors:v25 intoBundle:v6 error:&v40];
+  v35 = [(MIPlaceholderConstructor *)self _materializeConstructors:appExtensionPlaceholderConstructors intoBundle:directoryCopy error:&v40];
   v12 = v40;
 
   if (!v35)
@@ -1471,9 +1471,9 @@ LABEL_16:
 LABEL_27:
     if ([(MIPlaceholderConstructor *)self includeAppClipPlaceholders])
     {
-      v28 = [(MIPlaceholderConstructor *)self embeddedAppClipPlaceholderConstructors];
+      embeddedAppClipPlaceholderConstructors = [(MIPlaceholderConstructor *)self embeddedAppClipPlaceholderConstructors];
       v38 = v10;
-      v29 = [(MIPlaceholderConstructor *)self _materializeConstructors:v28 intoBundle:v6 error:&v38];
+      v29 = [(MIPlaceholderConstructor *)self _materializeConstructors:embeddedAppClipPlaceholderConstructors intoBundle:directoryCopy error:&v38];
       v12 = v38;
 
       if (v29)
@@ -1489,9 +1489,9 @@ LABEL_27:
     goto LABEL_16;
   }
 
-  v27 = [(MIPlaceholderConstructor *)self embeddedWatchAppPlaceholderConstructors];
+  embeddedWatchAppPlaceholderConstructors = [(MIPlaceholderConstructor *)self embeddedWatchAppPlaceholderConstructors];
   v39 = v26;
-  v36 = [(MIPlaceholderConstructor *)self _materializeConstructors:v27 intoBundle:v6 error:&v39];
+  v36 = [(MIPlaceholderConstructor *)self _materializeConstructors:embeddedWatchAppPlaceholderConstructors intoBundle:directoryCopy error:&v39];
   v10 = v39;
 
   if (v36)
@@ -1501,19 +1501,19 @@ LABEL_27:
 
 LABEL_31:
   v37 = 0;
-  v30 = [v7 removeItemAtURL:v6 error:&v37];
+  v30 = [defaultManager removeItemAtURL:directoryCopy error:&v37];
   v31 = v37;
   if ((v30 & 1) == 0 && (!gLogHandle || *(gLogHandle + 44) >= 3))
   {
-    v34 = [v6 path];
+    path = [directoryCopy path];
     MOLogWrite();
   }
 
-  if (a4)
+  if (error)
   {
     v32 = v10;
     v22 = 0;
-    *a4 = v10;
+    *error = v10;
   }
 
   else

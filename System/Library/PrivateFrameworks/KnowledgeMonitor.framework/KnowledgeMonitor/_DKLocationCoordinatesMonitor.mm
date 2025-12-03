@@ -1,16 +1,16 @@
 @interface _DKLocationCoordinatesMonitor
 + (id)log;
 - (_DKLocationCoordinatesMonitor)init;
-- (int)altitudeRangeFrom:(double)a3;
-- (int)distanceRangeFrom:(double)a3;
-- (int)locationTypeFrom:(int)a3;
-- (int)speedRangeFrom:(double)a3;
+- (int)altitudeRangeFrom:(double)from;
+- (int)distanceRangeFrom:(double)from;
+- (int)locationTypeFrom:(int)from;
+- (int)speedRangeFrom:(double)from;
 - (uint64_t)init;
 - (void)_fetchAndCacheLOIs;
 - (void)dealloc;
-- (void)locationManager:(id)a3 didFailWithError:(id)a4;
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4;
-- (void)locationManagerDidChangeAuthorization:(id)a3;
+- (void)locationManager:(id)manager didFailWithError:(id)error;
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations;
+- (void)locationManagerDidChangeAuthorization:(id)authorization;
 - (void)start;
 - (void)stop;
 @end
@@ -43,14 +43,14 @@
       _os_log_impl(&dword_22595A000, v3, OS_LOG_TYPE_INFO, "Enabling location coordinates monitor", buf, 2u);
     }
 
-    v4 = [(_DKMonitor *)v2 queue];
+    queue = [(_DKMonitor *)v2 queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __37___DKLocationCoordinatesMonitor_init__block_invoke;
     block[3] = &unk_27856F060;
     v5 = v2;
     v30 = v5;
-    dispatch_sync(v4, block);
+    dispatch_sync(queue, block);
 
     if (os_variant_has_internal_content())
     {
@@ -84,14 +84,14 @@
         }
 
         v9 = v6();
-        v10 = [v9 Location];
-        v11 = [v10 Coordinates];
+        location = [v9 Location];
+        coordinates = [location Coordinates];
         locationCoordinatesStream = v5->_locationCoordinatesStream;
-        v5->_locationCoordinatesStream = v11;
+        v5->_locationCoordinatesStream = coordinates;
 
-        v13 = [(BMStream *)v5->_locationCoordinatesStream source];
+        source = [(BMStream *)v5->_locationCoordinatesStream source];
         locationCoordinatesStreamSource = v5->_locationCoordinatesStreamSource;
-        v5->_locationCoordinatesStreamSource = v13;
+        v5->_locationCoordinatesStreamSource = source;
       }
 
       else
@@ -105,17 +105,17 @@
     }
 
     v15 = BiomeLibrary();
-    v16 = [v15 Location];
-    v17 = [v16 HashedCoordinates];
+    location2 = [v15 Location];
+    hashedCoordinates = [location2 HashedCoordinates];
     locationHashedCoordinatesStream = v5->_locationHashedCoordinatesStream;
-    v5->_locationHashedCoordinatesStream = v17;
+    v5->_locationHashedCoordinatesStream = hashedCoordinates;
 
-    v19 = [(BMStream *)v5->_locationHashedCoordinatesStream source];
+    source2 = [(BMStream *)v5->_locationHashedCoordinatesStream source];
     locationHashedCoordinatesStreamSource = v5->_locationHashedCoordinatesStreamSource;
-    v5->_locationHashedCoordinatesStreamSource = v19;
+    v5->_locationHashedCoordinatesStreamSource = source2;
 
-    v21 = [(_DKMonitor *)v5 queue];
-    v22 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, v21);
+    queue2 = [(_DKMonitor *)v5 queue];
+    v22 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, queue2);
     fetchLoiTimer = v5->_fetchLoiTimer;
     v5->_fetchLoiTimer = v22;
 
@@ -134,20 +134,20 @@
 
 - (void)_fetchAndCacheLOIs
 {
-  v3 = [MEMORY[0x277D01280] defaultManager];
+  defaultManager = [MEMORY[0x277D01280] defaultManager];
   objc_initWeak(&location, self);
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __51___DKLocationCoordinatesMonitor__fetchAndCacheLOIs__block_invoke;
   v6[3] = &unk_27856F088;
   objc_copyWeak(&v7, &location);
-  [v3 fetchLocationsOfInterestOfType:0 withHandler:v6];
+  [defaultManager fetchLocationsOfInterestOfType:0 withHandler:v6];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __51___DKLocationCoordinatesMonitor__fetchAndCacheLOIs__block_invoke_19;
   v4[3] = &unk_27856F088;
   objc_copyWeak(&v5, &location);
-  [v3 fetchLocationsOfInterestOfType:1 withHandler:v4];
+  [defaultManager fetchLocationsOfInterestOfType:1 withHandler:v4];
   objc_destroyWeak(&v5);
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
@@ -159,13 +159,13 @@
   v5.super_class = _DKLocationCoordinatesMonitor;
   if ([(_DKMonitor *)&v5 instantMonitorNeedsActivation])
   {
-    v3 = [(_DKMonitor *)self queue];
+    queue = [(_DKMonitor *)self queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __38___DKLocationCoordinatesMonitor_start__block_invoke;
     block[3] = &unk_27856F060;
     block[4] = self;
-    dispatch_sync(v3, block);
+    dispatch_sync(queue, block);
 
     dispatch_resume(self->_fetchLoiTimer);
   }
@@ -177,13 +177,13 @@
   v5.super_class = _DKLocationCoordinatesMonitor;
   if ([(_DKMonitor *)&v5 instantMonitorNeedsDeactivation])
   {
-    v3 = [(_DKMonitor *)self queue];
+    queue = [(_DKMonitor *)self queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __37___DKLocationCoordinatesMonitor_stop__block_invoke;
     block[3] = &unk_27856F060;
     block[4] = self;
-    dispatch_sync(v3, block);
+    dispatch_sync(queue, block);
   }
 }
 
@@ -203,9 +203,9 @@
   [(_DKMonitor *)&v5 dealloc];
 }
 
-- (void)locationManager:(id)a3 didFailWithError:(id)a4
+- (void)locationManager:(id)manager didFailWithError:(id)error
 {
-  v4 = a4;
+  errorCopy = error;
   v5 = +[_DKLocationCoordinatesMonitor log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
@@ -213,14 +213,14 @@
   }
 }
 
-- (void)locationManagerDidChangeAuthorization:(id)a3
+- (void)locationManagerDidChangeAuthorization:(id)authorization
 {
   v9 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  authorizationCopy = authorization;
   v4 = +[_DKLocationCoordinatesMonitor log];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
-    v5 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v3, "authorizationStatus")}];
+    v5 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(authorizationCopy, "authorizationStatus")}];
     v7 = 138412290;
     v8 = v5;
     _os_log_impl(&dword_22595A000, v4, OS_LOG_TYPE_INFO, "Authorization status changed %@", &v7, 0xCu);
@@ -229,31 +229,31 @@
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(_DKMonitor *)self queue];
-  dispatch_assert_queue_V2(v8);
+  managerCopy = manager;
+  locationsCopy = locations;
+  queue = [(_DKMonitor *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v9 = [v7 lastObject];
+  lastObject = [locationsCopy lastObject];
   v10 = +[_DKLocationCoordinatesMonitor log];
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
-    [(_DKLocationCoordinatesMonitor *)v9 locationManager:v10 didUpdateLocations:?];
+    [(_DKLocationCoordinatesMonitor *)lastObject locationManager:v10 didUpdateLocations:?];
   }
 
   if (self->_lastLocation)
   {
-    v11 = [v9 timestamp];
-    v12 = [(CLLocation *)self->_lastLocation timestamp];
-    [v11 timeIntervalSinceDate:v12];
+    timestamp = [lastObject timestamp];
+    timestamp2 = [(CLLocation *)self->_lastLocation timestamp];
+    [timestamp timeIntervalSinceDate:timestamp2];
     if (fabs(v13) >= 1.0)
     {
       goto LABEL_16;
     }
 
-    [v9 coordinate];
+    [lastObject coordinate];
     v15 = v14;
     [(CLLocation *)self->_lastLocation coordinate];
     if (v15 != v16)
@@ -261,7 +261,7 @@
       goto LABEL_16;
     }
 
-    [v9 coordinate];
+    [lastObject coordinate];
     v18 = v17;
     [(CLLocation *)self->_lastLocation coordinate];
     if (v18 != v19)
@@ -269,7 +269,7 @@
       goto LABEL_16;
     }
 
-    [v9 horizontalAccuracy];
+    [lastObject horizontalAccuracy];
     v21 = v20;
     [(CLLocation *)self->_lastLocation horizontalAccuracy];
     if (v21 != v22)
@@ -277,7 +277,7 @@
       goto LABEL_16;
     }
 
-    [v9 altitude];
+    [lastObject altitude];
     v24 = v23;
     [(CLLocation *)self->_lastLocation altitude];
     if (v24 != v25)
@@ -285,7 +285,7 @@
       goto LABEL_16;
     }
 
-    [v9 verticalAccuracy];
+    [lastObject verticalAccuracy];
     v27 = v26;
     [(CLLocation *)self->_lastLocation verticalAccuracy];
     if (v27 != v28)
@@ -293,24 +293,24 @@
       goto LABEL_16;
     }
 
-    [v9 speed];
+    [lastObject speed];
     v30 = v29;
     [(CLLocation *)self->_lastLocation speed];
-    if (v30 == v31 && ([v9 course], v33 = v32, -[CLLocation course](self->_lastLocation, "course"), v33 == v34) && (v35 = objc_msgSend(v9, "type"), v35 == -[CLLocation type](self->_lastLocation, "type")))
+    if (v30 == v31 && ([lastObject course], v33 = v32, -[CLLocation course](self->_lastLocation, "course"), v33 == v34) && (v35 = objc_msgSend(lastObject, "type"), v35 == -[CLLocation type](self->_lastLocation, "type")))
     {
-      v36 = [v9 floor];
-      v119 = [v36 level];
+      floor = [lastObject floor];
+      level = [floor level];
       [(CLLocation *)self->_lastLocation floor];
-      v38 = v37 = v7;
-      v39 = [v38 level];
+      v38 = v37 = locationsCopy;
+      level2 = [v38 level];
 
-      v7 = v37;
-      if (v119 == v39)
+      locationsCopy = v37;
+      if (level == level2)
       {
         v40 = +[_DKLocationCoordinatesMonitor log];
         if (os_log_type_enabled(v40, OS_LOG_TYPE_DEBUG))
         {
-          [_DKLocationCoordinatesMonitor locationManager:v9 didUpdateLocations:v40];
+          [_DKLocationCoordinatesMonitor locationManager:lastObject didUpdateLocations:v40];
         }
 
         goto LABEL_54;
@@ -323,9 +323,9 @@ LABEL_16:
     }
   }
 
-  v41 = [v9 timestamp];
-  v42 = [(CLLocation *)self->_lastLocation timestamp];
-  [v41 timeIntervalSinceDate:v42];
+  timestamp3 = [lastObject timestamp];
+  timestamp4 = [(CLLocation *)self->_lastLocation timestamp];
+  [timestamp3 timeIntervalSinceDate:timestamp4];
   v44 = v43;
 
   if (self->_lastLocation && fabs(v44) < 5.0)
@@ -341,7 +341,7 @@ LABEL_33:
     goto LABEL_34;
   }
 
-  objc_storeStrong(&self->_lastLocation, v9);
+  objc_storeStrong(&self->_lastLocation, lastObject);
   if (os_variant_has_internal_content() && self->_locationCoordinatesStreamSource)
   {
     v126 = 0;
@@ -357,32 +357,32 @@ LABEL_33:
       v53 = v127[3];
     }
 
-    v124 = v6;
+    v124 = managerCopy;
     v54 = v53;
     _Block_object_dispose(&v126, 8);
     v114 = [v53 alloc];
     v55 = MEMORY[0x277CCABB0];
-    [v9 coordinate];
+    [lastObject coordinate];
     v120 = [v55 numberWithDouble:?];
     v56 = MEMORY[0x277CCABB0];
-    [v9 coordinate];
+    [lastObject coordinate];
     v117 = [v56 numberWithDouble:v57];
     v58 = MEMORY[0x277CCABB0];
-    [v9 altitude];
+    [lastObject altitude];
     v116 = [v58 numberWithDouble:?];
     v59 = MEMORY[0x277CCABB0];
-    [v9 speed];
+    [lastObject speed];
     v115 = [v59 numberWithDouble:?];
     v60 = MEMORY[0x277CCABB0];
-    [v9 course];
+    [lastObject course];
     v61 = [v60 numberWithDouble:?];
-    v62 = [v9 floor];
-    v122 = v7;
-    if (v62)
+    floor2 = [lastObject floor];
+    v122 = locationsCopy;
+    if (floor2)
     {
       v63 = MEMORY[0x277CCABB0];
-      v113 = [v9 floor];
-      v64 = [v63 numberWithInteger:{objc_msgSend(v113, "level")}];
+      floor3 = [lastObject floor];
+      v64 = [v63 numberWithInteger:{objc_msgSend(floor3, "level")}];
     }
 
     else
@@ -390,44 +390,44 @@ LABEL_33:
       v64 = 0;
     }
 
-    v65 = -[_DKLocationCoordinatesMonitor locationTypeFrom:](self, "locationTypeFrom:", [v9 type]);
+    v65 = -[_DKLocationCoordinatesMonitor locationTypeFrom:](self, "locationTypeFrom:", [lastObject type]);
     v66 = MEMORY[0x277CCABB0];
-    [v9 horizontalAccuracy];
+    [lastObject horizontalAccuracy];
     v67 = [v66 numberWithDouble:?];
     v68 = MEMORY[0x277CCABB0];
-    [v9 verticalAccuracy];
+    [lastObject verticalAccuracy];
     v69 = [v68 numberWithDouble:?];
     v70 = MEMORY[0x277CCABB0];
-    [v9 speedAccuracy];
+    [lastObject speedAccuracy];
     v71 = [v70 numberWithDouble:?];
     v72 = MEMORY[0x277CCABB0];
-    [v9 courseAccuracy];
+    [lastObject courseAccuracy];
     v73 = [v72 numberWithDouble:?];
     LODWORD(v112) = v65;
     v45 = [v114 initWithLatitude:v120 longitude:v117 altitude:v116 speed:v115 course:v61 floor:v64 locationType:v112 horizontalAccuracy:v67 verticalAccuracy:v69 speedAccuracy:v71 courseAccuracy:v73];
 
-    if (v62)
+    if (floor2)
     {
     }
 
     locationCoordinatesStreamSource = self->_locationCoordinatesStreamSource;
-    v75 = [v9 timestamp];
-    [v75 timeIntervalSinceReferenceDate];
+    timestamp5 = [lastObject timestamp];
+    [timestamp5 timeIntervalSinceReferenceDate];
     [(BMSource *)locationCoordinatesStreamSource sendEvent:v45 timestamp:?];
 
     v76 = +[_DKLocationCoordinatesMonitor log];
-    v7 = v122;
+    locationsCopy = v122;
     if (os_log_type_enabled(v76, OS_LOG_TYPE_DEBUG))
     {
       [_DKLocationCoordinatesMonitor locationManager:v76 didUpdateLocations:?];
     }
 
-    v6 = v124;
+    managerCopy = v124;
     goto LABEL_33;
   }
 
 LABEL_34:
-  v77 = [v9 cd_privacyPreservingLocationHashWithLevel:16];
+  v77 = [lastObject cd_privacyPreservingLocationHashWithLevel:16];
   v78 = v77;
   if (v77 == self->_lastLocationGeoHash300m)
   {
@@ -441,18 +441,18 @@ LABEL_34:
   else
   {
     self->_lastLocationGeoHash300m = v77;
-    v79 = [(_DKLocationCoordinatesMonitor *)self home];
+    home = [(_DKLocationCoordinatesMonitor *)self home];
 
-    if (v79)
+    if (home)
     {
       v80 = objc_alloc(MEMORY[0x277CE41F8]);
-      v81 = [(_DKLocationCoordinatesMonitor *)self home];
-      [v81 latitude];
+      home2 = [(_DKLocationCoordinatesMonitor *)self home];
+      [home2 latitude];
       v83 = v82;
-      v84 = [(_DKLocationCoordinatesMonitor *)self home];
-      [v84 longitude];
+      home3 = [(_DKLocationCoordinatesMonitor *)self home];
+      [home3 longitude];
       v86 = [v80 initWithLatitude:v83 longitude:v85];
-      [v9 distanceFromLocation:v86];
+      [lastObject distanceFromLocation:v86];
       v88 = v87;
 
       v121 = [(_DKLocationCoordinatesMonitor *)self distanceRangeFrom:v88];
@@ -463,20 +463,20 @@ LABEL_34:
       v121 = 0;
     }
 
-    v89 = [(_DKLocationCoordinatesMonitor *)self work];
+    work = [(_DKLocationCoordinatesMonitor *)self work];
 
-    v123 = v7;
-    v125 = v6;
-    if (v89)
+    v123 = locationsCopy;
+    v125 = managerCopy;
+    if (work)
     {
       v90 = objc_alloc(MEMORY[0x277CE41F8]);
-      v91 = [(_DKLocationCoordinatesMonitor *)self work];
-      [v91 latitude];
+      work2 = [(_DKLocationCoordinatesMonitor *)self work];
+      [work2 latitude];
       v93 = v92;
-      v94 = [(_DKLocationCoordinatesMonitor *)self work];
-      [v94 longitude];
+      work3 = [(_DKLocationCoordinatesMonitor *)self work];
+      [work3 longitude];
       v96 = [v90 initWithLatitude:v93 longitude:v95];
-      [v9 distanceFromLocation:v96];
+      [lastObject distanceFromLocation:v96];
       v98 = v97;
 
       v118 = [(_DKLocationCoordinatesMonitor *)self distanceRangeFrom:v98];
@@ -487,18 +487,18 @@ LABEL_34:
       v118 = 0;
     }
 
-    v99 = [v9 cd_privacyPreservingLocationHashWithLevel:7];
-    v100 = [v9 cd_privacyPreservingLocationHashWithLevel:13];
+    floor5 = [lastObject cd_privacyPreservingLocationHashWithLevel:7];
+    v100 = [lastObject cd_privacyPreservingLocationHashWithLevel:13];
     v101 = objc_alloc(MEMORY[0x277CF12A0]);
     v102 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v78];
     v103 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v100];
-    v104 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v99];
-    v105 = [v9 floor];
-    if (v105)
+    v104 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:floor5];
+    floor4 = [lastObject floor];
+    if (floor4)
     {
       v106 = MEMORY[0x277CCABB0];
-      v99 = [v9 floor];
-      v107 = [v106 numberWithInteger:{objc_msgSend(v99, "level")}];
+      floor5 = [lastObject floor];
+      v107 = [v106 numberWithInteger:{objc_msgSend(floor5, "level")}];
     }
 
     else
@@ -506,24 +506,24 @@ LABEL_34:
       v107 = 0;
     }
 
-    [v9 speed];
+    [lastObject speed];
     v108 = [(_DKLocationCoordinatesMonitor *)self speedRangeFrom:?];
-    [v9 altitude];
+    [lastObject altitude];
     v40 = [v101 initWithLocationHashAt300Meters:v102 locationHashAt2500Meters:v103 locationHashAt156Kilometers:v104 distanceFromHomeOfCurrentLocationInMeters:0 distanceFromWorkOfCurrentLocationInMeters:0 distanceFromSchoolOfCurrentLocationInMeters:0 distanceFromGymOfCurrentLocationInMeters:0 floor:v107 speedBucket:__PAIR64__(-[_DKLocationCoordinatesMonitor altitudeRangeFrom:](self altitudeBucket:"altitudeRangeFrom:") distanceBucketFromHome:v108) distanceBucketFromWork:__PAIR64__(v118 distanceBucketFromGym:v121) distanceBucketFromSchool:0];
-    if (v105)
+    if (floor4)
     {
     }
 
     locationHashedCoordinatesStreamSource = self->_locationHashedCoordinatesStreamSource;
-    v6 = v125;
+    managerCopy = v125;
     if (locationHashedCoordinatesStreamSource)
     {
-      v110 = [v9 timestamp];
-      [v110 timeIntervalSinceReferenceDate];
+      timestamp6 = [lastObject timestamp];
+      [timestamp6 timeIntervalSinceReferenceDate];
       [(BMSource *)locationHashedCoordinatesStreamSource sendEvent:v40 timestamp:?];
 
       v111 = +[_DKLocationCoordinatesMonitor log];
-      v7 = v123;
+      locationsCopy = v123;
       if (os_log_type_enabled(v111, OS_LOG_TYPE_DEBUG))
       {
         [_DKLocationCoordinatesMonitor locationManager:didUpdateLocations:];
@@ -533,7 +533,7 @@ LABEL_34:
     else
     {
       v111 = +[_DKLocationCoordinatesMonitor log];
-      v7 = v123;
+      locationsCopy = v123;
       if (os_log_type_enabled(v111, OS_LOG_TYPE_ERROR))
       {
         [_DKLocationCoordinatesMonitor locationManager:didUpdateLocations:];
@@ -544,11 +544,11 @@ LABEL_34:
 LABEL_54:
 }
 
-- (int)locationTypeFrom:(int)a3
+- (int)locationTypeFrom:(int)from
 {
-  if (a3 < 0xE && ((0x3FDFu >> a3) & 1) != 0)
+  if (from < 0xE && ((0x3FDFu >> from) & 1) != 0)
   {
-    return dword_22598EEE0[a3];
+    return dword_22598EEE0[from];
   }
 
   v4 = +[_DKLocationCoordinatesMonitor log];
@@ -560,54 +560,54 @@ LABEL_54:
   return 0;
 }
 
-- (int)speedRangeFrom:(double)a3
+- (int)speedRangeFrom:(double)from
 {
-  if (a3 < 0.0)
+  if (from < 0.0)
   {
     return 0;
   }
 
-  if (a3 <= 2.0)
+  if (from <= 2.0)
   {
     return 1;
   }
 
-  if (a3 <= 4.0)
+  if (from <= 4.0)
   {
     return 2;
   }
 
-  if (a3 <= 6.0)
+  if (from <= 6.0)
   {
     return 3;
   }
 
-  if (a3 <= 8.0)
+  if (from <= 8.0)
   {
     return 4;
   }
 
-  if (a3 <= 10.0)
+  if (from <= 10.0)
   {
     return 5;
   }
 
-  if (a3 <= 12.0)
+  if (from <= 12.0)
   {
     return 6;
   }
 
-  if (a3 <= 16.0)
+  if (from <= 16.0)
   {
     return 7;
   }
 
-  if (a3 <= 20.0)
+  if (from <= 20.0)
   {
     return 8;
   }
 
-  if (a3 <= 24.0)
+  if (from <= 24.0)
   {
     v4 = 0;
   }
@@ -617,7 +617,7 @@ LABEL_54:
     v4 = 10;
   }
 
-  if (a3 > 24.0)
+  if (from > 24.0)
   {
     return v4;
   }
@@ -628,49 +628,49 @@ LABEL_54:
   }
 }
 
-- (int)altitudeRangeFrom:(double)a3
+- (int)altitudeRangeFrom:(double)from
 {
-  if (a3 < 0.0)
+  if (from < 0.0)
   {
     return 0;
   }
 
-  if (a3 <= 100.0)
+  if (from <= 100.0)
   {
     return 1;
   }
 
-  if (a3 <= 200.0)
+  if (from <= 200.0)
   {
     return 2;
   }
 
-  if (a3 <= 500.0)
+  if (from <= 500.0)
   {
     return 3;
   }
 
-  if (a3 <= 1000.0)
+  if (from <= 1000.0)
   {
     return 4;
   }
 
-  if (a3 <= 2000.0)
+  if (from <= 2000.0)
   {
     return 5;
   }
 
-  if (a3 <= 3000.0)
+  if (from <= 3000.0)
   {
     return 6;
   }
 
-  if (a3 <= 4000.0)
+  if (from <= 4000.0)
   {
     return 7;
   }
 
-  if (a3 <= 5000.0)
+  if (from <= 5000.0)
   {
     return 8;
   }
@@ -678,49 +678,49 @@ LABEL_54:
   return 9;
 }
 
-- (int)distanceRangeFrom:(double)a3
+- (int)distanceRangeFrom:(double)from
 {
-  if (a3 < 0.0)
+  if (from < 0.0)
   {
     return 0;
   }
 
-  if (a3 <= 50.0)
+  if (from <= 50.0)
   {
     return 1;
   }
 
-  if (a3 <= 200.0)
+  if (from <= 200.0)
   {
     return 2;
   }
 
-  if (a3 <= 500.0)
+  if (from <= 500.0)
   {
     return 3;
   }
 
-  if (a3 <= 1000.0)
+  if (from <= 1000.0)
   {
     return 4;
   }
 
-  if (a3 <= 2000.0)
+  if (from <= 2000.0)
   {
     return 5;
   }
 
-  if (a3 <= 3000.0)
+  if (from <= 3000.0)
   {
     return 6;
   }
 
-  if (a3 <= 4000.0)
+  if (from <= 4000.0)
   {
     return 7;
   }
 
-  if (a3 <= 5000.0)
+  if (from <= 5000.0)
   {
     return 8;
   }

@@ -1,34 +1,34 @@
 @interface THModelGlossary
 - (NSOperationQueue)loadingQueue;
-- (THModelGlossary)initWithContext:(id)a3 documentRoot:(id)a4;
-- (id)addEntryForPath:(id)a3 andTerm:(id)a4;
-- (id)entryAtIndex:(int64_t)a3;
-- (id)entryForTerm:(id)a3;
-- (id)pathsForEntriesInContentNode:(id)a3;
+- (THModelGlossary)initWithContext:(id)context documentRoot:(id)root;
+- (id)addEntryForPath:(id)path andTerm:(id)term;
+- (id)entryAtIndex:(int64_t)index;
+- (id)entryForTerm:(id)term;
+- (id)pathsForEntriesInContentNode:(id)node;
 - (void)dealloc;
-- (void)setApplePubURL:(id)a3;
-- (void)setGlossaryTermPaths:(id)a3 forContentNode:(id)a4;
+- (void)setApplePubURL:(id)l;
+- (void)setGlossaryTermPaths:(id)paths forContentNode:(id)node;
 @end
 
 @implementation THModelGlossary
 
-- (void)setApplePubURL:(id)a3
+- (void)setApplePubURL:(id)l
 {
   [(THModelGlossary *)self willModify];
-  v5 = a3;
+  lCopy = l;
 
-  self->mApplePubURL = a3;
+  self->mApplePubURL = l;
 }
 
-- (THModelGlossary)initWithContext:(id)a3 documentRoot:(id)a4
+- (THModelGlossary)initWithContext:(id)context documentRoot:(id)root
 {
   v8.receiver = self;
   v8.super_class = THModelGlossary;
-  v5 = [(THModelGlossary *)&v8 initWithContext:a3];
+  v5 = [(THModelGlossary *)&v8 initWithContext:context];
   v6 = v5;
   if (v5)
   {
-    v5->mDocumentRoot = a4;
+    v5->mDocumentRoot = root;
     v5->mEntries = objc_alloc_init(NSMutableArray);
     v6->mEntriesByApplePubPath = objc_alloc_init(NSMutableDictionary);
     v6->mEntriesByNormalizedTerm = objc_alloc_init(NSMutableDictionary);
@@ -70,21 +70,21 @@
   return result;
 }
 
-- (id)entryAtIndex:(int64_t)a3
+- (id)entryAtIndex:(int64_t)index
 {
-  if (a3 < 0 || [(NSMutableArray *)self->mEntries count]<= a3)
+  if (index < 0 || [(NSMutableArray *)self->mEntries count]<= index)
   {
     return 0;
   }
 
   mEntries = self->mEntries;
 
-  return [(NSMutableArray *)mEntries objectAtIndex:a3];
+  return [(NSMutableArray *)mEntries objectAtIndex:index];
 }
 
-- (id)addEntryForPath:(id)a3 andTerm:(id)a4
+- (id)addEntryForPath:(id)path andTerm:(id)term
 {
-  v6 = [[THModelGlossaryEntry alloc] initWithContext:[(THModelGlossary *)self context] parent:self applePubRelativePath:a3 andTerm:a4];
+  v6 = [[THModelGlossaryEntry alloc] initWithContext:[(THModelGlossary *)self context] parent:self applePubRelativePath:path andTerm:term];
   if (![-[THModelGlossaryEntry normalizedPrefixSearchStrings](v6 "normalizedPrefixSearchStrings")])
   {
     return 0;
@@ -92,33 +92,33 @@
 
   [(THModelGlossary *)self willModify];
   [(NSMutableArray *)self->mEntries addObject:v6];
-  [(NSMutableDictionary *)self->mEntriesByApplePubPath setObject:v6 forKey:a3];
+  [(NSMutableDictionary *)self->mEntriesByApplePubPath setObject:v6 forKey:path];
   [(NSMutableDictionary *)self->mEntriesByNormalizedTerm setObject:v6 forKey:[(THModelGlossaryEntry *)v6 normalizedTerm]];
   return v6;
 }
 
-- (id)entryForTerm:(id)a3
+- (id)entryForTerm:(id)term
 {
   mEntriesByNormalizedTerm = self->mEntriesByNormalizedTerm;
-  v4 = [a3 normalizedStringForSearch];
+  normalizedStringForSearch = [term normalizedStringForSearch];
 
-  return [(NSMutableDictionary *)mEntriesByNormalizedTerm objectForKey:v4];
+  return [(NSMutableDictionary *)mEntriesByNormalizedTerm objectForKey:normalizedStringForSearch];
 }
 
-- (id)pathsForEntriesInContentNode:(id)a3
+- (id)pathsForEntriesInContentNode:(id)node
 {
   mLinksByContentNodeId = self->mLinksByContentNodeId;
-  v4 = [a3 nodeGUID];
+  nodeGUID = [node nodeGUID];
 
-  return [(NSMutableDictionary *)mLinksByContentNodeId objectForKey:v4];
+  return [(NSMutableDictionary *)mLinksByContentNodeId objectForKey:nodeGUID];
 }
 
-- (void)setGlossaryTermPaths:(id)a3 forContentNode:(id)a4
+- (void)setGlossaryTermPaths:(id)paths forContentNode:(id)node
 {
   mLinksByContentNodeId = self->mLinksByContentNodeId;
-  v6 = [a4 nodeGUID];
+  nodeGUID = [node nodeGUID];
 
-  [(NSMutableDictionary *)mLinksByContentNodeId setObject:a3 forKey:v6];
+  [(NSMutableDictionary *)mLinksByContentNodeId setObject:paths forKey:nodeGUID];
 }
 
 @end

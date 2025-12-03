@@ -1,30 +1,30 @@
 @interface MobileRecertifyEngine
-- (MobileRecertifyEngine)initWithQueue:(id)a3 dark:(id)a4;
-- (id)createRecertInfoWithDataArk:(id)a3 alcoholBlob:(NACContextOpaque_ *)a4 options:(id)a5 error:(id *)a6;
-- (void)recertifyDevice:(id)a3;
+- (MobileRecertifyEngine)initWithQueue:(id)queue dark:(id)dark;
+- (id)createRecertInfoWithDataArk:(id)ark alcoholBlob:(NACContextOpaque_ *)blob options:(id)options error:(id *)error;
+- (void)recertifyDevice:(id)device;
 @end
 
 @implementation MobileRecertifyEngine
 
-- (MobileRecertifyEngine)initWithQueue:(id)a3 dark:(id)a4
+- (MobileRecertifyEngine)initWithQueue:(id)queue dark:(id)dark
 {
-  v7 = a3;
-  v8 = a4;
+  queueCopy = queue;
+  darkCopy = dark;
   v13.receiver = self;
   v13.super_class = MobileRecertifyEngine;
   v9 = [(MobileRecertifyEngine *)&v13 init];
   p_isa = &v9->super.isa;
   if (v9)
   {
-    if (!v7 || !v8)
+    if (!queueCopy || !darkCopy)
     {
       maLog("[MobileRecertifyEngine initWithQueue:dark:]", 0, @"Invalid input");
       v11 = 0;
       goto LABEL_7;
     }
 
-    objc_storeStrong(&v9->_queue, a3);
-    objc_storeStrong(p_isa + 1, a4);
+    objc_storeStrong(&v9->_queue, queue);
+    objc_storeStrong(p_isa + 1, dark);
   }
 
   v11 = p_isa;
@@ -33,10 +33,10 @@ LABEL_7:
   return v11;
 }
 
-- (id)createRecertInfoWithDataArk:(id)a3 alcoholBlob:(NACContextOpaque_ *)a4 options:(id)a5 error:(id *)a6
+- (id)createRecertInfoWithDataArk:(id)ark alcoholBlob:(NACContextOpaque_ *)blob options:(id)options error:(id *)error
 {
-  v8 = a3;
-  v9 = a5;
+  arkCopy = ark;
+  optionsCopy = options;
   v71 = 0uLL;
   v72 = 0;
   memset(v70, 0, 35);
@@ -48,9 +48,9 @@ LABEL_7:
   v61 = 0;
   v59 = 0;
   v58 = 0;
-  v50 = v9;
-  v51 = v8;
-  if (!v8 || !a4)
+  v50 = optionsCopy;
+  v51 = arkCopy;
+  if (!arkCopy || !blob)
   {
     v12 = createMobileActivationError("[MobileRecertifyEngine createRecertInfoWithDataArk:alcoholBlob:options:error:]", 104, @"com.apple.MobileActivation.ErrorDomain", -2, 0, @"Invalid input(s).");
     v10 = 0;
@@ -90,7 +90,7 @@ LABEL_10:
 
     v47 = v24;
     v56 = 0;
-    v13 = create_cert_request(v8, &v56);
+    v13 = create_cert_request(arkCopy, &v56);
     v25 = v56;
     if (!v13)
     {
@@ -116,7 +116,7 @@ LABEL_10:
     }
 
     v45 = v26;
-    v27 = [v9 objectForKeyedSubscript:@"ReCertRandomness"];
+    v27 = [optionsCopy objectForKeyedSubscript:@"ReCertRandomness"];
     v15 = isNSString(v27);
 
     v44 = v27;
@@ -184,7 +184,7 @@ LABEL_46:
       goto LABEL_43;
     }
 
-    t1BoNctgaUu66(a4, [v13 bytes], objc_msgSend(v13, "length"), &v59);
+    t1BoNctgaUu66(blob, [v13 bytes], objc_msgSend(v13, "length"), &v59);
     if (v31)
     {
       MobileActivationError = createMobileActivationError("[MobileRecertifyEngine createRecertInfoWithDataArk:alcoholBlob:options:error:]", 192, @"com.apple.MobileActivation.ErrorDomain", -1, 0, @"Failed to sign data: %d", v31);
@@ -333,10 +333,10 @@ LABEL_11:
   v20 = 0;
   v43 = 0;
 LABEL_12:
-  if (a6 && !v16)
+  if (error && !v16)
   {
     v21 = v12;
-    *a6 = v12;
+    *error = v12;
   }
 
   if (cf)
@@ -361,15 +361,15 @@ LABEL_12:
   return v22;
 }
 
-- (void)recertifyDevice:(id)a3
+- (void)recertifyDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v128 = 0;
   v129 = 0;
   v127 = 0;
   v126 = 0;
-  v5 = [(MobileRecertifyEngine *)self queue];
-  dispatch_assert_queue_not_V2(v5);
+  queue = [(MobileRecertifyEngine *)self queue];
+  dispatch_assert_queue_not_V2(queue);
 
   v6 = [[NSURL alloc] initWithString:@"https://albert.apple.com/deviceservices/certifySB"];
   v7 = [[NSURL alloc] initWithString:@"https://static.ips.apple.com/absinthe-cert/certificate.cer"];
@@ -389,7 +389,7 @@ LABEL_12:
   v106 = v8;
   if (v9 || v8 == 0)
   {
-    v11 = v4;
+    v11 = deviceCopy;
     v12 = createMobileActivationError("[MobileRecertifyEngine recertifyDevice:]", 350, @"com.apple.MobileActivation.ErrorDomain", -1, 0, @"Failed to allocate URL.");
     v13 = 0;
     v100 = 0;
@@ -408,7 +408,7 @@ LABEL_25:
     v35 = 0;
     v36 = 0;
     v37 = 0;
-    v32 = 0;
+    uUIDString = 0;
     v108 = 0;
 LABEL_26:
     v30 = 0;
@@ -426,32 +426,32 @@ LABEL_26:
     {
       v19 = v18;
       v20 = [v16 objectForKeyedSubscript:@"UseReverseProxy"];
-      v21 = [v20 BOOLValue];
+      bOOLValue = [v20 BOOLValue];
 
-      if (v21)
+      if (bOOLValue)
       {
         v22 = copyReverseProxyDictionary(0, 0, 0);
         if (v22)
         {
           v23 = v22;
-          v11 = v4;
+          v11 = deviceCopy;
           v24 = 0;
           goto LABEL_20;
         }
       }
 
-      v11 = v4;
+      v11 = deviceCopy;
     }
 
     else
     {
-      v11 = v4;
+      v11 = deviceCopy;
     }
   }
 
   else
   {
-    v11 = v4;
+    v11 = deviceCopy;
     v16 = 0;
   }
 
@@ -506,7 +506,7 @@ LABEL_36:
     v35 = 0;
     v36 = 0;
     v37 = 0;
-    v32 = 0;
+    uUIDString = 0;
     goto LABEL_37;
   }
 
@@ -517,7 +517,7 @@ LABEL_36:
   v108 = v124;
   v31 = v123;
 
-  v32 = v126;
+  uUIDString = v126;
   if (v126 != 200)
   {
     if (!v126)
@@ -541,7 +541,7 @@ LABEL_36:
     }
 
     v40 = [NSHTTPURLResponse localizedStringForStatusCode:v126];
-    v41 = createMobileActivationError("[MobileRecertifyEngine recertifyDevice:]", 387, @"com.apple.MobileActivation.ServerErrorDomain", v32, v31, @"Server error: %ld (%@)", v32, v40);
+    v41 = createMobileActivationError("[MobileRecertifyEngine recertifyDevice:]", 387, @"com.apple.MobileActivation.ServerErrorDomain", uUIDString, v31, @"Server error: %ld (%@)", uUIDString, v40);
 
     v42 = v126;
     v43 = [NSHTTPURLResponse localizedStringForStatusCode:v126];
@@ -624,7 +624,7 @@ LABEL_34:
     v35 = 0;
     v36 = 0;
     v37 = 0;
-    v32 = 0;
+    uUIDString = 0;
     goto LABEL_26;
   }
 
@@ -669,7 +669,7 @@ LABEL_34:
     v35 = 0;
     v36 = 0;
     v37 = 0;
-    v32 = 0;
+    uUIDString = 0;
     goto LABEL_61;
   }
 
@@ -690,7 +690,7 @@ LABEL_34:
     v35 = 0;
     v36 = 0;
     v37 = 0;
-    v32 = 0;
+    uUIDString = 0;
 LABEL_70:
     v108 = v67;
     goto LABEL_37;
@@ -698,10 +698,10 @@ LABEL_70:
 
   v92 = v53;
   v119 = v54;
-  v32 = [NSJSONSerialization JSONObjectWithData:v52 options:1 error:&v119];
+  uUIDString = [NSJSONSerialization JSONObjectWithData:v52 options:1 error:&v119];
   v56 = v119;
 
-  if (!v32)
+  if (!uUIDString)
   {
     v13 = v52;
     v12 = createMobileActivationError("[MobileRecertifyEngine recertifyDevice:]", 449, @"com.apple.MobileActivation.ErrorDomain", -1, v56, @"Failed to serialize json data.");
@@ -722,16 +722,16 @@ LABEL_69:
     goto LABEL_70;
   }
 
-  v57 = [(NSString *)v32 objectForKeyedSubscript:@"absinthe-results"];
+  v57 = [(NSString *)uUIDString objectForKeyedSubscript:@"absinthe-results"];
   v58 = [v57 objectForKeyedSubscript:@"create-session-info"];
 
   v33 = isNSArray(v58);
   v98 = v58;
-  v99 = v32;
+  v99 = uUIDString;
   if (!v33)
   {
     v13 = v52;
-    v12 = createMobileActivationError("[MobileRecertifyEngine recertifyDevice:]", 486, @"com.apple.MobileActivation.ErrorDomain", -1, 0, @"Missing one drink: %@", v32);
+    v12 = createMobileActivationError("[MobileRecertifyEngine recertifyDevice:]", 486, @"com.apple.MobileActivation.ErrorDomain", -1, 0, @"Missing one drink: %@", uUIDString);
 
     v96 = 0;
     v97 = 0;
@@ -741,7 +741,7 @@ LABEL_69:
     v35 = 0;
     v36 = 0;
     v37 = 0;
-    v32 = 0;
+    uUIDString = 0;
     goto LABEL_69;
   }
 
@@ -752,7 +752,7 @@ LABEL_69:
   v97 = v59;
   if (!v33)
   {
-    v12 = createMobileActivationError("[MobileRecertifyEngine recertifyDevice:]", 492, @"com.apple.MobileActivation.ErrorDomain", -1, 0, @"Missing two drinks: %@", v32);
+    v12 = createMobileActivationError("[MobileRecertifyEngine recertifyDevice:]", 492, @"com.apple.MobileActivation.ErrorDomain", -1, 0, @"Missing two drinks: %@", uUIDString);
 
     v96 = 0;
 LABEL_68:
@@ -762,7 +762,7 @@ LABEL_68:
     v35 = 0;
     v36 = 0;
     v37 = 0;
-    v32 = 0;
+    uUIDString = 0;
     v13 = v90;
     goto LABEL_69;
   }
@@ -773,7 +773,7 @@ LABEL_68:
   v96 = v60;
   if (!v33)
   {
-    v12 = createMobileActivationError("[MobileRecertifyEngine recertifyDevice:]", 498, @"com.apple.MobileActivation.ErrorDomain", -1, 0, @"Missing three drinks: %@", v32);
+    v12 = createMobileActivationError("[MobileRecertifyEngine recertifyDevice:]", 498, @"com.apple.MobileActivation.ErrorDomain", -1, 0, @"Missing three drinks: %@", uUIDString);
 
     goto LABEL_68;
   }
@@ -783,7 +783,7 @@ LABEL_68:
   v34 = v61;
   if (!v61)
   {
-    v12 = createMobileActivationError("[MobileRecertifyEngine recertifyDevice:]", 504, @"com.apple.MobileActivation.ErrorDomain", -1, 0, @"Missing four drinks: %@", v32);
+    v12 = createMobileActivationError("[MobileRecertifyEngine recertifyDevice:]", 504, @"com.apple.MobileActivation.ErrorDomain", -1, 0, @"Missing four drinks: %@", uUIDString);
 
     v95 = 0;
     v33 = 0;
@@ -802,7 +802,7 @@ LABEL_72:
     v35 = 0;
     v36 = 0;
     v37 = 0;
-    v32 = 0;
+    uUIDString = 0;
 LABEL_73:
     v13 = v90;
 LABEL_61:
@@ -813,9 +813,9 @@ LABEL_62:
   }
 
   v68 = +[NSUUID UUID];
-  v32 = [(NSUUID *)v68 UUIDString];
+  uUIDString = [(NSUUID *)v68 UUIDString];
 
-  if (!v32)
+  if (!uUIDString)
   {
     v12 = createMobileActivationError("[MobileRecertifyEngine recertifyDevice:]", 516, @"com.apple.MobileActivation.ErrorDomain", -1, 0, @"Failed to create nonce.");
 
@@ -828,11 +828,11 @@ LABEL_62:
   }
 
   v130 = @"ReCertRandomness";
-  v131 = v32;
+  v131 = uUIDString;
   v37 = [NSDictionary dictionaryWithObjects:&v131 forKeys:&v130 count:1];
-  v69 = [(MobileRecertifyEngine *)self dark];
+  dark = [(MobileRecertifyEngine *)self dark];
   v118 = v56;
-  v33 = [(MobileRecertifyEngine *)self createRecertInfoWithDataArk:v69 alcoholBlob:v129 options:v37 error:&v118];
+  v33 = [(MobileRecertifyEngine *)self createRecertInfoWithDataArk:dark alcoholBlob:v129 options:v37 error:&v118];
   v70 = v118;
 
   if (!v33)
@@ -923,7 +923,7 @@ LABEL_93:
 
   if (v82)
   {
-    v83 = [(MobileRecertifyEngine *)self queue];
+    queue2 = [(MobileRecertifyEngine *)self queue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3254779904;
     block[2] = __41__MobileRecertifyEngine_recertifyDevice___block_invoke;
@@ -935,7 +935,7 @@ LABEL_93:
     v111 = v37;
     v112 = v11;
     v84 = v11;
-    dispatch_async(v83, block);
+    dispatch_async(queue2, block);
 
     v11 = 0;
 LABEL_95:

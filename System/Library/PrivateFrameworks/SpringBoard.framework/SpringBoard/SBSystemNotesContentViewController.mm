@@ -1,70 +1,70 @@
 @interface SBSystemNotesContentViewController
-- (BOOL)_hitTestTouch:(id)a3 gestureRecognizer:(id)a4;
-- (BOOL)_updateForegroundStatus:(BOOL)a3;
-- (BOOL)containerViewController:(id)a3 shouldHandleStashingForTransitionContext:(id)a4;
-- (BOOL)sceneHandle:(id)a3 didReceiveAction:(id)a4;
-- (BOOL)shouldBeginPointerInteractionRequest:(id)a3 atLocation:(CGPoint)a4 forView:(id)a5;
-- (BOOL)transientUIHandledTouch:(id)a3 withSystemGestureRecognizer:(id)a4;
+- (BOOL)_hitTestTouch:(id)touch gestureRecognizer:(id)recognizer;
+- (BOOL)_updateForegroundStatus:(BOOL)status;
+- (BOOL)containerViewController:(id)controller shouldHandleStashingForTransitionContext:(id)context;
+- (BOOL)sceneHandle:(id)handle didReceiveAction:(id)action;
+- (BOOL)shouldBeginPointerInteractionRequest:(id)request atLocation:(CGPoint)location forView:(id)view;
+- (BOOL)transientUIHandledTouch:(id)touch withSystemGestureRecognizer:(id)recognizer;
 - (CGRect)_sceneFrame;
 - (CGSize)preferredContentSize;
-- (SBSystemNotesContentViewController)initWithSceneHandle:(id)a3 workspace:(id)a4 transientUIInteractionManager:(id)a5 notesInteractionSettings:(id)a6 presentationContext:(id)a7;
+- (SBSystemNotesContentViewController)initWithSceneHandle:(id)handle workspace:(id)workspace transientUIInteractionManager:(id)manager notesInteractionSettings:(id)settings presentationContext:(id)context;
 - (SBSystemNotesContentViewControllerDelegate)delegate;
-- (UIEdgeInsets)pointerInteractionHitTestInsetsForView:(id)a3;
-- (id)_imageFromUserActivity:(id)a3 presentationMode:(int64_t)a4;
-- (id)_sbWindowSceneForSceneHandle:(id)a3;
-- (id)_thumbnailViewForUserActivity:(id)a3;
-- (id)layoutStateForApplicationTransitionContext:(id)a3;
-- (id)previousLayoutStateForApplicationTransitionContext:(id)a3;
-- (id)styleForRegion:(id)a3 forView:(id)a4;
+- (UIEdgeInsets)pointerInteractionHitTestInsetsForView:(id)view;
+- (id)_imageFromUserActivity:(id)activity presentationMode:(int64_t)mode;
+- (id)_sbWindowSceneForSceneHandle:(id)handle;
+- (id)_thumbnailViewForUserActivity:(id)activity;
+- (id)layoutStateForApplicationTransitionContext:(id)context;
+- (id)previousLayoutStateForApplicationTransitionContext:(id)context;
+- (id)styleForRegion:(id)region forView:(id)view;
 - (int64_t)presentationMode;
-- (unint64_t)_sendActionForUpdatedConfiguration:(id)a3 sendCreateIfNecessary:(BOOL)a4;
-- (unint64_t)updateConfiguration:(id)a3 sendCreateActionIfNecessary:(BOOL)a4;
-- (void)_acquireTraitsParticipantOnWindowSceneIfNecessary:(id)a3;
-- (void)_handleThumbnailTapGesture:(id)a3;
+- (unint64_t)_sendActionForUpdatedConfiguration:(id)configuration sendCreateIfNecessary:(BOOL)necessary;
+- (unint64_t)updateConfiguration:(id)configuration sendCreateActionIfNecessary:(BOOL)necessary;
+- (void)_acquireTraitsParticipantOnWindowSceneIfNecessary:(id)necessary;
+- (void)_handleThumbnailTapGesture:(id)gesture;
 - (void)_invalidateTraitsParticipant;
-- (void)_setBlurred:(BOOL)a3;
-- (void)_setPreferredSceneContentSize:(CGSize)a3;
-- (void)_updateSceneFrameWithCompletion:(id)a3;
-- (void)containerViewController:(id)a3 didSettleOnStashState:(BOOL)a4;
-- (void)containerViewControllerDidEndInteraction:(id)a3 targetWindowScene:(id)a4;
-- (void)containerViewControllerDidEndSizeChange:(id)a3;
-- (void)containerViewControllerWillBeginSizeChange:(id)a3 behavior:(int)a4;
+- (void)_setBlurred:(BOOL)blurred;
+- (void)_setPreferredSceneContentSize:(CGSize)size;
+- (void)_updateSceneFrameWithCompletion:(id)completion;
+- (void)containerViewController:(id)controller didSettleOnStashState:(BOOL)state;
+- (void)containerViewControllerDidEndInteraction:(id)interaction targetWindowScene:(id)scene;
+- (void)containerViewControllerDidEndSizeChange:(id)change;
+- (void)containerViewControllerWillBeginSizeChange:(id)change behavior:(int)behavior;
 - (void)dealloc;
-- (void)sceneHandle:(id)a3 didCreateScene:(id)a4;
-- (void)sceneHandle:(id)a3 didDestroyScene:(id)a4;
-- (void)setPresentationMode:(int64_t)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)sceneHandle:(id)handle didCreateScene:(id)scene;
+- (void)sceneHandle:(id)handle didDestroyScene:(id)scene;
+- (void)setPresentationMode:(int64_t)mode;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation SBSystemNotesContentViewController
 
-- (SBSystemNotesContentViewController)initWithSceneHandle:(id)a3 workspace:(id)a4 transientUIInteractionManager:(id)a5 notesInteractionSettings:(id)a6 presentationContext:(id)a7
+- (SBSystemNotesContentViewController)initWithSceneHandle:(id)handle workspace:(id)workspace transientUIInteractionManager:(id)manager notesInteractionSettings:(id)settings presentationContext:(id)context
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  handleCopy = handle;
+  workspaceCopy = workspace;
+  managerCopy = manager;
+  settingsCopy = settings;
+  contextCopy = context;
   v26.receiver = self;
   v26.super_class = SBSystemNotesContentViewController;
   v17 = [(SBSystemNotesContentViewController *)&v26 initWithNibName:0 bundle:0];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_workspace, a4);
-    objc_storeStrong(&v18->_notesInteractionSettings, a6);
-    objc_storeStrong(&v18->_transientUIInteractionManager, a5);
+    objc_storeStrong(&v17->_workspace, workspace);
+    objc_storeStrong(&v18->_notesInteractionSettings, settings);
+    objc_storeStrong(&v18->_transientUIInteractionManager, manager);
     v18->_preferredSceneContentSize.width = SBSystemNotesDefaultWindowSize();
     v18->_preferredSceneContentSize.height = v19;
-    [v12 addObserver:v18];
-    [v12 addActionConsumer:v18];
-    v20 = [[SBDeviceApplicationSceneViewController alloc] initWithSceneHandle:v12];
+    [handleCopy addObserver:v18];
+    [handleCopy addActionConsumer:v18];
+    v20 = [[SBDeviceApplicationSceneViewController alloc] initWithSceneHandle:handleCopy];
     sceneViewController = v18->_sceneViewController;
     v18->_sceneViewController = v20;
 
@@ -75,9 +75,9 @@
     v18->_thumbnailTapGestureRecognizer = v22;
 
     [(UITapGestureRecognizer *)v18->_thumbnailTapGestureRecognizer setAllowedTouchTypes:&unk_28336E8F8];
-    objc_storeStrong(&v18->_presentationContext, a7);
-    v24 = [(SBSystemNotesContentPresentationContext *)v18->_presentationContext requestedConfiguration];
-    [(SBSystemNotesContentViewController *)v18 updateConfiguration:v24 sendCreateActionIfNecessary:1];
+    objc_storeStrong(&v18->_presentationContext, context);
+    requestedConfiguration = [(SBSystemNotesContentPresentationContext *)v18->_presentationContext requestedConfiguration];
+    [(SBSystemNotesContentViewController *)v18 updateConfiguration:requestedConfiguration sendCreateActionIfNecessary:1];
   }
 
   return v18;
@@ -88,13 +88,13 @@
   if ([(SBSystemNotesContentViewController *)self isViewLoaded])
   {
     [(SBDeviceApplicationSceneViewController *)self->_sceneViewController willMoveToParentViewController:0];
-    v3 = [(SBDeviceApplicationSceneViewController *)self->_sceneViewController view];
-    [v3 removeFromSuperview];
+    view = [(SBDeviceApplicationSceneViewController *)self->_sceneViewController view];
+    [view removeFromSuperview];
 
     [(SBDeviceApplicationSceneViewController *)self->_sceneViewController removeFromParentViewController];
     WeakRetained = objc_loadWeakRetained(&self->_systemPointerInteractionManager);
-    v5 = [(SBNubView *)self->_nubView contentView];
-    [WeakRetained unregisterView:v5];
+    contentView = [(SBNubView *)self->_nubView contentView];
+    [WeakRetained unregisterView:contentView];
   }
 
   [(SBSystemNotesContentViewController *)self _invalidateTraitsParticipant];
@@ -111,57 +111,57 @@
   v18.receiver = self;
   v18.super_class = SBSystemNotesContentViewController;
   [(SBSystemNotesContentViewController *)&v18 viewDidLoad];
-  v3 = [(SBSystemNotesContentViewController *)self view];
-  v4 = [v3 layer];
-  [v4 setAllowsGroupOpacity:1];
+  view = [(SBSystemNotesContentViewController *)self view];
+  layer = [view layer];
+  [layer setAllowsGroupOpacity:1];
 
-  [v3 setClipsToBounds:1];
-  [v3 addGestureRecognizer:self->_thumbnailTapGestureRecognizer];
-  [v3 setAccessibilityIdentifier:@"system-notes-content-view"];
-  v5 = [v3 layer];
-  [v5 setBorderWidth:1.0];
+  [view setClipsToBounds:1];
+  [view addGestureRecognizer:self->_thumbnailTapGestureRecognizer];
+  [view setAccessibilityIdentifier:@"system-notes-content-view"];
+  layer2 = [view layer];
+  [layer2 setBorderWidth:1.0];
   v6 = [MEMORY[0x277D75348] colorWithWhite:1.0 alpha:0.15];
-  [v5 setBorderColor:{objc_msgSend(v6, "CGColor")}];
+  [layer2 setBorderColor:{objc_msgSend(v6, "CGColor")}];
 
-  [v3 addSubview:self->_thumbnailView];
+  [view addSubview:self->_thumbnailView];
   [(UIView *)self->_thumbnailView setContentMode:0];
   [(UIView *)self->_thumbnailView setOpaque:0];
   [(UIView *)self->_thumbnailView setAccessibilityIdentifier:@"system-notes-thumbnail-view"];
   [(SBSystemNotesContentViewController *)self addChildViewController:self->_sceneViewController];
-  v7 = [(SBDeviceApplicationSceneViewController *)self->_sceneViewController view];
-  v8 = [v7 layer];
-  [v8 setAllowsGroupOpacity:1];
+  view2 = [(SBDeviceApplicationSceneViewController *)self->_sceneViewController view];
+  layer3 = [view2 layer];
+  [layer3 setAllowsGroupOpacity:1];
 
-  [v3 addSubview:v7];
-  [v7 setOpaque:0];
+  [view addSubview:view2];
+  [view2 setOpaque:0];
   [(SBDeviceApplicationSceneViewController *)self->_sceneViewController didMoveToParentViewController:self];
   v9 = [SBSystemNotesBackgroundView alloc];
-  [v7 bounds];
+  [view2 bounds];
   v10 = [(SBSystemNotesBackgroundView *)v9 initWithFrame:?];
   [(SBDeviceApplicationSceneViewController *)self->_sceneViewController setBackgroundView:v10];
   v11 = [SBNubView alloc];
-  v12 = [(SBSceneViewController *)self->_sceneViewController sceneHandle];
-  v13 = [(SBNubView *)v11 initWithDeviceApplicationSceneHandle:v12];
+  sceneHandle = [(SBSceneViewController *)self->_sceneViewController sceneHandle];
+  v13 = [(SBNubView *)v11 initWithDeviceApplicationSceneHandle:sceneHandle];
   nubView = self->_nubView;
   self->_nubView = v13;
 
-  v15 = [(SBNubView *)self->_nubView layer];
-  [v15 setHitTestsAsOpaque:1];
+  layer4 = [(SBNubView *)self->_nubView layer];
+  [layer4 setHitTestsAsOpaque:1];
 
   [(SBNubView *)self->_nubView setHighlighted:0];
-  [v7 addSubview:self->_nubView];
+  [view2 addSubview:self->_nubView];
   [(SBNubView *)self->_nubView setAccessibilityIdentifier:@"system-notes-nub-view"];
   WeakRetained = objc_loadWeakRetained(&self->_systemPointerInteractionManager);
-  v17 = [(SBNubView *)self->_nubView contentView];
-  [WeakRetained registerView:v17 delegate:self];
+  contentView = [(SBNubView *)self->_nubView contentView];
+  [WeakRetained registerView:contentView delegate:self];
 
-  [v3 bringSubviewToFront:self->_thumbnailView];
+  [view bringSubviewToFront:self->_thumbnailView];
 }
 
 - (void)viewWillLayoutSubviews
 {
-  v3 = [(SBSystemNotesContentViewController *)self view];
-  [v3 bounds];
+  view = [(SBSystemNotesContentViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -177,17 +177,17 @@
   v15 = fmin(v14, 1.0);
   [(UIView *)self->_thumbnailView setFrame:v5, v7, v9, v11];
   [(SBApplicationBlurContentView *)self->_blurView setFrame:v5, v7, v9, v11];
-  v16 = [(SBDeviceApplicationSceneViewController *)self->_sceneViewController view];
-  [v3 bounds];
+  view2 = [(SBDeviceApplicationSceneViewController *)self->_sceneViewController view];
+  [view bounds];
   UIRectGetCenter();
-  [v16 setCenter:?];
+  [view2 setCenter:?];
   width = self->_preferredSceneContentSize.width;
   height = self->_preferredSceneContentSize.height;
-  [v16 setBounds:{0.0, 0.0, width, height}];
+  [view2 setBounds:{0.0, 0.0, width, height}];
   memset(&v28, 0, sizeof(v28));
   CGAffineTransformMakeScale(&v28, v9 / width, v11 / height);
   v27 = v28;
-  [v16 setTransform:&v27];
+  [view2 setTransform:&v27];
   +[SBNubView height];
   [(SBNubView *)self->_nubView setFrame:0.0, 0.0, width, v19];
   v20 = SBSystemNotesThumbnailCornerRadius();
@@ -207,11 +207,11 @@
     v21 = v20;
   }
 
-  [v3 _setContinuousCornerRadius:v22 + (v21 - v22) * v15];
+  [view _setContinuousCornerRadius:v22 + (v21 - v22) * v15];
   [(UIView *)self->_thumbnailView setAlpha:1.0 - v15];
   if (BSFloatLessThanOrEqualToFloat())
   {
-    [v16 setHidden:1];
+    [view2 setHidden:1];
     thumbnailView = self->_thumbnailView;
 LABEL_12:
     v25 = 0;
@@ -219,7 +219,7 @@ LABEL_12:
   }
 
   v24 = BSFloatGreaterThanOrEqualToFloat();
-  [v16 setHidden:0];
+  [view2 setHidden:0];
   thumbnailView = self->_thumbnailView;
   if (!v24)
   {
@@ -229,25 +229,25 @@ LABEL_12:
   v25 = 1;
 LABEL_13:
   [(UIView *)thumbnailView setHidden:v25];
-  v26 = [v3 _sbWindowScene];
-  [(SBSystemNotesContentViewController *)self _acquireTraitsParticipantOnWindowSceneIfNecessary:v26];
+  _sbWindowScene = [view _sbWindowScene];
+  [(SBSystemNotesContentViewController *)self _acquireTraitsParticipantOnWindowSceneIfNecessary:_sbWindowScene];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = SBSystemNotesContentViewController;
-  [(SBSystemNotesContentViewController *)&v6 viewWillAppear:a3];
+  [(SBSystemNotesContentViewController *)&v6 viewWillAppear:appear];
   v4 = [(SBDeviceApplicationSceneViewController *)self->_sceneViewController statusBarAssertionWithStatusBarHidden:1 atLevel:0];
   statusBarAssertion = self->_statusBarAssertion;
   self->_statusBarAssertion = v4;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v11.receiver = self;
   v11.super_class = SBSystemNotesContentViewController;
-  [(SBSystemNotesContentViewController *)&v11 viewDidAppear:a3];
+  [(SBSystemNotesContentViewController *)&v11 viewDidAppear:appear];
   v5 = SBLogSystemNotes();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -255,17 +255,17 @@ LABEL_13:
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_systemPointerInteractionManager);
-  v7 = [(UIViewController *)self _sbWindowScene];
-  v8 = [v7 systemPointerInteractionManager];
+  _sbWindowScene = [(UIViewController *)self _sbWindowScene];
+  systemPointerInteractionManager = [_sbWindowScene systemPointerInteractionManager];
 
-  if (WeakRetained != v8)
+  if (WeakRetained != systemPointerInteractionManager)
   {
-    v9 = [(SBNubView *)self->_nubView contentView];
-    [WeakRetained unregisterView:v9];
+    contentView = [(SBNubView *)self->_nubView contentView];
+    [WeakRetained unregisterView:contentView];
 
-    objc_storeWeak(&self->_systemPointerInteractionManager, v8);
-    v10 = [(SBNubView *)self->_nubView contentView];
-    [v8 registerView:v10 delegate:self];
+    objc_storeWeak(&self->_systemPointerInteractionManager, systemPointerInteractionManager);
+    contentView2 = [(SBNubView *)self->_nubView contentView];
+    [systemPointerInteractionManager registerView:contentView2 delegate:self];
   }
 
   if (![(SBSystemNotesContentViewController *)self presentationMode])
@@ -276,59 +276,59 @@ LABEL_13:
   [(SBTransientUIInteractionManager *)self->_transientUIInteractionManager registerParticipantForTapToDismiss:self];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = SBSystemNotesContentViewController;
-  [(SBSystemNotesContentViewController *)&v4 viewWillDisappear:a3];
+  [(SBSystemNotesContentViewController *)&v4 viewWillDisappear:disappear];
   [(SBTransientUIInteractionManager *)self->_transientUIInteractionManager unregisterParticipantForTapToDismiss:self];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = SBSystemNotesContentViewController;
-  [(SBSystemNotesContentViewController *)&v5 viewDidDisappear:a3];
+  [(SBSystemNotesContentViewController *)&v5 viewDidDisappear:disappear];
   [(SBSceneViewStatusBarAssertion *)self->_statusBarAssertion invalidate];
   statusBarAssertion = self->_statusBarAssertion;
   self->_statusBarAssertion = 0;
 }
 
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear
 {
-  v4 = a4;
+  disappearCopy = disappear;
   v13.receiver = self;
   v13.super_class = SBSystemNotesContentViewController;
-  v6 = a3;
-  [(SBSystemNotesContentViewController *)&v13 viewDidMoveToWindow:v6 shouldAppearOrDisappear:v4];
-  v7 = [v6 _sbWindowScene];
-  [(SBSystemNotesContentViewController *)self _acquireTraitsParticipantOnWindowSceneIfNecessary:v7];
+  windowCopy = window;
+  [(SBSystemNotesContentViewController *)&v13 viewDidMoveToWindow:windowCopy shouldAppearOrDisappear:disappearCopy];
+  _sbWindowScene = [windowCopy _sbWindowScene];
+  [(SBSystemNotesContentViewController *)self _acquireTraitsParticipantOnWindowSceneIfNecessary:_sbWindowScene];
 
   traitsParticipantDelegate = self->_traitsParticipantDelegate;
   v9 = MEMORY[0x277CCABB0];
-  [v6 windowLevel];
+  [windowCopy windowLevel];
   v11 = v10;
 
   v12 = [v9 numberWithDouble:v11];
   [(SBTraitsSceneParticipantDelegate *)traitsParticipantDelegate setPreferredSceneLevel:v12];
 }
 
-- (void)_acquireTraitsParticipantOnWindowSceneIfNecessary:(id)a3
+- (void)_acquireTraitsParticipantOnWindowSceneIfNecessary:(id)necessary
 {
-  v4 = a3;
-  if (!self->_traitsParticipant || (v5 = objc_loadWeakRetained(&self->_lastKnownWindowScene), v5, v5 != v4))
+  necessaryCopy = necessary;
+  if (!self->_traitsParticipant || (v5 = objc_loadWeakRetained(&self->_lastKnownWindowScene), v5, v5 != necessaryCopy))
   {
-    objc_storeWeak(&self->_lastKnownWindowScene, v4);
-    v6 = [v4 traitsArbiter];
-    objc_storeWeak(&self->_arbiter, v6);
+    objc_storeWeak(&self->_lastKnownWindowScene, necessaryCopy);
+    traitsArbiter = [necessaryCopy traitsArbiter];
+    objc_storeWeak(&self->_arbiter, traitsArbiter);
 
     WeakRetained = objc_loadWeakRetained(&self->_arbiter);
     [(SBSystemNotesContentViewController *)self _invalidateTraitsParticipant];
     if (WeakRetained)
     {
       v8 = [SBTraitsSceneParticipantDelegate alloc];
-      v9 = [(SBSceneViewController *)self->_sceneViewController sceneHandle];
-      v10 = [(SBTraitsSceneParticipantDelegate *)v8 initWithSceneHandle:v9];
+      sceneHandle = [(SBSceneViewController *)self->_sceneViewController sceneHandle];
+      v10 = [(SBTraitsSceneParticipantDelegate *)v8 initWithSceneHandle:sceneHandle];
       traitsParticipantDelegate = self->_traitsParticipantDelegate;
       self->_traitsParticipantDelegate = v10;
 
@@ -399,14 +399,14 @@ void __88__SBSystemNotesContentViewController__acquireTraitsParticipantOnWindowS
   self->_traitsParticipant = 0;
 }
 
-- (id)_sbWindowSceneForSceneHandle:(id)a3
+- (id)_sbWindowSceneForSceneHandle:(id)handle
 {
   v3 = SBApp;
-  v4 = a3;
-  v5 = [v3 windowSceneManager];
-  v6 = [v4 displayIdentity];
+  handleCopy = handle;
+  windowSceneManager = [v3 windowSceneManager];
+  displayIdentity = [handleCopy displayIdentity];
 
-  v7 = [v5 windowSceneForDisplayIdentity:v6];
+  v7 = [windowSceneManager windowSceneForDisplayIdentity:displayIdentity];
 
   return v7;
 }
@@ -425,31 +425,31 @@ void __88__SBSystemNotesContentViewController__acquireTraitsParticipantOnWindowS
   }
 }
 
-- (void)setPresentationMode:(int64_t)a3
+- (void)setPresentationMode:(int64_t)mode
 {
   currentConfiguration = self->_currentConfiguration;
   if (currentConfiguration)
   {
-    v5 = [(SBSSystemNotesPresentationConfiguration *)currentConfiguration presentationConfigurationWithPreferredPresentationMode:a3];
+    v5 = [(SBSSystemNotesPresentationConfiguration *)currentConfiguration presentationConfigurationWithPreferredPresentationMode:mode];
     [(SBSystemNotesContentViewController *)self updateConfiguration:v5 sendCreateActionIfNecessary:1];
   }
 }
 
 - (CGSize)preferredContentSize
 {
-  v4 = [(SBSystemNotesContentViewController *)self presentationMode];
-  if (v4)
+  presentationMode = [(SBSystemNotesContentViewController *)self presentationMode];
+  if (presentationMode)
   {
-    if (v4 == 1)
+    if (presentationMode == 1)
     {
       v5 = SBSystemNotesThumbnailSize();
     }
 
     else
     {
-      v7 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v8 = SBSSystemNotesPresentationModeDescription();
-      [v7 handleFailureInMethod:a2 object:self file:@"SBSystemNotesContentViewController.m" lineNumber:362 description:{@"invalid mode: %@", v8}];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"SBSystemNotesContentViewController.m" lineNumber:362 description:{@"invalid mode: %@", v8}];
 
       v5 = *MEMORY[0x277CBF3A8];
       v6 = *(MEMORY[0x277CBF3A8] + 8);
@@ -466,29 +466,29 @@ void __88__SBSystemNotesContentViewController__acquireTraitsParticipantOnWindowS
   return result;
 }
 
-- (unint64_t)updateConfiguration:(id)a3 sendCreateActionIfNecessary:(BOOL)a4
+- (unint64_t)updateConfiguration:(id)configuration sendCreateActionIfNecessary:(BOOL)necessary
 {
-  v4 = a4;
-  v8 = a3;
-  v9 = [(SBSystemNotesContentViewController *)self presentationMode];
+  necessaryCopy = necessary;
+  configurationCopy = configuration;
+  presentationMode = [(SBSystemNotesContentViewController *)self presentationMode];
   v10 = SBSDiffSystemNotesPresentationConfigurations();
   if (v10)
   {
     v11 = v10;
     if ((v10 & 1) != 0 && self->_currentConfiguration)
     {
-      [(SBSystemNotesContentViewController *)self updateConfiguration:v8 sendCreateActionIfNecessary:a2];
+      [(SBSystemNotesContentViewController *)self updateConfiguration:configurationCopy sendCreateActionIfNecessary:a2];
     }
 
-    objc_storeStrong(&self->_currentConfiguration, a3);
+    objc_storeStrong(&self->_currentConfiguration, configuration);
     if ((v11 & 4) != 0)
     {
-      v12 = [(SBSSystemNotesPresentationConfiguration *)self->_currentConfiguration userActivity];
-      v13 = [(SBSystemNotesContentViewController *)self _thumbnailViewForUserActivity:v12];
+      userActivity = [(SBSSystemNotesPresentationConfiguration *)self->_currentConfiguration userActivity];
+      v13 = [(SBSystemNotesContentViewController *)self _thumbnailViewForUserActivity:userActivity];
 
       if (self->_thumbnailView)
       {
-        v14 = v9 == 1;
+        v14 = presentationMode == 1;
       }
 
       else
@@ -500,19 +500,19 @@ void __88__SBSystemNotesContentViewController__acquireTraitsParticipantOnWindowS
       {
         v15 = [MEMORY[0x277D67940] crossfadeViewWithStartView:self->_thumbnailView endView:v13 translucent:0];
         objc_storeStrong(&self->_thumbnailView, v13);
-        v16 = [(SBSystemNotesContentViewController *)self view];
-        [v16 bounds];
+        view = [(SBSystemNotesContentViewController *)self view];
+        [view bounds];
         [v15 setFrame:?];
-        [v16 addSubview:v15];
+        [view addSubview:v15];
         v49[0] = MEMORY[0x277D85DD0];
         v49[1] = 3221225472;
         v49[2] = __86__SBSystemNotesContentViewController_updateConfiguration_sendCreateActionIfNecessary___block_invoke;
         v49[3] = &unk_2783A8ED8;
         v49[4] = self;
-        v50 = v16;
+        v50 = view;
         v51 = v15;
         v17 = v15;
-        v18 = v16;
+        v18 = view;
         [v17 crossfadeWithCompletion:v49];
       }
 
@@ -521,8 +521,8 @@ void __88__SBSystemNotesContentViewController__acquireTraitsParticipantOnWindowS
         objc_storeStrong(&self->_thumbnailView, v13);
       }
 
-      v19 = [(SBSSystemNotesPresentationConfiguration *)self->_currentConfiguration userActivity];
-      v20 = [(SBSystemNotesContentViewController *)self _imageFromUserActivity:v19 presentationMode:0];
+      userActivity2 = [(SBSSystemNotesPresentationConfiguration *)self->_currentConfiguration userActivity];
+      v20 = [(SBSystemNotesContentViewController *)self _imageFromUserActivity:userActivity2 presentationMode:0];
 
       placeholderProvider = self->_placeholderProvider;
       if (placeholderProvider)
@@ -536,15 +536,15 @@ void __88__SBSystemNotesContentViewController__acquireTraitsParticipantOnWindowS
         v23 = self->_placeholderProvider;
         self->_placeholderProvider = v22;
 
-        v24 = [(SBSceneViewController *)self->_sceneViewController sceneHandle];
-        [v24 setPlaceholderContentProvider:self->_placeholderProvider];
+        sceneHandle = [(SBSceneViewController *)self->_sceneViewController sceneHandle];
+        [sceneHandle setPlaceholderContentProvider:self->_placeholderProvider];
       }
     }
 
-    v25 = [v8 preferredPresentationMode];
+    preferredPresentationMode = [configurationCopy preferredPresentationMode];
     if ((v11 & 2) != 0)
     {
-      v26 = v25;
+      v26 = preferredPresentationMode;
       [(BSAbsoluteMachTimer *)self->_thumbnailCooldownTimer cancel];
       self->_thumbnailCooldownTimerFired = 0;
       if (v26)
@@ -578,19 +578,19 @@ void __88__SBSystemNotesContentViewController__acquireTraitsParticipantOnWindowS
         goto LABEL_49;
       }
 
-      v34 = [(SBSystemNotesContentPresentationContext *)self->_presentationContext source];
-      if (v34 > 4)
+      source = [(SBSystemNotesContentPresentationContext *)self->_presentationContext source];
+      if (source > 4)
       {
-        if (v34 == 5)
+        if (source == 5)
         {
-          v40 = [(SBSystemNotesContentPresentationContext *)self->_presentationContext positionConfiguration];
-          v41 = [v40 edgeProtectEnabled];
+          positionConfiguration = [(SBSystemNotesContentPresentationContext *)self->_presentationContext positionConfiguration];
+          edgeProtectEnabled = [positionConfiguration edgeProtectEnabled];
 
-          if (v41)
+          if (edgeProtectEnabled)
           {
             objc_storeStrong(&self->_pendingAnalyticsString, *MEMORY[0x277D6B838]);
-            v37 = SBLogSystemNotes();
-            if (os_log_type_enabled(v37, OS_LOG_TYPE_DEBUG))
+            userActivity3 = SBLogSystemNotes();
+            if (os_log_type_enabled(userActivity3, OS_LOG_TYPE_DEBUG))
             {
               [SBSystemNotesContentViewController updateConfiguration:sendCreateActionIfNecessary:];
             }
@@ -599,8 +599,8 @@ void __88__SBSystemNotesContentViewController__acquireTraitsParticipantOnWindowS
           else
           {
             [MEMORY[0x277D6B7F0] logActivationEvent:*MEMORY[0x277D6B838]];
-            v37 = SBLogSystemNotes();
-            if (os_log_type_enabled(v37, OS_LOG_TYPE_DEBUG))
+            userActivity3 = SBLogSystemNotes();
+            if (os_log_type_enabled(userActivity3, OS_LOG_TYPE_DEBUG))
             {
               [SBSystemNotesContentViewController updateConfiguration:sendCreateActionIfNecessary:];
             }
@@ -609,11 +609,11 @@ void __88__SBSystemNotesContentViewController__acquireTraitsParticipantOnWindowS
           goto LABEL_47;
         }
 
-        if (v34 == 6)
+        if (source == 6)
         {
           [MEMORY[0x277D6B7F0] logActivationEvent:*MEMORY[0x277D6B830]];
-          v37 = SBLogSystemNotes();
-          if (os_log_type_enabled(v37, OS_LOG_TYPE_DEBUG))
+          userActivity3 = SBLogSystemNotes();
+          if (os_log_type_enabled(userActivity3, OS_LOG_TYPE_DEBUG))
           {
             [SBSystemNotesContentViewController updateConfiguration:sendCreateActionIfNecessary:];
           }
@@ -624,7 +624,7 @@ void __88__SBSystemNotesContentViewController__acquireTraitsParticipantOnWindowS
 
       else
       {
-        if (v34 == 2)
+        if (source == 2)
         {
           [MEMORY[0x277D6B7F0] logActivationEvent:*MEMORY[0x277D6B828]];
           v38 = SBLogSystemNotes();
@@ -633,10 +633,10 @@ void __88__SBSystemNotesContentViewController__acquireTraitsParticipantOnWindowS
             [SBSystemNotesContentViewController updateConfiguration:sendCreateActionIfNecessary:];
           }
 
-          v37 = [(SBSSystemNotesPresentationConfiguration *)self->_currentConfiguration userActivity];
-          if (v37)
+          userActivity3 = [(SBSSystemNotesPresentationConfiguration *)self->_currentConfiguration userActivity];
+          if (userActivity3)
           {
-            [MEMORY[0x277D6B788] didActivateBacklinkItemWithUserActivity:v37];
+            [MEMORY[0x277D6B788] didActivateBacklinkItemWithUserActivity:userActivity3];
             v39 = SBLogSystemNotes();
             if (os_log_type_enabled(v39, OS_LOG_TYPE_DEBUG))
             {
@@ -647,16 +647,16 @@ void __88__SBSystemNotesContentViewController__acquireTraitsParticipantOnWindowS
           goto LABEL_47;
         }
 
-        if (v34 == 4)
+        if (source == 4)
         {
-          v35 = [(SBSystemNotesContentPresentationContext *)self->_presentationContext positionConfiguration];
-          v36 = [v35 edgeProtectEnabled];
+          positionConfiguration2 = [(SBSystemNotesContentPresentationContext *)self->_presentationContext positionConfiguration];
+          edgeProtectEnabled2 = [positionConfiguration2 edgeProtectEnabled];
 
-          if (v36)
+          if (edgeProtectEnabled2)
           {
             objc_storeStrong(&self->_pendingAnalyticsString, *MEMORY[0x277D6B840]);
-            v37 = SBLogSystemNotes();
-            if (os_log_type_enabled(v37, OS_LOG_TYPE_DEBUG))
+            userActivity3 = SBLogSystemNotes();
+            if (os_log_type_enabled(userActivity3, OS_LOG_TYPE_DEBUG))
             {
               [SBSystemNotesContentViewController updateConfiguration:sendCreateActionIfNecessary:];
             }
@@ -665,8 +665,8 @@ void __88__SBSystemNotesContentViewController__acquireTraitsParticipantOnWindowS
           else
           {
             [MEMORY[0x277D6B7F0] logActivationEvent:*MEMORY[0x277D6B840]];
-            v37 = SBLogSystemNotes();
-            if (os_log_type_enabled(v37, OS_LOG_TYPE_DEBUG))
+            userActivity3 = SBLogSystemNotes();
+            if (os_log_type_enabled(userActivity3, OS_LOG_TYPE_DEBUG))
             {
               [SBSystemNotesContentViewController updateConfiguration:sendCreateActionIfNecessary:];
             }
@@ -678,22 +678,22 @@ LABEL_47:
 
       [(SBSystemNotesContentViewController *)self _updateForegroundStatus:1];
 LABEL_49:
-      v42 = [(SBSystemNotesContentViewController *)self viewIfLoaded];
-      [v42 setNeedsLayout];
+      viewIfLoaded = [(SBSystemNotesContentViewController *)self viewIfLoaded];
+      [viewIfLoaded setNeedsLayout];
 
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
       [WeakRetained contentViewController:self didChangeToPresentationMode:v26];
     }
   }
 
-  if (v9)
+  if (presentationMode)
   {
     v44 = 0;
   }
 
   else
   {
-    v44 = [(SBSystemNotesContentViewController *)self _sendActionForUpdatedConfiguration:self->_currentConfiguration sendCreateIfNecessary:v4];
+    v44 = [(SBSystemNotesContentViewController *)self _sendActionForUpdatedConfiguration:self->_currentConfiguration sendCreateIfNecessary:necessaryCopy];
   }
 
   return v44;
@@ -720,24 +720,24 @@ void __86__SBSystemNotesContentViewController_updateConfiguration_sendCreateActi
   }
 }
 
-- (unint64_t)_sendActionForUpdatedConfiguration:(id)a3 sendCreateIfNecessary:(BOOL)a4
+- (unint64_t)_sendActionForUpdatedConfiguration:(id)configuration sendCreateIfNecessary:(BOOL)necessary
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(SBSceneViewController *)self->_sceneViewController sceneHandle];
-  v8 = [v7 sceneIfExists];
-  if (v8)
+  necessaryCopy = necessary;
+  configurationCopy = configuration;
+  sceneHandle = [(SBSceneViewController *)self->_sceneViewController sceneHandle];
+  sceneIfExists = [sceneHandle sceneIfExists];
+  if (sceneIfExists)
   {
-    v9 = [v6 userActivity];
-    v10 = v9;
-    if (!v4 || v9)
+    userActivity = [configurationCopy userActivity];
+    v10 = userActivity;
+    if (!necessaryCopy || userActivity)
     {
-      if (!v9)
+      if (!userActivity)
       {
         v13 = 0;
 LABEL_17:
-        v14 = SBLogSystemNotes();
-        if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
+        _uiActivityContinuationAction = SBLogSystemNotes();
+        if (os_log_type_enabled(_uiActivityContinuationAction, OS_LOG_TYPE_DEBUG))
         {
           [SBSystemNotesContentViewController _sendActionForUpdatedConfiguration:sendCreateIfNecessary:];
         }
@@ -752,9 +752,9 @@ LABEL_17:
         _os_log_impl(&dword_21ED4E000, v15, OS_LOG_TYPE_DEFAULT, "sending UIUserActivityContinuationAction to remote scene", v18, 2u);
       }
 
-      v14 = [v6 _uiActivityContinuationAction];
+      _uiActivityContinuationAction = [configurationCopy _uiActivityContinuationAction];
       v13 = 2;
-      if (!v14)
+      if (!_uiActivityContinuationAction)
       {
         goto LABEL_17;
       }
@@ -772,16 +772,16 @@ LABEL_17:
       v12 = [MEMORY[0x277CF0B60] responderWithHandler:&__block_literal_global_292];
       [v12 setTimeout:{dispatch_time(0, 2000000000)}];
       v13 = 1;
-      v14 = [objc_alloc(MEMORY[0x277D66C90]) initWithReason:1 responder:v12];
+      _uiActivityContinuationAction = [objc_alloc(MEMORY[0x277D66C90]) initWithReason:1 responder:v12];
 
-      if (!v14)
+      if (!_uiActivityContinuationAction)
       {
         goto LABEL_17;
       }
     }
 
-    v16 = [MEMORY[0x277CBEB98] setWithObject:v14];
-    [v8 sendActions:v16];
+    v16 = [MEMORY[0x277CBEB98] setWithObject:_uiActivityContinuationAction];
+    [sceneIfExists sendActions:v16];
 
 LABEL_19:
     goto LABEL_20;
@@ -813,35 +813,35 @@ void __95__SBSystemNotesContentViewController__sendActionForUpdatedConfiguration
   }
 }
 
-- (void)_setBlurred:(BOOL)a3
+- (void)_setBlurred:(BOOL)blurred
 {
   blurView = self->_blurView;
-  if (a3)
+  if (blurred)
   {
     if (!blurView)
     {
-      v20 = [(SBSystemNotesContentViewController *)self view];
-      v5 = [(SBDeviceApplicationSceneViewController *)self->_sceneViewController view];
-      v6 = [(SBSceneViewController *)self->_sceneViewController sceneHandle];
-      v7 = [v6 application];
-      v8 = [v7 bundleIdentifier];
+      view = [(SBSystemNotesContentViewController *)self view];
+      view2 = [(SBDeviceApplicationSceneViewController *)self->_sceneViewController view];
+      sceneHandle = [(SBSceneViewController *)self->_sceneViewController sceneHandle];
+      application = [sceneHandle application];
+      bundleIdentifier = [application bundleIdentifier];
 
       v9 = [SBApplicationBlurContentView alloc];
-      [v20 bounds];
-      v10 = [(SBApplicationBlurContentView *)v9 initWithFrame:v8 bundleIdentifier:v5 targetViewToBlur:?];
+      [view bounds];
+      v10 = [(SBApplicationBlurContentView *)v9 initWithFrame:bundleIdentifier bundleIdentifier:view2 targetViewToBlur:?];
       v11 = self->_blurView;
       self->_blurView = v10;
 
       v12 = [MEMORY[0x277CF0D38] factoryWithDuration:0.25];
       [(SBApplicationBlurContentView *)self->_blurView generateAndAnimateToBlurredSnapshotWithAnimationFactory:v12 completion:0];
       [(SBApplicationBlurContentView *)self->_blurView setClipsToBounds:1];
-      v13 = [(SBApplicationBlurContentView *)self->_blurView layer];
-      [v13 setAllowsGroupOpacity:1];
+      layer = [(SBApplicationBlurContentView *)self->_blurView layer];
+      [layer setAllowsGroupOpacity:1];
 
-      v14 = [(SBApplicationBlurContentView *)self->_blurView iconView];
-      [v14 setHidden:1];
+      iconView = [(SBApplicationBlurContentView *)self->_blurView iconView];
+      [iconView setHidden:1];
 
-      [v20 addSubview:self->_blurView];
+      [view addSubview:self->_blurView];
     }
   }
 
@@ -868,10 +868,10 @@ void __95__SBSystemNotesContentViewController__sendActionForUpdatedConfiguration
   }
 }
 
-- (void)containerViewController:(id)a3 didSettleOnStashState:(BOOL)a4
+- (void)containerViewController:(id)controller didSettleOnStashState:(BOOL)state
 {
-  v6 = a3;
-  if (!a4)
+  controllerCopy = controller;
+  if (!state)
   {
     if (self->_pendingAnalyticsString)
     {
@@ -886,30 +886,30 @@ void __95__SBSystemNotesContentViewController__sendActionForUpdatedConfiguration
       self->_pendingAnalyticsString = 0;
     }
 
-    if (([v6 isStashed] & 1) == 0)
+    if (([controllerCopy isStashed] & 1) == 0)
     {
       [(SBSystemNotesContentViewController *)self _updateSceneFrameWithCompletion:0];
     }
   }
 }
 
-- (void)containerViewControllerWillBeginSizeChange:(id)a3 behavior:(int)a4
+- (void)containerViewControllerWillBeginSizeChange:(id)change behavior:(int)behavior
 {
-  if ([(SBSystemNotesContentViewController *)self presentationMode:a3]!= 1)
+  if ([(SBSystemNotesContentViewController *)self presentationMode:change]!= 1)
   {
     [(SBSystemNotesContentViewController *)self _setBlurred:1];
-    v5 = [(SBDeviceApplicationSceneViewController *)self->_sceneViewController view];
-    [v5 setHidden:1];
+    view = [(SBDeviceApplicationSceneViewController *)self->_sceneViewController view];
+    [view setHidden:1];
   }
 }
 
-- (void)containerViewControllerDidEndSizeChange:(id)a3
+- (void)containerViewControllerDidEndSizeChange:(id)change
 {
-  v4 = [(SBDeviceApplicationSceneViewController *)self->_sceneViewController view];
-  [v4 setHidden:0];
+  view = [(SBDeviceApplicationSceneViewController *)self->_sceneViewController view];
+  [view setHidden:0];
 
-  v5 = [(SBSystemNotesContentViewController *)self view];
-  [v5 bounds];
+  view2 = [(SBSystemNotesContentViewController *)self view];
+  [view2 bounds];
   [(SBSystemNotesContentViewController *)self _setPreferredSceneContentSize:v6, v7];
 
   v8[0] = MEMORY[0x277D85DD0];
@@ -920,20 +920,20 @@ void __95__SBSystemNotesContentViewController__sendActionForUpdatedConfiguration
   [(SBSystemNotesContentViewController *)self _updateSceneFrameWithCompletion:v8];
 }
 
-- (void)containerViewControllerDidEndInteraction:(id)a3 targetWindowScene:(id)a4
+- (void)containerViewControllerDidEndInteraction:(id)interaction targetWindowScene:(id)scene
 {
-  if (([a3 isStashed] & 1) == 0)
+  if (([interaction isStashed] & 1) == 0)
   {
 
     [(SBSystemNotesContentViewController *)self _updateSceneFrameWithCompletion:0];
   }
 }
 
-- (void)_updateSceneFrameWithCompletion:(id)a3
+- (void)_updateSceneFrameWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(SBSceneViewController *)self->_sceneViewController sceneHandle];
-  v6 = [v5 sceneIfExists];
+  completionCopy = completion;
+  sceneHandle = [(SBSceneViewController *)self->_sceneViewController sceneHandle];
+  sceneIfExists = [sceneHandle sceneIfExists];
 
   [(SBSystemNotesContentViewController *)self _sceneFrame];
   v8 = v7;
@@ -947,9 +947,9 @@ void __95__SBSystemNotesContentViewController__sendActionForUpdatedConfiguration
   v19.size.height = v13;
   if (CGRectEqualToRect(*p_lastKnownSceneFrame, v19))
   {
-    if (v4)
+    if (completionCopy)
     {
-      v4[2](v4);
+      completionCopy[2](completionCopy);
     }
   }
 
@@ -971,8 +971,8 @@ void __95__SBSystemNotesContentViewController__sendActionForUpdatedConfiguration
     v16[1] = 3221225472;
     v16[2] = __70__SBSystemNotesContentViewController__updateSceneFrameWithCompletion___block_invoke_2;
     v16[3] = &unk_2783B7568;
-    v17 = v4;
-    [v6 performUpdate:v18 withCompletion:v16];
+    v17 = completionCopy;
+    [sceneIfExists performUpdate:v18 withCompletion:v16];
   }
 }
 
@@ -987,10 +987,10 @@ uint64_t __70__SBSystemNotesContentViewController__updateSceneFrameWithCompletio
   return result;
 }
 
-- (BOOL)containerViewController:(id)a3 shouldHandleStashingForTransitionContext:(id)a4
+- (BOOL)containerViewController:(id)controller shouldHandleStashingForTransitionContext:(id)context
 {
   v12 = *MEMORY[0x277D85DE8];
-  v5 = [(SBSystemNotesContentViewController *)self presentationMode:a3];
+  v5 = [(SBSystemNotesContentViewController *)self presentationMode:controller];
   if (v5 == 1)
   {
     v6 = SBLogSystemNotes();
@@ -1009,7 +1009,7 @@ uint64_t __70__SBSystemNotesContentViewController__updateSceneFrameWithCompletio
   return v5 == 1;
 }
 
-- (void)_handleThumbnailTapGesture:(id)a3
+- (void)_handleThumbnailTapGesture:(id)gesture
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (WeakRetained)
@@ -1025,12 +1025,12 @@ uint64_t __70__SBSystemNotesContentViewController__updateSceneFrameWithCompletio
   }
 }
 
-- (BOOL)_updateForegroundStatus:(BOOL)a3
+- (BOOL)_updateForegroundStatus:(BOOL)status
 {
-  v3 = a3;
+  statusCopy = status;
   v19 = *MEMORY[0x277D85DE8];
-  v5 = [(SBSceneViewController *)self->_sceneViewController sceneHandle];
-  v6 = [(SBSystemNotesContentViewController *)self _sbWindowSceneForSceneHandle:v5];
+  sceneHandle = [(SBSceneViewController *)self->_sceneViewController sceneHandle];
+  v6 = [(SBSystemNotesContentViewController *)self _sbWindowSceneForSceneHandle:sceneHandle];
   [(SBSystemNotesContentViewController *)self _acquireTraitsParticipantOnWindowSceneIfNecessary:v6];
 
   workspace = self->_workspace;
@@ -1039,8 +1039,8 @@ uint64_t __70__SBSystemNotesContentViewController__updateSceneFrameWithCompletio
   v14[2] = __62__SBSystemNotesContentViewController__updateForegroundStatus___block_invoke;
   v14[3] = &unk_2783B1860;
   v14[4] = self;
-  v16 = v3;
-  v8 = v5;
+  v16 = statusCopy;
+  v8 = sceneHandle;
   v15 = v8;
   v9 = [(SBMainWorkspace *)workspace requestTransitionWithOptions:0 builder:v14 validator:&__block_literal_global_76];
   v10 = SBLogPIP();
@@ -1049,13 +1049,13 @@ uint64_t __70__SBSystemNotesContentViewController__updateSceneFrameWithCompletio
   {
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [v8 sceneIdentifier];
+      sceneIdentifier = [v8 sceneIdentifier];
       *buf = 138543362;
-      v18 = v12;
+      v18 = sceneIdentifier;
       _os_log_impl(&dword_21ED4E000, v11, OS_LOG_TYPE_DEFAULT, "PIP scene transition succeeded; sceneID: %{public}@", buf, 0xCu);
     }
 
-    if (v3)
+    if (statusCopy)
     {
       self->_haveBeenForeground = 1;
     }
@@ -1143,65 +1143,65 @@ SBPIPSceneContentSceneUpdateWorkspaceTransaction *__62__SBSystemNotesContentView
   return v15;
 }
 
-- (id)layoutStateForApplicationTransitionContext:(id)a3
+- (id)layoutStateForApplicationTransitionContext:(id)context
 {
-  v3 = a3;
-  v4 = [v3 request];
-  v5 = [v4 layoutStateForApplicationTransitionContext:v3];
+  contextCopy = context;
+  request = [contextCopy request];
+  v5 = [request layoutStateForApplicationTransitionContext:contextCopy];
 
   return v5;
 }
 
-- (id)previousLayoutStateForApplicationTransitionContext:(id)a3
+- (id)previousLayoutStateForApplicationTransitionContext:(id)context
 {
-  v3 = a3;
-  v4 = [v3 request];
-  v5 = [v4 previousLayoutStateForApplicationTransitionContext:v3];
+  contextCopy = context;
+  request = [contextCopy request];
+  v5 = [request previousLayoutStateForApplicationTransitionContext:contextCopy];
 
   return v5;
 }
 
-- (BOOL)_hitTestTouch:(id)a3 gestureRecognizer:(id)a4
+- (BOOL)_hitTestTouch:(id)touch gestureRecognizer:(id)recognizer
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SBSystemNotesContentViewController *)self view];
-  v9 = [v6 view];
+  recognizerCopy = recognizer;
+  touchCopy = touch;
+  view = [(SBSystemNotesContentViewController *)self view];
+  view2 = [recognizerCopy view];
 
-  v10 = [v9 window];
+  window = [view2 window];
 
-  v11 = [v10 screen];
-  v12 = [v11 fixedCoordinateSpace];
+  screen = [window screen];
+  fixedCoordinateSpace = [screen fixedCoordinateSpace];
 
-  v13 = [v7 view];
-  [v7 locationInView:v13];
+  view3 = [touchCopy view];
+  [touchCopy locationInView:view3];
   v15 = v14;
   v17 = v16;
 
-  [v10 convertPoint:v12 toCoordinateSpace:{v15, v17}];
+  [window convertPoint:fixedCoordinateSpace toCoordinateSpace:{v15, v17}];
   v19 = v18;
   v21 = v20;
 
-  [v8 convertPoint:v12 fromCoordinateSpace:{v19, v21}];
-  v22 = [v8 hitTest:0 withEvent:?];
-  LOBYTE(v7) = v22 != 0;
+  [view convertPoint:fixedCoordinateSpace fromCoordinateSpace:{v19, v21}];
+  v22 = [view hitTest:0 withEvent:?];
+  LOBYTE(touchCopy) = v22 != 0;
 
-  return v7;
+  return touchCopy;
 }
 
-- (BOOL)transientUIHandledTouch:(id)a3 withSystemGestureRecognizer:(id)a4
+- (BOOL)transientUIHandledTouch:(id)touch withSystemGestureRecognizer:(id)recognizer
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  touchCopy = touch;
+  recognizerCopy = recognizer;
   if ([(SBSystemNotesContentViewController *)self presentationMode]!= 1)
   {
     goto LABEL_8;
   }
 
-  if ([(SBSystemNotesContentViewController *)self _hitTestTouch:v6 gestureRecognizer:v7])
+  if ([(SBSystemNotesContentViewController *)self _hitTestTouch:touchCopy gestureRecognizer:recognizerCopy])
   {
-    [(SBSystemNotesContentViewController *)self _handleThumbnailTapGesture:v7];
+    [(SBSystemNotesContentViewController *)self _handleThumbnailTapGesture:recognizerCopy];
 LABEL_8:
     v11 = 0;
     goto LABEL_9;
@@ -1229,10 +1229,10 @@ LABEL_9:
   return v11;
 }
 
-- (void)_setPreferredSceneContentSize:(CGSize)a3
+- (void)_setPreferredSceneContentSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v6 = SBSystemNotesMinimumWindowSize();
   v8 = v7;
   v9 = SBSystemNotesMaximumWindowSize();
@@ -1258,14 +1258,14 @@ LABEL_9:
     }
   }
 
-  v14 = [(SBSystemNotesContentViewController *)self view];
-  [v14 setNeedsLayout];
+  view = [(SBSystemNotesContentViewController *)self view];
+  [view setNeedsLayout];
 }
 
 - (CGRect)_sceneFrame
 {
-  v3 = [(TRAParticipant *)self->_traitsParticipant sbf_currentOrientation];
-  if ((v3 - 3) >= 2)
+  sbf_currentOrientation = [(TRAParticipant *)self->_traitsParticipant sbf_currentOrientation];
+  if ((sbf_currentOrientation - 3) >= 2)
   {
     width = self->_preferredSceneContentSize.width;
   }
@@ -1275,7 +1275,7 @@ LABEL_9:
     width = self->_preferredSceneContentSize.height;
   }
 
-  if ((v3 - 3) >= 2)
+  if ((sbf_currentOrientation - 3) >= 2)
   {
     height = self->_preferredSceneContentSize.height;
   }
@@ -1294,22 +1294,22 @@ LABEL_9:
   return result;
 }
 
-- (id)_thumbnailViewForUserActivity:(id)a3
+- (id)_thumbnailViewForUserActivity:(id)activity
 {
-  v3 = [(SBSystemNotesContentViewController *)self _imageFromUserActivity:a3 presentationMode:1];
+  v3 = [(SBSystemNotesContentViewController *)self _imageFromUserActivity:activity presentationMode:1];
   v4 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:v3];
   [v4 setContentMode:2];
 
   return v4;
 }
 
-- (id)_imageFromUserActivity:(id)a3 presentationMode:(int64_t)a4
+- (id)_imageFromUserActivity:(id)activity presentationMode:(int64_t)mode
 {
   v7 = MEMORY[0x277D359B0];
-  v8 = a3;
-  v9 = [v7 shared];
+  activityCopy = activity;
+  shared = [v7 shared];
   v18 = 0;
-  v10 = [v9 previewForUserActivity:v8 error:&v18];
+  v10 = [shared previewForUserActivity:activityCopy error:&v18];
 
   v11 = v18;
   if (v11)
@@ -1321,13 +1321,13 @@ LABEL_9:
     }
   }
 
-  if (!a4)
+  if (!mode)
   {
     v13 = MEMORY[0x277D359A0];
     goto LABEL_9;
   }
 
-  if (a4 == 1)
+  if (mode == 1)
   {
     v13 = MEMORY[0x277D359A8];
 LABEL_9:
@@ -1335,9 +1335,9 @@ LABEL_9:
     goto LABEL_11;
   }
 
-  v15 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v16 = SBSSystemNotesPresentationModeDescription();
-  [v15 handleFailureInMethod:a2 object:self file:@"SBSystemNotesContentViewController.m" lineNumber:792 description:{@"unsupported presentationMode: %@", v16}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SBSystemNotesContentViewController.m" lineNumber:792 description:{@"unsupported presentationMode: %@", v16}];
 
   v14 = 0;
 LABEL_11:
@@ -1345,25 +1345,25 @@ LABEL_11:
   return v14;
 }
 
-- (BOOL)shouldBeginPointerInteractionRequest:(id)a3 atLocation:(CGPoint)a4 forView:(id)a5
+- (BOOL)shouldBeginPointerInteractionRequest:(id)request atLocation:(CGPoint)location forView:(id)view
 {
-  v7 = a3;
-  v8 = a5;
+  requestCopy = request;
+  viewCopy = view;
   nubView = self->_nubView;
   if (nubView && ([(SBNubView *)nubView isHiddenOrHasHiddenAncestor]& 1) == 0)
   {
-    v10 = [(SBNubView *)self->_nubView _isInAWindow];
+    _isInAWindow = [(SBNubView *)self->_nubView _isInAWindow];
   }
 
   else
   {
-    v10 = 0;
+    _isInAWindow = 0;
   }
 
-  return v10;
+  return _isInAWindow;
 }
 
-- (UIEdgeInsets)pointerInteractionHitTestInsetsForView:(id)a3
+- (UIEdgeInsets)pointerInteractionHitTestInsetsForView:(id)view
 {
   +[SBNubView height];
   v4 = v3;
@@ -1381,12 +1381,12 @@ LABEL_11:
   return result;
 }
 
-- (id)styleForRegion:(id)a3 forView:(id)a4
+- (id)styleForRegion:(id)region forView:(id)view
 {
   v5 = [objc_alloc(MEMORY[0x277D75B90]) initWithView:self->_nubView];
   v6 = [MEMORY[0x277D75860] effectWithPreview:v5];
-  v7 = [(SBNubView *)self->_nubView contentView];
-  [v7 frame];
+  contentView = [(SBNubView *)self->_nubView contentView];
+  [contentView frame];
   v9 = v8;
   v11 = v10;
   v13 = v12;
@@ -1398,16 +1398,16 @@ LABEL_11:
   return v17;
 }
 
-- (void)sceneHandle:(id)a3 didCreateScene:(id)a4
+- (void)sceneHandle:(id)handle didCreateScene:(id)scene
 {
-  v5 = a3;
+  handleCopy = handle;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __65__SBSystemNotesContentViewController_sceneHandle_didCreateScene___block_invoke;
   v7[3] = &unk_2783A92D8;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
+  v8 = handleCopy;
+  v6 = handleCopy;
   dispatch_async(MEMORY[0x277D85CD0], v7);
 }
 
@@ -1430,10 +1430,10 @@ void __65__SBSystemNotesContentViewController_sceneHandle_didCreateScene___block
   [*(a1 + 32) _acquireTraitsParticipantOnWindowSceneIfNecessary:v5];
 }
 
-- (void)sceneHandle:(id)a3 didDestroyScene:(id)a4
+- (void)sceneHandle:(id)handle didDestroyScene:(id)scene
 {
   v10 = *MEMORY[0x277D85DE8];
-  [(SBSystemNotesContentViewController *)self _invalidateTraitsParticipant:a3];
+  [(SBSystemNotesContentViewController *)self _invalidateTraitsParticipant:handle];
   v5 = SBLogSystemNotes();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1447,16 +1447,16 @@ void __65__SBSystemNotesContentViewController_sceneHandle_didCreateScene___block
   [WeakRetained contentViewControllerWantsDismissal:self forReason:2 animated:0];
 }
 
-- (BOOL)sceneHandle:(id)a3 didReceiveAction:(id)a4
+- (BOOL)sceneHandle:(id)handle didReceiveAction:(id)action
 {
   v36 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  handleCopy = handle;
+  actionCopy = action;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v7 = objc_opt_class();
-    v8 = v6;
+    v8 = actionCopy;
     if (v7)
     {
       if (objc_opt_isKindOfClass())
@@ -1477,12 +1477,12 @@ void __65__SBSystemNotesContentViewController_sceneHandle_didCreateScene___block
 
     v11 = v9;
 
-    v12 = [v5 scene];
-    if ([v11 canSendResponse] && (objc_msgSend(v12, "clientProcess"), v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "hasEntitlement:", @"com.apple.springboard.systemNotesScreenshot"), v13, v14))
+    scene = [handleCopy scene];
+    if ([v11 canSendResponse] && (objc_msgSend(scene, "clientProcess"), v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "hasEntitlement:", @"com.apple.springboard.systemNotesScreenshot"), v13, v14))
     {
-      v15 = [v11 displaysToScreenshot];
+      displaysToScreenshot = [v11 displaysToScreenshot];
       v16 = MEMORY[0x277CBEB58];
-      v17 = [v15 count];
+      v17 = [displaysToScreenshot count];
       if (v17 <= 1)
       {
         v18 = 1;
@@ -1494,14 +1494,14 @@ void __65__SBSystemNotesContentViewController_sceneHandle_didCreateScene___block
       }
 
       v19 = [v16 setWithCapacity:v18];
-      if ([v15 count])
+      if ([displaysToScreenshot count])
       {
         v33 = 0u;
         v34 = 0u;
         v31 = 0u;
         v32 = 0u;
-        v29 = v15;
-        v20 = v15;
+        v29 = displaysToScreenshot;
+        v20 = displaysToScreenshot;
         v21 = [v20 countByEnumeratingWithState:&v31 objects:v35 count:16];
         if (v21)
         {
@@ -1525,14 +1525,14 @@ void __65__SBSystemNotesContentViewController_sceneHandle_didCreateScene___block
           while (v22);
         }
 
-        v15 = v29;
+        displaysToScreenshot = v29;
       }
 
       else
       {
-        v25 = [v12 settings];
-        v26 = [v25 sb_displayIdentityForSceneManagers];
-        [v19 addObject:v26];
+        settings = [scene settings];
+        sb_displayIdentityForSceneManagers = [settings sb_displayIdentityForSceneManagers];
+        [v19 addObject:sb_displayIdentityForSceneManagers];
       }
 
       v30 = v11;

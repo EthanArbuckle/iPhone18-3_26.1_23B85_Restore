@@ -1,37 +1,37 @@
 @interface PFCameraMetadata
 - (NSData)JSONDebugDescription;
-- (PFCameraMetadata)initWithCoder:(id)a3;
-- (PFCameraMetadata)initWithJunkImageClassificationObservations:(id)a3 imageAestheticsObservation:(id)a4 saliencyObservation:(id)a5 scenePrintObservation:(id)a6 detectedObjectsInfoHumanFaces:(id)a7 detectedObjectsInfoHumanBodies:(id)a8 detectedObjectsInfoCatBodies:(id)a9 detectedObjectsInfoDogBodies:(id)a10 detectedObjectsSalientObjects:(id)a11 smartCamInfo:(id)a12 stitchConfidence:(unint64_t)a13 horizonLinePresent:(BOOL)a14 horizonLineAngleInDegrees:(float)a15 captureFolderPath:(id)a16 semanticDevelopmentGatingObservations:(id)a17 faceObservations:(id)a18 torsoprints:(id)a19 foodAndDrinkObservations:(id)a20 semanticEnhanceScene:(int64_t)a21 contactIDsInProximity:(id)a22 sharedLibraryMode:(int64_t)a23;
-- (PFCameraMetadata)initWithSpatialOverCapturePrivateClientMetadata:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (PFCameraMetadata)initWithCoder:(id)coder;
+- (PFCameraMetadata)initWithJunkImageClassificationObservations:(id)observations imageAestheticsObservation:(id)observation saliencyObservation:(id)saliencyObservation scenePrintObservation:(id)printObservation detectedObjectsInfoHumanFaces:(id)faces detectedObjectsInfoHumanBodies:(id)bodies detectedObjectsInfoCatBodies:(id)catBodies detectedObjectsInfoDogBodies:(id)self0 detectedObjectsSalientObjects:(id)self1 smartCamInfo:(id)self2 stitchConfidence:(unint64_t)self3 horizonLinePresent:(BOOL)self4 horizonLineAngleInDegrees:(float)self5 captureFolderPath:(id)self6 semanticDevelopmentGatingObservations:(id)self7 faceObservations:(id)self8 torsoprints:(id)self9 foodAndDrinkObservations:(id)drinkObservations semanticEnhanceScene:(int64_t)scene contactIDsInProximity:(id)proximity sharedLibraryMode:(int64_t)mode;
+- (PFCameraMetadata)initWithSpatialOverCapturePrivateClientMetadata:(id)metadata;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PFCameraMetadata
 
-- (PFCameraMetadata)initWithCoder:(id)a3
+- (PFCameraMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(PFCameraMetadata *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectForKey:@"semanticEnhanceScene"];
+    v6 = [coderCopy decodeObjectForKey:@"semanticEnhanceScene"];
     v5->_semanticEnhanceScene = [v6 integerValue];
 
-    v7 = [v4 decodeObjectForKey:@"semanticEnhanceSceneConfidence"];
+    v7 = [coderCopy decodeObjectForKey:@"semanticEnhanceSceneConfidence"];
     [v7 floatValue];
     v5->_semanticEnhanceSceneConfidence = v8;
 
     v9 = MEMORY[0x1E695DFD8];
     v10 = objc_opt_class();
     v11 = [v9 setWithObjects:{v10, getVNRecognizedObjectObservationClass(), 0}];
-    v12 = [v4 decodeObjectOfClasses:v11 forKey:@"foodBoxes"];
+    v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"foodBoxes"];
     foodAndDrinkObservations = v5->_foodAndDrinkObservations;
     v5->_foodAndDrinkObservations = v12;
 
     v14 = MEMORY[0x1E695DFD8];
     v15 = objc_opt_class();
     v16 = [v14 setWithObjects:{v15, getVNFaceObservationClass(), 0}];
-    v17 = [v4 decodeObjectOfClasses:v16 forKey:@"faceBoxes"];
+    v17 = [coderCopy decodeObjectOfClasses:v16 forKey:@"faceBoxes"];
     faceObservations = v5->_faceObservations;
     v5->_faceObservations = v17;
   }
@@ -39,21 +39,21 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E696AD98];
   semanticEnhanceScene = self->_semanticEnhanceScene;
-  v9 = a3;
+  coderCopy = coder;
   v6 = [v4 numberWithInteger:semanticEnhanceScene];
-  [v9 encodeObject:v6 forKey:@"semanticEnhanceScene"];
+  [coderCopy encodeObject:v6 forKey:@"semanticEnhanceScene"];
 
   semanticEnhanceSceneConfidence = self->_semanticEnhanceSceneConfidence;
   *&semanticEnhanceSceneConfidence = semanticEnhanceSceneConfidence;
   v8 = [MEMORY[0x1E696AD98] numberWithFloat:semanticEnhanceSceneConfidence];
-  [v9 encodeObject:v8 forKey:@"semanticEnhanceSceneConfidence"];
+  [coderCopy encodeObject:v8 forKey:@"semanticEnhanceSceneConfidence"];
 
-  [v9 encodeObject:self->_foodAndDrinkObservations forKey:@"foodBoxes"];
-  [v9 encodeObject:self->_faceObservations forKey:@"faceBoxes"];
+  [coderCopy encodeObject:self->_foodAndDrinkObservations forKey:@"foodBoxes"];
+  [coderCopy encodeObject:self->_faceObservations forKey:@"faceBoxes"];
 }
 
 - (NSData)JSONDebugDescription
@@ -91,14 +91,14 @@
   v9 = [MEMORY[0x1E696AD98] numberWithInteger:self->_sharedLibraryMode];
   [v3 addObject:v9 forKey:@"sharedLibraryMode"];
 
-  v10 = [v3 JSONDebugData];
+  jSONDebugData = [v3 JSONDebugData];
 
-  return v10;
+  return jSONDebugData;
 }
 
-- (PFCameraMetadata)initWithSpatialOverCapturePrivateClientMetadata:(id)a3
+- (PFCameraMetadata)initWithSpatialOverCapturePrivateClientMetadata:(id)metadata
 {
-  v4 = a3;
+  metadataCopy = metadata;
   v10.receiver = self;
   v10.super_class = PFCameraMetadata;
   v5 = [(PFCameraMetadata *)&v10 init];
@@ -106,15 +106,15 @@
   {
     if (objc_opt_respondsToSelector())
     {
-      v6 = [v4 spatialOverCaptureImageStitchingConfidenceScore];
+      spatialOverCaptureImageStitchingConfidenceScore = [metadataCopy spatialOverCaptureImageStitchingConfidenceScore];
     }
 
     else
     {
-      v6 = 0;
+      spatialOverCaptureImageStitchingConfidenceScore = 0;
     }
 
-    v5->_stitchConfidence = v6;
+    v5->_stitchConfidence = spatialOverCaptureImageStitchingConfidenceScore;
     if ((objc_opt_respondsToSelector() & 1) == 0)
     {
       v5->_horizonLinePresent = 0;
@@ -122,11 +122,11 @@
       goto LABEL_9;
     }
 
-    v7 = [v4 spatialOverCaptureImageHorizonLinePresent];
-    v5->_horizonLinePresent = v7;
-    if (v7)
+    spatialOverCaptureImageHorizonLinePresent = [metadataCopy spatialOverCaptureImageHorizonLinePresent];
+    v5->_horizonLinePresent = spatialOverCaptureImageHorizonLinePresent;
+    if (spatialOverCaptureImageHorizonLinePresent)
     {
-      [v4 spatialOverCaptureImageHorizonLineAngleInDegrees];
+      [metadataCopy spatialOverCaptureImageHorizonLineAngleInDegrees];
 LABEL_9:
       v5->_horizonLineAngleInDegrees = v8;
     }
@@ -135,52 +135,52 @@ LABEL_9:
   return v5;
 }
 
-- (PFCameraMetadata)initWithJunkImageClassificationObservations:(id)a3 imageAestheticsObservation:(id)a4 saliencyObservation:(id)a5 scenePrintObservation:(id)a6 detectedObjectsInfoHumanFaces:(id)a7 detectedObjectsInfoHumanBodies:(id)a8 detectedObjectsInfoCatBodies:(id)a9 detectedObjectsInfoDogBodies:(id)a10 detectedObjectsSalientObjects:(id)a11 smartCamInfo:(id)a12 stitchConfidence:(unint64_t)a13 horizonLinePresent:(BOOL)a14 horizonLineAngleInDegrees:(float)a15 captureFolderPath:(id)a16 semanticDevelopmentGatingObservations:(id)a17 faceObservations:(id)a18 torsoprints:(id)a19 foodAndDrinkObservations:(id)a20 semanticEnhanceScene:(int64_t)a21 contactIDsInProximity:(id)a22 sharedLibraryMode:(int64_t)a23
+- (PFCameraMetadata)initWithJunkImageClassificationObservations:(id)observations imageAestheticsObservation:(id)observation saliencyObservation:(id)saliencyObservation scenePrintObservation:(id)printObservation detectedObjectsInfoHumanFaces:(id)faces detectedObjectsInfoHumanBodies:(id)bodies detectedObjectsInfoCatBodies:(id)catBodies detectedObjectsInfoDogBodies:(id)self0 detectedObjectsSalientObjects:(id)self1 smartCamInfo:(id)self2 stitchConfidence:(unint64_t)self3 horizonLinePresent:(BOOL)self4 horizonLineAngleInDegrees:(float)self5 captureFolderPath:(id)self6 semanticDevelopmentGatingObservations:(id)self7 faceObservations:(id)self8 torsoprints:(id)self9 foodAndDrinkObservations:(id)drinkObservations semanticEnhanceScene:(int64_t)scene contactIDsInProximity:(id)proximity sharedLibraryMode:(int64_t)mode
 {
-  v50 = a3;
-  v49 = a4;
-  v48 = a5;
-  v47 = a6;
-  v35 = a7;
-  v46 = a7;
-  v45 = a8;
-  v44 = a9;
-  v43 = a10;
-  v42 = a11;
-  v41 = a12;
-  v29 = a16;
-  v40 = a17;
-  v39 = a18;
-  v38 = a19;
-  v37 = a20;
-  v30 = a22;
+  observationsCopy = observations;
+  observationCopy = observation;
+  saliencyObservationCopy = saliencyObservation;
+  printObservationCopy = printObservation;
+  facesCopy = faces;
+  facesCopy2 = faces;
+  bodiesCopy = bodies;
+  catBodiesCopy = catBodies;
+  dogBodiesCopy = dogBodies;
+  objectsCopy = objects;
+  infoCopy = info;
+  pathCopy = path;
+  gatingObservationsCopy = gatingObservations;
+  faceObservationsCopy = faceObservations;
+  torsoprintsCopy = torsoprints;
+  drinkObservationsCopy = drinkObservations;
+  proximityCopy = proximity;
   v51.receiver = self;
   v51.super_class = PFCameraMetadata;
   v31 = [(PFCameraMetadata *)&v51 init];
   v32 = v31;
   if (v31)
   {
-    objc_storeStrong(&v31->_junkImageClassificationObservations, a3);
-    objc_storeStrong(&v32->_imageAestheticsObservation, a4);
-    objc_storeStrong(&v32->_detectedHumanFaces, v35);
-    objc_storeStrong(&v32->_detectedHumanBodies, a8);
-    objc_storeStrong(&v32->_detectedCatBodies, a9);
-    objc_storeStrong(&v32->_detectedDogBodies, a10);
-    objc_storeStrong(&v32->_detectedSalientObjects, a11);
-    objc_storeStrong(&v32->_saliencyObservation, a5);
-    objc_storeStrong(&v32->_scenePrintObservation, a6);
-    objc_storeStrong(&v32->_captureFolderPath, a16);
-    objc_storeStrong(&v32->_semanticDevelopmentGatingObservations, a17);
-    objc_storeStrong(&v32->_faceObservations, a18);
-    objc_storeStrong(&v32->_torsoprints, a19);
-    objc_storeStrong(&v32->_foodAndDrinkObservations, a20);
-    objc_storeStrong(&v32->_smartCamInfo, a12);
-    objc_storeStrong(&v32->_contactIDsInProximity, a22);
-    v32->_stitchConfidence = a13;
-    v32->_horizonLinePresent = a14;
-    v32->_horizonLineAngleInDegrees = a15;
-    v32->_semanticEnhanceScene = a21;
-    v32->_sharedLibraryMode = a23;
+    objc_storeStrong(&v31->_junkImageClassificationObservations, observations);
+    objc_storeStrong(&v32->_imageAestheticsObservation, observation);
+    objc_storeStrong(&v32->_detectedHumanFaces, facesCopy);
+    objc_storeStrong(&v32->_detectedHumanBodies, bodies);
+    objc_storeStrong(&v32->_detectedCatBodies, catBodies);
+    objc_storeStrong(&v32->_detectedDogBodies, dogBodies);
+    objc_storeStrong(&v32->_detectedSalientObjects, objects);
+    objc_storeStrong(&v32->_saliencyObservation, saliencyObservation);
+    objc_storeStrong(&v32->_scenePrintObservation, printObservation);
+    objc_storeStrong(&v32->_captureFolderPath, path);
+    objc_storeStrong(&v32->_semanticDevelopmentGatingObservations, gatingObservations);
+    objc_storeStrong(&v32->_faceObservations, faceObservations);
+    objc_storeStrong(&v32->_torsoprints, torsoprints);
+    objc_storeStrong(&v32->_foodAndDrinkObservations, drinkObservations);
+    objc_storeStrong(&v32->_smartCamInfo, info);
+    objc_storeStrong(&v32->_contactIDsInProximity, proximity);
+    v32->_stitchConfidence = confidence;
+    v32->_horizonLinePresent = present;
+    v32->_horizonLineAngleInDegrees = degrees;
+    v32->_semanticEnhanceScene = scene;
+    v32->_sharedLibraryMode = mode;
   }
 
   return v32;

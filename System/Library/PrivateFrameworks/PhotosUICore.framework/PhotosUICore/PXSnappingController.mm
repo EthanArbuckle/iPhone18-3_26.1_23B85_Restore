@@ -1,29 +1,29 @@
 @interface PXSnappingController
 - (PXSnappingController)init;
-- (PXSnappingController)initWithSnappingTarget:(double)a3;
+- (PXSnappingController)initWithSnappingTarget:(double)target;
 - (void)_reset;
-- (void)_setBoolPointer:(BOOL *)a3 toValue:(BOOL)a4;
-- (void)setAttractionOffsetThreshold:(double)a3;
-- (void)setAttractionVelocityThreshold:(double)a3;
-- (void)setRetentionOffsetThreshold:(double)a3;
-- (void)updateOffset:(double *)a3 withVelocity:(double)a4 shouldSnap:(BOOL *)a5 shouldBreak:(BOOL *)a6;
+- (void)_setBoolPointer:(BOOL *)pointer toValue:(BOOL)value;
+- (void)setAttractionOffsetThreshold:(double)threshold;
+- (void)setAttractionVelocityThreshold:(double)threshold;
+- (void)setRetentionOffsetThreshold:(double)threshold;
+- (void)updateOffset:(double *)offset withVelocity:(double)velocity shouldSnap:(BOOL *)snap shouldBreak:(BOOL *)break;
 @end
 
 @implementation PXSnappingController
 
-- (void)updateOffset:(double *)a3 withVelocity:(double)a4 shouldSnap:(BOOL *)a5 shouldBreak:(BOOL *)a6
+- (void)updateOffset:(double *)offset withVelocity:(double)velocity shouldSnap:(BOOL *)snap shouldBreak:(BOOL *)break
 {
   if ([(PXSnappingController *)self _isPreviousOffsetInvalid])
   {
-    v11 = *a3;
-    v12 = *a3;
+    v11 = *offset;
+    v12 = *offset;
   }
 
   else
   {
     [(PXSnappingController *)self _previousOffset];
     v12 = v13;
-    v11 = *a3;
+    v11 = *offset;
   }
 
   [(PXSnappingController *)self _accumulatedOffset];
@@ -49,20 +49,20 @@
   v24 = ![(PXSnappingController *)self _hasEnteredRetentionThreshold]&& [(PXSnappingController *)self isSnappedToTarget];
   if ([(PXSnappingController *)self _hasEnteredRetentionThreshold])
   {
-    v25 = [(PXSnappingController *)self isSnappedToTarget];
+    isSnappedToTarget = [(PXSnappingController *)self isSnappedToTarget];
   }
 
   else
   {
-    v25 = 0;
+    isSnappedToTarget = 0;
   }
 
-  if ([(PXSnappingController *)self _hasEnteredAttractionThreshold]&& !(v26 = [(PXSnappingController *)self isSnappedToTarget]) && ((v27 = v26, [(PXSnappingController *)self attractionVelocityThreshold], v28 <= 0.0) || (([(PXSnappingController *)self attractionVelocityThreshold], v30 = v29, a4 >= 0.0) ? (v32 = 0) : ([(PXSnappingController *)self snappingTarget], v32 = v11 > v31), (v33 = !v27, v34 = fabs(a4), a4 <= 0.0) ? (v36 = 0) : ([(PXSnappingController *)self snappingTarget], v36 = v11 < v35), ((v34 <= v30) & (v32 || v36) & v33) == 1)))
+  if ([(PXSnappingController *)self _hasEnteredAttractionThreshold]&& !(v26 = [(PXSnappingController *)self isSnappedToTarget]) && ((v27 = v26, [(PXSnappingController *)self attractionVelocityThreshold], v28 <= 0.0) || (([(PXSnappingController *)self attractionVelocityThreshold], v30 = v29, velocity >= 0.0) ? (v32 = 0) : ([(PXSnappingController *)self snappingTarget], v32 = v11 > v31), (v33 = !v27, v34 = fabs(velocity), velocity <= 0.0) ? (v36 = 0) : ([(PXSnappingController *)self snappingTarget], v36 = v11 < v35), ((v34 <= v30) & (v32 || v36) & v33) == 1)))
   {
     [(PXSnappingController *)self didSnapByAttraction];
   }
 
-  else if (!v25)
+  else if (!isSnappedToTarget)
   {
     goto LABEL_30;
   }
@@ -70,12 +70,12 @@
   [(PXSnappingController *)self snappingTarget];
   v11 = v37;
   self->_snappedToTarget = 1;
-  [(PXSnappingController *)self _setBoolPointer:a5 toValue:1];
+  [(PXSnappingController *)self _setBoolPointer:snap toValue:1];
   [(PXSnappingController *)self _setHasEnteredRetentionThreshold:1];
   [(PXSnappingController *)self _setHasEnteredAttractionThreshold:1];
-  if (v25 && [(PXSnappingController *)self accumulateOffsetWhileSnapped])
+  if (isSnappedToTarget && [(PXSnappingController *)self accumulateOffsetWhileSnapped])
   {
-    v38 = *a3;
+    v38 = *offset;
     [(PXSnappingController *)self snappingTarget];
     v40 = v38 - v39;
     [(PXSnappingController *)self _accumulatedOffset];
@@ -85,17 +85,17 @@
 LABEL_30:
   if (v24)
   {
-    [(PXSnappingController *)self _setBoolPointer:a6 toValue:1];
+    [(PXSnappingController *)self _setBoolPointer:break toValue:1];
     [(PXSnappingController *)self _reset];
   }
 
   else
   {
-    [(PXSnappingController *)self _setPreviousOffset:*a3];
+    [(PXSnappingController *)self _setPreviousOffset:*offset];
     [(PXSnappingController *)self _setPreviousOffsetInvalid:0];
   }
 
-  *a3 = v11;
+  *offset = v11;
 }
 
 - (void)_reset
@@ -108,48 +108,48 @@ LABEL_30:
   [(PXSnappingController *)self _setHasEnteredAttractionThreshold:0];
 }
 
-- (void)_setBoolPointer:(BOOL *)a3 toValue:(BOOL)a4
+- (void)_setBoolPointer:(BOOL *)pointer toValue:(BOOL)value
 {
-  if (a3)
+  if (pointer)
   {
-    *a3 = a4;
+    *pointer = value;
   }
 }
 
-- (void)setAttractionVelocityThreshold:(double)a3
+- (void)setAttractionVelocityThreshold:(double)threshold
 {
-  if (a3 < 0.0)
+  if (threshold < 0.0)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"PXSnappingController.m" lineNumber:46 description:{@"Invalid parameter not satisfying: %@", @"attractionVelocityThreshold >= 0"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSnappingController.m" lineNumber:46 description:{@"Invalid parameter not satisfying: %@", @"attractionVelocityThreshold >= 0"}];
   }
 
-  self->_attractionVelocityThreshold = a3;
+  self->_attractionVelocityThreshold = threshold;
 }
 
-- (void)setAttractionOffsetThreshold:(double)a3
+- (void)setAttractionOffsetThreshold:(double)threshold
 {
-  if (a3 < 0.0)
+  if (threshold < 0.0)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"PXSnappingController.m" lineNumber:41 description:{@"Invalid parameter not satisfying: %@", @"attractionOffsetThreshold >= 0"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSnappingController.m" lineNumber:41 description:{@"Invalid parameter not satisfying: %@", @"attractionOffsetThreshold >= 0"}];
   }
 
-  self->_attractionOffsetThreshold = a3;
+  self->_attractionOffsetThreshold = threshold;
 }
 
-- (void)setRetentionOffsetThreshold:(double)a3
+- (void)setRetentionOffsetThreshold:(double)threshold
 {
-  if (a3 < 0.0)
+  if (threshold < 0.0)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"PXSnappingController.m" lineNumber:36 description:{@"Invalid parameter not satisfying: %@", @"retentionOffsetThreshold >= 0"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSnappingController.m" lineNumber:36 description:{@"Invalid parameter not satisfying: %@", @"retentionOffsetThreshold >= 0"}];
   }
 
-  self->_retentionOffsetThreshold = a3;
+  self->_retentionOffsetThreshold = threshold;
 }
 
-- (PXSnappingController)initWithSnappingTarget:(double)a3
+- (PXSnappingController)initWithSnappingTarget:(double)target
 {
   v5.receiver = self;
   v5.super_class = PXSnappingController;
@@ -157,7 +157,7 @@ LABEL_30:
   if (result)
   {
     result->__previousOffsetInvalid = 1;
-    result->_snappingTarget = a3;
+    result->_snappingTarget = target;
   }
 
   return result;
@@ -165,8 +165,8 @@ LABEL_30:
 
 - (PXSnappingController)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXSnappingController.m" lineNumber:24 description:{@"%s is not available as initializer", "-[PXSnappingController init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXSnappingController.m" lineNumber:24 description:{@"%s is not available as initializer", "-[PXSnappingController init]"}];
 
   abort();
 }

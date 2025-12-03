@@ -1,14 +1,14 @@
 @interface MILocation
-+ (id)URLForLocation:(id)a3 isAppBundle:(BOOL *)a4 error:(id *)a5;
-+ (id)locationFromPlistDictionary:(id)a3 error:(id *)a4;
-+ (id)plistDictionaryFromLocation:(id)a3;
-+ (id)volumeUUIDForLocation:(id)a3 error:(id *)a4;
++ (id)URLForLocation:(id)location isAppBundle:(BOOL *)bundle error:(id *)error;
++ (id)locationFromPlistDictionary:(id)dictionary error:(id *)error;
++ (id)plistDictionaryFromLocation:(id)location;
++ (id)volumeUUIDForLocation:(id)location error:(id *)error;
 - (MILocation)init;
 @end
 
 @implementation MILocation
 
-+ (id)locationFromPlistDictionary:(id)a3 error:(id *)a4
++ (id)locationFromPlistDictionary:(id)dictionary error:(id *)error
 {
   v4 = sub_1B1756F38();
   v5 = sub_1B17522D4(v4);
@@ -16,24 +16,24 @@
   return v5;
 }
 
-+ (id)plistDictionaryFromLocation:(id)a3
++ (id)plistDictionaryFromLocation:(id)location
 {
   swift_unknownObjectRetain();
-  sub_1B1752630(a3);
+  sub_1B1752630(location);
   swift_unknownObjectRelease();
   v4 = sub_1B1756F28();
 
   return v4;
 }
 
-+ (id)URLForLocation:(id)a3 isAppBundle:(BOOL *)a4 error:(id *)a5
++ (id)URLForLocation:(id)location isAppBundle:(BOOL *)bundle error:(id *)error
 {
   v6 = sub_1B1756EE8();
   v7 = *(v6 - 8);
   MEMORY[0x1EEE9AC00](v6);
   v9 = &v13 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   v10 = swift_unknownObjectRetain();
-  sub_1B175101C(v10, a4);
+  sub_1B175101C(v10, bundle);
   swift_unknownObjectRelease();
   v11 = sub_1B1756EA8();
   (*(v7 + 8))(v9, v6);
@@ -41,7 +41,7 @@
   return v11;
 }
 
-+ (id)volumeUUIDForLocation:(id)a3 error:(id *)a4
++ (id)volumeUUIDForLocation:(id)location error:(id *)error
 {
   v4 = sub_1B1756F18();
   v5 = *(v4 - 8);

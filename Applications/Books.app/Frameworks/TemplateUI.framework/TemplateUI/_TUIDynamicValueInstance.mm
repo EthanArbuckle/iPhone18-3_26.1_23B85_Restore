@@ -1,23 +1,23 @@
 @interface _TUIDynamicValueInstance
-- (BOOL)applyUpdatesForTransactionGroup:(id)a3;
-- (BOOL)hasUpdatesForTransactionGroup:(id)a3;
-- (BOOL)optimizeUpdatesForTransactionGroup:(id)a3;
-- (BOOL)optimizeUpdatesForTransactionGroup:(id)a3 block:(id)a4;
+- (BOOL)applyUpdatesForTransactionGroup:(id)group;
+- (BOOL)hasUpdatesForTransactionGroup:(id)group;
+- (BOOL)optimizeUpdatesForTransactionGroup:(id)group;
+- (BOOL)optimizeUpdatesForTransactionGroup:(id)group block:(id)block;
 - (TUIDynamicValueObserving)observer;
-- (_TUIDynamicValueInstance)initWithDynamicValue:(id)a3 value:(id)a4 observer:(id)a5;
+- (_TUIDynamicValueInstance)initWithDynamicValue:(id)value value:(id)a4 observer:(id)observer;
 - (id)dequeueUpdate;
-- (id)tui_unwrapDynamicWithError:(unint64_t *)a3;
-- (void)enqueueUpdate:(id)a3;
-- (void)valueWithBlock:(id)a3;
+- (id)tui_unwrapDynamicWithError:(unint64_t *)error;
+- (void)enqueueUpdate:(id)update;
+- (void)valueWithBlock:(id)block;
 @end
 
 @implementation _TUIDynamicValueInstance
 
-- (_TUIDynamicValueInstance)initWithDynamicValue:(id)a3 value:(id)a4 observer:(id)a5
+- (_TUIDynamicValueInstance)initWithDynamicValue:(id)value value:(id)a4 observer:(id)observer
 {
-  v9 = a3;
+  valueCopy = value;
   v10 = a4;
-  v11 = a5;
+  observerCopy = observer;
   v15.receiver = self;
   v15.super_class = _TUIDynamicValueInstance;
   v12 = [(_TUIDynamicValueInstance *)&v15 init];
@@ -25,17 +25,17 @@
   if (v12)
   {
     v12->_accessLock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v12->_dynamicValue, a3);
+    objc_storeStrong(&v12->_dynamicValue, value);
     objc_storeStrong(&v13->_value, a4);
-    objc_storeWeak(&v13->_observer, v11);
+    objc_storeWeak(&v13->_observer, observerCopy);
   }
 
   return v13;
 }
 
-- (void)enqueueUpdate:(id)a3
+- (void)enqueueUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   os_unfair_lock_lock(&self->_accessLock);
   updates = self->_updates;
   if (!updates)
@@ -47,12 +47,12 @@
     updates = self->_updates;
   }
 
-  [(NSMutableArray *)updates addObject:v4];
+  [(NSMutableArray *)updates addObject:updateCopy];
   os_unfair_lock_unlock(&self->_accessLock);
   WeakRetained = objc_loadWeakRetained(&self->_observer);
-  v8 = [v4 transaction];
+  transaction = [updateCopy transaction];
 
-  [WeakRetained dynamicChanged:self transaction:v8];
+  [WeakRetained dynamicChanged:self transaction:transaction];
 }
 
 - (id)dequeueUpdate
@@ -74,10 +74,10 @@
   return v3;
 }
 
-- (BOOL)optimizeUpdatesForTransactionGroup:(id)a3 block:(id)a4
+- (BOOL)optimizeUpdatesForTransactionGroup:(id)group block:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  groupCopy = group;
+  blockCopy = block;
   os_unfair_lock_lock(&self->_accessLock);
   v8 = [(NSMutableArray *)self->_updates count];
   if (v8)
@@ -86,11 +86,11 @@
     v10 = 0;
     while (1)
     {
-      if (v6)
+      if (groupCopy)
       {
         v11 = [(NSMutableArray *)self->_updates objectAtIndexedSubscript:v10];
-        v12 = [v11 transaction];
-        v13 = [v6 containsTransaction:v12];
+        transaction = [v11 transaction];
+        v13 = [groupCopy containsTransaction:transaction];
 
         if (!v13)
         {
@@ -112,7 +112,7 @@
 
 LABEL_9:
     v14 = [(NSMutableArray *)self->_updates subarrayWithRange:0, v10];
-    v15 = v7[2](v7, v14);
+    v15 = blockCopy[2](blockCopy, v14);
     v16 = v15;
     if (v14 != v15)
     {
@@ -141,9 +141,9 @@ LABEL_15:
   return v10;
 }
 
-- (BOOL)hasUpdatesForTransactionGroup:(id)a3
+- (BOOL)hasUpdatesForTransactionGroup:(id)group
 {
-  v4 = a3;
+  groupCopy = group;
   os_unfair_lock_lock(&self->_accessLock);
   v16 = 0u;
   v17 = 0u;
@@ -164,10 +164,10 @@ LABEL_15:
           objc_enumerationMutation(v5);
         }
 
-        if (v4)
+        if (groupCopy)
         {
-          v10 = [*(*(&v14 + 1) + 8 * i) transaction];
-          v11 = [v4 containsTransaction:v10];
+          transaction = [*(*(&v14 + 1) + 8 * i) transaction];
+          v11 = [groupCopy containsTransaction:transaction];
 
           if ((v11 & 1) == 0)
           {
@@ -201,25 +201,25 @@ LABEL_13:
   return v12;
 }
 
-- (BOOL)optimizeUpdatesForTransactionGroup:(id)a3
+- (BOOL)optimizeUpdatesForTransactionGroup:(id)group
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_69EB8;
   v4[3] = &unk_25F6E8;
   v4[4] = self;
-  return [(_TUIDynamicValueInstance *)self optimizeUpdatesForTransactionGroup:a3 block:v4];
+  return [(_TUIDynamicValueInstance *)self optimizeUpdatesForTransactionGroup:group block:v4];
 }
 
-- (BOOL)applyUpdatesForTransactionGroup:(id)a3
+- (BOOL)applyUpdatesForTransactionGroup:(id)group
 {
-  v4 = a3;
+  groupCopy = group;
   os_unfair_lock_lock(&self->_accessLock);
   if ([(NSMutableArray *)self->_updates count])
   {
-    v5 = [(NSMutableArray *)self->_updates firstObject];
-    v6 = v5;
-    if (v4 && ([v5 transaction], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v4, "containsTransaction:", v7), v7, !v8))
+    firstObject = [(NSMutableArray *)self->_updates firstObject];
+    v6 = firstObject;
+    if (groupCopy && ([firstObject transaction], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(groupCopy, "containsTransaction:", v7), v7, !v8))
     {
       v11 = 0;
     }
@@ -227,9 +227,9 @@ LABEL_13:
     else
     {
       [(NSMutableArray *)self->_updates removeObjectAtIndex:0];
-      v9 = [v6 value];
+      value = [v6 value];
       value = self->_value;
-      self->_value = v9;
+      self->_value = value;
 
       v11 = 1;
     }
@@ -245,15 +245,15 @@ LABEL_13:
   return v11;
 }
 
-- (void)valueWithBlock:(id)a3
+- (void)valueWithBlock:(id)block
 {
-  if (a3)
+  if (block)
   {
-    (*(a3 + 2))(a3, self->_value);
+    (*(block + 2))(block, self->_value);
   }
 }
 
-- (id)tui_unwrapDynamicWithError:(unint64_t *)a3
+- (id)tui_unwrapDynamicWithError:(unint64_t *)error
 {
   v6 = 0;
   v7 = &v6;

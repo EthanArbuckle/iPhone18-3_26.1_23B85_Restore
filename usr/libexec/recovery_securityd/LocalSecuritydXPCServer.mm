@@ -1,19 +1,19 @@
 @interface LocalSecuritydXPCServer
-- (BOOL)clientHasBooleanEntitlement:(id)a3;
-- (LocalSecuritydXPCServer)initWithSecurityClient:(SecurityClient *)a3 fakeEntitlements:(id)a4;
+- (BOOL)clientHasBooleanEntitlement:(id)entitlement;
+- (LocalSecuritydXPCServer)initWithSecurityClient:(SecurityClient *)client fakeEntitlements:(id)entitlements;
 @end
 
 @implementation LocalSecuritydXPCServer
 
-- (LocalSecuritydXPCServer)initWithSecurityClient:(SecurityClient *)a3 fakeEntitlements:(id)a4
+- (LocalSecuritydXPCServer)initWithSecurityClient:(SecurityClient *)client fakeEntitlements:(id)entitlements
 {
-  v6 = a4;
+  entitlementsCopy = entitlements;
   v11.receiver = self;
   v11.super_class = LocalSecuritydXPCServer;
-  v7 = [(SecuritydXPCServer *)&v11 initWithSecurityClient:a3];
+  v7 = [(SecuritydXPCServer *)&v11 initWithSecurityClient:client];
   if (v7)
   {
-    v8 = [v6 mutableCopy];
+    v8 = [entitlementsCopy mutableCopy];
     fakeEntitlements = v7->_fakeEntitlements;
     v7->_fakeEntitlements = v8;
   }
@@ -21,15 +21,15 @@
   return v7;
 }
 
-- (BOOL)clientHasBooleanEntitlement:(id)a3
+- (BOOL)clientHasBooleanEntitlement:(id)entitlement
 {
-  v4 = a3;
-  v5 = [(LocalSecuritydXPCServer *)self fakeEntitlements];
+  entitlementCopy = entitlement;
+  fakeEntitlements = [(LocalSecuritydXPCServer *)self fakeEntitlements];
 
-  if (v5)
+  if (fakeEntitlements)
   {
-    v6 = [(LocalSecuritydXPCServer *)self fakeEntitlements];
-    v7 = [v6 objectForKeyedSubscript:v4];
+    fakeEntitlements2 = [(LocalSecuritydXPCServer *)self fakeEntitlements];
+    v7 = [fakeEntitlements2 objectForKeyedSubscript:entitlementCopy];
     v8 = [v7 isEqual:&__kCFBooleanTrue];
   }
 

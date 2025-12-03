@@ -1,13 +1,13 @@
 @interface BWAudioFormat
-+ (BOOL)compressionOptionTrimSampleBufferDurationsIsRequiredForAudioSettings:(id)a3;
-+ (id)formatForAVAudioSettings:(id)a3 inputFormat:(id)a4 formatExtensions:(id)a5;
-+ (id)formatWithAudioFormatDescription:(opaqueCMFormatDescription *)a3;
++ (BOOL)compressionOptionTrimSampleBufferDurationsIsRequiredForAudioSettings:(id)settings;
++ (id)formatForAVAudioSettings:(id)settings inputFormat:(id)format formatExtensions:(id)extensions;
++ (id)formatWithAudioFormatDescription:(opaqueCMFormatDescription *)description;
 + (void)initialize;
 - (NSDictionary)audioCompressionSBPOptions;
 - (id)debugDescription;
 - (id)description;
-- (void)_initForAVAudioSettings:(unint64_t)a3 inputFormat:(const __CFDictionary *)a4 formatExtensions:;
-- (void)_initWithAudioFormatDescription:(void *)a1;
+- (void)_initForAVAudioSettings:(unint64_t)settings inputFormat:(const __CFDictionary *)format formatExtensions:;
+- (void)_initWithAudioFormatDescription:(void *)description;
 - (void)dealloc;
 @end
 
@@ -33,9 +33,9 @@
   objc_opt_class();
 }
 
-+ (BOOL)compressionOptionTrimSampleBufferDurationsIsRequiredForAudioSettings:(id)a3
++ (BOOL)compressionOptionTrimSampleBufferDurationsIsRequiredForAudioSettings:(id)settings
 {
-  if ([a3 objectForKeyedSubscript:@"AVEncoderBitRateKey"] || (v4 = objc_msgSend(a3, "objectForKeyedSubscript:", @"AVEncoderBitRatePerChannelKey")) != 0)
+  if ([settings objectForKeyedSubscript:@"AVEncoderBitRateKey"] || (v4 = objc_msgSend(settings, "objectForKeyedSubscript:", @"AVEncoderBitRatePerChannelKey")) != 0)
   {
     LOBYTE(v4) = 1;
   }
@@ -43,44 +43,44 @@
   return v4;
 }
 
-+ (id)formatWithAudioFormatDescription:(opaqueCMFormatDescription *)a3
++ (id)formatWithAudioFormatDescription:(opaqueCMFormatDescription *)description
 {
-  v3 = [[BWAudioFormat alloc] _initWithAudioFormatDescription:a3];
+  v3 = [[BWAudioFormat alloc] _initWithAudioFormatDescription:description];
 
   return v3;
 }
 
-+ (id)formatForAVAudioSettings:(id)a3 inputFormat:(id)a4 formatExtensions:(id)a5
++ (id)formatForAVAudioSettings:(id)settings inputFormat:(id)format formatExtensions:(id)extensions
 {
-  v5 = [[BWAudioFormat alloc] _initForAVAudioSettings:a3 inputFormat:a4 formatExtensions:a5];
+  v5 = [[BWAudioFormat alloc] _initForAVAudioSettings:settings inputFormat:format formatExtensions:extensions];
 
   return v5;
 }
 
-- (void)_initForAVAudioSettings:(unint64_t)a3 inputFormat:(const __CFDictionary *)a4 formatExtensions:
+- (void)_initForAVAudioSettings:(unint64_t)settings inputFormat:(const __CFDictionary *)format formatExtensions:
 {
-  v4 = a1;
-  if (!a1)
+  selfCopy = self;
+  if (!self)
   {
-    return v4;
+    return selfCopy;
   }
 
-  if (!(a2 | a3))
+  if (!(a2 | settings))
   {
     [BWAudioFormat _initForAVAudioSettings:inputFormat:formatExtensions:];
   }
 
   formatDescriptionOut = 0;
-  v7 = [a3 formatDescription];
-  v8 = v7;
+  formatDescription = [settings formatDescription];
+  v8 = formatDescription;
   if (!a2)
   {
-    if (!v7)
+    if (!formatDescription)
     {
       [BWAudioFormat _initForAVAudioSettings:inputFormat:formatExtensions:];
     }
 
-    v9 = CFRetain(v7);
+    v9 = CFRetain(formatDescription);
     formatDescriptionOut = v9;
     goto LABEL_41;
   }
@@ -142,7 +142,7 @@
   v19 = v18;
   if (v18)
   {
-    v20 = [v18 bytes];
+    bytes = [v18 bytes];
     v19 = [v19 length];
     if (!v8)
     {
@@ -152,7 +152,7 @@
 
   else
   {
-    v20 = 0;
+    bytes = 0;
     if (!v8)
     {
       goto LABEL_28;
@@ -219,7 +219,7 @@ LABEL_50:
     return 0;
   }
 
-  if (CMAudioFormatDescriptionCreate(*MEMORY[0x1E695E480], &outPropertyData, v19, v20, 0, 0, a4, &formatDescriptionOut))
+  if (CMAudioFormatDescriptionCreate(*MEMORY[0x1E695E480], &outPropertyData, v19, bytes, 0, 0, format, &formatDescriptionOut))
   {
     [BWAudioFormat _initForAVAudioSettings:inputFormat:formatExtensions:];
     goto LABEL_50;
@@ -227,10 +227,10 @@ LABEL_50:
 
   v9 = formatDescriptionOut;
 LABEL_41:
-  v4 = [(BWAudioFormat *)v4 _initWithAudioFormatDescription:v9];
-  if (v4)
+  selfCopy = [(BWAudioFormat *)selfCopy _initWithAudioFormatDescription:v9];
+  if (selfCopy)
   {
-    v4[2] = [a2 copy];
+    selfCopy[2] = [a2 copy];
   }
 
   if (formatDescriptionOut)
@@ -238,17 +238,17 @@ LABEL_41:
     CFRelease(formatDescriptionOut);
   }
 
-  return v4;
+  return selfCopy;
 }
 
 - (NSDictionary)audioCompressionSBPOptions
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v4 = [(NSDictionary *)self->_avAudioSettings objectForKeyedSubscript:@"AVEncoderBitRateKey"];
   v5 = MEMORY[0x1E6971628];
   if (v4)
   {
-    [(NSDictionary *)v3 setObject:v4 forKeyedSubscript:*MEMORY[0x1E6971628]];
+    [(NSDictionary *)dictionary setObject:v4 forKeyedSubscript:*MEMORY[0x1E6971628]];
   }
 
   v6 = [(NSDictionary *)self->_avAudioSettings objectForKeyedSubscript:@"AVEncoderBitRatePerChannelKey"];
@@ -258,28 +258,28 @@ LABEL_41:
     StreamBasicDescription = CMAudioFormatDescriptionGetStreamBasicDescription(self->_audioFormatDescription);
     if (StreamBasicDescription)
     {
-      -[NSDictionary setObject:forKeyedSubscript:](v3, "setObject:forKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithUnsignedInt:{StreamBasicDescription->mChannelsPerFrame * objc_msgSend(v7, "intValue")}], *v5);
+      -[NSDictionary setObject:forKeyedSubscript:](dictionary, "setObject:forKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithUnsignedInt:{StreamBasicDescription->mChannelsPerFrame * objc_msgSend(v7, "intValue")}], *v5);
     }
   }
 
   if ([BWAudioFormat compressionOptionTrimSampleBufferDurationsIsRequiredForAudioSettings:self->_avAudioSettings])
   {
-    [(NSDictionary *)v3 setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E6971668]];
+    [(NSDictionary *)dictionary setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E6971668]];
   }
 
   v9 = [-[NSDictionary objectForKeyedSubscript:](self->_avAudioSettings objectForKeyedSubscript:{@"AVAudioEncoderSpecificationKey", "objectForKeyedSubscript:", @"AVAudioEncoderSpecificationUseHardwareEncoderIfAvailableKey"}];
   if (v9)
   {
-    v10 = [v9 BOOLValue];
+    bOOLValue = [v9 BOOLValue];
   }
 
   else
   {
-    v10 = 1;
+    bOOLValue = 1;
   }
 
-  v11 = [MEMORY[0x1E696AD98] numberWithBool:v10];
-  [(NSDictionary *)v3 setObject:v11 forKeyedSubscript:*MEMORY[0x1E6971670]];
+  v11 = [MEMORY[0x1E696AD98] numberWithBool:bOOLValue];
+  [(NSDictionary *)dictionary setObject:v11 forKeyedSubscript:*MEMORY[0x1E6971670]];
   v12 = [(NSDictionary *)self->_avAudioSettings objectForKeyedSubscript:@"AVEncoderBitRateStrategyKey"];
   if (v12)
   {
@@ -290,7 +290,7 @@ LABEL_41:
 LABEL_16:
       v15 = MEMORY[0x1E6971640];
 LABEL_17:
-      [(NSDictionary *)v3 setObject:v14 forKeyedSubscript:*v15];
+      [(NSDictionary *)dictionary setObject:v14 forKeyedSubscript:*v15];
       goto LABEL_18;
     }
 
@@ -310,7 +310,7 @@ LABEL_17:
 
     if ([v13 isEqualToString:@"AVAudioBitRateStrategy_Variable"])
     {
-      [(NSDictionary *)v3 setObject:&unk_1F2243288 forKeyedSubscript:*v15];
+      [(NSDictionary *)dictionary setObject:&unk_1F2243288 forKeyedSubscript:*v15];
       v21 = [(NSDictionary *)self->_avAudioSettings objectForKeyedSubscript:@"AVEncoderQualityForVBRKey"];
       if (v21)
       {
@@ -330,7 +330,7 @@ LABEL_18:
     {
       v18 = &unk_1F22432A0;
 LABEL_23:
-      [(NSDictionary *)v3 setObject:v18 forKeyedSubscript:*MEMORY[0x1E6971630]];
+      [(NSDictionary *)dictionary setObject:v18 forKeyedSubscript:*MEMORY[0x1E6971630]];
       goto LABEL_24;
     }
 
@@ -342,8 +342,8 @@ LABEL_23:
   }
 
 LABEL_24:
-  [(NSDictionary *)v3 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"kFigAudioCompressionOption_UseAudioConverterForMixing"];
-  return v3;
+  [(NSDictionary *)dictionary setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"kFigAudioCompressionOption_UseAudioConverterForMixing"];
+  return dictionary;
 }
 
 - (id)description
@@ -476,9 +476,9 @@ LABEL_32:
   return [v3 stringWithFormat:@"<%@: %p> %@", NSStringFromClass(v4), self, -[BWAudioFormat description](self, "description")];
 }
 
-- (void)_initWithAudioFormatDescription:(void *)a1
+- (void)_initWithAudioFormatDescription:(void *)description
 {
-  if (!a1)
+  if (!description)
   {
     return 0;
   }
@@ -489,7 +489,7 @@ LABEL_32:
     return 0;
   }
 
-  v5.receiver = a1;
+  v5.receiver = description;
   v5.super_class = BWAudioFormat;
   v3 = objc_msgSendSuper2(&v5, sel_init);
   if (v3)

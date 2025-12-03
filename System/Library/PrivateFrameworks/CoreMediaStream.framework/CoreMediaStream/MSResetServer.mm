@@ -1,27 +1,27 @@
 @interface MSResetServer
-+ (id)resetServerObjectWithPersonID:(id)a3 baseURL:(id)a4;
-- (MSResetServer)initWithPersonID:(id)a3 baseURL:(id)a4;
++ (id)resetServerObjectWithPersonID:(id)d baseURL:(id)l;
+- (MSResetServer)initWithPersonID:(id)d baseURL:(id)l;
 - (void)resetServer;
-- (void)resetServerProtocol:(id)a3 didFinishWithError:(id)a4;
-- (void)resetServerProtocol:(id)a3 didReceiveAuthenticationError:(id)a4;
+- (void)resetServerProtocol:(id)protocol didFinishWithError:(id)error;
+- (void)resetServerProtocol:(id)protocol didReceiveAuthenticationError:(id)error;
 @end
 
 @implementation MSResetServer
 
-- (void)resetServerProtocol:(id)a3 didReceiveAuthenticationError:(id)a4
+- (void)resetServerProtocol:(id)protocol didReceiveAuthenticationError:(id)error
 {
   v13 = *MEMORY[0x277D85DE8];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
-    v10 = [a4 MSVerboseDescription];
+    mSVerboseDescription = [error MSVerboseDescription];
     v11 = 138543362;
-    v12 = v10;
+    v12 = mSVerboseDescription;
     _os_log_error_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "Couldn't reset server. Received authentication error: %{public}@", &v11, 0xCu);
   }
 
   daemon = self->_daemon;
-  v7 = [(MSStreamsProtocol *)self->_protocol personID];
-  [(MSMediaStreamDaemon *)daemon didReceiveAuthenticationFailureForPersonID:v7];
+  personID = [(MSStreamsProtocol *)self->_protocol personID];
+  [(MSMediaStreamDaemon *)daemon didReceiveAuthenticationFailureForPersonID:personID];
 
   [(MSDaemon *)self->_daemon releaseBusy];
   selfReference = self->_selfReference;
@@ -30,18 +30,18 @@
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)resetServerProtocol:(id)a3 didFinishWithError:(id)a4
+- (void)resetServerProtocol:(id)protocol didFinishWithError:(id)error
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  protocolCopy = protocol;
+  errorCopy = error;
+  if (errorCopy)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
-      v8 = [v7 MSVerboseDescription];
+      mSVerboseDescription = [errorCopy MSVerboseDescription];
       v13 = 138543362;
-      v14 = v8;
+      v14 = mSVerboseDescription;
       _os_log_error_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "Couldn't reset server. Error: %{public}@", &v13, 0xCu);
     }
   }
@@ -55,8 +55,8 @@
     }
 
     daemon = self->_daemon;
-    v10 = [(MSResetServer *)self personID];
-    [(MSMediaStreamDaemon *)daemon didReceiveAuthenticationSuccessForPersonID:v10];
+    personID = [(MSResetServer *)self personID];
+    [(MSMediaStreamDaemon *)daemon didReceiveAuthenticationSuccessForPersonID:personID];
   }
 
   [(MSDaemon *)self->_daemon releaseBusy];
@@ -79,16 +79,16 @@
   [(MSResetServerProtocol *)self->_protocol resetServerState];
 }
 
-- (MSResetServer)initWithPersonID:(id)a3 baseURL:(id)a4
+- (MSResetServer)initWithPersonID:(id)d baseURL:(id)l
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  lCopy = l;
   v12.receiver = self;
   v12.super_class = MSResetServer;
   v8 = [(MSResetServer *)&v12 init];
   if (v8)
   {
-    v9 = [[MSResetServerProtocol alloc] initWithPersonID:v6 baseURL:v7];
+    v9 = [[MSResetServerProtocol alloc] initWithPersonID:dCopy baseURL:lCopy];
     protocol = v8->_protocol;
     v8->_protocol = v9;
 
@@ -98,11 +98,11 @@
   return v8;
 }
 
-+ (id)resetServerObjectWithPersonID:(id)a3 baseURL:(id)a4
++ (id)resetServerObjectWithPersonID:(id)d baseURL:(id)l
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithPersonID:v7 baseURL:v6];
+  lCopy = l;
+  dCopy = d;
+  v8 = [[self alloc] initWithPersonID:dCopy baseURL:lCopy];
 
   return v8;
 }

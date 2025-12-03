@@ -1,24 +1,24 @@
 @interface PPNamedEntityRecord
-+ (id)algorithmForName:(id)a3;
-+ (id)describeAlgorithm:(unint64_t)a3;
-+ (id)describeChangeType:(unsigned __int8)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToNamedEntityRecord:(id)a3;
++ (id)algorithmForName:(id)name;
++ (id)describeAlgorithm:(unint64_t)algorithm;
++ (id)describeChangeType:(unsigned __int8)type;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToNamedEntityRecord:(id)record;
 - (NSSet)featureNames;
-- (PPNamedEntityRecord)initWithCoder:(id)a3;
+- (PPNamedEntityRecord)initWithCoder:(id)coder;
 - (id)description;
-- (id)featureValueForName:(id)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)featureValueForName:(id)name;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PPNamedEntityRecord
 
-- (id)featureValueForName:(id)a3
+- (id)featureValueForName:(id)name
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"algorithm"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"algorithm"])
   {
     v5 = MEMORY[0x1E695FE60];
     algorithm = self->_algorithm;
@@ -29,7 +29,7 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if ([v4 isEqualToString:@"initialScore"])
+  if ([nameCopy isEqualToString:@"initialScore"])
   {
     v8 = MEMORY[0x1E695FE60];
     initialScore = self->_initialScore;
@@ -40,27 +40,27 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if ([v4 isEqualToString:@"decayRate"])
+  if ([nameCopy isEqualToString:@"decayRate"])
   {
     v8 = MEMORY[0x1E695FE60];
     initialScore = self->_decayRate;
     goto LABEL_8;
   }
 
-  if ([v4 isEqualToString:@"extractionOsBuild"])
+  if ([nameCopy isEqualToString:@"extractionOsBuild"])
   {
     v7 = [MEMORY[0x1E695FE60] featureValueWithString:self->_extractionOsBuild];
     goto LABEL_10;
   }
 
-  if ([v4 isEqualToString:@"extractionAssetVersion"])
+  if ([nameCopy isEqualToString:@"extractionAssetVersion"])
   {
     v5 = MEMORY[0x1E695FE60];
     algorithm = self->_extractionAssetVersion;
     goto LABEL_3;
   }
 
-  if ([v4 isEqualToString:@"sentimentScore"])
+  if ([nameCopy isEqualToString:@"sentimentScore"])
   {
     v13 = MEMORY[0x1E695FE60];
     [(PPNamedEntityRecord *)self sentimentScore];
@@ -68,32 +68,32 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  if ([v4 isEqualToString:@"changeType"])
+  if ([nameCopy isEqualToString:@"changeType"])
   {
     v5 = MEMORY[0x1E695FE60];
     algorithm = self->_changeType;
     goto LABEL_3;
   }
 
-  if ([v4 hasPrefix:@"entity_"])
+  if ([nameCopy hasPrefix:@"entity_"])
   {
     entity = self->_entity;
     v15 = @"entity_";
 LABEL_28:
-    v16 = [v4 substringFromIndex:{-[__CFString length](v15, "length")}];
+    v16 = [nameCopy substringFromIndex:{-[__CFString length](v15, "length")}];
     v11 = [entity featureValueForName:v16];
 
     goto LABEL_11;
   }
 
-  if ([v4 hasPrefix:@"source_"])
+  if ([nameCopy hasPrefix:@"source_"])
   {
     entity = self->_source;
     v15 = @"source_";
     goto LABEL_28;
   }
 
-  if ([v4 hasPrefix:@"meta_"])
+  if ([nameCopy hasPrefix:@"meta_"])
   {
     entity = self->_metadata;
     v15 = @"meta_";
@@ -152,17 +152,17 @@ void __35__PPNamedEntityRecord_featureNames__block_invoke(uint64_t a1)
   objc_autoreleasePoolPop(v2);
 }
 
-- (BOOL)isEqualToNamedEntityRecord:(id)a3
+- (BOOL)isEqualToNamedEntityRecord:(id)record
 {
-  v4 = a3;
-  if (!v4)
+  recordCopy = record;
+  if (!recordCopy)
   {
     goto LABEL_23;
   }
 
   v5 = self->_entity;
   v6 = v5;
-  if (v5 == v4[1])
+  if (v5 == recordCopy[1])
   {
   }
 
@@ -178,7 +178,7 @@ void __35__PPNamedEntityRecord_featureNames__block_invoke(uint64_t a1)
 
   v8 = self->_source;
   v9 = v8;
-  if (v8 == v4[2])
+  if (v8 == recordCopy[2])
   {
   }
 
@@ -192,14 +192,14 @@ void __35__PPNamedEntityRecord_featureNames__block_invoke(uint64_t a1)
     }
   }
 
-  if (self->_algorithm != *(v4 + 44) || self->_initialScore != *(v4 + 8) || self->_decayRate != *(v4 + 9))
+  if (self->_algorithm != *(recordCopy + 44) || self->_initialScore != *(recordCopy + 8) || self->_decayRate != *(recordCopy + 9))
   {
     goto LABEL_23;
   }
 
   v11 = self->_extractionOsBuild;
   v12 = v11;
-  if (v11 == v4[3])
+  if (v11 == recordCopy[3])
   {
   }
 
@@ -215,7 +215,7 @@ void __35__PPNamedEntityRecord_featureNames__block_invoke(uint64_t a1)
 
   v14 = self->_metadata;
   v15 = v14;
-  if (v14 == v4[6])
+  if (v14 == recordCopy[6])
   {
   }
 
@@ -229,31 +229,31 @@ void __35__PPNamedEntityRecord_featureNames__block_invoke(uint64_t a1)
     }
   }
 
-  if (self->_extractionAssetVersion != *(v4 + 10))
+  if (self->_extractionAssetVersion != *(recordCopy + 10))
   {
 LABEL_23:
     v17 = 0;
     goto LABEL_24;
   }
 
-  v17 = self->_changeType == *(v4 + 45);
+  v17 = self->_changeType == *(recordCopy + 45);
 LABEL_24:
 
   return v17;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && ((objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0)) && [(PPNamedEntityRecord *)self isEqualToNamedEntityRecord:v5];
+    v6 = equalCopy && ((objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0)) && [(PPNamedEntityRecord *)self isEqualToNamedEntityRecord:v5];
   }
 
   return v6;
@@ -281,19 +281,19 @@ LABEL_24:
 - (id)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(PPSource *)self->_source bundleId];
+  bundleId = [(PPSource *)self->_source bundleId];
   v5 = [PPNamedEntityRecord describeAlgorithm:self->_algorithm];
   initialScore = self->_initialScore;
   v7 = [PPNamedEntityRecord describeChangeType:self->_changeType];
-  v8 = [v3 initWithFormat:@"<PPNamedEntityRecord src:%@ a:'%@' s:%f ct:%@ e:%@>", v4, v5, *&initialScore, v7, self->_entity];
+  v8 = [v3 initWithFormat:@"<PPNamedEntityRecord src:%@ a:'%@' s:%f ct:%@ e:%@>", bundleId, v5, *&initialScore, v7, self->_entity];
 
   return v8;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v5 = [+[PPMutableNamedEntityRecord allocWithZone:](PPMutableNamedEntityRecord init];
-  v6 = [(PPNamedEntity *)self->_entity copyWithZone:a3];
+  v6 = [(PPNamedEntity *)self->_entity copyWithZone:zone];
   [(PPMutableNamedEntityRecord *)v5 setEntity:v6];
 
   [(PPMutableNamedEntityRecord *)v5 setSource:self->_source];
@@ -304,28 +304,28 @@ LABEL_24:
   [(PPMutableNamedEntityRecord *)v5 setExtractionAssetVersion:self->_extractionAssetVersion];
   [(PPMutableNamedEntityRecord *)v5 setChangeType:self->_changeType];
   v5->super._bucketizedSentimentScore = self->_bucketizedSentimentScore;
-  v7 = [(PPNamedEntityMetadata *)self->_metadata copyWithZone:a3];
+  v7 = [(PPNamedEntityMetadata *)self->_metadata copyWithZone:zone];
   [(PPMutableNamedEntityRecord *)v5 setMetadata:v7];
 
   return v5;
 }
 
-+ (id)describeChangeType:(unsigned __int8)a3
++ (id)describeChangeType:(unsigned __int8)type
 {
-  if (a3 >= 4u)
+  if (type >= 4u)
   {
-    v3 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid (%lu)", a3];
+    type = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid (%lu)", type];
   }
 
   else
   {
-    v3 = off_1E77F6040[a3];
+    type = off_1E77F6040[type];
   }
 
-  return v3;
+  return type;
 }
 
-+ (id)algorithmForName:(id)a3
++ (id)algorithmForName:(id)name
 {
   v12[16] = *MEMORY[0x1E69E9840];
   v11[0] = @"CoreNLP";
@@ -361,9 +361,9 @@ LABEL_24:
   v12[14] = &unk_1F1B45E50;
   v12[15] = &unk_1F1B45E68;
   v3 = MEMORY[0x1E695DF20];
-  v4 = a3;
+  nameCopy = name;
   v5 = [v3 dictionaryWithObjects:v12 forKeys:v11 count:16];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  v6 = [v5 objectForKeyedSubscript:nameCopy];
 
   if (v6)
   {
@@ -381,74 +381,74 @@ LABEL_24:
   return v7;
 }
 
-+ (id)describeAlgorithm:(unint64_t)a3
++ (id)describeAlgorithm:(unint64_t)algorithm
 {
-  if (a3 - 1 >= 0x11)
+  if (algorithm - 1 >= 0x11)
   {
-    v4 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"unknown (%lu)", a3];
-    v3 = [v4 _pas_stringBackedByUTF8CString];
+    algorithm = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"unknown (%lu)", algorithm];
+    _pas_stringBackedByUTF8CString = [algorithm _pas_stringBackedByUTF8CString];
   }
 
   else
   {
-    v3 = off_1E77F5FB8[a3 - 1];
+    _pas_stringBackedByUTF8CString = off_1E77F5FB8[algorithm - 1];
   }
 
-  return v3;
+  return _pas_stringBackedByUTF8CString;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   entity = self->_entity;
-  v7 = a3;
-  [v7 encodeObject:entity forKey:@"ent"];
-  [v7 encodeObject:self->_source forKey:@"src"];
-  [v7 encodeInt32:self->_algorithm forKey:@"alg"];
+  coderCopy = coder;
+  [coderCopy encodeObject:entity forKey:@"ent"];
+  [coderCopy encodeObject:self->_source forKey:@"src"];
+  [coderCopy encodeInt32:self->_algorithm forKey:@"alg"];
   *&v5 = self->_initialScore;
-  [v7 encodeFloat:@"score" forKey:v5];
+  [coderCopy encodeFloat:@"score" forKey:v5];
   *&v6 = self->_decayRate;
-  [v7 encodeFloat:@"dec" forKey:v6];
-  [v7 encodeObject:self->_extractionOsBuild forKey:@"bld"];
-  [v7 encodeInt64:self->_extractionAssetVersion forKey:@"ast"];
-  [v7 encodeInt32:self->_changeType forKey:@"cty"];
-  [v7 encodeInt32:self->_bucketizedSentimentScore forKey:@"snt"];
-  [v7 encodeObject:self->_metadata forKey:@"met"];
+  [coderCopy encodeFloat:@"dec" forKey:v6];
+  [coderCopy encodeObject:self->_extractionOsBuild forKey:@"bld"];
+  [coderCopy encodeInt64:self->_extractionAssetVersion forKey:@"ast"];
+  [coderCopy encodeInt32:self->_changeType forKey:@"cty"];
+  [coderCopy encodeInt32:self->_bucketizedSentimentScore forKey:@"snt"];
+  [coderCopy encodeObject:self->_metadata forKey:@"met"];
 }
 
-- (PPNamedEntityRecord)initWithCoder:(id)a3
+- (PPNamedEntityRecord)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v22.receiver = self;
   v22.super_class = PPNamedEntityRecord;
   v5 = [(PPNamedEntityRecord *)&v22 init];
   if (v5)
   {
     v6 = objc_opt_class();
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ent"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ent"];
     entity = v5->_entity;
     v5->_entity = v7;
 
     v9 = PPGetSourceInternPool();
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"src"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"src"];
     v11 = [v9 intern:v10];
     source = v5->_source;
     v5->_source = v11;
 
-    v5->_algorithm = [v4 decodeInt32ForKey:@"alg"];
-    [v4 decodeFloatForKey:@"score"];
+    v5->_algorithm = [coderCopy decodeInt32ForKey:@"alg"];
+    [coderCopy decodeFloatForKey:@"score"];
     v5->_initialScore = v13;
-    [v4 decodeFloatForKey:@"dec"];
+    [coderCopy decodeFloatForKey:@"dec"];
     v5->_decayRate = v14;
     v15 = PPGetStringInternPool();
-    v16 = [v4 decodeObjectOfClass:v6 forKey:@"bld"];
+    v16 = [coderCopy decodeObjectOfClass:v6 forKey:@"bld"];
     v17 = [v15 intern:v16];
     extractionOsBuild = v5->_extractionOsBuild;
     v5->_extractionOsBuild = v17;
 
-    v5->_extractionAssetVersion = [v4 decodeInt64ForKey:@"ast"];
-    v5->_changeType = [v4 decodeInt32ForKey:@"cty"];
-    v5->_bucketizedSentimentScore = [v4 decodeInt32ForKey:@"snt"];
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"met"];
+    v5->_extractionAssetVersion = [coderCopy decodeInt64ForKey:@"ast"];
+    v5->_changeType = [coderCopy decodeInt32ForKey:@"cty"];
+    v5->_bucketizedSentimentScore = [coderCopy decodeInt32ForKey:@"snt"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"met"];
     metadata = v5->_metadata;
     v5->_metadata = v19;
   }

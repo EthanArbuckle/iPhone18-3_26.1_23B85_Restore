@@ -1,5 +1,5 @@
 @interface MUPlaceRibbonItemViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (id)accessibilityValue;
 - (unint64_t)accessibilityTraits;
@@ -7,12 +7,12 @@
 
 @implementation MUPlaceRibbonItemViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MUPlaceRibbonItemView" hasInstanceVariable:@"_titleLabel" withType:"UIView<MULabelViewProtocol>"];
-  [v3 validateClass:@"MUPlaceRibbonItemView" hasInstanceVariable:@"_valueLabel" withType:"UIView<MULabelViewProtocol>"];
-  [v3 validateClass:@"MUPlaceRibbonItemView" hasInstanceMethod:@"viewModel" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MUPlaceRibbonItemView" hasInstanceVariable:@"_titleLabel" withType:"UIView<MULabelViewProtocol>"];
+  [validationsCopy validateClass:@"MUPlaceRibbonItemView" hasInstanceVariable:@"_valueLabel" withType:"UIView<MULabelViewProtocol>"];
+  [validationsCopy validateClass:@"MUPlaceRibbonItemView" hasInstanceMethod:@"viewModel" withFullSignature:{"@", 0}];
 }
 
 - (unint64_t)accessibilityTraits
@@ -22,34 +22,34 @@
   {
     v7.receiver = self;
     v7.super_class = MUPlaceRibbonItemViewAccessibility;
-    v4 = ([(MUPlaceRibbonItemViewAccessibility *)&v7 accessibilityTraits]| *MEMORY[0x29EDC7F70]) != 0;
+    accessibilityTraits = ([(MUPlaceRibbonItemViewAccessibility *)&v7 accessibilityTraits]| *MEMORY[0x29EDC7F70]) != 0;
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = MUPlaceRibbonItemViewAccessibility;
-    v4 = [(MUPlaceRibbonItemViewAccessibility *)&v6 accessibilityTraits];
+    accessibilityTraits = [(MUPlaceRibbonItemViewAccessibility *)&v6 accessibilityTraits];
   }
 
-  return v4;
+  return accessibilityTraits;
 }
 
 - (id)accessibilityLabel
 {
   v3 = [(MUPlaceRibbonItemViewAccessibility *)self safeUIViewForKey:@"_titleLabel"];
-  v4 = [v3 accessibilityLabel];
+  accessibilityLabel = [v3 accessibilityLabel];
 
   v5 = [(MUPlaceRibbonItemViewAccessibility *)self safeValueForKey:@"viewModel"];
-  if ([v5 _accessibilityIntegerValueForKey:@"RibbonItemViewTypeKey"] == 2 && objc_msgSend(v4, "containsString:", @"("))
+  if ([v5 _accessibilityIntegerValueForKey:@"RibbonItemViewTypeKey"] == 2 && objc_msgSend(accessibilityLabel, "containsString:", @"("))
   {
     v8 = accessibilityLocalizedString(@"RATINGS");
     v6 = __AXStringForVariables();
 
-    v4 = v6;
+    accessibilityLabel = v6;
   }
 
-  return v4;
+  return accessibilityLabel;
 }
 
 - (id)accessibilityValue
@@ -57,7 +57,7 @@
   v3 = [(MUPlaceRibbonItemViewAccessibility *)self safeValueForKey:@"viewModel"];
   v4 = [v3 _accessibilityIntegerValueForKey:@"RibbonItemViewTypeKey"];
   v5 = [(MUPlaceRibbonItemViewAccessibility *)self safeUIViewForKey:@"_valueLabel"];
-  v6 = [v5 accessibilityLabel];
+  accessibilityLabel = [v5 accessibilityLabel];
 
   v7 = [(MUPlaceRibbonItemViewAccessibility *)self safeUIViewForKey:@"_valueLabel"];
   v8 = [v7 safeValueForKey:@"attributedText"];
@@ -96,7 +96,7 @@
     if (v4 != 7)
     {
 LABEL_12:
-      v14 = v6;
+      v14 = accessibilityLabel;
       goto LABEL_24;
     }
 
@@ -143,7 +143,7 @@ LABEL_12:
           v30[4] = &v34;
           [v8 enumerateAttribute:v10 inRange:0 options:v9 usingBlock:{0, v30}];
           v11 = v35[5];
-          v29 = [v8 string];
+          string = [v8 string];
           v12 = __UIAXStringForVariables();
           v13 = v35[5];
           v35[5] = v12;
@@ -159,20 +159,20 @@ LABEL_18:
       goto LABEL_12;
     }
 
-    v17 = [v8 string];
-    v18 = [v17 containsString:@"%"];
+    string2 = [v8 string];
+    v18 = [string2 containsString:@"%"];
 
     if (v18)
     {
       v19 = MEMORY[0x29EDBA0F8];
       v20 = accessibilityLocalizedString(@"RECOMMEND");
-      v14 = [v19 stringWithFormat:@"%@ %@", v6, v20];
+      v14 = [v19 stringWithFormat:@"%@ %@", accessibilityLabel, v20];
 
       goto LABEL_24;
     }
 
-    v25 = [v8 string];
-    v26 = [v25 substringFromIndex:1];
+    string3 = [v8 string];
+    v26 = [string3 substringFromIndex:1];
     [v26 floatValue];
 
     v27 = UIAXStarRatingStringForRating();

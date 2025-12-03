@@ -1,33 +1,33 @@
 @interface MusicAngel.Server.ApplicationDelegate
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4;
-- (id)application:(id)a3 configurationForConnectingSceneSession:(id)a4 options:(id)a5;
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options;
+- (id)application:(id)application configurationForConnectingSceneSession:(id)session options:(id)options;
 @end
 
 @implementation MusicAngel.Server.ApplicationDelegate
 
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options
 {
-  if (a4)
+  if (options)
   {
     type metadata accessor for LaunchOptionsKey(0);
     sub_100012BB8();
     static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  v6 = a3;
-  v7 = self;
+  applicationCopy = application;
+  selfCopy = self;
   sub_100012808();
 
   return 1;
 }
 
-- (id)application:(id)a3 configurationForConnectingSceneSession:(id)a4 options:(id)a5
+- (id)application:(id)application configurationForConnectingSceneSession:(id)session options:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  v12 = sub_1000128F0(v11, v9);
+  applicationCopy = application;
+  sessionCopy = session;
+  optionsCopy = options;
+  selfCopy = self;
+  v12 = sub_1000128F0(selfCopy, sessionCopy);
 
   return v12;
 }

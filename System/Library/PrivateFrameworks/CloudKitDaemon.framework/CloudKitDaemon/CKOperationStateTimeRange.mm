@@ -1,13 +1,13 @@
 @interface CKOperationStateTimeRange
-- (CKOperationStateTimeRange)initWithOperationState:(unint64_t)a3 startDate:(id)a4 duration:(double)a5;
+- (CKOperationStateTimeRange)initWithOperationState:(unint64_t)state startDate:(id)date duration:(double)duration;
 - (double)absoluteStart;
 - (double)absoluteStop;
 - (double)executing;
 - (double)queueing;
 - (double)relativeStart;
 - (id)CKPropertiesDescription;
-- (int64_t)compareStartTime:(id)a3;
-- (int64_t)compareStopTime:(id)a3;
+- (int64_t)compareStartTime:(id)time;
+- (int64_t)compareStopTime:(id)time;
 @end
 
 @implementation CKOperationStateTimeRange
@@ -29,18 +29,18 @@
   return v7;
 }
 
-- (CKOperationStateTimeRange)initWithOperationState:(unint64_t)a3 startDate:(id)a4 duration:(double)a5
+- (CKOperationStateTimeRange)initWithOperationState:(unint64_t)state startDate:(id)date duration:(double)duration
 {
-  v9 = a4;
+  dateCopy = date;
   v13.receiver = self;
   v13.super_class = CKOperationStateTimeRange;
   v10 = [(CKOperationStateTimeRange *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    v10->_operationState = a3;
-    objc_storeStrong(&v10->_startDate, a4);
-    v11->_duration = a5;
+    v10->_operationState = state;
+    objc_storeStrong(&v10->_startDate, date);
+    v11->_duration = duration;
   }
 
   return v11;
@@ -68,12 +68,12 @@
   return result;
 }
 
-- (int64_t)compareStartTime:(id)a3
+- (int64_t)compareStartTime:(id)time
 {
-  v4 = a3;
+  timeCopy = time;
   objc_msgSend_absoluteStart(self, v5, v6);
   v8 = v7;
-  objc_msgSend_absoluteStart(v4, v9, v10);
+  objc_msgSend_absoluteStart(timeCopy, v9, v10);
   v12 = v11;
 
   if (v8 < v12)
@@ -87,12 +87,12 @@
   }
 }
 
-- (int64_t)compareStopTime:(id)a3
+- (int64_t)compareStopTime:(id)time
 {
-  v4 = a3;
+  timeCopy = time;
   objc_msgSend_absoluteStop(self, v5, v6);
   v8 = v7;
-  objc_msgSend_absoluteStop(v4, v9, v10);
+  objc_msgSend_absoluteStop(timeCopy, v9, v10);
   v12 = v11;
 
   if (v8 < v12)

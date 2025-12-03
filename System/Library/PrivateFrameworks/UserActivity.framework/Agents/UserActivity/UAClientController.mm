@@ -1,27 +1,27 @@
 @interface UAClientController
-- (UAClientController)initWithManager:(id)a3 name:(id)a4;
+- (UAClientController)initWithManager:(id)manager name:(id)name;
 - (id)eligibleAdvertiseableItemsInOrder;
-- (id)userActivityInfoForUUID:(id)a3;
+- (id)userActivityInfoForUUID:(id)d;
 @end
 
 @implementation UAClientController
 
-- (UAClientController)initWithManager:(id)a3 name:(id)a4
+- (UAClientController)initWithManager:(id)manager name:(id)name
 {
   v5.receiver = self;
   v5.super_class = UAClientController;
-  return [(UACornerActionManagerHandler *)&v5 initWithManager:a3 name:a4];
+  return [(UACornerActionManagerHandler *)&v5 initWithManager:manager name:name];
 }
 
-- (id)userActivityInfoForUUID:(id)a3
+- (id)userActivityInfoForUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(UAClientController *)self items];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  items = [(UAClientController *)self items];
+  v6 = [items countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = *v14;
@@ -31,12 +31,12 @@
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(items);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 uuid];
-        v11 = [v10 isEqual:v4];
+        uuid = [v9 uuid];
+        v11 = [uuid isEqual:dCopy];
 
         if (v11)
         {
@@ -45,7 +45,7 @@
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [items countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v6)
       {
         continue;
@@ -62,19 +62,19 @@ LABEL_11:
 
 - (id)eligibleAdvertiseableItemsInOrder
 {
-  v3 = [(UAClientController *)self items];
-  if (v3)
+  items = [(UAClientController *)self items];
+  if (items)
   {
-    v4 = [(UAClientController *)self items];
-    v5 = [v4 allObjects];
+    items2 = [(UAClientController *)self items];
+    allObjects = [items2 allObjects];
   }
 
   else
   {
-    v5 = 0;
+    allObjects = 0;
   }
 
-  return v5;
+  return allObjects;
 }
 
 @end

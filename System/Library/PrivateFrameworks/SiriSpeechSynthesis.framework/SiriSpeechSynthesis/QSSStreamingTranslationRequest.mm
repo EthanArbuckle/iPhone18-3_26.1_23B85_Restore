@@ -9,8 +9,8 @@
 - (NSString)target_language;
 - (NSString)task;
 - (NSString)translation_text;
-- (Offset<siri::speech::schema_fb::StreamingTranslationRequest>)addObjectToBuffer:(void *)a3;
-- (QSSStreamingTranslationRequest)initWithFlatbuffData:(id)a3 root:(const StreamingTranslationRequest *)a4 verify:(BOOL)a5;
+- (Offset<siri::speech::schema_fb::StreamingTranslationRequest>)addObjectToBuffer:(void *)buffer;
+- (QSSStreamingTranslationRequest)initWithFlatbuffData:(id)data root:(const StreamingTranslationRequest *)root verify:(BOOL)verify;
 - (id)flatbuffData;
 - (int64_t)opt_in_status;
 @end
@@ -46,118 +46,118 @@ flatbuffers::DetachedBuffer *__46__QSSStreamingTranslationRequest_flatbuffData__
   return result;
 }
 
-- (Offset<siri::speech::schema_fb::StreamingTranslationRequest>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::schema_fb::StreamingTranslationRequest>)addObjectToBuffer:(void *)buffer
 {
-  v5 = [(QSSStreamingTranslationRequest *)self speech_id];
-  v6 = v5;
-  if (!v5)
+  speech_id = [(QSSStreamingTranslationRequest *)self speech_id];
+  v6 = speech_id;
+  if (!speech_id)
   {
-    v5 = &stru_2879AE8E0;
+    speech_id = &stru_2879AE8E0;
   }
 
-  v7 = [(__CFString *)v5 UTF8String];
-  v8 = strlen(v7);
-  String = flatbuffers::FlatBufferBuilder::CreateString(a3, v7, v8);
+  uTF8String = [(__CFString *)speech_id UTF8String];
+  v8 = strlen(uTF8String);
+  String = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String, v8);
 
-  v10 = [(QSSStreamingTranslationRequest *)self request_id];
-  v11 = v10;
-  if (!v10)
+  request_id = [(QSSStreamingTranslationRequest *)self request_id];
+  v11 = request_id;
+  if (!request_id)
   {
-    v10 = &stru_2879AE8E0;
+    request_id = &stru_2879AE8E0;
   }
 
-  v12 = [(__CFString *)v10 UTF8String];
-  v13 = strlen(v12);
-  v14 = flatbuffers::FlatBufferBuilder::CreateString(a3, v12, v13);
+  uTF8String2 = [(__CFString *)request_id UTF8String];
+  v13 = strlen(uTF8String2);
+  v14 = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String2, v13);
 
-  v15 = [(QSSStreamingTranslationRequest *)self task];
-  v16 = v15;
-  if (!v15)
+  task = [(QSSStreamingTranslationRequest *)self task];
+  v16 = task;
+  if (!task)
   {
-    v15 = &stru_2879AE8E0;
+    task = &stru_2879AE8E0;
   }
 
-  v17 = [(__CFString *)v15 UTF8String];
-  v18 = strlen(v17);
-  v19 = flatbuffers::FlatBufferBuilder::CreateString(a3, v17, v18);
+  uTF8String3 = [(__CFString *)task UTF8String];
+  v18 = strlen(uTF8String3);
+  v19 = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String3, v18);
 
-  v20 = [(QSSStreamingTranslationRequest *)self source_language];
-  v21 = v20;
-  if (!v20)
+  source_language = [(QSSStreamingTranslationRequest *)self source_language];
+  v21 = source_language;
+  if (!source_language)
   {
-    v20 = &stru_2879AE8E0;
+    source_language = &stru_2879AE8E0;
   }
 
-  v22 = [(__CFString *)v20 UTF8String];
-  v23 = strlen(v22);
-  v24 = flatbuffers::FlatBufferBuilder::CreateString(a3, v22, v23);
+  uTF8String4 = [(__CFString *)source_language UTF8String];
+  v23 = strlen(uTF8String4);
+  v24 = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String4, v23);
 
-  v25 = [(QSSStreamingTranslationRequest *)self target_language];
-  v26 = v25;
-  if (!v25)
+  target_language = [(QSSStreamingTranslationRequest *)self target_language];
+  v26 = target_language;
+  if (!target_language)
   {
-    v25 = &stru_2879AE8E0;
+    target_language = &stru_2879AE8E0;
   }
 
-  v27 = [(__CFString *)v25 UTF8String];
-  v28 = strlen(v27);
-  v29 = flatbuffers::FlatBufferBuilder::CreateString(a3, v27, v28);
+  uTF8String5 = [(__CFString *)target_language UTF8String];
+  v28 = strlen(uTF8String5);
+  v29 = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String5, v28);
 
-  v30 = [(QSSStreamingTranslationRequest *)self translation_text];
-  v31 = v30;
-  if (!v30)
+  translation_text = [(QSSStreamingTranslationRequest *)self translation_text];
+  v31 = translation_text;
+  if (!translation_text)
   {
-    v30 = &stru_2879AE8E0;
+    translation_text = &stru_2879AE8E0;
   }
 
-  v32 = [(__CFString *)v30 UTF8String];
-  v33 = strlen(v32);
-  v51 = flatbuffers::FlatBufferBuilder::CreateString(a3, v32, v33);
+  uTF8String6 = [(__CFString *)translation_text UTF8String];
+  v33 = strlen(uTF8String6);
+  v51 = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String6, v33);
   v50 = v29;
 
-  v34 = [(QSSStreamingTranslationRequest *)self sequence_id];
-  v35 = v34;
-  if (!v34)
+  sequence_id = [(QSSStreamingTranslationRequest *)self sequence_id];
+  v35 = sequence_id;
+  if (!sequence_id)
   {
-    v34 = &stru_2879AE8E0;
+    sequence_id = &stru_2879AE8E0;
   }
 
-  v36 = [(__CFString *)v34 UTF8String];
-  v37 = strlen(v36);
-  v49 = flatbuffers::FlatBufferBuilder::CreateString(a3, v36, v37);
+  uTF8String7 = [(__CFString *)sequence_id UTF8String];
+  v37 = strlen(uTF8String7);
+  v49 = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String7, v37);
   v38 = v24;
 
-  v39 = [(QSSStreamingTranslationRequest *)self disable_log];
-  v48 = [(QSSStreamingTranslationRequest *)self opt_in_status];
-  v40 = [(QSSStreamingTranslationRequest *)self app_id];
-  v41 = v40;
-  if (!v40)
+  disable_log = [(QSSStreamingTranslationRequest *)self disable_log];
+  opt_in_status = [(QSSStreamingTranslationRequest *)self opt_in_status];
+  app_id = [(QSSStreamingTranslationRequest *)self app_id];
+  v41 = app_id;
+  if (!app_id)
   {
-    v40 = &stru_2879AE8E0;
+    app_id = &stru_2879AE8E0;
   }
 
-  v42 = [(__CFString *)v40 UTF8String];
-  v43 = strlen(v42);
-  LODWORD(v42) = flatbuffers::FlatBufferBuilder::CreateString(a3, v42, v43);
+  uTF8String8 = [(__CFString *)app_id UTF8String];
+  v43 = strlen(uTF8String8);
+  LODWORD(uTF8String8) = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String8, v43);
 
-  v44 = [(QSSStreamingTranslationRequest *)self final_message];
-  flatbuffers::FlatBufferBuilder::NotNested(a3);
-  *(a3 + 70) = 1;
-  v45 = *(a3 + 10);
-  v46 = *(a3 + 8) - *(a3 + 12);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 4, String);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 6, v14);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 8, v19);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 10, v38);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 12, v50);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 14, v51);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 16, v49);
-  flatbuffers::FlatBufferBuilder::AddElement<unsigned char>(a3, 18, v39);
-  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(a3, 20, v48);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 22, v42);
-  flatbuffers::FlatBufferBuilder::AddElement<unsigned char>(a3, 24, v44);
+  final_message = [(QSSStreamingTranslationRequest *)self final_message];
+  flatbuffers::FlatBufferBuilder::NotNested(buffer);
+  *(buffer + 70) = 1;
+  v45 = *(buffer + 10);
+  v46 = *(buffer + 8) - *(buffer + 12);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 4, String);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 6, v14);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 8, v19);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 10, v38);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 12, v50);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 14, v51);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 16, v49);
+  flatbuffers::FlatBufferBuilder::AddElement<unsigned char>(buffer, 18, disable_log);
+  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(buffer, 20, opt_in_status);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 22, uTF8String8);
+  flatbuffers::FlatBufferBuilder::AddElement<unsigned char>(buffer, 24, final_message);
 
-  return flatbuffers::FlatBufferBuilder::EndTable(a3, v46 + v45);
+  return flatbuffers::FlatBufferBuilder::EndTable(buffer, v46 + v45);
 }
 
 - (BOOL)final_message
@@ -373,42 +373,42 @@ flatbuffers::DetachedBuffer *__46__QSSStreamingTranslationRequest_flatbuffData__
   return v6;
 }
 
-- (QSSStreamingTranslationRequest)initWithFlatbuffData:(id)a3 root:(const StreamingTranslationRequest *)a4 verify:(BOOL)a5
+- (QSSStreamingTranslationRequest)initWithFlatbuffData:(id)data root:(const StreamingTranslationRequest *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v29.receiver = self;
   v29.super_class = QSSStreamingTranslationRequest;
   v10 = [(QSSStreamingTranslationRequest *)&v29 init];
   v11 = v10;
   if (v10)
   {
-    if (!v9 || ![v9 length])
+    if (!dataCopy || ![dataCopy length])
     {
       goto LABEL_16;
     }
 
-    objc_storeStrong(&v10->_data, a3);
-    if (!a4)
+    objc_storeStrong(&v10->_data, data);
+    if (!root)
     {
-      v12 = [(NSData *)v10->_data bytes];
-      a4 = v12 + *v12;
+      bytes = [(NSData *)v10->_data bytes];
+      root = bytes + *bytes;
     }
 
-    v10->_root = a4;
-    if (v5)
+    v10->_root = root;
+    if (verifyCopy)
     {
-      v13 = [(NSData *)v10->_data bytes];
+      bytes2 = [(NSData *)v10->_data bytes];
       v14 = [(NSData *)v10->_data length];
       root = v10->_root;
-      if (root < v13 || root > v13 + v14)
+      if (root < bytes2 || root > bytes2 + v14)
       {
         goto LABEL_16;
       }
 
-      v17 = [(NSData *)v10->_data bytes];
+      bytes3 = [(NSData *)v10->_data bytes];
       v18 = [(NSData *)v10->_data length];
-      v24 = v17;
+      v24 = bytes3;
       v25 = v18;
       v26 = xmmword_26914CD70;
       v27 = 0;
@@ -430,9 +430,9 @@ LABEL_16:
       }
     }
 
-    v20 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     storage = v10->_storage;
-    v10->_storage = v20;
+    v10->_storage = dictionary;
   }
 
   v22 = v10;

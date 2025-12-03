@@ -1,63 +1,63 @@
 @interface _INPBIntentResponse
-- (BOOL)isEqual:(id)a3;
-- (_INPBIntentResponse)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBIntentResponse)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (int)StringAsType:(id)a3;
+- (int)StringAsType:(id)type;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setHasRequiresProtectedData:(BOOL)a3;
-- (void)setHasType:(BOOL)a3;
-- (void)setType:(int)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setHasRequiresProtectedData:(BOOL)data;
+- (void)setHasType:(BOOL)type;
+- (void)setType:(int)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBIntentResponse
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(_INPBIntentResponse *)self payloadFailure];
-  v5 = [v4 dictionaryRepresentation];
-  [v3 setObject:v5 forKeyedSubscript:@"_payloadFailure"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  payloadFailure = [(_INPBIntentResponse *)self payloadFailure];
+  dictionaryRepresentation = [payloadFailure dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"_payloadFailure"];
 
-  v6 = [(_INPBIntentResponse *)self payloadSuccess];
-  v7 = [v6 dictionaryRepresentation];
-  [v3 setObject:v7 forKeyedSubscript:@"_payloadSuccess"];
+  payloadSuccess = [(_INPBIntentResponse *)self payloadSuccess];
+  dictionaryRepresentation2 = [payloadSuccess dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"_payloadSuccess"];
 
   if ([(_INPBIntentResponse *)self hasRequiresAuthentication])
   {
     v8 = [MEMORY[0x1E696AD98] numberWithBool:{-[_INPBIntentResponse requiresAuthentication](self, "requiresAuthentication")}];
-    [v3 setObject:v8 forKeyedSubscript:@"requiresAuthentication"];
+    [dictionary setObject:v8 forKeyedSubscript:@"requiresAuthentication"];
   }
 
   if ([(_INPBIntentResponse *)self hasRequiresProtectedData])
   {
     v9 = [MEMORY[0x1E696AD98] numberWithBool:{-[_INPBIntentResponse requiresProtectedData](self, "requiresProtectedData")}];
-    [v3 setObject:v9 forKeyedSubscript:@"requires_protected_data"];
+    [dictionary setObject:v9 forKeyedSubscript:@"requires_protected_data"];
   }
 
   if ([(_INPBIntentResponse *)self hasType])
   {
-    v10 = [(_INPBIntentResponse *)self type];
-    if (v10 >= 8)
+    type = [(_INPBIntentResponse *)self type];
+    if (type >= 8)
     {
-      v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v10];
+      v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", type];
     }
 
     else
     {
-      v11 = off_1E72806A0[v10];
+      v11 = off_1E72806A0[type];
     }
 
-    [v3 setObject:v11 forKeyedSubscript:@"type"];
+    [dictionary setObject:v11 forKeyedSubscript:@"type"];
   }
 
-  v12 = [(_INPBIntentResponse *)self userActivity];
-  v13 = [v12 dictionaryRepresentation];
-  [v3 setObject:v13 forKeyedSubscript:@"userActivity"];
+  userActivity = [(_INPBIntentResponse *)self userActivity];
+  dictionaryRepresentation3 = [userActivity dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"userActivity"];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -97,28 +97,28 @@
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ [(_INPBUserActivity *)self->_userActivity hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_29;
   }
 
-  v5 = [(_INPBIntentResponse *)self payloadFailure];
-  v6 = [v4 payloadFailure];
-  if ((v5 != 0) == (v6 == 0))
+  payloadFailure = [(_INPBIntentResponse *)self payloadFailure];
+  payloadFailure2 = [equalCopy payloadFailure];
+  if ((payloadFailure != 0) == (payloadFailure2 == 0))
   {
     goto LABEL_28;
   }
 
-  v7 = [(_INPBIntentResponse *)self payloadFailure];
-  if (v7)
+  payloadFailure3 = [(_INPBIntentResponse *)self payloadFailure];
+  if (payloadFailure3)
   {
-    v8 = v7;
-    v9 = [(_INPBIntentResponse *)self payloadFailure];
-    v10 = [v4 payloadFailure];
-    v11 = [v9 isEqual:v10];
+    v8 = payloadFailure3;
+    payloadFailure4 = [(_INPBIntentResponse *)self payloadFailure];
+    payloadFailure5 = [equalCopy payloadFailure];
+    v11 = [payloadFailure4 isEqual:payloadFailure5];
 
     if (!v11)
     {
@@ -130,20 +130,20 @@
   {
   }
 
-  v5 = [(_INPBIntentResponse *)self payloadSuccess];
-  v6 = [v4 payloadSuccess];
-  if ((v5 != 0) == (v6 == 0))
+  payloadFailure = [(_INPBIntentResponse *)self payloadSuccess];
+  payloadFailure2 = [equalCopy payloadSuccess];
+  if ((payloadFailure != 0) == (payloadFailure2 == 0))
   {
     goto LABEL_28;
   }
 
-  v12 = [(_INPBIntentResponse *)self payloadSuccess];
-  if (v12)
+  payloadSuccess = [(_INPBIntentResponse *)self payloadSuccess];
+  if (payloadSuccess)
   {
-    v13 = v12;
-    v14 = [(_INPBIntentResponse *)self payloadSuccess];
-    v15 = [v4 payloadSuccess];
-    v16 = [v14 isEqual:v15];
+    v13 = payloadSuccess;
+    payloadSuccess2 = [(_INPBIntentResponse *)self payloadSuccess];
+    payloadSuccess3 = [equalCopy payloadSuccess];
+    v16 = [payloadSuccess2 isEqual:payloadSuccess3];
 
     if (!v16)
     {
@@ -155,66 +155,66 @@
   {
   }
 
-  v17 = [(_INPBIntentResponse *)self hasRequiresAuthentication];
-  if (v17 != [v4 hasRequiresAuthentication])
+  hasRequiresAuthentication = [(_INPBIntentResponse *)self hasRequiresAuthentication];
+  if (hasRequiresAuthentication != [equalCopy hasRequiresAuthentication])
   {
     goto LABEL_29;
   }
 
   if ([(_INPBIntentResponse *)self hasRequiresAuthentication])
   {
-    if ([v4 hasRequiresAuthentication])
+    if ([equalCopy hasRequiresAuthentication])
     {
       requiresAuthentication = self->_requiresAuthentication;
-      if (requiresAuthentication != [v4 requiresAuthentication])
+      if (requiresAuthentication != [equalCopy requiresAuthentication])
       {
         goto LABEL_29;
       }
     }
   }
 
-  v19 = [(_INPBIntentResponse *)self hasRequiresProtectedData];
-  if (v19 != [v4 hasRequiresProtectedData])
+  hasRequiresProtectedData = [(_INPBIntentResponse *)self hasRequiresProtectedData];
+  if (hasRequiresProtectedData != [equalCopy hasRequiresProtectedData])
   {
     goto LABEL_29;
   }
 
   if ([(_INPBIntentResponse *)self hasRequiresProtectedData])
   {
-    if ([v4 hasRequiresProtectedData])
+    if ([equalCopy hasRequiresProtectedData])
     {
       requiresProtectedData = self->_requiresProtectedData;
-      if (requiresProtectedData != [v4 requiresProtectedData])
+      if (requiresProtectedData != [equalCopy requiresProtectedData])
       {
         goto LABEL_29;
       }
     }
   }
 
-  v21 = [(_INPBIntentResponse *)self hasType];
-  if (v21 != [v4 hasType])
+  hasType = [(_INPBIntentResponse *)self hasType];
+  if (hasType != [equalCopy hasType])
   {
     goto LABEL_29;
   }
 
   if ([(_INPBIntentResponse *)self hasType])
   {
-    if ([v4 hasType])
+    if ([equalCopy hasType])
     {
       type = self->_type;
-      if (type != [v4 type])
+      if (type != [equalCopy type])
       {
         goto LABEL_29;
       }
     }
   }
 
-  v5 = [(_INPBIntentResponse *)self userActivity];
-  v6 = [v4 userActivity];
-  if ((v5 != 0) != (v6 == 0))
+  payloadFailure = [(_INPBIntentResponse *)self userActivity];
+  payloadFailure2 = [equalCopy userActivity];
+  if ((payloadFailure != 0) != (payloadFailure2 == 0))
   {
-    v23 = [(_INPBIntentResponse *)self userActivity];
-    if (!v23)
+    userActivity = [(_INPBIntentResponse *)self userActivity];
+    if (!userActivity)
     {
 
 LABEL_32:
@@ -222,10 +222,10 @@ LABEL_32:
       goto LABEL_30;
     }
 
-    v24 = v23;
-    v25 = [(_INPBIntentResponse *)self userActivity];
-    v26 = [v4 userActivity];
-    v27 = [v25 isEqual:v26];
+    v24 = userActivity;
+    userActivity2 = [(_INPBIntentResponse *)self userActivity];
+    userActivity3 = [equalCopy userActivity];
+    v27 = [userActivity2 isEqual:userActivity3];
 
     if (v27)
     {
@@ -245,13 +245,13 @@ LABEL_30:
   return v28;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBIntentResponse allocWithZone:](_INPBIntentResponse init];
-  v6 = [(_INPBIntentResponsePayloadFailure *)self->_payloadFailure copyWithZone:a3];
+  v6 = [(_INPBIntentResponsePayloadFailure *)self->_payloadFailure copyWithZone:zone];
   [(_INPBIntentResponse *)v5 setPayloadFailure:v6];
 
-  v7 = [(_INPBIntentResponsePayloadSuccess *)self->_payloadSuccess copyWithZone:a3];
+  v7 = [(_INPBIntentResponsePayloadSuccess *)self->_payloadSuccess copyWithZone:zone];
   [(_INPBIntentResponse *)v5 setPayloadSuccess:v7];
 
   if ([(_INPBIntentResponse *)self hasRequiresAuthentication])
@@ -269,52 +269,52 @@ LABEL_30:
     [(_INPBIntentResponse *)v5 setType:[(_INPBIntentResponse *)self type]];
   }
 
-  v8 = [(_INPBUserActivity *)self->_userActivity copyWithZone:a3];
+  v8 = [(_INPBUserActivity *)self->_userActivity copyWithZone:zone];
   [(_INPBIntentResponse *)v5 setUserActivity:v8];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBIntentResponse *)self data];
+  coderCopy = coder;
+  data = [(_INPBIntentResponse *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBIntentResponse)initWithCoder:(id)a3
+- (_INPBIntentResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBIntentResponse *)self initWithData:v6];
+    self = [(_INPBIntentResponse *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v14 = a3;
-  v4 = [(_INPBIntentResponse *)self payloadFailure];
+  toCopy = to;
+  payloadFailure = [(_INPBIntentResponse *)self payloadFailure];
 
-  if (v4)
+  if (payloadFailure)
   {
-    v5 = [(_INPBIntentResponse *)self payloadFailure];
+    payloadFailure2 = [(_INPBIntentResponse *)self payloadFailure];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(_INPBIntentResponse *)self payloadSuccess];
+  payloadSuccess = [(_INPBIntentResponse *)self payloadSuccess];
 
-  if (v6)
+  if (payloadSuccess)
   {
-    v7 = [(_INPBIntentResponse *)self payloadSuccess];
+    payloadSuccess2 = [(_INPBIntentResponse *)self payloadSuccess];
     PBDataWriterWriteSubmessage();
   }
 
@@ -336,57 +336,57 @@ LABEL_30:
     PBDataWriterWriteInt32Field();
   }
 
-  v11 = [(_INPBIntentResponse *)self userActivity];
+  userActivity = [(_INPBIntentResponse *)self userActivity];
 
-  v12 = v14;
-  if (v11)
+  v12 = toCopy;
+  if (userActivity)
   {
-    v13 = [(_INPBIntentResponse *)self userActivity];
+    userActivity2 = [(_INPBIntentResponse *)self userActivity];
     PBDataWriterWriteSubmessage();
 
-    v12 = v14;
+    v12 = toCopy;
   }
 }
 
-- (int)StringAsType:(id)a3
+- (int)StringAsType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"SUCCESS"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"SUCCESS"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"FAILURE"])
+  else if ([typeCopy isEqualToString:@"FAILURE"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"IN_PROGRESS"])
+  else if ([typeCopy isEqualToString:@"IN_PROGRESS"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"UNSPECIFIED"])
+  else if ([typeCopy isEqualToString:@"UNSPECIFIED"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"CONTINUE_IN_APP"])
+  else if ([typeCopy isEqualToString:@"CONTINUE_IN_APP"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"READY"])
+  else if ([typeCopy isEqualToString:@"READY"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"AUTHENTICATION_REQUIRED"])
+  else if ([typeCopy isEqualToString:@"AUTHENTICATION_REQUIRED"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"USER_CONFIRMATION_REQUIRED"])
+  else if ([typeCopy isEqualToString:@"USER_CONFIRMATION_REQUIRED"])
   {
     v4 = 7;
   }
@@ -399,9 +399,9 @@ LABEL_30:
   return v4;
 }
 
-- (void)setHasType:(BOOL)a3
+- (void)setHasType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 4;
   }
@@ -414,10 +414,10 @@ LABEL_30:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setType:(int)a3
+- (void)setType:(int)type
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (type == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xFB;
   }
@@ -425,13 +425,13 @@ LABEL_30:
   else
   {
     *&self->_has = has | 4;
-    self->_type = a3;
+    self->_type = type;
   }
 }
 
-- (void)setHasRequiresProtectedData:(BOOL)a3
+- (void)setHasRequiresProtectedData:(BOOL)data
 {
-  if (a3)
+  if (data)
   {
     v3 = 2;
   }

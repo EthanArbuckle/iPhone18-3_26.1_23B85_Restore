@@ -1,37 +1,37 @@
 @interface CNUIAcceptedContactConfiguration
-+ (id)configurationForEmailAddress:(id)a3;
-+ (id)configurationForPhoneNumber:(id)a3;
++ (id)configurationForEmailAddress:(id)address;
++ (id)configurationForPhoneNumber:(id)number;
 + (id)log;
-- (CNUIAcceptedContactConfiguration)initWithHandle:(id)a3 handleType:(int64_t)a4;
+- (CNUIAcceptedContactConfiguration)initWithHandle:(id)handle handleType:(int64_t)type;
 - (id)contactForNewContact;
 - (id)sourceForRecentEvent;
-- (void)recordAcceptedEventWithDisplayName:(id)a3 completionHandler:(id)a4;
-- (void)recordAcceptedEventWithDisplayName:(id)a3 handle:(id)a4 metadata:(id)a5 sendingAddress:(id)a6 source:(id)a7 completionHandler:(id)a8;
+- (void)recordAcceptedEventWithDisplayName:(id)name completionHandler:(id)handler;
+- (void)recordAcceptedEventWithDisplayName:(id)name handle:(id)handle metadata:(id)metadata sendingAddress:(id)address source:(id)source completionHandler:(id)handler;
 @end
 
 @implementation CNUIAcceptedContactConfiguration
 
-- (void)recordAcceptedEventWithDisplayName:(id)a3 handle:(id)a4 metadata:(id)a5 sendingAddress:(id)a6 source:(id)a7 completionHandler:(id)a8
+- (void)recordAcceptedEventWithDisplayName:(id)name handle:(id)handle metadata:(id)metadata sendingAddress:(id)address source:(id)source completionHandler:(id)handler
 {
   v37 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  nameCopy = name;
+  handleCopy = handle;
+  metadataCopy = metadata;
+  addressCopy = address;
+  sourceCopy = source;
+  handlerCopy = handler;
   v20 = +[CNUIAcceptedContactConfiguration log];
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
   {
-    v21 = [(CNUIAcceptedContactConfiguration *)self handle];
+    handle = [(CNUIAcceptedContactConfiguration *)self handle];
     *buf = 138412546;
-    v34 = v21;
+    v34 = handle;
     v35 = 2112;
-    v36 = v14;
+    v36 = nameCopy;
     _os_log_impl(&dword_199A75000, v20, OS_LOG_TYPE_DEFAULT, "Generating event with handle: %@, displayName: %@", buf, 0x16u);
   }
 
-  if (!v18)
+  if (!sourceCopy)
   {
     v24 = MEMORY[0x1E696ABC0];
     v31 = *MEMORY[0x1E696A578];
@@ -41,21 +41,21 @@
     goto LABEL_14;
   }
 
-  v22 = [(CNUIAcceptedContactConfiguration *)self handleType];
-  if (v22 == 1)
+  handleType = [(CNUIAcceptedContactConfiguration *)self handleType];
+  if (handleType == 1)
   {
-    v23 = [getCRRecentContactsLibraryClass() recentEventForEmailAddress:v15 displayName:v14 metadata:v16];
+    v23 = [getCRRecentContactsLibraryClass() recentEventForEmailAddress:handleCopy displayName:nameCopy metadata:metadataCopy];
   }
 
   else
   {
-    if (v22)
+    if (handleType)
     {
       v25 = 0;
       goto LABEL_11;
     }
 
-    v23 = [getCRRecentContactsLibraryClass() recentEventForPhoneNumber:v15 displayName:v14 metadata:v16];
+    v23 = [getCRRecentContactsLibraryClass() recentEventForPhoneNumber:handleCopy displayName:nameCopy metadata:metadataCopy];
   }
 
   v25 = v23;
@@ -68,123 +68,123 @@ LABEL_11:
     _os_log_impl(&dword_199A75000, v27, OS_LOG_TYPE_DEFAULT, "Generated event: %@", buf, 0xCu);
   }
 
-  v28 = [getCRRecentContactsLibraryClass() defaultInstance];
+  defaultInstance = [getCRRecentContactsLibraryClass() defaultInstance];
   v30 = v25;
   v29 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v30 count:1];
-  [v28 recordAcceptedContactEvents:v29 sendingAddress:v17 source:v18 completion:v19];
+  [defaultInstance recordAcceptedContactEvents:v29 sendingAddress:addressCopy source:sourceCopy completion:handlerCopy];
 
   v26 = 0;
 LABEL_14:
 
-  if (v19)
+  if (handlerCopy)
   {
-    v19[2](v19, v26);
+    handlerCopy[2](handlerCopy, v26);
   }
 }
 
-- (void)recordAcceptedEventWithDisplayName:(id)a3 completionHandler:(id)a4
+- (void)recordAcceptedEventWithDisplayName:(id)name completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v11 = [(CNUIAcceptedContactConfiguration *)self handle];
-  v8 = [(CNUIAcceptedContactConfiguration *)self metadata];
-  v9 = [(CNUIAcceptedContactConfiguration *)self sendingAddress];
-  v10 = [(CNUIAcceptedContactConfiguration *)self sourceForRecentEvent];
-  [(CNUIAcceptedContactConfiguration *)self recordAcceptedEventWithDisplayName:v7 handle:v11 metadata:v8 sendingAddress:v9 source:v10 completionHandler:v6];
+  handlerCopy = handler;
+  nameCopy = name;
+  handle = [(CNUIAcceptedContactConfiguration *)self handle];
+  metadata = [(CNUIAcceptedContactConfiguration *)self metadata];
+  sendingAddress = [(CNUIAcceptedContactConfiguration *)self sendingAddress];
+  sourceForRecentEvent = [(CNUIAcceptedContactConfiguration *)self sourceForRecentEvent];
+  [(CNUIAcceptedContactConfiguration *)self recordAcceptedEventWithDisplayName:nameCopy handle:handle metadata:metadata sendingAddress:sendingAddress source:sourceForRecentEvent completionHandler:handlerCopy];
 }
 
 - (id)sourceForRecentEvent
 {
-  v2 = [(CNUIAcceptedContactConfiguration *)self source];
-  v3 = v2;
-  if (v2)
+  source = [(CNUIAcceptedContactConfiguration *)self source];
+  v3 = source;
+  if (source)
   {
-    v4 = v2;
+    bundleIdentifier = source;
   }
 
   else
   {
-    v5 = [MEMORY[0x1E696AAE8] mainBundle];
-    v4 = [v5 bundleIdentifier];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
   }
 
-  return v4;
+  return bundleIdentifier;
 }
 
 - (id)contactForNewContact
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v3 = [(CNUIAcceptedContactConfiguration *)self contact];
+  contact = [(CNUIAcceptedContactConfiguration *)self contact];
 
-  if (v3)
+  if (contact)
   {
-    v4 = [(CNUIAcceptedContactConfiguration *)self contact];
+    contact2 = [(CNUIAcceptedContactConfiguration *)self contact];
     goto LABEL_8;
   }
 
-  v4 = objc_opt_new();
-  v5 = [(CNUIAcceptedContactConfiguration *)self handleType];
-  if (v5 == 1)
+  contact2 = objc_opt_new();
+  handleType = [(CNUIAcceptedContactConfiguration *)self handleType];
+  if (handleType == 1)
   {
     v11 = MEMORY[0x1E695CEE0];
-    v12 = [(CNUIAcceptedContactConfiguration *)self handle];
-    v8 = [v11 labeledValueWithLabel:0 value:v12];
+    handle = [(CNUIAcceptedContactConfiguration *)self handle];
+    v8 = [v11 labeledValueWithLabel:0 value:handle];
 
     v14 = v8;
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v14 count:1];
-    [v4 setEmailAddresses:v9];
+    [contact2 setEmailAddresses:v9];
   }
 
   else
   {
-    if (v5)
+    if (handleType)
     {
       goto LABEL_8;
     }
 
     v6 = MEMORY[0x1E695CF50];
-    v7 = [(CNUIAcceptedContactConfiguration *)self handle];
-    v8 = [v6 phoneNumberWithStringValue:v7];
+    handle2 = [(CNUIAcceptedContactConfiguration *)self handle];
+    v8 = [v6 phoneNumberWithStringValue:handle2];
 
     v9 = [MEMORY[0x1E695CEE0] labeledValueWithLabel:0 value:v8];
     v15[0] = v9;
     v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
-    [v4 setPhoneNumbers:v10];
+    [contact2 setPhoneNumbers:v10];
   }
 
 LABEL_8:
 
-  return v4;
+  return contact2;
 }
 
-- (CNUIAcceptedContactConfiguration)initWithHandle:(id)a3 handleType:(int64_t)a4
+- (CNUIAcceptedContactConfiguration)initWithHandle:(id)handle handleType:(int64_t)type
 {
-  v7 = a3;
+  handleCopy = handle;
   v11.receiver = self;
   v11.super_class = CNUIAcceptedContactConfiguration;
   v8 = [(CNUIAcceptedContactConfiguration *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_handle, a3);
-    v9->_handleType = a4;
+    objc_storeStrong(&v8->_handle, handle);
+    v9->_handleType = type;
   }
 
   return v9;
 }
 
-+ (id)configurationForEmailAddress:(id)a3
++ (id)configurationForEmailAddress:(id)address
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithHandle:v4 handleType:1];
+  addressCopy = address;
+  v5 = [[self alloc] initWithHandle:addressCopy handleType:1];
 
   return v5;
 }
 
-+ (id)configurationForPhoneNumber:(id)a3
++ (id)configurationForPhoneNumber:(id)number
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithHandle:v4 handleType:0];
+  numberCopy = number;
+  v5 = [[self alloc] initWithHandle:numberCopy handleType:0];
 
   return v5;
 }

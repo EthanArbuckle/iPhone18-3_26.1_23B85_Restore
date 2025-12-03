@@ -1,39 +1,39 @@
 @interface HDMobilityWalkingSteadinessFeatureAvailabilityManager
-- (BOOL)_determineIsSupportedWithOnboardingCompletions:(id)a3 regionCheckBlock:(id)a4;
-- (BOOL)_localRegionCheckWithCountryCode:(id)a3;
-- (HDMobilityWalkingSteadinessFeatureAvailabilityManager)initWithProfile:(id)a3 regionAvailabilityProvider:(id)a4;
-- (id)_onboardedCountryCodeSupportedStateWithError:(id *)a3;
-- (id)_onboardingCompletionsForHighestVersionWithError:(id *)a3;
-- (id)canCompleteOnboardingForCountryCode:(id)a3 error:(id *)a4;
-- (id)canCompleteOnboardingWhileBypassingDeviceForDemoDataPurposesWithCountryCode:(id)a3;
+- (BOOL)_determineIsSupportedWithOnboardingCompletions:(id)completions regionCheckBlock:(id)block;
+- (BOOL)_localRegionCheckWithCountryCode:(id)code;
+- (HDMobilityWalkingSteadinessFeatureAvailabilityManager)initWithProfile:(id)profile regionAvailabilityProvider:(id)provider;
+- (id)_onboardedCountryCodeSupportedStateWithError:(id *)error;
+- (id)_onboardingCompletionsForHighestVersionWithError:(id *)error;
+- (id)canCompleteOnboardingForCountryCode:(id)code error:(id *)error;
+- (id)canCompleteOnboardingWhileBypassingDeviceForDemoDataPurposesWithCountryCode:(id)code;
 - (id)description;
-- (id)isCurrentOnboardingVersionCompletedWithError:(id *)a3;
-- (id)onboardingEligibilityForCountryCode:(id)a3 error:(id *)a4;
+- (id)isCurrentOnboardingVersionCompletedWithError:(id *)error;
+- (id)onboardingEligibilityForCountryCode:(id)code error:(id *)error;
 - (int64_t)_currentOnboardingVersion;
-- (void)isCurrentOnboardingVersionCompletedWithCompletion:(id)a3;
-- (void)removeFeatureSettingValueForKey:(id)a3 completion:(id)a4;
-- (void)saveOnboardingCompletion:(id)a3 settings:(id)a4 completion:(id)a5;
-- (void)setCurrentOnboardingVersionCompletedForCountryCode:(id)a3 countryCodeProvenance:(int64_t)a4 date:(id)a5 settings:(id)a6 completion:(id)a7;
-- (void)setFeatureSettingData:(id)a3 forKey:(id)a4 completion:(id)a5;
-- (void)setFeatureSettingNumber:(id)a3 forKey:(id)a4 completion:(id)a5;
-- (void)setFeatureSettingString:(id)a3 forKey:(id)a4 completion:(id)a5;
+- (void)isCurrentOnboardingVersionCompletedWithCompletion:(id)completion;
+- (void)removeFeatureSettingValueForKey:(id)key completion:(id)completion;
+- (void)saveOnboardingCompletion:(id)completion settings:(id)settings completion:(id)a5;
+- (void)setCurrentOnboardingVersionCompletedForCountryCode:(id)code countryCodeProvenance:(int64_t)provenance date:(id)date settings:(id)settings completion:(id)completion;
+- (void)setFeatureSettingData:(id)data forKey:(id)key completion:(id)completion;
+- (void)setFeatureSettingNumber:(id)number forKey:(id)key completion:(id)completion;
+- (void)setFeatureSettingString:(id)string forKey:(id)key completion:(id)completion;
 @end
 
 @implementation HDMobilityWalkingSteadinessFeatureAvailabilityManager
 
-- (HDMobilityWalkingSteadinessFeatureAvailabilityManager)initWithProfile:(id)a3 regionAvailabilityProvider:(id)a4
+- (HDMobilityWalkingSteadinessFeatureAvailabilityManager)initWithProfile:(id)profile regionAvailabilityProvider:(id)provider
 {
-  v6 = a3;
-  v7 = a4;
+  profileCopy = profile;
+  providerCopy = provider;
   v16.receiver = self;
   v16.super_class = HDMobilityWalkingSteadinessFeatureAvailabilityManager;
   v8 = [(HDMobilityWalkingSteadinessFeatureAvailabilityManager *)&v16 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_profile, v6);
+    objc_storeWeak(&v8->_profile, profileCopy);
     v9->_currentOnboardingVersion = 1;
-    objc_storeStrong(&v9->_supportedRegionProvider, a4);
+    objc_storeStrong(&v9->_supportedRegionProvider, provider);
     v10 = objc_alloc(MEMORY[0x277D106D8]);
     WeakRetained = objc_loadWeakRetained(&v9->_profile);
     v12 = [v10 initWithProfile:WeakRetained featureIdentifier:*MEMORY[0x277CCC118] currentOnboardingVersion:v9->_currentOnboardingVersion loggingCategory:*MEMORY[0x277CCC2F8]];
@@ -50,22 +50,22 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(HDFeatureAvailabilityManager *)self->_manager featureIdentifier];
-  v6 = [v3 stringWithFormat:@"%@:%@", v4, v5];
+  featureIdentifier = [(HDFeatureAvailabilityManager *)self->_manager featureIdentifier];
+  v6 = [v3 stringWithFormat:@"%@:%@", v4, featureIdentifier];
 
   return v6;
 }
 
-- (id)canCompleteOnboardingWhileBypassingDeviceForDemoDataPurposesWithCountryCode:(id)a3
+- (id)canCompleteOnboardingWhileBypassingDeviceForDemoDataPurposesWithCountryCode:(id)code
 {
   v3 = MEMORY[0x277CCABB0];
-  v4 = [(HDRegionAvailabilityProviding *)self->_supportedRegionProvider onboardingEligibilityForCountryCode:a3];
+  v4 = [(HDRegionAvailabilityProviding *)self->_supportedRegionProvider onboardingEligibilityForCountryCode:code];
   v5 = [v3 numberWithBool:{objc_msgSend(v4, "isEligible")}];
 
   return v5;
 }
 
-- (id)isCurrentOnboardingVersionCompletedWithError:(id *)a3
+- (id)isCurrentOnboardingVersionCompletedWithError:(id *)error
 {
   v17 = *MEMORY[0x277D85DE8];
   v14 = 0;
@@ -90,7 +90,7 @@
       if (os_log_type_enabled(*MEMORY[0x277CCC2F8], OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v16 = self;
+        selfCopy = self;
         _os_log_impl(&dword_251962000, v10, OS_LOG_TYPE_DEFAULT, "[%{public}@] No onboarding completion found", buf, 0xCu);
       }
 
@@ -109,10 +109,10 @@
     v8 = v6;
     if (v8)
     {
-      if (a3)
+      if (error)
       {
         v9 = v8;
-        *a3 = v8;
+        *error = v8;
       }
 
       else
@@ -129,24 +129,24 @@
   return v7;
 }
 
-- (void)isCurrentOnboardingVersionCompletedWithCompletion:(id)a3
+- (void)isCurrentOnboardingVersionCompletedWithCompletion:(id)completion
 {
   v7 = 0;
-  v4 = a3;
+  completionCopy = completion;
   v5 = [(HDMobilityWalkingSteadinessFeatureAvailabilityManager *)self isCurrentOnboardingVersionCompletedWithError:&v7];
   v6 = v7;
-  v4[2](v4, v5, v6);
+  completionCopy[2](completionCopy, v5, v6);
 }
 
-- (id)canCompleteOnboardingForCountryCode:(id)a3 error:(id *)a4
+- (id)canCompleteOnboardingForCountryCode:(id)code error:(id *)error
 {
   v4 = MEMORY[0x277CCABB0];
-  v5 = [(HDMobilityWalkingSteadinessFeatureAvailabilityManager *)self _localRegionCheckWithCountryCode:a3, a4];
+  error = [(HDMobilityWalkingSteadinessFeatureAvailabilityManager *)self _localRegionCheckWithCountryCode:code, error];
 
-  return [v4 numberWithBool:v5];
+  return [v4 numberWithBool:error];
 }
 
-- (id)onboardingEligibilityForCountryCode:(id)a3 error:(id *)a4
+- (id)onboardingEligibilityForCountryCode:(id)code error:(id *)error
 {
   _HKInitializeLogging();
   v7 = *MEMORY[0x277CCC2F8];
@@ -162,10 +162,10 @@
   v12 = [v8 hk_error:110 description:v11];
   if (v12)
   {
-    if (a4)
+    if (error)
     {
       v13 = v12;
-      *a4 = v12;
+      *error = v12;
     }
 
     else
@@ -177,54 +177,54 @@
   return 0;
 }
 
-- (void)setCurrentOnboardingVersionCompletedForCountryCode:(id)a3 countryCodeProvenance:(int64_t)a4 date:(id)a5 settings:(id)a6 completion:(id)a7
+- (void)setCurrentOnboardingVersionCompletedForCountryCode:(id)code countryCodeProvenance:(int64_t)provenance date:(id)date settings:(id)settings completion:(id)completion
 {
-  v21 = a3;
-  v12 = a5;
+  codeCopy = code;
+  dateCopy = date;
   v13 = MEMORY[0x277CCD740];
-  v14 = a7;
-  v15 = a6;
+  completionCopy = completion;
+  settingsCopy = settings;
   v16 = [v13 alloc];
-  v17 = [(HDMobilityWalkingSteadinessFeatureAvailabilityManager *)self featureIdentifier];
-  v18 = [(HDMobilityWalkingSteadinessFeatureAvailabilityManager *)self _currentOnboardingVersion];
-  if (v12)
+  featureIdentifier = [(HDMobilityWalkingSteadinessFeatureAvailabilityManager *)self featureIdentifier];
+  _currentOnboardingVersion = [(HDMobilityWalkingSteadinessFeatureAvailabilityManager *)self _currentOnboardingVersion];
+  if (dateCopy)
   {
-    v19 = [v16 initWithFeatureIdentifier:v17 version:v18 completionDate:v12 countryCode:v21 countryCodeProvenance:a4];
+    v19 = [v16 initWithFeatureIdentifier:featureIdentifier version:_currentOnboardingVersion completionDate:dateCopy countryCode:codeCopy countryCodeProvenance:provenance];
   }
 
   else
   {
     v20 = [MEMORY[0x277CBEAA8] now];
-    v19 = [v16 initWithFeatureIdentifier:v17 version:v18 completionDate:v20 countryCode:v21 countryCodeProvenance:a4];
+    v19 = [v16 initWithFeatureIdentifier:featureIdentifier version:_currentOnboardingVersion completionDate:v20 countryCode:codeCopy countryCodeProvenance:provenance];
   }
 
-  [(HDMobilityWalkingSteadinessFeatureAvailabilityManager *)self saveOnboardingCompletion:v19 settings:v15 completion:v14];
+  [(HDMobilityWalkingSteadinessFeatureAvailabilityManager *)self saveOnboardingCompletion:v19 settings:settingsCopy completion:completionCopy];
 }
 
-- (void)saveOnboardingCompletion:(id)a3 settings:(id)a4 completion:(id)a5
+- (void)saveOnboardingCompletion:(id)completion settings:(id)settings completion:(id)a5
 {
-  v7 = a3;
+  completionCopy = completion;
   v8 = a5;
-  v9 = [v7 countryCode];
+  countryCode = [completionCopy countryCode];
 
-  if (v9)
+  if (countryCode)
   {
     WeakRetained = objc_loadWeakRetained(&self->_profile);
-    v11 = [WeakRetained onboardingCompletionManager];
+    onboardingCompletionManager = [WeakRetained onboardingCompletionManager];
     v17 = 0;
-    v12 = [v11 insertOnboardingCompletion:v7 error:&v17];
+    v12 = [onboardingCompletionManager insertOnboardingCompletion:completionCopy error:&v17];
     v13 = v17;
 
     if (v12)
     {
-      v14 = [WeakRetained nanoSyncManager];
+      nanoSyncManager = [WeakRetained nanoSyncManager];
       v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"[%@] Onboarding completed", self];
       v16[0] = MEMORY[0x277D85DD0];
       v16[1] = 3221225472;
       v16[2] = __102__HDMobilityWalkingSteadinessFeatureAvailabilityManager_saveOnboardingCompletion_settings_completion___block_invoke;
       v16[3] = &unk_2796D9488;
       v16[4] = self;
-      [v14 syncHealthDataWithOptions:0 reason:v15 completion:v16];
+      [nanoSyncManager syncHealthDataWithOptions:0 reason:v15 completion:v16];
     }
 
     else
@@ -279,9 +279,9 @@ void __102__HDMobilityWalkingSteadinessFeatureAvailabilityManager_saveOnboarding
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setFeatureSettingData:(id)a3 forKey:(id)a4 completion:(id)a5
+- (void)setFeatureSettingData:(id)data forKey:(id)key completion:(id)completion
 {
-  v5 = a5;
+  completionCopy = completion;
   _HKInitializeLogging();
   if (os_log_type_enabled(*MEMORY[0x277CCC2F8], OS_LOG_TYPE_ERROR))
   {
@@ -289,12 +289,12 @@ void __102__HDMobilityWalkingSteadinessFeatureAvailabilityManager_saveOnboarding
   }
 
   v6 = [MEMORY[0x277CCA9B8] hk_error:110 description:@"Feature settings is not implemented for Walking Steadiness."];
-  v5[2](v5, 0, v6);
+  completionCopy[2](completionCopy, 0, v6);
 }
 
-- (void)setFeatureSettingString:(id)a3 forKey:(id)a4 completion:(id)a5
+- (void)setFeatureSettingString:(id)string forKey:(id)key completion:(id)completion
 {
-  v5 = a5;
+  completionCopy = completion;
   _HKInitializeLogging();
   if (os_log_type_enabled(*MEMORY[0x277CCC2F8], OS_LOG_TYPE_ERROR))
   {
@@ -302,12 +302,12 @@ void __102__HDMobilityWalkingSteadinessFeatureAvailabilityManager_saveOnboarding
   }
 
   v6 = [MEMORY[0x277CCA9B8] hk_error:110 description:@"Feature settings is not implemented for Walking Steadiness."];
-  v5[2](v5, 0, v6);
+  completionCopy[2](completionCopy, 0, v6);
 }
 
-- (void)setFeatureSettingNumber:(id)a3 forKey:(id)a4 completion:(id)a5
+- (void)setFeatureSettingNumber:(id)number forKey:(id)key completion:(id)completion
 {
-  v5 = a5;
+  completionCopy = completion;
   _HKInitializeLogging();
   if (os_log_type_enabled(*MEMORY[0x277CCC2F8], OS_LOG_TYPE_ERROR))
   {
@@ -315,12 +315,12 @@ void __102__HDMobilityWalkingSteadinessFeatureAvailabilityManager_saveOnboarding
   }
 
   v6 = [MEMORY[0x277CCA9B8] hk_error:110 description:@"Feature settings is not implemented for Walking Steadiness."];
-  v5[2](v5, 0, v6);
+  completionCopy[2](completionCopy, 0, v6);
 }
 
-- (void)removeFeatureSettingValueForKey:(id)a3 completion:(id)a4
+- (void)removeFeatureSettingValueForKey:(id)key completion:(id)completion
 {
-  v4 = a4;
+  completionCopy = completion;
   _HKInitializeLogging();
   if (os_log_type_enabled(*MEMORY[0x277CCC2F8], OS_LOG_TYPE_ERROR))
   {
@@ -328,7 +328,7 @@ void __102__HDMobilityWalkingSteadinessFeatureAvailabilityManager_saveOnboarding
   }
 
   v5 = [MEMORY[0x277CCA9B8] hk_error:110 description:@"Feature settings is not implemented for Walking Steadiness."];
-  v4[2](v4, 0, v5);
+  completionCopy[2](completionCopy, 0, v5);
 }
 
 - (int64_t)_currentOnboardingVersion
@@ -341,7 +341,7 @@ void __102__HDMobilityWalkingSteadinessFeatureAvailabilityManager_saveOnboarding
   return [(HDMobilityWalkingSteadinessFeatureAvailabilityManager *)self _unitTest_currentOnboardingVersionOverride];
 }
 
-- (id)_onboardedCountryCodeSupportedStateWithError:(id *)a3
+- (id)_onboardedCountryCodeSupportedStateWithError:(id *)error
 {
   v21 = *MEMORY[0x277D85DE8];
   v16 = 0;
@@ -371,7 +371,7 @@ void __102__HDMobilityWalkingSteadinessFeatureAvailabilityManager_saveOnboarding
       if (os_log_type_enabled(*MEMORY[0x277CCC2F8], OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543618;
-        v18 = self;
+        selfCopy2 = self;
         v19 = 1026;
         v20 = v7;
         _os_log_impl(&dword_251962000, v8, OS_LOG_TYPE_DEFAULT, "[%{public}@] Onboarded country code state: %{public}i", buf, 0x12u);
@@ -387,7 +387,7 @@ void __102__HDMobilityWalkingSteadinessFeatureAvailabilityManager_saveOnboarding
       if (os_log_type_enabled(*MEMORY[0x277CCC2F8], OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v18 = self;
+        selfCopy2 = self;
         _os_log_impl(&dword_251962000, v12, OS_LOG_TYPE_DEFAULT, "[%{public}@] No onboarding completion found", buf, 0xCu);
       }
 
@@ -406,10 +406,10 @@ void __102__HDMobilityWalkingSteadinessFeatureAvailabilityManager_saveOnboarding
     v10 = v6;
     if (v10)
     {
-      if (a3)
+      if (error)
       {
         v11 = v10;
-        *a3 = v10;
+        *error = v10;
       }
 
       else
@@ -426,16 +426,16 @@ void __102__HDMobilityWalkingSteadinessFeatureAvailabilityManager_saveOnboarding
   return v9;
 }
 
-- (BOOL)_determineIsSupportedWithOnboardingCompletions:(id)a3 regionCheckBlock:(id)a4
+- (BOOL)_determineIsSupportedWithOnboardingCompletions:(id)completions regionCheckBlock:(id)block
 {
   v38 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  completionsCopy = completions;
+  blockCopy = block;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v8 = v6;
+  v8 = completionsCopy;
   v9 = [v8 countByEnumeratingWithState:&v31 objects:v37 count:16];
   v11 = MEMORY[0x277CCC2F8];
   if (v9)
@@ -454,15 +454,15 @@ LABEL_3:
       }
 
       v15 = *(*(&v31 + 1) + 8 * v14);
-      v16 = [v15 version];
-      if (v16 >= [(HDMobilityWalkingSteadinessFeatureAvailabilityManager *)self _currentOnboardingVersion])
+      version = [v15 version];
+      if (version >= [(HDMobilityWalkingSteadinessFeatureAvailabilityManager *)self _currentOnboardingVersion])
       {
-        v20 = [v15 countryCode];
+        countryCode = [v15 countryCode];
 
-        if (v20)
+        if (countryCode)
         {
-          v21 = [v15 countryCode];
-          v22 = v7[2](v7, v21);
+          countryCode2 = [v15 countryCode];
+          v22 = blockCopy[2](blockCopy, countryCode2);
 
           _HKInitializeLogging();
           v23 = *v11;
@@ -472,7 +472,7 @@ LABEL_3:
             if (v24)
             {
               *buf = v30;
-              v36 = self;
+              selfCopy5 = self;
               _os_log_impl(&dword_251962000, v23, OS_LOG_TYPE_DEFAULT, "[%{public}@] Onboarding completion found that satisfies region check", buf, 0xCu);
             }
 
@@ -486,7 +486,7 @@ LABEL_3:
           }
 
           *buf = v30;
-          v36 = self;
+          selfCopy5 = self;
           v18 = v23;
           v19 = "[%{public}@] Onboarding completion found that does not satisfy region check";
           goto LABEL_15;
@@ -497,7 +497,7 @@ LABEL_3:
         if (os_log_type_enabled(*v11, OS_LOG_TYPE_DEFAULT))
         {
           *buf = v30;
-          v36 = self;
+          selfCopy5 = self;
           v18 = v25;
           v19 = "[%{public}@] Onboarding completion found with no country code";
           goto LABEL_15;
@@ -511,7 +511,7 @@ LABEL_3:
         if (os_log_type_enabled(*v11, OS_LOG_TYPE_DEFAULT))
         {
           *buf = v30;
-          v36 = self;
+          selfCopy5 = self;
           v18 = v17;
           v19 = "[%{public}@] Onboarding completion found with older version than current";
 LABEL_15:
@@ -539,7 +539,7 @@ LABEL_16:
   if (os_log_type_enabled(*v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v36 = self;
+    selfCopy5 = self;
     _os_log_impl(&dword_251962000, v26, OS_LOG_TYPE_DEFAULT, "[%{public}@] No onboarding completions meet the current requirements", buf, 0xCu);
     v27 = 0;
   }
@@ -550,13 +550,13 @@ LABEL_23:
   return v27;
 }
 
-- (id)_onboardingCompletionsForHighestVersionWithError:(id *)a3
+- (id)_onboardingCompletionsForHighestVersionWithError:(id *)error
 {
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v6 = [WeakRetained onboardingCompletionManager];
-  v7 = [(HDMobilityWalkingSteadinessFeatureAvailabilityManager *)self featureIdentifier];
+  onboardingCompletionManager = [WeakRetained onboardingCompletionManager];
+  featureIdentifier = [(HDMobilityWalkingSteadinessFeatureAvailabilityManager *)self featureIdentifier];
   v14 = 0;
-  v8 = [v6 onboardingCompletionsForHighestVersionOfFeatureIdentifier:v7 error:&v14];
+  v8 = [onboardingCompletionManager onboardingCompletionsForHighestVersionOfFeatureIdentifier:featureIdentifier error:&v14];
   v9 = v14;
 
   if (v8)
@@ -575,10 +575,10 @@ LABEL_23:
     v11 = v9;
     if (v11)
     {
-      if (a3)
+      if (error)
       {
         v12 = v11;
-        *a3 = v11;
+        *error = v11;
       }
 
       else
@@ -591,24 +591,24 @@ LABEL_23:
   return v8;
 }
 
-- (BOOL)_localRegionCheckWithCountryCode:(id)a3
+- (BOOL)_localRegionCheckWithCountryCode:(id)code
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HDRegionAvailabilityProviding *)self->_supportedRegionProvider onboardingEligibilityForCountryCode:v4];
-  v6 = [v5 isEligible];
+  codeCopy = code;
+  v5 = [(HDRegionAvailabilityProviding *)self->_supportedRegionProvider onboardingEligibilityForCountryCode:codeCopy];
+  isEligible = [v5 isEligible];
 
   _HKInitializeLogging();
   v7 = *MEMORY[0x277CCC2F8];
   v8 = os_log_type_enabled(*MEMORY[0x277CCC2F8], OS_LOG_TYPE_DEFAULT);
-  if (v6)
+  if (isEligible)
   {
     if (v8)
     {
       v12 = 138543619;
-      v13 = self;
+      selfCopy2 = self;
       v14 = 2113;
-      v15 = v4;
+      v15 = codeCopy;
       v9 = "[%{public}@] Country code %{private}@ supported";
 LABEL_6:
       _os_log_impl(&dword_251962000, v7, OS_LOG_TYPE_DEFAULT, v9, &v12, 0x16u);
@@ -618,15 +618,15 @@ LABEL_6:
   else if (v8)
   {
     v12 = 138543619;
-    v13 = self;
+    selfCopy2 = self;
     v14 = 2113;
-    v15 = v4;
+    v15 = codeCopy;
     v9 = "[%{public}@] Country code %{private}@ not supported";
     goto LABEL_6;
   }
 
   v10 = *MEMORY[0x277D85DE8];
-  return v6;
+  return isEligible;
 }
 
 - (void)isCurrentOnboardingVersionCompletedWithError:.cold.1()

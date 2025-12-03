@@ -1,26 +1,26 @@
 @interface CKNicknamePreviewView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CKNicknamePreviewView)initWithContact:(id)a3 avatarRecord:(id)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CKNicknamePreviewView)initWithContact:(id)contact avatarRecord:(id)record;
 - (CNSharingProfileAvatarItemProviderConfiguration)avatarItemProviderConfiguration;
 - (id)balloonText;
 - (id)flipAnimation;
-- (id)imageForAvatarType:(int64_t)a3;
-- (id)senderStringForAvatarType:(int64_t)a3;
-- (void)avatarDidFinishTransitionToAvatarAtIndex:(unint64_t)a3;
+- (id)imageForAvatarType:(int64_t)type;
+- (id)senderStringForAvatarType:(int64_t)type;
+- (void)avatarDidFinishTransitionToAvatarAtIndex:(unint64_t)index;
 - (void)beginAnimation;
 - (void)layoutSubviews;
-- (void)runFlipAnimationOnAvatarView:(id)a3 completion:(id)a4;
-- (void)setSenderLabelVisible:(BOOL)a3 completion:(id)a4;
+- (void)runFlipAnimationOnAvatarView:(id)view completion:(id)completion;
+- (void)setSenderLabelVisible:(BOOL)visible completion:(id)completion;
 - (void)updateBalloonTraitCollection;
 @end
 
 @implementation CKNicknamePreviewView
 
-- (CKNicknamePreviewView)initWithContact:(id)a3 avatarRecord:(id)a4
+- (CKNicknamePreviewView)initWithContact:(id)contact avatarRecord:(id)record
 {
   v44 = *MEMORY[0x1E69E9840];
-  v40 = a3;
-  v39 = a4;
+  contactCopy = contact;
+  recordCopy = record;
   v42.receiver = self;
   v42.super_class = CKNicknamePreviewView;
   v6 = [(CKNicknamePreviewView *)&v42 init];
@@ -31,13 +31,13 @@
       [CKNicknamePreviewView initWithContact:avatarRecord:];
     }
 
-    v7 = [[_CKCNSharingProfileAvatarItemProvider alloc] initWithContact:v40 avatarRecord:v39 logger:0];
+    v7 = [[_CKCNSharingProfileAvatarItemProvider alloc] initWithContact:contactCopy avatarRecord:recordCopy logger:0];
     [(CKNicknamePreviewView *)v6 setAvatarItemProvider:v7];
 
-    v8 = [(CKNicknamePreviewView *)v6 avatarItemProvider];
-    [v8 setShouldIncludeSilhouette:1];
+    avatarItemProvider = [(CKNicknamePreviewView *)v6 avatarItemProvider];
+    [avatarItemProvider setShouldIncludeSilhouette:1];
 
-    [(CKNicknamePreviewView *)v6 setContact:v40];
+    [(CKNicknamePreviewView *)v6 setContact:contactCopy];
     v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v10 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v11 = 0;
@@ -50,19 +50,19 @@
       {
         v14 = [(CKNicknamePreviewView *)v6 senderStringForAvatarType:v11];
         v15 = objc_alloc_init(MEMORY[0x1E69DCAE0]);
-        v16 = [v15 layer];
-        [v16 setCornerRadius:22.0];
+        layer = [v15 layer];
+        [layer setCornerRadius:22.0];
 
-        v17 = [v15 layer];
-        [v17 setMasksToBounds:1];
+        layer2 = [v15 layer];
+        [layer2 setMasksToBounds:1];
 
         [v15 setImage:v13];
         [v9 addObject:v15];
         [(CKNicknamePreviewView *)v6 addSubview:v15];
         CATransform3DMakeRotation(&v41, -1.57079633, 0.0, 1.0, 0.0);
-        v18 = [v15 layer];
+        layer3 = [v15 layer];
         buf = v41;
-        [v18 setTransform:&buf];
+        [layer3 setTransform:&buf];
 
         [v10 addObject:v14];
       }
@@ -89,9 +89,9 @@
     [(CKNicknamePreviewView *)v6 setSenderStrings:v21];
 
     v22 = objc_alloc_init(MEMORY[0x1E69DCC10]);
-    v23 = [(CKNicknamePreviewView *)v6 senderStrings];
-    v24 = [v23 firstObject];
-    [v22 setAttributedText:v24];
+    senderStrings = [(CKNicknamePreviewView *)v6 senderStrings];
+    firstObject = [senderStrings firstObject];
+    [v22 setAttributedText:firstObject];
 
     [(CKNicknamePreviewView *)v6 addSubview:v22];
     [(CKNicknamePreviewView *)v6 setSenderLabel:v22];
@@ -99,9 +99,9 @@
     v26 = [(CKTextBalloonView *)v25 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
     [(CKNicknamePreviewView *)v6 addSubview:v26];
     [(CKColoredBalloonView *)v26 setColor:0xFFFFFFFFLL];
-    v27 = [(CKNicknamePreviewView *)v6 balloonView];
-    v28 = [(CKNicknamePreviewView *)v6 traitCollection];
-    [v27 updateBalloonForTraitCollection:v28];
+    balloonView = [(CKNicknamePreviewView *)v6 balloonView];
+    traitCollection = [(CKNicknamePreviewView *)v6 traitCollection];
+    [balloonView updateBalloonForTraitCollection:traitCollection];
 
     [(CKBalloonView *)v26 setOrientation:0];
     [(CKColoredBalloonView *)v26 setHasTail:1];
@@ -111,11 +111,11 @@
     [v29 nicknamePreviewOnboardingBalloonCornerRadius];
     v31 = v30;
 
-    v32 = [(CKNicknamePreviewView *)v6 traitCollection];
-    v33 = COERCE_DOUBLE([v32 userInterfaceStyle]);
+    traitCollection2 = [(CKNicknamePreviewView *)v6 traitCollection];
+    v33 = COERCE_DOUBLE([traitCollection2 userInterfaceStyle]);
 
-    v34 = [(CKNicknamePreviewView *)v6 traitCollection];
-    v35 = COERCE_DOUBLE(CKBackgroundLevelForTraitCollection(v34));
+    traitCollection3 = [(CKNicknamePreviewView *)v6 traitCollection];
+    v35 = COERCE_DOUBLE(CKBackgroundLevelForTraitCollection(traitCollection3));
 
     *&buf.m11 = 256;
     buf.m12 = NAN;
@@ -126,8 +126,8 @@
     buf.m43 = v35;
     buf.m44 = COERCE_DOUBLE(257);
     [(CKColoredBalloonView *)v26 setBalloonDescriptor:&buf];
-    v36 = [(CKNicknamePreviewView *)v6 balloonText];
-    [(CKTextBalloonView *)v26 setAttributedText:v36];
+    balloonText = [(CKNicknamePreviewView *)v6 balloonText];
+    [(CKTextBalloonView *)v26 setAttributedText:balloonText];
 
     [(CKBalloonView *)v26 setNeedsPrepareForDisplay];
     [(CKBalloonView *)v26 prepareForDisplayIfNeeded];
@@ -147,14 +147,14 @@
   v7 = [v6 length];
   v8 = *MEMORY[0x1E69DB648];
   v9 = +[CKUIBehavior sharedBehaviors];
-  v10 = [v9 nicknamePreviewOnboardingBalloonFont];
-  [v6 addAttribute:v8 value:v10 range:{0, v7}];
+  nicknamePreviewOnboardingBalloonFont = [v9 nicknamePreviewOnboardingBalloonFont];
+  [v6 addAttribute:v8 value:nicknamePreviewOnboardingBalloonFont range:{0, v7}];
 
   v11 = *MEMORY[0x1E69DB650];
   v12 = +[CKUIBehavior sharedBehaviors];
-  v13 = [v12 theme];
-  v14 = [(CKNicknamePreviewView *)self balloonView];
-  v15 = [v13 balloonTextColorForColorType:{objc_msgSend(v14, "color")}];
+  theme = [v12 theme];
+  balloonView = [(CKNicknamePreviewView *)self balloonView];
+  v15 = [theme balloonTextColorForColorType:{objc_msgSend(balloonView, "color")}];
   [v6 addAttribute:v11 value:v15 range:{0, v7}];
 
   v16 = +[CKUIBehavior sharedBehaviors];
@@ -170,35 +170,35 @@
 
 - (void)updateBalloonTraitCollection
 {
-  v3 = [(CKNicknamePreviewView *)self balloonView];
-  v4 = [(CKNicknamePreviewView *)self traitCollection];
-  [v3 updateBalloonForTraitCollection:v4];
+  balloonView = [(CKNicknamePreviewView *)self balloonView];
+  traitCollection = [(CKNicknamePreviewView *)self traitCollection];
+  [balloonView updateBalloonForTraitCollection:traitCollection];
 
-  v5 = [(CKNicknamePreviewView *)self balloonView];
-  v6 = [(CKNicknamePreviewView *)self balloonText];
-  [v5 setAttributedText:v6];
+  balloonView2 = [(CKNicknamePreviewView *)self balloonView];
+  balloonText = [(CKNicknamePreviewView *)self balloonText];
+  [balloonView2 setAttributedText:balloonText];
 
-  v7 = [(CKNicknamePreviewView *)self balloonView];
-  [v7 setNeedsPrepareForDisplay];
+  balloonView3 = [(CKNicknamePreviewView *)self balloonView];
+  [balloonView3 setNeedsPrepareForDisplay];
 
-  v8 = [(CKNicknamePreviewView *)self balloonView];
-  [v8 prepareForDisplayIfNeeded];
+  balloonView4 = [(CKNicknamePreviewView *)self balloonView];
+  [balloonView4 prepareForDisplayIfNeeded];
 }
 
 - (void)beginAnimation
 {
-  v3 = [(CKNicknamePreviewView *)self avatarViews];
-  -[CKNicknamePreviewView avatarDidFinishTransitionToAvatarAtIndex:](self, "avatarDidFinishTransitionToAvatarAtIndex:", [v3 count] - 1);
+  avatarViews = [(CKNicknamePreviewView *)self avatarViews];
+  -[CKNicknamePreviewView avatarDidFinishTransitionToAvatarAtIndex:](self, "avatarDidFinishTransitionToAvatarAtIndex:", [avatarViews count] - 1);
 }
 
 - (void)layoutSubviews
 {
   v56 = *MEMORY[0x1E69E9840];
-  v3 = [(CKNicknamePreviewView *)self senderLabel];
-  [v3 sizeToFit];
+  senderLabel = [(CKNicknamePreviewView *)self senderLabel];
+  [senderLabel sizeToFit];
 
-  v4 = [(CKNicknamePreviewView *)self senderLabel];
-  [v4 frame];
+  senderLabel2 = [(CKNicknamePreviewView *)self senderLabel];
+  [senderLabel2 frame];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -208,8 +208,8 @@
   v57.size.width = v8;
   v57.size.height = v10;
   Height = CGRectGetHeight(v57);
-  v12 = [(CKNicknamePreviewView *)self senderLabel];
-  [v12 _lastLineBaseline];
+  senderLabel3 = [(CKNicknamePreviewView *)self senderLabel];
+  [senderLabel3 _lastLineBaseline];
   v14 = v13;
 
   v15 = *(MEMORY[0x1E69DDCE0] + 16);
@@ -217,13 +217,13 @@
   v54 = v15;
   v52[0] = v53;
   v52[1] = v15;
-  v16 = [(CKNicknamePreviewView *)self balloonView];
-  [v16 sizeThatFits:&v53 textAlignmentInsets:v52 tailInsets:{320.0, 1.79769313e308}];
+  balloonView = [(CKNicknamePreviewView *)self balloonView];
+  [balloonView sizeThatFits:&v53 textAlignmentInsets:v52 tailInsets:{320.0, 1.79769313e308}];
   v18 = v17;
   v20 = v19;
 
-  v21 = [(CKNicknamePreviewView *)self balloonView];
-  [v21 setTextAlignmentInsets:{v53, v54}];
+  balloonView2 = [(CKNicknamePreviewView *)self balloonView];
+  [balloonView2 setTextAlignmentInsets:{v53, v54}];
 
   v22 = *MEMORY[0x1E695F058];
   v58.origin.y = 0.0;
@@ -232,11 +232,11 @@
   v58.size.height = v10;
   v23 = v14 - Height + CGRectGetMaxY(v58) + 5.0;
   v24 = v22 + 56.0;
-  v25 = [(CKNicknamePreviewView *)self balloonView];
-  [v25 setFrame:{v22 + 56.0, v23, v18, v20}];
+  balloonView3 = [(CKNicknamePreviewView *)self balloonView];
+  [balloonView3 setFrame:{v22 + 56.0, v23, v18, v20}];
 
-  v26 = [(CKNicknamePreviewView *)self balloonView];
-  [v26 alignmentRectInsets];
+  balloonView4 = [(CKNicknamePreviewView *)self balloonView];
+  [balloonView4 alignmentRectInsets];
   v28 = v22 + 56.0 + v27;
 
   [(CKNicknamePreviewView *)self frame];
@@ -246,12 +246,12 @@
   v60.size.width = v8;
   v60.size.height = v10;
   v30 = Width - CGRectGetMinX(v60);
-  v31 = [(CKNicknamePreviewView *)self senderLabel];
-  [v31 setFrame:{v28, 0.0, v30, v10}];
+  senderLabel4 = [(CKNicknamePreviewView *)self senderLabel];
+  [senderLabel4 setFrame:{v28, 0.0, v30, v10}];
 
-  v32 = [(CKNicknamePreviewView *)self avatarViews];
-  v33 = [v32 firstObject];
-  [v33 frame];
+  avatarViews = [(CKNicknamePreviewView *)self avatarViews];
+  firstObject = [avatarViews firstObject];
+  [firstObject frame];
   v35 = v34;
   v37 = v36;
   v39 = v38;
@@ -270,8 +270,8 @@
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
-  v42 = [(CKNicknamePreviewView *)self avatarViews];
-  v43 = [v42 countByEnumeratingWithState:&v48 objects:v55 count:16];
+  avatarViews2 = [(CKNicknamePreviewView *)self avatarViews];
+  v43 = [avatarViews2 countByEnumeratingWithState:&v48 objects:v55 count:16];
   if (v43)
   {
     v44 = v43;
@@ -284,14 +284,14 @@
       {
         if (*v49 != v46)
         {
-          objc_enumerationMutation(v42);
+          objc_enumerationMutation(avatarViews2);
         }
 
         [*(*(&v48 + 1) + 8 * v47++) setFrame:{0.0, v45, 44.0, 44.0}];
       }
 
       while (v44 != v47);
-      v44 = [v42 countByEnumeratingWithState:&v48 objects:v55 count:16];
+      v44 = [avatarViews2 countByEnumeratingWithState:&v48 objects:v55 count:16];
     }
 
     while (v44);
@@ -300,24 +300,24 @@
   [(CKNicknamePreviewView *)self setShouldStopAnimation:0];
 }
 
-- (void)avatarDidFinishTransitionToAvatarAtIndex:(unint64_t)a3
+- (void)avatarDidFinishTransitionToAvatarAtIndex:(unint64_t)index
 {
-  v21 = [(CKNicknamePreviewView *)self avatarViews];
-  if ([v21 count] <= a3)
+  avatarViews = [(CKNicknamePreviewView *)self avatarViews];
+  if ([avatarViews count] <= index)
   {
   }
 
   else
   {
-    v5 = [(CKNicknamePreviewView *)self shouldStopAnimation];
+    shouldStopAnimation = [(CKNicknamePreviewView *)self shouldStopAnimation];
 
-    if (!v5)
+    if (!shouldStopAnimation)
     {
-      v6 = [(CKNicknamePreviewView *)self avatarViews];
-      v7 = (a3 + 1) % [v6 count];
+      avatarViews2 = [(CKNicknamePreviewView *)self avatarViews];
+      v7 = (index + 1) % [avatarViews2 count];
 
-      v8 = [(CKNicknamePreviewView *)self avatarViews];
-      v9 = [v8 objectAtIndexedSubscript:v7];
+      avatarViews3 = [(CKNicknamePreviewView *)self avatarViews];
+      v9 = [avatarViews3 objectAtIndexedSubscript:v7];
 
       v26[0] = MEMORY[0x1E69E9820];
       v26[1] = 3221225472;
@@ -326,19 +326,19 @@
       v26[4] = self;
       v26[5] = v7;
       [(CKNicknamePreviewView *)self runFlipAnimationOnAvatarView:v9 completion:v26];
-      v10 = a3 + 2;
-      v11 = [(CKNicknamePreviewView *)self senderStrings];
-      v12 = v10 % [v11 count];
+      v10 = index + 2;
+      senderStrings = [(CKNicknamePreviewView *)self senderStrings];
+      v12 = v10 % [senderStrings count];
 
-      v13 = [(CKNicknamePreviewView *)self senderStrings];
-      v14 = [v13 objectAtIndexedSubscript:v7];
+      senderStrings2 = [(CKNicknamePreviewView *)self senderStrings];
+      v14 = [senderStrings2 objectAtIndexedSubscript:v7];
 
-      v15 = [(CKNicknamePreviewView *)self senderStrings];
-      v16 = [v15 objectAtIndexedSubscript:v12];
+      senderStrings3 = [(CKNicknamePreviewView *)self senderStrings];
+      v16 = [senderStrings3 objectAtIndexedSubscript:v12];
 
-      v17 = [v14 string];
-      v18 = [v16 string];
-      v19 = [v17 isEqualToString:v18];
+      string = [v14 string];
+      string2 = [v16 string];
+      v19 = [string isEqualToString:string2];
 
       if ((v19 & 1) == 0)
       {
@@ -385,25 +385,25 @@ void __66__CKNicknamePreviewView_avatarDidFinishTransitionToAvatarAtIndex___bloc
   [v5 setSenderLabelVisible:1 completion:0];
 }
 
-- (void)setSenderLabelVisible:(BOOL)a3 completion:(id)a4
+- (void)setSenderLabelVisible:(BOOL)visible completion:(id)completion
 {
-  v4 = a3;
+  visibleCopy = visible;
   v6 = MEMORY[0x1E6979518];
-  v7 = a4;
+  completionCopy = completion;
   [v6 begin];
-  [MEMORY[0x1E6979518] setCompletionBlock:v7];
+  [MEMORY[0x1E6979518] setCompletionBlock:completionCopy];
 
-  v19 = [MEMORY[0x1E6979318] animation];
-  [v19 setKeyPath:@"opacity"];
-  [v19 setDuration:0.1];
+  animation = [MEMORY[0x1E6979318] animation];
+  [animation setKeyPath:@"opacity"];
+  [animation setDuration:0.1];
   v8 = MEMORY[0x1E696AD98];
-  v9 = [(CKNicknamePreviewView *)self senderLabel];
-  v10 = [v9 layer];
-  [v10 opacity];
+  senderLabel = [(CKNicknamePreviewView *)self senderLabel];
+  layer = [senderLabel layer];
+  [layer opacity];
   v11 = [v8 numberWithFloat:?];
-  [v19 setFromValue:v11];
+  [animation setFromValue:v11];
 
-  if (v4)
+  if (visibleCopy)
   {
     v12 = 1.0;
   }
@@ -414,32 +414,32 @@ void __66__CKNicknamePreviewView_avatarDidFinishTransitionToAvatarAtIndex___bloc
   }
 
   v13 = [MEMORY[0x1E696AD98] numberWithDouble:v12];
-  [v19 setToValue:v13];
+  [animation setToValue:v13];
 
-  v15 = [(CKNicknamePreviewView *)self senderLabel];
-  v16 = [v15 layer];
+  senderLabel2 = [(CKNicknamePreviewView *)self senderLabel];
+  layer2 = [senderLabel2 layer];
   v14 = v12;
   *&v17 = v14;
-  [v16 setOpacity:v17];
+  [layer2 setOpacity:v17];
 
-  v18 = [(CKNicknamePreviewView *)self senderLabel];
-  [v18 addAnimation:v19 forKey:@"fadeAnimation"];
+  senderLabel3 = [(CKNicknamePreviewView *)self senderLabel];
+  [senderLabel3 addAnimation:animation forKey:@"fadeAnimation"];
 
   [MEMORY[0x1E6979518] commit];
 }
 
-- (void)runFlipAnimationOnAvatarView:(id)a3 completion:(id)a4
+- (void)runFlipAnimationOnAvatarView:(id)view completion:(id)completion
 {
   v6 = MEMORY[0x1E6979518];
-  v7 = a4;
-  v8 = a3;
+  completionCopy = completion;
+  viewCopy = view;
   [v6 begin];
-  [MEMORY[0x1E6979518] setCompletionBlock:v7];
+  [MEMORY[0x1E6979518] setCompletionBlock:completionCopy];
 
-  v10 = [(CKNicknamePreviewView *)self flipAnimation];
-  v9 = [v8 layer];
+  flipAnimation = [(CKNicknamePreviewView *)self flipAnimation];
+  layer = [viewCopy layer];
 
-  [v9 addAnimation:v10 forKey:@"flipAnimation"];
+  [layer addAnimation:flipAnimation forKey:@"flipAnimation"];
   [MEMORY[0x1E6979518] commit];
 }
 
@@ -469,52 +469,52 @@ void __66__CKNicknamePreviewView_avatarDidFinishTransitionToAvatarAtIndex___bloc
   return v2;
 }
 
-- (id)imageForAvatarType:(int64_t)a3
+- (id)imageForAvatarType:(int64_t)type
 {
   v3 = 0;
-  if (a3 > 1)
+  if (type > 1)
   {
-    if (a3 == 2)
+    if (type == 2)
     {
-      v4 = [(CKNicknamePreviewView *)self avatarItemProvider];
-      v5 = [v4 photoItem];
+      avatarItemProvider = [(CKNicknamePreviewView *)self avatarItemProvider];
+      photoItem = [avatarItemProvider photoItem];
     }
 
     else
     {
-      if (a3 != 3)
+      if (type != 3)
       {
         goto LABEL_13;
       }
 
-      v4 = [(CKNicknamePreviewView *)self avatarItemProvider];
-      v5 = [v4 monogramItem];
+      avatarItemProvider = [(CKNicknamePreviewView *)self avatarItemProvider];
+      photoItem = [avatarItemProvider monogramItem];
     }
   }
 
-  else if (a3)
+  else if (type)
   {
-    if (a3 != 1)
+    if (type != 1)
     {
       goto LABEL_13;
     }
 
-    v4 = [(CKNicknamePreviewView *)self avatarItemProvider];
-    v5 = [v4 animojiItem];
+    avatarItemProvider = [(CKNicknamePreviewView *)self avatarItemProvider];
+    photoItem = [avatarItemProvider animojiItem];
   }
 
   else
   {
-    v4 = [(CKNicknamePreviewView *)self avatarItemProvider];
-    v5 = [v4 silhouetteItem];
+    avatarItemProvider = [(CKNicknamePreviewView *)self avatarItemProvider];
+    photoItem = [avatarItemProvider silhouetteItem];
   }
 
-  v6 = v5;
+  v6 = photoItem;
 
   if (v6)
   {
-    v7 = [v6 imageProvider];
-    v3 = v7[2](44.0, 44.0);
+    imageProvider = [v6 imageProvider];
+    v3 = imageProvider[2](44.0, 44.0);
   }
 
   else
@@ -527,31 +527,31 @@ LABEL_13:
   return v3;
 }
 
-- (id)senderStringForAvatarType:(int64_t)a3
+- (id)senderStringForAvatarType:(int64_t)type
 {
   v29 = *MEMORY[0x1E69E9840];
-  v5 = [MEMORY[0x1E69A5CA0] iMessageService];
+  iMessageService = [MEMORY[0x1E69A5CA0] iMessageService];
   v6 = IMPreferredAccountForService();
-  v7 = [v6 displayName];
-  v8 = v7;
-  if ((a3 - 1) >= 3)
+  displayName = [v6 displayName];
+  v8 = displayName;
+  if ((type - 1) >= 3)
   {
-    if (a3)
+    if (type)
     {
       v11 = 0;
     }
 
     else
     {
-      v11 = v7;
+      v11 = displayName;
     }
   }
 
   else
   {
     v9 = MEMORY[0x1E695CD80];
-    v10 = [(CKNicknamePreviewView *)self contact];
-    v11 = [v9 stringFromContact:v10 style:0];
+    contact = [(CKNicknamePreviewView *)self contact];
+    v11 = [v9 stringFromContact:contact style:0];
   }
 
   if ([(__CFString *)v11 length])
@@ -579,7 +579,7 @@ LABEL_13:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
       v23 = 134218498;
-      v24 = a3;
+      typeCopy = type;
       v25 = 2112;
       v26 = v6;
       v27 = 2112;
@@ -591,8 +591,8 @@ LABEL_13:
   v11 = &stru_1F04268F8;
 LABEL_15:
   v14 = +[CKUIBehavior sharedBehaviors];
-  v15 = [v14 senderTranscriptTextAttributes];
-  v16 = [v15 mutableCopy];
+  senderTranscriptTextAttributes = [v14 senderTranscriptTextAttributes];
+  v16 = [senderTranscriptTextAttributes mutableCopy];
 
   v17 = CKIsRunningInMacCatalyst();
   v18 = MEMORY[0x1E69DDD28];
@@ -612,14 +612,14 @@ LABEL_15:
   return v21;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v4 = [(CKNicknamePreviewView *)self balloonView:a3.width];
+  v4 = [(CKNicknamePreviewView *)self balloonView:fits.width];
   [v4 frame];
   MaxX = CGRectGetMaxX(v11);
 
-  v6 = [(CKNicknamePreviewView *)self balloonView];
-  [v6 frame];
+  balloonView = [(CKNicknamePreviewView *)self balloonView];
+  [balloonView frame];
   MaxY = CGRectGetMaxY(v12);
 
   v8 = MaxX;
@@ -631,10 +631,10 @@ LABEL_15:
 
 - (CNSharingProfileAvatarItemProviderConfiguration)avatarItemProviderConfiguration
 {
-  v2 = [(CKNicknamePreviewView *)self avatarItemProvider];
-  v3 = [v2 configuration];
+  avatarItemProvider = [(CKNicknamePreviewView *)self avatarItemProvider];
+  configuration = [avatarItemProvider configuration];
 
-  return v3;
+  return configuration;
 }
 
 @end

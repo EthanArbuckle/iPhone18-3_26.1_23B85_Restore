@@ -1,66 +1,66 @@
 @interface TRIAssetStoreOperator
-+ (unint64_t)_fileSizeInBytesForPath:(id)a3;
-- (BOOL)_acquireLockfileAndRunBlock:(id)a3;
-- (BOOL)_acquireLockfileInAssetStorePath:(id)a3 andRunBlock:(id)a4;
-- (BOOL)_clearUnrefAgeForAssetWithIdentifier:(id)a3;
-- (BOOL)_fixFileProtectionForFileURL:(id)a3;
-- (BOOL)_forceRemoveItemAtPath:(id)a3;
-- (BOOL)_incrementUnrefAgeForAssetWithIdentifier:(id)a3 newValue:(unsigned int *)a4 dryRun:(BOOL)a5;
-- (BOOL)_migrateAssetContentsWithLocalAssetStorePath:(id)a3 flockWitness:(TRIFlockWitness_ *)a4;
-- (BOOL)_migrateAssetsDatabaseWithLocalAssetStorePath:(id)a3;
-- (BOOL)_moveDirectoryAssetFromDirectory:(id)a3 toLocationForAssetIdentifier:(id)a4;
-- (BOOL)_nonAtomicOverwriteWithSrc:(id)a3 dest:(id)a4 finalPermissionBits:(const unsigned __int16 *)a5;
-- (BOOL)_overwriteRenameAsAtomicallyAsPossibleWithSrc:(id)a3 dest:(id)a4;
-- (BOOL)_relinkLocalAssetToGlobalAssetStore:(id)a3 withAssetId:(id)a4 localAssetDir:(id)a5;
-- (BOOL)_removeAssetWithIdentifier:(id)a3 flockWitness:(TRIFlockWitness_ *)a4 deletedAssetSize:(unint64_t *)a5 dryRun:(BOOL)a6;
-- (BOOL)_removeDeadSymlinksWithFlockWitness:(TRIFlockWitness_ *)a3 numRemoved:(unsigned int *)a4;
-- (BOOL)_removePaths:(id)a3 numRemoved:(unsigned int *)a4;
-- (BOOL)addSymlinkFromAssetWithIdentifier:(id)a3 toPath:(id)a4 flockWitness:(TRIFlockWitness_ *)a5;
-- (BOOL)collectGarbageOlderThanNumScans:(unsigned int)a3 deletedAssetSize:(unint64_t *)a4 ignoreRecentlyCreatedAssets:(BOOL)a5 dryRun:(BOOL)a6 includedCacheDeletableAssetIds:(id)a7 deletedAssetIds:(id *)a8;
++ (unint64_t)_fileSizeInBytesForPath:(id)path;
+- (BOOL)_acquireLockfileAndRunBlock:(id)block;
+- (BOOL)_acquireLockfileInAssetStorePath:(id)path andRunBlock:(id)block;
+- (BOOL)_clearUnrefAgeForAssetWithIdentifier:(id)identifier;
+- (BOOL)_fixFileProtectionForFileURL:(id)l;
+- (BOOL)_forceRemoveItemAtPath:(id)path;
+- (BOOL)_incrementUnrefAgeForAssetWithIdentifier:(id)identifier newValue:(unsigned int *)value dryRun:(BOOL)run;
+- (BOOL)_migrateAssetContentsWithLocalAssetStorePath:(id)path flockWitness:(TRIFlockWitness_ *)witness;
+- (BOOL)_migrateAssetsDatabaseWithLocalAssetStorePath:(id)path;
+- (BOOL)_moveDirectoryAssetFromDirectory:(id)directory toLocationForAssetIdentifier:(id)identifier;
+- (BOOL)_nonAtomicOverwriteWithSrc:(id)src dest:(id)dest finalPermissionBits:(const unsigned __int16 *)bits;
+- (BOOL)_overwriteRenameAsAtomicallyAsPossibleWithSrc:(id)src dest:(id)dest;
+- (BOOL)_relinkLocalAssetToGlobalAssetStore:(id)store withAssetId:(id)id localAssetDir:(id)dir;
+- (BOOL)_removeAssetWithIdentifier:(id)identifier flockWitness:(TRIFlockWitness_ *)witness deletedAssetSize:(unint64_t *)size dryRun:(BOOL)run;
+- (BOOL)_removeDeadSymlinksWithFlockWitness:(TRIFlockWitness_ *)witness numRemoved:(unsigned int *)removed;
+- (BOOL)_removePaths:(id)paths numRemoved:(unsigned int *)removed;
+- (BOOL)addSymlinkFromAssetWithIdentifier:(id)identifier toPath:(id)path flockWitness:(TRIFlockWitness_ *)witness;
+- (BOOL)collectGarbageOlderThanNumScans:(unsigned int)scans deletedAssetSize:(unint64_t *)size ignoreRecentlyCreatedAssets:(BOOL)assets dryRun:(BOOL)run includedCacheDeletableAssetIds:(id)ids deletedAssetIds:(id *)assetIds;
 - (BOOL)fixFileProtectionForAssetStoreFiles;
-- (BOOL)migrateToGlobalAssetStoreFromLocalAssetStore:(id)a3;
-- (BOOL)removeAssetWithIdentifier:(id)a3;
-- (BOOL)saveAssetWithIdentifier:(id)a3 sourcePath:(id)a4 flockWitness:(TRIFlockWitness_ *)a5 removeSourceOnFailure:(BOOL)a6;
-- (TRIAssetStoreOperator)initWithPaths:(id)a3 storageManagement:(id)a4 assetStore:(id)a5;
+- (BOOL)migrateToGlobalAssetStoreFromLocalAssetStore:(id)store;
+- (BOOL)removeAssetWithIdentifier:(id)identifier;
+- (BOOL)saveAssetWithIdentifier:(id)identifier sourcePath:(id)path flockWitness:(TRIFlockWitness_ *)witness removeSourceOnFailure:(BOOL)failure;
+- (TRIAssetStoreOperator)initWithPaths:(id)paths storageManagement:(id)management assetStore:(id)store;
 - (id)_collectDeadSymlinks;
-- (id)_collectUnreferencedAssetsIncludingLinkTargetsForReferencedAssetIds:(id)a3 ignoreRecentlyCreatedAssets:(BOOL)a4;
-- (id)_creationDateForAsset:(id)a3;
+- (id)_collectUnreferencedAssetsIncludingLinkTargetsForReferencedAssetIds:(id)ids ignoreRecentlyCreatedAssets:(BOOL)assets;
+- (id)_creationDateForAsset:(id)asset;
 - (id)_requireAssetStoreTempDir;
-- (id)referenceMAAutoAssetWithId:(id)a3 futurePath:(id)a4 currentPath:(id)a5 isFileFactor:(BOOL)a6;
-- (unsigned)_hardLinkCountForAssetWithIdentifier:(id)a3;
-- (unsigned)_hardLinkCountForFileWithPath:(id)a3;
-- (void)_fixupPermissionsOnPath:(id)a3 permissionBits:(const unsigned __int16 *)a4;
+- (id)referenceMAAutoAssetWithId:(id)id futurePath:(id)path currentPath:(id)currentPath isFileFactor:(BOOL)factor;
+- (unsigned)_hardLinkCountForAssetWithIdentifier:(id)identifier;
+- (unsigned)_hardLinkCountForFileWithPath:(id)path;
+- (void)_fixupPermissionsOnPath:(id)path permissionBits:(const unsigned __int16 *)bits;
 @end
 
 @implementation TRIAssetStoreOperator
 
-- (TRIAssetStoreOperator)initWithPaths:(id)a3 storageManagement:(id)a4 assetStore:(id)a5
+- (TRIAssetStoreOperator)initWithPaths:(id)paths storageManagement:(id)management assetStore:(id)store
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  pathsCopy = paths;
+  managementCopy = management;
+  storeCopy = store;
   v15.receiver = self;
   v15.super_class = TRIAssetStoreOperator;
   v12 = [(TRIAssetStoreOperator *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_paths, a3);
-    objc_storeStrong(&v13->_storageManagement, a4);
-    objc_storeWeak(&v13->_store, v11);
-    [v11 setAssetOperator:v13];
+    objc_storeStrong(&v12->_paths, paths);
+    objc_storeStrong(&v13->_storageManagement, management);
+    objc_storeWeak(&v13->_store, storeCopy);
+    [storeCopy setAssetOperator:v13];
   }
 
   return v13;
 }
 
-- (BOOL)saveAssetWithIdentifier:(id)a3 sourcePath:(id)a4 flockWitness:(TRIFlockWitness_ *)a5 removeSourceOnFailure:(BOOL)a6
+- (BOOL)saveAssetWithIdentifier:(id)identifier sourcePath:(id)path flockWitness:(TRIFlockWitness_ *)witness removeSourceOnFailure:(BOOL)failure
 {
-  v6 = a6;
+  failureCopy = failure;
   v27 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = [(TRIAssetStoreOperator *)self _moveDirectoryAssetFromDirectory:v10 toLocationForAssetIdentifier:v9];
+  identifierCopy = identifier;
+  pathCopy = path;
+  v11 = [(TRIAssetStoreOperator *)self _moveDirectoryAssetFromDirectory:pathCopy toLocationForAssetIdentifier:identifierCopy];
   if (!v11)
   {
     v12 = TRILogCategory_Server();
@@ -68,24 +68,24 @@
     {
       v19 = &stru_287FA0430;
       *buf = 138543874;
-      v22 = v10;
+      v22 = pathCopy;
       v23 = 2114;
-      if (v6)
+      if (failureCopy)
       {
         v19 = @"removing";
       }
 
-      v24 = v9;
+      v24 = identifierCopy;
       v25 = 2114;
       v26 = v19;
       _os_log_error_impl(&dword_26F567000, v12, OS_LOG_TYPE_ERROR, "Asset store failed to move dir. asset from: %{public}@ to location for asset: %{public}@. %{public}@", buf, 0x20u);
     }
 
-    if (v6)
+    if (failureCopy)
     {
-      v13 = [MEMORY[0x277CCAA00] defaultManager];
+      defaultManager = [MEMORY[0x277CCAA00] defaultManager];
       v20 = 0;
-      v14 = [v13 triForceRemoveItemAtPath:v10 error:&v20];
+      v14 = [defaultManager triForceRemoveItemAtPath:pathCopy error:&v20];
       v15 = v20;
 
       if ((v14 & 1) == 0)
@@ -94,7 +94,7 @@
         if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
         {
           *buf = 138543618;
-          v22 = v10;
+          v22 = pathCopy;
           v23 = 2114;
           v24 = v15;
           _os_log_error_impl(&dword_26F567000, v16, OS_LOG_TYPE_ERROR, "Asset store failed follow-up removal of source at path: %{public}@, error: %{public}@", buf, 0x16u);
@@ -107,22 +107,22 @@
   return v11;
 }
 
-- (BOOL)_moveDirectoryAssetFromDirectory:(id)a3 toLocationForAssetIdentifier:(id)a4
+- (BOOL)_moveDirectoryAssetFromDirectory:(id)directory toLocationForAssetIdentifier:(id)identifier
 {
   v85[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v63 = self;
+  directoryCopy = directory;
+  identifierCopy = identifier;
+  selfCopy = self;
   WeakRetained = objc_loadWeakRetained(&self->_store);
   v9 = WeakRetained;
-  v65 = v7;
+  v65 = identifierCopy;
   if (WeakRetained)
   {
-    v10 = [WeakRetained pathForAssetDirWithIdentifier:v7];
-    v66 = [v6 stringByAppendingPathComponent:@"content"];
+    v10 = [WeakRetained pathForAssetDirWithIdentifier:identifierCopy];
+    v66 = [directoryCopy stringByAppendingPathComponent:@"content"];
     v79 = 0;
-    v11 = [MEMORY[0x277CCAA00] defaultManager];
-    v12 = [v11 fileExistsAtPath:v66 isDirectory:&v79];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    v12 = [defaultManager fileExistsAtPath:v66 isDirectory:&v79];
 
     if ((v12 & 1) == 0)
     {
@@ -171,7 +171,7 @@ LABEL_63:
       v77 = __Block_byref_object_dispose__29;
       v78 = 0;
       v17 = [objc_alloc(MEMORY[0x277CBEBC0]) initFileURLWithPath:v66 isDirectory:1];
-      v18 = [MEMORY[0x277CCAA00] defaultManager];
+      defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
       v19 = *MEMORY[0x277CBE8A8];
       v61 = *MEMORY[0x277CBE868];
       v85[0] = *MEMORY[0x277CBE868];
@@ -183,7 +183,7 @@ LABEL_63:
       v72[2] = __87__TRIAssetStoreOperator__moveDirectoryAssetFromDirectory_toLocationForAssetIdentifier___block_invoke;
       v72[3] = &unk_279DE2410;
       v72[4] = &v73;
-      v21 = [v18 enumeratorAtURL:v17 includingPropertiesForKeys:v20 options:0 errorHandler:v72];
+      v21 = [defaultManager2 enumeratorAtURL:v17 includingPropertiesForKeys:v20 options:0 errorHandler:v72];
       v60 = v17;
 
       if (v21)
@@ -191,9 +191,9 @@ LABEL_63:
         while (1)
         {
           v22 = objc_autoreleasePoolPush();
-          v23 = [v21 nextObject];
-          v24 = v23;
-          if (!v23)
+          nextObject = [v21 nextObject];
+          v24 = nextObject;
+          if (!nextObject)
           {
             v31 = 3;
             goto LABEL_29;
@@ -201,22 +201,22 @@ LABEL_63:
 
           v70 = 0;
           v71 = 0;
-          v25 = [v23 getResourceValue:&v71 forKey:v64 error:&v70];
+          v25 = [nextObject getResourceValue:&v71 forKey:v64 error:&v70];
           v26 = v71;
           v27 = v70;
           if (v25)
           {
             if ([v26 BOOLValue])
             {
-              v28 = [v24 path];
-              if (!v28)
+              path = [v24 path];
+              if (!path)
               {
-                v45 = [MEMORY[0x277CCA890] currentHandler];
-                [v45 handleFailureInMethod:a2 object:v63 file:@"TRIAssetStoreOperator.m" lineNumber:140 description:{@"Expression was unexpectedly nil/false: %@", @"childURL.path"}];
+                currentHandler = [MEMORY[0x277CCA890] currentHandler];
+                [currentHandler handleFailureInMethod:a2 object:selfCopy file:@"TRIAssetStoreOperator.m" lineNumber:140 description:{@"Expression was unexpectedly nil/false: %@", @"childURL.path"}];
               }
 
-              v29 = v28;
-              if (!chmod([v28 fileSystemRepresentation], 0x124u))
+              v29 = path;
+              if (!chmod([path fileSystemRepresentation], 0x124u))
               {
 LABEL_43:
                 v31 = 2;
@@ -230,7 +230,7 @@ LABEL_43:
                 v59 = strerror(*v43);
                 v44 = *__error();
                 v84.st_dev = 138543874;
-                *&v84.st_mode = v28;
+                *&v84.st_mode = path;
                 WORD2(v84.st_ino) = 2080;
                 *(&v84.st_ino + 6) = v59;
                 HIWORD(v84.st_gid) = 1024;
@@ -254,16 +254,16 @@ LABEL_43:
                 goto LABEL_28;
               }
 
-              v28 = [v24 path];
-              if (!v28)
+              path = [v24 path];
+              if (!path)
               {
-                v46 = [MEMORY[0x277CCA890] currentHandler];
-                [v46 handleFailureInMethod:a2 object:v63 file:@"TRIAssetStoreOperator.m" lineNumber:165 description:{@"Expression was unexpectedly nil/false: %@", @"childURL.path"}];
+                currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+                [currentHandler2 handleFailureInMethod:a2 object:selfCopy file:@"TRIAssetStoreOperator.m" lineNumber:165 description:{@"Expression was unexpectedly nil/false: %@", @"childURL.path"}];
               }
 
               memset(&v84, 0, sizeof(v84));
-              v33 = v28;
-              if (!lstat([v28 fileSystemRepresentation], &v84) && (~v84.st_mode & 0x140) != 0)
+              v33 = path;
+              if (!lstat([path fileSystemRepresentation], &v84) && (~v84.st_mode & 0x140) != 0)
               {
                 v30 = TRILogCategory_Server();
                 if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
@@ -271,7 +271,7 @@ LABEL_43:
                   *buf = 67109378;
                   *v81 = v84.st_mode;
                   *&v81[4] = 2114;
-                  *&v81[6] = v6;
+                  *&v81[6] = directoryCopy;
                   v38 = v30;
                   v39 = "Candidate asset subdirectory was constructed with bad permission bits 0%o: %{public}@";
                   v40 = 18;
@@ -282,8 +282,8 @@ LABEL_50:
 
               else
               {
-                v34 = v28;
-                if (!chmod([v28 fileSystemRepresentation], 0x168u))
+                v34 = path;
+                if (!chmod([path fileSystemRepresentation], 0x168u))
                 {
                   goto LABEL_43;
                 }
@@ -296,7 +296,7 @@ LABEL_50:
                   v36 = strerror(*v35);
                   v37 = *__error();
                   *buf = 138543874;
-                  *v81 = v28;
+                  *v81 = path;
                   *&v81[8] = 2080;
                   *&v81[10] = v36;
                   v82 = 1024;
@@ -314,12 +314,12 @@ LABEL_23:
               goto LABEL_26;
             }
 
-            v28 = TRILogCategory_Server();
-            if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
+            path = TRILogCategory_Server();
+            if (os_log_type_enabled(path, OS_LOG_TYPE_ERROR))
             {
               v84.st_dev = 138543362;
               *&v84.st_mode = v27;
-              v41 = v28;
+              v41 = path;
               v42 = "Failed to get directory attribute: %{public}@";
 LABEL_46:
               _os_log_error_impl(&dword_26F567000, v41, OS_LOG_TYPE_ERROR, v42, &v84, 0xCu);
@@ -328,12 +328,12 @@ LABEL_46:
 
           else
           {
-            v28 = TRILogCategory_Server();
-            if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
+            path = TRILogCategory_Server();
+            if (os_log_type_enabled(path, OS_LOG_TYPE_ERROR))
             {
               v84.st_dev = 138543362;
               *&v84.st_mode = v27;
-              v41 = v28;
+              v41 = path;
               v42 = "Failed to get regular file attribute: %{public}@";
               goto LABEL_46;
             }
@@ -377,10 +377,10 @@ LABEL_56:
       }
     }
 
-    v48 = [v10 stringByDeletingLastPathComponent];
-    v49 = [MEMORY[0x277CCAA00] defaultManager];
+    stringByDeletingLastPathComponent = [v10 stringByDeletingLastPathComponent];
+    defaultManager3 = [MEMORY[0x277CCAA00] defaultManager];
     v67 = 0;
-    v50 = [v49 createDirectoryAtPath:v48 withIntermediateDirectories:1 attributes:0 error:&v67];
+    v50 = [defaultManager3 createDirectoryAtPath:stringByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:&v67];
     v51 = v67;
 
     if ((v50 & 1) == 0)
@@ -394,7 +394,7 @@ LABEL_56:
       }
     }
 
-    v16 = [(TRIAssetStoreOperator *)v63 _overwriteRenameAsAtomicallyAsPossibleWithSrc:v6 dest:v10];
+    v16 = [(TRIAssetStoreOperator *)selfCopy _overwriteRenameAsAtomicallyAsPossibleWithSrc:directoryCopy dest:v10];
     goto LABEL_63;
   }
 
@@ -412,13 +412,13 @@ LABEL_64:
   return v16;
 }
 
-- (BOOL)removeAssetWithIdentifier:(id)a3
+- (BOOL)removeAssetWithIdentifier:(id)identifier
 {
-  v5 = a3;
-  if (!v5)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"TRIAssetStoreOperator.m" lineNumber:215 description:{@"Invalid parameter not satisfying: %@", @"assetIdentifier"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIAssetStoreOperator.m" lineNumber:215 description:{@"Invalid parameter not satisfying: %@", @"assetIdentifier"}];
   }
 
   v13 = 0;
@@ -431,7 +431,7 @@ LABEL_64:
   v10[3] = &unk_279DE2578;
   v12 = &v13;
   v10[4] = self;
-  v6 = v5;
+  v6 = identifierCopy;
   v11 = v6;
   if ([(TRIAssetStoreOperator *)self _acquireLockfileAndRunBlock:v10])
   {
@@ -454,46 +454,46 @@ uint64_t __51__TRIAssetStoreOperator_removeAssetWithIdentifier___block_invoke(ui
   return result;
 }
 
-+ (unint64_t)_fileSizeInBytesForPath:(id)a3
++ (unint64_t)_fileSizeInBytesForPath:(id)path
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
-  v5 = [v4 attributesOfItemAtPath:v3 error:0];
-  v6 = [v5 fileSize];
+  pathCopy = path;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v5 = [defaultManager attributesOfItemAtPath:pathCopy error:0];
+  fileSize = [v5 fileSize];
 
-  v7 = [v4 enumeratorAtPath:v3];
+  v7 = [defaultManager enumeratorAtPath:pathCopy];
   v8 = objc_autoreleasePoolPush();
-  v9 = [v7 nextObject];
-  if (v9)
+  nextObject = [v7 nextObject];
+  if (nextObject)
   {
-    v10 = v9;
+    v10 = nextObject;
     do
     {
-      v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@/%@", v3, v10];
-      v12 = [v4 attributesOfItemAtPath:v11 error:0];
-      v13 = [v12 fileSize];
+      v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@/%@", pathCopy, v10];
+      v12 = [defaultManager attributesOfItemAtPath:v11 error:0];
+      fileSize2 = [v12 fileSize];
 
-      v6 += v13;
+      fileSize += fileSize2;
       objc_autoreleasePoolPop(v8);
       v8 = objc_autoreleasePoolPush();
-      v14 = [v7 nextObject];
+      nextObject2 = [v7 nextObject];
 
-      v10 = v14;
+      v10 = nextObject2;
     }
 
-    while (v14);
+    while (nextObject2);
   }
 
   objc_autoreleasePoolPop(v8);
 
-  return v6;
+  return fileSize;
 }
 
-- (BOOL)_removeAssetWithIdentifier:(id)a3 flockWitness:(TRIFlockWitness_ *)a4 deletedAssetSize:(unint64_t *)a5 dryRun:(BOOL)a6
+- (BOOL)_removeAssetWithIdentifier:(id)identifier flockWitness:(TRIFlockWitness_ *)witness deletedAssetSize:(unint64_t *)size dryRun:(BOOL)run
 {
-  v6 = a6;
+  runCopy = run;
   v28 = *MEMORY[0x277D85DE8];
-  v9 = a3;
+  identifierCopy = identifier;
   WeakRetained = objc_loadWeakRetained(&self->_store);
   v11 = TRILogCategory_Server();
   v12 = v11;
@@ -511,7 +511,7 @@ uint64_t __51__TRIAssetStoreOperator_removeAssetWithIdentifier___block_invoke(ui
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v13 = &stru_287FA0430;
-    if (v6)
+    if (runCopy)
     {
       v13 = @"(dry-run) ";
     }
@@ -519,22 +519,22 @@ uint64_t __51__TRIAssetStoreOperator_removeAssetWithIdentifier___block_invoke(ui
     *buf = 138543618;
     v25 = v13;
     v26 = 2114;
-    v27 = v9;
+    v27 = identifierCopy;
     _os_log_impl(&dword_26F567000, v12, OS_LOG_TYPE_DEFAULT, "%{public}@Removing asset: %{public}@", buf, 0x16u);
   }
 
-  if (a5)
+  if (size)
   {
-    *a5 = 0;
+    *size = 0;
   }
 
-  if ([WeakRetained hasAssetWithIdentifier:v9 type:0])
+  if ([WeakRetained hasAssetWithIdentifier:identifierCopy type:0])
   {
-    v12 = [WeakRetained pathForAssetDirWithIdentifier:v9];
+    v12 = [WeakRetained pathForAssetDirWithIdentifier:identifierCopy];
     v14 = [objc_opt_class() _fileSizeInBytesForPath:v12];
-    if (v6)
+    if (runCopy)
     {
-      if (!a5)
+      if (!size)
       {
         goto LABEL_20;
       }
@@ -543,23 +543,23 @@ uint64_t __51__TRIAssetStoreOperator_removeAssetWithIdentifier___block_invoke(ui
     }
 
     v23 = os_transaction_create();
-    v16 = [(TRIAssetStoreOperator *)self _requireAssetStoreTempDir];
+    _requireAssetStoreTempDir = [(TRIAssetStoreOperator *)self _requireAssetStoreTempDir];
     v17 = objc_opt_new();
-    v18 = [v17 UUIDString];
-    v19 = [v16 stringByAppendingPathComponent:v18];
+    uUIDString = [v17 UUIDString];
+    v19 = [_requireAssetStoreTempDir stringByAppendingPathComponent:uUIDString];
 
     if ([(TRIAssetStoreOperator *)self _overwriteRenameAsAtomicallyAsPossibleWithSrc:v12 dest:v19])
     {
       v20 = [(TRIAssetStoreOperator *)self _forceRemoveItemAtPath:v19];
 
       v15 = 1;
-      if (!a5 || !v20)
+      if (!size || !v20)
       {
         goto LABEL_21;
       }
 
 LABEL_19:
-      *a5 = v14;
+      *size = v14;
 LABEL_20:
       v15 = 1;
       goto LABEL_21;
@@ -579,19 +579,19 @@ LABEL_22:
   return v15;
 }
 
-- (BOOL)addSymlinkFromAssetWithIdentifier:(id)a3 toPath:(id)a4 flockWitness:(TRIFlockWitness_ *)a5
+- (BOOL)addSymlinkFromAssetWithIdentifier:(id)identifier toPath:(id)path flockWitness:(TRIFlockWitness_ *)witness
 {
   v38 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  pathCopy = path;
   WeakRetained = objc_loadWeakRetained(&self->_store);
   v10 = WeakRetained;
   if (WeakRetained)
   {
-    v11 = [WeakRetained pathForRefsToAssetWithIdentifier:v7];
-    v12 = [MEMORY[0x277CCAA00] defaultManager];
+    v11 = [WeakRetained pathForRefsToAssetWithIdentifier:identifierCopy];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     v29 = 0;
-    v13 = [v12 createDirectoryAtPath:v11 withIntermediateDirectories:1 attributes:0 error:&v29];
+    v13 = [defaultManager createDirectoryAtPath:v11 withIntermediateDirectories:1 attributes:0 error:&v29];
     v14 = v29;
 
     if ((v13 & 1) == 0)
@@ -607,11 +607,11 @@ LABEL_22:
 
     v16 = objc_alloc(MEMORY[0x277CCACA8]);
     v17 = objc_opt_new();
-    v18 = [v17 UUIDString];
-    v19 = [v16 initWithFormat:@"link-%@", v18];
+    uUIDString = [v17 UUIDString];
+    v19 = [v16 initWithFormat:@"link-%@", uUIDString];
     v20 = [v11 stringByAppendingPathComponent:v19];
 
-    v21 = symlink([v8 fileSystemRepresentation], objc_msgSend(v20, "fileSystemRepresentation"));
+    v21 = symlink([pathCopy fileSystemRepresentation], objc_msgSend(v20, "fileSystemRepresentation"));
     v22 = v21 == 0;
     if (v21)
     {
@@ -624,7 +624,7 @@ LABEL_22:
         *buf = 138544130;
         v31 = v20;
         v32 = 2114;
-        v33 = v8;
+        v33 = pathCopy;
         v34 = 2080;
         v35 = v27;
         v36 = 1024;
@@ -650,11 +650,11 @@ LABEL_22:
   return v22;
 }
 
-- (id)referenceMAAutoAssetWithId:(id)a3 futurePath:(id)a4 currentPath:(id)a5 isFileFactor:(BOOL)a6
+- (id)referenceMAAutoAssetWithId:(id)id futurePath:(id)path currentPath:(id)currentPath isFileFactor:(BOOL)factor
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  idCopy = id;
+  pathCopy = path;
+  currentPathCopy = currentPath;
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
@@ -666,13 +666,13 @@ LABEL_22:
   v19[2] = __88__TRIAssetStoreOperator_referenceMAAutoAssetWithId_futurePath_currentPath_isFileFactor___block_invoke;
   v19[3] = &unk_279DE25C0;
   v19[4] = self;
-  v14 = v11;
+  v14 = idCopy;
   v20 = v14;
-  v15 = v12;
-  v25 = a6;
+  v15 = pathCopy;
+  factorCopy = factor;
   v21 = v15;
   v24 = a2;
-  v16 = v13;
+  v16 = currentPathCopy;
   v22 = v16;
   v23 = &v26;
   [(TRIAssetStoreOperator *)self _acquireLockfileAndRunBlock:v19];
@@ -1020,12 +1020,12 @@ void __88__TRIAssetStoreOperator_referenceMAAutoAssetWithId_futurePath_currentPa
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)collectGarbageOlderThanNumScans:(unsigned int)a3 deletedAssetSize:(unint64_t *)a4 ignoreRecentlyCreatedAssets:(BOOL)a5 dryRun:(BOOL)a6 includedCacheDeletableAssetIds:(id)a7 deletedAssetIds:(id *)a8
+- (BOOL)collectGarbageOlderThanNumScans:(unsigned int)scans deletedAssetSize:(unint64_t *)size ignoreRecentlyCreatedAssets:(BOOL)assets dryRun:(BOOL)run includedCacheDeletableAssetIds:(id)ids deletedAssetIds:(id *)assetIds
 {
-  v14 = a7;
-  if (a4)
+  idsCopy = ids;
+  if (size)
   {
-    *a4 = 0;
+    *size = 0;
   }
 
   v26 = 0;
@@ -1037,14 +1037,14 @@ void __88__TRIAssetStoreOperator_referenceMAAutoAssetWithId_futurePath_currentPa
   v18[2] = __156__TRIAssetStoreOperator_collectGarbageOlderThanNumScans_deletedAssetSize_ignoreRecentlyCreatedAssets_dryRun_includedCacheDeletableAssetIds_deletedAssetIds___block_invoke;
   v18[3] = &unk_279DE2630;
   v20 = &v26;
-  v21 = a4;
+  sizeCopy = size;
   v18[4] = self;
-  v23 = a3;
-  v24 = a5;
-  v25 = a6;
-  v15 = v14;
+  scansCopy = scans;
+  assetsCopy = assets;
+  runCopy = run;
+  v15 = idsCopy;
   v19 = v15;
-  v22 = a8;
+  assetIdsCopy = assetIds;
   [(TRIAssetStoreOperator *)self _acquireLockfileAndRunBlock:v18];
   v16 = *(v27 + 24);
 
@@ -1203,15 +1203,15 @@ void __156__TRIAssetStoreOperator_collectGarbageOlderThanNumScans_deletedAssetSi
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_incrementUnrefAgeForAssetWithIdentifier:(id)a3 newValue:(unsigned int *)a4 dryRun:(BOOL)a5
+- (BOOL)_incrementUnrefAgeForAssetWithIdentifier:(id)identifier newValue:(unsigned int *)value dryRun:(BOOL)run
 {
   v42 = *MEMORY[0x277D85DE8];
-  v9 = a3;
+  identifierCopy = identifier;
   WeakRetained = objc_loadWeakRetained(&self->_store);
   v11 = WeakRetained;
   if (WeakRetained)
   {
-    v12 = [WeakRetained pathForAssetDirWithIdentifier:v9];
+    v12 = [WeakRetained pathForAssetDirWithIdentifier:identifierCopy];
     v13 = [v12 stringByAppendingPathComponent:@"unref-age"];
 
     v39 = 0;
@@ -1255,8 +1255,8 @@ LABEL_33:
 
         v16 = v19;
 LABEL_23:
-        *a4 = v21;
-        if (a5)
+        *value = v21;
+        if (run)
         {
           v22 = 1;
 LABEL_38:
@@ -1264,7 +1264,7 @@ LABEL_38:
           goto LABEL_39;
         }
 
-        v18 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%u\n", *a4];
+        v18 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%u\n", *value];
         v29 = [v18 dataUsingEncoding:4];
 
         if (!v29)
@@ -1310,15 +1310,15 @@ LABEL_38:
 
     else
     {
-      v23 = [v15 domain];
-      v24 = v23;
-      if (v23 == *MEMORY[0x277CCA050])
+      domain = [v15 domain];
+      v24 = domain;
+      if (domain == *MEMORY[0x277CCA050])
       {
         v36 = a2;
         v26 = v16;
-        v27 = [v16 code];
+        code = [v16 code];
 
-        v28 = v27 == 260;
+        v28 = code == 260;
         v16 = v26;
         if (v28)
         {
@@ -1362,10 +1362,10 @@ LABEL_39:
   return v22;
 }
 
-- (BOOL)_clearUnrefAgeForAssetWithIdentifier:(id)a3
+- (BOOL)_clearUnrefAgeForAssetWithIdentifier:(id)identifier
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   WeakRetained = objc_loadWeakRetained(&self->_store);
   v6 = WeakRetained;
   if (!WeakRetained)
@@ -1380,7 +1380,7 @@ LABEL_39:
     goto LABEL_10;
   }
 
-  v7 = [WeakRetained pathForAssetDirWithIdentifier:v4];
+  v7 = [WeakRetained pathForAssetDirWithIdentifier:identifierCopy];
   v8 = [v7 stringByAppendingPathComponent:@"unref-age"];
 
   if (unlink([v8 fileSystemRepresentation]) && *__error() != 2)
@@ -1569,23 +1569,23 @@ LABEL_13:
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (unsigned)_hardLinkCountForAssetWithIdentifier:(id)a3
+- (unsigned)_hardLinkCountForAssetWithIdentifier:(id)identifier
 {
-  v5 = a3;
-  if (!v5)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
-    v15 = [MEMORY[0x277CCA890] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"TRIAssetStoreOperator.m" lineNumber:688 description:{@"Invalid parameter not satisfying: %@", @"assetIdentifier"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIAssetStoreOperator.m" lineNumber:688 description:{@"Invalid parameter not satisfying: %@", @"assetIdentifier"}];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_store);
   v7 = WeakRetained;
   if (WeakRetained)
   {
-    v8 = [WeakRetained pathForAssetContentWithIdentifier:v5];
+    v8 = [WeakRetained pathForAssetContentWithIdentifier:identifierCopy];
     v16 = 0;
-    v9 = [MEMORY[0x277CCAA00] defaultManager];
-    v10 = [v9 fileExistsAtPath:v8 isDirectory:&v16];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    v10 = [defaultManager fileExistsAtPath:v8 isDirectory:&v16];
 
     v11 = 0;
     if (v10)
@@ -1628,12 +1628,12 @@ LABEL_13:
   return v11;
 }
 
-- (unsigned)_hardLinkCountForFileWithPath:(id)a3
+- (unsigned)_hardLinkCountForFileWithPath:(id)path
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  pathCopy = path;
   memset(&v11, 0, sizeof(v11));
-  if (stat([v3 fileSystemRepresentation], &v11))
+  if (stat([pathCopy fileSystemRepresentation], &v11))
   {
     v4 = TRILogCategory_Server();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -1642,7 +1642,7 @@ LABEL_13:
       v9 = strerror(*v8);
       v10 = *__error();
       *buf = 138543874;
-      v13 = v3;
+      v13 = pathCopy;
       v14 = 2080;
       v15 = v9;
       v16 = 1024;
@@ -1662,12 +1662,12 @@ LABEL_13:
   return st_nlink;
 }
 
-- (BOOL)_removeDeadSymlinksWithFlockWitness:(TRIFlockWitness_ *)a3 numRemoved:(unsigned int *)a4
+- (BOOL)_removeDeadSymlinksWithFlockWitness:(TRIFlockWitness_ *)witness numRemoved:(unsigned int *)removed
 {
-  v6 = [(TRIAssetStoreOperator *)self _collectDeadSymlinks];
-  if (v6)
+  _collectDeadSymlinks = [(TRIAssetStoreOperator *)self _collectDeadSymlinks];
+  if (_collectDeadSymlinks)
   {
-    v7 = [(TRIAssetStoreOperator *)self _removePaths:v6 numRemoved:a4];
+    v7 = [(TRIAssetStoreOperator *)self _removePaths:_collectDeadSymlinks numRemoved:removed];
   }
 
   else
@@ -1678,9 +1678,9 @@ LABEL_13:
   return v7;
 }
 
-- (id)_collectUnreferencedAssetsIncludingLinkTargetsForReferencedAssetIds:(id)a3 ignoreRecentlyCreatedAssets:(BOOL)a4
+- (id)_collectUnreferencedAssetsIncludingLinkTargetsForReferencedAssetIds:(id)ids ignoreRecentlyCreatedAssets:(BOOL)assets
 {
-  v7 = a3;
+  idsCopy = ids;
   v8 = objc_autoreleasePoolPush();
   WeakRetained = objc_loadWeakRetained(&self->_store);
   if (WeakRetained)
@@ -1699,8 +1699,8 @@ LABEL_13:
       v13[3] = &unk_279DE2680;
       v16 = a2;
       v13[4] = self;
-      v17 = a4;
-      v14 = v7;
+      assetsCopy = assets;
+      v14 = idsCopy;
       v15 = buf;
       [WeakRetained enumerateAssetDirsUsingBlock:v13];
       v10 = *(v19 + 5);
@@ -1864,21 +1864,21 @@ LABEL_26:
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_creationDateForAsset:(id)a3
+- (id)_creationDateForAsset:(id)asset
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
+  assetCopy = asset;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v13 = 0;
-  v5 = [v4 attributesOfItemAtPath:v3 error:&v13];
+  v5 = [defaultManager attributesOfItemAtPath:assetCopy error:&v13];
   v6 = v13;
 
   if (v5)
   {
-    v7 = [v5 fileCreationDate];
-    if (v7)
+    fileCreationDate = [v5 fileCreationDate];
+    if (fileCreationDate)
     {
-      v8 = v7;
+      v8 = fileCreationDate;
       v9 = v8;
       goto LABEL_10;
     }
@@ -1889,7 +1889,7 @@ LABEL_26:
       *buf = 138412546;
       v15 = v5;
       v16 = 2114;
-      v17 = v3;
+      v17 = assetCopy;
       _os_log_error_impl(&dword_26F567000, v10, OS_LOG_TYPE_ERROR, "Couldn't get creation date from file attributes %@ for %{public}@", buf, 0x16u);
     }
 
@@ -1902,7 +1902,7 @@ LABEL_26:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v15 = v3;
+      v15 = assetCopy;
       v16 = 2114;
       v17 = v6;
       _os_log_error_impl(&dword_26F567000, v8, OS_LOG_TYPE_ERROR, "Couldn't read file attributes for %{public}@: %{public}@", buf, 0x16u);
@@ -2001,13 +2001,13 @@ LABEL_20:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_removePaths:(id)a3 numRemoved:(unsigned int *)a4
+- (BOOL)_removePaths:(id)paths numRemoved:(unsigned int *)removed
 {
-  v5 = a3;
-  v6 = v5;
-  if (a4)
+  pathsCopy = paths;
+  v6 = pathsCopy;
+  if (removed)
   {
-    *a4 = 0;
+    *removed = 0;
   }
 
   v10 = 0;
@@ -2019,8 +2019,8 @@ LABEL_20:
   v9[2] = __49__TRIAssetStoreOperator__removePaths_numRemoved___block_invoke;
   v9[3] = &unk_279DE26D0;
   v9[4] = &v10;
-  v9[5] = a4;
-  if ([v5 enumerateStringsWithBlock:v9])
+  v9[5] = removed;
+  if ([pathsCopy enumerateStringsWithBlock:v9])
   {
     v7 = *(v11 + 24);
   }
@@ -2074,9 +2074,9 @@ void __49__TRIAssetStoreOperator__removePaths_numRemoved___block_invoke(uint64_t
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)migrateToGlobalAssetStoreFromLocalAssetStore:(id)a3
+- (BOOL)migrateToGlobalAssetStoreFromLocalAssetStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -2087,7 +2087,7 @@ void __49__TRIAssetStoreOperator__removePaths_numRemoved___block_invoke(uint64_t
   v7[3] = &unk_279DE2578;
   v9 = &v10;
   v7[4] = self;
-  v5 = v4;
+  v5 = storeCopy;
   v8 = v5;
   [(TRIAssetStoreOperator *)self _acquireLockfileInAssetStorePath:v5 andRunBlock:v7];
   LOBYTE(self) = *(v11 + 24);
@@ -2111,10 +2111,10 @@ void __70__TRIAssetStoreOperator_migrateToGlobalAssetStoreFromLocalAssetStore___
   }
 }
 
-- (BOOL)_migrateAssetsDatabaseWithLocalAssetStorePath:(id)a3
+- (BOOL)_migrateAssetsDatabaseWithLocalAssetStorePath:(id)path
 {
-  v4 = a3;
-  v5 = [[TRIAssetStoreDatabase alloc] initWithPaths:self->_paths assetStorePath:v4 storageManagement:0];
+  pathCopy = path;
+  v5 = [[TRIAssetStoreDatabase alloc] initWithPaths:self->_paths assetStorePath:pathCopy storageManagement:0];
 
   v6 = [[TRIAssetStoreDatabase alloc] initWithPaths:self->_paths storageManagement:self->_storageManagement];
   v9[0] = MEMORY[0x277D85DD0];
@@ -2123,49 +2123,49 @@ void __70__TRIAssetStoreOperator_migrateToGlobalAssetStoreFromLocalAssetStore___
   v9[3] = &unk_279DE26F8;
   v10 = v6;
   v7 = v6;
-  LOBYTE(v4) = [(TRIAssetStoreDatabase *)v5 enumerateAllAutoAssetReferencesWithBlock:v9];
+  LOBYTE(pathCopy) = [(TRIAssetStoreDatabase *)v5 enumerateAllAutoAssetReferencesWithBlock:v9];
   [(TRIAssetStoreDatabase *)v5 closePermanently];
   [(TRIAssetStoreDatabase *)v7 closePermanently];
 
-  return v4;
+  return pathCopy;
 }
 
-- (BOOL)_migrateAssetContentsWithLocalAssetStorePath:(id)a3 flockWitness:(TRIFlockWitness_ *)a4
+- (BOOL)_migrateAssetContentsWithLocalAssetStorePath:(id)path flockWitness:(TRIFlockWitness_ *)witness
 {
   v57 = *MEMORY[0x277D85DE8];
-  v36 = a3;
+  pathCopy = path;
   v47 = 0;
   v48 = &v47;
   v49 = 0x2020000000;
   v50 = 1;
-  v5 = [(TRIPaths *)self->_paths assetStore];
-  v38 = [v5 stringByAppendingPathComponent:@"assets"];
+  assetStore = [(TRIPaths *)self->_paths assetStore];
+  v38 = [assetStore stringByAppendingPathComponent:@"assets"];
 
-  v37 = [v36 stringByAppendingPathComponent:@"assets"];
-  v6 = [MEMORY[0x277CCAA00] defaultManager];
-  v7 = [v6 fileExistsAtPath:v38];
+  v37 = [pathCopy stringByAppendingPathComponent:@"assets"];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v7 = [defaultManager fileExistsAtPath:v38];
 
   if (v7)
   {
     v8 = [[TRIAssetStore alloc] initWithGlobalPaths:self->_paths];
-    v9 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
     v10 = [MEMORY[0x277CBEBC0] fileURLWithPath:v37];
-    v11 = [v9 enumeratorAtURL:v10 includingPropertiesForKeys:0 options:1 errorHandler:0];
+    v11 = [defaultManager2 enumeratorAtURL:v10 includingPropertiesForKeys:0 options:1 errorHandler:0];
 
     do
     {
       v12 = objc_autoreleasePoolPush();
-      v13 = [v11 nextObject];
-      v14 = v13;
-      if (v13)
+      nextObject = [v11 nextObject];
+      v14 = nextObject;
+      if (nextObject)
       {
-        v15 = [v13 lastPathComponent];
-        if (v15)
+        lastPathComponent = [nextObject lastPathComponent];
+        if (lastPathComponent)
         {
-          v16 = [v14 path];
-          if (v16)
+          path = [v14 path];
+          if (path)
           {
-            v17 = [MEMORY[0x277D73728] arrayFromDirectory:v16];
+            v17 = [MEMORY[0x277D73728] arrayFromDirectory:path];
             if (v17)
             {
               v39[0] = MEMORY[0x277D85DD0];
@@ -2173,9 +2173,9 @@ void __70__TRIAssetStoreOperator_migrateToGlobalAssetStoreFromLocalAssetStore___
               v39[2] = __83__TRIAssetStoreOperator__migrateAssetContentsWithLocalAssetStorePath_flockWitness___block_invoke;
               v39[3] = &unk_279DE2720;
               v40 = v38;
-              v41 = v15;
+              v41 = lastPathComponent;
               v18 = v8;
-              v43 = self;
+              selfCopy = self;
               v44 = &v47;
               v42 = v18;
               v19 = [v17 enumerateStringsWithBlock:v39];
@@ -2190,7 +2190,7 @@ void __70__TRIAssetStoreOperator_migrateToGlobalAssetStoreFromLocalAssetStore___
               if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
               {
                 *buf = 138412290;
-                v52 = v15;
+                v52 = lastPathComponent;
                 _os_log_error_impl(&dword_26F567000, v20, OS_LOG_TYPE_ERROR, "Couldn't locate asset folders for short hash: %@", buf, 0xCu);
               }
             }
@@ -2210,13 +2210,13 @@ void __70__TRIAssetStoreOperator_migrateToGlobalAssetStoreFromLocalAssetStore___
 
         else
         {
-          v16 = TRILogCategory_Server();
-          if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+          path = TRILogCategory_Server();
+          if (os_log_type_enabled(path, OS_LOG_TYPE_ERROR))
           {
-            v21 = [v14 path];
+            path2 = [v14 path];
             *buf = 138543362;
-            v52 = v21;
-            _os_log_error_impl(&dword_26F567000, v16, OS_LOG_TYPE_ERROR, "Invalid short hash found in local asset store url: %{public}@", buf, 0xCu);
+            v52 = path2;
+            _os_log_error_impl(&dword_26F567000, path, OS_LOG_TYPE_ERROR, "Invalid short hash found in local asset store url: %{public}@", buf, 0xCu);
           }
         }
       }
@@ -2238,10 +2238,10 @@ void __70__TRIAssetStoreOperator_migrateToGlobalAssetStoreFromLocalAssetStore___
       _os_log_impl(&dword_26F567000, v22, OS_LOG_TYPE_INFO, "No global assets folder exists at %@. Copying the entirety of the local assets folder.", buf, 0xCu);
     }
 
-    v23 = [MEMORY[0x277CCAA00] defaultManager];
-    v24 = [v38 stringByDeletingLastPathComponent];
+    defaultManager3 = [MEMORY[0x277CCAA00] defaultManager];
+    stringByDeletingLastPathComponent = [v38 stringByDeletingLastPathComponent];
     v46 = 0;
-    v25 = [v23 createDirectoryAtPath:v24 withIntermediateDirectories:1 attributes:0 error:&v46];
+    v25 = [defaultManager3 createDirectoryAtPath:stringByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:&v46];
     v26 = v46;
 
     if ((v25 & 1) == 0)
@@ -2249,20 +2249,20 @@ void __70__TRIAssetStoreOperator_migrateToGlobalAssetStoreFromLocalAssetStore___
       v27 = TRILogCategory_Server();
       if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
       {
-        v34 = [v26 localizedDescription];
+        localizedDescription = [v26 localizedDescription];
         *buf = 138543618;
         v52 = v38;
         v53 = 2112;
-        v54 = v34;
+        v54 = localizedDescription;
         _os_log_error_impl(&dword_26F567000, v27, OS_LOG_TYPE_ERROR, "Failed to create global assets folder: %{public}@ with error:%@", buf, 0x16u);
       }
 
       *(v48 + 24) = 0;
     }
 
-    v28 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager4 = [MEMORY[0x277CCAA00] defaultManager];
     v45 = v26;
-    v29 = [v28 moveItemAtPath:v37 toPath:v38 error:&v45];
+    v29 = [defaultManager4 moveItemAtPath:v37 toPath:v38 error:&v45];
     v8 = v45;
 
     if (v29)
@@ -2275,13 +2275,13 @@ void __70__TRIAssetStoreOperator_migrateToGlobalAssetStoreFromLocalAssetStore___
       v31 = TRILogCategory_Server();
       if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
       {
-        v35 = [(TRIAssetStore *)v8 localizedDescription];
+        localizedDescription2 = [(TRIAssetStore *)v8 localizedDescription];
         *buf = 138543874;
         v52 = v37;
         v53 = 2114;
         v54 = v38;
         v55 = 2112;
-        v56 = v35;
+        v56 = localizedDescription2;
         _os_log_error_impl(&dword_26F567000, v31, OS_LOG_TYPE_ERROR, "Failed to move local assets folder to the global assets folder: %{public}@ to %{public}@ with error:%@", buf, 0x20u);
       }
 
@@ -2377,42 +2377,42 @@ void __83__TRIAssetStoreOperator__migrateAssetContentsWithLocalAssetStorePath_fl
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_relinkLocalAssetToGlobalAssetStore:(id)a3 withAssetId:(id)a4 localAssetDir:(id)a5
+- (BOOL)_relinkLocalAssetToGlobalAssetStore:(id)store withAssetId:(id)id localAssetDir:(id)dir
 {
   v36 = *MEMORY[0x277D85DE8];
-  v31 = a3;
-  v9 = a4;
-  v30 = a5;
+  storeCopy = store;
+  idCopy = id;
+  dirCopy = dir;
   v29 = [MEMORY[0x277CBEBC0] fileURLWithPath:?];
   v10 = [MEMORY[0x277CBEBC0] fileURLWithPath:@"refs" relativeToURL:?];
-  v11 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v12 = 1;
   v28 = v10;
-  v13 = [v11 enumeratorAtURL:v10 includingPropertiesForKeys:0 options:1 errorHandler:0];
+  v13 = [defaultManager enumeratorAtURL:v10 includingPropertiesForKeys:0 options:1 errorHandler:0];
 
   v14 = objc_autoreleasePoolPush();
-  v15 = [v13 nextObject];
-  if (v15)
+  nextObject = [v13 nextObject];
+  if (nextObject)
   {
-    v16 = v15;
+    nextObject2 = nextObject;
     v27 = a2;
     v12 = 1;
     do
     {
-      v17 = [v16 lastPathComponent];
-      v18 = [v17 hasPrefix:@"link-"];
+      lastPathComponent = [nextObject2 lastPathComponent];
+      v18 = [lastPathComponent hasPrefix:@"link-"];
 
       if (v18)
       {
-        v19 = [v16 path];
-        if (!v19)
+        path = [nextObject2 path];
+        if (!path)
         {
-          v22 = [MEMORY[0x277CCA890] currentHandler];
-          [v22 handleFailureInMethod:v27 object:self file:@"TRIAssetStoreOperator.m" lineNumber:1076 description:{@"Invalid parameter not satisfying: %@", @"symlinkPath"}];
+          currentHandler = [MEMORY[0x277CCA890] currentHandler];
+          [currentHandler handleFailureInMethod:v27 object:self file:@"TRIAssetStoreOperator.m" lineNumber:1076 description:{@"Invalid parameter not satisfying: %@", @"symlinkPath"}];
         }
 
-        v20 = [MEMORY[0x277CCAA00] triTargetPathForSymlink:v19];
-        if (!v20 || ([v31 linkAssetWithIdentifier:v9 toPath:v20] & 1) == 0)
+        v20 = [MEMORY[0x277CCAA00] triTargetPathForSymlink:path];
+        if (!v20 || ([storeCopy linkAssetWithIdentifier:idCopy toPath:v20] & 1) == 0)
         {
           v21 = TRILogCategory_Server();
           if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -2428,10 +2428,10 @@ void __83__TRIAssetStoreOperator__migrateAssetContentsWithLocalAssetStorePath_fl
 
       objc_autoreleasePoolPop(v14);
       v14 = objc_autoreleasePoolPush();
-      v16 = [v13 nextObject];
+      nextObject2 = [v13 nextObject];
     }
 
-    while (v16);
+    while (nextObject2);
   }
 
   objc_autoreleasePoolPop(v14);
@@ -2445,7 +2445,7 @@ void __83__TRIAssetStoreOperator__migrateAssetContentsWithLocalAssetStorePath_fl
     }
 
     *buf = 138543618;
-    v33 = v9;
+    v33 = idCopy;
     v34 = 2112;
     v35 = v24;
     _os_log_impl(&dword_26F567000, v23, OS_LOG_TYPE_INFO, "Re-linking references to asset id %{public}@ to the global directory %@.", buf, 0x16u);
@@ -2455,26 +2455,26 @@ void __83__TRIAssetStoreOperator__migrateAssetContentsWithLocalAssetStorePath_fl
   return v12 & 1;
 }
 
-- (BOOL)_acquireLockfileAndRunBlock:(id)a3
+- (BOOL)_acquireLockfileAndRunBlock:(id)block
 {
-  v3 = self;
+  selfCopy = self;
   paths = self->_paths;
-  v5 = a3;
-  v6 = [(TRIPaths *)paths assetStore];
-  LOBYTE(v3) = [(TRIAssetStoreOperator *)v3 _acquireLockfileInAssetStorePath:v6 andRunBlock:v5];
+  blockCopy = block;
+  assetStore = [(TRIPaths *)paths assetStore];
+  LOBYTE(selfCopy) = [(TRIAssetStoreOperator *)selfCopy _acquireLockfileInAssetStorePath:assetStore andRunBlock:blockCopy];
 
-  return v3;
+  return selfCopy;
 }
 
-- (BOOL)_acquireLockfileInAssetStorePath:(id)a3 andRunBlock:(id)a4
+- (BOOL)_acquireLockfileInAssetStorePath:(id)path andRunBlock:(id)block
 {
   v39 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  pathCopy = path;
+  blockCopy = block;
   v7 = objc_autoreleasePoolPush();
-  v8 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v32 = 0;
-  v9 = [v8 createDirectoryAtPath:v5 withIntermediateDirectories:1 attributes:0 error:&v32];
+  v9 = [defaultManager createDirectoryAtPath:pathCopy withIntermediateDirectories:1 attributes:0 error:&v32];
   v10 = v32;
 
   if ((v9 & 1) == 0)
@@ -2488,7 +2488,7 @@ void __83__TRIAssetStoreOperator__migrateAssetContentsWithLocalAssetStorePath_fl
     }
   }
 
-  v12 = [v5 stringByAppendingPathComponent:@"lock"];
+  v12 = [pathCopy stringByAppendingPathComponent:@"lock"];
   v13 = v12;
   v14 = open([v12 fileSystemRepresentation], 514, 432);
   v15 = v14;
@@ -2538,7 +2538,7 @@ void __83__TRIAssetStoreOperator__migrateAssetContentsWithLocalAssetStorePath_fl
     {
       v19 = objc_autoreleasePoolPush();
       *buf = v15;
-      v6[2](v6, buf);
+      blockCopy[2](blockCopy, buf);
       objc_autoreleasePoolPop(v19);
       if (flock(v15, 8))
       {
@@ -2572,12 +2572,12 @@ void __83__TRIAssetStoreOperator__migrateAssetContentsWithLocalAssetStorePath_fl
 - (id)_requireAssetStoreTempDir
 {
   v20 = *MEMORY[0x277D85DE8];
-  v2 = [(TRIPaths *)self->_paths assetStore];
-  v3 = [v2 stringByAppendingPathComponent:@"tmp"];
+  assetStore = [(TRIPaths *)self->_paths assetStore];
+  v3 = [assetStore stringByAppendingPathComponent:@"tmp"];
 
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v14 = 0;
-  v5 = [v4 createDirectoryAtPath:v3 withIntermediateDirectories:1 attributes:0 error:&v14];
+  v5 = [defaultManager createDirectoryAtPath:v3 withIntermediateDirectories:1 attributes:0 error:&v14];
   v6 = v14;
 
   if ((v5 & 1) == 0)
@@ -2611,8 +2611,8 @@ void __83__TRIAssetStoreOperator__migrateAssetContentsWithLocalAssetStorePath_fl
 
   else
   {
-    v9 = [v3 fileSystemRepresentation];
-    chmod(v9, v19.st_mode | 0x92);
+    fileSystemRepresentation = [v3 fileSystemRepresentation];
+    chmod(fileSystemRepresentation, v19.st_mode | 0x92);
   }
 
   v10 = *MEMORY[0x277D85DE8];
@@ -2620,14 +2620,14 @@ void __83__TRIAssetStoreOperator__migrateAssetContentsWithLocalAssetStorePath_fl
   return v3;
 }
 
-- (BOOL)_fixFileProtectionForFileURL:(id)a3
+- (BOOL)_fixFileProtectionForFileURL:(id)l
 {
   v34 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  lCopy = l;
   v26 = 0;
   v6 = *MEMORY[0x277CBE868];
   v25 = 0;
-  v7 = [v5 getResourceValue:&v26 forKey:v6 error:&v25];
+  v7 = [lCopy getResourceValue:&v26 forKey:v6 error:&v25];
   v8 = v26;
   v9 = v25;
   if (!v7)
@@ -2636,7 +2636,7 @@ void __83__TRIAssetStoreOperator__migrateAssetContentsWithLocalAssetStorePath_fl
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       v33.st_dev = 138543618;
-      *&v33.st_mode = v5;
+      *&v33.st_mode = lCopy;
       WORD2(v33.st_ino) = 2114;
       *(&v33.st_ino + 6) = v9;
       v12 = "Failed to determine if url %{public}@ is a directory: %{public}@";
@@ -2656,13 +2656,13 @@ LABEL_13:
   if (([v8 BOOLValue] & 1) == 0)
   {
     memset(&v33, 0, sizeof(v33));
-    if (stat([v5 fileSystemRepresentation], &v33))
+    if (stat([lCopy fileSystemRepresentation], &v33))
     {
       v11 = TRILogCategory_Server();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543362;
-        v28 = v5;
+        v28 = lCopy;
         v12 = "Could not stat: %{public}@";
         v13 = buf;
         v14 = v11;
@@ -2673,20 +2673,20 @@ LABEL_13:
 
     else
     {
-      if (!chmod([v5 fileSystemRepresentation], 0x1F8u))
+      if (!chmod([lCopy fileSystemRepresentation], 0x1F8u))
       {
         v21 = MEMORY[0x277CCAA00];
-        v22 = [v5 path];
-        if (!v22)
+        path = [lCopy path];
+        if (!path)
         {
-          v24 = [MEMORY[0x277CCA890] currentHandler];
-          [v24 handleFailureInMethod:a2 object:self file:@"TRIAssetStoreOperator.m" lineNumber:1187 description:{@"Expression was unexpectedly nil/false: %@", @"fileURL.path"}];
+          currentHandler = [MEMORY[0x277CCA890] currentHandler];
+          [currentHandler handleFailureInMethod:a2 object:self file:@"TRIAssetStoreOperator.m" lineNumber:1187 description:{@"Expression was unexpectedly nil/false: %@", @"fileURL.path"}];
         }
 
-        [v21 triRemoveFileProtectionIfPresentForPath:v22];
+        [v21 triRemoveFileProtectionIfPresentForPath:path];
 
-        v23 = [v5 fileSystemRepresentation];
-        chmod(v23, v33.st_mode & 0x124);
+        fileSystemRepresentation = [lCopy fileSystemRepresentation];
+        chmod(fileSystemRepresentation, v33.st_mode & 0x124);
         goto LABEL_3;
       }
 
@@ -2697,7 +2697,7 @@ LABEL_13:
         v17 = strerror(*v16);
         v18 = *__error();
         *buf = 138543874;
-        v28 = v5;
+        v28 = lCopy;
         v29 = 2080;
         v30 = v17;
         v31 = 1024;
@@ -2736,7 +2736,7 @@ LABEL_14:
     v9[2] = __60__TRIAssetStoreOperator_fixFileProtectionForAssetStoreFiles__block_invoke;
     v9[3] = &unk_279DE2770;
     v10 = WeakRetained;
-    v11 = self;
+    selfCopy = self;
     v12 = buf;
     v13 = a2;
     [(TRIAssetStoreOperator *)self _acquireLockfileAndRunBlock:v9];
@@ -2863,13 +2863,13 @@ uint64_t __60__TRIAssetStoreOperator_fixFileProtectionForAssetStoreFiles__block_
   return 1;
 }
 
-- (BOOL)_overwriteRenameAsAtomicallyAsPossibleWithSrc:(id)a3 dest:(id)a4
+- (BOOL)_overwriteRenameAsAtomicallyAsPossibleWithSrc:(id)src dest:(id)dest
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  srcCopy = src;
+  destCopy = dest;
   memset(&v28, 0, sizeof(v28));
-  if (stat([v6 fileSystemRepresentation], &v28))
+  if (stat([srcCopy fileSystemRepresentation], &v28))
   {
     v8 = TRILogCategory_Server();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -2878,7 +2878,7 @@ uint64_t __60__TRIAssetStoreOperator_fixFileProtectionForAssetStoreFiles__block_
       v20 = strerror(*v19);
       v21 = *__error();
       v27.st_dev = 138543874;
-      *&v27.st_mode = v6;
+      *&v27.st_mode = srcCopy;
       WORD2(v27.st_ino) = 2080;
       *(&v27.st_ino + 6) = v20;
       HIWORD(v27.st_gid) = 1024;
@@ -2891,18 +2891,18 @@ uint64_t __60__TRIAssetStoreOperator_fixFileProtectionForAssetStoreFiles__block_
 
   v26 = v28.st_mode & 0x1FF;
   memset(&v27, 0, sizeof(v27));
-  v10 = stat([v7 fileSystemRepresentation], &v27);
+  v10 = stat([destCopy fileSystemRepresentation], &v27);
   v11 = v10;
   if ((v28.st_mode & 0xF000) == 0x4000)
   {
-    chmod([v6 fileSystemRepresentation], 0x1F8u);
+    chmod([srcCopy fileSystemRepresentation], 0x1F8u);
     v12 = &v26;
     if (!v11)
     {
 LABEL_10:
       if ((v27.st_mode & 0xF000) == 0x4000)
       {
-        chmod([v7 fileSystemRepresentation], 0x1F8u);
+        chmod([destCopy fileSystemRepresentation], 0x1F8u);
       }
     }
   }
@@ -2916,19 +2916,19 @@ LABEL_10:
     }
   }
 
-  v13 = [v6 fileSystemRepresentation];
-  v14 = [v7 fileSystemRepresentation];
-  rename(v13, v14, v15);
+  fileSystemRepresentation = [srcCopy fileSystemRepresentation];
+  fileSystemRepresentation2 = [destCopy fileSystemRepresentation];
+  rename(fileSystemRepresentation, fileSystemRepresentation2, v15);
   if (!v16)
   {
-    [(TRIAssetStoreOperator *)self _fixupPermissionsOnPath:v7 permissionBits:v12];
+    [(TRIAssetStoreOperator *)self _fixupPermissionsOnPath:destCopy permissionBits:v12];
     v9 = 1;
     goto LABEL_19;
   }
 
   if (*__error() == 17 || *__error() == 66 || *__error() == 21 || *__error() == 20)
   {
-    v9 = [(TRIAssetStoreOperator *)self _nonAtomicOverwriteWithSrc:v6 dest:v7 finalPermissionBits:v12];
+    v9 = [(TRIAssetStoreOperator *)self _nonAtomicOverwriteWithSrc:srcCopy dest:destCopy finalPermissionBits:v12];
     goto LABEL_19;
   }
 
@@ -2939,9 +2939,9 @@ LABEL_10:
     v24 = strerror(*v23);
     v25 = *__error();
     v28.st_dev = 138544130;
-    *&v28.st_mode = v6;
+    *&v28.st_mode = srcCopy;
     WORD2(v28.st_ino) = 2114;
-    *(&v28.st_ino + 6) = v7;
+    *(&v28.st_ino + 6) = destCopy;
     HIWORD(v28.st_gid) = 2080;
     *&v28.st_rdev = v24;
     LOWORD(v28.st_atimespec.tv_sec) = 1024;
@@ -2949,7 +2949,7 @@ LABEL_10:
     _os_log_error_impl(&dword_26F567000, v22, OS_LOG_TYPE_ERROR, "Failed to rename() %{public}@ --> %{public}@: %s (%d)", &v28, 0x26u);
   }
 
-  [(TRIAssetStoreOperator *)self _fixupPermissionsOnPath:v6 permissionBits:v12];
+  [(TRIAssetStoreOperator *)self _fixupPermissionsOnPath:srcCopy permissionBits:v12];
 LABEL_5:
   v9 = 0;
 LABEL_19:
@@ -2958,12 +2958,12 @@ LABEL_19:
   return v9;
 }
 
-- (void)_fixupPermissionsOnPath:(id)a3 permissionBits:(const unsigned __int16 *)a4
+- (void)_fixupPermissionsOnPath:(id)path permissionBits:(const unsigned __int16 *)bits
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = v5;
-  if (a4 && chmod([v5 fileSystemRepresentation], *a4))
+  pathCopy = path;
+  v6 = pathCopy;
+  if (bits && chmod([pathCopy fileSystemRepresentation], *bits))
   {
     v7 = TRILogCategory_Server();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -2984,22 +2984,22 @@ LABEL_19:
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_nonAtomicOverwriteWithSrc:(id)a3 dest:(id)a4 finalPermissionBits:(const unsigned __int16 *)a5
+- (BOOL)_nonAtomicOverwriteWithSrc:(id)src dest:(id)dest finalPermissionBits:(const unsigned __int16 *)bits
 {
   v44 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = [(TRIAssetStoreOperator *)self _requireAssetStoreTempDir];
+  srcCopy = src;
+  destCopy = dest;
+  _requireAssetStoreTempDir = [(TRIAssetStoreOperator *)self _requireAssetStoreTempDir];
   v11 = objc_opt_new();
-  v12 = [v11 UUIDString];
-  v13 = [v10 stringByAppendingPathComponent:v12];
+  uUIDString = [v11 UUIDString];
+  v13 = [_requireAssetStoreTempDir stringByAppendingPathComponent:uUIDString];
 
-  v14 = [v9 fileSystemRepresentation];
-  v15 = [v13 fileSystemRepresentation];
-  rename(v14, v15, v16);
+  fileSystemRepresentation = [destCopy fileSystemRepresentation];
+  fileSystemRepresentation2 = [v13 fileSystemRepresentation];
+  rename(fileSystemRepresentation, fileSystemRepresentation2, v16);
   if (v17)
   {
-    [(TRIAssetStoreOperator *)self _fixupPermissionsOnPath:v8 permissionBits:a5];
+    [(TRIAssetStoreOperator *)self _fixupPermissionsOnPath:srcCopy permissionBits:bits];
     v18 = TRILogCategory_Server();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
@@ -3007,7 +3007,7 @@ LABEL_19:
       v20 = strerror(*v19);
       v21 = *__error();
       v36 = 138544130;
-      v37 = v9;
+      v37 = destCopy;
       v38 = 2114;
       v39 = v13;
       v40 = 2080;
@@ -3022,21 +3022,21 @@ LABEL_10:
 
   else
   {
-    v23 = [v8 fileSystemRepresentation];
-    v24 = [v9 fileSystemRepresentation];
-    rename(v23, v24, v25);
+    fileSystemRepresentation3 = [srcCopy fileSystemRepresentation];
+    fileSystemRepresentation4 = [destCopy fileSystemRepresentation];
+    rename(fileSystemRepresentation3, fileSystemRepresentation4, v25);
     if (!v26)
     {
-      [(TRIAssetStoreOperator *)self _fixupPermissionsOnPath:v9 permissionBits:a5];
+      [(TRIAssetStoreOperator *)self _fixupPermissionsOnPath:destCopy permissionBits:bits];
       [(TRIAssetStoreOperator *)self _forceRemoveItemAtPath:v13];
       v30 = 1;
       goto LABEL_7;
     }
 
-    v27 = [v13 fileSystemRepresentation];
-    v28 = [v9 fileSystemRepresentation];
-    rename(v27, v28, v29);
-    [(TRIAssetStoreOperator *)self _fixupPermissionsOnPath:v8 permissionBits:a5];
+    fileSystemRepresentation5 = [v13 fileSystemRepresentation];
+    fileSystemRepresentation6 = [destCopy fileSystemRepresentation];
+    rename(fileSystemRepresentation5, fileSystemRepresentation6, v29);
+    [(TRIAssetStoreOperator *)self _fixupPermissionsOnPath:srcCopy permissionBits:bits];
     v18 = TRILogCategory_Server();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
@@ -3044,9 +3044,9 @@ LABEL_10:
       v34 = strerror(*v33);
       v35 = *__error();
       v36 = 138544130;
-      v37 = v8;
+      v37 = srcCopy;
       v38 = 2114;
-      v39 = v9;
+      v39 = destCopy;
       v40 = 2080;
       v41 = v34;
       v42 = 1024;
@@ -3063,14 +3063,14 @@ LABEL_7:
   return v30;
 }
 
-- (BOOL)_forceRemoveItemAtPath:(id)a3
+- (BOOL)_forceRemoveItemAtPath:(id)path
 {
   v14 = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CCAA00];
-  v4 = a3;
-  v5 = [v3 defaultManager];
+  pathCopy = path;
+  defaultManager = [v3 defaultManager];
   v11 = 0;
-  v6 = [v5 triForceRemoveItemAtPath:v4 error:&v11];
+  v6 = [defaultManager triForceRemoveItemAtPath:pathCopy error:&v11];
 
   v7 = v11;
   if ((v6 & 1) == 0)

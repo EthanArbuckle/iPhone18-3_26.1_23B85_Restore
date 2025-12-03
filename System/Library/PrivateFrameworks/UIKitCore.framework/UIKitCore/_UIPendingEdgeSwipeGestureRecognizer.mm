@@ -1,14 +1,14 @@
 @interface _UIPendingEdgeSwipeGestureRecognizer
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation _UIPendingEdgeSwipeGestureRecognizer
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  if (_UIEventHasEdgePendingOrLocked(a4))
+  if (_UIEventHasEdgePendingOrLocked(event))
   {
     v5 = 1;
   }
@@ -21,18 +21,18 @@
   [(UIGestureRecognizer *)self setState:v5];
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
-  if ([(UIGestureRecognizer *)self state:a3]== UIGestureRecognizerStatePossible)
+  if ([(UIGestureRecognizer *)self state:moved]== UIGestureRecognizerStatePossible)
   {
 
     [(UIGestureRecognizer *)self setState:3];
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  if ([(UIGestureRecognizer *)self state:a3]<= UIGestureRecognizerStateChanged)
+  if ([(UIGestureRecognizer *)self state:ended]<= UIGestureRecognizerStateChanged)
   {
 
     [(UIGestureRecognizer *)self setState:3];

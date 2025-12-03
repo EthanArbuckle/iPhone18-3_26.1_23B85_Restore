@@ -2,31 +2,31 @@
 + (id)maximumSupportedProtocolVersion;
 + (id)shortDescription;
 - (HMDHTTPServerMessageTransport)init;
-- (HMDHTTPServerMessageTransport)initWithServerIdentifier:(id)a3;
+- (HMDHTTPServerMessageTransport)initWithServerIdentifier:(id)identifier;
 - (HMDHTTPServerMessageTransportDelegate)delegate;
 - (NSArray)clientConnections;
 - (NSArray)devices;
 - (NSDictionary)TXTRecord;
-- (id)_clientConnectionForDevice:(id)a3;
-- (id)descriptionWithPointer:(BOOL)a3;
-- (id)dumpStateWithPrivacyLevel:(unint64_t)a3;
+- (id)_clientConnectionForDevice:(id)device;
+- (id)descriptionWithPointer:(BOOL)pointer;
+- (id)dumpStateWithPrivacyLevel:(unint64_t)level;
 - (id)shortDescription;
 - (void)__registerPingHandler;
 - (void)__registerReceiveMessageHandler;
 - (void)__registerSendMessageHandler;
 - (void)__registerSendResponseHandler;
-- (void)_stopWithError:(id)a3;
-- (void)addClientConnection:(id)a3;
-- (void)confirmDevice:(id)a3 completionHandler:(id)a4;
+- (void)_stopWithError:(id)error;
+- (void)addClientConnection:(id)connection;
+- (void)confirmDevice:(id)device completionHandler:(id)handler;
 - (void)removeAllClientConnections;
-- (void)removeClientConnection:(id)a3;
-- (void)removeTXTRecordValueForKey:(id)a3;
-- (void)sendMessage:(id)a3 toDevices:(id)a4 timeout:(double)a5 completionHandler:(id)a6;
-- (void)server:(id)a3 didCloseConnection:(id)a4;
-- (void)server:(id)a3 didOpenConnection:(id)a4;
-- (void)setTXTRecordValue:(id)a3 forKey:(id)a4;
-- (void)startWithCompletionHandler:(id)a3;
-- (void)timerDidFire:(id)a3;
+- (void)removeClientConnection:(id)connection;
+- (void)removeTXTRecordValueForKey:(id)key;
+- (void)sendMessage:(id)message toDevices:(id)devices timeout:(double)timeout completionHandler:(id)handler;
+- (void)server:(id)server didCloseConnection:(id)connection;
+- (void)server:(id)server didOpenConnection:(id)connection;
+- (void)setTXTRecordValue:(id)value forKey:(id)key;
+- (void)startWithCompletionHandler:(id)handler;
+- (void)timerDidFire:(id)fire;
 @end
 
 @implementation HMDHTTPServerMessageTransport
@@ -38,20 +38,20 @@
   return WeakRetained;
 }
 
-- (id)dumpStateWithPrivacyLevel:(unint64_t)a3
+- (id)dumpStateWithPrivacyLevel:(unint64_t)level
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v5 = [(HMDHTTPServerMessageTransport *)self debugDescription];
-  [v4 setObject:v5 forKeyedSubscript:*MEMORY[0x277D0F0D0]];
+  [dictionary setObject:v5 forKeyedSubscript:*MEMORY[0x277D0F0D0]];
 
-  v6 = [(HMDHTTPServerMessageTransport *)self clientConnections];
-  v7 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v6, "count")}];
+  clientConnections = [(HMDHTTPServerMessageTransport *)self clientConnections];
+  v7 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(clientConnections, "count")}];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v8 = v6;
+  v8 = clientConnections;
   v9 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v9)
   {
@@ -76,26 +76,26 @@
     while (v10);
   }
 
-  [v4 setObject:v7 forKeyedSubscript:@"clientConnectionStates"];
-  v14 = [(HMDHTTPServerMessageTransport *)self server];
-  v15 = [v14 dumpState];
-  [v4 setObject:v15 forKeyedSubscript:@"server"];
+  [dictionary setObject:v7 forKeyedSubscript:@"clientConnectionStates"];
+  server = [(HMDHTTPServerMessageTransport *)self server];
+  dumpState = [server dumpState];
+  [dictionary setObject:dumpState forKeyedSubscript:@"server"];
 
   v16 = *MEMORY[0x277D85DE8];
 
-  return v4;
+  return dictionary;
 }
 
-- (void)timerDidFire:(id)a3
+- (void)timerDidFire:(id)fire
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fireCopy = fire;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v5 = [(HMDHTTPServerMessageTransport *)self clientConnections];
-  v6 = [v5 copy];
+  clientConnections = [(HMDHTTPServerMessageTransport *)self clientConnections];
+  v6 = [clientConnections copy];
 
   v7 = [v6 countByEnumeratingWithState:&v21 objects:v31 count:16];
   if (v7)
@@ -112,8 +112,8 @@
         }
 
         v11 = *(*(&v21 + 1) + 8 * i);
-        v12 = [v11 lostConnectionTimer];
-        v13 = [v12 isEqual:v4];
+        lostConnectionTimer = [v11 lostConnectionTimer];
+        v13 = [lostConnectionTimer isEqual:fireCopy];
 
         if (v13)
         {
@@ -122,11 +122,11 @@
           if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
           {
             v16 = HMFGetLogIdentifier();
-            v17 = [(HMDHTTPServerMessageTransport *)self shortDescription];
+            shortDescription = [(HMDHTTPServerMessageTransport *)self shortDescription];
             *buf = 138543874;
             v26 = v16;
             v27 = 2112;
-            v28 = v17;
+            v28 = shortDescription;
             v29 = 2112;
             v30 = v11;
             _os_log_impl(&dword_2531F8000, v15, OS_LOG_TYPE_DEBUG, "%{public}@[%@] Removing unreachable client connection: %@", buf, 0x20u);
@@ -134,9 +134,9 @@
 
           objc_autoreleasePoolPop(v14);
           [(HMDHTTPServerMessageTransport *)self removeClientConnection:v11];
-          v18 = [(HMDHTTPServerMessageTransport *)self delegate];
-          v19 = [v11 device];
-          [v18 server:self didRemoveDevice:v19];
+          delegate = [(HMDHTTPServerMessageTransport *)self delegate];
+          device = [v11 device];
+          [delegate server:self didRemoveDevice:device];
 
           goto LABEL_13;
         }
@@ -157,17 +157,17 @@ LABEL_13:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)server:(id)a3 didCloseConnection:(id)a4
+- (void)server:(id)server didCloseConnection:(id)connection
 {
   v35 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  serverCopy = server;
+  connectionCopy = connection;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v8 = [(HMDHTTPServerMessageTransport *)self clientConnections];
-  v9 = [v8 countByEnumeratingWithState:&v22 objects:v34 count:16];
+  clientConnections = [(HMDHTTPServerMessageTransport *)self clientConnections];
+  v9 = [clientConnections countByEnumeratingWithState:&v22 objects:v34 count:16];
   if (v9)
   {
     v10 = v9;
@@ -178,12 +178,12 @@ LABEL_13:
       {
         if (*v23 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(clientConnections);
         }
 
         v13 = *(*(&v22 + 1) + 8 * i);
-        v14 = [v13 connection];
-        v15 = [v14 isEqual:v7];
+        connection = [v13 connection];
+        v15 = [connection isEqual:connectionCopy];
 
         if (v15)
         {
@@ -192,16 +192,16 @@ LABEL_13:
           if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
           {
             v18 = HMFGetLogIdentifier();
-            v19 = [(HMDHTTPServerMessageTransport *)self shortDescription];
-            v20 = [v13 device];
+            shortDescription = [(HMDHTTPServerMessageTransport *)self shortDescription];
+            device = [v13 device];
             *buf = 138544130;
             v27 = v18;
             v28 = 2112;
-            v29 = v19;
+            v29 = shortDescription;
             v30 = 2112;
-            v31 = v7;
+            v31 = connectionCopy;
             v32 = 2112;
-            v33 = v20;
+            v33 = device;
             _os_log_impl(&dword_2531F8000, v17, OS_LOG_TYPE_DEBUG, "%{public}@[%@] Removing closed connection, %@, from device: %@", buf, 0x2Au);
           }
 
@@ -211,7 +211,7 @@ LABEL_13:
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v22 objects:v34 count:16];
+      v10 = [clientConnections countByEnumeratingWithState:&v22 objects:v34 count:16];
       if (v10)
       {
         continue;
@@ -226,23 +226,23 @@ LABEL_13:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)server:(id)a3 didOpenConnection:(id)a4
+- (void)server:(id)server didOpenConnection:(id)connection
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  serverCopy = server;
+  connectionCopy = connection;
   v8 = objc_autoreleasePoolPush();
   v9 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
     v10 = HMFGetLogIdentifier();
-    v11 = [(HMDHTTPServerMessageTransport *)self shortDescription];
+    shortDescription = [(HMDHTTPServerMessageTransport *)self shortDescription];
     v13 = 138543874;
     v14 = v10;
     v15 = 2112;
-    v16 = v11;
+    v16 = shortDescription;
     v17 = 2112;
-    v18 = v7;
+    v18 = connectionCopy;
     _os_log_impl(&dword_2531F8000, v9, OS_LOG_TYPE_DEBUG, "%{public}@[%@] Received new connection: %@", &v13, 0x20u);
   }
 
@@ -979,16 +979,16 @@ void __64__HMDHTTPServerMessageTransport___registerReceiveMessageHandler__block_
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_clientConnectionForDevice:(id)a3
+- (id)_clientConnectionForDevice:(id)device
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  deviceCopy = device;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(HMDHTTPServerMessageTransport *)self clientConnections];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  clientConnections = [(HMDHTTPServerMessageTransport *)self clientConnections];
+  v6 = [clientConnections countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = *v15;
@@ -998,12 +998,12 @@ void __64__HMDHTTPServerMessageTransport___registerReceiveMessageHandler__block_
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(clientConnections);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 device];
-        v11 = [v10 isEqual:v4];
+        device = [v9 device];
+        v11 = [device isEqual:deviceCopy];
 
         if (v11)
         {
@@ -1012,7 +1012,7 @@ void __64__HMDHTTPServerMessageTransport___registerReceiveMessageHandler__block_
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [clientConnections countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v6)
       {
         continue;
@@ -1029,24 +1029,24 @@ LABEL_11:
   return v6;
 }
 
-- (void)sendMessage:(id)a3 toDevices:(id)a4 timeout:(double)a5 completionHandler:(id)a6
+- (void)sendMessage:(id)message toDevices:(id)devices timeout:(double)timeout completionHandler:(id)handler
 {
   v29 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [v11 anyObject];
-  v14 = [(HMDHTTPServerMessageTransport *)self _clientConnectionForDevice:v13];
+  messageCopy = message;
+  devicesCopy = devices;
+  handlerCopy = handler;
+  anyObject = [devicesCopy anyObject];
+  v14 = [(HMDHTTPServerMessageTransport *)self _clientConnectionForDevice:anyObject];
   v15 = v14;
   if (v14)
   {
-    v16 = 60.0;
-    if (a5 > 0.0)
+    timeoutCopy = 60.0;
+    if (timeout > 0.0)
     {
-      v16 = a5;
+      timeoutCopy = timeout;
     }
 
-    [v14 sendMessage:v10 timeout:v12 completionHandler:v16];
+    [v14 sendMessage:messageCopy timeout:handlerCopy completionHandler:timeoutCopy];
   }
 
   else
@@ -1056,47 +1056,47 @@ LABEL_11:
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
       v19 = HMFGetLogIdentifier();
-      v20 = [(HMDHTTPServerMessageTransport *)self shortDescription];
+      shortDescription = [(HMDHTTPServerMessageTransport *)self shortDescription];
       v23 = 138543874;
       v24 = v19;
       v25 = 2112;
-      v26 = v20;
+      v26 = shortDescription;
       v27 = 2112;
-      v28 = v13;
+      v28 = anyObject;
       _os_log_impl(&dword_2531F8000, v18, OS_LOG_TYPE_ERROR, "%{public}@[%@] Unable to send message to device, %@, the device is not currently connected", &v23, 0x20u);
     }
 
     objc_autoreleasePoolPop(v17);
-    if (v12)
+    if (handlerCopy)
     {
       v21 = [MEMORY[0x277CCA9B8] hmErrorWithCode:54 description:@"Communication Failure." reason:@"The device is not currently connected." suggestion:0];
-      v12[2](v12, 0, v21);
+      handlerCopy[2](handlerCopy, 0, v21);
     }
   }
 
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)confirmDevice:(id)a3 completionHandler:(id)a4
+- (void)confirmDevice:(id)device completionHandler:(id)handler
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDHTTPServerMessageTransport *)self _clientConnectionForDevice:v6];
+  deviceCopy = device;
+  handlerCopy = handler;
+  v8 = [(HMDHTTPServerMessageTransport *)self _clientConnectionForDevice:deviceCopy];
   if (v8)
   {
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __65__HMDHTTPServerMessageTransport_confirmDevice_completionHandler___block_invoke;
     v14[3] = &unk_27972AD58;
-    v15 = v7;
+    v15 = handlerCopy;
     [v8 sendMessage:MEMORY[0x277CBEC10] timeout:v14 completionHandler:10.0];
   }
 
   else
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
@@ -1104,14 +1104,14 @@ LABEL_11:
       *buf = 138543618;
       v17 = v12;
       v18 = 2112;
-      v19 = v6;
+      v19 = deviceCopy;
       _os_log_impl(&dword_2531F8000, v11, OS_LOG_TYPE_INFO, "%{public}@The device, %@, is not currently connected", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v9);
-    if (v7)
+    if (handlerCopy)
     {
-      (*(v7 + 2))(v7, 0);
+      (*(handlerCopy + 2))(handlerCopy, 0);
     }
   }
 
@@ -1129,73 +1129,73 @@ uint64_t __65__HMDHTTPServerMessageTransport_confirmDevice_completionHandler___b
   return result;
 }
 
-- (void)_stopWithError:(id)a3
+- (void)_stopWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(HMDHTTPServerMessageTransport *)self server];
-  [v5 stop];
+  errorCopy = error;
+  server = [(HMDHTTPServerMessageTransport *)self server];
+  [server stop];
 
   [(HMDHTTPServerMessageTransport *)self removeAllClientConnections];
-  v6 = [(HMDHTTPServerMessageTransport *)self delegate];
-  [v6 server:self didStopWithError:v4];
+  delegate = [(HMDHTTPServerMessageTransport *)self delegate];
+  [delegate server:self didStopWithError:errorCopy];
 }
 
-- (void)startWithCompletionHandler:(id)a3
+- (void)startWithCompletionHandler:(id)handler
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CCAD78] UUID];
+  handlerCopy = handler;
+  uUID = [MEMORY[0x277CCAD78] UUID];
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = HMFGetLogIdentifier();
-    v10 = [v5 UUIDString];
+    uUIDString = [uUID UUIDString];
     v17 = 138543618;
     v18 = v9;
     v19 = 2112;
-    v20 = v10;
+    v20 = uUIDString;
     _os_log_impl(&dword_2531F8000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@Starting with session identifier: %@", &v17, 0x16u);
   }
 
   objc_autoreleasePoolPop(v6);
-  v11 = [(HMDHTTPServerMessageTransport *)v7 server];
-  v12 = [v11 netService];
-  v13 = [v5 UUIDString];
-  v14 = [v13 dataUsingEncoding:4];
-  [v12 setTXTRecordValue:v14 forKey:@"si"];
+  server = [(HMDHTTPServerMessageTransport *)selfCopy server];
+  netService = [server netService];
+  uUIDString2 = [uUID UUIDString];
+  v14 = [uUIDString2 dataUsingEncoding:4];
+  [netService setTXTRecordValue:v14 forKey:@"si"];
 
-  v15 = [(HMDHTTPServerMessageTransport *)v7 server];
-  [v15 startWithCompletionHandler:v4];
+  server2 = [(HMDHTTPServerMessageTransport *)selfCopy server];
+  [server2 startWithCompletionHandler:handlerCopy];
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeTXTRecordValueForKey:(id)a3
+- (void)removeTXTRecordValueForKey:(id)key
 {
-  v4 = a3;
-  v6 = [(HMDHTTPServerMessageTransport *)self server];
-  v5 = [v6 netService];
-  [v5 removeTXTRecordValueForKey:v4];
+  keyCopy = key;
+  server = [(HMDHTTPServerMessageTransport *)self server];
+  netService = [server netService];
+  [netService removeTXTRecordValueForKey:keyCopy];
 }
 
-- (void)setTXTRecordValue:(id)a3 forKey:(id)a4
+- (void)setTXTRecordValue:(id)value forKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(HMDHTTPServerMessageTransport *)self server];
-  v8 = [v9 netService];
-  [v8 setTXTRecordValue:v7 forKey:v6];
+  keyCopy = key;
+  valueCopy = value;
+  server = [(HMDHTTPServerMessageTransport *)self server];
+  netService = [server netService];
+  [netService setTXTRecordValue:valueCopy forKey:keyCopy];
 }
 
 - (NSDictionary)TXTRecord
 {
-  v2 = [(HMDHTTPServerMessageTransport *)self server];
-  v3 = [v2 netService];
-  v4 = [v3 TXTRecord];
+  server = [(HMDHTTPServerMessageTransport *)self server];
+  netService = [server netService];
+  tXTRecord = [netService TXTRecord];
 
-  return v4;
+  return tXTRecord;
 }
 
 - (void)removeAllClientConnections
@@ -1237,31 +1237,31 @@ uint64_t __65__HMDHTTPServerMessageTransport_confirmDevice_completionHandler___b
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeClientConnection:(id)a3
+- (void)removeClientConnection:(id)connection
 {
-  v4 = a3;
-  if (v4)
+  connectionCopy = connection;
+  if (connectionCopy)
   {
     os_unfair_lock_lock_with_options();
-    [(NSMutableArray *)self->_clientConnections removeObject:v4];
+    [(NSMutableArray *)self->_clientConnections removeObject:connectionCopy];
     os_unfair_lock_unlock(&self->_lock);
-    [v4 invalidate];
+    [connectionCopy invalidate];
   }
 }
 
-- (void)addClientConnection:(id)a3
+- (void)addClientConnection:(id)connection
 {
-  v4 = a3;
-  if (v4)
+  connectionCopy = connection;
+  if (connectionCopy)
   {
-    v6 = v4;
+    v6 = connectionCopy;
     os_unfair_lock_lock_with_options();
     [(NSMutableArray *)self->_clientConnections addObject:v6];
-    v5 = [v6 lostConnectionTimer];
-    [v5 setDelegate:self];
+    lostConnectionTimer = [v6 lostConnectionTimer];
+    [lostConnectionTimer setDelegate:self];
 
     os_unfair_lock_unlock(&self->_lock);
-    v4 = v6;
+    connectionCopy = v6;
   }
 }
 
@@ -1277,13 +1277,13 @@ uint64_t __65__HMDHTTPServerMessageTransport_confirmDevice_completionHandler___b
 - (NSArray)devices
 {
   v19 = *MEMORY[0x277D85DE8];
-  v2 = [(HMDHTTPServerMessageTransport *)self clientConnections];
-  v3 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v2, "count")}];
+  clientConnections = [(HMDHTTPServerMessageTransport *)self clientConnections];
+  v3 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(clientConnections, "count")}];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = v2;
+  v4 = clientConnections;
   v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
@@ -1301,8 +1301,8 @@ uint64_t __65__HMDHTTPServerMessageTransport_confirmDevice_completionHandler___b
         v9 = *(*(&v14 + 1) + 8 * i);
         if ([v9 isConnected])
         {
-          v10 = [v9 device];
-          [v3 addObject:v10];
+          device = [v9 device];
+          [v3 addObject:device];
         }
       }
 
@@ -1318,22 +1318,22 @@ uint64_t __65__HMDHTTPServerMessageTransport_confirmDevice_completionHandler___b
   return v11;
 }
 
-- (id)descriptionWithPointer:(BOOL)a3
+- (id)descriptionWithPointer:(BOOL)pointer
 {
   v5 = MEMORY[0x277CCACA8];
-  v6 = [objc_opt_class() shortDescription];
-  v7 = [(HMDHTTPServerMessageTransport *)self identifier];
-  v8 = [v7 UUIDString];
-  v9 = v8;
-  if (a3)
+  shortDescription = [objc_opt_class() shortDescription];
+  identifier = [(HMDHTTPServerMessageTransport *)self identifier];
+  uUIDString = [identifier UUIDString];
+  v9 = uUIDString;
+  if (pointer)
   {
     v10 = [MEMORY[0x277CCACA8] stringWithFormat:@" %p", self];
-    v11 = [v5 stringWithFormat:@"<%@ %@, Identifier = %@>", v6, v9, v10];
+    v11 = [v5 stringWithFormat:@"<%@ %@, Identifier = %@>", shortDescription, v9, v10];
   }
 
   else
   {
-    v11 = [v5 stringWithFormat:@"<%@ %@, Identifier = %@>", v6, v8, &stru_286509E58];
+    v11 = [v5 stringWithFormat:@"<%@ %@, Identifier = %@>", shortDescription, uUIDString, &stru_286509E58];
   }
 
   return v11;
@@ -1342,59 +1342,59 @@ uint64_t __65__HMDHTTPServerMessageTransport_confirmDevice_completionHandler___b
 - (id)shortDescription
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [objc_opt_class() shortDescription];
-  v5 = [(HMDHTTPServerMessageTransport *)self identifier];
-  v6 = [v5 UUIDString];
-  v7 = [v3 stringWithFormat:@"%@ %@", v4, v6];
+  shortDescription = [objc_opt_class() shortDescription];
+  identifier = [(HMDHTTPServerMessageTransport *)self identifier];
+  uUIDString = [identifier UUIDString];
+  v7 = [v3 stringWithFormat:@"%@ %@", shortDescription, uUIDString];
 
   return v7;
 }
 
-- (HMDHTTPServerMessageTransport)initWithServerIdentifier:(id)a3
+- (HMDHTTPServerMessageTransport)initWithServerIdentifier:(id)identifier
 {
   v36 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     v31.receiver = self;
     v31.super_class = HMDHTTPServerMessageTransport;
     v5 = [(HMDHTTPServerMessageTransport *)&v31 init];
     if (v5)
     {
-      v6 = [v4 copy];
+      v6 = [identifierCopy copy];
       identifier = v5->_identifier;
       v5->_identifier = v6;
 
-      v8 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
       clientConnections = v5->_clientConnections;
-      v5->_clientConnections = v8;
+      v5->_clientConnections = array;
 
       v10 = objc_alloc(MEMORY[0x277D0F7E0]);
-      v11 = [(HMDHTTPServerMessageTransport *)v5 identifier];
-      v12 = [v11 UUIDString];
-      v13 = [v10 initWithServiceType:@"_homekit._tcp." name:v12 port:0 options:7];
+      identifier = [(HMDHTTPServerMessageTransport *)v5 identifier];
+      uUIDString = [identifier UUIDString];
+      v13 = [v10 initWithServiceType:@"_homekit._tcp." name:uUIDString port:0 options:7];
       server = v5->_server;
       v5->_server = v13;
 
-      v15 = [(HMDHTTPServerMessageTransport *)v5 server];
-      [v15 setDelegate:v5];
+      server = [(HMDHTTPServerMessageTransport *)v5 server];
+      [server setDelegate:v5];
 
-      v16 = [(HMDHTTPServerMessageTransport *)v5 server];
-      [v16 setConnectionIdleTimeout:3600.0];
+      server2 = [(HMDHTTPServerMessageTransport *)v5 server];
+      [server2 setConnectionIdleTimeout:3600.0];
 
       if (isInternalBuild())
       {
-        v17 = [(HMDHTTPServerMessageTransport *)v5 server];
-        v18 = [v17 netService];
+        server3 = [(HMDHTTPServerMessageTransport *)v5 server];
+        netService = [server3 netService];
 
         v19 = deviceName();
         v20 = [v19 dataUsingEncoding:4];
-        [v18 setTXTRecordValue:v20 forKey:@"Name"];
+        [netService setTXTRecordValue:v20 forKey:@"Name"];
 
         v21 = +[HMDHomeKitVersion currentVersion];
-        v22 = [v21 versionString];
-        v23 = [v22 dataUsingEncoding:4];
-        [v18 setTXTRecordValue:v23 forKey:@"sw"];
+        versionString = [v21 versionString];
+        v23 = [versionString dataUsingEncoding:4];
+        [netService setTXTRecordValue:v23 forKey:@"sw"];
       }
 
       [(HMDHTTPServerMessageTransport *)v5 __registerReceiveMessageHandler];
@@ -1404,7 +1404,7 @@ uint64_t __65__HMDHTTPServerMessageTransport_confirmDevice_completionHandler___b
     }
 
     self = v5;
-    v24 = self;
+    selfCopy = self;
   }
 
   else
@@ -1423,11 +1423,11 @@ uint64_t __65__HMDHTTPServerMessageTransport_confirmDevice_completionHandler___b
     }
 
     objc_autoreleasePoolPop(v25);
-    v24 = 0;
+    selfCopy = 0;
   }
 
   v29 = *MEMORY[0x277D85DE8];
-  return v24;
+  return selfCopy;
 }
 
 - (HMDHTTPServerMessageTransport)init

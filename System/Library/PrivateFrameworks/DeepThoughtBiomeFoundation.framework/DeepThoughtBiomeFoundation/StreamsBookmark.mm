@@ -1,21 +1,21 @@
 @interface StreamsBookmark
 - (NSString)debugDescription;
 - (_TtC26DeepThoughtBiomeFoundation15StreamsBookmark)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation StreamsBookmark
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_2486FAE3C(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_2486FAE3C(coderCopy);
 }
 
 - (NSString)debugDescription
 {
-  v2 = self;
+  selfCopy = self;
   sub_2486FB51C();
 
   v3 = sub_248730FC0();

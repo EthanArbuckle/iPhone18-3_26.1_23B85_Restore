@@ -1,19 +1,19 @@
 @interface DBWallpaperRootViewController
 - (CRSUIWallpaper)currentWallpaper;
-- (_TtC9DashBoard29DBWallpaperRootViewController)initWithCoder:(id)a3;
-- (_TtC9DashBoard29DBWallpaperRootViewController)initWithEnvironment:(id)a3;
-- (_TtC9DashBoard29DBWallpaperRootViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC9DashBoard29DBWallpaperRootViewController)initWithCoder:(id)coder;
+- (_TtC9DashBoard29DBWallpaperRootViewController)initWithEnvironment:(id)environment;
+- (_TtC9DashBoard29DBWallpaperRootViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (int64_t)interfaceStyleOverride;
 - (void)_homeScreenStyleChanged;
 - (void)_userInterfaceStyleChanged;
 - (void)invalidate;
-- (void)setWallpaper:(id)a3 duration:(double)a4 delay:(double)a5 updates:(id)a6;
+- (void)setWallpaper:(id)wallpaper duration:(double)duration delay:(double)delay updates:(id)updates;
 - (void)viewDidLoad;
 @end
 
 @implementation DBWallpaperRootViewController
 
-- (_TtC9DashBoard29DBWallpaperRootViewController)initWithEnvironment:(id)a3
+- (_TtC9DashBoard29DBWallpaperRootViewController)initWithEnvironment:(id)environment
 {
   swift_unknownObjectRetain();
   v3 = sub_248370474();
@@ -21,7 +21,7 @@
   return v3;
 }
 
-- (_TtC9DashBoard29DBWallpaperRootViewController)initWithCoder:(id)a3
+- (_TtC9DashBoard29DBWallpaperRootViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC9DashBoard29DBWallpaperRootViewController__wallpaperScene) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC9DashBoard29DBWallpaperRootViewController__nextWallpaperScene) = 0;
@@ -34,7 +34,7 @@
 
 - (CRSUIWallpaper)currentWallpaper
 {
-  v2 = self;
+  selfCopy = self;
   v3 = DBWallpaperRootViewController.currentWallpaper.getter();
 
   return v3;
@@ -51,19 +51,19 @@
   return result;
 }
 
-- (void)setWallpaper:(id)a3 duration:(double)a4 delay:(double)a5 updates:(id)a6
+- (void)setWallpaper:(id)wallpaper duration:(double)duration delay:(double)delay updates:(id)updates
 {
-  v10 = _Block_copy(a6);
+  v10 = _Block_copy(updates);
   _Block_copy(v10);
   swift_unknownObjectRetain();
-  v11 = self;
-  sub_2483705DC(a3, v11, v10, a4, a5);
+  selfCopy = self;
+  sub_2483705DC(wallpaper, selfCopy, v10, duration, delay);
   _Block_release(v10);
   _Block_release(v10);
   swift_unknownObjectRelease();
 }
 
-- (_TtC9DashBoard29DBWallpaperRootViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC9DashBoard29DBWallpaperRootViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
@@ -72,30 +72,30 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   DBWallpaperRootViewController.viewDidLoad()();
 }
 
 - (void)invalidate
 {
-  v2 = self;
+  selfCopy = self;
   DBWallpaperRootViewController.invalidate()();
 }
 
 - (void)_userInterfaceStyleChanged
 {
-  v2 = self;
+  selfCopy = self;
   sub_24836FFE8();
 }
 
 - (void)_homeScreenStyleChanged
 {
-  v4 = self;
-  v2 = [(DBWallpaperRootViewController *)v4 traitCollection];
-  v3 = [v2 homeScreenStyleWantsDimmedWallpaper];
+  selfCopy = self;
+  traitCollection = [(DBWallpaperRootViewController *)selfCopy traitCollection];
+  homeScreenStyleWantsDimmedWallpaper = [traitCollection homeScreenStyleWantsDimmedWallpaper];
 
-  [*(&v4->super.super.super.isa + OBJC_IVAR____TtC9DashBoard29DBWallpaperRootViewController__wallpaperViewController) setIsDimmed_];
-  [*(&v4->super.super.super.isa + OBJC_IVAR____TtC9DashBoard29DBWallpaperRootViewController__nextWallpaperViewController) setIsDimmed_];
+  [*(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC9DashBoard29DBWallpaperRootViewController__wallpaperViewController) setIsDimmed_];
+  [*(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC9DashBoard29DBWallpaperRootViewController__nextWallpaperViewController) setIsDimmed_];
 }
 
 @end

@@ -10,7 +10,7 @@
 + (id)sensitiveSubjectRegularExpressionPatterns;
 + (id)synonyms;
 - (RKAssets)init;
-- (RKAssets)initWithPlistURL:(id)a3;
+- (RKAssets)initWithPlistURL:(id)l;
 @end
 
 @implementation RKAssets
@@ -29,15 +29,15 @@
   return v2;
 }
 
-- (RKAssets)initWithPlistURL:(id)a3
+- (RKAssets)initWithPlistURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v8.receiver = self;
   v8.super_class = RKAssets;
   v6 = [(RKAssets *)&v8 init];
   if (v6)
   {
-    objc_storeStrong(&plistURL, a3);
+    objc_storeStrong(&plistURL, l);
   }
 
   return v6;
@@ -45,80 +45,80 @@
 
 + (id)categoryKeywordMap
 {
-  v2 = [a1 constantClasses];
-  v3 = [v2 objectForKeyedSubscript:@"categoryClassifiersByLanguageAndScript"];
+  constantClasses = [self constantClasses];
+  v3 = [constantClasses objectForKeyedSubscript:@"categoryClassifiersByLanguageAndScript"];
 
   return v3;
 }
 
 + (id)fixedPhrases
 {
-  v2 = [a1 constantClasses];
-  v3 = [v2 objectForKeyedSubscript:@"fixedPhrasesByLanguageAndScript"];
+  constantClasses = [self constantClasses];
+  v3 = [constantClasses objectForKeyedSubscript:@"fixedPhrasesByLanguageAndScript"];
 
   return v3;
 }
 
 + (id)momentsPhrases
 {
-  v2 = [a1 constantClasses];
-  v3 = [v2 objectForKeyedSubscript:@"fullScreenMomentsKeywordsByLanguageAndScript"];
+  constantClasses = [self constantClasses];
+  v3 = [constantClasses objectForKeyedSubscript:@"fullScreenMomentsKeywordsByLanguageAndScript"];
 
   return v3;
 }
 
 + (id)synonyms
 {
-  v2 = [a1 constantClasses];
-  v3 = [v2 objectForKeyedSubscript:@"synonymsByLanguageID"];
+  constantClasses = [self constantClasses];
+  v3 = [constantClasses objectForKeyedSubscript:@"synonymsByLanguageID"];
 
   return v3;
 }
 
 + (id)sensitiveSubjectRegularExpressionPatterns
 {
-  v2 = [a1 constantClasses];
-  v3 = [v2 objectForKeyedSubscript:@"sensitiveSubjectRegularExpressionPatternsByLanguageCode"];
+  constantClasses = [self constantClasses];
+  v3 = [constantClasses objectForKeyedSubscript:@"sensitiveSubjectRegularExpressionPatternsByLanguageCode"];
 
   return v3;
 }
 
 + (id)polarTagKeywords
 {
-  v2 = [a1 constantClasses];
-  v3 = [v2 objectForKeyedSubscript:@"polarTagKeywordsByLanguageCode"];
+  constantClasses = [self constantClasses];
+  v3 = [constantClasses objectForKeyedSubscript:@"polarTagKeywordsByLanguageCode"];
 
   return v3;
 }
 
 + (id)contractedResponses
 {
-  v2 = [a1 constantClasses];
-  v3 = [v2 objectForKeyedSubscript:@"contractedResponseByLanguageCode"];
+  constantClasses = [self constantClasses];
+  v3 = [constantClasses objectForKeyedSubscript:@"contractedResponseByLanguageCode"];
 
   return v3;
 }
 
 + (id)alternativeInversions
 {
-  v2 = [a1 constantClasses];
-  v3 = [v2 objectForKeyedSubscript:@"alternativeInversionsByLanguageCode"];
+  constantClasses = [self constantClasses];
+  v3 = [constantClasses objectForKeyedSubscript:@"alternativeInversionsByLanguageCode"];
 
   return v3;
 }
 
 + (id)localizedStrings
 {
-  v2 = [a1 constantClasses];
-  v3 = [v2 objectForKeyedSubscript:@"localizedStringsByLanguageID"];
+  constantClasses = [self constantClasses];
+  v3 = [constantClasses objectForKeyedSubscript:@"localizedStringsByLanguageID"];
 
   return v3;
 }
 
 + (id)appreciationKeywords
 {
-  v2 = [a1 constantClasses];
-  v3 = [v2 objectForKeyedSubscript:@"appreciationKeywordsByLanguageCode"];
+  constantClasses = [self constantClasses];
+  v3 = [constantClasses objectForKeyedSubscript:@"appreciationKeywordsByLanguageCode"];
 
   return v3;
 }

@@ -1,23 +1,23 @@
 @interface TVPStoreFPSKeyLoader
 + (void)initialize;
 + (void)preFetchFPSCertificate;
-- (TVPStoreFPSKeyLoader)initWithCertificateDataURL:(id)a3 keyDataURL:(id)a4;
+- (TVPStoreFPSKeyLoader)initWithCertificateDataURL:(id)l keyDataURL:(id)rL;
 - (TVPStoreFPSKeyLoaderDelegate)delegate;
-- (void)_failPendingKeyRequestsWithError:(id)a3;
+- (void)_failPendingKeyRequestsWithError:(id)error;
 - (void)_preFetchFPSCertificate;
-- (void)loadSecureKeyRequest:(id)a3;
-- (void)secureKeyDeliveryCoordinator:(id)a3 didReceiveOfflineKeyData:(id)a4 forKeyRequest:(id)a5;
-- (void)secureKeyDeliveryCoordinator:(id)a3 didReceiveUpdatedRentalExpirationDate:(id)a4;
-- (void)secureKeyDeliveryCoordinator:(id)a3 didReceiveUpdatedRentalExpirationDate:(id)a4 playbackStartDate:(id)a5;
-- (void)secureKeyDeliveryCoordinator:(id)a3 didReceiveUpdatedRentalPlaybackStartDate:(id)a4;
-- (void)secureKeyDeliveryCoordinator:(id)a3 willFailWithError:(id)a4 forKeyRequest:(id)a5;
-- (void)secureKeyDeliveryCoordinatorWillSucceed:(id)a3 forKeyRequest:(id)a4;
-- (void)secureKeyLoader:(id)a3 didFailWithError:(id)a4 forRequest:(id)a5;
-- (void)secureKeyLoader:(id)a3 didLoadCertificateData:(id)a4 forRequest:(id)a5;
+- (void)loadSecureKeyRequest:(id)request;
+- (void)secureKeyDeliveryCoordinator:(id)coordinator didReceiveOfflineKeyData:(id)data forKeyRequest:(id)request;
+- (void)secureKeyDeliveryCoordinator:(id)coordinator didReceiveUpdatedRentalExpirationDate:(id)date;
+- (void)secureKeyDeliveryCoordinator:(id)coordinator didReceiveUpdatedRentalExpirationDate:(id)date playbackStartDate:(id)startDate;
+- (void)secureKeyDeliveryCoordinator:(id)coordinator didReceiveUpdatedRentalPlaybackStartDate:(id)date;
+- (void)secureKeyDeliveryCoordinator:(id)coordinator willFailWithError:(id)error forKeyRequest:(id)request;
+- (void)secureKeyDeliveryCoordinatorWillSucceed:(id)succeed forKeyRequest:(id)request;
+- (void)secureKeyLoader:(id)loader didFailWithError:(id)error forRequest:(id)request;
+- (void)secureKeyLoader:(id)loader didLoadCertificateData:(id)data forRequest:(id)request;
 - (void)sendStopRequest;
-- (void)setEventCollection:(id)a3;
-- (void)setRentalID:(id)a3;
-- (void)setServiceProviderID:(id)a3;
+- (void)setEventCollection:(id)collection;
+- (void)setRentalID:(id)d;
+- (void)setServiceProviderID:(id)d;
 @end
 
 @implementation TVPStoreFPSKeyLoader
@@ -51,20 +51,20 @@ uint64_t __34__TVPStoreFPSKeyLoader_initialize__block_invoke()
   }
 }
 
-- (TVPStoreFPSKeyLoader)initWithCertificateDataURL:(id)a3 keyDataURL:(id)a4
+- (TVPStoreFPSKeyLoader)initWithCertificateDataURL:(id)l keyDataURL:(id)rL
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  rLCopy = rL;
   v14.receiver = self;
   v14.super_class = TVPStoreFPSKeyLoader;
   v8 = [(TVPStoreFPSKeyLoader *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [lCopy copy];
     certificateDataURL = v8->_certificateDataURL;
     v8->_certificateDataURL = v9;
 
-    v11 = [v7 copy];
+    v11 = [rLCopy copy];
     keyDataURL = v8->_keyDataURL;
     v8->_keyDataURL = v11;
   }
@@ -72,50 +72,50 @@ uint64_t __34__TVPStoreFPSKeyLoader_initialize__block_invoke()
   return v8;
 }
 
-- (void)loadSecureKeyRequest:(id)a3
+- (void)loadSecureKeyRequest:(id)request
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  requestCopy = request;
+  if (requestCopy)
   {
-    v5 = [(TVPStoreFPSKeyLoader *)self secureKeyDeliveryCoordinator];
+    secureKeyDeliveryCoordinator = [(TVPStoreFPSKeyLoader *)self secureKeyDeliveryCoordinator];
 
-    if (v5)
+    if (secureKeyDeliveryCoordinator)
     {
-      v6 = [(TVPStoreFPSKeyLoader *)self secureKeyDeliveryCoordinator];
-      [v6 loadSecureKeyRequest:v4];
+      secureKeyDeliveryCoordinator2 = [(TVPStoreFPSKeyLoader *)self secureKeyDeliveryCoordinator];
+      [secureKeyDeliveryCoordinator2 loadSecureKeyRequest:requestCopy];
     }
 
     else
     {
-      v7 = [(TVPStoreFPSKeyLoader *)self pendingKeyRequests];
+      pendingKeyRequests = [(TVPStoreFPSKeyLoader *)self pendingKeyRequests];
 
-      if (!v7)
+      if (!pendingKeyRequests)
       {
         v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
         [(TVPStoreFPSKeyLoader *)self setPendingKeyRequests:v8];
       }
 
-      v9 = [(TVPStoreFPSKeyLoader *)self pendingKeyRequests];
-      [v9 addObject:v4];
+      pendingKeyRequests2 = [(TVPStoreFPSKeyLoader *)self pendingKeyRequests];
+      [pendingKeyRequests2 addObject:requestCopy];
 
       v10 = sLogObject_1;
       if (os_log_type_enabled(sLogObject_1, OS_LOG_TYPE_DEFAULT))
       {
         v11 = v10;
         *buf = 134217984;
-        v17 = [v4 requestID];
+        requestID = [requestCopy requestID];
         _os_log_impl(&dword_26CEDD000, v11, OS_LOG_TYPE_DEFAULT, "Waiting for URL bag fetch before handling keyRequest %lu", buf, 0xCu);
       }
 
       objc_initWeak(buf, self);
-      v12 = [MEMORY[0x277D7FD58] sharedBagLoadingController];
+      mEMORY[0x277D7FD58] = [MEMORY[0x277D7FD58] sharedBagLoadingController];
       v14[0] = MEMORY[0x277D85DD0];
       v14[1] = 3221225472;
       v14[2] = __45__TVPStoreFPSKeyLoader_loadSecureKeyRequest___block_invoke;
       v14[3] = &unk_279D7BCE0;
       objc_copyWeak(&v15, buf);
-      [v12 requestAccessToBagUsingBlock:v14];
+      [mEMORY[0x277D7FD58] requestAccessToBagUsingBlock:v14];
 
       objc_destroyWeak(&v15);
       objc_destroyWeak(buf);
@@ -315,137 +315,137 @@ LABEL_38:
   v57 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setEventCollection:(id)a3
+- (void)setEventCollection:(id)collection
 {
-  v7 = a3;
-  objc_storeStrong(&self->_eventCollection, a3);
-  v5 = [(TVPStoreFPSKeyLoader *)self secureKeyDeliveryCoordinator];
+  collectionCopy = collection;
+  objc_storeStrong(&self->_eventCollection, collection);
+  secureKeyDeliveryCoordinator = [(TVPStoreFPSKeyLoader *)self secureKeyDeliveryCoordinator];
 
-  if (v5)
+  if (secureKeyDeliveryCoordinator)
   {
-    v6 = [(TVPStoreFPSKeyLoader *)self secureKeyDeliveryCoordinator];
-    [v6 setEventCollection:v7];
+    secureKeyDeliveryCoordinator2 = [(TVPStoreFPSKeyLoader *)self secureKeyDeliveryCoordinator];
+    [secureKeyDeliveryCoordinator2 setEventCollection:collectionCopy];
   }
 }
 
-- (void)setServiceProviderID:(id)a3
+- (void)setServiceProviderID:(id)d
 {
-  objc_storeStrong(&self->_serviceProviderID, a3);
-  v5 = a3;
-  v6 = [(TVPStoreFPSKeyLoader *)self secureKeyStandardLoader];
-  [v6 setServiceProviderID:v5];
+  objc_storeStrong(&self->_serviceProviderID, d);
+  dCopy = d;
+  secureKeyStandardLoader = [(TVPStoreFPSKeyLoader *)self secureKeyStandardLoader];
+  [secureKeyStandardLoader setServiceProviderID:dCopy];
 }
 
-- (void)setRentalID:(id)a3
+- (void)setRentalID:(id)d
 {
-  objc_storeStrong(&self->_rentalID, a3);
-  v5 = a3;
-  v6 = [(TVPStoreFPSKeyLoader *)self secureKeyStandardLoader];
-  [v6 setRentalID:v5];
+  objc_storeStrong(&self->_rentalID, d);
+  dCopy = d;
+  secureKeyStandardLoader = [(TVPStoreFPSKeyLoader *)self secureKeyStandardLoader];
+  [secureKeyStandardLoader setRentalID:dCopy];
 }
 
 - (void)sendStopRequest
 {
-  v2 = [(TVPStoreFPSKeyLoader *)self secureKeyDeliveryCoordinator];
-  [v2 sendStopRequest];
+  secureKeyDeliveryCoordinator = [(TVPStoreFPSKeyLoader *)self secureKeyDeliveryCoordinator];
+  [secureKeyDeliveryCoordinator sendStopRequest];
 }
 
-- (void)secureKeyDeliveryCoordinatorWillSucceed:(id)a3 forKeyRequest:(id)a4
+- (void)secureKeyDeliveryCoordinatorWillSucceed:(id)succeed forKeyRequest:(id)request
 {
-  v8 = a4;
+  requestCopy = request;
   [(TVPStoreFPSKeyLoader *)self setError:0];
-  v5 = [(TVPStoreFPSKeyLoader *)self delegate];
+  delegate = [(TVPStoreFPSKeyLoader *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(TVPStoreFPSKeyLoader *)self delegate];
-    [v7 storeFPSKeyLoaderWillSucceed:self forKeyRequest:v8];
+    delegate2 = [(TVPStoreFPSKeyLoader *)self delegate];
+    [delegate2 storeFPSKeyLoaderWillSucceed:self forKeyRequest:requestCopy];
   }
 }
 
-- (void)secureKeyDeliveryCoordinator:(id)a3 willFailWithError:(id)a4 forKeyRequest:(id)a5
+- (void)secureKeyDeliveryCoordinator:(id)coordinator willFailWithError:(id)error forKeyRequest:(id)request
 {
-  v12 = a4;
-  v7 = a5;
-  v8 = [(TVPStoreFPSKeyLoader *)self error];
+  errorCopy = error;
+  requestCopy = request;
+  error = [(TVPStoreFPSKeyLoader *)self error];
 
-  if (!v8)
+  if (!error)
   {
-    [(TVPStoreFPSKeyLoader *)self setError:v12];
+    [(TVPStoreFPSKeyLoader *)self setError:errorCopy];
   }
 
-  v9 = [(TVPStoreFPSKeyLoader *)self delegate];
+  delegate = [(TVPStoreFPSKeyLoader *)self delegate];
   v10 = objc_opt_respondsToSelector();
 
   if (v10)
   {
-    v11 = [(TVPStoreFPSKeyLoader *)self delegate];
-    [v11 storeFPSKeyLoader:self willFailWithError:v12 forKeyRequest:v7];
+    delegate2 = [(TVPStoreFPSKeyLoader *)self delegate];
+    [delegate2 storeFPSKeyLoader:self willFailWithError:errorCopy forKeyRequest:requestCopy];
   }
 }
 
-- (void)secureKeyDeliveryCoordinator:(id)a3 didReceiveUpdatedRentalExpirationDate:(id)a4
+- (void)secureKeyDeliveryCoordinator:(id)coordinator didReceiveUpdatedRentalExpirationDate:(id)date
 {
-  v8 = a4;
-  v5 = [(TVPStoreFPSKeyLoader *)self delegate];
+  dateCopy = date;
+  delegate = [(TVPStoreFPSKeyLoader *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(TVPStoreFPSKeyLoader *)self delegate];
-    [v7 storeFPSKeyLoader:self didReceiveUpdatedRentalExpirationDate:v8];
+    delegate2 = [(TVPStoreFPSKeyLoader *)self delegate];
+    [delegate2 storeFPSKeyLoader:self didReceiveUpdatedRentalExpirationDate:dateCopy];
   }
 }
 
-- (void)secureKeyDeliveryCoordinator:(id)a3 didReceiveUpdatedRentalPlaybackStartDate:(id)a4
+- (void)secureKeyDeliveryCoordinator:(id)coordinator didReceiveUpdatedRentalPlaybackStartDate:(id)date
 {
-  v8 = a4;
-  v5 = [(TVPStoreFPSKeyLoader *)self delegate];
+  dateCopy = date;
+  delegate = [(TVPStoreFPSKeyLoader *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(TVPStoreFPSKeyLoader *)self delegate];
-    [v7 storeFPSKeyLoader:self didReceiveUpdatedRentalPlaybackStartDate:v8];
+    delegate2 = [(TVPStoreFPSKeyLoader *)self delegate];
+    [delegate2 storeFPSKeyLoader:self didReceiveUpdatedRentalPlaybackStartDate:dateCopy];
   }
 }
 
-- (void)secureKeyDeliveryCoordinator:(id)a3 didReceiveOfflineKeyData:(id)a4 forKeyRequest:(id)a5
+- (void)secureKeyDeliveryCoordinator:(id)coordinator didReceiveOfflineKeyData:(id)data forKeyRequest:(id)request
 {
-  v11 = a4;
-  v7 = a5;
-  v8 = [(TVPStoreFPSKeyLoader *)self delegate];
+  dataCopy = data;
+  requestCopy = request;
+  delegate = [(TVPStoreFPSKeyLoader *)self delegate];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v10 = [(TVPStoreFPSKeyLoader *)self delegate];
-    [v10 storeFPSKeyLoader:self didLoadOfflineKeyData:v11 forKeyRequest:v7];
+    delegate2 = [(TVPStoreFPSKeyLoader *)self delegate];
+    [delegate2 storeFPSKeyLoader:self didLoadOfflineKeyData:dataCopy forKeyRequest:requestCopy];
   }
 }
 
-- (void)secureKeyDeliveryCoordinator:(id)a3 didReceiveUpdatedRentalExpirationDate:(id)a4 playbackStartDate:(id)a5
+- (void)secureKeyDeliveryCoordinator:(id)coordinator didReceiveUpdatedRentalExpirationDate:(id)date playbackStartDate:(id)startDate
 {
-  v11 = a4;
-  v7 = a5;
-  v8 = [(TVPStoreFPSKeyLoader *)self delegate];
+  dateCopy = date;
+  startDateCopy = startDate;
+  delegate = [(TVPStoreFPSKeyLoader *)self delegate];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v10 = [(TVPStoreFPSKeyLoader *)self delegate];
-    [v10 storeFPSKeyLoader:self didReceiveUpdatedRentalExpirationDate:v11 playbackStartDate:v7];
+    delegate2 = [(TVPStoreFPSKeyLoader *)self delegate];
+    [delegate2 storeFPSKeyLoader:self didReceiveUpdatedRentalExpirationDate:dateCopy playbackStartDate:startDateCopy];
   }
 }
 
-- (void)secureKeyLoader:(id)a3 didFailWithError:(id)a4 forRequest:(id)a5
+- (void)secureKeyLoader:(id)loader didFailWithError:(id)error forRequest:(id)request
 {
   v5 = sCertLoader;
   sCertLoader = 0;
 }
 
-- (void)secureKeyLoader:(id)a3 didLoadCertificateData:(id)a4 forRequest:(id)a5
+- (void)secureKeyLoader:(id)loader didLoadCertificateData:(id)data forRequest:(id)request
 {
   v5 = sCertLoader;
   sCertLoader = 0;
@@ -454,13 +454,13 @@ LABEL_38:
 - (void)_preFetchFPSCertificate
 {
   objc_initWeak(&location, self);
-  v2 = [MEMORY[0x277D7FD58] sharedBagLoadingController];
+  mEMORY[0x277D7FD58] = [MEMORY[0x277D7FD58] sharedBagLoadingController];
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __47__TVPStoreFPSKeyLoader__preFetchFPSCertificate__block_invoke;
   v3[3] = &unk_279D7BCE0;
   objc_copyWeak(&v4, &location);
-  [v2 requestAccessToBagUsingBlock:v3];
+  [mEMORY[0x277D7FD58] requestAccessToBagUsingBlock:v3];
 
   objc_destroyWeak(&v4);
   objc_destroyWeak(&location);
@@ -517,15 +517,15 @@ void __47__TVPStoreFPSKeyLoader__preFetchFPSCertificate__block_invoke_2(uint64_t
   }
 }
 
-- (void)_failPendingKeyRequestsWithError:(id)a3
+- (void)_failPendingKeyRequestsWithError:(id)error
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(TVPStoreFPSKeyLoader *)self pendingKeyRequests];
-  v6 = [v5 copy];
+  errorCopy = error;
+  pendingKeyRequests = [(TVPStoreFPSKeyLoader *)self pendingKeyRequests];
+  v6 = [pendingKeyRequests copy];
 
-  v7 = [(TVPStoreFPSKeyLoader *)self pendingKeyRequests];
-  [v7 removeAllObjects];
+  pendingKeyRequests2 = [(TVPStoreFPSKeyLoader *)self pendingKeyRequests];
+  [pendingKeyRequests2 removeAllObjects];
 
   v22 = 0u;
   v23 = 0u;
@@ -555,16 +555,16 @@ void __47__TVPStoreFPSKeyLoader__preFetchFPSCertificate__block_invoke_2(uint64_t
           if (os_log_type_enabled(sLogObject_1, OS_LOG_TYPE_DEFAULT))
           {
             v16 = v15;
-            v17 = [v14 requestID];
+            requestID = [v14 requestID];
             *buf = v19;
-            v25 = v17;
+            v25 = requestID;
             _os_log_impl(&dword_26CEDD000, v16, OS_LOG_TYPE_DEFAULT, "Not failing request %lu since it has been cancelled", buf, 0xCu);
           }
         }
 
         else
         {
-          [v14 finishLoadingWithError:v4];
+          [v14 finishLoadingWithError:errorCopy];
         }
       }
 

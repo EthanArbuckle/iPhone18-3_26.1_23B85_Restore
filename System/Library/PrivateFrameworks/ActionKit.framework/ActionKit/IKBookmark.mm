@@ -1,6 +1,6 @@
 @interface IKBookmark
-+ (id)bookmarkWithBookmarkID:(int64_t)a3;
-- (IKBookmark)initWithBookmarkID:(int64_t)a3;
++ (id)bookmarkWithBookmarkID:(int64_t)d;
+- (IKBookmark)initWithBookmarkID:(int64_t)d;
 - (id)description;
 - (void)dealloc;
 @end
@@ -21,14 +21,14 @@
   return [v3 stringWithFormat:@"<%@: %@ (%ld), URL:(%@)>", NSStringFromClass(v4), -[IKBookmark title](self, "title"), -[IKBookmark bookmarkID](self, "bookmarkID"), -[IKBookmark URL](self, "URL")];
 }
 
-- (IKBookmark)initWithBookmarkID:(int64_t)a3
+- (IKBookmark)initWithBookmarkID:(int64_t)d
 {
   v5.receiver = self;
   v5.super_class = IKBookmark;
   result = [(IKBookmark *)&v5 init];
   if (result)
   {
-    result->_bookmarkID = a3;
+    result->_bookmarkID = d;
     *&result->_URL = 0u;
     *&result->_descr = 0u;
     result->_starred = 0;
@@ -41,9 +41,9 @@
   return result;
 }
 
-+ (id)bookmarkWithBookmarkID:(int64_t)a3
++ (id)bookmarkWithBookmarkID:(int64_t)d
 {
-  v3 = [[IKBookmark alloc] initWithBookmarkID:a3];
+  v3 = [[IKBookmark alloc] initWithBookmarkID:d];
 
   return v3;
 }

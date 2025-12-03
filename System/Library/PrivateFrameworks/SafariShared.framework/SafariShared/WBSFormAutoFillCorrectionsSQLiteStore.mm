@@ -2,32 +2,32 @@
 + (id)_defaultParsecDatabaseURL;
 + (id)_obsoleteLocalDatabaseURLForRemoval;
 + (id)standardStore;
-- (BOOL)_migrateToSchemaVersion:(int)a3 forDatabase:(id)a4;
-- (BOOL)_replaceDomainAllowListWithDomains:(id)a3 retrievalURLString:(id)a4;
-- (BOOL)_setDomain:(id)a3 isAllowListedForFeedback:(BOOL)a4;
-- (BOOL)_setParsecMetadataStringValue:(id)a3 forKey:(id)a4;
-- (BOOL)_tryToPerformTransactionOnDatabase:(id)a3 inBlock:(id)a4;
-- (WBSFormAutoFillCorrectionsSQLiteStore)initWithParsecDatabaseURL:(id)a3;
-- (id)_normalizeDomain:(id)a3;
-- (id)_parsecMetadataStringValueForKey:(id)a3;
+- (BOOL)_migrateToSchemaVersion:(int)version forDatabase:(id)database;
+- (BOOL)_replaceDomainAllowListWithDomains:(id)domains retrievalURLString:(id)string;
+- (BOOL)_setDomain:(id)domain isAllowListedForFeedback:(BOOL)feedback;
+- (BOOL)_setParsecMetadataStringValue:(id)value forKey:(id)key;
+- (BOOL)_tryToPerformTransactionOnDatabase:(id)database inBlock:(id)block;
+- (WBSFormAutoFillCorrectionsSQLiteStore)initWithParsecDatabaseURL:(id)l;
+- (id)_normalizeDomain:(id)domain;
+- (id)_parsecMetadataStringValueForKey:(id)key;
 - (int)_createFreshParsecDatabaseSchema;
-- (int)_migrateToCurrentSchemaVersionIfNeededForDatabase:(id)a3;
+- (int)_migrateToCurrentSchemaVersionIfNeededForDatabase:(id)database;
 - (int)_migrateToSchemaVersion_2;
-- (int)_schemaVersionForDatabase:(id)a3;
-- (int)_setDatabaseSchemaVersion:(int)a3 forDatabase:(id)a4;
+- (int)_schemaVersionForDatabase:(id)database;
+- (int)_setDatabaseSchemaVersion:(int)version forDatabase:(id)database;
 - (void)_closeDatabases;
-- (void)_configureDatabase:(id)a3 currentSchemaVersion:(int)a4;
+- (void)_configureDatabase:(id)database currentSchemaVersion:(int)version;
 - (void)_createFreshParsecDatabaseSchema;
 - (void)_migrateToSchemaVersion_2;
 - (void)_openDatabasesIfNeeded;
 - (void)_openParsecDatabase;
 - (void)closeDatabase;
-- (void)getAllowListStatusForDomain:(id)a3 completionHandler:(id)a4;
-- (void)getLastAllowListRetrievalURLStringWithCompletionHandler:(id)a3;
+- (void)getAllowListStatusForDomain:(id)domain completionHandler:(id)handler;
+- (void)getLastAllowListRetrievalURLStringWithCompletionHandler:(id)handler;
 - (void)removeObsoleteDatabase;
-- (void)replaceDomainAllowListWithDomains:(id)a3 retrievalURLString:(id)a4 completionHandler:(id)a5;
-- (void)setDomain:(id)a3 isAllowListedForFeedback:(BOOL)a4 completionHandler:(id)a5;
-- (void)setLastAllowListRetrievalURLString:(id)a3 completionHandler:(id)a4;
+- (void)replaceDomainAllowListWithDomains:(id)domains retrievalURLString:(id)string completionHandler:(id)handler;
+- (void)setDomain:(id)domain isAllowListedForFeedback:(BOOL)feedback completionHandler:(id)handler;
+- (void)setLastAllowListRetrievalURLString:(id)string completionHandler:(id)handler;
 @end
 
 @implementation WBSFormAutoFillCorrectionsSQLiteStore
@@ -55,33 +55,33 @@ void __54__WBSFormAutoFillCorrectionsSQLiteStore_standardStore__block_invoke()
 
 + (id)_defaultParsecDatabaseURL
 {
-  v2 = [MEMORY[0x1E696AC08] defaultManager];
-  v3 = [v2 safari_settingsDirectoryURL];
-  v4 = [v3 URLByAppendingPathComponent:@"CloudAutoFillCorrections.db" isDirectory:0];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  safari_settingsDirectoryURL = [defaultManager safari_settingsDirectoryURL];
+  v4 = [safari_settingsDirectoryURL URLByAppendingPathComponent:@"CloudAutoFillCorrections.db" isDirectory:0];
 
   return v4;
 }
 
-- (WBSFormAutoFillCorrectionsSQLiteStore)initWithParsecDatabaseURL:(id)a3
+- (WBSFormAutoFillCorrectionsSQLiteStore)initWithParsecDatabaseURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v13.receiver = self;
   v13.super_class = WBSFormAutoFillCorrectionsSQLiteStore;
   v5 = [(WBSFormAutoFillCorrectionsSQLiteStore *)&v13 init];
   if (v5)
   {
-    if (v4)
+    if (lCopy)
     {
-      v6 = v4;
+      inMemoryDatabaseURL = lCopy;
     }
 
     else
     {
-      v6 = [MEMORY[0x1E69C89E8] inMemoryDatabaseURL];
+      inMemoryDatabaseURL = [MEMORY[0x1E69C89E8] inMemoryDatabaseURL];
     }
 
     parsecDatabaseURL = v5->_parsecDatabaseURL;
-    v5->_parsecDatabaseURL = v6;
+    v5->_parsecDatabaseURL = inMemoryDatabaseURL;
 
     v8 = dispatch_get_global_queue(17, 0);
     v9 = dispatch_queue_create_with_target_V2("com.apple.SafariShared.WBSFormAutoFillCorrectionsSQLiteStore", 0, v8);
@@ -105,13 +105,13 @@ void __54__WBSFormAutoFillCorrectionsSQLiteStore_standardStore__block_invoke()
   dispatch_sync(databaseQueue, block);
 }
 
-- (void)replaceDomainAllowListWithDomains:(id)a3 retrievalURLString:(id)a4 completionHandler:(id)a5
+- (void)replaceDomainAllowListWithDomains:(id)domains retrievalURLString:(id)string completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  [v7 copy];
-  [v8 copy];
+  domainsCopy = domains;
+  stringCopy = string;
+  handlerCopy = handler;
+  [domainsCopy copy];
+  [stringCopy copy];
   operator new();
 }
 
@@ -149,17 +149,17 @@ void __112__WBSFormAutoFillCorrectionsSQLiteStore_replaceDomainAllowListWithDoma
   }
 }
 
-- (void)getAllowListStatusForDomain:(id)a3 completionHandler:(id)a4
+- (void)getAllowListStatusForDomain:(id)domain completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 copy];
+  domainCopy = domain;
+  handlerCopy = handler;
+  v8 = [domainCopy copy];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __87__WBSFormAutoFillCorrectionsSQLiteStore_getAllowListStatusForDomain_completionHandler___block_invoke;
   v11[3] = &unk_1E7FC5960;
   v11[4] = self;
-  v9 = v7;
+  v9 = handlerCopy;
   v12 = v8;
   v13 = v9;
   v10 = v8;
@@ -236,11 +236,11 @@ void __87__WBSFormAutoFillCorrectionsSQLiteStore_getAllowListStatusForDomain_com
   dispatch_async(v7, block);
 }
 
-- (void)setDomain:(id)a3 isAllowListedForFeedback:(BOOL)a4 completionHandler:(id)a5
+- (void)setDomain:(id)domain isAllowListedForFeedback:(BOOL)feedback completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a5;
-  [v6 copy];
+  domainCopy = domain;
+  handlerCopy = handler;
+  [domainCopy copy];
   operator new();
 }
 
@@ -278,17 +278,17 @@ void __94__WBSFormAutoFillCorrectionsSQLiteStore_setDomain_isAllowListedForFeedb
   }
 }
 
-- (void)getLastAllowListRetrievalURLStringWithCompletionHandler:(id)a3
+- (void)getLastAllowListRetrievalURLStringWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   databaseQueue = self->_databaseQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __97__WBSFormAutoFillCorrectionsSQLiteStore_getLastAllowListRetrievalURLStringWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E7FB6F08;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(databaseQueue, v7);
 }
 
@@ -318,11 +318,11 @@ void __97__WBSFormAutoFillCorrectionsSQLiteStore_getLastAllowListRetrievalURLStr
   dispatch_async(v4, v7);
 }
 
-- (void)setLastAllowListRetrievalURLString:(id)a3 completionHandler:(id)a4
+- (void)setLastAllowListRetrievalURLString:(id)string completionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
-  [v5 copy];
+  stringCopy = string;
+  handlerCopy = handler;
+  [stringCopy copy];
   operator new();
 }
 
@@ -360,17 +360,17 @@ void __94__WBSFormAutoFillCorrectionsSQLiteStore_setLastAllowListRetrievalURLStr
   }
 }
 
-- (int)_schemaVersionForDatabase:(id)a3
+- (int)_schemaVersionForDatabase:(id)database
 {
-  v4 = a3;
-  if ([(WBSFormAutoFillCorrectionsSQLiteStore *)self _isDatabaseOpen:v4])
+  databaseCopy = database;
+  if ([(WBSFormAutoFillCorrectionsSQLiteStore *)self _isDatabaseOpen:databaseCopy])
   {
-    v5 = SafariShared::WBSSQLiteDatabaseFetch<>(v4, @"PRAGMA user_version");
-    v6 = [v5 nextObject];
-    v7 = [v6 intAtIndex:0];
+    v5 = SafariShared::WBSSQLiteDatabaseFetch<>(databaseCopy, @"PRAGMA user_version");
+    nextObject = [v5 nextObject];
+    v7 = [nextObject intAtIndex:0];
 
-    v8 = [v5 statement];
-    [v8 invalidate];
+    statement = [v5 statement];
+    [statement invalidate];
   }
 
   else
@@ -381,16 +381,16 @@ void __94__WBSFormAutoFillCorrectionsSQLiteStore_setLastAllowListRetrievalURLStr
   return v7;
 }
 
-- (int)_migrateToCurrentSchemaVersionIfNeededForDatabase:(id)a3
+- (int)_migrateToCurrentSchemaVersionIfNeededForDatabase:(id)database
 {
-  v4 = a3;
-  v5 = [(WBSFormAutoFillCorrectionsSQLiteStore *)self _schemaVersionForDatabase:v4];
+  databaseCopy = database;
+  v5 = [(WBSFormAutoFillCorrectionsSQLiteStore *)self _schemaVersionForDatabase:databaseCopy];
   v6 = v5;
   if (v5 <= 1)
   {
-    if (v5 || self->_parsecDatabase != v4 || [(WBSFormAutoFillCorrectionsSQLiteStore *)self _createFreshParsecDatabaseSchema]== 101)
+    if (v5 || self->_parsecDatabase != databaseCopy || [(WBSFormAutoFillCorrectionsSQLiteStore *)self _createFreshParsecDatabaseSchema]== 101)
     {
-      if ([(WBSFormAutoFillCorrectionsSQLiteStore *)self _migrateToSchemaVersion:2 forDatabase:v4])
+      if ([(WBSFormAutoFillCorrectionsSQLiteStore *)self _migrateToSchemaVersion:2 forDatabase:databaseCopy])
       {
         v6 = 2;
       }
@@ -410,10 +410,10 @@ void __94__WBSFormAutoFillCorrectionsSQLiteStore_setLastAllowListRetrievalURLStr
   return v6;
 }
 
-- (BOOL)_migrateToSchemaVersion:(int)a3 forDatabase:(id)a4
+- (BOOL)_migrateToSchemaVersion:(int)version forDatabase:(id)database
 {
-  v4 = *&a3;
-  v6 = a4;
+  v4 = *&version;
+  databaseCopy = database;
   v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"_migrateToSchemaVersion_%d", v4];
   v8 = NSSelectorFromString(v7);
 
@@ -424,7 +424,7 @@ void __94__WBSFormAutoFillCorrectionsSQLiteStore_setLastAllowListRetrievalURLStr
   v11[4] = self;
   v13 = v8;
   v14 = v4;
-  v9 = v6;
+  v9 = databaseCopy;
   v12 = v9;
   LOBYTE(self) = [(WBSFormAutoFillCorrectionsSQLiteStore *)self _tryToPerformTransactionOnDatabase:v9 inBlock:v11];
 
@@ -444,24 +444,24 @@ BOOL __77__WBSFormAutoFillCorrectionsSQLiteStore__migrateToSchemaVersion_forData
   return v4;
 }
 
-- (int)_setDatabaseSchemaVersion:(int)a3 forDatabase:(id)a4
+- (int)_setDatabaseSchemaVersion:(int)version forDatabase:(id)database
 {
-  v4 = *&a3;
+  v4 = *&version;
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  databaseCopy = database;
   v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"PRAGMA user_version = %d", v4];
-  v7 = SafariShared::_WBSSQLiteDatabaseExecuteAndReturnError<>(v5, 0, v6);
+  v7 = SafariShared::_WBSSQLiteDatabaseExecuteAndReturnError<>(databaseCopy, 0, v6);
 
   if (v7 != 101)
   {
     v8 = WBS_LOG_CHANNEL_PREFIXAutoFill();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      v10 = [v5 lastErrorMessage];
+      lastErrorMessage = [databaseCopy lastErrorMessage];
       *buf = 67109634;
       v12 = v4;
       v13 = 2112;
-      v14 = v10;
+      v14 = lastErrorMessage;
       v15 = 1024;
       v16 = v7;
       _os_log_error_impl(&dword_1BB6F3000, v8, OS_LOG_TYPE_ERROR, "Failed to set the AutoFill corrections database schema version to %d: %@ (%d)", buf, 0x18u);
@@ -574,16 +574,16 @@ LABEL_7:
 
 + (id)_obsoleteLocalDatabaseURLForRemoval
 {
-  v2 = [MEMORY[0x1E696AC08] defaultManager];
-  v3 = [v2 safari_settingsDirectoryURL];
-  v4 = [v3 URLByAppendingPathComponent:@"AutoFillCorrections.db" isDirectory:0];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  safari_settingsDirectoryURL = [defaultManager safari_settingsDirectoryURL];
+  v4 = [safari_settingsDirectoryURL URLByAppendingPathComponent:@"AutoFillCorrections.db" isDirectory:0];
 
   return v4;
 }
 
-- (id)_normalizeDomain:(id)a3
+- (id)_normalizeDomain:(id)domain
 {
-  v4 = a3;
+  domainCopy = domain;
   domainNormalizer = self->_domainNormalizer;
   if (!domainNormalizer)
   {
@@ -594,23 +594,23 @@ LABEL_7:
     domainNormalizer = self->_domainNormalizer;
   }
 
-  v8 = [(WBSCrowdsourcedFeedbackDomainNormalizer *)domainNormalizer transformedValue:v4];
+  v8 = [(WBSCrowdsourcedFeedbackDomainNormalizer *)domainNormalizer transformedValue:domainCopy];
 
   return v8;
 }
 
 - (void)removeObsoleteDatabase
 {
-  v3 = [objc_opt_class() _obsoleteLocalDatabaseURLForRemoval];
-  v4 = v3;
-  if (v3)
+  _obsoleteLocalDatabaseURLForRemoval = [objc_opt_class() _obsoleteLocalDatabaseURLForRemoval];
+  v4 = _obsoleteLocalDatabaseURLForRemoval;
+  if (_obsoleteLocalDatabaseURLForRemoval)
   {
     databaseQueue = self->_databaseQueue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __63__WBSFormAutoFillCorrectionsSQLiteStore_removeObsoleteDatabase__block_invoke;
     block[3] = &unk_1E7FB6F80;
-    v7 = v3;
+    v7 = _obsoleteLocalDatabaseURLForRemoval;
     dispatch_async(databaseQueue, block);
   }
 }
@@ -671,15 +671,15 @@ void __63__WBSFormAutoFillCorrectionsSQLiteStore_removeObsoleteDatabase__block_i
   SafariShared::SuddenTerminationDisabler::~SuddenTerminationDisabler(v3);
 }
 
-- (void)_configureDatabase:(id)a3 currentSchemaVersion:(int)a4
+- (void)_configureDatabase:(id)database currentSchemaVersion:(int)version
 {
-  v4 = *&a4;
+  v4 = *&version;
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 url];
-  [v6 setBusyTimeout:1.0];
+  databaseCopy = database;
+  v7 = [databaseCopy url];
+  [databaseCopy setBusyTimeout:1.0];
   v18 = 0;
-  v8 = [v6 enableWAL:&v18];
+  v8 = [databaseCopy enableWAL:&v18];
   v9 = v18;
   v10 = v9;
   if ((v8 & 1) == 0)
@@ -689,8 +689,8 @@ void __63__WBSFormAutoFillCorrectionsSQLiteStore_removeObsoleteDatabase__block_i
       v11 = WBS_LOG_CHANNEL_PREFIXAutoFill();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
-        v12 = [v7 lastPathComponent];
-        [(WBSFormAutoFillCorrectionsSQLiteStore *)v12 _configureDatabase:buf currentSchemaVersion:v11];
+        lastPathComponent = [v7 lastPathComponent];
+        [(WBSFormAutoFillCorrectionsSQLiteStore *)lastPathComponent _configureDatabase:buf currentSchemaVersion:v11];
       }
 
       [(WBSFormAutoFillCorrectionsSQLiteStore *)self _closeDatabases];
@@ -700,17 +700,17 @@ void __63__WBSFormAutoFillCorrectionsSQLiteStore_removeObsoleteDatabase__block_i
     v13 = WBS_LOG_CHANNEL_PREFIXAutoFill();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      v14 = [v7 lastPathComponent];
-      v15 = [v10 safari_privacyPreservingDescription];
-      [(WBSFormAutoFillCorrectionsSQLiteStore *)v14 _configureDatabase:v15 currentSchemaVersion:buf, v13];
+      lastPathComponent2 = [v7 lastPathComponent];
+      safari_privacyPreservingDescription = [v10 safari_privacyPreservingDescription];
+      [(WBSFormAutoFillCorrectionsSQLiteStore *)lastPathComponent2 _configureDatabase:safari_privacyPreservingDescription currentSchemaVersion:buf, v13];
     }
   }
 
-  SafariShared::_WBSSQLiteDatabaseExecuteAndReturnError<>(v6, 0, @"PRAGMA foreign_keys = ON");
-  v16 = [(WBSFormAutoFillCorrectionsSQLiteStore *)self _migrateToCurrentSchemaVersionIfNeededForDatabase:v6];
+  SafariShared::_WBSSQLiteDatabaseExecuteAndReturnError<>(databaseCopy, 0, @"PRAGMA foreign_keys = ON");
+  v16 = [(WBSFormAutoFillCorrectionsSQLiteStore *)self _migrateToCurrentSchemaVersionIfNeededForDatabase:databaseCopy];
   if (v16 != v4)
   {
-    v17 = [v7 lastPathComponent];
+    lastPathComponent3 = [v7 lastPathComponent];
     WTFLogAlways();
 
     [(WBSFormAutoFillCorrectionsSQLiteStore *)self _closeDatabases:v16];
@@ -722,7 +722,7 @@ LABEL_11:
 - (void)_openParsecDatabase
 {
   *buf = 138543362;
-  *(buf + 4) = a1;
+  *(buf + 4) = self;
   _os_log_error_impl(&dword_1BB6F3000, log, OS_LOG_TYPE_ERROR, "Failed to mark Parsec AutoFill corrections SQLite store as excluded from backup.  Error: %{public}@", buf, 0xCu);
 }
 
@@ -733,21 +733,21 @@ LABEL_11:
   self->_parsecDatabase = 0;
 }
 
-- (BOOL)_tryToPerformTransactionOnDatabase:(id)a3 inBlock:(id)a4
+- (BOOL)_tryToPerformTransactionOnDatabase:(id)database inBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  if (![(WBSFormAutoFillCorrectionsSQLiteStore *)self _isDatabaseOpen:v6])
+  databaseCopy = database;
+  blockCopy = block;
+  if (![(WBSFormAutoFillCorrectionsSQLiteStore *)self _isDatabaseOpen:databaseCopy])
   {
     goto LABEL_9;
   }
 
-  if (SafariShared::_WBSSQLiteDatabaseExecuteAndReturnError<>(v6, 0, @"BEGIN TRANSACTION") != 101)
+  if (SafariShared::_WBSSQLiteDatabaseExecuteAndReturnError<>(databaseCopy, 0, @"BEGIN TRANSACTION") != 101)
   {
     v9 = WBS_LOG_CHANNEL_PREFIXAutoFill();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      [v6 lastErrorMessage];
+      [databaseCopy lastErrorMessage];
       objc_claimAutoreleasedReturnValue();
       [WBSFormAutoFillCorrectionsSQLiteStore _tryToPerformTransactionOnDatabase:inBlock:];
     }
@@ -755,9 +755,9 @@ LABEL_11:
     goto LABEL_8;
   }
 
-  if (!v7[2](v7))
+  if (!blockCopy[2](blockCopy))
   {
-    if (SafariShared::_WBSSQLiteDatabaseExecuteAndReturnError<>(v6, 0, @"ROLLBACK TRANSACTION") == 101)
+    if (SafariShared::_WBSSQLiteDatabaseExecuteAndReturnError<>(databaseCopy, 0, @"ROLLBACK TRANSACTION") == 101)
     {
       goto LABEL_9;
     }
@@ -765,7 +765,7 @@ LABEL_11:
     v9 = WBS_LOG_CHANNEL_PREFIXAutoFill();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      [v6 lastErrorMessage];
+      [databaseCopy lastErrorMessage];
       objc_claimAutoreleasedReturnValue();
       [WBSFormAutoFillCorrectionsSQLiteStore _tryToPerformTransactionOnDatabase:inBlock:];
     }
@@ -777,12 +777,12 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (SafariShared::_WBSSQLiteDatabaseExecuteAndReturnError<>(v6, 0, @"COMMIT TRANSACTION") != 101)
+  if (SafariShared::_WBSSQLiteDatabaseExecuteAndReturnError<>(databaseCopy, 0, @"COMMIT TRANSACTION") != 101)
   {
     v9 = WBS_LOG_CHANNEL_PREFIXAutoFill();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      [v6 lastErrorMessage];
+      [databaseCopy lastErrorMessage];
       objc_claimAutoreleasedReturnValue();
       [WBSFormAutoFillCorrectionsSQLiteStore _tryToPerformTransactionOnDatabase:inBlock:];
     }
@@ -796,37 +796,37 @@ LABEL_10:
   return v8;
 }
 
-- (BOOL)_replaceDomainAllowListWithDomains:(id)a3 retrievalURLString:(id)a4
+- (BOOL)_replaceDomainAllowListWithDomains:(id)domains retrievalURLString:(id)string
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  domainsCopy = domains;
+  stringCopy = string;
   if (SafariShared::_WBSSQLiteDatabaseExecuteAndReturnError<>(self->_parsecDatabase, 0, @"DELETE FROM whitelist") == 101)
   {
-    v8 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __95__WBSFormAutoFillCorrectionsSQLiteStore__replaceDomainAllowListWithDomains_retrievalURLString___block_invoke;
     v20[3] = &unk_1E7FC5A00;
     v20[4] = self;
-    v9 = v8;
+    v9 = array;
     v21 = v9;
-    [v6 enumerateObjectsUsingBlock:v20];
+    [domainsCopy enumerateObjectsUsingBlock:v20];
     v10 = [v9 count];
-    if (v10 == [v6 count])
+    if (v10 == [domainsCopy count])
     {
-      v11 = [MEMORY[0x1E695DF70] array];
+      array2 = [MEMORY[0x1E695DF70] array];
       v12 = [v9 count];
       v16[0] = MEMORY[0x1E69E9820];
       v16[1] = 3221225472;
       v16[2] = __95__WBSFormAutoFillCorrectionsSQLiteStore__replaceDomainAllowListWithDomains_retrievalURLString___block_invoke_2;
       v16[3] = &unk_1E7FB8B20;
-      v13 = v11;
-      v18 = self;
+      v13 = array2;
+      selfCopy = self;
       v19 = v12;
       v17 = v13;
       [v9 enumerateObjectsUsingBlock:v16];
-      v14 = [(WBSFormAutoFillCorrectionsSQLiteStore *)self _setParsecMetadataStringValue:v7 forKey:@"lastWhitelistRetrievalURL"];
+      v14 = [(WBSFormAutoFillCorrectionsSQLiteStore *)self _setParsecMetadataStringValue:stringCopy forKey:@"lastWhitelistRetrievalURL"];
     }
 
     else
@@ -908,18 +908,18 @@ void __95__WBSFormAutoFillCorrectionsSQLiteStore__replaceDomainAllowListWithDoma
   }
 }
 
-- (BOOL)_setDomain:(id)a3 isAllowListedForFeedback:(BOOL)a4
+- (BOOL)_setDomain:(id)domain isAllowListedForFeedback:(BOOL)feedback
 {
-  v4 = a4;
-  v6 = a3;
-  v12 = [(WBSFormAutoFillCorrectionsSQLiteStore *)self _normalizeDomain:v6];
+  feedbackCopy = feedback;
+  domainCopy = domain;
+  v12 = [(WBSFormAutoFillCorrectionsSQLiteStore *)self _normalizeDomain:domainCopy];
 
   if (!v12)
   {
     return 0;
   }
 
-  if (v4)
+  if (feedbackCopy)
   {
     v7 = @"INSERT INTO whitelist (domain) VALUES (?)";
   }
@@ -935,25 +935,25 @@ void __95__WBSFormAutoFillCorrectionsSQLiteStore__replaceDomainAllowListWithDoma
   return v10;
 }
 
-- (id)_parsecMetadataStringValueForKey:(id)a3
+- (id)_parsecMetadataStringValueForKey:(id)key
 {
-  v8 = a3;
-  v4 = SafariShared::WBSSQLiteDatabaseFetch<NSString * {__strong}&>(self->_parsecDatabase, @"SELECT value FROM metadata WHERE key = ?", &v8);
-  v5 = [v4 nextObject];
-  v6 = [v5 stringAtIndex:0];
+  keyCopy = key;
+  v4 = SafariShared::WBSSQLiteDatabaseFetch<NSString * {__strong}&>(self->_parsecDatabase, @"SELECT value FROM metadata WHERE key = ?", &keyCopy);
+  nextObject = [v4 nextObject];
+  v6 = [nextObject stringAtIndex:0];
 
   return v6;
 }
 
-- (BOOL)_setParsecMetadataStringValue:(id)a3 forKey:(id)a4
+- (BOOL)_setParsecMetadataStringValue:(id)value forKey:(id)key
 {
   v24 = *MEMORY[0x1E69E9840];
-  v17 = a3;
-  v16 = a4;
+  valueCopy = value;
+  keyCopy = key;
   parsecDatabase = self->_parsecDatabase;
-  if (v17)
+  if (valueCopy)
   {
-    v7 = SafariShared::_WBSSQLiteDatabaseExecuteAndReturnError<NSString * {__strong}&,NSString * {__strong}&>(parsecDatabase, 0, @"UPDATE metadata SET value = ? WHERE key = ?", &v17, &v16);
+    v7 = SafariShared::_WBSSQLiteDatabaseExecuteAndReturnError<NSString * {__strong}&,NSString * {__strong}&>(parsecDatabase, 0, @"UPDATE metadata SET value = ? WHERE key = ?", &valueCopy, &keyCopy);
     if (v7 != 101)
     {
       v8 = WBS_LOG_CHANNEL_PREFIXAutoFill();
@@ -967,7 +967,7 @@ void __95__WBSFormAutoFillCorrectionsSQLiteStore__replaceDomainAllowListWithDoma
 
     if (![(WBSSQLiteDatabase *)self->_parsecDatabase changedRowCount])
     {
-      v7 = SafariShared::_WBSSQLiteDatabaseExecuteAndReturnError<NSString * {__strong}&,NSString * {__strong}&>(self->_parsecDatabase, 0, @"INSERT INTO metadata (key, value) VALUES (?, ?)", &v16, &v17);
+      v7 = SafariShared::_WBSSQLiteDatabaseExecuteAndReturnError<NSString * {__strong}&,NSString * {__strong}&>(self->_parsecDatabase, 0, @"INSERT INTO metadata (key, value) VALUES (?, ?)", &keyCopy, &valueCopy);
       if (v7 != 101)
       {
         v8 = WBS_LOG_CHANNEL_PREFIXAutoFill();
@@ -980,12 +980,12 @@ LABEL_13:
         }
 
 LABEL_6:
-        v9 = v16;
-        v10 = [(WBSSQLiteDatabase *)self->_parsecDatabase lastErrorMessage];
+        v9 = keyCopy;
+        lastErrorMessage = [(WBSSQLiteDatabase *)self->_parsecDatabase lastErrorMessage];
         *buf = 138412802;
         v19 = v9;
         v20 = 2112;
-        v21 = v10;
+        v21 = lastErrorMessage;
         v22 = 1024;
         v23 = v7;
         _os_log_error_impl(&dword_1BB6F3000, v8, OS_LOG_TYPE_ERROR, "Failed to update metadata value %@: %@ (%d)", buf, 0x1Cu);
@@ -997,18 +997,18 @@ LABEL_6:
 
   else
   {
-    v11 = SafariShared::_WBSSQLiteDatabaseExecuteAndReturnError<NSString * {__strong}&>(parsecDatabase, 0, @"DELETE FROM metadata WHERE key = ?", &v16);
+    v11 = SafariShared::_WBSSQLiteDatabaseExecuteAndReturnError<NSString * {__strong}&>(parsecDatabase, 0, @"DELETE FROM metadata WHERE key = ?", &keyCopy);
     if (v11 != 101)
     {
       v8 = WBS_LOG_CHANNEL_PREFIXAutoFill();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
       {
-        v14 = v16;
-        v15 = [(WBSSQLiteDatabase *)self->_parsecDatabase lastErrorMessage];
+        v14 = keyCopy;
+        lastErrorMessage2 = [(WBSSQLiteDatabase *)self->_parsecDatabase lastErrorMessage];
         *buf = 138412802;
         v19 = v14;
         v20 = 2112;
-        v21 = v15;
+        v21 = lastErrorMessage2;
         v22 = 1024;
         v23 = v11;
         _os_log_error_impl(&dword_1BB6F3000, v8, OS_LOG_TYPE_ERROR, "Failed to delete metadata value %@: %@ (%d)", buf, 0x1Cu);

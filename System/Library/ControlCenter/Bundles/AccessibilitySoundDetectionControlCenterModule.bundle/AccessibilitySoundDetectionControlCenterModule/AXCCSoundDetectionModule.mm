@@ -4,7 +4,7 @@
 - (void)_initializeViewContent;
 - (void)expandModule;
 - (void)openSoundDetectionSettings;
-- (void)setSelected:(BOOL)a3;
+- (void)setSelected:(BOOL)selected;
 @end
 
 @implementation AXCCSoundDetectionModule
@@ -58,30 +58,30 @@
   [(CCUIButtonModuleViewController *)v9 setSelectedGlyphImage:v12];
 
   v13 = self->_contentViewController;
-  v14 = [MEMORY[0x29EDC7A00] systemPinkColor];
-  [(CCUIButtonModuleViewController *)v13 setSelectedGlyphColor:v14];
+  systemPinkColor = [MEMORY[0x29EDC7A00] systemPinkColor];
+  [(CCUIButtonModuleViewController *)v13 setSelectedGlyphColor:systemPinkColor];
 
   if (![(CCUIButtonModuleViewController *)self->_contentViewController isExpanded])
   {
-    v15 = [(AXCCSoundDetectionModule *)self isSelected];
+    isSelected = [(AXCCSoundDetectionModule *)self isSelected];
     v16 = self->_contentViewController;
 
-    [(CCUIButtonModuleViewController *)v16 setSelected:v15];
+    [(CCUIButtonModuleViewController *)v16 setSelected:isSelected];
   }
 }
 
 - (void)expandModule
 {
-  v2 = [(AXCCSoundDetectionModule *)self contentModuleContext];
-  [v2 requestExpandModule];
+  contentModuleContext = [(AXCCSoundDetectionModule *)self contentModuleContext];
+  [contentModuleContext requestExpandModule];
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v3 = a3;
-  v9 = [(AXCCSoundDetectionModule *)self contentModuleContext];
+  selectedCopy = selected;
+  contentModuleContext = [(AXCCSoundDetectionModule *)self contentModuleContext];
   v4 = MEMORY[0x29EDC0CF0];
-  if (v3)
+  if (selectedCopy)
   {
     v5 = @"status.running";
   }
@@ -91,7 +91,7 @@
     v5 = @"status.paused";
   }
 
-  if (v3)
+  if (selectedCopy)
   {
     v6 = 1;
   }
@@ -103,13 +103,13 @@
 
   v7 = sub_29C9325CC(v5);
   v8 = [v4 statusUpdateWithMessage:v7 type:v6];
-  [v9 enqueueStatusUpdate:v8];
+  [contentModuleContext enqueueStatusUpdate:v8];
 }
 
 - (BOOL)isSelected
 {
-  v2 = [MEMORY[0x29EDBDDB8] sharedInstance];
-  v3 = [v2 soundDetectionState] == 2;
+  mEMORY[0x29EDBDDB8] = [MEMORY[0x29EDBDDB8] sharedInstance];
+  v3 = [mEMORY[0x29EDBDDB8] soundDetectionState] == 2;
 
   return v3;
 }
@@ -127,8 +127,8 @@
   }
 
   v5 = [MEMORY[0x29EDB8E70] URLWithString:v3];
-  v4 = [(AXCCSoundDetectionModule *)self contentModuleContext];
-  [v4 openURL:v5 completionHandler:0];
+  contentModuleContext = [(AXCCSoundDetectionModule *)self contentModuleContext];
+  [contentModuleContext openURL:v5 completionHandler:0];
 }
 
 @end

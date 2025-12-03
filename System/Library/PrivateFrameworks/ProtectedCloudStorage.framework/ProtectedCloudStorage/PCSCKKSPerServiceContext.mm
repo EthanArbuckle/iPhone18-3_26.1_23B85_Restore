@@ -2,7 +2,7 @@
 - (PCSCKKSPerServiceContext)init;
 - (void)dealloc;
 - (void)resetIdentity;
-- (void)setCurrentIdentity:(_PCSIdentityData *)a3 persistentReference:(id)a4;
+- (void)setCurrentIdentity:(_PCSIdentityData *)identity persistentReference:(id)reference;
 @end
 
 @implementation PCSCKKSPerServiceContext
@@ -53,9 +53,9 @@
   self->_rollItemReference = 0;
 }
 
-- (void)setCurrentIdentity:(_PCSIdentityData *)a3 persistentReference:(id)a4
+- (void)setCurrentIdentity:(_PCSIdentityData *)identity persistentReference:(id)reference
 {
-  v6 = a4;
+  referenceCopy = reference;
   currentIdentity = self->_currentIdentity;
   if (currentIdentity)
   {
@@ -63,13 +63,13 @@
     CFRelease(currentIdentity);
   }
 
-  if (a3)
+  if (identity)
   {
-    self->_currentIdentity = CFRetain(a3);
+    self->_currentIdentity = CFRetain(identity);
   }
 
   currentItemReference = self->_currentItemReference;
-  self->_currentItemReference = v6;
+  self->_currentItemReference = referenceCopy;
 }
 
 - (void)dealloc

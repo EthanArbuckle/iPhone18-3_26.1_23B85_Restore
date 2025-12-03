@@ -1,14 +1,14 @@
 @interface MNRouteDivergenceFinderBoundingSection
 - ($A71F62C2B947990EEEAFC21D5CFDCAFE)boundingRect;
-- (BOOL)containsCoordinate:(id)a3;
+- (BOOL)containsCoordinate:(id)coordinate;
 - (GEOPolylineCoordinateRange)range;
 - (id).cxx_construct;
 - (id)boundsDescription;
 - (id)description;
-- (id)leafSectionsIntersectingSection:(id)a3 paddingMapPoints:(double)a4;
+- (id)leafSectionsIntersectingSection:(id)section paddingMapPoints:(double)points;
 - (id)treeDescription;
-- (void)_appendDescription:(id)a3 indent:(unint64_t)a4;
-- (void)traverseWithHandler:(id)a3;
+- (void)_appendDescription:(id)description indent:(unint64_t)indent;
+- (void)traverseWithHandler:(id)handler;
 @end
 
 @implementation MNRouteDivergenceFinderBoundingSection
@@ -42,14 +42,14 @@
   return result;
 }
 
-- (void)_appendDescription:(id)a3 indent:(unint64_t)a4
+- (void)_appendDescription:(id)description indent:(unint64_t)indent
 {
-  v7 = a3;
+  descriptionCopy = description;
   v6 = [(MNRouteDivergenceFinderBoundingSection *)self description];
-  [v7 appendFormat:@"%*s%@", (2 * a4), "", v6];
+  [descriptionCopy appendFormat:@"%*s%@", (2 * indent), "", v6];
 
-  [(MNRouteDivergenceFinderBoundingSection *)self->_left _appendDescription:v7 indent:a4 + 1];
-  [(MNRouteDivergenceFinderBoundingSection *)self->_right _appendDescription:v7 indent:a4 + 1];
+  [(MNRouteDivergenceFinderBoundingSection *)self->_left _appendDescription:descriptionCopy indent:indent + 1];
+  [(MNRouteDivergenceFinderBoundingSection *)self->_right _appendDescription:descriptionCopy indent:indent + 1];
 }
 
 - (id)description
@@ -105,13 +105,13 @@
 
 - (id)treeDescription
 {
-  v3 = [MEMORY[0x1E696AD60] string];
-  [(MNRouteDivergenceFinderBoundingSection *)self _appendDescription:v3 indent:0];
+  string = [MEMORY[0x1E696AD60] string];
+  [(MNRouteDivergenceFinderBoundingSection *)self _appendDescription:string indent:0];
 
-  return v3;
+  return string;
 }
 
-- (BOOL)containsCoordinate:(id)a3
+- (BOOL)containsCoordinate:(id)coordinate
 {
   v4 = GEOMapPointForCoordinate();
   v5.n128_u64[0] = v7.n128_u64[0];
@@ -124,14 +124,14 @@
   return MEMORY[0x1EEE0BB98](v4, v7, v8, v9, v10, v5, v6);
 }
 
-- (void)traverseWithHandler:(id)a3
+- (void)traverseWithHandler:(id)handler
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  handlerCopy = handler;
+  v5 = handlerCopy;
+  if (handlerCopy)
   {
     v6 = 1;
-    (*(v4 + 2))(v4, self, &v6);
+    (*(handlerCopy + 2))(handlerCopy, self, &v6);
     if (v6 == 1)
     {
       [(MNRouteDivergenceFinderBoundingSection *)self->_left traverseWithHandler:v5];
@@ -140,10 +140,10 @@
   }
 }
 
-- (id)leafSectionsIntersectingSection:(id)a3 paddingMapPoints:(double)a4
+- (id)leafSectionsIntersectingSection:(id)section paddingMapPoints:(double)points
 {
-  v6 = a3;
-  [v6 boundingRect];
+  sectionCopy = section;
+  [sectionCopy boundingRect];
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -154,10 +154,10 @@
   v13[1] = 3221225472;
   v13[2] = __91__MNRouteDivergenceFinderBoundingSection_leafSectionsIntersectingSection_paddingMapPoints___block_invoke;
   v13[3] = &unk_1E842EFF0;
-  *&v13[5] = v7 - a4;
-  *&v13[6] = v8 - a4;
-  *&v13[7] = v9 + a4 + a4;
-  *&v13[8] = v10 + a4 + a4;
+  *&v13[5] = v7 - points;
+  *&v13[6] = v8 - points;
+  *&v13[7] = v9 + points + points;
+  *&v13[8] = v10 + points + points;
   v13[4] = &v14;
   [(MNRouteDivergenceFinderBoundingSection *)self traverseWithHandler:v13];
   v11 = v15[5];

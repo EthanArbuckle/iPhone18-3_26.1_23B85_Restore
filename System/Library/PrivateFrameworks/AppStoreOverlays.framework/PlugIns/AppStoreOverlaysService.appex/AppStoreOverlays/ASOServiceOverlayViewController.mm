@@ -1,24 +1,24 @@
 @interface ASOServiceOverlayViewController
 + (id)log;
-- (CGPoint)edgePointForPercentage:(double)a3;
-- (CGRect)overlayFrameForEdgePoint:(CGPoint)a3;
+- (CGPoint)edgePointForPercentage:(double)percentage;
+- (CGRect)overlayFrameForEdgePoint:(CGPoint)point;
 - (UIGestureRecognizer)panGestureRecognizer;
 - (double)overlayHeight;
-- (double)percentageForEdgePoint:(CGPoint)a3;
-- (id)hideOverlayAnimated:(BOOL)a3;
-- (id)presentationQueue:(id)a3 presentOverlayWithConfiguration:(id)a4 delegate:(id)a5;
-- (id)showOverlayAnimated:(BOOL)a3;
+- (double)percentageForEdgePoint:(CGPoint)point;
+- (id)hideOverlayAnimated:(BOOL)animated;
+- (id)presentationQueue:(id)queue presentOverlayWithConfiguration:(id)configuration delegate:(id)delegate;
+- (id)showOverlayAnimated:(BOOL)animated;
 - (void)hostDidEnterBackground;
 - (void)hostWillEnterForeground;
-- (void)interactiveDismissGesture:(id)a3;
+- (void)interactiveDismissGesture:(id)gesture;
 - (void)loadView;
 - (void)refreshOverlayFrame;
 - (void)reloadAXSize;
 - (void)reloadContainerConfiguration;
-- (void)serviceContext:(id)a3 presentOverlayWithConfiguration:(id)a4 delegate:(id)a5;
-- (void)serviceContextDismissOverlay:(id)a3;
-- (void)setContainerConfiguration:(id)a3;
-- (void)setPercentageOnScreen:(double)a3 animated:(BOOL)a4 completion:(id)a5;
+- (void)serviceContext:(id)context presentOverlayWithConfiguration:(id)configuration delegate:(id)delegate;
+- (void)serviceContextDismissOverlay:(id)overlay;
+- (void)setContainerConfiguration:(id)configuration;
+- (void)setPercentageOnScreen:(double)screen animated:(BOOL)animated completion:(id)completion;
 - (void)updateRateLimiterConstantsIfNeeded;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
@@ -47,30 +47,30 @@
   serviceQueue = self->_serviceQueue;
   self->_serviceQueue = v3;
 
-  v5 = [(ASOServiceOverlayViewController *)self serviceQueue];
-  [v5 setDelegate:self];
+  serviceQueue = [(ASOServiceOverlayViewController *)self serviceQueue];
+  [serviceQueue setDelegate:self];
 
-  v6 = [(ASOServiceOverlayViewController *)self extensionContext];
-  [v6 setDelegate:self];
+  extensionContext = [(ASOServiceOverlayViewController *)self extensionContext];
+  [extensionContext setDelegate:self];
 
   v7 = +[ASCOverlaySettings sharedSettings];
-  v8 = [v7 rateLimitRequestsPerSecond];
+  rateLimitRequestsPerSecond = [v7 rateLimitRequestsPerSecond];
 
   v9 = &off_100025B20;
-  if (v8)
+  if (rateLimitRequestsPerSecond)
   {
-    v9 = v8;
+    v9 = rateLimitRequestsPerSecond;
   }
 
   v10 = v9;
 
   v11 = +[ASCOverlaySettings sharedSettings];
-  v12 = [v11 rateLimitTimeWindow];
+  rateLimitTimeWindow = [v11 rateLimitTimeWindow];
 
   v13 = &off_100025B30;
-  if (v12)
+  if (rateLimitTimeWindow)
   {
-    v13 = v12;
+    v13 = rateLimitTimeWindow;
   }
 
   v14 = v13;
@@ -94,19 +94,19 @@
 
   [(ASOServiceOverlayViewController *)self setPercentageOnScreen:0.0];
   [(ASOServiceOverlayViewController *)self setViewRespectsSystemMinimumLayoutMargins:0];
-  v21 = [(ASOServiceOverlayViewController *)self view];
-  [v21 setInsetsLayoutMarginsFromSafeArea:1];
+  view = [(ASOServiceOverlayViewController *)self view];
+  [view setInsetsLayoutMarginsFromSafeArea:1];
 
   v22 = objc_alloc_init(_TtC23AppStoreOverlaysService27ServiceOverlayContainerView);
   [(ASOServiceOverlayViewController *)self setOverlayContainer:v22];
 
-  v23 = [(ASOServiceOverlayViewController *)self view];
-  v24 = [(ASOServiceOverlayViewController *)self overlayContainer];
-  [v23 addSubview:v24];
+  view2 = [(ASOServiceOverlayViewController *)self view];
+  overlayContainer = [(ASOServiceOverlayViewController *)self overlayContainer];
+  [view2 addSubview:overlayContainer];
 
   v25 = [[UIPanGestureRecognizer alloc] initWithTarget:self action:"interactiveDismissGesture:"];
-  v26 = [(ASOServiceOverlayViewController *)self view];
-  [v26 addGestureRecognizer:v25];
+  view3 = [(ASOServiceOverlayViewController *)self view];
+  [view3 addGestureRecognizer:v25];
 
   [(ASOServiceOverlayViewController *)self setPanGestureRecognizer:v25];
   v27 = objc_opt_self();
@@ -127,15 +127,15 @@
   [(ASOServiceOverlayViewController *)self setView:v3];
 }
 
-- (void)setContainerConfiguration:(id)a3
+- (void)setContainerConfiguration:(id)configuration
 {
-  v13 = a3;
-  objc_storeStrong(&self->_containerConfiguration, a3);
-  v5 = [v13 userDismissible];
-  v6 = [(ASOServiceOverlayViewController *)self panGestureRecognizer];
-  [v6 setEnabled:v5];
+  configurationCopy = configuration;
+  objc_storeStrong(&self->_containerConfiguration, configuration);
+  userDismissible = [configurationCopy userDismissible];
+  panGestureRecognizer = [(ASOServiceOverlayViewController *)self panGestureRecognizer];
+  [panGestureRecognizer setEnabled:userDismissible];
 
-  if ([v13 hostIdiom] == 6)
+  if ([configurationCopy hostIdiom] == 6)
   {
     v7 = 0.0;
     v8 = 0.0;
@@ -144,10 +144,10 @@
 
   else
   {
-    v10 = [v13 position];
-    if (v10)
+    position = [configurationCopy position];
+    if (position)
     {
-      if (v10 != 1)
+      if (position != 1)
       {
         goto LABEL_9;
       }
@@ -165,23 +165,23 @@
     v9 = 15.0;
   }
 
-  v11 = [(ASOServiceOverlayViewController *)self view];
-  [v11 setLayoutMargins:{0.0, v7, v8, v9}];
+  view = [(ASOServiceOverlayViewController *)self view];
+  [view setLayoutMargins:{0.0, v7, v8, v9}];
 
 LABEL_9:
-  v12 = [(ASOServiceOverlayViewController *)self view];
-  [v12 setNeedsLayout];
+  view2 = [(ASOServiceOverlayViewController *)self view];
+  [view2 setNeedsLayout];
 }
 
 - (void)reloadContainerConfiguration
 {
-  v3 = [(ASOServiceOverlayViewController *)self currentOverlayPresenter];
+  currentOverlayPresenter = [(ASOServiceOverlayViewController *)self currentOverlayPresenter];
 
-  if (v3)
+  if (currentOverlayPresenter)
   {
-    v5 = [(ASOServiceOverlayViewController *)self currentOverlayPresenter];
-    v4 = [v5 containerConfiguration];
-    [(ASOServiceOverlayViewController *)self setContainerConfiguration:v4];
+    currentOverlayPresenter2 = [(ASOServiceOverlayViewController *)self currentOverlayPresenter];
+    containerConfiguration = [currentOverlayPresenter2 containerConfiguration];
+    [(ASOServiceOverlayViewController *)self setContainerConfiguration:containerConfiguration];
   }
 }
 
@@ -195,10 +195,10 @@ LABEL_9:
 
 - (double)overlayHeight
 {
-  v3 = [(ASOServiceOverlayViewController *)self overlayContainer];
-  v4 = [(ASOServiceOverlayViewController *)self view];
-  [v4 bounds];
-  [v3 sizeThatFits:{v5, v6}];
+  overlayContainer = [(ASOServiceOverlayViewController *)self overlayContainer];
+  view = [(ASOServiceOverlayViewController *)self view];
+  [view bounds];
+  [overlayContainer sizeThatFits:{v5, v6}];
   v8 = v7;
 
   return v8;
@@ -206,10 +206,10 @@ LABEL_9:
 
 - (void)refreshOverlayFrame
 {
-  v3 = [(ASOServiceOverlayViewController *)self containerConfiguration];
-  v4 = [v3 hostIdiom];
+  containerConfiguration = [(ASOServiceOverlayViewController *)self containerConfiguration];
+  hostIdiom = [containerConfiguration hostIdiom];
 
-  if (v4 == 6)
+  if (hostIdiom == 6)
   {
     [(ASOServiceOverlayViewController *)self edgePointForPercentage:1.0];
     [(ASOServiceOverlayViewController *)self overlayFrameForEdgePoint:?];
@@ -217,13 +217,13 @@ LABEL_9:
     v8 = v7;
     v10 = v9;
     v12 = v11;
-    v13 = [(ASOServiceOverlayViewController *)self overlayContainer];
-    [v13 setFrame:{v6, v8, v10, v12}];
+    overlayContainer = [(ASOServiceOverlayViewController *)self overlayContainer];
+    [overlayContainer setFrame:{v6, v8, v10, v12}];
 
     [(ASOServiceOverlayViewController *)self percentageOnScreen];
     v15 = v14;
-    v16 = [(ASOServiceOverlayViewController *)self overlayContainer];
-    [v16 setAlpha:v15];
+    overlayContainer2 = [(ASOServiceOverlayViewController *)self overlayContainer];
+    [overlayContainer2 setAlpha:v15];
   }
 
   else
@@ -235,82 +235,82 @@ LABEL_9:
     v20 = v19;
     v22 = v21;
     v24 = v23;
-    v16 = [(ASOServiceOverlayViewController *)self overlayContainer];
-    [v16 setFrame:{v18, v20, v22, v24}];
+    overlayContainer2 = [(ASOServiceOverlayViewController *)self overlayContainer];
+    [overlayContainer2 setFrame:{v18, v20, v22, v24}];
   }
 
-  v25 = [(ASOServiceOverlayViewController *)self overlayContainer];
-  [v25 setNeedsLayout];
+  overlayContainer3 = [(ASOServiceOverlayViewController *)self overlayContainer];
+  [overlayContainer3 setNeedsLayout];
 }
 
-- (void)setPercentageOnScreen:(double)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)setPercentageOnScreen:(double)screen animated:(BOOL)animated completion:(id)completion
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = [(ASOServiceOverlayViewController *)self view];
-  [v9 layoutIfNeeded];
+  animatedCopy = animated;
+  completionCopy = completion;
+  view = [(ASOServiceOverlayViewController *)self view];
+  [view layoutIfNeeded];
 
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_100009B94;
   v12[3] = &unk_1000251F0;
   v12[4] = self;
-  *&v12[5] = a3;
+  *&v12[5] = screen;
   v10 = objc_retainBlock(v12);
   v11 = v10;
-  if (v5)
+  if (animatedCopy)
   {
-    [ASOOverlayAnimator performAnimations:v10 completion:v8];
+    [ASOOverlayAnimator performAnimations:v10 completion:completionCopy];
   }
 
   else
   {
     (v10[2])(v10);
-    if (v8)
+    if (completionCopy)
     {
-      v8[2](v8, 1);
+      completionCopy[2](completionCopy, 1);
     }
   }
 }
 
 - (void)reloadAXSize
 {
-  v3 = [(ASOServiceOverlayViewController *)self traitCollection];
-  v4 = [v3 preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v4);
+  traitCollection = [(ASOServiceOverlayViewController *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
-  v8 = [(ASOServiceOverlayViewController *)self view];
-  v6 = [v8 traitOverrides];
+  view = [(ASOServiceOverlayViewController *)self view];
+  traitOverrides = [view traitOverrides];
   if (IsAccessibilityCategory)
   {
-    [v6 setPreferredContentSizeCategory:UIContentSizeCategoryExtraExtraExtraLarge];
+    [traitOverrides setPreferredContentSizeCategory:UIContentSizeCategoryExtraExtraExtraLarge];
   }
 
   else
   {
     v7 = objc_opt_self();
-    [v6 removeTrait:v7];
+    [traitOverrides removeTrait:v7];
   }
 }
 
-- (void)interactiveDismissGesture:(id)a3
+- (void)interactiveDismissGesture:(id)gesture
 {
-  v22 = a3;
-  v4 = [(ASOServiceOverlayViewController *)self view];
-  [v22 translationInView:v4];
+  gestureCopy = gesture;
+  view = [(ASOServiceOverlayViewController *)self view];
+  [gestureCopy translationInView:view];
 
-  v5 = [v22 state];
-  if (v5 == 3)
+  state = [gestureCopy state];
+  if (state == 3)
   {
     [(ASOServiceOverlayViewController *)self percentageOnScreen];
     [(ASOServiceOverlayViewController *)self edgePointForPercentage:?];
     v13 = v12;
-    v14 = [(ASOServiceOverlayViewController *)self view];
-    [v22 velocityInView:v14];
+    view2 = [(ASOServiceOverlayViewController *)self view];
+    [gestureCopy velocityInView:view2];
     v16 = v15;
 
-    v17 = [(ASOServiceOverlayViewController *)self view];
-    [v17 safeAreaInsets];
+    view3 = [(ASOServiceOverlayViewController *)self view];
+    [view3 safeAreaInsets];
     v19 = v13 - v18;
 
     [(ASOServiceOverlayViewController *)self overlayHeight];
@@ -325,7 +325,7 @@ LABEL_9:
     }
   }
 
-  else if (v5 == 2)
+  else if (state == 2)
   {
     [(ASOServiceOverlayViewController *)self interactiveDismissStartPercentage];
     [(ASOServiceOverlayViewController *)self edgePointForPercentage:?];
@@ -348,14 +348,14 @@ LABEL_9:
     [(ASOServiceOverlayViewController *)self setPercentageOnScreen:v11];
   }
 
-  else if (v5 == 1)
+  else if (state == 1)
   {
     [(ASOServiceOverlayViewController *)self percentageOnScreen];
     [(ASOServiceOverlayViewController *)self setInteractiveDismissStartPercentage:?];
   }
 }
 
-- (id)showOverlayAnimated:(BOOL)a3
+- (id)showOverlayAnimated:(BOOL)animated
 {
   [(ASOServiceOverlayViewController *)self percentageOnScreen];
   if (v5 <= 0.0)
@@ -365,7 +365,7 @@ LABEL_9:
     block[2] = sub_100009F20;
     block[3] = &unk_100025268;
     block[4] = self;
-    v12 = a3;
+    animatedCopy = animated;
     v7 = objc_alloc_init(AMSMutableBinaryPromise);
     v11 = v7;
     dispatch_async(&_dispatch_main_q, block);
@@ -381,13 +381,13 @@ LABEL_9:
   return v6;
 }
 
-- (id)hideOverlayAnimated:(BOOL)a3
+- (id)hideOverlayAnimated:(BOOL)animated
 {
-  v5 = [(ASOServiceOverlayViewController *)self panGestureRecognizer];
-  [v5 setEnabled:0];
+  panGestureRecognizer = [(ASOServiceOverlayViewController *)self panGestureRecognizer];
+  [panGestureRecognizer setEnabled:0];
 
-  v6 = [(ASOServiceOverlayViewController *)self panGestureRecognizer];
-  [v6 setEnabled:1];
+  panGestureRecognizer2 = [(ASOServiceOverlayViewController *)self panGestureRecognizer];
+  [panGestureRecognizer2 setEnabled:1];
 
   [(ASOServiceOverlayViewController *)self percentageOnScreen];
   if (v7 == 0.0)
@@ -402,7 +402,7 @@ LABEL_9:
     block[2] = sub_10000A35C;
     block[3] = &unk_100025268;
     block[4] = self;
-    v14 = a3;
+    animatedCopy = animated;
     v9 = objc_alloc_init(AMSMutableBinaryPromise);
     v13 = v9;
     dispatch_async(&_dispatch_main_q, block);
@@ -413,16 +413,16 @@ LABEL_9:
   return v8;
 }
 
-- (CGPoint)edgePointForPercentage:(double)a3
+- (CGPoint)edgePointForPercentage:(double)percentage
 {
-  v5 = [(ASOServiceOverlayViewController *)self view];
-  [v5 frame];
+  view = [(ASOServiceOverlayViewController *)self view];
+  [view frame];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  v14 = [(ASOServiceOverlayViewController *)self view];
-  [v14 layoutMargins];
+  view2 = [(ASOServiceOverlayViewController *)self view];
+  [view2 layoutMargins];
   v16 = v7 + v15;
   v18 = v9 + v17;
   v20 = v11 - (v15 + v19);
@@ -430,8 +430,8 @@ LABEL_9:
 
   [(ASOServiceOverlayViewController *)self overlayHeight];
   v24 = v23;
-  v25 = [(ASOServiceOverlayViewController *)self view];
-  [v25 layoutMargins];
+  view3 = [(ASOServiceOverlayViewController *)self view];
+  [view3 layoutMargins];
   v27 = v24 + v26;
 
   v31.origin.x = v16;
@@ -439,31 +439,31 @@ LABEL_9:
   v31.size.width = v20;
   v31.size.height = v22;
   MidX = CGRectGetMidX(v31);
-  v29 = v27 * a3;
+  v29 = v27 * percentage;
   result.y = v29;
   result.x = MidX;
   return result;
 }
 
-- (double)percentageForEdgePoint:(CGPoint)a3
+- (double)percentageForEdgePoint:(CGPoint)point
 {
-  y = a3.y;
+  y = point.y;
   [(ASOServiceOverlayViewController *)self edgePointForPercentage:1.0];
   return y / v4;
 }
 
-- (CGRect)overlayFrameForEdgePoint:(CGPoint)a3
+- (CGRect)overlayFrameForEdgePoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(ASOServiceOverlayViewController *)self view];
-  [v6 frame];
+  y = point.y;
+  x = point.x;
+  view = [(ASOServiceOverlayViewController *)self view];
+  [view frame];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  v15 = [(ASOServiceOverlayViewController *)self view];
-  [v15 layoutMargins];
+  view2 = [(ASOServiceOverlayViewController *)self view];
+  [view2 layoutMargins];
   v17 = v8 + v16;
   v19 = v10 + v18;
   v21 = v12 - (v16 + v20);
@@ -474,8 +474,8 @@ LABEL_9:
   v32.size.width = v21;
   v32.size.height = v23;
   v24 = fmin(CGRectGetWidth(v32), 600.0);
-  v25 = [(ASOServiceOverlayViewController *)self view];
-  [v25 frame];
+  view3 = [(ASOServiceOverlayViewController *)self view];
+  [view3 frame];
   v26 = CGRectGetMaxY(v33) - y;
 
   [(ASOServiceOverlayViewController *)self overlayHeight];
@@ -490,28 +490,28 @@ LABEL_9:
   return result;
 }
 
-- (void)serviceContext:(id)a3 presentOverlayWithConfiguration:(id)a4 delegate:(id)a5
+- (void)serviceContext:(id)context presentOverlayWithConfiguration:(id)configuration delegate:(id)delegate
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [(ASOServiceOverlayViewController *)self serviceQueue];
-  [v9 queuePresentOverlayWithConfiguration:v8 delegate:v7];
+  delegateCopy = delegate;
+  configurationCopy = configuration;
+  serviceQueue = [(ASOServiceOverlayViewController *)self serviceQueue];
+  [serviceQueue queuePresentOverlayWithConfiguration:configurationCopy delegate:delegateCopy];
 }
 
-- (void)serviceContextDismissOverlay:(id)a3
+- (void)serviceContextDismissOverlay:(id)overlay
 {
-  v3 = [(ASOServiceOverlayViewController *)self serviceQueue];
-  [v3 queueDismissOverlay];
+  serviceQueue = [(ASOServiceOverlayViewController *)self serviceQueue];
+  [serviceQueue queueDismissOverlay];
 }
 
-- (id)presentationQueue:(id)a3 presentOverlayWithConfiguration:(id)a4 delegate:(id)a5
+- (id)presentationQueue:(id)queue presentOverlayWithConfiguration:(id)configuration delegate:(id)delegate
 {
-  v7 = a5;
-  v8 = a4;
+  delegateCopy = delegate;
+  configurationCopy = configuration;
   v9 = [ASOServiceOverlayPresenter alloc];
-  v10 = [(ASOServiceOverlayViewController *)self serviceContext];
+  serviceContext = [(ASOServiceOverlayViewController *)self serviceContext];
   v11 = objc_alloc_init(ASOServiceOverlayLoader);
-  v12 = [(ASOServiceOverlayPresenter *)v9 initWithConfiguration:v8 remoteDelegate:v7 serviceContext:v10 overlayLoader:v11];
+  v12 = [(ASOServiceOverlayPresenter *)v9 initWithConfiguration:configurationCopy remoteDelegate:delegateCopy serviceContext:serviceContext overlayLoader:v11];
 
   v13 = +[ASOServiceOverlayViewController log];
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
@@ -529,38 +529,38 @@ LABEL_9:
 
 - (void)hostDidEnterBackground
 {
-  v2 = [(ASOServiceOverlayViewController *)self currentOverlayPresenter];
-  [v2 hostApplicationDidEnterBackground];
+  currentOverlayPresenter = [(ASOServiceOverlayViewController *)self currentOverlayPresenter];
+  [currentOverlayPresenter hostApplicationDidEnterBackground];
 }
 
 - (void)hostWillEnterForeground
 {
-  v2 = [(ASOServiceOverlayViewController *)self currentOverlayPresenter];
-  [v2 hostApplicationWillEnterForeground];
+  currentOverlayPresenter = [(ASOServiceOverlayViewController *)self currentOverlayPresenter];
+  [currentOverlayPresenter hostApplicationWillEnterForeground];
 }
 
 - (void)updateRateLimiterConstantsIfNeeded
 {
   v3 = +[ASCOverlaySettings sharedSettings];
-  v12 = [v3 rateLimitRequestsPerSecond];
+  rateLimitRequestsPerSecond = [v3 rateLimitRequestsPerSecond];
 
-  if (v12)
+  if (rateLimitRequestsPerSecond)
   {
-    [v12 doubleValue];
+    [rateLimitRequestsPerSecond doubleValue];
     v5 = v4;
-    v6 = [(ASOServiceOverlayViewController *)self rateLimiter];
-    [v6 setRequestsPerSecond:v5];
+    rateLimiter = [(ASOServiceOverlayViewController *)self rateLimiter];
+    [rateLimiter setRequestsPerSecond:v5];
   }
 
   v7 = +[ASCOverlaySettings sharedSettings];
-  v8 = [v7 rateLimitTimeWindow];
+  rateLimitTimeWindow = [v7 rateLimitTimeWindow];
 
-  if (v8)
+  if (rateLimitTimeWindow)
   {
-    [v8 doubleValue];
+    [rateLimitTimeWindow doubleValue];
     v10 = v9;
-    v11 = [(ASOServiceOverlayViewController *)self rateLimiter];
-    [v11 setTimeWindow:v10];
+    rateLimiter2 = [(ASOServiceOverlayViewController *)self rateLimiter];
+    [rateLimiter2 setTimeWindow:v10];
   }
 }
 

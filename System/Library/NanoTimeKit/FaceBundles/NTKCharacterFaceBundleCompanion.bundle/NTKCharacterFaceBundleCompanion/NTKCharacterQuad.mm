@@ -1,21 +1,21 @@
 @interface NTKCharacterQuad
-- (NTKCharacterQuad)initWithCLKDevice:(id)a3;
+- (NTKCharacterQuad)initWithCLKDevice:(id)device;
 - (void)dealloc;
-- (void)renderForDisplayWithEncoder:(id)a3;
+- (void)renderForDisplayWithEncoder:(id)encoder;
 @end
 
 @implementation NTKCharacterQuad
 
-- (NTKCharacterQuad)initWithCLKDevice:(id)a3
+- (NTKCharacterQuad)initWithCLKDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v9.receiver = self;
   v9.super_class = NTKCharacterQuad;
   v6 = [(NTKCharacterQuad *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_clkDevice, a3);
+    objc_storeStrong(&v6->_clkDevice, device);
   }
 
   return v7;
@@ -28,11 +28,11 @@
   [(NTKCharacterQuad *)&v2 dealloc];
 }
 
-- (void)renderForDisplayWithEncoder:(id)a3
+- (void)renderForDisplayWithEncoder:(id)encoder
 {
-  v4 = a3;
+  encoderCopy = encoder;
   kdebug_trace();
-  [(NTKCharacterRenderer *)self->_renderer renderWithEncoder:v4];
+  [(NTKCharacterRenderer *)self->_renderer renderWithEncoder:encoderCopy];
 
   kdebug_trace();
 }

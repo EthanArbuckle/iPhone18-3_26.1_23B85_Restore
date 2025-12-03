@@ -1,14 +1,14 @@
 @interface OverlayTile
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 @end
 
 @implementation OverlayTile
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_220FC3410();
     swift_unknownObjectRelease();
@@ -17,7 +17,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = sub_220E5E898(v8);

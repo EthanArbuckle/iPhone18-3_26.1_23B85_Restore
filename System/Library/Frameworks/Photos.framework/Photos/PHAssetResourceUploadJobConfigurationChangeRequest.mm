@@ -1,53 +1,53 @@
 @interface PHAssetResourceUploadJobConfigurationChangeRequest
-+ (id)changeRequestForAssetResourceUploadJobConfiguration:(id)a3;
-+ (id)changeRequestForConfiguration:(id)a3;
++ (id)changeRequestForAssetResourceUploadJobConfiguration:(id)configuration;
++ (id)changeRequestForConfiguration:(id)configuration;
 + (id)creationRequestForAssetResourceUploadJobConfiguration;
-+ (void)deleteAssetResourceUploadJobConfigurations:(id)a3;
-- (BOOL)_confirmAppHasValidExtensionWithPhotoLibrary:(id)a3 error:(id *)a4;
-- (PHAssetResourceUploadJobConfigurationChangeRequest)initWithUUID:(id)a3 objectID:(id)a4;
-- (PHAssetResourceUploadJobConfigurationChangeRequest)initWithXPCDict:(id)a3 request:(id)a4 clientAuthorization:(id)a5;
-- (id)createManagedObjectForInsertIntoPhotoLibrary:(id)a3 error:(id *)a4;
++ (void)deleteAssetResourceUploadJobConfigurations:(id)configurations;
+- (BOOL)_confirmAppHasValidExtensionWithPhotoLibrary:(id)library error:(id *)error;
+- (PHAssetResourceUploadJobConfigurationChangeRequest)initWithUUID:(id)d objectID:(id)iD;
+- (PHAssetResourceUploadJobConfigurationChangeRequest)initWithXPCDict:(id)dict request:(id)request clientAuthorization:(id)authorization;
+- (id)createManagedObjectForInsertIntoPhotoLibrary:(id)library error:(id *)error;
 - (id)initForNewObject;
 - (signed)state;
-- (void)encodeToXPCDict:(id)a3;
-- (void)setState:(signed __int16)a3;
+- (void)encodeToXPCDict:(id)dict;
+- (void)setState:(signed __int16)state;
 @end
 
 @implementation PHAssetResourceUploadJobConfigurationChangeRequest
 
-- (void)setState:(signed __int16)a3
+- (void)setState:(signed __int16)state
 {
-  v3 = a3;
-  v5 = [(PHChangeRequest *)self helper];
-  [v5 didMutate];
+  stateCopy = state;
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v8 = [MEMORY[0x1E696AD98] numberWithShort:v3];
-  v6 = [(PHChangeRequest *)self helper];
-  v7 = [v6 mutations];
-  [v7 setObject:v8 forKeyedSubscript:@"state"];
+  v8 = [MEMORY[0x1E696AD98] numberWithShort:stateCopy];
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  [mutations setObject:v8 forKeyedSubscript:@"state"];
 }
 
 - (signed)state
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"state"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"state"];
 
-  LOWORD(v3) = [v5 shortValue];
-  return v3;
+  LOWORD(helper) = [v5 shortValue];
+  return helper;
 }
 
-- (PHAssetResourceUploadJobConfigurationChangeRequest)initWithUUID:(id)a3 objectID:(id)a4
+- (PHAssetResourceUploadJobConfigurationChangeRequest)initWithUUID:(id)d objectID:(id)iD
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  iDCopy = iD;
   v12.receiver = self;
   v12.super_class = PHAssetResourceUploadJobConfigurationChangeRequest;
   v8 = [(PHChangeRequest *)&v12 init];
   if (v8)
   {
-    v9 = [[PHChangeRequestHelper alloc] initWithUUID:v6 objectID:v7 changeRequest:v8];
+    v9 = [[PHChangeRequestHelper alloc] initWithUUID:dCopy objectID:iDCopy changeRequest:v8];
     helper = v8->super._helper;
     v8->super._helper = v9;
   }
@@ -55,43 +55,43 @@
   return v8;
 }
 
-- (void)encodeToXPCDict:(id)a3
+- (void)encodeToXPCDict:(id)dict
 {
-  xdict = a3;
-  v4 = [(PHChangeRequest *)self helper];
-  [v4 encodeToXPCDict:xdict];
+  xdict = dict;
+  helper = [(PHChangeRequest *)self helper];
+  [helper encodeToXPCDict:xdict];
 
   xpc_dictionary_set_BOOL(xdict, "skipExtensionValidation", self->_skipExtensionValidation);
 }
 
-- (PHAssetResourceUploadJobConfigurationChangeRequest)initWithXPCDict:(id)a3 request:(id)a4 clientAuthorization:(id)a5
+- (PHAssetResourceUploadJobConfigurationChangeRequest)initWithXPCDict:(id)dict request:(id)request clientAuthorization:(id)authorization
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dictCopy = dict;
+  requestCopy = request;
+  authorizationCopy = authorization;
   v15.receiver = self;
   v15.super_class = PHAssetResourceUploadJobConfigurationChangeRequest;
   v11 = [(PHChangeRequest *)&v15 init];
   if (v11)
   {
-    v12 = [[PHChangeRequestHelper alloc] initWithXPCDict:v8 changeRequest:v11 request:v9 clientAuthorization:v10];
+    v12 = [[PHChangeRequestHelper alloc] initWithXPCDict:dictCopy changeRequest:v11 request:requestCopy clientAuthorization:authorizationCopy];
     helper = v11->super._helper;
     v11->super._helper = v12;
 
-    v11->_skipExtensionValidation = xpc_dictionary_get_BOOL(v8, "skipExtensionValidation");
+    v11->_skipExtensionValidation = xpc_dictionary_get_BOOL(dictCopy, "skipExtensionValidation");
   }
 
   return v11;
 }
 
-- (BOOL)_confirmAppHasValidExtensionWithPhotoLibrary:(id)a3 error:(id *)a4
+- (BOOL)_confirmAppHasValidExtensionWithPhotoLibrary:(id)library error:(id *)error
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(PHChangeRequestHelper *)self->super._helper clientAuthorization];
-  v8 = [v7 trustedCallerBundleID];
+  libraryCopy = library;
+  clientAuthorization = [(PHChangeRequestHelper *)self->super._helper clientAuthorization];
+  trustedCallerBundleID = [clientAuthorization trustedCallerBundleID];
 
-  if ((PLIsInternalTool() & 1) != 0 || [v8 isEqualToString:@"com.apple.plphotosctl"]) && (PFOSVariantHasInternalDiagnostics() & 1) != 0 || objc_msgSend(v6, "isUnitTesting") && !-[PHAssetResourceUploadJobConfigurationChangeRequest skipExtensionValidation](self, "skipExtensionValidation") || (-[PHChangeRequestHelper clientAuthorization](self->super._helper, "clientAuthorization"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "isBackgroundResourceUploadExtensionClient"), v9, (v10))
+  if ((PLIsInternalTool() & 1) != 0 || [trustedCallerBundleID isEqualToString:@"com.apple.plphotosctl"]) && (PFOSVariantHasInternalDiagnostics() & 1) != 0 || objc_msgSend(libraryCopy, "isUnitTesting") && !-[PHAssetResourceUploadJobConfigurationChangeRequest skipExtensionValidation](self, "skipExtensionValidation") || (-[PHChangeRequestHelper clientAuthorization](self->super._helper, "clientAuthorization"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "isBackgroundResourceUploadExtensionClient"), v9, (v10))
   {
     v11 = 1;
   }
@@ -104,10 +104,10 @@
     v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:&v17 count:1];
     v14 = [v12 ph_errorWithDomain:@"PHPhotosErrorDomain" code:-1 userInfo:v13];
 
-    if (a4)
+    if (error)
     {
       v15 = v14;
-      *a4 = v14;
+      *error = v14;
     }
 
     v11 = 0;
@@ -116,22 +116,22 @@
   return v11;
 }
 
-- (id)createManagedObjectForInsertIntoPhotoLibrary:(id)a3 error:(id *)a4
+- (id)createManagedObjectForInsertIntoPhotoLibrary:(id)library error:(id *)error
 {
   v26[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (![(PHAssetResourceUploadJobConfigurationChangeRequest *)self _confirmAppHasValidExtensionWithPhotoLibrary:v6 error:a4])
+  libraryCopy = library;
+  if (![(PHAssetResourceUploadJobConfigurationChangeRequest *)self _confirmAppHasValidExtensionWithPhotoLibrary:libraryCopy error:error])
   {
     v15 = 0;
     goto LABEL_10;
   }
 
-  v7 = [(PHChangeRequestHelper *)self->super._helper clientAuthorization];
-  v8 = [v7 trustedCallerBundleID];
+  clientAuthorization = [(PHChangeRequestHelper *)self->super._helper clientAuthorization];
+  trustedCallerBundleID = [clientAuthorization trustedCallerBundleID];
 
   v9 = MEMORY[0x1E69BE278];
-  v10 = [v6 managedObjectContext];
-  v11 = [v9 configurationWithBundleIdentifier:v8 managedObjectContext:v10 error:0];
+  managedObjectContext = [libraryCopy managedObjectContext];
+  v11 = [v9 configurationWithBundleIdentifier:trustedCallerBundleID managedObjectContext:managedObjectContext error:0];
 
   if (v11)
   {
@@ -140,19 +140,19 @@
     v26[0] = @"An existing configuration record for the same bundle identifier was found";
     v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v26 forKeys:&v25 count:1];
     v14 = [v12 errorWithDomain:@"PHPhotosErrorDomain" code:3202 userInfo:v13];
-    if (a4)
+    if (error)
     {
       v14 = v14;
-      *a4 = v14;
+      *error = v14;
     }
   }
 
   else
   {
     v16 = MEMORY[0x1E69BE278];
-    v17 = [v6 managedObjectContext];
-    v18 = [(PHChangeRequest *)self uuid];
-    v15 = [v16 insertIntoManagedObjectContext:v17 uuid:v18 bundleID:v8];
+    managedObjectContext2 = [libraryCopy managedObjectContext];
+    uuid = [(PHChangeRequest *)self uuid];
+    v15 = [v16 insertIntoManagedObjectContext:managedObjectContext2 uuid:uuid bundleID:trustedCallerBundleID];
 
     if (v15)
     {
@@ -165,10 +165,10 @@
     v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v24 forKeys:&v23 count:1];
     v13 = [v20 ph_errorWithDomain:@"PHPhotosErrorDomain" code:-1 userInfo:v21];
 
-    if (a4)
+    if (error)
     {
       v22 = v13;
-      *a4 = v13;
+      *error = v13;
     }
   }
 
@@ -195,22 +195,22 @@ LABEL_10:
   return v2;
 }
 
-+ (void)deleteAssetResourceUploadJobConfigurations:(id)a3
++ (void)deleteAssetResourceUploadJobConfigurations:(id)configurations
 {
-  v5 = a3;
-  v4 = [(PHObjectDeleteRequest *)PHAssetResourceUploadJobConfigurationDeleteRequest deleteRequestsForObjects:v5 ofType:objc_opt_class() forSelector:a2];
+  configurationsCopy = configurations;
+  v4 = [(PHObjectDeleteRequest *)PHAssetResourceUploadJobConfigurationDeleteRequest deleteRequestsForObjects:configurationsCopy ofType:objc_opt_class() forSelector:a2];
 }
 
-+ (id)changeRequestForAssetResourceUploadJobConfiguration:(id)a3
++ (id)changeRequestForAssetResourceUploadJobConfiguration:(id)configuration
 {
-  v3 = a3;
+  configurationCopy = configuration;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v4 = [PHAssetResourceUploadJobConfigurationChangeRequest alloc];
-    v5 = [v3 uuid];
-    v6 = [v3 objectID];
-    v7 = [(PHAssetResourceUploadJobConfigurationChangeRequest *)v4 initWithUUID:v5 objectID:v6];
+    uuid = [configurationCopy uuid];
+    objectID = [configurationCopy objectID];
+    v7 = [(PHAssetResourceUploadJobConfigurationChangeRequest *)v4 initWithUUID:uuid objectID:objectID];
   }
 
   else
@@ -221,16 +221,16 @@ LABEL_10:
   return v7;
 }
 
-+ (id)changeRequestForConfiguration:(id)a3
++ (id)changeRequestForConfiguration:(id)configuration
 {
-  v3 = a3;
+  configurationCopy = configuration;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v4 = [PHAssetResourceUploadJobConfigurationChangeRequest alloc];
-    v5 = [v3 uuid];
-    v6 = [v3 objectID];
-    v7 = [(PHAssetResourceUploadJobConfigurationChangeRequest *)v4 initWithUUID:v5 objectID:v6];
+    uuid = [configurationCopy uuid];
+    objectID = [configurationCopy objectID];
+    v7 = [(PHAssetResourceUploadJobConfigurationChangeRequest *)v4 initWithUUID:uuid objectID:objectID];
   }
 
   else
@@ -243,10 +243,10 @@ LABEL_10:
 
 + (id)creationRequestForAssetResourceUploadJobConfiguration
 {
-  v2 = [[PHAssetResourceUploadJobConfigurationChangeRequest alloc] initForNewObject];
-  [v2 setState:3];
+  initForNewObject = [[PHAssetResourceUploadJobConfigurationChangeRequest alloc] initForNewObject];
+  [initForNewObject setState:3];
 
-  return v2;
+  return initForNewObject;
 }
 
 @end

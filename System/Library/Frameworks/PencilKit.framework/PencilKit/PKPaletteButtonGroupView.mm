@@ -1,25 +1,25 @@
 @interface PKPaletteButtonGroupView
 - (NSDirectionalEdgeInsets)additionalContentMargins;
-- (PKPaletteButtonGroupView)initWithFrame:(CGRect)a3;
+- (PKPaletteButtonGroupView)initWithFrame:(CGRect)frame;
 - (int64_t)axis;
 - (void)_updateUI;
-- (void)addButton:(id)a3;
-- (void)addButtonsFromArray:(id)a3;
-- (void)setAdditionalContentMargins:(NSDirectionalEdgeInsets)a3;
-- (void)setAxis:(int64_t)a3;
-- (void)setButtons:(id)a3;
-- (void)setScalingFactor:(double)a3;
-- (void)setUseEqualInterItemSpacing:(BOOL)a3;
+- (void)addButton:(id)button;
+- (void)addButtonsFromArray:(id)array;
+- (void)setAdditionalContentMargins:(NSDirectionalEdgeInsets)margins;
+- (void)setAxis:(int64_t)axis;
+- (void)setButtons:(id)buttons;
+- (void)setScalingFactor:(double)factor;
+- (void)setUseEqualInterItemSpacing:(BOOL)spacing;
 @end
 
 @implementation PKPaletteButtonGroupView
 
-- (PKPaletteButtonGroupView)initWithFrame:(CGRect)a3
+- (PKPaletteButtonGroupView)initWithFrame:(CGRect)frame
 {
   v28[4] = *MEMORY[0x1E69E9840];
   v27.receiver = self;
   v27.super_class = PKPaletteButtonGroupView;
-  v3 = [(PKPaletteButtonGroupView *)&v27 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PKPaletteButtonGroupView *)&v27 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -34,27 +34,27 @@
     [(UIStackView *)v4->_buttonStackView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIStackView *)v4->_buttonStackView setAlignment:3];
     [(PKPaletteButtonGroupView *)v4 addSubview:v4->_buttonStackView];
-    v8 = [(UIStackView *)v4->_buttonStackView topAnchor];
-    v9 = [(PKPaletteButtonGroupView *)v4 topAnchor];
-    v10 = [v8 constraintEqualToAnchor:v9];
+    topAnchor = [(UIStackView *)v4->_buttonStackView topAnchor];
+    topAnchor2 = [(PKPaletteButtonGroupView *)v4 topAnchor];
+    v10 = [topAnchor constraintEqualToAnchor:topAnchor2];
     buttonStackViewTopConstraint = v4->_buttonStackViewTopConstraint;
     v4->_buttonStackViewTopConstraint = v10;
 
-    v12 = [(UIStackView *)v4->_buttonStackView leadingAnchor];
-    v13 = [(PKPaletteButtonGroupView *)v4 leadingAnchor];
-    v14 = [v12 constraintEqualToAnchor:v13];
+    leadingAnchor = [(UIStackView *)v4->_buttonStackView leadingAnchor];
+    leadingAnchor2 = [(PKPaletteButtonGroupView *)v4 leadingAnchor];
+    v14 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     buttonStackViewLeadingConstraint = v4->_buttonStackViewLeadingConstraint;
     v4->_buttonStackViewLeadingConstraint = v14;
 
-    v16 = [(UIStackView *)v4->_buttonStackView bottomAnchor];
-    v17 = [(PKPaletteButtonGroupView *)v4 bottomAnchor];
-    v18 = [v16 constraintEqualToAnchor:v17];
+    bottomAnchor = [(UIStackView *)v4->_buttonStackView bottomAnchor];
+    bottomAnchor2 = [(PKPaletteButtonGroupView *)v4 bottomAnchor];
+    v18 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     buttonStackViewBottomConstraint = v4->_buttonStackViewBottomConstraint;
     v4->_buttonStackViewBottomConstraint = v18;
 
-    v20 = [(UIStackView *)v4->_buttonStackView trailingAnchor];
-    v21 = [(PKPaletteButtonGroupView *)v4 trailingAnchor];
-    v22 = [v20 constraintEqualToAnchor:v21];
+    trailingAnchor = [(UIStackView *)v4->_buttonStackView trailingAnchor];
+    trailingAnchor2 = [(PKPaletteButtonGroupView *)v4 trailingAnchor];
+    v22 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     buttonStackViewTrailingConstraint = v4->_buttonStackViewTrailingConstraint;
     v4->_buttonStackViewTrailingConstraint = v22;
 
@@ -73,32 +73,32 @@
   return v4;
 }
 
-- (void)addButton:(id)a3
+- (void)addButton:(id)button
 {
-  v4 = a3;
-  v6 = [(PKPaletteButtonGroupView *)self buttons];
-  v5 = [v6 arrayByAddingObject:v4];
+  buttonCopy = button;
+  buttons = [(PKPaletteButtonGroupView *)self buttons];
+  v5 = [buttons arrayByAddingObject:buttonCopy];
 
   [(PKPaletteButtonGroupView *)self setButtons:v5];
 }
 
-- (void)addButtonsFromArray:(id)a3
+- (void)addButtonsFromArray:(id)array
 {
-  v4 = a3;
-  v6 = [(PKPaletteButtonGroupView *)self buttons];
-  v5 = [v6 arrayByAddingObjectsFromArray:v4];
+  arrayCopy = array;
+  buttons = [(PKPaletteButtonGroupView *)self buttons];
+  v5 = [buttons arrayByAddingObjectsFromArray:arrayCopy];
 
   [(PKPaletteButtonGroupView *)self setButtons:v5];
 }
 
-- (void)setButtons:(id)a3
+- (void)setButtons:(id)buttons
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (self->_buttons != v4)
+  buttonsCopy = buttons;
+  v5 = buttonsCopy;
+  if (self->_buttons != buttonsCopy)
   {
-    v6 = [(NSArray *)v4 copy];
+    v6 = [(NSArray *)buttonsCopy copy];
     buttons = self->_buttons;
     self->_buttons = v6;
 
@@ -106,9 +106,9 @@
     v32 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v8 = [(PKPaletteButtonGroupView *)self buttonStackView];
-    v9 = [v8 arrangedSubviews];
-    v10 = [v9 copy];
+    buttonStackView = [(PKPaletteButtonGroupView *)self buttonStackView];
+    arrangedSubviews = [buttonStackView arrangedSubviews];
+    v10 = [arrangedSubviews copy];
 
     v11 = [v10 countByEnumeratingWithState:&v29 objects:v34 count:16];
     if (v11)
@@ -126,8 +126,8 @@
 
           v15 = *(*(&v29 + 1) + 8 * i);
           v16 = objc_autoreleasePoolPush();
-          v17 = [(PKPaletteButtonGroupView *)self buttonStackView];
-          [v17 removeArrangedSubview:v15];
+          buttonStackView2 = [(PKPaletteButtonGroupView *)self buttonStackView];
+          [buttonStackView2 removeArrangedSubview:v15];
 
           [v15 removeFromSuperview];
           objc_autoreleasePoolPop(v16);
@@ -160,8 +160,8 @@
 
           v23 = *(*(&v25 + 1) + 8 * j);
           [v23 removeFromSuperview];
-          v24 = [(PKPaletteButtonGroupView *)self buttonStackView];
-          [v24 addArrangedSubview:v23];
+          buttonStackView3 = [(PKPaletteButtonGroupView *)self buttonStackView];
+          [buttonStackView3 addArrangedSubview:v23];
         }
 
         v20 = [(NSArray *)v18 countByEnumeratingWithState:&v25 objects:v33 count:16];
@@ -176,36 +176,36 @@
 
 - (int64_t)axis
 {
-  v2 = [(PKPaletteButtonGroupView *)self buttonStackView];
-  v3 = [v2 axis];
+  buttonStackView = [(PKPaletteButtonGroupView *)self buttonStackView];
+  axis = [buttonStackView axis];
 
-  return v3;
+  return axis;
 }
 
-- (void)setAxis:(int64_t)a3
+- (void)setAxis:(int64_t)axis
 {
-  v4 = [(PKPaletteButtonGroupView *)self buttonStackView];
-  [v4 setAxis:a3];
+  buttonStackView = [(PKPaletteButtonGroupView *)self buttonStackView];
+  [buttonStackView setAxis:axis];
 }
 
-- (void)setUseEqualInterItemSpacing:(BOOL)a3
+- (void)setUseEqualInterItemSpacing:(BOOL)spacing
 {
-  if (self->_useEqualInterItemSpacing != a3)
+  if (self->_useEqualInterItemSpacing != spacing)
   {
-    self->_useEqualInterItemSpacing = a3;
+    self->_useEqualInterItemSpacing = spacing;
     [(PKPaletteButtonGroupView *)self _updateUI];
   }
 }
 
-- (void)setAdditionalContentMargins:(NSDirectionalEdgeInsets)a3
+- (void)setAdditionalContentMargins:(NSDirectionalEdgeInsets)margins
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.leading;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.trailing;
+  v3.f64[0] = margins.top;
+  v3.f64[1] = margins.leading;
+  v4.f64[0] = margins.bottom;
+  v4.f64[1] = margins.trailing;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_additionalContentMargins.top, v3), vceqq_f64(*&self->_additionalContentMargins.bottom, v4)))) & 1) == 0)
   {
-    self->_additionalContentMargins = a3;
+    self->_additionalContentMargins = margins;
     [(PKPaletteButtonGroupView *)self _updateUI];
   }
 }
@@ -223,8 +223,8 @@
     v3 = 0;
   }
 
-  v4 = [(PKPaletteButtonGroupView *)self buttonStackView];
-  [v4 setDistribution:v3];
+  buttonStackView = [(PKPaletteButtonGroupView *)self buttonStackView];
+  [buttonStackView setDistribution:v3];
 
   if ([(PKPaletteButtonGroupView *)self useEqualInterItemSpacing])
   {
@@ -237,15 +237,15 @@
     v5 = v6 * 12.0;
   }
 
-  v7 = [(PKPaletteButtonGroupView *)self buttonStackView];
-  [v7 setSpacing:v5];
+  buttonStackView2 = [(PKPaletteButtonGroupView *)self buttonStackView];
+  [buttonStackView2 setSpacing:v5];
 
   v36 = 0u;
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v8 = [(PKPaletteButtonGroupView *)self buttons];
-  v9 = [v8 countByEnumeratingWithState:&v34 objects:v38 count:16];
+  buttons = [(PKPaletteButtonGroupView *)self buttons];
+  v9 = [buttons countByEnumeratingWithState:&v34 objects:v38 count:16];
   if (v9)
   {
     v10 = v9;
@@ -256,7 +256,7 @@
       {
         if (*v35 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(buttons);
         }
 
         v13 = *(*(&v34 + 1) + 8 * i);
@@ -264,7 +264,7 @@
         [v13 setScalingFactor:?];
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v34 objects:v38 count:16];
+      v10 = [buttons countByEnumeratingWithState:&v34 objects:v38 count:16];
     }
 
     while (v10);
@@ -274,36 +274,36 @@
   v15 = v14;
   [(PKPaletteButtonGroupView *)self scalingFactor];
   v17 = v15 * v16;
-  v18 = [(PKPaletteButtonGroupView *)self buttonStackViewTopConstraint];
-  [v18 setConstant:v17];
+  buttonStackViewTopConstraint = [(PKPaletteButtonGroupView *)self buttonStackViewTopConstraint];
+  [buttonStackViewTopConstraint setConstant:v17];
 
   [(PKPaletteButtonGroupView *)self additionalContentMargins];
   v20 = v19;
   [(PKPaletteButtonGroupView *)self scalingFactor];
   v22 = v20 * v21;
-  v23 = [(PKPaletteButtonGroupView *)self buttonStackViewLeadingConstraint];
-  [v23 setConstant:v22];
+  buttonStackViewLeadingConstraint = [(PKPaletteButtonGroupView *)self buttonStackViewLeadingConstraint];
+  [buttonStackViewLeadingConstraint setConstant:v22];
 
   [(PKPaletteButtonGroupView *)self additionalContentMargins];
   v25 = v24;
   [(PKPaletteButtonGroupView *)self scalingFactor];
   v27 = -(v25 * v26);
-  v28 = [(PKPaletteButtonGroupView *)self buttonStackViewBottomConstraint];
-  [v28 setConstant:v27];
+  buttonStackViewBottomConstraint = [(PKPaletteButtonGroupView *)self buttonStackViewBottomConstraint];
+  [buttonStackViewBottomConstraint setConstant:v27];
 
   [(PKPaletteButtonGroupView *)self additionalContentMargins];
   v30 = v29;
   [(PKPaletteButtonGroupView *)self scalingFactor];
   v32 = -(v30 * v31);
-  v33 = [(PKPaletteButtonGroupView *)self buttonStackViewTrailingConstraint];
-  [v33 setConstant:v32];
+  buttonStackViewTrailingConstraint = [(PKPaletteButtonGroupView *)self buttonStackViewTrailingConstraint];
+  [buttonStackViewTrailingConstraint setConstant:v32];
 }
 
-- (void)setScalingFactor:(double)a3
+- (void)setScalingFactor:(double)factor
 {
-  if (self->_scalingFactor != a3)
+  if (self->_scalingFactor != factor)
   {
-    self->_scalingFactor = a3;
+    self->_scalingFactor = factor;
     [(PKPaletteButtonGroupView *)self _updateUI];
   }
 }

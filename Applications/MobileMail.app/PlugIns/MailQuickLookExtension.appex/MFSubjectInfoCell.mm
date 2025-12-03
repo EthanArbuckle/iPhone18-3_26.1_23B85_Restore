@@ -1,14 +1,14 @@
 @interface MFSubjectInfoCell
-- (MFSubjectInfoCell)initWithFrame:(CGRect)a3;
+- (MFSubjectInfoCell)initWithFrame:(CGRect)frame;
 @end
 
 @implementation MFSubjectInfoCell
 
-- (MFSubjectInfoCell)initWithFrame:(CGRect)a3
+- (MFSubjectInfoCell)initWithFrame:(CGRect)frame
 {
   v28.receiver = self;
   v28.super_class = MFSubjectInfoCell;
-  v3 = [(MFSubjectInfoCell *)&v28 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MFSubjectInfoCell *)&v28 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
@@ -19,32 +19,32 @@
     [(UILabel *)v3->_subjectLabel setFont:v6];
 
     [(UILabel *)v3->_subjectLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-    v7 = [(MFSubjectInfoCell *)v3 contentView];
-    [v7 addSubview:v3->_subjectLabel];
+    contentView = [(MFSubjectInfoCell *)v3 contentView];
+    [contentView addSubview:v3->_subjectLabel];
 
     v8 = +[UIColor tableCellGroupedBackgroundColor];
-    v9 = [(MFSubjectInfoCell *)v3 contentView];
-    [v9 setBackgroundColor:v8];
+    contentView2 = [(MFSubjectInfoCell *)v3 contentView];
+    [contentView2 setBackgroundColor:v8];
 
-    v27 = [(UILabel *)v3->_subjectLabel leadingAnchor];
-    v24 = [(MFSubjectInfoCell *)v3 contentView];
-    v23 = [v24 leadingAnchor];
-    v22 = [v27 constraintEqualToAnchor:20.0 constant:?];
+    leadingAnchor = [(UILabel *)v3->_subjectLabel leadingAnchor];
+    contentView3 = [(MFSubjectInfoCell *)v3 contentView];
+    leadingAnchor2 = [contentView3 leadingAnchor];
+    v22 = [leadingAnchor constraintEqualToAnchor:20.0 constant:?];
     v29[0] = v22;
-    v26 = [(UILabel *)v3->_subjectLabel trailingAnchor];
-    v21 = [(MFSubjectInfoCell *)v3 contentView];
-    v20 = [v21 trailingAnchor];
-    v19 = [v26 constraintEqualToAnchor:-35.0 constant:?];
+    trailingAnchor = [(UILabel *)v3->_subjectLabel trailingAnchor];
+    contentView4 = [(MFSubjectInfoCell *)v3 contentView];
+    trailingAnchor2 = [contentView4 trailingAnchor];
+    v19 = [trailingAnchor constraintEqualToAnchor:-35.0 constant:?];
     v29[1] = v19;
-    v25 = [(UILabel *)v3->_subjectLabel topAnchor];
-    v18 = [(MFSubjectInfoCell *)v3 contentView];
-    v10 = [v18 topAnchor];
-    v11 = [v25 constraintEqualToAnchor:v10 constant:20.0];
+    topAnchor = [(UILabel *)v3->_subjectLabel topAnchor];
+    contentView5 = [(MFSubjectInfoCell *)v3 contentView];
+    topAnchor2 = [contentView5 topAnchor];
+    v11 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:20.0];
     v29[2] = v11;
-    v12 = [(UILabel *)v3->_subjectLabel bottomAnchor];
-    v13 = [(MFSubjectInfoCell *)v3 contentView];
-    v14 = [v13 bottomAnchor];
-    v15 = [v12 constraintEqualToAnchor:v14 constant:-20.0];
+    bottomAnchor = [(UILabel *)v3->_subjectLabel bottomAnchor];
+    contentView6 = [(MFSubjectInfoCell *)v3 contentView];
+    bottomAnchor2 = [contentView6 bottomAnchor];
+    v15 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-20.0];
     v29[3] = v15;
     v16 = [NSArray arrayWithObjects:v29 count:4];
     [NSLayoutConstraint activateConstraints:v16];

@@ -1,35 +1,35 @@
 @interface _INPBWholeHouseAudioMetadata
-- (BOOL)isEqual:(id)a3;
-- (_INPBWholeHouseAudioMetadata)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBWholeHouseAudioMetadata)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addIntentDestinationSpeakers:(id)a3;
-- (void)addIntentPermanentNames:(id)a3;
-- (void)addIntentSpeakerNames:(id)a3;
-- (void)addIntentSpeakerRooms:(id)a3;
-- (void)addPermanentNames:(id)a3;
-- (void)addSpeakerNames:(id)a3;
-- (void)addSpeakerRooms:(id)a3;
-- (void)addSpokenEntityName:(id)a3;
-- (void)addSpokenEntityType:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setHasIsAllSpeakers:(BOOL)a3;
-- (void)setHasIsInHere:(BOOL)a3;
-- (void)setHasIsParticipatingSpeaker:(BOOL)a3;
-- (void)setHasIsPauseOrStop:(BOOL)a3;
-- (void)setHasIsWholeHouseAudioCommand:(BOOL)a3;
-- (void)setHasNumberOfHomeAutomationWords:(BOOL)a3;
-- (void)setIntentDestinationSpeakers:(id)a3;
-- (void)setIntentPermanentNames:(id)a3;
-- (void)setIntentSpeakerNames:(id)a3;
-- (void)setIntentSpeakerRooms:(id)a3;
-- (void)setPermanentNames:(id)a3;
-- (void)setSpeakerNames:(id)a3;
-- (void)setSpeakerRooms:(id)a3;
-- (void)setSpokenEntityNames:(id)a3;
-- (void)setSpokenEntityTypes:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addIntentDestinationSpeakers:(id)speakers;
+- (void)addIntentPermanentNames:(id)names;
+- (void)addIntentSpeakerNames:(id)names;
+- (void)addIntentSpeakerRooms:(id)rooms;
+- (void)addPermanentNames:(id)names;
+- (void)addSpeakerNames:(id)names;
+- (void)addSpeakerRooms:(id)rooms;
+- (void)addSpokenEntityName:(id)name;
+- (void)addSpokenEntityType:(id)type;
+- (void)encodeWithCoder:(id)coder;
+- (void)setHasIsAllSpeakers:(BOOL)speakers;
+- (void)setHasIsInHere:(BOOL)here;
+- (void)setHasIsParticipatingSpeaker:(BOOL)speaker;
+- (void)setHasIsPauseOrStop:(BOOL)stop;
+- (void)setHasIsWholeHouseAudioCommand:(BOOL)command;
+- (void)setHasNumberOfHomeAutomationWords:(BOOL)words;
+- (void)setIntentDestinationSpeakers:(id)speakers;
+- (void)setIntentPermanentNames:(id)names;
+- (void)setIntentSpeakerNames:(id)names;
+- (void)setIntentSpeakerRooms:(id)rooms;
+- (void)setPermanentNames:(id)names;
+- (void)setSpeakerNames:(id)names;
+- (void)setSpeakerRooms:(id)rooms;
+- (void)setSpokenEntityNames:(id)names;
+- (void)setSpokenEntityTypes:(id)types;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBWholeHouseAudioMetadata
@@ -37,16 +37,16 @@
 - (id)dictionaryRepresentation
 {
   v121 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(_INPBWholeHouseAudioMetadata *)self hasHasExcept])
   {
     v4 = [MEMORY[0x1E696AD98] numberWithBool:{-[_INPBWholeHouseAudioMetadata hasExcept](self, "hasExcept")}];
-    [v3 setObject:v4 forKeyedSubscript:@"hasExcept"];
+    [dictionary setObject:v4 forKeyedSubscript:@"hasExcept"];
   }
 
   if ([(NSArray *)self->_intentDestinationSpeakers count])
   {
-    v5 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v108 = 0u;
     v109 = 0u;
     v110 = 0u;
@@ -66,8 +66,8 @@
             objc_enumerationMutation(v6);
           }
 
-          v11 = [*(*(&v108 + 1) + 8 * i) dictionaryRepresentation];
-          [v5 addObject:v11];
+          dictionaryRepresentation = [*(*(&v108 + 1) + 8 * i) dictionaryRepresentation];
+          [array addObject:dictionaryRepresentation];
         }
 
         v8 = [(NSArray *)v6 countByEnumeratingWithState:&v108 objects:v120 count:16];
@@ -76,12 +76,12 @@
       while (v8);
     }
 
-    [v3 setObject:v5 forKeyedSubscript:@"intentDestinationSpeakers"];
+    [dictionary setObject:array forKeyedSubscript:@"intentDestinationSpeakers"];
   }
 
   if ([(NSArray *)self->_intentPermanentNames count])
   {
-    v12 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v104 = 0u;
     v105 = 0u;
     v106 = 0u;
@@ -101,8 +101,8 @@
             objc_enumerationMutation(v13);
           }
 
-          v18 = [*(*(&v104 + 1) + 8 * j) dictionaryRepresentation];
-          [v12 addObject:v18];
+          dictionaryRepresentation2 = [*(*(&v104 + 1) + 8 * j) dictionaryRepresentation];
+          [array2 addObject:dictionaryRepresentation2];
         }
 
         v15 = [(NSArray *)v13 countByEnumeratingWithState:&v104 objects:v119 count:16];
@@ -111,12 +111,12 @@
       while (v15);
     }
 
-    [v3 setObject:v12 forKeyedSubscript:@"intentPermanentNames"];
+    [dictionary setObject:array2 forKeyedSubscript:@"intentPermanentNames"];
   }
 
   if ([(NSArray *)self->_intentSpeakerNames count])
   {
-    v19 = [MEMORY[0x1E695DF70] array];
+    array3 = [MEMORY[0x1E695DF70] array];
     v100 = 0u;
     v101 = 0u;
     v102 = 0u;
@@ -136,8 +136,8 @@
             objc_enumerationMutation(v20);
           }
 
-          v25 = [*(*(&v100 + 1) + 8 * k) dictionaryRepresentation];
-          [v19 addObject:v25];
+          dictionaryRepresentation3 = [*(*(&v100 + 1) + 8 * k) dictionaryRepresentation];
+          [array3 addObject:dictionaryRepresentation3];
         }
 
         v22 = [(NSArray *)v20 countByEnumeratingWithState:&v100 objects:v118 count:16];
@@ -146,12 +146,12 @@
       while (v22);
     }
 
-    [v3 setObject:v19 forKeyedSubscript:@"intentSpeakerNames"];
+    [dictionary setObject:array3 forKeyedSubscript:@"intentSpeakerNames"];
   }
 
   if ([(NSArray *)self->_intentSpeakerRooms count])
   {
-    v26 = [MEMORY[0x1E695DF70] array];
+    array4 = [MEMORY[0x1E695DF70] array];
     v96 = 0u;
     v97 = 0u;
     v98 = 0u;
@@ -171,8 +171,8 @@
             objc_enumerationMutation(v27);
           }
 
-          v32 = [*(*(&v96 + 1) + 8 * m) dictionaryRepresentation];
-          [v26 addObject:v32];
+          dictionaryRepresentation4 = [*(*(&v96 + 1) + 8 * m) dictionaryRepresentation];
+          [array4 addObject:dictionaryRepresentation4];
         }
 
         v29 = [(NSArray *)v27 countByEnumeratingWithState:&v96 objects:v117 count:16];
@@ -181,48 +181,48 @@
       while (v29);
     }
 
-    [v3 setObject:v26 forKeyedSubscript:@"intentSpeakerRooms"];
+    [dictionary setObject:array4 forKeyedSubscript:@"intentSpeakerRooms"];
   }
 
   if ([(_INPBWholeHouseAudioMetadata *)self hasIsAllSpeakers])
   {
     v33 = [MEMORY[0x1E696AD98] numberWithBool:{-[_INPBWholeHouseAudioMetadata isAllSpeakers](self, "isAllSpeakers")}];
-    [v3 setObject:v33 forKeyedSubscript:@"isAllSpeakers"];
+    [dictionary setObject:v33 forKeyedSubscript:@"isAllSpeakers"];
   }
 
   if ([(_INPBWholeHouseAudioMetadata *)self hasIsInHere])
   {
     v34 = [MEMORY[0x1E696AD98] numberWithBool:{-[_INPBWholeHouseAudioMetadata isInHere](self, "isInHere")}];
-    [v3 setObject:v34 forKeyedSubscript:@"isInHere"];
+    [dictionary setObject:v34 forKeyedSubscript:@"isInHere"];
   }
 
   if ([(_INPBWholeHouseAudioMetadata *)self hasIsParticipatingSpeaker])
   {
     v35 = [MEMORY[0x1E696AD98] numberWithBool:{-[_INPBWholeHouseAudioMetadata isParticipatingSpeaker](self, "isParticipatingSpeaker")}];
-    [v3 setObject:v35 forKeyedSubscript:@"isParticipatingSpeaker"];
+    [dictionary setObject:v35 forKeyedSubscript:@"isParticipatingSpeaker"];
   }
 
   if ([(_INPBWholeHouseAudioMetadata *)self hasIsPauseOrStop])
   {
     v36 = [MEMORY[0x1E696AD98] numberWithBool:{-[_INPBWholeHouseAudioMetadata isPauseOrStop](self, "isPauseOrStop")}];
-    [v3 setObject:v36 forKeyedSubscript:@"isPauseOrStop"];
+    [dictionary setObject:v36 forKeyedSubscript:@"isPauseOrStop"];
   }
 
   if ([(_INPBWholeHouseAudioMetadata *)self hasIsWholeHouseAudioCommand])
   {
     v37 = [MEMORY[0x1E696AD98] numberWithBool:{-[_INPBWholeHouseAudioMetadata isWholeHouseAudioCommand](self, "isWholeHouseAudioCommand")}];
-    [v3 setObject:v37 forKeyedSubscript:@"isWholeHouseAudioCommand"];
+    [dictionary setObject:v37 forKeyedSubscript:@"isWholeHouseAudioCommand"];
   }
 
   if ([(_INPBWholeHouseAudioMetadata *)self hasNumberOfHomeAutomationWords])
   {
     v38 = [MEMORY[0x1E696AD98] numberWithInt:{-[_INPBWholeHouseAudioMetadata numberOfHomeAutomationWords](self, "numberOfHomeAutomationWords")}];
-    [v3 setObject:v38 forKeyedSubscript:@"numberOfHomeAutomationWords"];
+    [dictionary setObject:v38 forKeyedSubscript:@"numberOfHomeAutomationWords"];
   }
 
   if ([(NSArray *)self->_permanentNames count])
   {
-    v39 = [MEMORY[0x1E695DF70] array];
+    array5 = [MEMORY[0x1E695DF70] array];
     v92 = 0u;
     v93 = 0u;
     v94 = 0u;
@@ -242,8 +242,8 @@
             objc_enumerationMutation(v40);
           }
 
-          v45 = [*(*(&v92 + 1) + 8 * n) dictionaryRepresentation];
-          [v39 addObject:v45];
+          dictionaryRepresentation5 = [*(*(&v92 + 1) + 8 * n) dictionaryRepresentation];
+          [array5 addObject:dictionaryRepresentation5];
         }
 
         v42 = [(NSArray *)v40 countByEnumeratingWithState:&v92 objects:v116 count:16];
@@ -252,12 +252,12 @@
       while (v42);
     }
 
-    [v3 setObject:v39 forKeyedSubscript:@"permanentNames"];
+    [dictionary setObject:array5 forKeyedSubscript:@"permanentNames"];
   }
 
   if ([(NSArray *)self->_speakerNames count])
   {
-    v46 = [MEMORY[0x1E695DF70] array];
+    array6 = [MEMORY[0x1E695DF70] array];
     v88 = 0u;
     v89 = 0u;
     v90 = 0u;
@@ -277,8 +277,8 @@
             objc_enumerationMutation(v47);
           }
 
-          v52 = [*(*(&v88 + 1) + 8 * ii) dictionaryRepresentation];
-          [v46 addObject:v52];
+          dictionaryRepresentation6 = [*(*(&v88 + 1) + 8 * ii) dictionaryRepresentation];
+          [array6 addObject:dictionaryRepresentation6];
         }
 
         v49 = [(NSArray *)v47 countByEnumeratingWithState:&v88 objects:v115 count:16];
@@ -287,12 +287,12 @@
       while (v49);
     }
 
-    [v3 setObject:v46 forKeyedSubscript:@"speakerNames"];
+    [dictionary setObject:array6 forKeyedSubscript:@"speakerNames"];
   }
 
   if ([(NSArray *)self->_speakerRooms count])
   {
-    v53 = [MEMORY[0x1E695DF70] array];
+    array7 = [MEMORY[0x1E695DF70] array];
     v84 = 0u;
     v85 = 0u;
     v86 = 0u;
@@ -312,8 +312,8 @@
             objc_enumerationMutation(v54);
           }
 
-          v59 = [*(*(&v84 + 1) + 8 * jj) dictionaryRepresentation];
-          [v53 addObject:v59];
+          dictionaryRepresentation7 = [*(*(&v84 + 1) + 8 * jj) dictionaryRepresentation];
+          [array7 addObject:dictionaryRepresentation7];
         }
 
         v56 = [(NSArray *)v54 countByEnumeratingWithState:&v84 objects:v114 count:16];
@@ -322,12 +322,12 @@
       while (v56);
     }
 
-    [v3 setObject:v53 forKeyedSubscript:@"speakerRooms"];
+    [dictionary setObject:array7 forKeyedSubscript:@"speakerRooms"];
   }
 
   if ([(NSArray *)self->_spokenEntityNames count])
   {
-    v60 = [MEMORY[0x1E695DF70] array];
+    array8 = [MEMORY[0x1E695DF70] array];
     v80 = 0u;
     v81 = 0u;
     v82 = 0u;
@@ -347,8 +347,8 @@
             objc_enumerationMutation(v61);
           }
 
-          v66 = [*(*(&v80 + 1) + 8 * kk) dictionaryRepresentation];
-          [v60 addObject:v66];
+          dictionaryRepresentation8 = [*(*(&v80 + 1) + 8 * kk) dictionaryRepresentation];
+          [array8 addObject:dictionaryRepresentation8];
         }
 
         v63 = [(NSArray *)v61 countByEnumeratingWithState:&v80 objects:v113 count:16];
@@ -357,12 +357,12 @@
       while (v63);
     }
 
-    [v3 setObject:v60 forKeyedSubscript:@"spokenEntityName"];
+    [dictionary setObject:array8 forKeyedSubscript:@"spokenEntityName"];
   }
 
   if ([(NSArray *)self->_spokenEntityTypes count])
   {
-    v67 = [MEMORY[0x1E695DF70] array];
+    array9 = [MEMORY[0x1E695DF70] array];
     v76 = 0u;
     v77 = 0u;
     v78 = 0u;
@@ -382,8 +382,8 @@
             objc_enumerationMutation(v68);
           }
 
-          v73 = [*(*(&v76 + 1) + 8 * mm) dictionaryRepresentation];
-          [v67 addObject:v73];
+          dictionaryRepresentation9 = [*(*(&v76 + 1) + 8 * mm) dictionaryRepresentation];
+          [array9 addObject:dictionaryRepresentation9];
         }
 
         v70 = [(NSArray *)v68 countByEnumeratingWithState:&v76 objects:v112 count:16];
@@ -392,12 +392,12 @@
       while (v70);
     }
 
-    [v3 setObject:v67 forKeyedSubscript:@"spokenEntityType"];
+    [dictionary setObject:array9 forKeyedSubscript:@"spokenEntityType"];
   }
 
   v74 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -484,46 +484,46 @@
   return v15 ^ v16 ^ [(NSArray *)self->_spokenEntityTypes hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_75;
   }
 
-  v5 = [(_INPBWholeHouseAudioMetadata *)self hasHasExcept];
-  if (v5 != [v4 hasHasExcept])
+  hasHasExcept = [(_INPBWholeHouseAudioMetadata *)self hasHasExcept];
+  if (hasHasExcept != [equalCopy hasHasExcept])
   {
     goto LABEL_75;
   }
 
   if ([(_INPBWholeHouseAudioMetadata *)self hasHasExcept])
   {
-    if ([v4 hasHasExcept])
+    if ([equalCopy hasHasExcept])
     {
       hasExcept = self->_hasExcept;
-      if (hasExcept != [v4 hasExcept])
+      if (hasExcept != [equalCopy hasExcept])
       {
         goto LABEL_75;
       }
     }
   }
 
-  v7 = [(_INPBWholeHouseAudioMetadata *)self intentDestinationSpeakers];
-  v8 = [v4 intentDestinationSpeakers];
-  if ((v7 != 0) == (v8 == 0))
+  intentDestinationSpeakers = [(_INPBWholeHouseAudioMetadata *)self intentDestinationSpeakers];
+  intentDestinationSpeakers2 = [equalCopy intentDestinationSpeakers];
+  if ((intentDestinationSpeakers != 0) == (intentDestinationSpeakers2 == 0))
   {
     goto LABEL_74;
   }
 
-  v9 = [(_INPBWholeHouseAudioMetadata *)self intentDestinationSpeakers];
-  if (v9)
+  intentDestinationSpeakers3 = [(_INPBWholeHouseAudioMetadata *)self intentDestinationSpeakers];
+  if (intentDestinationSpeakers3)
   {
-    v10 = v9;
-    v11 = [(_INPBWholeHouseAudioMetadata *)self intentDestinationSpeakers];
-    v12 = [v4 intentDestinationSpeakers];
-    v13 = [v11 isEqual:v12];
+    v10 = intentDestinationSpeakers3;
+    intentDestinationSpeakers4 = [(_INPBWholeHouseAudioMetadata *)self intentDestinationSpeakers];
+    intentDestinationSpeakers5 = [equalCopy intentDestinationSpeakers];
+    v13 = [intentDestinationSpeakers4 isEqual:intentDestinationSpeakers5];
 
     if (!v13)
     {
@@ -535,20 +535,20 @@
   {
   }
 
-  v7 = [(_INPBWholeHouseAudioMetadata *)self intentPermanentNames];
-  v8 = [v4 intentPermanentNames];
-  if ((v7 != 0) == (v8 == 0))
+  intentDestinationSpeakers = [(_INPBWholeHouseAudioMetadata *)self intentPermanentNames];
+  intentDestinationSpeakers2 = [equalCopy intentPermanentNames];
+  if ((intentDestinationSpeakers != 0) == (intentDestinationSpeakers2 == 0))
   {
     goto LABEL_74;
   }
 
-  v14 = [(_INPBWholeHouseAudioMetadata *)self intentPermanentNames];
-  if (v14)
+  intentPermanentNames = [(_INPBWholeHouseAudioMetadata *)self intentPermanentNames];
+  if (intentPermanentNames)
   {
-    v15 = v14;
-    v16 = [(_INPBWholeHouseAudioMetadata *)self intentPermanentNames];
-    v17 = [v4 intentPermanentNames];
-    v18 = [v16 isEqual:v17];
+    v15 = intentPermanentNames;
+    intentPermanentNames2 = [(_INPBWholeHouseAudioMetadata *)self intentPermanentNames];
+    intentPermanentNames3 = [equalCopy intentPermanentNames];
+    v18 = [intentPermanentNames2 isEqual:intentPermanentNames3];
 
     if (!v18)
     {
@@ -560,20 +560,20 @@
   {
   }
 
-  v7 = [(_INPBWholeHouseAudioMetadata *)self intentSpeakerNames];
-  v8 = [v4 intentSpeakerNames];
-  if ((v7 != 0) == (v8 == 0))
+  intentDestinationSpeakers = [(_INPBWholeHouseAudioMetadata *)self intentSpeakerNames];
+  intentDestinationSpeakers2 = [equalCopy intentSpeakerNames];
+  if ((intentDestinationSpeakers != 0) == (intentDestinationSpeakers2 == 0))
   {
     goto LABEL_74;
   }
 
-  v19 = [(_INPBWholeHouseAudioMetadata *)self intentSpeakerNames];
-  if (v19)
+  intentSpeakerNames = [(_INPBWholeHouseAudioMetadata *)self intentSpeakerNames];
+  if (intentSpeakerNames)
   {
-    v20 = v19;
-    v21 = [(_INPBWholeHouseAudioMetadata *)self intentSpeakerNames];
-    v22 = [v4 intentSpeakerNames];
-    v23 = [v21 isEqual:v22];
+    v20 = intentSpeakerNames;
+    intentSpeakerNames2 = [(_INPBWholeHouseAudioMetadata *)self intentSpeakerNames];
+    intentSpeakerNames3 = [equalCopy intentSpeakerNames];
+    v23 = [intentSpeakerNames2 isEqual:intentSpeakerNames3];
 
     if (!v23)
     {
@@ -585,20 +585,20 @@
   {
   }
 
-  v7 = [(_INPBWholeHouseAudioMetadata *)self intentSpeakerRooms];
-  v8 = [v4 intentSpeakerRooms];
-  if ((v7 != 0) == (v8 == 0))
+  intentDestinationSpeakers = [(_INPBWholeHouseAudioMetadata *)self intentSpeakerRooms];
+  intentDestinationSpeakers2 = [equalCopy intentSpeakerRooms];
+  if ((intentDestinationSpeakers != 0) == (intentDestinationSpeakers2 == 0))
   {
     goto LABEL_74;
   }
 
-  v24 = [(_INPBWholeHouseAudioMetadata *)self intentSpeakerRooms];
-  if (v24)
+  intentSpeakerRooms = [(_INPBWholeHouseAudioMetadata *)self intentSpeakerRooms];
+  if (intentSpeakerRooms)
   {
-    v25 = v24;
-    v26 = [(_INPBWholeHouseAudioMetadata *)self intentSpeakerRooms];
-    v27 = [v4 intentSpeakerRooms];
-    v28 = [v26 isEqual:v27];
+    v25 = intentSpeakerRooms;
+    intentSpeakerRooms2 = [(_INPBWholeHouseAudioMetadata *)self intentSpeakerRooms];
+    intentSpeakerRooms3 = [equalCopy intentSpeakerRooms];
+    v28 = [intentSpeakerRooms2 isEqual:intentSpeakerRooms3];
 
     if (!v28)
     {
@@ -610,128 +610,128 @@
   {
   }
 
-  v29 = [(_INPBWholeHouseAudioMetadata *)self hasIsAllSpeakers];
-  if (v29 != [v4 hasIsAllSpeakers])
+  hasIsAllSpeakers = [(_INPBWholeHouseAudioMetadata *)self hasIsAllSpeakers];
+  if (hasIsAllSpeakers != [equalCopy hasIsAllSpeakers])
   {
     goto LABEL_75;
   }
 
   if ([(_INPBWholeHouseAudioMetadata *)self hasIsAllSpeakers])
   {
-    if ([v4 hasIsAllSpeakers])
+    if ([equalCopy hasIsAllSpeakers])
     {
       isAllSpeakers = self->_isAllSpeakers;
-      if (isAllSpeakers != [v4 isAllSpeakers])
+      if (isAllSpeakers != [equalCopy isAllSpeakers])
       {
         goto LABEL_75;
       }
     }
   }
 
-  v31 = [(_INPBWholeHouseAudioMetadata *)self hasIsInHere];
-  if (v31 != [v4 hasIsInHere])
+  hasIsInHere = [(_INPBWholeHouseAudioMetadata *)self hasIsInHere];
+  if (hasIsInHere != [equalCopy hasIsInHere])
   {
     goto LABEL_75;
   }
 
   if ([(_INPBWholeHouseAudioMetadata *)self hasIsInHere])
   {
-    if ([v4 hasIsInHere])
+    if ([equalCopy hasIsInHere])
     {
       isInHere = self->_isInHere;
-      if (isInHere != [v4 isInHere])
+      if (isInHere != [equalCopy isInHere])
       {
         goto LABEL_75;
       }
     }
   }
 
-  v33 = [(_INPBWholeHouseAudioMetadata *)self hasIsParticipatingSpeaker];
-  if (v33 != [v4 hasIsParticipatingSpeaker])
+  hasIsParticipatingSpeaker = [(_INPBWholeHouseAudioMetadata *)self hasIsParticipatingSpeaker];
+  if (hasIsParticipatingSpeaker != [equalCopy hasIsParticipatingSpeaker])
   {
     goto LABEL_75;
   }
 
   if ([(_INPBWholeHouseAudioMetadata *)self hasIsParticipatingSpeaker])
   {
-    if ([v4 hasIsParticipatingSpeaker])
+    if ([equalCopy hasIsParticipatingSpeaker])
     {
       isParticipatingSpeaker = self->_isParticipatingSpeaker;
-      if (isParticipatingSpeaker != [v4 isParticipatingSpeaker])
+      if (isParticipatingSpeaker != [equalCopy isParticipatingSpeaker])
       {
         goto LABEL_75;
       }
     }
   }
 
-  v35 = [(_INPBWholeHouseAudioMetadata *)self hasIsPauseOrStop];
-  if (v35 != [v4 hasIsPauseOrStop])
+  hasIsPauseOrStop = [(_INPBWholeHouseAudioMetadata *)self hasIsPauseOrStop];
+  if (hasIsPauseOrStop != [equalCopy hasIsPauseOrStop])
   {
     goto LABEL_75;
   }
 
   if ([(_INPBWholeHouseAudioMetadata *)self hasIsPauseOrStop])
   {
-    if ([v4 hasIsPauseOrStop])
+    if ([equalCopy hasIsPauseOrStop])
     {
       isPauseOrStop = self->_isPauseOrStop;
-      if (isPauseOrStop != [v4 isPauseOrStop])
+      if (isPauseOrStop != [equalCopy isPauseOrStop])
       {
         goto LABEL_75;
       }
     }
   }
 
-  v37 = [(_INPBWholeHouseAudioMetadata *)self hasIsWholeHouseAudioCommand];
-  if (v37 != [v4 hasIsWholeHouseAudioCommand])
+  hasIsWholeHouseAudioCommand = [(_INPBWholeHouseAudioMetadata *)self hasIsWholeHouseAudioCommand];
+  if (hasIsWholeHouseAudioCommand != [equalCopy hasIsWholeHouseAudioCommand])
   {
     goto LABEL_75;
   }
 
   if ([(_INPBWholeHouseAudioMetadata *)self hasIsWholeHouseAudioCommand])
   {
-    if ([v4 hasIsWholeHouseAudioCommand])
+    if ([equalCopy hasIsWholeHouseAudioCommand])
     {
       isWholeHouseAudioCommand = self->_isWholeHouseAudioCommand;
-      if (isWholeHouseAudioCommand != [v4 isWholeHouseAudioCommand])
+      if (isWholeHouseAudioCommand != [equalCopy isWholeHouseAudioCommand])
       {
         goto LABEL_75;
       }
     }
   }
 
-  v39 = [(_INPBWholeHouseAudioMetadata *)self hasNumberOfHomeAutomationWords];
-  if (v39 != [v4 hasNumberOfHomeAutomationWords])
+  hasNumberOfHomeAutomationWords = [(_INPBWholeHouseAudioMetadata *)self hasNumberOfHomeAutomationWords];
+  if (hasNumberOfHomeAutomationWords != [equalCopy hasNumberOfHomeAutomationWords])
   {
     goto LABEL_75;
   }
 
   if ([(_INPBWholeHouseAudioMetadata *)self hasNumberOfHomeAutomationWords])
   {
-    if ([v4 hasNumberOfHomeAutomationWords])
+    if ([equalCopy hasNumberOfHomeAutomationWords])
     {
       numberOfHomeAutomationWords = self->_numberOfHomeAutomationWords;
-      if (numberOfHomeAutomationWords != [v4 numberOfHomeAutomationWords])
+      if (numberOfHomeAutomationWords != [equalCopy numberOfHomeAutomationWords])
       {
         goto LABEL_75;
       }
     }
   }
 
-  v7 = [(_INPBWholeHouseAudioMetadata *)self permanentNames];
-  v8 = [v4 permanentNames];
-  if ((v7 != 0) == (v8 == 0))
+  intentDestinationSpeakers = [(_INPBWholeHouseAudioMetadata *)self permanentNames];
+  intentDestinationSpeakers2 = [equalCopy permanentNames];
+  if ((intentDestinationSpeakers != 0) == (intentDestinationSpeakers2 == 0))
   {
     goto LABEL_74;
   }
 
-  v41 = [(_INPBWholeHouseAudioMetadata *)self permanentNames];
-  if (v41)
+  permanentNames = [(_INPBWholeHouseAudioMetadata *)self permanentNames];
+  if (permanentNames)
   {
-    v42 = v41;
-    v43 = [(_INPBWholeHouseAudioMetadata *)self permanentNames];
-    v44 = [v4 permanentNames];
-    v45 = [v43 isEqual:v44];
+    v42 = permanentNames;
+    permanentNames2 = [(_INPBWholeHouseAudioMetadata *)self permanentNames];
+    permanentNames3 = [equalCopy permanentNames];
+    v45 = [permanentNames2 isEqual:permanentNames3];
 
     if (!v45)
     {
@@ -743,20 +743,20 @@
   {
   }
 
-  v7 = [(_INPBWholeHouseAudioMetadata *)self speakerNames];
-  v8 = [v4 speakerNames];
-  if ((v7 != 0) == (v8 == 0))
+  intentDestinationSpeakers = [(_INPBWholeHouseAudioMetadata *)self speakerNames];
+  intentDestinationSpeakers2 = [equalCopy speakerNames];
+  if ((intentDestinationSpeakers != 0) == (intentDestinationSpeakers2 == 0))
   {
     goto LABEL_74;
   }
 
-  v46 = [(_INPBWholeHouseAudioMetadata *)self speakerNames];
-  if (v46)
+  speakerNames = [(_INPBWholeHouseAudioMetadata *)self speakerNames];
+  if (speakerNames)
   {
-    v47 = v46;
-    v48 = [(_INPBWholeHouseAudioMetadata *)self speakerNames];
-    v49 = [v4 speakerNames];
-    v50 = [v48 isEqual:v49];
+    v47 = speakerNames;
+    speakerNames2 = [(_INPBWholeHouseAudioMetadata *)self speakerNames];
+    speakerNames3 = [equalCopy speakerNames];
+    v50 = [speakerNames2 isEqual:speakerNames3];
 
     if (!v50)
     {
@@ -768,20 +768,20 @@
   {
   }
 
-  v7 = [(_INPBWholeHouseAudioMetadata *)self speakerRooms];
-  v8 = [v4 speakerRooms];
-  if ((v7 != 0) == (v8 == 0))
+  intentDestinationSpeakers = [(_INPBWholeHouseAudioMetadata *)self speakerRooms];
+  intentDestinationSpeakers2 = [equalCopy speakerRooms];
+  if ((intentDestinationSpeakers != 0) == (intentDestinationSpeakers2 == 0))
   {
     goto LABEL_74;
   }
 
-  v51 = [(_INPBWholeHouseAudioMetadata *)self speakerRooms];
-  if (v51)
+  speakerRooms = [(_INPBWholeHouseAudioMetadata *)self speakerRooms];
+  if (speakerRooms)
   {
-    v52 = v51;
-    v53 = [(_INPBWholeHouseAudioMetadata *)self speakerRooms];
-    v54 = [v4 speakerRooms];
-    v55 = [v53 isEqual:v54];
+    v52 = speakerRooms;
+    speakerRooms2 = [(_INPBWholeHouseAudioMetadata *)self speakerRooms];
+    speakerRooms3 = [equalCopy speakerRooms];
+    v55 = [speakerRooms2 isEqual:speakerRooms3];
 
     if (!v55)
     {
@@ -793,20 +793,20 @@
   {
   }
 
-  v7 = [(_INPBWholeHouseAudioMetadata *)self spokenEntityNames];
-  v8 = [v4 spokenEntityNames];
-  if ((v7 != 0) == (v8 == 0))
+  intentDestinationSpeakers = [(_INPBWholeHouseAudioMetadata *)self spokenEntityNames];
+  intentDestinationSpeakers2 = [equalCopy spokenEntityNames];
+  if ((intentDestinationSpeakers != 0) == (intentDestinationSpeakers2 == 0))
   {
     goto LABEL_74;
   }
 
-  v56 = [(_INPBWholeHouseAudioMetadata *)self spokenEntityNames];
-  if (v56)
+  spokenEntityNames = [(_INPBWholeHouseAudioMetadata *)self spokenEntityNames];
+  if (spokenEntityNames)
   {
-    v57 = v56;
-    v58 = [(_INPBWholeHouseAudioMetadata *)self spokenEntityNames];
-    v59 = [v4 spokenEntityNames];
-    v60 = [v58 isEqual:v59];
+    v57 = spokenEntityNames;
+    spokenEntityNames2 = [(_INPBWholeHouseAudioMetadata *)self spokenEntityNames];
+    spokenEntityNames3 = [equalCopy spokenEntityNames];
+    v60 = [spokenEntityNames2 isEqual:spokenEntityNames3];
 
     if (!v60)
     {
@@ -818,12 +818,12 @@
   {
   }
 
-  v7 = [(_INPBWholeHouseAudioMetadata *)self spokenEntityTypes];
-  v8 = [v4 spokenEntityTypes];
-  if ((v7 != 0) != (v8 == 0))
+  intentDestinationSpeakers = [(_INPBWholeHouseAudioMetadata *)self spokenEntityTypes];
+  intentDestinationSpeakers2 = [equalCopy spokenEntityTypes];
+  if ((intentDestinationSpeakers != 0) != (intentDestinationSpeakers2 == 0))
   {
-    v61 = [(_INPBWholeHouseAudioMetadata *)self spokenEntityTypes];
-    if (!v61)
+    spokenEntityTypes = [(_INPBWholeHouseAudioMetadata *)self spokenEntityTypes];
+    if (!spokenEntityTypes)
     {
 
 LABEL_78:
@@ -831,10 +831,10 @@ LABEL_78:
       goto LABEL_76;
     }
 
-    v62 = v61;
-    v63 = [(_INPBWholeHouseAudioMetadata *)self spokenEntityTypes];
-    v64 = [v4 spokenEntityTypes];
-    v65 = [v63 isEqual:v64];
+    v62 = spokenEntityTypes;
+    spokenEntityTypes2 = [(_INPBWholeHouseAudioMetadata *)self spokenEntityTypes];
+    spokenEntityTypes3 = [equalCopy spokenEntityTypes];
+    v65 = [spokenEntityTypes2 isEqual:spokenEntityTypes3];
 
     if (v65)
     {
@@ -854,7 +854,7 @@ LABEL_76:
   return v66;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBWholeHouseAudioMetadata allocWithZone:](_INPBWholeHouseAudioMetadata init];
   if ([(_INPBWholeHouseAudioMetadata *)self hasHasExcept])
@@ -862,16 +862,16 @@ LABEL_76:
     [(_INPBWholeHouseAudioMetadata *)v5 setHasExcept:[(_INPBWholeHouseAudioMetadata *)self hasExcept]];
   }
 
-  v6 = [(NSArray *)self->_intentDestinationSpeakers copyWithZone:a3];
+  v6 = [(NSArray *)self->_intentDestinationSpeakers copyWithZone:zone];
   [(_INPBWholeHouseAudioMetadata *)v5 setIntentDestinationSpeakers:v6];
 
-  v7 = [(NSArray *)self->_intentPermanentNames copyWithZone:a3];
+  v7 = [(NSArray *)self->_intentPermanentNames copyWithZone:zone];
   [(_INPBWholeHouseAudioMetadata *)v5 setIntentPermanentNames:v7];
 
-  v8 = [(NSArray *)self->_intentSpeakerNames copyWithZone:a3];
+  v8 = [(NSArray *)self->_intentSpeakerNames copyWithZone:zone];
   [(_INPBWholeHouseAudioMetadata *)v5 setIntentSpeakerNames:v8];
 
-  v9 = [(NSArray *)self->_intentSpeakerRooms copyWithZone:a3];
+  v9 = [(NSArray *)self->_intentSpeakerRooms copyWithZone:zone];
   [(_INPBWholeHouseAudioMetadata *)v5 setIntentSpeakerRooms:v9];
 
   if ([(_INPBWholeHouseAudioMetadata *)self hasIsAllSpeakers])
@@ -904,52 +904,52 @@ LABEL_76:
     [(_INPBWholeHouseAudioMetadata *)v5 setNumberOfHomeAutomationWords:[(_INPBWholeHouseAudioMetadata *)self numberOfHomeAutomationWords]];
   }
 
-  v10 = [(NSArray *)self->_permanentNames copyWithZone:a3];
+  v10 = [(NSArray *)self->_permanentNames copyWithZone:zone];
   [(_INPBWholeHouseAudioMetadata *)v5 setPermanentNames:v10];
 
-  v11 = [(NSArray *)self->_speakerNames copyWithZone:a3];
+  v11 = [(NSArray *)self->_speakerNames copyWithZone:zone];
   [(_INPBWholeHouseAudioMetadata *)v5 setSpeakerNames:v11];
 
-  v12 = [(NSArray *)self->_speakerRooms copyWithZone:a3];
+  v12 = [(NSArray *)self->_speakerRooms copyWithZone:zone];
   [(_INPBWholeHouseAudioMetadata *)v5 setSpeakerRooms:v12];
 
-  v13 = [(NSArray *)self->_spokenEntityNames copyWithZone:a3];
+  v13 = [(NSArray *)self->_spokenEntityNames copyWithZone:zone];
   [(_INPBWholeHouseAudioMetadata *)v5 setSpokenEntityNames:v13];
 
-  v14 = [(NSArray *)self->_spokenEntityTypes copyWithZone:a3];
+  v14 = [(NSArray *)self->_spokenEntityTypes copyWithZone:zone];
   [(_INPBWholeHouseAudioMetadata *)v5 setSpokenEntityTypes:v14];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBWholeHouseAudioMetadata *)self data];
+  coderCopy = coder;
+  data = [(_INPBWholeHouseAudioMetadata *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBWholeHouseAudioMetadata)initWithCoder:(id)a3
+- (_INPBWholeHouseAudioMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBWholeHouseAudioMetadata *)self initWithData:v6];
+    self = [(_INPBWholeHouseAudioMetadata *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v112 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if ([(_INPBWholeHouseAudioMetadata *)self hasHasExcept])
   {
     hasExcept = self->_hasExcept;
@@ -1283,144 +1283,144 @@ LABEL_76:
   v66 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addSpokenEntityType:(id)a3
+- (void)addSpokenEntityType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   spokenEntityTypes = self->_spokenEntityTypes;
-  v8 = v4;
+  v8 = typeCopy;
   if (!spokenEntityTypes)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_spokenEntityTypes;
-    self->_spokenEntityTypes = v6;
+    self->_spokenEntityTypes = array;
 
-    v4 = v8;
+    typeCopy = v8;
     spokenEntityTypes = self->_spokenEntityTypes;
   }
 
-  [(NSArray *)spokenEntityTypes addObject:v4];
+  [(NSArray *)spokenEntityTypes addObject:typeCopy];
 }
 
-- (void)setSpokenEntityTypes:(id)a3
+- (void)setSpokenEntityTypes:(id)types
 {
-  v4 = [a3 mutableCopy];
+  v4 = [types mutableCopy];
   spokenEntityTypes = self->_spokenEntityTypes;
   self->_spokenEntityTypes = v4;
 
   MEMORY[0x1EEE66BB8](v4, spokenEntityTypes);
 }
 
-- (void)addSpokenEntityName:(id)a3
+- (void)addSpokenEntityName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   spokenEntityNames = self->_spokenEntityNames;
-  v8 = v4;
+  v8 = nameCopy;
   if (!spokenEntityNames)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_spokenEntityNames;
-    self->_spokenEntityNames = v6;
+    self->_spokenEntityNames = array;
 
-    v4 = v8;
+    nameCopy = v8;
     spokenEntityNames = self->_spokenEntityNames;
   }
 
-  [(NSArray *)spokenEntityNames addObject:v4];
+  [(NSArray *)spokenEntityNames addObject:nameCopy];
 }
 
-- (void)setSpokenEntityNames:(id)a3
+- (void)setSpokenEntityNames:(id)names
 {
-  v4 = [a3 mutableCopy];
+  v4 = [names mutableCopy];
   spokenEntityNames = self->_spokenEntityNames;
   self->_spokenEntityNames = v4;
 
   MEMORY[0x1EEE66BB8](v4, spokenEntityNames);
 }
 
-- (void)addSpeakerRooms:(id)a3
+- (void)addSpeakerRooms:(id)rooms
 {
-  v4 = a3;
+  roomsCopy = rooms;
   speakerRooms = self->_speakerRooms;
-  v8 = v4;
+  v8 = roomsCopy;
   if (!speakerRooms)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_speakerRooms;
-    self->_speakerRooms = v6;
+    self->_speakerRooms = array;
 
-    v4 = v8;
+    roomsCopy = v8;
     speakerRooms = self->_speakerRooms;
   }
 
-  [(NSArray *)speakerRooms addObject:v4];
+  [(NSArray *)speakerRooms addObject:roomsCopy];
 }
 
-- (void)setSpeakerRooms:(id)a3
+- (void)setSpeakerRooms:(id)rooms
 {
-  v4 = [a3 mutableCopy];
+  v4 = [rooms mutableCopy];
   speakerRooms = self->_speakerRooms;
   self->_speakerRooms = v4;
 
   MEMORY[0x1EEE66BB8](v4, speakerRooms);
 }
 
-- (void)addSpeakerNames:(id)a3
+- (void)addSpeakerNames:(id)names
 {
-  v4 = a3;
+  namesCopy = names;
   speakerNames = self->_speakerNames;
-  v8 = v4;
+  v8 = namesCopy;
   if (!speakerNames)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_speakerNames;
-    self->_speakerNames = v6;
+    self->_speakerNames = array;
 
-    v4 = v8;
+    namesCopy = v8;
     speakerNames = self->_speakerNames;
   }
 
-  [(NSArray *)speakerNames addObject:v4];
+  [(NSArray *)speakerNames addObject:namesCopy];
 }
 
-- (void)setSpeakerNames:(id)a3
+- (void)setSpeakerNames:(id)names
 {
-  v4 = [a3 mutableCopy];
+  v4 = [names mutableCopy];
   speakerNames = self->_speakerNames;
   self->_speakerNames = v4;
 
   MEMORY[0x1EEE66BB8](v4, speakerNames);
 }
 
-- (void)addPermanentNames:(id)a3
+- (void)addPermanentNames:(id)names
 {
-  v4 = a3;
+  namesCopy = names;
   permanentNames = self->_permanentNames;
-  v8 = v4;
+  v8 = namesCopy;
   if (!permanentNames)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_permanentNames;
-    self->_permanentNames = v6;
+    self->_permanentNames = array;
 
-    v4 = v8;
+    namesCopy = v8;
     permanentNames = self->_permanentNames;
   }
 
-  [(NSArray *)permanentNames addObject:v4];
+  [(NSArray *)permanentNames addObject:namesCopy];
 }
 
-- (void)setPermanentNames:(id)a3
+- (void)setPermanentNames:(id)names
 {
-  v4 = [a3 mutableCopy];
+  v4 = [names mutableCopy];
   permanentNames = self->_permanentNames;
   self->_permanentNames = v4;
 
   MEMORY[0x1EEE66BB8](v4, permanentNames);
 }
 
-- (void)setHasNumberOfHomeAutomationWords:(BOOL)a3
+- (void)setHasNumberOfHomeAutomationWords:(BOOL)words
 {
-  if (a3)
+  if (words)
   {
     v3 = 64;
   }
@@ -1433,9 +1433,9 @@ LABEL_76:
   *&self->_has = *&self->_has & 0xBF | v3;
 }
 
-- (void)setHasIsWholeHouseAudioCommand:(BOOL)a3
+- (void)setHasIsWholeHouseAudioCommand:(BOOL)command
 {
-  if (a3)
+  if (command)
   {
     v3 = 32;
   }
@@ -1448,9 +1448,9 @@ LABEL_76:
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasIsPauseOrStop:(BOOL)a3
+- (void)setHasIsPauseOrStop:(BOOL)stop
 {
-  if (a3)
+  if (stop)
   {
     v3 = 16;
   }
@@ -1463,9 +1463,9 @@ LABEL_76:
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasIsParticipatingSpeaker:(BOOL)a3
+- (void)setHasIsParticipatingSpeaker:(BOOL)speaker
 {
-  if (a3)
+  if (speaker)
   {
     v3 = 8;
   }
@@ -1478,9 +1478,9 @@ LABEL_76:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasIsInHere:(BOOL)a3
+- (void)setHasIsInHere:(BOOL)here
 {
-  if (a3)
+  if (here)
   {
     v3 = 4;
   }
@@ -1493,9 +1493,9 @@ LABEL_76:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasIsAllSpeakers:(BOOL)a3
+- (void)setHasIsAllSpeakers:(BOOL)speakers
 {
-  if (a3)
+  if (speakers)
   {
     v3 = 2;
   }
@@ -1508,108 +1508,108 @@ LABEL_76:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)addIntentSpeakerRooms:(id)a3
+- (void)addIntentSpeakerRooms:(id)rooms
 {
-  v4 = a3;
+  roomsCopy = rooms;
   intentSpeakerRooms = self->_intentSpeakerRooms;
-  v8 = v4;
+  v8 = roomsCopy;
   if (!intentSpeakerRooms)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_intentSpeakerRooms;
-    self->_intentSpeakerRooms = v6;
+    self->_intentSpeakerRooms = array;
 
-    v4 = v8;
+    roomsCopy = v8;
     intentSpeakerRooms = self->_intentSpeakerRooms;
   }
 
-  [(NSArray *)intentSpeakerRooms addObject:v4];
+  [(NSArray *)intentSpeakerRooms addObject:roomsCopy];
 }
 
-- (void)setIntentSpeakerRooms:(id)a3
+- (void)setIntentSpeakerRooms:(id)rooms
 {
-  v4 = [a3 mutableCopy];
+  v4 = [rooms mutableCopy];
   intentSpeakerRooms = self->_intentSpeakerRooms;
   self->_intentSpeakerRooms = v4;
 
   MEMORY[0x1EEE66BB8](v4, intentSpeakerRooms);
 }
 
-- (void)addIntentSpeakerNames:(id)a3
+- (void)addIntentSpeakerNames:(id)names
 {
-  v4 = a3;
+  namesCopy = names;
   intentSpeakerNames = self->_intentSpeakerNames;
-  v8 = v4;
+  v8 = namesCopy;
   if (!intentSpeakerNames)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_intentSpeakerNames;
-    self->_intentSpeakerNames = v6;
+    self->_intentSpeakerNames = array;
 
-    v4 = v8;
+    namesCopy = v8;
     intentSpeakerNames = self->_intentSpeakerNames;
   }
 
-  [(NSArray *)intentSpeakerNames addObject:v4];
+  [(NSArray *)intentSpeakerNames addObject:namesCopy];
 }
 
-- (void)setIntentSpeakerNames:(id)a3
+- (void)setIntentSpeakerNames:(id)names
 {
-  v4 = [a3 mutableCopy];
+  v4 = [names mutableCopy];
   intentSpeakerNames = self->_intentSpeakerNames;
   self->_intentSpeakerNames = v4;
 
   MEMORY[0x1EEE66BB8](v4, intentSpeakerNames);
 }
 
-- (void)addIntentPermanentNames:(id)a3
+- (void)addIntentPermanentNames:(id)names
 {
-  v4 = a3;
+  namesCopy = names;
   intentPermanentNames = self->_intentPermanentNames;
-  v8 = v4;
+  v8 = namesCopy;
   if (!intentPermanentNames)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_intentPermanentNames;
-    self->_intentPermanentNames = v6;
+    self->_intentPermanentNames = array;
 
-    v4 = v8;
+    namesCopy = v8;
     intentPermanentNames = self->_intentPermanentNames;
   }
 
-  [(NSArray *)intentPermanentNames addObject:v4];
+  [(NSArray *)intentPermanentNames addObject:namesCopy];
 }
 
-- (void)setIntentPermanentNames:(id)a3
+- (void)setIntentPermanentNames:(id)names
 {
-  v4 = [a3 mutableCopy];
+  v4 = [names mutableCopy];
   intentPermanentNames = self->_intentPermanentNames;
   self->_intentPermanentNames = v4;
 
   MEMORY[0x1EEE66BB8](v4, intentPermanentNames);
 }
 
-- (void)addIntentDestinationSpeakers:(id)a3
+- (void)addIntentDestinationSpeakers:(id)speakers
 {
-  v4 = a3;
+  speakersCopy = speakers;
   intentDestinationSpeakers = self->_intentDestinationSpeakers;
-  v8 = v4;
+  v8 = speakersCopy;
   if (!intentDestinationSpeakers)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_intentDestinationSpeakers;
-    self->_intentDestinationSpeakers = v6;
+    self->_intentDestinationSpeakers = array;
 
-    v4 = v8;
+    speakersCopy = v8;
     intentDestinationSpeakers = self->_intentDestinationSpeakers;
   }
 
-  [(NSArray *)intentDestinationSpeakers addObject:v4];
+  [(NSArray *)intentDestinationSpeakers addObject:speakersCopy];
 }
 
-- (void)setIntentDestinationSpeakers:(id)a3
+- (void)setIntentDestinationSpeakers:(id)speakers
 {
-  v4 = [a3 mutableCopy];
+  v4 = [speakers mutableCopy];
   intentDestinationSpeakers = self->_intentDestinationSpeakers;
   self->_intentDestinationSpeakers = v4;
 

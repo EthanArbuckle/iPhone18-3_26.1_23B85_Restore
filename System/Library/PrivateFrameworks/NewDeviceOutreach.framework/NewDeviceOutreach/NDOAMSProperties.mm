@@ -1,11 +1,11 @@
 @interface NDOAMSProperties
 - (NDOAMSProperties)init;
-- (NDOAMSProperties)initWithUrl:(id)a3 signatureHeaders:(id)a4 bodyData:(id)a5;
-- (NDOAMSProperties)initWithUrl:(id)a3 signatureHeaders:(id)a4 bodyData:(id)a5 presentModally:(BOOL)a6;
+- (NDOAMSProperties)initWithUrl:(id)url signatureHeaders:(id)headers bodyData:(id)data;
+- (NDOAMSProperties)initWithUrl:(id)url signatureHeaders:(id)headers bodyData:(id)data presentModally:(BOOL)modally;
 - (NSData)bodyData;
 - (NSDictionary)signatureHeaders;
 - (NSURL)url;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NDOAMSProperties
@@ -64,13 +64,13 @@
   return v3;
 }
 
-- (NDOAMSProperties)initWithUrl:(id)a3 signatureHeaders:(id)a4 bodyData:(id)a5
+- (NDOAMSProperties)initWithUrl:(id)url signatureHeaders:(id)headers bodyData:(id)data
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27FBDBF18, &qword_25BD7C078);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x28223BE20](v7 - 8);
   v10 = &v19 - v9;
-  if (a3)
+  if (url)
   {
     sub_25BD79658();
     v11 = sub_25BD79678();
@@ -84,20 +84,20 @@
   }
 
   v13 = sub_25BD79778();
-  v14 = a5;
+  dataCopy = data;
   v15 = sub_25BD796A8();
   v17 = v16;
 
   return NDOAMSProperties.init(url:signatureHeaders:bodyData:)(v10, v13, v15, v17);
 }
 
-- (NDOAMSProperties)initWithUrl:(id)a3 signatureHeaders:(id)a4 bodyData:(id)a5 presentModally:(BOOL)a6
+- (NDOAMSProperties)initWithUrl:(id)url signatureHeaders:(id)headers bodyData:(id)data presentModally:(BOOL)modally
 {
   v9 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27FBDBF18, &qword_25BD7C078);
   v10 = *(*(v9 - 8) + 64);
   MEMORY[0x28223BE20](v9 - 8);
   v12 = &v21 - v11;
-  if (a3)
+  if (url)
   {
     sub_25BD79658();
     v13 = sub_25BD79678();
@@ -111,18 +111,18 @@
   }
 
   v15 = sub_25BD79778();
-  v16 = a5;
+  dataCopy = data;
   v17 = sub_25BD796A8();
   v19 = v18;
 
-  return NDOAMSProperties.init(url:signatureHeaders:bodyData:presentModally:)(v12, v15, v17, v19, a6);
+  return NDOAMSProperties.init(url:signatureHeaders:bodyData:presentModally:)(v12, v15, v17, v19, modally);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  NDOAMSProperties.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  NDOAMSProperties.encode(with:)(coderCopy);
 }
 
 - (NDOAMSProperties)init

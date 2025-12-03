@@ -1,32 +1,32 @@
 @interface _NSTemporaryObjectID2
-+ (id)initWithEntity:(id)a3 andUUIDString:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)initWithEntity:(id)entity andUUIDString:(id)string;
+- (BOOL)isEqual:(id)equal;
 - (unint64_t)hash;
-- (void)_setPersistentStore:(id)a3;
+- (void)_setPersistentStore:(id)store;
 - (void)dealloc;
 @end
 
 @implementation _NSTemporaryObjectID2
 
-+ (id)initWithEntity:(id)a3 andUUIDString:(id)a4
++ (id)initWithEntity:(id)entity andUUIDString:(id)string
 {
   v19 = *MEMORY[0x1E69E9840];
-  if ([a4 length] < 0x25)
+  if ([string length] < 0x25)
   {
-    v9 = [a4 UTF8String];
-    v10 = 0;
+    uTF8String = [string UTF8String];
+    intValue = 0;
   }
 
   else
   {
-    v7 = [a4 substringToIndex:36];
-    v8 = [a4 substringFromIndex:36];
-    v9 = [v7 UTF8String];
-    v10 = [v8 intValue];
+    v7 = [string substringToIndex:36];
+    v8 = [string substringFromIndex:36];
+    uTF8String = [v7 UTF8String];
+    intValue = [v8 intValue];
   }
 
   memset(uu, 0, sizeof(uu));
-  v11 = uuid_parse(v9, uu);
+  v11 = uuid_parse(uTF8String, uu);
   v12 = 0;
   if (!v11)
   {
@@ -37,7 +37,7 @@
 
     else
     {
-      v12 = _PFAllocateObject(a1, 0);
+      v12 = _PFAllocateObject(self, 0);
       v14 = [_NS128bitWrapper alloc];
       if (v14)
       {
@@ -53,8 +53,8 @@
       v12[4] = v14;
     }
 
-    v12[2] = a3;
-    *(v12 + 3) = v10;
+    v12[2] = entity;
+    *(v12 + 3) = intValue;
   }
 
   v15 = *MEMORY[0x1E69E9840];
@@ -88,36 +88,36 @@
   }
 }
 
-- (void)_setPersistentStore:(id)a3
+- (void)_setPersistentStore:(id)store
 {
   store = self->_store;
-  if (store != a3)
+  if (store != store)
   {
 
-    self->_store = a3;
+    self->_store = store;
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
 
-  if (!a3)
+  if (!equal)
   {
     return 0;
   }
 
   Class = object_getClass(self);
-  if (Class != objc_opt_class() || self->super._counter != *(a3 + 3))
+  if (Class != objc_opt_class() || self->super._counter != *(equal + 3))
   {
     return 0;
   }
 
   uuid128 = self->_uuid128;
-  if (uuid128 == *(a3 + 4))
+  if (uuid128 == *(equal + 4))
   {
     return 1;
   }

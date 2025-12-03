@@ -1,44 +1,44 @@
 @interface GKNotificationBannerViewController
 - (BOOL)useShortBanner;
-- (BOOL)windowPointInside:(CGPoint)a3 withEvent:(id)a4;
-- (CGPoint)_hiddenBannerPosition:(CGSize)a3;
-- (CGPoint)_visibleBannerCenterPosition:(CGSize)a3;
-- (double)bannerWidthForViewSize:(CGSize)a3;
+- (BOOL)windowPointInside:(CGPoint)inside withEvent:(id)event;
+- (CGPoint)_hiddenBannerPosition:(CGSize)position;
+- (CGPoint)_visibleBannerCenterPosition:(CGSize)position;
+- (double)bannerWidthForViewSize:(CGSize)size;
 - (unint64_t)supportedInterfaceOrientations;
-- (void)addBannerView:(id)a3;
+- (void)addBannerView:(id)view;
 - (void)addConstraintsForBannerView;
 - (void)addConstraintsForTVOSBannerView;
-- (void)handleWindowPan:(id)a3;
-- (void)handleWindowSingleTap:(id)a3;
-- (void)hideBannerQuickly:(BOOL)a3;
+- (void)handleWindowPan:(id)pan;
+- (void)handleWindowSingleTap:(id)tap;
+- (void)hideBannerQuickly:(BOOL)quickly;
 - (void)showCurrentBanner;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
-- (void)windowTouchesEnded:(id)a3 withEvent:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
+- (void)windowTouchesEnded:(id)ended withEvent:(id)event;
 @end
 
 @implementation GKNotificationBannerViewController
 
 - (BOOL)useShortBanner
 {
-  v2 = [(GKNotificationBannerViewController *)self bannerView];
-  v3 = [v2 useShortBanner];
+  bannerView = [(GKNotificationBannerViewController *)self bannerView];
+  useShortBanner = [bannerView useShortBanner];
 
-  return v3;
+  return useShortBanner;
 }
 
-- (BOOL)windowPointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)windowPointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   v21 = *MEMORY[0x277D85DE8];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = [(GKNotificationBannerViewController *)self view:a4];
-  v7 = [v6 subviews];
+  v6 = [(GKNotificationBannerViewController *)self view:event];
+  subviews = [v6 subviews];
 
-  v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v8 = [subviews countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v8)
   {
     v9 = *v17;
@@ -48,16 +48,16 @@
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(subviews);
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v12 = [v11 layer];
-          v13 = [v12 presentationLayer];
-          v14 = [v13 hitTest:{x, y}];
+          layer = [v11 layer];
+          presentationLayer = [layer presentationLayer];
+          v14 = [presentationLayer hitTest:{x, y}];
 
           if (v14)
           {
@@ -67,7 +67,7 @@
         }
       }
 
-      v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v8 = [subviews countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v8)
       {
         continue;
@@ -82,14 +82,14 @@ LABEL_12:
   return v8;
 }
 
-- (void)windowTouchesEnded:(id)a3 withEvent:(id)a4
+- (void)windowTouchesEnded:(id)ended withEvent:(id)event
 {
   v30 = *MEMORY[0x277D85DE8];
-  v24 = a4;
-  v6 = [a3 anyObject];
-  v7 = [(GKNotificationBannerViewController *)self view];
-  v23 = v6;
-  [v6 locationInView:v7];
+  eventCopy = event;
+  anyObject = [ended anyObject];
+  view = [(GKNotificationBannerViewController *)self view];
+  v23 = anyObject;
+  [anyObject locationInView:view];
   v9 = v8;
   v11 = v10;
 
@@ -97,10 +97,10 @@ LABEL_12:
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v12 = [(GKNotificationBannerViewController *)self view];
-  v13 = [v12 subviews];
+  view2 = [(GKNotificationBannerViewController *)self view];
+  subviews = [view2 subviews];
 
-  v14 = [v13 countByEnumeratingWithState:&v25 objects:v29 count:16];
+  v14 = [subviews countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v14)
   {
     v15 = v14;
@@ -112,24 +112,24 @@ LABEL_12:
       {
         if (*v26 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(subviews);
         }
 
         v18 = *(*(&v25 + 1) + 8 * v17);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v19 = [v18 layer];
-          v20 = [v19 presentationLayer];
-          v21 = [v20 hitTest:{v9, v11}];
+          layer = [v18 layer];
+          presentationLayer = [layer presentationLayer];
+          v21 = [presentationLayer hitTest:{v9, v11}];
 
           if (v21)
           {
-            v22 = [v18 touchHandler];
+            touchHandler = [v18 touchHandler];
 
-            if (v22)
+            if (touchHandler)
             {
-              [v18 _wasTouched:v24];
+              [v18 _wasTouched:eventCopy];
               [(GKNotificationBannerViewController *)self hideBannerQuickly:0];
             }
           }
@@ -139,14 +139,14 @@ LABEL_12:
       }
 
       while (v15 != v17);
-      v15 = [v13 countByEnumeratingWithState:&v25 objects:v29 count:16];
+      v15 = [subviews countByEnumeratingWithState:&v25 objects:v29 count:16];
     }
 
     while (v15);
   }
 }
 
-- (void)handleWindowSingleTap:(id)a3
+- (void)handleWindowSingleTap:(id)tap
 {
   if ([(GKNotificationBannerViewController *)self bannerVisible])
   {
@@ -155,13 +155,13 @@ LABEL_12:
   }
 }
 
-- (void)handleWindowPan:(id)a3
+- (void)handleWindowPan:(id)pan
 {
-  v7 = a3;
+  panCopy = pan;
   if ([(GKNotificationBannerViewController *)self bannerVisible])
   {
-    v4 = [(GKNotificationBannerViewController *)self view];
-    [v7 translationInView:v4];
+    view = [(GKNotificationBannerViewController *)self view];
+    [panCopy translationInView:view];
     v6 = v5;
 
     if (v6 < 0.0)
@@ -171,40 +171,40 @@ LABEL_12:
   }
 }
 
-- (void)addBannerView:(id)a3
+- (void)addBannerView:(id)view
 {
-  v8 = a3;
-  v4 = [(GKNotificationBannerViewController *)self bannerView];
+  viewCopy = view;
+  bannerView = [(GKNotificationBannerViewController *)self bannerView];
 
-  if (v4)
+  if (bannerView)
   {
     [(GKNotificationBannerViewController *)self setBannerYPositionConstraint:0];
     [(GKNotificationBannerViewController *)self setBannerWidthConstraint:0];
-    v5 = [(GKNotificationBannerViewController *)self bannerView];
-    [v5 removeFromSuperview];
+    bannerView2 = [(GKNotificationBannerViewController *)self bannerView];
+    [bannerView2 removeFromSuperview];
 
     [(GKNotificationBannerViewController *)self setBannerView:0];
   }
 
-  [(GKNotificationBannerViewController *)self setBannerView:v8];
-  v6 = [(GKNotificationBannerViewController *)self view];
-  v7 = [(GKNotificationBannerViewController *)self bannerView];
-  [v6 addSubview:v7];
+  [(GKNotificationBannerViewController *)self setBannerView:viewCopy];
+  view = [(GKNotificationBannerViewController *)self view];
+  bannerView3 = [(GKNotificationBannerViewController *)self bannerView];
+  [view addSubview:bannerView3];
 
   [(GKNotificationBannerViewController *)self addConstraintsForBannerView];
 }
 
 - (void)showCurrentBanner
 {
-  v3 = [(GKNotificationBannerViewController *)self bannerView];
-  v4 = [(GKNotificationBannerViewController *)self view];
-  v5 = [v4 subviews];
-  v6 = [v5 containsObject:v3];
+  bannerView = [(GKNotificationBannerViewController *)self bannerView];
+  view = [(GKNotificationBannerViewController *)self view];
+  subviews = [view subviews];
+  v6 = [subviews containsObject:bannerView];
 
   if ((v6 & 1) == 0)
   {
-    v7 = [(GKNotificationBannerViewController *)self view];
-    [v7 addSubview:v3];
+    view2 = [(GKNotificationBannerViewController *)self view];
+    [view2 addSubview:bannerView];
   }
 
   [(GKNotificationBannerViewController *)self setBannerAnimating:1];
@@ -214,11 +214,11 @@ LABEL_12:
   aBlock[2] = __55__GKNotificationBannerViewController_showCurrentBanner__block_invoke;
   aBlock[3] = &unk_279669E48;
   aBlock[4] = self;
-  v8 = v3;
+  v8 = bannerView;
   v21 = v8;
   v9 = _Block_copy(aBlock);
-  v10 = [(GKNotificationBannerViewController *)self view];
-  [v10 layoutIfNeeded];
+  view3 = [(GKNotificationBannerViewController *)self view];
+  [view3 layoutIfNeeded];
 
   v11 = MEMORY[0x277D75D18];
   v17 = v9;
@@ -302,10 +302,10 @@ void __55__GKNotificationBannerViewController_showCurrentBanner__block_invoke_5(
   }
 }
 
-- (void)hideBannerQuickly:(BOOL)a3
+- (void)hideBannerQuickly:(BOOL)quickly
 {
-  v3 = a3;
-  v5 = [(GKNotificationBannerViewController *)self bannerView];
+  quicklyCopy = quickly;
+  bannerView = [(GKNotificationBannerViewController *)self bannerView];
   [(GKNotificationBannerViewController *)self setBannerAnimating:1];
   [(GKNotificationBannerViewController *)self setBannerVisible:0];
   aBlock[0] = MEMORY[0x277D85DD0];
@@ -313,14 +313,14 @@ void __55__GKNotificationBannerViewController_showCurrentBanner__block_invoke_5(
   aBlock[2] = __56__GKNotificationBannerViewController_hideBannerQuickly___block_invoke;
   aBlock[3] = &unk_279669E48;
   aBlock[4] = self;
-  v6 = v5;
+  v6 = bannerView;
   v18 = v6;
   v7 = _Block_copy(aBlock);
-  v8 = [(GKNotificationBannerViewController *)self view];
-  [v8 layoutIfNeeded];
+  view = [(GKNotificationBannerViewController *)self view];
+  [view layoutIfNeeded];
 
   v9 = MEMORY[0x277D75D18];
-  if (v3)
+  if (quicklyCopy)
   {
     v10 = 0.1;
   }
@@ -396,77 +396,77 @@ void __56__GKNotificationBannerViewController_hideBannerQuickly___block_invoke_3
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v3 = [MEMORY[0x277D75128] sharedApplication];
-  v4 = [v3 windows];
-  v5 = [v4 count];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  windows = [mEMORY[0x277D75128] windows];
+  v5 = [windows count];
 
   if (!v5)
   {
     goto LABEL_8;
   }
 
-  v6 = [MEMORY[0x277D75128] sharedApplication];
-  v7 = [v6 windows];
-  v8 = [v7 objectAtIndexedSubscript:0];
+  mEMORY[0x277D75128]2 = [MEMORY[0x277D75128] sharedApplication];
+  windows2 = [mEMORY[0x277D75128]2 windows];
+  traitCollection = [windows2 objectAtIndexedSubscript:0];
 
-  v9 = [(GKNotificationBannerViewController *)self view];
-  v10 = [v9 window];
-  v11 = v10;
-  if (v8 == v10)
+  view = [(GKNotificationBannerViewController *)self view];
+  window = [view window];
+  v11 = window;
+  if (traitCollection == window)
   {
   }
 
   else
   {
-    v12 = [v8 rootViewController];
+    rootViewController = [traitCollection rootViewController];
 
-    if (v12)
+    if (rootViewController)
     {
-      v13 = [v8 rootViewController];
-      v14 = [v13 supportedInterfaceOrientations];
+      rootViewController2 = [traitCollection rootViewController];
+      supportedInterfaceOrientations = [rootViewController2 supportedInterfaceOrientations];
 
-      if (v14)
+      if (supportedInterfaceOrientations)
       {
         goto LABEL_11;
       }
     }
   }
 
-  v15 = [MEMORY[0x277D75128] sharedApplication];
-  v14 = [v15 supportedInterfaceOrientationsForWindow:v8];
+  mEMORY[0x277D75128]3 = [MEMORY[0x277D75128] sharedApplication];
+  supportedInterfaceOrientations = [mEMORY[0x277D75128]3 supportedInterfaceOrientationsForWindow:traitCollection];
 
-  if (!v14)
+  if (!supportedInterfaceOrientations)
   {
 LABEL_8:
-    v8 = [(GKNotificationBannerViewController *)self traitCollection];
-    if ([v8 userInterfaceIdiom])
+    traitCollection = [(GKNotificationBannerViewController *)self traitCollection];
+    if ([traitCollection userInterfaceIdiom])
     {
-      v14 = 30;
+      supportedInterfaceOrientations = 30;
     }
 
     else
     {
-      v14 = 26;
+      supportedInterfaceOrientations = 26;
     }
 
 LABEL_11:
   }
 
-  return v14;
+  return supportedInterfaceOrientations;
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
   v11.receiver = self;
   v11.super_class = GKNotificationBannerViewController;
-  [(GKNotificationBannerViewController *)&v11 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
-  v8 = [(GKNotificationBannerViewController *)self bannerView];
-  v9 = [v8 superview];
+  [(GKNotificationBannerViewController *)&v11 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
+  bannerView = [(GKNotificationBannerViewController *)self bannerView];
+  superview = [bannerView superview];
 
-  if (v9)
+  if (superview)
   {
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
@@ -475,7 +475,7 @@ LABEL_11:
     v10[4] = self;
     *&v10[5] = width;
     *&v10[6] = height;
-    [v7 animateAlongsideTransition:v10 completion:0];
+    [coordinatorCopy animateAlongsideTransition:v10 completion:0];
   }
 }
 
@@ -516,10 +516,10 @@ void __89__GKNotificationBannerViewController_viewWillTransitionToSize_withTrans
   [v22 layoutIfNeeded];
 }
 
-- (double)bannerWidthForViewSize:(CGSize)a3
+- (double)bannerWidthForViewSize:(CGSize)size
 {
-  width = a3.width;
-  v5 = [(GKNotificationBannerViewController *)self useShortBanner:a3.width];
+  width = size.width;
+  v5 = [(GKNotificationBannerViewController *)self useShortBanner:size.width];
   v6 = 30.0;
   if (v5)
   {
@@ -527,8 +527,8 @@ void __89__GKNotificationBannerViewController_viewWillTransitionToSize_withTrans
   }
 
   v7 = width - v6;
-  v8 = [(GKNotificationBannerViewController *)self bannerView];
-  [v8 preferredBannerWidth];
+  bannerView = [(GKNotificationBannerViewController *)self bannerView];
+  [bannerView preferredBannerWidth];
   v10 = v9;
 
   if (v7 <= v10)
@@ -544,11 +544,11 @@ void __89__GKNotificationBannerViewController_viewWillTransitionToSize_withTrans
 
 - (void)addConstraintsForTVOSBannerView
 {
-  v3 = [(GKNotificationBannerViewController *)self bannerView];
-  [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
+  bannerView = [(GKNotificationBannerViewController *)self bannerView];
+  [bannerView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v4 = [(GKNotificationBannerViewController *)self bannerView];
-  v5 = [v4 heightAnchor];
+  bannerView2 = [(GKNotificationBannerViewController *)self bannerView];
+  heightAnchor = [bannerView2 heightAnchor];
   if ([(GKNotificationBannerViewController *)self useShortBanner])
   {
     v6 = 0x4044000000000000;
@@ -557,50 +557,50 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v7 = [MEMORY[0x277D75418] currentDevice];
-  v8 = [v7 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v8 != 1 || (v9 = 66.0, *MEMORY[0x277D0C258] == 1) && (*MEMORY[0x277D0C8F0] & 1) == 0)
+  if (userInterfaceIdiom != 1 || (v9 = 66.0, *MEMORY[0x277D0C258] == 1) && (*MEMORY[0x277D0C8F0] & 1) == 0)
   {
     v6 = 0x4050000000000000;
     goto LABEL_7;
   }
 
 LABEL_8:
-  v10 = [v5 constraintEqualToConstant:v9];
+  v10 = [heightAnchor constraintEqualToConstant:v9];
   [v10 setActive:1];
 
-  v11 = [(GKNotificationBannerViewController *)self bannerView];
-  v12 = [v11 widthAnchor];
-  v13 = [v12 constraintEqualToConstant:640.0];
+  bannerView3 = [(GKNotificationBannerViewController *)self bannerView];
+  widthAnchor = [bannerView3 widthAnchor];
+  v13 = [widthAnchor constraintEqualToConstant:640.0];
   [v13 setActive:1];
 
-  v14 = [(GKNotificationBannerViewController *)self view];
-  v15 = [v14 trailingAnchor];
-  v16 = [(GKNotificationBannerViewController *)self bannerView];
-  v17 = [v16 trailingAnchor];
-  v18 = [v15 constraintEqualToAnchor:v17];
+  view = [(GKNotificationBannerViewController *)self view];
+  trailingAnchor = [view trailingAnchor];
+  bannerView4 = [(GKNotificationBannerViewController *)self bannerView];
+  trailingAnchor2 = [bannerView4 trailingAnchor];
+  v18 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   [v18 setActive:1];
 
-  v23 = [(GKNotificationBannerViewController *)self view];
-  v19 = [v23 topAnchor];
-  v20 = [(GKNotificationBannerViewController *)self bannerView];
-  v21 = [v20 topAnchor];
-  v22 = [v19 constraintEqualToAnchor:v21];
+  view2 = [(GKNotificationBannerViewController *)self view];
+  topAnchor = [view2 topAnchor];
+  bannerView5 = [(GKNotificationBannerViewController *)self bannerView];
+  topAnchor2 = [bannerView5 topAnchor];
+  v22 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v22 setActive:1];
 }
 
 - (void)addConstraintsForBannerView
 {
-  v3 = [MEMORY[0x277D759A0] mainScreen];
-  [v3 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v5 = v4;
   v7 = v6;
 
   if ((GKApplicationLinkedOnOrAfter() & 1) == 0)
   {
-    v8 = [MEMORY[0x277D75128] sharedApplication];
-    v9 = [v8 statusBarOrientation] - 3;
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    v9 = [mEMORY[0x277D75128] statusBarOrientation] - 3;
 
     if (v9 >= 2)
     {
@@ -620,23 +620,23 @@ LABEL_8:
     v7 = v10;
   }
 
-  v11 = [(GKNotificationBannerViewController *)self bannerView];
-  [v11 setTranslatesAutoresizingMaskIntoConstraints:0];
+  bannerView = [(GKNotificationBannerViewController *)self bannerView];
+  [bannerView setTranslatesAutoresizingMaskIntoConstraints:0];
 
   [(GKNotificationBannerViewController *)self bannerWidthForViewSize:v5, v7];
   v13 = v12;
   v14 = MEMORY[0x277CCAAD0];
-  v15 = [(GKNotificationBannerViewController *)self bannerView];
-  v16 = [v14 constraintWithItem:v15 attribute:7 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:v13];
+  bannerView2 = [(GKNotificationBannerViewController *)self bannerView];
+  v16 = [v14 constraintWithItem:bannerView2 attribute:7 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:v13];
   [(GKNotificationBannerViewController *)self setBannerWidthConstraint:v16];
 
-  v17 = [(GKNotificationBannerViewController *)self bannerView];
-  v18 = [(GKNotificationBannerViewController *)self bannerWidthConstraint];
-  [v17 addConstraint:v18];
+  bannerView3 = [(GKNotificationBannerViewController *)self bannerView];
+  bannerWidthConstraint = [(GKNotificationBannerViewController *)self bannerWidthConstraint];
+  [bannerView3 addConstraint:bannerWidthConstraint];
 
-  v19 = [(GKNotificationBannerViewController *)self bannerView];
+  bannerView4 = [(GKNotificationBannerViewController *)self bannerView];
   v20 = MEMORY[0x277CCAAD0];
-  v21 = [(GKNotificationBannerViewController *)self bannerView];
+  bannerView5 = [(GKNotificationBannerViewController *)self bannerView];
   if ([(GKNotificationBannerViewController *)self useShortBanner])
   {
     *&v22 = 40.0;
@@ -645,45 +645,45 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  v23 = [MEMORY[0x277D75418] currentDevice];
-  v24 = [v23 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v24 != 1 || (v25 = 66.0, *MEMORY[0x277D0C258] == 1) && (*MEMORY[0x277D0C8F0] & 1) == 0)
+  if (userInterfaceIdiom != 1 || (v25 = 66.0, *MEMORY[0x277D0C258] == 1) && (*MEMORY[0x277D0C8F0] & 1) == 0)
   {
     *&v22 = 64.0;
     goto LABEL_14;
   }
 
 LABEL_15:
-  v26 = [v20 constraintWithItem:v21 attribute:8 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:v25];
-  [v19 addConstraint:v26];
+  v26 = [v20 constraintWithItem:bannerView5 attribute:8 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:v25];
+  [bannerView4 addConstraint:v26];
 
-  v27 = [(GKNotificationBannerViewController *)self view];
+  view = [(GKNotificationBannerViewController *)self view];
   v28 = MEMORY[0x277CCAAD0];
-  v29 = [(GKNotificationBannerViewController *)self bannerView];
-  v30 = [(GKNotificationBannerViewController *)self view];
-  v31 = [v28 constraintWithItem:v29 attribute:9 relatedBy:0 toItem:v30 attribute:9 multiplier:1.0 constant:0.0];
-  [v27 addConstraint:v31];
+  bannerView6 = [(GKNotificationBannerViewController *)self bannerView];
+  view2 = [(GKNotificationBannerViewController *)self view];
+  v31 = [v28 constraintWithItem:bannerView6 attribute:9 relatedBy:0 toItem:view2 attribute:9 multiplier:1.0 constant:0.0];
+  [view addConstraint:v31];
 
-  v32 = [(GKNotificationBannerViewController *)self bannerView];
-  [v32 bounds];
+  bannerView7 = [(GKNotificationBannerViewController *)self bannerView];
+  [bannerView7 bounds];
   [(GKNotificationBannerViewController *)self _hiddenBannerPosition:v33, v34];
   v36 = v35;
 
   v37 = MEMORY[0x277CCAAD0];
-  v38 = [(GKNotificationBannerViewController *)self bannerView];
-  v39 = [(GKNotificationBannerViewController *)self view];
-  v40 = [v37 constraintWithItem:v38 attribute:10 relatedBy:0 toItem:v39 attribute:3 multiplier:1.0 constant:v36];
+  bannerView8 = [(GKNotificationBannerViewController *)self bannerView];
+  view3 = [(GKNotificationBannerViewController *)self view];
+  v40 = [v37 constraintWithItem:bannerView8 attribute:10 relatedBy:0 toItem:view3 attribute:3 multiplier:1.0 constant:v36];
   [(GKNotificationBannerViewController *)self setBannerYPositionConstraint:v40];
 
-  v42 = [(GKNotificationBannerViewController *)self view];
-  v41 = [(GKNotificationBannerViewController *)self bannerYPositionConstraint];
-  [v42 addConstraint:v41];
+  view4 = [(GKNotificationBannerViewController *)self view];
+  bannerYPositionConstraint = [(GKNotificationBannerViewController *)self bannerYPositionConstraint];
+  [view4 addConstraint:bannerYPositionConstraint];
 }
 
-- (CGPoint)_hiddenBannerPosition:(CGSize)a3
+- (CGPoint)_hiddenBannerPosition:(CGSize)position
 {
-  v4 = [(GKNotificationBannerViewController *)self view:a3.width];
+  v4 = [(GKNotificationBannerViewController *)self view:position.width];
   [v4 bounds];
   v6 = v5;
   v8 = v7;
@@ -700,14 +700,14 @@ LABEL_15:
   v23.size.width = v10;
   v23.size.height = v12;
   MinY = CGRectGetMinY(v23);
-  v15 = [(GKNotificationBannerViewController *)self useShortBanner];
+  useShortBanner = [(GKNotificationBannerViewController *)self useShortBanner];
   v16 = 20.0;
-  if (!v15)
+  if (!useShortBanner)
   {
-    v17 = [MEMORY[0x277D75418] currentDevice];
-    v18 = [v17 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (v18 != 1 || (v16 = 33.0, *MEMORY[0x277D0C258] == 1) && (*MEMORY[0x277D0C8F0] & 1) == 0)
+    if (userInterfaceIdiom != 1 || (v16 = 33.0, *MEMORY[0x277D0C258] == 1) && (*MEMORY[0x277D0C8F0] & 1) == 0)
     {
       v16 = 32.0;
     }
@@ -720,17 +720,17 @@ LABEL_15:
   return result;
 }
 
-- (CGPoint)_visibleBannerCenterPosition:(CGSize)a3
+- (CGPoint)_visibleBannerCenterPosition:(CGSize)position
 {
-  v4 = [(GKNotificationBannerViewController *)self view:a3.width];
+  v4 = [(GKNotificationBannerViewController *)self view:position.width];
   [v4 bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
 
-  v13 = [(GKNotificationBannerViewController *)self view];
-  [v13 safeAreaInsets];
+  view = [(GKNotificationBannerViewController *)self view];
+  [view safeAreaInsets];
   v15 = v14;
 
   v28.origin.x = v6;
@@ -746,24 +746,24 @@ LABEL_15:
   v18 = 20.0;
   if (![(GKNotificationBannerViewController *)self useShortBanner])
   {
-    v19 = [MEMORY[0x277D75418] currentDevice];
-    v20 = [v19 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (v20 != 1 || (v18 = 33.0, *MEMORY[0x277D0C258] == 1) && (*MEMORY[0x277D0C8F0] & 1) == 0)
+    if (userInterfaceIdiom != 1 || (v18 = 33.0, *MEMORY[0x277D0C258] == 1) && (*MEMORY[0x277D0C8F0] & 1) == 0)
     {
       v18 = 32.0;
     }
   }
 
-  v21 = [(GKNotificationBannerViewController *)self useShortBanner];
+  useShortBanner = [(GKNotificationBannerViewController *)self useShortBanner];
   v22 = 21.0;
-  if (!v21)
+  if (!useShortBanner)
   {
-    v23 = [MEMORY[0x277D75418] currentDevice];
-    v24 = [v23 userInterfaceIdiom];
+    currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom2 = [currentDevice2 userInterfaceIdiom];
 
     v22 = 8.0;
-    if (v24 == 1)
+    if (userInterfaceIdiom2 == 1)
     {
       if (*MEMORY[0x277D0C8F0] & 1 | ((*MEMORY[0x277D0C258] & 1) == 0))
       {

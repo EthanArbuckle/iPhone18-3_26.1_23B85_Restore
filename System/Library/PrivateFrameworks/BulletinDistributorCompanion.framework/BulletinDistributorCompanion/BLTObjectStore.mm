@@ -1,29 +1,29 @@
 @interface BLTObjectStore
-- (BLTObjectStore)initWithPath:(id)a3 elementClass:(Class)a4;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (BLTObjectStore)initWithPath:(id)path elementClass:(Class)class;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)keys;
-- (id)objectForKey:(id)a3;
+- (id)objectForKey:(id)key;
 - (id)succinctDescription;
 - (void)keys;
-- (void)removeObjectForKey:(id)a3;
-- (void)setObject:(id)a3 forKeyedSubscript:(id)a4;
-- (void)storeObject:(id)a3 withKey:(id)a4;
+- (void)removeObjectForKey:(id)key;
+- (void)setObject:(id)object forKeyedSubscript:(id)subscript;
+- (void)storeObject:(id)object withKey:(id)key;
 @end
 
 @implementation BLTObjectStore
 
-- (BLTObjectStore)initWithPath:(id)a3 elementClass:(Class)a4
+- (BLTObjectStore)initWithPath:(id)path elementClass:(Class)class
 {
-  v7 = a3;
+  pathCopy = path;
   v11.receiver = self;
   v11.super_class = BLTObjectStore;
   v8 = [(BLTObjectStore *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_path, a3);
-    v9->_elementClass = a4;
+    objc_storeStrong(&v8->_path, path);
+    v9->_elementClass = class;
   }
 
   return v9;
@@ -32,13 +32,13 @@
 - (id)keys
 {
   v38[1] = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   path = self->_path;
   v37 = *MEMORY[0x277CCA1B0];
   v38[0] = *MEMORY[0x277CCA1B8];
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v38 forKeys:&v37 count:1];
   v35 = 0;
-  [v3 createDirectoryAtPath:path withIntermediateDirectories:1 attributes:v5 error:&v35];
+  [defaultManager createDirectoryAtPath:path withIntermediateDirectories:1 attributes:v5 error:&v35];
   v6 = v35;
 
   if (v6)
@@ -54,10 +54,10 @@
 
   else
   {
-    v8 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
     v9 = self->_path;
     v34 = 0;
-    v7 = [v8 contentsOfDirectoryAtPath:v9 error:&v34];
+    v7 = [defaultManager2 contentsOfDirectoryAtPath:v9 error:&v34];
     v6 = v34;
 
     if (v6)
@@ -98,21 +98,21 @@
             }
 
             v14 = *(*(&v30 + 1) + 8 * v13);
-            v15 = [v14 fromHex];
-            if (v15)
+            fromHex = [v14 fromHex];
+            if (fromHex)
             {
-              [v28 addObject:v15];
+              [v28 addObject:fromHex];
             }
 
             else
             {
               v16 = [v14 hex];
               v17 = [(NSString *)self->_path stringByAppendingPathComponent:v14];
-              v18 = self;
+              selfCopy = self;
               v19 = [(NSString *)self->_path stringByAppendingPathComponent:v16];
-              v20 = [MEMORY[0x277CCAA00] defaultManager];
+              defaultManager3 = [MEMORY[0x277CCAA00] defaultManager];
               v29 = 0;
-              [v20 moveItemAtPath:v17 toPath:v19 error:&v29];
+              [defaultManager3 moveItemAtPath:v17 toPath:v19 error:&v29];
               v21 = v29;
 
               if (!v21)
@@ -120,7 +120,7 @@
                 [v28 addObject:v14];
               }
 
-              self = v18;
+              self = selfCopy;
               v11 = v26;
             }
 
@@ -143,11 +143,11 @@
   return v28;
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 hex];
+  keyCopy = key;
+  v5 = [keyCopy hex];
   v6 = [(NSString *)self->_path stringByAppendingPathComponent:v5];
   v7 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:v6];
   if (v7)
@@ -161,9 +161,9 @@
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
         *buf = 138413058;
-        v17 = self;
+        selfCopy2 = self;
         v18 = 2112;
-        v19 = v4;
+        v19 = keyCopy;
         v20 = 2112;
         v21 = v9;
         v22 = 2112;
@@ -182,9 +182,9 @@
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412802;
-      v17 = self;
+      selfCopy2 = self;
       v18 = 2112;
-      v19 = v4;
+      v19 = keyCopy;
       v20 = 2112;
       v21 = v6;
       _os_log_error_impl(&dword_241FB3000, v12, OS_LOG_TYPE_ERROR, "%@ objectForKey: %@ not found at %@", buf, 0x20u);
@@ -198,24 +198,24 @@
   return v11;
 }
 
-- (void)removeObjectForKey:(id)a3
+- (void)removeObjectForKey:(id)key
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 hex];
+  keyCopy = key;
+  v5 = [keyCopy hex];
   v6 = [(NSString *)self->_path stringByAppendingPathComponent:v5];
-  v7 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v11 = 0;
-  [v7 removeItemAtPath:v6 error:&v11];
+  [defaultManager removeItemAtPath:v6 error:&v11];
   v8 = v11;
 
   v9 = blt_general_log();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138413058;
-    v13 = self;
+    selfCopy = self;
     v14 = 2112;
-    v15 = v4;
+    v15 = keyCopy;
     v16 = 2112;
     v17 = v6;
     v18 = 2112;
@@ -226,19 +226,19 @@
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)storeObject:(id)a3 withKey:(id)a4
+- (void)storeObject:(id)object withKey:(id)key
 {
   v36[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  objectCopy = object;
+  keyCopy = key;
+  v8 = keyCopy;
+  if (objectCopy)
   {
     v26 = 0;
-    v9 = [v7 hex];
+    v9 = [keyCopy hex];
     v10 = [(NSString *)self->_path stringByAppendingPathComponent:v9];
-    v11 = [MEMORY[0x277CCAA00] defaultManager];
-    v12 = [v11 fileExistsAtPath:self->_path isDirectory:&v26];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    v12 = [defaultManager fileExistsAtPath:self->_path isDirectory:&v26];
     v13 = v26;
 
     if (v12 & v13)
@@ -246,13 +246,13 @@
       goto LABEL_6;
     }
 
-    v14 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
     path = self->_path;
     v35 = *MEMORY[0x277CCA1B0];
     v36[0] = *MEMORY[0x277CCA1B8];
     v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v36 forKeys:&v35 count:1];
     v25 = 0;
-    [v14 createDirectoryAtPath:path withIntermediateDirectories:1 attributes:v16 error:&v25];
+    [defaultManager2 createDirectoryAtPath:path withIntermediateDirectories:1 attributes:v16 error:&v25];
     v17 = v25;
 
     if (!v17)
@@ -262,17 +262,17 @@ LABEL_6:
       v18 = v19;
       if (v19)
       {
-        [v19 encodeObject:v6 forKey:*MEMORY[0x277CCA308]];
-        v20 = [v18 encodedData];
+        [v19 encodeObject:objectCopy forKey:*MEMORY[0x277CCA308]];
+        encodedData = [v18 encodedData];
         v24 = 0;
-        [v20 writeToFile:v10 options:268435457 error:&v24];
+        [encodedData writeToFile:v10 options:268435457 error:&v24];
         v17 = v24;
 
         v21 = blt_general_log();
         if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412802;
-          v28 = self;
+          selfCopy3 = self;
           v29 = 2112;
           v30 = v8;
           v31 = 2112;
@@ -287,7 +287,7 @@ LABEL_6:
         if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412802;
-          v28 = self;
+          selfCopy3 = self;
           v29 = 2112;
           v30 = v8;
           v31 = 2112;
@@ -305,7 +305,7 @@ LABEL_6:
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
         *buf = 138413058;
-        v28 = self;
+        selfCopy3 = self;
         v29 = 2112;
         v30 = v8;
         v31 = 2112;
@@ -329,42 +329,42 @@ LABEL_6:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setObject:(id)a3 forKeyedSubscript:(id)a4
+- (void)setObject:(id)object forKeyedSubscript:(id)subscript
 {
-  if (a3)
+  if (object)
   {
-    [(BLTObjectStore *)self storeObject:a3 withKey:a4];
+    [(BLTObjectStore *)self storeObject:object withKey:subscript];
   }
 
   else
   {
-    [(BLTObjectStore *)self removeObjectForKey:a4];
+    [(BLTObjectStore *)self removeObjectForKey:subscript];
   }
 }
 
 - (id)succinctDescription
 {
-  v2 = [(BLTObjectStore *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(BLTObjectStore *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(BLTObjectStore *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(BLTObjectStore *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(BLTObjectStore *)self succinctDescriptionBuilder];
-  v5 = [v4 appendObject:self->_path withName:@"path"];
-  v6 = [v4 appendObject:self->_elementClass withName:@"_elementClass"];
+  succinctDescriptionBuilder = [(BLTObjectStore *)self succinctDescriptionBuilder];
+  v5 = [succinctDescriptionBuilder appendObject:self->_path withName:@"path"];
+  v6 = [succinctDescriptionBuilder appendObject:self->_elementClass withName:@"_elementClass"];
 
-  return v4;
+  return succinctDescriptionBuilder;
 }
 
 - (void)keys

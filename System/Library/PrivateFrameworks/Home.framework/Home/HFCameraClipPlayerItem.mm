@@ -1,9 +1,9 @@
 @interface HFCameraClipPlayerItem
-+ (id)_assetOptionsForClip:(id)a3;
++ (id)_assetOptionsForClip:(id)clip;
 + (id)playlistURL;
 - (BOOL)isPlayable;
-- (BOOL)resourceLoader:(id)a3 shouldWaitForLoadingOfRequestedResource:(id)a4;
-- (HFCameraClipPlayerItem)initWithClipManager:(id)a3 clip:(id)a4;
+- (BOOL)resourceLoader:(id)loader shouldWaitForLoadingOfRequestedResource:(id)resource;
+- (HFCameraClipPlayerItem)initWithClipManager:(id)manager clip:(id)clip;
 - (NSString)description;
 - (void)dealloc;
 @end
@@ -29,27 +29,27 @@ void __37__HFCameraClipPlayerItem_playlistURL__block_invoke_2()
   qword_280E02408 = v0;
 }
 
-+ (id)_assetOptionsForClip:(id)a3
++ (id)_assetOptionsForClip:(id)clip
 {
-  v3 = a3;
+  clipCopy = clip;
   v4 = objc_opt_new();
-  v5 = [v3 videoAssetRequiredHTTPHeaders];
+  videoAssetRequiredHTTPHeaders = [clipCopy videoAssetRequiredHTTPHeaders];
 
-  [v4 setObject:v5 forKeyedSubscript:*MEMORY[0x277CE6220]];
+  [v4 setObject:videoAssetRequiredHTTPHeaders forKeyedSubscript:*MEMORY[0x277CE6220]];
 
   return v4;
 }
 
-- (HFCameraClipPlayerItem)initWithClipManager:(id)a3 clip:(id)a4
+- (HFCameraClipPlayerItem)initWithClipManager:(id)manager clip:(id)clip
 {
   v39 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (!v8)
+  managerCopy = manager;
+  clipCopy = clip;
+  v10 = clipCopy;
+  if (!managerCopy)
   {
-    v29 = [MEMORY[0x277CCA890] currentHandler];
-    [v29 handleFailureInMethod:a2 object:self file:@"HFCameraClipPlayerItem.m" lineNumber:50 description:{@"Invalid parameter not satisfying: %@", @"clipManager != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HFCameraClipPlayerItem.m" lineNumber:50 description:{@"Invalid parameter not satisfying: %@", @"clipManager != nil"}];
 
     if (v10)
     {
@@ -57,13 +57,13 @@ void __37__HFCameraClipPlayerItem_playlistURL__block_invoke_2()
     }
 
 LABEL_28:
-    v30 = [MEMORY[0x277CCA890] currentHandler];
-    [v30 handleFailureInMethod:a2 object:self file:@"HFCameraClipPlayerItem.m" lineNumber:51 description:{@"Invalid parameter not satisfying: %@", @"clip != nil"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"HFCameraClipPlayerItem.m" lineNumber:51 description:{@"Invalid parameter not satisfying: %@", @"clip != nil"}];
 
     goto LABEL_3;
   }
 
-  if (!v9)
+  if (!clipCopy)
   {
     goto LABEL_28;
   }
@@ -82,14 +82,14 @@ LABEL_3:
       v26 = HFLogForCategory(0xDuLL);
       if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
       {
-        v27 = [v11 relativePath];
-        v28 = [v10 hf_prettyDescription];
+        relativePath = [v11 relativePath];
+        hf_prettyDescription = [v10 hf_prettyDescription];
         *buf = 136315650;
         v34 = "[HFCameraClipPlayerItem initWithClipManager:clip:]";
         v35 = 2112;
-        v36 = v27;
+        v36 = relativePath;
         v37 = 2112;
-        v38 = v28;
+        v38 = hf_prettyDescription;
         _os_log_impl(&dword_20D9BF000, v26, OS_LOG_TYPE_DEFAULT, "%s instantiating with cached file: %@; clip: %@", buf, 0x20u);
       }
 
@@ -104,29 +104,29 @@ LABEL_3:
 
   else
   {
-    v13 = [objc_opt_class() playlistURL];
+    playlistURL = [objc_opt_class() playlistURL];
 
     v12 = [objc_opt_class() _assetOptionsForClip:v10];
     v14 = HFLogForCategory(0xDuLL);
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [v10 hf_prettyDescription];
+      hf_prettyDescription2 = [v10 hf_prettyDescription];
       *buf = 136315394;
       v34 = "[HFCameraClipPlayerItem initWithClipManager:clip:]";
       v35 = 2112;
-      v36 = v15;
+      v36 = hf_prettyDescription2;
       _os_log_impl(&dword_20D9BF000, v14, OS_LOG_TYPE_DEFAULT, "%s: instantiating with HLS playlist for clip: %@", buf, 0x16u);
     }
 
-    v11 = v13;
+    v11 = playlistURL;
   }
 
   if (+[HFUtilities isPressDemoModeEnabled])
   {
-    v16 = [v10 clipURL];
+    clipURL = [v10 clipURL];
 
     v12 = 0;
-    v11 = v16;
+    v11 = clipURL;
   }
 
   v17 = [objc_alloc(MEMORY[0x277CE6650]) initWithURL:v11 options:v12];
@@ -155,8 +155,8 @@ LABEL_3:
   {
     if (![(HFCameraClipPlayerItem *)v20 isUsingCachedVideoOnDisk])
     {
-      v21 = [v17 resourceLoader];
-      [v21 setDelegate:v20 queue:v18];
+      resourceLoader = [v17 resourceLoader];
+      [resourceLoader setDelegate:v20 queue:v18];
 
       objc_storeStrong(&v20->_resourceLoaderQueue, v18);
       v22 = +[HFCameraClipVideoAssetContextProvider defaultProvider];
@@ -164,8 +164,8 @@ LABEL_3:
       v20->_videoContextProvider = v22;
     }
 
-    objc_storeStrong(&v20->_clipManager, a3);
-    objc_storeStrong(&v20->_clip, a4);
+    objc_storeStrong(&v20->_clipManager, manager);
+    objc_storeStrong(&v20->_clip, clip);
   }
 
   v24 = *MEMORY[0x277D85DE8];
@@ -182,84 +182,84 @@ void __51__HFCameraClipPlayerItem_initWithClipManager_clip___block_invoke_2()
 
 - (BOOL)isPlayable
 {
-  v2 = [(HFCameraClipPlayerItem *)self error];
-  v3 = v2 == 0;
+  error = [(HFCameraClipPlayerItem *)self error];
+  v3 = error == 0;
 
   return v3;
 }
 
-- (BOOL)resourceLoader:(id)a3 shouldWaitForLoadingOfRequestedResource:(id)a4
+- (BOOL)resourceLoader:(id)loader shouldWaitForLoadingOfRequestedResource:(id)resource
 {
   v57 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  loaderCopy = loader;
+  resourceCopy = resource;
   v8 = HFLogForCategory(0x17uLL);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(HFCameraClipPlayerItem *)self clip];
-    v10 = [v9 uniqueIdentifier];
-    v11 = [v7 request];
+    clip = [(HFCameraClipPlayerItem *)self clip];
+    uniqueIdentifier = [clip uniqueIdentifier];
+    request = [resourceCopy request];
     *buf = 138412802;
-    v52 = v10;
+    v52 = uniqueIdentifier;
     v53 = 2112;
-    v54 = v6;
+    v54 = loaderCopy;
     v55 = 2112;
-    v56 = v11;
+    v56 = request;
     _os_log_impl(&dword_20D9BF000, v8, OS_LOG_TYPE_DEFAULT, "Received resource loader request for clip %@: %@ loadingRequest:%@", buf, 0x20u);
   }
 
-  v12 = [v7 request];
-  v13 = [v12 URL];
-  v14 = [v13 absoluteString];
-  v15 = [v14 isEqualToString:*MEMORY[0x277CCF380]];
+  request2 = [resourceCopy request];
+  v13 = [request2 URL];
+  absoluteString = [v13 absoluteString];
+  v15 = [absoluteString isEqualToString:*MEMORY[0x277CCF380]];
 
   if (v15)
   {
-    v16 = [(HFCameraClipPlayerItem *)self clip];
-    v17 = [v16 encryptionKey];
+    clip2 = [(HFCameraClipPlayerItem *)self clip];
+    encryptionKey = [clip2 encryptionKey];
 
     v18 = HFLogForCategory(0x17uLL);
     v19 = v18;
-    if (!v17)
+    if (!encryptionKey)
     {
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
-        v40 = [v7 request];
-        v41 = [v40 URL];
-        v42 = [(HFCameraClipPlayerItem *)self clip];
+        request3 = [resourceCopy request];
+        v41 = [request3 URL];
+        clip3 = [(HFCameraClipPlayerItem *)self clip];
         *buf = 138412546;
         v52 = v41;
         v53 = 2112;
-        v54 = v42;
+        v54 = clip3;
         _os_log_error_impl(&dword_20D9BF000, v19, OS_LOG_TYPE_ERROR, "Asked to load resource for URL %@ but clip has no encryption key: %@", buf, 0x16u);
       }
 
       v37 = 0;
-      v17 = v19;
+      encryptionKey = v19;
       goto LABEL_19;
     }
 
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
-      v20 = [(HFCameraClipPlayerItem *)self clip];
-      v21 = [v20 uniqueIdentifier];
+      clip4 = [(HFCameraClipPlayerItem *)self clip];
+      uniqueIdentifier2 = [clip4 uniqueIdentifier];
       *buf = 138412290;
-      v52 = v21;
+      v52 = uniqueIdentifier2;
       _os_log_impl(&dword_20D9BF000, v19, OS_LOG_TYPE_DEFAULT, "Returning encryption key for clip:%@", buf, 0xCu);
     }
 
     v22 = *MEMORY[0x277CE6180];
-    v23 = [v7 contentInformationRequest];
-    [v23 setContentType:v22];
+    contentInformationRequest = [resourceCopy contentInformationRequest];
+    [contentInformationRequest setContentType:v22];
 
-    v24 = [v17 length];
-    v25 = [v7 contentInformationRequest];
-    [v25 setContentLength:v24];
+    v24 = [encryptionKey length];
+    contentInformationRequest2 = [resourceCopy contentInformationRequest];
+    [contentInformationRequest2 setContentLength:v24];
 
-    v26 = [v7 dataRequest];
-    [v26 respondWithData:v17];
+    dataRequest = [resourceCopy dataRequest];
+    [dataRequest respondWithData:encryptionKey];
 
-    [v7 finishLoading];
+    [resourceCopy finishLoading];
 LABEL_10:
     v37 = 1;
 LABEL_19:
@@ -267,50 +267,50 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  v27 = [v7 request];
-  v28 = [v27 URL];
-  v29 = [objc_opt_class() playlistURL];
-  v30 = [v28 isEqual:v29];
+  request4 = [resourceCopy request];
+  v28 = [request4 URL];
+  playlistURL = [objc_opt_class() playlistURL];
+  v30 = [v28 isEqual:playlistURL];
 
   if (v30)
   {
-    v31 = [(HFCameraClipPlayerItem *)self videoContextProvider];
-    v32 = [(HFCameraClipPlayerItem *)self clip];
-    v33 = [(HFCameraClipPlayerItem *)self clipManager];
-    v17 = [v31 fetchVideoAssetContextForClip:v32 clipManager:v33];
+    videoContextProvider = [(HFCameraClipPlayerItem *)self videoContextProvider];
+    clip5 = [(HFCameraClipPlayerItem *)self clip];
+    clipManager = [(HFCameraClipPlayerItem *)self clipManager];
+    encryptionKey = [videoContextProvider fetchVideoAssetContextForClip:clip5 clipManager:clipManager];
 
     v49[0] = MEMORY[0x277D85DD0];
     v49[1] = 3221225472;
     v49[2] = __81__HFCameraClipPlayerItem_resourceLoader_shouldWaitForLoadingOfRequestedResource___block_invoke;
     v49[3] = &unk_277DF2748;
     v49[4] = self;
-    v34 = v7;
+    v34 = resourceCopy;
     v50 = v34;
-    v35 = [v17 addFailureBlock:v49];
+    v35 = [encryptionKey addFailureBlock:v49];
     v46[0] = MEMORY[0x277D85DD0];
     v46[1] = 3221225472;
     v46[2] = __81__HFCameraClipPlayerItem_resourceLoader_shouldWaitForLoadingOfRequestedResource___block_invoke_33;
     v46[3] = &unk_277DFA688;
     v47 = v34;
-    v48 = self;
-    v36 = [v17 addSuccessBlock:v46];
+    selfCopy = self;
+    v36 = [encryptionKey addSuccessBlock:v46];
 
     goto LABEL_10;
   }
 
   if (!+[HFUtilities isPressDemoModeEnabled])
   {
-    v17 = HFLogForCategory(0x17uLL);
-    if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+    encryptionKey = HFLogForCategory(0x17uLL);
+    if (os_log_type_enabled(encryptionKey, OS_LOG_TYPE_ERROR))
     {
-      v43 = [v7 request];
-      v44 = [v43 URL];
-      v45 = [(HFCameraClipPlayerItem *)self clip];
+      request5 = [resourceCopy request];
+      v44 = [request5 URL];
+      clip6 = [(HFCameraClipPlayerItem *)self clip];
       *buf = 138412546;
       v52 = v44;
       v53 = 2112;
-      v54 = v45;
-      _os_log_error_impl(&dword_20D9BF000, v17, OS_LOG_TYPE_ERROR, "Asked to load resource for unexpected URL %@ for clip: %@", buf, 0x16u);
+      v54 = clip6;
+      _os_log_error_impl(&dword_20D9BF000, encryptionKey, OS_LOG_TYPE_ERROR, "Asked to load resource for unexpected URL %@ for clip: %@", buf, 0x16u);
     }
 
     v37 = 0;
@@ -436,9 +436,9 @@ id __81__HFCameraClipPlayerItem_resourceLoader_shouldWaitForLoadingOfRequestedRe
 
 - (void)dealloc
 {
-  v3 = [(HFCameraClipPlayerItem *)self asset];
-  v4 = [v3 resourceLoader];
-  [v4 setDelegate:0 queue:0];
+  asset = [(HFCameraClipPlayerItem *)self asset];
+  resourceLoader = [asset resourceLoader];
+  [resourceLoader setDelegate:0 queue:0];
 
   v5.receiver = self;
   v5.super_class = HFCameraClipPlayerItem;
@@ -448,13 +448,13 @@ id __81__HFCameraClipPlayerItem_resourceLoader_shouldWaitForLoadingOfRequestedRe
 - (NSString)description
 {
   v3 = [MEMORY[0x277D2C8F8] builderWithObject:self];
-  v4 = [(HFCameraClipPlayerItem *)self clip];
-  v5 = [v3 appendObject:v4 withName:@"clip"];
+  clip = [(HFCameraClipPlayerItem *)self clip];
+  v5 = [v3 appendObject:clip withName:@"clip"];
 
   v6 = [v3 appendBool:-[HFCameraClipPlayerItem isUsingCachedVideoOnDisk](self withName:{"isUsingCachedVideoOnDisk"), @"usingCachedVideoOnDisk"}];
-  v7 = [v3 build];
+  build = [v3 build];
 
-  return v7;
+  return build;
 }
 
 @end

@@ -1,25 +1,25 @@
 @interface BSUIWeeklyProgressDay
-- (BOOL)isEqual:(id)a3;
-- (BSUIWeeklyProgressDay)initWithType:(int64_t)a3 progress:(double)a4 text:(id)a5 dateShortString:(id)a6;
+- (BOOL)isEqual:(id)equal;
+- (BSUIWeeklyProgressDay)initWithType:(int64_t)type progress:(double)progress text:(id)text dateShortString:(id)string;
 - (id)description;
 @end
 
 @implementation BSUIWeeklyProgressDay
 
-- (BSUIWeeklyProgressDay)initWithType:(int64_t)a3 progress:(double)a4 text:(id)a5 dateShortString:(id)a6
+- (BSUIWeeklyProgressDay)initWithType:(int64_t)type progress:(double)progress text:(id)text dateShortString:(id)string
 {
-  v11 = a5;
-  v12 = a6;
+  textCopy = text;
+  stringCopy = string;
   v16.receiver = self;
   v16.super_class = BSUIWeeklyProgressDay;
   v13 = [(BSUIWeeklyProgressDay *)&v16 init];
   v14 = v13;
   if (v13)
   {
-    v13->_type = a3;
-    v13->_progress = a4;
-    objc_storeStrong(&v13->_text, a5);
-    objc_storeStrong(&v14->_dateShortString, a6);
+    v13->_type = type;
+    v13->_progress = progress;
+    objc_storeStrong(&v13->_text, text);
+    objc_storeStrong(&v14->_dateShortString, string);
   }
 
   return v14;
@@ -29,31 +29,31 @@
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(BSUIWeeklyProgressDay *)self type];
+  type = [(BSUIWeeklyProgressDay *)self type];
   [(BSUIWeeklyProgressDay *)self progress];
   v7 = v6;
-  v8 = [(BSUIWeeklyProgressDay *)self text];
-  v9 = [(BSUIWeeklyProgressDay *)self dateShortString];
-  v10 = [NSString stringWithFormat:@"<%@(%p) type=%ld progress=%.3f text=%@ dateShortString=%@ >", v4, self, v5, v7, v8, v9];
+  text = [(BSUIWeeklyProgressDay *)self text];
+  dateShortString = [(BSUIWeeklyProgressDay *)self dateShortString];
+  v10 = [NSString stringWithFormat:@"<%@(%p) type=%ld progress=%.3f text=%@ dateShortString=%@ >", v4, self, type, v7, text, dateShortString];
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   v5 = BUDynamicCast();
 
   if (v5 && (v6 = -[BSUIWeeklyProgressDay type](self, "type"), v6 == [v5 type]) && (-[BSUIWeeklyProgressDay progress](self, "progress"), v8 = v7, objc_msgSend(v5, "progress"), v8 == v9))
   {
-    v10 = [(BSUIWeeklyProgressDay *)self text];
-    v11 = [v5 text];
-    if ([v10 isEqualToString:v11])
+    text = [(BSUIWeeklyProgressDay *)self text];
+    text2 = [v5 text];
+    if ([text isEqualToString:text2])
     {
-      v12 = [(BSUIWeeklyProgressDay *)self dateShortString];
-      v13 = [v5 dateShortString];
-      v14 = [v12 isEqualToString:v13];
+      dateShortString = [(BSUIWeeklyProgressDay *)self dateShortString];
+      dateShortString2 = [v5 dateShortString];
+      v14 = [dateShortString isEqualToString:dateShortString2];
     }
 
     else

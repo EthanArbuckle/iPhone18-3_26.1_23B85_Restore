@@ -1,5 +1,5 @@
 @interface KNSlideNodeSlideSpecificTableCounter
-- (KNSlideNodeSlideSpecificTableCounter)initWithTableInfoUUID:(id)a3 andLinkCount:(unint64_t)a4;
+- (KNSlideNodeSlideSpecificTableCounter)initWithTableInfoUUID:(id)d andLinkCount:(unint64_t)count;
 - (NSString)stringValue;
 - (id)description;
 - (void)decrement;
@@ -7,10 +7,10 @@
 
 @implementation KNSlideNodeSlideSpecificTableCounter
 
-- (KNSlideNodeSlideSpecificTableCounter)initWithTableInfoUUID:(id)a3 andLinkCount:(unint64_t)a4
+- (KNSlideNodeSlideSpecificTableCounter)initWithTableInfoUUID:(id)d andLinkCount:(unint64_t)count
 {
-  v8 = a3;
-  if (!v8)
+  dCopy = d;
+  if (!dCopy)
   {
     v9 = MEMORY[0x277D81150];
     v10 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, "[KNSlideNodeSlideSpecificTableCounter initWithTableInfoUUID:andLinkCount:]");
@@ -26,8 +26,8 @@
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_tableInfoUUID, a3);
-    v17->_linkCount = a4;
+    objc_storeStrong(&v16->_tableInfoUUID, d);
+    v17->_linkCount = count;
   }
 
   return v17;

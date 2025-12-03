@@ -1,16 +1,16 @@
 @interface CNContactViewServiceViewController
 + (Class)classForContentViewControllerImpl;
-- (BOOL)shouldPerformDefaultActionForContact:(id)a3 propertyKey:(id)a4 propertyIdentifier:(id)a5;
+- (BOOL)shouldPerformDefaultActionForContact:(id)contact propertyKey:(id)key propertyIdentifier:(id)identifier;
 - (CNContactViewServiceViewController)init;
-- (void)didChangePreferredContentSize:(CGSize)a3;
-- (void)didCompleteWithContact:(id)a3;
-- (void)didDeleteContact:(id)a3;
+- (void)didChangePreferredContentSize:(CGSize)size;
+- (void)didCompleteWithContact:(id)contact;
+- (void)didDeleteContact:(id)contact;
 - (void)didExecuteClearRecentsDataAction;
 - (void)didExecuteDeleteFromDowntimeWhitelistAction;
-- (void)isPresentingEditingController:(BOOL)a3;
-- (void)isPresentingFullscreen:(BOOL)a3;
+- (void)isPresentingEditingController:(BOOL)controller;
+- (void)isPresentingFullscreen:(BOOL)fullscreen;
 - (void)presentCancelConfirmationAlert;
-- (void)updateEditing:(BOOL)a3 doneButtonEnabled:(BOOL)a4 doneButtonText:(id)a5;
+- (void)updateEditing:(BOOL)editing doneButtonEnabled:(BOOL)enabled doneButtonText:(id)text;
 - (void)viewDidAppear;
 - (void)viewDidLoad;
 @end
@@ -19,80 +19,80 @@
 
 - (void)presentCancelConfirmationAlert
 {
-  v2 = [(CNContactViewServiceViewController *)self extensionContext];
-  [v2 presentCancelConfirmationAlert];
+  extensionContext = [(CNContactViewServiceViewController *)self extensionContext];
+  [extensionContext presentCancelConfirmationAlert];
 }
 
 - (void)didExecuteDeleteFromDowntimeWhitelistAction
 {
-  v2 = [(CNContactViewServiceViewController *)self extensionContext];
-  [v2 didExecuteDeleteFromDowntimeWhitelistAction];
+  extensionContext = [(CNContactViewServiceViewController *)self extensionContext];
+  [extensionContext didExecuteDeleteFromDowntimeWhitelistAction];
 }
 
 - (void)didExecuteClearRecentsDataAction
 {
-  v2 = [(CNContactViewServiceViewController *)self extensionContext];
-  [v2 didExecuteClearRecentsDataAction];
+  extensionContext = [(CNContactViewServiceViewController *)self extensionContext];
+  [extensionContext didExecuteClearRecentsDataAction];
 }
 
 - (void)viewDidAppear
 {
-  v2 = [(CNContactViewServiceViewController *)self extensionContext];
-  [v2 viewDidAppear];
+  extensionContext = [(CNContactViewServiceViewController *)self extensionContext];
+  [extensionContext viewDidAppear];
 }
 
-- (void)didChangePreferredContentSize:(CGSize)a3
+- (void)didChangePreferredContentSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(CNContactViewServiceViewController *)self extensionContext];
-  [v5 didChangePreferredContentSize:{width, height}];
+  height = size.height;
+  width = size.width;
+  extensionContext = [(CNContactViewServiceViewController *)self extensionContext];
+  [extensionContext didChangePreferredContentSize:{width, height}];
 }
 
-- (void)isPresentingEditingController:(BOOL)a3
+- (void)isPresentingEditingController:(BOOL)controller
 {
-  v3 = a3;
-  v4 = [(CNContactViewServiceViewController *)self extensionContext];
-  [v4 isPresentingEditingController:v3];
+  controllerCopy = controller;
+  extensionContext = [(CNContactViewServiceViewController *)self extensionContext];
+  [extensionContext isPresentingEditingController:controllerCopy];
 }
 
-- (void)isPresentingFullscreen:(BOOL)a3
+- (void)isPresentingFullscreen:(BOOL)fullscreen
 {
-  v3 = a3;
-  v4 = [(CNContactViewServiceViewController *)self extensionContext];
-  [v4 isPresentingFullscreen:v3];
+  fullscreenCopy = fullscreen;
+  extensionContext = [(CNContactViewServiceViewController *)self extensionContext];
+  [extensionContext isPresentingFullscreen:fullscreenCopy];
 }
 
-- (void)didDeleteContact:(id)a3
+- (void)didDeleteContact:(id)contact
 {
-  v4 = a3;
-  v5 = [(CNContactViewServiceViewController *)self extensionContext];
-  [v5 didDeleteContact:v4];
+  contactCopy = contact;
+  extensionContext = [(CNContactViewServiceViewController *)self extensionContext];
+  [extensionContext didDeleteContact:contactCopy];
 }
 
-- (void)didCompleteWithContact:(id)a3
+- (void)didCompleteWithContact:(id)contact
 {
-  v4 = a3;
-  v5 = [(CNContactViewServiceViewController *)self extensionContext];
-  [v5 didCompleteWithContact:v4];
+  contactCopy = contact;
+  extensionContext = [(CNContactViewServiceViewController *)self extensionContext];
+  [extensionContext didCompleteWithContact:contactCopy];
 }
 
-- (void)updateEditing:(BOOL)a3 doneButtonEnabled:(BOOL)a4 doneButtonText:(id)a5
+- (void)updateEditing:(BOOL)editing doneButtonEnabled:(BOOL)enabled doneButtonText:(id)text
 {
-  v5 = a4;
-  v6 = a3;
-  v8 = a5;
-  v9 = [(CNContactViewServiceViewController *)self extensionContext];
-  [v9 updateEditing:v6 doneButtonEnabled:v5 doneButtonText:v8];
+  enabledCopy = enabled;
+  editingCopy = editing;
+  textCopy = text;
+  extensionContext = [(CNContactViewServiceViewController *)self extensionContext];
+  [extensionContext updateEditing:editingCopy doneButtonEnabled:enabledCopy doneButtonText:textCopy];
 }
 
-- (BOOL)shouldPerformDefaultActionForContact:(id)a3 propertyKey:(id)a4 propertyIdentifier:(id)a5
+- (BOOL)shouldPerformDefaultActionForContact:(id)contact propertyKey:(id)key propertyIdentifier:(id)identifier
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(CNContactViewServiceViewController *)self extensionContext];
-  v12 = [v11 shouldPerformDefaultActionForContact:v10 propertyKey:v9 propertyIdentifier:v8];
+  identifierCopy = identifier;
+  keyCopy = key;
+  contactCopy = contact;
+  extensionContext = [(CNContactViewServiceViewController *)self extensionContext];
+  v12 = [extensionContext shouldPerformDefaultActionForContact:contactCopy propertyKey:keyCopy propertyIdentifier:identifierCopy];
 
   return v12;
 }
@@ -102,8 +102,8 @@
   v4.receiver = self;
   v4.super_class = CNContactViewServiceViewController;
   [(CNContactViewServiceViewController *)&v4 viewDidLoad];
-  v3 = [(CNContactViewServiceViewController *)self contactContentVC];
-  [(UIViewController *)self cnui_addChildViewController:v3];
+  contactContentVC = [(CNContactViewServiceViewController *)self contactContentVC];
+  [(UIViewController *)self cnui_addChildViewController:contactContentVC];
 }
 
 - (CNContactViewServiceViewController)init
@@ -124,9 +124,9 @@
 
 + (Class)classForContentViewControllerImpl
 {
-  v2 = [MEMORY[0x1E69966E8] currentEnvironment];
-  v3 = [v2 featureFlags];
-  [v3 isFeatureEnabled:10];
+  currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+  featureFlags = [currentEnvironment featureFlags];
+  [featureFlags isFeatureEnabled:10];
 
   v4 = objc_opt_class();
 

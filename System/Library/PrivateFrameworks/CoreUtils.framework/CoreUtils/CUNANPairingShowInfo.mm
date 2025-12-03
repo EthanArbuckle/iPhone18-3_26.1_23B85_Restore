@@ -1,5 +1,5 @@
 @interface CUNANPairingShowInfo
-- (CUNANPairingShowInfo)initWithSubscriberInfo:(id)a3 pinCode:(id)a4;
+- (CUNANPairingShowInfo)initWithSubscriberInfo:(id)info pinCode:(id)code;
 - (id)description;
 @end
 
@@ -23,22 +23,22 @@
   return v28;
 }
 
-- (CUNANPairingShowInfo)initWithSubscriberInfo:(id)a3 pinCode:(id)a4
+- (CUNANPairingShowInfo)initWithSubscriberInfo:(id)info pinCode:(id)code
 {
-  v6 = a3;
-  v7 = a4;
+  infoCopy = info;
+  codeCopy = code;
   v17.receiver = self;
   v17.super_class = CUNANPairingShowInfo;
   v8 = [(CUNANPairingShowInfo *)&v17 init];
   if (v8)
   {
-    v9 = [v6 instanceName];
+    instanceName = [infoCopy instanceName];
     name = v8->_name;
-    v8->_name = v9;
+    v8->_name = instanceName;
 
-    objc_storeStrong(&v8->_pinCode, a4);
-    v11 = [v6 txtRecordData];
-    v13 = CUTXTDictionaryCreateWithTXTData(v11, v12, 0);
+    objc_storeStrong(&v8->_pinCode, code);
+    txtRecordData = [infoCopy txtRecordData];
+    v13 = CUTXTDictionaryCreateWithTXTData(txtRecordData, v12, 0);
     textInfo = v8->_textInfo;
     v8->_textInfo = v13;
 

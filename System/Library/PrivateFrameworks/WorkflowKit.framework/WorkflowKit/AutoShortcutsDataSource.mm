@@ -6,7 +6,7 @@
 
 - (void)appShortcutsChanged
 {
-  v2 = self;
+  selfCopy = self;
   sub_1CA5B9518();
 }
 

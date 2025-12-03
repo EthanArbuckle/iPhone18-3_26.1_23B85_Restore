@@ -1,56 +1,56 @@
 @interface OAXGraphic
-+ (void)readPropertiesFromXmlNode:(_xmlNode *)a3 graphicProperties:(id)a4 drawingState:(id)a5;
++ (void)readPropertiesFromXmlNode:(_xmlNode *)node graphicProperties:(id)properties drawingState:(id)state;
 @end
 
 @implementation OAXGraphic
 
-+ (void)readPropertiesFromXmlNode:(_xmlNode *)a3 graphicProperties:(id)a4 drawingState:(id)a5
++ (void)readPropertiesFromXmlNode:(_xmlNode *)node graphicProperties:(id)properties drawingState:(id)state
 {
-  v22 = a4;
-  v7 = a5;
-  v21 = a3;
-  for (i = OCXFirstChild(a3); i; i = OCXNextSibling(i))
+  propertiesCopy = properties;
+  stateCopy = state;
+  nodeCopy = node;
+  for (i = OCXFirstChild(node); i; i = OCXNextSibling(i))
   {
-    v9 = [v7 packagePart];
-    v10 = [OAXFill readFillFromXmlNode:i packagePart:v9 drawingState:v7];
+    packagePart = [stateCopy packagePart];
+    v10 = [OAXFill readFillFromXmlNode:i packagePart:packagePart drawingState:stateCopy];
 
     if (v10)
     {
-      [v22 setFill:v10];
+      [propertiesCopy setFill:v10];
     }
 
     if (xmlStrEqual(i->name, "effectLst"))
     {
-      v11 = [v7 packagePart];
-      v12 = [OAXEffect readEffectsFromXmlNode:i packagePart:v11 drawingState:v7];
+      packagePart2 = [stateCopy packagePart];
+      v12 = [OAXEffect readEffectsFromXmlNode:i packagePart:packagePart2 drawingState:stateCopy];
 
-      [v22 setEffects:v12];
+      [propertiesCopy setEffects:v12];
     }
 
     if (xmlStrEqual(i->name, "scene3d"))
     {
-      v13 = [v7 packagePart];
-      v14 = [OAXScene3D readScene3DFromXmlNode:i packagePart:v13 drawingState:v7];
-      [v22 setScene3D:v14];
+      packagePart3 = [stateCopy packagePart];
+      v14 = [OAXScene3D readScene3DFromXmlNode:i packagePart:packagePart3 drawingState:stateCopy];
+      [propertiesCopy setScene3D:v14];
     }
 
     if (xmlStrEqual(i->name, "sp3d"))
     {
-      v15 = [v7 packagePart];
-      v16 = [OAXShape3D readShape3DFromXmlNode:i packagePart:v15 drawingState:v7];
-      [v22 setShape3D:v16];
+      packagePart4 = [stateCopy packagePart];
+      v16 = [OAXShape3D readShape3DFromXmlNode:i packagePart:packagePart4 drawingState:stateCopy];
+      [propertiesCopy setShape3D:v16];
     }
   }
 
-  v17 = [v7 OAXMainNamespace];
-  v18 = OCXFindChild(v21, v17, "ln");
+  oAXMainNamespace = [stateCopy OAXMainNamespace];
+  v18 = OCXFindChild(nodeCopy, oAXMainNamespace, "ln");
 
   if (v18)
   {
-    v19 = [v7 packagePart];
-    v20 = [OAXStroke readStrokeFromXmlNode:v18 packagePart:v19 drawingState:v7];
+    packagePart5 = [stateCopy packagePart];
+    v20 = [OAXStroke readStrokeFromXmlNode:v18 packagePart:packagePart5 drawingState:stateCopy];
 
-    [v22 setStroke:v20];
+    [propertiesCopy setStroke:v20];
   }
 }
 

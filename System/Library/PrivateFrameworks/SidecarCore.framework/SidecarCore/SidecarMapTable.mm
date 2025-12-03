@@ -1,33 +1,33 @@
 @interface SidecarMapTable
-- (SidecarMapTable)initWithKeyMask:(int64_t)a3 weakObjects:(BOOL)a4;
+- (SidecarMapTable)initWithKeyMask:(int64_t)mask weakObjects:(BOOL)objects;
 @end
 
 @implementation SidecarMapTable
 
-- (SidecarMapTable)initWithKeyMask:(int64_t)a3 weakObjects:(BOOL)a4
+- (SidecarMapTable)initWithKeyMask:(int64_t)mask weakObjects:(BOOL)objects
 {
-  v4 = a4;
+  objectsCopy = objects;
   v15.receiver = self;
   v15.super_class = SidecarMapTable;
   v6 = [(SidecarMapTable *)&v15 init];
   v7 = v6;
   if (v6)
   {
-    v6->_keyMask = a3;
-    if (v4)
+    v6->_keyMask = mask;
+    if (objectsCopy)
     {
-      v8 = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
+      strongToWeakObjectsMapTable = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
       keys2values = v7->_keys2values;
-      v7->_keys2values = v8;
+      v7->_keys2values = strongToWeakObjectsMapTable;
 
       [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
     }
 
     else
     {
-      v11 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+      strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
       v12 = v7->_keys2values;
-      v7->_keys2values = v11;
+      v7->_keys2values = strongToStrongObjectsMapTable;
 
       [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
     }

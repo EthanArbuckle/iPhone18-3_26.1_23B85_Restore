@@ -1,15 +1,15 @@
 @interface _ATXAppLaunchHistogramWithPersistentBackup
-- (BOOL)removeHistoryForBundleId:(id)a3;
-- (_ATXAppLaunchHistogramWithPersistentBackup)initWithDataStore:(id)a3 histogramType:(int64_t)a4 loadFromDataStore:(BOOL)a5 saveOnBackgroundQueue:(id)a6;
-- (int)removeHistoryForBundleIds:(id)a3;
-- (void)addLaunchWithBundleId:(id)a3 date:(id)a4 timeZone:(id)a5;
-- (void)addLaunchWithBundleId:(id)a3 date:(id)a4 timeZone:(id)a5 weight:(float)a6;
-- (void)addLaunchWithBundleId:(id)a3 elapsedTime:(double)a4;
-- (void)addLaunchWithBundleId:(id)a3 elapsedTime:(double)a4 weight:(float)a5;
-- (void)decayByFactor:(double)a3;
-- (void)decayWithHalfLifeInDays:(double)a3;
+- (BOOL)removeHistoryForBundleId:(id)id;
+- (_ATXAppLaunchHistogramWithPersistentBackup)initWithDataStore:(id)store histogramType:(int64_t)type loadFromDataStore:(BOOL)dataStore saveOnBackgroundQueue:(id)queue;
+- (int)removeHistoryForBundleIds:(id)ids;
+- (void)addLaunchWithBundleId:(id)id date:(id)date timeZone:(id)zone;
+- (void)addLaunchWithBundleId:(id)id date:(id)date timeZone:(id)zone weight:(float)weight;
+- (void)addLaunchWithBundleId:(id)id elapsedTime:(double)time;
+- (void)addLaunchWithBundleId:(id)id elapsedTime:(double)time weight:(float)weight;
+- (void)decayByFactor:(double)factor;
+- (void)decayWithHalfLifeInDays:(double)days;
 - (void)flush;
-- (void)removeLaunchWithBundleId:(id)a3 date:(id)a4 timeZone:(id)a5 weight:(float)a6;
+- (void)removeLaunchWithBundleId:(id)id date:(id)date timeZone:(id)zone weight:(float)weight;
 - (void)resetData;
 @end
 
@@ -21,20 +21,20 @@
   v4 = objc_autoreleasePoolPush();
   v5 = [objc_alloc(MEMORY[0x277CCAAB0]) initRequiringSecureCoding:1];
   [(_ATXAppLaunchHistogram *)self encodeWithCoder:v5];
-  v6 = [v5 encodedData];
+  encodedData = [v5 encodedData];
 
   objc_autoreleasePoolPop(v4);
-  [(_ATXDataStore *)self->_datastore addHistogramData:v6 forHistogramOfType:self->_histogramType];
+  [(_ATXDataStore *)self->_datastore addHistogramData:encodedData forHistogramOfType:self->_histogramType];
 
   objc_autoreleasePoolPop(v3);
 }
 
-- (_ATXAppLaunchHistogramWithPersistentBackup)initWithDataStore:(id)a3 histogramType:(int64_t)a4 loadFromDataStore:(BOOL)a5 saveOnBackgroundQueue:(id)a6
+- (_ATXAppLaunchHistogramWithPersistentBackup)initWithDataStore:(id)store histogramType:(int64_t)type loadFromDataStore:(BOOL)dataStore saveOnBackgroundQueue:(id)queue
 {
-  v7 = a5;
-  v11 = a3;
-  v12 = a6;
-  if (v7 && ([v11 histogramDataForHistogramType:a4], (v13 = objc_claimAutoreleasedReturnValue()) != 0))
+  dataStoreCopy = dataStore;
+  storeCopy = store;
+  queueCopy = queue;
+  if (dataStoreCopy && ([storeCopy histogramDataForHistogramType:type], (v13 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v14 = v13;
     v15 = objc_autoreleasePoolPush();
@@ -58,7 +58,7 @@
 
       v30.receiver = self;
       v30.super_class = _ATXAppLaunchHistogramWithPersistentBackup;
-      v18 = [(_ATXAppLaunchHistogram *)&v30 initWithType:a4];
+      v18 = [(_ATXAppLaunchHistogram *)&v30 initWithType:type];
     }
 
     v19 = v18;
@@ -74,7 +74,7 @@
   {
     v29.receiver = self;
     v29.super_class = _ATXAppLaunchHistogramWithPersistentBackup;
-    v19 = [(_ATXAppLaunchHistogram *)&v29 initWithType:a4];
+    v19 = [(_ATXAppLaunchHistogram *)&v29 initWithType:type];
     v14 = 0;
     if (!v19)
     {
@@ -89,9 +89,9 @@ LABEL_12:
     }
   }
 
-  objc_storeStrong(&v19->_datastore, a3);
-  v19->_histogramType = a4;
-  if (v12)
+  objc_storeStrong(&v19->_datastore, store);
+  v19->_histogramType = type;
+  if (queueCopy)
   {
     objc_initWeak(&location, v19);
     v20 = [ATXBackgroundSaver alloc];
@@ -100,7 +100,7 @@ LABEL_12:
     v26[2] = __118___ATXAppLaunchHistogramWithPersistentBackup_initWithDataStore_histogramType_loadFromDataStore_saveOnBackgroundQueue___block_invoke;
     v26[3] = &unk_2785977B0;
     objc_copyWeak(&v27, &location);
-    v21 = [(ATXBackgroundSaver *)v20 initWithQueue:v12 block:v26];
+    v21 = [(ATXBackgroundSaver *)v20 initWithQueue:queueCopy block:v26];
     saver = v19->_saver;
     v19->_saver = v21;
 
@@ -113,51 +113,51 @@ LABEL_15:
   return v19;
 }
 
-- (void)addLaunchWithBundleId:(id)a3 date:(id)a4 timeZone:(id)a5
+- (void)addLaunchWithBundleId:(id)id date:(id)date timeZone:(id)zone
 {
   v6.receiver = self;
   v6.super_class = _ATXAppLaunchHistogramWithPersistentBackup;
-  [(_ATXAppLaunchHistogram *)&v6 addLaunchWithBundleId:a3 date:a4 timeZone:a5];
+  [(_ATXAppLaunchHistogram *)&v6 addLaunchWithBundleId:id date:date timeZone:zone];
   [(ATXBackgroundSaver *)self->_saver scheduleSave];
 }
 
-- (void)addLaunchWithBundleId:(id)a3 date:(id)a4 timeZone:(id)a5 weight:(float)a6
+- (void)addLaunchWithBundleId:(id)id date:(id)date timeZone:(id)zone weight:(float)weight
 {
   v7.receiver = self;
   v7.super_class = _ATXAppLaunchHistogramWithPersistentBackup;
-  [(_ATXAppLaunchHistogram *)&v7 addLaunchWithBundleId:a3 date:a4 timeZone:a5 weight:?];
+  [(_ATXAppLaunchHistogram *)&v7 addLaunchWithBundleId:id date:date timeZone:zone weight:?];
   [(ATXBackgroundSaver *)self->_saver scheduleSave];
 }
 
-- (void)addLaunchWithBundleId:(id)a3 elapsedTime:(double)a4
+- (void)addLaunchWithBundleId:(id)id elapsedTime:(double)time
 {
   v5.receiver = self;
   v5.super_class = _ATXAppLaunchHistogramWithPersistentBackup;
-  [(_ATXAppLaunchHistogram *)&v5 addLaunchWithBundleId:a3 elapsedTime:a4];
+  [(_ATXAppLaunchHistogram *)&v5 addLaunchWithBundleId:id elapsedTime:time];
   [(ATXBackgroundSaver *)self->_saver scheduleSave];
 }
 
-- (void)addLaunchWithBundleId:(id)a3 elapsedTime:(double)a4 weight:(float)a5
+- (void)addLaunchWithBundleId:(id)id elapsedTime:(double)time weight:(float)weight
 {
   v6.receiver = self;
   v6.super_class = _ATXAppLaunchHistogramWithPersistentBackup;
-  [(_ATXAppLaunchHistogram *)&v6 addLaunchWithBundleId:a3 elapsedTime:a4 weight:?];
+  [(_ATXAppLaunchHistogram *)&v6 addLaunchWithBundleId:id elapsedTime:time weight:?];
   [(ATXBackgroundSaver *)self->_saver scheduleSave];
 }
 
-- (void)removeLaunchWithBundleId:(id)a3 date:(id)a4 timeZone:(id)a5 weight:(float)a6
+- (void)removeLaunchWithBundleId:(id)id date:(id)date timeZone:(id)zone weight:(float)weight
 {
   v7.receiver = self;
   v7.super_class = _ATXAppLaunchHistogramWithPersistentBackup;
-  [(_ATXAppLaunchHistogram *)&v7 removeLaunchWithBundleId:a3 date:a4 timeZone:a5 weight:?];
+  [(_ATXAppLaunchHistogram *)&v7 removeLaunchWithBundleId:id date:date timeZone:zone weight:?];
   [(ATXBackgroundSaver *)self->_saver scheduleSave];
 }
 
-- (BOOL)removeHistoryForBundleId:(id)a3
+- (BOOL)removeHistoryForBundleId:(id)id
 {
   v6.receiver = self;
   v6.super_class = _ATXAppLaunchHistogramWithPersistentBackup;
-  v4 = [(_ATXAppLaunchHistogram *)&v6 removeHistoryForBundleId:a3];
+  v4 = [(_ATXAppLaunchHistogram *)&v6 removeHistoryForBundleId:id];
   if (v4)
   {
     [(ATXBackgroundSaver *)self->_saver scheduleSaveImmediately];
@@ -166,11 +166,11 @@ LABEL_15:
   return v4;
 }
 
-- (int)removeHistoryForBundleIds:(id)a3
+- (int)removeHistoryForBundleIds:(id)ids
 {
   v6.receiver = self;
   v6.super_class = _ATXAppLaunchHistogramWithPersistentBackup;
-  v4 = [(_ATXAppLaunchHistogram *)&v6 removeHistoryForBundleIds:a3];
+  v4 = [(_ATXAppLaunchHistogram *)&v6 removeHistoryForBundleIds:ids];
   if (v4 >= 1)
   {
     [(ATXBackgroundSaver *)self->_saver scheduleSaveImmediately];
@@ -179,19 +179,19 @@ LABEL_15:
   return v4;
 }
 
-- (void)decayByFactor:(double)a3
+- (void)decayByFactor:(double)factor
 {
   v4.receiver = self;
   v4.super_class = _ATXAppLaunchHistogramWithPersistentBackup;
-  [(_ATXAppLaunchHistogram *)&v4 decayByFactor:a3];
+  [(_ATXAppLaunchHistogram *)&v4 decayByFactor:factor];
   [(ATXBackgroundSaver *)self->_saver scheduleSave];
 }
 
-- (void)decayWithHalfLifeInDays:(double)a3
+- (void)decayWithHalfLifeInDays:(double)days
 {
   v4.receiver = self;
   v4.super_class = _ATXAppLaunchHistogramWithPersistentBackup;
-  [(_ATXAppLaunchHistogram *)&v4 decayWithHalfLifeInDays:a3];
+  [(_ATXAppLaunchHistogram *)&v4 decayWithHalfLifeInDays:days];
   [(ATXBackgroundSaver *)self->_saver scheduleSave];
 }
 

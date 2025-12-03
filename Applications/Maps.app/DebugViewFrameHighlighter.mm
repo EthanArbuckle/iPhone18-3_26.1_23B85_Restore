@@ -1,7 +1,7 @@
 @interface DebugViewFrameHighlighter
 + (BOOL)frameHighlightingEnabled;
 + (BOOL)shouldHighlightOnLaunch;
-+ (void)setFrameHighlightingEnabled:(BOOL)a3 persistToDefaults:(BOOL)a4;
++ (void)setFrameHighlightingEnabled:(BOOL)enabled persistToDefaults:(BOOL)defaults;
 @end
 
 @implementation DebugViewFrameHighlighter
@@ -14,10 +14,10 @@
   return v3;
 }
 
-+ (void)setFrameHighlightingEnabled:(BOOL)a3 persistToDefaults:(BOOL)a4
++ (void)setFrameHighlightingEnabled:(BOOL)enabled persistToDefaults:(BOOL)defaults
 {
-  v4 = a4;
-  v5 = a3;
+  defaultsCopy = defaults;
+  enabledCopy = enabled;
   Uid = sel_getUid("_enableToolsDebugColorViewBounds:");
   objc_opt_class();
   if (objc_opt_respondsToSelector())
@@ -25,10 +25,10 @@
     v7 = objc_autoreleasePoolPush();
     [objc_opt_class() Uid];
     objc_autoreleasePoolPop(v7);
-    if (v4)
+    if (defaultsCopy)
     {
       v10 = +[NSUserDefaults standardUserDefaults];
-      [v10 setBool:v5 forKey:@"kDebugViewFrameHighlightingEnabledDefaultsKey"];
+      [v10 setBool:enabledCopy forKey:@"kDebugViewFrameHighlightingEnabledDefaultsKey"];
     }
   }
 

@@ -1,14 +1,14 @@
 @interface SBDisplayBrightnessController
 + (BOOL)handlesKeyCommands;
 - (BOOL)_isBrightnessPropertyRunning;
-- (SBDisplayBrightnessController)initWithCoordinator:(id)a3;
+- (SBDisplayBrightnessController)initWithCoordinator:(id)coordinator;
 - (float)_effectiveCurrentTargetBrightness;
 - (void)_beginBrightnessTransaction;
 - (void)_brightnessControlAvailabilityDidChange;
 - (void)_completeBrightnessTransaction;
-- (void)_setBrightnessLevel:(float)a3 animated:(BOOL)a4;
-- (void)buttonSetArbiter:(id)a3 performActionForButtonPage:(unsigned __int16)a4 usage:(unsigned __int16)a5;
-- (void)buttonSetArbiterDidReset:(id)a3;
+- (void)_setBrightnessLevel:(float)level animated:(BOOL)animated;
+- (void)buttonSetArbiter:(id)arbiter performActionForButtonPage:(unsigned __int16)page usage:(unsigned __int16)usage;
+- (void)buttonSetArbiterDidReset:(id)reset;
 - (void)dealloc;
 - (void)noteValueUpdatesDidEnd;
 - (void)noteValueUpdatesWillBegin;
@@ -16,11 +16,11 @@
 
 @implementation SBDisplayBrightnessController
 
-- (SBDisplayBrightnessController)initWithCoordinator:(id)a3
+- (SBDisplayBrightnessController)initWithCoordinator:(id)coordinator
 {
   v24[4] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  coordinatorCopy = coordinator;
+  if (!coordinatorCopy)
   {
     [(SBDisplayBrightnessController *)a2 initWithCoordinator:?];
   }
@@ -31,7 +31,7 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeWeak(&v6->_coordinator, v5);
+    objc_storeWeak(&v6->_coordinator, coordinatorCopy);
     v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:786544];
     v24[0] = v8;
     v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:4278255649];
@@ -134,10 +134,10 @@ void __51__SBDisplayBrightnessController_handlesKeyCommands__block_invoke()
   [(SBDisplayBrightnessController *)self _completeBrightnessTransaction];
 }
 
-- (void)buttonSetArbiter:(id)a3 performActionForButtonPage:(unsigned __int16)a4 usage:(unsigned __int16)a5
+- (void)buttonSetArbiter:(id)arbiter performActionForButtonPage:(unsigned __int16)page usage:(unsigned __int16)usage
 {
-  v5 = a5;
-  v6 = a4;
+  usageCopy = usage;
+  pageCopy = page;
   v18 = *MEMORY[0x277D85DE8];
   WeakRetained = objc_loadWeakRetained(&self->_coordinator);
   v9 = WeakRetained;
@@ -147,14 +147,14 @@ void __51__SBDisplayBrightnessController_handlesKeyCommands__block_invoke()
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v16 = 138543362;
-      v17 = self;
+      selfCopy = self;
       _os_log_impl(&dword_21ED4E000, v12, OS_LOG_TYPE_DEFAULT, "%{public}@ ignoring brightness key press; brightness control is unavailable", &v16, 0xCu);
     }
 
     goto LABEL_14;
   }
 
-  v10 = v5 | (v6 << 16);
+  v10 = usageCopy | (pageCopy << 16);
   if (v10 <= 786542)
   {
     if (v10 != -16711648)
@@ -164,7 +164,7 @@ void __51__SBDisplayBrightnessController_handlesKeyCommands__block_invoke()
     }
 
 LABEL_12:
-    v13 = self;
+    selfCopy3 = self;
     v14 = 1;
     v15 = 0;
     goto LABEL_13;
@@ -179,17 +179,17 @@ LABEL_12:
 LABEL_10:
   if (v10 == v11)
   {
-    v13 = self;
+    selfCopy3 = self;
     v14 = 0;
     v15 = 1;
 LABEL_13:
-    [WeakRetained brightnessController:v13 performCoordinatedBrightnessChangeForIncrementKeyDown:v14 decrementKeyDown:v15];
+    [WeakRetained brightnessController:selfCopy3 performCoordinatedBrightnessChangeForIncrementKeyDown:v14 decrementKeyDown:v15];
   }
 
 LABEL_14:
 }
 
-- (void)buttonSetArbiterDidReset:(id)a3
+- (void)buttonSetArbiterDidReset:(id)reset
 {
   WeakRetained = objc_loadWeakRetained(&self->_coordinator);
   [WeakRetained brightnessController:self performCoordinatedBrightnessChangeForIncrementKeyDown:0 decrementKeyDown:0];
@@ -199,20 +199,20 @@ LABEL_14:
 {
   v10 = *MEMORY[0x277D85DE8];
   v3 = [(BrightnessSystemClient *)self->_brightnessSystemClient copyPropertyForKey:@"CBBrightnessControlAvailable"];
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
   v5 = SBLogBacklight();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138543618;
-    v7 = self;
+    selfCopy = self;
     v8 = 1024;
-    v9 = v4;
+    v9 = bOOLValue;
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ brightness control availability did change; available: %{BOOL}u", &v6, 0x12u);
   }
 
-  self->_brightnessControlAvailable = v4;
-  if ((v4 & 1) == 0)
+  self->_brightnessControlAvailable = bOOLValue;
+  if ((bOOLValue & 1) == 0)
   {
     [(SBDisplayBrightnessController *)self cancelBrightnessKeyPressEvent];
   }
@@ -227,7 +227,7 @@ LABEL_14:
     if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
     {
       v4 = 138412290;
-      v5 = self;
+      selfCopy = self;
       _os_log_impl(&dword_21ED4E000, v3, OS_LOG_TYPE_INFO, "%@ beginning brightness transaction", &v4, 0xCu);
     }
 
@@ -244,7 +244,7 @@ LABEL_14:
     if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
     {
       v4 = 138412290;
-      v5 = self;
+      selfCopy = self;
       _os_log_impl(&dword_21ED4E000, v3, OS_LOG_TYPE_INFO, "%@ completing brightness transaction", &v4, 0xCu);
     }
 
@@ -281,10 +281,10 @@ LABEL_14:
   return brightnessProperty;
 }
 
-- (void)_setBrightnessLevel:(float)a3 animated:(BOOL)a4
+- (void)_setBrightnessLevel:(float)level animated:(BOOL)animated
 {
   v39[1] = *MEMORY[0x277D85DE8];
-  if (a4)
+  if (animated)
   {
     if ([(SBDisplayBrightnessController *)self _isBrightnessPropertyRunning])
     {
@@ -295,7 +295,7 @@ LABEL_14:
       v36[2] = __62__SBDisplayBrightnessController__setBrightnessLevel_animated___block_invoke;
       v36[3] = &unk_2783AC098;
       v37 = v6;
-      v38 = a3;
+      levelCopy = level;
       v8 = *MEMORY[0x277CD9DD0];
       v9 = *(MEMORY[0x277CD9DD0] + 4);
       v10 = *(MEMORY[0x277CD9DD0] + 8);
@@ -342,7 +342,7 @@ LABEL_14:
         v27[3] = &unk_2783AC098;
         v23 = v19;
         v28 = v23;
-        v29 = a3;
+        levelCopy2 = level;
         LODWORD(v24) = *MEMORY[0x277CD9DD0];
         LODWORD(v25) = *(MEMORY[0x277CD9DD0] + 4);
         LODWORD(v26) = *(MEMORY[0x277CD9DD0] + 8);

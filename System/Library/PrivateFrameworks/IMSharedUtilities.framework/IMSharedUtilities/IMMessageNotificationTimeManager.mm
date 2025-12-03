@@ -1,14 +1,14 @@
 @interface IMMessageNotificationTimeManager
 + (id)sharedInstance;
-- (BOOL)_shouldSendNotificationForChatIdentifier:(id)a3;
+- (BOOL)_shouldSendNotificationForChatIdentifier:(id)identifier;
 - (IMMessageNotificationTimeManager)init;
 - (int64_t)_getToneTimeWindow;
 - (void)acquireAssertionToUnsuspendProcess;
 - (void)dealloc;
-- (void)sendNotificationMessageIfNeededForIncomingMessageFromChatIdentifier:(id)a3;
-- (void)setDate:(id)a3 forChatIdentifier:(id)a4;
-- (void)setLatestNotificationIDSTokenURI:(id)a3;
-- (void)tearDownSessionForChatIdentifier:(id)a3;
+- (void)sendNotificationMessageIfNeededForIncomingMessageFromChatIdentifier:(id)identifier;
+- (void)setDate:(id)date forChatIdentifier:(id)identifier;
+- (void)setLatestNotificationIDSTokenURI:(id)i;
+- (void)tearDownSessionForChatIdentifier:(id)identifier;
 @end
 
 @implementation IMMessageNotificationTimeManager
@@ -43,10 +43,10 @@
   [(IMMessageNotificationTimeManager *)&v3 dealloc];
 }
 
-- (void)tearDownSessionForChatIdentifier:(id)a3
+- (void)tearDownSessionForChatIdentifier:(id)identifier
 {
   v8 = *MEMORY[0x1E69E9840];
-  if ([(NSMutableDictionary *)[(IMMessageNotificationTimeManager *)self chatsStartTimeDictionary] count]&& [(NSMutableDictionary *)[(IMMessageNotificationTimeManager *)self chatsStartTimeDictionary] objectForKey:a3])
+  if ([(NSMutableDictionary *)[(IMMessageNotificationTimeManager *)self chatsStartTimeDictionary] count]&& [(NSMutableDictionary *)[(IMMessageNotificationTimeManager *)self chatsStartTimeDictionary] objectForKey:identifier])
   {
     if (IMOSLoggingEnabled())
     {
@@ -54,35 +54,35 @@
       if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
       {
         v6 = 138412290;
-        v7 = a3;
+        identifierCopy = identifier;
         _os_log_impl(&dword_1A85E5000, v5, OS_LOG_TYPE_INFO, "Tearing down session for chatIdentifier %@", &v6, 0xCu);
       }
     }
 
-    [(NSMutableDictionary *)[(IMMessageNotificationTimeManager *)self chatsStartTimeDictionary] removeObjectForKey:a3];
+    [(NSMutableDictionary *)[(IMMessageNotificationTimeManager *)self chatsStartTimeDictionary] removeObjectForKey:identifier];
   }
 }
 
-- (void)setDate:(id)a3 forChatIdentifier:(id)a4
+- (void)setDate:(id)date forChatIdentifier:(id)identifier
 {
   v14 = *MEMORY[0x1E69E9840];
-  if ([a4 length])
+  if ([identifier length])
   {
-    v7 = [[IMMessageNotificationTimer alloc] initWithDate:a3];
+    v7 = [[IMMessageNotificationTimer alloc] initWithDate:date];
     if (IMOSLoggingEnabled())
     {
       v8 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
       {
         v10 = 138412546;
-        v11 = v7;
+        identifierCopy2 = v7;
         v12 = 2112;
-        v13 = a4;
+        identifierCopy = identifier;
         _os_log_impl(&dword_1A85E5000, v8, OS_LOG_TYPE_INFO, "Setting current notification object %@ for chatIdentifier %@", &v10, 0x16u);
       }
     }
 
-    [(NSMutableDictionary *)[(IMMessageNotificationTimeManager *)self chatsStartTimeDictionary] setObject:v7 forKey:a4];
+    [(NSMutableDictionary *)[(IMMessageNotificationTimeManager *)self chatsStartTimeDictionary] setObject:v7 forKey:identifier];
   }
 
   else if (IMOSLoggingEnabled())
@@ -91,7 +91,7 @@
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       v10 = 138412290;
-      v11 = a4;
+      identifierCopy2 = identifier;
       _os_log_impl(&dword_1A85E5000, v9, OS_LOG_TYPE_INFO, "Passed in chatIdentifier is not valid %@", &v10, 0xCu);
     }
   }
@@ -100,13 +100,13 @@
 - (int64_t)_getToneTimeWindow
 {
   v8 = *MEMORY[0x1E69E9840];
-  v2 = [(IMMessageNotificationTimeManager *)self _getTimeWindowOverride];
-  if (v2 == -1)
+  _getTimeWindowOverride = [(IMMessageNotificationTimeManager *)self _getTimeWindowOverride];
+  if (_getTimeWindowOverride == -1)
   {
     return 180;
   }
 
-  v3 = v2;
+  v3 = _getTimeWindowOverride;
   if (![objc_msgSend(MEMORY[0x1E69A60F0] "sharedInstance")])
   {
     return 180;
@@ -126,10 +126,10 @@
   return v3;
 }
 
-- (BOOL)_shouldSendNotificationForChatIdentifier:(id)a3
+- (BOOL)_shouldSendNotificationForChatIdentifier:(id)identifier
 {
   v40 = *MEMORY[0x1E69E9840];
-  v5 = [(NSMutableDictionary *)[(IMMessageNotificationTimeManager *)self chatsStartTimeDictionary] objectForKey:a3];
+  v5 = [(NSMutableDictionary *)[(IMMessageNotificationTimeManager *)self chatsStartTimeDictionary] objectForKey:identifier];
   v6 = IMOSLoggingEnabled();
   if (!v5)
   {
@@ -145,7 +145,7 @@
     }
 
     v36 = 138412290;
-    v37 = a3;
+    identifierCopy2 = identifier;
     v22 = "Could not find a notification object for chatIdentifier %@, should not send notification";
     v23 = v21;
     v24 = 12;
@@ -158,23 +158,23 @@
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       v36 = 138412546;
-      v37 = [v5 date];
+      identifierCopy2 = [v5 date];
       v38 = 2112;
-      v39 = [v5 numberDingsLeft];
+      numberDingsLeft = [v5 numberDingsLeft];
       _os_log_impl(&dword_1A85E5000, v7, OS_LOG_TYPE_INFO, "Looking at notification object with previousDate %@, numberDingsLeft %@", &v36, 0x16u);
     }
   }
 
-  v8 = [(IMMessageNotificationTimeManager *)self _isToneToggleSwitchOn];
-  v9 = [(IMMessageNotificationTimeManager *)self _getToneTimeWindow];
+  _isToneToggleSwitchOn = [(IMMessageNotificationTimeManager *)self _isToneToggleSwitchOn];
+  _getToneTimeWindow = [(IMMessageNotificationTimeManager *)self _getToneTimeWindow];
   [objc_msgSend(MEMORY[0x1E695DF00] "date")];
   v11 = v10;
-  v12 = v9;
-  v13 = v10 >= v9;
-  v14 = [v5 areDingsRemaining];
-  if (!v8 || v13 || ((v14 ^ 1) & 1) != 0)
+  v12 = _getToneTimeWindow;
+  v13 = v10 >= _getToneTimeWindow;
+  areDingsRemaining = [v5 areDingsRemaining];
+  if (!_isToneToggleSwitchOn || v13 || ((areDingsRemaining ^ 1) & 1) != 0)
   {
-    v25 = v11 >= v12 || !v8;
+    v25 = v11 >= v12 || !_isToneToggleSwitchOn;
     v26 = IMOSLoggingEnabled();
     if (v25)
     {
@@ -186,16 +186,16 @@
           if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
           {
             v28 = [MEMORY[0x1E696AD98] numberWithDouble:v11];
-            v29 = [MEMORY[0x1E696AD98] numberWithInteger:v9];
+            v29 = [MEMORY[0x1E696AD98] numberWithInteger:_getToneTimeWindow];
             v36 = 138412546;
-            v37 = v28;
+            identifierCopy2 = v28;
             v38 = 2112;
-            v39 = v29;
+            numberDingsLeft = v29;
             _os_log_impl(&dword_1A85E5000, v27, OS_LOG_TYPE_INFO, "Time interval since then %@ is < than timeWindow %@, should send is NO, removing from dicitonary", &v36, 0x16u);
           }
         }
 
-        [(IMMessageNotificationTimeManager *)self tearDownSessionForChatIdentifier:a3];
+        [(IMMessageNotificationTimeManager *)self tearDownSessionForChatIdentifier:identifier];
         return 0;
       }
 
@@ -211,11 +211,11 @@
       }
 
       v33 = [MEMORY[0x1E696AD98] numberWithDouble:v11];
-      v34 = [MEMORY[0x1E696AD98] numberWithInteger:v9];
+      v34 = [MEMORY[0x1E696AD98] numberWithInteger:_getToneTimeWindow];
       v36 = 138412546;
-      v37 = v33;
+      identifierCopy2 = v33;
       v38 = 2112;
-      v39 = v34;
+      numberDingsLeft = v34;
       v22 = "Time interval since then %@ is NOT < than timeWindow %@, but tone toggle is off so should send is NO, but not removing from dictionary";
     }
 
@@ -233,11 +233,11 @@
       }
 
       v31 = [MEMORY[0x1E696AD98] numberWithDouble:v11];
-      v32 = [MEMORY[0x1E696AD98] numberWithInteger:v9];
+      v32 = [MEMORY[0x1E696AD98] numberWithInteger:_getToneTimeWindow];
       v36 = 138412546;
-      v37 = v31;
+      identifierCopy2 = v31;
       v38 = 2112;
-      v39 = v32;
+      numberDingsLeft = v32;
       v22 = "Time interval since then %@ is NOT < than timeWindow %@, tone toggle is on but no dings left so should send is NO, but not removing from dictionary";
     }
 
@@ -254,11 +254,11 @@ LABEL_32:
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
       v16 = [MEMORY[0x1E696AD98] numberWithDouble:v11];
-      v17 = [MEMORY[0x1E696AD98] numberWithInteger:v9];
+      v17 = [MEMORY[0x1E696AD98] numberWithInteger:_getToneTimeWindow];
       v36 = 138412546;
-      v37 = v16;
+      identifierCopy2 = v16;
       v38 = 2112;
-      v39 = v17;
+      numberDingsLeft = v17;
       _os_log_impl(&dword_1A85E5000, v15, OS_LOG_TYPE_INFO, "Time interval since then %@ is NOT < than timeWindow %@, tone toggle is on so should send is YES, but not removing from dictionary", &v36, 0x16u);
     }
   }
@@ -273,23 +273,23 @@ LABEL_32:
   v19 = 1;
   if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
   {
-    v20 = [v5 numberDingsLeft];
+    numberDingsLeft2 = [v5 numberDingsLeft];
     v36 = 138412546;
-    v37 = a3;
+    identifierCopy2 = identifier;
     v38 = 2112;
-    v39 = v20;
+    numberDingsLeft = numberDingsLeft2;
     _os_log_impl(&dword_1A85E5000, v18, OS_LOG_TYPE_INFO, "Num dings left after sending ding tone for chatIdentifier %@ is %@", &v36, 0x16u);
   }
 
   return v19;
 }
 
-- (void)setLatestNotificationIDSTokenURI:(id)a3
+- (void)setLatestNotificationIDSTokenURI:(id)i
 {
   v9 = *MEMORY[0x1E69E9840];
   if ([+[IMMessageNotificationController audioAccessoryDeviceWithTokenURIExists:"audioAccessoryDeviceWithTokenURIExists:"]
   {
-    [(IMMessageNotificationTimeManager *)self setLatestIDSTokenURI:a3];
+    [(IMMessageNotificationTimeManager *)self setLatestIDSTokenURI:i];
     if (IMOSLoggingEnabled())
     {
       v5 = OSLogHandleForIMFoundationCategory();
@@ -304,10 +304,10 @@ LABEL_32:
   }
 }
 
-- (void)sendNotificationMessageIfNeededForIncomingMessageFromChatIdentifier:(id)a3
+- (void)sendNotificationMessageIfNeededForIncomingMessageFromChatIdentifier:(id)identifier
 {
   v9 = *MEMORY[0x1E69E9840];
-  if ([(NSString *)self->_latestIDSTokenURI length]&& [(IMMessageNotificationTimeManager *)self _shouldSendNotificationForChatIdentifier:a3])
+  if ([(NSString *)self->_latestIDSTokenURI length]&& [(IMMessageNotificationTimeManager *)self _shouldSendNotificationForChatIdentifier:identifier])
   {
     if (IMOSLoggingEnabled())
     {

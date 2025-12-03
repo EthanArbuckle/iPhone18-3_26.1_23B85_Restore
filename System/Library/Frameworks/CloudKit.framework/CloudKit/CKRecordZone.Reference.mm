@@ -1,7 +1,7 @@
 @interface CKRecordZone.Reference
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)copyWithZone:(void *)a3;
+- (id)copyWithZone:(void *)zone;
 - (int64_t)hash;
 @end
 
@@ -9,7 +9,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CKRecordZone.Reference.description.getter();
   v5 = v4;
 
@@ -18,9 +18,9 @@
   return v6;
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v3 = self;
+  selfCopy = self;
   CKRecordZone.Reference.copy(with:)(v6);
 
   sub_188400B68(v6, v6[3]);
@@ -29,11 +29,11 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -42,7 +42,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = CKRecordZone.Reference.isEqual(_:)(v8);
@@ -53,7 +53,7 @@
 
 - (int64_t)hash
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CKRecordZone.Reference.hash.getter();
 
   return v3;

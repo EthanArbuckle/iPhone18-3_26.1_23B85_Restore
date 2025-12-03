@@ -2,21 +2,21 @@
 - (AXSDDetectorManager)detectorManager;
 - (BOOL)isListening;
 - (NSSet)currentDetectionTypes;
-- (id)pipeInFilePath:(id)a3 error:(id *)a4;
-- (id)pipeInFileURL:(id)a3 error:(id *)a4;
-- (void)addWithListenType:(id)a3;
+- (id)pipeInFilePath:(id)path error:(id *)error;
+- (id)pipeInFileURL:(id)l error:(id *)error;
+- (void)addWithListenType:(id)type;
 - (void)assetsReadyAndDetectorsAdded;
-- (void)listenEngineDidStartWithInputFormat:(id)a3;
-- (void)listenEngineFinishedAudioFile:(id)a3;
-- (void)listenEngineReceivedAudioFile:(id)a3;
-- (void)receivedBuffer:(id)a3 atTime:(id)a4;
-- (void)receivedBuffer:(id)a3 atTime:(id)a4 isFile:(BOOL)a5;
-- (void)receivedCompletion:(id)a3;
-- (void)receivedError:(id)a3 fromDetector:(id)a4;
-- (void)receivedObservation:(id)a3 forDetector:(id)a4;
+- (void)listenEngineDidStartWithInputFormat:(id)format;
+- (void)listenEngineFinishedAudioFile:(id)file;
+- (void)listenEngineReceivedAudioFile:(id)file;
+- (void)receivedBuffer:(id)buffer atTime:(id)time;
+- (void)receivedBuffer:(id)buffer atTime:(id)time isFile:(BOOL)file;
+- (void)receivedCompletion:(id)completion;
+- (void)receivedError:(id)error fromDetector:(id)detector;
+- (void)receivedObservation:(id)observation forDetector:(id)detector;
 - (void)removeAllListenTypes;
-- (void)removeWithListenType:(id)a3;
-- (void)setDetectorManager:(id)a3;
+- (void)removeWithListenType:(id)type;
+- (void)setDetectorManager:(id)manager;
 - (void)stopListening;
 @end
 
@@ -24,7 +24,7 @@
 
 - (void)assetsReadyAndDetectorsAdded
 {
-  v1 = a1;
+  selfCopy = self;
   _s18AXSoundDetectionUI30AXSDNSControllerImplementationC28assetsReadyAndDetectorsAddedyyF_0();
 }
 
@@ -35,13 +35,13 @@
   return *(&self->super.super.isa + v3);
 }
 
-- (void)setDetectorManager:(id)a3
+- (void)setDetectorManager:(id)manager
 {
   v5 = OBJC_IVAR____TtC18AXSoundDetectionUI30AXSDNSControllerImplementation_detectorManager;
   swift_beginAccess();
   v6 = *(&self->super.super.isa + v5);
-  *(&self->super.super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.super.isa + v5) = manager;
+  managerCopy = manager;
 }
 
 - (NSSet)currentDetectionTypes
@@ -49,8 +49,8 @@
   v3 = OBJC_IVAR____TtC18AXSoundDetectionUI30AXSDNSControllerImplementation_detectorManager;
   swift_beginAccess();
   v4 = *(&self->super.super.isa + v3);
-  v5 = self;
-  v6 = [v4 currentDetectors];
+  selfCopy = self;
+  currentDetectors = [v4 currentDetectors];
   type metadata accessor for AXSDSoundDetectionType();
   v7 = sub_23D685980();
 
@@ -67,48 +67,48 @@
   v3 = OBJC_IVAR____TtC18AXSoundDetectionUI34AXSDNSBaseControllerImplementation_listener;
   swift_beginAccess();
   v4 = *(&self->super.super.isa + v3);
-  v5 = self;
+  selfCopy = self;
   if ([v4 containsListenDelegate_])
   {
     v6 = *(&self->super.super.isa + v3);
-    v7 = [v6 isListening];
+    isListening = [v6 isListening];
   }
 
   else
   {
-    v7 = 0;
+    isListening = 0;
   }
 
-  return v7;
+  return isListening;
 }
 
-- (void)addWithListenType:(id)a3
+- (void)addWithListenType:(id)type
 {
-  v4 = a3;
-  v5 = self;
-  sub_23D67B264(v4);
+  typeCopy = type;
+  selfCopy = self;
+  sub_23D67B264(typeCopy);
 }
 
-- (void)removeWithListenType:(id)a3
+- (void)removeWithListenType:(id)type
 {
-  v4 = a3;
-  v5 = self;
-  sub_23D67B2E0(v4);
+  typeCopy = type;
+  selfCopy = self;
+  sub_23D67B2E0(typeCopy);
 }
 
 - (void)removeAllListenTypes
 {
-  v2 = self;
+  selfCopy = self;
   sub_23D67B568();
 }
 
 - (void)stopListening
 {
-  v2 = self;
+  selfCopy = self;
   sub_23D67BCC4();
 }
 
-- (id)pipeInFileURL:(id)a3 error:(id *)a4
+- (id)pipeInFileURL:(id)l error:(id *)error
 {
   v5 = sub_23D6856A0();
   v6 = *(v5 - 8);
@@ -116,7 +116,7 @@
   MEMORY[0x28223BE20](v5);
   v9 = &v13 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_23D685680();
-  v10 = self;
+  selfCopy = self;
   AXSDNSControllerImplementation.pipe(inFileURL:)(v9);
   (*(v6 + 8))(v9, v5);
 
@@ -128,11 +128,11 @@
   return v11;
 }
 
-- (id)pipeInFilePath:(id)a3 error:(id *)a4
+- (id)pipeInFilePath:(id)path error:(id *)error
 {
   v5 = _sSo22AXSDSoundDetectionTypea07AXSoundB2UIE11descriptionSSvg_0();
   v7 = v6;
-  v8 = self;
+  selfCopy = self;
   AXSDNSControllerImplementation.pipe(inFilePath:)(v5, v7);
 
   type metadata accessor for AXSDSoundDetectionType();
@@ -143,71 +143,71 @@
   return v9;
 }
 
-- (void)receivedBuffer:(id)a3 atTime:(id)a4
+- (void)receivedBuffer:(id)buffer atTime:(id)time
 {
   v9.receiver = self;
   v9.super_class = type metadata accessor for AXSDNSControllerImplementation();
-  v6 = a3;
-  v7 = a4;
+  bufferCopy = buffer;
+  timeCopy = time;
   v8 = v9.receiver;
-  [(AXSDNSBaseControllerImplementation *)&v9 receivedBuffer:v6 atTime:v7];
-  [v8 receivedBuffer:v6 atTime:v7 isFile:{0, v9.receiver, v9.super_class}];
+  [(AXSDNSBaseControllerImplementation *)&v9 receivedBuffer:bufferCopy atTime:timeCopy];
+  [v8 receivedBuffer:bufferCopy atTime:timeCopy isFile:{0, v9.receiver, v9.super_class}];
 }
 
-- (void)receivedBuffer:(id)a3 atTime:(id)a4 isFile:(BOOL)a5
+- (void)receivedBuffer:(id)buffer atTime:(id)time isFile:(BOOL)file
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
-  _s18AXSoundDetectionUI30AXSDNSControllerImplementationC14receivedBuffer_2at6isFileySo16AVAudioPCMBufferC_So0K4TimeCSbtF_0(v7, v8);
+  bufferCopy = buffer;
+  timeCopy = time;
+  selfCopy = self;
+  _s18AXSoundDetectionUI30AXSDNSControllerImplementationC14receivedBuffer_2at6isFileySo16AVAudioPCMBufferC_So0K4TimeCSbtF_0(bufferCopy, timeCopy);
 }
 
-- (void)listenEngineDidStartWithInputFormat:(id)a3
+- (void)listenEngineDidStartWithInputFormat:(id)format
 {
-  v5 = a3;
-  v6 = self;
-  AXSDNSControllerImplementation.listenEngineDidStart(withInputFormat:)(a3);
+  formatCopy = format;
+  selfCopy = self;
+  AXSDNSControllerImplementation.listenEngineDidStart(withInputFormat:)(format);
 }
 
-- (void)listenEngineReceivedAudioFile:(id)a3
+- (void)listenEngineReceivedAudioFile:(id)file
 {
-  v4 = a3;
+  fileCopy = file;
   v5._impl = self;
   impl = v5._impl;
-  v5.super.isa = v4;
+  v5.super.isa = fileCopy;
   AXSDNSControllerImplementation.listenEngineReceivedAudioFile(_:)(v5);
 }
 
-- (void)listenEngineFinishedAudioFile:(id)a3
+- (void)listenEngineFinishedAudioFile:(id)file
 {
-  v4 = a3;
+  fileCopy = file;
   v5._impl = self;
   impl = v5._impl;
-  v5.super.isa = v4;
+  v5.super.isa = fileCopy;
   AXSDNSControllerImplementation.listenEngineFinishedAudioFile(_:)(v5);
 }
 
-- (void)receivedObservation:(id)a3 forDetector:(id)a4
+- (void)receivedObservation:(id)observation forDetector:(id)detector
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  AXSDNSControllerImplementation.receivedObservation(_:forDetector:)(v6, v7);
+  observationCopy = observation;
+  detectorCopy = detector;
+  selfCopy = self;
+  AXSDNSControllerImplementation.receivedObservation(_:forDetector:)(observationCopy, detectorCopy);
 }
 
-- (void)receivedCompletion:(id)a3
+- (void)receivedCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = self;
-  _s18AXSoundDetectionUI30AXSDNSControllerImplementationC18receivedCompletionyySo20SNDetectSoundRequestCF_0(v4);
+  completionCopy = completion;
+  selfCopy = self;
+  _s18AXSoundDetectionUI30AXSDNSControllerImplementationC18receivedCompletionyySo20SNDetectSoundRequestCF_0(completionCopy);
 }
 
-- (void)receivedError:(id)a3 fromDetector:(id)a4
+- (void)receivedError:(id)error fromDetector:(id)detector
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = self;
-  _s18AXSoundDetectionUI30AXSDNSControllerImplementationC13receivedError_12fromDetectorys0G0_p_So20SNDetectSoundRequestCtF_0(v8, v6);
+  errorCopy = error;
+  detectorCopy = detector;
+  selfCopy = self;
+  _s18AXSoundDetectionUI30AXSDNSControllerImplementationC13receivedError_12fromDetectorys0G0_p_So20SNDetectSoundRequestCtF_0(errorCopy, detectorCopy);
 }
 
 @end

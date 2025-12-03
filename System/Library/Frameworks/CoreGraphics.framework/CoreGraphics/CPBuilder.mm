@@ -1,49 +1,49 @@
 @interface CPBuilder
-- (void)cluster:(id)a3 andPutTextLinesInto:(id)a4;
-- (void)prepareZone:(id)a3;
+- (void)cluster:(id)cluster andPutTextLinesInto:(id)into;
+- (void)prepareZone:(id)zone;
 @end
 
 @implementation CPBuilder
 
-- (void)prepareZone:(id)a3
+- (void)prepareZone:(id)zone
 {
-  [a3 mapSafely:sel_prepareZone_ target:self childrenOfClass:objc_opt_class()];
+  [zone mapSafely:sel_prepareZone_ target:self childrenOfClass:objc_opt_class()];
   v7 = objc_alloc_init(CPTextLineMaker);
-  v5 = [(CPTextLineMaker *)v7 makeTextLines:a3];
+  v5 = [(CPTextLineMaker *)v7 makeTextLines:zone];
   v6 = v7;
   if (v5)
   {
-    [(CPBuilder *)self cluster:[(CPTextLineMaker *)v7 textLines] andPutTextLinesInto:a3];
-    if (v5 == 1 && [CPHighlighter reconstructHighlightFor:a3])
+    [(CPBuilder *)self cluster:[(CPTextLineMaker *)v7 textLines] andPutTextLinesInto:zone];
+    if (v5 == 1 && [CPHighlighter reconstructHighlightFor:zone])
     {
 
       return;
     }
 
-    [a3 sortUsingSelector:sel_compareYDescending_];
+    [zone sortUsingSelector:sel_compareYDescending_];
     v6 = v7;
   }
 
-  [CPGraphicMaker makeCombinedShapesIn:a3];
+  [CPGraphicMaker makeCombinedShapesIn:zone];
 }
 
-- (void)cluster:(id)a3 andPutTextLinesInto:(id)a4
+- (void)cluster:(id)cluster andPutTextLinesInto:(id)into
 {
-  v6 = [a4 page];
-  v7 = [a3 count];
-  v8 = [a4 textLinesInZone];
+  page = [into page];
+  v7 = [cluster count];
+  textLinesInZone = [into textLinesInZone];
   if (v7 >= 1)
   {
-    v9 = v8;
+    v9 = textLinesInZone;
     v10 = 0;
     v11 = v7 & 0x7FFFFFFF;
     do
     {
-      v12 = [a3 objectAtIndex:v10];
+      v12 = [cluster objectAtIndex:v10];
       if ([v12 length])
       {
         v13 = objc_alloc_init(CPTextLine);
-        [(CPObject *)v13 setPage:v6];
+        [(CPObject *)v13 setPage:page];
         [(CPTextLine *)v13 setCharSequence:v12];
         if ([v12 wasMerged])
         {

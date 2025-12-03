@@ -1,23 +1,23 @@
 @interface TKHostTokenConnection
 - (NSString)slotName;
 - (NSXPCListenerEndpoint)endpoint;
-- (TKHostTokenConnection)initWithToken:(id)a3;
+- (TKHostTokenConnection)initWithToken:(id)token;
 - (void)dealloc;
 @end
 
 @implementation TKHostTokenConnection
 
-- (TKHostTokenConnection)initWithToken:(id)a3
+- (TKHostTokenConnection)initWithToken:(id)token
 {
-  v5 = a3;
+  tokenCopy = token;
   v9.receiver = self;
   v9.super_class = TKHostTokenConnection;
   v6 = [(TKHostTokenConnection *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_token, a3);
-    [v5 setConnectionCount:{objc_msgSend(v5, "connectionCount") + 1}];
+    objc_storeStrong(&v6->_token, token);
+    [tokenCopy setConnectionCount:{objc_msgSend(tokenCopy, "connectionCount") + 1}];
   }
 
   return v7;
@@ -25,42 +25,42 @@
 
 - (NSXPCListenerEndpoint)endpoint
 {
-  v2 = [(TKHostTokenConnection *)self token];
-  v3 = [v2 endpoint];
+  token = [(TKHostTokenConnection *)self token];
+  endpoint = [token endpoint];
 
-  return v3;
+  return endpoint;
 }
 
 - (NSString)slotName
 {
-  v2 = [(TKHostTokenConnection *)self token];
-  v3 = [v2 slotName];
+  token = [(TKHostTokenConnection *)self token];
+  slotName = [token slotName];
 
-  return v3;
+  return slotName;
 }
 
 - (void)dealloc
 {
-  v3 = [(TKHostTokenConnection *)self token];
-  objc_sync_enter(v3);
-  v4 = [v3 connectionCount] - 1;
-  [v3 setConnectionCount:v4];
+  token = [(TKHostTokenConnection *)self token];
+  objc_sync_enter(token);
+  v4 = [token connectionCount] - 1;
+  [token setConnectionCount:v4];
   if (!v4)
   {
-    [v3 setEndpoint:0];
-    v5 = [v3 registry];
+    [token setEndpoint:0];
+    registry = [token registry];
 
-    if (v5)
+    if (registry)
     {
-      v6 = [v3 driver];
-      v7 = [v3 tokenID];
-      [v6 releaseTokenWithTokenID:v7];
+      driver = [token driver];
+      tokenID = [token tokenID];
+      [driver releaseTokenWithTokenID:tokenID];
     }
 
-    [v3 setDriver:0];
+    [token setDriver:0];
   }
 
-  objc_sync_exit(v3);
+  objc_sync_exit(token);
 
   v8.receiver = self;
   v8.super_class = TKHostTokenConnection;

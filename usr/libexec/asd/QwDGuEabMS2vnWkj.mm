@@ -1,47 +1,47 @@
 @interface QwDGuEabMS2vnWkj
-+ (id)errorFromUnderlyingError:(id)a3;
++ (id)errorFromUnderlyingError:(id)error;
 + (id)wrongXPCParameterError;
-- (QwDGuEabMS2vnWkj)initWithsk6s81V5EsZL9icr:(unsigned __int8)a3;
-- (void)Me7YKKqFAKjegMFz:(id)a3 hostChallenge:(id)a4 challengeResponse:(id)a5 seid:(id)a6 nonce:(id)a7 HY6FXG20397zwmVg:(id)a8;
-- (void)cacheDataXPC:(id)a3 forKey:(id)a4 andCategory:(int64_t)a5 completion:(id)a6;
-- (void)djoNSwl5j57W5mfl:(id)a3 eqF2XJh3hHBJQf2K:(id)a4;
-- (void)f9MGfLOgnHPuKTrU:(id)a3 HY6FXG20397zwmVg:(id)a4;
-- (void)fetchConfigWithCompletionXPC:(id)a3;
-- (void)fetchDataForKeyXPC:(id)a3 andCategory:(int64_t)a4 completion:(id)a5;
-- (void)fetchGeoCodingsForAddressesXPC:(id)a3 completion:(id)a4;
-- (void)k0p7Rchr49btq6wB:(id)a3 HY6FXG20397zwmVg:(id)a4;
-- (void)k4eQYhyzyebbQqys:(id)a3;
-- (void)lJIqliFcwusu4FxD:(id)a3 be2xk53Wn161LTDz:(id)a4 completion:(id)a5;
-- (void)llNEghuIdfPH7O8I:(BOOL)a3 all:(BOOL)a4 pregeneration:(BOOL)a5 workflowID:(id)a6 completion:(id)a7;
-- (void)pRo6qBDnfEL0sBNs:(id)a3 i7D0Lridvo8oYoNd:(id)a4 completion:(id)a5;
-- (void)rGvculjlqIwBJaoX:(id)a3 completion:(id)a4;
-- (void)registerICloudLoginWithCompletionXPC:(id)a3;
-- (void)sPLljm0ZB9z7TiKd:(id)a3 nSLeS2inTAbpsUeZ:(id)a4 noUfOiGjp1iQmKZX:(id)a5 pPGyXmlDbN3mzzHm:(id)a6 iSOZt67ioKsVcqQZ:(id)a7 hjCrdFOLMJN0Cc5Q:(id)a8 lE40aye8U2u533Ka:(id)a9 JRuZv6Feh9qwrGmN:(unint64_t)a10 Wn0aIR2B54NCtGQc:(unint64_t)a11 B3l3lS18BITy5E4L:(id)a12 UywAszL6AB8Y6LTJ:(id)a13 uNao9X8A82jVmQkK:(id)a14 completion:(id)a15;
-- (void)unregisterICloudLoginWithCompletionXPC:(id)a3;
-- (void)updateGeoCodingsXPC:(id)a3 completion:(id)a4;
-- (void)xs00laTiKIpDUzDP:(id)a3;
+- (QwDGuEabMS2vnWkj)initWithsk6s81V5EsZL9icr:(unsigned __int8)l9icr;
+- (void)Me7YKKqFAKjegMFz:(id)fz hostChallenge:(id)challenge challengeResponse:(id)response seid:(id)seid nonce:(id)nonce HY6FXG20397zwmVg:(id)vg;
+- (void)cacheDataXPC:(id)c forKey:(id)key andCategory:(int64_t)category completion:(id)completion;
+- (void)djoNSwl5j57W5mfl:(id)w5mfl eqF2XJh3hHBJQf2K:(id)k;
+- (void)f9MGfLOgnHPuKTrU:(id)u HY6FXG20397zwmVg:(id)vg;
+- (void)fetchConfigWithCompletionXPC:(id)c;
+- (void)fetchDataForKeyXPC:(id)c andCategory:(int64_t)category completion:(id)completion;
+- (void)fetchGeoCodingsForAddressesXPC:(id)c completion:(id)completion;
+- (void)k0p7Rchr49btq6wB:(id)b HY6FXG20397zwmVg:(id)vg;
+- (void)k4eQYhyzyebbQqys:(id)qqys;
+- (void)lJIqliFcwusu4FxD:(id)d be2xk53Wn161LTDz:(id)dz completion:(id)completion;
+- (void)llNEghuIdfPH7O8I:(BOOL)i all:(BOOL)all pregeneration:(BOOL)pregeneration workflowID:(id)d completion:(id)completion;
+- (void)pRo6qBDnfEL0sBNs:(id)ns i7D0Lridvo8oYoNd:(id)nd completion:(id)completion;
+- (void)rGvculjlqIwBJaoX:(id)x completion:(id)completion;
+- (void)registerICloudLoginWithCompletionXPC:(id)c;
+- (void)sPLljm0ZB9z7TiKd:(id)kd nSLeS2inTAbpsUeZ:(id)z noUfOiGjp1iQmKZX:(id)x pPGyXmlDbN3mzzHm:(id)hm iSOZt67ioKsVcqQZ:(id)qZ hjCrdFOLMJN0Cc5Q:(id)q lE40aye8U2u533Ka:(id)ka JRuZv6Feh9qwrGmN:(unint64_t)self0 Wn0aIR2B54NCtGQc:(unint64_t)self1 B3l3lS18BITy5E4L:(id)self2 UywAszL6AB8Y6LTJ:(id)self3 uNao9X8A82jVmQkK:(id)self4 completion:(id)self5;
+- (void)unregisterICloudLoginWithCompletionXPC:(id)c;
+- (void)updateGeoCodingsXPC:(id)c completion:(id)completion;
+- (void)xs00laTiKIpDUzDP:(id)p;
 @end
 
 @implementation QwDGuEabMS2vnWkj
 
-- (QwDGuEabMS2vnWkj)initWithsk6s81V5EsZL9icr:(unsigned __int8)a3
+- (QwDGuEabMS2vnWkj)initWithsk6s81V5EsZL9icr:(unsigned __int8)l9icr
 {
   v5.receiver = self;
   v5.super_class = QwDGuEabMS2vnWkj;
   result = [(QwDGuEabMS2vnWkj *)&v5 init];
   if (result)
   {
-    result->yUeYlMhe6tbatNIz = a3;
+    result->yUeYlMhe6tbatNIz = l9icr;
   }
 
   return result;
 }
 
-- (void)k0p7Rchr49btq6wB:(id)a3 HY6FXG20397zwmVg:(id)a4
+- (void)k0p7Rchr49btq6wB:(id)b HY6FXG20397zwmVg:(id)vg
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[git3vZFAfTws6rT8 alloc] initWithDictionary:v6];
+  vgCopy = vg;
+  bCopy = b;
+  v7 = [[git3vZFAfTws6rT8 alloc] initWithDictionary:bCopy];
 
   if (v7)
   {
@@ -56,8 +56,8 @@
       }
     }
 
-    v9 = [(git3vZFAfTws6rT8 *)v7 endpointIdentifier];
-    [v9 UTF8String];
+    endpointIdentifier = [(git3vZFAfTws6rT8 *)v7 endpointIdentifier];
+    [endpointIdentifier UTF8String];
 
     buf[0] = 0;
     v13 = 0;
@@ -74,65 +74,65 @@
     v12 = +[QwDGuEabMS2vnWkj wrongXPCParameterError];
   }
 
-  (*(v5 + 2))(v5, 0, 0, v12);
+  (*(vgCopy + 2))(vgCopy, 0, 0, v12);
 }
 
-- (void)Me7YKKqFAKjegMFz:(id)a3 hostChallenge:(id)a4 challengeResponse:(id)a5 seid:(id)a6 nonce:(id)a7 HY6FXG20397zwmVg:(id)a8
+- (void)Me7YKKqFAKjegMFz:(id)fz hostChallenge:(id)challenge challengeResponse:(id)response seid:(id)seid nonce:(id)nonce HY6FXG20397zwmVg:(id)vg
 {
-  v13 = a8;
-  v14 = a7;
-  v15 = a6;
-  v16 = a5;
-  v17 = a4;
-  v18 = a3;
+  vgCopy = vg;
+  nonceCopy = nonce;
+  seidCopy = seid;
+  responseCopy = response;
+  challengeCopy = challenge;
+  fzCopy = fz;
   v19 = +[pNjRsniwrVEhiG7R sharedInstance];
-  [v19 QeMnG23X94qgz7jT:v18 hostChallenge:v17 challengeResponse:v16 seid:v15 nonce:v14 completion:v13];
+  [v19 QeMnG23X94qgz7jT:fzCopy hostChallenge:challengeCopy challengeResponse:responseCopy seid:seidCopy nonce:nonceCopy completion:vgCopy];
 }
 
-- (void)f9MGfLOgnHPuKTrU:(id)a3 HY6FXG20397zwmVg:(id)a4
+- (void)f9MGfLOgnHPuKTrU:(id)u HY6FXG20397zwmVg:(id)vg
 {
-  v5 = a4;
-  v6 = a3;
+  vgCopy = vg;
+  uCopy = u;
   v7 = +[pNjRsniwrVEhiG7R sharedInstance];
-  [v7 ZfE6lVphNUVrZcKx:v6 completion:v5];
+  [v7 ZfE6lVphNUVrZcKx:uCopy completion:vgCopy];
 }
 
-- (void)xs00laTiKIpDUzDP:(id)a3
+- (void)xs00laTiKIpDUzDP:(id)p
 {
-  v3 = a3;
+  pCopy = p;
   v4 = +[pNjRsniwrVEhiG7R sharedInstance];
-  [v4 vffg4lwI2HftPvpO:v3];
+  [v4 vffg4lwI2HftPvpO:pCopy];
 }
 
-- (void)sPLljm0ZB9z7TiKd:(id)a3 nSLeS2inTAbpsUeZ:(id)a4 noUfOiGjp1iQmKZX:(id)a5 pPGyXmlDbN3mzzHm:(id)a6 iSOZt67ioKsVcqQZ:(id)a7 hjCrdFOLMJN0Cc5Q:(id)a8 lE40aye8U2u533Ka:(id)a9 JRuZv6Feh9qwrGmN:(unint64_t)a10 Wn0aIR2B54NCtGQc:(unint64_t)a11 B3l3lS18BITy5E4L:(id)a12 UywAszL6AB8Y6LTJ:(id)a13 uNao9X8A82jVmQkK:(id)a14 completion:(id)a15
+- (void)sPLljm0ZB9z7TiKd:(id)kd nSLeS2inTAbpsUeZ:(id)z noUfOiGjp1iQmKZX:(id)x pPGyXmlDbN3mzzHm:(id)hm iSOZt67ioKsVcqQZ:(id)qZ hjCrdFOLMJN0Cc5Q:(id)q lE40aye8U2u533Ka:(id)ka JRuZv6Feh9qwrGmN:(unint64_t)self0 Wn0aIR2B54NCtGQc:(unint64_t)self1 B3l3lS18BITy5E4L:(id)self2 UywAszL6AB8Y6LTJ:(id)self3 uNao9X8A82jVmQkK:(id)self4 completion:(id)self5
 {
-  v20 = a3;
-  v21 = a4;
-  v42 = a5;
-  v22 = a6;
-  v23 = a7;
-  v41 = a8;
-  v24 = v21;
-  v25 = a9;
-  v26 = a12;
-  v45 = a13;
-  v44 = a14;
-  v27 = a15;
-  v28 = v23;
-  v43 = v22;
-  if (a10 <= 4 && v20 | v24 && v22 && v23 && v25)
+  kdCopy = kd;
+  zCopy = z;
+  xCopy = x;
+  hmCopy = hm;
+  qZCopy = qZ;
+  qCopy = q;
+  v24 = zCopy;
+  kaCopy = ka;
+  lCopy = l;
+  jCopy = j;
+  kCopy = k;
+  completionCopy = completion;
+  v28 = qZCopy;
+  v43 = hmCopy;
+  if (n <= 4 && kdCopy | v24 && hmCopy && qZCopy && kaCopy)
   {
     v29 = +[pNjRsniwrVEhiG7R sharedInstance];
-    if (v20)
+    if (kdCopy)
     {
-      v30 = [[ASReleasableBuffer alloc] initWithData:v20];
+      v30 = [[ASReleasableBuffer alloc] initWithData:kdCopy];
       v40 = v30;
       if (v30)
       {
-        v31 = v42;
-        v32 = v23;
-        v33 = v41;
-        [v29 zGi22DPZsVGfawap:v30 xz5EHXEN4FjlhJbi:v42 uhVTXyAfCFn7u0Ue:v43 EQUjQp7JcQbqcPcD:v32 A5wDLa5TFdFZlz3A:v41 TJKMyOe6zn5PdGIr:v25 eCqgGM0WcnHOslnr:a10 eCszfxdv3kUXvhgV:a11 uWp4aZpP2vLhc04Q:v26 QZYtNpvp0hKd248p:v45 oCwPYmtRv8s31KUH:v44 completion:v27];
+        v31 = xCopy;
+        v32 = qZCopy;
+        v33 = qCopy;
+        [v29 zGi22DPZsVGfawap:v30 xz5EHXEN4FjlhJbi:xCopy uhVTXyAfCFn7u0Ue:v43 EQUjQp7JcQbqcPcD:v32 A5wDLa5TFdFZlz3A:qCopy TJKMyOe6zn5PdGIr:kaCopy eCqgGM0WcnHOslnr:n eCszfxdv3kUXvhgV:qc uWp4aZpP2vLhc04Q:lCopy QZYtNpvp0hKd248p:jCopy oCwPYmtRv8s31KUH:kCopy completion:completionCopy];
       }
 
       else
@@ -143,14 +143,14 @@
         [NSDictionary dictionaryWithObjects:&v60 forKeys:&v59 count:1];
         v37 = v36 = v24;
         [NSError errorWithDomain:v35 code:-27002 userInfo:v37];
-        v38 = v39 = v26;
+        v38 = v39 = lCopy;
 
         v24 = v36;
-        (*(v27 + 2))(v27, 0, 0, 0, 0xFFFFFFFFLL, v38);
+        (*(completionCopy + 2))(completionCopy, 0, 0, 0, 0xFFFFFFFFLL, v38);
 
-        v26 = v39;
-        v33 = v41;
-        v31 = v42;
+        lCopy = v39;
+        v33 = qCopy;
+        v31 = xCopy;
       }
     }
 
@@ -161,20 +161,20 @@
       v46[1] = 3221225472;
       v46[2] = sub_1000052D4;
       v46[3] = &unk_10068ED38;
-      v56 = v27;
+      v56 = completionCopy;
       v47 = v29;
-      v31 = v42;
-      v48 = v42;
+      v31 = xCopy;
+      v48 = xCopy;
       v49 = v43;
-      v50 = v23;
-      v33 = v41;
-      v51 = v41;
-      v52 = v25;
-      v57 = a10;
-      v58 = a11 | 0x20;
-      v53 = v26;
-      v54 = v45;
-      v55 = v44;
+      v50 = qZCopy;
+      v33 = qCopy;
+      v51 = qCopy;
+      v52 = kaCopy;
+      nCopy = n;
+      v58 = qc | 0x20;
+      v53 = lCopy;
+      v54 = jCopy;
+      v55 = kCopy;
       [v40 quVb0ErcaaAyQJnG:v24 completion:v46];
     }
   }
@@ -182,29 +182,29 @@
   else
   {
     v34 = +[QwDGuEabMS2vnWkj wrongXPCParameterError];
-    (*(v27 + 2))(v27, 0, 0, 0, 0xFFFFFFFFLL, v34);
+    (*(completionCopy + 2))(completionCopy, 0, 0, 0, 0xFFFFFFFFLL, v34);
 
-    v33 = v41;
-    v31 = v42;
+    v33 = qCopy;
+    v31 = xCopy;
   }
 }
 
-- (void)k4eQYhyzyebbQqys:(id)a3
+- (void)k4eQYhyzyebbQqys:(id)qqys
 {
-  v3 = a3;
+  qqysCopy = qqys;
   v6 = +[_TtC3asd18RavioliManagerObjC shared];
   v4 = +[_TtC3asd16RavioliConstants ravioliUUID];
   v5 = +[_TtC3asd29DefinedRavioliNotificationIds xpc];
-  [v6 triggerImmediateRavioliFetchWithBagID:v4 notificationId:v5 completion:v3];
+  [v6 triggerImmediateRavioliFetchWithBagID:v4 notificationId:v5 completion:qqysCopy];
 }
 
-- (void)updateGeoCodingsXPC:(id)a3 completion:(id)a4
+- (void)updateGeoCodingsXPC:(id)c completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  cCopy = c;
+  completionCopy = completion;
   v7 = objc_opt_self();
   v43 = 0;
-  v8 = [ASDGeoCodingKeyedUnarchiver unarchivedObjectOfClass:v7 fromData:v5 error:&v43];
+  v8 = [ASDGeoCodingKeyedUnarchiver unarchivedObjectOfClass:v7 fromData:cCopy error:&v43];
   v9 = v43;
 
   v10 = [v8 objectForKeyedSubscript:@"addresses"];
@@ -219,7 +219,7 @@
   {
     v9 = +[QwDGuEabMS2vnWkj wrongXPCParameterError];
 LABEL_2:
-    v6[2](v6, v9);
+    completionCopy[2](completionCopy, v9);
     goto LABEL_28;
   }
 
@@ -252,7 +252,7 @@ LABEL_2:
         if ((v18 & 1) == 0)
         {
           v9 = +[QwDGuEabMS2vnWkj wrongXPCParameterError];
-          v6[2](v6, v9);
+          completionCopy[2](completionCopy, v9);
 
           goto LABEL_27;
         }
@@ -271,8 +271,8 @@ LABEL_2:
     }
   }
 
-  v30 = v6;
-  v31 = v5;
+  v30 = completionCopy;
+  v31 = cCopy;
 
   v37 = 0u;
   v38 = 0u;
@@ -308,7 +308,7 @@ LABEL_2:
           if ((isKindOfClass & 1) == 0)
           {
             v9 = +[QwDGuEabMS2vnWkj wrongXPCParameterError];
-            v6 = v30;
+            completionCopy = v30;
             v30[2](v30, v9);
 
             goto LABEL_26;
@@ -334,23 +334,23 @@ LABEL_2:
   [v29 updateGeoCodeForAddresses:v13 locations:v20 error:&v34];
   v9 = v34;
 
-  v6 = v30;
+  completionCopy = v30;
   v30[2](v30, v9);
 LABEL_26:
-  v5 = v31;
+  cCopy = v31;
 LABEL_27:
   v10 = v32;
   v12 = v33;
 LABEL_28:
 }
 
-- (void)fetchGeoCodingsForAddressesXPC:(id)a3 completion:(id)a4
+- (void)fetchGeoCodingsForAddressesXPC:(id)c completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  cCopy = c;
+  completionCopy = completion;
   v7 = objc_opt_self();
   v25 = 0;
-  v8 = [ASDGeoCodingKeyedUnarchiver unarchivedObjectOfClass:v7 fromData:v5 error:&v25];
+  v8 = [ASDGeoCodingKeyedUnarchiver unarchivedObjectOfClass:v7 fromData:cCopy error:&v25];
   v9 = v25;
 
   if (v8)
@@ -392,7 +392,7 @@ LABEL_28:
           if ((v16 & 1) == 0)
           {
             v9 = +[QwDGuEabMS2vnWkj wrongXPCParameterError];
-            v6[2](v6, 0, v9);
+            completionCopy[2](completionCopy, 0, v9);
             goto LABEL_16;
           }
 
@@ -416,40 +416,40 @@ LABEL_28:
     v20 = 0;
     v19 = [NSKeyedArchiver archivedDataWithRootObject:v11 requiringSecureCoding:1 error:&v20];
     v9 = v20;
-    (v6)[2](v6, v19, v9);
+    (completionCopy)[2](completionCopy, v19, v9);
 
 LABEL_16:
   }
 
   else
   {
-    v6[2](v6, 0, v9);
+    completionCopy[2](completionCopy, 0, v9);
   }
 }
 
-- (void)fetchConfigWithCompletionXPC:(id)a3
+- (void)fetchConfigWithCompletionXPC:(id)c
 {
-  v4 = a3;
+  cCopy = c;
   v6 = +[_TtC3asd23ASDConfigurationManager shared];
-  v5 = [v6 configDictionaryForCoreODI];
-  (*(a3 + 2))(v4, v5);
+  configDictionaryForCoreODI = [v6 configDictionaryForCoreODI];
+  (*(c + 2))(cCopy, configDictionaryForCoreODI);
 }
 
-- (void)llNEghuIdfPH7O8I:(BOOL)a3 all:(BOOL)a4 pregeneration:(BOOL)a5 workflowID:(id)a6 completion:(id)a7
+- (void)llNEghuIdfPH7O8I:(BOOL)i all:(BOOL)all pregeneration:(BOOL)pregeneration workflowID:(id)d completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v12 = a6;
+  pregenerationCopy = pregeneration;
+  allCopy = all;
+  iCopy = i;
+  dCopy = d;
   v25[0] = _NSConcreteStackBlock;
   v25[1] = 3221225472;
   v25[2] = sub_100005E9C;
   v25[3] = &unk_10068EDA0;
-  v13 = a7;
+  completionCopy = completion;
   v25[4] = self;
-  v26 = v13;
+  v26 = completionCopy;
   v14 = objc_retainBlock(v25);
-  if (v10)
+  if (iCopy)
   {
     v15 = +[_TtC3asd21PrecomputationManager shared];
     v23[0] = _NSConcreteStackBlock;
@@ -464,7 +464,7 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if (v9)
+  if (allCopy)
   {
     v15 = +[_TtC3asd21PrecomputationManager shared];
     v21[0] = _NSConcreteStackBlock;
@@ -477,7 +477,7 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  if (v12 && !v8)
+  if (dCopy && !pregenerationCopy)
   {
     v15 = +[_TtC3asd21PrecomputationManager shared];
     v19[0] = _NSConcreteStackBlock;
@@ -486,11 +486,11 @@ LABEL_11:
     v19[3] = &unk_10068EE58;
     v16 = &v20;
     v20 = v14;
-    [v15 triggerPrecomputationWithWorkflowID:v12 completionHandler:v19];
+    [v15 triggerPrecomputationWithWorkflowID:dCopy completionHandler:v19];
     goto LABEL_11;
   }
 
-  if (v12 && v8)
+  if (dCopy && pregenerationCopy)
   {
     v15 = +[_TtC3asd21PrecomputationManager shared];
     v17[0] = _NSConcreteStackBlock;
@@ -499,114 +499,114 @@ LABEL_11:
     v17[3] = &unk_10068EE58;
     v16 = &v18;
     v18 = v14;
-    [v15 triggerPregenerationWithWorkflowID:v12 completionHandler:v17];
+    [v15 triggerPregenerationWithWorkflowID:dCopy completionHandler:v17];
     goto LABEL_11;
   }
 
 LABEL_12:
 }
 
-- (void)djoNSwl5j57W5mfl:(id)a3 eqF2XJh3hHBJQf2K:(id)a4
+- (void)djoNSwl5j57W5mfl:(id)w5mfl eqF2XJh3hHBJQf2K:(id)k
 {
-  v5 = a4;
-  v6 = a3;
+  kCopy = k;
+  w5mflCopy = w5mfl;
   v7 = +[PJXBDBF1h0EU80dy sharedInstance];
-  [v7 dKsJLlNX54lzKt5n:v6 eqF2XJh3hHBJQf2K:v5];
+  [v7 dKsJLlNX54lzKt5n:w5mflCopy eqF2XJh3hHBJQf2K:kCopy];
 }
 
-- (void)lJIqliFcwusu4FxD:(id)a3 be2xk53Wn161LTDz:(id)a4 completion:(id)a5
+- (void)lJIqliFcwusu4FxD:(id)d be2xk53Wn161LTDz:(id)dz completion:(id)completion
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  completionCopy = completion;
+  dzCopy = dz;
+  dCopy = d;
   v10 = +[PJXBDBF1h0EU80dy sharedInstance];
-  [v10 lJIqliFcwusu4FxD:v9 workflowID:v8 completionHandler:v7];
+  [v10 lJIqliFcwusu4FxD:dCopy workflowID:dzCopy completionHandler:completionCopy];
 }
 
-- (void)cacheDataXPC:(id)a3 forKey:(id)a4 andCategory:(int64_t)a5 completion:(id)a6
+- (void)cacheDataXPC:(id)c forKey:(id)key andCategory:(int64_t)category completion:(id)completion
 {
-  v9 = a6;
-  v10 = a4;
-  v11 = a3;
+  completionCopy = completion;
+  keyCopy = key;
+  cCopy = c;
   v12 = +[ASFileCacheManager sharedInstance];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_100006150;
   v14[3] = &unk_10068EE58;
-  v15 = v9;
-  v13 = v9;
-  [v12 cacheData:v11 forKey:v10 andCategory:a5 completion:v14];
+  v15 = completionCopy;
+  v13 = completionCopy;
+  [v12 cacheData:cCopy forKey:keyCopy andCategory:category completion:v14];
 }
 
-- (void)fetchDataForKeyXPC:(id)a3 andCategory:(int64_t)a4 completion:(id)a5
+- (void)fetchDataForKeyXPC:(id)c andCategory:(int64_t)category completion:(id)completion
 {
-  v7 = a5;
-  v8 = a3;
+  completionCopy = completion;
+  cCopy = c;
   v9 = +[ASFileCacheManager sharedInstance];
-  [v9 fetchDataForKey:v8 andCategory:a4 completion:v7];
+  [v9 fetchDataForKey:cCopy andCategory:category completion:completionCopy];
 }
 
-- (void)rGvculjlqIwBJaoX:(id)a3 completion:(id)a4
+- (void)rGvculjlqIwBJaoX:(id)x completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  xCopy = x;
   v7 = +[PJXBDBF1h0EU80dy sharedInstance];
   v10 = 0;
-  v8 = [v7 evrtH713YbFfEOzk:v6 error:&v10];
+  v8 = [v7 evrtH713YbFfEOzk:xCopy error:&v10];
 
   v9 = v10;
   if (v9)
   {
-    v5[2](v5, 0, v9);
+    completionCopy[2](completionCopy, 0, v9);
   }
 
-  (v5)[2](v5, v8, 0);
+  (completionCopy)[2](completionCopy, v8, 0);
 }
 
-- (void)registerICloudLoginWithCompletionXPC:(id)a3
+- (void)registerICloudLoginWithCompletionXPC:(id)c
 {
-  v4 = a3;
+  cCopy = c;
   v3 = +[_TtC3asd15PushCoordinator shared];
   [v3 registerICloud];
 
-  v4[2](v4, 0);
+  cCopy[2](cCopy, 0);
 }
 
-- (void)unregisterICloudLoginWithCompletionXPC:(id)a3
+- (void)unregisterICloudLoginWithCompletionXPC:(id)c
 {
-  v5 = a3;
+  cCopy = c;
   v3 = +[_TtC3asd15PushCoordinator shared];
   [v3 unregister];
 
   v4 = objc_alloc_init(Vr3QrKl7Yn9l4CTz);
   [(Vr3QrKl7Yn9l4CTz *)v4 sFFfMcUAtN14Bjc5];
 
-  v5[2](v5, 0);
+  cCopy[2](cCopy, 0);
 }
 
-- (void)pRo6qBDnfEL0sBNs:(id)a3 i7D0Lridvo8oYoNd:(id)a4 completion:(id)a5
+- (void)pRo6qBDnfEL0sBNs:(id)ns i7D0Lridvo8oYoNd:(id)nd completion:(id)completion
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  completionCopy = completion;
+  ndCopy = nd;
+  nsCopy = ns;
   v10 = +[_TtC3asd22AssessmentPayloadStore shared];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_100006494;
   v12[3] = &unk_10068EE80;
-  v13 = v7;
-  v11 = v7;
-  [v10 fetchFor:v9 withBindings:v8 completionHandler:v12];
+  v13 = completionCopy;
+  v11 = completionCopy;
+  [v10 fetchFor:nsCopy withBindings:ndCopy completionHandler:v12];
 }
 
-+ (id)errorFromUnderlyingError:(id)a3
++ (id)errorFromUnderlyingError:(id)error
 {
   v3 = off_1006C9430;
-  v4 = a3;
+  errorCopy = error;
   v5 = [NSString stringWithUTF8String:v3];
-  v6 = [v4 code];
+  code = [errorCopy code];
 
-  v7 = [NSError errorWithDomain:v5 code:v6 userInfo:0];
+  v7 = [NSError errorWithDomain:v5 code:code userInfo:0];
 
   return v7;
 }

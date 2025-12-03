@@ -8,7 +8,7 @@
 - (NSString)description
 {
   type metadata accessor for PRLoggers();
-  v3 = self;
+  selfCopy = self;
   sub_243F4E2D0();
   MEMORY[0x245D57000](1029990702, 0xE400000000000000);
   sub_243F6C880();

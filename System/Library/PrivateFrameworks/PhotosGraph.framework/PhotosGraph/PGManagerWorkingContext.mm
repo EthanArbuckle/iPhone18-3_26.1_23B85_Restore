@@ -2,92 +2,92 @@
 - (BOOL)isGraphReady;
 - (CLSServiceManager)serviceManager;
 - (PGCurationManager)curationManager;
-- (PGManagerWorkingContext)initWithManager:(id)a3 loggingConnection:(id)a4;
+- (PGManagerWorkingContext)initWithManager:(id)manager loggingConnection:(id)connection;
 - (PHPhotoLibrary)photoLibrary;
-- (id)musicCuratorContextWithCurationOptions:(id)a3 error:(id *)a4;
-- (id)musicCuratorContextWithRecentlyUsedSongAdamIDs:(id)a3 error:(id *)a4;
-- (void)performSynchronousConcurrentGraphReadUsingBlock:(id)a3;
+- (id)musicCuratorContextWithCurationOptions:(id)options error:(id *)error;
+- (id)musicCuratorContextWithRecentlyUsedSongAdamIDs:(id)ds error:(id *)error;
+- (void)performSynchronousConcurrentGraphReadUsingBlock:(id)block;
 @end
 
 @implementation PGManagerWorkingContext
 
-- (void)performSynchronousConcurrentGraphReadUsingBlock:(id)a3
+- (void)performSynchronousConcurrentGraphReadUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   WeakRetained = objc_loadWeakRetained(&self->_manager);
-  [WeakRetained performSynchronousConcurrentGraphReadUsingBlock:v4];
+  [WeakRetained performSynchronousConcurrentGraphReadUsingBlock:blockCopy];
 }
 
 - (BOOL)isGraphReady
 {
   WeakRetained = objc_loadWeakRetained(&self->_manager);
-  v3 = [WeakRetained isReady];
+  isReady = [WeakRetained isReady];
 
-  return v3;
+  return isReady;
 }
 
 - (CLSServiceManager)serviceManager
 {
   WeakRetained = objc_loadWeakRetained(&self->_manager);
-  v3 = [WeakRetained serviceManager];
+  serviceManager = [WeakRetained serviceManager];
 
-  return v3;
+  return serviceManager;
 }
 
 - (PGCurationManager)curationManager
 {
   WeakRetained = objc_loadWeakRetained(&self->_manager);
-  v3 = [WeakRetained curationManager];
+  curationManager = [WeakRetained curationManager];
 
-  return v3;
+  return curationManager;
 }
 
 - (PHPhotoLibrary)photoLibrary
 {
   WeakRetained = objc_loadWeakRetained(&self->_manager);
-  v3 = [WeakRetained photoLibrary];
+  photoLibrary = [WeakRetained photoLibrary];
 
-  return v3;
+  return photoLibrary;
 }
 
-- (PGManagerWorkingContext)initWithManager:(id)a3 loggingConnection:(id)a4
+- (PGManagerWorkingContext)initWithManager:(id)manager loggingConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  connectionCopy = connection;
   v15.receiver = self;
   v15.super_class = PGManagerWorkingContext;
   v8 = [(PGManagerWorkingContext *)&v15 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_manager, v6);
-    objc_storeStrong(&v9->_loggingConnection, a4);
-    v10 = [v6 analytics];
+    objc_storeWeak(&v8->_manager, managerCopy);
+    objc_storeStrong(&v9->_loggingConnection, connection);
+    analytics = [managerCopy analytics];
     analytics = v9->_analytics;
-    v9->_analytics = v10;
+    v9->_analytics = analytics;
 
-    v12 = [v6 locationCache];
+    locationCache = [managerCopy locationCache];
     locationCache = v9->_locationCache;
-    v9->_locationCache = v12;
+    v9->_locationCache = locationCache;
   }
 
   return v9;
 }
 
-- (id)musicCuratorContextWithCurationOptions:(id)a3 error:(id *)a4
+- (id)musicCuratorContextWithCurationOptions:(id)options error:(id *)error
 {
-  v6 = a3;
+  optionsCopy = options;
   WeakRetained = objc_loadWeakRetained(&self->_manager);
-  v8 = [WeakRetained musicCuratorContextWithCurationOptions:v6 error:a4];
+  v8 = [WeakRetained musicCuratorContextWithCurationOptions:optionsCopy error:error];
 
   return v8;
 }
 
-- (id)musicCuratorContextWithRecentlyUsedSongAdamIDs:(id)a3 error:(id *)a4
+- (id)musicCuratorContextWithRecentlyUsedSongAdamIDs:(id)ds error:(id *)error
 {
-  v6 = a3;
+  dsCopy = ds;
   WeakRetained = objc_loadWeakRetained(&self->_manager);
-  v8 = [WeakRetained musicCuratorContextWithRecentlyUsedSongAdamIDs:v6 error:a4];
+  v8 = [WeakRetained musicCuratorContextWithRecentlyUsedSongAdamIDs:dsCopy error:error];
 
   return v8;
 }

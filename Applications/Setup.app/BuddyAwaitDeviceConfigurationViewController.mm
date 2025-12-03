@@ -2,8 +2,8 @@
 - (BuddyAwaitDeviceConfigurationViewController)init;
 - (id)_clearImage;
 - (void)loadView;
-- (void)presentEnrollmentStatusForDebugging:(id)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)presentEnrollmentStatusForDebugging:(id)debugging;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation BuddyAwaitDeviceConfigurationViewController
@@ -15,11 +15,11 @@
   v3 = +[NSBundle mainBundle];
   v4 = [UIDevice modelSpecificLocalizedStringKeyForKey:@"CLOUD_CONFIG_CONFIGURING"];
   v5 = [(NSBundle *)v3 localizedStringForKey:v4 value:&stru_10032F900 table:@"Localizable"];
-  v6 = [location _clearImage];
+  _clearImage = [location _clearImage];
   location = 0;
   v9.receiver = self;
   v9.super_class = BuddyAwaitDeviceConfigurationViewController;
-  location = [(BuddyAwaitDeviceConfigurationViewController *)&v9 initWithTitle:v5 detailText:0 icon:v6];
+  location = [(BuddyAwaitDeviceConfigurationViewController *)&v9 initWithTitle:v5 detailText:0 icon:_clearImage];
   objc_storeStrong(&location, location);
 
   v7 = location;
@@ -29,96 +29,96 @@
 
 - (void)loadView
 {
-  v31 = self;
+  selfCopy = self;
   v30 = a2;
   v29.receiver = self;
   v29.super_class = BuddyAwaitDeviceConfigurationViewController;
   [(BuddyAwaitDeviceConfigurationViewController *)&v29 loadView];
   v2 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
-  statusLabel = v31->_statusLabel;
-  v31->_statusLabel = v2;
+  statusLabel = selfCopy->_statusLabel;
+  selfCopy->_statusLabel = v2;
 
-  [(UILabel *)v31->_statusLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-  [(UILabel *)v31->_statusLabel setTextAlignment:1];
-  v4 = v31->_statusLabel;
+  [(UILabel *)selfCopy->_statusLabel setTranslatesAutoresizingMaskIntoConstraints:0];
+  [(UILabel *)selfCopy->_statusLabel setTextAlignment:1];
+  v4 = selfCopy->_statusLabel;
   v5 = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
   [(UILabel *)v4 setFont:v5];
 
-  v6 = v31->_statusLabel;
+  v6 = selfCopy->_statusLabel;
   v7 = +[UIColor secondaryLabelColor];
   [(UILabel *)v6 setTextColor:v7];
 
-  [(UILabel *)v31->_statusLabel setLineBreakMode:0];
-  [(UILabel *)v31->_statusLabel setNumberOfLines:0];
-  v8 = [(BuddyAwaitDeviceConfigurationViewController *)v31 view];
-  [v8 addSubview:v31->_statusLabel];
+  [(UILabel *)selfCopy->_statusLabel setLineBreakMode:0];
+  [(UILabel *)selfCopy->_statusLabel setNumberOfLines:0];
+  view = [(BuddyAwaitDeviceConfigurationViewController *)selfCopy view];
+  [view addSubview:selfCopy->_statusLabel];
 
   v9 = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:100];
-  spinnerView = v31->_spinnerView;
-  v31->_spinnerView = v9;
+  spinnerView = selfCopy->_spinnerView;
+  selfCopy->_spinnerView = v9;
 
-  [(UIActivityIndicatorView *)v31->_spinnerView setTranslatesAutoresizingMaskIntoConstraints:0];
-  v11 = [(BuddyAwaitDeviceConfigurationViewController *)v31 view];
-  [v11 addSubview:v31->_spinnerView];
+  [(UIActivityIndicatorView *)selfCopy->_spinnerView setTranslatesAutoresizingMaskIntoConstraints:0];
+  view2 = [(BuddyAwaitDeviceConfigurationViewController *)selfCopy view];
+  [view2 addSubview:selfCopy->_spinnerView];
 
-  v28 = [(BuddyAwaitDeviceConfigurationViewController *)v31 view];
-  v27 = [v28 centerXAnchor];
-  v26 = [(UILabel *)v31->_statusLabel centerXAnchor];
-  v25 = [v27 constraintEqualToAnchor:?];
+  view3 = [(BuddyAwaitDeviceConfigurationViewController *)selfCopy view];
+  centerXAnchor = [view3 centerXAnchor];
+  centerXAnchor2 = [(UILabel *)selfCopy->_statusLabel centerXAnchor];
+  v25 = [centerXAnchor constraintEqualToAnchor:?];
   v32[0] = v25;
-  v23 = [(UILabel *)v31->_statusLabel bottomAnchor];
-  v24 = [(BuddyAwaitDeviceConfigurationViewController *)v31 view];
-  v22 = [v24 bottomAnchor];
-  v12 = [v23 constraintGreaterThanOrEqualToAnchor:-30.0 constant:?];
+  bottomAnchor = [(UILabel *)selfCopy->_statusLabel bottomAnchor];
+  view4 = [(BuddyAwaitDeviceConfigurationViewController *)selfCopy view];
+  bottomAnchor2 = [view4 bottomAnchor];
+  v12 = [bottomAnchor constraintGreaterThanOrEqualToAnchor:-30.0 constant:?];
   v32[1] = v12;
-  v13 = [(BuddyAwaitDeviceConfigurationViewController *)v31 view];
-  v14 = [v13 centerXAnchor];
-  v15 = [(UIActivityIndicatorView *)v31->_spinnerView centerXAnchor];
-  v16 = [v14 constraintEqualToAnchor:v15];
+  view5 = [(BuddyAwaitDeviceConfigurationViewController *)selfCopy view];
+  centerXAnchor3 = [view5 centerXAnchor];
+  centerXAnchor4 = [(UIActivityIndicatorView *)selfCopy->_spinnerView centerXAnchor];
+  v16 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
   v32[2] = v16;
-  v17 = [(BuddyAwaitDeviceConfigurationViewController *)v31 view];
-  v18 = [v17 centerYAnchor];
-  v19 = [(UIActivityIndicatorView *)v31->_spinnerView centerYAnchor];
-  v20 = [v18 constraintEqualToAnchor:v19];
+  view6 = [(BuddyAwaitDeviceConfigurationViewController *)selfCopy view];
+  centerYAnchor = [view6 centerYAnchor];
+  centerYAnchor2 = [(UIActivityIndicatorView *)selfCopy->_spinnerView centerYAnchor];
+  v20 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v32[3] = v20;
   v21 = [NSArray arrayWithObjects:v32 count:4];
   [NSLayoutConstraint activateConstraints:v21];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v16 = self;
+  selfCopy = self;
   v15 = a2;
-  v14 = a3;
+  appearCopy = appear;
   v13.receiver = self;
   v13.super_class = BuddyAwaitDeviceConfigurationViewController;
-  [(BuddyAwaitDeviceConfigurationViewController *)&v13 viewWillAppear:a3];
+  [(BuddyAwaitDeviceConfigurationViewController *)&v13 viewWillAppear:appear];
   v3 = +[MDMCloudConfiguration sharedConfiguration];
-  v12 = [v3 details];
+  details = [v3 details];
 
-  location = [v12 objectForKeyedSubscript:kCCOrganizationNameKey];
-  v4 = [(BuddyAwaitDeviceConfigurationViewController *)v16 headerView];
+  location = [details objectForKeyedSubscript:kCCOrganizationNameKey];
+  headerView = [(BuddyAwaitDeviceConfigurationViewController *)selfCopy headerView];
   v5 = +[NSBundle mainBundle];
   v6 = [(NSBundle *)v5 localizedStringForKey:@"CLOUD_CONFIG_GETTING_CONFIGURATION_DESCRIPTION_%@" value:&stru_10032F900 table:@"Localizable"];
-  v7 = [NSString localizedStringWithFormat:v6, location];
-  [v4 setDetailText:v7];
+  location = [NSString localizedStringWithFormat:v6, location];
+  [headerView setDetailText:location];
 
-  v8 = [(BuddyAwaitDeviceConfigurationViewController *)v16 spinnerView];
-  [(UIActivityIndicatorView *)v8 startAnimating];
+  spinnerView = [(BuddyAwaitDeviceConfigurationViewController *)selfCopy spinnerView];
+  [(UIActivityIndicatorView *)spinnerView startAnimating];
 
-  v9 = [(BuddyAwaitDeviceConfigurationViewController *)v16 navigationItem];
-  [v9 setHidesBackButton:1];
+  navigationItem = [(BuddyAwaitDeviceConfigurationViewController *)selfCopy navigationItem];
+  [navigationItem setHidesBackButton:1];
 
-  v10 = [(BuddyAwaitDeviceConfigurationViewController *)v16 view];
-  [v10 setNeedsLayout];
+  view = [(BuddyAwaitDeviceConfigurationViewController *)selfCopy view];
+  [view setNeedsLayout];
 
   objc_storeStrong(&location, 0);
-  objc_storeStrong(&v12, 0);
+  objc_storeStrong(&details, 0);
 }
 
 - (id)_clearImage
 {
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
   v10.width = sub_100163810();
   size = v10;
@@ -136,19 +136,19 @@
   return v3;
 }
 
-- (void)presentEnrollmentStatusForDebugging:(id)a3
+- (void)presentEnrollmentStatusForDebugging:(id)debugging
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, debugging);
   v3 = &_dispatch_main_q;
   block = _NSConcreteStackBlock;
   v5 = -1073741824;
   v6 = 0;
   v7 = sub_1001639B0;
   v8 = &unk_10032B838;
-  v9 = v12;
+  v9 = selfCopy;
   v10 = location[0];
   dispatch_async(v3, &block);
 

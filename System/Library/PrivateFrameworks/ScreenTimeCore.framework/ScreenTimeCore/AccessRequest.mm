@@ -1,15 +1,15 @@
 @interface AccessRequest
 - (_TtC14ScreenTimeCore13AccessRequest)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AccessRequest
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_1B83C3914(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_1B83C3914(coderCopy);
 }
 
 - (_TtC14ScreenTimeCore13AccessRequest)init

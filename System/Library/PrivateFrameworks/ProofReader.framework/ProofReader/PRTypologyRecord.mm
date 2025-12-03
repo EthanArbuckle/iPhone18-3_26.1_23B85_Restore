@@ -1,44 +1,44 @@
 @interface PRTypologyRecord
 + (id)currentTypologyRecord;
-+ (id)openTypologyRecordWithString:(id)a3 range:(_NSRange)a4 languageObject:(id)a5 languages:(id)a6 topLanguages:(id)a7 autocorrect:(BOOL)a8 initialCapitalize:(BOOL)a9 autocapitalize:(BOOL)a10 keyEventArray:(id)a11 appIdentifier:(id)a12 selectedRangeValue:(id)a13;
++ (id)openTypologyRecordWithString:(id)string range:(_NSRange)range languageObject:(id)object languages:(id)languages topLanguages:(id)topLanguages autocorrect:(BOOL)autocorrect initialCapitalize:(BOOL)capitalize autocapitalize:(BOOL)self0 keyEventArray:(id)self1 appIdentifier:(id)self2 selectedRangeValue:(id)self3;
 + (void)resetTypologyRecords;
-+ (void)setTypologyRecordsLimit:(unint64_t)a3;
++ (void)setTypologyRecordsLimit:(unint64_t)limit;
 + (void)writeTypologyRecords;
-- (PRTypologyRecord)initWithString:(id)a3 offset:(unint64_t)a4 range:(_NSRange)a5 languageObject:(id)a6 languages:(id)a7 topLanguages:(id)a8 autocorrect:(BOOL)a9 initialCapitalize:(BOOL)a10 autocapitalize:(BOOL)a11 keyEventArray:(id)a12 appIdentifier:(id)a13 selectedRangeValue:(id)a14;
+- (PRTypologyRecord)initWithString:(id)string offset:(unint64_t)offset range:(_NSRange)range languageObject:(id)object languages:(id)languages topLanguages:(id)topLanguages autocorrect:(BOOL)autocorrect initialCapitalize:(BOOL)self0 autocapitalize:(BOOL)self1 keyEventArray:(id)self2 appIdentifier:(id)self3 selectedRangeValue:(id)self4;
 - (id)dictionaryRepresentation;
-- (void)addCandidate:(id)a3;
-- (void)addCorrection:(id)a3;
-- (void)closeTypologyRecordWithResults:(id)a3;
+- (void)addCandidate:(id)candidate;
+- (void)addCorrection:(id)correction;
+- (void)closeTypologyRecordWithResults:(id)results;
 - (void)dealloc;
 @end
 
 @implementation PRTypologyRecord
 
-- (PRTypologyRecord)initWithString:(id)a3 offset:(unint64_t)a4 range:(_NSRange)a5 languageObject:(id)a6 languages:(id)a7 topLanguages:(id)a8 autocorrect:(BOOL)a9 initialCapitalize:(BOOL)a10 autocapitalize:(BOOL)a11 keyEventArray:(id)a12 appIdentifier:(id)a13 selectedRangeValue:(id)a14
+- (PRTypologyRecord)initWithString:(id)string offset:(unint64_t)offset range:(_NSRange)range languageObject:(id)object languages:(id)languages topLanguages:(id)topLanguages autocorrect:(BOOL)autocorrect initialCapitalize:(BOOL)self0 autocapitalize:(BOOL)self1 keyEventArray:(id)self2 appIdentifier:(id)self3 selectedRangeValue:(id)self4
 {
-  length = a5.length;
-  location = a5.location;
+  length = range.length;
+  location = range.location;
   v23.receiver = self;
   v23.super_class = PRTypologyRecord;
   v20 = [(PRTypologyRecord *)&v23 init];
   if (v20)
   {
-    v21 = [a3 copy];
-    v20->_offset = a4;
+    v21 = [string copy];
+    v20->_offset = offset;
     v20->_string = v21;
     v20->_range.location = location;
     v20->_range.length = length;
-    v20->_langObj = [a6 copy];
-    v20->_languages = [a7 copy];
-    v20->_appIdentifier = [a13 copy];
-    v20->_selectedRangeValue = [a14 copy];
-    v20->_topLanguages = [a8 copy];
-    v20->_keyEventArray = [a12 copy];
+    v20->_langObj = [object copy];
+    v20->_languages = [languages copy];
+    v20->_appIdentifier = [identifier copy];
+    v20->_selectedRangeValue = [value copy];
+    v20->_topLanguages = [topLanguages copy];
+    v20->_keyEventArray = [array copy];
     v20->_typologyCorrections = objc_alloc_init(MEMORY[0x1E695DF70]);
     v20->_typologyCandidates = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v20->_autocorrect = a9;
-    v20->_initialCapitalize = a10;
-    v20->_autocapitalize = a11;
+    v20->_autocorrect = autocorrect;
+    v20->_initialCapitalize = capitalize;
+    v20->_autocapitalize = autocapitalize;
     v20->_isOpen = 1;
     v20->_openTime = CFAbsoluteTimeGetCurrent();
   }
@@ -53,11 +53,11 @@
   [(PRTypologyRecord *)&v3 dealloc];
 }
 
-+ (id)openTypologyRecordWithString:(id)a3 range:(_NSRange)a4 languageObject:(id)a5 languages:(id)a6 topLanguages:(id)a7 autocorrect:(BOOL)a8 initialCapitalize:(BOOL)a9 autocapitalize:(BOOL)a10 keyEventArray:(id)a11 appIdentifier:(id)a12 selectedRangeValue:(id)a13
++ (id)openTypologyRecordWithString:(id)string range:(_NSRange)range languageObject:(id)object languages:(id)languages topLanguages:(id)topLanguages autocorrect:(BOOL)autocorrect initialCapitalize:(BOOL)capitalize autocapitalize:(BOOL)self0 keyEventArray:(id)self1 appIdentifier:(id)self2 selectedRangeValue:(id)self3
 {
-  length = a4.length;
-  location = a4.location;
-  v19 = [a3 length];
+  length = range.length;
+  location = range.location;
+  v19 = [string length];
   if (openTypologyRecordWithString_range_languageObject_languages_topLanguages_autocorrect_initialCapitalize_autocapitalize_keyEventArray_appIdentifier_selectedRangeValue__onceToken != -1)
   {
     +[PRTypologyRecord openTypologyRecordWithString:range:languageObject:languages:topLanguages:autocorrect:initialCapitalize:autocapitalize:keyEventArray:appIdentifier:selectedRangeValue:];
@@ -119,9 +119,9 @@
       v27 = v19 - v26;
     }
 
-    BYTE2(v29) = a10;
-    LOWORD(v29) = __PAIR16__(a9, a8);
-    v20 = -[PRTypologyRecord initWithString:offset:range:languageObject:languages:topLanguages:autocorrect:initialCapitalize:autocapitalize:keyEventArray:appIdentifier:selectedRangeValue:]([PRTypologyRecord alloc], "initWithString:offset:range:languageObject:languages:topLanguages:autocorrect:initialCapitalize:autocapitalize:keyEventArray:appIdentifier:selectedRangeValue:", [a3 substringWithRange:{v26, v27}], v26, location, length, a5, a6, a7, v29, a11, a12, a13);
+    BYTE2(v29) = autocapitalize;
+    LOWORD(v29) = __PAIR16__(capitalize, autocorrect);
+    v20 = -[PRTypologyRecord initWithString:offset:range:languageObject:languages:topLanguages:autocorrect:initialCapitalize:autocapitalize:keyEventArray:appIdentifier:selectedRangeValue:]([PRTypologyRecord alloc], "initWithString:offset:range:languageObject:languages:topLanguages:autocorrect:initialCapitalize:autocapitalize:keyEventArray:appIdentifier:selectedRangeValue:", [string substringWithRange:{v26, v27}], v26, location, length, object, languages, topLanguages, v29, array, identifier, value);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __185__PRTypologyRecord_openTypologyRecordWithString_range_languageObject_languages_topLanguages_autocorrect_initialCapitalize_autocapitalize_keyEventArray_appIdentifier_selectedRangeValue___block_invoke_2;
@@ -197,31 +197,31 @@ id __41__PRTypologyRecord_currentTypologyRecord__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)addCorrection:(id)a3
+- (void)addCorrection:(id)correction
 {
   if (self->_isOpen)
   {
-    [(NSMutableArray *)self->_typologyCorrections addObject:a3];
+    [(NSMutableArray *)self->_typologyCorrections addObject:correction];
   }
 }
 
-- (void)addCandidate:(id)a3
+- (void)addCandidate:(id)candidate
 {
   if (self->_isOpen)
   {
-    [(NSMutableArray *)self->_typologyCandidates addObject:a3];
+    [(NSMutableArray *)self->_typologyCandidates addObject:candidate];
   }
 }
 
 - (id)dictionaryRepresentation
 {
   v38 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   string = self->_string;
   if (string)
   {
-    [v3 setObject:string forKey:@"StringToCheck"];
+    [dictionary setObject:string forKey:@"StringToCheck"];
   }
 
   [v4 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInteger:", self->_offset), @"Offset"}];
@@ -269,7 +269,7 @@ id __41__PRTypologyRecord_currentTypologyRecord__block_invoke(uint64_t a1)
   typologyCorrections = self->_typologyCorrections;
   if (typologyCorrections && [(NSMutableArray *)typologyCorrections count])
   {
-    v13 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
@@ -289,7 +289,7 @@ id __41__PRTypologyRecord_currentTypologyRecord__block_invoke(uint64_t a1)
             objc_enumerationMutation(v14);
           }
 
-          [v13 addObject:{objc_msgSend(*(*(&v32 + 1) + 8 * i), "dictionaryRepresentation")}];
+          [array addObject:{objc_msgSend(*(*(&v32 + 1) + 8 * i), "dictionaryRepresentation")}];
         }
 
         v16 = [(NSMutableArray *)v14 countByEnumeratingWithState:&v32 objects:v37 count:16];
@@ -298,13 +298,13 @@ id __41__PRTypologyRecord_currentTypologyRecord__block_invoke(uint64_t a1)
       while (v16);
     }
 
-    [v4 setObject:v13 forKey:@"Corrections"];
+    [v4 setObject:array forKey:@"Corrections"];
   }
 
   typologyCandidates = self->_typologyCandidates;
   if (typologyCandidates && [(NSMutableArray *)typologyCandidates count])
   {
-    v20 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
@@ -324,7 +324,7 @@ id __41__PRTypologyRecord_currentTypologyRecord__block_invoke(uint64_t a1)
             objc_enumerationMutation(v21);
           }
 
-          [v20 addObject:{objc_msgSend(*(*(&v28 + 1) + 8 * j), "dictionaryRepresentation")}];
+          [array2 addObject:{objc_msgSend(*(*(&v28 + 1) + 8 * j), "dictionaryRepresentation")}];
         }
 
         v23 = [(NSMutableArray *)v21 countByEnumeratingWithState:&v28 objects:v36 count:16];
@@ -333,7 +333,7 @@ id __41__PRTypologyRecord_currentTypologyRecord__block_invoke(uint64_t a1)
       while (v23);
     }
 
-    [v4 setObject:v20 forKey:@"Candidates"];
+    [v4 setObject:array2 forKey:@"Candidates"];
   }
 
   if (!self->_isOpen)
@@ -347,7 +347,7 @@ id __41__PRTypologyRecord_currentTypologyRecord__block_invoke(uint64_t a1)
 
 + (void)writeTypologyRecords
 {
-  v2 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   if ((_enabledLogTypes & 0x400) != 0)
   {
     if (_typologyRecords)
@@ -362,7 +362,7 @@ id __41__PRTypologyRecord_currentTypologyRecord__block_invoke(uint64_t a1)
 
     if (!v3)
     {
-      v4 = v2;
+      v4 = array;
       v5 = [_NSSpellingDictDirectoryPath2() stringByAppendingPathComponent:@"typology.plist"];
       v8 = 0;
       block[0] = MEMORY[0x1E69E9820];
@@ -437,9 +437,9 @@ uint64_t __40__PRTypologyRecord_writeTypologyRecords__block_invoke(uint64_t a1)
   }
 }
 
-+ (void)setTypologyRecordsLimit:(unint64_t)a3
++ (void)setTypologyRecordsLimit:(unint64_t)limit
 {
-  _numTypologyRecords = a3;
+  _numTypologyRecords = limit;
   if ((_enabledLogTypes & 0x400) != 0)
   {
     if (_typologyRecords)
@@ -469,12 +469,12 @@ unint64_t __44__PRTypologyRecord_setTypologyRecordsLimit___block_invoke()
   return result;
 }
 
-- (void)closeTypologyRecordWithResults:(id)a3
+- (void)closeTypologyRecordWithResults:(id)results
 {
   if (self->_isOpen)
   {
     self->_closeTime = CFAbsoluteTimeGetCurrent();
-    self->_results = [a3 copy];
+    self->_results = [results copy];
     self->_isOpen = 0;
   }
 }

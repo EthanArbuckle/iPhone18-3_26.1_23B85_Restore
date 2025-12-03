@@ -1,17 +1,17 @@
 @interface BLHLSKey
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToHLSKey:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToHLSKey:(id)key;
 - (id)description;
 - (unint64_t)hash;
-- (void)setPropertiesFromAttributeList:(id)a3;
+- (void)setPropertiesFromAttributeList:(id)list;
 @end
 
 @implementation BLHLSKey
 
-- (void)setPropertiesFromAttributeList:(id)a3
+- (void)setPropertiesFromAttributeList:(id)list
 {
-  v4 = a3;
-  v15 = [v4 objectForKeyedSubscript:@"METHOD"];
+  listCopy = list;
+  v15 = [listCopy objectForKeyedSubscript:@"METHOD"];
   if ([@"NONE" isEqualToString:?])
   {
     v5 = 1;
@@ -34,20 +34,20 @@ LABEL_7:
 
   self->_method = 0;
 LABEL_8:
-  v6 = [v4 objectForKeyedSubscript:@"URI"];
+  v6 = [listCopy objectForKeyedSubscript:@"URI"];
   v7 = [MEMORY[0x277CBEBC0] URLWithString:v6];
   url = self->_url;
   self->_url = v7;
 
-  v9 = [v4 objectForKeyedSubscript:@"KEYFORMAT"];
+  v9 = [listCopy objectForKeyedSubscript:@"KEYFORMAT"];
   keyFormat = self->_keyFormat;
   self->_keyFormat = v9;
 
-  v11 = [v4 objectForKeyedSubscript:@"KEYFORMATVERSIONS"];
+  v11 = [listCopy objectForKeyedSubscript:@"KEYFORMATVERSIONS"];
   keyFormatVersions = self->_keyFormatVersions;
   self->_keyFormatVersions = v11;
 
-  v13 = [v4 objectForKeyedSubscript:@"IV"];
+  v13 = [listCopy objectForKeyedSubscript:@"IV"];
 
   iv = self->_iv;
   self->_iv = v13;
@@ -62,14 +62,14 @@ LABEL_8:
   return v5;
 }
 
-- (BOOL)isEqualToHLSKey:(id)a3
+- (BOOL)isEqualToHLSKey:(id)key
 {
-  v4 = a3;
-  v5 = v4;
+  keyCopy = key;
+  v5 = keyCopy;
   url = self->_url;
   if (url)
   {
-    v7 = [v4 url];
+    v7 = [keyCopy url];
     v8 = [(NSURL *)url isEqual:v7];
 
     if (!v8)
@@ -81,8 +81,8 @@ LABEL_8:
   keyFormat = self->_keyFormat;
   if (keyFormat)
   {
-    v10 = [v5 keyFormat];
-    v11 = [(NSString *)keyFormat isEqualToString:v10];
+    keyFormat = [v5 keyFormat];
+    v11 = [(NSString *)keyFormat isEqualToString:keyFormat];
 
     if (!v11)
     {
@@ -118,10 +118,10 @@ LABEL_10:
   return v19;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }

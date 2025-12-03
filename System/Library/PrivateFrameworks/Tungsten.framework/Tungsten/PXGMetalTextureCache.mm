@@ -1,10 +1,10 @@
 @interface PXGMetalTextureCache
 - (PXGMetalTextureCache)init;
-- (PXGMetalTextureCache)initWithContext:(id)a3;
+- (PXGMetalTextureCache)initWithContext:(id)context;
 - (double)ageLimit;
 - (id)_description;
 - (id)description;
-- (id)textureWithSize:(CGSize)a3 pixelFormat:(unint64_t)a4;
+- (id)textureWithSize:(CGSize)size pixelFormat:(unint64_t)format;
 - (unint64_t)capacity;
 - (unint64_t)count;
 - (unint64_t)peakMemorySize;
@@ -12,22 +12,22 @@
 - (unint64_t)sizeLimit;
 - (void)_enforceLimits;
 - (void)_purgeOldestTexture;
-- (void)recycleTexture:(id)a3;
-- (void)setAgeLimit:(double)a3;
-- (void)setCapacity:(unint64_t)a3;
-- (void)setSizeLimit:(unint64_t)a3;
+- (void)recycleTexture:(id)texture;
+- (void)setAgeLimit:(double)limit;
+- (void)setCapacity:(unint64_t)capacity;
+- (void)setSizeLimit:(unint64_t)limit;
 @end
 
 @implementation PXGMetalTextureCache
 
 - (void)_purgeOldestTexture
 {
-  v3 = [(NSMutableArray *)self->_entries lastObject];
-  v4 = [v3 texture];
+  lastObject = [(NSMutableArray *)self->_entries lastObject];
+  texture = [lastObject texture];
 
-  [v4 width];
-  [v4 height];
-  [v4 allocatedSize];
+  [texture width];
+  [texture height];
+  [texture allocatedSize];
   kdebug_trace();
   [(NSMutableArray *)self->_entries removeLastObject];
 }
@@ -48,17 +48,17 @@
     while (1)
     {
       v8 = [(NSMutableArray *)self->_entries objectAtIndexedSubscript:v7];
-      v9 = [v8 texture];
-      v10 = [v9 allocatedSize];
+      texture = [v8 texture];
+      allocatedSize = [texture allocatedSize];
 
-      v11 = v10 + v6;
-      if (v10 + v6 > self->_sizeLimit)
+      v11 = allocatedSize + v6;
+      if (allocatedSize + v6 > self->_sizeLimit)
       {
         break;
       }
 
       ++v7;
-      v6 += v10;
+      v6 += allocatedSize;
       if (v5 == v7)
       {
         goto LABEL_13;
@@ -82,9 +82,9 @@ LABEL_13:
   v12 = [MEMORY[0x277CBEAA8] now];
   while ([(NSMutableArray *)self->_entries count])
   {
-    v13 = [(NSMutableArray *)self->_entries lastObject];
-    v14 = [v13 time];
-    [v12 timeIntervalSinceDate:v14];
+    lastObject = [(NSMutableArray *)self->_entries lastObject];
+    time = [lastObject time];
+    [v12 timeIntervalSinceDate:time];
     v16 = v15;
     ageLimit = self->_ageLimit;
 
@@ -140,14 +140,14 @@ void __38__PXGMetalTextureCache__enforceLimits__block_invoke(uint64_t a1)
   [WeakRetained _enforceLimits];
 }
 
-- (void)recycleTexture:(id)a3
+- (void)recycleTexture:(id)texture
 {
-  v4 = a3;
-  [v4 width];
-  [v4 height];
-  [v4 allocatedSize];
+  textureCopy = texture;
+  [textureCopy width];
+  [textureCopy height];
+  [textureCopy allocatedSize];
   kdebug_trace();
-  v5 = [[PXGMetalTextureCacheEntry alloc] initWithTexture:v4];
+  v5 = [[PXGMetalTextureCacheEntry alloc] initWithTexture:textureCopy];
   queue = self->_queue;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
@@ -167,10 +167,10 @@ uint64_t __39__PXGMetalTextureCache_recycleTexture___block_invoke(uint64_t a1)
   return [v2 _enforceLimits];
 }
 
-- (id)textureWithSize:(CGSize)a3 pixelFormat:(unint64_t)a4
+- (id)textureWithSize:(CGSize)size pixelFormat:(unint64_t)format
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
@@ -182,9 +182,9 @@ uint64_t __39__PXGMetalTextureCache_recycleTexture___block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __52__PXGMetalTextureCache_textureWithSize_pixelFormat___block_invoke;
   block[3] = &unk_2782A90E0;
-  block[6] = a3.width;
-  block[7] = a3.height;
-  block[8] = a4;
+  block[6] = size.width;
+  block[7] = size.height;
+  block[8] = format;
   block[4] = self;
   block[5] = &v18;
   dispatch_sync(queue, block);
@@ -197,8 +197,8 @@ uint64_t __39__PXGMetalTextureCache_recycleTexture___block_invoke(uint64_t a1)
 
   else
   {
-    v11 = [(PXGMetalTextureCache *)self metalRenderContext];
-    v12 = _createMetal2DTextureWithPixelFormat(a4, v11, 1, width, height);
+    metalRenderContext = [(PXGMetalTextureCache *)self metalRenderContext];
+    v12 = _createMetal2DTextureWithPixelFormat(format, metalRenderContext, 1, width, height);
     v13 = v19[5];
     v19[5] = v12;
 
@@ -248,7 +248,7 @@ BOOL __52__PXGMetalTextureCache_textureWithSize_pixelFormat___block_invoke_2(voi
   return v4;
 }
 
-- (void)setSizeLimit:(unint64_t)a3
+- (void)setSizeLimit:(unint64_t)limit
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -256,7 +256,7 @@ BOOL __52__PXGMetalTextureCache_textureWithSize_pixelFormat___block_invoke_2(voi
   v4[2] = __37__PXGMetalTextureCache_setSizeLimit___block_invoke;
   v4[3] = &unk_2782ABF68;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = limit;
   dispatch_sync(queue, v4);
 }
 
@@ -279,12 +279,12 @@ BOOL __52__PXGMetalTextureCache_textureWithSize_pixelFormat___block_invoke_2(voi
   return v3;
 }
 
-- (void)setAgeLimit:(double)a3
+- (void)setAgeLimit:(double)limit
 {
-  if (a3 < 0.0)
+  if (limit < 0.0)
   {
-    v7 = [MEMORY[0x277CCA890] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"PXGMetalTextureCache.m" lineNumber:114 description:{@"Invalid parameter not satisfying: %@", @"ageLimit >= 0.0"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGMetalTextureCache.m" lineNumber:114 description:{@"Invalid parameter not satisfying: %@", @"ageLimit >= 0.0"}];
   }
 
   queue = self->_queue;
@@ -293,7 +293,7 @@ BOOL __52__PXGMetalTextureCache_textureWithSize_pixelFormat___block_invoke_2(voi
   block[2] = __36__PXGMetalTextureCache_setAgeLimit___block_invoke;
   block[3] = &unk_2782ABF68;
   block[4] = self;
-  *&block[5] = a3;
+  *&block[5] = limit;
   dispatch_sync(queue, block);
 }
 
@@ -323,7 +323,7 @@ double __32__PXGMetalTextureCache_ageLimit__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setCapacity:(unint64_t)a3
+- (void)setCapacity:(unint64_t)capacity
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -331,7 +331,7 @@ double __32__PXGMetalTextureCache_ageLimit__block_invoke(uint64_t a1)
   v4[2] = __36__PXGMetalTextureCache_setCapacity___block_invoke;
   v4[3] = &unk_2782ABF68;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = capacity;
   dispatch_sync(queue, v4);
 }
 
@@ -492,16 +492,16 @@ void __35__PXGMetalTextureCache_description__block_invoke(uint64_t a1)
   *(v3 + 40) = v2;
 }
 
-- (PXGMetalTextureCache)initWithContext:(id)a3
+- (PXGMetalTextureCache)initWithContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v13.receiver = self;
   v13.super_class = PXGMetalTextureCache;
   v6 = [(PXGMetalTextureCache *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_metalRenderContext, a3);
+    objc_storeStrong(&v6->_metalRenderContext, context);
     v7->_capacity = 15;
     v7->_ageLimit = 0.05;
     v7->_sizeLimit = 262144000;
@@ -519,8 +519,8 @@ void __35__PXGMetalTextureCache_description__block_invoke(uint64_t a1)
 
 - (PXGMetalTextureCache)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXGMetalTextureCache.m" lineNumber:32 description:{@"%s is not available as initializer", "-[PXGMetalTextureCache init]"}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXGMetalTextureCache.m" lineNumber:32 description:{@"%s is not available as initializer", "-[PXGMetalTextureCache init]"}];
 
   abort();
 }

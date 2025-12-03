@@ -1,13 +1,13 @@
 @interface MCEDUClassroomPayload
-- (id)handlerWithProfileHandler:(id)a3;
+- (id)handlerWithProfileHandler:(id)handler;
 @end
 
 @implementation MCEDUClassroomPayload
 
-- (id)handlerWithProfileHandler:(id)a3
+- (id)handlerWithProfileHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(MCNewPayloadHandler *)[MCEDUClassroomPayloadHandler alloc] initWithPayload:self profileHandler:v4];
+  handlerCopy = handler;
+  v5 = [(MCNewPayloadHandler *)[MCEDUClassroomPayloadHandler alloc] initWithPayload:self profileHandler:handlerCopy];
 
   return v5;
 }

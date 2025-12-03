@@ -8,19 +8,19 @@
 + (id)makeHoldAcceptVoipButtonCircleView;
 + (id)makeHoldAndAcceptButtonCircleView;
 + (id)makeTextSOSButtonCircleView;
-- (PHGlassCutoutCirclesOverlayViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (PHGlassCutoutCirclesOverlayViewController)initWithNibName:(id)name bundle:(id)bundle;
 @end
 
 @implementation PHGlassCutoutCirclesOverlayViewController
 
-- (PHGlassCutoutCirclesOverlayViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (PHGlassCutoutCirclesOverlayViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   GlassCutoutCirclesOverlayViewController.init(nibName:bundle:)();
 }
 

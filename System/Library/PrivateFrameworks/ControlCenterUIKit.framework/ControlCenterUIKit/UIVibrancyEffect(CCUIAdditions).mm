@@ -14,9 +14,9 @@
 {
   v0 = [MEMORY[0x1E69AE170] _visualStylingProviderForRecipe:+[CCUIControlCenterMaterialView _controlCenterModulesRecipe](CCUIControlCenterMaterialView andCategory:{"_controlCenterModulesRecipe"), 1}];
   v1 = [v0 _visualStylingForStyle:0];
-  v2 = [v1 visualEffect];
+  visualEffect = [v1 visualEffect];
 
-  return v2;
+  return visualEffect;
 }
 
 + (id)controlCenterSecondaryVibrancyEffect
@@ -31,46 +31,46 @@
 + (id)controlCenterPrimaryOnLightVibrancyEffect
 {
   v0 = [MEMORY[0x1E69AE170] _visualStylingProviderForRecipe:+[CCUIControlCenterMaterialView _controlCenterModulesRecipe](CCUIControlCenterMaterialView andCategory:{"_controlCenterModulesRecipe"), 1}];
-  v1 = [v0 _controlCenterPrimaryOnLightVisualStyling];
-  v2 = [v1 visualEffect];
+  _controlCenterPrimaryOnLightVisualStyling = [v0 _controlCenterPrimaryOnLightVisualStyling];
+  visualEffect = [_controlCenterPrimaryOnLightVisualStyling visualEffect];
 
-  return v2;
+  return visualEffect;
 }
 
 + (id)controlCenterSecondaryOnLightVibrancyEffect
 {
   v0 = [MEMORY[0x1E69AE170] _visualStylingProviderForRecipe:+[CCUIControlCenterMaterialView _controlCenterModulesRecipe](CCUIControlCenterMaterialView andCategory:{"_controlCenterModulesRecipe"), 1}];
-  v1 = [v0 _controlCenterSecondaryOnLightVisualStyling];
-  v2 = [v1 visualEffect];
+  _controlCenterSecondaryOnLightVisualStyling = [v0 _controlCenterSecondaryOnLightVisualStyling];
+  visualEffect = [_controlCenterSecondaryOnLightVisualStyling visualEffect];
 
-  return v2;
+  return visualEffect;
 }
 
 + (id)controlCenterScrollViewDarkeningVibrancyEffect
 {
   v0 = [MEMORY[0x1E69AE170] _visualStylingProviderForRecipe:+[CCUIControlCenterMaterialView _controlCenterModulesRecipe](CCUIControlCenterMaterialView andCategory:{"_controlCenterModulesRecipe"), 2}];
-  v1 = [v0 _controlCenterScrollViewDarkeningVisualStyling];
-  v2 = [v1 visualEffect];
+  _controlCenterScrollViewDarkeningVisualStyling = [v0 _controlCenterScrollViewDarkeningVisualStyling];
+  visualEffect = [_controlCenterScrollViewDarkeningVisualStyling visualEffect];
 
-  return v2;
+  return visualEffect;
 }
 
 + (id)controlCenterKeyLineOnDarkVibrancyEffect
 {
   v0 = [MEMORY[0x1E69AE170] _visualStylingProviderForRecipe:+[CCUIControlCenterMaterialView _controlCenterModulesRecipe](CCUIControlCenterMaterialView andCategory:{"_controlCenterModulesRecipe"), 2}];
   v1 = [v0 _visualStylingForStyle:5];
-  v2 = [v1 visualEffect];
+  visualEffect = [v1 visualEffect];
 
-  return v2;
+  return visualEffect;
 }
 
 + (id)controlCenterKeyLineOnLightVibrancyEffect
 {
   v0 = [MEMORY[0x1E69AE170] _visualStylingProviderForRecipe:+[CCUIControlCenterMaterialView _controlCenterModulesRecipe](CCUIControlCenterMaterialView andCategory:{"_controlCenterModulesRecipe"), 1}];
-  v1 = [v0 _controlCenterKeyLineOnLightVisualStyling];
-  v2 = [v1 visualEffect];
+  _controlCenterKeyLineOnLightVisualStyling = [v0 _controlCenterKeyLineOnLightVisualStyling];
+  visualEffect = [_controlCenterKeyLineOnLightVisualStyling visualEffect];
 
-  return v2;
+  return visualEffect;
 }
 
 @end

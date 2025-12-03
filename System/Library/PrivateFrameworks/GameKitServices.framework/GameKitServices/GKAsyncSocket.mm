@@ -1,34 +1,34 @@
 @interface GKAsyncSocket
-+ (id)allocWithZone:(_NSZone *)a3;
++ (id)allocWithZone:(_NSZone *)zone;
 - (OS_dispatch_queue)targetQueue;
 - (id)connectedHandler;
 - (id)receiveDataHandler;
 - (id)socketName;
 - (id)syncQueue;
 - (void)invalidate;
-- (void)sendData:(id)a3 withCompletionHandler:(id)a4;
-- (void)setConnectedHandler:(id)a3;
-- (void)setReceiveDataHandler:(id)a3;
-- (void)setSocketName:(id)a3;
-- (void)setSyncQueue:(id)a3;
-- (void)setTargetQueue:(id)a3;
-- (void)tcpAttachSocketDescriptor:(int)a3;
+- (void)sendData:(id)data withCompletionHandler:(id)handler;
+- (void)setConnectedHandler:(id)handler;
+- (void)setReceiveDataHandler:(id)handler;
+- (void)setSocketName:(id)name;
+- (void)setSyncQueue:(id)queue;
+- (void)setTargetQueue:(id)queue;
+- (void)tcpAttachSocketDescriptor:(int)descriptor;
 @end
 
 @implementation GKAsyncSocket
 
-+ (id)allocWithZone:(_NSZone *)a3
++ (id)allocWithZone:(_NSZone *)zone
 {
-  v4 = a1;
-  if (objc_opt_self() == a1)
+  selfCopy = self;
+  if (objc_opt_self() == self)
   {
-    v4 = objc_opt_self();
+    selfCopy = objc_opt_self();
   }
 
-  return NSAllocateObject(v4, 0, a3);
+  return NSAllocateObject(selfCopy, 0, zone);
 }
 
-- (void)tcpAttachSocketDescriptor:(int)a3
+- (void)tcpAttachSocketDescriptor:(int)descriptor
 {
   v3.receiver = self;
   v3.super_class = GKAsyncSocket;
@@ -42,11 +42,11 @@
   [(GKAsyncSocket *)&v2 doesNotRecognizeSelector:a2];
 }
 
-- (void)sendData:(id)a3 withCompletionHandler:(id)a4
+- (void)sendData:(id)data withCompletionHandler:(id)handler
 {
   v4.receiver = self;
   v4.super_class = GKAsyncSocket;
-  [(GKAsyncSocket *)&v4 doesNotRecognizeSelector:a2, a4];
+  [(GKAsyncSocket *)&v4 doesNotRecognizeSelector:a2, handler];
 }
 
 - (id)syncQueue
@@ -89,35 +89,35 @@
   return 0;
 }
 
-- (void)setSyncQueue:(id)a3
+- (void)setSyncQueue:(id)queue
 {
   v3.receiver = self;
   v3.super_class = GKAsyncSocket;
   [(GKAsyncSocket *)&v3 doesNotRecognizeSelector:a2];
 }
 
-- (void)setTargetQueue:(id)a3
+- (void)setTargetQueue:(id)queue
 {
   v3.receiver = self;
   v3.super_class = GKAsyncSocket;
   [(GKAsyncSocket *)&v3 doesNotRecognizeSelector:a2];
 }
 
-- (void)setReceiveDataHandler:(id)a3
+- (void)setReceiveDataHandler:(id)handler
 {
   v3.receiver = self;
   v3.super_class = GKAsyncSocket;
   [(GKAsyncSocket *)&v3 doesNotRecognizeSelector:a2];
 }
 
-- (void)setConnectedHandler:(id)a3
+- (void)setConnectedHandler:(id)handler
 {
   v3.receiver = self;
   v3.super_class = GKAsyncSocket;
   [(GKAsyncSocket *)&v3 doesNotRecognizeSelector:a2];
 }
 
-- (void)setSocketName:(id)a3
+- (void)setSocketName:(id)name
 {
   v3.receiver = self;
   v3.super_class = GKAsyncSocket;

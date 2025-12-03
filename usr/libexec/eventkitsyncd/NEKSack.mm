@@ -1,8 +1,8 @@
 @interface NEKSack
 - (NEKSack)init;
-- (int64_t)addObject:(id)a3;
-- (int64_t)removeObject:(id)a3;
-- (void)forEachUnique:(id)a3;
+- (int64_t)addObject:(id)object;
+- (int64_t)removeObject:(id)object;
+- (void)forEachUnique:(id)unique;
 @end
 
 @implementation NEKSack
@@ -22,11 +22,11 @@
   return v2;
 }
 
-- (int64_t)addObject:(id)a3
+- (int64_t)addObject:(id)object
 {
-  v4 = a3;
-  v5 = [(NEKSack *)self dict];
-  v6 = [v5 objectForKey:v4];
+  objectCopy = object;
+  dict = [(NEKSack *)self dict];
+  v6 = [dict objectForKey:objectCopy];
 
   if (v6)
   {
@@ -38,57 +38,57 @@
     v7 = &off_1000BB778;
   }
 
-  v8 = [v7 integerValue];
-  v9 = [(NEKSack *)self dict];
-  v10 = [NSNumber numberWithInteger:v8 + 1];
-  [v9 setObject:v10 forKey:v4];
+  integerValue = [v7 integerValue];
+  dict2 = [(NEKSack *)self dict];
+  v10 = [NSNumber numberWithInteger:integerValue + 1];
+  [dict2 setObject:v10 forKey:objectCopy];
 
-  return (v8 + 1);
+  return (integerValue + 1);
 }
 
-- (int64_t)removeObject:(id)a3
+- (int64_t)removeObject:(id)object
 {
-  v4 = a3;
-  v5 = [(NEKSack *)self dict];
-  v6 = [v5 objectForKey:v4];
+  objectCopy = object;
+  dict = [(NEKSack *)self dict];
+  v6 = [dict objectForKey:objectCopy];
 
   if (v6)
   {
     if ([v6 isEqualToNumber:&off_1000BB790])
     {
-      v7 = [(NEKSack *)self dict];
-      [v7 removeObjectForKey:v4];
+      dict2 = [(NEKSack *)self dict];
+      [dict2 removeObjectForKey:objectCopy];
 
-      v8 = 1;
+      integerValue = 1;
     }
 
     else
     {
       v9 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v6 integerValue] - 1);
-      v10 = [(NEKSack *)self dict];
-      [v10 setObject:v9 forKey:v4];
+      dict3 = [(NEKSack *)self dict];
+      [dict3 setObject:v9 forKey:objectCopy];
 
-      v8 = [v6 integerValue];
+      integerValue = [v6 integerValue];
     }
   }
 
   else
   {
-    v8 = 0;
+    integerValue = 0;
   }
 
-  return v8;
+  return integerValue;
 }
 
-- (void)forEachUnique:(id)a3
+- (void)forEachUnique:(id)unique
 {
-  v4 = a3;
+  uniqueCopy = unique;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(NEKSack *)self dict];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  dict = [(NEKSack *)self dict];
+  v6 = [dict countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -100,19 +100,19 @@
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(dict);
         }
 
         v10 = *(*(&v13 + 1) + 8 * v9);
-        v11 = [(NEKSack *)self dict];
-        v12 = [v11 objectForKeyedSubscript:v10];
-        v4[2](v4, v10, [v12 integerValue]);
+        dict2 = [(NEKSack *)self dict];
+        v12 = [dict2 objectForKeyedSubscript:v10];
+        uniqueCopy[2](uniqueCopy, v10, [v12 integerValue]);
 
         v9 = v9 + 1;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [dict countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);

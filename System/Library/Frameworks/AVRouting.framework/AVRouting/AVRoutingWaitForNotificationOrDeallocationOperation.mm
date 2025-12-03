@@ -1,5 +1,5 @@
 @interface AVRoutingWaitForNotificationOrDeallocationOperation
-- (AVRoutingWaitForNotificationOrDeallocationOperation)initWithObject:(id)a3 notificationNames:(id)a4;
+- (AVRoutingWaitForNotificationOrDeallocationOperation)initWithObject:(id)object notificationNames:(id)names;
 - (void)_balanceMonitoringIsFinishedSemaphore;
 - (void)_registerForObjectNotifications;
 - (void)_signalMonitoringIsFinishedIfNeeded;
@@ -10,19 +10,19 @@
 
 @implementation AVRoutingWaitForNotificationOrDeallocationOperation
 
-- (AVRoutingWaitForNotificationOrDeallocationOperation)initWithObject:(id)a3 notificationNames:(id)a4
+- (AVRoutingWaitForNotificationOrDeallocationOperation)initWithObject:(id)object notificationNames:(id)names
 {
   v10.receiver = self;
   v10.super_class = AVRoutingWaitForNotificationOrDeallocationOperation;
   v6 = [(AVRoutingWaitForNotificationOrDeallocationOperation *)&v10 init];
   if (v6)
   {
-    if (!a3)
+    if (!object)
     {
       goto LABEL_10;
     }
 
-    v6->_weakReferenceToMonitoredObject = [[AVRoutingWeakReference alloc] initWithReferencedObject:a3];
+    v6->_weakReferenceToMonitoredObject = [[AVRoutingWeakReference alloc] initWithReferencedObject:object];
     v7 = [[AVRoutingWeakReference alloc] initWithReferencedObject:v6];
     v6->_weakReferenceToSelf = v7;
     if (v7)
@@ -33,10 +33,10 @@
     v8 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v6->_operationStateSerializationQueue = dispatch_queue_create("com.apple.avfoundation.waitForNotificationOrDeallocationOperation", v8);
     v6->_monitoringIsFinishedSemaphore = dispatch_semaphore_create(0);
-    v6->_notificationNames = [a4 copy];
+    v6->_notificationNames = [names copy];
     if (v6->_weakReferenceToSelf && v6->_weakReferenceToMonitoredObject && v6->_operationStateSerializationQueue && v6->_monitoringIsFinishedSemaphore)
     {
-      [AVRoutingDepartureAnnouncingObjectMonitor attachDepartureAnnouncingObjectMonitorToObject:a3 monitoringObject:v6];
+      [AVRoutingDepartureAnnouncingObjectMonitor attachDepartureAnnouncingObjectMonitorToObject:object monitoringObject:v6];
       [(AVRoutingWaitForNotificationOrDeallocationOperation *)v6 _registerForObjectNotifications];
     }
 

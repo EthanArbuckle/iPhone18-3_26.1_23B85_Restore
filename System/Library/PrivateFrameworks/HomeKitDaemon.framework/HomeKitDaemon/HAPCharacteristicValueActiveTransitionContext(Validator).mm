@@ -6,11 +6,11 @@
 
 - (BOOL)isValid
 {
-  v2 = [a1 HAPInstanceID];
-  if (v2)
+  hAPInstanceID = [self HAPInstanceID];
+  if (hAPInstanceID)
   {
-    v3 = [a1 timeElapsedSinceStart];
-    v4 = v3 != 0;
+    timeElapsedSinceStart = [self timeElapsedSinceStart];
+    v4 = timeElapsedSinceStart != 0;
   }
 
   else

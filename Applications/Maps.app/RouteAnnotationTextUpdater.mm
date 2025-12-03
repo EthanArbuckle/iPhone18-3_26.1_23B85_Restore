@@ -1,5 +1,5 @@
 @interface RouteAnnotationTextUpdater
-- (RouteAnnotationTextUpdater)initWithRouteWaypoint:(id)a3 mapView:(id)a4;
+- (RouteAnnotationTextUpdater)initWithRouteWaypoint:(id)waypoint mapView:(id)view;
 - (void)_updateAnnotationText;
 - (void)dealloc;
 @end
@@ -19,7 +19,7 @@
       if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
       {
         *buf = 136316418;
-        v34 = "[RouteAnnotationTextUpdater _updateAnnotationText]";
+        selfCopy5 = "[RouteAnnotationTextUpdater _updateAnnotationText]";
         v35 = 2080;
         v36 = "RouteAnnotationsController.m";
         v37 = 1024;
@@ -40,7 +40,7 @@
         {
           v29 = +[NSThread callStackSymbols];
           *buf = 138412290;
-          v34 = v29;
+          selfCopy5 = v29;
           _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
         }
       }
@@ -52,22 +52,22 @@
   if (WeakRetained)
   {
     v32 = 0.0;
-    v8 = [WeakRetained waypoint];
-    v9 = [v8 location];
-    [v9 timestamp];
+    waypoint = [WeakRetained waypoint];
+    location = [waypoint location];
+    [location timestamp];
     v10 = [NSDate dateWithTimeIntervalSinceReferenceDate:?];
     v11 = +[NSDate date];
     v12 = [NSDateComponentsFormatter _mapkit_descriptionForTimeSinceDate:v10 referenceDate:v11 smallestUnit:64 timeUntilNextUpdate:&v32];
 
-    v13 = [v7 annotationText];
+    annotationText = [v7 annotationText];
     v14 = v12;
-    if (v14 | v13 && (v15 = [v13 isEqual:v14], v14, v13, v13, !v15))
+    if (v14 | annotationText && (v15 = [annotationText isEqual:v14], v14, annotationText, annotationText, !v15))
     {
       v19 = sub_100B6F424();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
       {
         *buf = 134349570;
-        v34 = self;
+        selfCopy5 = self;
         v35 = 2112;
         v36 = v14;
         v37 = 2048;
@@ -86,7 +86,7 @@
       if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
       {
         *buf = 134349056;
-        v34 = self;
+        selfCopy5 = self;
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "[%{public}p] Annotation text has not changed, will not update", buf, 0xCu);
       }
     }
@@ -99,7 +99,7 @@
       if (v22)
       {
         *buf = 134349056;
-        v34 = self;
+        selfCopy5 = self;
         _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_INFO, "[%{public}p] No next update provided; stopping timer", buf, 0xCu);
       }
 
@@ -112,7 +112,7 @@
       if (v22)
       {
         *buf = 134349056;
-        v34 = self;
+        selfCopy5 = self;
         _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_INFO, "[%{public}p] Starting annotation text updating timer", buf, 0xCu);
       }
 
@@ -138,7 +138,7 @@
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
       *buf = 134349056;
-      v34 = self;
+      selfCopy5 = self;
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_INFO, "[%{public}p] Lost waypoint; stopping timer", buf, 0xCu);
     }
 
@@ -154,7 +154,7 @@
   {
     WeakRetained = objc_loadWeakRetained(&self->_waypoint);
     *buf = 134349314;
-    v7 = self;
+    selfCopy = self;
     v8 = 2112;
     v9 = WeakRetained;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}p] Deallocating for waypoint: %@", buf, 0x16u);
@@ -165,10 +165,10 @@
   [(RouteAnnotationTextUpdater *)&v5 dealloc];
 }
 
-- (RouteAnnotationTextUpdater)initWithRouteWaypoint:(id)a3 mapView:(id)a4
+- (RouteAnnotationTextUpdater)initWithRouteWaypoint:(id)waypoint mapView:(id)view
 {
-  v6 = a3;
-  v7 = a4;
+  waypointCopy = waypoint;
+  viewCopy = view;
   v13.receiver = self;
   v13.super_class = RouteAnnotationTextUpdater;
   v8 = [(RouteAnnotationTextUpdater *)&v13 init];
@@ -180,12 +180,12 @@
       *buf = 134349314;
       v15 = v8;
       v16 = 2112;
-      v17 = v6;
+      v17 = waypointCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "[%{public}p] Initializing for waypoint: %@", buf, 0x16u);
     }
 
-    objc_storeWeak(&v8->_waypoint, v6);
-    objc_storeWeak(&v8->_mapView, v7);
+    objc_storeWeak(&v8->_waypoint, waypointCopy);
+    objc_storeWeak(&v8->_mapView, viewCopy);
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100B6F7D4;

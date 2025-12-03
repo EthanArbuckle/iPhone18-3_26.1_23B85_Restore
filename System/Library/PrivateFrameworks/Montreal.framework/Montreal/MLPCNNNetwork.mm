@@ -1,26 +1,26 @@
 @interface MLPCNNNetwork
-- (MLPCNNNetwork)initWithLayers:(id)a3;
-- (float)computeLoss:(id)a3;
-- (id)computeInference:(id)a3;
-- (unint64_t)runInference:(id)a3 databatch:(id)a4 inferredResult:(id)a5 semaphore:(id)a6;
+- (MLPCNNNetwork)initWithLayers:(id)layers;
+- (float)computeLoss:(id)loss;
+- (id)computeInference:(id)inference;
+- (unint64_t)runInference:(id)inference databatch:(id)databatch inferredResult:(id)result semaphore:(id)semaphore;
 - (void)createLayerKernels;
-- (void)runTraining:(id)a3 databatch:(id)a4 iteration:(unint64_t)a5 lossCallback:(id)a6 semaphore:(id)a7;
-- (void)setOptimizerParams:(id)a3;
+- (void)runTraining:(id)training databatch:(id)databatch iteration:(unint64_t)iteration lossCallback:(id)callback semaphore:(id)semaphore;
+- (void)setOptimizerParams:(id)params;
 @end
 
 @implementation MLPCNNNetwork
 
-- (MLPCNNNetwork)initWithLayers:(id)a3
+- (MLPCNNNetwork)initWithLayers:(id)layers
 {
   v4.receiver = self;
   v4.super_class = MLPCNNNetwork;
-  return [(MLPNetwork *)&v4 initWithNetworkType:1 layers:a3];
+  return [(MLPNetwork *)&v4 initWithNetworkType:1 layers:layers];
 }
 
-- (void)setOptimizerParams:(id)a3
+- (void)setOptimizerParams:(id)params
 {
-  v7 = a3;
-  if (!v7)
+  paramsCopy = params;
+  if (!paramsCopy)
   {
     v8 = objc_msgSend_options(self, v4, v5, v6);
     v11 = objc_msgSend_exMRL_numberForKey_(v8, v9, MLPModelTrainerLearningRateKey, v10);
@@ -36,12 +36,12 @@
     v31 = [MontrealNNModelOptimizerParam alloc];
     LODWORD(v32) = 1.0;
     LODWORD(v33) = v16;
-    v7 = objc_msgSend_initWithOptimizerType_learningRate_momentum_gradientClipMin_gradientClipMax_(v31, v34, 1, v23, v30, v33, v32);
+    paramsCopy = objc_msgSend_initWithOptimizerType_learningRate_momentum_gradientClipMin_gradientClipMax_(v31, v34, 1, v23, v30, v33, v32);
   }
 
   v35.receiver = self;
   v35.super_class = MLPCNNNetwork;
-  [(MLPNetwork *)&v35 setOptimizerParams:v7];
+  [(MLPNetwork *)&v35 setOptimizerParams:paramsCopy];
 }
 
 - (void)createLayerKernels
@@ -77,13 +77,13 @@
   }
 }
 
-- (void)runTraining:(id)a3 databatch:(id)a4 iteration:(unint64_t)a5 lossCallback:(id)a6 semaphore:(id)a7
+- (void)runTraining:(id)training databatch:(id)databatch iteration:(unint64_t)iteration lossCallback:(id)callback semaphore:(id)semaphore
 {
-  v12 = a3;
-  v13 = a4;
-  v100 = a6;
-  v99 = a7;
-  v14 = v13;
+  trainingCopy = training;
+  databatchCopy = databatch;
+  callbackCopy = callback;
+  semaphoreCopy = semaphore;
+  v14 = databatchCopy;
   v21 = objc_msgSend_images(v14, v15, v16, v17);
   for (i = 0; ; ++i)
   {
@@ -100,7 +100,7 @@
     v38 = objc_msgSend_objectAtIndexedSubscript_(v35, v36, i, v37);
 
     v42 = objc_msgSend_lossLabels(v14, v39, v40, v41);
-    v44 = objc_msgSend_forward_input_labels_runInference_(v38, v43, v12, v21, v42, 0);
+    v44 = objc_msgSend_forward_input_labels_runInference_(v38, v43, trainingCopy, v21, v42, 0);
 
     objc_autoreleasePoolPop(v31);
     v21 = v44;
@@ -121,12 +121,12 @@
     v61 = objc_msgSend_objectAtIndexedSubscript_(v58, v59, j, v60);
 
     v65 = objc_msgSend_lossImage(v61, v62, v63, v64);
-    objc_msgSend_synchronizeOnCommandBuffer_(v65, v66, v12, v67);
+    objc_msgSend_synchronizeOnCommandBuffer_(v65, v66, trainingCopy, v67);
 
     objc_autoreleasePoolPop(v54);
   }
 
-  v98 = a5;
+  iterationCopy = iteration;
   v68 = 0;
   for (k = -1; ; --k)
   {
@@ -145,7 +145,7 @@
     v87 = objc_msgSend_layers(self, v84, v85, v86);
     v90 = objc_msgSend_objectAtIndexedSubscript_(v87, v88, k + v83, v89);
 
-    v92 = objc_msgSend_backward_inputGradient_(v90, v91, v12, v21);
+    v92 = objc_msgSend_backward_inputGradient_(v90, v91, trainingCopy, v21);
 
     objc_autoreleasePoolPop(v75);
     ++v68;
@@ -161,25 +161,25 @@
   objc_copyWeak(v105, &location);
   v93 = v14;
   v102 = v93;
-  v94 = v100;
+  v94 = callbackCopy;
   v104 = v94;
-  v105[1] = v98;
-  v95 = v99;
+  v105[1] = iterationCopy;
+  v95 = semaphoreCopy;
   v103 = v95;
-  objc_msgSend_addCompletedHandler_(v12, v96, v101, v97);
+  objc_msgSend_addCompletedHandler_(trainingCopy, v96, v101, v97);
 
   objc_destroyWeak(v105);
   objc_destroyWeak(&location);
 }
 
-- (float)computeLoss:(id)a3
+- (float)computeLoss:(id)loss
 {
-  v7 = a3;
+  lossCopy = loss;
   v8 = 0;
   v9 = 0.0;
   while (1)
   {
-    v10 = objc_msgSend_labels(v7, v4, v5, v6);
+    v10 = objc_msgSend_labels(lossCopy, v4, v5, v6);
     v14 = objc_msgSend_count(v10, v11, v12, v13);
 
     if (v8 >= v14)
@@ -187,7 +187,7 @@
       break;
     }
 
-    v18 = objc_msgSend_lossLabels(v7, v15, v16, v17);
+    v18 = objc_msgSend_lossLabels(lossCopy, v15, v16, v17);
     v21 = objc_msgSend_objectAtIndexedSubscript_(v18, v19, v8, v20);
 
     v25 = objc_msgSend_lossImage(v21, v22, v23, v24);
@@ -204,13 +204,13 @@
   return v9;
 }
 
-- (unint64_t)runInference:(id)a3 databatch:(id)a4 inferredResult:(id)a5 semaphore:(id)a6
+- (unint64_t)runInference:(id)inference databatch:(id)databatch inferredResult:(id)result semaphore:(id)semaphore
 {
-  v10 = a3;
-  v11 = a4;
-  v111 = a5;
-  v110 = a6;
-  v12 = v11;
+  inferenceCopy = inference;
+  databatchCopy = databatch;
+  resultCopy = result;
+  semaphoreCopy = semaphore;
+  v12 = databatchCopy;
   v19 = objc_msgSend_images(v12, v13, v14, v15);
   v20 = 0;
   v112 = 0;
@@ -232,13 +232,13 @@
     v44 = objc_msgSend_objectAtIndexedSubscript_(v41, v42, v20, v43);
 
     v48 = objc_msgSend_lossLabels(v12, v45, v46, v47);
-    v50 = objc_msgSend_forward_input_labels_runInference_(v44, v49, v10, v19, v48, 1);
+    v50 = objc_msgSend_forward_input_labels_runInference_(v44, v49, inferenceCopy, v19, v48, 1);
 
     if (v20 == v37 - 1)
     {
       v54 = objc_msgSend_deviceHandler(self, v51, v52, v53);
       v58 = objc_msgSend_i2mKernel(self, v55, v56, v57);
-      v60 = objc_msgSend_matrixFromImages_i2mKernel_cmdBuf_(v54, v59, v50, v58, v10);
+      v60 = objc_msgSend_matrixFromImages_i2mKernel_cmdBuf_(v54, v59, v50, v58, inferenceCopy);
 
       v112 = v60;
     }
@@ -263,7 +263,7 @@
     v77 = objc_msgSend_objectAtIndexedSubscript_(v74, v75, i, v76);
 
     v81 = objc_msgSend_lossImage(v77, v78, v79, v80);
-    objc_msgSend_synchronizeOnCommandBuffer_(v81, v82, v10, v83);
+    objc_msgSend_synchronizeOnCommandBuffer_(v81, v82, inferenceCopy, v83);
 
     objc_autoreleasePoolPop(v70);
   }
@@ -272,7 +272,7 @@
   {
     v84 = objc_msgSend_deviceHandler(self, v67, v68, v69);
     v88 = objc_msgSend_data(v112, v85, v86, v87);
-    objc_msgSend_importDataFromGPU_cmdBuf_(v84, v89, v88, v10);
+    objc_msgSend_importDataFromGPU_cmdBuf_(v84, v89, v88, inferenceCopy);
   }
 
   v90 = objc_msgSend_layers(self, v67, v68, v69);
@@ -290,12 +290,12 @@
   v116 = v113;
   v96 = v94;
   v117 = v96;
-  v97 = v111;
+  v97 = resultCopy;
   v118 = v97;
-  v119 = self;
-  v98 = v110;
+  selfCopy = self;
+  v98 = semaphoreCopy;
   v120 = v98;
-  objc_msgSend_addCompletedHandler_(v10, v99, v114, v100);
+  objc_msgSend_addCompletedHandler_(inferenceCopy, v99, v114, v100);
   v104 = objc_msgSend_images(v95, v101, v102, v103);
   v108 = objc_msgSend_count(v104, v105, v106, v107);
 
@@ -305,9 +305,9 @@
   return v108;
 }
 
-- (id)computeInference:(id)a3
+- (id)computeInference:(id)inference
 {
-  v4 = a3;
+  inferenceCopy = inference;
   v8 = objc_msgSend_deviceHandler(self, v5, v6, v7);
   v12 = objc_msgSend_device(v8, v9, v10, v11);
 
@@ -316,8 +316,8 @@
   v90 = v12;
 
   v23 = objc_msgSend_commandBufferFromCommandQueue_(MEMORY[0x1E6974450], v21, v20, v22);
-  v89 = v4;
-  v25 = objc_msgSend_dataBatch_batchSize_network_(MLPDataBatch, v24, v4, 1, self);
+  v89 = inferenceCopy;
+  v25 = objc_msgSend_dataBatch_batchSize_network_(MLPDataBatch, v24, inferenceCopy, 1, self);
   v88 = v20;
   v32 = objc_msgSend_images(v25, v26, v27, v28);
   v33 = 0;

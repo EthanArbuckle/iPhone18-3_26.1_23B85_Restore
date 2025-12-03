@@ -1,17 +1,17 @@
 @interface TIWordSearchKana
-+ (id)configureContactCollectionObserver:(id)a3 previousObserver:(id)a4;
++ (id)configureContactCollectionObserver:(id)observer previousObserver:(id)previousObserver;
 + (id)sharedMecabraWrapper;
 + (void)clearCachedContactObserver;
 + (void)resetSharedMecabraWrapper;
-- (BOOL)_insertString:(id)a3 input:(id)a4 at:(unint64_t)a5 force:(BOOL)a6;
-- (BOOL)shouldMoveCursor:(id)a3;
-- (id)candidateForDefault:(id)a3 rawInputString:(id)a4;
-- (id)candidatesCacheKeyForOperation:(id)a3;
-- (id)initTIWordSearchWithInputMode:(id)a3;
-- (id)initTIWordSearchWithInputMode:(id)a3 mecabraWrapper:(id)a4;
-- (id)makeCandidates:(id)a3 input:(id)a4 contextString:(id)a5 predictionEnabled:(BOOL)a6 reanalysisMode:(BOOL)a7 withInputManager:(id)a8 geometryModelData:(id)a9 flickUsed:(BOOL)a10 hardwareKeyboardMode:(BOOL)a11 referenceMode:(BOOL)a12 singlePhrase:(BOOL)a13;
+- (BOOL)_insertString:(id)string input:(id)input at:(unint64_t)at force:(BOOL)force;
+- (BOOL)shouldMoveCursor:(id)cursor;
+- (id)candidateForDefault:(id)default rawInputString:(id)string;
+- (id)candidatesCacheKeyForOperation:(id)operation;
+- (id)initTIWordSearchWithInputMode:(id)mode;
+- (id)initTIWordSearchWithInputMode:(id)mode mecabraWrapper:(id)wrapper;
+- (id)makeCandidates:(id)candidates input:(id)input contextString:(id)string predictionEnabled:(BOOL)enabled reanalysisMode:(BOOL)mode withInputManager:(id)manager geometryModelData:(id)data flickUsed:(BOOL)self0 hardwareKeyboardMode:(BOOL)self1 referenceMode:(BOOL)self2 singlePhrase:(BOOL)self3;
 - (void)dealloc;
-- (void)dynamicDictionariesRemoved:(id)a3;
+- (void)dynamicDictionariesRemoved:(id)removed;
 - (void)updateMecabraState;
 @end
 
@@ -19,8 +19,8 @@
 
 + (id)sharedMecabraWrapper
 {
-  v2 = a1;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v3 = __mecabraWrapper;
   if (!__mecabraWrapper)
   {
@@ -40,14 +40,14 @@
   }
 
   v10 = v3;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v10;
 }
 
 + (void)resetSharedMecabraWrapper
 {
-  obj = a1;
+  obj = self;
   objc_sync_enter(obj);
   v2 = __mecabraWrapper;
   __mecabraWrapper = 0;
@@ -55,12 +55,12 @@
   objc_sync_exit(obj);
 }
 
-+ (id)configureContactCollectionObserver:(id)a3 previousObserver:(id)a4
++ (id)configureContactCollectionObserver:(id)observer previousObserver:(id)previousObserver
 {
   v25 = *MEMORY[0x29EDCA608];
-  v5 = a3;
-  v6 = a4;
-  v7 = [objc_opt_class() sharedOperationQueue];
+  observerCopy = observer;
+  previousObserverCopy = previousObserver;
+  sharedOperationQueue = [objc_opt_class() sharedOperationQueue];
   v8 = TIPersonalizationContactOSLogFacility();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -70,18 +70,18 @@
     _os_log_impl(&dword_29EA26000, v8, OS_LOG_TYPE_INFO, "%@", buf, 0xCu);
   }
 
-  v10 = [MEMORY[0x29EDC7268] sharedInstance];
+  mEMORY[0x29EDC7268] = [MEMORY[0x29EDC7268] sharedInstance];
   v20[0] = MEMORY[0x29EDCA5F8];
   v20[1] = 3221225472;
   v20[2] = __72__TIWordSearchKana_configureContactCollectionObserver_previousObserver___block_invoke;
   v20[3] = &unk_29F379060;
-  v11 = v7;
+  v11 = sharedOperationQueue;
   v21 = v11;
-  v12 = v5;
+  v12 = observerCopy;
   v22 = v12;
-  v13 = [v10 addContactObserver:v20];
+  v13 = [mEMORY[0x29EDC7268] addContactObserver:v20];
 
-  if (v6)
+  if (previousObserverCopy)
   {
     v14 = TIPersonalizationContactOSLogFacility();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
@@ -92,8 +92,8 @@
       _os_log_impl(&dword_29EA26000, v14, OS_LOG_TYPE_INFO, "%@", buf, 0xCu);
     }
 
-    v16 = [MEMORY[0x29EDC7268] sharedInstance];
-    [v16 removeContactObserver:v6];
+    mEMORY[0x29EDC7268]2 = [MEMORY[0x29EDC7268] sharedInstance];
+    [mEMORY[0x29EDC7268]2 removeContactObserver:previousObserverCopy];
   }
 
   v17 = MEMORY[0x29EDA3C60](v13);
@@ -141,20 +141,20 @@ uint64_t __72__TIWordSearchKana_configureContactCollectionObserver_previousObser
   return MEMORY[0x2A1C70B40](v2, v4);
 }
 
-- (id)initTIWordSearchWithInputMode:(id)a3
+- (id)initTIWordSearchWithInputMode:(id)mode
 {
-  v4 = a3;
-  v5 = [objc_opt_class() sharedMecabraWrapper];
-  v6 = [(TIWordSearchKana *)self initTIWordSearchWithInputMode:v4 mecabraWrapper:v5];
+  modeCopy = mode;
+  sharedMecabraWrapper = [objc_opt_class() sharedMecabraWrapper];
+  v6 = [(TIWordSearchKana *)self initTIWordSearchWithInputMode:modeCopy mecabraWrapper:sharedMecabraWrapper];
 
   return v6;
 }
 
-- (id)initTIWordSearchWithInputMode:(id)a3 mecabraWrapper:(id)a4
+- (id)initTIWordSearchWithInputMode:(id)mode mecabraWrapper:(id)wrapper
 {
   v10.receiver = self;
   v10.super_class = TIWordSearchKana;
-  v4 = [(TIWordSearch *)&v10 initTIWordSearchWithInputMode:a3 mecabraWrapper:a4];
+  v4 = [(TIWordSearch *)&v10 initTIWordSearchWithInputMode:mode mecabraWrapper:wrapper];
   v5 = v4;
   if (v4)
   {
@@ -183,9 +183,9 @@ uint64_t __72__TIWordSearchKana_configureContactCollectionObserver_previousObser
   [(TIWordSearch *)&v3 dealloc];
 }
 
-- (BOOL)shouldMoveCursor:(id)a3
+- (BOOL)shouldMoveCursor:(id)cursor
 {
-  v4 = a3;
+  cursorCopy = cursor;
   if ([(TIWordSearchKana *)self supportsPairedPunctutationInput])
   {
     if (pairedPunctuations(void)::__onceToken != -1)
@@ -193,7 +193,7 @@ uint64_t __72__TIWordSearchKana_configureContactCollectionObserver_previousObser
       [TIWordSearchKana shouldMoveCursor:];
     }
 
-    v5 = [pairedPunctuations(void)::__pairedPunctuations containsObject:v4];
+    v5 = [pairedPunctuations(void)::__pairedPunctuations containsObject:cursorCopy];
   }
 
   else
@@ -204,41 +204,41 @@ uint64_t __72__TIWordSearchKana_configureContactCollectionObserver_previousObser
   return v5;
 }
 
-- (id)candidateForDefault:(id)a3 rawInputString:(id)a4
+- (id)candidateForDefault:(id)default rawInputString:(id)string
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(TIWordSearchKana *)self shouldMoveCursor:v7];
-  v9 = [MEMORY[0x29EDC7088] candidateWithCandidate:v7 forInput:v6 cursorMovement:v8 << 63 >> 63];
+  stringCopy = string;
+  defaultCopy = default;
+  v8 = [(TIWordSearchKana *)self shouldMoveCursor:defaultCopy];
+  v9 = [MEMORY[0x29EDC7088] candidateWithCandidate:defaultCopy forInput:stringCopy cursorMovement:v8 << 63 >> 63];
 
   return v9;
 }
 
-- (BOOL)_insertString:(id)a3 input:(id)a4 at:(unint64_t)a5 force:(BOOL)a6
+- (BOOL)_insertString:(id)string input:(id)input at:(unint64_t)at force:(BOOL)force
 {
-  v6 = a6;
-  v10 = a3;
-  v11 = a4;
+  forceCopy = force;
+  stringCopy = string;
+  inputCopy = input;
   v12 = 0;
-  if (v10 && a5 != 0x7FFFFFFFFFFFFFFFLL)
+  if (stringCopy && at != 0x7FFFFFFFFFFFFFFFLL)
   {
-    if ([v10 length])
+    if ([stringCopy length])
     {
-      v13 = [(TIWordSearchKana *)self candidateResultSet];
-      v14 = [v13 candidates];
+      candidateResultSet = [(TIWordSearchKana *)self candidateResultSet];
+      candidates = [candidateResultSet candidates];
 
-      v15 = [v14 count];
-      if (v15 >= a5)
+      v15 = [candidates count];
+      if (v15 >= at)
       {
-        v16 = a5;
+        atCopy = at;
       }
 
       else
       {
-        v16 = v15;
+        atCopy = v15;
       }
 
-      v24 = v16;
+      v24 = atCopy;
       if (v15)
       {
         v17 = v15;
@@ -247,10 +247,10 @@ uint64_t __72__TIWordSearchKana_configureContactCollectionObserver_previousObser
         while (1)
         {
           v20 = v19;
-          v19 = [v14 objectAtIndex:v18];
+          v19 = [candidates objectAtIndex:v18];
 
-          v21 = [v19 candidate];
-          LODWORD(v20) = [v10 isEqualToString:v21];
+          candidate = [v19 candidate];
+          LODWORD(v20) = [stringCopy isEqualToString:candidate];
 
           if (v20)
           {
@@ -263,22 +263,22 @@ uint64_t __72__TIWordSearchKana_configureContactCollectionObserver_previousObser
           }
         }
 
-        if (v24 >= v18 && !v6)
+        if (v24 >= v18 && !forceCopy)
         {
           v12 = 0;
           goto LABEL_16;
         }
 
-        v22 = [(TIWordSearchKana *)self candidateResultSet];
-        [v22 moveCandidate:v19 fromIndex:v18 toIndex:v24];
+        candidateResultSet2 = [(TIWordSearchKana *)self candidateResultSet];
+        [candidateResultSet2 moveCandidate:v19 fromIndex:v18 toIndex:v24];
       }
 
       else
       {
         v19 = 0;
 LABEL_14:
-        v22 = [(TIWordSearchKana *)self candidateResultSet];
-        [v22 insertSyntheticMecabraCandidateWithSurface:v10 input:v11 atIndex:v24];
+        candidateResultSet2 = [(TIWordSearchKana *)self candidateResultSet];
+        [candidateResultSet2 insertSyntheticMecabraCandidateWithSurface:stringCopy input:inputCopy atIndex:v24];
       }
 
       v12 = 1;
@@ -295,64 +295,64 @@ LABEL_17:
   return v12;
 }
 
-- (id)candidatesCacheKeyForOperation:(id)a3
+- (id)candidatesCacheKeyForOperation:(id)operation
 {
-  v3 = a3;
-  v4 = [v3 keyboardInput];
-  if (!v4)
+  operationCopy = operation;
+  keyboardInput = [operationCopy keyboardInput];
+  if (!keyboardInput)
   {
-    v5 = [v3 inputString];
+    inputString = [operationCopy inputString];
     goto LABEL_5;
   }
 
-  if ([v4 hasKindOf:objc_opt_class()])
+  if ([keyboardInput hasKindOf:objc_opt_class()])
   {
-    v5 = [MEMORY[0x29EDBA0F8] stringWithFormat:@"%lud", v4];
+    inputString = [MEMORY[0x29EDBA0F8] stringWithFormat:@"%lud", keyboardInput];
 LABEL_5:
-    v6 = v5;
+    v6 = inputString;
     goto LABEL_8;
   }
 
-  v7 = [v4 asSearchString];
-  v6 = [v7 stringByAppendingFormat:@"%lud", objc_msgSend(v4, "asSearchTextCursorIndex")];
+  asSearchString = [keyboardInput asSearchString];
+  v6 = [asSearchString stringByAppendingFormat:@"%lud", objc_msgSend(keyboardInput, "asSearchTextCursorIndex")];
 
   if (![v6 length])
   {
-    v8 = [v4 asInlineText];
+    asInlineText = [keyboardInput asInlineText];
 
-    v6 = v8;
+    v6 = asInlineText;
   }
 
 LABEL_8:
-  if (([v3 phraseBoundarySet] & 1) != 0 || (objc_msgSend(v3, "predictionEnabled") & 1) == 0)
+  if (([operationCopy phraseBoundarySet] & 1) != 0 || (objc_msgSend(operationCopy, "predictionEnabled") & 1) == 0)
   {
     v9 = [v6 stringByAppendingString:@" *"];
 
     v6 = v9;
   }
 
-  if ([v3 allowIncompleteRomaji])
+  if ([operationCopy allowIncompleteRomaji])
   {
     v10 = [v6 stringByAppendingString:@" #"];
 
     v6 = v10;
   }
 
-  if ([v3 referenceMode])
+  if ([operationCopy referenceMode])
   {
     v11 = [v6 stringByAppendingString:@" r"];
 
     v6 = v11;
   }
 
-  if ([v3 segmentBreakIndex] == 0x7FFFFFFFFFFFFFFFLL)
+  if ([operationCopy segmentBreakIndex] == 0x7FFFFFFFFFFFFFFFLL)
   {
     v12 = v6;
   }
 
   else
   {
-    v12 = [v6 stringByAppendingFormat:@" %ld", objc_msgSend(v3, "segmentBreakIndex")];
+    v12 = [v6 stringByAppendingFormat:@" %ld", objc_msgSend(operationCopy, "segmentBreakIndex")];
   }
 
   v13 = v12;
@@ -360,17 +360,17 @@ LABEL_8:
   return v13;
 }
 
-- (id)makeCandidates:(id)a3 input:(id)a4 contextString:(id)a5 predictionEnabled:(BOOL)a6 reanalysisMode:(BOOL)a7 withInputManager:(id)a8 geometryModelData:(id)a9 flickUsed:(BOOL)a10 hardwareKeyboardMode:(BOOL)a11 referenceMode:(BOOL)a12 singlePhrase:(BOOL)a13
+- (id)makeCandidates:(id)candidates input:(id)input contextString:(id)string predictionEnabled:(BOOL)enabled reanalysisMode:(BOOL)mode withInputManager:(id)manager geometryModelData:(id)data flickUsed:(BOOL)self0 hardwareKeyboardMode:(BOOL)self1 referenceMode:(BOOL)self2 singlePhrase:(BOOL)self3
 {
-  v14 = a7;
-  v15 = a6;
-  v19 = a3;
-  v20 = a4;
-  v45 = a5;
-  v46 = a8;
-  v21 = a9;
+  modeCopy = mode;
+  enabledCopy = enabled;
+  candidatesCopy = candidates;
+  inputCopy = input;
+  stringCopy = string;
+  managerCopy = manager;
+  dataCopy = data;
   v22 = objc_alloc_init(MEMORY[0x29EDC7278]);
-  if (v15)
+  if (enabledCopy)
   {
     v23 = 0;
   }
@@ -385,19 +385,19 @@ LABEL_8:
     v23 |= 0x100uLL;
   }
 
-  v24 = [(TIWordSearch *)self shouldLearnAcceptedCandidate];
+  shouldLearnAcceptedCandidate = [(TIWordSearch *)self shouldLearnAcceptedCandidate];
   v25 = v23 | 0x80;
-  if (v24)
+  if (shouldLearnAcceptedCandidate)
   {
     v25 = v23;
   }
 
-  if (v14)
+  if (modeCopy)
   {
     v25 |= 0x4000uLL;
   }
 
-  if (!v14 || a12)
+  if (!modeCopy || referenceMode)
   {
     v26 = v25 | 8;
   }
@@ -410,7 +410,7 @@ LABEL_8:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (!a10 && ![(TIWordSearchKana *)self flickOnly])
+    if (!used && ![(TIWordSearchKana *)self flickOnly])
     {
       v26 |= 0x1000000uLL;
     }
@@ -421,9 +421,9 @@ LABEL_8:
     }
   }
 
-  v27 = [(TIWordSearch *)self autoCorrects];
+  autoCorrects = [(TIWordSearch *)self autoCorrects];
   v28 = v26 | 0x40;
-  if (v20 | v21)
+  if (inputCopy | dataCopy)
   {
     v29 = v26 | 0x40;
   }
@@ -433,28 +433,28 @@ LABEL_8:
     v29 = v26;
   }
 
-  if (!v15)
+  if (!enabledCopy)
   {
     v28 = v26;
   }
 
-  if (a11)
+  if (keyboardMode)
   {
     v29 = v28;
   }
 
-  if (!v27)
+  if (!autoCorrects)
   {
     v29 = v26;
   }
 
-  v30 = v29 | a12;
-  if (a13)
+  v30 = v29 | referenceMode;
+  if (phrase)
   {
     v30 |= 0x400000uLL;
   }
 
-  if (a11)
+  if (keyboardMode)
   {
     v31 = v30 | 0x20000000;
   }
@@ -464,29 +464,29 @@ LABEL_8:
     v31 = v30;
   }
 
-  v32 = [(TIWordSearch *)self mecabraEnvironment];
-  [v32 setGeometryModel:v46 modelData:v21];
+  mecabraEnvironment = [(TIWordSearch *)self mecabraEnvironment];
+  [mecabraEnvironment setGeometryModel:managerCopy modelData:dataCopy];
 
-  if (![v19 length])
+  if (![candidatesCopy length])
   {
-    v33 = [v20 inputs];
-    v34 = [v33 count];
+    inputs = [inputCopy inputs];
+    v34 = [inputs count];
 
     if (!v34)
     {
-      v35 = [(TIWordSearch *)self mecabraEnvironment];
-      [v35 setLeftDocumentContext:v45];
+      mecabraEnvironment2 = [(TIWordSearch *)self mecabraEnvironment];
+      [mecabraEnvironment2 setLeftDocumentContext:stringCopy];
 
-      v36 = [(TIWordSearch *)self mecabraEnvironment];
-      [v36 adjustEnvironmentDirectly:0];
+      mecabraEnvironment3 = [(TIWordSearch *)self mecabraEnvironment];
+      [mecabraEnvironment3 adjustEnvironmentDirectly:0];
     }
   }
 
-  v37 = [(TIWordSearch *)self mecabraEnvironment];
-  v38 = v37;
-  if (v20)
+  mecabraEnvironment4 = [(TIWordSearch *)self mecabraEnvironment];
+  v38 = mecabraEnvironment4;
+  if (inputCopy)
   {
-    v39 = [v37 analyzeInput:v20 options:v31];
+    v39 = [mecabraEnvironment4 analyzeInput:inputCopy options:v31];
 
     if ((v39 & 1) == 0)
     {
@@ -496,7 +496,7 @@ LABEL_8:
 
   else
   {
-    v40 = [v37 analyzeString:v19 options:v31];
+    v40 = [mecabraEnvironment4 analyzeString:candidatesCopy options:v31];
 
     if (!v40)
     {
@@ -522,7 +522,7 @@ LABEL_8:
   }
 
 LABEL_43:
-  if (![v19 length])
+  if (![candidatesCopy length])
   {
     [(TIWordSearch *)self insertTopSupplementalCandidateSurroundingCursorToFrontOfResultSet:v22];
   }
@@ -538,23 +538,23 @@ LABEL_43:
   [(TIWordSearch *)self updateUserWordEntries];
 }
 
-- (void)dynamicDictionariesRemoved:(id)a3
+- (void)dynamicDictionariesRemoved:(id)removed
 {
-  v4 = a3;
-  v5 = [(TIWordSearch *)self mecabraWrapper];
+  removedCopy = removed;
+  mecabraWrapper = [(TIWordSearch *)self mecabraWrapper];
   v8.receiver = self;
   v8.super_class = TIWordSearchKana;
-  [(TIWordSearch *)&v8 dynamicDictionariesRemoved:v4];
+  [(TIWordSearch *)&v8 dynamicDictionariesRemoved:removedCopy];
 
-  v6 = [objc_opt_class() sharedMecabraWrapper];
+  sharedMecabraWrapper = [objc_opt_class() sharedMecabraWrapper];
 
-  if (v5 == v6)
+  if (mecabraWrapper == sharedMecabraWrapper)
   {
     [objc_opt_class() resetSharedMecabraWrapper];
   }
 
-  v7 = [objc_opt_class() sharedMecabraWrapper];
-  [(TIWordSearch *)self setMecabraWrapper:v7];
+  sharedMecabraWrapper2 = [objc_opt_class() sharedMecabraWrapper];
+  [(TIWordSearch *)self setMecabraWrapper:sharedMecabraWrapper2];
 
   [(TIWordSearch *)self updateDictionaryPaths];
 }
@@ -573,8 +573,8 @@ LABEL_43:
       _os_log_impl(&dword_29EA26000, v2, OS_LOG_TYPE_INFO, "%@", buf, 0xCu);
     }
 
-    v4 = [MEMORY[0x29EDC7268] sharedInstance];
-    [v4 removeContactObserver:__contactCollectionObserver];
+    mEMORY[0x29EDC7268] = [MEMORY[0x29EDC7268] sharedInstance];
+    [mEMORY[0x29EDC7268] removeContactObserver:__contactCollectionObserver];
 
     v5 = __contactCollectionObserver;
     __contactCollectionObserver = 0;

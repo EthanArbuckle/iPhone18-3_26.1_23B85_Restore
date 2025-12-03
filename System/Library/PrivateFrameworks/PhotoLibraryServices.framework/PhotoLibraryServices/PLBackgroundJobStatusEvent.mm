@@ -10,8 +10,8 @@
   [v3 setDateStyle:1];
   [v3 setTimeStyle:2];
   v4 = MEMORY[0x1E696AEC0];
-  v5 = [(PLBackgroundJobStatusEvent *)self eventTimestamp];
-  v6 = [v3 stringFromDate:v5];
+  eventTimestamp = [(PLBackgroundJobStatusEvent *)self eventTimestamp];
+  v6 = [v3 stringFromDate:eventTimestamp];
   v7 = [v4 stringWithFormat:@"%@", v6];
 
   return v7;

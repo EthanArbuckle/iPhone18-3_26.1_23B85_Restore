@@ -4,30 +4,30 @@
 - (EPTransactionDelegate)delegate;
 - (NRDeviceCollectionDiff)diff;
 - (void)addDiffObserver;
-- (void)beginRollbackWithRoutingSlipEntry:(id)a3 serviceRegistry:(id)a4;
-- (void)beginTransactionWithRoutingSlipEntry:(id)a3 serviceRegistry:(id)a4;
-- (void)cancelWithError:(id)a3;
+- (void)beginRollbackWithRoutingSlipEntry:(id)entry serviceRegistry:(id)registry;
+- (void)beginTransactionWithRoutingSlipEntry:(id)entry serviceRegistry:(id)registry;
+- (void)cancelWithError:(id)error;
 - (void)check;
 - (void)invalidate;
 - (void)removeDiffObserver;
 - (void)startTimer;
 - (void)stopTimer;
-- (void)timeout:(id)a3;
+- (void)timeout:(id)timeout;
 - (void)transactionDidComplete;
 @end
 
 @implementation EPSagaTransactionWaitForDeviceCollectionChanges
 
-- (void)beginTransactionWithRoutingSlipEntry:(id)a3 serviceRegistry:(id)a4
+- (void)beginTransactionWithRoutingSlipEntry:(id)entry serviceRegistry:(id)registry
 {
-  v6 = a4;
-  v7 = a3;
-  objc_storeWeak(&self->_serviceRegistry, v6);
-  objc_storeWeak(&self->_routingSlipEntry, v7);
-  v8 = [v7 objectForKeyedSubscript:@"deviceCollectionWaitingTransactionDiff"];
+  registryCopy = registry;
+  entryCopy = entry;
+  objc_storeWeak(&self->_serviceRegistry, registryCopy);
+  objc_storeWeak(&self->_routingSlipEntry, entryCopy);
+  v8 = [entryCopy objectForKeyedSubscript:@"deviceCollectionWaitingTransactionDiff"];
 
   objc_storeWeak(&self->_diff, v8);
-  [v6 addService:self];
+  [registryCopy addService:self];
 
   [(EPSagaTransactionWaitForDeviceCollectionChanges *)self addDiffObserver];
   [(EPSagaTransactionWaitForDeviceCollectionChanges *)self startTimer];
@@ -35,15 +35,15 @@
   [(EPSagaTransactionWaitForDeviceCollectionChanges *)self check];
 }
 
-- (void)beginRollbackWithRoutingSlipEntry:(id)a3 serviceRegistry:(id)a4
+- (void)beginRollbackWithRoutingSlipEntry:(id)entry serviceRegistry:(id)registry
 {
-  v5 = [a3 queue];
+  queue = [entry queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100014A54;
   block[3] = &unk_100175660;
   block[4] = self;
-  dispatch_async(v5, block);
+  dispatch_async(queue, block);
 }
 
 - (void)transactionDidComplete
@@ -56,8 +56,8 @@
   if (!self->_transactionComplete)
   {
     self->_transactionComplete = 1;
-    v4 = [(EPSagaTransactionWaitForDeviceCollectionChanges *)self delegate];
-    [v4 transactionDidComplete:self];
+    delegate = [(EPSagaTransactionWaitForDeviceCollectionChanges *)self delegate];
+    [delegate transactionDidComplete:self];
   }
 }
 
@@ -122,7 +122,7 @@
   v8[2] = sub_100014F0C;
   v8[3] = &unk_1001757C0;
   v9 = v6;
-  v10 = self;
+  selfCopy = self;
   v7 = v6;
   [v4 grabRegistryWithReadBlockAsync:v8];
 }
@@ -143,16 +143,16 @@
   }
 }
 
-- (void)timeout:(id)a3
+- (void)timeout:(id)timeout
 {
-  v4 = [(EPSagaTransactionWaitForDeviceCollectionChanges *)self routingSlipEntry];
-  v5 = [v4 queue];
+  routingSlipEntry = [(EPSagaTransactionWaitForDeviceCollectionChanges *)self routingSlipEntry];
+  queue = [routingSlipEntry queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100015130;
   block[3] = &unk_100175660;
   block[4] = self;
-  dispatch_async(v5, block);
+  dispatch_async(queue, block);
 }
 
 - (void)stopTimer
@@ -162,15 +162,15 @@
   self->_timer = 0;
 }
 
-- (void)cancelWithError:(id)a3
+- (void)cancelWithError:(id)error
 {
-  v4 = a3;
-  if (!v4)
+  errorCopy = error;
+  if (!errorCopy)
   {
     v17 = NSLocalizedDescriptionKey;
     v18 = @"Cancelled";
     v5 = [NSDictionary dictionaryWithObjects:&v18 forKeys:&v17 count:1];
-    v4 = [NSError errorWithDomain:@"com.apple.nanoregistry.saga.EPSagaTransactionWaitForDeviceCollectionChanges" code:1 userInfo:v5];
+    errorCopy = [NSError errorWithDomain:@"com.apple.nanoregistry.saga.EPSagaTransactionWaitForDeviceCollectionChanges" code:1 userInfo:v5];
   }
 
   v6 = nr_daemon_log();
@@ -186,14 +186,14 @@
       v13 = 138412546;
       v14 = v10;
       v15 = 2112;
-      v16 = v4;
+      v16 = errorCopy;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%@: cancelWithError: %@", &v13, 0x16u);
     }
   }
 
-  v11 = [(EPSagaTransactionWaitForDeviceCollectionChanges *)self routingSlipEntry];
-  v12 = [v11 errors];
-  [v12 addObject:v4];
+  routingSlipEntry = [(EPSagaTransactionWaitForDeviceCollectionChanges *)self routingSlipEntry];
+  errors = [routingSlipEntry errors];
+  [errors addObject:errorCopy];
 
   [(EPSagaTransactionWaitForDeviceCollectionChanges *)self transactionDidComplete];
 }

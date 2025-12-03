@@ -1,10 +1,10 @@
 @interface FCPersonalizationTagScoringConfig
 - (FCPersonalizationTagScoringConfig)init;
-- (FCPersonalizationTagScoringConfig)initWithChannelTopicMappingWeight:(double)a3 democratizationFactor:(double)a4 locationScoreDecayFactor:(double)a5 locationWeight:(double)a6 maxDistanceThreshold:(double)a7 maxLocationsToConsider:(int64_t)a8 popularityMultiplierBoost:(double)a9 popularityMultiplierExponent:(double)a10 topicTopicMappingWeight:(double)a11 userMembershipWeight:(double)a12;
-- (FCPersonalizationTagScoringConfig)initWithCoder:(id)a3;
-- (FCPersonalizationTagScoringConfig)initWithConfigDictionary:(id)a3;
-- (FCPersonalizationTagScoringConfig)initWithConfigDictionary:(id)a3 defaultConfig:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (FCPersonalizationTagScoringConfig)initWithChannelTopicMappingWeight:(double)weight democratizationFactor:(double)factor locationScoreDecayFactor:(double)decayFactor locationWeight:(double)locationWeight maxDistanceThreshold:(double)threshold maxLocationsToConsider:(int64_t)consider popularityMultiplierBoost:(double)boost popularityMultiplierExponent:(double)self0 topicTopicMappingWeight:(double)self1 userMembershipWeight:(double)self2;
+- (FCPersonalizationTagScoringConfig)initWithCoder:(id)coder;
+- (FCPersonalizationTagScoringConfig)initWithConfigDictionary:(id)dictionary;
+- (FCPersonalizationTagScoringConfig)initWithConfigDictionary:(id)dictionary defaultConfig:(id)config;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FCPersonalizationTagScoringConfig
@@ -35,22 +35,22 @@
   objc_exception_throw(v6);
 }
 
-- (FCPersonalizationTagScoringConfig)initWithConfigDictionary:(id)a3
+- (FCPersonalizationTagScoringConfig)initWithConfigDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v27.receiver = self;
   v27.super_class = FCPersonalizationTagScoringConfig;
   v5 = [(FCPersonalizationTagScoringConfig *)&v27 init];
   if (v5)
   {
-    v6 = FCAppConfigurationDoubleValue(v4, @"channelTopicMappingWeight", 1.0);
+    v6 = FCAppConfigurationDoubleValue(dictionaryCopy, @"channelTopicMappingWeight", 1.0);
     if (v6 < 0.0)
     {
       v6 = 1.0;
     }
 
     v26 = v6;
-    v7 = FCAppConfigurationDoubleValue(v4, @"democratizationFactor", 1.0);
+    v7 = FCAppConfigurationDoubleValue(dictionaryCopy, @"democratizationFactor", 1.0);
     v8 = 0.0;
     if (v7 > 1.0 || v7 < 0.0)
     {
@@ -63,13 +63,13 @@
     }
 
     v11 = 0.1;
-    v12 = FCAppConfigurationDoubleValue(v4, @"locationScoreDecayFactor", 0.1);
+    v12 = FCAppConfigurationDoubleValue(dictionaryCopy, @"locationScoreDecayFactor", 0.1);
     if (v12 <= 1.0 && v12 >= 0.0)
     {
       v11 = v12;
     }
 
-    v14 = FCAppConfigurationDoubleValue(v4, @"locationWeight", 1.0);
+    v14 = FCAppConfigurationDoubleValue(dictionaryCopy, @"locationWeight", 1.0);
     if (v14 < 0.0)
     {
       v15 = 1.0;
@@ -81,27 +81,27 @@
     }
 
     v16 = 1000.0;
-    v17 = FCAppConfigurationDoubleValue(v4, @"maxDistanceThreshold", 1000.0);
+    v17 = FCAppConfigurationDoubleValue(dictionaryCopy, @"maxDistanceThreshold", 1000.0);
     if (v17 >= 0.0)
     {
       v16 = v17;
     }
 
-    v18 = FCAppConfigurationIntegerValue(v4, @"maxLocationsToConsider", 10);
-    v19 = FCAppConfigurationDoubleValue(v4, @"popularityMultiplierBoost", 0.0);
+    v18 = FCAppConfigurationIntegerValue(dictionaryCopy, @"maxLocationsToConsider", 10);
+    v19 = FCAppConfigurationDoubleValue(dictionaryCopy, @"popularityMultiplierBoost", 0.0);
     if (v19 >= 0.0)
     {
       v8 = v19;
     }
 
     v20 = 0.5;
-    v21 = FCAppConfigurationDoubleValue(v4, @"popularityMultiplierExponent", 0.5);
+    v21 = FCAppConfigurationDoubleValue(dictionaryCopy, @"popularityMultiplierExponent", 0.5);
     if (v21 >= 0.0)
     {
       v20 = v21;
     }
 
-    v22 = FCAppConfigurationDoubleValue(v4, @"topicTopicMappingWeight", 1.0);
+    v22 = FCAppConfigurationDoubleValue(dictionaryCopy, @"topicTopicMappingWeight", 1.0);
     if (v22 < 0.0)
     {
       v23 = 1.0;
@@ -112,7 +112,7 @@
       v23 = v22;
     }
 
-    v24 = FCAppConfigurationDoubleValue(v4, @"userMembershipWeight", 1.0);
+    v24 = FCAppConfigurationDoubleValue(dictionaryCopy, @"userMembershipWeight", 1.0);
     if (v24 < 0.0)
     {
       v24 = 1.0;
@@ -124,84 +124,84 @@
   return v5;
 }
 
-- (FCPersonalizationTagScoringConfig)initWithConfigDictionary:(id)a3 defaultConfig:(id)a4
+- (FCPersonalizationTagScoringConfig)initWithConfigDictionary:(id)dictionary defaultConfig:(id)config
 {
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  configCopy = config;
   v41.receiver = self;
   v41.super_class = FCPersonalizationTagScoringConfig;
   v8 = [(FCPersonalizationTagScoringConfig *)&v41 init];
   if (v8)
   {
-    [v7 channelTopicMappingWeight];
-    v10 = FCAppConfigurationDoubleValue(v6, @"channelTopicMappingWeight", v9);
-    [v7 channelTopicMappingWeight];
+    [configCopy channelTopicMappingWeight];
+    v10 = FCAppConfigurationDoubleValue(dictionaryCopy, @"channelTopicMappingWeight", v9);
+    [configCopy channelTopicMappingWeight];
     if (v10 >= 0.0)
     {
       v11 = v10;
     }
 
     v40 = v11;
-    [v7 democratizationFactor];
-    v13 = FCAppConfigurationDoubleValue(v6, @"democratizationFactor", v12);
-    [v7 democratizationFactor];
+    [configCopy democratizationFactor];
+    v13 = FCAppConfigurationDoubleValue(dictionaryCopy, @"democratizationFactor", v12);
+    [configCopy democratizationFactor];
     if (v13 > 1.0 || v13 < 0.0)
     {
       v13 = v14;
     }
 
-    [v7 locationScoreDecayFactor];
-    v17 = FCAppConfigurationDoubleValue(v6, @"locationScoreDecayFactor", v16);
-    [v7 locationScoreDecayFactor];
+    [configCopy locationScoreDecayFactor];
+    v17 = FCAppConfigurationDoubleValue(dictionaryCopy, @"locationScoreDecayFactor", v16);
+    [configCopy locationScoreDecayFactor];
     if (v17 > 1.0 || v17 < 0.0)
     {
       v17 = v18;
     }
 
-    [v7 locationWeight];
-    v21 = FCAppConfigurationDoubleValue(v6, @"locationWeight", v20);
-    [v7 locationWeight];
+    [configCopy locationWeight];
+    v21 = FCAppConfigurationDoubleValue(dictionaryCopy, @"locationWeight", v20);
+    [configCopy locationWeight];
     if (v21 < 0.0)
     {
       v21 = v22;
     }
 
-    [v7 maxDistanceThreshold];
-    v24 = FCAppConfigurationDoubleValue(v6, @"maxDistanceThreshold", v23);
-    [v7 maxDistanceThreshold];
+    [configCopy maxDistanceThreshold];
+    v24 = FCAppConfigurationDoubleValue(dictionaryCopy, @"maxDistanceThreshold", v23);
+    [configCopy maxDistanceThreshold];
     if (v24 < 0.0)
     {
       v24 = v25;
     }
 
-    v26 = FCAppConfigurationIntegerValue(v6, @"maxLocationsToConsider", [v7 maxLocationsToConsider]);
-    [v7 popularityMultiplierBoost];
-    v28 = FCAppConfigurationDoubleValue(v6, @"popularityMultiplierBoost", v27);
-    [v7 popularityMultiplierBoost];
+    v26 = FCAppConfigurationIntegerValue(dictionaryCopy, @"maxLocationsToConsider", [configCopy maxLocationsToConsider]);
+    [configCopy popularityMultiplierBoost];
+    v28 = FCAppConfigurationDoubleValue(dictionaryCopy, @"popularityMultiplierBoost", v27);
+    [configCopy popularityMultiplierBoost];
     if (v28 < 0.0)
     {
       v28 = v29;
     }
 
-    [v7 popularityMultiplierExponent];
-    v31 = FCAppConfigurationDoubleValue(v6, @"popularityMultiplierExponent", v30);
-    [v7 popularityMultiplierExponent];
+    [configCopy popularityMultiplierExponent];
+    v31 = FCAppConfigurationDoubleValue(dictionaryCopy, @"popularityMultiplierExponent", v30);
+    [configCopy popularityMultiplierExponent];
     if (v31 < 0.0)
     {
       v31 = v32;
     }
 
-    [v7 topicTopicMappingWeight];
-    v34 = FCAppConfigurationDoubleValue(v6, @"topicTopicMappingWeight", v33);
-    [v7 topicTopicMappingWeight];
+    [configCopy topicTopicMappingWeight];
+    v34 = FCAppConfigurationDoubleValue(dictionaryCopy, @"topicTopicMappingWeight", v33);
+    [configCopy topicTopicMappingWeight];
     if (v34 < 0.0)
     {
       v34 = v35;
     }
 
-    [v7 userMembershipWeight];
-    v37 = FCAppConfigurationDoubleValue(v6, @"userMembershipWeight", v36);
-    [v7 userMembershipWeight];
+    [configCopy userMembershipWeight];
+    v37 = FCAppConfigurationDoubleValue(dictionaryCopy, @"userMembershipWeight", v36);
+    [configCopy userMembershipWeight];
     if (v37 >= 0.0)
     {
       v38 = v37;
@@ -213,76 +213,76 @@
   return v8;
 }
 
-- (FCPersonalizationTagScoringConfig)initWithChannelTopicMappingWeight:(double)a3 democratizationFactor:(double)a4 locationScoreDecayFactor:(double)a5 locationWeight:(double)a6 maxDistanceThreshold:(double)a7 maxLocationsToConsider:(int64_t)a8 popularityMultiplierBoost:(double)a9 popularityMultiplierExponent:(double)a10 topicTopicMappingWeight:(double)a11 userMembershipWeight:(double)a12
+- (FCPersonalizationTagScoringConfig)initWithChannelTopicMappingWeight:(double)weight democratizationFactor:(double)factor locationScoreDecayFactor:(double)decayFactor locationWeight:(double)locationWeight maxDistanceThreshold:(double)threshold maxLocationsToConsider:(int64_t)consider popularityMultiplierBoost:(double)boost popularityMultiplierExponent:(double)self0 topicTopicMappingWeight:(double)self1 userMembershipWeight:(double)self2
 {
   v22.receiver = self;
   v22.super_class = FCPersonalizationTagScoringConfig;
   result = [(FCPersonalizationTagScoringConfig *)&v22 init];
   if (result)
   {
-    result->_channelTopicMappingWeight = a3;
-    result->_democratizationFactor = a4;
-    result->_locationScoreDecayFactor = a5;
-    result->_locationWeight = a6;
-    result->_maxDistanceThreshold = a7;
-    result->_maxLocationsToConsider = a8;
-    result->_popularityMultiplierBoost = a9;
-    result->_popularityMultiplierExponent = a10;
-    result->_topicTopicMappingWeight = a11;
-    result->_userMembershipWeight = a12;
+    result->_channelTopicMappingWeight = weight;
+    result->_democratizationFactor = factor;
+    result->_locationScoreDecayFactor = decayFactor;
+    result->_locationWeight = locationWeight;
+    result->_maxDistanceThreshold = threshold;
+    result->_maxLocationsToConsider = consider;
+    result->_popularityMultiplierBoost = boost;
+    result->_popularityMultiplierExponent = exponent;
+    result->_topicTopicMappingWeight = mappingWeight;
+    result->_userMembershipWeight = membershipWeight;
   }
 
   return result;
 }
 
-- (FCPersonalizationTagScoringConfig)initWithCoder:(id)a3
+- (FCPersonalizationTagScoringConfig)initWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 decodeDoubleForKey:@"channelTopicMappingWeight"];
+  coderCopy = coder;
+  [coderCopy decodeDoubleForKey:@"channelTopicMappingWeight"];
   v24 = v5;
-  [v4 decodeDoubleForKey:@"democratizationFactor"];
+  [coderCopy decodeDoubleForKey:@"democratizationFactor"];
   v7 = v6;
-  [v4 decodeDoubleForKey:@"locationScoreDecayFactor"];
+  [coderCopy decodeDoubleForKey:@"locationScoreDecayFactor"];
   v9 = v8;
-  [v4 decodeDoubleForKey:@"locationWeight"];
+  [coderCopy decodeDoubleForKey:@"locationWeight"];
   v11 = v10;
-  [v4 decodeDoubleForKey:@"maxDistanceThreshold"];
+  [coderCopy decodeDoubleForKey:@"maxDistanceThreshold"];
   v13 = v12;
-  v14 = [v4 decodeInt64ForKey:@"maxLocationsToConsider"];
-  [v4 decodeDoubleForKey:@"popularityMultiplierBoost"];
+  v14 = [coderCopy decodeInt64ForKey:@"maxLocationsToConsider"];
+  [coderCopy decodeDoubleForKey:@"popularityMultiplierBoost"];
   v16 = v15;
-  [v4 decodeDoubleForKey:@"popularityMultiplierExponent"];
+  [coderCopy decodeDoubleForKey:@"popularityMultiplierExponent"];
   v18 = v17;
-  [v4 decodeDoubleForKey:@"topicTopicMappingWeight"];
+  [coderCopy decodeDoubleForKey:@"topicTopicMappingWeight"];
   v20 = v19;
-  [v4 decodeDoubleForKey:@"userMembershipWeight"];
+  [coderCopy decodeDoubleForKey:@"userMembershipWeight"];
   v22 = v21;
 
   return [(FCPersonalizationTagScoringConfig *)self initWithChannelTopicMappingWeight:v14 democratizationFactor:v24 locationScoreDecayFactor:v7 locationWeight:v9 maxDistanceThreshold:v11 maxLocationsToConsider:v13 popularityMultiplierBoost:v16 popularityMultiplierExponent:v18 topicTopicMappingWeight:v20 userMembershipWeight:v22];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
+  coderCopy = coder;
   [(FCPersonalizationTagScoringConfig *)self channelTopicMappingWeight];
-  [v5 encodeDouble:@"channelTopicMappingWeight" forKey:?];
+  [coderCopy encodeDouble:@"channelTopicMappingWeight" forKey:?];
   [(FCPersonalizationTagScoringConfig *)self democratizationFactor];
-  [v5 encodeDouble:@"democratizationFactor" forKey:?];
+  [coderCopy encodeDouble:@"democratizationFactor" forKey:?];
   [(FCPersonalizationTagScoringConfig *)self locationScoreDecayFactor];
-  [v5 encodeDouble:@"locationScoreDecayFactor" forKey:?];
+  [coderCopy encodeDouble:@"locationScoreDecayFactor" forKey:?];
   [(FCPersonalizationTagScoringConfig *)self locationWeight];
-  [v5 encodeDouble:@"locationWeight" forKey:?];
+  [coderCopy encodeDouble:@"locationWeight" forKey:?];
   [(FCPersonalizationTagScoringConfig *)self maxDistanceThreshold];
-  [v5 encodeInt64:v4 forKey:@"maxDistanceThreshold"];
-  [v5 encodeDouble:@"maxLocationsToConsider" forKey:{-[FCPersonalizationTagScoringConfig maxLocationsToConsider](self, "maxLocationsToConsider")}];
+  [coderCopy encodeInt64:v4 forKey:@"maxDistanceThreshold"];
+  [coderCopy encodeDouble:@"maxLocationsToConsider" forKey:{-[FCPersonalizationTagScoringConfig maxLocationsToConsider](self, "maxLocationsToConsider")}];
   [(FCPersonalizationTagScoringConfig *)self popularityMultiplierBoost];
-  [v5 encodeDouble:@"popularityMultiplierBoost" forKey:?];
+  [coderCopy encodeDouble:@"popularityMultiplierBoost" forKey:?];
   [(FCPersonalizationTagScoringConfig *)self popularityMultiplierExponent];
-  [v5 encodeDouble:@"popularityMultiplierExponent" forKey:?];
+  [coderCopy encodeDouble:@"popularityMultiplierExponent" forKey:?];
   [(FCPersonalizationTagScoringConfig *)self topicTopicMappingWeight];
-  [v5 encodeDouble:@"topicTopicMappingWeight" forKey:?];
+  [coderCopy encodeDouble:@"topicTopicMappingWeight" forKey:?];
   [(FCPersonalizationTagScoringConfig *)self userMembershipWeight];
-  [v5 encodeDouble:@"userMembershipWeight" forKey:?];
+  [coderCopy encodeDouble:@"userMembershipWeight" forKey:?];
 }
 
 @end

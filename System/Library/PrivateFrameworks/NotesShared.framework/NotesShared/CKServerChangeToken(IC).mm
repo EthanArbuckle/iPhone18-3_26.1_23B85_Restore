@@ -7,8 +7,8 @@
 - (id)ic_loggingDescription
 {
   v1 = MEMORY[0x277CCACA8];
-  v2 = [a1 data];
-  v3 = [v2 base64EncodedStringWithOptions:0];
+  data = [self data];
+  v3 = [data base64EncodedStringWithOptions:0];
   v4 = [v1 stringWithFormat:@"<ServerChangeToken %@>", v3];
 
   return v4;

@@ -1,23 +1,23 @@
 @interface PRUISPosterChannelContext
-+ (PRUISPosterChannelContext)contextWithRole:(id)a3 userInfo:(id)a4;
++ (PRUISPosterChannelContext)contextWithRole:(id)role userInfo:(id)info;
 + (id)userInfoPersistenceClasses;
-- (BOOL)_validateUserInfo:(id)a3 badKeys:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (PRUISPosterChannelContext)initWithCoder:(id)a3;
-- (PRUISPosterChannelContext)initWithRole:(id)a3 userInfo:(id)a4;
-- (id)contextByUpdatingUserInfo:(id)a3;
+- (BOOL)_validateUserInfo:(id)info badKeys:(id *)keys;
+- (BOOL)isEqual:(id)equal;
+- (PRUISPosterChannelContext)initWithCoder:(id)coder;
+- (PRUISPosterChannelContext)initWithRole:(id)role userInfo:(id)info;
+- (id)contextByUpdatingUserInfo:(id)info;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PRUISPosterChannelContext
 
-- (PRUISPosterChannelContext)initWithRole:(id)a3 userInfo:(id)a4
+- (PRUISPosterChannelContext)initWithRole:(id)role userInfo:(id)info
 {
   v26[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  roleCopy = role;
+  infoCopy = info;
   if ((PFPosterRoleIsValid() & 1) == 0)
   {
     [PRUISPosterChannelContext initWithRole:a2 userInfo:self];
@@ -29,10 +29,10 @@
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_role, a3);
-    if (v9)
+    objc_storeStrong(&v10->_role, role);
+    if (infoCopy)
     {
-      v12 = v9;
+      v12 = infoCopy;
     }
 
     else
@@ -72,41 +72,41 @@
   return v11;
 }
 
-+ (PRUISPosterChannelContext)contextWithRole:(id)a3 userInfo:(id)a4
++ (PRUISPosterChannelContext)contextWithRole:(id)role userInfo:(id)info
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithRole:v7 userInfo:v6];
+  infoCopy = info;
+  roleCopy = role;
+  v8 = [[self alloc] initWithRole:roleCopy userInfo:infoCopy];
 
   return v8;
 }
 
-- (id)contextByUpdatingUserInfo:(id)a3
+- (id)contextByUpdatingUserInfo:(id)info
 {
-  v4 = a3;
-  v5 = [objc_alloc(objc_opt_class()) initWithRole:self->_role userInfo:v4];
+  infoCopy = info;
+  v5 = [objc_alloc(objc_opt_class()) initWithRole:self->_role userInfo:infoCopy];
 
   return v5;
 }
 
-- (BOOL)_validateUserInfo:(id)a3 badKeys:(id *)a4
+- (BOOL)_validateUserInfo:(id)info badKeys:(id *)keys
 {
-  v5 = a3;
+  infoCopy = info;
   v6 = objc_opt_new();
-  v7 = [objc_opt_class() userInfoPersistenceClasses];
+  userInfoPersistenceClasses = [objc_opt_class() userInfoPersistenceClasses];
   v12 = MEMORY[0x1E69E9820];
   v13 = 3221225472;
   v14 = __55__PRUISPosterChannelContext__validateUserInfo_badKeys___block_invoke;
   v15 = &unk_1E83A87B0;
   v8 = v6;
   v16 = v8;
-  v17 = v7;
-  v9 = v7;
-  [v5 enumerateKeysAndObjectsUsingBlock:&v12];
+  v17 = userInfoPersistenceClasses;
+  v9 = userInfoPersistenceClasses;
+  [infoCopy enumerateKeysAndObjectsUsingBlock:&v12];
 
-  if (a4)
+  if (keys)
   {
-    *a4 = [v8 copy];
+    *keys = [v8 copy];
   }
 
   v10 = [v8 count] == 0;
@@ -180,12 +180,12 @@ LABEL_5:
 LABEL_15:
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   role = self->_role;
-  v5 = a3;
-  [v5 encodeObject:role forKey:@"_role"];
-  [v5 encodeObject:self->_userInfo forKey:@"_userInfo"];
+  coderCopy = coder;
+  [coderCopy encodeObject:role forKey:@"_role"];
+  [coderCopy encodeObject:self->_userInfo forKey:@"_userInfo"];
 }
 
 + (id)userInfoPersistenceClasses
@@ -206,23 +206,23 @@ LABEL_15:
   return [v15 setWithObjects:{v14, v13, v2, v3, v4, v5, v6, v7, v8, v9, v10, v11, objc_opt_class(), 0}];
 }
 
-- (PRUISPosterChannelContext)initWithCoder:(id)a3
+- (PRUISPosterChannelContext)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_role"];
-  v6 = [objc_opt_class() userInfoPersistenceClasses];
-  v7 = [v4 decodeObjectOfClasses:v6 forKey:@"_userInfo"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_role"];
+  userInfoPersistenceClasses = [objc_opt_class() userInfoPersistenceClasses];
+  v7 = [coderCopy decodeObjectOfClasses:userInfoPersistenceClasses forKey:@"_userInfo"];
 
   v8 = [objc_opt_class() contextWithRole:v5 userInfo:v7];
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  v6 = v4;
+  v6 = equalCopy;
   if (v5)
   {
     if (objc_opt_isKindOfClass())
@@ -245,12 +245,12 @@ LABEL_15:
 
   if (v8)
   {
-    v9 = [v8 role];
+    role = [v8 role];
     v10 = BSEqualObjects();
 
     if (v10)
     {
-      v11 = [v8 userInfo];
+      userInfo = [v8 userInfo];
       v12 = BSEqualObjects();
     }
 
@@ -270,10 +270,10 @@ LABEL_15:
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E698E6B8] builder];
-  v4 = [v3 appendString:self->_role];
-  v5 = [v3 appendObject:self->_userInfo];
-  v6 = [v3 hash];
+  builder = [MEMORY[0x1E698E6B8] builder];
+  v4 = [builder appendString:self->_role];
+  v5 = [builder appendObject:self->_userInfo];
+  v6 = [builder hash];
 
   return v6;
 }

@@ -1,12 +1,12 @@
 @interface RadiosityView
-- (_TtC23ShelfKitCollectionViews13RadiosityView)initWithCoder:(id)a3;
-- (_TtC23ShelfKitCollectionViews13RadiosityView)initWithFrame:(CGRect)a3;
-- (_TtC23ShelfKitCollectionViews13RadiosityView)initWithSourceView:(id)a3;
+- (_TtC23ShelfKitCollectionViews13RadiosityView)initWithCoder:(id)coder;
+- (_TtC23ShelfKitCollectionViews13RadiosityView)initWithFrame:(CGRect)frame;
+- (_TtC23ShelfKitCollectionViews13RadiosityView)initWithSourceView:(id)view;
 @end
 
 @implementation RadiosityView
 
-- (_TtC23ShelfKitCollectionViews13RadiosityView)initWithCoder:(id)a3
+- (_TtC23ShelfKitCollectionViews13RadiosityView)initWithCoder:(id)coder
 {
   *&self->_UIPortalView_opaque[OBJC_IVAR____TtC23ShelfKitCollectionViews13RadiosityView_saturation] = 0x4000000000000000;
   *&self->_UIPortalView_opaque[OBJC_IVAR____TtC23ShelfKitCollectionViews13RadiosityView_scaleFactor] = 0x3FEB333333333333;
@@ -16,14 +16,14 @@
   return result;
 }
 
-- (_TtC23ShelfKitCollectionViews13RadiosityView)initWithSourceView:(id)a3
+- (_TtC23ShelfKitCollectionViews13RadiosityView)initWithSourceView:(id)view
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC23ShelfKitCollectionViews13RadiosityView)initWithFrame:(CGRect)a3
+- (_TtC23ShelfKitCollectionViews13RadiosityView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

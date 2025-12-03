@@ -1,10 +1,10 @@
 @interface AuthorizationServiceServer
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 @end
 
 @implementation AuthorizationServiceServer
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   if (qword_280369100 != -1)
   {
@@ -19,10 +19,10 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
-  v10 = sub_26A08AB08(v8);
+  listenerCopy = listener;
+  connectionCopy = connection;
+  selfCopy = self;
+  v10 = sub_26A08AB08(connectionCopy);
 
   return v10 & 1;
 }

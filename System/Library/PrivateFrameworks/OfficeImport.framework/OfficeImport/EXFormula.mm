@@ -1,96 +1,96 @@
 @interface EXFormula
-+ (Class)formulaClassFromXmlFormulaElement:(_xmlNode *)a3 state:(id)a4;
-+ (id)edFormulaFromXmlFormulaElement:(_xmlNode *)a3 formulaClass:(Class)a4 state:(id)a5;
-+ (id)edFormulaFromXmlFormulaElement:(_xmlNode *)a3 state:(id)a4;
-+ (id)edTokensForFormulaString:(id)a3 formulaClass:(Class)a4 rowNumber:(int)a5 columnNumber:(int)a6 sheet:(id)a7 workbook:(id)a8;
-+ (id)edTokensForFormulaString:(id)a3 sheet:(id)a4 workbook:(id)a5;
-+ (id)readFrom:(_xmlNode *)a3 formulaClass:(Class)a4 rowNumber:(int)a5 columnNumber:(int)a6 edCell:(EDCellHeader *)a7 edRowBlocks:(id)a8 state:(id)a9;
-+ (void)applyArrayedFormula:(id)a3 edReference:(id)a4 edWorksheet:(id)a5 state:(id)a6;
-+ (void)applyArrayedFormulasToSheet:(id)a3 state:(id)a4;
-+ (void)readFrom:(_xmlNode *)a3 rowNumber:(int)a4 columnNumber:(int)a5 edCell:(EDCellHeader *)a6 edRowBlocks:(id)a7 state:(id)a8;
++ (Class)formulaClassFromXmlFormulaElement:(_xmlNode *)element state:(id)state;
++ (id)edFormulaFromXmlFormulaElement:(_xmlNode *)element formulaClass:(Class)class state:(id)state;
++ (id)edFormulaFromXmlFormulaElement:(_xmlNode *)element state:(id)state;
++ (id)edTokensForFormulaString:(id)string formulaClass:(Class)class rowNumber:(int)number columnNumber:(int)columnNumber sheet:(id)sheet workbook:(id)workbook;
++ (id)edTokensForFormulaString:(id)string sheet:(id)sheet workbook:(id)workbook;
++ (id)readFrom:(_xmlNode *)from formulaClass:(Class)class rowNumber:(int)number columnNumber:(int)columnNumber edCell:(EDCellHeader *)cell edRowBlocks:(id)blocks state:(id)state;
++ (void)applyArrayedFormula:(id)formula edReference:(id)reference edWorksheet:(id)worksheet state:(id)state;
++ (void)applyArrayedFormulasToSheet:(id)sheet state:(id)state;
++ (void)readFrom:(_xmlNode *)from rowNumber:(int)number columnNumber:(int)columnNumber edCell:(EDCellHeader *)cell edRowBlocks:(id)blocks state:(id)state;
 @end
 
 @implementation EXFormula
 
-+ (id)edFormulaFromXmlFormulaElement:(_xmlNode *)a3 state:(id)a4
++ (id)edFormulaFromXmlFormulaElement:(_xmlNode *)element state:(id)state
 {
-  v6 = a4;
-  v7 = [a1 edFormulaFromXmlFormulaElement:a3 formulaClass:objc_msgSend(a1 state:{"formulaClassFromXmlFormulaElement:state:", a3, v6), v6}];
+  stateCopy = state;
+  v7 = [self edFormulaFromXmlFormulaElement:element formulaClass:objc_msgSend(self state:{"formulaClassFromXmlFormulaElement:state:", element, stateCopy), stateCopy}];
 
   return v7;
 }
 
-+ (id)edFormulaFromXmlFormulaElement:(_xmlNode *)a3 formulaClass:(Class)a4 state:(id)a5
++ (id)edFormulaFromXmlFormulaElement:(_xmlNode *)element formulaClass:(Class)class state:(id)state
 {
-  v5 = [a1 readFrom:a3 formulaClass:a4 rowNumber:0xFFFFFFFFLL columnNumber:0xFFFFFFFFLL edCell:0 edRowBlocks:0 state:a5];
+  v5 = [self readFrom:element formulaClass:class rowNumber:0xFFFFFFFFLL columnNumber:0xFFFFFFFFLL edCell:0 edRowBlocks:0 state:state];
 
   return v5;
 }
 
-+ (void)readFrom:(_xmlNode *)a3 rowNumber:(int)a4 columnNumber:(int)a5 edCell:(EDCellHeader *)a6 edRowBlocks:(id)a7 state:(id)a8
++ (void)readFrom:(_xmlNode *)from rowNumber:(int)number columnNumber:(int)columnNumber edCell:(EDCellHeader *)cell edRowBlocks:(id)blocks state:(id)state
 {
-  v10 = *&a5;
-  v11 = *&a4;
-  v16 = a7;
-  v14 = a8;
-  v15 = [a1 readFrom:a3 formulaClass:objc_msgSend(a1 rowNumber:"formulaClassFromXmlFormulaElement:state:" columnNumber:a3 edCell:v14) edRowBlocks:v11 state:{v10, a6, v16, v14}];
+  v10 = *&columnNumber;
+  v11 = *&number;
+  blocksCopy = blocks;
+  stateCopy = state;
+  v15 = [self readFrom:from formulaClass:objc_msgSend(self rowNumber:"formulaClassFromXmlFormulaElement:state:" columnNumber:from edCell:stateCopy) edRowBlocks:v11 state:{v10, cell, blocksCopy, stateCopy}];
 }
 
-+ (void)applyArrayedFormulasToSheet:(id)a3 state:(id)a4
++ (void)applyArrayedFormulasToSheet:(id)sheet state:(id)state
 {
-  v6 = a3;
-  v7 = a4;
-  v14 = v6;
+  sheetCopy = sheet;
+  stateCopy = state;
+  v14 = sheetCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [v7 arrayedFormulas];
-    v9 = [v8 count];
+    arrayedFormulas = [stateCopy arrayedFormulas];
+    v9 = [arrayedFormulas count];
     if (v9)
     {
       for (i = 0; i != v9; ++i)
       {
-        v11 = [v8 objectAtIndex:i];
-        v12 = [v11 first];
-        v13 = [v11 second];
-        [a1 applyArrayedFormula:v12 edReference:v13 edWorksheet:v14 state:v7];
+        v11 = [arrayedFormulas objectAtIndex:i];
+        first = [v11 first];
+        second = [v11 second];
+        [self applyArrayedFormula:first edReference:second edWorksheet:v14 state:stateCopy];
       }
     }
 
-    [v8 removeAllObjects];
+    [arrayedFormulas removeAllObjects];
   }
 }
 
-+ (id)edTokensForFormulaString:(id)a3 sheet:(id)a4 workbook:(id)a5
++ (id)edTokensForFormulaString:(id)string sheet:(id)sheet workbook:(id)workbook
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [a1 edTokensForFormulaString:v8 formulaClass:objc_opt_class() rowNumber:0xFFFFFFFFLL columnNumber:0xFFFFFFFFLL sheet:v9 workbook:v10];
+  stringCopy = string;
+  sheetCopy = sheet;
+  workbookCopy = workbook;
+  v11 = [self edTokensForFormulaString:stringCopy formulaClass:objc_opt_class() rowNumber:0xFFFFFFFFLL columnNumber:0xFFFFFFFFLL sheet:sheetCopy workbook:workbookCopy];
 
   return v11;
 }
 
-+ (id)readFrom:(_xmlNode *)a3 formulaClass:(Class)a4 rowNumber:(int)a5 columnNumber:(int)a6 edCell:(EDCellHeader *)a7 edRowBlocks:(id)a8 state:(id)a9
++ (id)readFrom:(_xmlNode *)from formulaClass:(Class)class rowNumber:(int)number columnNumber:(int)columnNumber edCell:(EDCellHeader *)cell edRowBlocks:(id)blocks state:(id)state
 {
-  v10 = *&a6;
-  v11 = *&a5;
-  v30 = a8;
-  v15 = a9;
-  v16 = 0;
-  if (a3 && a4)
+  v10 = *&columnNumber;
+  v11 = *&number;
+  blocksCopy = blocks;
+  stateCopy = state;
+  formula = 0;
+  if (from && class)
   {
-    v29 = [objc_alloc(MEMORY[0x277CCACA8]) tc_initWithContentOfXmlNode:a3];
+    v29 = [objc_alloc(MEMORY[0x277CCACA8]) tc_initWithContentOfXmlNode:from];
     if (v29 && [v29 length])
     {
       v17 = [@"=" stringByAppendingString:v29];
-      v27 = v15;
-      v18 = [v15 currentSheet];
-      v19 = [v15 workbook];
-      v16 = [a1 edTokensForFormulaString:v17 formulaClass:a4 rowNumber:v11 columnNumber:v10 sheet:v18 workbook:v19];
+      v27 = stateCopy;
+      currentSheet = [stateCopy currentSheet];
+      workbook = [stateCopy workbook];
+      formula = [self edTokensForFormulaString:v17 formulaClass:class rowNumber:v11 columnNumber:v10 sheet:currentSheet workbook:workbook];
 
-      v15 = v27;
-      if (!a7)
+      stateCopy = v27;
+      if (!cell)
       {
         goto LABEL_19;
       }
@@ -98,8 +98,8 @@
 
     else
     {
-      v16 = [(objc_class *)a4 formula];
-      if (!a7)
+      formula = [(objc_class *)class formula];
+      if (!cell)
       {
         goto LABEL_19;
       }
@@ -107,52 +107,52 @@
 
     if (((v10 | v11) & 0x80000000) == 0)
     {
-      setFormulaForEDCell(a7, v16, v30);
-      v28 = v15;
+      setFormulaForEDCell(cell, formula, blocksCopy);
+      v28 = stateCopy;
       v32 = 0;
-      CXOptionalStringAttribute(a3, CXNoNamespace, "ref", &v32);
+      CXOptionalStringAttribute(from, CXNoNamespace, "ref", &v32);
       v20 = v32;
-      if (objc_opt_class() == a4)
+      if (objc_opt_class() == class)
       {
-        v21 = v16;
+        arrayedFormulas = formula;
         v31 = -1;
-        CXOptionalLongAttribute(a3, CXNoNamespace, "si", &v31);
+        CXOptionalLongAttribute(from, CXNoNamespace, "si", &v31);
         if (v20)
         {
-          [(EDFormula *)v21 setRowBaseOrOffset:v11];
-          [(EDFormula *)v21 setColumnBaseOrOffset:v10];
-          v24 = formulaIndexForEDCell(a7);
-          [v15 addSharedBaseFormulaIndex:v24 withIndex:v31];
+          [(EDFormula *)arrayedFormulas setRowBaseOrOffset:v11];
+          [(EDFormula *)arrayedFormulas setColumnBaseOrOffset:v10];
+          v24 = formulaIndexForEDCell(cell);
+          [stateCopy addSharedBaseFormulaIndex:v24 withIndex:v31];
         }
 
         else
         {
-          -[EDFormula setBaseFormulaIndex:](v21, "setBaseFormulaIndex:", [v15 sharedBaseFormulaIndexWithIndex:v31]);
-          v25 = [(EDFormula *)v21 baseFormulaWithRowBlocks:v30];
+          -[EDFormula setBaseFormulaIndex:](arrayedFormulas, "setBaseFormulaIndex:", [stateCopy sharedBaseFormulaIndexWithIndex:v31]);
+          v25 = [(EDFormula *)arrayedFormulas baseFormulaWithRowBlocks:blocksCopy];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            -[EDFormula setRowBaseOrOffset:](v21, "setRowBaseOrOffset:", v11 - [v25 rowBaseOrOffset]);
-            -[EDFormula setColumnBaseOrOffset:](v21, "setColumnBaseOrOffset:", v10 - [v25 columnBaseOrOffset]);
+            -[EDFormula setRowBaseOrOffset:](arrayedFormulas, "setRowBaseOrOffset:", v11 - [v25 rowBaseOrOffset]);
+            -[EDFormula setColumnBaseOrOffset:](arrayedFormulas, "setColumnBaseOrOffset:", v10 - [v25 columnBaseOrOffset]);
           }
         }
       }
 
       else
       {
-        if (objc_opt_class() != a4)
+        if (objc_opt_class() != class)
         {
 LABEL_18:
 
           goto LABEL_19;
         }
 
-        v21 = [v15 arrayedFormulas];
+        arrayedFormulas = [stateCopy arrayedFormulas];
         v22 = [EXReference edReferenceFromXmlReference:v20];
-        v23 = [OITSUPair pairWithFirst:v16 second:v22];
-        [(EDFormula *)v21 addObject:v23];
+        v23 = [OITSUPair pairWithFirst:formula second:v22];
+        [(EDFormula *)arrayedFormulas addObject:v23];
 
-        v15 = v28;
+        stateCopy = v28;
       }
 
       goto LABEL_18;
@@ -161,20 +161,20 @@ LABEL_18:
 LABEL_19:
   }
 
-  return v16;
+  return formula;
 }
 
-+ (id)edTokensForFormulaString:(id)a3 formulaClass:(Class)a4 rowNumber:(int)a5 columnNumber:(int)a6 sheet:(id)a7 workbook:(id)a8
++ (id)edTokensForFormulaString:(id)string formulaClass:(Class)class rowNumber:(int)number columnNumber:(int)columnNumber sheet:(id)sheet workbook:(id)workbook
 {
-  v10 = *&a6;
-  v11 = *&a5;
-  v13 = a3;
-  v14 = a7;
-  v15 = a8;
+  v10 = *&columnNumber;
+  v11 = *&number;
+  stringCopy = string;
+  sheetCopy = sheet;
+  workbookCopy = workbook;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v16 = v14;
+    v16 = sheetCopy;
   }
 
   else
@@ -183,23 +183,23 @@ LABEL_19:
   }
 
   v17 = v16;
-  v18 = [[EDFormulaHelper alloc] initWithWorkbook:v15 worksheet:v17 rowNumber:v11 columnNumber:v10];
-  v19 = [EFormula stringToFormula:v13 formulaHelper:v18 formulaClass:a4];
-  [v19 setOriginalFormulaString:v13];
+  v18 = [[EDFormulaHelper alloc] initWithWorkbook:workbookCopy worksheet:v17 rowNumber:v11 columnNumber:v10];
+  v19 = [EFormula stringToFormula:stringCopy formulaHelper:v18 formulaClass:class];
+  [v19 setOriginalFormulaString:stringCopy];
 
   return v19;
 }
 
-+ (Class)formulaClassFromXmlFormulaElement:(_xmlNode *)a3 state:(id)a4
++ (Class)formulaClassFromXmlFormulaElement:(_xmlNode *)element state:(id)state
 {
   v13 = 0;
-  v5 = CXOptionalStringAttribute(a3, CXNoNamespace, "type", &v13);
+  v5 = CXOptionalStringAttribute(element, CXNoNamespace, "type", &v13);
   v6 = v13;
   v7 = v6;
   if (!v5)
   {
     v12 = v6;
-    CXOptionalStringAttribute(a3, CXNoNamespace, "t", &v12);
+    CXOptionalStringAttribute(element, CXNoNamespace, "t", &v12);
     v8 = v12;
 
     v7 = v8;
@@ -226,51 +226,51 @@ LABEL_19:
   return v9;
 }
 
-+ (void)applyArrayedFormula:(id)a3 edReference:(id)a4 edWorksheet:(id)a5 state:(id)a6
++ (void)applyArrayedFormula:(id)formula edReference:(id)reference edWorksheet:(id)worksheet state:(id)state
 {
-  v9 = a3;
-  v40 = a4;
-  v10 = a5;
-  v35 = a6;
-  v37 = v9;
-  v38 = v10;
-  v39 = [v9 originalFormulaString];
-  if (v10)
+  formulaCopy = formula;
+  referenceCopy = reference;
+  worksheetCopy = worksheet;
+  stateCopy = state;
+  v37 = formulaCopy;
+  v38 = worksheetCopy;
+  originalFormulaString = [formulaCopy originalFormulaString];
+  if (worksheetCopy)
   {
-    if (v40)
+    if (referenceCopy)
     {
-      if (v39)
+      if (originalFormulaString)
       {
-        v43 = [v40 firstRow];
-        v11 = [v40 lastRow];
-        v49 = [v40 firstColumn];
-        v12 = [v40 lastColumn];
-        if (v43 <= 0x10000 && v49 <= 256)
+        firstRow = [referenceCopy firstRow];
+        lastRow = [referenceCopy lastRow];
+        firstColumn = [referenceCopy firstColumn];
+        lastColumn = [referenceCopy lastColumn];
+        if (firstRow <= 0x10000 && firstColumn <= 256)
         {
-          v13 = v11 >= 0x10000 ? 0x10000 : v11;
+          v13 = lastRow >= 0x10000 ? 0x10000 : lastRow;
           v42 = v13;
-          v14 = v12 >= 256 ? 256 : v12;
+          v14 = lastColumn >= 256 ? 256 : lastColumn;
           v47 = v14;
-          if (v11 >= v43)
+          if (lastRow >= firstRow)
           {
-            v15 = [v10 rowBlocks];
-            v16 = [v15 formulas];
-            v46 = [v16 indexOfObject:v9];
+            rowBlocks = [worksheetCopy rowBlocks];
+            formulas = [rowBlocks formulas];
+            v46 = [formulas indexOfObject:formulaCopy];
 
-            v17 = [v15 expectedIndexOfRowBlockForRowNumber:v43];
-            v36 = [v15 expectedIndexOfRowBlockForRowNumber:v42];
+            v17 = [rowBlocks expectedIndexOfRowBlockForRowNumber:firstRow];
+            v36 = [rowBlocks expectedIndexOfRowBlockForRowNumber:v42];
             if (v17 <= v36)
             {
-              v44 = v15;
+              v44 = rowBlocks;
               while (1)
               {
                 v41 = v17;
-                v18 = [v15 rowBlockAtIndex:v17];
+                v18 = [rowBlocks rowBlockAtIndex:v17];
                 v19 = v18;
                 if (v18)
                 {
-                  v45 = [v18 rowCount];
-                  if (v45)
+                  rowCount = [v18 rowCount];
+                  if (rowCount)
                   {
                     break;
                   }
@@ -279,7 +279,7 @@ LABEL_19:
 LABEL_51:
 
                 v17 = v41 + 1;
-                v15 = v44;
+                rowBlocks = v44;
                 if (v41 + 1 > v36)
                 {
                   goto LABEL_52;
@@ -294,7 +294,7 @@ LABEL_51:
                 if (v21)
                 {
                   v22 = *(v21 + 4);
-                  if (v22 >= v43)
+                  if (v22 >= firstRow)
                   {
                     if (v22 > v42)
                     {
@@ -302,7 +302,7 @@ LABEL_51:
                     }
 
                     v23 = *(v21 + 8);
-                    v24 = [v19 expectedIndexOfCellWithColumnNumber:v49 rowInfo:?];
+                    v24 = [v19 expectedIndexOfCellWithColumnNumber:firstColumn rowInfo:?];
                     v48 = v23;
                     if (v24 < v23)
                     {
@@ -313,7 +313,7 @@ LABEL_51:
 
 LABEL_50:
                 v20 = (v20 + 1);
-                if (v20 == v45)
+                if (v20 == rowCount)
                 {
                   goto LABEL_51;
                 }
@@ -324,7 +324,7 @@ LABEL_50:
                 v25 = [v19 cellAtIndex:v24 rowInfo:v50];
                 v26 = columnNumberForEDCell(v25);
                 v27 = v26;
-                if (v26 >= v49)
+                if (v26 >= firstColumn)
                 {
                   break;
                 }
@@ -431,7 +431,7 @@ LABEL_36:
             }
 
 LABEL_52:
-            [v15 unlock];
+            [rowBlocks unlock];
           }
         }
       }

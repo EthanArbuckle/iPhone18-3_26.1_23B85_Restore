@@ -1,76 +1,76 @@
 @interface EKREMCompletionStateReminderPredicate
-- (BOOL)evaluateWithObject:(id)a3;
-- (id)fetchMatchingRemindersInStore:(id)a3 allLists:(id)a4 error:(id *)a5;
-- (id)initForCompletedRemindersWithCompletionDateStarting:(id)a3 ending:(id)a4 calendars:(id)a5;
-- (id)initForIncompleteRemindersWithDueDateStarting:(id)a3 ending:(id)a4 calendars:(id)a5;
+- (BOOL)evaluateWithObject:(id)object;
+- (id)fetchMatchingRemindersInStore:(id)store allLists:(id)lists error:(id *)error;
+- (id)initForCompletedRemindersWithCompletionDateStarting:(id)starting ending:(id)ending calendars:(id)calendars;
+- (id)initForIncompleteRemindersWithDueDateStarting:(id)starting ending:(id)ending calendars:(id)calendars;
 @end
 
 @implementation EKREMCompletionStateReminderPredicate
 
-- (id)initForIncompleteRemindersWithDueDateStarting:(id)a3 ending:(id)a4 calendars:(id)a5
+- (id)initForIncompleteRemindersWithDueDateStarting:(id)starting ending:(id)ending calendars:(id)calendars
 {
-  v9 = a3;
-  v10 = a4;
+  startingCopy = starting;
+  endingCopy = ending;
   v14.receiver = self;
   v14.super_class = EKREMCompletionStateReminderPredicate;
-  v11 = [(EKREMReminderPredicate *)&v14 initWithCalendars:a5];
+  v11 = [(EKREMReminderPredicate *)&v14 initWithCalendars:calendars];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_start, a3);
-    objc_storeStrong(&v12->_end, a4);
+    objc_storeStrong(&v11->_start, starting);
+    objc_storeStrong(&v12->_end, ending);
     v12->_completed = 0;
   }
 
   return v12;
 }
 
-- (id)initForCompletedRemindersWithCompletionDateStarting:(id)a3 ending:(id)a4 calendars:(id)a5
+- (id)initForCompletedRemindersWithCompletionDateStarting:(id)starting ending:(id)ending calendars:(id)calendars
 {
-  v9 = a3;
-  v10 = a4;
+  startingCopy = starting;
+  endingCopy = ending;
   v14.receiver = self;
   v14.super_class = EKREMCompletionStateReminderPredicate;
-  v11 = [(EKREMReminderPredicate *)&v14 initWithCalendars:a5];
+  v11 = [(EKREMReminderPredicate *)&v14 initWithCalendars:calendars];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_start, a3);
-    objc_storeStrong(&v12->_end, a4);
+    objc_storeStrong(&v11->_start, starting);
+    objc_storeStrong(&v12->_end, ending);
     v12->_completed = 1;
   }
 
   return v12;
 }
 
-- (id)fetchMatchingRemindersInStore:(id)a3 allLists:(id)a4 error:(id *)a5
+- (id)fetchMatchingRemindersInStore:(id)store allLists:(id)lists error:(id *)error
 {
-  v8 = a3;
-  v9 = [(EKREMReminderPredicate *)self remListIDsWithAllLists:a4];
+  storeCopy = store;
+  v9 = [(EKREMReminderPredicate *)self remListIDsWithAllLists:lists];
   start = self->_start;
   end = self->_end;
   if (self->_completed)
   {
-    [v8 fetchCompletedRemindersForEventKitBridgingWithCompletionDateFrom:start to:end withListIDs:v9 error:a5];
+    [storeCopy fetchCompletedRemindersForEventKitBridgingWithCompletionDateFrom:start to:end withListIDs:v9 error:error];
   }
 
   else
   {
-    [v8 fetchIncompleteRemindersForEventKitBridgingWithDueDateFrom:start to:end withListIDs:v9 error:a5];
+    [storeCopy fetchIncompleteRemindersForEventKitBridgingWithDueDateFrom:start to:end withListIDs:v9 error:error];
   }
   v12 = ;
 
   return v12;
 }
 
-- (BOOL)evaluateWithObject:(id)a3
+- (BOOL)evaluateWithObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v14.receiver = self;
   v14.super_class = EKREMCompletionStateReminderPredicate;
-  if ([(EKREMReminderPredicate *)&v14 evaluateWithObject:v4])
+  if ([(EKREMReminderPredicate *)&v14 evaluateWithObject:objectCopy])
   {
-    v5 = v4;
+    v5 = objectCopy;
     if (self->_completed != [v5 isCompleted])
     {
       v7 = 0;
@@ -87,37 +87,37 @@ LABEL_27:
 
     if (self->_completed)
     {
-      v6 = [v5 completionDate];
+      completionDate = [v5 completionDate];
     }
 
     else
     {
-      v8 = [v5 dueDateComponents];
-      if (!v8)
+      dueDateComponents = [v5 dueDateComponents];
+      if (!dueDateComponents)
       {
-        v6 = 0;
+        completionDate = 0;
 LABEL_25:
         v7 = 0;
         goto LABEL_26;
       }
 
-      v9 = v8;
+      v9 = dueDateComponents;
       v10 = [MEMORY[0x1E695DEE8] calendarWithIdentifier:*MEMORY[0x1E695D850]];
       [v9 setCalendar:v10];
 
-      v6 = [v9 date];
+      completionDate = [v9 date];
     }
 
     start = self->_start;
     if (self->_completed)
     {
-      if (start && ([v6 CalIsBeforeDate:?] & 1) != 0)
+      if (start && ([completionDate CalIsBeforeDate:?] & 1) != 0)
       {
         goto LABEL_25;
       }
     }
 
-    else if (start && ([v6 CalIsBeforeOrSameAsDate:?] & 1) != 0)
+    else if (start && ([completionDate CalIsBeforeOrSameAsDate:?] & 1) != 0)
     {
       goto LABEL_25;
     }
@@ -125,13 +125,13 @@ LABEL_25:
     end = self->_end;
     if (self->_completed)
     {
-      if (end && ([v6 CalIsAfterOrSameAsDate:?] & 1) != 0)
+      if (end && ([completionDate CalIsAfterOrSameAsDate:?] & 1) != 0)
       {
         goto LABEL_25;
       }
     }
 
-    else if (end && [v6 CalIsAfterDate:?])
+    else if (end && [completionDate CalIsAfterDate:?])
     {
       goto LABEL_25;
     }

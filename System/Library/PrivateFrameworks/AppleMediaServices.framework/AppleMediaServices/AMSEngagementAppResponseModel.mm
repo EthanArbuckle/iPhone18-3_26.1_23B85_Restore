@@ -1,8 +1,8 @@
 @interface AMSEngagementAppResponseModel
-+ (BOOL)_shouldEvictDefinition:(id)a3 created:(id)a4;
-- (AMSEngagementAppResponseModel)initWithCacheObject:(id)a3;
-- (AMSEngagementAppResponseModel)initWithData:(id)a3 cacheInfo:(id)a4;
-- (BOOL)matchesEvent:(id)a3;
++ (BOOL)_shouldEvictDefinition:(id)definition created:(id)created;
+- (AMSEngagementAppResponseModel)initWithCacheObject:(id)object;
+- (AMSEngagementAppResponseModel)initWithData:(id)data cacheInfo:(id)info;
+- (BOOL)matchesEvent:(id)event;
 - (NSDictionary)responseData;
 - (NSString)cacheKey;
 - (id)exportObject;
@@ -10,10 +10,10 @@
 
 @implementation AMSEngagementAppResponseModel
 
-- (AMSEngagementAppResponseModel)initWithCacheObject:(id)a3
+- (AMSEngagementAppResponseModel)initWithCacheObject:(id)object
 {
-  v4 = a3;
-  if (![v4 count])
+  objectCopy = object;
+  if (![objectCopy count])
   {
     goto LABEL_9;
   }
@@ -26,7 +26,7 @@
     goto LABEL_10;
   }
 
-  v5 = [v4 objectForKeyedSubscript:@"created"];
+  v5 = [objectCopy objectForKeyedSubscript:@"created"];
   v6 = objc_opt_respondsToSelector();
   v7 = 0.0;
   if (v6)
@@ -38,7 +38,7 @@
   created = self->_created;
   self->_created = v8;
 
-  v10 = [v4 objectForKeyedSubscript:@"definition"];
+  v10 = [objectCopy objectForKeyedSubscript:@"definition"];
   objc_opt_class();
   v11 = (objc_opt_isKindOfClass() & 1) != 0 ? v10 : 0;
 
@@ -49,30 +49,30 @@
   if (v13)
   {
 LABEL_9:
-    v14 = 0;
+    selfCopy = 0;
   }
 
   else
   {
 LABEL_10:
     self = self;
-    v14 = self;
+    selfCopy = self;
   }
 
-  return v14;
+  return selfCopy;
 }
 
-- (AMSEngagementAppResponseModel)initWithData:(id)a3 cacheInfo:(id)a4
+- (AMSEngagementAppResponseModel)initWithData:(id)data cacheInfo:(id)info
 {
   v19[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  infoCopy = info;
   v17.receiver = self;
   v17.super_class = AMSEngagementAppResponseModel;
   v8 = [(AMSEngagementAppResponseModel *)&v17 init];
   if (v8)
   {
-    if (![v6 count] || !objc_msgSend(v7, "count"))
+    if (![dataCopy count] || !objc_msgSend(infoCopy, "count"))
     {
       v15 = 0;
       goto LABEL_13;
@@ -82,9 +82,9 @@ LABEL_10:
     created = v8->_created;
     v8->_created = v9;
 
-    if (v6)
+    if (dataCopy)
     {
-      v11 = v6;
+      v11 = dataCopy;
     }
 
     else
@@ -94,9 +94,9 @@ LABEL_10:
 
     v18[0] = @"data";
     v18[1] = @"cacheInfo";
-    if (v7)
+    if (infoCopy)
     {
-      v12 = v7;
+      v12 = infoCopy;
     }
 
     else
@@ -119,8 +119,8 @@ LABEL_13:
 
 - (NSString)cacheKey
 {
-  v2 = [(AMSEngagementAppResponseModel *)self definition];
-  v3 = [v2 objectForKeyedSubscript:@"cacheInfo"];
+  definition = [(AMSEngagementAppResponseModel *)self definition];
+  v3 = [definition objectForKeyedSubscript:@"cacheInfo"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -142,7 +142,7 @@ LABEL_13:
     if (v6)
     {
       v7 = v6;
-      v8 = v7;
+      uUIDString = v7;
       goto LABEL_9;
     }
   }
@@ -151,13 +151,13 @@ LABEL_13:
   {
   }
 
-  v9 = [MEMORY[0x1E696AFB0] UUID];
-  v8 = [v9 UUIDString];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
 
   v7 = 0;
 LABEL_9:
 
-  return v8;
+  return uUIDString;
 }
 
 - (id)exportObject
@@ -165,17 +165,17 @@ LABEL_9:
   v12[2] = *MEMORY[0x1E69E9840];
   v11[0] = @"created";
   v3 = MEMORY[0x1E696AD98];
-  v4 = [(AMSEngagementAppResponseModel *)self created];
-  [v4 timeIntervalSince1970];
+  created = [(AMSEngagementAppResponseModel *)self created];
+  [created timeIntervalSince1970];
   v5 = [v3 numberWithDouble:?];
   v11[1] = @"definition";
   v12[0] = v5;
-  v6 = [(AMSEngagementAppResponseModel *)self definition];
-  v7 = v6;
+  definition = [(AMSEngagementAppResponseModel *)self definition];
+  v7 = definition;
   v8 = MEMORY[0x1E695E0F8];
-  if (v6)
+  if (definition)
   {
-    v8 = v6;
+    v8 = definition;
   }
 
   v12[1] = v8;
@@ -186,8 +186,8 @@ LABEL_9:
 
 - (NSDictionary)responseData
 {
-  v2 = [(AMSEngagementAppResponseModel *)self definition];
-  v3 = [v2 objectForKeyedSubscript:@"data"];
+  definition = [(AMSEngagementAppResponseModel *)self definition];
+  v3 = [definition objectForKeyedSubscript:@"data"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -203,11 +203,11 @@ LABEL_9:
   return v4;
 }
 
-- (BOOL)matchesEvent:(id)a3
+- (BOOL)matchesEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(AMSEngagementAppResponseModel *)self definition];
-  v6 = [v5 objectForKeyedSubscript:@"cacheInfo"];
+  eventCopy = event;
+  definition = [(AMSEngagementAppResponseModel *)self definition];
+  v6 = [definition objectForKeyedSubscript:@"cacheInfo"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -233,15 +233,15 @@ LABEL_9:
   }
 
   v10 = +[AMSEngagementAppEventFilterModel sharedRegexCache];
-  v11 = [AMSEngagementAppEventFilterModel matchEvent:v4 toFilter:v9 withCache:v10];
+  v11 = [AMSEngagementAppEventFilterModel matchEvent:eventCopy toFilter:v9 withCache:v10];
 
   return v11;
 }
 
-+ (BOOL)_shouldEvictDefinition:(id)a3 created:(id)a4
++ (BOOL)_shouldEvictDefinition:(id)definition created:(id)created
 {
-  v5 = a4;
-  v6 = [a3 objectForKeyedSubscript:@"cacheInfo"];
+  createdCopy = created;
+  v6 = [definition objectForKeyedSubscript:@"cacheInfo"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -262,10 +262,10 @@ LABEL_9:
   }
 
   v13 = 1;
-  if (v5)
+  if (createdCopy)
   {
     v11 = fmin(v10, 2592000.0);
-    [v5 timeIntervalSinceNow];
+    [createdCopy timeIntervalSinceNow];
     if (v11 >= -v12)
     {
       v13 = 0;

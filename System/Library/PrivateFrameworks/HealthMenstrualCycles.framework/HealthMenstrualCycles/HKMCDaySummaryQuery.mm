@@ -1,21 +1,21 @@
 @interface HKMCDaySummaryQuery
-+ (void)configureClientInterface:(id)a3;
++ (void)configureClientInterface:(id)interface;
 - ($0AC6E346AE4835514AAA8AC86D8F4844)dayIndexRange;
-- (HKMCDaySummaryQuery)initWithDayIndexRange:(id)a3 ascending:(BOOL)a4 limit:(int64_t)a5 resultsHandler:(id)a6;
-- (void)client_deliverDaySummaries:(id)a3 clearPending:(BOOL)a4 isFinalBatch:(BOOL)a5 daySummaryAnchor:(id)a6 queryUUID:(id)a7;
-- (void)queue_deliverError:(id)a3;
-- (void)queue_populateConfiguration:(id)a3;
-- (void)queue_queryDidDeactivate:(id)a3;
+- (HKMCDaySummaryQuery)initWithDayIndexRange:(id)range ascending:(BOOL)ascending limit:(int64_t)limit resultsHandler:(id)handler;
+- (void)client_deliverDaySummaries:(id)summaries clearPending:(BOOL)pending isFinalBatch:(BOOL)batch daySummaryAnchor:(id)anchor queryUUID:(id)d;
+- (void)queue_deliverError:(id)error;
+- (void)queue_populateConfiguration:(id)configuration;
+- (void)queue_queryDidDeactivate:(id)deactivate;
 - (void)queue_validate;
 @end
 
 @implementation HKMCDaySummaryQuery
 
-- (HKMCDaySummaryQuery)initWithDayIndexRange:(id)a3 ascending:(BOOL)a4 limit:(int64_t)a5 resultsHandler:(id)a6
+- (HKMCDaySummaryQuery)initWithDayIndexRange:(id)range ascending:(BOOL)ascending limit:(int64_t)limit resultsHandler:(id)handler
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
-  v11 = a6;
+  var1 = range.var1;
+  var0 = range.var0;
+  handlerCopy = handler;
   v17.receiver = self;
   v17.super_class = HKMCDaySummaryQuery;
   v12 = [(HKQuery *)&v17 _initWithObjectType:0 predicate:0];
@@ -24,9 +24,9 @@
   {
     v12->_dayIndexRange.start = var0;
     v12->_dayIndexRange.duration = var1;
-    v12->_ascending = a4;
-    v12->_limit = a5;
-    v14 = [v11 copy];
+    v12->_ascending = ascending;
+    v12->_limit = limit;
+    v14 = [handlerCopy copy];
     resultsHandler = v13->_resultsHandler;
     v13->_resultsHandler = v14;
   }
@@ -34,26 +34,26 @@
   return v13;
 }
 
-- (void)client_deliverDaySummaries:(id)a3 clearPending:(BOOL)a4 isFinalBatch:(BOOL)a5 daySummaryAnchor:(id)a6 queryUUID:(id)a7
+- (void)client_deliverDaySummaries:(id)summaries clearPending:(BOOL)pending isFinalBatch:(BOOL)batch daySummaryAnchor:(id)anchor queryUUID:(id)d
 {
-  v12 = a3;
-  v13 = a6;
-  v14 = a7;
-  v15 = [(HKQuery *)self queue];
+  summariesCopy = summaries;
+  anchorCopy = anchor;
+  dCopy = d;
+  queue = [(HKQuery *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __103__HKMCDaySummaryQuery_client_deliverDaySummaries_clearPending_isFinalBatch_daySummaryAnchor_queryUUID___block_invoke;
   block[3] = &unk_2796D5370;
   block[4] = self;
-  v20 = v12;
-  v23 = a4;
-  v24 = a5;
-  v21 = v14;
-  v22 = v13;
-  v16 = v13;
-  v17 = v14;
-  v18 = v12;
-  dispatch_async(v15, block);
+  v20 = summariesCopy;
+  pendingCopy = pending;
+  batchCopy = batch;
+  v21 = dCopy;
+  v22 = anchorCopy;
+  v16 = anchorCopy;
+  v17 = dCopy;
+  v18 = summariesCopy;
+  dispatch_async(queue, block);
 }
 
 void __103__HKMCDaySummaryQuery_client_deliverDaySummaries_clearPending_isFinalBatch_daySummaryAnchor_queryUUID___block_invoke(uint64_t a1)
@@ -137,41 +137,41 @@ uint64_t __103__HKMCDaySummaryQuery_client_deliverDaySummaries_clearPending_isFi
   return result;
 }
 
-- (void)queue_populateConfiguration:(id)a3
+- (void)queue_populateConfiguration:(id)configuration
 {
   v5.receiver = self;
   v5.super_class = HKMCDaySummaryQuery;
-  v4 = a3;
-  [(HKQuery *)&v5 queue_populateConfiguration:v4];
-  [v4 setDayIndexRange:{self->_dayIndexRange.start, self->_dayIndexRange.duration, v5.receiver, v5.super_class}];
-  [v4 setAscending:self->_ascending];
-  [v4 setLimit:self->_limit];
+  configurationCopy = configuration;
+  [(HKQuery *)&v5 queue_populateConfiguration:configurationCopy];
+  [configurationCopy setDayIndexRange:{self->_dayIndexRange.start, self->_dayIndexRange.duration, v5.receiver, v5.super_class}];
+  [configurationCopy setAscending:self->_ascending];
+  [configurationCopy setLimit:self->_limit];
 }
 
-+ (void)configureClientInterface:(id)a3
++ (void)configureClientInterface:(id)interface
 {
-  v4 = a3;
-  v6.receiver = a1;
+  interfaceCopy = interface;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___HKMCDaySummaryQuery;
-  objc_msgSendSuper2(&v6, sel_configureClientInterface_, v4);
-  v5 = [v4 hk_setArrayOfClass:objc_opt_class() forSelector:sel_client_deliverDaySummaries_clearPending_isFinalBatch_daySummaryAnchor_queryUUID_ argumentIndex:0 ofReply:0];
+  objc_msgSendSuper2(&v6, sel_configureClientInterface_, interfaceCopy);
+  v5 = [interfaceCopy hk_setArrayOfClass:objc_opt_class() forSelector:sel_client_deliverDaySummaries_clearPending_isFinalBatch_daySummaryAnchor_queryUUID_ argumentIndex:0 ofReply:0];
 }
 
-- (void)queue_deliverError:(id)a3
+- (void)queue_deliverError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = MEMORY[0x253087260](self->_resultsHandler);
-  v6 = [(HKQuery *)self clientQueue];
+  clientQueue = [(HKQuery *)self clientQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __42__HKMCDaySummaryQuery_queue_deliverError___block_invoke;
   block[3] = &unk_2796D4BF8;
-  v10 = v4;
+  v10 = errorCopy;
   v11 = v5;
   block[4] = self;
-  v7 = v4;
+  v7 = errorCopy;
   v8 = v5;
-  dispatch_async(v6, block);
+  dispatch_async(clientQueue, block);
 }
 
 - (void)queue_validate
@@ -185,11 +185,11 @@ uint64_t __103__HKMCDaySummaryQuery_client_deliverDaySummaries_clearPending_isFi
   }
 }
 
-- (void)queue_queryDidDeactivate:(id)a3
+- (void)queue_queryDidDeactivate:(id)deactivate
 {
   v5.receiver = self;
   v5.super_class = HKMCDaySummaryQuery;
-  [(HKQuery *)&v5 queue_queryDidDeactivate:a3];
+  [(HKQuery *)&v5 queue_queryDidDeactivate:deactivate];
   resultsHandler = self->_resultsHandler;
   self->_resultsHandler = 0;
 }

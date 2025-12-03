@@ -1,37 +1,37 @@
 @interface EPSagaTransactionNotifyCompanionOfCompletion
 - (EPTransactionDelegate)delegate;
-- (void)beginRollbackWithRoutingSlipEntry:(id)a3 serviceRegistry:(id)a4;
-- (void)beginTransactionWithRoutingSlipEntry:(id)a3 serviceRegistry:(id)a4;
+- (void)beginRollbackWithRoutingSlipEntry:(id)entry serviceRegistry:(id)registry;
+- (void)beginTransactionWithRoutingSlipEntry:(id)entry serviceRegistry:(id)registry;
 @end
 
 @implementation EPSagaTransactionNotifyCompanionOfCompletion
 
-- (void)beginTransactionWithRoutingSlipEntry:(id)a3 serviceRegistry:(id)a4
+- (void)beginTransactionWithRoutingSlipEntry:(id)entry serviceRegistry:(id)registry
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 serviceFromClass:objc_opt_class()];
+  entryCopy = entry;
+  registryCopy = registry;
+  v8 = [registryCopy serviceFromClass:objc_opt_class()];
 
-  v9 = [v6 objectForKeyedSubscript:@"coreBluetoothID"];
+  v9 = [entryCopy objectForKeyedSubscript:@"coreBluetoothID"];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1000E7FD0;
   v11[3] = &unk_100177410;
-  v12 = v6;
-  v13 = self;
-  v10 = v6;
+  v12 = entryCopy;
+  selfCopy = self;
+  v10 = entryCopy;
   [v8 sendMigrationCompletionWithStatus:0 toIDSBTUUID:v9 withResponseBlock:v11];
 }
 
-- (void)beginRollbackWithRoutingSlipEntry:(id)a3 serviceRegistry:(id)a4
+- (void)beginRollbackWithRoutingSlipEntry:(id)entry serviceRegistry:(id)registry
 {
-  v5 = [a3 queue];
+  queue = [entry queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000E8220;
   block[3] = &unk_100175660;
   block[4] = self;
-  dispatch_async(v5, block);
+  dispatch_async(queue, block);
 }
 
 - (EPTransactionDelegate)delegate

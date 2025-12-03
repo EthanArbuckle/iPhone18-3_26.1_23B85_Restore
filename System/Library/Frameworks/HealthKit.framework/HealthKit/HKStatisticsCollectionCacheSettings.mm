@@ -1,15 +1,15 @@
 @interface HKStatisticsCollectionCacheSettings
-- (HKStatisticsCollectionCacheSettings)initWithCoder:(id)a3;
-- (HKStatisticsCollectionCacheSettings)initWithIdentifier:(id)a3 mode:(int64_t)a4;
-- (void)encodeWithCoder:(id)a3;
+- (HKStatisticsCollectionCacheSettings)initWithCoder:(id)coder;
+- (HKStatisticsCollectionCacheSettings)initWithIdentifier:(id)identifier mode:(int64_t)mode;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKStatisticsCollectionCacheSettings
 
-- (HKStatisticsCollectionCacheSettings)initWithIdentifier:(id)a3 mode:(int64_t)a4
+- (HKStatisticsCollectionCacheSettings)initWithIdentifier:(id)identifier mode:(int64_t)mode
 {
-  v7 = a3;
-  if (!v7)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
     [HKStatisticsCollectionCacheSettings initWithIdentifier:a2 mode:self];
   }
@@ -19,40 +19,40 @@
   v8 = [(HKStatisticsCollectionCacheSettings *)&v12 init];
   if (v8)
   {
-    v9 = [v7 copy];
+    v9 = [identifierCopy copy];
     identifier = v8->_identifier;
     v8->_identifier = v9;
 
-    v8->_mode = a4;
+    v8->_mode = mode;
   }
 
   return v8;
 }
 
-- (HKStatisticsCollectionCacheSettings)initWithCoder:(id)a3
+- (HKStatisticsCollectionCacheSettings)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = HKStatisticsCollectionCacheSettings;
   v5 = [(HKStatisticsCollectionCacheSettings *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v5->_mode = [v4 decodeIntegerForKey:@"mode"];
+    v5->_mode = [coderCopy decodeIntegerForKey:@"mode"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"identifier"];
-  [v5 encodeInteger:self->_mode forKey:@"mode"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
+  [coderCopy encodeInteger:self->_mode forKey:@"mode"];
 }
 
 - (void)initWithIdentifier:(uint64_t)a1 mode:(uint64_t)a2 .cold.1(uint64_t a1, uint64_t a2)

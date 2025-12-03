@@ -1,9 +1,9 @@
 @interface CKTextMetricsRequest
 - (CGSize)adjustedMaximumSize;
-- (CKTextMetricsRequest)initWithAttributedString:(id)a3;
+- (CKTextMetricsRequest)initWithAttributedString:(id)string;
 - (UIEdgeInsets)containerInset;
 - (double)adjustedMaximumWidth;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation CKTextMetricsRequest
@@ -44,15 +44,15 @@
   return result;
 }
 
-- (CKTextMetricsRequest)initWithAttributedString:(id)a3
+- (CKTextMetricsRequest)initWithAttributedString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v11.receiver = self;
   v11.super_class = CKTextMetricsRequest;
   v5 = [(CKTextMetricsRequest *)&v11 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [stringCopy copy];
     v7 = *(v5 + 2);
     *(v5 + 2) = v6;
 
@@ -71,7 +71,7 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [CKTextMetricsRequest alloc];
   v5 = [(NSAttributedString *)self->_attributedString copy];

@@ -1,25 +1,25 @@
 @interface SpeechModelTrainingClient
 + (void)initialize;
 - (SpeechModelTrainingClient)init;
-- (void)buildSpeechProfileForLanguage:(id)a3;
+- (void)buildSpeechProfileForLanguage:(id)language;
 - (void)dealloc;
-- (void)extractBundledOovs:(id)a3 appLmDataFileSandboxExtension:(id)a4 appBundleId:(id)a5 completion:(id)a6;
-- (void)generateAudioWithTexts:(id)a3 language:(id)a4 completion:(id)a5;
-- (void)generateConfusionPairsWithUUID:(id)a3 parameters:(id)a4 language:(id)a5 task:(id)a6 samplingRate:(unint64_t)a7 recognizedNbest:(id)a8 recognizedText:(id)a9 correctedText:(id)a10 selectedAlternatives:(id)a11 completion:(id)a12;
-- (void)generateConfusionPairsWithUUID:(id)a3 parameters:(id)a4 language:(id)a5 task:(id)a6 samplingRate:(unint64_t)a7 recognizedTokens:(id)a8 recognizedText:(id)a9 correctedText:(id)a10 selectedAlternatives:(id)a11 completion:(id)a12;
+- (void)extractBundledOovs:(id)oovs appLmDataFileSandboxExtension:(id)extension appBundleId:(id)id completion:(id)completion;
+- (void)generateAudioWithTexts:(id)texts language:(id)language completion:(id)completion;
+- (void)generateConfusionPairsWithUUID:(id)d parameters:(id)parameters language:(id)language task:(id)task samplingRate:(unint64_t)rate recognizedNbest:(id)nbest recognizedText:(id)text correctedText:(id)self0 selectedAlternatives:(id)self1 completion:(id)self2;
+- (void)generateConfusionPairsWithUUID:(id)d parameters:(id)parameters language:(id)language task:(id)task samplingRate:(unint64_t)rate recognizedTokens:(id)tokens recognizedText:(id)text correctedText:(id)self0 selectedAlternatives:(id)self1 completion:(id)self2;
 - (void)invalidate;
-- (void)trainAllAppLMWithLanguage:(id)a3;
-- (void)trainAllAppLMWithLanguage:(id)a3 completion:(id)a4;
-- (void)trainAppLMWithLanguage:(id)a3 configuration:(id)a4 appBundleId:(id)a5 appLmDataFile:(id)a6 appLmDataFileSandboxExtension:(id)a7;
-- (void)trainAppLMWithLanguage:(id)a3 configuration:(id)a4 appBundleId:(id)a5 appLmDataFile:(id)a6 appLmDataFileSandboxExtension:(id)a7 completion:(id)a8;
-- (void)trainAppLMWithLanguage:(id)a3 configuration:(id)a4 appBundleId:(id)a5 appLmDataFile:(id)a6 appLmModelFile:(id)a7 appLmDataFileSandboxExtension:(id)a8;
-- (void)trainAppLMWithLanguage:(id)a3 configuration:(id)a4 appBundleId:(id)a5 appLmDataFile:(id)a6 appLmModelFile:(id)a7 appLmDataFileSandboxExtension:(id)a8 completion:(id)a9;
-- (void)trainGlobalNNLMwithFidesSessionURL:(id)a3 completion:(id)a4;
-- (void)trainPartialAllAppLMWithLanguage:(id)a3;
-- (void)trainPartialAllAppLMWithLanguage:(id)a3 completion:(id)a4;
-- (void)trainPersonalizedLMWithLanguage:(id)a3 configuration:(id)a4 asset:(id)a5 directory:(id)a6 completion:(id)a7;
-- (void)upperCaseString:(id)a3 completion:(id)a4;
-- (void)wakeUpWithCompletion:(id)a3;
+- (void)trainAllAppLMWithLanguage:(id)language;
+- (void)trainAllAppLMWithLanguage:(id)language completion:(id)completion;
+- (void)trainAppLMWithLanguage:(id)language configuration:(id)configuration appBundleId:(id)id appLmDataFile:(id)file appLmDataFileSandboxExtension:(id)extension;
+- (void)trainAppLMWithLanguage:(id)language configuration:(id)configuration appBundleId:(id)id appLmDataFile:(id)file appLmDataFileSandboxExtension:(id)extension completion:(id)completion;
+- (void)trainAppLMWithLanguage:(id)language configuration:(id)configuration appBundleId:(id)id appLmDataFile:(id)file appLmModelFile:(id)modelFile appLmDataFileSandboxExtension:(id)extension;
+- (void)trainAppLMWithLanguage:(id)language configuration:(id)configuration appBundleId:(id)id appLmDataFile:(id)file appLmModelFile:(id)modelFile appLmDataFileSandboxExtension:(id)extension completion:(id)completion;
+- (void)trainGlobalNNLMwithFidesSessionURL:(id)l completion:(id)completion;
+- (void)trainPartialAllAppLMWithLanguage:(id)language;
+- (void)trainPartialAllAppLMWithLanguage:(id)language completion:(id)completion;
+- (void)trainPersonalizedLMWithLanguage:(id)language configuration:(id)configuration asset:(id)asset directory:(id)directory completion:(id)completion;
+- (void)upperCaseString:(id)string completion:(id)completion;
+- (void)wakeUpWithCompletion:(id)completion;
 - (void)xpcExitClean;
 @end
 
@@ -43,63 +43,63 @@
   [v2 xpcExitClean];
 }
 
-- (void)generateConfusionPairsWithUUID:(id)a3 parameters:(id)a4 language:(id)a5 task:(id)a6 samplingRate:(unint64_t)a7 recognizedNbest:(id)a8 recognizedText:(id)a9 correctedText:(id)a10 selectedAlternatives:(id)a11 completion:(id)a12
+- (void)generateConfusionPairsWithUUID:(id)d parameters:(id)parameters language:(id)language task:(id)task samplingRate:(unint64_t)rate recognizedNbest:(id)nbest recognizedText:(id)text correctedText:(id)self0 selectedAlternatives:(id)self1 completion:(id)self2
 {
   v29[0] = _NSConcreteStackBlock;
   v29[1] = 3221225472;
   v29[2] = sub_10000A440;
   v29[3] = &unk_100252368;
-  v30 = a12;
-  v18 = v30;
-  v19 = a11;
-  v20 = a10;
-  v21 = a9;
-  v22 = a8;
-  v23 = a6;
-  v24 = a5;
-  v25 = a4;
-  v26 = a3;
+  completionCopy = completion;
+  v18 = completionCopy;
+  alternativesCopy = alternatives;
+  correctedTextCopy = correctedText;
+  textCopy = text;
+  nbestCopy = nbest;
+  taskCopy = task;
+  languageCopy = language;
+  parametersCopy = parameters;
+  dCopy = d;
   v27 = [(SpeechModelTrainingClient *)self _serviceProxyWithErrorHandler:v29];
-  [v27 generateConfusionPairsWithUUID:v26 parameters:v25 language:v24 task:v23 samplingRate:a7 recognizedNbest:v22 recognizedText:v21 correctedText:v20 selectedAlternatives:v19 completion:v18];
+  [v27 generateConfusionPairsWithUUID:dCopy parameters:parametersCopy language:languageCopy task:taskCopy samplingRate:rate recognizedNbest:nbestCopy recognizedText:textCopy correctedText:correctedTextCopy selectedAlternatives:alternativesCopy completion:v18];
 }
 
-- (void)generateConfusionPairsWithUUID:(id)a3 parameters:(id)a4 language:(id)a5 task:(id)a6 samplingRate:(unint64_t)a7 recognizedTokens:(id)a8 recognizedText:(id)a9 correctedText:(id)a10 selectedAlternatives:(id)a11 completion:(id)a12
+- (void)generateConfusionPairsWithUUID:(id)d parameters:(id)parameters language:(id)language task:(id)task samplingRate:(unint64_t)rate recognizedTokens:(id)tokens recognizedText:(id)text correctedText:(id)self0 selectedAlternatives:(id)self1 completion:(id)self2
 {
   v29[0] = _NSConcreteStackBlock;
   v29[1] = 3221225472;
   v29[2] = sub_10000A6AC;
   v29[3] = &unk_100252368;
-  v30 = a12;
-  v18 = v30;
-  v19 = a11;
-  v20 = a10;
-  v21 = a9;
-  v22 = a8;
-  v23 = a6;
-  v24 = a5;
-  v25 = a4;
-  v26 = a3;
+  completionCopy = completion;
+  v18 = completionCopy;
+  alternativesCopy = alternatives;
+  correctedTextCopy = correctedText;
+  textCopy = text;
+  tokensCopy = tokens;
+  taskCopy = task;
+  languageCopy = language;
+  parametersCopy = parameters;
+  dCopy = d;
   v27 = [(SpeechModelTrainingClient *)self _serviceProxyWithErrorHandler:v29];
-  [v27 generateConfusionPairsWithUUID:v26 parameters:v25 language:v24 task:v23 samplingRate:a7 recognizedTokens:v22 recognizedText:v21 correctedText:v20 selectedAlternatives:v19 completion:v18];
+  [v27 generateConfusionPairsWithUUID:dCopy parameters:parametersCopy language:languageCopy task:taskCopy samplingRate:rate recognizedTokens:tokensCopy recognizedText:textCopy correctedText:correctedTextCopy selectedAlternatives:alternativesCopy completion:v18];
 }
 
-- (void)generateAudioWithTexts:(id)a3 language:(id)a4 completion:(id)a5
+- (void)generateAudioWithTexts:(id)texts language:(id)language completion:(id)completion
 {
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_10000A88C;
   v12[3] = &unk_100252368;
-  v13 = a5;
-  v8 = v13;
-  v9 = a4;
-  v10 = a3;
+  completionCopy = completion;
+  v8 = completionCopy;
+  languageCopy = language;
+  textsCopy = texts;
   v11 = [(SpeechModelTrainingClient *)self _serviceProxyWithErrorHandler:v12];
-  [v11 generateAudioWithTexts:v10 language:v9 completion:v8];
+  [v11 generateAudioWithTexts:textsCopy language:languageCopy completion:v8];
 }
 
-- (void)buildSpeechProfileForLanguage:(id)a3
+- (void)buildSpeechProfileForLanguage:(id)language
 {
-  v5 = a3;
+  languageCopy = language;
   if (_os_feature_enabled_impl())
   {
     NSLog(@"buildSpeechProfile is unavailable when siri_vocabulary_speech_profile feature flag is enabled.");
@@ -108,171 +108,171 @@
   else
   {
     v4 = [(SpeechModelTrainingClient *)self _serviceProxyWithErrorHandler:&stru_10024E280];
-    [v4 buildSpeechProfileForLanguage:v5];
+    [v4 buildSpeechProfileForLanguage:languageCopy];
   }
 }
 
-- (void)extractBundledOovs:(id)a3 appLmDataFileSandboxExtension:(id)a4 appBundleId:(id)a5 completion:(id)a6
+- (void)extractBundledOovs:(id)oovs appLmDataFileSandboxExtension:(id)extension appBundleId:(id)id completion:(id)completion
 {
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_10000AE38;
   v15[3] = &unk_100252368;
-  v16 = a6;
-  v10 = v16;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  completionCopy = completion;
+  v10 = completionCopy;
+  idCopy = id;
+  extensionCopy = extension;
+  oovsCopy = oovs;
   v14 = [(SpeechModelTrainingClient *)self _serviceProxyWithErrorHandler:v15];
-  [v14 extractBundledOovs:v13 appLmDataFileSandboxExtension:v12 appBundleId:v11 completion:v10];
+  [v14 extractBundledOovs:oovsCopy appLmDataFileSandboxExtension:extensionCopy appBundleId:idCopy completion:v10];
 }
 
-- (void)trainPartialAllAppLMWithLanguage:(id)a3 completion:(id)a4
+- (void)trainPartialAllAppLMWithLanguage:(id)language completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  languageCopy = language;
   v8 = [(SpeechModelTrainingClient *)self _serviceProxyWithErrorHandler:&stru_10024E260];
-  [v8 trainPartialAllAppLMWithLanguage:v7 completion:v6];
+  [v8 trainPartialAllAppLMWithLanguage:languageCopy completion:completionCopy];
 }
 
-- (void)trainPartialAllAppLMWithLanguage:(id)a3
+- (void)trainPartialAllAppLMWithLanguage:(id)language
 {
-  v4 = a3;
+  languageCopy = language;
   v5 = [(SpeechModelTrainingClient *)self _serviceProxyWithErrorHandler:&stru_10024E240];
-  [v5 trainPartialAllAppLMWithLanguage:v4];
+  [v5 trainPartialAllAppLMWithLanguage:languageCopy];
 }
 
-- (void)trainAllAppLMWithLanguage:(id)a3
+- (void)trainAllAppLMWithLanguage:(id)language
 {
-  v4 = a3;
+  languageCopy = language;
   v5 = [(SpeechModelTrainingClient *)self _serviceProxyWithErrorHandler:&stru_10024E220];
-  [v5 trainAllAppLMWithLanguage:v4];
+  [v5 trainAllAppLMWithLanguage:languageCopy];
 }
 
-- (void)trainAllAppLMWithLanguage:(id)a3 completion:(id)a4
+- (void)trainAllAppLMWithLanguage:(id)language completion:(id)completion
 {
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10000B404;
   v9[3] = &unk_100252368;
-  v10 = a4;
-  v6 = v10;
-  v7 = a3;
+  completionCopy = completion;
+  v6 = completionCopy;
+  languageCopy = language;
   v8 = [(SpeechModelTrainingClient *)self _serviceProxyWithErrorHandler:v9];
-  [v8 trainAllAppLMWithLanguage:v7 completion:v6];
+  [v8 trainAllAppLMWithLanguage:languageCopy completion:v6];
 }
 
-- (void)wakeUpWithCompletion:(id)a3
+- (void)wakeUpWithCompletion:(id)completion
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10000B5B8;
   v6[3] = &unk_100252368;
-  v7 = a3;
-  v4 = v7;
+  completionCopy = completion;
+  v4 = completionCopy;
   v5 = [(SpeechModelTrainingClient *)self _serviceProxyWithErrorHandler:v6];
   [v5 wakeUpWithCompletion:v4];
 }
 
-- (void)trainAppLMWithLanguage:(id)a3 configuration:(id)a4 appBundleId:(id)a5 appLmDataFile:(id)a6 appLmModelFile:(id)a7 appLmDataFileSandboxExtension:(id)a8 completion:(id)a9
+- (void)trainAppLMWithLanguage:(id)language configuration:(id)configuration appBundleId:(id)id appLmDataFile:(id)file appLmModelFile:(id)modelFile appLmDataFileSandboxExtension:(id)extension completion:(id)completion
 {
-  v16 = a9;
-  v17 = a8;
-  v18 = a7;
-  v19 = a6;
-  v20 = a5;
-  v21 = a4;
-  v22 = a3;
+  completionCopy = completion;
+  extensionCopy = extension;
+  modelFileCopy = modelFile;
+  fileCopy = file;
+  idCopy = id;
+  configurationCopy = configuration;
+  languageCopy = language;
   v23 = [(SpeechModelTrainingClient *)self _serviceProxyWithErrorHandler:&stru_10024E200];
-  [v23 trainAppLMWithLanguage:v22 configuration:v21 appBundleId:v20 appLmDataFile:v19 appLmModelFile:v18 appLmDataFileSandboxExtension:v17 completion:v16];
+  [v23 trainAppLMWithLanguage:languageCopy configuration:configurationCopy appBundleId:idCopy appLmDataFile:fileCopy appLmModelFile:modelFileCopy appLmDataFileSandboxExtension:extensionCopy completion:completionCopy];
 }
 
-- (void)trainAppLMWithLanguage:(id)a3 configuration:(id)a4 appBundleId:(id)a5 appLmDataFile:(id)a6 appLmModelFile:(id)a7 appLmDataFileSandboxExtension:(id)a8
+- (void)trainAppLMWithLanguage:(id)language configuration:(id)configuration appBundleId:(id)id appLmDataFile:(id)file appLmModelFile:(id)modelFile appLmDataFileSandboxExtension:(id)extension
 {
-  v14 = a8;
-  v15 = a7;
-  v16 = a6;
-  v17 = a5;
-  v18 = a4;
-  v19 = a3;
+  extensionCopy = extension;
+  modelFileCopy = modelFile;
+  fileCopy = file;
+  idCopy = id;
+  configurationCopy = configuration;
+  languageCopy = language;
   v20 = [(SpeechModelTrainingClient *)self _serviceProxyWithErrorHandler:&stru_10024E1E0];
-  [v20 trainAppLMWithLanguage:v19 configuration:v18 appBundleId:v17 appLmDataFile:v16 appLmModelFile:v15 appLmDataFileSandboxExtension:v14];
+  [v20 trainAppLMWithLanguage:languageCopy configuration:configurationCopy appBundleId:idCopy appLmDataFile:fileCopy appLmModelFile:modelFileCopy appLmDataFileSandboxExtension:extensionCopy];
 }
 
-- (void)trainAppLMWithLanguage:(id)a3 configuration:(id)a4 appBundleId:(id)a5 appLmDataFile:(id)a6 appLmDataFileSandboxExtension:(id)a7
+- (void)trainAppLMWithLanguage:(id)language configuration:(id)configuration appBundleId:(id)id appLmDataFile:(id)file appLmDataFileSandboxExtension:(id)extension
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
+  extensionCopy = extension;
+  fileCopy = file;
+  idCopy = id;
+  configurationCopy = configuration;
+  languageCopy = language;
   v17 = [(SpeechModelTrainingClient *)self _serviceProxyWithErrorHandler:&stru_10024E1C0];
-  [v17 trainAppLMWithLanguage:v16 configuration:v15 appBundleId:v14 appLmDataFile:v13 appLmDataFileSandboxExtension:v12];
+  [v17 trainAppLMWithLanguage:languageCopy configuration:configurationCopy appBundleId:idCopy appLmDataFile:fileCopy appLmDataFileSandboxExtension:extensionCopy];
 }
 
-- (void)trainAppLMWithLanguage:(id)a3 configuration:(id)a4 appBundleId:(id)a5 appLmDataFile:(id)a6 appLmDataFileSandboxExtension:(id)a7 completion:(id)a8
+- (void)trainAppLMWithLanguage:(id)language configuration:(id)configuration appBundleId:(id)id appLmDataFile:(id)file appLmDataFileSandboxExtension:(id)extension completion:(id)completion
 {
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
   v21[2] = sub_10000BD20;
   v21[3] = &unk_100252368;
-  v22 = a8;
-  v14 = v22;
-  v15 = a7;
-  v16 = a6;
-  v17 = a5;
-  v18 = a4;
-  v19 = a3;
+  completionCopy = completion;
+  v14 = completionCopy;
+  extensionCopy = extension;
+  fileCopy = file;
+  idCopy = id;
+  configurationCopy = configuration;
+  languageCopy = language;
   v20 = [(SpeechModelTrainingClient *)self _serviceProxyWithErrorHandler:v21];
-  [v20 trainAppLMWithLanguage:v19 configuration:v18 appBundleId:v17 appLmDataFile:v16 appLmDataFileSandboxExtension:v15 completion:v14];
+  [v20 trainAppLMWithLanguage:languageCopy configuration:configurationCopy appBundleId:idCopy appLmDataFile:fileCopy appLmDataFileSandboxExtension:extensionCopy completion:v14];
 }
 
-- (void)trainGlobalNNLMwithFidesSessionURL:(id)a3 completion:(id)a4
+- (void)trainGlobalNNLMwithFidesSessionURL:(id)l completion:(id)completion
 {
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10000BEF8;
   v9[3] = &unk_100252368;
-  v10 = a4;
-  v6 = v10;
-  v7 = a3;
+  completionCopy = completion;
+  v6 = completionCopy;
+  lCopy = l;
   v8 = [(SpeechModelTrainingClient *)self _serviceProxyWithErrorHandler:v9];
-  [v8 trainGlobalNNLMwithFidesSessionURL:v7 completion:v6];
+  [v8 trainGlobalNNLMwithFidesSessionURL:lCopy completion:v6];
 }
 
-- (void)trainPersonalizedLMWithLanguage:(id)a3 configuration:(id)a4 asset:(id)a5 directory:(id)a6 completion:(id)a7
+- (void)trainPersonalizedLMWithLanguage:(id)language configuration:(id)configuration asset:(id)asset directory:(id)directory completion:(id)completion
 {
-  v39 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  languageCopy = language;
+  configurationCopy = configuration;
+  assetCopy = asset;
+  directoryCopy = directory;
   v45[0] = _NSConcreteStackBlock;
   v45[1] = 3221225472;
   v45[2] = sub_10000C7D4;
   v45[3] = &unk_10024E1A0;
-  v14 = a7;
-  v46 = v14;
+  completionCopy = completion;
+  v46 = completionCopy;
   v40 = objc_retainBlock(v45);
   v15 = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, 1uLL, 1);
-  v16 = [v15 firstObject];
+  firstObject = [v15 firstObject];
 
-  v17 = [v16 stringByAppendingPathComponent:@"Assistant/SpeechPersonalizedLM"];
-  v18 = [v17 stringByStandardizingPath];
+  v17 = [firstObject stringByAppendingPathComponent:@"Assistant/SpeechPersonalizedLM"];
+  stringByStandardizingPath = [v17 stringByStandardizingPath];
 
-  v19 = [v16 stringByAppendingPathComponent:@"Assistant/SpeechPersonalizedLM_Fides"];
-  v20 = [v19 stringByStandardizingPath];
+  v19 = [firstObject stringByAppendingPathComponent:@"Assistant/SpeechPersonalizedLM_Fides"];
+  stringByStandardizingPath2 = [v19 stringByStandardizingPath];
 
   v21 = qword_10029DF20;
   if (os_log_type_enabled(qword_10029DF20, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v50 = v18;
+    v50 = stringByStandardizingPath;
     v51 = 2112;
-    v52 = v20;
+    v52 = stringByStandardizingPath2;
     _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_INFO, "personalizedLMPath=%@ fidesPersonalizedLMPath=%@", buf, 0x16u);
   }
 
-  if ([v13 isEqualToString:v18])
+  if ([directoryCopy isEqualToString:stringByStandardizingPath])
   {
     v22 = qword_10029DF20;
     if (os_log_type_enabled(qword_10029DF20, OS_LOG_TYPE_INFO))
@@ -281,18 +281,18 @@
       _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_INFO, "Client is 24-hour job", buf, 2u);
     }
 
-    v23 = self;
-    v24 = v39;
-    v25 = v39;
-    v26 = v11;
-    v27 = v12;
+    selfCopy2 = self;
+    v24 = languageCopy;
+    v25 = languageCopy;
+    v26 = configurationCopy;
+    v27 = assetCopy;
     v28 = 0;
 LABEL_11:
-    [(SpeechModelTrainingClient *)v23 trainPersonalizedLMWithLanguage:v25 configuration:v26 asset:v27 fides:v28 activity:0 completion:v14];
+    [(SpeechModelTrainingClient *)selfCopy2 trainPersonalizedLMWithLanguage:v25 configuration:v26 asset:v27 fides:v28 activity:0 completion:completionCopy];
     goto LABEL_12;
   }
 
-  if ([v13 isEqualToString:v20])
+  if ([directoryCopy isEqualToString:stringByStandardizingPath2])
   {
     v29 = qword_10029DF20;
     if (os_log_type_enabled(qword_10029DF20, OS_LOG_TYPE_INFO))
@@ -301,20 +301,20 @@ LABEL_11:
       _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_INFO, "Client is DictationPersonalizationFidesPlugin", buf, 2u);
     }
 
-    v23 = self;
-    v24 = v39;
-    v25 = v39;
-    v26 = v11;
-    v27 = v12;
+    selfCopy2 = self;
+    v24 = languageCopy;
+    v25 = languageCopy;
+    v26 = configurationCopy;
+    v27 = assetCopy;
     v28 = 1;
     goto LABEL_11;
   }
 
-  if ([v13 length])
+  if ([directoryCopy length])
   {
-    v30 = [[NSString alloc] initWithFormat:@"Input directory path(%@) does not match expected path", v13];
+    directoryCopy = [[NSString alloc] initWithFormat:@"Input directory path(%@) does not match expected path", directoryCopy];
     v31 = qword_10029DF20;
-    v32 = v30;
+    v32 = directoryCopy;
     if (os_log_type_enabled(qword_10029DF20, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
@@ -328,7 +328,7 @@ LABEL_11:
     v34 = [NSError errorWithDomain:@"com.apple.siri.speechmodeltraining" code:202 userInfo:v33];
     (v40[2])(v40, 0, v34);
 
-    v24 = v39;
+    v24 = languageCopy;
   }
 
   else
@@ -352,22 +352,22 @@ LABEL_11:
     v41[2] = sub_10000C8DC;
     v41[3] = &unk_10024E1A0;
     v42 = v36;
-    v24 = v39;
-    [v37 trainPersonalizedLMWithLanguage:v39 configuration:v11 fides:0 write:0 completion:v41];
+    v24 = languageCopy;
+    [v37 trainPersonalizedLMWithLanguage:languageCopy configuration:configurationCopy fides:0 write:0 completion:v41];
   }
 
 LABEL_12:
 }
 
-- (void)upperCaseString:(id)a3 completion:(id)a4
+- (void)upperCaseString:(id)string completion:(id)completion
 {
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_10000CA68;
   v15[3] = &unk_10024E150;
-  v16 = a4;
-  v6 = v16;
-  v7 = a3;
+  completionCopy = completion;
+  v6 = completionCopy;
+  stringCopy = string;
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10000CA80;
@@ -381,7 +381,7 @@ LABEL_12:
   v11[3] = &unk_10024E178;
   v12 = v8;
   v10 = v8;
-  [v9 upperCaseString:v7 withReply:v11];
+  [v9 upperCaseString:stringCopy withReply:v11];
 }
 
 - (void)dealloc
@@ -441,7 +441,7 @@ LABEL_12:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = os_log_create("com.apple.speech.speechmodeltraining", "SpeechModelTrainingClient");
     v3 = qword_10029DF20;

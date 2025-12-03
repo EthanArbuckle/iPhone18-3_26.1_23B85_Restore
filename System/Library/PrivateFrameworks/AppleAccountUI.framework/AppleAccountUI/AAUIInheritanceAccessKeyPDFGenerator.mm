@@ -1,77 +1,77 @@
 @interface AAUIInheritanceAccessKeyPDFGenerator
-- (AAUIInheritanceAccessKeyPDFGenerator)initWithAppleAccount:(id)a3 localContactInfo:(id)a4;
-- (double)_renderAccountDetailsWithPageRect:(CGRect)a3 yPosition:(double)a4;
-- (double)_renderMessageWithPageRect:(CGRect)a3 yPosition:(double)a4;
-- (double)_renderQRCodeImageWithPageRect:(CGRect)a3 yPosition:(double)a4;
-- (double)_renderRectBoxWithPageRect:(CGRect)a3 yPosition:(double)a4 drawContext:(CGContext *)a5;
-- (double)_renderTitleWithPageRect:(CGRect)a3;
-- (id)_attributedStringWithField:(id)a3 value:(id)a4;
+- (AAUIInheritanceAccessKeyPDFGenerator)initWithAppleAccount:(id)account localContactInfo:(id)info;
+- (double)_renderAccountDetailsWithPageRect:(CGRect)rect yPosition:(double)position;
+- (double)_renderMessageWithPageRect:(CGRect)rect yPosition:(double)position;
+- (double)_renderQRCodeImageWithPageRect:(CGRect)rect yPosition:(double)position;
+- (double)_renderRectBoxWithPageRect:(CGRect)rect yPosition:(double)position drawContext:(CGContext *)context;
+- (double)_renderTitleWithPageRect:(CGRect)rect;
+- (id)_attributedStringWithField:(id)field value:(id)value;
 - (id)_pdfMetaData;
 - (id)createPDFDocumentData;
-- (void)_renderAccessKeyWithPageRect:(CGRect)a3 yPosition:(double)a4;
-- (void)_renderFooterWithPageRect:(CGRect)a3 yPosition:(double)a4;
-- (void)_renderLogoImageWithPageRect:(CGRect)a3;
+- (void)_renderAccessKeyWithPageRect:(CGRect)rect yPosition:(double)position;
+- (void)_renderFooterWithPageRect:(CGRect)rect yPosition:(double)position;
+- (void)_renderLogoImageWithPageRect:(CGRect)rect;
 @end
 
 @implementation AAUIInheritanceAccessKeyPDFGenerator
 
-- (AAUIInheritanceAccessKeyPDFGenerator)initWithAppleAccount:(id)a3 localContactInfo:(id)a4
+- (AAUIInheritanceAccessKeyPDFGenerator)initWithAppleAccount:(id)account localContactInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
+  accountCopy = account;
+  infoCopy = info;
   v28.receiver = self;
   v28.super_class = AAUIInheritanceAccessKeyPDFGenerator;
   v8 = [(AAUIInheritanceAccessKeyPDFGenerator *)&v28 init];
   if (v8)
   {
-    if (([v7 contactType] & 4) != 0)
+    if (([infoCopy contactType] & 4) != 0)
     {
-      v16 = [v6 aa_fullName];
+      aa_fullName = [accountCopy aa_fullName];
       ownerDisplayName = v8->_ownerDisplayName;
-      v8->_ownerDisplayName = v16;
+      v8->_ownerDisplayName = aa_fullName;
 
-      v18 = [v6 aa_firstName];
+      aa_firstName = [accountCopy aa_firstName];
       ownerFirstName = v8->_ownerFirstName;
-      v8->_ownerFirstName = v18;
+      v8->_ownerFirstName = aa_firstName;
 
-      v20 = [v6 aa_primaryEmail];
+      aa_primaryEmail = [accountCopy aa_primaryEmail];
       ownerEmailAddress = v8->_ownerEmailAddress;
-      v8->_ownerEmailAddress = v20;
+      v8->_ownerEmailAddress = aa_primaryEmail;
 
-      v15 = [v7 displayName];
+      displayName = [infoCopy displayName];
     }
 
     else
     {
-      if (([v7 contactType] & 8) == 0)
+      if (([infoCopy contactType] & 8) == 0)
       {
 LABEL_7:
         v23 = objc_alloc(MEMORY[0x1E698B8D8]);
-        v24 = [v7 inheritanceContactInfo];
-        v25 = [v23 initWithContactInfo:v24 contactType:{objc_msgSend(v7, "contactType")}];
+        inheritanceContactInfo = [infoCopy inheritanceContactInfo];
+        v25 = [v23 initWithContactInfo:inheritanceContactInfo contactType:{objc_msgSend(infoCopy, "contactType")}];
         contactController = v8->_contactController;
         v8->_contactController = v25;
 
         goto LABEL_8;
       }
 
-      v9 = [v7 displayName];
+      displayName2 = [infoCopy displayName];
       v10 = v8->_ownerDisplayName;
-      v8->_ownerDisplayName = v9;
+      v8->_ownerDisplayName = displayName2;
 
-      v11 = [v7 firstName];
+      firstName = [infoCopy firstName];
       v12 = v8->_ownerFirstName;
-      v8->_ownerFirstName = v11;
+      v8->_ownerFirstName = firstName;
 
-      v13 = [v7 handle];
+      handle = [infoCopy handle];
       v14 = v8->_ownerEmailAddress;
-      v8->_ownerEmailAddress = v13;
+      v8->_ownerEmailAddress = handle;
 
-      v15 = [v6 aa_fullName];
+      displayName = [accountCopy aa_fullName];
     }
 
     contactDisplayName = v8->_contactDisplayName;
-    v8->_contactDisplayName = v15;
+    v8->_contactDisplayName = displayName;
 
     goto LABEL_7;
   }
@@ -84,8 +84,8 @@ LABEL_8:
 - (id)createPDFDocumentData
 {
   v3 = objc_alloc_init(MEMORY[0x1E69DCA90]);
-  v4 = [(AAUIInheritanceAccessKeyPDFGenerator *)self _pdfMetaData];
-  [v3 setDocumentInfo:v4];
+  _pdfMetaData = [(AAUIInheritanceAccessKeyPDFGenerator *)self _pdfMetaData];
+  [v3 setDocumentInfo:_pdfMetaData];
 
   v5 = [objc_alloc(MEMORY[0x1E69DCA88]) initWithBounds:v3 format:{0.0, 0.0, 612.0, 792.0}];
   v8[0] = MEMORY[0x1E69E9820];
@@ -131,19 +131,19 @@ uint64_t __61__AAUIInheritanceAccessKeyPDFGenerator_createPDFDocumentData__block
 {
   v6[1] = *MEMORY[0x1E69E9840];
   v5 = *MEMORY[0x1E695F3C0];
-  v2 = [MEMORY[0x1E698B9B0] printAccessKeyDocumentMessage];
-  v6[0] = v2;
+  printAccessKeyDocumentMessage = [MEMORY[0x1E698B9B0] printAccessKeyDocumentMessage];
+  v6[0] = printAccessKeyDocumentMessage;
   v3 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v6 forKeys:&v5 count:1];
 
   return v3;
 }
 
-- (void)_renderLogoImageWithPageRect:(CGRect)a3
+- (void)_renderLogoImageWithPageRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v18 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"applelogo"];
   v20.origin.x = x;
   v20.origin.y = y;
@@ -175,12 +175,12 @@ uint64_t __61__AAUIInheritanceAccessKeyPDFGenerator_createPDFDocumentData__block
   [v18 drawInRect:{v17, CGRectGetHeight(v23) * 0.035, v14, v16}];
 }
 
-- (double)_renderTitleWithPageRect:(CGRect)a3
+- (double)_renderTitleWithPageRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v21[2] = *MEMORY[0x1E69E9840];
   v7 = [MEMORY[0x1E69DB878] systemFontOfSize:26.0 weight:*MEMORY[0x1E69DB980]];
   v8 = objc_alloc_init(MEMORY[0x1E69DB7C8]);
@@ -193,8 +193,8 @@ uint64_t __61__AAUIInheritanceAccessKeyPDFGenerator_createPDFDocumentData__block
   v21[1] = v8;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v21 forKeys:v20 count:2];
   v11 = objc_alloc(MEMORY[0x1E696AAB0]);
-  v12 = [MEMORY[0x1E698B9B0] printAccessKeyDocumentTitle];
-  v13 = [v11 initWithString:v12 attributes:v10];
+  printAccessKeyDocumentTitle = [MEMORY[0x1E698B9B0] printAccessKeyDocumentTitle];
+  v13 = [v11 initWithString:printAccessKeyDocumentTitle attributes:v10];
 
   v22.origin.x = x;
   v22.origin.y = y;
@@ -226,23 +226,23 @@ uint64_t __61__AAUIInheritanceAccessKeyPDFGenerator_createPDFDocumentData__block
   return v15 + v18;
 }
 
-- (double)_renderAccountDetailsWithPageRect:(CGRect)a3 yPosition:(double)a4
+- (double)_renderAccountDetailsWithPageRect:(CGRect)rect yPosition:(double)position
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v10 = objc_alloc_init(MEMORY[0x1E696AD40]);
-  v11 = [MEMORY[0x1E698B9B0] printAccessKeyOwnerNameField];
-  v12 = [(AAUIInheritanceAccessKeyPDFGenerator *)self _attributedStringWithField:v11 value:self->_ownerDisplayName];
+  printAccessKeyOwnerNameField = [MEMORY[0x1E698B9B0] printAccessKeyOwnerNameField];
+  v12 = [(AAUIInheritanceAccessKeyPDFGenerator *)self _attributedStringWithField:printAccessKeyOwnerNameField value:self->_ownerDisplayName];
   [v10 appendAttributedString:v12];
 
-  v13 = [MEMORY[0x1E698B9B0] printAccessKeyOwnerAppleIDField];
-  v14 = [(AAUIInheritanceAccessKeyPDFGenerator *)self _attributedStringWithField:v13 value:self->_ownerEmailAddress];
+  printAccessKeyOwnerAppleIDField = [MEMORY[0x1E698B9B0] printAccessKeyOwnerAppleIDField];
+  v14 = [(AAUIInheritanceAccessKeyPDFGenerator *)self _attributedStringWithField:printAccessKeyOwnerAppleIDField value:self->_ownerEmailAddress];
   [v10 appendAttributedString:v14];
 
-  v15 = [MEMORY[0x1E698B9B0] printAccessKeyBeneficiaryNameField];
-  v16 = [(AAUIInheritanceAccessKeyPDFGenerator *)self _attributedStringWithField:v15 value:self->_contactDisplayName];
+  printAccessKeyBeneficiaryNameField = [MEMORY[0x1E698B9B0] printAccessKeyBeneficiaryNameField];
+  v16 = [(AAUIInheritanceAccessKeyPDFGenerator *)self _attributedStringWithField:printAccessKeyBeneficiaryNameField value:self->_contactDisplayName];
   [v10 appendAttributedString:v16];
 
   v22.origin.x = x;
@@ -265,49 +265,49 @@ uint64_t __61__AAUIInheritanceAccessKeyPDFGenerator_createPDFDocumentData__block
   v25.size.width = width;
   v25.size.height = height;
   v20 = CGRectGetHeight(v25) * 0.07;
-  [v10 drawInRect:{v17, a4, v19, v20}];
+  [v10 drawInRect:{v17, position, v19, v20}];
 
-  return v20 + a4;
+  return v20 + position;
 }
 
-- (id)_attributedStringWithField:(id)a3 value:(id)a4
+- (id)_attributedStringWithField:(id)field value:(id)value
 {
   v24[1] = *MEMORY[0x1E69E9840];
   v5 = MEMORY[0x1E696AD40];
-  v6 = a4;
-  v7 = a3;
+  valueCopy = value;
+  fieldCopy = field;
   v8 = objc_alloc_init(v5);
   v9 = [MEMORY[0x1E69DB878] systemFontOfSize:12.0 weight:*MEMORY[0x1E69DB980]];
-  v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@: ", v7];
+  fieldCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@: ", fieldCopy];
 
   v11 = objc_alloc(MEMORY[0x1E696AAB0]);
   v23 = *MEMORY[0x1E69DB648];
   v12 = v23;
   v24[0] = v9;
   v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v24 forKeys:&v23 count:1];
-  v14 = [v11 initWithString:v10 attributes:v13];
+  v14 = [v11 initWithString:fieldCopy attributes:v13];
 
   [v8 appendAttributedString:v14];
   v15 = [MEMORY[0x1E69DB878] systemFontOfSize:12.0 weight:*MEMORY[0x1E69DB978]];
-  v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@\n", v6];
+  valueCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@\n", valueCopy];
 
   v17 = objc_alloc(MEMORY[0x1E696AAB0]);
   v21 = v12;
   v22 = v15;
   v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v22 forKeys:&v21 count:1];
-  v19 = [v17 initWithString:v16 attributes:v18];
+  v19 = [v17 initWithString:valueCopy attributes:v18];
 
   [v8 appendAttributedString:v19];
 
   return v8;
 }
 
-- (double)_renderMessageWithPageRect:(CGRect)a3 yPosition:(double)a4
+- (double)_renderMessageWithPageRect:(CGRect)rect yPosition:(double)position
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v23[2] = *MEMORY[0x1E69E9840];
   v10 = [MEMORY[0x1E69DB878] systemFontOfSize:12.0 weight:*MEMORY[0x1E69DB978]];
   v11 = objc_alloc_init(MEMORY[0x1E69DB7C8]);
@@ -321,8 +321,8 @@ uint64_t __61__AAUIInheritanceAccessKeyPDFGenerator_createPDFDocumentData__block
   v23[1] = v11;
   v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:v22 count:2];
   v14 = MEMORY[0x1E696AEC0];
-  v15 = [MEMORY[0x1E698B9B0] printAccessKeyDocumentMessage];
-  v16 = [v14 stringWithFormat:v15, self->_ownerFirstName, self->_ownerFirstName];
+  printAccessKeyDocumentMessage = [MEMORY[0x1E698B9B0] printAccessKeyDocumentMessage];
+  v16 = [v14 stringWithFormat:printAccessKeyDocumentMessage, self->_ownerFirstName, self->_ownerFirstName];
 
   v17 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v16 attributes:v13];
   v24.origin.x = x;
@@ -340,22 +340,22 @@ uint64_t __61__AAUIInheritanceAccessKeyPDFGenerator_createPDFDocumentData__block
   v26.size.width = width;
   v26.size.height = height;
   v20 = CGRectGetHeight(v26) * 0.26;
-  [v17 drawInRect:{v18, a4, v19, v20}];
+  [v17 drawInRect:{v18, position, v19, v20}];
 
-  return v20 + a4;
+  return v20 + position;
 }
 
-- (double)_renderRectBoxWithPageRect:(CGRect)a3 yPosition:(double)a4 drawContext:(CGContext *)a5
+- (double)_renderRectBoxWithPageRect:(CGRect)rect yPosition:(double)position drawContext:(CGContext *)context
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  CGContextSaveGState(a5);
-  CGContextSetLineWidth(a5, 1.0);
-  v11 = [MEMORY[0x1E69DC888] lightGrayColor];
-  Components = CGColorGetComponents([v11 cgColor]);
-  CGContextSetStrokeColor(a5, Components);
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  CGContextSaveGState(context);
+  CGContextSetLineWidth(context, 1.0);
+  lightGrayColor = [MEMORY[0x1E69DC888] lightGrayColor];
+  Components = CGColorGetComponents([lightGrayColor cgColor]);
+  CGContextSetStrokeColor(context, Components);
 
   v18.origin.x = x;
   v18.origin.y = y;
@@ -378,23 +378,23 @@ uint64_t __61__AAUIInheritanceAccessKeyPDFGenerator_createPDFDocumentData__block
   v21.size.height = height;
   v16 = CGRectGetHeight(v21) * 0.28;
   v22.origin.x = v13;
-  v22.origin.y = a4;
+  v22.origin.y = position;
   v22.size.width = v15;
   v22.size.height = v16;
-  CGContextAddRect(a5, v22);
-  CGContextStrokePath(a5);
-  CGContextRestoreGState(a5);
-  return v16 + a4;
+  CGContextAddRect(context, v22);
+  CGContextStrokePath(context);
+  CGContextRestoreGState(context);
+  return v16 + position;
 }
 
-- (double)_renderQRCodeImageWithPageRect:(CGRect)a3 yPosition:(double)a4
+- (double)_renderQRCodeImageWithPageRect:(CGRect)rect yPosition:(double)position
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v9 = MEMORY[0x1E69DCAB8];
-  v10 = [(AAInheritanceContactController *)self->_contactController accessKeyQRCodeImageDataWithSize:CGRectGetWidth(a3) * 0.5];
+  v10 = [(AAInheritanceContactController *)self->_contactController accessKeyQRCodeImageDataWithSize:CGRectGetWidth(rect) * 0.5];
   v11 = [v9 imageWithData:v10];
 
   v23.origin.x = x;
@@ -419,17 +419,17 @@ uint64_t __61__AAUIInheritanceAccessKeyPDFGenerator_createPDFDocumentData__block
   v25.origin.y = y;
   v25.size.width = width;
   v25.size.height = height;
-  [v11 drawInRect:{(CGRectGetWidth(v25) - v19) * 0.5, a4, v19, v21}];
+  [v11 drawInRect:{(CGRectGetWidth(v25) - v19) * 0.5, position, v19, v21}];
 
-  return v21 + a4;
+  return v21 + position;
 }
 
-- (void)_renderAccessKeyWithPageRect:(CGRect)a3 yPosition:(double)a4
+- (void)_renderAccessKeyWithPageRect:(CGRect)rect yPosition:(double)position
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v22[2] = *MEMORY[0x1E69E9840];
   v10 = [MEMORY[0x1E69DB878] systemFontOfSize:18.0 weight:*MEMORY[0x1E69DB980]];
   v11 = objc_alloc_init(MEMORY[0x1E69DB7C8]);
@@ -442,9 +442,9 @@ uint64_t __61__AAUIInheritanceAccessKeyPDFGenerator_createPDFDocumentData__block
   v22[1] = v11;
   v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v22 forKeys:v21 count:2];
   v14 = MEMORY[0x1E696AEC0];
-  v15 = [MEMORY[0x1E698B9B0] printAccessKeyPrefix];
-  v16 = [(AAInheritanceContactController *)self->_contactController accessKeyString];
-  v17 = [v14 stringWithFormat:@"%@: %@", v15, v16];
+  printAccessKeyPrefix = [MEMORY[0x1E698B9B0] printAccessKeyPrefix];
+  accessKeyString = [(AAInheritanceContactController *)self->_contactController accessKeyString];
+  v17 = [v14 stringWithFormat:@"%@: %@", printAccessKeyPrefix, accessKeyString];
 
   v18 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v17 attributes:v13];
   v23.origin.x = x;
@@ -461,15 +461,15 @@ uint64_t __61__AAUIInheritanceAccessKeyPDFGenerator_createPDFDocumentData__block
   v25.origin.y = y;
   v25.size.width = width;
   v25.size.height = height;
-  [v18 drawInRect:{v19, a4, v20, CGRectGetHeight(v25) * 0.12}];
+  [v18 drawInRect:{v19, position, v20, CGRectGetHeight(v25) * 0.12}];
 }
 
-- (void)_renderFooterWithPageRect:(CGRect)a3 yPosition:(double)a4
+- (void)_renderFooterWithPageRect:(CGRect)rect yPosition:(double)position
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v20[2] = *MEMORY[0x1E69E9840];
   v9 = [MEMORY[0x1E69DB878] systemFontOfSize:12.0 weight:*MEMORY[0x1E69DB980]];
   v10 = objc_alloc_init(MEMORY[0x1E69DB7C8]);
@@ -482,8 +482,8 @@ uint64_t __61__AAUIInheritanceAccessKeyPDFGenerator_createPDFDocumentData__block
   v20[1] = v10;
   v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:v19 count:2];
   v13 = objc_alloc(MEMORY[0x1E696AAB0]);
-  v14 = [MEMORY[0x1E698B9B0] printAccessKeyFooter];
-  v15 = [v13 initWithString:v14 attributes:v12];
+  printAccessKeyFooter = [MEMORY[0x1E698B9B0] printAccessKeyFooter];
+  v15 = [v13 initWithString:printAccessKeyFooter attributes:v12];
 
   v21.origin.x = x;
   v21.origin.y = y;
@@ -504,7 +504,7 @@ uint64_t __61__AAUIInheritanceAccessKeyPDFGenerator_createPDFDocumentData__block
   v24.origin.y = y;
   v24.size.width = width;
   v24.size.height = height;
-  [v15 drawInRect:{v16, a4, v18, CGRectGetHeight(v24) * 0.04}];
+  [v15 drawInRect:{v16, position, v18, CGRectGetHeight(v24) * 0.04}];
 }
 
 @end

@@ -1,28 +1,28 @@
 @interface NTKCollieColorEditOption
-+ (id)__orderedValuesForDevice:(id)a3;
-+ (id)_orderedValuesForDevice:(id)a3;
-+ (id)_snapshotKeyForValue:(unint64_t)a3 forDevice:(id)a4;
++ (id)__orderedValuesForDevice:(id)device;
++ (id)_orderedValuesForDevice:(id)device;
++ (id)_snapshotKeyForValue:(unint64_t)value forDevice:(id)device;
 - (id)_valueToFaceBundleStringDict;
 - (id)pigmentEditOption;
 @end
 
 @implementation NTKCollieColorEditOption
 
-+ (id)_orderedValuesForDevice:(id)a3
++ (id)_orderedValuesForDevice:(id)device
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_11A44;
   v5[3] = &unk_2D000;
-  v5[4] = a1;
-  v3 = sub_11A44(v5, a3);
+  v5[4] = self;
+  v3 = sub_11A44(v5, device);
 
   return v3;
 }
 
-+ (id)__orderedValuesForDevice:(id)a3
++ (id)__orderedValuesForDevice:(id)device
 {
-  v3 = [NTKFaceColorEditOption _orderedValuesForDevice:a3];
+  v3 = [NTKFaceColorEditOption _orderedValuesForDevice:device];
   v4 = [v3 mutableCopy];
 
   v5 = [v4 indexOfObject:&off_2DF28];
@@ -34,9 +34,9 @@
   return v4;
 }
 
-+ (id)_snapshotKeyForValue:(unint64_t)a3 forDevice:(id)a4
++ (id)_snapshotKeyForValue:(unint64_t)value forDevice:(id)device
 {
-  if (a3 == 200)
+  if (value == 200)
   {
     v6 = @"collie-dark-gray";
   }
@@ -45,9 +45,9 @@
   {
     v9 = v4;
     v10 = v5;
-    v8.receiver = a1;
+    v8.receiver = self;
     v8.super_class = &OBJC_METACLASS___NTKCollieColorEditOption;
-    v6 = objc_msgSendSuper2(&v8, "_snapshotKeyForValue:forDevice:", a3, a4);
+    v6 = objc_msgSendSuper2(&v8, "_snapshotKeyForValue:forDevice:", value, device);
   }
 
   return v6;
@@ -70,10 +70,10 @@
 
 - (id)pigmentEditOption
 {
-  v3 = [(NTKCollieColorEditOption *)self faceColor];
-  if ((v3 - 200) >= 2)
+  faceColor = [(NTKCollieColorEditOption *)self faceColor];
+  if ((faceColor - 200) >= 2)
   {
-    if (v3 == &dword_18 + 2)
+    if (faceColor == &dword_18 + 2)
     {
       v5 = [NTKPigmentEditOption alloc];
       v6 = NTKFaceColorName();
@@ -84,15 +84,15 @@
 
     v9.receiver = self;
     v9.super_class = NTKCollieColorEditOption;
-    v4 = [(NTKCollieColorEditOption *)&v9 pigmentEditOption];
+    pigmentEditOption = [(NTKCollieColorEditOption *)&v9 pigmentEditOption];
   }
 
   else
   {
-    v4 = [[NTKPigmentEditOption alloc] initWithOptionName:@"darkGray" collectionName:@"memoji"];
+    pigmentEditOption = [[NTKPigmentEditOption alloc] initWithOptionName:@"darkGray" collectionName:@"memoji"];
   }
 
-  v7 = v4;
+  v7 = pigmentEditOption;
 LABEL_7:
 
   return v7;

@@ -1,25 +1,25 @@
 @interface PMSmartPowerNapService
 + (id)sharedInstance;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (PMSmartPowerNapService)init;
-- (void)backlight:(id)a3 didChangeAlwaysOnEnabled:(BOOL)a4;
-- (void)backlight:(id)a3 didCompleteUpdateToState:(int64_t)a4 forEvent:(id)a5;
+- (void)backlight:(id)backlight didChangeAlwaysOnEnabled:(BOOL)enabled;
+- (void)backlight:(id)backlight didCompleteUpdateToState:(int64_t)state forEvent:(id)event;
 - (void)enterSmartPowerNap;
 - (void)exitSmartPowerNap;
 - (void)registerForBacklightUpdates;
 - (void)registerForLockStateUpdates;
 - (void)registerForPluginStateUpdates;
-- (void)registerWithIdentifier:(id)a3;
-- (void)setSPNMotionAlarmStartThreshold:(unsigned int)a3;
-- (void)setSPNMotionAlarmThreshold:(unsigned int)a3;
-- (void)setSPNReentryCoolOffPeriod:(unsigned int)a3;
-- (void)setSPNReentryDelaySeconds:(unsigned int)a3;
-- (void)setSPNRequeryDelta:(unsigned int)a3;
-- (void)setState:(unsigned __int8)a3;
-- (void)syncStateWithHandler:(id)a3;
-- (void)unregisterWithIdentifier:(id)a3;
-- (void)updateAmbientState:(BOOL)a3;
-- (void)updateLockState:(unint64_t)a3;
+- (void)registerWithIdentifier:(id)identifier;
+- (void)setSPNMotionAlarmStartThreshold:(unsigned int)threshold;
+- (void)setSPNMotionAlarmThreshold:(unsigned int)threshold;
+- (void)setSPNReentryCoolOffPeriod:(unsigned int)period;
+- (void)setSPNReentryDelaySeconds:(unsigned int)seconds;
+- (void)setSPNRequeryDelta:(unsigned int)delta;
+- (void)setState:(unsigned __int8)state;
+- (void)syncStateWithHandler:(id)handler;
+- (void)unregisterWithIdentifier:(id)identifier;
+- (void)updateAmbientState:(BOOL)state;
+- (void)updateLockState:(unint64_t)state;
 @end
 
 @implementation PMSmartPowerNapService
@@ -79,31 +79,31 @@
   return v13;
 }
 
-- (void)updateAmbientState:(BOOL)a3
+- (void)updateAmbientState:(BOOL)state
 {
-  v5 = [(PMSmartPowerNapService *)self mainQueue];
+  mainQueue = [(PMSmartPowerNapService *)self mainQueue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10001C704;
   v6[3] = &unk_1000991C0;
   v6[4] = self;
-  v7 = a3;
-  dispatch_async(v5, v6);
+  stateCopy = state;
+  dispatch_async(mainQueue, v6);
 }
 
 - (void)registerForLockStateUpdates
 {
-  v2 = self;
+  selfCopy = self;
   out_token = 0;
-  v3 = [(PMSmartPowerNapService *)self mainQueue];
+  mainQueue = [(PMSmartPowerNapService *)self mainQueue];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100016BF0;
   v5[3] = &unk_1000991E8;
-  v5[4] = v2;
-  LODWORD(v2) = notify_register_dispatch("com.apple.springboard.lockstate", &out_token, v3, v5);
+  v5[4] = selfCopy;
+  LODWORD(selfCopy) = notify_register_dispatch("com.apple.springboard.lockstate", &out_token, mainQueue, v5);
 
-  if (v2)
+  if (selfCopy)
   {
     v4 = qword_1000AB7D0;
     if (os_log_type_enabled(qword_1000AB7D0, OS_LOG_TYPE_ERROR))
@@ -113,25 +113,25 @@
   }
 }
 
-- (void)updateLockState:(unint64_t)a3
+- (void)updateLockState:(unint64_t)state
 {
-  v4 = [(PMSmartPowerNapService *)self predictor];
-  [v4 updateLockState:a3];
+  predictor = [(PMSmartPowerNapService *)self predictor];
+  [predictor updateLockState:state];
 }
 
 - (void)registerForPluginStateUpdates
 {
-  v2 = self;
+  selfCopy = self;
   out_token = 0;
-  v3 = [(PMSmartPowerNapService *)self mainQueue];
+  mainQueue = [(PMSmartPowerNapService *)self mainQueue];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10001C944;
   v5[3] = &unk_1000991E8;
-  v5[4] = v2;
-  LODWORD(v2) = notify_register_dispatch("com.apple.system.powersources.source", &out_token, v3, v5);
+  v5[4] = selfCopy;
+  LODWORD(selfCopy) = notify_register_dispatch("com.apple.system.powersources.source", &out_token, mainQueue, v5);
 
-  if (v2)
+  if (selfCopy)
   {
     v4 = qword_1000AB7D0;
     if (os_log_type_enabled(qword_1000AB7D0, OS_LOG_TYPE_ERROR))
@@ -144,22 +144,22 @@
 - (void)registerForBacklightUpdates
 {
   v3 = dispatch_time(0, 1000000000);
-  v4 = [(PMSmartPowerNapService *)self mainQueue];
+  mainQueue = [(PMSmartPowerNapService *)self mainQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10001CA80;
   block[3] = &unk_100099210;
   block[4] = self;
-  dispatch_after(v3, v4, block);
+  dispatch_after(v3, mainQueue, block);
 }
 
-- (void)backlight:(id)a3 didCompleteUpdateToState:(int64_t)a4 forEvent:(id)a5
+- (void)backlight:(id)backlight didCompleteUpdateToState:(int64_t)state forEvent:(id)event
 {
-  v7 = [a5 changeRequest];
-  v8 = [v7 sourceEvent];
-  if (a4 != 2)
+  changeRequest = [event changeRequest];
+  sourceEvent = [changeRequest sourceEvent];
+  if (state != 2)
   {
-    if (a4 > 1)
+    if (state > 1)
     {
       goto LABEL_10;
     }
@@ -172,20 +172,20 @@
     }
 
 LABEL_9:
-    v13 = a4 == 2;
-    v14 = [(PMSmartPowerNapService *)self mainQueue];
+    v13 = state == 2;
+    mainQueue = [(PMSmartPowerNapService *)self mainQueue];
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_10001CCB8;
     v15[3] = &unk_1000991C0;
     v15[4] = self;
     v16 = v13;
-    dispatch_async(v14, v15);
+    dispatch_async(mainQueue, v15);
 
     goto LABEL_10;
   }
 
-  v9 = v8;
+  v9 = sourceEvent;
   v10 = NSStringFromBLSBacklightChangeSourceEvent();
   v11 = qword_1000AB7D0;
   if (os_log_type_enabled(qword_1000AB7D0, OS_LOG_TYPE_DEFAULT))
@@ -203,96 +203,96 @@ LABEL_9:
 LABEL_10:
 }
 
-- (void)backlight:(id)a3 didChangeAlwaysOnEnabled:(BOOL)a4
+- (void)backlight:(id)backlight didChangeAlwaysOnEnabled:(BOOL)enabled
 {
-  v6 = [(PMSmartPowerNapService *)self mainQueue];
+  mainQueue = [(PMSmartPowerNapService *)self mainQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10001CDA4;
   v7[3] = &unk_1000991C0;
   v7[4] = self;
-  v8 = a4;
-  dispatch_async(v6, v7);
+  enabledCopy = enabled;
+  dispatch_async(mainQueue, v7);
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
   v6 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL____PMSmartPowerNapProtocol];
-  [v5 setExportedInterface:v6];
+  [connectionCopy setExportedInterface:v6];
 
   v7 = qword_1000AB7D0;
   if (os_log_type_enabled(qword_1000AB7D0, OS_LOG_TYPE_DEFAULT))
   {
     v8 = v7;
     v11[0] = 67109120;
-    v11[1] = [v5 processIdentifier];
+    v11[1] = [connectionCopy processIdentifier];
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "SPN: listener: accepted new connection from pid %d", v11, 8u);
   }
 
-  [v5 setExportedObject:self];
+  [connectionCopy setExportedObject:self];
   v9 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL____PMSmartPowerNapCallbackProtocol];
-  [v5 setRemoteObjectInterface:v9];
+  [connectionCopy setRemoteObjectInterface:v9];
 
-  [v5 resume];
+  [connectionCopy resume];
   return 1;
 }
 
-- (void)registerWithIdentifier:(id)a3
+- (void)registerWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = +[NSXPCConnection currentConnection];
-  v6 = [(PMSmartPowerNapService *)self mainQueue];
+  mainQueue = [(PMSmartPowerNapService *)self mainQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10001D00C;
   block[3] = &unk_100099278;
-  v10 = v4;
+  v10 = identifierCopy;
   v11 = v5;
-  v12 = self;
+  selfCopy = self;
   v7 = v5;
-  v8 = v4;
-  dispatch_async(v6, block);
+  v8 = identifierCopy;
+  dispatch_async(mainQueue, block);
 }
 
-- (void)unregisterWithIdentifier:(id)a3
+- (void)unregisterWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(PMSmartPowerNapService *)self mainQueue];
+  identifierCopy = identifier;
+  mainQueue = [(PMSmartPowerNapService *)self mainQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10001D358;
   v7[3] = &unk_1000992A0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = identifierCopy;
+  selfCopy = self;
+  v6 = identifierCopy;
+  dispatch_async(mainQueue, v7);
 }
 
-- (void)setState:(unsigned __int8)a3
+- (void)setState:(unsigned __int8)state
 {
-  v5 = [(PMSmartPowerNapService *)self mainQueue];
+  mainQueue = [(PMSmartPowerNapService *)self mainQueue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10001D79C;
   v6[3] = &unk_1000991C0;
-  v7 = a3;
+  stateCopy = state;
   v6[4] = self;
-  dispatch_async(v5, v6);
+  dispatch_async(mainQueue, v6);
 }
 
-- (void)syncStateWithHandler:(id)a3
+- (void)syncStateWithHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(PMSmartPowerNapService *)self mainQueue];
+  handlerCopy = handler;
+  mainQueue = [(PMSmartPowerNapService *)self mainQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10001D950;
   v7[3] = &unk_1000992E8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  dispatch_async(mainQueue, v7);
 }
 
 - (void)enterSmartPowerNap
@@ -319,7 +319,7 @@ LABEL_10:
   [(PMSmartPowerNapService *)self updateState:0];
 }
 
-- (void)setSPNReentryCoolOffPeriod:(unsigned int)a3
+- (void)setSPNReentryCoolOffPeriod:(unsigned int)period
 {
   v5 = qword_1000AB7D0;
   if (os_log_type_enabled(qword_1000AB7D0, OS_LOG_TYPE_DEFAULT))
@@ -328,94 +328,94 @@ LABEL_10:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Updating SPN Re-entry cool off period", buf, 2u);
   }
 
-  v6 = [(PMSmartPowerNapService *)self mainQueue];
+  mainQueue = [(PMSmartPowerNapService *)self mainQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10001DBF0;
   v7[3] = &unk_100099310;
   v7[4] = self;
-  v8 = a3;
-  dispatch_async(v6, v7);
+  periodCopy = period;
+  dispatch_async(mainQueue, v7);
 }
 
-- (void)setSPNReentryDelaySeconds:(unsigned int)a3
+- (void)setSPNReentryDelaySeconds:(unsigned int)seconds
 {
   v5 = qword_1000AB7D0;
   if (os_log_type_enabled(qword_1000AB7D0, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    v10 = a3;
+    secondsCopy = seconds;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Updating SPN Re-entry delay to %u", buf, 8u);
   }
 
-  v6 = [(PMSmartPowerNapService *)self mainQueue];
+  mainQueue = [(PMSmartPowerNapService *)self mainQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10001DD58;
   v7[3] = &unk_100099310;
   v7[4] = self;
-  v8 = a3;
-  dispatch_async(v6, v7);
+  secondsCopy2 = seconds;
+  dispatch_async(mainQueue, v7);
 }
 
-- (void)setSPNRequeryDelta:(unsigned int)a3
+- (void)setSPNRequeryDelta:(unsigned int)delta
 {
   v5 = qword_1000AB7D0;
   if (os_log_type_enabled(qword_1000AB7D0, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    v10 = a3;
+    deltaCopy = delta;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Updating SPN requery delta to %u", buf, 8u);
   }
 
-  v6 = [(PMSmartPowerNapService *)self mainQueue];
+  mainQueue = [(PMSmartPowerNapService *)self mainQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10001DEC0;
   v7[3] = &unk_100099310;
   v7[4] = self;
-  v8 = a3;
-  dispatch_async(v6, v7);
+  deltaCopy2 = delta;
+  dispatch_async(mainQueue, v7);
 }
 
-- (void)setSPNMotionAlarmThreshold:(unsigned int)a3
+- (void)setSPNMotionAlarmThreshold:(unsigned int)threshold
 {
   v5 = qword_1000AB7D0;
   if (os_log_type_enabled(qword_1000AB7D0, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    v10 = a3;
+    thresholdCopy = threshold;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Updating SPN motion alarm threshold to %u", buf, 8u);
   }
 
-  v6 = [(PMSmartPowerNapService *)self mainQueue];
+  mainQueue = [(PMSmartPowerNapService *)self mainQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10001E028;
   v7[3] = &unk_100099310;
   v7[4] = self;
-  v8 = a3;
-  dispatch_async(v6, v7);
+  thresholdCopy2 = threshold;
+  dispatch_async(mainQueue, v7);
 }
 
-- (void)setSPNMotionAlarmStartThreshold:(unsigned int)a3
+- (void)setSPNMotionAlarmStartThreshold:(unsigned int)threshold
 {
   v5 = qword_1000AB7D0;
   if (os_log_type_enabled(qword_1000AB7D0, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    v10 = a3;
+    thresholdCopy = threshold;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Updating SPN motion alarm start threshold to %u", buf, 8u);
   }
 
-  v6 = [(PMSmartPowerNapService *)self mainQueue];
+  mainQueue = [(PMSmartPowerNapService *)self mainQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10001E190;
   v7[3] = &unk_100099310;
   v7[4] = self;
-  v8 = a3;
-  dispatch_async(v6, v7);
+  thresholdCopy2 = threshold;
+  dispatch_async(mainQueue, v7);
 }
 
 @end

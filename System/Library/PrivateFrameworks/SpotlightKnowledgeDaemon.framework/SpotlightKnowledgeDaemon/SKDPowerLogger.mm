@@ -1,20 +1,20 @@
 @interface SKDPowerLogger
-- (BOOL)supportedEvent:(id)a3;
-- (SKDPowerLogger)initWithDomain:(id)a3 powerProvider:(id)a4;
+- (BOOL)supportedEvent:(id)event;
+- (SKDPowerLogger)initWithDomain:(id)domain powerProvider:(id)provider;
 - (id)logs;
 - (void)dealloc;
 - (void)flush;
-- (void)logEvent:(id)a3 level:(unint64_t)a4;
+- (void)logEvent:(id)event level:(unint64_t)level;
 @end
 
 @implementation SKDPowerLogger
 
-- (SKDPowerLogger)initWithDomain:(id)a3 powerProvider:(id)a4
+- (SKDPowerLogger)initWithDomain:(id)domain powerProvider:(id)provider
 {
-  v7 = a4;
+  providerCopy = provider;
   v13.receiver = self;
   v13.super_class = SKDPowerLogger;
-  v8 = [(SKDEventLogger *)&v13 initWithDomain:a3];
+  v8 = [(SKDEventLogger *)&v13 initWithDomain:domain];
   if (v8)
   {
     v9 = [MEMORY[0x277CBEB98] setWithArray:&unk_2846E8118];
@@ -25,7 +25,7 @@
     v8->_aliases = &unk_2846E8600;
 
     v8->_lock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v8->_powerProvider, a4);
+    objc_storeStrong(&v8->_powerProvider, provider);
     v8->_interval = 1800.0;
   }
 
@@ -68,15 +68,15 @@
 
           v30 = v4;
           v5 = *(*(&v36 + 1) + 8 * v4);
-          v6 = self;
+          selfCopy = self;
           v7 = [(NSMutableDictionary *)self->_cache objectForKeyedSubscript:v5];
-          v8 = [v7 allKeys];
+          allKeys = [v7 allKeys];
 
           v34 = 0u;
           v35 = 0u;
           v32 = 0u;
           v33 = 0u;
-          v31 = v8;
+          v31 = allKeys;
           v9 = [v31 countByEnumeratingWithState:&v32 objects:v41 count:16];
           if (v9)
           {
@@ -100,12 +100,12 @@
                   [v3 setObject:v15 forKeyedSubscript:v5];
                 }
 
-                v16 = [(NSMutableDictionary *)v6->_cache objectForKeyedSubscript:v5];
+                v16 = [(NSMutableDictionary *)selfCopy->_cache objectForKeyedSubscript:v5];
                 v17 = [v16 objectForKeyedSubscript:v13];
-                v18 = [v17 unsignedIntValue];
+                unsignedIntValue = [v17 unsignedIntValue];
 
                 v19 = [v3 objectForKeyedSubscript:v5];
-                v20 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v18];
+                v20 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:unsignedIntValue];
                 [v19 setObject:v20 forKey:v13];
               }
 
@@ -116,7 +116,7 @@
           }
 
           v4 = v30 + 1;
-          self = v6;
+          self = selfCopy;
         }
 
         while (v30 + 1 != v29);
@@ -130,9 +130,9 @@
     v21 = [MEMORY[0x277CBEAA8] now];
     [v3 setObject:v21 forKeyedSubscript:@"timestampEnd"];
 
-    v22 = [MEMORY[0x277CCAC38] processInfo];
-    v23 = [v22 processName];
-    [v3 setObject:v23 forKeyedSubscript:@"processName"];
+    processInfo = [MEMORY[0x277CCAC38] processInfo];
+    processName = [processInfo processName];
+    [v3 setObject:processName forKeyedSubscript:@"processName"];
   }
 
   os_unfair_lock_unlock(&self->_lock);
@@ -152,35 +152,35 @@
   return v24;
 }
 
-- (BOOL)supportedEvent:(id)a3
+- (BOOL)supportedEvent:(id)event
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 identifier];
-  if (!v5)
+  eventCopy = event;
+  identifier = [eventCopy identifier];
+  if (!identifier)
   {
     goto LABEL_15;
   }
 
-  v6 = v5;
-  v7 = [v4 feedback];
-  if (![v7 count])
+  v6 = identifier;
+  feedback = [eventCopy feedback];
+  if (![feedback count])
   {
 
     goto LABEL_15;
   }
 
-  v8 = [v4 type];
+  type = [eventCopy type];
 
-  if (v8 != 7)
+  if (type != 7)
   {
 LABEL_15:
     LOBYTE(v12) = 0;
     goto LABEL_16;
   }
 
-  v9 = [v4 feedback];
-  v10 = [v9 objectForKeyedSubscript:@"bundleID"];
+  feedback2 = [eventCopy feedback];
+  v10 = [feedback2 objectForKeyedSubscript:@"bundleID"];
   if (v10)
   {
     v20 = 0u;
@@ -201,7 +201,7 @@ LABEL_15:
             objc_enumerationMutation(v11);
           }
 
-          v15 = [v9 objectForKeyedSubscript:{*(*(&v18 + 1) + 8 * i), v18}];
+          v15 = [feedback2 objectForKeyedSubscript:{*(*(&v18 + 1) + 8 * i), v18}];
 
           if (v15)
           {
@@ -233,14 +233,14 @@ LABEL_16:
   return v12;
 }
 
-- (void)logEvent:(id)a3 level:(unint64_t)a4
+- (void)logEvent:(id)event level:(unint64_t)level
 {
   v53 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if ([(SKDPowerLogger *)self supportedEvent:v5])
+  eventCopy = event;
+  if ([(SKDPowerLogger *)self supportedEvent:eventCopy])
   {
-    v6 = [v5 feedback];
-    v40 = [v6 objectForKeyedSubscript:@"bundleID"];
+    feedback = [eventCopy feedback];
+    v40 = [feedback objectForKeyedSubscript:@"bundleID"];
     os_unfair_lock_lock(&self->_lock);
     v46 = 0u;
     v47 = 0u;
@@ -251,14 +251,14 @@ LABEL_16:
     if (v8)
     {
       v9 = v8;
-      v36 = v5;
+      v36 = eventCopy;
       v10 = 0;
       v11 = *v45;
       v12 = MEMORY[0x277D86220];
       v38 = v7;
-      v39 = v6;
+      v39 = feedback;
       v37 = *v45;
-      v43 = self;
+      selfCopy = self;
       do
       {
         v13 = 0;
@@ -274,50 +274,50 @@ LABEL_16:
           v15 = [(NSDictionary *)self->_aliases objectForKeyedSubscript:v14, v36];
           if (v15)
           {
-            v16 = [v6 objectForKeyedSubscript:v14];
+            v16 = [feedback objectForKeyedSubscript:v14];
             if (v16)
             {
               objc_opt_class();
               if (objc_opt_isKindOfClass())
               {
                 v42 = v16;
-                cache = v43->_cache;
+                cache = selfCopy->_cache;
                 if (!cache)
                 {
                   v18 = objc_alloc_init(MEMORY[0x277CBEB38]);
-                  v19 = v43->_cache;
-                  v43->_cache = v18;
+                  v19 = selfCopy->_cache;
+                  selfCopy->_cache = v18;
 
-                  cache = v43->_cache;
+                  cache = selfCopy->_cache;
                 }
 
                 v20 = [(NSMutableDictionary *)cache objectForKeyedSubscript:v40];
 
                 if (!v20)
                 {
-                  v21 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{-[NSSet count](v43->_supportedAttributes, "count")}];
-                  [(NSMutableDictionary *)v43->_cache setObject:v21 forKeyedSubscript:v40];
+                  v21 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{-[NSSet count](selfCopy->_supportedAttributes, "count")}];
+                  [(NSMutableDictionary *)selfCopy->_cache setObject:v21 forKeyedSubscript:v40];
                 }
 
-                v22 = [(NSMutableDictionary *)v43->_cache objectForKeyedSubscript:v40];
+                v22 = [(NSMutableDictionary *)selfCopy->_cache objectForKeyedSubscript:v40];
                 v23 = [v22 objectForKeyedSubscript:v15];
 
                 if (!v23)
                 {
-                  v24 = [(NSMutableDictionary *)v43->_cache objectForKeyedSubscript:v40];
+                  v24 = [(NSMutableDictionary *)selfCopy->_cache objectForKeyedSubscript:v40];
                   [v24 setObject:&unk_2846E7A28 forKeyedSubscript:v15];
                 }
 
-                v25 = [(NSMutableDictionary *)v43->_cache objectForKeyedSubscript:v40];
+                v25 = [(NSMutableDictionary *)selfCopy->_cache objectForKeyedSubscript:v40];
                 v26 = [v25 objectForKeyedSubscript:v15];
 
                 v27 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v42, "unsignedIntValue") + objc_msgSend(v26, "unsignedIntValue")}];
-                v28 = [(NSMutableDictionary *)v43->_cache objectForKeyedSubscript:v40];
+                v28 = [(NSMutableDictionary *)selfCopy->_cache objectForKeyedSubscript:v40];
                 [v28 setObject:v27 forKeyedSubscript:v15];
 
                 v10 = 1;
                 v7 = v38;
-                v6 = v39;
+                feedback = v39;
                 v11 = v37;
                 v9 = v41;
               }
@@ -333,7 +333,7 @@ LABEL_16:
             }
 
             v12 = MEMORY[0x277D86220];
-            self = v43;
+            self = selfCopy;
           }
 
           else if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
@@ -352,7 +352,7 @@ LABEL_16:
 
       while (v9);
 
-      v5 = v36;
+      eventCopy = v36;
       if (v10)
       {
         if (!self->_lastFlushDate)
@@ -394,7 +394,7 @@ LABEL_32:
 - (void)flush
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = [(SKDPowerLogger *)self logs];
+  logs = [(SKDPowerLogger *)self logs];
   os_unfair_lock_lock(&self->_lock);
   cache = self->_cache;
   self->_cache = 0;
@@ -408,7 +408,7 @@ LABEL_32:
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v7 = v3;
+  v7 = logs;
   v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v8)
   {
@@ -426,8 +426,8 @@ LABEL_32:
 
         v12 = *(*(&v16 + 1) + 8 * v11);
         powerProvider = self->_powerProvider;
-        v14 = [(SKDEventLogger *)self domain];
-        [(SKDLogProviding *)powerProvider sendLog:v12 domain:v14];
+        domain = [(SKDEventLogger *)self domain];
+        [(SKDLogProviding *)powerProvider sendLog:v12 domain:domain];
 
         ++v11;
       }

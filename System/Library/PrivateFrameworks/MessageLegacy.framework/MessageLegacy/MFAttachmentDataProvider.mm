@@ -1,29 +1,29 @@
 @interface MFAttachmentDataProvider
-+ (id)dataProviderWithPath:(id)a3;
-+ (id)dataProviderWithURL:(id)a3;
++ (id)dataProviderWithPath:(id)path;
++ (id)dataProviderWithURL:(id)l;
 - (BOOL)exists;
-- (BOOL)save:(id)a3;
-- (MFAttachmentDataProvider)initWithURL:(id)a3;
-- (id)_fileAttributes:(id)a3;
+- (BOOL)save:(id)save;
+- (MFAttachmentDataProvider)initWithURL:(id)l;
+- (id)_fileAttributes:(id)attributes;
 - (id)data;
-- (id)errorWithMessage:(id)a3 code:(int64_t)a4;
+- (id)errorWithMessage:(id)message code:(int64_t)code;
 - (void)dealloc;
 @end
 
 @implementation MFAttachmentDataProvider
 
-+ (id)dataProviderWithURL:(id)a3
++ (id)dataProviderWithURL:(id)l
 {
-  v3 = [[a1 alloc] initWithURL:a3];
+  v3 = [[self alloc] initWithURL:l];
 
   return v3;
 }
 
-+ (id)dataProviderWithPath:(id)a3
++ (id)dataProviderWithPath:(id)path
 {
-  if (a3)
+  if (path)
   {
-    v3 = [[a1 alloc] initWithURL:{objc_msgSend(MEMORY[0x277CBEBC0], "fileURLWithPath:")}];
+    v3 = [[self alloc] initWithURL:{objc_msgSend(MEMORY[0x277CBEBC0], "fileURLWithPath:")}];
 
     return v3;
   }
@@ -41,12 +41,12 @@
   }
 }
 
-- (MFAttachmentDataProvider)initWithURL:(id)a3
+- (MFAttachmentDataProvider)initWithURL:(id)l
 {
   v4 = [(MFAttachmentDataProvider *)self init];
   if (v4)
   {
-    v4->_url = a3;
+    v4->_url = l;
   }
 
   return v4;
@@ -59,11 +59,11 @@
   [(MFAttachmentDataProvider *)&v3 dealloc];
 }
 
-- (id)errorWithMessage:(id)a3 code:(int64_t)a4
+- (id)errorWithMessage:(id)message code:(int64_t)code
 {
   v7[1] = *MEMORY[0x277D85DE8];
   v6 = *MEMORY[0x277CCA450];
-  v7[0] = a3;
+  v7[0] = message;
   result = [MEMORY[0x277CCA9B8] errorWithDomain:@"MFAttachmentDataProviderErrorDomain" code:0 userInfo:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v7, &v6, 1)}];
   v5 = *MEMORY[0x277D85DE8];
   return result;
@@ -71,24 +71,24 @@
 
 - (BOOL)exists
 {
-  v3 = [(MFAttachmentDataProvider *)self _isFileURL];
-  if (v3)
+  _isFileURL = [(MFAttachmentDataProvider *)self _isFileURL];
+  if (_isFileURL)
   {
-    v4 = [MEMORY[0x277CCAA00] defaultManager];
-    v5 = [(MFAttachmentDataProvider *)self _path];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    _path = [(MFAttachmentDataProvider *)self _path];
 
-    LOBYTE(v3) = [v4 fileExistsAtPath:v5];
+    LOBYTE(_isFileURL) = [defaultManager fileExistsAtPath:_path];
   }
 
-  return v3;
+  return _isFileURL;
 }
 
-- (id)_fileAttributes:(id)a3
+- (id)_fileAttributes:(id)attributes
 {
   v4 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:1];
-  if (a3)
+  if (attributes)
   {
-    v5 = strtoul([a3 ef_lossyDefaultCStringBytes], 0, 8) & 0x1FF;
+    v5 = strtoul([attributes ef_lossyDefaultCStringBytes], 0, 8) & 0x1FF;
     if (v5)
     {
       v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:v5];
@@ -99,21 +99,21 @@
   return v4;
 }
 
-- (BOOL)save:(id)a3
+- (BOOL)save:(id)save
 {
   v19 = *MEMORY[0x277D85DE8];
   v5 = [-[MFAttachmentDataProvider _path](self "_path")];
-  v6 = [v5 stringByDeletingLastPathComponent];
-  if (v6)
+  stringByDeletingLastPathComponent = [v5 stringByDeletingLastPathComponent];
+  if (stringByDeletingLastPathComponent)
   {
-    v7 = v6;
-    v8 = [MEMORY[0x277CCAA00] defaultManager];
+    v7 = stringByDeletingLastPathComponent;
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     v14 = 0;
-    if ([v8 createDirectoryAtPath:v7 withIntermediateDirectories:1 attributes:0 error:&v14])
+    if ([defaultManager createDirectoryAtPath:v7 withIntermediateDirectories:1 attributes:0 error:&v14])
     {
       v9 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:{-[MFAttachmentDataProvider _fileAttributes:](self, "_fileAttributes:", 0)}];
       [v9 setObject:*MEMORY[0x277CCA198] forKey:*MEMORY[0x277CCA1B0]];
-      if (([v8 createFileAtPath:v5 contents:a3 attributes:v9] & 1) == 0)
+      if (([defaultManager createFileAtPath:v5 contents:save attributes:v9] & 1) == 0)
       {
         v10 = MFLogGeneral();
         if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
@@ -151,9 +151,9 @@ LABEL_8:
 - (id)data
 {
   v2 = MEMORY[0x277D24F00];
-  v3 = [(MFAttachmentDataProvider *)self _path];
+  _path = [(MFAttachmentDataProvider *)self _path];
 
-  return [v2 dataWithContentsOfFile:v3];
+  return [v2 dataWithContentsOfFile:_path];
 }
 
 @end

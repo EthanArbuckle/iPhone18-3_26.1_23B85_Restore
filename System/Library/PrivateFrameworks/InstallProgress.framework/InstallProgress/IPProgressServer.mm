@@ -1,20 +1,20 @@
 @interface IPProgressServer
 + (id)defaultAccessAdjudicator;
 + (id)defaultBehavior;
-- (IPProgressServer)initWithDelegate:(id)a3 delegateQueue:(id)a4;
-- (IPProgressServer)initWithDelegate:(id)a3 delegateQueue:(id)a4 accessAdjudicator:(id)a5 behavior:(id)a6;
+- (IPProgressServer)initWithDelegate:(id)delegate delegateQueue:(id)queue;
+- (IPProgressServer)initWithDelegate:(id)delegate delegateQueue:(id)queue accessAdjudicator:(id)adjudicator behavior:(id)behavior;
 - (IPProgressServerDelegate)delegate;
-- (id)_progressForIdentity:(id)a3 createIfMissing:(BOOL)a4;
-- (id)_queue_progressForIdentity:(id)a3 createIfMissing:(BOOL)a4;
-- (id)activeInstallationsForBehavior:(id)a3;
-- (id)initiateProgressForIdentity:(id)a3;
-- (id)serverBehavior:(id)a3 progressForIdentity:(id)a4 error:(id *)a5;
-- (void)_queue_removePublishedProgress:(id)a3;
-- (void)identityProgress:(id)a3 didChangeProgressData:(id)a4;
-- (void)identityProgress:(id)a3 didFinishWithState:(unint64_t)a4;
-- (void)identityWasUninstalled:(id)a3;
+- (id)_progressForIdentity:(id)identity createIfMissing:(BOOL)missing;
+- (id)_queue_progressForIdentity:(id)identity createIfMissing:(BOOL)missing;
+- (id)activeInstallationsForBehavior:(id)behavior;
+- (id)initiateProgressForIdentity:(id)identity;
+- (id)serverBehavior:(id)behavior progressForIdentity:(id)identity error:(id *)error;
+- (void)_queue_removePublishedProgress:(id)progress;
+- (void)identityProgress:(id)progress didChangeProgressData:(id)data;
+- (void)identityProgress:(id)progress didFinishWithState:(unint64_t)state;
+- (void)identityWasUninstalled:(id)uninstalled;
 - (void)resume;
-- (void)serverBehavior:(id)a3 acceptedClient:(id)a4;
+- (void)serverBehavior:(id)behavior acceptedClient:(id)client;
 @end
 
 @implementation IPProgressServer
@@ -74,52 +74,52 @@ uint64_t __44__IPProgressServer_defaultAccessAdjudicator__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (IPProgressServer)initWithDelegate:(id)a3 delegateQueue:(id)a4 accessAdjudicator:(id)a5 behavior:(id)a6
+- (IPProgressServer)initWithDelegate:(id)delegate delegateQueue:(id)queue accessAdjudicator:(id)adjudicator behavior:(id)behavior
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  delegateCopy = delegate;
+  queueCopy = queue;
+  adjudicatorCopy = adjudicator;
+  behaviorCopy = behavior;
   v20.receiver = self;
   v20.super_class = IPProgressServer;
   v14 = [(IPProgressServer *)&v20 init];
   if (v14)
   {
-    v15 = [v13 queue];
+    queue = [behaviorCopy queue];
     queue = v14->_queue;
-    v14->_queue = v15;
+    v14->_queue = queue;
 
     v17 = objc_alloc_init(MEMORY[0x277CBEB38]);
     activeProgresses = v14->_activeProgresses;
     v14->_activeProgresses = v17;
 
-    [(IPProgressServer *)v14 setDelegate:v10];
-    [(IPProgressServer *)v14 setDelegateQueue:v11];
-    objc_storeStrong(&v14->_behavior, a6);
+    [(IPProgressServer *)v14 setDelegate:delegateCopy];
+    [(IPProgressServer *)v14 setDelegateQueue:queueCopy];
+    objc_storeStrong(&v14->_behavior, behavior);
     [(IPProgressServerBehavior *)v14->_behavior setDelegate:v14];
-    objc_storeStrong(&v14->_accessAdjudicator, a5);
+    objc_storeStrong(&v14->_accessAdjudicator, adjudicator);
   }
 
   return v14;
 }
 
-- (IPProgressServer)initWithDelegate:(id)a3 delegateQueue:(id)a4
+- (IPProgressServer)initWithDelegate:(id)delegate delegateQueue:(id)queue
 {
-  v6 = a4;
-  v7 = a3;
+  queueCopy = queue;
+  delegateCopy = delegate;
   v8 = +[IPProgressServer defaultAccessAdjudicator];
   v9 = +[IPProgressServer defaultBehavior];
-  v10 = [(IPProgressServer *)self initWithDelegate:v7 delegateQueue:v6 accessAdjudicator:v8 behavior:v9];
+  v10 = [(IPProgressServer *)self initWithDelegate:delegateCopy delegateQueue:queueCopy accessAdjudicator:v8 behavior:v9];
 
   return v10;
 }
 
-- (id)_queue_progressForIdentity:(id)a3 createIfMissing:(BOOL)a4
+- (id)_queue_progressForIdentity:(id)identity createIfMissing:(BOOL)missing
 {
-  v4 = a4;
-  v6 = a3;
+  missingCopy = missing;
+  identityCopy = identity;
   dispatch_assert_queue_V2(self->_queue);
-  v7 = [(NSMutableDictionary *)self->_activeProgresses objectForKey:v6];
+  v7 = [(NSMutableDictionary *)self->_activeProgresses objectForKey:identityCopy];
 
   if (v7)
   {
@@ -128,34 +128,34 @@ uint64_t __44__IPProgressServer_defaultAccessAdjudicator__block_invoke()
 
   else
   {
-    v8 = !v4;
+    v8 = !missingCopy;
   }
 
   if (!v8)
   {
-    v9 = [[IPPublishedIdentityProgress alloc] initWithAppIdentity:v6 observer:self];
-    [(NSMutableDictionary *)self->_activeProgresses setObject:v9 forKey:v6];
+    v9 = [[IPPublishedIdentityProgress alloc] initWithAppIdentity:identityCopy observer:self];
+    [(NSMutableDictionary *)self->_activeProgresses setObject:v9 forKey:identityCopy];
   }
 
-  v10 = [(NSMutableDictionary *)self->_activeProgresses objectForKey:v6];
+  v10 = [(NSMutableDictionary *)self->_activeProgresses objectForKey:identityCopy];
 
   return v10;
 }
 
-- (void)_queue_removePublishedProgress:(id)a3
+- (void)_queue_removePublishedProgress:(id)progress
 {
   queue = self->_queue;
-  v5 = a3;
+  progressCopy = progress;
   dispatch_assert_queue_V2(queue);
   activeProgresses = self->_activeProgresses;
-  v7 = [v5 miIdentity];
+  miIdentity = [progressCopy miIdentity];
 
-  [(NSMutableDictionary *)activeProgresses removeObjectForKey:v7];
+  [(NSMutableDictionary *)activeProgresses removeObjectForKey:miIdentity];
 }
 
-- (id)_progressForIdentity:(id)a3 createIfMissing:(BOOL)a4
+- (id)_progressForIdentity:(id)identity createIfMissing:(BOOL)missing
 {
-  v6 = a3;
+  identityCopy = identity;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -167,11 +167,11 @@ uint64_t __44__IPProgressServer_defaultAccessAdjudicator__block_invoke()
   v11[1] = 3221225472;
   v11[2] = __57__IPProgressServer__progressForIdentity_createIfMissing___block_invoke;
   v11[3] = &unk_2797B2278;
-  v12 = v6;
+  v12 = identityCopy;
   v13 = &v15;
   v11[4] = self;
-  v14 = a4;
-  v8 = v6;
+  missingCopy = missing;
+  v8 = identityCopy;
   dispatch_sync(queue, v11);
   v9 = v16[5];
 
@@ -190,15 +190,15 @@ uint64_t __57__IPProgressServer__progressForIdentity_createIfMissing___block_inv
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)initiateProgressForIdentity:(id)a3
+- (id)initiateProgressForIdentity:(id)identity
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identityCopy = identity;
   v5 = _IPServerLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v4;
+    *(&buf + 4) = identityCopy;
     _os_log_impl(&dword_254C69000, v5, OS_LOG_TYPE_DEFAULT, "initiating progress for %@", &buf, 0xCu);
   }
 
@@ -213,10 +213,10 @@ uint64_t __57__IPProgressServer__progressForIdentity_createIfMissing___block_inv
   block[1] = 3221225472;
   block[2] = __48__IPProgressServer_initiateProgressForIdentity___block_invoke;
   block[3] = &unk_2797B2120;
-  v12 = v4;
+  v12 = identityCopy;
   p_buf = &buf;
   block[4] = self;
-  v7 = v4;
+  v7 = identityCopy;
   dispatch_sync(queue, block);
   v8 = *(*(&buf + 1) + 40);
 
@@ -250,17 +250,17 @@ void __48__IPProgressServer_initiateProgressForIdentity___block_invoke(uint64_t 
   }
 }
 
-- (void)identityWasUninstalled:(id)a3
+- (void)identityWasUninstalled:(id)uninstalled
 {
-  v4 = a3;
+  uninstalledCopy = uninstalled;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __43__IPProgressServer_identityWasUninstalled___block_invoke;
   v7[3] = &unk_2797B1E00;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = uninstalledCopy;
+  selfCopy = self;
+  v6 = uninstalledCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -308,22 +308,22 @@ void __43__IPProgressServer_identityWasUninstalled___block_invoke(uint64_t a1)
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)serverBehavior:(id)a3 acceptedClient:(id)a4
+- (void)serverBehavior:(id)behavior acceptedClient:(id)client
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a4;
+  clientCopy = client;
   v5 = _IPServerLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = clientCopy;
     _os_log_impl(&dword_254C69000, v5, OS_LOG_TYPE_DEFAULT, "new client %@", &v7, 0xCu);
   }
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (id)activeInstallationsForBehavior:(id)a3
+- (id)activeInstallationsForBehavior:(id)behavior
 {
   v31 = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(self->_queue);
@@ -363,13 +363,13 @@ void __43__IPProgressServer_identityWasUninstalled___block_invoke(uint64_t a1)
           v13 = _IPDefaultLog();
           if (os_log_type_enabled(&v13->super, OS_LOG_TYPE_ERROR))
           {
-            v18 = [0 bundleID];
-            v14 = [0 personaUniqueString];
+            bundleID = [0 bundleID];
+            personaUniqueString = [0 personaUniqueString];
             *buf = 138412802;
-            v25 = v18;
+            v25 = bundleID;
             v26 = 2112;
-            v27 = v14;
-            v15 = v14;
+            v27 = personaUniqueString;
+            v15 = personaUniqueString;
             v28 = 2112;
             v29 = v12;
             _os_log_error_impl(&dword_254C69000, &v13->super, OS_LOG_TYPE_ERROR, "could not find identity for %@/%@: %@", buf, 0x20u);
@@ -391,10 +391,10 @@ void __43__IPProgressServer_identityWasUninstalled___block_invoke(uint64_t a1)
   return v4;
 }
 
-- (id)serverBehavior:(id)a3 progressForIdentity:(id)a4 error:(id *)a5
+- (id)serverBehavior:(id)behavior progressForIdentity:(id)identity error:(id *)error
 {
   v39 = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  identityCopy = identity;
   dispatch_assert_queue_V2(self->_queue);
   v30 = 0u;
   v31 = 0u;
@@ -417,7 +417,7 @@ LABEL_3:
 
       v13 = *(*(&v28 + 1) + 8 * v12);
       v14 = IPLSIdentityFromMIIdentity(v13, 0);
-      if ([v14 isEqual:v7])
+      if ([v14 isEqual:identityCopy])
       {
         break;
       }
@@ -435,9 +435,9 @@ LABEL_3:
     }
 
     v15 = [(NSMutableDictionary *)self->_activeProgresses objectForKey:v13];
-    v16 = [v15 currentProgress];
+    currentProgress = [v15 currentProgress];
 
-    if (!v16)
+    if (!currentProgress)
     {
       goto LABEL_12;
     }
@@ -451,87 +451,87 @@ LABEL_9:
 
 LABEL_12:
     v27 = 0;
-    v18 = [v7 findApplicationRecordFetchingPlaceholder:2 error:&v27];
+    v18 = [identityCopy findApplicationRecordFetchingPlaceholder:2 error:&v27];
     v17 = v27;
     if (v18 && ([v18 isPlaceholder] & 1) == 0)
     {
-      v16 = objc_alloc_init(IPInstallableProgressData);
-      [(IPInstallableProgressData *)v16 setInstallPhase:6];
-      [(IPInstallableProgressData *)v16 setFinalPhase:3];
+      currentProgress = objc_alloc_init(IPInstallableProgressData);
+      [(IPInstallableProgressData *)currentProgress setInstallPhase:6];
+      [(IPInstallableProgressData *)currentProgress setFinalPhase:3];
       v36[0] = &unk_286718588;
       v36[1] = &unk_2867185B8;
       v37[0] = &unk_2867185A0;
       v37[1] = &unk_2867185A0;
       v23 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v37 forKeys:v36 count:2];
-      [(IPInstallableProgressData *)v16 setTotalUnitCountsForPhases:v23];
+      [(IPInstallableProgressData *)currentProgress setTotalUnitCountsForPhases:v23];
 
-      [(IPInstallableProgressData *)v16 setCompletedUnitCount:10 forPhase:2];
-      [(IPInstallableProgressData *)v16 setCompletedUnitCount:10 forPhase:3];
+      [(IPInstallableProgressData *)currentProgress setCompletedUnitCount:10 forPhase:2];
+      [(IPInstallableProgressData *)currentProgress setCompletedUnitCount:10 forPhase:3];
     }
 
     else
     {
-      v19 = [v18 isPlaceholder];
+      isPlaceholder = [v18 isPlaceholder];
       v20 = _IPServerLog();
       v21 = v20;
-      if (v19)
+      if (isPlaceholder)
       {
         if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v35 = v7;
+          v35 = identityCopy;
           _os_log_impl(&dword_254C69000, v21, OS_LOG_TYPE_DEFAULT, "asked for progress for identity %@ for which we do not have active progress but a placeholder exists. Returning a resonable ersatz progress.", buf, 0xCu);
         }
 
-        v16 = objc_alloc_init(IPInstallableProgressData);
-        [(IPInstallableProgressData *)v16 setInstallPhase:2];
-        [(IPInstallableProgressData *)v16 setFinalPhase:3];
+        currentProgress = objc_alloc_init(IPInstallableProgressData);
+        [(IPInstallableProgressData *)currentProgress setInstallPhase:2];
+        [(IPInstallableProgressData *)currentProgress setFinalPhase:3];
         v32[0] = &unk_286718588;
         v32[1] = &unk_2867185B8;
         v33[0] = &unk_2867185A0;
         v33[1] = &unk_2867185A0;
         v22 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v33 forKeys:v32 count:2];
-        [(IPInstallableProgressData *)v16 setTotalUnitCountsForPhases:v22];
+        [(IPInstallableProgressData *)currentProgress setTotalUnitCountsForPhases:v22];
       }
 
       else
       {
         if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
         {
-          [IPProgressServer serverBehavior:v7 progressForIdentity:v17 error:v21];
+          [IPProgressServer serverBehavior:identityCopy progressForIdentity:v17 error:v21];
         }
 
-        v16 = 0;
+        currentProgress = 0;
       }
     }
 
-    if (a5 && !v16)
+    if (error && !currentProgress)
     {
       v24 = v17;
-      *a5 = v17;
+      *error = v17;
     }
   }
 
   v25 = *MEMORY[0x277D85DE8];
 
-  return v16;
+  return currentProgress;
 }
 
-- (void)identityProgress:(id)a3 didChangeProgressData:(id)a4
+- (void)identityProgress:(id)progress didChangeProgressData:(id)data
 {
-  v6 = a3;
-  v7 = a4;
+  progressCopy = progress;
+  dataCopy = data;
   dispatch_assert_queue_not_V2(self->_queue);
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __59__IPProgressServer_identityProgress_didChangeProgressData___block_invoke;
   block[3] = &unk_2797B21B8;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = progressCopy;
+  selfCopy = self;
+  v14 = dataCopy;
+  v9 = dataCopy;
+  v10 = progressCopy;
   dispatch_sync(queue, block);
 }
 
@@ -554,9 +554,9 @@ void __59__IPProgressServer_identityProgress_didChangeProgressData___block_invok
   }
 }
 
-- (void)identityProgress:(id)a3 didFinishWithState:(unint64_t)a4
+- (void)identityProgress:(id)progress didFinishWithState:(unint64_t)state
 {
-  v6 = a3;
+  progressCopy = progress;
   dispatch_assert_queue_not_V2(self->_queue);
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -564,9 +564,9 @@ void __59__IPProgressServer_identityProgress_didChangeProgressData___block_invok
   block[2] = __56__IPProgressServer_identityProgress_didFinishWithState___block_invoke;
   block[3] = &unk_2797B21E0;
   block[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
+  v10 = progressCopy;
+  stateCopy = state;
+  v8 = progressCopy;
   dispatch_sync(queue, block);
 }
 

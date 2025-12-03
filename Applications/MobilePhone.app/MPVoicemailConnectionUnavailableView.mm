@@ -6,7 +6,7 @@
 - (double)titleLabelLastBaselineLayoutConstraintConstant;
 - (void)loadConstraints;
 - (void)loadView;
-- (void)setButtonHidden:(BOOL)a3 animated:(BOOL)a4 completion:(id)a5;
+- (void)setButtonHidden:(BOOL)hidden animated:(BOOL)animated completion:(id)completion;
 - (void)updateConstraintsConstants;
 - (void)updateFonts;
 @end
@@ -18,16 +18,16 @@
   v12.receiver = self;
   v12.super_class = MPVoicemailConnectionUnavailableView;
   [(MPVoicemailTableHeaderView *)&v12 loadView];
-  v3 = [(MPVoicemailTableHeaderView *)self messageLabel];
-  [v3 setHidden:1];
-  v4 = [(MPVoicemailTableHeaderView *)self titleLabel];
-  [v4 setLineBreakMode:0];
-  [v4 setNumberOfLines:0];
+  messageLabel = [(MPVoicemailTableHeaderView *)self messageLabel];
+  [messageLabel setHidden:1];
+  titleLabel = [(MPVoicemailTableHeaderView *)self titleLabel];
+  [titleLabel setLineBreakMode:0];
+  [titleLabel setNumberOfLines:0];
   v5 = +[NSBundle mainBundle];
   v6 = [v5 localizedStringForKey:@"VOICEMAIL_UNAVAILABLE" value:&stru_10028F310 table:@"Voicemail"];
-  [v4 setText:v6];
+  [titleLabel setText:v6];
 
-  [v4 setTextAlignment:1];
+  [titleLabel setTextAlignment:1];
   v7 = [UIButton buttonWithType:1];
   [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
   v8 = +[NSBundle mainBundle];
@@ -47,29 +47,29 @@
   v48.receiver = self;
   v48.super_class = MPVoicemailConnectionUnavailableView;
   [(MPVoicemailTableHeaderView *)&v48 loadConstraints];
-  v3 = [(MPVoicemailTableHeaderView *)self messageLabelCenterXAnchorLayoutConstraint];
-  [v3 setActive:0];
+  messageLabelCenterXAnchorLayoutConstraint = [(MPVoicemailTableHeaderView *)self messageLabelCenterXAnchorLayoutConstraint];
+  [messageLabelCenterXAnchorLayoutConstraint setActive:0];
 
-  v4 = [(MPVoicemailTableHeaderView *)self messageLabelLeadingLayoutConstraint];
-  [v4 setActive:0];
+  messageLabelLeadingLayoutConstraint = [(MPVoicemailTableHeaderView *)self messageLabelLeadingLayoutConstraint];
+  [messageLabelLeadingLayoutConstraint setActive:0];
 
-  v5 = [(MPVoicemailTableHeaderView *)self messageLabelTrailingLayoutConstraint];
-  [v5 setActive:0];
+  messageLabelTrailingLayoutConstraint = [(MPVoicemailTableHeaderView *)self messageLabelTrailingLayoutConstraint];
+  [messageLabelTrailingLayoutConstraint setActive:0];
 
-  v6 = [(MPVoicemailTableHeaderView *)self messageLabelFirstBaselineLayoutConstraint];
-  [v6 setActive:0];
+  messageLabelFirstBaselineLayoutConstraint = [(MPVoicemailTableHeaderView *)self messageLabelFirstBaselineLayoutConstraint];
+  [messageLabelFirstBaselineLayoutConstraint setActive:0];
 
-  v7 = [(MPVoicemailTableHeaderView *)self messageLabelLastBaselineLayoutConstraint];
-  [v7 setActive:0];
+  messageLabelLastBaselineLayoutConstraint = [(MPVoicemailTableHeaderView *)self messageLabelLastBaselineLayoutConstraint];
+  [messageLabelLastBaselineLayoutConstraint setActive:0];
 
-  v8 = [(MPVoicemailConnectionUnavailableView *)self bottomAnchor];
-  v9 = [(MPVoicemailTableHeaderView *)self titleLabel];
-  v10 = [v9 lastBaselineAnchor];
+  bottomAnchor = [(MPVoicemailConnectionUnavailableView *)self bottomAnchor];
+  titleLabel = [(MPVoicemailTableHeaderView *)self titleLabel];
+  lastBaselineAnchor = [titleLabel lastBaselineAnchor];
   [(MPVoicemailConnectionUnavailableView *)self titleLabelLastBaselineLayoutConstraintConstant];
-  v11 = [v8 constraintGreaterThanOrEqualToAnchor:v10 constant:?];
+  v11 = [bottomAnchor constraintGreaterThanOrEqualToAnchor:lastBaselineAnchor constant:?];
 
-  v12 = [(MPVoicemailConnectionUnavailableView *)self button];
-  if ([v12 isHidden])
+  button = [(MPVoicemailConnectionUnavailableView *)self button];
+  if ([button isHidden])
   {
     *&v13 = 999.0;
   }
@@ -86,21 +86,21 @@
 
   [v11 setActive:1];
   [(MPVoicemailTableHeaderView *)self setTitleLabelLastBaselineLayoutConstraint:v11];
-  v15 = [(MPVoicemailConnectionUnavailableView *)self button];
-  v16 = [v15 centerXAnchor];
-  v17 = [(MPVoicemailTableHeaderView *)self titleLabel];
-  v18 = [v17 centerXAnchor];
-  v19 = [v16 constraintEqualToAnchor:v18];
+  button2 = [(MPVoicemailConnectionUnavailableView *)self button];
+  centerXAnchor = [button2 centerXAnchor];
+  titleLabel2 = [(MPVoicemailTableHeaderView *)self titleLabel];
+  centerXAnchor2 = [titleLabel2 centerXAnchor];
+  v19 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
 
   v20 = NSStringFromSelector("buttonCenterXLayoutConstraint");
   [v19 setIdentifier:v20];
 
   [v19 setActive:1];
   [(MPVoicemailConnectionUnavailableView *)self setButtonCenterXLayoutConstraint:v19];
-  v21 = [(MPVoicemailConnectionUnavailableView *)self button];
-  v22 = [v21 leadingAnchor];
-  v23 = [(MPVoicemailConnectionUnavailableView *)self leadingAnchor];
-  v24 = [v22 constraintGreaterThanOrEqualToAnchor:v23];
+  button3 = [(MPVoicemailConnectionUnavailableView *)self button];
+  leadingAnchor = [button3 leadingAnchor];
+  leadingAnchor2 = [(MPVoicemailConnectionUnavailableView *)self leadingAnchor];
+  v24 = [leadingAnchor constraintGreaterThanOrEqualToAnchor:leadingAnchor2];
 
   LODWORD(v25) = 1148829696;
   [v24 setPriority:v25];
@@ -109,10 +109,10 @@
 
   [v24 setActive:1];
   [(MPVoicemailConnectionUnavailableView *)self setButtonLeadingLayoutConstraint:v24];
-  v27 = [(MPVoicemailConnectionUnavailableView *)self trailingAnchor];
-  v28 = [(MPVoicemailConnectionUnavailableView *)self button];
-  v29 = [v28 trailingAnchor];
-  v30 = [v27 constraintGreaterThanOrEqualToAnchor:v29];
+  trailingAnchor = [(MPVoicemailConnectionUnavailableView *)self trailingAnchor];
+  button4 = [(MPVoicemailConnectionUnavailableView *)self button];
+  trailingAnchor2 = [button4 trailingAnchor];
+  v30 = [trailingAnchor constraintGreaterThanOrEqualToAnchor:trailingAnchor2];
 
   LODWORD(v31) = 1148829696;
   [v30 setPriority:v31];
@@ -121,28 +121,28 @@
 
   [v30 setActive:1];
   [(MPVoicemailConnectionUnavailableView *)self setButtonTrailingLayoutConstraint:v30];
-  v33 = [(MPVoicemailConnectionUnavailableView *)self button];
-  v34 = [v33 titleLabel];
-  v35 = [v34 firstBaselineAnchor];
-  v36 = [(MPVoicemailTableHeaderView *)self titleLabel];
-  v37 = [v36 lastBaselineAnchor];
+  button5 = [(MPVoicemailConnectionUnavailableView *)self button];
+  titleLabel3 = [button5 titleLabel];
+  firstBaselineAnchor = [titleLabel3 firstBaselineAnchor];
+  titleLabel4 = [(MPVoicemailTableHeaderView *)self titleLabel];
+  lastBaselineAnchor2 = [titleLabel4 lastBaselineAnchor];
   [(MPVoicemailConnectionUnavailableView *)self buttonTitleLabelFirstBaselineLayoutConstraintConstant];
-  v38 = [v35 constraintEqualToAnchor:v37 constant:?];
+  v38 = [firstBaselineAnchor constraintEqualToAnchor:lastBaselineAnchor2 constant:?];
 
   v39 = NSStringFromSelector("buttonTitleLabelFirstBaselineLayoutConstraint");
   [v38 setIdentifier:v39];
 
   [v38 setActive:1];
   [(MPVoicemailConnectionUnavailableView *)self setButtonTitleLabelFirstBaselineLayoutConstraint:v38];
-  v40 = [(MPVoicemailConnectionUnavailableView *)self bottomAnchor];
-  v41 = [(MPVoicemailConnectionUnavailableView *)self button];
-  v42 = [v41 titleLabel];
-  v43 = [v42 lastBaselineAnchor];
+  bottomAnchor2 = [(MPVoicemailConnectionUnavailableView *)self bottomAnchor];
+  button6 = [(MPVoicemailConnectionUnavailableView *)self button];
+  titleLabel5 = [button6 titleLabel];
+  lastBaselineAnchor3 = [titleLabel5 lastBaselineAnchor];
   [(MPVoicemailConnectionUnavailableView *)self buttonTitleLabelLastBaselineLayoutConstraintConstant];
-  v44 = [v40 constraintGreaterThanOrEqualToAnchor:v43 constant:?];
+  v44 = [bottomAnchor2 constraintGreaterThanOrEqualToAnchor:lastBaselineAnchor3 constant:?];
 
-  v45 = [(MPVoicemailConnectionUnavailableView *)self button];
-  if ([v45 isHidden])
+  button7 = [(MPVoicemailConnectionUnavailableView *)self button];
+  if ([button7 isHidden])
   {
     *&v46 = 1.0;
   }
@@ -168,13 +168,13 @@
   [(MPVoicemailTableHeaderView *)&v9 updateConstraintsConstants];
   [(MPVoicemailConnectionUnavailableView *)self buttonTitleLabelFirstBaselineLayoutConstraintConstant];
   v4 = v3;
-  v5 = [(MPVoicemailConnectionUnavailableView *)self buttonTitleLabelFirstBaselineLayoutConstraint];
-  [v5 setConstant:v4];
+  buttonTitleLabelFirstBaselineLayoutConstraint = [(MPVoicemailConnectionUnavailableView *)self buttonTitleLabelFirstBaselineLayoutConstraint];
+  [buttonTitleLabelFirstBaselineLayoutConstraint setConstant:v4];
 
   [(MPVoicemailConnectionUnavailableView *)self buttonTitleLabelLastBaselineLayoutConstraintConstant];
   v7 = v6;
-  v8 = [(MPVoicemailConnectionUnavailableView *)self buttonTitleLabelLastBaselineLayoutConstraint];
-  [v8 setConstant:v7];
+  buttonTitleLabelLastBaselineLayoutConstraint = [(MPVoicemailConnectionUnavailableView *)self buttonTitleLabelLastBaselineLayoutConstraint];
+  [buttonTitleLabelLastBaselineLayoutConstraint setConstant:v7];
 }
 
 - (void)updateFonts
@@ -183,36 +183,36 @@
   v6.super_class = MPVoicemailConnectionUnavailableView;
   [(MPVoicemailTableHeaderView *)&v6 updateFonts];
   v3 = +[UIFont telephonyUIBodyShortEmphasizedFont];
-  v4 = [(MPVoicemailConnectionUnavailableView *)self button];
-  v5 = [v4 titleLabel];
-  [v5 setFont:v3];
+  button = [(MPVoicemailConnectionUnavailableView *)self button];
+  titleLabel = [button titleLabel];
+  [titleLabel setFont:v3];
 }
 
 - (BOOL)isButtonHidden
 {
-  v2 = [(MPVoicemailConnectionUnavailableView *)self button];
-  v3 = [v2 isHidden];
+  button = [(MPVoicemailConnectionUnavailableView *)self button];
+  isHidden = [button isHidden];
 
-  return v3;
+  return isHidden;
 }
 
-- (void)setButtonHidden:(BOOL)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)setButtonHidden:(BOOL)hidden animated:(BOOL)animated completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
-  v8 = a5;
-  v9 = [(MPVoicemailConnectionUnavailableView *)self button];
-  v10 = [v9 isHidden];
+  animatedCopy = animated;
+  hiddenCopy = hidden;
+  completionCopy = completion;
+  button = [(MPVoicemailConnectionUnavailableView *)self button];
+  isHidden = [button isHidden];
 
-  if (v10 != v6)
+  if (isHidden != hiddenCopy)
   {
     [(MPVoicemailConnectionUnavailableView *)self layoutIfNeeded];
-    v11 = [(MPVoicemailConnectionUnavailableView *)self button];
-    [v11 setHidden:v6];
+    button2 = [(MPVoicemailConnectionUnavailableView *)self button];
+    [button2 setHidden:hiddenCopy];
 
-    v12 = [(MPVoicemailTableHeaderView *)self titleLabelLastBaselineLayoutConstraint];
-    v14 = v12;
-    if (v6)
+    titleLabelLastBaselineLayoutConstraint = [(MPVoicemailTableHeaderView *)self titleLabelLastBaselineLayoutConstraint];
+    v14 = titleLabelLastBaselineLayoutConstraint;
+    if (hiddenCopy)
     {
       *&v13 = 999.0;
     }
@@ -222,7 +222,7 @@
       *&v13 = 1.0;
     }
 
-    if (v6)
+    if (hiddenCopy)
     {
       v15 = 1.0;
     }
@@ -232,11 +232,11 @@
       v15 = 999.0;
     }
 
-    [v12 setPriority:v13];
+    [titleLabelLastBaselineLayoutConstraint setPriority:v13];
 
-    v16 = [(MPVoicemailConnectionUnavailableView *)self buttonTitleLabelLastBaselineLayoutConstraint];
+    buttonTitleLabelLastBaselineLayoutConstraint = [(MPVoicemailConnectionUnavailableView *)self buttonTitleLabelLastBaselineLayoutConstraint];
     *&v17 = v15;
-    [v16 setPriority:v17];
+    [buttonTitleLabelLastBaselineLayoutConstraint setPriority:v17];
 
     [(MPVoicemailConnectionUnavailableView *)self setNeedsUpdateConstraints];
     v20[0] = _NSConcreteStackBlock;
@@ -246,20 +246,20 @@
     v20[4] = self;
     v18 = objc_retainBlock(v20);
     v19 = 0.300000012;
-    if (!v5)
+    if (!animatedCopy)
     {
       v19 = 0.0;
     }
 
-    [UIView animateWithDuration:v18 animations:v8 completion:v19];
+    [UIView animateWithDuration:v18 animations:completionCopy completion:v19];
   }
 }
 
 - (double)buttonTitleLabelFirstBaselineLayoutConstraintConstant
 {
-  v2 = [(MPVoicemailTableHeaderView *)self titleLabel];
-  v3 = [v2 font];
-  [v3 _scaledValueForValue:24.0];
+  titleLabel = [(MPVoicemailTableHeaderView *)self titleLabel];
+  font = [titleLabel font];
+  [font _scaledValueForValue:24.0];
   v5 = ceil(v4);
 
   return v5;
@@ -267,9 +267,9 @@
 
 - (double)buttonTitleLabelLastBaselineLayoutConstraintConstant
 {
-  v2 = [(MPVoicemailTableHeaderView *)self titleLabel];
-  v3 = [v2 font];
-  [v3 _scaledValueForValue:13.0];
+  titleLabel = [(MPVoicemailTableHeaderView *)self titleLabel];
+  font = [titleLabel font];
+  [font _scaledValueForValue:13.0];
   v5 = ceil(v4);
 
   return v5;
@@ -277,12 +277,12 @@
 
 - (double)titleLabelFirstBaselineLayoutConstraintConstant
 {
-  v3 = [(MPVoicemailConnectionUnavailableView *)self button];
-  if ([v3 isHidden])
+  button = [(MPVoicemailConnectionUnavailableView *)self button];
+  if ([button isHidden])
   {
-    v4 = [(MPVoicemailTableHeaderView *)self titleLabel];
-    v5 = [v4 font];
-    [v5 _scaledValueForValue:36.0];
+    titleLabel = [(MPVoicemailTableHeaderView *)self titleLabel];
+    font = [titleLabel font];
+    [font _scaledValueForValue:36.0];
     v7 = ceil(v6);
   }
 
@@ -299,9 +299,9 @@
 
 - (double)titleLabelLastBaselineLayoutConstraintConstant
 {
-  v2 = [(MPVoicemailTableHeaderView *)self titleLabel];
-  v3 = [v2 font];
-  [v3 _scaledValueForValue:24.0];
+  titleLabel = [(MPVoicemailTableHeaderView *)self titleLabel];
+  font = [titleLabel font];
+  [font _scaledValueForValue:24.0];
   v5 = ceil(v4);
 
   return v5;

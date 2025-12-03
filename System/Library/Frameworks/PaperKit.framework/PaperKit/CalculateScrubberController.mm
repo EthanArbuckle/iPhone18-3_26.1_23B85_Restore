@@ -2,52 +2,52 @@
 - (_TtC8PaperKit27CalculateScrubberController)init;
 - (id)activeScrubberView;
 - (void)hideScrubber;
-- (void)popoverPresentationControllerDidDismissPopover:(id)a3;
+- (void)popoverPresentationControllerDidDismissPopover:(id)popover;
 - (void)sendValueChanged;
-- (void)showScrubberFor:(id)a3 frame:(CGRect)a4 compact:(BOOL)a5;
+- (void)showScrubberFor:(id)for frame:(CGRect)frame compact:(BOOL)compact;
 @end
 
 @implementation CalculateScrubberController
 
-- (void)showScrubberFor:(id)a3 frame:(CGRect)a4 compact:(BOOL)a5
+- (void)showScrubberFor:(id)for frame:(CGRect)frame compact:(BOOL)compact
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v11 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v13 = v12;
-  v14 = self;
+  selfCopy = self;
   v15._countAndFlagsBits = v11;
   v15._object = v13;
   v17.origin.x = x;
   v17.origin.y = y;
   v17.size.width = width;
   v17.size.height = height;
-  CalculateScrubberController.showScrubber(for:frame:compact:)(v15, v17, a5);
+  CalculateScrubberController.showScrubber(for:frame:compact:)(v15, v17, compact);
 }
 
 - (void)hideScrubber
 {
-  v2 = self;
+  selfCopy = self;
   CalculateScrubberController.hideScrubber()();
 }
 
 - (id)activeScrubberView
 {
-  v3 = *(&self->super.isa + OBJC_IVAR____TtC8PaperKit27CalculateScrubberController_viewController);
-  if (v3)
+  view = *(&self->super.isa + OBJC_IVAR____TtC8PaperKit27CalculateScrubberController_viewController);
+  if (view)
   {
-    v3 = [v3 view];
+    view = [view view];
     v2 = vars8;
   }
 
-  return v3;
+  return view;
 }
 
 - (void)sendValueChanged
 {
-  v2 = self;
+  selfCopy = self;
   CalculateScrubberController.sendValueChanged()();
 }
 
@@ -58,7 +58,7 @@
   return result;
 }
 
-- (void)popoverPresentationControllerDidDismissPopover:(id)a3
+- (void)popoverPresentationControllerDidDismissPopover:(id)popover
 {
   Strong = swift_unknownObjectWeakLoadStrong();
   if (Strong)

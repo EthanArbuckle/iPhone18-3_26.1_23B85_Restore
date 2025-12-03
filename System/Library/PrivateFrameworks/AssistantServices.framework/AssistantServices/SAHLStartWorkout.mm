@@ -14,10 +14,10 @@
 
 - (id)_ad_transformedWorkoutRequest
 {
-  v3 = [(SAHLStartWorkout *)self workoutType];
-  v4 = [v3 workoutCategory];
+  workoutType = [(SAHLStartWorkout *)self workoutType];
+  workoutCategory = [workoutType workoutCategory];
 
-  if ([v4 isEqualToString:SAHLWorkoutCategoryCyclingValue])
+  if ([workoutCategory isEqualToString:SAHLWorkoutCategoryCyclingValue])
   {
     v5 = 2;
 LABEL_15:
@@ -25,56 +25,56 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  if ([v4 isEqualToString:SAHLWorkoutCategoryEllipticalValue])
+  if ([workoutCategory isEqualToString:SAHLWorkoutCategoryEllipticalValue])
   {
     v5 = 3;
     goto LABEL_15;
   }
 
-  if ([v4 isEqualToString:SAHLWorkoutCategoryRowerValue])
+  if ([workoutCategory isEqualToString:SAHLWorkoutCategoryRowerValue])
   {
     v5 = 4;
     goto LABEL_15;
   }
 
-  if ([v4 isEqualToString:SAHLWorkoutCategoryRunningValue])
+  if ([workoutCategory isEqualToString:SAHLWorkoutCategoryRunningValue])
   {
     v5 = 5;
     goto LABEL_15;
   }
 
-  if ([v4 isEqualToString:SAHLWorkoutCategoryStair_StepperValue])
+  if ([workoutCategory isEqualToString:SAHLWorkoutCategoryStair_StepperValue])
   {
     v5 = 6;
     goto LABEL_15;
   }
 
-  if ([v4 isEqualToString:SAHLWorkoutCategoryWalkingValue])
+  if ([workoutCategory isEqualToString:SAHLWorkoutCategoryWalkingValue])
   {
     v5 = 7;
     goto LABEL_15;
   }
 
-  if ([v4 isEqualToString:SAHLWorkoutCategoryOtherValue])
+  if ([workoutCategory isEqualToString:SAHLWorkoutCategoryOtherValue])
   {
     v5 = 1;
     goto LABEL_15;
   }
 
-  [v4 isEqualToString:SAHLWorkoutCategoryUnspecifiedValue];
+  [workoutCategory isEqualToString:SAHLWorkoutCategoryUnspecifiedValue];
   v32 = 0;
 LABEL_16:
-  v6 = [(SAHLStartWorkout *)self workoutType];
-  v7 = [v6 workoutLocationType];
+  workoutType2 = [(SAHLStartWorkout *)self workoutType];
+  workoutLocationType = [workoutType2 workoutLocationType];
 
-  if ([v7 isEqualToString:SAHLWorkoutLocationTypeIndoorValue])
+  if ([workoutLocationType isEqualToString:SAHLWorkoutLocationTypeIndoorValue])
   {
     v8 = 1;
   }
 
   else
   {
-    v9 = [v7 isEqualToString:SAHLWorkoutLocationTypeOutdoorValue];
+    v9 = [workoutLocationType isEqualToString:SAHLWorkoutLocationTypeOutdoorValue];
     v8 = 2;
     if (!v9)
     {
@@ -83,13 +83,13 @@ LABEL_16:
   }
 
   v31 = v8;
-  v10 = [(SAHLStartWorkout *)self workoutUserMode];
-  v11 = [v10 isEqualToString:SAHLWorkoutUserModeWheelchairValue];
+  workoutUserMode = [(SAHLStartWorkout *)self workoutUserMode];
+  v11 = [workoutUserMode isEqualToString:SAHLWorkoutUserModeWheelchairValue];
 
-  v12 = [(SAHLStartWorkout *)self workoutGoal];
-  v13 = [v12 workoutGoalUnitType];
+  workoutGoal = [(SAHLStartWorkout *)self workoutGoal];
+  workoutGoalUnitType = [workoutGoal workoutGoalUnitType];
 
-  if ([v13 isEqualToString:SAHLWorkoutGoalUnitTypeInchValue])
+  if ([workoutGoalUnitType isEqualToString:SAHLWorkoutGoalUnitTypeInchValue])
   {
     v14 = +[HKUnit inchUnit];
 LABEL_41:
@@ -97,55 +97,55 @@ LABEL_41:
     goto LABEL_42;
   }
 
-  if ([v13 isEqualToString:SAHLWorkoutGoalUnitTypeMeterValue])
+  if ([workoutGoalUnitType isEqualToString:SAHLWorkoutGoalUnitTypeMeterValue])
   {
     v14 = +[HKUnit meterUnit];
     goto LABEL_41;
   }
 
-  if ([v13 isEqualToString:SAHLWorkoutGoalUnitTypeFootValue])
+  if ([workoutGoalUnitType isEqualToString:SAHLWorkoutGoalUnitTypeFootValue])
   {
     v14 = +[HKUnit footUnit];
     goto LABEL_41;
   }
 
-  if ([v13 isEqualToString:SAHLWorkoutGoalUnitTypeYardsValue])
+  if ([workoutGoalUnitType isEqualToString:SAHLWorkoutGoalUnitTypeYardsValue])
   {
     v14 = +[HKUnit yardUnit];
     goto LABEL_41;
   }
 
-  if ([v13 isEqualToString:SAHLWorkoutGoalUnitTypeMileValue])
+  if ([workoutGoalUnitType isEqualToString:SAHLWorkoutGoalUnitTypeMileValue])
   {
     v14 = +[HKUnit mileUnit];
     goto LABEL_41;
   }
 
-  if ([v13 isEqualToString:SAHLWorkoutGoalUnitTypeSecondValue])
+  if ([workoutGoalUnitType isEqualToString:SAHLWorkoutGoalUnitTypeSecondValue])
   {
     v14 = +[HKUnit secondUnit];
     goto LABEL_41;
   }
 
-  if ([v13 isEqualToString:SAHLWorkoutGoalUnitTypeMinuteValue])
+  if ([workoutGoalUnitType isEqualToString:SAHLWorkoutGoalUnitTypeMinuteValue])
   {
     v14 = +[HKUnit minuteUnit];
     goto LABEL_41;
   }
 
-  if ([v13 isEqualToString:SAHLWorkoutGoalUnitTypeHourValue])
+  if ([workoutGoalUnitType isEqualToString:SAHLWorkoutGoalUnitTypeHourValue])
   {
     v14 = +[HKUnit hourUnit];
     goto LABEL_41;
   }
 
-  if ([v13 isEqualToString:SAHLWorkoutGoalUnitTypeJouleValue])
+  if ([workoutGoalUnitType isEqualToString:SAHLWorkoutGoalUnitTypeJouleValue])
   {
     v14 = +[HKUnit jouleUnit];
     goto LABEL_41;
   }
 
-  if ([v13 isEqualToString:SAHLWorkoutGoalUnitTypeKiloCalorieValue])
+  if ([workoutGoalUnitType isEqualToString:SAHLWorkoutGoalUnitTypeKiloCalorieValue])
   {
     v14 = +[HKUnit kilocalorieUnit];
     goto LABEL_41;
@@ -153,8 +153,8 @@ LABEL_41:
 
   v15 = 0;
 LABEL_42:
-  v16 = [(SAHLStartWorkout *)self workoutGoal];
-  [v16 goalValue];
+  workoutGoal2 = [(SAHLStartWorkout *)self workoutGoal];
+  [workoutGoal2 goalValue];
   v17 = [HKQuantity quantityWithUnit:v15 doubleValue:?];
 
   v18 = +[HKUnit meterUnit];
@@ -194,9 +194,9 @@ LABEL_42:
 
   v25 = v11;
   v26 = [STStartWorkoutRequest alloc];
-  v27 = [(SAHLStartWorkout *)self isOpenGoal];
+  isOpenGoal = [(SAHLStartWorkout *)self isOpenGoal];
   LOBYTE(v30) = [(SAHLStartWorkout *)self skipActivitySetup];
-  v28 = [v26 _initWithType:v32 location:v31 goal:v17 goalType:v20 userMode:v25 isOpenGoal:v27 skipActivitySetup:v30];
+  v28 = [v26 _initWithType:v32 location:v31 goal:v17 goalType:v20 userMode:v25 isOpenGoal:isOpenGoal skipActivitySetup:v30];
 
   return v28;
 }

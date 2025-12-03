@@ -1,6 +1,6 @@
 @interface MFZeroCopyDataConsumer
 - (MFZeroCopyDataConsumer)init;
-- (int64_t)appendData:(id)a3;
+- (int64_t)appendData:(id)data;
 @end
 
 @implementation MFZeroCopyDataConsumer
@@ -20,9 +20,9 @@
   return v2;
 }
 
-- (int64_t)appendData:(id)a3
+- (int64_t)appendData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   if (self->_done)
   {
     v5 = -1;
@@ -30,8 +30,8 @@
 
   else
   {
-    [(MFDataHolder *)self->_dataHolder addData:v4];
-    v5 = [v4 length];
+    [(MFDataHolder *)self->_dataHolder addData:dataCopy];
+    v5 = [dataCopy length];
   }
 
   return v5;

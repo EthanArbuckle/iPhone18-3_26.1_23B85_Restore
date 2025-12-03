@@ -1,6 +1,6 @@
 @interface SiriTTSOspreyStreamingBeginResponse
 - (AudioStreamBasicDescription)asbd;
-- (SiriTTSOspreyStreamingBeginResponse)initWithOspreyBeginResponse:(id)a3;
+- (SiriTTSOspreyStreamingBeginResponse)initWithOspreyBeginResponse:(id)response;
 @end
 
 @implementation SiriTTSOspreyStreamingBeginResponse
@@ -14,69 +14,69 @@
   return self;
 }
 
-- (SiriTTSOspreyStreamingBeginResponse)initWithOspreyBeginResponse:(id)a3
+- (SiriTTSOspreyStreamingBeginResponse)initWithOspreyBeginResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   v45.receiver = self;
   v45.super_class = SiriTTSOspreyStreamingBeginResponse;
   v5 = [(SiriTTSOspreyStreamingBeginResponse *)&v45 init];
   if (v5)
   {
-    v6 = [v4 meta_info];
-    v7 = [v6 voice];
-    v8 = [v7 language];
-    v9 = [v8 stringByReplacingOccurrencesOfString:@"_" withString:@"-"];
+    meta_info = [responseCopy meta_info];
+    voice = [meta_info voice];
+    language = [voice language];
+    v9 = [language stringByReplacingOccurrencesOfString:@"_" withString:@"-"];
     voiceLanguage = v5->_voiceLanguage;
     v5->_voiceLanguage = v9;
 
-    v11 = [v4 meta_info];
-    v12 = [v11 voice];
-    v13 = [v12 name];
+    meta_info2 = [responseCopy meta_info];
+    voice2 = [meta_info2 voice];
+    name = [voice2 name];
     voiceName = v5->_voiceName;
-    v5->_voiceName = v13;
+    v5->_voiceName = name;
 
-    v15 = [v4 meta_info];
-    v16 = [v15 voice];
-    v17 = [v16 version];
-    v5->_voiceVersion = [v17 integerValue];
+    meta_info3 = [responseCopy meta_info];
+    voice3 = [meta_info3 voice];
+    version = [voice3 version];
+    v5->_voiceVersion = [version integerValue];
 
-    v18 = [v4 meta_info];
-    v19 = [v18 voice];
-    v20 = [v19 quality];
+    meta_info4 = [responseCopy meta_info];
+    voice4 = [meta_info4 voice];
+    quality = [voice4 quality];
     voiceFootprint = v5->_voiceFootprint;
-    v5->_voiceFootprint = v20;
+    v5->_voiceFootprint = quality;
 
-    v22 = [v4 meta_info];
-    v23 = [v22 voice];
-    v24 = [v23 type];
+    meta_info5 = [responseCopy meta_info];
+    voice5 = [meta_info5 voice];
+    type = [voice5 type];
     voiceType = v5->_voiceType;
-    v5->_voiceType = v24;
+    v5->_voiceType = type;
 
-    v26 = [v4 meta_info];
-    v27 = [v26 voice];
-    v28 = [v27 gender];
+    meta_info6 = [responseCopy meta_info];
+    voice6 = [meta_info6 voice];
+    gender = [voice6 gender];
     voiceGender = v5->_voiceGender;
-    v5->_voiceGender = v28;
+    v5->_voiceGender = gender;
 
-    v30 = [v4 meta_info];
-    v31 = [v30 resource];
-    v32 = [v31 language];
-    v33 = [v32 stringByReplacingOccurrencesOfString:@"_" withString:@"-"];
+    meta_info7 = [responseCopy meta_info];
+    resource = [meta_info7 resource];
+    language2 = [resource language];
+    v33 = [language2 stringByReplacingOccurrencesOfString:@"_" withString:@"-"];
     resourceLanguage = v5->_resourceLanguage;
     v5->_resourceLanguage = v33;
 
-    v35 = [v4 meta_info];
-    v36 = [v35 resource];
-    v37 = [v36 version];
-    v5->_resourceVersion = [v37 integerValue];
+    meta_info8 = [responseCopy meta_info];
+    resource2 = [meta_info8 resource];
+    version2 = [resource2 version];
+    v5->_resourceVersion = [version2 integerValue];
 
-    [v4 streaming_playback_buffer_size_in_seconds];
+    [responseCopy streaming_playback_buffer_size_in_seconds];
     v5->_bufferDuration = v38;
-    v39 = [v4 decoder_description];
-    v40 = v39;
-    if (v39)
+    decoder_description = [responseCopy decoder_description];
+    v40 = decoder_description;
+    if (decoder_description)
     {
-      [v39 audioStreamBasicDescription];
+      [decoder_description audioStreamBasicDescription];
     }
 
     else

@@ -2,7 +2,7 @@
 - (CGSize)intrinsicContentSize;
 - (SLSheetPreComposedAppIconImageView)init;
 - (UIEdgeInsets)alignmentRectInsets;
-- (void)setImage:(id)a3;
+- (void)setImage:(id)image;
 @end
 
 @implementation SLSheetPreComposedAppIconImageView
@@ -17,13 +17,13 @@
   v5 = v4;
   if (v4)
   {
-    v6 = [(SLSheetPreComposedAppIconImageView *)v4 layer];
-    [v6 setShouldRasterize:1];
+    layer = [(SLSheetPreComposedAppIconImageView *)v4 layer];
+    [layer setShouldRasterize:1];
 
-    v7 = [(SLSheetPreComposedAppIconImageView *)v5 layer];
-    v8 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v8 scale];
-    [v7 setRasterizationScale:?];
+    layer2 = [(SLSheetPreComposedAppIconImageView *)v5 layer];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen scale];
+    [layer2 setRasterizationScale:?];
 
     v9 = objc_alloc(MEMORY[0x1E69DCAE0]);
     v16.origin.x = v2;
@@ -34,14 +34,14 @@
     v10 = [v9 initWithFrame:{v17.origin.x, v17.origin.y, v17.size.width, v17.size.height}];
     [(SLSheetImagePreviewView *)v5 setImageView:v10];
 
-    v11 = [(SLSheetImagePreviewView *)v5 imageView];
-    [v11 setContentMode:2];
+    imageView = [(SLSheetImagePreviewView *)v5 imageView];
+    [imageView setContentMode:2];
 
-    v12 = [(SLSheetImagePreviewView *)v5 imageView];
-    [v12 setClipsToBounds:1];
+    imageView2 = [(SLSheetImagePreviewView *)v5 imageView];
+    [imageView2 setClipsToBounds:1];
 
-    v13 = [(SLSheetImagePreviewView *)v5 imageView];
-    [(SLSheetPreComposedAppIconImageView *)v5 addSubview:v13];
+    imageView3 = [(SLSheetImagePreviewView *)v5 imageView];
+    [(SLSheetPreComposedAppIconImageView *)v5 addSubview:imageView3];
 
     [(SLSheetPreComposedAppIconImageView *)v5 setNeedsLayout];
   }
@@ -49,13 +49,13 @@
   return v5;
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v5 = a3;
-  v6 = v5;
-  if (a3)
+  imageCopy = image;
+  v6 = imageCopy;
+  if (image)
   {
-    [v5 size];
+    [imageCopy size];
     width = v7;
     height = v9;
     [(SLSheetPreComposedAppIconImageView *)self bounds];
@@ -74,8 +74,8 @@
     height = v18.size.height;
   }
 
-  v15 = [(SLSheetImagePreviewView *)self imageView];
-  [v15 setFrame:{x, y, width, height}];
+  imageView = [(SLSheetImagePreviewView *)self imageView];
+  [imageView setFrame:{x, y, width, height}];
 
   v16.receiver = self;
   v16.super_class = SLSheetPreComposedAppIconImageView;

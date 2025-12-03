@@ -2,8 +2,8 @@
 + (id)sharedAttachedAccessoriesMonitor;
 + (void)initialize;
 - (BWFigCaptureAttachedAccessoriesMonitor)init;
-- (void)accessoryConnectionDetached:(id)a3;
-- (void)accessoryEndpointAttached:(id)a3 transportType:(int)a4 protocol:(int)a5 forConnection:(id)a6;
+- (void)accessoryConnectionDetached:(id)detached;
+- (void)accessoryEndpointAttached:(id)attached transportType:(int)type protocol:(int)protocol forConnection:(id)connection;
 - (void)dealloc;
 @end
 
@@ -21,7 +21,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     FigNote_AllowInternalDefaultLogs();
     fig_note_initialize_category_with_default_work_cf();
@@ -81,7 +81,7 @@ BWFigCaptureAttachedAccessoriesMonitor *__74__BWFigCaptureAttachedAccessoriesMon
   [(BWFigCaptureAttachedAccessoriesMonitor *)&v3 dealloc];
 }
 
-- (void)accessoryEndpointAttached:(id)a3 transportType:(int)a4 protocol:(int)a5 forConnection:(id)a6
+- (void)accessoryEndpointAttached:(id)attached transportType:(int)type protocol:(int)protocol forConnection:(id)connection
 {
   if (dword_1ED8443B0)
   {
@@ -97,11 +97,11 @@ BWFigCaptureAttachedAccessoriesMonitor *__74__BWFigCaptureAttachedAccessoriesMon
   block[1] = 3221225472;
   block[2] = __105__BWFigCaptureAttachedAccessoriesMonitor_accessoryEndpointAttached_transportType_protocol_forConnection___block_invoke;
   block[3] = &unk_1E7998980;
-  v14 = a4;
-  v15 = a5;
+  typeCopy = type;
+  protocolCopy = protocol;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a6;
+  block[5] = attached;
+  block[6] = connection;
   dispatch_sync(notificationQueue, block);
 }
 
@@ -211,7 +211,7 @@ LABEL_12:
   return result;
 }
 
-- (void)accessoryConnectionDetached:(id)a3
+- (void)accessoryConnectionDetached:(id)detached
 {
   if (dword_1ED8443B0)
   {
@@ -227,7 +227,7 @@ LABEL_12:
   block[1] = 3221225472;
   block[2] = __70__BWFigCaptureAttachedAccessoriesMonitor_accessoryConnectionDetached___block_invoke;
   block[3] = &unk_1E798F898;
-  block[4] = a3;
+  block[4] = detached;
   block[5] = self;
   dispatch_sync(notificationQueue, block);
 }

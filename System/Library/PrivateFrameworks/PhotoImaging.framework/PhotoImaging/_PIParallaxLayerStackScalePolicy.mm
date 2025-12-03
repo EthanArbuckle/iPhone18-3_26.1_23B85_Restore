@@ -1,11 +1,11 @@
 @interface _PIParallaxLayerStackScalePolicy
-- ($0AC6E346AE4835514AAA8AC86D8F4844)scaleForImageSize:(id)a3;
-- (_PIParallaxLayerStackScalePolicy)initWithLayout:(id)a3;
+- ($0AC6E346AE4835514AAA8AC86D8F4844)scaleForImageSize:(id)size;
+- (_PIParallaxLayerStackScalePolicy)initWithLayout:(id)layout;
 @end
 
 @implementation _PIParallaxLayerStackScalePolicy
 
-- ($0AC6E346AE4835514AAA8AC86D8F4844)scaleForImageSize:(id)a3
+- ($0AC6E346AE4835514AAA8AC86D8F4844)scaleForImageSize:(id)size
 {
   [(PFPosterOrientedLayout *)self->_layout imageSize];
   [(PFPosterOrientedLayout *)self->_layout visibleFrame];
@@ -23,11 +23,11 @@
   return result;
 }
 
-- (_PIParallaxLayerStackScalePolicy)initWithLayout:(id)a3
+- (_PIParallaxLayerStackScalePolicy)initWithLayout:(id)layout
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  layoutCopy = layout;
+  if (!layoutCopy)
   {
     v9 = NUAssertLogger_21137();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -49,8 +49,8 @@
         v17 = dispatch_get_specific(*v11);
         v18 = MEMORY[0x1E696AF00];
         v19 = v17;
-        v20 = [v18 callStackSymbols];
-        v21 = [v20 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v18 callStackSymbols];
+        v21 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v24 = v17;
         v25 = 2114;
@@ -61,8 +61,8 @@
 
     else if (v14)
     {
-      v15 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v16 = [v15 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v16 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v24 = v16;
       _os_log_error_impl(&dword_1C7694000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -71,7 +71,7 @@
     _NUAssertFailHandler();
   }
 
-  v5 = v4;
+  v5 = layoutCopy;
   v22.receiver = self;
   v22.super_class = _PIParallaxLayerStackScalePolicy;
   v6 = [(_PIParallaxLayerStackScalePolicy *)&v22 init];

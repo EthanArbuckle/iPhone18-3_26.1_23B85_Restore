@@ -1,24 +1,24 @@
 @interface ACCExternalAccessoryClientInfo
-- (ACCExternalAccessoryClientInfo)initWithXPCConnection:(id)a3;
-- (BOOL)canSendConnectionEventForAccessory:(id)a3;
+- (ACCExternalAccessoryClientInfo)initWithXPCConnection:(id)connection;
+- (BOOL)canSendConnectionEventForAccessory:(id)accessory;
 - (BOOL)canSendLaunchEvent;
-- (BOOL)containsLocationAccessoryUUID:(id)a3;
+- (BOOL)containsLocationAccessoryUUID:(id)d;
 - (void)_determineEntitlementsForXPCConnection;
-- (void)addClientRegistrationInformation:(id)a3;
-- (void)addLocationAccessoryUUID:(id)a3;
+- (void)addClientRegistrationInformation:(id)information;
+- (void)addLocationAccessoryUUID:(id)d;
 - (void)canSendLaunchEvent;
 - (void)dealloc;
-- (void)removeLocationAccessoryUUID:(id)a3;
+- (void)removeLocationAccessoryUUID:(id)d;
 @end
 
 @implementation ACCExternalAccessoryClientInfo
 
-- (ACCExternalAccessoryClientInfo)initWithXPCConnection:(id)a3
+- (ACCExternalAccessoryClientInfo)initWithXPCConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v14.receiver = self;
   v14.super_class = ACCExternalAccessoryClientInfo;
-  v5 = [(XPCConnectionInfo *)&v14 initWithXPCConnection:v4];
+  v5 = [(XPCConnectionInfo *)&v14 initWithXPCConnection:connectionCopy];
   v6 = v5;
   if (v5)
   {
@@ -33,7 +33,7 @@
     activeLocationAccessoryUUIDs = v6->_activeLocationAccessoryUUIDs;
     v6->_activeLocationAccessoryUUIDs = v9;
 
-    v6->_clientPid = [v4 processIdentifier];
+    v6->_clientPid = [connectionCopy processIdentifier];
     v11 = dispatch_queue_create("com.apple.accessoryd.ea.uuidQueue", 0);
     locationAccessoryUUIDsQueue = v6->_locationAccessoryUUIDsQueue;
     v6->_locationAccessoryUUIDsQueue = v11;
@@ -72,9 +72,9 @@
 
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [(ACCExternalAccessoryClientInfo *)self bundleID];
+    bundleID = [(ACCExternalAccessoryClientInfo *)self bundleID];
     *buf = 138412290;
-    v9 = v6;
+    v9 = bundleID;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "client %@ released", buf, 0xCu);
   }
 
@@ -85,16 +85,16 @@
 
 - (void)_determineEntitlementsForXPCConnection
 {
-  v3 = [(XPCConnectionInfo *)self XPCConnection];
-  v4 = [v3 valueForEntitlement:@"com.apple.private.externalaccessory.showallaccessories"];
+  xPCConnection = [(XPCConnectionInfo *)self XPCConnection];
+  v4 = [xPCConnection valueForEntitlement:@"com.apple.private.externalaccessory.showallaccessories"];
 
   if (v4)
   {
     self->_allAccessoryNotificationsEntitlement = 1;
   }
 
-  v5 = [(XPCConnectionInfo *)self XPCConnection];
-  v6 = [v5 valueForEntitlement:@"com.apple.iapd.accessibility"];
+  xPCConnection2 = [(XPCConnectionInfo *)self XPCConnection];
+  v6 = [xPCConnection2 valueForEntitlement:@"com.apple.iapd.accessibility"];
 
   if (v6)
   {
@@ -102,11 +102,11 @@
   }
 }
 
-- (void)addClientRegistrationInformation:(id)a3
+- (void)addClientRegistrationInformation:(id)information
 {
   v4 = kACCExternalAccessoryClientBundleIDKey;
-  v5 = a3;
-  v6 = [v5 objectForKey:v4];
+  informationCopy = information;
+  v6 = [informationCopy objectForKey:v4];
   v7 = [v6 copy];
 
   if (gLogObjects)
@@ -146,25 +146,25 @@
   self->_bundleID = v7;
   v12 = v7;
 
-  v13 = [v5 objectForKey:kACCExternalAccessoryClientEAProtocolsKey];
+  v13 = [informationCopy objectForKey:kACCExternalAccessoryClientEAProtocolsKey];
   v14 = [v13 copy];
   protocolStrings = self->_protocolStrings;
   self->_protocolStrings = v14;
 
-  v16 = [v5 objectForKey:kACCExternalAccessoryClientEACapablitiesKey];
+  v16 = [informationCopy objectForKey:kACCExternalAccessoryClientEACapablitiesKey];
 
   self->_clientCapabilities = [v16 unsignedLongLongValue];
 }
 
-- (BOOL)canSendConnectionEventForAccessory:(id)a3
+- (BOOL)canSendConnectionEventForAccessory:(id)accessory
 {
-  v4 = a3;
-  v5 = [v4 copyExternalAccessoryProtocols];
+  accessoryCopy = accessory;
+  copyExternalAccessoryProtocols = [accessoryCopy copyExternalAccessoryProtocols];
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
   v20 = 0;
-  if ([v5 count])
+  if ([copyExternalAccessoryProtocols count])
   {
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
@@ -172,7 +172,7 @@
     v16[3] = &unk_1002288F0;
     v16[4] = self;
     v16[5] = &v17;
-    [v5 enumerateObjectsUsingBlock:v16];
+    [copyExternalAccessoryProtocols enumerateObjectsUsingBlock:v16];
     if ((v18[3] & 1) == 0)
     {
       if (gLogObjects && gNumLogObjects >= 10)
@@ -193,9 +193,9 @@
 
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
-        v8 = [(ACCExternalAccessoryClientInfo *)self bundleID];
+        bundleID = [(ACCExternalAccessoryClientInfo *)self bundleID];
         *buf = 138412290;
-        v22 = v8;
+        v22 = bundleID;
         _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "No protocols found for client %@", buf, 0xCu);
       }
     }
@@ -220,13 +220,13 @@
 
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [(ACCExternalAccessoryClientInfo *)self bundleID];
-    v13 = [(ACCExternalAccessoryClientInfo *)self allAccessoryNotificationsEntitlement];
+    bundleID2 = [(ACCExternalAccessoryClientInfo *)self bundleID];
+    allAccessoryNotificationsEntitlement = [(ACCExternalAccessoryClientInfo *)self allAccessoryNotificationsEntitlement];
     v14 = *(v18 + 24);
     *buf = 138413058;
-    v22 = v12;
+    v22 = bundleID2;
     v23 = 1024;
-    v24 = v13;
+    v24 = allAccessoryNotificationsEntitlement;
     v25 = 1024;
     v26 = v14;
     v27 = 1024;
@@ -346,7 +346,7 @@ void __69__ACCExternalAccessoryClientInfo_canSendConnectionEventForAccessory___b
 
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
-      v7 = [(ACCExternalAccessoryClientInfo *)self bundleID];
+      bundleID = [(ACCExternalAccessoryClientInfo *)self bundleID];
       if (([(ACCExternalAccessoryClientInfo *)self clientCapabilities]& 0x10) != 0)
       {
         v8 = @"yes";
@@ -368,7 +368,7 @@ void __69__ACCExternalAccessoryClientInfo_canSendConnectionEventForAccessory___b
         v9 = @"no";
       }
 
-      v14 = v7;
+      v14 = bundleID;
       v15 = 2112;
       v16 = v8;
       v17 = 2112;
@@ -382,37 +382,37 @@ void __69__ACCExternalAccessoryClientInfo_canSendConnectionEventForAccessory___b
   return v10;
 }
 
-- (void)addLocationAccessoryUUID:(id)a3
+- (void)addLocationAccessoryUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   locationAccessoryUUIDsQueue = self->_locationAccessoryUUIDsQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = __59__ACCExternalAccessoryClientInfo_addLocationAccessoryUUID___block_invoke;
   v7[3] = &unk_100225A08;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dCopy;
+  v6 = dCopy;
   dispatch_sync(locationAccessoryUUIDsQueue, v7);
 }
 
-- (void)removeLocationAccessoryUUID:(id)a3
+- (void)removeLocationAccessoryUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   locationAccessoryUUIDsQueue = self->_locationAccessoryUUIDsQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = __62__ACCExternalAccessoryClientInfo_removeLocationAccessoryUUID___block_invoke;
   v7[3] = &unk_100225A08;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dCopy;
+  v6 = dCopy;
   dispatch_sync(locationAccessoryUUIDsQueue, v7);
 }
 
-- (BOOL)containsLocationAccessoryUUID:(id)a3
+- (BOOL)containsLocationAccessoryUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -422,10 +422,10 @@ void __69__ACCExternalAccessoryClientInfo_canSendConnectionEventForAccessory___b
   block[1] = 3221225472;
   block[2] = __64__ACCExternalAccessoryClientInfo_containsLocationAccessoryUUID___block_invoke;
   block[3] = &unk_1002259B8;
-  v9 = v4;
+  v9 = dCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
+  v6 = dCopy;
   dispatch_sync(locationAccessoryUUIDsQueue, block);
   LOBYTE(locationAccessoryUUIDsQueue) = *(v12 + 24);
 
@@ -449,9 +449,9 @@ void __69__ACCExternalAccessoryClientInfo_canSendConnectionEventForAccessory___b
 
 - (void)canSendLaunchEvent
 {
-  v3 = [a1 bundleID];
+  bundleID = [self bundleID];
   v4 = 138412290;
-  v5 = v3;
+  v5 = bundleID;
   _os_log_debug_impl(&_mh_execute_header, a2, OS_LOG_TYPE_DEBUG, "Can send launch event for bundleID %@", &v4, 0xCu);
 }
 

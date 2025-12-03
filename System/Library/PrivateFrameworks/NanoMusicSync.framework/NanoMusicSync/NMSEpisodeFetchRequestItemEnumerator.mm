@@ -1,27 +1,27 @@
 @interface NMSEpisodeFetchRequestItemEnumerator
-- (NMSEpisodeFetchRequestItemEnumerator)initWithFetchRequest:(id)a3 ctx:(id)a4;
+- (NMSEpisodeFetchRequestItemEnumerator)initWithFetchRequest:(id)request ctx:(id)ctx;
 - (NSArray)items;
 - (id)_getNextItem;
 @end
 
 @implementation NMSEpisodeFetchRequestItemEnumerator
 
-- (NMSEpisodeFetchRequestItemEnumerator)initWithFetchRequest:(id)a3 ctx:(id)a4
+- (NMSEpisodeFetchRequestItemEnumerator)initWithFetchRequest:(id)request ctx:(id)ctx
 {
-  v7 = a3;
-  v8 = a4;
+  requestCopy = request;
+  ctxCopy = ctx;
   v11.receiver = self;
   v11.super_class = NMSEpisodeFetchRequestItemEnumerator;
   v9 = [(NMSEpisodeFetchRequestItemEnumerator *)&v11 init];
   if (v9)
   {
-    if (![v7 fetchBatchSize])
+    if (![requestCopy fetchBatchSize])
     {
-      [v7 setFetchBatchSize:3];
+      [requestCopy setFetchBatchSize:3];
     }
 
-    objc_storeStrong(&v9->_fetchRequest, a3);
-    objc_storeStrong(&v9->_ctx, a4);
+    objc_storeStrong(&v9->_fetchRequest, request);
+    objc_storeStrong(&v9->_ctx, ctx);
   }
 
   return v9;
@@ -30,8 +30,8 @@
 - (id)_getNextItem
 {
   itemIndex = self->_itemIndex;
-  v4 = [(NMSEpisodeFetchRequestItemEnumerator *)self items];
-  v5 = [v4 count];
+  items = [(NMSEpisodeFetchRequestItemEnumerator *)self items];
+  v5 = [items count];
 
   if (itemIndex >= v5)
   {
@@ -60,15 +60,15 @@
     v7 = v14[5];
     if (v7)
     {
-      v8 = v7;
+      _getNextItem = v7;
     }
 
     else
     {
-      v8 = [(NMSEpisodeFetchRequestItemEnumerator *)self _getNextItem];
+      _getNextItem = [(NMSEpisodeFetchRequestItemEnumerator *)self _getNextItem];
     }
 
-    v10 = v8;
+    v10 = _getNextItem;
     _Block_object_dispose(&v13, 8);
   }
 

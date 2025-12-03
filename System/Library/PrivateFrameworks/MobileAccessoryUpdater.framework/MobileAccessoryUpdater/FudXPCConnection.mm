@@ -1,48 +1,48 @@
 @interface FudXPCConnection
 - (BOOL)createSession;
 - (BOOL)registerForBSDNotifications;
-- (FudXPCConnection)initWithClientName:(id)a3 replyHandlerQueue:(id)a4 messageHandler:(id)a5;
+- (FudXPCConnection)initWithClientName:(id)name replyHandlerQueue:(id)queue messageHandler:(id)handler;
 - (void)createConnection;
 - (void)createSession;
 - (void)dealloc;
-- (void)sendMessageToFud:(id)a3;
-- (void)sendMessageToFud:(id)a3 reply:(id)a4;
+- (void)sendMessageToFud:(id)fud;
+- (void)sendMessageToFud:(id)fud reply:(id)reply;
 - (void)stop;
 @end
 
 @implementation FudXPCConnection
 
-- (FudXPCConnection)initWithClientName:(id)a3 replyHandlerQueue:(id)a4 messageHandler:(id)a5
+- (FudXPCConnection)initWithClientName:(id)name replyHandlerQueue:(id)queue messageHandler:(id)handler
 {
   v20.receiver = self;
   v20.super_class = FudXPCConnection;
   v8 = [(FudXPCConnection *)&v20 init];
   v15 = v8;
   v8->connection = 0;
-  if (!a3)
+  if (!name)
   {
     v19 = @"Can't create xpc connection without client name";
     goto LABEL_8;
   }
 
-  if (!a5)
+  if (!handler)
   {
     v19 = @"Can't create xpc connection without reply handler";
     goto LABEL_8;
   }
 
-  if (!a4)
+  if (!queue)
   {
     v19 = @"Can't create xpc connection without reply queue";
     goto LABEL_8;
   }
 
   v8->didStop = 0;
-  v8->clientIdentifier = a3;
-  v16 = _Block_copy(a5);
-  v15->replyQueue = a4;
+  v8->clientIdentifier = name;
+  v16 = _Block_copy(handler);
+  v15->replyQueue = queue;
   v15->messageHandler = v16;
-  dispatch_retain(a4);
+  dispatch_retain(queue);
   v17 = dispatch_queue_create("com.apple.MobileAccessoryUpdater.FudXPCConnection.connection", 0);
   v15->connectionQueue = v17;
   if (!v17)
@@ -207,10 +207,10 @@ void __36__FudXPCConnection_createConnection__block_invoke(uint64_t a1, uint64_t
 {
   if (!self->connection)
   {
-    v3 = [(FudXPCConnection *)self createConnection];
+    createConnection = [(FudXPCConnection *)self createConnection];
     if (!self->connection)
     {
-      [(FudXPCConnection *)v3 createSession:v4];
+      [(FudXPCConnection *)createConnection createSession:v4];
 LABEL_20:
       LOBYTE(v18) = 0;
       return v18;
@@ -297,13 +297,13 @@ LABEL_14:
   self->didStop = 1;
 }
 
-- (void)sendMessageToFud:(id)a3
+- (void)sendMessageToFud:(id)fud
 {
   connection = self->connection;
   if (connection || ([(FudXPCConnection *)self createConnection], (connection = self->connection) != 0))
   {
 
-    xpc_connection_send_message(connection, a3);
+    xpc_connection_send_message(connection, fud);
   }
 
   else
@@ -312,35 +312,35 @@ LABEL_14:
   }
 }
 
-- (void)sendMessageToFud:(id)a3 reply:(id)a4
+- (void)sendMessageToFud:(id)fud reply:(id)reply
 {
   connection = self->connection;
   if (connection || ([(FudXPCConnection *)self createConnection], (connection = self->connection) != 0))
   {
-    if (a3)
+    if (fud)
     {
-      if (a4)
+      if (reply)
       {
         replyQueue = self->replyQueue;
 
-        xpc_connection_send_message_with_reply(connection, a3, replyQueue, a4);
+        xpc_connection_send_message_with_reply(connection, fud, replyQueue, reply);
       }
 
       else
       {
-        [(FudXPCConnection *)connection sendMessageToFud:a2 reply:a3, a4, v4, v5, v6, v7, v13];
+        [(FudXPCConnection *)connection sendMessageToFud:a2 reply:fud, reply, v4, v5, v6, v7, v13];
       }
     }
 
     else
     {
-      [(FudXPCConnection *)connection sendMessageToFud:a2 reply:a3, a4, v4, v5, v6, v7, v13];
+      [(FudXPCConnection *)connection sendMessageToFud:a2 reply:fud, reply, v4, v5, v6, v7, v13];
     }
   }
 
   else
   {
-    [(FudXPCConnection *)0 sendMessageToFud:a2, a3, a4, v4, v5, v6, v7, v13];
+    [(FudXPCConnection *)0 sendMessageToFud:a2, fud, reply, v4, v5, v6, v7, v13];
   }
 }
 
@@ -348,7 +348,7 @@ LABEL_14:
 {
   FudLog(3, @"NULL reply from session request", a3, a4, a5, a6, a7, a8, v9);
 
-  xpc_release(a1);
+  xpc_release(self);
 }
 
 @end

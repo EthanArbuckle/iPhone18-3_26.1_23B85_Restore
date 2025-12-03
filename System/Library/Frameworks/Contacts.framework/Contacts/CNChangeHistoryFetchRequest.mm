@@ -1,11 +1,11 @@
 @interface CNChangeHistoryFetchRequest
 - (CNChangeHistoryAnchor)startingAnchor;
 - (CNChangeHistoryFetchRequest)init;
-- (CNChangeHistoryFetchRequest)initWithClientIdentifier:(id)a3;
-- (CNChangeHistoryFetchRequest)initWithCoder:(id)a3;
+- (CNChangeHistoryFetchRequest)initWithClientIdentifier:(id)identifier;
+- (CNChangeHistoryFetchRequest)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
-- (void)setStartingAnchor:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setStartingAnchor:(id)anchor;
 @end
 
 @implementation CNChangeHistoryFetchRequest
@@ -26,9 +26,9 @@
   return v3;
 }
 
-- (CNChangeHistoryFetchRequest)initWithClientIdentifier:(id)a3
+- (CNChangeHistoryFetchRequest)initWithClientIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = CNChangeHistoryFetchRequest;
   v5 = [(CNChangeHistoryFetchRequest *)&v11 init];
@@ -36,7 +36,7 @@
   if (v5)
   {
     v5->_resultType = 2;
-    v7 = [v4 copy];
+    v7 = [identifierCopy copy];
     clientIdentifier = v6->_clientIdentifier;
     v6->_clientIdentifier = v7;
 
@@ -57,44 +57,44 @@
   return v6;
 }
 
-- (CNChangeHistoryFetchRequest)initWithCoder:(id)a3
+- (CNChangeHistoryFetchRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v23.receiver = self;
   v23.super_class = CNChangeHistoryFetchRequest;
   v5 = [(CNChangeHistoryFetchRequest *)&v23 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_clientIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_clientIdentifier"];
     v7 = [v6 copy];
     clientIdentifier = v5->_clientIdentifier;
     v5->_clientIdentifier = v7;
 
-    v5->_shouldUnifyResults = [v4 decodeBoolForKey:@"_shouldUnifyResults"];
-    v5->_includeGroupChanges = [v4 decodeBoolForKey:@"_includeGroupChanges"];
-    v5->_includeChangeAnchors = [v4 decodeBoolForKey:@"_includeChangeAnchors"];
-    v5->_includeChangeIDs = [v4 decodeBoolForKey:@"_includeChangeIDs"];
-    v5->_includeExternalIDs = [v4 decodeBoolForKey:@"_includeExternalIDs"];
-    v5->_includeImagesChanged = [v4 decodeBoolForKey:@"_includeImagesChanged"];
-    v5->_includeLabeledValueChanges = [v4 decodeBoolForKey:@"_includeLabeledValueChanges"];
-    v5->_includeLinkingChanges = [v4 decodeBoolForKey:@"_includeLinkingChanges"];
-    v5->_includeMeCardChanges = [v4 decodeBoolForKey:@"_includeMeCardChanges"];
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_containerIdentifier"];
+    v5->_shouldUnifyResults = [coderCopy decodeBoolForKey:@"_shouldUnifyResults"];
+    v5->_includeGroupChanges = [coderCopy decodeBoolForKey:@"_includeGroupChanges"];
+    v5->_includeChangeAnchors = [coderCopy decodeBoolForKey:@"_includeChangeAnchors"];
+    v5->_includeChangeIDs = [coderCopy decodeBoolForKey:@"_includeChangeIDs"];
+    v5->_includeExternalIDs = [coderCopy decodeBoolForKey:@"_includeExternalIDs"];
+    v5->_includeImagesChanged = [coderCopy decodeBoolForKey:@"_includeImagesChanged"];
+    v5->_includeLabeledValueChanges = [coderCopy decodeBoolForKey:@"_includeLabeledValueChanges"];
+    v5->_includeLinkingChanges = [coderCopy decodeBoolForKey:@"_includeLinkingChanges"];
+    v5->_includeMeCardChanges = [coderCopy decodeBoolForKey:@"_includeMeCardChanges"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_containerIdentifier"];
     v10 = [v9 copy];
     containerIdentifier = v5->_containerIdentifier;
     v5->_containerIdentifier = v10;
 
-    v5->_enforceClientIdentifier = [v4 decodeBoolForKey:@"_enforceClientIdentifier"];
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_startingToken"];
+    v5->_enforceClientIdentifier = [coderCopy decodeBoolForKey:@"_enforceClientIdentifier"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_startingToken"];
     v13 = [v12 copy];
     startingToken = v5->_startingToken;
     v5->_startingToken = v13;
 
-    v5->_resultType = [v4 decodeIntegerForKey:@"_resultType"];
+    v5->_resultType = [coderCopy decodeIntegerForKey:@"_resultType"];
     v15 = MEMORY[0x1E695DFD8];
     v16 = objc_opt_class();
     v17 = [v15 setWithObjects:{v16, objc_opt_class(), 0}];
-    v18 = [v4 decodeObjectOfClasses:v17 forKey:@"_excludedTransactionAuthors"];
+    v18 = [coderCopy decodeObjectOfClasses:v17 forKey:@"_excludedTransactionAuthors"];
     v19 = [v18 copy];
     excludedTransactionAuthors = v5->_excludedTransactionAuthors;
     v5->_excludedTransactionAuthors = v19;
@@ -105,25 +105,25 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   clientIdentifier = self->_clientIdentifier;
-  v5 = a3;
-  [v5 encodeObject:clientIdentifier forKey:@"_clientIdentifier"];
-  [v5 encodeBool:self->_shouldUnifyResults forKey:@"_shouldUnifyResults"];
-  [v5 encodeBool:self->_includeGroupChanges forKey:@"_includeGroupChanges"];
-  [v5 encodeBool:self->_includeChangeAnchors forKey:@"_includeChangeAnchors"];
-  [v5 encodeBool:self->_includeChangeIDs forKey:@"_includeChangeIDs"];
-  [v5 encodeBool:self->_includeExternalIDs forKey:@"_includeExternalIDs"];
-  [v5 encodeBool:self->_includeImagesChanged forKey:@"_includeImagesChanged"];
-  [v5 encodeBool:self->_includeLabeledValueChanges forKey:@"_includeLabeledValueChanges"];
-  [v5 encodeBool:self->_includeLinkingChanges forKey:@"_includeLinkingChanges"];
-  [v5 encodeBool:self->_includeMeCardChanges forKey:@"_includeMeCardChanges"];
-  [v5 encodeObject:self->_containerIdentifier forKey:@"_containerIdentifier"];
-  [v5 encodeBool:self->_enforceClientIdentifier forKey:@"_enforceClientIdentifier"];
-  [v5 encodeObject:self->_startingToken forKey:@"_startingToken"];
-  [v5 encodeInteger:self->_resultType forKey:@"_resultType"];
-  [v5 encodeObject:self->_excludedTransactionAuthors forKey:@"_excludedTransactionAuthors"];
+  coderCopy = coder;
+  [coderCopy encodeObject:clientIdentifier forKey:@"_clientIdentifier"];
+  [coderCopy encodeBool:self->_shouldUnifyResults forKey:@"_shouldUnifyResults"];
+  [coderCopy encodeBool:self->_includeGroupChanges forKey:@"_includeGroupChanges"];
+  [coderCopy encodeBool:self->_includeChangeAnchors forKey:@"_includeChangeAnchors"];
+  [coderCopy encodeBool:self->_includeChangeIDs forKey:@"_includeChangeIDs"];
+  [coderCopy encodeBool:self->_includeExternalIDs forKey:@"_includeExternalIDs"];
+  [coderCopy encodeBool:self->_includeImagesChanged forKey:@"_includeImagesChanged"];
+  [coderCopy encodeBool:self->_includeLabeledValueChanges forKey:@"_includeLabeledValueChanges"];
+  [coderCopy encodeBool:self->_includeLinkingChanges forKey:@"_includeLinkingChanges"];
+  [coderCopy encodeBool:self->_includeMeCardChanges forKey:@"_includeMeCardChanges"];
+  [coderCopy encodeObject:self->_containerIdentifier forKey:@"_containerIdentifier"];
+  [coderCopy encodeBool:self->_enforceClientIdentifier forKey:@"_enforceClientIdentifier"];
+  [coderCopy encodeObject:self->_startingToken forKey:@"_startingToken"];
+  [coderCopy encodeInteger:self->_resultType forKey:@"_resultType"];
+  [coderCopy encodeObject:self->_excludedTransactionAuthors forKey:@"_excludedTransactionAuthors"];
 }
 
 - (id)description
@@ -148,23 +148,23 @@
   v15 = [MEMORY[0x1E696AD98] numberWithBool:{-[CNChangeHistoryFetchRequest includeMeCardChanges](self, "includeMeCardChanges")}];
   v16 = [v3 appendName:@"includeMeCardChanges" object:v15];
 
-  v17 = [(CNChangeHistoryFetchRequest *)self containerIdentifier];
-  v18 = [v3 appendName:@"containerIdentifier" object:v17];
+  containerIdentifier = [(CNChangeHistoryFetchRequest *)self containerIdentifier];
+  v18 = [v3 appendName:@"containerIdentifier" object:containerIdentifier];
 
-  v19 = [(CNChangeHistoryFetchRequest *)self startingAnchor];
+  startingAnchor = [(CNChangeHistoryFetchRequest *)self startingAnchor];
 
-  if (v19)
+  if (startingAnchor)
   {
-    v20 = [(CNChangeHistoryFetchRequest *)self startingAnchor];
-    v21 = [v3 appendName:@"startingAnchor" object:v20];
+    startingAnchor2 = [(CNChangeHistoryFetchRequest *)self startingAnchor];
+    v21 = [v3 appendName:@"startingAnchor" object:startingAnchor2];
   }
 
   v22 = [v3 appendName:@"shouldEnforceClientIdentifier" BOOLValue:{-[CNChangeHistoryFetchRequest shouldEnforceClientIdentifer](self, "shouldEnforceClientIdentifer")}];
-  v23 = [(CNChangeHistoryFetchRequest *)self excludedTransactionAuthors];
-  v24 = [v3 appendName:@"excludedTransactionAuthors" object:v23];
+  excludedTransactionAuthors = [(CNChangeHistoryFetchRequest *)self excludedTransactionAuthors];
+  v24 = [v3 appendName:@"excludedTransactionAuthors" object:excludedTransactionAuthors];
 
-  v25 = [(CNChangeHistoryFetchRequest *)self clientIdentifier];
-  v26 = [v3 appendName:@"clientIdentifier" object:v25];
+  clientIdentifier = [(CNChangeHistoryFetchRequest *)self clientIdentifier];
+  v26 = [v3 appendName:@"clientIdentifier" object:clientIdentifier];
 
   v27 = [MEMORY[0x1E696AD98] numberWithBool:{-[CNChangeHistoryFetchRequest includeChangeAnchors](self, "includeChangeAnchors")}];
   v28 = [v3 appendName:@"includeChangeAnchors" object:v27];
@@ -175,24 +175,24 @@
   v31 = [MEMORY[0x1E696AD98] numberWithBool:{-[CNChangeHistoryFetchRequest includeImagesChanged](self, "includeImagesChanged")}];
   v32 = [v3 appendName:@"includeImagesChanged" object:v31];
 
-  v33 = [v3 build];
+  build = [v3 build];
 
-  return v33;
+  return build;
 }
 
 - (CNChangeHistoryAnchor)startingAnchor
 {
   v3 = [CNChangeHistoryAnchor alloc];
-  v4 = [(CNChangeHistoryFetchRequest *)self startingToken];
-  v5 = [(CNChangeHistoryAnchor *)v3 initWithHistoryToken:v4 error:0];
+  startingToken = [(CNChangeHistoryFetchRequest *)self startingToken];
+  v5 = [(CNChangeHistoryAnchor *)v3 initWithHistoryToken:startingToken error:0];
 
   return v5;
 }
 
-- (void)setStartingAnchor:(id)a3
+- (void)setStartingAnchor:(id)anchor
 {
-  v4 = [a3 historyToken];
-  [(CNChangeHistoryFetchRequest *)self setStartingToken:v4];
+  historyToken = [anchor historyToken];
+  [(CNChangeHistoryFetchRequest *)self setStartingToken:historyToken];
 }
 
 @end

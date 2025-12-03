@@ -1,7 +1,7 @@
 @interface RPTSettings
 + (RPTSettings)processEnvironment;
 - (RPTSettings)init;
-- (id)initFromDictionary:(id)a3;
+- (id)initFromDictionary:(id)dictionary;
 @end
 
 @implementation RPTSettings
@@ -45,31 +45,31 @@ void __33__RPTSettings_processEnvironment__block_invoke()
   return v3;
 }
 
-- (id)initFromDictionary:(id)a3
+- (id)initFromDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = RPTSettings;
   v5 = [(RPTSettings *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"RPT_OVERRIDE_RECAP_WITH_FILE"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"RPT_OVERRIDE_RECAP_WITH_FILE"];
     recapOverrideFileURL = v5->_recapOverrideFileURL;
     v5->_recapOverrideFileURL = v6;
 
-    v8 = [v4 objectForKeyedSubscript:@"RPT_ACTIVATION_ITERATION_COUNT"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"RPT_ACTIVATION_ITERATION_COUNT"];
     v9 = v8;
     if (v8)
     {
-      v10 = [v8 intValue];
+      intValue = [v8 intValue];
     }
 
     else
     {
-      v10 = -1;
+      intValue = -1;
     }
 
-    v5->_activationIterationCount = v10;
+    v5->_activationIterationCount = intValue;
   }
 
   return v5;

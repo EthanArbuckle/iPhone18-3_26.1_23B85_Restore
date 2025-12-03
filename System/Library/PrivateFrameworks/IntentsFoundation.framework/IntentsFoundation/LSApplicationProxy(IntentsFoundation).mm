@@ -6,7 +6,7 @@
 
 - (void)if_userActivityTypes
 {
-  v1 = [a1 objectForInfoDictionaryKey:@"NSUserActivityTypes" ofClass:objc_opt_class()];
+  v1 = [self objectForInfoDictionaryKey:@"NSUserActivityTypes" ofClass:objc_opt_class()];
   v2 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global];
   v3 = [v1 filteredArrayUsingPredicate:v2];
   v4 = v3;

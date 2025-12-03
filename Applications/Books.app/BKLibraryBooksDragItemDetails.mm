@@ -1,27 +1,27 @@
 @interface BKLibraryBooksDragItemDetails
-- (BKLibraryBooksDragItemDetails)initWithCollectionID:(id)a3 assetID:(id)a4 bvcType:(int64_t)a5;
+- (BKLibraryBooksDragItemDetails)initWithCollectionID:(id)d assetID:(id)iD bvcType:(int64_t)type;
 @end
 
 @implementation BKLibraryBooksDragItemDetails
 
-- (BKLibraryBooksDragItemDetails)initWithCollectionID:(id)a3 assetID:(id)a4 bvcType:(int64_t)a5
+- (BKLibraryBooksDragItemDetails)initWithCollectionID:(id)d assetID:(id)iD bvcType:(int64_t)type
 {
-  v8 = a3;
-  v9 = a4;
+  dCopy = d;
+  iDCopy = iD;
   v16.receiver = self;
   v16.super_class = BKLibraryBooksDragItemDetails;
   v10 = [(BKLibraryBooksDragItemDetails *)&v16 init];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [dCopy copy];
     sourceCollectionID = v10->_sourceCollectionID;
     v10->_sourceCollectionID = v11;
 
-    v13 = [v9 copy];
+    v13 = [iDCopy copy];
     assetID = v10->_assetID;
     v10->_assetID = v13;
 
-    v10->_bvcType = a5;
+    v10->_bvcType = type;
   }
 
   return v10;

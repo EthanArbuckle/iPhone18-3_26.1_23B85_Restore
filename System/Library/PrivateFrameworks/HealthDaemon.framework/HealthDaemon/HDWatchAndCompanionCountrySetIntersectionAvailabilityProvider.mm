@@ -1,56 +1,56 @@
 @interface HDWatchAndCompanionCountrySetIntersectionAvailabilityProvider
-+ (id)lastContentVersionDuringReloadAttemptDomainForProfile:(id)a3;
++ (id)lastContentVersionDuringReloadAttemptDomainForProfile:(id)profile;
 - (HDRegionAvailabilityProvidingDelegate)delegate;
-- (HDWatchAndCompanionCountrySetIntersectionAvailabilityProvider)initWithAllowedCountriesDataSource:(id)a3 profile:(id)a4 featureCapability:(id)a5 loggingCategory:(id)a6;
-- (HDWatchAndCompanionCountrySetIntersectionAvailabilityProvider)initWithAllowedCountriesDataSource:(id)a3 profile:(id)a4 featureCapability:(id)a5 reloadsLocalCountrySetOnRemoteCountrySetUpdate:(BOOL)a6 loggingCategory:(id)a7;
+- (HDWatchAndCompanionCountrySetIntersectionAvailabilityProvider)initWithAllowedCountriesDataSource:(id)source profile:(id)profile featureCapability:(id)capability loggingCategory:(id)category;
+- (HDWatchAndCompanionCountrySetIntersectionAvailabilityProvider)initWithAllowedCountriesDataSource:(id)source profile:(id)profile featureCapability:(id)capability reloadsLocalCountrySetOnRemoteCountrySetUpdate:(BOOL)update loggingCategory:(id)category;
 - (NSString)description;
 - (id)_lastContentVersionDuringReloadAttemptDomain;
-- (id)onboardingEligibilityForCountryCode:(id)a3;
-- (id)onboardingEligibilityForCountryCode:(id)a3 device:(id)a4;
+- (id)onboardingEligibilityForCountryCode:(id)code;
+- (id)onboardingEligibilityForCountryCode:(id)code device:(id)device;
 - (id)regionAvailability;
-- (id)regionAvailabilityForDevice:(id)a3;
-- (void)allowedCountriesDataSourceDidUpdateActiveRemoteCountrySet:(id)a3;
-- (void)allowedCountriesDataSourceDidUpdateLocalCountrySet:(id)a3;
+- (id)regionAvailabilityForDevice:(id)device;
+- (void)allowedCountriesDataSourceDidUpdateActiveRemoteCountrySet:(id)set;
+- (void)allowedCountriesDataSourceDidUpdateLocalCountrySet:(id)set;
 @end
 
 @implementation HDWatchAndCompanionCountrySetIntersectionAvailabilityProvider
 
-- (HDWatchAndCompanionCountrySetIntersectionAvailabilityProvider)initWithAllowedCountriesDataSource:(id)a3 profile:(id)a4 featureCapability:(id)a5 loggingCategory:(id)a6
+- (HDWatchAndCompanionCountrySetIntersectionAvailabilityProvider)initWithAllowedCountriesDataSource:(id)source profile:(id)profile featureCapability:(id)capability loggingCategory:(id)category
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [v12 daemon];
-  v15 = [v14 behavior];
-  v16 = [v15 isAppleWatch];
+  categoryCopy = category;
+  capabilityCopy = capability;
+  profileCopy = profile;
+  sourceCopy = source;
+  daemon = [profileCopy daemon];
+  behavior = [daemon behavior];
+  isAppleWatch = [behavior isAppleWatch];
 
-  v17 = [(HDWatchAndCompanionCountrySetIntersectionAvailabilityProvider *)self initWithAllowedCountriesDataSource:v13 profile:v12 featureCapability:v11 reloadsLocalCountrySetOnRemoteCountrySetUpdate:v16 loggingCategory:v10];
+  v17 = [(HDWatchAndCompanionCountrySetIntersectionAvailabilityProvider *)self initWithAllowedCountriesDataSource:sourceCopy profile:profileCopy featureCapability:capabilityCopy reloadsLocalCountrySetOnRemoteCountrySetUpdate:isAppleWatch loggingCategory:categoryCopy];
   return v17;
 }
 
-- (HDWatchAndCompanionCountrySetIntersectionAvailabilityProvider)initWithAllowedCountriesDataSource:(id)a3 profile:(id)a4 featureCapability:(id)a5 reloadsLocalCountrySetOnRemoteCountrySetUpdate:(BOOL)a6 loggingCategory:(id)a7
+- (HDWatchAndCompanionCountrySetIntersectionAvailabilityProvider)initWithAllowedCountriesDataSource:(id)source profile:(id)profile featureCapability:(id)capability reloadsLocalCountrySetOnRemoteCountrySetUpdate:(BOOL)update loggingCategory:(id)category
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a7;
+  sourceCopy = source;
+  profileCopy = profile;
+  capabilityCopy = capability;
+  categoryCopy = category;
   v23.receiver = self;
   v23.super_class = HDWatchAndCompanionCountrySetIntersectionAvailabilityProvider;
   v17 = [(HDWatchAndCompanionCountrySetIntersectionAvailabilityProvider *)&v23 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_allowedCountriesDataSource, a3);
-    objc_storeWeak(&v18->_profile, v14);
-    v19 = [v14 daemon];
-    v20 = [v19 nanoRegistryDeviceCapabilityProvider];
+    objc_storeStrong(&v17->_allowedCountriesDataSource, source);
+    objc_storeWeak(&v18->_profile, profileCopy);
+    daemon = [profileCopy daemon];
+    nanoRegistryDeviceCapabilityProvider = [daemon nanoRegistryDeviceCapabilityProvider];
     pairedDeviceCapabilityProvider = v18->_pairedDeviceCapabilityProvider;
-    v18->_pairedDeviceCapabilityProvider = v20;
+    v18->_pairedDeviceCapabilityProvider = nanoRegistryDeviceCapabilityProvider;
 
-    objc_storeStrong(&v18->_featureCapability, a5);
-    v18->_reloadsLocalCountrySetOnRemoteCountrySetUpdate = a6;
-    objc_storeStrong(&v18->_loggingCategory, a7);
+    objc_storeStrong(&v18->_featureCapability, capability);
+    v18->_reloadsLocalCountrySetOnRemoteCountrySetUpdate = update;
+    objc_storeStrong(&v18->_loggingCategory, category);
     [(HDAllowedCountriesDataSource *)v18->_allowedCountriesDataSource setDelegate:v18];
   }
 
@@ -61,61 +61,61 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(HDAllowedCountriesDataSource *)self->_allowedCountriesDataSource featureIdentifier];
-  v6 = [v3 stringWithFormat:@"%@:%@", v4, v5];
+  featureIdentifier = [(HDAllowedCountriesDataSource *)self->_allowedCountriesDataSource featureIdentifier];
+  v6 = [v3 stringWithFormat:@"%@:%@", v4, featureIdentifier];
 
   return v6;
 }
 
-- (id)onboardingEligibilityForCountryCode:(id)a3
+- (id)onboardingEligibilityForCountryCode:(id)code
 {
-  v4 = a3;
-  v5 = [(HDWatchAndCompanionCountrySetIntersectionAvailabilityProvider *)self regionAvailability];
-  v6 = [v5 onboardingEligibilityForCountryCode:v4];
+  codeCopy = code;
+  regionAvailability = [(HDWatchAndCompanionCountrySetIntersectionAvailabilityProvider *)self regionAvailability];
+  v6 = [regionAvailability onboardingEligibilityForCountryCode:codeCopy];
 
   return v6;
 }
 
-- (id)onboardingEligibilityForCountryCode:(id)a3 device:(id)a4
+- (id)onboardingEligibilityForCountryCode:(id)code device:(id)device
 {
-  v6 = a3;
-  v7 = [(HDWatchAndCompanionCountrySetIntersectionAvailabilityProvider *)self regionAvailabilityForDevice:a4];
-  v8 = [v7 onboardingEligibilityForCountryCode:v6];
+  codeCopy = code;
+  v7 = [(HDWatchAndCompanionCountrySetIntersectionAvailabilityProvider *)self regionAvailabilityForDevice:device];
+  v8 = [v7 onboardingEligibilityForCountryCode:codeCopy];
 
   return v8;
 }
 
 - (id)regionAvailability
 {
-  v3 = [(HDPairedDeviceCapabilityProviding *)self->_pairedDeviceCapabilityProvider activePairedDevice];
-  v4 = [(HDWatchAndCompanionCountrySetIntersectionAvailabilityProvider *)self regionAvailabilityForDevice:v3];
+  activePairedDevice = [(HDPairedDeviceCapabilityProviding *)self->_pairedDeviceCapabilityProvider activePairedDevice];
+  v4 = [(HDWatchAndCompanionCountrySetIntersectionAvailabilityProvider *)self regionAvailabilityForDevice:activePairedDevice];
 
   return v4;
 }
 
-- (id)regionAvailabilityForDevice:(id)a3
+- (id)regionAvailabilityForDevice:(id)device
 {
-  v4 = a3;
-  v5 = [(HDAllowedCountriesDataSource *)self->_allowedCountriesDataSource localCountrySet];
-  if (v4)
+  deviceCopy = device;
+  localCountrySet = [(HDAllowedCountriesDataSource *)self->_allowedCountriesDataSource localCountrySet];
+  if (deviceCopy)
   {
-    v6 = [(HDAllowedCountriesDataSource *)self->_allowedCountriesDataSource remoteCountrySetForDevice:v4];
+    v6 = [(HDAllowedCountriesDataSource *)self->_allowedCountriesDataSource remoteCountrySetForDevice:deviceCopy];
     if (v6)
     {
-      v7 = [MEMORY[0x277CCCFE0] allowedCountriesInIntersectionOfLocalSet:v5 remoteSet:v6];
+      v7 = [MEMORY[0x277CCCFE0] allowedCountriesInIntersectionOfLocalSet:localCountrySet remoteSet:v6];
     }
 
     else
     {
       featureCapability = self->_featureCapability;
-      if (featureCapability && ([(HDPairedDeviceCapabilityProviding *)self->_pairedDeviceCapabilityProvider isCapabilitySupported:featureCapability onDevice:v4]& 1) == 0)
+      if (featureCapability && ([(HDPairedDeviceCapabilityProviding *)self->_pairedDeviceCapabilityProvider isCapabilitySupported:featureCapability onDevice:deviceCopy]& 1) == 0)
       {
-        v7 = [MEMORY[0x277CCCFE0] capabilityNotSupportedOnRemoteDevice:v5];
+        v7 = [MEMORY[0x277CCCFE0] capabilityNotSupportedOnRemoteDevice:localCountrySet];
       }
 
       else
       {
-        v7 = [MEMORY[0x277CCCFE0] allowedCountriesInIntersectionOfLocalAndRemoteSetPendingSync:v5];
+        v7 = [MEMORY[0x277CCCFE0] allowedCountriesInIntersectionOfLocalAndRemoteSetPendingSync:localCountrySet];
       }
     }
 
@@ -124,7 +124,7 @@
 
   else
   {
-    v8 = [MEMORY[0x277CCCFE0] noRemoteDevice:v5];
+    v8 = [MEMORY[0x277CCCFE0] noRemoteDevice:localCountrySet];
   }
 
   v10 = [MEMORY[0x277CCD898] allowedInSomeCountries:v8];
@@ -132,32 +132,32 @@
   return v10;
 }
 
-- (void)allowedCountriesDataSourceDidUpdateLocalCountrySet:(id)a3
+- (void)allowedCountriesDataSourceDidUpdateLocalCountrySet:(id)set
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained regionAvailabilityProvidingDidUpdate:self];
 }
 
-- (void)allowedCountriesDataSourceDidUpdateActiveRemoteCountrySet:(id)a3
+- (void)allowedCountriesDataSourceDidUpdateActiveRemoteCountrySet:(id)set
 {
   v27 = *MEMORY[0x277D85DE8];
   if (self->_reloadsLocalCountrySetOnRemoteCountrySetUpdate)
   {
-    v4 = [(HDAllowedCountriesDataSource *)self->_allowedCountriesDataSource activeRemoteCountrySet];
-    v5 = v4;
-    if (v4)
+    activeRemoteCountrySet = [(HDAllowedCountriesDataSource *)self->_allowedCountriesDataSource activeRemoteCountrySet];
+    v5 = activeRemoteCountrySet;
+    if (activeRemoteCountrySet)
     {
-      v6 = [v4 contentVersion];
+      contentVersion = [activeRemoteCountrySet contentVersion];
       v22 = 0;
-      v7 = [(HDWatchAndCompanionCountrySetIntersectionAvailabilityProvider *)self _lastContentVersionDuringReloadAttemptDomain];
-      v8 = [(HDAllowedCountriesDataSource *)self->_allowedCountriesDataSource featureIdentifier];
-      v9 = [v7 numberForKey:v8 error:&v22];
+      _lastContentVersionDuringReloadAttemptDomain = [(HDWatchAndCompanionCountrySetIntersectionAvailabilityProvider *)self _lastContentVersionDuringReloadAttemptDomain];
+      featureIdentifier = [(HDAllowedCountriesDataSource *)self->_allowedCountriesDataSource featureIdentifier];
+      v9 = [_lastContentVersionDuringReloadAttemptDomain numberForKey:featureIdentifier error:&v22];
 
       v10 = v22;
       v11 = v10;
       if (v9 || !v10)
       {
-        v13 = [v9 integerValue] < v6;
+        v13 = [v9 integerValue] < contentVersion;
       }
 
       else
@@ -193,8 +193,8 @@
         *&buf[8] = 3221225472;
         *&buf[16] = __87__HDWatchAndCompanionCountrySetIntersectionAvailabilityProvider__reloadLocalCountrySet__block_invoke;
         v24 = &unk_27861DCA0;
-        v25 = self;
-        v26 = v6;
+        selfCopy = self;
+        v26 = contentVersion;
         [(HDAllowedCountriesDataSource *)allowedCountriesDataSource reloadLocalCountrySetWithCompletion:buf];
         goto LABEL_18;
       }
@@ -283,10 +283,10 @@ void __87__HDWatchAndCompanionCountrySetIntersectionAvailabilityProvider__reload
   v16 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)lastContentVersionDuringReloadAttemptDomainForProfile:(id)a3
++ (id)lastContentVersionDuringReloadAttemptDomainForProfile:(id)profile
 {
-  v3 = a3;
-  v4 = [[HDKeyValueDomain alloc] initWithCategory:0 domainName:@"HDWatchAndCompanionCountrySetIntersectionAvailabilityProvider_LastContentVersionDuringReloadAttempt" profile:v3];
+  profileCopy = profile;
+  v4 = [[HDKeyValueDomain alloc] initWithCategory:0 domainName:@"HDWatchAndCompanionCountrySetIntersectionAvailabilityProvider_LastContentVersionDuringReloadAttempt" profile:profileCopy];
 
   return v4;
 }
@@ -294,7 +294,7 @@ void __87__HDWatchAndCompanionCountrySetIntersectionAvailabilityProvider__reload
 - (id)_lastContentVersionDuringReloadAttemptDomain
 {
   v2 = objc_opt_class();
-  WeakRetained = objc_loadWeakRetained((a1 + 16));
+  WeakRetained = objc_loadWeakRetained((self + 16));
   v4 = [v2 lastContentVersionDuringReloadAttemptDomainForProfile:WeakRetained];
 
   return v4;

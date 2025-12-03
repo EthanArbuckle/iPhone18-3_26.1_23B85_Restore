@@ -1,30 +1,30 @@
 @interface CAMPerformanceTestPlan
-- (CAMPerformanceTestPlan)initWithTestName:(id)a3;
-- (id)_findHarnessAfter:(id)a3;
-- (void)_failedTestWithReason:(id)a3;
-- (void)_runHarnessAfter:(id)a3;
+- (CAMPerformanceTestPlan)initWithTestName:(id)name;
+- (id)_findHarnessAfter:(id)after;
+- (void)_failedTestWithReason:(id)reason;
+- (void)_runHarnessAfter:(id)after;
 - (void)_startTesting;
 - (void)_stopTesting;
-- (void)queueHarness:(id)a3;
-- (void)runHarness:(id)a3;
-- (void)runWithSecondsDelay:(unint64_t)a3;
-- (void)startSubtestWithName:(id)a3 withMetrics:(id)a4;
-- (void)stopSubtestWithName:(id)a3;
-- (void)willEndTestHarness:(id)a3;
-- (void)willStartTestHarness:(id)a3;
+- (void)queueHarness:(id)harness;
+- (void)runHarness:(id)harness;
+- (void)runWithSecondsDelay:(unint64_t)delay;
+- (void)startSubtestWithName:(id)name withMetrics:(id)metrics;
+- (void)stopSubtestWithName:(id)name;
+- (void)willEndTestHarness:(id)harness;
+- (void)willStartTestHarness:(id)harness;
 @end
 
 @implementation CAMPerformanceTestPlan
 
-- (CAMPerformanceTestPlan)initWithTestName:(id)a3
+- (CAMPerformanceTestPlan)initWithTestName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v12.receiver = self;
   v12.super_class = CAMPerformanceTestPlan;
   v5 = [(CAMPerformanceTestPlan *)&v12 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [nameCopy copy];
     testName = v5->_testName;
     v5->_testName = v6;
 
@@ -38,20 +38,20 @@
   return v5;
 }
 
-- (void)queueHarness:(id)a3
+- (void)queueHarness:(id)harness
 {
-  v5 = a3;
-  v4 = [(CAMPerformanceTestPlan *)self _harnesses];
-  [v4 addObject:v5];
+  harnessCopy = harness;
+  _harnesses = [(CAMPerformanceTestPlan *)self _harnesses];
+  [_harnesses addObject:harnessCopy];
 
-  [v5 setDelegate:self];
+  [harnessCopy setDelegate:self];
 }
 
-- (void)runWithSecondsDelay:(unint64_t)a3
+- (void)runWithSecondsDelay:(unint64_t)delay
 {
-  if (a3)
+  if (delay)
   {
-    v4 = dispatch_time(0, 1000000000 * a3);
+    v4 = dispatch_time(0, 1000000000 * delay);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __46__CAMPerformanceTestPlan_runWithSecondsDelay___block_invoke;
@@ -67,39 +67,39 @@
   }
 }
 
-- (void)runHarness:(id)a3
+- (void)runHarness:(id)harness
 {
-  v3 = a3;
-  if (([v3 isRunningTest] & 1) == 0)
+  harnessCopy = harness;
+  if (([harnessCopy isRunningTest] & 1) == 0)
   {
-    [v3 startTesting];
+    [harnessCopy startTesting];
   }
 }
 
 - (void)_startTesting
 {
-  v6 = [(CAMPerformanceTestPlan *)self testName];
-  v3 = [MEMORY[0x1E69DC668] sharedApplication];
-  [v3 startedTest:v6];
+  testName = [(CAMPerformanceTestPlan *)self testName];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  [mEMORY[0x1E69DC668] startedTest:testName];
 
-  v4 = [(CAMPerformanceTestPlan *)self startHandler];
-  v5 = v4;
-  if (v4)
+  startHandler = [(CAMPerformanceTestPlan *)self startHandler];
+  v5 = startHandler;
+  if (startHandler)
   {
-    (*(v4 + 16))(v4);
+    (*(startHandler + 16))(startHandler);
   }
 }
 
 - (void)_stopTesting
 {
-  v3 = [MEMORY[0x1E69DC668] sharedApplication];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
   testName = self->_testName;
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __38__CAMPerformanceTestPlan__stopTesting__block_invoke;
   v5[3] = &unk_1E76F77B0;
   v5[4] = self;
-  [v3 finishedTest:testName extraResults:0 withTeardownBlock:v5];
+  [mEMORY[0x1E69DC668] finishedTest:testName extraResults:0 withTeardownBlock:v5];
 }
 
 void __38__CAMPerformanceTestPlan__stopTesting__block_invoke(uint64_t a1)
@@ -118,23 +118,23 @@ void __38__CAMPerformanceTestPlan__stopTesting__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_failedTestWithReason:(id)a3
+- (void)_failedTestWithReason:(id)reason
 {
   v4 = MEMORY[0x1E69DC668];
-  v5 = a3;
-  v7 = [v4 sharedApplication];
-  v6 = [(CAMPerformanceTestPlan *)self testName];
-  [v7 failedTest:v6 withFailure:v5];
+  reasonCopy = reason;
+  sharedApplication = [v4 sharedApplication];
+  testName = [(CAMPerformanceTestPlan *)self testName];
+  [sharedApplication failedTest:testName withFailure:reasonCopy];
 }
 
-- (void)_runHarnessAfter:(id)a3
+- (void)_runHarnessAfter:(id)after
 {
-  v4 = a3;
-  v7 = v4;
-  if (v4)
+  afterCopy = after;
+  v7 = afterCopy;
+  if (afterCopy)
   {
-    v5 = [(CAMPerformanceTestPlan *)self _findHarnessAfter:v4];
-    if (!v5)
+    firstObject = [(CAMPerformanceTestPlan *)self _findHarnessAfter:afterCopy];
+    if (!firstObject)
     {
       goto LABEL_7;
     }
@@ -142,28 +142,28 @@ void __38__CAMPerformanceTestPlan__stopTesting__block_invoke(uint64_t a1)
 
   else
   {
-    v6 = [(CAMPerformanceTestPlan *)self _harnesses];
-    v5 = [v6 firstObject];
+    _harnesses = [(CAMPerformanceTestPlan *)self _harnesses];
+    firstObject = [_harnesses firstObject];
 
-    if (!v5)
+    if (!firstObject)
     {
       goto LABEL_7;
     }
   }
 
-  if (([v5 isRunningTest] & 1) == 0)
+  if (([firstObject isRunningTest] & 1) == 0)
   {
-    [v5 startTesting];
+    [firstObject startTesting];
   }
 
 LABEL_7:
 }
 
-- (id)_findHarnessAfter:(id)a3
+- (id)_findHarnessAfter:(id)after
 {
-  v4 = a3;
-  v5 = [(CAMPerformanceTestPlan *)self _harnesses];
-  v6 = [v5 indexOfObject:v4];
+  afterCopy = after;
+  _harnesses = [(CAMPerformanceTestPlan *)self _harnesses];
+  v6 = [_harnesses indexOfObject:afterCopy];
 
   if (v6 == 0x7FFFFFFFFFFFFFFFLL || (-[CAMPerformanceTestPlan _harnesses](self, "_harnesses"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 count] - 1, v7, v6 >= v8))
   {
@@ -172,34 +172,34 @@ LABEL_7:
 
   else
   {
-    v9 = [(CAMPerformanceTestPlan *)self _harnesses];
-    v10 = [v9 objectAtIndexedSubscript:v6 + 1];
+    _harnesses2 = [(CAMPerformanceTestPlan *)self _harnesses];
+    v10 = [_harnesses2 objectAtIndexedSubscript:v6 + 1];
   }
 
   return v10;
 }
 
-- (void)startSubtestWithName:(id)a3 withMetrics:(id)a4
+- (void)startSubtestWithName:(id)name withMetrics:(id)metrics
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(CAMPerformanceTestPlan *)self testName];
-  v8 = [MEMORY[0x1E69DC668] sharedApplication];
-  [v8 startedSubTest:v7 forTest:v9 withMetrics:v6];
+  metricsCopy = metrics;
+  nameCopy = name;
+  testName = [(CAMPerformanceTestPlan *)self testName];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  [mEMORY[0x1E69DC668] startedSubTest:nameCopy forTest:testName withMetrics:metricsCopy];
 }
 
-- (void)stopSubtestWithName:(id)a3
+- (void)stopSubtestWithName:(id)name
 {
-  v4 = a3;
-  v6 = [(CAMPerformanceTestPlan *)self testName];
-  v5 = [MEMORY[0x1E69DC668] sharedApplication];
-  [v5 finishedSubTest:v4 forTest:v6];
+  nameCopy = name;
+  testName = [(CAMPerformanceTestPlan *)self testName];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  [mEMORY[0x1E69DC668] finishedSubTest:nameCopy forTest:testName];
 }
 
-- (void)willStartTestHarness:(id)a3
+- (void)willStartTestHarness:(id)harness
 {
-  v4 = a3;
-  if (!-[CAMPerformanceTestPlan _hasTriggeredTestStart](self, "_hasTriggeredTestStart") && ([v4 isSetupHarness] & 1) == 0)
+  harnessCopy = harness;
+  if (!-[CAMPerformanceTestPlan _hasTriggeredTestStart](self, "_hasTriggeredTestStart") && ([harnessCopy isSetupHarness] & 1) == 0)
   {
     [(CAMPerformanceTestPlan *)self set_hasTriggeredTestStart:1];
     [(CAMPerformanceTestPlan *)self _startTesting];
@@ -208,15 +208,15 @@ LABEL_7:
   [(CAMPerformanceTestPlan *)self set_startedHarnesses:[(CAMPerformanceTestPlan *)self _startedHarnesses]+ 1];
 }
 
-- (void)willEndTestHarness:(id)a3
+- (void)willEndTestHarness:(id)harness
 {
-  v7 = a3;
+  harnessCopy = harness;
   [(CAMPerformanceTestPlan *)self set_completedHarnesses:[(CAMPerformanceTestPlan *)self _completedHarnesses]+ 1];
-  v4 = [(CAMPerformanceTestPlan *)self _completedHarnesses];
-  v5 = [(CAMPerformanceTestPlan *)self _harnesses];
-  v6 = [v5 count];
+  _completedHarnesses = [(CAMPerformanceTestPlan *)self _completedHarnesses];
+  _harnesses = [(CAMPerformanceTestPlan *)self _harnesses];
+  v6 = [_harnesses count];
 
-  if (v4 >= v6)
+  if (_completedHarnesses >= v6)
   {
     if ([(CAMPerformanceTestPlan *)self _hasTriggeredTestStart])
     {
@@ -226,7 +226,7 @@ LABEL_7:
 
   else
   {
-    [(CAMPerformanceTestPlan *)self _runHarnessAfter:v7];
+    [(CAMPerformanceTestPlan *)self _runHarnessAfter:harnessCopy];
   }
 }
 

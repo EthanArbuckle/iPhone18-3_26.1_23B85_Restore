@@ -1,21 +1,21 @@
 @interface ICCameraDeviceRemovedItemsCoalescer
-- (ICCameraDeviceRemovedItemsCoalescer)initWithSource:(id)a3 block:(id)a4;
-- (void)coalesceItems:(id)a3;
+- (ICCameraDeviceRemovedItemsCoalescer)initWithSource:(id)source block:(id)block;
+- (void)coalesceItems:(id)items;
 @end
 
 @implementation ICCameraDeviceRemovedItemsCoalescer
 
-- (void)coalesceItems:(id)a3
+- (void)coalesceItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __53__ICCameraDeviceRemovedItemsCoalescer_coalesceItems___block_invoke;
   v7[3] = &unk_1E75AAEB0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = itemsCopy;
+  v6 = itemsCopy;
   dispatch_async(queue, v7);
 }
 
@@ -68,17 +68,17 @@ uint64_t __53__ICCameraDeviceRemovedItemsCoalescer_coalesceItems___block_invoke_
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (ICCameraDeviceRemovedItemsCoalescer)initWithSource:(id)a3 block:(id)a4
+- (ICCameraDeviceRemovedItemsCoalescer)initWithSource:(id)source block:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  sourceCopy = source;
+  blockCopy = block;
   v18.receiver = self;
   v18.super_class = ICCameraDeviceRemovedItemsCoalescer;
   v8 = [(ICCameraDeviceRemovedItemsCoalescer *)&v18 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_source, v6);
+    objc_storeWeak(&v8->_source, sourceCopy);
     v10 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v11 = dispatch_queue_create("ICCameraFileRemovedItemsCoalescer", v10);
     queue = v9->_queue;
@@ -88,7 +88,7 @@ uint64_t __53__ICCameraDeviceRemovedItemsCoalescer_coalesceItems___block_invoke_
     items = v9->_items;
     v9->_items = v13;
 
-    v15 = [v7 copy];
+    v15 = [blockCopy copy];
     block = v9->_block;
     v9->_block = v15;
   }

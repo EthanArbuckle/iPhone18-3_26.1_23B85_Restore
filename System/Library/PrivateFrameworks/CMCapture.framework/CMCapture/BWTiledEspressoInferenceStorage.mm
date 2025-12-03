@@ -1,16 +1,16 @@
 @interface BWTiledEspressoInferenceStorage
-- (BWTiledEspressoInferenceStorage)initWithRequirementsNeedingPixelBuffers:(id)a3 requirementsNeedingPixelBufferPools:(id)a4 espressoStorages:(id)a5;
+- (BWTiledEspressoInferenceStorage)initWithRequirementsNeedingPixelBuffers:(id)buffers requirementsNeedingPixelBufferPools:(id)pools espressoStorages:(id)storages;
 - (void)dealloc;
 @end
 
 @implementation BWTiledEspressoInferenceStorage
 
-- (BWTiledEspressoInferenceStorage)initWithRequirementsNeedingPixelBuffers:(id)a3 requirementsNeedingPixelBufferPools:(id)a4 espressoStorages:(id)a5
+- (BWTiledEspressoInferenceStorage)initWithRequirementsNeedingPixelBuffers:(id)buffers requirementsNeedingPixelBufferPools:(id)pools espressoStorages:(id)storages
 {
   v8.receiver = self;
   v8.super_class = BWTiledEspressoInferenceStorage;
-  v6 = [(BWInferenceProviderStorage *)&v8 initWithRequirementsNeedingPixelBuffers:a3 requirementsNeedingPixelBufferPools:a4];
-  v6->_espressoStorages = a5;
+  v6 = [(BWInferenceProviderStorage *)&v8 initWithRequirementsNeedingPixelBuffers:buffers requirementsNeedingPixelBufferPools:pools];
+  v6->_espressoStorages = storages;
   return v6;
 }
 

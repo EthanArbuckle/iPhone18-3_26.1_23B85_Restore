@@ -1,38 +1,38 @@
 @interface SXMosaicGalleryCluster
-- (BOOL)clusterIsEqualToTileTypes:(id)a3;
-- (BOOL)isClusterOfType:(int)a3;
-- (BOOL)isEqual:(id)a3;
-- (SXMosaicGalleryCluster)initWithItems:(id)a3;
+- (BOOL)clusterIsEqualToTileTypes:(id)types;
+- (BOOL)isClusterOfType:(int)type;
+- (BOOL)isEqual:(id)equal;
+- (SXMosaicGalleryCluster)initWithItems:(id)items;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation SXMosaicGalleryCluster
 
-- (SXMosaicGalleryCluster)initWithItems:(id)a3
+- (SXMosaicGalleryCluster)initWithItems:(id)items
 {
-  v5 = a3;
+  itemsCopy = items;
   v9.receiver = self;
   v9.super_class = SXMosaicGalleryCluster;
   v6 = [(SXMosaicGalleryCluster *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_items, a3);
+    objc_storeStrong(&v6->_items, items);
   }
 
   return v7;
 }
 
-- (BOOL)isClusterOfType:(int)a3
+- (BOOL)isClusterOfType:(int)type
 {
   v16 = *MEMORY[0x1E69E9840];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(SXMosaicGalleryCluster *)self items];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  items = [(SXMosaicGalleryCluster *)self items];
+  v5 = [items countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -43,17 +43,17 @@
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(items);
         }
 
-        if ([*(*(&v11 + 1) + 8 * i) tileType] != a3)
+        if ([*(*(&v11 + 1) + 8 * i) tileType] != type)
         {
           v9 = 0;
           goto LABEL_11;
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [items countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v6)
       {
         continue;
@@ -69,17 +69,17 @@ LABEL_11:
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(SXMosaicGalleryCluster *)self items];
-    v7 = [v5 items];
+    v5 = equalCopy;
+    items = [(SXMosaicGalleryCluster *)self items];
+    items2 = [v5 items];
 
-    v8 = [v6 isEqualToArray:v7];
+    v8 = [items isEqualToArray:items2];
   }
 
   else
@@ -90,13 +90,13 @@ LABEL_11:
   return v8;
 }
 
-- (BOOL)clusterIsEqualToTileTypes:(id)a3
+- (BOOL)clusterIsEqualToTileTypes:(id)types
 {
-  v4 = a3;
-  v5 = [(SXMosaicGalleryCluster *)self items];
-  v6 = [v5 count];
+  typesCopy = types;
+  items = [(SXMosaicGalleryCluster *)self items];
+  v6 = [items count];
 
-  if ([v4 count] == v6)
+  if ([typesCopy count] == v6)
   {
     if (v6)
     {
@@ -107,15 +107,15 @@ LABEL_11:
       while (1)
       {
         v11 = v8;
-        v12 = [(SXMosaicGalleryCluster *)self items];
-        v13 = [v12 objectAtIndex:v7];
+        items2 = [(SXMosaicGalleryCluster *)self items];
+        v13 = [items2 objectAtIndex:v7];
 
         if (v9)
         {
-          v14 = [v4 objectAtIndex:v7];
-          v15 = [v14 intValue];
+          v14 = [typesCopy objectAtIndex:v7];
+          intValue = [v14 intValue];
 
-          v9 = [v13 tileType] == v15;
+          v9 = [v13 tileType] == intValue;
           if (!v10)
           {
             goto LABEL_6;
@@ -133,10 +133,10 @@ LABEL_6:
           }
         }
 
-        v16 = [v4 objectAtIndex:v11];
-        v17 = [v16 intValue];
+        v16 = [typesCopy objectAtIndex:v11];
+        intValue2 = [v16 intValue];
 
-        v10 = [v13 tileType] == v17;
+        v10 = [v13 tileType] == intValue2;
 LABEL_9:
         v18 = v9 || v10;
 
@@ -169,8 +169,8 @@ LABEL_14:
 
 - (unint64_t)hash
 {
-  v2 = [(SXMosaicGalleryCluster *)self items];
-  v3 = [v2 hash];
+  items = [(SXMosaicGalleryCluster *)self items];
+  v3 = [items hash];
 
   return v3;
 }
@@ -178,8 +178,8 @@ LABEL_14:
 - (id)description
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [(SXMosaicGalleryCluster *)self items];
-  v4 = [v2 stringWithFormat:@"Cluster: %@", v3];
+  items = [(SXMosaicGalleryCluster *)self items];
+  v4 = [v2 stringWithFormat:@"Cluster: %@", items];
 
   return v4;
 }

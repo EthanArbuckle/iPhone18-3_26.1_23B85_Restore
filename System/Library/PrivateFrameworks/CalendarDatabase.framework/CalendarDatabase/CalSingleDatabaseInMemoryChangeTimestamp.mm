@@ -1,8 +1,8 @@
 @interface CalSingleDatabaseInMemoryChangeTimestamp
 - (CalSingleDatabaseInMemoryChangeTimestamp)init;
-- (CalSingleDatabaseInMemoryChangeTimestamp)initWithCoder:(id)a3;
-- (CalSingleDatabaseInMemoryChangeTimestamp)initWithTimestampForMyself:(unint64_t)a3 others:(unint64_t)a4;
-- (void)encodeWithCoder:(id)a3;
+- (CalSingleDatabaseInMemoryChangeTimestamp)initWithCoder:(id)coder;
+- (CalSingleDatabaseInMemoryChangeTimestamp)initWithTimestampForMyself:(unint64_t)myself others:(unint64_t)others;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CalSingleDatabaseInMemoryChangeTimestamp
@@ -22,35 +22,35 @@
   return v2;
 }
 
-- (CalSingleDatabaseInMemoryChangeTimestamp)initWithTimestampForMyself:(unint64_t)a3 others:(unint64_t)a4
+- (CalSingleDatabaseInMemoryChangeTimestamp)initWithTimestampForMyself:(unint64_t)myself others:(unint64_t)others
 {
   v7.receiver = self;
   v7.super_class = CalSingleDatabaseInMemoryChangeTimestamp;
   result = [(CalSingleDatabaseInMemoryChangeTimestamp *)&v7 init];
   if (result)
   {
-    result->_others = a4;
-    result->_myself = a3;
+    result->_others = others;
+    result->_myself = myself;
   }
 
   return result;
 }
 
-- (CalSingleDatabaseInMemoryChangeTimestamp)initWithCoder:(id)a3
+- (CalSingleDatabaseInMemoryChangeTimestamp)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeInt64ForKey:@"myself"];
-  v6 = [v4 decodeInt64ForKey:@"others"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeInt64ForKey:@"myself"];
+  v6 = [coderCopy decodeInt64ForKey:@"others"];
 
   return [(CalSingleDatabaseInMemoryChangeTimestamp *)self initWithTimestampForMyself:v5 others:v6];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   myself = self->_myself;
-  v5 = a3;
-  [v5 encodeInt64:myself forKey:@"myself"];
-  [v5 encodeInt64:self->_others forKey:@"others"];
+  coderCopy = coder;
+  [coderCopy encodeInt64:myself forKey:@"myself"];
+  [coderCopy encodeInt64:self->_others forKey:@"others"];
 }
 
 @end

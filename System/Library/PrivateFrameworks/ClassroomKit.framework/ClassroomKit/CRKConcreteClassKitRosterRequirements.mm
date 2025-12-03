@@ -1,48 +1,48 @@
 @interface CRKConcreteClassKitRosterRequirements
-+ (id)instructorRosterRequirementsWithClassKitFacade:(id)a3;
-+ (id)studentRosterRequirementsWithClassKitFacade:(id)a3;
-- (BOOL)ownsError:(id)a3;
-- (CRKConcreteClassKitRosterRequirements)initWithClassKitFacade:(id)a3 isForInstructor:(BOOL)a4;
-- (id)addGeneralObserver:(id)a3;
-- (id)addObserverForPersonIDs:(id)a3 observerBlock:(id)a4;
-- (id)makeClassWithLocationID:(id)a3 name:(id)a4;
-- (id)makeDataChangedBlockWithObserverDescription:(id)a3;
++ (id)instructorRosterRequirementsWithClassKitFacade:(id)facade;
++ (id)studentRosterRequirementsWithClassKitFacade:(id)facade;
+- (BOOL)ownsError:(id)error;
+- (CRKConcreteClassKitRosterRequirements)initWithClassKitFacade:(id)facade isForInstructor:(BOOL)instructor;
+- (id)addGeneralObserver:(id)observer;
+- (id)addObserverForPersonIDs:(id)ds observerBlock:(id)block;
+- (id)makeClassWithLocationID:(id)d name:(id)name;
+- (id)makeDataChangedBlockWithObserverDescription:(id)description;
 - (id)makeDataObservers;
-- (id)makeInstructorQueryForSearchString:(id)a3 locationIDs:(id)a4 sortingGivenNameFirst:(BOOL)a5 pageSize:(int64_t)a6;
-- (id)makeQueryForLocationsAllowingEasyStudentSignInForPersonID:(id)a3;
-- (id)makeQueryForPersonsWithIdentifiers:(id)a3;
-- (id)makeStudentQueryForSearchString:(id)a3 locationIDs:(id)a4 sortingGivenNameFirst:(BOOL)a5 pageSize:(int64_t)a6;
-- (id)objectIDsOfPersonsInClass:(id)a3;
-- (id)objectIDsOfTrustedPersonsInClass:(id)a3;
+- (id)makeInstructorQueryForSearchString:(id)string locationIDs:(id)ds sortingGivenNameFirst:(BOOL)first pageSize:(int64_t)size;
+- (id)makeQueryForLocationsAllowingEasyStudentSignInForPersonID:(id)d;
+- (id)makeQueryForPersonsWithIdentifiers:(id)identifiers;
+- (id)makeStudentQueryForSearchString:(id)string locationIDs:(id)ds sortingGivenNameFirst:(BOOL)first pageSize:(int64_t)size;
+- (id)objectIDsOfPersonsInClass:(id)class;
+- (id)objectIDsOfTrustedPersonsInClass:(id)class;
 - (int64_t)accountState;
-- (void)addNullableObserver:(id)a3 toArray:(id)a4;
-- (void)addPerson:(id)a3 toClass:(id)a4;
-- (void)addTrustedPerson:(id)a3 toClass:(id)a4;
-- (void)callGeneralObserversWithReason:(id)a3;
-- (void)classesWithCompletion:(id)a3;
-- (void)currentUserWithCompletion:(id)a3;
+- (void)addNullableObserver:(id)observer toArray:(id)array;
+- (void)addPerson:(id)person toClass:(id)class;
+- (void)addTrustedPerson:(id)person toClass:(id)class;
+- (void)callGeneralObserversWithReason:(id)reason;
+- (void)classesWithCompletion:(id)completion;
+- (void)currentUserWithCompletion:(id)completion;
 - (void)dealloc;
 - (void)deregisterDataObservers;
-- (void)executeQuery:(id)a3;
-- (void)locationsWithManagePermissionsForUserWithObjectID:(id)a3 completion:(id)a4;
-- (void)locationsWithObjectIDs:(id)a3 completion:(id)a4;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)personsInClassWithObjectID:(id)a3 completion:(id)a4;
+- (void)executeQuery:(id)query;
+- (void)locationsWithManagePermissionsForUserWithObjectID:(id)d completion:(id)completion;
+- (void)locationsWithObjectIDs:(id)ds completion:(id)completion;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)personsInClassWithObjectID:(id)d completion:(id)completion;
 - (void)registerDataObservers;
 - (void)registerForCurrentUserChangeNotification;
 - (void)registerForMembershipChangeDarwinNotification;
 - (void)registerGeneralObserverConstituents;
-- (void)removeClass:(id)a3 completion:(id)a4;
-- (void)removeGeneralObserver:(id)a3;
-- (void)removeObserver:(id)a3;
-- (void)removePerson:(id)a3 fromClass:(id)a4;
-- (void)removePersonObserver:(id)a3;
-- (void)removeTrustedPerson:(id)a3 fromClass:(id)a4;
-- (void)saveClass:(id)a3 completion:(id)a4;
+- (void)removeClass:(id)class completion:(id)completion;
+- (void)removeGeneralObserver:(id)observer;
+- (void)removeObserver:(id)observer;
+- (void)removePerson:(id)person fromClass:(id)class;
+- (void)removePersonObserver:(id)observer;
+- (void)removeTrustedPerson:(id)person fromClass:(id)class;
+- (void)saveClass:(id)class completion:(id)completion;
 - (void)startObservingAccountState;
 - (void)stopObservingAccountState;
-- (void)syncServerConfigWithCompletion:(id)a3;
-- (void)trustedPersonsInClassWithObjectID:(id)a3 completion:(id)a4;
+- (void)syncServerConfigWithCompletion:(id)completion;
+- (void)trustedPersonsInClassWithObjectID:(id)d completion:(id)completion;
 - (void)unregisterForCurrentUserChangeNotification;
 - (void)unregisterForMembershipChangeDarwinNotification;
 - (void)unregisterGeneralObserverConstituents;
@@ -58,33 +58,33 @@
   [(CRKConcreteClassKitRosterRequirements *)&v3 dealloc];
 }
 
-+ (id)studentRosterRequirementsWithClassKitFacade:(id)a3
++ (id)studentRosterRequirementsWithClassKitFacade:(id)facade
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithClassKitFacade:v4 isForInstructor:0];
+  facadeCopy = facade;
+  v5 = [[self alloc] initWithClassKitFacade:facadeCopy isForInstructor:0];
 
   return v5;
 }
 
-+ (id)instructorRosterRequirementsWithClassKitFacade:(id)a3
++ (id)instructorRosterRequirementsWithClassKitFacade:(id)facade
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithClassKitFacade:v4 isForInstructor:1];
+  facadeCopy = facade;
+  v5 = [[self alloc] initWithClassKitFacade:facadeCopy isForInstructor:1];
 
   return v5;
 }
 
-- (CRKConcreteClassKitRosterRequirements)initWithClassKitFacade:(id)a3 isForInstructor:(BOOL)a4
+- (CRKConcreteClassKitRosterRequirements)initWithClassKitFacade:(id)facade isForInstructor:(BOOL)instructor
 {
-  v7 = a3;
+  facadeCopy = facade;
   v17.receiver = self;
   v17.super_class = CRKConcreteClassKitRosterRequirements;
   v8 = [(CRKConcreteClassKitRosterRequirements *)&v17 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_classKitFacade, a3);
-    v9->_forInstructor = a4;
+    objc_storeStrong(&v8->_classKitFacade, facade);
+    v9->_forInstructor = instructor;
     v10 = objc_opt_new();
     generalObserversByToken = v9->_generalObserversByToken;
     v9->_generalObserversByToken = v10;
@@ -93,38 +93,38 @@
     personObserversByToken = v9->_personObserversByToken;
     v9->_personObserversByToken = v12;
 
-    v14 = [(CRKConcreteClassKitRosterRequirements *)v9 makeDataObservers];
+    makeDataObservers = [(CRKConcreteClassKitRosterRequirements *)v9 makeDataObservers];
     dataObservers = v9->_dataObservers;
-    v9->_dataObservers = v14;
+    v9->_dataObservers = makeDataObservers;
   }
 
   return v9;
 }
 
-- (BOOL)ownsError:(id)a3
+- (BOOL)ownsError:(id)error
 {
-  v4 = a3;
-  v5 = [(CRKConcreteClassKitRosterRequirements *)self classKitFacade];
-  v6 = [v5 ownsError:v4];
+  errorCopy = error;
+  classKitFacade = [(CRKConcreteClassKitRosterRequirements *)self classKitFacade];
+  v6 = [classKitFacade ownsError:errorCopy];
 
   return v6;
 }
 
-- (void)syncServerConfigWithCompletion:(id)a3
+- (void)syncServerConfigWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(CRKConcreteClassKitRosterRequirements *)self classKitFacade];
-  [v5 syncServerConfigWithCompletion:v4];
+  completionCopy = completion;
+  classKitFacade = [(CRKConcreteClassKitRosterRequirements *)self classKitFacade];
+  [classKitFacade syncServerConfigWithCompletion:completionCopy];
 }
 
-- (void)removeGeneralObserver:(id)a3
+- (void)removeGeneralObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(CRKConcreteClassKitRosterRequirements *)self generalObserversByToken];
-  [v5 setObject:0 forKeyedSubscript:v4];
+  observerCopy = observer;
+  generalObserversByToken = [(CRKConcreteClassKitRosterRequirements *)self generalObserversByToken];
+  [generalObserversByToken setObject:0 forKeyedSubscript:observerCopy];
 
-  v6 = [(CRKConcreteClassKitRosterRequirements *)self generalObserversByToken];
-  v7 = [v6 count];
+  generalObserversByToken2 = [(CRKConcreteClassKitRosterRequirements *)self generalObserversByToken];
+  v7 = [generalObserversByToken2 count];
 
   if (!v7)
   {
@@ -133,15 +133,15 @@
   }
 }
 
-- (void)removePersonObserver:(id)a3
+- (void)removePersonObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(CRKConcreteClassKitRosterRequirements *)self personObserversByToken];
-  v7 = [v5 objectForKeyedSubscript:v4];
+  observerCopy = observer;
+  personObserversByToken = [(CRKConcreteClassKitRosterRequirements *)self personObserversByToken];
+  v7 = [personObserversByToken objectForKeyedSubscript:observerCopy];
 
   [v7 cancel];
-  v6 = [(CRKConcreteClassKitRosterRequirements *)self personObserversByToken];
-  [v6 setObject:0 forKeyedSubscript:v4];
+  personObserversByToken2 = [(CRKConcreteClassKitRosterRequirements *)self personObserversByToken];
+  [personObserversByToken2 setObject:0 forKeyedSubscript:observerCopy];
 }
 
 - (void)registerGeneralObserverConstituents
@@ -173,16 +173,16 @@
 - (void)registerForCurrentUserChangeNotification
 {
   objc_initWeak(&location, self);
-  v3 = [(CRKConcreteClassKitRosterRequirements *)self userDidChangeSubscription];
-  [v3 cancel];
+  userDidChangeSubscription = [(CRKConcreteClassKitRosterRequirements *)self userDidChangeSubscription];
+  [userDidChangeSubscription cancel];
 
-  v4 = [(CRKConcreteClassKitRosterRequirements *)self classKitFacade];
+  classKitFacade = [(CRKConcreteClassKitRosterRequirements *)self classKitFacade];
   v6 = MEMORY[0x277D85DD0];
   v7 = 3221225472;
   v8 = __81__CRKConcreteClassKitRosterRequirements_registerForCurrentUserChangeNotification__block_invoke;
   v9 = &unk_278DC1870;
   objc_copyWeak(&v10, &location);
-  v5 = [v4 subscribeToCurrentUserDidChangeEvents:&v6];
+  v5 = [classKitFacade subscribeToCurrentUserDidChangeEvents:&v6];
   [(CRKConcreteClassKitRosterRequirements *)self setUserDidChangeSubscription:v5, v6, v7, v8, v9];
 
   objc_destroyWeak(&v10);
@@ -197,8 +197,8 @@ void __81__CRKConcreteClassKitRosterRequirements_registerForCurrentUserChangeNot
 
 - (void)unregisterForCurrentUserChangeNotification
 {
-  v3 = [(CRKConcreteClassKitRosterRequirements *)self userDidChangeSubscription];
-  [v3 cancel];
+  userDidChangeSubscription = [(CRKConcreteClassKitRosterRequirements *)self userDidChangeSubscription];
+  [userDidChangeSubscription cancel];
 
   [(CRKConcreteClassKitRosterRequirements *)self setUserDidChangeSubscription:0];
 }
@@ -208,16 +208,16 @@ void __81__CRKConcreteClassKitRosterRequirements_registerForCurrentUserChangeNot
   if (![(CRKConcreteClassKitRosterRequirements *)self isForInstructor])
   {
     objc_initWeak(&location, self);
-    v3 = [(CRKConcreteClassKitRosterRequirements *)self membershipDidChangeSubscription];
-    [v3 cancel];
+    membershipDidChangeSubscription = [(CRKConcreteClassKitRosterRequirements *)self membershipDidChangeSubscription];
+    [membershipDidChangeSubscription cancel];
 
-    v4 = [(CRKConcreteClassKitRosterRequirements *)self classKitFacade];
+    classKitFacade = [(CRKConcreteClassKitRosterRequirements *)self classKitFacade];
     v6 = MEMORY[0x277D85DD0];
     v7 = 3221225472;
     v8 = __86__CRKConcreteClassKitRosterRequirements_registerForMembershipChangeDarwinNotification__block_invoke;
     v9 = &unk_278DC1870;
     objc_copyWeak(&v10, &location);
-    v5 = [v4 subscribeToClassMembershipChangeEvents:&v6];
+    v5 = [classKitFacade subscribeToClassMembershipChangeEvents:&v6];
     [(CRKConcreteClassKitRosterRequirements *)self setMembershipDidChangeSubscription:v5, v6, v7, v8, v9];
 
     objc_destroyWeak(&v10);
@@ -233,8 +233,8 @@ void __86__CRKConcreteClassKitRosterRequirements_registerForMembershipChangeDarw
 
 - (void)unregisterForMembershipChangeDarwinNotification
 {
-  v3 = [(CRKConcreteClassKitRosterRequirements *)self membershipDidChangeSubscription];
-  [v3 cancel];
+  membershipDidChangeSubscription = [(CRKConcreteClassKitRosterRequirements *)self membershipDidChangeSubscription];
+  [membershipDidChangeSubscription cancel];
 
   [(CRKConcreteClassKitRosterRequirements *)self setMembershipDidChangeSubscription:0];
 }
@@ -242,8 +242,8 @@ void __86__CRKConcreteClassKitRosterRequirements_registerForMembershipChangeDarw
 - (id)makeDataObservers
 {
   v3 = objc_opt_new();
-  v4 = [(CRKConcreteClassKitRosterRequirements *)self classKitFacade];
-  v5 = [v4 classDataObserverWithSortDescriptors:0];
+  classKitFacade = [(CRKConcreteClassKitRosterRequirements *)self classKitFacade];
+  v5 = [classKitFacade classDataObserverWithSortDescriptors:0];
 
   if (!v5)
   {
@@ -260,8 +260,8 @@ void __86__CRKConcreteClassKitRosterRequirements_registerForMembershipChangeDarw
   [(CRKConcreteClassKitRosterRequirements *)self addNullableObserver:v5 toArray:v3];
   if ([(CRKConcreteClassKitRosterRequirements *)self isForInstructor])
   {
-    v8 = [(CRKConcreteClassKitRosterRequirements *)self classKitFacade];
-    v9 = [v8 locationsObserverWithSortDescriptors:0];
+    classKitFacade2 = [(CRKConcreteClassKitRosterRequirements *)self classKitFacade];
+    v9 = [classKitFacade2 locationsObserverWithSortDescriptors:0];
 
     if (!v9)
     {
@@ -283,17 +283,17 @@ void __86__CRKConcreteClassKitRosterRequirements_registerForMembershipChangeDarw
   return v12;
 }
 
-- (void)addNullableObserver:(id)a3 toArray:(id)a4
+- (void)addNullableObserver:(id)observer toArray:(id)array
 {
-  if (a3)
+  if (observer)
   {
-    [a4 addObject:?];
+    [array addObject:?];
   }
 }
 
-- (id)makeDataChangedBlockWithObserverDescription:(id)a3
+- (id)makeDataChangedBlockWithObserverDescription:(id)description
 {
-  v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"ClassKit data observer for '%@' fired", a3];
+  v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"ClassKit data observer for '%@' fired", description];
   objc_initWeak(&location, self);
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
@@ -336,8 +336,8 @@ void __85__CRKConcreteClassKitRosterRequirements_makeDataChangedBlockWithObserve
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(CRKConcreteClassKitRosterRequirements *)self dataObservers];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  dataObservers = [(CRKConcreteClassKitRosterRequirements *)self dataObservers];
+  v4 = [dataObservers countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -349,18 +349,18 @@ void __85__CRKConcreteClassKitRosterRequirements_makeDataChangedBlockWithObserve
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(dataObservers);
         }
 
         v8 = *(*(&v10 + 1) + 8 * v7);
-        v9 = [(CRKConcreteClassKitRosterRequirements *)self classKitFacade];
-        [v9 registerDataObserver:v8];
+        classKitFacade = [(CRKConcreteClassKitRosterRequirements *)self classKitFacade];
+        [classKitFacade registerDataObserver:v8];
 
         ++v7;
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [dataObservers countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
@@ -369,15 +369,15 @@ void __85__CRKConcreteClassKitRosterRequirements_makeDataChangedBlockWithObserve
 
 - (void)deregisterDataObservers
 {
-  v3 = [(CRKConcreteClassKitRosterRequirements *)self dataObservers];
-  v4 = [(CRKConcreteClassKitRosterRequirements *)self classKitFacade];
+  dataObservers = [(CRKConcreteClassKitRosterRequirements *)self dataObservers];
+  classKitFacade = [(CRKConcreteClassKitRosterRequirements *)self classKitFacade];
   v8 = MEMORY[0x277D85DD0];
   v9 = 3221225472;
   v10 = __64__CRKConcreteClassKitRosterRequirements_deregisterDataObservers__block_invoke;
   v11 = &unk_278DC1320;
-  v5 = v3;
+  v5 = dataObservers;
   v12 = v5;
-  v6 = v4;
+  v6 = classKitFacade;
   v13 = v6;
   v7 = MEMORY[0x245D3AAD0](&v8);
   if ([MEMORY[0x277CCACC8] isMainThread])
@@ -427,38 +427,38 @@ void __64__CRKConcreteClassKitRosterRequirements_deregisterDataObservers__block_
 
 - (int64_t)accountState
 {
-  v2 = [(CRKConcreteClassKitRosterRequirements *)self classKitFacade];
-  v3 = [v2 accountState];
+  classKitFacade = [(CRKConcreteClassKitRosterRequirements *)self classKitFacade];
+  accountState = [classKitFacade accountState];
 
-  return v3;
+  return accountState;
 }
 
 - (void)startObservingAccountState
 {
-  v3 = [(CRKConcreteClassKitRosterRequirements *)self classKitFacade];
-  [v3 addObserver:self forKeyPath:@"accountState" options:0 context:@"ObservationContext"];
+  classKitFacade = [(CRKConcreteClassKitRosterRequirements *)self classKitFacade];
+  [classKitFacade addObserver:self forKeyPath:@"accountState" options:0 context:@"ObservationContext"];
 }
 
 - (void)stopObservingAccountState
 {
-  v3 = [(CRKConcreteClassKitRosterRequirements *)self classKitFacade];
-  [v3 removeObserver:self forKeyPath:@"accountState" context:@"ObservationContext"];
+  classKitFacade = [(CRKConcreteClassKitRosterRequirements *)self classKitFacade];
+  [classKitFacade removeObserver:self forKeyPath:@"accountState" context:@"ObservationContext"];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v9 = a3;
-  if (a6 == @"ObservationContext")
+  pathCopy = path;
+  if (context == @"ObservationContext")
   {
-    v13 = v9;
-    v10 = a4;
-    v11 = [(CRKConcreteClassKitRosterRequirements *)self classKitFacade];
+    v13 = pathCopy;
+    objectCopy = object;
+    classKitFacade = [(CRKConcreteClassKitRosterRequirements *)self classKitFacade];
 
-    if (v11 == v10)
+    if (classKitFacade == objectCopy)
     {
       v12 = [v13 isEqualToString:@"accountState"];
 
-      v9 = v13;
+      pathCopy = v13;
       if (!v12)
       {
         goto LABEL_7;
@@ -471,16 +471,16 @@ void __64__CRKConcreteClassKitRosterRequirements_deregisterDataObservers__block_
     {
     }
 
-    v9 = v13;
+    pathCopy = v13;
   }
 
 LABEL_7:
 }
 
-- (void)callGeneralObserversWithReason:(id)a3
+- (void)callGeneralObserversWithReason:(id)reason
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  reasonCopy = reason;
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
     [(CRKConcreteClassKitRosterRequirements *)a2 callGeneralObserversWithReason:?];
@@ -490,7 +490,7 @@ LABEL_7:
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v19 = v5;
+    v19 = reasonCopy;
     _os_log_impl(&dword_243550000, v6, OS_LOG_TYPE_DEFAULT, "Firing roster requirements general observers with reason: '%{public}@'", buf, 0xCu);
   }
 
@@ -498,10 +498,10 @@ LABEL_7:
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v7 = [(CRKConcreteClassKitRosterRequirements *)self generalObserversByToken];
-  v8 = [v7 allValues];
+  generalObserversByToken = [(CRKConcreteClassKitRosterRequirements *)self generalObserversByToken];
+  allValues = [generalObserversByToken allValues];
 
-  v9 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v9 = [allValues countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v9)
   {
     v10 = v9;
@@ -513,314 +513,314 @@ LABEL_7:
       {
         if (*v14 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(allValues);
         }
 
         (*(*(*(&v13 + 1) + 8 * v12++) + 16))();
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v10 = [allValues countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v10);
   }
 }
 
-- (id)addGeneralObserver:(id)a3
+- (id)addGeneralObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   [(CRKConcreteClassKitRosterRequirements *)self registerGeneralObserverConstituents];
-  v5 = [(CRKConcreteClassKitRosterRequirements *)self makeToken];
-  v6 = MEMORY[0x245D3AAD0](v4);
+  makeToken = [(CRKConcreteClassKitRosterRequirements *)self makeToken];
+  v6 = MEMORY[0x245D3AAD0](observerCopy);
 
-  v7 = [(CRKConcreteClassKitRosterRequirements *)self generalObserversByToken];
-  [v7 setObject:v6 forKeyedSubscript:v5];
+  generalObserversByToken = [(CRKConcreteClassKitRosterRequirements *)self generalObserversByToken];
+  [generalObserversByToken setObject:v6 forKeyedSubscript:makeToken];
 
-  return v5;
+  return makeToken;
 }
 
-- (id)addObserverForPersonIDs:(id)a3 observerBlock:(id)a4
+- (id)addObserverForPersonIDs:(id)ds observerBlock:(id)block
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CRKConcreteClassKitRosterRequirements *)self makeToken];
+  blockCopy = block;
+  dsCopy = ds;
+  makeToken = [(CRKConcreteClassKitRosterRequirements *)self makeToken];
   v9 = [CRKClassKitPersonIDObservation alloc];
-  v10 = [(CRKConcreteClassKitRosterRequirements *)self classKitFacade];
-  v11 = [(CRKClassKitPersonIDObservation *)v9 initWithPersonIDs:v7 classKitFacade:v10 block:v6];
+  classKitFacade = [(CRKConcreteClassKitRosterRequirements *)self classKitFacade];
+  v11 = [(CRKClassKitPersonIDObservation *)v9 initWithPersonIDs:dsCopy classKitFacade:classKitFacade block:blockCopy];
 
-  v12 = [(CRKConcreteClassKitRosterRequirements *)self personObserversByToken];
-  [v12 setObject:v11 forKeyedSubscript:v8];
+  personObserversByToken = [(CRKConcreteClassKitRosterRequirements *)self personObserversByToken];
+  [personObserversByToken setObject:v11 forKeyedSubscript:makeToken];
 
-  return v8;
+  return makeToken;
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  [(CRKConcreteClassKitRosterRequirements *)self removeGeneralObserver:v4];
-  [(CRKConcreteClassKitRosterRequirements *)self removePersonObserver:v4];
+  observerCopy = observer;
+  [(CRKConcreteClassKitRosterRequirements *)self removeGeneralObserver:observerCopy];
+  [(CRKConcreteClassKitRosterRequirements *)self removePersonObserver:observerCopy];
 }
 
-- (id)objectIDsOfPersonsInClass:(id)a3
+- (id)objectIDsOfPersonsInClass:(id)class
 {
-  v4 = a3;
-  v5 = [(CRKConcreteClassKitRosterRequirements *)self isForInstructor];
-  v6 = [(CRKConcreteClassKitRosterRequirements *)self classKitFacade];
-  v7 = v6;
-  if (v5)
+  classCopy = class;
+  isForInstructor = [(CRKConcreteClassKitRosterRequirements *)self isForInstructor];
+  classKitFacade = [(CRKConcreteClassKitRosterRequirements *)self classKitFacade];
+  v7 = classKitFacade;
+  if (isForInstructor)
   {
-    [v6 objectIDsOfInstructorsInClass:v4];
+    [classKitFacade objectIDsOfInstructorsInClass:classCopy];
   }
 
   else
   {
-    [v6 objectIDsOfStudentsInClass:v4];
+    [classKitFacade objectIDsOfStudentsInClass:classCopy];
   }
   v8 = ;
 
   return v8;
 }
 
-- (id)objectIDsOfTrustedPersonsInClass:(id)a3
+- (id)objectIDsOfTrustedPersonsInClass:(id)class
 {
-  v4 = a3;
-  v5 = [(CRKConcreteClassKitRosterRequirements *)self isForInstructor];
-  v6 = [(CRKConcreteClassKitRosterRequirements *)self classKitFacade];
-  v7 = v6;
-  if (v5)
+  classCopy = class;
+  isForInstructor = [(CRKConcreteClassKitRosterRequirements *)self isForInstructor];
+  classKitFacade = [(CRKConcreteClassKitRosterRequirements *)self classKitFacade];
+  v7 = classKitFacade;
+  if (isForInstructor)
   {
-    [v6 objectIDsOfStudentsInClass:v4];
+    [classKitFacade objectIDsOfStudentsInClass:classCopy];
   }
 
   else
   {
-    [v6 objectIDsOfInstructorsInClass:v4];
+    [classKitFacade objectIDsOfInstructorsInClass:classCopy];
   }
   v8 = ;
 
   return v8;
 }
 
-- (void)currentUserWithCompletion:(id)a3
+- (void)currentUserWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(CRKConcreteClassKitRosterRequirements *)self classKitFacade];
-  [v5 currentUserWithCompletion:v4];
+  completionCopy = completion;
+  classKitFacade = [(CRKConcreteClassKitRosterRequirements *)self classKitFacade];
+  [classKitFacade currentUserWithCompletion:completionCopy];
 }
 
-- (void)classesWithCompletion:(id)a3
+- (void)classesWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(CRKConcreteClassKitRosterRequirements *)self isForInstructor];
-  v6 = [(CRKConcreteClassKitRosterRequirements *)self classKitFacade];
-  v7 = v6;
-  if (v5)
+  completionCopy = completion;
+  isForInstructor = [(CRKConcreteClassKitRosterRequirements *)self isForInstructor];
+  classKitFacade = [(CRKConcreteClassKitRosterRequirements *)self classKitFacade];
+  v7 = classKitFacade;
+  if (isForInstructor)
   {
-    [v6 instructedClassesWithCompletion:v4];
+    [classKitFacade instructedClassesWithCompletion:completionCopy];
   }
 
   else
   {
-    [v6 enrolledClassesWithCompletion:v4];
+    [classKitFacade enrolledClassesWithCompletion:completionCopy];
   }
 }
 
-- (void)personsInClassWithObjectID:(id)a3 completion:(id)a4
+- (void)personsInClassWithObjectID:(id)d completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CRKConcreteClassKitRosterRequirements *)self isForInstructor];
-  v9 = [(CRKConcreteClassKitRosterRequirements *)self classKitFacade];
-  v10 = v9;
-  if (v8)
+  completionCopy = completion;
+  dCopy = d;
+  isForInstructor = [(CRKConcreteClassKitRosterRequirements *)self isForInstructor];
+  classKitFacade = [(CRKConcreteClassKitRosterRequirements *)self classKitFacade];
+  v10 = classKitFacade;
+  if (isForInstructor)
   {
-    [v9 instructorsInClassWithObjectID:v7 completion:v6];
+    [classKitFacade instructorsInClassWithObjectID:dCopy completion:completionCopy];
   }
 
   else
   {
-    [v9 studentsInClassWithObjectID:v7 completion:v6];
+    [classKitFacade studentsInClassWithObjectID:dCopy completion:completionCopy];
   }
 }
 
-- (void)trustedPersonsInClassWithObjectID:(id)a3 completion:(id)a4
+- (void)trustedPersonsInClassWithObjectID:(id)d completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CRKConcreteClassKitRosterRequirements *)self isForInstructor];
-  v9 = [(CRKConcreteClassKitRosterRequirements *)self classKitFacade];
-  v10 = v9;
-  if (v8)
+  completionCopy = completion;
+  dCopy = d;
+  isForInstructor = [(CRKConcreteClassKitRosterRequirements *)self isForInstructor];
+  classKitFacade = [(CRKConcreteClassKitRosterRequirements *)self classKitFacade];
+  v10 = classKitFacade;
+  if (isForInstructor)
   {
-    [v9 studentsInClassWithObjectID:v7 completion:v6];
+    [classKitFacade studentsInClassWithObjectID:dCopy completion:completionCopy];
   }
 
   else
   {
-    [v9 instructorsInClassWithObjectID:v7 completion:v6];
+    [classKitFacade instructorsInClassWithObjectID:dCopy completion:completionCopy];
   }
 }
 
-- (void)executeQuery:(id)a3
+- (void)executeQuery:(id)query
 {
-  v4 = a3;
-  v5 = [(CRKConcreteClassKitRosterRequirements *)self classKitFacade];
-  [v5 executeQuery:v4];
+  queryCopy = query;
+  classKitFacade = [(CRKConcreteClassKitRosterRequirements *)self classKitFacade];
+  [classKitFacade executeQuery:queryCopy];
 }
 
-- (void)addPerson:(id)a3 toClass:(id)a4
+- (void)addPerson:(id)person toClass:(id)class
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CRKConcreteClassKitRosterRequirements *)self isForInstructor];
-  v9 = [(CRKConcreteClassKitRosterRequirements *)self classKitFacade];
-  v10 = v9;
-  if (v8)
+  classCopy = class;
+  personCopy = person;
+  isForInstructor = [(CRKConcreteClassKitRosterRequirements *)self isForInstructor];
+  classKitFacade = [(CRKConcreteClassKitRosterRequirements *)self classKitFacade];
+  v10 = classKitFacade;
+  if (isForInstructor)
   {
-    [v9 addInstructor:v7 toClass:v6];
+    [classKitFacade addInstructor:personCopy toClass:classCopy];
   }
 
   else
   {
-    [v9 addStudent:v7 toClass:v6];
+    [classKitFacade addStudent:personCopy toClass:classCopy];
   }
 }
 
-- (void)removePerson:(id)a3 fromClass:(id)a4
+- (void)removePerson:(id)person fromClass:(id)class
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CRKConcreteClassKitRosterRequirements *)self isForInstructor];
-  v9 = [(CRKConcreteClassKitRosterRequirements *)self classKitFacade];
-  v10 = v9;
-  if (v8)
+  classCopy = class;
+  personCopy = person;
+  isForInstructor = [(CRKConcreteClassKitRosterRequirements *)self isForInstructor];
+  classKitFacade = [(CRKConcreteClassKitRosterRequirements *)self classKitFacade];
+  v10 = classKitFacade;
+  if (isForInstructor)
   {
-    [v9 removeInstructor:v7 fromClass:v6];
+    [classKitFacade removeInstructor:personCopy fromClass:classCopy];
   }
 
   else
   {
-    [v9 removeStudent:v7 fromClass:v6];
+    [classKitFacade removeStudent:personCopy fromClass:classCopy];
   }
 }
 
-- (void)addTrustedPerson:(id)a3 toClass:(id)a4
+- (void)addTrustedPerson:(id)person toClass:(id)class
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CRKConcreteClassKitRosterRequirements *)self isForInstructor];
-  v9 = [(CRKConcreteClassKitRosterRequirements *)self classKitFacade];
-  v10 = v9;
-  if (v8)
+  classCopy = class;
+  personCopy = person;
+  isForInstructor = [(CRKConcreteClassKitRosterRequirements *)self isForInstructor];
+  classKitFacade = [(CRKConcreteClassKitRosterRequirements *)self classKitFacade];
+  v10 = classKitFacade;
+  if (isForInstructor)
   {
-    [v9 addStudent:v7 toClass:v6];
+    [classKitFacade addStudent:personCopy toClass:classCopy];
   }
 
   else
   {
-    [v9 addInstructor:v7 toClass:v6];
+    [classKitFacade addInstructor:personCopy toClass:classCopy];
   }
 }
 
-- (void)removeTrustedPerson:(id)a3 fromClass:(id)a4
+- (void)removeTrustedPerson:(id)person fromClass:(id)class
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CRKConcreteClassKitRosterRequirements *)self isForInstructor];
-  v9 = [(CRKConcreteClassKitRosterRequirements *)self classKitFacade];
-  v10 = v9;
-  if (v8)
+  classCopy = class;
+  personCopy = person;
+  isForInstructor = [(CRKConcreteClassKitRosterRequirements *)self isForInstructor];
+  classKitFacade = [(CRKConcreteClassKitRosterRequirements *)self classKitFacade];
+  v10 = classKitFacade;
+  if (isForInstructor)
   {
-    [v9 removeStudent:v7 fromClass:v6];
+    [classKitFacade removeStudent:personCopy fromClass:classCopy];
   }
 
   else
   {
-    [v9 removeInstructor:v7 fromClass:v6];
+    [classKitFacade removeInstructor:personCopy fromClass:classCopy];
   }
 }
 
-- (id)makeStudentQueryForSearchString:(id)a3 locationIDs:(id)a4 sortingGivenNameFirst:(BOOL)a5 pageSize:(int64_t)a6
+- (id)makeStudentQueryForSearchString:(id)string locationIDs:(id)ds sortingGivenNameFirst:(BOOL)first pageSize:(int64_t)size
 {
-  v7 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [(CRKConcreteClassKitRosterRequirements *)self classKitFacade];
-  v13 = [v12 makeStudentQueryForSearchString:v11 locationIDs:v10 sortingGivenNameFirst:v7 pageSize:a6];
+  firstCopy = first;
+  dsCopy = ds;
+  stringCopy = string;
+  classKitFacade = [(CRKConcreteClassKitRosterRequirements *)self classKitFacade];
+  v13 = [classKitFacade makeStudentQueryForSearchString:stringCopy locationIDs:dsCopy sortingGivenNameFirst:firstCopy pageSize:size];
 
   return v13;
 }
 
-- (id)makeInstructorQueryForSearchString:(id)a3 locationIDs:(id)a4 sortingGivenNameFirst:(BOOL)a5 pageSize:(int64_t)a6
+- (id)makeInstructorQueryForSearchString:(id)string locationIDs:(id)ds sortingGivenNameFirst:(BOOL)first pageSize:(int64_t)size
 {
-  v7 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [(CRKConcreteClassKitRosterRequirements *)self classKitFacade];
-  v13 = [v12 makeInstructorQueryForSearchString:v11 locationIDs:v10 sortingGivenNameFirst:v7 pageSize:a6];
+  firstCopy = first;
+  dsCopy = ds;
+  stringCopy = string;
+  classKitFacade = [(CRKConcreteClassKitRosterRequirements *)self classKitFacade];
+  v13 = [classKitFacade makeInstructorQueryForSearchString:stringCopy locationIDs:dsCopy sortingGivenNameFirst:firstCopy pageSize:size];
 
   return v13;
 }
 
-- (id)makeQueryForPersonsWithIdentifiers:(id)a3
+- (id)makeQueryForPersonsWithIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  v5 = [(CRKConcreteClassKitRosterRequirements *)self classKitFacade];
-  v6 = [v5 makeQueryForPersonsWithIdentifiers:v4];
+  identifiersCopy = identifiers;
+  classKitFacade = [(CRKConcreteClassKitRosterRequirements *)self classKitFacade];
+  v6 = [classKitFacade makeQueryForPersonsWithIdentifiers:identifiersCopy];
 
   return v6;
 }
 
-- (id)makeQueryForLocationsAllowingEasyStudentSignInForPersonID:(id)a3
+- (id)makeQueryForLocationsAllowingEasyStudentSignInForPersonID:(id)d
 {
-  v4 = a3;
-  v5 = [(CRKConcreteClassKitRosterRequirements *)self classKitFacade];
-  v6 = [v5 makeQueryForLocationsAllowingEasyStudentSignInForPersonID:v4];
+  dCopy = d;
+  classKitFacade = [(CRKConcreteClassKitRosterRequirements *)self classKitFacade];
+  v6 = [classKitFacade makeQueryForLocationsAllowingEasyStudentSignInForPersonID:dCopy];
 
   return v6;
 }
 
-- (id)makeClassWithLocationID:(id)a3 name:(id)a4
+- (id)makeClassWithLocationID:(id)d name:(id)name
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CRKConcreteClassKitRosterRequirements *)self classKitFacade];
-  v9 = [v8 makeClassWithLocationID:v7 name:v6];
+  nameCopy = name;
+  dCopy = d;
+  classKitFacade = [(CRKConcreteClassKitRosterRequirements *)self classKitFacade];
+  v9 = [classKitFacade makeClassWithLocationID:dCopy name:nameCopy];
 
   return v9;
 }
 
-- (void)saveClass:(id)a3 completion:(id)a4
+- (void)saveClass:(id)class completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CRKConcreteClassKitRosterRequirements *)self classKitFacade];
-  [v8 saveClass:v7 completion:v6];
+  completionCopy = completion;
+  classCopy = class;
+  classKitFacade = [(CRKConcreteClassKitRosterRequirements *)self classKitFacade];
+  [classKitFacade saveClass:classCopy completion:completionCopy];
 }
 
-- (void)removeClass:(id)a3 completion:(id)a4
+- (void)removeClass:(id)class completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CRKConcreteClassKitRosterRequirements *)self classKitFacade];
-  [v8 removeClass:v7 completion:v6];
+  completionCopy = completion;
+  classCopy = class;
+  classKitFacade = [(CRKConcreteClassKitRosterRequirements *)self classKitFacade];
+  [classKitFacade removeClass:classCopy completion:completionCopy];
 }
 
-- (void)locationsWithManagePermissionsForUserWithObjectID:(id)a3 completion:(id)a4
+- (void)locationsWithManagePermissionsForUserWithObjectID:(id)d completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CRKConcreteClassKitRosterRequirements *)self classKitFacade];
-  [v8 locationsWithManagePermissionsForUserWithObjectID:v7 completion:v6];
+  completionCopy = completion;
+  dCopy = d;
+  classKitFacade = [(CRKConcreteClassKitRosterRequirements *)self classKitFacade];
+  [classKitFacade locationsWithManagePermissionsForUserWithObjectID:dCopy completion:completionCopy];
 }
 
-- (void)locationsWithObjectIDs:(id)a3 completion:(id)a4
+- (void)locationsWithObjectIDs:(id)ds completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CRKConcreteClassKitRosterRequirements *)self classKitFacade];
-  [v8 locationsWithObjectIDs:v7 completion:v6];
+  completionCopy = completion;
+  dsCopy = ds;
+  classKitFacade = [(CRKConcreteClassKitRosterRequirements *)self classKitFacade];
+  [classKitFacade locationsWithObjectIDs:dsCopy completion:completionCopy];
 }
 
 - (void)callGeneralObserversWithReason:(const char *)a1 .cold.1(const char *a1, uint64_t a2)

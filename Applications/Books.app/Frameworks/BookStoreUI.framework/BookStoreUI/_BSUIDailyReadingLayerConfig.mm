@@ -1,31 +1,31 @@
 @interface _BSUIDailyReadingLayerConfig
-- (BOOL)isEqualToConfig:(id)a3;
-- (_BSUIDailyReadingLayerConfig)initWithMetrics:(id)a3 timeTextYOffset:(double)a4 micaFileProvider:(id)a5;
+- (BOOL)isEqualToConfig:(id)config;
+- (_BSUIDailyReadingLayerConfig)initWithMetrics:(id)metrics timeTextYOffset:(double)offset micaFileProvider:(id)provider;
 @end
 
 @implementation _BSUIDailyReadingLayerConfig
 
-- (_BSUIDailyReadingLayerConfig)initWithMetrics:(id)a3 timeTextYOffset:(double)a4 micaFileProvider:(id)a5
+- (_BSUIDailyReadingLayerConfig)initWithMetrics:(id)metrics timeTextYOffset:(double)offset micaFileProvider:(id)provider
 {
-  v9 = a3;
-  v10 = a5;
+  metricsCopy = metrics;
+  providerCopy = provider;
   v14.receiver = self;
   v14.super_class = _BSUIDailyReadingLayerConfig;
   v11 = [(_BSUIDailyReadingLayerConfig *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_metrics, a3);
-    v12->_timeTextYOffset = a4;
-    objc_storeStrong(&v12->_micaFileProvider, a5);
+    objc_storeStrong(&v11->_metrics, metrics);
+    v12->_timeTextYOffset = offset;
+    objc_storeStrong(&v12->_micaFileProvider, provider);
   }
 
   return v12;
 }
 
-- (BOOL)isEqualToConfig:(id)a3
+- (BOOL)isEqualToConfig:(id)config
 {
-  v4 = a3;
+  configCopy = config;
   objc_opt_class();
   v5 = TUIDynamicCast();
 

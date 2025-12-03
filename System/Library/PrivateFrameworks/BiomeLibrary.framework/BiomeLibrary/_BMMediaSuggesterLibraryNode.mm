@@ -2,25 +2,25 @@
 + (id)SuggestionFeedback;
 + (id)configurationForSuggestionFeedback;
 + (id)storeConfigurationForSuggestionFeedback;
-+ (id)streamWithName:(id)a3;
++ (id)streamWithName:(id)name;
 + (id)validKeyPaths;
 @end
 
 @implementation _BMMediaSuggesterLibraryNode
 
-+ (id)streamWithName:(id)a3
++ (id)streamWithName:(id)name
 {
-  if ([a3 isEqualToString:@"SuggestionFeedback"])
+  if ([name isEqualToString:@"SuggestionFeedback"])
   {
-    v4 = [a1 SuggestionFeedback];
+    suggestionFeedback = [self SuggestionFeedback];
   }
 
   else
   {
-    v4 = 0;
+    suggestionFeedback = 0;
   }
 
-  return v4;
+  return suggestionFeedback;
 }
 
 + (id)validKeyPaths
@@ -37,8 +37,8 @@
 + (id)configurationForSuggestionFeedback
 {
   v18[2] = *MEMORY[0x1E69E9840];
-  v3 = [a1 storeConfigurationForSuggestionFeedback];
-  v4 = [a1 syncPolicyForSuggestionFeedback];
+  storeConfigurationForSuggestionFeedback = [self storeConfigurationForSuggestionFeedback];
+  syncPolicyForSuggestionFeedback = [self syncPolicyForSuggestionFeedback];
   v5 = objc_alloc(MEMORY[0x1E698F330]);
   v6 = [MEMORY[0x1E696AE18] predicateWithFormat:@"$uninstalled == targetBundleID" argumentArray:0];
   v7 = [v5 initWithIdentifier:@"app-uninstall" predicate:v6];
@@ -53,7 +53,7 @@
   v13 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"95A8F077-DE32-435F-AAE8-68A23B4D7A3C"];
   BYTE2(v17) = 1;
   LOWORD(v17) = 1;
-  v14 = [v12 _libraryStreamConfigurationWithUUID:v13 streamIdentifier:@"MediaSuggester.SuggestionFeedback" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v17 enableSubscriptionSubstream:0 enableTombstoneSubstream:v11 allowedClients:0 pruningTriggers:v18[0] spaceAttributionOwner:?];
+  v14 = [v12 _libraryStreamConfigurationWithUUID:v13 streamIdentifier:@"MediaSuggester.SuggestionFeedback" eventClass:objc_opt_class() storeConfig:storeConfigurationForSuggestionFeedback syncPolicy:syncPolicyForSuggestionFeedback legacyNames:0 internalMetadata:0 enableSubscriptions:v17 enableSubscriptionSubstream:0 enableTombstoneSubstream:v11 allowedClients:0 pruningTriggers:v18[0] spaceAttributionOwner:?];
 
   v15 = *MEMORY[0x1E69E9840];
 
@@ -71,7 +71,7 @@
 + (id)SuggestionFeedback
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForSuggestionFeedback];
+  configurationForSuggestionFeedback = [self configurationForSuggestionFeedback];
   v3 = +[BMMediaSuggesterSuggestionFeedback columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -83,7 +83,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"MediaSuggester.SuggestionFeedback" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"MediaSuggester.SuggestionFeedback" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"MediaSuggester.SuggestionFeedback" schema:v9 configuration:configurationForSuggestionFeedback];
 
   v11 = *MEMORY[0x1E69E9840];
 

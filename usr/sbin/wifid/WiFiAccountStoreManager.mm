@@ -2,9 +2,9 @@
 + (id)sharedWiFiAccountStoreManager;
 - (BOOL)isManagedAppleID;
 - (WiFiAccountStoreManager)init;
-- (void)_updateIsManagedAppleIDAndNotify:(BOOL)a3;
+- (void)_updateIsManagedAppleIDAndNotify:(BOOL)notify;
 - (void)dealloc;
-- (void)registerCallback:(void *)a3 withContext:(void *)a4;
+- (void)registerCallback:(void *)callback withContext:(void *)context;
 @end
 
 @implementation WiFiAccountStoreManager
@@ -101,11 +101,11 @@ LABEL_12:
   [(WiFiAccountStoreManager *)&v6 dealloc];
 }
 
-- (void)registerCallback:(void *)a3 withContext:(void *)a4
+- (void)registerCallback:(void *)callback withContext:(void *)context
 {
-  [(WiFiAccountStoreManager *)self setCallback:a3];
+  [(WiFiAccountStoreManager *)self setCallback:callback];
 
-  [(WiFiAccountStoreManager *)self setContext:a4];
+  [(WiFiAccountStoreManager *)self setContext:context];
 }
 
 - (BOOL)isManagedAppleID
@@ -126,7 +126,7 @@ LABEL_12:
   return v2;
 }
 
-- (void)_updateIsManagedAppleIDAndNotify:(BOOL)a3
+- (void)_updateIsManagedAppleIDAndNotify:(BOOL)notify
 {
   v7[0] = 0;
   v7[1] = v7;
@@ -138,7 +138,7 @@ LABEL_12:
   block[3] = &unk_10025F840;
   block[4] = self;
   block[5] = v7;
-  v6 = a3;
+  notifyCopy = notify;
   dispatch_sync([(WiFiAccountStoreManager *)self dispatchQueue], block);
   _Block_object_dispose(v7, 8);
 }

@@ -13,8 +13,8 @@
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = a1;
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  selfCopy = self;
+  v4 = [selfCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
     v5 = 0;
@@ -25,11 +25,11 @@
       {
         if (*v14 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(selfCopy);
         }
 
         v8 = *(*(&v13 + 1) + 8 * i);
-        v9 = [v3 countForObject:{v8, v13}];
+        v9 = [selfCopy countForObject:{v8, v13}];
         v10 = v9;
         if (v9 <= v5)
         {
@@ -47,7 +47,7 @@
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v4 = [selfCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v4);
@@ -66,8 +66,8 @@
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = a1;
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  selfCopy = self;
+  v4 = [selfCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
     v5 = *v14;
@@ -78,11 +78,11 @@
       {
         if (*v14 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(selfCopy);
         }
 
         v8 = *(*(&v13 + 1) + 8 * i);
-        v9 = [v3 countForObject:{v8, v13}];
+        v9 = [selfCopy countForObject:{v8, v13}];
         v10 = v9;
         if (v9 >= v6)
         {
@@ -100,7 +100,7 @@
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v4 = [selfCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v4);

@@ -1,18 +1,18 @@
 @interface NotificationBadgeView
 - (CGRect)frame;
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC16MusicApplication21NotificationBadgeView)initWithCoder:(id)a3;
-- (_TtC16MusicApplication21NotificationBadgeView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC16MusicApplication21NotificationBadgeView)initWithCoder:(id)coder;
+- (_TtC16MusicApplication21NotificationBadgeView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setFrame:(CGRect)a3;
-- (void)setValue:(int64_t)a3;
+- (void)setFrame:(CGRect)frame;
+- (void)setValue:(int64_t)value;
 - (void)tintColorDidChange;
 @end
 
 @implementation NotificationBadgeView
 
-- (_TtC16MusicApplication21NotificationBadgeView)initWithCoder:(id)a3
+- (_TtC16MusicApplication21NotificationBadgeView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC16MusicApplication21NotificationBadgeView_shouldHideAutomatically) = 1;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC16MusicApplication21NotificationBadgeView_isShadowEnabled) = 0;
@@ -26,10 +26,10 @@
   return result;
 }
 
-- (void)setValue:(int64_t)a3
+- (void)setValue:(int64_t)value
 {
-  v4 = self;
-  sub_30D14(a3);
+  selfCopy = self;
+  sub_30D14(value);
 }
 
 - (CGRect)frame
@@ -44,22 +44,22 @@
   return result;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8 = type metadata accessor for NotificationBadgeView();
   v11.receiver = self;
   v11.super_class = v8;
-  v9 = self;
+  selfCopy = self;
   [(NotificationBadgeView *)&v11 frame];
-  v10.receiver = v9;
+  v10.receiver = selfCopy;
   v10.super_class = v8;
   [(NotificationBadgeView *)&v10 setFrame:x, y, width, height];
   type metadata accessor for CGSize(0);
-  [(NotificationBadgeView *)v9 frame];
+  [(NotificationBadgeView *)selfCopy frame];
   if (sub_AB38D0())
   {
     sub_312AC();
@@ -82,12 +82,12 @@
   [*&v2[OBJC_IVAR____TtC16MusicApplication21NotificationBadgeView_valueLabel] setFrame:{v4, v6, v8, v10}];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
-  [(NotificationBadgeView *)v5 intrinsicContentSize];
+  height = fits.height;
+  width = fits.width;
+  selfCopy = self;
+  [(NotificationBadgeView *)selfCopy intrinsicContentSize];
   v7 = v6;
   v9 = v8;
   type metadata accessor for CGSize(0);
@@ -131,10 +131,10 @@
 - (CGSize)intrinsicContentSize
 {
   v2 = *(&self->super.super.super.isa + OBJC_IVAR____TtC16MusicApplication21NotificationBadgeView_valueLabel);
-  v3 = self;
+  selfCopy = self;
   [v2 sizeThatFits:{0.0, 0.0}];
   v5 = v4;
-  v6 = *(&v3->super.super.super.isa + OBJC_IVAR____TtC16MusicApplication21NotificationBadgeView_style);
+  v6 = *(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC16MusicApplication21NotificationBadgeView_style);
   if (v6)
   {
     if (v6 == &dword_0 + 1)
@@ -145,7 +145,7 @@
 
     else
     {
-      [*(&v3->super.super.super.isa + OBJC_IVAR____TtC16MusicApplication21NotificationBadgeView_style) lineHeight];
+      [*(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC16MusicApplication21NotificationBadgeView_style) lineHeight];
       v7 = v9;
       [v6 lineHeight];
       v8 = v10;
@@ -183,7 +183,7 @@
   sub_312AC();
 }
 
-- (_TtC16MusicApplication21NotificationBadgeView)initWithFrame:(CGRect)a3
+- (_TtC16MusicApplication21NotificationBadgeView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,29 +1,29 @@
 @interface NanoRegistryObserver
-- (NanoRegistryObserver)initWithQueue:(queue)a3 delegate:(weak_ptr<NanoRegistryObserverDelegate>)a4;
+- (NanoRegistryObserver)initWithQueue:(queue)queue delegate:(weak_ptr<NanoRegistryObserverDelegate>)delegate;
 - (id).cxx_construct;
 - (void)dealloc;
-- (void)device:(id)a3 propertyDidChange:(id)a4 fromValue:(id)a5;
-- (void)didDeviceUnpair:(id)a3;
-- (void)didDeviceUnpair_sync:(id)a3;
-- (void)didEnterCompatibilityState:(id)a3;
-- (void)didEnterCompatibilityState_sync:(id)a3;
-- (void)notifyDevicesUpdated:(id)a3;
-- (void)sendInitialUpdate:(id)a3;
+- (void)device:(id)device propertyDidChange:(id)change fromValue:(id)value;
+- (void)didDeviceUnpair:(id)unpair;
+- (void)didDeviceUnpair_sync:(id)unpair_sync;
+- (void)didEnterCompatibilityState:(id)state;
+- (void)didEnterCompatibilityState_sync:(id)state_sync;
+- (void)notifyDevicesUpdated:(id)updated;
+- (void)sendInitialUpdate:(id)update;
 - (void)startObserving_sync;
 - (void)stopObserving_sync;
 @end
 
 @implementation NanoRegistryObserver
 
-- (NanoRegistryObserver)initWithQueue:(queue)a3 delegate:(weak_ptr<NanoRegistryObserverDelegate>)a4
+- (NanoRegistryObserver)initWithQueue:(queue)queue delegate:(weak_ptr<NanoRegistryObserverDelegate>)delegate
 {
-  ptr = a4.__ptr_;
+  ptr = delegate.__ptr_;
   v15.receiver = self;
   v15.super_class = NanoRegistryObserver;
-  v6 = [(NanoRegistryObserver *)&v15 init:a3.fObj.fObj];
+  v6 = [(NanoRegistryObserver *)&v15 init:queue.fObj.fObj];
   if (v6)
   {
-    v7 = *a3.fObj.fObj;
+    v7 = *queue.fObj.fObj;
     if (v7)
     {
       dispatch_retain(v7);
@@ -96,29 +96,29 @@
   [v3 removeObserver:self];
 }
 
-- (void)didEnterCompatibilityState:(id)a3
+- (void)didEnterCompatibilityState:(id)state
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_101346C28;
   v5[3] = &unk_101F0F6C0;
-  v6 = self;
-  v7 = a3;
-  fObj = v6->_queue.fObj.fObj;
-  v4 = v7;
+  selfCopy = self;
+  stateCopy = state;
+  fObj = selfCopy->_queue.fObj.fObj;
+  v4 = stateCopy;
   dispatch_async(fObj, v5);
 }
 
-- (void)didEnterCompatibilityState_sync:(id)a3
+- (void)didEnterCompatibilityState_sync:(id)state_sync
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:NRPairedDeviceRegistryDevice];
-  v6 = [v4 objectForKey:NRPairedDeviceRegistryCompatibilityStateKey];
-  v7 = [v6 intValue];
+  state_syncCopy = state_sync;
+  v5 = [state_syncCopy objectForKey:NRPairedDeviceRegistryDevice];
+  v6 = [state_syncCopy objectForKey:NRPairedDeviceRegistryCompatibilityStateKey];
+  intValue = [v6 intValue];
 
-  if (v7 - 4 >= 2)
+  if (intValue - 4 >= 2)
   {
-    if (v7 != 3)
+    if (intValue != 3)
     {
       goto LABEL_9;
     }
@@ -149,22 +149,22 @@
 LABEL_9:
 }
 
-- (void)didDeviceUnpair:(id)a3
+- (void)didDeviceUnpair:(id)unpair
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_101346ECC;
   v5[3] = &unk_101F0F6C0;
-  v6 = self;
-  v7 = a3;
-  fObj = v6->_queue.fObj.fObj;
-  v4 = v7;
+  selfCopy = self;
+  unpairCopy = unpair;
+  fObj = selfCopy->_queue.fObj.fObj;
+  v4 = unpairCopy;
   dispatch_async(fObj, v5);
 }
 
-- (void)didDeviceUnpair_sync:(id)a3
+- (void)didDeviceUnpair_sync:(id)unpair_sync
 {
-  v4 = a3;
+  unpair_syncCopy = unpair_sync;
   cntrl = self->_delegate.__cntrl_;
   if (cntrl)
   {
@@ -175,14 +175,14 @@ LABEL_9:
       ptr = self->_delegate.__ptr_;
       if (ptr)
       {
-        v9 = [v4 objectForKey:NRPairedDeviceRegistryDevice];
+        v9 = [unpair_syncCopy objectForKey:NRPairedDeviceRegistryDevice];
         v10 = +[NRPairedDeviceRegistry sharedInstance];
         v11 = [v10 deviceIDForNRDevice:v9];
 
         if (v11)
         {
-          v12 = [v11 UUIDString];
-          sub_10000501C(__p, [v12 UTF8String]);
+          uUIDString = [v11 UUIDString];
+          sub_10000501C(__p, [uUIDString UTF8String]);
           (*(*ptr + 16))(ptr, __p);
           if (v14 < 0)
           {
@@ -206,30 +206,30 @@ LABEL_9:
   }
 }
 
-- (void)device:(id)a3 propertyDidChange:(id)a4 fromValue:(id)a5
+- (void)device:(id)device propertyDidChange:(id)change fromValue:(id)value
 {
-  v7 = a3;
+  deviceCopy = device;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1013471E4;
   block[3] = &unk_101EA6A98;
-  v12 = a4;
-  v13 = v7;
-  v14 = self;
+  changeCopy = change;
+  v13 = deviceCopy;
+  selfCopy = self;
   fObj = self->_queue.fObj.fObj;
-  v9 = v7;
-  v10 = v12;
+  v9 = deviceCopy;
+  v10 = changeCopy;
   dispatch_async(fObj, block);
 }
 
-- (void)sendInitialUpdate:(id)a3
+- (void)sendInitialUpdate:(id)update
 {
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  updateCopy = update;
+  v5 = [updateCopy countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v5)
   {
     v6 = *v9;
@@ -240,7 +240,7 @@ LABEL_9:
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(updateCopy);
         }
 
         [*(*(&v8 + 1) + 8 * v7) addPropertyObserver:self forPropertyChanges:{self->_interestingDeviceProperties, v8}];
@@ -248,18 +248,18 @@ LABEL_9:
       }
 
       while (v5 != v7);
-      v5 = [v4 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [updateCopy countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);
   }
 
-  [(NanoRegistryObserver *)self notifyDevicesUpdated:v4];
+  [(NanoRegistryObserver *)self notifyDevicesUpdated:updateCopy];
 }
 
-- (void)notifyDevicesUpdated:(id)a3
+- (void)notifyDevicesUpdated:(id)updated
 {
-  v3 = a3;
+  updatedCopy = updated;
   v4 = +[NRPairedDeviceRegistry sharedInstance];
   v76 = 0;
   v77 = 0uLL;
@@ -267,7 +267,7 @@ LABEL_9:
   v73 = 0u;
   v74 = 0u;
   v75 = 0u;
-  obj = v3;
+  obj = updatedCopy;
   v5 = [obj countByEnumeratingWithState:&v72 objects:v84 count:16];
   if (v5)
   {
@@ -398,9 +398,9 @@ LABEL_59:
     }
 
     *&v77 = v11;
-    v21 = [v9 UUIDString];
-    v22 = v21;
-    sub_100016890((v11 - 208), [v21 UTF8String]);
+    uUIDString = [v9 UUIDString];
+    v22 = uUIDString;
+    sub_100016890((v11 - 208), [uUIDString UTF8String]);
 
     v23 = [v8 valueForProperty:v68];
     v24 = v23;
@@ -480,22 +480,22 @@ LABEL_59:
       sub_100016890((v11 - 64), [v42 UTF8String]);
     }
 
-    v44 = [v4 compatibilityState];
+    compatibilityState = [v4 compatibilityState];
     v45 = [v8 valueForProperty:v64];
-    v46 = [v45 BOOLValue];
+    bOOLValue = [v45 BOOLValue];
 
-    if (!v46)
+    if (!bOOLValue)
     {
       goto LABEL_44;
     }
 
-    if ((v44 & 0xFFFE) == 4)
+    if ((compatibilityState & 0xFFFE) == 4)
     {
       *(v11 - 39) = 2;
       goto LABEL_45;
     }
 
-    if (v44 == 3)
+    if (compatibilityState == 3)
     {
       *(v11 - 39) = 1;
       *(v11 - 8) = 3;
@@ -549,9 +549,9 @@ LABEL_52:
     }
 
     v48 = [v8 valueForProperty:v62];
-    v49 = [v48 BOOLValue];
+    bOOLValue2 = [v48 BOOLValue];
 
-    if (v49)
+    if (bOOLValue2)
     {
       LOBYTE(v47) = 2;
     }

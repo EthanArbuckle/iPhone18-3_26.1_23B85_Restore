@@ -2,7 +2,7 @@
 + (WKContentWorld)defaultClientWorld;
 + (WKContentWorld)pageWorld;
 + (WKContentWorld)worldWithName:(NSString *)name;
-+ (id)_worldWithConfiguration:(id)a3;
++ (id)_worldWithConfiguration:(id)configuration;
 - (NSString)name;
 - (_WKUserContentWorld)_userContentWorld;
 - (void)dealloc;
@@ -12,7 +12,7 @@
 
 + (WKContentWorld)pageWorld
 {
-  v2 = *(API::ContentWorld::pageContentWorldSingleton(a1) + 1);
+  v2 = *(API::ContentWorld::pageContentWorldSingleton(self) + 1);
   if (!v2)
   {
     return v2;
@@ -31,7 +31,7 @@
 
 + (WKContentWorld)defaultClientWorld
 {
-  v2 = *(API::ContentWorld::defaultClientWorldSingleton(a1) + 8);
+  v2 = *(API::ContentWorld::defaultClientWorldSingleton(self) + 8);
   if (!v2)
   {
     return v2;
@@ -146,26 +146,26 @@ LABEL_9:
   return v3;
 }
 
-+ (id)_worldWithConfiguration:(id)a3
++ (id)_worldWithConfiguration:(id)configuration
 {
-  v4 = [a3 allowAccessToClosedShadowRoots];
-  if ([a3 allowAutofill])
+  allowAccessToClosedShadowRoots = [configuration allowAccessToClosedShadowRoots];
+  if ([configuration allowAutofill])
   {
-    v4 |= 2u;
+    allowAccessToClosedShadowRoots |= 2u;
   }
 
-  if ([a3 allowElementUserInfo])
+  if ([configuration allowElementUserInfo])
   {
-    v4 |= 4u;
+    allowAccessToClosedShadowRoots |= 4u;
   }
 
-  if ([a3 disableLegacyBuiltinOverrides])
+  if ([configuration disableLegacyBuiltinOverrides])
   {
-    v4 |= 8u;
+    allowAccessToClosedShadowRoots |= 8u;
   }
 
-  MEMORY[0x19EB02040](&v14, [a3 name]);
-  API::ContentWorld::sharedWorldWithName(&v14, v4, v5, &v15);
+  MEMORY[0x19EB02040](&v14, [configuration name]);
+  API::ContentWorld::sharedWorldWithName(&v14, allowAccessToClosedShadowRoots, v5, &v15);
   v7 = v14;
   v14 = 0;
   if (v7)
@@ -176,7 +176,7 @@ LABEL_9:
     }
   }
 
-  checkContentWorldOptions(v15, a3);
+  checkContentWorldOptions(v15, configuration);
   v8 = *(v15 + 8);
   if (!v8)
   {

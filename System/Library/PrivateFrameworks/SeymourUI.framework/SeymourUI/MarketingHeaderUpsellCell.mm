@@ -1,5 +1,5 @@
 @interface MarketingHeaderUpsellCell
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority;
 - (void)prepareForReuse;
 @end
 
@@ -7,19 +7,19 @@
 
 - (void)prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   sub_20C0B5E74();
 }
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority
 {
-  height = a3.height;
-  width = a3.width;
-  v9 = self;
-  v10 = [(MarketingHeaderUpsellCell *)v9 contentView];
-  *&v11 = a4;
-  *&v12 = a5;
-  [v10 systemLayoutSizeFittingSize:width withHorizontalFittingPriority:height verticalFittingPriority:{v11, v12}];
+  height = size.height;
+  width = size.width;
+  selfCopy = self;
+  contentView = [(MarketingHeaderUpsellCell *)selfCopy contentView];
+  *&v11 = priority;
+  *&v12 = fittingPriority;
+  [contentView systemLayoutSizeFittingSize:width withHorizontalFittingPriority:height verticalFittingPriority:{v11, v12}];
   v14 = v13;
   v16 = v15;
 

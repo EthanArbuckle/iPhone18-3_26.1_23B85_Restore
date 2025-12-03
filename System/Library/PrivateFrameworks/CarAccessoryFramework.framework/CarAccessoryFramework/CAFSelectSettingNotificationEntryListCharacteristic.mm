@@ -3,38 +3,38 @@
 + (void)load;
 - (CAFSelectSettingNotificationEntryList)selectSettingNotificationEntryListValue;
 - (id)formattedValue;
-- (void)setSelectSettingNotificationEntryListValue:(id)a3;
+- (void)setSelectSettingNotificationEntryListValue:(id)value;
 @end
 
 @implementation CAFSelectSettingNotificationEntryListCharacteristic
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___CAFSelectSettingNotificationEntryListCharacteristic;
   objc_msgSendSuper2(&v2, sel_load);
 }
 
 - (CAFSelectSettingNotificationEntryList)selectSettingNotificationEntryListValue
 {
-  v2 = [(CAFArrayCharacteristic *)self arrayValue];
-  v3 = [CAFSelectSettingNotificationEntryList selectSettingNotificationEntryListWithArray:v2];
+  arrayValue = [(CAFArrayCharacteristic *)self arrayValue];
+  v3 = [CAFSelectSettingNotificationEntryList selectSettingNotificationEntryListWithArray:arrayValue];
 
   return v3;
 }
 
-- (void)setSelectSettingNotificationEntryListValue:(id)a3
+- (void)setSelectSettingNotificationEntryListValue:(id)value
 {
-  v4 = [a3 arrayRepresentation];
-  [(CAFArrayCharacteristic *)self setArrayValue:v4];
+  arrayRepresentation = [value arrayRepresentation];
+  [(CAFArrayCharacteristic *)self setArrayValue:arrayRepresentation];
 }
 
 - (id)formattedValue
 {
-  v2 = [(CAFSelectSettingNotificationEntryListCharacteristic *)self selectSettingNotificationEntryListValue];
-  v3 = [v2 formattedValue];
+  selectSettingNotificationEntryListValue = [(CAFSelectSettingNotificationEntryListCharacteristic *)self selectSettingNotificationEntryListValue];
+  formattedValue = [selectSettingNotificationEntryListValue formattedValue];
 
-  return v3;
+  return formattedValue;
 }
 
 + (id)secondaryCharacteristicFormats

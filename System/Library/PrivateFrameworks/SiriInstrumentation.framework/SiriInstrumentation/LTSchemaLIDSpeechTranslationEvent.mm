@@ -1,27 +1,27 @@
 @interface LTSchemaLIDSpeechTranslationEvent
-- (BOOL)isEqual:(id)a3;
-- (LTSchemaLIDSpeechTranslationEvent)initWithDictionary:(id)a3;
-- (LTSchemaLIDSpeechTranslationEvent)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (LTSchemaLIDSpeechTranslationEvent)initWithDictionary:(id)dictionary;
+- (LTSchemaLIDSpeechTranslationEvent)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasSpeechElapsedTime:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasSpeechElapsedTime:(BOOL)time;
+- (void)writeTo:(id)to;
 @end
 
 @implementation LTSchemaLIDSpeechTranslationEvent
 
-- (LTSchemaLIDSpeechTranslationEvent)initWithDictionary:(id)a3
+- (LTSchemaLIDSpeechTranslationEvent)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v18.receiver = self;
   v18.super_class = LTSchemaLIDSpeechTranslationEvent;
   v5 = [(LTSchemaLIDSpeechTranslationEvent *)&v18 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"requestID"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"requestID"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -29,7 +29,7 @@
       [(LTSchemaLIDSpeechTranslationEvent *)v5 setRequestID:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"selectedLocale"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"selectedLocale"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -37,7 +37,7 @@
       [(LTSchemaLIDSpeechTranslationEvent *)v5 setSelectedLocale:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"alternateLocale"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"alternateLocale"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -45,7 +45,7 @@
       [(LTSchemaLIDSpeechTranslationEvent *)v5 setAlternateLocale:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"userSelectedLocale"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"userSelectedLocale"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -53,14 +53,14 @@
       [(LTSchemaLIDSpeechTranslationEvent *)v5 setUserSelectedLocale:v13];
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"responseTimeMs"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"responseTimeMs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[LTSchemaLIDSpeechTranslationEvent setResponseTimeMs:](v5, "setResponseTimeMs:", [v14 unsignedIntValue]);
     }
 
-    v15 = [v4 objectForKeyedSubscript:@"speechElapsedTime"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"speechElapsedTime"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -73,30 +73,30 @@
   return v5;
 }
 
-- (LTSchemaLIDSpeechTranslationEvent)initWithJSON:(id)a3
+- (LTSchemaLIDSpeechTranslationEvent)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(LTSchemaLIDSpeechTranslationEvent *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(LTSchemaLIDSpeechTranslationEvent *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(LTSchemaLIDSpeechTranslationEvent *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -109,68 +109,68 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_alternateLocale)
   {
-    v4 = [(LTSchemaLIDSpeechTranslationEvent *)self alternateLocale];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    alternateLocale = [(LTSchemaLIDSpeechTranslationEvent *)self alternateLocale];
+    dictionaryRepresentation = [alternateLocale dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"alternateLocale"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"alternateLocale"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"alternateLocale"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"alternateLocale"];
     }
   }
 
   if (self->_requestID)
   {
-    v7 = [(LTSchemaLIDSpeechTranslationEvent *)self requestID];
-    v8 = [v7 copy];
-    [v3 setObject:v8 forKeyedSubscript:@"requestID"];
+    requestID = [(LTSchemaLIDSpeechTranslationEvent *)self requestID];
+    v8 = [requestID copy];
+    [dictionary setObject:v8 forKeyedSubscript:@"requestID"];
   }
 
   if (*&self->_has)
   {
     v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[LTSchemaLIDSpeechTranslationEvent responseTimeMs](self, "responseTimeMs")}];
-    [v3 setObject:v9 forKeyedSubscript:@"responseTimeMs"];
+    [dictionary setObject:v9 forKeyedSubscript:@"responseTimeMs"];
   }
 
   if (self->_selectedLocale)
   {
-    v10 = [(LTSchemaLIDSpeechTranslationEvent *)self selectedLocale];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    selectedLocale = [(LTSchemaLIDSpeechTranslationEvent *)self selectedLocale];
+    dictionaryRepresentation2 = [selectedLocale dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"selectedLocale"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"selectedLocale"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"selectedLocale"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"selectedLocale"];
     }
   }
 
   if ((*&self->_has & 2) != 0)
   {
     v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[LTSchemaLIDSpeechTranslationEvent speechElapsedTime](self, "speechElapsedTime")}];
-    [v3 setObject:v13 forKeyedSubscript:@"speechElapsedTime"];
+    [dictionary setObject:v13 forKeyedSubscript:@"speechElapsedTime"];
   }
 
   if (self->_userSelectedLocale)
   {
-    v14 = [(LTSchemaLIDSpeechTranslationEvent *)self userSelectedLocale];
-    v15 = [v14 copy];
-    [v3 setObject:v15 forKeyedSubscript:@"userSelectedLocale"];
+    userSelectedLocale = [(LTSchemaLIDSpeechTranslationEvent *)self userSelectedLocale];
+    v15 = [userSelectedLocale copy];
+    [dictionary setObject:v15 forKeyedSubscript:@"userSelectedLocale"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -203,28 +203,28 @@ LABEL_3:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_22;
   }
 
-  v5 = [(LTSchemaLIDSpeechTranslationEvent *)self requestID];
-  v6 = [v4 requestID];
-  if ((v5 != 0) == (v6 == 0))
+  requestID = [(LTSchemaLIDSpeechTranslationEvent *)self requestID];
+  requestID2 = [equalCopy requestID];
+  if ((requestID != 0) == (requestID2 == 0))
   {
     goto LABEL_21;
   }
 
-  v7 = [(LTSchemaLIDSpeechTranslationEvent *)self requestID];
-  if (v7)
+  requestID3 = [(LTSchemaLIDSpeechTranslationEvent *)self requestID];
+  if (requestID3)
   {
-    v8 = v7;
-    v9 = [(LTSchemaLIDSpeechTranslationEvent *)self requestID];
-    v10 = [v4 requestID];
-    v11 = [v9 isEqual:v10];
+    v8 = requestID3;
+    requestID4 = [(LTSchemaLIDSpeechTranslationEvent *)self requestID];
+    requestID5 = [equalCopy requestID];
+    v11 = [requestID4 isEqual:requestID5];
 
     if (!v11)
     {
@@ -236,20 +236,20 @@ LABEL_3:
   {
   }
 
-  v5 = [(LTSchemaLIDSpeechTranslationEvent *)self selectedLocale];
-  v6 = [v4 selectedLocale];
-  if ((v5 != 0) == (v6 == 0))
+  requestID = [(LTSchemaLIDSpeechTranslationEvent *)self selectedLocale];
+  requestID2 = [equalCopy selectedLocale];
+  if ((requestID != 0) == (requestID2 == 0))
   {
     goto LABEL_21;
   }
 
-  v12 = [(LTSchemaLIDSpeechTranslationEvent *)self selectedLocale];
-  if (v12)
+  selectedLocale = [(LTSchemaLIDSpeechTranslationEvent *)self selectedLocale];
+  if (selectedLocale)
   {
-    v13 = v12;
-    v14 = [(LTSchemaLIDSpeechTranslationEvent *)self selectedLocale];
-    v15 = [v4 selectedLocale];
-    v16 = [v14 isEqual:v15];
+    v13 = selectedLocale;
+    selectedLocale2 = [(LTSchemaLIDSpeechTranslationEvent *)self selectedLocale];
+    selectedLocale3 = [equalCopy selectedLocale];
+    v16 = [selectedLocale2 isEqual:selectedLocale3];
 
     if (!v16)
     {
@@ -261,20 +261,20 @@ LABEL_3:
   {
   }
 
-  v5 = [(LTSchemaLIDSpeechTranslationEvent *)self alternateLocale];
-  v6 = [v4 alternateLocale];
-  if ((v5 != 0) == (v6 == 0))
+  requestID = [(LTSchemaLIDSpeechTranslationEvent *)self alternateLocale];
+  requestID2 = [equalCopy alternateLocale];
+  if ((requestID != 0) == (requestID2 == 0))
   {
     goto LABEL_21;
   }
 
-  v17 = [(LTSchemaLIDSpeechTranslationEvent *)self alternateLocale];
-  if (v17)
+  alternateLocale = [(LTSchemaLIDSpeechTranslationEvent *)self alternateLocale];
+  if (alternateLocale)
   {
-    v18 = v17;
-    v19 = [(LTSchemaLIDSpeechTranslationEvent *)self alternateLocale];
-    v20 = [v4 alternateLocale];
-    v21 = [v19 isEqual:v20];
+    v18 = alternateLocale;
+    alternateLocale2 = [(LTSchemaLIDSpeechTranslationEvent *)self alternateLocale];
+    alternateLocale3 = [equalCopy alternateLocale];
+    v21 = [alternateLocale2 isEqual:alternateLocale3];
 
     if (!v21)
     {
@@ -286,22 +286,22 @@ LABEL_3:
   {
   }
 
-  v5 = [(LTSchemaLIDSpeechTranslationEvent *)self userSelectedLocale];
-  v6 = [v4 userSelectedLocale];
-  if ((v5 != 0) == (v6 == 0))
+  requestID = [(LTSchemaLIDSpeechTranslationEvent *)self userSelectedLocale];
+  requestID2 = [equalCopy userSelectedLocale];
+  if ((requestID != 0) == (requestID2 == 0))
   {
 LABEL_21:
 
     goto LABEL_22;
   }
 
-  v22 = [(LTSchemaLIDSpeechTranslationEvent *)self userSelectedLocale];
-  if (v22)
+  userSelectedLocale = [(LTSchemaLIDSpeechTranslationEvent *)self userSelectedLocale];
+  if (userSelectedLocale)
   {
-    v23 = v22;
-    v24 = [(LTSchemaLIDSpeechTranslationEvent *)self userSelectedLocale];
-    v25 = [v4 userSelectedLocale];
-    v26 = [v24 isEqual:v25];
+    v23 = userSelectedLocale;
+    userSelectedLocale2 = [(LTSchemaLIDSpeechTranslationEvent *)self userSelectedLocale];
+    userSelectedLocale3 = [equalCopy userSelectedLocale];
+    v26 = [userSelectedLocale2 isEqual:userSelectedLocale3];
 
     if (!v26)
     {
@@ -314,25 +314,25 @@ LABEL_21:
   }
 
   has = self->_has;
-  v30 = v4[48];
+  v30 = equalCopy[48];
   if ((*&has & 1) == (v30 & 1))
   {
     if (*&has)
     {
       responseTimeMs = self->_responseTimeMs;
-      if (responseTimeMs != [v4 responseTimeMs])
+      if (responseTimeMs != [equalCopy responseTimeMs])
       {
         goto LABEL_22;
       }
 
       has = self->_has;
-      v30 = v4[48];
+      v30 = equalCopy[48];
     }
 
     v32 = (*&has >> 1) & 1;
     if (v32 == ((v30 >> 1) & 1))
     {
-      if (!v32 || (speechElapsedTime = self->_speechElapsedTime, speechElapsedTime == [v4 speechElapsedTime]))
+      if (!v32 || (speechElapsedTime = self->_speechElapsedTime, speechElapsedTime == [equalCopy speechElapsedTime]))
       {
         v27 = 1;
         goto LABEL_23;
@@ -347,58 +347,58 @@ LABEL_23:
   return v27;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v12 = a3;
-  v4 = [(LTSchemaLIDSpeechTranslationEvent *)self requestID];
+  toCopy = to;
+  requestID = [(LTSchemaLIDSpeechTranslationEvent *)self requestID];
 
-  if (v4)
+  if (requestID)
   {
     PBDataWriterWriteStringField();
   }
 
-  v5 = [(LTSchemaLIDSpeechTranslationEvent *)self selectedLocale];
+  selectedLocale = [(LTSchemaLIDSpeechTranslationEvent *)self selectedLocale];
 
-  if (v5)
+  if (selectedLocale)
   {
-    v6 = [(LTSchemaLIDSpeechTranslationEvent *)self selectedLocale];
+    selectedLocale2 = [(LTSchemaLIDSpeechTranslationEvent *)self selectedLocale];
     PBDataWriterWriteSubmessage();
   }
 
-  v7 = [(LTSchemaLIDSpeechTranslationEvent *)self alternateLocale];
+  alternateLocale = [(LTSchemaLIDSpeechTranslationEvent *)self alternateLocale];
 
-  if (v7)
+  if (alternateLocale)
   {
-    v8 = [(LTSchemaLIDSpeechTranslationEvent *)self alternateLocale];
+    alternateLocale2 = [(LTSchemaLIDSpeechTranslationEvent *)self alternateLocale];
     PBDataWriterWriteSubmessage();
   }
 
-  v9 = [(LTSchemaLIDSpeechTranslationEvent *)self userSelectedLocale];
+  userSelectedLocale = [(LTSchemaLIDSpeechTranslationEvent *)self userSelectedLocale];
 
-  if (v9)
+  if (userSelectedLocale)
   {
     PBDataWriterWriteStringField();
   }
 
   has = self->_has;
-  v11 = v12;
+  v11 = toCopy;
   if (has)
   {
     PBDataWriterWriteUint32Field();
-    v11 = v12;
+    v11 = toCopy;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
     PBDataWriterWriteUint32Field();
-    v11 = v12;
+    v11 = toCopy;
   }
 }
 
-- (void)setHasSpeechElapsedTime:(BOOL)a3
+- (void)setHasSpeechElapsedTime:(BOOL)time
 {
-  if (a3)
+  if (time)
   {
     v3 = 2;
   }
@@ -411,26 +411,26 @@ LABEL_23:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v13.receiver = self;
   v13.super_class = LTSchemaLIDSpeechTranslationEvent;
-  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:v4];
-  v6 = [(LTSchemaLIDSpeechTranslationEvent *)self selectedLocale];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:policyCopy];
+  selectedLocale = [(LTSchemaLIDSpeechTranslationEvent *)self selectedLocale];
+  v7 = [selectedLocale applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(LTSchemaLIDSpeechTranslationEvent *)self deleteSelectedLocale];
   }
 
-  v9 = [(LTSchemaLIDSpeechTranslationEvent *)self alternateLocale];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  alternateLocale = [(LTSchemaLIDSpeechTranslationEvent *)self alternateLocale];
+  v10 = [alternateLocale applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(LTSchemaLIDSpeechTranslationEvent *)self deleteAlternateLocale];
   }

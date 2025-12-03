@@ -1,40 +1,40 @@
 @interface ServiceStoreProductViewController
-- (ServiceStoreProductViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (ServiceStoreProductViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (ServiceStoreProductViewControllerDelegate)delegate;
 - (id)_clientViewControllerProxy;
-- (id)_newCancelButtonItemWithClientContext:(id)a3;
-- (id)legacyScriptInterfaceForApplication:(id)a3;
-- (void)_presentOnboardingIfNeededWithCompletion:(id)a3;
-- (void)_sendDidFinishWithResult:(int64_t)a3;
+- (id)_newCancelButtonItemWithClientContext:(id)context;
+- (id)legacyScriptInterfaceForApplication:(id)application;
+- (void)_presentOnboardingIfNeededWithCompletion:(id)completion;
+- (void)_sendDidFinishWithResult:(int64_t)result;
 - (void)_sendInstallAttributionIfAllowed;
 - (void)_startIfReady;
-- (void)application:(id)a3 didFailToLoadWithError:(id)a4;
-- (void)application:(id)a3 didStopWithOptions:(id)a4;
-- (void)applicationDidDisplayFirstPage:(id)a3;
+- (void)application:(id)application didFailToLoadWithError:(id)error;
+- (void)application:(id)application didStopWithOptions:(id)options;
+- (void)applicationDidDisplayFirstPage:(id)page;
 - (void)dealloc;
 - (void)finishImmediately;
-- (void)finishStarRatingPromptWithRating:(id)a3;
-- (void)loadProductWithPageDictionary:(id)a3;
-- (void)loadProductWithParameters:(id)a3;
-- (void)loadProductWithRequest:(id)a3;
-- (void)loadProductWithURL:(id)a3;
-- (void)setAdditionalBuyParameters:(id)a3;
-- (void)setAffiliateIdentifier:(id)a3;
-- (void)setClientIdentifier:(id)a3;
-- (void)setPreview:(id)a3;
-- (void)setProductPageStyle:(id)a3;
-- (void)setupWithClientBundleID:(id)a3 bagType:(int64_t)a4;
+- (void)finishStarRatingPromptWithRating:(id)rating;
+- (void)loadProductWithPageDictionary:(id)dictionary;
+- (void)loadProductWithParameters:(id)parameters;
+- (void)loadProductWithRequest:(id)request;
+- (void)loadProductWithURL:(id)l;
+- (void)setAdditionalBuyParameters:(id)parameters;
+- (void)setAffiliateIdentifier:(id)identifier;
+- (void)setClientIdentifier:(id)identifier;
+- (void)setPreview:(id)preview;
+- (void)setProductPageStyle:(id)style;
+- (void)setupWithClientBundleID:(id)d bagType:(int64_t)type;
 - (void)viewDidLayoutSubviews;
-- (void)willRotateToInterfaceOrientation:(int64_t)a3 duration:(double)a4;
+- (void)willRotateToInterfaceOrientation:(int64_t)orientation duration:(double)duration;
 @end
 
 @implementation ServiceStoreProductViewController
 
-- (ServiceStoreProductViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (ServiceStoreProductViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v27.receiver = self;
   v27.super_class = ServiceStoreProductViewController;
-  v4 = [(ServiceStoreProductViewController *)&v27 initWithNibName:a3 bundle:a4];
+  v4 = [(ServiceStoreProductViewController *)&v27 initWithNibName:name bundle:bundle];
   if (v4)
   {
     v5 = objc_alloc_init(SKUIMutableApplicationControllerOptions);
@@ -51,16 +51,16 @@
     v10 = [NSArray arrayWithObjects:&v28 count:1];
     [(SKUIApplicationController *)v9 setTabBarItems:v10];
 
-    v11 = [(SKUIApplicationController *)v4->_applicationController clientContext];
-    v12 = [(ServiceStoreProductViewController *)v4 _newCancelButtonItemWithClientContext:v11];
+    clientContext = [(SKUIApplicationController *)v4->_applicationController clientContext];
+    v12 = [(ServiceStoreProductViewController *)v4 _newCancelButtonItemWithClientContext:clientContext];
 
     v13 = objc_alloc_init(UIViewController);
-    v14 = [v13 navigationItem];
-    [v14 setLeftBarButtonItem:v12];
+    navigationItem = [v13 navigationItem];
+    [navigationItem setLeftBarButtonItem:v12];
 
-    v15 = [v13 view];
+    view = [v13 view];
     v16 = +[UIColor whiteColor];
-    [v15 setBackgroundColor:v16];
+    [view setBackgroundColor:v16];
 
     v17 = [[UINavigationController alloc] initWithRootViewController:v13];
     loadingPlaceholderViewController = v4->_loadingPlaceholderViewController;
@@ -72,11 +72,11 @@
 
     [(ServiceProductPageConfiguration *)v4->_pageConfiguration setShowsStoreButton:1];
     v21 = +[NSUUID UUID];
-    v22 = [v21 UUIDString];
-    v23 = [v22 componentsSeparatedByString:@"-"];
-    v24 = [v23 firstObject];
+    uUIDString = [v21 UUIDString];
+    v23 = [uUIDString componentsSeparatedByString:@"-"];
+    firstObject = [v23 firstObject];
     logKey = v4->_logKey;
-    v4->_logKey = v24;
+    v4->_logKey = firstObject;
   }
 
   return v4;
@@ -87,18 +87,18 @@
   loadingPlaceholderViewController = self->_loadingPlaceholderViewController;
   if (loadingPlaceholderViewController)
   {
-    v4 = [(UINavigationController *)loadingPlaceholderViewController parentViewController];
+    parentViewController = [(UINavigationController *)loadingPlaceholderViewController parentViewController];
 
-    if (!v4)
+    if (!parentViewController)
     {
-      v5 = [(SKUIApplicationController *)self->_applicationController rootViewController];
-      [v5 addChildViewController:self->_loadingPlaceholderViewController];
-      v6 = [v5 view];
-      v7 = [(UINavigationController *)self->_loadingPlaceholderViewController view];
-      [v7 setAutoresizingMask:18];
-      [v6 bounds];
-      [v7 setFrame:?];
-      [v6 addSubview:v7];
+      rootViewController = [(SKUIApplicationController *)self->_applicationController rootViewController];
+      [rootViewController addChildViewController:self->_loadingPlaceholderViewController];
+      view = [rootViewController view];
+      view2 = [(UINavigationController *)self->_loadingPlaceholderViewController view];
+      [view2 setAutoresizingMask:18];
+      [view bounds];
+      [view2 setFrame:?];
+      [view addSubview:view2];
     }
   }
 
@@ -116,20 +116,20 @@
   [(ServiceStoreProductViewController *)&v3 dealloc];
 }
 
-- (void)loadProductWithParameters:(id)a3
+- (void)loadProductWithParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     logKey = self->_logKey;
     v6 = 138543618;
-    v7 = self;
+    selfCopy = self;
     v8 = 2114;
     v9 = logKey;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "[%{public}@][%{public}@]: Loading product with page parameters.", &v6, 0x16u);
   }
 
-  [(ServiceProductPageConfiguration *)self->_pageConfiguration setProductParameters:v4];
+  [(ServiceProductPageConfiguration *)self->_pageConfiguration setProductParameters:parametersCopy];
   [(ServiceStoreProductViewController *)self _startIfReady];
 }
 
@@ -137,8 +137,8 @@
 {
   if (!self->_didStart && [(ServiceStoreProductViewController *)self isViewLoaded]&& [(ServiceProductPageConfiguration *)self->_pageConfiguration isLoadable])
   {
-    v3 = [(SKUIApplicationController *)self->_applicationController _applicationMode];
-    if (v3 == 2)
+    _applicationMode = [(SKUIApplicationController *)self->_applicationController _applicationMode];
+    if (_applicationMode == 2)
     {
       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
       {
@@ -146,28 +146,28 @@
       }
 
       v5 = [NSError alloc];
-      v4 = [v5 initWithDomain:SKUIErrorDomain code:0 userInfo:0];
-      v6 = [(ServiceStoreProductViewController *)self _clientViewControllerProxy];
-      [v6 loadDidFinishWithResult:&__kCFBooleanFalse error:v4];
+      copyITMLOptionsDictionary = [v5 initWithDomain:SKUIErrorDomain code:0 userInfo:0];
+      _clientViewControllerProxy = [(ServiceStoreProductViewController *)self _clientViewControllerProxy];
+      [_clientViewControllerProxy loadDidFinishWithResult:&__kCFBooleanFalse error:copyITMLOptionsDictionary];
     }
 
-    else if (v3 == 1)
+    else if (_applicationMode == 1)
     {
-      v4 = [(ServiceProductPageConfiguration *)self->_pageConfiguration copyITMLOptionsDictionary];
-      [(SKUIApplicationController *)self->_applicationController resumeApplicationWithOptions:v4];
+      copyITMLOptionsDictionary = [(ServiceProductPageConfiguration *)self->_pageConfiguration copyITMLOptionsDictionary];
+      [(SKUIApplicationController *)self->_applicationController resumeApplicationWithOptions:copyITMLOptionsDictionary];
     }
 
     else
     {
-      if (v3)
+      if (_applicationMode)
       {
 LABEL_13:
         self->_didStart = 1;
         return;
       }
 
-      v4 = [(ServiceProductPageConfiguration *)self->_pageConfiguration copyITMLOptionsDictionary];
-      [(SKUIApplicationController *)self->_applicationController loadApplicationWithOptions:v4];
+      copyITMLOptionsDictionary = [(ServiceProductPageConfiguration *)self->_pageConfiguration copyITMLOptionsDictionary];
+      [(SKUIApplicationController *)self->_applicationController loadApplicationWithOptions:copyITMLOptionsDictionary];
     }
 
     goto LABEL_13;
@@ -176,42 +176,42 @@ LABEL_13:
 
 - (id)_clientViewControllerProxy
 {
-  v2 = [(ServiceStoreProductViewController *)self delegate];
-  v3 = [v2 serviceProductPageViewControllerClientProxy];
+  delegate = [(ServiceStoreProductViewController *)self delegate];
+  serviceProductPageViewControllerClientProxy = [delegate serviceProductPageViewControllerClientProxy];
 
-  return v3;
+  return serviceProductPageViewControllerClientProxy;
 }
 
 - (void)_sendInstallAttributionIfAllowed
 {
   if (self->_didLoad && self->_didShow)
   {
-    v3 = [(ServiceProductPageConfiguration *)self->_pageConfiguration productParameters];
-    v4 = [v3 objectForKeyedSubscript:SKStoreProductParameterAdNetworkIdentifier];
+    productParameters = [(ServiceProductPageConfiguration *)self->_pageConfiguration productParameters];
+    v4 = [productParameters objectForKeyedSubscript:SKStoreProductParameterAdNetworkIdentifier];
     if (v4)
     {
-      v5 = [(ServiceStoreProductViewController *)self _hostApplicationBundleIdentifier];
-      v6 = [LSApplicationProxy applicationProxyForIdentifier:v5];
-      v7 = [v6 itemID];
-      v8 = [v7 unsignedIntegerValue];
+      _hostApplicationBundleIdentifier = [(ServiceStoreProductViewController *)self _hostApplicationBundleIdentifier];
+      v6 = [LSApplicationProxy applicationProxyForIdentifier:_hostApplicationBundleIdentifier];
+      itemID = [v6 itemID];
+      unsignedIntegerValue = [itemID unsignedIntegerValue];
 
-      if (v8)
+      if (unsignedIntegerValue)
       {
         v22 = v4;
         v23 = v6;
-        v9 = [v3 objectForKeyedSubscript:SKStoreProductParameterITunesItemIdentifier];
-        [v3 objectForKeyedSubscript:SKStoreProductParameterAdNetworkCampaignIdentifier];
-        v10 = v21 = v5;
-        v11 = [v3 objectForKeyedSubscript:SKStoreProductParameterAdNetworkNonce];
-        v12 = [v3 objectForKeyedSubscript:SKStoreProductParameterAdNetworkTimestamp];
-        v13 = [v3 objectForKeyedSubscript:SKStoreProductParameterAdNetworkAttributionSignature];
-        v14 = [v3 objectForKeyedSubscript:SKStoreProductParameterAdNetworkVersion];
-        v15 = [v3 objectForKeyedSubscript:SKStoreProductParameterAdNetworkSourceAppStoreIdentifier];
+        v9 = [productParameters objectForKeyedSubscript:SKStoreProductParameterITunesItemIdentifier];
+        [productParameters objectForKeyedSubscript:SKStoreProductParameterAdNetworkCampaignIdentifier];
+        v10 = v21 = _hostApplicationBundleIdentifier;
+        v11 = [productParameters objectForKeyedSubscript:SKStoreProductParameterAdNetworkNonce];
+        v12 = [productParameters objectForKeyedSubscript:SKStoreProductParameterAdNetworkTimestamp];
+        v13 = [productParameters objectForKeyedSubscript:SKStoreProductParameterAdNetworkAttributionSignature];
+        v14 = [productParameters objectForKeyedSubscript:SKStoreProductParameterAdNetworkVersion];
+        v15 = [productParameters objectForKeyedSubscript:SKStoreProductParameterAdNetworkSourceAppStoreIdentifier];
         v16 = objc_opt_new();
         v24 = v9;
         v17 = v9;
         v18 = v10;
-        v5 = v21;
+        _hostApplicationBundleIdentifier = v21;
         [v16 setAppAdamId:v17];
         [v16 setAdNetworkId:@"com.apple.advp"];
         [v16 setCampaignId:v18];
@@ -226,7 +226,7 @@ LABEL_13:
         {
           logKey = self->_logKey;
           *buf = 138544130;
-          v26 = self;
+          selfCopy = self;
           v27 = 2114;
           v28 = logKey;
           v29 = 2114;
@@ -256,15 +256,15 @@ LABEL_13:
   }
 }
 
-- (id)_newCancelButtonItemWithClientContext:(id)a3
+- (id)_newCancelButtonItemWithClientContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = objc_alloc_init(UIBarButtonItem);
   [v5 setAction:"_cancelButtonAction:"];
   [v5 setTarget:self];
-  if (v4)
+  if (contextCopy)
   {
-    v6 = [v4 localizedStringForKey:@"CLOSE_SHEET_BUTTON"];
+    v6 = [contextCopy localizedStringForKey:@"CLOSE_SHEET_BUTTON"];
     [v5 setTitle:v6];
   }
 
@@ -278,78 +278,78 @@ LABEL_13:
   return v5;
 }
 
-- (void)_presentOnboardingIfNeededWithCompletion:(id)a3
+- (void)_presentOnboardingIfNeededWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ([sub_100011E18() shouldShowOnboarding])
   {
     if (!self->_presentingOnboarding && [(ServiceStoreProductViewController *)self shouldShowOnboarding])
     {
       self->_presentingOnboarding = 1;
-      v5 = self;
+      selfCopy = self;
       v6 = sub_100011E18();
       v18 = _NSConcreteStackBlock;
       v19 = 3221225472;
       v20 = sub_100011EF8;
       v21 = &unk_100051798;
-      v22 = v5;
-      v23 = v4;
+      v22 = selfCopy;
+      v23 = completionCopy;
       v7 = [v6 viewControllerForMediaType:2 completion:&v18];
-      v8 = [v7 view];
-      v9 = [(ServiceStoreProductViewController *)v5 view];
-      [v9 bounds];
+      view = [v7 view];
+      view2 = [(ServiceStoreProductViewController *)selfCopy view];
+      [view2 bounds];
       v11 = v10;
       v13 = v12;
       v15 = v14;
-      [v8 frame];
-      [(ServiceStoreProductViewController *)v5 addChildViewController:v7];
-      [v8 setAutoresizingMask:18];
-      [v8 setFrame:{v11, 0.0, v13, v15}];
-      v16 = [(ServiceStoreProductViewController *)v5 view];
-      v17 = [v7 view];
-      [v16 addSubview:v17];
+      [view frame];
+      [(ServiceStoreProductViewController *)selfCopy addChildViewController:v7];
+      [view setAutoresizingMask:18];
+      [view setFrame:{v11, 0.0, v13, v15}];
+      view3 = [(ServiceStoreProductViewController *)selfCopy view];
+      view4 = [v7 view];
+      [view3 addSubview:view4];
 
-      [v7 didMoveToParentViewController:v5];
+      [v7 didMoveToParentViewController:selfCopy];
     }
   }
 
   else
   {
-    v4[2](v4);
+    completionCopy[2](completionCopy);
   }
 }
 
-- (id)legacyScriptInterfaceForApplication:(id)a3
+- (id)legacyScriptInterfaceForApplication:(id)application
 {
   v3 = objc_alloc_init(SKScriptInterface);
 
   return v3;
 }
 
-- (void)application:(id)a3 didFailToLoadWithError:(id)a4
+- (void)application:(id)application didFailToLoadWithError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  applicationCopy = application;
+  errorCopy = error;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_10002C370(self);
   }
 
   v8 = [_UIContentUnavailableView alloc];
-  v9 = [v6 clientContext];
+  clientContext = [applicationCopy clientContext];
   v10 = SKUIErrorDocumentTitle();
   v11 = [v8 initWithFrame:v10 title:0 style:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
 
-  v12 = [(UINavigationController *)self->_loadingPlaceholderViewController topViewController];
-  [v12 setView:v11];
+  topViewController = [(UINavigationController *)self->_loadingPlaceholderViewController topViewController];
+  [topViewController setView:v11];
 
-  v13 = [(ServiceStoreProductViewController *)self _clientViewControllerProxy];
-  [v13 loadDidFinishWithResult:&__kCFBooleanFalse error:v7];
+  _clientViewControllerProxy = [(ServiceStoreProductViewController *)self _clientViewControllerProxy];
+  [_clientViewControllerProxy loadDidFinishWithResult:&__kCFBooleanFalse error:errorCopy];
 }
 
-- (void)application:(id)a3 didStopWithOptions:(id)a4
+- (void)application:(id)application didStopWithOptions:(id)options
 {
-  v5 = [a4 objectForKey:@"type"];
+  v5 = [options objectForKey:@"type"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -393,7 +393,7 @@ LABEL_13:
   {
     logKey = self->_logKey;
     v8 = 138543874;
-    v9 = self;
+    selfCopy = self;
     v10 = 2114;
     v11 = logKey;
     v12 = 2114;
@@ -404,48 +404,48 @@ LABEL_13:
   [(ServiceStoreProductViewController *)self _sendDidFinishWithResult:v6];
 }
 
-- (void)applicationDidDisplayFirstPage:(id)a3
+- (void)applicationDidDisplayFirstPage:(id)page
 {
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     logKey = self->_logKey;
     v8 = 138543618;
-    v9 = self;
+    selfCopy = self;
     v10 = 2114;
     v11 = logKey;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "[%{public}@][%{public}@]: Product load completed.", &v8, 0x16u);
   }
 
-  v5 = [(UINavigationController *)self->_loadingPlaceholderViewController view];
-  [v5 removeFromSuperview];
+  view = [(UINavigationController *)self->_loadingPlaceholderViewController view];
+  [view removeFromSuperview];
 
   [(UINavigationController *)self->_loadingPlaceholderViewController removeFromParentViewController];
   loadingPlaceholderViewController = self->_loadingPlaceholderViewController;
   self->_loadingPlaceholderViewController = 0;
 
-  v7 = [(ServiceStoreProductViewController *)self _clientViewControllerProxy];
-  [v7 loadDidFinishWithResult:&__kCFBooleanTrue error:0];
+  _clientViewControllerProxy = [(ServiceStoreProductViewController *)self _clientViewControllerProxy];
+  [_clientViewControllerProxy loadDidFinishWithResult:&__kCFBooleanTrue error:0];
 
   self->_didLoad = 1;
   [(ServiceStoreProductViewController *)self _sendInstallAttributionIfAllowed];
 }
 
-- (void)_sendDidFinishWithResult:(int64_t)a3
+- (void)_sendDidFinishWithResult:(int64_t)result
 {
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     logKey = self->_logKey;
     *buf = 138543874;
-    v10 = self;
+    selfCopy = self;
     v11 = 2114;
     v12 = logKey;
     v13 = 2048;
-    v14 = a3;
+    resultCopy = result;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "[%{public}@][%{public}@]: Product finished with result: %ld.", buf, 0x20u);
   }
 
-  v6 = [(ServiceStoreProductViewController *)self delegate];
-  [v6 serviceProductPageViewControllerFinishWithResult:a3];
+  delegate = [(ServiceStoreProductViewController *)self delegate];
+  [delegate serviceProductPageViewControllerFinishWithResult:result];
 
   [(SKUIApplicationController *)self->_applicationController _resetDocumentControllers];
   v7 = dispatch_time(0, 5000000000);
@@ -472,163 +472,163 @@ LABEL_13:
   [(ServiceStoreProductViewController *)self _sendDidFinishWithResult:v2];
 }
 
-- (void)finishStarRatingPromptWithRating:(id)a3
+- (void)finishStarRatingPromptWithRating:(id)rating
 {
   starRatingCompletionBlock = self->_starRatingCompletionBlock;
   if (starRatingCompletionBlock)
   {
-    v5 = a3 != 0;
-    [a3 floatValue];
+    v5 = rating != 0;
+    [rating floatValue];
     starRatingCompletionBlock[2](starRatingCompletionBlock, v5);
     v6 = self->_starRatingCompletionBlock;
     self->_starRatingCompletionBlock = 0;
   }
 }
 
-- (void)loadProductWithPageDictionary:(id)a3
+- (void)loadProductWithPageDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     logKey = self->_logKey;
     v6 = 138543618;
-    v7 = self;
+    selfCopy = self;
     v8 = 2114;
     v9 = logKey;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "[%{public}@][%{public}@]: Loading product with page dictionary.", &v6, 0x16u);
   }
 
-  [(ServiceProductPageConfiguration *)self->_pageConfiguration setProductPageDictionary:v4];
+  [(ServiceProductPageConfiguration *)self->_pageConfiguration setProductPageDictionary:dictionaryCopy];
   [(ServiceStoreProductViewController *)self _startIfReady];
 }
 
-- (void)loadProductWithRequest:(id)a3
+- (void)loadProductWithRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     logKey = self->_logKey;
     v10 = 138543618;
-    v11 = self;
+    selfCopy = self;
     v12 = 2114;
     v13 = logKey;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "[%{public}@][%{public}@]: Loading product with encoded request.", &v10, 0x16u);
   }
 
-  v6 = [[SKStorePageRequest alloc] initWithXPCEncoding:v4];
+  v6 = [[SKStorePageRequest alloc] initWithXPCEncoding:requestCopy];
   -[ServiceProductPageConfiguration setProductPageStyle:](self->_pageConfiguration, "setProductPageStyle:", [v6 productPageStyle]);
-  v7 = [v6 productURL];
+  productURL = [v6 productURL];
   pageConfiguration = self->_pageConfiguration;
-  if (v7)
+  if (productURL)
   {
-    [(ServiceProductPageConfiguration *)pageConfiguration setProductURL:v7];
+    [(ServiceProductPageConfiguration *)pageConfiguration setProductURL:productURL];
   }
 
   else
   {
-    v9 = [v6 productParameters];
-    [(ServiceProductPageConfiguration *)pageConfiguration setProductParameters:v9];
+    productParameters = [v6 productParameters];
+    [(ServiceProductPageConfiguration *)pageConfiguration setProductParameters:productParameters];
   }
 
   [(ServiceStoreProductViewController *)self _startIfReady];
 }
 
-- (void)loadProductWithURL:(id)a3
+- (void)loadProductWithURL:(id)l
 {
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
-    sub_10002C3FC(self, a3);
+    sub_10002C3FC(self, l);
   }
 
-  v5 = [(ServiceStoreProductViewController *)self _clientViewControllerProxy];
-  [v5 loadDidFinishWithResult:&__kCFBooleanFalse error:0];
+  _clientViewControllerProxy = [(ServiceStoreProductViewController *)self _clientViewControllerProxy];
+  [_clientViewControllerProxy loadDidFinishWithResult:&__kCFBooleanFalse error:0];
 }
 
-- (void)setAdditionalBuyParameters:(id)a3
+- (void)setAdditionalBuyParameters:(id)parameters
 {
   applicationController = self->_applicationController;
-  v4 = a3;
-  v5 = [(SKUIApplicationController *)applicationController clientContext];
-  [v5 _setAdditionalPurchaseParameters:v4];
+  parametersCopy = parameters;
+  clientContext = [(SKUIApplicationController *)applicationController clientContext];
+  [clientContext _setAdditionalPurchaseParameters:parametersCopy];
 }
 
-- (void)setAffiliateIdentifier:(id)a3
+- (void)setAffiliateIdentifier:(id)identifier
 {
   applicationController = self->_applicationController;
-  v4 = a3;
-  v5 = [(SKUIApplicationController *)applicationController clientContext];
-  [v5 _setPurchaseAffiliateIdentifier:v4];
+  identifierCopy = identifier;
+  clientContext = [(SKUIApplicationController *)applicationController clientContext];
+  [clientContext _setPurchaseAffiliateIdentifier:identifierCopy];
 }
 
-- (void)setClientIdentifier:(id)a3
+- (void)setClientIdentifier:(id)identifier
 {
   applicationController = self->_applicationController;
-  v4 = a3;
-  v5 = [(SKUIApplicationController *)applicationController clientContext];
-  v6 = [v5 clientInterface];
+  identifierCopy = identifier;
+  clientContext = [(SKUIApplicationController *)applicationController clientContext];
+  clientInterface = [clientContext clientInterface];
 
-  [v6 setClientIdentifier:v4];
+  [clientInterface setClientIdentifier:identifierCopy];
 }
 
-- (void)setPreview:(id)a3
+- (void)setPreview:(id)preview
 {
-  v4 = [a3 BOOLValue];
-  self->_preview = v4;
-  [(UINavigationController *)self->_loadingPlaceholderViewController setNavigationBarHidden:v4];
-  v5 = [(SKUIApplicationController *)self->_applicationController clientContext];
-  [v5 sendAppPreviewStateChanged:self->_preview];
+  bOOLValue = [preview BOOLValue];
+  self->_preview = bOOLValue;
+  [(UINavigationController *)self->_loadingPlaceholderViewController setNavigationBarHidden:bOOLValue];
+  clientContext = [(SKUIApplicationController *)self->_applicationController clientContext];
+  [clientContext sendAppPreviewStateChanged:self->_preview];
 }
 
-- (void)setProductPageStyle:(id)a3
+- (void)setProductPageStyle:(id)style
 {
   pageConfiguration = self->_pageConfiguration;
-  v4 = [a3 integerValue];
+  integerValue = [style integerValue];
 
-  [(ServiceProductPageConfiguration *)pageConfiguration setProductPageStyle:v4];
+  [(ServiceProductPageConfiguration *)pageConfiguration setProductPageStyle:integerValue];
 }
 
-- (void)setupWithClientBundleID:(id)a3 bagType:(int64_t)a4
+- (void)setupWithClientBundleID:(id)d bagType:(int64_t)type
 {
-  v6 = a3;
-  v7 = [(SKUIApplicationController *)self->_applicationController clientContext];
-  v12 = v6;
-  [v7 setHostApplicationIdentifier:v12];
+  dCopy = d;
+  clientContext = [(SKUIApplicationController *)self->_applicationController clientContext];
+  v12 = dCopy;
+  [clientContext setHostApplicationIdentifier:v12];
   [(ServiceProductPageConfiguration *)self->_pageConfiguration setHostApplicationIdentifier:v12];
   if (v12)
   {
     v8 = objc_alloc_init(SKUIURL);
     [v8 setReferrerApplicationName:v12];
-    [v7 setPurchaseReferrerURL:v8];
+    [clientContext setPurchaseReferrerURL:v8];
   }
 
-  [v7 _setPurchaseURLBagType:a4];
+  [clientContext _setPurchaseURLBagType:type];
   v9 = [LSApplicationProxy applicationProxyForIdentifier:v12];
-  v10 = [v9 itemID];
-  v11 = [v10 stringValue];
-  [v7 _setPurchaseAffiliateIdentifier:v11];
+  itemID = [v9 itemID];
+  stringValue = [itemID stringValue];
+  [clientContext _setPurchaseAffiliateIdentifier:stringValue];
 }
 
-- (void)willRotateToInterfaceOrientation:(int64_t)a3 duration:(double)a4
+- (void)willRotateToInterfaceOrientation:(int64_t)orientation duration:(double)duration
 {
-  v7 = [(SKUIApplicationController *)self->_applicationController rootViewController];
-  v8 = v7;
-  if (v7)
+  rootViewController = [(SKUIApplicationController *)self->_applicationController rootViewController];
+  v8 = rootViewController;
+  if (rootViewController)
   {
-    v9 = [v7 view];
-    [v9 bounds];
+    view = [rootViewController view];
+    [view bounds];
     v11 = v10;
     v13 = v12;
 
     if (v13 != v11)
     {
-      v14 = [(ServiceStoreProductViewController *)self transitionCoordinator];
-      [v8 viewWillTransitionToSize:v14 withTransitionCoordinator:{v13, v11}];
+      transitionCoordinator = [(ServiceStoreProductViewController *)self transitionCoordinator];
+      [v8 viewWillTransitionToSize:transitionCoordinator withTransitionCoordinator:{v13, v11}];
     }
   }
 
   v15.receiver = self;
   v15.super_class = ServiceStoreProductViewController;
-  [(ServiceStoreProductViewController *)&v15 willRotateToInterfaceOrientation:a3 duration:a4];
+  [(ServiceStoreProductViewController *)&v15 willRotateToInterfaceOrientation:orientation duration:duration];
 }
 
 - (ServiceStoreProductViewControllerDelegate)delegate

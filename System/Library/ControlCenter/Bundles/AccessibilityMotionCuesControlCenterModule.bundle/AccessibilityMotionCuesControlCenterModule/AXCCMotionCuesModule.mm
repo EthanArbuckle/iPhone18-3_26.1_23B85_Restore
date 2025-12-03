@@ -27,8 +27,8 @@
 - (void)openMotionCuesSettings
 {
   v4 = [MEMORY[0x29EDB8E70] URLWithString:@"prefs:root=ACCESSIBILITY&path=MOTION_TITLE/MotionCues"];
-  v3 = [(CCUIToggleModule *)self contentModuleContext];
-  [v3 openURL:v4 completionHandler:0];
+  contentModuleContext = [(CCUIToggleModule *)self contentModuleContext];
+  [contentModuleContext openURL:v4 completionHandler:0];
 }
 
 @end

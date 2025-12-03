@@ -1,12 +1,12 @@
 @interface ConfiguratorClientInfo
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)consumeInfoForAggregation:(id)a3;
+- (void)consumeInfoForAggregation:(id)aggregation;
 @end
 
 @implementation ConfiguratorClientInfo
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[ConfiguratorClientInfo allocWithZone:?]];
   [(ConfiguratorClientInfo *)v4 setPrewarmUWB:self->_prewarmUWB];
@@ -17,59 +17,59 @@
   return v4;
 }
 
-- (void)consumeInfoForAggregation:(id)a3
+- (void)consumeInfoForAggregation:(id)aggregation
 {
-  v4 = a3;
-  v5 = v4;
-  v11 = v4;
+  aggregationCopy = aggregation;
+  v5 = aggregationCopy;
+  v11 = aggregationCopy;
   if (self->_prewarmUWB)
   {
-    v6 = 1;
+    prewarmUWB = 1;
   }
 
   else
   {
-    v6 = [v4 prewarmUWB];
+    prewarmUWB = [aggregationCopy prewarmUWB];
     v5 = v11;
   }
 
-  self->_prewarmUWB = v6;
+  self->_prewarmUWB = prewarmUWB;
   if (self->_prewarmSecureElementChannel)
   {
-    v7 = 1;
+    prewarmSecureElementChannel = 1;
   }
 
   else
   {
-    v7 = [v5 prewarmSecureElementChannel];
+    prewarmSecureElementChannel = [v5 prewarmSecureElementChannel];
     v5 = v11;
   }
 
-  self->_prewarmSecureElementChannel = v7;
+  self->_prewarmSecureElementChannel = prewarmSecureElementChannel;
   if (self->_carKeyRangingLimitExceeded)
   {
-    v8 = 1;
+    carKeyRangingLimitExceeded = 1;
   }
 
   else
   {
-    v8 = [v5 carKeyRangingLimitExceeded];
+    carKeyRangingLimitExceeded = [v5 carKeyRangingLimitExceeded];
     v5 = v11;
   }
 
-  self->_carKeyRangingLimitExceeded = v8;
+  self->_carKeyRangingLimitExceeded = carKeyRangingLimitExceeded;
   if (self->_acwgRangingLimitExceeded)
   {
-    v9 = 1;
+    acwgRangingLimitExceeded = 1;
   }
 
   else
   {
-    v9 = [v5 acwgRangingLimitExceeded];
+    acwgRangingLimitExceeded = [v5 acwgRangingLimitExceeded];
     v5 = v11;
   }
 
-  self->_acwgRangingLimitExceeded = v9;
+  self->_acwgRangingLimitExceeded = acwgRangingLimitExceeded;
   passiveAccessIntent = self->_passiveAccessIntent;
   self->_passiveAccessIntent = [v5 passiveAccessIntent] | passiveAccessIntent;
 }

@@ -1,23 +1,23 @@
 @interface ICStoreURLResponseAuthenticationProvider
-- (void)_adjustedAuthenticationPolicyForResponse:(id)a3 withCompletionHandler:(id)a4;
-- (void)_performAuthenticationUsingRequestContext:(id)a3 usingVerificationInteractionLevel:(int64_t)a4 withCompletionHandler:(id)a5;
-- (void)performAuthenticationToHandleResponse:(id)a3 toRequest:(id)a4 withCompletionHandler:(id)a5;
-- (void)performAuthenticationUsingRequestContext:(id)a3 withCompletionHandler:(id)a4;
+- (void)_adjustedAuthenticationPolicyForResponse:(id)response withCompletionHandler:(id)handler;
+- (void)_performAuthenticationUsingRequestContext:(id)context usingVerificationInteractionLevel:(int64_t)level withCompletionHandler:(id)handler;
+- (void)performAuthenticationToHandleResponse:(id)response toRequest:(id)request withCompletionHandler:(id)handler;
+- (void)performAuthenticationUsingRequestContext:(id)context withCompletionHandler:(id)handler;
 @end
 
 @implementation ICStoreURLResponseAuthenticationProvider
 
-- (void)_adjustedAuthenticationPolicyForResponse:(id)a3 withCompletionHandler:(id)a4
+- (void)_adjustedAuthenticationPolicyForResponse:(id)response withCompletionHandler:(id)handler
 {
   v35 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ICURLResponseAuthenticationProvider *)self interactionLevel];
-  v9 = [v7 urlResponse];
+  handlerCopy = handler;
+  responseCopy = response;
+  interactionLevel = [(ICURLResponseAuthenticationProvider *)self interactionLevel];
+  urlResponse = [responseCopy urlResponse];
 
-  v10 = [v9 ic_valueForHTTPHeaderField:@"X-Apple-Allow-Auth-Types"];
-  v11 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-  v12 = [v10 stringByTrimmingCharactersInSet:v11];
+  v10 = [urlResponse ic_valueForHTTPHeaderField:@"X-Apple-Allow-Auth-Types"];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+  v12 = [v10 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
   if (v12)
   {
@@ -25,7 +25,7 @@
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       v29 = 138543618;
-      v30 = self;
+      selfCopy3 = self;
       v31 = 2114;
       v32 = v12;
       _os_log_impl(&dword_1B4491000, v13, OS_LOG_TYPE_DEFAULT, "%{public}@ Adjusting authentication policy based on allowed types: [%{public}@]", &v29, 0x16u);
@@ -37,10 +37,10 @@
     v17 = v16;
     if (v15 & 1) != 0 || (v16)
     {
-      v20 = [(ICURLResponseAuthenticationProvider *)self interactionLevel];
+      interactionLevel2 = [(ICURLResponseAuthenticationProvider *)self interactionLevel];
       if (v17)
       {
-        v21 = v8;
+        v21 = interactionLevel;
       }
 
       else
@@ -53,7 +53,7 @@
         v21 = 0;
       }
 
-      if (v20 == 1)
+      if (interactionLevel2 == 1)
       {
         v22 = v15;
       }
@@ -63,9 +63,9 @@
         v22 = 1;
       }
 
-      if (v20 == 2)
+      if (interactionLevel2 == 2)
       {
-        v8 = v21;
+        interactionLevel = v21;
         v19 = 1;
       }
 
@@ -81,7 +81,7 @@
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
         v29 = 138543362;
-        v30 = self;
+        selfCopy3 = self;
         _os_log_impl(&dword_1B4491000, v18, OS_LOG_TYPE_DEFAULT, "%{public}@ Disallowing authentication because there are no allowed types for this response", &v29, 0xCu);
       }
 
@@ -91,28 +91,28 @@
     v23 = os_log_create("com.apple.amp.iTunesCloud", "Default");
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
     {
-      v24 = [(ICURLResponseAuthenticationProvider *)self interactionLevel];
-      if (v24 > 5)
+      interactionLevel3 = [(ICURLResponseAuthenticationProvider *)self interactionLevel];
+      if (interactionLevel3 > 5)
       {
         v25 = @"unknown";
       }
 
       else
       {
-        v25 = off_1E7BF49E8[v24];
+        v25 = off_1E7BF49E8[interactionLevel3];
       }
 
       v26 = v25;
       if (v19)
       {
-        if (v8 > 5)
+        if (interactionLevel > 5)
         {
           v27 = @"unknown";
         }
 
         else
         {
-          v27 = off_1E7BF49E8[v8];
+          v27 = off_1E7BF49E8[interactionLevel];
         }
 
         v28 = v27;
@@ -124,7 +124,7 @@
       }
 
       v29 = 138543874;
-      v30 = self;
+      selfCopy3 = self;
       v31 = 2114;
       v32 = v26;
       v33 = 2114;
@@ -141,33 +141,33 @@
     v19 = 1;
   }
 
-  v6[2](v6, v19, v8);
+  handlerCopy[2](handlerCopy, v19, interactionLevel);
 }
 
-- (void)_performAuthenticationUsingRequestContext:(id)a3 usingVerificationInteractionLevel:(int64_t)a4 withCompletionHandler:(id)a5
+- (void)_performAuthenticationUsingRequestContext:(id)context usingVerificationInteractionLevel:(int64_t)level withCompletionHandler:(id)handler
 {
   v40 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  v10 = v8;
+  contextCopy = context;
+  handlerCopy = handler;
+  v10 = contextCopy;
   if ([v10 personalizationStyle] != 1 || (objc_msgSend(v10, "identity"), v11 = objc_claimAutoreleasedReturnValue(), +[ICPrivacyInfo sharedPrivacyInfoForUserIdentity:](ICPrivacyInfo, "sharedPrivacyInfoForUserIdentity:", v11), v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "shouldBlockPersonalizedNetworkRequestsForMusic"), v12, v11, !v13))
   {
     v16 = os_log_create("com.apple.amp.iTunesCloud", "Default");
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
-      if (a4 > 5)
+      if (level > 5)
       {
         v17 = @"unknown";
       }
 
       else
       {
-        v17 = off_1E7BF49E8[a4];
+        v17 = off_1E7BF49E8[level];
       }
 
       v18 = v17;
       *buf = 138543874;
-      v35 = self;
+      selfCopy3 = self;
       v36 = 2114;
       v37 = v18;
       v38 = 2114;
@@ -175,19 +175,19 @@
       _os_log_impl(&dword_1B4491000, v16, OS_LOG_TYPE_DEFAULT, "%{public}@ Performing %{public}@ authentication using request context %{public}@", buf, 0x20u);
     }
 
-    v15 = [v10 identity];
-    v19 = [(__CFString *)v15 allowsAccountEstablishment];
-    if (a4 == 1 && v19)
+    identity = [v10 identity];
+    allowsAccountEstablishment = [(__CFString *)identity allowsAccountEstablishment];
+    if (level == 1 && allowsAccountEstablishment)
     {
-      v20 = [v10 identity];
-      v21 = [v20 identityAllowingEstablishment:0];
+      identity2 = [v10 identity];
+      v21 = [identity2 identityAllowingEstablishment:0];
 
-      v15 = v21;
+      identity = v21;
     }
 
-    v22 = [v10 identityStore];
+    identityStore = [v10 identityStore];
     v33 = 0;
-    v23 = [v22 getVerificationContextForUserIdentity:v15 error:&v33];
+    v23 = [identityStore getVerificationContextForUserIdentity:identity error:&v33];
     v24 = v33;
     if (v24 || !v23)
     {
@@ -195,9 +195,9 @@
       if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543874;
-        v35 = self;
+        selfCopy3 = self;
         v36 = 2114;
-        v37 = v15;
+        v37 = identity;
         v38 = 2114;
         v39 = v24;
         _os_log_impl(&dword_1B4491000, v29, OS_LOG_TYPE_DEFAULT, "%{public}@ Failed to get verification context for identity %{public}@. error=%{public}@", buf, 0x20u);
@@ -205,36 +205,36 @@
 
       v25 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:2];
       [(ICUserVerificationRequest *)v25 setObject:v24 forKeyedSubscript:*MEMORY[0x1E696AA08]];
-      v30 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to get verification context for identity %@", v15];
+      v30 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to get verification context for identity %@", identity];
       [(ICUserVerificationRequest *)v25 setObject:v30 forKeyedSubscript:*MEMORY[0x1E696A278]];
 
       if (v24)
       {
-        v9[2](v9, 0, v24);
+        handlerCopy[2](handlerCopy, 0, v24);
 LABEL_23:
 
         goto LABEL_24;
       }
 
       v28 = [MEMORY[0x1E696ABC0] errorWithDomain:@"ICError" code:-7400 userInfo:v25];
-      v9[2](v9, 0, v28);
+      handlerCopy[2](handlerCopy, 0, v28);
     }
 
     else
     {
-      [v23 setInteractionLevel:a4];
+      [v23 setInteractionLevel:level];
       [v23 setDebugReason:@"Server requested authentication"];
       v25 = [[ICUserVerificationRequest alloc] initWithVerificationContext:v23];
       v26 = [ICStoreRequestContext alloc];
-      v27 = [v10 clientInfo];
-      v28 = [(ICStoreRequestContext *)v26 initWithIdentity:v15 identityStore:v22 clientInfo:v27];
+      clientInfo = [v10 clientInfo];
+      v28 = [(ICStoreRequestContext *)v26 initWithIdentity:identity identityStore:identityStore clientInfo:clientInfo];
 
       [(ICUserVerificationRequest *)v25 setStoreRequestContext:v28];
       v31[0] = MEMORY[0x1E69E9820];
       v31[1] = 3221225472;
       v31[2] = __142__ICStoreURLResponseAuthenticationProvider__performAuthenticationUsingRequestContext_usingVerificationInteractionLevel_withCompletionHandler___block_invoke;
       v31[3] = &unk_1E7BF8450;
-      v32 = v9;
+      v32 = handlerCopy;
       [(ICUserVerificationRequest *)v25 performWithResponseHandler:v31];
     }
 
@@ -245,43 +245,43 @@ LABEL_23:
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v35 = self;
+    selfCopy3 = self;
     _os_log_impl(&dword_1B4491000, v14, OS_LOG_TYPE_DEFAULT, "%{public}@ Skipping automatic re-authentication because the user hasn't accepted the latest privacy link, and personalization is automatic", buf, 0xCu);
   }
 
-  v15 = [MEMORY[0x1E696ABC0] errorWithDomain:@"ICError" code:-7007 userInfo:0];
-  v9[2](v9, 0, v15);
+  identity = [MEMORY[0x1E696ABC0] errorWithDomain:@"ICError" code:-7007 userInfo:0];
+  handlerCopy[2](handlerCopy, 0, identity);
 LABEL_24:
 }
 
-- (void)performAuthenticationUsingRequestContext:(id)a3 withCompletionHandler:(id)a4
+- (void)performAuthenticationUsingRequestContext:(id)context withCompletionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  [(ICStoreURLResponseAuthenticationProvider *)self _performAuthenticationUsingRequestContext:v7 usingVerificationInteractionLevel:[(ICURLResponseAuthenticationProvider *)self interactionLevel] withCompletionHandler:v6];
+  handlerCopy = handler;
+  contextCopy = context;
+  [(ICStoreURLResponseAuthenticationProvider *)self _performAuthenticationUsingRequestContext:contextCopy usingVerificationInteractionLevel:[(ICURLResponseAuthenticationProvider *)self interactionLevel] withCompletionHandler:handlerCopy];
 }
 
-- (void)performAuthenticationToHandleResponse:(id)a3 toRequest:(id)a4 withCompletionHandler:(id)a5
+- (void)performAuthenticationToHandleResponse:(id)response toRequest:(id)request withCompletionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  v11 = [v10 currentURLRequest];
-  v12 = [v10 requestContext];
+  responseCopy = response;
+  handlerCopy = handler;
+  requestCopy = request;
+  currentURLRequest = [requestCopy currentURLRequest];
+  requestContext = [requestCopy requestContext];
 
-  v13 = [v12 delegatedIdentity];
-  v14 = [v11 ic_valueForHTTPHeaderField:@"X-WHA-Token"];
+  delegatedIdentity = [requestContext delegatedIdentity];
+  v14 = [currentURLRequest ic_valueForHTTPHeaderField:@"X-WHA-Token"];
 
-  if (v14 && v13)
+  if (v14 && delegatedIdentity)
   {
-    v15 = [v12 identityStore];
+    identityStore = [requestContext identityStore];
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
     v22[2] = __114__ICStoreURLResponseAuthenticationProvider_performAuthenticationToHandleResponse_toRequest_withCompletionHandler___block_invoke;
     v22[3] = &unk_1E7BF8450;
-    v23 = v9;
-    v16 = v9;
-    [v15 removeDelegateTokenForUserIdentity:v13 completionHandler:v22];
+    v23 = handlerCopy;
+    v16 = handlerCopy;
+    [identityStore removeDelegateTokenForUserIdentity:delegatedIdentity completionHandler:v22];
 
     v17 = v23;
   }
@@ -293,10 +293,10 @@ LABEL_24:
     v19[2] = __114__ICStoreURLResponseAuthenticationProvider_performAuthenticationToHandleResponse_toRequest_withCompletionHandler___block_invoke_2;
     v19[3] = &unk_1E7BF7A28;
     v19[4] = self;
-    v21 = v9;
-    v20 = v12;
-    v18 = v9;
-    [(ICStoreURLResponseAuthenticationProvider *)self _adjustedAuthenticationPolicyForResponse:v8 withCompletionHandler:v19];
+    v21 = handlerCopy;
+    v20 = requestContext;
+    v18 = handlerCopy;
+    [(ICStoreURLResponseAuthenticationProvider *)self _adjustedAuthenticationPolicyForResponse:responseCopy withCompletionHandler:v19];
 
     v17 = v21;
   }

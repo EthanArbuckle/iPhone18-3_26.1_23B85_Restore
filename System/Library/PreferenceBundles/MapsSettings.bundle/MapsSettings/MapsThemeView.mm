@@ -1,30 +1,30 @@
 @interface MapsThemeView
 - (void)didMoveToWindow;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation MapsThemeView
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
+  changeCopy = change;
   v9.receiver = self;
   v9.super_class = MapsThemeView;
-  [(MapsThemeView *)&v9 traitCollectionDidChange:v5];
-  if (v5 && (v6 = [v5 userInterfaceStyle], -[MapsThemeView traitCollection](self, "traitCollection"), v3 = objc_claimAutoreleasedReturnValue(), v6 == objc_msgSend(v3, "userInterfaceStyle")))
+  [(MapsThemeView *)&v9 traitCollectionDidChange:changeCopy];
+  if (changeCopy && (v6 = [changeCopy userInterfaceStyle], -[MapsThemeView traitCollection](self, "traitCollection"), v3 = objc_claimAutoreleasedReturnValue(), v6 == objc_msgSend(v3, "userInterfaceStyle")))
   {
   }
 
   else
   {
-    v7 = [(MapsThemeView *)self traitCollection];
-    v8 = [v7 userInterfaceStyle];
+    traitCollection = [(MapsThemeView *)self traitCollection];
+    userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-    if (v5)
+    if (changeCopy)
     {
     }
 
-    if (v8)
+    if (userInterfaceStyle)
     {
       [(MapsThemeView *)self updateTheme];
     }
@@ -36,9 +36,9 @@
   v4.receiver = self;
   v4.super_class = MapsThemeView;
   [(MapsThemeView *)&v4 didMoveToWindow];
-  v3 = [(MapsThemeView *)self window];
+  window = [(MapsThemeView *)self window];
 
-  if (v3)
+  if (window)
   {
     [(MapsThemeView *)self updateTheme];
   }

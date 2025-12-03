@@ -1,11 +1,11 @@
 @interface GCGenericDeviceRumbleActuatorModel
-+ (id)modelWithDictionaryRepresentation:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)modelWithDictionaryRepresentation:(id)representation error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (GCGenericDeviceRumbleActuatorModel)init;
-- (GCGenericDeviceRumbleActuatorModel)initWithCoder:(id)a3;
+- (GCGenericDeviceRumbleActuatorModel)initWithCoder:(id)coder;
 - (id)debugDescription;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation GCGenericDeviceRumbleActuatorModel
@@ -17,13 +17,13 @@
   return 0;
 }
 
-- (GCGenericDeviceRumbleActuatorModel)initWithCoder:(id)a3
+- (GCGenericDeviceRumbleActuatorModel)initWithCoder:(id)coder
 {
   v8.receiver = self;
   v8.super_class = GCGenericDeviceRumbleActuatorModel;
-  v3 = a3;
+  coderCopy = coder;
   v4 = [(GCGenericDeviceRumbleActuatorModel *)&v8 init];
-  v5 = [v3 decodeObjectOfClass:objc_opt_class() forKey:{@"name", v8.receiver, v8.super_class}];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:{@"name", v8.receiver, v8.super_class}];
 
   name = v4->_name;
   v4->_name = v5;
@@ -31,11 +31,11 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(GCGenericDeviceRumbleActuatorModel *)self name];
-  [v4 encodeObject:v5 forKey:@"name"];
+  coderCopy = coder;
+  name = [(GCGenericDeviceRumbleActuatorModel *)self name];
+  [coderCopy encodeObject:name forKey:@"name"];
 }
 
 - (unint64_t)hash
@@ -45,9 +45,9 @@
   return [v2 hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -68,9 +68,9 @@ LABEL_7:
     }
   }
 
-  v5 = [(GCGenericDeviceRumbleActuatorModel *)self name];
-  v6 = [v4 name];
-  v7 = [v5 isEqual:v6];
+  name = [(GCGenericDeviceRumbleActuatorModel *)self name];
+  name2 = [equalCopy name];
+  v7 = [name isEqual:name2];
 
 LABEL_8:
   return v7;
@@ -81,48 +81,48 @@ LABEL_8:
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(GCGenericDeviceRumbleActuatorModel *)self name];
-  v7 = [v3 stringWithFormat:@"<%@ %p> {\n\t name = %@\n}", v5, self, v6];
+  name = [(GCGenericDeviceRumbleActuatorModel *)self name];
+  v7 = [v3 stringWithFormat:@"<%@ %p> {\n\t name = %@\n}", v5, self, name];
 
   return v7;
 }
 
-+ (id)modelWithDictionaryRepresentation:(id)a3 error:(id *)a4
++ (id)modelWithDictionaryRepresentation:(id)representation error:(id *)error
 {
   v19[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  representationCopy = representation;
   v7 = objc_opt_new();
   v17[0] = 0;
-  v8 = [v6 gc_requiredObjectForKey:@"Name" ofClass:objc_opt_class() error:v17];
+  v8 = [representationCopy gc_requiredObjectForKey:@"Name" ofClass:objc_opt_class() error:v17];
   v9 = v17[0];
   if (v8)
   {
     [v7 setName:v8];
 
-    v10 = [v7 build];
+    build = [v7 build];
   }
 
   else
   {
-    if (a4)
+    if (error)
     {
       v13 = MEMORY[0x1E696ABC0];
       v18[0] = *MEMORY[0x1E696A578];
-      v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid '%@' definition.", a1];
+      v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid '%@' definition.", self];
       v19[0] = v14;
       v18[1] = *MEMORY[0x1E696A588];
-      v15 = [v9 localizedFailureReason];
-      v19[1] = v15;
+      localizedFailureReason = [v9 localizedFailureReason];
+      v19[1] = localizedFailureReason;
       v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v19 forKeys:v18 count:2];
-      *a4 = [(NSError *)v13 gc_modelError:v16 userInfo:?];
+      *error = [(NSError *)v13 gc_modelError:v16 userInfo:?];
     }
 
-    v10 = 0;
+    build = 0;
   }
 
   v11 = *MEMORY[0x1E69E9840];
 
-  return v10;
+  return build;
 }
 
 @end

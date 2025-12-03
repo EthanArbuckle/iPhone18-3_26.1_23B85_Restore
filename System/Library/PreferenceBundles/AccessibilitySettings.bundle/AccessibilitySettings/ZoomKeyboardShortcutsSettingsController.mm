@@ -6,22 +6,22 @@
 - (id)scrollWheelShortcutEnabled;
 - (id)specifiers;
 - (id)switchZoomModeShortcutEnabled;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (id)tempToggleZoomShortcutEnabled;
 - (id)toggleZoomShortcutEnabled;
 - (id)zoomKeyboardShortcutsEnabled;
 - (void)dealloc;
-- (void)deviceMonitorDidDetectDeviceEvent:(id)a3;
+- (void)deviceMonitorDidDetectDeviceEvent:(id)event;
 - (void)insertOrRemoveKbShortcutsSpecs;
 - (void)insertOrRemoveWindowModeSpecs;
-- (void)setAdjustZoomLevelShortcutEnabled:(id)a3 specifier:(id)a4;
-- (void)setPanZoomShortcutEnabled:(id)a3 specifier:(id)a4;
-- (void)setResizeZoomWindowShortcutEnabled:(id)a3 specifier:(id)a4;
-- (void)setScrollWheelShortcutEnabled:(id)a3 specifier:(id)a4;
-- (void)setSwitchZoomModeShortcutEnabled:(id)a3 specifier:(id)a4;
-- (void)setTempToggleZoomShortcutEnabled:(id)a3 specifier:(id)a4;
-- (void)setToggleZoomShortcutEnabled:(id)a3 specifier:(id)a4;
-- (void)setZoomKeyboardShortcutsEnabled:(id)a3 specifier:(id)a4;
+- (void)setAdjustZoomLevelShortcutEnabled:(id)enabled specifier:(id)specifier;
+- (void)setPanZoomShortcutEnabled:(id)enabled specifier:(id)specifier;
+- (void)setResizeZoomWindowShortcutEnabled:(id)enabled specifier:(id)specifier;
+- (void)setScrollWheelShortcutEnabled:(id)enabled specifier:(id)specifier;
+- (void)setSwitchZoomModeShortcutEnabled:(id)enabled specifier:(id)specifier;
+- (void)setTempToggleZoomShortcutEnabled:(id)enabled specifier:(id)specifier;
+- (void)setToggleZoomShortcutEnabled:(id)enabled specifier:(id)specifier;
+- (void)setZoomKeyboardShortcutsEnabled:(id)enabled specifier:(id)specifier;
 @end
 
 @implementation ZoomKeyboardShortcutsSettingsController
@@ -80,7 +80,7 @@ void __47__ZoomKeyboardShortcutsSettingsController_init__block_invoke(uint64_t a
   }
 
   v55 = OBJC_IVAR___PSListController__specifiers;
-  v56 = self;
+  selfCopy = self;
   v4 = [(ZoomKeyboardShortcutsSettingsController *)self loadSpecifiersFromPlistName:@"ZoomKeyboardShortcutsSettings" target:?];
   v5 = [v4 mutableCopy];
 
@@ -213,83 +213,83 @@ LABEL_21:
 LABEL_28:
 
   v31 = +[NSMutableArray array];
-  [(ZoomKeyboardShortcutsSettingsController *)v56 setKbScrollWheelSpecs:v31];
+  [(ZoomKeyboardShortcutsSettingsController *)selfCopy setKbScrollWheelSpecs:v31];
 
   if (v63 && v61)
   {
-    v32 = [(ZoomKeyboardShortcutsSettingsController *)v56 kbScrollWheelSpecs];
+    kbScrollWheelSpecs = [(ZoomKeyboardShortcutsSettingsController *)selfCopy kbScrollWheelSpecs];
     v70[0] = v61;
     v70[1] = v63;
     v33 = [NSArray arrayWithObjects:v70 count:2];
-    [v32 addObjectsFromArray:v33];
+    [kbScrollWheelSpecs addObjectsFromArray:v33];
   }
 
-  v34 = [(AXDeviceMonitor *)v56->_deviceMonitor copyDevices];
-  v35 = [v34 count];
+  copyDevices = [(AXDeviceMonitor *)selfCopy->_deviceMonitor copyDevices];
+  v35 = [copyDevices count];
 
   if (!v35)
   {
-    v36 = [(ZoomKeyboardShortcutsSettingsController *)v56 kbScrollWheelSpecs];
-    [obj removeObjectsInArray:v36];
+    kbScrollWheelSpecs2 = [(ZoomKeyboardShortcutsSettingsController *)selfCopy kbScrollWheelSpecs];
+    [obj removeObjectsInArray:kbScrollWheelSpecs2];
   }
 
   v37 = +[NSMutableArray array];
-  [(ZoomKeyboardShortcutsSettingsController *)v56 setResizeSpecs:v37];
+  [(ZoomKeyboardShortcutsSettingsController *)selfCopy setResizeSpecs:v37];
 
   if (v59 && v58)
   {
-    v38 = [(ZoomKeyboardShortcutsSettingsController *)v56 resizeSpecs];
+    resizeSpecs = [(ZoomKeyboardShortcutsSettingsController *)selfCopy resizeSpecs];
     v69[0] = v58;
     v69[1] = v59;
     v39 = [NSArray arrayWithObjects:v69 count:2];
-    [v38 addObjectsFromArray:v39];
+    [resizeSpecs addObjectsFromArray:v39];
   }
 
   v40 = +[NSMutableArray array];
-  [(ZoomKeyboardShortcutsSettingsController *)v56 setPanSpecs:v40];
+  [(ZoomKeyboardShortcutsSettingsController *)selfCopy setPanSpecs:v40];
 
   if (v57 && v8)
   {
-    v41 = [(ZoomKeyboardShortcutsSettingsController *)v56 panSpecs];
+    panSpecs = [(ZoomKeyboardShortcutsSettingsController *)selfCopy panSpecs];
     v68[0] = v8;
     v68[1] = v57;
     v42 = [NSArray arrayWithObjects:v68 count:2];
-    [v41 addObjectsFromArray:v42];
+    [panSpecs addObjectsFromArray:v42];
   }
 
   v43 = +[AXSettings sharedInstance];
-  v44 = [v43 zoomPreferredCurrentLensMode];
-  v45 = [v44 isEqualToString:AXZoomLensModeFullscreen];
+  zoomPreferredCurrentLensMode = [v43 zoomPreferredCurrentLensMode];
+  v45 = [zoomPreferredCurrentLensMode isEqualToString:AXZoomLensModeFullscreen];
 
   if (v45)
   {
-    v46 = [(ZoomKeyboardShortcutsSettingsController *)v56 resizeSpecs];
-    [obj removeObjectsInArray:v46];
+    resizeSpecs2 = [(ZoomKeyboardShortcutsSettingsController *)selfCopy resizeSpecs];
+    [obj removeObjectsInArray:resizeSpecs2];
   }
 
   v47 = [obj mutableCopy];
-  [(ZoomKeyboardShortcutsSettingsController *)v56 setKbShortcutSpecs:v47];
+  [(ZoomKeyboardShortcutsSettingsController *)selfCopy setKbShortcutSpecs:v47];
 
   if (v60)
   {
-    v48 = [(ZoomKeyboardShortcutsSettingsController *)v56 kbShortcutSpecs];
-    [v48 removeObject:v60];
+    kbShortcutSpecs = [(ZoomKeyboardShortcutsSettingsController *)selfCopy kbShortcutSpecs];
+    [kbShortcutSpecs removeObject:v60];
 
     v49 = +[AXSettings sharedInstance];
-    v50 = [v49 zoomKeyboardShortcutsEnabled];
+    zoomKeyboardShortcutsEnabled = [v49 zoomKeyboardShortcutsEnabled];
 
-    if ((v50 & 1) == 0)
+    if ((zoomKeyboardShortcutsEnabled & 1) == 0)
     {
-      v51 = [(ZoomKeyboardShortcutsSettingsController *)v56 kbShortcutSpecs];
-      [obj removeObjectsInArray:v51];
+      kbShortcutSpecs2 = [(ZoomKeyboardShortcutsSettingsController *)selfCopy kbShortcutSpecs];
+      [obj removeObjectsInArray:kbShortcutSpecs2];
     }
   }
 
-  v52 = *&v56->AXUISettingsBaseListController_opaque[v55];
-  *&v56->AXUISettingsBaseListController_opaque[v55] = obj;
+  v52 = *&selfCopy->AXUISettingsBaseListController_opaque[v55];
+  *&selfCopy->AXUISettingsBaseListController_opaque[v55] = obj;
   v53 = obj;
 
-  v3 = *&v56->AXUISettingsBaseListController_opaque[v55];
+  v3 = *&selfCopy->AXUISettingsBaseListController_opaque[v55];
 LABEL_45:
 
   return v3;
@@ -298,72 +298,72 @@ LABEL_45:
 - (void)insertOrRemoveKbShortcutsSpecs
 {
   v3 = +[AXSettings sharedInstance];
-  v4 = [v3 zoomKeyboardShortcutsEnabled];
+  zoomKeyboardShortcutsEnabled = [v3 zoomKeyboardShortcutsEnabled];
 
-  v5 = [(ZoomKeyboardShortcutsSettingsController *)self kbShortcutSpecs];
-  if (v4)
+  kbShortcutSpecs = [(ZoomKeyboardShortcutsSettingsController *)self kbShortcutSpecs];
+  if (zoomKeyboardShortcutsEnabled)
   {
-    [(ZoomKeyboardShortcutsSettingsController *)self insertContiguousSpecifiers:v5 afterSpecifierID:@"ZoomEnableKeyboardShortcuts" animated:1];
+    [(ZoomKeyboardShortcutsSettingsController *)self insertContiguousSpecifiers:kbShortcutSpecs afterSpecifierID:@"ZoomEnableKeyboardShortcuts" animated:1];
   }
 
   else
   {
-    [(ZoomKeyboardShortcutsSettingsController *)self removeContiguousSpecifiers:v5 animated:1];
+    [(ZoomKeyboardShortcutsSettingsController *)self removeContiguousSpecifiers:kbShortcutSpecs animated:1];
   }
 
   [(ZoomKeyboardShortcutsSettingsController *)self prepareSpecifiersMetadata];
 }
 
-- (void)deviceMonitorDidDetectDeviceEvent:(id)a3
+- (void)deviceMonitorDidDetectDeviceEvent:(id)event
 {
-  v4 = [(ZoomKeyboardShortcutsSettingsController *)self kbScrollWheelSpecs];
+  kbScrollWheelSpecs = [(ZoomKeyboardShortcutsSettingsController *)self kbScrollWheelSpecs];
 
-  if (!v4)
+  if (!kbScrollWheelSpecs)
   {
     return;
   }
 
-  v5 = [(AXDeviceMonitor *)self->_deviceMonitor copyDevices];
-  v6 = [v5 count];
+  copyDevices = [(AXDeviceMonitor *)self->_deviceMonitor copyDevices];
+  v6 = [copyDevices count];
 
-  v7 = [(ZoomKeyboardShortcutsSettingsController *)self kbShortcutSpecs];
-  v8 = [(ZoomKeyboardShortcutsSettingsController *)self kbScrollWheelSpecs];
-  v9 = v8;
+  kbShortcutSpecs = [(ZoomKeyboardShortcutsSettingsController *)self kbShortcutSpecs];
+  kbScrollWheelSpecs2 = [(ZoomKeyboardShortcutsSettingsController *)self kbScrollWheelSpecs];
+  v9 = kbScrollWheelSpecs2;
   if (!v6)
   {
-    [v7 removeObjectsInArray:v8];
+    [kbShortcutSpecs removeObjectsInArray:kbScrollWheelSpecs2];
 
-    v18 = [(ZoomKeyboardShortcutsSettingsController *)self kbScrollWheelSpecs];
-    [(ZoomKeyboardShortcutsSettingsController *)self removeContiguousSpecifiers:v18 animated:1];
+    kbScrollWheelSpecs3 = [(ZoomKeyboardShortcutsSettingsController *)self kbScrollWheelSpecs];
+    [(ZoomKeyboardShortcutsSettingsController *)self removeContiguousSpecifiers:kbScrollWheelSpecs3 animated:1];
     goto LABEL_11;
   }
 
-  v10 = [v8 objectAtIndex:0];
-  v11 = [v7 containsObject:v10];
+  v10 = [kbScrollWheelSpecs2 objectAtIndex:0];
+  v11 = [kbShortcutSpecs containsObject:v10];
 
   if ((v11 & 1) == 0)
   {
-    v12 = [(ZoomKeyboardShortcutsSettingsController *)self kbShortcutSpecs];
-    v13 = [(ZoomKeyboardShortcutsSettingsController *)self kbScrollWheelSpecs];
-    [v12 addObjectsFromArray:v13];
+    kbShortcutSpecs2 = [(ZoomKeyboardShortcutsSettingsController *)self kbShortcutSpecs];
+    kbScrollWheelSpecs4 = [(ZoomKeyboardShortcutsSettingsController *)self kbScrollWheelSpecs];
+    [kbShortcutSpecs2 addObjectsFromArray:kbScrollWheelSpecs4];
   }
 
-  v18 = [(ZoomKeyboardShortcutsSettingsController *)self specifierForID:@"ZoomKeyboardShortcutTempToggleZoom"];
-  v14 = +[AXSettings sharedInstance];
-  if (![v14 zoomKeyboardShortcutsEnabled])
+  kbScrollWheelSpecs3 = [(ZoomKeyboardShortcutsSettingsController *)self specifierForID:@"ZoomKeyboardShortcutTempToggleZoom"];
+  kbScrollWheelSpecs6 = +[AXSettings sharedInstance];
+  if (![kbScrollWheelSpecs6 zoomKeyboardShortcutsEnabled])
   {
     goto LABEL_8;
   }
 
   v15 = *&self->AXUISettingsBaseListController_opaque[OBJC_IVAR___PSListController__specifiers];
-  v16 = [(ZoomKeyboardShortcutsSettingsController *)self kbScrollWheelSpecs];
-  v17 = [v16 objectAtIndex:0];
+  kbScrollWheelSpecs5 = [(ZoomKeyboardShortcutsSettingsController *)self kbScrollWheelSpecs];
+  v17 = [kbScrollWheelSpecs5 objectAtIndex:0];
   LOBYTE(v15) = [v15 containsObject:v17];
 
   if ((v15 & 1) == 0)
   {
-    v14 = [(ZoomKeyboardShortcutsSettingsController *)self kbScrollWheelSpecs];
-    [(ZoomKeyboardShortcutsSettingsController *)self insertContiguousSpecifiers:v14 afterSpecifier:v18 animated:1];
+    kbScrollWheelSpecs6 = [(ZoomKeyboardShortcutsSettingsController *)self kbScrollWheelSpecs];
+    [(ZoomKeyboardShortcutsSettingsController *)self insertContiguousSpecifiers:kbScrollWheelSpecs6 afterSpecifier:kbScrollWheelSpecs3 animated:1];
 LABEL_8:
   }
 
@@ -373,54 +373,54 @@ LABEL_11:
 - (void)insertOrRemoveWindowModeSpecs
 {
   v3 = +[AXSettings sharedInstance];
-  v4 = [v3 zoomPreferredCurrentLensMode];
-  if ([v4 isEqualToString:AXZoomLensModeFullscreen])
+  zoomPreferredCurrentLensMode = [v3 zoomPreferredCurrentLensMode];
+  if ([zoomPreferredCurrentLensMode isEqualToString:AXZoomLensModeFullscreen])
   {
   }
 
   else
   {
-    v5 = [(ZoomKeyboardShortcutsSettingsController *)self specifiers];
+    specifiers = [(ZoomKeyboardShortcutsSettingsController *)self specifiers];
     v6 = [(ZoomKeyboardShortcutsSettingsController *)self specifierForID:@"ZoomKeyboardShortcutResizeZoomWindow"];
-    v7 = [v5 containsObject:v6];
+    v7 = [specifiers containsObject:v6];
 
     if ((v7 & 1) == 0)
     {
-      v12 = [(ZoomKeyboardShortcutsSettingsController *)self resizeSpecs];
-      v8 = [(ZoomKeyboardShortcutsSettingsController *)self specifierForID:@"ZoomKeyboardShortcutPanZoom"];
-      [(ZoomKeyboardShortcutsSettingsController *)self insertContiguousSpecifiers:v12 afterSpecifier:v8 animated:1];
+      resizeSpecs = [(ZoomKeyboardShortcutsSettingsController *)self resizeSpecs];
+      zoomPreferredCurrentLensMode2 = [(ZoomKeyboardShortcutsSettingsController *)self specifierForID:@"ZoomKeyboardShortcutPanZoom"];
+      [(ZoomKeyboardShortcutsSettingsController *)self insertContiguousSpecifiers:resizeSpecs afterSpecifier:zoomPreferredCurrentLensMode2 animated:1];
       goto LABEL_8;
     }
   }
 
-  v12 = +[AXSettings sharedInstance];
-  v8 = [v12 zoomPreferredCurrentLensMode];
-  if (([v8 isEqualToString:AXZoomLensModeFullscreen] & 1) == 0)
+  resizeSpecs = +[AXSettings sharedInstance];
+  zoomPreferredCurrentLensMode2 = [resizeSpecs zoomPreferredCurrentLensMode];
+  if (([zoomPreferredCurrentLensMode2 isEqualToString:AXZoomLensModeFullscreen] & 1) == 0)
   {
 LABEL_8:
 
     goto LABEL_9;
   }
 
-  v9 = [(ZoomKeyboardShortcutsSettingsController *)self specifiers];
+  specifiers2 = [(ZoomKeyboardShortcutsSettingsController *)self specifiers];
   v10 = [(ZoomKeyboardShortcutsSettingsController *)self specifierForID:@"ZoomKeyboardShortcutResizeZoomWindow"];
-  v11 = [v9 containsObject:v10];
+  v11 = [specifiers2 containsObject:v10];
 
   if (!v11)
   {
     return;
   }
 
-  v12 = [(ZoomKeyboardShortcutsSettingsController *)self resizeSpecs];
+  resizeSpecs = [(ZoomKeyboardShortcutsSettingsController *)self resizeSpecs];
   [ZoomKeyboardShortcutsSettingsController removeContiguousSpecifiers:"removeContiguousSpecifiers:animated:" animated:?];
 LABEL_9:
 }
 
-- (void)setZoomKeyboardShortcutsEnabled:(id)a3 specifier:(id)a4
+- (void)setZoomKeyboardShortcutsEnabled:(id)enabled specifier:(id)specifier
 {
-  v5 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
   v6 = +[AXSettings sharedInstance];
-  [v6 setZoomKeyboardShortcutsEnabled:v5];
+  [v6 setZoomKeyboardShortcutsEnabled:bOOLValue];
 
   [(ZoomKeyboardShortcutsSettingsController *)self insertOrRemoveKbShortcutsSpecs];
 }
@@ -433,11 +433,11 @@ LABEL_9:
   return v3;
 }
 
-- (void)setAdjustZoomLevelShortcutEnabled:(id)a3 specifier:(id)a4
+- (void)setAdjustZoomLevelShortcutEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
   v5 = +[AXSettings sharedInstance];
-  [v5 setZoomAdjustZoomLevelKbShortcutEnabled:v4];
+  [v5 setZoomAdjustZoomLevelKbShortcutEnabled:bOOLValue];
 }
 
 - (id)adjustZoomLevelShortcutEnabled
@@ -448,11 +448,11 @@ LABEL_9:
   return v3;
 }
 
-- (void)setToggleZoomShortcutEnabled:(id)a3 specifier:(id)a4
+- (void)setToggleZoomShortcutEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
   v5 = +[AXSettings sharedInstance];
-  [v5 setZoomToggleZoomKbShortcutEnabled:v4];
+  [v5 setZoomToggleZoomKbShortcutEnabled:bOOLValue];
 }
 
 - (id)toggleZoomShortcutEnabled
@@ -463,11 +463,11 @@ LABEL_9:
   return v3;
 }
 
-- (void)setPanZoomShortcutEnabled:(id)a3 specifier:(id)a4
+- (void)setPanZoomShortcutEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
   v5 = +[AXSettings sharedInstance];
-  [v5 setZoomPanZoomKbShortcutEnabled:v4];
+  [v5 setZoomPanZoomKbShortcutEnabled:bOOLValue];
 }
 
 - (id)panZoomShortcutEnabled
@@ -478,11 +478,11 @@ LABEL_9:
   return v3;
 }
 
-- (void)setResizeZoomWindowShortcutEnabled:(id)a3 specifier:(id)a4
+- (void)setResizeZoomWindowShortcutEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
   v5 = +[AXSettings sharedInstance];
-  [v5 setZoomResizeZoomWindowKbShortcutEnabled:v4];
+  [v5 setZoomResizeZoomWindowKbShortcutEnabled:bOOLValue];
 }
 
 - (id)resizeZoomWindowShortcutEnabled
@@ -493,11 +493,11 @@ LABEL_9:
   return v3;
 }
 
-- (void)setSwitchZoomModeShortcutEnabled:(id)a3 specifier:(id)a4
+- (void)setSwitchZoomModeShortcutEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
   v5 = +[AXSettings sharedInstance];
-  [v5 setZoomSwitchZoomModeKbShortcutEnabled:v4];
+  [v5 setZoomSwitchZoomModeKbShortcutEnabled:bOOLValue];
 }
 
 - (id)switchZoomModeShortcutEnabled
@@ -508,11 +508,11 @@ LABEL_9:
   return v3;
 }
 
-- (void)setTempToggleZoomShortcutEnabled:(id)a3 specifier:(id)a4
+- (void)setTempToggleZoomShortcutEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
   v5 = +[AXSettings sharedInstance];
-  [v5 setZoomTempToggleZoomKbShortcutEnabled:v4];
+  [v5 setZoomTempToggleZoomKbShortcutEnabled:bOOLValue];
 }
 
 - (id)tempToggleZoomShortcutEnabled
@@ -523,11 +523,11 @@ LABEL_9:
   return v3;
 }
 
-- (void)setScrollWheelShortcutEnabled:(id)a3 specifier:(id)a4
+- (void)setScrollWheelShortcutEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
   v5 = +[AXSettings sharedInstance];
-  [v5 setZoomScrollWheelKbShortcutEnabled:v4];
+  [v5 setZoomScrollWheelKbShortcutEnabled:bOOLValue];
 }
 
 - (id)scrollWheelShortcutEnabled
@@ -538,13 +538,13 @@ LABEL_9:
   return v3;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v7.receiver = self;
   v7.super_class = ZoomKeyboardShortcutsSettingsController;
-  v4 = [(ZoomKeyboardShortcutsSettingsController *)&v7 tableView:a3 cellForRowAtIndexPath:a4];
-  v5 = [v4 textLabel];
-  [v5 setNumberOfLines:0];
+  v4 = [(ZoomKeyboardShortcutsSettingsController *)&v7 tableView:view cellForRowAtIndexPath:path];
+  textLabel = [v4 textLabel];
+  [textLabel setNumberOfLines:0];
 
   return v4;
 }

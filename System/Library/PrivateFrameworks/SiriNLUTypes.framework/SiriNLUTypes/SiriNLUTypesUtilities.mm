@@ -1,21 +1,21 @@
 @interface SiriNLUTypesUtilities
-+ (id)serverDelegatedUserDialogActFromNLUResponse:(id)a3;
++ (id)serverDelegatedUserDialogActFromNLUResponse:(id)response;
 @end
 
 @implementation SiriNLUTypesUtilities
 
-+ (id)serverDelegatedUserDialogActFromNLUResponse:(id)a3
++ (id)serverDelegatedUserDialogActFromNLUResponse:(id)response
 {
-  v3 = a3;
+  responseCopy = response;
   v4 = objc_opt_new();
-  v5 = [v3 supplementaryOutput];
-  v6 = [v5 rewrite];
-  [v4 setRewrite:v6];
+  supplementaryOutput = [responseCopy supplementaryOutput];
+  rewrite = [supplementaryOutput rewrite];
+  [v4 setRewrite:rewrite];
 
-  v7 = [v3 supplementaryOutput];
+  supplementaryOutput2 = [responseCopy supplementaryOutput];
 
-  v8 = [v7 matchingSpans];
-  [v4 setMatchingSpans:v8];
+  matchingSpans = [supplementaryOutput2 matchingSpans];
+  [v4 setMatchingSpans:matchingSpans];
 
   [v4 setAsrHypothesisIndex:0];
   [v4 setExternalParserId:@"com.apple.siri.nlv3"];

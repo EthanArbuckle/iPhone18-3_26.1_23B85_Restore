@@ -1,16 +1,16 @@
 @interface WFRequestPaymentCurrencyAmountMigration
-+ (BOOL)workflowNeedsMigration:(id)a3 fromClientVersion:(id)a4;
++ (BOOL)workflowNeedsMigration:(id)migration fromClientVersion:(id)version;
 - (void)migrateWorkflow;
 @end
 
 @implementation WFRequestPaymentCurrencyAmountMigration
 
-+ (BOOL)workflowNeedsMigration:(id)a3 fromClientVersion:(id)a4
++ (BOOL)workflowNeedsMigration:(id)migration fromClientVersion:(id)version
 {
-  v5 = a3;
-  if (WFCompareBundleVersions(a4, @"1084"))
+  migrationCopy = migration;
+  if (WFCompareBundleVersions(version, @"1084"))
   {
-    HasActionsWithIdentifier = WFWorkflowHasActionsWithIdentifier(@"is.workflow.actions.venmo.request", v5);
+    HasActionsWithIdentifier = WFWorkflowHasActionsWithIdentifier(@"is.workflow.actions.venmo.request", migrationCopy);
   }
 
   else

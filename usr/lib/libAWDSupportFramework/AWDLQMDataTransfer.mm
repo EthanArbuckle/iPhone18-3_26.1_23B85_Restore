@@ -1,18 +1,18 @@
 @interface AWDLQMDataTransfer
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsLQM:(id)a3;
+- (int)StringAsLQM:(id)m;
 - (int)lQM;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasRxBytes:(BOOL)a3;
-- (void)setHasStateDuration:(BOOL)a3;
-- (void)setHasTxBytes:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasRxBytes:(BOOL)bytes;
+- (void)setHasStateDuration:(BOOL)duration;
+- (void)setHasTxBytes:(BOOL)bytes;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDLQMDataTransfer
@@ -38,24 +38,24 @@
   }
 }
 
-- (int)StringAsLQM:(id)a3
+- (int)StringAsLQM:(id)m
 {
-  if ([a3 isEqualToString:@"LQM_TYPE_UNKNOWN"])
+  if ([m isEqualToString:@"LQM_TYPE_UNKNOWN"])
   {
     return 0;
   }
 
-  if ([a3 isEqualToString:@"LQM_TYPE_GOOD"])
+  if ([m isEqualToString:@"LQM_TYPE_GOOD"])
   {
     return 1;
   }
 
-  if ([a3 isEqualToString:@"LQM_TYPE_BAD"])
+  if ([m isEqualToString:@"LQM_TYPE_BAD"])
   {
     return 2;
   }
 
-  if ([a3 isEqualToString:@"LQM_TYPE_POOR"])
+  if ([m isEqualToString:@"LQM_TYPE_POOR"])
   {
     return 3;
   }
@@ -63,9 +63,9 @@
   return 0;
 }
 
-- (void)setHasTxBytes:(BOOL)a3
+- (void)setHasTxBytes:(BOOL)bytes
 {
-  if (a3)
+  if (bytes)
   {
     v3 = 8;
   }
@@ -78,9 +78,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasRxBytes:(BOOL)a3
+- (void)setHasRxBytes:(BOOL)bytes
 {
-  if (a3)
+  if (bytes)
   {
     v3 = 2;
   }
@@ -93,9 +93,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasStateDuration:(BOOL)a3
+- (void)setHasStateDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 4;
   }
@@ -117,12 +117,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
+  v4 = dictionary;
   bundleName = self->_bundleName;
   if (bundleName)
   {
-    [v3 setObject:bundleName forKey:@"bundleName"];
+    [dictionary setObject:bundleName forKey:@"bundleName"];
   }
 
   has = self->_has;
@@ -177,7 +177,7 @@ LABEL_11:
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (self->_bundleName)
   {
@@ -235,18 +235,18 @@ LABEL_11:
   PBDataWriterWriteUint32Field();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if (self->_bundleName)
   {
-    [a3 setBundleName:?];
+    [to setBundleName:?];
   }
 
   has = self->_has;
   if (has)
   {
-    *(a3 + 4) = self->_lQM;
-    *(a3 + 32) |= 1u;
+    *(to + 4) = self->_lQM;
+    *(to + 32) |= 1u;
     has = self->_has;
     if ((has & 8) == 0)
     {
@@ -265,8 +265,8 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  *(a3 + 7) = self->_txBytes;
-  *(a3 + 32) |= 8u;
+  *(to + 7) = self->_txBytes;
+  *(to + 32) |= 8u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -280,23 +280,23 @@ LABEL_6:
   }
 
 LABEL_11:
-  *(a3 + 5) = self->_rxBytes;
-  *(a3 + 32) |= 2u;
+  *(to + 5) = self->_rxBytes;
+  *(to + 32) |= 2u;
   if ((*&self->_has & 4) == 0)
   {
     return;
   }
 
 LABEL_7:
-  *(a3 + 6) = self->_stateDuration;
-  *(a3 + 32) |= 4u;
+  *(to + 6) = self->_stateDuration;
+  *(to + 32) |= 4u;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
 
-  *(v5 + 8) = [(NSString *)self->_bundleName copyWithZone:a3];
+  *(v5 + 8) = [(NSString *)self->_bundleName copyWithZone:zone];
   has = self->_has;
   if (has)
   {
@@ -347,23 +347,23 @@ LABEL_5:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     bundleName = self->_bundleName;
-    if (!(bundleName | *(a3 + 1)) || (v5 = [(NSString *)bundleName isEqual:?]) != 0)
+    if (!(bundleName | *(equal + 1)) || (v5 = [(NSString *)bundleName isEqual:?]) != 0)
     {
       if (*&self->_has)
       {
-        if ((*(a3 + 32) & 1) == 0 || self->_lQM != *(a3 + 4))
+        if ((*(equal + 32) & 1) == 0 || self->_lQM != *(equal + 4))
         {
           goto LABEL_23;
         }
       }
 
-      else if (*(a3 + 32))
+      else if (*(equal + 32))
       {
 LABEL_23:
         LOBYTE(v5) = 0;
@@ -372,34 +372,34 @@ LABEL_23:
 
       if ((*&self->_has & 8) != 0)
       {
-        if ((*(a3 + 32) & 8) == 0 || self->_txBytes != *(a3 + 7))
+        if ((*(equal + 32) & 8) == 0 || self->_txBytes != *(equal + 7))
         {
           goto LABEL_23;
         }
       }
 
-      else if ((*(a3 + 32) & 8) != 0)
+      else if ((*(equal + 32) & 8) != 0)
       {
         goto LABEL_23;
       }
 
       if ((*&self->_has & 2) != 0)
       {
-        if ((*(a3 + 32) & 2) == 0 || self->_rxBytes != *(a3 + 5))
+        if ((*(equal + 32) & 2) == 0 || self->_rxBytes != *(equal + 5))
         {
           goto LABEL_23;
         }
       }
 
-      else if ((*(a3 + 32) & 2) != 0)
+      else if ((*(equal + 32) & 2) != 0)
       {
         goto LABEL_23;
       }
 
-      LOBYTE(v5) = (*(a3 + 32) & 4) == 0;
+      LOBYTE(v5) = (*(equal + 32) & 4) == 0;
       if ((*&self->_has & 4) != 0)
       {
-        if ((*(a3 + 32) & 4) == 0 || self->_stateDuration != *(a3 + 6))
+        if ((*(equal + 32) & 4) == 0 || self->_stateDuration != *(equal + 6))
         {
           goto LABEL_23;
         }
@@ -467,19 +467,19 @@ LABEL_5:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if (*(a3 + 1))
+  if (*(from + 1))
   {
     [(AWDLQMDataTransfer *)self setBundleName:?];
   }
 
-  v5 = *(a3 + 32);
+  v5 = *(from + 32);
   if (v5)
   {
-    self->_lQM = *(a3 + 4);
+    self->_lQM = *(from + 4);
     *&self->_has |= 1u;
-    v5 = *(a3 + 32);
+    v5 = *(from + 32);
     if ((v5 & 8) == 0)
     {
 LABEL_5:
@@ -492,14 +492,14 @@ LABEL_5:
     }
   }
 
-  else if ((*(a3 + 32) & 8) == 0)
+  else if ((*(from + 32) & 8) == 0)
   {
     goto LABEL_5;
   }
 
-  self->_txBytes = *(a3 + 7);
+  self->_txBytes = *(from + 7);
   *&self->_has |= 8u;
-  v5 = *(a3 + 32);
+  v5 = *(from + 32);
   if ((v5 & 2) == 0)
   {
 LABEL_6:
@@ -512,15 +512,15 @@ LABEL_6:
   }
 
 LABEL_11:
-  self->_rxBytes = *(a3 + 5);
+  self->_rxBytes = *(from + 5);
   *&self->_has |= 2u;
-  if ((*(a3 + 32) & 4) == 0)
+  if ((*(from + 32) & 4) == 0)
   {
     return;
   }
 
 LABEL_7:
-  self->_stateDuration = *(a3 + 6);
+  self->_stateDuration = *(from + 6);
   *&self->_has |= 4u;
 }
 

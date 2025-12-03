@@ -1,120 +1,120 @@
 @interface IMStickerMessageProcessingPipelineComponent
-- (IMStickerMessageProcessingPipelineComponent)initWithPipelineResources:(id)a3;
-- (id)createMessageItemWithInput:(id)a3;
-- (id)runIndividuallyWithInput:(id)a3;
+- (IMStickerMessageProcessingPipelineComponent)initWithPipelineResources:(id)resources;
+- (id)createMessageItemWithInput:(id)input;
+- (id)runIndividuallyWithInput:(id)input;
 @end
 
 @implementation IMStickerMessageProcessingPipelineComponent
 
-- (IMStickerMessageProcessingPipelineComponent)initWithPipelineResources:(id)a3
+- (IMStickerMessageProcessingPipelineComponent)initWithPipelineResources:(id)resources
 {
-  v5 = a3;
-  v6 = [v5 messageStore];
+  resourcesCopy = resources;
+  messageStore = [resourcesCopy messageStore];
   v9.receiver = self;
   v9.super_class = IMStickerMessageProcessingPipelineComponent;
-  v7 = [(IMTextMessageProcessingPipelineComponent *)&v9 initWithMessageStore:v6];
+  v7 = [(IMTextMessageProcessingPipelineComponent *)&v9 initWithMessageStore:messageStore];
 
   if (v7)
   {
-    objc_storeStrong(&v7->_pipelineResources, a3);
+    objc_storeStrong(&v7->_pipelineResources, resources);
   }
 
   return v7;
 }
 
-- (id)createMessageItemWithInput:(id)a3
+- (id)createMessageItemWithInput:(id)input
 {
-  v4 = a3;
-  v5 = [(IMTextMessageProcessingPipelineComponent *)self computeFlagsForInput:v4];
-  v6 = [v4 associatedMessageGUID];
+  inputCopy = input;
+  v5 = [(IMTextMessageProcessingPipelineComponent *)self computeFlagsForInput:inputCopy];
+  associatedMessageGUID = [inputCopy associatedMessageGUID];
 
-  if (v6)
+  if (associatedMessageGUID)
   {
     v45 = v5;
-    v7 = [v4 messageSummaryInfo];
-    v8 = [(IMStickerMessageProcessingPipelineComponent *)self messageSummaryAdditions];
+    messageSummaryInfo = [inputCopy messageSummaryInfo];
+    messageSummaryAdditions = [(IMStickerMessageProcessingPipelineComponent *)self messageSummaryAdditions];
 
-    v44 = self;
-    if (v8)
+    selfCopy = self;
+    if (messageSummaryAdditions)
     {
-      v9 = [v7 mutableCopy];
-      v10 = [(IMStickerMessageProcessingPipelineComponent *)self messageSummaryAdditions];
-      [v9 addEntriesFromDictionary:v10];
+      v9 = [messageSummaryInfo mutableCopy];
+      messageSummaryAdditions2 = [(IMStickerMessageProcessingPipelineComponent *)self messageSummaryAdditions];
+      [v9 addEntriesFromDictionary:messageSummaryAdditions2];
 
       v46 = v9;
     }
 
     else
     {
-      v46 = v7;
+      v46 = messageSummaryInfo;
     }
 
     v41 = objc_alloc(MEMORY[0x277D1A8A8]);
-    v43 = [v4 fromIdentifier];
-    v40 = [v43 _stripFZIDPrefix];
+    fromIdentifier = [inputCopy fromIdentifier];
+    _stripFZIDPrefix = [fromIdentifier _stripFZIDPrefix];
     v24 = MEMORY[0x277CBEAA8];
-    v42 = [v4 timestamp];
-    v25 = [v24 __im_iMessageDateFromTimeStamp:v42];
-    v26 = [v4 richBody];
-    v27 = [v4 fileTransferGUIDs];
-    v28 = [v4 GUID];
-    v29 = [v4 associatedMessageGUID];
-    v30 = [v4 associatedMessageType];
-    v31 = [v4 associatedMessageRange];
+    timestamp = [inputCopy timestamp];
+    v25 = [v24 __im_iMessageDateFromTimeStamp:timestamp];
+    richBody = [inputCopy richBody];
+    fileTransferGUIDs = [inputCopy fileTransferGUIDs];
+    gUID = [inputCopy GUID];
+    associatedMessageGUID2 = [inputCopy associatedMessageGUID];
+    associatedMessageType = [inputCopy associatedMessageType];
+    associatedMessageRange = [inputCopy associatedMessageRange];
     v33 = v32;
-    v34 = [v4 threadIdentifierGUID];
-    v20 = [v41 initWithSender:v40 time:v25 body:v26 attributes:0 fileTransferGUIDs:v27 flags:v45 error:0 guid:v28 associatedMessageGUID:v29 associatedMessageType:v30 associatedMessageRange:v31 messageSummaryInfo:v33 threadIdentifier:{v46, v34}];
+    threadIdentifierGUID = [inputCopy threadIdentifierGUID];
+    v20 = [v41 initWithSender:_stripFZIDPrefix time:v25 body:richBody attributes:0 fileTransferGUIDs:fileTransferGUIDs flags:v45 error:0 guid:gUID associatedMessageGUID:associatedMessageGUID2 associatedMessageType:associatedMessageType associatedMessageRange:associatedMessageRange messageSummaryInfo:v33 threadIdentifier:{v46, threadIdentifierGUID}];
 
-    v35 = [v4 replicatedFallbackGUIDs];
-    [v20 setReplicatedFallbackGUIDs:v35];
+    replicatedFallbackGUIDs = [inputCopy replicatedFallbackGUIDs];
+    [v20 setReplicatedFallbackGUIDs:replicatedFallbackGUIDs];
 
-    v36 = [(IMTextMessageProcessingPipelineComponent *)v44 _findMessageItemForAssociatedMessageItem:v20];
-    v37 = [(IMTextMessageProcessingPipelineComponent *)v44 _findAssociatedMessagePartTextForMessageItem:v20 associatedMessageItem:v36];
+    v36 = [(IMTextMessageProcessingPipelineComponent *)selfCopy _findMessageItemForAssociatedMessageItem:v20];
+    v37 = [(IMTextMessageProcessingPipelineComponent *)selfCopy _findAssociatedMessagePartTextForMessageItem:v20 associatedMessageItem:v36];
     [v20 setAssociatedMessagePartText:v37];
 
-    v23 = v46;
+    replicatedFallbackGUIDs2 = v46;
   }
 
   else
   {
     v47 = objc_alloc(MEMORY[0x277D1AA70]);
-    v11 = [v4 fromIdentifier];
-    v12 = [v11 _stripFZIDPrefix];
+    fromIdentifier2 = [inputCopy fromIdentifier];
+    _stripFZIDPrefix2 = [fromIdentifier2 _stripFZIDPrefix];
     v13 = MEMORY[0x277CBEAA8];
-    v14 = [v4 timestamp];
-    v15 = [v13 __im_iMessageDateFromTimeStamp:v14];
-    v16 = [v4 richBody];
-    v17 = [v4 fileTransferGUIDs];
-    v18 = [v4 GUID];
-    v19 = [v4 threadIdentifierGUID];
-    v20 = [v47 initWithSender:v12 time:v15 body:v16 attributes:0 fileTransferGUIDs:v17 flags:v5 error:0 guid:v18 threadIdentifier:v19];
+    timestamp2 = [inputCopy timestamp];
+    v15 = [v13 __im_iMessageDateFromTimeStamp:timestamp2];
+    richBody2 = [inputCopy richBody];
+    fileTransferGUIDs2 = [inputCopy fileTransferGUIDs];
+    gUID2 = [inputCopy GUID];
+    threadIdentifierGUID2 = [inputCopy threadIdentifierGUID];
+    v20 = [v47 initWithSender:_stripFZIDPrefix2 time:v15 body:richBody2 attributes:0 fileTransferGUIDs:fileTransferGUIDs2 flags:v5 error:0 guid:gUID2 threadIdentifier:threadIdentifierGUID2];
 
-    v21 = [v4 messageSummaryInfo];
-    [v20 setMessageSummaryInfo:v21];
+    messageSummaryInfo2 = [inputCopy messageSummaryInfo];
+    [v20 setMessageSummaryInfo:messageSummaryInfo2];
 
-    v22 = [v4 expressiveSendStyleIdentifier];
-    [v20 setExpressiveSendStyleID:v22];
+    expressiveSendStyleIdentifier = [inputCopy expressiveSendStyleIdentifier];
+    [v20 setExpressiveSendStyleID:expressiveSendStyleIdentifier];
 
-    v23 = [v4 replicatedFallbackGUIDs];
-    [v20 setReplicatedFallbackGUIDs:v23];
+    replicatedFallbackGUIDs2 = [inputCopy replicatedFallbackGUIDs];
+    [v20 setReplicatedFallbackGUIDs:replicatedFallbackGUIDs2];
   }
 
-  if ([v4 scheduleType] == 2 && objc_msgSend(v20, "isFromMe"))
+  if ([inputCopy scheduleType] == 2 && objc_msgSend(v20, "isFromMe"))
   {
-    [v20 setScheduleType:{objc_msgSend(v4, "scheduleType")}];
+    [v20 setScheduleType:{objc_msgSend(inputCopy, "scheduleType")}];
     [v20 setScheduleState:2];
-    v38 = [v4 scheduledDate];
-    [v20 setTime:v38];
+    scheduledDate = [inputCopy scheduledDate];
+    [v20 setTime:scheduledDate];
   }
 
   return v20;
 }
 
-- (id)runIndividuallyWithInput:(id)a3
+- (id)runIndividuallyWithInput:(id)input
 {
   v5.receiver = self;
   v5.super_class = IMStickerMessageProcessingPipelineComponent;
-  v3 = [(IMAssociatedMessageProcessingPipelineComponent *)&v5 runIndividuallyWithInput:a3];
+  v3 = [(IMAssociatedMessageProcessingPipelineComponent *)&v5 runIndividuallyWithInput:input];
 
   return v3;
 }

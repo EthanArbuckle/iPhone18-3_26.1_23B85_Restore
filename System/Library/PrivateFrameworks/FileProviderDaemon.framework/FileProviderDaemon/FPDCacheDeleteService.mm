@@ -3,9 +3,9 @@
 - (BOOL)isCacheDeleteCacheable;
 - (FPDCacheDeleteService)init;
 - (void)registerCacheDeleteCallbacks;
-- (void)registerKey:(id)a3 notificationsUpdatesHandlers:(id)a4;
+- (void)registerKey:(id)key notificationsUpdatesHandlers:(id)handlers;
 - (void)start;
-- (void)unregisterKey:(id)a3;
+- (void)unregisterKey:(id)key;
 @end
 
 @implementation FPDCacheDeleteService
@@ -71,7 +71,7 @@ void __49__FPDCacheDeleteService_unregisterBackgroundTask__block_invoke()
 
 - (void)registerCacheDeleteCallbacks
 {
-  OUTLINED_FUNCTION_3(a1, *MEMORY[0x1E69E9840]);
+  OUTLINED_FUNCTION_3(self, *MEMORY[0x1E69E9840]);
   v4 = 138412290;
   v5 = v1;
   _os_log_debug_impl(&dword_1CEFC7000, v2, OS_LOG_TYPE_DEBUG, "[DEBUG] Registered %@ as a cache delete service", &v4, 0xCu);
@@ -147,43 +147,43 @@ void __53__FPDCacheDeleteService_registerCacheDeleteCallbacks__block_invoke_10(u
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)registerKey:(id)a3 notificationsUpdatesHandlers:(id)a4
+- (void)registerKey:(id)key notificationsUpdatesHandlers:(id)handlers
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  objc_sync_enter(v8);
-  v9 = _Block_copy(v7);
-  [(NSMutableDictionary *)v8->_cdNotificationsHandlers setObject:v9 forKeyedSubscript:v6];
+  keyCopy = key;
+  handlersCopy = handlers;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v9 = _Block_copy(handlersCopy);
+  [(NSMutableDictionary *)selfCopy->_cdNotificationsHandlers setObject:v9 forKeyedSubscript:keyCopy];
 
-  notificationsHandlersQueue = v8->_notificationsHandlersQueue;
+  notificationsHandlersQueue = selfCopy->_notificationsHandlersQueue;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __66__FPDCacheDeleteService_registerKey_notificationsUpdatesHandlers___block_invoke;
   v12[3] = &unk_1E83BF450;
-  v12[4] = v8;
-  v13 = v7;
-  v11 = v7;
+  v12[4] = selfCopy;
+  v13 = handlersCopy;
+  v11 = handlersCopy;
   dispatch_async(notificationsHandlersQueue, v12);
 
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)unregisterKey:(id)a3
+- (void)unregisterKey:(id)key
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [(NSMutableDictionary *)v4->_cdNotificationsHandlers removeObjectForKey:v5];
-  objc_sync_exit(v4);
+  keyCopy = key;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSMutableDictionary *)selfCopy->_cdNotificationsHandlers removeObjectForKey:keyCopy];
+  objc_sync_exit(selfCopy);
 }
 
 - (BOOL)isCacheDeleteCacheable
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  cacheDeleteCacheable = v2->_cacheDeleteCacheable;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  cacheDeleteCacheable = selfCopy->_cacheDeleteCacheable;
+  objc_sync_exit(selfCopy);
 
   return cacheDeleteCacheable;
 }
@@ -194,7 +194,7 @@ void __53__FPDCacheDeleteService_registerCacheDeleteCallbacks__block_invoke_10(u
   block[1] = 3221225472;
   block[2] = __39__FPDCacheDeleteService_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_once != -1)
   {
     dispatch_once(&sharedInstance_once, block);

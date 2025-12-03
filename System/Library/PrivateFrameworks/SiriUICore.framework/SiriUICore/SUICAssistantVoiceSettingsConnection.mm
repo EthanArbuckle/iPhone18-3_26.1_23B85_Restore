@@ -1,21 +1,21 @@
 @interface SUICAssistantVoiceSettingsConnection
 + (id)assistantLanguageTitlesDictionary;
-+ (id)capitalizeFirstPartOfCountry:(id)a3;
-+ (id)shortTitlesForLanguageIdentifiers:(id)a3 deviceLanguageLocale:(id)a4;
-+ (id)titlesForLanguageIdentifiers:(id)a3;
-- (BOOL)languageHasVoiceSelection:(id)a3;
-- (BOOL)languageHasVoiceVariations:(id)a3;
-- (id)_regionForLanguageIdentifier:(id)a3;
-- (id)dialectForLanguageIdentifier:(id)a3;
-- (id)getAvailableDialectsForLanguage:(id)a3;
-- (id)getAvailableVoicesForLanguage:(id)a3;
++ (id)capitalizeFirstPartOfCountry:(id)country;
++ (id)shortTitlesForLanguageIdentifiers:(id)identifiers deviceLanguageLocale:(id)locale;
++ (id)titlesForLanguageIdentifiers:(id)identifiers;
+- (BOOL)languageHasVoiceSelection:(id)selection;
+- (BOOL)languageHasVoiceVariations:(id)variations;
+- (id)_regionForLanguageIdentifier:(id)identifier;
+- (id)dialectForLanguageIdentifier:(id)identifier;
+- (id)getAvailableDialectsForLanguage:(id)language;
+- (id)getAvailableVoicesForLanguage:(id)language;
 @end
 
 @implementation SUICAssistantVoiceSettingsConnection
 
-- (BOOL)languageHasVoiceVariations:(id)a3
+- (BOOL)languageHasVoiceVariations:(id)variations
 {
-  v3 = [(SUICAssistantVoiceSettingsConnection *)self getAvailableVoicesForLanguage:a3];
+  v3 = [(SUICAssistantVoiceSettingsConnection *)self getAvailableVoicesForLanguage:variations];
   v4 = [MEMORY[0x1E696AE18] predicateWithBlock:&__block_literal_global_7];
   v5 = [v3 filteredArrayUsingPredicate:v4];
 
@@ -40,11 +40,11 @@ BOOL __67__SUICAssistantVoiceSettingsConnection_languageHasVoiceVariations___blo
   return v4;
 }
 
-- (id)getAvailableVoicesForLanguage:(id)a3
+- (id)getAvailableVoicesForLanguage:(id)language
 {
-  v4 = a3;
+  languageCopy = language;
   v5 = MEMORY[0x1E695E0F0];
-  if (v4)
+  if (languageCopy)
   {
     v6 = self->_cachedAvailableVoices;
     objc_sync_enter(v6);
@@ -58,17 +58,17 @@ BOOL __67__SUICAssistantVoiceSettingsConnection_languageHasVoiceVariations___blo
       cachedAvailableVoices = self->_cachedAvailableVoices;
     }
 
-    v10 = [(NSMutableDictionary *)cachedAvailableVoices objectForKeyedSubscript:v4];
+    v10 = [(NSMutableDictionary *)cachedAvailableVoices objectForKeyedSubscript:languageCopy];
 
     if (!v10)
     {
-      v11 = [MEMORY[0x1E698D270] allVoicesForSiriSessionLanguage:v4];
+      v11 = [MEMORY[0x1E698D270] allVoicesForSiriSessionLanguage:languageCopy];
       v12 = MEMORY[0x1E696AE18];
       v18[0] = MEMORY[0x1E69E9820];
       v18[1] = 3221225472;
       v18[2] = __70__SUICAssistantVoiceSettingsConnection_getAvailableVoicesForLanguage___block_invoke;
       v18[3] = &unk_1E81E84A0;
-      v13 = v4;
+      v13 = languageCopy;
       v19 = v13;
       v14 = [v12 predicateWithBlock:v18];
       v15 = [v11 filteredArrayUsingPredicate:v14];
@@ -88,7 +88,7 @@ BOOL __67__SUICAssistantVoiceSettingsConnection_languageHasVoiceVariations___blo
 
     objc_sync_exit(v6);
 
-    v5 = [(NSMutableDictionary *)self->_cachedAvailableVoices objectForKeyedSubscript:v4];
+    v5 = [(NSMutableDictionary *)self->_cachedAvailableVoices objectForKeyedSubscript:languageCopy];
   }
 
   return v5;
@@ -102,14 +102,14 @@ uint64_t __70__SUICAssistantVoiceSettingsConnection_getAvailableVoicesForLanguag
   return v4;
 }
 
-- (id)getAvailableDialectsForLanguage:(id)a3
+- (id)getAvailableDialectsForLanguage:(id)language
 {
-  v3 = a3;
+  languageCopy = language;
   v4 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
   v5 = [v4 pathForResource:@"AssistantVoiceDialects" ofType:@"plist"];
 
   v6 = [MEMORY[0x1E695DF20] dictionaryWithContentsOfFile:v5];
-  v7 = [v6 objectForKeyedSubscript:v3];
+  v7 = [v6 objectForKeyedSubscript:languageCopy];
   if (v7)
   {
     [MEMORY[0x1E695DFD8] setWithArray:v7];
@@ -117,38 +117,38 @@ uint64_t __70__SUICAssistantVoiceSettingsConnection_getAvailableVoicesForLanguag
 
   else
   {
-    [MEMORY[0x1E695DFD8] setWithObjects:{v3, 0}];
+    [MEMORY[0x1E695DFD8] setWithObjects:{languageCopy, 0}];
   }
   v8 = ;
 
   return v8;
 }
 
-- (BOOL)languageHasVoiceSelection:(id)a3
+- (BOOL)languageHasVoiceSelection:(id)selection
 {
-  v4 = a3;
-  if ([(SUICAssistantVoiceSettingsConnection *)self languageHasVoiceVariations:v4])
+  selectionCopy = selection;
+  if ([(SUICAssistantVoiceSettingsConnection *)self languageHasVoiceVariations:selectionCopy])
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [(SUICAssistantVoiceSettingsConnection *)self getAvailableDialectsForLanguage:v4];
+    v6 = [(SUICAssistantVoiceSettingsConnection *)self getAvailableDialectsForLanguage:selectionCopy];
     v5 = [v6 count] > 1;
   }
 
   return v5;
 }
 
-- (id)_regionForLanguageIdentifier:(id)a3
+- (id)_regionForLanguageIdentifier:(id)identifier
 {
   v3 = MEMORY[0x1E695DF58];
-  v4 = a3;
-  v5 = [v3 _deviceLanguage];
-  v6 = [v3 localeWithLocaleIdentifier:v5];
+  identifierCopy = identifier;
+  _deviceLanguage = [v3 _deviceLanguage];
+  v6 = [v3 localeWithLocaleIdentifier:_deviceLanguage];
 
-  v7 = [MEMORY[0x1E695DF58] componentsFromLocaleIdentifier:v4];
+  v7 = [MEMORY[0x1E695DF58] componentsFromLocaleIdentifier:identifierCopy];
 
   v8 = *MEMORY[0x1E695D978];
   v9 = [v7 objectForKey:*MEMORY[0x1E695D978]];
@@ -157,21 +157,21 @@ uint64_t __70__SUICAssistantVoiceSettingsConnection_getAvailableVoicesForLanguag
   return v10;
 }
 
-- (id)dialectForLanguageIdentifier:(id)a3
+- (id)dialectForLanguageIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"REGION_%@", v4];
+  identifierCopy = identifier;
+  identifierCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"REGION_%@", identifierCopy];
   v6 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-  v7 = [v6 localizedStringForKey:v5 value:&stru_1F43BC8C0 table:0];
+  v7 = [v6 localizedStringForKey:identifierCopy value:&stru_1F43BC8C0 table:0];
 
-  if (v7 && ([v7 isEqualToString:v5] & 1) == 0)
+  if (v7 && ([v7 isEqualToString:identifierCopy] & 1) == 0)
   {
     v8 = v7;
   }
 
   else
   {
-    v8 = [(SUICAssistantVoiceSettingsConnection *)self _regionForLanguageIdentifier:v4];
+    v8 = [(SUICAssistantVoiceSettingsConnection *)self _regionForLanguageIdentifier:identifierCopy];
   }
 
   v9 = v8;
@@ -183,31 +183,31 @@ uint64_t __70__SUICAssistantVoiceSettingsConnection_getAvailableVoicesForLanguag
 {
   v3 = AFPreferencesSupportedLanguages();
   v4 = [MEMORY[0x1E695DFD8] setWithArray:v3];
-  v5 = [a1 titlesForLanguageIdentifiers:v4];
+  v5 = [self titlesForLanguageIdentifiers:v4];
 
   return v5;
 }
 
-+ (id)titlesForLanguageIdentifiers:(id)a3
++ (id)titlesForLanguageIdentifiers:(id)identifiers
 {
   v69 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifiersCopy = identifiers;
   v5 = 0x1E695D000uLL;
   v6 = MEMORY[0x1E695DF58];
-  v7 = [MEMORY[0x1E695DF58] _deviceLanguage];
-  v8 = [v6 localeWithLocaleIdentifier:v7];
+  _deviceLanguage = [MEMORY[0x1E695DF58] _deviceLanguage];
+  v8 = [v6 localeWithLocaleIdentifier:_deviceLanguage];
 
   v54 = [MEMORY[0x1E696AB50] set];
-  v53 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v4, "count")}];
-  v45 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v4, "count")}];
-  v43 = a1;
+  v53 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(identifiersCopy, "count")}];
+  v45 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(identifiersCopy, "count")}];
+  selfCopy = self;
   v52 = v8;
-  v48 = [a1 shortTitlesForLanguageIdentifiers:v4 deviceLanguageLocale:v8];
+  v48 = [self shortTitlesForLanguageIdentifiers:identifiersCopy deviceLanguageLocale:v8];
   v63 = 0u;
   v64 = 0u;
   v65 = 0u;
   v66 = 0u;
-  obj = v4;
+  obj = identifiersCopy;
   v9 = [obj countByEnumeratingWithState:&v63 objects:v68 count:16];
   if (v9)
   {
@@ -264,7 +264,7 @@ uint64_t __70__SUICAssistantVoiceSettingsConnection_getAvailableVoicesForLanguag
   v59 = 0u;
   v60 = 0u;
   v44 = obj;
-  v23 = v43;
+  v23 = selfCopy;
   v49 = [v44 countByEnumeratingWithState:&v59 objects:v67 count:16];
   if (v49)
   {
@@ -341,7 +341,7 @@ LABEL_37:
           v40 = [v35 localizedStringForKey:@"LANGUAGE_WITH_REGION" value:&stru_1F43BC8C0 table:0];
           v37 = [v39 stringWithFormat:v40, obja, v29];
 
-          v23 = v43;
+          v23 = selfCopy;
           goto LABEL_32;
         }
 
@@ -382,17 +382,17 @@ LABEL_38:
   return v45;
 }
 
-+ (id)shortTitlesForLanguageIdentifiers:(id)a3 deviceLanguageLocale:(id)a4
++ (id)shortTitlesForLanguageIdentifiers:(id)identifiers deviceLanguageLocale:(id)locale
 {
   v26 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v19 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v5, "count")}];
+  identifiersCopy = identifiers;
+  localeCopy = locale;
+  v19 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(identifiersCopy, "count")}];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  obj = v5;
+  obj = identifiersCopy;
   v7 = [obj countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v7)
   {
@@ -411,8 +411,8 @@ LABEL_38:
         v12 = *(*(&v21 + 1) + 8 * i);
         v13 = [MEMORY[0x1E695DF58] componentsFromLocaleIdentifier:v12];
         v14 = [v13 objectForKey:v10];
-        v15 = [v6 displayNameForKey:v10 value:v14];
-        v16 = [a1 capitalizeFirstPartOfCountry:v15];
+        v15 = [localeCopy displayNameForKey:v10 value:v14];
+        v16 = [self capitalizeFirstPartOfCountry:v15];
         if (v16)
         {
           [v19 setValue:v16 forKey:v12];
@@ -428,18 +428,18 @@ LABEL_38:
   return v19;
 }
 
-+ (id)capitalizeFirstPartOfCountry:(id)a3
++ (id)capitalizeFirstPartOfCountry:(id)country
 {
-  v3 = a3;
-  if (v3)
+  countryCopy = country;
+  if (countryCopy)
   {
     v4 = objc_msgSend(MEMORY[0x1E696AB08], "characterSetWithCharactersInString:", @"(");
-    v5 = [v3 componentsSeparatedByCharactersInSet:v4];
+    v5 = [countryCopy componentsSeparatedByCharactersInSet:v4];
 
     v6 = [v5 objectAtIndex:0];
-    v7 = [v6 capitalizedString];
+    capitalizedString = [v6 capitalizedString];
 
-    v8 = [objc_alloc(MEMORY[0x1E696AD60]) initWithString:v7];
+    v8 = [objc_alloc(MEMORY[0x1E696AD60]) initWithString:capitalizedString];
     if ([v5 count] >= 2)
     {
       v9 = 1;

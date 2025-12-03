@@ -1,18 +1,18 @@
 @interface LAExtendedRequirement
 + (LAExtendedRequirement)applicationRemainsForegroundRequirement;
-- (BOOL)isEqual:(id)a3;
-- (id)initWithConstraint:(id *)a1;
+- (BOOL)isEqual:(id)equal;
+- (id)initWithConstraint:(id *)constraint;
 @end
 
 @implementation LAExtendedRequirement
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = v5[1];
     v7 = v6 == self->_constraint || [(NSDictionary *)v6 isEqualToDictionary:?];
   }
@@ -25,22 +25,22 @@
   return v7;
 }
 
-- (id)initWithConstraint:(id *)a1
+- (id)initWithConstraint:(id *)constraint
 {
   v4 = a2;
-  if (a1)
+  if (constraint)
   {
-    v7.receiver = a1;
+    v7.receiver = constraint;
     v7.super_class = LAExtendedRequirement;
     v5 = objc_msgSendSuper2(&v7, sel_init);
-    a1 = v5;
+    constraint = v5;
     if (v5)
     {
       objc_storeStrong(v5 + 1, a2);
     }
   }
 
-  return a1;
+  return constraint;
 }
 
 + (LAExtendedRequirement)applicationRemainsForegroundRequirement

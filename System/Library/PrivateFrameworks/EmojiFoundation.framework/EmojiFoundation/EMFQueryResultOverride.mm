@@ -1,13 +1,13 @@
 @interface EMFQueryResultOverride
-- (EMFQueryResultOverride)initWithOverridesArray:(id)a3 searchType:(unint64_t)a4 behavior:(unint64_t)a5;
+- (EMFQueryResultOverride)initWithOverridesArray:(id)array searchType:(unint64_t)type behavior:(unint64_t)behavior;
 @end
 
 @implementation EMFQueryResultOverride
 
-- (EMFQueryResultOverride)initWithOverridesArray:(id)a3 searchType:(unint64_t)a4 behavior:(unint64_t)a5
+- (EMFQueryResultOverride)initWithOverridesArray:(id)array searchType:(unint64_t)type behavior:(unint64_t)behavior
 {
-  v9 = a3;
-  if (v9)
+  arrayCopy = array;
+  if (arrayCopy)
   {
     v14.receiver = self;
     v14.super_class = EMFQueryResultOverride;
@@ -15,21 +15,21 @@
     v11 = v10;
     if (v10)
     {
-      objc_storeStrong(&v10->_results, a3);
-      v11->_overrideSearchType = a4;
-      v11->_overrideBehavior = a5;
+      objc_storeStrong(&v10->_results, array);
+      v11->_overrideSearchType = type;
+      v11->_overrideBehavior = behavior;
     }
 
     self = v11;
-    v12 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v12 = 0;
+    selfCopy = 0;
   }
 
-  return v12;
+  return selfCopy;
 }
 
 @end

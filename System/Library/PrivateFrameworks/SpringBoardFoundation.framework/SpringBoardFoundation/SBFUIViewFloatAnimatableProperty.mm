@@ -1,24 +1,24 @@
 @interface SBFUIViewFloatAnimatableProperty
-+ (id)sbf_animatablePropertyWithProgressMilestonesToBlocks:(id)a3;
++ (id)sbf_animatablePropertyWithProgressMilestonesToBlocks:(id)blocks;
 - (void)invalidate;
 @end
 
 @implementation SBFUIViewFloatAnimatableProperty
 
-+ (id)sbf_animatablePropertyWithProgressMilestonesToBlocks:(id)a3
++ (id)sbf_animatablePropertyWithProgressMilestonesToBlocks:(id)blocks
 {
-  v4 = a3;
+  blocksCopy = blocks;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __89__SBFUIViewFloatAnimatableProperty_sbf_animatablePropertyWithProgressMilestonesToBlocks___block_invoke;
   v12[3] = &unk_1E80803E8;
-  v5 = v4;
+  v5 = blocksCopy;
   v13 = v5;
   v6 = MEMORY[0x1BFB4D9B0](v12);
   v7 = MEMORY[0x1E695DFD8];
-  v8 = [v5 allKeys];
-  v9 = [v7 setWithArray:v8];
-  v10 = [a1 sbf_animatablePropertyWithProgressMilestones:v9 block:v6];
+  allKeys = [v5 allKeys];
+  v9 = [v7 setWithArray:allKeys];
+  v10 = [self sbf_animatablePropertyWithProgressMilestones:v9 block:v6];
 
   if (v5)
   {
@@ -113,8 +113,8 @@ void __89__SBFUIViewFloatAnimatableProperty_sbf_animatablePropertyWithProgressMi
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [(NSMutableDictionary *)self->_mutableMilestonesToBlocks allKeys];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v15 count:16];
+  allKeys = [(NSMutableDictionary *)self->_mutableMilestonesToBlocks allKeys];
+  v4 = [allKeys countByEnumeratingWithState:&v10 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -125,7 +125,7 @@ void __89__SBFUIViewFloatAnimatableProperty_sbf_animatablePropertyWithProgressMi
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allKeys);
         }
 
         v8 = *(*(&v10 + 1) + 8 * i);
@@ -137,7 +137,7 @@ void __89__SBFUIViewFloatAnimatableProperty_sbf_animatablePropertyWithProgressMi
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v15 count:16];
+      v5 = [allKeys countByEnumeratingWithState:&v10 objects:v15 count:16];
     }
 
     while (v5);

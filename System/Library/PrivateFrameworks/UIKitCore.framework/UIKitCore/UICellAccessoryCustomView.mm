@@ -1,11 +1,11 @@
 @interface UICellAccessoryCustomView
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (UICellAccessoryCustomView)initWithCoder:(NSCoder *)coder;
 - (UICellAccessoryCustomView)initWithCustomView:(UIView *)customView placement:(UICellAccessoryPlacement)placement;
 - (UICellAccessoryPosition)position;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation UICellAccessoryCustomView
@@ -36,14 +36,14 @@
   v8 = customView;
   if (!v8)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"UICellAccessory.m" lineNumber:860 description:{@"Invalid parameter not satisfying: %@", @"customView != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UICellAccessory.m" lineNumber:860 description:{@"Invalid parameter not satisfying: %@", @"customView != nil"}];
   }
 
   if (![(UIView *)v8 translatesAutoresizingMaskIntoConstraints])
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"UICellAccessory.m" lineNumber:861 description:{@"Custom view accessories must have translatesAutoresizingMaskIntoConstraints enabled, even if auto layout constraints are used inside them. Custom view: %@", v8}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"UICellAccessory.m" lineNumber:861 description:{@"Custom view accessories must have translatesAutoresizingMaskIntoConstraints enabled, even if auto layout constraints are used inside them. Custom view: %@", v8}];
   }
 
   v15.receiver = self;
@@ -116,26 +116,26 @@
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5.receiver = self;
   v5.super_class = UICellAccessoryCustomView;
-  [(UICellAccessory *)&v5 encodeWithCoder:v4];
-  if (([v4 requiresSecureCoding] & 1) == 0)
+  [(UICellAccessory *)&v5 encodeWithCoder:coderCopy];
+  if (([coderCopy requiresSecureCoding] & 1) == 0)
   {
-    [v4 encodeObject:self->_customView forKey:@"customView"];
+    [coderCopy encodeObject:self->_customView forKey:@"customView"];
   }
 
-  [v4 encodeInteger:self->_placement forKey:@"placement"];
-  [v4 encodeBool:self->_maintainsFixedSize forKey:@"maintainsFixedSize"];
+  [coderCopy encodeInteger:self->_placement forKey:@"placement"];
+  [coderCopy encodeBool:self->_maintainsFixedSize forKey:@"maintainsFixedSize"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v9.receiver = self;
   v9.super_class = UICellAccessoryCustomView;
-  v4 = [(UICellAccessory *)&v9 copyWithZone:a3];
+  v4 = [(UICellAccessory *)&v9 copyWithZone:zone];
   v5 = v4;
   if (v4)
   {
@@ -150,14 +150,14 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v8.receiver = self;
   v8.super_class = UICellAccessoryCustomView;
-  if ([(UICellAccessory *)&v8 isEqual:v4])
+  if ([(UICellAccessory *)&v8 isEqual:equalCopy])
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = self->_customView == v5[8] && self->_placement == v5[9] && self->_maintainsFixedSize == *(v5 + 56) && self->_position == v5[10];
   }
 

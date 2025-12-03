@@ -1,39 +1,39 @@
 @interface HKMedicationScheduleIntervalData
-- (BOOL)isEqual:(id)a3;
-- (HKMedicationScheduleIntervalData)initWithCoder:(id)a3;
-- (HKMedicationScheduleIntervalData)initWithStartTimeComponent:(id)a3 daysOfWeek:(unint64_t)a4 cycleIndex:(id)a5 cycleIntervalDays:(id)a6 dose:(id)a7;
+- (BOOL)isEqual:(id)equal;
+- (HKMedicationScheduleIntervalData)initWithCoder:(id)coder;
+- (HKMedicationScheduleIntervalData)initWithStartTimeComponent:(id)component daysOfWeek:(unint64_t)week cycleIndex:(id)index cycleIntervalDays:(id)days dose:(id)dose;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKMedicationScheduleIntervalData
 
-- (HKMedicationScheduleIntervalData)initWithStartTimeComponent:(id)a3 daysOfWeek:(unint64_t)a4 cycleIndex:(id)a5 cycleIntervalDays:(id)a6 dose:(id)a7
+- (HKMedicationScheduleIntervalData)initWithStartTimeComponent:(id)component daysOfWeek:(unint64_t)week cycleIndex:(id)index cycleIntervalDays:(id)days dose:(id)dose
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  componentCopy = component;
+  indexCopy = index;
+  daysCopy = days;
+  doseCopy = dose;
   v26.receiver = self;
   v26.super_class = HKMedicationScheduleIntervalData;
   v16 = [(HKMedicationScheduleIntervalData *)&v26 init];
   if (v16)
   {
-    v17 = [v12 copy];
+    v17 = [componentCopy copy];
     startTimeComponent = v16->_startTimeComponent;
     v16->_startTimeComponent = v17;
 
-    v16->_daysOfWeek = a4;
-    v19 = [v13 copy];
+    v16->_daysOfWeek = week;
+    v19 = [indexCopy copy];
     cycleIndex = v16->_cycleIndex;
     v16->_cycleIndex = v19;
 
-    v21 = [v14 copy];
+    v21 = [daysCopy copy];
     cycleIntervalDays = v16->_cycleIntervalDays;
     v16->_cycleIntervalDays = v21;
 
-    v23 = [v15 copy];
+    v23 = [doseCopy copy];
     dose = v16->_dose;
     v16->_dose = v23;
   }
@@ -41,10 +41,10 @@
   return v16;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v14 = 1;
   }
@@ -54,7 +54,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       startTimeComponent = self->_startTimeComponent;
       v7 = v5->_startTimeComponent;
       if (startTimeComponent != v7 && (!v7 || ![(NSDateComponents *)startTimeComponent isEqual:?]))
@@ -121,39 +121,39 @@ LABEL_20:
   return v5 ^ [(NSNumber *)self->_dose hash];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   startTimeComponent = self->_startTimeComponent;
-  v5 = a3;
-  [v5 encodeObject:startTimeComponent forKey:@"startTimeComponent"];
-  [v5 encodeInteger:self->_daysOfWeek forKey:@"daysOfWeek"];
-  [v5 encodeObject:self->_cycleIndex forKey:@"cycleIndex"];
-  [v5 encodeObject:self->_cycleIntervalDays forKey:@"cycleIntervalDays"];
-  [v5 encodeObject:self->_dose forKey:@"dose"];
+  coderCopy = coder;
+  [coderCopy encodeObject:startTimeComponent forKey:@"startTimeComponent"];
+  [coderCopy encodeInteger:self->_daysOfWeek forKey:@"daysOfWeek"];
+  [coderCopy encodeObject:self->_cycleIndex forKey:@"cycleIndex"];
+  [coderCopy encodeObject:self->_cycleIntervalDays forKey:@"cycleIntervalDays"];
+  [coderCopy encodeObject:self->_dose forKey:@"dose"];
 }
 
-- (HKMedicationScheduleIntervalData)initWithCoder:(id)a3
+- (HKMedicationScheduleIntervalData)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = HKMedicationScheduleIntervalData;
   v5 = [(HKMedicationScheduleIntervalData *)&v15 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"startTimeComponent"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"startTimeComponent"];
     startTimeComponent = v5->_startTimeComponent;
     v5->_startTimeComponent = v6;
 
-    v5->_daysOfWeek = [v4 decodeIntegerForKey:@"daysOfWeek"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"cycleIndex"];
+    v5->_daysOfWeek = [coderCopy decodeIntegerForKey:@"daysOfWeek"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"cycleIndex"];
     cycleIndex = v5->_cycleIndex;
     v5->_cycleIndex = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"cycleIntervalDays"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"cycleIntervalDays"];
     cycleIntervalDays = v5->_cycleIntervalDays;
     v5->_cycleIntervalDays = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dose"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dose"];
     dose = v5->_dose;
     v5->_dose = v12;
   }

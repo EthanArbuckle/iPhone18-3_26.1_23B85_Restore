@@ -1,23 +1,23 @@
 @interface MRUActivityMirroringViewController
-- (MRUActivityMirroringViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (MRUActivityMirroringViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (SBUISystemApertureAccessoryView)leadingView;
 - (SBUISystemApertureAccessoryView)minimalView;
 - (SBUISystemApertureAccessoryView)trailingView;
 - (double)preferredHeightForBottomSafeArea;
 - (void)loadView;
-- (void)stopMirroring:(id)a3;
+- (void)stopMirroring:(id)mirroring;
 - (void)updateState;
 - (void)viewDidLoad;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation MRUActivityMirroringViewController
 
-- (MRUActivityMirroringViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (MRUActivityMirroringViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v8.receiver = self;
   v8.super_class = MRUActivityMirroringViewController;
-  v4 = [(MRUActivityMirroringViewController *)&v8 initWithNibName:a3 bundle:a4];
+  v4 = [(MRUActivityMirroringViewController *)&v8 initWithNibName:name bundle:bundle];
   if (v4)
   {
     v5 = objc_alloc_init(MRUMirroringController);
@@ -41,27 +41,27 @@
   v5.receiver = self;
   v5.super_class = MRUActivityMirroringViewController;
   [(MRUActivityMirroringViewController *)&v5 viewDidLoad];
-  v3 = [(MRUActivityMirroringViewController *)self view];
-  v4 = [v3 button];
-  [v4 addTarget:self action:sel_stopMirroring_ forControlEvents:64];
+  view = [(MRUActivityMirroringViewController *)self view];
+  button = [view button];
+  [button addTarget:self action:sel_stopMirroring_ forControlEvents:64];
 
   [(MRUActivityMirroringViewController *)self updateState];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v9.receiver = self;
   v9.super_class = MRUActivityMirroringViewController;
-  v7 = a4;
-  [(MRUActivityMirroringViewController *)&v9 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  coordinatorCopy = coordinator;
+  [(MRUActivityMirroringViewController *)&v9 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __89__MRUActivityMirroringViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke;
   v8[3] = &unk_1E76645E8;
   v8[4] = self;
-  [v7 animateAlongsideTransition:v8 completion:&__block_literal_global_46];
+  [coordinatorCopy animateAlongsideTransition:v8 completion:&__block_literal_global_46];
 }
 
 void __89__MRUActivityMirroringViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke(uint64_t a1)
@@ -74,7 +74,7 @@ void __89__MRUActivityMirroringViewController_viewWillTransitionToSize_withTrans
   [v3 layoutIfNeeded];
 }
 
-- (void)stopMirroring:(id)a3
+- (void)stopMirroring:(id)mirroring
 {
   mirroringController = self->_mirroringController;
   v4[0] = MEMORY[0x1E69E9820];
@@ -93,8 +93,8 @@ void __52__MRUActivityMirroringViewController_stopMirroring___block_invoke(uint6
 
 - (double)preferredHeightForBottomSafeArea
 {
-  v2 = [(MRUActivityMirroringViewController *)self view];
-  [v2 preferredHeightForBottomSafeArea];
+  view = [(MRUActivityMirroringViewController *)self view];
+  [view preferredHeightForBottomSafeArea];
   v4 = v3;
 
   return v4;
@@ -102,48 +102,48 @@ void __52__MRUActivityMirroringViewController_stopMirroring___block_invoke(uint6
 
 - (SBUISystemApertureAccessoryView)leadingView
 {
-  v2 = [(MRUActivityMirroringViewController *)self view];
-  v3 = [v2 leadingView];
+  view = [(MRUActivityMirroringViewController *)self view];
+  leadingView = [view leadingView];
 
-  return v3;
+  return leadingView;
 }
 
 - (SBUISystemApertureAccessoryView)trailingView
 {
-  v2 = [(MRUActivityMirroringViewController *)self view];
-  v3 = [v2 trailingView];
+  view = [(MRUActivityMirroringViewController *)self view];
+  trailingView = [view trailingView];
 
-  return v3;
+  return trailingView;
 }
 
 - (SBUISystemApertureAccessoryView)minimalView
 {
-  v2 = [(MRUActivityMirroringViewController *)self view];
-  v3 = [v2 leadingView];
+  view = [(MRUActivityMirroringViewController *)self view];
+  leadingView = [view leadingView];
 
-  return v3;
+  return leadingView;
 }
 
 - (void)updateState
 {
-  v3 = [(MRUMirroringController *)self->_mirroringController selectedOutputDevice];
-  v19 = v3;
-  if (v3)
+  selectedOutputDevice = [(MRUMirroringController *)self->_mirroringController selectedOutputDevice];
+  v19 = selectedOutputDevice;
+  if (selectedOutputDevice)
   {
     v4 = MEMORY[0x1E69DCAB8];
-    v5 = [MRUMirroringController symbolNameForOutputDevice:v3];
+    v5 = [MRUMirroringController symbolNameForOutputDevice:selectedOutputDevice];
     v6 = [v4 _systemImageNamed:v5];
-    v7 = [(MRUActivityMirroringViewController *)self view];
-    [v7 setDeviceImage:v6];
+    view = [(MRUActivityMirroringViewController *)self view];
+    [view setDeviceImage:v6];
 
-    v8 = [v19 name];
-    v9 = [(MRUActivityMirroringViewController *)self view];
-    v10 = [v9 deviceImage];
-    [v10 setAccessibilityLabel:v8];
+    name = [v19 name];
+    view2 = [(MRUActivityMirroringViewController *)self view];
+    deviceImage = [view2 deviceImage];
+    [deviceImage setAccessibilityLabel:name];
 
-    v11 = [v19 name];
-    v12 = [(MRUActivityMirroringViewController *)self view];
-    [v12 setDeviceName:v11];
+    name2 = [v19 name];
+    view3 = [(MRUActivityMirroringViewController *)self view];
+    [view3 setDeviceName:name2];
 
     if (self->_activeLayoutMode == 4)
     {
@@ -155,26 +155,26 @@ void __52__MRUActivityMirroringViewController_stopMirroring___block_invoke(uint6
       v13 = @"breathe";
     }
 
-    v14 = [(MRUActivityMirroringViewController *)self view];
-    [v14 setState:v13];
+    view4 = [(MRUActivityMirroringViewController *)self view];
+    [view4 setState:v13];
   }
 
   else
   {
-    v15 = [(MRUActivityMirroringViewController *)self view];
-    [v15 setDeviceImage:0];
+    view5 = [(MRUActivityMirroringViewController *)self view];
+    [view5 setDeviceImage:0];
 
-    v16 = [(MRUActivityMirroringViewController *)self view];
-    [v16 setDeviceName:0];
+    view6 = [(MRUActivityMirroringViewController *)self view];
+    [view6 setDeviceName:0];
 
-    v17 = [(MRUActivityMirroringViewController *)self view];
-    [v17 setState:&stru_1F1445548];
+    view7 = [(MRUActivityMirroringViewController *)self view];
+    [view7 setState:&stru_1F1445548];
   }
 
   if (self->_activeLayoutMode == 4)
   {
-    v18 = [(MRUActivityMirroringViewController *)self systemApertureElementContext];
-    [v18 setElementNeedsUpdate];
+    systemApertureElementContext = [(MRUActivityMirroringViewController *)self systemApertureElementContext];
+    [systemApertureElementContext setElementNeedsUpdate];
   }
 }
 

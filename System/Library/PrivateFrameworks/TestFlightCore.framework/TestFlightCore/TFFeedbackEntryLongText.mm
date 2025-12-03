@@ -1,18 +1,18 @@
 @interface TFFeedbackEntryLongText
-- (TFFeedbackEntryLongText)initWithIdentifier:(id)a3 title:(id)a4 placeholder:(id)a5;
+- (TFFeedbackEntryLongText)initWithIdentifier:(id)identifier title:(id)title placeholder:(id)placeholder;
 @end
 
 @implementation TFFeedbackEntryLongText
 
-- (TFFeedbackEntryLongText)initWithIdentifier:(id)a3 title:(id)a4 placeholder:(id)a5
+- (TFFeedbackEntryLongText)initWithIdentifier:(id)identifier title:(id)title placeholder:(id)placeholder
 {
-  v8 = a5;
+  placeholderCopy = placeholder;
   v13.receiver = self;
   v13.super_class = TFFeedbackEntryLongText;
-  v9 = [(TFFeedbackEntry *)&v13 initWithType:1 identifier:a3 title:a4];
+  v9 = [(TFFeedbackEntry *)&v13 initWithType:1 identifier:identifier title:title];
   if (v9)
   {
-    v10 = [v8 copy];
+    v10 = [placeholderCopy copy];
     placeholder = v9->_placeholder;
     v9->_placeholder = v10;
   }

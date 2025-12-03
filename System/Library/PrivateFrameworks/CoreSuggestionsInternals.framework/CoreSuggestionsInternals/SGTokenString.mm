@@ -1,12 +1,12 @@
 @interface SGTokenString
-+ (id)stringWithString:(id)a3 range:(_NSRange)a4 confidence:(int)a5;
++ (id)stringWithString:(id)string range:(_NSRange)range confidence:(int)confidence;
 - (_NSRange)range;
 - (const)UTF8String;
-- (const)_fastCStringContents:(BOOL)a3;
+- (const)_fastCStringContents:(BOOL)contents;
 - (const)_fastCharacterContents;
 - (unint64_t)fastestEncoding;
-- (unsigned)characterAtIndex:(unint64_t)a3;
-- (void)getCharacters:(unsigned __int16 *)a3 range:(_NSRange)a4;
+- (unsigned)characterAtIndex:(unint64_t)index;
+- (void)getCharacters:(unsigned __int16 *)characters range:(_NSRange)range;
 @end
 
 @implementation SGTokenString
@@ -47,7 +47,7 @@
   }
 }
 
-- (const)_fastCStringContents:(BOOL)a3
+- (const)_fastCStringContents:(BOOL)contents
 {
   if (*(self + 28))
   {
@@ -74,11 +74,11 @@
   return [(SGTokenString *)&v5 UTF8String];
 }
 
-- (void)getCharacters:(unsigned __int16 *)a3 range:(_NSRange)a4
+- (void)getCharacters:(unsigned __int16 *)characters range:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  if (a4.location + a4.length > *(self + 7) >> 1)
+  length = range.length;
+  location = range.location;
+  if (range.location + range.length > *(self + 7) >> 1)
   {
     [objc_msgSend(MEMORY[0x277CCA890] "currentHandler")];
   }
@@ -91,7 +91,7 @@
       do
       {
         v9 = *v8++;
-        *a3++ = v9;
+        *characters++ = v9;
         --length;
       }
 
@@ -102,13 +102,13 @@
   else
   {
 
-    memcpy(a3, &self->_contents + 2 * location, 2 * length);
+    memcpy(characters, &self->_contents + 2 * location, 2 * length);
   }
 }
 
-- (unsigned)characterAtIndex:(unint64_t)a3
+- (unsigned)characterAtIndex:(unint64_t)index
 {
-  if (a3 >= *(self + 7) >> 1)
+  if (index >= *(self + 7) >> 1)
   {
     [objc_msgSend(MEMORY[0x277CCA890] "currentHandler")];
   }
@@ -116,44 +116,44 @@
   p_contents = &self->_contents;
   if (*(self + 28))
   {
-    return *(p_contents + a3);
+    return *(p_contents + index);
   }
 
   else
   {
-    return *(p_contents + a3);
+    return *(p_contents + index);
   }
 }
 
-+ (id)stringWithString:(id)a3 range:(_NSRange)a4 confidence:(int)a5
++ (id)stringWithString:(id)string range:(_NSRange)range confidence:(int)confidence
 {
-  length = a4.length;
-  location = a4.location;
-  if (!a3)
+  length = range.length;
+  location = range.location;
+  if (!string)
   {
     [objc_msgSend(MEMORY[0x277CCA890] "currentHandler")];
   }
 
-  if ([a3 length] >> 31)
+  if ([string length] >> 31)
   {
     [objc_msgSend(MEMORY[0x277CCA890] "currentHandler")];
   }
 
-  v11 = [a3 canBeConvertedToEncoding:1];
-  v12 = [class_createInstance(a1 (objc_msgSend(a3];
+  v11 = [string canBeConvertedToEncoding:1];
+  v12 = [class_createInstance(self (objc_msgSend(string];
   *(v12 + 8) = location;
   *(v12 + 16) = length;
-  *(v12 + 24) = a5;
+  *(v12 + 24) = confidence;
   *(v12 + 28) = *(v12 + 28) & 0xFE | v11;
-  *(v12 + 28) = *(v12 + 28) & 1 | (2 * [a3 length]);
+  *(v12 + 28) = *(v12 + 28) & 1 | (2 * [string length]);
   if ((v11 ^ 1))
   {
-    [a3 getCharacters:v12 + 32];
+    [string getCharacters:v12 + 32];
   }
 
   else
   {
-    [a3 getBytes:v12 + 32 maxLength:0 usedLength:*(v12 + 28) >> 1 encoding:0 options:? range:? remainingRange:?];
+    [string getBytes:v12 + 32 maxLength:0 usedLength:*(v12 + 28) >> 1 encoding:0 options:? range:? remainingRange:?];
   }
 
   return v12;

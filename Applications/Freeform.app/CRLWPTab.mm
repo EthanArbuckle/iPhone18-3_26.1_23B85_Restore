@@ -1,8 +1,8 @@
 @interface CRLWPTab
-+ (id)displayStringFromTabLeader:(id)a3;
-+ (id)stringFromTabAlignment:(int)a3 isRTL:(BOOL)a4 isVertical:(BOOL)a5;
++ (id)displayStringFromTabLeader:(id)leader;
++ (id)stringFromTabAlignment:(int)alignment isRTL:(BOOL)l isVertical:(BOOL)vertical;
 + (id)tab;
-+ (id)tabLeaderFromDisplayString:(id)a3;
++ (id)tabLeaderFromDisplayString:(id)string;
 + (id)tabStopAlignmentStringBottom;
 + (id)tabStopAlignmentStringCenter;
 + (id)tabStopAlignmentStringDecimal;
@@ -20,14 +20,14 @@
 + (id)tabStopLeaderStringDash;
 + (id)tabStopLeaderStringPoint;
 + (id)tabStopLeaderStringUnderscore;
-+ (int)tabAlignmentFromString:(id)a3 isRTL:(BOOL)a4;
-- (BOOL)isEqual:(id)a3;
-- (CRLWPTab)initWithPosition:(double)a3 alignment:(int)a4 leader:(id)a5;
++ (int)tabAlignmentFromString:(id)string isRTL:(BOOL)l;
+- (BOOL)isEqual:(id)equal;
+- (CRLWPTab)initWithPosition:(double)position alignment:(int)alignment leader:(id)leader;
 - (NSString)leader;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (int64_t)compare:(id)a3;
-- (int64_t)compareToPosition:(double)a3;
+- (int64_t)compare:(id)compare;
+- (int64_t)compareToPosition:(double)position;
 @end
 
 @implementation CRLWPTab
@@ -168,44 +168,44 @@
   return v3;
 }
 
-+ (id)tabLeaderFromDisplayString:(id)a3
++ (id)tabLeaderFromDisplayString:(id)string
 {
-  v4 = a3;
-  v5 = [a1 tabStopDisplayStringPoint];
-  v6 = [v4 isEqualToString:v5];
+  stringCopy = string;
+  tabStopDisplayStringPoint = [self tabStopDisplayStringPoint];
+  v6 = [stringCopy isEqualToString:tabStopDisplayStringPoint];
 
   if (v6)
   {
-    v7 = [a1 tabStopLeaderStringPoint];
+    tabStopLeaderStringPoint = [self tabStopLeaderStringPoint];
 LABEL_9:
-    v14 = v7;
+    v14 = tabStopLeaderStringPoint;
     goto LABEL_10;
   }
 
-  v8 = [a1 tabStopDisplayStringDash];
-  v9 = [v4 isEqualToString:v8];
+  tabStopDisplayStringDash = [self tabStopDisplayStringDash];
+  v9 = [stringCopy isEqualToString:tabStopDisplayStringDash];
 
   if (v9)
   {
-    v7 = [a1 tabStopLeaderStringDash];
+    tabStopLeaderStringPoint = [self tabStopLeaderStringDash];
     goto LABEL_9;
   }
 
-  v10 = [a1 tabStopDisplayStringUnderscore];
-  v11 = [v4 isEqualToString:v10];
+  tabStopDisplayStringUnderscore = [self tabStopDisplayStringUnderscore];
+  v11 = [stringCopy isEqualToString:tabStopDisplayStringUnderscore];
 
   if (v11)
   {
-    v7 = [a1 tabStopLeaderStringUnderscore];
+    tabStopLeaderStringPoint = [self tabStopLeaderStringUnderscore];
     goto LABEL_9;
   }
 
-  v12 = [a1 tabStopDisplayStringArrow];
-  v13 = [v4 isEqualToString:v12];
+  tabStopDisplayStringArrow = [self tabStopDisplayStringArrow];
+  v13 = [stringCopy isEqualToString:tabStopDisplayStringArrow];
 
   if (v13)
   {
-    v7 = [a1 tabStopLeaderStringArrow];
+    tabStopLeaderStringPoint = [self tabStopLeaderStringArrow];
     goto LABEL_9;
   }
 
@@ -215,16 +215,16 @@ LABEL_10:
   return v14;
 }
 
-+ (int)tabAlignmentFromString:(id)a3 isRTL:(BOOL)a4
++ (int)tabAlignmentFromString:(id)string isRTL:(BOOL)l
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [a1 tabStopAlignmentStringLeft];
-  v8 = [v6 isEqualToString:v7];
+  lCopy = l;
+  stringCopy = string;
+  tabStopAlignmentStringLeft = [self tabStopAlignmentStringLeft];
+  v8 = [stringCopy isEqualToString:tabStopAlignmentStringLeft];
 
   if (v8)
   {
-    if (v4)
+    if (lCopy)
     {
       v9 = 2;
     }
@@ -237,8 +237,8 @@ LABEL_10:
     goto LABEL_15;
   }
 
-  v10 = [a1 tabStopAlignmentStringCenter];
-  v11 = [v6 isEqualToString:v10];
+  tabStopAlignmentStringCenter = [self tabStopAlignmentStringCenter];
+  v11 = [stringCopy isEqualToString:tabStopAlignmentStringCenter];
 
   if (v11)
   {
@@ -247,13 +247,13 @@ LABEL_6:
     goto LABEL_15;
   }
 
-  v12 = [a1 tabStopAlignmentStringRight];
-  v13 = [v6 isEqualToString:v12];
+  tabStopAlignmentStringRight = [self tabStopAlignmentStringRight];
+  v13 = [stringCopy isEqualToString:tabStopAlignmentStringRight];
 
   if (!v13)
   {
-    v14 = [a1 tabStopAlignmentStringDecimal];
-    v15 = [v6 isEqualToString:v14];
+    tabStopAlignmentStringDecimal = [self tabStopAlignmentStringDecimal];
+    v15 = [stringCopy isEqualToString:tabStopAlignmentStringDecimal];
 
     if (v15)
     {
@@ -261,21 +261,21 @@ LABEL_6:
       goto LABEL_15;
     }
 
-    v16 = [a1 tabStopAlignmentStringTop];
-    v17 = [v6 isEqualToString:v16];
+    tabStopAlignmentStringTop = [self tabStopAlignmentStringTop];
+    v17 = [stringCopy isEqualToString:tabStopAlignmentStringTop];
 
     if ((v17 & 1) == 0)
     {
-      v19 = [a1 tabStopAlignmentStringMiddle];
-      v20 = [v6 isEqualToString:v19];
+      tabStopAlignmentStringMiddle = [self tabStopAlignmentStringMiddle];
+      v20 = [stringCopy isEqualToString:tabStopAlignmentStringMiddle];
 
       if (v20)
       {
         goto LABEL_6;
       }
 
-      v21 = [a1 tabStopAlignmentStringBottom];
-      v22 = [v6 isEqualToString:v21];
+      tabStopAlignmentStringBottom = [self tabStopAlignmentStringBottom];
+      v22 = [stringCopy isEqualToString:tabStopAlignmentStringBottom];
 
       if (v22)
       {
@@ -316,7 +316,7 @@ LABEL_6:
     goto LABEL_15;
   }
 
-  if (v4)
+  if (lCopy)
   {
     v9 = 0;
   }
@@ -331,57 +331,57 @@ LABEL_15:
   return v9;
 }
 
-+ (id)stringFromTabAlignment:(int)a3 isRTL:(BOOL)a4 isVertical:(BOOL)a5
++ (id)stringFromTabAlignment:(int)alignment isRTL:(BOOL)l isVertical:(BOOL)vertical
 {
-  v6 = &stru_1018BCA28;
-  if (a3 <= 1)
+  tabStopAlignmentStringTop = &stru_1018BCA28;
+  if (alignment <= 1)
   {
-    if (a3)
+    if (alignment)
     {
-      if (a3 == 1)
+      if (alignment == 1)
       {
-        if (a5)
+        if (vertical)
         {
-          [a1 tabStopAlignmentStringMiddle];
+          [self tabStopAlignmentStringMiddle];
         }
 
         else
         {
-          [a1 tabStopAlignmentStringCenter];
+          [self tabStopAlignmentStringCenter];
         }
-        v6 = ;
+        tabStopAlignmentStringTop = ;
       }
 
       goto LABEL_19;
     }
 
-    if (a5)
+    if (vertical)
     {
-      v6 = [a1 tabStopAlignmentStringTop];
+      tabStopAlignmentStringTop = [self tabStopAlignmentStringTop];
       goto LABEL_19;
     }
 
-    if (a4)
+    if (l)
     {
 LABEL_16:
-      v6 = [a1 tabStopAlignmentStringRight];
+      tabStopAlignmentStringTop = [self tabStopAlignmentStringRight];
       goto LABEL_19;
     }
 
 LABEL_18:
-    v6 = [a1 tabStopAlignmentStringLeft];
+    tabStopAlignmentStringTop = [self tabStopAlignmentStringLeft];
     goto LABEL_19;
   }
 
-  if (a3 == 2)
+  if (alignment == 2)
   {
-    if (a5)
+    if (vertical)
     {
-      v6 = [a1 tabStopAlignmentStringBottom];
+      tabStopAlignmentStringTop = [self tabStopAlignmentStringBottom];
       goto LABEL_19;
     }
 
-    if (!a4)
+    if (!l)
     {
       goto LABEL_16;
     }
@@ -389,69 +389,69 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  if (a3 == 3)
+  if (alignment == 3)
   {
-    v6 = [a1 tabStopAlignmentStringDecimal];
+    tabStopAlignmentStringTop = [self tabStopAlignmentStringDecimal];
   }
 
 LABEL_19:
 
-  return v6;
+  return tabStopAlignmentStringTop;
 }
 
-+ (id)displayStringFromTabLeader:(id)a3
++ (id)displayStringFromTabLeader:(id)leader
 {
-  v4 = a3;
-  v5 = [a1 tabStopDisplayStringNone];
-  v6 = [a1 tabStopLeaderStringPoint];
-  v7 = [v4 isEqualToString:v6];
+  leaderCopy = leader;
+  tabStopDisplayStringNone = [self tabStopDisplayStringNone];
+  tabStopLeaderStringPoint = [self tabStopLeaderStringPoint];
+  v7 = [leaderCopy isEqualToString:tabStopLeaderStringPoint];
 
   if (v7)
   {
-    v8 = [a1 tabStopDisplayStringPoint];
+    tabStopDisplayStringPoint = [self tabStopDisplayStringPoint];
   }
 
   else
   {
-    v9 = [a1 tabStopLeaderStringDash];
-    v10 = [v4 isEqualToString:v9];
+    tabStopLeaderStringDash = [self tabStopLeaderStringDash];
+    v10 = [leaderCopy isEqualToString:tabStopLeaderStringDash];
 
     if (v10)
     {
-      v8 = [a1 tabStopDisplayStringDash];
+      tabStopDisplayStringPoint = [self tabStopDisplayStringDash];
     }
 
     else
     {
-      v11 = [a1 tabStopLeaderStringUnderscore];
-      v12 = [v4 isEqualToString:v11];
+      tabStopLeaderStringUnderscore = [self tabStopLeaderStringUnderscore];
+      v12 = [leaderCopy isEqualToString:tabStopLeaderStringUnderscore];
 
       if (v12)
       {
-        v8 = [a1 tabStopDisplayStringUnderscore];
+        tabStopDisplayStringPoint = [self tabStopDisplayStringUnderscore];
       }
 
       else
       {
-        v13 = [a1 tabStopLeaderStringArrow];
-        v14 = [v4 isEqualToString:v13];
+        tabStopLeaderStringArrow = [self tabStopLeaderStringArrow];
+        v14 = [leaderCopy isEqualToString:tabStopLeaderStringArrow];
 
         if (!v14)
         {
           goto LABEL_10;
         }
 
-        v8 = [a1 tabStopDisplayStringArrow];
+        tabStopDisplayStringPoint = [self tabStopDisplayStringArrow];
       }
     }
   }
 
-  v15 = v8;
+  v15 = tabStopDisplayStringPoint;
 
-  v5 = v15;
+  tabStopDisplayStringNone = v15;
 LABEL_10:
 
-  return v5;
+  return tabStopDisplayStringNone;
 }
 
 + (id)tab
@@ -461,18 +461,18 @@ LABEL_10:
   return v2;
 }
 
-- (CRLWPTab)initWithPosition:(double)a3 alignment:(int)a4 leader:(id)a5
+- (CRLWPTab)initWithPosition:(double)position alignment:(int)alignment leader:(id)leader
 {
-  v8 = a5;
+  leaderCopy = leader;
   v14.receiver = self;
   v14.super_class = CRLWPTab;
   v9 = [(CRLWPTab *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    v9->_position = a3;
-    v9->_alignment = a4;
-    v11 = [v8 copy];
+    v9->_position = position;
+    v9->_alignment = alignment;
+    v11 = [leaderCopy copy];
     leader = v10->_leader;
     v10->_leader = v11;
   }
@@ -480,7 +480,7 @@ LABEL_10:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   position = self->_position;
@@ -503,27 +503,27 @@ LABEL_10:
   }
 }
 
-- (int64_t)compareToPosition:(double)a3
+- (int64_t)compareToPosition:(double)position
 {
   position = self->_position;
-  if (position < a3)
+  if (position < position)
   {
     return -1;
   }
 
   else
   {
-    return position > a3;
+    return position > position;
   }
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  compareCopy = compare;
+  v5 = compareCopy;
+  if (compareCopy)
   {
-    [v4 position];
+    [compareCopy position];
     v6 = [(CRLWPTab *)self compareToPosition:?];
   }
 
@@ -535,16 +535,16 @@ LABEL_10:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  v6 = sub_100014370(v5, v4);
+  v6 = sub_100014370(v5, equalCopy);
   v7 = v6;
   if (v6 && ((position = self->_position, [v6 position], position == v9) || vabdd_f64(position, v9) < fabs(v9 * 0.000000999999997)) && (alignment = self->_alignment, alignment == objc_msgSend(v7, "alignment")))
   {
     leader = self->_leader;
-    v12 = [v7 leader];
+    leader = [v7 leader];
     v13 = leader;
     if (v13)
     {
@@ -556,9 +556,9 @@ LABEL_10:
       v14 = @" ";
     }
 
-    if (v12)
+    if (leader)
     {
-      v15 = v12;
+      v15 = leader;
     }
 
     else
@@ -566,7 +566,7 @@ LABEL_10:
       v15 = @" ";
     }
 
-    v16 = v12;
+    v16 = leader;
     v17 = [(__CFString *)v14 isEqualToString:v15];
   }
 

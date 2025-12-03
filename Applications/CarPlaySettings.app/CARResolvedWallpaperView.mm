@@ -1,13 +1,13 @@
 @interface CARResolvedWallpaperView
-- (_TtC15CarPlaySettings24CARResolvedWallpaperView)initWithCoder:(id)a3;
-- (_TtC15CarPlaySettings24CARResolvedWallpaperView)initWithFrame:(CGRect)a3;
+- (_TtC15CarPlaySettings24CARResolvedWallpaperView)initWithCoder:(id)coder;
+- (_TtC15CarPlaySettings24CARResolvedWallpaperView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 - (void)updateDimmingView;
 @end
 
 @implementation CARResolvedWallpaperView
 
-- (_TtC15CarPlaySettings24CARResolvedWallpaperView)initWithCoder:(id)a3
+- (_TtC15CarPlaySettings24CARResolvedWallpaperView)initWithCoder:(id)coder
 {
   v3 = (&self->super.super.super.isa + OBJC_IVAR____TtC15CarPlaySettings24CARResolvedWallpaperView_wallpaperID);
   *v3 = 0;
@@ -31,11 +31,11 @@
 
 - (void)updateDimmingView
 {
-  v2 = self;
+  selfCopy = self;
   sub_100055280();
 }
 
-- (_TtC15CarPlaySettings24CARResolvedWallpaperView)initWithFrame:(CGRect)a3
+- (_TtC15CarPlaySettings24CARResolvedWallpaperView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

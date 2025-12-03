@@ -1,18 +1,18 @@
 @interface WKRotationCoordinatorObserver
-- (BOOL)isMonitoringCaptureDeviceRotation:(const void *)a3;
-- (WKRotationCoordinatorObserver)initWithRequestManagerProxy:(void *)a3;
+- (BOOL)isMonitoringCaptureDeviceRotation:(const void *)rotation;
+- (WKRotationCoordinatorObserver)initWithRequestManagerProxy:(void *)proxy;
 - (id).cxx_construct;
-- (optional<WebCore::VideoFrameRotation>)start:(const void *)a3 layer:(id)a4;
-- (uint64_t)observeValueForKeyPath:(WTF *)this ofObject:(WTF::StringImpl *)a2 change:context:;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)observeValueForKeyPath:(uint64_t)a1 ofObject:change:context:;
-- (void)observeValueForKeyPath:(void *)a1 ofObject:(WTF::StringImpl *)a2 change:context:;
-- (void)stop:(const void *)a3;
+- (optional<WebCore::VideoFrameRotation>)start:(const void *)start layer:(id)layer;
+- (uint64_t)observeValueForKeyPath:(WTF *)this ofObject:(WTF::StringImpl *)object change:context:;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)observeValueForKeyPath:(uint64_t)path ofObject:change:context:;
+- (void)observeValueForKeyPath:(void *)path ofObject:(WTF::StringImpl *)object change:context:;
+- (void)stop:(const void *)stop;
 @end
 
 @implementation WKRotationCoordinatorObserver
 
-- (WKRotationCoordinatorObserver)initWithRequestManagerProxy:(void *)a3
+- (WKRotationCoordinatorObserver)initWithRequestManagerProxy:(void *)proxy
 {
   v10.receiver = self;
   v10.super_class = WKRotationCoordinatorObserver;
@@ -20,8 +20,8 @@
   v6 = v4;
   if (v4)
   {
-    v7 = *a3;
-    *a3 = 0;
+    v7 = *proxy;
+    *proxy = 0;
     m_ptr = v4->_managerProxy.m_impl.m_ptr;
     v6->_managerProxy.m_impl.m_ptr = v7;
     if (m_ptr)
@@ -37,16 +37,16 @@
   return v6;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   m_ptr = self->_managerProxy.m_impl.m_ptr;
-  if (!m_ptr || !*(m_ptr + 1) || ![a3 isEqualToString:{@"videoRotationAngleForHorizonLevelPreview", a4, a5, a6}])
+  if (!m_ptr || !*(m_ptr + 1) || ![path isEqualToString:{@"videoRotationAngleForHorizonLevelPreview", object, change, context}])
   {
     return;
   }
 
-  MEMORY[0x19EB02040](&v21, [objc_msgSend(a4 "device")]);
-  v9 = [a4 videoRotationAngleForHorizonLevelPreview];
+  MEMORY[0x19EB02040](&v21, [objc_msgSend(object "device")]);
+  videoRotationAngleForHorizonLevelPreview = [object videoRotationAngleForHorizonLevelPreview];
   if (v10 >= 2147483650.0 || v10 <= -2147483650.0)
   {
     goto LABEL_9;
@@ -77,9 +77,9 @@ LABEL_9:
   }
 
 LABEL_10:
-  WTF::RunLoop::mainSingleton(v9);
+  WTF::RunLoop::mainSingleton(videoRotationAngleForHorizonLevelPreview);
   *&v18 = self;
-  v13 = self;
+  selfCopy = self;
   *(&v18 + 1) = self;
   WTF::String::isolatedCopy();
   v14 = WTF::fastMalloc(0x28);
@@ -105,13 +105,13 @@ LABEL_10:
   }
 }
 
-- (BOOL)isMonitoringCaptureDeviceRotation:(const void *)a3
+- (BOOL)isMonitoringCaptureDeviceRotation:(const void *)rotation
 {
   m_table = self->m_coordinators.m_impl.m_table;
   if (m_table)
   {
-    v5 = *a3;
-    if (*a3 == -1 || !v5)
+    v5 = *rotation;
+    if (*rotation == -1 || !v5)
     {
       __break(0xC471u);
       JUMPOUT(0x19DC98C98);
@@ -140,7 +140,7 @@ LABEL_10:
           return v11;
         }
 
-        if (WTF::equal(v11, *a3, a3))
+        if (WTF::equal(v11, *rotation, rotation))
         {
           break;
         }
@@ -160,9 +160,9 @@ LABEL_10:
   return v11;
 }
 
-- (optional<WebCore::VideoFrameRotation>)start:(const void *)a3 layer:(id)a4
+- (optional<WebCore::VideoFrameRotation>)start:(const void *)start layer:(id)layer
 {
-  if (*a3 == -1 || !*a3)
+  if (*start == -1 || !*start)
   {
     __break(0xC471u);
     JUMPOUT(0x19DC98FB0);
@@ -179,10 +179,10 @@ LABEL_10:
     v8 = 0;
   }
 
-  v9 = *(*a3 + 16);
+  v9 = *(*start + 16);
   if (v9 < 0x100)
   {
-    v10 = WTF::StringImpl::hashSlowCase(*a3);
+    v10 = WTF::StringImpl::hashSlowCase(*start);
   }
 
   else
@@ -207,7 +207,7 @@ LABEL_10:
       break;
     }
 
-    if (WTF::equal(v15, *a3, a3))
+    if (WTF::equal(v15, *start, start))
     {
       goto LABEL_25;
     }
@@ -224,7 +224,7 @@ LABEL_14:
     v14 = v11;
   }
 
-  WTF::String::operator=(v14, a3);
+  WTF::String::operator=(v14, start);
   v16 = v14[1];
   v14[1] = 0;
   if (v16)
@@ -302,7 +302,7 @@ LABEL_33:
     if ((*MEMORY[0x1E69E2428])())
     {
       v28 = (*MEMORY[0x1E69E22A8])();
-      v29 = *a3;
+      v29 = *start;
       if (v29)
       {
         atomic_fetch_add_explicit(v29, 2u, memory_order_relaxed);
@@ -334,7 +334,7 @@ LABEL_33:
 
       if (v33)
       {
-        v35 = [objc_alloc((*v27)(v32)) initWithDevice:v33 previewLayer:a4];
+        v35 = [objc_alloc((*v27)(v32)) initWithDevice:v33 previewLayer:layer];
         [v35 addObserver:self forKeyPath:@"videoRotationAngleForHorizonLevelPreview" options:1 context:0];
         v36 = v14[1];
         v14[1] = v35;
@@ -355,14 +355,14 @@ LABEL_33:
   return (v24 | v26 | v25);
 }
 
-- (void)stop:(const void *)a3
+- (void)stop:(const void *)stop
 {
   p_m_coordinators = &self->m_coordinators;
   m_table = self->m_coordinators.m_impl.m_table;
   if (m_table)
   {
-    v7 = *a3;
-    if (*a3 == -1 || !v7)
+    v7 = *stop;
+    if (*stop == -1 || !v7)
     {
       __break(0xC471u);
       JUMPOUT(0x19DC99214);
@@ -398,7 +398,7 @@ LABEL_33:
           goto LABEL_14;
         }
 
-        if (WTF::equal(v13, *a3, a3))
+        if (WTF::equal(v13, *stop, stop))
         {
           break;
         }
@@ -465,33 +465,33 @@ LABEL_15:
   return self;
 }
 
-- (void)observeValueForKeyPath:(void *)a1 ofObject:(WTF::StringImpl *)a2 change:context:
+- (void)observeValueForKeyPath:(void *)path ofObject:(WTF::StringImpl *)object change:context:
 {
-  *a1 = &unk_1F1102CD0;
-  v3 = a1[3];
-  a1[3] = 0;
+  *path = &unk_1F1102CD0;
+  v3 = path[3];
+  path[3] = 0;
   if (v3 && atomic_fetch_add_explicit(v3, 0xFFFFFFFE, memory_order_relaxed) == 2)
   {
-    WTF::StringImpl::destroy(v3, a2);
+    WTF::StringImpl::destroy(v3, object);
   }
 
-  v4 = a1[1];
-  a1[1] = 0;
+  v4 = path[1];
+  path[1] = 0;
   if (v4)
   {
   }
 
-  return a1;
+  return path;
 }
 
-- (uint64_t)observeValueForKeyPath:(WTF *)this ofObject:(WTF::StringImpl *)a2 change:context:
+- (uint64_t)observeValueForKeyPath:(WTF *)this ofObject:(WTF::StringImpl *)object change:context:
 {
   *this = &unk_1F1102CD0;
   v3 = *(this + 3);
   *(this + 3) = 0;
   if (v3 && atomic_fetch_add_explicit(v3, 0xFFFFFFFE, memory_order_relaxed) == 2)
   {
-    WTF::StringImpl::destroy(v3, a2);
+    WTF::StringImpl::destroy(v3, object);
   }
 
   v4 = *(this + 1);
@@ -500,18 +500,18 @@ LABEL_15:
   {
   }
 
-  return WTF::fastFree(this, a2);
+  return WTF::fastFree(this, object);
 }
 
-- (void)observeValueForKeyPath:(uint64_t)a1 ofObject:change:context:
+- (void)observeValueForKeyPath:(uint64_t)path ofObject:change:context:
 {
-  v1 = *(*(a1 + 16) + 8);
+  v1 = *(*(path + 16) + 8);
   if (v1)
   {
     v2 = *(v1 + 8);
     if (v2)
     {
-      WebKit::UserMediaPermissionRequestManagerProxy::rotationAngleForCaptureDeviceChanged(*(v2 + 72), a1 + 24, *(a1 + 32));
+      WebKit::UserMediaPermissionRequestManagerProxy::rotationAngleForCaptureDeviceChanged(*(v2 + 72), path + 24, *(path + 32));
     }
   }
 }

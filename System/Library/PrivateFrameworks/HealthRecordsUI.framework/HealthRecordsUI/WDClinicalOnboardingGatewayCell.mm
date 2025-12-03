@@ -1,5 +1,5 @@
 @interface WDClinicalOnboardingGatewayCell
-- (WDClinicalOnboardingGatewayCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (WDClinicalOnboardingGatewayCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (id)_contentViewMarginsGuide;
 - (void)_constrainStackViewContainerWithinContentView;
 - (void)_createDetailLabel;
@@ -11,13 +11,13 @@
 - (void)_createTapToConnectButton;
 - (void)_createTitleLabel;
 - (void)_createVerticalSpecContainerView;
-- (void)_didTapConnectButton:(id)a3;
+- (void)_didTapConnectButton:(id)button;
 - (void)_positionTapToConnectButton;
 - (void)_setAccessibilityIdentifiers;
-- (void)_updateBasedOnAccessibilityCategory:(BOOL)a3;
-- (void)_updateForContentSizeCategory:(id)a3;
+- (void)_updateBasedOnAccessibilityCategory:(BOOL)category;
+- (void)_updateForContentSizeCategory:(id)category;
 - (void)_updateLabelVisibility;
-- (void)configureWithGateway:(id)a3 dataProvider:(id)a4 connected:(BOOL)a5;
+- (void)configureWithGateway:(id)gateway dataProvider:(id)provider connected:(BOOL)connected;
 - (void)prepareForReuse;
 - (void)setUpConstraints;
 - (void)setupSubviews;
@@ -26,11 +26,11 @@
 
 @implementation WDClinicalOnboardingGatewayCell
 
-- (WDClinicalOnboardingGatewayCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (WDClinicalOnboardingGatewayCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v7.receiver = self;
   v7.super_class = WDClinicalOnboardingGatewayCell;
-  v4 = [(WDMedicalRecordGroupableCell *)&v7 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(WDMedicalRecordGroupableCell *)&v7 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
@@ -46,8 +46,8 @@
   v4.super_class = WDClinicalOnboardingGatewayCell;
   [(WDMedicalRecordGroupableCell *)&v4 prepareForReuse];
   [(WDClinicalOnboardingGatewayCell *)self configureWithGateway:0 dataProvider:0 connected:0];
-  v3 = [(WDClinicalOnboardingGatewayCell *)self logoView];
-  [v3 prepareForReuse];
+  logoView = [(WDClinicalOnboardingGatewayCell *)self logoView];
+  [logoView prepareForReuse];
 
   [(WDClinicalOnboardingGatewayCell *)self setCurrentGateway:0];
   [(WDClinicalOnboardingGatewayCell *)self setCurrentDataProvider:0];
@@ -58,8 +58,8 @@
   v4.receiver = self;
   v4.super_class = WDClinicalOnboardingGatewayCell;
   [(WDMedicalRecordGroupableCell *)&v4 setupSubviews];
-  v3 = [(WDMedicalRecordGroupableCell *)self pillBackgroundView];
-  [v3 setDirectionalLayoutMargins:{16.0, 16.0, 16.0, 16.0}];
+  pillBackgroundView = [(WDMedicalRecordGroupableCell *)self pillBackgroundView];
+  [pillBackgroundView setDirectionalLayoutMargins:{16.0, 16.0, 16.0, 16.0}];
 
   [(WDClinicalOnboardingGatewayCell *)self _createLogoView];
   [(WDClinicalOnboardingGatewayCell *)self _createTitleLabel];
@@ -79,16 +79,16 @@
   logoView = self->_logoView;
   self->_logoView = v4;
 
-  v6 = [(WDClinicalOnboardingGatewayCell *)self logoView];
-  [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
+  logoView = [(WDClinicalOnboardingGatewayCell *)self logoView];
+  [logoView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v7 = [(WDClinicalOnboardingGatewayCell *)self logoView];
-  [v7 setContentMode:1];
+  logoView2 = [(WDClinicalOnboardingGatewayCell *)self logoView];
+  [logoView2 setContentMode:1];
 
   [MEMORY[0x1E69DCAE0] mediumLogoViewDimension];
   v9 = v8;
-  v10 = [(WDClinicalOnboardingGatewayCell *)self logoView];
-  [v10 setSize:v9];
+  logoView3 = [(WDClinicalOnboardingGatewayCell *)self logoView];
+  [logoView3 setSize:v9];
 }
 
 - (void)_createTitleLabel
@@ -98,16 +98,16 @@
   titleLabel = self->_titleLabel;
   self->_titleLabel = v4;
 
-  v6 = [(WDClinicalOnboardingGatewayCell *)self titleLabel];
-  [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
+  titleLabel = [(WDClinicalOnboardingGatewayCell *)self titleLabel];
+  [titleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v7 = [MEMORY[0x1E69DC888] labelColor];
-  v8 = [(WDClinicalOnboardingGatewayCell *)self titleLabel];
-  [v8 setTextColor:v7];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  titleLabel2 = [(WDClinicalOnboardingGatewayCell *)self titleLabel];
+  [titleLabel2 setTextColor:labelColor];
 
   v10 = [MEMORY[0x1E69DB878] _preferredFontForTextStyle:*MEMORY[0x1E69DDCF8] variant:1024];
-  v9 = [(WDClinicalOnboardingGatewayCell *)self titleLabel];
-  [v9 setFont:v10];
+  titleLabel3 = [(WDClinicalOnboardingGatewayCell *)self titleLabel];
+  [titleLabel3 setFont:v10];
 }
 
 - (void)_createSubtitleLabel
@@ -117,16 +117,16 @@
   subtitleLabel = self->_subtitleLabel;
   self->_subtitleLabel = v4;
 
-  v6 = [(WDClinicalOnboardingGatewayCell *)self subtitleLabel];
-  [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
+  subtitleLabel = [(WDClinicalOnboardingGatewayCell *)self subtitleLabel];
+  [subtitleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v7 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  v8 = [(WDClinicalOnboardingGatewayCell *)self subtitleLabel];
-  [v8 setTextColor:v7];
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  subtitleLabel2 = [(WDClinicalOnboardingGatewayCell *)self subtitleLabel];
+  [subtitleLabel2 setTextColor:secondaryLabelColor];
 
   v10 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD80]];
-  v9 = [(WDClinicalOnboardingGatewayCell *)self subtitleLabel];
-  [v9 setFont:v10];
+  subtitleLabel3 = [(WDClinicalOnboardingGatewayCell *)self subtitleLabel];
+  [subtitleLabel3 setFont:v10];
 }
 
 - (void)_createDetailLabel
@@ -136,19 +136,19 @@
   detailLabel = self->_detailLabel;
   self->_detailLabel = v4;
 
-  v6 = [(WDClinicalOnboardingGatewayCell *)self detailLabel];
-  [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
+  detailLabel = [(WDClinicalOnboardingGatewayCell *)self detailLabel];
+  [detailLabel setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v7 = [(WDClinicalOnboardingGatewayCell *)self detailLabel];
-  [v7 setNumberOfLines:0];
+  detailLabel2 = [(WDClinicalOnboardingGatewayCell *)self detailLabel];
+  [detailLabel2 setNumberOfLines:0];
 
-  v8 = [MEMORY[0x1E69DC888] labelColor];
-  v9 = [(WDClinicalOnboardingGatewayCell *)self detailLabel];
-  [v9 setTextColor:v8];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  detailLabel3 = [(WDClinicalOnboardingGatewayCell *)self detailLabel];
+  [detailLabel3 setTextColor:labelColor];
 
   v11 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDCF8]];
-  v10 = [(WDClinicalOnboardingGatewayCell *)self detailLabel];
-  [v10 setFont:v11];
+  detailLabel4 = [(WDClinicalOnboardingGatewayCell *)self detailLabel];
+  [detailLabel4 setFont:v11];
 }
 
 - (void)_createDownloadAvailableView
@@ -164,8 +164,8 @@
 
   [(UILabel *)self->_featureDownloadTitleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UILabel *)self->_featureDownloadTitleLabel setNumberOfLines:0];
-  v10 = [MEMORY[0x1E69DC888] labelColor];
-  [(UILabel *)self->_featureDownloadTitleLabel setTextColor:v10];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  [(UILabel *)self->_featureDownloadTitleLabel setTextColor:labelColor];
 
   v11 = *MEMORY[0x1E69DDD80];
   v12 = [MEMORY[0x1E69DB878] _preferredFontForTextStyle:*MEMORY[0x1E69DDD80] variant:1024];
@@ -173,10 +173,10 @@
 
   v13 = MEMORY[0x1E696AAB0];
   v15 = HROsloLocalizedString(@"GATEWAY_FEATURE_DOWNLOAD_TITLE", v14);
-  v16 = [MEMORY[0x1E69DC888] labelColor];
+  labelColor2 = [MEMORY[0x1E69DC888] labelColor];
   v17 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"arrow.down.circle"];
-  v18 = [MEMORY[0x1E69DC888] labelColor];
-  v19 = [v13 attributedStringText:v15 textColor:v16 symbol:v17 symbolColor:v18 useLargeSpacing:0];
+  labelColor3 = [MEMORY[0x1E69DC888] labelColor];
+  v19 = [v13 attributedStringText:v15 textColor:labelColor2 symbol:v17 symbolColor:labelColor3 useLargeSpacing:0];
   [(UILabel *)self->_featureDownloadTitleLabel setAttributedText:v19];
 
   v20 = [objc_alloc(MEMORY[0x1E69DCC10]) initWithFrame:{v4, v5, v6, v7}];
@@ -185,8 +185,8 @@
 
   [(UILabel *)self->_featureDownloadTextLabel setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UILabel *)self->_featureDownloadTextLabel setNumberOfLines:0];
-  v22 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  [(UILabel *)self->_featureDownloadTextLabel setTextColor:v22];
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  [(UILabel *)self->_featureDownloadTextLabel setTextColor:secondaryLabelColor];
 
   v23 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:v11];
   [(UILabel *)self->_featureDownloadTextLabel setFont:v23];
@@ -197,11 +197,11 @@
   self->_featureDownloadView = v25;
 
   [(HKBorderLineView *)self->_featureDownloadView setTranslatesAutoresizingMaskIntoConstraints:0];
-  v27 = [MEMORY[0x1E69DC888] clearColor];
-  [(HKBorderLineView *)self->_featureDownloadView setBackgroundColor:v27];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [(HKBorderLineView *)self->_featureDownloadView setBackgroundColor:clearColor];
 
-  v28 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  [(HKBorderLineView *)self->_featureDownloadView setBorderLineColor:v28];
+  secondaryLabelColor2 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  [(HKBorderLineView *)self->_featureDownloadView setBorderLineColor:secondaryLabelColor2];
 
   [(HKBorderLineView *)self->_featureDownloadView addSubview:self->_featureDownloadTitleLabel];
   [(HKBorderLineView *)self->_featureDownloadView addSubview:self->_featureDownloadTextLabel];
@@ -213,41 +213,41 @@
   [(UILabel *)self->_featureDownloadTextLabel setContentHuggingPriority:1 forAxis:v31];
   LODWORD(v32) = 1148829696;
   [(UILabel *)self->_featureDownloadTextLabel setContentCompressionResistancePriority:1 forAxis:v32];
-  v33 = [(UILabel *)self->_featureDownloadTitleLabel topAnchor];
-  v34 = [(HKBorderLineView *)self->_featureDownloadView topAnchor];
-  v35 = [v33 constraintEqualToAnchor:v34];
+  topAnchor = [(UILabel *)self->_featureDownloadTitleLabel topAnchor];
+  topAnchor2 = [(HKBorderLineView *)self->_featureDownloadView topAnchor];
+  v35 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v35 setActive:1];
 
-  v36 = [(UILabel *)self->_featureDownloadTextLabel topAnchor];
-  v37 = [(UILabel *)self->_featureDownloadTitleLabel bottomAnchor];
-  v38 = [v36 constraintEqualToAnchor:v37 constant:2.0];
+  topAnchor3 = [(UILabel *)self->_featureDownloadTextLabel topAnchor];
+  bottomAnchor = [(UILabel *)self->_featureDownloadTitleLabel bottomAnchor];
+  v38 = [topAnchor3 constraintEqualToAnchor:bottomAnchor constant:2.0];
   [v38 setActive:1];
 
-  v39 = [(UILabel *)self->_featureDownloadTextLabel bottomAnchor];
-  v40 = [(HKBorderLineView *)self->_featureDownloadView bottomAnchor];
-  v41 = [v39 constraintEqualToAnchor:v40];
+  bottomAnchor2 = [(UILabel *)self->_featureDownloadTextLabel bottomAnchor];
+  bottomAnchor3 = [(HKBorderLineView *)self->_featureDownloadView bottomAnchor];
+  v41 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
   featureDownloadBottomConstraint = self->_featureDownloadBottomConstraint;
   self->_featureDownloadBottomConstraint = v41;
 
   [(NSLayoutConstraint *)self->_featureDownloadBottomConstraint setActive:1];
-  v43 = [(UILabel *)self->_featureDownloadTitleLabel leadingAnchor];
-  v44 = [(HKBorderLineView *)self->_featureDownloadView leadingAnchor];
-  v45 = [v43 constraintEqualToAnchor:v44];
+  leadingAnchor = [(UILabel *)self->_featureDownloadTitleLabel leadingAnchor];
+  leadingAnchor2 = [(HKBorderLineView *)self->_featureDownloadView leadingAnchor];
+  v45 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v45 setActive:1];
 
-  v46 = [(UILabel *)self->_featureDownloadTitleLabel trailingAnchor];
-  v47 = [(HKBorderLineView *)self->_featureDownloadView trailingAnchor];
-  v48 = [v46 constraintEqualToAnchor:v47];
+  trailingAnchor = [(UILabel *)self->_featureDownloadTitleLabel trailingAnchor];
+  trailingAnchor2 = [(HKBorderLineView *)self->_featureDownloadView trailingAnchor];
+  v48 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   [v48 setActive:1];
 
-  v49 = [(UILabel *)self->_featureDownloadTextLabel leadingAnchor];
-  v50 = [(HKBorderLineView *)self->_featureDownloadView leadingAnchor];
-  v51 = [v49 constraintEqualToAnchor:v50];
+  leadingAnchor3 = [(UILabel *)self->_featureDownloadTextLabel leadingAnchor];
+  leadingAnchor4 = [(HKBorderLineView *)self->_featureDownloadView leadingAnchor];
+  v51 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   [v51 setActive:1];
 
-  v54 = [(UILabel *)self->_featureDownloadTextLabel trailingAnchor];
-  v52 = [(HKBorderLineView *)self->_featureDownloadView trailingAnchor];
-  v53 = [v54 constraintEqualToAnchor:v52];
+  trailingAnchor3 = [(UILabel *)self->_featureDownloadTextLabel trailingAnchor];
+  trailingAnchor4 = [(HKBorderLineView *)self->_featureDownloadView trailingAnchor];
+  v53 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   [v53 setActive:1];
 }
 
@@ -264,8 +264,8 @@
 
   [(UILabel *)self->_featureSharingTitleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UILabel *)self->_featureSharingTitleLabel setNumberOfLines:0];
-  v10 = [MEMORY[0x1E69DC888] labelColor];
-  [(UILabel *)self->_featureSharingTitleLabel setTextColor:v10];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  [(UILabel *)self->_featureSharingTitleLabel setTextColor:labelColor];
 
   v11 = *MEMORY[0x1E69DDD80];
   v12 = [MEMORY[0x1E69DB878] _preferredFontForTextStyle:*MEMORY[0x1E69DDD80] variant:1280];
@@ -273,10 +273,10 @@
 
   v13 = MEMORY[0x1E696AAB0];
   v15 = HROsloLocalizedString(@"GATEWAY_FEATURE_SHARING_TITLE", v14);
-  v16 = [MEMORY[0x1E69DC888] labelColor];
+  labelColor2 = [MEMORY[0x1E69DC888] labelColor];
   v17 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"arrow.up.circle"];
-  v18 = [MEMORY[0x1E69DC888] labelColor];
-  v19 = [v13 attributedStringText:v15 textColor:v16 symbol:v17 symbolColor:v18 useLargeSpacing:0];
+  labelColor3 = [MEMORY[0x1E69DC888] labelColor];
+  v19 = [v13 attributedStringText:v15 textColor:labelColor2 symbol:v17 symbolColor:labelColor3 useLargeSpacing:0];
   [(UILabel *)self->_featureSharingTitleLabel setAttributedText:v19];
 
   v20 = [objc_alloc(MEMORY[0x1E69DCC10]) initWithFrame:{v4, v5, v6, v7}];
@@ -286,8 +286,8 @@
   [(UILabel *)self->_featureSharingTextLabel setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UILabel *)self->_featureSharingTextLabel setAdjustsFontForContentSizeCategory:0];
   [(UILabel *)self->_featureSharingTextLabel setNumberOfLines:0];
-  v22 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  [(UILabel *)self->_featureSharingTextLabel setTextColor:v22];
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  [(UILabel *)self->_featureSharingTextLabel setTextColor:secondaryLabelColor];
 
   v23 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:v11];
   [(UILabel *)self->_featureSharingTextLabel setFont:v23];
@@ -298,11 +298,11 @@
   self->_featureSharingView = v25;
 
   [(HKBorderLineView *)self->_featureSharingView setTranslatesAutoresizingMaskIntoConstraints:0];
-  v27 = [MEMORY[0x1E69DC888] clearColor];
-  [(HKBorderLineView *)self->_featureSharingView setBackgroundColor:v27];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [(HKBorderLineView *)self->_featureSharingView setBackgroundColor:clearColor];
 
-  v28 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  [(HKBorderLineView *)self->_featureSharingView setBorderLineColor:v28];
+  secondaryLabelColor2 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  [(HKBorderLineView *)self->_featureSharingView setBorderLineColor:secondaryLabelColor2];
 
   [(HKBorderLineView *)self->_featureSharingView addSubview:self->_featureSharingTitleLabel];
   [(HKBorderLineView *)self->_featureSharingView addSubview:self->_featureSharingTextLabel];
@@ -314,50 +314,50 @@
   [(UILabel *)self->_featureSharingTextLabel setContentHuggingPriority:1 forAxis:v31];
   LODWORD(v32) = 1148829696;
   [(UILabel *)self->_featureSharingTextLabel setContentCompressionResistancePriority:1 forAxis:v32];
-  v33 = [(UILabel *)self->_featureSharingTitleLabel topAnchor];
-  v34 = [(HKBorderLineView *)self->_featureSharingView topAnchor];
-  v35 = [v33 constraintEqualToAnchor:v34];
+  topAnchor = [(UILabel *)self->_featureSharingTitleLabel topAnchor];
+  topAnchor2 = [(HKBorderLineView *)self->_featureSharingView topAnchor];
+  v35 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v35 setActive:1];
 
-  v36 = [(UILabel *)self->_featureSharingTextLabel topAnchor];
-  v37 = [(UILabel *)self->_featureSharingTitleLabel bottomAnchor];
-  v38 = [v36 constraintEqualToAnchor:v37 constant:2.0];
+  topAnchor3 = [(UILabel *)self->_featureSharingTextLabel topAnchor];
+  bottomAnchor = [(UILabel *)self->_featureSharingTitleLabel bottomAnchor];
+  v38 = [topAnchor3 constraintEqualToAnchor:bottomAnchor constant:2.0];
   [v38 setActive:1];
 
-  v39 = [(UILabel *)self->_featureSharingTextLabel bottomAnchor];
-  v40 = [(HKBorderLineView *)self->_featureSharingView bottomAnchor];
-  v41 = [v39 constraintEqualToAnchor:v40];
+  bottomAnchor2 = [(UILabel *)self->_featureSharingTextLabel bottomAnchor];
+  bottomAnchor3 = [(HKBorderLineView *)self->_featureSharingView bottomAnchor];
+  v41 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
   featureSharingBottomConstraint = self->_featureSharingBottomConstraint;
   self->_featureSharingBottomConstraint = v41;
 
   [(NSLayoutConstraint *)self->_featureSharingBottomConstraint setActive:1];
-  v43 = [(UILabel *)self->_featureSharingTitleLabel leadingAnchor];
-  v44 = [(HKBorderLineView *)self->_featureSharingView leadingAnchor];
-  v45 = [v43 constraintEqualToAnchor:v44];
+  leadingAnchor = [(UILabel *)self->_featureSharingTitleLabel leadingAnchor];
+  leadingAnchor2 = [(HKBorderLineView *)self->_featureSharingView leadingAnchor];
+  v45 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v45 setActive:1];
 
-  v46 = [(UILabel *)self->_featureSharingTitleLabel trailingAnchor];
-  v47 = [(HKBorderLineView *)self->_featureSharingView trailingAnchor];
-  v48 = [v46 constraintEqualToAnchor:v47];
+  trailingAnchor = [(UILabel *)self->_featureSharingTitleLabel trailingAnchor];
+  trailingAnchor2 = [(HKBorderLineView *)self->_featureSharingView trailingAnchor];
+  v48 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   [v48 setActive:1];
 
-  v49 = [(UILabel *)self->_featureSharingTextLabel leadingAnchor];
-  v50 = [(HKBorderLineView *)self->_featureSharingView leadingAnchor];
-  v51 = [v49 constraintEqualToAnchor:v50];
+  leadingAnchor3 = [(UILabel *)self->_featureSharingTextLabel leadingAnchor];
+  leadingAnchor4 = [(HKBorderLineView *)self->_featureSharingView leadingAnchor];
+  v51 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   [v51 setActive:1];
 
-  v54 = [(UILabel *)self->_featureSharingTextLabel trailingAnchor];
-  v52 = [(HKBorderLineView *)self->_featureSharingView trailingAnchor];
-  v53 = [v54 constraintEqualToAnchor:v52];
+  trailingAnchor3 = [(UILabel *)self->_featureSharingTextLabel trailingAnchor];
+  trailingAnchor4 = [(HKBorderLineView *)self->_featureSharingView trailingAnchor];
+  v53 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   [v53 setActive:1];
 }
 
 - (void)_createTapToConnectButton
 {
-  v3 = [MEMORY[0x1E69DC740] tintedButtonConfiguration];
-  [v3 setButtonSize:1];
+  tintedButtonConfiguration = [MEMORY[0x1E69DC740] tintedButtonConfiguration];
+  [tintedButtonConfiguration setButtonSize:1];
   v4 = HRLocalizedString(@"TAP_TO_CONNECT");
-  [v3 setTitle:v4];
+  [tintedButtonConfiguration setTitle:v4];
 
   v5 = MEMORY[0x1E69DB878];
   v6 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDCF8]];
@@ -370,9 +370,9 @@
   v14[3] = &unk_1E83DD8E8;
   v15 = v7;
   v8 = v7;
-  [v3 setTitleTextAttributesTransformer:v14];
-  [v3 setDefaultContentInsets];
-  v9 = [MEMORY[0x1E69DC738] buttonWithConfiguration:v3 primaryAction:0];
+  [tintedButtonConfiguration setTitleTextAttributesTransformer:v14];
+  [tintedButtonConfiguration setDefaultContentInsets];
+  v9 = [MEMORY[0x1E69DC738] buttonWithConfiguration:tintedButtonConfiguration primaryAction:0];
   tapToConnectButton = self->_tapToConnectButton;
   self->_tapToConnectButton = v9;
 
@@ -384,8 +384,8 @@
   [(UIButton *)self->_tapToConnectButton setContentHuggingPriority:1 forAxis:v11];
   LODWORD(v12) = 1148846080;
   [(UIButton *)self->_tapToConnectButton setContentCompressionResistancePriority:1 forAxis:v12];
-  v13 = [(WDClinicalOnboardingGatewayCell *)self contentView];
-  [v13 addSubview:self->_tapToConnectButton];
+  contentView = [(WDClinicalOnboardingGatewayCell *)self contentView];
+  [contentView addSubview:self->_tapToConnectButton];
 }
 
 id __60__WDClinicalOnboardingGatewayCell__createTapToConnectButton__block_invoke(uint64_t a1, void *a2)
@@ -412,14 +412,14 @@ id __60__WDClinicalOnboardingGatewayCell__createTapToConnectButton__block_invoke
   verticalSpecContainerView = self->_verticalSpecContainerView;
   self->_verticalSpecContainerView = v6;
 
-  v8 = [(WDClinicalOnboardingGatewayCell *)self verticalSpecContainerView];
-  [v8 setAxis:1];
+  verticalSpecContainerView = [(WDClinicalOnboardingGatewayCell *)self verticalSpecContainerView];
+  [verticalSpecContainerView setAxis:1];
 
-  v9 = [(WDClinicalOnboardingGatewayCell *)self verticalSpecContainerView];
-  [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
+  verticalSpecContainerView2 = [(WDClinicalOnboardingGatewayCell *)self verticalSpecContainerView];
+  [verticalSpecContainerView2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v10 = [(WDClinicalOnboardingGatewayCell *)self verticalSpecContainerView];
-  [v10 setBaselineRelativeArrangement:0];
+  verticalSpecContainerView3 = [(WDClinicalOnboardingGatewayCell *)self verticalSpecContainerView];
+  [verticalSpecContainerView3 setBaselineRelativeArrangement:0];
 
   [(UIStackView *)self->_verticalSpecContainerView setCustomSpacing:self->_subtitleLabel afterView:12.0];
   [(UIStackView *)self->_verticalSpecContainerView setCustomSpacing:self->_detailLabel afterView:20.0];
@@ -443,8 +443,8 @@ id __60__WDClinicalOnboardingGatewayCell__createTapToConnectButton__block_invoke
   [(UIStackView *)self->_outerSpecContainerView setAxis:0];
   [(UIStackView *)self->_outerSpecContainerView setAlignment:1];
   [(UIStackView *)self->_outerSpecContainerView setSpacing:12.0];
-  v8 = [(WDClinicalOnboardingGatewayCell *)self contentView];
-  [v8 addSubview:self->_outerSpecContainerView];
+  contentView = [(WDClinicalOnboardingGatewayCell *)self contentView];
+  [contentView addSubview:self->_outerSpecContainerView];
 }
 
 - (void)setUpConstraints
@@ -458,100 +458,100 @@ id __60__WDClinicalOnboardingGatewayCell__createTapToConnectButton__block_invoke
 
 - (void)_constrainStackViewContainerWithinContentView
 {
-  v12 = [(WDClinicalOnboardingGatewayCell *)self _contentViewMarginsGuide];
-  v3 = [v12 topAnchor];
-  v4 = [(UIStackView *)self->_outerSpecContainerView topAnchor];
-  v5 = [v3 constraintEqualToAnchor:v4];
+  _contentViewMarginsGuide = [(WDClinicalOnboardingGatewayCell *)self _contentViewMarginsGuide];
+  topAnchor = [_contentViewMarginsGuide topAnchor];
+  topAnchor2 = [(UIStackView *)self->_outerSpecContainerView topAnchor];
+  v5 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v5 setActive:1];
 
-  v6 = [v12 trailingAnchor];
-  v7 = [(UIStackView *)self->_outerSpecContainerView trailingAnchor];
-  v8 = [v6 constraintEqualToAnchor:v7];
+  trailingAnchor = [_contentViewMarginsGuide trailingAnchor];
+  trailingAnchor2 = [(UIStackView *)self->_outerSpecContainerView trailingAnchor];
+  v8 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   [v8 setActive:1];
 
-  v9 = [v12 leadingAnchor];
-  v10 = [(UIStackView *)self->_outerSpecContainerView leadingAnchor];
-  v11 = [v9 constraintEqualToAnchor:v10];
+  leadingAnchor = [_contentViewMarginsGuide leadingAnchor];
+  leadingAnchor2 = [(UIStackView *)self->_outerSpecContainerView leadingAnchor];
+  v11 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v11 setActive:1];
 }
 
 - (id)_contentViewMarginsGuide
 {
-  v2 = [(WDMedicalRecordGroupableCell *)self pillBackgroundView];
-  v3 = [v2 layoutMarginsGuide];
+  pillBackgroundView = [(WDMedicalRecordGroupableCell *)self pillBackgroundView];
+  layoutMarginsGuide = [pillBackgroundView layoutMarginsGuide];
 
-  return v3;
+  return layoutMarginsGuide;
 }
 
 - (void)_positionTapToConnectButton
 {
-  v3 = [(UIButton *)self->_tapToConnectButton leadingAnchor];
-  v4 = [(UIStackView *)self->_verticalSpecContainerView leadingAnchor];
-  v5 = [v3 constraintEqualToAnchor:v4];
+  leadingAnchor = [(UIButton *)self->_tapToConnectButton leadingAnchor];
+  leadingAnchor2 = [(UIStackView *)self->_verticalSpecContainerView leadingAnchor];
+  v5 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v5 setActive:1];
 
-  v6 = [(UIButton *)self->_tapToConnectButton topAnchor];
-  v7 = [(UIStackView *)self->_verticalSpecContainerView bottomAnchor];
-  v8 = [v6 constraintEqualToAnchor:v7];
+  topAnchor = [(UIButton *)self->_tapToConnectButton topAnchor];
+  bottomAnchor = [(UIStackView *)self->_verticalSpecContainerView bottomAnchor];
+  v8 = [topAnchor constraintEqualToAnchor:bottomAnchor];
   [v8 setActive:1];
 
-  v15 = [(WDClinicalOnboardingGatewayCell *)self _contentViewMarginsGuide];
-  v9 = [(UIButton *)self->_tapToConnectButton bottomAnchor];
-  v10 = [v15 bottomAnchor];
-  v11 = [v9 constraintEqualToAnchor:v10];
+  _contentViewMarginsGuide = [(WDClinicalOnboardingGatewayCell *)self _contentViewMarginsGuide];
+  bottomAnchor2 = [(UIButton *)self->_tapToConnectButton bottomAnchor];
+  bottomAnchor3 = [_contentViewMarginsGuide bottomAnchor];
+  v11 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
   [v11 setActive:1];
 
-  v12 = [(UIButton *)self->_tapToConnectButton heightAnchor];
-  v13 = [v12 constraintEqualToConstant:32.0];
+  heightAnchor = [(UIButton *)self->_tapToConnectButton heightAnchor];
+  v13 = [heightAnchor constraintEqualToConstant:32.0];
   tapToConnectButtonHeightConstraint = self->_tapToConnectButtonHeightConstraint;
   self->_tapToConnectButtonHeightConstraint = v13;
 
   [(NSLayoutConstraint *)self->_tapToConnectButtonHeightConstraint setActive:1];
 }
 
-- (void)configureWithGateway:(id)a3 dataProvider:(id)a4 connected:(BOOL)a5
+- (void)configureWithGateway:(id)gateway dataProvider:(id)provider connected:(BOOL)connected
 {
-  v5 = a5;
-  v28 = a3;
-  v8 = a4;
-  [(WDClinicalOnboardingGatewayCell *)self setCurrentGateway:v28];
-  [(WDClinicalOnboardingGatewayCell *)self setCurrentDataProvider:v8];
-  if (v28 && v8)
+  connectedCopy = connected;
+  gatewayCopy = gateway;
+  providerCopy = provider;
+  [(WDClinicalOnboardingGatewayCell *)self setCurrentGateway:gatewayCopy];
+  [(WDClinicalOnboardingGatewayCell *)self setCurrentDataProvider:providerCopy];
+  if (gatewayCopy && providerCopy)
   {
-    v9 = [(WDClinicalOnboardingGatewayCell *)self logoView];
-    [v9 fetchBrandable:v28 dataProvider:v8];
+    logoView = [(WDClinicalOnboardingGatewayCell *)self logoView];
+    [logoView fetchBrandable:gatewayCopy dataProvider:providerCopy];
   }
 
-  v10 = [v28 title];
-  v11 = [(WDClinicalOnboardingGatewayCell *)self titleLabel];
-  [v11 setText:v10];
+  title = [gatewayCopy title];
+  titleLabel = [(WDClinicalOnboardingGatewayCell *)self titleLabel];
+  [titleLabel setText:title];
 
-  v12 = [v28 subtitle];
-  v13 = [(WDClinicalOnboardingGatewayCell *)self subtitleLabel];
-  [v13 setText:v12];
+  subtitle = [gatewayCopy subtitle];
+  subtitleLabel = [(WDClinicalOnboardingGatewayCell *)self subtitleLabel];
+  [subtitleLabel setText:subtitle];
 
-  v14 = [v28 displayableDescription];
-  v15 = [(WDClinicalOnboardingGatewayCell *)self detailLabel];
-  [v15 setText:v14];
+  displayableDescription = [gatewayCopy displayableDescription];
+  detailLabel = [(WDClinicalOnboardingGatewayCell *)self detailLabel];
+  [detailLabel setText:displayableDescription];
 
   v16 = objc_alloc(MEMORY[0x1E696AEC0]);
   v18 = HROsloLocalizedString(@"GATEWAY_%@_FEATURE_DOWNLOAD_TEXT", v17);
-  v19 = [v28 title];
-  v20 = [v16 initWithFormat:v18, v19];
+  title2 = [gatewayCopy title];
+  v20 = [v16 initWithFormat:v18, title2];
   [(UILabel *)self->_featureDownloadTextLabel setText:v20];
 
   v21 = objc_alloc(MEMORY[0x1E696AEC0]);
   v23 = HROsloLocalizedString(@"GATEWAY_%@_FEATURE_SHARING_TEXT", v22);
-  v24 = [v28 title];
-  v25 = [v21 initWithFormat:v23, v24];
+  title3 = [gatewayCopy title];
+  v25 = [v21 initWithFormat:v23, title3];
   [(UILabel *)self->_featureSharingTextLabel setText:v25];
 
-  LODWORD(v25) = [v28 supportsSharingToProviderObjC];
-  v26 = [(WDClinicalOnboardingGatewayCell *)self featureSharingView];
-  [v26 setHidden:v25 ^ 1];
+  LODWORD(v25) = [gatewayCopy supportsSharingToProviderObjC];
+  featureSharingView = [(WDClinicalOnboardingGatewayCell *)self featureSharingView];
+  [featureSharingView setHidden:v25 ^ 1];
 
-  v27 = [(WDClinicalOnboardingGatewayCell *)self tapToConnectButton];
-  [v27 setHidden:v5];
+  tapToConnectButton = [(WDClinicalOnboardingGatewayCell *)self tapToConnectButton];
+  [tapToConnectButton setHidden:connectedCopy];
 
   [(WDClinicalOnboardingGatewayCell *)self _updateLabelVisibility];
   [(WDMedicalRecordGroupableCell *)self _updateForCurrentSizeCategory];
@@ -560,41 +560,41 @@ id __60__WDClinicalOnboardingGatewayCell__createTapToConnectButton__block_invoke
 
 - (void)_updateLabelVisibility
 {
-  v3 = [(WDClinicalOnboardingGatewayCell *)self titleLabel];
-  v4 = [v3 text];
-  v5 = [v4 length] == 0;
-  v6 = [(WDClinicalOnboardingGatewayCell *)self titleLabel];
-  [v6 setHidden:v5];
+  titleLabel = [(WDClinicalOnboardingGatewayCell *)self titleLabel];
+  text = [titleLabel text];
+  v5 = [text length] == 0;
+  titleLabel2 = [(WDClinicalOnboardingGatewayCell *)self titleLabel];
+  [titleLabel2 setHidden:v5];
 
-  v7 = [(WDClinicalOnboardingGatewayCell *)self subtitleLabel];
-  v8 = [v7 text];
-  v9 = [v8 length] == 0;
-  v10 = [(WDClinicalOnboardingGatewayCell *)self subtitleLabel];
-  [v10 setHidden:v9];
+  subtitleLabel = [(WDClinicalOnboardingGatewayCell *)self subtitleLabel];
+  text2 = [subtitleLabel text];
+  v9 = [text2 length] == 0;
+  subtitleLabel2 = [(WDClinicalOnboardingGatewayCell *)self subtitleLabel];
+  [subtitleLabel2 setHidden:v9];
 
-  v11 = [(WDClinicalOnboardingGatewayCell *)self detailLabel];
-  v12 = [v11 text];
-  v13 = [v12 length] == 0;
-  v14 = [(WDClinicalOnboardingGatewayCell *)self detailLabel];
-  [v14 setHidden:v13];
+  detailLabel = [(WDClinicalOnboardingGatewayCell *)self detailLabel];
+  text3 = [detailLabel text];
+  v13 = [text3 length] == 0;
+  detailLabel2 = [(WDClinicalOnboardingGatewayCell *)self detailLabel];
+  [detailLabel2 setHidden:v13];
 
-  v15 = [(WDClinicalOnboardingGatewayCell *)self featureDownloadView];
-  [v15 setEdges:0];
+  featureDownloadView = [(WDClinicalOnboardingGatewayCell *)self featureDownloadView];
+  [featureDownloadView setEdges:0];
 
-  v16 = [(WDClinicalOnboardingGatewayCell *)self featureSharingView];
-  [v16 setEdges:0];
+  featureSharingView = [(WDClinicalOnboardingGatewayCell *)self featureSharingView];
+  [featureSharingView setEdges:0];
 
-  v17 = [(WDClinicalOnboardingGatewayCell *)self verticalSpecContainerView];
-  [v17 setNeedsUpdateConstraints];
+  verticalSpecContainerView = [(WDClinicalOnboardingGatewayCell *)self verticalSpecContainerView];
+  [verticalSpecContainerView setNeedsUpdateConstraints];
 }
 
-- (void)_updateForContentSizeCategory:(id)a3
+- (void)_updateForContentSizeCategory:(id)category
 {
   v16.receiver = self;
   v16.super_class = WDClinicalOnboardingGatewayCell;
-  v4 = a3;
-  [(WDMedicalRecordGroupableCell *)&v16 _updateForContentSizeCategory:v4];
-  v5 = [MEMORY[0x1E69DD1B8] traitCollectionWithPreferredContentSizeCategory:{v4, v16.receiver, v16.super_class}];
+  categoryCopy = category;
+  [(WDMedicalRecordGroupableCell *)&v16 _updateForContentSizeCategory:categoryCopy];
+  v5 = [MEMORY[0x1E69DD1B8] traitCollectionWithPreferredContentSizeCategory:{categoryCopy, v16.receiver, v16.super_class}];
 
   v6 = objc_alloc(MEMORY[0x1E69DCA40]);
   v7 = [v6 initForTextStyle:*MEMORY[0x1E69DDCF8]];
@@ -602,13 +602,13 @@ id __60__WDClinicalOnboardingGatewayCell__createTapToConnectButton__block_invoke
   v9 = v8;
   [v7 scaledValueForValue:v5 compatibleWithTraitCollection:12.0];
   v11 = v10;
-  v12 = [(UIButton *)self->_tapToConnectButton isHidden];
+  isHidden = [(UIButton *)self->_tapToConnectButton isHidden];
   [(UIStackView *)self->_outerSpecContainerView setSpacing:v11];
   [(UIStackView *)self->_verticalSpecContainerView setSpacing:v11];
   [(UIStackView *)self->_verticalSpecContainerView setCustomSpacing:self->_titleLabel afterView:2.0];
   [(UIStackView *)self->_verticalSpecContainerView setCustomSpacing:self->_subtitleLabel afterView:v11];
   [(UIStackView *)self->_verticalSpecContainerView setCustomSpacing:self->_detailLabel afterView:v9];
-  if (v12)
+  if (isHidden)
   {
     v13 = 0.0;
   }
@@ -622,22 +622,22 @@ id __60__WDClinicalOnboardingGatewayCell__createTapToConnectButton__block_invoke
   [(NSLayoutConstraint *)self->_featureSharingBottomConstraint setConstant:v13];
   [v7 scaledValueForValue:v5 compatibleWithTraitCollection:32.0];
   v15 = fmax(v14, 32.0);
-  if (v12)
+  if (isHidden)
   {
     v15 = 0.0;
   }
 
   [(NSLayoutConstraint *)self->_tapToConnectButtonHeightConstraint setConstant:v15];
-  [(NSLayoutConstraint *)self->_tapToConnectButtonHeightConstraint setActive:v12 ^ 1u];
+  [(NSLayoutConstraint *)self->_tapToConnectButtonHeightConstraint setActive:isHidden ^ 1u];
 }
 
-- (void)_updateBasedOnAccessibilityCategory:(BOOL)a3
+- (void)_updateBasedOnAccessibilityCategory:(BOOL)category
 {
-  v3 = a3;
+  categoryCopy = category;
   v7.receiver = self;
   v7.super_class = WDClinicalOnboardingGatewayCell;
   [(WDMedicalRecordGroupableCell *)&v7 _updateBasedOnAccessibilityCategory:?];
-  if (v3)
+  if (categoryCopy)
   {
     v5 = 4;
   }
@@ -647,7 +647,7 @@ id __60__WDClinicalOnboardingGatewayCell__createTapToConnectButton__block_invoke
     v5 = 2;
   }
 
-  if (v3)
+  if (categoryCopy)
   {
     v6 = 2;
   }
@@ -659,7 +659,7 @@ id __60__WDClinicalOnboardingGatewayCell__createTapToConnectButton__block_invoke
 
   [(UILabel *)self->_titleLabel setNumberOfLines:v5];
   [(UILabel *)self->_subtitleLabel setNumberOfLines:v6];
-  [(UIStackView *)self->_outerSpecContainerView setAxis:v3];
+  [(UIStackView *)self->_outerSpecContainerView setAxis:categoryCopy];
 }
 
 - (void)_setAccessibilityIdentifiers
@@ -709,14 +709,14 @@ id __60__WDClinicalOnboardingGatewayCell__createTapToConnectButton__block_invoke
   [(UILabel *)self->_featureSharingTextLabel setAccessibilityIdentifier:v17];
 }
 
-- (void)_didTapConnectButton:(id)a3
+- (void)_didTapConnectButton:(id)button
 {
-  v4 = a3;
-  v5 = self;
-  v6 = v5;
-  if (v5)
+  buttonCopy = button;
+  selfCopy = self;
+  v6 = selfCopy;
+  if (selfCopy)
   {
-    v7 = v5;
+    v7 = selfCopy;
     while (1)
     {
       objc_opt_class();
@@ -725,30 +725,30 @@ id __60__WDClinicalOnboardingGatewayCell__createTapToConnectButton__block_invoke
         break;
       }
 
-      v8 = [v7 superview];
+      superview = [v7 superview];
 
-      v7 = v8;
-      if (!v8)
+      v7 = superview;
+      if (!superview)
       {
         goto LABEL_5;
       }
     }
 
     v10 = v7;
-    v11 = [v10 delegate];
+    delegate = [v10 delegate];
     v12 = objc_opt_respondsToSelector();
 
     if (v12)
     {
-      v13 = [v10 delegate];
-      v14 = [v13 conformsToProtocol:&unk_1F4D70F58];
+      delegate2 = [v10 delegate];
+      v14 = [delegate2 conformsToProtocol:&unk_1F4D70F58];
 
       if (v14)
       {
-        v15 = [v10 delegate];
-        v16 = [(WDClinicalOnboardingGatewayCell *)v6 currentGateway];
-        v17 = [(WDClinicalOnboardingGatewayCell *)v6 currentDataProvider];
-        [v15 clinicalOnboardingGatewayCell:v6 didTapConnectWithGateway:v16 dataProvider:v17];
+        delegate3 = [v10 delegate];
+        currentGateway = [(WDClinicalOnboardingGatewayCell *)v6 currentGateway];
+        currentDataProvider = [(WDClinicalOnboardingGatewayCell *)v6 currentDataProvider];
+        [delegate3 clinicalOnboardingGatewayCell:v6 didTapConnectWithGateway:currentGateway dataProvider:currentDataProvider];
       }
     }
 
@@ -780,9 +780,9 @@ LABEL_5:
   v5.receiver = self;
   v5.super_class = WDClinicalOnboardingGatewayCell;
   [(WDClinicalOnboardingGatewayCell *)&v5 tintColorDidChange];
-  v3 = [(WDClinicalOnboardingGatewayCell *)self tapToConnectButton];
-  v4 = [(WDClinicalOnboardingGatewayCell *)self tintColor];
-  [v3 setTitleColor:v4 forState:0];
+  tapToConnectButton = [(WDClinicalOnboardingGatewayCell *)self tapToConnectButton];
+  tintColor = [(WDClinicalOnboardingGatewayCell *)self tintColor];
+  [tapToConnectButton setTitleColor:tintColor forState:0];
 }
 
 - (void)_didTapConnectButton:(void *)a1 .cold.1(void *a1)

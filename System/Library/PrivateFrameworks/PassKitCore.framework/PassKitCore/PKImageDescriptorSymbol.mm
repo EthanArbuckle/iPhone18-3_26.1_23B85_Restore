@@ -1,21 +1,21 @@
 @interface PKImageDescriptorSymbol
-+ (id)createForName:(id)a3 withTintColor:(int64_t)a4 hasBackground:(BOOL)a5;
-- (PKImageDescriptorSymbol)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
++ (id)createForName:(id)name withTintColor:(int64_t)color hasBackground:(BOOL)background;
+- (PKImageDescriptorSymbol)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKImageDescriptorSymbol
 
-+ (id)createForName:(id)a3 withTintColor:(int64_t)a4 hasBackground:(BOOL)a5
++ (id)createForName:(id)name withTintColor:(int64_t)color hasBackground:(BOOL)background
 {
-  if (!a3)
+  if (!name)
   {
     return 0;
   }
 
-  v7 = a3;
-  v8 = [PKImageDescriptor _createForType:a4 withTintColor:a5 hasBackground:?];
-  v9 = [v7 copy];
+  nameCopy = name;
+  v8 = [PKImageDescriptor _createForType:color withTintColor:background hasBackground:?];
+  v9 = [nameCopy copy];
 
   v10 = v8[4];
   v8[4] = v9;
@@ -23,15 +23,15 @@
   return v8;
 }
 
-- (PKImageDescriptorSymbol)initWithCoder:(id)a3
+- (PKImageDescriptorSymbol)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = PKImageDescriptorSymbol;
-  v5 = [(PKImageDescriptor *)&v9 initWithCoder:v4];
+  v5 = [(PKImageDescriptor *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
     name = v5->_name;
     v5->_name = v6;
   }
@@ -39,13 +39,13 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = PKImageDescriptorSymbol;
-  v4 = a3;
-  [(PKImageDescriptor *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_name forKey:{@"name", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(PKImageDescriptor *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_name forKey:{@"name", v5.receiver, v5.super_class}];
 }
 
 @end

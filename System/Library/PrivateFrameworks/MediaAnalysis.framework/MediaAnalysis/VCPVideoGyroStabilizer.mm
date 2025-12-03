@@ -1,21 +1,21 @@
 @interface VCPVideoGyroStabilizer
-- (VCPVideoGyroStabilizer)initWithMetadata:(id)a3 sourceSize:(CGSize)a4 cropRect:(CGRect)a5 stillImageMetadata:(id)a6 timeRange:(id *)a7;
+- (VCPVideoGyroStabilizer)initWithMetadata:(id)metadata sourceSize:(CGSize)size cropRect:(CGRect)rect stillImageMetadata:(id)imageMetadata timeRange:(id *)range;
 - (int)convertAnalysisResult;
-- (void)storeAnalytics:(CGAffineTransform *)a3 isLivePhoto:(BOOL)a4;
+- (void)storeAnalytics:(CGAffineTransform *)analytics isLivePhoto:(BOOL)photo;
 @end
 
 @implementation VCPVideoGyroStabilizer
 
-- (VCPVideoGyroStabilizer)initWithMetadata:(id)a3 sourceSize:(CGSize)a4 cropRect:(CGRect)a5 stillImageMetadata:(id)a6 timeRange:(id *)a7
+- (VCPVideoGyroStabilizer)initWithMetadata:(id)metadata sourceSize:(CGSize)size cropRect:(CGRect)rect stillImageMetadata:(id)imageMetadata timeRange:(id *)range
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v13 = a4.height;
-  v14 = a4.width;
-  v17 = a3;
-  v18 = a6;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v13 = size.height;
+  v14 = size.width;
+  metadataCopy = metadata;
+  imageMetadataCopy = imageMetadata;
   v33.receiver = self;
   v33.super_class = VCPVideoGyroStabilizer;
   v19 = [(VCPVideoStabilizer *)&v33 init];
@@ -41,15 +41,15 @@
 
     v20->_cropSize.width = width;
     v20->_cropSize.height = height;
-    objc_storeStrong(&v20->_metadata, a3);
-    -[VCPVideoStabilizer setIsPathConstraintsStabilization:](v20, "setIsPathConstraintsStabilization:", [v18 count] != 0);
-    [(VCPVideoStabilizer *)v20 setStillImageMetadata:v18];
+    objc_storeStrong(&v20->_metadata, metadata);
+    -[VCPVideoStabilizer setIsPathConstraintsStabilization:](v20, "setIsPathConstraintsStabilization:", [imageMetadataCopy count] != 0);
+    [(VCPVideoStabilizer *)v20 setStillImageMetadata:imageMetadataCopy];
     [(VCPVideoStabilizer *)v20 setCropRect:x, y, width, height];
     [(VCPVideoStabilizer *)v20 setSourceSize:v14, v13];
-    v25 = *&a7->var0.var3;
-    v32[0] = *&a7->var0.var0;
+    v25 = *&range->var0.var3;
+    v32[0] = *&range->var0.var0;
     v32[1] = v25;
-    v32[2] = *&a7->var1.var1;
+    v32[2] = *&range->var1.var1;
     [(VCPVideoStabilizer *)v20 setTimeRange:v32];
     if ([(VCPVideoStabilizer *)v20 isPathConstraintsStabilization])
     {
@@ -87,8 +87,8 @@
   time = **&MEMORY[0x1E6960C68];
   v79 = CMTimeCopyAsDictionary(&time, 0);
   memset(&v101, 0, sizeof(v101));
-  v3 = [(VCPVideoStabilizer *)self stillImageMetadata];
-  v4 = [v3 objectAtIndexedSubscript:0];
+  stillImageMetadata = [(VCPVideoStabilizer *)self stillImageMetadata];
+  v4 = [stillImageMetadata objectAtIndexedSubscript:0];
   v5 = [v4 objectForKeyedSubscript:@"attributes"];
   v6 = [v5 objectForKeyedSubscript:@"MetaPresentationTimeResults"];
   CMTimeMakeFromDictionary(&v101, v6);
@@ -258,13 +258,13 @@ LABEL_16:
         {
 LABEL_26:
           [v87 addObject:v10];
-          v24 = [(VCPVideoStabilizer *)self motionBlurVector];
+          motionBlurVector = [(VCPVideoStabilizer *)self motionBlurVector];
           v25 = [MEMORY[0x1E696AD98] numberWithDouble:v17.x];
           v105[0] = v25;
           v26 = [MEMORY[0x1E696AD98] numberWithDouble:v17.y];
           v105[1] = v26;
           v27 = [MEMORY[0x1E695DEC8] arrayWithObjects:v105 count:2];
-          [v24 addObject:v27];
+          [motionBlurVector addObject:v27];
 
           goto LABEL_27;
         }
@@ -286,8 +286,8 @@ LABEL_39:
         v41 = v38 - 1;
         v86 = [v87 objectAtIndexedSubscript:v38 - 1];
         v114 = @"privEMBVct";
-        v42 = [(VCPVideoStabilizer *)self motionBlurVector];
-        v43 = [v42 objectAtIndexedSubscript:v41];
+        motionBlurVector2 = [(VCPVideoStabilizer *)self motionBlurVector];
+        v43 = [motionBlurVector2 objectAtIndexedSubscript:v41];
         v115 = v43;
         v78 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v115 forKeys:&v114 count:1];
 
@@ -353,13 +353,13 @@ LABEL_39:
             [v65 floatValue];
             v67 = v66;
 
-            v68 = [(VCPVideoStabilizer *)self motionBlurVector];
+            motionBlurVector3 = [(VCPVideoStabilizer *)self motionBlurVector];
             v69 = [MEMORY[0x1E696AD98] numberWithDouble:v62];
             v106[0] = v69;
             v70 = [MEMORY[0x1E696AD98] numberWithDouble:v67];
             v106[1] = v70;
             v71 = [MEMORY[0x1E695DEC8] arrayWithObjects:v106 count:2];
-            [v68 addObject:v71];
+            [motionBlurVector3 addObject:v71];
           }
 
           else if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -405,20 +405,20 @@ LABEL_40:
     }
   }
 
-  v29 = [(VCPVideoStabilizer *)self stillImageMetadata];
-  v30 = [v29 objectAtIndexedSubscript:0];
+  stillImageMetadata2 = [(VCPVideoStabilizer *)self stillImageMetadata];
+  v30 = [stillImageMetadata2 objectAtIndexedSubscript:0];
   v31 = [v30 objectForKeyedSubscript:@"attributes"];
   v32 = [v31 objectForKeyedSubscript:@"MetaPresentationTimeResults"];
   [v10 setObject:v32 forKeyedSubscript:*MEMORY[0x1E69A8B78]];
 
   [v87 addObject:v10];
-  v33 = [(VCPVideoStabilizer *)self motionBlurVector];
+  motionBlurVector4 = [(VCPVideoStabilizer *)self motionBlurVector];
   v34 = [MEMORY[0x1E696AD98] numberWithDouble:v17.x];
   v116[0] = v34;
   v35 = [MEMORY[0x1E696AD98] numberWithDouble:v17.y];
   v116[1] = v35;
   v36 = [MEMORY[0x1E695DEC8] arrayWithObjects:v116 count:2];
-  [v33 addObject:v36];
+  [motionBlurVector4 addObject:v36];
 
 LABEL_42:
 LABEL_43:
@@ -440,13 +440,13 @@ LABEL_47:
   return v28;
 }
 
-- (void)storeAnalytics:(CGAffineTransform *)a3 isLivePhoto:(BOOL)a4
+- (void)storeAnalytics:(CGAffineTransform *)analytics isLivePhoto:(BOOL)photo
 {
-  v4 = a4;
+  photoCopy = photo;
   if ([(VCPVideoStabilizer *)self analysisResultRef])
   {
     v6 = MEMORY[0x1E69A8B48];
-    if (!v4)
+    if (!photoCopy)
     {
       v6 = MEMORY[0x1E69A8B50];
     }

@@ -1,8 +1,8 @@
 @interface ActionsProvider
 - (CNUICoreParentContainerProvider)containerProvider;
 - (_TtC14ContactsUICoreP33_B36447D588C06954708674886B340C6315ActionsProvider)init;
-- (void)setContainerProvider:(id)a3;
-- (void)setGameCenterPlayerViewWrapper:(id)a3;
+- (void)setContainerProvider:(id)provider;
+- (void)setGameCenterPlayerViewWrapper:(id)wrapper;
 @end
 
 @implementation ActionsProvider
@@ -14,19 +14,19 @@
   return v2;
 }
 
-- (void)setContainerProvider:(id)a3
+- (void)setContainerProvider:(id)provider
 {
-  *(&self->super.isa + OBJC_IVAR____TtC14ContactsUICoreP33_B36447D588C06954708674886B340C6315ActionsProvider_containerProvider) = a3;
+  *(&self->super.isa + OBJC_IVAR____TtC14ContactsUICoreP33_B36447D588C06954708674886B340C6315ActionsProvider_containerProvider) = provider;
   swift_unknownObjectRetain();
 
   swift_unknownObjectRelease();
 }
 
-- (void)setGameCenterPlayerViewWrapper:(id)a3
+- (void)setGameCenterPlayerViewWrapper:(id)wrapper
 {
   v4 = *(&self->super.isa + OBJC_IVAR____TtC14ContactsUICoreP33_B36447D588C06954708674886B340C6315ActionsProvider_gameCenterPlayerViewWrapper);
-  *(&self->super.isa + OBJC_IVAR____TtC14ContactsUICoreP33_B36447D588C06954708674886B340C6315ActionsProvider_gameCenterPlayerViewWrapper) = a3;
-  v3 = a3;
+  *(&self->super.isa + OBJC_IVAR____TtC14ContactsUICoreP33_B36447D588C06954708674886B340C6315ActionsProvider_gameCenterPlayerViewWrapper) = wrapper;
+  wrapperCopy = wrapper;
 }
 
 - (_TtC14ContactsUICoreP33_B36447D588C06954708674886B340C6315ActionsProvider)init

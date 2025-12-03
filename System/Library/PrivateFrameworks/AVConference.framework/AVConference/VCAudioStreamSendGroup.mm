@@ -1,52 +1,52 @@
 @interface VCAudioStreamSendGroup
-- (BOOL)addSyncDestination:(id)a3;
-- (BOOL)configureAudioStreams:(id)a3 deviceRole:(int)a4 operatingMode:(int)a5;
+- (BOOL)addSyncDestination:(id)destination;
+- (BOOL)configureAudioStreams:(id)streams deviceRole:(int)role operatingMode:(int)mode;
 - (BOOL)configureStreams;
 - (BOOL)createIOEventQueues;
-- (BOOL)removeSyncDestination:(id)a3;
-- (BOOL)setDeviceRole:(int)a3 operatingMode:(int)a4;
-- (BOOL)setupStreamGroupWithConfig:(id)a3;
-- (BOOL)startCaptureIfNeeded:(BOOL)a3;
+- (BOOL)removeSyncDestination:(id)destination;
+- (BOOL)setDeviceRole:(int)role operatingMode:(int)mode;
+- (BOOL)setupStreamGroupWithConfig:(id)config;
+- (BOOL)startCaptureIfNeeded:(BOOL)needed;
 - (BOOL)stopCaptureForEndToEndStreamIfNeeded;
-- (VCAudioStreamSendGroup)initWithConfig:(id)a3;
+- (VCAudioStreamSendGroup)initWithConfig:(id)config;
 - (id)activeStreamKeys;
-- (id)checkStreamsForAdditionalOptIn:(id)a3;
-- (id)setupRedundancyControllerForMode:(unsigned int)a3;
+- (id)checkStreamsForAdditionalOptIn:(id)in;
+- (id)setupRedundancyControllerForMode:(unsigned int)mode;
 - (id)willStart;
 - (void)cleanupIOEventQueues;
-- (void)collectAndLogChannelMetrics:(id *)a3;
+- (void)collectAndLogChannelMetrics:(id *)metrics;
 - (void)configureSyncGroupTimestamp;
 - (void)createIOEventQueues;
 - (void)dealloc;
-- (void)didReceiveCustomReportPacket:(tagRTCPPACKET *)a3 arrivalNTPTime:(tagNTP)a4;
-- (void)didReceiveReportPacket:(tagRTCPPACKET *)a3 arrivalNTPTime:(tagNTP)a4;
+- (void)didReceiveCustomReportPacket:(tagRTCPPACKET *)packet arrivalNTPTime:(tagNTP)time;
+- (void)didReceiveReportPacket:(tagRTCPPACKET *)packet arrivalNTPTime:(tagNTP)time;
 - (void)didStart;
 - (void)didStop;
-- (void)dispatchedUpdateActiveMediaStreamIDs:(id)a3 withTargetBitrate:(unsigned int)a4 mediaBitrates:(id)a5 rateChangeCounter:(unsigned int)a6;
-- (void)dispatchedUpdateStreamsWithActiveConnection:(id)a3;
+- (void)dispatchedUpdateActiveMediaStreamIDs:(id)ds withTargetBitrate:(unsigned int)bitrate mediaBitrates:(id)bitrates rateChangeCounter:(unsigned int)counter;
+- (void)dispatchedUpdateStreamsWithActiveConnection:(id)connection;
 - (void)flushAudioEventQueue;
 - (void)flushAudioRedundancyEventQueue;
-- (void)redundancyController:(id)a3 redundancyPercentageDidChange:(unsigned int)a4;
-- (void)reportOperatingMode:(int)a3;
-- (void)setBasebandCongestionDetector:(id)a3;
-- (void)setCurrentDTXEnabled:(BOOL)a3;
+- (void)redundancyController:(id)controller redundancyPercentageDidChange:(unsigned int)change;
+- (void)reportOperatingMode:(int)mode;
+- (void)setBasebandCongestionDetector:(id)detector;
+- (void)setCurrentDTXEnabled:(BOOL)enabled;
 - (void)setMuteOnStreams;
-- (void)setMuted:(BOOL)a3;
-- (void)setPowerSpectrumEnabled:(BOOL)a3;
-- (void)setReportingAgent:(opaqueRTCReporting *)a3;
-- (void)setVADFilteringEnabled:(BOOL)a3;
+- (void)setMuted:(BOOL)muted;
+- (void)setPowerSpectrumEnabled:(BOOL)enabled;
+- (void)setReportingAgent:(opaqueRTCReporting *)agent;
+- (void)setVADFilteringEnabled:(BOOL)enabled;
 - (void)startDynamicDucker;
 - (void)startVoiceActivityDetection;
 - (void)stopDynamicDucker;
 - (void)stopVoiceActivityDetection;
-- (void)updateActiveVoiceOnly:(BOOL)a3;
-- (void)updateOperatingMode:(int)a3;
-- (void)updateVoiceActivityEnabled:(BOOL)a3 isMediaPriorityEnabled:(BOOL)a4;
+- (void)updateActiveVoiceOnly:(BOOL)only;
+- (void)updateOperatingMode:(int)mode;
+- (void)updateVoiceActivityEnabled:(BOOL)enabled isMediaPriorityEnabled:(BOOL)priorityEnabled;
 @end
 
 @implementation VCAudioStreamSendGroup
 
-- (VCAudioStreamSendGroup)initWithConfig:(id)a3
+- (VCAudioStreamSendGroup)initWithConfig:(id)config
 {
   v7[1] = *MEMORY[0x1E69E9840];
   v6.receiver = self;
@@ -54,7 +54,7 @@
   v4 = [(VCMediaStreamSendGroup *)&v6 initWithConfig:?];
   if (v4)
   {
-    v4->_common = [[VCAudioStreamGroupCommon alloc] initWithConfig:a3 audioCallback:VCAudioStreamSendGroup_PushAudioSamples context:v4 audioDirection:2 stateQueue:v4->super.super._stateQueue];
+    v4->_common = [[VCAudioStreamGroupCommon alloc] initWithConfig:config audioCallback:VCAudioStreamSendGroup_PushAudioSamples context:v4 audioDirection:2 stateQueue:v4->super.super._stateQueue];
     [(VCObject *)v4->_common setLogPrefix:[(VCObject *)v4 logPrefix]];
     if (v4->_common)
     {
@@ -63,8 +63,8 @@
       v4->_forcedAudioPriorityValue = [+[VCDefaults sharedInstance](VCDefaults forceAudioPriorityValue];
       v4->_forcedAudioPriorityEnabled = [+[VCDefaults sharedInstance](VCDefaults forceAudioPriorityEnabled];
       v4->_lastAudioPriority = 0;
-      v4->_systemAudioCaptureSession = [a3 systemAudioCaptureSession];
-      v4->_shouldScheduleMediaQueue = [a3 shouldScheduleMediaQueue];
+      v4->_systemAudioCaptureSession = [config systemAudioCaptureSession];
+      v4->_shouldScheduleMediaQueue = [config shouldScheduleMediaQueue];
       if ([(VCAudioStreamSendGroup *)v4 createIOEventQueues])
       {
         return v4;
@@ -106,14 +106,14 @@
   [(VCMediaStreamSendGroup *)&v4 dealloc];
 }
 
-- (BOOL)setupStreamGroupWithConfig:(id)a3
+- (BOOL)setupStreamGroupWithConfig:(id)config
 {
   v7 = *MEMORY[0x1E69E9840];
-  self->_shouldScheduleMediaQueue = [a3 shouldScheduleMediaQueue];
+  self->_shouldScheduleMediaQueue = [config shouldScheduleMediaQueue];
   [(VCAudioStreamGroupCommon *)self->_common cleanupStreams];
   v6.receiver = self;
   v6.super_class = VCAudioStreamSendGroup;
-  return [(VCMediaStreamSendGroup *)&v6 setupStreamGroupWithConfig:a3];
+  return [(VCMediaStreamSendGroup *)&v6 setupStreamGroupWithConfig:config];
 }
 
 - (BOOL)stopCaptureForEndToEndStreamIfNeeded
@@ -140,7 +140,7 @@
     }
 
     streamGroupMode = self->super._streamGroupMode;
-    v8 = [(VCAudioIO *)[(VCAudioStreamGroupCommon *)self->_common audioIO] state];
+    state = [(VCAudioIO *)[(VCAudioStreamGroupCommon *)self->_common audioIO] state];
     *v16 = 136316162;
     *&v16[4] = v5;
     *&v16[12] = 2080;
@@ -150,7 +150,7 @@
     WORD2(v17) = 1024;
     *(&v17 + 6) = streamGroupMode;
     WORD5(v17) = 1024;
-    HIDWORD(v17) = v8;
+    HIDWORD(v17) = state;
     v9 = " [%s] %s:%d Choosing to stop capture, streamGroupMode=%u audioIOState=%u";
     v10 = v6;
     v11 = 40;
@@ -181,7 +181,7 @@
     }
 
     v14 = self->super._streamGroupMode;
-    v15 = [(VCAudioIO *)[(VCAudioStreamGroupCommon *)self->_common audioIO] state];
+    state2 = [(VCAudioIO *)[(VCAudioStreamGroupCommon *)self->_common audioIO] state];
     *v16 = 136316674;
     *&v16[4] = v12;
     *&v16[12] = 2080;
@@ -191,11 +191,11 @@
     WORD2(v17) = 2112;
     *(&v17 + 6) = v3;
     HIWORD(v17) = 2048;
-    v18 = self;
+    selfCopy = self;
     LOWORD(v19) = 1024;
     *(&v19 + 2) = v14;
     HIWORD(v19) = 1024;
-    LODWORD(v20) = v15;
+    LODWORD(v20) = state2;
     v9 = " [%s] %s:%d %@(%p) Choosing to stop capture, streamGroupMode=%u audioIOState=%u";
     v10 = v13;
     v11 = 60;
@@ -207,10 +207,10 @@ LABEL_15:
   return 1;
 }
 
-- (BOOL)startCaptureIfNeeded:(BOOL)a3
+- (BOOL)startCaptureIfNeeded:(BOOL)needed
 {
   v23 = *MEMORY[0x1E69E9840];
-  if (a3 && (v4 = [(VCAudioStreamGroupCommon *)self->_common startCapture]) != 0)
+  if (needed && (v4 = [(VCAudioStreamGroupCommon *)self->_common startCapture]) != 0)
   {
     v5 = v4;
     if (objc_opt_class() == self)
@@ -259,7 +259,7 @@ LABEL_15:
         v17 = 2112;
         v18 = v6;
         v19 = 2048;
-        v20 = self;
+        selfCopy = self;
         v21 = 2112;
         v22 = v5;
         _os_log_error_impl(&dword_1DB56E000, v9, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Starting capture failed with error=%@", &v11, 0x3Au);
@@ -277,9 +277,9 @@ LABEL_15:
   return v7;
 }
 
-- (void)updateOperatingMode:(int)a3
+- (void)updateOperatingMode:(int)mode
 {
-  v3 = *&a3;
+  v3 = *&mode;
   v38 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
   {
@@ -299,10 +299,10 @@ LABEL_15:
     }
   }
 
-  v7 = [(VCAudioStreamGroupCommon *)self->_common audioStreams];
-  if (v7)
+  audioStreams = [(VCAudioStreamGroupCommon *)self->_common audioStreams];
+  if (audioStreams)
   {
-    v8 = v7;
+    v8 = audioStreams;
     do
     {
       [v8->var7 updateOperatingMode:v3];
@@ -337,8 +337,8 @@ LABEL_15:
         v22 = 0u;
         v23 = 0u;
         v24 = 0u;
-        v15 = [v14 streamConfigs];
-        v16 = [v15 countByEnumeratingWithState:&v21 objects:v20 count:16];
+        streamConfigs = [v14 streamConfigs];
+        v16 = [streamConfigs countByEnumeratingWithState:&v21 objects:v20 count:16];
         if (v16)
         {
           v17 = v16;
@@ -350,14 +350,14 @@ LABEL_15:
             {
               if (*v22 != v18)
               {
-                objc_enumerationMutation(v15);
+                objc_enumerationMutation(streamConfigs);
               }
 
               [*(*(&v21 + 1) + 8 * v19++) setOneToOneOperatingMode:v3];
             }
 
             while (v17 != v19);
-            v17 = [v15 countByEnumeratingWithState:&v21 objects:v20 count:16];
+            v17 = [streamConfigs countByEnumeratingWithState:&v21 objects:v20 count:16];
           }
 
           while (v17);
@@ -374,7 +374,7 @@ LABEL_15:
   }
 }
 
-- (BOOL)setDeviceRole:(int)a3 operatingMode:(int)a4
+- (BOOL)setDeviceRole:(int)role operatingMode:(int)mode
 {
   v14 = *MEMORY[0x1E69E9840];
   v10 = 0;
@@ -386,8 +386,8 @@ LABEL_15:
   v7[1] = 3221225472;
   v7[2] = __54__VCAudioStreamSendGroup_setDeviceRole_operatingMode___block_invoke;
   v7[3] = &unk_1E85F6D88;
-  v8 = a3;
-  v9 = a4;
+  roleCopy = role;
+  modeCopy = mode;
   v7[4] = self;
   v7[5] = &v10;
   dispatch_sync(stateQueue, v7);
@@ -538,21 +538,21 @@ LABEL_18:
   }
 }
 
-- (BOOL)configureAudioStreams:(id)a3 deviceRole:(int)a4 operatingMode:(int)a5
+- (BOOL)configureAudioStreams:(id)streams deviceRole:(int)role operatingMode:(int)mode
 {
   v74 = *MEMORY[0x1E69E9840];
-  v51 = 0;
+  stop = 0;
   v70 = 0u;
   v71 = 0u;
   v72 = 0u;
   v73 = 0u;
-  v46 = [a3 countByEnumeratingWithState:&v70 objects:v69 count:16];
+  v46 = [streams countByEnumeratingWithState:&v70 objects:v69 count:16];
   if (!v46)
   {
     goto LABEL_42;
   }
 
-  if (a4 == 3)
+  if (role == 3)
   {
     v7 = 6;
   }
@@ -569,7 +569,7 @@ LABEL_6:
   {
     if (*v71 != v45)
     {
-      objc_enumerationMutation(a3);
+      objc_enumerationMutation(streams);
     }
 
     v9 = *(*(&v70 + 1) + 8 * v8);
@@ -579,8 +579,8 @@ LABEL_6:
     v68 = 0u;
     v47 = v8;
     v48 = v9;
-    v49 = [v9 streamConfigs];
-    v10 = [v49 countByEnumeratingWithState:&v65 objects:v64 count:16];
+    streamConfigs = [v9 streamConfigs];
+    v10 = [streamConfigs countByEnumeratingWithState:&v65 objects:v64 count:16];
     if (v10)
     {
       v11 = v10;
@@ -591,12 +591,12 @@ LABEL_6:
         {
           if (*v66 != v12)
           {
-            objc_enumerationMutation(v49);
+            objc_enumerationMutation(streamConfigs);
           }
 
           v14 = *(*(&v65 + 1) + 8 * i);
           [v14 setAudioStreamMode:v7];
-          [v14 setOneToOneOperatingMode:a5];
+          [v14 setOneToOneOperatingMode:mode];
           if (objc_opt_class() == self)
           {
             if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -605,7 +605,7 @@ LABEL_6:
               v23 = *MEMORY[0x1E6986650];
               if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
               {
-                v24 = [v14 oneToOneOperatingMode];
+                oneToOneOperatingMode = [v14 oneToOneOperatingMode];
                 *buf = 136315906;
                 v53 = v22;
                 v54 = 2080;
@@ -613,7 +613,7 @@ LABEL_6:
                 v56 = 1024;
                 v57 = 226;
                 v58 = 1024;
-                LODWORD(v59) = v24;
+                LODWORD(v59) = oneToOneOperatingMode;
                 v19 = v23;
                 v20 = " [%s] %s:%d Updating operatingMode in streamConfig.oneToOneOperatingMode=%d";
                 v21 = 34;
@@ -636,7 +636,7 @@ LABEL_6:
               v17 = *MEMORY[0x1E6986650];
               if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
               {
-                v18 = [v14 oneToOneOperatingMode];
+                oneToOneOperatingMode2 = [v14 oneToOneOperatingMode];
                 *buf = 136316418;
                 v53 = v16;
                 v54 = 2080;
@@ -646,9 +646,9 @@ LABEL_6:
                 v58 = 2112;
                 v59 = v15;
                 v60 = 2048;
-                v61 = self;
+                selfCopy5 = self;
                 v62 = 1024;
-                LODWORD(v63) = v18;
+                LODWORD(v63) = oneToOneOperatingMode2;
                 v19 = v17;
                 v20 = " [%s] %s:%d %@(%p) Updating operatingMode in streamConfig.oneToOneOperatingMode=%d";
                 v21 = 54;
@@ -660,22 +660,22 @@ LABEL_23:
           }
         }
 
-        v11 = [v49 countByEnumeratingWithState:&v65 objects:v64 count:16];
+        v11 = [streamConfigs countByEnumeratingWithState:&v65 objects:v64 count:16];
       }
 
       while (v11);
     }
 
-    v25 = [v48 stream];
-    v26 = [v25 state];
-    v27 = [v25 state];
-    v28 = v27;
-    v29 = v26 == 2 || v27 == 4;
+    stream = [v48 stream];
+    state = [stream state];
+    state2 = [stream state];
+    v28 = state2;
+    v29 = state == 2 || state2 == 4;
     v30 = v29;
-    if (v29 || [v25 state])
+    if (v29 || [stream state])
     {
-      v51 = [v25 stop];
-      if (v51)
+      stop = [stream stop];
+      if (stop)
       {
         if (objc_opt_class() == self)
         {
@@ -716,7 +716,7 @@ LABEL_23:
               v58 = 2112;
               v59 = v33;
               v60 = 2048;
-              v61 = self;
+              selfCopy5 = self;
               v39 = " [%s] %s:%d %@(%p) stop audio stream failed";
               goto LABEL_85;
             }
@@ -729,15 +729,15 @@ LABEL_42:
       }
     }
 
-    if (([v25 setStreamConfig:objc_msgSend(v48 withError:{"streamConfigs"), &v51}] & 1) == 0)
+    if (([stream setStreamConfig:objc_msgSend(v48 withError:{"streamConfigs"), &stop}] & 1) == 0)
     {
       break;
     }
 
     if (v30)
     {
-      v51 = [v25 start];
-      if (v51)
+      stop = [stream start];
+      if (stop)
       {
         if (objc_opt_class() == self)
         {
@@ -784,7 +784,7 @@ LABEL_42:
         v58 = 2112;
         v59 = v34;
         v60 = 2048;
-        v61 = self;
+        selfCopy5 = self;
         v39 = " [%s] %s:%d %@(%p) start audio stream failed";
 LABEL_85:
         _os_log_error_impl(&dword_1DB56E000, v38, OS_LOG_TYPE_ERROR, v39, buf, 0x30u);
@@ -793,8 +793,8 @@ LABEL_85:
 
       if (v28 == 4)
       {
-        v51 = [v25 setPause:1];
-        if (v51)
+        stop = [stream setPause:1];
+        if (stop)
         {
           if (objc_opt_class() == self)
           {
@@ -841,7 +841,7 @@ LABEL_85:
           v58 = 2112;
           v59 = v40;
           v60 = 2048;
-          v61 = self;
+          selfCopy5 = self;
           v39 = " [%s] %s:%d %@(%p) pause audio stream failed";
           goto LABEL_85;
         }
@@ -851,7 +851,7 @@ LABEL_85:
     v8 = v47 + 1;
     if (v47 + 1 == v46)
     {
-      v46 = [a3 countByEnumeratingWithState:&v70 objects:v69 count:16];
+      v46 = [streams countByEnumeratingWithState:&v70 objects:v69 count:16];
       if (!v46)
       {
         goto LABEL_42;
@@ -907,9 +907,9 @@ LABEL_85:
       v58 = 2112;
       v59 = v32;
       v60 = 2048;
-      v61 = self;
+      selfCopy5 = self;
       v62 = 2112;
-      v63 = v51;
+      v63 = stop;
       _os_log_error_impl(&dword_1DB56E000, v36, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) configuring audio stream failed error=%@", buf, 0x3Au);
     }
   }
@@ -918,7 +918,7 @@ LABEL_85:
   return v31;
 }
 
-- (void)setPowerSpectrumEnabled:(BOOL)a3
+- (void)setPowerSpectrumEnabled:(BOOL)enabled
 {
   v6 = *MEMORY[0x1E69E9840];
   stateQueue = self->super.super._stateQueue;
@@ -927,11 +927,11 @@ LABEL_85:
   block[2] = __50__VCAudioStreamSendGroup_setPowerSpectrumEnabled___block_invoke;
   block[3] = &unk_1E85F37A0;
   block[4] = self;
-  v5 = a3;
+  enabledCopy = enabled;
   dispatch_sync(stateQueue, block);
 }
 
-- (void)setBasebandCongestionDetector:(id)a3
+- (void)setBasebandCongestionDetector:(id)detector
 {
   block[6] = *MEMORY[0x1E69E9840];
   stateQueue = self->super.super._stateQueue;
@@ -940,7 +940,7 @@ LABEL_85:
   block[2] = __56__VCAudioStreamSendGroup_setBasebandCongestionDetector___block_invoke;
   block[3] = &unk_1E85F37F0;
   block[4] = self;
-  block[5] = a3;
+  block[5] = detector;
   dispatch_sync(stateQueue, block);
 }
 
@@ -983,7 +983,7 @@ uint64_t __56__VCAudioStreamSendGroup_setBasebandCongestionDetector___block_invo
   return result;
 }
 
-- (void)setVADFilteringEnabled:(BOOL)a3
+- (void)setVADFilteringEnabled:(BOOL)enabled
 {
   v6 = *MEMORY[0x1E69E9840];
   stateQueue = self->super.super._stateQueue;
@@ -992,13 +992,13 @@ uint64_t __56__VCAudioStreamSendGroup_setBasebandCongestionDetector___block_invo
   block[2] = __49__VCAudioStreamSendGroup_setVADFilteringEnabled___block_invoke;
   block[3] = &unk_1E85F37A0;
   block[4] = self;
-  v5 = a3;
+  enabledCopy = enabled;
   dispatch_sync(stateQueue, block);
 }
 
-- (void)updateActiveVoiceOnly:(BOOL)a3
+- (void)updateActiveVoiceOnly:(BOOL)only
 {
-  v3 = a3;
+  onlyCopy = only;
   v38 = *MEMORY[0x1E69E9840];
   v34 = 0u;
   v35 = 0u;
@@ -1021,8 +1021,8 @@ uint64_t __56__VCAudioStreamSendGroup_setBasebandCongestionDetector___block_invo
           objc_enumerationMutation(obj);
         }
 
-        v10 = [*(*(&v34 + 1) + 8 * i) stream];
-        [v10 setSendActiveVoiceOnly:v3];
+        stream = [*(*(&v34 + 1) + 8 * i) stream];
+        [stream setSendActiveVoiceOnly:onlyCopy];
         if (objc_opt_class() == self)
         {
           if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -1038,9 +1038,9 @@ uint64_t __56__VCAudioStreamSendGroup_setBasebandCongestionDetector___block_invo
               v25 = 1024;
               v26 = 294;
               v27 = 1024;
-              *v28 = v3;
+              *v28 = onlyCopy;
               *&v28[4] = 2112;
-              *&v28[6] = v10;
+              *&v28[6] = stream;
               v14 = v18;
               v15 = " [%s] %s:%d Send active voice only set to %d for stream=%@";
               v16 = 44;
@@ -1074,9 +1074,9 @@ uint64_t __56__VCAudioStreamSendGroup_setBasebandCongestionDetector___block_invo
               *&v28[8] = 2048;
               *&v28[10] = self;
               v29 = 1024;
-              v30 = v3;
+              v30 = onlyCopy;
               v31 = 2112;
-              v32 = v10;
+              v32 = stream;
               v14 = v13;
               v15 = " [%s] %s:%d %@(%p) Send active voice only set to %d for stream=%@";
               v16 = 64;
@@ -1095,15 +1095,15 @@ LABEL_15:
   }
 }
 
-- (void)dispatchedUpdateStreamsWithActiveConnection:(id)a3
+- (void)dispatchedUpdateStreamsWithActiveConnection:(id)connection
 {
   v31 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->super.super._stateQueue);
-  if (VCConnection_IsEndToEndLink(a3) && self->super._streamGroupMode == 1)
+  if (VCConnection_IsEndToEndLink(connection) && self->super._streamGroupMode == 1)
   {
     v5 = [(VCMediaStreamSendGroup *)self dispatchedMediaStreamInfosForEndToEndConnection:1];
-    v18 = a3;
-    v6 = [a3 isWifiToWifi];
+    connectionCopy = connection;
+    isWifiToWifi = [connection isWifiToWifi];
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
@@ -1128,8 +1128,8 @@ LABEL_15:
           v23 = 0u;
           v24 = 0u;
           v25 = 0u;
-          v12 = [v11 streamConfigs];
-          v13 = [v12 countByEnumeratingWithState:&v22 objects:v21 count:16];
+          streamConfigs = [v11 streamConfigs];
+          v13 = [streamConfigs countByEnumeratingWithState:&v22 objects:v21 count:16];
           if (v13)
           {
             v14 = v13;
@@ -1141,14 +1141,14 @@ LABEL_15:
               {
                 if (*v23 != v15)
                 {
-                  objc_enumerationMutation(v12);
+                  objc_enumerationMutation(streamConfigs);
                 }
 
-                [*(*(&v22 + 1) + 8 * v16++) setUseWifiTiers:v6];
+                [*(*(&v22 + 1) + 8 * v16++) setUseWifiTiers:isWifiToWifi];
               }
 
               while (v14 != v16);
-              v14 = [v12 countByEnumeratingWithState:&v22 objects:v21 count:16];
+              v14 = [streamConfigs countByEnumeratingWithState:&v22 objects:v21 count:16];
             }
 
             while (v14);
@@ -1164,9 +1164,9 @@ LABEL_15:
       while (v8);
     }
 
-    v19 = self;
-    v17 = &v19;
-    a3 = v18;
+    selfCopy = self;
+    v17 = &selfCopy;
+    connection = connectionCopy;
   }
 
   else
@@ -1176,10 +1176,10 @@ LABEL_15:
   }
 
   v17->super_class = VCAudioStreamSendGroup;
-  [(objc_super *)v17 dispatchedUpdateStreamsWithActiveConnection:a3];
+  [(objc_super *)v17 dispatchedUpdateStreamsWithActiveConnection:connection];
 }
 
-- (void)setCurrentDTXEnabled:(BOOL)a3
+- (void)setCurrentDTXEnabled:(BOOL)enabled
 {
   v6 = *MEMORY[0x1E69E9840];
   stateQueue = self->super.super._stateQueue;
@@ -1188,7 +1188,7 @@ LABEL_15:
   block[2] = __47__VCAudioStreamSendGroup_setCurrentDTXEnabled___block_invoke;
   block[3] = &unk_1E85F37A0;
   block[4] = self;
-  v5 = a3;
+  enabledCopy = enabled;
   dispatch_sync(stateQueue, block);
 }
 
@@ -1230,7 +1230,7 @@ uint64_t __47__VCAudioStreamSendGroup_setCurrentDTXEnabled___block_invoke(uint64
   return result;
 }
 
-- (void)updateVoiceActivityEnabled:(BOOL)a3 isMediaPriorityEnabled:(BOOL)a4
+- (void)updateVoiceActivityEnabled:(BOOL)enabled isMediaPriorityEnabled:(BOOL)priorityEnabled
 {
   v8 = *MEMORY[0x1E69E9840];
   stateQueue = self->super.super._stateQueue;
@@ -1239,8 +1239,8 @@ uint64_t __47__VCAudioStreamSendGroup_setCurrentDTXEnabled___block_invoke(uint64
   block[2] = __76__VCAudioStreamSendGroup_updateVoiceActivityEnabled_isMediaPriorityEnabled___block_invoke;
   block[3] = &unk_1E85F41F8;
   block[4] = self;
-  v6 = a3;
-  v7 = a4;
+  enabledCopy = enabled;
+  priorityEnabledCopy = priorityEnabled;
   dispatch_async(stateQueue, block);
 }
 
@@ -1289,7 +1289,7 @@ uint64_t __47__VCAudioStreamSendGroup_setCurrentDTXEnabled___block_invoke(uint64
   [(VCMediaStreamSendGroup *)&v3 didStop];
 }
 
-- (void)setMuted:(BOOL)a3
+- (void)setMuted:(BOOL)muted
 {
   v6 = *MEMORY[0x1E69E9840];
   stateQueue = self->super.super._stateQueue;
@@ -1298,7 +1298,7 @@ uint64_t __47__VCAudioStreamSendGroup_setCurrentDTXEnabled___block_invoke(uint64
   block[2] = __35__VCAudioStreamSendGroup_setMuted___block_invoke;
   block[3] = &unk_1E85F37A0;
   block[4] = self;
-  v5 = a3;
+  mutedCopy = muted;
   dispatch_sync(stateQueue, block);
 }
 
@@ -1310,18 +1310,18 @@ uint64_t __35__VCAudioStreamSendGroup_setMuted___block_invoke(uint64_t a1)
   return [v2 setMuteOnStreams];
 }
 
-- (void)collectAndLogChannelMetrics:(id *)a3
+- (void)collectAndLogChannelMetrics:(id *)metrics
 {
   if ([(VCMediaStreamGroup *)self state]== 1)
   {
     common = self->_common;
     *&v5 = self->_averageInputPower;
 
-    [(VCAudioStreamGroupCommon *)common collectAndLogChannelMetrics:a3 averagePower:v5];
+    [(VCAudioStreamGroupCommon *)common collectAndLogChannelMetrics:metrics averagePower:v5];
   }
 }
 
-- (void)setReportingAgent:(opaqueRTCReporting *)a3
+- (void)setReportingAgent:(opaqueRTCReporting *)agent
 {
   block[6] = *MEMORY[0x1E69E9840];
   stateQueue = self->super.super._stateQueue;
@@ -1330,7 +1330,7 @@ uint64_t __35__VCAudioStreamSendGroup_setMuted___block_invoke(uint64_t a1)
   block[2] = __44__VCAudioStreamSendGroup_setReportingAgent___block_invoke;
   block[3] = &unk_1E85F40E0;
   block[4] = self;
-  block[5] = a3;
+  block[5] = agent;
   dispatch_sync(stateQueue, block);
 }
 
@@ -1344,9 +1344,9 @@ uint64_t __44__VCAudioStreamSendGroup_setReportingAgent___block_invoke(uint64_t 
   return [*(*(a1 + 32) + 768) setReportingAgent:*(a1 + 40)];
 }
 
-- (void)dispatchedUpdateActiveMediaStreamIDs:(id)a3 withTargetBitrate:(unsigned int)a4 mediaBitrates:(id)a5 rateChangeCounter:(unsigned int)a6
+- (void)dispatchedUpdateActiveMediaStreamIDs:(id)ds withTargetBitrate:(unsigned int)bitrate mediaBitrates:(id)bitrates rateChangeCounter:(unsigned int)counter
 {
-  v6 = *&a6;
+  v6 = *&counter;
   v47 = *MEMORY[0x1E69E9840];
   if (objc_opt_class() == self)
   {
@@ -1365,11 +1365,11 @@ uint64_t __44__VCAudioStreamSendGroup_setReportingAgent___block_invoke(uint64_t 
         v35 = 2080;
         v36 = FourccToCStr([(VCMediaStreamGroup *)self streamGroupID]);
         v37 = 2112;
-        v38 = a3;
+        selfCopy2 = ds;
         v39 = 2112;
-        v40 = a5;
+        bitratesCopy = bitrates;
         v41 = 1024;
-        LODWORD(v42) = a4;
+        LODWORD(dsCopy2) = bitrate;
         v14 = " [%s] %s:%d StreamGroup=%s streamIDs=%@ mediaBitrates=%@ for targetBitrate=%d";
         v15 = v13;
         v16 = 64;
@@ -1406,15 +1406,15 @@ LABEL_11:
         v35 = 2112;
         v36 = v11;
         v37 = 2048;
-        v38 = self;
+        selfCopy2 = self;
         v39 = 2080;
-        v40 = FourccToCStr([(VCMediaStreamGroup *)self streamGroupID]);
+        bitratesCopy = FourccToCStr([(VCMediaStreamGroup *)self streamGroupID]);
         v41 = 2112;
-        v42 = a3;
+        dsCopy2 = ds;
         v43 = 2112;
-        v44 = a5;
+        bitratesCopy2 = bitrates;
         v45 = 1024;
-        v46 = a4;
+        bitrateCopy = bitrate;
         v14 = " [%s] %s:%d %@(%p) StreamGroup=%s streamIDs=%@ mediaBitrates=%@ for targetBitrate=%d";
         v15 = v18;
         v16 = 84;
@@ -1424,24 +1424,24 @@ LABEL_11:
   }
 
   v19 = VCMemoryPool_Alloc(self->_audioStreamUpdatePool);
-  *v19 = [a3 count];
+  *v19 = [ds count];
   v19[18] = [(VCMediaStreamSendGroup *)self v2PayloadsAllowed];
-  if ([a3 count] >= 1)
+  if ([ds count] >= 1)
   {
     v20 = 0;
     do
     {
-      *&v19[2 * v20 + 2] = [objc_msgSend(a3 objectAtIndexedSubscript:{v20), "unsignedShortValue"}];
-      v21 = -[NSDictionary objectForKeyedSubscript:](self->super.super._streamIDToMediaStreamMap, "objectForKeyedSubscript:", [a3 objectAtIndexedSubscript:v20]);
+      *&v19[2 * v20 + 2] = [objc_msgSend(ds objectAtIndexedSubscript:{v20), "unsignedShortValue"}];
+      v21 = -[NSDictionary objectForKeyedSubscript:](self->super.super._streamIDToMediaStreamMap, "objectForKeyedSubscript:", [ds objectAtIndexedSubscript:v20]);
       if (v21 && self->super._streamGroupMode == 1)
       {
-        [v21 setTargetBitrate:objc_msgSend(objc_msgSend(a5 rateChangeCounter:{"objectAtIndexedSubscript:", v20), "unsignedIntValue"), v6}];
+        [v21 setTargetBitrate:objc_msgSend(objc_msgSend(bitrates rateChangeCounter:{"objectAtIndexedSubscript:", v20), "unsignedIntValue"), v6}];
       }
 
       ++v20;
     }
 
-    while (v20 < [a3 count]);
+    while (v20 < [ds count]);
   }
 
   _VCAudioStreamSendGroup_ProcessActiveStreams(self, v19, &__block_literal_global_46);
@@ -1493,9 +1493,9 @@ LABEL_11:
           v35 = 2112;
           v36 = v24;
           v37 = 2048;
-          v38 = self;
+          selfCopy2 = self;
           v39 = 1024;
-          LODWORD(v40) = v26;
+          LODWORD(bitratesCopy) = v26;
           _os_log_error_impl(&dword_1DB56E000, v25, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) CMSimpleQueueEnqueue Full! Dropping audio stream update event with %d active streams", buf, 0x36u);
         }
       }
@@ -1508,7 +1508,7 @@ LABEL_33:
   self->_lastEnqueuedStreamUpdateEventWasEmpty = v22 == 0;
   v28.receiver = self;
   v28.super_class = VCAudioStreamSendGroup;
-  [(VCMediaStreamSendGroup *)&v28 dispatchedUpdateActiveMediaStreamIDs:a3 withTargetBitrate:a4 mediaBitrates:a5 rateChangeCounter:v6];
+  [(VCMediaStreamSendGroup *)&v28 dispatchedUpdateActiveMediaStreamIDs:ds withTargetBitrate:bitrate mediaBitrates:bitrates rateChangeCounter:v6];
 }
 
 void __113__VCAudioStreamSendGroup_dispatchedUpdateActiveMediaStreamIDs_withTargetBitrate_mediaBitrates_rateChangeCounter___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, unsigned __int16 *a4, int a5)
@@ -1543,11 +1543,11 @@ void __113__VCAudioStreamSendGroup_dispatchedUpdateActiveMediaStreamIDs_withTarg
 
 - (id)activeStreamKeys
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [(VCAudioStreamGroupCommon *)self->_common audioStreams];
-  if (v4)
+  array = [MEMORY[0x1E695DF70] array];
+  audioStreams = [(VCAudioStreamGroupCommon *)self->_common audioStreams];
+  if (audioStreams)
   {
-    v5 = v4;
+    v5 = audioStreams;
     do
     {
       if (v5->var1)
@@ -1563,7 +1563,7 @@ void __113__VCAudioStreamSendGroup_dispatchedUpdateActiveMediaStreamIDs_withTarg
           v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[VCMediaStreamGroup streamGroupID](self, "streamGroupID")}];
         }
 
-        [v3 addObject:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"%@:%@", self->super.super._participantUUID, v7)}];
+        [array addObject:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"%@:%@", self->super.super._participantUUID, v7)}];
       }
 
       v5 = v5->var0;
@@ -1572,10 +1572,10 @@ void __113__VCAudioStreamSendGroup_dispatchedUpdateActiveMediaStreamIDs_withTarg
     while (v5);
   }
 
-  return v3;
+  return array;
 }
 
-- (BOOL)addSyncDestination:(id)a3
+- (BOOL)addSyncDestination:(id)destination
 {
   v11 = *MEMORY[0x1E69E9840];
   v7 = 0;
@@ -1589,7 +1589,7 @@ void __113__VCAudioStreamSendGroup_dispatchedUpdateActiveMediaStreamIDs_withTarg
   v6[3] = &unk_1E85F4108;
   v6[5] = self;
   v6[6] = &v7;
-  v6[4] = a3;
+  v6[4] = destination;
   dispatch_sync(stateQueue, v6);
   v4 = *(v8 + 24);
   _Block_object_dispose(&v7, 8);
@@ -1701,7 +1701,7 @@ LABEL_13:
   }
 }
 
-- (BOOL)removeSyncDestination:(id)a3
+- (BOOL)removeSyncDestination:(id)destination
 {
   v11 = *MEMORY[0x1E69E9840];
   v7 = 0;
@@ -1715,7 +1715,7 @@ LABEL_13:
   v6[3] = &unk_1E85F4108;
   v6[5] = self;
   v6[6] = &v7;
-  v6[4] = a3;
+  v6[4] = destination;
   dispatch_sync(stateQueue, v6);
   v4 = *(v8 + 24);
   _Block_object_dispose(&v7, 8);
@@ -1818,7 +1818,7 @@ LABEL_13:
   }
 }
 
-- (void)redundancyController:(id)a3 redundancyPercentageDidChange:(unsigned int)a4
+- (void)redundancyController:(id)controller redundancyPercentageDidChange:(unsigned int)change
 {
   v7 = *MEMORY[0x1E69E9840];
   stateQueue = self->super.super._stateQueue;
@@ -1826,9 +1826,9 @@ LABEL_13:
   v5[1] = 3221225472;
   v5[2] = __77__VCAudioStreamSendGroup_redundancyController_redundancyPercentageDidChange___block_invoke;
   v5[3] = &unk_1E85F3890;
-  v5[4] = a3;
+  v5[4] = controller;
   v5[5] = self;
-  v6 = a4;
+  changeCopy = change;
   dispatch_async(stateQueue, v5);
 }
 
@@ -2139,9 +2139,9 @@ LABEL_15:
 {
   v3 = VCVoiceDetector_Create(0);
   self->_voiceDetector = v3;
-  v4 = [(VCAudioIO *)[(VCAudioStreamGroupCommon *)self->_common audioIO] clientFormat];
+  clientFormat = [(VCAudioIO *)[(VCAudioStreamGroupCommon *)self->_common audioIO] clientFormat];
 
-  VCVoiceDetector_Start(v3, v4);
+  VCVoiceDetector_Start(v3, clientFormat);
 }
 
 - (void)stopVoiceActivityDetection
@@ -2198,7 +2198,7 @@ LABEL_15:
   }
 }
 
-- (id)setupRedundancyControllerForMode:(unsigned int)a3
+- (id)setupRedundancyControllerForMode:(unsigned int)mode
 {
   v23 = *MEMORY[0x1E69E9840];
   v5 = -[NSMutableDictionary objectForKeyedSubscript:](self->super._sendGroupConfigForMode, "objectForKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithUnsignedInt:?]);
@@ -2261,7 +2261,7 @@ LABEL_26:
     WORD2(v20) = 2048;
     *(&v20 + 6) = v8;
     HIWORD(v20) = 1024;
-    LODWORD(v21) = a3;
+    LODWORD(selfCopy) = mode;
     v12 = " [%s] %s:%d Redundancy controller %p is created for streamGroupMode=%u";
     v13 = v11;
     v14 = 44;
@@ -2300,11 +2300,11 @@ LABEL_26:
     WORD2(v20) = 2112;
     *(&v20 + 6) = v9;
     HIWORD(v20) = 2048;
-    v21 = self;
+    selfCopy = self;
     LOWORD(v22) = 2048;
     *(&v22 + 2) = v8;
     WORD5(v22) = 1024;
-    HIDWORD(v22) = a3;
+    HIDWORD(v22) = mode;
     v12 = " [%s] %s:%d %@(%p) Redundancy controller %p is created for streamGroupMode=%u";
     v13 = v16;
     v14 = 64;
@@ -2312,7 +2312,7 @@ LABEL_26:
 
   _os_log_impl(&dword_1DB56E000, v13, OS_LOG_TYPE_DEFAULT, v12, v19, v14);
 LABEL_17:
-  [v6 setRedundancyController:{v8, *v19, *&v19[8], v20, v21, v22}];
+  [v6 setRedundancyController:{v8, *v19, *&v19[8], v20, selfCopy, v22}];
 LABEL_18:
   -[VCMediaStreamSendGroup setRedundancyController:](self, "setRedundancyController:", [v6 redundancyController]);
 LABEL_19:
@@ -2320,7 +2320,7 @@ LABEL_19:
   return 0;
 }
 
-- (id)checkStreamsForAdditionalOptIn:(id)a3
+- (id)checkStreamsForAdditionalOptIn:(id)in
 {
   v22 = *MEMORY[0x1E69E9840];
   if (self->super._isRemoteOnPeace)
@@ -2329,9 +2329,9 @@ LABEL_19:
     {
       v5 = [objc_msgSend(objc_msgSend(-[NSArray objectAtIndexedSubscript:](self->super.super._mediaStreamInfoArray objectAtIndexedSubscript:{0), "streamConfigs"), "objectAtIndexedSubscript:", 0), "multiwayConfig"}];
       v6 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:{objc_msgSend(v5, "idsStreamID")}];
-      if (([a3 containsObject:v6] & 1) == 0)
+      if (([in containsObject:v6] & 1) == 0)
       {
-        v7 = [objc_alloc(MEMORY[0x1E695DF70]) initWithArray:a3];
+        v7 = [objc_alloc(MEMORY[0x1E695DF70]) initWithArray:in];
         [v7 addObject:v6];
         if (VRTraceGetErrorLogLevelForModule() >= 5)
         {
@@ -2359,13 +2359,13 @@ LABEL_19:
     }
   }
 
-  return a3;
+  return in;
 }
 
-- (void)didReceiveReportPacket:(tagRTCPPACKET *)a3 arrivalNTPTime:(tagNTP)a4
+- (void)didReceiveReportPacket:(tagRTCPPACKET *)packet arrivalNTPTime:(tagNTP)time
 {
   v55 = *MEMORY[0x1E69E9840];
-  if ((*&a3->var0 & 0x1F) != 0)
+  if ((*&packet->var0 & 0x1F) != 0)
   {
     v5 = 0;
     v6 = 0;
@@ -2377,13 +2377,13 @@ LABEL_3:
       v54 = 0u;
       v51 = 0u;
       v52 = 0u;
-      v7 = self;
+      selfCopy = self;
       mediaStreams = self->super.super._mediaStreams;
       v9 = [(NSArray *)mediaStreams countByEnumeratingWithState:&v51 objects:v50 count:16];
       if (v9)
       {
         v10 = v9;
-        v11 = &a3->var1.var22.var1.var0[24 * v5 + 16];
+        v11 = &packet->var1.var22.var1.var0[24 * v5 + 16];
         v12 = *v52;
 LABEL_6:
         v13 = 0;
@@ -2413,10 +2413,10 @@ LABEL_6:
           }
         }
 
-        var0 = a3->var1.var0.var0;
+        var0 = packet->var1.var0.var0;
         v17 = (100 * v11[4]) >> 8;
         v18 = *(v11 + 2);
-        v19 = RTCPComputeRoundTripTimeMiddle32(v11, a4.wide);
+        v19 = RTCPComputeRoundTripTimeMiddle32(v11, time.wide);
         v20 = Middle32ToMilliSeconds(v19);
         v36 = 0;
         memset(v37, 0, sizeof(v37));
@@ -2438,8 +2438,8 @@ LABEL_6:
         [v14 setVCStatistics:buf];
         ++v5;
         v6 = 1;
-        self = v7;
-        if (v5 < (*&a3->var0 & 0x1Fu))
+        self = selfCopy;
+        if (v5 < (*&packet->var0 & 0x1Fu))
         {
           goto LABEL_3;
         }
@@ -2449,10 +2449,10 @@ LABEL_6:
 
 LABEL_12:
       ++v5;
-      self = v7;
+      self = selfCopy;
     }
 
-    while (v5 < (*&a3->var0 & 0x1Fu));
+    while (v5 < (*&packet->var0 & 0x1Fu));
     if ((v32 & 1) == 0)
     {
       goto LABEL_20;
@@ -2569,11 +2569,11 @@ LABEL_20:
   }
 }
 
-- (void)didReceiveCustomReportPacket:(tagRTCPPACKET *)a3 arrivalNTPTime:(tagNTP)a4
+- (void)didReceiveCustomReportPacket:(tagRTCPPACKET *)packet arrivalNTPTime:(tagNTP)time
 {
-  v5 = self;
+  selfCopy = self;
   v76 = *MEMORY[0x1E69E9840];
-  var2 = a3->var1.var0.var2;
+  var2 = packet->var1.var0.var2;
   if (objc_opt_class() == self)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -2582,8 +2582,8 @@ LABEL_20:
       v8 = *MEMORY[0x1E6986650];
       if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
       {
-        v9 = *(&a3->var0 + 1);
-        var0 = a3->var1.var0.var0;
+        v9 = *(&packet->var0 + 1);
+        var0 = packet->var1.var0.var0;
         *buf = 136316418;
         v57 = v7;
         v58[0] = 2080;
@@ -2609,7 +2609,7 @@ LABEL_11:
   {
     if (objc_opt_respondsToSelector())
     {
-      v6 = [(VCAudioStreamSendGroup *)v5 performSelector:sel_logPrefix];
+      v6 = [(VCAudioStreamSendGroup *)selfCopy performSelector:sel_logPrefix];
     }
 
     else
@@ -2623,8 +2623,8 @@ LABEL_11:
       v15 = *MEMORY[0x1E6986650];
       if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
       {
-        v16 = *(&a3->var0 + 1);
-        v17 = a3->var1.var0.var0;
+        v16 = *(&packet->var0 + 1);
+        v17 = packet->var1.var0.var0;
         *buf = 136316930;
         v57 = v14;
         v58[0] = 2080;
@@ -2634,7 +2634,7 @@ LABEL_11:
         *v60 = 2112;
         *&v60[2] = v6;
         *&v60[10] = 2048;
-        *&v61 = v5;
+        *&v61 = selfCopy;
         WORD4(v61) = 1024;
         *(&v61 + 10) = v16;
         HIWORD(v61) = 1024;
@@ -2653,7 +2653,7 @@ LABEL_11:
   {
     v18 = 0;
     v19 = 0;
-    v53 = v5;
+    v53 = selfCopy;
 LABEL_14:
     v52 = v19;
     do
@@ -2662,14 +2662,14 @@ LABEL_14:
       v75 = 0u;
       v72 = 0u;
       v73 = 0u;
-      mediaStreams = v5->super.super._mediaStreams;
+      mediaStreams = selfCopy->super.super._mediaStreams;
       v21 = [(NSArray *)mediaStreams countByEnumeratingWithState:&v72 objects:v71 count:16];
       if (v21)
       {
         v22 = v21;
         v23 = *v73;
-        v24 = &a3->var1.var2.var1.var2[12 * v18 + 7];
-        v25 = &a3->var1.var2.var1.var2[12 * v18 + 23];
+        v24 = &packet->var1.var2.var1.var2[12 * v18 + 7];
+        v25 = &packet->var1.var2.var1.var2[12 * v18 + 23];
         v55 = v18;
 LABEL_17:
         v26 = 0;
@@ -2681,7 +2681,7 @@ LABEL_17:
           }
 
           v27 = *(*(&v72 + 1) + 8 * v26);
-          v28 = *(&a3->var0 + 1) << 8 == 62720 ? v24 : v25;
+          v28 = *(&packet->var0 + 1) << 8 == 62720 ? v24 : v25;
           v29 = *v28;
           if (v29 == [*(*(&v72 + 1) + 8 * v26) localSSRC])
           {
@@ -2707,7 +2707,7 @@ LABEL_17:
         {
           v32 = v31;
           v33 = 0xFFFF * v30;
-          v34 = NTPToMiddle32(a4.wide);
+          v34 = NTPToMiddle32(time.wide);
           if (v34 - v32 >= v33)
           {
             v35 = v34 - v32 - v33;
@@ -2724,7 +2724,7 @@ LABEL_17:
           v35 = 0;
         }
 
-        v36 = a3->var1.var0.var0;
+        v36 = packet->var1.var0.var0;
         v37 = (3289700 * v28[10]) >> 23;
         v38 = [v27 getExtendedSequenceNumberForSequenceNumber:*(v28 + 4)];
         v39 = Middle32ToMilliSeconds(v35);
@@ -2748,7 +2748,7 @@ LABEL_17:
         [v27 setVCStatistics:buf];
         v18 = v55 + 1;
         v19 = 1;
-        v5 = v53;
+        selfCopy = v53;
         if (v55 + 1 != var2)
         {
           goto LABEL_14;
@@ -2759,7 +2759,7 @@ LABEL_17:
 
 LABEL_26:
       ++v18;
-      v5 = v53;
+      selfCopy = v53;
     }
 
     while (v18 != var2);
@@ -2769,7 +2769,7 @@ LABEL_26:
     }
 
 LABEL_36:
-    if (objc_opt_class() == v5)
+    if (objc_opt_class() == selfCopy)
     {
       if (VRTraceGetErrorLogLevelForModule() >= 7)
       {
@@ -2796,7 +2796,7 @@ LABEL_52:
     {
       if (objc_opt_respondsToSelector())
       {
-        v40 = [(VCAudioStreamSendGroup *)v5 performSelector:sel_logPrefix];
+        v40 = [(VCAudioStreamSendGroup *)selfCopy performSelector:sel_logPrefix];
       }
 
       else
@@ -2819,7 +2819,7 @@ LABEL_52:
           *v60 = 2112;
           *&v60[2] = v40;
           *&v60[10] = 2048;
-          *&v61 = v5;
+          *&v61 = selfCopy;
           v44 = " [%s] %s:%d %@(%p) RTCP report found!!";
           v45 = v48;
           v46 = 48;
@@ -2832,7 +2832,7 @@ LABEL_52:
   else
   {
 LABEL_39:
-    if (objc_opt_class() == v5)
+    if (objc_opt_class() == selfCopy)
     {
       if (VRTraceGetErrorLogLevelForModule() >= 3)
       {
@@ -2848,7 +2848,7 @@ LABEL_39:
     {
       if (objc_opt_respondsToSelector())
       {
-        v41 = [(VCAudioStreamSendGroup *)v5 performSelector:sel_logPrefix];
+        v41 = [(VCAudioStreamSendGroup *)selfCopy performSelector:sel_logPrefix];
       }
 
       else
@@ -2871,7 +2871,7 @@ LABEL_39:
           *v60 = 2112;
           *&v60[2] = v41;
           *&v60[10] = 2048;
-          *&v61 = v5;
+          *&v61 = selfCopy;
           _os_log_error_impl(&dword_1DB56E000, v50, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) RTCP report not found!!", buf, 0x30u);
         }
       }
@@ -2940,9 +2940,9 @@ void __VCAudioStreamSendGroup_UpdateAudioPriorityUplink_block_invoke(uint64_t a1
   CFRelease(v2);
 }
 
-- (void)reportOperatingMode:(int)a3
+- (void)reportOperatingMode:(int)mode
 {
-  v3 = *&a3;
+  v3 = *&mode;
   v6[1] = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->super.super._stateQueue);
   if ([(VCObject *)self reportingAgent])
@@ -2997,8 +2997,8 @@ void __VCAudioStreamSendGroup_UpdateAudioPriorityUplink_block_invoke(uint64_t a1
           v48 = 0u;
           v49 = 0u;
           v50 = 0u;
-          v17 = [v16 streamConfigs];
-          v18 = [v17 countByEnumeratingWithState:&v47 objects:&v31 count:16];
+          streamConfigs = [v16 streamConfigs];
+          v18 = [streamConfigs countByEnumeratingWithState:&v47 objects:&v31 count:16];
           if (v18)
           {
             v26 = v18;
@@ -3010,14 +3010,14 @@ void __VCAudioStreamSendGroup_UpdateAudioPriorityUplink_block_invoke(uint64_t a1
               {
                 if (*v48 != v27)
                 {
-                  objc_enumerationMutation(v17);
+                  objc_enumerationMutation(streamConfigs);
                 }
 
                 [*(*(&v47 + 1) + 8 * v28++) setCellularUniqueTag:self->_cellularUniqueTag];
               }
 
               while (v26 != v28);
-              v18 = [v17 countByEnumeratingWithState:&v47 objects:&v31 count:16];
+              v18 = [streamConfigs countByEnumeratingWithState:&v47 objects:&v31 count:16];
               v26 = v18;
             }
 
@@ -3392,7 +3392,7 @@ void __77__VCAudioStreamSendGroup_redundancyController_redundancyPercentageDidCh
 
 - (void)createIOEventQueues
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     if (VRTraceGetErrorLogLevelForModule() < 3)
     {
@@ -3415,7 +3415,7 @@ LABEL_11:
 
   if (objc_opt_respondsToSelector())
   {
-    [a1 performSelector:sel_logPrefix];
+    [self performSelector:sel_logPrefix];
   }
 
   if (VRTraceGetErrorLogLevelForModule() >= 3)

@@ -21,8 +21,8 @@
 
 LABEL_60:
     v70 = v14;
-    v71 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v71 handleFailureInMethod:a2 object:a1 file:@"NSOrderedSet+WFThreeWayMerging.m" lineNumber:40 description:{@"Invalid parameter not satisfying: %@", @"secondOrderedSet"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"NSOrderedSet+WFThreeWayMerging.m" lineNumber:40 description:{@"Invalid parameter not satisfying: %@", @"secondOrderedSet"}];
 
     v14 = v70;
     if (v12)
@@ -34,8 +34,8 @@ LABEL_60:
   }
 
   v68 = v13;
-  v69 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v69 handleFailureInMethod:a2 object:a1 file:@"NSOrderedSet+WFThreeWayMerging.m" lineNumber:39 description:{@"Invalid parameter not satisfying: %@", @"firstOrderedSet"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"NSOrderedSet+WFThreeWayMerging.m" lineNumber:39 description:{@"Invalid parameter not satisfying: %@", @"firstOrderedSet"}];
 
   v14 = v68;
   if (!v11)
@@ -51,8 +51,8 @@ LABEL_3:
 
 LABEL_61:
   v72 = v14;
-  v73 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v73 handleFailureInMethod:a2 object:a1 file:@"NSOrderedSet+WFThreeWayMerging.m" lineNumber:41 description:{@"Invalid parameter not satisfying: %@", @"baseOrderedSet"}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"NSOrderedSet+WFThreeWayMerging.m" lineNumber:41 description:{@"Invalid parameter not satisfying: %@", @"baseOrderedSet"}];
 
   v14 = v72;
 LABEL_4:
@@ -65,8 +65,8 @@ LABEL_4:
 
   else
   {
-    v74 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v74 handleFailureInMethod:a2 object:a1 file:@"NSOrderedSet+WFThreeWayMerging.m" lineNumber:42 description:{@"Invalid parameter not satisfying: %@", @"comparator"}];
+    currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler4 handleFailureInMethod:a2 object:self file:@"NSOrderedSet+WFThreeWayMerging.m" lineNumber:42 description:{@"Invalid parameter not satisfying: %@", @"comparator"}];
 
     v15 = [WFThreeWayMergingObjectGraph alloc];
     v16 = 0;
@@ -112,30 +112,30 @@ LABEL_4:
   v27 = v20;
   if (!v26)
   {
-    v75 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler5 = [MEMORY[0x1E696AAA8] currentHandler];
     v76 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"void WFAddEdgesForTransitiveRelationships(WFThreeWayMergingObjectGraph * _Nonnull __strong, NSOrderedSet * _Nonnull __strong, NSOrderedSet * _Nonnull __strong, NSOrderedSet * _Nonnull __strong)"}];
-    [v75 handleFailureInFunction:v76 file:@"NSOrderedSet+WFThreeWayMerging.m" lineNumber:193 description:{@"Invalid parameter not satisfying: %@", @"graph"}];
+    [currentHandler5 handleFailureInFunction:v76 file:@"NSOrderedSet+WFThreeWayMerging.m" lineNumber:193 description:{@"Invalid parameter not satisfying: %@", @"graph"}];
   }
 
   if (!v12)
   {
-    v77 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler6 = [MEMORY[0x1E696AAA8] currentHandler];
     v78 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"void WFAddEdgesForTransitiveRelationships(WFThreeWayMergingObjectGraph * _Nonnull __strong, NSOrderedSet * _Nonnull __strong, NSOrderedSet * _Nonnull __strong, NSOrderedSet * _Nonnull __strong)"}];
-    [v77 handleFailureInFunction:v78 file:@"NSOrderedSet+WFThreeWayMerging.m" lineNumber:194 description:{@"Invalid parameter not satisfying: %@", @"baseOrderedSet"}];
+    [currentHandler6 handleFailureInFunction:v78 file:@"NSOrderedSet+WFThreeWayMerging.m" lineNumber:194 description:{@"Invalid parameter not satisfying: %@", @"baseOrderedSet"}];
   }
 
   if (!v10)
   {
-    v79 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler7 = [MEMORY[0x1E696AAA8] currentHandler];
     v80 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"void WFAddEdgesForTransitiveRelationships(WFThreeWayMergingObjectGraph * _Nonnull __strong, NSOrderedSet * _Nonnull __strong, NSOrderedSet * _Nonnull __strong, NSOrderedSet * _Nonnull __strong)"}];
-    [v79 handleFailureInFunction:v80 file:@"NSOrderedSet+WFThreeWayMerging.m" lineNumber:195 description:{@"Invalid parameter not satisfying: %@", @"firstOrderedSet"}];
+    [currentHandler7 handleFailureInFunction:v80 file:@"NSOrderedSet+WFThreeWayMerging.m" lineNumber:195 description:{@"Invalid parameter not satisfying: %@", @"firstOrderedSet"}];
   }
 
   if (!v11)
   {
-    v81 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler8 = [MEMORY[0x1E696AAA8] currentHandler];
     v82 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"void WFAddEdgesForTransitiveRelationships(WFThreeWayMergingObjectGraph * _Nonnull __strong, NSOrderedSet * _Nonnull __strong, NSOrderedSet * _Nonnull __strong, NSOrderedSet * _Nonnull __strong)"}];
-    [v81 handleFailureInFunction:v82 file:@"NSOrderedSet+WFThreeWayMerging.m" lineNumber:196 description:{@"Invalid parameter not satisfying: %@", @"secondOrderedSet"}];
+    [currentHandler8 handleFailureInFunction:v82 file:@"NSOrderedSet+WFThreeWayMerging.m" lineNumber:196 description:{@"Invalid parameter not satisfying: %@", @"secondOrderedSet"}];
   }
 
   v121 = 0u;
@@ -175,8 +175,8 @@ LABEL_4:
         {
           if (!v35)
           {
-            v45 = [MEMORY[0x1E696AAA8] currentHandler];
-            [v45 handleFailureInMethod:sel_directPredecessorsOfVertex_ object:v26 file:@"WFThreeWayMergingObjectGraph.m" lineNumber:95 description:{@"Invalid parameter not satisfying: %@", @"vertex"}];
+            currentHandler9 = [MEMORY[0x1E696AAA8] currentHandler];
+            [currentHandler9 handleFailureInMethod:sel_directPredecessorsOfVertex_ object:v26 file:@"WFThreeWayMergingObjectGraph.m" lineNumber:95 description:{@"Invalid parameter not satisfying: %@", @"vertex"}];
           }
 
           v37 = [v26[4] objectForKey:v36];
@@ -203,8 +203,8 @@ LABEL_4:
         {
           if (!v40)
           {
-            v46 = [MEMORY[0x1E696AAA8] currentHandler];
-            [v46 handleFailureInMethod:sel_directSuccessorsOfVertex_ object:v26 file:@"WFThreeWayMergingObjectGraph.m" lineNumber:101 description:{@"Invalid parameter not satisfying: %@", @"vertex"}];
+            currentHandler10 = [MEMORY[0x1E696AAA8] currentHandler];
+            [currentHandler10 handleFailureInMethod:sel_directSuccessorsOfVertex_ object:v26 file:@"WFThreeWayMergingObjectGraph.m" lineNumber:101 description:{@"Invalid parameter not satisfying: %@", @"vertex"}];
           }
 
           v42 = [v26[3] objectForKey:v41];
@@ -258,8 +258,8 @@ LABEL_4:
     v126[1] = v126;
     v126[2] = 0x2020000000;
     v126[3] = 0;
-    v50 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
-    v51 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable2 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
     v52 = objc_opt_new();
     *&v119 = MEMORY[0x1E69E9820];
     *(&v119 + 1) = 3221225472;
@@ -268,10 +268,10 @@ LABEL_4:
     v53 = v52;
     *&v121 = v53;
     *(&v121 + 1) = v26;
-    v98 = v50;
+    v98 = strongToStrongObjectsMapTable;
     *&v122 = v98;
     v125 = v126;
-    v91 = v51;
+    v91 = strongToStrongObjectsMapTable2;
     *(&v122 + 1) = v91;
     v86 = v49;
     v123 = v86;
@@ -329,7 +329,7 @@ LABEL_4:
     _Block_object_dispose(v126, 8);
   }
 
-  v65 = [a1 orderedSetWithOrderedSet:v92];
+  v65 = [self orderedSetWithOrderedSet:v92];
 
   v66 = *MEMORY[0x1E69E9840];
 

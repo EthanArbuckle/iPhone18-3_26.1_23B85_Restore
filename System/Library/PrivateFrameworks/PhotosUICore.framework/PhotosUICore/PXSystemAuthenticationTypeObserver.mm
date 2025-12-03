@@ -7,8 +7,8 @@
 - (void)_stopObservingApplicationStateChanges;
 - (void)_updateAuthenticationTypeInBackground;
 - (void)dealloc;
-- (void)setAuthenticationType:(int64_t)a3;
-- (void)setForcedSystemAuthenticationType:(int64_t)a3;
+- (void)setAuthenticationType:(int64_t)type;
+- (void)setForcedSystemAuthenticationType:(int64_t)type;
 - (void)updateAuthenticationTypeImmediately;
 @end
 
@@ -21,8 +21,8 @@
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [(PXSystemAuthenticationTypeObserver *)self observers];
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  observers = [(PXSystemAuthenticationTypeObserver *)self observers];
+  v4 = [observers countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -34,39 +34,39 @@
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(observers);
         }
 
         v8 = *(*(&v11 + 1) + 8 * v7);
-        v9 = [MEMORY[0x1E696AD88] defaultCenter];
-        [v9 removeObserver:v8];
+        defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+        [defaultCenter removeObserver:v8];
 
         ++v7;
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [observers countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v5);
   }
 
-  v10 = [(PXSystemAuthenticationTypeObserver *)self observers];
-  [v10 removeAllObjects];
+  observers2 = [(PXSystemAuthenticationTypeObserver *)self observers];
+  [observers2 removeAllObjects];
 }
 
 - (void)_beginObservingApplicationStateChangesAndSystemEvents
 {
   objc_initWeak(&location, self);
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  v4 = [MEMORY[0x1E696ADC8] mainQueue];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  mainQueue = [MEMORY[0x1E696ADC8] mainQueue];
   v5 = *MEMORY[0x1E69DE360];
   v8 = MEMORY[0x1E69E9820];
   v9 = 3221225472;
   v10 = __91__PXSystemAuthenticationTypeObserver__beginObservingApplicationStateChangesAndSystemEvents__block_invoke;
   v11 = &unk_1E7747200;
   objc_copyWeak(&v12, &location);
-  v6 = [v3 addObserverForName:v5 object:0 queue:v4 usingBlock:&v8];
+  v6 = [defaultCenter addObserverForName:v5 object:0 queue:mainQueue usingBlock:&v8];
 
   v7 = [(PXSystemAuthenticationTypeObserver *)self observers:v8];
   [v7 addObject:v6];
@@ -81,20 +81,20 @@ void __91__PXSystemAuthenticationTypeObserver__beginObservingApplicationStateCha
   [WeakRetained _updateAuthenticationTypeInBackground];
 }
 
-- (void)setForcedSystemAuthenticationType:(int64_t)a3
+- (void)setForcedSystemAuthenticationType:(int64_t)type
 {
-  if (self->_forcedSystemAuthenticationType != a3)
+  if (self->_forcedSystemAuthenticationType != type)
   {
-    self->_forcedSystemAuthenticationType = a3;
+    self->_forcedSystemAuthenticationType = type;
     [(PXSystemAuthenticationTypeObserver *)self updateAuthenticationTypeImmediately];
   }
 }
 
-- (void)setAuthenticationType:(int64_t)a3
+- (void)setAuthenticationType:(int64_t)type
 {
-  if (self->_authenticationType != a3)
+  if (self->_authenticationType != type)
   {
-    self->_authenticationType = a3;
+    self->_authenticationType = type;
     [(PXSystemAuthenticationTypeObserver *)self signalChange:1];
   }
 }
@@ -108,13 +108,13 @@ void __91__PXSystemAuthenticationTypeObserver__beginObservingApplicationStateCha
     _os_log_impl(&dword_1A3C1C000, v3, OS_LOG_TYPE_DEFAULT, "[SystemAuthenticationObserver] Scheduling async authentication type update", buf, 2u);
   }
 
-  v4 = [(PXSystemAuthenticationTypeObserver *)self observationQueue];
+  observationQueue = [(PXSystemAuthenticationTypeObserver *)self observationQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __75__PXSystemAuthenticationTypeObserver__updateAuthenticationTypeInBackground__block_invoke;
   block[3] = &unk_1E774C648;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(observationQueue, block);
 }
 
 void __75__PXSystemAuthenticationTypeObserver__updateAuthenticationTypeInBackground__block_invoke(uint64_t a1)
@@ -149,11 +149,11 @@ uint64_t __75__PXSystemAuthenticationTypeObserver__updateAuthenticationTypeInBac
 
 - (void)updateAuthenticationTypeImmediately
 {
-  v3 = [(PXSystemAuthenticationTypeObserver *)self authenticationType];
-  v4 = [(PXSystemAuthenticationTypeObserver *)self _calculateAuthenticationType];
-  if (v3 != v4)
+  authenticationType = [(PXSystemAuthenticationTypeObserver *)self authenticationType];
+  _calculateAuthenticationType = [(PXSystemAuthenticationTypeObserver *)self _calculateAuthenticationType];
+  if (authenticationType != _calculateAuthenticationType)
   {
-    v5 = v4;
+    v5 = _calculateAuthenticationType;
     v6 = PLContentPrivacyUIGetLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
@@ -214,20 +214,20 @@ uint64_t __75__PXSystemAuthenticationTypeObserver__updateAuthenticationTypeInBac
     }
   }
 
-  v13 = [(PXSystemAuthenticationTypeObserver *)self _currentlyAvailableBiometryType];
-  if (v13 <= 1)
+  _currentlyAvailableBiometryType = [(PXSystemAuthenticationTypeObserver *)self _currentlyAvailableBiometryType];
+  if (_currentlyAvailableBiometryType <= 1)
   {
-    if (v13)
+    if (_currentlyAvailableBiometryType)
     {
-      if (v13 == 1)
+      if (_currentlyAvailableBiometryType == 1)
       {
-        v14 = 0;
+        availableCompanionTypes = 0;
         v5 = 3;
         goto LABEL_45;
       }
 
 LABEL_21:
-      v14 = 0;
+      availableCompanionTypes = 0;
       v5 = 2;
       goto LABEL_45;
     }
@@ -236,13 +236,13 @@ LABEL_21:
     v33 = 0;
     v15 = [v32 canEvaluatePolicy:2 error:&v33];
     v16 = v33;
-    v17 = [v16 domain];
+    domain = [v16 domain];
     v31 = v16;
-    if ([v17 isEqualToString:*MEMORY[0x1E696EE30]])
+    if ([domain isEqualToString:*MEMORY[0x1E696EE30]])
     {
-      v18 = [v16 code];
+      code = [v16 code];
 
-      if (v18 == -5)
+      if (code == -5)
       {
         v19 = v15;
       }
@@ -291,16 +291,16 @@ LABEL_37:
 LABEL_38:
     v21 = objc_alloc_init(MEMORY[0x1E696EE50]);
     v22 = [v21 canEvaluatePolicy:3 error:0];
-    v23 = [v21 domainState];
-    v24 = [v23 companion];
-    v14 = [v24 availableCompanionTypes];
+    domainState = [v21 domainState];
+    companion = [domainState companion];
+    availableCompanionTypes = [companion availableCompanionTypes];
 
     if (v22)
     {
       v6 = 0x1E695D000uLL;
-      if ([v14 count] == 1)
+      if ([availableCompanionTypes count] == 1)
       {
-        v25 = [v14 member:&unk_1F190AA08];
+        v25 = [availableCompanionTypes member:&unk_1F190AA08];
 
         if (v25)
         {
@@ -327,11 +327,11 @@ LABEL_38:
     goto LABEL_45;
   }
 
-  if (v13 != 2)
+  if (_currentlyAvailableBiometryType != 2)
   {
-    if (v13 == 4)
+    if (_currentlyAvailableBiometryType == 4)
     {
-      v14 = 0;
+      availableCompanionTypes = 0;
       v5 = 5;
       goto LABEL_45;
     }
@@ -339,7 +339,7 @@ LABEL_38:
     goto LABEL_21;
   }
 
-  v14 = 0;
+  availableCompanionTypes = 0;
   v5 = 4;
 LABEL_45:
   v26 = v11;
@@ -382,7 +382,7 @@ LABEL_45:
 
   if (v6)
   {
-    v8 = [v2 biometryType];
+    biometryType = [v2 biometryType];
   }
 
   else
@@ -395,10 +395,10 @@ LABEL_45:
       _os_log_impl(&dword_1A3C1C000, v7, OS_LOG_TYPE_INFO, "[SystemAuthenticationObserver] Biometrics not available for auth. Error: %@", buf, 0xCu);
     }
 
-    v8 = 0;
+    biometryType = 0;
   }
 
-  return v8;
+  return biometryType;
 }
 
 - (void)dealloc

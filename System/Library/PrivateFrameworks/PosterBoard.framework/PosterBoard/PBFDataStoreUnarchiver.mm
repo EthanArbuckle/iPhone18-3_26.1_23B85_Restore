@@ -1,10 +1,10 @@
 @interface PBFDataStoreUnarchiver
-+ (BOOL)unarchiveDataStoreAtURL:(id)a3 toURL:(id)a4 options:(id)a5 error:(id *)a6;
++ (BOOL)unarchiveDataStoreAtURL:(id)l toURL:(id)rL options:(id)options error:(id *)error;
 + (id)fileManager;
-- (BOOL)_focusActivityExistsForUUID:(id)a3;
-- (BOOL)unarchiveToDirectoryAtURL:(id)a3 error:(id *)a4;
-- (PBFDataStoreUnarchiver)initWithArchivedDataStoreURL:(id)a3;
-- (id)_activityForIdentifier:(id)a3;
+- (BOOL)_focusActivityExistsForUUID:(id)d;
+- (BOOL)unarchiveToDirectoryAtURL:(id)l error:(id *)error;
+- (PBFDataStoreUnarchiver)initWithArchivedDataStoreURL:(id)l;
+- (id)_activityForIdentifier:(id)identifier;
 - (id)_availableActivities;
 @end
 
@@ -29,46 +29,46 @@ void __37__PBFDataStoreUnarchiver_fileManager__block_invoke()
   fileManager_fileManager_63 = v0;
 }
 
-+ (BOOL)unarchiveDataStoreAtURL:(id)a3 toURL:(id)a4 options:(id)a5 error:(id *)a6
++ (BOOL)unarchiveDataStoreAtURL:(id)l toURL:(id)rL options:(id)options error:(id *)error
 {
   v30[2] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [a1 fileManager];
-  v14 = [MEMORY[0x277CBEBC0] pf_temporaryDirectoryURL];
-  v15 = [MEMORY[0x277CCAD78] UUID];
-  v16 = [v15 UUIDString];
-  v17 = [v14 URLByAppendingPathComponent:v16];
+  lCopy = l;
+  rLCopy = rL;
+  optionsCopy = options;
+  fileManager = [self fileManager];
+  pf_temporaryDirectoryURL = [MEMORY[0x277CBEBC0] pf_temporaryDirectoryURL];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
+  v17 = [pf_temporaryDirectoryURL URLByAppendingPathComponent:uUIDString];
 
-  if (![v13 createDirectoryAtURL:v17 withIntermediateDirectories:1 attributes:0 error:a6])
+  if (![fileManager createDirectoryAtURL:v17 withIntermediateDirectories:1 attributes:0 error:error])
   {
 LABEL_10:
     v21 = 0;
     goto LABEL_13;
   }
 
-  if ((PBFAppleArchiveDecompress(v10, v17) & 1) == 0)
+  if ((PBFAppleArchiveDecompress(lCopy, v17) & 1) == 0)
   {
-    if (a6)
+    if (error)
     {
       v22 = MEMORY[0x277CCA9B8];
       v23 = *MEMORY[0x277CCA748];
       v29[0] = *MEMORY[0x277CCA470];
       v29[1] = v23;
       v24 = @"(NULL archiveURL)";
-      if (v10)
+      if (lCopy)
       {
-        v24 = v10;
+        v24 = lCopy;
       }
 
       v30[0] = @"Unable to decompress data store url";
       v30[1] = v24;
       v25 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v30 forKeys:v29 count:2];
-      *a6 = [v22 pbf_generalErrorWithCode:7 userInfo:v25];
+      *error = [v22 pbf_generalErrorWithCode:7 userInfo:v25];
     }
 
-    [v13 removeItemAtURL:v17 error:0];
+    [fileManager removeItemAtURL:v17 error:0];
     goto LABEL_10;
   }
 
@@ -80,14 +80,14 @@ LABEL_10:
   v28[1] = MEMORY[0x277CBEC38];
   v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v28 forKeys:v27 count:2];
   [v17 pbf_recursivelyUpdateResourceValues:v20 error:0];
-  if ([PBFDataStoreArchivalUtilities transformDataStoreAtURL:v17 options:v12 error:a6])
+  if ([PBFDataStoreArchivalUtilities transformDataStoreAtURL:v17 options:optionsCopy error:error])
   {
-    v21 = [v13 moveItemAtURL:v17 toURL:v11 error:a6];
+    v21 = [fileManager moveItemAtURL:v17 toURL:rLCopy error:error];
   }
 
   else
   {
-    [v13 removeItemAtURL:v17 error:0];
+    [fileManager removeItemAtURL:v17 error:0];
     v21 = 0;
   }
 
@@ -95,10 +95,10 @@ LABEL_13:
   return v21;
 }
 
-- (PBFDataStoreUnarchiver)initWithArchivedDataStoreURL:(id)a3
+- (PBFDataStoreUnarchiver)initWithArchivedDataStoreURL:(id)l
 {
-  v5 = a3;
-  if (([v5 checkResourceIsReachableAndReturnError:0] & 1) == 0)
+  lCopy = l;
+  if (([lCopy checkResourceIsReachableAndReturnError:0] & 1) == 0)
   {
     [PBFDataStoreUnarchiver initWithArchivedDataStoreURL:a2];
   }
@@ -108,7 +108,7 @@ LABEL_13:
   v6 = [(PBFDataStoreUnarchiver *)&v10 init];
   if (v6)
   {
-    v7 = [v5 copy];
+    v7 = [lCopy copy];
     archivedDataStoreURL = v6->_archivedDataStoreURL;
     v6->_archivedDataStoreURL = v7;
 
@@ -118,28 +118,28 @@ LABEL_13:
   return v6;
 }
 
-- (BOOL)unarchiveToDirectoryAtURL:(id)a3 error:(id *)a4
+- (BOOL)unarchiveToDirectoryAtURL:(id)l error:(id *)error
 {
   v33 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if ([(NSURL *)self->_archivedDataStoreURL checkResourceIsReachableAndReturnError:a4])
+  lCopy = l;
+  if ([(NSURL *)self->_archivedDataStoreURL checkResourceIsReachableAndReturnError:error])
   {
-    v7 = [objc_opt_class() fileManager];
-    v8 = [MEMORY[0x277CBEBC0] pf_temporaryDirectoryURL];
-    v9 = [MEMORY[0x277CCAD78] UUID];
-    v10 = [v9 UUIDString];
-    v11 = [v8 URLByAppendingPathComponent:v10];
+    fileManager = [objc_opt_class() fileManager];
+    pf_temporaryDirectoryURL = [MEMORY[0x277CBEBC0] pf_temporaryDirectoryURL];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    v11 = [pf_temporaryDirectoryURL URLByAppendingPathComponent:uUIDString];
 
     v12 = objc_opt_class();
     archivedDataStoreURL = self->_archivedDataStoreURL;
-    v14 = [(PBFDataStoreUnarchiver *)self options];
-    LOBYTE(v12) = [v12 unarchiveDataStoreAtURL:archivedDataStoreURL toURL:v11 options:v14 error:a4];
+    options = [(PBFDataStoreUnarchiver *)self options];
+    LOBYTE(v12) = [v12 unarchiveDataStoreAtURL:archivedDataStoreURL toURL:v11 options:options error:error];
 
     if (v12)
     {
       if ([(PBFDataStoreUnarchiver *)self remapFocusConfigurations])
       {
-        v26 = a4;
+        errorCopy = error;
         v30 = 0u;
         v31 = 0u;
         v28 = 0u;
@@ -160,17 +160,17 @@ LABEL_13:
               }
 
               v20 = *(*(&v28 + 1) + 8 * i);
-              v21 = [v20 setupEnvironmentIfNecessary];
-              if (v21)
+              setupEnvironmentIfNecessary = [v20 setupEnvironmentIfNecessary];
+              if (setupEnvironmentIfNecessary)
               {
-                v23 = v21;
-                if (v26)
+                v23 = setupEnvironmentIfNecessary;
+                if (errorCopy)
                 {
-                  v24 = v21;
-                  *v26 = v23;
+                  v24 = setupEnvironmentIfNecessary;
+                  *errorCopy = v23;
                 }
 
-                [v7 removeItemAtURL:v11 error:0];
+                [fileManager removeItemAtURL:v11 error:0];
 
                 v22 = 0;
                 goto LABEL_19;
@@ -194,15 +194,15 @@ LABEL_13:
           }
         }
 
-        a4 = v26;
+        error = errorCopy;
       }
 
-      v22 = [v7 moveItemAtURL:v11 toURL:v6 error:a4];
+      v22 = [fileManager moveItemAtURL:v11 toURL:lCopy error:error];
     }
 
     else
     {
-      [v7 removeItemAtURL:v11 error:0];
+      [fileManager removeItemAtURL:v11 error:0];
       v22 = 0;
     }
 
@@ -293,23 +293,23 @@ void __58__PBFDataStoreUnarchiver_unarchiveToDirectoryAtURL_error___block_invoke
 
 - (id)_availableActivities
 {
-  v2 = [MEMORY[0x277D0A9E8] sharedActivityManager];
-  v3 = [v2 availableActivities];
+  mEMORY[0x277D0A9E8] = [MEMORY[0x277D0A9E8] sharedActivityManager];
+  availableActivities = [mEMORY[0x277D0A9E8] availableActivities];
 
-  return v3;
+  return availableActivities;
 }
 
-- (BOOL)_focusActivityExistsForUUID:(id)a3
+- (BOOL)_focusActivityExistsForUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(PBFDataStoreUnarchiver *)self _availableActivities];
+  dCopy = d;
+  _availableActivities = [(PBFDataStoreUnarchiver *)self _availableActivities];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __54__PBFDataStoreUnarchiver__focusActivityExistsForUUID___block_invoke;
   v9[3] = &unk_2782C57D0;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 bs_containsObjectPassingTest:v9];
+  v10 = dCopy;
+  v6 = dCopy;
+  v7 = [_availableActivities bs_containsObjectPassingTest:v9];
 
   return v7;
 }
@@ -322,17 +322,17 @@ uint64_t __54__PBFDataStoreUnarchiver__focusActivityExistsForUUID___block_invoke
   return v4;
 }
 
-- (id)_activityForIdentifier:(id)a3
+- (id)_activityForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(PBFDataStoreUnarchiver *)self _availableActivities];
+  identifierCopy = identifier;
+  _availableActivities = [(PBFDataStoreUnarchiver *)self _availableActivities];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __49__PBFDataStoreUnarchiver__activityForIdentifier___block_invoke;
   v9[3] = &unk_2782C57D0;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 bs_firstObjectPassingTest:v9];
+  v10 = identifierCopy;
+  v6 = identifierCopy;
+  v7 = [_availableActivities bs_firstObjectPassingTest:v9];
 
   return v7;
 }

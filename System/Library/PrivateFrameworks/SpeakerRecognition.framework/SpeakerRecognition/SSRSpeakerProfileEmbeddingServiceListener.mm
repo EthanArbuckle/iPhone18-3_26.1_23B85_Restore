@@ -1,5 +1,5 @@
 @interface SSRSpeakerProfileEmbeddingServiceListener
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (SSRSpeakerProfileEmbeddingServiceListener)init;
 - (void)resumeConnection;
 @end
@@ -27,11 +27,11 @@
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v42 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   v8 = MEMORY[0x277D01970];
   v9 = *MEMORY[0x277D01970];
   if (os_log_type_enabled(*MEMORY[0x277D01970], OS_LOG_TYPE_DEFAULT))
@@ -39,11 +39,11 @@
     *buf = 136315394;
     v39 = "[SSRSpeakerProfileEmbeddingServiceListener listener:shouldAcceptNewConnection:]";
     v40 = 2112;
-    v41 = v7;
+    v41 = connectionCopy;
     _os_log_impl(&dword_225E12000, v9, OS_LOG_TYPE_DEFAULT, "%s Got new connection on speaker profile embedding service: %@", buf, 0x16u);
   }
 
-  if (self->_listener != v6)
+  if (self->_listener != listenerCopy)
   {
     v10 = *v8;
     if (os_log_type_enabled(*v8, OS_LOG_TYPE_ERROR))
@@ -51,7 +51,7 @@
       *buf = 136315394;
       v39 = "[SSRSpeakerProfileEmbeddingServiceListener listener:shouldAcceptNewConnection:]";
       v40 = 2114;
-      v41 = v6;
+      v41 = listenerCopy;
       v11 = "%s Invalid listener - %{public}@";
       v12 = v10;
       v13 = 22;
@@ -63,9 +63,9 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if (([MEMORY[0x277D018F8] xpcConnection:v7 hasEntitlement:@"siri.speakerprofile.embedding.service.xpc"] & 1) == 0)
+  if (([MEMORY[0x277D018F8] xpcConnection:connectionCopy hasEntitlement:@"siri.speakerprofile.embedding.service.xpc"] & 1) == 0)
   {
-    [(NSXPCListener *)v7 invalidate];
+    [(NSXPCListener *)connectionCopy invalidate];
     v23 = *v8;
     if (os_log_type_enabled(*v8, OS_LOG_TYPE_ERROR))
     {
@@ -83,16 +83,16 @@ LABEL_11:
   }
 
   v14 = SSRSpeakerProfileEmbeddingServiceGetXPCInterface();
-  [(NSXPCListener *)v7 setExportedInterface:v14];
+  [(NSXPCListener *)connectionCopy setExportedInterface:v14];
 
   v15 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_283948D38];
-  [(NSXPCListener *)v7 setRemoteObjectInterface:v15];
+  [(NSXPCListener *)connectionCopy setRemoteObjectInterface:v15];
 
-  v16 = [[SSRSpeakerProfileEmbeddingMessageHandler alloc] initWithConnection:v7];
-  v17 = [(NSXPCListener *)v7 remoteObjectProxy];
-  [(SSRSpeakerProfileEmbeddingMessageHandler *)v16 setupListenerDelegate:v17];
+  v16 = [[SSRSpeakerProfileEmbeddingMessageHandler alloc] initWithConnection:connectionCopy];
+  remoteObjectProxy = [(NSXPCListener *)connectionCopy remoteObjectProxy];
+  [(SSRSpeakerProfileEmbeddingMessageHandler *)v16 setupListenerDelegate:remoteObjectProxy];
 
-  [(NSXPCListener *)v7 setExportedObject:v16];
+  [(NSXPCListener *)connectionCopy setExportedObject:v16];
   objc_initWeak(buf, self);
   v35[0] = MEMORY[0x277D85DD0];
   v35[1] = 3221225472;
@@ -101,7 +101,7 @@ LABEL_11:
   objc_copyWeak(&v37, buf);
   v18 = v16;
   v36 = v18;
-  [(NSXPCListener *)v7 setInvalidationHandler:v35];
+  [(NSXPCListener *)connectionCopy setInvalidationHandler:v35];
   v32[0] = MEMORY[0x277D85DD0];
   v32[1] = 3221225472;
   v32[2] = __80__SSRSpeakerProfileEmbeddingServiceListener_listener_shouldAcceptNewConnection___block_invoke_3;
@@ -109,18 +109,18 @@ LABEL_11:
   objc_copyWeak(&v34, buf);
   v19 = v18;
   v33 = v19;
-  [(NSXPCListener *)v7 setInterruptionHandler:v32];
-  v20 = [(SSRSpeakerProfileEmbeddingServiceListener *)self queue];
+  [(NSXPCListener *)connectionCopy setInterruptionHandler:v32];
+  queue = [(SSRSpeakerProfileEmbeddingServiceListener *)self queue];
   v26 = MEMORY[0x277D85DD0];
   v27 = 3221225472;
   v28 = __80__SSRSpeakerProfileEmbeddingServiceListener_listener_shouldAcceptNewConnection___block_invoke_5;
   v29 = &unk_278579350;
-  v30 = self;
+  selfCopy = self;
   v21 = v19;
   v31 = v21;
-  dispatch_async(v20, &v26);
+  dispatch_async(queue, &v26);
 
-  [(NSXPCListener *)v7 resume:v26];
+  [(NSXPCListener *)connectionCopy resume:v26];
   objc_destroyWeak(&v34);
 
   objc_destroyWeak(&v37);
@@ -194,9 +194,9 @@ void __80__SSRSpeakerProfileEmbeddingServiceListener_listener_shouldAcceptNewCon
     v2->_listener = v5;
 
     [(NSXPCListener *)v2->_listener setDelegate:v2];
-    v7 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     messageHandlers = v2->_messageHandlers;
-    v2->_messageHandlers = v7;
+    v2->_messageHandlers = array;
 
     v9 = *MEMORY[0x277D01970];
     if (os_log_type_enabled(*MEMORY[0x277D01970], OS_LOG_TYPE_DEFAULT))

@@ -1,24 +1,24 @@
 @interface SUUIComposeReviewNicknameView
-- (SUUIComposeReviewNicknameView)initWithFrame:(CGRect)a3;
+- (SUUIComposeReviewNicknameView)initWithFrame:(CGRect)frame;
 - (void)_setupInfo;
 - (void)_setupSampleCardView;
 - (void)_setupTextField;
 - (void)_setupTitle;
 - (void)_setupView;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation SUUIComposeReviewNicknameView
 
-- (SUUIComposeReviewNicknameView)initWithFrame:(CGRect)a3
+- (SUUIComposeReviewNicknameView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = SUUIComposeReviewNicknameView;
-  v3 = [(SUUIComposeReviewNicknameView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SUUIComposeReviewNicknameView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x277D75348] systemBackgroundColor];
-    [(SUUIComposeReviewNicknameView *)v3 setBackgroundColor:v4];
+    systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+    [(SUUIComposeReviewNicknameView *)v3 setBackgroundColor:systemBackgroundColor];
 
     [(SUUIComposeReviewNicknameView *)v3 _setupView];
   }
@@ -26,52 +26,52 @@
   return v3;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v27[4] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SUUIComposeReviewNicknameView *)self traitCollection];
-  v6 = [v5 preferredContentSizeCategory];
-  v7 = [v4 preferredContentSizeCategory];
+  changeCopy = change;
+  traitCollection = [(SUUIComposeReviewNicknameView *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  preferredContentSizeCategory2 = [changeCopy preferredContentSizeCategory];
 
-  if (v6 != v7)
+  if (preferredContentSizeCategory != preferredContentSizeCategory2)
   {
-    v8 = [(SUUIComposeReviewNicknameView *)self titleView];
+    titleView = [(SUUIComposeReviewNicknameView *)self titleView];
     v9 = SUUIFontLimitedPreferredFontForTextStyle(15, 7);
-    [v8 setFont:v9];
+    [titleView setFont:v9];
 
-    v10 = [(SUUIComposeReviewNicknameView *)self nicknamePlaceholderLabel];
+    nicknamePlaceholderLabel = [(SUUIComposeReviewNicknameView *)self nicknamePlaceholderLabel];
     v11 = SUUIFontLimitedPreferredFontForTextStyle(3, 7);
-    [v10 setFont:v11];
+    [nicknamePlaceholderLabel setFont:v11];
 
-    v12 = [(SUUIComposeReviewNicknameView *)self nicknameTextfield];
+    nicknameTextfield = [(SUUIComposeReviewNicknameView *)self nicknameTextfield];
     v13 = SUUIFontLimitedPreferredFontForTextStyle(1, 7);
-    [v12 setFont:v13];
+    [nicknameTextfield setFont:v13];
 
-    v14 = [(SUUIComposeReviewNicknameView *)self nicknameInfoLabel];
+    nicknameInfoLabel = [(SUUIComposeReviewNicknameView *)self nicknameInfoLabel];
     v15 = SUUIFontLimitedPreferredFontForTextStyle(11, 7);
-    [v14 setFont:v15];
+    [nicknameInfoLabel setFont:v15];
   }
 
-  v16 = [(SUUIComposeReviewNicknameView *)self traitCollection];
-  v17 = [v16 hasDifferentColorAppearanceComparedToTraitCollection:v4];
+  traitCollection2 = [(SUUIComposeReviewNicknameView *)self traitCollection];
+  v17 = [traitCollection2 hasDifferentColorAppearanceComparedToTraitCollection:changeCopy];
 
   if (v17)
   {
-    v18 = [(SUUIComposeReviewNicknameView *)self sampleCardGradientView];
-    v19 = [v18 layer];
-    v20 = [MEMORY[0x277D75348] systemBackgroundColor];
-    v21 = [v20 colorWithAlphaComponent:0.0];
+    sampleCardGradientView = [(SUUIComposeReviewNicknameView *)self sampleCardGradientView];
+    layer = [sampleCardGradientView layer];
+    systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+    v21 = [systemBackgroundColor colorWithAlphaComponent:0.0];
     v27[0] = [v21 CGColor];
-    v22 = [MEMORY[0x277D75348] systemBackgroundColor];
-    v23 = [v22 colorWithAlphaComponent:0.0];
+    systemBackgroundColor2 = [MEMORY[0x277D75348] systemBackgroundColor];
+    v23 = [systemBackgroundColor2 colorWithAlphaComponent:0.0];
     v27[1] = [v23 CGColor];
-    v24 = [MEMORY[0x277D75348] systemBackgroundColor];
-    v27[2] = [v24 CGColor];
-    v25 = [MEMORY[0x277D75348] systemBackgroundColor];
-    v27[3] = [v25 CGColor];
+    systemBackgroundColor3 = [MEMORY[0x277D75348] systemBackgroundColor];
+    v27[2] = [systemBackgroundColor3 CGColor];
+    systemBackgroundColor4 = [MEMORY[0x277D75348] systemBackgroundColor];
+    v27[3] = [systemBackgroundColor4 CGColor];
     v26 = [MEMORY[0x277CBEA60] arrayWithObjects:v27 count:4];
-    [v19 setColors:v26];
+    [layer setColors:v26];
   }
 }
 
@@ -89,45 +89,45 @@
   v3 = objc_opt_new();
   [(SUUIComposeReviewNicknameView *)self setTitleView:v3];
 
-  v4 = [(SUUIComposeReviewNicknameView *)self titleView];
+  titleView = [(SUUIComposeReviewNicknameView *)self titleView];
   v5 = SUUIFontLimitedPreferredFontForTextStyle(15, 7);
-  [v4 setFont:v5];
+  [titleView setFont:v5];
 
-  v6 = [(SUUIComposeReviewNicknameView *)self titleView];
-  [v6 setNumberOfLines:2];
+  titleView2 = [(SUUIComposeReviewNicknameView *)self titleView];
+  [titleView2 setNumberOfLines:2];
 
-  v7 = [(SUUIComposeReviewNicknameView *)self titleView];
-  [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
+  titleView3 = [(SUUIComposeReviewNicknameView *)self titleView];
+  [titleView3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v8 = [(SUUIComposeReviewNicknameView *)self titleView];
-  [(SUUIComposeReviewNicknameView *)self addSubview:v8];
+  titleView4 = [(SUUIComposeReviewNicknameView *)self titleView];
+  [(SUUIComposeReviewNicknameView *)self addSubview:titleView4];
 
-  v9 = [(SUUIComposeReviewNicknameView *)self titleView];
-  v10 = [v9 firstBaselineAnchor];
-  v11 = [(SUUIComposeReviewNicknameView *)self safeAreaLayoutGuide];
-  v12 = [v11 topAnchor];
-  v13 = [v10 constraintEqualToAnchor:v12 constant:61.0];
+  titleView5 = [(SUUIComposeReviewNicknameView *)self titleView];
+  firstBaselineAnchor = [titleView5 firstBaselineAnchor];
+  safeAreaLayoutGuide = [(SUUIComposeReviewNicknameView *)self safeAreaLayoutGuide];
+  topAnchor = [safeAreaLayoutGuide topAnchor];
+  v13 = [firstBaselineAnchor constraintEqualToAnchor:topAnchor constant:61.0];
   [v13 setActive:1];
 
-  v14 = [(SUUIComposeReviewNicknameView *)self titleView];
-  v15 = [v14 leadingAnchor];
-  v16 = [(SUUIComposeReviewNicknameView *)self leadingAnchor];
-  v17 = [v15 constraintEqualToAnchor:v16 constant:20.0];
+  titleView6 = [(SUUIComposeReviewNicknameView *)self titleView];
+  leadingAnchor = [titleView6 leadingAnchor];
+  leadingAnchor2 = [(SUUIComposeReviewNicknameView *)self leadingAnchor];
+  v17 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:20.0];
   [v17 setActive:1];
 
-  v18 = [(SUUIComposeReviewNicknameView *)self titleView];
-  v19 = [v18 trailingAnchor];
-  v20 = [(SUUIComposeReviewNicknameView *)self trailingAnchor];
-  v21 = [v19 constraintEqualToAnchor:v20 constant:-20.0];
+  titleView7 = [(SUUIComposeReviewNicknameView *)self titleView];
+  trailingAnchor = [titleView7 trailingAnchor];
+  trailingAnchor2 = [(SUUIComposeReviewNicknameView *)self trailingAnchor];
+  v21 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-20.0];
   [v21 setActive:1];
 
   v22 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v23 = [v22 localizedStringForKey:@"NICKNAME_VIEW_TITLE" value:&stru_286AECDE0 table:0];
-  v24 = [(SUUIComposeReviewNicknameView *)self titleView];
-  [v24 setText:v23];
+  titleView8 = [(SUUIComposeReviewNicknameView *)self titleView];
+  [titleView8 setText:v23];
 
-  v25 = [(SUUIComposeReviewNicknameView *)self titleView];
-  [v25 setTextAlignment:1];
+  titleView9 = [(SUUIComposeReviewNicknameView *)self titleView];
+  [titleView9 setTextAlignment:1];
 }
 
 - (void)_setupSampleCardView
@@ -136,82 +136,82 @@
   v3 = objc_opt_new();
   [(SUUIComposeReviewNicknameView *)self setSampleCardView:v3];
 
-  v4 = [(SUUIComposeReviewNicknameView *)self sampleCardView];
-  [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
+  sampleCardView = [(SUUIComposeReviewNicknameView *)self sampleCardView];
+  [sampleCardView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v5 = [(SUUIComposeReviewNicknameView *)self sampleCardView];
-  [(SUUIComposeReviewNicknameView *)self addSubview:v5];
+  sampleCardView2 = [(SUUIComposeReviewNicknameView *)self sampleCardView];
+  [(SUUIComposeReviewNicknameView *)self addSubview:sampleCardView2];
 
-  v6 = [(SUUIComposeReviewNicknameView *)self sampleCardView];
-  v7 = [v6 topAnchor];
-  v8 = [(SUUIComposeReviewNicknameView *)self titleView];
-  v9 = [v8 bottomAnchor];
-  v10 = [v7 constraintEqualToAnchor:v9 constant:24.0];
+  sampleCardView3 = [(SUUIComposeReviewNicknameView *)self sampleCardView];
+  topAnchor = [sampleCardView3 topAnchor];
+  titleView = [(SUUIComposeReviewNicknameView *)self titleView];
+  bottomAnchor = [titleView bottomAnchor];
+  v10 = [topAnchor constraintEqualToAnchor:bottomAnchor constant:24.0];
   [v10 setActive:1];
 
-  v11 = [(SUUIComposeReviewNicknameView *)self sampleCardView];
-  v12 = [v11 centerXAnchor];
-  v13 = [(SUUIComposeReviewNicknameView *)self centerXAnchor];
-  v14 = [v12 constraintEqualToAnchor:v13];
+  sampleCardView4 = [(SUUIComposeReviewNicknameView *)self sampleCardView];
+  centerXAnchor = [sampleCardView4 centerXAnchor];
+  centerXAnchor2 = [(SUUIComposeReviewNicknameView *)self centerXAnchor];
+  v14 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   [v14 setActive:1];
 
   v15 = [SUUIGradientView alloc];
   v16 = [(SUUIGradientView *)v15 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   [(SUUIComposeReviewNicknameView *)self setSampleCardGradientView:v16];
 
-  v17 = [(SUUIComposeReviewNicknameView *)self sampleCardGradientView];
-  [v17 setTranslatesAutoresizingMaskIntoConstraints:0];
+  sampleCardGradientView = [(SUUIComposeReviewNicknameView *)self sampleCardGradientView];
+  [sampleCardGradientView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v18 = [(SUUIComposeReviewNicknameView *)self sampleCardView];
-  v19 = [(SUUIComposeReviewNicknameView *)self sampleCardGradientView];
-  [v18 addSubview:v19];
+  sampleCardView5 = [(SUUIComposeReviewNicknameView *)self sampleCardView];
+  sampleCardGradientView2 = [(SUUIComposeReviewNicknameView *)self sampleCardGradientView];
+  [sampleCardView5 addSubview:sampleCardGradientView2];
 
-  v20 = [(SUUIComposeReviewNicknameView *)self sampleCardGradientView];
-  v21 = [v20 topAnchor];
-  v22 = [(SUUIComposeReviewNicknameView *)self sampleCardView];
-  v23 = [v22 topAnchor];
-  v24 = [v21 constraintEqualToAnchor:v23];
+  sampleCardGradientView3 = [(SUUIComposeReviewNicknameView *)self sampleCardGradientView];
+  topAnchor2 = [sampleCardGradientView3 topAnchor];
+  sampleCardView6 = [(SUUIComposeReviewNicknameView *)self sampleCardView];
+  topAnchor3 = [sampleCardView6 topAnchor];
+  v24 = [topAnchor2 constraintEqualToAnchor:topAnchor3];
   [v24 setActive:1];
 
-  v25 = [(SUUIComposeReviewNicknameView *)self sampleCardGradientView];
-  v26 = [v25 leadingAnchor];
-  v27 = [(SUUIComposeReviewNicknameView *)self sampleCardView];
-  v28 = [v27 leadingAnchor];
-  v29 = [v26 constraintEqualToAnchor:v28];
+  sampleCardGradientView4 = [(SUUIComposeReviewNicknameView *)self sampleCardGradientView];
+  leadingAnchor = [sampleCardGradientView4 leadingAnchor];
+  sampleCardView7 = [(SUUIComposeReviewNicknameView *)self sampleCardView];
+  leadingAnchor2 = [sampleCardView7 leadingAnchor];
+  v29 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v29 setActive:1];
 
-  v30 = [(SUUIComposeReviewNicknameView *)self sampleCardGradientView];
-  v31 = [v30 trailingAnchor];
-  v32 = [(SUUIComposeReviewNicknameView *)self sampleCardView];
-  v33 = [v32 trailingAnchor];
-  v34 = [v31 constraintEqualToAnchor:v33];
+  sampleCardGradientView5 = [(SUUIComposeReviewNicknameView *)self sampleCardGradientView];
+  trailingAnchor = [sampleCardGradientView5 trailingAnchor];
+  sampleCardView8 = [(SUUIComposeReviewNicknameView *)self sampleCardView];
+  trailingAnchor2 = [sampleCardView8 trailingAnchor];
+  v34 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   [v34 setActive:1];
 
-  v35 = [(SUUIComposeReviewNicknameView *)self sampleCardGradientView];
-  v36 = [v35 bottomAnchor];
-  v37 = [(SUUIComposeReviewNicknameView *)self sampleCardView];
-  v38 = [v37 bottomAnchor];
-  v39 = [v36 constraintEqualToAnchor:v38];
+  sampleCardGradientView6 = [(SUUIComposeReviewNicknameView *)self sampleCardGradientView];
+  bottomAnchor2 = [sampleCardGradientView6 bottomAnchor];
+  sampleCardView9 = [(SUUIComposeReviewNicknameView *)self sampleCardView];
+  bottomAnchor3 = [sampleCardView9 bottomAnchor];
+  v39 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
   [v39 setActive:1];
 
-  v40 = [(SUUIComposeReviewNicknameView *)self sampleCardGradientView];
-  v41 = [v40 layer];
-  v42 = [MEMORY[0x277D75348] systemBackgroundColor];
-  v43 = [v42 colorWithAlphaComponent:0.0];
+  sampleCardGradientView7 = [(SUUIComposeReviewNicknameView *)self sampleCardGradientView];
+  layer = [sampleCardGradientView7 layer];
+  systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+  v43 = [systemBackgroundColor colorWithAlphaComponent:0.0];
   v51[0] = [v43 CGColor];
-  v44 = [MEMORY[0x277D75348] systemBackgroundColor];
-  v45 = [v44 colorWithAlphaComponent:0.0];
+  systemBackgroundColor2 = [MEMORY[0x277D75348] systemBackgroundColor];
+  v45 = [systemBackgroundColor2 colorWithAlphaComponent:0.0];
   v51[1] = [v45 CGColor];
-  v46 = [MEMORY[0x277D75348] systemBackgroundColor];
-  v51[2] = [v46 CGColor];
-  v47 = [MEMORY[0x277D75348] systemBackgroundColor];
-  v51[3] = [v47 CGColor];
+  systemBackgroundColor3 = [MEMORY[0x277D75348] systemBackgroundColor];
+  v51[2] = [systemBackgroundColor3 CGColor];
+  systemBackgroundColor4 = [MEMORY[0x277D75348] systemBackgroundColor];
+  v51[3] = [systemBackgroundColor4 CGColor];
   v48 = [MEMORY[0x277CBEA60] arrayWithObjects:v51 count:4];
-  [v41 setColors:v48];
+  [layer setColors:v48];
 
-  v49 = [(SUUIComposeReviewNicknameView *)self sampleCardGradientView];
-  v50 = [v49 layer];
-  [v50 setLocations:&unk_286BBE160];
+  sampleCardGradientView8 = [(SUUIComposeReviewNicknameView *)self sampleCardGradientView];
+  layer2 = [sampleCardGradientView8 layer];
+  [layer2 setLocations:&unk_286BBE160];
 }
 
 - (void)_setupTextField
@@ -219,138 +219,138 @@
   v3 = objc_opt_new();
   [(SUUIComposeReviewNicknameView *)self setNicknameBackgroundView:v3];
 
-  v4 = [(SUUIComposeReviewNicknameView *)self nicknameBackgroundView];
-  [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
+  nicknameBackgroundView = [(SUUIComposeReviewNicknameView *)self nicknameBackgroundView];
+  [nicknameBackgroundView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v5 = [MEMORY[0x277D75348] secondarySystemBackgroundColor];
-  v6 = [(SUUIComposeReviewNicknameView *)self nicknameBackgroundView];
-  [v6 setBackgroundColor:v5];
+  secondarySystemBackgroundColor = [MEMORY[0x277D75348] secondarySystemBackgroundColor];
+  nicknameBackgroundView2 = [(SUUIComposeReviewNicknameView *)self nicknameBackgroundView];
+  [nicknameBackgroundView2 setBackgroundColor:secondarySystemBackgroundColor];
 
-  v7 = [(SUUIComposeReviewNicknameView *)self nicknameBackgroundView];
-  v8 = [v7 layer];
-  [v8 setCornerRadius:8.0];
+  nicknameBackgroundView3 = [(SUUIComposeReviewNicknameView *)self nicknameBackgroundView];
+  layer = [nicknameBackgroundView3 layer];
+  [layer setCornerRadius:8.0];
 
-  v9 = [(SUUIComposeReviewNicknameView *)self nicknameBackgroundView];
-  [(SUUIComposeReviewNicknameView *)self addSubview:v9];
+  nicknameBackgroundView4 = [(SUUIComposeReviewNicknameView *)self nicknameBackgroundView];
+  [(SUUIComposeReviewNicknameView *)self addSubview:nicknameBackgroundView4];
 
-  v10 = [(SUUIComposeReviewNicknameView *)self nicknameBackgroundView];
-  v11 = [v10 topAnchor];
-  v12 = [(SUUIComposeReviewNicknameView *)self sampleCardView];
-  v13 = [v12 bottomAnchor];
-  v14 = [v11 constraintEqualToAnchor:v13 constant:20.0];
+  nicknameBackgroundView5 = [(SUUIComposeReviewNicknameView *)self nicknameBackgroundView];
+  topAnchor = [nicknameBackgroundView5 topAnchor];
+  sampleCardView = [(SUUIComposeReviewNicknameView *)self sampleCardView];
+  bottomAnchor = [sampleCardView bottomAnchor];
+  v14 = [topAnchor constraintEqualToAnchor:bottomAnchor constant:20.0];
   [v14 setActive:1];
 
-  v15 = [(SUUIComposeReviewNicknameView *)self nicknameBackgroundView];
-  v16 = [v15 leadingAnchor];
-  v17 = [(SUUIComposeReviewNicknameView *)self leadingAnchor];
-  v18 = [v16 constraintEqualToAnchor:v17 constant:20.0];
+  nicknameBackgroundView6 = [(SUUIComposeReviewNicknameView *)self nicknameBackgroundView];
+  leadingAnchor = [nicknameBackgroundView6 leadingAnchor];
+  leadingAnchor2 = [(SUUIComposeReviewNicknameView *)self leadingAnchor];
+  v18 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:20.0];
   [v18 setActive:1];
 
-  v19 = [(SUUIComposeReviewNicknameView *)self nicknameBackgroundView];
-  v20 = [v19 trailingAnchor];
-  v21 = [(SUUIComposeReviewNicknameView *)self trailingAnchor];
-  v22 = [v20 constraintEqualToAnchor:v21 constant:-20.0];
+  nicknameBackgroundView7 = [(SUUIComposeReviewNicknameView *)self nicknameBackgroundView];
+  trailingAnchor = [nicknameBackgroundView7 trailingAnchor];
+  trailingAnchor2 = [(SUUIComposeReviewNicknameView *)self trailingAnchor];
+  v22 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-20.0];
   [v22 setActive:1];
 
   v23 = objc_opt_new();
   [(SUUIComposeReviewNicknameView *)self setNicknamePlaceholderLabel:v23];
 
-  v24 = [(SUUIComposeReviewNicknameView *)self nicknamePlaceholderLabel];
-  [v24 setTranslatesAutoresizingMaskIntoConstraints:0];
+  nicknamePlaceholderLabel = [(SUUIComposeReviewNicknameView *)self nicknamePlaceholderLabel];
+  [nicknamePlaceholderLabel setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v25 = [(SUUIComposeReviewNicknameView *)self nicknameBackgroundView];
-  v26 = [(SUUIComposeReviewNicknameView *)self nicknamePlaceholderLabel];
-  [v25 addSubview:v26];
+  nicknameBackgroundView8 = [(SUUIComposeReviewNicknameView *)self nicknameBackgroundView];
+  nicknamePlaceholderLabel2 = [(SUUIComposeReviewNicknameView *)self nicknamePlaceholderLabel];
+  [nicknameBackgroundView8 addSubview:nicknamePlaceholderLabel2];
 
-  v27 = [(SUUIComposeReviewNicknameView *)self nicknamePlaceholderLabel];
+  nicknamePlaceholderLabel3 = [(SUUIComposeReviewNicknameView *)self nicknamePlaceholderLabel];
   v28 = SUUIFontLimitedPreferredFontForTextStyle(3, 7);
-  [v27 setFont:v28];
+  [nicknamePlaceholderLabel3 setFont:v28];
 
-  v29 = [(SUUIComposeReviewNicknameView *)self nicknamePlaceholderLabel];
-  v30 = [v29 leadingAnchor];
-  v31 = [(SUUIComposeReviewNicknameView *)self nicknameBackgroundView];
-  v32 = [v31 leadingAnchor];
-  v33 = [v30 constraintEqualToAnchor:v32 constant:20.0];
+  nicknamePlaceholderLabel4 = [(SUUIComposeReviewNicknameView *)self nicknamePlaceholderLabel];
+  leadingAnchor3 = [nicknamePlaceholderLabel4 leadingAnchor];
+  nicknameBackgroundView9 = [(SUUIComposeReviewNicknameView *)self nicknameBackgroundView];
+  leadingAnchor4 = [nicknameBackgroundView9 leadingAnchor];
+  v33 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:20.0];
   [v33 setActive:1];
 
-  v34 = [(SUUIComposeReviewNicknameView *)self nicknamePlaceholderLabel];
-  v35 = [v34 topAnchor];
-  v36 = [(SUUIComposeReviewNicknameView *)self nicknameBackgroundView];
-  v37 = [v36 topAnchor];
-  v38 = [v35 constraintEqualToAnchor:v37 constant:18.0];
+  nicknamePlaceholderLabel5 = [(SUUIComposeReviewNicknameView *)self nicknamePlaceholderLabel];
+  topAnchor2 = [nicknamePlaceholderLabel5 topAnchor];
+  nicknameBackgroundView10 = [(SUUIComposeReviewNicknameView *)self nicknameBackgroundView];
+  topAnchor3 = [nicknameBackgroundView10 topAnchor];
+  v38 = [topAnchor2 constraintEqualToAnchor:topAnchor3 constant:18.0];
   [v38 setActive:1];
 
-  v39 = [(SUUIComposeReviewNicknameView *)self nicknamePlaceholderLabel];
-  v40 = [v39 bottomAnchor];
-  v41 = [(SUUIComposeReviewNicknameView *)self nicknameBackgroundView];
-  v42 = [v41 bottomAnchor];
-  v43 = [v40 constraintEqualToAnchor:v42 constant:-18.0];
+  nicknamePlaceholderLabel6 = [(SUUIComposeReviewNicknameView *)self nicknamePlaceholderLabel];
+  bottomAnchor2 = [nicknamePlaceholderLabel6 bottomAnchor];
+  nicknameBackgroundView11 = [(SUUIComposeReviewNicknameView *)self nicknameBackgroundView];
+  bottomAnchor3 = [nicknameBackgroundView11 bottomAnchor];
+  v43 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3 constant:-18.0];
   [v43 setActive:1];
 
-  v44 = [(SUUIComposeReviewNicknameView *)self nicknamePlaceholderLabel];
+  nicknamePlaceholderLabel7 = [(SUUIComposeReviewNicknameView *)self nicknamePlaceholderLabel];
   LODWORD(v45) = 1148846080;
-  [v44 setContentHuggingPriority:0 forAxis:v45];
+  [nicknamePlaceholderLabel7 setContentHuggingPriority:0 forAxis:v45];
 
   v46 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v47 = [v46 localizedStringForKey:@"NICKNAME_VIEW_PLACEHOLDER" value:&stru_286AECDE0 table:0];
-  v48 = [(SUUIComposeReviewNicknameView *)self nicknamePlaceholderLabel];
-  [v48 setText:v47];
+  nicknamePlaceholderLabel8 = [(SUUIComposeReviewNicknameView *)self nicknamePlaceholderLabel];
+  [nicknamePlaceholderLabel8 setText:v47];
 
   v49 = objc_opt_new();
   [(SUUIComposeReviewNicknameView *)self setNicknameTextfield:v49];
 
-  v50 = [(SUUIComposeReviewNicknameView *)self nicknameTextfield];
-  [v50 setTranslatesAutoresizingMaskIntoConstraints:0];
+  nicknameTextfield = [(SUUIComposeReviewNicknameView *)self nicknameTextfield];
+  [nicknameTextfield setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v51 = [(SUUIComposeReviewNicknameView *)self nicknameBackgroundView];
-  v52 = [(SUUIComposeReviewNicknameView *)self nicknameTextfield];
-  [v51 addSubview:v52];
+  nicknameBackgroundView12 = [(SUUIComposeReviewNicknameView *)self nicknameBackgroundView];
+  nicknameTextfield2 = [(SUUIComposeReviewNicknameView *)self nicknameTextfield];
+  [nicknameBackgroundView12 addSubview:nicknameTextfield2];
 
-  v53 = [(SUUIComposeReviewNicknameView *)self nicknameTextfield];
-  v54 = [v53 firstBaselineAnchor];
-  v55 = [(SUUIComposeReviewNicknameView *)self nicknamePlaceholderLabel];
-  v56 = [v55 firstBaselineAnchor];
-  v57 = [v54 constraintEqualToAnchor:v56];
+  nicknameTextfield3 = [(SUUIComposeReviewNicknameView *)self nicknameTextfield];
+  firstBaselineAnchor = [nicknameTextfield3 firstBaselineAnchor];
+  nicknamePlaceholderLabel9 = [(SUUIComposeReviewNicknameView *)self nicknamePlaceholderLabel];
+  firstBaselineAnchor2 = [nicknamePlaceholderLabel9 firstBaselineAnchor];
+  v57 = [firstBaselineAnchor constraintEqualToAnchor:firstBaselineAnchor2];
   [v57 setActive:1];
 
-  v58 = [(SUUIComposeReviewNicknameView *)self nicknameTextfield];
-  v59 = [v58 topAnchor];
-  v60 = [(SUUIComposeReviewNicknameView *)self nicknameBackgroundView];
-  v61 = [v60 topAnchor];
-  v62 = [v59 constraintEqualToAnchor:v61];
+  nicknameTextfield4 = [(SUUIComposeReviewNicknameView *)self nicknameTextfield];
+  topAnchor4 = [nicknameTextfield4 topAnchor];
+  nicknameBackgroundView13 = [(SUUIComposeReviewNicknameView *)self nicknameBackgroundView];
+  topAnchor5 = [nicknameBackgroundView13 topAnchor];
+  v62 = [topAnchor4 constraintEqualToAnchor:topAnchor5];
   [v62 setActive:1];
 
-  v63 = [(SUUIComposeReviewNicknameView *)self nicknameTextfield];
-  v64 = [v63 leadingAnchor];
-  v65 = [(SUUIComposeReviewNicknameView *)self nicknamePlaceholderLabel];
-  v66 = [v65 trailingAnchor];
-  v67 = [v64 constraintEqualToAnchor:v66 constant:20.0];
+  nicknameTextfield5 = [(SUUIComposeReviewNicknameView *)self nicknameTextfield];
+  leadingAnchor5 = [nicknameTextfield5 leadingAnchor];
+  nicknamePlaceholderLabel10 = [(SUUIComposeReviewNicknameView *)self nicknamePlaceholderLabel];
+  trailingAnchor3 = [nicknamePlaceholderLabel10 trailingAnchor];
+  v67 = [leadingAnchor5 constraintEqualToAnchor:trailingAnchor3 constant:20.0];
   [v67 setActive:1];
 
-  v68 = [(SUUIComposeReviewNicknameView *)self nicknameTextfield];
-  v69 = [v68 trailingAnchor];
-  v70 = [(SUUIComposeReviewNicknameView *)self nicknameBackgroundView];
-  v71 = [v70 trailingAnchor];
-  v72 = [v69 constraintEqualToAnchor:v71 constant:-16.0];
+  nicknameTextfield6 = [(SUUIComposeReviewNicknameView *)self nicknameTextfield];
+  trailingAnchor4 = [nicknameTextfield6 trailingAnchor];
+  nicknameBackgroundView14 = [(SUUIComposeReviewNicknameView *)self nicknameBackgroundView];
+  trailingAnchor5 = [nicknameBackgroundView14 trailingAnchor];
+  v72 = [trailingAnchor4 constraintEqualToAnchor:trailingAnchor5 constant:-16.0];
   [v72 setActive:1];
 
-  v73 = [(SUUIComposeReviewNicknameView *)self nicknameTextfield];
-  v74 = [v73 bottomAnchor];
-  v75 = [(SUUIComposeReviewNicknameView *)self nicknameBackgroundView];
-  v76 = [v75 bottomAnchor];
-  v77 = [v74 constraintEqualToAnchor:v76];
+  nicknameTextfield7 = [(SUUIComposeReviewNicknameView *)self nicknameTextfield];
+  bottomAnchor4 = [nicknameTextfield7 bottomAnchor];
+  nicknameBackgroundView15 = [(SUUIComposeReviewNicknameView *)self nicknameBackgroundView];
+  bottomAnchor5 = [nicknameBackgroundView15 bottomAnchor];
+  v77 = [bottomAnchor4 constraintEqualToAnchor:bottomAnchor5];
   [v77 setActive:1];
 
-  v78 = [(SUUIComposeReviewNicknameView *)self nicknameTextfield];
+  nicknameTextfield8 = [(SUUIComposeReviewNicknameView *)self nicknameTextfield];
   LODWORD(v79) = 1132068864;
-  [v78 setContentCompressionResistancePriority:0 forAxis:v79];
+  [nicknameTextfield8 setContentCompressionResistancePriority:0 forAxis:v79];
 
-  v80 = [(SUUIComposeReviewNicknameView *)self nicknameTextfield];
-  [v80 setClearButtonMode:1];
+  nicknameTextfield9 = [(SUUIComposeReviewNicknameView *)self nicknameTextfield];
+  [nicknameTextfield9 setClearButtonMode:1];
 
-  v82 = [(SUUIComposeReviewNicknameView *)self nicknameTextfield];
+  nicknameTextfield10 = [(SUUIComposeReviewNicknameView *)self nicknameTextfield];
   v81 = SUUIFontLimitedPreferredFontForTextStyle(1, 7);
-  [v82 setFont:v81];
+  [nicknameTextfield10 setFont:v81];
 }
 
 - (void)_setupInfo
@@ -358,55 +358,55 @@
   v3 = objc_opt_new();
   [(SUUIComposeReviewNicknameView *)self setNicknameInfoLabel:v3];
 
-  v4 = [(SUUIComposeReviewNicknameView *)self nicknameInfoLabel];
-  [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
+  nicknameInfoLabel = [(SUUIComposeReviewNicknameView *)self nicknameInfoLabel];
+  [nicknameInfoLabel setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v5 = [(SUUIComposeReviewNicknameView *)self nicknameInfoLabel];
-  [(SUUIComposeReviewNicknameView *)self addSubview:v5];
+  nicknameInfoLabel2 = [(SUUIComposeReviewNicknameView *)self nicknameInfoLabel];
+  [(SUUIComposeReviewNicknameView *)self addSubview:nicknameInfoLabel2];
 
-  v6 = [(SUUIComposeReviewNicknameView *)self nicknameInfoLabel];
+  nicknameInfoLabel3 = [(SUUIComposeReviewNicknameView *)self nicknameInfoLabel];
   v7 = SUUIFontLimitedPreferredFontForTextStyle(11, 7);
-  [v6 setFont:v7];
+  [nicknameInfoLabel3 setFont:v7];
 
-  v8 = [(SUUIComposeReviewNicknameView *)self nicknameInfoLabel];
-  v9 = [MEMORY[0x277D75348] secondaryLabelColor];
-  [v8 setTextColor:v9];
+  nicknameInfoLabel4 = [(SUUIComposeReviewNicknameView *)self nicknameInfoLabel];
+  secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+  [nicknameInfoLabel4 setTextColor:secondaryLabelColor];
 
-  v10 = [(SUUIComposeReviewNicknameView *)self nicknameInfoLabel];
-  v11 = [v10 leadingAnchor];
-  v12 = [(SUUIComposeReviewNicknameView *)self leadingAnchor];
-  v13 = [v11 constraintEqualToAnchor:v12 constant:40.0];
+  nicknameInfoLabel5 = [(SUUIComposeReviewNicknameView *)self nicknameInfoLabel];
+  leadingAnchor = [nicknameInfoLabel5 leadingAnchor];
+  leadingAnchor2 = [(SUUIComposeReviewNicknameView *)self leadingAnchor];
+  v13 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:40.0];
   [v13 setActive:1];
 
-  v14 = [(SUUIComposeReviewNicknameView *)self nicknameInfoLabel];
-  v15 = [v14 trailingAnchor];
-  v16 = [(SUUIComposeReviewNicknameView *)self trailingAnchor];
-  v17 = [v15 constraintEqualToAnchor:v16 constant:-40.0];
+  nicknameInfoLabel6 = [(SUUIComposeReviewNicknameView *)self nicknameInfoLabel];
+  trailingAnchor = [nicknameInfoLabel6 trailingAnchor];
+  trailingAnchor2 = [(SUUIComposeReviewNicknameView *)self trailingAnchor];
+  v17 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-40.0];
   [v17 setActive:1];
 
-  v18 = [(SUUIComposeReviewNicknameView *)self nicknameInfoLabel];
-  v19 = [v18 firstBaselineAnchor];
-  v20 = [(SUUIComposeReviewNicknameView *)self nicknameBackgroundView];
-  v21 = [v20 bottomAnchor];
-  v22 = [v19 constraintEqualToAnchor:v21 constant:24.0];
+  nicknameInfoLabel7 = [(SUUIComposeReviewNicknameView *)self nicknameInfoLabel];
+  firstBaselineAnchor = [nicknameInfoLabel7 firstBaselineAnchor];
+  nicknameBackgroundView = [(SUUIComposeReviewNicknameView *)self nicknameBackgroundView];
+  bottomAnchor = [nicknameBackgroundView bottomAnchor];
+  v22 = [firstBaselineAnchor constraintEqualToAnchor:bottomAnchor constant:24.0];
   [v22 setActive:1];
 
-  v23 = [(SUUIComposeReviewNicknameView *)self nicknameInfoLabel];
-  v24 = [v23 bottomAnchor];
-  v25 = [(SUUIComposeReviewNicknameView *)self bottomAnchor];
-  v26 = [v24 constraintEqualToAnchor:v25 constant:-20.0];
+  nicknameInfoLabel8 = [(SUUIComposeReviewNicknameView *)self nicknameInfoLabel];
+  bottomAnchor2 = [nicknameInfoLabel8 bottomAnchor];
+  bottomAnchor3 = [(SUUIComposeReviewNicknameView *)self bottomAnchor];
+  v26 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3 constant:-20.0];
   [v26 setActive:1];
 
-  v27 = [(SUUIComposeReviewNicknameView *)self nicknameInfoLabel];
-  [v27 setNumberOfLines:3];
+  nicknameInfoLabel9 = [(SUUIComposeReviewNicknameView *)self nicknameInfoLabel];
+  [nicknameInfoLabel9 setNumberOfLines:3];
 
-  v28 = [(SUUIComposeReviewNicknameView *)self nicknameInfoLabel];
-  [v28 setTextAlignment:1];
+  nicknameInfoLabel10 = [(SUUIComposeReviewNicknameView *)self nicknameInfoLabel];
+  [nicknameInfoLabel10 setTextAlignment:1];
 
   v31 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v29 = [v31 localizedStringForKey:@"NICKNAME_VIEW_MESSAGE" value:&stru_286AECDE0 table:0];
-  v30 = [(SUUIComposeReviewNicknameView *)self nicknameInfoLabel];
-  [v30 setText:v29];
+  nicknameInfoLabel11 = [(SUUIComposeReviewNicknameView *)self nicknameInfoLabel];
+  [nicknameInfoLabel11 setText:v29];
 }
 
 @end

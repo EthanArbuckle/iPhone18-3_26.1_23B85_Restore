@@ -1,9 +1,9 @@
 @interface LNCodableValue
-- (BOOL)isEqual:(id)a3;
-- (LNCodableValue)initWithData:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (LNCodableValue)initWithData:(id)data;
 - (NSData)data;
 - (NSString)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNCodableValue
@@ -18,27 +18,27 @@
   return v5;
 }
 
-- (LNCodableValue)initWithData:(id)a3
+- (LNCodableValue)initWithData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v4 = sub_18F09330C();
   v6 = v5;
 
   return LNCodableValue.init(data:)(v4, v6);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  LNCodableValue.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  LNCodableValue.encode(with:)(coderCopy);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_18F093FAC();
     swift_unknownObjectRelease();
@@ -47,7 +47,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = LNCodableValue.isEqual(_:)(v8);
@@ -58,7 +58,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   LNCodableValue.description.getter();
 
   v3 = sub_18F093B5C();

@@ -2,42 +2,42 @@
 - (CLKMonochromeFilterProvider)filterProvider;
 - (double)_circleDiameter;
 - (id)_createCircularLayer;
-- (id)_createCircularLayersWithDiameter:(double)a3;
+- (id)_createCircularLayersWithDiameter:(double)diameter;
 - (id)_createDownloadMaskLayer;
-- (id)_createDownloadProgressMaskWithDiameter:(double)a3 progress:(double)a4 contained:(BOOL)a5;
+- (id)_createDownloadProgressMaskWithDiameter:(double)diameter progress:(double)progress contained:(BOOL)contained;
 - (id)_createRectangularLayer;
-- (id)initFullColorImageViewWithDevice:(id)a3;
+- (id)initFullColorImageViewWithDevice:(id)device;
 - (void)_updateLayers;
-- (void)configureWithImageProvider:(id)a3 reason:(int64_t)a4;
+- (void)configureWithImageProvider:(id)provider reason:(int64_t)reason;
 - (void)layoutSubviews;
 @end
 
 @implementation NTKComplicationPlaceholderView
 
-- (id)initFullColorImageViewWithDevice:(id)a3
+- (id)initFullColorImageViewWithDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v9.receiver = self;
   v9.super_class = NTKComplicationPlaceholderView;
   v6 = [(NTKComplicationPlaceholderView *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_device, a3);
+    objc_storeStrong(&v6->_device, device);
   }
 
   return v7;
 }
 
-- (void)configureWithImageProvider:(id)a3 reason:(int64_t)a4
+- (void)configureWithImageProvider:(id)provider reason:(int64_t)reason
 {
-  v5 = a3;
-  v6 = [v5 metadata];
-  v7 = [v6 objectForKeyedSubscript:@"NTKComplicationPlaceholderAppIdentifierKey"];
+  providerCopy = provider;
+  metadata = [providerCopy metadata];
+  v7 = [metadata objectForKeyedSubscript:@"NTKComplicationPlaceholderAppIdentifierKey"];
 
-  v8 = [v5 metadata];
+  metadata2 = [providerCopy metadata];
 
-  v9 = [v8 objectForKeyedSubscript:@"NTKComplicationPlaceholderComplicationVariantKey"];
+  v9 = [metadata2 objectForKeyedSubscript:@"NTKComplicationPlaceholderComplicationVariantKey"];
 
   complicationAppIdentifier = self->_complicationAppIdentifier;
   self->_complicationAppIdentifier = v7;
@@ -67,23 +67,23 @@
 - (void)_updateLayers
 {
   [(CALayer *)self->_strokesLayer removeFromSuperlayer];
-  v3 = [MEMORY[0x277CD9ED0] layer];
+  layer = [MEMORY[0x277CD9ED0] layer];
   [(NTKComplicationPlaceholderView *)self bounds];
-  [(CALayer *)v3 setFrame:?];
+  [(CALayer *)layer setFrame:?];
   v4 = [MEMORY[0x277D75348] colorWithWhite:1.0 alpha:0.65];
-  -[CALayer setBackgroundColor:](v3, "setBackgroundColor:", [v4 CGColor]);
+  -[CALayer setBackgroundColor:](layer, "setBackgroundColor:", [v4 CGColor]);
 
-  v5 = [(NTKComplicationVariant *)self->_complicationVariant metrics];
-  [v5 cornerRadius];
-  [(CALayer *)v3 setCornerRadius:?];
+  metrics = [(NTKComplicationVariant *)self->_complicationVariant metrics];
+  [metrics cornerRadius];
+  [(CALayer *)layer setCornerRadius:?];
 
-  v6 = [(NTKComplicationVariant *)self->_complicationVariant metrics];
-  v7 = [v6 opaque];
+  metrics2 = [(NTKComplicationVariant *)self->_complicationVariant metrics];
+  opaque = [metrics2 opaque];
 
-  if (v7)
+  if (opaque)
   {
-    v8 = [MEMORY[0x277D75348] whiteColor];
-    [(NTKComplicationPlaceholderView *)self setBackgroundColor:v8];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [(NTKComplicationPlaceholderView *)self setBackgroundColor:whiteColor];
   }
 
   if ([(NTKComplicationVariant *)self->_complicationVariant family]== 11)
@@ -96,26 +96,26 @@
     [(NTKComplicationPlaceholderView *)self _createCircularLayer];
   }
   v9 = ;
-  [(CALayer *)v3 addSublayer:v9];
+  [(CALayer *)layer addSublayer:v9];
 
   strokesLayer = self->_strokesLayer;
-  self->_strokesLayer = v3;
-  v11 = v3;
+  self->_strokesLayer = layer;
+  v11 = layer;
 
-  v12 = [(NTKComplicationVariant *)self->_complicationVariant metrics];
-  [v12 cornerRadius];
+  metrics3 = [(NTKComplicationVariant *)self->_complicationVariant metrics];
+  [metrics3 cornerRadius];
   v14 = v13;
-  v15 = [(NTKComplicationPlaceholderView *)self layer];
-  [v15 setCornerRadius:v14];
+  layer2 = [(NTKComplicationPlaceholderView *)self layer];
+  [layer2 setCornerRadius:v14];
 
-  v16 = [(NTKComplicationPlaceholderView *)self layer];
-  [v16 addSublayer:self->_strokesLayer];
+  layer3 = [(NTKComplicationPlaceholderView *)self layer];
+  [layer3 addSublayer:self->_strokesLayer];
 }
 
 - (id)_createCircularLayer
 {
-  v3 = [(NTKComplicationVariant *)self->_complicationVariant metrics];
-  [v3 size];
+  metrics = [(NTKComplicationVariant *)self->_complicationVariant metrics];
+  [metrics size];
   v5 = [(NTKComplicationPlaceholderView *)self _createCircularLayersWithDiameter:v4];
 
   return v5;
@@ -123,12 +123,12 @@
 
 - (id)_createRectangularLayer
 {
-  v3 = [(NTKComplicationVariant *)self->_complicationVariant metrics];
-  [v3 cornerRadius];
+  metrics = [(NTKComplicationVariant *)self->_complicationVariant metrics];
+  [metrics cornerRadius];
   v5 = v4;
 
-  v6 = [(NTKComplicationVariant *)self->_complicationVariant metrics];
-  [v6 size];
+  metrics2 = [(NTKComplicationVariant *)self->_complicationVariant metrics];
+  [metrics2 size];
   v8 = v7;
   v10 = v9;
 
@@ -184,13 +184,13 @@
   v38.size.height = v10;
   MaxY = CGRectGetMaxY(v38);
   CGPathAddLineToPoint(Mutable, 0, v21, MaxY);
-  v23 = [MEMORY[0x277CD9F90] layer];
-  [v23 setPath:Mutable];
+  layer = [MEMORY[0x277CD9F90] layer];
+  [layer setPath:Mutable];
   v24 = [MEMORY[0x277D75348] colorWithWhite:0.407843137 alpha:1.0];
-  [v23 setStrokeColor:{objc_msgSend(v24, "CGColor")}];
+  [layer setStrokeColor:{objc_msgSend(v24, "CGColor")}];
 
-  [v23 setLineWidth:1.0];
-  [v23 setFillColor:0];
+  [layer setLineWidth:1.0];
+  [layer setFillColor:0];
   CGPathRelease(Mutable);
   v25 = [(NTKComplicationPlaceholderView *)self _createCircularLayersWithDiameter:height];
   v39.origin.x = 0.0;
@@ -203,15 +203,15 @@
   v40.size.width = v8;
   v40.size.height = v10;
   [v25 setFrame:{v26, CGRectGetMidY(v40) - height * 0.5, height, height}];
-  [v23 addSublayer:v25];
+  [layer addSublayer:v25];
 
-  return v23;
+  return layer;
 }
 
-- (id)_createCircularLayersWithDiameter:(double)a3
+- (id)_createCircularLayersWithDiameter:(double)diameter
 {
-  v4 = a3 * 0.5;
-  v5 = a3 * 1.41421356 * 0.5;
+  v4 = diameter * 0.5;
+  v5 = diameter * 1.41421356 * 0.5;
   Mutable = CGPathCreateMutable();
   v7 = v5 * 0.5;
   CGPathMoveToPoint(Mutable, 0, v4 - v7, v4 - v7);
@@ -226,42 +226,42 @@
   v8 = CGPathCreateMutable();
   CGPathAddArc(v8, 0, v4, v4, v4, 0.0, 6.28318531, 1);
   CGPathMoveToPoint(v8, 0, 0.0, v4);
-  CGPathAddLineToPoint(v8, 0, a3, v4);
+  CGPathAddLineToPoint(v8, 0, diameter, v4);
   CGPathMoveToPoint(v8, 0, v4, 0.0);
-  CGPathAddLineToPoint(v8, 0, v4, a3);
+  CGPathAddLineToPoint(v8, 0, v4, diameter);
   v9 = CGPathCreateMutable();
   CGPathAddArc(v9, 0, v4, v4, v4 * 0.3, 0.0, 6.28318531, 1);
   CGPathAddArc(v9, 0, v4, v4, v5 * 0.5, 0.0, 6.28318531, 1);
-  v10 = [MEMORY[0x277CD9F90] layer];
-  [v10 setPath:Mutable];
+  layer = [MEMORY[0x277CD9F90] layer];
+  [layer setPath:Mutable];
   v11 = [MEMORY[0x277D75348] colorWithWhite:0.447058824 alpha:1.0];
-  [v10 setStrokeColor:{objc_msgSend(v11, "CGColor")}];
+  [layer setStrokeColor:{objc_msgSend(v11, "CGColor")}];
 
-  [v10 setLineWidth:1.0];
-  [v10 setFillColor:0];
-  v12 = [MEMORY[0x277CD9F90] layer];
-  [v12 setPath:v8];
+  [layer setLineWidth:1.0];
+  [layer setFillColor:0];
+  layer2 = [MEMORY[0x277CD9F90] layer];
+  [layer2 setPath:v8];
   v13 = [MEMORY[0x277D75348] colorWithWhite:0.407843137 alpha:1.0];
-  [v12 setStrokeColor:{objc_msgSend(v13, "CGColor")}];
+  [layer2 setStrokeColor:{objc_msgSend(v13, "CGColor")}];
 
-  [v12 setLineWidth:1.0];
-  [v12 setFillColor:0];
-  v14 = [MEMORY[0x277CD9F90] layer];
-  [v14 setPath:v9];
+  [layer2 setLineWidth:1.0];
+  [layer2 setFillColor:0];
+  layer3 = [MEMORY[0x277CD9F90] layer];
+  [layer3 setPath:v9];
   v15 = [MEMORY[0x277D75348] colorWithWhite:0.298039216 alpha:1.0];
-  [v14 setStrokeColor:{objc_msgSend(v15, "CGColor")}];
+  [layer3 setStrokeColor:{objc_msgSend(v15, "CGColor")}];
 
-  [v14 setLineWidth:1.0];
-  [v14 setFillColor:0];
+  [layer3 setLineWidth:1.0];
+  [layer3 setFillColor:0];
   CGPathRelease(Mutable);
   CGPathRelease(v8);
   CGPathRelease(v9);
-  v16 = [MEMORY[0x277CD9ED0] layer];
-  [v16 addSublayer:v10];
-  [v16 addSublayer:v12];
-  [v16 addSublayer:v14];
+  layer4 = [MEMORY[0x277CD9ED0] layer];
+  [layer4 addSublayer:layer];
+  [layer4 addSublayer:layer2];
+  [layer4 addSublayer:layer3];
 
-  return v16;
+  return layer4;
 }
 
 - (id)_createDownloadMaskLayer
@@ -274,8 +274,8 @@
 
 - (double)_circleDiameter
 {
-  v3 = [(NTKComplicationVariant *)self->_complicationVariant metrics];
-  [v3 size];
+  metrics = [(NTKComplicationVariant *)self->_complicationVariant metrics];
+  [metrics size];
   v5 = v4;
 
   if ([(NTKComplicationVariant *)self->_complicationVariant family]!= 11)
@@ -287,11 +287,11 @@
   return v5 + v6 * -2.0;
 }
 
-- (id)_createDownloadProgressMaskWithDiameter:(double)a3 progress:(double)a4 contained:(BOOL)a5
+- (id)_createDownloadProgressMaskWithDiameter:(double)diameter progress:(double)progress contained:(BOOL)contained
 {
-  v5 = a5;
-  v8 = [(NTKComplicationVariant *)self->_complicationVariant metrics];
-  [v8 size];
+  containedCopy = contained;
+  metrics = [(NTKComplicationVariant *)self->_complicationVariant metrics];
+  [metrics size];
   v10 = v9;
   v12 = v11;
 
@@ -306,26 +306,26 @@
   v22.size.width = v10;
   v22.size.height = v12;
   MidY = CGRectGetMidY(v22);
-  if (v5)
+  if (containedCopy)
   {
-    CGPathAddArc(Mutable, 0, MidX, MidY, a3 * 0.5, 0.0, 6.28318531, 1);
+    CGPathAddArc(Mutable, 0, MidX, MidY, diameter * 0.5, 0.0, 6.28318531, 1);
     CGPathCloseSubpath(Mutable);
   }
 
   CGPathMoveToPoint(Mutable, 0, MidX, MidY);
-  CGPathAddArc(Mutable, 0, MidX, MidY, a3 * 1.41421356 * 0.5 * 0.5, -1.57079633, a4 * 6.28318531 + -1.57079633, 1);
+  CGPathAddArc(Mutable, 0, MidX, MidY, diameter * 1.41421356 * 0.5 * 0.5, -1.57079633, progress * 6.28318531 + -1.57079633, 1);
   CGPathCloseSubpath(Mutable);
-  v16 = [MEMORY[0x277CD9F90] layer];
-  [v16 setPath:Mutable];
+  layer = [MEMORY[0x277CD9F90] layer];
+  [layer setPath:Mutable];
   v17 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:1.0];
-  [v16 setFillColor:{objc_msgSend(v17, "CGColor")}];
+  [layer setFillColor:{objc_msgSend(v17, "CGColor")}];
 
-  [v16 setLineWidth:1.0];
-  [v16 setFillRule:*MEMORY[0x277CDA248]];
+  [layer setLineWidth:1.0];
+  [layer setFillRule:*MEMORY[0x277CDA248]];
   v18 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.4];
-  [v16 setBackgroundColor:{objc_msgSend(v18, "CGColor")}];
+  [layer setBackgroundColor:{objc_msgSend(v18, "CGColor")}];
 
-  return v16;
+  return layer;
 }
 
 - (CLKMonochromeFilterProvider)filterProvider

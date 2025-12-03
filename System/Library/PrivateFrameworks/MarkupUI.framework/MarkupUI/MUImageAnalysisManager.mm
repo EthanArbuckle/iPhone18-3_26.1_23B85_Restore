@@ -1,19 +1,19 @@
 @interface MUImageAnalysisManager
-- (BOOL)actionInfoItemExistsAtPoint:(CGPoint)a3;
+- (BOOL)actionInfoItemExistsAtPoint:(CGPoint)point;
 - (BOOL)addInteractionIfNeeded;
-- (BOOL)dataDetectorExistsAtPoint:(CGPoint)a3;
+- (BOOL)dataDetectorExistsAtPoint:(CGPoint)point;
 - (BOOL)hasActiveTextSelection;
 - (BOOL)hasAnalysis;
 - (BOOL)hasResultsForVisualSearch;
-- (BOOL)imageAnalysisInteraction:(id)a3 shouldBeginAtPoint:(CGPoint)a4 forAnalysisType:(unint64_t)a5;
-- (BOOL)imageSubjectExistsAtPoint:(CGPoint)a3;
+- (BOOL)imageAnalysisInteraction:(id)interaction shouldBeginAtPoint:(CGPoint)point forAnalysisType:(unint64_t)type;
+- (BOOL)imageSubjectExistsAtPoint:(CGPoint)point;
 - (BOOL)isImageSubjectHighlightingEnabled;
 - (BOOL)isInteractionActive;
 - (BOOL)isTextSelectionEnabled;
 - (BOOL)isVisualSearchEnabled;
-- (BOOL)textExistsAtPoint:(CGPoint)a3;
-- (BOOL)visualSearchExistsAtPoint:(CGPoint)a3;
-- (MUImageAnalysisManager)initWithDelegate:(id)a3 presentingView:(id)a4;
+- (BOOL)textExistsAtPoint:(CGPoint)point;
+- (BOOL)visualSearchExistsAtPoint:(CGPoint)point;
+- (MUImageAnalysisManager)initWithDelegate:(id)delegate presentingView:(id)view;
 - (MUImageAnalysisManagerDelegate)delegate;
 - (NSString)filledInfoButtonGlyphName;
 - (NSString)infoButtonGlyphName;
@@ -21,47 +21,47 @@
 - (VKCImageAnalyzer)imageAnalyzer;
 - (id)image;
 - (id)imageAnalysisQueue;
-- (id)presentingViewControllerForImageAnalysisInteraction:(id)a3;
+- (id)presentingViewControllerForImageAnalysisInteraction:(id)interaction;
 - (unint64_t)_defaultInteractionTypes;
-- (void)_activateInteractionTypes:(unint64_t)a3;
-- (void)_handleImageAnalysis:(id)a3 error:(id)a4;
-- (void)_setupAnalysisButtonsContainerInView:(id)a3;
+- (void)_activateInteractionTypes:(unint64_t)types;
+- (void)_handleImageAnalysis:(id)analysis error:(id)error;
+- (void)_setupAnalysisButtonsContainerInView:(id)view;
 - (void)_setupImageAnalysis;
 - (void)_setupNotificationsObservation;
-- (void)_startImageAnalysisWithRequest:(id)a3;
-- (void)_updateAnalysisButtonContainerWithAnimation:(BOOL)a3;
-- (void)_updateAnalysisButtonWithAnimation:(BOOL)a3;
-- (void)_updateInfoButtonWithAnimation:(BOOL)a3;
-- (void)adjustImageInteractionForScrollView:(id)a3;
+- (void)_startImageAnalysisWithRequest:(id)request;
+- (void)_updateAnalysisButtonContainerWithAnimation:(BOOL)animation;
+- (void)_updateAnalysisButtonWithAnimation:(BOOL)animation;
+- (void)_updateInfoButtonWithAnimation:(BOOL)animation;
+- (void)adjustImageInteractionForScrollView:(id)view;
 - (void)cancelAllRequests;
 - (void)dealloc;
-- (void)enableMarkupMode:(BOOL)a3;
-- (void)imageAnalysisInteraction:(id)a3 prepareForCalloutAction:(SEL)a4 competion:(id)a5;
+- (void)enableMarkupMode:(BOOL)mode;
+- (void)imageAnalysisInteraction:(id)interaction prepareForCalloutAction:(SEL)action competion:(id)competion;
 - (void)imageAnalysisPopoverDidDisappear;
 - (void)imageAnalysisPopoverWillAppear;
 - (void)infoButtonTapped;
 - (void)setupAnalysisButtonsContainer;
-- (void)shouldHideInteraction:(BOOL)a3 animated:(BOOL)a4;
+- (void)shouldHideInteraction:(BOOL)interaction animated:(BOOL)animated;
 - (void)startImageAnalysis;
 - (void)stopImageAnalysis;
-- (void)updateBottomRightContainerPositionForImageView:(id)a3 view:(id)a4;
-- (void)updateForFullScreen:(BOOL)a3 animated:(BOOL)a4;
+- (void)updateBottomRightContainerPositionForImageView:(id)view view:(id)a4;
+- (void)updateForFullScreen:(BOOL)screen animated:(BOOL)animated;
 @end
 
 @implementation MUImageAnalysisManager
 
-- (MUImageAnalysisManager)initWithDelegate:(id)a3 presentingView:(id)a4
+- (MUImageAnalysisManager)initWithDelegate:(id)delegate presentingView:(id)view
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  viewCopy = view;
   v11.receiver = self;
   v11.super_class = MUImageAnalysisManager;
   v8 = [(MUImageAnalysisManager *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(MUImageAnalysisManager *)v8 setDelegate:v6];
-    [(MUImageAnalysisManager *)v9 setPresentingView:v7];
+    [(MUImageAnalysisManager *)v8 setDelegate:delegateCopy];
+    [(MUImageAnalysisManager *)v9 setPresentingView:viewCopy];
   }
 
   [(MUImageAnalysisManager *)v9 _setupImageAnalysis];
@@ -77,20 +77,20 @@
   v3 = objc_alloc_init(MEMORY[0x277D78510]);
   [(MUImageAnalysisManager *)self setImageInteraction:v3];
 
-  v4 = [(MUImageAnalysisManager *)self _defaultInteractionTypes];
-  v5 = [(MUImageAnalysisManager *)self imageInteraction];
-  [v5 setActiveInteractionTypes:v4];
+  _defaultInteractionTypes = [(MUImageAnalysisManager *)self _defaultInteractionTypes];
+  imageInteraction = [(MUImageAnalysisManager *)self imageInteraction];
+  [imageInteraction setActiveInteractionTypes:_defaultInteractionTypes];
 
-  v6 = [(MUImageAnalysisManager *)self imageInteraction];
-  [v6 setDelegate:self];
+  imageInteraction2 = [(MUImageAnalysisManager *)self imageInteraction];
+  [imageInteraction2 setDelegate:self];
 
-  v7 = [(MUImageAnalysisManager *)self imageInteraction];
-  [v7 setAutomaticallyShowVisualSearchResults:1];
+  imageInteraction3 = [(MUImageAnalysisManager *)self imageInteraction];
+  [imageInteraction3 setAutomaticallyShowVisualSearchResults:1];
 
-  v8 = [(MUImageAnalysisManager *)self delegate];
-  v9 = [v8 imageAnalysisView];
-  v10 = [(MUImageAnalysisManager *)self imageInteraction];
-  [v9 addInteraction:v10];
+  delegate = [(MUImageAnalysisManager *)self delegate];
+  imageAnalysisView = [delegate imageAnalysisView];
+  imageInteraction4 = [(MUImageAnalysisManager *)self imageInteraction];
+  [imageAnalysisView addInteraction:imageInteraction4];
 
   [(MUImageAnalysisManager *)self _updateAnalysisButtonWithAnimation:1];
 }
@@ -120,8 +120,8 @@
   v5 = *v3;
   if (v5)
   {
-    v6 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v6 addObserver:self selector:sel_dataDetectorDetectionControllerWillPresentAction_ name:v5 object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:self selector:sel_dataDetectorDetectionControllerWillPresentAction_ name:v5 object:0];
   }
 
   v13 = 0;
@@ -150,61 +150,61 @@ LABEL_13:
   {
     v9 = MEMORY[0x277CCAB98];
     v10 = *v7;
-    v11 = [v9 defaultCenter];
-    [v11 addObserver:self selector:sel_dataDetectorDetectionControllerDidDismissAction_ name:v10 object:0];
+    defaultCenter2 = [v9 defaultCenter];
+    [defaultCenter2 addObserver:self selector:sel_dataDetectorDetectionControllerDidDismissAction_ name:v10 object:0];
   }
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = MUImageAnalysisManager;
   [(MUImageAnalysisManager *)&v4 dealloc];
 }
 
-- (void)_setupAnalysisButtonsContainerInView:(id)a3
+- (void)_setupAnalysisButtonsContainerInView:(id)view
 {
   v96[4] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  viewCopy = view;
   if ((_os_feature_enabled_impl() & 1) == 0)
   {
-    v5 = [(MUImageAnalysisManager *)self bottomRightButtonsContainer];
+    bottomRightButtonsContainer = [(MUImageAnalysisManager *)self bottomRightButtonsContainer];
 
-    if (!v5)
+    if (!bottomRightButtonsContainer)
     {
       v6 = objc_opt_new();
       [(MUImageAnalysisManager *)self setBottomRightButtonsContainer:v6];
       [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
-      [v4 addSubview:v6];
-      [v4 rightAnchor];
+      [viewCopy addSubview:v6];
+      [viewCopy rightAnchor];
       v7 = v90 = self;
-      v8 = [v6 rightAnchor];
-      v9 = [v7 constraintEqualToAnchor:v8];
+      rightAnchor = [v6 rightAnchor];
+      v9 = [v7 constraintEqualToAnchor:rightAnchor];
 
       [(MUImageAnalysisManager *)v90 setBottomRightButtonsContainerRightConstraint:v9];
       LODWORD(v10) = 1148829696;
       [(NSLayoutConstraint *)v90->_bottomRightButtonsContainerRightConstraint setPriority:v10];
-      v11 = [v4 bottomAnchor];
-      v12 = [v6 bottomAnchor];
-      v13 = [v11 constraintEqualToAnchor:v12];
+      bottomAnchor = [viewCopy bottomAnchor];
+      bottomAnchor2 = [v6 bottomAnchor];
+      v13 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
 
       [(MUImageAnalysisManager *)v90 setBottomRightButtonsContainerBottomConstraint:v13];
       LODWORD(v14) = 1148829696;
       [v13 setPriority:v14];
       v83 = MEMORY[0x277CCAAD0];
-      v15 = [v4 rightAnchor];
-      v16 = [v6 rightAnchor];
-      v17 = [v15 constraintGreaterThanOrEqualToAnchor:v16 constant:16.0];
+      rightAnchor2 = [viewCopy rightAnchor];
+      rightAnchor3 = [v6 rightAnchor];
+      v17 = [rightAnchor2 constraintGreaterThanOrEqualToAnchor:rightAnchor3 constant:16.0];
       v96[0] = v17;
-      v88 = v4;
-      v18 = [v4 safeAreaLayoutGuide];
-      v19 = [v18 bottomAnchor];
+      v88 = viewCopy;
+      safeAreaLayoutGuide = [viewCopy safeAreaLayoutGuide];
+      bottomAnchor3 = [safeAreaLayoutGuide bottomAnchor];
       v89 = v6;
-      v20 = [v6 bottomAnchor];
-      v21 = [v19 constraintGreaterThanOrEqualToAnchor:v20 constant:12.0];
+      bottomAnchor4 = [v6 bottomAnchor];
+      v21 = [bottomAnchor3 constraintGreaterThanOrEqualToAnchor:bottomAnchor4 constant:12.0];
       v96[1] = v21;
       v96[2] = v9;
       v86 = v13;
@@ -214,51 +214,51 @@ LABEL_13:
       [v83 activateConstraints:v22];
 
       v23 = v90;
-      v24 = [(MUImageAnalysisManager *)v90 imageInteraction];
-      v25 = [v24 visualSearchCornerView];
+      imageInteraction = [(MUImageAnalysisManager *)v90 imageInteraction];
+      visualSearchCornerView = [imageInteraction visualSearchCornerView];
 
-      v26 = [v25 superview];
+      superview = [visualSearchCornerView superview];
 
-      if (!v26)
+      if (!superview)
       {
         v27 = objc_opt_new();
         [(MUImageAnalysisManager *)v90 setVisualSearchViewContainer:v27];
         [v27 setTranslatesAutoresizingMaskIntoConstraints:0];
         [v89 addSubview:v27];
-        [v25 setTranslatesAutoresizingMaskIntoConstraints:0];
-        [v27 addSubview:v25];
+        [visualSearchCornerView setTranslatesAutoresizingMaskIntoConstraints:0];
+        [v27 addSubview:visualSearchCornerView];
         v63 = MEMORY[0x277CCAAD0];
-        v84 = [v25 topAnchor];
-        v81 = [v27 topAnchor];
-        v79 = [v84 constraintEqualToAnchor:v81];
+        topAnchor = [visualSearchCornerView topAnchor];
+        topAnchor2 = [v27 topAnchor];
+        v79 = [topAnchor constraintEqualToAnchor:topAnchor2];
         v95[0] = v79;
-        v77 = [v25 bottomAnchor];
-        v75 = [v27 bottomAnchor];
-        v73 = [v77 constraintEqualToAnchor:v75];
+        bottomAnchor5 = [visualSearchCornerView bottomAnchor];
+        bottomAnchor6 = [v27 bottomAnchor];
+        v73 = [bottomAnchor5 constraintEqualToAnchor:bottomAnchor6];
         v95[1] = v73;
-        v71 = [v25 trailingAnchor];
-        v69 = [v27 trailingAnchor];
-        v67 = [v71 constraintEqualToAnchor:v69];
+        trailingAnchor = [visualSearchCornerView trailingAnchor];
+        trailingAnchor2 = [v27 trailingAnchor];
+        v67 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
         v95[2] = v67;
-        v65 = [v25 leadingAnchor];
-        v61 = [v27 leadingAnchor];
-        v59 = [v65 constraintEqualToAnchor:v61];
+        leadingAnchor = [visualSearchCornerView leadingAnchor];
+        leadingAnchor2 = [v27 leadingAnchor];
+        v59 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
         v95[3] = v59;
-        v57 = [v27 trailingAnchor];
-        v55 = [v89 trailingAnchor];
-        v53 = [v57 constraintEqualToAnchor:v55];
+        trailingAnchor3 = [v27 trailingAnchor];
+        trailingAnchor4 = [v89 trailingAnchor];
+        v53 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
         v95[4] = v53;
-        v51 = [v27 bottomAnchor];
-        v49 = [v89 bottomAnchor];
-        v28 = [v51 constraintEqualToAnchor:v49];
+        bottomAnchor7 = [v27 bottomAnchor];
+        bottomAnchor8 = [v89 bottomAnchor];
+        v28 = [bottomAnchor7 constraintEqualToAnchor:bottomAnchor8];
         v95[5] = v28;
-        v29 = [v27 widthAnchor];
-        v30 = [v89 widthAnchor];
-        v31 = [v29 constraintLessThanOrEqualToAnchor:v30];
+        widthAnchor = [v27 widthAnchor];
+        widthAnchor2 = [v89 widthAnchor];
+        v31 = [widthAnchor constraintLessThanOrEqualToAnchor:widthAnchor2];
         v95[6] = v31;
-        v32 = [v27 heightAnchor];
-        v33 = [v89 heightAnchor];
-        v34 = [v32 constraintLessThanOrEqualToAnchor:v33];
+        heightAnchor = [v27 heightAnchor];
+        heightAnchor2 = [v89 heightAnchor];
+        v34 = [heightAnchor constraintLessThanOrEqualToAnchor:heightAnchor2];
         v95[7] = v34;
         v35 = [MEMORY[0x277CBEA60] arrayWithObjects:v95 count:8];
         [v63 activateConstraints:v35];
@@ -266,57 +266,57 @@ LABEL_13:
         v23 = v90;
       }
 
-      v36 = [(MUImageAnalysisManager *)v23 imageInteraction];
-      v37 = [v36 analysisButton];
+      imageInteraction2 = [(MUImageAnalysisManager *)v23 imageInteraction];
+      analysisButton = [imageInteraction2 analysisButton];
 
-      v38 = [v37 superview];
+      superview2 = [analysisButton superview];
 
-      if (!v38)
+      if (!superview2)
       {
         v39 = objc_opt_new();
         [(MUImageAnalysisManager *)v23 setAnalysisButtonContainer:v39];
         [v39 setTranslatesAutoresizingMaskIntoConstraints:0];
         [v89 addSubview:v39];
-        [v37 setTranslatesAutoresizingMaskIntoConstraints:0];
-        [v39 addSubview:v37];
+        [analysisButton setTranslatesAutoresizingMaskIntoConstraints:0];
+        [v39 addSubview:analysisButton];
         v66 = MEMORY[0x277CCAAD0];
-        v91 = [v37 topAnchor];
-        v85 = [v39 topAnchor];
-        v82 = [v91 constraintEqualToAnchor:v85];
+        topAnchor3 = [analysisButton topAnchor];
+        topAnchor4 = [v39 topAnchor];
+        v82 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
         v94[0] = v82;
-        v80 = [v37 bottomAnchor];
-        v78 = [v39 bottomAnchor];
-        v76 = [v80 constraintEqualToAnchor:v78];
+        bottomAnchor9 = [analysisButton bottomAnchor];
+        bottomAnchor10 = [v39 bottomAnchor];
+        v76 = [bottomAnchor9 constraintEqualToAnchor:bottomAnchor10];
         v94[1] = v76;
-        v74 = [v37 trailingAnchor];
-        v72 = [v39 trailingAnchor];
-        v70 = [v74 constraintEqualToAnchor:v72];
+        trailingAnchor5 = [analysisButton trailingAnchor];
+        trailingAnchor6 = [v39 trailingAnchor];
+        v70 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
         v94[2] = v70;
-        v68 = [v37 leadingAnchor];
-        v64 = [v39 leadingAnchor];
-        v62 = [v68 constraintEqualToAnchor:v64];
+        leadingAnchor3 = [analysisButton leadingAnchor];
+        leadingAnchor4 = [v39 leadingAnchor];
+        v62 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
         v94[3] = v62;
-        v60 = [v39 trailingAnchor];
-        v58 = [v89 trailingAnchor];
-        v56 = [v60 constraintEqualToAnchor:v58];
+        trailingAnchor7 = [v39 trailingAnchor];
+        trailingAnchor8 = [v89 trailingAnchor];
+        v56 = [trailingAnchor7 constraintEqualToAnchor:trailingAnchor8];
         v94[4] = v56;
-        v54 = [v39 bottomAnchor];
-        v52 = [v89 bottomAnchor];
-        v50 = [v54 constraintEqualToAnchor:v52];
+        bottomAnchor11 = [v39 bottomAnchor];
+        bottomAnchor12 = [v89 bottomAnchor];
+        v50 = [bottomAnchor11 constraintEqualToAnchor:bottomAnchor12];
         v94[5] = v50;
-        v40 = [v39 widthAnchor];
-        v41 = [v89 widthAnchor];
-        v42 = [v40 constraintLessThanOrEqualToAnchor:v41];
+        widthAnchor3 = [v39 widthAnchor];
+        widthAnchor4 = [v89 widthAnchor];
+        v42 = [widthAnchor3 constraintLessThanOrEqualToAnchor:widthAnchor4];
         v94[6] = v42;
-        v43 = [v39 heightAnchor];
-        v44 = [v89 heightAnchor];
-        v45 = [v43 constraintLessThanOrEqualToAnchor:v44];
+        heightAnchor3 = [v39 heightAnchor];
+        heightAnchor4 = [v89 heightAnchor];
+        v45 = [heightAnchor3 constraintLessThanOrEqualToAnchor:heightAnchor4];
         v94[7] = v45;
         [MEMORY[0x277CBEA60] arrayWithObjects:v94 count:8];
-        v47 = v46 = v25;
+        v47 = v46 = visualSearchCornerView;
         [v66 activateConstraints:v47];
 
-        v25 = v46;
+        visualSearchCornerView = v46;
       }
 
       v48 = MEMORY[0x277D75D18];
@@ -324,7 +324,7 @@ LABEL_13:
       v92[1] = 3221225472;
       v92[2] = __63__MUImageAnalysisManager__setupAnalysisButtonsContainerInView___block_invoke;
       v92[3] = &unk_27986E2C8;
-      v4 = v88;
+      viewCopy = v88;
       v93 = v88;
       [v48 performWithoutAnimation:v92];
     }
@@ -346,10 +346,10 @@ LABEL_13:
 
 - (id)image
 {
-  v2 = [(MUImageAnalysisManager *)self delegate];
-  v3 = [v2 imageForAnalysis];
+  delegate = [(MUImageAnalysisManager *)self delegate];
+  imageForAnalysis = [delegate imageForAnalysis];
 
-  return v3;
+  return imageForAnalysis;
 }
 
 - (VKCImageAnalyzer)imageAnalyzer
@@ -360,9 +360,9 @@ LABEL_13:
     v4 = objc_alloc_init(MEMORY[0x277D78518]);
     [(MUImageAnalysisManager *)self setImageAnalyzer:v4];
 
-    v5 = [(MUImageAnalysisManager *)self imageAnalysisQueue];
-    v6 = [(MUImageAnalysisManager *)self imageAnalyzer];
-    [v6 setCallbackQueue:v5];
+    imageAnalysisQueue = [(MUImageAnalysisManager *)self imageAnalysisQueue];
+    imageAnalyzer = [(MUImageAnalysisManager *)self imageAnalyzer];
+    [imageAnalyzer setCallbackQueue:imageAnalysisQueue];
 
     imageAnalyzer = self->_imageAnalyzer;
   }
@@ -370,18 +370,18 @@ LABEL_13:
   return imageAnalyzer;
 }
 
-- (void)_updateAnalysisButtonWithAnimation:(BOOL)a3
+- (void)_updateAnalysisButtonWithAnimation:(BOOL)animation
 {
-  v3 = a3;
+  animationCopy = animation;
   if (_os_feature_enabled_impl())
   {
-    v5 = [(MUImageAnalysisManager *)self imageInteraction];
-    v11 = [v5 analysis];
+    imageInteraction = [(MUImageAnalysisManager *)self imageInteraction];
+    analysis = [imageInteraction analysis];
 
-    v6 = v11;
-    if (v11)
+    v6 = analysis;
+    if (analysis)
     {
-      v7 = [v11 hasResultsForAnalysisTypes:29];
+      v7 = [analysis hasResultsForAnalysisTypes:29];
       if ([(MUImageAnalysisManager *)self isFullScreen])
       {
         if ([(MUImageAnalysisManager *)self isVisualSearchEnabled])
@@ -401,29 +401,29 @@ LABEL_13:
       }
 
       v9 = v8 | ~v7;
-      v10 = [(MUImageAnalysisManager *)self imageInteraction];
-      [v10 setActionInfoViewHidden:v9 & 1 animated:v3];
+      imageInteraction2 = [(MUImageAnalysisManager *)self imageInteraction];
+      [imageInteraction2 setActionInfoViewHidden:v9 & 1 animated:animationCopy];
 
-      v6 = v11;
+      v6 = analysis;
     }
   }
 
   else
   {
 
-    [(MUImageAnalysisManager *)self _updateAnalysisButtonContainerWithAnimation:v3];
+    [(MUImageAnalysisManager *)self _updateAnalysisButtonContainerWithAnimation:animationCopy];
   }
 }
 
-- (void)_updateAnalysisButtonContainerWithAnimation:(BOOL)a3
+- (void)_updateAnalysisButtonContainerWithAnimation:(BOOL)animation
 {
-  v3 = a3;
-  v5 = [(MUImageAnalysisManager *)self imageInteraction];
-  v6 = [v5 analysis];
+  animationCopy = animation;
+  imageInteraction = [(MUImageAnalysisManager *)self imageInteraction];
+  analysis = [imageInteraction analysis];
 
-  if (v6)
+  if (analysis)
   {
-    v7 = [v6 hasResultsForAnalysisTypes:13];
+    v7 = [analysis hasResultsForAnalysisTypes:13];
   }
 
   else
@@ -434,9 +434,9 @@ LABEL_13:
   v8 = ![(MUImageAnalysisManager *)self isVisualSearchEnabled]& v7;
   if ([(MUImageAnalysisManager *)self isFullScreen])
   {
-    v9 = [(MUImageAnalysisManager *)self imageInteraction];
-    v10 = [v9 analysisButton];
-    if ([v10 state] != 4)
+    imageInteraction2 = [(MUImageAnalysisManager *)self imageInteraction];
+    analysisButton = [imageInteraction2 analysisButton];
+    if ([analysisButton state] != 4)
     {
       LOBYTE(v8) = 0;
     }
@@ -444,13 +444,13 @@ LABEL_13:
 
   if (v8)
   {
-    v11 = [(MUImageAnalysisManager *)self analysisButtonContainer];
-    [v11 setHidden:0];
+    analysisButtonContainer = [(MUImageAnalysisManager *)self analysisButtonContainer];
+    [analysisButtonContainer setHidden:0];
 
-    v12 = [(MUImageAnalysisManager *)self delegate];
+    delegate = [(MUImageAnalysisManager *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v12 imageAnalyzerWantsUpdateOverlayViews];
+      [delegate imageAnalyzerWantsUpdateOverlayViews];
     }
 
     v13 = 1;
@@ -458,7 +458,7 @@ LABEL_13:
 
   else
   {
-    v12 = [(MUImageAnalysisManager *)self delegate];
+    delegate = [(MUImageAnalysisManager *)self delegate];
     v13 = 0;
   }
 
@@ -471,7 +471,7 @@ LABEL_13:
   v18 = v13;
   v14 = MEMORY[0x259C7BE00](v16);
   v15 = v14;
-  if (v3)
+  if (animationCopy)
   {
     [MEMORY[0x277D75D18] animateWithDuration:5242880 delay:v14 options:0 animations:0.4 completion:0.0];
   }
@@ -502,10 +502,10 @@ void __70__MUImageAnalysisManager__updateAnalysisButtonContainerWithAnimation___
   [v2 setAlpha:v1];
 }
 
-- (void)_activateInteractionTypes:(unint64_t)a3
+- (void)_activateInteractionTypes:(unint64_t)types
 {
-  v5 = [(MUImageAnalysisManager *)self imageInteraction];
-  [v5 setActiveInteractionTypes:a3];
+  imageInteraction = [(MUImageAnalysisManager *)self imageInteraction];
+  [imageInteraction setActiveInteractionTypes:types];
 
   [(MUImageAnalysisManager *)self _updateAnalysisButtonWithAnimation:1];
 
@@ -516,10 +516,10 @@ void __70__MUImageAnalysisManager__updateAnalysisButtonContainerWithAnimation___
 {
   if ((_os_feature_enabled_impl() & 1) == 0)
   {
-    v3 = [(MUImageAnalysisManager *)self presentingView];
-    if (v3)
+    presentingView = [(MUImageAnalysisManager *)self presentingView];
+    if (presentingView)
     {
-      [(MUImageAnalysisManager *)self _setupAnalysisButtonsContainerInView:v3];
+      [(MUImageAnalysisManager *)self _setupAnalysisButtonsContainerInView:presentingView];
     }
 
     MEMORY[0x2821F96F8]();
@@ -550,20 +550,20 @@ void __44__MUImageAnalysisManager_imageAnalysisQueue__block_invoke()
 
 - (void)startImageAnalysis
 {
-  v3 = [(MUImageAnalysisManager *)self image];
-  v9 = v3;
-  if (v3)
+  image = [(MUImageAnalysisManager *)self image];
+  v9 = image;
+  if (image)
   {
-    NSLog(&cfstr_CreatingImageA.isa, v3);
+    NSLog(&cfstr_CreatingImageA.isa, image);
     v4 = [objc_alloc(MEMORY[0x277D78520]) initWithImage:v9 requestType:-65];
-    v5 = [(MUImageAnalysisManager *)self delegate];
-    if (v5 && (objc_opt_respondsToSelector() & 1) != 0)
+    delegate = [(MUImageAnalysisManager *)self delegate];
+    if (delegate && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      v6 = [v5 clientPreviewOptions];
-      v7 = [v6 objectForKeyedSubscript:@"imageURL"];
+      clientPreviewOptions = [delegate clientPreviewOptions];
+      v7 = [clientPreviewOptions objectForKeyedSubscript:@"imageURL"];
       [v4 setImageURL:v7];
 
-      v8 = [v6 objectForKeyedSubscript:@"pageURL"];
+      v8 = [clientPreviewOptions objectForKeyedSubscript:@"pageURL"];
       [v4 setPageURL:v8];
     }
 
@@ -576,23 +576,23 @@ void __44__MUImageAnalysisManager_imageAnalysisQueue__block_invoke()
   }
 }
 
-- (void)_startImageAnalysisWithRequest:(id)a3
+- (void)_startImageAnalysisWithRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   [(MUImageAnalysisManager *)self cancelAllRequests];
-  v5 = [(MUImageAnalysisManager *)self imageInteraction];
-  [v5 setAnalysis:0];
+  imageInteraction = [(MUImageAnalysisManager *)self imageInteraction];
+  [imageInteraction setAnalysis:0];
 
   objc_initWeak(&location, self);
-  v6 = [(MUImageAnalysisManager *)self imageAnalysisQueue];
+  imageAnalysisQueue = [(MUImageAnalysisManager *)self imageAnalysisQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __57__MUImageAnalysisManager__startImageAnalysisWithRequest___block_invoke;
   block[3] = &unk_27986E4F0;
   objc_copyWeak(&v10, &location);
-  v7 = v4;
+  v7 = requestCopy;
   v9 = v7;
-  dispatch_async(v6, block);
+  dispatch_async(imageAnalysisQueue, block);
 
   [(MUImageAnalysisManager *)self _updateInfoButtonWithAnimation:1];
   objc_destroyWeak(&v10);
@@ -659,23 +659,23 @@ void __57__MUImageAnalysisManager__startImageAnalysisWithRequest___block_invoke_
   [WeakRetained _handleImageAnalysis:*(a1 + 32) error:*(a1 + 40)];
 }
 
-- (void)_handleImageAnalysis:(id)a3 error:(id)a4
+- (void)_handleImageAnalysis:(id)analysis error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MUImageAnalysisManager *)self imageInteraction];
-  v9 = v8;
-  if (!v6 || v7)
+  analysisCopy = analysis;
+  errorCopy = error;
+  imageInteraction = [(MUImageAnalysisManager *)self imageInteraction];
+  v9 = imageInteraction;
+  if (!analysisCopy || errorCopy)
   {
     v10 = 0;
   }
 
   else
   {
-    v10 = v6;
+    v10 = analysisCopy;
   }
 
-  [v8 setAnalysis:v10];
+  [imageInteraction setAnalysis:v10];
 
   [(MUImageAnalysisManager *)self _updateAnalysisButtonWithAnimation:1];
   [(MUImageAnalysisManager *)self _updateInfoButtonWithAnimation:1];
@@ -700,8 +700,8 @@ void __57__MUImageAnalysisManager__startImageAnalysisWithRequest___block_invoke_
   else if (self->_shouldUpliftSubjectAfterNextAnalysis)
   {
     self->_shouldUpliftSubjectAfterNextAnalysis = 0;
-    v12 = [(MUImageAnalysisManager *)self imageInteraction];
-    [v12 setSubjectHighlightActive:1];
+    imageInteraction2 = [(MUImageAnalysisManager *)self imageInteraction];
+    [imageInteraction2 setSubjectHighlightActive:1];
   }
 }
 
@@ -711,32 +711,32 @@ void __53__MUImageAnalysisManager__handleImageAnalysis_error___block_invoke(uint
   [v1 setHighlightSelectableItems:1];
 }
 
-- (void)_updateInfoButtonWithAnimation:(BOOL)a3
+- (void)_updateInfoButtonWithAnimation:(BOOL)animation
 {
-  v3 = a3;
-  v4 = [(MUImageAnalysisManager *)self delegate];
-  if (v4)
+  animationCopy = animation;
+  delegate = [(MUImageAnalysisManager *)self delegate];
+  if (delegate)
   {
-    v5 = v4;
+    v5 = delegate;
     if (objc_opt_respondsToSelector())
     {
-      [v5 imageAnalyzerWantsUpdateInfoButtonWithAnimation:v3];
+      [v5 imageAnalyzerWantsUpdateInfoButtonWithAnimation:animationCopy];
     }
   }
 
   MEMORY[0x2821F9730]();
 }
 
-- (void)updateBottomRightContainerPositionForImageView:(id)a3 view:(id)a4
+- (void)updateBottomRightContainerPositionForImageView:(id)view view:(id)a4
 {
-  if (a3 && a4)
+  if (view && a4)
   {
     v6 = a4;
-    v7 = a3;
-    [v7 bounds];
+    viewCopy = view;
+    [viewCopy bounds];
     MaxX = CGRectGetMaxX(v26);
-    [v7 bounds];
-    [v7 convertPoint:v6 toView:{MaxX, CGRectGetMaxY(v27)}];
+    [viewCopy bounds];
+    [viewCopy convertPoint:v6 toView:{MaxX, CGRectGetMaxY(v27)}];
     v10 = v9;
     v12 = v11;
 
@@ -753,26 +753,26 @@ void __53__MUImageAnalysisManager__handleImageAnalysis_error___block_invoke(uint
     v29.size.width = v19;
     v29.size.height = v21;
     v22 = CGRectGetMaxY(v29) - v12 + 12.0;
-    v23 = [(MUImageAnalysisManager *)self bottomRightButtonsContainerRightConstraint];
-    [v23 setConstant:v13];
+    bottomRightButtonsContainerRightConstraint = [(MUImageAnalysisManager *)self bottomRightButtonsContainerRightConstraint];
+    [bottomRightButtonsContainerRightConstraint setConstant:v13];
 
-    v24 = [(MUImageAnalysisManager *)self bottomRightButtonsContainerBottomConstraint];
-    [v24 setConstant:v22];
+    bottomRightButtonsContainerBottomConstraint = [(MUImageAnalysisManager *)self bottomRightButtonsContainerBottomConstraint];
+    [bottomRightButtonsContainerBottomConstraint setConstant:v22];
   }
 }
 
-- (void)updateForFullScreen:(BOOL)a3 animated:(BOOL)a4
+- (void)updateForFullScreen:(BOOL)screen animated:(BOOL)animated
 {
-  v4 = a4;
-  [(MUImageAnalysisManager *)self setIsFullScreen:a3];
-  [(MUImageAnalysisManager *)self _updateAnalysisButtonWithAnimation:v4];
+  animatedCopy = animated;
+  [(MUImageAnalysisManager *)self setIsFullScreen:screen];
+  [(MUImageAnalysisManager *)self _updateAnalysisButtonWithAnimation:animatedCopy];
   if ((_os_feature_enabled_impl() & 1) == 0)
   {
-    v6 = [(MUImageAnalysisManager *)self imageInteraction];
-    if (v6 && (![(MUImageAnalysisManager *)self isVisualSearchEnabled]? (v7 = 0) : (v7 = [(MUImageAnalysisManager *)self hasResultsForVisualSearch]), ![(MUImageAnalysisManager *)self isFullScreen]? (v8 = 1) : (v8 = [(MUImageAnalysisManager *)self isImageAnalysisPopoverPresented]), v7 && v8))
+    imageInteraction = [(MUImageAnalysisManager *)self imageInteraction];
+    if (imageInteraction && (![(MUImageAnalysisManager *)self isVisualSearchEnabled]? (v7 = 0) : (v7 = [(MUImageAnalysisManager *)self hasResultsForVisualSearch]), ![(MUImageAnalysisManager *)self isFullScreen]? (v8 = 1) : (v8 = [(MUImageAnalysisManager *)self isImageAnalysisPopoverPresented]), v7 && v8))
     {
-      v9 = [(MUImageAnalysisManager *)self visualSearchViewContainer];
-      [v9 setHidden:0];
+      visualSearchViewContainer = [(MUImageAnalysisManager *)self visualSearchViewContainer];
+      [visualSearchViewContainer setHidden:0];
 
       v10 = 1;
     }
@@ -818,13 +818,13 @@ void __55__MUImageAnalysisManager_updateForFullScreen_animated___block_invoke(ui
 {
   [(MUImageAnalysisManager *)self _updateInfoButtonWithAnimation:1];
   [(MUImageAnalysisManager *)self cancelAllRequests];
-  v3 = [(MUImageAnalysisManager *)self delegate];
-  v4 = [v3 imageAnalysisView];
-  v5 = [(MUImageAnalysisManager *)self imageInteraction];
-  [v4 removeInteraction:v5];
+  delegate = [(MUImageAnalysisManager *)self delegate];
+  imageAnalysisView = [delegate imageAnalysisView];
+  imageInteraction = [(MUImageAnalysisManager *)self imageInteraction];
+  [imageAnalysisView removeInteraction:imageInteraction];
 
-  v6 = [(MUImageAnalysisManager *)self bottomRightButtonsContainer];
-  [v6 removeFromSuperview];
+  bottomRightButtonsContainer = [(MUImageAnalysisManager *)self bottomRightButtonsContainer];
+  [bottomRightButtonsContainer removeFromSuperview];
 
   [(MUImageAnalysisManager *)self setBottomRightButtonsContainer:0];
 }
@@ -832,30 +832,30 @@ void __55__MUImageAnalysisManager_updateForFullScreen_animated___block_invoke(ui
 - (void)cancelAllRequests
 {
   NSLog(&cfstr_CancelAllImage.isa, a2);
-  v3 = [(MUImageAnalysisManager *)self imageAnalyzer];
-  [v3 cancelAllRequests];
+  imageAnalyzer = [(MUImageAnalysisManager *)self imageAnalyzer];
+  [imageAnalyzer cancelAllRequests];
 }
 
 - (BOOL)hasAnalysis
 {
-  v2 = [(MUImageAnalysisManager *)self imageInteraction];
-  v3 = [v2 analysis];
-  v4 = v3 != 0;
+  imageInteraction = [(MUImageAnalysisManager *)self imageInteraction];
+  analysis = [imageInteraction analysis];
+  v4 = analysis != 0;
 
   return v4;
 }
 
 - (BOOL)addInteractionIfNeeded
 {
-  v3 = [(MUImageAnalysisManager *)self delegate];
-  v4 = [v3 imageAnalysisView];
+  delegate = [(MUImageAnalysisManager *)self delegate];
+  imageAnalysisView = [delegate imageAnalysisView];
 
-  if (v4)
+  if (imageAnalysisView)
   {
-    v5 = [(MUImageAnalysisManager *)self imageInteraction];
-    if (v5 && ([v4 interactions], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "containsObject:", v5), v6, (v7 & 1) == 0))
+    imageInteraction = [(MUImageAnalysisManager *)self imageInteraction];
+    if (imageInteraction && ([imageAnalysisView interactions], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "containsObject:", imageInteraction), v6, (v7 & 1) == 0))
     {
-      [v4 addInteraction:v5];
+      [imageAnalysisView addInteraction:imageInteraction];
       v8 = 1;
     }
 
@@ -873,22 +873,22 @@ void __55__MUImageAnalysisManager_updateForFullScreen_animated___block_invoke(ui
   return v8;
 }
 
-- (void)enableMarkupMode:(BOOL)a3
+- (void)enableMarkupMode:(BOOL)mode
 {
-  v3 = a3;
-  v5 = [(MUImageAnalysisManager *)self delegate];
-  v10 = [v5 imageAnalysisView];
+  modeCopy = mode;
+  delegate = [(MUImageAnalysisManager *)self delegate];
+  imageAnalysisView = [delegate imageAnalysisView];
 
-  if (v10)
+  if (imageAnalysisView)
   {
-    v6 = [(MUImageAnalysisManager *)self imageInteraction];
-    v7 = v6;
-    if (v3 || !v6)
+    imageInteraction = [(MUImageAnalysisManager *)self imageInteraction];
+    v7 = imageInteraction;
+    if (modeCopy || !imageInteraction)
     {
-      if (v3)
+      if (modeCopy)
       {
-        v8 = [v10 interactions];
-        v9 = [v8 containsObject:v7];
+        interactions = [imageAnalysisView interactions];
+        v9 = [interactions containsObject:v7];
 
         if (v9)
         {
@@ -899,30 +899,30 @@ void __55__MUImageAnalysisManager_updateForFullScreen_animated___block_invoke(ui
 
           [(MUImageAnalysisManager *)self cancelAllRequests];
           [v7 setAnalysis:0];
-          [v10 removeInteraction:v7];
+          [imageAnalysisView removeInteraction:v7];
         }
       }
     }
 
     else
     {
-      [v10 addInteraction:v6];
+      [imageAnalysisView addInteraction:imageInteraction];
     }
   }
 }
 
 - (BOOL)isInteractionActive
 {
-  v3 = [(MUImageAnalysisManager *)self delegate];
-  v4 = [v3 imageAnalysisView];
+  delegate = [(MUImageAnalysisManager *)self delegate];
+  imageAnalysisView = [delegate imageAnalysisView];
 
-  if (v4)
+  if (imageAnalysisView)
   {
-    v5 = [(MUImageAnalysisManager *)self imageInteraction];
-    if (v5)
+    imageInteraction = [(MUImageAnalysisManager *)self imageInteraction];
+    if (imageInteraction)
     {
-      v6 = [v4 interactions];
-      v7 = [v6 containsObject:v5];
+      interactions = [imageAnalysisView interactions];
+      v7 = [interactions containsObject:imageInteraction];
     }
 
     else
@@ -941,12 +941,12 @@ void __55__MUImageAnalysisManager_updateForFullScreen_animated___block_invoke(ui
 
 - (BOOL)hasResultsForVisualSearch
 {
-  v2 = [(MUImageAnalysisManager *)self imageInteraction];
-  v3 = [v2 analysis];
+  imageInteraction = [(MUImageAnalysisManager *)self imageInteraction];
+  analysis = [imageInteraction analysis];
 
-  if (v3)
+  if (analysis)
   {
-    v4 = [v3 hasResultsForAnalysisTypes:16];
+    v4 = [analysis hasResultsForAnalysisTypes:16];
   }
 
   else
@@ -959,11 +959,11 @@ void __55__MUImageAnalysisManager_updateForFullScreen_animated___block_invoke(ui
 
 - (BOOL)isVisualSearchEnabled
 {
-  v2 = [(MUImageAnalysisManager *)self imageInteraction];
-  v3 = v2;
-  if (v2)
+  imageInteraction = [(MUImageAnalysisManager *)self imageInteraction];
+  v3 = imageInteraction;
+  if (imageInteraction)
   {
-    v4 = ([v2 activeInteractionTypes] >> 2) & 1;
+    v4 = ([imageInteraction activeInteractionTypes] >> 2) & 1;
   }
 
   else
@@ -976,88 +976,88 @@ void __55__MUImageAnalysisManager_updateForFullScreen_animated___block_invoke(ui
 
 - (NSString)infoButtonGlyphName
 {
-  v3 = [(MUImageAnalysisManager *)self imageInteraction];
+  imageInteraction = [(MUImageAnalysisManager *)self imageInteraction];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(MUImageAnalysisManager *)self imageInteraction];
-    v6 = [v5 visualSearchResultItems];
-    v7 = [v6 firstObject];
+    imageInteraction2 = [(MUImageAnalysisManager *)self imageInteraction];
+    visualSearchResultItems = [imageInteraction2 visualSearchResultItems];
+    firstObject = [visualSearchResultItems firstObject];
 
     if (objc_opt_respondsToSelector())
     {
-      v8 = [v7 infoButtonGlyphName];
+      infoButtonGlyphName = [firstObject infoButtonGlyphName];
     }
 
     else
     {
-      v8 = 0;
+      infoButtonGlyphName = 0;
     }
   }
 
   else
   {
-    v8 = 0;
+    infoButtonGlyphName = 0;
   }
 
-  return v8;
+  return infoButtonGlyphName;
 }
 
 - (NSString)filledInfoButtonGlyphName
 {
-  v3 = [(MUImageAnalysisManager *)self imageInteraction];
+  imageInteraction = [(MUImageAnalysisManager *)self imageInteraction];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(MUImageAnalysisManager *)self imageInteraction];
-    v6 = [v5 visualSearchResultItems];
-    v7 = [v6 firstObject];
+    imageInteraction2 = [(MUImageAnalysisManager *)self imageInteraction];
+    visualSearchResultItems = [imageInteraction2 visualSearchResultItems];
+    firstObject = [visualSearchResultItems firstObject];
 
     if (objc_opt_respondsToSelector())
     {
-      v8 = [v7 filledInfoButtonGlyphName];
+      filledInfoButtonGlyphName = [firstObject filledInfoButtonGlyphName];
     }
 
     else
     {
-      v8 = 0;
+      filledInfoButtonGlyphName = 0;
     }
   }
 
   else
   {
-    v8 = 0;
+    filledInfoButtonGlyphName = 0;
   }
 
-  return v8;
+  return filledInfoButtonGlyphName;
 }
 
 - (BOOL)isTextSelectionEnabled
 {
-  v2 = [(MUImageAnalysisManager *)self imageInteraction];
-  v3 = v2;
-  if (v2 && ([v2 activeInteractionTypes] & 1) != 0)
+  imageInteraction = [(MUImageAnalysisManager *)self imageInteraction];
+  v3 = imageInteraction;
+  if (imageInteraction && ([imageInteraction activeInteractionTypes] & 1) != 0)
   {
-    v4 = [v3 highlightSelectableItems];
+    highlightSelectableItems = [v3 highlightSelectableItems];
   }
 
   else
   {
-    v4 = 0;
+    highlightSelectableItems = 0;
   }
 
-  return v4;
+  return highlightSelectableItems;
 }
 
 - (BOOL)isImageSubjectHighlightingEnabled
 {
-  v2 = [(MUImageAnalysisManager *)self imageInteraction];
-  v3 = v2;
-  if (v2)
+  imageInteraction = [(MUImageAnalysisManager *)self imageInteraction];
+  v3 = imageInteraction;
+  if (imageInteraction)
   {
-    v4 = ([v2 activeInteractionTypes] >> 3) & 1;
+    v4 = ([imageInteraction activeInteractionTypes] >> 3) & 1;
   }
 
   else
@@ -1072,46 +1072,46 @@ void __55__MUImageAnalysisManager_updateForFullScreen_animated___block_invoke(ui
 {
   if ([(MUImageAnalysisManager *)self isVisualSearchEnabled])
   {
-    v3 = [(MUImageAnalysisManager *)self _defaultInteractionTypes];
+    _defaultInteractionTypes = [(MUImageAnalysisManager *)self _defaultInteractionTypes];
   }
 
   else
   {
-    v3 = 4;
+    _defaultInteractionTypes = 4;
   }
 
-  [(MUImageAnalysisManager *)self _activateInteractionTypes:v3];
+  [(MUImageAnalysisManager *)self _activateInteractionTypes:_defaultInteractionTypes];
 }
 
-- (void)shouldHideInteraction:(BOOL)a3 animated:(BOOL)a4
+- (void)shouldHideInteraction:(BOOL)interaction animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  v12 = [(MUImageAnalysisManager *)self delegate];
-  v7 = [v12 imageAnalysisView];
-  if (v7)
+  animatedCopy = animated;
+  interactionCopy = interaction;
+  delegate = [(MUImageAnalysisManager *)self delegate];
+  imageAnalysisView = [delegate imageAnalysisView];
+  if (imageAnalysisView)
   {
-    v8 = [(MUImageAnalysisManager *)self imageInteraction];
-    if (v8)
+    imageInteraction = [(MUImageAnalysisManager *)self imageInteraction];
+    if (imageInteraction)
     {
-      v9 = [v7 interactions];
-      v10 = [v9 containsObject:v8];
+      interactions = [imageAnalysisView interactions];
+      v10 = [interactions containsObject:imageInteraction];
 
-      if (v5 && v10)
+      if (interactionCopy && v10)
       {
-        v11 = [v12 imageAnalysisView];
-        [v11 removeInteraction:v8];
+        imageAnalysisView2 = [delegate imageAnalysisView];
+        [imageAnalysisView2 removeInteraction:imageInteraction];
 LABEL_8:
 
-        [(MUImageAnalysisManager *)self _updateAnalysisButtonWithAnimation:v4];
-        [(MUImageAnalysisManager *)self _updateInfoButtonWithAnimation:v4];
+        [(MUImageAnalysisManager *)self _updateAnalysisButtonWithAnimation:animatedCopy];
+        [(MUImageAnalysisManager *)self _updateInfoButtonWithAnimation:animatedCopy];
         goto LABEL_9;
       }
 
-      if (((v5 | v10) & 1) == 0)
+      if (((interactionCopy | v10) & 1) == 0)
       {
-        v11 = [v12 imageAnalysisView];
-        [v11 addInteraction:v8];
+        imageAnalysisView2 = [delegate imageAnalysisView];
+        [imageAnalysisView2 addInteraction:imageInteraction];
         goto LABEL_8;
       }
     }
@@ -1120,150 +1120,150 @@ LABEL_9:
   }
 }
 
-- (BOOL)dataDetectorExistsAtPoint:(CGPoint)a3
+- (BOOL)dataDetectorExistsAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(MUImageAnalysisManager *)self imageInteraction];
-  v6 = [v5 dataDetectorExistsAtPoint:{x, y}];
+  y = point.y;
+  x = point.x;
+  imageInteraction = [(MUImageAnalysisManager *)self imageInteraction];
+  v6 = [imageInteraction dataDetectorExistsAtPoint:{x, y}];
 
   return v6;
 }
 
-- (BOOL)textExistsAtPoint:(CGPoint)a3
+- (BOOL)textExistsAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(MUImageAnalysisManager *)self imageInteraction];
-  v6 = [v5 textExistsAtPoint:{x, y}];
+  y = point.y;
+  x = point.x;
+  imageInteraction = [(MUImageAnalysisManager *)self imageInteraction];
+  v6 = [imageInteraction textExistsAtPoint:{x, y}];
 
   return v6;
 }
 
-- (BOOL)imageSubjectExistsAtPoint:(CGPoint)a3
+- (BOOL)imageSubjectExistsAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(MUImageAnalysisManager *)self imageInteraction];
-  v6 = [v5 imageSubjectExistsAtPoint:{x, y}];
+  y = point.y;
+  x = point.x;
+  imageInteraction = [(MUImageAnalysisManager *)self imageInteraction];
+  v6 = [imageInteraction imageSubjectExistsAtPoint:{x, y}];
 
   return v6;
 }
 
-- (BOOL)visualSearchExistsAtPoint:(CGPoint)a3
+- (BOOL)visualSearchExistsAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(MUImageAnalysisManager *)self imageInteraction];
-  v6 = [v5 visualSearchExistsAtPoint:{x, y}];
+  y = point.y;
+  x = point.x;
+  imageInteraction = [(MUImageAnalysisManager *)self imageInteraction];
+  v6 = [imageInteraction visualSearchExistsAtPoint:{x, y}];
 
   return v6;
 }
 
-- (BOOL)actionInfoItemExistsAtPoint:(CGPoint)a3
+- (BOOL)actionInfoItemExistsAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(MUImageAnalysisManager *)self imageInteraction];
-  v6 = [v5 actionInfoItemExistsAtPoint:{x, y}];
+  y = point.y;
+  x = point.x;
+  imageInteraction = [(MUImageAnalysisManager *)self imageInteraction];
+  v6 = [imageInteraction actionInfoItemExistsAtPoint:{x, y}];
 
   return v6;
 }
 
 - (BOOL)hasActiveTextSelection
 {
-  v2 = [(MUImageAnalysisManager *)self imageInteraction];
-  v3 = [v2 hasActiveTextSelection];
+  imageInteraction = [(MUImageAnalysisManager *)self imageInteraction];
+  hasActiveTextSelection = [imageInteraction hasActiveTextSelection];
 
-  return v3;
+  return hasActiveTextSelection;
 }
 
-- (void)adjustImageInteractionForScrollView:(id)a3
+- (void)adjustImageInteractionForScrollView:(id)view
 {
-  v23 = a3;
+  viewCopy = view;
   if ((_os_feature_enabled_impl() & 1) == 0)
   {
-    v4 = [(MUImageAnalysisManager *)self delegate];
-    v5 = [v4 imageAnalysisView];
+    delegate = [(MUImageAnalysisManager *)self delegate];
+    imageAnalysisView = [delegate imageAnalysisView];
 
-    if (v23 && v5)
+    if (viewCopy && imageAnalysisView)
     {
-      [v23 bounds];
-      [v23 convertRect:v5 toView:?];
+      [viewCopy bounds];
+      [viewCopy convertRect:imageAnalysisView toView:?];
       v7 = v6;
       v9 = v8;
       v11 = v10;
       v13 = v12;
-      [v5 bounds];
+      [imageAnalysisView bounds];
       v15 = v7 / v14;
-      [v5 bounds];
+      [imageAnalysisView bounds];
       v17 = v9 / v16;
-      [v5 bounds];
+      [imageAnalysisView bounds];
       v19 = v11 / v18;
-      [v5 bounds];
+      [imageAnalysisView bounds];
       v21 = v13 / v20;
-      v22 = [(MUImageAnalysisManager *)self imageInteraction];
-      [v22 scrollViewDidZoomToUnitRect:{v15, v17, v19, v21}];
+      imageInteraction = [(MUImageAnalysisManager *)self imageInteraction];
+      [imageInteraction scrollViewDidZoomToUnitRect:{v15, v17, v19, v21}];
     }
   }
 }
 
-- (BOOL)imageAnalysisInteraction:(id)a3 shouldBeginAtPoint:(CGPoint)a4 forAnalysisType:(unint64_t)a5
+- (BOOL)imageAnalysisInteraction:(id)interaction shouldBeginAtPoint:(CGPoint)point forAnalysisType:(unint64_t)type
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3;
-  v8 = [v7 textExistsAtPoint:{x, y}];
-  v9 = [v7 imageSubjectExistsAtPoint:{x, y}];
-  v10 = [v7 dataDetectorExistsAtPoint:{x, y}];
-  v11 = [v7 visualSearchExistsAtPoint:{x, y}];
-  v12 = 1;
+  y = point.y;
+  x = point.x;
+  interactionCopy = interaction;
+  v8 = [interactionCopy textExistsAtPoint:{x, y}];
+  v9 = [interactionCopy imageSubjectExistsAtPoint:{x, y}];
+  v10 = [interactionCopy dataDetectorExistsAtPoint:{x, y}];
+  v11 = [interactionCopy visualSearchExistsAtPoint:{x, y}];
+  hasActiveTextSelection = 1;
   if ((v8 & 1) == 0 && (v9 & 1) == 0 && (v10 & 1) == 0 && (v11 & 1) == 0)
   {
-    v12 = [v7 hasActiveTextSelection];
+    hasActiveTextSelection = [interactionCopy hasActiveTextSelection];
   }
 
-  return v12;
+  return hasActiveTextSelection;
 }
 
 - (void)imageAnalysisPopoverWillAppear
 {
   [(MUImageAnalysisManager *)self setIsImageAnalysisPopoverPresented:1];
-  v3 = [(MUImageAnalysisManager *)self delegate];
+  delegate = [(MUImageAnalysisManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v3 imageAnalysisInteractionWillPresentVisualSearchController];
+    [delegate imageAnalysisInteractionWillPresentVisualSearchController];
   }
 }
 
 - (void)imageAnalysisPopoverDidDisappear
 {
   [(MUImageAnalysisManager *)self setIsImageAnalysisPopoverPresented:0];
-  v3 = [(MUImageAnalysisManager *)self delegate];
+  delegate = [(MUImageAnalysisManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v3 imageAnalysisInteractionDidDismissVisualSearchController];
+    [delegate imageAnalysisInteractionDidDismissVisualSearchController];
   }
 }
 
-- (void)imageAnalysisInteraction:(id)a3 prepareForCalloutAction:(SEL)a4 competion:(id)a5
+- (void)imageAnalysisInteraction:(id)interaction prepareForCalloutAction:(SEL)action competion:(id)competion
 {
-  v9 = a5;
-  v7 = NSStringFromSelector(a4);
+  competionCopy = competion;
+  v7 = NSStringFromSelector(action);
   v8 = [MEMORY[0x277CBEB98] setWithObjects:{@"_define:", @"_translate:", @"_share:", @"_addShortcut:", 0}];
   if ([v8 containsObject:v7])
   {
     [(MUImageAnalysisManager *)self imageAnalysisPopoverWillAppear];
   }
 
-  v9[2]();
+  competionCopy[2]();
 }
 
-- (id)presentingViewControllerForImageAnalysisInteraction:(id)a3
+- (id)presentingViewControllerForImageAnalysisInteraction:(id)interaction
 {
-  v4 = a3;
-  v5 = [(MUImageAnalysisManager *)self delegate];
-  v6 = [v5 presentingViewControllerForImageAnalysisInteraction:v4];
+  interactionCopy = interaction;
+  delegate = [(MUImageAnalysisManager *)self delegate];
+  v6 = [delegate presentingViewControllerForImageAnalysisInteraction:interactionCopy];
 
   return v6;
 }

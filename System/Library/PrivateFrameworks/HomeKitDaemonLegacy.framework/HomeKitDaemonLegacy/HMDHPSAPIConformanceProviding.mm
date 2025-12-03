@@ -1,21 +1,21 @@
 @interface HMDHPSAPIConformanceProviding
-+ (BOOL)objectRespondsToHPSBooleanSettingProtocolMethods:(id)a3;
-+ (BOOL)objectRespondsToHPSConstrainedNumberSettingProtocolMethods:(id)a3;
-+ (BOOL)objectRespondsToHPSLanguageValueProtocolMethods:(id)a3;
-+ (BOOL)objectRespondsToHPSNumberSettingProtocolMethods:(id)a3;
-+ (BOOL)objectRespondsToHPSSiriAvailableLanguagesProtocolMethods:(id)a3;
-+ (BOOL)objectRespondsToHPSSiriLanguageSettingProtocolMethods:(id)a3;
-+ (BOOL)objectRespondsToHPSStringSettingProtocolMethods:(id)a3;
++ (BOOL)objectRespondsToHPSBooleanSettingProtocolMethods:(id)methods;
++ (BOOL)objectRespondsToHPSConstrainedNumberSettingProtocolMethods:(id)methods;
++ (BOOL)objectRespondsToHPSLanguageValueProtocolMethods:(id)methods;
++ (BOOL)objectRespondsToHPSNumberSettingProtocolMethods:(id)methods;
++ (BOOL)objectRespondsToHPSSiriAvailableLanguagesProtocolMethods:(id)methods;
++ (BOOL)objectRespondsToHPSSiriLanguageSettingProtocolMethods:(id)methods;
++ (BOOL)objectRespondsToHPSStringSettingProtocolMethods:(id)methods;
 @end
 
 @implementation HMDHPSAPIConformanceProviding
 
-+ (BOOL)objectRespondsToHPSConstrainedNumberSettingProtocolMethods:(id)a3
++ (BOOL)objectRespondsToHPSConstrainedNumberSettingProtocolMethods:(id)methods
 {
-  v4 = a3;
+  methodsCopy = methods;
   if (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector())
   {
-    v5 = [a1 objectRespondsToHPSNumberSettingProtocolMethods:v4];
+    v5 = [self objectRespondsToHPSNumberSettingProtocolMethods:methodsCopy];
   }
 
   else
@@ -26,12 +26,12 @@
   return v5;
 }
 
-+ (BOOL)objectRespondsToHPSNumberSettingProtocolMethods:(id)a3
++ (BOOL)objectRespondsToHPSNumberSettingProtocolMethods:(id)methods
 {
-  v4 = a3;
+  methodsCopy = methods;
   if (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector())
   {
-    v5 = [a1 objectRespondsToHPSSettingProtocolMethods:v4];
+    v5 = [self objectRespondsToHPSSettingProtocolMethods:methodsCopy];
   }
 
   else
@@ -42,12 +42,12 @@
   return v5;
 }
 
-+ (BOOL)objectRespondsToHPSBooleanSettingProtocolMethods:(id)a3
++ (BOOL)objectRespondsToHPSBooleanSettingProtocolMethods:(id)methods
 {
-  v4 = a3;
+  methodsCopy = methods;
   if (objc_opt_respondsToSelector())
   {
-    v5 = [a1 objectRespondsToHPSSettingProtocolMethods:v4];
+    v5 = [self objectRespondsToHPSSettingProtocolMethods:methodsCopy];
   }
 
   else
@@ -58,12 +58,12 @@
   return v5;
 }
 
-+ (BOOL)objectRespondsToHPSStringSettingProtocolMethods:(id)a3
++ (BOOL)objectRespondsToHPSStringSettingProtocolMethods:(id)methods
 {
-  v4 = a3;
+  methodsCopy = methods;
   if (objc_opt_respondsToSelector())
   {
-    v5 = [a1 objectRespondsToHPSSettingProtocolMethods:v4];
+    v5 = [self objectRespondsToHPSSettingProtocolMethods:methodsCopy];
   }
 
   else
@@ -74,12 +74,12 @@
   return v5;
 }
 
-+ (BOOL)objectRespondsToHPSSiriLanguageSettingProtocolMethods:(id)a3
++ (BOOL)objectRespondsToHPSSiriLanguageSettingProtocolMethods:(id)methods
 {
-  v4 = a3;
+  methodsCopy = methods;
   if (objc_opt_respondsToSelector())
   {
-    v5 = [a1 objectRespondsToHPSSettingProtocolMethods:v4];
+    v5 = [self objectRespondsToHPSSettingProtocolMethods:methodsCopy];
   }
 
   else
@@ -90,9 +90,9 @@
   return v5;
 }
 
-+ (BOOL)objectRespondsToHPSLanguageValueProtocolMethods:(id)a3
++ (BOOL)objectRespondsToHPSLanguageValueProtocolMethods:(id)methods
 {
-  v3 = a3;
+  methodsCopy = methods;
   if (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector())
   {
     v4 = objc_opt_respondsToSelector();
@@ -106,12 +106,12 @@
   return v4 & 1;
 }
 
-+ (BOOL)objectRespondsToHPSSiriAvailableLanguagesProtocolMethods:(id)a3
++ (BOOL)objectRespondsToHPSSiriAvailableLanguagesProtocolMethods:(id)methods
 {
-  v4 = a3;
+  methodsCopy = methods;
   if (objc_opt_respondsToSelector())
   {
-    v5 = [a1 objectRespondsToHPSSettingProtocolMethods:v4];
+    v5 = [self objectRespondsToHPSSettingProtocolMethods:methodsCopy];
   }
 
   else

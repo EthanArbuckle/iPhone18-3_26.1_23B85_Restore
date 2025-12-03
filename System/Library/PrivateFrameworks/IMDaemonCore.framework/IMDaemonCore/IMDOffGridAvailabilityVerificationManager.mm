@@ -1,9 +1,9 @@
 @interface IMDOffGridAvailabilityVerificationManager
 + (id)sharedInstance;
 - (IMDOffGridAvailabilityVerificationManager)init;
-- (id)cachedAvailabilityTokensForHandleID:(id)a3;
-- (void)populateCacheForHandleID:(id)a3;
-- (void)verifyOffGridSubscriptionMatchesSubscriptionValidationToken:(id)a3 encryptionValidationToken:(id)a4 receivedByHandleID:(id)a5 fromHandleID:(id)a6 messageDate:(id)a7;
+- (id)cachedAvailabilityTokensForHandleID:(id)d;
+- (void)populateCacheForHandleID:(id)d;
+- (void)verifyOffGridSubscriptionMatchesSubscriptionValidationToken:(id)token encryptionValidationToken:(id)validationToken receivedByHandleID:(id)d fromHandleID:(id)iD messageDate:(id)date;
 @end
 
 @implementation IMDOffGridAvailabilityVerificationManager
@@ -45,45 +45,45 @@
   return v2;
 }
 
-- (void)populateCacheForHandleID:(id)a3
+- (void)populateCacheForHandleID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = [objc_alloc(MEMORY[0x231897B40](@"SKHandle" @"StatusKit"))];
   offGridAvailabilitySubscriptionService = self->_offGridAvailabilitySubscriptionService;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = sub_22B57C968;
   v8[3] = &unk_278703B18;
-  v9 = v4;
-  v10 = self;
-  v7 = v4;
+  v9 = dCopy;
+  selfCopy = self;
+  v7 = dCopy;
   [(SKStatusSubscriptionService *)offGridAvailabilitySubscriptionService subscriptionValidationTokensForHandle:v5 completion:v8];
 }
 
-- (id)cachedAvailabilityTokensForHandleID:(id)a3
+- (id)cachedAvailabilityTokensForHandleID:(id)d
 {
-  v4 = a3;
-  v5 = [(NSCache *)self->_subscriptionValidationTokenByHandleIDCache objectForKey:v4];
+  dCopy = d;
+  v5 = [(NSCache *)self->_subscriptionValidationTokenByHandleIDCache objectForKey:dCopy];
   if (!v5)
   {
     v6 = IMLogHandleForCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      sub_22B7D2CC8(v4, v6);
+      sub_22B7D2CC8(dCopy, v6);
     }
 
-    [(IMDOffGridAvailabilityVerificationManager *)self populateCacheForHandleID:v4];
+    [(IMDOffGridAvailabilityVerificationManager *)self populateCacheForHandleID:dCopy];
   }
 
   return v5;
 }
 
-- (void)verifyOffGridSubscriptionMatchesSubscriptionValidationToken:(id)a3 encryptionValidationToken:(id)a4 receivedByHandleID:(id)a5 fromHandleID:(id)a6 messageDate:(id)a7
+- (void)verifyOffGridSubscriptionMatchesSubscriptionValidationToken:(id)token encryptionValidationToken:(id)validationToken receivedByHandleID:(id)d fromHandleID:(id)iD messageDate:(id)date
 {
-  v11 = a5;
-  v12 = a6;
-  v13 = a4;
-  v14 = a3;
+  dCopy = d;
+  iDCopy = iD;
+  validationTokenCopy = validationToken;
+  tokenCopy = token;
   v15 = [objc_alloc(MEMORY[0x231897B40](@"SKHandle" @"StatusKit"))];
   v16 = [objc_alloc(MEMORY[0x231897B40](@"SKSubscriptionValidationTokens" @"StatusKit"))];
 
@@ -92,10 +92,10 @@
   v20[1] = 3221225472;
   v20[2] = sub_22B57CC44;
   v20[3] = &unk_278704EA0;
-  v21 = v12;
-  v22 = v11;
-  v18 = v11;
-  v19 = v12;
+  v21 = iDCopy;
+  v22 = dCopy;
+  v18 = dCopy;
+  v19 = iDCopy;
   [(SKStatusSubscriptionService *)offGridAvailabilitySubscriptionService validatePersonalStatusSubscriptionMatchesSubscriptionValidationTokens:v16 fromSender:v15 completion:v20];
 }
 

@@ -1,6 +1,6 @@
 @interface GVSIIR2FilterFloat
 - (GVSIIR2FilterFloat)init;
-- (float)updateValue:(float)result withPole:(float)a4;
+- (float)updateValue:(float)result withPole:(float)pole;
 - (void)reset;
 @end
 
@@ -27,17 +27,17 @@
   self->_isFilterInitialized = 0;
 }
 
-- (float)updateValue:(float)result withPole:(float)a4
+- (float)updateValue:(float)result withPole:(float)pole
 {
-  if (a4 > 1.0 || a4 < 0.0)
+  if (pole > 1.0 || pole < 0.0)
   {
     return self->_filteredValue;
   }
 
   if (self->_isFilterInitialized)
   {
-    v4 = result + (a4 * (self->_lowPassBuffer1 - result));
-    result = v4 + (a4 * (self->_lowPassBuffer2 - v4));
+    v4 = result + (pole * (self->_lowPassBuffer1 - result));
+    result = v4 + (pole * (self->_lowPassBuffer2 - v4));
     self->_lowPassBuffer1 = v4;
     self->_lowPassBuffer2 = result;
   }

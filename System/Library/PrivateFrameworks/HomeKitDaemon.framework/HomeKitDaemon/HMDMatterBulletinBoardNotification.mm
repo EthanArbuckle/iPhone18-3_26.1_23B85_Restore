@@ -1,16 +1,16 @@
 @interface HMDMatterBulletinBoardNotification
 + (id)logCategory;
 - (HMDMatterAccessoryProtocol)accessory;
-- (HMDMatterBulletinBoardNotification)initWithCoder:(id)a3;
+- (HMDMatterBulletinBoardNotification)initWithCoder:(id)coder;
 - (id)attributeDescriptions;
-- (id)dumpStateWithPrivacyLevel:(unint64_t)a3;
+- (id)dumpStateWithPrivacyLevel:(unint64_t)level;
 - (id)home;
 - (id)logIdentifier;
-- (void)_handleBulletinBoardNotificationCommitRequest:(id)a3;
-- (void)_updateAccessoryBulletinNotificationManagerWithEnabled:(BOOL)a3 condition:(id)a4 completion:(id)a5;
-- (void)configureWithWorkQueue:(id)a3 messageDispatcher:(id)a4;
+- (void)_handleBulletinBoardNotificationCommitRequest:(id)request;
+- (void)_updateAccessoryBulletinNotificationManagerWithEnabled:(BOOL)enabled condition:(id)condition completion:(id)completion;
+- (void)configureWithWorkQueue:(id)queue messageDispatcher:(id)dispatcher;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)registerNotificationHandlers;
 - (void)updateRegistrations;
 @end
@@ -24,25 +24,25 @@
   return WeakRetained;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HMDMatterBulletinBoardNotification *)self accessory];
-  [v4 encodeConditionalObject:v5 forKey:@"accessory"];
+  coderCopy = coder;
+  accessory = [(HMDMatterBulletinBoardNotification *)self accessory];
+  [coderCopy encodeConditionalObject:accessory forKey:@"accessory"];
 
-  v6 = [(HMDMatterBulletinBoardNotification *)self endpointID];
-  [v4 encodeObject:v6 forKey:*MEMORY[0x277CD2610]];
+  endpointID = [(HMDMatterBulletinBoardNotification *)self endpointID];
+  [coderCopy encodeObject:endpointID forKey:*MEMORY[0x277CD2610]];
 
-  v7 = [(HMDBulletinBoardNotification *)self isEnabled];
-  [v4 encodeBool:v7 forKey:*MEMORY[0x277CD20E0]];
-  v8 = [(HMDBulletinBoardNotification *)self condition];
-  [v4 encodeObject:v8 forKey:*MEMORY[0x277CD20D8]];
+  isEnabled = [(HMDBulletinBoardNotification *)self isEnabled];
+  [coderCopy encodeBool:isEnabled forKey:*MEMORY[0x277CD20E0]];
+  condition = [(HMDBulletinBoardNotification *)self condition];
+  [coderCopy encodeObject:condition forKey:*MEMORY[0x277CD20D8]];
 }
 
-- (HMDMatterBulletinBoardNotification)initWithCoder:(id)a3
+- (HMDMatterBulletinBoardNotification)initWithCoder:(id)coder
 {
   v22[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(HMDBulletinBoardNotification *)self init];
   if (v5)
   {
@@ -51,18 +51,18 @@
     v22[1] = objc_opt_class();
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v22 count:2];
     v8 = [v6 setWithArray:v7];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"accessory"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"accessory"];
 
     objc_storeWeak(&v5->_accessory, v9);
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:*MEMORY[0x277CD2610]];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:*MEMORY[0x277CD2610]];
     endpointID = v5->_endpointID;
     v5->_endpointID = v10;
     v12 = v10;
 
     v13 = *MEMORY[0x277CD20E0];
-    if ([v4 containsValueForKey:*MEMORY[0x277CD20E0]])
+    if ([coderCopy containsValueForKey:*MEMORY[0x277CD20E0]])
     {
-      v14 = [v4 decodeBoolForKey:v13];
+      v14 = [coderCopy decodeBoolForKey:v13];
     }
 
     else
@@ -77,7 +77,7 @@
     v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v21 count:2];
     v17 = [v15 setWithArray:v16];
 
-    v18 = [v4 decodeObjectOfClasses:v17 forKey:*MEMORY[0x277CD20D8]];
+    v18 = [coderCopy decodeObjectOfClasses:v17 forKey:*MEMORY[0x277CD20D8]];
     [(HMDBulletinBoardNotification *)v5 setCondition:v18];
   }
 
@@ -93,9 +93,9 @@
   v5 = [v3 initWithName:@"Enabled" value:v4];
   v13[0] = v5;
   v6 = objc_alloc(MEMORY[0x277D0F778]);
-  v7 = [(HMDBulletinBoardNotification *)self condition];
-  v8 = [v7 predicateFormat];
-  v9 = [v6 initWithName:@"Condition" value:v8];
+  condition = [(HMDBulletinBoardNotification *)self condition];
+  predicateFormat = [condition predicateFormat];
+  v9 = [v6 initWithName:@"Condition" value:predicateFormat];
   v13[1] = v9;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:2];
 
@@ -107,54 +107,54 @@
 - (id)logIdentifier
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HMDMatterBulletinBoardNotification *)self accessory];
-  v5 = [v4 name];
-  v6 = [(HMDMatterBulletinBoardNotification *)self endpointID];
-  v7 = [(HMDMatterBulletinBoardNotification *)self messageTargetUUID];
-  v8 = [v7 UUIDString];
-  v9 = [v3 stringWithFormat:@"%@/%@ : %@", v5, v6, v8];
+  accessory = [(HMDMatterBulletinBoardNotification *)self accessory];
+  name = [accessory name];
+  endpointID = [(HMDMatterBulletinBoardNotification *)self endpointID];
+  messageTargetUUID = [(HMDMatterBulletinBoardNotification *)self messageTargetUUID];
+  uUIDString = [messageTargetUUID UUIDString];
+  v9 = [v3 stringWithFormat:@"%@/%@ : %@", name, endpointID, uUIDString];
 
   return v9;
 }
 
-- (void)_updateAccessoryBulletinNotificationManagerWithEnabled:(BOOL)a3 condition:(id)a4 completion:(id)a5
+- (void)_updateAccessoryBulletinNotificationManagerWithEnabled:(BOOL)enabled condition:(id)condition completion:(id)completion
 {
-  v6 = a3;
+  enabledCopy = enabled;
   v48 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
-  v10 = [(HMDMatterBulletinBoardNotification *)self home];
-  v11 = [v10 accessoryBulletinNotificationManager];
+  conditionCopy = condition;
+  completionCopy = completion;
+  home = [(HMDMatterBulletinBoardNotification *)self home];
+  accessoryBulletinNotificationManager = [home accessoryBulletinNotificationManager];
 
-  if (v11)
+  if (accessoryBulletinNotificationManager)
   {
-    v12 = [(HMDMatterBulletinBoardNotification *)self accessory];
-    v13 = [(HMDMatterBulletinBoardNotification *)self endpointID];
-    v14 = [HMDBulletinBoard bulletinSupportedMatterPathsForAccessory:v12 endpointID:v13];
-    v15 = [v11 conditionsFromPredicate:v8];
+    accessory = [(HMDMatterBulletinBoardNotification *)self accessory];
+    endpointID = [(HMDMatterBulletinBoardNotification *)self endpointID];
+    v14 = [HMDBulletinBoard bulletinSupportedMatterPathsForAccessory:accessory endpointID:endpointID];
+    v15 = [accessoryBulletinNotificationManager conditionsFromPredicate:conditionCopy];
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __114__HMDMatterBulletinBoardNotification__updateAccessoryBulletinNotificationManagerWithEnabled_condition_completion___block_invoke;
     aBlock[3] = &unk_278684F98;
-    v45 = v6;
+    v45 = enabledCopy;
     aBlock[4] = self;
-    v39 = v8;
-    v34 = v9;
-    v16 = v9;
+    v39 = conditionCopy;
+    v34 = completionCopy;
+    v16 = completionCopy;
     v44 = v16;
-    v17 = v11;
+    v17 = accessoryBulletinNotificationManager;
     v40 = v17;
-    v18 = v12;
+    v18 = accessory;
     v41 = v18;
-    v19 = v13;
+    v19 = endpointID;
     v42 = v19;
     v20 = v15;
     v43 = v20;
     v21 = _Block_copy(aBlock);
     if ([v14 count])
     {
-      v22 = !v6;
-      if (v6)
+      v22 = !enabledCopy;
+      if (enabledCopy)
       {
         v23 = v14;
       }
@@ -164,9 +164,9 @@
         v23 = 0;
       }
 
-      v33 = v11;
+      v33 = accessoryBulletinNotificationManager;
       v24 = v19;
-      v25 = v8;
+      v25 = conditionCopy;
       if (v22)
       {
         v26 = v14;
@@ -184,9 +184,9 @@
       v36 = v16;
       v37 = v21;
       v27 = v26;
-      v8 = v25;
+      conditionCopy = v25;
       v19 = v24;
-      v11 = v33;
+      accessoryBulletinNotificationManager = v33;
       [v17 updateRegistrationsWithEnabledMatterPaths:v23 disabledMatterPaths:v27 conditions:v20 completion:v35];
     }
 
@@ -195,13 +195,13 @@
       v21[2](v21);
     }
 
-    v9 = v34;
+    completionCopy = v34;
   }
 
   else
   {
     v28 = objc_autoreleasePoolPush();
-    v29 = self;
+    selfCopy = self;
     v30 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
     {
@@ -213,7 +213,7 @@
 
     objc_autoreleasePoolPop(v28);
     v18 = [MEMORY[0x277CCA9B8] hmErrorWithCode:-1];
-    (*(v9 + 2))(v9, v18);
+    (*(completionCopy + 2))(completionCopy, v18);
   }
 
   v32 = *MEMORY[0x277D85DE8];
@@ -266,14 +266,14 @@ uint64_t __114__HMDMatterBulletinBoardNotification__updateAccessoryBulletinNotif
 
 - (void)updateRegistrations
 {
-  v3 = [(HMDBulletinBoardNotification *)self isEnabled];
-  v4 = [(HMDBulletinBoardNotification *)self condition];
+  isEnabled = [(HMDBulletinBoardNotification *)self isEnabled];
+  condition = [(HMDBulletinBoardNotification *)self condition];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __57__HMDMatterBulletinBoardNotification_updateRegistrations__block_invoke;
   v5[3] = &unk_27868A250;
   v5[4] = self;
-  [(HMDMatterBulletinBoardNotification *)self _updateAccessoryBulletinNotificationManagerWithEnabled:v3 condition:v4 completion:v5];
+  [(HMDMatterBulletinBoardNotification *)self _updateAccessoryBulletinNotificationManagerWithEnabled:isEnabled condition:condition completion:v5];
 }
 
 void __57__HMDMatterBulletinBoardNotification_updateRegistrations__block_invoke(uint64_t a1, void *a2)
@@ -297,30 +297,30 @@ void __57__HMDMatterBulletinBoardNotification_updateRegistrations__block_invoke(
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (id)dumpStateWithPrivacyLevel:(unint64_t)a3
+- (id)dumpStateWithPrivacyLevel:(unint64_t)level
 {
-  v4 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v5 = MEMORY[0x277CCACA8];
-  v6 = [(HMDMatterBulletinBoardNotification *)self messageTargetUUID];
-  v7 = [v6 UUIDString];
+  messageTargetUUID = [(HMDMatterBulletinBoardNotification *)self messageTargetUUID];
+  uUIDString = [messageTargetUUID UUIDString];
   [(HMDBulletinBoardNotification *)self isEnabled];
   v8 = HMFBooleanToString();
-  v9 = [v5 stringWithFormat:@"uuid: %@, enabled: %@", v7, v8];
-  [v4 setObject:v9 forKeyedSubscript:*MEMORY[0x277D0F170]];
+  v9 = [v5 stringWithFormat:@"uuid: %@, enabled: %@", uUIDString, v8];
+  [dictionary setObject:v9 forKeyedSubscript:*MEMORY[0x277D0F170]];
 
-  return v4;
+  return dictionary;
 }
 
-- (void)_handleBulletinBoardNotificationCommitRequest:(id)a3
+- (void)_handleBulletinBoardNotificationCommitRequest:(id)request
 {
   v50 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDMatterBulletinBoardNotification *)self home];
+  requestCopy = request;
+  home = [(HMDMatterBulletinBoardNotification *)self home];
 
-  if (!v5)
+  if (!home)
   {
     v23 = objc_autoreleasePoolPush();
-    v24 = self;
+    selfCopy = self;
     v25 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
     {
@@ -336,13 +336,13 @@ void __57__HMDMatterBulletinBoardNotification_updateRegistrations__block_invoke(
     goto LABEL_18;
   }
 
-  v6 = [(HMDMatterBulletinBoardNotification *)self home];
-  v7 = [v6 bulletinNotificationsSupported];
+  home2 = [(HMDMatterBulletinBoardNotification *)self home];
+  bulletinNotificationsSupported = [home2 bulletinNotificationsSupported];
 
-  if ((v7 & 1) == 0)
+  if ((bulletinNotificationsSupported & 1) == 0)
   {
     v29 = objc_autoreleasePoolPush();
-    v30 = self;
+    selfCopy2 = self;
     v31 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
     {
@@ -357,23 +357,23 @@ void __57__HMDMatterBulletinBoardNotification_updateRegistrations__block_invoke(
     v28 = 48;
 LABEL_18:
     v9 = [v27 hmErrorWithCode:v28];
-    [v4 respondWithError:v9];
+    [requestCopy respondWithError:v9];
     goto LABEL_23;
   }
 
-  v8 = [v4 BOOLForKey:*MEMORY[0x277CD20E0]];
-  v9 = [v4 predicateForKey:*MEMORY[0x277CD20D8]];
+  v8 = [requestCopy BOOLForKey:*MEMORY[0x277CD20E0]];
+  v9 = [requestCopy predicateForKey:*MEMORY[0x277CD20D8]];
   v10 = v8 ^ [(HMDBulletinBoardNotification *)self isEnabled];
   if (v10 == 1)
   {
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy3 = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
       HMFGetLogIdentifier();
       v14 = v39 = v11;
-      [(HMDBulletinBoardNotification *)v12 isEnabled];
+      [(HMDBulletinBoardNotification *)selfCopy3 isEnabled];
       v15 = HMFBooleanToString();
       v16 = HMFBooleanToString();
       *buf = 138543874;
@@ -390,22 +390,22 @@ LABEL_18:
     objc_autoreleasePoolPop(v11);
   }
 
-  v17 = [(HMDBulletinBoardNotification *)self condition];
+  condition = [(HMDBulletinBoardNotification *)self condition];
   v18 = HMFEqualObjects();
 
   if ((v18 & 1) == 0)
   {
     v33 = objc_autoreleasePoolPush();
-    v34 = self;
+    selfCopy4 = self;
     v35 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v35, OS_LOG_TYPE_INFO))
     {
       v36 = HMFGetLogIdentifier();
-      v37 = [(HMDBulletinBoardNotification *)v34 condition];
+      condition2 = [(HMDBulletinBoardNotification *)selfCopy4 condition];
       *buf = 138543874;
       v45 = v36;
       v46 = 2112;
-      v47 = v37;
+      v47 = condition2;
       v48 = 2112;
       v49 = v9;
       _os_log_impl(&dword_229538000, v35, OS_LOG_TYPE_INFO, "%{public}@Updating bulletin board notification condition from %@ to %@", buf, 0x20u);
@@ -423,7 +423,7 @@ LABEL_22:
     v40[2] = __84__HMDMatterBulletinBoardNotification__handleBulletinBoardNotificationCommitRequest___block_invoke;
     v40[3] = &unk_278684F70;
     v40[4] = self;
-    v41 = v4;
+    v41 = requestCopy;
     v43 = v8;
     v9 = v9;
     v42 = v9;
@@ -433,7 +433,7 @@ LABEL_22:
   }
 
   v19 = objc_autoreleasePoolPush();
-  v20 = self;
+  selfCopy5 = self;
   v21 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
   {
@@ -444,7 +444,7 @@ LABEL_22:
   }
 
   objc_autoreleasePoolPop(v19);
-  [(HMDMatterBulletinBoardNotification *)v20 _updateLocalSettingsWithEnabled:v8 condition:v9 forMessage:v4];
+  [(HMDMatterBulletinBoardNotification *)selfCopy5 _updateLocalSettingsWithEnabled:v8 condition:v9 forMessage:requestCopy];
 LABEL_23:
 
   v38 = *MEMORY[0x277D85DE8];
@@ -503,45 +503,45 @@ void __84__HMDMatterBulletinBoardNotification__handleBulletinBoardNotificationCo
 
 - (id)home
 {
-  v2 = [(HMDMatterBulletinBoardNotification *)self accessory];
-  v3 = [v2 home];
+  accessory = [(HMDMatterBulletinBoardNotification *)self accessory];
+  home = [accessory home];
 
-  return v3;
+  return home;
 }
 
 - (void)registerNotificationHandlers
 {
   v8[1] = *MEMORY[0x277D85DE8];
-  v3 = [(HMDMatterBulletinBoardNotification *)self msgDispatcher];
+  msgDispatcher = [(HMDMatterBulletinBoardNotification *)self msgDispatcher];
   v4 = *MEMORY[0x277CD20D0];
   v5 = [HMDXPCMessagePolicy policyWithEntitlements:5];
   v8[0] = v5;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:1];
-  [v3 registerForMessage:v4 receiver:self policies:v6 selector:sel__handleBulletinBoardNotificationCommitRequest_];
+  [msgDispatcher registerForMessage:v4 receiver:self policies:v6 selector:sel__handleBulletinBoardNotificationCommitRequest_];
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)configureWithWorkQueue:(id)a3 messageDispatcher:(id)a4
+- (void)configureWithWorkQueue:(id)queue messageDispatcher:(id)dispatcher
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  queueCopy = queue;
+  dispatcherCopy = dispatcher;
+  if (queueCopy)
   {
-    v8 = v7;
-    if (v7)
+    v8 = dispatcherCopy;
+    if (dispatcherCopy)
     {
-      [(HMDMatterBulletinBoardNotification *)self setWorkQueue:v6];
+      [(HMDMatterBulletinBoardNotification *)self setWorkQueue:queueCopy];
       [(HMDMatterBulletinBoardNotification *)self setMsgDispatcher:v8];
       [(HMDMatterBulletinBoardNotification *)self registerNotificationHandlers];
-      v9 = [(HMDBulletinBoardNotification *)self isEnabled];
-      v10 = [(HMDBulletinBoardNotification *)self condition];
+      isEnabled = [(HMDBulletinBoardNotification *)self isEnabled];
+      condition = [(HMDBulletinBoardNotification *)self condition];
       v13[0] = MEMORY[0x277D85DD0];
       v13[1] = 3221225472;
       v13[2] = __79__HMDMatterBulletinBoardNotification_configureWithWorkQueue_messageDispatcher___block_invoke;
       v13[3] = &unk_27868A250;
       v13[4] = self;
-      [(HMDMatterBulletinBoardNotification *)self _updateAccessoryBulletinNotificationManagerWithEnabled:v9 condition:v10 completion:v13];
+      [(HMDMatterBulletinBoardNotification *)self _updateAccessoryBulletinNotificationManagerWithEnabled:isEnabled condition:condition completion:v13];
 
       return;
     }
@@ -579,8 +579,8 @@ void __79__HMDMatterBulletinBoardNotification_configureWithWorkQueue_messageDisp
 
 - (void)dealloc
 {
-  v3 = [(HMDMatterBulletinBoardNotification *)self msgDispatcher];
-  [v3 deregisterReceiver:self];
+  msgDispatcher = [(HMDMatterBulletinBoardNotification *)self msgDispatcher];
+  [msgDispatcher deregisterReceiver:self];
 
   v4.receiver = self;
   v4.super_class = HMDMatterBulletinBoardNotification;

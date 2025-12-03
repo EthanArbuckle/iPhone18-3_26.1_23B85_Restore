@@ -42,15 +42,15 @@
 {
   if ([(PUSlideshowSettingsViewControllerSpec *)self shouldUseBlurredBackground])
   {
-    v2 = 0;
+    systemGroupedBackgroundColor = 0;
   }
 
   else
   {
-    v2 = [MEMORY[0x1E69DC888] systemGroupedBackgroundColor];
+    systemGroupedBackgroundColor = [MEMORY[0x1E69DC888] systemGroupedBackgroundColor];
   }
 
-  return v2;
+  return systemGroupedBackgroundColor;
 }
 
 - (UIColor)cellBackgroundColor
@@ -73,9 +73,9 @@
 {
   v4.receiver = self;
   v4.super_class = PUSlideshowSettingsViewControllerSpec;
-  v2 = [(PUViewControllerSpec *)&v4 currentChange];
+  currentChange = [(PUViewControllerSpec *)&v4 currentChange];
 
-  return v2;
+  return currentChange;
 }
 
 @end

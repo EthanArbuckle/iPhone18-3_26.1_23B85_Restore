@@ -6,27 +6,27 @@
 - (UIScenePresentation)presentationView;
 - (UIScenePresentationManager)manager;
 - (_UIScenePresenter)init;
-- (_UIScenePresenter)initWithManager:(id)a3 scene:(id)a4 owner:(id)a5 identifier:(id)a6 sortContext:(id)a7;
-- (_UISceneSnapshotPresentationView)_snapshotPresentationViewWithConfigurator:(_UISceneSnapshotPresentationView *)a1;
+- (_UIScenePresenter)initWithManager:(id)manager scene:(id)scene owner:(id)owner identifier:(id)identifier sortContext:(id)context;
+- (_UISceneSnapshotPresentationView)_snapshotPresentationViewWithConfigurator:(_UISceneSnapshotPresentationView *)configurator;
 - (id)captureSnapshotPresentationView;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)newSnapshot;
 - (id)newSnapshotContext;
 - (id)newSnapshotPresentationView;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
-- (int64_t)compare:(id)a3;
-- (void)_modifySnapshotConfiguration:(uint64_t)a1;
+- (int64_t)compare:(id)compare;
+- (void)_modifySnapshotConfiguration:(uint64_t)configuration;
 - (void)activate;
-- (void)addObserver:(id)a3;
+- (void)addObserver:(id)observer;
 - (void)deactivate;
 - (void)dealloc;
 - (void)invalidate;
-- (void)modifyPresentationContext:(id)a3;
-- (void)notifyObserversDidUpdateContext:(id)a3;
-- (void)notifyObserversHostingDidChange:(BOOL)a3;
-- (void)notifyObserversHostingWillChange:(BOOL)a3;
-- (void)removeObserver:(id)a3;
+- (void)modifyPresentationContext:(id)context;
+- (void)notifyObserversDidUpdateContext:(id)context;
+- (void)notifyObserversHostingDidChange:(BOOL)change;
+- (void)notifyObserversHostingWillChange:(BOOL)change;
+- (void)removeObserver:(id)observer;
 - (void)updateHostingStateIfNecessary;
 @end
 
@@ -37,9 +37,9 @@
   BSDispatchQueueAssertMain();
   if (!self->_invalidated && !self->_view)
   {
-    v3 = [(UIScenePresentationContext *)self->_presentationContext shouldSupportFlattening];
+    shouldSupportFlattening = [(UIScenePresentationContext *)self->_presentationContext shouldSupportFlattening];
     v4 = off_1E70EC0B8;
-    if (!v3)
+    if (!shouldSupportFlattening)
     {
       v4 = off_1E70EC068;
     }
@@ -59,16 +59,16 @@
   strongScene = self->_strongScene;
   if (strongScene)
   {
-    v3 = strongScene;
+    scene = strongScene;
   }
 
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_weakManager);
-    v3 = [WeakRetained scene];
+    scene = [WeakRetained scene];
   }
 
-  return v3;
+  return scene;
 }
 
 - (void)activate
@@ -95,11 +95,11 @@
 
 - (void)updateHostingStateIfNecessary
 {
-  v3 = [(_UIScenePresenter *)self _isHosting];
-  if (self->_hosting != v3)
+  _isHosting = [(_UIScenePresenter *)self _isHosting];
+  if (self->_hosting != _isHosting)
   {
-    v4 = v3;
-    [(_UIScenePresenter *)self notifyObserversHostingWillChange:v3];
+    v4 = _isHosting;
+    [(_UIScenePresenter *)self notifyObserversHostingWillChange:_isHosting];
     self->_hosting = v4;
 
     [(_UIScenePresenter *)self notifyObserversHostingDidChange:v4];
@@ -113,11 +113,11 @@
     return 0;
   }
 
-  v3 = self;
+  selfCopy = self;
   WeakRetained = objc_loadWeakRetained(&self->_owner);
-  LOBYTE(v3) = [WeakRetained _isPresenterHosting:v3];
+  LOBYTE(selfCopy) = [WeakRetained _isPresenterHosting:selfCopy];
 
-  return v3;
+  return selfCopy;
 }
 
 - (NSString)identifier
@@ -165,8 +165,8 @@
 {
   if (!self->_invalidated)
   {
-    v4 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v4 handleFailureInMethod:a2 object:self file:@"_UIScenePresenter.m" lineNumber:68 description:{@"_UIScenePresenter %@ must be invalidated before it can be deallocated.", self}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIScenePresenter.m" lineNumber:68 description:{@"_UIScenePresenter %@ must be invalidated before it can be deallocated.", self}];
   }
 
   v5.receiver = self;
@@ -176,41 +176,41 @@
 
 - (_UIScenePresenter)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"_UIScenePresenter.m" lineNumber:50 description:@"[_UIScenePresenter init] is unavailable for use."];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"_UIScenePresenter.m" lineNumber:50 description:@"[_UIScenePresenter init] is unavailable for use."];
 
   v6.receiver = self;
   v6.super_class = _UIScenePresenter;
   return [(_UIScenePresenter *)&v6 init];
 }
 
-- (_UIScenePresenter)initWithManager:(id)a3 scene:(id)a4 owner:(id)a5 identifier:(id)a6 sortContext:(id)a7
+- (_UIScenePresenter)initWithManager:(id)manager scene:(id)scene owner:(id)owner identifier:(id)identifier sortContext:(id)context
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  managerCopy = manager;
+  sceneCopy = scene;
+  ownerCopy = owner;
+  identifierCopy = identifier;
+  contextCopy = context;
   v28.receiver = self;
   v28.super_class = _UIScenePresenter;
   v18 = [(_UIScenePresenter *)&v28 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_strongManager, a3);
-    objc_storeWeak(&v19->_weakManager, v13);
-    objc_storeStrong(&v19->_strongScene, a4);
-    objc_storeWeak(&v19->_owner, v15);
-    objc_storeStrong(&v19->_identifier, a6);
-    v20 = [v17 copy];
+    objc_storeStrong(&v18->_strongManager, manager);
+    objc_storeWeak(&v19->_weakManager, managerCopy);
+    objc_storeStrong(&v19->_strongScene, scene);
+    objc_storeWeak(&v19->_owner, ownerCopy);
+    objc_storeStrong(&v19->_identifier, identifier);
+    v20 = [contextCopy copy];
     sortContext = v19->_sortContext;
     v19->_sortContext = v20;
 
     BSAbsoluteMachTimeNow();
     v19->_initializeTime = v22;
     v23 = [UIScenePresentationContext alloc];
-    v24 = [v15 defaultPresentationContext];
-    v25 = [(UIScenePresentationContext *)v23 _initWithDefaultPresentationContext:v24];
+    defaultPresentationContext = [ownerCopy defaultPresentationContext];
+    v25 = [(UIScenePresentationContext *)v23 _initWithDefaultPresentationContext:defaultPresentationContext];
     presentationContext = v19->_presentationContext;
     v19->_presentationContext = v25;
   }
@@ -218,16 +218,16 @@
   return v19;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
+  compareCopy = compare;
   sortContext = self->_sortContext;
-  v6 = [v4 sortContext];
-  v7 = [(NSCopying *)sortContext compare:v6];
+  sortContext = [compareCopy sortContext];
+  v7 = [(NSCopying *)sortContext compare:sortContext];
 
   if (!v7)
   {
-    [v4 _initializeTime];
+    [compareCopy _initializeTime];
     initializeTime = self->_initializeTime;
     v10 = -1;
     if (initializeTime >= v8)
@@ -249,45 +249,45 @@
   return v7;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v9 = a3;
-  if (!v9)
+  observerCopy = observer;
+  if (!observerCopy)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"_UIScenePresenter.m" lineNumber:97 description:{@"Invalid parameter not satisfying: %@", @"observer"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIScenePresenter.m" lineNumber:97 description:{@"Invalid parameter not satisfying: %@", @"observer"}];
   }
 
   BSDispatchQueueAssertMain();
   observers = self->_observers;
   if (!observers)
   {
-    v6 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     v7 = self->_observers;
-    self->_observers = v6;
+    self->_observers = weakObjectsHashTable;
 
     observers = self->_observers;
   }
 
-  [(NSHashTable *)observers addObject:v9];
+  [(NSHashTable *)observers addObject:observerCopy];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v7 = a3;
+  observerCopy = observer;
   BSDispatchQueueAssertMain();
-  v4 = v7;
-  if (v7)
+  v4 = observerCopy;
+  if (observerCopy)
   {
-    [(NSHashTable *)self->_observers removeObject:v7];
+    [(NSHashTable *)self->_observers removeObject:observerCopy];
     v5 = [(NSHashTable *)self->_observers count];
-    v4 = v7;
+    v4 = observerCopy;
     if (!v5)
     {
       observers = self->_observers;
       self->_observers = 0;
 
-      v4 = v7;
+      v4 = observerCopy;
     }
   }
 }
@@ -315,27 +315,27 @@
     return 0;
   }
 
-  v3 = self;
+  selfCopy = self;
   WeakRetained = objc_loadWeakRetained(&self->_owner);
-  LOBYTE(v3) = [WeakRetained _isPresenterActive:v3];
+  LOBYTE(selfCopy) = [WeakRetained _isPresenterActive:selfCopy];
 
-  return v3;
+  return selfCopy;
 }
 
-- (void)modifyPresentationContext:(id)a3
+- (void)modifyPresentationContext:(id)context
 {
   v35 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  contextCopy = context;
+  if (!contextCopy)
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"_UIScenePresenter.m" lineNumber:192 description:{@"Invalid parameter not satisfying: %@", @"modifyBlock"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIScenePresenter.m" lineNumber:192 description:{@"Invalid parameter not satisfying: %@", @"modifyBlock"}];
   }
 
   BSDispatchQueueAssertMain();
   v6 = self->_presentationContext;
   v7 = [(UIScenePresentationContext *)self->_presentationContext mutableCopy];
-  v5[2](v5, v7);
+  contextCopy[2](contextCopy, v7);
   v8 = UIScenePresentationLog();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG);
 
@@ -346,12 +346,12 @@
     {
       v13 = MEMORY[0x1E696AEC0];
       WeakRetained = objc_loadWeakRetained(&self->_weakManager);
-      v21 = [WeakRetained scene];
-      v20 = [v21 identifier];
-      v14 = [v13 stringWithFormat:@"%@-%@", v20, self->_identifier];
+      scene = [WeakRetained scene];
+      identifier = [scene identifier];
+      v14 = [v13 stringWithFormat:@"%@-%@", identifier, self->_identifier];
       v15 = [MEMORY[0x1E696AD98] numberWithBool:BSEqualObjects()];
-      v16 = [(UIScenePresentationContext *)self->_presentationContext _defaultPresentationContext];
-      v17 = [v7 _defaultPresentationContext];
+      _defaultPresentationContext = [(UIScenePresentationContext *)self->_presentationContext _defaultPresentationContext];
+      _defaultPresentationContext2 = [v7 _defaultPresentationContext];
       *buf = 138413570;
       v24 = v14;
       v25 = 2112;
@@ -361,9 +361,9 @@
       v29 = 2112;
       v30 = v7;
       v31 = 2112;
-      v32 = v16;
+      v32 = _defaultPresentationContext;
       v33 = 2112;
-      v34 = v17;
+      v34 = _defaultPresentationContext2;
       _os_log_debug_impl(&dword_188A29000, v10, OS_LOG_TYPE_DEBUG, "Modify presentation context on %@ (equal? %@), prevContext: %@, newContext: %@,  prevDefaultContext: %@, newDefaultContext: %@", buf, 0x3Eu);
     }
   }
@@ -378,8 +378,8 @@
     [v7 shouldSupportFlattening];
     if ((BSEqualBools() & 1) == 0 && self->_view)
     {
-      v19 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v19 handleFailureInMethod:a2 object:self file:@"_UIScenePresenter.m" lineNumber:207 description:@"shouldSupportFlattening should not change after the presentation view has been created"];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"_UIScenePresenter.m" lineNumber:207 description:@"shouldSupportFlattening should not change after the presentation view has been created"];
     }
 
     [(_UIScenePresentationView *)self->_view setCurrentPresentationContext:self->_presentationContext];
@@ -387,18 +387,18 @@
   }
 }
 
-- (void)_modifySnapshotConfiguration:(uint64_t)a1
+- (void)_modifySnapshotConfiguration:(uint64_t)configuration
 {
-  if (a1)
+  if (configuration)
   {
-    v3 = *(a1 + 80);
+    v3 = *(configuration + 80);
     v4 = a2;
-    v5 = [v3 hostContainerView];
-    v6 = [v5 nonHostedLayers];
-    [v4 setLayersToExclude:v6];
+    hostContainerView = [v3 hostContainerView];
+    nonHostedLayers = [hostContainerView nonHostedLayers];
+    [v4 setLayersToExclude:nonHostedLayers];
 
-    v7 = [*(a1 + 40) backgroundColorWhileHosting];
-    [v7 alphaComponent];
+    backgroundColorWhileHosting = [*(configuration + 40) backgroundColorWhileHosting];
+    [backgroundColorWhileHosting alphaComponent];
     [v4 setOpaque:BSFloatGreaterThanOrEqualToFloat()];
   }
 }
@@ -406,19 +406,19 @@
 - (id)newSnapshotContext
 {
   WeakRetained = objc_loadWeakRetained(&self->_weakManager);
-  v4 = [WeakRetained scene];
-  v5 = [v4 snapshotContext];
+  scene = [WeakRetained scene];
+  snapshotContext = [scene snapshotContext];
 
-  [(_UIScenePresenter *)self _modifySnapshotConfiguration:v5];
-  return v5;
+  [(_UIScenePresenter *)self _modifySnapshotConfiguration:snapshotContext];
+  return snapshotContext;
 }
 
 - (id)newSnapshot
 {
   WeakRetained = objc_loadWeakRetained(&self->_weakManager);
-  v4 = [WeakRetained scene];
-  v5 = [(_UIScenePresenter *)self newSnapshotContext];
-  v6 = [v4 createSnapshotWithContext:v5];
+  scene = [WeakRetained scene];
+  newSnapshotContext = [(_UIScenePresenter *)self newSnapshotContext];
+  v6 = [scene createSnapshotWithContext:newSnapshotContext];
 
   return v6;
 }
@@ -426,26 +426,26 @@
 - (id)newSnapshotPresentationView
 {
   v3 = [_UISceneSnapshotPresentationView alloc];
-  v4 = [(_UIScenePresenter *)self newSnapshot];
-  v5 = [(_UISceneSnapshotPresentationView *)v3 initWithSnapshot:v4];
+  newSnapshot = [(_UIScenePresenter *)self newSnapshot];
+  v5 = [(_UISceneSnapshotPresentationView *)v3 initWithSnapshot:newSnapshot];
 
   [(_UISceneSnapshotPresentationView *)v5 capture];
   return v5;
 }
 
-- (_UISceneSnapshotPresentationView)_snapshotPresentationViewWithConfigurator:(_UISceneSnapshotPresentationView *)a1
+- (_UISceneSnapshotPresentationView)_snapshotPresentationViewWithConfigurator:(_UISceneSnapshotPresentationView *)configurator
 {
   v28 = *MEMORY[0x1E69E9840];
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (configurator)
   {
-    cachedTraitCollection = a1->super._cachedTraitCollection;
+    cachedTraitCollection = configurator->super._cachedTraitCollection;
     if (!cachedTraitCollection)
     {
       v8 = MEMORY[0x1E696AEC0];
-      WeakRetained = objc_loadWeakRetained(&a1->super.super._responderFlags);
-      v10 = [v8 stringWithFormat:@"attempt to create a snapshotPresentationView after the presenter has been invalidated : presenter=%@ manager=%@", a1, WeakRetained];
+      WeakRetained = objc_loadWeakRetained(&configurator->super.super._responderFlags);
+      weakRetained = [v8 stringWithFormat:@"attempt to create a snapshotPresentationView after the presenter has been invalidated : presenter=%@ manager=%@", configurator, WeakRetained];
 
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
@@ -457,17 +457,17 @@
         v18 = 2114;
         v19 = v13;
         v20 = 2048;
-        v21 = a1;
+        configuratorCopy = configurator;
         v22 = 2114;
         v23 = @"_UIScenePresenter.m";
         v24 = 1024;
         v25 = 236;
         v26 = 2114;
-        v27 = v10;
+        v27 = weakRetained;
         _os_log_error_impl(&dword_188A29000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "failure in %{public}@ of <%{public}@:%p> (%{public}@:%i) : %{public}@", buf, 0x3Au);
       }
 
-      [v10 UTF8String];
+      [weakRetained UTF8String];
       _bs_set_crash_log_message();
       __break(0);
       JUMPOUT(0x1898D874CLL);
@@ -477,13 +477,13 @@
     v14[1] = 3221225472;
     v14[2] = __63___UIScenePresenter__snapshotPresentationViewWithConfigurator___block_invoke;
     v14[3] = &unk_1E7109D98;
-    v14[4] = a1;
+    v14[4] = configurator;
     v15 = v3;
     v6 = [(UITraitCollection *)cachedTraitCollection prepareSnapshotWithConfigurator:v14];
-    a1 = [[_UISceneSnapshotPresentationView alloc] initWithSnapshot:v6];
+    configurator = [[_UISceneSnapshotPresentationView alloc] initWithSnapshot:v6];
   }
 
-  return a1;
+  return configurator;
 }
 
 - (id)captureSnapshotPresentationView
@@ -494,9 +494,9 @@
   return v2;
 }
 
-- (void)notifyObserversHostingWillChange:(BOOL)a3
+- (void)notifyObserversHostingWillChange:(BOOL)change
 {
-  v3 = a3;
+  changeCopy = change;
   v16 = *MEMORY[0x1E69E9840];
   v11 = 0u;
   v12 = 0u;
@@ -521,7 +521,7 @@
         v10 = *(*(&v11 + 1) + 8 * v9);
         if (objc_opt_respondsToSelector())
         {
-          [v10 scenePresenter:self hostingWillChange:{v3, v11}];
+          [v10 scenePresenter:self hostingWillChange:{changeCopy, v11}];
         }
 
         ++v9;
@@ -535,9 +535,9 @@
   }
 }
 
-- (void)notifyObserversHostingDidChange:(BOOL)a3
+- (void)notifyObserversHostingDidChange:(BOOL)change
 {
-  v3 = a3;
+  changeCopy = change;
   v16 = *MEMORY[0x1E69E9840];
   v11 = 0u;
   v12 = 0u;
@@ -562,7 +562,7 @@
         v10 = *(*(&v11 + 1) + 8 * v9);
         if (objc_opt_respondsToSelector())
         {
-          [v10 scenePresenter:self hostingDidChange:{v3, v11}];
+          [v10 scenePresenter:self hostingDidChange:{changeCopy, v11}];
         }
 
         ++v9;
@@ -576,10 +576,10 @@
   }
 }
 
-- (void)notifyObserversDidUpdateContext:(id)a3
+- (void)notifyObserversDidUpdateContext:(id)context
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  contextCopy = context;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -603,7 +603,7 @@
         v10 = *(*(&v11 + 1) + 8 * v9);
         if (objc_opt_respondsToSelector())
         {
-          [v10 scenePresenter:self didUpdateContext:{v4, v11}];
+          [v10 scenePresenter:self didUpdateContext:{contextCopy, v11}];
         }
 
         ++v9;
@@ -619,18 +619,18 @@
 
 - (id)succinctDescription
 {
-  v2 = [(_UIScenePresenter *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(_UIScenePresenter *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(_UIScenePresenter *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(_UIScenePresenter *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 @end

@@ -1,19 +1,19 @@
 @interface VGSelectionState
-+ (id)capturedStatesFromCapturedPoses:(id)a3;
++ (id)capturedStatesFromCapturedPoses:(id)poses;
 @end
 
 @implementation VGSelectionState
 
-+ (id)capturedStatesFromCapturedPoses:(id)a3
++ (id)capturedStatesFromCapturedPoses:(id)poses
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB38] dictionary];
+  posesCopy = poses;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v3;
+  v5 = posesCopy;
   v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
@@ -31,7 +31,7 @@
         v10 = MEMORY[0x277CCABB0];
         v11 = [v5 objectForKey:{v9, v15}];
         v12 = [v10 numberWithBool:{objc_msgSend(v11, "valid")}];
-        [v4 setObject:v12 forKeyedSubscript:v9];
+        [dictionary setObject:v12 forKeyedSubscript:v9];
       }
 
       v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -42,7 +42,7 @@
 
   v13 = *MEMORY[0x277D85DE8];
 
-  return v4;
+  return dictionary;
 }
 
 @end

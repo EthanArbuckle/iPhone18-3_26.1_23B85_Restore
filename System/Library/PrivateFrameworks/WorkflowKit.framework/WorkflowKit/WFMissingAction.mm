@@ -1,13 +1,13 @@
 @interface WFMissingAction
 - (id)iconImage;
 - (id)localizedDescriptionSummary;
-- (id)localizedNameWithContext:(id)a3;
-- (void)runWithInput:(id)a3 error:(id *)a4;
+- (id)localizedNameWithContext:(id)context;
+- (void)runWithInput:(id)input error:(id *)error;
 @end
 
 @implementation WFMissingAction
 
-- (void)runWithInput:(id)a3 error:(id *)a4
+- (void)runWithInput:(id)input error:(id *)error
 {
   v10[1] = *MEMORY[0x1E69E9840];
   v5 = WFLocalizedString(@"The shortcut could not be run because an action could not be found.");
@@ -15,7 +15,7 @@
   v9 = *MEMORY[0x1E696A578];
   v10[0] = v5;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:&v9 count:1];
-  *a4 = [v6 errorWithDomain:@"WFActionErrorDomain" code:14 userInfo:v7];
+  *error = [v6 errorWithDomain:@"WFActionErrorDomain" code:14 userInfo:v7];
 
   v8 = *MEMORY[0x1E69E9840];
 }
@@ -24,8 +24,8 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = WFLocalizedString(@"This action could not be found. It may require a newer version of Shortcuts or another app.\n\nThe missing action’s identifier is “%@”.");
-  v5 = [(WFAction *)self identifier];
-  v6 = [v3 localizedStringWithFormat:v4, v5];
+  identifier = [(WFAction *)self identifier];
+  v6 = [v3 localizedStringWithFormat:v4, identifier];
 
   return v6;
 }
@@ -37,22 +37,22 @@
   return v2;
 }
 
-- (id)localizedNameWithContext:(id)a3
+- (id)localizedNameWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [(WFAction *)self definition];
+  contextCopy = context;
+  definition = [(WFAction *)self definition];
 
-  if (v5)
+  if (definition)
   {
     v9.receiver = self;
     v9.super_class = WFMissingAction;
-    v6 = [(WFAction *)&v9 localizedNameWithContext:v4];
+    v6 = [(WFAction *)&v9 localizedNameWithContext:contextCopy];
   }
 
   else
   {
     v7 = WFLocalizedStringResourceWithKey(@"Unknown Action", @"Unknown Action");
-    v6 = [v4 localize:v7];
+    v6 = [contextCopy localize:v7];
   }
 
   return v6;

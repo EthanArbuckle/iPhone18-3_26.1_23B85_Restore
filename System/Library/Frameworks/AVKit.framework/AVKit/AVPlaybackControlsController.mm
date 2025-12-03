@@ -14,7 +14,7 @@
 + (id)keyPathsForValuesAffectingShowsSkipButtons;
 + (id)keyPathsForValuesAffectingShowsStartContentTransitionButtons;
 + (id)keyPathsForValuesAffectingShowsTransportControls;
-- (AVPlaybackControlsController)initWithPlayerViewController:(id)a3;
+- (AVPlaybackControlsController)initWithPlayerViewController:(id)controller;
 - (AVPlayerController)playerController;
 - (AVPlayerViewController)playerViewController;
 - (AVTurboModePlaybackControlsPlaceholderView)turboModePlaybackControlsPlaceholderView;
@@ -26,11 +26,11 @@
 - (BOOL)isSeekingEnabled;
 - (BOOL)needsTimeResolver;
 - (BOOL)playButtonsShowPauseGlyph;
-- (BOOL)playerViewControllerContentViewHasActiveTransition:(id)a3;
-- (BOOL)playerViewControllerContentViewIsBeingTransitionedFromFullScreen:(id)a3;
-- (BOOL)playerViewControllerContentViewShouldApplyAutomaticVideoGravity:(id)a3;
+- (BOOL)playerViewControllerContentViewHasActiveTransition:(id)transition;
+- (BOOL)playerViewControllerContentViewIsBeingTransitionedFromFullScreen:(id)screen;
+- (BOOL)playerViewControllerContentViewShouldApplyAutomaticVideoGravity:(id)gravity;
 - (BOOL)prefersStatusBarHidden;
-- (BOOL)shouldApplyLegibleMediaSelectionCriteriaAutomaticallyForMediaSelectionMenuController:(id)a3;
+- (BOOL)shouldApplyLegibleMediaSelectionCriteriaAutomaticallyForMediaSelectionMenuController:(id)controller;
 - (BOOL)shouldEnterFullScreenWhenPlaybackBegins;
 - (BOOL)showsMediaSelectionButton;
 - (BOOL)showsProminentPlayButton;
@@ -40,7 +40,7 @@
 - (BOOL)showsTransportControls;
 - (BOOL)tapGestureRecognizersCanReceiveTouches;
 - (CGRect)playbackViewFrame;
-- (CGSize)playerViewControllerContentViewContentDimensions:(id)a3;
+- (CGSize)playerViewControllerContentViewContentDimensions:(id)dimensions;
 - (NSTimer)loadingIndicatorTimer;
 - (UIAlertController)routePickerAlertController;
 - (UIViewPropertyAnimator)collapseExpandSliderAnimator;
@@ -49,25 +49,25 @@
 - (double)minimumTime;
 - (double)targetTime;
 - (id)_volumeButtonMicaPackageState;
-- (id)overflowMenuItemsForControlOverflowButton:(id)a3;
-- (id)playerViewControllerContentViewOverrideLayoutClass:(id)a3;
-- (void)_autoHideControlsAfterDelay:(double)a3;
-- (void)_bindEnabledStateOfControls:(id)a3 toKeyPath:(id)a4 usingObservationController:(id)a5;
-- (void)_bindInclusionOfControlItems:(id)a3 toKeyPath:(id)a4;
+- (id)overflowMenuItemsForControlOverflowButton:(id)button;
+- (id)playerViewControllerContentViewOverrideLayoutClass:(id)class;
+- (void)_autoHideControlsAfterDelay:(double)delay;
+- (void)_bindEnabledStateOfControls:(id)controls toKeyPath:(id)path usingObservationController:(id)controller;
+- (void)_bindInclusionOfControlItems:(id)items toKeyPath:(id)path;
 - (void)_handlePhotosensitiveRegions;
 - (void)_hideContextMenusIfPresented;
-- (void)_observeBoolForKeyPath:(id)a3 usingKeyValueObservationController:(id)a4 observationHandler:(id)a5;
-- (void)_seekByTimeInterval:(double)a3 toleranceBefore:(double)a4 toleranceAfter:(double)a5;
+- (void)_observeBoolForKeyPath:(id)path usingKeyValueObservationController:(id)controller observationHandler:(id)handler;
+- (void)_seekByTimeInterval:(double)interval toleranceBefore:(double)before toleranceAfter:(double)after;
 - (void)_showOrHideDisplayModeControls;
 - (void)_startObservingForPlaybackViewUpdates;
 - (void)_startObservingPlayerControllerProperties;
 - (void)_startObservingPotentiallyUnimplementedPlayerControllerProperties;
 - (void)_updateContainerInclusion;
 - (void)_updateControlInclusion;
-- (void)_updateHasPlaybackBegunSincePlayerControllerBecameReadyToPlay:(BOOL)a3 playing:(BOOL)a4 userDidEndTappingProminentPlayButton:(BOOL)a5;
+- (void)_updateHasPlaybackBegunSincePlayerControllerBecameReadyToPlay:(BOOL)play playing:(BOOL)playing userDidEndTappingProminentPlayButton:(BOOL)button;
 - (void)_updateOrCreateTimeResolverIfNeeded;
 - (void)_updatePhotosensitivityRegions;
-- (void)_updatePlaybackControlsVisibilityWantsPlaybackControlsVisible:(BOOL)a3;
+- (void)_updatePlaybackControlsVisibilityWantsPlaybackControlsVisible:(BOOL)visible;
 - (void)_updatePlaybackControlsVisibleAndObservingUpdates;
 - (void)_updatePlaybackSpeedControlInclusion;
 - (void)_updateRouteDetectionEnabled;
@@ -76,8 +76,8 @@
 - (void)_updateTransportBarCustomMenuItemsIfNeeded;
 - (void)_updateVideoGravityButtonType;
 - (void)_updateVolumeButtonGlyph;
-- (void)_updateVolumeButtonInclusionAndPrefersVolumeSliderExpandedWithPreferredExpansion:(BOOL)a3;
-- (void)_updateVolumeSliderValueWithSystemVolume:(float)a3 animated:(BOOL)a4;
+- (void)_updateVolumeButtonInclusionAndPrefersVolumeSliderExpandedWithPreferredExpansion:(BOOL)expansion;
+- (void)_updateVolumeSliderValueWithSystemVolume:(float)volume animated:(BOOL)animated;
 - (void)beginChangingVolume;
 - (void)beginHidingItemsForTransition;
 - (void)beginScrubbing;
@@ -85,68 +85,68 @@
 - (void)beginUserInteraction;
 - (void)dealloc;
 - (void)endChangingVolume;
-- (void)endHidingItemsForTransitionAndShowImmediately:(BOOL)a3;
+- (void)endHidingItemsForTransitionAndShowImmediately:(BOOL)immediately;
 - (void)endScrubbing;
 - (void)endShowingItemsDueToIndirectUserInteraction;
 - (void)endUserInteraction;
-- (void)flashPlaybackControlsWithDuration:(double)a3;
-- (void)flashVolumeControlsWithDuration:(double)a3;
-- (void)handleCurrentRouteSupportsVolumeControlChanged:(id)a3;
-- (void)handleVolumeChange:(id)a3;
-- (void)mediaSelectionMenuController:(id)a3 didSelectOption:(id)a4;
-- (void)playbackControlsViewDidLoad:(id)a3;
-- (void)playbackSpeedButtonTapped:(id)a3;
-- (void)playerViewControllerContentViewDidChangeVideoGravity:(id)a3;
-- (void)playerViewControllerContentViewDidLayoutSubviews:(id)a3;
-- (void)playerViewControllerContentViewDidMoveToSuperviewOrWindow:(id)a3;
-- (void)playerViewControllerContentViewDidUpdateScrollingStatus:(id)a3;
-- (void)playerViewControllerContentViewPlaybackContentContainerViewChanged:(id)a3;
-- (void)prominentPlayButtonTouchUpInside:(id)a3;
-- (void)scrubToTime:(double)a3 resolution:(double)a4;
-- (void)setAllowsEnteringFullScreen:(BOOL)a3;
-- (void)setCanIncludePlaybackControlsWhenInline:(BOOL)a3;
-- (void)setCanIncludeVideoGravityButton:(BOOL)a3;
-- (void)setCoveringWindow:(BOOL)a3;
-- (void)setCustomControlItems:(id)a3;
-- (void)setForcePlaybackControlsHidden:(BOOL)a3;
-- (void)setHasCustomPlaybackControls:(BOOL)a3;
-- (void)setPictureInPictureActive:(BOOL)a3;
-- (void)setPlaybackSpeedCollection:(id)a3;
-- (void)setPlayerController:(id)a3;
-- (void)setPlayerViewControllerIsBeingTransitionedWithResizing:(BOOL)a3;
-- (void)setPlayerViewControllerIsPresentedFullScreen:(BOOL)a3;
-- (void)setPlayerViewControllerIsPresentingFullScreen:(BOOL)a3;
-- (void)setPopoverIsBeingPresented:(BOOL)a3;
-- (void)setPreferredUnobscuredArea:(int64_t)a3;
-- (void)setShowsDoneButtonWhenFullScreen:(BOOL)a3;
-- (void)setShowsMinimalPlaybackControlsWhenEmbeddedInline:(BOOL)a3;
-- (void)setShowsPictureInPictureButton:(BOOL)a3;
-- (void)setShowsPlaybackControls:(BOOL)a3;
-- (void)setShowsTimecodes:(BOOL)a3;
-- (void)setShowsVideoGravityButton:(BOOL)a3;
-- (void)setShowsVolumeControlsForContentWithNoAudio:(BOOL)a3;
-- (void)setTransportBarCustomMenuItems:(id)a3;
-- (void)setVolumeController:(id)a3;
-- (void)setVolumeControlsCanShowSlider:(BOOL)a3;
-- (void)setWantsExternalPlaybackButtonShown:(BOOL)a3;
-- (void)showPlaybackControls:(BOOL)a3 immediately:(BOOL)a4;
-- (void)skipButtonForcePressChanged:(id)a3;
-- (void)skipButtonLongPressEnded:(id)a3;
-- (void)skipButtonLongPressTriggered:(id)a3;
-- (void)skipButtonTouchUpInside:(id)a3;
-- (void)startContentTransitionButtonTouchUpInside:(id)a3;
+- (void)flashPlaybackControlsWithDuration:(double)duration;
+- (void)flashVolumeControlsWithDuration:(double)duration;
+- (void)handleCurrentRouteSupportsVolumeControlChanged:(id)changed;
+- (void)handleVolumeChange:(id)change;
+- (void)mediaSelectionMenuController:(id)controller didSelectOption:(id)option;
+- (void)playbackControlsViewDidLoad:(id)load;
+- (void)playbackSpeedButtonTapped:(id)tapped;
+- (void)playerViewControllerContentViewDidChangeVideoGravity:(id)gravity;
+- (void)playerViewControllerContentViewDidLayoutSubviews:(id)subviews;
+- (void)playerViewControllerContentViewDidMoveToSuperviewOrWindow:(id)window;
+- (void)playerViewControllerContentViewDidUpdateScrollingStatus:(id)status;
+- (void)playerViewControllerContentViewPlaybackContentContainerViewChanged:(id)changed;
+- (void)prominentPlayButtonTouchUpInside:(id)inside;
+- (void)scrubToTime:(double)time resolution:(double)resolution;
+- (void)setAllowsEnteringFullScreen:(BOOL)screen;
+- (void)setCanIncludePlaybackControlsWhenInline:(BOOL)inline;
+- (void)setCanIncludeVideoGravityButton:(BOOL)button;
+- (void)setCoveringWindow:(BOOL)window;
+- (void)setCustomControlItems:(id)items;
+- (void)setForcePlaybackControlsHidden:(BOOL)hidden;
+- (void)setHasCustomPlaybackControls:(BOOL)controls;
+- (void)setPictureInPictureActive:(BOOL)active;
+- (void)setPlaybackSpeedCollection:(id)collection;
+- (void)setPlayerController:(id)controller;
+- (void)setPlayerViewControllerIsBeingTransitionedWithResizing:(BOOL)resizing;
+- (void)setPlayerViewControllerIsPresentedFullScreen:(BOOL)screen;
+- (void)setPlayerViewControllerIsPresentingFullScreen:(BOOL)screen;
+- (void)setPopoverIsBeingPresented:(BOOL)presented;
+- (void)setPreferredUnobscuredArea:(int64_t)area;
+- (void)setShowsDoneButtonWhenFullScreen:(BOOL)screen;
+- (void)setShowsMinimalPlaybackControlsWhenEmbeddedInline:(BOOL)inline;
+- (void)setShowsPictureInPictureButton:(BOOL)button;
+- (void)setShowsPlaybackControls:(BOOL)controls;
+- (void)setShowsTimecodes:(BOOL)timecodes;
+- (void)setShowsVideoGravityButton:(BOOL)button;
+- (void)setShowsVolumeControlsForContentWithNoAudio:(BOOL)audio;
+- (void)setTransportBarCustomMenuItems:(id)items;
+- (void)setVolumeController:(id)controller;
+- (void)setVolumeControlsCanShowSlider:(BOOL)slider;
+- (void)setWantsExternalPlaybackButtonShown:(BOOL)shown;
+- (void)showPlaybackControls:(BOOL)controls immediately:(BOOL)immediately;
+- (void)skipButtonForcePressChanged:(id)changed;
+- (void)skipButtonLongPressEnded:(id)ended;
+- (void)skipButtonLongPressTriggered:(id)triggered;
+- (void)skipButtonTouchUpInside:(id)inside;
+- (void)startContentTransitionButtonTouchUpInside:(id)inside;
 - (void)startUpdatesIfNeeded;
 - (void)toggleMuted;
 - (void)togglePlaybackControlsVisibility;
-- (void)transportControls:(id)a3 scrubberDidBeginScrubbing:(id)a4;
-- (void)transportControls:(id)a3 scrubberDidEndScrubbing:(id)a4;
-- (void)transportControls:(id)a3 scrubberDidScrub:(id)a4;
-- (void)transportControlsNeedsLayoutIfNeeded:(id)a3;
-- (void)turboModePlaybackControlsPlaceholderViewDidLoad:(id)a3;
-- (void)updateVolumeSliderValue:(id)a3 volumeButtonControl:(id)a4;
-- (void)volumeButtonPanChanged:(id)a3;
-- (void)volumeButtonTapTriggered:(id)a3;
-- (void)volumeSliderValueDidChange:(id)a3;
+- (void)transportControls:(id)controls scrubberDidBeginScrubbing:(id)scrubbing;
+- (void)transportControls:(id)controls scrubberDidEndScrubbing:(id)scrubbing;
+- (void)transportControls:(id)controls scrubberDidScrub:(id)scrub;
+- (void)transportControlsNeedsLayoutIfNeeded:(id)needed;
+- (void)turboModePlaybackControlsPlaceholderViewDidLoad:(id)load;
+- (void)updateVolumeSliderValue:(id)value volumeButtonControl:(id)control;
+- (void)volumeButtonPanChanged:(id)changed;
+- (void)volumeButtonTapTriggered:(id)triggered;
+- (void)volumeSliderValueDidChange:(id)change;
 @end
 
 @implementation AVPlaybackControlsController
@@ -214,7 +214,7 @@
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v31 = self;
+  selfCopy = self;
   v3 = self->_transportBarCustomMenuItems;
   v4 = [(NSArray *)v3 countByEnumeratingWithState:&v34 objects:v38 count:16];
   if (v4)
@@ -239,29 +239,29 @@
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v12 = v11;
-          v13 = [v12 title];
-          v14 = [p_info + 421 buttonWithAccessibilityIdentifier:v13 isFirstGeneration:1];
+          identifier2 = v11;
+          title = [identifier2 title];
+          v14 = [p_info + 421 buttonWithAccessibilityIdentifier:title isFirstGeneration:1];
 
-          v15 = [v12 image];
+          image = [identifier2 image];
 
-          if (v15)
+          if (image)
           {
-            v16 = [v12 image];
-            [v14 setImage:v16 forState:0];
+            image2 = [identifier2 image];
+            [v14 setImage:image2 forState:0];
           }
 
-          v17 = [v12 title];
+          title2 = [identifier2 title];
 
-          if (v17)
+          if (title2)
           {
-            v18 = [v12 title];
-            [v14 setTitle:v18 forState:0];
+            title3 = [identifier2 title];
+            [v14 setTitle:title3 forState:0];
           }
 
-          [v14 addAction:v12 forControlEvents:0x2000];
-          v19 = [v12 identifier];
-          [v14 setMenuElementIdentifier:v19];
+          [v14 addAction:identifier2 forControlEvents:0x2000];
+          identifier = [identifier2 identifier];
+          [v14 setMenuElementIdentifier:identifier];
         }
 
         else
@@ -288,14 +288,14 @@
           v3 = v23;
           v6 = v22;
           v5 = v32;
-          v28 = [v21 image];
-          [v14 setImage:v28 forState:0];
+          image3 = [v21 image];
+          [v14 setImage:image3 forState:0];
 
           [v14 setMenu:v21];
           [v14 setShowsMenuAsPrimaryAction:1];
-          v12 = [v21 identifier];
+          identifier2 = [v21 identifier];
 
-          [v14 setMenuElementIdentifier:v12];
+          [v14 setMenuElementIdentifier:identifier2];
         }
 
         if (v14)
@@ -314,22 +314,22 @@ LABEL_16:
     while (v5);
   }
 
-  v29 = [(AVPlaybackControlsController *)v31 playbackControlsView];
-  v30 = [v29 transportControlsView];
-  [v30 setCustomMenuItemsViews:v33];
+  playbackControlsView = [(AVPlaybackControlsController *)selfCopy playbackControlsView];
+  transportControlsView = [playbackControlsView transportControlsView];
+  [transportControlsView setCustomMenuItemsViews:v33];
 }
 
 - (void)_updateRouteDetectionEnabled
 {
-  v3 = [(AVPlaybackControlsController *)self routeDetectorCoordinator];
-  [v3 setRouteDetectionEnabled:{-[AVPlaybackControlsController _wantsRouteDetectionEnabled](self, "_wantsRouteDetectionEnabled")}];
+  routeDetectorCoordinator = [(AVPlaybackControlsController *)self routeDetectorCoordinator];
+  [routeDetectorCoordinator setRouteDetectionEnabled:{-[AVPlaybackControlsController _wantsRouteDetectionEnabled](self, "_wantsRouteDetectionEnabled")}];
 }
 
-- (void)_updateHasPlaybackBegunSincePlayerControllerBecameReadyToPlay:(BOOL)a3 playing:(BOOL)a4 userDidEndTappingProminentPlayButton:(BOOL)a5
+- (void)_updateHasPlaybackBegunSincePlayerControllerBecameReadyToPlay:(BOOL)play playing:(BOOL)playing userDidEndTappingProminentPlayButton:(BOOL)button
 {
-  if (a4 || a5 || !a3)
+  if (playing || button || !play)
   {
-    [(AVPlaybackControlsController *)self setHasPlaybackBegunSincePlayerControllerBecameReadyToPlay:a3];
+    [(AVPlaybackControlsController *)self setHasPlaybackBegunSincePlayerControllerBecameReadyToPlay:play];
   }
 }
 
@@ -340,26 +340,26 @@ LABEL_16:
     goto LABEL_9;
   }
 
-  v3 = [(AVPlaybackControlsController *)self playerController];
-  if (![v3 hasVideo] || !-[AVPlaybackControlsController isFullScreen](self, "isFullScreen"))
+  playerController = [(AVPlaybackControlsController *)self playerController];
+  if (![playerController hasVideo] || !-[AVPlaybackControlsController isFullScreen](self, "isFullScreen"))
   {
     goto LABEL_6;
   }
 
-  v4 = [(AVPlaybackControlsController *)self playerController];
-  if ([v4 isPlayingOnExternalScreen])
+  playerController2 = [(AVPlaybackControlsController *)self playerController];
+  if ([playerController2 isPlayingOnExternalScreen])
   {
 
     goto LABEL_6;
   }
 
-  v6 = [(AVPlaybackControlsController *)self playerViewController];
-  v7 = [v6 contentTransitioningDelegate];
+  playerViewController = [(AVPlaybackControlsController *)self playerViewController];
+  contentTransitioningDelegate = [playerViewController contentTransitioningDelegate];
 
-  if (!v7)
+  if (!contentTransitioningDelegate)
   {
-    v10 = [(AVPlaybackControlsController *)self playerController];
-    [v10 contentDimensions];
+    playerController3 = [(AVPlaybackControlsController *)self playerController];
+    [playerController3 contentDimensions];
     v12 = v11;
     v14 = v13;
 
@@ -370,21 +370,21 @@ LABEL_16:
       v5 = 1;
       if (!v19 && v17)
       {
-        v20 = [(AVPlaybackControlsController *)self playerViewController];
-        v3 = [v20 contentView];
+        playerViewController2 = [(AVPlaybackControlsController *)self playerViewController];
+        playerController = [playerViewController2 contentView];
 
-        [v3 bounds];
+        [playerController bounds];
         v22 = v21;
         v24 = v23;
         v26 = v25;
         v28 = v27;
         v29 = v12 / v14;
-        [v3 frame];
+        [playerController frame];
         UIRectGetCenter();
         v31 = v30;
         v33 = v32;
-        v34 = [v3 cacheLargestInscribedRect];
-        [v34 getLargestInscribableRectForView:v3 withCenter:v31 aspectRatio:{v33, v29}];
+        cacheLargestInscribedRect = [playerController cacheLargestInscribedRect];
+        [cacheLargestInscribedRect getLargestInscribableRectForView:playerController withCenter:v31 aspectRatio:{v33, v29}];
         v36 = v35;
         v38 = v37;
         v40 = v39;
@@ -521,45 +521,45 @@ void __61__AVPlaybackControlsController__updateVideoGravityButtonType__block_inv
 {
   if (_AXSPhotosensitiveMitigationEnabled() && ([(AVPlaybackControlsController *)self playerController], v3 = objc_claimAutoreleasedReturnValue(), v4 = objc_opt_respondsToSelector(), v3, (v4 & 1) != 0))
   {
-    v5 = [(AVPlaybackControlsController *)self playerController];
-    v9 = [v5 photosensitivityRegions];
+    playerController = [(AVPlaybackControlsController *)self playerController];
+    photosensitivityRegions = [playerController photosensitivityRegions];
   }
 
   else
   {
-    v9 = 0;
+    photosensitivityRegions = 0;
   }
 
-  v6 = [(AVPlaybackControlsController *)self playbackControlsView];
-  v7 = [v6 transportControlsView];
-  v8 = [v7 scrubber];
-  [v8 setPhotosensitiveDisplayTimes:v9];
+  playbackControlsView = [(AVPlaybackControlsController *)self playbackControlsView];
+  transportControlsView = [playbackControlsView transportControlsView];
+  scrubber = [transportControlsView scrubber];
+  [scrubber setPhotosensitiveDisplayTimes:photosensitivityRegions];
 }
 
 - (void)_handlePhotosensitiveRegions
 {
-  v3 = [(AVPlaybackControlsController *)self playerController];
+  playerController = [(AVPlaybackControlsController *)self playerController];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v6 = [(AVPlaybackControlsController *)self playerControllerObservationController];
-    v5 = [v6 startObserving:self keyPath:@"playerController.photosensitivityRegions" includeInitialValue:1 observationHandler:&__block_literal_global_405];
+    playerControllerObservationController = [(AVPlaybackControlsController *)self playerControllerObservationController];
+    v5 = [playerControllerObservationController startObserving:self keyPath:@"playerController.photosensitivityRegions" includeInitialValue:1 observationHandler:&__block_literal_global_405];
   }
 }
 
 - (void)_updateScrubberAndTimeLabels
 {
-  v3 = [(AVPlaybackControlsController *)self playbackControlsView];
-  v86 = [v3 transportControlsView];
+  playbackControlsView = [(AVPlaybackControlsController *)self playbackControlsView];
+  transportControlsView = [playbackControlsView transportControlsView];
 
   if (![(AVPlaybackControlsController *)self needsTimeResolver]|| ([(AVPlaybackControlsController *)self timeResolver], v4 = objc_claimAutoreleasedReturnValue(), v4, !v4))
   {
-    v17 = [(AVPlaybackControlsController *)self timeResolver];
+    timeResolver = [(AVPlaybackControlsController *)self timeResolver];
 
-    v15 = 0;
+    timecodeForCurrentTime = 0;
     v16 = 0;
-    if (v17)
+    if (timeResolver)
     {
       goto LABEL_26;
     }
@@ -571,19 +571,19 @@ void __61__AVPlaybackControlsController__updateVideoGravityButtonType__block_inv
   v6 = v5;
   [(AVPlaybackControlsController *)self minimumTime];
   v8 = v6 - v7;
-  v9 = [(AVPlaybackControlsController *)self elapsedTimeFormatter];
-  [v9 setFormatTemplate:v8];
+  elapsedTimeFormatter = [(AVPlaybackControlsController *)self elapsedTimeFormatter];
+  [elapsedTimeFormatter setFormatTemplate:v8];
 
-  v10 = [(AVPlaybackControlsController *)self remainingTimeFormatter];
-  [v10 setFormatTemplate:v8];
+  remainingTimeFormatter = [(AVPlaybackControlsController *)self remainingTimeFormatter];
+  [remainingTimeFormatter setFormatTemplate:v8];
 
-  if ([v86 liveStreamingControlsIncludeScrubber])
+  if ([transportControlsView liveStreamingControlsIncludeScrubber])
   {
-    v11 = [(AVPlaybackControlsController *)self elapsedTimeFormatter];
+    elapsedTimeFormatter2 = [(AVPlaybackControlsController *)self elapsedTimeFormatter];
     [(AVPlaybackControlsController *)self minimumTime];
     v13 = v12;
     [(AVPlaybackControlsController *)self maximumTime];
-    v15 = [v11 stringFromSeconds:v13 - v14];
+    timecodeForCurrentTime = [elapsedTimeFormatter2 stringFromSeconds:v13 - v14];
     v16 = &stru_1EFED57D8;
   }
 
@@ -591,27 +591,27 @@ void __61__AVPlaybackControlsController__updateVideoGravityButtonType__block_inv
   {
     if (-[AVPlaybackControlsController showsTimecodes](self, "showsTimecodes") && (-[AVPlaybackControlsController playerController](self, "playerController"), v18 = objc_claimAutoreleasedReturnValue(), v19 = [v18 hasReadableTimecodes], v18, v19))
     {
-      v20 = [(AVPlaybackControlsController *)self playerController];
-      v15 = [v20 timecodeForCurrentTime];
+      playerController = [(AVPlaybackControlsController *)self playerController];
+      timecodeForCurrentTime = [playerController timecodeForCurrentTime];
 
-      v11 = [(AVPlaybackControlsController *)self playerController];
-      v21 = [v11 maxTimecode];
+      elapsedTimeFormatter2 = [(AVPlaybackControlsController *)self playerController];
+      maxTimecode = [elapsedTimeFormatter2 maxTimecode];
     }
 
     else
     {
-      v22 = [(AVPlaybackControlsController *)self elapsedTimeFormatter];
+      elapsedTimeFormatter3 = [(AVPlaybackControlsController *)self elapsedTimeFormatter];
       [(AVPlaybackControlsController *)self targetTime];
-      v15 = [v22 stringFromSeconds:?];
+      timecodeForCurrentTime = [elapsedTimeFormatter3 stringFromSeconds:?];
 
-      v11 = [(AVPlaybackControlsController *)self remainingTimeFormatter];
+      elapsedTimeFormatter2 = [(AVPlaybackControlsController *)self remainingTimeFormatter];
       [(AVPlaybackControlsController *)self maximumTime];
       v24 = v23;
       [(AVPlaybackControlsController *)self targetTime];
-      v21 = [v11 stringFromSeconds:v24 - v25];
+      maxTimecode = [elapsedTimeFormatter2 stringFromSeconds:v24 - v25];
     }
 
-    v16 = v21;
+    v16 = maxTimecode;
   }
 
   [(AVPlaybackControlsController *)self minimumTime];
@@ -619,23 +619,23 @@ void __61__AVPlaybackControlsController__updateVideoGravityButtonType__block_inv
   if (fabs(v26) == INFINITY || ([(AVPlaybackControlsController *)self maximumTime], [(AVPlaybackControlsController *)self maximumTime], fabs(v27) == INFINITY) || ([(AVPlaybackControlsController *)self currentTime], [(AVPlaybackControlsController *)self currentTime], fabs(v28) == INFINITY) || ([(AVPlaybackControlsController *)self maximumTime], v30 = v29, [(AVPlaybackControlsController *)self minimumTime], v30 <= v31) || ([(AVPlaybackControlsController *)self currentTime], v33 = v32, [(AVPlaybackControlsController *)self minimumTime], v33 < v34) && ([(AVPlaybackControlsController *)self currentTime], v36 = v35, [(AVPlaybackControlsController *)self maximumTime], v36 > v37))
   {
 LABEL_18:
-    v38 = [(AVPlaybackControlsController *)self elapsedTimeFormatter];
-    v39 = [v38 stringFromSeconds:NAN];
+    elapsedTimeFormatter4 = [(AVPlaybackControlsController *)self elapsedTimeFormatter];
+    v39 = [elapsedTimeFormatter4 stringFromSeconds:NAN];
 
-    v40 = [(AVPlaybackControlsController *)self remainingTimeFormatter];
-    v41 = [v40 stringFromSeconds:NAN];
+    remainingTimeFormatter2 = [(AVPlaybackControlsController *)self remainingTimeFormatter];
+    v41 = [remainingTimeFormatter2 stringFromSeconds:NAN];
 
-    v42 = [v86 scrubber];
-    [v42 setMinimumValue:0.0];
+    scrubber = [transportControlsView scrubber];
+    [scrubber setMinimumValue:0.0];
 
-    v43 = [v86 scrubber];
-    [v43 setValue:0 animated:0.0];
+    scrubber2 = [transportControlsView scrubber];
+    [scrubber2 setValue:0 animated:0.0];
 
-    v44 = [v86 scrubber];
+    scrubber3 = [transportControlsView scrubber];
     LODWORD(v45) = 1.0;
-    [v44 setMaximumValue:v45];
+    [scrubber3 setMaximumValue:v45];
     v16 = v41;
-    v15 = v39;
+    timecodeForCurrentTime = v39;
     goto LABEL_19;
   }
 
@@ -643,22 +643,22 @@ LABEL_18:
   v67 = v66;
   [(AVPlaybackControlsController *)self maximumTime];
   v69 = v68;
-  v70 = [v86 scrubber];
+  scrubber4 = [transportControlsView scrubber];
   *&v71 = v67;
-  [v70 setMinimumValue:v71];
+  [scrubber4 setMinimumValue:v71];
 
-  v72 = [v86 scrubber];
+  scrubber5 = [transportControlsView scrubber];
   *&v73 = v69;
-  [v72 setMaximumValue:v73];
+  [scrubber5 setMaximumValue:v73];
 
-  v44 = [v86 scrubber];
-  if (([v44 isTracking] & 1) == 0)
+  scrubber3 = [transportControlsView scrubber];
+  if (([scrubber3 isTracking] & 1) == 0)
   {
-    v74 = [(AVPlaybackControlsController *)self playerController];
-    if ([v74 isPlayingOnExternalScreen])
+    playerController2 = [(AVPlaybackControlsController *)self playerController];
+    if ([playerController2 isPlayingOnExternalScreen])
     {
-      v75 = [v86 scrubber];
-      [v75 timeIntervalSinceTrackingEnded];
+      scrubber6 = [transportControlsView scrubber];
+      [scrubber6 timeIntervalSinceTrackingEnded];
       v77 = v76;
 
       if (v77 <= 0.5)
@@ -673,13 +673,13 @@ LABEL_18:
 
     [(AVPlaybackControlsController *)self targetTime];
     v79 = v78;
-    v80 = [(AVPlaybackControlsController *)self playerController];
-    if ([v80 hasSeekableLiveStreamingContent])
+    playerController3 = [(AVPlaybackControlsController *)self playerController];
+    if ([playerController3 hasSeekableLiveStreamingContent])
     {
-      v81 = [(AVPlaybackControlsController *)self playerController];
-      v82 = [v81 isPlaying];
+      playerController4 = [(AVPlaybackControlsController *)self playerController];
+      isPlaying = [playerController4 isPlaying];
 
-      v83 = v82 ^ 1;
+      v83 = isPlaying ^ 1;
     }
 
     else
@@ -702,99 +702,99 @@ LABEL_18:
       v69 = v79;
     }
 
-    v44 = [v86 scrubber];
+    scrubber3 = [transportControlsView scrubber];
     *&v85 = v69;
-    [v44 setValue:0 animated:v85];
+    [scrubber3 setValue:0 animated:v85];
   }
 
 LABEL_19:
 
 LABEL_20:
-  if (v15 && v16)
+  if (timecodeForCurrentTime && v16)
   {
-    v46 = [v86 elapsedTimeLabel];
-    v47 = [v46 text];
+    elapsedTimeLabel = [transportControlsView elapsedTimeLabel];
+    text = [elapsedTimeLabel text];
 
-    v48 = [v86 elapsedTimeLabel];
-    v49 = [v48 text];
+    elapsedTimeLabel2 = [transportControlsView elapsedTimeLabel];
+    text2 = [elapsedTimeLabel2 text];
 
-    v50 = [v86 elapsedTimeLabel];
-    [v50 setText:v15];
+    elapsedTimeLabel3 = [transportControlsView elapsedTimeLabel];
+    [elapsedTimeLabel3 setText:timecodeForCurrentTime];
 
-    v51 = [v86 timeRemainingLabel];
-    [v51 setText:v16];
+    timeRemainingLabel = [transportControlsView timeRemainingLabel];
+    [timeRemainingLabel setText:v16];
 
-    v52 = [v47 length];
-    if (v52 != [v15 length] || (v53 = objc_msgSend(v49, "length"), v53 != -[__CFString length](v16, "length")))
+    v52 = [text length];
+    if (v52 != [timecodeForCurrentTime length] || (v53 = objc_msgSend(text2, "length"), v53 != -[__CFString length](v16, "length")))
     {
-      [v86 setNeedsLayout];
+      [transportControlsView setNeedsLayout];
     }
   }
 
 LABEL_26:
-  v54 = [(AVPlaybackControlsController *)self playerController];
+  playerController5 = [(AVPlaybackControlsController *)self playerController];
   v55 = objc_opt_respondsToSelector();
   if (v55)
   {
-    v56 = [(AVPlaybackControlsController *)self playerController];
-    v57 = [v56 interstitialController];
-    v58 = [v57 currentInterstitialTimeRange];
+    playerController6 = [(AVPlaybackControlsController *)self playerController];
+    interstitialController = [playerController6 interstitialController];
+    currentInterstitialTimeRange = [interstitialController currentInterstitialTimeRange];
 
-    if (v58)
+    if (currentInterstitialTimeRange)
     {
       v55 = 0;
       goto LABEL_35;
     }
 
-    v54 = [(AVPlaybackControlsController *)self playerController];
-    v59 = [v54 player];
-    v60 = [v59 currentItem];
-    v61 = [v60 interstitialTimeRanges];
-    if ([v61 count])
+    playerController5 = [(AVPlaybackControlsController *)self playerController];
+    player = [playerController5 player];
+    currentItem = [player currentItem];
+    interstitialTimeRanges = [currentItem interstitialTimeRanges];
+    if ([interstitialTimeRanges count])
     {
-      v62 = [v86 scrubber];
-      v63 = [v62 interstitialDisplayTimes];
+      scrubber7 = [transportControlsView scrubber];
+      interstitialDisplayTimes = [scrubber7 interstitialDisplayTimes];
 
-      if (v63)
+      if (interstitialDisplayTimes)
       {
         v55 = 1;
         goto LABEL_35;
       }
 
-      v54 = [v86 scrubber];
-      v59 = [(AVPlaybackControlsController *)self playerController];
-      v60 = [v59 player];
-      v61 = [v60 currentItem];
-      v64 = [v61 interstitialTimeRanges];
-      [v54 setInterstitialDisplayTimes:v64];
+      playerController5 = [transportControlsView scrubber];
+      player = [(AVPlaybackControlsController *)self playerController];
+      currentItem = [player player];
+      interstitialTimeRanges = [currentItem currentItem];
+      v61InterstitialTimeRanges = [interstitialTimeRanges interstitialTimeRanges];
+      [playerController5 setInterstitialDisplayTimes:v61InterstitialTimeRanges];
     }
   }
 
 LABEL_35:
-  v65 = [v86 scrubber];
-  [v65 setShowsTimelineMarkers:v55 & 1];
+  scrubber8 = [transportControlsView scrubber];
+  [scrubber8 setShowsTimelineMarkers:v55 & 1];
 }
 
 - (void)_updatePlaybackSpeedControlInclusion
 {
-  v7 = [(AVPlaybackControlsController *)self playerController];
-  if ([v7 hasLiveStreamingContent])
+  playerController = [(AVPlaybackControlsController *)self playerController];
+  if ([playerController hasLiveStreamingContent])
   {
-    v3 = [v7 hasSeekableLiveStreamingContent];
+    hasSeekableLiveStreamingContent = [playerController hasSeekableLiveStreamingContent];
   }
 
   else
   {
-    v3 = 1;
+    hasSeekableLiveStreamingContent = 1;
   }
 
-  v4 = [(AVPlaybackControlsController *)self playbackSpeedCollection];
-  if (v4)
+  playbackSpeedCollection = [(AVPlaybackControlsController *)self playbackSpeedCollection];
+  if (playbackSpeedCollection)
   {
     v5 = +[AVKitGlobalSettings shared];
     if ([v5 playbackSpeedControlEnabled])
     {
-      v6 = ([v7 isPlayingOnMatchPointDevice] ^ 1) & v3;
+      v6 = ([playerController isPlayingOnMatchPointDevice] ^ 1) & hasSeekableLiveStreamingContent;
     }
 
     else
@@ -818,36 +818,36 @@ LABEL_35:
 {
   if (![(AVPlaybackControlsController *)self needsTimeResolver])
   {
-    v26 = [(AVPlaybackControlsController *)self timeResolver];
-    [v26 setPlayerController:0];
+    timeResolver = [(AVPlaybackControlsController *)self timeResolver];
+    [timeResolver setPlayerController:0];
 
     [(AVPlaybackControlsController *)self setTimeResolver:0];
     return;
   }
 
-  v3 = [(AVPlaybackControlsController *)self playbackControlsView];
-  v4 = [v3 transportControlsView];
-  v5 = [v4 scrubber];
+  playbackControlsView = [(AVPlaybackControlsController *)self playbackControlsView];
+  transportControlsView = [playbackControlsView transportControlsView];
+  scrubber = [transportControlsView scrubber];
   v6 = 1.0;
-  if (([v5 isTracking] & 1) == 0)
+  if (([scrubber isTracking] & 1) == 0)
   {
-    v7 = [(AVPlaybackControlsController *)self playbackControlsView];
-    v8 = [v7 volumeSlider];
-    v9 = [v8 isTracking];
+    playbackControlsView2 = [(AVPlaybackControlsController *)self playbackControlsView];
+    volumeSlider = [playbackControlsView2 volumeSlider];
+    isTracking = [volumeSlider isTracking];
 
-    if (v9)
+    if (isTracking)
     {
       goto LABEL_6;
     }
 
-    v3 = [(AVPlaybackControlsController *)self playbackControlsView];
-    v4 = [v3 transportControlsView];
-    v5 = [v4 scrubber];
-    [v5 frame];
+    playbackControlsView = [(AVPlaybackControlsController *)self playbackControlsView];
+    transportControlsView = [playbackControlsView transportControlsView];
+    scrubber = [transportControlsView scrubber];
+    [scrubber frame];
     Width = CGRectGetWidth(v37);
-    v11 = [(AVPlaybackControlsController *)self playbackControlsView];
-    v12 = [v11 traitCollection];
-    [v12 displayScale];
+    playbackControlsView3 = [(AVPlaybackControlsController *)self playbackControlsView];
+    traitCollection = [playbackControlsView3 traitCollection];
+    [traitCollection displayScale];
     v6 = Width * v13;
   }
 
@@ -855,26 +855,26 @@ LABEL_6:
   v14 = 1.0;
   if ([(AVPlaybackControlsController *)self showsTimecodes])
   {
-    v15 = [(AVPlaybackControlsController *)self playerController];
-    v16 = [v15 hasReadableTimecodes];
+    playerController = [(AVPlaybackControlsController *)self playerController];
+    hasReadableTimecodes = [playerController hasReadableTimecodes];
 
-    if (v16)
+    if (hasReadableTimecodes)
     {
-      v17 = [(AVPlaybackControlsController *)self playerController];
-      [v17 timecodeObservationInterval];
+      playerController2 = [(AVPlaybackControlsController *)self playerController];
+      [playerController2 timecodeObservationInterval];
       v14 = v18;
     }
   }
 
-  v19 = [(AVPlaybackControlsController *)self timeResolver];
-  v20 = [v19 playerController];
-  v21 = [(AVPlaybackControlsController *)self playerController];
+  timeResolver2 = [(AVPlaybackControlsController *)self timeResolver];
+  playerController3 = [timeResolver2 playerController];
+  playerController4 = [(AVPlaybackControlsController *)self playerController];
 
-  if (v20 != v21)
+  if (playerController3 != playerController4)
   {
     v22 = objc_alloc_init(AVPlayerControllerTimeResolver);
-    v23 = [(AVPlaybackControlsController *)self playerController];
-    [(AVPlayerControllerTimeResolver *)v22 setPlayerController:v23];
+    playerController5 = [(AVPlaybackControlsController *)self playerController];
+    [(AVPlayerControllerTimeResolver *)v22 setPlayerController:playerController5];
 
     [(AVPlayerControllerTimeResolver *)v22 setResolution:v6];
     [(AVPlayerControllerTimeResolver *)v22 setInterval:v14];
@@ -891,12 +891,12 @@ LABEL_6:
     return;
   }
 
-  v27 = [(AVPlaybackControlsController *)self timeResolver];
-  [v27 resolution];
+  timeResolver3 = [(AVPlaybackControlsController *)self timeResolver];
+  [timeResolver3 resolution];
   if (v28 == v6)
   {
-    v29 = [(AVPlaybackControlsController *)self timeResolver];
-    [v29 interval];
+    timeResolver4 = [(AVPlaybackControlsController *)self timeResolver];
+    [timeResolver4 interval];
     v31 = vabdd_f64(v30, v14);
 
     if (v31 < 2.22044605e-16)
@@ -909,11 +909,11 @@ LABEL_6:
   {
   }
 
-  v32 = [(AVPlaybackControlsController *)self timeResolver];
-  [v32 setResolution:v6];
+  timeResolver5 = [(AVPlaybackControlsController *)self timeResolver];
+  [timeResolver5 setResolution:v6];
 
-  v33 = [(AVPlaybackControlsController *)self timeResolver];
-  [v33 setInterval:v14];
+  timeResolver6 = [(AVPlaybackControlsController *)self timeResolver];
+  [timeResolver6 setInterval:v14];
 }
 
 void __67__AVPlaybackControlsController__updateOrCreateTimeResolverIfNeeded__block_invoke(uint64_t a1)
@@ -927,17 +927,17 @@ void __67__AVPlaybackControlsController__updateOrCreateTimeResolverIfNeeded__blo
 
 - (void)_updateContainerInclusion
 {
-  v3 = [(AVPlaybackControlsController *)self playbackControlsView];
+  playbackControlsView = [(AVPlaybackControlsController *)self playbackControlsView];
 
-  if (v3)
+  if (playbackControlsView)
   {
-    v4 = [(AVPlaybackControlsController *)self showsProminentPlayButton];
-    v5 = [(AVPlaybackControlsController *)self playbackControlsIncludeTransportControls];
-    v6 = [(AVPlaybackControlsController *)self playbackControlsIncludeDisplayModeControls];
-    v7 = [(AVPlaybackControlsController *)self playbackControlsIncludeVolumeControls];
+    showsProminentPlayButton = [(AVPlaybackControlsController *)self showsProminentPlayButton];
+    playbackControlsIncludeTransportControls = [(AVPlaybackControlsController *)self playbackControlsIncludeTransportControls];
+    playbackControlsIncludeDisplayModeControls = [(AVPlaybackControlsController *)self playbackControlsIncludeDisplayModeControls];
+    playbackControlsIncludeVolumeControls = [(AVPlaybackControlsController *)self playbackControlsIncludeVolumeControls];
     if (![(AVPlaybackControlsController *)self isFullScreen]&& [(AVPlaybackControlsController *)self showsMinimalPlaybackControlsWhenEmbeddedInline])
     {
-      if (v4)
+      if (showsProminentPlayButton)
       {
         v8 = 2;
         goto LABEL_25;
@@ -947,16 +947,16 @@ void __67__AVPlaybackControlsController__updateOrCreateTimeResolverIfNeeded__blo
 LABEL_20:
       if (![(AVPlaybackControlsController *)self shouldShowVolumeControlInTransportBar])
       {
-        v9 = [(AVPlaybackControlsController *)self playerController];
-        if ([v9 hasEnabledAudio])
+        playerController = [(AVPlaybackControlsController *)self playerController];
+        if ([playerController hasEnabledAudio])
         {
         }
 
         else
         {
-          v10 = [(AVPlaybackControlsController *)self showsVolumeControlsForContentWithNoAudio];
+          showsVolumeControlsForContentWithNoAudio = [(AVPlaybackControlsController *)self showsVolumeControlsForContentWithNoAudio];
 
-          if (!v10)
+          if (!showsVolumeControlsForContentWithNoAudio)
           {
             goto LABEL_25;
           }
@@ -966,18 +966,18 @@ LABEL_20:
       }
 
 LABEL_25:
-      v11 = [(AVPlaybackControlsController *)self playbackControlsView];
+      playbackControlsView2 = [(AVPlaybackControlsController *)self playbackControlsView];
       v12[0] = MEMORY[0x1E69E9820];
       v12[1] = 3221225472;
       v12[2] = __57__AVPlaybackControlsController__updateContainerInclusion__block_invoke;
       v12[3] = &unk_1E720A090;
       v12[4] = self;
-      [v11 setIncludedContainers:v8 animations:v12];
+      [playbackControlsView2 setIncludedContainers:v8 animations:v12];
 
       return;
     }
 
-    if (v4)
+    if (showsProminentPlayButton)
     {
       v8 = 2;
     }
@@ -987,12 +987,12 @@ LABEL_25:
       v8 = 0;
     }
 
-    if (v5)
+    if (playbackControlsIncludeTransportControls)
     {
-      if (v6)
+      if (playbackControlsIncludeDisplayModeControls)
       {
         v8 |= 0xCuLL;
-        if (!v7)
+        if (!playbackControlsIncludeVolumeControls)
         {
           goto LABEL_25;
         }
@@ -1003,10 +1003,10 @@ LABEL_25:
       v8 |= 4uLL;
     }
 
-    else if (v6)
+    else if (playbackControlsIncludeDisplayModeControls)
     {
       v8 |= 8uLL;
-      if (!v7)
+      if (!playbackControlsIncludeVolumeControls)
       {
         goto LABEL_25;
       }
@@ -1014,7 +1014,7 @@ LABEL_25:
       goto LABEL_20;
     }
 
-    if (!v7)
+    if (!playbackControlsIncludeVolumeControls)
     {
       goto LABEL_25;
     }
@@ -1025,73 +1025,73 @@ LABEL_25:
 
 - (void)_updateControlInclusion
 {
-  v3 = [(AVPlaybackControlsController *)self playbackControlsView];
-  v4 = [v3 volumeSlider];
-  -[AVPlaybackControlsController _updateVolumeButtonInclusionAndPrefersVolumeSliderExpandedWithPreferredExpansion:](self, "_updateVolumeButtonInclusionAndPrefersVolumeSliderExpandedWithPreferredExpansion:", [v4 isIncluded]);
+  playbackControlsView = [(AVPlaybackControlsController *)self playbackControlsView];
+  volumeSlider = [playbackControlsView volumeSlider];
+  -[AVPlaybackControlsController _updateVolumeButtonInclusionAndPrefersVolumeSliderExpandedWithPreferredExpansion:](self, "_updateVolumeButtonInclusionAndPrefersVolumeSliderExpandedWithPreferredExpansion:", [volumeSlider isIncluded]);
 
   [(AVPlaybackControlsController *)self _showOrHideDisplayModeControls];
 }
 
 - (void)_updateSkipButtonsEnableLongPress
 {
-  v3 = [(AVPlaybackControlsController *)self playerController];
+  playerController = [(AVPlaybackControlsController *)self playerController];
 
-  if (v3)
+  if (playerController)
   {
-    v4 = [(AVPlaybackControlsController *)self playbackControlsView];
-    v5 = [v4 skipBackButton];
-    v6 = [(AVPlaybackControlsController *)self playerController];
-    [v5 setTreatsForcePressAsLongPress:(objc_opt_respondsToSelector() & 1) == 0];
+    playbackControlsView = [(AVPlaybackControlsController *)self playbackControlsView];
+    skipBackButton = [playbackControlsView skipBackButton];
+    playerController2 = [(AVPlaybackControlsController *)self playerController];
+    [skipBackButton setTreatsForcePressAsLongPress:(objc_opt_respondsToSelector() & 1) == 0];
 
-    v9 = [(AVPlaybackControlsController *)self playbackControlsView];
-    v7 = [v9 skipForwardButton];
-    v8 = [(AVPlaybackControlsController *)self playerController];
-    [v7 setTreatsForcePressAsLongPress:(objc_opt_respondsToSelector() & 1) == 0];
+    playbackControlsView2 = [(AVPlaybackControlsController *)self playbackControlsView];
+    skipForwardButton = [playbackControlsView2 skipForwardButton];
+    playerController3 = [(AVPlaybackControlsController *)self playerController];
+    [skipForwardButton setTreatsForcePressAsLongPress:(objc_opt_respondsToSelector() & 1) == 0];
   }
 }
 
 - (BOOL)_wantsRouteDetectionEnabled
 {
-  v3 = [(AVPlaybackControlsController *)self playerViewController];
-  if ([v3 isBeingPresented])
+  playerViewController = [(AVPlaybackControlsController *)self playerViewController];
+  if ([playerViewController isBeingPresented])
   {
   }
 
   else
   {
-    v4 = [(AVPlaybackControlsController *)self playerViewController];
-    v5 = [v4 fullScreenViewController];
-    v6 = [v5 isBeingPresented];
+    playerViewController2 = [(AVPlaybackControlsController *)self playerViewController];
+    fullScreenViewController = [playerViewController2 fullScreenViewController];
+    isBeingPresented = [fullScreenViewController isBeingPresented];
 
-    if ((v6 & 1) == 0)
+    if ((isBeingPresented & 1) == 0)
     {
-      v7 = [(AVPlaybackControlsController *)self playbackControlsView];
-      v8 = [v7 avkit_isInAWindowAndVisible];
+      playbackControlsView = [(AVPlaybackControlsController *)self playbackControlsView];
+      avkit_isInAWindowAndVisible = [playbackControlsView avkit_isInAWindowAndVisible];
 
-      if (!v8)
+      if (!avkit_isInAWindowAndVisible)
       {
-        LOBYTE(v9) = 0;
-        return v9;
+        LOBYTE(showsPlaybackControls) = 0;
+        return showsPlaybackControls;
       }
     }
   }
 
-  v9 = [(AVPlaybackControlsController *)self showsPlaybackControls];
-  if (v9)
+  showsPlaybackControls = [(AVPlaybackControlsController *)self showsPlaybackControls];
+  if (showsPlaybackControls)
   {
     if ([(AVPlaybackControlsController *)self isFullScreen])
     {
-      LOBYTE(v9) = 1;
+      LOBYTE(showsPlaybackControls) = 1;
     }
 
     else
     {
 
-      LOBYTE(v9) = [(AVPlaybackControlsController *)self canIncludePlaybackControlsWhenInline];
+      LOBYTE(showsPlaybackControls) = [(AVPlaybackControlsController *)self canIncludePlaybackControlsWhenInline];
     }
   }
 
-  return v9;
+  return showsPlaybackControls;
 }
 
 - (void)_startObservingPotentiallyUnimplementedPlayerControllerProperties
@@ -1100,45 +1100,45 @@ LABEL_25:
   {
     [(AVPlaybackControlsController *)self setHasBegunObservingPotentiallyUnimplementedPlayerControllerProperties:1];
     objc_initWeak(&location, self);
-    v3 = [(AVPlaybackControlsController *)self playerController];
+    playerController = [(AVPlaybackControlsController *)self playerController];
     v4 = objc_opt_respondsToSelector();
 
     if (v4)
     {
-      v5 = [(AVPlaybackControlsController *)self playerControllerObservationController];
+      playerControllerObservationController = [(AVPlaybackControlsController *)self playerControllerObservationController];
       v24[0] = MEMORY[0x1E69E9820];
       v24[1] = 3221225472;
       v24[2] = __97__AVPlaybackControlsController__startObservingPotentiallyUnimplementedPlayerControllerProperties__block_invoke;
       v24[3] = &unk_1E7209A88;
       objc_copyWeak(&v25, &location);
-      [(AVPlaybackControlsController *)self _observeBoolForKeyPath:@"playerController.hasSeekableLiveStreamingContent" usingKeyValueObservationController:v5 observationHandler:v24];
+      [(AVPlaybackControlsController *)self _observeBoolForKeyPath:@"playerController.hasSeekableLiveStreamingContent" usingKeyValueObservationController:playerControllerObservationController observationHandler:v24];
 
       objc_destroyWeak(&v25);
     }
 
-    v6 = [(AVPlaybackControlsController *)self playerController];
+    playerController2 = [(AVPlaybackControlsController *)self playerController];
     if (objc_opt_respondsToSelector())
     {
-      v7 = [(AVPlaybackControlsController *)self playerController];
+      playerController3 = [(AVPlaybackControlsController *)self playerController];
       v8 = objc_opt_respondsToSelector();
 
       if (v8)
       {
-        v9 = [(AVPlaybackControlsController *)self playerControllerObservationController];
+        playerControllerObservationController2 = [(AVPlaybackControlsController *)self playerControllerObservationController];
         v22[0] = MEMORY[0x1E69E9820];
         v22[1] = 3221225472;
         v22[2] = __97__AVPlaybackControlsController__startObservingPotentiallyUnimplementedPlayerControllerProperties__block_invoke_2;
         v22[3] = &unk_1E7209A88;
         objc_copyWeak(&v23, &location);
-        [(AVPlaybackControlsController *)self _observeBoolForKeyPath:@"playerController.seeking" usingKeyValueObservationController:v9 observationHandler:v22];
+        [(AVPlaybackControlsController *)self _observeBoolForKeyPath:@"playerController.seeking" usingKeyValueObservationController:playerControllerObservationController2 observationHandler:v22];
 
-        v10 = [(AVPlaybackControlsController *)self playerControllerObservationController];
+        playerControllerObservationController3 = [(AVPlaybackControlsController *)self playerControllerObservationController];
         v20[0] = MEMORY[0x1E69E9820];
         v20[1] = 3221225472;
         v20[2] = __97__AVPlaybackControlsController__startObservingPotentiallyUnimplementedPlayerControllerProperties__block_invoke_3;
         v20[3] = &unk_1E7209A88;
         objc_copyWeak(&v21, &location);
-        [(AVPlaybackControlsController *)self _observeBoolForKeyPath:@"playerController.scrubbing" usingKeyValueObservationController:v10 observationHandler:v20];
+        [(AVPlaybackControlsController *)self _observeBoolForKeyPath:@"playerController.scrubbing" usingKeyValueObservationController:playerControllerObservationController3 observationHandler:v20];
 
         objc_destroyWeak(&v21);
         objc_destroyWeak(&v23);
@@ -1149,10 +1149,10 @@ LABEL_25:
     {
     }
 
-    v11 = [(AVPlaybackControlsController *)self playerController];
+    playerController4 = [(AVPlaybackControlsController *)self playerController];
     v12 = objc_opt_respondsToSelector();
 
-    v13 = [(AVPlaybackControlsController *)self playerControllerObservationController];
+    playerControllerObservationController4 = [(AVPlaybackControlsController *)self playerControllerObservationController];
     if (v12)
     {
       v18[0] = MEMORY[0x1E69E9820];
@@ -1161,7 +1161,7 @@ LABEL_25:
       v18[3] = &unk_1E7208C38;
       v14 = &v19;
       objc_copyWeak(&v19, &location);
-      v15 = [v13 startObserving:self keyPath:@"playerController.timeControlStatus" includeInitialValue:1 observationHandler:v18];
+      v15 = [playerControllerObservationController4 startObserving:self keyPath:@"playerController.timeControlStatus" includeInitialValue:1 observationHandler:v18];
     }
 
     else
@@ -1172,7 +1172,7 @@ LABEL_25:
       v16[3] = &unk_1E7209A88;
       v14 = &v17;
       objc_copyWeak(&v17, &location);
-      [(AVPlaybackControlsController *)self _observeBoolForKeyPath:@"playerController.playing" usingKeyValueObservationController:v13 observationHandler:v16];
+      [(AVPlaybackControlsController *)self _observeBoolForKeyPath:@"playerController.playing" usingKeyValueObservationController:playerControllerObservationController4 observationHandler:v16];
     }
 
     objc_destroyWeak(v14);
@@ -1301,9 +1301,9 @@ void __97__AVPlaybackControlsController__startObservingPotentiallyUnimplementedP
 - (void)_startObservingForPlaybackViewUpdates
 {
   location[2] = *MEMORY[0x1E69E9840];
-  v3 = [(AVPlaybackControlsController *)self playbackControlsView];
+  playbackControlsView = [(AVPlaybackControlsController *)self playbackControlsView];
 
-  if (!v3)
+  if (!playbackControlsView)
   {
     v4 = _AVLog();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -1315,72 +1315,72 @@ void __97__AVPlaybackControlsController__startObservingPotentiallyUnimplementedP
     }
   }
 
-  v5 = [(AVPlaybackControlsController *)self playbackControlsView];
-  v6 = [(AVPlaybackControlsController *)self playbackControlsView];
-  objc_initWeak(location, v6);
+  playbackControlsView2 = [(AVPlaybackControlsController *)self playbackControlsView];
+  playbackControlsView3 = [(AVPlaybackControlsController *)self playbackControlsView];
+  objc_initWeak(location, playbackControlsView3);
 
   objc_initWeak(&from, self);
   [(AVPlaybackControlsController *)self setResumingUpdates:1];
-  v7 = [(AVPlaybackControlsController *)self playbackControlsObservationController];
+  playbackControlsObservationController = [(AVPlaybackControlsController *)self playbackControlsObservationController];
   v82[0] = MEMORY[0x1E69E9820];
   v82[1] = 3221225472;
   v82[2] = __69__AVPlaybackControlsController__startObservingForPlaybackViewUpdates__block_invoke;
   v82[3] = &unk_1E7209A88;
   objc_copyWeak(&v83, location);
-  [(AVPlaybackControlsController *)self _observeBoolForKeyPath:@"prominentPlayButtonCanShowPauseGlyph" usingKeyValueObservationController:v7 observationHandler:v82];
+  [(AVPlaybackControlsController *)self _observeBoolForKeyPath:@"prominentPlayButtonCanShowPauseGlyph" usingKeyValueObservationController:playbackControlsObservationController observationHandler:v82];
 
-  v8 = [(AVPlaybackControlsController *)self playbackControlsObservationController];
+  playbackControlsObservationController2 = [(AVPlaybackControlsController *)self playbackControlsObservationController];
   v80[0] = MEMORY[0x1E69E9820];
   v80[1] = 3221225472;
   v80[2] = __69__AVPlaybackControlsController__startObservingForPlaybackViewUpdates__block_invoke_2;
   v80[3] = &unk_1E7209A88;
   objc_copyWeak(&v81, &from);
-  [(AVPlaybackControlsController *)self _observeBoolForKeyPath:@"showsProminentPlayButton" usingKeyValueObservationController:v8 observationHandler:v80];
+  [(AVPlaybackControlsController *)self _observeBoolForKeyPath:@"showsProminentPlayButton" usingKeyValueObservationController:playbackControlsObservationController2 observationHandler:v80];
 
-  v9 = [(AVPlaybackControlsController *)self playbackControlsObservationController];
+  playbackControlsObservationController3 = [(AVPlaybackControlsController *)self playbackControlsObservationController];
   v77[0] = MEMORY[0x1E69E9820];
   v77[1] = 3221225472;
   v77[2] = __69__AVPlaybackControlsController__startObservingForPlaybackViewUpdates__block_invoke_3;
   v77[3] = &unk_1E7208D40;
   objc_copyWeak(&v78, location);
   objc_copyWeak(&v79, &from);
-  [(AVPlaybackControlsController *)self _observeBoolForKeyPath:@"playButtonsShowPauseGlyph" usingKeyValueObservationController:v9 observationHandler:v77];
+  [(AVPlaybackControlsController *)self _observeBoolForKeyPath:@"playButtonsShowPauseGlyph" usingKeyValueObservationController:playbackControlsObservationController3 observationHandler:v77];
 
-  v10 = [(AVPlaybackControlsController *)self playbackControlsObservationController];
+  playbackControlsObservationController4 = [(AVPlaybackControlsController *)self playbackControlsObservationController];
   v74[0] = MEMORY[0x1E69E9820];
   v74[1] = 3221225472;
   v74[2] = __69__AVPlaybackControlsController__startObservingForPlaybackViewUpdates__block_invoke_4;
   v74[3] = &unk_1E7208D40;
   objc_copyWeak(&v75, &from);
   objc_copyWeak(&v76, location);
-  [(AVPlaybackControlsController *)self _observeBoolForKeyPath:@"prefersMuted" usingKeyValueObservationController:v10 observationHandler:v74];
+  [(AVPlaybackControlsController *)self _observeBoolForKeyPath:@"prefersMuted" usingKeyValueObservationController:playbackControlsObservationController4 observationHandler:v74];
 
-  v11 = [(AVPlaybackControlsController *)self playbackControlsObservationController];
+  playbackControlsObservationController5 = [(AVPlaybackControlsController *)self playbackControlsObservationController];
   v71[0] = MEMORY[0x1E69E9820];
   v71[1] = 3221225472;
   v71[2] = __69__AVPlaybackControlsController__startObservingForPlaybackViewUpdates__block_invoke_7;
   v71[3] = &unk_1E7208D40;
   objc_copyWeak(&v72, &from);
   objc_copyWeak(&v73, location);
-  [(AVPlaybackControlsController *)self _observeBoolForKeyPath:@"fullScreen" usingKeyValueObservationController:v11 observationHandler:v71];
+  [(AVPlaybackControlsController *)self _observeBoolForKeyPath:@"fullScreen" usingKeyValueObservationController:playbackControlsObservationController5 observationHandler:v71];
 
-  v12 = [(AVPlaybackControlsController *)self playbackControlsObservationController];
+  playbackControlsObservationController6 = [(AVPlaybackControlsController *)self playbackControlsObservationController];
   v68[0] = MEMORY[0x1E69E9820];
   v68[1] = 3221225472;
   v68[2] = __69__AVPlaybackControlsController__startObservingForPlaybackViewUpdates__block_invoke_8;
   v68[3] = &unk_1E7208D40;
   objc_copyWeak(&v69, location);
   objc_copyWeak(&v70, &from);
-  [(AVPlaybackControlsController *)self _observeBoolForKeyPath:@"hasSeekableLiveStreamingContent" usingKeyValueObservationController:v12 observationHandler:v68];
+  [(AVPlaybackControlsController *)self _observeBoolForKeyPath:@"hasSeekableLiveStreamingContent" usingKeyValueObservationController:playbackControlsObservationController6 observationHandler:v68];
 
-  v13 = [(AVPlaybackControlsController *)self playbackControlsObservationController];
+  playbackControlsObservationController7 = [(AVPlaybackControlsController *)self playbackControlsObservationController];
   v65[0] = MEMORY[0x1E69E9820];
   v65[1] = 3221225472;
   v65[2] = __69__AVPlaybackControlsController__startObservingForPlaybackViewUpdates__block_invoke_9;
   v65[3] = &unk_1E7208D40;
   objc_copyWeak(&v66, location);
   objc_copyWeak(&v67, &from);
-  [(AVPlaybackControlsController *)self _observeBoolForKeyPath:@"showsLoadingIndicator" usingKeyValueObservationController:v13 observationHandler:v65];
+  [(AVPlaybackControlsController *)self _observeBoolForKeyPath:@"showsLoadingIndicator" usingKeyValueObservationController:playbackControlsObservationController7 observationHandler:v65];
 
   v97[0] = @"playerController.contentDimensions";
   v97[1] = @"fullScreen";
@@ -1389,118 +1389,118 @@ void __97__AVPlaybackControlsController__startObservingPotentiallyUnimplementedP
   v97[4] = @"playerController.hasVideo";
   v97[5] = @"hasBecomeReadyToPlay";
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v97 count:6];
-  v15 = [(AVPlaybackControlsController *)self playbackControlsObservationController];
-  v16 = [v15 startObserving:self keyPaths:v14 includeInitialValue:0 observationHandler:&__block_literal_global_299];
+  playbackControlsObservationController8 = [(AVPlaybackControlsController *)self playbackControlsObservationController];
+  v16 = [playbackControlsObservationController8 startObserving:self keyPaths:v14 includeInitialValue:0 observationHandler:&__block_literal_global_299];
 
-  v17 = [(AVPlaybackControlsController *)self playbackControlsObservationController];
+  playbackControlsObservationController9 = [(AVPlaybackControlsController *)self playbackControlsObservationController];
   v63[0] = MEMORY[0x1E69E9820];
   v63[1] = 3221225472;
   v63[2] = __69__AVPlaybackControlsController__startObservingForPlaybackViewUpdates__block_invoke_11;
   v63[3] = &unk_1E7209A88;
   objc_copyWeak(&v64, &from);
-  [(AVPlaybackControlsController *)self _observeBoolForKeyPath:@"canShowLoadingIndicator" usingKeyValueObservationController:v17 observationHandler:v63];
+  [(AVPlaybackControlsController *)self _observeBoolForKeyPath:@"canShowLoadingIndicator" usingKeyValueObservationController:playbackControlsObservationController9 observationHandler:v63];
 
   [(AVPlaybackControlsController *)self _updateVideoGravityButtonType];
-  if (v5)
+  if (playbackControlsView2)
   {
-    v18 = [v5 scrubber];
-    v96[0] = v18;
-    v19 = [v5 skipBackButton];
-    v96[1] = v19;
-    v20 = [v5 skipForwardButton];
-    v96[2] = v20;
+    scrubber = [playbackControlsView2 scrubber];
+    v96[0] = scrubber;
+    skipBackButton = [playbackControlsView2 skipBackButton];
+    v96[1] = skipBackButton;
+    skipForwardButton = [playbackControlsView2 skipForwardButton];
+    v96[2] = skipForwardButton;
     v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v96 count:3];
-    v22 = [(AVPlaybackControlsController *)self playbackControlsObservationController];
-    [(AVPlaybackControlsController *)self _bindEnabledStateOfControls:v21 toKeyPath:@"seekingEnabled" usingObservationController:v22];
+    playbackControlsObservationController10 = [(AVPlaybackControlsController *)self playbackControlsObservationController];
+    [(AVPlaybackControlsController *)self _bindEnabledStateOfControls:v21 toKeyPath:@"seekingEnabled" usingObservationController:playbackControlsObservationController10];
 
-    v23 = [v5 startLeftwardContentTransitionButton];
-    v95 = v23;
+    startLeftwardContentTransitionButton = [playbackControlsView2 startLeftwardContentTransitionButton];
+    v95 = startLeftwardContentTransitionButton;
     v24 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v95 count:1];
-    v25 = [(AVPlaybackControlsController *)self playbackControlsObservationController];
-    [(AVPlaybackControlsController *)self _bindEnabledStateOfControls:v24 toKeyPath:@"startLeftwardContentTransitionButtonEnabled" usingObservationController:v25];
+    playbackControlsObservationController11 = [(AVPlaybackControlsController *)self playbackControlsObservationController];
+    [(AVPlaybackControlsController *)self _bindEnabledStateOfControls:v24 toKeyPath:@"startLeftwardContentTransitionButtonEnabled" usingObservationController:playbackControlsObservationController11];
 
-    v26 = [v5 startRightwardContentTransitionButton];
-    v94 = v26;
+    startRightwardContentTransitionButton = [playbackControlsView2 startRightwardContentTransitionButton];
+    v94 = startRightwardContentTransitionButton;
     v27 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v94 count:1];
-    v28 = [(AVPlaybackControlsController *)self playbackControlsObservationController];
-    [(AVPlaybackControlsController *)self _bindEnabledStateOfControls:v27 toKeyPath:@"startRightwardContentTransitionButtonEnabled" usingObservationController:v28];
+    playbackControlsObservationController12 = [(AVPlaybackControlsController *)self playbackControlsObservationController];
+    [(AVPlaybackControlsController *)self _bindEnabledStateOfControls:v27 toKeyPath:@"startRightwardContentTransitionButtonEnabled" usingObservationController:playbackControlsObservationController12];
 
-    v29 = [v5 scrubber];
-    v93 = v29;
+    scrubber2 = [playbackControlsView2 scrubber];
+    v93 = scrubber2;
     v30 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v93 count:1];
-    v31 = [(AVPlaybackControlsController *)self playbackControlsObservationController];
-    [(AVPlaybackControlsController *)self _bindEnabledStateOfControls:v30 toKeyPath:@"isSeekingEnabled" usingObservationController:v31];
+    playbackControlsObservationController13 = [(AVPlaybackControlsController *)self playbackControlsObservationController];
+    [(AVPlaybackControlsController *)self _bindEnabledStateOfControls:v30 toKeyPath:@"isSeekingEnabled" usingObservationController:playbackControlsObservationController13];
 
-    v32 = [v5 transportControlsView];
-    v92 = v32;
+    transportControlsView = [playbackControlsView2 transportControlsView];
+    v92 = transportControlsView;
     v33 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v92 count:1];
     [(AVPlaybackControlsController *)self _bindInclusionOfControlItems:v33 toKeyPath:@"showsTransportControls"];
 
-    v34 = [v5 skipBackButton];
-    v91[0] = v34;
-    v35 = [v5 skipForwardButton];
-    v91[1] = v35;
+    skipBackButton2 = [playbackControlsView2 skipBackButton];
+    v91[0] = skipBackButton2;
+    skipForwardButton2 = [playbackControlsView2 skipForwardButton];
+    v91[1] = skipForwardButton2;
     v36 = [MEMORY[0x1E695DEC8] arrayWithObjects:v91 count:2];
     [(AVPlaybackControlsController *)self _bindInclusionOfControlItems:v36 toKeyPath:@"showsSkipButtons"];
 
-    v37 = [v5 startLeftwardContentTransitionButton];
-    v90[0] = v37;
-    v38 = [v5 startRightwardContentTransitionButton];
-    v90[1] = v38;
+    startLeftwardContentTransitionButton2 = [playbackControlsView2 startLeftwardContentTransitionButton];
+    v90[0] = startLeftwardContentTransitionButton2;
+    startRightwardContentTransitionButton2 = [playbackControlsView2 startRightwardContentTransitionButton];
+    v90[1] = startRightwardContentTransitionButton2;
     v39 = [MEMORY[0x1E695DEC8] arrayWithObjects:v90 count:2];
     [(AVPlaybackControlsController *)self _bindInclusionOfControlItems:v39 toKeyPath:@"showsStartContentTransitionButtons"];
 
-    v40 = [v5 routePickerView];
-    v89 = v40;
+    routePickerView = [playbackControlsView2 routePickerView];
+    v89 = routePickerView;
     v41 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v89 count:1];
     [(AVPlaybackControlsController *)self _bindInclusionOfControlItems:v41 toKeyPath:@"showsRoutePickerView"];
 
-    v42 = [v5 mediaSelectionButton];
-    v88 = v42;
+    mediaSelectionButton = [playbackControlsView2 mediaSelectionButton];
+    v88 = mediaSelectionButton;
     v43 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v88 count:1];
     [(AVPlaybackControlsController *)self _bindInclusionOfControlItems:v43 toKeyPath:@"showsMediaSelectionButton"];
 
-    v44 = [v5 playbackSpeedButton];
-    v87 = v44;
+    playbackSpeedButton = [playbackControlsView2 playbackSpeedButton];
+    v87 = playbackSpeedButton;
     v45 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v87 count:1];
     [(AVPlaybackControlsController *)self _bindInclusionOfControlItems:v45 toKeyPath:@"showsPlaybackSpeedButton"];
   }
 
-  v46 = [(AVPlaybackControlsController *)self playbackControlsObservationController];
+  playbackControlsObservationController14 = [(AVPlaybackControlsController *)self playbackControlsObservationController];
   v86[0] = @"minimumTime";
   v86[1] = @"maximumTime";
   v86[2] = @"currentTime";
   v47 = [MEMORY[0x1E695DEC8] arrayWithObjects:v86 count:3];
-  v48 = [v46 startObserving:self keyPaths:v47 includeInitialValue:1 observationHandler:&__block_literal_global_340];
+  v48 = [playbackControlsObservationController14 startObserving:self keyPaths:v47 includeInitialValue:1 observationHandler:&__block_literal_global_340];
 
-  v49 = [(AVPlaybackControlsController *)self playbackControlsObservationController];
-  [v49 startObservingNotificationForName:*MEMORY[0x1E69DE828] object:0 notificationCenter:0 observationHandler:&__block_literal_global_342];
+  playbackControlsObservationController15 = [(AVPlaybackControlsController *)self playbackControlsObservationController];
+  [playbackControlsObservationController15 startObservingNotificationForName:*MEMORY[0x1E69DE828] object:0 notificationCenter:0 observationHandler:&__block_literal_global_342];
 
-  v50 = [(AVPlaybackControlsController *)self playbackControlsObservationController];
-  [v50 startObservingNotificationForName:*MEMORY[0x1E69DE7D0] object:0 notificationCenter:0 observationHandler:&__block_literal_global_344_22048];
+  playbackControlsObservationController16 = [(AVPlaybackControlsController *)self playbackControlsObservationController];
+  [playbackControlsObservationController16 startObservingNotificationForName:*MEMORY[0x1E69DE7D0] object:0 notificationCenter:0 observationHandler:&__block_literal_global_344_22048];
 
-  v51 = [(AVPlaybackControlsController *)self playbackControlsObservationController];
-  v52 = [(AVPlaybackControlsController *)self playbackRateMenuController];
-  v53 = [v51 startObserving:v52 keyPath:@"menu" observationHandler:&__block_literal_global_350];
+  playbackControlsObservationController17 = [(AVPlaybackControlsController *)self playbackControlsObservationController];
+  playbackRateMenuController = [(AVPlaybackControlsController *)self playbackRateMenuController];
+  v53 = [playbackControlsObservationController17 startObserving:playbackRateMenuController keyPath:@"menu" observationHandler:&__block_literal_global_350];
 
-  v54 = [(AVPlaybackControlsController *)self playbackControlsObservationController];
-  v55 = [v54 startObserving:self keyPath:@"showsMediaSelectionButton" observationHandler:&__block_literal_global_352];
+  playbackControlsObservationController18 = [(AVPlaybackControlsController *)self playbackControlsObservationController];
+  v55 = [playbackControlsObservationController18 startObserving:self keyPath:@"showsMediaSelectionButton" observationHandler:&__block_literal_global_352];
 
-  v56 = [(AVPlaybackControlsController *)self playbackControlsObservationController];
-  v57 = [(AVPlaybackControlsController *)self playerController];
+  playbackControlsObservationController19 = [(AVPlaybackControlsController *)self playbackControlsObservationController];
+  playerController = [(AVPlaybackControlsController *)self playerController];
   v85[0] = @"audioMediaSelectionOptions";
   v85[1] = @"legibleMediaSelectionOptions";
   v85[2] = @"currentAudioMediaSelectionOption";
   v85[3] = @"currentLegibleMediaSelectionOption";
   v58 = [MEMORY[0x1E695DEC8] arrayWithObjects:v85 count:4];
-  v59 = [v56 startObserving:v57 keyPaths:v58 observationHandler:&__block_literal_global_366];
+  v59 = [playbackControlsObservationController19 startObserving:playerController keyPaths:v58 observationHandler:&__block_literal_global_366];
 
-  v60 = [(AVPlaybackControlsController *)self volumeController];
-  [v60 volume];
+  volumeController = [(AVPlaybackControlsController *)self volumeController];
+  [volumeController volume];
   [(AVPlaybackControlsController *)self _updateVolumeSliderValueWithSystemVolume:0 animated:?];
 
-  v61 = [(AVPlaybackControlsController *)self playbackControlsView];
-  [v61 setHidden:0];
+  playbackControlsView4 = [(AVPlaybackControlsController *)self playbackControlsView];
+  [playbackControlsView4 setHidden:0];
 
   [(AVPlaybackControlsController *)self setResumingUpdates:0];
   objc_destroyWeak(&v64);
@@ -1963,11 +1963,11 @@ void __69__AVPlaybackControlsController__startObservingForPlaybackViewUpdates__b
 
 - (void)_updatePlaybackControlsVisibleAndObservingUpdates
 {
-  v10 = [(AVPlaybackControlsController *)self playbackControlsView];
+  playbackControlsView = [(AVPlaybackControlsController *)self playbackControlsView];
   if ([(AVPlaybackControlsController *)self showsPlaybackControls]&& ![(AVPlaybackControlsController *)self playerViewControllerIsBeingTransitionedWithResizing]&& ![(AVPlaybackControlsController *)self forcePlaybackControlsHidden]&& ([(AVPlaybackControlsController *)self isFullScreen]|| [(AVPlaybackControlsController *)self canIncludePlaybackControlsWhenInline]))
   {
     [(AVPlaybackControlsController *)self _startObservingPlayerControllerProperties];
-    if (!v10)
+    if (!playbackControlsView)
     {
       goto LABEL_19;
     }
@@ -1984,7 +1984,7 @@ void __69__AVPlaybackControlsController__startObservingForPlaybackViewUpdates__b
     }
 
     [(AVPlaybackControlsController *)self _startObservingPlayerControllerProperties];
-    if (!v10)
+    if (!playbackControlsView)
     {
       goto LABEL_11;
     }
@@ -1992,9 +1992,9 @@ void __69__AVPlaybackControlsController__startObservingForPlaybackViewUpdates__b
     v3 = 0;
   }
 
-  v4 = [(AVPlaybackControlsController *)self playbackControlsObservationController];
+  playbackControlsObservationController = [(AVPlaybackControlsController *)self playbackControlsObservationController];
 
-  if (v4)
+  if (playbackControlsObservationController)
   {
     if (v3)
     {
@@ -2011,7 +2011,7 @@ void __69__AVPlaybackControlsController__startObservingForPlaybackViewUpdates__b
     if (v3)
     {
 LABEL_19:
-      [v10 setHidden:0];
+      [playbackControlsView setHidden:0];
       [(AVPlaybackControlsController *)self _updatePlaybackControlsVisibilityWantsPlaybackControlsVisible:[(AVPlaybackControlsController *)self showsPlaybackControls]];
       if (![(AVPlaybackControlsController *)self isHidingItemsForTransition])
       {
@@ -2023,15 +2023,15 @@ LABEL_19:
         goto LABEL_26;
       }
 
-      v6 = [(AVPlaybackControlsController *)self playerController];
-      if (([v6 isPlayingOnExternalScreen] & 1) == 0)
+      playerController = [(AVPlaybackControlsController *)self playerController];
+      if (([playerController isPlayingOnExternalScreen] & 1) == 0)
       {
-        v7 = [(AVPlaybackControlsController *)self playerViewController];
-        if (![v7 isAudioOnlyContent])
+        playerViewController = [(AVPlaybackControlsController *)self playerViewController];
+        if (![playerViewController isAudioOnlyContent])
         {
-          v9 = [(AVPlaybackControlsController *)self canHidePlaybackControls];
+          canHidePlaybackControls = [(AVPlaybackControlsController *)self canHidePlaybackControls];
 
-          if (v9)
+          if (canHidePlaybackControls)
           {
             v8 = 0;
             goto LABEL_27;
@@ -2062,31 +2062,31 @@ LABEL_28:
 - (void)_startObservingPlayerControllerProperties
 {
   v45[1] = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v2 = [a1 playerControllerObservationController];
-    [v2 stopAllObservation];
+    playerControllerObservationController = [self playerControllerObservationController];
+    [playerControllerObservationController stopAllObservation];
 
-    v3 = [[AVObservationController alloc] initWithOwner:a1];
-    [a1 setPlayerControllerObservationController:v3];
+    v3 = [[AVObservationController alloc] initWithOwner:self];
+    [self setPlayerControllerObservationController:v3];
 
-    [a1 _handlePhotosensitiveRegions];
-    objc_initWeak(&location, a1);
-    v4 = [a1 playerControllerObservationController];
+    [self _handlePhotosensitiveRegions];
+    objc_initWeak(&location, self);
+    playerControllerObservationController2 = [self playerControllerObservationController];
     v42[0] = MEMORY[0x1E69E9820];
     v42[1] = 3221225472;
     v42[2] = __73__AVPlaybackControlsController__startObservingPlayerControllerProperties__block_invoke;
     v42[3] = &unk_1E7208C38;
     objc_copyWeak(&v43, &location);
-    v5 = [v4 startObserving:a1 keyPath:@"playerController.status" includeInitialValue:1 observationHandler:v42];
+    v5 = [playerControllerObservationController2 startObserving:self keyPath:@"playerController.status" includeInitialValue:1 observationHandler:v42];
 
-    v6 = [a1 playbackControlsView];
-    objc_initWeak(&from, v6);
+    playbackControlsView = [self playbackControlsView];
+    objc_initWeak(&from, playbackControlsView);
 
-    v7 = [a1 playbackControlsView];
-    if ([a1 showsPlaybackControls] && (objc_msgSend(a1, "playerViewControllerIsBeingTransitionedWithResizing") & 1) == 0 && (objc_msgSend(a1, "forcePlaybackControlsHidden") & 1) == 0 && ((objc_msgSend(a1, "isFullScreen") & 1) != 0 || (objc_msgSend(a1, "canIncludePlaybackControlsWhenInline") & 1) != 0))
+    playbackControlsView2 = [self playbackControlsView];
+    if ([self showsPlaybackControls] && (objc_msgSend(self, "playerViewControllerIsBeingTransitionedWithResizing") & 1) == 0 && (objc_msgSend(self, "forcePlaybackControlsHidden") & 1) == 0 && ((objc_msgSend(self, "isFullScreen") & 1) != 0 || (objc_msgSend(self, "canIncludePlaybackControlsWhenInline") & 1) != 0))
     {
-      if (!v7)
+      if (!playbackControlsView2)
       {
 LABEL_12:
 
@@ -2099,10 +2099,10 @@ LABEL_12:
 
     else
     {
-      v8 = [a1 hasCustomPlaybackControls];
-      if (v7)
+      hasCustomPlaybackControls = [self hasCustomPlaybackControls];
+      if (playbackControlsView2)
       {
-        v9 = v8;
+        v9 = hasCustomPlaybackControls;
       }
 
       else
@@ -2116,70 +2116,70 @@ LABEL_12:
       }
     }
 
-    v10 = [a1 playerControllerObservationController];
+    playerControllerObservationController3 = [self playerControllerObservationController];
     v39[0] = MEMORY[0x1E69E9820];
     v39[1] = 3221225472;
     v39[2] = __73__AVPlaybackControlsController__startObservingPlayerControllerProperties__block_invoke_2;
     v39[3] = &unk_1E7209A88;
     objc_copyWeak(&v40, &location);
-    [a1 _observeBoolForKeyPath:@"playerController.muted" usingKeyValueObservationController:v10 observationHandler:v39];
+    [self _observeBoolForKeyPath:@"playerController.muted" usingKeyValueObservationController:playerControllerObservationController3 observationHandler:v39];
 
-    v11 = [a1 playerControllerObservationController];
+    playerControllerObservationController4 = [self playerControllerObservationController];
     v37[0] = MEMORY[0x1E69E9820];
     v37[1] = 3221225472;
     v37[2] = __73__AVPlaybackControlsController__startObservingPlayerControllerProperties__block_invoke_3;
     v37[3] = &unk_1E7209A88;
     objc_copyWeak(&v38, &location);
-    [a1 _observeBoolForKeyPath:@"playerController.hasEnabledAudio" usingKeyValueObservationController:v11 observationHandler:v37];
+    [self _observeBoolForKeyPath:@"playerController.hasEnabledAudio" usingKeyValueObservationController:playerControllerObservationController4 observationHandler:v37];
 
-    v12 = [a1 playerController];
+    playerController = [self playerController];
     v13 = objc_opt_respondsToSelector();
 
     if (v13)
     {
-      v14 = [a1 playerControllerObservationController];
-      v15 = [v14 startObserving:a1 keyPath:@"playerController.currentAssetIfReady" includeInitialValue:1 observationHandler:&__block_literal_global_252];
+      playerControllerObservationController5 = [self playerControllerObservationController];
+      v15 = [playerControllerObservationController5 startObserving:self keyPath:@"playerController.currentAssetIfReady" includeInitialValue:1 observationHandler:&__block_literal_global_252];
     }
 
-    v16 = [a1 playerControllerObservationController];
+    playerControllerObservationController6 = [self playerControllerObservationController];
     v35[0] = MEMORY[0x1E69E9820];
     v35[1] = 3221225472;
     v35[2] = __73__AVPlaybackControlsController__startObservingPlayerControllerProperties__block_invoke_5;
     v35[3] = &unk_1E7209A88;
     objc_copyWeak(&v36, &location);
-    [a1 _observeBoolForKeyPath:@"playerController.playingOnExternalScreen" usingKeyValueObservationController:v16 observationHandler:v35];
+    [self _observeBoolForKeyPath:@"playerController.playingOnExternalScreen" usingKeyValueObservationController:playerControllerObservationController6 observationHandler:v35];
 
-    v17 = [a1 playerControllerObservationController];
+    playerControllerObservationController7 = [self playerControllerObservationController];
     v32[0] = MEMORY[0x1E69E9820];
     v32[1] = 3221225472;
     v32[2] = __73__AVPlaybackControlsController__startObservingPlayerControllerProperties__block_invoke_6;
     v32[3] = &unk_1E7208D40;
     objc_copyWeak(&v33, &from);
     objc_copyWeak(&v34, &location);
-    [a1 _observeBoolForKeyPath:@"playerController.hasLiveStreamingContent" usingKeyValueObservationController:v17 observationHandler:v32];
+    [self _observeBoolForKeyPath:@"playerController.hasLiveStreamingContent" usingKeyValueObservationController:playerControllerObservationController7 observationHandler:v32];
 
-    v18 = [a1 playerControllerObservationController];
+    playerControllerObservationController8 = [self playerControllerObservationController];
     v30[0] = MEMORY[0x1E69E9820];
     v30[1] = 3221225472;
     v30[2] = __73__AVPlaybackControlsController__startObservingPlayerControllerProperties__block_invoke_7;
     v30[3] = &unk_1E7209A88;
     objc_copyWeak(&v31, &location);
-    [a1 _observeBoolForKeyPath:@"playerController.playingOnMatchPointDevice" usingKeyValueObservationController:v18 observationHandler:v30];
+    [self _observeBoolForKeyPath:@"playerController.playingOnMatchPointDevice" usingKeyValueObservationController:playerControllerObservationController8 observationHandler:v30];
 
-    v19 = [a1 playerControllerObservationController];
+    playerControllerObservationController9 = [self playerControllerObservationController];
     v24 = MEMORY[0x1E69E9820];
     v25 = 3221225472;
     v26 = __73__AVPlaybackControlsController__startObservingPlayerControllerProperties__block_invoke_8;
     v27 = &unk_1E7208D68;
     objc_copyWeak(&v28, &from);
     objc_copyWeak(&v29, &location);
-    v20 = [v19 startObserving:a1 keyPath:@"playerController.loadedTimeRanges" includeInitialValue:1 observationHandler:&v24];
+    v20 = [playerControllerObservationController9 startObserving:self keyPath:@"playerController.loadedTimeRanges" includeInitialValue:1 observationHandler:&v24];
 
-    v21 = [v7 standardPlayPauseButton];
-    v45[0] = v21;
+    standardPlayPauseButton = [playbackControlsView2 standardPlayPauseButton];
+    v45[0] = standardPlayPauseButton;
     v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:v45 count:1];
-    v23 = [a1 playerControllerObservationController];
-    [a1 _bindEnabledStateOfControls:v22 toKeyPath:@"playerController.canTogglePlayback" usingObservationController:v23];
+    playerControllerObservationController10 = [self playerControllerObservationController];
+    [self _bindEnabledStateOfControls:v22 toKeyPath:@"playerController.canTogglePlayback" usingObservationController:playerControllerObservationController10];
 
     objc_destroyWeak(&v29);
     objc_destroyWeak(&v28);
@@ -2271,15 +2271,15 @@ void __73__AVPlaybackControlsController__startObservingPlayerControllerPropertie
   }
 }
 
-- (void)endHidingItemsForTransitionAndShowImmediately:(BOOL)a3
+- (void)endHidingItemsForTransitionAndShowImmediately:(BOOL)immediately
 {
-  v3 = a3;
+  immediatelyCopy = immediately;
   [(AVPlaybackControlsController *)self setHidingItemsForTransition:0];
-  [(AVPlaybackControlsController *)self showPlaybackControls:v3 immediately:1];
-  v5 = [(AVPlaybackControlsController *)self playerController];
-  v6 = [v5 timeControlStatus];
+  [(AVPlaybackControlsController *)self showPlaybackControls:immediatelyCopy immediately:1];
+  playerController = [(AVPlaybackControlsController *)self playerController];
+  timeControlStatus = [playerController timeControlStatus];
 
-  if (v6 == 2 && v3)
+  if (timeControlStatus == 2 && immediatelyCopy)
   {
 
     [(AVPlaybackControlsController *)self flashPlaybackControlsWithDuration:3.0];
@@ -2288,10 +2288,10 @@ void __73__AVPlaybackControlsController__startObservingPlayerControllerPropertie
 
 - (void)_hideContextMenusIfPresented
 {
-  v4 = [(AVPlaybackControlsController *)self playbackControlsView];
-  v2 = [v4 controlOverflowButton];
-  v3 = [v2 contextMenuInteraction];
-  [v3 dismissMenu];
+  playbackControlsView = [(AVPlaybackControlsController *)self playbackControlsView];
+  controlOverflowButton = [playbackControlsView controlOverflowButton];
+  contextMenuInteraction = [controlOverflowButton contextMenuInteraction];
+  [contextMenuInteraction dismissMenu];
 }
 
 - (void)beginHidingItemsForTransition
@@ -2306,10 +2306,10 @@ void __73__AVPlaybackControlsController__startObservingPlayerControllerPropertie
   [(AVPlaybackControlsController *)self setUserInteractingCount:[(AVPlaybackControlsController *)self userInteractingCount]- 1];
   if (![(AVPlaybackControlsController *)self userInteractingCount])
   {
-    v3 = [(AVPlaybackControlsController *)self playerController];
-    v4 = [v3 isPlaying];
+    playerController = [(AVPlaybackControlsController *)self playerController];
+    isPlaying = [playerController isPlaying];
 
-    if (v4)
+    if (isPlaying)
     {
 
       [(AVPlaybackControlsController *)self _autoHideControlsAfterDelay:3.0];
@@ -2320,8 +2320,8 @@ void __73__AVPlaybackControlsController__startObservingPlayerControllerPropertie
 - (void)beginUserInteraction
 {
   [(AVPlaybackControlsController *)self setUserInteractingCount:[(AVPlaybackControlsController *)self userInteractingCount]+ 1];
-  v3 = [(AVPlaybackControlsController *)self playbackControlsVisibilityTimer];
-  [v3 invalidate];
+  playbackControlsVisibilityTimer = [(AVPlaybackControlsController *)self playbackControlsVisibilityTimer];
+  [playbackControlsVisibilityTimer invalidate];
 }
 
 - (BOOL)prefersStatusBarHidden
@@ -2337,12 +2337,12 @@ void __73__AVPlaybackControlsController__startObservingPlayerControllerPropertie
   }
 }
 
-- (void)setPopoverIsBeingPresented:(BOOL)a3
+- (void)setPopoverIsBeingPresented:(BOOL)presented
 {
-  if (self->_popoverIsBeingPresented != a3)
+  if (self->_popoverIsBeingPresented != presented)
   {
-    self->_popoverIsBeingPresented = a3;
-    if (a3)
+    self->_popoverIsBeingPresented = presented;
+    if (presented)
     {
 
       [(AVPlaybackControlsController *)self _updatePlaybackControlsVisibilityWantsPlaybackControlsVisible:1];
@@ -2350,10 +2350,10 @@ void __73__AVPlaybackControlsController__startObservingPlayerControllerPropertie
 
     else
     {
-      v4 = [(AVPlaybackControlsController *)self playerController];
-      v5 = [v4 isPlaying];
+      playerController = [(AVPlaybackControlsController *)self playerController];
+      isPlaying = [playerController isPlaying];
 
-      if (v5)
+      if (isPlaying)
       {
 
         [(AVPlaybackControlsController *)self flashPlaybackControlsWithDuration:3.0];
@@ -2362,20 +2362,20 @@ void __73__AVPlaybackControlsController__startObservingPlayerControllerPropertie
   }
 }
 
-- (void)setPictureInPictureActive:(BOOL)a3
+- (void)setPictureInPictureActive:(BOOL)active
 {
-  if (self->_pictureInPictureActive != a3)
+  if (self->_pictureInPictureActive != active)
   {
-    self->_pictureInPictureActive = a3;
-    if (a3)
+    self->_pictureInPictureActive = active;
+    if (active)
     {
       v5 = 0;
     }
 
     else
     {
-      v6 = [(AVPlaybackControlsController *)self playerController];
-      v5 = [v6 isPlaying] ^ 1;
+      playerController = [(AVPlaybackControlsController *)self playerController];
+      v5 = [playerController isPlaying] ^ 1;
     }
 
     [(AVPlaybackControlsController *)self _updatePlaybackControlsVisibilityWantsPlaybackControlsVisible:v5];
@@ -2389,14 +2389,14 @@ void __73__AVPlaybackControlsController__startObservingPlayerControllerPropertie
     return;
   }
 
-  v5 = [(AVPlaybackControlsController *)self playerController];
-  if ([v5 isPlayingOnExternalScreen])
+  playerController = [(AVPlaybackControlsController *)self playerController];
+  if ([playerController isPlayingOnExternalScreen])
   {
     goto LABEL_7;
   }
 
-  v3 = [(AVPlaybackControlsController *)self playerViewController];
-  if ([v3 isAudioOnlyContent])
+  playerViewController = [(AVPlaybackControlsController *)self playerViewController];
+  if ([playerViewController isAudioOnlyContent])
   {
 
 LABEL_7:
@@ -2404,9 +2404,9 @@ LABEL_7:
     return;
   }
 
-  v4 = [(AVPlaybackControlsController *)self canHidePlaybackControls];
+  canHidePlaybackControls = [(AVPlaybackControlsController *)self canHidePlaybackControls];
 
-  if (v4)
+  if (canHidePlaybackControls)
   {
 
     [(AVPlaybackControlsController *)self showPlaybackControls:0 immediately:0];
@@ -2422,7 +2422,7 @@ LABEL_7:
   }
 }
 
-- (void)_autoHideControlsAfterDelay:(double)a3
+- (void)_autoHideControlsAfterDelay:(double)delay
 {
   v15 = *MEMORY[0x1E69E9840];
   v5 = _AVLog();
@@ -2431,12 +2431,12 @@ LABEL_7:
     *buf = 136315394;
     v12 = "[AVPlaybackControlsController _autoHideControlsAfterDelay:]";
     v13 = 2048;
-    v14 = a3;
+    delayCopy = delay;
     _os_log_impl(&dword_18B49C000, v5, OS_LOG_TYPE_DEFAULT, "%s delay: %f", buf, 0x16u);
   }
 
-  v6 = [(AVPlaybackControlsController *)self playbackControlsVisibilityTimer];
-  [v6 invalidate];
+  playbackControlsVisibilityTimer = [(AVPlaybackControlsController *)self playbackControlsVisibilityTimer];
+  [playbackControlsVisibilityTimer invalidate];
 
   objc_initWeak(buf, self);
   v7 = MEMORY[0x1E695DFF0];
@@ -2445,7 +2445,7 @@ LABEL_7:
   v9[2] = __60__AVPlaybackControlsController__autoHideControlsAfterDelay___block_invoke;
   v9[3] = &unk_1E7209DA8;
   objc_copyWeak(&v10, buf);
-  v8 = [v7 scheduledTimerWithTimeInterval:0 repeats:v9 block:a3];
+  v8 = [v7 scheduledTimerWithTimeInterval:0 repeats:v9 block:delay];
   [(AVPlaybackControlsController *)self setPlaybackControlsVisibilityTimer:v8];
 
   objc_destroyWeak(&v10);
@@ -2463,27 +2463,27 @@ void __60__AVPlaybackControlsController__autoHideControlsAfterDelay___block_invo
   }
 }
 
-- (void)flashVolumeControlsWithDuration:(double)a3
+- (void)flashVolumeControlsWithDuration:(double)duration
 {
-  v4 = [(AVPlaybackControlsController *)self playbackControlsView];
-  v5 = [v4 volumeControlsContainer];
-  v6 = ([v5 isIncluded] & 1) != 0 || -[AVPlaybackControlsController _prefersVolumeSliderExpandedAutomatically](self, "_prefersVolumeSliderExpandedAutomatically");
+  playbackControlsView = [(AVPlaybackControlsController *)self playbackControlsView];
+  volumeControlsContainer = [playbackControlsView volumeControlsContainer];
+  v6 = ([volumeControlsContainer isIncluded] & 1) != 0 || -[AVPlaybackControlsController _prefersVolumeSliderExpandedAutomatically](self, "_prefersVolumeSliderExpandedAutomatically");
   [(AVPlaybackControlsController *)self _updateVolumeButtonInclusionAndPrefersVolumeSliderExpandedWithPreferredExpansion:v6];
 
-  v7 = [(AVPlaybackControlsController *)self playbackControlsView];
-  [v7 setShowsAudioControls:1];
+  playbackControlsView2 = [(AVPlaybackControlsController *)self playbackControlsView];
+  [playbackControlsView2 setShowsAudioControls:1];
 
-  v8 = [(AVPlaybackControlsController *)self playerController];
-  if ([v8 isPlaying])
+  playerController = [(AVPlaybackControlsController *)self playerController];
+  if ([playerController isPlaying])
   {
   }
 
   else
   {
-    v9 = [(AVPlaybackControlsController *)self playbackControlsView];
-    v10 = [v9 showsPlaybackControls];
+    playbackControlsView3 = [(AVPlaybackControlsController *)self playbackControlsView];
+    showsPlaybackControls = [playbackControlsView3 showsPlaybackControls];
 
-    if (v10)
+    if (showsPlaybackControls)
     {
       return;
     }
@@ -2492,13 +2492,13 @@ void __60__AVPlaybackControlsController__autoHideControlsAfterDelay___block_invo
   [(AVPlaybackControlsController *)self _autoHideControlsAfterDelay:2.0];
 }
 
-- (void)showPlaybackControls:(BOOL)a3 immediately:(BOOL)a4
+- (void)showPlaybackControls:(BOOL)controls immediately:(BOOL)immediately
 {
-  v4 = a4;
-  v5 = a3;
+  immediatelyCopy = immediately;
+  controlsCopy = controls;
   v18 = *MEMORY[0x1E69E9840];
-  v7 = [(AVPlaybackControlsController *)self playbackControlsVisibilityTimer];
-  [v7 invalidate];
+  playbackControlsVisibilityTimer = [(AVPlaybackControlsController *)self playbackControlsVisibilityTimer];
+  [playbackControlsVisibilityTimer invalidate];
 
   v8 = _AVLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -2506,23 +2506,23 @@ void __60__AVPlaybackControlsController__autoHideControlsAfterDelay___block_invo
     v10 = 136315906;
     v11 = "[AVPlaybackControlsController showPlaybackControls:immediately:]";
     v12 = 1024;
-    v13 = v5;
+    v13 = controlsCopy;
     v14 = 1024;
-    v15 = v4;
+    v15 = immediatelyCopy;
     v16 = 1024;
-    v17 = [(AVPlaybackControlsController *)self isHidingItemsForTransition];
+    isHidingItemsForTransition = [(AVPlaybackControlsController *)self isHidingItemsForTransition];
     _os_log_impl(&dword_18B49C000, v8, OS_LOG_TYPE_DEFAULT, "%s shouldShowPlaybackControls: %d {\n\tshowImmediately: %d\n\tisHidingItemsForTransition: %d}", &v10, 0x1Eu);
   }
 
   if (![(AVPlaybackControlsController *)self isHidingItemsForTransition])
   {
-    [(AVPlaybackControlsController *)self setShowingPlaybackControls:v5];
-    v9 = [(AVPlaybackControlsController *)self playbackControlsView];
-    [v9 showPlaybackControls:v5 immediately:v4];
+    [(AVPlaybackControlsController *)self setShowingPlaybackControls:controlsCopy];
+    playbackControlsView = [(AVPlaybackControlsController *)self playbackControlsView];
+    [playbackControlsView showPlaybackControls:controlsCopy immediately:immediatelyCopy];
   }
 }
 
-- (void)flashPlaybackControlsWithDuration:(double)a3
+- (void)flashPlaybackControlsWithDuration:(double)duration
 {
   v12 = *MEMORY[0x1E69E9840];
   v5 = _AVLog();
@@ -2531,44 +2531,44 @@ void __60__AVPlaybackControlsController__autoHideControlsAfterDelay___block_invo
     v8 = 136315394;
     v9 = "[AVPlaybackControlsController flashPlaybackControlsWithDuration:]";
     v10 = 2048;
-    v11 = a3;
+    durationCopy = duration;
     _os_log_impl(&dword_18B49C000, v5, OS_LOG_TYPE_DEFAULT, "%s duration: %f", &v8, 0x16u);
   }
 
   if (![(AVPlaybackControlsController *)self isPictureInPictureActive])
   {
-    v6 = [(AVPlaybackControlsController *)self playerController];
-    if ([v6 isPlayingOnExternalScreen])
+    playerController = [(AVPlaybackControlsController *)self playerController];
+    if ([playerController isPlayingOnExternalScreen])
     {
     }
 
     else
     {
-      v7 = [(AVPlaybackControlsController *)self showsPlaybackControls];
+      showsPlaybackControls = [(AVPlaybackControlsController *)self showsPlaybackControls];
 
-      if (v7)
+      if (showsPlaybackControls)
       {
         [(AVPlaybackControlsController *)self showPlaybackControls:1 immediately:0];
-        [(AVPlaybackControlsController *)self _autoHideControlsAfterDelay:a3];
+        [(AVPlaybackControlsController *)self _autoHideControlsAfterDelay:duration];
       }
     }
   }
 }
 
-- (void)_updatePlaybackControlsVisibilityWantsPlaybackControlsVisible:(BOOL)a3
+- (void)_updatePlaybackControlsVisibilityWantsPlaybackControlsVisible:(BOOL)visible
 {
-  v3 = a3;
+  visibleCopy = visible;
   v37 = *MEMORY[0x1E69E9840];
-  v5 = [(AVPlaybackControlsController *)self playerController];
-  v6 = [v5 isPlayingOnExternalScreen];
+  playerController = [(AVPlaybackControlsController *)self playerController];
+  isPlayingOnExternalScreen = [playerController isPlayingOnExternalScreen];
 
-  v7 = [(AVPlaybackControlsController *)self playerViewController];
-  v8 = [v7 isAudioOnlyContent];
+  playerViewController = [(AVPlaybackControlsController *)self playerViewController];
+  isAudioOnlyContent = [playerViewController isAudioOnlyContent];
 
-  if (([(AVPlaybackControlsController *)self isUserInteracting]|| v3) && ![(AVPlaybackControlsController *)self isPictureInPictureActive])
+  if (([(AVPlaybackControlsController *)self isUserInteracting]|| visibleCopy) && ![(AVPlaybackControlsController *)self isPictureInPictureActive])
   {
     v9 = 1;
-    if (v3)
+    if (visibleCopy)
     {
       goto LABEL_17;
     }
@@ -2576,14 +2576,14 @@ void __60__AVPlaybackControlsController__autoHideControlsAfterDelay___block_invo
 
   else
   {
-    v9 = v6 | v8;
-    if (v3)
+    v9 = isPlayingOnExternalScreen | isAudioOnlyContent;
+    if (visibleCopy)
     {
       goto LABEL_17;
     }
   }
 
-  if (![(AVPlaybackControlsController *)self isUserInteracting]&& ![(AVPlaybackControlsController *)self isPopoverBeingPresented]&& ![(AVPlaybackControlsController *)self showsLoadingIndicator]&& ![(AVPlaybackControlsController *)self isPictureInPictureActive]&& !(v6 & 1 | ![(AVPlaybackControlsController *)self canHidePlaybackControls]| v8 & 1))
+  if (![(AVPlaybackControlsController *)self isUserInteracting]&& ![(AVPlaybackControlsController *)self isPopoverBeingPresented]&& ![(AVPlaybackControlsController *)self showsLoadingIndicator]&& ![(AVPlaybackControlsController *)self isPictureInPictureActive]&& !(isPlayingOnExternalScreen & 1 | ![(AVPlaybackControlsController *)self canHidePlaybackControls]| isAudioOnlyContent & 1))
   {
     goto LABEL_27;
   }
@@ -2601,17 +2601,17 @@ void __60__AVPlaybackControlsController__autoHideControlsAfterDelay___block_invo
 LABEL_17:
   if ([(AVPlaybackControlsController *)self isPictureInPictureActive])
   {
-    v10 = [(AVPlaybackControlsController *)self playerController];
-    if ([v10 isPlayingOnExternalScreen])
+    playerController2 = [(AVPlaybackControlsController *)self playerController];
+    if ([playerController2 isPlayingOnExternalScreen])
     {
 
       goto LABEL_21;
     }
 
-    v11 = [(AVPlaybackControlsController *)self playerViewController];
-    v12 = [v11 isAudioOnlyContent];
+    playerViewController2 = [(AVPlaybackControlsController *)self playerViewController];
+    isAudioOnlyContent2 = [playerViewController2 isAudioOnlyContent];
 
-    if (v12)
+    if (isAudioOnlyContent2)
     {
       goto LABEL_21;
     }
@@ -2622,10 +2622,10 @@ LABEL_27:
   }
 
 LABEL_21:
-  v13 = [(AVPlaybackControlsController *)self playbackControlsView];
-  v14 = [v13 showsAudioControls];
+  playbackControlsView = [(AVPlaybackControlsController *)self playbackControlsView];
+  showsAudioControls = [playbackControlsView showsAudioControls];
 
-  if ((v14 & 1) == 0)
+  if ((showsAudioControls & 1) == 0)
   {
     [(AVPlaybackControlsController *)self _updateVolumeButtonInclusionAndPrefersVolumeSliderExpandedWithPreferredExpansion:[(AVPlaybackControlsController *)self _prefersVolumeSliderExpandedAutomatically]];
   }
@@ -2640,21 +2640,21 @@ LABEL_24:
     v19 = 1024;
     v20 = v15;
     v21 = 1024;
-    v22 = v3;
+    v22 = visibleCopy;
     v23 = 1024;
-    v24 = [(AVPlaybackControlsController *)self isUserInteracting];
+    isUserInteracting = [(AVPlaybackControlsController *)self isUserInteracting];
     v25 = 1024;
-    v26 = [(AVPlaybackControlsController *)self isPictureInPictureActive];
+    isPictureInPictureActive = [(AVPlaybackControlsController *)self isPictureInPictureActive];
     v27 = 1024;
-    v28 = v6;
+    v28 = isPlayingOnExternalScreen;
     v29 = 1024;
-    v30 = v8;
+    v30 = isAudioOnlyContent;
     v31 = 1024;
-    v32 = [(AVPlaybackControlsController *)self isPopoverBeingPresented];
+    isPopoverBeingPresented = [(AVPlaybackControlsController *)self isPopoverBeingPresented];
     v33 = 1024;
-    v34 = [(AVPlaybackControlsController *)self showsLoadingIndicator];
+    showsLoadingIndicator = [(AVPlaybackControlsController *)self showsLoadingIndicator];
     v35 = 1024;
-    v36 = [(AVPlaybackControlsController *)self canHidePlaybackControls];
+    canHidePlaybackControls = [(AVPlaybackControlsController *)self canHidePlaybackControls];
     _os_log_impl(&dword_18B49C000, v16, OS_LOG_TYPE_DEFAULT, "%s shouldShowPlaybackControls: %d {\n\twantsPlaybackControlsVisible: %d\n\tisUserInteracting: %d\n\tisPictureInPictureActive: %d\n\tplayingOnExternalScreen: %d\n\taudioOnlyContent: %d\n\tisPopoverBeingPresented: %d\n\tshowsLoadingIndicator: %d\n\tcanHidePlaybackControls: %d\n}", &v17, 0x42u);
   }
 
@@ -2663,15 +2663,15 @@ LABEL_24:
 
 - (void)togglePlaybackControlsVisibility
 {
-  v3 = [(AVPlaybackControlsController *)self playbackControlsView];
-  [v3 setPrefersVolumeSliderExpandedAutomatically:{-[AVPlaybackControlsController _prefersVolumeSliderExpandedAutomatically](self, "_prefersVolumeSliderExpandedAutomatically")}];
+  playbackControlsView = [(AVPlaybackControlsController *)self playbackControlsView];
+  [playbackControlsView setPrefersVolumeSliderExpandedAutomatically:{-[AVPlaybackControlsController _prefersVolumeSliderExpandedAutomatically](self, "_prefersVolumeSliderExpandedAutomatically")}];
 
-  v4 = [(AVPlaybackControlsController *)self playerController];
-  if ([v4 isPlaying])
+  playerController = [(AVPlaybackControlsController *)self playerController];
+  if ([playerController isPlaying])
   {
-    v5 = [(AVPlaybackControlsController *)self isShowingPlaybackControls];
+    isShowingPlaybackControls = [(AVPlaybackControlsController *)self isShowingPlaybackControls];
 
-    if (!v5)
+    if (!isShowingPlaybackControls)
     {
 
       [(AVPlaybackControlsController *)self flashPlaybackControlsWithDuration:3.0];
@@ -2688,48 +2688,48 @@ LABEL_24:
   [(AVPlaybackControlsController *)self _updatePlaybackControlsVisibilityWantsPlaybackControlsVisible:v6];
 }
 
-- (void)setForcePlaybackControlsHidden:(BOOL)a3
+- (void)setForcePlaybackControlsHidden:(BOOL)hidden
 {
-  if (self->_forcePlaybackControlsHidden != a3)
+  if (self->_forcePlaybackControlsHidden != hidden)
   {
-    self->_forcePlaybackControlsHidden = a3;
+    self->_forcePlaybackControlsHidden = hidden;
     [(AVPlaybackControlsController *)self _updatePlaybackControlsVisibleAndObservingUpdates];
   }
 }
 
-- (void)_seekByTimeInterval:(double)a3 toleranceBefore:(double)a4 toleranceAfter:(double)a5
+- (void)_seekByTimeInterval:(double)interval toleranceBefore:(double)before toleranceAfter:(double)after
 {
-  v9 = [(AVPlaybackControlsController *)self playerController];
+  playerController = [(AVPlaybackControlsController *)self playerController];
   v10 = objc_opt_respondsToSelector();
 
-  v12 = [(AVPlaybackControlsController *)self playerController];
+  playerController2 = [(AVPlaybackControlsController *)self playerController];
   if (v10)
   {
-    [v12 seekByTimeInterval:a3 toleranceBefore:a4 toleranceAfter:a5];
+    [playerController2 seekByTimeInterval:interval toleranceBefore:before toleranceAfter:after];
   }
 
   else
   {
     [(AVPlaybackControlsController *)self currentTime];
-    [v12 seekToTime:v11 + a3];
+    [playerController2 seekToTime:v11 + interval];
   }
 }
 
-- (void)_observeBoolForKeyPath:(id)a3 usingKeyValueObservationController:(id)a4 observationHandler:(id)a5
+- (void)_observeBoolForKeyPath:(id)path usingKeyValueObservationController:(id)controller observationHandler:(id)handler
 {
   v17 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(AVPlaybackControlsController *)self valueForKeyPath:v8];
-  v12 = [v10 copy];
+  pathCopy = path;
+  controllerCopy = controller;
+  handlerCopy = handler;
+  v11 = [(AVPlaybackControlsController *)self valueForKeyPath:pathCopy];
+  v12 = [handlerCopy copy];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __109__AVPlaybackControlsController__observeBoolForKeyPath_usingKeyValueObservationController_observationHandler___block_invoke;
   v15[3] = &unk_1E7208CF8;
   v13 = v12;
   v16 = v13;
-  v14 = [v9 startObserving:self keyPath:v8 includeInitialValue:1 observationHandler:v15];
+  v14 = [controllerCopy startObserving:self keyPath:pathCopy includeInitialValue:1 observationHandler:v15];
 }
 
 void __109__AVPlaybackControlsController__observeBoolForKeyPath_usingKeyValueObservationController_observationHandler___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, void *a4)
@@ -2739,20 +2739,20 @@ void __109__AVPlaybackControlsController__observeBoolForKeyPath_usingKeyValueObs
   (*(v4 + 16))(v4, [v5 BOOLValue]);
 }
 
-- (void)_bindInclusionOfControlItems:(id)a3 toKeyPath:(id)a4
+- (void)_bindInclusionOfControlItems:(id)items toKeyPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  itemsCopy = items;
+  pathCopy = path;
   objc_initWeak(&location, self);
-  v8 = [(AVPlaybackControlsController *)self playbackControlsObservationController];
+  playbackControlsObservationController = [(AVPlaybackControlsController *)self playbackControlsObservationController];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __71__AVPlaybackControlsController__bindInclusionOfControlItems_toKeyPath___block_invoke;
   v10[3] = &unk_1E7208CD0;
-  v9 = v6;
+  v9 = itemsCopy;
   v11 = v9;
   objc_copyWeak(&v12, &location);
-  [(AVPlaybackControlsController *)self _observeBoolForKeyPath:v7 usingKeyValueObservationController:v8 observationHandler:v10];
+  [(AVPlaybackControlsController *)self _observeBoolForKeyPath:pathCopy usingKeyValueObservationController:playbackControlsObservationController observationHandler:v10];
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);
@@ -2815,16 +2815,16 @@ void __71__AVPlaybackControlsController__bindInclusionOfControlItems_toKeyPath__
   }
 }
 
-- (void)_bindEnabledStateOfControls:(id)a3 toKeyPath:(id)a4 usingObservationController:(id)a5
+- (void)_bindEnabledStateOfControls:(id)controls toKeyPath:(id)path usingObservationController:(id)controller
 {
-  v8 = a3;
+  controlsCopy = controls;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __97__AVPlaybackControlsController__bindEnabledStateOfControls_toKeyPath_usingObservationController___block_invoke;
   v10[3] = &unk_1E7208E90;
-  v11 = v8;
-  v9 = v8;
-  [(AVPlaybackControlsController *)self _observeBoolForKeyPath:a4 usingKeyValueObservationController:a5 observationHandler:v10];
+  v11 = controlsCopy;
+  v9 = controlsCopy;
+  [(AVPlaybackControlsController *)self _observeBoolForKeyPath:path usingKeyValueObservationController:controller observationHandler:v10];
 }
 
 void __97__AVPlaybackControlsController__bindEnabledStateOfControls_toKeyPath_usingObservationController___block_invoke(uint64_t a1, uint64_t a2)
@@ -2861,18 +2861,18 @@ void __97__AVPlaybackControlsController__bindEnabledStateOfControls_toKeyPath_us
   }
 }
 
-- (void)startContentTransitionButtonTouchUpInside:(id)a3
+- (void)startContentTransitionButtonTouchUpInside:(id)inside
 {
-  v14 = a3;
-  v4 = [(AVPlaybackControlsController *)self playbackControlsView];
-  v5 = [v4 effectiveUserInterfaceLayoutDirection];
+  insideCopy = inside;
+  playbackControlsView = [(AVPlaybackControlsController *)self playbackControlsView];
+  effectiveUserInterfaceLayoutDirection = [playbackControlsView effectiveUserInterfaceLayoutDirection];
 
-  v6 = [(AVPlaybackControlsController *)self playbackControlsView];
-  v7 = [v6 startLeftwardContentTransitionButton];
+  playbackControlsView2 = [(AVPlaybackControlsController *)self playbackControlsView];
+  startLeftwardContentTransitionButton = [playbackControlsView2 startLeftwardContentTransitionButton];
 
-  if (v7 == v14)
+  if (startLeftwardContentTransitionButton == insideCopy)
   {
-    if (v5)
+    if (effectiveUserInterfaceLayoutDirection)
     {
       v11 = 1;
     }
@@ -2885,16 +2885,16 @@ void __97__AVPlaybackControlsController__bindEnabledStateOfControls_toKeyPath_us
 
   else
   {
-    v8 = [(AVPlaybackControlsController *)self playbackControlsView];
-    v9 = [v8 startRightwardContentTransitionButton];
+    playbackControlsView3 = [(AVPlaybackControlsController *)self playbackControlsView];
+    startRightwardContentTransitionButton = [playbackControlsView3 startRightwardContentTransitionButton];
 
     v10 = 1;
-    if (v5)
+    if (effectiveUserInterfaceLayoutDirection)
     {
       v10 = 2;
     }
 
-    if (v9 == v14)
+    if (startRightwardContentTransitionButton == insideCopy)
     {
       v11 = v10;
     }
@@ -2905,121 +2905,121 @@ void __97__AVPlaybackControlsController__bindEnabledStateOfControls_toKeyPath_us
     }
   }
 
-  v12 = [(AVPlaybackControlsController *)self contentTransitionAction];
+  contentTransitionAction = [(AVPlaybackControlsController *)self contentTransitionAction];
 
-  if (v12)
+  if (contentTransitionAction)
   {
-    v13 = [(AVPlaybackControlsController *)self contentTransitionAction];
-    v13[2](v13, v11);
+    contentTransitionAction2 = [(AVPlaybackControlsController *)self contentTransitionAction];
+    contentTransitionAction2[2](contentTransitionAction2, v11);
   }
 }
 
-- (void)skipButtonForcePressChanged:(id)a3
+- (void)skipButtonForcePressChanged:(id)changed
 {
-  v11 = a3;
-  [v11 maximumForceSinceTrackingBegan];
+  changedCopy = changed;
+  [changedCopy maximumForceSinceTrackingBegan];
   v5 = v4;
-  [v11 forceThreshold];
+  [changedCopy forceThreshold];
   if (v5 >= v6)
   {
-    v7 = [(AVPlaybackControlsController *)self playbackControlsView];
-    v8 = [v7 skipForwardButton];
+    playbackControlsView = [(AVPlaybackControlsController *)self playbackControlsView];
+    skipForwardButton = [playbackControlsView skipForwardButton];
 
-    v9 = [(AVPlaybackControlsController *)self playerController];
-    [v11 force];
-    if (v8 != v11)
+    playerController = [(AVPlaybackControlsController *)self playerController];
+    [changedCopy force];
+    if (skipForwardButton != changedCopy)
     {
       v10 = -v10;
     }
 
-    [v9 setRateWithForce:v10];
+    [playerController setRateWithForce:v10];
   }
 }
 
-- (void)skipButtonLongPressEnded:(id)a3
+- (void)skipButtonLongPressEnded:(id)ended
 {
-  v10 = a3;
-  v4 = [(AVPlaybackControlsController *)self playbackControlsView];
-  v5 = [v4 skipBackButton];
+  endedCopy = ended;
+  playbackControlsView = [(AVPlaybackControlsController *)self playbackControlsView];
+  skipBackButton = [playbackControlsView skipBackButton];
 
-  if (v5 == v10)
+  if (skipBackButton == endedCopy)
   {
-    v9 = [(AVPlaybackControlsController *)self playerController];
-    [v9 endScanningBackward:v10];
+    playerController = [(AVPlaybackControlsController *)self playerController];
+    [playerController endScanningBackward:endedCopy];
   }
 
   else
   {
-    v6 = [(AVPlaybackControlsController *)self playbackControlsView];
-    v7 = [v6 skipForwardButton];
+    playbackControlsView2 = [(AVPlaybackControlsController *)self playbackControlsView];
+    skipForwardButton = [playbackControlsView2 skipForwardButton];
 
-    v8 = v10;
-    if (v7 != v10)
+    v8 = endedCopy;
+    if (skipForwardButton != endedCopy)
     {
       goto LABEL_6;
     }
 
-    v9 = [(AVPlaybackControlsController *)self playerController];
-    [v9 endScanningForward:v10];
+    playerController = [(AVPlaybackControlsController *)self playerController];
+    [playerController endScanningForward:endedCopy];
   }
 
-  v8 = v10;
+  v8 = endedCopy;
 LABEL_6:
 }
 
-- (void)skipButtonLongPressTriggered:(id)a3
+- (void)skipButtonLongPressTriggered:(id)triggered
 {
-  v10 = a3;
-  v4 = [(AVPlaybackControlsController *)self playbackControlsView];
-  v5 = [v4 skipBackButton];
+  triggeredCopy = triggered;
+  playbackControlsView = [(AVPlaybackControlsController *)self playbackControlsView];
+  skipBackButton = [playbackControlsView skipBackButton];
 
-  if (v5 == v10)
+  if (skipBackButton == triggeredCopy)
   {
-    v9 = [(AVPlaybackControlsController *)self playerController];
-    [v9 beginScanningBackward:v10];
+    playerController = [(AVPlaybackControlsController *)self playerController];
+    [playerController beginScanningBackward:triggeredCopy];
   }
 
   else
   {
-    v6 = [(AVPlaybackControlsController *)self playbackControlsView];
-    v7 = [v6 skipForwardButton];
+    playbackControlsView2 = [(AVPlaybackControlsController *)self playbackControlsView];
+    skipForwardButton = [playbackControlsView2 skipForwardButton];
 
-    v8 = v10;
-    if (v7 != v10)
+    v8 = triggeredCopy;
+    if (skipForwardButton != triggeredCopy)
     {
       goto LABEL_6;
     }
 
-    v9 = [(AVPlaybackControlsController *)self playerController];
-    [v9 beginScanningForward:v10];
+    playerController = [(AVPlaybackControlsController *)self playerController];
+    [playerController beginScanningForward:triggeredCopy];
   }
 
-  v8 = v10;
+  v8 = triggeredCopy;
 LABEL_6:
 }
 
-- (void)skipButtonTouchUpInside:(id)a3
+- (void)skipButtonTouchUpInside:(id)inside
 {
-  v16 = a3;
-  if (([v16 wasLongPressed] & 1) == 0)
+  insideCopy = inside;
+  if (([insideCopy wasLongPressed] & 1) == 0)
   {
-    [v16 maximumForceSinceTrackingBegan];
+    [insideCopy maximumForceSinceTrackingBegan];
     v5 = v4;
-    [v16 forceThreshold];
+    [insideCopy forceThreshold];
     if (v5 < v6)
     {
-      v7 = [(AVPlaybackControlsController *)self playbackControlsView];
-      v8 = [v7 skipForwardButton];
-      if (v8 == v16)
+      playbackControlsView = [(AVPlaybackControlsController *)self playbackControlsView];
+      skipForwardButton = [playbackControlsView skipForwardButton];
+      if (skipForwardButton == insideCopy)
       {
-        v9 = [(AVPlaybackControlsController *)self playbackControlsView];
-        v10 = [v9 transportControlsView];
-        v11 = [v10 liveStreamingControlsIncludeScrubber];
+        playbackControlsView2 = [(AVPlaybackControlsController *)self playbackControlsView];
+        transportControlsView = [playbackControlsView2 transportControlsView];
+        liveStreamingControlsIncludeScrubber = [transportControlsView liveStreamingControlsIncludeScrubber];
 
-        if (v11)
+        if (liveStreamingControlsIncludeScrubber)
         {
-          v12 = [(AVPlaybackControlsController *)self playerController];
-          [v12 gotoEndOfSeekableRanges:v16];
+          playerController = [(AVPlaybackControlsController *)self playerController];
+          [playerController gotoEndOfSeekableRanges:insideCopy];
 
           goto LABEL_10;
         }
@@ -3029,11 +3029,11 @@ LABEL_6:
       {
       }
 
-      v13 = [(AVPlaybackControlsController *)self playbackControlsView];
-      v14 = [v13 skipForwardButton];
+      playbackControlsView3 = [(AVPlaybackControlsController *)self playbackControlsView];
+      skipForwardButton2 = [playbackControlsView3 skipForwardButton];
 
       v15 = -15.0;
-      if (v14 == v16)
+      if (skipForwardButton2 == insideCopy)
       {
         v15 = 15.0;
       }
@@ -3045,19 +3045,19 @@ LABEL_6:
 LABEL_10:
 }
 
-- (void)prominentPlayButtonTouchUpInside:(id)a3
+- (void)prominentPlayButtonTouchUpInside:(id)inside
 {
-  v14 = a3;
-  v4 = [(AVPlaybackControlsController *)self playerController];
-  if ([v4 canTogglePlayback])
+  insideCopy = inside;
+  playerController = [(AVPlaybackControlsController *)self playerController];
+  if ([playerController canTogglePlayback])
   {
-    v5 = [(AVPlaybackControlsController *)self playerController];
-    v6 = [v5 isPlaying];
+    playerController2 = [(AVPlaybackControlsController *)self playerController];
+    isPlaying = [playerController2 isPlaying];
 
-    if ((v6 & 1) == 0)
+    if ((isPlaying & 1) == 0)
     {
-      v7 = [(AVPlaybackControlsController *)self playerViewController];
-      [v7 togglePlayback:v14];
+      playerViewController = [(AVPlaybackControlsController *)self playerViewController];
+      [playerViewController togglePlayback:insideCopy];
 
       [(AVPlaybackControlsController *)self _updateHasPlaybackBegunSincePlayerControllerBecameReadyToPlay:1 playing:1 userDidEndTappingProminentPlayButton:1];
       goto LABEL_9;
@@ -3073,147 +3073,147 @@ LABEL_10:
     goto LABEL_8;
   }
 
-  v8 = [(AVPlaybackControlsController *)self playerController];
-  if ([v8 status])
+  playerController3 = [(AVPlaybackControlsController *)self playerController];
+  if ([playerController3 status])
   {
 
 LABEL_8:
-    v9 = [(AVPlaybackControlsController *)self playerController];
-    v10 = [v9 status] == 2;
-    v11 = [(AVPlaybackControlsController *)self playerController];
-    -[AVPlaybackControlsController _updateHasPlaybackBegunSincePlayerControllerBecameReadyToPlay:playing:userDidEndTappingProminentPlayButton:](self, "_updateHasPlaybackBegunSincePlayerControllerBecameReadyToPlay:playing:userDidEndTappingProminentPlayButton:", v10, [v11 isPlaying], 1);
+    playerController4 = [(AVPlaybackControlsController *)self playerController];
+    v10 = [playerController4 status] == 2;
+    playerController5 = [(AVPlaybackControlsController *)self playerController];
+    -[AVPlaybackControlsController _updateHasPlaybackBegunSincePlayerControllerBecameReadyToPlay:playing:userDidEndTappingProminentPlayButton:](self, "_updateHasPlaybackBegunSincePlayerControllerBecameReadyToPlay:playing:userDidEndTappingProminentPlayButton:", v10, [playerController5 isPlaying], 1);
 
     goto LABEL_9;
   }
 
-  v12 = [(AVPlaybackControlsController *)self playButtonHandlerForLazyPlayerLoading];
+  playButtonHandlerForLazyPlayerLoading = [(AVPlaybackControlsController *)self playButtonHandlerForLazyPlayerLoading];
 
-  if (!v12)
+  if (!playButtonHandlerForLazyPlayerLoading)
   {
     goto LABEL_8;
   }
 
   [(AVPlaybackControlsController *)self startUpdatesIfNeeded];
-  v13 = [(AVPlaybackControlsController *)self playButtonHandlerForLazyPlayerLoading];
-  v13[2]();
+  playButtonHandlerForLazyPlayerLoading2 = [(AVPlaybackControlsController *)self playButtonHandlerForLazyPlayerLoading];
+  playButtonHandlerForLazyPlayerLoading2[2]();
 
 LABEL_9:
 }
 
-- (void)playbackSpeedButtonTapped:(id)a3
+- (void)playbackSpeedButtonTapped:(id)tapped
 {
-  v4 = [(AVPlaybackControlsController *)self playbackSpeedCollection];
-  [v4 selectNextPlaybackSpeed:self];
+  playbackSpeedCollection = [(AVPlaybackControlsController *)self playbackSpeedCollection];
+  [playbackSpeedCollection selectNextPlaybackSpeed:self];
 }
 
-- (id)overflowMenuItemsForControlOverflowButton:(id)a3
+- (id)overflowMenuItemsForControlOverflowButton:(id)button
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
-  v6 = [(AVPlaybackControlsController *)self playbackControlsView];
-  v7 = [v6 mediaSelectionButton];
-  if ([v7 isIncluded])
+  buttonCopy = button;
+  array = [MEMORY[0x1E695DF70] array];
+  playbackControlsView = [(AVPlaybackControlsController *)self playbackControlsView];
+  mediaSelectionButton = [playbackControlsView mediaSelectionButton];
+  if ([mediaSelectionButton isIncluded])
   {
-    v8 = [(AVPlaybackControlsController *)self playbackControlsView];
-    v9 = [v8 mediaSelectionButton];
-    v10 = [v9 isCollapsed];
+    playbackControlsView2 = [(AVPlaybackControlsController *)self playbackControlsView];
+    mediaSelectionButton2 = [playbackControlsView2 mediaSelectionButton];
+    isCollapsed = [mediaSelectionButton2 isCollapsed];
 
-    if (!v10)
+    if (!isCollapsed)
     {
       goto LABEL_11;
     }
 
-    v11 = [(AVPlaybackControlsController *)self playerController];
-    v6 = [v11 audioMediaSelectionOptions];
+    playerController = [(AVPlaybackControlsController *)self playerController];
+    playbackControlsView = [playerController audioMediaSelectionOptions];
 
-    v12 = [(AVPlaybackControlsController *)self playerController];
-    v7 = [v12 legibleMediaSelectionOptions];
+    playerController2 = [(AVPlaybackControlsController *)self playerController];
+    mediaSelectionButton = [playerController2 legibleMediaSelectionOptions];
 
     mediaSelectionMenuController = self->_mediaSelectionMenuController;
-    v61 = v4;
+    v61 = buttonCopy;
     if (mediaSelectionMenuController)
     {
-      [(AVMediaSelectionMenuController *)mediaSelectionMenuController setAudibleOptions:v6];
-      [(AVMediaSelectionMenuController *)self->_mediaSelectionMenuController setLegibleOptions:v7];
+      [(AVMediaSelectionMenuController *)mediaSelectionMenuController setAudibleOptions:playbackControlsView];
+      [(AVMediaSelectionMenuController *)self->_mediaSelectionMenuController setLegibleOptions:mediaSelectionButton];
     }
 
     else
     {
-      v14 = [[AVMediaSelectionMenuController alloc] initWithAudibleOptions:v6 legibleOptions:v7];
+      v14 = [[AVMediaSelectionMenuController alloc] initWithAudibleOptions:playbackControlsView legibleOptions:mediaSelectionButton];
       v15 = self->_mediaSelectionMenuController;
       self->_mediaSelectionMenuController = v14;
 
       [(AVMediaSelectionMenuController *)self->_mediaSelectionMenuController setDelegate:self];
     }
 
-    v16 = [(AVPlaybackControlsController *)self playerController];
-    v17 = [v16 audioMediaSelectionOptions];
-    v18 = [(AVPlaybackControlsController *)self playerController];
-    v19 = [v18 currentAudioMediaSelectionOption];
-    v20 = [v17 indexOfObject:v19];
+    playerController3 = [(AVPlaybackControlsController *)self playerController];
+    audioMediaSelectionOptions = [playerController3 audioMediaSelectionOptions];
+    playerController4 = [(AVPlaybackControlsController *)self playerController];
+    currentAudioMediaSelectionOption = [playerController4 currentAudioMediaSelectionOption];
+    v20 = [audioMediaSelectionOptions indexOfObject:currentAudioMediaSelectionOption];
 
-    v21 = [(AVPlaybackControlsController *)self playerController];
-    v22 = [v21 legibleMediaSelectionOptions];
-    v23 = [(AVPlaybackControlsController *)self playerController];
-    v24 = [v23 currentLegibleMediaSelectionOption];
-    v25 = [v22 indexOfObject:v24];
+    playerController5 = [(AVPlaybackControlsController *)self playerController];
+    legibleMediaSelectionOptions = [playerController5 legibleMediaSelectionOptions];
+    playerController6 = [(AVPlaybackControlsController *)self playerController];
+    currentLegibleMediaSelectionOption = [playerController6 currentLegibleMediaSelectionOption];
+    v25 = [legibleMediaSelectionOptions indexOfObject:currentLegibleMediaSelectionOption];
 
     [(AVMediaSelectionMenuController *)self->_mediaSelectionMenuController setCurrentAudibleOptionIndex:v20];
     [(AVMediaSelectionMenuController *)self->_mediaSelectionMenuController setCurrentLegibleOptionIndex:v25];
-    v26 = [(AVMediaSelectionMenuController *)self->_mediaSelectionMenuController audibleOptionsMenu];
+    audibleOptionsMenu = [(AVMediaSelectionMenuController *)self->_mediaSelectionMenuController audibleOptionsMenu];
 
-    if (v26)
+    if (audibleOptionsMenu)
     {
-      v27 = [(AVMediaSelectionMenuController *)self->_mediaSelectionMenuController audibleOptionsMenu];
-      [v5 addObject:v27];
+      audibleOptionsMenu2 = [(AVMediaSelectionMenuController *)self->_mediaSelectionMenuController audibleOptionsMenu];
+      [array addObject:audibleOptionsMenu2];
     }
 
-    v28 = [(AVMediaSelectionMenuController *)self->_mediaSelectionMenuController legibleOptionsMenu];
+    legibleOptionsMenu = [(AVMediaSelectionMenuController *)self->_mediaSelectionMenuController legibleOptionsMenu];
 
-    v4 = v61;
-    if (v28)
+    buttonCopy = v61;
+    if (legibleOptionsMenu)
     {
-      v29 = [(AVMediaSelectionMenuController *)self->_mediaSelectionMenuController legibleOptionsMenu];
-      [v5 addObject:v29];
+      legibleOptionsMenu2 = [(AVMediaSelectionMenuController *)self->_mediaSelectionMenuController legibleOptionsMenu];
+      [array addObject:legibleOptionsMenu2];
     }
   }
 
 LABEL_11:
-  v30 = [(AVPlaybackControlsController *)self playbackControlsView];
-  v31 = [v30 playbackSpeedButton];
-  if ([v31 isIncluded])
+  playbackControlsView3 = [(AVPlaybackControlsController *)self playbackControlsView];
+  playbackSpeedButton = [playbackControlsView3 playbackSpeedButton];
+  if ([playbackSpeedButton isIncluded])
   {
-    v32 = [(AVPlaybackControlsController *)self playbackControlsView];
-    v33 = [v32 playbackSpeedButton];
-    v34 = [v33 isCollapsed];
+    playbackControlsView4 = [(AVPlaybackControlsController *)self playbackControlsView];
+    playbackSpeedButton2 = [playbackControlsView4 playbackSpeedButton];
+    isCollapsed2 = [playbackSpeedButton2 isCollapsed];
 
-    if (!v34)
+    if (!isCollapsed2)
     {
       goto LABEL_15;
     }
 
-    v30 = [(AVPlaybackControlsController *)self playbackRateMenuController];
-    v31 = [v30 menu];
-    [v5 addObject:v31];
+    playbackControlsView3 = [(AVPlaybackControlsController *)self playbackRateMenuController];
+    playbackSpeedButton = [playbackControlsView3 menu];
+    [array addObject:playbackSpeedButton];
   }
 
 LABEL_15:
-  v35 = [(AVPlaybackControlsController *)self playbackControlsView];
-  v36 = [v35 routePickerView];
-  if ([v36 isIncluded])
+  playbackControlsView5 = [(AVPlaybackControlsController *)self playbackControlsView];
+  routePickerView = [playbackControlsView5 routePickerView];
+  if ([routePickerView isIncluded])
   {
-    v37 = [(AVPlaybackControlsController *)self playbackControlsView];
-    v38 = [v37 routePickerView];
-    v39 = [v38 isCollapsed];
+    playbackControlsView6 = [(AVPlaybackControlsController *)self playbackControlsView];
+    routePickerView2 = [playbackControlsView6 routePickerView];
+    isCollapsed3 = [routePickerView2 isCollapsed];
 
-    if (v39)
+    if (isCollapsed3)
     {
-      v40 = [(AVPlaybackControlsController *)self playbackControlsView];
-      v41 = [v40 routePickerView];
+      playbackControlsView7 = [(AVPlaybackControlsController *)self playbackControlsView];
+      routePickerView3 = [playbackControlsView7 routePickerView];
 
       v42 = AVLocalizedString(@"EXTERNAL_PLAYBACK_OVERFLOW_MENU_ITEM_TITLE");
       v43 = [MEMORY[0x1E69DCAB8] avkit_imageWithSymbolNamed:@"airplayvideo" textStyle:*MEMORY[0x1E69DDCF8] scale:-1];
-      if ([v41 isAirPlayActive])
+      if ([routePickerView3 isAirPlayActive])
       {
         v44 = [MEMORY[0x1E69DC888] colorWithRed:0.5 green:0.86 blue:1.0 alpha:1.0];
         v45 = [v43 imageWithTintColor:v44 renderingMode:1];
@@ -3227,11 +3227,11 @@ LABEL_15:
       v64[1] = 3221225472;
       v64[2] = __74__AVPlaybackControlsController_overflowMenuItemsForControlOverflowButton___block_invoke;
       v64[3] = &unk_1E7208C60;
-      v47 = v41;
+      v47 = routePickerView3;
       v65 = v47;
       objc_copyWeak(&v66, &location);
       v48 = [v46 actionWithTitle:v42 image:v43 identifier:0 handler:v64];
-      [v5 addObject:v48];
+      [array addObject:v48];
 
       objc_destroyWeak(&v66);
       objc_destroyWeak(&location);
@@ -3244,12 +3244,12 @@ LABEL_15:
 
   if (self->_transportBarCustomMenuItems)
   {
-    v49 = [(AVPlaybackControlsController *)self playbackControlsView];
-    v50 = [v49 transportControlsView];
-    v51 = [v50 customMenuItemsViews];
+    playbackControlsView8 = [(AVPlaybackControlsController *)self playbackControlsView];
+    transportControlsView = [playbackControlsView8 transportControlsView];
+    customMenuItemsViews = [transportControlsView customMenuItemsViews];
 
     v52 = [MEMORY[0x1E696AE18] predicateWithBlock:&__block_literal_global_236_22121];
-    v53 = [v51 filteredArrayUsingPredicate:v52];
+    v53 = [customMenuItemsViews filteredArrayUsingPredicate:v52];
 
     v54 = objc_alloc_init(MEMORY[0x1E695DEC8]);
     transportBarCustomMenuItems = self->_transportBarCustomMenuItems;
@@ -3263,10 +3263,10 @@ LABEL_15:
     v58 = [v56 predicateWithBlock:v62];
     v59 = [(NSArray *)transportBarCustomMenuItems filteredArrayUsingPredicate:v58];
 
-    [v5 addObjectsFromArray:v59];
+    [array addObjectsFromArray:v59];
   }
 
-  return v5;
+  return array;
 }
 
 void __74__AVPlaybackControlsController_overflowMenuItemsForControlOverflowButton___block_invoke(uint64_t a1)
@@ -3356,57 +3356,57 @@ uint64_t __74__AVPlaybackControlsController_overflowMenuItemsForControlOverflowB
   return v8;
 }
 
-- (BOOL)shouldApplyLegibleMediaSelectionCriteriaAutomaticallyForMediaSelectionMenuController:(id)a3
+- (BOOL)shouldApplyLegibleMediaSelectionCriteriaAutomaticallyForMediaSelectionMenuController:(id)controller
 {
-  v3 = [(AVPlaybackControlsController *)self playerController];
-  v4 = [v3 closedCaptionsEnabled];
+  playerController = [(AVPlaybackControlsController *)self playerController];
+  closedCaptionsEnabled = [playerController closedCaptionsEnabled];
 
-  return v4;
+  return closedCaptionsEnabled;
 }
 
-- (void)mediaSelectionMenuController:(id)a3 didSelectOption:(id)a4
+- (void)mediaSelectionMenuController:(id)controller didSelectOption:(id)option
 {
-  v10 = a4;
-  v6 = [a3 audibleOptions];
-  v7 = [v6 containsObject:v10];
+  optionCopy = option;
+  audibleOptions = [controller audibleOptions];
+  v7 = [audibleOptions containsObject:optionCopy];
 
-  v8 = [(AVPlaybackControlsController *)self playerController];
-  v9 = v8;
+  playerController = [(AVPlaybackControlsController *)self playerController];
+  v9 = playerController;
   if (v7)
   {
-    [v8 setCurrentAudioMediaSelectionOption:v10];
+    [playerController setCurrentAudioMediaSelectionOption:optionCopy];
   }
 
   else
   {
-    [v8 setCurrentLegibleMediaSelectionOption:v10];
+    [playerController setCurrentLegibleMediaSelectionOption:optionCopy];
   }
 }
 
-- (void)_updateVolumeSliderValueWithSystemVolume:(float)a3 animated:(BOOL)a4
+- (void)_updateVolumeSliderValueWithSystemVolume:(float)volume animated:(BOOL)animated
 {
-  v4 = a4;
-  v7 = 0.0;
+  animatedCopy = animated;
+  volumeCopy = 0.0;
   if (![(AVPlaybackControlsController *)self prefersMuted])
   {
-    v8 = [(AVPlaybackControlsController *)self volumeController];
-    v9 = [v8 currentRouteHasVolumeControl];
+    volumeController = [(AVPlaybackControlsController *)self volumeController];
+    currentRouteHasVolumeControl = [volumeController currentRouteHasVolumeControl];
 
-    if (v9)
+    if (currentRouteHasVolumeControl)
     {
-      v7 = a3;
+      volumeCopy = volume;
     }
 
     else
     {
-      v7 = 1.0;
+      volumeCopy = 1.0;
     }
   }
 
-  v12 = [(AVPlaybackControlsController *)self playbackControlsView];
-  v10 = [v12 volumeSlider];
-  *&v11 = v7;
-  [v10 setValue:v4 animated:v11];
+  playbackControlsView = [(AVPlaybackControlsController *)self playbackControlsView];
+  volumeSlider = [playbackControlsView volumeSlider];
+  *&v11 = volumeCopy;
+  [volumeSlider setValue:animatedCopy animated:v11];
 }
 
 - (id)_volumeButtonMicaPackageState
@@ -3416,30 +3416,30 @@ uint64_t __74__AVPlaybackControlsController_overflowMenuItemsForControlOverflowB
     goto LABEL_2;
   }
 
-  v5 = [(AVPlaybackControlsController *)self volumeController];
-  v6 = [v5 currentRouteHasVolumeControl];
+  volumeController = [(AVPlaybackControlsController *)self volumeController];
+  currentRouteHasVolumeControl = [volumeController currentRouteHasVolumeControl];
 
   v4 = &AVVolumeGlyphStateNameMax;
-  if (!v6)
+  if (!currentRouteHasVolumeControl)
   {
     goto LABEL_20;
   }
 
-  v7 = [(AVPlaybackControlsController *)self playbackControlsView];
-  if (!v7 || [(AVPlaybackControlsController *)self isResumingUpdates])
+  playbackControlsView = [(AVPlaybackControlsController *)self playbackControlsView];
+  if (!playbackControlsView || [(AVPlaybackControlsController *)self isResumingUpdates])
   {
     v8 = 0;
     goto LABEL_7;
   }
 
-  v6 = [(AVPlaybackControlsController *)self playbackControlsView];
-  v2 = [v6 volumeSlider];
-  if ([v2 isHiddenOrHasHiddenAncestor])
+  currentRouteHasVolumeControl = [(AVPlaybackControlsController *)self playbackControlsView];
+  volumeSlider = [currentRouteHasVolumeControl volumeSlider];
+  if ([volumeSlider isHiddenOrHasHiddenAncestor])
   {
     v8 = 1;
 LABEL_7:
-    v9 = [(AVPlaybackControlsController *)self volumeController];
-    [v9 volume];
+    volumeController2 = [(AVPlaybackControlsController *)self volumeController];
+    [volumeController2 volume];
     v11 = v10;
 
     if (!v8)
@@ -3450,9 +3450,9 @@ LABEL_7:
     goto LABEL_12;
   }
 
-  v12 = [(AVPlaybackControlsController *)self playbackControlsView];
-  v13 = [v12 volumeSlider];
-  [v13 value];
+  playbackControlsView2 = [(AVPlaybackControlsController *)self playbackControlsView];
+  volumeSlider2 = [playbackControlsView2 volumeSlider];
+  [volumeSlider2 value];
   v11 = v14;
 
 LABEL_12:
@@ -3495,13 +3495,13 @@ LABEL_20:
 
 - (void)_updateVolumeButtonGlyph
 {
-  v6 = [(AVPlaybackControlsController *)self _volumeButtonMicaPackageState];
-  v3 = [(AVPlaybackControlsController *)self playbackControlsView];
-  v4 = [v3 volumeButton];
-  [v4 setMicaPackageStateName:v6];
+  _volumeButtonMicaPackageState = [(AVPlaybackControlsController *)self _volumeButtonMicaPackageState];
+  playbackControlsView = [(AVPlaybackControlsController *)self playbackControlsView];
+  volumeButton = [playbackControlsView volumeButton];
+  [volumeButton setMicaPackageStateName:_volumeButtonMicaPackageState];
 
-  v5 = [(AVPlaybackControlsController *)self turboModePlaybackControlsPlaceholderView];
-  [v5 setVolumeButtonMicaPackageStateName:v6];
+  turboModePlaybackControlsPlaceholderView = [(AVPlaybackControlsController *)self turboModePlaybackControlsPlaceholderView];
+  [turboModePlaybackControlsPlaceholderView setVolumeButtonMicaPackageStateName:_volumeButtonMicaPackageState];
 }
 
 - (void)_showOrHideDisplayModeControls
@@ -3511,36 +3511,36 @@ LABEL_20:
     v7 = ![(AVPlaybackControlsController *)self isFullScreen]&& [(AVPlaybackControlsController *)self allowsEnteringFullScreen];
     if ([(AVPlaybackControlsController *)self showsDoneButtonWhenFullScreen])
     {
-      v8 = [(AVPlaybackControlsController *)self isFullScreen];
+      isFullScreen = [(AVPlaybackControlsController *)self isFullScreen];
     }
 
     else
     {
-      v8 = 0;
+      isFullScreen = 0;
     }
 
-    v6 = [(AVPlaybackControlsController *)self showsPictureInPictureButton];
-    v9 = [(AVPlaybackControlsController *)self canIncludeVideoGravityButton];
+    showsPictureInPictureButton = [(AVPlaybackControlsController *)self showsPictureInPictureButton];
+    canIncludeVideoGravityButton = [(AVPlaybackControlsController *)self canIncludeVideoGravityButton];
   }
 
   else
   {
-    v6 = 0;
+    showsPictureInPictureButton = 0;
     v7 = 0;
-    v8 = 0;
-    v9 = 0;
+    isFullScreen = 0;
+    canIncludeVideoGravityButton = 0;
   }
 
-  v10 = [(AVPlaybackControlsController *)self playbackControlsView];
-  v11 = [v10 fullScreenButton];
-  if (v7 != [v11 isIncluded])
+  playbackControlsView = [(AVPlaybackControlsController *)self playbackControlsView];
+  fullScreenButton = [playbackControlsView fullScreenButton];
+  if (v7 != [fullScreenButton isIncluded])
   {
     goto LABEL_16;
   }
 
-  v12 = [(AVPlaybackControlsController *)self playbackControlsView];
-  v13 = [v12 doneButton];
-  if (v8 != [v13 isIncluded])
+  playbackControlsView2 = [(AVPlaybackControlsController *)self playbackControlsView];
+  doneButton = [playbackControlsView2 doneButton];
+  if (isFullScreen != [doneButton isIncluded])
   {
 LABEL_15:
 
@@ -3548,62 +3548,62 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  v32 = v8;
+  v32 = isFullScreen;
   [(AVPlaybackControlsController *)self playbackControlsView];
-  v15 = v14 = v6;
-  v16 = [v15 pictureInPictureButton];
+  v15 = v14 = showsPictureInPictureButton;
+  pictureInPictureButton = [v15 pictureInPictureButton];
   v33 = v14;
-  if (v14 != [v16 isIncluded])
+  if (v14 != [pictureInPictureButton isIncluded])
   {
 
-    v8 = v32;
-    v6 = v33;
+    isFullScreen = v32;
+    showsPictureInPictureButton = v33;
     goto LABEL_15;
   }
 
-  v28 = [(AVPlaybackControlsController *)self playbackControlsView];
-  [v28 videoGravityButton];
-  v29 = v31 = v9;
-  v30 = [v29 isIncluded];
+  playbackControlsView3 = [(AVPlaybackControlsController *)self playbackControlsView];
+  [playbackControlsView3 videoGravityButton];
+  v29 = v31 = canIncludeVideoGravityButton;
+  isIncluded = [v29 isIncluded];
 
-  v9 = v31;
-  v8 = v32;
-  v6 = v33;
-  if (v31 == v30)
+  canIncludeVideoGravityButton = v31;
+  isFullScreen = v32;
+  showsPictureInPictureButton = v33;
+  if (v31 == isIncluded)
   {
     return;
   }
 
 LABEL_17:
-  v17 = [(AVPlaybackControlsController *)self playbackControlsView];
+  playbackControlsView4 = [(AVPlaybackControlsController *)self playbackControlsView];
 
-  if (!v17)
+  if (!playbackControlsView4)
   {
     return;
   }
 
-  v34 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   if (v7)
   {
-    v21 = [(AVPlaybackControlsController *)self playbackControlsView];
-    [v21 fullScreenButton];
-    v23 = v22 = v8;
-    [v34 addObject:v23];
+    playbackControlsView5 = [(AVPlaybackControlsController *)self playbackControlsView];
+    [playbackControlsView5 fullScreenButton];
+    v23 = v22 = isFullScreen;
+    [array addObject:v23];
 
     if (!v22)
     {
 LABEL_20:
-      if (!v6)
+      if (!showsPictureInPictureButton)
       {
         goto LABEL_21;
       }
 
 LABEL_28:
-      v26 = [(AVPlaybackControlsController *)self playbackControlsView];
-      v27 = [v26 pictureInPictureButton];
-      [v34 addObject:v27];
+      playbackControlsView6 = [(AVPlaybackControlsController *)self playbackControlsView];
+      pictureInPictureButton2 = [playbackControlsView6 pictureInPictureButton];
+      [array addObject:pictureInPictureButton2];
 
-      if (!v9)
+      if (!canIncludeVideoGravityButton)
       {
         goto LABEL_23;
       }
@@ -3612,49 +3612,49 @@ LABEL_28:
     }
   }
 
-  else if (!v8)
+  else if (!isFullScreen)
   {
     goto LABEL_20;
   }
 
-  v24 = [(AVPlaybackControlsController *)self playbackControlsView];
-  v25 = [v24 doneButton];
-  [v34 addObject:v25];
+  playbackControlsView7 = [(AVPlaybackControlsController *)self playbackControlsView];
+  doneButton2 = [playbackControlsView7 doneButton];
+  [array addObject:doneButton2];
 
-  if (v6)
+  if (showsPictureInPictureButton)
   {
     goto LABEL_28;
   }
 
 LABEL_21:
-  if (v9)
+  if (canIncludeVideoGravityButton)
   {
 LABEL_22:
-    v18 = [(AVPlaybackControlsController *)self playbackControlsView];
-    v19 = [v18 videoGravityButton];
-    [v34 addObject:v19];
+    playbackControlsView8 = [(AVPlaybackControlsController *)self playbackControlsView];
+    videoGravityButton = [playbackControlsView8 videoGravityButton];
+    [array addObject:videoGravityButton];
   }
 
 LABEL_23:
-  v20 = [(AVPlaybackControlsController *)self playbackControlsView];
-  [v20 updateDisplayControlsVisibilityIncludedButtons:v34];
+  playbackControlsView9 = [(AVPlaybackControlsController *)self playbackControlsView];
+  [playbackControlsView9 updateDisplayControlsVisibilityIncludedButtons:array];
 }
 
 - (BOOL)_prefersVolumeSliderExpandedAutomatically
 {
-  v3 = [(AVPlaybackControlsController *)self playbackControlsView];
-  v4 = [v3 traitCollection];
-  v5 = [v4 horizontalSizeClass];
+  playbackControlsView = [(AVPlaybackControlsController *)self playbackControlsView];
+  traitCollection = [playbackControlsView traitCollection];
+  horizontalSizeClass = [traitCollection horizontalSizeClass];
 
-  v6 = [(AVPlaybackControlsController *)self playerViewController];
-  v7 = [v6 contentView];
-  v8 = [v7 layoutClass];
-  v9 = [v8 unsignedIntegerValue];
+  playerViewController = [(AVPlaybackControlsController *)self playerViewController];
+  contentView = [playerViewController contentView];
+  layoutClass = [contentView layoutClass];
+  unsignedIntegerValue = [layoutClass unsignedIntegerValue];
 
-  if (v9 == 2)
+  if (unsignedIntegerValue == 2)
   {
-    v10 = [(AVPlaybackControlsController *)self pendingOrientationChange];
-    v11 = ([v10 integerValue] - 3) < 0xFFFFFFFFFFFFFFFELL;
+    pendingOrientationChange = [(AVPlaybackControlsController *)self pendingOrientationChange];
+    v11 = ([pendingOrientationChange integerValue] - 3) < 0xFFFFFFFFFFFFFFFELL;
   }
 
   else
@@ -3662,15 +3662,15 @@ LABEL_23:
     v11 = 0;
   }
 
-  v12 = [(AVPlaybackControlsController *)self playerViewController];
-  v13 = [v12 contentView];
-  v14 = [v13 layoutClass];
-  v15 = [v14 unsignedIntegerValue];
+  playerViewController2 = [(AVPlaybackControlsController *)self playerViewController];
+  contentView2 = [playerViewController2 contentView];
+  layoutClass2 = [contentView2 layoutClass];
+  unsignedIntegerValue2 = [layoutClass2 unsignedIntegerValue];
 
-  if (v15 == 1)
+  if (unsignedIntegerValue2 == 1)
   {
-    v16 = [(AVPlaybackControlsController *)self pendingOrientationChange];
-    v17 = ([v16 integerValue] - 3) < 2;
+    pendingOrientationChange2 = [(AVPlaybackControlsController *)self pendingOrientationChange];
+    v17 = ([pendingOrientationChange2 integerValue] - 3) < 2;
   }
 
   else
@@ -3678,9 +3678,9 @@ LABEL_23:
     v17 = 0;
   }
 
-  v18 = [(AVPlaybackControlsController *)self playbackControlsView];
-  v19 = [v18 customAudioItems];
-  v20 = [v19 count];
+  playbackControlsView2 = [(AVPlaybackControlsController *)self playbackControlsView];
+  customAudioItems = [playbackControlsView2 customAudioItems];
+  v20 = [customAudioItems count];
 
   if (v20)
   {
@@ -3692,57 +3692,57 @@ LABEL_23:
     return 0;
   }
 
-  v21 = [(AVPlaybackControlsController *)self playerController];
-  v22 = [v21 isPlayingOnExternalScreen];
+  playerController = [(AVPlaybackControlsController *)self playerController];
+  isPlayingOnExternalScreen = [playerController isPlayingOnExternalScreen];
 
-  if (v22)
+  if (isPlayingOnExternalScreen)
   {
     return 0;
   }
 
   else
   {
-    v25 = [(AVPlaybackControlsController *)self isFullScreen];
+    isFullScreen = [(AVPlaybackControlsController *)self isFullScreen];
     v23 = v17 || v11;
-    if (!v25 || v5 == 2)
+    if (!isFullScreen || horizontalSizeClass == 2)
     {
-      return v25;
+      return isFullScreen;
     }
   }
 
   return v23;
 }
 
-- (void)updateVolumeSliderValue:(id)a3 volumeButtonControl:(id)a4
+- (void)updateVolumeSliderValue:(id)value volumeButtonControl:(id)control
 {
-  v30 = a3;
-  v6 = a4;
-  [v30 frame];
+  valueCopy = value;
+  controlCopy = control;
+  [valueCopy frame];
   Width = CGRectGetWidth(v32);
   if (Width > 0.0)
   {
     v8 = Width;
-    v9 = [(AVPlaybackControlsController *)self volumeController];
-    v10 = [v9 currentRouteHasVolumeControl];
+    volumeController = [(AVPlaybackControlsController *)self volumeController];
+    currentRouteHasVolumeControl = [volumeController currentRouteHasVolumeControl];
 
-    if (v10)
+    if (currentRouteHasVolumeControl)
     {
-      [v30 value];
+      [valueCopy value];
       v12 = v11;
-      [v6 translationOfPanFromPreviousTouch];
+      [controlCopy translationOfPanFromPreviousTouch];
       v14 = v13 / v8;
-      v15 = [v6 window];
-      [v15 bounds];
+      window = [controlCopy window];
+      [window bounds];
       MaxX = CGRectGetMaxX(v33);
-      [v6 locationOfTouchInWindow];
+      [controlCopy locationOfTouchInWindow];
       v18 = v17;
 
-      if ([v6 effectiveUserInterfaceLayoutDirection] == 1)
+      if ([controlCopy effectiveUserInterfaceLayoutDirection] == 1)
       {
-        [v6 locationOfTouchInWindow];
+        [controlCopy locationOfTouchInWindow];
         v21 = v20;
-        v22 = [v6 window];
-        [v22 bounds];
+        window2 = [controlCopy window];
+        [window2 bounds];
         v23 = v21 - CGRectGetMinX(v34);
 
         v14 = -v14;
@@ -3786,114 +3786,114 @@ LABEL_23:
 
       v28 = fminf(*&v19, 1.0);
       *&v19 = v28;
-      [v30 setValue:v19];
+      [valueCopy setValue:v19];
       if (v12 != v28 && (v28 == 0.0 || v28 == 1.0))
       {
-        [v6 triggerSelectionChangedFeedback];
+        [controlCopy triggerSelectionChangedFeedback];
       }
 
-      [(AVPlaybackControlsController *)self volumeSliderValueDidChange:v30];
+      [(AVPlaybackControlsController *)self volumeSliderValueDidChange:valueCopy];
     }
   }
 }
 
-- (void)volumeButtonPanChanged:(id)a3
+- (void)volumeButtonPanChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   [(AVPlaybackControlsController *)self _updateVolumeButtonInclusionAndPrefersVolumeSliderExpandedWithPreferredExpansion:1];
   [(AVPlaybackControlsController *)self setPrefersMuted:0];
-  v6 = [(AVPlaybackControlsController *)self playbackControlsView];
-  v5 = [v6 volumeSlider];
-  [(AVPlaybackControlsController *)self updateVolumeSliderValue:v5 volumeButtonControl:v4];
+  playbackControlsView = [(AVPlaybackControlsController *)self playbackControlsView];
+  volumeSlider = [playbackControlsView volumeSlider];
+  [(AVPlaybackControlsController *)self updateVolumeSliderValue:volumeSlider volumeButtonControl:changedCopy];
 }
 
 - (void)endChangingVolume
 {
-  v2 = [(AVPlaybackControlsController *)self volumeController];
-  [v2 endChangingVolume];
+  volumeController = [(AVPlaybackControlsController *)self volumeController];
+  [volumeController endChangingVolume];
 }
 
 - (void)beginChangingVolume
 {
-  v2 = [(AVPlaybackControlsController *)self volumeController];
-  [v2 beginChangingVolume];
+  volumeController = [(AVPlaybackControlsController *)self volumeController];
+  [volumeController beginChangingVolume];
 }
 
-- (void)volumeButtonTapTriggered:(id)a3
+- (void)volumeButtonTapTriggered:(id)triggered
 {
-  v4 = a3;
-  v5 = [(AVPlaybackControlsController *)self playerViewController];
-  [v5 toggleMuted:v4];
+  triggeredCopy = triggered;
+  playerViewController = [(AVPlaybackControlsController *)self playerViewController];
+  [playerViewController toggleMuted:triggeredCopy];
 
-  v6 = [(AVPlaybackControlsController *)self turboModePlaybackControlsPlaceholderView];
+  turboModePlaybackControlsPlaceholderView = [(AVPlaybackControlsController *)self turboModePlaybackControlsPlaceholderView];
 
-  if (v6)
+  if (turboModePlaybackControlsPlaceholderView)
   {
 
     [(AVPlaybackControlsController *)self _updateVolumeButtonGlyph];
   }
 }
 
-- (void)volumeSliderValueDidChange:(id)a3
+- (void)volumeSliderValueDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   [(AVPlaybackControlsController *)self beginChangingVolume];
-  v5 = [(AVPlaybackControlsController *)self volumeController];
-  [v4 value];
+  volumeController = [(AVPlaybackControlsController *)self volumeController];
+  [changeCopy value];
   v7 = v6;
 
   LODWORD(v8) = v7;
-  [v5 setTargetVolume:v8];
+  [volumeController setTargetVolume:v8];
 
   [(AVPlaybackControlsController *)self _updateVolumeButtonGlyph];
 }
 
-- (void)handleCurrentRouteSupportsVolumeControlChanged:(id)a3
+- (void)handleCurrentRouteSupportsVolumeControlChanged:(id)changed
 {
-  v4 = [(AVPlaybackControlsController *)self playbackControlsView];
-  v5 = [v4 volumeSlider];
-  v6 = [(AVPlaybackControlsController *)self volumeController];
-  [v5 setEnabled:{objc_msgSend(v6, "currentRouteHasVolumeControl")}];
+  playbackControlsView = [(AVPlaybackControlsController *)self playbackControlsView];
+  volumeSlider = [playbackControlsView volumeSlider];
+  volumeController = [(AVPlaybackControlsController *)self volumeController];
+  [volumeSlider setEnabled:{objc_msgSend(volumeController, "currentRouteHasVolumeControl")}];
 
-  v7 = [(AVPlaybackControlsController *)self volumeController];
-  LOBYTE(v5) = [v7 currentRouteHasVolumeControl];
+  volumeController2 = [(AVPlaybackControlsController *)self volumeController];
+  LOBYTE(volumeSlider) = [volumeController2 currentRouteHasVolumeControl];
 
-  if ((v5 & 1) == 0)
+  if ((volumeSlider & 1) == 0)
   {
-    v8 = [(AVPlaybackControlsController *)self volumeController];
-    -[AVPlaybackControlsController _updateVolumeButtonInclusionAndPrefersVolumeSliderExpandedWithPreferredExpansion:](self, "_updateVolumeButtonInclusionAndPrefersVolumeSliderExpandedWithPreferredExpansion:", [v8 currentRouteHasVolumeControl]);
+    volumeController3 = [(AVPlaybackControlsController *)self volumeController];
+    -[AVPlaybackControlsController _updateVolumeButtonInclusionAndPrefersVolumeSliderExpandedWithPreferredExpansion:](self, "_updateVolumeButtonInclusionAndPrefersVolumeSliderExpandedWithPreferredExpansion:", [volumeController3 currentRouteHasVolumeControl]);
   }
 
-  v9 = [(AVPlaybackControlsController *)self volumeController];
-  [v9 volume];
+  volumeController4 = [(AVPlaybackControlsController *)self volumeController];
+  [volumeController4 volume];
   [(AVPlaybackControlsController *)self _updateVolumeSliderValueWithSystemVolume:0 animated:?];
 }
 
-- (void)handleVolumeChange:(id)a3
+- (void)handleVolumeChange:(id)change
 {
-  v4 = a3;
-  v5 = [(AVPlaybackControlsController *)self playbackControlsView];
-  v6 = [v5 volumeSlider];
-  v7 = [(AVPlaybackControlsController *)self volumeController];
-  [v6 setEnabled:{objc_msgSend(v7, "currentRouteHasVolumeControl")}];
+  changeCopy = change;
+  playbackControlsView = [(AVPlaybackControlsController *)self playbackControlsView];
+  volumeSlider = [playbackControlsView volumeSlider];
+  volumeController = [(AVPlaybackControlsController *)self volumeController];
+  [volumeSlider setEnabled:{objc_msgSend(volumeController, "currentRouteHasVolumeControl")}];
 
-  v8 = [(AVPlaybackControlsController *)self volumeController];
-  [v8 volume];
+  volumeController2 = [(AVPlaybackControlsController *)self volumeController];
+  [volumeController2 volume];
   v10 = v9;
 
-  v11 = [(AVPlaybackControlsController *)self playbackControlsView];
-  v12 = [v11 volumeSlider];
-  if ([v12 isTracking])
+  playbackControlsView2 = [(AVPlaybackControlsController *)self playbackControlsView];
+  volumeSlider2 = [playbackControlsView2 volumeSlider];
+  if ([volumeSlider2 isTracking])
   {
   }
 
   else
   {
-    v13 = [(AVPlaybackControlsController *)self playbackControlsView];
-    v14 = [v13 volumeButton];
-    v15 = [v14 isTracking];
+    playbackControlsView3 = [(AVPlaybackControlsController *)self playbackControlsView];
+    volumeButton = [playbackControlsView3 volumeButton];
+    isTracking = [volumeButton isTracking];
 
-    if ((v15 & 1) == 0)
+    if ((isTracking & 1) == 0)
     {
       LODWORD(v16) = v10;
       [(AVPlaybackControlsController *)self _updateVolumeSliderValueWithSystemVolume:0 animated:v16];
@@ -3901,20 +3901,20 @@ LABEL_23:
   }
 
   [(AVPlaybackControlsController *)self _updateVolumeButtonGlyph];
-  v17 = [v4 userInfo];
+  userInfo = [changeCopy userInfo];
 
-  v18 = [v17 objectForKeyedSubscript:@"AVVolumeControllerVolumeDidChangeNotificationIsInitialValueKey"];
-  v19 = [v18 BOOLValue];
+  v18 = [userInfo objectForKeyedSubscript:@"AVVolumeControllerVolumeDidChangeNotificationIsInitialValueKey"];
+  bOOLValue = [v18 BOOLValue];
 
-  if ((v19 & 1) == 0)
+  if ((bOOLValue & 1) == 0)
   {
     if (-[AVPlaybackControlsController isFullScreen](self, "isFullScreen") || (-[AVPlaybackControlsController volumeController](self, "volumeController"), v20 = objc_claimAutoreleasedReturnValue(), v21 = [v20 isChangingVolume], v20, v21))
     {
       [(AVPlaybackControlsController *)self setPrefersMuted:0];
-      v22 = [(AVPlaybackControlsController *)self playerViewController];
-      v23 = [v22 isBeingPresented];
+      playerViewController = [(AVPlaybackControlsController *)self playerViewController];
+      isBeingPresented = [playerViewController isBeingPresented];
 
-      if ((v23 & 1) == 0)
+      if ((isBeingPresented & 1) == 0)
       {
 
         [(AVPlaybackControlsController *)self flashVolumeControlsWithDuration:2.0];
@@ -3925,8 +3925,8 @@ LABEL_23:
 
 - (void)endScrubbing
 {
-  v3 = [(AVPlaybackControlsController *)self playerController];
-  [v3 endScrubbing:self];
+  playerController = [(AVPlaybackControlsController *)self playerController];
+  [playerController endScrubbing:self];
 
   [(AVPlaybackControlsController *)self setPlaybackSuspendedForScrubbing:0];
   [(AVPlaybackControlsController *)self _updateOrCreateTimeResolverIfNeeded];
@@ -3934,39 +3934,39 @@ LABEL_23:
   [(AVPlaybackControlsController *)self setShouldIgnoreTimeResolverUpdates:0];
 }
 
-- (void)scrubToTime:(double)a3 resolution:(double)a4
+- (void)scrubToTime:(double)time resolution:(double)resolution
 {
-  v7 = [(AVPlaybackControlsController *)self playerController];
-  if ([v7 hasSeekableLiveStreamingContent])
+  playerController = [(AVPlaybackControlsController *)self playerController];
+  if ([playerController hasSeekableLiveStreamingContent])
   {
-    v8 = [(AVPlaybackControlsController *)self timeResolver];
-    [v8 seekableTimeRangeDuration];
+    timeResolver = [(AVPlaybackControlsController *)self timeResolver];
+    [timeResolver seekableTimeRangeDuration];
   }
 
   else
   {
-    v8 = [(AVPlaybackControlsController *)self playerController];
-    [v8 contentDuration];
+    timeResolver = [(AVPlaybackControlsController *)self playerController];
+    [timeResolver contentDuration];
   }
 
   v10 = v9;
 
-  v11 = [(AVPlaybackControlsController *)self timeResolver];
-  [v11 targetTime];
+  timeResolver2 = [(AVPlaybackControlsController *)self timeResolver];
+  [timeResolver2 targetTime];
   v13 = v12;
 
-  v14 = v10 / a4;
+  v14 = v10 / resolution;
   v15 = 0.0;
-  if (a4 > 0.0)
+  if (resolution > 0.0)
   {
     v15 = v14;
   }
 
-  if (vabdd_f64(a3, v13) > v15)
+  if (vabdd_f64(time, v13) > v15)
   {
-    if (a4 > 0.0 && ([(AVPlaybackControlsController *)self playerController], v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_opt_respondsToSelector(), v16, (v17 & 1) != 0))
+    if (resolution > 0.0 && ([(AVPlaybackControlsController *)self playerController], v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_opt_respondsToSelector(), v16, (v17 & 1) != 0))
     {
-      v18 = a3 - v13;
+      v18 = time - v13;
       v19 = v14 * 10.0;
       if (v14 * 10.0 > 15.0)
       {
@@ -4006,14 +4006,14 @@ LABEL_23:
         v24 = v22;
       }
 
-      v25 = [(AVPlaybackControlsController *)self playerController];
-      [v25 seekToTime:a3 toleranceBefore:v23 toleranceAfter:v24];
+      playerController2 = [(AVPlaybackControlsController *)self playerController];
+      [playerController2 seekToTime:time toleranceBefore:v23 toleranceAfter:v24];
     }
 
     else
     {
-      v25 = [(AVPlaybackControlsController *)self playerController];
-      [v25 seekToTime:a3];
+      playerController2 = [(AVPlaybackControlsController *)self playerController];
+      [playerController2 seekToTime:time];
     }
   }
 
@@ -4024,17 +4024,17 @@ LABEL_23:
 {
   [(AVPlaybackControlsController *)self setShouldIgnoreTimeResolverUpdates:1];
   [(AVPlaybackControlsController *)self setPlaybackSuspendedForScrubbing:[(AVPlaybackControlsController *)self playButtonsShowPauseGlyph]];
-  v3 = [(AVPlaybackControlsController *)self playerController];
-  [v3 beginScrubbing:self];
+  playerController = [(AVPlaybackControlsController *)self playerController];
+  [playerController beginScrubbing:self];
 
   [(AVPlaybackControlsController *)self _updateOrCreateTimeResolverIfNeeded];
 }
 
-- (void)transportControls:(id)a3 scrubberDidEndScrubbing:(id)a4
+- (void)transportControls:(id)controls scrubberDidEndScrubbing:(id)scrubbing
 {
-  v5 = a4;
-  v6 = [(AVPlaybackControlsController *)self playerController];
-  [v6 endScrubbing:v5];
+  scrubbingCopy = scrubbing;
+  playerController = [(AVPlaybackControlsController *)self playerController];
+  [playerController endScrubbing:scrubbingCopy];
 
   [(AVPlaybackControlsController *)self setPlaybackSuspendedForScrubbing:0];
   [(AVPlaybackControlsController *)self _updateOrCreateTimeResolverIfNeeded];
@@ -4042,18 +4042,18 @@ LABEL_23:
   [(AVPlaybackControlsController *)self setShouldIgnoreTimeResolverUpdates:0];
 }
 
-- (void)transportControls:(id)a3 scrubberDidScrub:(id)a4
+- (void)transportControls:(id)controls scrubberDidScrub:(id)scrub
 {
-  v12 = a4;
-  [v12 value];
+  scrubCopy = scrub;
+  [scrubCopy value];
   v6 = v5;
-  if ([v12 isTracking])
+  if ([scrubCopy isTracking])
   {
-    [v12 resolution];
+    [scrubCopy resolution];
     v8 = v7;
-    v9 = [(AVPlaybackControlsController *)self playbackControlsView];
-    v10 = [v9 traitCollection];
-    [v10 displayScale];
+    playbackControlsView = [(AVPlaybackControlsController *)self playbackControlsView];
+    traitCollection = [playbackControlsView traitCollection];
+    [traitCollection displayScale];
     [(AVPlaybackControlsController *)self scrubToTime:v6 resolution:v8 * v11];
   }
 
@@ -4063,28 +4063,28 @@ LABEL_23:
   }
 }
 
-- (void)transportControls:(id)a3 scrubberDidBeginScrubbing:(id)a4
+- (void)transportControls:(id)controls scrubberDidBeginScrubbing:(id)scrubbing
 {
-  v5 = a4;
+  scrubbingCopy = scrubbing;
   [(AVPlaybackControlsController *)self beginScrubbing];
-  v6 = [(AVPlaybackControlsController *)self playerController];
-  [v6 nominalFrameRate];
-  [v5 setEstimatedFrameRate:?];
+  playerController = [(AVPlaybackControlsController *)self playerController];
+  [playerController nominalFrameRate];
+  [scrubbingCopy setEstimatedFrameRate:?];
 }
 
-- (void)transportControlsNeedsLayoutIfNeeded:(id)a3
+- (void)transportControlsNeedsLayoutIfNeeded:(id)needed
 {
-  v4 = [(AVPlaybackControlsController *)self playbackControlsView];
-  [v4 setNeedsLayout];
+  playbackControlsView = [(AVPlaybackControlsController *)self playbackControlsView];
+  [playbackControlsView setNeedsLayout];
 
-  v5 = [(AVPlaybackControlsController *)self playbackControlsView];
-  [v5 layoutIfNeeded];
+  playbackControlsView2 = [(AVPlaybackControlsController *)self playbackControlsView];
+  [playbackControlsView2 layoutIfNeeded];
 }
 
-- (CGSize)playerViewControllerContentViewContentDimensions:(id)a3
+- (CGSize)playerViewControllerContentViewContentDimensions:(id)dimensions
 {
-  v3 = [(AVPlaybackControlsController *)self playerController];
-  [v3 contentDimensions];
+  playerController = [(AVPlaybackControlsController *)self playerController];
+  [playerController contentDimensions];
   v5 = v4;
   v7 = v6;
 
@@ -4095,48 +4095,48 @@ LABEL_23:
   return result;
 }
 
-- (void)playerViewControllerContentViewDidUpdateScrollingStatus:(id)a3
+- (void)playerViewControllerContentViewDidUpdateScrollingStatus:(id)status
 {
-  v3 = [(AVPlaybackControlsController *)self playerViewController];
-  [v3 performInitialSetupIfNeededAndPossible];
+  playerViewController = [(AVPlaybackControlsController *)self playerViewController];
+  [playerViewController performInitialSetupIfNeededAndPossible];
 }
 
-- (id)playerViewControllerContentViewOverrideLayoutClass:(id)a3
+- (id)playerViewControllerContentViewOverrideLayoutClass:(id)class
 {
-  v3 = [(AVPlaybackControlsController *)self playerViewController];
-  v4 = [v3 presentationContext];
+  playerViewController = [(AVPlaybackControlsController *)self playerViewController];
+  presentationContext = [playerViewController presentationContext];
 
-  if ([v4 hasActiveTransition])
+  if ([presentationContext hasActiveTransition])
   {
-    v5 = [v4 sourceView];
+    sourceView = [presentationContext sourceView];
 
-    v6 = [v4 currentTransition];
-    v7 = [v6 initialInterfaceOrientation];
+    currentTransition = [presentationContext currentTransition];
+    initialInterfaceOrientation = [currentTransition initialInterfaceOrientation];
 
-    v8 = [v4 currentTransition];
-    v9 = [v8 finalInterfaceOrientation];
+    currentTransition2 = [presentationContext currentTransition];
+    finalInterfaceOrientation = [currentTransition2 finalInterfaceOrientation];
 
-    v10 = [v4 isPresenting];
-    v11 = [v4 isDismissing];
-    v12 = [v4 presentedViewController];
-    v13 = [v12 transitionCoordinator];
-    v14 = [v13 isCancelled];
+    isPresenting = [presentationContext isPresenting];
+    isDismissing = [presentationContext isDismissing];
+    presentedViewController = [presentationContext presentedViewController];
+    transitionCoordinator = [presentedViewController transitionCoordinator];
+    isCancelled = [transitionCoordinator isCancelled];
 
-    v15 = [v4 presentedViewController];
-    v16 = [v15 transitionCoordinator];
-    v17 = [v16 isInteractive];
+    presentedViewController2 = [presentationContext presentedViewController];
+    transitionCoordinator2 = [presentedViewController2 transitionCoordinator];
+    isInteractive = [transitionCoordinator2 isInteractive];
 
-    if ((v14 | v17))
+    if ((isCancelled | isInteractive))
     {
-      v18 = v10;
+      v18 = isPresenting;
     }
 
     else
     {
-      v18 = v11;
+      v18 = isDismissing;
     }
 
-    if (!v5)
+    if (!sourceView)
     {
       v18 = 0;
     }
@@ -4148,14 +4148,14 @@ LABEL_23:
 
     else
     {
-      if ((v14 | v17))
+      if ((isCancelled | isInteractive))
       {
-        v20 = v7;
+        v20 = initialInterfaceOrientation;
       }
 
       else
       {
-        v20 = v9;
+        v20 = finalInterfaceOrientation;
       }
 
       if ((v20 - 1) >= 2)
@@ -4180,54 +4180,54 @@ LABEL_23:
   return v19;
 }
 
-- (BOOL)playerViewControllerContentViewIsBeingTransitionedFromFullScreen:(id)a3
+- (BOOL)playerViewControllerContentViewIsBeingTransitionedFromFullScreen:(id)screen
 {
-  v4 = [(AVPlaybackControlsController *)self playerViewController];
-  v5 = [v4 fullScreenViewController];
-  v6 = v5;
-  if (v5)
+  playerViewController = [(AVPlaybackControlsController *)self playerViewController];
+  fullScreenViewController = [playerViewController fullScreenViewController];
+  v6 = fullScreenViewController;
+  if (fullScreenViewController)
   {
-    v7 = v5;
+    playerViewController2 = fullScreenViewController;
   }
 
   else
   {
-    v7 = [(AVPlaybackControlsController *)self playerViewController];
+    playerViewController2 = [(AVPlaybackControlsController *)self playerViewController];
   }
 
-  v8 = v7;
+  v8 = playerViewController2;
 
-  v9 = [v8 isBeingDismissed];
-  return v9;
+  isBeingDismissed = [v8 isBeingDismissed];
+  return isBeingDismissed;
 }
 
-- (BOOL)playerViewControllerContentViewHasActiveTransition:(id)a3
+- (BOOL)playerViewControllerContentViewHasActiveTransition:(id)transition
 {
-  v3 = [(AVPlaybackControlsController *)self playerViewController];
-  v4 = [v3 hasActiveTransition];
+  playerViewController = [(AVPlaybackControlsController *)self playerViewController];
+  hasActiveTransition = [playerViewController hasActiveTransition];
 
-  return v4;
+  return hasActiveTransition;
 }
 
-- (void)playerViewControllerContentViewDidChangeVideoGravity:(id)a3
+- (void)playerViewControllerContentViewDidChangeVideoGravity:(id)gravity
 {
-  v4 = [(AVPlaybackControlsController *)self playerViewController];
-  v5 = [v4 videoGravity];
+  playerViewController = [(AVPlaybackControlsController *)self playerViewController];
+  videoGravity = [playerViewController videoGravity];
 
-  if (v5)
+  if (videoGravity)
   {
-    v6 = [(AVPlaybackControlsController *)self playerViewController];
-    v7 = [v6 videoGravity];
-    -[AVPlaybackControlsController setVideoScaled:](self, "setVideoScaled:", [v7 isEqualToString:*MEMORY[0x1E69874E8]] ^ 1);
+    playerViewController2 = [(AVPlaybackControlsController *)self playerViewController];
+    videoGravity2 = [playerViewController2 videoGravity];
+    -[AVPlaybackControlsController setVideoScaled:](self, "setVideoScaled:", [videoGravity2 isEqualToString:*MEMORY[0x1E69874E8]] ^ 1);
   }
 
   [(AVPlaybackControlsController *)self _updateVideoGravityButtonType];
 }
 
-- (BOOL)playerViewControllerContentViewShouldApplyAutomaticVideoGravity:(id)a3
+- (BOOL)playerViewControllerContentViewShouldApplyAutomaticVideoGravity:(id)gravity
 {
-  v4 = a3;
-  if (![v4 canAutomaticallyZoomLetterboxVideos] || !objc_msgSend(v4, "isCoveringWindow") || (objc_msgSend(v4, "traitCollection"), v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "displayCornerRadius"), v7 = v6, v5, v7 <= 0.0) || ((-[AVPlaybackControlsController playerController](self, "playerController"), v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "contentDimensions"), v10 = v9, v12 = v11, v8, v12 <= 0.0) ? (v13 = NAN) : (v13 = v10 / v12), (objc_msgSend(v4, "bounds"), v15 = v14, v17 = v16, v19 = v18, v21 = v20, objc_msgSend(v4, "edgeInsetsForLetterboxedContent"), v24 = v21 - (v22 + v23), v27 = v19 - (v25 + v26), v28 = v17 + v22, v29 = v15 + v25, v37.origin.x = v29, v37.origin.y = v28, v37.size.width = v27, v37.size.height = v24, CGRectIsEmpty(v37)) || (objc_msgSend(v4, "bounds"), CGRectIsEmpty(v38)) || (objc_msgSend(MEMORY[0x1E69DCEB0], "avkit_mainScreen"), v30 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v30, "nativeBounds"), IsEmpty = CGRectIsEmpty(v39), v30, IsEmpty) || (objc_msgSend(v4, "bounds"), Width = CGRectGetWidth(v40), objc_msgSend(v4, "bounds"), Height = CGRectGetHeight(v41), v42.origin.x = v29, v42.origin.y = v28, v42.size.width = v27, v42.size.height = v24, CGRectGetMinY(v42) <= 0.0)))
+  gravityCopy = gravity;
+  if (![gravityCopy canAutomaticallyZoomLetterboxVideos] || !objc_msgSend(gravityCopy, "isCoveringWindow") || (objc_msgSend(gravityCopy, "traitCollection"), v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "displayCornerRadius"), v7 = v6, v5, v7 <= 0.0) || ((-[AVPlaybackControlsController playerController](self, "playerController"), v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "contentDimensions"), v10 = v9, v12 = v11, v8, v12 <= 0.0) ? (v13 = NAN) : (v13 = v10 / v12), (objc_msgSend(gravityCopy, "bounds"), v15 = v14, v17 = v16, v19 = v18, v21 = v20, objc_msgSend(gravityCopy, "edgeInsetsForLetterboxedContent"), v24 = v21 - (v22 + v23), v27 = v19 - (v25 + v26), v28 = v17 + v22, v29 = v15 + v25, v37.origin.x = v29, v37.origin.y = v28, v37.size.width = v27, v37.size.height = v24, CGRectIsEmpty(v37)) || (objc_msgSend(gravityCopy, "bounds"), CGRectIsEmpty(v38)) || (objc_msgSend(MEMORY[0x1E69DCEB0], "avkit_mainScreen"), v30 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v30, "nativeBounds"), IsEmpty = CGRectIsEmpty(v39), v30, IsEmpty) || (objc_msgSend(gravityCopy, "bounds"), Width = CGRectGetWidth(v40), objc_msgSend(gravityCopy, "bounds"), Height = CGRectGetHeight(v41), v42.origin.x = v29, v42.origin.y = v28, v42.size.width = v27, v42.size.height = v24, CGRectGetMinY(v42) <= 0.0)))
   {
     v35 = 0;
   }
@@ -4246,29 +4246,29 @@ LABEL_23:
   return v35;
 }
 
-- (void)playerViewControllerContentViewDidLayoutSubviews:(id)a3
+- (void)playerViewControllerContentViewDidLayoutSubviews:(id)subviews
 {
-  v15 = a3;
-  v4 = [(AVPlaybackControlsController *)self playbackControlsView];
-  v5 = [v4 showsPlaybackControls];
-  v6 = [v4 volumeControlsContainer];
-  v7 = [v6 isCollapsed];
+  subviewsCopy = subviews;
+  playbackControlsView = [(AVPlaybackControlsController *)self playbackControlsView];
+  showsPlaybackControls = [playbackControlsView showsPlaybackControls];
+  volumeControlsContainer = [playbackControlsView volumeControlsContainer];
+  isCollapsed = [volumeControlsContainer isCollapsed];
 
-  v8 = [v4 volumeButton];
-  if ([v8 isTracking])
+  volumeButton = [playbackControlsView volumeButton];
+  if ([volumeButton isTracking])
   {
-    v9 = 1;
+    isTracking = 1;
   }
 
   else
   {
-    v10 = [v4 volumeSlider];
-    v9 = [v10 isTracking];
+    volumeSlider = [playbackControlsView volumeSlider];
+    isTracking = [volumeSlider isTracking];
   }
 
-  if (v7 & 1 | ((v5 & 1) == 0))
+  if (isCollapsed & 1 | ((showsPlaybackControls & 1) == 0))
   {
-    v11 = [(AVPlaybackControlsController *)self _prefersVolumeSliderExpandedAutomatically]| v9;
+    v11 = [(AVPlaybackControlsController *)self _prefersVolumeSliderExpandedAutomatically]| isTracking;
   }
 
   else
@@ -4276,58 +4276,58 @@ LABEL_23:
     v11 = 1;
   }
 
-  if ([v15 avkit_isDescendantOfNonPagingScrollView])
+  if ([subviewsCopy avkit_isDescendantOfNonPagingScrollView])
   {
-    v12 = 0;
+    isCoveringWindow = 0;
   }
 
   else
   {
-    v12 = [v15 isCoveringWindow];
+    isCoveringWindow = [subviewsCopy isCoveringWindow];
   }
 
-  [(AVPlaybackControlsController *)self setCoveringWindow:v12];
+  [(AVPlaybackControlsController *)self setCoveringWindow:isCoveringWindow];
   [(AVPlaybackControlsController *)self _updateOrCreateTimeResolverIfNeeded];
   [(AVPlaybackControlsController *)self _updateVolumeButtonInclusionAndPrefersVolumeSliderExpandedWithPreferredExpansion:v11 & 1];
-  v13 = [v15 playbackContentContainerView];
-  [v13 frame];
+  playbackContentContainerView = [subviewsCopy playbackContentContainerView];
+  [playbackContentContainerView frame];
   [(AVPlaybackControlsController *)self setPlaybackViewFrame:?];
 
-  v14 = [(AVPlaybackControlsController *)self pictureInPictureController];
-  [v14 contentSourceVideoRectInWindowChanged];
+  pictureInPictureController = [(AVPlaybackControlsController *)self pictureInPictureController];
+  [pictureInPictureController contentSourceVideoRectInWindowChanged];
 
   [(AVPlaybackControlsController *)self _updateRouteDetectionEnabled];
 }
 
-- (void)playerViewControllerContentViewDidMoveToSuperviewOrWindow:(id)a3
+- (void)playerViewControllerContentViewDidMoveToSuperviewOrWindow:(id)window
 {
-  v4 = a3;
-  v5 = [(AVPlaybackControlsController *)self playerViewController];
-  [v5 performInitialSetupIfNeededAndPossible];
+  windowCopy = window;
+  playerViewController = [(AVPlaybackControlsController *)self playerViewController];
+  [playerViewController performInitialSetupIfNeededAndPossible];
 
-  v6 = [(AVPlaybackControlsController *)self pictureInPictureController];
-  [v6 contentSourceVideoRectInWindowChanged];
+  pictureInPictureController = [(AVPlaybackControlsController *)self pictureInPictureController];
+  [pictureInPictureController contentSourceVideoRectInWindowChanged];
 
-  v7 = [(AVPlaybackControlsController *)self windowSceneSessionIdentifier];
-  v8 = [v4 window];
-  v9 = [v8 windowScene];
-  v10 = [v9 session];
-  v11 = [v10 persistentIdentifier];
-  [(AVPlaybackControlsController *)self setWindowSceneSessionIdentifier:v11];
+  windowSceneSessionIdentifier = [(AVPlaybackControlsController *)self windowSceneSessionIdentifier];
+  window = [windowCopy window];
+  windowScene = [window windowScene];
+  session = [windowScene session];
+  persistentIdentifier = [session persistentIdentifier];
+  [(AVPlaybackControlsController *)self setWindowSceneSessionIdentifier:persistentIdentifier];
 
-  v12 = [(AVPlaybackControlsController *)self volumeController];
-  v13 = [(AVPlaybackControlsController *)self uniqueIdentifer];
-  [v12 setClientWithIdentifier:v13 forWindowSceneSessionWithIdentifier:v7];
+  volumeController = [(AVPlaybackControlsController *)self volumeController];
+  uniqueIdentifer = [(AVPlaybackControlsController *)self uniqueIdentifer];
+  [volumeController setClientWithIdentifier:uniqueIdentifer forWindowSceneSessionWithIdentifier:windowSceneSessionIdentifier];
 
-  v14 = [(AVPlaybackControlsController *)self volumeController];
-  [v14 setPrefersSystemVolumeHUDHidden:{-[AVPlaybackControlsController isFullScreen](self, "isFullScreen")}];
+  volumeController2 = [(AVPlaybackControlsController *)self volumeController];
+  [volumeController2 setPrefersSystemVolumeHUDHidden:{-[AVPlaybackControlsController isFullScreen](self, "isFullScreen")}];
 
-  v15 = [v4 window];
+  window2 = [windowCopy window];
 
   objc_opt_class();
-  LOBYTE(v4) = objc_opt_isKindOfClass();
+  LOBYTE(windowCopy) = objc_opt_isKindOfClass();
 
-  if (v4)
+  if (windowCopy)
   {
     v16 = _AVLog();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -4340,22 +4340,22 @@ LABEL_23:
   [(AVPlaybackControlsController *)self _updateRouteDetectionEnabled];
 }
 
-- (void)playerViewControllerContentViewPlaybackContentContainerViewChanged:(id)a3
+- (void)playerViewControllerContentViewPlaybackContentContainerViewChanged:(id)changed
 {
-  v3 = [(AVPlaybackControlsController *)self playerViewController];
-  [v3 activeContentViewDidChange];
+  playerViewController = [(AVPlaybackControlsController *)self playerViewController];
+  [playerViewController activeContentViewDidChange];
 }
 
-- (void)turboModePlaybackControlsPlaceholderViewDidLoad:(id)a3
+- (void)turboModePlaybackControlsPlaceholderViewDidLoad:(id)load
 {
-  v4 = a3;
-  [(AVPlaybackControlsController *)self setTurboModePlaybackControlsPlaceholderView:v4];
-  [v4 setPreferredUnobscuredArea:{-[AVPlaybackControlsController preferredUnobscuredArea](self, "preferredUnobscuredArea")}];
-  v5 = [(AVPlaybackControlsController *)self playerViewController];
-  v6 = v5;
-  if (v5)
+  loadCopy = load;
+  [(AVPlaybackControlsController *)self setTurboModePlaybackControlsPlaceholderView:loadCopy];
+  [loadCopy setPreferredUnobscuredArea:{-[AVPlaybackControlsController preferredUnobscuredArea](self, "preferredUnobscuredArea")}];
+  playerViewController = [(AVPlaybackControlsController *)self playerViewController];
+  v6 = playerViewController;
+  if (playerViewController)
   {
-    [v5 overrideTransformForProminentPlayButton];
+    [playerViewController overrideTransformForProminentPlayButton];
   }
 
   else
@@ -4363,149 +4363,149 @@ LABEL_23:
     memset(v10, 0, sizeof(v10));
   }
 
-  [v4 setOverrideTransformForProminentPlayButton:v10];
+  [loadCopy setOverrideTransformForProminentPlayButton:v10];
 
-  v7 = [(AVPlaybackControlsController *)self playerViewController];
-  v8 = [v7 overrideLayoutMarginsWhenEmbeddedInline];
-  [v4 setOverrideLayoutMarginsWhenEmbeddedInline:v8];
+  playerViewController2 = [(AVPlaybackControlsController *)self playerViewController];
+  overrideLayoutMarginsWhenEmbeddedInline = [playerViewController2 overrideLayoutMarginsWhenEmbeddedInline];
+  [loadCopy setOverrideLayoutMarginsWhenEmbeddedInline:overrideLayoutMarginsWhenEmbeddedInline];
 
-  [v4 setHidden:{-[AVPlaybackControlsController showsPlaybackControls](self, "showsPlaybackControls") ^ 1}];
-  v9 = [(AVPlaybackControlsController *)self playerController];
-  [v4 setPlayerController:v9];
+  [loadCopy setHidden:{-[AVPlaybackControlsController showsPlaybackControls](self, "showsPlaybackControls") ^ 1}];
+  playerController = [(AVPlaybackControlsController *)self playerController];
+  [loadCopy setPlayerController:playerController];
 }
 
-- (void)playbackControlsViewDidLoad:(id)a3
+- (void)playbackControlsViewDidLoad:(id)load
 {
-  v4 = a3;
+  loadCopy = load;
   [(AVPlaybackControlsController *)self setResumingUpdates:1];
-  [(AVPlaybackControlsController *)self setPlaybackControlsView:v4];
+  [(AVPlaybackControlsController *)self setPlaybackControlsView:loadCopy];
   if (!self->_showsPlaybackControls && ![(AVPlaybackControlsController *)self isHidingItemsForTransition])
   {
     [(AVPlaybackControlsController *)self beginHidingItemsForTransition];
   }
 
-  v5 = [(AVPlaybackControlsController *)self turboModePlaybackControlsPlaceholderView];
-  [v5 removeFromSuperview];
+  turboModePlaybackControlsPlaceholderView = [(AVPlaybackControlsController *)self turboModePlaybackControlsPlaceholderView];
+  [turboModePlaybackControlsPlaceholderView removeFromSuperview];
 
-  v6 = [(AVPlaybackControlsController *)self playerController];
-  -[AVPlaybackControlsController _updatePlaybackControlsVisibilityWantsPlaybackControlsVisible:](self, "_updatePlaybackControlsVisibilityWantsPlaybackControlsVisible:", [v6 isPlaying]);
+  playerController = [(AVPlaybackControlsController *)self playerController];
+  -[AVPlaybackControlsController _updatePlaybackControlsVisibilityWantsPlaybackControlsVisible:](self, "_updatePlaybackControlsVisibilityWantsPlaybackControlsVisible:", [playerController isPlaying]);
 
   v7 = objc_alloc_init(AVRouteDetectorCoordinator);
   routeDetectorCoordinator = self->_routeDetectorCoordinator;
   self->_routeDetectorCoordinator = v7;
 
   [(AVPlaybackControlsController *)self startUpdatesIfNeeded];
-  [v4 setFullScreen:{-[AVPlaybackControlsController isFullScreen](self, "isFullScreen")}];
-  v9 = [(AVPlaybackControlsController *)self playerViewController];
-  v10 = [v9 contentView];
-  v11 = [v10 playbackContentContainerView];
-  [v11 frame];
+  [loadCopy setFullScreen:{-[AVPlaybackControlsController isFullScreen](self, "isFullScreen")}];
+  playerViewController = [(AVPlaybackControlsController *)self playerViewController];
+  contentView = [playerViewController contentView];
+  playbackContentContainerView = [contentView playbackContentContainerView];
+  [playbackContentContainerView frame];
   [(AVPlaybackControlsController *)self setPlaybackViewFrame:?];
 
-  [v4 setPreferredUnobscuredArea:{-[AVPlaybackControlsController preferredUnobscuredArea](self, "preferredUnobscuredArea")}];
-  v12 = [(AVPlaybackControlsController *)self playerViewController];
-  [v4 setVisibilityDelegate:v12];
+  [loadCopy setPreferredUnobscuredArea:{-[AVPlaybackControlsController preferredUnobscuredArea](self, "preferredUnobscuredArea")}];
+  playerViewController2 = [(AVPlaybackControlsController *)self playerViewController];
+  [loadCopy setVisibilityDelegate:playerViewController2];
 
-  v13 = [v4 standardPlayPauseButton];
-  [v13 setImageName:@"play.fill"];
+  standardPlayPauseButton = [loadCopy standardPlayPauseButton];
+  [standardPlayPauseButton setImageName:@"play.fill"];
 
-  v14 = [v4 standardPlayPauseButton];
-  [v14 setAlternateImageName:@"pause.fill"];
+  standardPlayPauseButton2 = [loadCopy standardPlayPauseButton];
+  [standardPlayPauseButton2 setAlternateImageName:@"pause.fill"];
 
-  v15 = [v4 standardPlayPauseButton];
+  standardPlayPauseButton3 = [loadCopy standardPlayPauseButton];
   v16 = *MEMORY[0x1E69DB970];
   v17 = [MEMORY[0x1E69DB878] avkit_nonScalingFontWithTextStyle:*MEMORY[0x1E69DDDB8] weight:*MEMORY[0x1E69DB970]];
-  [v15 setAlternateFullScreenFont:v17];
+  [standardPlayPauseButton3 setAlternateFullScreenFont:v17];
 
-  v18 = [v4 standardPlayPauseButton];
-  [v18 setFullscreenAlternateImagePadding:1.0];
+  standardPlayPauseButton4 = [loadCopy standardPlayPauseButton];
+  [standardPlayPauseButton4 setFullscreenAlternateImagePadding:1.0];
 
-  v19 = [v4 standardPlayPauseButton];
-  v20 = [(AVPlaybackControlsController *)self playerViewController];
-  v21 = [v20 traitCollection];
-  v22 = [v21 userInterfaceIdiom];
+  standardPlayPauseButton5 = [loadCopy standardPlayPauseButton];
+  playerViewController3 = [(AVPlaybackControlsController *)self playerViewController];
+  traitCollection = [playerViewController3 traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
   v23 = 0.5;
-  if (v22 == 5)
+  if (userInterfaceIdiom == 5)
   {
     v23 = 0.0;
   }
 
-  [v19 setAlternateImagePadding:v23];
+  [standardPlayPauseButton5 setAlternateImagePadding:v23];
 
-  v24 = [v4 prominentPlayButton];
-  [v24 setImageName:@"play.fill"];
+  prominentPlayButton = [loadCopy prominentPlayButton];
+  [prominentPlayButton setImageName:@"play.fill"];
 
-  v25 = [v4 prominentPlayButton];
+  prominentPlayButton2 = [loadCopy prominentPlayButton];
   v26 = [MEMORY[0x1E69DB878] avkit_nonScalingFontWithTextStyle:*MEMORY[0x1E69DDD58] weight:v16];
-  [v25 setInlineFont:v26];
+  [prominentPlayButton2 setInlineFont:v26];
 
-  v27 = [v4 prominentPlayButton];
-  [v27 setMultipleTouchesEndsTracking:1];
+  prominentPlayButton3 = [loadCopy prominentPlayButton];
+  [prominentPlayButton3 setMultipleTouchesEndsTracking:1];
 
-  v28 = [v4 skipBackButton];
-  [v28 setImageName:@"gobackward.15"];
+  skipBackButton = [loadCopy skipBackButton];
+  [skipBackButton setImageName:@"gobackward.15"];
 
-  v29 = [v4 skipForwardButton];
-  [v29 setImageName:@"goforward.15"];
+  skipForwardButton = [loadCopy skipForwardButton];
+  [skipForwardButton setImageName:@"goforward.15"];
 
-  v30 = [v4 skipForwardButton];
-  [v30 setAlternateImageName:@"forward.end.alt.fill"];
+  skipForwardButton2 = [loadCopy skipForwardButton];
+  [skipForwardButton2 setAlternateImageName:@"forward.end.alt.fill"];
 
-  v31 = [v4 skipForwardButton];
+  skipForwardButton3 = [loadCopy skipForwardButton];
   v32 = [MEMORY[0x1E69DB878] avkit_nonScalingFontWithTextStyle:*MEMORY[0x1E69DDDC8] weight:v16];
-  [v31 setAlternateFullScreenFont:v32];
+  [skipForwardButton3 setAlternateFullScreenFont:v32];
 
-  v33 = [v4 startLeftwardContentTransitionButton];
-  [v33 setImageName:@"backward.end.fill"];
+  startLeftwardContentTransitionButton = [loadCopy startLeftwardContentTransitionButton];
+  [startLeftwardContentTransitionButton setImageName:@"backward.end.fill"];
 
-  v34 = [v4 startRightwardContentTransitionButton];
-  [v34 setImageName:@"forward.end.fill"];
+  startRightwardContentTransitionButton = [loadCopy startRightwardContentTransitionButton];
+  [startRightwardContentTransitionButton setImageName:@"forward.end.fill"];
 
-  v35 = [v4 mediaSelectionButton];
-  [v35 setImageName:@"captions.bubble"];
+  mediaSelectionButton = [loadCopy mediaSelectionButton];
+  [mediaSelectionButton setImageName:@"captions.bubble"];
 
-  v36 = [v4 pictureInPictureButton];
-  [v36 setImageName:@"pip.enter"];
+  pictureInPictureButton = [loadCopy pictureInPictureButton];
+  [pictureInPictureButton setImageName:@"pip.enter"];
 
-  v37 = [v4 fullScreenButton];
-  [v37 setImageName:@"arrow.up.left.and.arrow.down.right"];
+  fullScreenButton = [loadCopy fullScreenButton];
+  [fullScreenButton setImageName:@"arrow.up.left.and.arrow.down.right"];
 
-  v38 = [v4 doneButton];
-  [v38 setImageName:@"xmark"];
+  doneButton = [loadCopy doneButton];
+  [doneButton setImageName:@"xmark"];
 
-  v39 = [v4 volumeButton];
-  v40 = [(AVPlaybackControlsController *)self _volumeButtonMicaPackageState];
-  [v39 setMicaPackageStateName:v40];
+  volumeButton = [loadCopy volumeButton];
+  _volumeButtonMicaPackageState = [(AVPlaybackControlsController *)self _volumeButtonMicaPackageState];
+  [volumeButton setMicaPackageStateName:_volumeButtonMicaPackageState];
 
-  v41 = [v4 routePickerView];
-  [v41 setDelegate:self];
+  routePickerView = [loadCopy routePickerView];
+  [routePickerView setDelegate:self];
 
-  v42 = [v4 controlOverflowButton];
-  [v42 setDelegate:self];
+  controlOverflowButton = [loadCopy controlOverflowButton];
+  [controlOverflowButton setDelegate:self];
 
-  v43 = [v4 doneButton];
-  v44 = [(AVPlaybackControlsController *)self playerViewController];
-  [v43 addTarget:v44 action:sel_doneButtonTapped_ forControlEvents:64];
+  doneButton2 = [loadCopy doneButton];
+  playerViewController4 = [(AVPlaybackControlsController *)self playerViewController];
+  [doneButton2 addTarget:playerViewController4 action:sel_doneButtonTapped_ forControlEvents:64];
 
-  v45 = [v4 fullScreenButton];
-  v46 = [(AVPlaybackControlsController *)self playerViewController];
-  [v45 addTarget:v46 action:sel_enterFullScreen_ forControlEvents:64];
+  fullScreenButton2 = [loadCopy fullScreenButton];
+  playerViewController5 = [(AVPlaybackControlsController *)self playerViewController];
+  [fullScreenButton2 addTarget:playerViewController5 action:sel_enterFullScreen_ forControlEvents:64];
 
-  v47 = [v4 videoGravityButton];
-  v48 = [(AVPlaybackControlsController *)self playerViewController];
-  [v47 addTarget:v48 action:sel_videoGravityButtonTapped_ forControlEvents:64];
+  videoGravityButton = [loadCopy videoGravityButton];
+  playerViewController6 = [(AVPlaybackControlsController *)self playerViewController];
+  [videoGravityButton addTarget:playerViewController6 action:sel_videoGravityButtonTapped_ forControlEvents:64];
 
-  v49 = [v4 standardPlayPauseButton];
-  v50 = [(AVPlaybackControlsController *)self playerViewController];
-  [v49 addTarget:v50 action:sel_togglePlayback_ forControlEvents:64];
+  standardPlayPauseButton6 = [loadCopy standardPlayPauseButton];
+  playerViewController7 = [(AVPlaybackControlsController *)self playerViewController];
+  [standardPlayPauseButton6 addTarget:playerViewController7 action:sel_togglePlayback_ forControlEvents:64];
 
-  v51 = [v4 pictureInPictureButton];
-  v52 = [(AVPlaybackControlsController *)self playerViewController];
-  [v51 addTarget:v52 action:sel_pictureInPictureButtonTapped_ forControlEvents:64];
+  pictureInPictureButton2 = [loadCopy pictureInPictureButton];
+  playerViewController8 = [(AVPlaybackControlsController *)self playerViewController];
+  [pictureInPictureButton2 addTarget:playerViewController8 action:sel_pictureInPictureButtonTapped_ forControlEvents:64];
 
-  v53 = [v4 mediaSelectionButton];
-  v54 = [(AVPlaybackControlsController *)self playerViewController];
-  [v53 addTarget:v54 action:sel_mediaSelectionButtonTapped_ forControlEvents:64];
+  mediaSelectionButton2 = [loadCopy mediaSelectionButton];
+  playerViewController9 = [(AVPlaybackControlsController *)self playerViewController];
+  [mediaSelectionButton2 addTarget:playerViewController9 action:sel_mediaSelectionButtonTapped_ forControlEvents:64];
 
   objc_initWeak(&location, self);
   v55 = MEMORY[0x1E69DC628];
@@ -4515,112 +4515,112 @@ LABEL_23:
   v116[3] = &unk_1E7209230;
   objc_copyWeak(&v117, &location);
   v56 = [v55 actionWithHandler:v116];
-  v57 = [(AVPlaybackControlsController *)self playbackControlsView];
-  v58 = [v57 playbackSpeedButton];
-  [v58 setImageName:@"speedometer"];
+  playbackControlsView = [(AVPlaybackControlsController *)self playbackControlsView];
+  playbackSpeedButton = [playbackControlsView playbackSpeedButton];
+  [playbackSpeedButton setImageName:@"speedometer"];
 
-  v59 = [(AVPlaybackControlsController *)self playbackControlsView];
-  v60 = [v59 playbackSpeedButton];
+  playbackControlsView2 = [(AVPlaybackControlsController *)self playbackControlsView];
+  playbackSpeedButton2 = [playbackControlsView2 playbackSpeedButton];
   v61 = objc_loadWeakRetained(&location);
-  v62 = [v61 playbackRateMenuController];
-  v63 = [v62 menu];
-  [v60 setMenu:v63];
+  playbackRateMenuController = [v61 playbackRateMenuController];
+  menu = [playbackRateMenuController menu];
+  [playbackSpeedButton2 setMenu:menu];
 
-  v64 = [(AVPlaybackControlsController *)self playbackControlsView];
-  v65 = [v64 playbackSpeedButton];
-  [v65 addAction:v56 forControlEvents:0x4000];
+  playbackControlsView3 = [(AVPlaybackControlsController *)self playbackControlsView];
+  playbackSpeedButton3 = [playbackControlsView3 playbackSpeedButton];
+  [playbackSpeedButton3 addAction:v56 forControlEvents:0x4000];
 
-  v66 = [(AVPlaybackControlsController *)self playbackControlsView];
-  v67 = [v66 playbackSpeedButton];
-  [v67 addTarget:self action:sel_playbackSpeedButtonTapped_ forControlEvents:64];
+  playbackControlsView4 = [(AVPlaybackControlsController *)self playbackControlsView];
+  playbackSpeedButton4 = [playbackControlsView4 playbackSpeedButton];
+  [playbackSpeedButton4 addTarget:self action:sel_playbackSpeedButtonTapped_ forControlEvents:64];
 
-  v68 = [v4 skipBackButton];
-  [v68 addTarget:self action:sel_skipButtonTouchUpInside_ forControlEvents:64];
+  skipBackButton2 = [loadCopy skipBackButton];
+  [skipBackButton2 addTarget:self action:sel_skipButtonTouchUpInside_ forControlEvents:64];
 
-  v69 = [v4 skipForwardButton];
-  [v69 addTarget:self action:sel_skipButtonTouchUpInside_ forControlEvents:64];
+  skipForwardButton4 = [loadCopy skipForwardButton];
+  [skipForwardButton4 addTarget:self action:sel_skipButtonTouchUpInside_ forControlEvents:64];
 
-  v70 = [v4 skipBackButton];
-  [v70 addTarget:self action:sel_skipButtonLongPressTriggered_ forControlEvents:0x400000];
+  skipBackButton3 = [loadCopy skipBackButton];
+  [skipBackButton3 addTarget:self action:sel_skipButtonLongPressTriggered_ forControlEvents:0x400000];
 
-  v71 = [v4 skipForwardButton];
-  [v71 addTarget:self action:sel_skipButtonLongPressTriggered_ forControlEvents:0x400000];
+  skipForwardButton5 = [loadCopy skipForwardButton];
+  [skipForwardButton5 addTarget:self action:sel_skipButtonLongPressTriggered_ forControlEvents:0x400000];
 
-  v72 = [v4 skipBackButton];
-  [v72 addTarget:self action:sel_skipButtonLongPressEnded_ forControlEvents:0x800000];
+  skipBackButton4 = [loadCopy skipBackButton];
+  [skipBackButton4 addTarget:self action:sel_skipButtonLongPressEnded_ forControlEvents:0x800000];
 
-  v73 = [v4 skipForwardButton];
-  [v73 addTarget:self action:sel_skipButtonLongPressEnded_ forControlEvents:0x800000];
+  skipForwardButton6 = [loadCopy skipForwardButton];
+  [skipForwardButton6 addTarget:self action:sel_skipButtonLongPressEnded_ forControlEvents:0x800000];
 
-  v74 = [v4 skipBackButton];
-  [v74 addTarget:self action:sel_skipButtonForcePressChanged_ forControlEvents:0x2000000];
+  skipBackButton5 = [loadCopy skipBackButton];
+  [skipBackButton5 addTarget:self action:sel_skipButtonForcePressChanged_ forControlEvents:0x2000000];
 
-  v75 = [v4 skipForwardButton];
-  [v75 addTarget:self action:sel_skipButtonForcePressChanged_ forControlEvents:0x2000000];
+  skipForwardButton7 = [loadCopy skipForwardButton];
+  [skipForwardButton7 addTarget:self action:sel_skipButtonForcePressChanged_ forControlEvents:0x2000000];
 
   [(AVPlaybackControlsController *)self _updateSkipButtonsEnableLongPress];
-  v76 = [v4 startLeftwardContentTransitionButton];
-  [v76 addTarget:self action:sel_startContentTransitionButtonTouchUpInside_ forControlEvents:64];
+  startLeftwardContentTransitionButton2 = [loadCopy startLeftwardContentTransitionButton];
+  [startLeftwardContentTransitionButton2 addTarget:self action:sel_startContentTransitionButtonTouchUpInside_ forControlEvents:64];
 
-  v77 = [v4 startRightwardContentTransitionButton];
-  [v77 addTarget:self action:sel_startContentTransitionButtonTouchUpInside_ forControlEvents:64];
+  startRightwardContentTransitionButton2 = [loadCopy startRightwardContentTransitionButton];
+  [startRightwardContentTransitionButton2 addTarget:self action:sel_startContentTransitionButtonTouchUpInside_ forControlEvents:64];
 
-  v78 = [v4 prominentPlayButton];
-  [v78 addTarget:self action:sel_prominentPlayButtonTouchUpInside_ forControlEvents:64];
+  prominentPlayButton4 = [loadCopy prominentPlayButton];
+  [prominentPlayButton4 addTarget:self action:sel_prominentPlayButtonTouchUpInside_ forControlEvents:64];
 
-  v79 = [v4 volumeButton];
-  [v79 addTarget:self action:sel_volumeButtonTapTriggered_ forControlEvents:0x400000];
+  volumeButton2 = [loadCopy volumeButton];
+  [volumeButton2 addTarget:self action:sel_volumeButtonTapTriggered_ forControlEvents:0x400000];
 
-  v80 = [v4 volumeButton];
-  [v80 addTarget:self action:sel_beginChangingVolume forControlEvents:0x1000000];
+  volumeButton3 = [loadCopy volumeButton];
+  [volumeButton3 addTarget:self action:sel_beginChangingVolume forControlEvents:0x1000000];
 
-  v81 = [v4 volumeButton];
-  [v81 addTarget:self action:sel_volumeButtonLongPressTriggered_ forControlEvents:0x800000];
+  volumeButton4 = [loadCopy volumeButton];
+  [volumeButton4 addTarget:self action:sel_volumeButtonLongPressTriggered_ forControlEvents:0x800000];
 
-  v82 = [v4 volumeButton];
-  [v82 addTarget:self action:sel_volumeButtonPanChanged_ forControlEvents:0x2000000];
+  volumeButton5 = [loadCopy volumeButton];
+  [volumeButton5 addTarget:self action:sel_volumeButtonPanChanged_ forControlEvents:0x2000000];
 
-  v83 = [v4 volumeButton];
-  [v83 addTarget:self action:sel_endChangingVolume forControlEvents:0x4000000];
+  volumeButton6 = [loadCopy volumeButton];
+  [volumeButton6 addTarget:self action:sel_endChangingVolume forControlEvents:0x4000000];
 
-  v84 = [v4 volumeSlider];
-  [v84 addTarget:self action:sel_beginChangingVolume forControlEvents:1];
+  volumeSlider = [loadCopy volumeSlider];
+  [volumeSlider addTarget:self action:sel_beginChangingVolume forControlEvents:1];
 
-  v85 = [v4 volumeSlider];
-  [v85 addTarget:self action:sel_endChangingVolume forControlEvents:448];
+  volumeSlider2 = [loadCopy volumeSlider];
+  [volumeSlider2 addTarget:self action:sel_endChangingVolume forControlEvents:448];
 
-  v86 = [v4 volumeSlider];
-  [v86 addTarget:self action:sel_volumeSliderValueDidChange_ forControlEvents:4096];
+  volumeSlider3 = [loadCopy volumeSlider];
+  [volumeSlider3 addTarget:self action:sel_volumeSliderValueDidChange_ forControlEvents:4096];
 
-  v87 = [v4 transportControlsView];
-  [v87 setDelegate:self];
+  transportControlsView = [loadCopy transportControlsView];
+  [transportControlsView setDelegate:self];
 
-  v88 = [v4 standardPlayPauseButton];
-  [v88 setTintEffectStyle:0];
+  standardPlayPauseButton7 = [loadCopy standardPlayPauseButton];
+  [standardPlayPauseButton7 setTintEffectStyle:0];
 
-  v89 = [v4 prominentPlayButton];
-  [v89 setTintEffectStyle:0];
+  prominentPlayButton5 = [loadCopy prominentPlayButton];
+  [prominentPlayButton5 setTintEffectStyle:0];
 
-  v90 = [v4 skipBackButton];
-  [v90 setTintEffectStyle:0];
+  skipBackButton6 = [loadCopy skipBackButton];
+  [skipBackButton6 setTintEffectStyle:0];
 
-  v91 = [v4 skipForwardButton];
-  [v91 setTintEffectStyle:0];
+  skipForwardButton8 = [loadCopy skipForwardButton];
+  [skipForwardButton8 setTintEffectStyle:0];
 
-  v92 = [v4 startLeftwardContentTransitionButton];
-  [v92 setTintEffectStyle:0];
+  startLeftwardContentTransitionButton3 = [loadCopy startLeftwardContentTransitionButton];
+  [startLeftwardContentTransitionButton3 setTintEffectStyle:0];
 
-  v93 = [v4 startRightwardContentTransitionButton];
-  [v93 setTintEffectStyle:0];
+  startRightwardContentTransitionButton3 = [loadCopy startRightwardContentTransitionButton];
+  [startRightwardContentTransitionButton3 setTintEffectStyle:0];
 
-  v94 = [(AVPlaybackControlsController *)self customControlItems];
-  [v4 setCustomControlItems:v94 animations:&__block_literal_global_212_22157];
+  customControlItems = [(AVPlaybackControlsController *)self customControlItems];
+  [loadCopy setCustomControlItems:customControlItems animations:&__block_literal_global_212_22157];
 
-  v95 = [(AVPlaybackControlsController *)self playerViewController];
-  v96 = v95;
-  if (v95)
+  playerViewController10 = [(AVPlaybackControlsController *)self playerViewController];
+  v96 = playerViewController10;
+  if (playerViewController10)
   {
-    [v95 overrideTransformForProminentPlayButton];
+    [playerViewController10 overrideTransformForProminentPlayButton];
   }
 
   else
@@ -4628,28 +4628,28 @@ LABEL_23:
     memset(v115, 0, sizeof(v115));
   }
 
-  [v4 setOverrideTransformForProminentPlayButton:v115];
+  [loadCopy setOverrideTransformForProminentPlayButton:v115];
 
-  v97 = [(AVPlaybackControlsController *)self playerViewController];
-  v98 = [v97 overrideLayoutMarginsWhenEmbeddedInline];
-  [v4 setOverrideLayoutMarginsWhenEmbeddedInline:v98];
+  playerViewController11 = [(AVPlaybackControlsController *)self playerViewController];
+  overrideLayoutMarginsWhenEmbeddedInline = [playerViewController11 overrideLayoutMarginsWhenEmbeddedInline];
+  [loadCopy setOverrideLayoutMarginsWhenEmbeddedInline:overrideLayoutMarginsWhenEmbeddedInline];
 
   v99 = MEMORY[0x1E69DD250];
   v109 = MEMORY[0x1E69E9820];
   v110 = 3221225472;
   v111 = __60__AVPlaybackControlsController_playbackControlsViewDidLoad___block_invoke_3;
   v112 = &unk_1E7209FB0;
-  v100 = v4;
+  v100 = loadCopy;
   v113 = v100;
-  v114 = self;
+  selfCopy = self;
   [v99 performWithoutAnimation:&v109];
   v101 = [(AVPlaybackControlsController *)self volumeController:v109];
-  v102 = [(AVPlaybackControlsController *)self uniqueIdentifer];
-  v103 = [(AVPlaybackControlsController *)self windowSceneSessionIdentifier];
-  [v101 setClientWithIdentifier:v102 forWindowSceneSessionWithIdentifier:v103];
+  uniqueIdentifer = [(AVPlaybackControlsController *)self uniqueIdentifer];
+  windowSceneSessionIdentifier = [(AVPlaybackControlsController *)self windowSceneSessionIdentifier];
+  [v101 setClientWithIdentifier:uniqueIdentifer forWindowSceneSessionWithIdentifier:windowSceneSessionIdentifier];
 
-  v104 = [(AVPlaybackControlsController *)self volumeController];
-  [v104 setPrefersSystemVolumeHUDHidden:{-[AVPlaybackControlsController isFullScreen](self, "isFullScreen")}];
+  volumeController = [(AVPlaybackControlsController *)self volumeController];
+  [volumeController setPrefersSystemVolumeHUDHidden:{-[AVPlaybackControlsController isFullScreen](self, "isFullScreen")}];
 
   if (!self->_remainingTimeFormatter || !self->_elapsedTimeFormatter)
   {
@@ -4703,27 +4703,27 @@ uint64_t __60__AVPlaybackControlsController_playbackControlsViewDidLoad___block_
   return [v5 _updateVolumeButtonInclusionAndPrefersVolumeSliderExpandedWithPreferredExpansion:v6];
 }
 
-- (void)setTransportBarCustomMenuItems:(id)a3
+- (void)setTransportBarCustomMenuItems:(id)items
 {
-  v4 = [a3 copy];
+  v4 = [items copy];
   transportBarCustomMenuItems = self->_transportBarCustomMenuItems;
   self->_transportBarCustomMenuItems = v4;
 
-  v6 = [(AVPlaybackControlsController *)self playbackControlsView];
-  v7 = [v6 transportControlsView];
-  v8 = [v7 controlOverflowButton];
-  [v8 updateContextMenu];
+  playbackControlsView = [(AVPlaybackControlsController *)self playbackControlsView];
+  transportControlsView = [playbackControlsView transportControlsView];
+  controlOverflowButton = [transportControlsView controlOverflowButton];
+  [controlOverflowButton updateContextMenu];
 
   [(AVPlaybackControlsController *)self _updateTransportBarCustomMenuItemsIfNeeded];
 }
 
-- (void)setCustomControlItems:(id)a3
+- (void)setCustomControlItems:(id)items
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (![(NSArray *)self->_customControlItems isEqualToArray:v4])
+  itemsCopy = items;
+  if (![(NSArray *)self->_customControlItems isEqualToArray:itemsCopy])
   {
-    v5 = [v4 copy];
+    v5 = [itemsCopy copy];
     customControlItems = self->_customControlItems;
     self->_customControlItems = v5;
 
@@ -4757,16 +4757,16 @@ uint64_t __60__AVPlaybackControlsController_playbackControlsViewDidLoad___block_
       while (v9);
     }
 
-    v12 = [(AVPlaybackControlsController *)self playbackControlsView];
+    playbackControlsView = [(AVPlaybackControlsController *)self playbackControlsView];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __54__AVPlaybackControlsController_setCustomControlItems___block_invoke;
     v14[3] = &unk_1E720A090;
     v14[4] = self;
-    [v12 setCustomControlItems:v4 animations:v14];
+    [playbackControlsView setCustomControlItems:itemsCopy animations:v14];
 
-    v13 = [(AVPlaybackControlsController *)self playbackControlsView];
-    [v13 setPrefersVolumeSliderExpandedAutomatically:{-[AVPlaybackControlsController _prefersVolumeSliderExpandedAutomatically](self, "_prefersVolumeSliderExpandedAutomatically")}];
+    playbackControlsView2 = [(AVPlaybackControlsController *)self playbackControlsView];
+    [playbackControlsView2 setPrefersVolumeSliderExpandedAutomatically:{-[AVPlaybackControlsController _prefersVolumeSliderExpandedAutomatically](self, "_prefersVolumeSliderExpandedAutomatically")}];
   }
 }
 
@@ -4782,11 +4782,11 @@ uint64_t __60__AVPlaybackControlsController_playbackControlsViewDidLoad___block_
 
 - (BOOL)needsTimeResolver
 {
-  v3 = [(AVPlaybackControlsController *)self playbackControlsView];
-  if (v3)
+  playbackControlsView = [(AVPlaybackControlsController *)self playbackControlsView];
+  if (playbackControlsView)
   {
-    v4 = [(AVPlaybackControlsController *)self playbackControlsView];
-    if ([v4 showsPlaybackControls])
+    playbackControlsView2 = [(AVPlaybackControlsController *)self playbackControlsView];
+    if ([playbackControlsView2 showsPlaybackControls])
     {
       v5 = ![(AVPlaybackControlsController *)self isResumingUpdates];
     }
@@ -4807,16 +4807,16 @@ uint64_t __60__AVPlaybackControlsController_playbackControlsViewDidLoad___block_
 
 - (BOOL)playButtonsShowPauseGlyph
 {
-  v3 = [(AVPlaybackControlsController *)self playerController];
-  [v3 activeRate];
+  playerController = [(AVPlaybackControlsController *)self playerController];
+  [playerController activeRate];
   v5 = v4;
-  if ([v3 avkit_isAVPlayerControllerOrSubclass])
+  if ([playerController avkit_isAVPlayerControllerOrSubclass])
   {
-    [v3 suspendedRate];
+    [playerController suspendedRate];
     v7 = v6;
-    v8 = [v3 isPlaybackSuspended];
+    isPlaybackSuspended = [playerController isPlaybackSuspended];
     v9 = v7 > 0.0 || v7 < 0.0;
-    v10 = v8 & v9;
+    v10 = isPlaybackSuspended & v9;
   }
 
   else
@@ -4831,8 +4831,8 @@ uint64_t __60__AVPlaybackControlsController_playbackControlsViewDidLoad___block_
 
   else
   {
-    v12 = [(AVPlaybackControlsController *)self isPlaybackSuspendedForScrubbing];
-    v13 = v5 != 0.0 || v12;
+    isPlaybackSuspendedForScrubbing = [(AVPlaybackControlsController *)self isPlaybackSuspendedForScrubbing];
+    v13 = v5 != 0.0 || isPlaybackSuspendedForScrubbing;
     v11 = v13 | v10;
   }
 
@@ -4846,11 +4846,11 @@ uint64_t __60__AVPlaybackControlsController_playbackControlsViewDidLoad___block_
     return 0;
   }
 
-  v4 = [(AVPlaybackControlsController *)self playbackControlsView];
-  if (v4)
+  playbackControlsView = [(AVPlaybackControlsController *)self playbackControlsView];
+  if (playbackControlsView)
   {
-    v5 = [(AVPlaybackControlsController *)self playerController];
-    v3 = [v5 status] == 1 || -[AVPlaybackControlsController timeControlStatus](self, "timeControlStatus") == 1;
+    playerController = [(AVPlaybackControlsController *)self playerController];
+    v3 = [playerController status] == 1 || -[AVPlaybackControlsController timeControlStatus](self, "timeControlStatus") == 1;
   }
 
   else
@@ -4863,14 +4863,14 @@ uint64_t __60__AVPlaybackControlsController_playbackControlsViewDidLoad___block_
 
 - (BOOL)showsStartContentTransitionButtons
 {
-  v3 = [(AVPlaybackControlsController *)self isFullScreen];
-  if (v3)
+  isFullScreen = [(AVPlaybackControlsController *)self isFullScreen];
+  if (isFullScreen)
   {
 
-    LOBYTE(v3) = [(AVPlaybackControlsController *)self playbackControlsIncludeStartContentTransitionButtons];
+    LOBYTE(isFullScreen) = [(AVPlaybackControlsController *)self playbackControlsIncludeStartContentTransitionButtons];
   }
 
-  return v3;
+  return isFullScreen;
 }
 
 - (BOOL)showsSkipButtons
@@ -4884,8 +4884,8 @@ uint64_t __60__AVPlaybackControlsController_playbackControlsViewDidLoad___block_
 
     if (![(AVPlaybackControlsController *)self requiresLinearPlayback])
     {
-      v5 = [(AVPlaybackControlsController *)self playerController];
-      v3 = [v5 status] != 2;
+      playerController = [(AVPlaybackControlsController *)self playerController];
+      v3 = [playerController status] != 2;
 
       return v3;
     }
@@ -4901,19 +4901,19 @@ uint64_t __60__AVPlaybackControlsController_playbackControlsViewDidLoad___block_
     return 0;
   }
 
-  v4 = [(AVPlaybackControlsController *)self playerController];
-  v5 = [v4 canSeek];
+  playerController = [(AVPlaybackControlsController *)self playerController];
+  canSeek = [playerController canSeek];
 
-  return v5;
+  return canSeek;
 }
 
 - (double)maximumTime
 {
-  v3 = [(AVPlaybackControlsController *)self playerController];
-  if ([v3 status] == 2)
+  playerController = [(AVPlaybackControlsController *)self playerController];
+  if ([playerController status] == 2)
   {
-    v4 = [(AVPlaybackControlsController *)self timeResolver];
-    [v4 maxTime];
+    timeResolver = [(AVPlaybackControlsController *)self timeResolver];
+    [timeResolver maxTime];
     v6 = v5;
   }
 
@@ -4927,11 +4927,11 @@ uint64_t __60__AVPlaybackControlsController_playbackControlsViewDidLoad___block_
 
 - (double)minimumTime
 {
-  v3 = [(AVPlaybackControlsController *)self playerController];
-  if ([v3 status] == 2)
+  playerController = [(AVPlaybackControlsController *)self playerController];
+  if ([playerController status] == 2)
   {
-    v4 = [(AVPlaybackControlsController *)self timeResolver];
-    [v4 minTime];
+    timeResolver = [(AVPlaybackControlsController *)self timeResolver];
+    [timeResolver minTime];
     v6 = v5;
   }
 
@@ -4945,11 +4945,11 @@ uint64_t __60__AVPlaybackControlsController_playbackControlsViewDidLoad___block_
 
 - (double)currentTime
 {
-  v3 = [(AVPlaybackControlsController *)self playerController];
-  if ([v3 status] == 2)
+  playerController = [(AVPlaybackControlsController *)self playerController];
+  if ([playerController status] == 2)
   {
-    v4 = [(AVPlaybackControlsController *)self timeResolver];
-    [v4 targetTime];
+    timeResolver = [(AVPlaybackControlsController *)self timeResolver];
+    [timeResolver targetTime];
     v6 = v5;
   }
 
@@ -4963,28 +4963,28 @@ uint64_t __60__AVPlaybackControlsController_playbackControlsViewDidLoad___block_
 
 - (double)targetTime
 {
-  v3 = [(AVPlaybackControlsController *)self playbackControlsView];
-  v4 = [v3 scrubber];
-  v5 = [v4 isTracking];
+  playbackControlsView = [(AVPlaybackControlsController *)self playbackControlsView];
+  scrubber = [playbackControlsView scrubber];
+  isTracking = [scrubber isTracking];
 
-  if (v5)
+  if (isTracking)
   {
-    v6 = [(AVPlaybackControlsController *)self playbackControlsView];
-    v7 = [v6 scrubber];
-    [v7 value];
+    playbackControlsView2 = [(AVPlaybackControlsController *)self playbackControlsView];
+    scrubber2 = [playbackControlsView2 scrubber];
+    [scrubber2 value];
     v9 = v8;
 
 LABEL_5:
     return v9;
   }
 
-  v10 = [(AVPlaybackControlsController *)self playerController];
-  v11 = [v10 externalPlaybackType];
+  playerController = [(AVPlaybackControlsController *)self playerController];
+  externalPlaybackType = [playerController externalPlaybackType];
 
-  if (v11 == 1)
+  if (externalPlaybackType == 1)
   {
-    v6 = [(AVPlaybackControlsController *)self timeResolver];
-    [v6 currentTime];
+    playbackControlsView2 = [(AVPlaybackControlsController *)self timeResolver];
+    [playbackControlsView2 currentTime];
     v9 = v12;
     goto LABEL_5;
   }
@@ -4995,29 +4995,29 @@ LABEL_5:
 
 - (BOOL)showsMediaSelectionButton
 {
-  v2 = [(AVPlaybackControlsController *)self playerController];
-  v3 = [v2 hasMediaSelectionOptions];
+  playerController = [(AVPlaybackControlsController *)self playerController];
+  hasMediaSelectionOptions = [playerController hasMediaSelectionOptions];
 
-  return v3;
+  return hasMediaSelectionOptions;
 }
 
 - (BOOL)shouldEnterFullScreenWhenPlaybackBegins
 {
-  v3 = [(AVPlaybackControlsController *)self entersFullScreenWhenPlaybackBegins];
-  if (v3)
+  entersFullScreenWhenPlaybackBegins = [(AVPlaybackControlsController *)self entersFullScreenWhenPlaybackBegins];
+  if (entersFullScreenWhenPlaybackBegins)
   {
     if ([(AVPlaybackControlsController *)self hasPlaybackBegunSincePlayerControllerBecameReadyToPlay])
     {
-      LOBYTE(v3) = 0;
+      LOBYTE(entersFullScreenWhenPlaybackBegins) = 0;
     }
 
     else
     {
-      LOBYTE(v3) = ![(AVPlaybackControlsController *)self playerViewControllerHasInvalidViewControllerHierarchy];
+      LOBYTE(entersFullScreenWhenPlaybackBegins) = ![(AVPlaybackControlsController *)self playerViewControllerHasInvalidViewControllerHierarchy];
     }
   }
 
-  return v3;
+  return entersFullScreenWhenPlaybackBegins;
 }
 
 - (BOOL)showsTransportControls
@@ -5037,52 +5037,52 @@ LABEL_5:
 
 - (BOOL)showsProminentPlayButton
 {
-  v3 = [(AVPlaybackControlsController *)self shouldEnterFullScreenWhenPlaybackBegins]|| [(AVPlaybackControlsController *)self showsMinimalPlaybackControlsWhenEmbeddedInline];
-  if ([(AVPlaybackControlsController *)self isFullScreen]|| ![(AVPlaybackControlsController *)self playbackControlsIncludeTransportControls]|| !(v3 | ![(AVPlaybackControlsController *)self hasPlaybackBegunSincePlayerControllerBecameReadyToPlay]))
+  showsMinimalPlaybackControlsWhenEmbeddedInline = [(AVPlaybackControlsController *)self shouldEnterFullScreenWhenPlaybackBegins]|| [(AVPlaybackControlsController *)self showsMinimalPlaybackControlsWhenEmbeddedInline];
+  if ([(AVPlaybackControlsController *)self isFullScreen]|| ![(AVPlaybackControlsController *)self playbackControlsIncludeTransportControls]|| !(showsMinimalPlaybackControlsWhenEmbeddedInline | ![(AVPlaybackControlsController *)self hasPlaybackBegunSincePlayerControllerBecameReadyToPlay]))
   {
     goto LABEL_27;
   }
 
-  v4 = [(AVPlaybackControlsController *)self pictureInPictureController];
-  if ([v4 isPictureInPictureActive])
+  pictureInPictureController = [(AVPlaybackControlsController *)self pictureInPictureController];
+  if ([pictureInPictureController isPictureInPictureActive])
   {
     v5 = 0;
   }
 
   else
   {
-    v6 = [(AVPlaybackControlsController *)self playerController];
-    if ([v6 status] == 3)
+    playerController = [(AVPlaybackControlsController *)self playerController];
+    if ([playerController status] == 3)
     {
       v5 = 0;
     }
 
     else
     {
-      v7 = [(AVPlaybackControlsController *)self playerController];
-      if ([v7 isPlayingOnExternalScreen])
+      playerController2 = [(AVPlaybackControlsController *)self playerController];
+      if ([playerController2 isPlayingOnExternalScreen])
       {
         v5 = 0;
       }
 
       else
       {
-        v8 = [(AVPlaybackControlsController *)self playerController];
-        if ([v8 hasVideo])
+        playerController3 = [(AVPlaybackControlsController *)self playerController];
+        if ([playerController3 hasVideo])
         {
           v5 = 1;
         }
 
         else
         {
-          v9 = [(AVPlaybackControlsController *)self playerController];
-          v5 = [v9 hasEnabledAudio] ^ 1;
+          playerController4 = [(AVPlaybackControlsController *)self playerController];
+          v5 = [playerController4 hasEnabledAudio] ^ 1;
         }
       }
     }
   }
 
-  if (-[AVPlaybackControlsController playButtonsShowPauseGlyph](self, "playButtonsShowPauseGlyph") || !v3 && ((-[AVPlaybackControlsController playButtonHandlerForLazyPlayerLoading](self, "playButtonHandlerForLazyPlayerLoading"), (v10 = objc_claimAutoreleasedReturnValue()) == 0) || (v11 = v10, -[AVPlaybackControlsController playerController](self, "playerController"), v12 = objc_claimAutoreleasedReturnValue(), v13 = [v12 status], v12, v11, v13)))
+  if (-[AVPlaybackControlsController playButtonsShowPauseGlyph](self, "playButtonsShowPauseGlyph") || !showsMinimalPlaybackControlsWhenEmbeddedInline && ((-[AVPlaybackControlsController playButtonHandlerForLazyPlayerLoading](self, "playButtonHandlerForLazyPlayerLoading"), (v10 = objc_claimAutoreleasedReturnValue()) == 0) || (v11 = v10, -[AVPlaybackControlsController playerController](self, "playerController"), v12 = objc_claimAutoreleasedReturnValue(), v13 = [v12 status], v12, v11, v13)))
   {
     if ([(AVPlaybackControlsController *)self preferredUnobscuredArea]== 2)
     {
@@ -5109,57 +5109,57 @@ LABEL_27:
     return 0;
   }
 
-  v3 = [(AVPlaybackControlsController *)self playerController];
-  if ([v3 allowsExternalPlayback])
+  playerController = [(AVPlaybackControlsController *)self playerController];
+  if ([playerController allowsExternalPlayback])
   {
-    v4 = [(AVPlaybackControlsController *)self wantsExternalPlaybackButtonShown];
+    wantsExternalPlaybackButtonShown = [(AVPlaybackControlsController *)self wantsExternalPlaybackButtonShown];
   }
 
   else
   {
-    v4 = 0;
+    wantsExternalPlaybackButtonShown = 0;
   }
 
-  return v4;
+  return wantsExternalPlaybackButtonShown;
 }
 
-- (void)setWantsExternalPlaybackButtonShown:(BOOL)a3
+- (void)setWantsExternalPlaybackButtonShown:(BOOL)shown
 {
-  if (self->_wantsExternalPlaybackButtonShown != a3)
+  if (self->_wantsExternalPlaybackButtonShown != shown)
   {
-    self->_wantsExternalPlaybackButtonShown = a3;
+    self->_wantsExternalPlaybackButtonShown = shown;
   }
 }
 
 - (BOOL)entersFullScreenWhenTapped
 {
-  v3 = [(AVPlaybackControlsController *)self showsMinimalPlaybackControlsWhenEmbeddedInline];
-  if (v3)
+  showsMinimalPlaybackControlsWhenEmbeddedInline = [(AVPlaybackControlsController *)self showsMinimalPlaybackControlsWhenEmbeddedInline];
+  if (showsMinimalPlaybackControlsWhenEmbeddedInline)
   {
     if ([(AVPlaybackControlsController *)self showsProminentPlayButton])
     {
-      LOBYTE(v3) = 0;
+      LOBYTE(showsMinimalPlaybackControlsWhenEmbeddedInline) = 0;
     }
 
     else
     {
-      v3 = [(AVPlaybackControlsController *)self allowsEnteringFullScreen];
-      if (v3)
+      showsMinimalPlaybackControlsWhenEmbeddedInline = [(AVPlaybackControlsController *)self allowsEnteringFullScreen];
+      if (showsMinimalPlaybackControlsWhenEmbeddedInline)
       {
-        LOBYTE(v3) = ![(AVPlaybackControlsController *)self isFullScreen];
+        LOBYTE(showsMinimalPlaybackControlsWhenEmbeddedInline) = ![(AVPlaybackControlsController *)self isFullScreen];
       }
     }
   }
 
-  return v3;
+  return showsMinimalPlaybackControlsWhenEmbeddedInline;
 }
 
-- (void)setShowsTimecodes:(BOOL)a3
+- (void)setShowsTimecodes:(BOOL)timecodes
 {
   v14 = *MEMORY[0x1E69E9840];
-  if (self->_showsTimecodes != a3)
+  if (self->_showsTimecodes != timecodes)
   {
-    v3 = a3;
+    timecodesCopy = timecodes;
     v5 = _AVLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
@@ -5168,7 +5168,7 @@ LABEL_27:
       v9 = "[AVPlaybackControlsController setShowsTimecodes:]";
       v11 = "showsTimecodes";
       v10 = 2080;
-      if (v3)
+      if (timecodesCopy)
       {
         v6 = "YES";
       }
@@ -5178,38 +5178,38 @@ LABEL_27:
       _os_log_impl(&dword_18B49C000, v5, OS_LOG_TYPE_DEFAULT, "%s %s %s", &v8, 0x20u);
     }
 
-    self->_showsTimecodes = v3;
-    v7 = [(AVPlaybackControlsController *)self playerController];
-    [v7 hasReadableTimecodes];
+    self->_showsTimecodes = timecodesCopy;
+    playerController = [(AVPlaybackControlsController *)self playerController];
+    [playerController hasReadableTimecodes];
 
     [(AVPlaybackControlsController *)self _updateOrCreateTimeResolverIfNeeded];
     [(AVPlaybackControlsController *)self _updateScrubberAndTimeLabels];
   }
 }
 
-- (void)setShowsPictureInPictureButton:(BOOL)a3
+- (void)setShowsPictureInPictureButton:(BOOL)button
 {
-  if (self->_showsPictureInPictureButton != a3)
+  if (self->_showsPictureInPictureButton != button)
   {
-    self->_showsPictureInPictureButton = a3;
+    self->_showsPictureInPictureButton = button;
     [(AVPlaybackControlsController *)self _updateControlInclusion];
   }
 }
 
-- (void)setCanIncludeVideoGravityButton:(BOOL)a3
+- (void)setCanIncludeVideoGravityButton:(BOOL)button
 {
-  if (self->_canIncludeVideoGravityButton != a3)
+  if (self->_canIncludeVideoGravityButton != button)
   {
-    self->_canIncludeVideoGravityButton = a3;
+    self->_canIncludeVideoGravityButton = button;
     [(AVPlaybackControlsController *)self _updateControlInclusion];
   }
 }
 
-- (void)setCoveringWindow:(BOOL)a3
+- (void)setCoveringWindow:(BOOL)window
 {
-  if (self->_coveringWindow != a3)
+  if (self->_coveringWindow != window)
   {
-    self->_coveringWindow = a3;
+    self->_coveringWindow = window;
     [(AVPlaybackControlsController *)self _updateControlInclusion];
   }
 }
@@ -5224,28 +5224,28 @@ LABEL_27:
   return [(AVPlaybackControlsController *)self isCoveringWindow];
 }
 
-- (void)setVolumeController:(id)a3
+- (void)setVolumeController:(id)controller
 {
-  v7 = a3;
+  controllerCopy = controller;
   v5 = self->_volumeController;
-  if (v5 != v7)
+  if (v5 != controllerCopy)
   {
-    objc_storeStrong(&self->_volumeController, a3);
+    objc_storeStrong(&self->_volumeController, controller);
     if ([(AVPlaybackControlsController *)self isFullScreen])
     {
       [(AVVolumeController *)v5 setPrefersSystemVolumeHUDHidden:0];
-      v6 = [(AVPlaybackControlsController *)self volumeController];
-      [v6 setPrefersSystemVolumeHUDHidden:1];
+      volumeController = [(AVPlaybackControlsController *)self volumeController];
+      [volumeController setPrefersSystemVolumeHUDHidden:1];
     }
   }
 }
 
-- (void)setShowsVideoGravityButton:(BOOL)a3
+- (void)setShowsVideoGravityButton:(BOOL)button
 {
   v13 = *MEMORY[0x1E69E9840];
-  if (self->_showsVideoGravityButton != a3)
+  if (self->_showsVideoGravityButton != button)
   {
-    v3 = a3;
+    buttonCopy = button;
     v5 = _AVLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
@@ -5254,7 +5254,7 @@ LABEL_27:
       v8 = "[AVPlaybackControlsController setShowsVideoGravityButton:]";
       v10 = "showsVideoGravityButton";
       v9 = 2080;
-      if (v3)
+      if (buttonCopy)
       {
         v6 = "YES";
       }
@@ -5264,35 +5264,35 @@ LABEL_27:
       _os_log_impl(&dword_18B49C000, v5, OS_LOG_TYPE_DEFAULT, "%s %s %s", &v7, 0x20u);
     }
 
-    self->_showsVideoGravityButton = v3;
+    self->_showsVideoGravityButton = buttonCopy;
     [(AVPlaybackControlsController *)self _updateVideoGravityButtonType];
   }
 }
 
-- (void)setShowsDoneButtonWhenFullScreen:(BOOL)a3
+- (void)setShowsDoneButtonWhenFullScreen:(BOOL)screen
 {
-  if (self->_showsDoneButtonWhenFullScreen != a3)
+  if (self->_showsDoneButtonWhenFullScreen != screen)
   {
-    self->_showsDoneButtonWhenFullScreen = a3;
+    self->_showsDoneButtonWhenFullScreen = screen;
     [(AVPlaybackControlsController *)self _updateControlInclusion];
   }
 }
 
-- (void)setShowsVolumeControlsForContentWithNoAudio:(BOOL)a3
+- (void)setShowsVolumeControlsForContentWithNoAudio:(BOOL)audio
 {
-  if (self->_showsVolumeControlsForContentWithNoAudio != a3)
+  if (self->_showsVolumeControlsForContentWithNoAudio != audio)
   {
-    self->_showsVolumeControlsForContentWithNoAudio = a3;
+    self->_showsVolumeControlsForContentWithNoAudio = audio;
     [(AVPlaybackControlsController *)self _updateContainerInclusion];
   }
 }
 
-- (void)setVolumeControlsCanShowSlider:(BOOL)a3
+- (void)setVolumeControlsCanShowSlider:(BOOL)slider
 {
   v13 = *MEMORY[0x1E69E9840];
-  if (self->_volumeControlsCanShowSlider != a3)
+  if (self->_volumeControlsCanShowSlider != slider)
   {
-    v3 = a3;
+    sliderCopy = slider;
     v5 = _AVLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
@@ -5301,7 +5301,7 @@ LABEL_27:
       v8 = "[AVPlaybackControlsController setVolumeControlsCanShowSlider:]";
       v10 = "volumeControlsCanShowSlider";
       v9 = 2080;
-      if (v3)
+      if (sliderCopy)
       {
         v6 = "YES";
       }
@@ -5311,17 +5311,17 @@ LABEL_27:
       _os_log_impl(&dword_18B49C000, v5, OS_LOG_TYPE_DEFAULT, "%s %s %s", &v7, 0x20u);
     }
 
-    self->_volumeControlsCanShowSlider = v3;
-    [(AVPlaybackControlsController *)self _updateVolumeButtonInclusionAndPrefersVolumeSliderExpandedWithPreferredExpansion:v3];
+    self->_volumeControlsCanShowSlider = sliderCopy;
+    [(AVPlaybackControlsController *)self _updateVolumeButtonInclusionAndPrefersVolumeSliderExpandedWithPreferredExpansion:sliderCopy];
   }
 }
 
-- (void)setCanIncludePlaybackControlsWhenInline:(BOOL)a3
+- (void)setCanIncludePlaybackControlsWhenInline:(BOOL)inline
 {
   v13 = *MEMORY[0x1E69E9840];
-  if (self->_canIncludePlaybackControlsWhenInline != a3)
+  if (self->_canIncludePlaybackControlsWhenInline != inline)
   {
-    v3 = a3;
+    inlineCopy = inline;
     v5 = _AVLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
@@ -5330,7 +5330,7 @@ LABEL_27:
       v8 = "[AVPlaybackControlsController setCanIncludePlaybackControlsWhenInline:]";
       v10 = "canIncludePlaybackControlsWhenInline";
       v9 = 2080;
-      if (v3)
+      if (inlineCopy)
       {
         v6 = "YES";
       }
@@ -5340,16 +5340,16 @@ LABEL_27:
       _os_log_impl(&dword_18B49C000, v5, OS_LOG_TYPE_DEFAULT, "%s %s %s", &v7, 0x20u);
     }
 
-    self->_canIncludePlaybackControlsWhenInline = v3;
+    self->_canIncludePlaybackControlsWhenInline = inlineCopy;
   }
 }
 
-- (void)setHasCustomPlaybackControls:(BOOL)a3
+- (void)setHasCustomPlaybackControls:(BOOL)controls
 {
   v13 = *MEMORY[0x1E69E9840];
-  if (self->_hasCustomPlaybackControls != a3)
+  if (self->_hasCustomPlaybackControls != controls)
   {
-    v3 = a3;
+    controlsCopy = controls;
     v5 = _AVLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
@@ -5358,7 +5358,7 @@ LABEL_27:
       v8 = "[AVPlaybackControlsController setHasCustomPlaybackControls:]";
       v10 = "hasCustomPlaybackControls";
       v9 = 2080;
-      if (v3)
+      if (controlsCopy)
       {
         v6 = "YES";
       }
@@ -5368,16 +5368,16 @@ LABEL_27:
       _os_log_impl(&dword_18B49C000, v5, OS_LOG_TYPE_DEFAULT, "%s %s %s", &v7, 0x20u);
     }
 
-    self->_hasCustomPlaybackControls = v3;
+    self->_hasCustomPlaybackControls = controlsCopy;
   }
 }
 
-- (void)setShowsPlaybackControls:(BOOL)a3
+- (void)setShowsPlaybackControls:(BOOL)controls
 {
   v14 = *MEMORY[0x1E69E9840];
-  if (self->_showsPlaybackControls != a3)
+  if (self->_showsPlaybackControls != controls)
   {
-    v3 = a3;
+    controlsCopy = controls;
     v5 = _AVLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
@@ -5386,7 +5386,7 @@ LABEL_27:
       v9 = "[AVPlaybackControlsController setShowsPlaybackControls:]";
       v11 = "showsPlaybackControls";
       v10 = 2080;
-      if (v3)
+      if (controlsCopy)
       {
         v6 = "YES";
       }
@@ -5396,46 +5396,46 @@ LABEL_27:
       _os_log_impl(&dword_18B49C000, v5, OS_LOG_TYPE_DEFAULT, "%s %s %s", &v8, 0x20u);
     }
 
-    self->_showsPlaybackControls = v3;
+    self->_showsPlaybackControls = controlsCopy;
     [(AVPlaybackControlsController *)self _updatePlaybackControlsVisibleAndObservingUpdates];
-    v7 = [(AVPlaybackControlsController *)self turboModePlaybackControlsPlaceholderView];
-    [v7 setHidden:!v3];
+    turboModePlaybackControlsPlaceholderView = [(AVPlaybackControlsController *)self turboModePlaybackControlsPlaceholderView];
+    [turboModePlaybackControlsPlaceholderView setHidden:!controlsCopy];
   }
 }
 
-- (void)setPlayerViewControllerIsBeingTransitionedWithResizing:(BOOL)a3
+- (void)setPlayerViewControllerIsBeingTransitionedWithResizing:(BOOL)resizing
 {
-  if (self->_playerViewControllerIsBeingTransitionedWithResizing != a3)
+  if (self->_playerViewControllerIsBeingTransitionedWithResizing != resizing)
   {
-    self->_playerViewControllerIsBeingTransitionedWithResizing = a3;
+    self->_playerViewControllerIsBeingTransitionedWithResizing = resizing;
     [(AVPlaybackControlsController *)self _updatePlaybackControlsVisibleAndObservingUpdates];
   }
 }
 
-- (void)setPlayerViewControllerIsPresentedFullScreen:(BOOL)a3
+- (void)setPlayerViewControllerIsPresentedFullScreen:(BOOL)screen
 {
-  if (self->_playerViewControllerIsPresentedFullScreen != a3)
+  if (self->_playerViewControllerIsPresentedFullScreen != screen)
   {
-    self->_playerViewControllerIsPresentedFullScreen = a3;
+    self->_playerViewControllerIsPresentedFullScreen = screen;
     [(AVPlaybackControlsController *)self _updateControlInclusion];
   }
 }
 
-- (void)setPlayerViewControllerIsPresentingFullScreen:(BOOL)a3
+- (void)setPlayerViewControllerIsPresentingFullScreen:(BOOL)screen
 {
-  if (self->_playerViewControllerIsPresentingFullScreen != a3)
+  if (self->_playerViewControllerIsPresentingFullScreen != screen)
   {
-    self->_playerViewControllerIsPresentingFullScreen = a3;
+    self->_playerViewControllerIsPresentingFullScreen = screen;
     [(AVPlaybackControlsController *)self _updateControlInclusion];
   }
 }
 
-- (void)setPlaybackSpeedCollection:(id)a3
+- (void)setPlaybackSpeedCollection:(id)collection
 {
-  v5 = a3;
-  if (self->_playbackSpeedCollection != v5)
+  collectionCopy = collection;
+  if (self->_playbackSpeedCollection != collectionCopy)
   {
-    v8 = v5;
+    v8 = collectionCopy;
     if (self->_selectedPlaybackSpeedObservationToken)
     {
       [(AVObservationController *)self->_observationController stopObserving:?];
@@ -5443,31 +5443,31 @@ LABEL_27:
       self->_selectedPlaybackSpeedObservationToken = 0;
     }
 
-    objc_storeStrong(&self->_playbackSpeedCollection, a3);
-    v7 = [(AVPlaybackControlsController *)self playbackRateMenuController];
-    [v7 setPlaybackSpeedCollection:v8];
+    objc_storeStrong(&self->_playbackSpeedCollection, collection);
+    playbackRateMenuController = [(AVPlaybackControlsController *)self playbackRateMenuController];
+    [playbackRateMenuController setPlaybackSpeedCollection:v8];
 
     [(AVPlaybackControlsController *)self _updatePlaybackSpeedControlInclusion];
-    v5 = v8;
+    collectionCopy = v8;
   }
 }
 
-- (void)setPlayerController:(id)a3
+- (void)setPlayerController:(id)controller
 {
-  obj = a3;
+  obj = controller;
   WeakRetained = objc_loadWeakRetained(&self->_playerController);
 
   v5 = obj;
   if (WeakRetained != obj)
   {
-    v6 = [(AVPlaybackControlsController *)self volumeAnimator];
-    [v6 restoreVolumeIfNeeded];
+    volumeAnimator = [(AVPlaybackControlsController *)self volumeAnimator];
+    [volumeAnimator restoreVolumeIfNeeded];
 
     [(AVPlaybackControlsController *)self setVolumeAnimator:0];
     if (self)
     {
-      v7 = [(AVPlaybackControlsController *)self playerControllerObservationController];
-      [v7 stopAllObservation];
+      playerControllerObservationController = [(AVPlaybackControlsController *)self playerControllerObservationController];
+      [playerControllerObservationController stopAllObservation];
 
       if ([(AVPlaybackControlsController *)self hasBegunObservingPotentiallyUnimplementedPlayerControllerProperties])
       {
@@ -5483,37 +5483,37 @@ LABEL_27:
       [(AVPlaybackControlsController *)self _startObservingPotentiallyUnimplementedPlayerControllerProperties];
     }
 
-    v9 = [(AVPlaybackControlsController *)self volumeController];
+    volumeController = [(AVPlaybackControlsController *)self volumeController];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v11 = [(AVPlaybackControlsController *)self volumeController];
+      volumeController2 = [(AVPlaybackControlsController *)self volumeController];
       v12 = objc_loadWeakRetained(&self->_playerController);
-      [v11 setPlayerController:v12];
+      [volumeController2 setPlayerController:v12];
     }
 
     [(AVPlaybackControlsController *)self _updateOrCreateTimeResolverIfNeeded];
     [(AVPlaybackControlsController *)self _updateSkipButtonsEnableLongPress];
-    v13 = [(AVPlaybackControlsController *)self turboModePlaybackControlsPlaceholderView];
-    [v13 setPlayerController:obj];
+    turboModePlaybackControlsPlaceholderView = [(AVPlaybackControlsController *)self turboModePlaybackControlsPlaceholderView];
+    [turboModePlaybackControlsPlaceholderView setPlayerController:obj];
 
     v5 = obj;
   }
 }
 
-- (void)_updateVolumeButtonInclusionAndPrefersVolumeSliderExpandedWithPreferredExpansion:(BOOL)a3
+- (void)_updateVolumeButtonInclusionAndPrefersVolumeSliderExpandedWithPreferredExpansion:(BOOL)expansion
 {
-  v48 = a3;
-  v4 = [(AVPlaybackControlsController *)self playerViewController];
-  v5 = [v4 presentationContext];
-  if ([v5 isPresenting])
+  expansionCopy = expansion;
+  playerViewController = [(AVPlaybackControlsController *)self playerViewController];
+  presentationContext = [playerViewController presentationContext];
+  if ([presentationContext isPresenting])
   {
-    v6 = [(AVPlaybackControlsController *)self playerViewController];
-    v7 = [v6 presentationContext];
-    v8 = [v7 presentingTransition];
-    v47 = ([v8 finalInterfaceOrientation] - 1) < 2;
+    playerViewController2 = [(AVPlaybackControlsController *)self playerViewController];
+    presentationContext2 = [playerViewController2 presentationContext];
+    presentingTransition = [presentationContext2 presentingTransition];
+    v47 = ([presentingTransition finalInterfaceOrientation] - 1) < 2;
   }
 
   else
@@ -5521,48 +5521,48 @@ LABEL_27:
     v47 = 0;
   }
 
-  v9 = [(AVPlaybackControlsController *)self playerViewController];
-  v10 = [v9 presentationContext];
-  v11 = [v10 currentTransition];
-  v12 = [v11 isRotated];
-  v13 = [(AVPlaybackControlsController *)self playerViewController];
-  v14 = [v13 presentingViewController];
-  v15 = [v14 view];
-  v16 = [v15 window];
-  v17 = [v16 traitCollection];
-  v18 = v17;
-  if (v12)
+  playerViewController3 = [(AVPlaybackControlsController *)self playerViewController];
+  presentationContext3 = [playerViewController3 presentationContext];
+  currentTransition = [presentationContext3 currentTransition];
+  isRotated = [currentTransition isRotated];
+  playerViewController4 = [(AVPlaybackControlsController *)self playerViewController];
+  presentingViewController = [playerViewController4 presentingViewController];
+  view = [presentingViewController view];
+  window = [view window];
+  traitCollection = [window traitCollection];
+  v18 = traitCollection;
+  if (isRotated)
   {
-    v19 = [v17 verticalSizeClass];
+    verticalSizeClass = [traitCollection verticalSizeClass];
   }
 
   else
   {
-    v19 = [v17 horizontalSizeClass];
+    verticalSizeClass = [traitCollection horizontalSizeClass];
   }
 
-  v20 = v19;
+  v20 = verticalSizeClass;
 
-  v21 = [(AVPlaybackControlsController *)self shouldShowVolumeControlInTransportBar];
+  shouldShowVolumeControlInTransportBar = [(AVPlaybackControlsController *)self shouldShowVolumeControlInTransportBar];
   if ([(AVPlaybackControlsController *)self playbackControlsIncludeVolumeControls])
   {
     v22 = v20 == 1 && v47;
     v23 = 0;
     if ([(AVPlaybackControlsController *)self volumeControlsCanShowSlider]&& !v22)
     {
-      v24 = [(AVPlaybackControlsController *)self volumeController];
-      if ([v24 currentRouteHasVolumeControl])
+      volumeController = [(AVPlaybackControlsController *)self volumeController];
+      if ([volumeController currentRouteHasVolumeControl])
       {
-        v25 = [(AVPlaybackControlsController *)self playerController];
-        if ([v25 isPlayingOnExternalScreen])
+        playerController = [(AVPlaybackControlsController *)self playerController];
+        if ([playerController isPlayingOnExternalScreen])
         {
           v23 = 0;
         }
 
         else
         {
-          v26 = [(AVPlaybackControlsController *)self playerController];
-          v23 = ([v26 isPlayingOnSecondScreen] & 1) == 0 && -[AVPlaybackControlsController preferredUnobscuredArea](self, "preferredUnobscuredArea") != 1;
+          playerController2 = [(AVPlaybackControlsController *)self playerController];
+          v23 = ([playerController2 isPlayingOnSecondScreen] & 1) == 0 && -[AVPlaybackControlsController preferredUnobscuredArea](self, "preferredUnobscuredArea") != 1;
         }
       }
 
@@ -5580,23 +5580,23 @@ LABEL_27:
 
   if ([(AVPlaybackControlsController *)self playbackControlsIncludeVolumeControls])
   {
-    v27 = v21 ^ 1;
+    v27 = shouldShowVolumeControlInTransportBar ^ 1;
   }
 
   else
   {
-    v28 = [(AVPlaybackControlsController *)self playbackControlsView];
-    v29 = [v28 customAudioItems];
-    v27 = ([v29 count] == 0) & (v21 ^ 1);
+    playbackControlsView = [(AVPlaybackControlsController *)self playbackControlsView];
+    customAudioItems = [playbackControlsView customAudioItems];
+    v27 = ([customAudioItems count] == 0) & (shouldShowVolumeControlInTransportBar ^ 1);
   }
 
-  v30 = [(AVPlaybackControlsController *)self playbackControlsView];
-  v31 = [v30 transportControlsView];
-  [v31 setTransportViewIncludesVolumeController:v21];
+  playbackControlsView2 = [(AVPlaybackControlsController *)self playbackControlsView];
+  transportControlsView = [playbackControlsView2 transportControlsView];
+  [transportControlsView setTransportViewIncludesVolumeController:shouldShowVolumeControlInTransportBar];
 
   if (v23)
   {
-    v32 = v48 & (v21 ^ 1);
+    v32 = expansionCopy & (shouldShowVolumeControlInTransportBar ^ 1);
   }
 
   else
@@ -5604,15 +5604,15 @@ LABEL_27:
     v32 = 0;
   }
 
-  v33 = [(AVPlaybackControlsController *)self playbackControlsView];
-  v34 = [v33 volumeSlider];
-  if (v32 == [v34 isIncluded])
+  playbackControlsView3 = [(AVPlaybackControlsController *)self playbackControlsView];
+  volumeSlider = [playbackControlsView3 volumeSlider];
+  if (v32 == [volumeSlider isIncluded])
   {
-    v35 = [(AVPlaybackControlsController *)self playbackControlsView];
-    v36 = [v35 volumeButton];
-    v37 = [v36 isIncluded];
+    playbackControlsView4 = [(AVPlaybackControlsController *)self playbackControlsView];
+    volumeButton = [playbackControlsView4 volumeButton];
+    isIncluded = [volumeButton isIncluded];
 
-    if (v27 == v37)
+    if (v27 == isIncluded)
     {
       goto LABEL_49;
     }
@@ -5624,31 +5624,31 @@ LABEL_27:
 
   if (v32)
   {
-    v38 = [(AVPlaybackControlsController *)self volumeController];
-    [v38 volume];
+    volumeController2 = [(AVPlaybackControlsController *)self volumeController];
+    [volumeController2 volume];
     [(AVPlaybackControlsController *)self _updateVolumeSliderValueWithSystemVolume:0 animated:?];
   }
 
   if ([MEMORY[0x1E69DD250] areAnimationsEnabled])
   {
-    v39 = [(AVPlaybackControlsController *)self playbackControlsView];
-    v40 = [v39 volumeControls];
-    if ([v40 isHiddenOrHasHiddenAncestor])
+    playbackControlsView5 = [(AVPlaybackControlsController *)self playbackControlsView];
+    volumeControls = [playbackControlsView5 volumeControls];
+    if ([volumeControls isHiddenOrHasHiddenAncestor])
     {
       v41 = 0;
     }
 
     else
     {
-      v42 = [(AVPlaybackControlsController *)self playbackControlsView];
-      v43 = [v42 volumeControls];
-      if ([v43 _isInAWindow] && !-[AVPlaybackControlsController isResumingUpdates](self, "isResumingUpdates"))
+      playbackControlsView6 = [(AVPlaybackControlsController *)self playbackControlsView];
+      volumeControls2 = [playbackControlsView6 volumeControls];
+      if ([volumeControls2 _isInAWindow] && !-[AVPlaybackControlsController isResumingUpdates](self, "isResumingUpdates"))
       {
-        v44 = [(AVPlaybackControlsController *)self playbackControlsView];
-        if ([v44 avkit_wantsAnimatedViewTransitions])
+        playbackControlsView7 = [(AVPlaybackControlsController *)self playbackControlsView];
+        if ([playbackControlsView7 avkit_wantsAnimatedViewTransitions])
         {
-          v45 = [(AVPlaybackControlsController *)self playerViewController];
-          v41 = [v45 hasActiveTransition] ^ 1;
+          playerViewController5 = [(AVPlaybackControlsController *)self playerViewController];
+          v41 = [playerViewController5 hasActiveTransition] ^ 1;
         }
 
         else
@@ -5669,43 +5669,43 @@ LABEL_27:
     v41 = 0;
   }
 
-  v46 = [(AVPlaybackControlsController *)self playbackControlsView];
-  [v46 setPrefersVolumeSliderExpanded:v32 prefersVolumeButtonIncluded:v27 animated:v41];
+  playbackControlsView8 = [(AVPlaybackControlsController *)self playbackControlsView];
+  [playbackControlsView8 setPrefersVolumeSliderExpanded:v32 prefersVolumeButtonIncluded:v27 animated:v41];
 
 LABEL_49:
 
   [(AVPlaybackControlsController *)self _updateVolumeButtonGlyph];
 }
 
-- (void)setAllowsEnteringFullScreen:(BOOL)a3
+- (void)setAllowsEnteringFullScreen:(BOOL)screen
 {
-  if (self->_allowsEnteringFullScreen != a3)
+  if (self->_allowsEnteringFullScreen != screen)
   {
-    self->_allowsEnteringFullScreen = a3;
+    self->_allowsEnteringFullScreen = screen;
     [(AVPlaybackControlsController *)self _updateControlInclusion];
   }
 }
 
-- (void)setPreferredUnobscuredArea:(int64_t)a3
+- (void)setPreferredUnobscuredArea:(int64_t)area
 {
-  if (self->_preferredUnobscuredArea != a3)
+  if (self->_preferredUnobscuredArea != area)
   {
-    self->_preferredUnobscuredArea = a3;
-    v6 = [(AVPlaybackControlsController *)self playbackControlsView];
-    [v6 setPreferredUnobscuredArea:a3];
+    self->_preferredUnobscuredArea = area;
+    playbackControlsView = [(AVPlaybackControlsController *)self playbackControlsView];
+    [playbackControlsView setPreferredUnobscuredArea:area];
 
-    v7 = [(AVPlaybackControlsController *)self playbackControlsView];
-    [v7 setNeedsLayout];
+    playbackControlsView2 = [(AVPlaybackControlsController *)self playbackControlsView];
+    [playbackControlsView2 setNeedsLayout];
   }
 }
 
-- (void)setShowsMinimalPlaybackControlsWhenEmbeddedInline:(BOOL)a3
+- (void)setShowsMinimalPlaybackControlsWhenEmbeddedInline:(BOOL)inline
 {
   v13 = *MEMORY[0x1E69E9840];
-  if (self->_showsMinimalPlaybackControlsWhenEmbeddedInline != a3)
+  if (self->_showsMinimalPlaybackControlsWhenEmbeddedInline != inline)
   {
-    v3 = a3;
-    self->_showsMinimalPlaybackControlsWhenEmbeddedInline = a3;
+    inlineCopy = inline;
+    self->_showsMinimalPlaybackControlsWhenEmbeddedInline = inline;
     v5 = _AVLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
@@ -5714,7 +5714,7 @@ LABEL_49:
       v8 = "[AVPlaybackControlsController setShowsMinimalPlaybackControlsWhenEmbeddedInline:]";
       v10 = "showsMinimalPlaybackControlsWhenEmbeddedInline";
       v9 = 2080;
-      if (v3)
+      if (inlineCopy)
       {
         v6 = "YES";
       }
@@ -5739,16 +5739,16 @@ LABEL_49:
 {
   if (![(AVPlaybackControlsController *)self hasStartedUpdates])
   {
-    v3 = [(AVPlaybackControlsController *)self playbackControlsView];
+    playbackControlsView = [(AVPlaybackControlsController *)self playbackControlsView];
 
-    if (v3)
+    if (playbackControlsView)
     {
       [(AVPlaybackControlsController *)self setHasStartedUpdates:1];
       v4 = self->_observationController;
       objc_initWeak(&location, self);
       [(AVPlaybackControlsController *)self _updateRouteDetectionEnabled];
-      v5 = [(AVPlaybackControlsController *)self routeDetectorCoordinator];
-      -[AVPlaybackControlsController setMultipleRoutesDetected:](self, "setMultipleRoutesDetected:", [v5 multipleRoutesDetected]);
+      routeDetectorCoordinator = [(AVPlaybackControlsController *)self routeDetectorCoordinator];
+      -[AVPlaybackControlsController setMultipleRoutesDetected:](self, "setMultipleRoutesDetected:", [routeDetectorCoordinator multipleRoutesDetected]);
 
       v14[0] = MEMORY[0x1E69E9820];
       v14[1] = 3221225472;
@@ -5758,9 +5758,9 @@ LABEL_49:
       [(AVObservationController *)v4 startObservingNotificationForName:@"AVRouteDetectorCoordinatorMultipleRoutesDetectedDidChangeNotification" object:0 notificationCenter:0 observationHandler:v14];
       [(AVObservationController *)v4 startObservingNotificationForName:@"AVVolumeControllerVolumeChangedNotification" object:0 notificationCenter:0 observationHandler:&__block_literal_global_22185];
       [(AVObservationController *)v4 startObservingNotificationForName:@"AVVolumeControllerCurrentRouteHasVolumeControlChangedNotification" object:0 notificationCenter:0 observationHandler:&__block_literal_global_28];
-      v6 = [(AVPlaybackControlsController *)self playerController];
+      playerController = [(AVPlaybackControlsController *)self playerController];
 
-      if (v6)
+      if (playerController)
       {
         [(AVPlaybackControlsController *)self _startObservingPotentiallyUnimplementedPlayerControllerProperties];
       }
@@ -5879,24 +5879,24 @@ void __52__AVPlaybackControlsController_startUpdatesIfNeeded__block_invoke_2(uin
     _os_log_impl(&dword_18B49C000, v3, OS_LOG_TYPE_DEFAULT, "%s %d", buf, 0x12u);
   }
 
-  v4 = [(AVPlaybackControlsController *)self playerControllerObservationController];
-  [v4 stopAllObservation];
+  playerControllerObservationController = [(AVPlaybackControlsController *)self playerControllerObservationController];
+  [playerControllerObservationController stopAllObservation];
 
-  v5 = [(AVPlaybackControlsController *)self playbackControlsObservationController];
-  [v5 stopAllObservation];
+  playbackControlsObservationController = [(AVPlaybackControlsController *)self playbackControlsObservationController];
+  [playbackControlsObservationController stopAllObservation];
 
-  v6 = [(AVPlaybackControlsController *)self observationController];
-  [v6 stopAllObservation];
+  observationController = [(AVPlaybackControlsController *)self observationController];
+  [observationController stopAllObservation];
 
   [(AVPlaybackControlsController *)self setShowsTimecodes:0];
-  v7 = [(AVPlaybackControlsController *)self volumeController];
-  [v7 setPrefersSystemVolumeHUDHidden:0];
+  volumeController = [(AVPlaybackControlsController *)self volumeController];
+  [volumeController setPrefersSystemVolumeHUDHidden:0];
 
-  v8 = [(AVPlaybackControlsController *)self timeResolver];
-  [v8 setPlayerController:0];
+  timeResolver = [(AVPlaybackControlsController *)self timeResolver];
+  [timeResolver setPlayerController:0];
 
-  v9 = [(AVPlaybackControlsController *)self routeDetectorCoordinator];
-  [v9 setRouteDetectionEnabled:0];
+  routeDetectorCoordinator = [(AVPlaybackControlsController *)self routeDetectorCoordinator];
+  [routeDetectorCoordinator setRouteDetectionEnabled:0];
 
   [(AVPlaybackControlsController *)self setPlayerController:0];
   v10.receiver = self;
@@ -5904,23 +5904,23 @@ void __52__AVPlaybackControlsController_startUpdatesIfNeeded__block_invoke_2(uin
   [(AVPlaybackControlsController *)&v10 dealloc];
 }
 
-- (AVPlaybackControlsController)initWithPlayerViewController:(id)a3
+- (AVPlaybackControlsController)initWithPlayerViewController:(id)controller
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  controllerCopy = controller;
   v20.receiver = self;
   v20.super_class = AVPlaybackControlsController;
   v5 = [(AVPlaybackControlsController *)&v20 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_playerViewController, v4);
-    v7 = [v4 playerController];
-    objc_storeWeak(&v6->_playerController, v7);
+    objc_storeWeak(&v5->_playerViewController, controllerCopy);
+    playerController = [controllerCopy playerController];
+    objc_storeWeak(&v6->_playerController, playerController);
 
     v6->_showsVideoGravityButton = 1;
-    v8 = [(AVPlaybackControlsController *)v6 playerViewController];
-    v6->_showsPlaybackControls = [v8 showsPlaybackControls];
+    playerViewController = [(AVPlaybackControlsController *)v6 playerViewController];
+    v6->_showsPlaybackControls = [playerViewController showsPlaybackControls];
 
     *&v6->_playbackControlsIncludeTransportControls = 257;
     v6->_playbackControlsIncludeVolumeControls = 1;
@@ -5930,11 +5930,11 @@ void __52__AVPlaybackControlsController_startUpdatesIfNeeded__block_invoke_2(uin
     *&v6->_forcePlaybackControlsHidden = 16842752;
     *&v6->_hasBegunObservingPotentiallyUnimplementedPlayerControllerProperties = 0;
     v6->_loadingIndicatorTimerDelay = 1.0;
-    v6->_canIncludePlaybackControlsWhenInline = [v4 canIncludePlaybackControlsWhenInline];
-    v9 = [MEMORY[0x1E696AE30] processInfo];
-    v10 = [v9 globallyUniqueString];
+    v6->_canIncludePlaybackControlsWhenInline = [controllerCopy canIncludePlaybackControlsWhenInline];
+    processInfo = [MEMORY[0x1E696AE30] processInfo];
+    globallyUniqueString = [processInfo globallyUniqueString];
     uniqueIdentifer = v6->_uniqueIdentifer;
-    v6->_uniqueIdentifer = v10;
+    v6->_uniqueIdentifer = globallyUniqueString;
 
     v12 = [[AVObservationController alloc] initWithOwner:v6];
     observationController = v6->_observationController;

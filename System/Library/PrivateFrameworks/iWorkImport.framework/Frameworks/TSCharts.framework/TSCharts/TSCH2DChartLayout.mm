@@ -1,6 +1,6 @@
 @interface TSCH2DChartLayout
 + (id)propertiesThatInvalidateLayout;
-- (CGPath)newDragAndDropHighlightPathForSelection:(id)a3;
+- (CGPath)newDragAndDropHighlightPathForSelection:(id)selection;
 - (CGPoint)p_cachedOriginRelativeToChartAreaFrame;
 - (CGRect)chartAreaFrame;
 - (CGRect)chartBodyFrame;
@@ -11,40 +11,40 @@
 - (CGRect)outerLayoutFrame;
 - (CGRect)outerShadowFrame;
 - (CGRect)titleFrame;
-- (TSCH2DChartLayout)initWithChartInfo:(id)a3;
-- (id)hitChartElements:(CGPoint)a3 passingTest:(id)a4;
+- (TSCH2DChartLayout)initWithChartInfo:(id)info;
+- (id)hitChartElements:(CGPoint)elements passingTest:(id)test;
 - (id)model;
 - (id)p_layoutTree;
-- (id)renderersWithRep:(id)a3;
-- (id)subselectionHaloPositionsForSelections:(id)a3;
-- (id)subselectionKnobPositionsForSelection:(id)a3;
+- (id)renderersWithRep:(id)rep;
+- (id)subselectionHaloPositionsForSelections:(id)selections;
+- (id)subselectionKnobPositionsForSelection:(id)selection;
 - (void)beginDynamicOperation;
 - (void)endDynamicOperation;
 - (void)invalidate;
 - (void)invalidateCachedOriginRelativeToChartAreaFrame;
-- (void)layoutForChartAreaSize:(CGSize)a3;
-- (void)layoutForChartBodySize:(CGSize)a3;
-- (void)layoutForCircumscribingSize:(CGSize)a3;
+- (void)layoutForChartAreaSize:(CGSize)size;
+- (void)layoutForChartBodySize:(CGSize)size;
+- (void)layoutForCircumscribingSize:(CGSize)size;
 - (void)p_ensureValidForInwardLayout;
-- (void)p_layoutNowForChartAreaSize:(CGSize)a3;
-- (void)p_layoutNowForChartBodySize:(CGSize)a3;
-- (void)p_layoutNowForCircumscribingSize:(CGSize)a3;
-- (void)setDataSetIndex:(unint64_t)a3;
-- (void)setLayoutSettings:(id *)a3;
-- (void)setLegendGeometryFrame:(CGRect)a3;
-- (void)setLegendModelGeometryFrame:(CGRect)a3;
-- (void)setLegendSize:(CGSize)a3;
-- (void)setSeriesIndexedPieWedgeExplosions:(id)a3;
-- (void)setStyleProvidingSource:(id)a3;
+- (void)p_layoutNowForChartAreaSize:(CGSize)size;
+- (void)p_layoutNowForChartBodySize:(CGSize)size;
+- (void)p_layoutNowForCircumscribingSize:(CGSize)size;
+- (void)setDataSetIndex:(unint64_t)index;
+- (void)setLayoutSettings:(id *)settings;
+- (void)setLegendGeometryFrame:(CGRect)frame;
+- (void)setLegendModelGeometryFrame:(CGRect)frame;
+- (void)setLegendSize:(CGSize)size;
+- (void)setSeriesIndexedPieWedgeExplosions:(id)explosions;
+- (void)setStyleProvidingSource:(id)source;
 @end
 
 @implementation TSCH2DChartLayout
 
-- (TSCH2DChartLayout)initWithChartInfo:(id)a3
+- (TSCH2DChartLayout)initWithChartInfo:(id)info
 {
   v7.receiver = self;
   v7.super_class = TSCH2DChartLayout;
-  result = [(TSCHChartLayout *)&v7 initWithChartInfo:a3];
+  result = [(TSCHChartLayout *)&v7 initWithChartInfo:info];
   if (result)
   {
     v4 = *MEMORY[0x277CBF398];
@@ -360,13 +360,13 @@
   return result;
 }
 
-- (void)setLegendGeometryFrame:(CGRect)a3
+- (void)setLegendGeometryFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = objc_msgSend_p_layoutTree(self, a2, a3.origin.x, a3.origin.y, a3.size.width);
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  v8 = objc_msgSend_p_layoutTree(self, a2, frame.origin.x, frame.origin.y, frame.size.width);
   v13 = objc_msgSend_legendAreaLayoutItem(v8, v9, v10, v11, v12);
 
   if (v13)
@@ -436,13 +436,13 @@
   return result;
 }
 
-- (void)setLegendModelGeometryFrame:(CGRect)a3
+- (void)setLegendModelGeometryFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = objc_msgSend_p_layoutTree(self, a2, a3.origin.x, a3.origin.y, a3.size.width);
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  v7 = objc_msgSend_p_layoutTree(self, a2, frame.origin.x, frame.origin.y, frame.size.width);
   v14 = objc_msgSend_legendAreaLayoutItem(v7, v8, v9, v10, v11);
 
   v13 = v14;
@@ -485,10 +485,10 @@
   return result;
 }
 
-- (void)setLayoutSettings:(id *)a3
+- (void)setLayoutSettings:(id *)settings
 {
   objc_msgSend_layoutSettings(self, a2, v3, v4, v5);
-  v14 = *a3;
+  v14 = *settings;
   if (!sub_27635FBE4(&v15, &v14))
   {
     layoutTreeRoot = self->_layoutTreeRoot;
@@ -497,18 +497,18 @@
     objc_msgSend_invalidate(self, v9, v10, v11, v12);
     v13.receiver = self;
     v13.super_class = TSCH2DChartLayout;
-    v15 = *&a3->var0;
-    var9 = a3->var9;
+    v15 = *&settings->var0;
+    var9 = settings->var9;
     [(TSCHChartLayout *)&v13 setLayoutSettings:&v15];
   }
 }
 
-- (void)setStyleProvidingSource:(id)a3
+- (void)setStyleProvidingSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   v9 = objc_msgSend_styleProvidingSource(self, v5, v6, v7, v8);
 
-  if (v9 != v4)
+  if (v9 != sourceCopy)
   {
     layoutTreeRoot = self->_layoutTreeRoot;
     self->_layoutTreeRoot = 0;
@@ -516,7 +516,7 @@
     objc_msgSend_invalidate(self, v11, v12, v13, v14);
     v15.receiver = self;
     v15.super_class = TSCH2DChartLayout;
-    [(TSCHChartLayout *)&v15 setStyleProvidingSource:v4];
+    [(TSCHChartLayout *)&v15 setStyleProvidingSource:sourceCopy];
   }
 }
 
@@ -550,11 +550,11 @@
   return v3;
 }
 
-- (void)layoutForCircumscribingSize:(CGSize)a3
+- (void)layoutForCircumscribingSize:(CGSize)size
 {
-  if (a3.width >= 0.0)
+  if (size.width >= 0.0)
   {
-    width = a3.width;
+    width = size.width;
   }
 
   else
@@ -562,9 +562,9 @@
     width = 0.0;
   }
 
-  if (a3.height >= 0.0)
+  if (size.height >= 0.0)
   {
-    height = a3.height;
+    height = size.height;
   }
 
   else
@@ -572,7 +572,7 @@
     height = 0.0;
   }
 
-  objc_msgSend_p_ensureValidForInwardLayout(self, a2, a3.width, a3.height, 0.0);
+  objc_msgSend_p_ensureValidForInwardLayout(self, a2, size.width, size.height, 0.0);
   objc_msgSend_outerLayoutFrame(self, v6, v7, v8, v9);
   v11 = v10;
   v13 = v12;
@@ -595,11 +595,11 @@
   }
 }
 
-- (void)layoutForChartAreaSize:(CGSize)a3
+- (void)layoutForChartAreaSize:(CGSize)size
 {
-  if (a3.width >= 0.0)
+  if (size.width >= 0.0)
   {
-    width = a3.width;
+    width = size.width;
   }
 
   else
@@ -607,9 +607,9 @@
     width = 0.0;
   }
 
-  if (a3.height >= 0.0)
+  if (size.height >= 0.0)
   {
-    height = a3.height;
+    height = size.height;
   }
 
   else
@@ -617,7 +617,7 @@
     height = 0.0;
   }
 
-  objc_msgSend_p_ensureValidForInwardLayout(self, a2, a3.width, a3.height, 0.0);
+  objc_msgSend_p_ensureValidForInwardLayout(self, a2, size.width, size.height, 0.0);
   objc_msgSend_chartAreaFrame(self, v6, v7, v8, v9);
   v11 = v10;
   v13 = v12;
@@ -640,11 +640,11 @@
   }
 }
 
-- (void)layoutForChartBodySize:(CGSize)a3
+- (void)layoutForChartBodySize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = objc_msgSend_chartInfo(self, a2, a3.width, a3.height, v3);
+  height = size.height;
+  width = size.width;
+  v7 = objc_msgSend_chartInfo(self, a2, size.width, size.height, v3);
   objc_msgSend_minimumChartBodySize(v7, v8, v9, v10, v11);
   v13 = v12;
   v15 = v14;
@@ -689,10 +689,10 @@
   }
 }
 
-- (void)p_layoutNowForCircumscribingSize:(CGSize)a3
+- (void)p_layoutNowForCircumscribingSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v6 = objc_autoreleasePoolPush();
   v11 = objc_msgSend_p_layoutTree(self, v7, v8, v9, v10);
   if (objc_msgSend_isValid(self, v12, v13, v14, v15))
@@ -723,10 +723,10 @@
   objc_autoreleasePoolPop(v6);
 }
 
-- (void)p_layoutNowForChartAreaSize:(CGSize)a3
+- (void)p_layoutNowForChartAreaSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v6 = objc_autoreleasePoolPush();
   v11 = objc_msgSend_p_layoutTree(self, v7, v8, v9, v10);
   if (objc_msgSend_isValid(self, v12, v13, v14, v15))
@@ -759,10 +759,10 @@
   objc_autoreleasePoolPop(v6);
 }
 
-- (void)p_layoutNowForChartBodySize:(CGSize)a3
+- (void)p_layoutNowForChartBodySize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v6 = objc_autoreleasePoolPush();
   v11 = objc_msgSend_p_layoutTree(self, v7, v8, v9, v10);
   if (objc_msgSend_isValid(self, v12, v13, v14, v15))
@@ -905,19 +905,19 @@ LABEL_12:
   self->_startingLegendInnerFrame.size = v4;
 }
 
-- (void)setLegendSize:(CGSize)a3
+- (void)setLegendSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  self->_startingLegendInnerFrame.size = a3;
-  v8 = objc_msgSend_p_layoutTree(self, a2, a3.width, a3.height, v3);
+  height = size.height;
+  width = size.width;
+  self->_startingLegendInnerFrame.size = size;
+  v8 = objc_msgSend_p_layoutTree(self, a2, size.width, size.height, v3);
   objc_msgSend_setLegendSize_(v8, v6, width, height, v7);
 }
 
-- (void)setSeriesIndexedPieWedgeExplosions:(id)a3
+- (void)setSeriesIndexedPieWedgeExplosions:(id)explosions
 {
-  v39 = a3;
-  if (!v39)
+  explosionsCopy = explosions;
+  if (!explosionsCopy)
   {
     v8 = MEMORY[0x277D81150];
     v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v4, v5, v6, v7, "[TSCH2DChartLayout setSeriesIndexedPieWedgeExplosions:]");
@@ -939,7 +939,7 @@ LABEL_12:
     layoutTreeRoot = self->_layoutTreeRoot;
   }
 
-  objc_msgSend_setSeriesIndexedPieWedgeExplosions_(layoutTreeRoot, v4, v5, v6, v7, v39);
+  objc_msgSend_setSeriesIndexedPieWedgeExplosions_(layoutTreeRoot, v4, v5, v6, v7, explosionsCopy);
 }
 
 - (id)model
@@ -959,7 +959,7 @@ LABEL_12:
   return objc_msgSend_model(layoutTreeRoot, a2, v2, v3, v4);
 }
 
-- (void)setDataSetIndex:(unint64_t)a3
+- (void)setDataSetIndex:(unint64_t)index
 {
   layoutTreeRoot = self->_layoutTreeRoot;
   if (!layoutTreeRoot)
@@ -973,16 +973,16 @@ LABEL_12:
     layoutTreeRoot = self->_layoutTreeRoot;
   }
 
-  objc_msgSend_setDataSetIndex_(layoutTreeRoot, a2, v3, v4, v5, a3);
+  objc_msgSend_setDataSetIndex_(layoutTreeRoot, a2, v3, v4, v5, index);
 }
 
-- (id)renderersWithRep:(id)a3
+- (id)renderersWithRep:(id)rep
 {
-  v4 = a3;
+  repCopy = rep;
   if (objc_msgSend_isValid(self, v5, v6, v7, v8))
   {
     v13 = objc_msgSend_p_layoutTree(self, v9, v10, v11, v12);
-    v18 = objc_msgSend_renderersWithRep_(v13, v14, v15, v16, v17, v4);
+    v18 = objc_msgSend_renderersWithRep_(v13, v14, v15, v16, v17, repCopy);
   }
 
   else
@@ -993,40 +993,40 @@ LABEL_12:
   return v18;
 }
 
-- (id)hitChartElements:(CGPoint)a3 passingTest:(id)a4
+- (id)hitChartElements:(CGPoint)elements passingTest:(id)test
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = elements.y;
+  x = elements.x;
+  testCopy = test;
   v12 = objc_msgSend_p_layoutTree(self, v8, v9, v10, v11);
-  v15 = objc_msgSend_hitChartElements_passingTest_(v12, v13, x, y, v14, v7);
+  v15 = objc_msgSend_hitChartElements_passingTest_(v12, v13, x, y, v14, testCopy);
 
   return v15;
 }
 
-- (id)subselectionKnobPositionsForSelection:(id)a3
+- (id)subselectionKnobPositionsForSelection:(id)selection
 {
-  v4 = a3;
+  selectionCopy = selection;
   v9 = objc_msgSend_p_layoutTree(self, v5, v6, v7, v8);
-  v14 = objc_msgSend_subselectionKnobPositionsForSelection_(v9, v10, v11, v12, v13, v4);
+  v14 = objc_msgSend_subselectionKnobPositionsForSelection_(v9, v10, v11, v12, v13, selectionCopy);
 
   return v14;
 }
 
-- (id)subselectionHaloPositionsForSelections:(id)a3
+- (id)subselectionHaloPositionsForSelections:(id)selections
 {
-  v4 = a3;
+  selectionsCopy = selections;
   v9 = objc_msgSend_p_layoutTree(self, v5, v6, v7, v8);
-  v14 = objc_msgSend_subselectionHaloPositionsForSelections_(v9, v10, v11, v12, v13, v4);
+  v14 = objc_msgSend_subselectionHaloPositionsForSelections_(v9, v10, v11, v12, v13, selectionsCopy);
 
   return v14;
 }
 
-- (CGPath)newDragAndDropHighlightPathForSelection:(id)a3
+- (CGPath)newDragAndDropHighlightPathForSelection:(id)selection
 {
-  v4 = a3;
+  selectionCopy = selection;
   v9 = objc_msgSend_p_layoutTree(self, v5, v6, v7, v8);
-  v14 = objc_msgSend_newDragAndDropHighlightPathForSelection_(v9, v10, v11, v12, v13, v4);
+  v14 = objc_msgSend_newDragAndDropHighlightPathForSelection_(v9, v10, v11, v12, v13, selectionCopy);
 
   return v14;
 }

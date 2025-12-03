@@ -2,7 +2,7 @@
 + (OS_os_log)log;
 - (BOOL)canSaveCertificateToKeychain;
 - (BOOL)hasTrustException;
-- (MFCertificateTrustInformationKeychainManager)initWithTrustInformation:(id)a3;
+- (MFCertificateTrustInformationKeychainManager)initWithTrustInformation:(id)information;
 - (int)action;
 - (unint64_t)keychainStatus;
 - (void)addTrustException;
@@ -19,7 +19,7 @@
   block[1] = 3221225472;
   block[2] = __51__MFCertificateTrustInformationKeychainManager_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_11 != -1)
   {
     dispatch_once(&log_onceToken_11, block);
@@ -38,35 +38,35 @@ void __51__MFCertificateTrustInformationKeychainManager_log__block_invoke(uint64
   log_log_11 = v1;
 }
 
-- (MFCertificateTrustInformationKeychainManager)initWithTrustInformation:(id)a3
+- (MFCertificateTrustInformationKeychainManager)initWithTrustInformation:(id)information
 {
-  v5 = a3;
+  informationCopy = information;
   v18.receiver = self;
   v18.super_class = MFCertificateTrustInformationKeychainManager;
   v6 = [(MFCertificateTrustInformationKeychainManager *)&v18 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_trustInformation, a3);
+    objc_storeStrong(&v6->_trustInformation, information);
     v8 = +[MFMessageKeychainManager newTrustManager];
     keychainManager = v7->_keychainManager;
     v7->_keychainManager = v8;
 
-    v10 = [(EMCertificateTrustInformation *)v7->_trustInformation sender];
-    v11 = [v10 emailAddressValue];
-    v12 = [v11 simpleAddress];
-    v13 = v12;
-    if (v12)
+    sender = [(EMCertificateTrustInformation *)v7->_trustInformation sender];
+    emailAddressValue = [sender emailAddressValue];
+    simpleAddress = [emailAddressValue simpleAddress];
+    v13 = simpleAddress;
+    if (simpleAddress)
     {
-      v14 = v12;
+      stringValue = simpleAddress;
     }
 
     else
     {
-      v14 = [v10 stringValue];
+      stringValue = [sender stringValue];
     }
 
-    v15 = v14;
+    v15 = stringValue;
 
     addressForSaving = v7->_addressForSaving;
     v7->_addressForSaving = v15;
@@ -90,11 +90,11 @@ void __51__MFCertificateTrustInformationKeychainManager_log__block_invoke(uint64
   }
 
   v5 = trustInformation;
-  v6 = [(EMCertificateTrustInformation *)v5 trust];
-  v7 = [(MFCertificateTrustInformationKeychainManager *)self addressForSaving];
-  LODWORD(v6) = [(CertUITrustManager *)v3 actionForSMIMETrust:v6 sender:v7];
+  trust = [(EMCertificateTrustInformation *)v5 trust];
+  addressForSaving = [(MFCertificateTrustInformationKeychainManager *)self addressForSaving];
+  LODWORD(trust) = [(CertUITrustManager *)v3 actionForSMIMETrust:trust sender:addressForSaving];
 
-  return v6;
+  return trust;
 }
 
 - (BOOL)hasTrustException
@@ -112,11 +112,11 @@ void __51__MFCertificateTrustInformationKeychainManager_log__block_invoke(uint64
   }
 
   v5 = trustInformation;
-  v6 = [(EMCertificateTrustInformation *)v5 trust];
-  v7 = [(MFCertificateTrustInformationKeychainManager *)self addressForSaving];
-  LOBYTE(v6) = [(CertUITrustManager *)v3 _hasExceptionsForSMIMETrust:v6 sender:v7];
+  trust = [(EMCertificateTrustInformation *)v5 trust];
+  addressForSaving = [(MFCertificateTrustInformationKeychainManager *)self addressForSaving];
+  LOBYTE(trust) = [(CertUITrustManager *)v3 _hasExceptionsForSMIMETrust:trust sender:addressForSaving];
 
-  return v6;
+  return trust;
 }
 
 - (void)addTrustException
@@ -135,21 +135,21 @@ void __51__MFCertificateTrustInformationKeychainManager_log__block_invoke(uint64
   }
 
   v5 = trustInformation;
-  v6 = [(EMCertificateTrustInformation *)v5 trust];
-  v7 = [(MFCertificateTrustInformationKeychainManager *)self addressForSaving];
-  [(CertUITrustManager *)v3 addSMIMETrust:v6 sender:v7];
+  trust = [(EMCertificateTrustInformation *)v5 trust];
+  addressForSaving = [(MFCertificateTrustInformationKeychainManager *)self addressForSaving];
+  [(CertUITrustManager *)v3 addSMIMETrust:trust sender:addressForSaving];
 
   v8 = +[MFCertificateTrustInformationKeychainManager log];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(MFCertificateTrustInformationKeychainManager *)self addressForSaving];
+    addressForSaving2 = [(MFCertificateTrustInformationKeychainManager *)self addressForSaving];
     v12 = 138412290;
-    v13 = v9;
+    v13 = addressForSaving2;
     _os_log_impl(&dword_1B0389000, v8, OS_LOG_TYPE_DEFAULT, "Added trust exception for %@", &v12, 0xCu);
   }
 
-  v10 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v10 postNotificationName:@"MFCertificateTrustDidChangeNotification" object:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"MFCertificateTrustDidChangeNotification" object:self];
 
   v11 = *MEMORY[0x1E69E9840];
 }
@@ -169,9 +169,9 @@ void __51__MFCertificateTrustInformationKeychainManager_log__block_invoke(uint64
     }
 
     v7 = trustInformation;
-    v4 = [(EMCertificateTrustInformation *)v7 certificate];
-    v5 = [(MFCertificateTrustInformationKeychainManager *)self addressForSaving];
-    v6 = [MFMessageKeychainManager saveEncryptionCertificate:v4 forAddress:v5];
+    certificate = [(EMCertificateTrustInformation *)v7 certificate];
+    addressForSaving = [(MFCertificateTrustInformationKeychainManager *)self addressForSaving];
+    v6 = [MFMessageKeychainManager saveEncryptionCertificate:certificate forAddress:addressForSaving];
   }
 }
 
@@ -179,7 +179,7 @@ void __51__MFCertificateTrustInformationKeychainManager_log__block_invoke(uint64
 {
   if ([(MFCertificateTrustInformationKeychainManager *)self canSaveCertificateToKeychain])
   {
-    v4 = [(MFCertificateTrustInformationKeychainManager *)self addressForSaving];
+    addressForSaving = [(MFCertificateTrustInformationKeychainManager *)self addressForSaving];
     v3 = [MFMessageKeychainManager saveEncryptionCertificate:0 forAddress:?];
   }
 }
@@ -196,17 +196,17 @@ void __51__MFCertificateTrustInformationKeychainManager_log__block_invoke(uint64
 
 - (void)removeTrustException
 {
-  v2 = self;
+  selfCopy = self;
   v14 = *MEMORY[0x1E69E9840];
   if (self)
   {
     self = self->_trustInformation;
   }
 
-  v3 = [(MFCertificateTrustInformationKeychainManager *)self trust];
-  if (v2)
+  trust = [(MFCertificateTrustInformationKeychainManager *)self trust];
+  if (selfCopy)
   {
-    keychainManager = v2->_keychainManager;
+    keychainManager = selfCopy->_keychainManager;
   }
 
   else
@@ -215,35 +215,35 @@ void __51__MFCertificateTrustInformationKeychainManager_log__block_invoke(uint64
   }
 
   v5 = keychainManager;
-  v6 = [(MFCertificateTrustInformationKeychainManager *)v2 addressForSaving];
-  [(CertUITrustManager *)v5 removeSMIMETrust:v3 sender:v6];
+  addressForSaving = [(MFCertificateTrustInformationKeychainManager *)selfCopy addressForSaving];
+  [(CertUITrustManager *)v5 removeSMIMETrust:trust sender:addressForSaving];
 
   policies = 0;
-  if (!SecTrustCopyPolicies(v3, &policies))
+  if (!SecTrustCopyPolicies(trust, &policies))
   {
-    SecTrustSetPolicies(v3, MEMORY[0x1E695E0F0]);
-    SecTrustSetPolicies(v3, policies);
+    SecTrustSetPolicies(trust, MEMORY[0x1E695E0F0]);
+    SecTrustSetPolicies(trust, policies);
     CFRelease(policies);
   }
 
   v7 = +[MFCertificateTrustInformationKeychainManager log];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [(MFCertificateTrustInformationKeychainManager *)v2 addressForSaving];
+    addressForSaving2 = [(MFCertificateTrustInformationKeychainManager *)selfCopy addressForSaving];
     *buf = 138412290;
-    v13 = v8;
+    v13 = addressForSaving2;
     _os_log_impl(&dword_1B0389000, v7, OS_LOG_TYPE_DEFAULT, "Removed trust exception for %@", buf, 0xCu);
   }
 
-  v9 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v9 postNotificationName:@"MFCertificateTrustDidChangeNotification" object:v2];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"MFCertificateTrustDidChangeNotification" object:selfCopy];
 
   v10 = *MEMORY[0x1E69E9840];
 }
 
 - (unint64_t)keychainStatus
 {
-  v2 = self;
+  selfCopy = self;
   v20 = *MEMORY[0x1E69E9840];
   if (self)
   {
@@ -252,16 +252,16 @@ void __51__MFCertificateTrustInformationKeychainManager_log__block_invoke(uint64
 
   if ([(MFCertificateTrustInformationKeychainManager *)self certificateType]== 1)
   {
-    v3 = [(MFCertificateTrustInformationKeychainManager *)v2 addressForSaving];
+    addressForSaving = [(MFCertificateTrustInformationKeychainManager *)selfCopy addressForSaving];
     v15 = 0;
-    v4 = [MFMessageKeychainManager copyEncryptionCertificateForAddress:v3 error:&v15];
+    v4 = [MFMessageKeychainManager copyEncryptionCertificateForAddress:addressForSaving error:&v15];
     v5 = v15;
 
     if (v4)
     {
-      if (v2)
+      if (selfCopy)
       {
-        trustInformation = v2->_trustInformation;
+        trustInformation = selfCopy->_trustInformation;
       }
 
       else
@@ -291,12 +291,12 @@ void __51__MFCertificateTrustInformationKeychainManager_log__block_invoke(uint64
         v10 = +[MFCertificateTrustInformationKeychainManager log];
         if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
         {
-          v13 = [(MFCertificateTrustInformationKeychainManager *)v2 addressForSaving];
-          v14 = [v5 ef_publicDescription];
+          addressForSaving2 = [(MFCertificateTrustInformationKeychainManager *)selfCopy addressForSaving];
+          ef_publicDescription = [v5 ef_publicDescription];
           *buf = 138412546;
-          v17 = v13;
+          v17 = addressForSaving2;
           v18 = 2114;
-          v19 = v14;
+          v19 = ef_publicDescription;
           _os_log_error_impl(&dword_1B0389000, v10, OS_LOG_TYPE_ERROR, "Error when retrieving encryption certificate for %@: %{public}@", buf, 0x16u);
         }
       }

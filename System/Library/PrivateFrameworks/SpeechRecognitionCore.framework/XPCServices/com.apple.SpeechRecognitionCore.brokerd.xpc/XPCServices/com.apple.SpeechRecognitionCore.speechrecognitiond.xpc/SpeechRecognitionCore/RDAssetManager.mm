@@ -1,31 +1,31 @@
 @interface RDAssetManager
-+ (id)_assetQueryForLanguage:(id)a3;
++ (id)_assetQueryForLanguage:(id)language;
 + (id)sharedInstance;
-- (BOOL)_startedDownloadingEmbeddedSpeechAsset:(id)a3 withUrgency:(BOOL)a4 error:(id *)a5;
+- (BOOL)_startedDownloadingEmbeddedSpeechAsset:(id)asset withUrgency:(BOOL)urgency error:(id *)error;
 - (BOOL)sendCallback;
 - (RDAssetManager)init;
-- (id)_errorStringForCancelDownloadResult:(int64_t)a3;
-- (id)_errorStringForDownloadResult:(int64_t)a3;
-- (id)_errorStringForMAOperationResult:(int64_t)a3;
-- (id)_errorStringForPurgeResult:(int64_t)a3;
-- (id)_errorStringForQueryResult:(int64_t)a3;
-- (id)_installedAssetForLanguage:(id)a3 error:(id *)a4;
-- (id)_installedAssetFromFoundAssets:(id)a3 language:(id)a4 error:(id *)a5;
-- (id)_installedLocalAssetForLanguage:(id)a3 error:(id *)a4;
-- (id)_stateStringForAsset:(id)a3;
-- (id)copyInstallationStatusForLangaugesWithError:(id *)a3;
-- (id)copyInstalledAssetPathForLangaugeWithError:(id)a3 error:(id *)a4;
-- (id)copyInstalledQuasarModelPathForLanguage:(id)a3 error:(id *)a4;
-- (id)purgeInstalledAssetsWithError:(id *)a3;
-- (id)queryAndCopyInstallationStatusForLangaugesWithError:(id *)a3;
-- (void)_cancelDownloadForLangaugeWithError:(id)a3 withError:(id *)a4;
-- (void)_fetchRemoteAssetForLanguage:(id)a3;
-- (void)_sendDownloadCallbackDictionaryWithLanguage:(id)a3 downloadPhase:(__CFString *)a4 timeRemaining:(float)a5 bytesWritten:(float)a6 bytesTotal:(float)a7 error:(id)a8;
-- (void)addPeerForCallback:(id)a3;
-- (void)cancelDownloadForLanguage:(id)a3 error:(id *)a4;
-- (void)kickCatalogDownloadWithUrgency:(BOOL)a3;
-- (void)removePeerFromCallback:(id)a3;
-- (void)sendMessageToClient:(__CFDictionary *)a3;
+- (id)_errorStringForCancelDownloadResult:(int64_t)result;
+- (id)_errorStringForDownloadResult:(int64_t)result;
+- (id)_errorStringForMAOperationResult:(int64_t)result;
+- (id)_errorStringForPurgeResult:(int64_t)result;
+- (id)_errorStringForQueryResult:(int64_t)result;
+- (id)_installedAssetForLanguage:(id)language error:(id *)error;
+- (id)_installedAssetFromFoundAssets:(id)assets language:(id)language error:(id *)error;
+- (id)_installedLocalAssetForLanguage:(id)language error:(id *)error;
+- (id)_stateStringForAsset:(id)asset;
+- (id)copyInstallationStatusForLangaugesWithError:(id *)error;
+- (id)copyInstalledAssetPathForLangaugeWithError:(id)error error:(id *)a4;
+- (id)copyInstalledQuasarModelPathForLanguage:(id)language error:(id *)error;
+- (id)purgeInstalledAssetsWithError:(id *)error;
+- (id)queryAndCopyInstallationStatusForLangaugesWithError:(id *)error;
+- (void)_cancelDownloadForLangaugeWithError:(id)error withError:(id *)withError;
+- (void)_fetchRemoteAssetForLanguage:(id)language;
+- (void)_sendDownloadCallbackDictionaryWithLanguage:(id)language downloadPhase:(__CFString *)phase timeRemaining:(float)remaining bytesWritten:(float)written bytesTotal:(float)total error:(id)error;
+- (void)addPeerForCallback:(id)callback;
+- (void)cancelDownloadForLanguage:(id)language error:(id *)error;
+- (void)kickCatalogDownloadWithUrgency:(BOOL)urgency;
+- (void)removePeerFromCallback:(id)callback;
+- (void)sendMessageToClient:(__CFDictionary *)client;
 @end
 
 @implementation RDAssetManager
@@ -68,19 +68,19 @@
   return v2;
 }
 
-- (void)kickCatalogDownloadWithUrgency:(BOOL)a3
+- (void)kickCatalogDownloadWithUrgency:(BOOL)urgency
 {
   queue = self->_queue;
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10004349C;
   v4[3] = &unk_1000FF710;
-  v5 = a3;
+  urgencyCopy = urgency;
   v4[4] = self;
   dispatch_async(queue, v4);
 }
 
-- (id)copyInstallationStatusForLangaugesWithError:(id *)a3
+- (id)copyInstallationStatusForLangaugesWithError:(id *)error
 {
   v14 = 0;
   v15 = &v14;
@@ -103,9 +103,9 @@
   block[5] = &v14;
   block[6] = &v8;
   dispatch_sync(queue, block);
-  if (a3)
+  if (error)
   {
-    *a3 = v9[5];
+    *error = v9[5];
   }
 
   v5 = v15[5];
@@ -115,7 +115,7 @@
   return v5;
 }
 
-- (id)queryAndCopyInstallationStatusForLangaugesWithError:(id *)a3
+- (id)queryAndCopyInstallationStatusForLangaugesWithError:(id *)error
 {
   v5 = [RDAssetManager _assetQueryForLanguage:0];
   v6 = v5;
@@ -134,12 +134,12 @@
   [v5 returnTypes:1];
   [v6 setDoNotBlockBeforeFirstUnlock:1];
   [v6 setDoNotBlockOnNetworkStatus:1];
-  v7 = [v6 queryMetaDataSync];
+  queryMetaDataSync = [v6 queryMetaDataSync];
   v8 = RXOSLog();
   v9 = v8;
-  if (v7)
+  if (queryMetaDataSync)
   {
-    if (v7 == 2)
+    if (queryMetaDataSync == 2)
     {
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
@@ -154,19 +154,19 @@
     {
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
       {
-        v43 = [(RDAssetManager *)self _errorStringForQueryResult:v7];
+        v43 = [(RDAssetManager *)self _errorStringForQueryResult:queryMetaDataSync];
         *buf = 138412290;
         v58 = v43;
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "MobileAsset query failed : error = %@", buf, 0xCu);
       }
 
-      if (a3)
+      if (error)
       {
         v63 = @"MAQueryResult";
-        v44 = [(RDAssetManager *)self _errorStringForQueryResult:v7];
+        v44 = [(RDAssetManager *)self _errorStringForQueryResult:queryMetaDataSync];
         v64 = v44;
         v45 = [NSDictionary dictionaryWithObjects:&v64 forKeys:&v63 count:1];
-        *a3 = [NSError errorWithDomain:@"kRXAssetDownloadErrorDomain" code:101 userInfo:v45];
+        *error = [NSError errorWithDomain:@"kRXAssetDownloadErrorDomain" code:101 userInfo:v45];
       }
     }
 
@@ -182,17 +182,17 @@ LABEL_63:
   }
 
   [(RDAssetManager *)self kickCatalogDownloadWithUrgency:0];
-  v11 = [v6 results];
+  results = [v6 results];
   v12 = +[NSMutableDictionary dictionary];
-  v48 = v11;
-  if (v11)
+  v48 = results;
+  if (results)
   {
     v47 = v6;
     v55 = 0u;
     v56 = 0u;
     v53 = 0u;
     v54 = 0u;
-    v13 = v11;
+    v13 = results;
     v14 = [v13 countByEnumeratingWithState:&v53 objects:v62 count:16];
     if (!v14)
     {
@@ -212,29 +212,29 @@ LABEL_63:
         }
 
         v18 = *(*(&v53 + 1) + 8 * v17);
-        v19 = [v18 _es_language];
-        v20 = [v12 objectForKey:v19];
-        if ([v20 hasPrefix:@"Version:"])
+        _es_language = [v18 _es_language];
+        _es_quasarDir = [v12 objectForKey:_es_language];
+        if ([_es_quasarDir hasPrefix:@"Version:"])
         {
           goto LABEL_21;
         }
 
-        v21 = [v12 objectForKey:v19];
-        if ([v21 isEqualToString:@"Installing"])
+        _es_quasarModelPath = [v12 objectForKey:_es_language];
+        if ([_es_quasarModelPath isEqualToString:@"Installing"])
         {
           goto LABEL_20;
         }
 
-        v22 = [v21 isEqualToString:@"Waiting to Install"];
+        v22 = [_es_quasarModelPath isEqualToString:@"Waiting to Install"];
 
         if ((v22 & 1) == 0)
         {
-          v23 = [v18 _es_status];
-          if (v23 <= 1)
+          _es_status = [v18 _es_status];
+          if (_es_status <= 1)
           {
-            if (v23)
+            if (_es_status)
             {
-              if (v23 != 1)
+              if (_es_status != 1)
               {
                 goto LABEL_37;
               }
@@ -248,7 +248,7 @@ LABEL_63:
             }
           }
 
-          else if (v23 == 2)
+          else if (_es_status == 2)
           {
             v24 = @"Waiting to Install";
           }
@@ -256,21 +256,21 @@ LABEL_63:
           else
           {
             v24 = @"Installing";
-            if (v23 != 3)
+            if (_es_status != 3)
             {
-              if (v23 == 4)
+              if (_es_status == 4)
               {
-                v20 = [v18 _es_quasarDir];
-                v21 = [v18 _es_quasarModelPath];
-                if ([v18 _es_isCompatibleWithThisDevice] && sub_100044290(v21))
+                _es_quasarDir = [v18 _es_quasarDir];
+                _es_quasarModelPath = [v18 _es_quasarModelPath];
+                if ([v18 _es_isCompatibleWithThisDevice] && sub_100044290(_es_quasarModelPath))
                 {
-                  v25 = [NSString stringWithFormat:@"Version: %@", v20];
-                  [v12 setObject:v25 forKey:v19];
+                  v25 = [NSString stringWithFormat:@"Version: %@", _es_quasarDir];
+                  [v12 setObject:v25 forKey:_es_language];
                 }
 
                 else
                 {
-                  [v12 setObject:@"Not Supported" forKey:v19];
+                  [v12 setObject:@"Not Supported" forKey:_es_language];
                 }
 
 LABEL_20:
@@ -284,7 +284,7 @@ LABEL_37:
             }
           }
 
-          [v12 setObject:v24 forKey:v19];
+          [v12 setObject:v24 forKey:_es_language];
         }
 
 LABEL_22:
@@ -385,19 +385,19 @@ LABEL_66:
   return v12;
 }
 
-- (id)copyInstalledAssetPathForLangaugeWithError:(id)a3 error:(id *)a4
+- (id)copyInstalledAssetPathForLangaugeWithError:(id)error error:(id *)a4
 {
-  v6 = a3;
+  errorCopy = error;
   v7 = [RDAssetManager _assetQueryForLanguage:0];
   [v7 returnTypes:1];
-  v8 = [v7 queryMetaDataSync];
-  if (!v8)
+  queryMetaDataSync = [v7 queryMetaDataSync];
+  if (!queryMetaDataSync)
   {
-    v15 = [v7 results];
-    v12 = v15;
-    if (!v15)
+    results = [v7 results];
+    v12 = results;
+    if (!results)
     {
-      v14 = 0;
+      _es_quasarModelPath = 0;
 LABEL_29:
 
       goto LABEL_30;
@@ -407,7 +407,7 @@ LABEL_29:
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v13 = v15;
+    v13 = results;
     v16 = [v13 countByEnumeratingWithState:&v25 objects:v29 count:16];
     if (v16)
     {
@@ -423,11 +423,11 @@ LABEL_29:
           }
 
           v20 = *(*(&v25 + 1) + 8 * i);
-          v21 = [v20 _es_language];
-          v22 = [v20 _es_status];
-          if ([v21 isEqualToString:v6])
+          _es_language = [v20 _es_language];
+          _es_status = [v20 _es_status];
+          if ([_es_language isEqualToString:errorCopy])
           {
-            v23 = v22 == 4;
+            v23 = _es_status == 4;
           }
 
           else
@@ -437,8 +437,8 @@ LABEL_29:
 
           if (v23)
           {
-            v14 = [v20 _es_quasarModelPath];
-            if ([v20 _es_isCompatibleWithThisDevice] && (sub_100044290(v14) & 1) != 0)
+            _es_quasarModelPath = [v20 _es_quasarModelPath];
+            if ([v20 _es_isCompatibleWithThisDevice] && (sub_100044290(_es_quasarModelPath) & 1) != 0)
             {
 
               goto LABEL_27;
@@ -456,7 +456,7 @@ LABEL_29:
       }
     }
 
-    v14 = 0;
+    _es_quasarModelPath = 0;
 LABEL_27:
     v12 = v13;
 LABEL_28:
@@ -464,8 +464,8 @@ LABEL_28:
     goto LABEL_29;
   }
 
-  v9 = v8;
-  if (v8 != 2)
+  v9 = queryMetaDataSync;
+  if (queryMetaDataSync != 2)
   {
     v10 = RXOSLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -483,24 +483,24 @@ LABEL_28:
       v31 = v12;
       v13 = [NSDictionary dictionaryWithObjects:&v31 forKeys:&v30 count:1];
       [NSError errorWithDomain:@"kRXAssetDownloadErrorDomain" code:101 userInfo:v13];
-      *a4 = v14 = 0;
+      *a4 = _es_quasarModelPath = 0;
       goto LABEL_28;
     }
   }
 
-  v14 = 0;
+  _es_quasarModelPath = 0;
 LABEL_30:
 
-  return v14;
+  return _es_quasarModelPath;
 }
 
-- (void)cancelDownloadForLanguage:(id)a3 error:(id *)a4
+- (void)cancelDownloadForLanguage:(id)language error:(id *)error
 {
-  v6 = a3;
-  if (v6)
+  languageCopy = language;
+  if (languageCopy)
   {
-    v7 = v6;
-    v8 = [v6 stringByReplacingOccurrencesOfString:@"_" withString:@"-"];
+    v7 = languageCopy;
+    v8 = [languageCopy stringByReplacingOccurrencesOfString:@"_" withString:@"-"];
 
     *v16 = 0;
     v17 = v16;
@@ -518,13 +518,13 @@ LABEL_30:
     v14 = v10;
     v15 = v16;
     dispatch_sync(queue, block);
-    if (a4)
+    if (error)
     {
-      *a4 = *(v17 + 5);
+      *error = *(v17 + 5);
       v11 = RXOSLog();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
-        v12 = *a4;
+        v12 = *error;
         *buf = 138412290;
         v23 = v12;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_ERROR, "Error in cancelling download: %@", buf, 0xCu);
@@ -545,28 +545,28 @@ LABEL_30:
   }
 }
 
-- (void)_cancelDownloadForLangaugeWithError:(id)a3 withError:(id *)a4
+- (void)_cancelDownloadForLangaugeWithError:(id)error withError:(id *)withError
 {
-  v6 = a3;
-  v7 = [RDAssetManager _assetQueryForLanguage:v6];
+  errorCopy = error;
+  v7 = [RDAssetManager _assetQueryForLanguage:errorCopy];
   [v7 returnTypes:4];
-  v8 = [v7 queryMetaDataSync];
-  if (!v8)
+  queryMetaDataSync = [v7 queryMetaDataSync];
+  if (!queryMetaDataSync)
   {
-    v18 = [v7 results];
-    v16 = v18;
-    if (v18)
+    results = [v7 results];
+    v16 = results;
+    if (results)
     {
       v35 = 0u;
       v36 = 0u;
       v33 = 0u;
       v34 = 0u;
-      v19 = [v18 countByEnumeratingWithState:&v33 objects:v37 count:16];
+      v19 = [results countByEnumeratingWithState:&v33 objects:v37 count:16];
       if (v19)
       {
         v20 = v19;
         v31 = v7;
-        v32 = v6;
+        v32 = errorCopy;
         v21 = *v34;
         do
         {
@@ -581,8 +581,8 @@ LABEL_30:
             if ([v23 _es_isCompatibleWithThisDevice])
             {
               [v23 refreshState];
-              v24 = [v23 cancelDownloadSync];
-              if (v24)
+              cancelDownloadSync = [v23 cancelDownloadSync];
+              if (cancelDownloadSync)
               {
                 v25 = @"CancelFailed";
               }
@@ -594,12 +594,12 @@ LABEL_30:
 
               if ([(RDAssetManager *)self sendCallback])
               {
-                v26 = [v23 _es_language];
-                v27 = [(RDAssetManager *)self _errorStringForCancelDownloadResult:v24];
+                _es_language = [v23 _es_language];
+                v27 = [(RDAssetManager *)self _errorStringForCancelDownloadResult:cancelDownloadSync];
                 LODWORD(v28) = -1.0;
                 LODWORD(v29) = -1.0;
                 LODWORD(v30) = -1.0;
-                [(RDAssetManager *)self _sendDownloadCallbackDictionaryWithLanguage:v26 downloadPhase:v25 timeRemaining:v27 bytesWritten:v28 bytesTotal:v29 error:v30];
+                [(RDAssetManager *)self _sendDownloadCallbackDictionaryWithLanguage:_es_language downloadPhase:v25 timeRemaining:v27 bytesWritten:v28 bytesTotal:v29 error:v30];
               }
 
               CFRelease(v25);
@@ -611,14 +611,14 @@ LABEL_30:
 
         while (v20);
         v7 = v31;
-        v6 = v32;
+        errorCopy = v32;
       }
     }
 
     goto LABEL_24;
   }
 
-  v9 = v8;
+  v9 = queryMetaDataSync;
   v10 = RXOSLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
   {
@@ -628,7 +628,7 @@ LABEL_30:
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "MobileAsset query failed : error = %@", buf, 0xCu);
   }
 
-  if (a4)
+  if (withError)
   {
     if ([(RDAssetManager *)self sendCallback])
     {
@@ -636,26 +636,26 @@ LABEL_30:
       LODWORD(v13) = -1.0;
       LODWORD(v14) = -1.0;
       LODWORD(v15) = -1.0;
-      [(RDAssetManager *)self _sendDownloadCallbackDictionaryWithLanguage:v6 downloadPhase:@"CancelFailed" timeRemaining:v12 bytesWritten:v13 bytesTotal:v14 error:v15];
+      [(RDAssetManager *)self _sendDownloadCallbackDictionaryWithLanguage:errorCopy downloadPhase:@"CancelFailed" timeRemaining:v12 bytesWritten:v13 bytesTotal:v14 error:v15];
     }
 
     v38 = @"MAQueryResult";
     v16 = [(RDAssetManager *)self _errorStringForQueryResult:v9];
     v39 = v16;
     v17 = [NSDictionary dictionaryWithObjects:&v39 forKeys:&v38 count:1];
-    *a4 = [NSError errorWithDomain:@"kRXAssetDownloadErrorDomain" code:103 userInfo:v17];
+    *withError = [NSError errorWithDomain:@"kRXAssetDownloadErrorDomain" code:103 userInfo:v17];
 
 LABEL_24:
   }
 }
 
-- (id)copyInstalledQuasarModelPathForLanguage:(id)a3 error:(id *)a4
+- (id)copyInstalledQuasarModelPathForLanguage:(id)language error:(id *)error
 {
-  v6 = a3;
-  if (v6)
+  languageCopy = language;
+  if (languageCopy)
   {
-    v7 = v6;
-    v8 = [v6 stringByReplacingOccurrencesOfString:@"_" withString:@"-"];
+    v7 = languageCopy;
+    v8 = [languageCopy stringByReplacingOccurrencesOfString:@"_" withString:@"-"];
 
     *buf = 0;
     v30 = buf;
@@ -674,7 +674,7 @@ LABEL_24:
     v16 = 3221225472;
     v17 = sub_100045074;
     v18 = &unk_1000FF738;
-    v19 = self;
+    selfCopy = self;
     v10 = v8;
     v20 = v10;
     v21 = buf;
@@ -682,32 +682,32 @@ LABEL_24:
     dispatch_sync(queue, &v15);
     v11 = v30;
     v12 = *(v30 + 5);
-    if (a4 && !v12)
+    if (error && !v12)
     {
-      *a4 = v24[5];
+      *error = v24[5];
       v11 = v30;
       v12 = *(v30 + 5);
     }
 
     if (v12)
     {
-      if (a4)
+      if (error)
       {
-        *a4 = 0;
+        *error = 0;
         v12 = *(v11 + 5);
       }
 
-      a4 = v12;
+      error = v12;
     }
 
-    else if (a4)
+    else if (error)
     {
       v35 = NSLocalizedFailureReasonErrorKey;
       v36 = @"No models installed yet";
-      v13 = [NSDictionary dictionaryWithObjects:&v36 forKeys:&v35 count:1, v15, v16, v17, v18, v19];
-      *a4 = [NSError errorWithDomain:@"kRXAssetDownloadErrorDomain" code:100 userInfo:v13];
+      selfCopy = [NSDictionary dictionaryWithObjects:&v36 forKeys:&v35 count:1, v15, v16, v17, v18, selfCopy];
+      *error = [NSError errorWithDomain:@"kRXAssetDownloadErrorDomain" code:100 userInfo:selfCopy];
 
-      a4 = 0;
+      error = 0;
     }
 
     _Block_object_dispose(&v23, 8);
@@ -723,17 +723,17 @@ LABEL_24:
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Returning no model path for nil language", buf, 2u);
     }
 
-    a4 = 0;
+    error = 0;
   }
 
-  return a4;
+  return error;
 }
 
-- (void)_fetchRemoteAssetForLanguage:(id)a3
+- (void)_fetchRemoteAssetForLanguage:(id)language
 {
-  v4 = a3;
+  languageCopy = language;
   dispatch_assert_queue_V2(self->_queue);
-  v5 = [RDAssetManager _assetQueryForLanguage:v4];
+  v5 = [RDAssetManager _assetQueryForLanguage:languageCopy];
   [v5 returnTypes:2];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
@@ -741,17 +741,17 @@ LABEL_24:
   v8[3] = &unk_1000FF788;
   v8[4] = self;
   v9 = v5;
-  v10 = v4;
-  v6 = v4;
+  v10 = languageCopy;
+  v6 = languageCopy;
   v7 = v5;
   [v7 queryMetaData:v8];
 }
 
-- (id)_installedAssetForLanguage:(id)a3 error:(id *)a4
+- (id)_installedAssetForLanguage:(id)language error:(id *)error
 {
-  v6 = a3;
+  languageCopy = language;
   dispatch_assert_queue_V2(self->_queue);
-  if (v6)
+  if (languageCopy)
   {
     v7 = +[NSUserDefaults standardUserDefaults];
     v8 = [v7 stringArrayForKey:@"InstalledLanguages"];
@@ -764,20 +764,20 @@ LABEL_24:
 
     v11 = v10;
 
-    v12 = [(RDAssetManager *)self _installedLocalAssetForLanguage:v6 error:a4];
-    v13 = [v12 _es_isInstalled];
-    v14 = [v11 containsObject:v6];
-    if (v13)
+    v12 = [(RDAssetManager *)self _installedLocalAssetForLanguage:languageCopy error:error];
+    _es_isInstalled = [v12 _es_isInstalled];
+    v14 = [v11 containsObject:languageCopy];
+    if (_es_isInstalled)
     {
       if ((v14 & 1) == 0)
       {
-        v15 = [v11 arrayByAddingObject:v6];
+        v15 = [v11 arrayByAddingObject:languageCopy];
         v16 = RXOSLog();
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
         {
           v17 = [v15 componentsJoinedByString:{@", "}];
           v24 = 138412546;
-          v25 = v6;
+          v25 = languageCopy;
           v26 = 2112;
           v27 = v17;
           _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Recording newly installed offline language (%@) installed list is now: [%@]", &v24, 0x16u);
@@ -794,13 +794,13 @@ LABEL_24:
     if (v14)
     {
       v19 = [v11 mutableCopy];
-      [v19 removeObject:v6];
+      [v19 removeObject:languageCopy];
       v20 = RXOSLog();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
       {
         v21 = [v19 componentsJoinedByString:{@", "}];
         v24 = 138412546;
-        v25 = v6;
+        v25 = languageCopy;
         v26 = 2112;
         v27 = v21;
         _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "Previously installed offline language (%@) removed; installed list is now: [%@]", &v24, 0x16u);
@@ -812,7 +812,7 @@ LABEL_24:
 
     if ([v12 _es_isDownloading])
     {
-      if (!a4)
+      if (!error)
       {
         v18 = 0;
 LABEL_23:
@@ -823,16 +823,16 @@ LABEL_23:
 
     else
     {
-      v22 = [(RDAssetManager *)self _startedDownloadingEmbeddedSpeechAsset:v12 withUrgency:1 error:a4];
+      v22 = [(RDAssetManager *)self _startedDownloadingEmbeddedSpeechAsset:v12 withUrgency:1 error:error];
       v18 = 0;
-      if (!a4 || (v22 & 1) == 0)
+      if (!error || (v22 & 1) == 0)
       {
         goto LABEL_23;
       }
     }
 
     [NSError errorWithDomain:@"kRXAssetDownloadErrorDomain" code:100 userInfo:0];
-    *a4 = v18 = 0;
+    *error = v18 = 0;
     goto LABEL_23;
   }
 
@@ -849,18 +849,18 @@ LABEL_24:
   return v18;
 }
 
-- (id)_installedAssetFromFoundAssets:(id)a3 language:(id)a4 error:(id *)a5
+- (id)_installedAssetFromFoundAssets:(id)assets language:(id)language error:(id *)error
 {
-  v43 = a5;
-  v7 = a3;
-  v44 = a4;
-  v45 = self;
+  errorCopy = error;
+  assetsCopy = assets;
+  languageCopy = language;
+  selfCopy = self;
   dispatch_assert_queue_V2(self->_queue);
   v52 = 0u;
   v53 = 0u;
   v50 = 0u;
   v51 = 0u;
-  v8 = v7;
+  v8 = assetsCopy;
   v9 = [v8 countByEnumeratingWithState:&v50 objects:v63 count:16];
   if (v9)
   {
@@ -952,20 +952,20 @@ LABEL_24:
         {
           if ([v23 _es_isDownloading])
           {
-            v25 = [v23 cancelDownloadSync];
-            if (!v25)
+            cancelDownloadSync = [v23 cancelDownloadSync];
+            if (!cancelDownloadSync)
             {
               continue;
             }
 
-            v26 = v25;
+            v26 = cancelDownloadSync;
             v27 = RXOSLog();
             if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
             {
-              v28 = [v23 _es_description];
-              v29 = [(RDAssetManager *)v45 _errorStringForCancelDownloadResult:v26];
+              _es_description = [v23 _es_description];
+              v29 = [(RDAssetManager *)selfCopy _errorStringForCancelDownloadResult:v26];
               *buf = 138412546;
-              v57 = v28;
+              v57 = _es_description;
               v58 = 2112;
               v59 = v29;
               v30 = v27;
@@ -978,17 +978,17 @@ LABEL_24:
 
           if ([v23 _es_isInstalled])
           {
-            v32 = [v23 purgeSync];
-            if (v32)
+            purgeSync = [v23 purgeSync];
+            if (purgeSync)
             {
-              v33 = v32;
+              v33 = purgeSync;
               v27 = RXOSLog();
               if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
               {
-                v28 = [v23 _es_description];
-                v29 = [(RDAssetManager *)v45 _errorStringForPurgeResult:v33];
+                _es_description = [v23 _es_description];
+                v29 = [(RDAssetManager *)selfCopy _errorStringForPurgeResult:v33];
                 *buf = 138412546;
-                v57 = v28;
+                v57 = _es_description;
                 v58 = 2112;
                 v59 = v29;
                 v30 = v27;
@@ -1015,17 +1015,17 @@ LABEL_39:
   if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
   {
     v35 = [v18 count];
-    v36 = [v12 _es_description];
+    _es_description2 = [v12 _es_description];
     *buf = 134218498;
     v57 = v35;
     v58 = 2112;
-    v59 = v44;
+    v59 = languageCopy;
     v60 = 2112;
-    v61 = v36;
+    v61 = _es_description2;
     _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_DEFAULT, "Found %lu asset(s) for %@, with latest being (%@)", buf, 0x20u);
   }
 
-  v37 = v43;
+  v37 = errorCopy;
   if (v12 && v12 != v11)
   {
     v38 = RXOSLog();
@@ -1038,18 +1038,18 @@ LABEL_39:
       _os_log_impl(&_mh_execute_header, v38, OS_LOG_TYPE_DEFAULT, "Starting a download because %p != %p", buf, 0x16u);
     }
 
-    if ([(RDAssetManager *)v45 _startedDownloadingEmbeddedSpeechAsset:v12 withUrgency:v11 == 0 error:v43])
+    if ([(RDAssetManager *)selfCopy _startedDownloadingEmbeddedSpeechAsset:v12 withUrgency:v11 == 0 error:errorCopy])
     {
-      if (v43)
+      if (errorCopy)
       {
-        *v43 = [NSError errorWithDomain:@"kRXAssetDownloadErrorDomain" code:100 userInfo:0];
+        *errorCopy = [NSError errorWithDomain:@"kRXAssetDownloadErrorDomain" code:100 userInfo:0];
       }
     }
 
-    else if (v43)
+    else if (errorCopy)
     {
-      v39 = *v43;
-      if (*v43)
+      v39 = *errorCopy;
+      if (*errorCopy)
       {
         v54 = NSUnderlyingErrorKey;
         v55 = v39;
@@ -1061,7 +1061,7 @@ LABEL_39:
         v40 = 0;
       }
 
-      *v37 = [NSError errorWithDomain:@"kRXAssetDownloadErrorDomain" code:101 userInfo:v40, v43];
+      *v37 = [NSError errorWithDomain:@"kRXAssetDownloadErrorDomain" code:101 userInfo:v40, errorCopy];
       if (v39)
       {
       }
@@ -1076,39 +1076,39 @@ LABEL_39:
   return v11;
 }
 
-- (id)_installedLocalAssetForLanguage:(id)a3 error:(id *)a4
+- (id)_installedLocalAssetForLanguage:(id)language error:(id *)error
 {
-  v6 = a3;
+  languageCopy = language;
   dispatch_assert_queue_V2(self->_queue);
   v7 = RXOSLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v27 = v6;
+    v27 = languageCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%@", buf, 0xCu);
   }
 
-  v8 = [RDAssetManager _assetQueryForLanguage:v6];
+  v8 = [RDAssetManager _assetQueryForLanguage:languageCopy];
   [v8 returnTypes:2];
   [v8 setDoNotBlockOnNetworkStatus:1];
   [v8 setDoNotBlockBeforeFirstUnlock:1];
-  v9 = [v8 queryMetaDataSync];
-  if (!v9)
+  queryMetaDataSync = [v8 queryMetaDataSync];
+  if (!queryMetaDataSync)
   {
-    v16 = [v8 results];
-    v14 = v16;
-    if (v16)
+    results = [v8 results];
+    v14 = results;
+    if (results)
     {
-      if ([v16 count])
+      if ([results count])
       {
         v25 = 0;
-        v17 = [(RDAssetManager *)self _installedAssetFromFoundAssets:v14 language:v6 error:&v25];
+        v17 = [(RDAssetManager *)self _installedAssetFromFoundAssets:v14 language:languageCopy error:&v25];
         v18 = v25;
         v19 = v18;
-        if (a4 && !v17)
+        if (error && !v17)
         {
           v20 = v18;
-          *a4 = v19;
+          *error = v19;
         }
 
         goto LABEL_20;
@@ -1132,7 +1132,7 @@ LABEL_39:
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543618;
-        v27 = v6;
+        v27 = languageCopy;
         v28 = 2114;
         v29 = v8;
         v21 = "MobileAsset said it succeeded but it didn't for %{public}@: query=%{public}@";
@@ -1151,7 +1151,7 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  v10 = v9;
+  v10 = queryMetaDataSync;
   v11 = RXOSLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
   {
@@ -1161,7 +1161,7 @@ LABEL_20:
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_ERROR, "MobileAsset is having trouble with queryMetaDataSync: %@", buf, 0xCu);
   }
 
-  if (!a4)
+  if (!error)
   {
     v15 = 0;
     goto LABEL_22;
@@ -1172,7 +1172,7 @@ LABEL_20:
   v31 = v13;
   v14 = [NSDictionary dictionaryWithObjects:&v31 forKeys:&v30 count:1];
   [NSError errorWithDomain:@"kRXAssetDownloadErrorDomain" code:101 userInfo:v14];
-  *a4 = v15 = 0;
+  *error = v15 = 0;
 LABEL_21:
 
 LABEL_22:
@@ -1180,38 +1180,38 @@ LABEL_22:
   return v15;
 }
 
-+ (id)_assetQueryForLanguage:(id)a3
++ (id)_assetQueryForLanguage:(id)language
 {
-  v3 = a3;
+  languageCopy = language;
   v4 = RXOSLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = v3;
+    v9 = languageCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%@", &v8, 0xCu);
   }
 
   v5 = [[MAAssetQuery alloc] initWithType:@"com.apple.MobileAsset.EmbeddedSpeech"];
   v6 = v5;
-  if (v3)
+  if (languageCopy)
   {
-    [v5 addKeyValuePair:@"Language" with:v3];
+    [v5 addKeyValuePair:@"Language" with:languageCopy];
   }
 
   return v6;
 }
 
-- (BOOL)_startedDownloadingEmbeddedSpeechAsset:(id)a3 withUrgency:(BOOL)a4 error:(id *)a5
+- (BOOL)_startedDownloadingEmbeddedSpeechAsset:(id)asset withUrgency:(BOOL)urgency error:(id *)error
 {
-  v6 = a4;
-  v8 = a3;
+  urgencyCopy = urgency;
+  assetCopy = asset;
   dispatch_assert_queue_V2(self->_queue);
   v9 = RXOSLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v8 _es_description];
+    _es_description = [assetCopy _es_description];
     *buf = 138412290;
-    v41 = v10;
+    v41 = _es_description;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Downloading %@", buf, 0xCu);
   }
 
@@ -1220,7 +1220,7 @@ LABEL_22:
   v38[2] = sub_1000467E4;
   v38[3] = &unk_1000FF7B0;
   v38[4] = self;
-  v11 = v8;
+  v11 = assetCopy;
   v39 = v11;
   v12 = objc_retainBlock(v38);
   if ([v11 _es_isInstalled])
@@ -1236,11 +1236,11 @@ LABEL_22:
     goto LABEL_35;
   }
 
-  v15 = [v11 state];
-  v16 = v15;
-  if (v15 > 2)
+  state = [v11 state];
+  v16 = state;
+  if (state > 2)
   {
-    if (v15 == 3)
+    if (state == 3)
     {
       v22 = RXOSLog();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
@@ -1254,14 +1254,14 @@ LABEL_22:
       v32[1] = 3221225472;
       v32[2] = sub_100046BAC;
       v33 = v32[3] = &unk_1000FF7D8;
-      v34 = self;
+      selfCopy = self;
       v18 = v33;
       [v11 purge:v32];
 
       goto LABEL_25;
     }
 
-    if (v15 == 4)
+    if (state == 4)
     {
       v17 = RXOSLog();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
@@ -1289,7 +1289,7 @@ LABEL_25:
     goto LABEL_26;
   }
 
-  if (v15 == 1)
+  if (state == 1)
   {
     v37 = 0;
     v14 = [v11 spaceCheck:&v37];
@@ -1305,7 +1305,7 @@ LABEL_25:
       }
 
       [v11 attachProgressCallBack:v12];
-      v21 = sub_1000436DC(v6);
+      v21 = sub_1000436DC(urgencyCopy);
       v35[0] = _NSConcreteStackBlock;
       v35[1] = 3221225472;
       v35[2] = sub_1000469F4;
@@ -1329,18 +1329,18 @@ LABEL_25:
       v13 = [NSError errorWithDomain:@"kRXAssetDownloadErrorDomain" code:101 userInfo:&off_100106A28];
       if ([(RDAssetManager *)self sendCallback])
       {
-        v28 = [v11 _es_language];
+        _es_language = [v11 _es_language];
         LODWORD(v29) = -1.0;
         LODWORD(v30) = -1.0;
         LODWORD(v31) = -1.0;
-        [(RDAssetManager *)self _sendDownloadCallbackDictionaryWithLanguage:v28 downloadPhase:@"DownloadFailed" timeRemaining:@"Not enough space" bytesWritten:v29 bytesTotal:v30 error:v31];
+        [(RDAssetManager *)self _sendDownloadCallbackDictionaryWithLanguage:_es_language downloadPhase:@"DownloadFailed" timeRemaining:@"Not enough space" bytesWritten:v29 bytesTotal:v30 error:v31];
       }
     }
 
     goto LABEL_27;
   }
 
-  if (v15 != 2)
+  if (state != 2)
   {
     goto LABEL_16;
   }
@@ -1349,16 +1349,16 @@ LABEL_26:
   v13 = 0;
   v14 = 0;
 LABEL_27:
-  if (a5)
+  if (error)
   {
     v23 = v13;
-    *a5 = v13;
+    *error = v13;
   }
 
   v24 = RXOSLog();
   if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
   {
-    v25 = [v11 state];
+    state2 = [v11 state];
     *buf = 134218498;
     if (v14)
     {
@@ -1370,7 +1370,7 @@ LABEL_27:
       v26 = v13;
     }
 
-    v41 = v25;
+    v41 = state2;
     v42 = 1024;
     v43 = v14;
     v44 = 2112;
@@ -1382,7 +1382,7 @@ LABEL_35:
   return v14;
 }
 
-- (id)purgeInstalledAssetsWithError:(id *)a3
+- (id)purgeInstalledAssetsWithError:(id *)error
 {
   v8 = 0;
   v9 = &v8;
@@ -1395,13 +1395,13 @@ LABEL_35:
   v7[2] = sub_1000470BC;
   v7[3] = &unk_1000FF840;
   v7[4] = &v8;
-  v4 = sub_100046CDC(a3, v7);
-  if (a3)
+  v4 = sub_100046CDC(error, v7);
+  if (error)
   {
     v5 = v9[5];
     if (v5)
     {
-      *a3 = v5;
+      *error = v5;
     }
   }
 
@@ -1410,24 +1410,24 @@ LABEL_35:
   return v4;
 }
 
-- (void)addPeerForCallback:(id)a3
+- (void)addPeerForCallback:(id)callback
 {
-  v6 = a3;
+  callbackCopy = callback;
   v4 = self->_peersRequestingDownloadProgress;
   objc_sync_enter(v4);
-  v5 = [(RDAssetManager *)self peersRequestingDownloadProgress];
-  [v5 addObject:v6];
+  peersRequestingDownloadProgress = [(RDAssetManager *)self peersRequestingDownloadProgress];
+  [peersRequestingDownloadProgress addObject:callbackCopy];
 
   objc_sync_exit(v4);
 }
 
-- (void)removePeerFromCallback:(id)a3
+- (void)removePeerFromCallback:(id)callback
 {
-  v6 = a3;
+  callbackCopy = callback;
   v4 = self->_peersRequestingDownloadProgress;
   objc_sync_enter(v4);
-  v5 = [(RDAssetManager *)self peersRequestingDownloadProgress];
-  [v5 removeObject:v6];
+  peersRequestingDownloadProgress = [(RDAssetManager *)self peersRequestingDownloadProgress];
+  [peersRequestingDownloadProgress removeObject:callbackCopy];
 
   objc_sync_exit(v4);
 }
@@ -1436,28 +1436,28 @@ LABEL_35:
 {
   v3 = self->_peersRequestingDownloadProgress;
   objc_sync_enter(v3);
-  v4 = [(RDAssetManager *)self peersRequestingDownloadProgress];
-  v5 = [v4 count] != 0;
+  peersRequestingDownloadProgress = [(RDAssetManager *)self peersRequestingDownloadProgress];
+  v5 = [peersRequestingDownloadProgress count] != 0;
 
   objc_sync_exit(v3);
   return v5;
 }
 
-- (void)_sendDownloadCallbackDictionaryWithLanguage:(id)a3 downloadPhase:(__CFString *)a4 timeRemaining:(float)a5 bytesWritten:(float)a6 bytesTotal:(float)a7 error:(id)a8
+- (void)_sendDownloadCallbackDictionaryWithLanguage:(id)language downloadPhase:(__CFString *)phase timeRemaining:(float)remaining bytesWritten:(float)written bytesTotal:(float)total error:(id)error
 {
-  v12 = a3;
-  v40 = a6;
-  valuePtr = a5;
-  v39 = a7;
-  v13 = a8;
+  languageCopy = language;
+  writtenCopy = written;
+  valuePtr = remaining;
+  totalCopy = total;
+  errorCopy = error;
   Mutable = CFArrayCreateMutable(0, 0, &kCFTypeArrayCallBacks);
   if (Mutable)
   {
     v15 = Mutable;
-    theString2 = v12;
-    if (v12)
+    theString2 = languageCopy;
+    if (languageCopy)
     {
-      CFArrayAppendValue(Mutable, v12);
+      CFArrayAppendValue(Mutable, languageCopy);
       v16 = RXGetAssetFallbackLocales();
       Count = CFDictionaryGetCount(v16);
       if (Count >= 1)
@@ -1525,19 +1525,19 @@ LABEL_35:
           CFDictionaryAddValue(v30, @"Language", kCFNull);
         }
 
-        CFDictionaryAddValue(v30, @"Phase", a4);
+        CFDictionaryAddValue(v30, @"Phase", phase);
         v32 = CFNumberCreate(0, kCFNumberFloatType, &valuePtr);
         CFDictionaryAddValue(v30, @"TimeRemaining", v32);
         CFRelease(v32);
-        v33 = CFNumberCreate(0, kCFNumberFloatType, &v40);
+        v33 = CFNumberCreate(0, kCFNumberFloatType, &writtenCopy);
         CFDictionaryAddValue(v30, @"BytesWritten", v33);
         CFRelease(v33);
-        v34 = CFNumberCreate(0, kCFNumberFloatType, &v39);
+        v34 = CFNumberCreate(0, kCFNumberFloatType, &totalCopy);
         CFDictionaryAddValue(v30, @"BytesTotal", v34);
         CFRelease(v34);
-        if (v13)
+        if (errorCopy)
         {
-          v35 = CFStringCreateCopy(0, v13);
+          v35 = CFStringCreateCopy(0, errorCopy);
           CFDictionaryAddValue(v30, @"Error", v35);
           CFRelease(v35);
         }
@@ -1553,11 +1553,11 @@ LABEL_35:
     }
 
     CFRelease(v15);
-    v12 = theString2;
+    languageCopy = theString2;
   }
 }
 
-- (void)sendMessageToClient:(__CFDictionary *)a3
+- (void)sendMessageToClient:(__CFDictionary *)client
 {
   v4 = xpc_dictionary_create(0, 0, 0);
   v5 = _CFXPCCreateXPCObjectFromCFObject();
@@ -1569,8 +1569,8 @@ LABEL_35:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v7 = [(RDAssetManager *)self peersRequestingDownloadProgress];
-  v8 = [v7 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  peersRequestingDownloadProgress = [(RDAssetManager *)self peersRequestingDownloadProgress];
+  v8 = [peersRequestingDownloadProgress countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v8)
   {
     v9 = *v12;
@@ -1581,7 +1581,7 @@ LABEL_35:
       {
         if (*v12 != v9)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(peersRequestingDownloadProgress);
         }
 
         xpc_connection_send_message(*(*(&v11 + 1) + 8 * v10), v4);
@@ -1589,7 +1589,7 @@ LABEL_35:
       }
 
       while (v8 != v10);
-      v8 = [v7 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v8 = [peersRequestingDownloadProgress countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v8);
@@ -1598,93 +1598,93 @@ LABEL_35:
   objc_sync_exit(v6);
 }
 
-- (id)_errorStringForCancelDownloadResult:(int64_t)a3
+- (id)_errorStringForCancelDownloadResult:(int64_t)result
 {
-  if (a3 >= 8)
+  if (result >= 8)
   {
-    v4 = [NSString stringWithFormat:@"Unknown result: %d", a3];
+    result = [NSString stringWithFormat:@"Unknown result: %d", result];
   }
 
   else
   {
-    v4 = off_1000FF860[a3];
+    result = off_1000FF860[result];
   }
 
-  return v4;
+  return result;
 }
 
-- (id)_errorStringForDownloadResult:(int64_t)a3
+- (id)_errorStringForDownloadResult:(int64_t)result
 {
-  if (a3 >= 0x24)
+  if (result >= 0x24)
   {
-    v4 = [NSString stringWithFormat:@"Unknown result: %d", a3];
+    result = [NSString stringWithFormat:@"Unknown result: %d", result];
   }
 
   else
   {
-    v4 = off_1000FF8A0[a3];
+    result = off_1000FF8A0[result];
   }
 
-  return v4;
+  return result;
 }
 
-- (id)_errorStringForQueryResult:(int64_t)a3
+- (id)_errorStringForQueryResult:(int64_t)result
 {
-  if (a3 < 0xD && ((0x17FFu >> a3) & 1) != 0)
+  if (result < 0xD && ((0x17FFu >> result) & 1) != 0)
   {
-    v4 = off_1000FF9C0[a3];
+    result = off_1000FF9C0[result];
   }
 
   else
   {
-    v4 = [NSString stringWithFormat:@"Unknown result: %d", a3];
+    result = [NSString stringWithFormat:@"Unknown result: %d", result];
   }
 
-  return v4;
+  return result;
 }
 
-- (id)_errorStringForPurgeResult:(int64_t)a3
+- (id)_errorStringForPurgeResult:(int64_t)result
 {
-  if (a3 >= 0xC)
+  if (result >= 0xC)
   {
-    v4 = [NSString stringWithFormat:@"Unknown result: %d", a3];
+    result = [NSString stringWithFormat:@"Unknown result: %d", result];
   }
 
   else
   {
-    v4 = off_1000FFA28[a3];
+    result = off_1000FFA28[result];
   }
 
-  return v4;
+  return result;
 }
 
-- (id)_stateStringForAsset:(id)a3
+- (id)_stateStringForAsset:(id)asset
 {
-  v3 = a3;
-  v4 = [v3 state];
-  if (v4 >= 7)
+  assetCopy = asset;
+  state = [assetCopy state];
+  if (state >= 7)
   {
-    v5 = [NSString stringWithFormat:@"Unknown state: %@", v3];
+    assetCopy = [NSString stringWithFormat:@"Unknown state: %@", assetCopy];
   }
 
   else
   {
-    v5 = off_1000FFA88[v4];
+    assetCopy = off_1000FFA88[state];
   }
 
-  return v5;
+  return assetCopy;
 }
 
-- (id)_errorStringForMAOperationResult:(int64_t)a3
+- (id)_errorStringForMAOperationResult:(int64_t)result
 {
-  if ((a3 - 1) > 4)
+  if ((result - 1) > 4)
   {
     return @"successful";
   }
 
   else
   {
-    return off_1000FFAC0[a3 - 1];
+    return off_1000FFAC0[result - 1];
   }
 }
 

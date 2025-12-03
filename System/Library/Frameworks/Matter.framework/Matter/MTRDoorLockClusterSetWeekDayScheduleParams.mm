@@ -1,8 +1,8 @@
 @interface MTRDoorLockClusterSetWeekDayScheduleParams
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3;
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader;
 - (MTRDoorLockClusterSetWeekDayScheduleParams)init;
-- (id)_encodeAsDataValue:(id *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_encodeAsDataValue:(id *)value;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -47,35 +47,35 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRDoorLockClusterSetWeekDayScheduleParams);
-  v5 = [(MTRDoorLockClusterSetWeekDayScheduleParams *)self weekDayIndex];
-  [(MTRDoorLockClusterSetWeekDayScheduleParams *)v4 setWeekDayIndex:v5];
+  weekDayIndex = [(MTRDoorLockClusterSetWeekDayScheduleParams *)self weekDayIndex];
+  [(MTRDoorLockClusterSetWeekDayScheduleParams *)v4 setWeekDayIndex:weekDayIndex];
 
-  v6 = [(MTRDoorLockClusterSetWeekDayScheduleParams *)self userIndex];
-  [(MTRDoorLockClusterSetWeekDayScheduleParams *)v4 setUserIndex:v6];
+  userIndex = [(MTRDoorLockClusterSetWeekDayScheduleParams *)self userIndex];
+  [(MTRDoorLockClusterSetWeekDayScheduleParams *)v4 setUserIndex:userIndex];
 
-  v7 = [(MTRDoorLockClusterSetWeekDayScheduleParams *)self daysMask];
-  [(MTRDoorLockClusterSetWeekDayScheduleParams *)v4 setDaysMask:v7];
+  daysMask = [(MTRDoorLockClusterSetWeekDayScheduleParams *)self daysMask];
+  [(MTRDoorLockClusterSetWeekDayScheduleParams *)v4 setDaysMask:daysMask];
 
-  v8 = [(MTRDoorLockClusterSetWeekDayScheduleParams *)self startHour];
-  [(MTRDoorLockClusterSetWeekDayScheduleParams *)v4 setStartHour:v8];
+  startHour = [(MTRDoorLockClusterSetWeekDayScheduleParams *)self startHour];
+  [(MTRDoorLockClusterSetWeekDayScheduleParams *)v4 setStartHour:startHour];
 
-  v9 = [(MTRDoorLockClusterSetWeekDayScheduleParams *)self startMinute];
-  [(MTRDoorLockClusterSetWeekDayScheduleParams *)v4 setStartMinute:v9];
+  startMinute = [(MTRDoorLockClusterSetWeekDayScheduleParams *)self startMinute];
+  [(MTRDoorLockClusterSetWeekDayScheduleParams *)v4 setStartMinute:startMinute];
 
-  v10 = [(MTRDoorLockClusterSetWeekDayScheduleParams *)self endHour];
-  [(MTRDoorLockClusterSetWeekDayScheduleParams *)v4 setEndHour:v10];
+  endHour = [(MTRDoorLockClusterSetWeekDayScheduleParams *)self endHour];
+  [(MTRDoorLockClusterSetWeekDayScheduleParams *)v4 setEndHour:endHour];
 
-  v11 = [(MTRDoorLockClusterSetWeekDayScheduleParams *)self endMinute];
-  [(MTRDoorLockClusterSetWeekDayScheduleParams *)v4 setEndMinute:v11];
+  endMinute = [(MTRDoorLockClusterSetWeekDayScheduleParams *)self endMinute];
+  [(MTRDoorLockClusterSetWeekDayScheduleParams *)v4 setEndMinute:endMinute];
 
-  v12 = [(MTRDoorLockClusterSetWeekDayScheduleParams *)self timedInvokeTimeoutMs];
-  [(MTRDoorLockClusterSetWeekDayScheduleParams *)v4 setTimedInvokeTimeoutMs:v12];
+  timedInvokeTimeoutMs = [(MTRDoorLockClusterSetWeekDayScheduleParams *)self timedInvokeTimeoutMs];
+  [(MTRDoorLockClusterSetWeekDayScheduleParams *)v4 setTimedInvokeTimeoutMs:timedInvokeTimeoutMs];
 
-  v13 = [(MTRDoorLockClusterSetWeekDayScheduleParams *)self serverSideProcessingTimeout];
-  [(MTRDoorLockClusterSetWeekDayScheduleParams *)v4 setServerSideProcessingTimeout:v13];
+  serverSideProcessingTimeout = [(MTRDoorLockClusterSetWeekDayScheduleParams *)self serverSideProcessingTimeout];
+  [(MTRDoorLockClusterSetWeekDayScheduleParams *)v4 setServerSideProcessingTimeout:serverSideProcessingTimeout];
 
   return v4;
 }
@@ -90,33 +90,33 @@
   return v6;
 }
 
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader
 {
   LOBYTE(v28[0]) = 0;
   memset(&v28[1], 0, 7);
   v27[0] = 0;
   v27[1] = 0;
   v26 = v27;
-  v5 = [(MTRDoorLockClusterSetWeekDayScheduleParams *)self weekDayIndex];
-  LOBYTE(v28[0]) = [v5 unsignedCharValue];
+  weekDayIndex = [(MTRDoorLockClusterSetWeekDayScheduleParams *)self weekDayIndex];
+  LOBYTE(v28[0]) = [weekDayIndex unsignedCharValue];
 
-  v6 = [(MTRDoorLockClusterSetWeekDayScheduleParams *)self userIndex];
-  v28[1] = [v6 unsignedShortValue];
+  userIndex = [(MTRDoorLockClusterSetWeekDayScheduleParams *)self userIndex];
+  v28[1] = [userIndex unsignedShortValue];
 
-  v7 = [(MTRDoorLockClusterSetWeekDayScheduleParams *)self daysMask];
-  LOBYTE(v28[2]) = [v7 unsignedCharValue];
+  daysMask = [(MTRDoorLockClusterSetWeekDayScheduleParams *)self daysMask];
+  LOBYTE(v28[2]) = [daysMask unsignedCharValue];
 
-  v8 = [(MTRDoorLockClusterSetWeekDayScheduleParams *)self startHour];
-  HIBYTE(v28[2]) = [v8 unsignedCharValue];
+  startHour = [(MTRDoorLockClusterSetWeekDayScheduleParams *)self startHour];
+  HIBYTE(v28[2]) = [startHour unsignedCharValue];
 
-  v9 = [(MTRDoorLockClusterSetWeekDayScheduleParams *)self startMinute];
-  LOBYTE(v28[3]) = [v9 unsignedCharValue];
+  startMinute = [(MTRDoorLockClusterSetWeekDayScheduleParams *)self startMinute];
+  LOBYTE(v28[3]) = [startMinute unsignedCharValue];
 
-  v10 = [(MTRDoorLockClusterSetWeekDayScheduleParams *)self endHour];
-  HIBYTE(v28[3]) = [v10 unsignedCharValue];
+  endHour = [(MTRDoorLockClusterSetWeekDayScheduleParams *)self endHour];
+  HIBYTE(v28[3]) = [endHour unsignedCharValue];
 
-  v11 = [(MTRDoorLockClusterSetWeekDayScheduleParams *)self endMinute];
-  LOBYTE(v28[4]) = [v11 unsignedCharValue];
+  endMinute = [(MTRDoorLockClusterSetWeekDayScheduleParams *)self endMinute];
+  LOBYTE(v28[4]) = [endMinute unsignedCharValue];
 
   sub_2393D9C18(0x62FuLL, 0, &v25);
   if (v25)
@@ -137,8 +137,8 @@
 
     else
     {
-      sub_238DD2F90(a3, &v25);
-      v12 = sub_2393C7114(a3, 21, 256);
+      sub_238DD2F90(reader, &v25);
+      v12 = sub_2393C7114(reader, 21, 256);
       v15 = v19;
       v14 = v12;
     }
@@ -166,19 +166,19 @@
   return result;
 }
 
-- (id)_encodeAsDataValue:(id *)a3
+- (id)_encodeAsDataValue:(id *)value
 {
   v5 = sub_2393C5AAC(v12);
   v13 = 0;
   v7 = [(MTRDoorLockClusterSetWeekDayScheduleParams *)self _encodeToTLVReader:v12, v5];
   if (v7)
   {
-    if (a3)
+    if (value)
     {
       v8 = sub_23921C1E4(MTRError, v7, v6);
       v9 = 0;
 LABEL_7:
-      *a3 = v8;
+      *value = v8;
       goto LABEL_9;
     }
 
@@ -189,7 +189,7 @@ LABEL_7:
   {
     v10 = sub_238EE60DC(v12, 0);
     v9 = v10;
-    if (a3 && !v10)
+    if (value && !v10)
     {
       v8 = sub_23921C1E4(MTRError, 0x4B7F00000003, "/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/zap-generated/MTRCommandPayloadsObjc.mm");
       goto LABEL_7;

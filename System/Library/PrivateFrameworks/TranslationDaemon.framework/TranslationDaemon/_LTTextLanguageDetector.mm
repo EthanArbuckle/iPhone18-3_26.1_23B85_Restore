@@ -1,9 +1,9 @@
 @interface _LTTextLanguageDetector
 - (_LTTextLanguageDetector)init;
-- (_LTTextLanguageDetector)initWithModel:(unint64_t)a3;
-- (id)_mapSupportedLocales:(id)a3;
-- (id)detectionForString:(id)a3;
-- (id)detectionForStrings:(id)a3 strategy:(unint64_t)a4;
+- (_LTTextLanguageDetector)initWithModel:(unint64_t)model;
+- (id)_mapSupportedLocales:(id)locales;
+- (id)detectionForString:(id)string;
+- (id)detectionForStrings:(id)strings strategy:(unint64_t)strategy;
 @end
 
 @implementation _LTTextLanguageDetector
@@ -21,14 +21,14 @@
   return result;
 }
 
-- (_LTTextLanguageDetector)initWithModel:(unint64_t)a3
+- (_LTTextLanguageDetector)initWithModel:(unint64_t)model
 {
   v15.receiver = self;
   v15.super_class = _LTTextLanguageDetector;
   v4 = [(_LTTextLanguageDetector *)&v15 init];
   if (v4)
   {
-    if (a3 != 2 && (a3 || ([MEMORY[0x277CBEBD0] standardUserDefaults], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "BOOLForKey:", @"TextLIDUseLSTM"), v5, v6)))
+    if (model != 2 && (model || ([MEMORY[0x277CBEBD0] standardUserDefaults], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "BOOLForKey:", @"TextLIDUseLSTM"), v5, v6)))
     {
       v7 = _LTOSLogLID();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -62,10 +62,10 @@
   return v4;
 }
 
-- (id)detectionForString:(id)a3
+- (id)detectionForString:(id)string
 {
   v44 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  stringCopy = string;
   v5 = _LTOSLogLID();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -73,13 +73,13 @@
   }
 
   [(NLLanguageRecognizer *)self->_recognizer reset];
-  [(NLLanguageRecognizer *)self->_recognizer processString:v4];
-  v13 = [(NLLanguageRecognizer *)self->_recognizer dominantLanguage];
+  [(NLLanguageRecognizer *)self->_recognizer processString:stringCopy];
+  dominantLanguage = [(NLLanguageRecognizer *)self->_recognizer dominantLanguage];
   v14 = _LTOSLogLID();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
     *buf = 138543362;
-    v43 = v13;
+    v43 = dominantLanguage;
     _os_log_impl(&dword_232E53000, v14, OS_LOG_TYPE_INFO, "Dominant language: %{public}@", buf, 0xCu);
   }
 
@@ -92,7 +92,7 @@
     _os_log_impl(&dword_232E53000, v16, OS_LOG_TYPE_INFO, "Language confidences: %{public}@", buf, 0xCu);
   }
 
-  v17 = [(_LTTextLanguageDetector *)self availableLocales];
+  availableLocales = [(_LTTextLanguageDetector *)self availableLocales];
   v18 = _LTLanguageCodeToSupportedLocale();
 
   v19 = _LTOSLogLID();
@@ -106,15 +106,15 @@
   if (v18)
   {
     v34 = v18;
-    v35 = v13;
-    v36 = v4;
-    v20 = [MEMORY[0x277CBEB38] dictionary];
+    v35 = dominantLanguage;
+    v36 = stringCopy;
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v37 = 0u;
     v38 = 0u;
     v39 = 0u;
     v40 = 0u;
-    v21 = [v15 allKeys];
-    v22 = [v21 countByEnumeratingWithState:&v37 objects:v41 count:16];
+    allKeys = [v15 allKeys];
+    v22 = [allKeys countByEnumeratingWithState:&v37 objects:v41 count:16];
     if (v22)
     {
       v23 = v22;
@@ -125,32 +125,32 @@
         {
           if (*v38 != v24)
           {
-            objc_enumerationMutation(v21);
+            objc_enumerationMutation(allKeys);
           }
 
           v26 = *(*(&v37 + 1) + 8 * i);
-          v27 = [(_LTTextLanguageDetector *)self availableLocales];
+          availableLocales2 = [(_LTTextLanguageDetector *)self availableLocales];
           v28 = _LTLanguageCodeToSupportedLocale();
 
           if (v28)
           {
             v29 = [v15 objectForKeyedSubscript:v26];
-            [v20 setObject:v29 forKeyedSubscript:v28];
+            [dictionary setObject:v29 forKeyedSubscript:v28];
           }
         }
 
-        v23 = [v21 countByEnumeratingWithState:&v37 objects:v41 count:16];
+        v23 = [allKeys countByEnumeratingWithState:&v37 objects:v41 count:16];
       }
 
       while (v23);
     }
 
-    v30 = [objc_alloc(MEMORY[0x277CE1B08]) initWithConfidences:v20 isConfident:1 dominantLanguage:0 isFinal:1];
+    v30 = [objc_alloc(MEMORY[0x277CE1B08]) initWithConfidences:dictionary isConfident:1 dominantLanguage:0 isFinal:1];
     v18 = v34;
     [v30 setDominantLanguage:v34];
 
-    v13 = v35;
-    v4 = v36;
+    dominantLanguage = v35;
+    stringCopy = v36;
   }
 
   else
@@ -158,7 +158,7 @@
     v31 = _LTOSLogLID();
     if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
     {
-      [(_LTTextLanguageDetector *)v13 detectionForString:v31, self];
+      [(_LTTextLanguageDetector *)dominantLanguage detectionForString:v31, self];
     }
 
     v30 = 0;
@@ -169,21 +169,21 @@
   return v30;
 }
 
-- (id)detectionForStrings:(id)a3 strategy:(unint64_t)a4
+- (id)detectionForStrings:(id)strings strategy:(unint64_t)strategy
 {
   v74 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  stringsCopy = strings;
   v7 = _LTOSLogLID();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    [(_LTTextLanguageDetector *)v7 detectionForStrings:v6 strategy:a4];
+    [(_LTTextLanguageDetector *)v7 detectionForStrings:stringsCopy strategy:strategy];
   }
 
-  if ((a4 | 2) == 3)
+  if ((strategy | 2) == 3)
   {
     v8 = [_LTTextLanguageDetectorScorer alloc];
-    v9 = [(_LTTextLanguageDetector *)self availableLocales];
-    v10 = [(_LTTextLanguageDetectorScorer *)v8 initWithSupportedLocales:v9];
+    availableLocales = [(_LTTextLanguageDetector *)self availableLocales];
+    v10 = [(_LTTextLanguageDetectorScorer *)v8 initWithSupportedLocales:availableLocales];
   }
 
   else
@@ -191,26 +191,26 @@
     v10 = 0;
   }
 
-  v11 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v12 = [v11 BOOLForKey:@"TextLIDAggregateEvaluation"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v12 = [standardUserDefaults BOOLForKey:@"TextLIDAggregateEvaluation"];
 
   v13 = _LTOSLogLID();
   v14 = os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG);
   if (!v12)
   {
-    v61 = a4;
+    strategyCopy = strategy;
     if (v14)
     {
       [(_LTTextLanguageDetector *)v13 detectionForStrings:v15 strategy:v16, v17, v18, v19, v20, v21];
     }
 
-    v28 = objc_alloc_init(MEMORY[0x277CCA940]);
+    dominantLanguage3 = objc_alloc_init(MEMORY[0x277CCA940]);
     v63 = 0u;
     v64 = 0u;
     v65 = 0u;
     v66 = 0u;
-    v62 = v6;
-    v32 = v6;
+    v62 = stringsCopy;
+    v32 = stringsCopy;
     v33 = [v32 countByEnumeratingWithState:&v63 objects:v71 count:16];
     if (v33)
     {
@@ -229,13 +229,13 @@
           v38 = *(*(&v63 + 1) + 8 * i);
           [(NLLanguageRecognizer *)self->_recognizer reset];
           [(NLLanguageRecognizer *)self->_recognizer processString:v38];
-          v39 = [(NLLanguageRecognizer *)self->_recognizer dominantLanguage];
-          if (!v39)
+          dominantLanguage = [(NLLanguageRecognizer *)self->_recognizer dominantLanguage];
+          if (!dominantLanguage)
           {
-            v39 = v36;
+            dominantLanguage = v36;
           }
 
-          [v28 addObject:v39];
+          [dominantLanguage3 addObject:dominantLanguage];
           [(_LTTextLanguageDetectorScorer *)v10 append:v38 recognizer:self->_recognizer];
         }
 
@@ -254,8 +254,8 @@
         [_LTTextLanguageDetector detectionForStrings:v40 strategy:v41];
       }
 
-      v42 = [(NLLanguageRecognizer *)self->_recognizer dominantLanguage];
-      v43 = [v40 objectForKeyedSubscript:v42];
+      dominantLanguage2 = [(NLLanguageRecognizer *)self->_recognizer dominantLanguage];
+      v43 = [v40 objectForKeyedSubscript:dominantLanguage2];
       v44 = [v40 keysSortedByValueUsingComparator:&__block_literal_global_31];
       v45 = [(_LTTextLanguageDetector *)self _mapSupportedLocales:v44];
       v46 = _LTPreferencesTextLIDScorerConfidenceThreshold();
@@ -278,8 +278,8 @@
 
     v53 = objc_alloc(MEMORY[0x277CE1BD8]);
     v54 = v53;
-    v6 = v62;
-    if (v61 == 3)
+    stringsCopy = v62;
+    if (strategyCopy == 3)
     {
       v55 = v10;
       v56 = v48;
@@ -288,10 +288,10 @@
 
     else
     {
-      if (v61 != 1)
+      if (strategyCopy != 1)
       {
-        v58 = [(_LTTextLanguageDetector *)self availableLocales];
-        v31 = [v54 initWithDetectionCounts:v28 availableLocales:v58 lowConfidenceLocales:v48 strategy:v61];
+        availableLocales2 = [(_LTTextLanguageDetector *)self availableLocales];
+        v31 = [v54 initWithDetectionCounts:dominantLanguage3 availableLocales:availableLocales2 lowConfidenceLocales:v48 strategy:strategyCopy];
 
         goto LABEL_46;
       }
@@ -301,7 +301,7 @@
       v57 = 1;
     }
 
-    v31 = [v53 initWithScorer:v55 lowConfidenceLocales:v56 strategy:{v57, v61}];
+    v31 = [v53 initWithScorer:v55 lowConfidenceLocales:v56 strategy:{v57, strategyCopy}];
 LABEL_46:
 
     goto LABEL_47;
@@ -317,7 +317,7 @@ LABEL_46:
   v70 = 0u;
   v67 = 0u;
   v68 = 0u;
-  v22 = v6;
+  v22 = stringsCopy;
   v23 = [v22 countByEnumeratingWithState:&v67 objects:v73 count:16];
   if (v23)
   {
@@ -343,27 +343,27 @@ LABEL_46:
     while (v24);
   }
 
-  v28 = [(NLLanguageRecognizer *)self->_recognizer dominantLanguage];
-  if (!v28)
+  dominantLanguage3 = [(NLLanguageRecognizer *)self->_recognizer dominantLanguage];
+  if (!dominantLanguage3)
   {
-    v28 = *MEMORY[0x277CE1CA8];
+    dominantLanguage3 = *MEMORY[0x277CE1CA8];
   }
 
   v29 = objc_alloc(MEMORY[0x277CE1BD8]);
   v30 = v29;
   if (v10)
   {
-    v31 = [v29 initWithScorer:v10 lowConfidenceLocales:0 strategy:a4];
+    v31 = [v29 initWithScorer:v10 lowConfidenceLocales:0 strategy:strategy];
   }
 
   else
   {
     v49 = MEMORY[0x277CCA940];
-    v72 = v28;
+    v72 = dominantLanguage3;
     v50 = [MEMORY[0x277CBEA60] arrayWithObjects:&v72 count:1];
     v51 = [v49 setWithArray:v50];
-    v52 = [(_LTTextLanguageDetector *)self availableLocales];
-    v31 = [v30 initWithDetectionCounts:v51 availableLocales:v52 lowConfidenceLocales:0 strategy:a4];
+    availableLocales3 = [(_LTTextLanguageDetector *)self availableLocales];
+    v31 = [v30 initWithDetectionCounts:v51 availableLocales:availableLocales3 lowConfidenceLocales:0 strategy:strategy];
   }
 
 LABEL_47:
@@ -373,14 +373,14 @@ LABEL_47:
   return v31;
 }
 
-- (id)_mapSupportedLocales:(id)a3
+- (id)_mapSupportedLocales:(id)locales
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __48___LTTextLanguageDetector__mapSupportedLocales___block_invoke;
   v5[3] = &unk_2789B7D08;
   v5[4] = self;
-  v3 = [a3 _ltCompactMap:v5];
+  v3 = [locales _ltCompactMap:v5];
 
   return v3;
 }

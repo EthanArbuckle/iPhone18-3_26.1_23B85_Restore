@@ -1,94 +1,94 @@
 @interface HUPocketButtonDescriptor
-+ (id)descriptorWithTitle:(id)a3 style:(unint64_t)a4 target:(id)a5 action:(SEL)a6 userInfo:(id)a7;
-+ (id)descriptorWithTitle:(id)a3 style:(unint64_t)a4 userInfo:(id)a5 block:(id)a6;
++ (id)descriptorWithTitle:(id)title style:(unint64_t)style target:(id)target action:(SEL)action userInfo:(id)info;
++ (id)descriptorWithTitle:(id)title style:(unint64_t)style userInfo:(id)info block:(id)block;
 - (SEL)action;
 - (UIColor)backgroundColor;
 - (UIColor)textColor;
 - (id)target;
 - (void)execute;
-- (void)setAction:(SEL)a3;
+- (void)setAction:(SEL)action;
 @end
 
 @implementation HUPocketButtonDescriptor
 
-+ (id)descriptorWithTitle:(id)a3 style:(unint64_t)a4 target:(id)a5 action:(SEL)a6 userInfo:(id)a7
++ (id)descriptorWithTitle:(id)title style:(unint64_t)style target:(id)target action:(SEL)action userInfo:(id)info
 {
-  v11 = a7;
-  v12 = a5;
-  v13 = a3;
+  infoCopy = info;
+  targetCopy = target;
+  titleCopy = title;
   v14 = objc_opt_new();
-  [v14 setTitle:v13];
+  [v14 setTitle:titleCopy];
 
-  [v14 setStyle:a4];
-  [v14 setTarget:v12];
+  [v14 setStyle:style];
+  [v14 setTarget:targetCopy];
 
-  [v14 setAction:a6];
-  [v14 setUserInfo:v11];
+  [v14 setAction:action];
+  [v14 setUserInfo:infoCopy];
 
   return v14;
 }
 
-+ (id)descriptorWithTitle:(id)a3 style:(unint64_t)a4 userInfo:(id)a5 block:(id)a6
++ (id)descriptorWithTitle:(id)title style:(unint64_t)style userInfo:(id)info block:(id)block
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a3;
+  blockCopy = block;
+  infoCopy = info;
+  titleCopy = title;
   v12 = objc_opt_new();
-  [v12 setTitle:v11];
+  [v12 setTitle:titleCopy];
 
-  [v12 setStyle:a4];
-  [v12 setBlock:v9];
+  [v12 setStyle:style];
+  [v12 setBlock:blockCopy];
 
-  [v12 setUserInfo:v10];
+  [v12 setUserInfo:infoCopy];
 
   return v12;
 }
 
 - (UIColor)textColor
 {
-  v2 = [(HUPocketButtonDescriptor *)self style];
-  if (v2 == 1)
+  style = [(HUPocketButtonDescriptor *)self style];
+  if (style == 1)
   {
-    v2 = [MEMORY[0x277D75348] hf_keyColor];
+    style = [MEMORY[0x277D75348] hf_keyColor];
   }
 
-  else if (!v2)
+  else if (!style)
   {
-    v2 = [MEMORY[0x277D75348] systemWhiteColor];
+    style = [MEMORY[0x277D75348] systemWhiteColor];
   }
 
-  return v2;
+  return style;
 }
 
 - (UIColor)backgroundColor
 {
   if ([(HUPocketButtonDescriptor *)self style]== 1)
   {
-    v2 = [MEMORY[0x277D75348] clearColor];
+    clearColor = [MEMORY[0x277D75348] clearColor];
   }
 
   else
   {
-    v2 = 0;
+    clearColor = 0;
   }
 
-  return v2;
+  return clearColor;
 }
 
 - (void)execute
 {
-  v3 = [(HUPocketButtonDescriptor *)self block];
+  block = [(HUPocketButtonDescriptor *)self block];
 
-  if (v3)
+  if (block)
   {
-    v4 = [(HUPocketButtonDescriptor *)self block];
-    v4[2](v4, self);
+    block2 = [(HUPocketButtonDescriptor *)self block];
+    block2[2](block2, self);
   }
 
   else
   {
-    v4 = [(HUPocketButtonDescriptor *)self target];
-    [v4 performSelector:-[HUPocketButtonDescriptor action](self withObject:{"action"), self}];
+    block2 = [(HUPocketButtonDescriptor *)self target];
+    [block2 performSelector:-[HUPocketButtonDescriptor action](self withObject:{"action"), self}];
   }
 }
 
@@ -112,19 +112,19 @@
   }
 }
 
-- (void)setAction:(SEL)a3
+- (void)setAction:(SEL)action
 {
-  if (a3)
+  if (action)
   {
-    v3 = a3;
+    actionCopy = action;
   }
 
   else
   {
-    v3 = 0;
+    actionCopy = 0;
   }
 
-  self->_action = v3;
+  self->_action = actionCopy;
 }
 
 @end

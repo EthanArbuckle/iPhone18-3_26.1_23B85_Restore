@@ -1,20 +1,20 @@
 @interface SVLooper
-- (SVLooper)initWithPlayer:(id)a3;
+- (SVLooper)initWithPlayer:(id)player;
 @end
 
 @implementation SVLooper
 
-- (SVLooper)initWithPlayer:(id)a3
+- (SVLooper)initWithPlayer:(id)player
 {
-  v5 = a3;
+  playerCopy = player;
   v17.receiver = self;
   v17.super_class = SVLooper;
   v6 = [(SVLooper *)&v17 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_player, a3);
-    v8 = [[SVPlayerItemObserver alloc] initWithPlayer:v5];
+    objc_storeStrong(&v6->_player, player);
+    v8 = [[SVPlayerItemObserver alloc] initWithPlayer:playerCopy];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __27__SVLooper_initWithPlayer___block_invoke;

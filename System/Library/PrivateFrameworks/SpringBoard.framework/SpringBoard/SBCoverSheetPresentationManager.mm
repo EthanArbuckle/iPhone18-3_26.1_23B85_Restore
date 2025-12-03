@@ -1,16 +1,16 @@
 @interface SBCoverSheetPresentationManager
 + (SBCoverSheetPresentationManager)sharedInstance;
-+ (void)getLeadingTopButtonFrame:(CGRect *)a3 trailingTopButtonFrame:(CGRect *)a4 forScreen:(id)a5;
++ (void)getLeadingTopButtonFrame:(CGRect *)frame trailingTopButtonFrame:(CGRect *)buttonFrame forScreen:(id)screen;
 - (BOOL)_isEffectivelyLocked;
-- (BOOL)_isGoingToSecureAppForSlidingViewController:(id)a3;
+- (BOOL)_isGoingToSecureAppForSlidingViewController:(id)controller;
 - (BOOL)_isIconFlyInAnimationAllowed;
 - (BOOL)_isInAlwaysOn;
-- (BOOL)_performInterstitialPresentationIfNeeded:(id)a3;
-- (BOOL)coverSheetSlidingViewControllerIsDisplayingInterstitial:(id)a3;
-- (BOOL)coverSheetSlidingViewControllerIsInterstitialDismissalAllowed:(id)a3;
-- (BOOL)coverSheetSlidingViewControllerPerformExternalUnlockIfNeeded:(id)a3;
-- (BOOL)coverSheetSlidingViewControllerShouldAllowDismissal:(id)a3;
-- (BOOL)hasContentUnderCoverSheetSlidingViewController:(id)a3;
+- (BOOL)_performInterstitialPresentationIfNeeded:(id)needed;
+- (BOOL)coverSheetSlidingViewControllerIsDisplayingInterstitial:(id)interstitial;
+- (BOOL)coverSheetSlidingViewControllerIsInterstitialDismissalAllowed:(id)allowed;
+- (BOOL)coverSheetSlidingViewControllerPerformExternalUnlockIfNeeded:(id)needed;
+- (BOOL)coverSheetSlidingViewControllerShouldAllowDismissal:(id)dismissal;
+- (BOOL)hasContentUnderCoverSheetSlidingViewController:(id)controller;
 - (BOOL)hasFirstSwipeShowGrabberOverride;
 - (BOOL)isAnyGestureActivelyRecognized;
 - (BOOL)isCoverSheetHostingAnApp;
@@ -20,11 +20,11 @@
 - (BOOL)isTransitioning;
 - (BOOL)isVisible;
 - (BOOL)isVisibleAndNotDisappearing;
-- (BOOL)secureAppEnvironmentViewControllerShouldEnableIdleWarning:(id)a3 alwaysOnEnabled:(BOOL)a4;
+- (BOOL)secureAppEnvironmentViewControllerShouldEnableIdleWarning:(id)warning alwaysOnEnabled:(BOOL)enabled;
 - (CSCoverSheetTransitionSettings)transitionSettings;
 - (NSSet)components;
 - (SBCoverSheetPresentationDelegate)delegate;
-- (SBCoverSheetPresentationManager)initWithWindowScene:(id)a3;
+- (SBCoverSheetPresentationManager)initWithWindowScene:(id)scene;
 - (SBCoverSheetSceneManager)sceneManager;
 - (SBCoverSheetSlidingViewController)coverSheetSlidingViewController;
 - (SBCoverSheetSlidingViewController)secureAppSlidingViewController;
@@ -33,145 +33,145 @@
 - (SBWindow)coverSheetWindow;
 - (SBWindow)secureAppWindow;
 - (SBWindowScene)windowScene;
-- (id)_impactFeedbackGeneratorConfigurationForStyle:(int64_t)a3;
-- (id)_newRubberBandFeedbackGeneratorForSettings:(id)a3;
+- (id)_impactFeedbackGeneratorConfigurationForStyle:(int64_t)style;
+- (id)_newRubberBandFeedbackGeneratorForSettings:(id)settings;
 - (id)coverSheetViewController;
 - (id)scenesForBacklightSession;
-- (id)traitsParticipantForSceneHandle:(id)a3;
+- (id)traitsParticipantForSceneHandle:(id)handle;
 - (int64_t)_wallpaperEffectiveInterfaceOrientation;
 - (int64_t)idleTimerDuration;
-- (int64_t)interfaceOrientationForWallpaperController:(id)a3;
+- (int64_t)interfaceOrientationForWallpaperController:(id)controller;
 - (unint64_t)restrictedCapabilities;
 - (unint64_t)screenEdgesDeferringSystemGestures;
 - (void)_acquireAsynchronousRenderingAssertion;
 - (void)_acquireSystemApertureCoverSheetAssertion;
-- (void)_animateForProgress:(double)a3;
-- (void)_authenticationChanged:(id)a3;
-- (void)_cleanupARubberBandTransitionForSlidingViewController:(id)a3;
+- (void)_animateForProgress:(double)progress;
+- (void)_authenticationChanged:(id)changed;
+- (void)_cleanupARubberBandTransitionForSlidingViewController:(id)controller;
 - (void)_cleanupATransition;
 - (void)_cleanupDismissalTransition;
 - (void)_cleanupIconAnimator;
-- (void)_cleanupInterstitialTransitionForSlidingViewController:(id)a3;
+- (void)_cleanupInterstitialTransitionForSlidingViewController:(id)controller;
 - (void)_cleanupPresentationTransition;
-- (void)_cleanupRubberBandDismissalTransitionForSlidingViewController:(id)a3;
-- (void)_cleanupRubberBandPresentationTransitionForSlidingViewController:(id)a3;
-- (void)_clearSecureAppViewControllersIncludingWindow:(BOOL)a3 force:(BOOL)a4;
-- (void)_createWallpaperOverlayIfNeededWithCoverSheetFrame:(CGRect)a3;
-- (void)_enqueueBlock:(id)a3 withName:(id)a4;
-- (void)_finishSecureAppTransitionToPresented:(BOOL)a3;
+- (void)_cleanupRubberBandDismissalTransitionForSlidingViewController:(id)controller;
+- (void)_cleanupRubberBandPresentationTransitionForSlidingViewController:(id)controller;
+- (void)_clearSecureAppViewControllersIncludingWindow:(BOOL)window force:(BOOL)force;
+- (void)_createWallpaperOverlayIfNeededWithCoverSheetFrame:(CGRect)frame;
+- (void)_enqueueBlock:(id)block withName:(id)name;
+- (void)_finishSecureAppTransitionToPresented:(BOOL)presented;
 - (void)_invalidateSystemApertureCoverSheetAssertion;
 - (void)_isIconFlyInAnimationAllowed;
 - (void)_noteCoverSheetDismissingByUserGesture;
-- (void)_noteEffectiveLockStatusMayHaveChangedForUserNotification:(BOOL)a3 canDismiss:(BOOL)a4;
+- (void)_noteEffectiveLockStatusMayHaveChangedForUserNotification:(BOOL)notification canDismiss:(BOOL)dismiss;
 - (void)_notifyDelegateDidDismiss;
 - (void)_notifyDelegateDidPresent;
 - (void)_notifyDelegateRequestsUnlock;
-- (void)_notifyDelegateWillDismissWithVelocity:(double)a3;
-- (void)_notifyDelegateWillPerformTransitionWithFinalValue:(double)a3 forUserGesture:(BOOL)a4 withVelocity:(double)a5 animated:(BOOL)a6;
+- (void)_notifyDelegateWillDismissWithVelocity:(double)velocity;
+- (void)_notifyDelegateWillPerformTransitionWithFinalValue:(double)value forUserGesture:(BOOL)gesture withVelocity:(double)velocity animated:(BOOL)animated;
 - (void)_notifyDelegateWillPresent;
-- (void)_performAfterSecureAppCleanup:(id)a3;
+- (void)_performAfterSecureAppCleanup:(id)cleanup;
 - (void)_prepareCoverSheetWindowForDisplay;
-- (void)_prepareForARubberBandTransitionForSlidingViewController:(id)a3;
+- (void)_prepareForARubberBandTransitionForSlidingViewController:(id)controller;
 - (void)_prepareForATransition;
-- (void)_prepareForCoverSheetRemovalWithVelocity:(double)a3;
+- (void)_prepareForCoverSheetRemovalWithVelocity:(double)velocity;
 - (void)_prepareForDismissalTransition;
-- (void)_prepareForPresentationTransitionForUserGesture:(BOOL)a3;
-- (void)_prepareForRubberBandDismissalTransitionForSlidingViewController:(id)a3;
-- (void)_prepareForRubberBandPresentationTransitionForSlidingViewController:(id)a3;
-- (void)_prepareForSecureAppTransitionToPresented:(BOOL)a3 animated:(BOOL)a4;
+- (void)_prepareForPresentationTransitionForUserGesture:(BOOL)gesture;
+- (void)_prepareForRubberBandDismissalTransitionForSlidingViewController:(id)controller;
+- (void)_prepareForRubberBandPresentationTransitionForSlidingViewController:(id)controller;
+- (void)_prepareForSecureAppTransitionToPresented:(BOOL)presented animated:(BOOL)animated;
 - (void)_prepareForTransitionToSecureApp;
-- (void)_prepareIconAnimatorForPresenting:(BOOL)a3 withVelocity:(double)a4;
-- (void)_prepareInterstitialTransitionForSlidingViewController:(id)a3;
+- (void)_prepareIconAnimatorForPresenting:(BOOL)presenting withVelocity:(double)velocity;
+- (void)_prepareInterstitialTransitionForSlidingViewController:(id)controller;
 - (void)_prepareSecureAppViewController;
 - (void)_prepareSecureAppWindowForDisplay;
 - (void)_relinquishAsynchronousRenderingAssertion;
 - (void)_relinquishHomeGestureOwnership;
 - (void)_removeWallpaperOverlay;
 - (void)_requestHomeGestureOwnership;
-- (void)_restartStartupTransitionBegan:(id)a3;
-- (void)_setCoverSheet:(BOOL)a3 windowVisible:(BOOL)a4 forReason:(id)a5;
-- (void)_setCoverSheetPresented:(BOOL)a3 forcePresented:(BOOL)a4 animated:(BOOL)a5 dismissModalPresentation:(BOOL)a6 options:(unint64_t)a7 withCompletion:(id)a8;
-- (void)_setOrientationUpdatesDeferred:(BOOL)a3;
-- (void)_setTransitionProgress:(double)a3 animated:(BOOL)a4 gestureActive:(BOOL)a5 coverSheetProgress:(double)a6 completion:(id)a7;
+- (void)_restartStartupTransitionBegan:(id)began;
+- (void)_setCoverSheet:(BOOL)sheet windowVisible:(BOOL)visible forReason:(id)reason;
+- (void)_setCoverSheetPresented:(BOOL)presented forcePresented:(BOOL)forcePresented animated:(BOOL)animated dismissModalPresentation:(BOOL)presentation options:(unint64_t)options withCompletion:(id)completion;
+- (void)_setOrientationUpdatesDeferred:(BOOL)deferred;
+- (void)_setTransitionProgress:(double)progress animated:(BOOL)animated gestureActive:(BOOL)active coverSheetProgress:(double)sheetProgress completion:(id)completion;
 - (void)_tellDashBoardOurAppearanceAndBehaviorChanged;
 - (void)_tellDashBoardOurAppearanceChanged;
 - (void)_tellDashBoardOurBehaviorChanged;
-- (void)_transitionFromSecureAppToFullAppAndDismiss:(BOOL)a3 preservingBanners:(BOOL)a4;
-- (void)_updateIconsFlyInWithSettings:(id)a3;
-- (void)_updateInterstitialTransitionForSlidingViewController:(id)a3 withProgress:(double)a4;
+- (void)_transitionFromSecureAppToFullAppAndDismiss:(BOOL)dismiss preservingBanners:(BOOL)banners;
+- (void)_updateIconsFlyInWithSettings:(id)settings;
+- (void)_updateInterstitialTransitionForSlidingViewController:(id)controller withProgress:(double)progress;
 - (void)_updateProximitySensorState;
-- (void)_updateSecureAppViewControllerVisibilityForAssertionsActive:(BOOL)a3;
-- (void)_updateShouldDisplayFakeStatusBarInVisibleTransition:(BOOL)a3;
-- (void)_updateTopButtonsForCoverSheetViewController:(id)a3;
-- (void)_updateTransitionToSecureAppWithProgress:(double)a3;
-- (void)_updateVisibilityOfWindow:(id)a3 forReasons:(id)a4;
+- (void)_updateSecureAppViewControllerVisibilityForAssertionsActive:(BOOL)active;
+- (void)_updateShouldDisplayFakeStatusBarInVisibleTransition:(BOOL)transition;
+- (void)_updateTopButtonsForCoverSheetViewController:(id)controller;
+- (void)_updateTransitionToSecureAppWithProgress:(double)progress;
+- (void)_updateVisibilityOfWindow:(id)window forReasons:(id)reasons;
 - (void)_updateWallpaperOverlay;
-- (void)_updateWallpaperOverlayAlpha:(double)a3;
-- (void)addDismissalObserver:(id)a3;
-- (void)assistantDidDisappear:(id)a3 windowScene:(id)a4;
+- (void)_updateWallpaperOverlayAlpha:(double)alpha;
+- (void)addDismissalObserver:(id)observer;
+- (void)assistantDidDisappear:(id)disappear windowScene:(id)scene;
 - (void)completeOngoingPresentationIfNeeded;
 - (void)coverSheetSlidingViewController;
-- (void)coverSheetSlidingViewController:(id)a3 animateForGestureActive:(BOOL)a4 withProgress:(double)a5 beginBlock:(id)a6 endBlock:(id)a7;
-- (void)coverSheetSlidingViewController:(id)a3 animationTickedWithProgress:(double)a4 velocity:(double)a5 isPresenting:(BOOL)a6 coverSheetFrame:(CGRect)a7 gestureActive:(BOOL)a8 forPresentationValue:(BOOL)a9;
-- (void)coverSheetSlidingViewController:(id)a3 committingToEndPresented:(BOOL)a4;
-- (void)coverSheetSlidingViewController:(id)a3 isTransitioning:(BOOL)a4;
-- (void)coverSheetSlidingViewController:(id)a3 performIconFlyInForPresenting:(BOOL)a4 animated:(BOOL)a5 beginBlock:(id)a6 endBlock:(id)a7;
-- (void)coverSheetSlidingViewController:(id)a3 prepareForDismissalTransitionForReversingTransition:(BOOL)a4 forUserGesture:(BOOL)a5;
-- (void)coverSheetSlidingViewController:(id)a3 prepareForPresentationTransitionForUserGesture:(BOOL)a4;
-- (void)coverSheetSlidingViewController:(id)a3 prepareToAnimateIconFlyInForPresenting:(BOOL)a4 withVelocity:(double)a5;
-- (void)coverSheetSlidingViewController:(id)a3 transitionTickedWithProgress:(double)a4 velocity:(double)a5 isPresenting:(BOOL)a6 coverSheetFrame:(CGRect)a7 gestureActive:(BOOL)a8 forPresentationValue:(BOOL)a9;
-- (void)coverSheetSlidingViewController:(id)a3 willChangePresentationState:(int64_t)a4 forUserGesture:(BOOL)a5 withVelocity:(double)a6 animated:(BOOL)a7;
-- (void)coverSheetSlidingViewControllerCleanupDismissalTransition:(id)a3;
-- (void)coverSheetSlidingViewControllerCleanupInterstitialTransition:(id)a3;
-- (void)coverSheetSlidingViewControllerCleanupPresentationTransition:(id)a3;
-- (void)coverSheetSlidingViewControllerCleanupRubberBandedPresentationTransition:(id)a3;
-- (void)coverSheetSlidingViewControllerDidEndDismissGestureOverInterstitial:(id)a3;
-- (void)coverSheetSlidingViewControllerDidEndTransition:(id)a3 toPresented:(BOOL)a4;
-- (void)coverSheetSlidingViewControllerDidPassRubberBandThreshold:(id)a3;
-- (void)coverSheetSlidingViewControllerPrepareForRubberBandedPresentationTransition:(id)a3;
-- (void)coverSheetSlidingViewControllerReachabilityAnimationDidEnd:(id)a3;
-- (void)coverSheetSlidingViewControllerReachabilityAnimationWillBegin:(id)a3;
-- (void)coverSheetSlidingViewControllerUserPresentGestureBegan:(id)a3;
-- (void)coverSheetViewController:(id)a3 didChangeActiveBehavior:(id)a4;
-- (void)coverSheetViewController:(id)a3 didObscureWallpaper:(BOOL)a4;
-- (void)coverSheetViewController:(id)a3 didOccludeWallpaper:(BOOL)a4;
-- (void)coverSheetViewControllerActivityItemsMayHaveChanged:(id)a3;
-- (void)coverSheetViewControllerDidAddNewSceneHostEnvironment:(id)a3;
-- (void)coverSheetViewControllerDidChangeUserPresence:(BOOL)a3;
-- (void)coverSheetViewControllerDidUpdateAudioCategoriesDisablingVolumeHUD:(id)a3;
-- (void)coverSheetViewControllerExternalLockProviderStateDidChange:(id)a3;
-- (void)hostableEntityPresenter:(id)a3 didBeginHosting:(id)a4;
-- (void)hostableEntityPresenter:(id)a3 didEndHosting:(id)a4;
+- (void)coverSheetSlidingViewController:(id)controller animateForGestureActive:(BOOL)active withProgress:(double)progress beginBlock:(id)block endBlock:(id)endBlock;
+- (void)coverSheetSlidingViewController:(id)controller animationTickedWithProgress:(double)progress velocity:(double)velocity isPresenting:(BOOL)presenting coverSheetFrame:(CGRect)frame gestureActive:(BOOL)active forPresentationValue:(BOOL)value;
+- (void)coverSheetSlidingViewController:(id)controller committingToEndPresented:(BOOL)presented;
+- (void)coverSheetSlidingViewController:(id)controller isTransitioning:(BOOL)transitioning;
+- (void)coverSheetSlidingViewController:(id)controller performIconFlyInForPresenting:(BOOL)presenting animated:(BOOL)animated beginBlock:(id)block endBlock:(id)endBlock;
+- (void)coverSheetSlidingViewController:(id)controller prepareForDismissalTransitionForReversingTransition:(BOOL)transition forUserGesture:(BOOL)gesture;
+- (void)coverSheetSlidingViewController:(id)controller prepareForPresentationTransitionForUserGesture:(BOOL)gesture;
+- (void)coverSheetSlidingViewController:(id)controller prepareToAnimateIconFlyInForPresenting:(BOOL)presenting withVelocity:(double)velocity;
+- (void)coverSheetSlidingViewController:(id)controller transitionTickedWithProgress:(double)progress velocity:(double)velocity isPresenting:(BOOL)presenting coverSheetFrame:(CGRect)frame gestureActive:(BOOL)active forPresentationValue:(BOOL)value;
+- (void)coverSheetSlidingViewController:(id)controller willChangePresentationState:(int64_t)state forUserGesture:(BOOL)gesture withVelocity:(double)velocity animated:(BOOL)animated;
+- (void)coverSheetSlidingViewControllerCleanupDismissalTransition:(id)transition;
+- (void)coverSheetSlidingViewControllerCleanupInterstitialTransition:(id)transition;
+- (void)coverSheetSlidingViewControllerCleanupPresentationTransition:(id)transition;
+- (void)coverSheetSlidingViewControllerCleanupRubberBandedPresentationTransition:(id)transition;
+- (void)coverSheetSlidingViewControllerDidEndDismissGestureOverInterstitial:(id)interstitial;
+- (void)coverSheetSlidingViewControllerDidEndTransition:(id)transition toPresented:(BOOL)presented;
+- (void)coverSheetSlidingViewControllerDidPassRubberBandThreshold:(id)threshold;
+- (void)coverSheetSlidingViewControllerPrepareForRubberBandedPresentationTransition:(id)transition;
+- (void)coverSheetSlidingViewControllerReachabilityAnimationDidEnd:(id)end;
+- (void)coverSheetSlidingViewControllerReachabilityAnimationWillBegin:(id)begin;
+- (void)coverSheetSlidingViewControllerUserPresentGestureBegan:(id)began;
+- (void)coverSheetViewController:(id)controller didChangeActiveBehavior:(id)behavior;
+- (void)coverSheetViewController:(id)controller didObscureWallpaper:(BOOL)wallpaper;
+- (void)coverSheetViewController:(id)controller didOccludeWallpaper:(BOOL)wallpaper;
+- (void)coverSheetViewControllerActivityItemsMayHaveChanged:(id)changed;
+- (void)coverSheetViewControllerDidAddNewSceneHostEnvironment:(id)environment;
+- (void)coverSheetViewControllerDidChangeUserPresence:(BOOL)presence;
+- (void)coverSheetViewControllerDidUpdateAudioCategoriesDisablingVolumeHUD:(id)d;
+- (void)coverSheetViewControllerExternalLockProviderStateDidChange:(id)change;
+- (void)hostableEntityPresenter:(id)presenter didBeginHosting:(id)hosting;
+- (void)hostableEntityPresenter:(id)presenter didEndHosting:(id)hosting;
 - (void)loadViewsIfNeeded;
 - (void)noteScreenDidTurnOff;
-- (void)pearlMatchingStateProviderStateChangedForMatchFailure:(id)a3;
+- (void)pearlMatchingStateProviderStateChangedForMatchFailure:(id)failure;
 - (void)reenableCoverSheetScalingForPositioning;
-- (void)sceneHandle:(id)a3 didCreateScene:(id)a4;
-- (void)sceneHandle:(id)a3 didDestroyScene:(id)a4;
-- (void)secureAppOfTypeDidBegin:(unint64_t)a3;
-- (void)secureAppOfTypeDidEnd:(unint64_t)a3;
-- (void)setActiveInterfaceOrientationLocked:(BOOL)a3;
-- (void)setCoverSheetTranslationToPresented:(BOOL)a3 forcingTransition:(BOOL)a4 ignoringPreflightRequirements:(BOOL)a5 suppressingIconFly:(BOOL)a6 animated:(BOOL)a7;
-- (void)setCoverSheetWindow:(id)a3;
-- (void)setFloatingDockBehaviorAssertion:(id)a3;
-- (void)setHasBeenDismissedSinceKeybagLock:(BOOL)a3;
-- (void)setIconAnimatorCompletionBlock:(id)a3;
-- (void)setIconAnimatorCompletionGroup:(id)a3;
-- (void)setLockScreenEnvironment:(id)a3;
-- (void)setPearlMatchingStateProvider:(id)a3;
-- (void)setSecureAppEnvironmentViewController:(id)a3;
-- (void)setSecureAppSlidingViewController:(id)a3;
-- (void)setSecureAppViewController:(id)a3;
-- (void)setSecureAppWindow:(id)a3;
-- (void)setTransitionType:(unint64_t)a3;
-- (void)setWallpaperFloatingLayerHidden:(BOOL)a3;
-- (void)setWantsHomeGestureOwnership:(BOOL)a3;
-- (void)settings:(id)a3 changedValueForKey:(id)a4;
+- (void)sceneHandle:(id)handle didCreateScene:(id)scene;
+- (void)sceneHandle:(id)handle didDestroyScene:(id)scene;
+- (void)secureAppOfTypeDidBegin:(unint64_t)begin;
+- (void)secureAppOfTypeDidEnd:(unint64_t)end;
+- (void)setActiveInterfaceOrientationLocked:(BOOL)locked;
+- (void)setCoverSheetTranslationToPresented:(BOOL)presented forcingTransition:(BOOL)transition ignoringPreflightRequirements:(BOOL)requirements suppressingIconFly:(BOOL)fly animated:(BOOL)animated;
+- (void)setCoverSheetWindow:(id)window;
+- (void)setFloatingDockBehaviorAssertion:(id)assertion;
+- (void)setHasBeenDismissedSinceKeybagLock:(BOOL)lock;
+- (void)setIconAnimatorCompletionBlock:(id)block;
+- (void)setIconAnimatorCompletionGroup:(id)group;
+- (void)setLockScreenEnvironment:(id)environment;
+- (void)setPearlMatchingStateProvider:(id)provider;
+- (void)setSecureAppEnvironmentViewController:(id)controller;
+- (void)setSecureAppSlidingViewController:(id)controller;
+- (void)setSecureAppViewController:(id)controller;
+- (void)setSecureAppWindow:(id)window;
+- (void)setTransitionType:(unint64_t)type;
+- (void)setWallpaperFloatingLayerHidden:(BOOL)hidden;
+- (void)setWantsHomeGestureOwnership:(BOOL)ownership;
+- (void)settings:(id)settings changedValueForKey:(id)key;
 - (void)updateBecauseSecureAppChanged;
-- (void)updateInterfaceOrientationToMatchOrientation:(int64_t)a3;
-- (void)updateVisibilityForGrabberVisible:(BOOL)a3;
-- (void)willUIUnlockWithPendingUnlockRequest:(BOOL)a3;
-- (void)zStackParticipant:(id)a3 updatePreferences:(id)a4;
+- (void)updateInterfaceOrientationToMatchOrientation:(int64_t)orientation;
+- (void)updateVisibilityForGrabberVisible:(BOOL)visible;
+- (void)willUIUnlockWithPendingUnlockRequest:(BOOL)request;
+- (void)zStackParticipant:(id)participant updatePreferences:(id)preferences;
 @end
 
 @implementation SBCoverSheetPresentationManager
@@ -207,8 +207,8 @@
     return 1;
   }
 
-  v4 = [(SBCoverSheetPresentationManager *)self coverSheetSlidingViewControllerIfLoaded];
-  v3 = [v4 _appearState] != 0;
+  coverSheetSlidingViewControllerIfLoaded = [(SBCoverSheetPresentationManager *)self coverSheetSlidingViewControllerIfLoaded];
+  v3 = [coverSheetSlidingViewControllerIfLoaded _appearState] != 0;
 
   return v3;
 }
@@ -222,17 +222,17 @@
 
 - (void)_tellDashBoardOurAppearanceChanged
 {
-  v3 = [(SBCoverSheetPresentationManager *)self coverSheetViewController];
-  [v3 externalAppearanceProviderBehaviorChanged:self];
+  coverSheetViewController = [(SBCoverSheetPresentationManager *)self coverSheetViewController];
+  [coverSheetViewController externalAppearanceProviderBehaviorChanged:self];
 }
 
 - (id)coverSheetViewController
 {
-  v2 = [(SBLockScreenEnvironment *)self->_lockScreenEnvironment rootViewController];
+  rootViewController = [(SBLockScreenEnvironment *)self->_lockScreenEnvironment rootViewController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = rootViewController;
   }
 
   else
@@ -245,16 +245,16 @@
 
 - (void)_tellDashBoardOurBehaviorChanged
 {
-  v3 = [(SBCoverSheetPresentationManager *)self coverSheetViewController];
-  [v3 externalBehaviorProviderBehaviorChanged:self];
+  coverSheetViewController = [(SBCoverSheetPresentationManager *)self coverSheetViewController];
+  [coverSheetViewController externalBehaviorProviderBehaviorChanged:self];
 }
 
 - (BOOL)isCoverSheetHostingAnApp
 {
-  v3 = [(SBLockScreenEnvironment *)self->_lockScreenEnvironment applicationHoster];
-  v4 = [v3 isHostingAnApp];
+  applicationHoster = [(SBLockScreenEnvironment *)self->_lockScreenEnvironment applicationHoster];
+  isHostingAnApp = [applicationHoster isHostingAnApp];
 
-  if (v4)
+  if (isHostingAnApp)
   {
 LABEL_7:
     LOBYTE(secureAppViewController) = 1;
@@ -282,10 +282,10 @@ LABEL_7:
 
 - (SBDeviceApplicationSceneHandle)coverSheetHostedAppSceneHandle
 {
-  v3 = [(SBLockScreenEnvironment *)self->_lockScreenEnvironment applicationHoster];
-  v4 = [v3 isHostingAnApp];
-  secureAppViewController = v3;
-  if (v4)
+  applicationHoster = [(SBLockScreenEnvironment *)self->_lockScreenEnvironment applicationHoster];
+  isHostingAnApp = [applicationHoster isHostingAnApp];
+  secureAppViewController = applicationHoster;
+  if (isHostingAnApp)
   {
     goto LABEL_4;
   }
@@ -294,14 +294,14 @@ LABEL_7:
   {
     secureAppViewController = self->_secureAppViewController;
 LABEL_4:
-    v6 = [(BSInvalidatable *)secureAppViewController hostedAppSceneHandle];
+    hostedAppSceneHandle = [(BSInvalidatable *)secureAppViewController hostedAppSceneHandle];
     goto LABEL_6;
   }
 
-  v6 = 0;
+  hostedAppSceneHandle = 0;
 LABEL_6:
 
-  return v6;
+  return hostedAppSceneHandle;
 }
 
 - (SBWindow)coverSheetWindow
@@ -311,18 +311,18 @@ LABEL_6:
   {
     WeakRetained = objc_loadWeakRetained(&self->_windowScene);
     v5 = [(SBWindow *)[SBCoverSheetWindow alloc] initWithWindowScene:WeakRetained role:@"SBTraitsParticipantRoleCoverSheet" debugName:@"CoverSheet"];
-    v6 = [MEMORY[0x277D75348] clearColor];
-    [(SBCoverSheetWindow *)v5 setBackgroundColor:v6];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(SBCoverSheetWindow *)v5 setBackgroundColor:clearColor];
 
     [(SBCoverSheetWindow *)v5 setWindowLevel:*MEMORY[0x277D76EE8]];
-    v7 = [WeakRetained statusBarManager];
-    v8 = [v7 layoutManager];
-    [v8 setOrientationWindow:v5 forStatusBarLayoutLayer:1];
+    statusBarManager = [WeakRetained statusBarManager];
+    layoutManager = [statusBarManager layoutManager];
+    [layoutManager setOrientationWindow:v5 forStatusBarLayoutLayer:1];
 
     v9 = +[SBSecureAppManager sharedInstance];
-    v10 = [(UIWindow *)v5 _sbWindowScene];
-    v11 = [v10 layoutStateTransitionCoordinator];
-    [v9 setSecureAppTransitionCoordinator:v11];
+    _sbWindowScene = [(UIWindow *)v5 _sbWindowScene];
+    layoutStateTransitionCoordinator = [_sbWindowScene layoutStateTransitionCoordinator];
+    [v9 setSecureAppTransitionCoordinator:layoutStateTransitionCoordinator];
 
     [(SBCoverSheetPresentationManager *)self setCoverSheetWindow:v5];
     coverSheetWindow = self->_coverSheetWindow;
@@ -351,19 +351,19 @@ LABEL_6:
 
 - (BOOL)_isEffectivelyLocked
 {
-  v3 = [SBApp authenticationController];
-  if ([v3 isAuthenticated])
+  authenticationController = [SBApp authenticationController];
+  if ([authenticationController isAuthenticated])
   {
-    v4 = [(SBCoverSheetPresentationManager *)self coverSheetViewController];
-    v5 = [v4 externalLockProvidersRequireUnlock];
+    coverSheetViewController = [(SBCoverSheetPresentationManager *)self coverSheetViewController];
+    externalLockProvidersRequireUnlock = [coverSheetViewController externalLockProvidersRequireUnlock];
   }
 
   else
   {
-    v5 = 1;
+    externalLockProvidersRequireUnlock = 1;
   }
 
-  return v5;
+  return externalLockProvidersRequireUnlock;
 }
 
 - (SBPearlMatchingStateProvider)pearlMatchingStateProvider
@@ -406,10 +406,10 @@ LABEL_6:
 - (void)_prepareForATransition
 {
   [(SBCoverSheetPresentationManager *)self _setOrientationUpdatesDeferred:1];
-  v10 = [(SBLockScreenEnvironment *)self->_lockScreenEnvironment idleTimerController];
+  idleTimerController = [(SBLockScreenEnvironment *)self->_lockScreenEnvironment idleTimerController];
   if (objc_opt_respondsToSelector())
   {
-    [v10 addIdleTimerDisabledAssertionReason:@"SBCoverSheetDisableIdleTimerForGestureInProgress"];
+    [idleTimerController addIdleTimerDisabledAssertionReason:@"SBCoverSheetDisableIdleTimerForGestureInProgress"];
   }
 
   [(SBCoverSheetPresentationManager *)self _setCoverSheetWindowVisible:1 forReason:@"SBCoverSheetWindowVisibleReasonTransition"];
@@ -434,24 +434,24 @@ LABEL_6:
 
   [(SBCoverSheetPresentationManager *)self setTransitionType:v5];
   [(SBCoverSheetPresentationManager *)self _acquireAsynchronousRenderingAssertion];
-  v6 = [(SBCoverSheetPresentationManager *)self requireWallpaperAssertion];
-  [v6 invalidate];
+  requireWallpaperAssertion = [(SBCoverSheetPresentationManager *)self requireWallpaperAssertion];
+  [requireWallpaperAssertion invalidate];
 
   v7 = +[SBWallpaperController sharedInstance];
   v8 = [v7 requireWallpaperWithReason:@"CoverSheet"];
   [(SBCoverSheetPresentationManager *)self setRequireWallpaperAssertion:v8];
 
-  v9 = [(SBCoverSheetPresentationManager *)self sceneManager];
-  [v9 updateForegroundScenesForCoverSheetAnimationActive:1];
+  sceneManager = [(SBCoverSheetPresentationManager *)self sceneManager];
+  [sceneManager updateForegroundScenesForCoverSheetAnimationActive:1];
 }
 
 - (BOOL)isInSecureApp
 {
-  v2 = [(SBCoverSheetPresentationManager *)self secureAppSlidingViewControllerIfLoaded];
-  v3 = v2;
-  if (v2)
+  secureAppSlidingViewControllerIfLoaded = [(SBCoverSheetPresentationManager *)self secureAppSlidingViewControllerIfLoaded];
+  v3 = secureAppSlidingViewControllerIfLoaded;
+  if (secureAppSlidingViewControllerIfLoaded)
   {
-    v4 = [v2 _appearState] != 0;
+    v4 = [secureAppSlidingViewControllerIfLoaded _appearState] != 0;
   }
 
   else
@@ -478,8 +478,8 @@ LABEL_6:
   if (!sceneManager)
   {
     v4 = [SBCoverSheetSceneManager alloc];
-    v5 = [(SBCoverSheetPresentationManager *)self coverSheetWindow];
-    v6 = [(SBCoverSheetSceneManager *)v4 initWithCoverSheetWindow:v5];
+    coverSheetWindow = [(SBCoverSheetPresentationManager *)self coverSheetWindow];
+    v6 = [(SBCoverSheetSceneManager *)v4 initWithCoverSheetWindow:coverSheetWindow];
     v7 = self->_sceneManager;
     self->_sceneManager = v6;
 
@@ -496,8 +496,8 @@ LABEL_6:
     return 0;
   }
 
-  v2 = [SBApp authenticationController];
-  if ([v2 isAuthenticatedCached])
+  authenticationController = [SBApp authenticationController];
+  if ([authenticationController isAuthenticatedCached])
   {
     v3 = 16;
   }
@@ -515,10 +515,10 @@ LABEL_6:
   v3 = 8 * (self->_secureAppWindow != 0);
   if (([(SBFZStackParticipant *)self->_zStackParticipant ownsHomeGesture]& 1) == 0)
   {
-    v4 = [(SBCoverSheetSecureAppEnvironmentViewController *)self->_secureAppEnvironmentViewController zStackParticipant];
-    v5 = [v4 ownsHomeGesture];
+    zStackParticipant = [(SBCoverSheetSecureAppEnvironmentViewController *)self->_secureAppEnvironmentViewController zStackParticipant];
+    ownsHomeGesture = [zStackParticipant ownsHomeGesture];
 
-    if ((v5 & 1) == 0)
+    if ((ownsHomeGesture & 1) == 0)
     {
       v3 |= 0x1000uLL;
     }
@@ -548,13 +548,13 @@ LABEL_6:
 - (NSSet)components
 {
   v3 = objc_alloc_init(MEMORY[0x277CBEB58]);
-  v4 = [(SBCoverSheetSlidingViewController *)self->_coverSheetSlidingViewController dismissalSlidingMode];
-  v5 = [MEMORY[0x277D02BC8] homeAffordance];
-  v6 = [v5 priority:20];
-  v7 = [(SBCoverSheetPresentationManager *)self appearanceIdentifier];
-  v8 = [v6 identifier:v7];
+  dismissalSlidingMode = [(SBCoverSheetSlidingViewController *)self->_coverSheetSlidingViewController dismissalSlidingMode];
+  homeAffordance = [MEMORY[0x277D02BC8] homeAffordance];
+  v6 = [homeAffordance priority:20];
+  appearanceIdentifier = [(SBCoverSheetPresentationManager *)self appearanceIdentifier];
+  v8 = [v6 identifier:appearanceIdentifier];
 
-  if (v4 == 2 || [(SBCoverSheetSlidingViewController *)self->_coverSheetSlidingViewController isTransitioning])
+  if (dismissalSlidingMode == 2 || [(SBCoverSheetSlidingViewController *)self->_coverSheetSlidingViewController isTransitioning])
   {
     if (self->_shouldDisplayFakeStatusBar)
     {
@@ -574,16 +574,16 @@ LABEL_6:
   }
 
   [v3 addObject:v8];
-  v13 = [MEMORY[0x277D02BC8] homeAffordance];
-  v14 = [(SBCoverSheetPresentationManager *)self appearanceIdentifier];
-  v15 = [v13 identifier:v14];
+  homeAffordance2 = [MEMORY[0x277D02BC8] homeAffordance];
+  appearanceIdentifier2 = [(SBCoverSheetPresentationManager *)self appearanceIdentifier];
+  v15 = [homeAffordance2 identifier:appearanceIdentifier2];
 
-  v16 = [(SBCoverSheetPresentationManager *)self coverSheetSlidingViewController];
-  v17 = [v16 systemGesturesDelegate];
-  v18 = [v17 syntheticAppearState];
+  coverSheetSlidingViewController = [(SBCoverSheetPresentationManager *)self coverSheetSlidingViewController];
+  systemGesturesDelegate = [coverSheetSlidingViewController systemGesturesDelegate];
+  syntheticAppearState = [systemGesturesDelegate syntheticAppearState];
 
   v19 = [(SBFZStackParticipant *)self->_zStackParticipant ownsHomeGesture]^ 1;
-  if (v18 == 1)
+  if (syntheticAppearState == 1)
   {
     v20 = 1;
   }
@@ -602,22 +602,22 @@ LABEL_6:
   [v3 addObject:v15];
   if ([(SBCoverSheetPresentationManager *)self hasBeenDismissedSinceKeybagLock])
   {
-    v21 = [MEMORY[0x277D02BC8] footerCallToActionLabel];
-    v22 = [v21 hidden:1];
+    footerCallToActionLabel = [MEMORY[0x277D02BC8] footerCallToActionLabel];
+    v22 = [footerCallToActionLabel hidden:1];
     [v3 addObject:v22];
   }
 
-  v23 = [MEMORY[0x277D02BC8] statusBarGradient];
-  v24 = [(SBCoverSheetPresentationManager *)self appearanceIdentifier];
-  v25 = [v23 identifier:v24];
+  statusBarGradient = [MEMORY[0x277D02BC8] statusBarGradient];
+  appearanceIdentifier3 = [(SBCoverSheetPresentationManager *)self appearanceIdentifier];
+  v25 = [statusBarGradient identifier:appearanceIdentifier3];
 
   v26 = +[SBWallpaperController sharedInstance];
   v27 = [v26 _wallpaperViewForVariant:0];
 
   if ([v27 hasVideo])
   {
-    v28 = [v27 wallpaperName];
-    v29 = [v28 length];
+    wallpaperName = [v27 wallpaperName];
+    v29 = [wallpaperName length];
 
     [v25 setHidden:v29 != 0];
     if (v29)
@@ -647,16 +647,16 @@ LABEL_23:
   [(SBCoverSheetPresentationManager *)self wallpaperFloatingLayerAlpha];
   if (v34 < 1.0 && CSFeatureEnabled())
   {
-    v35 = [(SBCoverSheetPresentationManager *)self coverSheetViewController];
-    v36 = [v35 activeAppearance];
-    v33 = [v36 componentForType:23 property:4];
+    coverSheetViewController = [(SBCoverSheetPresentationManager *)self coverSheetViewController];
+    activeAppearance = [coverSheetViewController activeAppearance];
+    v33 = [activeAppearance componentForType:23 property:4];
 
     if (v33)
     {
-      v37 = [v33 value];
-      v38 = [v37 BOOLValue];
+      value = [v33 value];
+      bOOLValue = [value BOOLValue];
 
-      v39 = v38;
+      v39 = bOOLValue;
     }
 
     else
@@ -683,10 +683,10 @@ LABEL_28:
 
 - (BOOL)isPresented
 {
-  v2 = [(SBCoverSheetPresentationManager *)self coverSheetSlidingViewControllerIfLoaded];
-  v3 = [v2 _appearState];
+  coverSheetSlidingViewControllerIfLoaded = [(SBCoverSheetPresentationManager *)self coverSheetSlidingViewControllerIfLoaded];
+  _appearState = [coverSheetSlidingViewControllerIfLoaded _appearState];
 
-  return (v3 - 1) < 2;
+  return (_appearState - 1) < 2;
 }
 
 - (CSCoverSheetTransitionSettings)transitionSettings
@@ -700,8 +700,8 @@ LABEL_28:
 {
   if ([(SBCoverSheetPresentationManager *)self isInSecureApp])
   {
-    v3 = [(SBCoverSheetPresentationManager *)self secureAppSlidingViewController];
-    [v3 resumePositionBasedScaling];
+    secureAppSlidingViewController = [(SBCoverSheetPresentationManager *)self secureAppSlidingViewController];
+    [secureAppSlidingViewController resumePositionBasedScaling];
   }
 }
 
@@ -714,21 +714,21 @@ LABEL_28:
 
 - (void)_relinquishHomeGestureOwnership
 {
-  v2 = [(SBCoverSheetPresentationManager *)self zStackParticipant];
-  [v2 setNeedsUpdatePreferencesWithReason:@"relinquishing home gesture ownership"];
+  zStackParticipant = [(SBCoverSheetPresentationManager *)self zStackParticipant];
+  [zStackParticipant setNeedsUpdatePreferencesWithReason:@"relinquishing home gesture ownership"];
 }
 
 - (void)_updateWallpaperOverlay
 {
   if (CSFeatureEnabled())
   {
-    v3 = [(SBCoverSheetPresentationManager *)self coverSheetViewController];
-    v4 = ([v3 isPasscodeLockVisible] & 1) != 0 || self->_isPresentingInterstitial;
+    coverSheetViewController = [(SBCoverSheetPresentationManager *)self coverSheetViewController];
+    v4 = ([coverSheetViewController isPasscodeLockVisible] & 1) != 0 || self->_isPresentingInterstitial;
 
-    v6 = [(SBCoverSheetPresentationManager *)self coverSheetViewController];
-    v7 = [v6 externalLockProvidersRequireUnlock];
+    coverSheetViewController2 = [(SBCoverSheetPresentationManager *)self coverSheetViewController];
+    externalLockProvidersRequireUnlock = [coverSheetViewController2 externalLockProvidersRequireUnlock];
 
-    v5 = v4 | v7;
+    v5 = v4 | externalLockProvidersRequireUnlock;
   }
 
   else
@@ -744,13 +744,13 @@ LABEL_28:
 
   else
   {
-    v8 = [MEMORY[0x277D75418] currentDevice];
-    v9 = [v8 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (v9 & 0xFFFFFFFFFFFFFFFBLL) == 1 && (_os_feature_enabled_impl())
+    if (userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1 && (_os_feature_enabled_impl())
     {
-      v10 = [MEMORY[0x277D759A0] mainScreen];
-      [v10 _referenceBounds];
+      mainScreen = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen _referenceBounds];
       v12 = v11;
       v14 = v13;
       v16 = v15;
@@ -759,9 +759,9 @@ LABEL_28:
 
     else
     {
-      v10 = [(SBCoverSheetPresentationManager *)self coverSheetViewController];
-      v19 = [v10 view];
-      [v19 bounds];
+      mainScreen = [(SBCoverSheetPresentationManager *)self coverSheetViewController];
+      view = [mainScreen view];
+      [view bounds];
       v12 = v20;
       v14 = v21;
       v16 = v22;
@@ -783,7 +783,7 @@ LABEL_28:
 {
   v15 = *MEMORY[0x277D85DE8];
   v6 = BSInterfaceOrientationDescription();
-  if (a1 == a2)
+  if (self == a2)
   {
     v7 = &stru_283094718;
   }
@@ -793,13 +793,13 @@ LABEL_28:
     v7 = @"which is unexpected and doesn't match the active interface orientation! ";
   }
 
-  v8 = [SBApp orientationAggregator];
+  orientationAggregator = [SBApp orientationAggregator];
   v9 = 138543874;
   v10 = v6;
   v11 = 2114;
   v12 = v7;
   v13 = 2114;
-  v14 = v8;
+  v14 = orientationAggregator;
   _os_log_error_impl(&dword_21ED4E000, a3, OS_LOG_TYPE_ERROR, "Unlocking to %{public}@, %{public}@%{public}@", &v9, 0x20u);
 }
 
@@ -807,19 +807,19 @@ LABEL_28:
 {
   [(SBCoverSheetPresentationManager *)self _setCoverSheetWindowVisible:0 forReason:@"SBCoverSheetWindowVisibleReasonTransition"];
   [(SBCoverSheetPresentationManager *)self _setOrientationUpdatesDeferred:0];
-  v3 = [(SBLockScreenEnvironment *)self->_lockScreenEnvironment idleTimerController];
+  idleTimerController = [(SBLockScreenEnvironment *)self->_lockScreenEnvironment idleTimerController];
   if (objc_opt_respondsToSelector())
   {
-    [v3 removeIdleTimerDisabledAssertionReason:@"SBCoverSheetDisableIdleTimerForGestureInProgress"];
+    [idleTimerController removeIdleTimerDisabledAssertionReason:@"SBCoverSheetDisableIdleTimerForGestureInProgress"];
   }
 
   [(SBCoverSheetPresentationManager *)self _relinquishAsynchronousRenderingAssertion];
-  v4 = [(SBCoverSheetPresentationManager *)self requireWallpaperAssertion];
-  [v4 invalidate];
+  requireWallpaperAssertion = [(SBCoverSheetPresentationManager *)self requireWallpaperAssertion];
+  [requireWallpaperAssertion invalidate];
 
   [(SBCoverSheetPresentationManager *)self setRequireWallpaperAssertion:0];
-  v5 = [(SBCoverSheetPresentationManager *)self sceneManager];
-  [v5 updateForegroundScenesForCoverSheetAnimationActive:0];
+  sceneManager = [(SBCoverSheetPresentationManager *)self sceneManager];
+  [sceneManager updateForegroundScenesForCoverSheetAnimationActive:0];
 
   [(SBCoverSheetPresentationManager *)self _updateWallpaperOverlay];
   v6 = SBLogTelemetrySignposts();
@@ -830,11 +830,11 @@ LABEL_28:
   }
 
   kdebug_trace();
-  v7 = [(SBCoverSheetPresentationManager *)self ppt_transitionEndsCallback];
-  if (v7)
+  ppt_transitionEndsCallback = [(SBCoverSheetPresentationManager *)self ppt_transitionEndsCallback];
+  if (ppt_transitionEndsCallback)
   {
     [(SBCoverSheetPresentationManager *)self setPpt_transitionEndsCallback:0];
-    v7[2](v7);
+    ppt_transitionEndsCallback[2](ppt_transitionEndsCallback);
   }
 }
 
@@ -874,21 +874,21 @@ LABEL_28:
   if (!self->_secureAppWindow)
   {
     v3 = +[SBSecureAppManager sharedInstance];
-    v4 = [v3 hasSecureApp];
+    hasSecureApp = [v3 hasSecureApp];
 
-    if (v4)
+    if (hasSecureApp)
     {
       WeakRetained = objc_loadWeakRetained(&self->_windowScene);
       v6 = [(SBWindow *)[SBSecureAppWindow alloc] initWithWindowScene:WeakRetained role:@"SBTraitsParticipantRoleSecureApp" debugName:@"SecureApp"];
-      v7 = [MEMORY[0x277D75348] blackColor];
+      blackColor = [MEMORY[0x277D75348] blackColor];
       if (CSFeatureEnabled())
       {
         v8 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.4];
 
-        v7 = v8;
+        blackColor = v8;
       }
 
-      [(SBSecureAppWindow *)v6 setBackgroundColor:v7];
+      [(SBSecureAppWindow *)v6 setBackgroundColor:blackColor];
       [(SBSecureAppWindow *)v6 setWindowLevel:*MEMORY[0x277D76EE8] + -5.0];
       [(SBCoverSheetPresentationManager *)self setSecureAppWindow:v6];
     }
@@ -917,10 +917,10 @@ void __60__SBCoverSheetPresentationManager__notifyDelegateDidDismiss__block_invo
 
 - (void)completeOngoingPresentationIfNeeded
 {
-  v3 = [(SBCoverSheetPresentationManager *)self coverSheetSlidingViewControllerIfLoaded];
-  v4 = [v3 _appearState];
+  coverSheetSlidingViewControllerIfLoaded = [(SBCoverSheetPresentationManager *)self coverSheetSlidingViewControllerIfLoaded];
+  _appearState = [coverSheetSlidingViewControllerIfLoaded _appearState];
 
-  if (v4 == 1)
+  if (_appearState == 1)
   {
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
@@ -933,13 +933,13 @@ void __60__SBCoverSheetPresentationManager__notifyDelegateDidDismiss__block_invo
 
 - (id)scenesForBacklightSession
 {
-  v2 = [(SBCoverSheetPresentationManager *)self secureAppViewController];
-  v3 = [v2 applicationSceneHandle];
-  v4 = [v3 sceneIfExists];
+  secureAppViewController = [(SBCoverSheetPresentationManager *)self secureAppViewController];
+  applicationSceneHandle = [secureAppViewController applicationSceneHandle];
+  sceneIfExists = [applicationSceneHandle sceneIfExists];
 
-  if (v4)
+  if (sceneIfExists)
   {
-    v5 = [MEMORY[0x277CBEB98] setWithObject:v4];
+    v5 = [MEMORY[0x277CBEB98] setWithObject:sceneIfExists];
   }
 
   else
@@ -966,20 +966,20 @@ void __49__SBCoverSheetPresentationManager_sharedInstance__block_invoke()
   kdebug_trace();
 }
 
-- (SBCoverSheetPresentationManager)initWithWindowScene:(id)a3
+- (SBCoverSheetPresentationManager)initWithWindowScene:(id)scene
 {
-  v5 = a3;
+  sceneCopy = scene;
   v47.receiver = self;
   v47.super_class = SBCoverSheetPresentationManager;
   v6 = [(SBCoverSheetPresentationManager *)&v47 init];
   if (v6)
   {
-    if (!v5)
+    if (!sceneCopy)
     {
       [(SBCoverSheetPresentationManager *)a2 initWithWindowScene:v6];
     }
 
-    objc_storeWeak(&v6->_windowScene, v5);
+    objc_storeWeak(&v6->_windowScene, sceneCopy);
     v7 = objc_alloc_init(MEMORY[0x277CBEB58]);
     coverSheetWindowVisibleReasons = v6->_coverSheetWindowVisibleReasons;
     v6->_coverSheetWindowVisibleReasons = v7;
@@ -1001,39 +1001,39 @@ void __49__SBCoverSheetPresentationManager_sharedInstance__block_invoke()
     lockUnlockQueue = v6->_lockUnlockQueue;
     v6->_lockUnlockQueue = v16;
 
-    v18 = [MEMORY[0x277D02C20] rootSettings];
+    rootSettings = [MEMORY[0x277D02C20] rootSettings];
     lockScreenSettings = v6->_lockScreenSettings;
-    v6->_lockScreenSettings = v18;
+    v6->_lockScreenSettings = rootSettings;
 
     [(CSLockScreenSettings *)v6->_lockScreenSettings addKeyObserver:v6];
-    v20 = [(CSLockScreenSettings *)v6->_lockScreenSettings dashBoardScrollModifierSettings];
-    [v20 addKeyObserver:v6];
+    dashBoardScrollModifierSettings = [(CSLockScreenSettings *)v6->_lockScreenSettings dashBoardScrollModifierSettings];
+    [dashBoardScrollModifierSettings addKeyObserver:v6];
 
     v21 = [(SBCoverSheetPresentationManager *)v6 _newRubberBandFeedbackGeneratorForSettings:v6->_lockScreenSettings];
     rubberBandFeedbackGenerator = v6->_rubberBandFeedbackGenerator;
     v6->_rubberBandFeedbackGenerator = v21;
 
-    v23 = [(CSLockScreenSettings *)v6->_lockScreenSettings coverSheetTransitionsSettings];
-    v24 = [v23 flyInSettings];
+    coverSheetTransitionsSettings = [(CSLockScreenSettings *)v6->_lockScreenSettings coverSheetTransitionsSettings];
+    flyInSettings = [coverSheetTransitionsSettings flyInSettings];
     flyInSettings = v6->_flyInSettings;
-    v6->_flyInSettings = v24;
+    v6->_flyInSettings = flyInSettings;
 
     [(SBCoverSheetPresentationManager *)v6 _updateIconsFlyInWithSettings:v6->_flyInSettings];
-    v26 = [(CSLockScreenSettings *)v6->_lockScreenSettings coverSheetTransitionsSettings];
-    v27 = [v26 flyInSettings];
-    [v27 addKeyObserver:v6];
+    coverSheetTransitionsSettings2 = [(CSLockScreenSettings *)v6->_lockScreenSettings coverSheetTransitionsSettings];
+    flyInSettings2 = [coverSheetTransitionsSettings2 flyInSettings];
+    [flyInSettings2 addKeyObserver:v6];
 
-    v28 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v28 addObserver:v6 selector:sel__authenticationChanged_ name:*MEMORY[0x277D66078] object:0];
-    [v28 addObserver:v6 selector:sel__restartStartupTransitionBegan_ name:@"SBRestartManagerDidBeginStartupTransitionNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v6 selector:sel__authenticationChanged_ name:*MEMORY[0x277D66078] object:0];
+    [defaultCenter addObserver:v6 selector:sel__restartStartupTransitionBegan_ name:@"SBRestartManagerDidBeginStartupTransitionNotification" object:0];
     v29 = +[SBSecureAppManager sharedInstance];
     [v29 addObserver:v6];
 
     v30 = +[SBAssistantController sharedInstance];
     [v30 addObserver:v6];
 
-    v31 = [v5 zStackResolver];
-    v32 = [v31 acquireParticipantWithIdentifier:8 delegate:v6];
+    zStackResolver = [sceneCopy zStackResolver];
+    v32 = [zStackResolver acquireParticipantWithIdentifier:8 delegate:v6];
     zStackParticipant = v6->_zStackParticipant;
     v6->_zStackParticipant = v32;
 
@@ -1050,8 +1050,8 @@ void __49__SBCoverSheetPresentationManager_sharedInstance__block_invoke()
     preserveSecureAppAssertions = v6->_preserveSecureAppAssertions;
     v6->_preserveSecureAppAssertions = v37;
 
-    v39 = [SBApp backlightEnvironmentSessionProvider];
-    [v39 registerBacklightEnvironmentSceneProvider:v6];
+    backlightEnvironmentSessionProvider = [SBApp backlightEnvironmentSessionProvider];
+    [backlightEnvironmentSessionProvider registerBacklightEnvironmentSceneProvider:v6];
 
     if (CSFeatureEnabled())
     {
@@ -1081,21 +1081,21 @@ void __55__SBCoverSheetPresentationManager_initWithWindowScene___block_invoke_2(
   [WeakRetained _updateSecureAppViewControllerVisibilityForAssertionsActive:{objc_msgSend(*(a1 + 32), "isActive")}];
 }
 
-- (void)_setCoverSheetPresented:(BOOL)a3 forcePresented:(BOOL)a4 animated:(BOOL)a5 dismissModalPresentation:(BOOL)a6 options:(unint64_t)a7 withCompletion:(id)a8
+- (void)_setCoverSheetPresented:(BOOL)presented forcePresented:(BOOL)forcePresented animated:(BOOL)animated dismissModalPresentation:(BOOL)presentation options:(unint64_t)options withCompletion:(id)completion
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v14 = a8;
-  v15 = [(SBCoverSheetPresentationManager *)self isInSecureApp];
-  v16 = [(SBCoverSheetPresentationManager *)self coverSheetViewController];
-  v17 = [v16 isShowingModalView];
+  presentationCopy = presentation;
+  animatedCopy = animated;
+  forcePresentedCopy = forcePresented;
+  presentedCopy = presented;
+  completionCopy = completion;
+  isInSecureApp = [(SBCoverSheetPresentationManager *)self isInSecureApp];
+  coverSheetViewController = [(SBCoverSheetPresentationManager *)self coverSheetViewController];
+  isShowingModalView = [coverSheetViewController isShowingModalView];
 
-  if ([(SBUILockStateProvider *)self->_uiLockStateProvider isUILocked]!= v12 || (v21 = [(SBCoverSheetSlidingViewController *)self->_coverSheetSlidingViewController isAnyGestureActivelyRecognized], v12 && v11) || v21 || v15)
+  if ([(SBUILockStateProvider *)self->_uiLockStateProvider isUILocked]!= presentedCopy || (v21 = [(SBCoverSheetSlidingViewController *)self->_coverSheetSlidingViewController isAnyGestureActivelyRecognized], presentedCopy && forcePresentedCopy) || v21 || isInSecureApp)
   {
-    v18 = [(SBCoverSheetSlidingViewController *)self->_coverSheetSlidingViewController activeGestureRecognizer];
-    if (v10 && !v12)
+    activeGestureRecognizer = [(SBCoverSheetSlidingViewController *)self->_coverSheetSlidingViewController activeGestureRecognizer];
+    if (animatedCopy && !presentedCopy)
     {
       v19 = SBLogTelemetrySignposts();
       if (os_signpost_enabled(v19))
@@ -1105,42 +1105,42 @@ void __55__SBCoverSheetPresentationManager_initWithWindowScene___block_invoke_2(
       }
 
       kdebug_trace();
-      v20 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v20 postNotificationName:@"SBCoverSheetWillAnimateDeactivation" object:self];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter postNotificationName:@"SBCoverSheetWillAnimateDeactivation" object:self];
     }
 
-    [v18 setEnabled:0];
-    [v18 setEnabled:1];
-    self->_transitionOverrideOptions = a7;
-    [(SBCoverSheetSlidingViewController *)self->_coverSheetSlidingViewController setPresented:v12 forUserGesture:(a7 >> 2) & 1 animated:v10 withCompletion:v14];
+    [activeGestureRecognizer setEnabled:0];
+    [activeGestureRecognizer setEnabled:1];
+    self->_transitionOverrideOptions = options;
+    [(SBCoverSheetSlidingViewController *)self->_coverSheetSlidingViewController setPresented:presentedCopy forUserGesture:(options >> 2) & 1 animated:animatedCopy withCompletion:completionCopy];
     self->_transitionOverrideOptions = 0;
   }
 
-  else if ((v12 || v11) && (v9 & v17) != 0)
+  else if ((presentedCopy || forcePresentedCopy) && (presentationCopy & isShowingModalView) != 0)
   {
-    v22 = [(SBCoverSheetPresentationManager *)self coverSheetViewController];
-    [v22 dismissModalPresentationAnimated:1 completion:v14];
+    coverSheetViewController2 = [(SBCoverSheetPresentationManager *)self coverSheetViewController];
+    [coverSheetViewController2 dismissModalPresentationAnimated:1 completion:completionCopy];
   }
 
-  else if (v14)
+  else if (completionCopy)
   {
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __131__SBCoverSheetPresentationManager__setCoverSheetPresented_forcePresented_animated_dismissModalPresentation_options_withCompletion___block_invoke;
     block[3] = &unk_2783A9348;
-    v24 = v14;
+    v24 = completionCopy;
     dispatch_async(MEMORY[0x277D85CD0], block);
   }
 }
 
-- (void)setCoverSheetTranslationToPresented:(BOOL)a3 forcingTransition:(BOOL)a4 ignoringPreflightRequirements:(BOOL)a5 suppressingIconFly:(BOOL)a6 animated:(BOOL)a7
+- (void)setCoverSheetTranslationToPresented:(BOOL)presented forcingTransition:(BOOL)transition ignoringPreflightRequirements:(BOOL)requirements suppressingIconFly:(BOOL)fly animated:(BOOL)animated
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  self->_iconsIgnoreNextFlyRequest = a6;
-  v11 = [(SBCoverSheetPresentationManager *)self coverSheetSlidingViewController];
-  [v11 setPresented:v9 forcingTransition:v8 ignoringPreflightRequirements:v7 forUserGesture:0 animated:1 withCompletion:0];
+  requirementsCopy = requirements;
+  transitionCopy = transition;
+  presentedCopy = presented;
+  self->_iconsIgnoreNextFlyRequest = fly;
+  coverSheetSlidingViewController = [(SBCoverSheetPresentationManager *)self coverSheetSlidingViewController];
+  [coverSheetSlidingViewController setPresented:presentedCopy forcingTransition:transitionCopy ignoringPreflightRequirements:requirementsCopy forUserGesture:0 animated:1 withCompletion:0];
 
   self->_iconsIgnoreNextFlyRequest = 0;
 }
@@ -1158,19 +1158,19 @@ void __70__SBCoverSheetPresentationManager_completeOngoingPresentationIfNeeded__
   [(SBCoverSheetPresentationManager *)self _prepareSecureAppWindowForDisplay];
 }
 
-- (void)updateInterfaceOrientationToMatchOrientation:(int64_t)a3
+- (void)updateInterfaceOrientationToMatchOrientation:(int64_t)orientation
 {
-  v5 = [(SBCoverSheetPresentationManager *)self coverSheetWindow];
-  v6 = [v5 interfaceOrientation];
+  coverSheetWindow = [(SBCoverSheetPresentationManager *)self coverSheetWindow];
+  interfaceOrientation = [coverSheetWindow interfaceOrientation];
 
-  if (v6 != a3)
+  if (interfaceOrientation != orientation)
   {
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __80__SBCoverSheetPresentationManager_updateInterfaceOrientationToMatchOrientation___block_invoke;
     v7[3] = &unk_2783A8BC8;
     v7[4] = self;
-    v7[5] = a3;
+    v7[5] = orientation;
     [MEMORY[0x277D75D18] performWithoutAnimation:v7];
   }
 }
@@ -1186,16 +1186,16 @@ void __80__SBCoverSheetPresentationManager_updateInterfaceOrientationToMatchOrie
 
 - (BOOL)isVisibleAndNotDisappearing
 {
-  v3 = [(SBCoverSheetPresentationManager *)self coverSheetSlidingViewControllerIfLoaded];
-  v4 = [v3 _appearState];
+  coverSheetSlidingViewControllerIfLoaded = [(SBCoverSheetPresentationManager *)self coverSheetSlidingViewControllerIfLoaded];
+  _appearState = [coverSheetSlidingViewControllerIfLoaded _appearState];
 
-  if (v4 == 3)
+  if (_appearState == 3)
   {
     return 0;
   }
 
   result = [(SBUILockStateProvider *)self->_uiLockStateProvider isUILocked];
-  if (v4)
+  if (_appearState)
   {
     return 1;
   }
@@ -1205,10 +1205,10 @@ void __80__SBCoverSheetPresentationManager_updateInterfaceOrientationToMatchOrie
 
 - (BOOL)isTransitioning
 {
-  v2 = [(SBCoverSheetPresentationManager *)self coverSheetSlidingViewControllerIfLoaded];
-  v3 = [v2 _appearState];
+  coverSheetSlidingViewControllerIfLoaded = [(SBCoverSheetPresentationManager *)self coverSheetSlidingViewControllerIfLoaded];
+  _appearState = [coverSheetSlidingViewControllerIfLoaded _appearState];
 
-  return (v3 & 0xFFFFFFFD) == 1;
+  return (_appearState & 0xFFFFFFFD) == 1;
 }
 
 - (BOOL)isDismissGestureActive
@@ -1223,73 +1223,73 @@ void __80__SBCoverSheetPresentationManager_updateInterfaceOrientationToMatchOrie
   return [(SBCoverSheetSlidingViewController *)secureAppSlidingViewController isDismissGestureActive];
 }
 
-- (void)willUIUnlockWithPendingUnlockRequest:(BOOL)a3
+- (void)willUIUnlockWithPendingUnlockRequest:(BOOL)request
 {
-  v3 = a3;
+  requestCopy = request;
   if (![(SBCoverSheetPresentationManager *)self _isEffectivelyLocked])
   {
-    v5 = [(SBCoverSheetPresentationManager *)self secureAppViewController];
-    v6 = [v5 hostedAppSceneHandle];
+    secureAppViewController = [(SBCoverSheetPresentationManager *)self secureAppViewController];
+    hostedAppSceneHandle = [secureAppViewController hostedAppSceneHandle];
 
-    if (v6)
+    if (hostedAppSceneHandle)
     {
 
-      [(SBCoverSheetPresentationManager *)self _transitionFromSecureAppToFullAppAndDismiss:v3 ^ 1 preservingBanners:v3];
+      [(SBCoverSheetPresentationManager *)self _transitionFromSecureAppToFullAppAndDismiss:requestCopy ^ 1 preservingBanners:requestCopy];
     }
   }
 }
 
 - (void)loadViewsIfNeeded
 {
-  v2 = [(SBCoverSheetPresentationManager *)self coverSheetSlidingViewController];
-  [v2 loadViewIfNeeded];
+  coverSheetSlidingViewController = [(SBCoverSheetPresentationManager *)self coverSheetSlidingViewController];
+  [coverSheetSlidingViewController loadViewIfNeeded];
 }
 
-- (void)addDismissalObserver:(id)a3
+- (void)addDismissalObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   dismissalObservers = self->_dismissalObservers;
-  v8 = v4;
+  v8 = observerCopy;
   if (!dismissalObservers)
   {
-    v6 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     v7 = self->_dismissalObservers;
-    self->_dismissalObservers = v6;
+    self->_dismissalObservers = weakObjectsHashTable;
 
-    v4 = v8;
+    observerCopy = v8;
     dismissalObservers = self->_dismissalObservers;
   }
 
-  [(NSHashTable *)dismissalObservers addObject:v4];
+  [(NSHashTable *)dismissalObservers addObject:observerCopy];
 }
 
-- (void)setCoverSheetWindow:(id)a3
+- (void)setCoverSheetWindow:(id)window
 {
-  v5 = a3;
-  if (self->_coverSheetWindow != v5)
+  windowCopy = window;
+  if (self->_coverSheetWindow != windowCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_coverSheetWindow, a3);
+    v7 = windowCopy;
+    objc_storeStrong(&self->_coverSheetWindow, window);
     [(SBCoverSheetPresentationManager *)self _prepareCoverSheetWindowForDisplay];
     [(SBCoverSheetPresentationManager *)self _updateVisibilityOfWindow:self->_coverSheetWindow forReasons:self->_coverSheetWindowVisibleReasons];
-    v6 = [(SBCoverSheetPresentationManager *)self sceneManager];
-    [v6 setCoverSheetWindow:self->_coverSheetWindow];
+    sceneManager = [(SBCoverSheetPresentationManager *)self sceneManager];
+    [sceneManager setCoverSheetWindow:self->_coverSheetWindow];
 
-    v5 = v7;
+    windowCopy = v7;
   }
 }
 
-- (void)setLockScreenEnvironment:(id)a3
+- (void)setLockScreenEnvironment:(id)environment
 {
-  v5 = a3;
-  if (self->_lockScreenEnvironment != v5)
+  environmentCopy = environment;
+  if (self->_lockScreenEnvironment != environmentCopy)
   {
-    v13 = v5;
-    objc_storeStrong(&self->_lockScreenEnvironment, a3);
-    v6 = [(SBLockScreenEnvironment *)self->_lockScreenEnvironment rootViewController];
+    v13 = environmentCopy;
+    objc_storeStrong(&self->_lockScreenEnvironment, environment);
+    rootViewController = [(SBLockScreenEnvironment *)self->_lockScreenEnvironment rootViewController];
     if (objc_opt_respondsToSelector())
     {
-      v7 = v6;
+      v7 = rootViewController;
     }
 
     else
@@ -1300,32 +1300,32 @@ void __80__SBCoverSheetPresentationManager_updateInterfaceOrientationToMatchOrie
     v8 = [(SBCoverSheetSlidingViewController *)[SBCoverSheetPrimarySlidingViewController alloc] initWithContentViewController:v7 canBePulledDown:1 canBePulledUp:1 dismissalPreemptingGestureRecognizer:0];
     [(SBCoverSheetSlidingViewController *)v8 setDelegate:self];
     [(SBCoverSheetPrimarySlidingViewController *)v8 setGrabberDelegate:self];
-    v9 = [SBApp proximitySensorManager];
-    [(SBCoverSheetSlidingViewController *)v8 setProximitySensorManager:v9];
+    proximitySensorManager = [SBApp proximitySensorManager];
+    [(SBCoverSheetSlidingViewController *)v8 setProximitySensorManager:proximitySensorManager];
 
     [(SBCoverSheetPresentationManager *)self setCoverSheetSlidingViewController:v8];
-    v10 = [(SBCoverSheetPresentationManager *)self coverSheetViewController];
-    [v10 registerExternalAppearanceProvider:self];
+    coverSheetViewController = [(SBCoverSheetPresentationManager *)self coverSheetViewController];
+    [coverSheetViewController registerExternalAppearanceProvider:self];
 
-    v11 = [(SBCoverSheetPresentationManager *)self coverSheetViewController];
-    [v11 registerExternalBehaviorProvider:self];
+    coverSheetViewController2 = [(SBCoverSheetPresentationManager *)self coverSheetViewController];
+    [coverSheetViewController2 registerExternalBehaviorProvider:self];
 
-    v12 = [(SBCoverSheetPresentationManager *)self coverSheetViewController];
-    [v12 addCoverSheetObserver:self];
+    coverSheetViewController3 = [(SBCoverSheetPresentationManager *)self coverSheetViewController];
+    [coverSheetViewController3 addCoverSheetObserver:self];
 
-    v5 = v13;
+    environmentCopy = v13;
   }
 }
 
-- (id)traitsParticipantForSceneHandle:(id)a3
+- (id)traitsParticipantForSceneHandle:(id)handle
 {
-  v4 = a3;
-  if ((objc_opt_respondsToSelector() & 1) == 0 || ([(SBCoverSheetSecureAppEnvironmentViewController *)self->_secureAppEnvironmentViewController traitsParticipantForSceneHandle:v4], (v5 = objc_claimAutoreleasedReturnValue()) == 0))
+  handleCopy = handle;
+  if ((objc_opt_respondsToSelector() & 1) == 0 || ([(SBCoverSheetSecureAppEnvironmentViewController *)self->_secureAppEnvironmentViewController traitsParticipantForSceneHandle:handleCopy], (v5 = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v6 = [(SBLockScreenEnvironment *)self->_lockScreenEnvironment applicationHoster];
+    applicationHoster = [(SBLockScreenEnvironment *)self->_lockScreenEnvironment applicationHoster];
     if (objc_opt_respondsToSelector())
     {
-      v5 = [v6 traitsParticipantForSceneHandle:v4];
+      v5 = [applicationHoster traitsParticipantForSceneHandle:handleCopy];
     }
 
     else
@@ -1337,20 +1337,20 @@ void __80__SBCoverSheetPresentationManager_updateInterfaceOrientationToMatchOrie
   return v5;
 }
 
-- (void)setTransitionType:(unint64_t)a3
+- (void)setTransitionType:(unint64_t)type
 {
-  if (self->_transitionType != a3)
+  if (self->_transitionType != type)
   {
-    self->_transitionType = a3;
-    v5 = CSCoverSheetTransitionSettingsForTransitionType(a3);
+    self->_transitionType = type;
+    v5 = CSCoverSheetTransitionSettingsForTransitionType(type);
     [(SBCoverSheetPresentationManager *)self setTransitionSettings:v5];
     [(SBCoverSheetSlidingViewController *)self->_coverSheetSlidingViewController setTransitionSettings:v5];
   }
 }
 
-- (void)setPearlMatchingStateProvider:(id)a3
+- (void)setPearlMatchingStateProvider:(id)provider
 {
-  obj = a3;
+  obj = provider;
   WeakRetained = objc_loadWeakRetained(&self->_pearlMatchingStateProvider);
   if (WeakRetained != obj)
   {
@@ -1360,18 +1360,18 @@ void __80__SBCoverSheetPresentationManager_updateInterfaceOrientationToMatchOrie
   }
 }
 
-- (void)setActiveInterfaceOrientationLocked:(BOOL)a3
+- (void)setActiveInterfaceOrientationLocked:(BOOL)locked
 {
-  v3 = a3;
-  v5 = [MEMORY[0x277D75418] currentDevice];
-  v6 = [v5 userInterfaceIdiom];
+  lockedCopy = locked;
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v6 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     return;
   }
 
-  if (!v3)
+  if (!lockedCopy)
   {
     [(SBDisableActiveInterfaceOrientationChangeAssertion *)self->_activeInterfaceOrientationChangeAssertion invalidate];
     activeInterfaceOrientationChangeAssertion = self->_activeInterfaceOrientationChangeAssertion;
@@ -1381,10 +1381,10 @@ LABEL_9:
     return;
   }
 
-  v7 = [SBApp activeInterfaceOrientation];
-  if (v7 != [SBApp activeInterfaceOrientationWithoutConsideringTransientOverlays])
+  activeInterfaceOrientation = [SBApp activeInterfaceOrientation];
+  if (activeInterfaceOrientation != [SBApp activeInterfaceOrientationWithoutConsideringTransientOverlays])
   {
-    [SBApp noteInterfaceOrientationChanged:v7 logMessage:@"Cover Sheet presentation over transient overlay might cause orientation mismatch"];
+    [SBApp noteInterfaceOrientationChanged:activeInterfaceOrientation logMessage:@"Cover Sheet presentation over transient overlay might cause orientation mismatch"];
   }
 
   if (!self->_activeInterfaceOrientationChangeAssertion)
@@ -1396,15 +1396,15 @@ LABEL_9:
   }
 }
 
-- (void)setHasBeenDismissedSinceKeybagLock:(BOOL)a3
+- (void)setHasBeenDismissedSinceKeybagLock:(BOOL)lock
 {
-  v3 = a3;
+  lockCopy = lock;
   v29 = *MEMORY[0x277D85DE8];
-  if (self->_hasBeenDismissedSinceKeybagLockAndAuthenticated != a3)
+  if (self->_hasBeenDismissedSinceKeybagLockAndAuthenticated != lock)
   {
-    if (!a3 || ([SBApp authenticationController], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "isAuthenticated"), v5, v6))
+    if (!lock || ([SBApp authenticationController], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "isAuthenticated"), v5, v6))
     {
-      self->_hasBeenDismissedSinceKeybagLockAndAuthenticated = v3;
+      self->_hasBeenDismissedSinceKeybagLockAndAuthenticated = lockCopy;
       v23 = 0u;
       v24 = 0u;
       v25 = 0u;
@@ -1443,9 +1443,9 @@ LABEL_9:
     }
   }
 
-  if (self->_hasBeenDismissedSinceKeybagLock != v3)
+  if (self->_hasBeenDismissedSinceKeybagLock != lockCopy)
   {
-    self->_hasBeenDismissedSinceKeybagLock = v3;
+    self->_hasBeenDismissedSinceKeybagLock = lockCopy;
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
@@ -1487,24 +1487,24 @@ LABEL_9:
   }
 }
 
-- (void)setIconAnimatorCompletionGroup:(id)a3
+- (void)setIconAnimatorCompletionGroup:(id)group
 {
-  v5 = a3;
-  if (self->_iconAnimatorCompletionGroup != v5)
+  groupCopy = group;
+  if (self->_iconAnimatorCompletionGroup != groupCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_iconAnimatorCompletionGroup, a3);
+    v6 = groupCopy;
+    objc_storeStrong(&self->_iconAnimatorCompletionGroup, group);
     [(SBCoverSheetPresentationManager *)self setIconAnimatorCompletionBlock:0];
-    v5 = v6;
+    groupCopy = v6;
   }
 }
 
-- (void)setIconAnimatorCompletionBlock:(id)a3
+- (void)setIconAnimatorCompletionBlock:(id)block
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  blockCopy = block;
   iconAnimatorCompletionBlock = self->_iconAnimatorCompletionBlock;
-  if (iconAnimatorCompletionBlock != v4)
+  if (iconAnimatorCompletionBlock != blockCopy)
   {
     if (iconAnimatorCompletionBlock)
     {
@@ -1520,7 +1520,7 @@ LABEL_9:
       dispatch_block_cancel(self->_iconAnimatorCompletionBlock);
     }
 
-    v8 = [v4 copy];
+    v8 = [blockCopy copy];
     v9 = self->_iconAnimatorCompletionBlock;
     self->_iconAnimatorCompletionBlock = v8;
 
@@ -1540,31 +1540,31 @@ LABEL_9:
   }
 }
 
-- (void)setFloatingDockBehaviorAssertion:(id)a3
+- (void)setFloatingDockBehaviorAssertion:(id)assertion
 {
-  v5 = a3;
+  assertionCopy = assertion;
   floatingDockBehaviorAssertion = self->_floatingDockBehaviorAssertion;
   p_floatingDockBehaviorAssertion = &self->_floatingDockBehaviorAssertion;
   v6 = floatingDockBehaviorAssertion;
-  if (floatingDockBehaviorAssertion != v5)
+  if (floatingDockBehaviorAssertion != assertionCopy)
   {
-    v9 = v5;
+    v9 = assertionCopy;
     [(SBFloatingDockBehaviorAssertion *)v6 invalidate];
-    objc_storeStrong(p_floatingDockBehaviorAssertion, a3);
-    v5 = v9;
+    objc_storeStrong(p_floatingDockBehaviorAssertion, assertion);
+    assertionCopy = v9;
   }
 }
 
-- (void)setSecureAppWindow:(id)a3
+- (void)setSecureAppWindow:(id)window
 {
-  v5 = a3;
-  if (self->_secureAppWindow != v5)
+  windowCopy = window;
+  if (self->_secureAppWindow != windowCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_secureAppWindow, a3);
+    v6 = windowCopy;
+    objc_storeStrong(&self->_secureAppWindow, window);
     [(SBCoverSheetPresentationManager *)self _updateVisibilityOfWindow:self->_secureAppWindow forReasons:self->_secureAppWindowVisibleReasons];
     [(SBCoverSheetPresentationManager *)self _tellDashBoardOurBehaviorChanged];
-    v5 = v6;
+    windowCopy = v6;
   }
 }
 
@@ -1580,38 +1580,38 @@ LABEL_9:
   return secureAppSlidingViewController;
 }
 
-- (void)setSecureAppSlidingViewController:(id)a3
+- (void)setSecureAppSlidingViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   secureAppSlidingViewController = self->_secureAppSlidingViewController;
-  if (secureAppSlidingViewController != v5)
+  if (secureAppSlidingViewController != controllerCopy)
   {
-    v7 = v5;
+    v7 = controllerCopy;
     [(SBCoverSheetSlidingViewController *)secureAppSlidingViewController bs_endAppearanceTransition:0];
     [(SBWindow *)self->_secureAppWindow setRootViewController:0];
-    objc_storeStrong(&self->_secureAppSlidingViewController, a3);
-    v5 = v7;
+    objc_storeStrong(&self->_secureAppSlidingViewController, controller);
+    controllerCopy = v7;
   }
 }
 
 - (void)_prepareSecureAppViewController
 {
   v15 = +[SBSecureAppManager sharedInstance];
-  v3 = [v15 newHostableEntityForCurrentSecureApp];
-  if (v3)
+  newHostableEntityForCurrentSecureApp = [v15 newHostableEntityForCurrentSecureApp];
+  if (newHostableEntityForCurrentSecureApp)
   {
     v4 = objc_alloc_init(MEMORY[0x277D02C18]);
-    [(SBSecureAppViewController *)v4 setHostedEntity:v3];
+    [(SBSecureAppViewController *)v4 setHostedEntity:newHostableEntityForCurrentSecureApp];
     [(SBSecureAppViewController *)v4 setEntityPresenterDelegate:self];
     [(SBSecureAppViewController *)v4 setHostableEntityContentMode:2];
-    v5 = [(SBCoverSheetPresentationManager *)self coverSheetViewController];
-    [(CSCoverSheetExternalViewControllerBase *)v4 setCoverSheetViewController:v5];
+    coverSheetViewController = [(SBCoverSheetPresentationManager *)self coverSheetViewController];
+    [(CSCoverSheetExternalViewControllerBase *)v4 setCoverSheetViewController:coverSheetViewController];
   }
 
   else
   {
-    v5 = [v15 newApplicationSceneEntityForCurrentSecureApp];
-    v4 = [(SBDashBoardHostedAppViewController *)[SBSecureAppViewController alloc] initWithApplicationSceneEntity:v5];
+    coverSheetViewController = [v15 newApplicationSceneEntityForCurrentSecureApp];
+    v4 = [(SBDashBoardHostedAppViewController *)[SBSecureAppViewController alloc] initWithApplicationSceneEntity:coverSheetViewController];
     [(SBDashBoardHostedAppViewController *)v4 setDelegate:self];
     [(SBDashBoardHostedAppViewController *)v4 setPlaceholderContentEnabled:0];
     if (__sb__runningInSpringBoard())
@@ -1621,8 +1621,8 @@ LABEL_9:
 
     else
     {
-      v6 = [MEMORY[0x277D75418] currentDevice];
-      -[SBDashBoardHostedAppViewController setInterfaceOrientationLocked:](v4, "setInterfaceOrientationLocked:", [v6 userInterfaceIdiom] != 1);
+      currentDevice = [MEMORY[0x277D75418] currentDevice];
+      -[SBDashBoardHostedAppViewController setInterfaceOrientationLocked:](v4, "setInterfaceOrientationLocked:", [currentDevice userInterfaceIdiom] != 1);
     }
   }
 
@@ -1633,8 +1633,8 @@ LABEL_9:
   v8 = SBHomeGestureEnabled();
   v9 = [SBCoverSheetSlidingViewController alloc];
   secureAppEnvironmentViewController = self->_secureAppEnvironmentViewController;
-  v11 = [(SBCoverSheetSlidingViewController *)self->_coverSheetSlidingViewController dismissGestureRecognizer];
-  v12 = [(SBCoverSheetSlidingViewController *)v9 initWithContentViewController:secureAppEnvironmentViewController canBePulledDown:0 canBePulledUp:v8 dismissalPreemptingGestureRecognizer:v11];
+  dismissGestureRecognizer = [(SBCoverSheetSlidingViewController *)self->_coverSheetSlidingViewController dismissGestureRecognizer];
+  v12 = [(SBCoverSheetSlidingViewController *)v9 initWithContentViewController:secureAppEnvironmentViewController canBePulledDown:0 canBePulledUp:v8 dismissalPreemptingGestureRecognizer:dismissGestureRecognizer];
 
   [(SBCoverSheetSlidingViewController *)v12 setDismissalTransformMode:2];
   [(SBCoverSheetSlidingViewController *)v12 setRoundsCorners:1];
@@ -1643,8 +1643,8 @@ LABEL_9:
   {
     v13 = [[SBWallpaperEffectView alloc] initWithWallpaperVariant:0];
     [(PBUIWallpaperEffectViewBase *)v13 setStyle:15];
-    v14 = [MEMORY[0x277D75348] blackColor];
-    [(SBWallpaperEffectView *)v13 setTintColor:v14];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    [(SBWallpaperEffectView *)v13 setTintColor:blackColor];
 
     [(SBCoverSheetSlidingViewController *)v12 setBackgroundView:v13];
   }
@@ -1653,18 +1653,18 @@ LABEL_9:
   self->_pendingClearSecureAppViewControllers = 0;
 }
 
-- (void)_updateSecureAppViewControllerVisibilityForAssertionsActive:(BOOL)a3
+- (void)_updateSecureAppViewControllerVisibilityForAssertionsActive:(BOOL)active
 {
-  if (!a3 && self->_pendingClearSecureAppViewControllers)
+  if (!active && self->_pendingClearSecureAppViewControllers)
   {
     [(SBCoverSheetPresentationManager *)self _clearSecureAppViewControllersIncludingWindow:1];
   }
 }
 
-- (void)_clearSecureAppViewControllersIncludingWindow:(BOOL)a3 force:(BOOL)a4
+- (void)_clearSecureAppViewControllersIncludingWindow:(BOOL)window force:(BOOL)force
 {
-  v4 = a3;
-  if (a4 || ([(BSCompoundAssertion *)self->_preserveSecureAppAssertions isActive]& 1) == 0)
+  windowCopy = window;
+  if (force || ([(BSCompoundAssertion *)self->_preserveSecureAppAssertions isActive]& 1) == 0)
   {
     v7 = SBLogCoverSheet();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -1680,7 +1680,7 @@ LABEL_9:
     [(SBCoverSheetPresentationManager *)self setSecureAppViewController:0];
     [(SBCoverSheetPresentationManager *)self setSecureAppEnvironmentViewController:0];
     [(SBCoverSheetPresentationManager *)self setSecureAppSlidingViewController:0];
-    if (v4)
+    if (windowCopy)
     {
       [(SBCoverSheetPresentationManager *)self setSecureAppWindow:0];
     }
@@ -1703,103 +1703,103 @@ LABEL_9:
   self->_pendingClearSecureAppViewControllers = v6;
 }
 
-- (void)_performAfterSecureAppCleanup:(id)a3
+- (void)_performAfterSecureAppCleanup:(id)cleanup
 {
-  v4 = a3;
-  v5 = v4;
+  cleanupCopy = cleanup;
+  v5 = cleanupCopy;
   if (self->_secureAppWindow)
   {
-    v6 = v4;
-    [(SBCoverSheetPresentationManager *)self setSecureAppCleanupHandler:v4];
+    v6 = cleanupCopy;
+    [(SBCoverSheetPresentationManager *)self setSecureAppCleanupHandler:cleanupCopy];
   }
 
   else
   {
-    if (!v4)
+    if (!cleanupCopy)
     {
       goto LABEL_6;
     }
 
-    v6 = v4;
-    (*(v4 + 2))(v4);
+    v6 = cleanupCopy;
+    (*(cleanupCopy + 2))(cleanupCopy);
   }
 
   v5 = v6;
 LABEL_6:
 }
 
-- (void)setSecureAppViewController:(id)a3
+- (void)setSecureAppViewController:(id)controller
 {
   v13 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (self->_secureAppViewController != v5)
+  controllerCopy = controller;
+  if (self->_secureAppViewController != controllerCopy)
   {
     v6 = SBLogCoverSheet();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v11 = 138412290;
-      v12 = v5;
+      v12 = controllerCopy;
       _os_log_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_DEFAULT, "Secure app view controller changed to %@", &v11, 0xCu);
     }
 
-    v7 = [(BSInvalidatable *)self->_secureAppViewController applicationSceneHandle];
-    [v7 removeObserver:self];
+    applicationSceneHandle = [(BSInvalidatable *)self->_secureAppViewController applicationSceneHandle];
+    [applicationSceneHandle removeObserver:self];
 
     [(BSInvalidatable *)self->_secureAppViewController bs_endAppearanceTransition:0];
     [(BSInvalidatable *)self->_secureAppViewController removeFromParentViewController];
-    objc_storeStrong(&self->_secureAppViewController, a3);
-    v8 = [(BSInvalidatable *)self->_secureAppViewController applicationSceneHandle];
-    [v8 addObserver:self];
+    objc_storeStrong(&self->_secureAppViewController, controller);
+    applicationSceneHandle2 = [(BSInvalidatable *)self->_secureAppViewController applicationSceneHandle];
+    [applicationSceneHandle2 addObserver:self];
 
-    v9 = [SBApp backlightEnvironmentSessionProvider];
-    [v9 invalidateBacklightScenesForProvider:self];
+    backlightEnvironmentSessionProvider = [SBApp backlightEnvironmentSessionProvider];
+    [backlightEnvironmentSessionProvider invalidateBacklightScenesForProvider:self];
 
-    v10 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v10 postNotificationName:@"BCoverSheetSecureAppChangedNotification" object:self];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"BCoverSheetSecureAppChangedNotification" object:self];
   }
 }
 
-- (void)setSecureAppEnvironmentViewController:(id)a3
+- (void)setSecureAppEnvironmentViewController:(id)controller
 {
-  v5 = a3;
-  if (self->_secureAppEnvironmentViewController != v5)
+  controllerCopy = controller;
+  if (self->_secureAppEnvironmentViewController != controllerCopy)
   {
-    v8 = v5;
-    v6 = [(SBCoverSheetPresentationManager *)self coverSheetViewController];
-    [v6 removeApplicationHoster:self->_secureAppEnvironmentViewController];
+    v8 = controllerCopy;
+    coverSheetViewController = [(SBCoverSheetPresentationManager *)self coverSheetViewController];
+    [coverSheetViewController removeApplicationHoster:self->_secureAppEnvironmentViewController];
 
     [(SBCoverSheetSecureAppEnvironmentViewController *)self->_secureAppEnvironmentViewController bs_endAppearanceTransition:0];
     [(SBCoverSheetSecureAppEnvironmentViewController *)self->_secureAppEnvironmentViewController removeFromParentViewController];
-    objc_storeStrong(&self->_secureAppEnvironmentViewController, a3);
-    v7 = [(SBCoverSheetPresentationManager *)self coverSheetViewController];
-    [v7 addApplicationHoster:self->_secureAppEnvironmentViewController];
+    objc_storeStrong(&self->_secureAppEnvironmentViewController, controller);
+    coverSheetViewController2 = [(SBCoverSheetPresentationManager *)self coverSheetViewController];
+    [coverSheetViewController2 addApplicationHoster:self->_secureAppEnvironmentViewController];
 
-    v5 = v8;
+    controllerCopy = v8;
   }
 }
 
-- (void)_noteEffectiveLockStatusMayHaveChangedForUserNotification:(BOOL)a3 canDismiss:(BOOL)a4
+- (void)_noteEffectiveLockStatusMayHaveChangedForUserNotification:(BOOL)notification canDismiss:(BOOL)dismiss
 {
-  v10 = [(SBCoverSheetPresentationManager *)self secureAppViewController];
-  if ([v10 isHostingAnApp])
+  secureAppViewController = [(SBCoverSheetPresentationManager *)self secureAppViewController];
+  if ([secureAppViewController isHostingAnApp])
   {
-    v7 = [(SBCoverSheetPresentationManager *)self _isEffectivelyLocked];
+    _isEffectivelyLocked = [(SBCoverSheetPresentationManager *)self _isEffectivelyLocked];
 
-    if (!v7)
+    if (!_isEffectivelyLocked)
     {
       v8 = objc_alloc_init(SBLockScreenUnlockRequest);
       [(SBLockScreenUnlockRequest *)v8 setName:@"Unlock UI for authenticated while in secure app"];
       [(SBLockScreenUnlockRequest *)v8 setSource:24];
       [(SBLockScreenUnlockRequest *)v8 setIntent:1];
-      v9 = [(SBCoverSheetPresentationManager *)self uiLockStateProvider];
+      uiLockStateProvider = [(SBCoverSheetPresentationManager *)self uiLockStateProvider];
       v11[0] = MEMORY[0x277D85DD0];
       v11[1] = 3221225472;
       v11[2] = __104__SBCoverSheetPresentationManager__noteEffectiveLockStatusMayHaveChangedForUserNotification_canDismiss___block_invoke;
       v11[3] = &unk_2783B6E08;
       v11[4] = self;
-      v12 = a3;
-      v13 = a4;
-      [v9 coverSheetPresentationManager:self unlockWithRequest:v8 completion:v11];
+      notificationCopy = notification;
+      dismissCopy = dismiss;
+      [uiLockStateProvider coverSheetPresentationManager:self unlockWithRequest:v8 completion:v11];
     }
   }
 
@@ -1837,17 +1837,17 @@ void __104__SBCoverSheetPresentationManager__noteEffectiveLockStatusMayHaveChang
   }
 }
 
-- (void)_transitionFromSecureAppToFullAppAndDismiss:(BOOL)a3 preservingBanners:(BOOL)a4
+- (void)_transitionFromSecureAppToFullAppAndDismiss:(BOOL)dismiss preservingBanners:(BOOL)banners
 {
-  v5 = a3;
-  v7 = [(SBCoverSheetPresentationManager *)self secureAppViewController];
-  v8 = [v7 hostedAppSceneHandle];
+  dismissCopy = dismiss;
+  secureAppViewController = [(SBCoverSheetPresentationManager *)self secureAppViewController];
+  hostedAppSceneHandle = [secureAppViewController hostedAppSceneHandle];
 
-  if (v8)
+  if (hostedAppSceneHandle)
   {
     v9 = [SBDeviceApplicationSceneEntity alloc];
-    v10 = [v8 application];
-    v11 = [(SBDeviceApplicationSceneEntity *)v9 initWithApplicationForMainDisplay:v10];
+    application = [hostedAppSceneHandle application];
+    v11 = [(SBDeviceApplicationSceneEntity *)v9 initWithApplicationForMainDisplay:application];
   }
 
   else
@@ -1861,20 +1861,20 @@ void __104__SBCoverSheetPresentationManager__noteEffectiveLockStatusMayHaveChang
   v20[1] = 3221225472;
   v20[2] = __97__SBCoverSheetPresentationManager__transitionFromSecureAppToFullAppAndDismiss_preservingBanners___block_invoke;
   v20[3] = &__block_descriptor_33_e70___SBMainWorkspaceTransaction_16__0__SBMainWorkspaceTransitionRequest_8l;
-  v21 = a4;
+  bannersCopy = banners;
   [v13 setTransactionProvider:v20];
-  v14 = [v8 application];
-  v15 = [v14 bundleIdentifier];
-  v16 = [v15 isEqualToString:@"com.apple.purplebuddy"];
+  application2 = [hostedAppSceneHandle application];
+  bundleIdentifier = [application2 bundleIdentifier];
+  v16 = [bundleIdentifier isEqualToString:@"com.apple.purplebuddy"];
 
-  if (v5 && (v16 & 1) == 0)
+  if (dismissCopy && (v16 & 1) == 0)
   {
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __97__SBCoverSheetPresentationManager__transitionFromSecureAppToFullAppAndDismiss_preservingBanners___block_invoke_2;
     v18[3] = &unk_2783A8BF0;
     v18[4] = self;
-    v19 = v8;
+    v19 = hostedAppSceneHandle;
     v17 = [v13 addCompletionHandler:v18];
   }
 
@@ -1924,147 +1924,147 @@ void __97__SBCoverSheetPresentationManager__transitionFromSecureAppToFullAppAndD
   }
 }
 
-- (void)coverSheetViewControllerExternalLockProviderStateDidChange:(id)a3
+- (void)coverSheetViewControllerExternalLockProviderStateDidChange:(id)change
 {
-  v4 = [MEMORY[0x277D0AB20] sharedInstance];
+  mEMORY[0x277D0AB20] = [MEMORY[0x277D0AB20] sharedInstance];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __94__SBCoverSheetPresentationManager_coverSheetViewControllerExternalLockProviderStateDidChange___block_invoke;
   v6[3] = &unk_2783A8C18;
   v6[4] = self;
   v5 = [MEMORY[0x277D0AB18] eventWithName:@"external lock provider state did change" handler:v6];
-  [v4 executeOrAppendEvent:v5];
+  [mEMORY[0x277D0AB20] executeOrAppendEvent:v5];
 }
 
-- (void)coverSheetViewControllerDidAddNewSceneHostEnvironment:(id)a3
+- (void)coverSheetViewControllerDidAddNewSceneHostEnvironment:(id)environment
 {
   v3 = SBApp;
-  v4 = a3;
-  v5 = [v3 backlightEnvironmentSessionProvider];
-  [v5 invalidateBacklightSceneHostEnvironmentsForProvider:v4];
+  environmentCopy = environment;
+  backlightEnvironmentSessionProvider = [v3 backlightEnvironmentSessionProvider];
+  [backlightEnvironmentSessionProvider invalidateBacklightSceneHostEnvironmentsForProvider:environmentCopy];
 }
 
-- (void)coverSheetViewControllerActivityItemsMayHaveChanged:(id)a3
+- (void)coverSheetViewControllerActivityItemsMayHaveChanged:(id)changed
 {
-  v3 = [(SBCoverSheetPresentationManager *)self zStackParticipant];
-  [v3 setNeedsUpdatePreferencesWithReason:@"coversheet activity items may have changed"];
+  zStackParticipant = [(SBCoverSheetPresentationManager *)self zStackParticipant];
+  [zStackParticipant setNeedsUpdatePreferencesWithReason:@"coversheet activity items may have changed"];
 }
 
-- (void)coverSheetViewControllerDidUpdateAudioCategoriesDisablingVolumeHUD:(id)a3
+- (void)coverSheetViewControllerDidUpdateAudioCategoriesDisablingVolumeHUD:(id)d
 {
-  v3 = [(SBCoverSheetPresentationManager *)self zStackParticipant];
-  [v3 setNeedsUpdatePreferencesWithReason:@"coversheet updated audio categories disabling the Volume HUD"];
+  zStackParticipant = [(SBCoverSheetPresentationManager *)self zStackParticipant];
+  [zStackParticipant setNeedsUpdatePreferencesWithReason:@"coversheet updated audio categories disabling the Volume HUD"];
 }
 
-- (void)coverSheetViewController:(id)a3 didObscureWallpaper:(BOOL)a4
+- (void)coverSheetViewController:(id)controller didObscureWallpaper:(BOOL)wallpaper
 {
-  if (self->_wallpaperObscured != a4)
+  if (self->_wallpaperObscured != wallpaper)
   {
-    v5 = a4;
-    self->_wallpaperObscured = a4;
+    wallpaperCopy = wallpaper;
+    self->_wallpaperObscured = wallpaper;
     v6 = +[SBWallpaperController sharedInstance];
-    [v6 setWallpaperObscured:v5];
+    [v6 setWallpaperObscured:wallpaperCopy];
   }
 }
 
-- (void)coverSheetViewController:(id)a3 didOccludeWallpaper:(BOOL)a4
+- (void)coverSheetViewController:(id)controller didOccludeWallpaper:(BOOL)wallpaper
 {
-  v4 = a4;
+  wallpaperCopy = wallpaper;
   v5 = +[SBLockScreenDeviceMotionEffectController sharedInstance];
-  [v5 setWallpaperObscured:v4];
+  [v5 setWallpaperObscured:wallpaperCopy];
 }
 
-- (void)coverSheetViewControllerDidChangeUserPresence:(BOOL)a3
+- (void)coverSheetViewControllerDidChangeUserPresence:(BOOL)presence
 {
-  v3 = a3;
+  presenceCopy = presence;
   v4 = +[SBLockScreenDeviceMotionEffectController sharedInstance];
-  [v4 setUserPresenceDetected:v3];
+  [v4 setUserPresenceDetected:presenceCopy];
 }
 
-- (void)coverSheetViewController:(id)a3 didChangeActiveBehavior:(id)a4
+- (void)coverSheetViewController:(id)controller didChangeActiveBehavior:(id)behavior
 {
-  v4 = [(SBCoverSheetPresentationManager *)self zStackParticipant:a3];
+  v4 = [(SBCoverSheetPresentationManager *)self zStackParticipant:controller];
   [v4 setNeedsUpdatePreferencesWithReason:@"coversheet active behavior did change"];
 }
 
-- (void)_updateTopButtonsForCoverSheetViewController:(id)a3
+- (void)_updateTopButtonsForCoverSheetViewController:(id)controller
 {
   v8 = 0u;
   v9 = 0u;
   v6 = 0u;
   v7 = 0u;
-  v3 = a3;
+  controllerCopy = controller;
   v4 = objc_opt_class();
-  v5 = [v3 _screen];
-  [v4 getLeadingTopButtonFrame:&v8 trailingTopButtonFrame:&v6 forScreen:v5];
+  _screen = [controllerCopy _screen];
+  [v4 getLeadingTopButtonFrame:&v8 trailingTopButtonFrame:&v6 forScreen:_screen];
 
-  [v3 updateLeadingTopButtonFrame:v8 trailingTopButtonFrame:{v9, v6, v7}];
+  [controllerCopy updateLeadingTopButtonFrame:v8 trailingTopButtonFrame:{v9, v6, v7}];
 }
 
-+ (void)getLeadingTopButtonFrame:(CGRect *)a3 trailingTopButtonFrame:(CGRect *)a4 forScreen:(id)a5
++ (void)getLeadingTopButtonFrame:(CGRect *)frame trailingTopButtonFrame:(CGRect *)buttonFrame forScreen:(id)screen
 {
-  v18 = a5;
+  screenCopy = screen;
   if (SBFEffectiveHomeButtonType() == 2)
   {
-    v7 = [SBApp windowSceneManager];
-    v8 = [v18 displayIdentity];
-    v9 = [v7 windowSceneForDisplayIdentity:v8];
+    windowSceneManager = [SBApp windowSceneManager];
+    displayIdentity = [screenCopy displayIdentity];
+    v9 = [windowSceneManager windowSceneForDisplayIdentity:displayIdentity];
 
-    v10 = [v9 homeScreenController];
-    [v10 getLeadingTopButtonFrame:a3 trailingTopButtonFrame:a4];
+    homeScreenController = [v9 homeScreenController];
+    [homeScreenController getLeadingTopButtonFrame:frame trailingTopButtonFrame:buttonFrame];
   }
 
   else
   {
-    [v18 bounds];
+    [screenCopy bounds];
     Width = CGRectGetWidth(v20);
     v21.size.width = 60.0;
     v21.origin.x = 0.0;
     v21.origin.y = 8.0;
     v21.size.height = 24.0;
     v12 = CGRectGetWidth(v21);
-    if (a3)
+    if (frame)
     {
       __asm { FMOV            V2.2D, #8.0 }
 
-      a3->origin = _Q2;
-      a3->size = xmmword_21F8A6D10;
+      frame->origin = _Q2;
+      frame->size = xmmword_21F8A6D10;
     }
 
-    if (a4)
+    if (buttonFrame)
     {
-      a4->origin.x = Width - v12 + -8.0;
-      *&a4->origin.y = xmmword_21F8A6D20;
-      a4->size.height = 24.0;
+      buttonFrame->origin.x = Width - v12 + -8.0;
+      *&buttonFrame->origin.y = xmmword_21F8A6D20;
+      buttonFrame->size.height = 24.0;
     }
   }
 }
 
-- (void)pearlMatchingStateProviderStateChangedForMatchFailure:(id)a3
+- (void)pearlMatchingStateProviderStateChangedForMatchFailure:(id)failure
 {
-  if ([a3 seenMatchResultSinceScreenOn])
+  if ([failure seenMatchResultSinceScreenOn])
   {
-    v4 = [SBApp authenticationController];
-    v5 = [v4 isAuthenticated];
+    authenticationController = [SBApp authenticationController];
+    isAuthenticated = [authenticationController isAuthenticated];
 
-    if ((v5 & 1) == 0)
+    if ((isAuthenticated & 1) == 0)
     {
       if ([(SBCoverSheetSlidingViewController *)self->_coverSheetSlidingViewController isAnyGestureActivelyRecognized])
       {
-        v6 = [(SBCoverSheetSlidingViewController *)self->_coverSheetSlidingViewController activeGestureRecognizer];
-        [v6 setEnabled:0];
-        [v6 setEnabled:1];
+        activeGestureRecognizer = [(SBCoverSheetSlidingViewController *)self->_coverSheetSlidingViewController activeGestureRecognizer];
+        [activeGestureRecognizer setEnabled:0];
+        [activeGestureRecognizer setEnabled:1];
       }
     }
   }
 }
 
-- (void)coverSheetSlidingViewController:(id)a3 prepareForPresentationTransitionForUserGesture:(BOOL)a4
+- (void)coverSheetSlidingViewController:(id)controller prepareForPresentationTransitionForUserGesture:(BOOL)gesture
 {
-  v4 = a4;
-  v6 = a3;
+  gestureCopy = gesture;
+  controllerCopy = controller;
   BSDispatchQueueAssertMain();
-  if (self->_coverSheetSlidingViewController == v6)
+  if (self->_coverSheetSlidingViewController == controllerCopy)
   {
     v7 = SBLogCoverSheet();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -2073,9 +2073,9 @@ void __97__SBCoverSheetPresentationManager__transitionFromSecureAppToFullAppAndD
       _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_DEFAULT, "cover sheet sliding view controller prepare for presentation transition", buf, 2u);
     }
 
-    [(SBCoverSheetPresentationManager *)self _prepareForPresentationTransitionForUserGesture:v4];
-    v8 = [(SBCoverSheetPresentationManager *)self coverSheetViewController];
-    [v8 prepareForTransitionToPresented:1 reversingTransition:0 forUserGesture:v4];
+    [(SBCoverSheetPresentationManager *)self _prepareForPresentationTransitionForUserGesture:gestureCopy];
+    coverSheetViewController = [(SBCoverSheetPresentationManager *)self coverSheetViewController];
+    [coverSheetViewController prepareForTransitionToPresented:1 reversingTransition:0 forUserGesture:gestureCopy];
 
     if (CSFeatureEnabled())
     {
@@ -2086,9 +2086,9 @@ void __97__SBCoverSheetPresentationManager__transitionFromSecureAppToFullAppAndD
 
       else
       {
-        v10 = [(SBCoverSheetPresentationManager *)self isInSecureApp];
+        isInSecureApp = [(SBCoverSheetPresentationManager *)self isInSecureApp];
 
-        if (!v10)
+        if (!isInSecureApp)
         {
           goto LABEL_10;
         }
@@ -2096,13 +2096,13 @@ void __97__SBCoverSheetPresentationManager__transitionFromSecureAppToFullAppAndD
 
       if ([(SBCoverSheetPresentationManager *)self _isEffectivelyLocked])
       {
-        [(SBCoverSheetPresentationManager *)self _prepareForSecureAppTransitionToPresented:0 animated:v4];
+        [(SBCoverSheetPresentationManager *)self _prepareForSecureAppTransitionToPresented:0 animated:gestureCopy];
       }
     }
   }
 
 LABEL_10:
-  if (self->_secureAppSlidingViewController == v6)
+  if (self->_secureAppSlidingViewController == controllerCopy)
   {
     v11 = SBLogCoverSheet();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -2113,18 +2113,18 @@ LABEL_10:
   }
 }
 
-- (void)coverSheetSlidingViewControllerCleanupPresentationTransition:(id)a3
+- (void)coverSheetSlidingViewControllerCleanupPresentationTransition:(id)transition
 {
-  v4 = a3;
+  transitionCopy = transition;
   BSDispatchQueueAssertMain();
-  if (self->_coverSheetSlidingViewController == v4)
+  if (self->_coverSheetSlidingViewController == transitionCopy)
   {
     if (CSFeatureEnabled())
     {
       v5 = +[SBSecureAppManager sharedInstance];
       v6 = ([v5 hasSecureApp] & 1) == 0 && !-[SBCoverSheetPresentationManager isInSecureApp](self, "isInSecureApp");
 
-      if (self->_coverSheetSlidingViewController == v4 && (v6 & 1) == 0 && [(SBCoverSheetPresentationManager *)self _isEffectivelyLocked])
+      if (self->_coverSheetSlidingViewController == transitionCopy && (v6 & 1) == 0 && [(SBCoverSheetPresentationManager *)self _isEffectivelyLocked])
       {
         [(SBCoverSheetPresentationManager *)self _finishSecureAppTransitionToPresented:0];
       }
@@ -2133,7 +2133,7 @@ LABEL_10:
     [(SBCoverSheetPresentationManager *)self _cleanupPresentationTransition];
   }
 
-  if (self->_secureAppSlidingViewController == v4)
+  if (self->_secureAppSlidingViewController == transitionCopy)
   {
     v7 = SBLogCoverSheet();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -2144,33 +2144,33 @@ LABEL_10:
   }
 }
 
-- (void)coverSheetSlidingViewControllerPrepareForRubberBandedPresentationTransition:(id)a3
+- (void)coverSheetSlidingViewControllerPrepareForRubberBandedPresentationTransition:(id)transition
 {
-  v4 = a3;
+  transitionCopy = transition;
   BSDispatchQueueAssertMain();
-  [(SBCoverSheetPresentationManager *)self _prepareForRubberBandPresentationTransitionForSlidingViewController:v4];
+  [(SBCoverSheetPresentationManager *)self _prepareForRubberBandPresentationTransitionForSlidingViewController:transitionCopy];
 }
 
-- (void)coverSheetSlidingViewControllerCleanupRubberBandedPresentationTransition:(id)a3
+- (void)coverSheetSlidingViewControllerCleanupRubberBandedPresentationTransition:(id)transition
 {
-  v4 = a3;
+  transitionCopy = transition;
   BSDispatchQueueAssertMain();
-  [(SBCoverSheetPresentationManager *)self _cleanupRubberBandPresentationTransitionForSlidingViewController:v4];
+  [(SBCoverSheetPresentationManager *)self _cleanupRubberBandPresentationTransitionForSlidingViewController:transitionCopy];
 
   if (self->_rubberBandCleanupNeeded)
   {
-    v5 = [(SBCoverSheetPresentationManager *)self coverSheetViewController];
-    [v5 cleanupRubberBandTransition];
+    coverSheetViewController = [(SBCoverSheetPresentationManager *)self coverSheetViewController];
+    [coverSheetViewController cleanupRubberBandTransition];
   }
 }
 
-- (void)coverSheetSlidingViewController:(id)a3 prepareForDismissalTransitionForReversingTransition:(BOOL)a4 forUserGesture:(BOOL)a5
+- (void)coverSheetSlidingViewController:(id)controller prepareForDismissalTransitionForReversingTransition:(BOOL)transition forUserGesture:(BOOL)gesture
 {
-  v5 = a5;
-  v6 = a4;
-  v8 = a3;
+  gestureCopy = gesture;
+  transitionCopy = transition;
+  controllerCopy = controller;
   BSDispatchQueueAssertMain();
-  if (self->_secureAppSlidingViewController == v8)
+  if (self->_secureAppSlidingViewController == controllerCopy)
   {
     v9 = SBLogCoverSheet();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -2180,15 +2180,15 @@ LABEL_10:
     }
   }
 
-  v10 = [(SBCoverSheetPresentationManager *)self coverSheetViewController];
-  v11 = [SBApp authenticationController];
-  v12 = [v11 isAuthenticated];
+  coverSheetViewController = [(SBCoverSheetPresentationManager *)self coverSheetViewController];
+  authenticationController = [SBApp authenticationController];
+  isAuthenticated = [authenticationController isAuthenticated];
 
-  v13 = [(SBCoverSheetPresentationManager *)self pearlMatchingStateProvider];
-  v14 = v13;
-  if (self->_coverSheetSlidingViewController == v8)
+  pearlMatchingStateProvider = [(SBCoverSheetPresentationManager *)self pearlMatchingStateProvider];
+  v14 = pearlMatchingStateProvider;
+  if (self->_coverSheetSlidingViewController == controllerCopy)
   {
-    v15 = [v13 pearlMatchEnabledAndPossible] ^ 1;
+    v15 = [pearlMatchingStateProvider pearlMatchEnabledAndPossible] ^ 1;
   }
 
   else
@@ -2196,11 +2196,11 @@ LABEL_10:
     v15 = 1;
   }
 
-  v16 = [v10 externalLockProvidersRequireUnlock];
-  v17 = [(SBCoverSheetSlidingViewController *)v8 dismissalSlidingMode];
-  if (v12)
+  externalLockProvidersRequireUnlock = [coverSheetViewController externalLockProvidersRequireUnlock];
+  dismissalSlidingMode = [(SBCoverSheetSlidingViewController *)controllerCopy dismissalSlidingMode];
+  if (isAuthenticated)
   {
-    v18 = v16 == 0;
+    v18 = externalLockProvidersRequireUnlock == 0;
   }
 
   else
@@ -2215,31 +2215,31 @@ LABEL_10:
 
   else
   {
-    v19 = v17 == 2 || !v6;
+    v19 = dismissalSlidingMode == 2 || !transitionCopy;
   }
 
-  v20 = [(SBCoverSheetPresentationManager *)self _isGoingToSecureAppForSlidingViewController:v8];
-  if (v5)
+  v20 = [(SBCoverSheetPresentationManager *)self _isGoingToSecureAppForSlidingViewController:controllerCopy];
+  if (gestureCopy)
   {
     [MEMORY[0x277CCAB98] defaultCenter];
-    v28 = v8;
-    v21 = v10;
-    v22 = v16;
+    v28 = controllerCopy;
+    v21 = coverSheetViewController;
+    v22 = externalLockProvidersRequireUnlock;
     v23 = v19;
     v24 = v14;
-    v25 = v5;
+    v25 = gestureCopy;
     v27 = v26 = v15;
     [v27 postNotificationName:@"SBBiometricEventTimestampNotificationCoversheetSwipedForDismissal" object:self];
 
     v15 = v26;
-    v5 = v25;
+    gestureCopy = v25;
     v14 = v24;
     v19 = v23;
-    v16 = v22;
-    v10 = v21;
-    v8 = v28;
-    [v10 prepareForTransitionToPresented:0 reversingTransition:v6 forUserGesture:1];
-    if (!v6)
+    externalLockProvidersRequireUnlock = v22;
+    coverSheetViewController = v21;
+    controllerCopy = v28;
+    [coverSheetViewController prepareForTransitionToPresented:0 reversingTransition:transitionCopy forUserGesture:1];
+    if (!transitionCopy)
     {
       [(SBCoverSheetPresentationManager *)self _noteCoverSheetDismissingByUserGesture];
     }
@@ -2252,13 +2252,13 @@ LABEL_10:
 
   else
   {
-    [v10 prepareForTransitionToPresented:0 reversingTransition:v6 forUserGesture:0];
+    [coverSheetViewController prepareForTransitionToPresented:0 reversingTransition:transitionCopy forUserGesture:0];
     if (v20)
     {
 LABEL_20:
       if (CSFeatureEnabled())
       {
-        [(SBCoverSheetPresentationManager *)self _prepareForSecureAppTransitionToPresented:1 animated:v5];
+        [(SBCoverSheetPresentationManager *)self _prepareForSecureAppTransitionToPresented:1 animated:gestureCopy];
       }
 
       else
@@ -2272,14 +2272,14 @@ LABEL_20:
 
   if (v19 && (CSFeatureEnabled() & 1) == 0)
   {
-    if ((v15 | v16))
+    if ((v15 | externalLockProvidersRequireUnlock))
     {
-      [(SBCoverSheetPresentationManager *)self _prepareForRubberBandDismissalTransitionForSlidingViewController:v8];
+      [(SBCoverSheetPresentationManager *)self _prepareForRubberBandDismissalTransitionForSlidingViewController:controllerCopy];
     }
 
     else
     {
-      [(SBCoverSheetPresentationManager *)self _prepareInterstitialTransitionForSlidingViewController:v8];
+      [(SBCoverSheetPresentationManager *)self _prepareInterstitialTransitionForSlidingViewController:controllerCopy];
     }
   }
 
@@ -2291,17 +2291,17 @@ LABEL_20:
 LABEL_27:
 }
 
-- (void)coverSheetSlidingViewControllerUserPresentGestureBegan:(id)a3
+- (void)coverSheetSlidingViewControllerUserPresentGestureBegan:(id)began
 {
-  v4 = a3;
+  beganCopy = began;
   BSDispatchQueueAssertMain();
-  if (self->_coverSheetSlidingViewController == v4)
+  if (self->_coverSheetSlidingViewController == beganCopy)
   {
     [(SBCoverSheetPresentationManager *)self setHasBeenDismissedSinceKeybagLock:1];
     [(SBCoverSheetPresentationManager *)self setHasBeenDismissedSinceBoot:1];
   }
 
-  if (self->_secureAppSlidingViewController == v4)
+  if (self->_secureAppSlidingViewController == beganCopy)
   {
     v5 = SBLogCoverSheet();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -2311,20 +2311,20 @@ LABEL_27:
     }
   }
 
-  v6 = [(UIWindow *)self->_coverSheetWindow _sbWindowScene];
-  v7 = [v6 controlCenterController];
-  [v7 dismissAnimated:0];
+  _sbWindowScene = [(UIWindow *)self->_coverSheetWindow _sbWindowScene];
+  controlCenterController = [_sbWindowScene controlCenterController];
+  [controlCenterController dismissAnimated:0];
 }
 
-- (void)coverSheetSlidingViewController:(id)a3 committingToEndPresented:(BOOL)a4
+- (void)coverSheetSlidingViewController:(id)controller committingToEndPresented:(BOOL)presented
 {
-  v6 = a3;
+  controllerCopy = controller;
   BSDispatchQueueAssertMain();
   coverSheetSlidingViewController = self->_coverSheetSlidingViewController;
 
-  if (coverSheetSlidingViewController == v6)
+  if (coverSheetSlidingViewController == controllerCopy)
   {
-    if (a4)
+    if (presented)
     {
 
       [(SBCoverSheetPresentationManager *)self setWantsHomeGestureOwnership:1];
@@ -2341,11 +2341,11 @@ LABEL_27:
   }
 }
 
-- (void)coverSheetSlidingViewControllerCleanupDismissalTransition:(id)a3
+- (void)coverSheetSlidingViewControllerCleanupDismissalTransition:(id)transition
 {
-  v4 = a3;
+  transitionCopy = transition;
   BSDispatchQueueAssertMain();
-  if (self->_coverSheetSlidingViewController == v4)
+  if (self->_coverSheetSlidingViewController == transitionCopy)
   {
     v5 = SBLogCoverSheet();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -2355,7 +2355,7 @@ LABEL_27:
     }
   }
 
-  if (self->_secureAppSlidingViewController == v4)
+  if (self->_secureAppSlidingViewController == transitionCopy)
   {
     v6 = SBLogCoverSheet();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -2365,8 +2365,8 @@ LABEL_27:
     }
   }
 
-  v7 = [(SBCoverSheetPresentationManager *)self _isEffectivelyLocked];
-  v8 = [(SBCoverSheetPresentationManager *)self _isGoingToSecureAppForSlidingViewController:v4];
+  _isEffectivelyLocked = [(SBCoverSheetPresentationManager *)self _isEffectivelyLocked];
+  v8 = [(SBCoverSheetPresentationManager *)self _isGoingToSecureAppForSlidingViewController:transitionCopy];
   if (CSFeatureEnabled() && v8)
   {
     [(SBCoverSheetPresentationManager *)self _finishSecureAppTransitionToPresented:1];
@@ -2374,25 +2374,25 @@ LABEL_27:
 
   if (CSFeatureEnabled())
   {
-    v9 = [(SBCoverSheetPresentationManager *)self coverSheetViewController];
-    v10 = ([v9 isPasscodeLockVisible] & 1) != 0 || self->_isPresentingInterstitial;
+    coverSheetViewController = [(SBCoverSheetPresentationManager *)self coverSheetViewController];
+    v10 = ([coverSheetViewController isPasscodeLockVisible] & 1) != 0 || self->_isPresentingInterstitial;
 
-    v15 = [(SBCoverSheetPresentationManager *)self coverSheetViewController];
-    v16 = [v15 externalLockProvidersRequireUnlock];
+    coverSheetViewController2 = [(SBCoverSheetPresentationManager *)self coverSheetViewController];
+    externalLockProvidersRequireUnlock = [coverSheetViewController2 externalLockProvidersRequireUnlock];
 
-    v17 = [(SBCoverSheetPresentationManager *)self secureAppSlidingViewControllerIfLoaded];
-    if (v17 == v4)
+    secureAppSlidingViewControllerIfLoaded = [(SBCoverSheetPresentationManager *)self secureAppSlidingViewControllerIfLoaded];
+    if (secureAppSlidingViewControllerIfLoaded == transitionCopy)
     {
       v19 = +[SBSecureAppManager sharedInstance];
-      v18 = [v19 hasSecureApp];
+      hasSecureApp = [v19 hasSecureApp];
     }
 
     else
     {
-      v18 = 0;
+      hasSecureApp = 0;
     }
 
-    v11 = v10 | v18 | v16;
+    v11 = v10 | hasSecureApp | externalLockProvidersRequireUnlock;
     if (v8)
     {
 LABEL_28:
@@ -2403,11 +2403,11 @@ LABEL_28:
         _os_log_impl(&dword_21ED4E000, v20, OS_LOG_TYPE_DEFAULT, "*** not cleaning up cover sheet dismissal transition because going to secure app ***", v25, 2u);
       }
 
-      v21 = [(SBCoverSheetPresentationManager *)self coverSheetSlidingViewController];
-      [v21 setDismissGesturesEnabled:0];
+      coverSheetSlidingViewController = [(SBCoverSheetPresentationManager *)self coverSheetSlidingViewController];
+      [coverSheetSlidingViewController setDismissGesturesEnabled:0];
 
-      v13 = [(SBCoverSheetPresentationManager *)self coverSheetViewController];
-      [v13 setCoverSheetIsVisible:0];
+      coverSheetViewController3 = [(SBCoverSheetPresentationManager *)self coverSheetViewController];
+      [coverSheetViewController3 setCoverSheetIsVisible:0];
 LABEL_31:
 
       [(SBCoverSheetPresentationManager *)self _cleanupATransition];
@@ -2424,9 +2424,9 @@ LABEL_31:
     }
   }
 
-  v12 = v11 | ~v7;
-  v13 = SBLogCoverSheet();
-  v14 = os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT);
+  v12 = v11 | ~_isEffectivelyLocked;
+  coverSheetViewController3 = SBLogCoverSheet();
+  v14 = os_log_type_enabled(coverSheetViewController3, OS_LOG_TYPE_DEFAULT);
   if (v12)
   {
     if (v11)
@@ -2434,7 +2434,7 @@ LABEL_31:
       if (v14)
       {
         *v23 = 0;
-        _os_log_impl(&dword_21ED4E000, v13, OS_LOG_TYPE_DEFAULT, "*** not cleaning up cover sheet dismissal transition because we're presenting an interstitial or external lock provider ***", v23, 2u);
+        _os_log_impl(&dword_21ED4E000, coverSheetViewController3, OS_LOG_TYPE_DEFAULT, "*** not cleaning up cover sheet dismissal transition because we're presenting an interstitial or external lock provider ***", v23, 2u);
       }
 
       goto LABEL_31;
@@ -2443,7 +2443,7 @@ LABEL_31:
     if (v14)
     {
       *v22 = 0;
-      _os_log_impl(&dword_21ED4E000, v13, OS_LOG_TYPE_DEFAULT, "cleaning up cover sheet dismissal transition", v22, 2u);
+      _os_log_impl(&dword_21ED4E000, coverSheetViewController3, OS_LOG_TYPE_DEFAULT, "cleaning up cover sheet dismissal transition", v22, 2u);
     }
 
     [(SBCoverSheetPresentationManager *)self _cleanupDismissalTransition];
@@ -2454,7 +2454,7 @@ LABEL_31:
     if (v14)
     {
       *v24 = 0;
-      _os_log_impl(&dword_21ED4E000, v13, OS_LOG_TYPE_DEFAULT, "*** not cleaning up cover sheet dismissal transition because requires unlock ***", v24, 2u);
+      _os_log_impl(&dword_21ED4E000, coverSheetViewController3, OS_LOG_TYPE_DEFAULT, "*** not cleaning up cover sheet dismissal transition because requires unlock ***", v24, 2u);
     }
 
     [(SBCoverSheetPresentationManager *)self _setCoverSheetPresented:1 forcePresented:1 animated:1 withCompletion:0];
@@ -2463,14 +2463,14 @@ LABEL_31:
 LABEL_32:
 }
 
-- (void)coverSheetSlidingViewControllerDidEndTransition:(id)a3 toPresented:(BOOL)a4
+- (void)coverSheetSlidingViewControllerDidEndTransition:(id)transition toPresented:(BOOL)presented
 {
-  v4 = a4;
+  presentedCopy = presented;
   BSDispatchQueueAssertMain();
   if (CSFeatureEnabled())
   {
     v6 = +[SBWallpaperController sharedInstance];
-    v7 = !v4;
+    v7 = !presentedCopy;
     [v6 setActiveVariant:v7];
 
     if (!v7)
@@ -2483,7 +2483,7 @@ LABEL_32:
   [(SBCoverSheetPresentationManager *)self setTransitionType:0];
 }
 
-- (void)coverSheetSlidingViewControllerDidPassRubberBandThreshold:(id)a3
+- (void)coverSheetSlidingViewControllerDidPassRubberBandThreshold:(id)threshold
 {
   BSDispatchQueueAssertMain();
   [(SBCoverSheetPresentationManager *)self _notifyDelegateRequestsUnlock];
@@ -2491,38 +2491,38 @@ LABEL_32:
   self->_rubberBandCleanupNeeded = 0;
 }
 
-- (BOOL)hasContentUnderCoverSheetSlidingViewController:(id)a3
+- (BOOL)hasContentUnderCoverSheetSlidingViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   BSDispatchQueueAssertMain();
   coverSheetSlidingViewController = self->_coverSheetSlidingViewController;
 
-  if (coverSheetSlidingViewController != v4)
+  if (coverSheetSlidingViewController != controllerCopy)
   {
     return 0;
   }
 
   v7 = +[SBSecureAppManager sharedInstance];
-  v8 = [v7 hasSecureApp];
+  hasSecureApp = [v7 hasSecureApp];
 
-  return v8;
+  return hasSecureApp;
 }
 
-- (void)coverSheetSlidingViewController:(id)a3 animationTickedWithProgress:(double)a4 velocity:(double)a5 isPresenting:(BOOL)a6 coverSheetFrame:(CGRect)a7 gestureActive:(BOOL)a8 forPresentationValue:(BOOL)a9
+- (void)coverSheetSlidingViewController:(id)controller animationTickedWithProgress:(double)progress velocity:(double)velocity isPresenting:(BOOL)presenting coverSheetFrame:(CGRect)frame gestureActive:(BOOL)active forPresentationValue:(BOOL)value
 {
-  v9 = a9;
-  v12 = a3;
-  if (v9)
+  valueCopy = value;
+  controllerCopy = controller;
+  if (valueCopy)
   {
     kdebug_trace();
     kdebug_trace();
-    if (self->_coverSheetSlidingViewController == v12)
+    if (self->_coverSheetSlidingViewController == controllerCopy)
     {
-      v13 = [(SBCoverSheetPresentationManager *)self coverSheetViewController];
-      [v13 updateCoverSheetDraggingProgress:1 forPresentationValue:a4];
+      coverSheetViewController = [(SBCoverSheetPresentationManager *)self coverSheetViewController];
+      [coverSheetViewController updateCoverSheetDraggingProgress:1 forPresentationValue:progress];
 
       unlockProgressQueue = self->_unlockProgressQueue;
-      v15 = [MEMORY[0x277CCABB0] numberWithDouble:a4];
+      v15 = [MEMORY[0x277CCABB0] numberWithDouble:progress];
       [(SBAtomicObjectQueue *)unlockProgressQueue enqueue:v15];
 
       BSDispatchMain();
@@ -2531,8 +2531,8 @@ LABEL_32:
 
   else
   {
-    v16 = [(SBCoverSheetPresentationManager *)self coverSheetViewController];
-    [v16 updateCoverSheetDraggingProgress:0 forPresentationValue:a4];
+    coverSheetViewController2 = [(SBCoverSheetPresentationManager *)self coverSheetViewController];
+    [coverSheetViewController2 updateCoverSheetDraggingProgress:0 forPresentationValue:progress];
   }
 }
 
@@ -2597,14 +2597,14 @@ LABEL_11:
   [v9 updateBackgroundGlassEffectForDraggingProgress:objc_msgSend(WeakRetained usingGlassEffects:{"supportsGlassEffects"), v4}];
 }
 
-- (void)coverSheetSlidingViewController:(id)a3 transitionTickedWithProgress:(double)a4 velocity:(double)a5 isPresenting:(BOOL)a6 coverSheetFrame:(CGRect)a7 gestureActive:(BOOL)a8 forPresentationValue:(BOOL)a9
+- (void)coverSheetSlidingViewController:(id)controller transitionTickedWithProgress:(double)progress velocity:(double)velocity isPresenting:(BOOL)presenting coverSheetFrame:(CGRect)frame gestureActive:(BOOL)active forPresentationValue:(BOOL)value
 {
-  v11 = a3;
+  controllerCopy = controller;
   transitionProgressQueue = self->_transitionProgressQueue;
-  v13 = [MEMORY[0x277CCABB0] numberWithDouble:a4];
+  v13 = [MEMORY[0x277CCABB0] numberWithDouble:progress];
   [(SBAtomicObjectQueue *)transitionProgressQueue enqueue:v13];
 
-  v14 = v11;
+  v14 = controllerCopy;
   BSDispatchMain();
 }
 
@@ -2646,17 +2646,17 @@ void __169__SBCoverSheetPresentationManager_coverSheetSlidingViewController_tran
   [v9 updateCoverSheetTransitionProgress:v4];
 }
 
-- (void)_updateShouldDisplayFakeStatusBarInVisibleTransition:(BOOL)a3
+- (void)_updateShouldDisplayFakeStatusBarInVisibleTransition:(BOOL)transition
 {
-  v4 = a3 || self->_secureAppViewController || self->_needsFakeStatusBarUpdate || self->_preparingToDismissCoverSheet;
+  v4 = transition || self->_secureAppViewController || self->_needsFakeStatusBarUpdate || self->_preparingToDismissCoverSheet;
   v5 = v4;
   if (self->_shouldDisplayFakeStatusBar != v5)
   {
     self->_needsFakeStatusBarUpdate = 0;
     self->_shouldDisplayFakeStatusBar = v5;
     WeakRetained = objc_loadWeakRetained(&self->_windowScene);
-    v7 = [WeakRetained statusBarManager];
-    v8 = [v7 layoutManager];
+    statusBarManager = [WeakRetained statusBarManager];
+    layoutManager = [statusBarManager layoutManager];
 
     v9 = MEMORY[0x277D75D18];
     if (self->_shouldDisplayFakeStatusBar)
@@ -2678,8 +2678,8 @@ void __169__SBCoverSheetPresentationManager_coverSheetSlidingViewController_tran
     v10[2] = v11;
     v10[3] = &unk_2783A92D8;
     v10[4] = self;
-    v10[5] = v8;
-    v12 = v8;
+    v10[5] = layoutManager;
+    v12 = layoutManager;
     [v9 performWithoutAnimation:v10];
 
     [(SBCoverSheetPresentationManager *)self _tellDashBoardOurAppearanceAndBehaviorChanged];
@@ -2706,50 +2706,50 @@ uint64_t __88__SBCoverSheetPresentationManager__updateShouldDisplayFakeStatusBar
   return [v3 removeActiveLayoutLayer:1];
 }
 
-- (void)coverSheetSlidingViewController:(id)a3 prepareToAnimateIconFlyInForPresenting:(BOOL)a4 withVelocity:(double)a5
+- (void)coverSheetSlidingViewController:(id)controller prepareToAnimateIconFlyInForPresenting:(BOOL)presenting withVelocity:(double)velocity
 {
-  if (self->_iconsWereLastAnimatedIn == a4)
+  if (self->_iconsWereLastAnimatedIn == presenting)
   {
-    v6 = a4;
+    presentingCopy = presenting;
     WeakRetained = objc_loadWeakRetained(&self->_transitionSettings);
-    v9 = [WeakRetained iconsFlyIn];
+    iconsFlyIn = [WeakRetained iconsFlyIn];
 
-    if (v9)
+    if (iconsFlyIn)
     {
       v10 = SBLogCoverSheet();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
       {
-        [SBCoverSheetPresentationManager coverSheetSlidingViewController:v6 prepareToAnimateIconFlyInForPresenting:v10 withVelocity:a5];
+        [SBCoverSheetPresentationManager coverSheetSlidingViewController:presentingCopy prepareToAnimateIconFlyInForPresenting:v10 withVelocity:velocity];
       }
 
-      [(SBCoverSheetPresentationManager *)self _prepareIconAnimatorForPresenting:v6 withVelocity:a5];
+      [(SBCoverSheetPresentationManager *)self _prepareIconAnimatorForPresenting:presentingCopy withVelocity:velocity];
     }
   }
 }
 
-- (void)coverSheetSlidingViewController:(id)a3 performIconFlyInForPresenting:(BOOL)a4 animated:(BOOL)a5 beginBlock:(id)a6 endBlock:(id)a7
+- (void)coverSheetSlidingViewController:(id)controller performIconFlyInForPresenting:(BOOL)presenting animated:(BOOL)animated beginBlock:(id)block endBlock:(id)endBlock
 {
-  v8 = a5;
-  v9 = a4;
-  v11 = a6;
-  v12 = a7;
+  animatedCopy = animated;
+  presentingCopy = presenting;
+  blockCopy = block;
+  endBlockCopy = endBlock;
   v13 = SBLogCoverSheet();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
-    [SBCoverSheetPresentationManager coverSheetSlidingViewController:v9 performIconFlyInForPresenting:v13 animated:? beginBlock:? endBlock:?];
+    [SBCoverSheetPresentationManager coverSheetSlidingViewController:presentingCopy performIconFlyInForPresenting:v13 animated:? beginBlock:? endBlock:?];
   }
 
-  if (self->_iconsWereLastAnimatedIn == v9)
+  if (self->_iconsWereLastAnimatedIn == presentingCopy)
   {
-    self->_iconsWereLastAnimatedIn = !v9;
-    if (v8 && self->_iconAnimator && self->_iconAnimatorCompletionGroup)
+    self->_iconsWereLastAnimatedIn = !presentingCopy;
+    if (animatedCopy && self->_iconAnimator && self->_iconAnimatorCompletionGroup)
     {
-      if (v11)
+      if (blockCopy)
       {
-        v11[2](v11);
+        blockCopy[2](blockCopy);
       }
 
-      if (v9)
+      if (presentingCopy)
       {
         v14 = 0.0;
       }
@@ -2763,7 +2763,7 @@ uint64_t __88__SBCoverSheetPresentationManager__updateShouldDisplayFakeStatusBar
       v15[1] = 3221225472;
       v15[2] = __126__SBCoverSheetPresentationManager_coverSheetSlidingViewController_performIconFlyInForPresenting_animated_beginBlock_endBlock___block_invoke;
       v15[3] = &unk_2783A9348;
-      v16 = v12;
+      v16 = endBlockCopy;
       [(SBCoverSheetPresentationManager *)self _setTransitionProgress:1 animated:0 gestureActive:v15 coverSheetProgress:v14 completion:v14];
     }
   }
@@ -2780,11 +2780,11 @@ uint64_t __126__SBCoverSheetPresentationManager_coverSheetSlidingViewController_
   return result;
 }
 
-- (void)coverSheetSlidingViewController:(id)a3 animateForGestureActive:(BOOL)a4 withProgress:(double)a5 beginBlock:(id)a6 endBlock:(id)a7
+- (void)coverSheetSlidingViewController:(id)controller animateForGestureActive:(BOOL)active withProgress:(double)progress beginBlock:(id)block endBlock:(id)endBlock
 {
-  v9 = a4;
-  v11 = a6;
-  v12 = a7;
+  activeCopy = active;
+  blockCopy = block;
+  endBlockCopy = endBlock;
   v13 = SBLogCoverSheet();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
@@ -2793,17 +2793,17 @@ uint64_t __126__SBCoverSheetPresentationManager_coverSheetSlidingViewController_
 
   if (self->_iconAnimator && self->_iconAnimatorCompletionGroup)
   {
-    v21 = a5 > 0.2 && self->_iconAnimatorNeedsAnimating;
-    if (v9)
+    v21 = progress > 0.2 && self->_iconAnimatorNeedsAnimating;
+    if (activeCopy)
     {
-      v21 = a5 > 0.560000002;
+      v21 = progress > 0.560000002;
     }
 
     if (v21)
     {
-      if (v11)
+      if (blockCopy)
       {
-        v11[2](v11);
+        blockCopy[2](blockCopy);
       }
 
       self->_iconAnimatorNeedsAnimating = 0;
@@ -2811,8 +2811,8 @@ uint64_t __126__SBCoverSheetPresentationManager_coverSheetSlidingViewController_
       v22[1] = 3221225472;
       v22[2] = __124__SBCoverSheetPresentationManager_coverSheetSlidingViewController_animateForGestureActive_withProgress_beginBlock_endBlock___block_invoke;
       v22[3] = &unk_2783A9348;
-      v23 = v12;
-      [(SBCoverSheetPresentationManager *)self _setTransitionProgress:1 animated:v9 gestureActive:v22 coverSheetProgress:1.0 completion:a5];
+      v23 = endBlockCopy;
+      [(SBCoverSheetPresentationManager *)self _setTransitionProgress:1 animated:activeCopy gestureActive:v22 coverSheetProgress:1.0 completion:progress];
     }
   }
 }
@@ -2828,40 +2828,40 @@ uint64_t __124__SBCoverSheetPresentationManager_coverSheetSlidingViewController_
   return result;
 }
 
-- (BOOL)coverSheetSlidingViewControllerPerformExternalUnlockIfNeeded:(id)a3
+- (BOOL)coverSheetSlidingViewControllerPerformExternalUnlockIfNeeded:(id)needed
 {
-  v4 = a3;
+  neededCopy = needed;
   if (CSFeatureEnabled())
   {
-    v5 = [(SBCoverSheetPresentationManager *)self coverSheetViewController];
-    v6 = [v5 externalLockProvidersRequireUnlock];
+    coverSheetViewController = [(SBCoverSheetPresentationManager *)self coverSheetViewController];
+    externalLockProvidersRequireUnlock = [coverSheetViewController externalLockProvidersRequireUnlock];
 
-    v7 = [(SBCoverSheetPresentationManager *)self secureAppSlidingViewControllerIfLoaded];
-    if (v7 == v4)
+    secureAppSlidingViewControllerIfLoaded = [(SBCoverSheetPresentationManager *)self secureAppSlidingViewControllerIfLoaded];
+    if (secureAppSlidingViewControllerIfLoaded == neededCopy)
     {
       v10 = +[SBSecureAppManager sharedInstance];
-      v8 = [v10 hasSecureApp];
+      hasSecureApp = [v10 hasSecureApp];
     }
 
     else
     {
-      v8 = 0;
+      hasSecureApp = 0;
     }
 
-    if (v6 && (+[SBAlertItemsController sharedInstance](SBAlertItemsController, "sharedInstance"), v11 = objc_claimAutoreleasedReturnValue(), v12 = [v11 hasVisibleAlert], v11, (v12 & 1) == 0))
+    if (externalLockProvidersRequireUnlock && (+[SBAlertItemsController sharedInstance](SBAlertItemsController, "sharedInstance"), v11 = objc_claimAutoreleasedReturnValue(), v12 = [v11 hasVisibleAlert], v11, (v12 & 1) == 0))
     {
       v13 = +[SBAlertItemsController sharedInstance];
       [v13 setForceAlertsToPend:0 forReason:@"SBCoverSheetForceAlertItemsToPendReason"];
     }
 
-    else if (!v8)
+    else if (!hasSecureApp)
     {
       goto LABEL_12;
     }
 
     [(SBCoverSheetPresentationManager *)self _notifyDelegateRequestsUnlock];
 LABEL_12:
-    v9 = v6 | v8;
+    v9 = externalLockProvidersRequireUnlock | hasSecureApp;
     goto LABEL_13;
   }
 
@@ -2871,17 +2871,17 @@ LABEL_13:
   return v9 & 1;
 }
 
-- (BOOL)coverSheetSlidingViewControllerIsDisplayingInterstitial:(id)a3
+- (BOOL)coverSheetSlidingViewControllerIsDisplayingInterstitial:(id)interstitial
 {
-  v3 = [(SBCoverSheetPresentationManager *)self coverSheetViewController];
-  v4 = [v3 isPasscodeLockVisible];
+  coverSheetViewController = [(SBCoverSheetPresentationManager *)self coverSheetViewController];
+  isPasscodeLockVisible = [coverSheetViewController isPasscodeLockVisible];
 
-  return v4;
+  return isPasscodeLockVisible;
 }
 
-- (void)coverSheetSlidingViewControllerCleanupInterstitialTransition:(id)a3
+- (void)coverSheetSlidingViewControllerCleanupInterstitialTransition:(id)transition
 {
-  v4 = a3;
+  transitionCopy = transition;
   if (CSFeatureEnabled())
   {
     if (!self->_isDismissingInterstitial)
@@ -2894,7 +2894,7 @@ LABEL_13:
       v7[3] = &unk_2783A8C18;
       v7[4] = self;
       [v5 _performBlockAfterCATransactionCommits:v7];
-      v6 = [(SBCoverSheetPresentationManager *)self _isGoingToSecureAppForSlidingViewController:v4];
+      v6 = [(SBCoverSheetPresentationManager *)self _isGoingToSecureAppForSlidingViewController:transitionCopy];
       if ([(SBCoverSheetPresentationManager *)self _isEffectivelyLocked])
       {
         if (!v6)
@@ -2907,7 +2907,7 @@ LABEL_13:
 
   else
   {
-    [(SBCoverSheetPresentationManager *)self _cleanupInterstitialTransitionForSlidingViewController:v4];
+    [(SBCoverSheetPresentationManager *)self _cleanupInterstitialTransitionForSlidingViewController:transitionCopy];
   }
 }
 
@@ -2919,9 +2919,9 @@ void __96__SBCoverSheetPresentationManager_coverSheetSlidingViewControllerCleanu
   *(*(a1 + 32) + 17) = 0;
 }
 
-- (BOOL)coverSheetSlidingViewControllerShouldAllowDismissal:(id)a3
+- (BOOL)coverSheetSlidingViewControllerShouldAllowDismissal:(id)dismissal
 {
-  if (self->_coverSheetSlidingViewController != a3 || (CSFeatureEnabled() & 1) != 0 || ![(SBCoverSheetPresentationManager *)self _isEffectivelyLocked])
+  if (self->_coverSheetSlidingViewController != dismissal || (CSFeatureEnabled() & 1) != 0 || ![(SBCoverSheetPresentationManager *)self _isEffectivelyLocked])
   {
     return 1;
   }
@@ -2931,41 +2931,41 @@ void __96__SBCoverSheetPresentationManager_coverSheetSlidingViewControllerCleanu
   return [(BSInvalidatable *)secureAppViewController isHostingAnApp];
 }
 
-- (void)coverSheetSlidingViewController:(id)a3 isTransitioning:(BOOL)a4
+- (void)coverSheetSlidingViewController:(id)controller isTransitioning:(BOOL)transitioning
 {
-  v4 = a4;
-  v5 = [(SBCoverSheetPresentationManager *)self coverSheetViewController];
-  [v5 setPartiallyOnScreen:v4];
+  transitioningCopy = transitioning;
+  coverSheetViewController = [(SBCoverSheetPresentationManager *)self coverSheetViewController];
+  [coverSheetViewController setPartiallyOnScreen:transitioningCopy];
 }
 
-- (void)coverSheetSlidingViewControllerReachabilityAnimationWillBegin:(id)a3
+- (void)coverSheetSlidingViewControllerReachabilityAnimationWillBegin:(id)begin
 {
-  v3 = [(SBCoverSheetPresentationManager *)self coverSheetViewController];
-  [v3 handleReachabilityAnimationWillBegin];
+  coverSheetViewController = [(SBCoverSheetPresentationManager *)self coverSheetViewController];
+  [coverSheetViewController handleReachabilityAnimationWillBegin];
 }
 
-- (void)coverSheetSlidingViewControllerReachabilityAnimationDidEnd:(id)a3
+- (void)coverSheetSlidingViewControllerReachabilityAnimationDidEnd:(id)end
 {
-  v3 = [(SBCoverSheetPresentationManager *)self coverSheetViewController];
-  [v3 handleReachabilityAnimationDidEnd];
+  coverSheetViewController = [(SBCoverSheetPresentationManager *)self coverSheetViewController];
+  [coverSheetViewController handleReachabilityAnimationDidEnd];
 }
 
-- (void)coverSheetSlidingViewController:(id)a3 willChangePresentationState:(int64_t)a4 forUserGesture:(BOOL)a5 withVelocity:(double)a6 animated:(BOOL)a7
+- (void)coverSheetSlidingViewController:(id)controller willChangePresentationState:(int64_t)state forUserGesture:(BOOL)gesture withVelocity:(double)velocity animated:(BOOL)animated
 {
-  v7 = a7;
-  v9 = a5;
-  v12 = a3;
+  animatedCopy = animated;
+  gestureCopy = gesture;
+  controllerCopy = controller;
   coverSheetSlidingViewController = self->_coverSheetSlidingViewController;
-  v16 = v12;
+  v16 = controllerCopy;
   v14 = [(SBCoverSheetPresentationManager *)self _isGoingToSecureAppForSlidingViewController:?];
-  if (a4 <= 5)
+  if (state <= 5)
   {
-    if (a4 == 1)
+    if (state == 1)
     {
       goto LABEL_13;
     }
 
-    if (a4 != 5)
+    if (state != 5)
     {
       goto LABEL_14;
     }
@@ -2975,18 +2975,18 @@ void __96__SBCoverSheetPresentationManager_coverSheetSlidingViewControllerCleanu
       goto LABEL_13;
     }
 
-    [(SBCoverSheetPresentationManager *)self _prepareForCoverSheetRemovalWithVelocity:a6];
+    [(SBCoverSheetPresentationManager *)self _prepareForCoverSheetRemovalWithVelocity:velocity];
     v15 = 1.0;
     goto LABEL_12;
   }
 
-  if (a4 == 6)
+  if (state == 6)
   {
     if (coverSheetSlidingViewController == v16)
     {
       v15 = 0.0;
 LABEL_12:
-      [(SBCoverSheetPresentationManager *)self _notifyDelegateWillPerformTransitionWithFinalValue:v9 forUserGesture:v7 withVelocity:v15 animated:a6];
+      [(SBCoverSheetPresentationManager *)self _notifyDelegateWillPerformTransitionWithFinalValue:gestureCopy forUserGesture:animatedCopy withVelocity:v15 animated:velocity];
     }
 
 LABEL_13:
@@ -2994,7 +2994,7 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if (a4 == 7)
+  if (state == 7)
   {
     goto LABEL_13;
   }
@@ -3020,33 +3020,33 @@ void __132__SBCoverSheetPresentationManager_coverSheetSlidingViewController_will
   [v0 endActiveVariantTransition];
 }
 
-- (void)coverSheetSlidingViewControllerDidEndDismissGestureOverInterstitial:(id)a3
+- (void)coverSheetSlidingViewControllerDidEndDismissGestureOverInterstitial:(id)interstitial
 {
-  v3 = [(SBCoverSheetPresentationManager *)self coverSheetViewController];
-  [v3 cleanupInterstitialWhileOffScreen];
+  coverSheetViewController = [(SBCoverSheetPresentationManager *)self coverSheetViewController];
+  [coverSheetViewController cleanupInterstitialWhileOffScreen];
 }
 
-- (BOOL)coverSheetSlidingViewControllerIsInterstitialDismissalAllowed:(id)a3
+- (BOOL)coverSheetSlidingViewControllerIsInterstitialDismissalAllowed:(id)allowed
 {
-  v4 = [(SBCoverSheetPresentationManager *)self pearlMatchingStateProvider];
-  v5 = [v4 pearlMatchEnabledAndPossible];
+  pearlMatchingStateProvider = [(SBCoverSheetPresentationManager *)self pearlMatchingStateProvider];
+  pearlMatchEnabledAndPossible = [pearlMatchingStateProvider pearlMatchEnabledAndPossible];
 
-  v6 = [(SBCoverSheetPresentationManager *)self coverSheetViewController];
-  LOBYTE(v4) = [v6 externalLockProvidersRequireUnlock];
+  coverSheetViewController = [(SBCoverSheetPresentationManager *)self coverSheetViewController];
+  LOBYTE(pearlMatchingStateProvider) = [coverSheetViewController externalLockProvidersRequireUnlock];
 
-  return v5 & (v4 ^ 1);
+  return pearlMatchEnabledAndPossible & (pearlMatchingStateProvider ^ 1);
 }
 
-- (void)_createWallpaperOverlayIfNeededWithCoverSheetFrame:(CGRect)a3
+- (void)_createWallpaperOverlayIfNeededWithCoverSheetFrame:(CGRect)frame
 {
   if (!self->_wallpaperFloatingLayerView)
   {
-    height = a3.size.height;
-    width = a3.size.width;
-    v6 = [(SBCoverSheetPresentationManager *)self transitionSettings:a3.origin.x];
-    v7 = [v6 floatingLayerAsWallpaperOverlay];
+    height = frame.size.height;
+    width = frame.size.width;
+    v6 = [(SBCoverSheetPresentationManager *)self transitionSettings:frame.origin.x];
+    floatingLayerAsWallpaperOverlay = [v6 floatingLayerAsWallpaperOverlay];
 
-    if (v7)
+    if (floatingLayerAsWallpaperOverlay)
     {
       v8 = +[SBWallpaperController sharedInstance];
       v9 = objc_opt_class();
@@ -3069,12 +3069,12 @@ void __132__SBCoverSheetPresentationManager_coverSheetSlidingViewController_will
   }
 }
 
-- (void)_updateWallpaperOverlayAlpha:(double)a3
+- (void)_updateWallpaperOverlayAlpha:(double)alpha
 {
   if (CSFeatureEnabled())
   {
-    [(SBCoverSheetPresentationManager *)self setWallpaperFloatingLayerAlpha:a3];
-    [(BSInvalidatable *)self->_wallpaperFloatingLayerView setAlpha:a3];
+    [(SBCoverSheetPresentationManager *)self setWallpaperFloatingLayerAlpha:alpha];
+    [(BSInvalidatable *)self->_wallpaperFloatingLayerView setAlpha:alpha];
 
     [(SBCoverSheetPresentationManager *)self _tellDashBoardOurAppearanceChanged];
   }
@@ -3083,60 +3083,60 @@ void __132__SBCoverSheetPresentationManager_coverSheetSlidingViewController_will
 - (BOOL)hasFirstSwipeShowGrabberOverride
 {
   v2 = +[SBWorkspace mainWorkspace];
-  v3 = [v2 transientOverlayPresentationManager];
-  v4 = [v3 hasActivePresentation];
+  transientOverlayPresentationManager = [v2 transientOverlayPresentationManager];
+  hasActivePresentation = [transientOverlayPresentationManager hasActivePresentation];
 
-  return v4;
+  return hasActivePresentation;
 }
 
 - (unint64_t)screenEdgesDeferringSystemGestures
 {
   WeakRetained = objc_loadWeakRetained(&self->_windowScene);
-  v3 = [WeakRetained switcherController];
+  switcherController = [WeakRetained switcherController];
 
-  v4 = [v3 layoutStatePrimaryElement];
-  v5 = [v4 workspaceEntity];
-  v6 = [v5 applicationSceneEntity];
-  v7 = [v6 sceneHandle];
-  v8 = [v7 screenEdgesDeferringSystemGestures];
+  layoutStatePrimaryElement = [switcherController layoutStatePrimaryElement];
+  workspaceEntity = [layoutStatePrimaryElement workspaceEntity];
+  applicationSceneEntity = [workspaceEntity applicationSceneEntity];
+  sceneHandle = [applicationSceneEntity sceneHandle];
+  screenEdgesDeferringSystemGestures = [sceneHandle screenEdgesDeferringSystemGestures];
 
-  return v8;
+  return screenEdgesDeferringSystemGestures;
 }
 
-- (void)updateVisibilityForGrabberVisible:(BOOL)a3
+- (void)updateVisibilityForGrabberVisible:(BOOL)visible
 {
-  v3 = a3;
-  if (a3)
+  visibleCopy = visible;
+  if (visible)
   {
-    v5 = [(SBCoverSheetPresentationManager *)self coverSheetViewController];
+    coverSheetViewController = [(SBCoverSheetPresentationManager *)self coverSheetViewController];
     if ((SBTraitsArbiterOrientationActuationEnabledForRole(@"SBTraitsParticipantRoleCoverSheet") & 1) == 0)
     {
-      v6 = [SBApp activeInterfaceOrientation];
-      [v5 setEffectiveInterfaceOrientationOverride:v6];
-      [(SBCoverSheetPresentationManager *)self updateInterfaceOrientationToMatchOrientation:v6];
+      activeInterfaceOrientation = [SBApp activeInterfaceOrientation];
+      [coverSheetViewController setEffectiveInterfaceOrientationOverride:activeInterfaceOrientation];
+      [(SBCoverSheetPresentationManager *)self updateInterfaceOrientationToMatchOrientation:activeInterfaceOrientation];
     }
   }
 
-  [(SBCoverSheetPresentationManager *)self _setCoverSheetWindowVisible:v3 forReason:@"SBCoverSheetPresentTongueGrabberVisibleReason"];
+  [(SBCoverSheetPresentationManager *)self _setCoverSheetWindowVisible:visibleCopy forReason:@"SBCoverSheetPresentTongueGrabberVisibleReason"];
 }
 
-- (BOOL)secureAppEnvironmentViewControllerShouldEnableIdleWarning:(id)a3 alwaysOnEnabled:(BOOL)a4
+- (BOOL)secureAppEnvironmentViewControllerShouldEnableIdleWarning:(id)warning alwaysOnEnabled:(BOOL)enabled
 {
-  if (!a4)
+  if (!enabled)
   {
     return 1;
   }
 
-  v4 = [a3 hostedAppSceneHandle];
-  v5 = [v4 application];
-  v6 = [v5 bundleIdentifier];
+  hostedAppSceneHandle = [warning hostedAppSceneHandle];
+  application = [hostedAppSceneHandle application];
+  bundleIdentifier = [application bundleIdentifier];
 
   v7 = +[SBSecureAppManager sharedInstance];
-  v8 = [v7 secureAppAction];
-  v9 = [v7 wakeDestination];
-  if (v9)
+  secureAppAction = [v7 secureAppAction];
+  wakeDestination = [v7 wakeDestination];
+  if (wakeDestination)
   {
-    v10 = v8 == 0;
+    v10 = secureAppAction == 0;
   }
 
   else
@@ -3144,15 +3144,15 @@ void __132__SBCoverSheetPresentationManager_coverSheetSlidingViewController_will
     v10 = 1;
   }
 
-  if (v10 || ([v8 isInProcessAction] & 1) != 0 || objc_msgSend(v9, "type") != 1)
+  if (v10 || ([secureAppAction isInProcessAction] & 1) != 0 || objc_msgSend(wakeDestination, "type") != 1)
   {
     v13 = 1;
   }
 
   else
   {
-    v11 = [v9 identifier];
-    v12 = [v11 isEqualToString:v6];
+    identifier = [wakeDestination identifier];
+    v12 = [identifier isEqualToString:bundleIdentifier];
 
     v13 = v12 ^ 1;
   }
@@ -3160,22 +3160,22 @@ void __132__SBCoverSheetPresentationManager_coverSheetSlidingViewController_will
   return v13;
 }
 
-- (void)secureAppOfTypeDidBegin:(unint64_t)a3
+- (void)secureAppOfTypeDidBegin:(unint64_t)begin
 {
   v14 = *MEMORY[0x277D85DE8];
   v5 = SBLogCoverSheet();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 134217984;
-    v13 = a3;
+    beginCopy = begin;
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "SecureApp began of type: %lu", &v12, 0xCu);
   }
 
-  v6 = [(SBUILockStateProvider *)self->_uiLockStateProvider isUILocked];
+  isUILocked = [(SBUILockStateProvider *)self->_uiLockStateProvider isUILocked];
   v7 = +[SBSecureAppManager sharedInstance];
-  v8 = [v7 hasSecureApp];
+  hasSecureApp = [v7 hasSecureApp];
 
-  if (v6 && v8)
+  if (isUILocked && hasSecureApp)
   {
     if (!+[SBBacklightPlatformProvider deviceSupportsAlwaysOn])
     {
@@ -3185,11 +3185,11 @@ LABEL_10:
       return;
     }
 
-    v9 = [SBApp authenticationController];
-    v10 = [v9 hasPasscodeSet];
+    authenticationController = [SBApp authenticationController];
+    hasPasscodeSet = [authenticationController hasPasscodeSet];
 
-    v11 = [(SBCoverSheetPresentationManager *)self _isInAlwaysOn];
-    if (v10 || !v11)
+    _isInAlwaysOn = [(SBCoverSheetPresentationManager *)self _isInAlwaysOn];
+    if (hasPasscodeSet || !_isInAlwaysOn)
     {
       goto LABEL_10;
     }
@@ -3204,37 +3204,37 @@ LABEL_10:
   return v3;
 }
 
-- (void)secureAppOfTypeDidEnd:(unint64_t)a3
+- (void)secureAppOfTypeDidEnd:(unint64_t)end
 {
   v12 = *MEMORY[0x277D85DE8];
   v5 = SBLogCoverSheet();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 134217984;
-    v11 = a3;
+    endCopy = end;
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "SecureApp ended of type: %lu", &v10, 0xCu);
   }
 
-  v6 = [(SBCoverSheetPresentationManager *)self _secureAppTypeGetsCorrectDismissalSemantics:a3];
+  v6 = [(SBCoverSheetPresentationManager *)self _secureAppTypeGetsCorrectDismissalSemantics:end];
   v7 = +[SBSecureAppManager sharedInstance];
-  v8 = [v7 secureAppAction];
-  v9 = [v8 secureAppType];
+  secureAppAction = [v7 secureAppAction];
+  secureAppType = [secureAppAction secureAppType];
 
-  if (!v6 && [(SBUILockStateProvider *)self->_uiLockStateProvider isUILocked]&& !v9)
+  if (!v6 && [(SBUILockStateProvider *)self->_uiLockStateProvider isUILocked]&& !secureAppType)
   {
     [(SBCoverSheetPresentationManager *)self setCoverSheetPresented:1 animated:1 withCompletion:0];
   }
 }
 
-- (void)assistantDidDisappear:(id)a3 windowScene:(id)a4
+- (void)assistantDidDisappear:(id)disappear windowScene:(id)scene
 {
-  v5 = [SBSecureAppManager sharedInstance:a3];
-  v6 = [v5 secureAppAction];
-  v7 = [v6 secureAppType];
+  v5 = [SBSecureAppManager sharedInstance:disappear];
+  secureAppAction = [v5 secureAppAction];
+  secureAppType = [secureAppAction secureAppType];
 
   if ([(SBUILockStateProvider *)self->_uiLockStateProvider isUILocked])
   {
-    v8 = (v7 & 0xFFFFFFFFFFFFFFFBLL) == 10;
+    v8 = (secureAppType & 0xFFFFFFFFFFFFFFFBLL) == 10;
   }
 
   else
@@ -3249,14 +3249,14 @@ LABEL_10:
   }
 }
 
-- (void)settings:(id)a3 changedValueForKey:(id)a4
+- (void)settings:(id)settings changedValueForKey:(id)key
 {
-  v13 = a3;
-  v6 = a4;
+  settingsCopy = settings;
+  keyCopy = key;
   lockScreenSettings = self->_lockScreenSettings;
-  if (lockScreenSettings == v13)
+  if (lockScreenSettings == settingsCopy)
   {
-    if (([v6 isEqualToString:@"unlockRubberBandFeedbackIntensity"] & 1) != 0 || objc_msgSend(v6, "isEqualToString:", @"unlockRubberBandFeedbackInterval"))
+    if (([keyCopy isEqualToString:@"unlockRubberBandFeedbackIntensity"] & 1) != 0 || objc_msgSend(keyCopy, "isEqualToString:", @"unlockRubberBandFeedbackInterval"))
     {
       v11 = [(SBCoverSheetPresentationManager *)self _newRubberBandFeedbackGeneratorForSettings:self->_lockScreenSettings];
       rubberBandFeedbackGenerator = self->_rubberBandFeedbackGenerator;
@@ -3266,11 +3266,11 @@ LABEL_10:
 
   else
   {
-    v8 = [(CSLockScreenSettings *)lockScreenSettings dashBoardScrollModifierSettings];
+    dashBoardScrollModifierSettings = [(CSLockScreenSettings *)lockScreenSettings dashBoardScrollModifierSettings];
 
-    if (v8 == v13)
+    if (dashBoardScrollModifierSettings == settingsCopy)
     {
-      if ([v6 isEqualToString:@"strategy"])
+      if ([keyCopy isEqualToString:@"strategy"])
       {
         [(SBCoverSheetPresentationManager *)self _tellDashBoardOurBehaviorChanged];
       }
@@ -3278,43 +3278,43 @@ LABEL_10:
 
     else
     {
-      v9 = [(CSLockScreenSettings *)self->_lockScreenSettings coverSheetTransitionsSettings];
-      v10 = [v9 flyInSettings];
+      coverSheetTransitionsSettings = [(CSLockScreenSettings *)self->_lockScreenSettings coverSheetTransitionsSettings];
+      flyInSettings = [coverSheetTransitionsSettings flyInSettings];
 
-      if (v10 == v13)
+      if (flyInSettings == settingsCopy)
       {
-        [(SBCoverSheetPresentationManager *)self _updateIconsFlyInWithSettings:v13];
+        [(SBCoverSheetPresentationManager *)self _updateIconsFlyInWithSettings:settingsCopy];
       }
     }
   }
 }
 
-- (void)_updateIconsFlyInWithSettings:(id)a3
+- (void)_updateIconsFlyInWithSettings:(id)settings
 {
-  v4 = a3;
-  self->_centerFollowsFinger = [v4 centerFollowsFinger];
-  self->_animateIconsOnPresentationToo = [v4 animateIconsOnPresentationToo];
-  [v4 iconsFlyInInteractiveResponseMin];
+  settingsCopy = settings;
+  self->_centerFollowsFinger = [settingsCopy centerFollowsFinger];
+  self->_animateIconsOnPresentationToo = [settingsCopy animateIconsOnPresentationToo];
+  [settingsCopy iconsFlyInInteractiveResponseMin];
   self->_iconFlyInInteractiveResponseMin = v5;
-  [v4 iconsFlyInInteractiveResponseMax];
+  [settingsCopy iconsFlyInInteractiveResponseMax];
   self->_iconFlyInInteractiveResponseMax = v6;
-  [v4 iconsFlyInInteractiveDampingRatioMin];
+  [settingsCopy iconsFlyInInteractiveDampingRatioMin];
   self->_iconFlyInInteractiveDampingRatioMin = v7;
-  [v4 iconsFlyInInteractiveDampingRatioMax];
+  [settingsCopy iconsFlyInInteractiveDampingRatioMax];
   self->_iconFlyInInteractiveDampingRatioMax = v8;
-  [v4 iconsFlyInTension];
+  [settingsCopy iconsFlyInTension];
   self->_iconFlyInTension = v9;
-  [v4 iconsFlyInFriction];
+  [settingsCopy iconsFlyInFriction];
   v11 = v10;
 
   self->_iconFlyInFriction = v11;
 }
 
-- (void)zStackParticipant:(id)a3 updatePreferences:(id)a4
+- (void)zStackParticipant:(id)participant updatePreferences:(id)preferences
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  participantCopy = participant;
+  preferencesCopy = preferences;
   if ([(SBCoverSheetPresentationManager *)self wantsHomeGestureOwnership])
   {
     v8 = 2;
@@ -3325,36 +3325,36 @@ LABEL_10:
     v8 = 0;
   }
 
-  [v7 setActivationPolicyForParticipantsBelow:v8];
+  [preferencesCopy setActivationPolicyForParticipantsBelow:v8];
   if (![(SBCoverSheetPresentationManager *)self wantsHomeGestureOwnership])
   {
     goto LABEL_22;
   }
 
-  v9 = [(SBCoverSheetPresentationManager *)self coverSheetViewController];
-  if ([v9 isLockScreenShowingDefaultContent])
+  coverSheetViewController = [(SBCoverSheetPresentationManager *)self coverSheetViewController];
+  if ([coverSheetViewController isLockScreenShowingDefaultContent])
   {
   }
 
   else
   {
     v10 = +[SBAssistantController sharedInstanceIfExists];
-    v11 = [v10 isVisible];
+    isVisible = [v10 isVisible];
 
-    if (!v11)
+    if (!isVisible)
     {
       goto LABEL_22;
     }
   }
 
-  v23 = v6;
-  v12 = [(SBCoverSheetPresentationManager *)self coverSheetViewController];
+  v23 = participantCopy;
+  coverSheetViewController2 = [(SBCoverSheetPresentationManager *)self coverSheetViewController];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v13 = [v12 sceneHostEnvironmentEntriesForBacklightSession];
-  v14 = [v13 countByEnumeratingWithState:&v24 objects:v28 count:16];
+  sceneHostEnvironmentEntriesForBacklightSession = [coverSheetViewController2 sceneHostEnvironmentEntriesForBacklightSession];
+  v14 = [sceneHostEnvironmentEntriesForBacklightSession countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v14)
   {
     v15 = v14;
@@ -3366,22 +3366,22 @@ LABEL_10:
       {
         if (*v25 != v17)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(sceneHostEnvironmentEntriesForBacklightSession);
         }
 
-        v19 = [*(*(&v24 + 1) + 8 * i) bundleIdentifier];
-        if (v19)
+        bundleIdentifier = [*(*(&v24 + 1) + 8 * i) bundleIdentifier];
+        if (bundleIdentifier)
         {
           if (!v16)
           {
             v16 = [MEMORY[0x277CBEB58] set];
           }
 
-          [v16 addObject:v19];
+          [v16 addObject:bundleIdentifier];
         }
       }
 
-      v15 = [v13 countByEnumeratingWithState:&v24 objects:v28 count:16];
+      v15 = [sceneHostEnvironmentEntriesForBacklightSession countByEnumeratingWithState:&v24 objects:v28 count:16];
     }
 
     while (v15);
@@ -3392,11 +3392,11 @@ LABEL_10:
     v16 = 0;
   }
 
-  [v7 setAssociatedBundleIdentifiersToSuppressInSystemAperture:v16];
-  v20 = [v12 audioCategoriesDisablingVolumeHUD];
-  [v7 setAudioCategoriesDisablingVolumeHUD:v20];
+  [preferencesCopy setAssociatedBundleIdentifiersToSuppressInSystemAperture:v16];
+  audioCategoriesDisablingVolumeHUD = [coverSheetViewController2 audioCategoriesDisablingVolumeHUD];
+  [preferencesCopy setAudioCategoriesDisablingVolumeHUD:audioCategoriesDisablingVolumeHUD];
 
-  v6 = v23;
+  participantCopy = v23;
 LABEL_22:
   v21 = self->_coverSheetWindow;
   if ([(SBCoverSheetPresentationManager *)self wantsHomeGestureOwnership])
@@ -3409,14 +3409,14 @@ LABEL_22:
     v22 = 0;
   }
 
-  [v7 setSuppressSystemApertureForSystemChromeSuppression:v22];
+  [preferencesCopy setSuppressSystemApertureForSystemChromeSuppression:v22];
   if ([(SBCoverSheetPresentationManager *)self isPresented])
   {
-    [v7 setAllowsDimmingWhenForegroundInactive:1];
+    [preferencesCopy setAllowsDimmingWhenForegroundInactive:1];
   }
 }
 
-- (void)sceneHandle:(id)a3 didCreateScene:(id)a4
+- (void)sceneHandle:(id)handle didCreateScene:(id)scene
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -3432,7 +3432,7 @@ void __62__SBCoverSheetPresentationManager_sceneHandle_didCreateScene___block_in
   [v2 invalidateBacklightScenesForProvider:*(a1 + 32)];
 }
 
-- (void)sceneHandle:(id)a3 didDestroyScene:(id)a4
+- (void)sceneHandle:(id)handle didDestroyScene:(id)scene
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -3448,7 +3448,7 @@ void __63__SBCoverSheetPresentationManager_sceneHandle_didDestroyScene___block_i
   [v2 invalidateBacklightScenesForProvider:*(a1 + 32)];
 }
 
-- (void)hostableEntityPresenter:(id)a3 didBeginHosting:(id)a4
+- (void)hostableEntityPresenter:(id)presenter didBeginHosting:(id)hosting
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -3464,7 +3464,7 @@ void __75__SBCoverSheetPresentationManager_hostableEntityPresenter_didBeginHosti
   [v2 invalidateBacklightScenesForProvider:*(a1 + 32)];
 }
 
-- (void)hostableEntityPresenter:(id)a3 didEndHosting:(id)a4
+- (void)hostableEntityPresenter:(id)presenter didEndHosting:(id)hosting
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -3482,22 +3482,22 @@ void __73__SBCoverSheetPresentationManager_hostableEntityPresenter_didEndHosting
 
 - (int64_t)_wallpaperEffectiveInterfaceOrientation
 {
-  v3 = [SBApp activeInterfaceOrientation];
+  activeInterfaceOrientation = [SBApp activeInterfaceOrientation];
 
-  return [(SBCoverSheetPresentationManager *)self _wallpaperEffectiveInterfaceOrientationWithFallbackOrientation:v3];
+  return [(SBCoverSheetPresentationManager *)self _wallpaperEffectiveInterfaceOrientationWithFallbackOrientation:activeInterfaceOrientation];
 }
 
-- (int64_t)interfaceOrientationForWallpaperController:(id)a3
+- (int64_t)interfaceOrientationForWallpaperController:(id)controller
 {
-  v4 = [(SBCoverSheetPresentationManager *)self coverSheetWindow];
-  v5 = -[SBCoverSheetPresentationManager _wallpaperEffectiveInterfaceOrientationWithFallbackOrientation:](self, "_wallpaperEffectiveInterfaceOrientationWithFallbackOrientation:", [v4 interfaceOrientation]);
+  coverSheetWindow = [(SBCoverSheetPresentationManager *)self coverSheetWindow];
+  v5 = -[SBCoverSheetPresentationManager _wallpaperEffectiveInterfaceOrientationWithFallbackOrientation:](self, "_wallpaperEffectiveInterfaceOrientationWithFallbackOrientation:", [coverSheetWindow interfaceOrientation]);
 
   return v5;
 }
 
-- (void)_prepareForPresentationTransitionForUserGesture:(BOOL)a3
+- (void)_prepareForPresentationTransitionForUserGesture:(BOOL)gesture
 {
-  v3 = a3;
+  gestureCopy = gesture;
   v5 = SBLogCoverSheet();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -3505,39 +3505,39 @@ void __73__SBCoverSheetPresentationManager_hostableEntityPresenter_didEndHosting
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "[SBCoverSheetPresentationManager _prepareForPresentationTransition]", buf, 2u);
   }
 
-  v6 = [(SBCoverSheetPresentationManager *)self coverSheetViewController];
+  coverSheetViewController = [(SBCoverSheetPresentationManager *)self coverSheetViewController];
   WeakRetained = objc_loadWeakRetained(&self->_windowScene);
   [(SBCoverSheetPresentationManager *)self _prepareForATransition];
-  v8 = [(SBCoverSheetSlidingViewController *)self->_coverSheetSlidingViewController _appearState];
-  if ((SBTraitsArbiterOrientationActuationEnabledForRole(@"SBTraitsParticipantRoleCoverSheet") & 1) == 0 && !v8)
+  _appearState = [(SBCoverSheetSlidingViewController *)self->_coverSheetSlidingViewController _appearState];
+  if ((SBTraitsArbiterOrientationActuationEnabledForRole(@"SBTraitsParticipantRoleCoverSheet") & 1) == 0 && !_appearState)
   {
-    v9 = [SBApp activeInterfaceOrientation];
-    [v6 setEffectiveInterfaceOrientationOverride:v9];
-    [(SBCoverSheetPresentationManager *)self updateInterfaceOrientationToMatchOrientation:v9];
+    activeInterfaceOrientation = [SBApp activeInterfaceOrientation];
+    [coverSheetViewController setEffectiveInterfaceOrientationOverride:activeInterfaceOrientation];
+    [(SBCoverSheetPresentationManager *)self updateInterfaceOrientationToMatchOrientation:activeInterfaceOrientation];
   }
 
-  v10 = [MEMORY[0x277D75418] currentDevice];
-  v11 = [v10 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v11 & 0xFFFFFFFFFFFFFFFBLL) != 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) != 1)
   {
-    v12 = [WeakRetained homeScreenController];
-    v13 = [v12 homeScreenViewController];
-    [v13 setAllowIconRotation:0 forReason:@"SBCoverSheetSuspendIconRotationReason"];
+    homeScreenController = [WeakRetained homeScreenController];
+    homeScreenViewController = [homeScreenController homeScreenViewController];
+    [homeScreenViewController setAllowIconRotation:0 forReason:@"SBCoverSheetSuspendIconRotationReason"];
   }
 
   [(SBCoverSheetPresentationManager *)self setActiveInterfaceOrientationLocked:1];
   v14 = +[SBWallpaperController sharedInstance];
   [v14 activateOrientationSource:3];
 
-  v15 = [(SBCoverSheetPresentationManager *)self coverSheetSlidingViewController];
-  [v15 bs_beginAppearanceTransition:1 animated:0];
+  coverSheetSlidingViewController = [(SBCoverSheetPresentationManager *)self coverSheetSlidingViewController];
+  [coverSheetSlidingViewController bs_beginAppearanceTransition:1 animated:0];
 
-  v16 = [(SBCoverSheetPresentationManager *)self coverSheetSlidingViewController];
-  [v16 setDismissGesturesEnabled:1];
+  coverSheetSlidingViewController2 = [(SBCoverSheetPresentationManager *)self coverSheetSlidingViewController];
+  [coverSheetSlidingViewController2 setDismissGesturesEnabled:1];
 
-  v17 = [(SBCoverSheetPresentationManager *)self suspendWallpaperAnimationAssertion];
-  [v17 invalidate];
+  suspendWallpaperAnimationAssertion = [(SBCoverSheetPresentationManager *)self suspendWallpaperAnimationAssertion];
+  [suspendWallpaperAnimationAssertion invalidate];
 
   v18 = +[SBWallpaperController sharedInstance];
   v19 = [v18 suspendWallpaperAnimationForReason:@"SBCoverSheetSuspendWallpaperAnimationForTransition"];
@@ -3545,14 +3545,14 @@ void __73__SBCoverSheetPresentationManager_hostableEntityPresenter_didEndHosting
 
   [(SBCoverSheetPresentationManager *)self setParticipantState:2];
   [(SBCoverSheetPresentationManager *)self _tellDashBoardOurAppearanceAndBehaviorChanged];
-  v20 = [(SBCoverSheetPresentationManager *)self transitionSettings];
-  if ([v20 revealWallpaper])
+  transitionSettings = [(SBCoverSheetPresentationManager *)self transitionSettings];
+  if ([transitionSettings revealWallpaper])
   {
     v21 = +[SBWallpaperController sharedInstance];
     [v21 setActiveVariant:0];
   }
 
-  if (!v8)
+  if (!_appearState)
   {
     [(SBCoverSheetPresentationManager *)self _notifyDelegateWillPresent];
     v22 = SBLogTelemetrySignposts();
@@ -3563,30 +3563,30 @@ void __73__SBCoverSheetPresentationManager_hostableEntityPresenter_didEndHosting
     }
 
     kdebug_trace();
-    v23 = [(SBCoverSheetPresentationManager *)self ppt_transitionBeginsCallback];
-    if (v23)
+    ppt_transitionBeginsCallback = [(SBCoverSheetPresentationManager *)self ppt_transitionBeginsCallback];
+    if (ppt_transitionBeginsCallback)
     {
       [(SBCoverSheetPresentationManager *)self setPpt_transitionBeginsCallback:0];
-      v23[2](v23);
+      ppt_transitionBeginsCallback[2](ppt_transitionBeginsCallback);
     }
   }
 
-  v24 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v24 postNotificationName:@"SBCoverSheetWillPresentNotification" object:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"SBCoverSheetWillPresentNotification" object:self];
 
   self->_dismissingCoverSheet = 0;
   [(SBCoverSheetPresentationManager *)self setNeedsFakeStatusBarUpdate:1];
   [(SBCoverSheetPresentationManager *)self _updateWallpaperOverlay];
-  if (v3 && [(SBCoverSheetPresentationManager *)self hasBeenDismissedSinceKeybagLock])
+  if (gestureCopy && [(SBCoverSheetPresentationManager *)self hasBeenDismissedSinceKeybagLock])
   {
-    [v6 noteWillPresentForUserGesture];
+    [coverSheetViewController noteWillPresentForUserGesture];
   }
 
   else if (self->_shouldDisplayFakeStatusBar)
   {
-    v25 = [WeakRetained statusBarManager];
-    v26 = [v25 layoutManager];
-    [v26 addActiveLayoutLayer:1];
+    statusBarManager = [WeakRetained statusBarManager];
+    layoutManager = [statusBarManager layoutManager];
+    [layoutManager addActiveLayoutLayer:1];
   }
 
   [(SBCoverSheetPresentationManager *)self _acquireSystemApertureCoverSheetAssertion];
@@ -3601,10 +3601,10 @@ void __73__SBCoverSheetPresentationManager_hostableEntityPresenter_didEndHosting
 {
   if (!self->_systemApertureCoverSheetAssertion)
   {
-    v6 = [SBApp systemApertureControllerForMainDisplay];
-    v4 = [v6 systemApertureRepresentationSuppressionAssertionForCoversheetVisibility];
+    systemApertureControllerForMainDisplay = [SBApp systemApertureControllerForMainDisplay];
+    systemApertureRepresentationSuppressionAssertionForCoversheetVisibility = [systemApertureControllerForMainDisplay systemApertureRepresentationSuppressionAssertionForCoversheetVisibility];
     systemApertureCoverSheetAssertion = self->_systemApertureCoverSheetAssertion;
-    self->_systemApertureCoverSheetAssertion = v4;
+    self->_systemApertureCoverSheetAssertion = systemApertureRepresentationSuppressionAssertionForCoversheetVisibility;
   }
 }
 
@@ -3623,19 +3623,19 @@ void __73__SBCoverSheetPresentationManager_hostableEntityPresenter_didEndHosting
   [(SBCoverSheetPresentationManager *)self _cleanupATransition];
   if ([(SBCoverSheetPresentationManager *)self hasBeenDismissedSinceKeybagLock])
   {
-    v5 = [SBApp authenticationController];
-    v4 = [v5 isAuthenticated] ^ 1;
+    authenticationController = [SBApp authenticationController];
+    v4 = [authenticationController isAuthenticated] ^ 1;
   }
 
-  v6 = [(SBCoverSheetPresentationManager *)self sceneManager];
-  [v6 updateSceneManagerForPresented:1 suspendUnderLockEnvironment:v4];
+  sceneManager = [(SBCoverSheetPresentationManager *)self sceneManager];
+  [sceneManager updateSceneManagerForPresented:1 suspendUnderLockEnvironment:v4];
 
-  v7 = [(SBCoverSheetPresentationManager *)self coverSheetSlidingViewController];
-  [v7 bs_endAppearanceTransition:1];
+  coverSheetSlidingViewController = [(SBCoverSheetPresentationManager *)self coverSheetSlidingViewController];
+  [coverSheetSlidingViewController bs_endAppearanceTransition:1];
 
   [(SBCoverSheetPresentationManager *)self _notifyDelegateDidPresent];
-  v8 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v8 postNotificationName:@"SBCoverSheetDidPresentNotification" object:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"SBCoverSheetDidPresentNotification" object:self];
 
   [(SBCoverSheetPresentationManager *)self _clearSecureAppViewControllersIncludingWindow:1];
   [MEMORY[0x277D75940] _synchronizeDrawing];
@@ -3646,141 +3646,141 @@ void __73__SBCoverSheetPresentationManager_hostableEntityPresenter_didEndHosting
 
   self->_shouldDisplayFakeStatusBar = 0;
   [(SBCoverSheetPresentationManager *)self _tellDashBoardOurAppearanceAndBehaviorChanged];
-  v11 = [(SBCoverSheetPresentationManager *)self suspendWallpaperAnimationAssertion];
-  [v11 invalidate];
+  suspendWallpaperAnimationAssertion = [(SBCoverSheetPresentationManager *)self suspendWallpaperAnimationAssertion];
+  [suspendWallpaperAnimationAssertion invalidate];
 
   [(SBCoverSheetPresentationManager *)self setSuspendWallpaperAnimationAssertion:0];
   v12 = +[SBAlertItemsController sharedInstance];
   [v12 setForceAlertsToPend:0 forReason:@"SBCoverSheetForceAlertItemsToPendReason"];
 
   WeakRetained = objc_loadWeakRetained(&self->_windowScene);
-  v14 = [(SBCoverSheetPresentationManager *)self keyboardFocusAssertion];
-  if (!v14)
+  keyboardFocusAssertion = [(SBCoverSheetPresentationManager *)self keyboardFocusAssertion];
+  if (!keyboardFocusAssertion)
   {
-    v15 = [(SBCoverSheetPresentationManager *)self mainWorkspace];
-    v16 = [v15 keyboardFocusController];
+    mainWorkspace = [(SBCoverSheetPresentationManager *)self mainWorkspace];
+    keyboardFocusController = [mainWorkspace keyboardFocusController];
     v17 = +[SBKeyboardFocusLockReason coverSheet];
-    v18 = [v16 focusLockSpringBoardWindowScene:WeakRetained forReason:v17];
+    v18 = [keyboardFocusController focusLockSpringBoardWindowScene:WeakRetained forReason:v17];
     [(SBCoverSheetPresentationManager *)self setKeyboardFocusAssertion:v18];
   }
 
   if ((CSFeatureEnabled() & 1) == 0)
   {
     v19 = [SBFloatingDockBehaviorAssertion alloc];
-    v20 = [WeakRetained floatingDockController];
+    floatingDockController = [WeakRetained floatingDockController];
     v21 = objc_opt_class();
     v22 = NSStringFromClass(v21);
-    v23 = [(SBFloatingDockBehaviorAssertion *)v19 initWithFloatingDockController:v20 visibleProgress:0 animated:0 gesturePossible:11 atLevel:v22 reason:0 withCompletion:0.0];
+    v23 = [(SBFloatingDockBehaviorAssertion *)v19 initWithFloatingDockController:floatingDockController visibleProgress:0 animated:0 gesturePossible:11 atLevel:v22 reason:0 withCompletion:0.0];
 
     [(SBCoverSheetPresentationManager *)self setFloatingDockBehaviorAssertion:v23];
   }
 
-  v24 = [(SBCoverSheetPresentationManager *)self coverSheetViewController];
-  [v24 setCoverSheetIsVisible:1];
+  coverSheetViewController = [(SBCoverSheetPresentationManager *)self coverSheetViewController];
+  [coverSheetViewController setCoverSheetIsVisible:1];
 }
 
-- (void)_prepareForARubberBandTransitionForSlidingViewController:(id)a3
+- (void)_prepareForARubberBandTransitionForSlidingViewController:(id)controller
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_coverSheetSlidingViewController == v4)
+  controllerCopy = controller;
+  v5 = controllerCopy;
+  if (self->_coverSheetSlidingViewController == controllerCopy)
   {
     [(SBCoverSheetPresentationManager *)self _prepareForATransition];
     [(SBCoverSheetPresentationManager *)self _tellDashBoardOurAppearanceAndBehaviorChanged];
-    v4 = v5;
+    controllerCopy = v5;
   }
 
-  [(SBCoverSheetSlidingViewController *)v4 setDismissalSlidingMode:2];
+  [(SBCoverSheetSlidingViewController *)controllerCopy setDismissalSlidingMode:2];
 }
 
-- (void)_cleanupARubberBandTransitionForSlidingViewController:(id)a3
+- (void)_cleanupARubberBandTransitionForSlidingViewController:(id)controller
 {
-  v4 = a3;
-  v6 = v4;
-  if (self->_coverSheetSlidingViewController == v4)
+  controllerCopy = controller;
+  v6 = controllerCopy;
+  if (self->_coverSheetSlidingViewController == controllerCopy)
   {
     [(SBCoverSheetPresentationManager *)self _cleanupATransition];
-    v4 = v6;
+    controllerCopy = v6;
   }
 
-  [(SBCoverSheetSlidingViewController *)v4 setDismissalSlidingMode:1];
+  [(SBCoverSheetSlidingViewController *)controllerCopy setDismissalSlidingMode:1];
   v5 = +[SBAlertItemsController sharedInstance];
   [v5 setForceAlertsToPend:0 forReason:@"SBCoverSheetForceAlertItemsToPendReason"];
 }
 
-- (void)_prepareForRubberBandPresentationTransitionForSlidingViewController:(id)a3
+- (void)_prepareForRubberBandPresentationTransitionForSlidingViewController:(id)controller
 {
   v8 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  controllerCopy = controller;
   v5 = SBLogCoverSheet();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = controllerCopy;
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_INFO, "_prepareForRubberBandPresentationTransitionForSlidingViewController: %@", &v6, 0xCu);
   }
 
-  [(SBCoverSheetPresentationManager *)self _prepareForARubberBandTransitionForSlidingViewController:v4];
+  [(SBCoverSheetPresentationManager *)self _prepareForARubberBandTransitionForSlidingViewController:controllerCopy];
 }
 
-- (void)_cleanupRubberBandPresentationTransitionForSlidingViewController:(id)a3
+- (void)_cleanupRubberBandPresentationTransitionForSlidingViewController:(id)controller
 {
   v8 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  controllerCopy = controller;
   v5 = SBLogCoverSheet();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = controllerCopy;
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_INFO, "_cleanupRubberBandPresentationTransitionForSlidingViewController: %@", &v6, 0xCu);
   }
 
-  [(SBCoverSheetPresentationManager *)self _cleanupARubberBandTransitionForSlidingViewController:v4];
+  [(SBCoverSheetPresentationManager *)self _cleanupARubberBandTransitionForSlidingViewController:controllerCopy];
 }
 
-- (void)_prepareForRubberBandDismissalTransitionForSlidingViewController:(id)a3
+- (void)_prepareForRubberBandDismissalTransitionForSlidingViewController:(id)controller
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  controllerCopy = controller;
   v5 = SBLogCoverSheet();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = controllerCopy;
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_INFO, "_prepareForRubberBandDismissalTransitionForSlidingViewController: %@", &v7, 0xCu);
   }
 
-  [(SBCoverSheetPresentationManager *)self _prepareForARubberBandTransitionForSlidingViewController:v4];
+  [(SBCoverSheetPresentationManager *)self _prepareForARubberBandTransitionForSlidingViewController:controllerCopy];
   [(UIImpactFeedbackGenerator *)self->_rubberBandFeedbackGenerator prepare];
   self->_rubberBandCleanupNeeded = 1;
-  v6 = [(SBCoverSheetPresentationManager *)self coverSheetViewController];
-  [v6 prepareRubberBandTransition];
+  coverSheetViewController = [(SBCoverSheetPresentationManager *)self coverSheetViewController];
+  [coverSheetViewController prepareRubberBandTransition];
 }
 
-- (void)_cleanupRubberBandDismissalTransitionForSlidingViewController:(id)a3
+- (void)_cleanupRubberBandDismissalTransitionForSlidingViewController:(id)controller
 {
   v8 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  controllerCopy = controller;
   v5 = SBLogCoverSheet();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = controllerCopy;
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_INFO, "_cleanupRubberBandDismissalTransitionForSlidingViewController: %@", &v6, 0xCu);
   }
 
-  [(SBCoverSheetPresentationManager *)self _cleanupARubberBandTransitionForSlidingViewController:v4];
+  [(SBCoverSheetPresentationManager *)self _cleanupARubberBandTransitionForSlidingViewController:controllerCopy];
 }
 
-- (void)_prepareInterstitialTransitionForSlidingViewController:(id)a3
+- (void)_prepareInterstitialTransitionForSlidingViewController:(id)controller
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  controllerCopy = controller;
   v5 = SBLogCoverSheet();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v9 = 138412290;
-    v10 = v4;
+    v10 = controllerCopy;
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_INFO, "_prepareInterstitialTransitionForSlidingViewController: %@", &v9, 0xCu);
   }
 
@@ -3792,50 +3792,50 @@ void __73__SBCoverSheetPresentationManager_hostableEntityPresenter_didEndHosting
   }
 
   kdebug_trace();
-  [v4 setDismissalSlidingMode:3];
-  v7 = [(SBCoverSheetPresentationManager *)self pearlMatchingStateProvider];
-  [v7 reset];
+  [controllerCopy setDismissalSlidingMode:3];
+  pearlMatchingStateProvider = [(SBCoverSheetPresentationManager *)self pearlMatchingStateProvider];
+  [pearlMatchingStateProvider reset];
 
-  v8 = [(SBCoverSheetPresentationManager *)self coverSheetViewController];
-  [v8 prepareForInterstitialPresentation];
+  coverSheetViewController = [(SBCoverSheetPresentationManager *)self coverSheetViewController];
+  [coverSheetViewController prepareForInterstitialPresentation];
 }
 
-- (void)_updateInterstitialTransitionForSlidingViewController:(id)a3 withProgress:(double)a4
+- (void)_updateInterstitialTransitionForSlidingViewController:(id)controller withProgress:(double)progress
 {
   v13 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  controllerCopy = controller;
   v7 = SBLogCoverSheet();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v9 = 138412546;
-    v10 = v6;
+    v10 = controllerCopy;
     v11 = 2048;
-    v12 = a4;
+    progressCopy = progress;
     _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_INFO, "_updateInterstitialTransitionForSlidingViewController: %@ withProgress: %.2f", &v9, 0x16u);
   }
 
-  v8 = [(SBCoverSheetPresentationManager *)self coverSheetViewController];
-  [v8 updateInterstitialPresentationWithProgress:a4];
+  coverSheetViewController = [(SBCoverSheetPresentationManager *)self coverSheetViewController];
+  [coverSheetViewController updateInterstitialPresentationWithProgress:progress];
 }
 
-- (void)_cleanupInterstitialTransitionForSlidingViewController:(id)a3
+- (void)_cleanupInterstitialTransitionForSlidingViewController:(id)controller
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  controllerCopy = controller;
   v5 = SBLogCoverSheet();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v11 = 138412290;
-    v12 = v4;
+    v12 = controllerCopy;
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_INFO, "_cleanupInterstitialTransitionForSlidingViewController: %@", &v11, 0xCu);
   }
 
-  [v4 setDismissalSlidingMode:1];
-  v6 = [v4 activeGestureRecognizer];
-  v7 = [v6 state] == 2;
-  v8 = v7 | [(SBCoverSheetSlidingViewController *)self->_coverSheetSlidingViewController mathForGestureRecognizerPointsDown:v6];
-  v9 = [(SBCoverSheetPresentationManager *)self coverSheetViewController];
-  [v9 cleanupInterstitialPresentationToPresented:!v8 inPlace:v7];
+  [controllerCopy setDismissalSlidingMode:1];
+  activeGestureRecognizer = [controllerCopy activeGestureRecognizer];
+  v7 = [activeGestureRecognizer state] == 2;
+  v8 = v7 | [(SBCoverSheetSlidingViewController *)self->_coverSheetSlidingViewController mathForGestureRecognizerPointsDown:activeGestureRecognizer];
+  coverSheetViewController = [(SBCoverSheetPresentationManager *)self coverSheetViewController];
+  [coverSheetViewController cleanupInterstitialPresentationToPresented:!v8 inPlace:v7];
 
   v10 = SBLogTelemetrySignposts();
   if (os_signpost_enabled(v10))
@@ -3847,10 +3847,10 @@ void __73__SBCoverSheetPresentationManager_hostableEntityPresenter_didEndHosting
   kdebug_trace();
 }
 
-- (BOOL)_performInterstitialPresentationIfNeeded:(id)a3
+- (BOOL)_performInterstitialPresentationIfNeeded:(id)needed
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  neededCopy = needed;
   if (!CSFeatureEnabled())
   {
     v5 = 0;
@@ -3865,21 +3865,21 @@ void __73__SBCoverSheetPresentationManager_hostableEntityPresenter_didEndHosting
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v19 = v4;
+      v19 = neededCopy;
       _os_log_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_INFO, "_performInterstitialPresentationIfNeeded: %@", buf, 0xCu);
     }
 
-    v7 = [(SBCoverSheetPresentationManager *)self _isEffectivelyLocked];
-    v8 = [(SBCoverSheetPresentationManager *)self _isGoingToSecureAppForSlidingViewController:v4];
-    v9 = [(SBCoverSheetPresentationManager *)self coverSheetViewController];
-    v10 = ([v9 isPasscodeLockVisible] & 1) == 0 && v7 && !v8;
+    _isEffectivelyLocked = [(SBCoverSheetPresentationManager *)self _isEffectivelyLocked];
+    v8 = [(SBCoverSheetPresentationManager *)self _isGoingToSecureAppForSlidingViewController:neededCopy];
+    coverSheetViewController = [(SBCoverSheetPresentationManager *)self coverSheetViewController];
+    v10 = ([coverSheetViewController isPasscodeLockVisible] & 1) == 0 && _isEffectivelyLocked && !v8;
 
-    v11 = [(SBCoverSheetPresentationManager *)self coverSheetViewController];
-    v12 = [v11 isPasscodeLockVisible];
+    coverSheetViewController2 = [(SBCoverSheetPresentationManager *)self coverSheetViewController];
+    isPasscodeLockVisible = [coverSheetViewController2 isPasscodeLockVisible];
 
-    if (v7)
+    if (_isEffectivelyLocked)
     {
-      v5 = v12 | !v8;
+      v5 = isPasscodeLockVisible | !v8;
       if (!v10)
       {
 LABEL_11:
@@ -3906,8 +3906,8 @@ LABEL_14:
       }
     }
 
-    v13 = [(SBCoverSheetPresentationManager *)self pearlMatchingStateProvider];
-    [v13 reset];
+    pearlMatchingStateProvider = [(SBCoverSheetPresentationManager *)self pearlMatchingStateProvider];
+    [pearlMatchingStateProvider reset];
 
     v14 = *MEMORY[0x277D76620];
     v17[0] = MEMORY[0x277D85DD0];
@@ -3932,30 +3932,30 @@ void __76__SBCoverSheetPresentationManager__performInterstitialPresentationIfNee
   *(*(a1 + 32) + 16) = 0;
 }
 
-- (void)_prepareForCoverSheetRemovalWithVelocity:(double)a3
+- (void)_prepareForCoverSheetRemovalWithVelocity:(double)velocity
 {
-  v5 = [(SBCoverSheetSlidingViewController *)self->_coverSheetSlidingViewController _appearState];
+  _appearState = [(SBCoverSheetSlidingViewController *)self->_coverSheetSlidingViewController _appearState];
   [(SBCoverSheetPresentationManager *)self _prepareForATransition];
   [(SBCoverSheetPresentationManager *)self _setCoverSheetWindowVisible:0 forReason:@"SBCoverSheetWindowVisibleReasonPresented"];
-  v6 = [(SBCoverSheetPresentationManager *)self coverSheetSlidingViewController];
-  [v6 bs_beginAppearanceTransition:0 animated:0];
+  coverSheetSlidingViewController = [(SBCoverSheetPresentationManager *)self coverSheetSlidingViewController];
+  [coverSheetSlidingViewController bs_beginAppearanceTransition:0 animated:0];
 
   [MEMORY[0x277D75940] _synchronizeDrawing];
-  v7 = [(SBCoverSheetPresentationManager *)self transitionSettings];
-  v8 = [v7 revealWallpaper];
+  transitionSettings = [(SBCoverSheetPresentationManager *)self transitionSettings];
+  revealWallpaper = [transitionSettings revealWallpaper];
 
-  if ((v8 & 1) == 0)
+  if ((revealWallpaper & 1) == 0)
   {
     v9 = +[SBWallpaperController sharedInstance];
     [v9 setActiveVariant:1];
   }
 
-  v10 = [(SBCoverSheetPresentationManager *)self sceneManager];
-  [v10 updateSceneManagerForPresented:0 suspendUnderLockEnvironment:0];
+  sceneManager = [(SBCoverSheetPresentationManager *)self sceneManager];
+  [sceneManager updateSceneManagerForPresented:0 suspendUnderLockEnvironment:0];
 
-  if (v5 == 2)
+  if (_appearState == 2)
   {
-    [(SBCoverSheetPresentationManager *)self _notifyDelegateWillDismissWithVelocity:a3];
+    [(SBCoverSheetPresentationManager *)self _notifyDelegateWillDismissWithVelocity:velocity];
     v11 = SBLogTelemetrySignposts();
     if (os_signpost_enabled(v11))
     {
@@ -3964,24 +3964,24 @@ void __76__SBCoverSheetPresentationManager__performInterstitialPresentationIfNee
     }
 
     kdebug_trace();
-    v12 = [(SBCoverSheetPresentationManager *)self ppt_transitionBeginsCallback];
-    if (v12)
+    ppt_transitionBeginsCallback = [(SBCoverSheetPresentationManager *)self ppt_transitionBeginsCallback];
+    if (ppt_transitionBeginsCallback)
     {
       [(SBCoverSheetPresentationManager *)self setPpt_transitionBeginsCallback:0];
-      v12[2](v12);
+      ppt_transitionBeginsCallback[2](ppt_transitionBeginsCallback);
     }
   }
 
-  v13 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v13 postNotificationName:@"SBCoverSheetWillDismissNotification" object:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"SBCoverSheetWillDismissNotification" object:self];
 
   if ((CSFeatureEnabled() & 1) == 0)
   {
     [(SBCoverSheetPresentationManager *)self setFloatingDockBehaviorAssertion:0];
   }
 
-  v14 = [(SBCoverSheetPresentationManager *)self suspendWallpaperAnimationAssertion];
-  [v14 invalidate];
+  suspendWallpaperAnimationAssertion = [(SBCoverSheetPresentationManager *)self suspendWallpaperAnimationAssertion];
+  [suspendWallpaperAnimationAssertion invalidate];
 
   v15 = +[SBWallpaperController sharedInstance];
   v16 = [v15 suspendWallpaperAnimationForReason:@"SBCoverSheetSuspendWallpaperAnimationForTransition"];
@@ -3996,14 +3996,14 @@ void __76__SBCoverSheetPresentationManager__performInterstitialPresentationIfNee
   *&self->_preparingToDismissCoverSheet = 256;
   [(SBCoverSheetPresentationManager *)self _updateWallpaperOverlay];
   v18 = CSFeatureEnabled();
-  if (v5 == 2 && (v18 & 1) == 0)
+  if (_appearState == 2 && (v18 & 1) == 0)
   {
     WeakRetained = objc_loadWeakRetained(&self->_transitionSettings);
     if ([WeakRetained iconsFlyIn])
     {
-      v20 = [(SBCoverSheetPresentationManager *)self hasBeenDismissedSinceKeybagLock];
+      hasBeenDismissedSinceKeybagLock = [(SBCoverSheetPresentationManager *)self hasBeenDismissedSinceKeybagLock];
 
-      if (!v20)
+      if (!hasBeenDismissedSinceKeybagLock)
       {
         [(SBCoverSheetPresentationManager *)self _prepareIconAnimatorForPresenting:0 withVelocity:0.0];
       }
@@ -4023,24 +4023,24 @@ void __76__SBCoverSheetPresentationManager__performInterstitialPresentationIfNee
   [(SBCoverSheetPresentationManager *)self setTransitionType:v3];
 }
 
-- (void)_prepareForSecureAppTransitionToPresented:(BOOL)a3 animated:(BOOL)a4
+- (void)_prepareForSecureAppTransitionToPresented:(BOOL)presented animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  if (CSFeatureEnabled() && (v5 || self->_secureAppSlidingViewController))
+  animatedCopy = animated;
+  presentedCopy = presented;
+  if (CSFeatureEnabled() && (presentedCopy || self->_secureAppSlidingViewController))
   {
     [(SBCoverSheetPresentationManager *)self _prepareSecureAppWindowForDisplay];
-    if (v4)
+    if (animatedCopy)
     {
-      v7 = [(SBCoverSheetPresentationManager *)self secureAppWindow];
-      v8 = v7;
+      secureAppWindow = [(SBCoverSheetPresentationManager *)self secureAppWindow];
+      v8 = secureAppWindow;
       v9 = 1.0;
-      if (v5)
+      if (presentedCopy)
       {
         v9 = 0.0;
       }
 
-      [v7 setAlpha:v9];
+      [secureAppWindow setAlpha:v9];
     }
 
     v10 = SBCoverSheetTransitionTypeForCurrentState();
@@ -4049,37 +4049,37 @@ void __76__SBCoverSheetPresentationManager__performInterstitialPresentationIfNee
   }
 }
 
-- (void)_updateTransitionToSecureAppWithProgress:(double)a3
+- (void)_updateTransitionToSecureAppWithProgress:(double)progress
 {
   if (CSFeatureEnabled())
   {
-    v5 = [(SBCoverSheetPresentationManager *)self secureAppWindow];
-    [v5 setAlpha:a3];
+    secureAppWindow = [(SBCoverSheetPresentationManager *)self secureAppWindow];
+    [secureAppWindow setAlpha:progress];
   }
 }
 
-- (void)_finishSecureAppTransitionToPresented:(BOOL)a3
+- (void)_finishSecureAppTransitionToPresented:(BOOL)presented
 {
-  v3 = a3;
+  presentedCopy = presented;
   if (CSFeatureEnabled())
   {
-    v5 = [(SBCoverSheetPresentationManager *)self secureAppWindow];
-    v7 = v5;
+    secureAppWindow = [(SBCoverSheetPresentationManager *)self secureAppWindow];
+    v7 = secureAppWindow;
     v6 = 0.0;
-    if (v3)
+    if (presentedCopy)
     {
       v6 = 1.0;
     }
 
-    [v5 setAlpha:v6];
+    [secureAppWindow setAlpha:v6];
   }
 }
 
 - (void)noteScreenDidTurnOff
 {
   [(SBCoverSheetPresentationManager *)self setHasBeenDismissedSinceKeybagLock:0];
-  v3 = [(SBCoverSheetPresentationManager *)self sceneManager];
-  [v3 updateSceneManagerForPresented:1 suspendUnderLockEnvironment:1];
+  sceneManager = [(SBCoverSheetPresentationManager *)self sceneManager];
+  [sceneManager updateSceneManagerForPresented:1 suspendUnderLockEnvironment:1];
 
   [(SBCoverSheetPresentationManager *)self _setOrientationUpdatesDeferred:0];
   if ([(SBCoverSheetPresentationManager *)self transitionType])
@@ -4121,14 +4121,14 @@ void __60__SBCoverSheetPresentationManager__notifyDelegateDidPresent__block_invo
   [v1 lockScreenViewControllerDidPresent];
 }
 
-- (void)_notifyDelegateWillDismissWithVelocity:(double)a3
+- (void)_notifyDelegateWillDismissWithVelocity:(double)velocity
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __74__SBCoverSheetPresentationManager__notifyDelegateWillDismissWithVelocity___block_invoke;
   v3[3] = &unk_2783A8BC8;
   v3[4] = self;
-  *&v3[5] = a3;
+  *&v3[5] = velocity;
   [(SBCoverSheetPresentationManager *)self _enqueueBlock:v3 withName:@"willDismiss"];
 }
 
@@ -4154,17 +4154,17 @@ void __64__SBCoverSheetPresentationManager__notifyDelegateRequestsUnlock__block_
   [v1 lockScreenViewControllerRequestsUnlock];
 }
 
-- (void)_notifyDelegateWillPerformTransitionWithFinalValue:(double)a3 forUserGesture:(BOOL)a4 withVelocity:(double)a5 animated:(BOOL)a6
+- (void)_notifyDelegateWillPerformTransitionWithFinalValue:(double)value forUserGesture:(BOOL)gesture withVelocity:(double)velocity animated:(BOOL)animated
 {
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __123__SBCoverSheetPresentationManager__notifyDelegateWillPerformTransitionWithFinalValue_forUserGesture_withVelocity_animated___block_invoke;
   v6[3] = &unk_2783B6E70;
   v6[4] = self;
-  v7 = a4;
-  *&v6[5] = a3;
-  *&v6[6] = a5;
-  v8 = a6;
+  gestureCopy = gesture;
+  *&v6[5] = value;
+  *&v6[6] = velocity;
+  animatedCopy = animated;
   [(SBCoverSheetPresentationManager *)self _enqueueBlock:v6 withName:@"willPerformTransition"];
 }
 
@@ -4174,18 +4174,18 @@ void __123__SBCoverSheetPresentationManager__notifyDelegateWillPerformTransition
   [v2 lockScreenViewControllerWillPerformTransitionToFinalValue:*(a1 + 56) forUserGesture:*(a1 + 57) withVelocity:*(a1 + 40) animated:*(a1 + 48)];
 }
 
-- (void)_enqueueBlock:(id)a3 withName:(id)a4
+- (void)_enqueueBlock:(id)block withName:(id)name
 {
-  v5 = [MEMORY[0x277CF0C30] eventWithName:a4 handler:a3];
+  v5 = [MEMORY[0x277CF0C30] eventWithName:name handler:block];
   [(BSEventQueue *)self->_lockUnlockQueue executeOrInsertEvent:v5 atPosition:1];
 }
 
-- (void)setWantsHomeGestureOwnership:(BOOL)a3
+- (void)setWantsHomeGestureOwnership:(BOOL)ownership
 {
-  if (self->_wantsHomeGestureOwnership != a3)
+  if (self->_wantsHomeGestureOwnership != ownership)
   {
-    self->_wantsHomeGestureOwnership = a3;
-    if (a3)
+    self->_wantsHomeGestureOwnership = ownership;
+    if (ownership)
     {
       [(SBCoverSheetPresentationManager *)self _requestHomeGestureOwnership];
     }
@@ -4199,19 +4199,19 @@ void __123__SBCoverSheetPresentationManager__notifyDelegateWillPerformTransition
 
 - (void)_requestHomeGestureOwnership
 {
-  v2 = [(SBCoverSheetPresentationManager *)self zStackParticipant];
-  [v2 setNeedsUpdatePreferencesWithReason:@"requesting home gesture ownership"];
+  zStackParticipant = [(SBCoverSheetPresentationManager *)self zStackParticipant];
+  [zStackParticipant setNeedsUpdatePreferencesWithReason:@"requesting home gesture ownership"];
 }
 
-- (void)_setOrientationUpdatesDeferred:(BOOL)a3
+- (void)_setOrientationUpdatesDeferred:(BOOL)deferred
 {
-  v3 = a3;
+  deferredCopy = deferred;
   if ((SBTraitsArbiterOrientationActuationEnabledForRole(@"SBTraitsParticipantRoleCoverSheet") & 1) == 0)
   {
     deferOrientationUpdatesAssertion = self->_deferOrientationUpdatesAssertion;
-    if ((((deferOrientationUpdatesAssertion == 0) ^ v3) & 1) == 0)
+    if ((((deferOrientationUpdatesAssertion == 0) ^ deferredCopy) & 1) == 0)
     {
-      if (v3)
+      if (deferredCopy)
       {
         v6 = [SBApp deviceOrientationUpdateDeferralAssertionWithReason:@"SBCoverSheetLockOrientationForInteractiveTransition"];
       }
@@ -4228,30 +4228,30 @@ void __123__SBCoverSheetPresentationManager__notifyDelegateWillPerformTransition
   }
 }
 
-- (void)_setCoverSheet:(BOOL)a3 windowVisible:(BOOL)a4 forReason:(id)a5
+- (void)_setCoverSheet:(BOOL)sheet windowVisible:(BOOL)visible forReason:(id)reason
 {
-  v5 = a4;
-  v6 = a3;
+  visibleCopy = visible;
+  sheetCopy = sheet;
   v36 = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  if (v6)
+  reasonCopy = reason;
+  if (sheetCopy)
   {
-    v9 = [(SBCoverSheetPresentationManager *)self coverSheetWindow];
+    coverSheetWindow = [(SBCoverSheetPresentationManager *)self coverSheetWindow];
     v10 = 136;
   }
 
   else
   {
-    v9 = [(SBCoverSheetPresentationManager *)self secureAppWindow];
+    coverSheetWindow = [(SBCoverSheetPresentationManager *)self secureAppWindow];
     v10 = 144;
   }
 
   v11 = *(&self->super.isa + v10);
   v12 = v11;
-  if (v5)
+  if (visibleCopy)
   {
     v13 = [v11 count];
-    [v12 addObject:v8];
+    [v12 addObject:reasonCopy];
     v14 = SBLogCoverSheet();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
     {
@@ -4270,7 +4270,7 @@ void __123__SBCoverSheetPresentationManager__notifyDelegateWillPerformTransition
       if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
       {
         v23 = @"Secure App";
-        if (v6)
+        if (sheetCopy)
         {
           v23 = @"CoverSheet";
         }
@@ -4280,13 +4280,13 @@ void __123__SBCoverSheetPresentationManager__notifyDelegateWillPerformTransition
         _os_log_impl(&dword_21ED4E000, v22, OS_LOG_TYPE_INFO, "Making %{public}@ Window visible", &v34, 0xCu);
       }
 
-      [v9 makeKeyAndVisible];
+      [coverSheetWindow makeKeyAndVisible];
     }
   }
 
   else
   {
-    [v11 removeObject:v8];
+    [v11 removeObject:reasonCopy];
     v24 = SBLogCoverSheet();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
     {
@@ -4305,7 +4305,7 @@ void __123__SBCoverSheetPresentationManager__notifyDelegateWillPerformTransition
       if (os_log_type_enabled(v32, OS_LOG_TYPE_INFO))
       {
         v33 = @"Secure App";
-        if (v6)
+        if (sheetCopy)
         {
           v33 = @"CoverSheet";
         }
@@ -4315,53 +4315,53 @@ void __123__SBCoverSheetPresentationManager__notifyDelegateWillPerformTransition
         _os_log_impl(&dword_21ED4E000, v32, OS_LOG_TYPE_INFO, "Making %{public}@ Window hidden", &v34, 0xCu);
       }
 
-      [v9 resignAsKeyWindow];
-      [v9 setHidden:1];
+      [coverSheetWindow resignAsKeyWindow];
+      [coverSheetWindow setHidden:1];
     }
   }
 }
 
-- (void)_updateVisibilityOfWindow:(id)a3 forReasons:(id)a4
+- (void)_updateVisibilityOfWindow:(id)window forReasons:(id)reasons
 {
-  v5 = a3;
-  if ([a4 count])
+  windowCopy = window;
+  if ([reasons count])
   {
-    [v5 makeKeyAndVisible];
+    [windowCopy makeKeyAndVisible];
   }
 
   else
   {
-    [v5 setHidden:1];
+    [windowCopy setHidden:1];
   }
 }
 
 - (void)_prepareCoverSheetWindowForDisplay
 {
-  v5 = [(SBCoverSheetPresentationManager *)self coverSheetSlidingViewController];
-  v3 = [v5 contentViewController];
+  coverSheetSlidingViewController = [(SBCoverSheetPresentationManager *)self coverSheetSlidingViewController];
+  contentViewController = [coverSheetSlidingViewController contentViewController];
 
-  if (v3)
+  if (contentViewController)
   {
-    v4 = [(SBCoverSheetPresentationManager *)self coverSheetWindow];
-    [v4 setRootViewController:v5];
+    coverSheetWindow = [(SBCoverSheetPresentationManager *)self coverSheetWindow];
+    [coverSheetWindow setRootViewController:coverSheetSlidingViewController];
   }
 }
 
 - (void)_prepareSecureAppWindowForDisplay
 {
   v3 = +[SBSecureAppManager sharedInstance];
-  v4 = [v3 hasSecureApp];
+  hasSecureApp = [v3 hasSecureApp];
 
-  if (v4)
+  if (hasSecureApp)
   {
-    v5 = [(SBCoverSheetPresentationManager *)self secureAppSlidingViewController];
-    if (v5)
+    secureAppSlidingViewController = [(SBCoverSheetPresentationManager *)self secureAppSlidingViewController];
+    if (secureAppSlidingViewController)
     {
-      v6 = [(SBCoverSheetPresentationManager *)self secureAppWindow];
-      [v6 setRootViewController:v5];
+      secureAppWindow = [(SBCoverSheetPresentationManager *)self secureAppWindow];
+      [secureAppWindow setRootViewController:secureAppSlidingViewController];
 
-      v7 = [v5 view];
-      [v7 layoutIfNeeded];
+      view = [secureAppSlidingViewController view];
+      [view layoutIfNeeded];
 
       [(SBCoverSheetPresentationManager *)self _setSecureAppWindowVisible:1 forReason:@"SBCoverSheetWindowVisibleReasonPresented"];
       [(SBCoverSheetSecureAppEnvironmentViewController *)self->_secureAppEnvironmentViewController requestHomeGestureOwnership];
@@ -4375,30 +4375,30 @@ void __123__SBCoverSheetPresentationManager__notifyDelegateWillPerformTransition
 {
   if ([(SBCoverSheetPresentationManager *)self isPresented])
   {
-    v3 = [(SBLockScreenEnvironment *)self->_lockScreenEnvironment proximityBehaviorProvider];
-    v4 = [v3 expectsFaceContact];
+    proximityBehaviorProvider = [(SBLockScreenEnvironment *)self->_lockScreenEnvironment proximityBehaviorProvider];
+    expectsFaceContact = [proximityBehaviorProvider expectsFaceContact];
   }
 
   else
   {
-    v4 = 0;
+    expectsFaceContact = 0;
   }
 
-  v5 = [SBApp proximitySensorManager];
-  [v5 client:@"CoverSheet" wantsProximityDetectionEnabled:v4];
+  proximitySensorManager = [SBApp proximitySensorManager];
+  [proximitySensorManager client:@"CoverSheet" wantsProximityDetectionEnabled:expectsFaceContact];
 }
 
-- (void)_authenticationChanged:(id)a3
+- (void)_authenticationChanged:(id)changed
 {
   v4 = SBApp;
-  v5 = a3;
-  v6 = [v4 authenticationController];
-  v7 = [v6 isAuthenticatedCached];
+  changedCopy = changed;
+  authenticationController = [v4 authenticationController];
+  isAuthenticatedCached = [authenticationController isAuthenticatedCached];
 
-  v8 = [v5 userInfo];
+  userInfo = [changedCopy userInfo];
 
-  v9 = [v8 bs_BOOLForKey:*MEMORY[0x277D66080]];
-  if ([(SBCoverSheetSlidingViewController *)self->_coverSheetSlidingViewController dismissalSlidingMode]!= 1 && v7 && (v9 & 1) == 0)
+  v9 = [userInfo bs_BOOLForKey:*MEMORY[0x277D66080]];
+  if ([(SBCoverSheetSlidingViewController *)self->_coverSheetSlidingViewController dismissalSlidingMode]!= 1 && isAuthenticatedCached && (v9 & 1) == 0)
   {
     v10 = SBLogCoverSheet();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
@@ -4410,56 +4410,56 @@ void __123__SBCoverSheetPresentationManager__notifyDelegateWillPerformTransition
     [(SBCoverSheetPresentationManager *)self coverSheetSlidingViewController:self->_coverSheetSlidingViewController prepareForDismissalTransitionForReversingTransition:0 forUserGesture:0];
   }
 
-  if (!(v7 & 1 | ((v9 & 1) == 0)))
+  if (!(isAuthenticatedCached & 1 | ((v9 & 1) == 0)))
   {
     [(SBCoverSheetPresentationManager *)self setHasBeenDismissedSinceKeybagLock:0];
     if (![(SBCoverSheetPresentationManager *)self isTransitioning]&& ([(SBUILockStateProvider *)self->_uiLockStateProvider isLockScreenPresentationPending]& 1) == 0)
     {
-      v11 = [(SBCoverSheetPresentationManager *)self sceneManager];
-      [v11 updateSceneManagerForPresented:1 suspendUnderLockEnvironment:1];
+      sceneManager = [(SBCoverSheetPresentationManager *)self sceneManager];
+      [sceneManager updateSceneManagerForPresented:1 suspendUnderLockEnvironment:1];
     }
   }
 }
 
-- (void)_restartStartupTransitionBegan:(id)a3
+- (void)_restartStartupTransitionBegan:(id)began
 {
-  v6 = [a3 object];
-  v4 = [v6 startupTransition];
-  v5 = [v4 destination];
+  object = [began object];
+  startupTransition = [object startupTransition];
+  destination = [startupTransition destination];
 
-  if (v5 == 2)
+  if (destination == 2)
   {
     [(SBCoverSheetPresentationManager *)self setHasBeenDismissedSinceBoot:1];
     [(SBCoverSheetPresentationManager *)self setHasBeenDismissedSinceKeybagLock:1];
   }
 }
 
-- (id)_impactFeedbackGeneratorConfigurationForStyle:(int64_t)a3
+- (id)_impactFeedbackGeneratorConfigurationForStyle:(int64_t)style
 {
-  if (a3 <= 1)
+  if (style <= 1)
   {
-    if (a3)
+    if (style)
     {
 LABEL_7:
-      v3 = [MEMORY[0x277D76020] defaultConfiguration];
+      defaultConfiguration = [MEMORY[0x277D76020] defaultConfiguration];
       goto LABEL_11;
     }
 
-    v3 = [MEMORY[0x277D76020] lightConfiguration];
+    defaultConfiguration = [MEMORY[0x277D76020] lightConfiguration];
   }
 
   else
   {
-    switch(a3)
+    switch(style)
     {
       case 2:
-        v3 = [MEMORY[0x277D76020] strongConfiguration];
+        defaultConfiguration = [MEMORY[0x277D76020] strongConfiguration];
         break;
       case 3:
-        v3 = [MEMORY[0x277D76020] softConfiguration];
+        defaultConfiguration = [MEMORY[0x277D76020] softConfiguration];
         break;
       case 4:
-        v3 = [MEMORY[0x277D76020] rigidConfiguration];
+        defaultConfiguration = [MEMORY[0x277D76020] rigidConfiguration];
         break;
       default:
         goto LABEL_7;
@@ -4468,23 +4468,23 @@ LABEL_7:
 
 LABEL_11:
 
-  return v3;
+  return defaultConfiguration;
 }
 
-- (id)_newRubberBandFeedbackGeneratorForSettings:(id)a3
+- (id)_newRubberBandFeedbackGeneratorForSettings:(id)settings
 {
-  v4 = a3;
-  v5 = -[SBCoverSheetPresentationManager _impactFeedbackGeneratorConfigurationForStyle:](self, "_impactFeedbackGeneratorConfigurationForStyle:", [v4 unlockRubberBandFeedbackIntensity]);
-  v6 = [v5 feedback];
-  v7 = [v6 copy];
+  settingsCopy = settings;
+  v5 = -[SBCoverSheetPresentationManager _impactFeedbackGeneratorConfigurationForStyle:](self, "_impactFeedbackGeneratorConfigurationForStyle:", [settingsCopy unlockRubberBandFeedbackIntensity]);
+  feedback = [v5 feedback];
+  v7 = [feedback copy];
 
   if (v7)
   {
-    v8 = [MEMORY[0x277D75F58] feedbackPattern];
-    [v8 addFeedback:v7 atTime:0.0];
-    [v4 unlockRubberBandFeedbackInterval];
-    [v8 addFeedback:v7 atTime:?];
-    [v5 setFeedback:v8];
+    feedbackPattern = [MEMORY[0x277D75F58] feedbackPattern];
+    [feedbackPattern addFeedback:v7 atTime:0.0];
+    [settingsCopy unlockRubberBandFeedbackInterval];
+    [feedbackPattern addFeedback:v7 atTime:?];
+    [v5 setFeedback:feedbackPattern];
   }
 
   v9 = [objc_alloc(MEMORY[0x277D755F0]) initWithConfiguration:v5];
@@ -4495,16 +4495,16 @@ LABEL_11:
 - (void)_noteCoverSheetDismissingByUserGesture
 {
   v2 = +[SBDefaults localDefaults];
-  v4 = [v2 lockScreenDefaults];
+  lockScreenDefaults = [v2 lockScreenDefaults];
 
-  v3 = [v4 gesturalDismissalCount];
-  if (v3 <= 9)
+  gesturalDismissalCount = [lockScreenDefaults gesturalDismissalCount];
+  if (gesturalDismissalCount <= 9)
   {
-    [v4 setGesturalDismissalCount:v3 + 1];
+    [lockScreenDefaults setGesturalDismissalCount:gesturalDismissalCount + 1];
   }
 }
 
-- (BOOL)_isGoingToSecureAppForSlidingViewController:(id)a3
+- (BOOL)_isGoingToSecureAppForSlidingViewController:(id)controller
 {
   coverSheetSlidingViewController = self->_coverSheetSlidingViewController;
   v6 = +[SBSecureAppManager sharedInstance];
@@ -4518,10 +4518,10 @@ LABEL_11:
     v7 = ![(SBCoverSheetPresentationManager *)self isInSecureApp];
   }
 
-  v8 = [(SBLockScreenEnvironment *)self->_lockScreenEnvironment lockController];
-  v9 = [v8 isProcessingUnlockAttempt];
+  lockController = [(SBLockScreenEnvironment *)self->_lockScreenEnvironment lockController];
+  isProcessingUnlockAttempt = [lockController isProcessingUnlockAttempt];
 
-  if (coverSheetSlidingViewController != a3 || (v9 & 1) != 0 || (v7 & 1) != 0)
+  if (coverSheetSlidingViewController != controller || (isProcessingUnlockAttempt & 1) != 0 || (v7 & 1) != 0)
   {
     return 0;
   }
@@ -4529,9 +4529,9 @@ LABEL_11:
   return [(SBCoverSheetPresentationManager *)self _isEffectivelyLocked];
 }
 
-- (void)_prepareIconAnimatorForPresenting:(BOOL)a3 withVelocity:(double)a4
+- (void)_prepareIconAnimatorForPresenting:(BOOL)presenting withVelocity:(double)velocity
 {
-  v5 = a3;
+  presentingCopy = presenting;
   v46 = *MEMORY[0x277D85DE8];
   if (SBReduceMotion())
   {
@@ -4554,7 +4554,7 @@ LABEL_11:
       _os_log_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_DEFAULT, "Reusing icon animator due to reversed in progress animation", buf, 2u);
     }
 
-    [(SBCoverSheetIconFlyInAnimator *)self->_iconAnimator prepareWithVelocity:!v5 forFlyIn:a4];
+    [(SBCoverSheetIconFlyInAnimator *)self->_iconAnimator prepareWithVelocity:!presentingCopy forFlyIn:velocity];
     return;
   }
 
@@ -4567,25 +4567,25 @@ LABEL_11:
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_windowScene);
-  v11 = [WeakRetained homeScreenController];
-  v12 = [v11 iconManager];
-  v41 = [v11 _openFolderController];
+  homeScreenController = [WeakRetained homeScreenController];
+  iconManager = [homeScreenController iconManager];
+  _openFolderController = [homeScreenController _openFolderController];
   if (CSFeatureEnabled())
   {
-    v13 = [WeakRetained modalLibraryController];
-    v14 = v13;
-    if (v13)
+    modalLibraryController = [WeakRetained modalLibraryController];
+    v14 = modalLibraryController;
+    if (modalLibraryController)
     {
-      if ([v13 isPresentingLibrary])
+      if ([modalLibraryController isPresentingLibrary])
       {
-        v15 = [v14 libraryViewController];
+        libraryViewController = [v14 libraryViewController];
         v16 = objc_opt_class();
-        v17 = v15;
+        overlayLibraryViewController = libraryViewController;
         if (v16)
         {
           if (objc_opt_isKindOfClass())
           {
-            v18 = v17;
+            v18 = overlayLibraryViewController;
           }
 
           else
@@ -4605,16 +4605,16 @@ LABEL_11:
       }
     }
 
-    else if ([v12 isMainDisplayLibraryViewVisible])
+    else if ([iconManager isMainDisplayLibraryViewVisible])
     {
-      v17 = [v12 overlayLibraryViewController];
+      overlayLibraryViewController = [iconManager overlayLibraryViewController];
       v20 = objc_opt_class();
-      v21 = __BSSafeCast(v17, v20);
+      v21 = __BSSafeCast(overlayLibraryViewController, v20);
 LABEL_24:
 
 LABEL_25:
-      v22 = [v21 podFolderViewController];
-      if (v22)
+      podFolderViewController = [v21 podFolderViewController];
+      if (podFolderViewController)
       {
         [v21 dismissSearch];
         if ([v21 isPresentingFolder])
@@ -4624,7 +4624,7 @@ LABEL_25:
       }
 
       v23 = objc_opt_class();
-      v24 = v22;
+      v24 = podFolderViewController;
       if (v23)
       {
         if (objc_opt_isKindOfClass())
@@ -4647,15 +4647,15 @@ LABEL_25:
 
       if (v26)
       {
-        v27 = v26;
+        _currentFolderController = v26;
       }
 
       else
       {
-        v27 = [v11 _currentFolderController];
+        _currentFolderController = [homeScreenController _currentFolderController];
       }
 
-      v19 = v27;
+      _currentFolderController2 = _currentFolderController;
 
       goto LABEL_37;
     }
@@ -4664,36 +4664,36 @@ LABEL_25:
     goto LABEL_25;
   }
 
-  v19 = [v11 _currentFolderController];
+  _currentFolderController2 = [homeScreenController _currentFolderController];
 LABEL_37:
   v40 = WeakRetained;
-  if (v41)
+  if (_openFolderController)
   {
-    [v12 closeFolderAnimated:0 withCompletion:0];
+    [iconManager closeFolderAnimated:0 withCompletion:0];
   }
 
-  v28 = [v11 _rootFolderController];
-  [v28 dismissSpotlightAnimated:0 completionHandler:0];
+  _rootFolderController = [homeScreenController _rootFolderController];
+  [_rootFolderController dismissSpotlightAnimated:0 completionHandler:0];
   v29 = MEMORY[0x277D75D18];
   v42[0] = MEMORY[0x277D85DD0];
   v42[1] = 3221225472;
   v42[2] = __82__SBCoverSheetPresentationManager__prepareIconAnimatorForPresenting_withVelocity___block_invoke;
   v42[3] = &unk_2783A8C18;
-  v30 = v12;
+  v30 = iconManager;
   v43 = v30;
   [v29 performWithoutAnimation:v42];
-  v31 = [[SBCoverSheetIconFlyInAnimator alloc] initWithFolderController:v19];
+  v31 = [[SBCoverSheetIconFlyInAnimator alloc] initWithFolderController:_currentFolderController2];
   iconAnimator = self->_iconAnimator;
   self->_iconAnimator = v31;
 
-  v33 = [MEMORY[0x277D661A0] rootSettings];
-  v34 = [v33 iconAnimationSettings];
-  v35 = [v34 unlockSettings];
-  v36 = [v35 copy];
+  rootSettings = [MEMORY[0x277D661A0] rootSettings];
+  iconAnimationSettings = [rootSettings iconAnimationSettings];
+  unlockSettings = [iconAnimationSettings unlockSettings];
+  v36 = [unlockSettings copy];
 
   [(SBIconAnimator *)self->_iconAnimator setSettings:v36];
-  [(SBCoverSheetIconFlyInAnimator *)self->_iconAnimator prepareWithVelocity:!v5 forFlyIn:a4];
-  if (v5)
+  [(SBCoverSheetIconFlyInAnimator *)self->_iconAnimator prepareWithVelocity:!presentingCopy forFlyIn:velocity];
+  if (presentingCopy)
   {
     v37 = 1.0;
   }
@@ -4720,14 +4720,14 @@ LABEL_37:
   [(SBCoverSheetPresentationManager *)self setIconAnimatorCompletionGroup:v38];
 }
 
-- (void)_animateForProgress:(double)a3
+- (void)_animateForProgress:(double)progress
 {
   v29[1] = *MEMORY[0x277D85DE8];
   if (CSFeatureEnabled())
   {
-    v4 = [(SBCenterIconZoomAnimator *)self->_iconAnimator folderController];
+    folderController = [(SBCenterIconZoomAnimator *)self->_iconAnimator folderController];
     v5 = objc_opt_class();
-    v6 = v4;
+    v6 = folderController;
     if (v5)
     {
       v7 = (objc_opt_isKindOfClass() & 1) != 0 ? v6 : 0;
@@ -4743,18 +4743,18 @@ LABEL_37:
     if (v8)
     {
       WeakRetained = objc_loadWeakRetained(&self->_windowScene);
-      v10 = [WeakRetained modalLibraryController];
-      v11 = v10;
-      if (v10 && [v10 isPresentingLibrary])
+      modalLibraryController = [WeakRetained modalLibraryController];
+      v11 = modalLibraryController;
+      if (modalLibraryController && [modalLibraryController isPresentingLibrary])
       {
-        v12 = [v11 libraryViewController];
+        libraryViewController = [v11 libraryViewController];
         v13 = objc_opt_class();
-        v14 = v12;
+        iconManager2 = libraryViewController;
         if (v13)
         {
           if (objc_opt_isKindOfClass())
           {
-            v15 = v14;
+            v15 = iconManager2;
           }
 
           else
@@ -4769,26 +4769,26 @@ LABEL_37:
         }
 
         v24 = v15;
-        v19 = v14;
+        homeScreenController2 = iconManager2;
       }
 
       else
       {
-        v16 = [WeakRetained homeScreenController];
-        v17 = [v16 iconManager];
-        v18 = [v17 isMainDisplayLibraryViewVisible];
+        homeScreenController = [WeakRetained homeScreenController];
+        iconManager = [homeScreenController iconManager];
+        isMainDisplayLibraryViewVisible = [iconManager isMainDisplayLibraryViewVisible];
 
-        if (!v18)
+        if (!isMainDisplayLibraryViewVisible)
         {
           v24 = 0;
 LABEL_25:
-          v25 = [v24 containerViewController];
-          v26 = [v25 searchBar];
+          containerViewController = [v24 containerViewController];
+          searchBar = [containerViewController searchBar];
 
-          if (v26)
+          if (searchBar)
           {
             iconAnimator = self->_iconAnimator;
-            v29[0] = v26;
+            v29[0] = searchBar;
             v28 = [MEMORY[0x277CBEA60] arrayWithObjects:v29 count:1];
             [(SBCoverSheetIconFlyInAnimator *)iconAnimator setFractionForAlphaFadeOfViews:v28];
           }
@@ -4796,11 +4796,11 @@ LABEL_25:
           return;
         }
 
-        v19 = [WeakRetained homeScreenController];
-        v14 = [v19 iconManager];
-        v20 = [v14 overlayLibraryViewController];
+        homeScreenController2 = [WeakRetained homeScreenController];
+        iconManager2 = [homeScreenController2 iconManager];
+        overlayLibraryViewController = [iconManager2 overlayLibraryViewController];
         v21 = objc_opt_class();
-        v22 = v20;
+        v22 = overlayLibraryViewController;
         if (v21)
         {
           if (objc_opt_isKindOfClass())
@@ -4830,25 +4830,25 @@ LABEL_25:
 - (BOOL)_isIconFlyInAnimationAllowed
 {
   v2 = +[SBDefaults localDefaults];
-  v3 = [v2 lockScreenDefaults];
+  lockScreenDefaults = [v2 lockScreenDefaults];
 
-  v4 = [v3 disableIconFlyInAnimation];
+  disableIconFlyInAnimation = [lockScreenDefaults disableIconFlyInAnimation];
   v5 = SBLogCoverSheet();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    [(SBCoverSheetPresentationManager *)v4 _isIconFlyInAnimationAllowed];
+    [(SBCoverSheetPresentationManager *)disableIconFlyInAnimation _isIconFlyInAnimationAllowed];
   }
 
-  return v4 ^ 1;
+  return disableIconFlyInAnimation ^ 1;
 }
 
-- (void)_setTransitionProgress:(double)a3 animated:(BOOL)a4 gestureActive:(BOOL)a5 coverSheetProgress:(double)a6 completion:(id)a7
+- (void)_setTransitionProgress:(double)progress animated:(BOOL)animated gestureActive:(BOOL)active coverSheetProgress:(double)sheetProgress completion:(id)completion
 {
-  v7 = a5;
-  v8 = a4;
+  activeCopy = active;
+  animatedCopy = animated;
   v59 = *MEMORY[0x277D85DE8];
-  v11 = a7;
-  if (v8)
+  completionCopy = completion;
+  if (animatedCopy)
   {
     v12 = SBLogDashBoardTelemetrySignposts();
     if (os_signpost_enabled(v12))
@@ -4860,7 +4860,7 @@ LABEL_25:
     kdebug_trace();
     iconFlyInFriction = 0.0;
     v57 = 0.0;
-    if (v7)
+    if (activeCopy)
     {
       convertDampingRatioAndResponseToTensionAndFriction();
     }
@@ -4872,18 +4872,18 @@ LABEL_25:
       v57 = iconFlyInTension;
     }
 
-    v14 = [(SBCoverSheetPresentationManager *)self iconAnimatorCompletionGroup];
-    dispatch_group_enter(v14);
+    iconAnimatorCompletionGroup = [(SBCoverSheetPresentationManager *)self iconAnimatorCompletionGroup];
+    dispatch_group_enter(iconAnimatorCompletionGroup);
     v15 = SBLogCoverSheet();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      *&buf[4] = v14;
+      *&buf[4] = iconAnimatorCompletionGroup;
       _os_log_impl(&dword_21ED4E000, v15, OS_LOG_TYPE_DEFAULT, "Entering completion group %p for icon animation", buf, 0xCu);
     }
 
-    v16 = [(SBCoverSheetPresentationManager *)self iconAnimatorCompletionBlock];
-    v17 = v16 == 0;
+    iconAnimatorCompletionBlock = [(SBCoverSheetPresentationManager *)self iconAnimatorCompletionBlock];
+    v17 = iconAnimatorCompletionBlock == 0;
 
     if (v17)
     {
@@ -4901,7 +4901,7 @@ LABEL_25:
       objc_destroyWeak(buf);
     }
 
-    dispatch_group_enter(v14);
+    dispatch_group_enter(iconAnimatorCompletionGroup);
     v53[6] = 0;
     v53[7] = 0;
     convertDampingRatioAndResponseToTensionAndFriction();
@@ -4911,12 +4911,12 @@ LABEL_25:
     v53[2] = __111__SBCoverSheetPresentationManager__setTransitionProgress_animated_gestureActive_coverSheetProgress_completion___block_invoke_230;
     v53[3] = &unk_2783A8BC8;
     v53[4] = self;
-    *&v53[5] = a3;
+    *&v53[5] = progress;
     v51[0] = MEMORY[0x277D85DD0];
     v51[1] = 3221225472;
     v51[2] = __111__SBCoverSheetPresentationManager__setTransitionProgress_animated_gestureActive_coverSheetProgress_completion___block_invoke_3;
     v51[3] = &unk_2783AE4B8;
-    v20 = v14;
+    v20 = iconAnimatorCompletionGroup;
     v52 = v20;
     [v19 _animateUsingSpringWithTension:0 friction:v53 interactive:v51 animations:0.0 completion:0.0];
     v21 = MEMORY[0x277D75D18];
@@ -4927,8 +4927,8 @@ LABEL_25:
     v49[2] = __111__SBCoverSheetPresentationManager__setTransitionProgress_animated_gestureActive_coverSheetProgress_completion___block_invoke_4;
     v49[3] = &unk_2783B1B18;
     v49[4] = self;
-    v50 = v7;
-    *&v49[5] = a3;
+    v50 = activeCopy;
+    *&v49[5] = progress;
     *&v49[6] = v57;
     *&v49[7] = iconFlyInFriction;
     v46[0] = MEMORY[0x277D85DD0];
@@ -4937,34 +4937,34 @@ LABEL_25:
     v46[3] = &unk_2783AE668;
     v24 = v20;
     v47 = v24;
-    v25 = v11;
+    v25 = completionCopy;
     v48 = v25;
     [v21 _animateUsingSpringWithTension:0 friction:v49 interactive:v46 animations:v22 completion:v23];
     v26 = CSFeatureEnabled();
-    v27 = [(SBCoverSheetPresentationManager *)self _isIconFlyInAnimationAllowed];
+    _isIconFlyInAnimationAllowed = [(SBCoverSheetPresentationManager *)self _isIconFlyInAnimationAllowed];
     if (self->_iconsIgnoreNextFlyRequest)
     {
-      v27 = 0;
+      _isIconFlyInAnimationAllowed = 0;
       self->_iconsIgnoreNextFlyRequest = 0;
     }
 
     IsZero = BSFloatIsZero();
-    v29 = [(SBCoverSheetPresentationManager *)self _isInAlwaysOn];
-    v30 = [(CSCoverSheetFlyInSettings *)self->_flyInSettings animatesFlyOut];
-    v31 = [(CSCoverSheetFlyInSettings *)self->_flyInSettings animatesFlyOutToAOD];
-    if (v29)
+    _isInAlwaysOn = [(SBCoverSheetPresentationManager *)self _isInAlwaysOn];
+    animatesFlyOut = [(CSCoverSheetFlyInSettings *)self->_flyInSettings animatesFlyOut];
+    animatesFlyOutToAOD = [(CSCoverSheetFlyInSettings *)self->_flyInSettings animatesFlyOutToAOD];
+    if (_isInAlwaysOn)
     {
-      v32 = v31;
+      v32 = animatesFlyOutToAOD;
     }
 
     else
     {
-      v32 = v30;
+      v32 = animatesFlyOut;
     }
 
-    if (v26 & v27) == 1 && ((IsZero ^ 1 | v32))
+    if (v26 & _isIconFlyInAnimationAllowed) == 1 && ((IsZero ^ 1 | v32))
     {
-      [(SBCoverSheetIconFlyInAnimator *)self->_iconAnimator animateZPositionsToFraction:v24 completionGroup:v25 completion:a3];
+      [(SBCoverSheetIconFlyInAnimator *)self->_iconAnimator animateZPositionsToFraction:v24 completionGroup:v25 completion:progress];
       dispatch_group_enter(v24);
       v33 = SBLogCoverSheet();
       if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
@@ -4995,7 +4995,7 @@ LABEL_25:
       v45[2] = __111__SBCoverSheetPresentationManager__setTransitionProgress_animated_gestureActive_coverSheetProgress_completion___block_invoke_232;
       v45[3] = &unk_2783A8BC8;
       v45[4] = self;
-      *&v45[5] = a3;
+      *&v45[5] = progress;
       v43[0] = MEMORY[0x277D85DD0];
       v43[1] = 3221225472;
       v43[2] = __111__SBCoverSheetPresentationManager__setTransitionProgress_animated_gestureActive_coverSheetProgress_completion___block_invoke_3_234;
@@ -5004,7 +5004,7 @@ LABEL_25:
       [v36 _animateUsingSpringWithTension:0 friction:v45 interactive:v43 animations:v37 completion:0.0];
     }
 
-    else if (!((IsZero ^ 1 | v32) & 1 | ((v26 & v27 & 1) == 0)))
+    else if (!((IsZero ^ 1 | v32) & 1 | ((v26 & _isIconFlyInAnimationAllowed & 1) == 0)))
     {
       v35 = MEMORY[0x277D75D18];
       v39[0] = MEMORY[0x277D85DD0];
@@ -5012,7 +5012,7 @@ LABEL_25:
       v39[2] = __111__SBCoverSheetPresentationManager__setTransitionProgress_animated_gestureActive_coverSheetProgress_completion___block_invoke_235;
       v39[3] = &unk_2783AB780;
       v39[4] = self;
-      v42 = a3;
+      progressCopy = progress;
       v40 = v24;
       v41 = v25;
       [v35 performWithoutAnimation:v39];
@@ -5026,7 +5026,7 @@ LABEL_25:
     v38[2] = __111__SBCoverSheetPresentationManager__setTransitionProgress_animated_gestureActive_coverSheetProgress_completion___block_invoke_2_236;
     v38[3] = &unk_2783A8BC8;
     v38[4] = self;
-    *&v38[5] = a3;
+    *&v38[5] = progress;
     [MEMORY[0x277D75D18] _performWithoutRetargetingAnimations:v38];
   }
 }
@@ -5183,11 +5183,11 @@ uint64_t __111__SBCoverSheetPresentationManager__setTransitionProgress_animated_
   return [v2 _animateForProgress:v3];
 }
 
-- (void)setWallpaperFloatingLayerHidden:(BOOL)a3
+- (void)setWallpaperFloatingLayerHidden:(BOOL)hidden
 {
-  if (self->_wallpaperFloatingLayerHidden != a3)
+  if (self->_wallpaperFloatingLayerHidden != hidden)
   {
-    self->_wallpaperFloatingLayerHidden = a3;
+    self->_wallpaperFloatingLayerHidden = hidden;
     [(SBCoverSheetPresentationManager *)self _tellDashBoardOurAppearanceChanged];
 
     [(SBCoverSheetPresentationManager *)self _updateWallpaperOverlay];
@@ -5209,8 +5209,8 @@ uint64_t __111__SBCoverSheetPresentationManager__setTransitionProgress_animated_
 
 - (void)coverSheetSlidingViewController
 {
-  v8 = [MEMORY[0x277CCA890] currentHandler];
-  [v8 handleFailureInMethod:a1 object:a2 file:@"SBCoverSheetPresentationManager.m" lineNumber:544 description:@"asking for the coversheet sliding view controller before it was initialized."];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"SBCoverSheetPresentationManager.m" lineNumber:544 description:@"asking for the coversheet sliding view controller before it was initialized."];
 
   *a4 = *a3;
 }
@@ -5240,7 +5240,7 @@ uint64_t __111__SBCoverSheetPresentationManager__setTransitionProgress_animated_
 {
   v3 = *MEMORY[0x277D85DE8];
   v2[0] = 67109120;
-  v2[1] = a1 & 1;
+  v2[1] = self & 1;
   _os_log_debug_impl(&dword_21ED4E000, a2, OS_LOG_TYPE_DEBUG, "SBCoverSheetPresentationManager disableIconFlyInAnimation: %{BOOL}u", v2, 8u);
 }
 

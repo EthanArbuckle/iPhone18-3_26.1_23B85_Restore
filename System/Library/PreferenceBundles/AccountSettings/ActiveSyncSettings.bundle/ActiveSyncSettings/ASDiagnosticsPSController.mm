@@ -1,5 +1,5 @@
 @interface ASDiagnosticsPSController
-- (id)currentPingIntervalForSpecifier:(id)a3;
+- (id)currentPingIntervalForSpecifier:(id)specifier;
 - (id)specifiers;
 @end
 
@@ -9,8 +9,8 @@
 {
   v15.receiver = self;
   v15.super_class = ASDiagnosticsPSController;
-  v3 = [(ESDiagnosticsPSController *)&v15 specifiers];
-  v4 = [v3 mutableCopy];
+  specifiers = [(ESDiagnosticsPSController *)&v15 specifiers];
+  v4 = [specifiers mutableCopy];
 
   v5 = [PSSpecifier preferenceSpecifierNamed:0 target:0 set:0 get:0 detail:0 cell:0 edit:0];
   v6 = [NSBundle bundleForClass:objc_opt_class()];
@@ -30,7 +30,7 @@
   return v12;
 }
 
-- (id)currentPingIntervalForSpecifier:(id)a3
+- (id)currentPingIntervalForSpecifier:(id)specifier
 {
   v3 = CFPreferencesCopyAppValue(@"LastGoodPingHeartBeat", @"com.apple.dataaccess.dataaccessd");
   v4 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%d", [v3 intValue]);

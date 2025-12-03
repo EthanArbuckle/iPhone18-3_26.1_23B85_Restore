@@ -1,21 +1,21 @@
 @interface ARUICelebrationFactory
-+ (id)celebrationOfType:(unint64_t)a3;
++ (id)celebrationOfType:(unint64_t)type;
 @end
 
 @implementation ARUICelebrationFactory
 
-+ (id)celebrationOfType:(unint64_t)a3
++ (id)celebrationOfType:(unint64_t)type
 {
-  if (a3)
+  if (type)
   {
   }
 
   else
   {
-    a1 = objc_alloc_init(_TtC15ActivityRingsUI17SparksCelebration);
+    self = objc_alloc_init(_TtC15ActivityRingsUI17SparksCelebration);
   }
 
-  return a1;
+  return self;
 }
 
 @end

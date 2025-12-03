@@ -1,5 +1,5 @@
 @interface SBFSAlwaysOnLiveRenderingAssertionFBSScene
-- (SBFSAlwaysOnLiveRenderingAssertionFBSScene)initWithScene:(id)a3;
+- (SBFSAlwaysOnLiveRenderingAssertionFBSScene)initWithScene:(id)scene;
 - (id)assertionAttributes;
 @end
 
@@ -26,16 +26,16 @@
   return v5;
 }
 
-- (SBFSAlwaysOnLiveRenderingAssertionFBSScene)initWithScene:(id)a3
+- (SBFSAlwaysOnLiveRenderingAssertionFBSScene)initWithScene:(id)scene
 {
-  v4 = a3;
+  sceneCopy = scene;
   v8.receiver = self;
   v8.super_class = SBFSAlwaysOnLiveRenderingAssertionFBSScene;
-  v5 = [(SBFAlwaysOnLiveRenderingSceneBLSAttributesProvider *)&v8 _init];
-  v6 = v5;
-  if (v5)
+  _init = [(SBFAlwaysOnLiveRenderingSceneBLSAttributesProvider *)&v8 _init];
+  v6 = _init;
+  if (_init)
   {
-    objc_storeWeak(v5 + 1, v4);
+    objc_storeWeak(_init + 1, sceneCopy);
   }
 
   return v6;

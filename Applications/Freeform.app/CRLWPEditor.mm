@@ -1,24 +1,24 @@
 @interface CRLWPEditor
-+ (BOOL)canEditTextIn:(id)a3 using:(id)a4;
-- (BOOL)blockGesture:(id)a3;
-- (BOOL)canHandleGesture:(id)a3;
++ (BOOL)canEditTextIn:(id)in using:(id)using;
+- (BOOL)blockGesture:(id)gesture;
+- (BOOL)canHandleGesture:(id)gesture;
 - (BOOL)canMutateTextStorage;
-- (BOOL)canPasteWithItemSource:(id)a3 selection:(id)a4 sender:(id)a5;
-- (BOOL)canSetWritingDirection:(int64_t)a3;
+- (BOOL)canPasteWithItemSource:(id)source selection:(id)selection sender:(id)sender;
+- (BOOL)canSetWritingDirection:(int64_t)direction;
 - (BOOL)editMenuIsVisible;
 - (BOOL)hasText;
 - (BOOL)isACurrentEditor;
-- (BOOL)isUnscaledPointInTextSelection:(CGPoint)a3;
+- (BOOL)isUnscaledPointInTextSelection:(CGPoint)selection;
 - (BOOL)needsTextEditingAccessoryBar;
-- (BOOL)p_shouldBeginCaretGrabAtUnscaledCanvasPoint:(CGPoint)a3;
-- (BOOL)shouldRemainOnEditorStackForSelection:(id)a3 inSelectionPath:(id)a4 withNewEditors:(id)a5;
-- (BOOL)wantsParagraphModeWithSelection:(id)a3;
+- (BOOL)p_shouldBeginCaretGrabAtUnscaledCanvasPoint:(CGPoint)point;
+- (BOOL)shouldRemainOnEditorStackForSelection:(id)selection inSelectionPath:(id)path withNewEditors:(id)editors;
+- (BOOL)wantsParagraphModeWithSelection:(id)selection;
 - (CGPoint)adjustedDragPoint;
 - (CGPoint)adjustedDragToNaturalPointOffset;
-- (CGPoint)clampUnscaledPointToTextFieldBounds:(CGPoint)a3;
+- (CGPoint)clampUnscaledPointToTextFieldBounds:(CGPoint)bounds;
 - (CGPoint)currentKnobPoint;
 - (CGPoint)firstTapUnscaledPoint;
-- (CGPoint)getCenterOfWord:(id)a3;
+- (CGPoint)getCenterOfWord:(id)word;
 - (CGPoint)knobToTouchOffset;
 - (CGPoint)knobTrackingDragPoint;
 - (CGPoint)selectionTargetToAdjustedDragOffset;
@@ -36,10 +36,10 @@
 - (NSDictionary)markedTextStyle;
 - (NSSet)editingReps;
 - (UIInputViewController)inputAccessoryViewController;
-- (_NSRange)availableSelectionRangeForCharIndex:(int64_t)a3;
+- (_NSRange)availableSelectionRangeForCharIndex:(int64_t)index;
 - (_NSRange)expectedWordSelectionAtPoint;
 - (_NSRange)markedRange;
-- (_NSRange)nextWordFromIndex:(unint64_t)a3 forward:(BOOL)a4;
+- (_NSRange)nextWordFromIndex:(unint64_t)index forward:(BOOL)forward;
 - (_NSRange)originalSelectionRange;
 - (_NSRange)selectedRangeAtPinchAndHalfStart;
 - (_TtC8Freeform11CRLWPEditor)init;
@@ -48,117 +48,117 @@
 - (_TtC8Freeform12CRLWPStorage)storageWithMarkedText;
 - (_TtC8Freeform25CRLWPTextSelectionManager)textSelectionManager;
 - (_TtP8Freeform16CRLTextSelecting_)textSelectionDelegate;
-- (id)attributedSubstringForProposedRange:(_NSRange)a3 actualRange:(_NSRange *)a4;
-- (id)autocorrectionRangesToDisplayInRange:(_NSRange)a3;
-- (id)closestRepToPoint:(CGPoint)a3 forStorage:(id)a4;
-- (id)commandForReplacingTextInRange:(id)a3 withAttributedText:(id)a4;
-- (id)commandForReplacingTextInRange:(id)a3 withText:(id)a4;
-- (id)cursorAtPoint:(CGPoint)a3 withCursorPlatformObject:(id)a4;
-- (id)dictationAndAutocorrectionsFor:(int64_t)a3 effectiveRange:(_NSRange *)a4;
+- (id)attributedSubstringForProposedRange:(_NSRange)range actualRange:(_NSRange *)actualRange;
+- (id)autocorrectionRangesToDisplayInRange:(_NSRange)range;
+- (id)closestRepToPoint:(CGPoint)point forStorage:(id)storage;
+- (id)commandForReplacingTextInRange:(id)range withAttributedText:(id)text;
+- (id)commandForReplacingTextInRange:(id)range withText:(id)text;
+- (id)cursorAtPoint:(CGPoint)point withCursorPlatformObject:(id)object;
+- (id)dictationAndAutocorrectionsFor:(int64_t)for effectiveRange:(_NSRange *)range;
 - (id)icc;
-- (id)p_editingRepAtPoint:(CGPoint)a3;
-- (id)p_editingRepForCharIndex:(unint64_t)a3;
-- (id)p_endingRepForUnscaledCanvasPoint:(CGPoint)a3;
-- (id)p_inlineEquationRepInTableCellTextRep:(id)a3 atUnscaledCanvasPoint:(CGPoint)a4 gesture:(id)a5;
-- (id)p_repsForStorage:(id)a3;
-- (id)p_selectionForRep:(id)a3 naturalPoint:(CGPoint)a4 textSelectionGranularity:(unint64_t)a5 isTapHold:(BOOL)a6 precise:(BOOL)a7 includeListLabels:(BOOL)a8 allowPastBreak:(BOOL)a9 alternateClick:(BOOL)a10;
-- (id)p_textRepAtGestureLocationForGesture:(id)a3;
-- (id)selectionFromUnscaledCanvasPoint:(CGPoint)a3 textSelectionGranularity:(unint64_t)a4 isTapHold:(BOOL)a5 allowPastBreak:(BOOL)a6 isDragging:(BOOL)a7;
-- (id)selectionWillChangeFromSelection:(id)a3 toSelection:(id)a4 withFlags:(unint64_t)a5 inSelectionPath:(id)a6 withNewEditors:(id)a7;
-- (id)wpRepFromHitRep:(id)a3;
-- (int64_t)baseWritingDirectionFor:(id)a3;
-- (int64_t)canPerformEditorAction:(SEL)a3 withSender:(id)a4;
+- (id)p_editingRepAtPoint:(CGPoint)point;
+- (id)p_editingRepForCharIndex:(unint64_t)index;
+- (id)p_endingRepForUnscaledCanvasPoint:(CGPoint)point;
+- (id)p_inlineEquationRepInTableCellTextRep:(id)rep atUnscaledCanvasPoint:(CGPoint)point gesture:(id)gesture;
+- (id)p_repsForStorage:(id)storage;
+- (id)p_selectionForRep:(id)rep naturalPoint:(CGPoint)point textSelectionGranularity:(unint64_t)granularity isTapHold:(BOOL)hold precise:(BOOL)precise includeListLabels:(BOOL)labels allowPastBreak:(BOOL)break alternateClick:(BOOL)self0;
+- (id)p_textRepAtGestureLocationForGesture:(id)gesture;
+- (id)selectionFromUnscaledCanvasPoint:(CGPoint)point textSelectionGranularity:(unint64_t)granularity isTapHold:(BOOL)hold allowPastBreak:(BOOL)break isDragging:(BOOL)dragging;
+- (id)selectionWillChangeFromSelection:(id)selection toSelection:(id)toSelection withFlags:(unint64_t)flags inSelectionPath:(id)path withNewEditors:(id)editors;
+- (id)wpRepFromHitRep:(id)rep;
+- (int64_t)baseWritingDirectionFor:(id)for;
+- (int64_t)canPerformEditorAction:(SEL)action withSender:(id)sender;
 - (int64_t)writingToolsBehavior;
-- (unint64_t)charIndexInRep:(id)a3 fromPoint:(CGPoint)a4 allowPastBreak:(BOOL)a5 allowNotFound:(BOOL)a6 isAtEndOfLine:(BOOL *)a7;
-- (unint64_t)charIndexInRep:(id)a3 fromPoint:(CGPoint)a4 allowPastBreak:(BOOL)a5 allowNotFound:(BOOL)a6 pastCenterGoesToNextChar:(BOOL)a7 isAtEndOfLine:(BOOL *)a8;
-- (unint64_t)charIndexInRep:(id)a3 fromPoint:(CGPoint)a4 allowPastBreak:(BOOL)a5 isAtEndOfLine:(BOOL *)a6 leadingEdge:(BOOL *)a7;
+- (unint64_t)charIndexInRep:(id)rep fromPoint:(CGPoint)point allowPastBreak:(BOOL)break allowNotFound:(BOOL)found isAtEndOfLine:(BOOL *)line;
+- (unint64_t)charIndexInRep:(id)rep fromPoint:(CGPoint)point allowPastBreak:(BOOL)break allowNotFound:(BOOL)found pastCenterGoesToNextChar:(BOOL)char isAtEndOfLine:(BOOL *)line;
+- (unint64_t)charIndexInRep:(id)rep fromPoint:(CGPoint)point allowPastBreak:(BOOL)break isAtEndOfLine:(BOOL *)line leadingEdge:(BOOL *)edge;
 - (void)abortMarkedText;
-- (void)addContextualMenuElementsToArray:(id)a3 atPoint:(CGPoint)a4;
-- (void)arrowKeyReceivedInDirection:(unint64_t)a3 withModifierKeys:(id)a4;
+- (void)addContextualMenuElementsToArray:(id)array atPoint:(CGPoint)point;
+- (void)arrowKeyReceivedInDirection:(unint64_t)direction withModifierKeys:(id)keys;
 - (void)clearMarkedRange;
 - (void)commitMarkedText;
 - (void)commitMarkedTextWithoutModifyingStorage;
-- (void)cutTo:(id)a3 nativeOnly:(BOOL)a4 sender:(id)a5;
-- (void)deleteBackward:(id)a3;
+- (void)cutTo:(id)to nativeOnly:(BOOL)only sender:(id)sender;
+- (void)deleteBackward:(id)backward;
 - (void)deleteCurrentSelection;
-- (void)deleteWordForward:(id)a3;
-- (void)didBecomeCurrentEditorForEditorController:(id)a3;
+- (void)deleteWordForward:(id)forward;
+- (void)didBecomeCurrentEditorForEditorController:(id)controller;
 - (void)didBecomeTextInputEditor;
 - (void)didResignTextInputEditor;
 - (void)didUndo;
 - (void)documentEditabilityDidChange;
 - (void)endEditing;
 - (void)gestureSequenceDidEnd;
-- (void)handleGesture:(id)a3;
+- (void)handleGesture:(id)gesture;
 - (void)hideEditMenu;
-- (void)insertText:(id)a3;
-- (void)insertWithText:(id)a3;
-- (void)lookUp:(id)a3;
-- (void)lookUpTextAtRange:(_NSRange)a3;
-- (void)moveRight:(id)a3;
-- (void)p_adjustSelection:(id)a3 withOtherSelection:(id)a4 textSelectionGranularity:(unint64_t)a5;
-- (void)p_adjustSelection:(id)a3 withUnscaledCanvasPoint:(CGPoint)a4 textSelectionGranularity:(unint64_t)a5 isTapHold:(BOOL)a6 allowPastBreak:(BOOL)a7 isDragging:(BOOL)a8;
-- (void)p_beginKnobTrackingSelection:(id)a3 forRep:(id)a4 atPoint:(CGPoint)a5;
-- (void)p_beginMagnification:(id)a3 forRep:(id)a4 atPoint:(CGPoint)a5 shouldSetSelection:(BOOL)a6;
+- (void)insertText:(id)text;
+- (void)insertWithText:(id)text;
+- (void)lookUp:(id)up;
+- (void)lookUpTextAtRange:(_NSRange)range;
+- (void)moveRight:(id)right;
+- (void)p_adjustSelection:(id)selection withOtherSelection:(id)otherSelection textSelectionGranularity:(unint64_t)granularity;
+- (void)p_adjustSelection:(id)selection withUnscaledCanvasPoint:(CGPoint)point textSelectionGranularity:(unint64_t)granularity isTapHold:(BOOL)hold allowPastBreak:(BOOL)break isDragging:(BOOL)dragging;
+- (void)p_beginKnobTrackingSelection:(id)selection forRep:(id)rep atPoint:(CGPoint)point;
+- (void)p_beginMagnification:(id)magnification forRep:(id)rep atPoint:(CGPoint)point shouldSetSelection:(BOOL)selection;
 - (void)p_beginOperationAndTakeControl;
 - (void)p_beginTapAndLongPress;
 - (void)p_cancelTapAndLongPressPreviousSelector;
-- (void)p_createKnobTracker:(id)a3 forRep:(id)a4 tapCount:(unint64_t)a5;
+- (void)p_createKnobTracker:(id)tracker forRep:(id)rep tapCount:(unint64_t)count;
 - (void)p_endAutoscroll;
-- (void)p_handleCaretDragWithImmediatePressGesture:(id)a3;
-- (void)p_handleEditableTextSelectionForceGesture:(id)a3;
-- (void)p_handleImmediateAndLongPressGesture:(id)a3;
-- (void)p_handleIndirectImmediatePressGesture:(id)a3;
-- (void)p_handleKnobDragGestureRecognizer:(id)a3;
-- (void)p_handleLongPressTextInteractionWithGestureRecognizer:(id)a3;
-- (void)p_handleTapAndTouchGesture:(id)a3;
-- (void)p_handleTapGestures:(id)a3;
-- (void)p_handleTapWhileMarkedTextGestureRecognizer:(id)a3;
-- (void)p_handleTwoFingerPanGesture:(id)a3;
-- (void)p_protectedStopKnobTrackingGesture:(id)a3;
-- (void)p_recursivelyAddRep:(id)a3 forStorage:(id)a4 toSet:(id)a5;
+- (void)p_handleCaretDragWithImmediatePressGesture:(id)gesture;
+- (void)p_handleEditableTextSelectionForceGesture:(id)gesture;
+- (void)p_handleImmediateAndLongPressGesture:(id)gesture;
+- (void)p_handleIndirectImmediatePressGesture:(id)gesture;
+- (void)p_handleKnobDragGestureRecognizer:(id)recognizer;
+- (void)p_handleLongPressTextInteractionWithGestureRecognizer:(id)recognizer;
+- (void)p_handleTapAndTouchGesture:(id)gesture;
+- (void)p_handleTapGestures:(id)gestures;
+- (void)p_handleTapWhileMarkedTextGestureRecognizer:(id)recognizer;
+- (void)p_handleTwoFingerPanGesture:(id)gesture;
+- (void)p_protectedStopKnobTrackingGesture:(id)gesture;
+- (void)p_recursivelyAddRep:(id)rep forStorage:(id)storage toSet:(id)set;
 - (void)p_sendHandleTapNotification;
-- (void)p_setSelectionFromPoint:(CGPoint)a3 textSelectionGranularity:(unint64_t)a4 includeListLabels:(BOOL)a5;
-- (void)p_setTappedSelectionPath:(id)a3;
-- (void)pasteFromItemSource:(id)a3 forceMatchStyle:(BOOL)a4;
-- (void)pasteWithItemSource:(id)a3 selection:(id)a4 sender:(id)a5 selectRange:(int64_t)a6 dragBlock:(id)a7;
+- (void)p_setSelectionFromPoint:(CGPoint)point textSelectionGranularity:(unint64_t)granularity includeListLabels:(BOOL)labels;
+- (void)p_setTappedSelectionPath:(id)path;
+- (void)pasteFromItemSource:(id)source forceMatchStyle:(BOOL)style;
+- (void)pasteWithItemSource:(id)source selection:(id)selection sender:(id)sender selectRange:(int64_t)range dragBlock:(id)block;
 - (void)protectedStopMagnification;
-- (void)replace:(id)a3 with:(id)a4;
+- (void)replace:(id)replace with:(id)with;
 - (void)selectAll;
-- (void)selectAllMenuAction:(id)a3;
-- (void)selectMenuAction:(id)a3;
-- (void)selectionDidChangeFromSelection:(id)a3 toSelection:(id)a4 withFlags:(unint64_t)a5;
-- (void)setAttributedMarkedText:(id)a3 selectedRange:(_NSRange)a4;
-- (void)setAutoscroll:(id)a3;
-- (void)setBaseWritingDirection:(int64_t)a3 forParagraphsWithRange:(id)a4;
-- (void)setDictationInterpretations:(id)a3;
-- (void)setDragRep:(id)a3;
-- (void)setEditorController:(id)a3;
-- (void)setEditorHelper:(id)a3;
-- (void)setEnclosingShape:(id)a3;
-- (void)setFidgetResolver:(id)a3;
-- (void)setInsertionStyle:(id)a3;
-- (void)setKnobTracker:(id)a3;
-- (void)setLastSingleImmediateTapTime:(id)a3;
-- (void)setListDragAnimator:(id)a3;
-- (void)setMagnifier:(id)a3;
-- (void)setMarkedText:(id)a3 selectedRange:(_NSRange)a4;
-- (void)setMarkedText:(id)a3 selectedRange:(_NSRange)a4 replacementRange:(_NSRange)a5;
-- (void)setMarkedTextStyle:(id)a3;
-- (void)setMostRecentGestureKind:(id)a3;
-- (void)setSelection:(id)a3;
-- (void)setSelectionControlsForInputType:(int64_t)a3;
-- (void)setTapInfo:(id)a3;
-- (void)setWantsVisibleKeyboard:(BOOL)a3;
+- (void)selectAllMenuAction:(id)action;
+- (void)selectMenuAction:(id)action;
+- (void)selectionDidChangeFromSelection:(id)selection toSelection:(id)toSelection withFlags:(unint64_t)flags;
+- (void)setAttributedMarkedText:(id)text selectedRange:(_NSRange)range;
+- (void)setAutoscroll:(id)autoscroll;
+- (void)setBaseWritingDirection:(int64_t)direction forParagraphsWithRange:(id)range;
+- (void)setDictationInterpretations:(id)interpretations;
+- (void)setDragRep:(id)rep;
+- (void)setEditorController:(id)controller;
+- (void)setEditorHelper:(id)helper;
+- (void)setEnclosingShape:(id)shape;
+- (void)setFidgetResolver:(id)resolver;
+- (void)setInsertionStyle:(id)style;
+- (void)setKnobTracker:(id)tracker;
+- (void)setLastSingleImmediateTapTime:(id)time;
+- (void)setListDragAnimator:(id)animator;
+- (void)setMagnifier:(id)magnifier;
+- (void)setMarkedText:(id)text selectedRange:(_NSRange)range;
+- (void)setMarkedText:(id)text selectedRange:(_NSRange)range replacementRange:(_NSRange)replacementRange;
+- (void)setMarkedTextStyle:(id)style;
+- (void)setMostRecentGestureKind:(id)kind;
+- (void)setSelection:(id)selection;
+- (void)setSelectionControlsForInputType:(int64_t)type;
+- (void)setTapInfo:(id)info;
+- (void)setWantsVisibleKeyboard:(BOOL)keyboard;
 - (void)showEditMenu;
 - (void)tapAndLongPressDidEndOrCancel;
-- (void)tappedInRep:(id)a3 point:(CGPoint)a4 tapCount:(unint64_t)a5 isTapHold:(BOOL)a6 precise:(BOOL)a7 alternateClick:(BOOL)a8;
+- (void)tappedInRep:(id)rep point:(CGPoint)point tapCount:(unint64_t)count isTapHold:(BOOL)hold precise:(BOOL)precise alternateClick:(BOOL)click;
 - (void)textSelectionDidChange;
 - (void)textSelectionWillChange;
 - (void)textWillChange;
-- (void)toggleListEntry:(id)a3;
+- (void)toggleListEntry:(id)entry;
 - (void)unmarkText;
-- (void)updateStateForCommand:(id)a3;
+- (void)updateStateForCommand:(id)command;
 - (void)updateTapAndLongPress;
 - (void)willResignCurrentEditor;
 - (void)willResignTextInputEditor;
@@ -176,75 +176,75 @@
 
 - (void)didUndo
 {
-  v1 = a1;
+  selfCopy = self;
   sub_100937818();
 }
 
-- (BOOL)blockGesture:(id)a3
+- (BOOL)blockGesture:(id)gesture
 {
-  v3 = [(CRLWPEditor *)self interactiveCanvasController];
-  if ([v3 floatingCursorInMotion])
+  interactiveCanvasController = [(CRLWPEditor *)self interactiveCanvasController];
+  if ([interactiveCanvasController floatingCursorInMotion])
   {
     LOBYTE(v4) = 1;
   }
 
   else
   {
-    v5 = [v3 textInputResponder];
-    v4 = [v5 isFirstResponder] ^ 1;
+    textInputResponder = [interactiveCanvasController textInputResponder];
+    v4 = [textInputResponder isFirstResponder] ^ 1;
   }
 
   return v4;
 }
 
-- (_NSRange)nextWordFromIndex:(unint64_t)a3 forward:(BOOL)a4
+- (_NSRange)nextWordFromIndex:(unint64_t)index forward:(BOOL)forward
 {
-  v4 = a4;
+  forwardCopy = forward;
   length = 0;
-  v8 = [(CRLWPEditor *)self storageWithMarkedText];
-  v9 = [v8 wordAtCharIndex:a3 includePreviousWord:v4];
+  storageWithMarkedText = [(CRLWPEditor *)self storageWithMarkedText];
+  v9 = [storageWithMarkedText wordAtCharIndex:index includePreviousWord:forwardCopy];
   v31 = v10;
 
-  v11 = [(CRLWPEditor *)self editorHelper];
-  v12 = [v11 availableSelectionRangeForCharIndex:a3];
+  editorHelper = [(CRLWPEditor *)self editorHelper];
+  v12 = [editorHelper availableSelectionRangeForCharIndex:index];
   v14 = v13;
 
-  v15 = [(CRLWPEditor *)self storageWithMarkedText];
-  v16 = [v15 textRangeForParagraphAtCharIndex:a3];
+  storageWithMarkedText2 = [(CRLWPEditor *)self storageWithMarkedText];
+  v16 = [storageWithMarkedText2 textRangeForParagraphAtCharIndex:index];
   v18 = v17;
 
-  v19 = [(CRLWPEditor *)self storageWithMarkedText];
-  v20 = [v19 string];
-  if (v4)
+  storageWithMarkedText3 = [(CRLWPEditor *)self storageWithMarkedText];
+  string = [storageWithMarkedText3 string];
+  if (forwardCopy)
   {
     v12 += v14;
     v33.length = v12 - v16;
     v33.location = v16;
-    v21 = CFStringTokenizerCreate(0, v20, v33, 0, 0);
+    v21 = CFStringTokenizerCreate(0, string, v33, 0, 0);
 
     v22 = 0x7FFFFFFFFFFFFFFFLL;
     if (v21)
     {
       v23 = 0;
-      v24 = a3;
+      indexCopy = index;
       do
       {
-        v25 = v24 - 1;
+        v25 = indexCopy - 1;
         ++v23;
-        if (CFStringTokenizerGoToTokenAtIndex(v21, v24))
+        if (CFStringTokenizerGoToTokenAtIndex(v21, indexCopy))
         {
           break;
         }
 
-        if (v24 <= v16)
+        if (indexCopy <= v16)
         {
           break;
         }
 
-        --v24;
+        --indexCopy;
       }
 
-      while (v12 == a3);
+      while (v12 == index);
       do
       {
         ++v25;
@@ -284,27 +284,27 @@ LABEL_30:
   {
     v34.length = &v16[v18 - v12];
     v34.location = v12;
-    v21 = CFStringTokenizerCreate(0, v20, v34, 0, 0);
+    v21 = CFStringTokenizerCreate(0, string, v34, 0, 0);
 
     v22 = 0x7FFFFFFFFFFFFFFFLL;
     if (v21)
     {
-      v28 = a3;
+      indexCopy2 = index;
       while (1)
       {
-        while (!CFStringTokenizerGoToTokenAtIndex(v21, v28))
+        while (!CFStringTokenizerGoToTokenAtIndex(v21, indexCopy2))
         {
-          if (v28 <= v12)
+          if (indexCopy2 <= v12)
           {
             goto LABEL_28;
           }
 
-          --v28;
+          --indexCopy2;
         }
 
         v29 = CFStringTokenizerGetCurrentTokenRange(v21);
         length = v29.length;
-        if (v29.location + v29.length < a3 || (v29.location + v29.length) == v9)
+        if (v29.location + v29.length < index || (v29.location + v29.length) == v9)
         {
           break;
         }
@@ -314,14 +314,14 @@ LABEL_30:
           goto LABEL_28;
         }
 
-        if (v28 - 1 >= v29.location - 1)
+        if (indexCopy2 - 1 >= v29.location - 1)
         {
-          v28 = v29.location - 1;
+          indexCopy2 = v29.location - 1;
         }
 
         else
         {
-          --v28;
+          --indexCopy2;
         }
       }
 
@@ -336,47 +336,47 @@ LABEL_30:
   return result;
 }
 
-- (void)p_adjustSelection:(id)a3 withOtherSelection:(id)a4 textSelectionGranularity:(unint64_t)a5
+- (void)p_adjustSelection:(id)selection withOtherSelection:(id)otherSelection textSelectionGranularity:(unint64_t)granularity
 {
-  v7 = a3;
-  v8 = a4;
-  if ([v7 isValid] && objc_msgSend(v8, "isValid"))
+  selectionCopy = selection;
+  otherSelectionCopy = otherSelection;
+  if ([selectionCopy isValid] && objc_msgSend(otherSelectionCopy, "isValid"))
   {
     v50[0] = _NSConcreteStackBlock;
     v50[1] = 3221225472;
     v50[2] = sub_100568BC4;
     v50[3] = &unk_10186F7E8;
-    v7 = v7;
-    v51 = v7;
-    v9 = v8;
+    selectionCopy = selectionCopy;
+    v51 = selectionCopy;
+    v9 = otherSelectionCopy;
     v52 = v9;
     v10 = objc_retainBlock(v50);
-    if ([v9 type] == 7 && !objc_msgSend(v7, "type"))
+    if ([v9 type] == 7 && !objc_msgSend(selectionCopy, "type"))
     {
-      v11 = [(CRLWPEditor *)self editorHelper];
-      v12 = [v11 logicalToVisualSelection:v7];
+      editorHelper = [(CRLWPEditor *)self editorHelper];
+      v12 = [editorHelper logicalToVisualSelection:selectionCopy];
 
-      v13 = [(CRLWPEditor *)self editorHelper];
-      v7 = [v13 calculateVisualRunsFromSelection:v12 updateControllerSelection:0];
+      editorHelper2 = [(CRLWPEditor *)self editorHelper];
+      selectionCopy = [editorHelper2 calculateVisualRunsFromSelection:v12 updateControllerSelection:0];
     }
 
-    if ([v9 type] != 7 || objc_msgSend(v7, "type") != 7)
+    if ([v9 type] != 7 || objc_msgSend(selectionCopy, "type") != 7)
     {
       v25 = (v10[2])(v10);
       v27 = v26;
-      v28 = [(CRLWPEditor *)self selection];
-      if ([v28 isValid])
+      selection = [(CRLWPEditor *)self selection];
+      if ([selection isValid])
       {
         [(CRLWPEditor *)self selection];
         v29 = v9;
         v31 = v30 = v10;
-        v32 = [v31 range];
+        range = [v31 range];
         v47 = v33;
 
         v10 = v30;
         v9 = v29;
 
-        if (v32 == v25 && v47 == v27)
+        if (range == v25 && v47 == v27)
         {
           v24 = 0;
           goto LABEL_26;
@@ -400,8 +400,8 @@ LABEL_26:
 
     v49 = 1;
     v48 = 0;
-    v14 = [(CRLWPEditor *)self editorHelper];
-    v15 = [v14 adjustVisualSelection:v7 withOtherSelection:v9 outLeadingEdge:&v49 outCaretAffinity:&v48];
+    editorHelper3 = [(CRLWPEditor *)self editorHelper];
+    v15 = [editorHelper3 adjustVisualSelection:selectionCopy withOtherSelection:v9 outLeadingEdge:&v49 outCaretAffinity:&v48];
     v17 = v16;
 
     if (v15 == 0x7FFFFFFFFFFFFFFFLL)
@@ -410,15 +410,15 @@ LABEL_26:
       v17 = v18;
     }
 
-    v19 = [(CRLWPEditor *)self selection];
+    selection2 = [(CRLWPEditor *)self selection];
     v46 = v10;
-    if ([v19 isValid])
+    if ([selection2 isValid])
     {
-      v20 = [(CRLWPEditor *)self selection];
-      v21 = [v20 range];
+      selection3 = [(CRLWPEditor *)self selection];
+      range2 = [selection3 range];
       v23 = v22;
 
-      if (v21 == v15 && v23 == v17)
+      if (range2 == v15 && v23 == v17)
       {
         v24 = 0;
         goto LABEL_23;
@@ -432,29 +432,29 @@ LABEL_26:
     v34 = [CRLWPSelection alloc];
     v35 = v48;
     v36 = v49;
-    v37 = [(CRLWPEditor *)self storageWithMarkedText];
+    storageWithMarkedText = [(CRLWPEditor *)self storageWithMarkedText];
     LOBYTE(v45) = v36;
-    v24 = [(CRLWPSelection *)v34 initWithType:7 range:v15 styleInsertionBehavior:v17 caretAffinity:0 smartFieldRange:v35 leadingEdge:0x7FFFFFFFFFFFFFFFLL storage:0, v45, v37];
+    v24 = [(CRLWPSelection *)v34 initWithType:7 range:v15 styleInsertionBehavior:v17 caretAffinity:0 smartFieldRange:v35 leadingEdge:0x7FFFFFFFFFFFFFFFLL storage:0, v45, storageWithMarkedText];
 
 LABEL_23:
     v10 = v46;
     if (v24)
     {
 LABEL_24:
-      v38 = [(CRLWPEditor *)self editorHelper];
-      v39 = [v38 selectionLastModifiedWithKeyboard];
+      editorHelper4 = [(CRLWPEditor *)self editorHelper];
+      selectionLastModifiedWithKeyboard = [editorHelper4 selectionLastModifiedWithKeyboard];
 
-      v40 = [(CRLWPEditor *)self editorController];
-      [v40 setSelection:v24 forEditor:self withFlags:8];
+      editorController = [(CRLWPEditor *)self editorController];
+      [editorController setSelection:v24 forEditor:self withFlags:8];
 
-      if (v39)
+      if (selectionLastModifiedWithKeyboard)
       {
-        v41 = [(CRLWPEditor *)self editorController];
-        v42 = [v41 selectionPath];
-        v43 = [v42 selectionPathByAppendingOrReplacingMostSpecificSelectionWithSelection:v9];
+        editorController2 = [(CRLWPEditor *)self editorController];
+        selectionPath = [editorController2 selectionPath];
+        v43 = [selectionPath selectionPathByAppendingOrReplacingMostSpecificSelectionWithSelection:v9];
 
-        v44 = [(CRLWPEditor *)self interactiveCanvasController];
-        [v44 scrollToSelectionPath:v43 scrollOptions:1];
+        interactiveCanvasController = [(CRLWPEditor *)self interactiveCanvasController];
+        [interactiveCanvasController scrollToSelectionPath:v43 scrollOptions:1];
       }
 
       goto LABEL_26;
@@ -466,28 +466,28 @@ LABEL_24:
 LABEL_27:
 }
 
-- (void)p_adjustSelection:(id)a3 withUnscaledCanvasPoint:(CGPoint)a4 textSelectionGranularity:(unint64_t)a5 isTapHold:(BOOL)a6 allowPastBreak:(BOOL)a7 isDragging:(BOOL)a8
+- (void)p_adjustSelection:(id)selection withUnscaledCanvasPoint:(CGPoint)point textSelectionGranularity:(unint64_t)granularity isTapHold:(BOOL)hold allowPastBreak:(BOOL)break isDragging:(BOOL)dragging
 {
-  v8 = a8;
-  v9 = a7;
-  v10 = a6;
-  y = a4.y;
-  x = a4.x;
-  v16 = a3;
-  v15 = [(CRLWPEditor *)self selectionFromUnscaledCanvasPoint:a5 textSelectionGranularity:v10 isTapHold:v9 allowPastBreak:v8 isDragging:x, y];
+  draggingCopy = dragging;
+  breakCopy = break;
+  holdCopy = hold;
+  y = point.y;
+  x = point.x;
+  selectionCopy = selection;
+  v15 = [(CRLWPEditor *)self selectionFromUnscaledCanvasPoint:granularity textSelectionGranularity:holdCopy isTapHold:breakCopy allowPastBreak:draggingCopy isDragging:x, y];
   if (v15)
   {
-    [(CRLWPEditor *)self p_adjustSelection:v16 withOtherSelection:v15 textSelectionGranularity:a5];
+    [(CRLWPEditor *)self p_adjustSelection:selectionCopy withOtherSelection:v15 textSelectionGranularity:granularity];
   }
 }
 
-- (id)p_editingRepAtPoint:(CGPoint)a3
+- (id)p_editingRepAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v6 = objc_opt_class();
-  v7 = [(CRLWPEditor *)self storageWithMarkedText];
-  v8 = [(CRLWPEditor *)self closestRepToPoint:v7 forStorage:x, y];
+  storageWithMarkedText = [(CRLWPEditor *)self storageWithMarkedText];
+  v8 = [(CRLWPEditor *)self closestRepToPoint:storageWithMarkedText forStorage:x, y];
   v9 = sub_100014370(v6, v8);
 
   if (v9 && [v9 isBeingEdited])
@@ -503,11 +503,11 @@ LABEL_27:
   return v10;
 }
 
-- (void)p_setSelectionFromPoint:(CGPoint)a3 textSelectionGranularity:(unint64_t)a4 includeListLabels:(BOOL)a5
+- (void)p_setSelectionFromPoint:(CGPoint)point textSelectionGranularity:(unint64_t)granularity includeListLabels:(BOOL)labels
 {
-  v5 = a5;
-  y = a3.y;
-  x = a3.x;
+  labelsCopy = labels;
+  y = point.y;
+  x = point.x;
   v10 = [(CRLWPEditor *)self p_editingRepAtPoint:?];
   if (v10)
   {
@@ -516,9 +516,9 @@ LABEL_27:
     [v21 pinToClosestColumn:?];
     v12 = v11;
     v14 = v13;
-    v15 = [(CRLWPEditor *)self p_selectionForRep:v21 point:a4 textSelectionGranularity:0 isTapHold:1 precise:v5 includeListLabels:0 allowPastBreak:?];
-    v16 = [(CRLWPEditor *)self selection];
-    v17 = [v15 isEqual:v16];
+    v15 = [(CRLWPEditor *)self p_selectionForRep:v21 point:granularity textSelectionGranularity:0 isTapHold:1 precise:labelsCopy includeListLabels:0 allowPastBreak:?];
+    selection = [(CRLWPEditor *)self selection];
+    v17 = [v15 isEqual:selection];
 
     if ((v17 & 1) == 0)
     {
@@ -532,32 +532,32 @@ LABEL_27:
         v18 = 14;
       }
 
-      v19 = [(CRLWPEditor *)self editorController];
-      [v19 setSelection:v15 forEditor:self withFlags:v18];
+      editorController = [(CRLWPEditor *)self editorController];
+      [editorController setSelection:v15 forEditor:self withFlags:v18];
 
-      v20 = [(CRLWPEditor *)self textSelectionDelegate];
-      [v20 moveLoupeTo:{v12, v14}];
+      textSelectionDelegate = [(CRLWPEditor *)self textSelectionDelegate];
+      [textSelectionDelegate moveLoupeTo:{v12, v14}];
     }
 
     v10 = v21;
   }
 }
 
-- (id)selectionFromUnscaledCanvasPoint:(CGPoint)a3 textSelectionGranularity:(unint64_t)a4 isTapHold:(BOOL)a5 allowPastBreak:(BOOL)a6 isDragging:(BOOL)a7
+- (id)selectionFromUnscaledCanvasPoint:(CGPoint)point textSelectionGranularity:(unint64_t)granularity isTapHold:(BOOL)hold allowPastBreak:(BOOL)break isDragging:(BOOL)dragging
 {
-  v7 = a6;
-  v8 = a5;
-  y = a3.y;
-  x = a3.x;
+  breakCopy = break;
+  holdCopy = hold;
+  y = point.y;
+  x = point.x;
   v13 = objc_opt_class();
-  v14 = [(CRLWPEditor *)self storageWithMarkedText];
-  v15 = [(CRLWPEditor *)self closestRepToPoint:v14 forStorage:x, y];
+  storageWithMarkedText = [(CRLWPEditor *)self storageWithMarkedText];
+  v15 = [(CRLWPEditor *)self closestRepToPoint:storageWithMarkedText forStorage:x, y];
   v16 = sub_100014370(v13, v15);
 
   if ([v16 isBeingEdited])
   {
     [v16 convertNaturalPointFromUnscaledCanvas:{x, y}];
-    v17 = [(CRLWPEditor *)self p_selectionForRep:v16 point:a4 textSelectionGranularity:v8 isTapHold:1 precise:0 includeListLabels:v7 allowPastBreak:?];
+    v17 = [(CRLWPEditor *)self p_selectionForRep:v16 point:granularity textSelectionGranularity:holdCopy isTapHold:1 precise:0 includeListLabels:breakCopy allowPastBreak:?];
   }
 
   else
@@ -568,31 +568,31 @@ LABEL_27:
   return v17;
 }
 
-- (id)wpRepFromHitRep:(id)a3
+- (id)wpRepFromHitRep:(id)rep
 {
-  v3 = a3;
+  repCopy = rep;
   v4 = objc_opt_class();
-  v5 = sub_100014370(v4, v3);
+  v5 = sub_100014370(v4, repCopy);
 
   return v5;
 }
 
-- (id)p_textRepAtGestureLocationForGesture:(id)a3
+- (id)p_textRepAtGestureLocationForGesture:(id)gesture
 {
-  v4 = a3;
-  v5 = [(CRLWPEditor *)self interactiveCanvasController];
-  [v4 unscaledLocationForICC:v5];
+  gestureCopy = gesture;
+  interactiveCanvasController = [(CRLWPEditor *)self interactiveCanvasController];
+  [gestureCopy unscaledLocationForICC:interactiveCanvasController];
   v7 = v6;
   v9 = v8;
   v10 = objc_opt_class();
-  v11 = [v4 targetRep];
+  targetRep = [gestureCopy targetRep];
 
-  v12 = sub_100014370(v10, v11);
+  v12 = sub_100014370(v10, targetRep);
 
   if (!v12)
   {
     v13 = objc_opt_class();
-    v14 = [v5 hitRep:{v7, v9}];
+    v14 = [interactiveCanvasController hitRep:{v7, v9}];
     v15 = [(CRLWPEditor *)self wpRepFromHitRep:v14];
     v12 = sub_100014370(v13, v15);
   }
@@ -600,17 +600,17 @@ LABEL_27:
   return v12;
 }
 
-- (void)p_recursivelyAddRep:(id)a3 forStorage:(id)a4 toSet:(id)a5
+- (void)p_recursivelyAddRep:(id)rep forStorage:(id)storage toSet:(id)set
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  repCopy = rep;
+  storageCopy = storage;
+  setCopy = set;
   v11 = objc_opt_class();
-  v12 = sub_100014370(v11, v8);
+  v12 = sub_100014370(v11, repCopy);
   v13 = v12;
-  if (v12 && ([v12 storage], v14 = objc_claimAutoreleasedReturnValue(), v14, v14 == v9))
+  if (v12 && ([v12 storage], v14 = objc_claimAutoreleasedReturnValue(), v14, v14 == storageCopy))
   {
-    [v10 addObject:v13];
+    [setCopy addObject:v13];
   }
 
   else
@@ -619,8 +619,8 @@ LABEL_27:
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v15 = [v8 childReps];
-    v16 = [v15 countByEnumeratingWithState:&v20 objects:v24 count:16];
+    childReps = [repCopy childReps];
+    v16 = [childReps countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v16)
     {
       v17 = v16;
@@ -632,15 +632,15 @@ LABEL_27:
         {
           if (*v21 != v18)
           {
-            objc_enumerationMutation(v15);
+            objc_enumerationMutation(childReps);
           }
 
-          [(CRLWPEditor *)self p_recursivelyAddRep:*(*(&v20 + 1) + 8 * v19) forStorage:v9 toSet:v10];
+          [(CRLWPEditor *)self p_recursivelyAddRep:*(*(&v20 + 1) + 8 * v19) forStorage:storageCopy toSet:setCopy];
           v19 = v19 + 1;
         }
 
         while (v17 != v19);
-        v17 = [v15 countByEnumeratingWithState:&v20 objects:v24 count:16];
+        v17 = [childReps countByEnumeratingWithState:&v20 objects:v24 count:16];
       }
 
       while (v17);
@@ -648,19 +648,19 @@ LABEL_27:
   }
 }
 
-- (id)p_repsForStorage:(id)a3
+- (id)p_repsForStorage:(id)storage
 {
-  v4 = a3;
+  storageCopy = storage;
   v5 = +[NSMutableSet set];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [(CRLWPEditor *)self interactiveCanvasController];
-  v7 = [v6 canvas];
-  v8 = [v7 topLevelReps];
+  interactiveCanvasController = [(CRLWPEditor *)self interactiveCanvasController];
+  canvas = [interactiveCanvasController canvas];
+  topLevelReps = [canvas topLevelReps];
 
-  v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v9 = [topLevelReps countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v9)
   {
     v10 = v9;
@@ -671,13 +671,13 @@ LABEL_27:
       {
         if (*v15 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(topLevelReps);
         }
 
-        [(CRLWPEditor *)self p_recursivelyAddRep:*(*(&v14 + 1) + 8 * i) forStorage:v4 toSet:v5];
+        [(CRLWPEditor *)self p_recursivelyAddRep:*(*(&v14 + 1) + 8 * i) forStorage:storageCopy toSet:v5];
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v10 = [topLevelReps countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v10);
@@ -686,12 +686,12 @@ LABEL_27:
   return v5;
 }
 
-- (id)closestRepToPoint:(CGPoint)a3 forStorage:(id)a4
+- (id)closestRepToPoint:(CGPoint)point forStorage:(id)storage
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  [(CRLWPEditor *)self p_repsForStorage:v7];
+  y = point.y;
+  x = point.x;
+  storageCopy = storage;
+  [(CRLWPEditor *)self p_repsForStorage:storageCopy];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
@@ -769,35 +769,35 @@ LABEL_14:
   return v11;
 }
 
-- (id)p_endingRepForUnscaledCanvasPoint:(CGPoint)a3
+- (id)p_endingRepForUnscaledCanvasPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v6 = objc_opt_class();
-  v7 = [(CRLWPEditor *)self storageWithMarkedText];
-  v8 = [(CRLWPEditor *)self closestRepToPoint:v7 forStorage:x, y];
+  storageWithMarkedText = [(CRLWPEditor *)self storageWithMarkedText];
+  v8 = [(CRLWPEditor *)self closestRepToPoint:storageWithMarkedText forStorage:x, y];
   v9 = sub_100014370(v6, v8);
 
   return v9;
 }
 
-- (void)p_handleTwoFingerPanGesture:(id)a3
+- (void)p_handleTwoFingerPanGesture:(id)gesture
 {
-  v4 = a3;
-  v5 = [v4 targetRep];
+  gestureCopy = gesture;
+  targetRep = [gestureCopy targetRep];
 
   v6 = objc_opt_class();
-  if (v5)
+  if (targetRep)
   {
-    v7 = [v4 targetRep];
-    v8 = sub_100014370(v6, v7);
+    targetRep2 = [gestureCopy targetRep];
+    v8 = sub_100014370(v6, targetRep2);
   }
 
   else
   {
-    v7 = [(CRLWPEditor *)self editingReps];
-    v9 = [v7 anyObject];
-    v8 = sub_100014370(v6, v9);
+    targetRep2 = [(CRLWPEditor *)self editingReps];
+    anyObject = [targetRep2 anyObject];
+    v8 = sub_100014370(v6, anyObject);
   }
 
   if (!v8)
@@ -829,18 +829,18 @@ LABEL_14:
     [CRLAssertionHandler handleFailureInFunction:v11 file:v12 lineNumber:438 isFatal:0 description:"invalid nil value for '%{public}s'", "targetRep"];
   }
 
-  v13 = [(CRLWPEditor *)self interactiveCanvasController];
-  [v4 unscaledLocationForICC:v13];
+  interactiveCanvasController = [(CRLWPEditor *)self interactiveCanvasController];
+  [gestureCopy unscaledLocationForICC:interactiveCanvasController];
   v15 = v14;
   v17 = v16;
 
-  v18 = [v4 gestureState];
-  if (v18 == 2)
+  gestureState = [gestureCopy gestureState];
+  if (gestureState == 2)
   {
     [v8 updateFloatingCursorAtPoint:{v15, v17}];
   }
 
-  else if (v18 == 1)
+  else if (gestureState == 1)
   {
     [(CRLWPEditor *)self twoFingerPanGestureWillBegin];
     [v8 beginFloatingCursorAtPoint:1 animate:{v15, v17}];
@@ -851,23 +851,23 @@ LABEL_14:
     [v8 endFloatingCursorWithRepForAnimation:v8];
     [(CRLWPEditor *)self twoFingerPanGestureDidEnd];
     v19 = +[NSNotificationCenter defaultCenter];
-    v20 = [(CRLWPEditor *)self storageWithMarkedText];
-    [v19 postNotificationName:@"CRLTPEditorSelectionChanged" object:v20];
+    storageWithMarkedText = [(CRLWPEditor *)self storageWithMarkedText];
+    [v19 postNotificationName:@"CRLTPEditorSelectionChanged" object:storageWithMarkedText];
 
     v21 = +[NSNotificationCenter defaultCenter];
-    v22 = [(CRLWPEditor *)self storageWithMarkedText];
-    [v21 postNotificationName:@"CRLWPEditorSelectionContentsChanged" object:v22];
+    storageWithMarkedText2 = [(CRLWPEditor *)self storageWithMarkedText];
+    [v21 postNotificationName:@"CRLWPEditorSelectionContentsChanged" object:storageWithMarkedText2];
   }
 }
 
-- (void)p_handleImmediateAndLongPressGesture:(id)a3
+- (void)p_handleImmediateAndLongPressGesture:(id)gesture
 {
-  v4 = a3;
-  v5 = [(CRLWPEditor *)self interactiveCanvasController];
-  [v4 unscaledLocationForICC:v5];
+  gestureCopy = gesture;
+  interactiveCanvasController = [(CRLWPEditor *)self interactiveCanvasController];
+  [gestureCopy unscaledLocationForICC:interactiveCanvasController];
   v22 = 0;
   v6 = 1;
-  v7 = [v5 hitKnobAtPoint:1 inputType:&v22 returningRep:?];
+  v7 = [interactiveCanvasController hitKnobAtPoint:1 inputType:&v22 returningRep:?];
   v8 = v22;
   if ([v7 tag] != 11)
   {
@@ -880,133 +880,133 @@ LABEL_14:
   v11 = 1;
   if (v7 && v10)
   {
-    v12 = [v10 storage];
-    v13 = [(CRLWPEditor *)self storageWithMarkedText];
-    v14 = v12 != v13;
+    storage = [v10 storage];
+    storageWithMarkedText = [(CRLWPEditor *)self storageWithMarkedText];
+    v14 = storage != storageWithMarkedText;
 
     v11 = v14 || !v6;
   }
 
-  v15 = [(CRLWPEditor *)self knobTracker];
-  v16 = [v4 gestureState] == 1 && (v11 & 1) == 0 || (objc_msgSend(v4, "gestureState") == 2 || objc_msgSend(v4, "gestureState") == 3 || objc_msgSend(v4, "gestureState") == 4) && v15 != 0;
-  v17 = [v4 gestureKind];
-  v18 = [v4 inputType];
-  if ([v4 gestureState] == 1)
+  knobTracker = [(CRLWPEditor *)self knobTracker];
+  v16 = [gestureCopy gestureState] == 1 && (v11 & 1) == 0 || (objc_msgSend(gestureCopy, "gestureState") == 2 || objc_msgSend(gestureCopy, "gestureState") == 3 || objc_msgSend(gestureCopy, "gestureState") == 4) && knobTracker != 0;
+  gestureKind = [gestureCopy gestureKind];
+  inputType = [gestureCopy inputType];
+  if ([gestureCopy gestureState] == 1)
   {
-    v19 = [(CRLWPEditor *)self selection];
-    v20 = [v19 isInsertionPoint];
-    if (v18 == 2)
+    selection = [(CRLWPEditor *)self selection];
+    isInsertionPoint = [selection isInsertionPoint];
+    if (inputType == 2)
     {
       v21 = 0;
     }
 
     else
     {
-      v21 = v20;
+      v21 = isInsertionPoint;
     }
   }
 
   else
   {
-    v21 = v18 != 2;
+    v21 = inputType != 2;
   }
 
-  if (v17 != @"CRLWPImmediatePress" || !v21 || v16)
+  if (gestureKind != @"CRLWPImmediatePress" || !v21 || v16)
   {
-    [(CRLWPEditor *)self p_handleLongPressTextInteractionWithGestureRecognizer:v4];
+    [(CRLWPEditor *)self p_handleLongPressTextInteractionWithGestureRecognizer:gestureCopy];
   }
 
   else
   {
-    [(CRLWPEditor *)self p_handleCaretDragWithImmediatePressGesture:v4];
+    [(CRLWPEditor *)self p_handleCaretDragWithImmediatePressGesture:gestureCopy];
   }
 }
 
-- (void)p_handleCaretDragWithImmediatePressGesture:(id)a3
+- (void)p_handleCaretDragWithImmediatePressGesture:(id)gesture
 {
-  v27 = a3;
-  v4 = [(CRLWPEditor *)self interactiveCanvasController];
-  [v27 unscaledLocationForICC:v4];
+  gestureCopy = gesture;
+  interactiveCanvasController = [(CRLWPEditor *)self interactiveCanvasController];
+  [gestureCopy unscaledLocationForICC:interactiveCanvasController];
   v6 = v5;
   v8 = v7;
-  [v4 convertUnscaledToBoundsPoint:?];
+  [interactiveCanvasController convertUnscaledToBoundsPoint:?];
   v10 = v9;
   v12 = v11;
-  v13 = [v27 gestureState];
-  if (v13 - 3 < 2)
+  gestureState = [gestureCopy gestureState];
+  if (gestureState - 3 < 2)
   {
     [(CRLWPEditor *)self revertLastSelectionChangeIfElapsedTimeIsUnderPinFidgetThreshold];
     [(CRLWPEditor *)self protectedStopMagnification];
   }
 
-  else if (v13 == 2)
+  else if (gestureState == 2)
   {
     v18 = [(CRLWPEditor *)self p_editingRepAtPoint:v6, v8];
-    v19 = [(CRLWPEditor *)self magnifier];
+    magnifier = [(CRLWPEditor *)self magnifier];
 
-    if (v19)
+    if (magnifier)
     {
-      v20 = [(CRLWPEditor *)self magnifier];
-      [v20 setTarget:v18];
+      magnifier2 = [(CRLWPEditor *)self magnifier];
+      [magnifier2 setTarget:v18];
 
-      v21 = [(CRLWPEditor *)self magnifier];
-      [v4 convertUnscaledToBoundsPoint:{v6, v8}];
-      [v21 continueMagnifyingWithMagnificationPoint:?];
+      magnifier3 = [(CRLWPEditor *)self magnifier];
+      [interactiveCanvasController convertUnscaledToBoundsPoint:{v6, v8}];
+      [magnifier3 continueMagnifyingWithMagnificationPoint:?];
 
       v22 = objc_opt_class();
-      v23 = sub_100013F00(v22, v27);
-      [v23 velocity];
+      selection = sub_100013F00(v22, gestureCopy);
+      [selection velocity];
       v25 = v24;
-      v26 = [(CRLWPEditor *)self magnifier];
-      [v26 setPointVelocity:v25];
+      magnifier4 = [(CRLWPEditor *)self magnifier];
+      [magnifier4 setPointVelocity:v25];
     }
 
     else
     {
-      v23 = [(CRLWPEditor *)self selection];
-      [(CRLWPEditor *)self p_beginMagnification:v23 forRep:v18 atPoint:1 shouldSetSelection:v10, v12];
+      selection = [(CRLWPEditor *)self selection];
+      [(CRLWPEditor *)self p_beginMagnification:selection forRep:v18 atPoint:1 shouldSetSelection:v10, v12];
     }
   }
 
-  else if (v13 == 1)
+  else if (gestureState == 1)
   {
     [(CRLWPEditor *)self p_clearEditMenuFlags];
     if (![(CRLWPEditor *)self editMenuIsVisible])
     {
-      v14 = [(CRLWPEditor *)self selection];
-      if ([v14 isValid])
+      selection2 = [(CRLWPEditor *)self selection];
+      if ([selection2 isValid])
       {
-        v15 = [v14 range];
+        range = [selection2 range];
         v17 = v16;
       }
 
       else
       {
-        v15 = 0x7FFFFFFFFFFFFFFFLL;
+        range = 0x7FFFFFFFFFFFFFFFLL;
         v17 = 0;
       }
 
-      [(CRLWPEditor *)self setOriginalSelectionRange:v15, v17];
+      [(CRLWPEditor *)self setOriginalSelectionRange:range, v17];
     }
 
-    [v4 layoutIfNeeded];
+    [interactiveCanvasController layoutIfNeeded];
   }
 }
 
-- (BOOL)isUnscaledPointInTextSelection:(CGPoint)a3
+- (BOOL)isUnscaledPointInTextSelection:(CGPoint)selection
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(CRLWPEditor *)self selection];
+  y = selection.y;
+  x = selection.x;
+  selection = [(CRLWPEditor *)self selection];
   v7 = objc_opt_class();
-  v8 = [(CRLWPEditor *)self interactiveCanvasController];
-  v9 = [v8 hitRep:{x, y}];
+  interactiveCanvasController = [(CRLWPEditor *)self interactiveCanvasController];
+  v9 = [interactiveCanvasController hitRep:{x, y}];
   v10 = [(CRLWPEditor *)self wpRepFromHitRep:v9];
   v11 = sub_100014370(v7, v10);
 
   v12 = [v11 canEditWithEditor:self];
   v13 = 0;
-  if ([v6 isValid] && v12)
+  if ([selection isValid] && v12)
   {
     [v11 convertNaturalPointFromUnscaledCanvas:{x, y}];
     v13 = [v11 isPointInSelectedArea:?];
@@ -1015,39 +1015,39 @@ LABEL_14:
   return v13;
 }
 
-- (unint64_t)charIndexInRep:(id)a3 fromPoint:(CGPoint)a4 allowPastBreak:(BOOL)a5 isAtEndOfLine:(BOOL *)a6 leadingEdge:(BOOL *)a7
+- (unint64_t)charIndexInRep:(id)rep fromPoint:(CGPoint)point allowPastBreak:(BOOL)break isAtEndOfLine:(BOOL *)line leadingEdge:(BOOL *)edge
 {
-  if (!a3)
+  if (!rep)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v9 = a5;
-  y = a4.y;
-  x = a4.x;
-  v12 = [a3 layout];
-  v13 = [CRLWPColumn charIndexFromPoint:v9 allowPastBreak:0 allowNotFound:a6 isAtEndOfLine:a7 leadingEdge:v12 inLayoutTarget:x, y];
+  breakCopy = break;
+  y = point.y;
+  x = point.x;
+  layout = [rep layout];
+  v13 = [CRLWPColumn charIndexFromPoint:breakCopy allowPastBreak:0 allowNotFound:line isAtEndOfLine:edge leadingEdge:layout inLayoutTarget:x, y];
 
   return v13;
 }
 
-- (unint64_t)charIndexInRep:(id)a3 fromPoint:(CGPoint)a4 allowPastBreak:(BOOL)a5 allowNotFound:(BOOL)a6 isAtEndOfLine:(BOOL *)a7
+- (unint64_t)charIndexInRep:(id)rep fromPoint:(CGPoint)point allowPastBreak:(BOOL)break allowNotFound:(BOOL)found isAtEndOfLine:(BOOL *)line
 {
-  v8 = a6;
-  v9 = a5;
-  y = a4.y;
-  x = a4.x;
-  v12 = a3;
-  v13 = v12;
-  if (v12)
+  foundCopy = found;
+  breakCopy = break;
+  y = point.y;
+  x = point.x;
+  repCopy = rep;
+  v13 = repCopy;
+  if (repCopy)
   {
-    v14 = [v12 layout];
-    v15 = [CRLWPColumn charIndexFromPoint:v9 allowPastBreak:v8 allowNotFound:a7 isAtEndOfLine:0 leadingEdge:v14 inLayoutTarget:x, y];
+    layout = [repCopy layout];
+    v15 = [CRLWPColumn charIndexFromPoint:breakCopy allowPastBreak:foundCopy allowNotFound:line isAtEndOfLine:0 leadingEdge:layout inLayoutTarget:x, y];
   }
 
   else
   {
-    if (!v8)
+    if (!foundCopy)
     {
       +[CRLAssertionHandler _atomicIncrementAssertCount];
       if (qword_101AD5A10 != -1)
@@ -1086,24 +1086,24 @@ LABEL_14:
   return v15;
 }
 
-- (unint64_t)charIndexInRep:(id)a3 fromPoint:(CGPoint)a4 allowPastBreak:(BOOL)a5 allowNotFound:(BOOL)a6 pastCenterGoesToNextChar:(BOOL)a7 isAtEndOfLine:(BOOL *)a8
+- (unint64_t)charIndexInRep:(id)rep fromPoint:(CGPoint)point allowPastBreak:(BOOL)break allowNotFound:(BOOL)found pastCenterGoesToNextChar:(BOOL)char isAtEndOfLine:(BOOL *)line
 {
-  v9 = a7;
-  v10 = a6;
-  v11 = a5;
-  y = a4.y;
-  x = a4.x;
-  v14 = a3;
-  v15 = v14;
-  if (v14)
+  charCopy = char;
+  foundCopy = found;
+  breakCopy = break;
+  y = point.y;
+  x = point.x;
+  repCopy = rep;
+  v15 = repCopy;
+  if (repCopy)
   {
-    v16 = [v14 layout];
-    v17 = [CRLWPColumn charIndexFromPoint:v11 allowPastBreak:v10 allowNotFound:v9 pastCenterGoesToNextChar:a8 isAtEndOfLine:0 leadingEdge:v16 inLayoutTarget:x, y];
+    layout = [repCopy layout];
+    v17 = [CRLWPColumn charIndexFromPoint:breakCopy allowPastBreak:foundCopy allowNotFound:charCopy pastCenterGoesToNextChar:line isAtEndOfLine:0 leadingEdge:layout inLayoutTarget:x, y];
   }
 
   else
   {
-    if (!v10)
+    if (!foundCopy)
     {
       +[CRLAssertionHandler _atomicIncrementAssertCount];
       if (qword_101AD5A10 != -1)
@@ -1142,35 +1142,35 @@ LABEL_14:
   return v17;
 }
 
-- (id)p_selectionForRep:(id)a3 naturalPoint:(CGPoint)a4 textSelectionGranularity:(unint64_t)a5 isTapHold:(BOOL)a6 precise:(BOOL)a7 includeListLabels:(BOOL)a8 allowPastBreak:(BOOL)a9 alternateClick:(BOOL)a10
+- (id)p_selectionForRep:(id)rep naturalPoint:(CGPoint)point textSelectionGranularity:(unint64_t)granularity isTapHold:(BOOL)hold precise:(BOOL)precise includeListLabels:(BOOL)labels allowPastBreak:(BOOL)break alternateClick:(BOOL)self0
 {
-  v10 = a9;
-  v11 = a7;
-  y = a4.y;
-  x = a4.x;
-  v16 = a3;
-  if (!v16)
+  breakCopy = break;
+  preciseCopy = precise;
+  y = point.y;
+  x = point.x;
+  repCopy = rep;
+  if (!repCopy)
   {
     goto LABEL_6;
   }
 
   v127[0] = 1;
   v126 = 0;
-  v17 = [(CRLWPEditor *)self storage];
-  v18 = [v16 storage];
+  storage = [(CRLWPEditor *)self storage];
+  storage2 = [repCopy storage];
 
-  if (v17 == v18)
+  if (storage == storage2)
   {
-    v20 = [(CRLWPEditor *)self charIndexInRep:v16 fromPoint:v10 allowPastBreak:&v126 isAtEndOfLine:v127 leadingEdge:x, y];
+    range2 = [(CRLWPEditor *)self charIndexInRep:repCopy fromPoint:breakCopy allowPastBreak:&v126 isAtEndOfLine:v127 leadingEdge:x, y];
   }
 
   else
   {
-    v19 = [(CRLWPEditor *)self storage];
-    v20 = [v19 length];
+    storage3 = [(CRLWPEditor *)self storage];
+    range2 = [storage3 length];
   }
 
-  if (v20 == 0x7FFFFFFFFFFFFFFFLL || (v22 = v20, (v127[0] & 1) == 0) && (-[CRLWPEditor storageWithMarkedText](self, "storageWithMarkedText"), v23 = objc_claimAutoreleasedReturnValue(), v22 = [v23 nextCharacterIndex:v20], v23, v22 == 0x7FFFFFFFFFFFFFFFLL))
+  if (range2 == 0x7FFFFFFFFFFFFFFFLL || (v22 = range2, (v127[0] & 1) == 0) && (-[CRLWPEditor storageWithMarkedText](self, "storageWithMarkedText"), v23 = objc_claimAutoreleasedReturnValue(), v22 = [v23 nextCharacterIndex:range2], v23, v22 == 0x7FFFFFFFFFFFFFFFLL))
   {
 LABEL_6:
     v21 = 0;
@@ -1178,15 +1178,15 @@ LABEL_6:
   }
 
   v24 = objc_opt_class();
-  v25 = [(CRLWPEditor *)self storageWithMarkedText];
-  v26 = sub_100014370(v24, v25);
+  storageWithMarkedText = [(CRLWPEditor *)self storageWithMarkedText];
+  v26 = sub_100014370(v24, storageWithMarkedText);
 
   rect_8 = v26;
-  if (a5 == 2)
+  if (granularity == 2)
   {
-    if ([(CRLWPEditor *)self charIndexInRep:v16 fromPoint:v10 allowPastBreak:0 allowNotFound:&v126 isAtEndOfLine:x, y]!= 0x7FFFFFFFFFFFFFFFLL)
+    if ([(CRLWPEditor *)self charIndexInRep:repCopy fromPoint:breakCopy allowPastBreak:0 allowNotFound:&v126 isAtEndOfLine:x, y]!= 0x7FFFFFFFFFFFFFFFLL)
     {
-      v20 = [v26 textRangeForParagraphAtCharIndex:v22];
+      range2 = [v26 textRangeForParagraphAtCharIndex:v22];
       v29 = v47;
       v46 = 0;
       goto LABEL_62;
@@ -1195,16 +1195,16 @@ LABEL_6:
     goto LABEL_33;
   }
 
-  if (a5 == 1)
+  if (granularity == 1)
   {
-    v36 = [(CRLWPEditor *)self charIndexInRep:v16 fromPoint:v10 allowPastBreak:1 allowNotFound:1 pastCenterGoesToNextChar:0 isAtEndOfLine:x, y];
-    v37 = [(CRLWPEditor *)self charIndexInRep:v16 fromPoint:v10 allowPastBreak:0 allowNotFound:0 pastCenterGoesToNextChar:0 isAtEndOfLine:x, y];
+    v36 = [(CRLWPEditor *)self charIndexInRep:repCopy fromPoint:breakCopy allowPastBreak:1 allowNotFound:1 pastCenterGoesToNextChar:0 isAtEndOfLine:x, y];
+    v37 = [(CRLWPEditor *)self charIndexInRep:repCopy fromPoint:breakCopy allowPastBreak:0 allowNotFound:0 pastCenterGoesToNextChar:0 isAtEndOfLine:x, y];
     if (v36 != 0x7FFFFFFFFFFFFFFFLL)
     {
       v45 = v37;
 LABEL_52:
-      v54 = [(CRLWPEditor *)self editorHelper];
-      v55 = [v54 rangeForSelectionAtCharIndex:objc_msgSend(v26 caretIndex:{"charIndexMappedFromStorage:", v45), objc_msgSend(v26, "charIndexMappedFromStorage:", v36)}];
+      editorHelper = [(CRLWPEditor *)self editorHelper];
+      v55 = [editorHelper rangeForSelectionAtCharIndex:objc_msgSend(v26 caretIndex:{"charIndexMappedFromStorage:", v45), objc_msgSend(v26, "charIndexMappedFromStorage:", v36)}];
       v57 = v56;
 
       if (v57 == 1 && [v26 characterAtIndex:v55] == 65532)
@@ -1222,11 +1222,11 @@ LABEL_52:
       goto LABEL_56;
     }
 
-    v38 = [(CRLWPEditor *)self storageWithMarkedText];
-    v39 = [v38 length];
+    storageWithMarkedText2 = [(CRLWPEditor *)self storageWithMarkedText];
+    v39 = [storageWithMarkedText2 length];
 
-    v40 = [(CRLWPEditor *)self storageWithMarkedText];
-    v41 = [v40 textRangeForParagraphAtCharIndex:v22];
+    storageWithMarkedText3 = [(CRLWPEditor *)self storageWithMarkedText];
+    v41 = [storageWithMarkedText3 textRangeForParagraphAtCharIndex:v22];
     v43 = v42;
     if (v22 >= v39)
     {
@@ -1278,37 +1278,37 @@ LABEL_56:
 
     else
     {
-      v20 = v55;
+      range2 = v55;
       v46 = v58;
     }
 
     goto LABEL_62;
   }
 
-  if (a5)
+  if (granularity)
   {
     v46 = 8;
     v29 = 0;
-    v20 = 0x7FFFFFFFFFFFFFFFLL;
+    range2 = 0x7FFFFFFFFFFFFFFFLL;
     goto LABEL_62;
   }
 
-  v28 = [v16 rangeOfMisspelledWordAtCharIndex:v22];
+  v28 = [repCopy rangeOfMisspelledWordAtCharIndex:v22];
   v29 = v27;
   v30 = v28 < v22 && &v28[v27] > v22;
   v31 = v30;
-  v32 = v30 && a10;
-  if (!v11 || v32)
+  v32 = v30 && click;
+  if (!preciseCopy || v32)
   {
-    if (v22 && (v126 & 1) != 0 && (-[CRLWPEditor storageWithMarkedText](self, "storageWithMarkedText"), v11 = objc_claimAutoreleasedReturnValue(), v33 = [v11 length], v11, v22 < v33))
+    if (v22 && (v126 & 1) != 0 && (-[CRLWPEditor storageWithMarkedText](self, "storageWithMarkedText"), preciseCopy = objc_claimAutoreleasedReturnValue(), v33 = [preciseCopy length], preciseCopy, v22 < v33))
     {
-      v11 = rect_8;
+      preciseCopy = rect_8;
       v34 = [rect_8 rangeOfNearestWhitespaceBeforeCharIndex:objc_msgSend(rect_8 includingBreaks:{"previousCharacterIndex:", objc_msgSend(rect_8, "charIndexMappedFromStorage:", v22)), 0}];
       v35 = v22;
       if (v34 != 0x7FFFFFFFFFFFFFFFLL)
       {
         v127[0] = 1;
-        v20 = v34;
+        range2 = v34;
         v35 = v34;
       }
     }
@@ -1320,29 +1320,29 @@ LABEL_56:
 
     if (v31)
     {
-      v48 = [(CRLWPEditor *)self selection];
-      if ([v48 isValid])
+      selection = [(CRLWPEditor *)self selection];
+      if ([selection isValid])
       {
-        rect = v48;
-        v49 = [(CRLWPEditor *)self selection];
-        v121 = [v49 type];
-        if (v121 == 3 || (-[CRLWPEditor selection](self, "selection"), v11 = objc_claimAutoreleasedReturnValue(), [v11 type] == 5))
+        rect = selection;
+        selection2 = [(CRLWPEditor *)self selection];
+        type = [selection2 type];
+        if (type == 3 || (-[CRLWPEditor selection](self, "selection"), preciseCopy = objc_claimAutoreleasedReturnValue(), [preciseCopy type] == 5))
         {
-          v119 = v49;
+          v119 = selection2;
           [(CRLWPEditor *)self selection];
           v51 = v50 = v35;
-          v52 = [v51 range];
+          range = [v51 range];
           v118 = v50;
-          if (v50 >= v52 && v50 - v52 < v53)
+          if (v50 >= range && v50 - range < v53)
           {
 
-            if (v121 != 3)
+            if (type != 3)
             {
             }
 
 LABEL_98:
-            v105 = [(CRLWPEditor *)self selection];
-            v20 = [v105 range];
+            selection3 = [(CRLWPEditor *)self selection];
+            range2 = [selection3 range];
             v29 = v106;
             v46 = 0;
 LABEL_119:
@@ -1350,11 +1350,11 @@ LABEL_119:
             goto LABEL_62;
           }
 
-          v102 = [(CRLWPEditor *)self selection];
-          v103 = [v102 range];
-          v117 = &v103[v104];
+          selection4 = [(CRLWPEditor *)self selection];
+          range3 = [selection4 range];
+          v117 = &range3[v104];
 
-          if (v121 != 3)
+          if (type != 3)
           {
           }
 
@@ -1376,7 +1376,7 @@ LABEL_119:
       if (v28 != 0x7FFFFFFFFFFFFFFFLL)
       {
         v46 = 3;
-        v20 = v28;
+        range2 = v28;
         goto LABEL_62;
       }
     }
@@ -1384,8 +1384,8 @@ LABEL_119:
     v75 = [rect_8 wordAtCharIndex:v22 includePreviousWord:1];
     if (v75 == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v77 = [(CRLWPEditor *)self editorHelper];
-      v78 = [v77 whiteSpaceRangeAtCharIndex:v22 includingBreaks:0];
+      editorHelper2 = [(CRLWPEditor *)self editorHelper];
+      v78 = [editorHelper2 whiteSpaceRangeAtCharIndex:v22 includingBreaks:0];
       v80 = v79;
     }
 
@@ -1403,14 +1403,14 @@ LABEL_119:
     }
 
     v81 = [rect_8 charRangeMappedToStorage:{v78, v80}];
-    v20 = v81 + v82 - 1;
-    [v16 caretRectForCharIndex:v81 leadingEdge:1 caretAffinity:0];
+    range2 = v81 + v82 - 1;
+    [repCopy caretRectForCharIndex:v81 leadingEdge:1 caretAffinity:0];
     v122 = v84;
     recta = v83;
     v86 = v85;
     v120 = v85;
     v88 = v87;
-    [v16 caretRectForCharIndex:v20 leadingEdge:0 caretAffinity:0];
+    [repCopy caretRectForCharIndex:range2 leadingEdge:0 caretAffinity:0];
     v90 = v89;
     v92 = v91;
     v94 = v93;
@@ -1480,7 +1480,7 @@ LABEL_119:
         if (v108 <= vabdd_f64(CGRectGetMinY(v137), y) && (v138.origin.x = v90, v138.origin.y = v115, v138.size.width = v116, v138.size.height = v114, v108 <= vabdd_f64(CGRectGetMaxY(v138), y)))
         {
           v109 = 1;
-          v20 = v81;
+          range2 = v81;
         }
 
         else
@@ -1490,7 +1490,7 @@ LABEL_119:
 
         v127[0] = v109;
 LABEL_109:
-        if (v20 == 0x7FFFFFFFFFFFFFFFLL)
+        if (range2 == 0x7FFFFFFFFFFFFFFFLL)
         {
           +[CRLAssertionHandler _atomicIncrementAssertCount];
           if (qword_101AD5A10 != -1)
@@ -1514,12 +1514,12 @@ LABEL_109:
             sub_10130DA10(v110);
           }
 
-          v105 = [NSString stringWithUTF8String:"[CRLWPEditor(GestureInterfaces) p_selectionForRep:naturalPoint:textSelectionGranularity:isTapHold:precise:includeListLabels:allowPastBreak:alternateClick:]"];
+          selection3 = [NSString stringWithUTF8String:"[CRLWPEditor(GestureInterfaces) p_selectionForRep:naturalPoint:textSelectionGranularity:isTapHold:precise:includeListLabels:allowPastBreak:alternateClick:]"];
           v111 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLWP/Gestures/CRLWPEditor+Gestures.m"];
-          [CRLAssertionHandler handleFailureInFunction:v105 file:v111 lineNumber:868 isFatal:0 description:"invalid charIndex for visual selection"];
+          [CRLAssertionHandler handleFailureInFunction:selection3 file:v111 lineNumber:868 isFatal:0 description:"invalid charIndex for visual selection"];
 
           v29 = 0;
-          v20 = 0x7FFFFFFFFFFFFFFFLL;
+          range2 = 0x7FFFFFFFFFFFFFFFLL;
           v46 = 7;
           goto LABEL_119;
         }
@@ -1536,7 +1536,7 @@ LABEL_91:
     }
 
     v127[0] = 1;
-    v20 = v81;
+    range2 = v81;
     goto LABEL_109;
   }
 
@@ -1544,16 +1544,16 @@ LABEL_33:
   v29 = 0;
   v46 = 7;
 LABEL_62:
-  v60 = [(CRLWPEditor *)self storageWithMarkedText];
-  v130.location = [v60 range];
+  storageWithMarkedText4 = [(CRLWPEditor *)self storageWithMarkedText];
+  v130.location = [storageWithMarkedText4 range];
   v130.length = v61;
-  v129.location = v20;
+  v129.location = range2;
   v129.length = v29;
   v62 = sub_1002BC8E0(v129, v130);
   v64 = v63;
 
-  v65 = [(CRLWPEditor *)self storageWithMarkedText];
-  v67 = v62 == [v65 length] && v64 == 0;
+  storageWithMarkedText5 = [(CRLWPEditor *)self storageWithMarkedText];
+  v67 = v62 == [storageWithMarkedText5 length] && v64 == 0;
   if (v127[0])
   {
     v67 = 1;
@@ -1564,14 +1564,14 @@ LABEL_62:
   v68 = objc_alloc([(CRLWPEditor *)self wpSelectionClass]);
   v69 = v126;
   v70 = v127[0];
-  v71 = [(CRLWPEditor *)self storageWithMarkedText];
+  storageWithMarkedText6 = [(CRLWPEditor *)self storageWithMarkedText];
   LOBYTE(v112) = v70;
-  v21 = [v68 initWithType:v46 range:v62 styleInsertionBehavior:v64 caretAffinity:0 smartFieldRange:v69 leadingEdge:0x7FFFFFFFFFFFFFFFLL storage:{0, v112, v71}];
+  v21 = [v68 initWithType:v46 range:v62 styleInsertionBehavior:v64 caretAffinity:0 smartFieldRange:v69 leadingEdge:0x7FFFFFFFFFFFFFFFLL storage:{0, v112, storageWithMarkedText6}];
 
-  if (a5 == 1 && !v46)
+  if (granularity == 1 && !v46)
   {
-    v72 = [(CRLWPEditor *)self editorHelper];
-    v73 = [v72 logicalToVisualSelection:v21];
+    editorHelper3 = [(CRLWPEditor *)self editorHelper];
+    v73 = [editorHelper3 logicalToVisualSelection:v21];
 
     v21 = v73;
   }
@@ -1581,19 +1581,19 @@ LABEL_74:
   return v21;
 }
 
-- (void)p_setTappedSelectionPath:(id)a3
+- (void)p_setTappedSelectionPath:(id)path
 {
-  v17 = a3;
-  v4 = [v17 mostSpecificSelectionOfClass:objc_opt_class()];
+  pathCopy = path;
+  v4 = [pathCopy mostSpecificSelectionOfClass:objc_opt_class()];
   v5 = [_TtC8Freeform12CRLTextRange alloc];
-  v6 = [v4 range];
-  v8 = [(CRLTextRange *)v5 initWithRange:v6, v7];
-  v9 = [(CRLWPEditor *)self storage];
-  if ([v9 hasMarkedText])
+  range = [v4 range];
+  v8 = [(CRLTextRange *)v5 initWithRange:range, v7];
+  storage = [(CRLWPEditor *)self storage];
+  if ([storage hasMarkedText])
   {
-    v10 = [(CRLWPEditor *)self storage];
-    v11 = [v10 markedTextRange];
-    v12 = [v11 containsTextRange:v8];
+    storage2 = [(CRLWPEditor *)self storage];
+    markedTextRange = [storage2 markedTextRange];
+    v12 = [markedTextRange containsTextRange:v8];
 
     if (v12)
     {
@@ -1605,10 +1605,10 @@ LABEL_74:
   {
   }
 
-  v13 = [(CRLWPEditor *)self storage];
-  v14 = [v13 hasMarkedText];
+  storage3 = [(CRLWPEditor *)self storage];
+  hasMarkedText = [storage3 hasMarkedText];
 
-  if (v14)
+  if (hasMarkedText)
   {
     [(CRLWPEditor *)self abortMarkedText];
   }
@@ -1624,36 +1624,36 @@ LABEL_74:
   }
 
   [(CRLWPEditor *)self setSelectionBeingSetFromGestures:1];
-  v16 = [(CRLWPEditor *)self interactiveCanvasController];
-  [v16 setSelectionPath:v17 withSelectionFlags:v15];
+  interactiveCanvasController = [(CRLWPEditor *)self interactiveCanvasController];
+  [interactiveCanvasController setSelectionPath:pathCopy withSelectionFlags:v15];
 
   [(CRLWPEditor *)self setSelectionBeingSetFromGestures:0];
 LABEL_11:
 }
 
-- (void)tappedInRep:(id)a3 point:(CGPoint)a4 tapCount:(unint64_t)a5 isTapHold:(BOOL)a6 precise:(BOOL)a7 alternateClick:(BOOL)a8
+- (void)tappedInRep:(id)rep point:(CGPoint)point tapCount:(unint64_t)count isTapHold:(BOOL)hold precise:(BOOL)precise alternateClick:(BOOL)click
 {
-  v9 = a7;
-  v10 = a6;
-  y = a4.y;
-  x = a4.x;
-  v27 = a3;
+  preciseCopy = precise;
+  holdCopy = hold;
+  y = point.y;
+  x = point.x;
+  repCopy = rep;
   [(CRLWPEditor *)self p_sendHandleTapNotification];
-  if (a5 == 3)
+  if (count == 3)
   {
     v15 = 2;
   }
 
-  else if (a5 == 2)
+  else if (count == 2)
   {
     v15 = 1;
   }
 
   else
   {
-    if (a5 == 1)
+    if (count == 1)
     {
-      [v27 convertNaturalPointToUnscaledCanvas:{x, y}];
+      [repCopy convertNaturalPointToUnscaledCanvas:{x, y}];
       if ([(CRLWPEditor *)self isUnscaledPointInTextSelection:?])
       {
         [(CRLWPEditor *)self hideEditMenu];
@@ -1663,92 +1663,92 @@ LABEL_11:
     v15 = 0;
   }
 
-  v16 = [(CRLWPEditor *)self storage];
-  if (([v16 hasMarkedText] & 1) == 0)
+  storage = [(CRLWPEditor *)self storage];
+  if (([storage hasMarkedText] & 1) == 0)
   {
 
     goto LABEL_13;
   }
 
-  v17 = [(CRLWPEditor *)self layout];
-  v18 = [v17 markedTextContainsPoint:{x, y}];
+  layout = [(CRLWPEditor *)self layout];
+  v18 = [layout markedTextContainsPoint:{x, y}];
 
-  v19 = v27;
+  v19 = repCopy;
   if ((v18 & 1) == 0)
   {
 LABEL_13:
-    LOBYTE(v26) = a8;
-    v20 = [(CRLWPEditor *)self p_selectionForRep:v27 naturalPoint:v15 textSelectionGranularity:v10 isTapHold:v9 precise:a5 != 0 includeListLabels:0 allowPastBreak:x alternateClick:y, v26];
-    v21 = [(CRLWPEditor *)self editorController];
-    v22 = [v21 selectionPath];
-    v23 = [(CRLWPEditor *)self selection];
-    v24 = [v22 selectionPathPoppingOffSelection:v23];
+    LOBYTE(v26) = click;
+    v20 = [(CRLWPEditor *)self p_selectionForRep:repCopy naturalPoint:v15 textSelectionGranularity:holdCopy isTapHold:preciseCopy precise:count != 0 includeListLabels:0 allowPastBreak:x alternateClick:y, v26];
+    editorController = [(CRLWPEditor *)self editorController];
+    selectionPath = [editorController selectionPath];
+    selection = [(CRLWPEditor *)self selection];
+    v24 = [selectionPath selectionPathPoppingOffSelection:selection];
 
     v25 = [v24 selectionPathWithAppendedSelection:v20];
 
     [(CRLWPEditor *)self p_setTappedSelectionPath:v25];
-    v19 = v27;
+    v19 = repCopy;
   }
 }
 
 - (BOOL)isACurrentEditor
 {
-  v2 = self;
-  v3 = [(CRLWPEditor *)self interactiveCanvasController];
-  v4 = [v3 editorController];
-  v5 = [v4 currentEditors];
-  LOBYTE(v2) = [v5 containsObject:v2];
+  selfCopy = self;
+  interactiveCanvasController = [(CRLWPEditor *)self interactiveCanvasController];
+  editorController = [interactiveCanvasController editorController];
+  currentEditors = [editorController currentEditors];
+  LOBYTE(selfCopy) = [currentEditors containsObject:selfCopy];
 
-  return v2;
+  return selfCopy;
 }
 
 - (void)p_sendHandleTapNotification
 {
   v4 = @"CRLEditorControllerEditorKey";
-  v5 = self;
-  v2 = [NSDictionary dictionaryWithObjects:&v5 forKeys:&v4 count:1];
+  selfCopy = self;
+  v2 = [NSDictionary dictionaryWithObjects:&selfCopy forKeys:&v4 count:1];
   v3 = +[NSNotificationCenter defaultCenter];
   [v3 postNotificationName:@"CRLEditorControllerTextEditorWillHandleTap" object:0 userInfo:v2];
 }
 
-- (void)p_handleLongPressTextInteractionWithGestureRecognizer:(id)a3
+- (void)p_handleLongPressTextInteractionWithGestureRecognizer:(id)recognizer
 {
-  v4 = a3;
-  v5 = [(CRLWPEditor *)self interactiveCanvasController];
-  [v4 unscaledLocationForICC:v5];
+  recognizerCopy = recognizer;
+  interactiveCanvasController = [(CRLWPEditor *)self interactiveCanvasController];
+  [recognizerCopy unscaledLocationForICC:interactiveCanvasController];
   v7 = v6;
   v9 = v8;
-  [v5 convertUnscaledToBoundsPoint:?];
+  [interactiveCanvasController convertUnscaledToBoundsPoint:?];
   v11 = v10;
   v13 = v12;
   v42 = 0;
-  v14 = [v5 hitKnobAtPoint:1 inputType:&v42 returningRep:{v7, v9}];
+  v14 = [interactiveCanvasController hitKnobAtPoint:1 inputType:&v42 returningRep:{v7, v9}];
   v15 = v42;
-  v16 = [v4 gestureKind];
-  v17 = [(CRLWPEditor *)self shouldUseModernTextGestures];
-  v18 = [v4 gestureState];
-  if (v18 - 3 < 2)
+  gestureKind = [recognizerCopy gestureKind];
+  shouldUseModernTextGestures = [(CRLWPEditor *)self shouldUseModernTextGestures];
+  gestureState = [recognizerCopy gestureState];
+  if (gestureState - 3 < 2)
   {
-    v20 = [(CRLWPEditor *)self knobTracker];
+    knobTracker = [(CRLWPEditor *)self knobTracker];
 
-    if (v20)
+    if (knobTracker)
     {
-      v21 = [(CRLWPEditor *)self knobTracker];
-      if ([v21 didDragKnob])
+      knobTracker2 = [(CRLWPEditor *)self knobTracker];
+      if ([knobTracker2 didDragKnob])
       {
       }
 
       else
       {
-        v23 = [(CRLWPEditor *)self wantsParagraphMode];
+        wantsParagraphMode = [(CRLWPEditor *)self wantsParagraphMode];
 
-        if ((v23 & 1) == 0)
+        if ((wantsParagraphMode & 1) == 0)
         {
           [(CRLWPEditor *)self p_tappedOnKnob:v14];
         }
       }
 
-      [(CRLWPEditor *)self p_protectedStopKnobTrackingGesture:v4];
+      [(CRLWPEditor *)self p_protectedStopKnobTrackingGesture:recognizerCopy];
     }
 
     else
@@ -1756,7 +1756,7 @@ LABEL_13:
       [(CRLWPEditor *)self p_endAutoscroll];
       [(CRLWPEditor *)self revertLastSelectionChangeIfElapsedTimeIsUnderPinFidgetThreshold];
       [(CRLWPEditor *)self protectedStopMagnification];
-      if ([v4 gestureState] == 3)
+      if ([recognizerCopy gestureState] == 3)
       {
         [(CRLWPEditor *)self setShouldShowEditMenuForInsertionPoint:1];
       }
@@ -1765,15 +1765,15 @@ LABEL_13:
 
   else
   {
-    if (v18 != 2)
+    if (gestureState != 2)
     {
-      if (v18 != 1)
+      if (gestureState != 1)
       {
         goto LABEL_36;
       }
 
       [(CRLWPEditor *)self p_clearEditMenuFlags];
-      [v5 layoutIfNeeded];
+      [interactiveCanvasController layoutIfNeeded];
       if ([v14 tag] == 11)
       {
         v19 = 0;
@@ -1801,23 +1801,23 @@ LABEL_13:
         [(CRLWPEditor *)self setKnobToTouchOffset:sub_10011F31C(v26, v27, v7)];
         [(CRLWPEditor *)self p_createKnobTracker:v14 forRep:v25 tapCount:1];
         [(CRLWPEditor *)self p_beginOperationAndTakeControl];
-        [(CRLWPEditor *)self p_handleKnobDragGestureRecognizer:v4];
+        [(CRLWPEditor *)self p_handleKnobDragGestureRecognizer:recognizerCopy];
 
         goto LABEL_36;
       }
 
 LABEL_20:
-      if (v16 != @"CRLWPLongPress")
+      if (gestureKind != @"CRLWPLongPress")
       {
         goto LABEL_36;
       }
 
-      v28 = [(CRLWPEditor *)self p_textRepAtGestureLocationForGesture:v4];
+      v28 = [(CRLWPEditor *)self p_textRepAtGestureLocationForGesture:recognizerCopy];
       [v28 convertNaturalPointFromUnscaledCanvas:{v7, v9}];
       v30 = v29;
       v32 = v31;
-      v33 = [(CRLWPEditor *)self selection];
-      if ([v33 isRange])
+      selection = [(CRLWPEditor *)self selection];
+      if ([selection isRange])
       {
         v34 = [(CRLWPEditor *)self isUnscaledPointInTextSelection:v7, v9];
 
@@ -1833,10 +1833,10 @@ LABEL_20:
 
       [(CRLWPEditor *)self tappedInRep:v28 point:1 tapCount:1 isTapHold:0 precise:v30, v32];
 LABEL_30:
-      v39 = [(CRLWPEditor *)self selection];
-      if ([v39 isInsertionPoint])
+      selection2 = [(CRLWPEditor *)self selection];
+      if ([selection2 isInsertionPoint])
       {
-        if (v17)
+        if (shouldUseModernTextGestures)
         {
           if (v28)
           {
@@ -1855,28 +1855,28 @@ LABEL_30:
 
         else
         {
-          [(CRLWPEditor *)self p_beginMagnification:v39 forRep:v28 atPoint:1 shouldSetSelection:v11, v13];
+          [(CRLWPEditor *)self p_beginMagnification:selection2 forRep:v28 atPoint:1 shouldSetSelection:v11, v13];
         }
       }
 
       goto LABEL_36;
     }
 
-    v22 = [(CRLWPEditor *)self knobTracker];
+    knobTracker3 = [(CRLWPEditor *)self knobTracker];
 
-    if (v22)
+    if (knobTracker3)
     {
-      [(CRLWPEditor *)self p_handleKnobDragGestureRecognizer:v4];
+      [(CRLWPEditor *)self p_handleKnobDragGestureRecognizer:recognizerCopy];
     }
 
-    else if ((v17 & 1) == 0)
+    else if ((shouldUseModernTextGestures & 1) == 0)
     {
-      v35 = [v5 layerHost];
-      v36 = [v35 canvasView];
-      v37 = [v36 enclosingScrollView];
-      v38 = [v37 isScrollEnabled];
+      layerHost = [interactiveCanvasController layerHost];
+      canvasView = [layerHost canvasView];
+      enclosingScrollView = [canvasView enclosingScrollView];
+      isScrollEnabled = [enclosingScrollView isScrollEnabled];
 
-      if (v38)
+      if (isScrollEnabled)
       {
         [CRLCanvasAutoscroll startAutoscroll:self unscaledPoint:v7, v9];
       }
@@ -1888,10 +1888,10 @@ LABEL_30:
 LABEL_36:
 }
 
-- (id)p_editingRepForCharIndex:(unint64_t)a3
+- (id)p_editingRepForCharIndex:(unint64_t)index
 {
-  v5 = [(CRLWPEditor *)self interactiveCanvasController];
-  [v5 visibleUnscaledRect];
+  interactiveCanvasController = [(CRLWPEditor *)self interactiveCanvasController];
+  [interactiveCanvasController visibleUnscaledRect];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -1926,18 +1926,18 @@ LABEL_36:
 
       v17 = *(*(&v40 + 1) + 8 * i);
 
-      v22 = [v17 range];
-      if (a3 < v22 || a3 - v22 >= v23)
+      range = [v17 range];
+      if (index < range || index - range >= v23)
       {
-        v25 = v22;
+        v25 = range;
         v26 = v23;
-        v27 = [(CRLWPEditor *)self storage];
-        if ([v27 length] != a3)
+        storage = [(CRLWPEditor *)self storage];
+        if ([storage length] != index)
         {
           goto LABEL_15;
         }
 
-        if (&v25[v26] != a3)
+        if (&v25[v26] != index)
         {
           continue;
         }
@@ -1950,7 +1950,7 @@ LABEL_36:
         continue;
       }
 
-      v27 = v16;
+      storage = v16;
       v19 = v32;
       v16 = v17;
 LABEL_15:
@@ -2015,31 +2015,31 @@ LABEL_21:
   return v17;
 }
 
-- (BOOL)p_shouldBeginCaretGrabAtUnscaledCanvasPoint:(CGPoint)a3
+- (BOOL)p_shouldBeginCaretGrabAtUnscaledCanvasPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   if (![(CRLWPEditor *)self shouldUseModernTextGestures])
   {
     return 0;
   }
 
-  v6 = [(CRLWPEditor *)self selection];
-  v7 = [v6 isInsertionPoint];
+  selection = [(CRLWPEditor *)self selection];
+  isInsertionPoint = [selection isInsertionPoint];
 
-  if (!v7)
+  if (!isInsertionPoint)
   {
     return 0;
   }
 
-  v8 = [(CRLWPEditor *)self interactiveCanvasController];
-  [v8 layoutIfNeeded];
+  interactiveCanvasController = [(CRLWPEditor *)self interactiveCanvasController];
+  [interactiveCanvasController layoutIfNeeded];
 
-  v9 = [(CRLWPEditor *)self selection];
-  v10 = -[CRLWPEditor p_editingRepForCharIndex:](self, "p_editingRepForCharIndex:", [v9 start]);
+  selection2 = [(CRLWPEditor *)self selection];
+  v10 = -[CRLWPEditor p_editingRepForCharIndex:](self, "p_editingRepForCharIndex:", [selection2 start]);
 
-  v11 = [(CRLWPEditor *)self interactiveCanvasController];
-  v12 = [v11 hitRep:{x, y}];
+  interactiveCanvasController2 = [(CRLWPEditor *)self interactiveCanvasController];
+  v12 = [interactiveCanvasController2 hitRep:{x, y}];
   v13 = v12;
   if (v10 && (!v12 || v12 == v10) && (-[CRLWPEditor selection](self, "selection"), v14 = objc_claimAutoreleasedReturnValue(), [v10 caretRectForSelection:v14], v16 = v15, v18 = v17, v20 = v19, v22 = v21, v14, v31.origin.x = v16, v31.origin.y = v18, v31.size.width = v20, v31.size.height = v22, !CGRectIsNull(v31)))
   {
@@ -2064,76 +2064,76 @@ LABEL_21:
   return v23;
 }
 
-- (id)p_inlineEquationRepInTableCellTextRep:(id)a3 atUnscaledCanvasPoint:(CGPoint)a4 gesture:(id)a5
+- (id)p_inlineEquationRepInTableCellTextRep:(id)rep atUnscaledCanvasPoint:(CGPoint)point gesture:(id)gesture
 {
-  v5 = [(CRLWPEditor *)self storageWithMarkedText:a3];
+  v5 = [(CRLWPEditor *)self storageWithMarkedText:rep];
   [v5 wpKind];
 
   return 0;
 }
 
-- (void)p_handleTapAndTouchGesture:(id)a3
+- (void)p_handleTapAndTouchGesture:(id)gesture
 {
-  v4 = a3;
-  v5 = [v4 inputType];
+  gestureCopy = gesture;
+  inputType = [gestureCopy inputType];
   [(CRLWPEditor *)self setIgnoreFutureImmediatePresses:1];
-  v6 = [(CRLWPEditor *)self interactiveCanvasController];
-  [v4 unscaledLocationForICC:v6];
+  interactiveCanvasController = [(CRLWPEditor *)self interactiveCanvasController];
+  [gestureCopy unscaledLocationForICC:interactiveCanvasController];
   v8 = v7;
   v10 = v9;
 
-  v11 = [(CRLWPEditor *)self interactiveCanvasController];
-  [v11 layoutIfNeeded];
+  interactiveCanvasController2 = [(CRLWPEditor *)self interactiveCanvasController];
+  [interactiveCanvasController2 layoutIfNeeded];
 
-  v12 = [(CRLWPEditor *)self p_textRepAtGestureLocationForGesture:v4];
+  v12 = [(CRLWPEditor *)self p_textRepAtGestureLocationForGesture:gestureCopy];
   [v12 convertNaturalPointFromUnscaledCanvas:{v8, v10}];
   v14 = v13;
   v16 = v15;
-  v17 = [v4 numberOfTapsRequired];
-  v18 = [(CRLWPEditor *)self knobTracker];
-  if (v18 || ([(CRLWPEditor *)self magnifier], (v18 = objc_claimAutoreleasedReturnValue()) != 0))
+  numberOfTapsRequired = [gestureCopy numberOfTapsRequired];
+  knobTracker = [(CRLWPEditor *)self knobTracker];
+  if (knobTracker || ([(CRLWPEditor *)self magnifier], (knobTracker = objc_claimAutoreleasedReturnValue()) != 0))
   {
   }
 
   else
   {
-    v29 = [(CRLWPEditor *)self pinchAndHalfDidStart];
-    if (!v12 && (v29 & 1) == 0)
+    pinchAndHalfDidStart = [(CRLWPEditor *)self pinchAndHalfDidStart];
+    if (!v12 && (pinchAndHalfDidStart & 1) == 0)
     {
       goto LABEL_12;
     }
   }
 
-  v19 = [(CRLWPEditor *)self selection];
-  if ([v19 type] == 3)
+  selection = [(CRLWPEditor *)self selection];
+  if ([selection type] == 3)
   {
   }
 
   else
   {
-    v20 = [(CRLWPEditor *)self selection];
-    v21 = [v20 type];
+    selection2 = [(CRLWPEditor *)self selection];
+    type = [selection2 type];
 
-    if (v21 != 5)
+    if (type != 5)
     {
-      v22 = [(CRLWPEditor *)self interactiveCanvasController];
-      [v22 convertUnscaledToBoundsPoint:{v8, v10}];
+      interactiveCanvasController3 = [(CRLWPEditor *)self interactiveCanvasController];
+      [interactiveCanvasController3 convertUnscaledToBoundsPoint:{v8, v10}];
       v24 = v23;
       v26 = v25;
 
-      if ([v4 gestureState] == 1)
+      if ([gestureCopy gestureState] == 1)
       {
         [(CRLWPEditor *)self p_clearEditMenuFlags];
-        [(CRLWPEditor *)self tappedInRep:v12 point:v17 + 1 tapCount:1 isTapHold:0 precise:v14, v16];
+        [(CRLWPEditor *)self tappedInRep:v12 point:numberOfTapsRequired + 1 tapCount:1 isTapHold:0 precise:v14, v16];
         [(CRLWPEditor *)self setInitialPressTextSelectionGranularity:1];
-        if (v5)
+        if (inputType)
         {
           [(CRLWPEditor *)self p_cancelTapAndLongPressPreviousSelector];
-          v27 = [NSValue valueWithCGPoint:v24, v26];
+          selection3 = [NSValue valueWithCGPoint:v24, v26];
           v47[0] = @"CRLWPEditorTextRepKey";
           v47[1] = @"CRLWPEditorRepPointKey";
           v48[0] = v12;
-          v48[1] = v27;
+          v48[1] = selection3;
           v28 = [NSDictionary dictionaryWithObjects:v48 forKeys:v47 count:2];
           [(CRLWPEditor *)self setTapInfo:v28];
 
@@ -2142,33 +2142,33 @@ LABEL_21:
 
         else
         {
-          v27 = [(CRLWPEditor *)self selection];
-          v45 = [(CRLWPEditor *)self editorHelper];
-          [v45 setAnchorSelection:v27];
+          selection3 = [(CRLWPEditor *)self selection];
+          editorHelper = [(CRLWPEditor *)self editorHelper];
+          [editorHelper setAnchorSelection:selection3];
         }
       }
 
       else
       {
-        if ([v4 gestureState] != 2)
+        if ([gestureCopy gestureState] != 2)
         {
           [(CRLWPEditor *)self p_endAutoscroll];
-          if (!v5)
+          if (!inputType)
           {
-            v46 = [(CRLWPEditor *)self editorHelper];
-            [v46 setAnchorSelection:0];
+            editorHelper2 = [(CRLWPEditor *)self editorHelper];
+            [editorHelper2 setAnchorSelection:0];
 
             [(CRLWPEditor *)self setInitialPressTextSelectionGranularity:0];
             goto LABEL_34;
           }
 
           [(CRLWPEditor *)self p_cancelTapAndLongPressPreviousSelector];
-          v44 = [(CRLWPEditor *)self knobTracker];
+          knobTracker2 = [(CRLWPEditor *)self knobTracker];
 
-          if (v44)
+          if (knobTracker2)
           {
 LABEL_16:
-            [(CRLWPEditor *)self p_protectedStopKnobTrackingGesture:v4];
+            [(CRLWPEditor *)self p_protectedStopKnobTrackingGesture:gestureCopy];
             goto LABEL_34;
           }
 
@@ -2178,24 +2178,24 @@ LABEL_23:
           goto LABEL_34;
         }
 
-        if (v5)
+        if (inputType)
         {
           goto LABEL_34;
         }
 
-        v39 = [(CRLWPEditor *)self interactiveCanvasController];
-        v40 = [v39 canvasView];
-        v41 = [v40 enclosingScrollView];
-        v42 = [v41 isScrollEnabled];
+        interactiveCanvasController4 = [(CRLWPEditor *)self interactiveCanvasController];
+        canvasView = [interactiveCanvasController4 canvasView];
+        enclosingScrollView = [canvasView enclosingScrollView];
+        isScrollEnabled = [enclosingScrollView isScrollEnabled];
 
-        if (v42)
+        if (isScrollEnabled)
         {
           [CRLCanvasAutoscroll startAutoscroll:self unscaledPoint:v8, v10];
         }
 
-        v27 = [(CRLWPEditor *)self editorHelper];
-        v43 = [v27 anchorSelection];
-        [(CRLWPEditor *)self p_adjustSelection:v43 withUnscaledCanvasPoint:[(CRLWPEditor *)self initialPressTextSelectionGranularity] textSelectionGranularity:0 isTapHold:[(CRLWPEditor *)self initialPressTextSelectionGranularity]^ 1 allowPastBreak:1 isDragging:v8, v10];
+        selection3 = [(CRLWPEditor *)self editorHelper];
+        anchorSelection = [selection3 anchorSelection];
+        [(CRLWPEditor *)self p_adjustSelection:anchorSelection withUnscaledCanvasPoint:[(CRLWPEditor *)self initialPressTextSelectionGranularity] textSelectionGranularity:0 isTapHold:[(CRLWPEditor *)self initialPressTextSelectionGranularity]^ 1 allowPastBreak:1 isDragging:v8, v10];
       }
 
       goto LABEL_34;
@@ -2205,26 +2205,26 @@ LABEL_23:
 LABEL_12:
   [(CRLWPEditor *)self p_endAutoscroll];
   [(CRLWPEditor *)self p_cancelTapAndLongPressPreviousSelector];
-  if ([v4 gestureState] == 3 || objc_msgSend(v4, "gestureState") == 4)
+  if ([gestureCopy gestureState] == 3 || objc_msgSend(gestureCopy, "gestureState") == 4)
   {
-    if (!v5)
+    if (!inputType)
     {
-      v31 = [(CRLWPEditor *)self editorHelper];
-      [v31 setAnchorSelection:0];
+      editorHelper3 = [(CRLWPEditor *)self editorHelper];
+      [editorHelper3 setAnchorSelection:0];
 
       goto LABEL_34;
     }
 
-    v30 = [(CRLWPEditor *)self knobTracker];
+    knobTracker3 = [(CRLWPEditor *)self knobTracker];
 
-    if (v30)
+    if (knobTracker3)
     {
       goto LABEL_16;
     }
 
-    v38 = [(CRLWPEditor *)self magnifier];
+    magnifier = [(CRLWPEditor *)self magnifier];
 
-    if (!v38)
+    if (!magnifier)
     {
       goto LABEL_34;
     }
@@ -2232,17 +2232,17 @@ LABEL_12:
     goto LABEL_23;
   }
 
-  v32 = [(CRLWPEditor *)self magnifier];
+  magnifier2 = [(CRLWPEditor *)self magnifier];
 
-  if (v32)
+  if (magnifier2)
   {
-    v33 = [(CRLWPEditor *)self interactiveCanvasController];
-    v34 = [v33 layerHost];
-    v35 = [v34 canvasView];
-    v36 = [v35 enclosingScrollView];
-    v37 = [v36 isScrollEnabled];
+    interactiveCanvasController5 = [(CRLWPEditor *)self interactiveCanvasController];
+    layerHost = [interactiveCanvasController5 layerHost];
+    canvasView2 = [layerHost canvasView];
+    enclosingScrollView2 = [canvasView2 enclosingScrollView];
+    isScrollEnabled2 = [enclosingScrollView2 isScrollEnabled];
 
-    if (v37)
+    if (isScrollEnabled2)
     {
       [CRLCanvasAutoscroll startAutoscroll:self unscaledPoint:v8, v10];
     }
@@ -2255,9 +2255,9 @@ LABEL_34:
 
 - (void)p_beginTapAndLongPress
 {
-  v3 = [(CRLWPEditor *)self tapInfo];
+  tapInfo = [(CRLWPEditor *)self tapInfo];
 
-  if (!v3)
+  if (!tapInfo)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -2286,24 +2286,24 @@ LABEL_34:
     [CRLAssertionHandler handleFailureInFunction:v5 file:v6 lineNumber:1798 isFatal:0 description:"self.tapInfo should be set"];
   }
 
-  v7 = [(CRLWPEditor *)self tapInfo];
-  v8 = [v7 objectForKeyedSubscript:@"CRLWPEditorTextRepKey"];
+  tapInfo2 = [(CRLWPEditor *)self tapInfo];
+  v8 = [tapInfo2 objectForKeyedSubscript:@"CRLWPEditorTextRepKey"];
 
-  v9 = [(CRLWPEditor *)self tapInfo];
-  v10 = [v9 objectForKeyedSubscript:@"CRLWPEditorRepPointKey"];
+  tapInfo3 = [(CRLWPEditor *)self tapInfo];
+  v10 = [tapInfo3 objectForKeyedSubscript:@"CRLWPEditorRepPointKey"];
   [v10 CGPointValue];
   v12 = v11;
   v14 = v13;
 
-  v15 = [(CRLWPEditor *)self selection];
-  v16 = [(CRLWPEditor *)self knobTracker];
-  if (v16 || ![v15 isValid])
+  selection = [(CRLWPEditor *)self selection];
+  knobTracker = [(CRLWPEditor *)self knobTracker];
+  if (knobTracker || ![selection isValid])
   {
   }
 
-  else if ([v15 isRange])
+  else if ([selection isRange])
   {
-    [(CRLWPEditor *)self p_beginKnobTrackingSelection:v15 forRep:v8 atPoint:v12, v14];
+    [(CRLWPEditor *)self p_beginKnobTrackingSelection:selection forRep:v8 atPoint:v12, v14];
   }
 
   [(CRLWPEditor *)self setTapInfo:0];
@@ -2311,9 +2311,9 @@ LABEL_34:
 
 - (void)updateTapAndLongPress
 {
-  v3 = [(CRLWPEditor *)self tapInfo];
+  tapInfo = [(CRLWPEditor *)self tapInfo];
 
-  if (!v3)
+  if (!tapInfo)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -2342,8 +2342,8 @@ LABEL_34:
     [CRLAssertionHandler handleFailureInFunction:v5 file:v6 lineNumber:1822 isFatal:0 description:"self.tapInfo should be set"];
   }
 
-  v7 = [(CRLWPEditor *)self tapInfo];
-  v8 = [v7 objectForKeyedSubscript:@"CRLWPEditorRepPointKey"];
+  tapInfo2 = [(CRLWPEditor *)self tapInfo];
+  v8 = [tapInfo2 objectForKeyedSubscript:@"CRLWPEditorRepPointKey"];
   [v8 CGPointValue];
   v10 = v9;
   v12 = v11;
@@ -2351,27 +2351,27 @@ LABEL_34:
   [(CRLWPEditor *)self clampUnscaledPointToTextFieldBounds:v10, v12];
   v14 = v13;
   v16 = v15;
-  v17 = [(CRLWPEditor *)self selectedRangeAtPinchAndHalfStart];
+  selectedRangeAtPinchAndHalfStart = [(CRLWPEditor *)self selectedRangeAtPinchAndHalfStart];
   v19 = v18;
-  v20 = [(CRLWPEditor *)self editingRep];
-  [v20 convertNaturalPointFromUnscaledCanvas:{v14, v16}];
+  editingRep = [(CRLWPEditor *)self editingRep];
+  [editingRep convertNaturalPointFromUnscaledCanvas:{v14, v16}];
   v22 = v21;
   v24 = v23;
 
   [(CRLWPEditor *)self adjustedDragToNaturalPointOffset];
   v26 = sub_10011F31C(v22, v24, v25);
   v28 = v27;
-  v29 = [(CRLWPEditor *)self textSelectionDelegate];
-  v30 = [v29 selectWordAt:{v26, v28}];
+  textSelectionDelegate = [(CRLWPEditor *)self textSelectionDelegate];
+  v30 = [textSelectionDelegate selectWordAt:{v26, v28}];
 
   v39.location = [v30 nsRange];
   v39.length = v31;
-  v38.location = v17;
+  v38.location = selectedRangeAtPinchAndHalfStart;
   v38.length = v19;
   v32 = NSUnionRange(v38, v39);
   [(CRLWPEditor *)self setAdjustedDragPoint:v26, v28];
-  v33 = [(CRLWPEditor *)self storageWithMarkedText];
-  v34 = [v33 length];
+  storageWithMarkedText = [(CRLWPEditor *)self storageWithMarkedText];
+  v34 = [storageWithMarkedText length];
 
   if (v32.length >= v34)
   {
@@ -2381,9 +2381,9 @@ LABEL_34:
   else
   {
     v35 = [[_TtC8Freeform12CRLTextRange alloc] initWithRange:v32.location, v32.length];
-    v36 = [(CRLWPEditor *)self interactiveCanvasController];
-    v37 = [v36 textInputResponder];
-    [v37 setSelectedTextRange:v35];
+    interactiveCanvasController = [(CRLWPEditor *)self interactiveCanvasController];
+    textInputResponder = [interactiveCanvasController textInputResponder];
+    [textInputResponder setSelectedTextRange:v35];
   }
 }
 
@@ -2393,8 +2393,8 @@ LABEL_34:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(CRLWPEditor *)self editingReps];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  editingReps = [(CRLWPEditor *)self editingReps];
+  v4 = [editingReps countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -2405,7 +2405,7 @@ LABEL_34:
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(editingReps);
         }
 
         v8 = *(*(&v9 + 1) + 8 * i);
@@ -2413,7 +2413,7 @@ LABEL_34:
         [v8 invalidateKnobs];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [editingReps countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
@@ -2427,9 +2427,9 @@ LABEL_34:
 
 - (void)p_cancelTapAndLongPressPreviousSelector
 {
-  v3 = [(CRLWPEditor *)self tapInfo];
+  tapInfo = [(CRLWPEditor *)self tapInfo];
 
-  if (v3)
+  if (tapInfo)
   {
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:"p_beginTapAndLongPress" object:0];
   }
@@ -2437,16 +2437,16 @@ LABEL_34:
   [(CRLWPEditor *)self setTapInfo:0];
 }
 
-- (void)p_beginKnobTrackingSelection:(id)a3 forRep:(id)a4 atPoint:(CGPoint)a5
+- (void)p_beginKnobTrackingSelection:(id)selection forRep:(id)rep atPoint:(CGPoint)point
 {
-  y = a5.y;
-  x = a5.x;
-  v9 = a3;
-  v10 = a4;
-  v11 = [(CRLWPEditor *)self charIndexInRep:v10 fromPoint:0 allowPastBreak:0 isAtEndOfLine:0 leadingEdge:x, y];
-  v12 = [v9 range];
-  [v9 range];
-  if (v11 >= v12 + (v13 >> 1))
+  y = point.y;
+  x = point.x;
+  selectionCopy = selection;
+  repCopy = rep;
+  v11 = [(CRLWPEditor *)self charIndexInRep:repCopy fromPoint:0 allowPastBreak:0 isAtEndOfLine:0 leadingEdge:x, y];
+  range = [selectionCopy range];
+  [selectionCopy range];
+  if (v11 >= range + (v13 >> 1))
   {
     v14 = 10;
   }
@@ -2456,14 +2456,14 @@ LABEL_34:
     v14 = 11;
   }
 
-  v15 = [v10 knobForTag:v14];
+  v15 = [repCopy knobForTag:v14];
   if (v15)
   {
 LABEL_15:
     [v15 position];
     if (sub_100120888(v22, v23))
     {
-      [(CRLWPEditor *)self p_createKnobTracker:v15 forRep:v10 tapCount:2];
+      [(CRLWPEditor *)self p_createKnobTracker:v15 forRep:repCopy tapCount:2];
       [(CRLWPEditor *)self p_beginOperationAndTakeControl];
     }
   }
@@ -2474,8 +2474,8 @@ LABEL_15:
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v16 = [v10 siblings];
-    v17 = [v16 countByEnumeratingWithState:&v24 objects:v28 count:16];
+    siblings = [repCopy siblings];
+    v17 = [siblings countByEnumeratingWithState:&v24 objects:v28 count:16];
     if (v17)
     {
       v18 = v17;
@@ -2486,7 +2486,7 @@ LABEL_15:
         {
           if (*v25 != v19)
           {
-            objc_enumerationMutation(v16);
+            objc_enumerationMutation(siblings);
           }
 
           v21 = [*(*(&v24 + 1) + 8 * i) knobForTag:v14];
@@ -2498,7 +2498,7 @@ LABEL_15:
           }
         }
 
-        v18 = [v16 countByEnumeratingWithState:&v24 objects:v28 count:16];
+        v18 = [siblings countByEnumeratingWithState:&v24 objects:v28 count:16];
         if (v18)
         {
           continue;
@@ -2512,13 +2512,13 @@ LABEL_15:
   }
 }
 
-- (void)p_createKnobTracker:(id)a3 forRep:(id)a4 tapCount:(unint64_t)a5
+- (void)p_createKnobTracker:(id)tracker forRep:(id)rep tapCount:(unint64_t)count
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(CRLWPEditor *)self knobTracker];
+  trackerCopy = tracker;
+  repCopy = rep;
+  knobTracker = [(CRLWPEditor *)self knobTracker];
 
-  if (v10)
+  if (knobTracker)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -2547,12 +2547,12 @@ LABEL_15:
     [CRLAssertionHandler handleFailureInFunction:v12 file:v13 lineNumber:1895 isFatal:0 description:"expected nil value for '%{public}s'", "self.knobTracker"];
   }
 
-  v14 = [(CRLWPEditor *)self knobTracker];
+  knobTracker2 = [(CRLWPEditor *)self knobTracker];
 
-  if (!v14)
+  if (!knobTracker2)
   {
-    [(CRLWPEditor *)self setKnobTrackingTapCount:a5];
-    v15 = [v9 newTrackerForKnob:v8];
+    [(CRLWPEditor *)self setKnobTrackingTapCount:count];
+    v15 = [repCopy newTrackerForKnob:trackerCopy];
     v16 = objc_opt_class();
     v17 = sub_100014370(v16, v15);
     if (!v17)
@@ -2588,25 +2588,25 @@ LABEL_15:
   }
 }
 
-- (void)p_handleEditableTextSelectionForceGesture:(id)a3
+- (void)p_handleEditableTextSelectionForceGesture:(id)gesture
 {
-  v4 = a3;
+  gestureCopy = gesture;
   v5 = objc_opt_class();
-  v6 = [v4 targetRep];
-  v7 = sub_100013F00(v5, v6);
+  targetRep = [gestureCopy targetRep];
+  v7 = sub_100013F00(v5, targetRep);
 
-  v8 = [(CRLWPEditor *)self interactiveCanvasController];
-  [v4 unscaledLocationForICC:v8];
+  interactiveCanvasController = [(CRLWPEditor *)self interactiveCanvasController];
+  [gestureCopy unscaledLocationForICC:interactiveCanvasController];
   v10 = v9;
   v12 = v11;
 
-  v13 = [(CRLWPEditor *)self interactiveCanvasController];
-  [v13 convertUnscaledToBoundsPoint:{v10, v12}];
+  interactiveCanvasController2 = [(CRLWPEditor *)self interactiveCanvasController];
+  [interactiveCanvasController2 convertUnscaledToBoundsPoint:{v10, v12}];
   v15 = v14;
   v17 = v16;
 
-  v18 = [v4 gestureState];
-  if (v18 - 3 < 2)
+  gestureState = [gestureCopy gestureState];
+  if (gestureState - 3 < 2)
   {
     [(CRLWPEditor *)self setEditableTextSelectionForceGestureInProgress:0];
     [(CRLWPEditor *)self p_endAutoscroll];
@@ -2614,11 +2614,11 @@ LABEL_15:
     [(CRLWPEditor *)self protectedStopMagnification];
   }
 
-  else if (v18 == 2)
+  else if (gestureState == 2)
   {
-    v20 = [(CRLWPEditor *)self magnifier];
+    magnifier = [(CRLWPEditor *)self magnifier];
 
-    if (!v20)
+    if (!magnifier)
     {
       +[CRLAssertionHandler _atomicIncrementAssertCount];
       if (qword_101AD5A10 != -1)
@@ -2647,19 +2647,19 @@ LABEL_15:
       [CRLAssertionHandler handleFailureInFunction:v22 file:v23 lineNumber:1925 isFatal:0 description:"invalid nil value for '%{public}s'", "self.magnifier"];
     }
 
-    v24 = [(CRLWPEditor *)self magnifier];
-    [v24 setTarget:v7];
+    magnifier2 = [(CRLWPEditor *)self magnifier];
+    [magnifier2 setTarget:v7];
 
-    v25 = [(CRLWPEditor *)self magnifier];
-    [v25 continueMagnifyingWithMagnificationPoint:{v15, v17}];
+    magnifier3 = [(CRLWPEditor *)self magnifier];
+    [magnifier3 continueMagnifyingWithMagnificationPoint:{v15, v17}];
 
-    v26 = [(CRLWPEditor *)self interactiveCanvasController];
-    v27 = [v26 layerHost];
-    v28 = [v27 canvasView];
-    v29 = [v28 enclosingScrollView];
-    v30 = [v29 isScrollEnabled];
+    interactiveCanvasController3 = [(CRLWPEditor *)self interactiveCanvasController];
+    layerHost = [interactiveCanvasController3 layerHost];
+    canvasView = [layerHost canvasView];
+    enclosingScrollView = [canvasView enclosingScrollView];
+    isScrollEnabled = [enclosingScrollView isScrollEnabled];
 
-    if (v30)
+    if (isScrollEnabled)
     {
       [CRLCanvasAutoscroll startAutoscroll:self unscaledPoint:v10, v12];
     }
@@ -2667,29 +2667,29 @@ LABEL_15:
     [(CRLWPEditor *)self p_setSelectionFromPoint:0 textSelectionGranularity:0 includeListLabels:v10, v12];
   }
 
-  else if (v18 == 1)
+  else if (gestureState == 1)
   {
     [(CRLWPEditor *)self setEditableTextSelectionForceGestureInProgress:1];
-    v19 = [(CRLWPEditor *)self selection];
-    [(CRLWPEditor *)self p_beginMagnification:v19 forRep:v7 atPoint:1 shouldSetSelection:v15, v17];
+    selection = [(CRLWPEditor *)self selection];
+    [(CRLWPEditor *)self p_beginMagnification:selection forRep:v7 atPoint:1 shouldSetSelection:v15, v17];
   }
 }
 
-- (void)p_handleTapGestures:(id)a3
+- (void)p_handleTapGestures:(id)gestures
 {
-  v4 = a3;
-  v5 = [v4 gestureKind];
-  v6 = [(CRLWPEditor *)self interactiveCanvasController];
-  [v4 unscaledLocationForICC:v6];
+  gesturesCopy = gestures;
+  gestureKind = [gesturesCopy gestureKind];
+  interactiveCanvasController = [(CRLWPEditor *)self interactiveCanvasController];
+  [gesturesCopy unscaledLocationForICC:interactiveCanvasController];
   v8 = v7;
   v10 = v9;
   [(CRLWPEditor *)self setFirstTapUnscaledPoint:?];
-  [v6 layoutIfNeeded];
-  v11 = [(CRLWPEditor *)self p_textRepAtGestureLocationForGesture:v4];
+  [interactiveCanvasController layoutIfNeeded];
+  v11 = [(CRLWPEditor *)self p_textRepAtGestureLocationForGesture:gesturesCopy];
   [v11 convertNaturalPointFromUnscaledCanvas:{v8, v10}];
   v13 = v12;
   v15 = v14;
-  if (v5 == @"CRLWPImmediateSingleTap")
+  if (gestureKind == @"CRLWPImmediateSingleTap")
   {
     if (!v11)
     {
@@ -2720,46 +2720,46 @@ LABEL_15:
       [CRLAssertionHandler handleFailureInFunction:v24 file:v25 lineNumber:1989 isFatal:0 description:"we should have gotten a valid textRep by now"];
     }
 
-    v26 = [(CRLWPEditor *)self p_shiftKeyIsDownWIthGesture:v4];
-    v27 = 0x7FFFFFFFFFFFFFFFLL;
+    v26 = [(CRLWPEditor *)self p_shiftKeyIsDownWIthGesture:gesturesCopy];
+    range = 0x7FFFFFFFFFFFFFFFLL;
     v28 = 0;
     [(CRLWPEditor *)self setOriginalSelectionRange:0x7FFFFFFFFFFFFFFFLL, 0];
     [(CRLWPEditor *)self p_clearEditMenuFlags];
     if (![(CRLWPEditor *)self editMenuIsVisible])
     {
-      v29 = [(CRLWPEditor *)self selection];
-      if ([v29 isValid])
+      selection = [(CRLWPEditor *)self selection];
+      if ([selection isValid])
       {
-        v27 = [v29 range];
+        range = [selection range];
         v28 = v30;
       }
 
-      [(CRLWPEditor *)self setOriginalSelectionRange:v27, v28];
+      [(CRLWPEditor *)self setOriginalSelectionRange:range, v28];
     }
 
     if ((-[CRLWPEditor shouldUseModernTextGestures](self, "shouldUseModernTextGestures") & v26) == 1 && (-[CRLWPEditor selection](self, "selection"), v31 = objc_claimAutoreleasedReturnValue(), v32 = [v31 isValid], v31, v32))
     {
-      v33 = [(CRLWPEditor *)self selection];
-      [(CRLWPEditor *)self p_adjustSelection:v33 withUnscaledCanvasPoint:0 textSelectionGranularity:0 isTapHold:0 allowPastBreak:0 isDragging:v8, v10];
+      selection2 = [(CRLWPEditor *)self selection];
+      [(CRLWPEditor *)self p_adjustSelection:selection2 withUnscaledCanvasPoint:0 textSelectionGranularity:0 isTapHold:0 allowPastBreak:0 isDragging:v8, v10];
     }
 
     else
     {
       v34 = 1;
       [(CRLWPEditor *)self setSelectionSetFromSingleTap:1];
-      if ([v4 inputType])
+      if ([gesturesCopy inputType])
       {
-        v34 = [v4 inputType] == 2;
+        v34 = [gesturesCopy inputType] == 2;
       }
 
-      -[CRLWPEditor tappedInRep:point:tapCount:isTapHold:precise:alternateClick:](self, "tappedInRep:point:tapCount:isTapHold:precise:alternateClick:", v11, 1, 0, v34, [v4 inputType] == 2, v13, v15);
+      -[CRLWPEditor tappedInRep:point:tapCount:isTapHold:precise:alternateClick:](self, "tappedInRep:point:tapCount:isTapHold:precise:alternateClick:", v11, 1, 0, v34, [gesturesCopy inputType] == 2, v13, v15);
       [(CRLWPEditor *)self setSelectionSetFromSingleTap:0];
       [(CRLWPEditor *)self setInitialPressTextSelectionGranularity:0];
       [(CRLWPEditor *)self setIsBecomingActive:0];
     }
   }
 
-  else if (v5 == @"CRLWPImmediateDoubleTap")
+  else if (gestureKind == @"CRLWPImmediateDoubleTap")
   {
     if (!v11)
     {
@@ -2807,14 +2807,14 @@ LABEL_15:
   }
 }
 
-- (void)setSelectionControlsForInputType:(int64_t)a3
+- (void)setSelectionControlsForInputType:(int64_t)type
 {
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(CRLWPEditor *)self editingReps];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  editingReps = [(CRLWPEditor *)self editingReps];
+  v6 = [editingReps countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -2826,46 +2826,46 @@ LABEL_15:
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(editingReps);
         }
 
-        [*(*(&v10 + 1) + 8 * v9) setSuppressSelectionControls:a3 == 0];
+        [*(*(&v10 + 1) + 8 * v9) setSuppressSelectionControls:type == 0];
         v9 = v9 + 1;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [editingReps countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);
   }
 
-  [(CRLWPEditor *)self setSuppressEditMenuForIndirectGesture:a3 == 0];
+  [(CRLWPEditor *)self setSuppressEditMenuForIndirectGesture:type == 0];
 }
 
-- (BOOL)canHandleGesture:(id)a3
+- (BOOL)canHandleGesture:(id)gesture
 {
-  v4 = a3;
-  if ([(CRLWPEditor *)self blockGesture:v4])
+  gestureCopy = gesture;
+  if ([(CRLWPEditor *)self blockGesture:gestureCopy])
   {
     v5 = 0;
   }
 
   else
   {
-    v6 = [(CRLWPEditor *)self interactiveCanvasController];
-    [v4 unscaledLocationForICC:v6];
+    interactiveCanvasController = [(CRLWPEditor *)self interactiveCanvasController];
+    [gestureCopy unscaledLocationForICC:interactiveCanvasController];
     v8 = v7;
     v10 = v9;
     v11 = objc_opt_class();
-    v12 = [v6 hitRep:{v8, v10}];
+    v12 = [interactiveCanvasController hitRep:{v8, v10}];
     v13 = sub_100014370(v11, v12);
 
     v14 = [v13 canEditWithEditor:self];
-    v31 = [(CRLWPEditor *)self canIgnoreEvent];
+    canIgnoreEvent = [(CRLWPEditor *)self canIgnoreEvent];
     v32 = 0;
     v15 = 1;
-    v16 = [v6 hitKnobAtPoint:1 inputType:&v32 returningRep:{v8, v10}];
+    v16 = [interactiveCanvasController hitKnobAtPoint:1 inputType:&v32 returningRep:{v8, v10}];
     v17 = v32;
     v18 = objc_opt_class();
     v19 = sub_100014370(v18, v17);
@@ -2878,9 +2878,9 @@ LABEL_15:
     v20 = 0;
     if (v16 && v19)
     {
-      v21 = [v19 storage];
-      v22 = [(CRLWPEditor *)self storage];
-      v20 = v21 == v22 && v15;
+      storage = [v19 storage];
+      storage2 = [(CRLWPEditor *)self storage];
+      v20 = storage == storage2 && v15;
     }
 
     if (v19)
@@ -2893,114 +2893,114 @@ LABEL_15:
       v5 = v14;
     }
 
-    v23 = [v4 gestureKind];
-    if ([v4 inputType])
+    gestureKind = [gestureCopy gestureKind];
+    if ([gestureCopy inputType])
     {
-      if (v23 == @"CRLWPTwoFingerPan")
+      if (gestureKind == @"CRLWPTwoFingerPan")
       {
         v5 = 1;
       }
 
-      else if (v23 != @"CRLWPLongPress" || v16)
+      else if (gestureKind != @"CRLWPLongPress" || v16)
       {
-        if (v23 == @"CRLWPImmediatePress" && ![(CRLWPEditor *)self ignoreFutureImmediatePresses])
+        if (gestureKind == @"CRLWPImmediatePress" && ![(CRLWPEditor *)self ignoreFutureImmediatePresses])
         {
           v5 = [(CRLWPEditor *)self p_shouldBeginCaretGrabAtUnscaledCanvasPoint:v8, v10]|| v20;
         }
 
-        else if (v23 == @"CRLWPImmediateSingleTap" || v23 == @"CRLWPSecondarySingleTap" || v23 == @"CRLWPImmediateDoubleTap" || v23 == @"CRLWPTapAndTouch" || v23 == @"CRLWPDoubleTapAndTouch")
+        else if (gestureKind == @"CRLWPImmediateSingleTap" || gestureKind == @"CRLWPSecondarySingleTap" || gestureKind == @"CRLWPImmediateDoubleTap" || gestureKind == @"CRLWPTapAndTouch" || gestureKind == @"CRLWPDoubleTapAndTouch")
         {
-          v28 = [(CRLWPEditor *)self interactiveCanvasController];
-          v29 = [v28 editingDisabled];
+          interactiveCanvasController2 = [(CRLWPEditor *)self interactiveCanvasController];
+          editingDisabled = [interactiveCanvasController2 editingDisabled];
 
-          v5 |= v29;
+          v5 |= editingDisabled;
         }
 
         else
         {
-          v5 &= v23 == @"CRLWPEditableTextSelectionForceGesture";
+          v5 &= gestureKind == @"CRLWPEditableTextSelectionForceGesture";
         }
       }
     }
 
     else
     {
-      v27 = v23 == @"CRLWPImmediatePress" || v23 == @"CRLWPImmediateSingleTap" || v23 == @"CRLWPTapAndTouch" || v23 == @"CRLWPDoubleTapAndTouch";
-      v5 &= v27 & (v31 ^ 1);
+      v27 = gestureKind == @"CRLWPImmediatePress" || gestureKind == @"CRLWPImmediateSingleTap" || gestureKind == @"CRLWPTapAndTouch" || gestureKind == @"CRLWPDoubleTapAndTouch";
+      v5 &= v27 & (canIgnoreEvent ^ 1);
     }
   }
 
   return v5 & 1;
 }
 
-- (void)handleGesture:(id)a3
+- (void)handleGesture:(id)gesture
 {
-  v4 = a3;
-  v5 = [(CRLWPEditor *)self interactiveCanvasController];
-  v6 = [v4 gestureKind];
-  if ([v4 gestureState] != 2)
+  gestureCopy = gesture;
+  interactiveCanvasController = [(CRLWPEditor *)self interactiveCanvasController];
+  gestureKind = [gestureCopy gestureKind];
+  if ([gestureCopy gestureState] != 2)
   {
-    [v5 layoutIfNeeded];
+    [interactiveCanvasController layoutIfNeeded];
   }
 
-  v7 = [v4 inputType];
-  [v4 unscaledLocationForICC:v5];
+  inputType = [gestureCopy inputType];
+  [gestureCopy unscaledLocationForICC:interactiveCanvasController];
   v9 = v8;
   v11 = v10;
   v12 = objc_opt_class();
-  v13 = [v5 hitRep:{v9, v11}];
+  v13 = [interactiveCanvasController hitRep:{v9, v11}];
   v14 = [(CRLWPEditor *)self wpRepFromHitRep:v13];
   v15 = sub_100014370(v12, v14);
 
-  v16 = [v15 suppressSelectionControls];
+  suppressSelectionControls = [v15 suppressSelectionControls];
   v17 = objc_opt_class();
-  v18 = [v5 layerHost];
-  v19 = sub_100014370(v17, v18);
+  layerHost = [interactiveCanvasController layerHost];
+  v19 = sub_100014370(v17, layerHost);
 
-  [v5 convertUnscaledToBoundsPoint:{v9, v11}];
+  [interactiveCanvasController convertUnscaledToBoundsPoint:{v9, v11}];
   v21 = v20;
   v23 = v22;
-  if ([v4 inputType] == 2 && objc_msgSend(v19, "shouldBeginScribblingAtPoint:", v21, v23))
+  if ([gestureCopy inputType] == 2 && objc_msgSend(v19, "shouldBeginScribblingAtPoint:", v21, v23))
   {
     [(CRLWPEditor *)self setShouldQueueBeginScribbleMode:1];
   }
 
-  -[CRLWPEditor setSelectionControlsForInputType:](self, "setSelectionControlsForInputType:", [v4 inputType]);
+  -[CRLWPEditor setSelectionControlsForInputType:](self, "setSelectionControlsForInputType:", [gestureCopy inputType]);
   [v15 convertNaturalPointFromUnscaledCanvas:{v9, v11}];
   v25 = v24;
   v27 = v26;
-  v28 = [v15 layout];
-  [v28 validate];
+  layout = [v15 layout];
+  [layout validate];
 
   v29 = [(CRLWPEditor *)self charIndexInRep:v15 fromPoint:0 allowPastBreak:0 isAtEndOfLine:0 leadingEdge:v25, v27];
-  if (!v7)
+  if (!inputType)
   {
     if (v29 != 0x7FFFFFFFFFFFFFFFLL || (-[CRLWPEditor editorHelper](self, "editorHelper"), v42 = objc_claimAutoreleasedReturnValue(), [v42 anchorSelection], v43 = objc_claimAutoreleasedReturnValue(), v43, v42, v43))
     {
-      if (v6 == @"CRLWPImmediatePress")
+      if (gestureKind == @"CRLWPImmediatePress")
       {
-        [(CRLWPEditor *)self p_handleIndirectImmediatePressGesture:v4];
+        [(CRLWPEditor *)self p_handleIndirectImmediatePressGesture:gestureCopy];
         goto LABEL_42;
       }
 
-      if (v6 == @"CRLWPTapAndTouch" || v6 == @"CRLWPDoubleTapAndTouch")
+      if (gestureKind == @"CRLWPTapAndTouch" || gestureKind == @"CRLWPDoubleTapAndTouch")
       {
-        v50 = sub_1003035DC(v4, 1, v30, v31, v32, v33, v34, v35, &OBJC_PROTOCOL___CRLTapGesture);
+        v50 = sub_1003035DC(gestureCopy, 1, v30, v31, v32, v33, v34, v35, &OBJC_PROTOCOL___CRLTapGesture);
         [(CRLWPEditor *)self p_handleTapAndTouchGesture:v50];
 
         goto LABEL_42;
       }
 
-      if (v6 == @"CRLWPImmediateSingleTap" || v6 == @"CRLWPImmediateDoubleTap" && (-[CRLWPEditor interactiveCanvasController](self, "interactiveCanvasController"), v44 = objc_claimAutoreleasedReturnValue(), v45 = [v44 editingDisabled], v44, v45))
+      if (gestureKind == @"CRLWPImmediateSingleTap" || gestureKind == @"CRLWPImmediateDoubleTap" && (-[CRLWPEditor interactiveCanvasController](self, "interactiveCanvasController"), v44 = objc_claimAutoreleasedReturnValue(), v45 = [v44 editingDisabled], v44, v45))
       {
-        [(CRLWPEditor *)self p_handleTapGestures:v4];
+        [(CRLWPEditor *)self p_handleTapGestures:gestureCopy];
 LABEL_42:
-        [(CRLWPEditor *)self setMostRecentGestureKind:v6];
+        [(CRLWPEditor *)self setMostRecentGestureKind:gestureKind];
         goto LABEL_43;
       }
     }
 
-    [(CRLWPEditor *)self setMostRecentGestureKind:v6];
+    [(CRLWPEditor *)self setMostRecentGestureKind:gestureKind];
 LABEL_29:
     v46 = +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -3010,7 +3010,7 @@ LABEL_29:
 
     if (os_log_type_enabled(off_1019EDA68, OS_LOG_TYPE_ERROR))
     {
-      sub_101394D8C(v6, v46);
+      sub_101394D8C(gestureKind, v46);
     }
 
     if (qword_101AD5A10 != -1)
@@ -3026,38 +3026,38 @@ LABEL_29:
 
     v48 = [NSString stringWithUTF8String:"[CRLWPEditor(GestureInterfaces) handleGesture:]"];
     v49 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLWP/Gestures/CRLWPEditor+Gestures.m"];
-    [CRLAssertionHandler handleFailureInFunction:v48 file:v49 lineNumber:2355 isFatal:0 description:"CRLWPEditor can't handle a gesture of kind %{public}@", v6];
+    [CRLAssertionHandler handleFailureInFunction:v48 file:v49 lineNumber:2355 isFatal:0 description:"CRLWPEditor can't handle a gesture of kind %{public}@", gestureKind];
 
     goto LABEL_40;
   }
 
-  [(CRLWPEditor *)self setMostRecentGestureKind:v6];
-  if (v6 == @"CRLWPTwoFingerPan")
+  [(CRLWPEditor *)self setMostRecentGestureKind:gestureKind];
+  if (gestureKind == @"CRLWPTwoFingerPan")
   {
-    [(CRLWPEditor *)self p_handleTwoFingerPanGesture:v4];
+    [(CRLWPEditor *)self p_handleTwoFingerPanGesture:gestureCopy];
     goto LABEL_43;
   }
 
-  if (v6 == @"CRLWPLongPress" || v6 == @"CRLWPImmediatePress")
+  if (gestureKind == @"CRLWPLongPress" || gestureKind == @"CRLWPImmediatePress")
   {
-    [(CRLWPEditor *)self p_handleImmediateAndLongPressGesture:v4];
+    [(CRLWPEditor *)self p_handleImmediateAndLongPressGesture:gestureCopy];
     goto LABEL_43;
   }
 
-  if (v6 == @"CRLWPTapAndTouch" || v6 == @"CRLWPDoubleTapAndTouch")
+  if (gestureKind == @"CRLWPTapAndTouch" || gestureKind == @"CRLWPDoubleTapAndTouch")
   {
-    v48 = sub_1003035DC(v4, 1, v36, v37, v38, v39, v40, v41, &OBJC_PROTOCOL___CRLTapGesture);
+    v48 = sub_1003035DC(gestureCopy, 1, v36, v37, v38, v39, v40, v41, &OBJC_PROTOCOL___CRLTapGesture);
     [(CRLWPEditor *)self p_handleTapAndTouchGesture:v48];
 LABEL_40:
 
     goto LABEL_43;
   }
 
-  if (v6 != @"CRLWPImmediateSingleTap" && v6 != @"CRLWPSecondarySingleTap" && v6 != @"CRLWPImmediateDoubleTap")
+  if (gestureKind != @"CRLWPImmediateSingleTap" && gestureKind != @"CRLWPSecondarySingleTap" && gestureKind != @"CRLWPImmediateDoubleTap")
   {
-    if (v6 == @"CRLWPEditableTextSelectionForceGesture")
+    if (gestureKind == @"CRLWPEditableTextSelectionForceGesture")
     {
-      [(CRLWPEditor *)self p_handleEditableTextSelectionForceGesture:v4];
+      [(CRLWPEditor *)self p_handleEditableTextSelectionForceGesture:gestureCopy];
       goto LABEL_43;
     }
 
@@ -3065,71 +3065,71 @@ LABEL_40:
   }
 
   v51 = [v15 isPointInSelectedArea:{v25, v27}];
-  v52 = [v4 inputType];
-  if (((v6 == @"CRLWPImmediateSingleTap") & v51 & v16) != 1 || !v52)
+  inputType2 = [gestureCopy inputType];
+  if (((gestureKind == @"CRLWPImmediateSingleTap") & v51 & suppressSelectionControls) != 1 || !inputType2)
   {
-    [(CRLWPEditor *)self p_handleTapGestures:v4];
+    [(CRLWPEditor *)self p_handleTapGestures:gestureCopy];
   }
 
 LABEL_43:
 }
 
-- (void)p_handleIndirectImmediatePressGesture:(id)a3
+- (void)p_handleIndirectImmediatePressGesture:(id)gesture
 {
-  v47 = a3;
-  v4 = [(CRLWPEditor *)self interactiveCanvasController];
-  [v47 unscaledLocationForICC:v4];
+  gestureCopy = gesture;
+  interactiveCanvasController = [(CRLWPEditor *)self interactiveCanvasController];
+  [gestureCopy unscaledLocationForICC:interactiveCanvasController];
   v6 = v5;
   v8 = v7;
 
   v9 = objc_opt_class();
-  v10 = sub_100013F00(v9, v47);
+  v10 = sub_100013F00(v9, gestureCopy);
   v11 = [(CRLWPEditor *)self icc];
   [v10 initialPosition];
   [v11 convertBoundsToUnscaledPoint:?];
   v13 = v12;
   v15 = v14;
 
-  v16 = [(CRLWPEditor *)self p_shiftKeyIsDownWIthGesture:v47];
-  v17 = [v47 gestureState];
-  if (v17 - 3 < 2)
+  v16 = [(CRLWPEditor *)self p_shiftKeyIsDownWIthGesture:gestureCopy];
+  gestureState = [gestureCopy gestureState];
+  if (gestureState - 3 < 2)
   {
     [(CRLWPEditor *)self p_endAutoscroll];
-    v19 = [(CRLWPEditor *)self editorHelper];
-    [v19 setAnchorSelection:0];
+    editorHelper = [(CRLWPEditor *)self editorHelper];
+    [editorHelper setAnchorSelection:0];
     goto LABEL_19;
   }
 
-  if (v17 != 2)
+  if (gestureState != 2)
   {
-    if (v17 != 1)
+    if (gestureState != 1)
     {
       goto LABEL_20;
     }
 
-    v18 = [(CRLWPEditor *)self interactiveCanvasController];
-    [v18 layoutIfNeeded];
+    interactiveCanvasController2 = [(CRLWPEditor *)self interactiveCanvasController];
+    [interactiveCanvasController2 layoutIfNeeded];
 
-    v19 = [(CRLWPEditor *)self p_textRepAtGestureLocationForGesture:v47];
-    [v19 convertNaturalPointFromUnscaledCanvas:{v13, v15}];
+    editorHelper = [(CRLWPEditor *)self p_textRepAtGestureLocationForGesture:gestureCopy];
+    [editorHelper convertNaturalPointFromUnscaledCanvas:{v13, v15}];
     v21 = v20;
     v23 = v22;
-    v24 = [v19 didPointHitSelectionEnd:?];
+    v24 = [editorHelper didPointHitSelectionEnd:?];
     v25 = v24;
     if (v16)
     {
-      v26 = [(CRLWPEditor *)self selection];
-      v27 = [v26 isValid];
+      selection = [(CRLWPEditor *)self selection];
+      isValid = [selection isValid];
 
-      if (((v27 | v25) & 1) == 0)
+      if (((isValid | v25) & 1) == 0)
       {
 LABEL_6:
         [(CRLWPEditor *)self setSelectionSetFromSingleTap:1];
-        [(CRLWPEditor *)self tappedInRep:v19 point:1 tapCount:1 isTapHold:1 precise:v21, v23];
+        [(CRLWPEditor *)self tappedInRep:editorHelper point:1 tapCount:1 isTapHold:1 precise:v21, v23];
         [(CRLWPEditor *)self setSelectionSetFromSingleTap:0];
-        v28 = [(CRLWPEditor *)self selection];
-        v29 = [(CRLWPEditor *)self editorHelper];
-        [v29 setAnchorSelection:v28];
+        selection2 = [(CRLWPEditor *)self selection];
+        editorHelper2 = [(CRLWPEditor *)self editorHelper];
+        [editorHelper2 setAnchorSelection:selection2];
 
         [(CRLWPEditor *)self setInitialPressTextSelectionGranularity:0];
 LABEL_19:
@@ -3143,55 +3143,55 @@ LABEL_19:
       goto LABEL_6;
     }
 
-    v39 = [(CRLWPEditor *)self selection];
-    v40 = [v39 range];
+    selection3 = [(CRLWPEditor *)self selection];
+    range = [selection3 range];
     v42 = v41;
 
-    v38 = [(CRLWPEditor *)self selectionFromUnscaledCanvasPoint:0 textSelectionGranularity:1 isTapHold:0 allowPastBreak:0 isDragging:v6, v8];
-    v43 = [(CRLWPEditor *)self selection];
-    [(CRLWPEditor *)self p_adjustSelection:v43 withOtherSelection:v38 textSelectionGranularity:0];
+    anchorSelection2 = [(CRLWPEditor *)self selectionFromUnscaledCanvasPoint:0 textSelectionGranularity:1 isTapHold:0 allowPastBreak:0 isDragging:v6, v8];
+    selection4 = [(CRLWPEditor *)self selection];
+    [(CRLWPEditor *)self p_adjustSelection:selection4 withOtherSelection:anchorSelection2 textSelectionGranularity:0];
 
-    v44 = [(CRLWPEditor *)self editorHelper];
-    [v44 setAnchorSelection:0];
+    editorHelper3 = [(CRLWPEditor *)self editorHelper];
+    [editorHelper3 setAnchorSelection:0];
 
-    if ([v38 range] > &v40[v42 >> 1])
+    if ([anchorSelection2 range] > &range[v42 >> 1])
     {
       v42 = 0;
     }
 
     v45 = [objc_alloc(-[CRLWPEditor wpSelectionClass](self "wpSelectionClass"))];
-    v46 = [(CRLWPEditor *)self editorHelper];
-    [v46 setAnchorSelection:v45];
+    editorHelper4 = [(CRLWPEditor *)self editorHelper];
+    [editorHelper4 setAnchorSelection:v45];
 
 LABEL_18:
     goto LABEL_19;
   }
 
-  v30 = [(CRLWPEditor *)self interactiveCanvasController];
-  v31 = [v30 canvasView];
-  v32 = [v31 enclosingScrollView];
-  v33 = [v32 isScrollEnabled];
+  interactiveCanvasController3 = [(CRLWPEditor *)self interactiveCanvasController];
+  canvasView = [interactiveCanvasController3 canvasView];
+  enclosingScrollView = [canvasView enclosingScrollView];
+  isScrollEnabled = [enclosingScrollView isScrollEnabled];
 
-  if (v33)
+  if (isScrollEnabled)
   {
     [CRLCanvasAutoscroll startAutoscroll:self unscaledPoint:v6, v8];
   }
 
-  v34 = [(CRLWPEditor *)self editorHelper];
-  v35 = [v34 anchorSelection];
+  editorHelper5 = [(CRLWPEditor *)self editorHelper];
+  anchorSelection = [editorHelper5 anchorSelection];
 
-  if (!v35)
+  if (!anchorSelection)
   {
-    v36 = [(CRLWPEditor *)self selection];
-    v37 = [(CRLWPEditor *)self editorHelper];
-    [v37 setAnchorSelection:v36];
+    selection5 = [(CRLWPEditor *)self selection];
+    editorHelper6 = [(CRLWPEditor *)self editorHelper];
+    [editorHelper6 setAnchorSelection:selection5];
   }
 
   if (sub_100120090(v13, v15, v6, v8) >= 3.0)
   {
-    v19 = [(CRLWPEditor *)self editorHelper];
-    v38 = [v19 anchorSelection];
-    [(CRLWPEditor *)self p_adjustSelection:v38 withUnscaledCanvasPoint:[(CRLWPEditor *)self initialPressTextSelectionGranularity] textSelectionGranularity:1 isTapHold:[(CRLWPEditor *)self initialPressTextSelectionGranularity]^ 1 allowPastBreak:1 isDragging:v6, v8];
+    editorHelper = [(CRLWPEditor *)self editorHelper];
+    anchorSelection2 = [editorHelper anchorSelection];
+    [(CRLWPEditor *)self p_adjustSelection:anchorSelection2 withUnscaledCanvasPoint:[(CRLWPEditor *)self initialPressTextSelectionGranularity] textSelectionGranularity:1 isTapHold:[(CRLWPEditor *)self initialPressTextSelectionGranularity]^ 1 allowPastBreak:1 isDragging:v6, v8];
     goto LABEL_18;
   }
 
@@ -3202,9 +3202,9 @@ LABEL_20:
 {
   [(CRLWPEditor *)self setIgnoreFutureImmediatePresses:0];
   v3 = objc_opt_class();
-  v4 = [(CRLWPEditor *)self interactiveCanvasController];
-  v5 = [v4 layerHost];
-  v18 = sub_100014370(v3, v5);
+  interactiveCanvasController = [(CRLWPEditor *)self interactiveCanvasController];
+  layerHost = [interactiveCanvasController layerHost];
+  v18 = sub_100014370(v3, layerHost);
 
   if ([(CRLWPEditor *)self shouldQueueBeginScribbleMode])
   {
@@ -3214,38 +3214,38 @@ LABEL_20:
 
   if ([(CRLWPEditor *)self isACurrentEditor])
   {
-    v6 = [(CRLWPEditor *)self selection];
-    if (!v6)
+    selection = [(CRLWPEditor *)self selection];
+    if (!selection)
     {
       goto LABEL_18;
     }
 
-    v7 = [(CRLWPEditor *)self mostRecentGestureKind];
-    v8 = v7;
-    if (v7 == @"CRLWPImmediateSingleTap")
+    mostRecentGestureKind = [(CRLWPEditor *)self mostRecentGestureKind];
+    v8 = mostRecentGestureKind;
+    if (mostRecentGestureKind == @"CRLWPImmediateSingleTap")
     {
     }
 
     else
     {
-      v9 = [(CRLWPEditor *)self mostRecentGestureKind];
+      mostRecentGestureKind2 = [(CRLWPEditor *)self mostRecentGestureKind];
 
-      if (v9 != @"CRLWPImmediatePress")
+      if (mostRecentGestureKind2 != @"CRLWPImmediatePress")
       {
-        v10 = [(CRLWPEditor *)self mostRecentGestureKind];
-        v11 = v10;
-        if (v10 == @"CRLWPTapAndTouch")
+        mostRecentGestureKind3 = [(CRLWPEditor *)self mostRecentGestureKind];
+        v11 = mostRecentGestureKind3;
+        if (mostRecentGestureKind3 == @"CRLWPTapAndTouch")
         {
 
           goto LABEL_16;
         }
 
-        v12 = [(CRLWPEditor *)self mostRecentGestureKind];
+        mostRecentGestureKind4 = [(CRLWPEditor *)self mostRecentGestureKind];
 
-        if (v12 == @"CRLWPImmediateDoubleTap")
+        if (mostRecentGestureKind4 == @"CRLWPImmediateDoubleTap")
         {
 LABEL_16:
-          [v6 range];
+          [selection range];
           if (!v17)
           {
             [(CRLWPEditor *)self gestureBeganWhenEditingBegan];
@@ -3258,9 +3258,9 @@ LABEL_18:
       }
     }
 
-    v13 = [v6 range];
+    range = [selection range];
     v15 = v14;
-    if (v13 == [(CRLWPEditor *)self originalSelectionRange]&& v15 == v16 && ![(CRLWPEditor *)self gestureBeganWhenEditingBegan])
+    if (range == [(CRLWPEditor *)self originalSelectionRange]&& v15 == v16 && ![(CRLWPEditor *)self gestureBeganWhenEditingBegan])
     {
       [(CRLWPEditor *)self setShouldShowEditMenuForInsertionPoint:1];
     }
@@ -3274,11 +3274,11 @@ LABEL_19:
 
 - (void)p_beginOperationAndTakeControl
 {
-  v3 = [(CRLWPEditor *)self interactiveCanvasController];
-  v4 = [v3 dynamicOperationController];
-  v5 = [v4 isInOperation];
+  interactiveCanvasController = [(CRLWPEditor *)self interactiveCanvasController];
+  dynamicOperationController = [interactiveCanvasController dynamicOperationController];
+  isInOperation = [dynamicOperationController isInOperation];
 
-  if (v5)
+  if (isInOperation)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -3307,16 +3307,16 @@ LABEL_19:
     [CRLAssertionHandler handleFailureInFunction:v7 file:v8 lineNumber:2826 isFatal:0 description:"beginning WP operation in DOC when already in an operation"];
   }
 
-  v9 = [v3 tmCoordinator];
-  [v9 registerTrackerManipulator:self];
+  tmCoordinator = [interactiveCanvasController tmCoordinator];
+  [tmCoordinator registerTrackerManipulator:self];
 
-  v10 = [v3 tmCoordinator];
-  v11 = [v10 takeControlWithTrackerManipulator:self];
+  tmCoordinator2 = [interactiveCanvasController tmCoordinator];
+  v11 = [tmCoordinator2 takeControlWithTrackerManipulator:self];
 
   if (v11)
   {
-    v12 = [v3 dynamicOperationController];
-    [v12 beginOperation];
+    dynamicOperationController2 = [interactiveCanvasController dynamicOperationController];
+    [dynamicOperationController2 beginOperation];
   }
 
   else
@@ -3330,7 +3330,7 @@ LABEL_19:
     v14 = off_1019EDA68;
     if (os_log_type_enabled(off_1019EDA68, OS_LOG_TYPE_ERROR))
     {
-      sub_101394F54(v14, v3, v13);
+      sub_101394F54(v14, interactiveCanvasController, v13);
     }
 
     if (qword_101AD5A10 != -1)
@@ -3344,40 +3344,40 @@ LABEL_19:
       sub_10130DA10(v15);
     }
 
-    v12 = [NSString stringWithUTF8String:"[CRLWPEditor(GestureInterfaces) p_beginOperationAndTakeControl]"];
+    dynamicOperationController2 = [NSString stringWithUTF8String:"[CRLWPEditor(GestureInterfaces) p_beginOperationAndTakeControl]"];
     v16 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLWP/Gestures/CRLWPEditor+Gestures.m"];
-    v17 = [v3 tmCoordinator];
-    v18 = [v17 controllingTM];
+    tmCoordinator3 = [interactiveCanvasController tmCoordinator];
+    controllingTM = [tmCoordinator3 controllingTM];
     v19 = objc_opt_class();
     v20 = NSStringFromClass(v19);
-    [CRLAssertionHandler handleFailureInFunction:v12 file:v16 lineNumber:2832 isFatal:0 description:"could not take control with WP Editing Controller. Controlling TM is %{public}@", v20];
+    [CRLAssertionHandler handleFailureInFunction:dynamicOperationController2 file:v16 lineNumber:2832 isFatal:0 description:"could not take control with WP Editing Controller. Controlling TM is %{public}@", v20];
   }
 }
 
 - (void)p_endAutoscroll
 {
-  v3 = [(CRLWPEditor *)self autoscroll];
-  [v3 invalidate];
+  autoscroll = [(CRLWPEditor *)self autoscroll];
+  [autoscroll invalidate];
 
   [(CRLWPEditor *)self setAutoscroll:0];
 }
 
-- (void)p_handleTapWhileMarkedTextGestureRecognizer:(id)a3
+- (void)p_handleTapWhileMarkedTextGestureRecognizer:(id)recognizer
 {
   v4 = [(CRLWPEditor *)self icc];
-  v3 = [v4 textInputResponder];
-  [v3 acceptAutocorrection];
+  textInputResponder = [v4 textInputResponder];
+  [textInputResponder acceptAutocorrection];
 }
 
-- (void)p_handleKnobDragGestureRecognizer:(id)a3
+- (void)p_handleKnobDragGestureRecognizer:(id)recognizer
 {
-  v4 = a3;
-  v5 = v4;
-  v6 = !v4 || [v4 gestureState] == 3 || objc_msgSend(v5, "gestureState") == 4;
+  recognizerCopy = recognizer;
+  v5 = recognizerCopy;
+  v6 = !recognizerCopy || [recognizerCopy gestureState] == 3 || objc_msgSend(v5, "gestureState") == 4;
   [(CRLWPEditor *)self setReadyToEnd:v6];
-  v7 = [(CRLWPEditor *)self knobTracker];
+  knobTracker = [(CRLWPEditor *)self knobTracker];
 
-  if (!v7)
+  if (!knobTracker)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -3408,8 +3408,8 @@ LABEL_19:
 
   if ([v5 gestureState] == 3 || objc_msgSend(v5, "gestureState") == 1)
   {
-    v11 = [(CRLWPEditor *)self knobTracker];
-    [v11 setIgnoreNextCall:1];
+    knobTracker2 = [(CRLWPEditor *)self knobTracker];
+    [knobTracker2 setIgnoreNextCall:1];
   }
 
   v12 = [(CRLWPEditor *)self icc];
@@ -3420,8 +3420,8 @@ LABEL_19:
   [(CRLWPEditor *)self knobToTouchOffset];
   v19 = sub_10011F334(v15, v17, v18);
   v21 = v20;
-  v22 = [(CRLWPEditor *)self knobTracker];
-  [v22 setCurrentPosition:{v19, v21}];
+  knobTracker3 = [(CRLWPEditor *)self knobTracker];
+  [knobTracker3 setCurrentPosition:{v19, v21}];
 
   if ([(CRLWPEditor *)self readyToEnd])
   {
@@ -3433,22 +3433,22 @@ LABEL_19:
     [CRLCanvasAutoscroll startAutoscroll:self unscaledPoint:v15, v17];
   }
 
-  v23 = [(CRLWPEditor *)self interactiveCanvasController];
-  v24 = [v23 dynamicOperationController];
-  [v24 handleTrackerManipulator:self];
+  interactiveCanvasController = [(CRLWPEditor *)self interactiveCanvasController];
+  dynamicOperationController = [interactiveCanvasController dynamicOperationController];
+  [dynamicOperationController handleTrackerManipulator:self];
 }
 
-- (void)p_beginMagnification:(id)a3 forRep:(id)a4 atPoint:(CGPoint)a5 shouldSetSelection:(BOOL)a6
+- (void)p_beginMagnification:(id)magnification forRep:(id)rep atPoint:(CGPoint)point shouldSetSelection:(BOOL)selection
 {
-  v6 = a6;
-  y = a5.y;
-  x = a5.x;
-  v10 = [(CRLWPEditor *)self interactiveCanvasController:a3];
+  selectionCopy = selection;
+  y = point.y;
+  x = point.x;
+  v10 = [(CRLWPEditor *)self interactiveCanvasController:magnification];
   [v10 convertBoundsToUnscaledPoint:{x, y}];
   v12 = v11;
   v14 = v13;
 
-  if (v6)
+  if (selectionCopy)
   {
 
     [(CRLWPEditor *)self p_setSelectionFromPoint:0 textSelectionGranularity:1 includeListLabels:v12, v14];
@@ -3457,18 +3457,18 @@ LABEL_19:
 
 - (void)protectedStopMagnification
 {
-  v3 = [(CRLWPEditor *)self textSelectionDelegate];
-  [v3 endLoupeSession];
+  textSelectionDelegate = [(CRLWPEditor *)self textSelectionDelegate];
+  [textSelectionDelegate endLoupeSession];
 
-  v4 = [(CRLWPEditor *)self magnifier];
+  magnifier = [(CRLWPEditor *)self magnifier];
 
-  if (v4)
+  if (magnifier)
   {
-    v5 = [(CRLWPEditor *)self interactiveCanvasController];
-    [v5 layoutIfNeeded];
+    interactiveCanvasController = [(CRLWPEditor *)self interactiveCanvasController];
+    [interactiveCanvasController layoutIfNeeded];
 
-    v6 = [(CRLWPEditor *)self magnifier];
-    [v6 stopMagnifying:1];
+    magnifier2 = [(CRLWPEditor *)self magnifier];
+    [magnifier2 stopMagnifying:1];
 
     [(CRLWPEditor *)self setMagnifier:0];
 
@@ -3476,14 +3476,14 @@ LABEL_19:
   }
 }
 
-- (void)p_protectedStopKnobTrackingGesture:(id)a3
+- (void)p_protectedStopKnobTrackingGesture:(id)gesture
 {
-  v6 = a3;
-  v4 = [(CRLWPEditor *)self knobTracker];
+  gestureCopy = gesture;
+  knobTracker = [(CRLWPEditor *)self knobTracker];
 
-  if (v4)
+  if (knobTracker)
   {
-    [(CRLWPEditor *)self p_handleKnobDragGestureRecognizer:v6];
+    [(CRLWPEditor *)self p_handleKnobDragGestureRecognizer:gestureCopy];
     y = CGPointZero.y;
     [(CRLWPEditor *)self setAdjustedDragPoint:CGPointZero.x, y];
     [(CRLWPEditor *)self setAdjustedDragToNaturalPointOffset:CGPointZero.x, y];
@@ -3492,23 +3492,23 @@ LABEL_19:
   }
 }
 
-- (void)setInsertionStyle:(id)a3
+- (void)setInsertionStyle:(id)style
 {
   v4 = *(self + OBJC_IVAR____TtC8Freeform11CRLWPEditor_insertionStyle);
-  *(self + OBJC_IVAR____TtC8Freeform11CRLWPEditor_insertionStyle) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC8Freeform11CRLWPEditor_insertionStyle) = style;
+  styleCopy = style;
 }
 
-- (void)setEnclosingShape:(id)a3
+- (void)setEnclosingShape:(id)shape
 {
   v4 = *(self + OBJC_IVAR____TtC8Freeform11CRLWPEditor_enclosingShape);
-  *(self + OBJC_IVAR____TtC8Freeform11CRLWPEditor_enclosingShape) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC8Freeform11CRLWPEditor_enclosingShape) = shape;
+  shapeCopy = shape;
 }
 
 - (_TtC8Freeform12CRLWPStorage)storageWithMarkedText
 {
-  v2 = self;
+  selfCopy = self;
   sub_100936C74();
   v4 = v3;
 
@@ -3517,7 +3517,7 @@ LABEL_19:
 
 - (_TtC8Freeform11CRLWPLayout)layout
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100936D54();
 
   return v3;
@@ -3525,39 +3525,39 @@ LABEL_19:
 
 - (void)textSelectionWillChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_100937648();
 }
 
 - (void)textSelectionDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_10093769C();
 }
 
 - (void)textWillChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_1009377C4();
 }
 
 - (void)willUndo
 {
-  v2 = self;
+  selfCopy = self;
   sub_100937824();
 }
 
 - (void)documentEditabilityDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_100937A54();
 }
 
-+ (BOOL)canEditTextIn:(id)a3 using:(id)a4
++ (BOOL)canEditTextIn:(id)in using:(id)using
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = sub_100962604(v5, v6);
+  inCopy = in;
+  usingCopy = using;
+  v7 = sub_100962604(inCopy, usingCopy);
 
   return v7 & 1;
 }
@@ -3580,16 +3580,16 @@ LABEL_19:
   return v2;
 }
 
-- (void)setSelection:(id)a3
+- (void)setSelection:(id)selection
 {
-  v5 = a3;
-  v6 = self;
-  sub_100937C74(a3);
+  selectionCopy = selection;
+  selfCopy = self;
+  sub_100937C74(selection);
 }
 
 - (CRLSearchReference)editingSearchReference
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100937E64();
 
   return v3;
@@ -3598,21 +3598,21 @@ LABEL_19:
 - (void)endEditing
 {
   memset(v3, 0, sizeof(v3));
-  v2 = self;
+  selfCopy = self;
   sub_1009380EC();
 
   sub_10000CAAC(v3, &unk_1019F4D00);
 }
 
-- (void)setWantsVisibleKeyboard:(BOOL)a3
+- (void)setWantsVisibleKeyboard:(BOOL)keyboard
 {
-  v4 = self;
-  sub_1009383D8(a3);
+  selfCopy = self;
+  sub_1009383D8(keyboard);
 }
 
 - (_TtP8Freeform16CRLTextSelecting_)textSelectionDelegate
 {
-  v2 = self;
+  selfCopy = self;
   sub_100960E34();
   v4 = v3;
   swift_unknownObjectRetain();
@@ -3622,7 +3622,7 @@ LABEL_19:
 
 - (_TtC8Freeform25CRLWPTextSelectionManager)textSelectionManager
 {
-  v2 = self;
+  selfCopy = self;
   sub_100960E34();
   v4 = v3;
   swift_unknownObjectRetain();
@@ -3645,16 +3645,16 @@ LABEL_5:
   return v5;
 }
 
-- (void)setEditorController:(id)a3
+- (void)setEditorController:(id)controller
 {
   v4 = *(self + OBJC_IVAR____TtC8Freeform11CRLWPEditor_editorController);
-  *(self + OBJC_IVAR____TtC8Freeform11CRLWPEditor_editorController) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC8Freeform11CRLWPEditor_editorController) = controller;
+  controllerCopy = controller;
 }
 
 - (BOOL)needsTextEditingAccessoryBar
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1009385E0();
 
   return v3 & 1;
@@ -3662,61 +3662,61 @@ LABEL_5:
 
 - (UIInputViewController)inputAccessoryViewController
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1009386D4();
 
   return v3;
 }
 
-- (BOOL)shouldRemainOnEditorStackForSelection:(id)a3 inSelectionPath:(id)a4 withNewEditors:(id)a5
+- (BOOL)shouldRemainOnEditorStackForSelection:(id)selection inSelectionPath:(id)path withNewEditors:(id)editors
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
-  v10 = sub_100962708(v7, v8);
+  selectionCopy = selection;
+  pathCopy = path;
+  selfCopy = self;
+  v10 = sub_100962708(selectionCopy, pathCopy);
 
   return v10 & 1;
 }
 
-- (id)selectionWillChangeFromSelection:(id)a3 toSelection:(id)a4 withFlags:(unint64_t)a5 inSelectionPath:(id)a6 withNewEditors:(id)a7
+- (id)selectionWillChangeFromSelection:(id)selection toSelection:(id)toSelection withFlags:(unint64_t)flags inSelectionPath:(id)path withNewEditors:(id)editors
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  v14 = self;
-  v15 = sub_1009628E0(a3, v12);
+  selectionCopy = selection;
+  toSelectionCopy = toSelection;
+  pathCopy = path;
+  selfCopy = self;
+  v15 = sub_1009628E0(selection, toSelectionCopy);
 
   return v15;
 }
 
-- (void)selectionDidChangeFromSelection:(id)a3 toSelection:(id)a4 withFlags:(unint64_t)a5
+- (void)selectionDidChangeFromSelection:(id)selection toSelection:(id)toSelection withFlags:(unint64_t)flags
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = self;
-  sub_100938C50(a3, v10, a5);
+  selectionCopy = selection;
+  toSelectionCopy = toSelection;
+  selfCopy = self;
+  sub_100938C50(selection, toSelectionCopy, flags);
 }
 
-- (void)didBecomeCurrentEditorForEditorController:(id)a3
+- (void)didBecomeCurrentEditorForEditorController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
+  controllerCopy = controller;
+  selfCopy = self;
   sub_100962C70();
 }
 
 - (void)willResignCurrentEditor
 {
-  v2 = self;
+  selfCopy = self;
   sub_100939624();
 }
 
-- (BOOL)canPasteWithItemSource:(id)a3 selection:(id)a4 sender:(id)a5
+- (BOOL)canPasteWithItemSource:(id)source selection:(id)selection sender:(id)sender
 {
-  if (a5)
+  if (sender)
   {
     swift_unknownObjectRetain();
-    v8 = a4;
-    v9 = self;
+    selectionCopy = selection;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -3726,33 +3726,33 @@ LABEL_5:
   {
     memset(v14, 0, sizeof(v14));
     swift_unknownObjectRetain();
-    v10 = a4;
-    v11 = self;
+    selectionCopy2 = selection;
+    selfCopy2 = self;
   }
 
-  v12 = sub_100962DFC(a3);
+  v12 = sub_100962DFC(source);
   swift_unknownObjectRelease();
 
   sub_10000CAAC(v14, &unk_1019F4D00);
   return v12 & 1;
 }
 
-- (void)pasteFromItemSource:(id)a3 forceMatchStyle:(BOOL)a4
+- (void)pasteFromItemSource:(id)source forceMatchStyle:(BOOL)style
 {
   swift_unknownObjectRetain();
-  v7 = self;
-  sub_100939C9C(a3, a4);
+  selfCopy = self;
+  sub_100939C9C(source, style);
   swift_unknownObjectRelease();
 }
 
-- (void)pasteWithItemSource:(id)a3 selection:(id)a4 sender:(id)a5 selectRange:(int64_t)a6 dragBlock:(id)a7
+- (void)pasteWithItemSource:(id)source selection:(id)selection sender:(id)sender selectRange:(int64_t)range dragBlock:(id)block
 {
-  v12 = _Block_copy(a7);
-  if (a5)
+  v12 = _Block_copy(block);
+  if (sender)
   {
     swift_unknownObjectRetain();
-    v13 = a4;
-    v14 = self;
+    selectionCopy = selection;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -3762,12 +3762,12 @@ LABEL_5:
   {
     memset(v17, 0, sizeof(v17));
     swift_unknownObjectRetain();
-    v15 = a4;
-    v16 = self;
+    selectionCopy2 = selection;
+    selfCopy2 = self;
   }
 
   _Block_copy(v12);
-  sub_100962F14(a3, a4, v17, a6, self, v12);
+  sub_100962F14(source, selection, v17, range, self, v12);
   _Block_release(v12);
   _Block_release(v12);
   swift_unknownObjectRelease();
@@ -3775,12 +3775,12 @@ LABEL_5:
   sub_10000CAAC(v17, &unk_1019F4D00);
 }
 
-- (void)cutTo:(id)a3 nativeOnly:(BOOL)a4 sender:(id)a5
+- (void)cutTo:(id)to nativeOnly:(BOOL)only sender:(id)sender
 {
-  if (a5)
+  if (sender)
   {
-    v8 = a3;
-    v9 = self;
+    toCopy = to;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -3789,20 +3789,20 @@ LABEL_5:
   else
   {
     memset(v12, 0, sizeof(v12));
-    v10 = a3;
-    v11 = self;
+    toCopy2 = to;
+    selfCopy2 = self;
   }
 
-  sub_10093C2F4(a3, a4);
+  sub_10093C2F4(to, only);
 
   sub_10000CAAC(v12, &unk_1019F4D00);
 }
 
-- (int64_t)canPerformEditorAction:(SEL)a3 withSender:(id)a4
+- (int64_t)canPerformEditorAction:(SEL)action withSender:(id)sender
 {
-  if (a4)
+  if (sender)
   {
-    v6 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -3811,10 +3811,10 @@ LABEL_5:
   else
   {
     memset(v10, 0, sizeof(v10));
-    v7 = self;
+    selfCopy2 = self;
   }
 
-  v8 = sub_10093CC50(a3);
+  v8 = sub_10093CC50(action);
 
   sub_10000CAAC(v10, &unk_1019F4D00);
   return v8;
@@ -3826,12 +3826,12 @@ LABEL_5:
   if (Strong)
   {
     v4 = Strong;
-    v5 = self;
-    v6 = [v4 editingDisabled];
+    selfCopy = self;
+    editingDisabled = [v4 editingDisabled];
 
-    if (!v6)
+    if (!editingDisabled)
     {
-      v8 = *(v5 + OBJC_IVAR____TtC8Freeform11CRLWPEditor_disallowEditingOfTextString);
+      v8 = *(selfCopy + OBJC_IVAR____TtC8Freeform11CRLWPEditor_disallowEditingOfTextString);
 
       v7 = v8 ^ 1;
       return v7 & 1;
@@ -3842,36 +3842,36 @@ LABEL_5:
   return v7 & 1;
 }
 
-- (void)setEditorHelper:(id)a3
+- (void)setEditorHelper:(id)helper
 {
   v4 = *(self + OBJC_IVAR____TtC8Freeform11CRLWPEditor_editorHelper);
-  *(self + OBJC_IVAR____TtC8Freeform11CRLWPEditor_editorHelper) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC8Freeform11CRLWPEditor_editorHelper) = helper;
+  helperCopy = helper;
 }
 
-- (id)cursorAtPoint:(CGPoint)a3 withCursorPlatformObject:(id)a4
+- (id)cursorAtPoint:(CGPoint)point withCursorPlatformObject:(id)object
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_10093E094(v7, x, y);
+  y = point.y;
+  x = point.x;
+  objectCopy = object;
+  selfCopy = self;
+  v9 = sub_10093E094(objectCopy, x, y);
 
   return v9;
 }
 
-- (void)addContextualMenuElementsToArray:(id)a3 atPoint:(CGPoint)a4
+- (void)addContextualMenuElementsToArray:(id)array atPoint:(CGPoint)point
 {
-  v5 = a3;
-  v6 = self;
-  sub_10096423C(v5);
+  arrayCopy = array;
+  selfCopy = self;
+  sub_10096423C(arrayCopy);
 }
 
-- (void)selectMenuAction:(id)a3
+- (void)selectMenuAction:(id)action
 {
-  if (a3)
+  if (action)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -3881,7 +3881,7 @@ LABEL_5:
   {
     v6 = 0u;
     v7 = 0u;
-    v5 = self;
+    selfCopy2 = self;
   }
 
   [*(self + OBJC_IVAR____TtC8Freeform11CRLWPEditor_editorHelper) selectWordWithFlags:{16, v6, v7}];
@@ -3891,15 +3891,15 @@ LABEL_5:
 
 - (void)selectAll
 {
-  v2 = self;
+  selfCopy = self;
   sub_10093EE84();
 }
 
-- (void)selectAllMenuAction:(id)a3
+- (void)selectAllMenuAction:(id)action
 {
-  if (a3)
+  if (action)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -3908,7 +3908,7 @@ LABEL_5:
   else
   {
     memset(v6, 0, sizeof(v6));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   sub_10093EE84();
@@ -3916,13 +3916,13 @@ LABEL_5:
   sub_10000CAAC(v6, &unk_1019F4D00);
 }
 
-- (void)lookUp:(id)a3
+- (void)lookUp:(id)up
 {
-  if (!a3)
+  if (!up)
   {
     v9 = 0u;
     v10 = 0u;
-    v8 = self;
+    selfCopy = self;
     sub_100960E34();
     if (!v5)
     {
@@ -3932,7 +3932,7 @@ LABEL_5:
     goto LABEL_3;
   }
 
-  v4 = self;
+  selfCopy2 = self;
   swift_unknownObjectRetain();
   _bridgeAnyObjectToAny(_:)();
   swift_unknownObjectRelease();
@@ -3940,8 +3940,8 @@ LABEL_5:
   if (v5)
   {
 LABEL_3:
-    v6 = [v5 selectedRange];
-    sub_10093F4E0(v6, v7);
+    selectedRange = [v5 selectedRange];
+    sub_10093F4E0(selectedRange, v7);
   }
 
 LABEL_4:
@@ -3949,19 +3949,19 @@ LABEL_4:
   sub_10000CAAC(&v9, &unk_1019F4D00);
 }
 
-- (void)lookUpTextAtRange:(_NSRange)a3
+- (void)lookUpTextAtRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v5 = self;
+  length = range.length;
+  location = range.location;
+  selfCopy = self;
   sub_10093F4E0(location, length);
 }
 
-- (void)deleteBackward:(id)a3
+- (void)deleteBackward:(id)backward
 {
-  if (a3)
+  if (backward)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -3971,7 +3971,7 @@ LABEL_4:
   {
     v6 = 0u;
     v7 = 0u;
-    v5 = self;
+    selfCopy2 = self;
   }
 
   [(CRLWPEditor *)self deleteCurrentSelection:v6];
@@ -3981,13 +3981,13 @@ LABEL_4:
 
 - (void)showEditMenu
 {
-  v2 = self;
+  selfCopy = self;
   sub_100943A08();
 }
 
 - (CGRect)targetRectForEditMenu
 {
-  v2 = self;
+  selfCopy = self;
   sub_100943FB8();
   v4 = v3;
   v6 = v5;
@@ -4007,7 +4007,7 @@ LABEL_4:
 
 - (void)hideEditMenu
 {
-  v4 = self;
+  selfCopy = self;
   v2 = sub_100943964();
   if (v2)
   {
@@ -4016,21 +4016,21 @@ LABEL_4:
   }
 }
 
-- (id)dictationAndAutocorrectionsFor:(int64_t)a3 effectiveRange:(_NSRange *)a4
+- (id)dictationAndAutocorrectionsFor:(int64_t)for effectiveRange:(_NSRange *)range
 {
-  v6 = self;
+  selfCopy = self;
 
-  sub_1008ACD34(a3);
+  sub_1008ACD34(for);
   v8 = v7;
   v10 = v9;
   v12 = v11;
 
   if (v8)
   {
-    if (a4)
+    if (range)
     {
-      a4->location = v10;
-      a4->length = v12;
+      range->location = v10;
+      range->length = v12;
     }
 
     v13 = String._bridgeToObjectiveC()();
@@ -4045,21 +4045,21 @@ LABEL_4:
   return v13;
 }
 
-- (id)autocorrectionRangesToDisplayInRange:(_NSRange)a3
+- (id)autocorrectionRangesToDisplayInRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v5 = self;
+  length = range.length;
+  location = range.location;
+  selfCopy = self;
   v6 = sub_1009443C8(location, length);
 
   return v6;
 }
 
-- (void)toggleListEntry:(id)a3
+- (void)toggleListEntry:(id)entry
 {
-  if (a3)
+  if (entry)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -4068,7 +4068,7 @@ LABEL_4:
   else
   {
     memset(v12, 0, sizeof(v12));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   KeyPath = swift_getKeyPath();
@@ -4092,108 +4092,108 @@ LABEL_4:
   sub_10000CAAC(v12, &unk_1019F4D00);
 }
 
-- (BOOL)canSetWritingDirection:(int64_t)a3
+- (BOOL)canSetWritingDirection:(int64_t)direction
 {
-  v4 = self;
-  sub_100945450(a3);
-  LOBYTE(a3) = v5;
+  selfCopy = self;
+  sub_100945450(direction);
+  LOBYTE(direction) = v5;
 
-  return a3 & 1;
+  return direction & 1;
 }
 
-- (int64_t)baseWritingDirectionFor:(id)a3
+- (int64_t)baseWritingDirectionFor:(id)for
 {
-  v4 = a3;
-  v5 = self;
-  sub_1009457D8(v4);
+  forCopy = for;
+  selfCopy = self;
+  sub_1009457D8(forCopy);
   v7 = v6;
 
   return v7;
 }
 
-- (void)setBaseWritingDirection:(int64_t)a3 forParagraphsWithRange:(id)a4
+- (void)setBaseWritingDirection:(int64_t)direction forParagraphsWithRange:(id)range
 {
-  v6 = a4;
-  v7 = self;
-  sub_100945BA8(a3, v6);
+  rangeCopy = range;
+  selfCopy = self;
+  sub_100945BA8(direction, rangeCopy);
 }
 
-- (void)setAutoscroll:(id)a3
+- (void)setAutoscroll:(id)autoscroll
 {
   v4 = *(self + OBJC_IVAR____TtC8Freeform11CRLWPEditor_autoscroll);
-  *(self + OBJC_IVAR____TtC8Freeform11CRLWPEditor_autoscroll) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC8Freeform11CRLWPEditor_autoscroll) = autoscroll;
+  autoscrollCopy = autoscroll;
 }
 
-- (void)setListDragAnimator:(id)a3
+- (void)setListDragAnimator:(id)animator
 {
   v4 = *(self + OBJC_IVAR____TtC8Freeform11CRLWPEditor_listDragAnimator);
-  *(self + OBJC_IVAR____TtC8Freeform11CRLWPEditor_listDragAnimator) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC8Freeform11CRLWPEditor_listDragAnimator) = animator;
+  animatorCopy = animator;
 }
 
 - (void)commitMarkedTextWithoutModifyingStorage
 {
-  v2 = self;
+  selfCopy = self;
   sub_100947F58();
 }
 
 - (void)commitMarkedText
 {
-  v2 = self;
+  selfCopy = self;
   sub_1009480A8();
 }
 
 - (void)abortMarkedText
 {
-  v2 = self;
+  selfCopy = self;
   sub_100948424();
 }
 
 - (void)willResignTextInputEditor
 {
-  v2 = self;
+  selfCopy = self;
   sub_100948514();
 }
 
 - (void)didResignTextInputEditor
 {
-  v2 = self;
+  selfCopy = self;
   sub_10094871C();
 }
 
 - (void)didBecomeTextInputEditor
 {
-  v2 = self;
+  selfCopy = self;
   sub_100948AF4();
 }
 
-- (void)setMostRecentGestureKind:(id)a3
+- (void)setMostRecentGestureKind:(id)kind
 {
   v4 = *(self + OBJC_IVAR____TtC8Freeform11CRLWPEditor_mostRecentGestureKind);
-  *(self + OBJC_IVAR____TtC8Freeform11CRLWPEditor_mostRecentGestureKind) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC8Freeform11CRLWPEditor_mostRecentGestureKind) = kind;
+  kindCopy = kind;
 }
 
-- (void)setFidgetResolver:(id)a3
+- (void)setFidgetResolver:(id)resolver
 {
   v4 = *(self + OBJC_IVAR____TtC8Freeform11CRLWPEditor_fidgetResolver);
-  *(self + OBJC_IVAR____TtC8Freeform11CRLWPEditor_fidgetResolver) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC8Freeform11CRLWPEditor_fidgetResolver) = resolver;
+  resolverCopy = resolver;
 }
 
-- (void)setDictationInterpretations:(id)a3
+- (void)setDictationInterpretations:(id)interpretations
 {
   v4 = *(self + OBJC_IVAR____TtC8Freeform11CRLWPEditor_dictationInterpretations);
-  *(self + OBJC_IVAR____TtC8Freeform11CRLWPEditor_dictationInterpretations) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC8Freeform11CRLWPEditor_dictationInterpretations) = interpretations;
+  interpretationsCopy = interpretations;
 }
 
-- (void)setTapInfo:(id)a3
+- (void)setTapInfo:(id)info
 {
   v4 = *(self + OBJC_IVAR____TtC8Freeform11CRLWPEditor_tapInfo);
-  *(self + OBJC_IVAR____TtC8Freeform11CRLWPEditor_tapInfo) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC8Freeform11CRLWPEditor_tapInfo) = info;
+  infoCopy = info;
 }
 
 - (CRLWPTextMagnifier)magnifier
@@ -4203,9 +4203,9 @@ LABEL_4:
   return v2;
 }
 
-- (void)setMagnifier:(id)a3
+- (void)setMagnifier:(id)magnifier
 {
-  *(self + OBJC_IVAR____TtC8Freeform11CRLWPEditor_magnifier) = a3;
+  *(self + OBJC_IVAR____TtC8Freeform11CRLWPEditor_magnifier) = magnifier;
   swift_unknownObjectRetain();
 
   swift_unknownObjectRelease();
@@ -4229,16 +4229,16 @@ LABEL_4:
   return result;
 }
 
-- (void)setKnobTracker:(id)a3
+- (void)setKnobTracker:(id)tracker
 {
   v4 = *(self + OBJC_IVAR____TtC8Freeform11CRLWPEditor_knobTracker);
-  *(self + OBJC_IVAR____TtC8Freeform11CRLWPEditor_knobTracker) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC8Freeform11CRLWPEditor_knobTracker) = tracker;
+  trackerCopy = tracker;
 }
 
 - (BOOL)editMenuIsVisible
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100943964();
 
   if (!v3)
@@ -4276,12 +4276,12 @@ LABEL_4:
   return result;
 }
 
-- (BOOL)wantsParagraphModeWithSelection:(id)a3
+- (BOOL)wantsParagraphModeWithSelection:(id)selection
 {
-  v4 = self;
-  if ([a3 isValid])
+  selfCopy = self;
+  if ([selection isValid])
   {
-    v5 = *(v4 + OBJC_IVAR____TtC8Freeform11CRLWPEditor_wantsParagraphMode);
+    v5 = *(selfCopy + OBJC_IVAR____TtC8Freeform11CRLWPEditor_wantsParagraphMode);
 
     if (v5)
     {
@@ -4298,7 +4298,7 @@ LABEL_4:
 
 - (NSSet)editingReps
 {
-  v2 = self;
+  selfCopy = self;
   sub_10094946C();
 
   sub_100006370(0, &qword_1019FB7A0);
@@ -4343,7 +4343,7 @@ LABEL_4:
   return v8.super.isa;
 }
 
-- (void)setLastSingleImmediateTapTime:(id)a3
+- (void)setLastSingleImmediateTapTime:(id)time
 {
   v4 = type metadata accessor for Date();
   v5 = *(v4 - 8);
@@ -4353,7 +4353,7 @@ LABEL_4:
   v8 = OBJC_IVAR____TtC8Freeform11CRLWPEditor_lastSingleImmediateTapTime;
   swift_beginAccess();
   v9 = *(v5 + 40);
-  v10 = self;
+  selfCopy = self;
   v9(self + v8, v7, v4);
   swift_endAccess();
 }
@@ -4435,17 +4435,17 @@ LABEL_4:
 
 - (CRLWPRep)editingRep
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100949A1C();
 
   return v3;
 }
 
-- (CGPoint)clampUnscaledPointToTextFieldBounds:(CGPoint)a3
+- (CGPoint)clampUnscaledPointToTextFieldBounds:(CGPoint)bounds
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = self;
+  y = bounds.y;
+  x = bounds.x;
+  selfCopy = self;
   v6 = sub_100949F2C(x, y);
   v8 = v7;
 
@@ -4456,11 +4456,11 @@ LABEL_4:
   return result;
 }
 
-- (CGPoint)getCenterOfWord:(id)a3
+- (CGPoint)getCenterOfWord:(id)word
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_10094A034(v4);
+  wordCopy = word;
+  selfCopy = self;
+  v6 = sub_10094A034(wordCopy);
   v8 = v7;
 
   v9 = v6;
@@ -4470,11 +4470,11 @@ LABEL_4:
   return result;
 }
 
-- (void)setDragRep:(id)a3
+- (void)setDragRep:(id)rep
 {
   v4 = *(self + OBJC_IVAR____TtC8Freeform11CRLWPEditor_dragRep);
-  *(self + OBJC_IVAR____TtC8Freeform11CRLWPEditor_dragRep) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC8Freeform11CRLWPEditor_dragRep) = rep;
+  repCopy = rep;
 }
 
 - (_TtC8Freeform11CRLWPEditor)init
@@ -4484,11 +4484,11 @@ LABEL_4:
   return result;
 }
 
-- (void)moveRight:(id)a3
+- (void)moveRight:(id)right
 {
-  if (a3)
+  if (right)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -4497,7 +4497,7 @@ LABEL_4:
   else
   {
     memset(v6, 0, sizeof(v6));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   if (qword_1019F1570 != -1)
@@ -4510,9 +4510,9 @@ LABEL_4:
   sub_10000CAAC(v6, &unk_1019F4D00);
 }
 
-- (_NSRange)availableSelectionRangeForCharIndex:(int64_t)a3
+- (_NSRange)availableSelectionRangeForCharIndex:(int64_t)index
 {
-  v3 = self;
+  selfCopy = self;
   sub_100966624();
   v5 = v4;
   v7 = v6;
@@ -4526,7 +4526,7 @@ LABEL_4:
 
 - (BOOL)hasText
 {
-  v2 = self;
+  selfCopy = self;
   sub_10094E97C();
   v4 = v3;
 
@@ -4554,10 +4554,10 @@ LABEL_4:
   return v8.super.isa;
 }
 
-- (void)insertText:(id)a3
+- (void)insertText:(id)text
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   _bridgeAnyObjectToAny(_:)();
   swift_unknownObjectRelease();
   sub_10094ECE4(v5);
@@ -4565,40 +4565,40 @@ LABEL_4:
   sub_100005070(v5);
 }
 
-- (void)insertWithText:(id)a3
+- (void)insertWithText:(id)text
 {
   v4 = qword_1019F1570;
-  v5 = a3;
-  v6 = self;
-  v7 = v6;
+  textCopy = text;
+  selfCopy = self;
+  v7 = selfCopy;
   if (v4 != -1)
   {
     swift_once();
-    v6 = v7;
+    selfCopy = v7;
   }
 
-  sub_10094F498(v6, v5);
+  sub_10094F498(selfCopy, textCopy);
 }
 
 - (void)deleteCurrentSelection
 {
-  v2 = self;
+  selfCopy = self;
   sub_10094F9F8();
 }
 
-- (void)updateStateForCommand:(id)a3
+- (void)updateStateForCommand:(id)command
 {
-  v4 = a3;
-  v5 = self;
-  sub_10094FE78(v4);
+  commandCopy = command;
+  selfCopy = self;
+  sub_10094FE78(commandCopy);
 }
 
-- (void)replace:(id)a3 with:(id)a4
+- (void)replace:(id)replace with:(id)with
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_100950348(v6, v7);
+  replaceCopy = replace;
+  withCopy = with;
+  selfCopy = self;
+  sub_100950348(replaceCopy, withCopy);
 }
 
 - (NSAttributedString)markedText
@@ -4631,13 +4631,13 @@ LABEL_4:
 - (_NSRange)markedRange
 {
   v2 = qword_1019F1570;
-  v3 = self;
+  selfCopy = self;
   if (v2 != -1)
   {
     swift_once();
   }
 
-  sub_100951AE8(v3, v6);
+  sub_100951AE8(selfCopy, v6);
 
   v4 = v6[0];
   v5 = v6[1];
@@ -4648,33 +4648,33 @@ LABEL_4:
 
 - (void)clearMarkedRange
 {
-  v2 = self;
+  selfCopy = self;
   sub_100951BD0();
 }
 
 - (_TtC8Freeform12CRLTextRange)markedTextRange
 {
   v2 = qword_1019F1570;
-  v3 = self;
+  selfCopy = self;
   if (v2 != -1)
   {
     swift_once();
   }
 
-  sub_100951D78(v3, &v6);
+  sub_100951D78(selfCopy, &v6);
 
   v4 = v6;
 
   return v4;
 }
 
-- (void)setMarkedText:(id)a3 selectedRange:(_NSRange)a4 replacementRange:(_NSRange)a5
+- (void)setMarkedText:(id)text selectedRange:(_NSRange)range replacementRange:(_NSRange)replacementRange
 {
-  length = a4.length;
-  location = a4.location;
-  if (a3)
+  length = range.length;
+  location = range.location;
+  if (text)
   {
-    v8 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -4683,7 +4683,7 @@ LABEL_4:
   else
   {
     memset(v10, 0, sizeof(v10));
-    v9 = self;
+    selfCopy2 = self;
   }
 
   sub_100951E20(v10, location, length);
@@ -4691,11 +4691,11 @@ LABEL_4:
   sub_10000CAAC(v10, &unk_1019F4D00);
 }
 
-- (void)setMarkedText:(id)a3 selectedRange:(_NSRange)a4
+- (void)setMarkedText:(id)text selectedRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  if (a3)
+  length = range.length;
+  location = range.location;
+  if (text)
   {
     v7 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v9 = v8;
@@ -4708,7 +4708,7 @@ LABEL_4:
   }
 
   v10 = qword_1019F1570;
-  v11 = self;
+  selfCopy = self;
   if (v10 != -1)
   {
     swift_once();
@@ -4717,17 +4717,17 @@ LABEL_4:
   sub_1005B981C(&unk_1019F6C70);
   type metadata accessor for _NSRange(0);
 
-  sub_10095260C(v7, v9, v11, location, length);
+  sub_10095260C(v7, v9, selfCopy, location, length);
   swift_arrayDestroy();
 }
 
-- (void)setAttributedMarkedText:(id)a3 selectedRange:(_NSRange)a4
+- (void)setAttributedMarkedText:(id)text selectedRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v7 = qword_1019F1570;
-  v8 = a3;
-  v9 = self;
+  textCopy = text;
+  selfCopy = self;
   if (v7 != -1)
   {
     swift_once();
@@ -4735,23 +4735,23 @@ LABEL_4:
 
   sub_1005B981C(&qword_101A012B8);
   type metadata accessor for _NSRange(0);
-  v10 = v8;
-  sub_100952848(v8, v9, location, length);
+  v10 = textCopy;
+  sub_100952848(textCopy, selfCopy, location, length);
   swift_arrayDestroy();
 }
 
-- (id)attributedSubstringForProposedRange:(_NSRange)a3 actualRange:(_NSRange *)a4
+- (id)attributedSubstringForProposedRange:(_NSRange)range actualRange:(_NSRange *)actualRange
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v7 = qword_1019F1570;
-  v8 = self;
+  selfCopy = self;
   if (v7 != -1)
   {
     swift_once();
   }
 
-  sub_100952E10(location, length, v8, a4, &v11);
+  sub_100952E10(location, length, selfCopy, actualRange, &v11);
 
   v9 = v11;
 
@@ -4760,7 +4760,7 @@ LABEL_4:
 
 - (void)unmarkText
 {
-  v2 = self;
+  selfCopy = self;
   sub_100953030();
 }
 
@@ -4793,9 +4793,9 @@ LABEL_4:
   return self;
 }
 
-- (void)setMarkedTextStyle:(id)a3
+- (void)setMarkedTextStyle:(id)style
 {
-  if (a3)
+  if (style)
   {
     type metadata accessor for Key(0);
     sub_1009624F8(&qword_1019F34A0, type metadata accessor for Key);
@@ -4807,7 +4807,7 @@ LABEL_4:
     v4 = 0;
   }
 
-  v5 = self;
+  selfCopy = self;
   sub_1009678D4(v4);
 }
 
@@ -4829,32 +4829,32 @@ LABEL_4:
   }
 }
 
-- (id)commandForReplacingTextInRange:(id)a3 withText:(id)a4
+- (id)commandForReplacingTextInRange:(id)range withText:(id)text
 {
   v6 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v8 = v7;
-  v9 = a3;
-  v10 = self;
-  v11 = sub_100953AAC(v9, v6, v8);
+  rangeCopy = range;
+  selfCopy = self;
+  v11 = sub_100953AAC(rangeCopy, v6, v8);
 
   return v11;
 }
 
-- (id)commandForReplacingTextInRange:(id)a3 withAttributedText:(id)a4
+- (id)commandForReplacingTextInRange:(id)range withAttributedText:(id)text
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_100953F60(v6, v7);
+  rangeCopy = range;
+  textCopy = text;
+  selfCopy = self;
+  v9 = sub_100953F60(rangeCopy, textCopy);
 
   return v9;
 }
 
-- (void)deleteWordForward:(id)a3
+- (void)deleteWordForward:(id)forward
 {
-  if (a3)
+  if (forward)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -4863,7 +4863,7 @@ LABEL_4:
   else
   {
     memset(v6, 0, sizeof(v6));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   sub_100D712CC();
@@ -4871,11 +4871,11 @@ LABEL_4:
   sub_1005E09AC(v6);
 }
 
-- (void)arrowKeyReceivedInDirection:(unint64_t)a3 withModifierKeys:(id)a4
+- (void)arrowKeyReceivedInDirection:(unint64_t)direction withModifierKeys:(id)keys
 {
-  v6 = a4;
-  v7 = self;
-  sub_100D72744(a3);
+  keysCopy = keys;
+  selfCopy = self;
+  sub_100D72744(direction);
 }
 
 @end

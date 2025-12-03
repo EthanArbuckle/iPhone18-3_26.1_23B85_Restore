@@ -1,16 +1,16 @@
 @interface CHFriendListViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)viewDidLoad;
 @end
 
 @implementation CHFriendListViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CHFriendListViewController" hasInstanceVariable:@"_sortBarButtonItem" withType:"UIBarButtonItem"];
-  [v3 validateClass:@"CHFriendListViewController" hasInstanceMethod:@"viewDidLoad" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CHFriendListViewController" hasInstanceVariable:@"_sortBarButtonItem" withType:"UIBarButtonItem"];
+  [validationsCopy validateClass:@"CHFriendListViewController" hasInstanceMethod:@"viewDidLoad" withFullSignature:{"v", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

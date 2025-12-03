@@ -1,13 +1,13 @@
 @interface BRCPQLInjectionDomainSyncState
-+ (id)_getPQLInjectionWithDesiredSyncStates:(unint64_t)a3;
-- (BRCPQLInjectionDomainSyncState)initWithDesiredSyncStates:(unint64_t)a3;
++ (id)_getPQLInjectionWithDesiredSyncStates:(unint64_t)states;
+- (BRCPQLInjectionDomainSyncState)initWithDesiredSyncStates:(unint64_t)states;
 @end
 
 @implementation BRCPQLInjectionDomainSyncState
 
-- (BRCPQLInjectionDomainSyncState)initWithDesiredSyncStates:(unint64_t)a3
+- (BRCPQLInjectionDomainSyncState)initWithDesiredSyncStates:(unint64_t)states
 {
-  v4 = [objc_opt_class() _getPQLInjectionWithDesiredSyncStates:a3];
+  v4 = [objc_opt_class() _getPQLInjectionWithDesiredSyncStates:states];
   v7.receiver = self;
   v7.super_class = BRCPQLInjectionDomainSyncState;
   v5 = [(BRCPQLInjectionBase *)&v7 initWithActualInjection:v4];
@@ -15,19 +15,19 @@
   return v5;
 }
 
-+ (id)_getPQLInjectionWithDesiredSyncStates:(unint64_t)a3
++ (id)_getPQLInjectionWithDesiredSyncStates:(unint64_t)states
 {
-  if ((a3 & 0xA) == 0)
+  if ((states & 0xA) == 0)
   {
     v9 = [MEMORY[0x277D82C18] rawInjection:"1" length:1];
     goto LABEL_15;
   }
 
-  v3 = a3;
-  if ((a3 & 8) != 0)
+  statesCopy = states;
+  if ((states & 8) != 0)
   {
     v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"(item_localsyncupstate = 3 AND NOT EXISTS (SELECT 1 FROM client_uploads WHERE throttle_id = ci.rowid AND throttle_state IN (%d, %d, %d, %d, %d, %d)))", 32, 33, 34, 35, 36, 37];
-    if ((v3 & 2) != 0)
+    if ((statesCopy & 2) != 0)
     {
       goto LABEL_4;
     }
@@ -39,7 +39,7 @@ LABEL_9:
   }
 
   v4 = 0;
-  if ((a3 & 2) == 0)
+  if ((states & 2) == 0)
   {
     goto LABEL_9;
   }

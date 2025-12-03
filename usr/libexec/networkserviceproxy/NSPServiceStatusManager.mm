@@ -1,37 +1,37 @@
 @interface NSPServiceStatusManager
 + (void)removeFromPreferences;
-- (BOOL)changePausedState:(BOOL)a3 forApp:(id)a4 path:(id)a5;
+- (BOOL)changePausedState:(BOOL)state forApp:(id)app path:(id)path;
 - (BOOL)hasPausedApps;
 - (BOOL)isNetworkOutage;
 - (BOOL)isServiceActive;
 - (BOOL)isServiceOutage;
-- (NSPServiceStatusManager)initWithCoder:(id)a3;
-- (NSPServiceStatusManager)initWithUserTier:(unint64_t)a3 effectiveUserTier:(unint64_t)a4 delegate:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (NSPServiceStatusManager)initWithCoder:(id)coder;
+- (NSPServiceStatusManager)initWithUserTier:(unint64_t)tier effectiveUserTier:(unint64_t)userTier delegate:(id)delegate;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)diagnostics;
-- (id)initFromPreferencesWithUserTier:(unint64_t)a3 effectiveUserTier:(unint64_t)a4 delegate:(id)a5;
+- (id)initFromPreferencesWithUserTier:(unint64_t)tier effectiveUserTier:(unint64_t)userTier delegate:(id)delegate;
 - (id)pausedBundleIDs;
 - (id)pausedProcessPaths;
 - (void)clearAllPausedApps;
-- (void)clearNetworkStatusForType:(int)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)handleEffectiveUserTierChange:(unint64_t)a3;
+- (void)clearNetworkStatusForType:(int)type;
+- (void)encodeWithCoder:(id)coder;
+- (void)handleEffectiveUserTierChange:(unint64_t)change;
 - (void)publishDailyNetworkStatus;
 - (void)publishDailyServiceStatus;
-- (void)reportActiveOnCellularName:(id)a3;
-- (void)reportActiveOnWiFiName:(id)a3;
-- (void)reportActivityForApp:(id)a3 path:(id)a4;
-- (void)reportBlockedOnCellularName:(id)a3;
-- (void)reportBlockedOnWiFiName:(id)a3;
-- (void)reportDisabledOnCellularName:(id)a3;
-- (void)reportDisabledOnWiFiName:(id)a3;
+- (void)reportActiveOnCellularName:(id)name;
+- (void)reportActiveOnWiFiName:(id)name;
+- (void)reportActivityForApp:(id)app path:(id)path;
+- (void)reportBlockedOnCellularName:(id)name;
+- (void)reportBlockedOnWiFiName:(id)name;
+- (void)reportDisabledOnCellularName:(id)name;
+- (void)reportDisabledOnWiFiName:(id)name;
 - (void)reportFraudAlert;
-- (void)reportServiceActiveShouldReport:(BOOL)a3;
-- (void)reportServiceDisabledShouldReport:(BOOL)a3;
-- (void)reportServiceOutageWithType:(unint64_t)a3 outageReasonStats:(id)a4;
-- (void)reportSubscriberUnsupportedRegion:(id)a3;
-- (void)reportUnsupportedRegion:(id)a3;
+- (void)reportServiceActiveShouldReport:(BOOL)report;
+- (void)reportServiceDisabledShouldReport:(BOOL)report;
+- (void)reportServiceOutageWithType:(unint64_t)type outageReasonStats:(id)stats;
+- (void)reportSubscriberUnsupportedRegion:(id)region;
+- (void)reportUnsupportedRegion:(id)region;
 @end
 
 @implementation NSPServiceStatusManager
@@ -44,8 +44,8 @@
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v5 = [(NSPServiceStatusManager *)self serviceStatusTimeline];
-  v6 = [v5 countByEnumeratingWithState:&v35 objects:v40 count:16];
+  serviceStatusTimeline = [(NSPServiceStatusManager *)self serviceStatusTimeline];
+  v6 = [serviceStatusTimeline countByEnumeratingWithState:&v35 objects:v40 count:16];
   if (v6)
   {
     v7 = v6;
@@ -56,17 +56,17 @@
       {
         if (*v36 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(serviceStatusTimeline);
         }
 
-        v10 = [*(*(&v35 + 1) + 8 * i) diagnostics];
-        if (v10)
+        diagnostics = [*(*(&v35 + 1) + 8 * i) diagnostics];
+        if (diagnostics)
         {
-          [v4 addObject:v10];
+          [v4 addObject:diagnostics];
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v35 objects:v40 count:16];
+      v7 = [serviceStatusTimeline countByEnumeratingWithState:&v35 objects:v40 count:16];
     }
 
     while (v7);
@@ -113,11 +113,11 @@
         if (v17)
         {
           v18 = objc_alloc_init(NSMutableDictionary);
-          v19 = [*(v17 + 8) networkStatusString];
-          [v18 setObject:v19 forKeyedSubscript:@"PrivacyProxyNetworkStatusTimeNetworkStatus"];
+          networkStatusString = [*(v17 + 8) networkStatusString];
+          [v18 setObject:networkStatusString forKeyedSubscript:@"PrivacyProxyNetworkStatusTimeNetworkStatus"];
 
-          v20 = [*(v17 + 8) networkTypeString];
-          [v18 setObject:v20 forKeyedSubscript:@"PrivacyProxyNetworkStatusTimeNetworkInterfaceType"];
+          networkTypeString = [*(v17 + 8) networkTypeString];
+          [v18 setObject:networkTypeString forKeyedSubscript:@"PrivacyProxyNetworkStatusTimeNetworkInterfaceType"];
 
           v21 = [NSDateFormatter localizedStringFromDate:*(v17 + 16) dateStyle:1 timeStyle:2];
           [v18 setObject:v21 forKeyedSubscript:@"PrivacyProxyNetworkStatusTimeNetworkStartTime"];
@@ -172,16 +172,16 @@
   if (self)
   {
     v3 = [[NSMutableString alloc] initWithCapacity:0];
-    v4 = [(NSPServiceStatusManager *)self serviceStatus];
-    sub_1000417D0(v3, v4, @"Service Status", 0, 14);
+    serviceStatus = [(NSPServiceStatusManager *)self serviceStatus];
+    sub_1000417D0(v3, serviceStatus, @"Service Status", 0, 14);
 
-    v5 = [(NSPServiceStatusManager *)self serviceStatusTimeline];
-    sub_1000417D0(v3, v5, @"Service Status Timeline", 0, 14);
+    serviceStatusTimeline = [(NSPServiceStatusManager *)self serviceStatusTimeline];
+    sub_1000417D0(v3, serviceStatusTimeline, @"Service Status Timeline", 0, 14);
 
     Property = objc_getProperty(self, v6, 64, 1);
     sub_1000417D0(v3, Property, @"Network Status Timeline", 0, 14);
-    v8 = [(NSPServiceStatusManager *)self appStatuses];
-    sub_1000417D0(v3, v8, @"App Statuses", 0, 14);
+    appStatuses = [(NSPServiceStatusManager *)self appStatuses];
+    sub_1000417D0(v3, appStatuses, @"App Statuses", 0, 14);
   }
 
   else
@@ -192,7 +192,7 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[NSPServiceStatusManager allocWithZone:?]];
   v5 = v4;
@@ -201,11 +201,11 @@
     generation = self->_generation;
     v4->_diskVersion = self->_diskVersion;
     v4->_generation = generation;
-    v7 = [(NSPServiceStatusManager *)self serviceStatus];
-    objc_setProperty_atomic(v5, v8, v7, 8);
+    serviceStatus = [(NSPServiceStatusManager *)self serviceStatus];
+    objc_setProperty_atomic(v5, v8, serviceStatus, 8);
 
-    v9 = [(NSPServiceStatusManager *)self serviceStatusTimeline];
-    objc_setProperty_atomic(v5, v10, v9, 16);
+    serviceStatusTimeline = [(NSPServiceStatusManager *)self serviceStatusTimeline];
+    objc_setProperty_atomic(v5, v10, serviceStatusTimeline, 16);
 
     Property = objc_getProperty(self, v11, 64, 1);
   }
@@ -214,37 +214,37 @@
   {
     v4->_diskVersion = 0;
     v4->_generation = 0;
-    v17 = [0 serviceStatus];
-    objc_setProperty_atomic(v5, v18, v17, 8);
+    serviceStatus2 = [0 serviceStatus];
+    objc_setProperty_atomic(v5, v18, serviceStatus2, 8);
 
-    v19 = [0 serviceStatusTimeline];
-    objc_setProperty_atomic(v5, v20, v19, 16);
+    serviceStatusTimeline2 = [0 serviceStatusTimeline];
+    objc_setProperty_atomic(v5, v20, serviceStatusTimeline2, 16);
 
     Property = 0;
   }
 
   objc_setProperty_atomic(v5, v12, Property, 64);
-  v14 = [(NSPServiceStatusManager *)self appStatuses];
-  objc_setProperty_atomic(v5, v15, v14, 24);
+  appStatuses = [(NSPServiceStatusManager *)self appStatuses];
+  objc_setProperty_atomic(v5, v15, appStatuses, 24);
 
   return v5;
 }
 
-- (NSPServiceStatusManager)initWithCoder:(id)a3
+- (NSPServiceStatusManager)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v20.receiver = self;
   v20.super_class = NSPServiceStatusManager;
   v5 = [(NSPServiceStatusManager *)&v20 init];
   if (v5)
   {
-    v5->_diskVersion = [v4 decodeIntegerForKey:@"DiskVersion"];
-    v5->_generation = [v4 decodeInt64ForKey:@"Generation"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ServiceStatus"];
+    v5->_diskVersion = [coderCopy decodeIntegerForKey:@"DiskVersion"];
+    v5->_generation = [coderCopy decodeInt64ForKey:@"Generation"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ServiceStatus"];
     serviceStatus = v5->_serviceStatus;
     v5->_serviceStatus = v6;
 
-    v8 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"ServiceStatusTimeline"];
+    v8 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"ServiceStatusTimeline"];
     if (v8)
     {
       v9 = [NSMutableArray arrayWithArray:v8];
@@ -252,7 +252,7 @@
       v5->_serviceStatusTimeline = v9;
     }
 
-    v11 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"NetworkStatusTimeline"];
+    v11 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"NetworkStatusTimeline"];
     if (v11)
     {
       v12 = [NSMutableArray arrayWithArray:v11];
@@ -260,7 +260,7 @@
       v5->_networkStatusTimeline = v12;
     }
 
-    v14 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"AppStatuses"];
+    v14 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"AppStatuses"];
     if (v14)
     {
       v15 = [NSMutableArray arrayWithArray:v14];
@@ -284,42 +284,42 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v11 = a3;
-  [v11 encodeInteger:2 forKey:@"DiskVersion"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:2 forKey:@"DiskVersion"];
   if (self)
   {
-    [v11 encodeInt64:self->_generation forKey:@"Generation"];
-    v4 = [(NSPServiceStatusManager *)self serviceStatus];
-    [v11 encodeObject:v4 forKey:@"ServiceStatus"];
+    [coderCopy encodeInt64:self->_generation forKey:@"Generation"];
+    serviceStatus = [(NSPServiceStatusManager *)self serviceStatus];
+    [coderCopy encodeObject:serviceStatus forKey:@"ServiceStatus"];
 
-    v5 = [(NSPServiceStatusManager *)self serviceStatusTimeline];
-    [v11 encodeObject:v5 forKey:@"ServiceStatusTimeline"];
+    serviceStatusTimeline = [(NSPServiceStatusManager *)self serviceStatusTimeline];
+    [coderCopy encodeObject:serviceStatusTimeline forKey:@"ServiceStatusTimeline"];
 
     Property = objc_getProperty(self, v6, 64, 1);
   }
 
   else
   {
-    [v11 encodeInt64:0 forKey:@"Generation"];
-    v9 = [0 serviceStatus];
-    [v11 encodeObject:v9 forKey:@"ServiceStatus"];
+    [coderCopy encodeInt64:0 forKey:@"Generation"];
+    serviceStatus2 = [0 serviceStatus];
+    [coderCopy encodeObject:serviceStatus2 forKey:@"ServiceStatus"];
 
-    v10 = [0 serviceStatusTimeline];
-    [v11 encodeObject:v10 forKey:@"ServiceStatusTimeline"];
+    serviceStatusTimeline2 = [0 serviceStatusTimeline];
+    [coderCopy encodeObject:serviceStatusTimeline2 forKey:@"ServiceStatusTimeline"];
 
     Property = 0;
   }
 
-  [v11 encodeObject:Property forKey:@"NetworkStatusTimeline"];
-  v8 = [(NSPServiceStatusManager *)self appStatuses];
-  [v11 encodeObject:v8 forKey:@"AppStatuses"];
+  [coderCopy encodeObject:Property forKey:@"NetworkStatusTimeline"];
+  appStatuses = [(NSPServiceStatusManager *)self appStatuses];
+  [coderCopy encodeObject:appStatuses forKey:@"AppStatuses"];
 }
 
-- (NSPServiceStatusManager)initWithUserTier:(unint64_t)a3 effectiveUserTier:(unint64_t)a4 delegate:(id)a5
+- (NSPServiceStatusManager)initWithUserTier:(unint64_t)tier effectiveUserTier:(unint64_t)userTier delegate:(id)delegate
 {
-  v8 = a5;
+  delegateCopy = delegate;
   v22.receiver = self;
   v22.super_class = NSPServiceStatusManager;
   v9 = [(NSPServiceStatusManager *)&v22 init];
@@ -337,9 +337,9 @@
     v9->_serviceStatusTimeline = v12;
 
     sub_10009C1AC(v9, 0);
-    v9->_userTier = a3;
-    v9->_effectiveTier = a4;
-    objc_storeWeak(&v9->_delegate, v8);
+    v9->_userTier = tier;
+    v9->_effectiveTier = userTier;
+    objc_storeWeak(&v9->_delegate, delegateCopy);
     v14 = objc_alloc_init(NSMutableArray);
     networkStatusTimeline = v9->_networkStatusTimeline;
     v9->_networkStatusTimeline = v14;
@@ -365,10 +365,10 @@
   return v9;
 }
 
-- (id)initFromPreferencesWithUserTier:(unint64_t)a3 effectiveUserTier:(unint64_t)a4 delegate:(id)a5
+- (id)initFromPreferencesWithUserTier:(unint64_t)tier effectiveUserTier:(unint64_t)userTier delegate:(id)delegate
 {
-  v8 = a5;
-  v9 = [(NSPServiceStatusManager *)self initWithUserTier:a3 effectiveUserTier:a4 delegate:v8];
+  delegateCopy = delegate;
+  v9 = [(NSPServiceStatusManager *)self initWithUserTier:tier effectiveUserTier:userTier delegate:delegateCopy];
   if (v9)
   {
     v10 = CFPreferencesCopyAppValue(@"NSPServiceStatusManagerInfo", kCFPreferencesCurrentApplication);
@@ -437,7 +437,7 @@ LABEL_23:
           _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_INFO, "Saved disk version of status manager info (%ld) does not match latest supported version (%ld)", buf, 0x16u);
         }
 
-        v17 = [(NSPServiceStatusManager *)v9 initWithUserTier:a3 effectiveUserTier:a4 delegate:v8];
+        v17 = [(NSPServiceStatusManager *)v9 initWithUserTier:tier effectiveUserTier:userTier delegate:delegateCopy];
         goto LABEL_22;
       }
     }
@@ -509,8 +509,8 @@ LABEL_24:
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = [(NSPServiceStatusManager *)self serviceStatusTimeline];
-  v6 = [v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  serviceStatusTimeline = [(NSPServiceStatusManager *)self serviceStatusTimeline];
+  v6 = [serviceStatusTimeline countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v6)
   {
     v7 = v6;
@@ -522,42 +522,42 @@ LABEL_24:
       {
         if (*v20 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(serviceStatusTimeline);
         }
 
         v10 = *(*(&v19 + 1) + 8 * v9);
-        v11 = [v10 serviceStatusEndTime];
-        if (!v11)
+        serviceStatusEndTime = [v10 serviceStatusEndTime];
+        if (!serviceStatusEndTime)
         {
           goto LABEL_14;
         }
 
-        v12 = v11;
+        v12 = serviceStatusEndTime;
         v13 = +[NSDate now];
-        v14 = [v10 serviceStatusEndTime];
-        [v13 timeIntervalSinceDate:v14];
+        serviceStatusEndTime2 = [v10 serviceStatusEndTime];
+        [v13 timeIntervalSinceDate:serviceStatusEndTime2];
         v16 = v15;
 
         if (v16 <= 86400.0)
         {
 LABEL_14:
-          v17 = [v10 serviceStatus];
-          if (v17 > 3)
+          serviceStatus = [v10 serviceStatus];
+          if (serviceStatus > 3)
           {
-            if (v17 > 5)
+            if (serviceStatus > 5)
             {
-              if (v17 == 6)
+              if (serviceStatus == 6)
               {
                 [(NSPServiceStatusStats *)v3 setServiceStatusSubscriberUnsupportedRegionCount:[(NSPServiceStatusStats *)v3 serviceStatusSubscriberUnsupportedRegionCount]+ 1];
               }
 
-              else if (v17 == 7)
+              else if (serviceStatus == 7)
               {
                 [(NSPServiceStatusStats *)v3 setServiceStatusNetworkOutageCount:[(NSPServiceStatusStats *)v3 serviceStatusNetworkOutageCount]+ 1];
               }
             }
 
-            else if (v17 == 4)
+            else if (serviceStatus == 4)
             {
               [(NSPServiceStatusStats *)v3 setServiceStatusUnsupportedRegionCount:[(NSPServiceStatusStats *)v3 serviceStatusUnsupportedRegionCount]+ 1];
             }
@@ -568,9 +568,9 @@ LABEL_14:
             }
           }
 
-          else if (v17 > 1)
+          else if (serviceStatus > 1)
           {
-            if (v17 == 2)
+            if (serviceStatus == 2)
             {
               [(NSPServiceStatusStats *)v3 setServiceStatusOutageCount:[(NSPServiceStatusStats *)v3 serviceStatusOutageCount]+ 1];
             }
@@ -581,9 +581,9 @@ LABEL_14:
             }
           }
 
-          else if (v17)
+          else if (serviceStatus)
           {
-            if (v17 == 1)
+            if (serviceStatus == 1)
             {
               [(NSPServiceStatusStats *)v3 setServiceStatusActiveCount:[(NSPServiceStatusStats *)v3 serviceStatusActiveCount]+ 1];
             }
@@ -599,7 +599,7 @@ LABEL_14:
       }
 
       while (v7 != v9);
-      v18 = [v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v18 = [serviceStatusTimeline countByEnumeratingWithState:&v19 objects:v23 count:16];
       v7 = v18;
     }
 
@@ -686,8 +686,8 @@ LABEL_14:
           v19 = 0;
         }
 
-        v20 = [v19 networkStatus];
-        if (v20 == 2)
+        networkStatus = [v19 networkStatus];
+        if (networkStatus == 2)
         {
           if (v13)
           {
@@ -741,7 +741,7 @@ LABEL_14:
           }
         }
 
-        else if (v20 == 1)
+        else if (networkStatus == 1)
         {
           if (v13)
           {
@@ -795,7 +795,7 @@ LABEL_14:
           }
         }
 
-        else if (!v20)
+        else if (!networkStatus)
         {
           if (v13)
           {
@@ -864,32 +864,32 @@ LABEL_54:
   [(NSPProxyAnalytics *)v4 sendAnalytics];
 }
 
-- (void)handleEffectiveUserTierChange:(unint64_t)a3
+- (void)handleEffectiveUserTierChange:(unint64_t)change
 {
   if (self)
   {
-    if (self->_effectiveTier != a3)
+    if (self->_effectiveTier != change)
     {
-      self->_effectiveTier = a3;
+      self->_effectiveTier = change;
     }
   }
 }
 
-- (void)reportServiceActiveShouldReport:(BOOL)a3
+- (void)reportServiceActiveShouldReport:(BOOL)report
 {
   if (self && self->_effectiveTier == 2)
   {
-    v5 = [(NSPServiceStatusManager *)self serviceStatus];
-    v6 = [v5 serviceStatus];
+    serviceStatus = [(NSPServiceStatusManager *)self serviceStatus];
+    v5ServiceStatus = [serviceStatus serviceStatus];
 
-    if (!v6)
+    if (!v5ServiceStatus)
     {
       v8 = nplog_obj();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
         v9 = [PrivacyProxyServiceStatus serviceStatusString:1];
-        v10 = [(NSPServiceStatusManager *)self serviceStatus];
-        v11 = +[PrivacyProxyServiceStatus serviceStatusString:](PrivacyProxyServiceStatus, "serviceStatusString:", [v10 serviceStatus]);
+        serviceStatus2 = [(NSPServiceStatusManager *)self serviceStatus];
+        v11 = +[PrivacyProxyServiceStatus serviceStatusString:](PrivacyProxyServiceStatus, "serviceStatusString:", [serviceStatus2 serviceStatus]);
         v24 = 138412546;
         v25 = v9;
         v26 = 2112;
@@ -897,10 +897,10 @@ LABEL_54:
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Setting service status %@, previous service status %@", &v24, 0x16u);
       }
 
-      if (!a3)
+      if (!report)
       {
-        v12 = [(NSPServiceStatusManager *)self serviceStatus];
-        [v12 setServiceStatus:1];
+        serviceStatus3 = [(NSPServiceStatusManager *)self serviceStatus];
+        [serviceStatus3 setServiceStatus:1];
 
         sub_10009C1AC(self, 1);
         ++self->_generation;
@@ -913,17 +913,17 @@ LABEL_54:
 
     if (self->_lastOutageType)
     {
-      v7 = [(NSPServiceStatusManager *)self serviceStatus];
-      if ([v7 serviceStatus] == 2)
+      serviceStatus4 = [(NSPServiceStatusManager *)self serviceStatus];
+      if ([serviceStatus4 serviceStatus] == 2)
       {
 
 LABEL_12:
-        v15 = [(NSPServiceStatusManager *)self serviceStatusTimeline];
-        v16 = [v15 lastObject];
+        serviceStatusTimeline = [(NSPServiceStatusManager *)self serviceStatusTimeline];
+        lastObject = [serviceStatusTimeline lastObject];
 
-        v17 = [v16 serviceStatusStartTime];
+        serviceStatusStartTime = [lastObject serviceStatusStartTime];
         v18 = +[NSDate now];
-        [v18 timeIntervalSinceDate:v17];
+        [v18 timeIntervalSinceDate:serviceStatusStartTime];
         v20 = v19;
 
         v21 = objc_alloc_init(NSPOutageDurationStats);
@@ -934,10 +934,10 @@ LABEL_12:
         goto LABEL_13;
       }
 
-      v13 = [(NSPServiceStatusManager *)self serviceStatus];
-      v14 = [v13 serviceStatus];
+      serviceStatus5 = [(NSPServiceStatusManager *)self serviceStatus];
+      v13ServiceStatus = [serviceStatus5 serviceStatus];
 
-      if (v14 == 7)
+      if (v13ServiceStatus == 7)
       {
         goto LABEL_12;
       }
@@ -950,11 +950,11 @@ LABEL_13:
   }
 }
 
-- (void)reportServiceDisabledShouldReport:(BOOL)a3
+- (void)reportServiceDisabledShouldReport:(BOOL)report
 {
-  if (self && self->_effectiveTier == 2 || a3)
+  if (self && self->_effectiveTier == 2 || report)
   {
-    if (a3)
+    if (report)
     {
       v12 = sub_10003A340(@"UNAVAILABLE_TITLE", @"UNAVAILABLE_TITLE");
       v4 = sub_10003A340(@"UNAVAILABLE", @"UNAVAILABLE");
@@ -963,17 +963,17 @@ LABEL_13:
 
     else
     {
-      v5 = [(NSPServiceStatusManager *)self serviceStatus];
-      v6 = [v5 serviceStatus];
+      serviceStatus = [(NSPServiceStatusManager *)self serviceStatus];
+      v5ServiceStatus = [serviceStatus serviceStatus];
 
-      if (v6)
+      if (v5ServiceStatus)
       {
         v7 = nplog_obj();
         if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
         {
           v8 = [PrivacyProxyServiceStatus serviceStatusString:0];
-          v9 = [(NSPServiceStatusManager *)self serviceStatus];
-          v10 = +[PrivacyProxyServiceStatus serviceStatusString:](PrivacyProxyServiceStatus, "serviceStatusString:", [v9 serviceStatus]);
+          serviceStatus2 = [(NSPServiceStatusManager *)self serviceStatus];
+          v10 = +[PrivacyProxyServiceStatus serviceStatusString:](PrivacyProxyServiceStatus, "serviceStatusString:", [serviceStatus2 serviceStatus]);
           *buf = 138412546;
           v14 = v8;
           v15 = 2112;
@@ -981,8 +981,8 @@ LABEL_13:
           _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Setting service status %@, previous service status %@", buf, 0x16u);
         }
 
-        v11 = [(NSPServiceStatusManager *)self serviceStatus];
-        [v11 setServiceStatus:0];
+        serviceStatus3 = [(NSPServiceStatusManager *)self serviceStatus];
+        [serviceStatus3 setServiceStatus:0];
 
         sub_10009C1AC(self, 0);
         if (self)
@@ -995,12 +995,12 @@ LABEL_13:
   }
 }
 
-- (void)reportServiceOutageWithType:(unint64_t)a3 outageReasonStats:(id)a4
+- (void)reportServiceOutageWithType:(unint64_t)type outageReasonStats:(id)stats
 {
-  v6 = a4;
+  statsCopy = stats;
   if (self && self->_effectiveTier == 2)
   {
-    if (a3 == 2)
+    if (type == 2)
     {
       effectiveTier = 7;
     }
@@ -1010,26 +1010,26 @@ LABEL_13:
       effectiveTier = self->_effectiveTier;
     }
 
-    v8 = [(NSPServiceStatusManager *)self serviceStatus];
-    v9 = [v8 serviceStatus];
+    serviceStatus = [(NSPServiceStatusManager *)self serviceStatus];
+    v8ServiceStatus = [serviceStatus serviceStatus];
 
-    if (v9 != effectiveTier)
+    if (v8ServiceStatus != effectiveTier)
     {
-      self->_lastOutageType = a3;
-      [v6 sendAnalytics];
+      self->_lastOutageType = type;
+      [statsCopy sendAnalytics];
     }
 
-    if (a3 == 2)
+    if (type == 2)
     {
       v10 = sub_10003A340(@"CAPTIVE_WARNING_NO_NETWORK", @"CAPTIVE_WARNING_NO_NETWORK");
       v27 = 0u;
       v28 = 0u;
       v29 = 0u;
       v30 = 0u;
-      v11 = [(NSPServiceStatusManager *)self serviceStatus];
-      v12 = [v11 networkStatuses];
+      serviceStatus2 = [(NSPServiceStatusManager *)self serviceStatus];
+      networkStatuses = [serviceStatus2 networkStatuses];
 
-      v13 = [v12 countByEnumeratingWithState:&v27 objects:v31 count:16];
+      v13 = [networkStatuses countByEnumeratingWithState:&v27 objects:v31 count:16];
       if (v13)
       {
         v14 = v13;
@@ -1040,19 +1040,19 @@ LABEL_13:
           {
             if (*v28 != v15)
             {
-              objc_enumerationMutation(v12);
+              objc_enumerationMutation(networkStatuses);
             }
 
             v17 = *(*(&v27 + 1) + 8 * i);
             if ([v17 networkType] == 1)
             {
-              v18 = [v17 networkName];
+              networkName = [v17 networkName];
 
-              if (v18)
+              if (networkName)
               {
                 v24 = sub_10003A340(@"CAPTIVE_WARNING", @"CAPTIVE_WARNING");
-                v25 = [v17 networkName];
-                v26 = [NSString stringWithValidatedFormat:v24 validFormatSpecifiers:@"%@" error:0, v25];
+                networkName2 = [v17 networkName];
+                v26 = [NSString stringWithValidatedFormat:v24 validFormatSpecifiers:@"%@" error:0, networkName2];
 
                 v10 = v26;
                 goto LABEL_21;
@@ -1060,7 +1060,7 @@ LABEL_13:
             }
           }
 
-          v14 = [v12 countByEnumeratingWithState:&v27 objects:v31 count:16];
+          v14 = [networkStatuses countByEnumeratingWithState:&v27 objects:v31 count:16];
           if (v14)
           {
             continue;
@@ -1073,7 +1073,7 @@ LABEL_13:
 LABEL_21:
 
       v19 = sub_10003A340(@"CAPTIVE_WARNING_TITLE", @"CAPTIVE_WARNING_TITLE");
-      v20 = self;
+      selfCopy2 = self;
       v21 = 7;
       v22 = v19;
       v23 = v10;
@@ -1083,13 +1083,13 @@ LABEL_21:
     {
       v10 = sub_10003A340(@"OUTAGE_WARNING_TITLE", @"OUTAGE_WARNING_TITLE");
       v19 = sub_10003A340(@"OUTAGE_WARNING", @"OUTAGE_WARNING");
-      v20 = self;
+      selfCopy2 = self;
       v21 = 2;
       v22 = v10;
       v23 = v19;
     }
 
-    sub_10009D038(v20, v21, v22, v23, 0);
+    sub_10009D038(selfCopy2, v21, v22, v23, 0);
   }
 }
 
@@ -1100,8 +1100,8 @@ LABEL_21:
     return 0;
   }
 
-  v2 = [(NSPServiceStatusManager *)self serviceStatus];
-  v3 = [v2 serviceStatus] == 1;
+  serviceStatus = [(NSPServiceStatusManager *)self serviceStatus];
+  v3 = [serviceStatus serviceStatus] == 1;
 
   return v3;
 }
@@ -1113,8 +1113,8 @@ LABEL_21:
     return 0;
   }
 
-  v2 = [(NSPServiceStatusManager *)self serviceStatus];
-  v3 = [v2 serviceStatus] == 2;
+  serviceStatus = [(NSPServiceStatusManager *)self serviceStatus];
+  v3 = [serviceStatus serviceStatus] == 2;
 
   return v3;
 }
@@ -1126,8 +1126,8 @@ LABEL_21:
     return 0;
   }
 
-  v2 = [(NSPServiceStatusManager *)self serviceStatus];
-  v3 = [v2 serviceStatus] == 7;
+  serviceStatus = [(NSPServiceStatusManager *)self serviceStatus];
+  v3 = [serviceStatus serviceStatus] == 7;
 
   return v3;
 }
@@ -1144,16 +1144,16 @@ LABEL_21:
   }
 }
 
-- (void)reportUnsupportedRegion:(id)a3
+- (void)reportUnsupportedRegion:(id)region
 {
-  v4 = a3;
-  v5 = v4;
+  regionCopy = region;
+  v5 = regionCopy;
   if (self && self->_userTier == 2)
   {
-    if (v4)
+    if (regionCopy)
     {
       v9 = kPrivacyProxyServiceStatusDetailsRegionIDKey;
-      v10 = v4;
+      v10 = regionCopy;
       v6 = [NSDictionary dictionaryWithObjects:&v10 forKeys:&v9 count:1];
     }
 
@@ -1168,16 +1168,16 @@ LABEL_21:
   }
 }
 
-- (void)reportSubscriberUnsupportedRegion:(id)a3
+- (void)reportSubscriberUnsupportedRegion:(id)region
 {
-  v4 = a3;
-  v5 = v4;
+  regionCopy = region;
+  v5 = regionCopy;
   if (self && self->_userTier == 2)
   {
-    if (v4)
+    if (regionCopy)
     {
       v9 = kPrivacyProxyServiceStatusDetailsRegionIDKey;
-      v10 = v4;
+      v10 = regionCopy;
       v6 = [NSDictionary dictionaryWithObjects:&v10 forKeys:&v9 count:1];
     }
 
@@ -1192,17 +1192,17 @@ LABEL_21:
   }
 }
 
-- (void)clearNetworkStatusForType:(int)a3
+- (void)clearNetworkStatusForType:(int)type
 {
   v5 = objc_alloc_init(NSMutableArray);
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = [(NSPServiceStatusManager *)self serviceStatus];
-  v7 = [v6 networkStatuses];
+  serviceStatus = [(NSPServiceStatusManager *)self serviceStatus];
+  networkStatuses = [serviceStatus networkStatuses];
 
-  v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v8 = [networkStatuses countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v8)
   {
     v9 = v8;
@@ -1214,11 +1214,11 @@ LABEL_21:
       {
         if (*v17 != v11)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(networkStatuses);
         }
 
         v13 = *(*(&v16 + 1) + 8 * i);
-        if ([v13 networkType] == a3)
+        if ([v13 networkType] == type)
         {
           v10 = 1;
         }
@@ -1229,13 +1229,13 @@ LABEL_21:
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v9 = [networkStatuses countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v9);
 
-    v14 = [(NSPServiceStatusManager *)self serviceStatus];
-    [v14 setNetworkStatuses:v5];
+    serviceStatus2 = [(NSPServiceStatusManager *)self serviceStatus];
+    [serviceStatus2 setNetworkStatuses:v5];
 
     if (self != 0 && (v10 & 1) != 0)
     {
@@ -1247,51 +1247,51 @@ LABEL_21:
   else
   {
 
-    v15 = [(NSPServiceStatusManager *)self serviceStatus];
-    [v15 setNetworkStatuses:v5];
+    serviceStatus3 = [(NSPServiceStatusManager *)self serviceStatus];
+    [serviceStatus3 setNetworkStatuses:v5];
   }
 }
 
-- (void)reportActiveOnWiFiName:(id)a3
+- (void)reportActiveOnWiFiName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = nplog_obj();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = 138477827;
-    v7 = v4;
+    v7 = nameCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Wi-Fi network %{private}@ is active", &v6, 0xCu);
   }
 
-  sub_10009DF8C(self, 1, 1, v4);
+  sub_10009DF8C(self, 1, 1, nameCopy);
 }
 
-- (void)reportDisabledOnWiFiName:(id)a3
+- (void)reportDisabledOnWiFiName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = nplog_obj();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138477827;
-    v7 = v4;
+    v7 = nameCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Wi-Fi network %{private}@ is disabled", &v6, 0xCu);
   }
 
-  sub_10009DF8C(self, 0, 1, v4);
+  sub_10009DF8C(self, 0, 1, nameCopy);
 }
 
-- (void)reportBlockedOnWiFiName:(id)a3
+- (void)reportBlockedOnWiFiName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = nplog_obj();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138477827;
-    v20 = v4;
+    v20 = nameCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Wi-Fi network %{private}@ is blocked", buf, 0xCu);
   }
 
-  if (sub_10009DF8C(self, 2, 1, v4))
+  if (sub_10009DF8C(self, 2, 1, nameCopy))
   {
     if (self)
     {
@@ -1305,7 +1305,7 @@ LABEL_21:
 
     sub_1000AE3DC(Property);
     v8 = sub_10003A340(@"WARNING_TITLE", @"WARNING_TITLE");
-    v9 = [NSString stringWithValidatedFormat:v8 validFormatSpecifiers:@"%@" error:0, v4];
+    nameCopy = [NSString stringWithValidatedFormat:v8 validFormatSpecifiers:@"%@" error:0, nameCopy];
 
     v10 = [NSPUserNotification alloc];
     v11 = sub_10003A340(@"WIFI_WARNING", @"WIFI_WARNING");
@@ -1317,8 +1317,8 @@ LABEL_21:
     v17[2] = sub_10009EBE4;
     v17[3] = &unk_10010A0D0;
     v17[4] = self;
-    v18 = v4;
-    v16 = sub_1000ADECC(v10, v9, v11, v12, v13, 0, 0, v14, v17);
+    v18 = nameCopy;
+    v16 = sub_1000ADECC(v10, nameCopy, v11, v12, v13, 0, 0, v14, v17);
     if (self)
     {
       objc_setProperty_atomic(self, v15, v16, 56);
@@ -1326,46 +1326,46 @@ LABEL_21:
   }
 }
 
-- (void)reportActiveOnCellularName:(id)a3
+- (void)reportActiveOnCellularName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = nplog_obj();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = nameCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Cellular network %@ is active", &v6, 0xCu);
   }
 
-  sub_10009DF8C(self, 1, 2, v4);
+  sub_10009DF8C(self, 1, 2, nameCopy);
 }
 
-- (void)reportDisabledOnCellularName:(id)a3
+- (void)reportDisabledOnCellularName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = nplog_obj();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = nameCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Cellular network %@ is disabled", &v6, 0xCu);
   }
 
-  sub_10009DF8C(self, 0, 2, v4);
+  sub_10009DF8C(self, 0, 2, nameCopy);
 }
 
-- (void)reportBlockedOnCellularName:(id)a3
+- (void)reportBlockedOnCellularName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = nplog_obj();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v19 = v4;
+    v19 = nameCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Cellular network %@ is blocked", buf, 0xCu);
   }
 
-  if (sub_10009DF8C(self, 2, 2, v4))
+  if (sub_10009DF8C(self, 2, 2, nameCopy))
   {
     if (self)
     {
@@ -1389,7 +1389,7 @@ LABEL_21:
     v16[2] = sub_10009F108;
     v16[3] = &unk_10010A0D0;
     v16[4] = self;
-    v17 = v4;
+    v17 = nameCopy;
     v15 = sub_1000ADECC(v8, v9, v10, v11, v12, 0, 0, v13, v16);
     if (self)
     {
@@ -1398,21 +1398,21 @@ LABEL_21:
   }
 }
 
-- (void)reportActivityForApp:(id)a3 path:(id)a4
+- (void)reportActivityForApp:(id)app path:(id)path
 {
-  v6 = a3;
-  v22 = a4;
+  appCopy = app;
+  pathCopy = path;
   v23 = objc_alloc_init(NSMutableArray);
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v7 = [(NSPServiceStatusManager *)self appStatuses];
-  v8 = [v7 countByEnumeratingWithState:&v24 objects:v30 count:16];
+  appStatuses = [(NSPServiceStatusManager *)self appStatuses];
+  v8 = [appStatuses countByEnumeratingWithState:&v24 objects:v30 count:16];
   if (!v8)
   {
 
-    if (!v6)
+    if (!appCopy)
     {
       goto LABEL_20;
     }
@@ -1421,7 +1421,7 @@ LABEL_21:
   }
 
   v9 = v8;
-  v21 = self;
+  selfCopy = self;
   v10 = *v25;
   v11 = 1;
   do
@@ -1430,19 +1430,19 @@ LABEL_21:
     {
       if (*v25 != v10)
       {
-        objc_enumerationMutation(v7);
+        objc_enumerationMutation(appStatuses);
       }
 
       v13 = *(*(&v24 + 1) + 8 * i);
-      v14 = [v13 bundleIdentifier];
-      if ([v14 isEqualToString:v6])
+      bundleIdentifier = [v13 bundleIdentifier];
+      if ([bundleIdentifier isEqualToString:appCopy])
       {
       }
 
       else
       {
-        v15 = [v13 path];
-        v16 = [v15 isEqualToString:v22];
+        path = [v13 path];
+        v16 = [path isEqualToString:pathCopy];
 
         if (!v16)
         {
@@ -1460,25 +1460,25 @@ LABEL_11:
       [v23 addObject:v13];
     }
 
-    v9 = [v7 countByEnumeratingWithState:&v24 objects:v30 count:16];
+    v9 = [appStatuses countByEnumeratingWithState:&v24 objects:v30 count:16];
   }
 
   while (v9);
 
-  self = v21;
+  self = selfCopy;
   if (v11)
   {
-    if (!v6)
+    if (!appCopy)
     {
       goto LABEL_20;
     }
 
 LABEL_18:
-    if (v22 || (+[LSApplicationWorkspace defaultWorkspace](LSApplicationWorkspace, "defaultWorkspace"), v17 = objc_claimAutoreleasedReturnValue(), v18 = [v17 applicationIsInstalled:v6], v17, (v18 & 1) != 0))
+    if (pathCopy || (+[LSApplicationWorkspace defaultWorkspace](LSApplicationWorkspace, "defaultWorkspace"), v17 = objc_claimAutoreleasedReturnValue(), v18 = [v17 applicationIsInstalled:appCopy], v17, (v18 & 1) != 0))
     {
 LABEL_20:
       v19 = +[NSDate now];
-      v20 = [[PrivacyProxyAppStatus alloc] initWithStatus:1 bundleID:v6 path:v22 activeDate:v19];
+      v20 = [[PrivacyProxyAppStatus alloc] initWithStatus:1 bundleID:appCopy path:pathCopy activeDate:v19];
       [v23 addObject:v20];
       sub_10009F750(self, v23, v19);
       if (self)
@@ -1494,19 +1494,19 @@ LABEL_20:
       if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v29 = v6;
+        v29 = appCopy;
         _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_INFO, "Bundle ID %@ not known to launch services, ignoring", buf, 0xCu);
       }
     }
   }
 }
 
-- (BOOL)changePausedState:(BOOL)a3 forApp:(id)a4 path:(id)a5
+- (BOOL)changePausedState:(BOOL)state forApp:(id)app path:(id)path
 {
-  v6 = a3;
-  v8 = a4;
-  v35 = a5;
-  if (v6)
+  stateCopy = state;
+  appCopy = app;
+  pathCopy = path;
+  if (stateCopy)
   {
     v9 = 2;
   }
@@ -1521,8 +1521,8 @@ LABEL_20:
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v11 = [(NSPServiceStatusManager *)self appStatuses];
-  v12 = [v11 countByEnumeratingWithState:&v38 objects:v42 count:16];
+  appStatuses = [(NSPServiceStatusManager *)self appStatuses];
+  v12 = [appStatuses countByEnumeratingWithState:&v38 objects:v42 count:16];
   v13 = NEPolicySession_ptr;
   if (!v12)
   {
@@ -1531,7 +1531,7 @@ LABEL_20:
   }
 
   v14 = v12;
-  v33 = self;
+  selfCopy = self;
   v34 = 0;
   v15 = *v39;
   v16 = 1;
@@ -1543,12 +1543,12 @@ LABEL_20:
     {
       if (*v39 != v15)
       {
-        objc_enumerationMutation(v11);
+        objc_enumerationMutation(appStatuses);
       }
 
       v18 = *(*(&v38 + 1) + 8 * v17);
-      v19 = [v18 bundleIdentifier];
-      if ([v19 isEqualToString:v8])
+      bundleIdentifier = [v18 bundleIdentifier];
+      if ([bundleIdentifier isEqualToString:appCopy])
       {
       }
 
@@ -1557,16 +1557,16 @@ LABEL_20:
         v37 = v16;
         [v18 path];
         v20 = v15;
-        v21 = v11;
+        v21 = appStatuses;
         v22 = v9;
         v23 = v10;
-        v25 = v24 = v8;
-        v26 = [v25 isEqualToString:v35];
+        v25 = v24 = appCopy;
+        v26 = [v25 isEqualToString:pathCopy];
 
-        v8 = v24;
+        appCopy = v24;
         v10 = v23;
         v9 = v22;
-        v11 = v21;
+        appStatuses = v21;
         v15 = v20;
         v14 = v36;
 
@@ -1595,19 +1595,19 @@ LABEL_16:
     }
 
     while (v14 != v17);
-    v14 = [v11 countByEnumeratingWithState:&v38 objects:v42 count:16];
+    v14 = [appStatuses countByEnumeratingWithState:&v38 objects:v42 count:16];
   }
 
   while (v14);
 
-  self = v33;
+  self = selfCopy;
   v13 = NEPolicySession_ptr;
   if (v16)
   {
 LABEL_22:
     v28 = [PrivacyProxyAppStatus alloc];
     v29 = [v13[73] now];
-    v30 = [v28 initWithStatus:v9 bundleID:v8 path:v35 activeDate:v29];
+    v30 = [v28 initWithStatus:v9 bundleID:appCopy path:pathCopy activeDate:v29];
 
     [v10 addObject:v30];
     goto LABEL_23;
@@ -1642,8 +1642,8 @@ LABEL_26:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(NSPServiceStatusManager *)self appStatuses];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  appStatuses = [(NSPServiceStatusManager *)self appStatuses];
+  v5 = [appStatuses countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1654,7 +1654,7 @@ LABEL_26:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(appStatuses);
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
@@ -1666,7 +1666,7 @@ LABEL_26:
         [v3 addObject:v9];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [appStatuses countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -1688,8 +1688,8 @@ LABEL_26:
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(NSPServiceStatusManager *)self appStatuses];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  appStatuses = [(NSPServiceStatusManager *)self appStatuses];
+  v3 = [appStatuses countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = *v8;
@@ -1699,7 +1699,7 @@ LABEL_26:
       {
         if (*v8 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(appStatuses);
         }
 
         if ([*(*(&v7 + 1) + 8 * i) appStatus] == 2)
@@ -1709,7 +1709,7 @@ LABEL_26:
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v3 = [appStatuses countByEnumeratingWithState:&v7 objects:v11 count:16];
       if (v3)
       {
         continue;
@@ -1730,8 +1730,8 @@ LABEL_11:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v2 = [(NSPServiceStatusManager *)self appStatuses];
-  v3 = [v2 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  appStatuses = [(NSPServiceStatusManager *)self appStatuses];
+  v3 = [appStatuses countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v3)
   {
     v4 = v3;
@@ -1743,28 +1743,28 @@ LABEL_11:
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(appStatuses);
         }
 
         v8 = *(*(&v12 + 1) + 8 * i);
         if ([v8 appStatus] == 2)
         {
-          v9 = [v8 bundleIdentifier];
+          bundleIdentifier = [v8 bundleIdentifier];
 
-          if (v9)
+          if (bundleIdentifier)
           {
             if (!v5)
             {
               v5 = objc_alloc_init(NSMutableArray);
             }
 
-            v10 = [v8 bundleIdentifier];
-            [v5 addObject:v10];
+            bundleIdentifier2 = [v8 bundleIdentifier];
+            [v5 addObject:bundleIdentifier2];
           }
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v4 = [appStatuses countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v4);
@@ -1784,8 +1784,8 @@ LABEL_11:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v2 = [(NSPServiceStatusManager *)self appStatuses];
-  v3 = [v2 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  appStatuses = [(NSPServiceStatusManager *)self appStatuses];
+  v3 = [appStatuses countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v3)
   {
     v4 = v3;
@@ -1797,28 +1797,28 @@ LABEL_11:
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(appStatuses);
         }
 
         v8 = *(*(&v12 + 1) + 8 * i);
         if ([v8 appStatus] == 2)
         {
-          v9 = [v8 path];
+          path = [v8 path];
 
-          if (v9)
+          if (path)
           {
             if (!v5)
             {
               v5 = objc_alloc_init(NSMutableArray);
             }
 
-            v10 = [v8 path];
-            [v5 addObject:v10];
+            path2 = [v8 path];
+            [v5 addObject:path2];
           }
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v4 = [appStatuses countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v4);

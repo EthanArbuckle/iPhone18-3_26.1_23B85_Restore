@@ -1,39 +1,39 @@
 @interface _UISceneCloudKitShareMetadataBSActionHandler
-- (id)_launchOptionsFromActions:(id)a3 forFBSScene:(id)a4 uiSceneSession:(id)a5 transitionContext:(id)a6;
-- (id)_respondToActions:(id)a3 forFBSScene:(id)a4 inUIScene:(id)a5 fromTransitionContext:(id)a6;
+- (id)_launchOptionsFromActions:(id)actions forFBSScene:(id)scene uiSceneSession:(id)session transitionContext:(id)context;
+- (id)_respondToActions:(id)actions forFBSScene:(id)scene inUIScene:(id)iScene fromTransitionContext:(id)context;
 @end
 
 @implementation _UISceneCloudKitShareMetadataBSActionHandler
 
-- (id)_respondToActions:(id)a3 forFBSScene:(id)a4 inUIScene:(id)a5 fromTransitionContext:(id)a6
+- (id)_respondToActions:(id)actions forFBSScene:(id)scene inUIScene:(id)iScene fromTransitionContext:(id)context
 {
   v47 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v41 = a4;
-  v12 = a5;
-  v40 = a6;
-  v13 = [UIApp _appAdoptsUISceneLifecycle];
+  actionsCopy = actions;
+  sceneCopy = scene;
+  iSceneCopy = iScene;
+  contextCopy = context;
+  _appAdoptsUISceneLifecycle = [UIApp _appAdoptsUISceneLifecycle];
   v14 = [MEMORY[0x1E695DFA8] set];
   v15 = objc_opt_self();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if ((isKindOfClass & 1) == 0)
   {
-    v38 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v38 handleFailureInMethod:a2 object:self file:@"_UISceneCloudKitShareMetadataBSActionHandler.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"[uiScene isKindOfClass:[UIWindowScene self]]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UISceneCloudKitShareMetadataBSActionHandler.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"[uiScene isKindOfClass:[UIWindowScene self]]"}];
   }
 
-  v17 = v12;
+  v17 = iSceneCopy;
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v18 = v11;
+  v18 = actionsCopy;
   v19 = [v18 countByEnumeratingWithState:&v42 objects:v46 count:16];
   if (v19)
   {
     v20 = v19;
-    v39 = v13;
+    v39 = _appAdoptsUISceneLifecycle;
     v21 = 0;
     v22 = *v43;
     do
@@ -49,16 +49,16 @@
         if ([v24 UIActionType] == 23)
         {
           [v14 addObject:v24];
-          v25 = [v24 shareMetadata];
+          shareMetadata = [v24 shareMetadata];
           if (v21)
           {
-            [v21 addObject:v25];
+            [v21 addObject:shareMetadata];
             v26 = v21;
           }
 
           else
           {
-            v26 = [MEMORY[0x1E695DFA8] setWithObject:v25];
+            v26 = [MEMORY[0x1E695DFA8] setWithObject:shareMetadata];
           }
 
           v27 = v26;
@@ -85,15 +85,15 @@
 
     v28 = v21;
     v29 = v17;
-    v30 = [v29 delegate];
+    delegate = [v29 delegate];
     v31 = objc_opt_respondsToSelector();
 
-    v13 = v39;
+    _appAdoptsUISceneLifecycle = v39;
     if (v31)
     {
-      v32 = [v29 delegate];
-      v33 = [v28 anyObject];
-      [v32 windowScene:v29 userDidAcceptCloudKitShareWithMetadata:v33];
+      delegate2 = [v29 delegate];
+      anyObject = [v28 anyObject];
+      [delegate2 windowScene:v29 userDidAcceptCloudKitShareWithMetadata:anyObject];
     }
 
     v34 = v28;
@@ -105,7 +105,7 @@
     v28 = v18;
   }
 
-  if (v13)
+  if (_appAdoptsUISceneLifecycle)
   {
 LABEL_21:
     v35 = [MEMORY[0x1E695DFA8] setWithSet:v18];
@@ -122,19 +122,19 @@ LABEL_24:
   return v36;
 }
 
-- (id)_launchOptionsFromActions:(id)a3 forFBSScene:(id)a4 uiSceneSession:(id)a5 transitionContext:(id)a6
+- (id)_launchOptionsFromActions:(id)actions forFBSScene:(id)scene uiSceneSession:(id)session transitionContext:(id)context
 {
   v39 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v24 = a4;
-  v10 = a5;
-  v11 = a6;
+  actionsCopy = actions;
+  sceneCopy = scene;
+  sessionCopy = session;
+  contextCopy = context;
   v12 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v13 = v9;
+  v13 = actionsCopy;
   v14 = 0;
   v15 = [v13 countByEnumeratingWithState:&v34 objects:v38 count:16];
   if (v15)
@@ -153,8 +153,8 @@ LABEL_24:
         if ([v18 UIActionType] == 23)
         {
           v33 = v14;
-          v19 = [v18 shareMetadata];
-          __119___UISceneCloudKitShareMetadataBSActionHandler__launchOptionsFromActions_forFBSScene_uiSceneSession_transitionContext___block_invoke(&v33, v19);
+          shareMetadata = [v18 shareMetadata];
+          __119___UISceneCloudKitShareMetadataBSActionHandler__launchOptionsFromActions_forFBSScene_uiSceneSession_transitionContext___block_invoke(&v33, shareMetadata);
           v20 = v33;
 
           v14 = v20;
@@ -164,7 +164,7 @@ LABEL_24:
         {
           v32 = v12;
           __119___UISceneCloudKitShareMetadataBSActionHandler__launchOptionsFromActions_forFBSScene_uiSceneSession_transitionContext___block_invoke(&v32, v18);
-          v19 = v12;
+          shareMetadata = v12;
           v12 = v32;
         }
       }

@@ -1,39 +1,39 @@
 @interface UNSNotificationRecordReplaceUpdate
-- (BOOL)isEqual:(id)a3;
-- (UNSNotificationRecordReplaceUpdate)initWithCoder:(id)a3;
-- (id)_initWithNotificationRecord:(id)a3 replacedNotificationRecord:(id)a4 shouldRepost:(BOOL)a5;
+- (BOOL)isEqual:(id)equal;
+- (UNSNotificationRecordReplaceUpdate)initWithCoder:(id)coder;
+- (id)_initWithNotificationRecord:(id)record replacedNotificationRecord:(id)notificationRecord shouldRepost:(BOOL)repost;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation UNSNotificationRecordReplaceUpdate
 
-- (id)_initWithNotificationRecord:(id)a3 replacedNotificationRecord:(id)a4 shouldRepost:(BOOL)a5
+- (id)_initWithNotificationRecord:(id)record replacedNotificationRecord:(id)notificationRecord shouldRepost:(BOOL)repost
 {
-  v9 = a4;
+  notificationRecordCopy = notificationRecord;
   v13.receiver = self;
   v13.super_class = UNSNotificationRecordReplaceUpdate;
-  v10 = [(UNCNotificationRecordUpdate *)&v13 _initWithNotificationRecord:a3 shouldSync:1];
+  v10 = [(UNCNotificationRecordUpdate *)&v13 _initWithNotificationRecord:record shouldSync:1];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(v10 + 4, a4);
-    *(v11 + 24) = a5;
+    objc_storeStrong(v10 + 4, notificationRecord);
+    *(v11 + 24) = repost;
   }
 
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v10.receiver = self;
   v10.super_class = UNSNotificationRecordReplaceUpdate;
-  if ([(UNCNotificationRecordUpdate *)&v10 isEqual:v4])
+  if ([(UNCNotificationRecordUpdate *)&v10 isEqual:equalCopy])
   {
-    v5 = v4;
-    v6 = [(UNSNotificationRecordReplaceUpdate *)self replacedNotificationRecord];
-    v7 = [v5 replacedNotificationRecord];
+    v5 = equalCopy;
+    replacedNotificationRecord = [(UNSNotificationRecordReplaceUpdate *)self replacedNotificationRecord];
+    replacedNotificationRecord2 = [v5 replacedNotificationRecord];
 
     v8 = UNEqualObjects();
   }
@@ -48,44 +48,44 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E698E6B8] builder];
+  builder = [MEMORY[0x1E698E6B8] builder];
   v10.receiver = self;
   v10.super_class = UNSNotificationRecordReplaceUpdate;
-  v4 = [v3 appendUnsignedInteger:{-[UNCNotificationRecordUpdate hash](&v10, sel_hash)}];
-  v5 = [(UNSNotificationRecordReplaceUpdate *)self replacedNotificationRecord];
-  v6 = [v3 appendObject:v5];
+  v4 = [builder appendUnsignedInteger:{-[UNCNotificationRecordUpdate hash](&v10, sel_hash)}];
+  replacedNotificationRecord = [(UNSNotificationRecordReplaceUpdate *)self replacedNotificationRecord];
+  v6 = [builder appendObject:replacedNotificationRecord];
 
-  v7 = [v3 appendBool:{-[UNSNotificationRecordReplaceUpdate shouldRepost](self, "shouldRepost")}];
-  v8 = [v3 hash];
+  v7 = [builder appendBool:{-[UNSNotificationRecordReplaceUpdate shouldRepost](self, "shouldRepost")}];
+  v8 = [builder hash];
 
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = UNSNotificationRecordReplaceUpdate;
-  v4 = a3;
-  [(UNCNotificationRecordUpdate *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(UNCNotificationRecordUpdate *)&v6 encodeWithCoder:coderCopy];
   v5 = [(UNSNotificationRecordReplaceUpdate *)self replacedNotificationRecord:v6.receiver];
-  [v4 encodeObject:v5 forKey:@"replacedNotificationRecord"];
+  [coderCopy encodeObject:v5 forKey:@"replacedNotificationRecord"];
 
-  [v4 encodeBool:-[UNSNotificationRecordReplaceUpdate shouldRepost](self forKey:{"shouldRepost"), @"shouldRepost"}];
+  [coderCopy encodeBool:-[UNSNotificationRecordReplaceUpdate shouldRepost](self forKey:{"shouldRepost"), @"shouldRepost"}];
 }
 
-- (UNSNotificationRecordReplaceUpdate)initWithCoder:(id)a3
+- (UNSNotificationRecordReplaceUpdate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = UNSNotificationRecordReplaceUpdate;
-  v5 = [(UNCNotificationRecordUpdate *)&v9 initWithCoder:v4];
+  v5 = [(UNCNotificationRecordUpdate *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"replacedNotificationRecord"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"replacedNotificationRecord"];
     replacedNotificationRecord = v5->_replacedNotificationRecord;
     v5->_replacedNotificationRecord = v6;
 
-    v5->_shouldRepost = [v4 decodeBoolForKey:@"shouldRepost"];
+    v5->_shouldRepost = [coderCopy decodeBoolForKey:@"shouldRepost"];
   }
 
   return v5;

@@ -1,50 +1,50 @@
 @interface PXCuratedLibrarySectionedLayout
-- (BOOL)layout:(id)a3 shouldPreventFaultOutOfSublayout:(id)a4;
-- (CGRect)sectionBoundariesForAssetCollectionReference:(id)a3;
-- (CGSize)layout:(id)a3 estimatedContentSizeForSublayoutAtIndex:(int64_t)a4 referenceSize:(CGSize)a5;
+- (BOOL)layout:(id)layout shouldPreventFaultOutOfSublayout:(id)sublayout;
+- (CGRect)sectionBoundariesForAssetCollectionReference:(id)reference;
+- (CGSize)layout:(id)layout estimatedContentSizeForSublayoutAtIndex:(int64_t)index referenceSize:(CGSize)size;
 - (PXAssetsSectionLayout)dominantSectionLayout;
 - (PXCuratedLibrarySectionedLayout)init;
-- (PXCuratedLibrarySectionedLayout)initWithViewModel:(id)a3 spec:(id)a4;
+- (PXCuratedLibrarySectionedLayout)initWithViewModel:(id)model spec:(id)spec;
 - (UIEdgeInsets)padding;
-- (id)_heroAssetCollectionReferenceClosestToAssetCollectionReference:(id)a3 zoomLevel:(int64_t)a4;
-- (id)_heroSectionLayoutClosestToSectionLayout:(id)a3 zoomLevel:(int64_t)a4;
-- (id)_targetAssetCollectionReferenceInZoomLevel:(int64_t)a3 forTransitionFromAssetCollectionReference:(id)a4;
-- (id)dateIntervalFutureForContentInRect:(CGRect)a3 type:(unint64_t)a4;
+- (id)_heroAssetCollectionReferenceClosestToAssetCollectionReference:(id)reference zoomLevel:(int64_t)level;
+- (id)_heroSectionLayoutClosestToSectionLayout:(id)layout zoomLevel:(int64_t)level;
+- (id)_targetAssetCollectionReferenceInZoomLevel:(int64_t)level forTransitionFromAssetCollectionReference:(id)reference;
+- (id)dateIntervalFutureForContentInRect:(CGRect)rect type:(unint64_t)type;
 - (id)dominantHeroPreferences;
-- (id)layout:(id)a3 createSublayoutAtIndex:(int64_t)a4;
-- (id)viewModel:(id)a3 dominantAssetCollectionReferenceForZoomLevel:(int64_t)a4;
-- (int64_t)sublayoutIndexForObjectReference:(id)a3 options:(unint64_t)a4 updatedObjectReference:(id *)a5;
+- (id)layout:(id)layout createSublayoutAtIndex:(int64_t)index;
+- (id)viewModel:(id)model dominantAssetCollectionReferenceForZoomLevel:(int64_t)level;
+- (int64_t)sublayoutIndexForObjectReference:(id)reference options:(unint64_t)options updatedObjectReference:(id *)objectReference;
 - (void)_anchorVisibleArea;
-- (void)_configureSectionLayout:(id)a3 atIndex:(int64_t)a4;
-- (void)_prepareAccumulatedSectionItemsBufferForSections:(int64_t)a3;
+- (void)_configureSectionLayout:(id)layout atIndex:(int64_t)index;
+- (void)_prepareAccumulatedSectionItemsBufferForSections:(int64_t)sections;
 - (void)_updateFaultOutsets;
-- (void)_updatePrefetchedSectionsForFaultedInSublayout:(id)a3;
+- (void)_updatePrefetchedSectionsForFaultedInSublayout:(id)sublayout;
 - (void)_updatePreheating;
 - (void)_updateSublayoutsDataSource;
 - (void)_updateSublayoutsForSkimming;
 - (void)clearLastVisibleAreaAnchoringInformation;
 - (void)dealloc;
-- (void)didFaultInSublayout:(id)a3 atIndex:(int64_t)a4 fromEstimatedContentSize:(CGSize)a5;
-- (void)enumerateAssetCollectionsInRect:(CGRect)a3 enumerator:(id)a4;
-- (void)enumerateAssetsInRect:(CGRect)a3 enumerator:(id)a4;
-- (void)enumerateAssetsSectionSublayoutsInRect:(CGRect)a3 usingBlock:(id)a4;
-- (void)enumerateAssetsSectionSublayoutsUsingBlock:(id)a3;
-- (void)enumerateHeroSpritesInRect:(CGRect)a3 usingBlock:(id)a4;
-- (void)enumerateScrollablePagesWithOptions:(unint64_t)a3 usingBlock:(id)a4;
-- (void)enumerateSectionBoundariesWithOptions:(unint64_t)a3 usingBlock:(id)a4;
-- (void)enumerateVisibleAnchoringLayoutsUsingBlock:(id)a3;
-- (void)layout:(id)a3 collectIndexesOfChapterHeaderSublayouts:(id)a4 heroSublayouts:(id)a5 inRange:(_NSRange)a6;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)setDominantHeroPreferences:(id)a3;
-- (void)setIsInitialLoad:(BOOL)a3;
-- (void)setLastHitSpriteReference:(id)a3;
-- (void)setLateralMargin:(double)a3;
-- (void)setPerformedInitialLoad:(BOOL)a3;
-- (void)setPrefersDominantHero:(BOOL)a3 forZoomLevel:(int64_t)a4;
-- (void)setSafeAreaInsets:(UIEdgeInsets)a3;
-- (void)setSpec:(id)a3;
+- (void)didFaultInSublayout:(id)sublayout atIndex:(int64_t)index fromEstimatedContentSize:(CGSize)size;
+- (void)enumerateAssetCollectionsInRect:(CGRect)rect enumerator:(id)enumerator;
+- (void)enumerateAssetsInRect:(CGRect)rect enumerator:(id)enumerator;
+- (void)enumerateAssetsSectionSublayoutsInRect:(CGRect)rect usingBlock:(id)block;
+- (void)enumerateAssetsSectionSublayoutsUsingBlock:(id)block;
+- (void)enumerateHeroSpritesInRect:(CGRect)rect usingBlock:(id)block;
+- (void)enumerateScrollablePagesWithOptions:(unint64_t)options usingBlock:(id)block;
+- (void)enumerateSectionBoundariesWithOptions:(unint64_t)options usingBlock:(id)block;
+- (void)enumerateVisibleAnchoringLayoutsUsingBlock:(id)block;
+- (void)layout:(id)layout collectIndexesOfChapterHeaderSublayouts:(id)sublayouts heroSublayouts:(id)heroSublayouts inRange:(_NSRange)range;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)setDominantHeroPreferences:(id)preferences;
+- (void)setIsInitialLoad:(BOOL)load;
+- (void)setLastHitSpriteReference:(id)reference;
+- (void)setLateralMargin:(double)margin;
+- (void)setPerformedInitialLoad:(BOOL)load;
+- (void)setPrefersDominantHero:(BOOL)hero forZoomLevel:(int64_t)level;
+- (void)setSafeAreaInsets:(UIEdgeInsets)insets;
+- (void)setSpec:(id)spec;
 - (void)update;
-- (void)willFaultOutSublayout:(id)a3 atIndex:(int64_t)a4;
+- (void)willFaultOutSublayout:(id)sublayout atIndex:(int64_t)index;
 @end
 
 @implementation PXCuratedLibrarySectionedLayout
@@ -62,41 +62,41 @@
   return result;
 }
 
-- (id)_targetAssetCollectionReferenceInZoomLevel:(int64_t)a3 forTransitionFromAssetCollectionReference:(id)a4
+- (id)_targetAssetCollectionReferenceInZoomLevel:(int64_t)level forTransitionFromAssetCollectionReference:(id)reference
 {
-  v7 = a4;
-  v8 = v7;
-  if (a3 == 3)
+  referenceCopy = reference;
+  v8 = referenceCopy;
+  if (level == 3)
   {
-    v9 = [v7 assetCollection];
-    v10 = [v9 px_highlightKind];
+    assetCollection = [referenceCopy assetCollection];
+    px_highlightKind = [assetCollection px_highlightKind];
 
-    if (v10 == 1)
+    if (px_highlightKind == 1)
     {
-      v11 = [(PXCuratedLibrarySectionedLayout *)self viewModel];
-      v12 = [v11 assetsDataSourceManager];
-      v13 = [v12 firstAssetCollectionReferenceInDataSourceForZoomLevel:3 withParent:v8];
+      viewModel = [(PXCuratedLibrarySectionedLayout *)self viewModel];
+      assetsDataSourceManager = [viewModel assetsDataSourceManager];
+      v13 = [assetsDataSourceManager firstAssetCollectionReferenceInDataSourceForZoomLevel:3 withParent:v8];
 LABEL_4:
 
       goto LABEL_7;
     }
   }
 
-  v14 = [(PXCuratedLibrarySectionedLayout *)self viewModel];
-  v15 = [v14 assetsDataSourceManager];
-  v11 = [v15 dataSourceForZoomLevel:a3];
+  viewModel2 = [(PXCuratedLibrarySectionedLayout *)self viewModel];
+  assetsDataSourceManager2 = [viewModel2 assetsDataSourceManager];
+  viewModel = [assetsDataSourceManager2 dataSourceForZoomLevel:level];
 
-  v13 = [v11 objectReferenceNearestToObjectReference:v8];
+  v13 = [viewModel objectReferenceNearestToObjectReference:v8];
   if (v13)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v12 = [MEMORY[0x1E696AAA8] currentHandler];
+      assetsDataSourceManager = [MEMORY[0x1E696AAA8] currentHandler];
       v17 = objc_opt_class();
       v18 = NSStringFromClass(v17);
-      v19 = [v13 px_descriptionForAssertionMessage];
-      [v12 handleFailureInMethod:a2 object:self file:@"PXCuratedLibrarySectionedLayout.m" lineNumber:1260 description:{@"%@ should be nil or an instance inheriting from %@, but it is %@", @"[dataSource objectReferenceNearestToObjectReference:sourceCollectionReference]", v18, v19}];
+      px_descriptionForAssertionMessage = [v13 px_descriptionForAssertionMessage];
+      [assetsDataSourceManager handleFailureInMethod:a2 object:self file:@"PXCuratedLibrarySectionedLayout.m" lineNumber:1260 description:{@"%@ should be nil or an instance inheriting from %@, but it is %@", @"[dataSource objectReferenceNearestToObjectReference:sourceCollectionReference]", v18, px_descriptionForAssertionMessage}];
 
       goto LABEL_4;
     }
@@ -107,44 +107,44 @@ LABEL_7:
   return v13;
 }
 
-- (id)viewModel:(id)a3 dominantAssetCollectionReferenceForZoomLevel:(int64_t)a4
+- (id)viewModel:(id)model dominantAssetCollectionReferenceForZoomLevel:(int64_t)level
 {
-  v6 = [a3 assetsDataSourceManager];
-  v7 = [v6 dataSourceForZoomLevel:a4];
+  assetsDataSourceManager = [model assetsDataSourceManager];
+  v7 = [assetsDataSourceManager dataSourceForZoomLevel:level];
 
-  v8 = [(PXCuratedLibrarySectionedLayout *)self lastVisibleDominantObjectReference];
-  v9 = [v7 assetCollectionReferenceNearestToObjectReference:v8];
+  lastVisibleDominantObjectReference = [(PXCuratedLibrarySectionedLayout *)self lastVisibleDominantObjectReference];
+  assetCollectionReference2 = [v7 assetCollectionReferenceNearestToObjectReference:lastVisibleDominantObjectReference];
 
-  if (v9)
+  if (assetCollectionReference2)
   {
-    if ([(PXCuratedLibrarySectionedLayout *)self prefersDominantHeroForZoomLevel:a4])
+    if ([(PXCuratedLibrarySectionedLayout *)self prefersDominantHeroForZoomLevel:level])
     {
       v29 = 0;
-      v10 = [(PXCuratedLibrarySectionedLayout *)self sublayoutIndexForObjectReference:v9 options:0 updatedObjectReference:&v29];
+      v10 = [(PXCuratedLibrarySectionedLayout *)self sublayoutIndexForObjectReference:assetCollectionReference2 options:0 updatedObjectReference:&v29];
       if (v10 == 0x7FFFFFFFFFFFFFFFLL)
       {
-        v11 = [(PXCuratedLibrarySectionedLayout *)self _heroAssetCollectionReferenceClosestToAssetCollectionReference:v9 zoomLevel:a4];
+        v11 = [(PXCuratedLibrarySectionedLayout *)self _heroAssetCollectionReferenceClosestToAssetCollectionReference:assetCollectionReference2 zoomLevel:level];
         v12 = v11;
-        v13 = v11 ? v11 : v9;
+        v13 = v11 ? v11 : assetCollectionReference2;
         v14 = v13;
       }
 
       else
       {
         v21 = v10;
-        v22 = [(PXCuratedLibrarySectionedLayout *)self sublayoutDataStore];
-        v12 = [v22 sublayoutAtIndex:v21];
+        sublayoutDataStore = [(PXCuratedLibrarySectionedLayout *)self sublayoutDataStore];
+        v12 = [sublayoutDataStore sublayoutAtIndex:v21];
 
-        v23 = [(PXCuratedLibrarySectionedLayout *)self _heroSectionLayoutClosestToSectionLayout:v12 zoomLevel:a4];
-        v24 = [v23 assetCollectionReference];
-        v25 = v24;
-        v26 = v24 ? v24 : v9;
+        v23 = [(PXCuratedLibrarySectionedLayout *)self _heroSectionLayoutClosestToSectionLayout:v12 zoomLevel:level];
+        assetCollectionReference = [v23 assetCollectionReference];
+        v25 = assetCollectionReference;
+        v26 = assetCollectionReference ? assetCollectionReference : assetCollectionReference2;
         v14 = v26;
 
-        v9 = v23;
+        assetCollectionReference2 = v23;
       }
 
-      v9 = v14;
+      assetCollectionReference2 = v14;
       if (!v14)
       {
         goto LABEL_22;
@@ -154,67 +154,67 @@ LABEL_7:
     goto LABEL_18;
   }
 
-  v15 = [(PXCuratedLibrarySectionedLayout *)self dominantSectionLayout];
-  v9 = [v15 assetCollectionReference];
-  if ([v15 presentedSkimming])
+  dominantSectionLayout = [(PXCuratedLibrarySectionedLayout *)self dominantSectionLayout];
+  assetCollectionReference2 = [dominantSectionLayout assetCollectionReference];
+  if ([dominantSectionLayout presentedSkimming])
   {
-    v16 = [(PXCuratedLibrarySectionedLayout *)self viewModel];
-    v17 = [v16 skimmingInfo];
-    v18 = [v17 childCollectionsZoomLevel];
+    viewModel = [(PXCuratedLibrarySectionedLayout *)self viewModel];
+    skimmingInfo = [viewModel skimmingInfo];
+    childCollectionsZoomLevel = [skimmingInfo childCollectionsZoomLevel];
 
-    if (v18 == a4)
+    if (childCollectionsZoomLevel == level)
     {
-      v19 = [(PXCuratedLibrarySectionedLayout *)self presentedDataSource];
-      v20 = [v19 assetCollectionReferenceNearestToObjectReference:v9];
+      presentedDataSource = [(PXCuratedLibrarySectionedLayout *)self presentedDataSource];
+      v20 = [presentedDataSource assetCollectionReferenceNearestToObjectReference:assetCollectionReference2];
 
-      v9 = [(PXCuratedLibrarySectionedLayout *)self _targetAssetCollectionReferenceInZoomLevel:a4 forTransitionFromAssetCollectionReference:v20];
+      assetCollectionReference2 = [(PXCuratedLibrarySectionedLayout *)self _targetAssetCollectionReferenceInZoomLevel:level forTransitionFromAssetCollectionReference:v20];
     }
   }
 
-  if (v9)
+  if (assetCollectionReference2)
   {
 LABEL_18:
     if (v7)
     {
-      [v7 indexPathForAssetCollectionReference:v9];
+      [v7 indexPathForAssetCollectionReference:assetCollectionReference2];
     }
 
     if (!*off_1E7721F68)
     {
-      v27 = [(PXCuratedLibrarySectionedLayout *)self _targetAssetCollectionReferenceInZoomLevel:a4 forTransitionFromAssetCollectionReference:v9];
+      v27 = [(PXCuratedLibrarySectionedLayout *)self _targetAssetCollectionReferenceInZoomLevel:level forTransitionFromAssetCollectionReference:assetCollectionReference2];
 
-      v9 = v27;
+      assetCollectionReference2 = v27;
     }
   }
 
 LABEL_22:
 
-  return v9;
+  return assetCollectionReference2;
 }
 
-- (id)_heroAssetCollectionReferenceClosestToAssetCollectionReference:(id)a3 zoomLevel:(int64_t)a4
+- (id)_heroAssetCollectionReferenceClosestToAssetCollectionReference:(id)reference zoomLevel:(int64_t)level
 {
   v44 = *MEMORY[0x1E69E9840];
-  v27 = a3;
-  v6 = [(PXCuratedLibrarySectionedLayout *)self viewModel];
-  v7 = [v6 assetsDataSourceManager];
-  v8 = [v7 dataSourceForZoomLevel:a4];
+  referenceCopy = reference;
+  viewModel = [(PXCuratedLibrarySectionedLayout *)self viewModel];
+  assetsDataSourceManager = [viewModel assetsDataSourceManager];
+  v8 = [assetsDataSourceManager dataSourceForZoomLevel:level];
 
   v36 = 0u;
   v37 = 0u;
   if (v8)
   {
-    [v8 indexPathForAssetCollectionReference:v27];
+    [v8 indexPathForAssetCollectionReference:referenceCopy];
   }
 
-  if (a4 != 2)
+  if (level != 2)
   {
     PXAssertGetLog();
   }
 
   if (v36 != *off_1E7721F68 && *(&v36 + 1) != 0x7FFFFFFFFFFFFFFFLL && v37 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v11 = [v8 identifier];
+    identifier = [v8 identifier];
     v12 = *(&v36 + 1);
     *buf = 0;
     v39 = buf;
@@ -228,7 +228,7 @@ LABEL_22:
     aBlock[3] = &unk_1E7743828;
     v13 = v8;
     v33 = v12;
-    v34 = v11;
+    v34 = identifier;
     v35 = 2;
     v31 = v13;
     v32 = buf;
@@ -242,17 +242,17 @@ LABEL_22:
       v26 = vnegq_f64(v19);
       while (1)
       {
-        v28[0] = v11;
+        v28[0] = identifier;
         v28[1] = v16;
         v29 = v26;
         v24 = [v13 assetCollectionReferenceAtSectionIndexPath:{v28, *&v26}];
-        v20 = [v24 assetCollection];
+        assetCollection = [v24 assetCollection];
         objc_opt_class();
-        v21 = (objc_opt_isKindOfClass() & 1) != 0 ? v20 : 0;
+        v21 = (objc_opt_isKindOfClass() & 1) != 0 ? assetCollection : 0;
         v22 = v21;
-        v23 = [v22 keyAssetObjectIDForKind];
+        keyAssetObjectIDForKind = [v22 keyAssetObjectIDForKind];
 
-        LOBYTE(v22) = [v23 isEqual:*(v39 + 5)];
+        LOBYTE(v22) = [keyAssetObjectIDForKind isEqual:*(v39 + 5)];
         if (v22)
         {
           break;
@@ -350,20 +350,20 @@ uint64_t __108__PXCuratedLibrarySectionedLayout__heroAssetCollectionReferenceClo
   return v5;
 }
 
-- (id)_heroSectionLayoutClosestToSectionLayout:(id)a3 zoomLevel:(int64_t)a4
+- (id)_heroSectionLayoutClosestToSectionLayout:(id)layout zoomLevel:(int64_t)level
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = v6;
-  if (a4 != 2)
+  layoutCopy = layout;
+  v7 = layoutCopy;
+  if (level != 2)
   {
     PXAssertGetLog();
   }
 
-  if (v6)
+  if (layoutCopy)
   {
-    v8 = [(PXCuratedLibrarySectionedLayout *)self sublayoutDataStore];
-    v9 = [v8 indexOfSublayout:v7];
+    sublayoutDataStore = [(PXCuratedLibrarySectionedLayout *)self sublayoutDataStore];
+    v9 = [sublayoutDataStore indexOfSublayout:v7];
     if (v9 == 0x7FFFFFFFFFFFFFFFLL)
     {
       v15 = 0;
@@ -376,8 +376,8 @@ uint64_t __108__PXCuratedLibrarySectionedLayout__heroAssetCollectionReferenceClo
       aBlock[1] = 3221225472;
       aBlock[2] = __86__PXCuratedLibrarySectionedLayout__heroSectionLayoutClosestToSectionLayout_zoomLevel___block_invoke;
       aBlock[3] = &unk_1E7743800;
-      v8 = v8;
-      v18 = v8;
+      sublayoutDataStore = sublayoutDataStore;
+      v18 = sublayoutDataStore;
       v19 = v10;
       v20 = 2;
       v11 = _Block_copy(aBlock);
@@ -394,7 +394,7 @@ LABEL_8:
         v14 = v13 + 1;
         while (1)
         {
-          v15 = [v8 sublayoutAtIndex:v12];
+          v15 = [sublayoutDataStore sublayoutAtIndex:v12];
           if (([v15 referenceOptions] & 4) != 0)
           {
             break;
@@ -460,10 +460,10 @@ uint64_t __86__PXCuratedLibrarySectionedLayout__heroSectionLayoutClosestToSectio
 
 - (PXAssetsSectionLayout)dominantSectionLayout
 {
-  v3 = [(PXCuratedLibrarySectionedLayout *)self lastHitSpriteReference];
-  if (v3)
+  lastHitSpriteReference = [(PXCuratedLibrarySectionedLayout *)self lastHitSpriteReference];
+  if (lastHitSpriteReference)
   {
-    v4 = [(PXCuratedLibrarySectionedLayout *)self sublayoutIndexForSpriteReference:v3 options:0];
+    v4 = [(PXCuratedLibrarySectionedLayout *)self sublayoutIndexForSpriteReference:lastHitSpriteReference options:0];
   }
 
   else
@@ -471,11 +471,11 @@ uint64_t __86__PXCuratedLibrarySectionedLayout__heroSectionLayoutClosestToSectio
     v4 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v5 = [(PXCuratedLibrarySectionedLayout *)self presentedZoomLevel];
-  v6 = [(PXCuratedLibrarySectionedLayout *)self lastVisibleDominantObjectReference];
-  if (v6)
+  presentedZoomLevel = [(PXCuratedLibrarySectionedLayout *)self presentedZoomLevel];
+  lastVisibleDominantObjectReference = [(PXCuratedLibrarySectionedLayout *)self lastVisibleDominantObjectReference];
+  if (lastVisibleDominantObjectReference)
   {
-    v7 = [(PXCuratedLibrarySectionedLayout *)self spriteReferenceForObjectReference:v6];
+    v7 = [(PXCuratedLibrarySectionedLayout *)self spriteReferenceForObjectReference:lastVisibleDominantObjectReference];
     v4 = [(PXCuratedLibrarySectionedLayout *)self sublayoutIndexForSpriteReference:v7 options:1];
   }
 
@@ -492,8 +492,8 @@ uint64_t __86__PXCuratedLibrarySectionedLayout__heroSectionLayoutClosestToSectio
     v13 = v12;
     v15 = v14;
     v17 = v16;
-    v18 = [(PXCuratedLibrarySectionedLayout *)self fullyVisibleEdgesWithDefaultTolerance];
-    if ((v18 & 5) == 0)
+    fullyVisibleEdgesWithDefaultTolerance = [(PXCuratedLibrarySectionedLayout *)self fullyVisibleEdgesWithDefaultTolerance];
+    if ((fullyVisibleEdgesWithDefaultTolerance & 5) == 0)
     {
       [(PXCuratedLibrarySectionedLayout *)self safeAreaInsets];
       v19 = +[PXCuratedLibrarySettings sharedInstance];
@@ -514,20 +514,20 @@ uint64_t __86__PXCuratedLibrarySectionedLayout__heroSectionLayoutClosestToSectio
     v23[1] = 3221225472;
     v23[2] = __56__PXCuratedLibrarySectionedLayout_dominantSectionLayout__block_invoke;
     v23[3] = &unk_1E77437B0;
-    v24 = (v18 & 4) != 0;
+    v24 = (fullyVisibleEdgesWithDefaultTolerance & 4) != 0;
     v23[4] = self;
     v23[5] = v26;
     v23[6] = v25;
     v23[7] = &v27;
-    v23[8] = v5;
+    v23[8] = presentedZoomLevel;
     [(PXCuratedLibrarySectionedLayout *)self enumerateAssetsSectionSublayoutsInRect:v23 usingBlock:v11, v13, v15, v17];
     _Block_object_dispose(v25, 8);
     _Block_object_dispose(v26, 8);
   }
 
-  if ([(PXCuratedLibrarySectionedLayout *)self prefersDominantHeroForZoomLevel:v5])
+  if ([(PXCuratedLibrarySectionedLayout *)self prefersDominantHeroForZoomLevel:presentedZoomLevel])
   {
-    v20 = [(PXCuratedLibrarySectionedLayout *)self _heroSectionLayoutClosestToSectionLayout:v28[5] zoomLevel:v5];
+    v20 = [(PXCuratedLibrarySectionedLayout *)self _heroSectionLayoutClosestToSectionLayout:v28[5] zoomLevel:presentedZoomLevel];
     if (v20)
     {
       objc_storeStrong(v28 + 5, v20);
@@ -601,10 +601,10 @@ void __56__PXCuratedLibrarySectionedLayout_dominantSectionLayout__block_invoke_2
   PXRectShortestDistanceToPoint();
 }
 
-- (CGRect)sectionBoundariesForAssetCollectionReference:(id)a3
+- (CGRect)sectionBoundariesForAssetCollectionReference:(id)reference
 {
   v16 = 0;
-  v4 = [(PXCuratedLibrarySectionedLayout *)self sublayoutIndexForObjectReference:a3 options:0 updatedObjectReference:&v16];
+  v4 = [(PXCuratedLibrarySectionedLayout *)self sublayoutIndexForObjectReference:reference options:0 updatedObjectReference:&v16];
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v5 = *MEMORY[0x1E695F050];
@@ -616,8 +616,8 @@ void __56__PXCuratedLibrarySectionedLayout_dominantSectionLayout__block_invoke_2
   else
   {
     v9 = v4;
-    v10 = [(PXCuratedLibrarySectionedLayout *)self sublayoutDataStore];
-    v11 = ([v10 geometries] + 136 * v9);
+    sublayoutDataStore = [(PXCuratedLibrarySectionedLayout *)self sublayoutDataStore];
+    v11 = ([sublayoutDataStore geometries] + 136 * v9);
     v7 = v11[4];
     v8 = v11[5];
     v5 = v11[6];
@@ -635,13 +635,13 @@ void __56__PXCuratedLibrarySectionedLayout_dominantSectionLayout__block_invoke_2
   return result;
 }
 
-- (void)enumerateHeroSpritesInRect:(CGRect)a3 usingBlock:(id)a4
+- (void)enumerateHeroSpritesInRect:(CGRect)rect usingBlock:(id)block
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  blockCopy = block;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __73__PXCuratedLibrarySectionedLayout_enumerateHeroSpritesInRect_usingBlock___block_invoke;
@@ -651,8 +651,8 @@ void __56__PXCuratedLibrarySectionedLayout_dominantSectionLayout__block_invoke_2
   v15 = width;
   v16 = height;
   v11[4] = self;
-  v12 = v9;
-  v10 = v9;
+  v12 = blockCopy;
+  v10 = blockCopy;
   [(PXCuratedLibrarySectionedLayout *)self enumerateAssetsSectionSublayoutsInRect:v11 usingBlock:x, y, width, height];
 }
 
@@ -695,36 +695,36 @@ uint64_t __73__PXCuratedLibrarySectionedLayout_enumerateHeroSpritesInRect_usingB
   return result;
 }
 
-- (void)enumerateScrollablePagesWithOptions:(unint64_t)a3 usingBlock:(id)a4
+- (void)enumerateScrollablePagesWithOptions:(unint64_t)options usingBlock:(id)block
 {
-  v7 = a4;
-  v8 = [(PXCuratedLibrarySectionedLayout *)self spec];
-  v9 = [(PXCuratedLibrarySectionedLayout *)self presentedZoomLevel];
-  switch(v9)
+  blockCopy = block;
+  spec = [(PXCuratedLibrarySectionedLayout *)self spec];
+  presentedZoomLevel = [(PXCuratedLibrarySectionedLayout *)self presentedZoomLevel];
+  switch(presentedZoomLevel)
   {
     case 3:
       goto LABEL_16;
     case 2:
-      v10 = [(PXGCompositeLayout *)self composition];
-      if (v10)
+      composition = [(PXGCompositeLayout *)self composition];
+      if (composition)
       {
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          v18 = [MEMORY[0x1E696AAA8] currentHandler];
+          currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
           v19 = objc_opt_class();
           v20 = NSStringFromClass(v19);
-          v21 = [v10 px_descriptionForAssertionMessage];
-          [v18 handleFailureInMethod:a2 object:self file:@"PXCuratedLibrarySectionedLayout.m" lineNumber:943 description:{@"%@ should be nil or an instance inheriting from %@, but it is %@", @"self.composition", v20, v21}];
+          px_descriptionForAssertionMessage = [composition px_descriptionForAssertionMessage];
+          [currentHandler handleFailureInMethod:a2 object:self file:@"PXCuratedLibrarySectionedLayout.m" lineNumber:943 description:{@"%@ should be nil or an instance inheriting from %@, but it is %@", @"self.composition", v20, px_descriptionForAssertionMessage}];
         }
       }
 
-      if (![v8 allowsPaginatedScrollingInYearsAndMonths])
+      if (![spec allowsPaginatedScrollingInYearsAndMonths])
       {
         goto LABEL_18;
       }
 
-      if (([v10 presentedSingleColumn] & 1) == 0)
+      if (([composition presentedSingleColumn] & 1) == 0)
       {
         v47[0] = 0;
         v47[1] = v47;
@@ -751,17 +751,17 @@ uint64_t __73__PXCuratedLibrarySectionedLayout_enumerateHeroSpritesInRect_usingB
         aBlock[3] = &unk_1E7743710;
         v39 = v47;
         v40 = v42;
-        v38 = v7;
+        v38 = blockCopy;
         v41 = v44;
         v13 = _Block_copy(aBlock);
-        v14 = [(PXCuratedLibrarySectionedLayout *)self presentedDataSource];
-        v15 = [v14 identifier];
+        presentedDataSource = [(PXCuratedLibrarySectionedLayout *)self presentedDataSource];
+        identifier = [presentedDataSource identifier];
         v28[0] = MEMORY[0x1E69E9820];
         v28[1] = 3221225472;
         v28[2] = __82__PXCuratedLibrarySectionedLayout_enumerateScrollablePagesWithOptions_usingBlock___block_invoke_2;
         v28[3] = &unk_1E7743738;
-        v16 = v14;
-        v35 = v15;
+        v16 = presentedDataSource;
+        v35 = identifier;
         v36 = 2;
         v29 = v16;
         v31 = v47;
@@ -770,7 +770,7 @@ uint64_t __73__PXCuratedLibrarySectionedLayout_enumerateHeroSpritesInRect_usingB
         v17 = v13;
         v30 = v17;
         v34 = v42;
-        [(PXCuratedLibrarySectionedLayout *)self enumerateSectionBoundariesWithOptions:a3 usingBlock:v28];
+        [(PXCuratedLibrarySectionedLayout *)self enumerateSectionBoundariesWithOptions:options usingBlock:v28];
         v17[2](v17);
 
         _Block_object_dispose(v42, 8);
@@ -785,30 +785,30 @@ LABEL_16:
       v26[1] = 3221225472;
       v26[2] = __82__PXCuratedLibrarySectionedLayout_enumerateScrollablePagesWithOptions_usingBlock___block_invoke_3;
       v26[3] = &unk_1E7743760;
-      v27 = v7;
-      [(PXCuratedLibrarySectionedLayout *)self enumerateSectionBoundariesWithOptions:a3 usingBlock:v26];
+      v27 = blockCopy;
+      [(PXCuratedLibrarySectionedLayout *)self enumerateSectionBoundariesWithOptions:options usingBlock:v26];
 
       break;
     case 1:
-      v10 = [(PXGCompositeLayout *)self composition];
-      if (v10)
+      composition = [(PXGCompositeLayout *)self composition];
+      if (composition)
       {
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          v22 = [MEMORY[0x1E696AAA8] currentHandler];
+          currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
           v23 = objc_opt_class();
           v24 = NSStringFromClass(v23);
-          v25 = [v10 px_descriptionForAssertionMessage];
-          [v22 handleFailureInMethod:a2 object:self file:@"PXCuratedLibrarySectionedLayout.m" lineNumber:933 description:{@"%@ should be nil or an instance inheriting from %@, but it is %@", @"self.composition", v24, v25}];
+          px_descriptionForAssertionMessage2 = [composition px_descriptionForAssertionMessage];
+          [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXCuratedLibrarySectionedLayout.m" lineNumber:933 description:{@"%@ should be nil or an instance inheriting from %@, but it is %@", @"self.composition", v24, px_descriptionForAssertionMessage2}];
         }
       }
 
-      if ([v8 allowsPaginatedScrollingInYearsAndMonths])
+      if ([spec allowsPaginatedScrollingInYearsAndMonths])
       {
-        v11 = [v10 presentedNumberOfColumns];
+        presentedNumberOfColumns = [composition presentedNumberOfColumns];
 
-        if (v11 != 1)
+        if (presentedNumberOfColumns != 1)
         {
           break;
         }
@@ -865,18 +865,18 @@ void __82__PXCuratedLibrarySectionedLayout_enumerateScrollablePagesWithOptions_u
   }
 }
 
-- (void)enumerateSectionBoundariesWithOptions:(unint64_t)a3 usingBlock:(id)a4
+- (void)enumerateSectionBoundariesWithOptions:(unint64_t)options usingBlock:(id)block
 {
-  v6 = a4;
-  v7 = [(PXCuratedLibrarySectionedLayout *)self sublayoutDataStore];
-  v8 = [v7 count];
+  blockCopy = block;
+  sublayoutDataStore = [(PXCuratedLibrarySectionedLayout *)self sublayoutDataStore];
+  v8 = [sublayoutDataStore count];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __84__PXCuratedLibrarySectionedLayout_enumerateSectionBoundariesWithOptions_usingBlock___block_invoke;
   v10[3] = &unk_1E77436E8;
-  v11 = v6;
-  v9 = v6;
-  [v7 enumerateSublayoutGeometriesInRange:0 options:v8 usingBlock:{a3, v10}];
+  v11 = blockCopy;
+  v9 = blockCopy;
+  [sublayoutDataStore enumerateSublayoutGeometriesInRange:0 options:v8 usingBlock:{options, v10}];
 }
 
 uint64_t __84__PXCuratedLibrarySectionedLayout_enumerateSectionBoundariesWithOptions_usingBlock___block_invoke(uint64_t a1, __n128 a2, __n128 a3, __n128 a4, __n128 a5, uint64_t a6, void *a7)
@@ -888,21 +888,21 @@ uint64_t __84__PXCuratedLibrarySectionedLayout_enumerateSectionBoundariesWithOpt
   return (*(*(a1 + 32) + 16))(a2, a3, a4, a5);
 }
 
-- (void)enumerateAssetsSectionSublayoutsInRect:(CGRect)a3 usingBlock:(id)a4
+- (void)enumerateAssetsSectionSublayoutsInRect:(CGRect)rect usingBlock:(id)block
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
-  v10 = [(PXCuratedLibrarySectionedLayout *)self sublayoutDataStore];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  blockCopy = block;
+  sublayoutDataStore = [(PXCuratedLibrarySectionedLayout *)self sublayoutDataStore];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __85__PXCuratedLibrarySectionedLayout_enumerateAssetsSectionSublayoutsInRect_usingBlock___block_invoke;
   v12[3] = &unk_1E77436C0;
-  v13 = v9;
-  v11 = v9;
-  [v10 enumerateSublayoutsInRect:v12 usingBlock:{x, y, width, height}];
+  v13 = blockCopy;
+  v11 = blockCopy;
+  [sublayoutDataStore enumerateSublayoutsInRect:v12 usingBlock:{x, y, width, height}];
 }
 
 void __85__PXCuratedLibrarySectionedLayout_enumerateAssetsSectionSublayoutsInRect_usingBlock___block_invoke(uint64_t a1, double a2, double a3, double a4, double a5, uint64_t a6, void *a7)
@@ -915,17 +915,17 @@ void __85__PXCuratedLibrarySectionedLayout_enumerateAssetsSectionSublayoutsInRec
   }
 }
 
-- (void)enumerateAssetsSectionSublayoutsUsingBlock:(id)a3
+- (void)enumerateAssetsSectionSublayoutsUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(PXCuratedLibrarySectionedLayout *)self sublayoutDataStore];
+  blockCopy = block;
+  sublayoutDataStore = [(PXCuratedLibrarySectionedLayout *)self sublayoutDataStore];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __78__PXCuratedLibrarySectionedLayout_enumerateAssetsSectionSublayoutsUsingBlock___block_invoke;
   v7[3] = &unk_1E7743698;
-  v8 = v4;
-  v6 = v4;
-  [v5 enumerateSublayoutsUsingBlock:v7];
+  v8 = blockCopy;
+  v6 = blockCopy;
+  [sublayoutDataStore enumerateSublayoutsUsingBlock:v7];
 }
 
 void __78__PXCuratedLibrarySectionedLayout_enumerateAssetsSectionSublayoutsUsingBlock___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -938,21 +938,21 @@ void __78__PXCuratedLibrarySectionedLayout_enumerateAssetsSectionSublayoutsUsing
   }
 }
 
-- (void)layout:(id)a3 collectIndexesOfChapterHeaderSublayouts:(id)a4 heroSublayouts:(id)a5 inRange:(_NSRange)a6
+- (void)layout:(id)layout collectIndexesOfChapterHeaderSublayouts:(id)sublayouts heroSublayouts:(id)heroSublayouts inRange:(_NSRange)range
 {
-  length = a6.length;
-  location = a6.location;
-  v11 = a3;
-  v30 = a4;
-  v29 = a5;
-  v12 = [(PXCuratedLibrarySectionedLayout *)self viewModel];
-  v13 = [v12 currentDataSource];
+  length = range.length;
+  location = range.location;
+  layoutCopy = layout;
+  sublayoutsCopy = sublayouts;
+  heroSublayoutsCopy = heroSublayouts;
+  viewModel = [(PXCuratedLibrarySectionedLayout *)self viewModel];
+  currentDataSource = [viewModel currentDataSource];
 
-  v14 = [v13 identifier];
+  identifier = [currentDataSource identifier];
   if (location < (location + length))
   {
-    v15 = v14;
-    v28 = v11;
+    v15 = identifier;
+    v28 = layoutCopy;
     v32 = 0;
     v16.f64[0] = NAN;
     v16.f64[1] = NAN;
@@ -964,7 +964,7 @@ void __78__PXCuratedLibrarySectionedLayout_enumerateAssetsSectionSublayoutsUsing
       v33[0] = v15;
       v33[1] = location;
       v34 = v31;
-      v19 = [v13 assetCollectionAtSectionIndexPath:v33];
+      v19 = [currentDataSource assetCollectionAtSectionIndexPath:v33];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -976,28 +976,28 @@ void __78__PXCuratedLibrarySectionedLayout_enumerateAssetsSectionSublayoutsUsing
         v20 = 0;
       }
 
-      v21 = [v20 keyAssetObjectIDForKind];
+      keyAssetObjectIDForKind = [v20 keyAssetObjectIDForKind];
       if (PXCuratedLibraryAssetsCollectionRepresentsChapterHeader(v19, *(&self->super.super.super.isa + v18[987])))
       {
-        [v30 addIndex:location];
+        [sublayoutsCopy addIndex:location];
         v22 = v15;
-        v23 = v13;
-        v24 = self;
+        v23 = currentDataSource;
+        selfCopy = self;
         v25 = v18;
         v26 = v17;
-        v27 = v21;
+        v27 = keyAssetObjectIDForKind;
 
         v32 = v27;
         v17 = v26;
         v18 = v25;
-        self = v24;
-        v13 = v23;
+        self = selfCopy;
+        currentDataSource = v23;
         v15 = v22;
       }
 
-      else if ([v21 isEqual:v32])
+      else if ([keyAssetObjectIDForKind isEqual:v32])
       {
-        [v29 addIndex:location];
+        [heroSublayoutsCopy addIndex:location];
       }
 
       ++location;
@@ -1006,77 +1006,77 @@ void __78__PXCuratedLibrarySectionedLayout_enumerateAssetsSectionSublayoutsUsing
 
     while (length);
 
-    v11 = v28;
+    layoutCopy = v28;
   }
 }
 
-- (BOOL)layout:(id)a3 shouldPreventFaultOutOfSublayout:(id)a4
+- (BOOL)layout:(id)layout shouldPreventFaultOutOfSublayout:(id)sublayout
 {
-  v5 = a4;
+  sublayoutCopy = sublayout;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v18 = 0;
+    hasPointReferences = 0;
     goto LABEL_10;
   }
 
-  v6 = v5;
+  v6 = sublayoutCopy;
   if (self->_dataSourceIdentifierOfCachedSectionsWithSelectedItems == *off_1E7721F68)
   {
-    v7 = [(PXCuratedLibrarySectionedLayout *)self viewModel];
-    v8 = [v7 selectionSnapshot];
+    viewModel = [(PXCuratedLibrarySectionedLayout *)self viewModel];
+    selectionSnapshot = [viewModel selectionSnapshot];
 
-    v9 = [v8 dataSource];
-    self->_dataSourceIdentifierOfCachedSectionsWithSelectedItems = [v9 identifier];
+    dataSource = [selectionSnapshot dataSource];
+    self->_dataSourceIdentifierOfCachedSectionsWithSelectedItems = [dataSource identifier];
 
-    v10 = [v8 selectedIndexPaths];
-    v11 = [v10 sectionsWithItemsForDataSourceIdentifier:self->_dataSourceIdentifierOfCachedSectionsWithSelectedItems];
+    selectedIndexPaths = [selectionSnapshot selectedIndexPaths];
+    v11 = [selectedIndexPaths sectionsWithItemsForDataSourceIdentifier:self->_dataSourceIdentifierOfCachedSectionsWithSelectedItems];
     cachedSectionsWithSelectedItems = self->_cachedSectionsWithSelectedItems;
     self->_cachedSectionsWithSelectedItems = v11;
   }
 
-  v13 = [v6 dataSource];
-  v14 = [v13 identifier];
+  dataSource2 = [v6 dataSource];
+  identifier = [dataSource2 identifier];
   dataSourceIdentifierOfCachedSectionsWithSelectedItems = self->_dataSourceIdentifierOfCachedSectionsWithSelectedItems;
 
-  if (v14 != dataSourceIdentifierOfCachedSectionsWithSelectedItems)
+  if (identifier != dataSourceIdentifierOfCachedSectionsWithSelectedItems)
   {
     goto LABEL_12;
   }
 
-  v16 = [v6 section];
+  section = [v6 section];
   v17 = self->_cachedSectionsWithSelectedItems;
-  if (![(NSIndexSet *)v17 containsIndex:v16]&& ![(NSIndexSet *)v17 containsIndex:v16 - 1]&& ![(NSIndexSet *)v17 containsIndex:v16 + 1])
+  if (![(NSIndexSet *)v17 containsIndex:section]&& ![(NSIndexSet *)v17 containsIndex:section - 1]&& ![(NSIndexSet *)v17 containsIndex:section + 1])
   {
 
 LABEL_12:
-    v18 = [v6 hasPointReferences];
+    hasPointReferences = [v6 hasPointReferences];
     goto LABEL_9;
   }
 
-  v18 = 1;
+  hasPointReferences = 1;
 LABEL_9:
 
 LABEL_10:
-  return v18;
+  return hasPointReferences;
 }
 
-- (void)_configureSectionLayout:(id)a3 atIndex:(int64_t)a4
+- (void)_configureSectionLayout:(id)layout atIndex:(int64_t)index
 {
-  v16 = a3;
-  v6 = [(PXCuratedLibrarySectionedLayout *)self viewModel];
+  layoutCopy = layout;
+  viewModel = [(PXCuratedLibrarySectionedLayout *)self viewModel];
   [(PXCuratedLibrarySectionedLayout *)self defaultInterlayoutSpacing];
-  [v16 setIntersectionSpacing:?];
-  [v16 setIsSelecting:{objc_msgSend(v6, "isSelecting")}];
-  v7 = [v6 draggedAssetReferences];
-  [v16 setDraggedAssetReferences:v7];
+  [layoutCopy setIntersectionSpacing:?];
+  [layoutCopy setIsSelecting:{objc_msgSend(viewModel, "isSelecting")}];
+  draggedAssetReferences = [viewModel draggedAssetReferences];
+  [layoutCopy setDraggedAssetReferences:draggedAssetReferences];
 
-  v8 = [v6 allowedActions];
-  [v16 setCanStartSelecting:{objc_msgSend(v8, "containsObject:", @"PXCuratedLibraryActionEnterSelectMode"}];
+  allowedActions = [viewModel allowedActions];
+  [layoutCopy setCanStartSelecting:{objc_msgSend(allowedActions, "containsObject:", @"PXCuratedLibraryActionEnterSelectMode"}];
 
-  if ([v6 zoomLevel] == 4)
+  if ([viewModel zoomLevel] == 4)
   {
-    v9 = self->_accumulatedSectionItems[a4];
+    v9 = self->_accumulatedSectionItems[index];
   }
 
   else
@@ -1084,52 +1084,52 @@ LABEL_10:
     v9 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  [v16 setNumberOfPrecedingAssets:v9];
-  v10 = [v16 dataSource];
-  v11 = [v10 identifier];
-  v12 = [v6 selectionSnapshot];
-  v13 = [v12 dataSource];
-  v14 = [v13 identifier];
+  [layoutCopy setNumberOfPrecedingAssets:v9];
+  dataSource = [layoutCopy dataSource];
+  identifier = [dataSource identifier];
+  selectionSnapshot = [viewModel selectionSnapshot];
+  dataSource2 = [selectionSnapshot dataSource];
+  identifier2 = [dataSource2 identifier];
 
-  if (v11 == v14)
+  if (identifier == identifier2)
   {
-    v15 = [v6 selectionSnapshot];
+    selectionSnapshot2 = [viewModel selectionSnapshot];
   }
 
   else
   {
-    v15 = 0;
+    selectionSnapshot2 = 0;
   }
 
-  [v16 setSelectionSnapshot:v15];
+  [layoutCopy setSelectionSnapshot:selectionSnapshot2];
 }
 
-- (id)layout:(id)a3 createSublayoutAtIndex:(int64_t)a4
+- (id)layout:(id)layout createSublayoutAtIndex:(int64_t)index
 {
-  v6 = [(PXCuratedLibrarySectionedLayout *)self viewModel];
-  v7 = [v6 currentDataSource];
-  v8 = [v7 numberOfItemsInSection:a4];
+  viewModel = [(PXCuratedLibrarySectionedLayout *)self viewModel];
+  currentDataSource = [viewModel currentDataSource];
+  v8 = [currentDataSource numberOfItemsInSection:index];
 
   if (!v8)
   {
-    v9 = [v6 assetsDataSourceManager];
+    assetsDataSourceManager = [viewModel assetsDataSourceManager];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __65__PXCuratedLibrarySectionedLayout_layout_createSublayoutAtIndex___block_invoke;
     v18[3] = &__block_descriptor_40_e58_v16__0___PXCuratedLibraryMutableAssetsDataSourceManager__8l;
-    v18[4] = a4;
-    [v9 performChanges:v18];
+    v18[4] = index;
+    [assetsDataSourceManager performChanges:v18];
   }
 
   v10 = [off_1E77214C0 alloc];
   currentDataSource = self->_currentDataSource;
-  v12 = [v6 videoPlaybackController];
+  videoPlaybackController = [viewModel videoPlaybackController];
   currentZoomLevel = self->_currentZoomLevel;
-  v14 = [(PXCuratedLibrarySectionedLayout *)self spec];
-  v15 = [v14 sectionLayoutSpec];
-  v16 = [v10 initWithSection:a4 dataSource:currentDataSource loadingStatusManager:0 assetImportStatusManager:0 inlinePlaybackController:v12 zoomLevel:currentZoomLevel spec:v15];
+  spec = [(PXCuratedLibrarySectionedLayout *)self spec];
+  sectionLayoutSpec = [spec sectionLayoutSpec];
+  v16 = [v10 initWithSection:index dataSource:currentDataSource loadingStatusManager:0 assetImportStatusManager:0 inlinePlaybackController:videoPlaybackController zoomLevel:currentZoomLevel spec:sectionLayoutSpec];
 
-  [(PXCuratedLibrarySectionedLayout *)self _configureSectionLayout:v16 atIndex:a4];
+  [(PXCuratedLibrarySectionedLayout *)self _configureSectionLayout:v16 atIndex:index];
 
   return v16;
 }
@@ -1143,23 +1143,23 @@ void __65__PXCuratedLibrarySectionedLayout_layout_createSublayoutAtIndex___block
   [v4 forceAccurateSectionsIfNeeded:v5];
 }
 
-- (CGSize)layout:(id)a3 estimatedContentSizeForSublayoutAtIndex:(int64_t)a4 referenceSize:(CGSize)a5
+- (CGSize)layout:(id)layout estimatedContentSizeForSublayoutAtIndex:(int64_t)index referenceSize:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
+  height = size.height;
+  width = size.width;
   currentDataSource = self->_currentDataSource;
   v23[0] = [(PXAssetsDataSource *)currentDataSource identifier];
-  v23[1] = a4;
+  v23[1] = index;
   v10.f64[0] = NAN;
   v10.f64[1] = NAN;
   v24 = vnegq_f64(v10);
   v11 = [(PXAssetsDataSource *)currentDataSource assetCollectionAtSectionIndexPath:v23];
-  v12 = [v11 estimatedAssetCount];
+  estimatedAssetCount = [v11 estimatedAssetCount];
   v13 = [(PXAssetsDataSource *)self->_currentDataSource hasCurationForAssetCollection:v11];
   currentZoomLevel = self->_currentZoomLevel;
-  v15 = [(PXCuratedLibrarySectionedLayout *)self spec];
-  v16 = [v15 sectionLayoutSpec];
-  [off_1E77214C0 estimatedSizeWithReferenceSize:v11 assetCollection:v12 numberOfAssets:v13 isCurated:currentZoomLevel zoomLevel:v16 spec:{width, height}];
+  spec = [(PXCuratedLibrarySectionedLayout *)self spec];
+  sectionLayoutSpec = [spec sectionLayoutSpec];
+  [off_1E77214C0 estimatedSizeWithReferenceSize:v11 assetCollection:estimatedAssetCount numberOfAssets:v13 isCurated:currentZoomLevel zoomLevel:sectionLayoutSpec spec:{width, height}];
   v18 = v17;
   v20 = v19;
 
@@ -1170,16 +1170,16 @@ void __65__PXCuratedLibrarySectionedLayout_layout_createSublayoutAtIndex___block
   return result;
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
-  v8 = a3;
-  if (PXCuratedLibraryViewModelObserverContext_200180 != a5)
+  changeCopy = change;
+  observableCopy = observable;
+  if (PXCuratedLibraryViewModelObserverContext_200180 != context)
   {
     goto LABEL_44;
   }
 
-  if ((v6 & 0x10) != 0)
+  if ((changeCopy & 0x10) != 0)
   {
     if (self->_isUpdatingSublayouts)
     {
@@ -1219,9 +1219,9 @@ LABEL_11:
 
     if ((self->_updateFlags.updated & 2) != 0)
     {
-      v26 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v27 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXCuratedLibrarySectionedLayout observable:didChange:context:]"];
-      [v26 handleFailureInFunction:v27 file:@"PXCuratedLibrarySectionedLayout.m" lineNumber:749 description:{@"invalidating %lu after it already has been updated", 2}];
+      [currentHandler handleFailureInFunction:v27 file:@"PXCuratedLibrarySectionedLayout.m" lineNumber:749 description:{@"invalidating %lu after it already has been updated", 2}];
       goto LABEL_60;
     }
 
@@ -1229,19 +1229,19 @@ LABEL_11:
   }
 
 LABEL_13:
-  if ((v6 & 4) == 0)
+  if ((changeCopy & 4) == 0)
   {
     goto LABEL_21;
   }
 
-  v11 = [(PXCuratedLibrarySectionedLayout *)self viewModel];
-  v12 = [v11 zoomLevel];
+  viewModel = [(PXCuratedLibrarySectionedLayout *)self viewModel];
+  zoomLevel = [viewModel zoomLevel];
 
   v28[0] = MEMORY[0x1E69E9820];
   v28[1] = 3221225472;
   v28[2] = __64__PXCuratedLibrarySectionedLayout_observable_didChange_context___block_invoke;
   v28[3] = &__block_descriptor_40_e38_v32__0q8__PXAssetsSectionLayout_16_B24l;
-  v28[4] = v12;
+  v28[4] = zoomLevel;
   [(PXCuratedLibrarySectionedLayout *)self enumerateAssetsSectionSublayoutsUsingBlock:v28];
   v13 = &self->_updateFlags;
   v14 = self->_updateFlags.needsUpdate;
@@ -1267,9 +1267,9 @@ LABEL_13:
 LABEL_18:
     if ((self->_updateFlags.updated & 4) != 0)
     {
-      v26 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v27 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXCuratedLibrarySectionedLayout observable:didChange:context:]"];
-      [v26 handleFailureInFunction:v27 file:@"PXCuratedLibrarySectionedLayout.m" lineNumber:765 description:{@"invalidating %lu after it already has been updated", 4}];
+      [currentHandler handleFailureInFunction:v27 file:@"PXCuratedLibrarySectionedLayout.m" lineNumber:765 description:{@"invalidating %lu after it already has been updated", 4}];
       goto LABEL_60;
     }
   }
@@ -1278,7 +1278,7 @@ LABEL_18:
 LABEL_20:
   [(PXCuratedLibrarySectionedLayout *)self setNeedsUpdate];
 LABEL_21:
-  if ((*&v6 & 0x210009) == 0)
+  if ((*&changeCopy & 0x210009) == 0)
   {
     goto LABEL_28;
   }
@@ -1297,9 +1297,9 @@ LABEL_27:
 LABEL_26:
     if ((self->_updateFlags.updated & 8) != 0)
     {
-      v26 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v27 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXCuratedLibrarySectionedLayout observable:didChange:context:]"];
-      [v26 handleFailureInFunction:v27 file:@"PXCuratedLibrarySectionedLayout.m" lineNumber:777 description:{@"invalidating %lu after it already has been updated", 8}];
+      [currentHandler handleFailureInFunction:v27 file:@"PXCuratedLibrarySectionedLayout.m" lineNumber:777 description:{@"invalidating %lu after it already has been updated", 8}];
       goto LABEL_60;
     }
 
@@ -1319,7 +1319,7 @@ LABEL_26:
   }
 
 LABEL_28:
-  if ((v6 & 0x200) == 0)
+  if ((changeCopy & 0x200) == 0)
   {
     goto LABEL_35;
   }
@@ -1338,9 +1338,9 @@ LABEL_34:
 LABEL_33:
     if ((self->_updateFlags.updated & 0x10) != 0)
     {
-      v26 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v27 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXCuratedLibrarySectionedLayout observable:didChange:context:]"];
-      [v26 handleFailureInFunction:v27 file:@"PXCuratedLibrarySectionedLayout.m" lineNumber:781 description:{@"invalidating %lu after it already has been updated", 16}];
+      [currentHandler handleFailureInFunction:v27 file:@"PXCuratedLibrarySectionedLayout.m" lineNumber:781 description:{@"invalidating %lu after it already has been updated", 16}];
       goto LABEL_60;
     }
 
@@ -1360,12 +1360,12 @@ LABEL_33:
   }
 
 LABEL_35:
-  if ((v6 & 8) != 0)
+  if ((changeCopy & 8) != 0)
   {
     self->_dataSourceIdentifierOfCachedSectionsWithSelectedItems = *off_1E7721F68;
   }
 
-  if ((v6 & 0x800) != 0)
+  if ((changeCopy & 0x800) != 0)
   {
     v19 = &self->_updateFlags;
     v20 = self->_updateFlags.needsUpdate;
@@ -1389,9 +1389,9 @@ LABEL_43:
         goto LABEL_44;
       }
 
-      v26 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v27 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXCuratedLibrarySectionedLayout observable:didChange:context:]"];
-      [v26 handleFailureInFunction:v27 file:@"PXCuratedLibrarySectionedLayout.m" lineNumber:789 description:{@"invalidating %lu after it already has been updated", 64}];
+      [currentHandler handleFailureInFunction:v27 file:@"PXCuratedLibrarySectionedLayout.m" lineNumber:789 description:{@"invalidating %lu after it already has been updated", 64}];
 LABEL_60:
 
       abort();
@@ -1408,13 +1408,13 @@ LABEL_60:
 LABEL_44:
 }
 
-- (void)enumerateAssetsInRect:(CGRect)a3 enumerator:(id)a4
+- (void)enumerateAssetsInRect:(CGRect)rect enumerator:(id)enumerator
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  enumeratorCopy = enumerator;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __68__PXCuratedLibrarySectionedLayout_enumerateAssetsInRect_enumerator___block_invoke;
@@ -1424,8 +1424,8 @@ LABEL_44:
   v15 = width;
   v16 = height;
   v11[4] = self;
-  v12 = v9;
-  v10 = v9;
+  v12 = enumeratorCopy;
+  v10 = enumeratorCopy;
   [(PXCuratedLibrarySectionedLayout *)self enumerateAssetsSectionSublayoutsInRect:v11 usingBlock:x, y, width, height];
 }
 
@@ -1459,13 +1459,13 @@ void __68__PXCuratedLibrarySectionedLayout_enumerateAssetsInRect_enumerator___bl
   }
 }
 
-- (void)enumerateAssetCollectionsInRect:(CGRect)a3 enumerator:(id)a4
+- (void)enumerateAssetCollectionsInRect:(CGRect)rect enumerator:(id)enumerator
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  enumeratorCopy = enumerator;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __78__PXCuratedLibrarySectionedLayout_enumerateAssetCollectionsInRect_enumerator___block_invoke;
@@ -1475,8 +1475,8 @@ void __68__PXCuratedLibrarySectionedLayout_enumerateAssetsInRect_enumerator___bl
   v15 = width;
   v16 = height;
   v11[4] = self;
-  v12 = v9;
-  v10 = v9;
+  v12 = enumeratorCopy;
+  v10 = enumeratorCopy;
   [(PXCuratedLibrarySectionedLayout *)self enumerateAssetsSectionSublayoutsInRect:v11 usingBlock:x, y, width, height];
 }
 
@@ -1510,12 +1510,12 @@ void __78__PXCuratedLibrarySectionedLayout_enumerateAssetCollectionsInRect_enume
   }
 }
 
-- (id)dateIntervalFutureForContentInRect:(CGRect)a3 type:(unint64_t)a4
+- (id)dateIntervalFutureForContentInRect:(CGRect)rect type:(unint64_t)type
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
@@ -1626,9 +1626,9 @@ id __75__PXCuratedLibrarySectionedLayout_dateIntervalFutureForContentInRect_type
   return v11;
 }
 
-- (void)setDominantHeroPreferences:(id)a3
+- (void)setDominantHeroPreferences:(id)preferences
 {
-  v4 = [a3 mutableCopy];
+  v4 = [preferences mutableCopy];
   zoomLevelsPreferringDominantHeros = self->_zoomLevelsPreferringDominantHeros;
   self->_zoomLevelsPreferringDominantHeros = v4;
 }
@@ -1640,10 +1640,10 @@ id __75__PXCuratedLibrarySectionedLayout_dateIntervalFutureForContentInRect_type
   return v2;
 }
 
-- (void)setPrefersDominantHero:(BOOL)a3 forZoomLevel:(int64_t)a4
+- (void)setPrefersDominantHero:(BOOL)hero forZoomLevel:(int64_t)level
 {
   zoomLevelsPreferringDominantHeros = self->_zoomLevelsPreferringDominantHeros;
-  if (a3)
+  if (hero)
   {
     if (!zoomLevelsPreferringDominantHeros)
     {
@@ -1654,21 +1654,21 @@ id __75__PXCuratedLibrarySectionedLayout_dateIntervalFutureForContentInRect_type
       zoomLevelsPreferringDominantHeros = self->_zoomLevelsPreferringDominantHeros;
     }
 
-    [(NSMutableIndexSet *)zoomLevelsPreferringDominantHeros addIndex:a4];
+    [(NSMutableIndexSet *)zoomLevelsPreferringDominantHeros addIndex:level];
   }
 
   else
   {
 
-    [(NSMutableIndexSet *)zoomLevelsPreferringDominantHeros removeIndex:a4];
+    [(NSMutableIndexSet *)zoomLevelsPreferringDominantHeros removeIndex:level];
   }
 }
 
-- (void)setSafeAreaInsets:(UIEdgeInsets)a3
+- (void)setSafeAreaInsets:(UIEdgeInsets)insets
 {
   v9.receiver = self;
   v9.super_class = PXCuratedLibrarySectionedLayout;
-  [(PXCuratedLibrarySectionedLayout *)&v9 setSafeAreaInsets:a3.top, a3.left, a3.bottom, a3.right];
+  [(PXCuratedLibrarySectionedLayout *)&v9 setSafeAreaInsets:insets.top, insets.left, insets.bottom, insets.right];
   p_updateFlags = &self->_updateFlags;
   needsUpdate = self->_updateFlags.needsUpdate;
   if (needsUpdate)
@@ -1683,9 +1683,9 @@ LABEL_6:
 LABEL_5:
     if ((self->_updateFlags.updated & 4) != 0)
     {
-      v7 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v8 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXCuratedLibrarySectionedLayout setSafeAreaInsets:]"];
-      [v7 handleFailureInFunction:v8 file:@"PXCuratedLibrarySectionedLayout.m" lineNumber:653 description:{@"invalidating %lu after it already has been updated", 4}];
+      [currentHandler handleFailureInFunction:v8 file:@"PXCuratedLibrarySectionedLayout.m" lineNumber:653 description:{@"invalidating %lu after it already has been updated", 4}];
 
       abort();
     }
@@ -1706,14 +1706,14 @@ LABEL_5:
   }
 }
 
-- (void)setLateralMargin:(double)a3
+- (void)setLateralMargin:(double)margin
 {
-  if (self->_lateralMargin == a3)
+  if (self->_lateralMargin == margin)
   {
     return;
   }
 
-  self->_lateralMargin = a3;
+  self->_lateralMargin = margin;
   p_updateFlags = &self->_updateFlags;
   needsUpdate = self->_updateFlags.needsUpdate;
   if (needsUpdate)
@@ -1728,9 +1728,9 @@ LABEL_8:
 LABEL_7:
     if ((self->_updateFlags.updated & 4) != 0)
     {
-      v7 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v8 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXCuratedLibrarySectionedLayout setLateralMargin:]"];
-      [v7 handleFailureInFunction:v8 file:@"PXCuratedLibrarySectionedLayout.m" lineNumber:648 description:{@"invalidating %lu after it already has been updated", 4}];
+      [currentHandler handleFailureInFunction:v8 file:@"PXCuratedLibrarySectionedLayout.m" lineNumber:648 description:{@"invalidating %lu after it already has been updated", 4}];
 
       abort();
     }
@@ -1752,13 +1752,13 @@ LABEL_7:
   }
 }
 
-- (void)setSpec:(id)a3
+- (void)setSpec:(id)spec
 {
-  v5 = a3;
-  if (self->_spec != v5)
+  specCopy = spec;
+  if (self->_spec != specCopy)
   {
-    v11 = v5;
-    objc_storeStrong(&self->_spec, a3);
+    v11 = specCopy;
+    objc_storeStrong(&self->_spec, spec);
     p_updateFlags = &self->_updateFlags;
     needsUpdate = self->_updateFlags.needsUpdate;
     if (needsUpdate)
@@ -1775,7 +1775,7 @@ LABEL_10:
     {
       willPerformUpdate = self->_updateFlags.willPerformUpdate;
       p_updateFlags->needsUpdate = 5;
-      v5 = v11;
+      specCopy = v11;
       if (willPerformUpdate)
       {
         goto LABEL_2;
@@ -1783,15 +1783,15 @@ LABEL_10:
 
       [(PXCuratedLibrarySectionedLayout *)self setNeedsUpdate];
 LABEL_11:
-      v5 = v11;
+      specCopy = v11;
       goto LABEL_2;
     }
 
     if ((self->_updateFlags.updated & 5) != 0)
     {
-      v9 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v10 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXCuratedLibrarySectionedLayout setSpec:]"];
-      [v9 handleFailureInFunction:v10 file:@"PXCuratedLibrarySectionedLayout.m" lineNumber:640 description:{@"invalidating %lu after it already has been updated", 5}];
+      [currentHandler handleFailureInFunction:v10 file:@"PXCuratedLibrarySectionedLayout.m" lineNumber:640 description:{@"invalidating %lu after it already has been updated", 5}];
 
       abort();
     }
@@ -1802,30 +1802,30 @@ LABEL_11:
 LABEL_2:
 }
 
-- (int64_t)sublayoutIndexForObjectReference:(id)a3 options:(unint64_t)a4 updatedObjectReference:(id *)a5
+- (int64_t)sublayoutIndexForObjectReference:(id)reference options:(unint64_t)options updatedObjectReference:(id *)objectReference
 {
   v22 = *MEMORY[0x1E69E9840];
-  v9 = a3;
+  referenceCopy = reference;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = [(PXCuratedLibrarySectionedLayout *)self presentedDataSource];
-    if (a4 & 2) != 0 && (objc_opt_class(), (objc_opt_isKindOfClass()))
+    presentedDataSource = [(PXCuratedLibrarySectionedLayout *)self presentedDataSource];
+    if (options & 2) != 0 && (objc_opt_class(), (objc_opt_isKindOfClass()))
     {
-      v11 = [(PXCuratedLibrarySectionedLayout *)self viewModel];
-      v12 = -[PXCuratedLibrarySectionedLayout _targetAssetCollectionReferenceInZoomLevel:forTransitionFromAssetCollectionReference:](self, "_targetAssetCollectionReferenceInZoomLevel:forTransitionFromAssetCollectionReference:", [v11 zoomLevel], v9);
+      viewModel = [(PXCuratedLibrarySectionedLayout *)self viewModel];
+      v12 = -[PXCuratedLibrarySectionedLayout _targetAssetCollectionReferenceInZoomLevel:forTransitionFromAssetCollectionReference:](self, "_targetAssetCollectionReferenceInZoomLevel:forTransitionFromAssetCollectionReference:", [viewModel zoomLevel], referenceCopy);
     }
 
     else
     {
-      if (a4)
+      if (options)
       {
-        [v10 objectReferenceNearestToObjectReference:v9];
+        [presentedDataSource objectReferenceNearestToObjectReference:referenceCopy];
       }
 
       else
       {
-        [v10 objectReferenceForObjectReference:v9];
+        [presentedDataSource objectReferenceForObjectReference:referenceCopy];
       }
       v12 = ;
     }
@@ -1853,18 +1853,18 @@ LABEL_2:
       v13 = *&buf[8];
       if (*&buf[8] == 0x7FFFFFFFFFFFFFFFLL || v21 != 0x7FFFFFFFFFFFFFFFLL)
       {
-        v16 = v12;
+        assetCollectionReference = v12;
       }
 
       else
       {
         v15 = [(PXCuratedLibrarySectionedLayout *)self sublayoutAtIndex:*&buf[8] loadIfNeeded:0];
-        v16 = [v15 assetCollectionReference];
+        assetCollectionReference = [v15 assetCollectionReference];
 
-        v9 = v15;
+        referenceCopy = v15;
       }
 
-      v9 = v16;
+      referenceCopy = assetCollectionReference;
     }
   }
 
@@ -1876,18 +1876,18 @@ LABEL_2:
       PXAssertGetLog();
     }
 
-    v10 = [v9 decoratedSpriteReference];
-    v13 = [(PXCuratedLibrarySectionedLayout *)self sublayoutIndexForSpriteReference:v10 options:a4];
+    presentedDataSource = [referenceCopy decoratedSpriteReference];
+    v13 = [(PXCuratedLibrarySectionedLayout *)self sublayoutIndexForSpriteReference:presentedDataSource options:options];
   }
 
   if (v13 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v17 = PLUIGetLog();
-    if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
+    currentHandler = PLUIGetLog();
+    if (os_log_type_enabled(currentHandler, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      *&buf[4] = v9;
-      _os_log_impl(&dword_1A3C1C000, v17, OS_LOG_TYPE_DEBUG, "library layout couldn't find a match for %@", buf, 0xCu);
+      *&buf[4] = referenceCopy;
+      _os_log_impl(&dword_1A3C1C000, currentHandler, OS_LOG_TYPE_DEBUG, "library layout couldn't find a match for %@", buf, 0xCu);
     }
 
     v13 = 0x7FFFFFFFFFFFFFFFLL;
@@ -1900,13 +1900,13 @@ LABEL_2:
       goto LABEL_29;
     }
 
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"PXCuratedLibrarySectionedLayout.m" lineNumber:599 description:@"sublayoutIndex %li out of bounds (0..%li) for object reference %@", v13, [(PXCuratedLibrarySectionedLayout *)self numberOfSublayouts]- 1, v9];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCuratedLibrarySectionedLayout.m" lineNumber:599 description:@"sublayoutIndex %li out of bounds (0..%li) for object reference %@", v13, [(PXCuratedLibrarySectionedLayout *)self numberOfSublayouts]- 1, referenceCopy];
   }
 
 LABEL_29:
-  v18 = v9;
-  *a5 = v9;
+  v18 = referenceCopy;
+  *objectReference = referenceCopy;
 
   return v13;
 }
@@ -1919,57 +1919,57 @@ LABEL_29:
   [(PXCuratedLibrarySectionedLayout *)self setLastHitSpriteReference:0];
 }
 
-- (void)setLastHitSpriteReference:(id)a3
+- (void)setLastHitSpriteReference:(id)reference
 {
-  v5 = a3;
-  if (self->_lastHitSpriteReference != v5)
+  referenceCopy = reference;
+  if (self->_lastHitSpriteReference != referenceCopy)
   {
-    v6 = v5;
-    if (v5)
+    v6 = referenceCopy;
+    if (referenceCopy)
     {
       [(PXCuratedLibrarySectionedLayout *)self clearLastVisibleAreaAnchoringInformation];
     }
 
-    objc_storeStrong(&self->_lastHitSpriteReference, a3);
-    v5 = v6;
+    objc_storeStrong(&self->_lastHitSpriteReference, reference);
+    referenceCopy = v6;
   }
 }
 
-- (void)enumerateVisibleAnchoringLayoutsUsingBlock:(id)a3
+- (void)enumerateVisibleAnchoringLayoutsUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(PXCuratedLibrarySectionedLayout *)self dominantSectionLayout];
-  if (v5)
+  blockCopy = block;
+  dominantSectionLayout = [(PXCuratedLibrarySectionedLayout *)self dominantSectionLayout];
+  if (dominantSectionLayout)
   {
     v7 = 0;
-    v4[2](v4, v5, &v7);
+    blockCopy[2](blockCopy, dominantSectionLayout, &v7);
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = PXCuratedLibrarySectionedLayout;
-    [(PXCuratedLibrarySectionedLayout *)&v6 enumerateVisibleAnchoringLayoutsUsingBlock:v4];
+    [(PXCuratedLibrarySectionedLayout *)&v6 enumerateVisibleAnchoringLayoutsUsingBlock:blockCopy];
   }
 }
 
 - (void)_anchorVisibleArea
 {
-  v4 = [(PXCuratedLibrarySectionedLayout *)self rootLayout];
-  v2 = [v4 createAnchorForVisibleArea];
-  v3 = [v2 autoInvalidate];
+  rootLayout = [(PXCuratedLibrarySectionedLayout *)self rootLayout];
+  createAnchorForVisibleArea = [rootLayout createAnchorForVisibleArea];
+  autoInvalidate = [createAnchorForVisibleArea autoInvalidate];
 }
 
 - (void)_updatePreheating
 {
-  v3 = [off_1E77219A8 sharedInstance];
-  if ([v3 preheatThumbnailsWhenIdle])
+  sharedInstance = [off_1E77219A8 sharedInstance];
+  if ([sharedInstance preheatThumbnailsWhenIdle])
   {
-    v4 = [(PXCuratedLibrarySectionedLayout *)self mediaProvider];
-    v5 = [(PXCuratedLibrarySectionedLayout *)self viewModel];
-    v6 = [v5 scrollRegime];
+    mediaProvider = [(PXCuratedLibrarySectionedLayout *)self mediaProvider];
+    viewModel = [(PXCuratedLibrarySectionedLayout *)self viewModel];
+    scrollRegime = [viewModel scrollRegime];
 
-    if (!v6)
+    if (!scrollRegime)
     {
       v28 = 0;
       v29 = &v28;
@@ -1987,13 +1987,13 @@ LABEL_29:
       v9 = v29[3];
       if (v9 != 0x7FFFFFFFFFFFFFFFLL && v9 < [(PXAssetsDataSource *)v7 numberOfSections])
       {
-        v10 = [(PXAssetsDataSource *)v8 numberOfSections];
+        numberOfSections = [(PXAssetsDataSource *)v8 numberOfSections];
         v11 = v29[3];
         if (v11 == 0x7FFFFFFFFFFFFFFFLL)
         {
-          v22 = [MEMORY[0x1E696AAA8] currentHandler];
+          currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
           v23 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"NSRange PXRangeWithMidLocationAndPadding(NSInteger, NSInteger)"}];
-          [v22 handleFailureInFunction:v23 file:@"NSRange+PhotosUIFoundation.h" lineNumber:53 description:{@"Invalid parameter not satisfying: %@", @"midLocation != NSNotFound"}];
+          [currentHandler handleFailureInFunction:v23 file:@"NSRange+PhotosUIFoundation.h" lineNumber:53 description:{@"Invalid parameter not satisfying: %@", @"midLocation != NSNotFound"}];
         }
 
         v12 = 100;
@@ -2005,13 +2005,13 @@ LABEL_29:
         v32.location = v12 - 100;
         v32.length = v11 - v12 + 201;
         v33.location = 0;
-        v33.length = v10;
+        v33.length = numberOfSections;
         v13 = NSIntersectionRange(v32, v33);
         length = v13.length;
         if (v13.length)
         {
           location = v13.location;
-          v16 = [(PXAssetsDataSource *)v8 identifier];
+          identifier = [(PXAssetsDataSource *)v8 identifier];
           v17 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v13.length];
           if (location < location + v13.length)
           {
@@ -2021,7 +2021,7 @@ LABEL_29:
             v24 = vnegq_f64(v19);
             do
             {
-              v25[0] = v16;
+              v25[0] = identifier;
               v25[1] = location;
               v26 = v24;
               v20 = [(PXAssetsDataSource *)v8 assetsInSectionIndexPath:v25];
@@ -2050,8 +2050,8 @@ LABEL_29:
       _Block_object_dispose(&v28, 8);
     }
 
-    [v4 masterThumbnailSize];
-    [v4 preheatThumbnailDataForAssets:0 origin:0 targetSize:v21 + 1.0];
+    [mediaProvider masterThumbnailSize];
+    [mediaProvider preheatThumbnailDataForAssets:0 origin:0 targetSize:v21 + 1.0];
   }
 }
 
@@ -2064,18 +2064,18 @@ uint64_t __52__PXCuratedLibrarySectionedLayout__updatePreheating__block_invoke(u
 
 - (void)_updateSublayoutsForSkimming
 {
-  v3 = [(PXCuratedLibrarySectionedLayout *)self viewModel];
-  v4 = [v3 skimmingInfo];
-  if ([v4 childCollectionsZoomLevel])
+  viewModel = [(PXCuratedLibrarySectionedLayout *)self viewModel];
+  skimmingInfo = [viewModel skimmingInfo];
+  if ([skimmingInfo childCollectionsZoomLevel])
   {
-    v5 = [v4 parentAssetCollection];
-    if (v5 && (([v4 touchInteractionStarted] & 1) != 0 || objc_msgSend(v4, "slideshowStarted")))
+    parentAssetCollection = [skimmingInfo parentAssetCollection];
+    if (parentAssetCollection && (([skimmingInfo touchInteractionStarted] & 1) != 0 || objc_msgSend(skimmingInfo, "slideshowStarted")))
     {
       v6 = [off_1E7721488 alloc];
       v7 = *(off_1E7722228 + 1);
       v20[0] = *off_1E7722228;
       v20[1] = v7;
-      v8 = [v6 initWithSectionObject:v5 itemObject:0 subitemObject:0 indexPath:v20];
+      v8 = [v6 initWithSectionObject:parentAssetCollection itemObject:0 subitemObject:0 indexPath:v20];
       presentedDataSource = self->_presentedDataSource;
       if (presentedDataSource)
       {
@@ -2106,12 +2106,12 @@ uint64_t __52__PXCuratedLibrarySectionedLayout__updatePreheating__block_invoke(u
   v13[1] = 3221225472;
   v13[2] = __63__PXCuratedLibrarySectionedLayout__updateSublayoutsForSkimming__block_invoke;
   v13[3] = &unk_1E77435A8;
-  v14 = v4;
-  v15 = v3;
-  v16 = self;
+  v14 = skimmingInfo;
+  v15 = viewModel;
+  selfCopy = self;
   v17 = v10;
-  v11 = v3;
-  v12 = v4;
+  v11 = viewModel;
+  v12 = skimmingInfo;
   [(PXCuratedLibrarySectionedLayout *)self enumerateAssetsSectionSublayoutsUsingBlock:v13];
 }
 
@@ -2222,9 +2222,9 @@ uint64_t __63__PXCuratedLibrarySectionedLayout__updateSublayoutsForSkimming__blo
   return result;
 }
 
-- (void)_prepareAccumulatedSectionItemsBufferForSections:(int64_t)a3
+- (void)_prepareAccumulatedSectionItemsBufferForSections:(int64_t)sections
 {
-  if (self->_accumulatedSectionItemsCount < a3)
+  if (self->_accumulatedSectionItemsCount < sections)
   {
     _PXGArrayResize();
   }
@@ -2232,44 +2232,44 @@ uint64_t __63__PXCuratedLibrarySectionedLayout__updateSublayoutsForSkimming__blo
 
 - (void)_updateSublayoutsDataSource
 {
-  v4 = [(PXCuratedLibrarySectionedLayout *)self viewModel];
-  v5 = [v4 assetsDataSourceManager];
+  viewModel = [(PXCuratedLibrarySectionedLayout *)self viewModel];
+  assetsDataSourceManager = [viewModel assetsDataSourceManager];
 
   v6 = self->_currentDataSource;
-  v7 = [v5 dataSource];
-  if (v6 != v7)
+  dataSource = [assetsDataSourceManager dataSource];
+  if (v6 != dataSource)
   {
-    v8 = [v5 zoomLevel];
-    if (v8 != 4)
+    zoomLevel = [assetsDataSourceManager zoomLevel];
+    if (zoomLevel != 4)
     {
-      v9 = v8;
-      v10 = [(PXCuratedLibrarySectionedLayout *)self sublayoutDataStore];
-      v11 = [(PXAssetsDataSource *)v6 numberOfSections];
-      v49 = v10;
-      if (v11 != [v10 count])
+      v9 = zoomLevel;
+      sublayoutDataStore = [(PXCuratedLibrarySectionedLayout *)self sublayoutDataStore];
+      numberOfSections = [(PXAssetsDataSource *)v6 numberOfSections];
+      v49 = sublayoutDataStore;
+      if (numberOfSections != [sublayoutDataStore count])
       {
-        v38 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v38 handleFailureInMethod:a2 object:self file:@"PXCuratedLibrarySectionedLayout.m" lineNumber:370 description:{@"Invalid parameter not satisfying: %@", @"numberOfSublayoutsBefore == sublayoutDataStore.count"}];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"PXCuratedLibrarySectionedLayout.m" lineNumber:370 description:{@"Invalid parameter not satisfying: %@", @"numberOfSublayoutsBefore == sublayoutDataStore.count"}];
       }
 
-      v12 = [v5 changeHistory];
-      v13 = [v12 changeDetailsFromDataSourceIdentifier:-[PXAssetsDataSource identifier](v6 toDataSourceIdentifier:{"identifier"), -[PXAssetsDataSource identifier](v7, "identifier")}];
+      changeHistory = [assetsDataSourceManager changeHistory];
+      v13 = [changeHistory changeDetailsFromDataSourceIdentifier:-[PXAssetsDataSource identifier](v6 toDataSourceIdentifier:{"identifier"), -[PXAssetsDataSource identifier](dataSource, "identifier")}];
 
       v14 = "anager";
-      v50 = v5;
+      v50 = assetsDataSourceManager;
       v51 = v13;
       if (self->_isUpdatingSublayouts)
       {
         if ([v13 count] != 1)
         {
-          v39 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v39 handleFailureInMethod:a2 object:self file:@"PXCuratedLibrarySectionedLayout.m" lineNumber:380 description:{@"While updating sublayouts, expecting only one data source change, got %lu", objc_msgSend(v13, "count")}];
+          currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXCuratedLibrarySectionedLayout.m" lineNumber:380 description:{@"While updating sublayouts, expecting only one data source change, got %lu", objc_msgSend(v13, "count")}];
         }
 
-        v15 = [v13 firstObject];
-        v16 = [v15 sectionsWithItemChanges];
+        firstObject = [v13 firstObject];
+        sectionsWithItemChanges = [firstObject sectionsWithItemChanges];
         v17 = a2;
-        v18 = v16;
+        v18 = sectionsWithItemChanges;
         v64[0] = MEMORY[0x1E69E9820];
         v64[1] = 3221225472;
         v64[2] = __62__PXCuratedLibrarySectionedLayout__updateSublayoutsDataSource__block_invoke;
@@ -2277,33 +2277,33 @@ uint64_t __63__PXCuratedLibrarySectionedLayout__updateSublayoutsForSkimming__blo
         v64[4] = self;
         v64[5] = v17;
         v52 = v17;
-        [v16 enumerateIndexesUsingBlock:v64];
+        [sectionsWithItemChanges enumerateIndexesUsingBlock:v64];
 
-        v19 = [v15 sectionChanges];
-        if (([v19 hasIncrementalChanges] & 1) == 0)
+        sectionChanges = [firstObject sectionChanges];
+        if (([sectionChanges hasIncrementalChanges] & 1) == 0)
         {
-          v40 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v40 handleFailureInMethod:v52 object:self file:@"PXCuratedLibrarySectionedLayout.m" lineNumber:386 description:@"Section changes while updating sublayouts must be incremental."];
+          currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler3 handleFailureInMethod:v52 object:self file:@"PXCuratedLibrarySectionedLayout.m" lineNumber:386 description:@"Section changes while updating sublayouts must be incremental."];
         }
 
-        v20 = [v19 insertedIndexes];
-        v21 = [v20 count];
+        insertedIndexes = [sectionChanges insertedIndexes];
+        v21 = [insertedIndexes count];
 
         if (v21)
         {
-          v41 = [MEMORY[0x1E696AAA8] currentHandler];
-          v42 = [v19 insertedIndexes];
-          [v41 handleFailureInMethod:v52 object:self file:@"PXCuratedLibrarySectionedLayout.m" lineNumber:387 description:{@"Sections %@ inserted while updating sublayouts, this is not supported.", v42}];
+          currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
+          insertedIndexes2 = [sectionChanges insertedIndexes];
+          [currentHandler4 handleFailureInMethod:v52 object:self file:@"PXCuratedLibrarySectionedLayout.m" lineNumber:387 description:{@"Sections %@ inserted while updating sublayouts, this is not supported.", insertedIndexes2}];
         }
 
-        v22 = [v19 removedIndexes];
-        v23 = [v22 count];
+        removedIndexes = [sectionChanges removedIndexes];
+        v23 = [removedIndexes count];
 
         if (v23)
         {
-          v43 = [MEMORY[0x1E696AAA8] currentHandler];
-          v44 = [v19 removedIndexes];
-          [v43 handleFailureInMethod:v52 object:self file:@"PXCuratedLibrarySectionedLayout.m" lineNumber:388 description:{@"Sections %@ removed while updating sublayouts, this is not supported.", v44}];
+          currentHandler5 = [MEMORY[0x1E696AAA8] currentHandler];
+          removedIndexes2 = [sectionChanges removedIndexes];
+          [currentHandler5 handleFailureInMethod:v52 object:self file:@"PXCuratedLibrarySectionedLayout.m" lineNumber:388 description:{@"Sections %@ removed while updating sublayouts, this is not supported.", removedIndexes2}];
         }
 
         v13 = v51;
@@ -2316,7 +2316,7 @@ uint64_t __63__PXCuratedLibrarySectionedLayout__updateSublayoutsForSkimming__blo
         [(PXCuratedLibrarySectionedLayout *)self _anchorVisibleArea];
       }
 
-      objc_storeStrong(&self->_currentDataSource, v7);
+      objc_storeStrong(&self->_currentDataSource, dataSource);
       if (self->_currentZoomLevel != v9)
       {
         [MEMORY[0x1E6979518] setFrameStallSkipRequest:1];
@@ -2331,7 +2331,7 @@ uint64_t __63__PXCuratedLibrarySectionedLayout__updateSublayoutsForSkimming__blo
       v59[2] = __62__PXCuratedLibrarySectionedLayout__updateSublayoutsDataSource__block_invoke_2;
       v59[3] = &unk_1E7743510;
       v60 = v6;
-      v26 = v7;
+      v26 = dataSource;
       v61 = v26;
       [(PXCuratedLibrarySectionedLayout *)self applySectionedChangeDetails:v13 dataSourceBeforeChanges:v60 dataSourceAfterChanges:v26 sublayoutProvider:self outChangedSections:&v63 outSectionsWithItemChanges:&v62 changeMediaVersionHandler:v59];
       v27 = v63;
@@ -2341,9 +2341,9 @@ uint64_t __63__PXCuratedLibrarySectionedLayout__updateSublayoutsForSkimming__blo
       [v27 enumerateIndexesUsingBlock:&__block_literal_global_200222];
       v47 = v28;
       [v28 enumerateIndexesUsingBlock:&__block_literal_global_260_200223];
-      v29 = [(PXAssetsDataSource *)self->_currentDataSource numberOfSections];
-      [(PXCuratedLibrarySectionedLayout *)self _prepareAccumulatedSectionItemsBufferForSections:v29];
-      if (v29 >= 1)
+      numberOfSections2 = [(PXAssetsDataSource *)self->_currentDataSource numberOfSections];
+      [(PXCuratedLibrarySectionedLayout *)self _prepareAccumulatedSectionItemsBufferForSections:numberOfSections2];
+      if (numberOfSections2 >= 1)
       {
         v30 = 0;
         v31 = 0;
@@ -2361,7 +2361,7 @@ uint64_t __63__PXCuratedLibrarySectionedLayout__updateSublayoutsForSkimming__blo
           ++v30;
         }
 
-        while (v29 != v30);
+        while (numberOfSections2 != v30);
       }
 
       v54[0] = MEMORY[0x1E69E9820];
@@ -2369,13 +2369,13 @@ uint64_t __63__PXCuratedLibrarySectionedLayout__updateSublayoutsForSkimming__blo
       v54[2] = __62__PXCuratedLibrarySectionedLayout__updateSublayoutsDataSource__block_invoke_5;
       v54[3] = &unk_1E7743558;
       v55 = v26;
-      v56 = self;
+      selfCopy = self;
       [(PXCuratedLibrarySectionedLayout *)self enumerateAssetsSectionSublayoutsUsingBlock:v54];
       p_updateFlags = &self->_updateFlags;
       needsUpdate = self->_updateFlags.needsUpdate;
       if (needsUpdate)
       {
-        v5 = v50;
+        assetsDataSourceManager = v50;
         v36 = v51;
         if (!self->_updateFlags.isPerformingUpdate)
         {
@@ -2389,7 +2389,7 @@ LABEL_27:
 
       else
       {
-        v5 = v50;
+        assetsDataSourceManager = v50;
         v36 = v51;
         if (!self->_updateFlags.isPerformingUpdate)
         {
@@ -2406,9 +2406,9 @@ LABEL_27:
 
       if ((self->_updateFlags.updated & 0x5D) != 0)
       {
-        v45 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler6 = [MEMORY[0x1E696AAA8] currentHandler];
         v46 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXCuratedLibrarySectionedLayout _updateSublayoutsDataSource]"];
-        [v45 handleFailureInFunction:v46 file:@"PXCuratedLibrarySectionedLayout.m" lineNumber:437 description:{@"invalidating %lu after it already has been updated", 93}];
+        [currentHandler6 handleFailureInFunction:v46 file:@"PXCuratedLibrarySectionedLayout.m" lineNumber:437 description:{@"invalidating %lu after it already has been updated", 93}];
 
         abort();
       }
@@ -2490,19 +2490,19 @@ void __62__PXCuratedLibrarySectionedLayout__updateSublayoutsDataSource__block_in
   [*(a1 + 40) _configureSectionLayout:v6 atIndex:a2];
 }
 
-- (void)willFaultOutSublayout:(id)a3 atIndex:(int64_t)a4
+- (void)willFaultOutSublayout:(id)sublayout atIndex:(int64_t)index
 {
-  v7 = a3;
+  sublayoutCopy = sublayout;
   v19.receiver = self;
   v19.super_class = PXCuratedLibrarySectionedLayout;
-  [(PXCuratedLibrarySectionedLayout *)&v19 willFaultOutSublayout:v7 atIndex:a4];
-  v8 = v7;
+  [(PXCuratedLibrarySectionedLayout *)&v19 willFaultOutSublayout:sublayoutCopy atIndex:index];
+  v8 = sublayoutCopy;
   if (!v8)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v13 = objc_opt_class();
     v14 = NSStringFromClass(v13);
-    [v12 handleFailureInMethod:a2 object:self file:@"PXCuratedLibrarySectionedLayout.m" lineNumber:346 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"sublayout", v14}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCuratedLibrarySectionedLayout.m" lineNumber:346 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"sublayout", v14}];
 LABEL_6:
 
     goto LABEL_3;
@@ -2511,25 +2511,25 @@ LABEL_6:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v15 = objc_opt_class();
     v14 = NSStringFromClass(v15);
-    v16 = [v8 px_descriptionForAssertionMessage];
-    [v12 handleFailureInMethod:a2 object:self file:@"PXCuratedLibrarySectionedLayout.m" lineNumber:346 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"sublayout", v14, v16}];
+    px_descriptionForAssertionMessage = [v8 px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCuratedLibrarySectionedLayout.m" lineNumber:346 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"sublayout", v14, px_descriptionForAssertionMessage}];
 
     goto LABEL_6;
   }
 
 LABEL_3:
-  v9 = [v8 assetCollection];
-  v10 = [(PXCuratedLibrarySectionedLayout *)self viewModel];
+  assetCollection = [v8 assetCollection];
+  viewModel = [(PXCuratedLibrarySectionedLayout *)self viewModel];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __65__PXCuratedLibrarySectionedLayout_willFaultOutSublayout_atIndex___block_invoke;
   v17[3] = &unk_1E7748B68;
-  v18 = v9;
-  v11 = v9;
-  [v10 performChanges:v17];
+  v18 = assetCollection;
+  v11 = assetCollection;
+  [viewModel performChanges:v17];
 }
 
 void __65__PXCuratedLibrarySectionedLayout_willFaultOutSublayout_atIndex___block_invoke(uint64_t a1, void *a2)
@@ -2538,22 +2538,22 @@ void __65__PXCuratedLibrarySectionedLayout_willFaultOutSublayout_atIndex___block
   [v3 removeObject:*(a1 + 32)];
 }
 
-- (void)didFaultInSublayout:(id)a3 atIndex:(int64_t)a4 fromEstimatedContentSize:(CGSize)a5
+- (void)didFaultInSublayout:(id)sublayout atIndex:(int64_t)index fromEstimatedContentSize:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
-  v10 = a3;
+  height = size.height;
+  width = size.width;
+  sublayoutCopy = sublayout;
   v22.receiver = self;
   v22.super_class = PXCuratedLibrarySectionedLayout;
-  [(PXCuratedLibrarySectionedLayout *)&v22 didFaultInSublayout:v10 atIndex:a4 fromEstimatedContentSize:width, height];
-  [(PXCuratedLibrarySectionedLayout *)self _updatePrefetchedSectionsForFaultedInSublayout:v10];
-  v11 = v10;
+  [(PXCuratedLibrarySectionedLayout *)&v22 didFaultInSublayout:sublayoutCopy atIndex:index fromEstimatedContentSize:width, height];
+  [(PXCuratedLibrarySectionedLayout *)self _updatePrefetchedSectionsForFaultedInSublayout:sublayoutCopy];
+  v11 = sublayoutCopy;
   if (!v11)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v16 = objc_opt_class();
     v17 = NSStringFromClass(v16);
-    [v15 handleFailureInMethod:a2 object:self file:@"PXCuratedLibrarySectionedLayout.m" lineNumber:336 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"sublayout", v17}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCuratedLibrarySectionedLayout.m" lineNumber:336 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"sublayout", v17}];
 LABEL_6:
 
     goto LABEL_3;
@@ -2562,25 +2562,25 @@ LABEL_6:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v18 = objc_opt_class();
     v17 = NSStringFromClass(v18);
-    v19 = [v11 px_descriptionForAssertionMessage];
-    [v15 handleFailureInMethod:a2 object:self file:@"PXCuratedLibrarySectionedLayout.m" lineNumber:336 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"sublayout", v17, v19}];
+    px_descriptionForAssertionMessage = [v11 px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCuratedLibrarySectionedLayout.m" lineNumber:336 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"sublayout", v17, px_descriptionForAssertionMessage}];
 
     goto LABEL_6;
   }
 
 LABEL_3:
-  v12 = [v11 assetCollection];
-  v13 = [(PXCuratedLibrarySectionedLayout *)self viewModel];
+  assetCollection = [v11 assetCollection];
+  viewModel = [(PXCuratedLibrarySectionedLayout *)self viewModel];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __88__PXCuratedLibrarySectionedLayout_didFaultInSublayout_atIndex_fromEstimatedContentSize___block_invoke;
   v20[3] = &unk_1E7748B68;
-  v21 = v12;
-  v14 = v12;
-  [v13 performChanges:v20];
+  v21 = assetCollection;
+  v14 = assetCollection;
+  [viewModel performChanges:v20];
 }
 
 void __88__PXCuratedLibrarySectionedLayout_didFaultInSublayout_atIndex_fromEstimatedContentSize___block_invoke(uint64_t a1, void *a2)
@@ -2589,32 +2589,32 @@ void __88__PXCuratedLibrarySectionedLayout_didFaultInSublayout_atIndex_fromEstim
   [v3 addObject:*(a1 + 32)];
 }
 
-- (void)_updatePrefetchedSectionsForFaultedInSublayout:(id)a3
+- (void)_updatePrefetchedSectionsForFaultedInSublayout:(id)sublayout
 {
-  v4 = a3;
+  sublayoutCopy = sublayout;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v5 = +[PXCuratedLibrarySettings sharedInstance];
-    v6 = [v5 sectionsToPrefetch];
+    sectionsToPrefetch = [v5 sectionsToPrefetch];
 
-    v7 = [(PXAssetsDataSource *)self->_currentDataSource numberOfSections];
-    if (v7 > v6)
+    numberOfSections = [(PXAssetsDataSource *)self->_currentDataSource numberOfSections];
+    if (numberOfSections > sectionsToPrefetch)
     {
-      v8 = v7;
-      v9 = [v4 section];
-      v10 = (v9 - v6) & ~((v9 - v6) >> 63);
-      if (v9 + v6 >= v8 - 1)
+      v8 = numberOfSections;
+      section = [sublayoutCopy section];
+      v10 = (section - sectionsToPrefetch) & ~((section - sectionsToPrefetch) >> 63);
+      if (section + sectionsToPrefetch >= v8 - 1)
       {
         v11 = v8 - 1;
       }
 
       else
       {
-        v11 = v9 + v6;
+        v11 = section + sectionsToPrefetch;
       }
 
-      v12 = [off_1E77217C8 indexPathSet];
+      indexPathSet = [off_1E77217C8 indexPathSet];
       if (v10 < v11)
       {
         v13.f64[0] = NAN;
@@ -2625,43 +2625,43 @@ void __88__PXCuratedLibrarySectionedLayout_didFaultInSublayout_atIndex_fromEstim
           v15[0] = [(PXAssetsDataSource *)self->_currentDataSource identifier];
           v15[1] = v10;
           v16 = v14;
-          [v12 addIndexPath:v15];
+          [indexPathSet addIndexPath:v15];
           ++v10;
         }
 
         while (v11 != v10);
       }
 
-      [(PXAssetsDataSource *)self->_currentDataSource prefetchSections:v12];
+      [(PXAssetsDataSource *)self->_currentDataSource prefetchSections:indexPathSet];
     }
   }
 }
 
-- (void)setPerformedInitialLoad:(BOOL)a3
+- (void)setPerformedInitialLoad:(BOOL)load
 {
-  if (self->_performedInitialLoad != a3)
+  if (self->_performedInitialLoad != load)
   {
     v7[7] = v3;
     v7[8] = v4;
-    self->_performedInitialLoad = a3;
-    if (a3)
+    self->_performedInitialLoad = load;
+    if (load)
     {
-      v6 = [off_1E7721858 sharedScheduler];
+      sharedScheduler = [off_1E7721858 sharedScheduler];
       v7[0] = MEMORY[0x1E69E9820];
       v7[1] = 3221225472;
       v7[2] = __59__PXCuratedLibrarySectionedLayout_setPerformedInitialLoad___block_invoke;
       v7[3] = &unk_1E774C648;
       v7[4] = self;
-      [v6 scheduleMainQueueTask:v7];
+      [sharedScheduler scheduleMainQueueTask:v7];
     }
   }
 }
 
-- (void)setIsInitialLoad:(BOOL)a3
+- (void)setIsInitialLoad:(BOOL)load
 {
-  if (self->_isInitialLoad != a3)
+  if (self->_isInitialLoad != load)
   {
-    self->_isInitialLoad = a3;
+    self->_isInitialLoad = load;
     p_updateFlags = &self->_updateFlags;
     needsUpdate = self->_updateFlags.needsUpdate;
     if (needsUpdate)
@@ -2676,9 +2676,9 @@ LABEL_7:
 LABEL_6:
       if ((self->_updateFlags.updated & 0x20) != 0)
       {
-        v7 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
         v8 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXCuratedLibrarySectionedLayout setIsInitialLoad:]"];
-        [v7 handleFailureInFunction:v8 file:@"PXCuratedLibrarySectionedLayout.m" lineNumber:295 description:{@"invalidating %lu after it already has been updated", 32}];
+        [currentHandler handleFailureInFunction:v8 file:@"PXCuratedLibrarySectionedLayout.m" lineNumber:295 description:{@"invalidating %lu after it already has been updated", 32}];
 
         abort();
       }
@@ -2726,9 +2726,9 @@ LABEL_6:
 
   if (self->_updateFlags.isPerformingUpdate)
   {
-    v43 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v44 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXCuratedLibrarySectionedLayout update]"];
-    [v43 handleFailureInFunction:v44 file:@"PXCuratedLibrarySectionedLayout.m" lineNumber:116 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
+    [currentHandler handleFailureInFunction:v44 file:@"PXCuratedLibrarySectionedLayout.m" lineNumber:116 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
 
     needsUpdate = p_updateFlags->needsUpdate;
   }
@@ -2741,9 +2741,9 @@ LABEL_6:
     [(PXCuratedLibrarySectionedLayout *)self _updateFaultOutsets];
     if (!p_updateFlags->isPerformingUpdate)
     {
-      v45 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
       v46 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXCuratedLibrarySectionedLayout update]"];
-      [v45 handleFailureInFunction:v46 file:@"PXCuratedLibrarySectionedLayout.m" lineNumber:122 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
+      [currentHandler2 handleFailureInFunction:v46 file:@"PXCuratedLibrarySectionedLayout.m" lineNumber:122 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
     }
   }
 
@@ -2757,9 +2757,9 @@ LABEL_6:
 
   if (!p_updateFlags->isPerformingUpdate)
   {
-    v47 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
     v48 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXCuratedLibrarySectionedLayout update]"];
-    [v47 handleFailureInFunction:v48 file:@"PXCuratedLibrarySectionedLayout.m" lineNumber:126 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
+    [currentHandler3 handleFailureInFunction:v48 file:@"PXCuratedLibrarySectionedLayout.m" lineNumber:126 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
   }
 
   v6 = p_updateFlags->needsUpdate;
@@ -2770,12 +2770,12 @@ LABEL_6:
     [(PXCuratedLibrarySectionedLayout *)self _updateSublayoutsForSkimming];
   }
 
-  v7 = [(PXCuratedLibrarySectionedLayout *)self spec];
+  spec = [(PXCuratedLibrarySectionedLayout *)self spec];
   if (!p_updateFlags->isPerformingUpdate)
   {
-    v49 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
     v50 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXCuratedLibrarySectionedLayout update]"];
-    [v49 handleFailureInFunction:v50 file:@"PXCuratedLibrarySectionedLayout.m" lineNumber:132 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
+    [currentHandler4 handleFailureInFunction:v50 file:@"PXCuratedLibrarySectionedLayout.m" lineNumber:132 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
   }
 
   v8 = p_updateFlags->needsUpdate;
@@ -2783,21 +2783,21 @@ LABEL_6:
   if (v8)
   {
     p_updateFlags->needsUpdate = v8 & 0xFFFFFFFFFFFFFFFELL;
-    v9 = [v7 sectionLayoutSpec];
+    sectionLayoutSpec = [spec sectionLayoutSpec];
     v67[0] = MEMORY[0x1E69E9820];
     v67[1] = 3221225472;
     v67[2] = __41__PXCuratedLibrarySectionedLayout_update__block_invoke;
     v67[3] = &unk_1E7743478;
-    v68 = v9;
-    v10 = v9;
+    v68 = sectionLayoutSpec;
+    v10 = sectionLayoutSpec;
     [(PXCuratedLibrarySectionedLayout *)self enumerateAssetsSectionSublayoutsUsingBlock:v67];
   }
 
   if (!p_updateFlags->isPerformingUpdate)
   {
-    v51 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler5 = [MEMORY[0x1E696AAA8] currentHandler];
     v52 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXCuratedLibrarySectionedLayout update]"];
-    [v51 handleFailureInFunction:v52 file:@"PXCuratedLibrarySectionedLayout.m" lineNumber:139 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
+    [currentHandler5 handleFailureInFunction:v52 file:@"PXCuratedLibrarySectionedLayout.m" lineNumber:139 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
   }
 
   v11 = p_updateFlags->needsUpdate;
@@ -2806,28 +2806,28 @@ LABEL_6:
   {
     p_updateFlags->needsUpdate = v11 & 0xFFFFFFFFFFFFFFFBLL;
     currentZoomLevel = self->_currentZoomLevel;
-    [v7 defaultInterlayoutSpacingForZoomLevel:currentZoomLevel];
+    [spec defaultInterlayoutSpacingForZoomLevel:currentZoomLevel];
     self->_defaultInterlayoutSpacing = v13;
     [(PXCuratedLibrarySectionedLayout *)self lateralMargin];
     v15 = v14;
-    v16 = [v7 userInterfaceIdiom];
+    userInterfaceIdiom = [spec userInterfaceIdiom];
     if ((currentZoomLevel - 1) <= 1)
     {
-      if (v16 != 4)
+      if (userInterfaceIdiom != 4)
       {
         [(PXCuratedLibrarySectionedLayout *)self safeAreaInsets];
-        v19 = [(PXCuratedLibrarySectionedLayout *)self viewModel];
-        v20 = [v19 styleGuide];
-        [v20 secondaryToolbarContentInsets];
+        viewModel = [(PXCuratedLibrarySectionedLayout *)self viewModel];
+        styleGuide = [viewModel styleGuide];
+        [styleGuide secondaryToolbarContentInsets];
 
         if (currentZoomLevel == 2)
         {
-          [v7 spacingBetweenSafeAreaTopAndFirstMonthTitle];
+          [spec spacingBetweenSafeAreaTopAndFirstMonthTitle];
         }
 
         else
         {
-          [v7 spacingBetweenSafeAreaTopAndFirstYearCard];
+          [spec spacingBetweenSafeAreaTopAndFirstYearCard];
         }
       }
 
@@ -2835,7 +2835,7 @@ LABEL_6:
     }
 
     v17 = *(off_1E7721FA8 + 2);
-    if (v16 == 4)
+    if (userInterfaceIdiom == 4)
     {
       v18 = *off_1E7721FA8;
     }
@@ -2857,8 +2857,8 @@ LABEL_6:
     aBlock[3] = &unk_1E77434A0;
     aBlock[4] = self;
     v23 = _Block_copy(aBlock);
-    v24 = [(PXGCompositeLayout *)self composition];
-    v25 = v24;
+    composition = [(PXGCompositeLayout *)self composition];
+    v25 = composition;
     if (currentZoomLevel == 1)
     {
       objc_opt_class();
@@ -2868,7 +2868,7 @@ LABEL_6:
         v26 = objc_alloc_init(PXYearsSublayoutComposition);
       }
 
-      v27 = [v7 yearsLayoutMetrics];
+      yearsLayoutMetrics = [spec yearsLayoutMetrics];
     }
 
     else
@@ -2897,11 +2897,11 @@ LABEL_6:
         v26 = objc_alloc_init(PXMonthsSublayoutComposition);
       }
 
-      v27 = [v7 monthsLayoutMetrics];
+      yearsLayoutMetrics = [spec monthsLayoutMetrics];
     }
 
-    v28 = v27;
-    v29 = [v27 copy];
+    v28 = yearsLayoutMetrics;
+    v29 = [yearsLayoutMetrics copy];
 
     [(PXYearsSublayoutComposition *)v29 padding];
     v23[2](v23, p_padding->top);
@@ -2926,9 +2926,9 @@ LABEL_43:
 
   if (!p_updateFlags->isPerformingUpdate)
   {
-    v53 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler6 = [MEMORY[0x1E696AAA8] currentHandler];
     v54 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXCuratedLibrarySectionedLayout update]"];
-    [v53 handleFailureInFunction:v54 file:@"PXCuratedLibrarySectionedLayout.m" lineNumber:234 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
+    [currentHandler6 handleFailureInFunction:v54 file:@"PXCuratedLibrarySectionedLayout.m" lineNumber:234 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
   }
 
   v30 = p_updateFlags->needsUpdate;
@@ -2944,15 +2944,15 @@ LABEL_43:
     [(PXCuratedLibrarySectionedLayout *)self enumerateAssetsSectionSublayoutsUsingBlock:v64];
     if ((self->_currentZoomLevel - 1) <= 1)
     {
-      v31 = [(PXCuratedLibrarySectionedLayout *)self viewModel];
-      v32 = [v31 selectionSnapshot];
+      viewModel2 = [(PXCuratedLibrarySectionedLayout *)self viewModel];
+      selectionSnapshot = [viewModel2 selectionSnapshot];
 
-      v33 = [(PXCuratedLibraryViewModel *)self->_viewModel zoomLevelTransitionPhase];
+      zoomLevelTransitionPhase = [(PXCuratedLibraryViewModel *)self->_viewModel zoomLevelTransitionPhase];
       v62 = 0u;
       v63 = 0u;
-      if (v32)
+      if (selectionSnapshot)
       {
-        [v32 pendingIndexPath];
+        [selectionSnapshot pendingIndexPath];
         v34 = v62;
       }
 
@@ -2968,12 +2968,12 @@ LABEL_43:
         v36 = *(&v62 + 1);
       }
 
-      [(PXGCompositeLayout *)self setSublayoutIndex:v36 forUniquelyStylableType:0 animated:v33 == 0];
+      [(PXGCompositeLayout *)self setSublayoutIndex:v36 forUniquelyStylableType:0 animated:zoomLevelTransitionPhase == 0];
       v60 = 0u;
       v61 = 0u;
-      if (v32)
+      if (selectionSnapshot)
       {
-        [v32 cursorIndexPath];
+        [selectionSnapshot cursorIndexPath];
         v38 = v60;
       }
 
@@ -2988,15 +2988,15 @@ LABEL_43:
         v39 = *(&v60 + 1);
       }
 
-      [(PXGCompositeLayout *)self setSublayoutIndex:v39 forUniquelyStylableType:1 animated:v33 == 0];
+      [(PXGCompositeLayout *)self setSublayoutIndex:v39 forUniquelyStylableType:1 animated:zoomLevelTransitionPhase == 0];
     }
   }
 
   if (!p_updateFlags->isPerformingUpdate)
   {
-    v55 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler7 = [MEMORY[0x1E696AAA8] currentHandler];
     v56 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXCuratedLibrarySectionedLayout update]"];
-    [v55 handleFailureInFunction:v56 file:@"PXCuratedLibrarySectionedLayout.m" lineNumber:258 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
+    [currentHandler7 handleFailureInFunction:v56 file:@"PXCuratedLibrarySectionedLayout.m" lineNumber:258 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
   }
 
   v41 = p_updateFlags->needsUpdate;
@@ -3012,9 +3012,9 @@ LABEL_43:
   p_updateFlags->isPerformingUpdate = 0;
   if (p_updateFlags->needsUpdate)
   {
-    v57 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler8 = [MEMORY[0x1E696AAA8] currentHandler];
     v58 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXCuratedLibrarySectionedLayout update]"];
-    [v57 handleFailureInFunction:v58 file:@"PXCuratedLibrarySectionedLayout.m" lineNumber:264 description:{@"still needing to update %lu after update pass", p_updateFlags->needsUpdate}];
+    [currentHandler8 handleFailureInFunction:v58 file:@"PXCuratedLibrarySectionedLayout.m" lineNumber:264 description:{@"still needing to update %lu after update pass", p_updateFlags->needsUpdate}];
   }
 
 LABEL_76:
@@ -3037,24 +3037,24 @@ LABEL_76:
 
 - (PXCuratedLibrarySectionedLayout)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXCuratedLibrarySectionedLayout.m" lineNumber:107 description:{@"%s is not available as initializer", "-[PXCuratedLibrarySectionedLayout init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXCuratedLibrarySectionedLayout.m" lineNumber:107 description:{@"%s is not available as initializer", "-[PXCuratedLibrarySectionedLayout init]"}];
 
   abort();
 }
 
-- (PXCuratedLibrarySectionedLayout)initWithViewModel:(id)a3 spec:(id)a4
+- (PXCuratedLibrarySectionedLayout)initWithViewModel:(id)model spec:(id)spec
 {
-  v7 = a3;
-  v8 = a4;
+  modelCopy = model;
+  specCopy = spec;
   v17.receiver = self;
   v17.super_class = PXCuratedLibrarySectionedLayout;
   v9 = [(PXGCompositeLayout *)&v17 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_spec, a4);
-    objc_storeStrong(&v10->_viewModel, a3);
+    objc_storeStrong(&v9->_spec, spec);
+    objc_storeStrong(&v10->_viewModel, model);
     [(PXCuratedLibraryViewModel *)v10->_viewModel registerChangeObserver:v10 context:PXCuratedLibraryViewModelObserverContext_200180];
     [(PXGCompositeLayout *)v10 setSublayoutFaultingDelegate:v10];
     if (!+[PXCuratedLibrarySectionedLayout shouldDisableLaunchOptimizations])
@@ -3076,9 +3076,9 @@ LABEL_9:
 LABEL_8:
       if ((v10->_updateFlags.updated & 0x7F) != 0)
       {
-        v15 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
         v16 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXCuratedLibrarySectionedLayout initWithViewModel:spec:]"];
-        [v15 handleFailureInFunction:v16 file:@"PXCuratedLibrarySectionedLayout.m" lineNumber:101 description:{@"invalidating %lu after it already has been updated", 127}];
+        [currentHandler handleFailureInFunction:v16 file:@"PXCuratedLibrarySectionedLayout.m" lineNumber:101 description:{@"invalidating %lu after it already has been updated", 127}];
 
         abort();
       }

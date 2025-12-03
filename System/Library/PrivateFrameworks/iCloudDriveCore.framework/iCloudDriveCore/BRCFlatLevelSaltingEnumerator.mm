@@ -1,33 +1,33 @@
 @interface BRCFlatLevelSaltingEnumerator
-+ (id)newEnumeratorForItemID:(id)a3 clientZone:(id)a4;
-- (BRCFlatLevelSaltingEnumerator)initWithItemID:(id)a3 clientZone:(id)a4;
++ (id)newEnumeratorForItemID:(id)d clientZone:(id)zone;
+- (BRCFlatLevelSaltingEnumerator)initWithItemID:(id)d clientZone:(id)zone;
 - (id)nextObject;
 - (void)dealloc;
 @end
 
 @implementation BRCFlatLevelSaltingEnumerator
 
-+ (id)newEnumeratorForItemID:(id)a3 clientZone:(id)a4
++ (id)newEnumeratorForItemID:(id)d clientZone:(id)zone
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[BRCFlatLevelSaltingEnumerator alloc] initWithItemID:v6 clientZone:v5];
+  zoneCopy = zone;
+  dCopy = d;
+  v7 = [[BRCFlatLevelSaltingEnumerator alloc] initWithItemID:dCopy clientZone:zoneCopy];
 
   return v7;
 }
 
-- (BRCFlatLevelSaltingEnumerator)initWithItemID:(id)a3 clientZone:(id)a4
+- (BRCFlatLevelSaltingEnumerator)initWithItemID:(id)d clientZone:(id)zone
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  zoneCopy = zone;
   v14.receiver = self;
   v14.super_class = BRCFlatLevelSaltingEnumerator;
   v9 = [(BRCFlatLevelSaltingEnumerator *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_itemID, a3);
-    v11 = [v8 directUnsaltedNonAliasItemsInServerTruthEnumeratorParentedTo:v7];
+    objc_storeStrong(&v9->_itemID, d);
+    v11 = [zoneCopy directUnsaltedNonAliasItemsInServerTruthEnumeratorParentedTo:dCopy];
     enumerator = v10->_enumerator;
     v10->_enumerator = v11;
   }
@@ -37,15 +37,15 @@
 
 - (id)nextObject
 {
-  v3 = [(PQLEnumeration *)self->_enumerator nextObject];
-  if (!v3)
+  nextObject = [(PQLEnumeration *)self->_enumerator nextObject];
+  if (!nextObject)
   {
     [(PQLEnumeration *)self->_enumerator close];
     enumerator = self->_enumerator;
     self->_enumerator = 0;
   }
 
-  return v3;
+  return nextObject;
 }
 
 - (void)dealloc

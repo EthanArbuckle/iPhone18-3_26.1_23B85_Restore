@@ -1,8 +1,8 @@
 @interface TDStringProperty
 - (NSString)stringValue;
-- (void)addToDictionary:(id)a3;
+- (void)addToDictionary:(id)dictionary;
 - (void)dealloc;
-- (void)setStringValue:(id)a3;
+- (void)setStringValue:(id)value;
 @end
 
 @implementation TDStringProperty
@@ -22,21 +22,21 @@
   return v3;
 }
 
-- (void)setStringValue:(id)a3
+- (void)setStringValue:(id)value
 {
   [(TDStringProperty *)self willChangeValueForKey:@"stringValue"];
 
-  self->_stringValue = [a3 copy];
+  self->_stringValue = [value copy];
 
   [(TDStringProperty *)self didChangeValueForKey:@"stringValue"];
 }
 
-- (void)addToDictionary:(id)a3
+- (void)addToDictionary:(id)dictionary
 {
-  v5 = [(TDStringProperty *)self stringValue];
-  v6 = [(TDProperty *)self name];
+  stringValue = [(TDStringProperty *)self stringValue];
+  name = [(TDProperty *)self name];
 
-  [a3 setObject:v5 forKey:v6];
+  [dictionary setObject:stringValue forKey:name];
 }
 
 @end

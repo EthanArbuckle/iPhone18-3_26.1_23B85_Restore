@@ -1,8 +1,8 @@
 @interface PXNewMagazineLayoutCoordinator
 - (BOOL)validateCurrentLayout;
-- (PXNewMagazineLayoutCoordinator)initWithPaddingInputs:(id)a3 tileGrid:(id)a4 tileAspectRatio:(double)a5 stopIfAnyGoodLayout:(BOOL)a6;
+- (PXNewMagazineLayoutCoordinator)initWithPaddingInputs:(id)inputs tileGrid:(id)grid tileAspectRatio:(double)ratio stopIfAnyGoodLayout:(BOOL)layout;
 - (PXNewMagazineRectArray)currentBestLayout;
-- (double)scoreOfLayout:(id)a3;
+- (double)scoreOfLayout:(id)layout;
 - (unint64_t)currentLayoutsCount;
 - (void)validateCurrentLayoutAsFallback;
 @end
@@ -11,11 +11,11 @@
 
 - (PXNewMagazineRectArray)currentBestLayout
 {
-  v3 = [(PXNewMagazineLayoutCoordinator *)self qualifiedLayouts];
-  [v3 sortUsingComparator:&__block_literal_global_24384];
-  if ([v3 count])
+  qualifiedLayouts = [(PXNewMagazineLayoutCoordinator *)self qualifiedLayouts];
+  [qualifiedLayouts sortUsingComparator:&__block_literal_global_24384];
+  if ([qualifiedLayouts count])
   {
-    v4 = [v3 objectAtIndexedSubscript:0];
+    v4 = [qualifiedLayouts objectAtIndexedSubscript:0];
   }
 
   else
@@ -59,8 +59,8 @@ uint64_t __51__PXNewMagazineLayoutCoordinator_currentBestLayout__block_invoke(ui
 
 - (unint64_t)currentLayoutsCount
 {
-  v3 = [(PXNewMagazineLayoutCoordinator *)self qualifiedLayouts];
-  v4 = [v3 count];
+  qualifiedLayouts = [(PXNewMagazineLayoutCoordinator *)self qualifiedLayouts];
+  v4 = [qualifiedLayouts count];
 
   if (!v4)
   {
@@ -70,49 +70,49 @@ uint64_t __51__PXNewMagazineLayoutCoordinator_currentBestLayout__block_invoke(ui
   return v4;
 }
 
-- (double)scoreOfLayout:(id)a3
+- (double)scoreOfLayout:(id)layout
 {
-  v5 = a3;
-  v6 = [(PXNewMagazineLayoutCoordinator *)self paddingInputs];
-  v7 = [v5 count];
-  if (v7 != [v6 count])
+  layoutCopy = layout;
+  paddingInputs = [(PXNewMagazineLayoutCoordinator *)self paddingInputs];
+  v7 = [layoutCopy count];
+  if (v7 != [paddingInputs count])
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"PXNewMagazineLayoutCoordinator.m" lineNumber:80 description:@"Output frames and inputs should be the same"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXNewMagazineLayoutCoordinator.m" lineNumber:80 description:@"Output frames and inputs should be the same"];
   }
 
   [(PXNewMagazineLayoutCoordinator *)self tileAspectRatio];
-  if ([v5 count])
+  if ([layoutCopy count])
   {
-    v8 = [v6 objectAtIndexedSubscript:0];
+    v8 = [paddingInputs objectAtIndexedSubscript:0];
     [v8 size];
 
-    if (v5)
+    if (layoutCopy)
     {
-      [v5 rectAtIndex:{0, 0}];
+      [layoutCopy rectAtIndex:{0, 0}];
     }
 
     PXSizeGetAspectRatio();
   }
 
-  v9 = 0.0 / [v5 count];
+  v9 = 0.0 / [layoutCopy count];
 
   return v9;
 }
 
 - (void)validateCurrentLayoutAsFallback
 {
-  v5 = [(PXNewMagazineLayoutCoordinator *)self currentLayout];
-  v3 = [v5 immutableCopyForCurrentRectsCount];
+  currentLayout = [(PXNewMagazineLayoutCoordinator *)self currentLayout];
+  immutableCopyForCurrentRectsCount = [currentLayout immutableCopyForCurrentRectsCount];
   fallbackLayout = self->_fallbackLayout;
-  self->_fallbackLayout = v3;
+  self->_fallbackLayout = immutableCopyForCurrentRectsCount;
 }
 
 - (BOOL)validateCurrentLayout
 {
-  v3 = [(PXNewMagazineLayoutCoordinator *)self qualifiedLayouts];
-  v4 = [(PXNewMagazineLayoutCoordinator *)self currentLayout];
-  [(PXNewMagazineLayoutCoordinator *)self scoreOfLayout:v4];
+  qualifiedLayouts = [(PXNewMagazineLayoutCoordinator *)self qualifiedLayouts];
+  currentLayout = [(PXNewMagazineLayoutCoordinator *)self currentLayout];
+  [(PXNewMagazineLayoutCoordinator *)self scoreOfLayout:currentLayout];
   v6 = v5;
   v7 = v5 < 0.12;
   if (v5 < 0.12)
@@ -120,10 +120,10 @@ uint64_t __51__PXNewMagazineLayoutCoordinator_currentBestLayout__block_invoke(ui
     fallbackLayout = self->_fallbackLayout;
     self->_fallbackLayout = 0;
 
-    v9 = [v4 immutableCopyForCurrentRectsCount];
-    [v9 setScore:v6];
-    [v3 addObject:v9];
-    if ([v3 count])
+    immutableCopyForCurrentRectsCount = [currentLayout immutableCopyForCurrentRectsCount];
+    [immutableCopyForCurrentRectsCount setScore:v6];
+    [qualifiedLayouts addObject:immutableCopyForCurrentRectsCount];
+    if ([qualifiedLayouts count])
     {
       [(PXNewMagazineLayoutCoordinator *)self setStop:1];
     }
@@ -131,24 +131,24 @@ uint64_t __51__PXNewMagazineLayoutCoordinator_currentBestLayout__block_invoke(ui
 
   else
   {
-    v9 = 0;
+    immutableCopyForCurrentRectsCount = 0;
   }
 
-  if (![v3 count] && v6 < self->_currentBestScore)
+  if (![qualifiedLayouts count] && v6 < self->_currentBestScore)
   {
     self->_currentBestScore = v6;
-    if (v9)
+    if (immutableCopyForCurrentRectsCount)
     {
-      v10 = v9;
+      immutableCopyForCurrentRectsCount2 = immutableCopyForCurrentRectsCount;
     }
 
     else
     {
-      v10 = [v4 immutableCopyForCurrentRectsCount];
+      immutableCopyForCurrentRectsCount2 = [currentLayout immutableCopyForCurrentRectsCount];
     }
 
     v11 = self->_fallbackLayout;
-    self->_fallbackLayout = v10;
+    self->_fallbackLayout = immutableCopyForCurrentRectsCount2;
 
     v7 = 1;
   }
@@ -161,27 +161,27 @@ uint64_t __51__PXNewMagazineLayoutCoordinator_currentBestLayout__block_invoke(ui
   return v7;
 }
 
-- (PXNewMagazineLayoutCoordinator)initWithPaddingInputs:(id)a3 tileGrid:(id)a4 tileAspectRatio:(double)a5 stopIfAnyGoodLayout:(BOOL)a6
+- (PXNewMagazineLayoutCoordinator)initWithPaddingInputs:(id)inputs tileGrid:(id)grid tileAspectRatio:(double)ratio stopIfAnyGoodLayout:(BOOL)layout
 {
-  v11 = a3;
-  v12 = a4;
+  inputsCopy = inputs;
+  gridCopy = grid;
   v20.receiver = self;
   v20.super_class = PXNewMagazineLayoutCoordinator;
   v13 = [(PXNewMagazineLayoutCoordinator *)&v20 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_paddingInputs, a3);
-    v14->_tileAspectRatio = a5;
-    v15 = [MEMORY[0x1E695DF70] array];
+    objc_storeStrong(&v13->_paddingInputs, inputs);
+    v14->_tileAspectRatio = ratio;
+    array = [MEMORY[0x1E695DF70] array];
     qualifiedLayouts = v14->_qualifiedLayouts;
-    v14->_qualifiedLayouts = v15;
+    v14->_qualifiedLayouts = array;
 
-    v17 = -[PXNewMagazineRectArray initWithSize:tileGrid:]([PXNewMagazineRectArray alloc], "initWithSize:tileGrid:", [v11 count], v12);
+    v17 = -[PXNewMagazineRectArray initWithSize:tileGrid:]([PXNewMagazineRectArray alloc], "initWithSize:tileGrid:", [inputsCopy count], gridCopy);
     currentLayout = v14->_currentLayout;
     v14->_currentLayout = v17;
 
-    v14->_stopIfAnyGoodLayout = a6;
+    v14->_stopIfAnyGoodLayout = layout;
     v14->_currentBestScore = 10000.0;
   }
 

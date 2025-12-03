@@ -1,22 +1,22 @@
 @interface JavaNetURLConnection
 + (BOOL)getDefaultAllowUserInteraction;
-+ (id)getDefaultRequestPropertyWithNSString:(id)a3;
++ (id)getDefaultRequestPropertyWithNSString:(id)string;
 + (void)initialize;
-+ (void)setDefaultAllowUserInteractionWithBoolean:(BOOL)a3;
-+ (void)setDefaultRequestPropertyWithNSString:(id)a3 withNSString:(id)a4;
++ (void)setDefaultAllowUserInteractionWithBoolean:(BOOL)boolean;
++ (void)setDefaultRequestPropertyWithNSString:(id)string withNSString:(id)sString;
 - (id)description;
 - (id)getContent;
-- (id)getContentWithIOSClassArray:(id)a3;
+- (id)getContentWithIOSClassArray:(id)array;
 - (id)getPermission;
 - (id)getRequestProperties;
-- (int64_t)getHeaderFieldDateWithNSString:(id)a3 withLong:(int64_t)a4;
+- (int64_t)getHeaderFieldDateWithNSString:(id)string withLong:(int64_t)long;
 - (int64_t)getLastModified;
 - (uint64_t)checkNotConnected;
-- (void)addRequestPropertyWithNSString:(id)a3 withNSString:(id)a4;
+- (void)addRequestPropertyWithNSString:(id)string withNSString:(id)sString;
 - (void)dealloc;
-- (void)setConnectTimeoutWithInt:(int)a3;
-- (void)setReadTimeoutWithInt:(int)a3;
-- (void)setRequestPropertyWithNSString:(id)a3 withNSString:(id)a4;
+- (void)setConnectTimeoutWithInt:(int)int;
+- (void)setReadTimeoutWithInt:(int)int;
+- (void)setRequestPropertyWithNSString:(id)string withNSString:(id)sString;
 @end
 
 @implementation JavaNetURLConnection
@@ -60,7 +60,7 @@ LABEL_13:
   return [v7 getContentWithJavaNetURLConnection:self];
 }
 
-- (id)getContentWithIOSClassArray:(id)a3
+- (id)getContentWithIOSClassArray:(id)array
 {
   if (!self->connected_)
   {
@@ -96,7 +96,7 @@ LABEL_13:
     JreThrowNullPointerException();
   }
 
-  return [v9 getContentWithJavaNetURLConnection:self withIOSClassArray:a3];
+  return [v9 getContentWithJavaNetURLConnection:self withIOSClassArray:array];
 }
 
 + (BOOL)getDefaultAllowUserInteraction
@@ -109,7 +109,7 @@ LABEL_13:
   return byte_1005550C8;
 }
 
-+ (id)getDefaultRequestPropertyWithNSString:(id)a3
++ (id)getDefaultRequestPropertyWithNSString:(id)string
 {
   if ((atomic_load_explicit(JavaNetURLConnection__initialized, memory_order_acquire) & 1) == 0)
   {
@@ -137,25 +137,25 @@ LABEL_13:
   return result;
 }
 
-- (void)addRequestPropertyWithNSString:(id)a3 withNSString:(id)a4
+- (void)addRequestPropertyWithNSString:(id)string withNSString:(id)sString
 {
   [JavaNetURLConnection checkNotConnected]_0(self);
-  if (!a3)
+  if (!string)
   {
     v5 = new_JavaLangNullPointerException_initWithNSString_(@"field == null");
     objc_exception_throw(v5);
   }
 }
 
-- (int64_t)getHeaderFieldDateWithNSString:(id)a3 withLong:(int64_t)a4
+- (int64_t)getHeaderFieldDateWithNSString:(id)string withLong:(int64_t)long
 {
-  v5 = [(JavaNetURLConnection *)self getHeaderFieldWithNSString:a3];
+  v5 = [(JavaNetURLConnection *)self getHeaderFieldWithNSString:string];
   if (v5)
   {
     return JavaUtilDate_parseWithNSString_(v5);
   }
 
-  return a4;
+  return long;
 }
 
 - (int64_t)getLastModified
@@ -177,17 +177,17 @@ LABEL_13:
   return v2;
 }
 
-+ (void)setDefaultAllowUserInteractionWithBoolean:(BOOL)a3
++ (void)setDefaultAllowUserInteractionWithBoolean:(BOOL)boolean
 {
   if ((atomic_load_explicit(JavaNetURLConnection__initialized, memory_order_acquire) & 1) == 0)
   {
     sub_100214DC8();
   }
 
-  byte_1005550C8 = a3;
+  byte_1005550C8 = boolean;
 }
 
-+ (void)setDefaultRequestPropertyWithNSString:(id)a3 withNSString:(id)a4
++ (void)setDefaultRequestPropertyWithNSString:(id)string withNSString:(id)sString
 {
   if ((atomic_load_explicit(JavaNetURLConnection__initialized, memory_order_acquire) & 1) == 0)
   {
@@ -195,36 +195,36 @@ LABEL_13:
   }
 }
 
-- (void)setRequestPropertyWithNSString:(id)a3 withNSString:(id)a4
+- (void)setRequestPropertyWithNSString:(id)string withNSString:(id)sString
 {
   [JavaNetURLConnection checkNotConnected]_0(self);
-  if (!a3)
+  if (!string)
   {
     v5 = new_JavaLangNullPointerException_initWithNSString_(@"field == null");
     objc_exception_throw(v5);
   }
 }
 
-- (void)setConnectTimeoutWithInt:(int)a3
+- (void)setConnectTimeoutWithInt:(int)int
 {
-  if (a3 < 0)
+  if (int < 0)
   {
     v3 = new_JavaLangIllegalArgumentException_initWithNSString_(@"timeoutMillis < 0");
     objc_exception_throw(v3);
   }
 
-  self->connectTimeout_ = a3;
+  self->connectTimeout_ = int;
 }
 
-- (void)setReadTimeoutWithInt:(int)a3
+- (void)setReadTimeoutWithInt:(int)int
 {
-  if (a3 < 0)
+  if (int < 0)
   {
     v3 = new_JavaLangIllegalArgumentException_initWithNSString_(@"timeoutMillis < 0");
     objc_exception_throw(v3);
   }
 
-  self->readTimeout_ = a3;
+  self->readTimeout_ = int;
 }
 
 - (id)description
@@ -249,7 +249,7 @@ LABEL_13:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = new_JavaUtilHashtable_init();
     JreStrongAssignAndConsume(&JavaNetURLConnection_contentHandlers_, v2);

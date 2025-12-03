@@ -1,23 +1,23 @@
 @interface PKPassPresentationContext
-+ (id)contextWithWasAutomaticallySelected:(BOOL)a3 additionalPassUniqueIdentifiers:(id)a4 userInfo:(id)a5 terminalType:(int64_t)a6;
++ (id)contextWithWasAutomaticallySelected:(BOOL)selected additionalPassUniqueIdentifiers:(id)identifiers userInfo:(id)info terminalType:(int64_t)type;
 - (PKBackgroundContactlessInterfaceSessionController)backgroundSession;
 - (id)description;
 @end
 
 @implementation PKPassPresentationContext
 
-+ (id)contextWithWasAutomaticallySelected:(BOOL)a3 additionalPassUniqueIdentifiers:(id)a4 userInfo:(id)a5 terminalType:(int64_t)a6
++ (id)contextWithWasAutomaticallySelected:(BOOL)selected additionalPassUniqueIdentifiers:(id)identifiers userInfo:(id)info terminalType:(int64_t)type
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
+  selectedCopy = selected;
+  infoCopy = info;
+  identifiersCopy = identifiers;
   v11 = objc_alloc_init(PKPassPresentationContext);
-  [(PKPassPresentationContext *)v11 setAdditionalPassUniqueIdentifiers:v10];
+  [(PKPassPresentationContext *)v11 setAdditionalPassUniqueIdentifiers:identifiersCopy];
 
-  [(PKPassPresentationContext *)v11 setWasAutomaticallySelected:v8];
-  [(PKPassPresentationContext *)v11 setUserInfo:v9];
+  [(PKPassPresentationContext *)v11 setWasAutomaticallySelected:selectedCopy];
+  [(PKPassPresentationContext *)v11 setUserInfo:infoCopy];
 
-  [(PKPassPresentationContext *)v11 setTerminalType:a6];
+  [(PKPassPresentationContext *)v11 setTerminalType:type];
 
   return v11;
 }

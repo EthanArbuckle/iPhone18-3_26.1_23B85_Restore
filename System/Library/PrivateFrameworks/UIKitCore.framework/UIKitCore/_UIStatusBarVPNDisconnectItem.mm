@@ -1,15 +1,15 @@
 @interface _UIStatusBarVPNDisconnectItem
-- (BOOL)canEnableDisplayItem:(id)a3 fromData:(id)a4;
+- (BOOL)canEnableDisplayItem:(id)item fromData:(id)data;
 - (_UIStatusBarVPNDisconnectView)disconnectView;
-- (id)applyUpdate:(id)a3 toDisplayItem:(id)a4;
+- (id)applyUpdate:(id)update toDisplayItem:(id)item;
 - (void)_create_disconnectView;
 @end
 
 @implementation _UIStatusBarVPNDisconnectItem
 
-- (BOOL)canEnableDisplayItem:(id)a3 fromData:(id)a4
+- (BOOL)canEnableDisplayItem:(id)item fromData:(id)data
 {
-  v4 = [a4 valueForKey:@"vpnEntry"];
+  v4 = [data valueForKey:@"vpnEntry"];
   v5 = v4;
   if (v4)
   {
@@ -44,22 +44,22 @@
   self->_disconnectView = v4;
 }
 
-- (id)applyUpdate:(id)a3 toDisplayItem:(id)a4
+- (id)applyUpdate:(id)update toDisplayItem:(id)item
 {
-  v6 = a3;
+  updateCopy = update;
   v13.receiver = self;
   v13.super_class = _UIStatusBarVPNDisconnectItem;
-  v7 = a4;
-  v8 = [(_UIStatusBarItem *)&v13 applyUpdate:v6 toDisplayItem:v7];
-  v9 = [v7 isEnabled];
+  itemCopy = item;
+  v8 = [(_UIStatusBarItem *)&v13 applyUpdate:updateCopy toDisplayItem:itemCopy];
+  isEnabled = [itemCopy isEnabled];
 
-  if (v9 && [v6 dataChanged])
+  if (isEnabled && [updateCopy dataChanged])
   {
-    v10 = [(_UIStatusBarVPNDisconnectItem *)self disconnectView];
-    [v10 resetSlashForUpdate:v6];
+    disconnectView = [(_UIStatusBarVPNDisconnectItem *)self disconnectView];
+    [disconnectView resetSlashForUpdate:updateCopy];
 
-    v11 = [(_UIStatusBarVPNDisconnectItem *)self disconnectView];
-    [v11 animateSlashForUpdate:v6];
+    disconnectView2 = [(_UIStatusBarVPNDisconnectItem *)self disconnectView];
+    [disconnectView2 animateSlashForUpdate:updateCopy];
   }
 
   return v8;

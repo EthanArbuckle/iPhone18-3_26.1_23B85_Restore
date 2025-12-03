@@ -1,34 +1,34 @@
 @interface CardView
 - (BOOL)vuiDebugUI;
-- (CGSize)vui_layoutSubviews:(CGSize)a3 computationOnly:(BOOL)a4;
+- (CGSize)vui_layoutSubviews:(CGSize)subviews computationOnly:(BOOL)only;
 - (NSArray)accessibilityLabelViews;
 - (UIView)accessibilityButton;
 - (UIView)accessibilityOverlayView;
 - (VUIImageView)accessibilityAppImageView;
 - (VUIImageView)accessibilityImageView;
 - (void)mainImageLoadedNotificationHandler;
-- (void)setHighlighted:(BOOL)a3;
+- (void)setHighlighted:(BOOL)highlighted;
 @end
 
 @implementation CardView
 
 - (BOOL)vuiDebugUI
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1E3AA1F6C();
 
   return v3 & 1;
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v4 = self;
-  sub_1E3AA1FA0(a3);
+  selfCopy = self;
+  sub_1E3AA1FA0(highlighted);
 }
 
-- (CGSize)vui_layoutSubviews:(CGSize)a3 computationOnly:(BOOL)a4
+- (CGSize)vui_layoutSubviews:(CGSize)subviews computationOnly:(BOOL)only
 {
-  v4 = self;
+  selfCopy = self;
   sub_1E3AA235C();
   OUTLINED_FUNCTION_18_3();
 
@@ -40,7 +40,7 @@
 
 - (VUIImageView)accessibilityImageView
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1E3AA6A68();
 
   return v3;
@@ -48,7 +48,7 @@
 
 - (VUIImageView)accessibilityAppImageView
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1E3AA6AE0();
 
   return v3;
@@ -56,7 +56,7 @@
 
 - (UIView)accessibilityOverlayView
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1E3AA6B60();
 
   return v3;
@@ -64,7 +64,7 @@
 
 - (NSArray)accessibilityLabelViews
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1E3AA6C1C();
 
   if (v3)
@@ -83,7 +83,7 @@
 
 - (UIView)accessibilityButton
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1E3AA6C9C();
 
   return v3;
@@ -91,7 +91,7 @@
 
 - (void)mainImageLoadedNotificationHandler
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E3AA6CD8();
 }
 

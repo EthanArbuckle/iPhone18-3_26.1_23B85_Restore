@@ -1,30 +1,30 @@
 @interface ACAssistantConfirmView
-- (ACAssistantConfirmView)initWithFrame:(CGRect)a3;
+- (ACAssistantConfirmView)initWithFrame:(CGRect)frame;
 - (BOOL)_showsConfirmButton;
 - (CGSize)sizeThatFits:(CGSize)result;
 - (UIEdgeInsets)edgeInsets;
 - (void)_hideConfirmButton;
 - (void)_showConfirmButton;
 - (void)layoutSubviews;
-- (void)setCancelText:(id)a3;
-- (void)setConfirmText:(id)a3;
+- (void)setCancelText:(id)text;
+- (void)setConfirmText:(id)text;
 @end
 
 @implementation ACAssistantConfirmView
 
-- (ACAssistantConfirmView)initWithFrame:(CGRect)a3
+- (ACAssistantConfirmView)initWithFrame:(CGRect)frame
 {
   v11.receiver = self;
   v11.super_class = ACAssistantConfirmView;
-  v3 = [(ACAssistantConfirmView *)&v11 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(ACAssistantConfirmView *)&v11 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[SiriUIContentButton buttonWithLightWeightFont];
     cancelButton = v3->_cancelButton;
     v3->_cancelButton = v4;
 
-    v6 = [(SiriUIContentButton *)v3->_cancelButton layer];
-    [v6 setCornerRadius:9.0];
+    layer = [(SiriUIContentButton *)v3->_cancelButton layer];
+    [layer setCornerRadius:9.0];
 
     [(SiriUIContentButton *)v3->_cancelButton setRole:0];
     [(ACAssistantConfirmView *)v3 addSubview:v3->_cancelButton];
@@ -32,8 +32,8 @@
     confirmButton = v3->_confirmButton;
     v3->_confirmButton = v7;
 
-    v9 = [(SiriUIContentButton *)v3->_confirmButton layer];
-    [v9 setCornerRadius:9.0];
+    layer2 = [(SiriUIContentButton *)v3->_confirmButton layer];
+    [layer2 setCornerRadius:9.0];
 
     [(SiriUIContentButton *)v3->_confirmButton setRole:0];
     [(ACAssistantConfirmView *)v3 addSubview:v3->_confirmButton];
@@ -84,8 +84,8 @@
     v14 = CGRectGetWidth(v19);
   }
 
-  v15 = [(ACAssistantConfirmView *)self semanticContentAttribute];
-  if (v15 == &dword_4)
+  semanticContentAttribute = [(ACAssistantConfirmView *)self semanticContentAttribute];
+  if (semanticContentAttribute == &dword_4)
   {
     v16 = v13 + 16.0;
   }
@@ -95,7 +95,7 @@
     v16 = x;
   }
 
-  if (v15 != &dword_4)
+  if (semanticContentAttribute != &dword_4)
   {
     x = v13 + 16.0;
   }
@@ -111,20 +111,20 @@
   return result;
 }
 
-- (void)setCancelText:(id)a3
+- (void)setCancelText:(id)text
 {
-  [(SiriUIContentButton *)self->_cancelButton setTitle:a3 forState:0];
+  [(SiriUIContentButton *)self->_cancelButton setTitle:text forState:0];
 
   [(ACAssistantConfirmView *)self setNeedsLayout];
 }
 
 - (BOOL)_showsConfirmButton
 {
-  v2 = self;
-  v3 = [(SiriUIContentButton *)self->_confirmButton superview];
-  LOBYTE(v2) = v3 == v2;
+  selfCopy = self;
+  superview = [(SiriUIContentButton *)self->_confirmButton superview];
+  LOBYTE(selfCopy) = superview == selfCopy;
 
-  return v2;
+  return selfCopy;
 }
 
 - (void)_showConfirmButton
@@ -149,9 +149,9 @@
   }
 }
 
-- (void)setConfirmText:(id)a3
+- (void)setConfirmText:(id)text
 {
-  [(SiriUIContentButton *)self->_confirmButton setTitle:a3 forState:0];
+  [(SiriUIContentButton *)self->_confirmButton setTitle:text forState:0];
   v4 = [(SiriUIContentButton *)self->_confirmButton titleForState:0];
   v5 = [v4 length];
 

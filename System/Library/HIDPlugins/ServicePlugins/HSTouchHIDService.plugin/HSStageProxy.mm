@@ -1,7 +1,7 @@
 @interface HSStageProxy
-- (BOOL)decodeStateFromData:(id)a3;
-- (BOOL)hsDecode:(void *)a3;
-- (BOOL)hsEncode:(void *)a3;
+- (BOOL)decodeStateFromData:(id)data;
+- (BOOL)hsDecode:(void *)decode;
+- (BOOL)hsEncode:(void *)encode;
 - (id)description;
 - (id)name;
 - (void)lock;
@@ -10,10 +10,10 @@
 
 @implementation HSStageProxy
 
-- (BOOL)decodeStateFromData:(id)a3
+- (BOOL)decodeStateFromData:(id)data
 {
-  v4 = a3;
-  v8 = v4;
+  dataCopy = data;
+  v8 = dataCopy;
   v5 = [NSArray arrayWithObjects:&v8 count:1];
   v6 = [(HSStageProxy *)self HSStageProxy_decodeStateFromData:v5];
 
@@ -21,24 +21,24 @@
   return self;
 }
 
-- (BOOL)hsEncode:(void *)a3
+- (BOOL)hsEncode:(void *)encode
 {
-  v4 = [(HSStageProxy *)self encodeStateToData];
-  if (!v4)
+  encodeStateToData = [(HSStageProxy *)self encodeStateToData];
+  if (!encodeStateToData)
   {
     v5 = 0;
     goto LABEL_18;
   }
 
-  HSUtil::Buffer::Buffer(v15, v4);
+  HSUtil::Buffer::Buffer(v15, encodeStateToData);
   HSUtil::Decoder::Decoder(v12, v15);
   HSUtil::Decoder::decodeElement(v12, v9);
   if (!LODWORD(v12[0]))
   {
-    if (!*a3)
+    if (!*encode)
     {
-      HSUtil::Encoder::_encodeDecoder(a3, v9);
-      if (!*a3)
+      HSUtil::Encoder::_encodeDecoder(encode, v9);
+      if (!*encode)
       {
         v5 = 1;
         goto LABEL_8;
@@ -86,12 +86,12 @@ LABEL_18:
   return v5;
 }
 
-- (BOOL)hsDecode:(void *)a3
+- (BOOL)hsDecode:(void *)decode
 {
   v5 = HSUtil::EncoderBuf::EncoderBuf(&v11);
   if (!v11)
   {
-    HSUtil::Encoder::_encodeDecoder(v5, a3);
+    HSUtil::Encoder::_encodeDecoder(v5, decode);
   }
 
   v6 = HSUtil::EncoderBuf::buffer(&v11);
@@ -145,11 +145,11 @@ LABEL_18:
 {
   v6.receiver = self;
   v6.super_class = HSStageProxy;
-  v2 = [(HSStageProxy *)&v6 name];
-  v3 = v2;
-  if (v2)
+  name = [(HSStageProxy *)&v6 name];
+  v3 = name;
+  if (name)
   {
-    v4 = v2;
+    v4 = name;
   }
 
   else
@@ -162,8 +162,8 @@ LABEL_18:
 
 - (id)description
 {
-  v3 = [(HSStageProxy *)self name];
-  v4 = [NSString stringWithFormat:@"<HSStageProxy: %p : %@>", self, v3];
+  name = [(HSStageProxy *)self name];
+  v4 = [NSString stringWithFormat:@"<HSStageProxy: %p : %@>", self, name];
 
   return v4;
 }

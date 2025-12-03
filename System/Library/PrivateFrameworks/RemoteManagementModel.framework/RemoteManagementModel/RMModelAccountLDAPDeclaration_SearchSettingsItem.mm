@@ -1,10 +1,10 @@
 @interface RMModelAccountLDAPDeclaration_SearchSettingsItem
 + (NSSet)allowedPayloadKeys;
-+ (id)buildRequiredOnlyWithSearchBase:(id)a3;
-+ (id)buildWithVisibleDescription:(id)a3 searchBase:(id)a4 scope:(id)a5;
-- (BOOL)loadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializeWithType:(signed __int16)a3;
++ (id)buildRequiredOnlyWithSearchBase:(id)base;
++ (id)buildWithVisibleDescription:(id)description searchBase:(id)base scope:(id)scope;
+- (BOOL)loadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializeWithType:(signed __int16)type;
 @end
 
 @implementation RMModelAccountLDAPDeclaration_SearchSettingsItem
@@ -24,18 +24,18 @@
   return v4;
 }
 
-+ (id)buildWithVisibleDescription:(id)a3 searchBase:(id)a4 scope:(id)a5
++ (id)buildWithVisibleDescription:(id)description searchBase:(id)base scope:(id)scope
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  scopeCopy = scope;
+  baseCopy = base;
+  descriptionCopy = description;
   v10 = objc_opt_new();
-  [v10 setPayloadVisibleDescription:v9];
+  [v10 setPayloadVisibleDescription:descriptionCopy];
 
-  [v10 setPayloadSearchBase:v8];
-  if (v7)
+  [v10 setPayloadSearchBase:baseCopy];
+  if (scopeCopy)
   {
-    v11 = v7;
+    v11 = scopeCopy;
   }
 
   else
@@ -48,21 +48,21 @@
   return v10;
 }
 
-+ (id)buildRequiredOnlyWithSearchBase:(id)a3
++ (id)buildRequiredOnlyWithSearchBase:(id)base
 {
-  v3 = a3;
+  baseCopy = base;
   v4 = objc_opt_new();
-  [v4 setPayloadSearchBase:v3];
+  [v4 setPayloadSearchBase:baseCopy];
 
   return v4;
 }
 
-- (BOOL)loadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5
+- (BOOL)loadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error
 {
-  v7 = a3;
+  dictionaryCopy = dictionary;
   v8 = MEMORY[0x277CBEB58];
-  v9 = [v7 allKeys];
-  v10 = [v8 setWithArray:v9];
+  allKeys = [dictionaryCopy allKeys];
+  v10 = [v8 setWithArray:allKeys];
 
   v11 = +[RMModelAccountLDAPDeclaration_SearchSettingsItem allowedPayloadKeys];
   [v10 minusSet:v11];
@@ -70,32 +70,32 @@
   v12 = [v10 copy];
   [(RMModelPayloadBase *)self setUnknownPayloadKeys:v12];
 
-  v13 = [(RMModelPayloadBase *)self loadStringFromDictionary:v7 usingKey:@"VisibleDescription" forKeyPath:@"payloadVisibleDescription" isRequired:0 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadStringFromDictionary:v7 usingKey:@"SearchBase" forKeyPath:@"payloadSearchBase" isRequired:1 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadStringFromDictionary:v7 usingKey:@"Scope" forKeyPath:@"payloadScope" isRequired:0 defaultValue:@"Subtree" error:a5];
+  v13 = [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"VisibleDescription" forKeyPath:@"payloadVisibleDescription" isRequired:0 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"SearchBase" forKeyPath:@"payloadSearchBase" isRequired:1 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"Scope" forKeyPath:@"payloadScope" isRequired:0 defaultValue:@"Subtree" error:error];
   return v13;
 }
 
-- (id)serializeWithType:(signed __int16)a3
+- (id)serializeWithType:(signed __int16)type
 {
   v4 = objc_opt_new();
-  v5 = [(RMModelAccountLDAPDeclaration_SearchSettingsItem *)self payloadVisibleDescription];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"VisibleDescription" value:v5 isRequired:0 defaultValue:0];
+  payloadVisibleDescription = [(RMModelAccountLDAPDeclaration_SearchSettingsItem *)self payloadVisibleDescription];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"VisibleDescription" value:payloadVisibleDescription isRequired:0 defaultValue:0];
 
-  v6 = [(RMModelAccountLDAPDeclaration_SearchSettingsItem *)self payloadSearchBase];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"SearchBase" value:v6 isRequired:1 defaultValue:0];
+  payloadSearchBase = [(RMModelAccountLDAPDeclaration_SearchSettingsItem *)self payloadSearchBase];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"SearchBase" value:payloadSearchBase isRequired:1 defaultValue:0];
 
-  v7 = [(RMModelAccountLDAPDeclaration_SearchSettingsItem *)self payloadScope];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"Scope" value:v7 isRequired:0 defaultValue:@"Subtree"];
+  payloadScope = [(RMModelAccountLDAPDeclaration_SearchSettingsItem *)self payloadScope];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"Scope" value:payloadScope isRequired:0 defaultValue:@"Subtree"];
 
   v8 = [v4 copy];
 
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v12.receiver = self;
   v12.super_class = RMModelAccountLDAPDeclaration_SearchSettingsItem;
-  v4 = [(RMModelPayloadBase *)&v12 copyWithZone:a3];
+  v4 = [(RMModelPayloadBase *)&v12 copyWithZone:zone];
   v5 = [(NSString *)self->_payloadVisibleDescription copy];
   v6 = v4[2];
   v4[2] = v5;

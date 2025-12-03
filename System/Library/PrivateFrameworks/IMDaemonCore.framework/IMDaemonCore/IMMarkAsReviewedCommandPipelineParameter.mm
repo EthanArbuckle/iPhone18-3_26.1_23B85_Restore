@@ -1,30 +1,30 @@
 @interface IMMarkAsReviewedCommandPipelineParameter
-- (IMMarkAsReviewedCommandPipelineParameter)initWithDefusedMessage:(id)a3 idsTrustedData:(id)a4;
+- (IMMarkAsReviewedCommandPipelineParameter)initWithDefusedMessage:(id)message idsTrustedData:(id)data;
 - (id)description;
 @end
 
 @implementation IMMarkAsReviewedCommandPipelineParameter
 
-- (IMMarkAsReviewedCommandPipelineParameter)initWithDefusedMessage:(id)a3 idsTrustedData:(id)a4
+- (IMMarkAsReviewedCommandPipelineParameter)initWithDefusedMessage:(id)message idsTrustedData:(id)data
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  dataCopy = data;
   v32.receiver = self;
   v32.super_class = IMMarkAsReviewedCommandPipelineParameter;
   v8 = [(IMMarkAsReviewedCommandPipelineParameter *)&v32 init];
   if (v8)
   {
-    v9 = [v6 metadata];
-    v10 = [v9 messageGUID];
-    v11 = [v10 UUIDString];
+    metadata = [messageCopy metadata];
+    messageGUID = [metadata messageGUID];
+    uUIDString = [messageGUID UUIDString];
     GUID = v8->_GUID;
-    v8->_GUID = v11;
+    v8->_GUID = uUIDString;
 
-    v13 = [v9 has_timestamp];
+    has_timestamp = [metadata has_timestamp];
     v14 = MEMORY[0x277CCABB0];
-    if (v13)
+    if (has_timestamp)
     {
-      v15 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v9, "timestamp")}];
+      v15 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(metadata, "timestamp")}];
       timestamp = v8->_timestamp;
       v8->_timestamp = v15;
     }
@@ -38,32 +38,32 @@
       v8->_timestamp = v17;
     }
 
-    v8->_isFromMe = [v7 isFromMe];
-    v19 = [v9 storageContext];
-    v8->_isFromStorage = [v19 isFromStorage];
+    v8->_isFromMe = [dataCopy isFromMe];
+    storageContext = [metadata storageContext];
+    v8->_isFromStorage = [storageContext isFromStorage];
 
-    v20 = [v9 storageContext];
-    v8->_isLastFromStorage = [v20 isLastFromStorage];
+    storageContext2 = [metadata storageContext];
+    v8->_isLastFromStorage = [storageContext2 isLastFromStorage];
 
-    v21 = [v7 batchContext];
+    batchContext = [dataCopy batchContext];
     batchContext = v8->_batchContext;
-    v8->_batchContext = v21;
+    v8->_batchContext = batchContext;
 
-    v23 = [v7 fromIdentifier];
+    fromIdentifier = [dataCopy fromIdentifier];
     fromIdentifier = v8->_fromIdentifier;
-    v8->_fromIdentifier = v23;
+    v8->_fromIdentifier = fromIdentifier;
 
-    v25 = [v7 toIdentifier];
+    toIdentifier = [dataCopy toIdentifier];
     toIdentifier = v8->_toIdentifier;
-    v8->_toIdentifier = v25;
+    v8->_toIdentifier = toIdentifier;
 
-    v27 = [v7 fromToken];
+    fromToken = [dataCopy fromToken];
     fromToken = v8->_fromToken;
-    v8->_fromToken = v27;
+    v8->_fromToken = fromToken;
 
-    v29 = [v6 reviewedChatGUIDs];
+    reviewedChatGUIDs = [messageCopy reviewedChatGUIDs];
     reviewedChatGUIDs = v8->_reviewedChatGUIDs;
-    v8->_reviewedChatGUIDs = v29;
+    v8->_reviewedChatGUIDs = reviewedChatGUIDs;
   }
 
   return v8;
@@ -72,8 +72,8 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(IMMarkAsReviewedCommandPipelineParameter *)self GUID];
-  v5 = [(IMMarkAsReviewedCommandPipelineParameter *)self timestamp];
+  gUID = [(IMMarkAsReviewedCommandPipelineParameter *)self GUID];
+  timestamp = [(IMMarkAsReviewedCommandPipelineParameter *)self timestamp];
   if ([(IMMarkAsReviewedCommandPipelineParameter *)self isFromStorage])
   {
     v6 = @"YES";
@@ -104,9 +104,9 @@
     v8 = @"NO";
   }
 
-  v9 = [(IMMarkAsReviewedCommandPipelineParameter *)self chat];
-  v10 = [(IMMarkAsReviewedCommandPipelineParameter *)self reviewedChatGUIDs];
-  v11 = [v3 stringWithFormat:@"<IMMarkAsReviewedCommandPipelineParameter %p GUID = %@; timestamp = %@; isFromStorage = %@; isLastFromStorage = %@; isFromMe = %@; OUTPUT chat = %@; reviewedChatGUIDs = %@", self, v4, v5, v6, v7, v8, v9, v10];;
+  chat = [(IMMarkAsReviewedCommandPipelineParameter *)self chat];
+  reviewedChatGUIDs = [(IMMarkAsReviewedCommandPipelineParameter *)self reviewedChatGUIDs];
+  v11 = [v3 stringWithFormat:@"<IMMarkAsReviewedCommandPipelineParameter %p GUID = %@; timestamp = %@; isFromStorage = %@; isLastFromStorage = %@; isFromMe = %@; OUTPUT chat = %@; reviewedChatGUIDs = %@", self, gUID, timestamp, v6, v7, v8, chat, reviewedChatGUIDs];;
 
   return v11;
 }

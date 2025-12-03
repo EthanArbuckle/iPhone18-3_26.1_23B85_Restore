@@ -1,16 +1,16 @@
 @interface MAGObjectUnderstandingService
 - (_TtC16MagnifierSupport29MAGObjectUnderstandingService)init;
-- (void)session:(id)a3 didUpdateDetectedObjects:(id)a4;
+- (void)session:(id)session didUpdateDetectedObjects:(id)objects;
 @end
 
 @implementation MAGObjectUnderstandingService
 
-- (void)session:(id)a3 didUpdateDetectedObjects:(id)a4
+- (void)session:(id)session didUpdateDetectedObjects:(id)objects
 {
   sub_257BD2C2C(0, &qword_27F8F6598);
   v6 = sub_257ECF810();
-  v7 = a3;
-  v8 = self;
+  sessionCopy = session;
+  selfCopy = self;
   sub_257C575A8(v6);
 }
 

@@ -1,13 +1,13 @@
 @interface LibraryCollectionsService
-- (void)controllerDidChangeContent:(id)a3;
+- (void)controllerDidChangeContent:(id)content;
 @end
 
 @implementation LibraryCollectionsService
 
-- (void)controllerDidChangeContent:(id)a3
+- (void)controllerDidChangeContent:(id)content
 {
-  v4 = a3;
-  v5 = self;
+  contentCopy = content;
+  selfCopy = self;
   sub_100489254();
 }
 

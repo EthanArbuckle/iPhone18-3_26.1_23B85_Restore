@@ -1,18 +1,18 @@
 @interface RTMotionActivityManagerNotificationActivityAlarm
-- (RTMotionActivityManagerNotificationActivityAlarm)initWithActivityAlarmTrigger:(int64_t)a3;
+- (RTMotionActivityManagerNotificationActivityAlarm)initWithActivityAlarmTrigger:(int64_t)trigger;
 - (id)description;
 @end
 
 @implementation RTMotionActivityManagerNotificationActivityAlarm
 
-- (RTMotionActivityManagerNotificationActivityAlarm)initWithActivityAlarmTrigger:(int64_t)a3
+- (RTMotionActivityManagerNotificationActivityAlarm)initWithActivityAlarmTrigger:(int64_t)trigger
 {
   v5.receiver = self;
   v5.super_class = RTMotionActivityManagerNotificationActivityAlarm;
   result = [(RTNotification *)&v5 init];
   if (result)
   {
-    result->_trigger = a3;
+    result->_trigger = trigger;
   }
 
   return result;

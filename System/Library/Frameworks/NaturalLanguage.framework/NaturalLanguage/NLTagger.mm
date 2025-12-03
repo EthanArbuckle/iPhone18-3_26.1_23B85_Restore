@@ -1,10 +1,10 @@
 @interface NLTagger
 + (NSArray)availableTagSchemesForUnit:(NLTokenUnit)unit language:(NLLanguage)language;
-+ (id)availableTagSchemesForLanguage:(id)a3;
-+ (id)dominantScriptForString:(id)a3;
-+ (void)didReceiveAssetsChangedNotification:(id)a3;
++ (id)availableTagSchemesForLanguage:(id)language;
++ (id)dominantScriptForString:(id)string;
++ (void)didReceiveAssetsChangedNotification:(id)notification;
 + (void)registerForAssetNotifications;
-+ (void)requestAssetsForLanguage:(id)a3 assetIdentifier:(id)a4 tagScheme:(id)a5 completionHandler:(id)a6;
++ (void)requestAssetsForLanguage:(id)language assetIdentifier:(id)identifier tagScheme:(id)scheme completionHandler:(id)handler;
 + (void)unregisterForAssetNotifications;
 - (NLLanguage)dominantLanguage;
 - (NLTag)tagAtIndex:(NSUInteger)characterIndex unit:(NLTokenUnit)unit scheme:(NLTagScheme)scheme tokenRange:(NSRangePointer)tokenRange;
@@ -16,16 +16,16 @@
 - (NSRange)tokenRangeAtIndex:(NSUInteger)characterIndex unit:(NLTokenUnit)unit;
 - (NSRange)tokenRangeForRange:(NSRange)range unit:(NLTokenUnit)unit;
 - (NSString)description;
-- (_NSRange)sentenceRangeForRange:(_NSRange)a3;
-- (id)_customGazetteerAtIndex:(unint64_t)a3 unit:(int64_t)a4 gazetteerDictionary:(id)a5;
-- (id)_customHypothesesAtIndex:(unint64_t)a3 fromHypothesisDictionary:(id)a4;
-- (id)_customHypothesesAtIndex:(unint64_t)a3 unit:(int64_t)a4 scheme:(id)a5 maximumCount:(unint64_t)a6 options:(unint64_t)a7 modelDictionary:(id)a8 gazetteerDictionary:(id)a9;
-- (id)_customHypothesisDictionaryForSentence:(id)a3 options:(unint64_t)a4 model:(id)a5 gazetteer:(id)a6 maximumCount:(unint64_t)a7;
-- (id)_customModelAtIndex:(unint64_t)a3 unit:(int64_t)a4 modelDictionary:(id)a5;
-- (id)_customTagAtIndex:(unint64_t)a3 fromTagDictionary:(id)a4;
-- (id)_customTagAtIndex:(unint64_t)a3 unit:(int64_t)a4 scheme:(id)a5 options:(unint64_t)a6 modelDictionary:(id)a7 gazetteerDictionary:(id)a8;
-- (id)_customTagDictionaryForSentence:(id)a3 options:(unint64_t)a4 model:(id)a5 gazetteer:(id)a6;
-- (id)_tagSchemeForScheme:(id)a3;
+- (_NSRange)sentenceRangeForRange:(_NSRange)range;
+- (id)_customGazetteerAtIndex:(unint64_t)index unit:(int64_t)unit gazetteerDictionary:(id)dictionary;
+- (id)_customHypothesesAtIndex:(unint64_t)index fromHypothesisDictionary:(id)dictionary;
+- (id)_customHypothesesAtIndex:(unint64_t)index unit:(int64_t)unit scheme:(id)scheme maximumCount:(unint64_t)count options:(unint64_t)options modelDictionary:(id)dictionary gazetteerDictionary:(id)gazetteerDictionary;
+- (id)_customHypothesisDictionaryForSentence:(id)sentence options:(unint64_t)options model:(id)model gazetteer:(id)gazetteer maximumCount:(unint64_t)count;
+- (id)_customModelAtIndex:(unint64_t)index unit:(int64_t)unit modelDictionary:(id)dictionary;
+- (id)_customTagAtIndex:(unint64_t)index fromTagDictionary:(id)dictionary;
+- (id)_customTagAtIndex:(unint64_t)index unit:(int64_t)unit scheme:(id)scheme options:(unint64_t)options modelDictionary:(id)dictionary gazetteerDictionary:(id)gazetteerDictionary;
+- (id)_customTagDictionaryForSentence:(id)sentence options:(unint64_t)options model:(id)model gazetteer:(id)gazetteer;
+- (id)_tagSchemeForScheme:(id)scheme;
 - (id)dominantScript;
 - (void)dealloc;
 - (void)enumerateTagsInRange:(NSRange)range unit:(NLTokenUnit)unit scheme:(NLTagScheme)scheme options:(NLTaggerOptions)options usingBlock:(void *)block;
@@ -34,7 +34,7 @@
 - (void)setModels:(NSArray *)models forTagScheme:(NLTagScheme)tagScheme;
 - (void)setOrthography:(NSOrthography *)orthography range:(NSRange)range;
 - (void)setString:(NSString *)string;
-- (void)stringEditedInRange:(_NSRange)a3 changeInLength:(int64_t)a4;
+- (void)stringEditedInRange:(_NSRange)range changeInLength:(int64_t)length;
 @end
 
 @implementation NLTagger
@@ -45,7 +45,7 @@
   block[1] = 3221225472;
   block[2] = __41__NLTagger_registerForAssetNotifications__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (registerForAssetNotifications_onceToken != -1)
   {
     dispatch_once(&registerForAssetNotifications_onceToken, block);
@@ -83,26 +83,26 @@
   return v5;
 }
 
-+ (id)availableTagSchemesForLanguage:(id)a3
++ (id)availableTagSchemesForLanguage:(id)language
 {
   v4 = MEMORY[0x1E695DFA8];
-  v5 = a3;
+  languageCopy = language;
   v6 = [v4 set];
-  v7 = [a1 availableTagSchemesForUnit:0 language:v5];
+  v7 = [self availableTagSchemesForUnit:0 language:languageCopy];
   [v6 addObjectsFromArray:v7];
 
-  v8 = [a1 availableTagSchemesForUnit:1 language:v5];
+  v8 = [self availableTagSchemesForUnit:1 language:languageCopy];
   [v6 addObjectsFromArray:v8];
 
-  v9 = [a1 availableTagSchemesForUnit:2 language:v5];
+  v9 = [self availableTagSchemesForUnit:2 language:languageCopy];
   [v6 addObjectsFromArray:v9];
 
-  v10 = [a1 availableTagSchemesForUnit:3 language:v5];
+  v10 = [self availableTagSchemesForUnit:3 language:languageCopy];
 
   [v6 addObjectsFromArray:v10];
-  v11 = [v6 allObjects];
+  allObjects = [v6 allObjects];
 
-  return v11;
+  return allObjects;
 }
 
 void __41__NLTagger_registerForAssetNotifications__block_invoke(uint64_t a1)
@@ -113,35 +113,35 @@ void __41__NLTagger_registerForAssetNotifications__block_invoke(uint64_t a1)
 
 + (void)unregisterForAssetNotifications
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:a1 name:@"com.apple.DataDeliveryServices.AssetUpdatedAndCacheCleared-com.apple.MobileAsset.LinguisticData" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:@"com.apple.DataDeliveryServices.AssetUpdatedAndCacheCleared-com.apple.MobileAsset.LinguisticData" object:0];
 }
 
-+ (void)didReceiveAssetsChangedNotification:(id)a3
++ (void)didReceiveAssetsChangedNotification:(id)notification
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  notificationCopy = notification;
   v5 = objc_autoreleasePoolPush();
-  v6 = NLGetLogCategory(a1);
-  v7 = [v6 internal];
+  v6 = NLGetLogCategory(self);
+  internal = [v6 internal];
 
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(internal, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = NLGetLogIdentifier(a1);
+    v8 = NLGetLogIdentifier(self);
     v9 = MEMORY[0x1E696AEC0];
-    v10 = [v4 name];
-    v11 = [v9 stringWithFormat:@"Observed notification: %@", v10];
+    name = [notificationCopy name];
+    v11 = [v9 stringWithFormat:@"Observed notification: %@", name];
     *buf = 138543618;
     v15 = v8;
     v16 = 2114;
     v17 = v11;
-    _os_log_impl(&dword_19D48F000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@%{public}@", buf, 0x16u);
+    _os_log_impl(&dword_19D48F000, internal, OS_LOG_TYPE_DEFAULT, "%{public}@%{public}@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
   +[NLTaggerAssetRequest checkAssetRequests];
-  v12 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v12 postNotificationName:@"NLAssetsHaveChanged" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"NLAssetsHaveChanged" object:0];
 
   v13 = *MEMORY[0x1E69E9840];
 }
@@ -150,7 +150,7 @@ void __41__NLTagger_registerForAssetNotifications__block_invoke(uint64_t a1)
 {
   v4 = tagSchemes;
   v5 = [MEMORY[0x1E695DF70] arrayWithArray:v4];
-  v6 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (([v5 containsObject:@"Language"] & 1) == 0)
   {
     [v5 addObject:@"Language"];
@@ -195,42 +195,42 @@ void __41__NLTagger_registerForAssetNotifications__block_invoke(uint64_t a1)
   return v5;
 }
 
-- (id)_tagSchemeForScheme:(id)a3
+- (id)_tagSchemeForScheme:(id)scheme
 {
-  v4 = a3;
-  if ([(NSArray *)self->_schemes containsObject:v4])
+  schemeCopy = scheme;
+  if ([(NSArray *)self->_schemes containsObject:schemeCopy])
   {
     v5 = @"TokenType";
-    if (([@"TokenType" isEqualToString:v4] & 1) == 0)
+    if (([@"TokenType" isEqualToString:schemeCopy] & 1) == 0)
     {
       v5 = @"LexicalClass";
-      if (([@"LexicalClass" isEqualToString:v4] & 1) == 0)
+      if (([@"LexicalClass" isEqualToString:schemeCopy] & 1) == 0)
       {
         v5 = @"NameType";
-        if (([@"NameType" isEqualToString:v4] & 1) == 0)
+        if (([@"NameType" isEqualToString:schemeCopy] & 1) == 0)
         {
           v5 = @"NameTypeOrLexicalClass";
-          if (([@"NameTypeOrLexicalClass" isEqualToString:v4] & 1) == 0)
+          if (([@"NameTypeOrLexicalClass" isEqualToString:schemeCopy] & 1) == 0)
           {
             v5 = @"Lemma";
-            if (([@"Lemma" isEqualToString:v4] & 1) == 0)
+            if (([@"Lemma" isEqualToString:schemeCopy] & 1) == 0)
             {
               v5 = @"Language";
-              if (([@"Language" isEqualToString:v4] & 1) == 0)
+              if (([@"Language" isEqualToString:schemeCopy] & 1) == 0)
               {
                 v5 = @"Script";
-                if (([@"Script" isEqualToString:v4] & 1) == 0)
+                if (([@"Script" isEqualToString:schemeCopy] & 1) == 0)
                 {
                   v5 = @"Sentiment";
-                  if (([@"Sentiment" isEqualToString:v4] & 1) == 0)
+                  if (([@"Sentiment" isEqualToString:schemeCopy] & 1) == 0)
                   {
                     v5 = @"PossibleClasses";
-                    if (([@"PossibleClasses" isEqualToString:v4] & 1) == 0)
+                    if (([@"PossibleClasses" isEqualToString:schemeCopy] & 1) == 0)
                     {
                       v5 = @"InternalClass";
-                      if (![@"InternalClass" isEqualToString:v4])
+                      if (![@"InternalClass" isEqualToString:schemeCopy])
                       {
-                        v5 = v4;
+                        v5 = schemeCopy;
                       }
                     }
                   }
@@ -261,12 +261,12 @@ void __41__NLTagger_registerForAssetNotifications__block_invoke(uint64_t a1)
   NLTaggerSetString();
 }
 
-- (_NSRange)sentenceRangeForRange:(_NSRange)a3
+- (_NSRange)sentenceRangeForRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v6 = [(NLTagger *)self string];
-  v7 = [v6 length];
+  length = range.length;
+  location = range.location;
+  string = [(NLTagger *)self string];
+  v7 = [string length];
 
   if (location + length <= v7)
   {
@@ -289,9 +289,9 @@ void __41__NLTagger_registerForAssetNotifications__block_invoke(uint64_t a1)
   return result;
 }
 
-- (id)_customModelAtIndex:(unint64_t)a3 unit:(int64_t)a4 modelDictionary:(id)a5
+- (id)_customModelAtIndex:(unint64_t)index unit:(int64_t)unit modelDictionary:(id)dictionary
 {
-  v6 = a5;
+  dictionaryCopy = dictionary;
   tagger = self->_tagger;
   v8 = NLTaggerCopyTagAtIndex();
   if (!v8)
@@ -299,19 +299,19 @@ void __41__NLTagger_registerForAssetNotifications__block_invoke(uint64_t a1)
     v8 = @"und";
   }
 
-  v9 = [v6 objectForKey:v8];
+  v9 = [dictionaryCopy objectForKey:v8];
   if (!v9)
   {
-    v9 = [v6 objectForKey:@"und"];
+    v9 = [dictionaryCopy objectForKey:@"und"];
   }
 
   return v9;
 }
 
-- (id)_customGazetteerAtIndex:(unint64_t)a3 unit:(int64_t)a4 gazetteerDictionary:(id)a5
+- (id)_customGazetteerAtIndex:(unint64_t)index unit:(int64_t)unit gazetteerDictionary:(id)dictionary
 {
-  v7 = a5;
-  if (a4)
+  dictionaryCopy = dictionary;
+  if (unit)
   {
     v8 = 0;
     v9 = 0;
@@ -326,10 +326,10 @@ void __41__NLTagger_registerForAssetNotifications__block_invoke(uint64_t a1)
       v9 = @"und";
     }
 
-    v11 = [v7 objectForKey:v9];
+    v11 = [dictionaryCopy objectForKey:v9];
     if (!v11)
     {
-      v11 = [v7 objectForKey:@"und"];
+      v11 = [dictionaryCopy objectForKey:@"und"];
     }
 
     v8 = v11;
@@ -338,27 +338,27 @@ void __41__NLTagger_registerForAssetNotifications__block_invoke(uint64_t a1)
   return v8;
 }
 
-- (id)_customTagDictionaryForSentence:(id)a3 options:(unint64_t)a4 model:(id)a5 gazetteer:(id)a6
+- (id)_customTagDictionaryForSentence:(id)sentence options:(unint64_t)options model:(id)model gazetteer:(id)gazetteer
 {
-  v50 = a4;
+  optionsCopy = options;
   v56[2] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  v54 = a6;
-  v10 = [MEMORY[0x1E695DF70] array];
-  v11 = [MEMORY[0x1E695DF70] array];
+  sentenceCopy = sentence;
+  modelCopy = model;
+  gazetteerCopy = gazetteer;
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   [MEMORY[0x1E695DF70] array];
-  v49 = v53 = v8;
-  generateTokenSequence(v8, 0, v10, v11, v49);
-  v12 = [v10 count];
+  v49 = v53 = sentenceCopy;
+  generateTokenSequence(sentenceCopy, 0, array, array2, v49);
+  v12 = [array count];
   if (v12)
   {
     v13 = v12;
     v14 = MEMORY[0x1E695DF70];
-    v15 = [v9 predictedLabelsForTokens:v10];
+    v15 = [modelCopy predictedLabelsForTokens:array];
     v16 = [v14 arrayWithArray:v15];
 
-    v17 = [MEMORY[0x1E695DF70] array];
+    array3 = [MEMORY[0x1E695DF70] array];
     if ([v16 count] < v13)
     {
       v18 = [v16 count];
@@ -376,22 +376,22 @@ void __41__NLTagger_registerForAssetNotifications__block_invoke(uint64_t a1)
     }
 
     v51 = v16;
-    v47 = v10;
-    v48 = v9;
+    v47 = array;
+    v48 = modelCopy;
     for (i = 0; i != v13; ++i)
     {
       v21 = MEMORY[0x1E696B098];
-      v22 = [v11 objectAtIndex:i];
-      v23 = [v22 unsignedIntegerValue];
+      v22 = [array2 objectAtIndex:i];
+      unsignedIntegerValue = [v22 unsignedIntegerValue];
       v24 = [v49 objectAtIndex:i];
-      v25 = [v21 valueWithRange:{v23, objc_msgSend(v24, "unsignedIntegerValue")}];
-      [v17 addObject:v25];
+      v25 = [v21 valueWithRange:{unsignedIntegerValue, objc_msgSend(v24, "unsignedIntegerValue")}];
+      [array3 addObject:v25];
     }
 
-    v52 = v17;
-    v45 = v11;
+    v52 = array3;
+    v45 = array2;
     v26 = v51;
-    if (!v54)
+    if (!gazetteerCopy)
     {
       goto LABEL_21;
     }
@@ -414,17 +414,17 @@ LABEL_13:
       }
 
       v30 = [v52 objectAtIndex:v27];
-      v31 = [v30 rangeValue];
+      rangeValue = [v30 rangeValue];
       v33 = v32;
       v34 = [v52 objectAtIndex:v27 + v29];
       v59.location = [v34 rangeValue];
       v59.length = v35;
-      v58.location = v31;
+      v58.location = rangeValue;
       v58.length = v33;
       v36 = NSUnionRange(v58, v59);
 
       v37 = [v53 substringWithRange:{v36.location, v36.length}];
-      v38 = [v54 labelForString:v37];
+      v38 = [gazetteerCopy labelForString:v37];
       if (!v38)
       {
         break;
@@ -433,7 +433,7 @@ LABEL_13:
       v39 = v38;
       v40 = v27;
       v26 = v51;
-      if ((v50 & 0x10) != 0)
+      if ((optionsCopy & 0x10) != 0)
       {
         [v52 removeObjectsInRange:{v27, v29 + 1}];
         [v51 removeObjectsInRange:{v27, v29 + 1}];
@@ -465,9 +465,9 @@ LABEL_21:
         v56[1] = v52;
         v42 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v56 forKeys:v55 count:{2, v45}];
 
-        v10 = v47;
-        v9 = v48;
-        v11 = v46;
+        array = v47;
+        modelCopy = v48;
+        array2 = v46;
         goto LABEL_23;
       }
     }
@@ -483,11 +483,11 @@ LABEL_23:
   return v42;
 }
 
-- (id)_customTagAtIndex:(unint64_t)a3 fromTagDictionary:(id)a4
+- (id)_customTagAtIndex:(unint64_t)index fromTagDictionary:(id)dictionary
 {
-  v5 = a4;
-  v6 = [v5 objectForKey:@"labels"];
-  v7 = [v5 objectForKey:@"ranges"];
+  dictionaryCopy = dictionary;
+  v6 = [dictionaryCopy objectForKey:@"labels"];
+  v7 = [dictionaryCopy objectForKey:@"ranges"];
   v8 = [v6 count];
   if (v8)
   {
@@ -496,10 +496,10 @@ LABEL_23:
     while (1)
     {
       v11 = [v7 objectAtIndex:v10];
-      v12 = [v11 rangeValue];
+      rangeValue = [v11 rangeValue];
       v14 = v13;
 
-      if (a3 >= v12 && a3 - v12 < v14)
+      if (index >= rangeValue && index - rangeValue < v14)
       {
         break;
       }
@@ -522,33 +522,33 @@ LABEL_6:
   return v15;
 }
 
-- (id)_customTagAtIndex:(unint64_t)a3 unit:(int64_t)a4 scheme:(id)a5 options:(unint64_t)a6 modelDictionary:(id)a7 gazetteerDictionary:(id)a8
+- (id)_customTagAtIndex:(unint64_t)index unit:(int64_t)unit scheme:(id)scheme options:(unint64_t)options modelDictionary:(id)dictionary gazetteerDictionary:(id)gazetteerDictionary
 {
-  v13 = a8;
-  v14 = [(NLTagger *)self _customModelAtIndex:a3 unit:a4 modelDictionary:a7];
+  gazetteerDictionaryCopy = gazetteerDictionary;
+  v14 = [(NLTagger *)self _customModelAtIndex:index unit:unit modelDictionary:dictionary];
   if (!v14)
   {
     v22 = 0;
     goto LABEL_34;
   }
 
-  v34 = v13;
+  v34 = gazetteerDictionaryCopy;
   v15 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v14];
-  v16 = [(NLTagger *)self string];
-  v17 = v16;
+  string = [(NLTagger *)self string];
+  v17 = string;
   v18 = 0;
-  if (a4 > 1)
+  if (unit > 1)
   {
-    if (a4 == 2)
+    if (unit == 2)
     {
-      v20 = [v16 paragraphRangeForRange:{a3, 0}];
+      v20 = [string paragraphRangeForRange:{index, 0}];
       goto LABEL_22;
     }
 
     v19 = 0;
-    if (a4 == 3)
+    if (unit == 3)
     {
-      v18 = [v16 length];
+      v18 = [string length];
       v23 = v17;
 LABEL_23:
       v19 = v23;
@@ -557,46 +557,46 @@ LABEL_23:
 
   else
   {
-    if (!a4)
+    if (!unit)
     {
-      v24 = [(NLTagger *)self sentenceRangeForRange:a3, 0];
+      v24 = [(NLTagger *)self sentenceRangeForRange:index, 0];
       v26 = v25;
       v33 = v24;
       v19 = [v17 substringWithRange:?];
-      v27 = [(NSMutableDictionary *)self->_sequenceCaches objectForKey:v15];
-      v28 = [v27 objectForKey:v19];
+      dictionary = [(NSMutableDictionary *)self->_sequenceCaches objectForKey:v15];
+      v28 = [dictionary objectForKey:v19];
       if (!v28 && v26)
       {
-        v29 = [(NLTagger *)self _customGazetteerAtIndex:a3 unit:0 gazetteerDictionary:v34];
-        v30 = a6;
+        v29 = [(NLTagger *)self _customGazetteerAtIndex:index unit:0 gazetteerDictionary:v34];
+        optionsCopy = options;
         v31 = v29;
-        v28 = [(NLTagger *)self _customTagDictionaryForSentence:v19 options:v30 model:v14 gazetteer:v29];
+        v28 = [(NLTagger *)self _customTagDictionaryForSentence:v19 options:optionsCopy model:v14 gazetteer:v29];
         if (v28 && v26 <= 0x400)
         {
-          if ([v27 count] >= 0x40)
+          if ([dictionary count] >= 0x40)
           {
-            [v27 removeAllObjects];
+            [dictionary removeAllObjects];
           }
 
-          if (!v27)
+          if (!dictionary)
           {
-            v27 = [MEMORY[0x1E695DF90] dictionary];
-            [(NSMutableDictionary *)self->_sequenceCaches setObject:v27 forKey:v15];
+            dictionary = [MEMORY[0x1E695DF90] dictionary];
+            [(NSMutableDictionary *)self->_sequenceCaches setObject:dictionary forKey:v15];
           }
 
-          [v27 setObject:v28 forKey:v19];
+          [dictionary setObject:v28 forKey:v19];
         }
       }
 
-      v22 = [(NLTagger *)self _customTagAtIndex:a3 - v33 fromTagDictionary:v28];
+      v22 = [(NLTagger *)self _customTagAtIndex:index - v33 fromTagDictionary:v28];
 
       goto LABEL_33;
     }
 
     v19 = 0;
-    if (a4 == 1)
+    if (unit == 1)
     {
-      v20 = [(NLTagger *)self sentenceRangeForRange:a3, 0];
+      v20 = [(NLTagger *)self sentenceRangeForRange:index, 0];
 LABEL_22:
       v18 = v21;
       v23 = [v17 substringWithRange:{v20, v21}];
@@ -604,8 +604,8 @@ LABEL_22:
     }
   }
 
-  v27 = [(NSMutableDictionary *)self->_classifierCaches objectForKey:v15];
-  v22 = [v27 objectForKey:v19];
+  dictionary = [(NSMutableDictionary *)self->_classifierCaches objectForKey:v15];
+  v22 = [dictionary objectForKey:v19];
   if (!v22)
   {
     if (v18)
@@ -615,18 +615,18 @@ LABEL_22:
       {
         if (v18 <= 0x400)
         {
-          if ([v27 count] >= 0x40)
+          if ([dictionary count] >= 0x40)
           {
-            [v27 removeAllObjects];
+            [dictionary removeAllObjects];
           }
 
-          if (!v27)
+          if (!dictionary)
           {
-            v27 = [MEMORY[0x1E695DF90] dictionary];
-            [(NSMutableDictionary *)self->_classifierCaches setObject:v27 forKey:v15];
+            dictionary = [MEMORY[0x1E695DF90] dictionary];
+            [(NSMutableDictionary *)self->_classifierCaches setObject:dictionary forKey:v15];
           }
 
-          [v27 setObject:v22 forKey:v19];
+          [dictionary setObject:v22 forKey:v19];
         }
       }
     }
@@ -634,35 +634,35 @@ LABEL_22:
 
 LABEL_33:
 
-  v13 = v34;
+  gazetteerDictionaryCopy = v34;
 LABEL_34:
 
   return v22;
 }
 
-- (id)_customHypothesisDictionaryForSentence:(id)a3 options:(unint64_t)a4 model:(id)a5 gazetteer:(id)a6 maximumCount:(unint64_t)a7
+- (id)_customHypothesisDictionaryForSentence:(id)sentence options:(unint64_t)options model:(id)model gazetteer:(id)gazetteer maximumCount:(unint64_t)count
 {
-  v54 = a4;
+  optionsCopy = options;
   v66[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a5;
-  v61 = a6;
-  v12 = [MEMORY[0x1E695DF70] array];
-  v13 = [MEMORY[0x1E695DF70] array];
+  sentenceCopy = sentence;
+  modelCopy = model;
+  gazetteerCopy = gazetteer;
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   [MEMORY[0x1E695DF70] array];
-  v57 = v60 = v10;
-  generateTokenSequence(v10, 0, v12, v13, v57);
-  v14 = [v12 count];
+  v57 = v60 = sentenceCopy;
+  generateTokenSequence(sentenceCopy, 0, array, array2, v57);
+  v14 = [array count];
   if (v14)
   {
     v15 = v14;
-    v16 = v12;
+    v16 = array;
     v17 = MEMORY[0x1E695DF70];
     v53 = v16;
-    v18 = [v11 predictedLabelHypothesesForTokens:? maximumCount:?];
+    v18 = [modelCopy predictedLabelHypothesesForTokens:? maximumCount:?];
     v19 = [v17 arrayWithArray:v18];
 
-    v62 = [MEMORY[0x1E695DF70] array];
+    array3 = [MEMORY[0x1E695DF70] array];
     if ([v19 count] < v15)
     {
       v20 = [v19 count];
@@ -687,11 +687,11 @@ LABEL_34:
     do
     {
       v26 = *(v24 + 152);
-      v27 = [v13 objectAtIndex:v23];
-      v28 = [v27 unsignedIntegerValue];
+      v27 = [array2 objectAtIndex:v23];
+      unsignedIntegerValue = [v27 unsignedIntegerValue];
       v29 = [v57 objectAtIndex:v23];
-      v30 = [v26 valueWithRange:{v28, objc_msgSend(v29, "unsignedIntegerValue")}];
-      [v62 addObject:v30];
+      v30 = [v26 valueWithRange:{unsignedIntegerValue, objc_msgSend(v29, "unsignedIntegerValue")}];
+      [array3 addObject:v30];
 
       v24 = 0x1E696B000;
       ++v23;
@@ -699,15 +699,15 @@ LABEL_34:
 
     while (v15 != v23);
     v31 = v59;
-    v32 = v62;
-    if (!v61 || !a7)
+    v32 = array3;
+    if (!gazetteerCopy || !count)
     {
       goto LABEL_23;
     }
 
     v33 = 0;
-    v55 = v13;
-    v56 = v11;
+    v55 = array2;
+    v56 = modelCopy;
     while (1)
     {
       v34 = 4;
@@ -719,25 +719,25 @@ LABEL_15:
         --v34;
         if (v35 == -1)
         {
-          v13 = v55;
-          v11 = v56;
+          array2 = v55;
+          modelCopy = v56;
           v25 = v57;
           goto LABEL_22;
         }
       }
 
       v36 = [v32 objectAtIndex:v33];
-      v37 = [v36 rangeValue];
+      rangeValue = [v36 rangeValue];
       v39 = v38;
       v40 = [v32 objectAtIndex:v33 + v35];
       v69.location = [v40 rangeValue];
       v69.length = v41;
-      v68.location = v37;
+      v68.location = rangeValue;
       v68.length = v39;
       v42 = NSUnionRange(v68, v69);
 
       v43 = [v60 substringWithRange:{v42.location, v42.length}];
-      v44 = [v61 labelForString:v43];
+      v44 = [gazetteerCopy labelForString:v43];
       if (!v44)
       {
         break;
@@ -751,12 +751,12 @@ LABEL_15:
 
       v47 = v33;
       v31 = v59;
-      if ((v54 & 0x10) != 0)
+      if ((optionsCopy & 0x10) != 0)
       {
-        [v62 removeObjectsInRange:{v33, v35 + 1}];
+        [array3 removeObjectsInRange:{v33, v35 + 1}];
         [v59 removeObjectsInRange:{v33, v35 + 1}];
         v49 = [MEMORY[0x1E696B098] valueWithRange:{v42.location, v42.length}];
-        [v62 insertObject:v49 atIndex:v33];
+        [array3 insertObject:v49 atIndex:v33];
 
         v48 = v58;
         [v59 insertObject:v58 atIndex:v33];
@@ -777,9 +777,9 @@ LABEL_15:
         v48 = v58;
       }
 
-      v13 = v55;
-      v11 = v56;
-      v32 = v62;
+      array2 = v55;
+      modelCopy = v56;
+      v32 = array3;
 LABEL_22:
       if (++v33 >= v15)
       {
@@ -790,13 +790,13 @@ LABEL_23:
         v64[1] = v32;
         v50 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v64 forKeys:v63 count:2];
 
-        v12 = v53;
+        array = v53;
         goto LABEL_25;
       }
     }
 
     v31 = v59;
-    v32 = v62;
+    v32 = array3;
     goto LABEL_15;
   }
 
@@ -809,11 +809,11 @@ LABEL_25:
   return v50;
 }
 
-- (id)_customHypothesesAtIndex:(unint64_t)a3 fromHypothesisDictionary:(id)a4
+- (id)_customHypothesesAtIndex:(unint64_t)index fromHypothesisDictionary:(id)dictionary
 {
-  v5 = a4;
-  v6 = [v5 objectForKey:@"hypotheses"];
-  v7 = [v5 objectForKey:@"ranges"];
+  dictionaryCopy = dictionary;
+  v6 = [dictionaryCopy objectForKey:@"hypotheses"];
+  v7 = [dictionaryCopy objectForKey:@"ranges"];
   v8 = [v6 count];
   if (v8)
   {
@@ -823,10 +823,10 @@ LABEL_25:
     while (1)
     {
       v12 = [v7 objectAtIndex:v10];
-      v13 = [v12 rangeValue];
+      rangeValue = [v12 rangeValue];
       v15 = v14;
 
-      if (a3 >= v13 && a3 - v13 < v15)
+      if (index >= rangeValue && index - rangeValue < v15)
       {
         break;
       }
@@ -850,45 +850,45 @@ LABEL_9:
   return v11;
 }
 
-- (id)_customHypothesesAtIndex:(unint64_t)a3 unit:(int64_t)a4 scheme:(id)a5 maximumCount:(unint64_t)a6 options:(unint64_t)a7 modelDictionary:(id)a8 gazetteerDictionary:(id)a9
+- (id)_customHypothesesAtIndex:(unint64_t)index unit:(int64_t)unit scheme:(id)scheme maximumCount:(unint64_t)count options:(unint64_t)options modelDictionary:(id)dictionary gazetteerDictionary:(id)gazetteerDictionary
 {
-  v15 = a9;
-  v16 = [(NLTagger *)self _customModelAtIndex:a3 unit:a4 modelDictionary:a8];
+  gazetteerDictionaryCopy = gazetteerDictionary;
+  v16 = [(NLTagger *)self _customModelAtIndex:index unit:unit modelDictionary:dictionary];
   if (!v16)
   {
     v22 = 0;
     goto LABEL_16;
   }
 
-  v17 = [(NLTagger *)self string];
-  v18 = v17;
+  string = [(NLTagger *)self string];
+  v18 = string;
   v19 = 0;
-  if (a4 > 1)
+  if (unit > 1)
   {
-    if (a4 == 2)
+    if (unit == 2)
     {
-      v20 = [v17 paragraphRangeForRange:{a3, 0}];
+      v20 = [string paragraphRangeForRange:{index, 0}];
       goto LABEL_12;
     }
 
-    if (a4 == 3)
+    if (unit == 3)
     {
-      [v17 length];
+      [string length];
       v23 = v18;
 LABEL_13:
       v19 = v23;
     }
 
 LABEL_14:
-    v22 = [v16 predictedLabelHypothesesForString:v19 maximumCount:a6];
+    v22 = [v16 predictedLabelHypothesesForString:v19 maximumCount:count];
     goto LABEL_15;
   }
 
-  if (a4)
+  if (unit)
   {
-    if (a4 == 1)
+    if (unit == 1)
     {
-      v20 = [(NLTagger *)self sentenceRangeForRange:a3, 0];
+      v20 = [(NLTagger *)self sentenceRangeForRange:index, 0];
 LABEL_12:
       v23 = [v18 substringWithRange:{v20, v21}];
       goto LABEL_13;
@@ -897,11 +897,11 @@ LABEL_12:
     goto LABEL_14;
   }
 
-  v24 = [(NLTagger *)self sentenceRangeForRange:a3, 0];
+  v24 = [(NLTagger *)self sentenceRangeForRange:index, 0];
   v19 = [v18 substringWithRange:{v24, v25}];
-  v26 = [(NLTagger *)self _customGazetteerAtIndex:a3 unit:0 gazetteerDictionary:v15];
-  v27 = [(NLTagger *)self _customHypothesisDictionaryForSentence:v19 options:a7 model:v16 gazetteer:v26 maximumCount:a6];
-  v22 = [(NLTagger *)self _customHypothesesAtIndex:a3 - v24 fromHypothesisDictionary:v27];
+  v26 = [(NLTagger *)self _customGazetteerAtIndex:index unit:0 gazetteerDictionary:gazetteerDictionaryCopy];
+  v27 = [(NLTagger *)self _customHypothesisDictionaryForSentence:v19 options:options model:v16 gazetteer:v26 maximumCount:count];
+  v22 = [(NLTagger *)self _customHypothesesAtIndex:index - v24 fromHypothesisDictionary:v27];
 
 LABEL_15:
 LABEL_16:
@@ -1066,24 +1066,24 @@ LABEL_13:
   length = range.length;
   location = range.location;
   v13 = scheme;
-  v14 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   if (tokenRanges)
   {
-    v15 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
   }
 
   else
   {
-    v15 = 0;
+    array2 = 0;
   }
 
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __56__NLTagger_tagsInRange_unit_scheme_options_tokenRanges___block_invoke;
   v22[3] = &unk_1E76293F0;
-  v16 = v14;
+  v16 = array;
   v23 = v16;
-  v17 = v15;
+  v17 = array2;
   v24 = v17;
   [(NLTagger *)self enumerateTagsInRange:location unit:length scheme:unit options:v13 usingBlock:options, v22];
   if (tokenRanges)
@@ -1147,9 +1147,9 @@ void __56__NLTagger_tagsInRange_unit_scheme_options_tokenRanges___block_invoke(u
     v17 = [(NSMutableDictionary *)self->_customModelDictionaries objectForKey:v16];
     v18 = [(NSMutableDictionary *)self->_customGazetteerDictionaries objectForKey:v16];
     v19 = v18;
-    if (!v17 || ([(NLTagger *)self _customHypothesesAtIndex:characterIndex unit:unit scheme:v16 maximumCount:maximumCount options:0 modelDictionary:v17 gazetteerDictionary:v18], (v20 = objc_claimAutoreleasedReturnValue()) == 0))
+    if (!v17 || ([(NLTagger *)self _customHypothesesAtIndex:characterIndex unit:unit scheme:v16 maximumCount:maximumCount options:0 modelDictionary:v17 gazetteerDictionary:v18], (dictionary = objc_claimAutoreleasedReturnValue()) == 0))
     {
-      v20 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
       tagger = self->_tagger;
       v43 = v19;
       v44 = NLTaggerCopyHypothesesAtIndex();
@@ -1185,7 +1185,7 @@ void __56__NLTagger_tagsInRange_unit_scheme_options_tokenRanges___block_invoke(u
               if (v29 > 0.0)
               {
                 v30 = tagForNLTag(v27);
-                [v20 setObject:v28 forKey:v30];
+                [dictionary setObject:v28 forKey:v30];
               }
             }
 
@@ -1203,14 +1203,14 @@ void __56__NLTagger_tagsInRange_unit_scheme_options_tokenRanges___block_invoke(u
         maximumCount = v38;
       }
 
-      v31 = [v20 count];
+      v31 = [dictionary count];
       if (maximumCount && !v31)
       {
         v32 = [(NLTagger *)self tagAtIndex:characterIndex unit:unit scheme:v16 tokenRange:tokenRange];
         if (v32)
         {
           v33 = [MEMORY[0x1E696AD98] numberWithDouble:1.0];
-          [v20 setObject:v33 forKey:v32];
+          [dictionary setObject:v33 forKey:v32];
 
           v19 = v43;
         }
@@ -1233,7 +1233,7 @@ void __56__NLTagger_tagsInRange_unit_scheme_options_tokenRanges___block_invoke(u
       }
     }
 
-    v34 = v20;
+    v34 = dictionary;
   }
 
 LABEL_30:
@@ -1334,22 +1334,22 @@ LABEL_30:
   return v3;
 }
 
-+ (id)dominantScriptForString:(id)a3
++ (id)dominantScriptForString:(id)string
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  stringCopy = string;
   v4 = [NLTagger alloc];
   v10[0] = @"Script";
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
   v6 = [(NLTagger *)v4 initWithTagSchemes:v5];
 
-  [(NLTagger *)v6 setString:v3];
-  v7 = [(NLTagger *)v6 dominantScript];
+  [(NLTagger *)v6 setString:stringCopy];
+  dominantScript = [(NLTagger *)v6 dominantScript];
   [(NLTagger *)v6 setString:0];
 
   v8 = *MEMORY[0x1E69E9840];
 
-  return v7;
+  return dominantScript;
 }
 
 - (void)setLanguage:(NLLanguage)language range:(NSRange)range
@@ -1405,7 +1405,7 @@ LABEL_30:
   v21 = &v22;
   v8 = v7;
   v17 = v8;
-  v18 = self;
+  selfCopy = self;
   [(NLTagger *)self enumerateTagsInRange:location unit:length scheme:0 options:@"Script" usingBlock:14, v16];
   v9 = v34;
   v10 = v34[5];
@@ -1501,9 +1501,9 @@ void __33__NLTagger_setOrthography_range___block_invoke(uint64_t a1, void *a2, u
 LABEL_15:
 }
 
-- (void)stringEditedInRange:(_NSRange)a3 changeInLength:(int64_t)a4
+- (void)stringEditedInRange:(_NSRange)range changeInLength:(int64_t)length
 {
-  v5 = [(NLTagger *)self string:a3.location];
+  v5 = [(NLTagger *)self string:range.location];
   [(NLTagger *)self setString:v5];
 }
 
@@ -1512,7 +1512,7 @@ LABEL_15:
   v31 = *MEMORY[0x1E69E9840];
   v6 = models;
   v25 = tagScheme;
-  v7 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (!self->_customModels)
   {
     v8 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -1561,15 +1561,15 @@ LABEL_15:
         }
 
         v21 = *(*(&v26 + 1) + 8 * i);
-        v22 = [v21 configuration];
-        v23 = [v22 language];
+        configuration = [v21 configuration];
+        language = [configuration language];
 
-        if (!v23)
+        if (!language)
         {
-          v23 = @"und";
+          language = @"und";
         }
 
-        [v7 setObject:v21 forKey:v23];
+        [dictionary setObject:v21 forKey:language];
       }
 
       v18 = [(NSArray *)v16 countByEnumeratingWithState:&v26 objects:v30 count:16];
@@ -1579,7 +1579,7 @@ LABEL_15:
   }
 
   [(NSMutableDictionary *)self->_customModels setObject:v16 forKey:v25];
-  [(NSMutableDictionary *)self->_customModelDictionaries setObject:v7 forKey:v25];
+  [(NSMutableDictionary *)self->_customModelDictionaries setObject:dictionary forKey:v25];
   [(NSMutableDictionary *)self->_classifierCaches removeAllObjects];
   [(NSMutableDictionary *)self->_sequenceCaches removeAllObjects];
 
@@ -1588,13 +1588,13 @@ LABEL_15:
 
 - (NSArray)modelsForTagScheme:(NLTagScheme)tagScheme
 {
-  v3 = [(NSMutableDictionary *)self->_customModels objectForKey:tagScheme];
-  if (!v3)
+  array = [(NSMutableDictionary *)self->_customModels objectForKey:tagScheme];
+  if (!array)
   {
-    v3 = [MEMORY[0x1E695DEC8] array];
+    array = [MEMORY[0x1E695DEC8] array];
   }
 
-  return v3;
+  return array;
 }
 
 - (void)setGazetteers:(NSArray *)gazetteers forTagScheme:(NLTagScheme)tagScheme
@@ -1603,7 +1603,7 @@ LABEL_15:
   v6 = gazetteers;
   v22 = tagScheme;
   Mutable = CFArrayCreateMutable(0, 0, MEMORY[0x1E695E9C0]);
-  v8 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
@@ -1624,13 +1624,13 @@ LABEL_15:
         }
 
         v14 = *(*(&v23 + 1) + 8 * i);
-        v15 = [v14 language];
-        if (!v15)
+        language = [v14 language];
+        if (!language)
         {
-          v15 = @"und";
+          language = @"und";
         }
 
-        [v8 setObject:v14 forKey:v15];
+        [dictionary setObject:v14 forKey:language];
         [v14 _addImplementationToArray:Mutable];
       }
 
@@ -1655,7 +1655,7 @@ LABEL_15:
   }
 
   [(NSMutableDictionary *)self->_customGazetteers setObject:v9 forKey:v22];
-  [(NSMutableDictionary *)self->_customGazetteerDictionaries setObject:v8 forKey:v22];
+  [(NSMutableDictionary *)self->_customGazetteerDictionaries setObject:dictionary forKey:v22];
   tagger = self->_tagger;
   NLTaggerSetGazetteers();
   CFRelease(Mutable);
@@ -1665,59 +1665,59 @@ LABEL_15:
 
 - (NSArray)gazetteersForTagScheme:(NLTagScheme)tagScheme
 {
-  v3 = [(NSMutableDictionary *)self->_customGazetteers objectForKey:tagScheme];
-  if (!v3)
+  array = [(NSMutableDictionary *)self->_customGazetteers objectForKey:tagScheme];
+  if (!array)
   {
-    v3 = [MEMORY[0x1E695DEC8] array];
+    array = [MEMORY[0x1E695DEC8] array];
   }
 
-  return v3;
+  return array;
 }
 
-+ (void)requestAssetsForLanguage:(id)a3 assetIdentifier:(id)a4 tagScheme:(id)a5 completionHandler:(id)a6
++ (void)requestAssetsForLanguage:(id)language assetIdentifier:(id)identifier tagScheme:(id)scheme completionHandler:(id)handler
 {
   v47 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  languageCopy = language;
+  identifierCopy = identifier;
+  schemeCopy = scheme;
+  handlerCopy = handler;
   v14 = objc_autoreleasePoolPush();
-  v15 = NLGetLogCategory(a1);
-  v16 = [v15 internal];
+  v15 = NLGetLogCategory(self);
+  internal = [v15 internal];
 
-  if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(internal, OS_LOG_TYPE_DEFAULT))
   {
-    v17 = NLGetLogIdentifier(a1);
-    v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Requested assets for '%@', language: '%@', identifier: '%@'", v12, v10, v11];
+    v17 = NLGetLogIdentifier(self);
+    identifierCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Requested assets for '%@', language: '%@', identifier: '%@'", schemeCopy, languageCopy, identifierCopy];
     *buf = 138543618;
     v44 = v17;
     v45 = 2114;
-    v46 = v18;
-    _os_log_impl(&dword_19D48F000, v16, OS_LOG_TYPE_DEFAULT, "%{public}@%{public}@", buf, 0x16u);
+    v46 = identifierCopy;
+    _os_log_impl(&dword_19D48F000, internal, OS_LOG_TYPE_DEFAULT, "%{public}@%{public}@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v14);
-  v19 = [[NLTaggerAssetRequest alloc] initWithLanguage:v10 assetIdentifier:v11 tagScheme:v12 completionHandler:v13];
+  v19 = [[NLTaggerAssetRequest alloc] initWithLanguage:languageCopy assetIdentifier:identifierCopy tagScheme:schemeCopy completionHandler:handlerCopy];
   +[NLTagger registerForAssetNotifications];
   if (v19)
   {
-    v20 = [(NLTaggerAssetRequest *)v19 isFulfilled];
+    isFulfilled = [(NLTaggerAssetRequest *)v19 isFulfilled];
     v21 = objc_autoreleasePoolPush();
-    v22 = NLGetLogCategory(a1);
-    v23 = [v22 internal];
+    v22 = NLGetLogCategory(self);
+    internal2 = [v22 internal];
 
-    v24 = os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT);
-    if (v20)
+    v24 = os_log_type_enabled(internal2, OS_LOG_TYPE_DEFAULT);
+    if (isFulfilled)
     {
       if (v24)
       {
-        v25 = NLGetLogIdentifier(a1);
-        v26 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Assets for '%@', language: '%@', identifier: '%@' are available", v12, v10, v11];
+        v25 = NLGetLogIdentifier(self);
+        identifierCopy2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Assets for '%@', language: '%@', identifier: '%@' are available", schemeCopy, languageCopy, identifierCopy];
         *buf = 138543618;
         v44 = v25;
         v45 = 2114;
-        v46 = v26;
-        _os_log_impl(&dword_19D48F000, v23, OS_LOG_TYPE_DEFAULT, "%{public}@%{public}@", buf, 0x16u);
+        v46 = identifierCopy2;
+        _os_log_impl(&dword_19D48F000, internal2, OS_LOG_TYPE_DEFAULT, "%{public}@%{public}@", buf, 0x16u);
       }
 
       objc_autoreleasePoolPop(v21);
@@ -1728,13 +1728,13 @@ LABEL_15:
     {
       if (v24)
       {
-        v35 = NLGetLogIdentifier(a1);
-        v36 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Placing request with asset download service for '%@', language: '%@', identifier: '%@'", v12, v10, v11];
+        v35 = NLGetLogIdentifier(self);
+        identifierCopy3 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Placing request with asset download service for '%@', language: '%@', identifier: '%@'", schemeCopy, languageCopy, identifierCopy];
         *buf = 138543618;
         v44 = v35;
         v45 = 2114;
-        v46 = v36;
-        _os_log_impl(&dword_19D48F000, v23, OS_LOG_TYPE_DEFAULT, "%{public}@%{public}@", buf, 0x16u);
+        v46 = identifierCopy3;
+        _os_log_impl(&dword_19D48F000, internal2, OS_LOG_TYPE_DEFAULT, "%{public}@%{public}@", buf, 0x16u);
       }
 
       objc_autoreleasePoolPop(v21);
@@ -1749,7 +1749,7 @@ LABEL_15:
       v39[2] = __81__NLTagger_requestAssetsForLanguage_assetIdentifier_tagScheme_completionHandler___block_invoke;
       v39[3] = &unk_1E7629440;
       v40 = v19;
-      [v37 requestLinguisticAssetsForLanguage:v10 completion:v39];
+      [v37 requestLinguisticAssetsForLanguage:languageCopy completion:v39];
     }
   }
 
@@ -1762,22 +1762,22 @@ LABEL_15:
     v29 = [v27 errorWithDomain:@"NLNaturalLanguageErrorDomain" code:7 userInfo:v28];
 
     v30 = objc_autoreleasePoolPush();
-    v31 = NLGetLogCategory(a1);
-    v32 = [v31 internal];
+    v31 = NLGetLogCategory(self);
+    internal3 = [v31 internal];
 
-    if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(internal3, OS_LOG_TYPE_ERROR))
     {
-      v33 = NLGetLogIdentifier(a1);
+      v33 = NLGetLogIdentifier(self);
       v34 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Error requesting assets: %@", v29];
       *buf = 138543618;
       v44 = v33;
       v45 = 2114;
       v46 = v34;
-      _os_log_impl(&dword_19D48F000, v32, OS_LOG_TYPE_ERROR, "%{public}@%{public}@", buf, 0x16u);
+      _os_log_impl(&dword_19D48F000, internal3, OS_LOG_TYPE_ERROR, "%{public}@%{public}@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v30);
-    v13[2](v13, 2, v29);
+    handlerCopy[2](handlerCopy, 2, v29);
   }
 
   v38 = *MEMORY[0x1E69E9840];

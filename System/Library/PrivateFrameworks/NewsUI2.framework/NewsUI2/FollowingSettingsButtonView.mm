@@ -6,9 +6,9 @@
 
 - (NSString)accessibilityLabel
 {
-  v2 = self;
-  v3 = [(FollowingSettingsButtonView *)v2 titleLabel];
-  if (v3 && (v4 = v3, v5 = [v3 text], v4, v5))
+  selfCopy = self;
+  titleLabel = [(FollowingSettingsButtonView *)selfCopy titleLabel];
+  if (titleLabel && (v4 = titleLabel, v5 = [titleLabel text], v4, v5))
   {
     sub_219BF5414();
 

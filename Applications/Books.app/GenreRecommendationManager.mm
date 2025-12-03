@@ -1,18 +1,18 @@
 @interface GenreRecommendationManager
 - (_TtC5Books26GenreRecommendationManager)init;
-- (void)account:(unint64_t)a3 didChangeWithReason:(unint64_t)a4;
+- (void)account:(unint64_t)account didChangeWithReason:(unint64_t)reason;
 @end
 
 @implementation GenreRecommendationManager
 
-- (void)account:(unint64_t)a3 didChangeWithReason:(unint64_t)a4
+- (void)account:(unint64_t)account didChangeWithReason:(unint64_t)reason
 {
   v4 = *(&self->super.isa + OBJC_IVAR____TtC5Books26GenreRecommendationManager_defaults);
-  v7 = self;
+  selfCopy = self;
   v5 = sub_1007A2214();
   [v4 removeObjectForKey:v5];
 
-  v6 = *(&v7->super.isa + OBJC_IVAR____TtC5Books26GenreRecommendationManager_stateLock);
+  v6 = *(&selfCopy->super.isa + OBJC_IVAR____TtC5Books26GenreRecommendationManager_stateLock);
   os_unfair_lock_lock((v6 + 28));
   sub_100548570(*(v6 + 16), *(v6 + 24));
   *(v6 + 16) = 0;

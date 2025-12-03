@@ -1,33 +1,33 @@
 @interface BWAdaptiveCorrectionPreviewRegistration
-+ (uint64_t)flattenNarrowerToWiderTransforms:(int)a3@<W4> narrowerDimensions:(_OWORD *)a4@<X8> narrowerFinalCropRect:(double)a5@<D0> atNarrowerToWiderCameraScale:(double)a6@<D1> useYAnchorAtHeightCenter:(double)a7@<D2>;
-- (BWAdaptiveCorrectionPreviewRegistration)initWithCameraInfoByPortType:(id)a3 excludeStaticComponentFromAlignmentShifts:(BOOL)a4;
-- (CGFloat)_estimatedSagPositionUsingOISShift:(double)a3 forPortType:(double)a4;
-- (float64_t)_fundamentalMatrixFromCalibration:(uint64_t)a3@<X2> narrowerMetadata:(uint64_t)a4@<X3> widerMetadata:(_OWORD *)a5@<X8>;
-- (int)allocateResourcesWithVideoFormat:(id)a3 metalContext:(id)a4;
-- (int)computeAlignmentFromWiderSampleBuffer:(opaqueCMSampleBuffer *)a3 narrowerSampleBuffer:(opaqueCMSampleBuffer *)a4 narrowerToWiderTransformsOut:(id *)a5;
-- (int)computeApproximateCorrectionForWiderCamera:(opaqueCMSampleBuffer *)a3 narrowerCameraPortType:(id)a4 narrowerPixelBufferDimensions:(id)a5 narrowerToWiderCameraScale:(double)a6 narrowerToWiderTransformsOut:(id *)a7;
-- (int)registerWiderSampleBufferUsingADC:(opaqueCMSampleBuffer *)a3 narrowerSampleBuffer:(opaqueCMSampleBuffer *)a4 narrowerRect:(CGRect)a5 macroTransitionType:(int)a6 narrowerToWiderTransformsOut:(id *)a7;
-- (uint64_t)_computeApproximateHomographyAtDepth:(uint64_t)a3@<X2> calibration:(void *)a4@<X3> narrowerPortType:(unint64_t)a5@<X4> widerMetadata:(float64x2_t *)a6@<X8> pixelBufferDimensions:(double)a7@<D0>;
-- (uint64_t)_computeApproximateOISCalibrationFromWiderMetadata:(uint64_t)a3 narrowerPortType:(double *)a4 narrowerToWiderCameraScale:(double)a5 calibrationOut:;
-- (uint64_t)_computeOISCalibrationFromWiderMetadata:(uint64_t)a3 narrowerMetadata:(int)a4 updateEstimatedSagPositions:(int)a5 excludeEstimatedSagFromAlignment:(uint64_t)a6 calibrationOut:;
-- (uint64_t)_estimateDepthFromKeypointsUsingCalibration:(float64x2_t *)a3 narrowerRawSensorResolution:(int)a4 fundamentalMatrix:(void *)a5 macroTransitionType:(float64x2_t)a6 totalZoomFactor:(float64x2_t)a7 consolidatedDepthsOut:(float64x2_t)a8;
-- (uint64_t)_homographyAtDepth:(void *)a3@<X2> calibration:(void *)a4@<X3> narrowerMetadata:(uint64_t)a5@<X4> widerMetadata:(char)a6@<W5> pixelBufferDimensions:(float64x2_t *)a7@<X8> excludeExtrinsics:(double)a8@<D0>;
++ (uint64_t)flattenNarrowerToWiderTransforms:(int)transforms@<W4> narrowerDimensions:(_OWORD *)dimensions@<X8> narrowerFinalCropRect:(double)rect@<D0> atNarrowerToWiderCameraScale:(double)scale@<D1> useYAnchorAtHeightCenter:(double)center@<D2>;
+- (BWAdaptiveCorrectionPreviewRegistration)initWithCameraInfoByPortType:(id)type excludeStaticComponentFromAlignmentShifts:(BOOL)shifts;
+- (CGFloat)_estimatedSagPositionUsingOISShift:(double)shift forPortType:(double)type;
+- (float64_t)_fundamentalMatrixFromCalibration:(uint64_t)calibration@<X2> narrowerMetadata:(uint64_t)metadata@<X3> widerMetadata:(_OWORD *)widerMetadata@<X8>;
+- (int)allocateResourcesWithVideoFormat:(id)format metalContext:(id)context;
+- (int)computeAlignmentFromWiderSampleBuffer:(opaqueCMSampleBuffer *)buffer narrowerSampleBuffer:(opaqueCMSampleBuffer *)sampleBuffer narrowerToWiderTransformsOut:(id *)out;
+- (int)computeApproximateCorrectionForWiderCamera:(opaqueCMSampleBuffer *)camera narrowerCameraPortType:(id)type narrowerPixelBufferDimensions:(id)dimensions narrowerToWiderCameraScale:(double)scale narrowerToWiderTransformsOut:(id *)out;
+- (int)registerWiderSampleBufferUsingADC:(opaqueCMSampleBuffer *)c narrowerSampleBuffer:(opaqueCMSampleBuffer *)buffer narrowerRect:(CGRect)rect macroTransitionType:(int)type narrowerToWiderTransformsOut:(id *)out;
+- (uint64_t)_computeApproximateHomographyAtDepth:(uint64_t)depth@<X2> calibration:(void *)calibration@<X3> narrowerPortType:(unint64_t)type@<X4> widerMetadata:(float64x2_t *)metadata@<X8> pixelBufferDimensions:(double)dimensions@<D0>;
+- (uint64_t)_computeApproximateOISCalibrationFromWiderMetadata:(uint64_t)metadata narrowerPortType:(double *)type narrowerToWiderCameraScale:(double)scale calibrationOut:;
+- (uint64_t)_computeOISCalibrationFromWiderMetadata:(uint64_t)metadata narrowerMetadata:(int)narrowerMetadata updateEstimatedSagPositions:(int)positions excludeEstimatedSagFromAlignment:(uint64_t)alignment calibrationOut:;
+- (uint64_t)_estimateDepthFromKeypointsUsingCalibration:(float64x2_t *)calibration narrowerRawSensorResolution:(int)resolution fundamentalMatrix:(void *)matrix macroTransitionType:(float64x2_t)type totalZoomFactor:(float64x2_t)factor consolidatedDepthsOut:(float64x2_t)out;
+- (uint64_t)_homographyAtDepth:(void *)depth@<X2> calibration:(void *)calibration@<X3> narrowerMetadata:(uint64_t)metadata@<X4> widerMetadata:(char)widerMetadata@<W5> pixelBufferDimensions:(float64x2_t *)dimensions@<X8> excludeExtrinsics:(double)extrinsics@<D0>;
 - (uint64_t)_loadAdaptiveCorrectionSymbols;
-- (uint64_t)_updateCorrectedCalibrationUsingInitialOISCalibration:(int)a3 macroTransitionType:;
-- (uint64_t)_verifyRegistrationTransform:(uint64_t)a3 usingInitialOISCalibration:(uint64_t)a4 narrowerMetadata:(uint64_t)a5 widerMetadata:(unint64_t)a6 narrowerDimensions:;
+- (uint64_t)_updateCorrectedCalibrationUsingInitialOISCalibration:(int)calibration macroTransitionType:;
+- (uint64_t)_verifyRegistrationTransform:(uint64_t)transform usingInitialOISCalibration:(uint64_t)calibration narrowerMetadata:(uint64_t)metadata widerMetadata:(unint64_t)widerMetadata narrowerDimensions:;
 - (void)cleanupResources;
 - (void)dealloc;
 @end
 
 @implementation BWAdaptiveCorrectionPreviewRegistration
 
-- (BWAdaptiveCorrectionPreviewRegistration)initWithCameraInfoByPortType:(id)a3 excludeStaticComponentFromAlignmentShifts:(BOOL)a4
+- (BWAdaptiveCorrectionPreviewRegistration)initWithCameraInfoByPortType:(id)type excludeStaticComponentFromAlignmentShifts:(BOOL)shifts
 {
   v37.receiver = self;
   v37.super_class = BWAdaptiveCorrectionPreviewRegistration;
   v6 = [(BWAdaptiveCorrectionPreviewRegistration *)&v37 init];
   v7 = v6;
-  if (!a3)
+  if (!type)
   {
     [BWAdaptiveCorrectionPreviewRegistration initWithCameraInfoByPortType:excludeStaticComponentFromAlignmentShifts:];
 LABEL_25:
@@ -40,16 +40,16 @@ LABEL_25:
     return v7;
   }
 
-  v24 = a4;
+  shiftsCopy = shifts;
   v6->_tuningParameters = objc_alloc_init(BWAdaptiveCorrectionPreviewRegistrationTuningParameters);
   v25 = v7;
   v7->_estimatedSagPositionsByPortType = [MEMORY[0x1E695DF90] dictionary];
-  v30 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  obj = [a3 allKeys];
+  obj = [type allKeys];
   v31 = [obj countByEnumeratingWithState:&v33 objects:v32 count:16];
   if (!v31)
   {
@@ -74,25 +74,25 @@ LABEL_25:
       }
 
       v14 = *(*(&v33 + 1) + 8 * i);
-      v15 = [MEMORY[0x1E695DF90] dictionary];
-      v16 = [objc_msgSend(a3 objectForKeyedSubscript:{v14), "objectForKeyedSubscript:", v8}];
+      dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+      v16 = [objc_msgSend(type objectForKeyedSubscript:{v14), "objectForKeyedSubscript:", v8}];
       if (!v16)
       {
         [BWAdaptiveCorrectionPreviewRegistration initWithCameraInfoByPortType:excludeStaticComponentFromAlignmentShifts:];
         goto LABEL_24;
       }
 
-      [v15 setObject:v16 forKeyedSubscript:v8];
-      v17 = [objc_msgSend(a3 objectForKeyedSubscript:{v14), "objectForKeyedSubscript:", v9}];
+      [dictionary2 setObject:v16 forKeyedSubscript:v8];
+      v17 = [objc_msgSend(type objectForKeyedSubscript:{v14), "objectForKeyedSubscript:", v9}];
       if (!v17)
       {
         [BWAdaptiveCorrectionPreviewRegistration initWithCameraInfoByPortType:excludeStaticComponentFromAlignmentShifts:];
         goto LABEL_24;
       }
 
-      [v15 setObject:v17 forKeyedSubscript:v9];
+      [dictionary2 setObject:v17 forKeyedSubscript:v9];
       v18 = [v14 isEqualToString:v28];
-      v19 = [a3 objectForKeyedSubscript:v14];
+      v19 = [type objectForKeyedSubscript:v14];
       if (v18)
       {
         v20 = [v19 objectForKeyedSubscript:v26];
@@ -115,24 +115,24 @@ LABEL_24:
         }
       }
 
-      [v15 setObject:v20 forKeyedSubscript:v10];
-      v21 = [objc_msgSend(a3 objectForKeyedSubscript:{v14), "objectForKeyedSubscript:", v11}];
+      [dictionary2 setObject:v20 forKeyedSubscript:v10];
+      v21 = [objc_msgSend(type objectForKeyedSubscript:{v14), "objectForKeyedSubscript:", v11}];
       if (!v21)
       {
         [BWAdaptiveCorrectionPreviewRegistration initWithCameraInfoByPortType:excludeStaticComponentFromAlignmentShifts:];
         goto LABEL_24;
       }
 
-      [v15 setObject:v21 forKeyedSubscript:v11];
-      v22 = [objc_msgSend(a3 objectForKeyedSubscript:{v14), "objectForKeyedSubscript:", v12}];
+      [dictionary2 setObject:v21 forKeyedSubscript:v11];
+      v22 = [objc_msgSend(type objectForKeyedSubscript:{v14), "objectForKeyedSubscript:", v12}];
       if (!v22)
       {
         [BWAdaptiveCorrectionPreviewRegistration initWithCameraInfoByPortType:excludeStaticComponentFromAlignmentShifts:];
         goto LABEL_24;
       }
 
-      [v15 setObject:v22 forKeyedSubscript:v12];
-      [v30 setObject:v15 forKeyedSubscript:v14];
+      [dictionary2 setObject:v22 forKeyedSubscript:v12];
+      [dictionary setObject:dictionary2 forKeyedSubscript:v14];
     }
 
     v31 = [obj countByEnumeratingWithState:&v33 objects:v32 count:16];
@@ -146,17 +146,17 @@ LABEL_24:
 
 LABEL_18:
   v7 = v25;
-  v25->_staticParametersByPortType = v30;
+  v25->_staticParametersByPortType = dictionary;
   v25->_registrationPoolReadyAssertion = [+[BWMemoryPool sharedMemoryPool](BWMemoryPool newFlushAssertion:"newFlushAssertion:", @"BWAdaptiveCorrectionPreviewRegistration registrationPool"];
-  v25->_excludeExtrinsicsCorrectionFromWideTeleAlignment = v24;
-  v25->_excludeEstimatedSagFromWideTeleAlignment = v24;
+  v25->_excludeExtrinsicsCorrectionFromWideTeleAlignment = shiftsCopy;
+  v25->_excludeEstimatedSagFromWideTeleAlignment = shiftsCopy;
   v25->_sagEstimationAlpha = 0.01;
   return v7;
 }
 
-- (int)allocateResourcesWithVideoFormat:(id)a3 metalContext:(id)a4
+- (int)allocateResourcesWithVideoFormat:(id)format metalContext:(id)context
 {
-  if (!a4)
+  if (!context)
   {
     [BWAdaptiveCorrectionPreviewRegistration allocateResourcesWithVideoFormat:metalContext:];
 LABEL_36:
@@ -164,7 +164,7 @@ LABEL_36:
     goto LABEL_33;
   }
 
-  if (!a3)
+  if (!format)
   {
     [BWAdaptiveCorrectionPreviewRegistration allocateResourcesWithVideoFormat:metalContext:];
     goto LABEL_36;
@@ -181,7 +181,7 @@ LABEL_33:
     return v35;
   }
 
-  self->_metalContext = a4;
+  self->_metalContext = context;
   v7 = [objc_alloc(MEMORY[0x1E6991788]) initWithCommandQueue:{-[FigMetalContext commandQueue](self->_metalContext, "commandQueue")}];
   self->_keypointDetector = v7;
   if (v7)
@@ -269,15 +269,15 @@ LABEL_33:
       }
 
       [(BWVideoFormatRequirements *)v19 setHeight:v23];
-      v39 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(a3, "pixelFormat")}];
+      v39 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(format, "pixelFormat")}];
       -[BWVideoFormatRequirements setSupportedPixelFormats:](v19, "setSupportedPixelFormats:", [MEMORY[0x1E695DEC8] arrayWithObjects:&v39 count:1]);
       v38 = v19;
       v24 = -[BWPixelBufferPool initWithVideoFormat:capacity:name:memoryPool:]([BWPixelBufferPool alloc], "initWithVideoFormat:capacity:name:memoryPool:", +[BWVideoFormat formatByResolvingRequirements:](BWVideoFormat, "formatByResolvingRequirements:", [MEMORY[0x1E695DEC8] arrayWithObjects:&v38 count:1]), 2, @"BWAdaptiveCorrectionPreviewRegistration", +[BWMemoryPool sharedMemoryPool](BWMemoryPool, "sharedMemoryPool"));
       self->_registrationPool = v24;
       if (v24)
       {
-        v25 = [(BWAdaptiveCorrectionPreviewRegistrationTuningParameters *)self->_tuningParameters configuredNumKeypoints];
-        v26 = malloc_type_malloc(24 * v25, 0x1000040504FFAC1uLL);
+        configuredNumKeypoints = [(BWAdaptiveCorrectionPreviewRegistrationTuningParameters *)self->_tuningParameters configuredNumKeypoints];
+        v26 = malloc_type_malloc(24 * configuredNumKeypoints, 0x1000040504FFAC1uLL);
         self->_keypointList = v26;
         if (v26)
         {
@@ -286,7 +286,7 @@ LABEL_33:
           do
           {
             v29 = v28;
-            v30 = malloc_type_malloc(16 * v25, 0x100004000313F17uLL);
+            v30 = malloc_type_malloc(16 * configuredNumKeypoints, 0x100004000313F17uLL);
             self->_validKeypointsInSensorResolution[v27] = v30;
             if (!v30)
             {
@@ -294,7 +294,7 @@ LABEL_33:
               goto LABEL_32;
             }
 
-            v31 = malloc_type_malloc(16 * v25, 0x100004000313F17uLL);
+            v31 = malloc_type_malloc(16 * configuredNumKeypoints, 0x100004000313F17uLL);
             self->_transposedKeypoints[v27] = v31;
             if (!v31)
             {
@@ -309,7 +309,7 @@ LABEL_33:
           while ((v29 & 1) != 0);
           for (i = 0; i != 3; ++i)
           {
-            v33 = malloc_type_malloc(8 * v25, 0x100004000313F17uLL);
+            v33 = malloc_type_malloc(8 * configuredNumKeypoints, 0x100004000313F17uLL);
             self->_keypointWeights[i] = v33;
             if (!v33)
             {
@@ -318,7 +318,7 @@ LABEL_33:
             }
           }
 
-          v34 = malloc_type_malloc(8 * v25, 0x100004000313F17uLL);
+          v34 = malloc_type_malloc(8 * configuredNumKeypoints, 0x100004000313F17uLL);
           self->_keypointDepths = v34;
           if (v34)
           {
@@ -347,16 +347,16 @@ LABEL_33:
   return 0;
 }
 
-- (int)registerWiderSampleBufferUsingADC:(opaqueCMSampleBuffer *)a3 narrowerSampleBuffer:(opaqueCMSampleBuffer *)a4 narrowerRect:(CGRect)a5 macroTransitionType:(int)a6 narrowerToWiderTransformsOut:(id *)a7
+- (int)registerWiderSampleBufferUsingADC:(opaqueCMSampleBuffer *)c narrowerSampleBuffer:(opaqueCMSampleBuffer *)buffer narrowerRect:(CGRect)rect macroTransitionType:(int)type narrowerToWiderTransformsOut:(id *)out
 {
   v247 = 0;
   v248[0] = 0;
   v245 = 0;
   v246 = 0;
-  *&v193.f64[0] = [MEMORY[0x1E695DF70] arrayWithCapacity:{2, a5.origin.x, a5.origin.y, a5.size.width, a5.size.height}];
+  *&v193.f64[0] = [MEMORY[0x1E695DF70] arrayWithCapacity:{2, rect.origin.x, rect.origin.y, rect.size.width, rect.size.height}];
   v12 = [MEMORY[0x1E695DF70] arrayWithCapacity:2];
-  __dst = a7;
-  if (!a3 || !a4)
+  __dst = out;
+  if (!c || !buffer)
   {
     [BWAdaptiveCorrectionPreviewRegistration registerWiderSampleBufferUsingADC:narrowerSampleBuffer:narrowerRect:macroTransitionType:narrowerToWiderTransformsOut:];
 LABEL_50:
@@ -364,35 +364,35 @@ LABEL_50:
     goto LABEL_37;
   }
 
-  if (!a7)
+  if (!out)
   {
     [BWAdaptiveCorrectionPreviewRegistration registerWiderSampleBufferUsingADC:narrowerSampleBuffer:narrowerRect:macroTransitionType:narrowerToWiderTransformsOut:];
     goto LABEL_50;
   }
 
   v13 = v12;
-  LODWORD(v162) = a6;
+  LODWORD(v162) = type;
   v14 = 0;
   *&v178 = v226;
   *&v173 = &v228;
   v15 = *off_1E798A3C8;
   v16 = *off_1E798B540;
-  v17 = a3;
+  cCopy = c;
   v18 = *off_1E7989E50;
   v19 = v248;
   v20 = 1;
-  *&v157 = a4;
+  *&v157 = buffer;
   *&v193.f64[1] = self;
   do
   {
     v21 = v20;
-    *v19 = CMSampleBufferGetImageBuffer(a4);
-    [*&v193.f64[0] setObject:CMGetAttachment(a4 atIndexedSubscript:{v15, 0), v14}];
+    *v19 = CMSampleBufferGetImageBuffer(buffer);
+    [*&v193.f64[0] setObject:CMGetAttachment(buffer atIndexedSubscript:{v15, 0), v14}];
     [v13 setObject:objc_msgSend(objc_msgSend(*&v193.f64[0] atIndexedSubscript:{"objectAtIndexedSubscript:", v14), "objectForKeyedSubscript:", v16), v14}];
     [objc_msgSend(objc_msgSend(*(*&v193.f64[1] + 48) objectForKeyedSubscript:{objc_msgSend(v13, "objectAtIndexedSubscript:", v14)), "objectForKeyedSubscript:", v18), "doubleValue"}];
     v20 = 0;
     v19 = &v247;
-    a4 = v17;
+    buffer = cCopy;
     v14 = 1;
   }
 
@@ -477,9 +477,9 @@ LABEL_12:
     [*&v193.f64[0] objectAtIndexedSubscript:v26];
     FigCFDictionaryGetCGRectIfPresent();
     self = *&v193.f64[1];
-    v40 = [*(*&v193.f64[1] + 608) newPixelBuffer];
-    *v28 = v40;
-    if (!v40)
+    newPixelBuffer = [*(*&v193.f64[1] + 608) newPixelBuffer];
+    *v28 = newPixelBuffer;
+    if (!newPixelBuffer)
     {
       [BWAdaptiveCorrectionPreviewRegistration registerWiderSampleBufferUsingADC:narrowerSampleBuffer:narrowerRect:macroTransitionType:narrowerToWiderTransformsOut:];
 LABEL_45:
@@ -774,16 +774,16 @@ LABEL_37:
   return v116;
 }
 
-- (uint64_t)_homographyAtDepth:(void *)a3@<X2> calibration:(void *)a4@<X3> narrowerMetadata:(uint64_t)a5@<X4> widerMetadata:(char)a6@<W5> pixelBufferDimensions:(float64x2_t *)a7@<X8> excludeExtrinsics:(double)a8@<D0>
+- (uint64_t)_homographyAtDepth:(void *)depth@<X2> calibration:(void *)calibration@<X3> narrowerMetadata:(uint64_t)metadata@<X4> widerMetadata:(char)widerMetadata@<W5> pixelBufferDimensions:(float64x2_t *)dimensions@<X8> excludeExtrinsics:(double)extrinsics@<D0>
 {
   if (result)
   {
     v49 = [MEMORY[0x1E695DF70] arrayWithCapacity:2];
-    v150 = a3;
-    [v49 setObject:a3 atIndexedSubscript:0];
+    depthCopy = depth;
+    [v49 setObject:depth atIndexedSubscript:0];
     v50 = 1;
-    v151 = a4;
-    [v49 setObject:a4 atIndexedSubscript:1];
+    calibrationCopy = calibration;
+    [v49 setObject:calibration atIndexedSubscript:1];
     v51 = 0;
     v52 = *off_1E798B540;
     v53 = *off_1E798B5A0;
@@ -814,7 +814,7 @@ LABEL_37:
     }
 
     while ((v60 & 1) != 0);
-    if (a6)
+    if (widerMetadata)
     {
       v69 = xmmword_1AD046820;
       v70 = xmmword_1AD046830;
@@ -822,7 +822,7 @@ LABEL_37:
       v72 = 0uLL;
       v73 = 0uLL;
       v74 = 0uLL;
-      v75 = v150;
+      v75 = depthCopy;
     }
 
     else
@@ -881,7 +881,7 @@ LABEL_37:
       a40 = 0u;
       a41 = 0u;
       a42 = 0u;
-      v75 = v150;
+      v75 = depthCopy;
       do
       {
         v91 = *(&STACK[0x670] + v84);
@@ -908,14 +908,14 @@ LABEL_37:
     }
 
     v94 = 0;
-    v64.f64[0] = -1.0 / a8;
+    v64.f64[0] = -1.0 / extrinsics;
     v95 = vmulq_f64(v64, v74);
-    v96 = vmulq_n_f64(v68, -1.0 / a8);
+    v96 = vmulq_n_f64(v68, -1.0 / extrinsics);
     v98 = *&STACK[0x610];
     v97 = *&STACK[0x620];
     v100 = *&STACK[0x630];
     v99 = *&STACK[0x640];
-    v101 = vmulq_n_f64(0, -1.0 / a8);
+    v101 = vmulq_n_f64(0, -1.0 / extrinsics);
     v102 = vsubq_f64(v70, v101);
     v103 = vsubq_f64(v69, v101);
     v105 = *&STACK[0x650];
@@ -998,9 +998,9 @@ LABEL_37:
     a22 = 0u;
     a23 = 0u;
     a24 = 0u;
-    acpr_computePixelBufferToRawSensorHomography(v75, a5, &a19);
+    acpr_computePixelBufferToRawSensorHomography(v75, metadata, &a19);
     vars0 = 0u;
-    acpr_computePixelBufferToRawSensorHomography(v151, a5, &vars0);
+    acpr_computePixelBufferToRawSensorHomography(calibrationCopy, metadata, &vars0);
     *&STACK[0x690] = 0u;
     *&STACK[0x6A0] = 0u;
     *&STACK[0x6B0] = 0u;
@@ -1039,57 +1039,57 @@ LABEL_37:
     v138 = *&STACK[0x6A0];
     v141 = *&STACK[0x6B0];
     v140 = *&STACK[0x6C0];
-    *a7 = 0u;
-    a7[1] = 0u;
-    a7[2] = 0u;
-    a7[3] = 0u;
-    a7[4] = 0u;
-    a7[5] = 0u;
+    *dimensions = 0u;
+    dimensions[1] = 0u;
+    dimensions[2] = 0u;
+    dimensions[3] = 0u;
+    dimensions[4] = 0u;
+    dimensions[5] = 0u;
     do
     {
       v143 = *(&a19 + v135 * 16);
       v142 = *(&a19 + v135 * 16 + 16);
-      v144 = &a7[v135];
+      v144 = &dimensions[v135];
       *v144 = vmlaq_n_f64(vmlaq_laneq_f64(vmulq_n_f64(v137, v143.f64[0]), v139, v143, 1), v141, *&v142);
       v144[1] = vmlaq_n_f64(vmlaq_laneq_f64(vmulq_n_f64(v136, v143.f64[0]), v138, v143, 1), v140, *&v142);
       v135 += 2;
     }
 
     while (v135 != 6);
-    v145 = a7[5];
-    v146 = vmulq_n_f64(a7[1], v145.f64[0]);
-    v147 = vmulq_n_f64(a7[3], v145.f64[0]);
-    v148 = vmulq_n_f64(a7[2], v145.f64[0]);
-    v149 = vmulq_n_f64(a7[4], v145.f64[0]);
-    *a7 = vmulq_n_f64(*a7, v145.f64[0]);
-    a7[1] = v146;
-    a7[2] = v148;
-    a7[3] = v147;
-    a7[4] = v149;
-    a7[5] = vmulq_n_f64(v145, v145.f64[0]);
+    v145 = dimensions[5];
+    v146 = vmulq_n_f64(dimensions[1], v145.f64[0]);
+    v147 = vmulq_n_f64(dimensions[3], v145.f64[0]);
+    v148 = vmulq_n_f64(dimensions[2], v145.f64[0]);
+    v149 = vmulq_n_f64(dimensions[4], v145.f64[0]);
+    *dimensions = vmulq_n_f64(*dimensions, v145.f64[0]);
+    dimensions[1] = v146;
+    dimensions[2] = v148;
+    dimensions[3] = v147;
+    dimensions[4] = v149;
+    dimensions[5] = vmulq_n_f64(v145, v145.f64[0]);
   }
 
   else
   {
-    a7[4] = 0u;
-    a7[5] = 0u;
-    a7[2] = 0u;
-    a7[3] = 0u;
-    *a7 = 0u;
-    a7[1] = 0u;
+    dimensions[4] = 0u;
+    dimensions[5] = 0u;
+    dimensions[2] = 0u;
+    dimensions[3] = 0u;
+    *dimensions = 0u;
+    dimensions[1] = 0u;
   }
 
   return result;
 }
 
-- (float64_t)_fundamentalMatrixFromCalibration:(uint64_t)a3@<X2> narrowerMetadata:(uint64_t)a4@<X3> widerMetadata:(_OWORD *)a5@<X8>
+- (float64_t)_fundamentalMatrixFromCalibration:(uint64_t)calibration@<X2> narrowerMetadata:(uint64_t)metadata@<X3> widerMetadata:(_OWORD *)widerMetadata@<X8>
 {
-  if (a1)
+  if (self)
   {
     v49 = [MEMORY[0x1E695DF70] arrayWithCapacity:2];
     v50 = [MEMORY[0x1E695DF70] arrayWithCapacity:2];
-    [v49 setObject:a3 atIndexedSubscript:0];
-    [v49 setObject:a4 atIndexedSubscript:1];
+    [v49 setObject:calibration atIndexedSubscript:0];
+    [v49 setObject:metadata atIndexedSubscript:1];
     v51 = 0;
     *&v52 = a2[6];
     *&v53 = a2[7];
@@ -1125,7 +1125,7 @@ LABEL_37:
     }
 
     while (v51 != 96);
-    v145 = a5;
+    widerMetadataCopy = widerMetadata;
     v66 = 0;
     v68 = a22;
     v67 = a23;
@@ -1211,12 +1211,12 @@ LABEL_37:
     v141 = *&v91;
     v142 = vdupq_laneq_s64(v92, 1).u64[0];
     vars0 = COERCE_UNSIGNED_INT64(-v91);
-    v145[4] = 0u;
-    v145[5] = 0u;
-    v145[2] = 0u;
-    v145[3] = 0u;
-    *v145 = 0u;
-    v145[1] = 0u;
+    widerMetadataCopy[4] = 0u;
+    widerMetadataCopy[5] = 0u;
+    widerMetadataCopy[2] = 0u;
+    widerMetadataCopy[3] = 0u;
+    *widerMetadataCopy = 0u;
+    widerMetadataCopy[1] = 0u;
     v93 = a41;
     v94 = a43;
     v96 = a44;
@@ -1321,17 +1321,17 @@ LABEL_37:
     v132 = a23;
     *&STACK[0x520] = a22;
     *&STACK[0x530] = v132;
-    *v145 = 0u;
-    v145[1] = 0u;
-    v145[2] = 0u;
-    v145[3] = 0u;
-    v145[4] = 0u;
-    v145[5] = 0u;
+    *widerMetadataCopy = 0u;
+    widerMetadataCopy[1] = 0u;
+    widerMetadataCopy[2] = 0u;
+    widerMetadataCopy[3] = 0u;
+    widerMetadataCopy[4] = 0u;
+    widerMetadataCopy[5] = 0u;
     do
     {
       v134 = *(&STACK[0x520] + v123 * 16);
       v133 = *(&STACK[0x520] + v123 * 16 + 16);
-      v135 = &v145[v123];
+      v135 = &widerMetadataCopy[v123];
       *v135 = vmlaq_n_f64(vmlaq_laneq_f64(vmulq_n_f64(v125, v134.f64[0]), v127, v134, 1), v129, *&v133);
       v135[1] = vmlaq_n_f64(vmlaq_laneq_f64(vmulq_n_f64(v124, v134.f64[0]), v126, v134, 1), v128, *&v133);
       v123 += 2;
@@ -1343,38 +1343,38 @@ LABEL_37:
   else
   {
     v124.f64[0] = 0.0;
-    a5[4] = 0u;
-    a5[5] = 0u;
-    a5[2] = 0u;
-    a5[3] = 0u;
-    *a5 = 0u;
-    a5[1] = 0u;
+    widerMetadata[4] = 0u;
+    widerMetadata[5] = 0u;
+    widerMetadata[2] = 0u;
+    widerMetadata[3] = 0u;
+    *widerMetadata = 0u;
+    widerMetadata[1] = 0u;
   }
 
   return v124.f64[0];
 }
 
-- (int)computeAlignmentFromWiderSampleBuffer:(opaqueCMSampleBuffer *)a3 narrowerSampleBuffer:(opaqueCMSampleBuffer *)a4 narrowerToWiderTransformsOut:(id *)a5
+- (int)computeAlignmentFromWiderSampleBuffer:(opaqueCMSampleBuffer *)buffer narrowerSampleBuffer:(opaqueCMSampleBuffer *)sampleBuffer narrowerToWiderTransformsOut:(id *)out
 {
-  if (!a3 || !a4)
+  if (!buffer || !sampleBuffer)
   {
     [BWAdaptiveCorrectionPreviewRegistration computeAlignmentFromWiderSampleBuffer:narrowerSampleBuffer:narrowerToWiderTransformsOut:];
     return -12780;
   }
 
-  if (!a5)
+  if (!out)
   {
     [BWAdaptiveCorrectionPreviewRegistration computeAlignmentFromWiderSampleBuffer:narrowerSampleBuffer:narrowerToWiderTransformsOut:];
     return -12780;
   }
 
   v9 = *off_1E798A3C8;
-  v10 = CMGetAttachment(a4, *off_1E798A3C8, 0);
-  v11 = CMGetAttachment(a3, v9, 0);
+  v10 = CMGetAttachment(sampleBuffer, *off_1E798A3C8, 0);
+  v11 = CMGetAttachment(buffer, v9, 0);
   v12 = [objc_msgSend(v10 objectForKeyedSubscript:{*off_1E798B540), "isEqualToString:", *off_1E798A0D8}];
   v13 = self->_excludeEstimatedSagFromWideTeleAlignment & v12;
   memset(&v36[8], 0, 24);
-  CMSampleBufferGetPresentationTimeStamp(&v36[8], a4);
+  CMSampleBufferGetPresentationTimeStamp(&v36[8], sampleBuffer);
   if (self->_excludeEstimatedSagFromWideTeleAlignment)
   {
     time1[0] = self->_lastNarrowerFramePTS;
@@ -1411,7 +1411,7 @@ LABEL_37:
   else
   {
     memset(time1, 0, sizeof(time1));
-    ImageBuffer = CMSampleBufferGetImageBuffer(a4);
+    ImageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer);
     Width = CVPixelBufferGetWidth(ImageBuffer);
     Height = CVPixelBufferGetHeight(ImageBuffer);
     v19 = 0;
@@ -1435,28 +1435,28 @@ LABEL_37:
     }
 
     while (v19 != 12);
-    memcpy(a5, time1, 0x120uLL);
+    memcpy(out, time1, 0x120uLL);
     return 0;
   }
 
   return v26;
 }
 
-- (int)computeApproximateCorrectionForWiderCamera:(opaqueCMSampleBuffer *)a3 narrowerCameraPortType:(id)a4 narrowerPixelBufferDimensions:(id)a5 narrowerToWiderCameraScale:(double)a6 narrowerToWiderTransformsOut:(id *)a7
+- (int)computeApproximateCorrectionForWiderCamera:(opaqueCMSampleBuffer *)camera narrowerCameraPortType:(id)type narrowerPixelBufferDimensions:(id)dimensions narrowerToWiderCameraScale:(double)scale narrowerToWiderTransformsOut:(id *)out
 {
-  if (!a3 || !a4)
+  if (!camera || !type)
   {
     [BWAdaptiveCorrectionPreviewRegistration computeApproximateCorrectionForWiderCamera:narrowerCameraPortType:narrowerPixelBufferDimensions:narrowerToWiderCameraScale:narrowerToWiderTransformsOut:];
     return -12780;
   }
 
-  if (!a7)
+  if (!out)
   {
     [BWAdaptiveCorrectionPreviewRegistration computeApproximateCorrectionForWiderCamera:narrowerCameraPortType:narrowerPixelBufferDimensions:narrowerToWiderCameraScale:narrowerToWiderTransformsOut:];
     return -12780;
   }
 
-  v12 = CMGetAttachment(a3, *off_1E798A3C8, 0);
+  v12 = CMGetAttachment(camera, *off_1E798A3C8, 0);
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
@@ -1469,7 +1469,7 @@ LABEL_37:
   v38 = 0u;
   v39 = 0u;
   v40 = 0.0;
-  v13 = [(BWAdaptiveCorrectionPreviewRegistration *)self _computeApproximateOISCalibrationFromWiderMetadata:v12 narrowerPortType:a4 narrowerToWiderCameraScale:v29.f64 calibrationOut:a6];
+  v13 = [(BWAdaptiveCorrectionPreviewRegistration *)self _computeApproximateOISCalibrationFromWiderMetadata:v12 narrowerPortType:type narrowerToWiderCameraScale:v29.f64 calibrationOut:scale];
   if (v13)
   {
     v19 = v13;
@@ -1483,7 +1483,7 @@ LABEL_37:
     v25 = 0u;
     v26 = 0u;
     v23.f64[0] = v40;
-    [(BWAdaptiveCorrectionPreviewRegistration *)self _computeApproximateHomographyAtDepth:a4 calibration:v12 narrowerPortType:*&a5 widerMetadata:v24 pixelBufferDimensions:1.0e10, *&v21[0].f64[0], *&v21[0].f64[1], *&v21[1].f64[0], *&v21[1].f64[1], *&v21[2].f64[0], *&v21[2].f64[1], v21[3], v21[4], v21[5], v21[6], v21[7], v21[8], v21[9], v21[10], v21[11], v21[12], v21[13], v21[14], v21[15], v21[16], v21[17], v29, v30, v31, v32, v33, v34, v35, v36, v37, v38, v39, v23, 0, 0];
+    [(BWAdaptiveCorrectionPreviewRegistration *)self _computeApproximateHomographyAtDepth:type calibration:v12 narrowerPortType:*&dimensions widerMetadata:v24 pixelBufferDimensions:1.0e10, *&v21[0].f64[0], *&v21[0].f64[1], *&v21[1].f64[0], *&v21[1].f64[1], *&v21[2].f64[0], *&v21[2].f64[1], v21[3], v21[4], v21[5], v21[6], v21[7], v21[8], v21[9], v21[10], v21[11], v21[12], v21[13], v21[14], v21[15], v21[16], v21[17], v29, v30, v31, v32, v33, v34, v35, v36, v37, v38, v39, v23, 0, 0];
     v14 = 0;
     memset(v21, 0, sizeof(v21));
     do
@@ -1502,20 +1502,20 @@ LABEL_37:
     }
 
     while (v14 != 18);
-    memcpy(a7, v21, 0x120uLL);
+    memcpy(out, v21, 0x120uLL);
     return 0;
   }
 
   return v19;
 }
 
-- (uint64_t)_computeApproximateHomographyAtDepth:(uint64_t)a3@<X2> calibration:(void *)a4@<X3> narrowerPortType:(unint64_t)a5@<X4> widerMetadata:(float64x2_t *)a6@<X8> pixelBufferDimensions:(double)a7@<D0>
+- (uint64_t)_computeApproximateHomographyAtDepth:(uint64_t)depth@<X2> calibration:(void *)calibration@<X3> narrowerPortType:(unint64_t)type@<X4> widerMetadata:(float64x2_t *)metadata@<X8> pixelBufferDimensions:(double)dimensions@<D0>
 {
   if (result)
   {
     v48 = result;
-    v49 = HIDWORD(a5);
-    [a4 objectForKeyedSubscript:*off_1E798B540];
+    v49 = HIDWORD(type);
+    [calibration objectForKeyedSubscript:*off_1E798B540];
     v52 = 0;
     v53 = &a32;
     __asm { FMOV            V20.2D, #1.0 }
@@ -1613,14 +1613,14 @@ LABEL_37:
     v154 = _Q20;
     v84 = vmlaq_f64(vmlaq_f64(vmulq_f64(v71, 0), 0, v72), _Q20, v80);
     v85 = vmlaq_n_f64(vmlaq_n_f64(v83, xmmword_1AD046850, v72.f64[0]), 0, v80.f64[0]);
-    v80.f64[0] = -1.0 / a7;
+    v80.f64[0] = -1.0 / dimensions;
     v86 = vmulq_f64(v80, v84);
-    v87 = vmulq_n_f64(v85, -1.0 / a7);
+    v87 = vmulq_n_f64(v85, -1.0 / dimensions);
     v89 = a38;
     v88 = a39;
     v91 = a40;
     v90 = a41;
-    v92 = vmulq_n_f64(0, -1.0 / a7);
+    v92 = vmulq_n_f64(0, -1.0 / dimensions);
     v93 = vsubq_f64(a27, v92);
     v94 = vsubq_f64(a28, v92);
     v95 = vsubq_f64(a29, v92);
@@ -1699,22 +1699,22 @@ LABEL_37:
     a19 = a31;
     a14 = a26;
     a15 = a27;
-    v118 = [objc_msgSend(*(v48 + 48) objectForKeyedSubscript:{a3), "objectForKeyedSubscript:", *off_1E7989F28}];
+    v118 = [objc_msgSend(*(v48 + 48) objectForKeyedSubscript:{depth), "objectForKeyedSubscript:", *off_1E7989F28}];
     v119 = [v118 objectForKeyedSubscript:*off_1E798A2C0];
     v120 = [v118 objectForKeyedSubscript:*off_1E798A288];
-    v121 = [v119 intValue];
-    v122 = [v120 intValue];
-    v123 = v121 / a5;
-    *&v124 = vcvtd_n_f64_s32(v121, 1uLL) + a5 * -0.5 * v123;
+    intValue = [v119 intValue];
+    intValue2 = [v120 intValue];
+    v123 = intValue / type;
+    *&v124 = vcvtd_n_f64_s32(intValue, 1uLL) + type * -0.5 * v123;
     *&v125 = 0;
     *(&v125 + 1) = v123;
     v152 = v125;
-    *(&v124 + 1) = vcvtd_n_f64_s32(v122, 1uLL) + v49 * -0.5 * v123;
+    *(&v124 + 1) = vcvtd_n_f64_s32(intValue2, 1uLL) + v49 * -0.5 * v123;
     v153 = v124;
     v155 = 0u;
     v156 = 0u;
     vars0 = 0u;
-    acpr_computePixelBufferToRawSensorHomography(a4, a5, &v155);
+    acpr_computePixelBufferToRawSensorHomography(calibration, type, &v155);
     *&STACK[0x590] = vars0;
     *&STACK[0x5A0] = 0u;
     *&STACK[0x5B0] = 0u;
@@ -1754,78 +1754,78 @@ LABEL_37:
     v140 = a29;
     v143 = a30;
     v142 = a31;
-    *&STACK[0x570] = COERCE_UNSIGNED_INT64(v121 / a5);
+    *&STACK[0x570] = COERCE_UNSIGNED_INT64(intValue / type);
     *&STACK[0x580] = 0u;
     *&STACK[0x590] = v152;
     *&STACK[0x5A0] = 0uLL;
     *&STACK[0x5C0] = v154;
     *&STACK[0x5B0] = v153;
-    *a6 = 0u;
-    a6[1] = 0u;
-    a6[2] = 0u;
-    a6[3] = 0u;
-    a6[4] = 0u;
-    a6[5] = 0u;
+    *metadata = 0u;
+    metadata[1] = 0u;
+    metadata[2] = 0u;
+    metadata[3] = 0u;
+    metadata[4] = 0u;
+    metadata[5] = 0u;
     do
     {
       v145 = *(&STACK[0x570] + v137 * 16);
       v144 = *(&STACK[0x570] + v137 * 16 + 16);
-      v146 = &a6[v137];
+      v146 = &metadata[v137];
       *v146 = vmlaq_n_f64(vmlaq_laneq_f64(vmulq_n_f64(v139, v145.f64[0]), v141, v145, 1), v143, *&v144);
       v146[1] = vmlaq_n_f64(vmlaq_laneq_f64(vmulq_n_f64(v138, v145.f64[0]), v140, v145, 1), v142, *&v144);
       v137 += 2;
     }
 
     while (v137 != 6);
-    v147 = a6[5];
-    v148 = vmulq_n_f64(a6[1], v147.f64[0]);
-    v149 = vmulq_n_f64(a6[3], v147.f64[0]);
-    v150 = vmulq_n_f64(a6[2], v147.f64[0]);
-    v151 = vmulq_n_f64(a6[4], v147.f64[0]);
-    *a6 = vmulq_n_f64(*a6, v147.f64[0]);
-    a6[1] = v148;
-    a6[2] = v150;
-    a6[3] = v149;
-    a6[4] = v151;
-    a6[5] = vmulq_n_f64(v147, v147.f64[0]);
+    v147 = metadata[5];
+    v148 = vmulq_n_f64(metadata[1], v147.f64[0]);
+    v149 = vmulq_n_f64(metadata[3], v147.f64[0]);
+    v150 = vmulq_n_f64(metadata[2], v147.f64[0]);
+    v151 = vmulq_n_f64(metadata[4], v147.f64[0]);
+    *metadata = vmulq_n_f64(*metadata, v147.f64[0]);
+    metadata[1] = v148;
+    metadata[2] = v150;
+    metadata[3] = v149;
+    metadata[4] = v151;
+    metadata[5] = vmulq_n_f64(v147, v147.f64[0]);
   }
 
   else
   {
-    a6[4] = 0u;
-    a6[5] = 0u;
-    a6[2] = 0u;
-    a6[3] = 0u;
-    *a6 = 0u;
-    a6[1] = 0u;
+    metadata[4] = 0u;
+    metadata[5] = 0u;
+    metadata[2] = 0u;
+    metadata[3] = 0u;
+    *metadata = 0u;
+    metadata[1] = 0u;
   }
 
   return result;
 }
 
-+ (uint64_t)flattenNarrowerToWiderTransforms:(int)a3@<W4> narrowerDimensions:(_OWORD *)a4@<X8> narrowerFinalCropRect:(double)a5@<D0> atNarrowerToWiderCameraScale:(double)a6@<D1> useYAnchorAtHeightCenter:(double)a7@<D2>
++ (uint64_t)flattenNarrowerToWiderTransforms:(int)transforms@<W4> narrowerDimensions:(_OWORD *)dimensions@<X8> narrowerFinalCropRect:(double)rect@<D0> atNarrowerToWiderCameraScale:(double)scale@<D1> useYAnchorAtHeightCenter:(double)center@<D2>
 {
-  a4[16] = 0u;
-  a4[17] = 0u;
-  a4[14] = 0u;
-  a4[15] = 0u;
-  a4[12] = 0u;
-  a4[13] = 0u;
-  a4[10] = 0u;
-  a4[11] = 0u;
-  a4[8] = 0u;
-  a4[9] = 0u;
-  a4[6] = 0u;
-  a4[7] = 0u;
-  a4[4] = 0u;
-  a4[5] = 0u;
-  a4[2] = 0u;
-  a4[3] = 0u;
-  *a4 = 0u;
-  a4[1] = 0u;
+  dimensions[16] = 0u;
+  dimensions[17] = 0u;
+  dimensions[14] = 0u;
+  dimensions[15] = 0u;
+  dimensions[12] = 0u;
+  dimensions[13] = 0u;
+  dimensions[10] = 0u;
+  dimensions[11] = 0u;
+  dimensions[8] = 0u;
+  dimensions[9] = 0u;
+  dimensions[6] = 0u;
+  dimensions[7] = 0u;
+  dimensions[4] = 0u;
+  dimensions[5] = 0u;
+  dimensions[2] = 0u;
+  dimensions[3] = 0u;
+  *dimensions = 0u;
+  dimensions[1] = 0u;
   v28 = a2;
   v29 = SHIDWORD(a2);
-  result = FigCaptureMetadataUtilitiesDenormalizeCropRect(a5, a6, a7, a8);
+  result = FigCaptureMetadataUtilitiesDenormalizeCropRect(rect, scale, center, a8);
   v32.f64[0] = a9;
   v33 = 0;
   *v74 = v34;
@@ -1836,7 +1836,7 @@ LABEL_37:
   *v38.i64 = *v38.i64 + v36 * 0.75;
   v39.i64[1] = v37;
   v40 = vdupq_lane_s64(v37, 0);
-  if (a3)
+  if (transforms)
   {
     v41 = -1;
   }
@@ -1858,7 +1858,7 @@ LABEL_37:
   {
     v51 = 0;
     *&v31.f64[0] = v74[v33];
-    v52 = (a1 + 96 * v33);
+    v52 = (self + 96 * v33);
     v54 = *v52;
     v53 = v52[1];
     v56 = v52[2];
@@ -1895,7 +1895,7 @@ LABEL_37:
       *(&vars0 + i * 8) = v68;
     }
 
-    v69 = &a4[6 * v33];
+    v69 = &dimensions[6 * v33];
     v31 = vmulq_f64(v32, v62);
     v70 = vaddq_f64(vaddq_f64(vsubq_f64(vars0, vmulq_f64(v32, v60)), vsubq_f64(0, vmulq_f64(v32, v61))), vsubq_f64(0, v31));
     __asm { FMOV            V16.2D, #3.0 }
@@ -2015,10 +2015,10 @@ LABEL_37:
   if (result)
   {
     v1 = result;
-    v2 = [+[FigCaptureCameraParameters sharedInstance](FigCaptureCameraParameters disparityVersion];
-    if (v2 > 3)
+    disparityVersion = [+[FigCaptureCameraParameters sharedInstance](FigCaptureCameraParameters disparityVersion];
+    if (disparityVersion > 3)
     {
-      v3 = [MEMORY[0x1E696AEC0] stringWithFormat:@"DisparityV%d.bundle", v2];
+      v3 = [MEMORY[0x1E696AEC0] stringWithFormat:@"DisparityV%d.bundle", disparityVersion];
       v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@", @"/System/Library/VideoProcessors/", v3];
       v5 = dlopen([objc_msgSend(MEMORY[0x1E696AEC0] stringWithFormat:@"%@/%@", v4, objc_msgSend(v3, "stringByDeletingPathExtension")), "fileSystemRepresentation"], 1);
       *(v1 + 696) = v5;
@@ -2066,12 +2066,12 @@ LABEL_37:
   return result;
 }
 
-- (uint64_t)_computeOISCalibrationFromWiderMetadata:(uint64_t)a3 narrowerMetadata:(int)a4 updateEstimatedSagPositions:(int)a5 excludeEstimatedSagFromAlignment:(uint64_t)a6 calibrationOut:
+- (uint64_t)_computeOISCalibrationFromWiderMetadata:(uint64_t)metadata narrowerMetadata:(int)narrowerMetadata updateEstimatedSagPositions:(int)positions excludeEstimatedSagFromAlignment:(uint64_t)alignment calibrationOut:
 {
-  v127 = a6;
-  HIDWORD(v111) = a5;
-  HIDWORD(v118) = a4;
-  if (!a1)
+  alignmentCopy = alignment;
+  HIDWORD(v111) = positions;
+  HIDWORD(v118) = narrowerMetadata;
+  if (!self)
   {
     return 0;
   }
@@ -2081,7 +2081,7 @@ LABEL_37:
   v133 = v172;
   v8 = [MEMORY[0x1E695DF70] arrayWithCapacity:2];
   v9 = [MEMORY[0x1E695DF70] arrayWithCapacity:2];
-  [v8 setObject:a3 atIndexedSubscript:0];
+  [v8 setObject:metadata atIndexedSubscript:0];
   v10 = 1;
   [OUTLINED_FUNCTION_7_15() setObject:? atIndexedSubscript:?];
   v11 = 0;
@@ -2126,10 +2126,10 @@ LABEL_37:
   }
 
   while ((v18 & 1) != 0);
-  v25 = [*(a1 + 48) objectForKeyedSubscript:{objc_msgSend(v9, "objectAtIndexedSubscript:", 1)}];
+  v25 = [*(self + 48) objectForKeyedSubscript:{objc_msgSend(v9, "objectAtIndexedSubscript:", 1)}];
   v26 = *off_1E7989E80;
   v27 = [objc_msgSend(v25 objectForKeyedSubscript:{*off_1E7989E80), "bytes"}];
-  v28 = [objc_msgSend(objc_msgSend(*(a1 + 48) objectForKeyedSubscript:{objc_msgSend(v9, "objectAtIndexedSubscript:", 0)), "objectForKeyedSubscript:", v26), "bytes"}];
+  v28 = [objc_msgSend(objc_msgSend(*(self + 48) objectForKeyedSubscript:{objc_msgSend(v9, "objectAtIndexedSubscript:", 0)), "objectForKeyedSubscript:", v26), "bytes"}];
   if (v27)
   {
     v34 = v28;
@@ -2170,8 +2170,8 @@ LABEL_37:
 
       while (v52 != 3);
       v55 = 0;
-      v56 = v127 + 16;
-      v131.i64[0] = v127 + 32;
+      v56 = alignmentCopy + 16;
+      v131.i64[0] = alignmentCopy + 32;
       v125.i64[0] = *off_1E7989F18;
       v122 = *off_1E798B588;
       v120 = *off_1E798B3B8;
@@ -2187,7 +2187,7 @@ LABEL_37:
       v61 = 1;
       v62 = *off_1E798B3C0;
       v63 = *off_1E798B3C8;
-      v114 = v127 + 16;
+      v114 = alignmentCopy + 16;
       while (1)
       {
         v64 = v61;
@@ -2196,7 +2196,7 @@ LABEL_37:
         v67 = v57[1] + -1.0;
         *(v56 + 8 * v55) = (*v57 + -1.0) * 0.5 + *v58 - (*v59 + -1.0) * 0.5;
         *(v131.i64[0] + 8 * v55) = v67 * 0.5 + v66 - v65 * 0.5;
-        [objc_msgSend(objc_msgSend(*(a1 + 48) objectForKeyedSubscript:{objc_msgSend(v9, "objectAtIndexedSubscript:", v55)), "objectForKeyedSubscript:", v125.i64[0]), "floatValue"}];
+        [objc_msgSend(objc_msgSend(*(self + 48) objectForKeyedSubscript:{objc_msgSend(v9, "objectAtIndexedSubscript:", v55)), "objectForKeyedSubscript:", v125.i64[0]), "floatValue"}];
         v69 = v68;
         v70 = [objc_msgSend(objc_msgSend(OUTLINED_FUNCTION_7_15() "objectAtIndexedSubscript:{"objectForKeyedSubscript:", v122), "intValue"}")];
         if (v70)
@@ -2204,7 +2204,7 @@ LABEL_37:
           v69 = v69 * v70;
         }
 
-        *(v127 + 8 * v55) = (*v60 / v69);
+        *(alignmentCopy + 8 * v55) = (*v60 / v69);
         if ([objc_msgSend(OUTLINED_FUNCTION_7_15() "objectAtIndexedSubscript:{"objectForKeyedSubscript:", v120}")])
         {
           v129.i32[0] = v64;
@@ -2253,12 +2253,12 @@ LABEL_37:
           *(v131.i64[0] + 8 * v55) = *(v131.i64[0] + 8 * v55) + ((1.0 / v69) * *(&v76 + 1));
           if (HIDWORD(v113))
           {
-            v102 = -[BWAdaptiveCorrectionPreviewRegistration _estimatedSagPositionUsingOISShift:forPortType:](a1, [v9 objectAtIndexedSubscript:v55], *&v76, *(&v76 + 1));
+            v102 = -[BWAdaptiveCorrectionPreviewRegistration _estimatedSagPositionUsingOISShift:forPortType:](self, [v9 objectAtIndexedSubscript:v55], *&v76, *(&v76 + 1));
             v104 = v102;
             v105 = v103;
             if (HIDWORD(v118))
             {
-              [*(a1 + 632) setObject:CGPointCreateDictionaryRepresentation(*&v102) forKeyedSubscript:{objc_msgSend(v9, "objectAtIndexedSubscript:", v55)}];
+              [*(self + 632) setObject:CGPointCreateDictionaryRepresentation(*&v102) forKeyedSubscript:{objc_msgSend(v9, "objectAtIndexedSubscript:", v55)}];
             }
 
             if (HIDWORD(v111))
@@ -2274,7 +2274,7 @@ LABEL_37:
             v85 = v77;
             if (v77)
             {
-              v86 = OUTLINED_FUNCTION_15_6(v77, v78, v79, v80, v81, v82, v83, v84, v108, v109, v110, v111, v112, v113, v114, v115, v116, v117, v118, v120, v122, v123, v125.i64[0], v125.i64[1], v126, v127, v129.i64[0], v129.i64[1], v131.i64[0], v131.i64[1], v132, v133, v134, v135, v136, v137, v138, v139, v140, v141, v142, v143, v144, v145, v146, v147, v148, v149, v150, v151, 0);
+              v86 = OUTLINED_FUNCTION_15_6(v77, v78, v79, v80, v81, v82, v83, v84, v108, v109, v110, v111, v112, v113, v114, v115, v116, v117, v118, v120, v122, v123, v125.i64[0], v125.i64[1], v126, alignmentCopy, v129.i64[0], v129.i64[1], v131.i64[0], v131.i64[1], v132, v133, v134, v135, v136, v137, v138, v139, v140, v141, v142, v143, v144, v145, v146, v147, v148, v149, v150, v151, 0);
               if (v86)
               {
                 v87 = v86;
@@ -2299,8 +2299,8 @@ LABEL_37:
                         [objc_msgSend(objc_msgSend(v85 objectForKeyedSubscript:{v90), "objectForKeyedSubscript:", v62), "doubleValue"}];
                         v100 = v99 * 0.00390625;
                         [objc_msgSend(objc_msgSend(v85 objectForKeyedSubscript:{v90), "objectForKeyedSubscript:", v63), "doubleValue"}];
-                        v173.x = [(BWAdaptiveCorrectionPreviewRegistration *)a1 _estimatedSagPositionUsingOISShift:v90 forPortType:v100, v101 * 0.00390625];
-                        v91 = [*(a1 + 632) setObject:CGPointCreateDictionaryRepresentation(v173) forKeyedSubscript:v90];
+                        v173.x = [(BWAdaptiveCorrectionPreviewRegistration *)self _estimatedSagPositionUsingOISShift:v90 forPortType:v100, v101 * 0.00390625];
+                        v91 = [*(self + 632) setObject:CGPointCreateDictionaryRepresentation(v173) forKeyedSubscript:v90];
                       }
                     }
 
@@ -2308,7 +2308,7 @@ LABEL_37:
                   }
 
                   while (v87 != v89);
-                  v87 = OUTLINED_FUNCTION_15_6(v91, v92, v93, v94, v95, v96, v97, v98, v108, v109, v110, v111, v112, v113, v114, v115, v116, v117, v118, v120, v122, v123, v125.i64[0], v125.i64[1], v126, v127, v129.i64[0], v129.i64[1], v131.i64[0], v131.i64[1], v132, v133, v134, v135, v136, v137, v138, v139, v140, v141, v142, v143, v144, v145, v146, v147, v148, v149, v150, v151, v152);
+                  v87 = OUTLINED_FUNCTION_15_6(v91, v92, v93, v94, v95, v96, v97, v98, v108, v109, v110, v111, v112, v113, v114, v115, v116, v117, v118, v120, v122, v123, v125.i64[0], v125.i64[1], v126, alignmentCopy, v129.i64[0], v129.i64[1], v131.i64[0], v131.i64[1], v132, v133, v134, v135, v136, v137, v138, v139, v140, v141, v142, v143, v144, v145, v146, v147, v148, v149, v150, v151, v152);
                 }
 
                 while (v87);
@@ -2341,9 +2341,9 @@ LABEL_37:
   return FigSignalErrorAtGM();
 }
 
-- (uint64_t)_updateCorrectedCalibrationUsingInitialOISCalibration:(int)a3 macroTransitionType:
+- (uint64_t)_updateCorrectedCalibrationUsingInitialOISCalibration:(int)calibration macroTransitionType:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
@@ -2377,8 +2377,8 @@ LABEL_37:
   v23 = vzip1q_s32(v12, v13);
   v20 = vzip2q_s32(v11, vdupq_lane_s32(*&v8.f64[0], 1));
   v21 = vzip2q_s32(v12, v13);
-  v14 = (*(a1 + 672))(&v26, &v25, &v24);
-  if (v14 || (v14 = (*(a1 + 688))(*(a1 + 240), *(a1 + 256), *(a1 + 264), *v25.columns, *&v25.columns[1]), v14) || (v14 = (*(a1 + 688))(*(a1 + 248), *(a1 + 256), *(a1 + 272), *v24.columns, *&v24.columns[1]), v14) || (v14 = (*(a1 + 680))(a2, v33, v26, v27, v28, v29, *v25.columns, *&v25.columns[1], *v24.columns, *&v24.columns[1]), v14))
+  v14 = (*(self + 672))(&v26, &v25, &v24);
+  if (v14 || (v14 = (*(self + 688))(*(self + 240), *(self + 256), *(self + 264), *v25.columns, *&v25.columns[1]), v14) || (v14 = (*(self + 688))(*(self + 248), *(self + 256), *(self + 272), *v24.columns, *&v24.columns[1]), v14) || (v14 = (*(self + 680))(a2, v33, v26, v27, v28, v29, *v25.columns, *&v25.columns[1], *v24.columns, *&v24.columns[1]), v14))
   {
     v18 = v14;
     fig_log_get_emitter();
@@ -2388,7 +2388,7 @@ LABEL_14:
     return v18;
   }
 
-  (*(a1 + 664))(v31, *(a1 + 264), *(a1 + 272), *(a1 + 256), v33, [*(a1 + 8) adaptiveCorrectionConfigsPtr] + (a3 << 9), v30);
+  (*(self + 664))(v31, *(self + 264), *(self + 272), *(self + 256), v33, [*(self + 8) adaptiveCorrectionConfigsPtr] + (calibration << 9), v30);
   if ((v30[812] & 1) == 0)
   {
     fig_log_get_emitter();
@@ -2397,7 +2397,7 @@ LABEL_14:
     return 0xFFFFFFFFLL;
   }
 
-  v15 = *(a1 + 680);
+  v15 = *(self + 680);
   v16 = __invert_f2(v25);
   v17 = __invert_f2(v24);
   v18 = v15(v31, __src, v22, v20, v23, v21, *v16.columns, *&v16.columns[1], *v17.columns, *&v17.columns[1]);
@@ -2408,35 +2408,35 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  memcpy((a1 + 56), __src, 0xB8uLL);
+  memcpy((self + 56), __src, 0xB8uLL);
   return v18;
 }
 
-- (uint64_t)_estimateDepthFromKeypointsUsingCalibration:(float64x2_t *)a3 narrowerRawSensorResolution:(int)a4 fundamentalMatrix:(void *)a5 macroTransitionType:(float64x2_t)a6 totalZoomFactor:(float64x2_t)a7 consolidatedDepthsOut:(float64x2_t)a8
+- (uint64_t)_estimateDepthFromKeypointsUsingCalibration:(float64x2_t *)calibration narrowerRawSensorResolution:(int)resolution fundamentalMatrix:(void *)matrix macroTransitionType:(float64x2_t)type totalZoomFactor:(float64x2_t)factor consolidatedDepthsOut:(float64x2_t)out
 {
   if (result)
   {
-    if (a5)
+    if (matrix)
     {
-      v70 = *a8.f64;
-      v71 = a6.f64[0];
+      v70 = *out.f64;
+      v71 = type.f64[0];
       v73 = result;
       v74 = 0;
-      *a5 = 0;
-      a5[1] = 0;
-      a5[2] = 0;
-      v75 = a6.f64[0] * 0.5;
-      v76 = a7.f64[0] * 0.5;
+      *matrix = 0;
+      matrix[1] = 0;
+      matrix[2] = 0;
+      v75 = type.f64[0] * 0.5;
+      v76 = factor.f64[0] * 0.5;
       *&v77 = a2[6];
       *&v78 = a2[7];
       *&v79 = a2[8];
-      a6.f64[0] = a2[9];
+      type.f64[0] = a2[9];
       *(&v77 + 1) = a2[10];
-      a8.f64[0] = a2[13];
+      out.f64[0] = a2[13];
       a12.n128_u64[0] = a2[14];
       a13.n128_u64[0] = a2[15];
       *&v69 = a2[16];
-      a7.f64[0] = a2[17];
+      factor.f64[0] = a2[17];
       *(&v78 + 1) = a2[11];
       *(&v79 + 1) = a2[12];
       *&STACK[0xA70] = a12;
@@ -2501,9 +2501,9 @@ LABEL_14:
       v102 = *&STACK[0xA00];
       v103 = *&STACK[0xA30];
       v104 = *&STACK[0xA20];
-      v105 = vmulq_n_f64(xmmword_1AD046840, a6.f64[0]);
-      v106 = vmlaq_f64(vmlaq_f64(vmulq_f64(a6, 0), 0, a8), _Q3, a7);
-      v107 = vmlaq_n_f64(vmlaq_n_f64(v105, xmmword_1AD046850, a8.f64[0]), 0, a7.f64[0]);
+      v105 = vmulq_n_f64(xmmword_1AD046840, type.f64[0]);
+      v106 = vmlaq_f64(vmlaq_f64(vmulq_f64(type, 0), 0, out), _Q3, factor);
+      v107 = vmlaq_n_f64(vmlaq_n_f64(v105, xmmword_1AD046850, out.f64[0]), 0, factor.f64[0]);
       *&STACK[0x860] = xmmword_1AD046830;
       *&STACK[0x870] = 0u;
       *&STACK[0x880] = xmmword_1AD046820;
@@ -2655,7 +2655,7 @@ LABEL_14:
       [*(v73 + 8) macroDepthWeightFalloffDistance];
       v142 = v143;
       LODWORD(v143) = 1.0;
-      if (a4 == 2)
+      if (resolution == 2)
       {
         [objc_msgSend(objc_msgSend(*(v73 + 48) objectForKeyedSubscript:{*off_1E798A0C0, v143), "objectForKeyedSubscript:", *off_1E7989E50), "floatValue"}];
         v143 = fmin((v70 / v144), 3.0);
@@ -2688,14 +2688,14 @@ LABEL_14:
             v155.f64[0] = exp(-(v154 * v154) / v151);
             v157 = *(v73 + 304);
             *(v157 + 8 * v146) = v155.f64[0];
-            if (a4)
+            if (resolution)
             {
               *(v157 + 8 * v146) = v155.f64[0] * exp(-*(v150 + 8 * v146) / v149);
             }
 
             v156.f64[0] = *(v152 + 16 * v146);
             v155.f64[0] = *(v152 + 8 * v153);
-            v158 = vaddq_f64(a3[4], vmlaq_n_f64(vmulq_n_f64(*a3, v156.f64[0]), a3[2], v155.f64[0]));
+            v158 = vaddq_f64(calibration[4], vmlaq_n_f64(vmulq_n_f64(*calibration, v156.f64[0]), calibration[2], v155.f64[0]));
             v159 = sqrt(vmuld_lane_f64(v158.f64[1], v158, 1) + v158.f64[0] * v158.f64[0]);
             if (v159 == 0.0)
             {
@@ -2704,7 +2704,7 @@ LABEL_14:
 
             else
             {
-              v160 = (vaddq_f64(a3[5], vmlaq_f64(vmulq_f64(v156, a3[1]), v155, a3[3])).f64[0] + v158.f64[1] * *(*(v73 + 248) + 8 * v153) + v158.f64[0] * *(*(v73 + 248) + 16 * v146)) / fabs(v159);
+              v160 = (vaddq_f64(calibration[5], vmlaq_f64(vmulq_f64(v156, calibration[1]), v155, calibration[3])).f64[0] + v158.f64[1] * *(*(v73 + 248) + 8 * v153) + v158.f64[0] * *(*(v73 + 248) + 16 * v146)) / fabs(v159);
               if (v160 >= 0.0)
               {
                 v160 = -v160;
@@ -2770,7 +2770,7 @@ LABEL_14:
 
         v171 = v170 / v169;
         *(&a18 + v168 * 8) = v171;
-        *&a5[v168++] = 1.0 / v171;
+        *&matrix[v168++] = 1.0 / v171;
         if (v168 == 3)
         {
           return 0;
@@ -2794,24 +2794,24 @@ LABEL_14:
   return result;
 }
 
-- (uint64_t)_verifyRegistrationTransform:(uint64_t)a3 usingInitialOISCalibration:(uint64_t)a4 narrowerMetadata:(uint64_t)a5 widerMetadata:(unint64_t)a6 narrowerDimensions:
+- (uint64_t)_verifyRegistrationTransform:(uint64_t)transform usingInitialOISCalibration:(uint64_t)calibration narrowerMetadata:(uint64_t)metadata widerMetadata:(unint64_t)widerMetadata narrowerDimensions:
 {
-  *&v64 = a4;
-  *(&v64 + 1) = a5;
+  *&v64 = calibration;
+  *(&v64 + 1) = metadata;
   *&v62 = a2;
-  *(&v62 + 1) = a3;
+  *(&v62 + 1) = transform;
   v60 = result;
   if (result)
   {
-    v7 = HIDWORD(a6);
+    v7 = HIDWORD(widerMetadata);
     bzero(v83, 0x120uLL);
     bzero(v82, 0x120uLL);
     v8 = 0;
-    *&v9 = vcvtd_n_f64_s32(a6, 1uLL);
+    *&v9 = vcvtd_n_f64_s32(widerMetadata, 1uLL);
     v55 = v9;
-    *&v66 = a6;
+    *&v66 = widerMetadata;
     v52 = vdupq_lane_s64(COERCE__INT64(vcvtd_n_f64_s32(v7, 1uLL)), 0);
-    v10 = (a6 * 0.0071023);
+    v10 = (widerMetadata * 0.0071023);
     do
     {
       *(&v66 + 1) = v8;
@@ -2911,20 +2911,20 @@ LABEL_14:
   return result;
 }
 
-- (uint64_t)_computeApproximateOISCalibrationFromWiderMetadata:(uint64_t)a3 narrowerPortType:(double *)a4 narrowerToWiderCameraScale:(double)a5 calibrationOut:
+- (uint64_t)_computeApproximateOISCalibrationFromWiderMetadata:(uint64_t)metadata narrowerPortType:(double *)type narrowerToWiderCameraScale:(double)scale calibrationOut:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
   v10 = [MEMORY[0x1E695DF70] arrayWithCapacity:2];
-  [v10 setObject:a3 atIndexedSubscript:0];
+  [v10 setObject:metadata atIndexedSubscript:0];
   [v10 setObject:objc_msgSend(a2 atIndexedSubscript:{"objectForKeyedSubscript:", *off_1E798B540), 1}];
-  v11 = [*(a1 + 48) objectForKeyedSubscript:{objc_msgSend(v10, "objectAtIndexedSubscript:", 1)}];
+  v11 = [*(self + 48) objectForKeyedSubscript:{objc_msgSend(v10, "objectAtIndexedSubscript:", 1)}];
   v12 = *off_1E7989E80;
   v13 = [objc_msgSend(v11 objectForKeyedSubscript:{*off_1E7989E80), "bytes"}];
-  v14 = [objc_msgSend(objc_msgSend(*(a1 + 48) objectForKeyedSubscript:{objc_msgSend(v10, "objectAtIndexedSubscript:", 0)), "objectForKeyedSubscript:", v12), "bytes"}];
+  v14 = [objc_msgSend(objc_msgSend(*(self + 48) objectForKeyedSubscript:{objc_msgSend(v10, "objectAtIndexedSubscript:", 0)), "objectForKeyedSubscript:", v12), "bytes"}];
   if (!v13 || (v20 = v14) == 0)
   {
     OUTLINED_FUNCTION_7_5();
@@ -2991,9 +2991,9 @@ LABEL_28:
   v46 = v45;
   [objc_msgSend(a2 objectForKeyedSubscript:{*off_1E798B5A0), "floatValue"}];
   y = v83.y;
-  a4[3] = (v46 + -1.0) * 0.5 + v83.x - (v46 + -1.0) * 0.5;
-  a4[5] = (v47 + -1.0) * 0.5 + y - (v47 + -1.0) * 0.5;
-  [objc_msgSend(objc_msgSend(*(a1 + 48) objectForKeyedSubscript:{objc_msgSend(v10, "objectAtIndexedSubscript:", 1)), "objectForKeyedSubscript:", *off_1E7989F18), "floatValue"}];
+  type[3] = (v46 + -1.0) * 0.5 + v83.x - (v46 + -1.0) * 0.5;
+  type[5] = (v47 + -1.0) * 0.5 + y - (v47 + -1.0) * 0.5;
+  [objc_msgSend(objc_msgSend(*(self + 48) objectForKeyedSubscript:{objc_msgSend(v10, "objectAtIndexedSubscript:", 1)), "objectForKeyedSubscript:", *off_1E7989F18), "floatValue"}];
   v50 = v49;
   v51 = [objc_msgSend(a2 objectForKeyedSubscript:{*off_1E798B588), "intValue"}];
   if (v51)
@@ -3001,7 +3001,7 @@ LABEL_28:
     v50 = v50 * v51;
   }
 
-  a4[1] = (v42 / v50);
+  type[1] = (v42 / v50);
   if ([a2 objectForKeyedSubscript:*off_1E798B3B8])
   {
     v52 = [a2 objectForKeyedSubscript:*off_1E798A420];
@@ -3033,8 +3033,8 @@ LABEL_18:
         }
 
         v56 = *(&v72 + 1);
-        a4[3] = a4[3] + ((1.0 / v50) * *&v72);
-        a4[5] = a4[5] + ((1.0 / v50) * v56);
+        type[3] = type[3] + ((1.0 / v50) * *&v72);
+        type[5] = type[5] + ((1.0 / v50) * v56);
         goto LABEL_20;
       }
     }
@@ -3057,50 +3057,50 @@ LABEL_18:
   }
 
 LABEL_20:
-  [v10 setObject:a3 atIndexedSubscript:0];
-  v57 = 1.0 / a5 * v42;
-  v58 = [objc_msgSend(*(a1 + 48) objectForKeyedSubscript:{a3), "objectForKeyedSubscript:", *off_1E7989F28}];
+  [v10 setObject:metadata atIndexedSubscript:0];
+  v57 = 1.0 / scale * v42;
+  v58 = [objc_msgSend(*(self + 48) objectForKeyedSubscript:{metadata), "objectForKeyedSubscript:", *off_1E7989F28}];
   v59 = [objc_msgSend(v58 objectForKeyedSubscript:{*off_1E798A2C0), "intValue"}];
   v60 = [objc_msgSend(v58 objectForKeyedSubscript:{*off_1E798A288), "intValue"}];
   v81 = vcvtd_n_f64_s32(v59, 1uLL);
   v82 = vcvtd_n_f64_s32(v60, 1uLL);
   point = *v43;
-  CGPointMakeWithDictionaryRepresentation([objc_msgSend(*(a1 + 48) objectForKeyedSubscript:{a3), "objectForKeyedSubscript:", *off_1E7989F10}], &point);
+  CGPointMakeWithDictionaryRepresentation([objc_msgSend(*(self + 48) objectForKeyedSubscript:{metadata), "objectForKeyedSubscript:", *off_1E7989F10}], &point);
   v61 = 0;
   v62 = point.x + v81;
   v63 = point.y + v82;
-  *a4 = v57;
-  a4[2] = v62;
-  a4[4] = v63;
+  *type = v57;
+  type[2] = v62;
+  type[4] = v63;
   return v61;
 }
 
-- (CGFloat)_estimatedSagPositionUsingOISShift:(double)a3 forPortType:(double)a4
+- (CGFloat)_estimatedSagPositionUsingOISShift:(double)shift forPortType:(double)type
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
   v8 = MEMORY[0x1E695EFF8];
   v13 = *MEMORY[0x1E695EFF8];
-  if ([*(a1 + 632) objectForKeyedSubscript:a2])
+  if ([*(self + 632) objectForKeyedSubscript:a2])
   {
-    CGPointMakeWithDictionaryRepresentation([*(a1 + 632) objectForKeyedSubscript:a2], &v13);
+    CGPointMakeWithDictionaryRepresentation([*(self + 632) objectForKeyedSubscript:a2], &v13);
   }
 
   v9 = v8[1];
-  if (a3 == *v8 && a4 == v9)
+  if (shift == *v8 && type == v9)
   {
     return v13.x;
   }
 
   if (v13.x != *v8 || v13.y != v9)
   {
-    return v13.x * (1.0 - *(a1 + 628)) + a3 * *(a1 + 628);
+    return v13.x * (1.0 - *(self + 628)) + shift * *(self + 628);
   }
 
-  return a3;
+  return shift;
 }
 
 - (uint64_t)initWithCameraInfoByPortType:excludeStaticComponentFromAlignmentShifts:.cold.1()

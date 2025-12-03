@@ -1,6 +1,6 @@
 @interface SPUISPodcastResultBuilder
-+ (BOOL)supportsResult:(id)a3;
-- (SPUISPodcastResultBuilder)initWithResult:(id)a3;
++ (BOOL)supportsResult:(id)result;
+- (SPUISPodcastResultBuilder)initWithResult:(id)result;
 - (id)buildCompactCardSection;
 - (id)buildDescriptions;
 - (id)buildInlineCardSection;
@@ -9,47 +9,47 @@
 
 @implementation SPUISPodcastResultBuilder
 
-+ (BOOL)supportsResult:(id)a3
++ (BOOL)supportsResult:(id)result
 {
-  v4 = a3;
-  v9.receiver = a1;
+  resultCopy = result;
+  v9.receiver = self;
   v9.super_class = &OBJC_METACLASS___SPUISPodcastResultBuilder;
-  if (objc_msgSendSuper2(&v9, sel_supportsResult_, v4))
+  if (objc_msgSendSuper2(&v9, sel_supportsResult_, resultCopy))
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [v4 contentType];
-    v7 = [a1 bundleId];
-    v5 = [v6 hasPrefix:v7];
+    contentType = [resultCopy contentType];
+    bundleId = [self bundleId];
+    v5 = [contentType hasPrefix:bundleId];
   }
 
   return v5;
 }
 
-- (SPUISPodcastResultBuilder)initWithResult:(id)a3
+- (SPUISPodcastResultBuilder)initWithResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v12.receiver = self;
   v12.super_class = SPUISPodcastResultBuilder;
-  v5 = [(SPUISResultBuilder *)&v12 initWithResult:v4];
+  v5 = [(SPUISResultBuilder *)&v12 initWithResult:resultCopy];
   if (v5)
   {
-    v6 = [v4 lastUsedDate];
-    [(SPUISPodcastResultBuilder *)v5 setLastViewedDate:v6];
+    lastUsedDate = [resultCopy lastUsedDate];
+    [(SPUISPodcastResultBuilder *)v5 setLastViewedDate:lastUsedDate];
 
-    v7 = [v4 valueForAttribute:*MEMORY[0x277CC2760] withType:objc_opt_class()];
+    v7 = [resultCopy valueForAttribute:*MEMORY[0x277CC2760] withType:objc_opt_class()];
     [(SPUISPodcastResultBuilder *)v5 setName:v7];
 
-    v8 = [v4 valueForAttribute:*MEMORY[0x277CC2750] withType:objc_opt_class()];
+    v8 = [resultCopy valueForAttribute:*MEMORY[0x277CC2750] withType:objc_opt_class()];
     [(SPUISPodcastResultBuilder *)v5 setPodcastDescription:v8];
 
-    v9 = [v4 valueForAttribute:*MEMORY[0x277CC2688] withType:objc_opt_class()];
+    v9 = [resultCopy valueForAttribute:*MEMORY[0x277CC2688] withType:objc_opt_class()];
     [(SPUISPodcastResultBuilder *)v5 setImageURL:v9];
 
-    v10 = [v4 valueForAttribute:*MEMORY[0x277CC24E0] withType:objc_opt_class()];
+    v10 = [resultCopy valueForAttribute:*MEMORY[0x277CC24E0] withType:objc_opt_class()];
     [(SPUISPodcastResultBuilder *)v5 setAuthors:v10];
   }
 
@@ -58,14 +58,14 @@
 
 - (id)buildLastViewedString
 {
-  v3 = [(SPUISPodcastResultBuilder *)self lastViewedDate];
+  lastViewedDate = [(SPUISPodcastResultBuilder *)self lastViewedDate];
 
-  if (v3)
+  if (lastViewedDate)
   {
     v4 = +[SPUISDateFormatManager dateLastOpenedStringFormat];
     v5 = MEMORY[0x277CCACA8];
-    v6 = [(SPUISPodcastResultBuilder *)self lastViewedDate];
-    v7 = [SPUISDateFormatManager dyanmicStringFromDate:v6];
+    lastViewedDate2 = [(SPUISPodcastResultBuilder *)self lastViewedDate];
+    v7 = [SPUISDateFormatManager dyanmicStringFromDate:lastViewedDate2];
     v8 = [v5 stringWithFormat:v4, v7];
   }
 
@@ -81,44 +81,44 @@
 {
   v4.receiver = self;
   v4.super_class = SPUISPodcastResultBuilder;
-  v2 = [(SPUISResultBuilder *)&v4 buildInlineCardSection];
-  [v2 setPunchoutOptions:0];
+  buildInlineCardSection = [(SPUISResultBuilder *)&v4 buildInlineCardSection];
+  [buildInlineCardSection setPunchoutOptions:0];
 
-  return v2;
+  return buildInlineCardSection;
 }
 
 - (id)buildCompactCardSection
 {
   v10.receiver = self;
   v10.super_class = SPUISPodcastResultBuilder;
-  v3 = [(SPUISResultBuilder *)&v10 buildCompactCardSection];
-  v4 = [v3 descriptions];
+  buildCompactCardSection = [(SPUISResultBuilder *)&v10 buildCompactCardSection];
+  descriptions = [buildCompactCardSection descriptions];
   v5 = MEMORY[0x277D4C598];
-  v6 = [(SPUISPodcastResultBuilder *)self buildLastViewedString];
-  v7 = [v5 textWithString:v6];
-  v8 = [v4 arrayByAddingObject:v7];
-  [v3 setDescriptions:v8];
+  buildLastViewedString = [(SPUISPodcastResultBuilder *)self buildLastViewedString];
+  v7 = [v5 textWithString:buildLastViewedString];
+  v8 = [descriptions arrayByAddingObject:v7];
+  [buildCompactCardSection setDescriptions:v8];
 
-  return v3;
+  return buildCompactCardSection;
 }
 
 - (id)buildDescriptions
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v3 = [(SPUISResultBuilder *)self result];
-  v4 = [v3 contentType];
-  if ([v4 isEqualToString:@"com.apple.podcasts.show"])
+  result = [(SPUISResultBuilder *)self result];
+  contentType = [result contentType];
+  if ([contentType isEqualToString:@"com.apple.podcasts.show"])
   {
-    v5 = [(SPUISPodcastResultBuilder *)self authors];
+    authors = [(SPUISPodcastResultBuilder *)self authors];
 
-    if (v5)
+    if (authors)
     {
       v6 = MEMORY[0x277D4C598];
-      v7 = [(SPUISPodcastResultBuilder *)self authors];
-      v8 = [v7 componentsJoinedByString:{@", "}];
+      authors2 = [(SPUISPodcastResultBuilder *)self authors];
+      v8 = [authors2 componentsJoinedByString:{@", "}];
       v9 = [v6 textWithString:v8];
       v14[0] = v9;
-      v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:1];
+      buildDescriptions = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:1];
 
       goto LABEL_6;
     }
@@ -130,11 +130,11 @@
 
   v13.receiver = self;
   v13.super_class = SPUISPodcastResultBuilder;
-  v10 = [(SPUISResultBuilder *)&v13 buildDescriptions];
+  buildDescriptions = [(SPUISResultBuilder *)&v13 buildDescriptions];
 LABEL_6:
   v11 = *MEMORY[0x277D85DE8];
 
-  return v10;
+  return buildDescriptions;
 }
 
 @end

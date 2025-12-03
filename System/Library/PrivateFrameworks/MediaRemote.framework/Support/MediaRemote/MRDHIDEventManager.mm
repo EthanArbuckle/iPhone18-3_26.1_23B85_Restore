@@ -1,24 +1,24 @@
 @interface MRDHIDEventManager
-- (void)_dispatchKeypressEventWithUsagePage:(unsigned int)a3 usage:(unsigned int)a4;
-- (void)dispatchKeypressEvent:(unint64_t)a3;
-- (void)dispatchUnicodeEventWithText:(id)a3;
+- (void)_dispatchKeypressEventWithUsagePage:(unsigned int)page usage:(unsigned int)usage;
+- (void)dispatchKeypressEvent:(unint64_t)event;
+- (void)dispatchUnicodeEventWithText:(id)text;
 @end
 
 @implementation MRDHIDEventManager
 
-- (void)dispatchKeypressEvent:(unint64_t)a3
+- (void)dispatchKeypressEvent:(unint64_t)event
 {
-  if (a3 - 1 <= 2)
+  if (event - 1 <= 2)
   {
-    [(MRDHIDEventManager *)self _dispatchKeypressEventWithUsagePage:7 usage:dword_10044E7E0[a3 - 1]];
+    [(MRDHIDEventManager *)self _dispatchKeypressEventWithUsagePage:7 usage:dword_10044E7E0[event - 1]];
   }
 }
 
-- (void)dispatchUnicodeEventWithText:(id)a3
+- (void)dispatchUnicodeEventWithText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   mach_absolute_time();
-  v7 = [v4 dataUsingEncoding:4];
+  v7 = [textCopy dataUsingEncoding:4];
 
   v5 = v7;
   [v7 bytes];
@@ -28,7 +28,7 @@
   CFRelease(UnicodeEvent);
 }
 
-- (void)_dispatchKeypressEventWithUsagePage:(unsigned int)a3 usage:(unsigned int)a4
+- (void)_dispatchKeypressEventWithUsagePage:(unsigned int)page usage:(unsigned int)usage
 {
   mach_absolute_time();
   KeyboardEvent = IOHIDEventCreateKeyboardEvent();

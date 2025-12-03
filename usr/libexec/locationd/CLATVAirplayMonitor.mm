@@ -1,36 +1,36 @@
 @interface CLATVAirplayMonitor
 + (id)getSilo;
-+ (void)becameFatallyBlocked:(id)a3 index:(unint64_t)a4;
++ (void)becameFatallyBlocked:(id)blocked index:(unint64_t)index;
 - (CLATVAirplayMonitor)init;
-- (void)addClient:(id)a3;
-- (void)airPlaySolo:(id)a3 failedToStartScanningWithError:(id)a4;
-- (void)airPlaySolo:(id)a3 foundDevice:(id)a4 withData:(id)a5;
-- (void)airPlaySoloDidUpdateState:(id)a3;
-- (void)airPlaySoloStartedScanning:(id)a3;
-- (void)airPlaySoloStoppedScanning:(id)a3;
+- (void)addClient:(id)client;
+- (void)airPlaySolo:(id)solo failedToStartScanningWithError:(id)error;
+- (void)airPlaySolo:(id)solo foundDevice:(id)device withData:(id)data;
+- (void)airPlaySoloDidUpdateState:(id)state;
+- (void)airPlaySoloStartedScanning:(id)scanning;
+- (void)airPlaySoloStoppedScanning:(id)scanning;
 - (void)beginService;
-- (void)beginServiceWithAirPlaySolo:(id)a3;
+- (void)beginServiceWithAirPlaySolo:(id)solo;
 - (void)dealloc;
 - (void)endService;
-- (void)getPowerWithCompletion:(id)a3;
+- (void)getPowerWithCompletion:(id)completion;
 - (void)releaseData;
-- (void)removeClient:(id)a3;
+- (void)removeClient:(id)client;
 - (void)sendBufferedScanNotifications;
-- (void)startMonitoringDevicesForClient:(id)a3;
+- (void)startMonitoringDevicesForClient:(id)client;
 - (void)startScan;
-- (void)stopMonitoringDevicesForClient:(id)a3;
+- (void)stopMonitoringDevicesForClient:(id)client;
 - (void)stopScan;
-- (void)withClients:(id)a3;
+- (void)withClients:(id)clients;
 @end
 
 @implementation CLATVAirplayMonitor
 
-+ (void)becameFatallyBlocked:(id)a3 index:(unint64_t)a4
++ (void)becameFatallyBlocked:(id)blocked index:(unint64_t)index
 {
-  v5 = a4 + 1;
-  if (a4 + 1 < [a3 count])
+  v5 = index + 1;
+  if (index + 1 < [blocked count])
   {
-    [objc_msgSend(a3 objectAtIndexedSubscript:{v5), "becameFatallyBlocked:index:", a3, v5}];
+    [objc_msgSend(blocked objectAtIndexedSubscript:{v5), "becameFatallyBlocked:index:", blocked, v5}];
   }
 }
 
@@ -52,11 +52,11 @@
   [(CLATVAirplayMonitor *)self beginServiceWithAirPlaySolo:v3];
 }
 
-- (void)beginServiceWithAirPlaySolo:(id)a3
+- (void)beginServiceWithAirPlaySolo:(id)solo
 {
   [-[CLATVAirplayMonitor universe](self "universe")];
   [(CLATVAirplayMonitor *)self setClients:+[NSMutableSet set]];
-  [(CLATVAirplayMonitor *)self setAirplaySolo:a3];
+  [(CLATVAirplayMonitor *)self setAirplaySolo:solo];
   [(CLATVAirplayMonitor *)self setPower:[(WPAirPlaySolo *)[(CLATVAirplayMonitor *)self airplaySolo] state]== 3];
   -[CLATVAirplayMonitor setScanDeliveryDelayTimer:](self, "setScanDeliveryDelayTimer:", [objc_msgSend(-[CLATVAirplayMonitor universe](self "universe")]);
   v5[0] = _NSConcreteStackBlock;
@@ -94,30 +94,30 @@
   [(CLATVAirplayMonitor *)&v3 dealloc];
 }
 
-- (void)addClient:(id)a3
+- (void)addClient:(id)client
 {
   [-[CLATVAirplayMonitor universe](self "universe")];
-  v5 = [(CLATVAirplayMonitor *)self clients];
+  clients = [(CLATVAirplayMonitor *)self clients];
 
-  [(NSMutableSet *)v5 addObject:a3];
+  [(NSMutableSet *)clients addObject:client];
 }
 
-- (void)removeClient:(id)a3
+- (void)removeClient:(id)client
 {
   [-[CLATVAirplayMonitor universe](self "universe")];
-  v5 = [(CLATVAirplayMonitor *)self clients];
+  clients = [(CLATVAirplayMonitor *)self clients];
 
-  [(NSMutableSet *)v5 removeObject:a3];
+  [(NSMutableSet *)clients removeObject:client];
 }
 
-- (void)startMonitoringDevicesForClient:(id)a3
+- (void)startMonitoringDevicesForClient:(id)client
 {
   [-[CLATVAirplayMonitor universe](self "universe")];
 
-  [(CLATVAirplayMonitor *)self addClient:a3];
+  [(CLATVAirplayMonitor *)self addClient:client];
 }
 
-- (void)stopMonitoringDevicesForClient:(id)a3
+- (void)stopMonitoringDevicesForClient:(id)client
 {
   [-[CLATVAirplayMonitor universe](self "universe")];
   if ([(NSMutableSet *)[(CLATVAirplayMonitor *)self clients] count]== 1)
@@ -125,15 +125,15 @@
     [(CLATVAirplayMonitor *)self stopScan];
   }
 
-  [(CLATVAirplayMonitor *)self removeClient:a3];
+  [(CLATVAirplayMonitor *)self removeClient:client];
 }
 
-- (void)getPowerWithCompletion:(id)a3
+- (void)getPowerWithCompletion:(id)completion
 {
-  v4 = [(CLATVAirplayMonitor *)self power];
-  v5 = *(a3 + 2);
+  power = [(CLATVAirplayMonitor *)self power];
+  v5 = *(completion + 2);
 
-  v5(a3, v4);
+  v5(completion, power);
 }
 
 - (CLATVAirplayMonitor)init
@@ -143,7 +143,7 @@
   return [(CLATVAirplayMonitor *)&v3 initWithInboundProtocol:&OBJC_PROTOCOL___CLATVAirplayMonitorServiceProtocol outboundProtocol:&OBJC_PROTOCOL___CLATVAirplayMonitorClientProtocol];
 }
 
-- (void)withClients:(id)a3
+- (void)withClients:(id)clients
 {
   [-[CLATVAirplayMonitor universe](self "universe")];
   v10 = 0u;
@@ -166,7 +166,7 @@
           objc_enumerationMutation(clients);
         }
 
-        (*(a3 + 2))(a3, *(*(&v10 + 1) + 8 * v9));
+        (*(clients + 2))(clients, *(*(&v10 + 1) + 8 * v9));
         v9 = v9 + 1;
       }
 
@@ -187,9 +187,9 @@
     {
       [(WPAirPlaySolo *)[(CLATVAirplayMonitor *)self airplaySolo] startConnectionlessScanningWithData:&off_102553BE8];
       v3 = (*&qword_10265AC18 + j__CFAbsoluteTimeGetCurrent_2() * 1000.0) / 1000.0;
-      v4 = [(CLATVAirplayMonitor *)self scanDeliveryDelayTimer];
+      scanDeliveryDelayTimer = [(CLATVAirplayMonitor *)self scanDeliveryDelayTimer];
 
-      [(CLTimer *)v4 setNextFireTime:v3];
+      [(CLTimer *)scanDeliveryDelayTimer setNextFireTime:v3];
     }
 
     else
@@ -237,9 +237,9 @@
 - (void)stopScan
 {
   [(WPAirPlaySolo *)[(CLATVAirplayMonitor *)self airplaySolo] stopConnectionlessScanningWithData:&off_102553BE8];
-  v3 = [(CLATVAirplayMonitor *)self scanDeliveryDelayTimer];
+  scanDeliveryDelayTimer = [(CLATVAirplayMonitor *)self scanDeliveryDelayTimer];
 
-  [(CLTimer *)v3 setNextFireDelay:1.79769313e308];
+  [(CLTimer *)scanDeliveryDelayTimer setNextFireDelay:1.79769313e308];
 }
 
 - (void)sendBufferedScanNotifications
@@ -260,14 +260,14 @@
   }
 }
 
-- (void)airPlaySoloDidUpdateState:(id)a3
+- (void)airPlaySoloDidUpdateState:(id)state
 {
-  v4 = [a3 state] == 3;
+  v4 = [state state] == 3;
 
   [(CLATVAirplayMonitor *)self setPower:v4];
 }
 
-- (void)airPlaySolo:(id)a3 foundDevice:(id)a4 withData:(id)a5
+- (void)airPlaySolo:(id)solo foundDevice:(id)device withData:(id)data
 {
   if (qword_1025D4870 != -1)
   {
@@ -283,16 +283,16 @@
   if (os_log_type_enabled(qword_1025D4878, OS_LOG_TYPE_DEBUG))
   {
     v19 = 136380931;
-    v20 = [objc_msgSend(a4 "UUIDString")];
+    v20 = [objc_msgSend(device "UUIDString")];
     v21 = 2081;
-    v22 = [objc_msgSend(a5 "description")];
+    v22 = [objc_msgSend(data "description")];
     _os_log_impl(dword_100000000, v8, OS_LOG_TYPE_DEBUG, "Found device %{private}s withData: %{private}s", &v19, 0x16u);
   }
 
   if (sub_10000A100(121, 2))
   {
-    sub_10195A3C8(a4, a5);
-    if (a4)
+    sub_10195A3C8(device, data);
+    if (device)
     {
       goto LABEL_8;
     }
@@ -301,38 +301,38 @@
   else
   {
 LABEL_7:
-    if (a4)
+    if (device)
     {
 LABEL_8:
-      v9 = [a5 objectForKeyedSubscript:WPPuckTypeAirPlaySoloAdvertisingData];
+      v9 = [data objectForKeyedSubscript:WPPuckTypeAirPlaySoloAdvertisingData];
       if (v9 && (v10 = v9, [v9 length]))
       {
         if ([v10 length] > 5)
         {
           v13 = *([v10 bytes] + 2);
-          v14 = [a5 objectForKeyedSubscript:WPPuckTypeAirPlaySoloRSSI];
+          v14 = [data objectForKeyedSubscript:WPPuckTypeAirPlaySoloRSSI];
           if (v14)
           {
-            v15 = [v14 intValue];
+            intValue = [v14 intValue];
           }
 
           else
           {
-            v15 = 0;
+            intValue = 0;
           }
 
-          v16 = [a5 objectForKeyedSubscript:WPPuckTypeAirPlaySoloAdvertisingChannel];
+          v16 = [data objectForKeyedSubscript:WPPuckTypeAirPlaySoloAdvertisingChannel];
           if (v16)
           {
-            v17 = [v16 intValue];
+            intValue2 = [v16 intValue];
           }
 
           else
           {
-            v17 = 0xFFFFFFFFLL;
+            intValue2 = 0xFFFFFFFFLL;
           }
 
-          [(NSMutableArray *)[(CLATVAirplayMonitor *)self bufferedDevices] addObject:[[CLATVAirplayDevice alloc] initWithTimestamp:v15 RSSI:a4 uuid:v13 ipv4:v17 channel:j__CFAbsoluteTimeGetCurrent_2()]];
+          [(NSMutableArray *)[(CLATVAirplayMonitor *)self bufferedDevices] addObject:[[CLATVAirplayDevice alloc] initWithTimestamp:intValue RSSI:device uuid:v13 ipv4:intValue2 channel:j__CFAbsoluteTimeGetCurrent_2()]];
         }
 
         else
@@ -398,7 +398,7 @@ LABEL_8:
   }
 }
 
-- (void)airPlaySoloStartedScanning:(id)a3
+- (void)airPlaySoloStartedScanning:(id)scanning
 {
   if (qword_1025D4870 != -1)
   {
@@ -418,7 +418,7 @@ LABEL_8:
   }
 }
 
-- (void)airPlaySoloStoppedScanning:(id)a3
+- (void)airPlaySoloStoppedScanning:(id)scanning
 {
   if (qword_1025D4870 != -1)
   {
@@ -438,7 +438,7 @@ LABEL_8:
   }
 }
 
-- (void)airPlaySolo:(id)a3 failedToStartScanningWithError:(id)a4
+- (void)airPlaySolo:(id)solo failedToStartScanningWithError:(id)error
 {
   if (qword_1025D4870 != -1)
   {
@@ -449,13 +449,13 @@ LABEL_8:
   if (os_log_type_enabled(qword_1025D4878, OS_LOG_TYPE_FAULT))
   {
     v6 = 138543362;
-    v7 = [a4 description];
+    v7 = [error description];
     _os_log_impl(dword_100000000, v5, OS_LOG_TYPE_FAULT, "Failed to start AirPlaySolo scanning. %{public}@", &v6, 0xCu);
   }
 
   if (sub_10000A100(121, 0))
   {
-    sub_10195A980(a4);
+    sub_10195A980(error);
   }
 }
 

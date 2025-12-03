@@ -1,23 +1,23 @@
 @interface VNPixelBufferMLFeatureProvider
 - (NSSet)featureNames;
-- (VNPixelBufferMLFeatureProvider)initWithPixelBuffer:(__CVBuffer *)a3 forKey:(id)a4 originalFeatureProvider:(id)a5;
-- (id)featureValueForName:(id)a3;
+- (VNPixelBufferMLFeatureProvider)initWithPixelBuffer:(__CVBuffer *)buffer forKey:(id)key originalFeatureProvider:(id)provider;
+- (id)featureValueForName:(id)name;
 - (void)dealloc;
 @end
 
 @implementation VNPixelBufferMLFeatureProvider
 
-- (id)featureValueForName:(id)a3
+- (id)featureValueForName:(id)name
 {
-  v4 = a3;
-  if ([v4 isEqualToString:self->_imageInputKey])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:self->_imageInputKey])
   {
     [MEMORY[0x1E695FE60] featureValueWithPixelBuffer:self->_pixelBuffer];
   }
 
   else
   {
-    [(MLFeatureProvider *)self->_originalFeatureProvider featureValueForName:v4];
+    [(MLFeatureProvider *)self->_originalFeatureProvider featureValueForName:nameCopy];
   }
   v5 = ;
 
@@ -30,8 +30,8 @@
   originalFeatureProvider = self->_originalFeatureProvider;
   if (originalFeatureProvider)
   {
-    v5 = [(MLFeatureProvider *)originalFeatureProvider featureNames];
-    [v3 unionSet:v5];
+    featureNames = [(MLFeatureProvider *)originalFeatureProvider featureNames];
+    [v3 unionSet:featureNames];
   }
 
   return v3;
@@ -46,21 +46,21 @@
   [(VNPixelBufferMLFeatureProvider *)&v3 dealloc];
 }
 
-- (VNPixelBufferMLFeatureProvider)initWithPixelBuffer:(__CVBuffer *)a3 forKey:(id)a4 originalFeatureProvider:(id)a5
+- (VNPixelBufferMLFeatureProvider)initWithPixelBuffer:(__CVBuffer *)buffer forKey:(id)key originalFeatureProvider:(id)provider
 {
-  v8 = a4;
-  v9 = a5;
+  keyCopy = key;
+  providerCopy = provider;
   v14.receiver = self;
   v14.super_class = VNPixelBufferMLFeatureProvider;
   v10 = [(VNPixelBufferMLFeatureProvider *)&v14 init];
   if (v10)
   {
-    v10->_pixelBuffer = CVPixelBufferRetain(a3);
-    v11 = [v8 copy];
+    v10->_pixelBuffer = CVPixelBufferRetain(buffer);
+    v11 = [keyCopy copy];
     imageInputKey = v10->_imageInputKey;
     v10->_imageInputKey = v11;
 
-    objc_storeStrong(&v10->_originalFeatureProvider, a5);
+    objc_storeStrong(&v10->_originalFeatureProvider, provider);
   }
 
   return v10;

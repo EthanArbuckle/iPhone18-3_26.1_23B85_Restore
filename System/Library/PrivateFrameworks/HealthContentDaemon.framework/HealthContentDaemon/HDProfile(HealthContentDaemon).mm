@@ -7,34 +7,34 @@
 
 - (id)ontologyConceptManager
 {
-  v1 = [a1 profileExtensionWithIdentifier:*MEMORY[0x277D10378]];
+  v1 = [self profileExtensionWithIdentifier:*MEMORY[0x277D10378]];
   if ([v1 conformsToProtocol:&unk_2863878E8])
   {
-    v2 = [v1 ontologyConceptManager];
+    ontologyConceptManager = [v1 ontologyConceptManager];
   }
 
   else
   {
-    v2 = 0;
+    ontologyConceptManager = 0;
   }
 
-  return v2;
+  return ontologyConceptManager;
 }
 
 - (id)ontologyDatabase
 {
-  v1 = [a1 profileExtensionWithIdentifier:*MEMORY[0x277D10378]];
+  v1 = [self profileExtensionWithIdentifier:*MEMORY[0x277D10378]];
   if ([v1 conformsToProtocol:&unk_2863878E8])
   {
-    v2 = [v1 ontologyDatabase];
+    ontologyDatabase = [v1 ontologyDatabase];
   }
 
   else
   {
-    v2 = 0;
+    ontologyDatabase = 0;
   }
 
-  return v2;
+  return ontologyDatabase;
 }
 
 @end

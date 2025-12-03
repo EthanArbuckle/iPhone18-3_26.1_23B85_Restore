@@ -1,20 +1,20 @@
 @interface PNPSqueezeThresholdSliderCell
 - (id)pencilSqueezeThreshold;
-- (id)squeezeThresholdToThreshold:(id)a3;
-- (id)thresholdToSqueezeThreshold:(id)a3;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
-- (void)setPencilSqueezeThreshold:(id)a3;
+- (id)squeezeThresholdToThreshold:(id)threshold;
+- (id)thresholdToSqueezeThreshold:(id)threshold;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
+- (void)setPencilSqueezeThreshold:(id)threshold;
 @end
 
 @implementation PNPSqueezeThresholdSliderCell
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
-  v4 = a3;
-  [v4 setTarget:self];
-  *&v4[*MEMORY[0x277D3FCB0]] = sel_setPencilSqueezeThreshold_;
-  *&v4[*MEMORY[0x277D3FCA8]] = sel_pencilSqueezeThreshold;
-  v5 = [v4 propertyForKey:@"extendedRange"];
+  specifierCopy = specifier;
+  [specifierCopy setTarget:self];
+  *&specifierCopy[*MEMORY[0x277D3FCB0]] = sel_setPencilSqueezeThreshold_;
+  *&specifierCopy[*MEMORY[0x277D3FCA8]] = sel_pencilSqueezeThreshold;
+  v5 = [specifierCopy propertyForKey:@"extendedRange"];
   self->_isExtendedRange = [v5 BOOLValue];
 
   v6 = &kExtendedRangeTickValues;
@@ -41,30 +41,30 @@
 
   self->_numTicks = v7;
   self->_tickValues = v6;
-  [v4 setProperty:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277D400C8]];
-  [v4 setProperty:MEMORY[0x277CBEC28] forKey:*MEMORY[0x277D400F0]];
+  [specifierCopy setProperty:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277D400C8]];
+  [specifierCopy setProperty:MEMORY[0x277CBEC28] forKey:*MEMORY[0x277D400F0]];
   v9 = [MEMORY[0x277CCABB0] numberWithInteger:self->_numTicks - 1];
-  [v4 setProperty:v9 forKey:*MEMORY[0x277D400E8]];
+  [specifierCopy setProperty:v9 forKey:*MEMORY[0x277D400E8]];
 
-  [v4 setProperty:&unk_286FED050 forKey:*MEMORY[0x277D3FEC0]];
+  [specifierCopy setProperty:&unk_286FED050 forKey:*MEMORY[0x277D3FEC0]];
   v10 = [MEMORY[0x277CCABB0] numberWithInteger:self->_numTicks - 1];
-  [v4 setProperty:v10 forKey:*MEMORY[0x277D3FEB8]];
+  [specifierCopy setProperty:v10 forKey:*MEMORY[0x277D3FEB8]];
 
-  [v4 setProperty:&unk_286FED068 forKey:*MEMORY[0x277D3FEF0]];
+  [specifierCopy setProperty:&unk_286FED068 forKey:*MEMORY[0x277D3FEF0]];
   v11.receiver = self;
   v11.super_class = PNPSqueezeThresholdSliderCell;
-  [(PSSliderTableCell *)&v11 refreshCellContentsWithSpecifier:v4];
+  [(PSSliderTableCell *)&v11 refreshCellContentsWithSpecifier:specifierCopy];
 }
 
-- (id)thresholdToSqueezeThreshold:(id)a3
+- (id)thresholdToSqueezeThreshold:(id)threshold
 {
   if (self->_numTicks)
   {
-    v4 = [a3 unsignedIntegerValue];
+    unsignedIntegerValue = [threshold unsignedIntegerValue];
     v5 = self->_numTicks - 1;
-    if (v5 >= (v4 & ~(v4 >> 63)))
+    if (v5 >= (unsignedIntegerValue & ~(unsignedIntegerValue >> 63)))
     {
-      v5 = v4 & ~(v4 >> 63);
+      v5 = unsignedIntegerValue & ~(unsignedIntegerValue >> 63);
     }
 
     v6 = MEMORY[0x277CCABB0];
@@ -83,11 +83,11 @@
   return v9;
 }
 
-- (id)squeezeThresholdToThreshold:(id)a3
+- (id)squeezeThresholdToThreshold:(id)threshold
 {
   if (self->_numTicks)
   {
-    [a3 doubleValue];
+    [threshold doubleValue];
     numTicks = self->_numTicks;
     if (numTicks < 2)
     {
@@ -134,12 +134,12 @@
 - (id)pencilSqueezeThreshold
 {
   v3 = +[PNPSqueezeThresholdController sharedController];
-  v4 = [v3 squeezeThreshold];
+  squeezeThreshold = [v3 squeezeThreshold];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(PNPSqueezeThresholdSliderCell *)self squeezeThresholdToThreshold:v4];
+    v5 = [(PNPSqueezeThresholdSliderCell *)self squeezeThresholdToThreshold:squeezeThreshold];
   }
 
   else
@@ -153,18 +153,18 @@
   return v5;
 }
 
-- (void)setPencilSqueezeThreshold:(id)a3
+- (void)setPencilSqueezeThreshold:(id)threshold
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(PNPSqueezeThresholdSliderCell *)self thresholdToSqueezeThreshold:v4];
+  thresholdCopy = threshold;
+  v5 = [(PNPSqueezeThresholdSliderCell *)self thresholdToSqueezeThreshold:thresholdCopy];
   v6 = os_log_create("com.apple.pencilpairingui", "");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412546;
     v9 = v5;
     v10 = 2112;
-    v11 = v4;
+    v11 = thresholdCopy;
     _os_log_impl(&dword_25E1BC000, v6, OS_LOG_TYPE_DEFAULT, "Setting squeze threshold: %@ (index: %@)", &v8, 0x16u);
   }
 

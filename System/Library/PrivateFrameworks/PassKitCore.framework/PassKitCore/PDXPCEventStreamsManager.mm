@@ -1,12 +1,12 @@
 @interface PDXPCEventStreamsManager
 + (id)eventStreamManager;
 - (id)_init;
-- (id)_managerForEventStream:(id)a3;
+- (id)_managerForEventStream:(id)stream;
 - (void)beginEventDelivery;
 - (void)pauseEventDelivery;
 - (void)registerForLaunchEvents;
-- (void)registerObserver:(id)a3 forEventStream:(id)a4 withReplyQueue:(id)a5;
-- (void)unregisterObserver:(id)a3 forEventStream:(id)a4;
+- (void)registerObserver:(id)observer forEventStream:(id)stream withReplyQueue:(id)queue;
+- (void)unregisterObserver:(id)observer forEventStream:(id)stream;
 @end
 
 @implementation PDXPCEventStreamsManager
@@ -77,12 +77,12 @@
   dispatch_sync(stateQueue, block);
 }
 
-- (void)registerObserver:(id)a3 forEventStream:(id)a4 withReplyQueue:(id)a5
+- (void)registerObserver:(id)observer forEventStream:(id)stream withReplyQueue:(id)queue
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v9 length])
+  observerCopy = observer;
+  streamCopy = stream;
+  queueCopy = queue;
+  if ([streamCopy length])
   {
     v15 = 0;
     v16 = &v15;
@@ -97,19 +97,19 @@
     block[3] = &unk_10083F120;
     v14 = &v15;
     block[4] = self;
-    v13 = v9;
+    v13 = streamCopy;
     dispatch_sync(stateQueue, block);
-    [v16[5] registerObserver:v8 withReplyQueue:v10];
+    [v16[5] registerObserver:observerCopy withReplyQueue:queueCopy];
 
     _Block_object_dispose(&v15, 8);
   }
 }
 
-- (void)unregisterObserver:(id)a3 forEventStream:(id)a4
+- (void)unregisterObserver:(id)observer forEventStream:(id)stream
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 length])
+  observerCopy = observer;
+  streamCopy = stream;
+  if ([streamCopy length])
   {
     v12 = 0;
     v13 = &v12;
@@ -124,22 +124,22 @@
     block[3] = &unk_10083F120;
     v11 = &v12;
     block[4] = self;
-    v10 = v7;
+    v10 = streamCopy;
     dispatch_sync(stateQueue, block);
-    [v13[5] unregisterObserver:v6];
+    [v13[5] unregisterObserver:observerCopy];
 
     _Block_object_dispose(&v12, 8);
   }
 }
 
-- (id)_managerForEventStream:(id)a3
+- (id)_managerForEventStream:(id)stream
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_streamToStreamManagerMap objectForKeyedSubscript:v4];
+  streamCopy = stream;
+  v5 = [(NSMutableDictionary *)self->_streamToStreamManagerMap objectForKeyedSubscript:streamCopy];
   if (!v5)
   {
-    v5 = [[PDXPCEventStreamManager alloc] initWithEventStream:v4 startedPaused:self->_pauseCounter != 0];
-    [(NSMutableDictionary *)self->_streamToStreamManagerMap setObject:v5 forKeyedSubscript:v4];
+    v5 = [[PDXPCEventStreamManager alloc] initWithEventStream:streamCopy startedPaused:self->_pauseCounter != 0];
+    [(NSMutableDictionary *)self->_streamToStreamManagerMap setObject:v5 forKeyedSubscript:streamCopy];
   }
 
   return v5;

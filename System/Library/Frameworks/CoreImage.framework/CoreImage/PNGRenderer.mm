@@ -1,5 +1,5 @@
 @interface PNGRenderer
-- (BOOL)setCanvasWidth:(unsigned int)a3 height:(unsigned int)a4;
+- (BOOL)setCanvasWidth:(unsigned int)width height:(unsigned int)height;
 - (CGImage)cgimage;
 - (PNGRenderer)init;
 - (void)dealloc;
@@ -31,7 +31,7 @@
   [(CGRenderer *)&v3 dealloc];
 }
 
-- (BOOL)setCanvasWidth:(unsigned int)a3 height:(unsigned int)a4
+- (BOOL)setCanvasWidth:(unsigned int)width height:(unsigned int)height
 {
   context = self->super.context;
   if (context)
@@ -39,8 +39,8 @@
     CGContextRelease(context);
   }
 
-  v8 = a3 + 40.0 + a3 + 40.0;
-  v9 = CGBitmapContextCreate(0, v8, (a4 + 40.0 + a4 + 40.0), 8uLL, vcvtd_n_u64_f64(v8, 2uLL), self->colorSpace, 0x2002u);
+  v8 = width + 40.0 + width + 40.0;
+  v9 = CGBitmapContextCreate(0, v8, (height + 40.0 + height + 40.0), 8uLL, vcvtd_n_u64_f64(v8, 2uLL), self->colorSpace, 0x2002u);
   self->super.context = v9;
   if (v9)
   {
@@ -48,8 +48,8 @@
     CGContextSetAlpha(self->super.context, 1.0);
     v11.origin.x = 0.0;
     v11.origin.y = 0.0;
-    v11.size.width = a3 + 40.0 + a3 + 40.0;
-    v11.size.height = a4 + 40.0 + a4 + 40.0;
+    v11.size.width = width + 40.0 + width + 40.0;
+    v11.size.height = height + 40.0 + height + 40.0;
     CGContextFillRect(self->super.context, v11);
     v9 = self->super.context;
   }
@@ -65,12 +65,12 @@
   if (v3)
   {
     v4 = v3;
-    v5 = [(PNGRenderer *)self cgimage];
-    CGImageDestinationAddImage(v4, v5, 0);
+    cgimage = [(PNGRenderer *)self cgimage];
+    CGImageDestinationAddImage(v4, cgimage, 0);
     CGImageDestinationFinalize(v4);
     CFRelease(v4);
 
-    CGImageRelease(v5);
+    CGImageRelease(cgimage);
   }
 }
 

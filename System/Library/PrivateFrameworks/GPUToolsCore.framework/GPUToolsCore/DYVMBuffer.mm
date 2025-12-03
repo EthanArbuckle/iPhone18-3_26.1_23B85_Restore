@@ -1,17 +1,17 @@
 @interface DYVMBuffer
-- (DYVMBuffer)initWithCapacity:(unint64_t)a3;
-- (DYVMBuffer)initWithLength:(unint64_t)a3;
-- (DYVMBuffer)initWithVMBuffer:(VMBuffer *)a3;
-- (id)subdataWithRange:(_NSRange)a3;
+- (DYVMBuffer)initWithCapacity:(unint64_t)capacity;
+- (DYVMBuffer)initWithLength:(unint64_t)length;
+- (DYVMBuffer)initWithVMBuffer:(VMBuffer *)buffer;
+- (id)subdataWithRange:(_NSRange)range;
 - (void)dealloc;
-- (void)setLength:(unint64_t)a3;
+- (void)setLength:(unint64_t)length;
 @end
 
 @implementation DYVMBuffer
 
-- (DYVMBuffer)initWithVMBuffer:(VMBuffer *)a3
+- (DYVMBuffer)initWithVMBuffer:(VMBuffer *)buffer
 {
-  if (!a3)
+  if (!buffer)
   {
     [DYVMBuffer initWithVMBuffer:];
   }
@@ -21,13 +21,13 @@
   result = [(DYVMBuffer *)&v5 init];
   if (result)
   {
-    result->_vmBuffer = a3;
+    result->_vmBuffer = buffer;
   }
 
   return result;
 }
 
-- (DYVMBuffer)initWithCapacity:(unint64_t)a3
+- (DYVMBuffer)initWithCapacity:(unint64_t)capacity
 {
   v4.receiver = self;
   v4.super_class = DYVMBuffer;
@@ -39,7 +39,7 @@
   return 0;
 }
 
-- (DYVMBuffer)initWithLength:(unint64_t)a3
+- (DYVMBuffer)initWithLength:(unint64_t)length
 {
   v4.receiver = self;
   v4.super_class = DYVMBuffer;
@@ -65,12 +65,12 @@
   [(DYVMBuffer *)&v4 dealloc];
 }
 
-- (void)setLength:(unint64_t)a3
+- (void)setLength:(unint64_t)length
 {
   vmBuffer = self->_vmBuffer;
-  if (vmBuffer->var1 < a3)
+  if (vmBuffer->var1 < length)
   {
-    GPUTools::VMBuffer::resize(vmBuffer, a3);
+    GPUTools::VMBuffer::resize(vmBuffer, length);
     vmBuffer = self->_vmBuffer;
   }
 
@@ -80,14 +80,14 @@
   v9 = -var5;
   v10 = (v8 & v9) - vmBuffer->var0;
   vmBuffer->var3 = v10;
-  vmBuffer->var4 = v10 + ((v7 + a3) & v9);
+  vmBuffer->var4 = v10 + ((v7 + length) & v9);
 }
 
-- (id)subdataWithRange:(_NSRange)a3
+- (id)subdataWithRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  if (a3.location + a3.length > [(DYVMBuffer *)self length])
+  length = range.length;
+  location = range.location;
+  if (range.location + range.length > [(DYVMBuffer *)self length])
   {
     return 0;
   }

@@ -1,55 +1,55 @@
 @interface _INPBIntentTypePhrases
-- (BOOL)isEqual:(id)a3;
-- (_INPBIntentTypePhrases)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBIntentTypePhrases)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (void)addIntentVocabularyExamples:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setIntentVocabularyExamples:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addIntentVocabularyExamples:(id)examples;
+- (void)encodeWithCoder:(id)coder;
+- (void)setIntentVocabularyExamples:(id)examples;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBIntentTypePhrases
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(_INPBIntentTypePhrases *)self intentType];
-  v5 = [v4 dictionaryRepresentation];
-  [v3 setObject:v5 forKeyedSubscript:@"intent_type"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  intentType = [(_INPBIntentTypePhrases *)self intentType];
+  dictionaryRepresentation = [intentType dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"intent_type"];
 
   if (self->_intentVocabularyExamples)
   {
-    v6 = [(_INPBIntentTypePhrases *)self intentVocabularyExamples];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"intent_vocabulary_examples"];
+    intentVocabularyExamples = [(_INPBIntentTypePhrases *)self intentVocabularyExamples];
+    v7 = [intentVocabularyExamples copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"intent_vocabulary_examples"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(_INPBIntentTypePhrases *)self intentType];
-  v6 = [v4 intentType];
-  if ((v5 != 0) == (v6 == 0))
+  intentType = [(_INPBIntentTypePhrases *)self intentType];
+  intentType2 = [equalCopy intentType];
+  if ((intentType != 0) == (intentType2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(_INPBIntentTypePhrases *)self intentType];
-  if (v7)
+  intentType3 = [(_INPBIntentTypePhrases *)self intentType];
+  if (intentType3)
   {
-    v8 = v7;
-    v9 = [(_INPBIntentTypePhrases *)self intentType];
-    v10 = [v4 intentType];
-    v11 = [v9 isEqual:v10];
+    v8 = intentType3;
+    intentType4 = [(_INPBIntentTypePhrases *)self intentType];
+    intentType5 = [equalCopy intentType];
+    v11 = [intentType4 isEqual:intentType5];
 
     if (!v11)
     {
@@ -61,12 +61,12 @@
   {
   }
 
-  v5 = [(_INPBIntentTypePhrases *)self intentVocabularyExamples];
-  v6 = [v4 intentVocabularyExamples];
-  if ((v5 != 0) != (v6 == 0))
+  intentType = [(_INPBIntentTypePhrases *)self intentVocabularyExamples];
+  intentType2 = [equalCopy intentVocabularyExamples];
+  if ((intentType != 0) != (intentType2 == 0))
   {
-    v12 = [(_INPBIntentTypePhrases *)self intentVocabularyExamples];
-    if (!v12)
+    intentVocabularyExamples = [(_INPBIntentTypePhrases *)self intentVocabularyExamples];
+    if (!intentVocabularyExamples)
     {
 
 LABEL_15:
@@ -74,10 +74,10 @@ LABEL_15:
       goto LABEL_13;
     }
 
-    v13 = v12;
-    v14 = [(_INPBIntentTypePhrases *)self intentVocabularyExamples];
-    v15 = [v4 intentVocabularyExamples];
-    v16 = [v14 isEqual:v15];
+    v13 = intentVocabularyExamples;
+    intentVocabularyExamples2 = [(_INPBIntentTypePhrases *)self intentVocabularyExamples];
+    intentVocabularyExamples3 = [equalCopy intentVocabularyExamples];
+    v16 = [intentVocabularyExamples2 isEqual:intentVocabularyExamples3];
 
     if (v16)
     {
@@ -97,51 +97,51 @@ LABEL_13:
   return v17;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBIntentTypePhrases allocWithZone:](_INPBIntentTypePhrases init];
-  v6 = [(_INPBIntentType *)self->_intentType copyWithZone:a3];
+  v6 = [(_INPBIntentType *)self->_intentType copyWithZone:zone];
   [(_INPBIntentTypePhrases *)v5 setIntentType:v6];
 
-  v7 = [(NSArray *)self->_intentVocabularyExamples copyWithZone:a3];
+  v7 = [(NSArray *)self->_intentVocabularyExamples copyWithZone:zone];
   [(_INPBIntentTypePhrases *)v5 setIntentVocabularyExamples:v7];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBIntentTypePhrases *)self data];
+  coderCopy = coder;
+  data = [(_INPBIntentTypePhrases *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBIntentTypePhrases)initWithCoder:(id)a3
+- (_INPBIntentTypePhrases)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBIntentTypePhrases *)self initWithData:v6];
+    self = [(_INPBIntentTypePhrases *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_INPBIntentTypePhrases *)self intentType];
+  toCopy = to;
+  intentType = [(_INPBIntentTypePhrases *)self intentType];
 
-  if (v5)
+  if (intentType)
   {
-    v6 = [(_INPBIntentTypePhrases *)self intentType];
+    intentType2 = [(_INPBIntentTypePhrases *)self intentType];
     PBDataWriterWriteSubmessage();
   }
 
@@ -180,27 +180,27 @@ LABEL_13:
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addIntentVocabularyExamples:(id)a3
+- (void)addIntentVocabularyExamples:(id)examples
 {
-  v4 = a3;
+  examplesCopy = examples;
   intentVocabularyExamples = self->_intentVocabularyExamples;
-  v8 = v4;
+  v8 = examplesCopy;
   if (!intentVocabularyExamples)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_intentVocabularyExamples;
-    self->_intentVocabularyExamples = v6;
+    self->_intentVocabularyExamples = array;
 
-    v4 = v8;
+    examplesCopy = v8;
     intentVocabularyExamples = self->_intentVocabularyExamples;
   }
 
-  [(NSArray *)intentVocabularyExamples addObject:v4];
+  [(NSArray *)intentVocabularyExamples addObject:examplesCopy];
 }
 
-- (void)setIntentVocabularyExamples:(id)a3
+- (void)setIntentVocabularyExamples:(id)examples
 {
-  v4 = [a3 mutableCopy];
+  v4 = [examples mutableCopy];
   intentVocabularyExamples = self->_intentVocabularyExamples;
   self->_intentVocabularyExamples = v4;
 

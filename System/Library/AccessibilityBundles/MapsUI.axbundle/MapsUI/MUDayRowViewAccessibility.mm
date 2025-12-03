@@ -1,15 +1,15 @@
 @interface MUDayRowViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 @end
 
 @implementation MUDayRowViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MUDayRowView" hasInstanceVariable:@"_headerLabel" withType:"UIView<MULabelViewProtocol>"];
-  [v3 validateClass:@"MUDayRowView" hasInstanceVariable:@"_dayLabel" withType:"UIView<MULabelViewProtocol>"];
-  [v3 validateClass:@"MUDayRowView" hasInstanceVariable:@"_hoursLabel" withType:"UIView<MULabelViewProtocol>"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MUDayRowView" hasInstanceVariable:@"_headerLabel" withType:"UIView<MULabelViewProtocol>"];
+  [validationsCopy validateClass:@"MUDayRowView" hasInstanceVariable:@"_dayLabel" withType:"UIView<MULabelViewProtocol>"];
+  [validationsCopy validateClass:@"MUDayRowView" hasInstanceVariable:@"_hoursLabel" withType:"UIView<MULabelViewProtocol>"];
 }
 
 @end

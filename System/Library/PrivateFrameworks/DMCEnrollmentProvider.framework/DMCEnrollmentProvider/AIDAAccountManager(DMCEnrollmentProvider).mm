@@ -6,16 +6,16 @@
 
 - (id)dmc_remoteManagementAccount
 {
-  v2 = [a1 accounts];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x277CED1A0]];
+  accounts = [self accounts];
+  v3 = [accounts objectForKeyedSubscript:*MEMORY[0x277CED1A0]];
 
-  v4 = [v3 dmc_remoteManagingAccountIdentifier];
+  dmc_remoteManagingAccountIdentifier = [v3 dmc_remoteManagingAccountIdentifier];
 
-  if (v4)
+  if (dmc_remoteManagingAccountIdentifier)
   {
-    v5 = [a1 accountStore];
-    v6 = [v3 dmc_remoteManagingAccountIdentifier];
-    v7 = [v5 dmc_remoteManagementAccountForIdentifier:v6];
+    accountStore = [self accountStore];
+    dmc_remoteManagingAccountIdentifier2 = [v3 dmc_remoteManagingAccountIdentifier];
+    v7 = [accountStore dmc_remoteManagementAccountForIdentifier:dmc_remoteManagingAccountIdentifier2];
   }
 
   else

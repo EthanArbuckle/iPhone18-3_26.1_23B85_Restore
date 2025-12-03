@@ -1,6 +1,6 @@
 @interface MTRThreadNetworkDiagnosticsClusterSecurityPolicy
 - (MTRThreadNetworkDiagnosticsClusterSecurityPolicy)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -24,14 +24,14 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRThreadNetworkDiagnosticsClusterSecurityPolicy);
-  v5 = [(MTRThreadNetworkDiagnosticsClusterSecurityPolicy *)self rotationTime];
-  [(MTRThreadNetworkDiagnosticsClusterSecurityPolicy *)v4 setRotationTime:v5];
+  rotationTime = [(MTRThreadNetworkDiagnosticsClusterSecurityPolicy *)self rotationTime];
+  [(MTRThreadNetworkDiagnosticsClusterSecurityPolicy *)v4 setRotationTime:rotationTime];
 
-  v6 = [(MTRThreadNetworkDiagnosticsClusterSecurityPolicy *)self flags];
-  [(MTRThreadNetworkDiagnosticsClusterSecurityPolicy *)v4 setFlags:v6];
+  flags = [(MTRThreadNetworkDiagnosticsClusterSecurityPolicy *)self flags];
+  [(MTRThreadNetworkDiagnosticsClusterSecurityPolicy *)v4 setFlags:flags];
 
   return v4;
 }

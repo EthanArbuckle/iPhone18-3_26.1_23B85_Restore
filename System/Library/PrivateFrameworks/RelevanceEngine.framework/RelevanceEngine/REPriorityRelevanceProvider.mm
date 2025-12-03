@@ -1,8 +1,8 @@
 @interface REPriorityRelevanceProvider
-- (BOOL)isEqual:(id)a3;
-- (REPriorityRelevanceProvider)initWithDictionary:(id)a3;
-- (REPriorityRelevanceProvider)initWithPriority:(float)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (REPriorityRelevanceProvider)initWithDictionary:(id)dictionary;
+- (REPriorityRelevanceProvider)initWithPriority:(float)priority;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryEncoding;
 - (unint64_t)_hash;
@@ -10,9 +10,9 @@
 
 @implementation REPriorityRelevanceProvider
 
-- (REPriorityRelevanceProvider)initWithPriority:(float)a3
+- (REPriorityRelevanceProvider)initWithPriority:(float)priority
 {
-  if (a3 < 0.0 || a3 > 1.0)
+  if (priority < 0.0 || priority > 1.0)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The priority must be in the range 0.0 to 1.0"];
   }
@@ -22,29 +22,29 @@
   result = [(RERelevanceProvider *)&v7 init];
   if (result)
   {
-    result->_priority = a3;
+    result->_priority = priority;
   }
 
   return result;
 }
 
-- (REPriorityRelevanceProvider)initWithDictionary:(id)a3
+- (REPriorityRelevanceProvider)initWithDictionary:(id)dictionary
 {
-  v4 = [a3 objectForKeyedSubscript:@"priority"];
+  v4 = [dictionary objectForKeyedSubscript:@"priority"];
   v5 = v4;
   if (v4)
   {
     [v4 floatValue];
     self = [(REPriorityRelevanceProvider *)self initWithPriority:?];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)dictionaryEncoding
@@ -61,19 +61,19 @@
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5.receiver = self;
   v5.super_class = REPriorityRelevanceProvider;
-  result = [(RERelevanceProvider *)&v5 copyWithZone:a3];
+  result = [(RERelevanceProvider *)&v5 copyWithZone:zone];
   *(result + 8) = LODWORD(self->_priority);
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -82,7 +82,7 @@
   {
     v7.receiver = self;
     v7.super_class = REPriorityRelevanceProvider;
-    v5 = [(RERelevanceProvider *)&v7 isEqual:v4]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && self->_priority == v4->_priority;
+    v5 = [(RERelevanceProvider *)&v7 isEqual:equalCopy]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && self->_priority == equalCopy->_priority;
   }
 
   return v5;

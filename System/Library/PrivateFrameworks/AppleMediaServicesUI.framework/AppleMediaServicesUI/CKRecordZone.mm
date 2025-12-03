@@ -8,21 +8,21 @@
 - (BOOL)isDefaultRecordZone
 {
   v3 = +[CKRecordZone defaultRecordZone];
-  v4 = [v3 identifier];
-  v5 = [v4 name];
-  v6 = [(CKRecordZone *)self identifier];
-  v7 = [v6 name];
-  v8 = [v5 isEqualToString:v7];
+  identifier = [v3 identifier];
+  name = [identifier name];
+  identifier2 = [(CKRecordZone *)self identifier];
+  name2 = [identifier2 name];
+  v8 = [name isEqualToString:name2];
 
   return v8;
 }
 
 - (NSString)hashedDescription
 {
-  v2 = [(CKRecordZone *)self identifier];
-  v3 = [v2 hashedDescription];
+  identifier = [(CKRecordZone *)self identifier];
+  hashedDescription = [identifier hashedDescription];
 
-  return v3;
+  return hashedDescription;
 }
 
 @end

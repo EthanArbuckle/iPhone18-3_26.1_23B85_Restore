@@ -1,7 +1,7 @@
 @interface _SWCollaborationOptionsGroup
 - (NSArray)options;
-- (_SWCollaborationOptionsGroup)initWithTitle:(id)a3 identifier:(id)a4 footer:(id)a5 options:(id)a6;
-- (void)setOptions:(id)a3;
+- (_SWCollaborationOptionsGroup)initWithTitle:(id)title identifier:(id)identifier footer:(id)footer options:(id)options;
+- (void)setOptions:(id)options;
 @end
 
 @implementation _SWCollaborationOptionsGroup
@@ -10,29 +10,29 @@
 {
   v4.receiver = self;
   v4.super_class = _SWCollaborationOptionsGroup;
-  v2 = [(SWCollaborationOptionsGroup *)&v4 options];
+  options = [(SWCollaborationOptionsGroup *)&v4 options];
 
-  return v2;
+  return options;
 }
 
-- (void)setOptions:(id)a3
+- (void)setOptions:(id)options
 {
   v3.receiver = self;
   v3.super_class = _SWCollaborationOptionsGroup;
-  [(SWCollaborationOptionsGroup *)&v3 setOptions:a3];
+  [(SWCollaborationOptionsGroup *)&v3 setOptions:options];
 }
 
-- (_SWCollaborationOptionsGroup)initWithTitle:(id)a3 identifier:(id)a4 footer:(id)a5 options:(id)a6
+- (_SWCollaborationOptionsGroup)initWithTitle:(id)title identifier:(id)identifier footer:(id)footer options:(id)options
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = [(SWCollaborationOptionsGroup *)self initWithIdentifier:a4 options:a6];
+  titleCopy = title;
+  footerCopy = footer;
+  v12 = [(SWCollaborationOptionsGroup *)self initWithIdentifier:identifier options:options];
   if (v12)
   {
-    v13 = [v10 copy];
+    v13 = [titleCopy copy];
     [(SWCollaborationOptionsGroup *)v12 setTitle:v13];
 
-    v14 = [v11 copy];
+    v14 = [footerCopy copy];
     [(SWCollaborationOptionsGroup *)v12 setFooter:v14];
   }
 

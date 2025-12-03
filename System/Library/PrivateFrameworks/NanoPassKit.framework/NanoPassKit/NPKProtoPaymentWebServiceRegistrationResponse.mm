@@ -1,20 +1,20 @@
 @interface NPKProtoPaymentWebServiceRegistrationResponse
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasPending:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasPending:(BOOL)pending;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NPKProtoPaymentWebServiceRegistrationResponse
 
-- (void)setHasPending:(BOOL)a3
+- (void)setHasPending:(BOOL)pending
 {
-  if (a3)
+  if (pending)
   {
     v3 = 2;
   }
@@ -33,20 +33,20 @@
   v8.receiver = self;
   v8.super_class = NPKProtoPaymentWebServiceRegistrationResponse;
   v4 = [(NPKProtoPaymentWebServiceRegistrationResponse *)&v8 description];
-  v5 = [(NPKProtoPaymentWebServiceRegistrationResponse *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NPKProtoPaymentWebServiceRegistrationResponse *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if ((has & 2) != 0)
   {
     v5 = [MEMORY[0x277CCABB0] numberWithBool:self->_pending];
-    [v3 setObject:v5 forKey:@"pending"];
+    [dictionary setObject:v5 forKey:@"pending"];
 
     has = self->_has;
   }
@@ -54,34 +54,34 @@
   if (has)
   {
     v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_registrationResult];
-    [v3 setObject:v6 forKey:@"registrationResult"];
+    [dictionary setObject:v6 forKey:@"registrationResult"];
   }
 
   errorData = self->_errorData;
   if (errorData)
   {
-    [v3 setObject:errorData forKey:@"errorData"];
+    [dictionary setObject:errorData forKey:@"errorData"];
   }
 
   webServiceContextData = self->_webServiceContextData;
   if (webServiceContextData)
   {
-    [v3 setObject:webServiceContextData forKey:@"webServiceContextData"];
+    [dictionary setObject:webServiceContextData forKey:@"webServiceContextData"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v8 = v4;
+  v8 = toCopy;
   if ((has & 2) != 0)
   {
     pending = self->_pending;
     PBDataWriterWriteBOOLField();
-    v4 = v8;
+    toCopy = v8;
     has = self->_has;
   }
 
@@ -89,56 +89,56 @@
   {
     registrationResult = self->_registrationResult;
     PBDataWriterWriteUint32Field();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_errorData)
   {
     PBDataWriterWriteDataField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_webServiceContextData)
   {
     PBDataWriterWriteDataField();
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 2) != 0)
   {
-    v4[32] = self->_pending;
-    v4[36] |= 2u;
+    toCopy[32] = self->_pending;
+    toCopy[36] |= 2u;
     has = self->_has;
   }
 
   if (has)
   {
-    *(v4 + 4) = self->_registrationResult;
-    v4[36] |= 1u;
+    *(toCopy + 4) = self->_registrationResult;
+    toCopy[36] |= 1u;
   }
 
-  v6 = v4;
+  v6 = toCopy;
   if (self->_errorData)
   {
-    [v4 setErrorData:?];
-    v4 = v6;
+    [toCopy setErrorData:?];
+    toCopy = v6;
   }
 
   if (self->_webServiceContextData)
   {
     [v6 setWebServiceContextData:?];
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 2) != 0)
@@ -154,29 +154,29 @@
     *(v5 + 36) |= 1u;
   }
 
-  v8 = [(NSData *)self->_errorData copyWithZone:a3];
+  v8 = [(NSData *)self->_errorData copyWithZone:zone];
   v9 = v6[1];
   v6[1] = v8;
 
-  v10 = [(NSData *)self->_webServiceContextData copyWithZone:a3];
+  v10 = [(NSData *)self->_webServiceContextData copyWithZone:zone];
   v11 = v6[3];
   v6[3] = v10;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_18;
   }
 
-  v5 = *(v4 + 36);
+  v5 = *(equalCopy + 36);
   if ((*&self->_has & 2) == 0)
   {
-    if ((*(v4 + 36) & 2) == 0)
+    if ((*(equalCopy + 36) & 2) == 0)
     {
       goto LABEL_4;
     }
@@ -186,21 +186,21 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  if ((*(v4 + 36) & 2) == 0)
+  if ((*(equalCopy + 36) & 2) == 0)
   {
     goto LABEL_18;
   }
 
-  v6 = *(v4 + 32);
+  v6 = *(equalCopy + 32);
   if (self->_pending)
   {
-    if ((*(v4 + 32) & 1) == 0)
+    if ((*(equalCopy + 32) & 1) == 0)
     {
       goto LABEL_18;
     }
   }
 
-  else if (*(v4 + 32))
+  else if (*(equalCopy + 32))
   {
     goto LABEL_18;
   }
@@ -208,25 +208,25 @@ LABEL_18:
 LABEL_4:
   if (*&self->_has)
   {
-    if ((*(v4 + 36) & 1) == 0 || self->_registrationResult != *(v4 + 4))
+    if ((*(equalCopy + 36) & 1) == 0 || self->_registrationResult != *(equalCopy + 4))
     {
       goto LABEL_18;
     }
   }
 
-  else if (*(v4 + 36))
+  else if (*(equalCopy + 36))
   {
     goto LABEL_18;
   }
 
   errorData = self->_errorData;
-  if (errorData | *(v4 + 1) && ![(NSData *)errorData isEqual:?])
+  if (errorData | *(equalCopy + 1) && ![(NSData *)errorData isEqual:?])
   {
     goto LABEL_18;
   }
 
   webServiceContextData = self->_webServiceContextData;
-  if (webServiceContextData | *(v4 + 3))
+  if (webServiceContextData | *(equalCopy + 3))
   {
     v9 = [(NSData *)webServiceContextData isEqual:?];
   }
@@ -269,34 +269,34 @@ LABEL_6:
   return v5 ^ [(NSData *)self->_webServiceContextData hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 36);
+  fromCopy = from;
+  v5 = *(fromCopy + 36);
   if ((v5 & 2) != 0)
   {
-    self->_pending = *(v4 + 32);
+    self->_pending = *(fromCopy + 32);
     *&self->_has |= 2u;
-    v5 = *(v4 + 36);
+    v5 = *(fromCopy + 36);
   }
 
   if (v5)
   {
-    self->_registrationResult = *(v4 + 4);
+    self->_registrationResult = *(fromCopy + 4);
     *&self->_has |= 1u;
   }
 
-  v6 = v4;
-  if (*(v4 + 1))
+  v6 = fromCopy;
+  if (*(fromCopy + 1))
   {
     [(NPKProtoPaymentWebServiceRegistrationResponse *)self setErrorData:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(NPKProtoPaymentWebServiceRegistrationResponse *)self setWebServiceContextData:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 }
 

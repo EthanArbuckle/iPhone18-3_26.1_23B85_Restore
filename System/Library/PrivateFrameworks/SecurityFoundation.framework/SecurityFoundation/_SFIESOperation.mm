@@ -3,44 +3,44 @@
 - (SFDigestOperation)digestOperation;
 - (_SFAuthenticatedEncryptionOperation)encryptionOperation;
 - (_SFECDHOperation)diffieHellmanOperation;
-- (_SFIESOperation)initWithCoder:(id)a3;
-- (_SFIESOperation)initWithCurve:(int64_t)a3;
-- (_SFIESOperation)initWithCurve:(int64_t)a3 diffieHellmanOperation:(id)a4 encryptionOperation:(id)a5 digestOperation:(id)a6;
-- (const)_ccDigestInfoWithError:(id *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)decrypt:(id)a3 withKey:(id)a4 error:(id *)a5;
-- (id)encrypt:(id)a3 withKey:(id)a4 error:(id *)a5;
-- (void)setDiffieHellmanOperation:(id)a3;
-- (void)setDigestOperation:(id)a3;
-- (void)setEncryptionOperation:(id)a3;
+- (_SFIESOperation)initWithCoder:(id)coder;
+- (_SFIESOperation)initWithCurve:(int64_t)curve;
+- (_SFIESOperation)initWithCurve:(int64_t)curve diffieHellmanOperation:(id)operation encryptionOperation:(id)encryptionOperation digestOperation:(id)digestOperation;
+- (const)_ccDigestInfoWithError:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)decrypt:(id)decrypt withKey:(id)key error:(id *)error;
+- (id)encrypt:(id)encrypt withKey:(id)key error:(id *)error;
+- (void)setDiffieHellmanOperation:(id)operation;
+- (void)setDigestOperation:(id)operation;
+- (void)setEncryptionOperation:(id)operation;
 @end
 
 @implementation _SFIESOperation
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
     MEMORY[0x282201808](&__rngSystemState);
   }
 }
 
-- (_SFIESOperation)initWithCurve:(int64_t)a3
+- (_SFIESOperation)initWithCurve:(int64_t)curve
 {
   v5 = +[_SFECDHOperation _defaultOperation];
   v6 = +[_SFAuthenticatedEncryptionOperation _defaultEncryptionOperation];
   v7 = _defaultDigestOperation();
-  v8 = [(_SFIESOperation *)self initWithCurve:a3 diffieHellmanOperation:v5 encryptionOperation:v6 digestOperation:v7];
+  v8 = [(_SFIESOperation *)self initWithCurve:curve diffieHellmanOperation:v5 encryptionOperation:v6 digestOperation:v7];
 
   return v8;
 }
 
-- (_SFIESOperation)initWithCurve:(int64_t)a3 diffieHellmanOperation:(id)a4 encryptionOperation:(id)a5 digestOperation:(id)a6
+- (_SFIESOperation)initWithCurve:(int64_t)curve diffieHellmanOperation:(id)operation encryptionOperation:(id)encryptionOperation digestOperation:(id)digestOperation
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  operationCopy = operation;
+  encryptionOperationCopy = encryptionOperation;
+  digestOperationCopy = digestOperation;
   v18.receiver = self;
   v18.super_class = _SFIESOperation;
   v14 = [(_SFIESOperation *)&v18 init];
@@ -50,23 +50,23 @@
     iesOperationInternal = v14->_iesOperationInternal;
     v14->_iesOperationInternal = v15;
 
-    *(v14->_iesOperationInternal + 1) = a3;
-    objc_storeStrong(v14->_iesOperationInternal + 2, a4);
-    objc_storeStrong(v14->_iesOperationInternal + 3, a5);
-    objc_storeStrong(v14->_iesOperationInternal + 4, a6);
+    *(v14->_iesOperationInternal + 1) = curve;
+    objc_storeStrong(v14->_iesOperationInternal + 2, operation);
+    objc_storeStrong(v14->_iesOperationInternal + 3, encryptionOperation);
+    objc_storeStrong(v14->_iesOperationInternal + 4, digestOperation);
   }
 
   return v14;
 }
 
-- (_SFIESOperation)initWithCoder:(id)a3
+- (_SFIESOperation)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = _SFIESOperation;
   return [(_SFIESOperation *)&v4 init];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   iesOperationInternal = self->_iesOperationInternal;
@@ -78,7 +78,7 @@
   return [v4 initWithCurve:v6 diffieHellmanOperation:v7 encryptionOperation:v8 digestOperation:v9];
 }
 
-- (const)_ccDigestInfoWithError:(id *)a3
+- (const)_ccDigestInfoWithError:(id *)error
 {
   v16[1] = *MEMORY[0x277D85DE8];
   v5 = *(self->_iesOperationInternal + 4);
@@ -90,7 +90,7 @@
     v15 = @"SFCryptoServicesErrorDigest";
     v16[0] = v12;
     v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:&v15 count:1];
-    *a3 = [v11 errorWithDomain:@"SFCryptoServicesErrorDomain" code:1 userInfo:v13];
+    *error = [v11 errorWithDomain:@"SFCryptoServicesErrorDomain" code:1 userInfo:v13];
 
     v14 = *MEMORY[0x277D85DE8];
     return 0;
@@ -105,14 +105,14 @@
   }
 }
 
-- (id)encrypt:(id)a3 withKey:(id)a4 error:(id *)a5
+- (id)encrypt:(id)encrypt withKey:(id)key error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (v8)
+  encryptCopy = encrypt;
+  keyCopy = key;
+  v10 = keyCopy;
+  if (encryptCopy)
   {
-    if (v9)
+    if (keyCopy)
     {
       goto LABEL_3;
     }
@@ -145,22 +145,22 @@ LABEL_3:
     v15[3] = &unk_2788496D8;
     v18 = &v19;
     v15[4] = self;
-    v16 = v8;
+    v16 = encryptCopy;
     v12 = v11;
     v17 = v12;
     v13 = [v12 performWithCCKey:v15];
-    if (a5)
+    if (error)
     {
-      *a5 = v20[5];
+      *error = v20[5];
     }
 
     _Block_object_dispose(&v19, 8);
   }
 
-  else if (a5)
+  else if (error)
   {
     [MEMORY[0x277CCA9B8] errorWithDomain:@"SFCryptoServicesErrorDomain" code:9 userInfo:0];
-    *a5 = v13 = 0;
+    *error = v13 = 0;
   }
 
   else
@@ -171,14 +171,14 @@ LABEL_3:
   return v13;
 }
 
-- (id)decrypt:(id)a3 withKey:(id)a4 error:(id *)a5
+- (id)decrypt:(id)decrypt withKey:(id)key error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (v8)
+  decryptCopy = decrypt;
+  keyCopy = key;
+  v10 = keyCopy;
+  if (decryptCopy)
   {
-    if (v9)
+    if (keyCopy)
     {
       goto LABEL_3;
     }
@@ -198,7 +198,7 @@ LABEL_3:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = v8;
+    v11 = decryptCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -217,18 +217,18 @@ LABEL_3:
       v15[4] = self;
       v16 = v11;
       v13 = [v12 performWithCCKey:v15];
-      if (a5)
+      if (error)
       {
-        *a5 = v19[5];
+        *error = v19[5];
       }
 
       _Block_object_dispose(&v18, 8);
     }
 
-    else if (a5)
+    else if (error)
     {
       [MEMORY[0x277CCA9B8] errorWithDomain:@"SFCryptoServicesErrorDomain" code:9 userInfo:0];
-      *a5 = v13 = 0;
+      *error = v13 = 0;
     }
 
     else
@@ -237,10 +237,10 @@ LABEL_3:
     }
   }
 
-  else if (a5)
+  else if (error)
   {
     [MEMORY[0x277CCA9B8] errorWithDomain:@"SFCryptoServicesErrorDomain" code:9 userInfo:0];
-    *a5 = v13 = 0;
+    *error = v13 = 0;
   }
 
   else
@@ -258,9 +258,9 @@ LABEL_3:
   return v2;
 }
 
-- (void)setDiffieHellmanOperation:(id)a3
+- (void)setDiffieHellmanOperation:(id)operation
 {
-  v4 = [a3 copy];
+  v4 = [operation copy];
   iesOperationInternal = self->_iesOperationInternal;
   v6 = iesOperationInternal[2];
   iesOperationInternal[2] = v4;
@@ -275,9 +275,9 @@ LABEL_3:
   return v2;
 }
 
-- (void)setEncryptionOperation:(id)a3
+- (void)setEncryptionOperation:(id)operation
 {
-  v4 = [a3 copy];
+  v4 = [operation copy];
   iesOperationInternal = self->_iesOperationInternal;
   v6 = iesOperationInternal[3];
   iesOperationInternal[3] = v4;
@@ -292,9 +292,9 @@ LABEL_3:
   return v2;
 }
 
-- (void)setDigestOperation:(id)a3
+- (void)setDigestOperation:(id)operation
 {
-  v4 = [a3 copyWithZone:0];
+  v4 = [operation copyWithZone:0];
   iesOperationInternal = self->_iesOperationInternal;
   v6 = iesOperationInternal[4];
   iesOperationInternal[4] = v4;

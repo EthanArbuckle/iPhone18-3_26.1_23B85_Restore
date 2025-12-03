@@ -1,10 +1,10 @@
 @interface ApplicationWorkspaceFailedPlaceholderOperation
-- (void)runWithCompletionBlock:(id)a3;
+- (void)runWithCompletionBlock:(id)block;
 @end
 
 @implementation ApplicationWorkspaceFailedPlaceholderOperation
 
-- (void)runWithCompletionBlock:(id)a3
+- (void)runWithCompletionBlock:(id)block
 {
   v5 = +[SSLogConfig sharedDaemonConfig];
   if (!v5)
@@ -12,15 +12,15 @@
     v5 = +[SSLogConfig sharedConfig];
   }
 
-  v6 = [v5 shouldLog];
+  shouldLog = [v5 shouldLog];
   if ([v5 shouldLogToDisk])
   {
-    v7 = v6 | 2;
+    v7 = shouldLog | 2;
   }
 
   else
   {
-    v7 = v6;
+    v7 = shouldLog;
   }
 
   if (!os_log_type_enabled([v5 OSLogObject], OS_LOG_TYPE_INFO))
@@ -33,7 +33,7 @@
     v20 = 138412546;
     v21 = objc_opt_class();
     v22 = 2112;
-    v23 = [(ApplicationWorkspaceOperation *)self applicationHandle];
+    applicationHandle = [(ApplicationWorkspaceOperation *)self applicationHandle];
     LODWORD(v19) = 22;
     v18 = &v20;
     v8 = _os_log_send_and_compose_impl();
@@ -47,14 +47,14 @@
     }
   }
 
-  v11 = [(ApplicationHandle *)[(ApplicationWorkspaceOperation *)self applicationHandle] bundleID];
+  bundleID = [(ApplicationHandle *)[(ApplicationWorkspaceOperation *)self applicationHandle] bundleID];
   v12 = +[LSApplicationWorkspace defaultWorkspace];
-  if (![(ApplicationWorkspaceOperation *)self applicationIsInstalled:v11])
+  if (![(ApplicationWorkspaceOperation *)self applicationIsInstalled:bundleID])
   {
     goto LABEL_19;
   }
 
-  v13 = [LSApplicationProxy applicationProxyForIdentifier:v11 placeholder:1];
+  v13 = [LSApplicationProxy applicationProxyForIdentifier:bundleID placeholder:1];
   if (!v13)
   {
     goto LABEL_22;
@@ -81,9 +81,9 @@
   if ([v12 installPhaseFinishedForProgress:v16])
   {
 LABEL_19:
-    [ApplicationWorkspaceState completeNotificationForFailedBundleIdentifier:v11];
+    [ApplicationWorkspaceState completeNotificationForFailedBundleIdentifier:bundleID];
     v17 = 1;
-    if (!a3)
+    if (!block)
     {
       return;
     }
@@ -93,13 +93,13 @@ LABEL_19:
   {
 LABEL_22:
     v17 = 0;
-    if (!a3)
+    if (!block)
     {
       return;
     }
   }
 
-  (*(a3 + 2))(a3, v17, 0, 0);
+  (*(block + 2))(block, v17, 0, 0);
 }
 
 @end

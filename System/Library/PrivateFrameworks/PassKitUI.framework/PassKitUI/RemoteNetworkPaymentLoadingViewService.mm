@@ -1,15 +1,15 @@
 @interface RemoteNetworkPaymentLoadingViewService
 - (_TtC9PassKitUI38RemoteNetworkPaymentLoadingViewService)init;
-- (void)fulfillRemotePaymentRequestPromise:(id)a3 completion:(id)a4;
-- (void)handleDismissWithCompletion:(id)a3;
-- (void)rejectRemotePaymentRequestPromiseWithFailure:(unint64_t)a3;
+- (void)fulfillRemotePaymentRequestPromise:(id)promise completion:(id)completion;
+- (void)handleDismissWithCompletion:(id)completion;
+- (void)rejectRemotePaymentRequestPromiseWithFailure:(unint64_t)failure;
 @end
 
 @implementation RemoteNetworkPaymentLoadingViewService
 
-- (void)handleDismissWithCompletion:(id)a3
+- (void)handleDismissWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   if (v4)
   {
     v5 = v4;
@@ -24,14 +24,14 @@
     v6 = 0;
   }
 
-  v8 = self;
+  selfCopy = self;
   sub_1BD7B2DD8(v7, v6);
   sub_1BD0D4744(v7);
 }
 
-- (void)fulfillRemotePaymentRequestPromise:(id)a3 completion:(id)a4
+- (void)fulfillRemotePaymentRequestPromise:(id)promise completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   if (v6)
   {
     v7 = swift_allocObject();
@@ -44,16 +44,16 @@
     v7 = 0;
   }
 
-  v8 = a3;
-  v9 = self;
-  sub_1BD7B30A0(a3, v6, v7);
+  promiseCopy = promise;
+  selfCopy = self;
+  sub_1BD7B30A0(promise, v6, v7);
   sub_1BD0D4744(v6);
 }
 
-- (void)rejectRemotePaymentRequestPromiseWithFailure:(unint64_t)a3
+- (void)rejectRemotePaymentRequestPromiseWithFailure:(unint64_t)failure
 {
-  v4 = self;
-  sub_1BD7B3304(a3);
+  selfCopy = self;
+  sub_1BD7B3304(failure);
 }
 
 - (_TtC9PassKitUI38RemoteNetworkPaymentLoadingViewService)init

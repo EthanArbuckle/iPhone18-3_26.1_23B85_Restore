@@ -1,57 +1,57 @@
 @interface RCCaptureInputWaveformDataSource
 - ($F24F406B2B787EFB06265DBA3D28CBD5)timeRangeToHighlight;
-- (BOOL)appendAveragePowerLevelsByDigestingAudioPCMBuffer:(id)a3;
-- (BOOL)appendAveragePowerLevelsByDigestingCapturedSampleBuffer:(opaqueCMSampleBuffer *)a3;
+- (BOOL)appendAveragePowerLevelsByDigestingAudioPCMBuffer:(id)buffer;
+- (BOOL)appendAveragePowerLevelsByDigestingCapturedSampleBuffer:(opaqueCMSampleBuffer *)buffer;
 - (BOOL)waitUntilFinished;
-- (BOOL)waitUntilFinishedWithFinalizedDestinationFragmentDuration:(double)a3;
-- (RCCaptureInputWaveformDataSource)initWithDestinationComposition:(id)a3 destinationFragment:(id)a4 trackIndex:(unint64_t)a5;
+- (BOOL)waitUntilFinishedWithFinalizedDestinationFragmentDuration:(double)duration;
+- (RCCaptureInputWaveformDataSource)initWithDestinationComposition:(id)composition destinationFragment:(id)fragment trackIndex:(unint64_t)index;
 - (RCMutableComposition)capturedComposition;
 - (RCMutableCompositionFragment)capturedFragment;
 - (double)_fragmentDuration;
 - (double)duration;
-- (id)_captureSegmentsInComponentWaveform:(id)a3 captureTimeRange:(id)a4 componentWaveformSegmentOffset:(double)a5;
-- (id)copyWithTrackIndex:(unint64_t)a3 emptyCopy:(BOOL)a4;
-- (id)segmentsInCompositionByConvertingFromActiveLoadingFragment:(id)a3;
-- (id)waveformSegmentsInTimeRange:(id)a3;
-- (void)_captureSesionCompletedWithFinalizedDuration:(double)a3;
-- (void)_extendAccumulatedWaveformSegmentsToMatchFinalDuration:(double)a3;
+- (id)_captureSegmentsInComponentWaveform:(id)waveform captureTimeRange:(id)range componentWaveformSegmentOffset:(double)offset;
+- (id)copyWithTrackIndex:(unint64_t)index emptyCopy:(BOOL)copy;
+- (id)segmentsInCompositionByConvertingFromActiveLoadingFragment:(id)fragment;
+- (id)waveformSegmentsInTimeRange:(id)range;
+- (void)_captureSesionCompletedWithFinalizedDuration:(double)duration;
+- (void)_extendAccumulatedWaveformSegmentsToMatchFinalDuration:(double)duration;
 - (void)_initializeCaptureComposition;
-- (void)_modifyAccumulatedWaveformSegmentsToMatchFinalDuration:(double)a3;
-- (void)_truncateAccumulatedWaveformSegmentsToEndTime:(double)a3;
-- (void)_updateCapturedComposition:(BOOL)a3;
-- (void)appendAveragePowerLevelsByDigestingWaveformSegment:(id)a3;
+- (void)_modifyAccumulatedWaveformSegmentsToMatchFinalDuration:(double)duration;
+- (void)_truncateAccumulatedWaveformSegmentsToEndTime:(double)time;
+- (void)_updateCapturedComposition:(BOOL)composition;
+- (void)appendAveragePowerLevelsByDigestingWaveformSegment:(id)segment;
 - (void)cancelLoading;
-- (void)finishLoadingWithCompletionTimeout:(unint64_t)a3 completionBlock:(id)a4;
-- (void)finishLoadingWithCompletionTimeout:(unint64_t)a3 finalizedFragmentDuration:(double)a4 completionBlock:(id)a5;
+- (void)finishLoadingWithCompletionTimeout:(unint64_t)timeout completionBlock:(id)block;
+- (void)finishLoadingWithCompletionTimeout:(unint64_t)timeout finalizedFragmentDuration:(double)duration completionBlock:(id)block;
 - (void)flushPendingCapturedSampleBuffers;
 - (void)startLoading;
 - (void)undoCapture;
-- (void)waveformDataSource:(id)a3 didLoadWaveformSegment:(id)a4;
-- (void)waveformDataSourceDidFinishLoading:(id)a3;
-- (void)waveformDataSourceRequiresUpdate:(id)a3;
+- (void)waveformDataSource:(id)source didLoadWaveformSegment:(id)segment;
+- (void)waveformDataSourceDidFinishLoading:(id)loading;
+- (void)waveformDataSourceRequiresUpdate:(id)update;
 @end
 
 @implementation RCCaptureInputWaveformDataSource
 
-- (RCCaptureInputWaveformDataSource)initWithDestinationComposition:(id)a3 destinationFragment:(id)a4 trackIndex:(unint64_t)a5
+- (RCCaptureInputWaveformDataSource)initWithDestinationComposition:(id)composition destinationFragment:(id)fragment trackIndex:(unint64_t)index
 {
-  v9 = a3;
-  v10 = a4;
+  compositionCopy = composition;
+  fragmentCopy = fragment;
   v11 = [RCWaveformGenerator alloc];
   +[RCDevice audioInputWaveformFlushInterval];
-  v12 = [(RCWaveformGenerator *)v11 initWithSegmentFlushInterval:a5 trackIndex:?];
-  v13 = [v10 waveformURL];
+  v12 = [(RCWaveformGenerator *)v11 initWithSegmentFlushInterval:index trackIndex:?];
+  waveformURL = [fragmentCopy waveformURL];
   v16.receiver = self;
   v16.super_class = RCCaptureInputWaveformDataSource;
-  v14 = [(RCWaveformDataSource *)&v16 initWithWaveformGenerator:v12 generatedWaveformOutputURL:v13 trackIndex:a5];
+  v14 = [(RCWaveformDataSource *)&v16 initWithWaveformGenerator:v12 generatedWaveformOutputURL:waveformURL trackIndex:index];
 
   if (v14)
   {
     v14->_updatedCapturedFragmentDuration = -3.40282347e38;
     v14->_finalCapturedFragmentDuration = -1.0;
     v14->_canUpdateCaptureComposition = 1;
-    objc_storeStrong(&v14->_destinationComposition, a3);
-    objc_storeStrong(&v14->_destinationFragment, a4);
+    objc_storeStrong(&v14->_destinationComposition, composition);
+    objc_storeStrong(&v14->_destinationFragment, fragment);
     [(RCCaptureInputWaveformDataSource *)v14 _initializeCaptureComposition];
   }
 
@@ -74,14 +74,14 @@
   capturedComposition = self->_capturedComposition;
   self->_capturedComposition = v7;
 
-  v9 = [MEMORY[0x277CBEB18] array];
-  v10 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v11 = [(RCComposition *)self->_capturedComposition composedFragments];
-  v12 = [v11 countByEnumeratingWithState:&v26 objects:v38 count:16];
+  composedFragments = [(RCComposition *)self->_capturedComposition composedFragments];
+  v12 = [composedFragments countByEnumeratingWithState:&v26 objects:v38 count:16];
   if (v12)
   {
     v13 = v12;
@@ -92,31 +92,31 @@
       {
         if (*v27 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(composedFragments);
         }
 
         v16 = *(*(&v26 + 1) + 8 * i);
         v17 = [v16 copy];
-        [v9 addObject:v17];
+        [array addObject:v17];
 
         v18 = [v16 mutableCopy];
-        [v10 addObject:v18];
+        [array2 addObject:v18];
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v26 objects:v38 count:16];
+      v13 = [composedFragments countByEnumeratingWithState:&v26 objects:v38 count:16];
     }
 
     while (v13);
   }
 
   v19 = [(RCMutableCompositionFragment *)self->_capturedFragment copy];
-  [v9 addObject:v19];
+  [array addObject:v19];
 
   v20 = [(RCMutableCompositionFragment *)self->_capturedFragment mutableCopy];
-  [v10 addObject:v20];
+  [array2 addObject:v20];
 
-  [(RCComposition *)self->_capturedComposition setDecomposedFragments:v10];
-  objc_storeStrong(&self->_captureInitialDecomposedFragments, v9);
+  [(RCComposition *)self->_capturedComposition setDecomposedFragments:array2];
+  objc_storeStrong(&self->_captureInitialDecomposedFragments, array);
   v21 = OSLogForCategory(@"Default");
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
   {
@@ -138,33 +138,33 @@
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)waveformDataSourceDidFinishLoading:(id)a3
+- (void)waveformDataSourceDidFinishLoading:(id)loading
 {
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __71__RCCaptureInputWaveformDataSource_waveformDataSourceDidFinishLoading___block_invoke;
   v6[3] = &unk_279E44330;
   v6[4] = self;
-  v4 = a3;
+  loadingCopy = loading;
   [(RCWaveformDataSource *)self _performObserversBlock:v6];
-  [v4 removeObserver:self];
+  [loadingCopy removeObserver:self];
 
   baseWaveformDataSource = self->_baseWaveformDataSource;
   self->_baseWaveformDataSource = 0;
 }
 
-- (void)waveformDataSource:(id)a3 didLoadWaveformSegment:(id)a4
+- (void)waveformDataSource:(id)source didLoadWaveformSegment:(id)segment
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  sourceCopy = source;
+  segmentCopy = segment;
+  v8 = segmentCopy;
   if (!self->_emptyCopy)
   {
-    v12 = v7;
+    v12 = segmentCopy;
     goto LABEL_5;
   }
 
-  [v7 timeRange];
+  [segmentCopy timeRange];
   captureInsertionTimeInComposition = self->_captureInsertionTimeInComposition;
   if (v10 >= captureInsertionTimeInComposition)
   {
@@ -199,7 +199,7 @@ id __78__RCCaptureInputWaveformDataSource_waveformDataSource_didLoadWaveformSegm
   return v4;
 }
 
-- (void)waveformDataSourceRequiresUpdate:(id)a3
+- (void)waveformDataSourceRequiresUpdate:(id)update
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
@@ -231,8 +231,8 @@ void __69__RCCaptureInputWaveformDataSource_waveformDataSourceRequiresUpdate___b
   v3 = [(RCComposition *)self->_destinationComposition composedWaveformURLForTrackIndex:[(RCWaveformDataSource *)self trackIndex]];
   v11 = +[RCWaveform waveformWithContentsOfURL:minimumRequiredVersion:](RCMutableWaveform, "waveformWithContentsOfURL:minimumRequiredVersion:", v3, +[RCWaveform version]);
 
-  v4 = [v11 segments];
-  v5 = [v4 count];
+  segments = [v11 segments];
+  v5 = [segments count];
 
   if (v5)
   {
@@ -246,43 +246,43 @@ void __69__RCCaptureInputWaveformDataSource_waveformDataSourceRequiresUpdate___b
     v8 = [[RCCompositionWaveformDataSource alloc] initWithComposition:self->_destinationComposition trackIndex:[(RCWaveformDataSource *)self trackIndex]];
     [(RCWaveformDataSource *)v8 addObserver:self];
     [(RCWaveformDataSource *)v8 beginLoading];
-    v9 = [(RCWaveformDataSource *)v8 accumulatorWaveform];
+    accumulatorWaveform = [(RCWaveformDataSource *)v8 accumulatorWaveform];
     v10 = self->_baseWaveform;
-    self->_baseWaveform = v9;
+    self->_baseWaveform = accumulatorWaveform;
 
     baseWaveform = self->_baseWaveformDataSource;
     self->_baseWaveformDataSource = v8;
   }
 }
 
-- (void)finishLoadingWithCompletionTimeout:(unint64_t)a3 completionBlock:(id)a4
+- (void)finishLoadingWithCompletionTimeout:(unint64_t)timeout completionBlock:(id)block
 {
-  v6 = [MEMORY[0x277CCA890] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"RCCaptureInputWaveformDataSource.m" lineNumber:160 description:@"ERROR: use -finishLoadingWithCompletionTimeout:finalizedFragmentDuration:completionBlock: instead"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"RCCaptureInputWaveformDataSource.m" lineNumber:160 description:@"ERROR: use -finishLoadingWithCompletionTimeout:finalizedFragmentDuration:completionBlock: instead"];
 }
 
 - (BOOL)waitUntilFinished
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"RCCaptureInputWaveformDataSource.m" lineNumber:165 description:@"ERROR: use -waitUntilFinishedWithFinalizedDestinationFragmentDuration: instead"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"RCCaptureInputWaveformDataSource.m" lineNumber:165 description:@"ERROR: use -waitUntilFinishedWithFinalizedDestinationFragmentDuration: instead"];
 
   return 0;
 }
 
-- (void)finishLoadingWithCompletionTimeout:(unint64_t)a3 finalizedFragmentDuration:(double)a4 completionBlock:(id)a5
+- (void)finishLoadingWithCompletionTimeout:(unint64_t)timeout finalizedFragmentDuration:(double)duration completionBlock:(id)block
 {
-  v8 = a5;
-  [(RCCompositionWaveformDataSource *)self->_baseWaveformDataSource waitUntilSegmentsFinishLoadingWithTimeout:a3];
-  v9 = [(RCWaveformDataSource *)self waveformGenerator];
+  blockCopy = block;
+  [(RCCompositionWaveformDataSource *)self->_baseWaveformDataSource waitUntilSegmentsFinishLoadingWithTimeout:timeout];
+  waveformGenerator = [(RCWaveformDataSource *)self waveformGenerator];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __113__RCCaptureInputWaveformDataSource_finishLoadingWithCompletionTimeout_finalizedFragmentDuration_completionBlock___block_invoke;
   v11[3] = &unk_279E45130;
-  v13 = a4;
+  durationCopy = duration;
   v11[4] = self;
-  v12 = v8;
-  v10 = v8;
-  [v9 finishLoadingWithCompletionTimeout:a3 completionBlock:v11];
+  v12 = blockCopy;
+  v10 = blockCopy;
+  [waveformGenerator finishLoadingWithCompletionTimeout:timeout completionBlock:v11];
 }
 
 void __113__RCCaptureInputWaveformDataSource_finishLoadingWithCompletionTimeout_finalizedFragmentDuration_completionBlock___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -297,7 +297,7 @@ void __113__RCCaptureInputWaveformDataSource_finishLoadingWithCompletionTimeout_
   }
 }
 
-- (BOOL)waitUntilFinishedWithFinalizedDestinationFragmentDuration:(double)a3
+- (BOOL)waitUntilFinishedWithFinalizedDestinationFragmentDuration:(double)duration
 {
   v5 = dispatch_semaphore_create(0);
   v10[0] = MEMORY[0x277D85DD0];
@@ -306,43 +306,43 @@ void __113__RCCaptureInputWaveformDataSource_finishLoadingWithCompletionTimeout_
   v10[3] = &unk_279E442E0;
   v11 = v5;
   v6 = v5;
-  [(RCCaptureInputWaveformDataSource *)self finishLoadingWithCompletionTimeout:-1 finalizedFragmentDuration:v10 completionBlock:a3];
+  [(RCCaptureInputWaveformDataSource *)self finishLoadingWithCompletionTimeout:-1 finalizedFragmentDuration:v10 completionBlock:duration];
   dispatch_semaphore_wait(v6, 0xFFFFFFFFFFFFFFFFLL);
-  v7 = [(RCWaveformDataSource *)self waveformGenerator];
-  v8 = [v7 canceled];
+  waveformGenerator = [(RCWaveformDataSource *)self waveformGenerator];
+  canceled = [waveformGenerator canceled];
 
-  return v8 ^ 1;
+  return canceled ^ 1;
 }
 
-- (id)_captureSegmentsInComponentWaveform:(id)a3 captureTimeRange:(id)a4 componentWaveformSegmentOffset:(double)a5
+- (id)_captureSegmentsInComponentWaveform:(id)waveform captureTimeRange:(id)range componentWaveformSegmentOffset:(double)offset
 {
-  var1 = a4.var1;
-  var0 = a4.var0;
-  if (a5 == 0.0)
+  var1 = range.var1;
+  var0 = range.var0;
+  if (offset == 0.0)
   {
-    v7 = a3;
-    [v7 segmentsByClippingToTimeRange:{var0, var1}];
+    waveformCopy = waveform;
+    [waveformCopy segmentsByClippingToTimeRange:{var0, var1}];
   }
 
   else
   {
-    v9 = -a5;
-    v10 = a3;
-    v7 = [v10 segmentsByClippingToTimeRange:{RCTimeRangeShift(var0, var1, v9)}];
+    v9 = -offset;
+    waveformCopy2 = waveform;
+    waveformCopy = [waveformCopy2 segmentsByClippingToTimeRange:{RCTimeRangeShift(var0, var1, v9)}];
 
-    [RCWaveformSegment segmentsByShiftingSegments:v7 byTimeOffset:a5];
+    [RCWaveformSegment segmentsByShiftingSegments:waveformCopy byTimeOffset:offset];
   }
   v11 = ;
 
   return v11;
 }
 
-- (id)waveformSegmentsInTimeRange:(id)a3
+- (id)waveformSegmentsInTimeRange:(id)range
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = range.var1;
+  var0 = range.var0;
   v45 = *MEMORY[0x277D85DE8];
-  v6 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v42.receiver = self;
   v42.super_class = RCCaptureInputWaveformDataSource;
   [(RCWaveformDataSource *)&v42 duration];
@@ -392,7 +392,7 @@ void __113__RCCaptureInputWaveformDataSource_finishLoadingWithCompletionTimeout_
       while (v13);
     }
 
-    [v6 addObjectsFromArray:v12];
+    [array addObjectsFromArray:v12];
   }
 
   if (var1 > v8)
@@ -405,7 +405,7 @@ void __113__RCCaptureInputWaveformDataSource_finishLoadingWithCompletionTimeout_
     v35 = __Block_byref_object_copy__12;
     v36 = __Block_byref_object_dispose__12;
     v37 = 0;
-    v19 = [(RCWaveformDataSource *)self queue];
+    queue = [(RCWaveformDataSource *)self queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __64__RCCaptureInputWaveformDataSource_waveformSegmentsInTimeRange___block_invoke;
@@ -416,11 +416,11 @@ void __113__RCCaptureInputWaveformDataSource_finishLoadingWithCompletionTimeout_
     block[7] = v18;
     *&block[8] = v8;
     *&block[9] = v10;
-    dispatch_sync(v19, block);
+    dispatch_sync(queue, block);
 
     if (v33[5])
     {
-      [v6 addObjectsFromArray:?];
+      [array addObjectsFromArray:?];
     }
 
     _Block_object_dispose(&v32, 8);
@@ -465,12 +465,12 @@ void __113__RCCaptureInputWaveformDataSource_finishLoadingWithCompletionTimeout_
       while (v22);
     }
 
-    [v6 addObjectsFromArray:v21];
+    [array addObjectsFromArray:v21];
   }
 
   v25 = *MEMORY[0x277D85DE8];
 
-  return v6;
+  return array;
 }
 
 void __64__RCCaptureInputWaveformDataSource_waveformSegmentsInTimeRange___block_invoke(uint64_t a1)
@@ -495,20 +495,20 @@ void __64__RCCaptureInputWaveformDataSource_waveformSegmentsInTimeRange___block_
   return result;
 }
 
-- (id)segmentsInCompositionByConvertingFromActiveLoadingFragment:(id)a3
+- (id)segmentsInCompositionByConvertingFromActiveLoadingFragment:(id)fragment
 {
   v12 = *MEMORY[0x277D85DE8];
-  v11 = a3;
+  fragmentCopy = fragment;
   v4 = MEMORY[0x277CBEA60];
-  v5 = a3;
-  v6 = [v4 arrayWithObjects:&v11 count:1];
-  v7 = [RCWaveformSegment segmentsByShiftingSegments:v6 byTimeOffset:self->_captureInsertionTimeInComposition, v11, v12];
+  fragmentCopy2 = fragment;
+  v6 = [v4 arrayWithObjects:&fragmentCopy count:1];
+  v7 = [RCWaveformSegment segmentsByShiftingSegments:v6 byTimeOffset:self->_captureInsertionTimeInComposition, fragmentCopy, v12];
 
-  v8 = [v7 firstObject];
+  firstObject = [v7 firstObject];
 
   v9 = *MEMORY[0x277D85DE8];
 
-  return v8;
+  return firstObject;
 }
 
 - (RCMutableComposition)capturedComposition
@@ -538,48 +538,48 @@ void __64__RCCaptureInputWaveformDataSource_waveformSegmentsInTimeRange___block_
 
 - (void)undoCapture
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"RCCaptureInputWaveformDataSource.m" lineNumber:290 description:{@"Invalid state to perform capture undo, generator has not finished yet."}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"RCCaptureInputWaveformDataSource.m" lineNumber:290 description:{@"Invalid state to perform capture undo, generator has not finished yet."}];
 }
 
-- (BOOL)appendAveragePowerLevelsByDigestingCapturedSampleBuffer:(opaqueCMSampleBuffer *)a3
+- (BOOL)appendAveragePowerLevelsByDigestingCapturedSampleBuffer:(opaqueCMSampleBuffer *)buffer
 {
-  v4 = [(RCWaveformDataSource *)self waveformGenerator];
-  LOBYTE(a3) = [v4 appendAveragePowerLevelsByDigestingSampleBuffer:a3];
+  waveformGenerator = [(RCWaveformDataSource *)self waveformGenerator];
+  LOBYTE(buffer) = [waveformGenerator appendAveragePowerLevelsByDigestingSampleBuffer:buffer];
 
-  return a3;
+  return buffer;
 }
 
-- (BOOL)appendAveragePowerLevelsByDigestingAudioPCMBuffer:(id)a3
+- (BOOL)appendAveragePowerLevelsByDigestingAudioPCMBuffer:(id)buffer
 {
-  v4 = a3;
-  v5 = [(RCWaveformDataSource *)self waveformGenerator];
-  v6 = [v5 appendAveragePowerLevelsByDigestingAudioPCMBuffer:v4];
+  bufferCopy = buffer;
+  waveformGenerator = [(RCWaveformDataSource *)self waveformGenerator];
+  v6 = [waveformGenerator appendAveragePowerLevelsByDigestingAudioPCMBuffer:bufferCopy];
 
   return v6;
 }
 
 - (void)flushPendingCapturedSampleBuffers
 {
-  v2 = [(RCWaveformDataSource *)self waveformGenerator];
-  [v2 flushPendingCapturedSampleBuffers];
+  waveformGenerator = [(RCWaveformDataSource *)self waveformGenerator];
+  [waveformGenerator flushPendingCapturedSampleBuffers];
 }
 
-- (void)appendAveragePowerLevelsByDigestingWaveformSegment:(id)a3
+- (void)appendAveragePowerLevelsByDigestingWaveformSegment:(id)segment
 {
   v8[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(RCWaveformDataSource *)self waveformGenerator];
-  v8[0] = v4;
+  segmentCopy = segment;
+  waveformGenerator = [(RCWaveformDataSource *)self waveformGenerator];
+  v8[0] = segmentCopy;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:1];
 
-  [v5 appendAveragePowerLevelsByDigestingWaveformSegments:v6];
+  [waveformGenerator appendAveragePowerLevelsByDigestingWaveformSegments:v6];
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_captureSesionCompletedWithFinalizedDuration:(double)a3
+- (void)_captureSesionCompletedWithFinalizedDuration:(double)duration
 {
-  self->_finalCapturedFragmentDuration = a3;
+  self->_finalCapturedFragmentDuration = duration;
   [(RCCaptureInputWaveformDataSource *)self _updateCapturedComposition:1];
   self->_canUpdateCaptureComposition = 0;
 }
@@ -599,48 +599,48 @@ void __64__RCCaptureInputWaveformDataSource_waveformSegmentsInTimeRange___block_
   return result;
 }
 
-- (void)_updateCapturedComposition:(BOOL)a3
+- (void)_updateCapturedComposition:(BOOL)composition
 {
   v32 = *MEMORY[0x277D85DE8];
   [(RCCaptureInputWaveformDataSource *)self _fragmentDuration];
   v7 = v6;
-  if (a3 || vabdd_f64(v6, self->_updatedCapturedFragmentDuration) >= 0.01)
+  if (composition || vabdd_f64(v6, self->_updatedCapturedFragmentDuration) >= 0.01)
   {
     self->_updatedCapturedFragmentDuration = v6;
     [(RCCompositionFragment *)self->_capturedFragment setContentDuration:v6];
     [(RCCompositionFragment *)self->_capturedFragment setTimeRangeInComposition:RCTimeRangeMake(self->_captureInsertionTimeInComposition, v7 + self->_captureInsertionTimeInComposition)];
-    v8 = [(RCComposition *)self->_capturedComposition decomposedFragments];
-    v9 = [v8 mutableCopy];
+    decomposedFragments = [(RCComposition *)self->_capturedComposition decomposedFragments];
+    v9 = [decomposedFragments mutableCopy];
 
     [v9 removeLastObject];
     [v9 addObject:self->_capturedFragment];
     [(RCComposition *)self->_capturedComposition setDecomposedFragments:v9];
     if (self->_finalCapturedFragmentDuration > 0.0)
     {
-      v10 = [(RCWaveformDataSource *)self accumulatorWaveform];
-      v11 = [v10 segmentsCopy];
-      v12 = [v11 lastObject];
+      accumulatorWaveform = [(RCWaveformDataSource *)self accumulatorWaveform];
+      segmentsCopy = [accumulatorWaveform segmentsCopy];
+      lastObject = [segmentsCopy lastObject];
 
-      if (v12)
+      if (lastObject)
       {
-        [v12 timeRange];
+        [lastObject timeRange];
         finalCapturedFragmentDuration = self->_finalCapturedFragmentDuration;
         if (vabdd_f64(v14, finalCapturedFragmentDuration) > 0.00000011920929)
         {
-          [v12 timeRange];
+          [lastObject timeRange];
           if (finalCapturedFragmentDuration - v15 >= 1.0)
           {
             [(RCCaptureInputWaveformDataSource *)a2 _updateCapturedComposition:?];
           }
 
-          [v12 timeRange];
+          [lastObject timeRange];
           v17 = self->_finalCapturedFragmentDuration;
           if (v17 > 0.00000011920929)
           {
             v18 = v16;
             if (vabdd_f64(v17, v16) >= 0.07)
             {
-              [v12 timeRange];
+              [lastObject timeRange];
               v20 = v19;
               v21 = self->_finalCapturedFragmentDuration;
               v22 = OSLogForCategory(@"Default");
@@ -670,37 +670,37 @@ void __64__RCCaptureInputWaveformDataSource_waveformSegmentsInTimeRange___block_
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_modifyAccumulatedWaveformSegmentsToMatchFinalDuration:(double)a3
+- (void)_modifyAccumulatedWaveformSegmentsToMatchFinalDuration:(double)duration
 {
-  v5 = [(RCWaveformDataSource *)self accumulatorWaveform];
-  v6 = [v5 segmentsCopy];
-  v9 = [v6 lastObject];
+  accumulatorWaveform = [(RCWaveformDataSource *)self accumulatorWaveform];
+  segmentsCopy = [accumulatorWaveform segmentsCopy];
+  lastObject = [segmentsCopy lastObject];
 
-  v7 = v9;
-  if (v9)
+  v7 = lastObject;
+  if (lastObject)
   {
-    [v9 timeRange];
-    if (v8 >= a3)
+    [lastObject timeRange];
+    if (v8 >= duration)
     {
-      [(RCCaptureInputWaveformDataSource *)self _truncateAccumulatedWaveformSegmentsToEndTime:a3];
+      [(RCCaptureInputWaveformDataSource *)self _truncateAccumulatedWaveformSegmentsToEndTime:duration];
     }
 
     else
     {
-      [(RCCaptureInputWaveformDataSource *)self _extendAccumulatedWaveformSegmentsToMatchFinalDuration:a3];
+      [(RCCaptureInputWaveformDataSource *)self _extendAccumulatedWaveformSegmentsToMatchFinalDuration:duration];
     }
 
-    v7 = v9;
+    v7 = lastObject;
   }
 }
 
-- (void)_extendAccumulatedWaveformSegmentsToMatchFinalDuration:(double)a3
+- (void)_extendAccumulatedWaveformSegmentsToMatchFinalDuration:(double)duration
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __91__RCCaptureInputWaveformDataSource__extendAccumulatedWaveformSegmentsToMatchFinalDuration___block_invoke;
   v3[3] = &unk_279E45180;
-  *&v3[5] = a3;
+  *&v3[5] = duration;
   v3[4] = self;
   [(RCWaveformDataSource *)self updateAccumulatorWaveformSegmentsWithBlock:v3];
 }
@@ -739,13 +739,13 @@ id __91__RCCaptureInputWaveformDataSource__extendAccumulatedWaveformSegmentsToMa
   return v5;
 }
 
-- (void)_truncateAccumulatedWaveformSegmentsToEndTime:(double)a3
+- (void)_truncateAccumulatedWaveformSegmentsToEndTime:(double)time
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __82__RCCaptureInputWaveformDataSource__truncateAccumulatedWaveformSegmentsToEndTime___block_invoke;
   v3[3] = &unk_279E45180;
-  *&v3[5] = a3;
+  *&v3[5] = time;
   v3[4] = self;
   [(RCWaveformDataSource *)self updateAccumulatorWaveformSegmentsWithBlock:v3];
 }
@@ -800,12 +800,12 @@ id __82__RCCaptureInputWaveformDataSource__truncateAccumulatedWaveformSegmentsTo
   return v11;
 }
 
-- (id)copyWithTrackIndex:(unint64_t)a3 emptyCopy:(BOOL)a4
+- (id)copyWithTrackIndex:(unint64_t)index emptyCopy:(BOOL)copy
 {
-  v4 = a4;
-  v6 = [[RCCaptureInputWaveformDataSource alloc] initWithDestinationComposition:self->_destinationComposition destinationFragment:self->_destinationFragment trackIndex:a3];
+  copyCopy = copy;
+  v6 = [[RCCaptureInputWaveformDataSource alloc] initWithDestinationComposition:self->_destinationComposition destinationFragment:self->_destinationFragment trackIndex:index];
   v7 = v6;
-  if (v4)
+  if (copyCopy)
   {
     [(RCCaptureInputWaveformDataSource *)v6 setEmptyCopy:1];
     [(RCWaveformDataSource *)self addObserver:v7];

@@ -1,15 +1,15 @@
 @interface CKConversationPriorityLabel
 - (BOOL)ck_highlighted;
-- (_TtC7ChatKit27CKConversationPriorityLabel)initWithCoder:(id)a3;
-- (_TtC7ChatKit27CKConversationPriorityLabel)initWithFrame:(CGRect)a3;
+- (_TtC7ChatKit27CKConversationPriorityLabel)initWithCoder:(id)coder;
+- (_TtC7ChatKit27CKConversationPriorityLabel)initWithFrame:(CGRect)frame;
 - (int64_t)classification;
-- (void)setCk_highlighted:(BOOL)a3;
-- (void)setClassification:(int64_t)a3;
+- (void)setCk_highlighted:(BOOL)ck_highlighted;
+- (void)setClassification:(int64_t)classification;
 @end
 
 @implementation CKConversationPriorityLabel
 
-- (_TtC7ChatKit27CKConversationPriorityLabel)initWithFrame:(CGRect)a3
+- (_TtC7ChatKit27CKConversationPriorityLabel)initWithFrame:(CGRect)frame
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC7ChatKit27CKConversationPriorityLabel_classification) = 0;
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC7ChatKit27CKConversationPriorityLabel_ck_highlighted) = 0;
@@ -21,7 +21,7 @@
   return v3;
 }
 
-- (_TtC7ChatKit27CKConversationPriorityLabel)initWithCoder:(id)a3
+- (_TtC7ChatKit27CKConversationPriorityLabel)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC7ChatKit27CKConversationPriorityLabel_classification) = 0;
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC7ChatKit27CKConversationPriorityLabel_ck_highlighted) = 0;
@@ -37,15 +37,15 @@
   return *(&self->super.super.super.super.isa + v3);
 }
 
-- (void)setClassification:(int64_t)a3
+- (void)setClassification:(int64_t)classification
 {
   v5 = OBJC_IVAR____TtC7ChatKit27CKConversationPriorityLabel_classification;
   swift_beginAccess();
   v6 = *(&self->super.super.super.super.isa + v5);
-  *(&self->super.super.super.super.isa + v5) = a3;
-  if (v6 != a3)
+  *(&self->super.super.super.super.isa + v5) = classification;
+  if (v6 != classification)
   {
-    v7 = self;
+    selfCopy = self;
     sub_190B4DD1C();
   }
 }
@@ -57,16 +57,16 @@
   return *(&self->super.super.super.super.isa + v3);
 }
 
-- (void)setCk_highlighted:(BOOL)a3
+- (void)setCk_highlighted:(BOOL)ck_highlighted
 {
-  v3 = a3;
+  ck_highlightedCopy = ck_highlighted;
   v5 = OBJC_IVAR____TtC7ChatKit27CKConversationPriorityLabel_ck_highlighted;
   swift_beginAccess();
   v6 = *(&self->super.super.super.super.isa + v5);
-  *(&self->super.super.super.super.isa + v5) = v3;
-  if (v6 != v3)
+  *(&self->super.super.super.super.isa + v5) = ck_highlightedCopy;
+  if (v6 != ck_highlightedCopy)
   {
-    v7 = self;
+    selfCopy = self;
     sub_190B4DD1C();
   }
 }

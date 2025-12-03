@@ -1,18 +1,18 @@
 @interface CustomSizeMeasurer
-- (CGSize)containerView:(id)a3 systemLayoutSizeFittingSize:(CGSize)a4 forArrangedSubview:(id)a5;
+- (CGSize)containerView:(id)view systemLayoutSizeFittingSize:(CGSize)size forArrangedSubview:(id)subview;
 - (_TtC25RemindersSharingExtensionP33_8326BBA138680702F00C183C494E669A18CustomSizeMeasurer)init;
 @end
 
 @implementation CustomSizeMeasurer
 
-- (CGSize)containerView:(id)a3 systemLayoutSizeFittingSize:(CGSize)a4 forArrangedSubview:(id)a5
+- (CGSize)containerView:(id)view systemLayoutSizeFittingSize:(CGSize)size forArrangedSubview:(id)subview
 {
-  height = a4.height;
-  width = a4.width;
-  v9 = a3;
-  v10 = a5;
-  v11 = self;
-  sub_100009E7C(v10, width, height);
+  height = size.height;
+  width = size.width;
+  viewCopy = view;
+  subviewCopy = subview;
+  selfCopy = self;
+  sub_100009E7C(subviewCopy, width, height);
   v13 = v12;
   v15 = v14;
 

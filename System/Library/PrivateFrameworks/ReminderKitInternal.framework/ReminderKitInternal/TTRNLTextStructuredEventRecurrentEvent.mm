@@ -1,10 +1,10 @@
 @interface TTRNLTextStructuredEventRecurrentEvent
-- (TTRNLTextStructuredEventRecurrentEvent)initWithRange:(_NSRange)a3 startDate:(id)a4 endDate:(id)a5 isAllDay:(BOOL)a6 frequency:(id)a7;
-- (TTRNLTextStructuredEventRecurrentEvent)initWithRange:(_NSRange)a3 startDate:(id)a4 endDate:(id)a5 isAllDay:(BOOL)a6 startComponents:(id)a7 endComponents:(id)a8 frequencyComponents:(id)a9;
+- (TTRNLTextStructuredEventRecurrentEvent)initWithRange:(_NSRange)range startDate:(id)date endDate:(id)endDate isAllDay:(BOOL)day frequency:(id)frequency;
+- (TTRNLTextStructuredEventRecurrentEvent)initWithRange:(_NSRange)range startDate:(id)date endDate:(id)endDate isAllDay:(BOOL)day startComponents:(id)components endComponents:(id)endComponents frequencyComponents:(id)frequencyComponents;
 - (_NSRange)range;
 - (id)description;
 - (int64_t)dayFrequency;
-- (int64_t)frequencyForKey:(id)a3;
+- (int64_t)frequencyForKey:(id)key;
 - (int64_t)hourFrequency;
 - (int64_t)monthFrequency;
 - (int64_t)weekDay;
@@ -18,13 +18,13 @@
 
 @implementation TTRNLTextStructuredEventRecurrentEvent
 
-- (TTRNLTextStructuredEventRecurrentEvent)initWithRange:(_NSRange)a3 startDate:(id)a4 endDate:(id)a5 isAllDay:(BOOL)a6 frequency:(id)a7
+- (TTRNLTextStructuredEventRecurrentEvent)initWithRange:(_NSRange)range startDate:(id)date endDate:(id)endDate isAllDay:(BOOL)day frequency:(id)frequency
 {
-  length = a3.length;
-  location = a3.location;
-  v14 = a4;
-  v15 = a5;
-  v16 = a7;
+  length = range.length;
+  location = range.location;
+  dateCopy = date;
+  endDateCopy = endDate;
+  frequencyCopy = frequency;
   v20.receiver = self;
   v20.super_class = TTRNLTextStructuredEventRecurrentEvent;
   v17 = [(TTRNLTextStructuredEventRecurrentEvent *)&v20 init];
@@ -33,24 +33,24 @@
   {
     v17->_range.location = location;
     v17->_range.length = length;
-    objc_storeStrong(&v17->_startDate, a4);
-    objc_storeStrong(&v18->_endDate, a5);
-    v18->_isAllDay = a6;
-    objc_storeStrong(&v18->_frequency, a7);
+    objc_storeStrong(&v17->_startDate, date);
+    objc_storeStrong(&v18->_endDate, endDate);
+    v18->_isAllDay = day;
+    objc_storeStrong(&v18->_frequency, frequency);
   }
 
   return v18;
 }
 
-- (TTRNLTextStructuredEventRecurrentEvent)initWithRange:(_NSRange)a3 startDate:(id)a4 endDate:(id)a5 isAllDay:(BOOL)a6 startComponents:(id)a7 endComponents:(id)a8 frequencyComponents:(id)a9
+- (TTRNLTextStructuredEventRecurrentEvent)initWithRange:(_NSRange)range startDate:(id)date endDate:(id)endDate isAllDay:(BOOL)day startComponents:(id)components endComponents:(id)endComponents frequencyComponents:(id)frequencyComponents
 {
-  length = a3.length;
-  location = a3.location;
-  v23 = a4;
-  v22 = a5;
-  v14 = a7;
-  v15 = a8;
-  v16 = a9;
+  length = range.length;
+  location = range.location;
+  dateCopy = date;
+  endDateCopy = endDate;
+  componentsCopy = components;
+  endComponentsCopy = endComponents;
+  frequencyComponentsCopy = frequencyComponents;
   v24.receiver = self;
   v24.super_class = TTRNLTextStructuredEventRecurrentEvent;
   v17 = [(TTRNLTextStructuredEventRecurrentEvent *)&v24 init];
@@ -59,12 +59,12 @@
   {
     v17->_range.location = location;
     v17->_range.length = length;
-    objc_storeStrong(&v17->_startDate, a4);
-    objc_storeStrong(&v18->_endDate, a5);
-    v18->_isAllDay = a6;
-    objc_storeStrong(&v18->_startDateComponents, a7);
-    objc_storeStrong(&v18->_endDateComponents, a8);
-    objc_storeStrong(&v18->_frequencyComponents, a9);
+    objc_storeStrong(&v17->_startDate, date);
+    objc_storeStrong(&v18->_endDate, endDate);
+    v18->_isAllDay = day;
+    objc_storeStrong(&v18->_startDateComponents, components);
+    objc_storeStrong(&v18->_endDateComponents, endComponents);
+    objc_storeStrong(&v18->_frequencyComponents, frequencyComponents);
   }
 
   return v18;
@@ -200,11 +200,11 @@
   }
 }
 
-- (int64_t)frequencyForKey:(id)a3
+- (int64_t)frequencyForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(TTRNLTextStructuredEventRecurrentEvent *)self frequency];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  keyCopy = key;
+  frequency = [(TTRNLTextStructuredEventRecurrentEvent *)self frequency];
+  v6 = [frequency objectForKeyedSubscript:keyCopy];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0 || (v7 = [v6 integerValue], v7 <= 0))
@@ -226,40 +226,40 @@
   v8 = [v4 stringWithFormat:@"<%@ range=%@", v6, v7];
   [v3 addObject:v8];
 
-  v9 = [(TTRNLTextStructuredEventRecurrentEvent *)self startDate];
+  startDate = [(TTRNLTextStructuredEventRecurrentEvent *)self startDate];
 
-  if (v9)
+  if (startDate)
   {
     v10 = MEMORY[0x277CCA968];
-    v11 = [(TTRNLTextStructuredEventRecurrentEvent *)self startDate];
-    v12 = [v10 localizedStringFromDate:v11 dateStyle:1 timeStyle:1];
+    startDate2 = [(TTRNLTextStructuredEventRecurrentEvent *)self startDate];
+    v12 = [v10 localizedStringFromDate:startDate2 dateStyle:1 timeStyle:1];
 
     v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"start=%@", v12];
     [v3 addObject:v13];
   }
 
-  v14 = [(TTRNLTextStructuredEventRecurrentEvent *)self endDate];
+  endDate = [(TTRNLTextStructuredEventRecurrentEvent *)self endDate];
 
-  if (v14)
+  if (endDate)
   {
     v15 = MEMORY[0x277CCA968];
-    v16 = [(TTRNLTextStructuredEventRecurrentEvent *)self endDate];
-    v17 = [v15 localizedStringFromDate:v16 dateStyle:1 timeStyle:1];
+    endDate2 = [(TTRNLTextStructuredEventRecurrentEvent *)self endDate];
+    v17 = [v15 localizedStringFromDate:endDate2 dateStyle:1 timeStyle:1];
 
     v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"end=%@", v17];
     [v3 addObject:v18];
   }
 
-  v19 = [(TTRNLTextStructuredEventRecurrentEvent *)self startDate];
-  if (v19)
+  startDate3 = [(TTRNLTextStructuredEventRecurrentEvent *)self startDate];
+  if (startDate3)
   {
   }
 
   else
   {
-    v20 = [(TTRNLTextStructuredEventRecurrentEvent *)self endDate];
+    endDate3 = [(TTRNLTextStructuredEventRecurrentEvent *)self endDate];
 
-    if (!v20)
+    if (!endDate3)
     {
       goto LABEL_9;
     }

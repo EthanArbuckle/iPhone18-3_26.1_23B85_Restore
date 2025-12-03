@@ -1,14 +1,14 @@
 @interface SKUIImageDeckViewElement
-- (SKUIImageDeckViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5;
+- (SKUIImageDeckViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory;
 @end
 
 @implementation SKUIImageDeckViewElement
 
-- (SKUIImageDeckViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5
+- (SKUIImageDeckViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  elementCopy = element;
+  parentCopy = parent;
+  factoryCopy = factory;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIImageDeckViewElement initWithDOMElement:parent:elementFactory:];
@@ -16,7 +16,7 @@
 
   v22.receiver = self;
   v22.super_class = SKUIImageDeckViewElement;
-  v11 = [(SKUIViewElement *)&v22 initWithDOMElement:v8 parent:v9 elementFactory:v10];
+  v11 = [(SKUIViewElement *)&v22 initWithDOMElement:elementCopy parent:parentCopy elementFactory:factoryCopy];
   v12 = v11;
   if (v11)
   {
@@ -24,10 +24,10 @@
     v11->_initialDragRight = 0.25;
     v11->_additionalDragLeft = 0.33;
     v11->_additionalDragRight = 0.33;
-    v13 = [v8 getAttribute:@"initialDragLeft"];
-    v14 = [v8 getAttribute:@"initialDragRight"];
-    v15 = [v8 getAttribute:@"additionalDragLeft"];
-    v16 = [v8 getAttribute:@"additionalDragRight"];
+    v13 = [elementCopy getAttribute:@"initialDragLeft"];
+    v14 = [elementCopy getAttribute:@"initialDragRight"];
+    v15 = [elementCopy getAttribute:@"additionalDragLeft"];
+    v16 = [elementCopy getAttribute:@"additionalDragRight"];
     if (v13 && [v13 length])
     {
       [v13 floatValue];

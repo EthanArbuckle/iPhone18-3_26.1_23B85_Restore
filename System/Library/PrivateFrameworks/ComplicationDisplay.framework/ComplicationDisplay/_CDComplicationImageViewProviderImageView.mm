@@ -1,20 +1,20 @@
 @interface _CDComplicationImageViewProviderImageView
 - (CGSize)maxSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (void)sizeToFit;
 @end
 
 @implementation _CDComplicationImageViewProviderImageView
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v4 = [(_CDComplicationImageViewProviderImageView *)self image:a3.width];
+  v4 = [(_CDComplicationImageViewProviderImageView *)self image:fits.width];
   [v4 size];
 
   width = self->_maxSize.width;
   height = self->_maxSize.height;
-  v7 = [MEMORY[0x277CBBB68] sharedRenderingContext];
-  v8 = [v7 device];
+  mEMORY[0x277CBBB68] = [MEMORY[0x277CBBB68] sharedRenderingContext];
+  device = [mEMORY[0x277CBBB68] device];
 
   CLKFloorForDevice();
   v10 = v9;
@@ -30,8 +30,8 @@
 
 - (void)sizeToFit
 {
-  v3 = [MEMORY[0x277CBBB68] sharedRenderingContext];
-  v4 = [v3 device];
+  mEMORY[0x277CBBB68] = [MEMORY[0x277CBBB68] sharedRenderingContext];
+  device = [mEMORY[0x277CBBB68] device];
 
   [(_CDComplicationImageViewProviderImageView *)self transform];
   if (CGAffineTransformIsIdentity(&v9))

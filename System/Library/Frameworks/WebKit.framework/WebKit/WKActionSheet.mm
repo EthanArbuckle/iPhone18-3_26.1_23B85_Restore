@@ -1,13 +1,13 @@
 @interface WKActionSheet
-- (BOOL)presentSheet:(int64_t)a3;
-- (BOOL)presentSheetFromRect:(CGRect)a3;
-- (CGRect)_presentationRectForStyle:(int64_t)a3;
+- (BOOL)presentSheet:(int64_t)sheet;
+- (BOOL)presentSheetFromRect:(CGRect)rect;
+- (CGRect)_presentationRectForStyle:(int64_t)style;
 - (WKActionSheet)init;
 - (id).cxx_construct;
 - (void)_cleanup;
 - (void)_didRotateAndLayout;
 - (void)dealloc;
-- (void)doneWithSheet:(BOOL)a3;
+- (void)doneWithSheet:(BOOL)sheet;
 - (void)updateSheetPosition;
 - (void)willRotate;
 @end
@@ -28,9 +28,9 @@
     {
       if ([objc_msgSend(MEMORY[0x1E69DC938] "currentDevice")])
       {
-        v4 = [MEMORY[0x1E696AD88] defaultCenter];
-        [v4 addObserver:v3 selector:sel_willRotate name:*MEMORY[0x1E69DE828] object:0];
-        [v4 addObserver:v3 selector:sel_didRotate name:*MEMORY[0x1E69DE7D0] object:0];
+        defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+        [defaultCenter addObserver:v3 selector:sel_willRotate name:*MEMORY[0x1E69DE828] object:0];
+        [defaultCenter addObserver:v3 selector:sel_didRotate name:*MEMORY[0x1E69DE7D0] object:0];
       }
     }
   }
@@ -54,7 +54,7 @@
   [v3 cancelPreviousPerformRequestsWithTarget:self];
 }
 
-- (BOOL)presentSheet:(int64_t)a3
+- (BOOL)presentSheet:(int64_t)sheet
 {
   x = *MEMORY[0x1E695F058];
   y = *(MEMORY[0x1E695F058] + 8);
@@ -65,7 +65,7 @@
   {
     if ([objc_msgSend(MEMORY[0x1E69DC938] "currentDevice")])
     {
-      [(WKActionSheet *)self _presentationRectForStyle:a3];
+      [(WKActionSheet *)self _presentationRectForStyle:sheet];
       x = v11.origin.x;
       y = v11.origin.y;
       width = v11.size.width;
@@ -77,20 +77,20 @@
     }
   }
 
-  self->_currentPresentationStyle = a3;
+  self->_currentPresentationStyle = sheet;
 
   return [(WKActionSheet *)self presentSheetFromRect:x, y, width, height];
 }
 
-- (CGRect)_presentationRectForStyle:(int64_t)a3
+- (CGRect)_presentationRectForStyle:(int64_t)style
 {
   sheetDelegate = self->_sheetDelegate;
-  if (a3 == 2)
+  if (style == 2)
   {
     [(WKActionSheetDelegate *)sheetDelegate presentationRectForElementUsingClosestIndicatedRect];
   }
 
-  else if (a3 == 1)
+  else if (style == 1)
   {
     [(WKActionSheetDelegate *)sheetDelegate presentationRectForIndicatedElement];
   }
@@ -107,14 +107,14 @@
   return result;
 }
 
-- (BOOL)presentSheetFromRect:(CGRect)a3
+- (BOOL)presentSheetFromRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(WKActionSheetDelegate *)self->_sheetDelegate hostViewForSheet];
-  if (v8)
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  hostViewForSheet = [(WKActionSheetDelegate *)self->_sheetDelegate hostViewForSheet];
+  if (hostViewForSheet)
   {
     if (self->_presentedViewControllerWhileRotating.m_ptr)
     {
@@ -127,20 +127,20 @@
     }
 
     [(WKActionSheet *)m_ptr setModalPresentationStyle:7];
-    v10 = [(WKActionSheet *)m_ptr popoverPresentationController];
-    [v10 setSourceView:v8];
-    [v10 setSourceRect:{x, y, width, height}];
-    [v10 setPermittedArrowDirections:self->_arrowDirections];
+    popoverPresentationController = [(WKActionSheet *)m_ptr popoverPresentationController];
+    [popoverPresentationController setSourceView:hostViewForSheet];
+    [popoverPresentationController setSourceRect:{x, y, width, height}];
+    [popoverPresentationController setPermittedArrowDirections:self->_arrowDirections];
     if (self->_popoverPresentationControllerDelegateWhileRotating.m_ptr)
     {
-      [v10 setDelegate:?];
+      [popoverPresentationController setDelegate:?];
     }
 
-    v11 = [v8 _wk_viewControllerForFullScreenPresentation];
-    v12 = v11;
-    if (v11)
+    _wk_viewControllerForFullScreenPresentation = [hostViewForSheet _wk_viewControllerForFullScreenPresentation];
+    v12 = _wk_viewControllerForFullScreenPresentation;
+    if (_wk_viewControllerForFullScreenPresentation)
     {
-      v13 = v11;
+      v13 = _wk_viewControllerForFullScreenPresentation;
     }
 
     v14 = self->_currentPresentingViewController.m_ptr;
@@ -154,17 +154,17 @@
     [(UIViewController *)v12 presentViewController:m_ptr animated:1 completion:0];
   }
 
-  return v8 != 0;
+  return hostViewForSheet != 0;
 }
 
-- (void)doneWithSheet:(BOOL)a3
+- (void)doneWithSheet:(BOOL)sheet
 {
-  if (a3)
+  if (sheet)
   {
-    v4 = [(UIViewController *)self->_currentPresentingViewController.m_ptr presentedViewController];
-    if (v4 == self || self->_presentedViewControllerWhileRotating.m_ptr == v4)
+    presentedViewController = [(UIViewController *)self->_currentPresentingViewController.m_ptr presentedViewController];
+    if (presentedViewController == self || self->_presentedViewControllerWhileRotating.m_ptr == presentedViewController)
     {
-      [(WKActionSheet *)v4 dismissViewControllerAnimated:1 completion:0];
+      [(WKActionSheet *)presentedViewController dismissViewControllerAnimated:1 completion:0];
     }
   }
 
@@ -193,37 +193,37 @@
 
 - (void)willRotate
 {
-  v3 = [(WKActionSheetDelegate *)self->_sheetDelegate hostViewForSheet];
-  if (v3)
+  hostViewForSheet = [(WKActionSheetDelegate *)self->_sheetDelegate hostViewForSheet];
+  if (hostViewForSheet)
   {
-    v4 = [v3 _wk_viewControllerForFullScreenPresentation];
-    v5 = [v4 presentedViewController];
-    if ([(UIPresentationController *)[(UIViewController *)v5 presentationController] presentationStyle]== UIModalPresentationPopover && !self->_isRotating)
+    _wk_viewControllerForFullScreenPresentation = [hostViewForSheet _wk_viewControllerForFullScreenPresentation];
+    presentedViewController = [_wk_viewControllerForFullScreenPresentation presentedViewController];
+    if ([(UIPresentationController *)[(UIViewController *)presentedViewController presentationController] presentationStyle]== UIModalPresentationPopover && !self->_isRotating)
     {
       self->_isRotating = 1;
       self->_readyToPresentAfterRotation = 0;
-      v6 = v5;
+      presentedViewController2 = presentedViewController;
       if ([(WKActionSheet *)self presentingViewController])
       {
-        v6 = [(WKActionSheet *)self presentedViewController];
+        presentedViewController2 = [(WKActionSheet *)self presentedViewController];
       }
 
-      if (v6)
+      if (presentedViewController2)
       {
-        v7 = v6;
+        v7 = presentedViewController2;
       }
 
       m_ptr = self->_presentedViewControllerWhileRotating.m_ptr;
-      self->_presentedViewControllerWhileRotating.m_ptr = v6;
+      self->_presentedViewControllerWhileRotating.m_ptr = presentedViewController2;
       if (m_ptr)
       {
       }
 
-      v9 = [(UIPopoverPresentationController *)[(UIViewController *)v5 popoverPresentationController] delegate];
-      v10 = v9;
-      if (v9)
+      delegate = [(UIPopoverPresentationController *)[(UIViewController *)presentedViewController popoverPresentationController] delegate];
+      v10 = delegate;
+      if (delegate)
       {
-        v11 = v9;
+        v11 = delegate;
       }
 
       v12 = self->_popoverPresentationControllerDelegateWhileRotating.m_ptr;
@@ -237,34 +237,34 @@
       v13[2] = __27__WKActionSheet_willRotate__block_invoke;
       v13[3] = &unk_1E7631230;
       v13[4] = self;
-      [v4 dismissViewControllerAnimated:0 completion:v13];
+      [_wk_viewControllerForFullScreenPresentation dismissViewControllerAnimated:0 completion:v13];
     }
   }
 }
 
 - (void)updateSheetPosition
 {
-  v2 = self;
+  selfCopy = self;
   if (self->_presentedViewControllerWhileRotating.m_ptr)
   {
     self = self->_presentedViewControllerWhileRotating.m_ptr;
   }
 
-  if (!v2->_isRotating && v2->_readyToPresentAfterRotation && ![(WKActionSheet *)self presentingViewController]&& ![(WKActionSheet *)v2 presentingViewController])
+  if (!selfCopy->_isRotating && selfCopy->_readyToPresentAfterRotation && ![(WKActionSheet *)self presentingViewController]&& ![(WKActionSheet *)selfCopy presentingViewController])
   {
-    [(WKActionSheet *)v2 _presentationRectForStyle:v2->_currentPresentationStyle];
+    [(WKActionSheet *)selfCopy _presentationRectForStyle:selfCopy->_currentPresentationStyle];
     v4 = v3;
     v6 = v5;
     v8 = v7;
     v10 = v9;
-    v11 = [(UIViewController *)v2->_presentedViewControllerWhileRotating.m_ptr isModalInPresentation];
+    isModalInPresentation = [(UIViewController *)selfCopy->_presentedViewControllerWhileRotating.m_ptr isModalInPresentation];
     v20.origin.x = v4;
     v20.origin.y = v6;
     v20.size.width = v8;
     v20.size.height = v10;
-    if (!CGRectIsEmpty(v20) || v11)
+    if (!CGRectIsEmpty(v20) || isModalInPresentation)
     {
-      [-[WKActionSheetDelegate hostViewForSheet](v2->_sheetDelegate "hostViewForSheet")];
+      [-[WKActionSheetDelegate hostViewForSheet](selfCopy->_sheetDelegate "hostViewForSheet")];
       v23.origin.x = v4;
       v23.origin.y = v6;
       v23.size.width = v8;
@@ -276,25 +276,25 @@
       height = v22.size.height;
       if (CGRectIsEmpty(v22))
       {
-        if (v11)
+        if (isModalInPresentation)
         {
-          [(WKActionSheet *)v2 presentSheet:v2->_currentPresentationStyle];
+          [(WKActionSheet *)selfCopy presentSheet:selfCopy->_currentPresentationStyle];
         }
       }
 
       else
       {
-        [(WKActionSheet *)v2 presentSheetFromRect:x, y, width, height];
+        [(WKActionSheet *)selfCopy presentSheetFromRect:x, y, width, height];
       }
 
-      m_ptr = v2->_presentedViewControllerWhileRotating.m_ptr;
-      v2->_presentedViewControllerWhileRotating.m_ptr = 0;
+      m_ptr = selfCopy->_presentedViewControllerWhileRotating.m_ptr;
+      selfCopy->_presentedViewControllerWhileRotating.m_ptr = 0;
       if (m_ptr)
       {
       }
 
-      v18 = v2->_popoverPresentationControllerDelegateWhileRotating.m_ptr;
-      v2->_popoverPresentationControllerDelegateWhileRotating.m_ptr = 0;
+      v18 = selfCopy->_popoverPresentationControllerDelegateWhileRotating.m_ptr;
+      selfCopy->_popoverPresentationControllerDelegateWhileRotating.m_ptr = 0;
       if (v18)
       {
       }

@@ -1,7 +1,7 @@
 @interface CKTranscriptStampButtonCell
 + (id)createStampTextView;
 - (id)attributedText;
-- (void)setAttributedText:(id)a3;
+- (void)setAttributedText:(id)text;
 @end
 
 @implementation CKTranscriptStampButtonCell
@@ -18,17 +18,17 @@
   return v2;
 }
 
-- (void)setAttributedText:(id)a3
+- (void)setAttributedText:(id)text
 {
-  v4 = a3;
-  v5 = [(CKTranscriptStampButtonCell *)self stampButton];
-  [v5 setAttributedTitle:v4 forState:0];
+  textCopy = text;
+  stampButton = [(CKTranscriptStampButtonCell *)self stampButton];
+  [stampButton setAttributedTitle:textCopy forState:0];
 }
 
 - (id)attributedText
 {
-  v2 = [(CKTranscriptStampButtonCell *)self stampButton];
-  v3 = [v2 attributedTitleForState:0];
+  stampButton = [(CKTranscriptStampButtonCell *)self stampButton];
+  v3 = [stampButton attributedTitleForState:0];
 
   return v3;
 }

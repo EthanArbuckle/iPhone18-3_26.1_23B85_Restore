@@ -1,19 +1,19 @@
 @interface PNPPreDeclare
-+ (void)squeezeInteraction:(id)a3 setMiniPaletteVisible:(BOOL)a4 hoverLocation:(CGPoint)a5 inView:(id)a6;
++ (void)squeezeInteraction:(id)interaction setMiniPaletteVisible:(BOOL)visible hoverLocation:(CGPoint)location inView:(id)view;
 @end
 
 @implementation PNPPreDeclare
 
-+ (void)squeezeInteraction:(id)a3 setMiniPaletteVisible:(BOOL)a4 hoverLocation:(CGPoint)a5 inView:(id)a6
++ (void)squeezeInteraction:(id)interaction setMiniPaletteVisible:(BOOL)visible hoverLocation:(CGPoint)location inView:(id)view
 {
-  y = a5.y;
-  x = a5.x;
-  v9 = a4;
-  v11 = a3;
-  v10 = a6;
+  y = location.y;
+  x = location.x;
+  visibleCopy = visible;
+  interactionCopy = interaction;
+  viewCopy = view;
   if (objc_opt_respondsToSelector())
   {
-    [v11 _setMiniPaletteVisible:v9 hoverLocation:v10 inView:{x, y}];
+    [interactionCopy _setMiniPaletteVisible:visibleCopy hoverLocation:viewCopy inView:{x, y}];
   }
 }
 

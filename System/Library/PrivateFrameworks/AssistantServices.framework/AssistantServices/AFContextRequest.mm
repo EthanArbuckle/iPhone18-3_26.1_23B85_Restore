@@ -1,13 +1,13 @@
 @interface AFContextRequest
-- (id)createResponseWithContext:(id)a3;
+- (id)createResponseWithContext:(id)context;
 @end
 
 @implementation AFContextRequest
 
-- (id)createResponseWithContext:(id)a3
+- (id)createResponseWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [[AFContextResponse alloc] _initWithRequest:self context:v4];
+  contextCopy = context;
+  v5 = [[AFContextResponse alloc] _initWithRequest:self context:contextCopy];
 
   return v5;
 }

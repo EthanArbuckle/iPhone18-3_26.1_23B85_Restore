@@ -1,9 +1,9 @@
 @interface SKUIIndexBarEntry
-+ (id)entryWithAttributedString:(id)a3;
-+ (id)entryWithImage:(id)a3;
-+ (id)placeholderEntryWithSize:(CGSize)a3;
++ (id)entryWithAttributedString:(id)string;
++ (id)entryWithImage:(id)image;
++ (id)placeholderEntryWithSize:(CGSize)size;
 + (id)systemCombinedEntry;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGSize)_calculatedContentSize;
 - (CGSize)contentSize;
 - (CGSize)size;
@@ -12,14 +12,14 @@
 - (UIEdgeInsets)contentEdgeInsets;
 - (UIImage)entryImage;
 - (unint64_t)hash;
-- (void)setTintColor:(id)a3;
+- (void)setTintColor:(id)color;
 @end
 
 @implementation SKUIIndexBarEntry
 
-+ (id)entryWithAttributedString:(id)a3
++ (id)entryWithAttributedString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -32,14 +32,14 @@
     }
   }
 
-  v12 = [[SKUIAttributedStringIndexBarEntry alloc] initWithAttributedString:v3];
+  v12 = [[SKUIAttributedStringIndexBarEntry alloc] initWithAttributedString:stringCopy];
 
   return v12;
 }
 
-+ (id)entryWithImage:(id)a3
++ (id)entryWithImage:(id)image
 {
-  v3 = a3;
+  imageCopy = image;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -52,15 +52,15 @@
     }
   }
 
-  v12 = [[SKUIImageIndexBarEntry alloc] initWithImage:v3];
+  v12 = [[SKUIImageIndexBarEntry alloc] initWithImage:imageCopy];
 
   return v12;
 }
 
-+ (id)placeholderEntryWithSize:(CGSize)a3
++ (id)placeholderEntryWithSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -73,9 +73,9 @@
     }
   }
 
-  v13 = [[SKUIPlaceholderIndexBarEntry alloc] initWithPlaceholderSize:width, height];
+  height = [[SKUIPlaceholderIndexBarEntry alloc] initWithPlaceholderSize:width, height];
 
-  return v13;
+  return height;
 }
 
 + (id)systemCombinedEntry
@@ -114,9 +114,9 @@
   return (self->_entryType ^ self->_visibilityPriority) + 52314;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -129,7 +129,7 @@
     }
   }
 
-  if (v4 == self)
+  if (equalCopy == self)
   {
     v13 = 1;
   }
@@ -137,7 +137,7 @@
   else
   {
     objc_opt_class();
-    v13 = (objc_opt_isKindOfClass() & 1) != 0 && v4->_visibilityPriority == self->_visibilityPriority && v4->_entryType == self->_entryType;
+    v13 = (objc_opt_isKindOfClass() & 1) != 0 && equalCopy->_visibilityPriority == self->_visibilityPriority && equalCopy->_entryType == self->_entryType;
   }
 
   return v13;
@@ -210,9 +210,9 @@
   return 0;
 }
 
-- (void)setTintColor:(id)a3
+- (void)setTintColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -226,9 +226,9 @@
   }
 
   tintColor = self->_tintColor;
-  if (tintColor != v5 && ([(UIColor *)tintColor isEqual:v5]& 1) == 0)
+  if (tintColor != colorCopy && ([(UIColor *)tintColor isEqual:colorCopy]& 1) == 0)
   {
-    objc_storeStrong(&self->_tintColor, a3);
+    objc_storeStrong(&self->_tintColor, color);
     [(SKUIIndexBarEntry *)self _tintColorDidChange];
   }
 }
@@ -272,15 +272,15 @@
   tintColor = self->_tintColor;
   if (tintColor)
   {
-    v12 = tintColor;
+    blackColor = tintColor;
   }
 
   else
   {
-    v12 = [MEMORY[0x277D75348] blackColor];
+    blackColor = [MEMORY[0x277D75348] blackColor];
   }
 
-  return v12;
+  return blackColor;
 }
 
 - (CGSize)_calculatedContentSize

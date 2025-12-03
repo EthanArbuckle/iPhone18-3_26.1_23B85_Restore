@@ -1,10 +1,10 @@
 @interface AAUserNotification
 + (id)_defaultParameters;
-+ (void)_waitForResponseAndReleaseNotification:(__CFUserNotification *)a3 completion:(id)a4;
-+ (void)showUserNotificationWithTitle:(id)a3 message:(id)a4 cancelButtonTitle:(id)a5 otherButtonTitle:(id)a6 withCompletionBlock:(id)a7;
-+ (void)showUserNotificationWithTitle:(id)a3 message:(id)a4 secureTextFieldTitle:(id)a5 cancelButtonTitle:(id)a6 otherButtonTitle:(id)a7 completion:(id)a8;
-+ (void)showUserNotificationWithTitle:(id)a3 message:(id)a4 textFieldTitle:(id)a5 cancelButtonTitle:(id)a6 otherButtonTitle:(id)a7 completion:(id)a8;
-+ (void)waitForResponseToNotification:(__CFUserNotification *)a3 completion:(id)a4;
++ (void)_waitForResponseAndReleaseNotification:(__CFUserNotification *)notification completion:(id)completion;
++ (void)showUserNotificationWithTitle:(id)title message:(id)message cancelButtonTitle:(id)buttonTitle otherButtonTitle:(id)otherButtonTitle withCompletionBlock:(id)block;
++ (void)showUserNotificationWithTitle:(id)title message:(id)message secureTextFieldTitle:(id)fieldTitle cancelButtonTitle:(id)buttonTitle otherButtonTitle:(id)otherButtonTitle completion:(id)completion;
++ (void)showUserNotificationWithTitle:(id)title message:(id)message textFieldTitle:(id)fieldTitle cancelButtonTitle:(id)buttonTitle otherButtonTitle:(id)otherButtonTitle completion:(id)completion;
++ (void)waitForResponseToNotification:(__CFUserNotification *)notification completion:(id)completion;
 @end
 
 @implementation AAUserNotification
@@ -25,135 +25,135 @@
   return v3;
 }
 
-+ (void)showUserNotificationWithTitle:(id)a3 message:(id)a4 cancelButtonTitle:(id)a5 otherButtonTitle:(id)a6 withCompletionBlock:(id)a7
++ (void)showUserNotificationWithTitle:(id)title message:(id)message cancelButtonTitle:(id)buttonTitle otherButtonTitle:(id)otherButtonTitle withCompletionBlock:(id)block
 {
-  v18 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  titleCopy = title;
+  messageCopy = message;
+  buttonTitleCopy = buttonTitle;
+  otherButtonTitleCopy = otherButtonTitle;
+  blockCopy = block;
   v16 = +[AAUserNotification _defaultParameters];
   v17 = [v16 mutableCopy];
 
-  if (v18)
+  if (titleCopy)
   {
-    [v17 setObject:v18 forKeyedSubscript:*MEMORY[0x1E695EE58]];
+    [v17 setObject:titleCopy forKeyedSubscript:*MEMORY[0x1E695EE58]];
   }
 
-  if (v12)
+  if (messageCopy)
   {
-    [v17 setObject:v12 forKeyedSubscript:*MEMORY[0x1E695EE60]];
+    [v17 setObject:messageCopy forKeyedSubscript:*MEMORY[0x1E695EE60]];
   }
 
-  if (v13)
+  if (buttonTitleCopy)
   {
-    [v17 setObject:v13 forKeyedSubscript:*MEMORY[0x1E695EE70]];
+    [v17 setObject:buttonTitleCopy forKeyedSubscript:*MEMORY[0x1E695EE70]];
   }
 
-  if (v14)
+  if (otherButtonTitleCopy)
   {
-    [v17 setObject:v14 forKeyedSubscript:*MEMORY[0x1E695EE78]];
+    [v17 setObject:otherButtonTitleCopy forKeyedSubscript:*MEMORY[0x1E695EE78]];
   }
 
-  [a1 _waitForResponseAndReleaseNotification:CFUserNotificationCreate(*MEMORY[0x1E695E480] completion:{0.0, 3uLL, 0, v17), v15}];
+  [self _waitForResponseAndReleaseNotification:CFUserNotificationCreate(*MEMORY[0x1E695E480] completion:{0.0, 3uLL, 0, v17), blockCopy}];
 }
 
-+ (void)showUserNotificationWithTitle:(id)a3 message:(id)a4 textFieldTitle:(id)a5 cancelButtonTitle:(id)a6 otherButtonTitle:(id)a7 completion:(id)a8
++ (void)showUserNotificationWithTitle:(id)title message:(id)message textFieldTitle:(id)fieldTitle cancelButtonTitle:(id)buttonTitle otherButtonTitle:(id)otherButtonTitle completion:(id)completion
 {
-  v21 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
+  titleCopy = title;
+  messageCopy = message;
+  fieldTitleCopy = fieldTitle;
+  buttonTitleCopy = buttonTitle;
+  otherButtonTitleCopy = otherButtonTitle;
+  completionCopy = completion;
   v19 = +[AAUserNotification _defaultParameters];
   v20 = [v19 mutableCopy];
 
-  if (v21)
+  if (titleCopy)
   {
-    [v20 setObject:v21 forKeyedSubscript:*MEMORY[0x1E695EE58]];
+    [v20 setObject:titleCopy forKeyedSubscript:*MEMORY[0x1E695EE58]];
   }
 
-  if (v14)
+  if (messageCopy)
   {
-    [v20 setObject:v14 forKeyedSubscript:*MEMORY[0x1E695EE60]];
+    [v20 setObject:messageCopy forKeyedSubscript:*MEMORY[0x1E695EE60]];
   }
 
-  if (v15)
+  if (fieldTitleCopy)
   {
-    [v20 setObject:v15 forKeyedSubscript:*MEMORY[0x1E695EEA0]];
+    [v20 setObject:fieldTitleCopy forKeyedSubscript:*MEMORY[0x1E695EEA0]];
   }
 
-  if (v16)
+  if (buttonTitleCopy)
   {
-    [v20 setObject:v16 forKeyedSubscript:*MEMORY[0x1E695EE70]];
+    [v20 setObject:buttonTitleCopy forKeyedSubscript:*MEMORY[0x1E695EE70]];
   }
 
-  if (v17)
+  if (otherButtonTitleCopy)
   {
-    [v20 setObject:v17 forKeyedSubscript:*MEMORY[0x1E695EE78]];
+    [v20 setObject:otherButtonTitleCopy forKeyedSubscript:*MEMORY[0x1E695EE78]];
   }
 
-  [a1 _waitForResponseAndReleaseNotification:CFUserNotificationCreate(*MEMORY[0x1E695E480] completion:{0.0, 3uLL, 0, v20), v18}];
+  [self _waitForResponseAndReleaseNotification:CFUserNotificationCreate(*MEMORY[0x1E695E480] completion:{0.0, 3uLL, 0, v20), completionCopy}];
 }
 
-+ (void)showUserNotificationWithTitle:(id)a3 message:(id)a4 secureTextFieldTitle:(id)a5 cancelButtonTitle:(id)a6 otherButtonTitle:(id)a7 completion:(id)a8
++ (void)showUserNotificationWithTitle:(id)title message:(id)message secureTextFieldTitle:(id)fieldTitle cancelButtonTitle:(id)buttonTitle otherButtonTitle:(id)otherButtonTitle completion:(id)completion
 {
-  v21 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
+  titleCopy = title;
+  messageCopy = message;
+  fieldTitleCopy = fieldTitle;
+  buttonTitleCopy = buttonTitle;
+  otherButtonTitleCopy = otherButtonTitle;
+  completionCopy = completion;
   v19 = +[AAUserNotification _defaultParameters];
   v20 = [v19 mutableCopy];
 
-  if (v21)
+  if (titleCopy)
   {
-    [v20 setObject:v21 forKeyedSubscript:*MEMORY[0x1E695EE58]];
+    [v20 setObject:titleCopy forKeyedSubscript:*MEMORY[0x1E695EE58]];
   }
 
-  if (v14)
+  if (messageCopy)
   {
-    [v20 setObject:v14 forKeyedSubscript:*MEMORY[0x1E695EE60]];
+    [v20 setObject:messageCopy forKeyedSubscript:*MEMORY[0x1E695EE60]];
   }
 
-  if (v15)
+  if (fieldTitleCopy)
   {
-    [v20 setObject:v15 forKeyedSubscript:*MEMORY[0x1E695EEA0]];
+    [v20 setObject:fieldTitleCopy forKeyedSubscript:*MEMORY[0x1E695EEA0]];
   }
 
-  if (v16)
+  if (buttonTitleCopy)
   {
-    [v20 setObject:v16 forKeyedSubscript:*MEMORY[0x1E695EE70]];
+    [v20 setObject:buttonTitleCopy forKeyedSubscript:*MEMORY[0x1E695EE70]];
   }
 
-  if (v17)
+  if (otherButtonTitleCopy)
   {
-    [v20 setObject:v17 forKeyedSubscript:*MEMORY[0x1E695EE78]];
+    [v20 setObject:otherButtonTitleCopy forKeyedSubscript:*MEMORY[0x1E695EE78]];
   }
 
-  [a1 _waitForResponseAndReleaseNotification:CFUserNotificationCreate(*MEMORY[0x1E695E480] completion:{0.0, 0x10000uLL, 0, v20), v18}];
+  [self _waitForResponseAndReleaseNotification:CFUserNotificationCreate(*MEMORY[0x1E695E480] completion:{0.0, 0x10000uLL, 0, v20), completionCopy}];
 }
 
-+ (void)_waitForResponseAndReleaseNotification:(__CFUserNotification *)a3 completion:(id)a4
++ (void)_waitForResponseAndReleaseNotification:(__CFUserNotification *)notification completion:(id)completion
 {
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  completionCopy = completion;
+  v7 = completionCopy;
+  if (completionCopy)
   {
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __72__AAUserNotification__waitForResponseAndReleaseNotification_completion___block_invoke;
     v8[3] = &unk_1E7C9D7F8;
-    v10 = a3;
-    v9 = v6;
-    [a1 waitForResponseToNotification:a3 completion:v8];
+    notificationCopy = notification;
+    v9 = completionCopy;
+    [self waitForResponseToNotification:notification completion:v8];
   }
 
-  else if (a3)
+  else if (notification)
   {
-    CFRelease(a3);
+    CFRelease(notification);
   }
 }
 
@@ -170,28 +170,28 @@ uint64_t __72__AAUserNotification__waitForResponseAndReleaseNotification_complet
   return v3();
 }
 
-+ (void)waitForResponseToNotification:(__CFUserNotification *)a3 completion:(id)a4
++ (void)waitForResponseToNotification:(__CFUserNotification *)notification completion:(id)completion
 {
-  v5 = a4;
-  v6 = v5;
-  if (v5)
+  completionCopy = completion;
+  v6 = completionCopy;
+  if (completionCopy)
   {
-    if (a3)
+    if (notification)
     {
-      CFRetain(a3);
+      CFRetain(notification);
       v7 = _AANotificationQueue();
       v8[0] = MEMORY[0x1E69E9820];
       v8[1] = 3221225472;
       v8[2] = __63__AAUserNotification_waitForResponseToNotification_completion___block_invoke;
       v8[3] = &unk_1E7C9D820;
-      v10 = a3;
+      notificationCopy = notification;
       v9 = v6;
       dispatch_async(v7, v8);
     }
 
     else
     {
-      (*(v5 + 2))(v5, 0, 3);
+      (*(completionCopy + 2))(completionCopy, 0, 3);
     }
   }
 }

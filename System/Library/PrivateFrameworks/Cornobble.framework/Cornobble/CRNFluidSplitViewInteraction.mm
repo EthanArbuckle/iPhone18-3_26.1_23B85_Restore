@@ -1,17 +1,17 @@
 @interface CRNFluidSplitViewInteraction
-+ (id)newWithSplitViewController:(id)a3;
++ (id)newWithSplitViewController:(id)controller;
 - (id)composerBlock;
 @end
 
 @implementation CRNFluidSplitViewInteraction
 
-+ (id)newWithSplitViewController:(id)a3
++ (id)newWithSplitViewController:(id)controller
 {
-  v3 = a3;
+  controllerCopy = controller;
   v4 = objc_opt_new();
   v5 = v4[1];
-  v4[1] = v3;
-  v6 = v3;
+  v4[1] = controllerCopy;
+  v6 = controllerCopy;
 
   v7 = [v6 viewControllerForColumn:1];
   v8 = v4[2];
@@ -26,13 +26,13 @@
 
 - (id)composerBlock
 {
-  v3 = [(UIViewController *)self->_supplementalController view];
-  v4 = CRNViewFrameInWindow(v3);
+  view = [(UIViewController *)self->_supplementalController view];
+  v4 = CRNViewFrameInWindow(view);
   MidpointAlongSide = CRNCGRectGetMidpointAlongSide(1, v4, v5, v6, v7);
   v10 = v9;
 
-  v11 = [(UIViewController *)self->_supplementalController view];
-  v12 = CRNViewFrameInWindow(v11);
+  view2 = [(UIViewController *)self->_supplementalController view];
+  v12 = CRNViewFrameInWindow(view2);
   v16 = CRNCGRectGetMidpointAlongSide(3, v12, v13, v14, v15);
   v18 = v17;
 

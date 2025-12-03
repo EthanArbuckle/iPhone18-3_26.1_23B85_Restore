@@ -1,8 +1,8 @@
 @interface BAARequestSigner
 - (NSDate)date;
 - (_TtC14ACSEFoundation16BAARequestSigner)init;
-- (_TtC14ACSEFoundation16BAARequestSigner)initWithDate:(id)a3;
-- (void)signWithRequest:(NSURLRequest *)a3 completionHandler:(id)a4;
+- (_TtC14ACSEFoundation16BAARequestSigner)initWithDate:(id)date;
+- (void)signWithRequest:(NSURLRequest *)request completionHandler:(id)handler;
 @end
 
 @implementation BAARequestSigner
@@ -28,7 +28,7 @@
   return v10;
 }
 
-- (_TtC14ACSEFoundation16BAARequestSigner)initWithDate:(id)a3
+- (_TtC14ACSEFoundation16BAARequestSigner)initWithDate:(id)date
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27E1F45C0, &qword_23C438CB0);
   v6 = *(*(v5 - 8) + 64);
@@ -36,7 +36,7 @@
   v9 = v20 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   MEMORY[0x28223BE20](v7);
   v11 = v20 - v10;
-  if (a3)
+  if (date)
   {
     sub_23C436EFC();
     v12 = sub_23C436F2C();
@@ -63,15 +63,15 @@
   return v16;
 }
 
-- (void)signWithRequest:(NSURLRequest *)a3 completionHandler:(id)a4
+- (void)signWithRequest:(NSURLRequest *)request completionHandler:(id)handler
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27E1F4738, &qword_23C438F40);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x28223BE20](v7 - 8);
   v10 = &v18 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = request;
   v12[3] = v11;
   v12[4] = self;
   v13 = sub_23C43726C();
@@ -86,8 +86,8 @@
   v15[3] = 0;
   v15[4] = &unk_23C438F60;
   v15[5] = v14;
-  v16 = a3;
-  v17 = self;
+  requestCopy = request;
+  selfCopy = self;
   sub_23C42A9E0(0, 0, v10, &unk_23C438F70, v15);
 }
 

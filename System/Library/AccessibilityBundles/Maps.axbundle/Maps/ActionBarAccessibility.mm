@@ -10,17 +10,17 @@
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 _accessibilityFindSubviewDescendantsPassingTest:&__block_literal_global_0];
+    accessibilityElements = [v3 _accessibilityFindSubviewDescendantsPassingTest:&__block_literal_global_0];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = ActionBarAccessibility;
-    v5 = [(ActionBarAccessibility *)&v8 accessibilityElements];
+    accessibilityElements = [(ActionBarAccessibility *)&v8 accessibilityElements];
   }
 
-  v6 = v5;
+  v6 = accessibilityElements;
 
   return v6;
 }

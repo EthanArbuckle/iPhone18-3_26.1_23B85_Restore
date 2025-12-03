@@ -1,6 +1,6 @@
 @interface TVSessionWatchDiscoveryView
 - (NSArray)preferredFocusEnvironments;
-- (_TtC9SeymourUI27TVSessionWatchDiscoveryView)initWithFrame:(CGRect)a3;
+- (_TtC9SeymourUI27TVSessionWatchDiscoveryView)initWithFrame:(CGRect)frame;
 - (void)didTapStartStandaloneButton;
 @end
 
@@ -9,7 +9,7 @@
 - (void)didTapStartStandaloneButton
 {
   v2 = (*(&self->super.super.super.isa + OBJC_IVAR____TtC9SeymourUI27TVSessionWatchDiscoveryView_presenter))[2];
-  v3 = self;
+  selfCopy = self;
   if (v2)
   {
     v4 = sub_20B584050(v2);
@@ -34,7 +34,7 @@
   return v6;
 }
 
-- (_TtC9SeymourUI27TVSessionWatchDiscoveryView)initWithFrame:(CGRect)a3
+- (_TtC9SeymourUI27TVSessionWatchDiscoveryView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

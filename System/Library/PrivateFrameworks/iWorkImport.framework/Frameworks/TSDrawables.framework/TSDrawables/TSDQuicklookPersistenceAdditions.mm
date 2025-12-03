@@ -1,7 +1,7 @@
 @interface TSDQuicklookPersistenceAdditions
 + (CGSize)imageColorSize;
-+ (id)imageDataFromCGColor:(CGColor *)a3 objContext:(id)a4;
-+ (id)imageFillFromColorFill:(id)a3 objContext:(id)a4;
++ (id)imageDataFromCGColor:(CGColor *)color objContext:(id)context;
++ (id)imageFillFromColorFill:(id)fill objContext:(id)context;
 @end
 
 @implementation TSDQuicklookPersistenceAdditions
@@ -15,23 +15,23 @@
   return result;
 }
 
-+ (id)imageDataFromCGColor:(CGColor *)a3 objContext:(id)a4
++ (id)imageDataFromCGColor:(CGColor *)color objContext:(id)context
 {
-  v8 = a4;
-  if (a3)
+  contextCopy = context;
+  if (color)
   {
-    objc_msgSend_imageColorSize(a1, v6, v7);
+    objc_msgSend_imageColorSize(self, v6, v7);
     v11 = TSDBitmapContextCreate(1, v9, v10);
     v12 = v11;
     if (v11)
     {
       UIGraphicsPushContext(v11);
-      CGContextSetFillColorWithColor(v12, a3);
+      CGContextSetFillColorWithColor(v12, color);
       TSURectWithSize();
       CGContextFillRect(v12, v26);
       Image = CGBitmapContextCreateImage(v12);
       v14 = CGImagePNGRepresentation();
-      v16 = objc_msgSend_dataFromNSData_filename_context_(MEMORY[0x277D80828], v15, v14, @"colorFill.png", v8);
+      v16 = objc_msgSend_dataFromNSData_filename_context_(MEMORY[0x277D80828], v15, v14, @"colorFill.png", contextCopy);
       CGImageRelease(Image);
       UIGraphicsPopContext();
       CFRelease(v12);
@@ -56,13 +56,13 @@ LABEL_6:
   return v16;
 }
 
-+ (id)imageFillFromColorFill:(id)a3 objContext:(id)a4
++ (id)imageFillFromColorFill:(id)fill objContext:(id)context
 {
-  v6 = a4;
-  v10 = objc_msgSend_CGColor(a3, v7, v8);
+  contextCopy = context;
+  v10 = objc_msgSend_CGColor(fill, v7, v8);
   if (v10)
   {
-    v11 = objc_msgSend_imageDataFromCGColor_objContext_(a1, v9, v10, v6);
+    v11 = objc_msgSend_imageDataFromCGColor_objContext_(self, v9, v10, contextCopy);
     if (v11)
     {
       v12 = [TSDImageFill alloc];

@@ -1,29 +1,29 @@
 @interface ATSSymbolsMapCapture
-- (ATSSymbolsMapCapture)initWithLogger:(id)a3;
-- (void)addChunksToFile:(ktrace_file *)a3;
-- (void)encodeLiveKernelMap:(ktrace_file *)a3;
-- (void)encodeSharedCachesUsingCS:(ktrace_file *)a3;
-- (void)encodeSharedCachesUsingDyldIntrospection:(ktrace_file *)a3;
+- (ATSSymbolsMapCapture)initWithLogger:(id)logger;
+- (void)addChunksToFile:(ktrace_file *)file;
+- (void)encodeLiveKernelMap:(ktrace_file *)map;
+- (void)encodeSharedCachesUsingCS:(ktrace_file *)s;
+- (void)encodeSharedCachesUsingDyldIntrospection:(ktrace_file *)introspection;
 @end
 
 @implementation ATSSymbolsMapCapture
 
-- (ATSSymbolsMapCapture)initWithLogger:(id)a3
+- (ATSSymbolsMapCapture)initWithLogger:(id)logger
 {
-  v5 = a3;
+  loggerCopy = logger;
   v9.receiver = self;
   v9.super_class = ATSSymbolsMapCapture;
   v6 = [(ATSSymbolsMapCapture *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_logger, a3);
+    objc_storeStrong(&v6->_logger, logger);
   }
 
   return v7;
 }
 
-- (void)encodeLiveKernelMap:(ktrace_file *)a3
+- (void)encodeLiveKernelMap:(ktrace_file *)map
 {
   CSSymbolicatorCreateWithMachKernel();
   if ((CSIsNull() & 1) == 0)
@@ -136,7 +136,7 @@
   }
 }
 
-- (void)encodeSharedCachesUsingDyldIntrospection:(ktrace_file *)a3
+- (void)encodeSharedCachesUsingDyldIntrospection:(ktrace_file *)introspection
 {
   v28 = 0;
   v29 = &v28;
@@ -210,7 +210,7 @@
   sub_3288(&v34);
 }
 
-- (void)encodeSharedCachesUsingCS:(ktrace_file *)a3
+- (void)encodeSharedCachesUsingCS:(ktrace_file *)s
 {
   v25 = 0;
   v26 = &v25;
@@ -274,11 +274,11 @@
   sub_3288(&v31);
 }
 
-- (void)addChunksToFile:(ktrace_file *)a3
+- (void)addChunksToFile:(ktrace_file *)file
 {
   [(ATSSymbolsMapCapture *)self encodeSharedCachesUsingDyldIntrospection:?];
 
-  [(ATSSymbolsMapCapture *)self encodeLiveKernelMap:a3];
+  [(ATSSymbolsMapCapture *)self encodeLiveKernelMap:file];
 }
 
 @end

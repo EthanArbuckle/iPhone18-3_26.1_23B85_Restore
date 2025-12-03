@@ -1,8 +1,8 @@
 @interface HeadphoneShareAudioViewController
-- (_TtC20HeadphoneProxService33HeadphoneShareAudioViewController)initWithContentView:(id)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (_TtC20HeadphoneProxService33HeadphoneShareAudioViewController)initWithContentView:(id)view;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation HeadphoneShareAudioViewController
@@ -16,19 +16,19 @@
   [v2 setDismissalType:{1, v3.receiver, v3.super_class}];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_1000A3F9C(a3, &selRef_viewWillAppear_, "Playing movie", &selRef_play);
+  selfCopy = self;
+  sub_1000A3F9C(appear, &selRef_viewWillAppear_, "Playing movie", &selRef_play);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_1000A3F9C(a3, &selRef_viewDidDisappear_, "Stopping movie", &selRef_stop);
+  selfCopy = self;
+  sub_1000A3F9C(disappear, &selRef_viewDidDisappear_, "Stopping movie", &selRef_stop);
 }
 
-- (_TtC20HeadphoneProxService33HeadphoneShareAudioViewController)initWithContentView:(id)a3
+- (_TtC20HeadphoneProxService33HeadphoneShareAudioViewController)initWithContentView:(id)view
 {
   ObjectType = swift_getObjectType();
   v6 = OBJC_IVAR____TtC20HeadphoneProxService33HeadphoneShareAudioViewController_movieContainer;
@@ -40,7 +40,7 @@
   self->PRXCardContentViewController_opaque[OBJC_IVAR____TtC20HeadphoneProxService33HeadphoneShareAudioViewController_type] = 22;
   v8.receiver = self;
   v8.super_class = ObjectType;
-  return [(HeadphoneShareAudioViewController *)&v8 initWithContentView:a3];
+  return [(HeadphoneShareAudioViewController *)&v8 initWithContentView:view];
 }
 
 @end

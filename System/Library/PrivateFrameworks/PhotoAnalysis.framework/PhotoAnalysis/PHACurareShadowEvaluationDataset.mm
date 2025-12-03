@@ -1,14 +1,14 @@
 @interface PHACurareShadowEvaluationDataset
-+ (id)prepareDatasetForEvaluationTaskWithRecipeOptions:(id)a3 error:(id *)a4;
++ (id)prepareDatasetForEvaluationTaskWithRecipeOptions:(id)options error:(id *)error;
 @end
 
 @implementation PHACurareShadowEvaluationDataset
 
-+ (id)prepareDatasetForEvaluationTaskWithRecipeOptions:(id)a3 error:(id *)a4
++ (id)prepareDatasetForEvaluationTaskWithRecipeOptions:(id)options error:(id *)error
 {
-  v5 = [PHAPrivateFederatedLearningRunner datasetBuilderForOptions:a3 error:?];
+  v5 = [PHAPrivateFederatedLearningRunner datasetBuilderForOptions:options error:?];
   v6 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v7 = [v5 datasetForEvaluationForLabel:@"positive" error:a4];
+  v7 = [v5 datasetForEvaluationForLabel:@"positive" error:error];
   if (v7)
   {
     [v6 setObject:v7 forKeyedSubscript:@"kPositive"];
@@ -16,11 +16,11 @@
 
   else
   {
-    v8 = [MEMORY[0x277CBEB68] null];
-    [v6 setObject:v8 forKeyedSubscript:@"kPositive"];
+    null = [MEMORY[0x277CBEB68] null];
+    [v6 setObject:null forKeyedSubscript:@"kPositive"];
   }
 
-  v9 = [v5 datasetForEvaluationForLabel:@"negative" error:a4];
+  v9 = [v5 datasetForEvaluationForLabel:@"negative" error:error];
   if (v9)
   {
     [v6 setObject:v9 forKeyedSubscript:@"kNegative"];
@@ -28,8 +28,8 @@
 
   else
   {
-    v10 = [MEMORY[0x277CBEB68] null];
-    [v6 setObject:v10 forKeyedSubscript:@"kNegative"];
+    null2 = [MEMORY[0x277CBEB68] null];
+    [v6 setObject:null2 forKeyedSubscript:@"kNegative"];
   }
 
   return v6;

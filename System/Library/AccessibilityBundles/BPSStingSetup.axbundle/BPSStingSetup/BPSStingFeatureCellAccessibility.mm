@@ -1,15 +1,15 @@
 @interface BPSStingFeatureCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation BPSStingFeatureCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"BPSStingFeatureCell" hasProperty:@"titleLabel" withType:"@"];
-  [v3 validateClass:@"BPSStingFeatureCell" hasProperty:@"subtitleLabel" withType:"@"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"BPSStingFeatureCell" hasProperty:@"titleLabel" withType:"@"];
+  [validationsCopy validateClass:@"BPSStingFeatureCell" hasProperty:@"subtitleLabel" withType:"@"];
 }
 
 - (id)accessibilityLabel

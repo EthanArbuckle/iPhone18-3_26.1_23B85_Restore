@@ -1,78 +1,78 @@
 @interface RAPPresenter
-- (BOOL)_isMACPlaceCardViewController:(id)a3 tryingToPresent:(id)a4;
-- (BOOL)presentOfflineAlertIfNecessaryWithCompletion:(id)a3;
-- (RAPPresenter)initWithSceneDelegate:(id)a3;
+- (BOOL)_isMACPlaceCardViewController:(id)controller tryingToPresent:(id)present;
+- (BOOL)presentOfflineAlertIfNecessaryWithCompletion:(id)completion;
+- (RAPPresenter)initWithSceneDelegate:(id)delegate;
 - (id)submissionManager;
-- (void)_createInitialNavigationRapStateWithCompletion:(id)a3;
-- (void)_dismissReportComposerWithSender:(id)a3 completion:(id)a4;
-- (void)_dismissSender:(id)a3 withGesture:(BOOL)a4 completion:(id)a5;
-- (void)_presentAddAPlaceFromEntryPoint:(int)a3 withEditingBlock:(id)a4 completion:(id)a5;
-- (void)_presentAutocompleteViewController:(id)a3 forItemKind:(int64_t)a4;
-- (void)_presentChooseAPlaceWithAppState:(id)a3 entryPoint:(int)a4;
+- (void)_createInitialNavigationRapStateWithCompletion:(id)completion;
+- (void)_dismissReportComposerWithSender:(id)sender completion:(id)completion;
+- (void)_dismissSender:(id)sender withGesture:(BOOL)gesture completion:(id)completion;
+- (void)_presentAddAPlaceFromEntryPoint:(int)point withEditingBlock:(id)block completion:(id)completion;
+- (void)_presentAutocompleteViewController:(id)controller forItemKind:(int64_t)kind;
+- (void)_presentChooseAPlaceWithAppState:(id)state entryPoint:(int)point;
 - (void)_presentLightweightFeedbackAcknowledgmentScreen;
-- (void)_presentPlacecardImageryCommentViewControllerWithReport:(id)a3 question:(id)a4 completion:(id)a5;
-- (void)_presentReportAProblemAndPrefetchShortcutsWithEditingContext:(id)a3 displayIncidentReports:(BOOL)a4 completion:(id)a5;
-- (void)_presentReportComposerWithAppState:(id)a3 completion:(id)a4;
-- (void)_presentReportComposerWithCompletion:(id)a3;
-- (void)_presentWebBundleViewControllerWithReport:(id)a3 completion:(id)a4;
-- (void)_presentWebBundleWithReport:(id)a3 completion:(id)a4;
-- (void)_submitLightweightReport:(id)a3 completion:(id)a4;
-- (void)presentAddAPlaceFromPlacecardWithEditingContext:(id)a3 overriddenUserInterfaceStyle:(int64_t)a4 shouldShowDetailedFlow:(BOOL)a5 sourceView:(id)a6 entryPoint:(int)a7 completion:(id)a8;
-- (void)presentAddAPlaceViewControllerFromEntryPoint:(int)a3 withAppState:(id)a4 completion:(id)a5;
-- (void)presentAddMissingDataOfType:(int64_t)a3 fromPlacecardWithEditingContext:(id)a4;
-- (void)presentAddToMapsFromSearchEntryPoint:(int)a3 result:(id)a4 completion:(id)a5;
-- (void)presentAddToMapsFromSearchEntryPoint:(int)a3 result:(id)a4 withAppState:(id)a5 completion:(id)a6;
-- (void)presentCuratedCollectionRAPWithContext:(id)a3 sourceView:(id)a4 completion:(id)a5;
-- (void)presentCurrentRouteIssueWithReport:(id)a3 fromEntryPoint:(int)a4 usingContaineePresentation:(BOOL)a5;
-- (void)presentEditPlaceDetailsOfType:(int64_t)a3 fromPlacecardWithEditingContext:(id)a4;
-- (void)presentLookAroundRAPWithContext:(id)a3 completion:(id)a4;
-- (void)presentPlaceEnrichmentRAPWithTarget:(int)a3 fromPlacecardWithEditingContext:(id)a4 completion:(id)a5;
-- (void)presentPlaceEnrichmentRAPWithTarget:(int)a3 withAppState:(id)a4 completion:(id)a5;
-- (void)presentPlacecardImageryRAPWithContext:(id)a3 layoutManager:(id)a4 popoverPresentationBlock:(id)a5 completion:(id)a6;
-- (void)presentPlacecardImageryRAPWithContext:(id)a3 selectedIssueItem:(id)a4 completion:(id)a5;
-- (void)presentRAPWebBundleQuestionType:(int64_t)a3 mapItem:(id)a4 fromEntryPoint:(int)a5 withCompletion:(id)a6;
-- (void)presentRAPWebBundleWithMapItem:(id)a3 fromEntryPoint:(int)a4 completion:(id)a5;
-- (void)presentReportAProblemByEditingContext:(id)a3 completion:(id)a4;
-- (void)presentReportAProblemForRouteWithAppState:(id)a3;
-- (void)presentReportAProblemFromPlaceCardViewController:(id)a3 editingContext:(id)a4 overriddenUserInterfaceStyle:(int64_t)a5 sourceView:(id)a6 entryPoint:(int)a7 completion:(id)a8;
-- (void)presentReportAProblemFromTransitLineCardWithEditingContext:(id)a3 completion:(id)a4;
-- (void)presentRouteListReportFromEntryPoint:(int)a3;
-- (void)presentViewController:(id)a3 animated:(BOOL)a4;
-- (void)rapSearchAutocompleteViewController:(id)a3 finishedPickingAutocompleteResult:(id)a4 isAutocompleteResult:(BOOL)a5;
-- (void)representReportAProblemIfCurrentlyOngoingAnimated:(BOOL)a3;
+- (void)_presentPlacecardImageryCommentViewControllerWithReport:(id)report question:(id)question completion:(id)completion;
+- (void)_presentReportAProblemAndPrefetchShortcutsWithEditingContext:(id)context displayIncidentReports:(BOOL)reports completion:(id)completion;
+- (void)_presentReportComposerWithAppState:(id)state completion:(id)completion;
+- (void)_presentReportComposerWithCompletion:(id)completion;
+- (void)_presentWebBundleViewControllerWithReport:(id)report completion:(id)completion;
+- (void)_presentWebBundleWithReport:(id)report completion:(id)completion;
+- (void)_submitLightweightReport:(id)report completion:(id)completion;
+- (void)presentAddAPlaceFromPlacecardWithEditingContext:(id)context overriddenUserInterfaceStyle:(int64_t)style shouldShowDetailedFlow:(BOOL)flow sourceView:(id)view entryPoint:(int)point completion:(id)completion;
+- (void)presentAddAPlaceViewControllerFromEntryPoint:(int)point withAppState:(id)state completion:(id)completion;
+- (void)presentAddMissingDataOfType:(int64_t)type fromPlacecardWithEditingContext:(id)context;
+- (void)presentAddToMapsFromSearchEntryPoint:(int)point result:(id)result completion:(id)completion;
+- (void)presentAddToMapsFromSearchEntryPoint:(int)point result:(id)result withAppState:(id)state completion:(id)completion;
+- (void)presentCuratedCollectionRAPWithContext:(id)context sourceView:(id)view completion:(id)completion;
+- (void)presentCurrentRouteIssueWithReport:(id)report fromEntryPoint:(int)point usingContaineePresentation:(BOOL)presentation;
+- (void)presentEditPlaceDetailsOfType:(int64_t)type fromPlacecardWithEditingContext:(id)context;
+- (void)presentLookAroundRAPWithContext:(id)context completion:(id)completion;
+- (void)presentPlaceEnrichmentRAPWithTarget:(int)target fromPlacecardWithEditingContext:(id)context completion:(id)completion;
+- (void)presentPlaceEnrichmentRAPWithTarget:(int)target withAppState:(id)state completion:(id)completion;
+- (void)presentPlacecardImageryRAPWithContext:(id)context layoutManager:(id)manager popoverPresentationBlock:(id)block completion:(id)completion;
+- (void)presentPlacecardImageryRAPWithContext:(id)context selectedIssueItem:(id)item completion:(id)completion;
+- (void)presentRAPWebBundleQuestionType:(int64_t)type mapItem:(id)item fromEntryPoint:(int)point withCompletion:(id)completion;
+- (void)presentRAPWebBundleWithMapItem:(id)item fromEntryPoint:(int)point completion:(id)completion;
+- (void)presentReportAProblemByEditingContext:(id)context completion:(id)completion;
+- (void)presentReportAProblemForRouteWithAppState:(id)state;
+- (void)presentReportAProblemFromPlaceCardViewController:(id)controller editingContext:(id)context overriddenUserInterfaceStyle:(int64_t)style sourceView:(id)view entryPoint:(int)point completion:(id)completion;
+- (void)presentReportAProblemFromTransitLineCardWithEditingContext:(id)context completion:(id)completion;
+- (void)presentRouteListReportFromEntryPoint:(int)point;
+- (void)presentViewController:(id)controller animated:(BOOL)animated;
+- (void)rapSearchAutocompleteViewController:(id)controller finishedPickingAutocompleteResult:(id)result isAutocompleteResult:(BOOL)autocompleteResult;
+- (void)representReportAProblemIfCurrentlyOngoingAnimated:(BOOL)animated;
 @end
 
 @implementation RAPPresenter
 
-- (void)presentPlaceEnrichmentRAPWithTarget:(int)a3 withAppState:(id)a4 completion:(id)a5
+- (void)presentPlaceEnrichmentRAPWithTarget:(int)target withAppState:(id)state completion:(id)completion
 {
-  v6 = *&a3;
-  v17 = a4;
-  v8 = a5;
-  if (![(RAPPresenter *)self presentOfflineAlertIfNecessaryWithCompletion:v8])
+  v6 = *&target;
+  stateCopy = state;
+  completionCopy = completion;
+  if (![(RAPPresenter *)self presentOfflineAlertIfNecessaryWithCompletion:completionCopy])
   {
     v9 = [RAPReport alloc];
-    v10 = [(RAPPresenter *)self submissionManager];
-    v11 = [(RAPReport *)v9 initWithContext:v17 submitter:v10];
+    submissionManager = [(RAPPresenter *)self submissionManager];
+    v11 = [(RAPReport *)v9 initWithContext:stateCopy submitter:submissionManager];
 
-    v12 = [(RAPReport *)v11 combinedUserPath];
-    [v12 addNativePath:v6];
+    combinedUserPath = [(RAPReport *)v11 combinedUserPath];
+    [combinedUserPath addNativePath:v6];
 
     v13 = [RAPWebBundleQuestion alloc];
-    v14 = [(RAPReport *)v11 _context];
-    v15 = [v14 reportedPlace];
-    v16 = [(RAPWebBundleQuestion *)v13 initWithReport:v11 place:v15 poiCorrectionType:2 questionType:29];
+    _context = [(RAPReport *)v11 _context];
+    reportedPlace = [_context reportedPlace];
+    v16 = [(RAPWebBundleQuestion *)v13 initWithReport:v11 place:reportedPlace poiCorrectionType:2 questionType:29];
 
     [(RAPReport *)v11 setInitialQuestion:v16];
-    [(RAPPresenter *)self _presentWebBundleWithReport:v11 completion:v8];
+    [(RAPPresenter *)self _presentWebBundleWithReport:v11 completion:completionCopy];
   }
 }
 
-- (void)presentPlaceEnrichmentRAPWithTarget:(int)a3 fromPlacecardWithEditingContext:(id)a4 completion:(id)a5
+- (void)presentPlaceEnrichmentRAPWithTarget:(int)target fromPlacecardWithEditingContext:(id)context completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
-  if (![(RAPPresenter *)self presentOfflineAlertIfNecessaryWithCompletion:v9])
+  contextCopy = context;
+  completionCopy = completion;
+  if (![(RAPPresenter *)self presentOfflineAlertIfNecessaryWithCompletion:completionCopy])
   {
     objc_initWeak(&location, self);
     v10 = [RAPAppStateCreator alloc];
@@ -83,10 +83,10 @@
     v13[1] = 3221225472;
     v13[2] = sub_100FDBA00;
     v13[3] = &unk_1016609C0;
-    v14 = v8;
+    v14 = contextCopy;
     objc_copyWeak(&v16, &location);
-    v17 = a3;
-    v15 = v9;
+    targetCopy = target;
+    v15 = completionCopy;
     [(RAPAppStateCreator *)v12 createReportAProblemAppStateWithCompletion:v13];
 
     objc_destroyWeak(&v16);
@@ -94,32 +94,32 @@
   }
 }
 
-- (void)presentAddToMapsFromSearchEntryPoint:(int)a3 result:(id)a4 withAppState:(id)a5 completion:(id)a6
+- (void)presentAddToMapsFromSearchEntryPoint:(int)point result:(id)result withAppState:(id)state completion:(id)completion
 {
-  v8 = *&a3;
-  v17 = a4;
-  v10 = a5;
-  v11 = a6;
-  if (![(RAPPresenter *)self presentOfflineAlertIfNecessaryWithCompletion:v11])
+  v8 = *&point;
+  resultCopy = result;
+  stateCopy = state;
+  completionCopy = completion;
+  if (![(RAPPresenter *)self presentOfflineAlertIfNecessaryWithCompletion:completionCopy])
   {
     v12 = [RAPReport alloc];
-    v13 = [(RAPPresenter *)self submissionManager];
-    v14 = [(RAPReport *)v12 initWithContext:v10 submitter:v13];
+    submissionManager = [(RAPPresenter *)self submissionManager];
+    v14 = [(RAPReport *)v12 initWithContext:stateCopy submitter:submissionManager];
 
-    v15 = [(RAPReport *)v14 combinedUserPath];
-    [v15 addNativePath:v8];
+    combinedUserPath = [(RAPReport *)v14 combinedUserPath];
+    [combinedUserPath addNativePath:v8];
 
-    v16 = [[RAPWebBundleQuestion alloc] initWithReport:v14 place:v17 questionType:28];
+    v16 = [[RAPWebBundleQuestion alloc] initWithReport:v14 place:resultCopy questionType:28];
     [(RAPReport *)v14 setInitialQuestion:v16];
-    [(RAPPresenter *)self _presentWebBundleWithReport:v14 completion:v11];
+    [(RAPPresenter *)self _presentWebBundleWithReport:v14 completion:completionCopy];
   }
 }
 
-- (void)presentAddToMapsFromSearchEntryPoint:(int)a3 result:(id)a4 completion:(id)a5
+- (void)presentAddToMapsFromSearchEntryPoint:(int)point result:(id)result completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
-  if (![(RAPPresenter *)self presentOfflineAlertIfNecessaryWithCompletion:v9])
+  resultCopy = result;
+  completionCopy = completion;
+  if (![(RAPPresenter *)self presentOfflineAlertIfNecessaryWithCompletion:completionCopy])
   {
     objc_initWeak(&location, self);
     v10 = [RAPAppStateCreator alloc];
@@ -131,9 +131,9 @@
     v13[2] = sub_100FDBEA8;
     v13[3] = &unk_101660A10;
     objc_copyWeak(&v16, &location);
-    v17 = a3;
-    v14 = v8;
-    v15 = v9;
+    pointCopy = point;
+    v14 = resultCopy;
+    v15 = completionCopy;
     [(RAPAppStateCreator *)v12 createReportAProblemAppStateWithCompletion:v13];
 
     objc_destroyWeak(&v16);
@@ -141,10 +141,10 @@
   }
 }
 
-- (BOOL)_isMACPlaceCardViewController:(id)a3 tryingToPresent:(id)a4
+- (BOOL)_isMACPlaceCardViewController:(id)controller tryingToPresent:(id)present
 {
-  v4 = a3;
-  if (sub_10000FA08(v4) == 5)
+  controllerCopy = controller;
+  if (sub_10000FA08(controllerCopy) == 5)
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
@@ -158,21 +158,21 @@
   return isKindOfClass & 1;
 }
 
-- (void)presentViewController:(id)a3 animated:(BOOL)a4
+- (void)presentViewController:(id)controller animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  animatedCopy = animated;
+  controllerCopy = controller;
+  v7 = controllerCopy;
+  if (controllerCopy)
   {
-    v8 = [v6 presentingViewController];
+    presentingViewController = [controllerCopy presentingViewController];
 
-    if (!v8)
+    if (!presentingViewController)
     {
       WeakRetained = objc_loadWeakRetained(&self->_sceneDelegate);
-      v10 = [WeakRetained topMostPresentedViewController];
+      topMostPresentedViewController = [WeakRetained topMostPresentedViewController];
 
-      if (v10 && (([v10 isBeingDismissed] & 1) != 0 || objc_msgSend(v10, "isBeingPresented")))
+      if (topMostPresentedViewController && (([topMostPresentedViewController isBeingDismissed] & 1) != 0 || objc_msgSend(topMostPresentedViewController, "isBeingPresented")))
       {
         v11 = dispatch_time(0, 100000000);
         block[0] = _NSConcreteStackBlock;
@@ -181,31 +181,31 @@
         block[3] = &unk_101660CE8;
         block[4] = self;
         v20 = v7;
-        v21 = v4;
+        v21 = animatedCopy;
         dispatch_after(v11, &_dispatch_main_q, block);
         v12 = v20;
       }
 
       else
       {
-        if (![(RAPPresenter *)self _isMACPlaceCardViewController:v10 tryingToPresent:v7])
+        if (![(RAPPresenter *)self _isMACPlaceCardViewController:topMostPresentedViewController tryingToPresent:v7])
         {
           v15 = objc_loadWeakRetained(&self->_sceneDelegate);
-          [v15 presentViewController:v7 animated:v4];
+          [v15 presentViewController:v7 animated:animatedCopy];
 
           goto LABEL_11;
         }
 
-        v13 = v10;
-        v14 = [v13 placeCardDelegate];
+        v13 = topMostPresentedViewController;
+        placeCardDelegate = [v13 placeCardDelegate];
         v16[0] = _NSConcreteStackBlock;
         v16[1] = 3221225472;
         v16[2] = sub_100FDC324;
         v16[3] = &unk_101660CE8;
         v16[4] = self;
         v17 = v7;
-        v18 = v4;
-        [v14 placeCardViewController:v13 dismissAnimated:1 completion:v16];
+        v18 = animatedCopy;
+        [placeCardDelegate placeCardViewController:v13 dismissAnimated:1 completion:v16];
 
         v12 = v17;
       }
@@ -218,17 +218,17 @@ LABEL_11:
 - (id)submissionManager
 {
   v2 = +[UIApplication sharedMapsDelegate];
-  v3 = [v2 submissionManager];
+  submissionManager = [v2 submissionManager];
 
-  return v3;
+  return submissionManager;
 }
 
-- (void)presentCuratedCollectionRAPWithContext:(id)a3 sourceView:(id)a4 completion:(id)a5
+- (void)presentCuratedCollectionRAPWithContext:(id)context sourceView:(id)view completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (![(RAPPresenter *)self presentOfflineAlertIfNecessaryWithCompletion:v10])
+  contextCopy = context;
+  viewCopy = view;
+  completionCopy = completion;
+  if (![(RAPPresenter *)self presentOfflineAlertIfNecessaryWithCompletion:completionCopy])
   {
     v11 = [RAPAppStateCreator alloc];
     WeakRetained = objc_loadWeakRetained(&self->_sceneDelegate);
@@ -240,39 +240,39 @@ LABEL_11:
     v14[2] = sub_100FDC530;
     v14[3] = &unk_101660CC0;
     objc_copyWeak(&v17, &location);
-    v16 = v10;
-    v15 = v9;
-    [(RAPAppStateCreator *)v13 createCuratedCollectionReportAProblemAppStateWithContext:v8 completion:v14];
+    v16 = completionCopy;
+    v15 = viewCopy;
+    [(RAPAppStateCreator *)v13 createCuratedCollectionReportAProblemAppStateWithContext:contextCopy completion:v14];
 
     objc_destroyWeak(&v17);
     objc_destroyWeak(&location);
   }
 }
 
-- (void)presentAddAPlaceViewControllerFromEntryPoint:(int)a3 withAppState:(id)a4 completion:(id)a5
+- (void)presentAddAPlaceViewControllerFromEntryPoint:(int)point withAppState:(id)state completion:(id)completion
 {
-  v6 = *&a3;
-  v25 = a4;
-  v8 = a5;
-  if (![(RAPPresenter *)self presentOfflineAlertIfNecessaryWithCompletion:v8])
+  v6 = *&point;
+  stateCopy = state;
+  completionCopy = completion;
+  if (![(RAPPresenter *)self presentOfflineAlertIfNecessaryWithCompletion:completionCopy])
   {
     v9 = [RAPReport alloc];
-    v10 = [(RAPPresenter *)self submissionManager];
-    v11 = [(RAPReport *)v9 initWithContext:v25 submitter:v10];
+    submissionManager = [(RAPPresenter *)self submissionManager];
+    v11 = [(RAPReport *)v9 initWithContext:stateCopy submitter:submissionManager];
 
-    v12 = [(RAPReport *)v11 combinedUserPath];
-    [v12 addNativePath:v6];
+    combinedUserPath = [(RAPReport *)v11 combinedUserPath];
+    [combinedUserPath addNativePath:v6];
 
     BOOL = GEOConfigGetBOOL();
-    v14 = [v25 isSprMap];
+    isSprMap = [stateCopy isSprMap];
     v15 = 5;
-    if (v14)
+    if (isSprMap)
     {
       v15 = 6;
     }
 
     v16 = 3;
-    if (v14)
+    if (isSprMap)
     {
       v16 = 4;
     }
@@ -287,13 +287,13 @@ LABEL_11:
       v17 = v16;
     }
 
-    v18 = [(RAPReport *)v11 _context];
-    v19 = [v18 reportedPlace];
-    v20 = [v19 source];
+    _context = [(RAPReport *)v11 _context];
+    reportedPlace = [_context reportedPlace];
+    source = [reportedPlace source];
 
-    if (v20 == 1)
+    if (source == 1)
     {
-      if ([v25 isSprMap])
+      if ([stateCopy isSprMap])
       {
         v17 = 8;
       }
@@ -305,34 +305,34 @@ LABEL_11:
     }
 
     v21 = [RAPWebBundleQuestion alloc];
-    v22 = [(RAPReport *)v11 _context];
-    v23 = [v22 reportedPlace];
-    v24 = [(RAPWebBundleQuestion *)v21 initWithReport:v11 place:v23 questionType:v17];
+    _context2 = [(RAPReport *)v11 _context];
+    reportedPlace2 = [_context2 reportedPlace];
+    v24 = [(RAPWebBundleQuestion *)v21 initWithReport:v11 place:reportedPlace2 questionType:v17];
 
     [(RAPReport *)v11 setInitialQuestion:v24];
-    [(RAPPresenter *)self _presentWebBundleWithReport:v11 completion:v8];
+    [(RAPPresenter *)self _presentWebBundleWithReport:v11 completion:completionCopy];
   }
 }
 
-- (void)_submitLightweightReport:(id)a3 completion:(id)a4
+- (void)_submitLightweightReport:(id)report completion:(id)completion
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100FDD0C4;
   v8[3] = &unk_101660C48;
-  v9 = a3;
-  v10 = self;
-  v11 = a4;
-  v6 = v11;
-  v7 = v9;
+  reportCopy = report;
+  selfCopy = self;
+  completionCopy = completion;
+  v6 = completionCopy;
+  v7 = reportCopy;
   [RAPPrivacy performPrivacyCheckWithAppearance:1 completion:v8];
 }
 
-- (void)_presentPlacecardImageryCommentViewControllerWithReport:(id)a3 question:(id)a4 completion:(id)a5
+- (void)_presentPlacecardImageryCommentViewControllerWithReport:(id)report question:(id)question completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  reportCopy = report;
+  questionCopy = question;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v11 = [RAPReportComposerViewController alloc];
   v15[0] = _NSConcreteStackBlock;
@@ -340,9 +340,9 @@ LABEL_11:
   v15[2] = sub_100FDD310;
   v15[3] = &unk_101660B78;
   objc_copyWeak(&v17, &location);
-  v12 = v10;
+  v12 = completionCopy;
   v16 = v12;
-  v13 = [(RAPReportComposerViewController *)v11 initWithReport:v8 commentQuestion:v9 completion:v15];
+  v13 = [(RAPReportComposerViewController *)v11 initWithReport:reportCopy commentQuestion:questionCopy completion:v15];
   reportComposer = self->_reportComposer;
   self->_reportComposer = v13;
 
@@ -351,13 +351,13 @@ LABEL_11:
   objc_destroyWeak(&location);
 }
 
-- (void)presentPlacecardImageryRAPWithContext:(id)a3 layoutManager:(id)a4 popoverPresentationBlock:(id)a5 completion:(id)a6
+- (void)presentPlacecardImageryRAPWithContext:(id)context layoutManager:(id)manager popoverPresentationBlock:(id)block completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (![(RAPPresenter *)self presentOfflineAlertIfNecessaryWithCompletion:v13])
+  contextCopy = context;
+  managerCopy = manager;
+  blockCopy = block;
+  completionCopy = completion;
+  if (![(RAPPresenter *)self presentOfflineAlertIfNecessaryWithCompletion:completionCopy])
   {
     v14 = [RAPAppStateCreator alloc];
     WeakRetained = objc_loadWeakRetained(&self->_sceneDelegate);
@@ -368,19 +368,19 @@ LABEL_11:
     v17[2] = sub_100FDD4C0;
     v17[3] = &unk_101660B50;
     v17[4] = self;
-    v18 = v11;
-    v19 = v12;
-    v20 = v13;
-    [(RAPAppStateCreator *)v16 createPlacecardImageryReportAProblemAppStateWithContext:v10 completion:v17];
+    v18 = managerCopy;
+    v19 = blockCopy;
+    v20 = completionCopy;
+    [(RAPAppStateCreator *)v16 createPlacecardImageryReportAProblemAppStateWithContext:contextCopy completion:v17];
   }
 }
 
-- (void)presentPlacecardImageryRAPWithContext:(id)a3 selectedIssueItem:(id)a4 completion:(id)a5
+- (void)presentPlacecardImageryRAPWithContext:(id)context selectedIssueItem:(id)item completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (![(RAPPresenter *)self presentOfflineAlertIfNecessaryWithCompletion:v10])
+  contextCopy = context;
+  itemCopy = item;
+  completionCopy = completion;
+  if (![(RAPPresenter *)self presentOfflineAlertIfNecessaryWithCompletion:completionCopy])
   {
     v11 = [RAPAppStateCreator alloc];
     WeakRetained = objc_loadWeakRetained(&self->_sceneDelegate);
@@ -391,17 +391,17 @@ LABEL_11:
     v14[2] = sub_100FDD8D8;
     v14[3] = &unk_101660B00;
     v14[4] = self;
-    v15 = v9;
-    v16 = v10;
-    [(RAPAppStateCreator *)v13 createPlacecardImageryReportAProblemAppStateWithContext:v8 completion:v14];
+    v15 = itemCopy;
+    v16 = completionCopy;
+    [(RAPAppStateCreator *)v13 createPlacecardImageryReportAProblemAppStateWithContext:contextCopy completion:v14];
   }
 }
 
-- (void)presentLookAroundRAPWithContext:(id)a3 completion:(id)a4
+- (void)presentLookAroundRAPWithContext:(id)context completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (![(RAPPresenter *)self presentOfflineAlertIfNecessaryWithCompletion:v7])
+  contextCopy = context;
+  completionCopy = completion;
+  if (![(RAPPresenter *)self presentOfflineAlertIfNecessaryWithCompletion:completionCopy])
   {
     v8 = [RAPAppStateCreator alloc];
     WeakRetained = objc_loadWeakRetained(&self->_sceneDelegate);
@@ -412,33 +412,33 @@ LABEL_11:
     v11[2] = sub_100FDDAC0;
     v11[3] = &unk_101660A60;
     v11[4] = self;
-    v12 = v7;
-    [(RAPAppStateCreator *)v10 createLookAroundReportAProblemAppStateWithLookAroundContext:v6 completion:v11];
+    v12 = completionCopy;
+    [(RAPAppStateCreator *)v10 createLookAroundReportAProblemAppStateWithLookAroundContext:contextCopy completion:v11];
   }
 }
 
-- (void)presentReportAProblemForRouteWithAppState:(id)a3
+- (void)presentReportAProblemForRouteWithAppState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   if (![(RAPPresenter *)self presentOfflineAlertIfNecessaryWithCompletion:0])
   {
     v5 = [RAPReport alloc];
-    v6 = [(RAPPresenter *)self submissionManager];
-    v7 = [(RAPReport *)v5 initWithContext:v4 submitter:v6];
+    submissionManager = [(RAPPresenter *)self submissionManager];
+    v7 = [(RAPReport *)v5 initWithContext:stateCopy submitter:submissionManager];
 
-    v8 = [(RAPReport *)v7 combinedUserPath];
-    [v8 addNativePath:37];
+    combinedUserPath = [(RAPReport *)v7 combinedUserPath];
+    [combinedUserPath addNativePath:37];
 
     if (v7)
     {
-      v9 = [(RAPReport *)v7 _context];
-      v10 = [v9 directionsHistory];
-      v11 = [v10 firstObject];
-      v12 = [v11 recording];
+      _context = [(RAPReport *)v7 _context];
+      directionsHistory = [_context directionsHistory];
+      firstObject = [directionsHistory firstObject];
+      recording = [firstObject recording];
 
-      if (v12)
+      if (recording)
       {
-        v13 = [[RAPWebBundleQuestion alloc] initWithReport:v7 directionsRecording:v12];
+        v13 = [[RAPWebBundleQuestion alloc] initWithReport:v7 directionsRecording:recording];
         [(RAPReport *)v7 setInitialQuestion:v13];
         v14 = [[RAPDirectionsReportContaineeViewController alloc] initWithReport:v7 directionsReportContext:0];
         [(RAPPresenter *)self presentViewController:v14 animated:1];
@@ -453,26 +453,26 @@ LABEL_11:
           _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "Can't present after nav flow because the latest route doesn't have a route recording.", v16, 2u);
         }
 
-        v12 = 0;
+        recording = 0;
       }
     }
 
     else
     {
-      v12 = sub_100798874();
-      if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+      recording = sub_100798874();
+      if (os_log_type_enabled(recording, OS_LOG_TYPE_ERROR))
       {
         *buf = 0;
-        _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "Failed to create report. Will abort RAP.", buf, 2u);
+        _os_log_impl(&_mh_execute_header, recording, OS_LOG_TYPE_ERROR, "Failed to create report. Will abort RAP.", buf, 2u);
       }
     }
   }
 }
 
-- (void)presentCurrentRouteIssueWithReport:(id)a3 fromEntryPoint:(int)a4 usingContaineePresentation:(BOOL)a5
+- (void)presentCurrentRouteIssueWithReport:(id)report fromEntryPoint:(int)point usingContaineePresentation:(BOOL)presentation
 {
-  v6 = *&a4;
-  v8 = a3;
+  v6 = *&point;
+  reportCopy = report;
   if (![(RAPPresenter *)self presentOfflineAlertIfNecessaryWithCompletion:0])
   {
     if (self->_isProcessingPresentation)
@@ -2714,9 +2714,9 @@ LABEL_581:
     v18[3] = &unk_101660AB0;
     objc_copyWeak(&v19, buf);
     v20 = v6;
-    v21 = a5;
+    presentationCopy = presentation;
     v12 = objc_retainBlock(v18);
-    if (v8)
+    if (reportCopy)
     {
       v13 = sub_100798874();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
@@ -2725,7 +2725,7 @@ LABEL_581:
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEBUG, "A report was passed to us so we'll present it without creating a new one.", v17, 2u);
       }
 
-      (v12[2])(v12, v8);
+      (v12[2])(v12, reportCopy);
     }
 
     else
@@ -2748,7 +2748,7 @@ LABEL_581:
 LABEL_584:
 }
 
-- (void)presentRouteListReportFromEntryPoint:(int)a3
+- (void)presentRouteListReportFromEntryPoint:(int)point
 {
   if (![(RAPPresenter *)self presentOfflineAlertIfNecessaryWithCompletion:0])
   {
@@ -2765,16 +2765,16 @@ LABEL_584:
     v6[2] = sub_100FDFF10;
     v6[3] = &unk_101660A88;
     objc_copyWeak(&v7, buf);
-    v8 = a3;
+    pointCopy = point;
     [(RAPPresenter *)self _createInitialNavigationRapStateWithCompletion:v6];
     objc_destroyWeak(&v7);
     objc_destroyWeak(buf);
   }
 }
 
-- (void)_createInitialNavigationRapStateWithCompletion:(id)a3
+- (void)_createInitialNavigationRapStateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = [RAPAppStateCreator alloc];
   WeakRetained = objc_loadWeakRetained(&self->_sceneDelegate);
   v7 = [(RAPAppStateCreator *)v5 initWithSceneDelegate:WeakRetained];
@@ -2784,15 +2784,15 @@ LABEL_584:
   v9[2] = sub_100FE011C;
   v9[3] = &unk_101660A60;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
+  v10 = completionCopy;
+  v8 = completionCopy;
   [(RAPAppStateCreator *)v7 createReportAProblemAppStateWithCompletion:v9];
 }
 
-- (void)rapSearchAutocompleteViewController:(id)a3 finishedPickingAutocompleteResult:(id)a4 isAutocompleteResult:(BOOL)a5
+- (void)rapSearchAutocompleteViewController:(id)controller finishedPickingAutocompleteResult:(id)result isAutocompleteResult:(BOOL)autocompleteResult
 {
-  v7 = a3;
-  v8 = a4;
+  controllerCopy = controller;
+  resultCopy = result;
   v9 = [RAPAppStateCreator alloc];
   WeakRetained = objc_loadWeakRetained(&self->_sceneDelegate);
   v11 = [(RAPAppStateCreator *)v9 initWithSceneDelegate:WeakRetained];
@@ -2803,9 +2803,9 @@ LABEL_584:
   v14[2] = sub_100FE0554;
   v14[3] = &unk_101660A38;
   objc_copyWeak(&v17, &location);
-  v12 = v7;
+  v12 = controllerCopy;
   v15 = v12;
-  v13 = v8;
+  v13 = resultCopy;
   v16 = v13;
   [(RAPAppStateCreator *)v11 createReportAProblemAppStateWithCompletion:v14];
 
@@ -2813,26 +2813,26 @@ LABEL_584:
   objc_destroyWeak(&location);
 }
 
-- (void)_presentAutocompleteViewController:(id)a3 forItemKind:(int64_t)a4
+- (void)_presentAutocompleteViewController:(id)controller forItemKind:(int64_t)kind
 {
-  v5 = a3;
-  [v5 setDelegate:self];
-  [v5 setModalInPresentation:1];
-  v6 = [[UINavigationController alloc] initWithRootViewController:v5];
+  controllerCopy = controller;
+  [controllerCopy setDelegate:self];
+  [controllerCopy setModalInPresentation:1];
+  v6 = [[UINavigationController alloc] initWithRootViewController:controllerCopy];
 
   [v6 setModalPresentationStyle:2];
   [(RAPPresenter *)self presentViewController:v6 animated:1];
 }
 
-- (void)_presentChooseAPlaceWithAppState:(id)a3 entryPoint:(int)a4
+- (void)_presentChooseAPlaceWithAppState:(id)state entryPoint:(int)point
 {
-  v4 = *&a4;
-  v6 = a3;
-  v7 = [v6 mapCamera];
-  [v7 centerCoordinate];
-  v8 = [v6 mapCamera];
+  v4 = *&point;
+  stateCopy = state;
+  mapCamera = [stateCopy mapCamera];
+  [mapCamera centerCoordinate];
+  mapCamera2 = [stateCopy mapCamera];
 
-  [v8 centerCoordinate];
+  [mapCamera2 centerCoordinate];
   GEOCoordinateRegionMakeWithDistance();
   v16 = [[GEOMapRegion alloc] initWithCoordinateRegion:{v9, v10, v11, v12}];
   v13 = [RAPSearchAutocompleteViewController poiAutocompleteViewControllerWithBoundedMapRegion:v16 excludedMUIDs:&__NSArray0__struct];
@@ -2844,16 +2844,16 @@ LABEL_584:
   [(RAPPresenter *)self _presentAutocompleteViewController:v13 forItemKind:0];
 }
 
-- (void)presentRAPWebBundleWithMapItem:(id)a3 fromEntryPoint:(int)a4 completion:(id)a5
+- (void)presentRAPWebBundleWithMapItem:(id)item fromEntryPoint:(int)point completion:(id)completion
 {
-  v8 = a3;
+  itemCopy = item;
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_100FE0A44;
   v20[3] = &unk_101661090;
-  v9 = a5;
+  completionCopy = completion;
   v20[4] = self;
-  v21 = v9;
+  v21 = completionCopy;
   v10 = [(RAPPresenter *)self presentOfflineAlertIfNecessaryWithCompletion:v20];
 
   if ((v10 & 1) == 0)
@@ -2868,9 +2868,9 @@ LABEL_584:
     v14[2] = sub_100FE0A60;
     v14[3] = &unk_101660A10;
     objc_copyWeak(&v17, &location);
-    v15 = v8;
-    v18 = a4;
-    v16 = v9;
+    v15 = itemCopy;
+    pointCopy = point;
+    v16 = completionCopy;
     [(RAPAppStateCreator *)v13 createReportAProblemAppStateWithCompletion:v14];
 
     objc_destroyWeak(&v17);
@@ -2878,16 +2878,16 @@ LABEL_584:
   }
 }
 
-- (void)presentRAPWebBundleQuestionType:(int64_t)a3 mapItem:(id)a4 fromEntryPoint:(int)a5 withCompletion:(id)a6
+- (void)presentRAPWebBundleQuestionType:(int64_t)type mapItem:(id)item fromEntryPoint:(int)point withCompletion:(id)completion
 {
-  v10 = a4;
+  itemCopy = item;
   v22[0] = _NSConcreteStackBlock;
   v22[1] = 3221225472;
   v22[2] = sub_100FE0D70;
   v22[3] = &unk_101661090;
-  v11 = a6;
+  completionCopy = completion;
   v22[4] = self;
-  v23 = v11;
+  v23 = completionCopy;
   v12 = [(RAPPresenter *)self presentOfflineAlertIfNecessaryWithCompletion:v22];
 
   if ((v12 & 1) == 0)
@@ -2902,10 +2902,10 @@ LABEL_584:
     v16[2] = sub_100FE0D8C;
     v16[3] = &unk_1016609E8;
     objc_copyWeak(v19, &location);
-    v19[1] = a3;
-    v20 = a5;
-    v17 = v10;
-    v18 = v11;
+    v19[1] = type;
+    pointCopy = point;
+    v17 = itemCopy;
+    v18 = completionCopy;
     [(RAPAppStateCreator *)v15 createReportAProblemAppStateWithCompletion:v16];
 
     objc_destroyWeak(v19);
@@ -2913,17 +2913,17 @@ LABEL_584:
   }
 }
 
-- (void)_presentAddAPlaceFromEntryPoint:(int)a3 withEditingBlock:(id)a4 completion:(id)a5
+- (void)_presentAddAPlaceFromEntryPoint:(int)point withEditingBlock:(id)block completion:(id)completion
 {
-  v8 = a4;
+  blockCopy = block;
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_100FE1090;
   v20[3] = &unk_101661760;
-  v9 = a5;
-  v21 = v9;
+  completionCopy = completion;
+  v21 = completionCopy;
   v10 = objc_retainBlock(v20);
-  if (![(RAPPresenter *)self presentOfflineAlertIfNecessaryWithCompletion:v9])
+  if (![(RAPPresenter *)self presentOfflineAlertIfNecessaryWithCompletion:completionCopy])
   {
     objc_initWeak(&location, self);
     v11 = [RAPAppStateCreator alloc];
@@ -2934,9 +2934,9 @@ LABEL_584:
     v14[1] = 3221225472;
     v14[2] = sub_100FE10A8;
     v14[3] = &unk_1016609C0;
-    v15 = v8;
+    v15 = blockCopy;
     objc_copyWeak(&v17, &location);
-    v18 = a3;
+    pointCopy = point;
     v16 = v10;
     [(RAPAppStateCreator *)v13 createReportAProblemAppStateWithCompletion:v14];
 
@@ -2945,25 +2945,25 @@ LABEL_584:
   }
 }
 
-- (void)representReportAProblemIfCurrentlyOngoingAnimated:(BOOL)a3
+- (void)representReportAProblemIfCurrentlyOngoingAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   [(RAPReportComposerViewController *)self->_reportComposer setModalPresentationStyle:2];
   [(RAPReportComposerViewController *)self->_reportComposer setModalInPresentation:1];
   reportComposer = self->_reportComposer;
 
-  [(RAPPresenter *)self presentViewController:reportComposer animated:v3];
+  [(RAPPresenter *)self presentViewController:reportComposer animated:animatedCopy];
 }
 
-- (void)_presentReportComposerWithAppState:(id)a3 completion:(id)a4
+- (void)_presentReportComposerWithAppState:(id)state completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  stateCopy = state;
   v8 = [RAPReport alloc];
-  v9 = [(RAPPresenter *)self submissionManager];
-  v10 = [(RAPReport *)v8 initWithContext:v7 submitter:v9];
+  submissionManager = [(RAPPresenter *)self submissionManager];
+  v10 = [(RAPReport *)v8 initWithContext:stateCopy submitter:submissionManager];
 
-  v11 = [RAPMenuQuestion menuForReport:v10 state:v7 onlyShowIncidents:1];
+  v11 = [RAPMenuQuestion menuForReport:v10 state:stateCopy onlyShowIncidents:1];
 
   [(RAPReport *)v10 setInitialQuestion:v11];
   v12 = [RAPReportComposerViewController alloc];
@@ -2971,26 +2971,26 @@ LABEL_584:
   v17 = 3221225472;
   v18 = sub_100FE149C;
   v19 = &unk_101660948;
-  v20 = self;
-  v21 = v6;
-  v13 = v6;
+  selfCopy = self;
+  v21 = completionCopy;
+  v13 = completionCopy;
   v14 = [(RAPReportComposerViewController *)v12 initWithReport:v10 categoryQuestion:v11 completion:&v16];
   reportComposer = self->_reportComposer;
   self->_reportComposer = v14;
 
-  [(RAPPresenter *)self _presentReportComposerWithCompletion:v13, v16, v17, v18, v19, v20];
+  [(RAPPresenter *)self _presentReportComposerWithCompletion:v13, v16, v17, v18, v19, selfCopy];
 }
 
-- (void)_presentReportAProblemAndPrefetchShortcutsWithEditingContext:(id)a3 displayIncidentReports:(BOOL)a4 completion:(id)a5
+- (void)_presentReportAProblemAndPrefetchShortcutsWithEditingContext:(id)context displayIncidentReports:(BOOL)reports completion:(id)completion
 {
-  v7 = a5;
-  if (a4)
+  completionCopy = completion;
+  if (reports)
   {
-    if (![(RAPPresenter *)self presentOfflineAlertIfNecessaryWithCompletion:v7])
+    if (![(RAPPresenter *)self presentOfflineAlertIfNecessaryWithCompletion:completionCopy])
     {
-      v8 = [(RAPReportComposerViewController *)self->_reportComposer view];
-      v9 = [v8 window];
-      [v9 setUserInteractionEnabled:0];
+      view = [(RAPReportComposerViewController *)self->_reportComposer view];
+      window = [view window];
+      [window setUserInteractionEnabled:0];
 
       v10 = [RAPAppStateCreator alloc];
       WeakRetained = objc_loadWeakRetained(&self->_sceneDelegate);
@@ -3001,7 +3001,7 @@ LABEL_584:
       v16[2] = sub_100FE1608;
       v16[3] = &unk_101660A60;
       v16[4] = self;
-      v17 = v7;
+      v17 = completionCopy;
       [(RAPAppStateCreator *)v12 createReportAProblemAppStateAndPrefetchShortcutsWithCompletion:v16];
     }
   }
@@ -3009,15 +3009,15 @@ LABEL_584:
   else
   {
     v13 = +[UIApplication sharedMapsDelegate];
-    v14 = [v13 appCoordinator];
-    v15 = [v14 baseActionCoordinator];
-    [v15 viewControllerShowReports:0];
+    appCoordinator = [v13 appCoordinator];
+    baseActionCoordinator = [appCoordinator baseActionCoordinator];
+    [baseActionCoordinator viewControllerShowReports:0];
   }
 }
 
-- (void)presentEditPlaceDetailsOfType:(int64_t)a3 fromPlacecardWithEditingContext:(id)a4
+- (void)presentEditPlaceDetailsOfType:(int64_t)type fromPlacecardWithEditingContext:(id)context
 {
-  v6 = a4;
+  contextCopy = context;
   if (![(RAPPresenter *)self presentOfflineAlertIfNecessaryWithCompletion:0])
   {
     v7 = [RAPAppStateCreator alloc];
@@ -3029,15 +3029,15 @@ LABEL_584:
     v10[2] = sub_100FE1784;
     v10[3] = &unk_101660920;
     v10[4] = self;
-    v11 = v6;
-    v12 = a3;
+    v11 = contextCopy;
+    typeCopy = type;
     [(RAPAppStateCreator *)v9 createReportAProblemAppStateWithCompletion:v10];
   }
 }
 
-- (void)presentAddMissingDataOfType:(int64_t)a3 fromPlacecardWithEditingContext:(id)a4
+- (void)presentAddMissingDataOfType:(int64_t)type fromPlacecardWithEditingContext:(id)context
 {
-  v6 = a4;
+  contextCopy = context;
   if (![(RAPPresenter *)self presentOfflineAlertIfNecessaryWithCompletion:0])
   {
     v7 = [RAPAppStateCreator alloc];
@@ -3049,21 +3049,21 @@ LABEL_584:
     v10[2] = sub_100FE19E4;
     v10[3] = &unk_101660920;
     v10[4] = self;
-    v11 = v6;
-    v12 = a3;
+    v11 = contextCopy;
+    typeCopy = type;
     [(RAPAppStateCreator *)v9 createReportAProblemAppStateWithCompletion:v10];
   }
 }
 
-- (void)presentReportAProblemByEditingContext:(id)a3 completion:(id)a4
+- (void)presentReportAProblemByEditingContext:(id)context completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (![(RAPPresenter *)self presentOfflineAlertIfNecessaryWithCompletion:v7])
+  contextCopy = context;
+  completionCopy = completion;
+  if (![(RAPPresenter *)self presentOfflineAlertIfNecessaryWithCompletion:completionCopy])
   {
-    v8 = [(RAPReportComposerViewController *)self->_reportComposer view];
-    v9 = [v8 window];
-    [v9 setUserInteractionEnabled:0];
+    view = [(RAPReportComposerViewController *)self->_reportComposer view];
+    window = [view window];
+    [window setUserInteractionEnabled:0];
 
     v10 = [RAPAppStateCreator alloc];
     WeakRetained = objc_loadWeakRetained(&self->_sceneDelegate);
@@ -3074,17 +3074,17 @@ LABEL_584:
     v13[2] = sub_100FE1CA4;
     v13[3] = &unk_1016608F8;
     v13[4] = self;
-    v14 = v6;
-    v15 = v7;
+    v14 = contextCopy;
+    v15 = completionCopy;
     [(RAPAppStateCreator *)v12 createReportAProblemAppStateWithCompletion:v13];
   }
 }
 
-- (void)presentReportAProblemFromTransitLineCardWithEditingContext:(id)a3 completion:(id)a4
+- (void)presentReportAProblemFromTransitLineCardWithEditingContext:(id)context completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (![(RAPPresenter *)self presentOfflineAlertIfNecessaryWithCompletion:v7])
+  contextCopy = context;
+  completionCopy = completion;
+  if (![(RAPPresenter *)self presentOfflineAlertIfNecessaryWithCompletion:completionCopy])
   {
     v8 = [RAPAppStateCreator alloc];
     WeakRetained = objc_loadWeakRetained(&self->_sceneDelegate);
@@ -3095,9 +3095,9 @@ LABEL_584:
     v11[1] = 3221225472;
     v11[2] = sub_100FE1E94;
     v11[3] = &unk_1016608D0;
-    v12 = v6;
+    v12 = contextCopy;
     objc_copyWeak(&v14, &location);
-    v13 = v7;
+    v13 = completionCopy;
     [(RAPAppStateCreator *)v10 createReportAProblemAppStateWithCompletion:v11];
 
     objc_destroyWeak(&v14);
@@ -3108,47 +3108,47 @@ LABEL_584:
 - (void)_presentLightweightFeedbackAcknowledgmentScreen
 {
   WeakRetained = objc_loadWeakRetained(&self->_sceneDelegate);
-  v3 = [WeakRetained chromeViewController];
-  v4 = [v3 view];
-  v7 = [v4 window];
+  chromeViewController = [WeakRetained chromeViewController];
+  view = [chromeViewController view];
+  window = [view window];
 
   v5 = +[NSBundle mainBundle];
   v6 = [v5 localizedStringForKey:@"Thanks for your feedback [Report an Issue]" value:@"localized string not found" table:0];
 
-  [ActionValidationController presentDefaultValidationActionWithTitle:v6 inWindow:v7];
+  [ActionValidationController presentDefaultValidationActionWithTitle:v6 inWindow:window];
 }
 
-- (void)_presentWebBundleViewControllerWithReport:(id)a3 completion:(id)a4
+- (void)_presentWebBundleViewControllerWithReport:(id)report completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  reportCopy = report;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100FE2430;
   v15[3] = &unk_101660840;
   objc_copyWeak(&v17, &location);
-  v8 = v7;
+  v8 = completionCopy;
   v16 = v8;
   v9 = objc_retainBlock(v15);
-  v10 = [[RAPWebBundleContaineeViewController alloc] initWithReport:v6 completion:v9];
+  v10 = [[RAPWebBundleContaineeViewController alloc] initWithReport:reportCopy completion:v9];
   [(RAPWebBundleContaineeViewController *)v10 setModalPresentationStyle:2];
   [(RAPWebBundleContaineeViewController *)v10 setModalInPresentation:1];
-  v11 = [v6 initialQuestion];
+  initialQuestion = [reportCopy initialQuestion];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v13 = [v6 initialQuestion];
+    initialQuestion2 = [reportCopy initialQuestion];
   }
 
   else
   {
-    v13 = 0;
+    initialQuestion2 = 0;
   }
 
-  if (sub_10000FA08(v10) == 5 || [v13 questionType] - 13 > 7)
+  if (sub_10000FA08(v10) == 5 || [initialQuestion2 questionType] - 13 > 7)
   {
     [(RAPPresenter *)self presentViewController:v10 animated:1];
   }
@@ -3163,23 +3163,23 @@ LABEL_584:
   objc_destroyWeak(&location);
 }
 
-- (void)_presentWebBundleWithReport:(id)a3 completion:(id)a4
+- (void)_presentWebBundleWithReport:(id)report completion:(id)completion
 {
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100FE2660;
   v9[3] = &unk_1016607F0;
-  v10 = a4;
-  v6 = v10;
-  v7 = a3;
+  completionCopy = completion;
+  v6 = completionCopy;
+  reportCopy = report;
   v8 = objc_retainBlock(v9);
-  [(RAPPresenter *)self _presentWebBundleWithReport:v7 withOutcomeCompletion:v8];
+  [(RAPPresenter *)self _presentWebBundleWithReport:reportCopy withOutcomeCompletion:v8];
 }
 
-- (void)_presentReportComposerWithCompletion:(id)a3
+- (void)_presentReportComposerWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
+  completionCopy = completion;
+  v5 = completionCopy;
   if (self->_reportComposer)
   {
     v11[0] = _NSConcreteStackBlock;
@@ -3187,11 +3187,11 @@ LABEL_584:
     v11[2] = sub_100FE27B8;
     v11[3] = &unk_101661090;
     v11[4] = self;
-    v12 = v4;
+    v12 = completionCopy;
     v6 = objc_retainBlock(v11);
-    v7 = [(RAPReportComposerViewController *)self->_reportComposer presentingViewController];
+    presentingViewController = [(RAPReportComposerViewController *)self->_reportComposer presentingViewController];
 
-    if (v7)
+    if (presentingViewController)
     {
       reportComposer = self->_reportComposer;
       v9[0] = _NSConcreteStackBlock;
@@ -3209,15 +3209,15 @@ LABEL_584:
   }
 }
 
-- (void)_dismissSender:(id)a3 withGesture:(BOOL)a4 completion:(id)a5
+- (void)_dismissSender:(id)sender withGesture:(BOOL)gesture completion:(id)completion
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
+  gestureCopy = gesture;
+  senderCopy = sender;
+  completionCopy = completion;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = v8;
+    v10 = senderCopy;
   }
 
   else
@@ -3228,32 +3228,32 @@ LABEL_584:
   v11 = v10;
   if (v11)
   {
-    if (v9 && v6)
+    if (completionCopy && gestureCopy)
     {
-      v9[2](v9);
+      completionCopy[2](completionCopy);
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_sceneDelegate);
-    v13 = [WeakRetained appCoordinator];
-    v14 = [v13 baseActionCoordinator];
-    v15 = [v14 currentViewController];
+    appCoordinator = [WeakRetained appCoordinator];
+    baseActionCoordinator = [appCoordinator baseActionCoordinator];
+    currentViewController = [baseActionCoordinator currentViewController];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      if (!v6)
+      if (!gestureCopy)
       {
         v17 = objc_loadWeakRetained(&self->_sceneDelegate);
-        v18 = [v17 appCoordinator];
-        v19 = [v18 baseActionCoordinator];
-        v20 = [v19 containerViewController];
-        [v20 popLastViewControllerAnimated:1];
+        appCoordinator2 = [v17 appCoordinator];
+        baseActionCoordinator2 = [appCoordinator2 baseActionCoordinator];
+        containerViewController = [baseActionCoordinator2 containerViewController];
+        [containerViewController popLastViewControllerAnimated:1];
       }
 
-      if (v9)
+      if (completionCopy)
       {
-        v9[2](v9);
+        completionCopy[2](completionCopy);
       }
     }
 
@@ -3263,7 +3263,7 @@ LABEL_584:
       v22[1] = 3221225472;
       v22[2] = sub_100FE2BB8;
       v22[3] = &unk_101661760;
-      v23 = v9;
+      v23 = completionCopy;
       [v11 dismissViewControllerAnimated:1 completion:v22];
     }
   }
@@ -3274,23 +3274,23 @@ LABEL_584:
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v25 = v8;
+      v25 = senderCopy;
       _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_ERROR, "Attempting to dismiss an object %@ that is not a view controller. Early return.", buf, 0xCu);
     }
   }
 }
 
-- (void)_dismissReportComposerWithSender:(id)a3 completion:(id)a4
+- (void)_dismissReportComposerWithSender:(id)sender completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  senderCopy = sender;
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (completionCopy)
   {
-    (*(v7 + 2))(v7);
+    (*(completionCopy + 2))(completionCopy);
   }
 
-  v9 = v6;
+  v9 = senderCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -3326,16 +3326,16 @@ LABEL_584:
   }
 }
 
-- (void)presentReportAProblemFromPlaceCardViewController:(id)a3 editingContext:(id)a4 overriddenUserInterfaceStyle:(int64_t)a5 sourceView:(id)a6 entryPoint:(int)a7 completion:(id)a8
+- (void)presentReportAProblemFromPlaceCardViewController:(id)controller editingContext:(id)context overriddenUserInterfaceStyle:(int64_t)style sourceView:(id)view entryPoint:(int)point completion:(id)completion
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a6;
-  v16 = a8;
-  if (![(RAPPresenter *)self presentOfflineAlertIfNecessaryWithCompletion:v16])
+  controllerCopy = controller;
+  contextCopy = context;
+  viewCopy = view;
+  completionCopy = completion;
+  if (![(RAPPresenter *)self presentOfflineAlertIfNecessaryWithCompletion:completionCopy])
   {
-    v17 = [v15 window];
-    [v17 setUserInteractionEnabled:0];
+    window = [viewCopy window];
+    [window setUserInteractionEnabled:0];
 
     v18 = [RAPAppStateCreator alloc];
     WeakRetained = objc_loadWeakRetained(&self->_sceneDelegate);
@@ -3345,34 +3345,34 @@ LABEL_584:
     v21[1] = 3221225472;
     v21[2] = sub_100FE2ED0;
     v21[3] = &unk_1016607A0;
-    v22 = v15;
-    v25 = v14;
-    v23 = self;
-    v27 = a7;
-    v24 = v13;
-    v26 = v16;
+    v22 = viewCopy;
+    v25 = contextCopy;
+    selfCopy = self;
+    pointCopy = point;
+    v24 = controllerCopy;
+    v26 = completionCopy;
     [(RAPAppStateCreator *)v20 createReportAProblemAppStateWithCompletion:v21];
   }
 }
 
-- (void)presentAddAPlaceFromPlacecardWithEditingContext:(id)a3 overriddenUserInterfaceStyle:(int64_t)a4 shouldShowDetailedFlow:(BOOL)a5 sourceView:(id)a6 entryPoint:(int)a7 completion:(id)a8
+- (void)presentAddAPlaceFromPlacecardWithEditingContext:(id)context overriddenUserInterfaceStyle:(int64_t)style shouldShowDetailedFlow:(BOOL)flow sourceView:(id)view entryPoint:(int)point completion:(id)completion
 {
-  v9 = *&a7;
-  v11 = a5;
-  v13 = a3;
-  v14 = a6;
-  v15 = a8;
-  if (![(RAPPresenter *)self presentOfflineAlertIfNecessaryWithCompletion:v15])
+  v9 = *&point;
+  flowCopy = flow;
+  contextCopy = context;
+  viewCopy = view;
+  completionCopy = completion;
+  if (![(RAPPresenter *)self presentOfflineAlertIfNecessaryWithCompletion:completionCopy])
   {
-    if (v11)
+    if (flowCopy)
     {
-      [(RAPPresenter *)self _presentAddAPlaceFromEntryPoint:v9 withEditingBlock:v13 completion:v15];
+      [(RAPPresenter *)self _presentAddAPlaceFromEntryPoint:v9 withEditingBlock:contextCopy completion:completionCopy];
     }
 
     else
     {
-      v16 = [v14 window];
-      [v16 setUserInteractionEnabled:0];
+      window = [viewCopy window];
+      [window setUserInteractionEnabled:0];
 
       v17 = [RAPAppStateCreator alloc];
       WeakRetained = objc_loadWeakRetained(&self->_sceneDelegate);
@@ -3382,23 +3382,23 @@ LABEL_584:
       v20[1] = 3221225472;
       v20[2] = sub_100FE38FC;
       v20[3] = &unk_101660750;
-      v21 = v14;
-      v22 = self;
-      v23 = v13;
+      v21 = viewCopy;
+      selfCopy = self;
+      v23 = contextCopy;
       v25 = v9;
-      v24 = v15;
+      v24 = completionCopy;
       [(RAPAppStateCreator *)v19 createReportAProblemAppStateWithCompletion:v20];
     }
   }
 }
 
-- (BOOL)presentOfflineAlertIfNecessaryWithCompletion:(id)a3
+- (BOOL)presentOfflineAlertIfNecessaryWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = +[MapsOfflineUIHelper sharedHelper];
-  v6 = [v5 isUsingOfflineMaps];
+  isUsingOfflineMaps = [v5 isUsingOfflineMaps];
 
-  if (v6)
+  if (isUsingOfflineMaps)
   {
     v7 = sub_100799520();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
@@ -3408,11 +3408,11 @@ LABEL_584:
     }
 
     v8 = +[MapsOfflineUIHelper sharedHelper];
-    v9 = [v8 isUsingForcedOfflineMaps];
+    isUsingForcedOfflineMaps = [v8 isUsingForcedOfflineMaps];
 
     v10 = +[NSBundle mainBundle];
     v11 = v10;
-    if (v9)
+    if (isUsingForcedOfflineMaps)
     {
       v12 = @"REPORT_AN_ISSUE_FORCED_OFFLINE_ALERT_TITLE";
     }
@@ -3422,7 +3422,7 @@ LABEL_584:
       v12 = @"REPORT_AN_ISSUE_OFFLINE_ALERT_TITLE";
     }
 
-    if (v9)
+    if (isUsingForcedOfflineMaps)
     {
       v13 = @"REPORT_AN_ISSUE_FORCED_OFFLINE_ALERT_MESSAGE";
     }
@@ -3444,26 +3444,26 @@ LABEL_584:
     v22[1] = 3221225472;
     v22[2] = sub_100FE3CB0;
     v22[3] = &unk_101660728;
-    v23 = v4;
+    v23 = completionCopy;
     v20 = [UIAlertAction actionWithTitle:v19 style:1 handler:v22];
     [v17 addAction:v20];
 
     [(RAPPresenter *)self presentViewController:v17 animated:1];
   }
 
-  return v6;
+  return isUsingOfflineMaps;
 }
 
-- (RAPPresenter)initWithSceneDelegate:(id)a3
+- (RAPPresenter)initWithSceneDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8.receiver = self;
   v8.super_class = RAPPresenter;
   v5 = [(RAPPresenter *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_sceneDelegate, v4);
+    objc_storeWeak(&v5->_sceneDelegate, delegateCopy);
   }
 
   return v6;

@@ -1,31 +1,31 @@
 @interface MFComposeFontSelectorButton
-+ (id)buttonWithFont:(id)a3;
++ (id)buttonWithFont:(id)font;
 - (void)layoutSubviews;
-- (void)setRepresentedFont:(id)a3;
+- (void)setRepresentedFont:(id)font;
 @end
 
 @implementation MFComposeFontSelectorButton
 
-+ (id)buttonWithFont:(id)a3
++ (id)buttonWithFont:(id)font
 {
-  v3 = a3;
+  fontCopy = font;
   v4 = [MFComposeFontSelectorButton buttonWithType:0];
   [v4 setContentHorizontalAlignment:4];
   [v4 setContentVerticalAlignment:0];
-  v5 = [v4 tintColor];
-  v6 = [v4 titleLabel];
-  [v6 setTextColor:v5];
+  tintColor = [v4 tintColor];
+  titleLabel = [v4 titleLabel];
+  [titleLabel setTextColor:tintColor];
 
-  v7 = [v4 titleLabel];
-  [v7 setLineBreakMode:4];
+  titleLabel2 = [v4 titleLabel];
+  [titleLabel2 setLineBreakMode:4];
 
-  v8 = [v4 titleLabel];
-  [v8 setAdjustsFontSizeToFitWidth:1];
+  titleLabel3 = [v4 titleLabel];
+  [titleLabel3 setAdjustsFontSizeToFitWidth:1];
 
-  v9 = [v4 titleLabel];
-  [v9 setBaselineAdjustment:1];
+  titleLabel4 = [v4 titleLabel];
+  [titleLabel4 setBaselineAdjustment:1];
 
-  [v4 setRepresentedFont:v3];
+  [v4 setRepresentedFont:fontCopy];
   [v4 setAccessibilityIdentifier:*MEMORY[0x1E69ADBA0]];
   v10 = [MEMORY[0x1E69DCAB8] mf_systemImageNamed:@"chevron.forward" textStyle:*MEMORY[0x1E69DDCF8] scale:3];
   [v4 setImage:v10 forState:0];
@@ -33,17 +33,17 @@
   return v4;
 }
 
-- (void)setRepresentedFont:(id)a3
+- (void)setRepresentedFont:(id)font
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (self->_representedFont != v5)
+  fontCopy = font;
+  if (self->_representedFont != fontCopy)
   {
-    objc_storeStrong(&self->_representedFont, a3);
-    v6 = [(MFComposeFontSelectorButton *)self titleLabel];
-    v7 = [v6 font];
-    [v7 pointSize];
-    v8 = [(UIFont *)v5 fontWithSize:?];
+    objc_storeStrong(&self->_representedFont, font);
+    titleLabel = [(MFComposeFontSelectorButton *)self titleLabel];
+    font = [titleLabel font];
+    [font pointSize];
+    v8 = [(UIFont *)fontCopy fontWithSize:?];
 
     if ((CTFontIsSystemUIFont() & 1) != 0 || CTFontIsTextStyleFont())
     {
@@ -71,17 +71,17 @@
   v11.receiver = self;
   v11.super_class = MFComposeFontSelectorButton;
   [(MFComposeFontSelectorButton *)&v11 layoutSubviews];
-  v3 = [(MFComposeFontSelectorButton *)self effectiveUserInterfaceLayoutDirection];
+  effectiveUserInterfaceLayoutDirection = [(MFComposeFontSelectorButton *)self effectiveUserInterfaceLayoutDirection];
   [(MFComposeFontSelectorButton *)self frame];
   v5 = v4;
-  v6 = [(MFComposeFontSelectorButton *)self imageView];
-  [v6 bounds];
-  if (v3 == 1)
+  imageView = [(MFComposeFontSelectorButton *)self imageView];
+  [imageView bounds];
+  if (effectiveUserInterfaceLayoutDirection == 1)
   {
     [(MFComposeFontSelectorButton *)self setImageEdgeInsets:0.0, 5.0, 0.0, v5 - (v7 + 5.0)];
 
-    v8 = [(MFComposeFontSelectorButton *)self imageView];
-    [v8 bounds];
+    imageView2 = [(MFComposeFontSelectorButton *)self imageView];
+    [imageView2 bounds];
     [(MFComposeFontSelectorButton *)self setTitleEdgeInsets:0.0, v9 + 10.0, 0.0, 5.0];
   }
 
@@ -89,8 +89,8 @@
   {
     [(MFComposeFontSelectorButton *)self setImageEdgeInsets:0.0, v5 - (v7 + 5.0), 0.0, 5.0];
 
-    v8 = [(MFComposeFontSelectorButton *)self imageView];
-    [v8 bounds];
+    imageView2 = [(MFComposeFontSelectorButton *)self imageView];
+    [imageView2 bounds];
     [(MFComposeFontSelectorButton *)self setTitleEdgeInsets:0.0, 5.0, 0.0, v10 + 10.0];
   }
 }

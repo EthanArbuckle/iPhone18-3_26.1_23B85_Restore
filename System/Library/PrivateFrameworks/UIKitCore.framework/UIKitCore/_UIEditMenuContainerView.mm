@@ -1,33 +1,33 @@
 @interface _UIEditMenuContainerView
-- (BOOL)dismissalGestureRecognizer:(id)a3 shouldInteractAtLocation:(CGPoint)a4 withEvent:(id)a5;
-- (BOOL)touchFallbackView:(id)a3 shouldHitTestAtLocation:(CGPoint)a4 withEvent:(id)a5;
-- (_UIEditMenuContainerView)initWithPresentation:(id)a3 enablePassthrough:(BOOL)a4;
+- (BOOL)dismissalGestureRecognizer:(id)recognizer shouldInteractAtLocation:(CGPoint)location withEvent:(id)event;
+- (BOOL)touchFallbackView:(id)view shouldHitTestAtLocation:(CGPoint)location withEvent:(id)event;
+- (_UIEditMenuContainerView)initWithPresentation:(id)presentation enablePassthrough:(BOOL)passthrough;
 - (_UIEditMenuPresentation)presentation;
 - (_UITouchFallbackView)touchFallbackView;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (void)_dismissMenuPresentationForSizeChange;
 - (void)_installDismissalGesture;
 - (void)didMoveToWindow;
-- (void)didRecognizeDismissalGestureRecognizer:(id)a3;
-- (void)setBounds:(CGRect)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)willMoveToWindow:(id)a3;
+- (void)didRecognizeDismissalGestureRecognizer:(id)recognizer;
+- (void)setBounds:(CGRect)bounds;
+- (void)setFrame:(CGRect)frame;
+- (void)willMoveToWindow:(id)window;
 @end
 
 @implementation _UIEditMenuContainerView
 
-- (_UIEditMenuContainerView)initWithPresentation:(id)a3 enablePassthrough:(BOOL)a4
+- (_UIEditMenuContainerView)initWithPresentation:(id)presentation enablePassthrough:(BOOL)passthrough
 {
-  v4 = a4;
-  v6 = a3;
+  passthroughCopy = passthrough;
+  presentationCopy = presentation;
   v10.receiver = self;
   v10.super_class = _UIEditMenuContainerView;
   v7 = [(UIView *)&v10 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->_presentation, v6);
-    if (v4)
+    objc_storeWeak(&v7->_presentation, presentationCopy);
+    if (passthroughCopy)
     {
       v8->_dismissesOnViewportResize = 1;
       [(_UIEditMenuContainerView *)v8 _installDismissalGesture];
@@ -37,12 +37,12 @@
   return v8;
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(UIView *)self bounds];
   if (width != v9 || height != v8)
   {
@@ -54,12 +54,12 @@
   [(UIView *)&v11 setBounds:x, y, width, height];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(UIView *)self frame];
   if (width != v9 || height != v8)
   {
@@ -75,10 +75,10 @@
 {
   if ([(_UIEditMenuContainerView *)self dismissesOnViewportResize])
   {
-    v3 = [(_UIEditMenuContainerView *)self presentation];
-    v4 = [v3 displayedMenu];
+    presentation = [(_UIEditMenuContainerView *)self presentation];
+    displayedMenu = [presentation displayedMenu];
 
-    if (v4)
+    if (displayedMenu)
     {
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
@@ -121,18 +121,18 @@
   [(UIView *)self setUserInteractionEnabled:1];
 }
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
   v7.receiver = self;
   v7.super_class = _UIEditMenuContainerView;
-  [(UIView *)&v7 willMoveToWindow:a3];
-  v4 = [(_UIEditMenuContainerView *)self dismissalGestureRecognizer];
+  [(UIView *)&v7 willMoveToWindow:window];
+  dismissalGestureRecognizer = [(_UIEditMenuContainerView *)self dismissalGestureRecognizer];
 
-  if (v4)
+  if (dismissalGestureRecognizer)
   {
-    v5 = [(UIView *)self window];
-    v6 = [(_UIEditMenuContainerView *)self dismissalGestureRecognizer];
-    [v5 removeGestureRecognizer:v6];
+    window = [(UIView *)self window];
+    dismissalGestureRecognizer2 = [(_UIEditMenuContainerView *)self dismissalGestureRecognizer];
+    [window removeGestureRecognizer:dismissalGestureRecognizer2];
   }
 
   [(UIView *)self->_touchFallbackView removeFromSuperview];
@@ -143,30 +143,30 @@
   v7.receiver = self;
   v7.super_class = _UIEditMenuContainerView;
   [(UIView *)&v7 didMoveToWindow];
-  v3 = [(UIView *)self window];
-  if (v3)
+  window = [(UIView *)self window];
+  if (window)
   {
-    v4 = [(_UIEditMenuContainerView *)self dismissalGestureRecognizer];
+    dismissalGestureRecognizer = [(_UIEditMenuContainerView *)self dismissalGestureRecognizer];
 
-    if (v4)
+    if (dismissalGestureRecognizer)
     {
-      v5 = [(_UIEditMenuContainerView *)self dismissalGestureRecognizer];
-      [v3 addGestureRecognizer:v5];
+      dismissalGestureRecognizer2 = [(_UIEditMenuContainerView *)self dismissalGestureRecognizer];
+      [window addGestureRecognizer:dismissalGestureRecognizer2];
 
-      v6 = [(_UIEditMenuContainerView *)self touchFallbackView];
-      [v3 bounds];
-      [v6 setFrame:?];
-      [v3 insertSubview:v6 atIndex:0];
+      touchFallbackView = [(_UIEditMenuContainerView *)self touchFallbackView];
+      [window bounds];
+      [touchFallbackView setFrame:?];
+      [window insertSubview:touchFallbackView atIndex:0];
     }
   }
 }
 
-- (void)didRecognizeDismissalGestureRecognizer:(id)a3
+- (void)didRecognizeDismissalGestureRecognizer:(id)recognizer
 {
-  v4 = [a3 state];
-  if ((v4 - 2) >= 2)
+  state = [recognizer state];
+  if ((state - 2) >= 2)
   {
-    if (v4 == 1)
+    if (state == 1)
     {
       self->_didDismissFromGesture = 0;
     }
@@ -175,74 +175,74 @@
   else if (!self->_didDismissFromGesture)
   {
     self->_didDismissFromGesture = 1;
-    v5 = [(_UIEditMenuContainerView *)self presentation];
-    [v5 hideMenuWithReason:0];
+    presentation = [(_UIEditMenuContainerView *)self presentation];
+    [presentation hideMenuWithReason:0];
   }
 }
 
-- (BOOL)touchFallbackView:(id)a3 shouldHitTestAtLocation:(CGPoint)a4 withEvent:(id)a5
+- (BOOL)touchFallbackView:(id)view shouldHitTestAtLocation:(CGPoint)location withEvent:(id)event
 {
-  v5 = [(_UIEditMenuContainerView *)self presentation:a3];
-  v6 = [v5 displayedMenu];
-  v7 = v6 != 0;
+  v5 = [(_UIEditMenuContainerView *)self presentation:view];
+  displayedMenu = [v5 displayedMenu];
+  v7 = displayedMenu != 0;
 
   return v7;
 }
 
-- (BOOL)dismissalGestureRecognizer:(id)a3 shouldInteractAtLocation:(CGPoint)a4 withEvent:(id)a5
+- (BOOL)dismissalGestureRecognizer:(id)recognizer shouldInteractAtLocation:(CGPoint)location withEvent:(id)event
 {
-  y = a4.y;
-  x = a4.x;
-  v9 = a5;
+  y = location.y;
+  x = location.x;
+  eventCopy = event;
   self->_lastHitTestPassedThrough = 0;
-  v10 = [a3 view];
-  [v10 convertPoint:self toView:{x, y}];
+  view = [recognizer view];
+  [view convertPoint:self toView:{x, y}];
   v12 = v11;
   v14 = v13;
 
-  v15 = [(_UIEditMenuContainerView *)self hitTest:v9 withEvent:v12, v14];
-  LOBYTE(v10) = self->_lastHitTestPassedThrough;
+  v15 = [(_UIEditMenuContainerView *)self hitTest:eventCopy withEvent:v12, v14];
+  LOBYTE(view) = self->_lastHitTestPassedThrough;
 
-  return v10;
+  return view;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
   v17.receiver = self;
   v17.super_class = _UIEditMenuContainerView;
-  v8 = [(UIView *)&v17 hitTest:v7 withEvent:x, y];
+  v8 = [(UIView *)&v17 hitTest:eventCopy withEvent:x, y];
   if (v8 != self)
   {
 LABEL_2:
-    v9 = v8;
+    dismissalGestureRecognizer = v8;
     goto LABEL_3;
   }
 
-  v9 = [(_UIEditMenuContainerView *)self dismissalGestureRecognizer];
+  dismissalGestureRecognizer = [(_UIEditMenuContainerView *)self dismissalGestureRecognizer];
 
-  if (v9)
+  if (dismissalGestureRecognizer)
   {
-    if ([v7 type] != 9)
+    if ([eventCopy type] != 9)
     {
-      if ([_UIEditMenuDismissalGestureRecognizer canHandleEventForPassthrough:v7])
+      if ([_UIEditMenuDismissalGestureRecognizer canHandleEventForPassthrough:eventCopy])
       {
         if ([(_UIEditMenuContainerView *)self ignoresPassthroughInPresentationSource])
         {
-          v11 = [(_UIEditMenuContainerView *)self presentation];
-          v12 = [v11 sourceView];
+          presentation = [(_UIEditMenuContainerView *)self presentation];
+          sourceView = [presentation sourceView];
 
           [(UIView *)self setUserInteractionEnabled:0];
-          v13 = [(UIView *)self window];
-          [(UIView *)self convertPoint:v13 toView:x, y];
+          window = [(UIView *)self window];
+          [(UIView *)self convertPoint:window toView:x, y];
 
-          v14 = [(UIView *)self window];
-          v15 = [v14 hitTest:v7 withEvent:{x, y}];
+          window2 = [(UIView *)self window];
+          v15 = [window2 hitTest:eventCopy withEvent:{x, y}];
 
           [(UIView *)self setUserInteractionEnabled:1];
-          v16 = [v15 isDescendantOfView:v12] ^ 1;
+          v16 = [v15 isDescendantOfView:sourceView] ^ 1;
         }
 
         else
@@ -250,7 +250,7 @@ LABEL_2:
           v16 = 1;
         }
 
-        v9 = 0;
+        dismissalGestureRecognizer = 0;
         self->_lastHitTestPassedThrough = v16;
         goto LABEL_3;
       }
@@ -258,12 +258,12 @@ LABEL_2:
       goto LABEL_2;
     }
 
-    v9 = 0;
+    dismissalGestureRecognizer = 0;
   }
 
 LABEL_3:
 
-  return v9;
+  return dismissalGestureRecognizer;
 }
 
 - (_UIEditMenuPresentation)presentation

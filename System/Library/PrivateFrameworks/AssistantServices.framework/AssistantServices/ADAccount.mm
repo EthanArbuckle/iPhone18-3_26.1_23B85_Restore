@@ -1,15 +1,15 @@
 @interface ADAccount
-+ (BOOL)setActiveAccountIdentifier:(id)a3;
-+ (id)_accountForIdentifier:(id)a3 infoDictionary:(id)a4 intanceContext:(id)a5 isReadOnly:(BOOL)a6 isCoupledToHost:(BOOL)a7;
-+ (id)accountForIdentifier:(id)a3;
-+ (id)activeAccountForInstanceContext:(id)a3;
++ (BOOL)setActiveAccountIdentifier:(id)identifier;
++ (id)_accountForIdentifier:(id)identifier infoDictionary:(id)dictionary intanceContext:(id)context isReadOnly:(BOOL)only isCoupledToHost:(BOOL)host;
++ (id)accountForIdentifier:(id)identifier;
++ (id)activeAccountForInstanceContext:(id)context;
 - (ADAccount)init;
-- (ADAccount)initWithMessageDictionary:(id)a3;
-- (BOOL)_onQueueSetKeychainValue:(id)a3 forKey:(id)a4;
-- (BOOL)_setKeychainValueSync:(id)a3 forKey:(id)a4;
-- (BOOL)setLocalCryptoKeyData:(id)a3;
-- (BOOL)setValidationDataSync:(id)a3;
-- (BOOL)watchExistsForAssistantId:(id)a3;
+- (ADAccount)initWithMessageDictionary:(id)dictionary;
+- (BOOL)_onQueueSetKeychainValue:(id)value forKey:(id)key;
+- (BOOL)_setKeychainValueSync:(id)sync forKey:(id)key;
+- (BOOL)setLocalCryptoKeyData:(id)data;
+- (BOOL)setValidationDataSync:(id)sync;
+- (BOOL)watchExistsForAssistantId:(id)id;
 - (NSString)hostname;
 - (NSString)identifier;
 - (NSString)localeIdentifier;
@@ -17,7 +17,7 @@
 - (id)_hostnameOverride;
 - (id)_hostnameQAOverride;
 - (id)_infoDictionaryForPreferences;
-- (id)_keychainValueForKey:(id)a3;
+- (id)_keychainValueForKey:(id)key;
 - (id)_preferences;
 - (id)_serverOverrideFromPreferences;
 - (id)aceHostCluster;
@@ -27,35 +27,35 @@
 - (id)messageDictionary;
 - (id)pairedWatches;
 - (id)saConnectionPolicy;
-- (id)saRemoteDevice:(id)a3;
+- (id)saRemoteDevice:(id)device;
 - (id)serverCertificateData;
 - (id)validationData;
 - (int64_t)connectionPolicyStatus;
 - (void)_markKeychainValuesAsDirty;
-- (void)_removeKeychainValueForKey:(id)a3;
-- (void)_setKeychainValue:(id)a3 forKey:(id)a4;
+- (void)_removeKeychainValueForKey:(id)key;
+- (void)_setKeychainValue:(id)value forKey:(id)key;
 - (void)clearAssistantData;
 - (void)clearAssistantDataDuringForcedRedirect;
 - (void)removeAndSave;
 - (void)resetCachedHostname;
 - (void)save;
-- (void)setAssistantIdentifier:(id)a3;
-- (void)setHostname:(id)a3;
-- (void)setLoggingAssistantIdentifier:(id)a3;
-- (void)setPairedWatches:(id)a3;
-- (void)setPeerAssistantIdentifier:(id)a3;
-- (void)setPeerHostname:(id)a3;
-- (void)setPeerLanguageCode:(id)a3;
-- (void)setPeerLoggingAssistantIdentifier:(id)a3;
-- (void)setPeerSiriEnabled:(BOOL)a3;
-- (void)setPeerSpeechIdentifier:(id)a3;
-- (void)setPeerUserAgentString:(id)a3;
-- (void)setServerCertificateData:(id)a3;
-- (void)setSpeechIdentifier:(id)a3;
-- (void)setValidationData:(id)a3;
-- (void)setValidationExpiration:(id)a3;
+- (void)setAssistantIdentifier:(id)identifier;
+- (void)setHostname:(id)hostname;
+- (void)setLoggingAssistantIdentifier:(id)identifier;
+- (void)setPairedWatches:(id)watches;
+- (void)setPeerAssistantIdentifier:(id)identifier;
+- (void)setPeerHostname:(id)hostname;
+- (void)setPeerLanguageCode:(id)code;
+- (void)setPeerLoggingAssistantIdentifier:(id)identifier;
+- (void)setPeerSiriEnabled:(BOOL)enabled;
+- (void)setPeerSpeechIdentifier:(id)identifier;
+- (void)setPeerUserAgentString:(id)string;
+- (void)setServerCertificateData:(id)data;
+- (void)setSpeechIdentifier:(id)identifier;
+- (void)setValidationData:(id)data;
+- (void)setValidationExpiration:(id)expiration;
 - (void)updateAssistantIdentifiers;
-- (void)updateGizmoData:(id)a3 forUniqueId:(id)a4;
+- (void)updateGizmoData:(id)data forUniqueId:(id)id;
 @end
 
 @implementation ADAccount
@@ -100,9 +100,9 @@
   {
     if (AFIsInternalInstall())
     {
-      v5 = [(ADAccount *)self _hostnameOverride];
-      hostname = v5;
-      if (v5 || (hostname = self->_hostname) != 0)
+      _hostnameOverride = [(ADAccount *)self _hostnameOverride];
+      hostname = _hostnameOverride;
+      if (_hostnameOverride || (hostname = self->_hostname) != 0)
       {
         v7 = hostname;
       }
@@ -118,11 +118,11 @@
       v7 = @"https://guzzoni.apple.com";
     }
 
-    v8 = [(ADAccount *)self _hostnameQAOverride];
-    v9 = v8;
-    if (v8)
+    _hostnameQAOverride = [(ADAccount *)self _hostnameQAOverride];
+    v9 = _hostnameQAOverride;
+    if (_hostnameQAOverride)
     {
-      v10 = v8;
+      v10 = _hostnameQAOverride;
     }
 
     else
@@ -145,12 +145,12 @@
 - (id)_hostnameOverride
 {
   v3 = AFInternalConfigValueForKey();
-  v4 = self->_predefinedServer;
-  if (!v4)
+  anyObject = self->_predefinedServer;
+  if (!anyObject)
   {
     if (AFPreferencesShouldIgnoreInternalConfig())
     {
-      v4 = 0;
+      anyObject = 0;
 LABEL_14:
       v5 = 0;
       goto LABEL_15;
@@ -167,16 +167,16 @@ LABEL_14:
       v8 = [v3 keysOfEntriesPassingTest:v11];
       if ([v8 count])
       {
-        v4 = [v8 anyObject];
+        anyObject = [v8 anyObject];
       }
 
       else
       {
         v9 = AFInternalConfigValueForKey();
-        v4 = [v9 objectForKey:self->_hostname];
+        anyObject = [v9 objectForKey:self->_hostname];
       }
 
-      if (!v4)
+      if (!anyObject)
       {
         goto LABEL_14;
       }
@@ -184,24 +184,24 @@ LABEL_14:
 
     else
     {
-      v4 = AFInternalConfigValueForKey();
-      if (!v4)
+      anyObject = AFInternalConfigValueForKey();
+      if (!anyObject)
       {
         goto LABEL_14;
       }
     }
 
-    [(ADAccount *)self setPredefinedServer:v4];
+    [(ADAccount *)self setPredefinedServer:anyObject];
   }
 
-  v5 = [v3 objectForKey:v4];
+  v5 = [v3 objectForKey:anyObject];
   v6 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     *buf = 136315650;
     v13 = "[ADAccount _hostnameOverride]";
     v14 = 2112;
-    v15 = v4;
+    v15 = anyObject;
     v16 = 2112;
     v17 = v5;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "%s Found Predefined Server '%@' = %@", buf, 0x20u);
@@ -262,8 +262,8 @@ LABEL_15:
     [v4 setObject:speechIdentifier forKey:kAFAccountInfoSpeechIdentifierKey];
   }
 
-  v10 = [(ADAccount *)self hostname];
-  [v4 setObject:v10 forKey:kAFAccountInfoHostnameKey];
+  hostname = [(ADAccount *)self hostname];
+  [v4 setObject:hostname forKey:kAFAccountInfoHostnameKey];
 
   peerAssistantIdentifier = self->_peerAssistantIdentifier;
   if (peerAssistantIdentifier)
@@ -370,11 +370,11 @@ LABEL_15:
 
   else
   {
-    v4 = [(ADAccount *)self _serverOverrideFromPreferences];
-    v5 = v4;
-    if (v4)
+    _serverOverrideFromPreferences = [(ADAccount *)self _serverOverrideFromPreferences];
+    v5 = _serverOverrideFromPreferences;
+    if (_serverOverrideFromPreferences)
     {
-      if (([v4 hasSuffix:@"apple.com"] & 1) != 0 || (objc_msgSend(v5, "rangeOfString:", @"apple.com:"), v6))
+      if (([_serverOverrideFromPreferences hasSuffix:@"apple.com"] & 1) != 0 || (objc_msgSend(v5, "rangeOfString:", @"apple.com:"), v6))
       {
         v7 = AFSiriLogContextDaemon;
         if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
@@ -416,10 +416,10 @@ LABEL_15:
 
 - (id)_serverOverrideFromPreferences
 {
-  v2 = [(ADAccount *)self _preferences];
-  v3 = [v2 serverOverride];
+  _preferences = [(ADAccount *)self _preferences];
+  serverOverride = [_preferences serverOverride];
 
-  return v3;
+  return serverOverride;
 }
 
 - (id)_preferences
@@ -466,13 +466,13 @@ LABEL_15:
       return;
     }
 
-    v6 = v4;
-    v7 = [(ADAccount *)self identifier];
+    _preferences = v4;
+    identifier = [(ADAccount *)self identifier];
     v28 = 136315394;
     v29 = "[ADAccount save]";
     v30 = 2112;
-    v31 = v7;
-    _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "%s Unable to save account info %@ because it is read only.", &v28, 0x16u);
+    v31 = identifier;
+    _os_log_impl(&_mh_execute_header, _preferences, OS_LOG_TYPE_INFO, "%s Unable to save account info %@ because it is read only.", &v28, 0x16u);
   }
 
   else
@@ -480,17 +480,17 @@ LABEL_15:
     if (v5)
     {
       v8 = v4;
-      v9 = [(ADAccount *)self identifier];
+      identifier2 = [(ADAccount *)self identifier];
       v28 = 136315394;
       v29 = "[ADAccount save]";
       v30 = 2112;
-      v31 = v9;
+      v31 = identifier2;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%s Saving account info %@", &v28, 0x16u);
     }
 
-    v6 = [(ADAccount *)self _preferences];
-    v10 = [(ADAccount *)self identifier];
-    v11 = [v6 accountInfoForIdentifier:v10];
+    _preferences = [(ADAccount *)self _preferences];
+    identifier3 = [(ADAccount *)self identifier];
+    v11 = [_preferences accountInfoForIdentifier:identifier3];
 
     if (v11)
     {
@@ -534,11 +534,11 @@ LABEL_15:
       v16 = 1;
     }
 
-    v22 = [(ADAccount *)self _infoDictionaryForPreferences];
-    v23 = [(ADAccount *)self identifier];
-    [v6 setAccountInfo:v22 forIdentifier:v23];
+    _infoDictionaryForPreferences = [(ADAccount *)self _infoDictionaryForPreferences];
+    identifier4 = [(ADAccount *)self identifier];
+    [_preferences setAccountInfo:_infoDictionaryForPreferences forIdentifier:identifier4];
 
-    [v6 synchronize];
+    [_preferences synchronize];
     if (self->_sharedDataChanged)
     {
       v24 = +[NSNotificationCenter defaultCenter];
@@ -684,7 +684,7 @@ LABEL_15:
     v25 = self->_peerUserAgentString;
     v26 = self->_peerLanguageCode;
     peerSiriEnabled = self->_peerSiriEnabled;
-    v28 = [(ADAccount *)self pairedWatches];
+    pairedWatches = [(ADAccount *)self pairedWatches];
     queue = self->_keychainQueue;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
@@ -701,8 +701,8 @@ LABEL_15:
     v53 = v25;
     v56 = peerSiriEnabled;
     v54 = v26;
-    v55 = v28;
-    v45 = v28;
+    v55 = pairedWatches;
+    v45 = pairedWatches;
     v44 = v26;
     v43 = v25;
     v42 = v41;
@@ -774,20 +774,20 @@ LABEL_15:
       if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
       {
         v4 = v3;
-        v5 = [(ADAccount *)self identifier];
+        identifier = [(ADAccount *)self identifier];
         *buf = 136315394;
         v8 = "[ADAccount removeAndSave]";
         v9 = 2112;
-        v10 = v5;
+        v10 = identifier;
         _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "%s Unable to remove and save account info %@ because it is read only.", buf, 0x16u);
       }
     }
 
     else
     {
-      v6 = [(ADAccount *)self _preferences];
-      [v6 setAccountInfo:0 forIdentifier:self->_identifier];
-      [v6 synchronize];
+      _preferences = [(ADAccount *)self _preferences];
+      [_preferences setAccountInfo:0 forIdentifier:self->_identifier];
+      [_preferences synchronize];
       [(ADAccount *)self setServerCertificateData:0];
       [(ADAccount *)self setValidationData:0];
       [(ADAccount *)self setLocalCryptoKeyData:0];
@@ -817,36 +817,36 @@ LABEL_15:
 - (void)updateAssistantIdentifiers
 {
   v3 = +[NSUUID UUID];
-  v4 = [v3 UUIDString];
+  uUIDString = [v3 UUIDString];
 
   v5 = +[NSUUID UUID];
-  v6 = [v5 UUIDString];
+  uUIDString2 = [v5 UUIDString];
 
   v7 = +[NSUUID UUID];
-  v8 = [v7 UUIDString];
+  uUIDString3 = [v7 UUIDString];
 
-  [(ADAccount *)self setAssistantIdentifier:v4];
-  [(ADAccount *)self setLoggingAssistantIdentifier:v6];
-  [(ADAccount *)self setSpeechIdentifier:v8];
+  [(ADAccount *)self setAssistantIdentifier:uUIDString];
+  [(ADAccount *)self setLoggingAssistantIdentifier:uUIDString2];
+  [(ADAccount *)self setSpeechIdentifier:uUIDString3];
   v9 = AFSiriLogContextSession;
   if (os_log_type_enabled(AFSiriLogContextSession, OS_LOG_TYPE_INFO))
   {
     v10 = 136315906;
     v11 = "[ADAccount updateAssistantIdentifiers]";
     v12 = 2112;
-    v13 = v4;
+    v13 = uUIDString;
     v14 = 2112;
-    v15 = v6;
+    v15 = uUIDString2;
     v16 = 2112;
-    v17 = v8;
+    v17 = uUIDString3;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "%s assistantId created: %@ loggingAssistantId: %@ speechId: %@", &v10, 0x2Au);
   }
 }
 
-- (BOOL)_setKeychainValueSync:(id)a3 forKey:(id)a4
+- (BOOL)_setKeychainValueSync:(id)sync forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  syncCopy = sync;
+  keyCopy = key;
   if (self->_isReadOnly || !self->_identifier)
   {
     v9 = 0;
@@ -864,9 +864,9 @@ LABEL_15:
     v11[2] = sub_1000CAABC;
     v11[3] = &unk_100517400;
     v15 = &v16;
-    v12 = v6;
-    v13 = self;
-    v14 = v7;
+    v12 = syncCopy;
+    selfCopy = self;
+    v14 = keyCopy;
     dispatch_sync(keychainQueue, v11);
     v9 = *(v17 + 24);
 
@@ -876,10 +876,10 @@ LABEL_15:
   return v9 & 1;
 }
 
-- (BOOL)_onQueueSetKeychainValue:(id)a3 forKey:(id)a4
+- (BOOL)_onQueueSetKeychainValue:(id)value forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  valueCopy = value;
+  keyCopy = key;
   dispatch_assert_queue_V2(self->_keychainQueue);
   if (self->_isReadOnly || !self->_identifier)
   {
@@ -894,10 +894,10 @@ LABEL_15:
   return v8;
 }
 
-- (void)_setKeychainValue:(id)a3 forKey:(id)a4
+- (void)_setKeychainValue:(id)value forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  valueCopy = value;
+  keyCopy = key;
   if (!self->_isReadOnly && self->_identifier)
   {
     keychainQueue = self->_keychainQueue;
@@ -906,16 +906,16 @@ LABEL_15:
     block[2] = sub_1000CAC44;
     block[3] = &unk_10051DB68;
     block[4] = self;
-    v10 = v6;
-    v11 = v7;
+    v10 = valueCopy;
+    v11 = keyCopy;
     dispatch_async(keychainQueue, block);
   }
 }
 
-- (void)_removeKeychainValueForKey:(id)a3
+- (void)_removeKeychainValueForKey:(id)key
 {
-  v4 = a3;
-  v5 = v4;
+  keyCopy = key;
+  v5 = keyCopy;
   if (!self->_isReadOnly)
   {
     keychainQueue = self->_keychainQueue;
@@ -924,14 +924,14 @@ LABEL_15:
     v7[2] = sub_1000CAD00;
     v7[3] = &unk_10051E010;
     v7[4] = self;
-    v8 = v4;
+    v8 = keyCopy;
     dispatch_async(keychainQueue, v7);
   }
 }
 
-- (id)_keychainValueForKey:(id)a3
+- (id)_keychainValueForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -943,10 +943,10 @@ LABEL_15:
   block[1] = 3221225472;
   block[2] = sub_1000CAE34;
   block[3] = &unk_10051C588;
-  v10 = v4;
+  v10 = keyCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = keyCopy;
   dispatch_sync(keychainQueue, block);
   v7 = v13[5];
 
@@ -968,11 +968,11 @@ LABEL_15:
 
 - (id)aceHostCluster
 {
-  v2 = [(ADAccount *)self aceHost];
-  v3 = [v2 componentsSeparatedByString:@":"];
-  v4 = [v3 firstObject];
+  aceHost = [(ADAccount *)self aceHost];
+  v3 = [aceHost componentsSeparatedByString:@":"];
+  firstObject = [v3 firstObject];
 
-  return v4;
+  return firstObject;
 }
 
 - (void)clearAssistantDataDuringForcedRedirect
@@ -1004,17 +1004,17 @@ LABEL_15:
   [(ADAccount *)self setNeedsDestruction:0];
   [(ADAccount *)self setConnectionPolicyFailureCount:0];
   [(ADAccount *)self setConnectionPolicyFirstFailureDate:0];
-  v3 = [(ADAccount *)self _preferences];
-  [v3 setCountryCode:0];
+  _preferences = [(ADAccount *)self _preferences];
+  [_preferences setCountryCode:0];
 }
 
-- (BOOL)setLocalCryptoKeyData:(id)a3
+- (BOOL)setLocalCryptoKeyData:(id)data
 {
-  v4 = a3;
-  v5 = [(ADAccount *)self _setKeychainValueSync:v4 forKey:@"Local Crypto Key Data"];
+  dataCopy = data;
+  v5 = [(ADAccount *)self _setKeychainValueSync:dataCopy forKey:@"Local Crypto Key Data"];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dataCopy copy];
     cachedLocalCryptoKeyData = self->_cachedLocalCryptoKeyData;
     self->_cachedLocalCryptoKeyData = v6;
   }
@@ -1038,42 +1038,42 @@ LABEL_15:
   return cachedLocalCryptoKeyData;
 }
 
-- (void)setValidationExpiration:(id)a3
+- (void)setValidationExpiration:(id)expiration
 {
-  self->_validationExpiration = [a3 copy];
+  self->_validationExpiration = [expiration copy];
 
   _objc_release_x1();
 }
 
-- (BOOL)setValidationDataSync:(id)a3
+- (BOOL)setValidationDataSync:(id)sync
 {
-  v4 = a3;
-  v5 = [v4 copy];
+  syncCopy = sync;
+  v5 = [syncCopy copy];
   cachedValidationData = self->_cachedValidationData;
   self->_cachedValidationData = v5;
 
-  LOBYTE(self) = [(ADAccount *)self _setKeychainValueSync:v4 forKey:@"Validation Data"];
+  LOBYTE(self) = [(ADAccount *)self _setKeychainValueSync:syncCopy forKey:@"Validation Data"];
   return self;
 }
 
-- (void)setValidationData:(id)a3
+- (void)setValidationData:(id)data
 {
-  v6 = a3;
-  v4 = [v6 copy];
+  dataCopy = data;
+  v4 = [dataCopy copy];
   cachedValidationData = self->_cachedValidationData;
   self->_cachedValidationData = v4;
 
-  [(ADAccount *)self _setKeychainValue:v6 forKey:@"Validation Data"];
+  [(ADAccount *)self _setKeychainValue:dataCopy forKey:@"Validation Data"];
 }
 
-- (void)setServerCertificateData:(id)a3
+- (void)setServerCertificateData:(id)data
 {
-  v6 = a3;
-  v4 = [v6 copy];
+  dataCopy = data;
+  v4 = [dataCopy copy];
   cachedServerCertificateData = self->_cachedServerCertificateData;
   self->_cachedServerCertificateData = v4;
 
-  [(ADAccount *)self _setKeychainValue:v6 forKey:@"Server Certificate Data"];
+  [(ADAccount *)self _setKeychainValue:dataCopy forKey:@"Server Certificate Data"];
 }
 
 - (id)serverCertificateData
@@ -1097,16 +1097,16 @@ LABEL_15:
   localeIdentifier = self->_localeIdentifier;
   if (localeIdentifier)
   {
-    v3 = localeIdentifier;
+    localeIdentifier = localeIdentifier;
   }
 
   else
   {
     v4 = +[NSLocale autoupdatingCurrentLocale];
-    v3 = [v4 localeIdentifier];
+    localeIdentifier = [v4 localeIdentifier];
   }
 
-  return v3;
+  return localeIdentifier;
 }
 
 - (void)resetCachedHostname
@@ -1117,14 +1117,14 @@ LABEL_15:
   self->_hasCachedHostnameQAOverride = 0;
 }
 
-- (void)setHostname:(id)a3
+- (void)setHostname:(id)hostname
 {
-  v4 = a3;
+  hostnameCopy = hostname;
   hostname = self->_hostname;
-  if (hostname != v4)
+  if (hostname != hostnameCopy)
   {
-    v8 = v4;
-    if (![(NSString *)hostname isEqualToString:v4])
+    v8 = hostnameCopy;
+    if (![(NSString *)hostname isEqualToString:hostnameCopy])
     {
       v6 = [(NSString *)v8 copy];
       v7 = self->_hostname;
@@ -1137,13 +1137,13 @@ LABEL_15:
   _objc_release_x1();
 }
 
-- (void)setSpeechIdentifier:(id)a3
+- (void)setSpeechIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   speechIdentifier = self->_speechIdentifier;
-  if (speechIdentifier != v4 && ![(NSString *)speechIdentifier isEqualToString:v4])
+  if (speechIdentifier != identifierCopy && ![(NSString *)speechIdentifier isEqualToString:identifierCopy])
   {
-    v6 = [(NSString *)v4 copy];
+    v6 = [(NSString *)identifierCopy copy];
     v7 = self->_speechIdentifier;
     self->_speechIdentifier = v6;
 
@@ -1158,13 +1158,13 @@ LABEL_15:
   }
 }
 
-- (void)setLoggingAssistantIdentifier:(id)a3
+- (void)setLoggingAssistantIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   loggingAssistantIdentifier = self->_loggingAssistantIdentifier;
-  if (loggingAssistantIdentifier != v4 && ![(NSString *)loggingAssistantIdentifier isEqualToString:v4])
+  if (loggingAssistantIdentifier != identifierCopy && ![(NSString *)loggingAssistantIdentifier isEqualToString:identifierCopy])
   {
-    v6 = [(NSString *)v4 copy];
+    v6 = [(NSString *)identifierCopy copy];
     v7 = self->_loggingAssistantIdentifier;
     self->_loggingAssistantIdentifier = v6;
 
@@ -1179,13 +1179,13 @@ LABEL_15:
   }
 }
 
-- (void)setAssistantIdentifier:(id)a3
+- (void)setAssistantIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   assistantIdentifier = self->_assistantIdentifier;
-  if (assistantIdentifier != v4 && ![(NSString *)assistantIdentifier isEqualToString:v4])
+  if (assistantIdentifier != identifierCopy && ![(NSString *)assistantIdentifier isEqualToString:identifierCopy])
   {
-    v6 = [(NSString *)v4 copy];
+    v6 = [(NSString *)identifierCopy copy];
     v7 = self->_assistantIdentifier;
     self->_assistantIdentifier = v6;
 
@@ -1200,132 +1200,132 @@ LABEL_15:
   }
 }
 
-- (ADAccount)initWithMessageDictionary:(id)a3
+- (ADAccount)initWithMessageDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = [(ADAccount *)self init];
   v6 = v5;
   if (v5)
   {
     v5->_isReadOnly = 1;
-    v7 = [v4 objectForKey:kAFAccountInfoIdentifierKey];
+    v7 = [dictionaryCopy objectForKey:kAFAccountInfoIdentifierKey];
     [(ADAccount *)v6 setIdentifier:v7];
 
-    v8 = [v4 objectForKey:kAFAccountInfoLabelKey];
+    v8 = [dictionaryCopy objectForKey:kAFAccountInfoLabelKey];
     [(ADAccount *)v6 setLabel:v8];
 
-    v9 = [v4 objectForKey:kAFAccountInfoAssistantIdentifierKey];
+    v9 = [dictionaryCopy objectForKey:kAFAccountInfoAssistantIdentifierKey];
     [(ADAccount *)v6 setAssistantIdentifier:v9];
 
-    v10 = [v4 objectForKey:kAFAccountInfoLoggingAssistantIdentifierKey];
+    v10 = [dictionaryCopy objectForKey:kAFAccountInfoLoggingAssistantIdentifierKey];
     [(ADAccount *)v6 setLoggingAssistantIdentifier:v10];
 
-    v11 = [v4 objectForKey:kAFAccountInfoSpeechIdentifierKey];
+    v11 = [dictionaryCopy objectForKey:kAFAccountInfoSpeechIdentifierKey];
     [(ADAccount *)v6 setSpeechIdentifier:v11];
 
-    v12 = [v4 objectForKey:kAFAccountInfoHostnameKey];
+    v12 = [dictionaryCopy objectForKey:kAFAccountInfoHostnameKey];
     [(ADAccount *)v6 setHostname:v12];
 
-    v13 = [v4 objectForKey:kAFAccountInfoPeerAssistantIdentifierKey];
+    v13 = [dictionaryCopy objectForKey:kAFAccountInfoPeerAssistantIdentifierKey];
     [(ADAccount *)v6 setPeerAssistantIdentifier:v13];
 
-    v14 = [v4 objectForKey:kAFAccountInfoPeerLoggingAssistantIdentifierKey];
+    v14 = [dictionaryCopy objectForKey:kAFAccountInfoPeerLoggingAssistantIdentifierKey];
     [(ADAccount *)v6 setPeerLoggingAssistantIdentifier:v14];
 
-    v15 = [v4 objectForKey:kAFAccountInfoPeerSpeechIdentifierKey];
+    v15 = [dictionaryCopy objectForKey:kAFAccountInfoPeerSpeechIdentifierKey];
     [(ADAccount *)v6 setPeerSpeechIdentifier:v15];
 
-    v16 = [v4 objectForKey:kAFAccountInfoPeerUserAgentStringKey];
+    v16 = [dictionaryCopy objectForKey:kAFAccountInfoPeerUserAgentStringKey];
     [(ADAccount *)v6 setPeerUserAgentString:v16];
 
-    v17 = [v4 objectForKey:kAFAccountInfoPeerLanguageCodeKey];
+    v17 = [dictionaryCopy objectForKey:kAFAccountInfoPeerLanguageCodeKey];
     [(ADAccount *)v6 setPeerLanguageCode:v17];
 
-    v18 = [v4 objectForKey:kAFAccountInfoPeerSiriEnabledKey];
+    v18 = [dictionaryCopy objectForKey:kAFAccountInfoPeerSiriEnabledKey];
     -[ADAccount setPeerSiriEnabled:](v6, "setPeerSiriEnabled:", [v18 BOOLValue]);
 
-    v19 = [v4 objectForKey:kAFAccountInfoPeerHostnameKey];
+    v19 = [dictionaryCopy objectForKey:kAFAccountInfoPeerHostnameKey];
     [(ADAccount *)v6 setPeerHostname:v19];
 
-    v20 = [v4 objectForKey:kAFAccountInfoPredefinedServerKey];
+    v20 = [dictionaryCopy objectForKey:kAFAccountInfoPredefinedServerKey];
     [(ADAccount *)v6 setPredefinedServer:v20];
 
-    v21 = [v4 objectForKey:kAFAccountInfoAceHostKey];
+    v21 = [dictionaryCopy objectForKey:kAFAccountInfoAceHostKey];
     [(ADAccount *)v6 setAceHost:v21];
 
-    v22 = [v4 objectForKey:kAFAccountInfoConnectionPolicyKey];
+    v22 = [dictionaryCopy objectForKey:kAFAccountInfoConnectionPolicyKey];
     [(ADAccount *)v6 setConnectionPolicy:v22];
 
-    v23 = [v4 objectForKey:kAFAccountInfoConnectionPolicyDateKey];
+    v23 = [dictionaryCopy objectForKey:kAFAccountInfoConnectionPolicyDateKey];
     [(ADAccount *)v6 setConnectionPolicyDate:v23];
 
-    v24 = [v4 objectForKey:kAFAccountInfoConnectionPolicyFirstFailureDateKey];
+    v24 = [dictionaryCopy objectForKey:kAFAccountInfoConnectionPolicyFirstFailureDateKey];
     [(ADAccount *)v6 setConnectionPolicyFirstFailureDate:v24];
 
-    v25 = [v4 objectForKey:kAFAccountInfoConnectionPolicyHostnameKey];
+    v25 = [dictionaryCopy objectForKey:kAFAccountInfoConnectionPolicyHostnameKey];
     [(ADAccount *)v6 setConnectionPolicyHostname:v25];
 
-    v26 = [v4 objectForKey:kAFAccountInfoGroupKey];
+    v26 = [dictionaryCopy objectForKey:kAFAccountInfoGroupKey];
     [(ADAccount *)v6 setGroup:v26];
 
-    v27 = [v4 objectForKey:kAFAccountInfoLocaleIdentifierKey];
+    v27 = [dictionaryCopy objectForKey:kAFAccountInfoLocaleIdentifierKey];
     [(ADAccount *)v6 setLocaleIdentifier:v27];
   }
 
   return v6;
 }
 
-+ (id)_accountForIdentifier:(id)a3 infoDictionary:(id)a4 intanceContext:(id)a5 isReadOnly:(BOOL)a6 isCoupledToHost:(BOOL)a7
++ (id)_accountForIdentifier:(id)identifier infoDictionary:(id)dictionary intanceContext:(id)context isReadOnly:(BOOL)only isCoupledToHost:(BOOL)host
 {
-  v7 = a6;
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  onlyCopy = only;
+  identifierCopy = identifier;
+  dictionaryCopy = dictionary;
+  contextCopy = context;
   v13 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     *buf = 136315395;
     v92 = "+[ADAccount _accountForIdentifier:infoDictionary:intanceContext:isReadOnly:isCoupledToHost:]";
     v93 = 2113;
-    v94 = v10;
+    v94 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "%s %{private}@", buf, 0x16u);
   }
 
   v14 = objc_alloc_init(ADAccount);
-  [(ADAccount *)v14 setInstanceContext:v12];
-  [(ADAccount *)v14 setIsReadOnly:v7];
-  [(ADAccount *)v14 setIdentifier:v10];
-  v15 = [v11 objectForKey:@"Label"];
+  [(ADAccount *)v14 setInstanceContext:contextCopy];
+  [(ADAccount *)v14 setIsReadOnly:onlyCopy];
+  [(ADAccount *)v14 setIdentifier:identifierCopy];
+  v15 = [dictionaryCopy objectForKey:@"Label"];
   [(ADAccount *)v14 setLabel:v15];
 
-  v16 = [v11 objectForKey:@"Hostname"];
+  v16 = [dictionaryCopy objectForKey:@"Hostname"];
   [(ADAccount *)v14 setHostname:v16];
 
-  v17 = [v11 objectForKey:@"Group"];
+  v17 = [dictionaryCopy objectForKey:@"Group"];
   [(ADAccount *)v14 setGroup:v17];
 
-  v18 = [v11 objectForKey:@"Predefined Server"];
+  v18 = [dictionaryCopy objectForKey:@"Predefined Server"];
   [(ADAccount *)v14 setPredefinedServer:v18];
 
-  v19 = [v11 objectForKey:@"Ace Host"];
+  v19 = [dictionaryCopy objectForKey:@"Ace Host"];
   [(ADAccount *)v14 setAceHost:v19];
 
   v20 = AFBuildVersion();
-  v21 = [v11 objectForKey:@"Build Version"];
+  v21 = [dictionaryCopy objectForKey:@"Build Version"];
   v22 = [v20 isEqualToString:v21];
 
   if (v22)
   {
-    v23 = [v11 objectForKey:@"Connection Policy"];
+    v23 = [dictionaryCopy objectForKey:@"Connection Policy"];
     [(ADAccount *)v14 setConnectionPolicy:v23];
 
-    v24 = [v11 objectForKey:@"Connection Policy Date"];
+    v24 = [dictionaryCopy objectForKey:@"Connection Policy Date"];
     [(ADAccount *)v14 setConnectionPolicyDate:v24];
 
-    v25 = [v11 objectForKey:@"Connection Policy Hostname"];
+    v25 = [dictionaryCopy objectForKey:@"Connection Policy Hostname"];
     [(ADAccount *)v14 setConnectionPolicyHostname:v25];
 
-    v26 = [v11 objectForKey:@"Connection Policy First Failure Date"];
+    v26 = [dictionaryCopy objectForKey:@"Connection Policy First Failure Date"];
     [(ADAccount *)v14 setConnectionPolicyFirstFailureDate:v26];
   }
 
@@ -1336,25 +1336,25 @@ LABEL_15:
     [(ADAccount *)v14 setConnectionPolicyHostname:0];
   }
 
-  v27 = [v11 objectForKey:@"Locale Identifier"];
+  v27 = [dictionaryCopy objectForKey:@"Locale Identifier"];
   [(ADAccount *)v14 setLocaleIdentifier:v27];
 
-  v28 = [v11 objectForKey:@"Last Assistant Data Anchor"];
+  v28 = [dictionaryCopy objectForKey:@"Last Assistant Data Anchor"];
   [(ADAccount *)v14 setLastAssistantDataAnchor:v28];
 
-  v29 = [v11 objectForKey:@"Validation Expiration"];
+  v29 = [dictionaryCopy objectForKey:@"Validation Expiration"];
   [(ADAccount *)v14 setValidationExpiration:v29];
 
-  v30 = [v11 objectForKey:@"Validation Version"];
+  v30 = [dictionaryCopy objectForKey:@"Validation Version"];
   [(ADAccount *)v14 setValidationVersion:v30];
 
-  v31 = [v11 objectForKey:@"Peer Hostname"];
+  v31 = [dictionaryCopy objectForKey:@"Peer Hostname"];
   [(ADAccount *)v14 setPeerHostname:v31];
 
-  v32 = [v11 objectForKey:@"Needs Creation"];
+  v32 = [dictionaryCopy objectForKey:@"Needs Creation"];
   -[ADAccount setNeedsCreation:](v14, "setNeedsCreation:", [v32 BOOLValue]);
 
-  v33 = [v11 objectForKey:@"Needs Destruction"];
+  v33 = [dictionaryCopy objectForKey:@"Needs Destruction"];
   -[ADAccount setNeedsDestruction:](v14, "setNeedsDestruction:", [v33 BOOLValue]);
 
   v34 = [(ADAccount *)v14 _keychainValueForKey:@"Assistant Identifier"];
@@ -1369,7 +1369,7 @@ LABEL_15:
 
   else
   {
-    v37 = [v11 objectForKey:@"Assistant Identifier"];
+    v37 = [dictionaryCopy objectForKey:@"Assistant Identifier"];
     if (v37)
     {
       v38 = AFSiriLogContextDaemon;
@@ -1390,15 +1390,15 @@ LABEL_15:
 
   if (v35)
   {
-    v40 = [[NSString alloc] initWithData:v35 encoding:4];
-    [(ADAccount *)v14 setLoggingAssistantIdentifier:v40];
+    uUIDString = [[NSString alloc] initWithData:v35 encoding:4];
+    [(ADAccount *)v14 setLoggingAssistantIdentifier:uUIDString];
   }
 
   else
   {
-    v41 = [(ADAccount *)v14 assistantIdentifier];
+    assistantIdentifier = [(ADAccount *)v14 assistantIdentifier];
 
-    if (!v41)
+    if (!assistantIdentifier)
     {
       goto LABEL_19;
     }
@@ -1412,10 +1412,10 @@ LABEL_15:
     }
 
     v43 = +[NSUUID UUID];
-    v40 = [v43 UUIDString];
+    uUIDString = [v43 UUIDString];
 
-    [(ADAccount *)v14 setLoggingAssistantIdentifier:v40];
-    v44 = [v40 dataUsingEncoding:4];
+    [(ADAccount *)v14 setLoggingAssistantIdentifier:uUIDString];
+    v44 = [uUIDString dataUsingEncoding:4];
     [(ADAccount *)v14 _setKeychainValue:v44 forKey:@"Logging Assistant Identifier"];
 
     v36 = v85;
@@ -1430,7 +1430,7 @@ LABEL_19:
 
   else
   {
-    v45 = [v11 objectForKey:@"Speech Identifier"];
+    v45 = [dictionaryCopy objectForKey:@"Speech Identifier"];
     if (v45)
     {
       v46 = AFSiriLogContextDaemon;
@@ -1492,25 +1492,25 @@ LABEL_19:
     v58 = [(ADAccount *)v14 _keychainValueForKey:@"Peer Siri Enabled"];
     if (v58)
     {
-      v80 = v12;
-      v59 = v10;
+      v80 = contextCopy;
+      v59 = identifierCopy;
       v60 = [NSSet setWithObject:objc_opt_class()];
       v61 = [NSKeyedUnarchiver unarchivedObjectOfClasses:v60 fromData:v58 error:0];
 
       if (objc_opt_respondsToSelector())
       {
-        v62 = [v61 BOOLValue];
+        bOOLValue = [v61 BOOLValue];
       }
 
       else
       {
-        v62 = 0;
+        bOOLValue = 0;
       }
 
-      [(ADAccount *)v14 setPeerSiriEnabled:v62];
+      [(ADAccount *)v14 setPeerSiriEnabled:bOOLValue];
 
-      v10 = v59;
-      v12 = v80;
+      identifierCopy = v59;
+      contextCopy = v80;
     }
 
     v35 = v83;
@@ -1531,8 +1531,8 @@ LABEL_19:
     v64 = [(ADAccount *)v14 _keychainValueForKey:@"Watch Data Exists"];
     if (v64)
     {
-      v81 = v12;
-      v65 = v10;
+      v81 = contextCopy;
+      v65 = identifierCopy;
       v66 = objc_opt_class();
       v67 = objc_opt_class();
       v68 = [NSSet setWithObjects:v66, v67, objc_opt_class(), 0];
@@ -1572,8 +1572,8 @@ LABEL_19:
       v77 = +[ADPreferences sharedPreferences];
       [v77 setHasPairedWatches:{objc_msgSend(v70, "count") != 0}];
 
-      v10 = v65;
-      v12 = v81;
+      identifierCopy = v65;
+      contextCopy = v81;
       v35 = v83;
       v34 = v84;
       v36 = v85;
@@ -1594,21 +1594,21 @@ LABEL_19:
   return v14;
 }
 
-+ (id)accountForIdentifier:(id)a3
++ (id)accountForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = +[ADPreferences sharedPreferences];
-  v6 = [v5 accountInfoForIdentifier:v4];
-  v7 = [a1 _accountForIdentifier:v4 infoDictionary:v6 intanceContext:0 isReadOnly:0 isCoupledToHost:1];
+  v6 = [v5 accountInfoForIdentifier:identifierCopy];
+  v7 = [self _accountForIdentifier:identifierCopy infoDictionary:v6 intanceContext:0 isReadOnly:0 isCoupledToHost:1];
 
   return v7;
 }
 
-+ (id)activeAccountForInstanceContext:(id)a3
++ (id)activeAccountForInstanceContext:(id)context
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && ([v3 isCurrent] & 1) == 0)
+  contextCopy = context;
+  v4 = contextCopy;
+  if (contextCopy && ([contextCopy isCurrent] & 1) == 0)
   {
     v5 = [[ADPreferences alloc] initWithInstanceContext:v4];
     v6 = 1;
@@ -1620,14 +1620,14 @@ LABEL_19:
     v6 = 0;
   }
 
-  v7 = [(ADPreferences *)v5 activeAccountIdentifier];
-  v8 = [(ADPreferences *)v5 accountIdentifiers];
-  v9 = v8;
-  if (v7 && ([v8 containsObject:v7] & 1) != 0)
+  activeAccountIdentifier = [(ADPreferences *)v5 activeAccountIdentifier];
+  accountIdentifiers = [(ADPreferences *)v5 accountIdentifiers];
+  v9 = accountIdentifiers;
+  if (activeAccountIdentifier && ([accountIdentifiers containsObject:activeAccountIdentifier] & 1) != 0)
   {
 LABEL_9:
-    v11 = [(ADPreferences *)v5 accountInfoForIdentifier:v7];
-    v12 = [ADAccount _accountForIdentifier:v7 infoDictionary:v11 intanceContext:v4 isReadOnly:v6 isCoupledToHost:1];
+    v11 = [(ADPreferences *)v5 accountInfoForIdentifier:activeAccountIdentifier];
+    v12 = [ADAccount _accountForIdentifier:activeAccountIdentifier infoDictionary:v11 intanceContext:v4 isReadOnly:v6 isCoupledToHost:1];
 
     if (v12)
     {
@@ -1641,7 +1641,7 @@ LABEL_9:
   {
     v10 = [v9 objectAtIndex:0];
 
-    v7 = v10;
+    activeAccountIdentifier = v10;
     if (v10)
     {
       goto LABEL_9;
@@ -1651,7 +1651,7 @@ LABEL_9:
   else
   {
 
-    v7 = 0;
+    activeAccountIdentifier = 0;
   }
 
 LABEL_12:
@@ -1663,25 +1663,25 @@ LABEL_13:
   return v12;
 }
 
-+ (BOOL)setActiveAccountIdentifier:(id)a3
++ (BOOL)setActiveAccountIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = +[ADPreferences sharedPreferences];
-  v5 = [v4 accountIdentifiers];
-  v6 = [v5 containsObject:v3];
+  accountIdentifiers = [v4 accountIdentifiers];
+  v6 = [accountIdentifiers containsObject:identifierCopy];
 
   if (v6)
   {
-    [v4 setActiveAccountIdentifier:v3];
+    [v4 setActiveAccountIdentifier:identifierCopy];
     [v4 synchronize];
   }
 
   return v6;
 }
 
-- (BOOL)watchExistsForAssistantId:(id)a3
+- (BOOL)watchExistsForAssistantId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   v5 = self->_pairedWatches;
   v6 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
@@ -1711,7 +1711,7 @@ LABEL_13:
         }
 
         v12 = [*(*(&v16 + 1) + 8 * i) objectForKey:{@"Watch Assistant Identifier", v16}];
-        v13 = [v4 isEqualToString:v12];
+        v13 = [idCopy isEqualToString:v12];
 
         if (v13)
         {
@@ -1736,32 +1736,32 @@ LABEL_13:
   return v14;
 }
 
-- (void)updateGizmoData:(id)a3 forUniqueId:(id)a4
+- (void)updateGizmoData:(id)data forUniqueId:(id)id
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  idCopy = id;
   v8 = self->_pairedWatches;
-  v38 = [v6 assistantId];
-  v9 = [v6 languageCode];
-  v10 = [v6 userAgent];
+  assistantId = [dataCopy assistantId];
+  languageCode = [dataCopy languageCode];
+  userAgent = [dataCopy userAgent];
   v11 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
   {
     *buf = 136315394;
     v46 = "[ADAccount(SharedData) updateGizmoData:forUniqueId:]";
     v47 = 2112;
-    v48 = v6;
+    v48 = dataCopy;
     _os_log_debug_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEBUG, "%s data=%@", buf, 0x16u);
   }
 
-  if (v6 && (![v6 siriEnabled] ? (v12 = 0) : (v12 = objc_msgSend(v6, "isFullUodEnabled") ^ 1), +[ADPreferences sharedPreferences](ADPreferences, "sharedPreferences"), v13 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v13, "setIsSyncNeededForWatch:", v12), v13, v14 = AFSiriLogContextDaemon, os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG)))
+  if (dataCopy && (![dataCopy siriEnabled] ? (v12 = 0) : (v12 = objc_msgSend(dataCopy, "isFullUodEnabled") ^ 1), +[ADPreferences sharedPreferences](ADPreferences, "sharedPreferences"), v13 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v13, "setIsSyncNeededForWatch:", v12), v13, v14 = AFSiriLogContextDaemon, os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG)))
   {
     *buf = 136315394;
     v46 = "[ADAccount(SharedData) updateGizmoData:forUniqueId:]";
     v47 = 1024;
     LODWORD(v48) = v12;
     _os_log_debug_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEBUG, "%s updated preference for watch sync=%d", buf, 0x12u);
-    if (!v7)
+    if (!idCopy)
     {
 LABEL_46:
       v32 = AFSiriLogContextDaemon;
@@ -1770,9 +1770,9 @@ LABEL_46:
         *buf = 136315650;
         v46 = "[ADAccount(SharedData) updateGizmoData:forUniqueId:]";
         v47 = 2112;
-        v48 = v38;
+        v48 = assistantId;
         v49 = 2112;
-        v50 = v7;
+        v50 = idCopy;
         _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_INFO, "%s missing assistantId=%@ or uniqueId=%@", buf, 0x20u);
       }
 
@@ -1780,12 +1780,12 @@ LABEL_46:
     }
   }
 
-  else if (!v7)
+  else if (!idCopy)
   {
     goto LABEL_46;
   }
 
-  if (!v38)
+  if (!assistantId)
   {
     goto LABEL_46;
   }
@@ -1795,8 +1795,8 @@ LABEL_46:
     goto LABEL_21;
   }
 
-  v36 = v10;
-  v37 = v9;
+  v36 = userAgent;
+  v37 = languageCode;
   v42 = 0u;
   v43 = 0u;
   v40 = 0u;
@@ -1811,11 +1811,11 @@ LABEL_46:
   v17 = v16;
   v18 = *v41;
   v34 = v8;
-  v35 = v6;
-  v33 = self;
+  v35 = dataCopy;
+  selfCopy = self;
   while (2)
   {
-    v19 = v7;
+    v19 = idCopy;
     for (i = 0; i != v17; i = i + 1)
     {
       if (*v41 != v18)
@@ -1825,16 +1825,16 @@ LABEL_46:
 
       v21 = *(*(&v40 + 1) + 8 * i);
       v22 = [v21 objectForKey:@"Watch Assistant Identifier"];
-      if ([v38 isEqualToString:v22])
+      if ([assistantId isEqualToString:v22])
       {
-        v9 = v37;
+        languageCode = v37;
         if (v37)
         {
           [v21 setObject:v37 forKey:@"Watch Language"];
         }
 
-        v7 = v19;
-        v10 = v36;
+        idCopy = v19;
+        userAgent = v36;
         if (v36)
         {
           [v21 setObject:v36 forKey:@"Watch User Agent String"];
@@ -1842,7 +1842,7 @@ LABEL_46:
 
         [v21 setObject:v19 forKey:@"Watch Override Id"];
         v28 = AFSiriLogContextDaemon;
-        v6 = v35;
+        dataCopy = v35;
         if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
         {
           *buf = 136315138;
@@ -1856,22 +1856,22 @@ LABEL_46:
       v23 = [v21 objectForKey:@"Watch Override Id"];
       if ([v23 isEqualToString:v19])
       {
-        v9 = v37;
+        languageCode = v37;
         if (v37)
         {
           [v21 setObject:v37 forKey:@"Watch Language"];
         }
 
-        v7 = v19;
-        v10 = v36;
+        idCopy = v19;
+        userAgent = v36;
         if (v36)
         {
           [v21 setObject:v36 forKey:@"Watch User Agent String"];
         }
 
-        [v21 setObject:v38 forKey:@"Watch Assistant Identifier"];
+        [v21 setObject:assistantId forKey:@"Watch Assistant Identifier"];
         v29 = AFSiriLogContextDaemon;
-        v6 = v35;
+        dataCopy = v35;
         if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
         {
           *buf = 136315138;
@@ -1880,17 +1880,17 @@ LABEL_46:
         }
 
 LABEL_43:
-        self = v33;
+        self = selfCopy;
         v8 = v34;
         goto LABEL_44;
       }
     }
 
     v17 = [(NSMutableSet *)v15 countByEnumeratingWithState:&v40 objects:v44 count:16];
-    v7 = v19;
+    idCopy = v19;
     v8 = v34;
-    v6 = v35;
-    self = v33;
+    dataCopy = v35;
+    self = selfCopy;
     if (v17)
     {
       continue;
@@ -1901,8 +1901,8 @@ LABEL_43:
 
 LABEL_20:
 
-  v10 = v36;
-  v9 = v37;
+  userAgent = v36;
+  languageCode = v37;
 LABEL_21:
   if (!v8)
   {
@@ -1913,18 +1913,18 @@ LABEL_21:
 
   v26 = objc_alloc_init(NSMutableDictionary);
   v15 = v26;
-  if (v9)
+  if (languageCode)
   {
-    [(NSMutableSet *)v26 setObject:v9 forKey:@"Watch Language"];
+    [(NSMutableSet *)v26 setObject:languageCode forKey:@"Watch Language"];
   }
 
-  if (v10)
+  if (userAgent)
   {
-    [(NSMutableSet *)v15 setObject:v10 forKey:@"Watch User Agent String"];
+    [(NSMutableSet *)v15 setObject:userAgent forKey:@"Watch User Agent String"];
   }
 
-  [(NSMutableSet *)v15 setObject:v38 forKey:@"Watch Assistant Identifier"];
-  [(NSMutableSet *)v15 setObject:v7 forKey:@"Watch Override Id"];
+  [(NSMutableSet *)v15 setObject:assistantId forKey:@"Watch Assistant Identifier"];
+  [(NSMutableSet *)v15 setObject:idCopy forKey:@"Watch Override Id"];
   v27 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
   {
@@ -1950,10 +1950,10 @@ LABEL_44:
 LABEL_48:
 }
 
-- (void)setPairedWatches:(id)a3
+- (void)setPairedWatches:(id)watches
 {
-  v5 = a3;
-  if (([v5 isEqual:self->_pairedWatches] & 1) == 0)
+  watchesCopy = watches;
+  if (([watchesCopy isEqual:self->_pairedWatches] & 1) == 0)
   {
     v6 = AFSiriLogContextDaemon;
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
@@ -1963,7 +1963,7 @@ LABEL_48:
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "%s ", buf, 0xCu);
     }
 
-    objc_storeStrong(&self->_pairedWatches, a3);
+    objc_storeStrong(&self->_pairedWatches, watches);
     keychainQueue = self->_keychainQueue;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
@@ -1974,13 +1974,13 @@ LABEL_48:
   }
 }
 
-- (void)setPeerSiriEnabled:(BOOL)a3
+- (void)setPeerSiriEnabled:(BOOL)enabled
 {
-  if (self->_peerSiriEnabled != a3)
+  if (self->_peerSiriEnabled != enabled)
   {
     block[5] = v3;
     block[6] = v4;
-    self->_peerSiriEnabled = a3;
+    self->_peerSiriEnabled = enabled;
     keychainQueue = self->_keychainQueue;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
@@ -1991,13 +1991,13 @@ LABEL_48:
   }
 }
 
-- (void)setPeerLanguageCode:(id)a3
+- (void)setPeerLanguageCode:(id)code
 {
-  v4 = a3;
+  codeCopy = code;
   peerLanguageCode = self->_peerLanguageCode;
-  if (peerLanguageCode != v4 && ![(NSString *)peerLanguageCode isEqualToString:v4])
+  if (peerLanguageCode != codeCopy && ![(NSString *)peerLanguageCode isEqualToString:codeCopy])
   {
-    v6 = [(NSString *)v4 copy];
+    v6 = [(NSString *)codeCopy copy];
     v7 = self->_peerLanguageCode;
     self->_peerLanguageCode = v6;
 
@@ -2011,18 +2011,18 @@ LABEL_48:
   }
 }
 
-- (void)setPeerHostname:(id)a3
+- (void)setPeerHostname:(id)hostname
 {
-  self->_peerHostname = [a3 copy];
+  self->_peerHostname = [hostname copy];
 
   _objc_release_x1();
 }
 
 - (NSString)peerHostname
 {
-  v3 = [(ADAccount *)self _hostnameQAOverride];
-  peerHostname = v3;
-  if (!v3)
+  _hostnameQAOverride = [(ADAccount *)self _hostnameQAOverride];
+  peerHostname = _hostnameQAOverride;
+  if (!_hostnameQAOverride)
   {
     peerHostname = self->_peerHostname;
   }
@@ -2032,13 +2032,13 @@ LABEL_48:
   return peerHostname;
 }
 
-- (void)setPeerUserAgentString:(id)a3
+- (void)setPeerUserAgentString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   peerUserAgentString = self->_peerUserAgentString;
-  if (peerUserAgentString != v4 && ![(NSString *)peerUserAgentString isEqualToString:v4])
+  if (peerUserAgentString != stringCopy && ![(NSString *)peerUserAgentString isEqualToString:stringCopy])
   {
-    v6 = [(NSString *)v4 copy];
+    v6 = [(NSString *)stringCopy copy];
     v7 = self->_peerUserAgentString;
     self->_peerUserAgentString = v6;
 
@@ -2052,13 +2052,13 @@ LABEL_48:
   }
 }
 
-- (void)setPeerSpeechIdentifier:(id)a3
+- (void)setPeerSpeechIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   peerSpeechIdentifier = self->_peerSpeechIdentifier;
-  if (peerSpeechIdentifier != v4 && ![(NSString *)peerSpeechIdentifier isEqualToString:v4])
+  if (peerSpeechIdentifier != identifierCopy && ![(NSString *)peerSpeechIdentifier isEqualToString:identifierCopy])
   {
-    v6 = [(NSString *)v4 copy];
+    v6 = [(NSString *)identifierCopy copy];
     v7 = self->_peerSpeechIdentifier;
     self->_peerSpeechIdentifier = v6;
 
@@ -2072,13 +2072,13 @@ LABEL_48:
   }
 }
 
-- (void)setPeerLoggingAssistantIdentifier:(id)a3
+- (void)setPeerLoggingAssistantIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   peerLoggingAssistantIdentifier = self->_peerLoggingAssistantIdentifier;
-  if (peerLoggingAssistantIdentifier != v4 && ![(NSString *)peerLoggingAssistantIdentifier isEqualToString:v4])
+  if (peerLoggingAssistantIdentifier != identifierCopy && ![(NSString *)peerLoggingAssistantIdentifier isEqualToString:identifierCopy])
   {
-    v6 = [(NSString *)v4 copy];
+    v6 = [(NSString *)identifierCopy copy];
     v7 = self->_peerLoggingAssistantIdentifier;
     self->_peerLoggingAssistantIdentifier = v6;
 
@@ -2092,13 +2092,13 @@ LABEL_48:
   }
 }
 
-- (void)setPeerAssistantIdentifier:(id)a3
+- (void)setPeerAssistantIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   peerAssistantIdentifier = self->_peerAssistantIdentifier;
-  if (peerAssistantIdentifier != v4 && ![(NSString *)peerAssistantIdentifier isEqualToString:v4])
+  if (peerAssistantIdentifier != identifierCopy && ![(NSString *)peerAssistantIdentifier isEqualToString:identifierCopy])
   {
-    v6 = [(NSString *)v4 copy];
+    v6 = [(NSString *)identifierCopy copy];
     v7 = self->_peerAssistantIdentifier;
     self->_peerAssistantIdentifier = v6;
 
@@ -2112,9 +2112,9 @@ LABEL_48:
   }
 }
 
-- (id)saRemoteDevice:(id)a3
+- (id)saRemoteDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v5 = self->_pairedWatches;
   v6 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
@@ -2145,7 +2145,7 @@ LABEL_5:
 
       v12 = *(*(&v22 + 1) + 8 * v11);
       v13 = [v12 objectForKey:{@"Watch Override Id", v22}];
-      v14 = [v4 isEqualToString:v13];
+      v14 = [deviceCopy isEqualToString:v13];
 
       if (v14)
       {
@@ -2206,10 +2206,10 @@ LABEL_16:
 
 - (int64_t)connectionPolicyStatus
 {
-  v3 = [(ADAccount *)self saConnectionPolicy];
-  v4 = [(ADAccount *)self connectionPolicyDate];
-  v5 = [(ADAccount *)self connectionPolicyHostname];
-  if (v3)
+  saConnectionPolicy = [(ADAccount *)self saConnectionPolicy];
+  connectionPolicyDate = [(ADAccount *)self connectionPolicyDate];
+  connectionPolicyHostname = [(ADAccount *)self connectionPolicyHostname];
+  if (saConnectionPolicy)
   {
     if ([(ADAccount *)self needsCreation])
     {
@@ -2221,9 +2221,9 @@ LABEL_16:
       v6 = 2;
     }
 
-    else if (v4)
+    else if (connectionPolicyDate)
     {
-      if (v5)
+      if (connectionPolicyHostname)
       {
         if ([(ADAccount *)self hasConnectionPolicyFailed])
         {
@@ -2232,12 +2232,12 @@ LABEL_16:
 
         else
         {
-          v7 = [(ADAccount *)self connectionPolicyExpirationDate];
-          [v7 timeIntervalSinceNow];
+          connectionPolicyExpirationDate = [(ADAccount *)self connectionPolicyExpirationDate];
+          [connectionPolicyExpirationDate timeIntervalSinceNow];
           if (v8 >= 0.0)
           {
-            v9 = [(ADAccount *)self hostname];
-            if ([v5 isEqualToString:v9])
+            hostname = [(ADAccount *)self hostname];
+            if ([connectionPolicyHostname isEqualToString:hostname])
             {
               v6 = 0;
             }
@@ -2277,12 +2277,12 @@ LABEL_16:
 
 - (id)connectionPolicyExpirationDate
 {
-  v3 = [(ADAccount *)self saConnectionPolicy];
-  v4 = [v3 timeToLive];
-  v5 = v4;
-  if (v4)
+  saConnectionPolicy = [(ADAccount *)self saConnectionPolicy];
+  timeToLive = [saConnectionPolicy timeToLive];
+  v5 = timeToLive;
+  if (timeToLive)
   {
-    [v4 doubleValue];
+    [timeToLive doubleValue];
     v7 = fmin(v6, 604800.0);
   }
 
@@ -2291,18 +2291,18 @@ LABEL_16:
     v7 = 604800.0;
   }
 
-  v8 = [(ADAccount *)self connectionPolicyDate];
-  v9 = [v8 dateByAddingTimeInterval:v7];
+  connectionPolicyDate = [(ADAccount *)self connectionPolicyDate];
+  v9 = [connectionPolicyDate dateByAddingTimeInterval:v7];
 
   return v9;
 }
 
 - (id)saConnectionPolicy
 {
-  v2 = [(ADAccount *)self connectionPolicy];
-  if (v2)
+  connectionPolicy = [(ADAccount *)self connectionPolicy];
+  if (connectionPolicy)
   {
-    v3 = [[SAConnectionPolicy alloc] initWithDictionary:v2];
+    v3 = [[SAConnectionPolicy alloc] initWithDictionary:connectionPolicy];
   }
 
   else

@@ -24,28 +24,28 @@
 - (int64_t)customElementState;
 - (int64_t)pseudoType;
 - (int64_t)shadowRootType;
-- (void)setAttributes:(id)a3;
-- (void)setBaseURL:(id)a3;
-- (void)setChildren:(id)a3;
-- (void)setContentDocument:(id)a3;
-- (void)setContentSecurityPolicyHash:(id)a3;
-- (void)setCustomElementState:(int64_t)a3;
-- (void)setDocumentURL:(id)a3;
-- (void)setFrameId:(id)a3;
-- (void)setLayoutFlags:(id)a3;
-- (void)setLocalName:(id)a3;
-- (void)setName:(id)a3;
-- (void)setNodeName:(id)a3;
-- (void)setNodeValue:(id)a3;
-- (void)setPseudoElements:(id)a3;
-- (void)setPseudoType:(int64_t)a3;
-- (void)setPublicId:(id)a3;
-- (void)setShadowRootType:(int64_t)a3;
-- (void)setShadowRoots:(id)a3;
-- (void)setSystemId:(id)a3;
-- (void)setTemplateContent:(id)a3;
-- (void)setValue:(id)a3;
-- (void)setXmlVersion:(id)a3;
+- (void)setAttributes:(id)attributes;
+- (void)setBaseURL:(id)l;
+- (void)setChildren:(id)children;
+- (void)setContentDocument:(id)document;
+- (void)setContentSecurityPolicyHash:(id)hash;
+- (void)setCustomElementState:(int64_t)state;
+- (void)setDocumentURL:(id)l;
+- (void)setFrameId:(id)id;
+- (void)setLayoutFlags:(id)flags;
+- (void)setLocalName:(id)name;
+- (void)setName:(id)name;
+- (void)setNodeName:(id)name;
+- (void)setNodeValue:(id)value;
+- (void)setPseudoElements:(id)elements;
+- (void)setPseudoType:(int64_t)type;
+- (void)setPublicId:(id)id;
+- (void)setShadowRootType:(int64_t)type;
+- (void)setShadowRoots:(id)roots;
+- (void)setSystemId:(id)id;
+- (void)setTemplateContent:(id)content;
+- (void)setValue:(id)value;
+- (void)setXmlVersion:(id)version;
 @end
 
 @implementation RWIProtocolDOMNode
@@ -64,11 +64,11 @@
   return [(RWIProtocolJSONObject *)&v3 integerForKey:@"nodeType"];
 }
 
-- (void)setNodeName:(id)a3
+- (void)setNodeName:(id)name
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolDOMNode;
-  [(RWIProtocolJSONObject *)&v3 setString:a3 forKey:@"nodeName"];
+  [(RWIProtocolJSONObject *)&v3 setString:name forKey:@"nodeName"];
 }
 
 - (NSString)nodeName
@@ -80,11 +80,11 @@
   return v2;
 }
 
-- (void)setLocalName:(id)a3
+- (void)setLocalName:(id)name
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolDOMNode;
-  [(RWIProtocolJSONObject *)&v3 setString:a3 forKey:@"localName"];
+  [(RWIProtocolJSONObject *)&v3 setString:name forKey:@"localName"];
 }
 
 - (NSString)localName
@@ -96,11 +96,11 @@
   return v2;
 }
 
-- (void)setNodeValue:(id)a3
+- (void)setNodeValue:(id)value
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolDOMNode;
-  [(RWIProtocolJSONObject *)&v3 setString:a3 forKey:@"nodeValue"];
+  [(RWIProtocolJSONObject *)&v3 setString:value forKey:@"nodeValue"];
 }
 
 - (NSString)nodeValue
@@ -112,11 +112,11 @@
   return v2;
 }
 
-- (void)setFrameId:(id)a3
+- (void)setFrameId:(id)id
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolDOMNode;
-  [(RWIProtocolJSONObject *)&v3 setString:a3 forKey:@"frameId"];
+  [(RWIProtocolJSONObject *)&v3 setString:id forKey:@"frameId"];
 }
 
 - (NSString)frameId
@@ -135,14 +135,14 @@
   return [(RWIProtocolJSONObject *)&v3 integerForKey:@"childNodeCount"];
 }
 
-- (void)setChildren:(id)a3
+- (void)setChildren:(id)children
 {
   v22 = *MEMORY[0x277D85DE8];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  obj = a3;
+  obj = children;
   v3 = [obj countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v3)
   {
@@ -206,9 +206,9 @@
   return v2;
 }
 
-- (void)setAttributes:(id)a3
+- (void)setAttributes:(id)attributes
 {
-  Inspector::toJSONStringArray(a3, &v6);
+  Inspector::toJSONStringArray(attributes, &v6);
   v5.receiver = self;
   v5.super_class = RWIProtocolDOMNode;
   [(RWIProtocolJSONObject *)&v5 setJSONArray:&v6 forKey:@"attributes"];
@@ -238,11 +238,11 @@
   return v2;
 }
 
-- (void)setDocumentURL:(id)a3
+- (void)setDocumentURL:(id)l
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolDOMNode;
-  [(RWIProtocolJSONObject *)&v3 setString:a3 forKey:@"documentURL"];
+  [(RWIProtocolJSONObject *)&v3 setString:l forKey:@"documentURL"];
 }
 
 - (NSString)documentURL
@@ -254,11 +254,11 @@
   return v2;
 }
 
-- (void)setBaseURL:(id)a3
+- (void)setBaseURL:(id)l
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolDOMNode;
-  [(RWIProtocolJSONObject *)&v3 setString:a3 forKey:@"baseURL"];
+  [(RWIProtocolJSONObject *)&v3 setString:l forKey:@"baseURL"];
 }
 
 - (NSString)baseURL
@@ -270,11 +270,11 @@
   return v2;
 }
 
-- (void)setPublicId:(id)a3
+- (void)setPublicId:(id)id
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolDOMNode;
-  [(RWIProtocolJSONObject *)&v3 setString:a3 forKey:@"publicId"];
+  [(RWIProtocolJSONObject *)&v3 setString:id forKey:@"publicId"];
 }
 
 - (NSString)publicId
@@ -286,11 +286,11 @@
   return v2;
 }
 
-- (void)setSystemId:(id)a3
+- (void)setSystemId:(id)id
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolDOMNode;
-  [(RWIProtocolJSONObject *)&v3 setString:a3 forKey:@"systemId"];
+  [(RWIProtocolJSONObject *)&v3 setString:id forKey:@"systemId"];
 }
 
 - (NSString)systemId
@@ -302,11 +302,11 @@
   return v2;
 }
 
-- (void)setXmlVersion:(id)a3
+- (void)setXmlVersion:(id)version
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolDOMNode;
-  [(RWIProtocolJSONObject *)&v3 setString:a3 forKey:@"xmlVersion"];
+  [(RWIProtocolJSONObject *)&v3 setString:version forKey:@"xmlVersion"];
 }
 
 - (NSString)xmlVersion
@@ -318,11 +318,11 @@
   return v2;
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolDOMNode;
-  [(RWIProtocolJSONObject *)&v3 setString:a3 forKey:@"name"];
+  [(RWIProtocolJSONObject *)&v3 setString:name forKey:@"name"];
 }
 
 - (NSString)name
@@ -334,11 +334,11 @@
   return v2;
 }
 
-- (void)setValue:(id)a3
+- (void)setValue:(id)value
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolDOMNode;
-  [(RWIProtocolJSONObject *)&v3 setString:a3 forKey:@"value"];
+  [(RWIProtocolJSONObject *)&v3 setString:value forKey:@"value"];
 }
 
 - (NSString)value
@@ -350,7 +350,7 @@
   return v2;
 }
 
-- (void)setPseudoType:(int64_t)a3
+- (void)setPseudoType:(int64_t)type
 {
   WTF::StringImpl::createWithoutCopyingNonEmpty();
   v4 = v7;
@@ -419,7 +419,7 @@ LABEL_8:
   return v10;
 }
 
-- (void)setShadowRootType:(int64_t)a3
+- (void)setShadowRootType:(int64_t)type
 {
   WTF::StringImpl::createWithoutCopyingNonEmpty();
   if (v6)
@@ -487,7 +487,7 @@ LABEL_8:
   return v10;
 }
 
-- (void)setCustomElementState:(int64_t)a3
+- (void)setCustomElementState:(int64_t)state
 {
   WTF::StringImpl::createWithoutCopyingNonEmpty();
   if (v6)
@@ -555,11 +555,11 @@ LABEL_8:
   return v10;
 }
 
-- (void)setContentDocument:(id)a3
+- (void)setContentDocument:(id)document
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolDOMNode;
-  [(RWIProtocolJSONObject *)&v3 setObject:a3 forKey:@"contentDocument"];
+  [(RWIProtocolJSONObject *)&v3 setObject:document forKey:@"contentDocument"];
 }
 
 - (RWIProtocolDOMNode)contentDocument
@@ -617,14 +617,14 @@ LABEL_8:
   return v7;
 }
 
-- (void)setShadowRoots:(id)a3
+- (void)setShadowRoots:(id)roots
 {
   v22 = *MEMORY[0x277D85DE8];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  obj = a3;
+  obj = roots;
   v3 = [obj countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v3)
   {
@@ -688,11 +688,11 @@ LABEL_8:
   return v2;
 }
 
-- (void)setTemplateContent:(id)a3
+- (void)setTemplateContent:(id)content
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolDOMNode;
-  [(RWIProtocolJSONObject *)&v3 setObject:a3 forKey:@"templateContent"];
+  [(RWIProtocolJSONObject *)&v3 setObject:content forKey:@"templateContent"];
 }
 
 - (RWIProtocolDOMNode)templateContent
@@ -750,14 +750,14 @@ LABEL_8:
   return v7;
 }
 
-- (void)setPseudoElements:(id)a3
+- (void)setPseudoElements:(id)elements
 {
   v22 = *MEMORY[0x277D85DE8];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  obj = a3;
+  obj = elements;
   v3 = [obj countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v3)
   {
@@ -821,11 +821,11 @@ LABEL_8:
   return v2;
 }
 
-- (void)setContentSecurityPolicyHash:(id)a3
+- (void)setContentSecurityPolicyHash:(id)hash
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolDOMNode;
-  [(RWIProtocolJSONObject *)&v3 setString:a3 forKey:@"contentSecurityPolicyHash"];
+  [(RWIProtocolJSONObject *)&v3 setString:hash forKey:@"contentSecurityPolicyHash"];
 }
 
 - (NSString)contentSecurityPolicyHash
@@ -837,9 +837,9 @@ LABEL_8:
   return v2;
 }
 
-- (void)setLayoutFlags:(id)a3
+- (void)setLayoutFlags:(id)flags
 {
-  Inspector::toJSONStringArray(a3, &v6);
+  Inspector::toJSONStringArray(flags, &v6);
   v5.receiver = self;
   v5.super_class = RWIProtocolDOMNode;
   [(RWIProtocolJSONObject *)&v5 setJSONArray:&v6 forKey:@"layoutFlags"];

@@ -1,5 +1,5 @@
 @interface FTSendMessage
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)messageBody;
 - (id)requiredKeys;
 - (void)dealloc;
@@ -7,11 +7,11 @@
 
 @implementation FTSendMessage
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v30.receiver = self;
   v30.super_class = FTSendMessage;
-  v4 = [(FTFaceTimeMessage *)&v30 copyWithZone:a3];
+  v4 = [(FTFaceTimeMessage *)&v30 copyWithZone:zone];
   v9 = objc_msgSend_peers(self, v5, v6, v7, v8);
   objc_msgSend_setPeers_(v4, v10, v9, v11, v12);
   v17 = objc_msgSend_reason(self, v13, v14, v15, v16);
@@ -32,8 +32,8 @@
 {
   v18.receiver = self;
   v18.super_class = FTSendMessage;
-  v2 = [(FTFaceTimeMessage *)&v18 requiredKeys];
-  v10 = objc_msgSend_mutableCopy(v2, v3, v4, v5, v6);
+  requiredKeys = [(FTFaceTimeMessage *)&v18 requiredKeys];
+  v10 = objc_msgSend_mutableCopy(requiredKeys, v3, v4, v5, v6);
   if (!v10)
   {
     v10 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -49,8 +49,8 @@
 {
   v35.receiver = self;
   v35.super_class = FTSendMessage;
-  v3 = [(FTFaceTimeMessage *)&v35 messageBody];
-  v8 = objc_msgSend_mutableCopy(v3, v4, v5, v6, v7);
+  messageBody = [(FTFaceTimeMessage *)&v35 messageBody];
+  v8 = objc_msgSend_mutableCopy(messageBody, v4, v5, v6, v7);
   v9 = MEMORY[0x277CCABB0];
   v14 = objc_msgSend_reason(self, v10, v11, v12, v13);
   v19 = objc_msgSend_intValue(v14, v15, v16, v17, v18);

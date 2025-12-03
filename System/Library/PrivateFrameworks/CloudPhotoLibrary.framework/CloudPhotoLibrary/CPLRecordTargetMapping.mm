@@ -2,10 +2,10 @@
 - (CPLRecordTargetMapping)init;
 - (NSString)targetDescriptions;
 - (NSString)updatedTargetsDescription;
-- (void)_setTarget:(id)a3 forRecordWithScopedIdentifier:(id)a4 isUpdate:(BOOL)a5;
-- (void)enumerateTargetsWithBlock:(id)a3;
-- (void)enumerateUnknownTargetsWithBlock:(id)a3;
-- (void)enumerateUpdatedTargetsWithBlock:(id)a3;
+- (void)_setTarget:(id)target forRecordWithScopedIdentifier:(id)identifier isUpdate:(BOOL)update;
+- (void)enumerateTargetsWithBlock:(id)block;
+- (void)enumerateUnknownTargetsWithBlock:(id)block;
+- (void)enumerateUpdatedTargetsWithBlock:(id)block;
 - (void)startTrackingUpdates;
 @end
 
@@ -20,7 +20,7 @@
   v10 = __44__CPLRecordTargetMapping_targetDescriptions__block_invoke;
   v11 = &unk_1E861C3F0;
   v12 = v3;
-  v13 = self;
+  selfCopy = self;
   v5 = v3;
   [(NSMutableDictionary *)targets enumerateKeysAndObjectsUsingBlock:&v8];
   v6 = [v5 componentsJoinedByString:{@"\n", v8, v9, v10, v11}];
@@ -88,9 +88,9 @@ void __44__CPLRecordTargetMapping_targetDescriptions__block_invoke(uint64_t a1, 
               }
             }
 
-            v18 = [MEMORY[0x1E696AAA8] currentHandler];
+            currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
             v19 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Framework/Sources/CPLRecordTarget.m"];
-            [v18 handleFailureInMethod:v20 object:self file:v19 lineNumber:252 description:{@"Target for %@ should have been updated and thus present", v10}];
+            [currentHandler handleFailureInMethod:v20 object:self file:v19 lineNumber:252 description:{@"Target for %@ should have been updated and thus present", v10}];
 
             abort();
           }
@@ -119,9 +119,9 @@ void __44__CPLRecordTargetMapping_targetDescriptions__block_invoke(uint64_t a1, 
   return v14;
 }
 
-- (void)enumerateUpdatedTargetsWithBlock:(id)a3
+- (void)enumerateUpdatedTargetsWithBlock:(id)block
 {
-  v5 = a3;
+  blockCopy = block;
   if ([(NSMutableSet *)self->_updatedScopedIdentifiers count])
   {
     updatedScopedIdentifiers = self->_updatedScopedIdentifiers;
@@ -131,7 +131,7 @@ void __44__CPLRecordTargetMapping_targetDescriptions__block_invoke(uint64_t a1, 
     v7[3] = &unk_1E861C3C8;
     v7[4] = self;
     v9 = a2;
-    v8 = v5;
+    v8 = blockCopy;
     [(NSMutableSet *)updatedScopedIdentifiers enumerateObjectsUsingBlock:v7];
   }
 }
@@ -178,18 +178,18 @@ void __59__CPLRecordTargetMapping_enumerateUpdatedTargetsWithBlock___block_invok
   MEMORY[0x1EEE66BB8](v3, updatedScopedIdentifiers);
 }
 
-- (void)enumerateUnknownTargetsWithBlock:(id)a3
+- (void)enumerateUnknownTargetsWithBlock:(id)block
 {
-  v5 = a3;
+  blockCopy = block;
   scopedIdentifiersWithUnknownTargets = self->_scopedIdentifiersWithUnknownTargets;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __59__CPLRecordTargetMapping_enumerateUnknownTargetsWithBlock___block_invoke;
   v8[3] = &unk_1E861C3C8;
-  v9 = v5;
+  v9 = blockCopy;
   v10 = a2;
   v8[4] = self;
-  v7 = v5;
+  v7 = blockCopy;
   [(NSMutableSet *)scopedIdentifiersWithUnknownTargets enumerateObjectsUsingBlock:v8];
 }
 
@@ -226,18 +226,18 @@ void __59__CPLRecordTargetMapping_enumerateUnknownTargetsWithBlock___block_invok
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)enumerateTargetsWithBlock:(id)a3
+- (void)enumerateTargetsWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_targets allKeys];
+  blockCopy = block;
+  allKeys = [(NSMutableDictionary *)self->_targets allKeys];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __52__CPLRecordTargetMapping_enumerateTargetsWithBlock___block_invoke;
   v7[3] = &unk_1E861C3A0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 enumerateObjectsUsingBlock:v7];
+  v8 = blockCopy;
+  v6 = blockCopy;
+  [allKeys enumerateObjectsUsingBlock:v7];
 }
 
 void __52__CPLRecordTargetMapping_enumerateTargetsWithBlock___block_invoke(uint64_t a1, uint64_t a2)
@@ -246,62 +246,62 @@ void __52__CPLRecordTargetMapping_enumerateTargetsWithBlock___block_invoke(uint6
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)_setTarget:(id)a3 forRecordWithScopedIdentifier:(id)a4 isUpdate:(BOOL)a5
+- (void)_setTarget:(id)target forRecordWithScopedIdentifier:(id)identifier isUpdate:(BOOL)update
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  v22 = v9;
-  v10 = [(NSMutableDictionary *)self->_targets objectForKeyedSubscript:v9];
+  updateCopy = update;
+  targetCopy = target;
+  identifierCopy = identifier;
+  v22 = identifierCopy;
+  v10 = [(NSMutableDictionary *)self->_targets objectForKeyedSubscript:identifierCopy];
   v11 = v10;
-  if (v10 && ([v10 isEqual:v8] & 1) != 0)
+  if (v10 && ([v10 isEqual:targetCopy] & 1) != 0)
   {
     goto LABEL_23;
   }
 
-  if (v5)
+  if (updateCopy)
   {
     updatedScopedIdentifiers = self->_updatedScopedIdentifiers;
     if (updatedScopedIdentifiers)
     {
-      [(NSMutableSet *)updatedScopedIdentifiers addObject:v9];
+      [(NSMutableSet *)updatedScopedIdentifiers addObject:identifierCopy];
     }
   }
 
-  v13 = [v11 otherScopedIdentifier];
-  v14 = [v8 otherScopedIdentifier];
-  v15 = v14;
-  v16 = v14 != 0;
-  if (!v13 || !v14)
+  otherScopedIdentifier = [v11 otherScopedIdentifier];
+  otherScopedIdentifier2 = [targetCopy otherScopedIdentifier];
+  v15 = otherScopedIdentifier2;
+  v16 = otherScopedIdentifier2 != 0;
+  if (!otherScopedIdentifier || !otherScopedIdentifier2)
   {
-    if (!v13)
+    if (!otherScopedIdentifier)
     {
       goto LABEL_12;
     }
 
 LABEL_11:
-    [(NSMutableDictionary *)self->_targetsFromOtherScopedIdentifier removeObjectForKey:v13];
+    [(NSMutableDictionary *)self->_targetsFromOtherScopedIdentifier removeObjectForKey:otherScopedIdentifier];
     v16 = 1;
     goto LABEL_12;
   }
 
-  if (([v13 isEqual:v14] & 1) == 0)
+  if (([otherScopedIdentifier isEqual:otherScopedIdentifier2] & 1) == 0)
   {
     goto LABEL_11;
   }
 
   v16 = 0;
 LABEL_12:
-  v17 = [v8 targetState];
+  targetState = [targetCopy targetState];
   scopedIdentifiersWithUnknownTargets = self->_scopedIdentifiersWithUnknownTargets;
-  if (v17)
+  if (targetState)
   {
-    [(NSMutableSet *)scopedIdentifiersWithUnknownTargets removeObject:v9];
+    [(NSMutableSet *)scopedIdentifiersWithUnknownTargets removeObject:identifierCopy];
   }
 
   else if (scopedIdentifiersWithUnknownTargets)
   {
-    [(NSMutableSet *)scopedIdentifiersWithUnknownTargets addObject:v9];
+    [(NSMutableSet *)scopedIdentifiersWithUnknownTargets addObject:identifierCopy];
   }
 
   else
@@ -310,10 +310,10 @@ LABEL_12:
     v20 = self->_scopedIdentifiersWithUnknownTargets;
     self->_scopedIdentifiersWithUnknownTargets = v19;
 
-    v9 = v22;
+    identifierCopy = v22;
   }
 
-  [(NSMutableDictionary *)self->_targets setObject:v8 forKeyedSubscript:v9];
+  [(NSMutableDictionary *)self->_targets setObject:targetCopy forKeyedSubscript:identifierCopy];
   if (v15)
   {
     v21 = v16;
@@ -326,7 +326,7 @@ LABEL_12:
 
   if (v21)
   {
-    [(NSMutableDictionary *)self->_targetsFromOtherScopedIdentifier setObject:v8 forKeyedSubscript:v15];
+    [(NSMutableDictionary *)self->_targetsFromOtherScopedIdentifier setObject:targetCopy forKeyedSubscript:v15];
   }
 
 LABEL_23:

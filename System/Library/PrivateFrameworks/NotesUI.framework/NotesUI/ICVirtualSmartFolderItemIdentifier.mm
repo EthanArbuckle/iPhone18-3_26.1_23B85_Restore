@@ -1,15 +1,15 @@
 @interface ICVirtualSmartFolderItemIdentifier
 + (NSArray)allTypes;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isHiddenInContext:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isHiddenInContext:(id)context;
 - (BOOL)isShowingDateHeaders;
 - (BOOL)isTrashFolder;
-- (BOOL)isType:(id)a3;
+- (BOOL)isType:(id)type;
 - (BOOL)supportsDateHeaders;
 - (ICFolderCustomNoteSortType)noteSortType;
 - (ICQuery)query;
-- (ICVirtualSmartFolderItemIdentifier)initWithIdentifier:(id)a3 parentIdentifier:(id)a4 context:(id)a5;
-- (ICVirtualSmartFolderItemIdentifier)initWithType:(id)a3 parentIdentifier:(id)a4 accountObjectID:(id)a5;
+- (ICVirtualSmartFolderItemIdentifier)initWithIdentifier:(id)identifier parentIdentifier:(id)parentIdentifier context:(id)context;
+- (ICVirtualSmartFolderItemIdentifier)initWithType:(id)type parentIdentifier:(id)identifier accountObjectID:(id)d;
 - (NSString)dateHeadersTypeUserDefaultsKey;
 - (NSString)description;
 - (NSString)identifier;
@@ -17,16 +17,16 @@
 - (NSString)systemImageName;
 - (NSString)title;
 - (NSString)visibilityUserDefaultsKey;
-- (id)predicateForContext:(id)a3;
+- (id)predicateForContext:(id)context;
 - (int64_t)dateHeadersType;
 - (int64_t)visibility;
 - (unint64_t)hash;
-- (unint64_t)visibleInvitationCountInContext:(id)a3;
-- (unint64_t)visibleItemCountInContext:(id)a3;
-- (unint64_t)visibleNoteCountInContext:(id)a3;
-- (void)setDateHeadersType:(int64_t)a3;
-- (void)setNoteSortType:(id)a3;
-- (void)setVisibility:(int64_t)a3;
+- (unint64_t)visibleInvitationCountInContext:(id)context;
+- (unint64_t)visibleItemCountInContext:(id)context;
+- (unint64_t)visibleNoteCountInContext:(id)context;
+- (void)setDateHeadersType:(int64_t)type;
+- (void)setNoteSortType:(id)type;
+- (void)setVisibility:(int64_t)visibility;
 @end
 
 @implementation ICVirtualSmartFolderItemIdentifier
@@ -36,12 +36,12 @@
   result = self->_hash;
   if (!result)
   {
-    v4 = [(ICVirtualSmartFolderItemIdentifier *)self type];
-    v5 = [v4 hash];
-    v6 = [(ICVirtualSmartFolderItemIdentifier *)self parentIdentifier];
-    v7 = [v6 hash];
-    v8 = [(ICVirtualSmartFolderItemIdentifier *)self accountObjectID];
-    [v8 hash];
+    type = [(ICVirtualSmartFolderItemIdentifier *)self type];
+    v5 = [type hash];
+    parentIdentifier = [(ICVirtualSmartFolderItemIdentifier *)self parentIdentifier];
+    v7 = [parentIdentifier hash];
+    accountObjectID = [(ICVirtualSmartFolderItemIdentifier *)self accountObjectID];
+    [accountObjectID hash];
     self->_hash = ICHashWithHashKeys(v5, v9, v10, v11, v12, v13, v14, v15, v7);
 
     return self->_hash;
@@ -65,9 +65,9 @@
 - (int64_t)visibility
 {
   objc_opt_class();
-  v3 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v4 = [(ICVirtualSmartFolderItemIdentifier *)self visibilityUserDefaultsKey];
-  v5 = [v3 objectForKey:v4];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  visibilityUserDefaultsKey = [(ICVirtualSmartFolderItemIdentifier *)self visibilityUserDefaultsKey];
+  v5 = [standardUserDefaults objectForKey:visibilityUserDefaultsKey];
   v6 = ICCheckedDynamicCast();
 
   if (v6)
@@ -94,76 +94,76 @@
 - (NSString)visibilityUserDefaultsKey
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [(ICVirtualSmartFolderItemIdentifier *)self identifier];
-  v4 = [v2 stringWithFormat:@"%@:hidden", v3];
+  identifier = [(ICVirtualSmartFolderItemIdentifier *)self identifier];
+  v4 = [v2 stringWithFormat:@"%@:hidden", identifier];
 
   return v4;
 }
 
 - (NSString)identifier
 {
-  v3 = [(ICVirtualSmartFolderItemIdentifier *)self accountObjectID];
-  if (v3)
+  accountObjectID = [(ICVirtualSmartFolderItemIdentifier *)self accountObjectID];
+  if (accountObjectID)
   {
     v4 = MEMORY[0x1E696AEC0];
-    v5 = [(ICVirtualSmartFolderItemIdentifier *)self type];
-    v6 = [(ICVirtualSmartFolderItemIdentifier *)self accountObjectID];
-    v7 = [v6 URIRepresentation];
-    v8 = [v4 stringWithFormat:@"%@:%@", v5, v7];
+    type = [(ICVirtualSmartFolderItemIdentifier *)self type];
+    accountObjectID2 = [(ICVirtualSmartFolderItemIdentifier *)self accountObjectID];
+    uRIRepresentation = [accountObjectID2 URIRepresentation];
+    type2 = [v4 stringWithFormat:@"%@:%@", type, uRIRepresentation];
   }
 
   else
   {
-    v8 = [(ICVirtualSmartFolderItemIdentifier *)self type];
+    type2 = [(ICVirtualSmartFolderItemIdentifier *)self type];
   }
 
-  return v8;
+  return type2;
 }
 
 - (ICQuery)query
 {
-  v3 = [(ICVirtualSmartFolderItemIdentifier *)self type];
-  v4 = [v3 isEqual:@"ICVirtualSmartFolderItemIdentifierTypeSharedWithYou"];
+  type = [(ICVirtualSmartFolderItemIdentifier *)self type];
+  v4 = [type isEqual:@"ICVirtualSmartFolderItemIdentifierTypeSharedWithYou"];
 
   if (v4)
   {
-    v5 = [MEMORY[0x1E69B7860] queryForSharedNotes:1 allowsRecentlyDeleted:0];
+    queryForRecentlyDeletedMathNotes = [MEMORY[0x1E69B7860] queryForSharedNotes:1 allowsRecentlyDeleted:0];
   }
 
   else
   {
-    v6 = [(ICVirtualSmartFolderItemIdentifier *)self type];
-    v7 = [v6 isEqual:@"ICVirtualSmartFolderItemIdentifierTypeSystemPaper"];
+    type2 = [(ICVirtualSmartFolderItemIdentifier *)self type];
+    v7 = [type2 isEqual:@"ICVirtualSmartFolderItemIdentifierTypeSystemPaper"];
 
     if (v7)
     {
-      v5 = [MEMORY[0x1E69B7860] queryForSystemPaperNotesAllowsRecentlyDeleted:0];
+      queryForRecentlyDeletedMathNotes = [MEMORY[0x1E69B7860] queryForSystemPaperNotesAllowsRecentlyDeleted:0];
     }
 
     else
     {
-      v8 = [(ICVirtualSmartFolderItemIdentifier *)self type];
-      v9 = [v8 isEqual:@"ICVirtualSmartFolderItemIdentifierTypeMathNotes"];
+      type3 = [(ICVirtualSmartFolderItemIdentifier *)self type];
+      v9 = [type3 isEqual:@"ICVirtualSmartFolderItemIdentifierTypeMathNotes"];
 
       if (v9)
       {
-        v5 = [MEMORY[0x1E69B7860] queryForMathNotesAllowsRecentlyDeleted:0];
+        queryForRecentlyDeletedMathNotes = [MEMORY[0x1E69B7860] queryForMathNotesAllowsRecentlyDeleted:0];
       }
 
       else
       {
-        v10 = [(ICVirtualSmartFolderItemIdentifier *)self type];
-        v11 = [v10 isEqual:@"ICVirtualSmartFolderItemIdentifierTypeCallNotes"];
+        type4 = [(ICVirtualSmartFolderItemIdentifier *)self type];
+        v11 = [type4 isEqual:@"ICVirtualSmartFolderItemIdentifierTypeCallNotes"];
 
         if (v11)
         {
-          v5 = [MEMORY[0x1E69B7860] queryForCallNotesAllowsRecentlyDeleted:0];
+          queryForRecentlyDeletedMathNotes = [MEMORY[0x1E69B7860] queryForCallNotesAllowsRecentlyDeleted:0];
         }
 
         else
         {
-          v12 = [(ICVirtualSmartFolderItemIdentifier *)self type];
-          v13 = [v12 isEqual:@"ICVirtualSmartFolderItemIdentifierTypeRecentlyDeletedMathNotes"];
+          type5 = [(ICVirtualSmartFolderItemIdentifier *)self type];
+          v13 = [type5 isEqual:@"ICVirtualSmartFolderItemIdentifierTypeRecentlyDeletedMathNotes"];
 
           if (!v13)
           {
@@ -171,13 +171,13 @@
             objc_exception_throw(v15);
           }
 
-          v5 = [MEMORY[0x1E69B7860] queryForRecentlyDeletedMathNotes];
+          queryForRecentlyDeletedMathNotes = [MEMORY[0x1E69B7860] queryForRecentlyDeletedMathNotes];
         }
       }
     }
   }
 
-  return v5;
+  return queryForRecentlyDeletedMathNotes;
 }
 
 void __46__ICVirtualSmartFolderItemIdentifier_allTypes__block_invoke()
@@ -193,18 +193,18 @@ void __46__ICVirtualSmartFolderItemIdentifier_allTypes__block_invoke()
   allTypes_allTypes = v0;
 }
 
-- (ICVirtualSmartFolderItemIdentifier)initWithType:(id)a3 parentIdentifier:(id)a4 accountObjectID:(id)a5
+- (ICVirtualSmartFolderItemIdentifier)initWithType:(id)type parentIdentifier:(id)identifier accountObjectID:(id)d
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  typeCopy = type;
+  identifierCopy = identifier;
+  dCopy = d;
   v17.receiver = self;
   v17.super_class = ICVirtualSmartFolderItemIdentifier;
   v12 = [(ICVirtualSmartFolderItemIdentifier *)&v17 init];
   if (v12)
   {
-    v13 = [objc_opt_class() allTypes];
-    v14 = [v13 containsObject:v9];
+    allTypes = [objc_opt_class() allTypes];
+    v14 = [allTypes containsObject:typeCopy];
 
     if ((v14 & 1) == 0)
     {
@@ -212,19 +212,19 @@ void __46__ICVirtualSmartFolderItemIdentifier_allTypes__block_invoke()
       objc_exception_throw(v16);
     }
 
-    objc_storeStrong(&v12->_type, a3);
-    objc_storeStrong(&v12->_parentIdentifier, a4);
-    objc_storeStrong(&v12->_accountObjectID, a5);
+    objc_storeStrong(&v12->_type, type);
+    objc_storeStrong(&v12->_parentIdentifier, identifier);
+    objc_storeStrong(&v12->_accountObjectID, d);
   }
 
   return v12;
 }
 
-- (ICVirtualSmartFolderItemIdentifier)initWithIdentifier:(id)a3 parentIdentifier:(id)a4 context:(id)a5
+- (ICVirtualSmartFolderItemIdentifier)initWithIdentifier:(id)identifier parentIdentifier:(id)parentIdentifier context:(id)context
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [a3 componentsSeparatedByString:@":"];
+  parentIdentifierCopy = parentIdentifier;
+  contextCopy = context;
+  v10 = [identifier componentsSeparatedByString:@":"];
   v11 = v10;
   v12 = MEMORY[0x1E695E0F0];
   if (v10)
@@ -251,24 +251,24 @@ void __46__ICVirtualSmartFolderItemIdentifier_allTypes__block_invoke()
 
   else
   {
-    v15 = [v9 persistentStoreCoordinator];
+    persistentStoreCoordinator = [contextCopy persistentStoreCoordinator];
     v16 = [v13 objectAtIndexedSubscript:1];
-    v17 = [v15 ic_managedObjectIDForURIString:v16];
+    v17 = [persistentStoreCoordinator ic_managedObjectIDForURIString:v16];
   }
 
-  v18 = [objc_opt_class() allTypes];
-  if ([v18 containsObject:v14])
+  allTypes = [objc_opt_class() allTypes];
+  if ([allTypes containsObject:v14])
   {
-    self = [(ICVirtualSmartFolderItemIdentifier *)self initWithType:v14 parentIdentifier:v8 accountObjectID:v17];
-    v19 = self;
+    self = [(ICVirtualSmartFolderItemIdentifier *)self initWithType:v14 parentIdentifier:parentIdentifierCopy accountObjectID:v17];
+    selfCopy = self;
   }
 
   else
   {
-    v19 = 0;
+    selfCopy = 0;
   }
 
-  v20 = v19;
+  v20 = selfCopy;
 
   return v20;
 }
@@ -278,26 +278,26 @@ void __46__ICVirtualSmartFolderItemIdentifier_allTypes__block_invoke()
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(ICVirtualSmartFolderItemIdentifier *)self type];
-  v7 = [(ICVirtualSmartFolderItemIdentifier *)self parentIdentifier];
-  v8 = [(ICVirtualSmartFolderItemIdentifier *)self accountObjectID];
-  v9 = [(ICVirtualSmartFolderItemIdentifier *)self title];
-  v10 = [v3 stringWithFormat:@"<%@: %p, type: %@, parentIdentifier: %@, accountID: %@, title: %@>", v5, self, v6, v7, v8, v9];
+  type = [(ICVirtualSmartFolderItemIdentifier *)self type];
+  parentIdentifier = [(ICVirtualSmartFolderItemIdentifier *)self parentIdentifier];
+  accountObjectID = [(ICVirtualSmartFolderItemIdentifier *)self accountObjectID];
+  title = [(ICVirtualSmartFolderItemIdentifier *)self title];
+  v10 = [v3 stringWithFormat:@"<%@: %p, type: %@, parentIdentifier: %@, accountID: %@, title: %@>", v5, self, type, parentIdentifier, accountObjectID, title];
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   v5 = ICDynamicCast();
 
   if (v5)
   {
-    v6 = [(ICVirtualSmartFolderItemIdentifier *)self type];
-    v7 = [v5 type];
-    if (![v6 isEqualToString:v7])
+    type = [(ICVirtualSmartFolderItemIdentifier *)self type];
+    type2 = [v5 type];
+    if (![type isEqualToString:type2])
     {
       v17 = 0;
 LABEL_33:
@@ -305,35 +305,35 @@ LABEL_33:
       goto LABEL_34;
     }
 
-    v8 = [(ICVirtualSmartFolderItemIdentifier *)self parentIdentifier];
-    v9 = [v5 parentIdentifier];
+    parentIdentifier = [(ICVirtualSmartFolderItemIdentifier *)self parentIdentifier];
+    parentIdentifier2 = [v5 parentIdentifier];
     v10 = *MEMORY[0x1E695E738];
-    if (*MEMORY[0x1E695E738] == v8)
+    if (*MEMORY[0x1E695E738] == parentIdentifier)
     {
       v11 = 0;
     }
 
     else
     {
-      v11 = v8;
+      v11 = parentIdentifier;
     }
 
-    v12 = v11;
-    if (v10 == v9)
+    accountObjectID = v11;
+    if (v10 == parentIdentifier2)
     {
       v13 = 0;
     }
 
     else
     {
-      v13 = v9;
+      v13 = parentIdentifier2;
     }
 
     v14 = v13;
-    if (v12 | v14)
+    if (accountObjectID | v14)
     {
-      v15 = v14;
-      if (v12)
+      accountObjectID2 = v14;
+      if (accountObjectID)
       {
         v16 = v14 == 0;
       }
@@ -352,7 +352,7 @@ LABEL_32:
         goto LABEL_33;
       }
 
-      v18 = [v12 isEqual:v14];
+      v18 = [accountObjectID isEqual:v14];
 
       if (!v18)
       {
@@ -361,27 +361,27 @@ LABEL_32:
       }
     }
 
-    v12 = [(ICVirtualSmartFolderItemIdentifier *)self accountObjectID];
-    v15 = [v5 accountObjectID];
-    if (v10 == v12)
+    accountObjectID = [(ICVirtualSmartFolderItemIdentifier *)self accountObjectID];
+    accountObjectID2 = [v5 accountObjectID];
+    if (v10 == accountObjectID)
     {
       v19 = 0;
     }
 
     else
     {
-      v19 = v12;
+      v19 = accountObjectID;
     }
 
     v20 = v19;
-    if (v10 == v15)
+    if (v10 == accountObjectID2)
     {
       v21 = 0;
     }
 
     else
     {
-      v21 = v15;
+      v21 = accountObjectID2;
     }
 
     v22 = v21;
@@ -411,8 +411,8 @@ LABEL_34:
 
 - (NSString)title
 {
-  v3 = [(ICVirtualSmartFolderItemIdentifier *)self type];
-  v4 = [v3 isEqualToString:@"ICVirtualSmartFolderItemIdentifierTypeSharedWithYou"];
+  type = [(ICVirtualSmartFolderItemIdentifier *)self type];
+  v4 = [type isEqualToString:@"ICVirtualSmartFolderItemIdentifierTypeSharedWithYou"];
 
   if (v4)
   {
@@ -421,8 +421,8 @@ LABEL_34:
 
   else
   {
-    v6 = [(ICVirtualSmartFolderItemIdentifier *)self type];
-    v7 = [v6 isEqualToString:@"ICVirtualSmartFolderItemIdentifierTypeSystemPaper"];
+    type2 = [(ICVirtualSmartFolderItemIdentifier *)self type];
+    v7 = [type2 isEqualToString:@"ICVirtualSmartFolderItemIdentifierTypeSystemPaper"];
 
     if (v7)
     {
@@ -431,8 +431,8 @@ LABEL_34:
 
     else
     {
-      v8 = [(ICVirtualSmartFolderItemIdentifier *)self type];
-      v9 = [v8 isEqualToString:@"ICVirtualSmartFolderItemIdentifierTypeMathNotes"];
+      type3 = [(ICVirtualSmartFolderItemIdentifier *)self type];
+      v9 = [type3 isEqualToString:@"ICVirtualSmartFolderItemIdentifierTypeMathNotes"];
 
       if (v9)
       {
@@ -441,8 +441,8 @@ LABEL_34:
 
       else
       {
-        v10 = [(ICVirtualSmartFolderItemIdentifier *)self type];
-        v11 = [v10 isEqualToString:@"ICVirtualSmartFolderItemIdentifierTypeCallNotes"];
+        type4 = [(ICVirtualSmartFolderItemIdentifier *)self type];
+        v11 = [type4 isEqualToString:@"ICVirtualSmartFolderItemIdentifierTypeCallNotes"];
 
         if (v11)
         {
@@ -451,8 +451,8 @@ LABEL_34:
 
         else
         {
-          v12 = [(ICVirtualSmartFolderItemIdentifier *)self type];
-          v13 = [v12 isEqualToString:@"ICVirtualSmartFolderItemIdentifierTypeRecentlyDeletedMathNotes"];
+          type5 = [(ICVirtualSmartFolderItemIdentifier *)self type];
+          v13 = [type5 isEqualToString:@"ICVirtualSmartFolderItemIdentifierTypeRecentlyDeletedMathNotes"];
 
           if (!v13)
           {
@@ -473,40 +473,40 @@ LABEL_34:
 
 - (NSString)systemImageName
 {
-  v3 = [(ICVirtualSmartFolderItemIdentifier *)self type];
-  v4 = [v3 isEqualToString:@"ICVirtualSmartFolderItemIdentifierTypeSharedWithYou"];
+  type = [(ICVirtualSmartFolderItemIdentifier *)self type];
+  v4 = [type isEqualToString:@"ICVirtualSmartFolderItemIdentifierTypeSharedWithYou"];
 
   if (v4)
   {
     return @"person.crop.circle";
   }
 
-  v6 = [(ICVirtualSmartFolderItemIdentifier *)self type];
-  v7 = [v6 isEqualToString:@"ICVirtualSmartFolderItemIdentifierTypeSystemPaper"];
+  type2 = [(ICVirtualSmartFolderItemIdentifier *)self type];
+  v7 = [type2 isEqualToString:@"ICVirtualSmartFolderItemIdentifierTypeSystemPaper"];
 
   if (v7)
   {
     return @"quicknote";
   }
 
-  v8 = [(ICVirtualSmartFolderItemIdentifier *)self type];
-  v9 = [v8 isEqualToString:@"ICVirtualSmartFolderItemIdentifierTypeMathNotes"];
+  type3 = [(ICVirtualSmartFolderItemIdentifier *)self type];
+  v9 = [type3 isEqualToString:@"ICVirtualSmartFolderItemIdentifierTypeMathNotes"];
 
   if (v9)
   {
     return @"apple.math.notes";
   }
 
-  v10 = [(ICVirtualSmartFolderItemIdentifier *)self type];
-  v11 = [v10 isEqualToString:@"ICVirtualSmartFolderItemIdentifierTypeCallNotes"];
+  type4 = [(ICVirtualSmartFolderItemIdentifier *)self type];
+  v11 = [type4 isEqualToString:@"ICVirtualSmartFolderItemIdentifierTypeCallNotes"];
 
   if (v11)
   {
     return @"phone.badge.waveform.fill";
   }
 
-  v12 = [(ICVirtualSmartFolderItemIdentifier *)self type];
-  v13 = [v12 isEqualToString:@"ICVirtualSmartFolderItemIdentifierTypeRecentlyDeletedMathNotes"];
+  type5 = [(ICVirtualSmartFolderItemIdentifier *)self type];
+  v13 = [type5 isEqualToString:@"ICVirtualSmartFolderItemIdentifierTypeRecentlyDeletedMathNotes"];
 
   if ((v13 & 1) == 0)
   {
@@ -519,15 +519,15 @@ LABEL_34:
 
 - (BOOL)isTrashFolder
 {
-  v2 = [(ICVirtualSmartFolderItemIdentifier *)self type];
-  v3 = [v2 isEqualToString:@"ICVirtualSmartFolderItemIdentifierTypeRecentlyDeletedMathNotes"];
+  type = [(ICVirtualSmartFolderItemIdentifier *)self type];
+  v3 = [type isEqualToString:@"ICVirtualSmartFolderItemIdentifierTypeRecentlyDeletedMathNotes"];
 
   return v3;
 }
 
-- (id)predicateForContext:(id)a3
+- (id)predicateForContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -539,7 +539,7 @@ LABEL_34:
   v8[2] = __58__ICVirtualSmartFolderItemIdentifier_predicateForContext___block_invoke;
   v8[3] = &unk_1E8469190;
   v8[4] = self;
-  v5 = v4;
+  v5 = contextCopy;
   v9 = v5;
   v10 = &v11;
   [v5 performBlockAndWait:v8];
@@ -597,9 +597,9 @@ void __58__ICVirtualSmartFolderItemIdentifier_predicateForContext___block_invoke
   }
 }
 
-- (unint64_t)visibleNoteCountInContext:(id)a3
+- (unint64_t)visibleNoteCountInContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -610,7 +610,7 @@ void __58__ICVirtualSmartFolderItemIdentifier_predicateForContext___block_invoke
   v8[3] = &unk_1E8469640;
   v10 = &v11;
   v8[4] = self;
-  v5 = v4;
+  v5 = contextCopy;
   v9 = v5;
   [v5 performBlockAndWait:v8];
   v6 = v12[3];
@@ -626,11 +626,11 @@ void __64__ICVirtualSmartFolderItemIdentifier_visibleNoteCountInContext___block_
   *(*(*(a1 + 48) + 8) + 24) = [v2 countOfNotesMatchingPredicate:v3 context:*(a1 + 40)];
 }
 
-- (unint64_t)visibleInvitationCountInContext:(id)a3
+- (unint64_t)visibleInvitationCountInContext:(id)context
 {
-  v4 = a3;
-  v5 = [(ICVirtualSmartFolderItemIdentifier *)self type];
-  v6 = [v5 isEqual:@"ICVirtualSmartFolderItemIdentifierTypeSharedWithYou"];
+  contextCopy = context;
+  type = [(ICVirtualSmartFolderItemIdentifier *)self type];
+  v6 = [type isEqual:@"ICVirtualSmartFolderItemIdentifierTypeSharedWithYou"];
 
   if (v6)
   {
@@ -643,7 +643,7 @@ void __64__ICVirtualSmartFolderItemIdentifier_visibleNoteCountInContext___block_
     v9[2] = __70__ICVirtualSmartFolderItemIdentifier_visibleInvitationCountInContext___block_invoke;
     v9[3] = &unk_1E8469190;
     v9[4] = self;
-    v10 = v4;
+    v10 = contextCopy;
     v11 = &v12;
     [v10 performBlockAndWait:v9];
     v7 = v13[3];
@@ -684,74 +684,74 @@ void __70__ICVirtualSmartFolderItemIdentifier_visibleInvitationCountInContext___
   *(*(*(a1 + 48) + 8) + 24) = [v9 count];
 }
 
-- (unint64_t)visibleItemCountInContext:(id)a3
+- (unint64_t)visibleItemCountInContext:(id)context
 {
-  v4 = a3;
-  v5 = [(ICVirtualSmartFolderItemIdentifier *)self visibleNoteCountInContext:v4];
-  v6 = [(ICVirtualSmartFolderItemIdentifier *)self visibleInvitationCountInContext:v4];
+  contextCopy = context;
+  v5 = [(ICVirtualSmartFolderItemIdentifier *)self visibleNoteCountInContext:contextCopy];
+  v6 = [(ICVirtualSmartFolderItemIdentifier *)self visibleInvitationCountInContext:contextCopy];
 
   return v6 + v5;
 }
 
-- (BOOL)isType:(id)a3
+- (BOOL)isType:(id)type
 {
-  v4 = a3;
-  v5 = [(ICVirtualSmartFolderItemIdentifier *)self type];
-  v6 = [v5 isEqual:v4];
+  typeCopy = type;
+  type = [(ICVirtualSmartFolderItemIdentifier *)self type];
+  v6 = [type isEqual:typeCopy];
 
   return v6;
 }
 
-- (void)setVisibility:(int64_t)a3
+- (void)setVisibility:(int64_t)visibility
 {
-  if (a3 == 2)
+  if (visibility == 2)
   {
-    v7 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v4 = [(ICVirtualSmartFolderItemIdentifier *)self visibilityUserDefaultsKey];
-    v5 = v7;
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    visibilityUserDefaultsKey = [(ICVirtualSmartFolderItemIdentifier *)self visibilityUserDefaultsKey];
+    v5 = standardUserDefaults;
     v6 = 1;
     goto LABEL_7;
   }
 
-  if (a3 == 1)
+  if (visibility == 1)
   {
-    v7 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v4 = [(ICVirtualSmartFolderItemIdentifier *)self visibilityUserDefaultsKey];
-    v5 = v7;
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    visibilityUserDefaultsKey = [(ICVirtualSmartFolderItemIdentifier *)self visibilityUserDefaultsKey];
+    v5 = standardUserDefaults;
     v6 = 0;
 LABEL_7:
-    [v5 setBool:v6 forKey:v4];
+    [v5 setBool:v6 forKey:visibilityUserDefaultsKey];
     goto LABEL_8;
   }
 
-  if (a3)
+  if (visibility)
   {
     return;
   }
 
-  v7 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v4 = [(ICVirtualSmartFolderItemIdentifier *)self visibilityUserDefaultsKey];
-  [v7 removeObjectForKey:v4];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  visibilityUserDefaultsKey = [(ICVirtualSmartFolderItemIdentifier *)self visibilityUserDefaultsKey];
+  [standardUserDefaults removeObjectForKey:visibilityUserDefaultsKey];
 LABEL_8:
 }
 
-- (BOOL)isHiddenInContext:(id)a3
+- (BOOL)isHiddenInContext:(id)context
 {
-  v4 = a3;
-  v5 = [(ICVirtualSmartFolderItemIdentifier *)self visibility];
-  if (v5 == 2)
+  contextCopy = context;
+  visibility = [(ICVirtualSmartFolderItemIdentifier *)self visibility];
+  if (visibility == 2)
   {
     v6 = 1;
   }
 
-  else if (v5)
+  else if (visibility)
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = [(ICVirtualSmartFolderItemIdentifier *)self isEmptyInContext:v4];
+    v6 = [(ICVirtualSmartFolderItemIdentifier *)self isEmptyInContext:contextCopy];
   }
 
   return v6;
@@ -760,17 +760,17 @@ LABEL_8:
 - (NSString)noteSortTypeUserDefaultsKey
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [(ICVirtualSmartFolderItemIdentifier *)self identifier];
-  v4 = [v2 stringWithFormat:@"%@:noteSortType", v3];
+  identifier = [(ICVirtualSmartFolderItemIdentifier *)self identifier];
+  v4 = [v2 stringWithFormat:@"%@:noteSortType", identifier];
 
   return v4;
 }
 
 - (ICFolderCustomNoteSortType)noteSortType
 {
-  v3 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v4 = [(ICVirtualSmartFolderItemIdentifier *)self noteSortTypeUserDefaultsKey];
-  v5 = [v3 integerForKey:v4];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  noteSortTypeUserDefaultsKey = [(ICVirtualSmartFolderItemIdentifier *)self noteSortTypeUserDefaultsKey];
+  v5 = [standardUserDefaults integerForKey:noteSortTypeUserDefaultsKey];
 
   v6 = MEMORY[0x1E69B7A68];
   v7 = [MEMORY[0x1E696AD98] numberWithInteger:v5];
@@ -779,73 +779,73 @@ LABEL_8:
   return v8;
 }
 
-- (void)setNoteSortType:(id)a3
+- (void)setNoteSortType:(id)type
 {
   v4 = MEMORY[0x1E695E000];
-  v5 = a3;
-  v8 = [v4 standardUserDefaults];
-  v6 = [v5 valueRepresentation];
+  typeCopy = type;
+  standardUserDefaults = [v4 standardUserDefaults];
+  valueRepresentation = [typeCopy valueRepresentation];
 
-  v7 = [(ICVirtualSmartFolderItemIdentifier *)self noteSortTypeUserDefaultsKey];
-  [v8 setValue:v6 forKey:v7];
+  noteSortTypeUserDefaultsKey = [(ICVirtualSmartFolderItemIdentifier *)self noteSortTypeUserDefaultsKey];
+  [standardUserDefaults setValue:valueRepresentation forKey:noteSortTypeUserDefaultsKey];
 }
 
 - (NSString)dateHeadersTypeUserDefaultsKey
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [(ICVirtualSmartFolderItemIdentifier *)self identifier];
-  v4 = [v2 stringWithFormat:@"%@:dateHeadersType", v3];
+  identifier = [(ICVirtualSmartFolderItemIdentifier *)self identifier];
+  v4 = [v2 stringWithFormat:@"%@:dateHeadersType", identifier];
 
   return v4;
 }
 
 - (int64_t)dateHeadersType
 {
-  v3 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v4 = [(ICVirtualSmartFolderItemIdentifier *)self dateHeadersTypeUserDefaultsKey];
-  v5 = [v3 integerForKey:v4];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  dateHeadersTypeUserDefaultsKey = [(ICVirtualSmartFolderItemIdentifier *)self dateHeadersTypeUserDefaultsKey];
+  v5 = [standardUserDefaults integerForKey:dateHeadersTypeUserDefaultsKey];
 
   return v5;
 }
 
-- (void)setDateHeadersType:(int64_t)a3
+- (void)setDateHeadersType:(int64_t)type
 {
-  v6 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v5 = [(ICVirtualSmartFolderItemIdentifier *)self dateHeadersTypeUserDefaultsKey];
-  [v6 setInteger:a3 forKey:v5];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  dateHeadersTypeUserDefaultsKey = [(ICVirtualSmartFolderItemIdentifier *)self dateHeadersTypeUserDefaultsKey];
+  [standardUserDefaults setInteger:type forKey:dateHeadersTypeUserDefaultsKey];
 }
 
 - (BOOL)supportsDateHeaders
 {
-  v2 = [(ICVirtualSmartFolderItemIdentifier *)self noteSortType];
-  v3 = [v2 resolvedCustomSortTypeOrder] != 3;
+  noteSortType = [(ICVirtualSmartFolderItemIdentifier *)self noteSortType];
+  v3 = [noteSortType resolvedCustomSortTypeOrder] != 3;
 
   return v3;
 }
 
 - (BOOL)isShowingDateHeaders
 {
-  v3 = [(ICVirtualSmartFolderItemIdentifier *)self supportsDateHeaders];
-  if (v3)
+  supportsDateHeaders = [(ICVirtualSmartFolderItemIdentifier *)self supportsDateHeaders];
+  if (supportsDateHeaders)
   {
-    v4 = [(ICVirtualSmartFolderItemIdentifier *)self dateHeadersType];
-    if (v4 == 2)
+    dateHeadersType = [(ICVirtualSmartFolderItemIdentifier *)self dateHeadersType];
+    if (dateHeadersType == 2)
     {
-      LOBYTE(v3) = 1;
+      LOBYTE(supportsDateHeaders) = 1;
     }
 
-    else if (v4)
+    else if (dateHeadersType)
     {
-      LOBYTE(v3) = 0;
+      LOBYTE(supportsDateHeaders) = 0;
     }
 
     else
     {
-      LOBYTE(v3) = [MEMORY[0x1E69B7A50] defaultDateHeadersType] == 2;
+      LOBYTE(supportsDateHeaders) = [MEMORY[0x1E69B7A50] defaultDateHeadersType] == 2;
     }
   }
 
-  return v3;
+  return supportsDateHeaders;
 }
 
 @end

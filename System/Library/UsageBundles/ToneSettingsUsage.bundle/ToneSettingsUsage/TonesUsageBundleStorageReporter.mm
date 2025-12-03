@@ -1,17 +1,17 @@
 @interface TonesUsageBundleStorageReporter
-- (float)sizeForCategory:(id)a3;
-- (id)_localizedStringWithIdentifier:(id)a3;
+- (float)sizeForCategory:(id)category;
+- (id)_localizedStringWithIdentifier:(id)identifier;
 - (id)usageBundleApps;
-- (void)usageBundleApp:(id)a3 willDisplaySpecifier:(id *)a4;
+- (void)usageBundleApp:(id)app willDisplaySpecifier:(id *)specifier;
 @end
 
 @implementation TonesUsageBundleStorageReporter
 
-- (id)_localizedStringWithIdentifier:(id)a3
+- (id)_localizedStringWithIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = [NSBundle bundleForClass:objc_opt_class()];
-  v5 = [v4 localizedStringForKey:v3 value:&stru_41C0 table:@"ToneSettingsUsage"];
+  v5 = [v4 localizedStringForKey:identifierCopy value:&stru_41C0 table:@"ToneSettingsUsage"];
 
   return v5;
 }
@@ -35,29 +35,29 @@
   return v10;
 }
 
-- (float)sizeForCategory:(id)a3
+- (float)sizeForCategory:(id)category
 {
   v3 = +[TLToneManager sharedToneManager];
-  v4 = [v3 _installedTonesSize];
+  _installedTonesSize = [v3 _installedTonesSize];
 
-  return v4;
+  return _installedTonesSize;
 }
 
-- (void)usageBundleApp:(id)a3 willDisplaySpecifier:(id *)a4
+- (void)usageBundleApp:(id)app willDisplaySpecifier:(id *)specifier
 {
-  v5 = [a3 bundleIdentifier];
-  v6 = [v5 isEqualToString:@"com.apple.ToneSettingsUsage"];
+  bundleIdentifier = [app bundleIdentifier];
+  v6 = [bundleIdentifier isEqualToString:@"com.apple.ToneSettingsUsage"];
 
   if (v6)
   {
     v7 = [NSBundle bundleForClass:objc_opt_class()];
-    v10 = [v7 resourcePath];
+    resourcePath = [v7 resourcePath];
 
-    v8 = [v10 stringByAppendingPathComponent:@"Settings-Sound"];
+    v8 = [resourcePath stringByAppendingPathComponent:@"Settings-Sound"];
     v9 = [v8 stringByAppendingPathExtension:@"png"];
 
-    [*a4 setProperty:v9 forKey:PSBundleIconPathKey];
-    [*a4 setupIconImageWithPath:v10];
+    [*specifier setProperty:v9 forKey:PSBundleIconPathKey];
+    [*specifier setupIconImageWithPath:resourcePath];
   }
 }
 

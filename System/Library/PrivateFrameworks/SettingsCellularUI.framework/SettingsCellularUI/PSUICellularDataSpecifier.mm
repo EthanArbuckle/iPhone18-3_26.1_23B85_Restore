@@ -1,47 +1,47 @@
 @interface PSUICellularDataSpecifier
 - (PSListController)hostController;
 - (PSUICellularDataListItemsController)detailController;
-- (PSUICellularDataSpecifier)initWithHostController:(id)a3;
-- (PSUICellularDataSpecifier)initWithHostController:(id)a3 simStatusCache:(id)a4 planManagerCache:(id)a5 callCache:(id)a6 dataCache:(id)a7 wifiState:(id)a8;
-- (id)_isCellularDataEnabled:(id)a3;
+- (PSUICellularDataSpecifier)initWithHostController:(id)controller;
+- (PSUICellularDataSpecifier)initWithHostController:(id)controller simStatusCache:(id)cache planManagerCache:(id)managerCache callCache:(id)callCache dataCache:(id)dataCache wifiState:(id)state;
+- (id)_isCellularDataEnabled:(id)enabled;
 - (id)callEndConfirmationSpecifier;
-- (id)isCellularDataEnabled:(id)a3;
-- (id)planItemForListItem:(id)a3;
-- (id)subscriptionContextForListItem:(id)a3;
-- (void)_acceptedDataSwitch:(id)a3;
-- (void)_setCellularDataEnabled:(id)a3 specifier:(id)a4;
-- (void)_setCellularDataSwitch:(id)a3;
-- (void)acceptedDataSwitch:(id)a3;
-- (void)canceledDataSwitch:(id)a3;
-- (void)setAirplaneMode:(BOOL)a3;
-- (void)setCellularDataEnabled:(id)a3 specifier:(id)a4;
+- (id)isCellularDataEnabled:(id)enabled;
+- (id)planItemForListItem:(id)item;
+- (id)subscriptionContextForListItem:(id)item;
+- (void)_acceptedDataSwitch:(id)switch;
+- (void)_setCellularDataEnabled:(id)enabled specifier:(id)specifier;
+- (void)_setCellularDataSwitch:(id)switch;
+- (void)acceptedDataSwitch:(id)switch;
+- (void)canceledDataSwitch:(id)switch;
+- (void)setAirplaneMode:(BOOL)mode;
+- (void)setCellularDataEnabled:(id)enabled specifier:(id)specifier;
 - (void)updateCachedState;
 @end
 
 @implementation PSUICellularDataSpecifier
 
-- (PSUICellularDataSpecifier)initWithHostController:(id)a3
+- (PSUICellularDataSpecifier)initWithHostController:(id)controller
 {
   v4 = MEMORY[0x277D4D868];
-  v5 = a3;
-  v6 = [v4 sharedInstance];
+  controllerCopy = controller;
+  sharedInstance = [v4 sharedInstance];
   v7 = +[PSUICellularPlanManagerCache sharedInstance];
   v8 = +[PSUICoreTelephonyCallCache sharedInstance];
   v9 = +[PSUICoreTelephonyDataCache sharedInstance];
   v10 = +[PSUIDeviceWiFiState sharedInstance];
-  v11 = [(PSUICellularDataSpecifier *)self initWithHostController:v5 simStatusCache:v6 planManagerCache:v7 callCache:v8 dataCache:v9 wifiState:v10];
+  v11 = [(PSUICellularDataSpecifier *)self initWithHostController:controllerCopy simStatusCache:sharedInstance planManagerCache:v7 callCache:v8 dataCache:v9 wifiState:v10];
 
   return v11;
 }
 
-- (PSUICellularDataSpecifier)initWithHostController:(id)a3 simStatusCache:(id)a4 planManagerCache:(id)a5 callCache:(id)a6 dataCache:(id)a7 wifiState:(id)a8
+- (PSUICellularDataSpecifier)initWithHostController:(id)controller simStatusCache:(id)cache planManagerCache:(id)managerCache callCache:(id)callCache dataCache:(id)dataCache wifiState:(id)state
 {
-  v26 = a3;
-  v25 = a4;
-  v24 = a5;
-  v23 = a6;
-  v22 = a7;
-  v21 = a8;
+  controllerCopy = controller;
+  cacheCopy = cache;
+  managerCacheCopy = managerCache;
+  callCacheCopy = callCache;
+  dataCacheCopy = dataCache;
+  stateCopy = state;
   v14 = +[SettingsCellularUtils isUIDualSIM];
   v15 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v16 = [v15 localizedStringForKey:@"MOBILE_DATA_SETTINGS" value:&stru_287733598 table:@"Cellular"];
@@ -65,12 +65,12 @@
   if (v19)
   {
     [(PSUICellularDataSpecifier *)v19 setIdentifier:@"MOBILE_DATA_SETTINGS"];
-    objc_storeWeak(&v19->_hostController, v26);
-    objc_storeStrong(&v19->_simStatusCache, a4);
-    objc_storeStrong(&v19->_planManagerCache, a5);
-    objc_storeStrong(&v19->_dataCache, a7);
-    objc_storeStrong(&v19->_callCache, a6);
-    objc_storeStrong(&v19->_wifiState, a8);
+    objc_storeWeak(&v19->_hostController, controllerCopy);
+    objc_storeStrong(&v19->_simStatusCache, cache);
+    objc_storeStrong(&v19->_planManagerCache, managerCache);
+    objc_storeStrong(&v19->_dataCache, dataCache);
+    objc_storeStrong(&v19->_callCache, callCache);
+    objc_storeStrong(&v19->_wifiState, state);
     [(PSUICellularDataSpecifier *)v19 setAirplaneMode:[(PSUICoreTelephonyDataCache *)v19->_dataCache isAirplaneModeEnabled]];
     [(PSUICellularDataSpecifier *)v19 setProperty:MEMORY[0x277CBEC28] forKey:*MEMORY[0x277D400F8]];
     [(PSUICellularDataSpecifier *)v19 updateCachedState];
@@ -82,12 +82,12 @@
 - (void)updateCachedState
 {
   v76 = *MEMORY[0x277D85DE8];
-  v3 = [(PSUICellularPlanManagerCache *)self->_planManagerCache planItems];
+  planItems = [(PSUICellularPlanManagerCache *)self->_planManagerCache planItems];
   cachedPlanItems = self->_cachedPlanItems;
-  self->_cachedPlanItems = v3;
+  self->_cachedPlanItems = planItems;
 
-  v5 = [(PSSimStatusCache *)self->_simStatusCache subscriptionContexts];
-  v6 = [v5 count];
+  subscriptionContexts = [(PSSimStatusCache *)self->_simStatusCache subscriptionContexts];
+  v6 = [subscriptionContexts count];
 
   if (v6)
   {
@@ -96,15 +96,15 @@
     v9 = 0;
     do
     {
-      v10 = [(PSSimStatusCache *)self->_simStatusCache subscriptionContexts];
-      v11 = [v10 objectAtIndexedSubscript:v7];
+      subscriptionContexts2 = [(PSSimStatusCache *)self->_simStatusCache subscriptionContexts];
+      v11 = [subscriptionContexts2 objectAtIndexedSubscript:v7];
 
       v9 |= [v11 isSimHidden];
       v8 += [v11 isSimPresent];
 
       ++v7;
-      v12 = [(PSSimStatusCache *)self->_simStatusCache subscriptionContexts];
-      v13 = [v12 count];
+      subscriptionContexts3 = [(PSSimStatusCache *)self->_simStatusCache subscriptionContexts];
+      v13 = [subscriptionContexts3 count];
     }
 
     while (v13 > v7);
@@ -117,21 +117,21 @@
   }
 
   self->_isMSOActive = v14;
-  v15 = [(PSUICellularDataSpecifier *)self getLogger];
-  if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(PSUICellularDataSpecifier *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
-    v16 = [(PSSimStatusCache *)self->_simStatusCache subscriptionContexts];
-    v17 = [v16 count];
+    subscriptionContexts4 = [(PSSimStatusCache *)self->_simStatusCache subscriptionContexts];
+    v17 = [subscriptionContexts4 count];
     v18 = [(NSArray *)self->_cachedPlanItems count];
     *buf = 134218240;
     *v73 = v17;
     *&v73[8] = 2048;
     *&v73[10] = v18;
-    _os_log_impl(&dword_2658DE000, v15, OS_LOG_TYPE_DEFAULT, "%lu subscription context(s) and %lu plan item(s)", buf, 0x16u);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "%lu subscription context(s) and %lu plan item(s)", buf, 0x16u);
   }
 
-  v19 = [(PSSimStatusCache *)self->_simStatusCache subscriptionContexts];
-  if ([v19 count] < 2)
+  subscriptionContexts5 = [(PSSimStatusCache *)self->_simStatusCache subscriptionContexts];
+  if ([subscriptionContexts5 count] < 2)
   {
 
     goto LABEL_21;
@@ -163,8 +163,8 @@ LABEL_21:
   v26 = [v25 localizedStringForKey:@"OFF" value:&stru_287733598 table:@"Cellular"];
   [v22 addObject:v26];
 
-  v27 = [MEMORY[0x277CBEB68] null];
-  [v71 addObject:v27];
+  null = [MEMORY[0x277CBEB68] null];
+  [v71 addObject:null];
 
   v28 = self->_cachedPlanItems;
   v29 = &unk_265974000;
@@ -179,45 +179,45 @@ LABEL_21:
       {
         ++v31;
         v33 = MEMORY[0x277CCACA8];
-        v34 = [v32 userLabel];
-        v35 = [v34 label];
-        v36 = [v33 stringWithFormat:@"%@", v35];
+        userLabel = [v32 userLabel];
+        label = [userLabel label];
+        v36 = [v33 stringWithFormat:@"%@", label];
         [v70 addObject:v36];
 
         v37 = MEMORY[0x277CCACA8];
-        v38 = [v32 userLabel];
-        v39 = [v38 label];
-        v40 = [v37 stringWithFormat:@"%@", v39];
+        userLabel2 = [v32 userLabel];
+        label2 = [userLabel2 label];
+        v40 = [v37 stringWithFormat:@"%@", label2];
         [v22 addObject:v40];
 
         v41 = [MEMORY[0x277CCABB0] numberWithInteger:v30];
         [v71 addObject:v41];
 
-        v42 = [(PSUICellularDataSpecifier *)self getLogger];
-        if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
+        getLogger2 = [(PSUICellularDataSpecifier *)self getLogger];
+        if (os_log_type_enabled(getLogger2, OS_LOG_TYPE_DEFAULT))
         {
-          v43 = [v32 userLabel];
-          v44 = [v43 label];
+          userLabel3 = [v32 userLabel];
+          label3 = [userLabel3 label];
           *buf = 138412546;
-          *v73 = v44;
+          *v73 = label3;
           *&v73[8] = 1024;
           *&v73[10] = v30;
-          _os_log_impl(&dword_2658DE000, v42, OS_LOG_TYPE_DEFAULT, "Adding plan item %@ with value %d", buf, 0x12u);
+          _os_log_impl(&dword_2658DE000, getLogger2, OS_LOG_TYPE_DEFAULT, "Adding plan item %@ with value %d", buf, 0x12u);
         }
       }
 
       else
       {
-        v42 = [(PSUICellularDataSpecifier *)self getLogger];
-        if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
+        getLogger2 = [(PSUICellularDataSpecifier *)self getLogger];
+        if (os_log_type_enabled(getLogger2, OS_LOG_TYPE_DEFAULT))
         {
-          v45 = [v32 userLabel];
-          v46 = [v45 label];
+          userLabel4 = [v32 userLabel];
+          label4 = [userLabel4 label];
           *buf = 67109378;
           *v73 = v30;
           *&v73[4] = 2112;
-          *&v73[6] = v46;
-          _os_log_impl(&dword_2658DE000, v42, OS_LOG_TYPE_DEFAULT, "Plan item %d (%@) is not selected", buf, 0x12u);
+          *&v73[6] = label4;
+          _os_log_impl(&dword_2658DE000, getLogger2, OS_LOG_TYPE_DEFAULT, "Plan item %d (%@) is not selected", buf, 0x12u);
         }
       }
 
@@ -237,11 +237,11 @@ LABEL_21:
     v31 = 0;
   }
 
-  v47 = [(PSUICellularDataSpecifier *)self getLogger];
-  if (os_log_type_enabled(v47, OS_LOG_TYPE_DEFAULT))
+  getLogger3 = [(PSUICellularDataSpecifier *)self getLogger];
+  if (os_log_type_enabled(getLogger3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
-    _os_log_impl(&dword_2658DE000, v47, OS_LOG_TYPE_DEFAULT, "Adding additional plans", buf, 2u);
+    _os_log_impl(&dword_2658DE000, getLogger3, OS_LOG_TYPE_DEFAULT, "Adding additional plans", buf, 2u);
   }
 
   if ([(NSArray *)v28 count])
@@ -254,52 +254,52 @@ LABEL_21:
       v49 = [(NSArray *)v28 objectAtIndexedSubscript:v48];
       if (([v49 isSelected] & 1) != 0 || (objc_msgSend(v49, "isSelectable") & 1) == 0)
       {
-        v59 = [(PSUICellularDataSpecifier *)self getLogger];
-        if (os_log_type_enabled(v59, OS_LOG_TYPE_DEFAULT))
+        getLogger4 = [(PSUICellularDataSpecifier *)self getLogger];
+        if (os_log_type_enabled(getLogger4, OS_LOG_TYPE_DEFAULT))
         {
-          v62 = [v49 userLabel];
-          v63 = [v62 label];
-          v64 = [v49 isSelected];
-          v65 = [v49 isSelectable];
+          userLabel5 = [v49 userLabel];
+          label5 = [userLabel5 label];
+          isSelected = [v49 isSelected];
+          isSelectable = [v49 isSelectable];
           *buf = 67109890;
           *v73 = v48;
           *&v73[4] = 2112;
-          *&v73[6] = v63;
+          *&v73[6] = label5;
           *&v73[14] = 1024;
-          *&v73[16] = v64;
+          *&v73[16] = isSelected;
           v74 = 1024;
-          v75 = v65;
-          _os_log_impl(&dword_2658DE000, v59, OS_LOG_TYPE_DEFAULT, "Plan item %d (%@) is selected (%d) or not selectable (%d)", buf, 0x1Eu);
+          v75 = isSelectable;
+          _os_log_impl(&dword_2658DE000, getLogger4, OS_LOG_TYPE_DEFAULT, "Plan item %d (%@) is selected (%d) or not selectable (%d)", buf, 0x1Eu);
         }
       }
 
       else
       {
         v50 = MEMORY[0x277CCACA8];
-        v51 = [v49 userLabel];
-        v52 = [v51 label];
-        v53 = [v50 stringWithFormat:@"%@", v52];
+        userLabel6 = [v49 userLabel];
+        label6 = [userLabel6 label];
+        v53 = [v50 stringWithFormat:@"%@", label6];
         [v70 addObject:v53];
 
         v54 = MEMORY[0x277CCACA8];
-        v55 = [v49 userLabel];
-        v56 = [v55 label];
-        v57 = [v54 stringWithFormat:@"%@", v56];
+        userLabel7 = [v49 userLabel];
+        label7 = [userLabel7 label];
+        v57 = [v54 stringWithFormat:@"%@", label7];
         [v22 addObject:v57];
 
         v58 = [MEMORY[0x277CCABB0] numberWithInteger:v48];
         [v71 addObject:v58];
 
-        v59 = [(PSUICellularDataSpecifier *)self getLogger];
-        if (os_log_type_enabled(v59, OS_LOG_TYPE_DEFAULT))
+        getLogger4 = [(PSUICellularDataSpecifier *)self getLogger];
+        if (os_log_type_enabled(getLogger4, OS_LOG_TYPE_DEFAULT))
         {
-          v60 = [v49 userLabel];
-          v61 = [v60 label];
+          userLabel8 = [v49 userLabel];
+          label8 = [userLabel8 label];
           *buf = v68;
-          *v73 = v61;
+          *v73 = label8;
           *&v73[8] = 1024;
           *&v73[10] = v48;
-          _os_log_impl(&dword_2658DE000, v59, OS_LOG_TYPE_DEFAULT, "Adding plan item %@ with value %d", buf, 0x12u);
+          _os_log_impl(&dword_2658DE000, getLogger4, OS_LOG_TYPE_DEFAULT, "Adding plan item %@ with value %d", buf, 0x12u);
         }
 
         v31 = v69;
@@ -312,12 +312,12 @@ LABEL_21:
   }
 
 LABEL_35:
-  v66 = [(PSUICellularDataSpecifier *)self getLogger];
-  if (os_log_type_enabled(v66, OS_LOG_TYPE_DEFAULT))
+  getLogger5 = [(PSUICellularDataSpecifier *)self getLogger];
+  if (os_log_type_enabled(getLogger5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
     *v73 = v31;
-    _os_log_impl(&dword_2658DE000, v66, OS_LOG_TYPE_DEFAULT, "%d lines turned on", buf, 8u);
+    _os_log_impl(&dword_2658DE000, getLogger5, OS_LOG_TYPE_DEFAULT, "%d lines turned on", buf, 8u);
   }
 
   [(PSUICellularDataSpecifier *)self setValues:v71 titles:v70 shortTitles:v22];
@@ -325,25 +325,25 @@ LABEL_38:
   v67 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setAirplaneMode:(BOOL)a3
+- (void)setAirplaneMode:(BOOL)mode
 {
-  v3 = a3;
+  modeCopy = mode;
   v10 = *MEMORY[0x277D85DE8];
-  v5 = [(PSUICellularDataSpecifier *)self getLogger];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(PSUICellularDataSpecifier *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     v6 = "OFF";
-    if (v3)
+    if (modeCopy)
     {
       v6 = "ON";
     }
 
     v8 = 136315138;
     v9 = v6;
-    _os_log_impl(&dword_2658DE000, v5, OS_LOG_TYPE_DEFAULT, "Airplane mode is %s", &v8, 0xCu);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "Airplane mode is %s", &v8, 0xCu);
   }
 
-  if (v3)
+  if (modeCopy)
   {
     [(PSUICellularDataSpecifier *)self setProperty:MEMORY[0x277CBEC28] forKey:*MEMORY[0x277D3FF38]];
   }
@@ -356,16 +356,16 @@ LABEL_38:
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (id)isCellularDataEnabled:(id)a3
+- (id)isCellularDataEnabled:(id)enabled
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = [(PSUICoreTelephonyDataCache *)self->_dataCache isCellularDataEnabled];
-  v5 = [(PSUICoreTelephonyDataCache *)self->_dataCache isAirplaneModeEnabled];
-  v6 = [(PSUICellularDataSpecifier *)self getLogger];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  isCellularDataEnabled = [(PSUICoreTelephonyDataCache *)self->_dataCache isCellularDataEnabled];
+  isAirplaneModeEnabled = [(PSUICoreTelephonyDataCache *)self->_dataCache isAirplaneModeEnabled];
+  getLogger = [(PSUICellularDataSpecifier *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     v7 = "OFF";
-    if (v4)
+    if (isCellularDataEnabled)
     {
       v8 = "ON";
     }
@@ -375,7 +375,7 @@ LABEL_38:
       v8 = "OFF";
     }
 
-    if (v5)
+    if (isAirplaneModeEnabled)
     {
       v7 = "ON";
     }
@@ -384,82 +384,82 @@ LABEL_38:
     v13 = v8;
     v14 = 2080;
     v15 = v7;
-    _os_log_impl(&dword_2658DE000, v6, OS_LOG_TYPE_DEFAULT, "Cellular data %s airplane mode %s", &v12, 0x16u);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "Cellular data %s airplane mode %s", &v12, 0x16u);
   }
 
-  v9 = [MEMORY[0x277CCABB0] numberWithBool:v4 && !v5];
+  v9 = [MEMORY[0x277CCABB0] numberWithBool:isCellularDataEnabled && !isAirplaneModeEnabled];
   v10 = *MEMORY[0x277D85DE8];
 
   return v9;
 }
 
-- (void)setCellularDataEnabled:(id)a3 specifier:(id)a4
+- (void)setCellularDataEnabled:(id)enabled specifier:(id)specifier
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [(PSUICellularDataSpecifier *)self getLogger];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  enabledCopy = enabled;
+  getLogger = [(PSUICellularDataSpecifier *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v5 BOOLValue];
+    bOOLValue = [enabledCopy BOOLValue];
     v8 = @"OFF";
-    if (v7)
+    if (bOOLValue)
     {
       v8 = @"ON";
     }
 
     v13 = 138412290;
     v14 = v8;
-    _os_log_impl(&dword_2658DE000, v6, OS_LOG_TYPE_DEFAULT, "Attempting to set cellular data switch to %@", &v13, 0xCu);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "Attempting to set cellular data switch to %@", &v13, 0xCu);
   }
 
-  v9 = [v5 BOOLValue];
-  if (v9 != [(PSUICoreTelephonyDataCache *)self->_dataCache isCellularDataEnabled])
+  bOOLValue2 = [enabledCopy BOOLValue];
+  if (bOOLValue2 != [(PSUICoreTelephonyDataCache *)self->_dataCache isCellularDataEnabled])
   {
-    if ((v9 & 1) != 0 || ![(PSUICoreTelephonyCallCache *)self->_callCache isAnyVOIPCallActive])
+    if ((bOOLValue2 & 1) != 0 || ![(PSUICoreTelephonyCallCache *)self->_callCache isAnyVOIPCallActive])
     {
-      [(PSUICellularDataSpecifier *)self setCellularDataSwitch:v9];
+      [(PSUICellularDataSpecifier *)self setCellularDataSwitch:bOOLValue2];
     }
 
     else
     {
-      v10 = [(PSUICellularDataSpecifier *)self callEndConfirmationSpecifier];
-      [v10 setConfirmationAction:sel_acceptedDataSwitch_];
-      [v10 setProperty:v5 forKey:@"newValue"];
+      callEndConfirmationSpecifier = [(PSUICellularDataSpecifier *)self callEndConfirmationSpecifier];
+      [callEndConfirmationSpecifier setConfirmationAction:sel_acceptedDataSwitch_];
+      [callEndConfirmationSpecifier setProperty:enabledCopy forKey:@"newValue"];
       WeakRetained = objc_loadWeakRetained(&self->_hostController);
-      [WeakRetained showConfirmationViewForSpecifier:v10];
+      [WeakRetained showConfirmationViewForSpecifier:callEndConfirmationSpecifier];
     }
   }
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)acceptedDataSwitch:(id)a3
+- (void)acceptedDataSwitch:(id)switch
 {
-  v4 = a3;
-  v5 = [(PSUICellularDataSpecifier *)self getLogger];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  switchCopy = switch;
+  getLogger = [(PSUICellularDataSpecifier *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     *v8 = 0;
-    _os_log_impl(&dword_2658DE000, v5, OS_LOG_TYPE_DEFAULT, "User confirmed cellular data switch action", v8, 2u);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "User confirmed cellular data switch action", v8, 2u);
   }
 
-  v6 = [v4 propertyForKey:@"newValue"];
+  v6 = [switchCopy propertyForKey:@"newValue"];
 
-  v7 = [v6 BOOLValue];
-  [(PSUICellularDataSpecifier *)self setCellularDataSwitch:v7];
+  bOOLValue = [v6 BOOLValue];
+  [(PSUICellularDataSpecifier *)self setCellularDataSwitch:bOOLValue];
 }
 
-- (id)_isCellularDataEnabled:(id)a3
+- (id)_isCellularDataEnabled:(id)enabled
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(PSUICoreTelephonyDataCache *)self->_dataCache isCellularDataEnabled];
-  v6 = [(PSUICoreTelephonyDataCache *)self->_dataCache isAirplaneModeEnabled];
-  v7 = [(PSUICellularDataSpecifier *)self getLogger];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+  enabledCopy = enabled;
+  isCellularDataEnabled = [(PSUICoreTelephonyDataCache *)self->_dataCache isCellularDataEnabled];
+  isAirplaneModeEnabled = [(PSUICoreTelephonyDataCache *)self->_dataCache isAirplaneModeEnabled];
+  getLogger = [(PSUICellularDataSpecifier *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     v8 = "OFF";
-    if (v5)
+    if (isCellularDataEnabled)
     {
       v9 = "ON";
     }
@@ -469,7 +469,7 @@ LABEL_38:
       v9 = "OFF";
     }
 
-    if (v6)
+    if (isAirplaneModeEnabled)
     {
       v8 = "ON";
     }
@@ -478,12 +478,12 @@ LABEL_38:
     v20 = v9;
     v21 = 2080;
     v22 = v8;
-    _os_log_impl(&dword_2658DE000, v7, OS_LOG_TYPE_DEFAULT, "Cellular data %s airplane mode %s", &v19, 0x16u);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "Cellular data %s airplane mode %s", &v19, 0x16u);
   }
 
-  if (v6 || !v5)
+  if (isAirplaneModeEnabled || !isCellularDataEnabled)
   {
-    v10 = [MEMORY[0x277CBEB68] null];
+    null = [MEMORY[0x277CBEB68] null];
   }
 
   else
@@ -492,7 +492,7 @@ LABEL_38:
     if ([(NSArray *)v11 count])
     {
       v12 = 0;
-      v10 = 0;
+      null = 0;
       v13 = 0;
       do
       {
@@ -508,7 +508,7 @@ LABEL_38:
         {
           v16 = [MEMORY[0x277CCABB0] numberWithInteger:v12];
 
-          v10 = v16;
+          null = v16;
         }
 
         ++v12;
@@ -519,41 +519,41 @@ LABEL_38:
       {
         v13 = v13;
 
-        v10 = v13;
+        null = v13;
       }
     }
 
     else
     {
       v13 = 0;
-      v10 = 0;
+      null = 0;
     }
   }
 
   v17 = *MEMORY[0x277D85DE8];
 
-  return v10;
+  return null;
 }
 
-- (void)_setCellularDataEnabled:(id)a3 specifier:(id)a4
+- (void)_setCellularDataEnabled:(id)enabled specifier:(id)specifier
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [(PSUICellularDataSpecifier *)self getLogger];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  enabledCopy = enabled;
+  getLogger = [(PSUICellularDataSpecifier *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138412290;
-    v14 = v5;
-    _os_log_impl(&dword_2658DE000, v6, OS_LOG_TYPE_DEFAULT, "Attempting to set cellular data switch to %@", &v13, 0xCu);
+    v14 = enabledCopy;
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "Attempting to set cellular data switch to %@", &v13, 0xCu);
   }
 
   if (self->_isMSOActive)
   {
-    v7 = [(PSUICellularDataSpecifier *)self getLogger];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+    getLogger2 = [(PSUICellularDataSpecifier *)self getLogger];
+    if (os_log_type_enabled(getLogger2, OS_LOG_TYPE_DEFAULT))
     {
       LOWORD(v13) = 0;
-      _os_log_impl(&dword_2658DE000, v7, OS_LOG_TYPE_DEFAULT, "MSO active, ignore cellular data switch", &v13, 2u);
+      _os_log_impl(&dword_2658DE000, getLogger2, OS_LOG_TYPE_DEFAULT, "MSO active, ignore cellular data switch", &v13, 2u);
     }
 
 LABEL_19:
@@ -561,13 +561,13 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  v8 = [MEMORY[0x277CBEB68] null];
-  v9 = [v8 isEqual:v5];
+  null = [MEMORY[0x277CBEB68] null];
+  v9 = [null isEqual:enabledCopy];
 
   if (!v9)
   {
-    v10 = -[NSArray objectAtIndexedSubscript:](self->_cachedPlanItems, "objectAtIndexedSubscript:", [v5 integerValue]);
-    if (-[PSUICoreTelephonyDataCache isCellularDataEnabled](self->_dataCache, "isCellularDataEnabled") && [v10 isActiveDataPlan])
+    callEndConfirmationSpecifier = -[NSArray objectAtIndexedSubscript:](self->_cachedPlanItems, "objectAtIndexedSubscript:", [enabledCopy integerValue]);
+    if (-[PSUICoreTelephonyDataCache isCellularDataEnabled](self->_dataCache, "isCellularDataEnabled") && [callEndConfirmationSpecifier isActiveDataPlan])
     {
       WeakRetained = [(PSUICellularDataSpecifier *)self getLogger];
       if (os_log_type_enabled(WeakRetained, OS_LOG_TYPE_DEBUG))
@@ -580,17 +580,17 @@ LABEL_19:
     }
 
 LABEL_16:
-    [(PSUICellularDataSpecifier *)self _setCellularDataSwitch:v5];
+    [(PSUICellularDataSpecifier *)self _setCellularDataSwitch:enabledCopy];
     goto LABEL_20;
   }
 
   if (![(PSUICoreTelephonyDataCache *)self->_dataCache isCellularDataEnabled])
   {
-    v7 = [(PSUICellularDataSpecifier *)self getLogger];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
+    getLogger2 = [(PSUICellularDataSpecifier *)self getLogger];
+    if (os_log_type_enabled(getLogger2, OS_LOG_TYPE_DEBUG))
     {
       LOWORD(v13) = 0;
-      _os_log_debug_impl(&dword_2658DE000, v7, OS_LOG_TYPE_DEBUG, "Cellular data is already off", &v13, 2u);
+      _os_log_debug_impl(&dword_2658DE000, getLogger2, OS_LOG_TYPE_DEBUG, "Cellular data is already off", &v13, 2u);
     }
 
     goto LABEL_19;
@@ -601,46 +601,46 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  v10 = [(PSUICellularDataSpecifier *)self callEndConfirmationSpecifier];
-  [v10 setConfirmationAction:sel__acceptedDataSwitch_];
-  [v10 setProperty:v5 forKey:@"newValue"];
+  callEndConfirmationSpecifier = [(PSUICellularDataSpecifier *)self callEndConfirmationSpecifier];
+  [callEndConfirmationSpecifier setConfirmationAction:sel__acceptedDataSwitch_];
+  [callEndConfirmationSpecifier setProperty:enabledCopy forKey:@"newValue"];
   WeakRetained = objc_loadWeakRetained(&self->_hostController);
-  [WeakRetained showConfirmationViewForSpecifier:v10];
+  [WeakRetained showConfirmationViewForSpecifier:callEndConfirmationSpecifier];
 LABEL_14:
 
 LABEL_20:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_acceptedDataSwitch:(id)a3
+- (void)_acceptedDataSwitch:(id)switch
 {
-  v4 = a3;
-  v5 = [(PSUICellularDataSpecifier *)self getLogger];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  switchCopy = switch;
+  getLogger = [(PSUICellularDataSpecifier *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     *v7 = 0;
-    _os_log_impl(&dword_2658DE000, v5, OS_LOG_TYPE_DEFAULT, "User confirmed cellular data switch action", v7, 2u);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "User confirmed cellular data switch action", v7, 2u);
   }
 
-  v6 = [v4 propertyForKey:@"newValue"];
+  v6 = [switchCopy propertyForKey:@"newValue"];
 
   [(PSUICellularDataSpecifier *)self _setCellularDataSwitch:v6];
 }
 
-- (void)_setCellularDataSwitch:(id)a3
+- (void)_setCellularDataSwitch:(id)switch
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(PSUICellularDataSpecifier *)self getLogger];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  switchCopy = switch;
+  getLogger = [(PSUICellularDataSpecifier *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412290;
-    v11 = v4;
-    _os_log_impl(&dword_2658DE000, v5, OS_LOG_TYPE_DEFAULT, "Setting cellular data switch to %@", &v10, 0xCu);
+    v11 = switchCopy;
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "Setting cellular data switch to %@", &v10, 0xCu);
   }
 
-  v6 = [MEMORY[0x277CBEB68] null];
-  v7 = [v6 isEqual:v4];
+  null = [MEMORY[0x277CBEB68] null];
+  v7 = [null isEqual:switchCopy];
 
   if (v7)
   {
@@ -649,7 +649,7 @@ LABEL_20:
 
   else
   {
-    v8 = -[NSArray objectAtIndexedSubscript:](self->_cachedPlanItems, "objectAtIndexedSubscript:", [v4 integerValue]);
+    v8 = -[NSArray objectAtIndexedSubscript:](self->_cachedPlanItems, "objectAtIndexedSubscript:", [switchCopy integerValue]);
     [(PSUICoreTelephonyDataCache *)self->_dataCache setCellularDataEnabled:1];
     [(PSUICellularPlanManagerCache *)self->_planManagerCache setSelectedPlanItemForData:v8];
   }
@@ -657,20 +657,20 @@ LABEL_20:
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (id)planItemForListItem:(id)a3
+- (id)planItemForListItem:(id)item
 {
-  v4 = a3;
-  if ([v4 cellType] != 3)
+  itemCopy = item;
+  if ([itemCopy cellType] != 3)
   {
     goto LABEL_5;
   }
 
-  v5 = [v4 values];
-  v6 = [v5 firstObject];
-  v7 = [MEMORY[0x277CBEB68] null];
-  v8 = [v6 isEqual:v7];
+  values = [itemCopy values];
+  firstObject = [values firstObject];
+  null = [MEMORY[0x277CBEB68] null];
+  v8 = [firstObject isEqual:null];
 
-  if ((v8 & 1) != 0 || ([v4 values], v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "firstObject"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "integerValue"), v10, v9, -[NSArray count](self->_cachedPlanItems, "count") <= v11))
+  if ((v8 & 1) != 0 || ([itemCopy values], v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "firstObject"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "integerValue"), v10, v9, -[NSArray count](self->_cachedPlanItems, "count") <= v11))
   {
 LABEL_5:
     v12 = 0;
@@ -684,9 +684,9 @@ LABEL_5:
   return v12;
 }
 
-- (id)subscriptionContextForListItem:(id)a3
+- (id)subscriptionContextForListItem:(id)item
 {
-  v4 = [(PSUICellularDataSpecifier *)self planItemForListItem:a3];
+  v4 = [(PSUICellularDataSpecifier *)self planItemForListItem:item];
   v5 = [(PSUICellularPlanManagerCache *)self->_planManagerCache subscriptionContextForPlanItem:v4 cachedSubscriptionContexts:0];
 
   return v5;
@@ -694,10 +694,10 @@ LABEL_5:
 
 - (id)callEndConfirmationSpecifier
 {
-  v3 = [(PSUIDeviceWiFiState *)self->_wifiState isConnectedOverWiFi];
+  isConnectedOverWiFi = [(PSUIDeviceWiFiState *)self->_wifiState isConnectedOverWiFi];
   v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v5 = v4;
-  if (v3)
+  if (isConnectedOverWiFi)
   {
     v6 = @"CELLULAR_DATA_ON_FACETIME_WIFI_WARNING_DISABLE";
   }
@@ -710,21 +710,21 @@ LABEL_5:
   v7 = [v4 localizedStringForKey:v6 value:&stru_287733598 table:@"Cellular"];
 
   v8 = [MEMORY[0x277D3F9C8] preferenceSpecifierNamed:&stru_287733598 target:self set:0 get:0 detail:0 cell:-1 edit:0];
-  v9 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v10 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v11 = [v10 localizedStringForKey:@"ON_CALL_CANCEL" value:&stru_287733598 table:@"Cellular"];
-  [v9 setObject:v11 forKey:*MEMORY[0x277D3FE78]];
+  [dictionary setObject:v11 forKey:*MEMORY[0x277D3FE78]];
 
   v12 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v13 = [v12 localizedStringForKey:@"ON_CALL_OK_DISABLE" value:&stru_287733598 table:@"Cellular"];
-  [v9 setObject:v13 forKey:*MEMORY[0x277D3FE88]];
+  [dictionary setObject:v13 forKey:*MEMORY[0x277D3FE88]];
 
-  [v9 setObject:v7 forKey:*MEMORY[0x277D3FE90]];
+  [dictionary setObject:v7 forKey:*MEMORY[0x277D3FE90]];
   v14 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v15 = [v14 localizedStringForKey:@"DISABLE_CELLULAR_DATA" value:&stru_287733598 table:@"Cellular"];
-  [v9 setObject:v15 forKey:*MEMORY[0x277D3FE98]];
+  [dictionary setObject:v15 forKey:*MEMORY[0x277D3FE98]];
 
-  [v8 setupWithDictionary:v9];
+  [v8 setupWithDictionary:dictionary];
   v16 = [MEMORY[0x277CCABB0] numberWithBool:1];
   [v8 setProperty:v16 forKey:*MEMORY[0x277D3FE80]];
 
@@ -733,21 +733,21 @@ LABEL_5:
   return v8;
 }
 
-- (void)canceledDataSwitch:(id)a3
+- (void)canceledDataSwitch:(id)switch
 {
-  v4 = [(PSUICellularDataSpecifier *)self getLogger];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(PSUICellularDataSpecifier *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     *v8 = 0;
-    _os_log_impl(&dword_2658DE000, v4, OS_LOG_TYPE_DEFAULT, "User cancelled cellular data switch action", v8, 2u);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "User cancelled cellular data switch action", v8, 2u);
   }
 
-  v5 = [(PSUICellularDataSpecifier *)self detailController];
+  detailController = [(PSUICellularDataSpecifier *)self detailController];
 
-  if (v5)
+  if (detailController)
   {
-    v6 = [(PSUICellularDataSpecifier *)self detailController];
-    [v6 reloadSpecifiers];
+    detailController2 = [(PSUICellularDataSpecifier *)self detailController];
+    [detailController2 reloadSpecifiers];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_hostController);

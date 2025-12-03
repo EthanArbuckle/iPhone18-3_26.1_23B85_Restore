@@ -5,13 +5,13 @@
 - (UILabel)titleLabel;
 - (UIView)iconContainer;
 - (void)awakeFromNib;
-- (void)configureWithBadgeCount:(int64_t)a3;
+- (void)configureWithBadgeCount:(int64_t)count;
 - (void)prepareForReuse;
-- (void)setBadgeLabel:(id)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setIconContainer:(id)a3;
-- (void)setTitleLabel:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setBadgeLabel:(id)label;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setIconContainer:(id)container;
+- (void)setTitleLabel:(id)label;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation GKPickerGroupNearbyCell
@@ -23,11 +23,11 @@
   return v2;
 }
 
-- (void)setIconContainer:(id)a3
+- (void)setIconContainer:(id)container
 {
-  v5 = a3;
-  v6 = self;
-  sub_24E1312D0(a3);
+  containerCopy = container;
+  selfCopy = self;
+  sub_24E1312D0(container);
 }
 
 - (UILabel)badgeLabel
@@ -37,11 +37,11 @@
   return v2;
 }
 
-- (void)setBadgeLabel:(id)a3
+- (void)setBadgeLabel:(id)label
 {
-  v5 = a3;
-  v6 = self;
-  sub_24E1313B4(a3);
+  labelCopy = label;
+  selfCopy = self;
+  sub_24E1313B4(label);
 }
 
 - (UILabel)titleLabel
@@ -51,44 +51,44 @@
   return v2;
 }
 
-- (void)setTitleLabel:(id)a3
+- (void)setTitleLabel:(id)label
 {
-  v5 = a3;
-  v6 = self;
-  sub_24E131498(a3);
+  labelCopy = label;
+  selfCopy = self;
+  sub_24E131498(label);
 }
 
 - (void)awakeFromNib
 {
-  v2 = self;
+  selfCopy = self;
   sub_24E1314E0();
 }
 
-- (void)configureWithBadgeCount:(int64_t)a3
+- (void)configureWithBadgeCount:(int64_t)count
 {
-  v4 = self;
-  sub_24E13176C(a3);
+  selfCopy = self;
+  sub_24E13176C(count);
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_24E131A94(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_24E131A94(change);
 }
 
 - (BOOL)isHighlighted
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_24E131BBC();
 
   return v3 & 1;
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v4 = self;
-  sub_24E131C44(a3);
+  selfCopy = self;
+  sub_24E131C44(highlighted);
 }
 
 - (UILabel)accessibilityTitleLabel
@@ -100,7 +100,7 @@
 
 - (void)prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   sub_24E131E24();
 }
 

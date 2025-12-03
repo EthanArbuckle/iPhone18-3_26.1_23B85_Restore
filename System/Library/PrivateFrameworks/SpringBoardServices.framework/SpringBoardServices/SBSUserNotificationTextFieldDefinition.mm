@@ -1,12 +1,12 @@
 @interface SBSUserNotificationTextFieldDefinition
-+ (id)_definitionsFromSerializedDefinitions:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)_definitionsFromSerializedDefinitions:(id)definitions;
+- (BOOL)isEqual:(id)equal;
 - (SBSUserNotificationTextFieldDefinition)init;
-- (id)_initWithDictionary:(id)a3;
+- (id)_initWithDictionary:(id)dictionary;
 - (id)build;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)_copyPropertiesToDefinition:(id)a3;
+- (void)_copyPropertiesToDefinition:(id)definition;
 @end
 
 @implementation SBSUserNotificationTextFieldDefinition
@@ -35,10 +35,10 @@
   return v3;
 }
 
-- (id)_initWithDictionary:(id)a3
+- (id)_initWithDictionary:(id)dictionary
 {
-  v5 = a3;
-  if (!v5)
+  dictionaryCopy = dictionary;
+  if (!dictionaryCopy)
   {
     [(SBSUserNotificationTextFieldDefinition *)a2 _initWithDictionary:?];
   }
@@ -49,71 +49,71 @@
     v6 = [(SBSUserNotificationTextFieldDefinition *)self init];
     if (v6)
     {
-      v7 = [v5 bs_safeStringForKey:@"_SBSTFTitle"];
+      v7 = [dictionaryCopy bs_safeStringForKey:@"_SBSTFTitle"];
       title = v6->_title;
       v6->_title = v7;
 
-      v9 = [v5 bs_safeStringForKey:@"_SBSTFValue"];
+      v9 = [dictionaryCopy bs_safeStringForKey:@"_SBSTFValue"];
       value = v6->_value;
       v6->_value = v9;
 
-      v6->_isSecure = [v5 bs_BOOLForKey:@"_SBSTFIsSecure"];
-      v11 = [v5 objectForKey:@"_SBSTFMaxLength"];
+      v6->_isSecure = [dictionaryCopy bs_BOOLForKey:@"_SBSTFIsSecure"];
+      v11 = [dictionaryCopy objectForKey:@"_SBSTFMaxLength"];
 
       if (v11)
       {
         v6->_hasSetMaxLength = 1;
-        v12 = [v5 bs_safeNumberForKey:@"_SBSTFMaxLength"];
+        v12 = [dictionaryCopy bs_safeNumberForKey:@"_SBSTFMaxLength"];
         v6->_maxLength = [v12 unsignedIntValue];
       }
 
-      v13 = [v5 objectForKey:@"_SBSTFKeyboardType"];
+      v13 = [dictionaryCopy objectForKey:@"_SBSTFKeyboardType"];
 
       if (v13)
       {
-        v14 = [v5 bs_safeNumberForKey:@"_SBSTFKeyboardType"];
+        v14 = [dictionaryCopy bs_safeNumberForKey:@"_SBSTFKeyboardType"];
         v6->_keyboardType = [v14 intValue];
       }
 
-      v15 = [v5 objectForKey:@"_SBSTFAutocorrectionType"];
+      v15 = [dictionaryCopy objectForKey:@"_SBSTFAutocorrectionType"];
 
       if (v15)
       {
-        v16 = [v5 bs_safeNumberForKey:@"_SBSTFAutocorrectionType"];
+        v16 = [dictionaryCopy bs_safeNumberForKey:@"_SBSTFAutocorrectionType"];
         v6->_autocorrectionType = [v16 intValue];
       }
 
-      v17 = [v5 objectForKey:@"_SBSTFAutocapitalizationType"];
+      v17 = [dictionaryCopy objectForKey:@"_SBSTFAutocapitalizationType"];
 
       if (v17)
       {
-        v18 = [v5 bs_safeNumberForKey:@"_SBSTFAutocapitalizationType"];
+        v18 = [dictionaryCopy bs_safeNumberForKey:@"_SBSTFAutocapitalizationType"];
         v6->_autocapitalizationType = [v18 intValue];
       }
     }
 
     self = v6;
-    v19 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v19 = 0;
+    selfCopy = 0;
   }
 
-  return v19;
+  return selfCopy;
 }
 
-+ (id)_definitionsFromSerializedDefinitions:(id)a3
++ (id)_definitionsFromSerializedDefinitions:(id)definitions
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  definitionsCopy = definitions;
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v3;
+  v5 = definitionsCopy;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -186,10 +186,10 @@
   return v4 + [(NSString *)self->_value hash]+ self->_maxLength + self->_keyboardType + 17 * self->_autocapitalizationType + 19 * self->_autocorrectionType;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -199,13 +199,13 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       if (BSEqualBools() && self->_maxLength == v5->_maxLength && self->_keyboardType == v5->_keyboardType && self->_autocapitalizationType == v5->_autocapitalizationType && self->_autocorrectionType == v5->_autocorrectionType)
       {
-        v6 = [(SBSUserNotificationTextFieldDefinition *)v5 title];
+        title = [(SBSUserNotificationTextFieldDefinition *)v5 title];
         if (BSEqualObjects())
         {
-          v7 = [(SBSUserNotificationTextFieldDefinition *)v5 value];
+          value = [(SBSUserNotificationTextFieldDefinition *)v5 value];
           v8 = BSEqualObjects();
         }
 
@@ -230,20 +230,20 @@
   return v8;
 }
 
-- (void)_copyPropertiesToDefinition:(id)a3
+- (void)_copyPropertiesToDefinition:(id)definition
 {
-  objc_storeStrong(a3 + 1, self->_title);
-  v5 = a3;
-  objc_storeStrong(v5 + 2, self->_value);
-  *(v5 + 24) = self->_isSecure;
-  *(v5 + 25) = self->_hasSetMaxLength;
-  v5[4] = self->_maxLength;
-  v5[5] = self->_keyboardType;
-  v5[6] = self->_autocorrectionType;
-  v5[7] = self->_autocapitalizationType;
+  objc_storeStrong(definition + 1, self->_title);
+  definitionCopy = definition;
+  objc_storeStrong(definitionCopy + 2, self->_value);
+  *(definitionCopy + 24) = self->_isSecure;
+  *(definitionCopy + 25) = self->_hasSetMaxLength;
+  definitionCopy[4] = self->_maxLength;
+  definitionCopy[5] = self->_keyboardType;
+  definitionCopy[6] = self->_autocorrectionType;
+  definitionCopy[7] = self->_autocapitalizationType;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(SBSMutableUserNotificationTextFieldDefinition);
   [(SBSUserNotificationTextFieldDefinition *)self _copyPropertiesToDefinition:v4];

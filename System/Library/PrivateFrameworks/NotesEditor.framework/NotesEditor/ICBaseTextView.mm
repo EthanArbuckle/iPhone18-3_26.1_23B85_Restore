@@ -2,8 +2,8 @@
 + (void)initialize;
 + (void)swizzleLayoutFragmentPointInside;
 + (void)swizzleTextLayoutCanvasViewTextViewportLayoutControllerDidLayoutTextViewportElement;
-- (ICBaseTextView)initWithCoder:(id)a3;
-- (ICBaseTextView)initWithFrame:(CGRect)a3 textContainer:(id)a4;
+- (ICBaseTextView)initWithCoder:(id)coder;
+- (ICBaseTextView)initWithFrame:(CGRect)frame textContainer:(id)container;
 - (ICEditingTextViewDelegate)icDelegate;
 - (ICEditorContainer)editorContainer;
 - (ICLayoutManager)icLayoutManager;
@@ -12,20 +12,20 @@
 - (ICTTTextStorage)TTTextStorage;
 - (UIResponder)nextResponderOverride;
 - (UIView)containerViewForAttachments;
-- (id)initForTextKit1WithSize:(CGSize)a3;
-- (id)initForTextKit2WithNote:(id)a3 size:(CGSize)a4 insideSystemPaper:(BOOL)a5 insideSiriSnippet:(BOOL)a6;
+- (id)initForTextKit1WithSize:(CGSize)size;
+- (id)initForTextKit2WithNote:(id)note size:(CGSize)size insideSystemPaper:(BOOL)paper insideSiriSnippet:(BOOL)snippet;
 - (id)textController;
 - (void)TTTextStorage;
 - (void)commonInit;
 - (void)dealloc;
-- (void)drawBlockQuoteAndCleanup:(BOOL *)a3 pendingBlockQuoteLevelToDraw:(unint64_t *)a4 pendingBlockQuoteRectToDraw:(CGRect *)a5 ps:(id)a6;
-- (void)drawBlockQuoteLayerInRectForTK2:(CGRect)a3 blockQuoteLevel:(int64_t)a4 isMonostyled:(BOOL)a5;
-- (void)drawMonostyledLayerInRect:(CGRect)a3;
-- (void)setHidden:(BOOL)a3;
-- (void)textViewportLayoutControllerDidLayout:(id)a3;
-- (void)updateBlockQuoteLayerForParagraphStyle:(id)a3 inRange:(_NSRange)a4 ioPreviousBlockQuoteRect:(CGRect *)a5;
-- (void)updateMonostyledLayerForParagraphStyle:(id)a3 inRange:(_NSRange)a4 ioPreviousMonoRect:(CGRect *)a5 ioPreviousBlockQuoteLevel:(unint64_t *)a6;
-- (void)updateStyleLayersInRange:(_NSRange)a3;
+- (void)drawBlockQuoteAndCleanup:(BOOL *)cleanup pendingBlockQuoteLevelToDraw:(unint64_t *)draw pendingBlockQuoteRectToDraw:(CGRect *)toDraw ps:(id)ps;
+- (void)drawBlockQuoteLayerInRectForTK2:(CGRect)k2 blockQuoteLevel:(int64_t)level isMonostyled:(BOOL)monostyled;
+- (void)drawMonostyledLayerInRect:(CGRect)rect;
+- (void)setHidden:(BOOL)hidden;
+- (void)textViewportLayoutControllerDidLayout:(id)layout;
+- (void)updateBlockQuoteLayerForParagraphStyle:(id)style inRange:(_NSRange)range ioPreviousBlockQuoteRect:(CGRect *)rect;
+- (void)updateMonostyledLayerForParagraphStyle:(id)style inRange:(_NSRange)range ioPreviousMonoRect:(CGRect *)rect ioPreviousBlockQuoteLevel:(unint64_t *)level;
+- (void)updateStyleLayersInRange:(_NSRange)range;
 @end
 
 @implementation ICBaseTextView
@@ -34,11 +34,11 @@
 {
   v2 = NSClassFromString(&cfstr_Uitextlayoutca.isa);
   v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s%s%s%s%s", "v", "@", ":", "@", "@"];
-  v4 = [v3 UTF8String];
+  uTF8String = [v3 UTF8String];
 
   v5 = imp_implementationWithBlock(&__block_literal_global_32);
 
-  class_addMethod(v2, sel_textViewportLayoutController_didLayoutTextViewportElement_, v5, v4);
+  class_addMethod(v2, sel_textViewportLayoutController_didLayoutTextViewportElement_, v5, uTF8String);
 }
 
 void __28__ICBaseTextView_initialize__block_invoke_2()
@@ -56,11 +56,11 @@ void __28__ICBaseTextView_initialize__block_invoke_2()
 {
   v2 = NSClassFromString(&cfstr_Uitextlayoutfr.isa);
   v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s%s%s%s%s", "B", "@", ":", "{CGPoint=dd}", "@"];
-  v4 = [v3 UTF8String];
+  uTF8String = [v3 UTF8String];
 
   v5 = imp_implementationWithBlock(&__block_literal_global_44);
 
-  class_addMethod(v2, sel_pointInside_withEvent_, v5, v4);
+  class_addMethod(v2, sel_pointInside_withEvent_, v5, uTF8String);
 }
 
 + (void)initialize
@@ -69,7 +69,7 @@ void __28__ICBaseTextView_initialize__block_invoke_2()
   block[1] = 3221225472;
   block[2] = __28__ICBaseTextView_initialize__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (initialize_onceToken != -1)
   {
     dispatch_once(&initialize_onceToken, block);
@@ -110,8 +110,8 @@ void __28__ICBaseTextView_initialize__block_invoke(uint64_t a1)
     v3 = objc_alloc_init(ICTextViewRenderingSurfaceView);
     [(ICBaseTextView *)self setRenderingSurfaceView:v3];
 
-    v4 = [(ICBaseTextView *)self textLayoutManager];
-    v5 = [v4 textViewportLayoutController];
+    textLayoutManager = [(ICBaseTextView *)self textLayoutManager];
+    textViewportLayoutController = [textLayoutManager textViewportLayoutController];
 
     objc_initWeak(&location, self);
     v7 = MEMORY[0x277D85DD0];
@@ -119,9 +119,9 @@ void __28__ICBaseTextView_initialize__block_invoke(uint64_t a1)
     v9 = __28__ICBaseTextView_commonInit__block_invoke;
     v10 = &unk_2781ADC80;
     objc_copyWeak(&v11, &location);
-    [v5 setRenderingSurfaceUpdater:&v7];
-    v6 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v6 addObserver:self selector:sel_textViewportLayoutControllerDidLayout_ name:*MEMORY[0x277D775F8] object:0];
+    [textViewportLayoutController setRenderingSurfaceUpdater:&v7];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:self selector:sel_textViewportLayoutControllerDidLayout_ name:*MEMORY[0x277D775F8] object:0];
 
     objc_destroyWeak(&v11);
     objc_destroyWeak(&location);
@@ -131,7 +131,7 @@ void __28__ICBaseTextView_initialize__block_invoke(uint64_t a1)
 - (UIView)containerViewForAttachments
 {
   v16 = *MEMORY[0x277D85DE8];
-  v2 = self;
+  selfCopy = self;
   if (!containerViewForAttachments_UITextContainerViewClass)
   {
     containerViewForAttachments_UITextContainerViewClass = NSClassFromString(&cfstr_Uitextcontaine.isa);
@@ -141,8 +141,8 @@ void __28__ICBaseTextView_initialize__block_invoke(uint64_t a1)
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(ICBaseTextView *)v2 subviews];
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  subviews = [(ICBaseTextView *)selfCopy subviews];
+  v4 = [subviews countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -153,7 +153,7 @@ void __28__ICBaseTextView_initialize__block_invoke(uint64_t a1)
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(subviews);
         }
 
         v8 = *(*(&v11 + 1) + 8 * i);
@@ -161,12 +161,12 @@ void __28__ICBaseTextView_initialize__block_invoke(uint64_t a1)
         {
           v9 = v8;
 
-          v2 = v9;
+          selfCopy = v9;
           goto LABEL_13;
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [subviews countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v5)
       {
         continue;
@@ -178,7 +178,7 @@ void __28__ICBaseTextView_initialize__block_invoke(uint64_t a1)
 
 LABEL_13:
 
-  return v2;
+  return selfCopy;
 }
 
 - (ICEditingTextViewDelegate)icDelegate
@@ -287,11 +287,11 @@ uint64_t __50__ICBaseTextView_swizzleLayoutFragmentPointInside__block_invoke_2(d
   return v7;
 }
 
-- (ICBaseTextView)initWithFrame:(CGRect)a3 textContainer:(id)a4
+- (ICBaseTextView)initWithFrame:(CGRect)frame textContainer:(id)container
 {
   v7.receiver = self;
   v7.super_class = ICBaseTextView;
-  v4 = [(ICBaseTextView *)&v7 initWithFrame:a4 textContainer:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v4 = [(ICBaseTextView *)&v7 initWithFrame:container textContainer:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v5 = v4;
   if (v4)
   {
@@ -301,11 +301,11 @@ uint64_t __50__ICBaseTextView_swizzleLayoutFragmentPointInside__block_invoke_2(d
   return v5;
 }
 
-- (ICBaseTextView)initWithCoder:(id)a3
+- (ICBaseTextView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = ICBaseTextView;
-  v3 = [(ICBaseTextView *)&v6 initWithCoder:a3];
+  v3 = [(ICBaseTextView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -315,13 +315,13 @@ uint64_t __50__ICBaseTextView_swizzleLayoutFragmentPointInside__block_invoke_2(d
   return v4;
 }
 
-- (id)initForTextKit1WithSize:(CGSize)a3
+- (id)initForTextKit1WithSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v6 = objc_alloc(MEMORY[0x277D36918]);
-  v7 = [MEMORY[0x277CCAD78] UUID];
-  v8 = [v6 initWithData:0 replicaID:v7];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  v8 = [v6 initWithData:0 replicaID:uUID];
 
   v9 = objc_alloc_init(ICLayoutManager);
   [v8 addLayoutManager:v9];
@@ -331,28 +331,28 @@ uint64_t __50__ICBaseTextView_swizzleLayoutFragmentPointInside__block_invoke_2(d
   [(ICBaseLayoutManager *)v9 setTextView:self];
   v14.receiver = self;
   v14.super_class = ICBaseTextView;
-  v11 = [(ICBaseTextView *)&v14 initWithFrame:v10 textContainer:0.0, 0.0, width, height];
-  v12 = v11;
-  if (v11)
+  height = [(ICBaseTextView *)&v14 initWithFrame:v10 textContainer:0.0, 0.0, width, height];
+  v12 = height;
+  if (height)
   {
-    [(ICBaseTextView *)v11 commonInit];
+    [(ICBaseTextView *)height commonInit];
   }
 
   return v12;
 }
 
-- (id)initForTextKit2WithNote:(id)a3 size:(CGSize)a4 insideSystemPaper:(BOOL)a5 insideSiriSnippet:(BOOL)a6
+- (id)initForTextKit2WithNote:(id)note size:(CGSize)size insideSystemPaper:(BOOL)paper insideSiriSnippet:(BOOL)snippet
 {
-  v6 = a6;
-  v37 = a5;
-  height = a4.height;
-  width = a4.width;
-  v9 = a3;
-  v10 = [v9 textContentStorageCreateIfNeeded];
-  v11 = v10;
-  if (v10)
+  snippetCopy = snippet;
+  paperCopy = paper;
+  height = size.height;
+  width = size.width;
+  noteCopy = note;
+  textContentStorageCreateIfNeeded = [noteCopy textContentStorageCreateIfNeeded];
+  v11 = textContentStorageCreateIfNeeded;
+  if (textContentStorageCreateIfNeeded)
   {
-    v12 = v10;
+    v12 = textContentStorageCreateIfNeeded;
   }
 
   else
@@ -363,19 +363,19 @@ uint64_t __50__ICBaseTextView_swizzleLayoutFragmentPointInside__block_invoke_2(d
   v13 = v12;
 
   v14 = objc_alloc_init(ICTextContentStorageDelegate);
-  [(ICTextContentStorageDelegate *)v14 setInsideSiriSnippet:v6];
+  [(ICTextContentStorageDelegate *)v14 setInsideSiriSnippet:snippetCopy];
   v15 = v14;
   [v13 setDelegate:v14];
   v16 = objc_alloc_init(ICTK2TextLayoutManager);
   v39 = objc_alloc_init(ICTK2TextLayoutManagerDelegate);
   [(ICTK2TextLayoutManager *)v16 setDelegate:?];
   [v13 addTextLayoutManager:v16];
-  v17 = [[ICTK2TextContainer alloc] initWithSize:width, height];
+  height = [[ICTK2TextContainer alloc] initWithSize:width, height];
   v40 = v16;
-  [(ICTK2TextLayoutManager *)v16 setTextContainer:v17];
+  [(ICTK2TextLayoutManager *)v16 setTextContainer:height];
   objc_opt_class();
-  v18 = [v13 textStorage];
-  v19 = [v18 styler];
+  textStorage = [v13 textStorage];
+  styler = [textStorage styler];
   v20 = ICDynamicCast();
   v21 = v20;
   if (v20)
@@ -390,28 +390,28 @@ uint64_t __50__ICBaseTextView_swizzleLayoutFragmentPointInside__block_invoke_2(d
 
   v23 = v22;
 
-  [v23 setNote:v9 firstVisibleLocation:0];
-  v24 = [v13 textStorage];
-  [v24 setStyler:v23];
+  [v23 setNote:noteCopy firstVisibleLocation:0];
+  textStorage2 = [v13 textStorage];
+  [textStorage2 setStyler:v23];
 
-  [(ICTK2TextContainer *)v17 setInsideSystemPaper:v37];
-  [(ICTK2TextContainer *)v17 setInsideSiriSnippet:v6];
-  [v23 setIsForSiri:v6];
+  [(ICTK2TextContainer *)height setInsideSystemPaper:paperCopy];
+  [(ICTK2TextContainer *)height setInsideSiriSnippet:snippetCopy];
+  [v23 setIsForSiri:snippetCopy];
   v25 = v15;
   if (ICInternalSettingsIsTextKit2Enabled())
   {
-    v26 = [(ICTK2TextContainer *)v17 textLayoutManager];
+    textLayoutManager = [(ICTK2TextContainer *)height textLayoutManager];
 
     v27 = v39;
-    if (!v26)
+    if (!textLayoutManager)
     {
       [MEMORY[0x277D36198] handleFailedAssertWithCondition:"((textContainer.textLayoutManager) != nil)" functionName:"-[ICBaseTextView initForTextKit2WithNote:size:insideSystemPaper:insideSiriSnippet:]" simulateCrash:1 showAlert:0 format:{@"Expected non-nil value for '%s'", "textContainer.textLayoutManager"}];
     }
 
-    v28 = [(ICTK2TextContainer *)v17 textLayoutManager];
-    v29 = [v28 textContentManager];
+    textLayoutManager2 = [(ICTK2TextContainer *)height textLayoutManager];
+    textContentManager = [textLayoutManager2 textContentManager];
 
-    if (!v29)
+    if (!textContentManager)
     {
       [MEMORY[0x277D36198] handleFailedAssertWithCondition:"((textContainer.textLayoutManager.textContentManager) != nil)" functionName:"-[ICBaseTextView initForTextKit2WithNote:size:insideSystemPaper:insideSiriSnippet:]" simulateCrash:1 showAlert:0 format:{@"Expected non-nil value for '%s'", "textContainer.textLayoutManager.textContentManager"}];
     }
@@ -419,18 +419,18 @@ uint64_t __50__ICBaseTextView_swizzleLayoutFragmentPointInside__block_invoke_2(d
 
   else
   {
-    v30 = [(ICTK2TextContainer *)v17 layoutManager];
+    layoutManager = [(ICTK2TextContainer *)height layoutManager];
 
     v27 = v39;
-    if (!v30)
+    if (!layoutManager)
     {
       [MEMORY[0x277D36198] handleFailedAssertWithCondition:"((textContainer.layoutManager) != nil)" functionName:"-[ICBaseTextView initForTextKit2WithNote:size:insideSystemPaper:insideSiriSnippet:]" simulateCrash:1 showAlert:0 format:{@"Expected non-nil value for '%s'", "textContainer.layoutManager"}];
     }
 
-    v31 = [(ICTK2TextContainer *)v17 layoutManager];
-    v32 = [v31 textStorage];
+    layoutManager2 = [(ICTK2TextContainer *)height layoutManager];
+    textStorage3 = [layoutManager2 textStorage];
 
-    if (!v32)
+    if (!textStorage3)
     {
       [MEMORY[0x277D36198] handleFailedAssertWithCondition:"((textContainer.layoutManager.textStorage) != nil)" functionName:"-[ICBaseTextView initForTextKit2WithNote:size:insideSystemPaper:insideSiriSnippet:]" simulateCrash:1 showAlert:0 format:{@"Expected non-nil value for '%s'", "textContainer.layoutManager.textStorage"}];
     }
@@ -438,7 +438,7 @@ uint64_t __50__ICBaseTextView_swizzleLayoutFragmentPointInside__block_invoke_2(d
 
   v41.receiver = self;
   v41.super_class = ICBaseTextView;
-  v33 = [(ICBaseTextView *)&v41 initWithFrame:v17 textContainer:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
+  v33 = [(ICBaseTextView *)&v41 initWithFrame:height textContainer:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   p_isa = &v33->super.super.super.super.super.isa;
   if (v33)
   {
@@ -447,10 +447,10 @@ uint64_t __50__ICBaseTextView_swizzleLayoutFragmentPointInside__block_invoke_2(d
     objc_storeStrong(p_isa + 372, v27);
     objc_storeStrong(p_isa + 373, v25);
     objc_storeStrong(p_isa + 365, v23);
-    objc_storeStrong(p_isa + 366, v17);
+    objc_storeStrong(p_isa + 366, height);
     [p_isa setClipsToBounds:0];
-    v35 = [p_isa tk2TextContainer];
-    [v35 setTk2TextView:p_isa];
+    tk2TextContainer = [p_isa tk2TextContainer];
+    [tk2TextContainer setTk2TextView:p_isa];
 
     [p_isa setCanCancelContentTouches:1];
     [p_isa setDelaysContentTouches:0];
@@ -464,8 +464,8 @@ uint64_t __50__ICBaseTextView_swizzleLayoutFragmentPointInside__block_invoke_2(d
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277D775F8] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D775F8] object:0];
 
   v4.receiver = self;
   v4.super_class = ICBaseTextView;
@@ -475,8 +475,8 @@ uint64_t __50__ICBaseTextView_swizzleLayoutFragmentPointInside__block_invoke_2(d
 - (id)textController
 {
   objc_opt_class();
-  v3 = [(ICBaseTextView *)self TTTextStorage];
-  v4 = [v3 styler];
+  tTTextStorage = [(ICBaseTextView *)self TTTextStorage];
+  styler = [tTTextStorage styler];
   v5 = ICCheckedDynamicCast();
 
   return v5;
@@ -484,8 +484,8 @@ uint64_t __50__ICBaseTextView_swizzleLayoutFragmentPointInside__block_invoke_2(d
 
 - (ICTTTextStorage)TTTextStorage
 {
-  v3 = [(ICBaseTextView *)self textStorage];
-  if (v3 && (v4 = v3, [(ICBaseTextView *)self textStorage], v5 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v5, v4, (isKindOfClass & 1) == 0))
+  textStorage = [(ICBaseTextView *)self textStorage];
+  if (textStorage && (v4 = textStorage, [(ICBaseTextView *)self textStorage], v5 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v5, v4, (isKindOfClass & 1) == 0))
   {
     v8 = os_log_create("com.apple.notes", "UI");
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -493,21 +493,21 @@ uint64_t __50__ICBaseTextView_swizzleLayoutFragmentPointInside__block_invoke_2(d
       [(ICBaseTextView *)self TTTextStorage];
     }
 
-    v7 = 0;
+    textStorage2 = 0;
   }
 
   else
   {
-    v7 = [(ICBaseTextView *)self textStorage];
+    textStorage2 = [(ICBaseTextView *)self textStorage];
   }
 
-  return v7;
+  return textStorage2;
 }
 
 - (ICLayoutManager)icLayoutManager
 {
   objc_opt_class();
-  v3 = [(ICBaseTextView *)self layoutManager];
+  layoutManager = [(ICBaseTextView *)self layoutManager];
   v4 = ICDynamicCast();
 
   return v4;
@@ -516,64 +516,64 @@ uint64_t __50__ICBaseTextView_swizzleLayoutFragmentPointInside__block_invoke_2(d
 - (ICTK2TextLayoutManager)icTextLayoutManager
 {
   objc_opt_class();
-  v3 = [(ICBaseTextView *)self textLayoutManager];
+  textLayoutManager = [(ICBaseTextView *)self textLayoutManager];
   v4 = ICDynamicCast();
 
   return v4;
 }
 
-- (void)textViewportLayoutControllerDidLayout:(id)a3
+- (void)textViewportLayoutControllerDidLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   objc_opt_class();
-  v5 = [v4 object];
+  object = [layoutCopy object];
 
   v16 = ICDynamicCast();
 
-  v6 = [v16 textLayoutManager];
-  v7 = [(ICBaseTextView *)self textLayoutManager];
+  textLayoutManager = [v16 textLayoutManager];
+  textLayoutManager2 = [(ICBaseTextView *)self textLayoutManager];
 
-  if (v6 == v7)
+  if (textLayoutManager == textLayoutManager2)
   {
-    v8 = [(ICBaseTextView *)self textStorage];
-    v9 = [v8 ic_range];
-    [(ICBaseTextView *)self updateStyleLayersInRange:v9, v10];
+    textStorage = [(ICBaseTextView *)self textStorage];
+    ic_range = [textStorage ic_range];
+    [(ICBaseTextView *)self updateStyleLayersInRange:ic_range, v10];
   }
 
   if ([(ICBaseTextView *)self needsStylingRefreshOnNextLayout])
   {
     objc_opt_class();
-    v11 = [(ICBaseTextView *)self TTTextStorage];
-    v12 = [v11 styler];
+    tTTextStorage = [(ICBaseTextView *)self TTTextStorage];
+    styler = [tTTextStorage styler];
     v13 = ICCheckedDynamicCast();
 
-    v14 = [(ICBaseTextView *)self TTTextStorage];
-    [v13 refreshTextStylingForTextStorage:v14 withTextController:v13];
+    tTTextStorage2 = [(ICBaseTextView *)self TTTextStorage];
+    [v13 refreshTextStylingForTextStorage:tTTextStorage2 withTextController:v13];
 
     [(ICBaseTextView *)self setNeedsStylingRefreshOnNextLayout:0];
   }
 
-  v15 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v15 postNotificationName:@"ICTextViewLayoutDidChangeNotification" object:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"ICTextViewLayoutDidChangeNotification" object:self];
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
-  v3 = a3;
+  hiddenCopy = hidden;
   v10.receiver = self;
   v10.super_class = ICBaseTextView;
   [(ICBaseTextView *)&v10 setHidden:?];
-  v5 = [(ICBaseTextView *)self icDelegate];
-  if (v5)
+  icDelegate = [(ICBaseTextView *)self icDelegate];
+  if (icDelegate)
   {
-    v6 = v5;
-    v7 = [(ICBaseTextView *)self icDelegate];
+    v6 = icDelegate;
+    icDelegate2 = [(ICBaseTextView *)self icDelegate];
     v8 = objc_opt_respondsToSelector();
 
     if (v8)
     {
-      v9 = [(ICBaseTextView *)self icDelegate];
-      [v9 icBaseTextViewDidSetHidden:v3];
+      icDelegate3 = [(ICBaseTextView *)self icDelegate];
+      [icDelegate3 icBaseTextViewDidSetHidden:hiddenCopy];
     }
   }
 }
@@ -592,35 +592,35 @@ uint64_t __50__ICBaseTextView_swizzleLayoutFragmentPointInside__block_invoke_2(d
   return WeakRetained;
 }
 
-- (void)updateStyleLayersInRange:(_NSRange)a3
+- (void)updateStyleLayersInRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v6 = [(ICBaseTextView *)self layer];
-  if (v6)
+  length = range.length;
+  location = range.location;
+  layer = [(ICBaseTextView *)self layer];
+  if (layer)
   {
   }
 
   else
   {
-    v7 = [(ICBaseTextView *)self renderingSurfaceView];
-    v8 = [v7 layer];
+    renderingSurfaceView = [(ICBaseTextView *)self renderingSurfaceView];
+    layer2 = [renderingSurfaceView layer];
 
-    if (!v8)
+    if (!layer2)
     {
       return;
     }
   }
 
-  v9 = [(ICBaseTextView *)self textStorage];
-  v10 = [v9 length];
+  textStorage = [(ICBaseTextView *)self textStorage];
+  v10 = [textStorage length];
 
   if (v10)
   {
     if (!length)
     {
-      v11 = [(ICBaseTextView *)self textStorage];
-      location = [v11 ic_range];
+      textStorage2 = [(ICBaseTextView *)self textStorage];
+      location = [textStorage2 ic_range];
       length = v12;
     }
 
@@ -628,22 +628,22 @@ uint64_t __50__ICBaseTextView_swizzleLayoutFragmentPointInside__block_invoke_2(d
     v38 = &v37;
     v39 = 0x2020000000;
     v40 = 0;
-    v13 = [(ICBaseTextView *)self textStorage];
+    textStorage3 = [(ICBaseTextView *)self textStorage];
     v14 = *MEMORY[0x277D35DA8];
     v36[0] = MEMORY[0x277D85DD0];
     v36[1] = 3221225472;
     v36[2] = __59__ICBaseTextView_StyleRendering__updateStyleLayersInRange___block_invoke;
     v36[3] = &unk_2781ABC80;
     v36[4] = &v37;
-    [v13 enumerateAttribute:v14 inRange:location options:length usingBlock:{0, v36}];
+    [textStorage3 enumerateAttribute:v14 inRange:location options:length usingBlock:{0, v36}];
 
     if (v38[3])
     {
       [MEMORY[0x277CD9FF0] begin];
       [MEMORY[0x277CD9FF0] setDisableActions:1];
-      v15 = [(ICBaseTextView *)self renderingSurfaceView];
-      v16 = [v15 layer];
-      [v16 setSublayers:0];
+      renderingSurfaceView2 = [(ICBaseTextView *)self renderingSurfaceView];
+      layer3 = [renderingSurfaceView2 layer];
+      [layer3 setSublayers:0];
 
       v33[0] = 0;
       v33[1] = v33;
@@ -671,8 +671,8 @@ uint64_t __50__ICBaseTextView_swizzleLayoutFragmentPointInside__block_invoke_2(d
       v25[2] = 0x3010000000;
       v25[3] = &unk_21552D17E;
       v26 = xmmword_2154BBE70;
-      v18 = [(ICBaseTextView *)self textStorage];
-      v19 = [v18 string];
+      textStorage4 = [(ICBaseTextView *)self textStorage];
+      string = [textStorage4 string];
       v24[0] = MEMORY[0x277D85DD0];
       v24[1] = 3221225472;
       v24[2] = __59__ICBaseTextView_StyleRendering__updateStyleLayersInRange___block_invoke_2;
@@ -683,7 +683,7 @@ uint64_t __50__ICBaseTextView_swizzleLayoutFragmentPointInside__block_invoke_2(d
       v24[7] = v29;
       v24[8] = v27;
       v24[9] = v30;
-      [v19 ic_enumerateParagraphsInRange:location usingBlock:{length, v24}];
+      [string ic_enumerateParagraphsInRange:location usingBlock:{length, v24}];
 
       [MEMORY[0x277CD9FF0] commit];
       _Block_object_dispose(v25, 8);
@@ -695,9 +695,9 @@ uint64_t __50__ICBaseTextView_swizzleLayoutFragmentPointInside__block_invoke_2(d
 
     else
     {
-      v21 = [(ICBaseTextView *)self renderingSurfaceView];
-      v22 = [v21 layer];
-      [v22 setSublayers:0];
+      renderingSurfaceView3 = [(ICBaseTextView *)self renderingSurfaceView];
+      layer4 = [renderingSurfaceView3 layer];
+      [layer4 setSublayers:0];
     }
 
     _Block_object_dispose(&v37, 8);
@@ -705,9 +705,9 @@ uint64_t __50__ICBaseTextView_swizzleLayoutFragmentPointInside__block_invoke_2(d
 
   else
   {
-    v23 = [(ICBaseTextView *)self renderingSurfaceView];
-    v20 = [v23 layer];
-    [v20 setSublayers:0];
+    renderingSurfaceView4 = [(ICBaseTextView *)self renderingSurfaceView];
+    layer5 = [renderingSurfaceView4 layer];
+    [layer5 setSublayers:0];
   }
 }
 
@@ -808,64 +808,64 @@ LABEL_18:
   }
 }
 
-- (void)drawMonostyledLayerInRect:(CGRect)a3
+- (void)drawMonostyledLayerInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v15 = objc_alloc_init(MEMORY[0x277CD9ED0]);
-  v8 = [MEMORY[0x277D75348] ICMonostyledBackgroundColor];
-  [v15 setBackgroundColor:{objc_msgSend(v8, "CGColor")}];
+  iCMonostyledBackgroundColor = [MEMORY[0x277D75348] ICMonostyledBackgroundColor];
+  [v15 setBackgroundColor:{objc_msgSend(iCMonostyledBackgroundColor, "CGColor")}];
 
   LODWORD(v9) = 0.25;
   [v15 setOpacity:v9];
   [v15 setCornerRadius:10.0];
   [v15 setBorderWidth:1.0];
-  v10 = [MEMORY[0x277D75348] ICMonostyledBorderColor];
-  [v15 setBorderColor:{objc_msgSend(v10, "CGColor")}];
+  iCMonostyledBorderColor = [MEMORY[0x277D75348] ICMonostyledBorderColor];
+  [v15 setBorderColor:{objc_msgSend(iCMonostyledBorderColor, "CGColor")}];
 
   [v15 setCornerCurve:*MEMORY[0x277CDA138]];
   [(ICBaseTextView *)self ic_textContainerOrigin];
   [v15 setFrame:{x + v11, y + v12 - *MEMORY[0x277D369F0], width, height + *MEMORY[0x277D369E0] + 2.0}];
-  v13 = [(ICBaseTextView *)self renderingSurfaceView];
-  v14 = [v13 layer];
-  [v14 addSublayer:v15];
+  renderingSurfaceView = [(ICBaseTextView *)self renderingSurfaceView];
+  layer = [renderingSurfaceView layer];
+  [layer addSublayer:v15];
 }
 
-- (void)drawBlockQuoteAndCleanup:(BOOL *)a3 pendingBlockQuoteLevelToDraw:(unint64_t *)a4 pendingBlockQuoteRectToDraw:(CGRect *)a5 ps:(id)a6
+- (void)drawBlockQuoteAndCleanup:(BOOL *)cleanup pendingBlockQuoteLevelToDraw:(unint64_t *)draw pendingBlockQuoteRectToDraw:(CGRect *)toDraw ps:(id)ps
 {
-  v10 = *a4;
-  v11 = *a3;
-  x = a5->origin.x;
-  y = a5->origin.y;
-  width = a5->size.width;
-  height = a5->size.height;
-  v16 = a6;
+  v10 = *draw;
+  v11 = *cleanup;
+  x = toDraw->origin.x;
+  y = toDraw->origin.y;
+  width = toDraw->size.width;
+  height = toDraw->size.height;
+  psCopy = ps;
   [(ICBaseTextView *)self drawBlockQuoteLayerInRectForTK2:v10 blockQuoteLevel:v11 isMonostyled:x, y, width, height];
   v17 = *(MEMORY[0x277CBF398] + 16);
-  a5->origin = *MEMORY[0x277CBF398];
-  a5->size = v17;
-  v18 = [v16 blockQuoteLevel];
+  toDraw->origin = *MEMORY[0x277CBF398];
+  toDraw->size = v17;
+  blockQuoteLevel = [psCopy blockQuoteLevel];
 
-  *a4 = v18;
-  *a3 = 0;
+  *draw = blockQuoteLevel;
+  *cleanup = 0;
 }
 
-- (void)drawBlockQuoteLayerInRectForTK2:(CGRect)a3 blockQuoteLevel:(int64_t)a4 isMonostyled:(BOOL)a5
+- (void)drawBlockQuoteLayerInRectForTK2:(CGRect)k2 blockQuoteLevel:(int64_t)level isMonostyled:(BOOL)monostyled
 {
-  v5 = a5;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  monostyledCopy = monostyled;
+  height = k2.size.height;
+  width = k2.size.width;
+  y = k2.origin.y;
+  x = k2.origin.x;
   [(ICBaseTextView *)self ic_textContainerOrigin];
   v13 = v12;
   v15 = v14;
-  v16 = [MEMORY[0x277D74248] ic_isRTL];
-  if (a4)
+  ic_isRTL = [MEMORY[0x277D74248] ic_isRTL];
+  if (level)
   {
-    if (v16)
+    if (ic_isRTL)
     {
       v17 = x;
     }
@@ -876,7 +876,7 @@ LABEL_18:
     }
 
     v18 = *MEMORY[0x277CDA138];
-    if (v5)
+    if (monostyledCopy)
     {
       v19 = y + v15 + -5.0;
     }
@@ -886,7 +886,7 @@ LABEL_18:
       v19 = y + v15;
     }
 
-    if (v5)
+    if (monostyledCopy)
     {
       height = height + 10.0;
     }
@@ -895,39 +895,39 @@ LABEL_18:
     do
     {
       v21 = objc_alloc_init(MEMORY[0x277CD9ED0]);
-      v22 = [MEMORY[0x277D75348] ICBlockQuoteBackgroundColor];
-      [v21 setBackgroundColor:{objc_msgSend(v22, "CGColor")}];
+      iCBlockQuoteBackgroundColor = [MEMORY[0x277D75348] ICBlockQuoteBackgroundColor];
+      [v21 setBackgroundColor:{objc_msgSend(iCBlockQuoteBackgroundColor, "CGColor")}];
 
       LODWORD(v23) = 1.0;
       [v21 setOpacity:v23];
       [v21 setCornerRadius:2.0];
       [v21 setCornerCurve:v18];
       [v21 setFrame:{v17 + v13 + ((v20 - 1) * 13.0) + 0.0, v19, width, height}];
-      v24 = [(ICBaseTextView *)self renderingSurfaceView];
-      v25 = [v24 layer];
-      [v25 addSublayer:v21];
+      renderingSurfaceView = [(ICBaseTextView *)self renderingSurfaceView];
+      layer = [renderingSurfaceView layer];
+      [layer addSublayer:v21];
 
       ++v20;
     }
 
-    while (v20 <= a4);
+    while (v20 <= level);
   }
 }
 
-- (void)updateMonostyledLayerForParagraphStyle:(id)a3 inRange:(_NSRange)a4 ioPreviousMonoRect:(CGRect *)a5 ioPreviousBlockQuoteLevel:(unint64_t *)a6
+- (void)updateMonostyledLayerForParagraphStyle:(id)style inRange:(_NSRange)range ioPreviousMonoRect:(CGRect *)rect ioPreviousBlockQuoteLevel:(unint64_t *)level
 {
-  length = a4.length;
-  location = a4.location;
-  v11 = a3;
+  length = range.length;
+  location = range.location;
+  styleCopy = style;
   if (ICInternalSettingsIsTextKit2Enabled())
   {
-    v12 = [(ICBaseTextView *)self editorContainer];
-    v13 = [v12 note];
-    v14 = [v13 calculateDocumentController];
-    [v14 setIsExpressionFormattingEnabled:0];
+    editorContainer = [(ICBaseTextView *)self editorContainer];
+    note = [editorContainer note];
+    calculateDocumentController = [note calculateDocumentController];
+    [calculateDocumentController setIsExpressionFormattingEnabled:0];
 
-    v15 = [(ICBaseTextView *)self textLayoutManager];
-    v16 = [v15 ic_textRangeForRange:{location, length}];
+    textLayoutManager = [(ICBaseTextView *)self textLayoutManager];
+    v16 = [textLayoutManager ic_textRangeForRange:{location, length}];
 
     v44 = 0;
     v45 = &v44;
@@ -937,37 +937,37 @@ LABEL_18:
     v18 = *(MEMORY[0x277CBF398] + 16);
     v48 = *MEMORY[0x277CBF398];
     v49 = v18;
-    v19 = [(ICBaseTextView *)self textLayoutManager];
+    textLayoutManager2 = [(ICBaseTextView *)self textLayoutManager];
     v43[0] = MEMORY[0x277D85DD0];
     v43[1] = 3221225472;
     v43[2] = __126__ICBaseTextView_StyleRendering__updateMonostyledLayerForParagraphStyle_inRange_ioPreviousMonoRect_ioPreviousBlockQuoteLevel___block_invoke;
     v43[3] = &unk_2781AE620;
     v43[4] = &v44;
-    [v19 enumerateTextSegmentsInRange:v16 type:0 options:12 usingBlock:v43];
+    [textLayoutManager2 enumerateTextSegmentsInRange:v16 type:0 options:12 usingBlock:v43];
 
-    v20 = [(ICBaseTextView *)self editorContainer];
-    v21 = [v20 note];
-    v22 = [v21 calculateDocumentController];
-    [v22 setIsExpressionFormattingEnabled:1];
+    editorContainer2 = [(ICBaseTextView *)self editorContainer];
+    note2 = [editorContainer2 note];
+    calculateDocumentController2 = [note2 calculateDocumentController];
+    [calculateDocumentController2 setIsExpressionFormattingEnabled:1];
 
-    v23 = [v11 blockQuoteLevel];
+    blockQuoteLevel = [styleCopy blockQuoteLevel];
     v25 = v45[4];
     v24 = v45[5];
     v27 = v45[6];
     v26 = v45[7];
-    v28 = [v11 blockQuoteLevel];
-    v29 = *MEMORY[0x277D369E8] * v23;
+    blockQuoteLevel2 = [styleCopy blockQuoteLevel];
+    v29 = *MEMORY[0x277D369E8] * blockQuoteLevel;
     v30 = v29 + v25;
     v31 = v27 - v29;
-    if (v28 == *a6)
+    if (blockQuoteLevel2 == *level)
     {
-      if (!CGRectEqualToRect(*v17, *a5))
+      if (!CGRectEqualToRect(*v17, *rect))
       {
         v50.origin.x = v30;
         v50.origin.y = v24;
         v50.size.width = v31;
         v50.size.height = v26;
-        *a5 = CGRectUnion(*a5, v50);
+        *rect = CGRectUnion(*rect, v50);
 LABEL_13:
         _Block_object_dispose(&v44, 8);
 
@@ -977,13 +977,13 @@ LABEL_13:
 
     else
     {
-      [(ICBaseTextView *)self drawMonostyledLayerInRect:a5->origin.x, a5->origin.y, a5->size.width, a5->size.height];
+      [(ICBaseTextView *)self drawMonostyledLayerInRect:rect->origin.x, rect->origin.y, rect->size.width, rect->size.height];
     }
 
-    a5->origin.x = v30;
-    a5->origin.y = v24;
-    a5->size.width = v31;
-    a5->size.height = v26;
+    rect->origin.x = v30;
+    rect->origin.y = v24;
+    rect->size.width = v31;
+    rect->size.height = v26;
     goto LABEL_13;
   }
 
@@ -992,7 +992,7 @@ LABEL_13:
   v35 = v34;
   v37 = v36;
   v39 = v38;
-  if ([v11 isBlockQuote])
+  if ([styleCopy isBlockQuote])
   {
     v40 = *MEMORY[0x277D369E8];
   }
@@ -1002,9 +1002,9 @@ LABEL_13:
     v40 = 0.0;
   }
 
-  v41 = [v11 isBlockQuote];
+  isBlockQuote = [styleCopy isBlockQuote];
   v42 = v33 + v40;
-  if (!v41)
+  if (!isBlockQuote)
   {
     v42 = 0.0;
   }
@@ -1023,20 +1023,20 @@ uint64_t __126__ICBaseTextView_StyleRendering__updateMonostyledLayerForParagraph
   return 1;
 }
 
-- (void)updateBlockQuoteLayerForParagraphStyle:(id)a3 inRange:(_NSRange)a4 ioPreviousBlockQuoteRect:(CGRect *)a5
+- (void)updateBlockQuoteLayerForParagraphStyle:(id)style inRange:(_NSRange)range ioPreviousBlockQuoteRect:(CGRect *)rect
 {
-  length = a4.length;
-  location = a4.location;
-  v9 = a3;
+  length = range.length;
+  location = range.location;
+  styleCopy = style;
   if (ICInternalSettingsIsTextKit2Enabled())
   {
-    v10 = [(ICBaseTextView *)self editorContainer];
-    v11 = [v10 note];
-    v12 = [v11 calculateDocumentController];
-    [v12 setIsExpressionFormattingEnabled:0];
+    editorContainer = [(ICBaseTextView *)self editorContainer];
+    note = [editorContainer note];
+    calculateDocumentController = [note calculateDocumentController];
+    [calculateDocumentController setIsExpressionFormattingEnabled:0];
 
-    v13 = [(ICBaseTextView *)self textLayoutManager];
-    v14 = [v13 ic_textRangeForRange:{location, length}];
+    textLayoutManager = [(ICBaseTextView *)self textLayoutManager];
+    v14 = [textLayoutManager ic_textRangeForRange:{location, length}];
 
     v31 = 0;
     v32 = &v31;
@@ -1046,29 +1046,29 @@ uint64_t __126__ICBaseTextView_StyleRendering__updateMonostyledLayerForParagraph
     v16 = *(MEMORY[0x277CBF398] + 16);
     v35 = *MEMORY[0x277CBF398];
     v36 = v16;
-    v17 = [(ICBaseTextView *)self textLayoutManager];
+    textLayoutManager2 = [(ICBaseTextView *)self textLayoutManager];
     v30[0] = MEMORY[0x277D85DD0];
     v30[1] = 3221225472;
     v30[2] = __106__ICBaseTextView_StyleRendering__updateBlockQuoteLayerForParagraphStyle_inRange_ioPreviousBlockQuoteRect___block_invoke;
     v30[3] = &unk_2781AE620;
     v30[4] = &v31;
-    [v17 enumerateTextSegmentsInRange:v14 type:0 options:12 usingBlock:v30];
+    [textLayoutManager2 enumerateTextSegmentsInRange:v14 type:0 options:12 usingBlock:v30];
 
-    v18 = [(ICBaseTextView *)self editorContainer];
-    v19 = [v18 note];
-    v20 = [v19 calculateDocumentController];
-    [v20 setIsExpressionFormattingEnabled:1];
+    editorContainer2 = [(ICBaseTextView *)self editorContainer];
+    note2 = [editorContainer2 note];
+    calculateDocumentController2 = [note2 calculateDocumentController];
+    [calculateDocumentController2 setIsExpressionFormattingEnabled:1];
 
-    v21 = [v9 isRTL];
+    isRTL = [styleCopy isRTL];
     v22 = v32[4];
-    if (v21)
+    if (isRTL)
     {
       v22 = v22 + v32[6];
     }
 
     v23 = v32[5];
     v24 = v32[7];
-    v25 = CGRectEqualToRect(*v15, *a5);
+    v25 = CGRectEqualToRect(*v15, *rect);
     v26 = 4.0;
     if (!v25)
     {
@@ -1076,16 +1076,16 @@ uint64_t __126__ICBaseTextView_StyleRendering__updateMonostyledLayerForParagraph
       v37.origin.x = v22;
       v37.origin.y = v23;
       v37.size.height = v24;
-      *(&v26 - 2) = CGRectUnion(*a5, v37);
+      *(&v26 - 2) = CGRectUnion(*rect, v37);
       v22 = v27;
       v23 = v28;
       v24 = v29;
     }
 
-    a5->origin.x = v22;
-    a5->origin.y = v23;
-    a5->size.width = v26;
-    a5->size.height = v24;
+    rect->origin.x = v22;
+    rect->origin.y = v23;
+    rect->size.width = v26;
+    rect->size.height = v24;
     _Block_object_dispose(&v31, 8);
   }
 }
@@ -1103,14 +1103,14 @@ uint64_t __106__ICBaseTextView_StyleRendering__updateBlockQuoteLayerForParagraph
 - (void)TTTextStorage
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = [a1 textStorage];
+  textStorage = [self textStorage];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  v7 = [a1 textStorage];
+  textStorage2 = [self textStorage];
   v8 = 138412546;
   v9 = v6;
   v10 = 2048;
-  v11 = v7;
+  v11 = textStorage2;
   _os_log_error_impl(&dword_2151A1000, a2, OS_LOG_TYPE_ERROR, "Expects textStorage be a ICTTTextStorage %@ %p", &v8, 0x16u);
 }
 

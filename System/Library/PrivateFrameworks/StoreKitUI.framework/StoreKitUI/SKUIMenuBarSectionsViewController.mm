@@ -1,11 +1,11 @@
 @interface SKUIMenuBarSectionsViewController
-- (SKUIMenuBarSectionsViewController)initWithLayoutStyle:(int64_t)a3;
-- (id)defaultSectionForComponent:(id)a3;
+- (SKUIMenuBarSectionsViewController)initWithLayoutStyle:(int64_t)style;
+- (id)defaultSectionForComponent:(id)component;
 @end
 
 @implementation SKUIMenuBarSectionsViewController
 
-- (SKUIMenuBarSectionsViewController)initWithLayoutStyle:(int64_t)a3
+- (SKUIMenuBarSectionsViewController)initWithLayoutStyle:(int64_t)style
 {
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
@@ -14,7 +14,7 @@
 
   v6.receiver = self;
   v6.super_class = SKUIMenuBarSectionsViewController;
-  result = [(SKUIStorePageSectionsViewController *)&v6 initWithLayoutStyle:a3];
+  result = [(SKUIStorePageSectionsViewController *)&v6 initWithLayoutStyle:style];
   if (result)
   {
     result->_numberOfIterationsForShelfPageSections = 1;
@@ -23,22 +23,22 @@
   return result;
 }
 
-- (id)defaultSectionForComponent:(id)a3
+- (id)defaultSectionForComponent:(id)component
 {
-  v4 = a3;
-  if ([v4 componentType] == 22)
+  componentCopy = component;
+  if ([componentCopy componentType] == 22)
   {
     v5 = [[SKUIMenuBarTemplateShelfPageSectionConfiguration alloc] initWithNumberOfIterations:[(SKUIMenuBarSectionsViewController *)self numberOfIterationsForShelfPageSections]];
     v6 = objc_opt_class();
-    v7 = [v4 viewElement];
-    v8 = [v7 isDynamicContainer];
+    viewElement = [componentCopy viewElement];
+    isDynamicContainer = [viewElement isDynamicContainer];
 
-    if (v8)
+    if (isDynamicContainer)
     {
       v6 = objc_opt_class();
     }
 
-    v9 = [[v6 alloc] initWithPageComponent:v4 configuration:v5];
+    v9 = [[v6 alloc] initWithPageComponent:componentCopy configuration:v5];
   }
 
   else

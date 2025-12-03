@@ -14,9 +14,9 @@
     accountImageForAccount____accountIcons = v4;
   }
 
-  v6 = [v3 iconString];
-  v7 = [accountImageForAccount____accountIcons objectForKey:v6];
-  if (!v7)
+  iconString = [v3 iconString];
+  null = [accountImageForAccount____accountIcons objectForKey:iconString];
+  if (!null)
   {
     if (!accountImageForAccount__bundle)
     {
@@ -25,25 +25,25 @@
       accountImageForAccount__bundle = v8;
     }
 
-    v10 = [MEMORY[0x277D755B8] imageNamed:v6 inBundle:? compatibleWithTraitCollection:?];
-    v7 = [v10 _applicationIconImageForFormat:0 precomposed:1];
-    if (!v7)
+    v10 = [MEMORY[0x277D755B8] imageNamed:iconString inBundle:? compatibleWithTraitCollection:?];
+    null = [v10 _applicationIconImageForFormat:0 precomposed:1];
+    if (!null)
     {
-      v7 = [MEMORY[0x277CBEB68] null];
+      null = [MEMORY[0x277CBEB68] null];
     }
 
-    [accountImageForAccount____accountIcons setObject:v7 forKey:v6];
+    [accountImageForAccount____accountIcons setObject:null forKey:iconString];
   }
 
-  v11 = [MEMORY[0x277CBEB68] null];
+  null2 = [MEMORY[0x277CBEB68] null];
 
-  if (v11 == v7)
+  if (null2 == null)
   {
 
-    v7 = 0;
+    null = 0;
   }
 
-  return v7;
+  return null;
 }
 
 @end

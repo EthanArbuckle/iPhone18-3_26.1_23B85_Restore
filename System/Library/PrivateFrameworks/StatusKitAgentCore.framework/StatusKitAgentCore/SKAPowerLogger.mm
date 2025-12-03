@@ -1,8 +1,8 @@
 @interface SKAPowerLogger
 + (SKAPowerLogger)shared;
-- (void)logEvent:(int64_t)a3 ofType:(int64_t)a4 channelType:(int64_t)a5 identifier:(id)a6;
-- (void)logEvent:(int64_t)a3 ofType:(int64_t)a4 onDatabaseChannel:(id)a5;
-- (void)logEvent:(int64_t)a3 ofType:(int64_t)a4 onDatabaseChannels:(id)a5;
+- (void)logEvent:(int64_t)event ofType:(int64_t)type channelType:(int64_t)channelType identifier:(id)identifier;
+- (void)logEvent:(int64_t)event ofType:(int64_t)type onDatabaseChannel:(id)channel;
+- (void)logEvent:(int64_t)event ofType:(int64_t)type onDatabaseChannels:(id)channels;
 @end
 
 @implementation SKAPowerLogger
@@ -19,14 +19,14 @@
   return v3;
 }
 
-- (void)logEvent:(int64_t)a3 ofType:(int64_t)a4 onDatabaseChannel:(id)a5
+- (void)logEvent:(int64_t)event ofType:(int64_t)type onDatabaseChannel:(id)channel
 {
-  v8 = a5;
-  v9 = self;
-  SKAPowerLogger.log(_:type:on:)(a3, a4, v8);
+  channelCopy = channel;
+  selfCopy = self;
+  SKAPowerLogger.log(_:type:on:)(event, type, channelCopy);
 }
 
-- (void)logEvent:(int64_t)a3 ofType:(int64_t)a4 onDatabaseChannels:(id)a5
+- (void)logEvent:(int64_t)event ofType:(int64_t)type onDatabaseChannels:(id)channels
 {
   type metadata accessor for SKADatabaseChannel();
   v8 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
@@ -55,7 +55,7 @@
     return;
   }
 
-  v11 = self;
+  selfCopy = self;
   for (i = 0; i != v10; ++i)
   {
     if ((v9 & 0xC000000000000001) != 0)
@@ -69,21 +69,21 @@
     }
 
     v14 = v13;
-    SKAPowerLogger.log(_:type:on:)(a3, a4, v13);
+    SKAPowerLogger.log(_:type:on:)(event, type, v13);
   }
 
 LABEL_10:
 }
 
-- (void)logEvent:(int64_t)a3 ofType:(int64_t)a4 channelType:(int64_t)a5 identifier:(id)a6
+- (void)logEvent:(int64_t)event ofType:(int64_t)type channelType:(int64_t)channelType identifier:(id)identifier
 {
   v10 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v12 = v11;
   v13 = (self + OBJC_IVAR___SKAPowerLogger_state);
-  v15 = self;
+  selfCopy = self;
   os_unfair_lock_lock(v13);
   v14 = __swift_instantiateConcreteTypeFromMangledNameV2(&_s15Synchronization5MutexVy18StatusKitAgentCore14SKAPowerLoggerC5State33_9FCD8C5B33CE418606FD932C9F8D29EFLLVGMd, &_s15Synchronization5MutexVy18StatusKitAgentCore14SKAPowerLoggerC5State33_9FCD8C5B33CE418606FD932C9F8D29EFLLVGMR);
-  _s18StatusKitAgentCore14SKAPowerLoggerC3log33_9FCD8C5B33CE418606FD932C9F8D29EFLL_4type2on11channelType10identifieryAA11SKALogEventO_AC0e3LogwT0OSSSo018SKADatabaseChannelT0VSStFyAC5StateAELLVzYuYTXEfU_((v13 + *(v14 + 28)), v10, v12, a5, a3, a4);
+  _s18StatusKitAgentCore14SKAPowerLoggerC3log33_9FCD8C5B33CE418606FD932C9F8D29EFLL_4type2on11channelType10identifieryAA11SKALogEventO_AC0e3LogwT0OSSSo018SKADatabaseChannelT0VSStFyAC5StateAELLVzYuYTXEfU_((v13 + *(v14 + 28)), v10, v12, channelType, event, type);
 
   os_unfair_lock_unlock(v13);
 }

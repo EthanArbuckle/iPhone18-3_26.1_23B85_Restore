@@ -1,33 +1,33 @@
 @interface NTKRingsAndDotsView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (NTKRingsAndDotsView)initWithFrame:(CGRect)a3 diameter:(double)a4 ringWidth:(double)a5 ringGapWidth:(double)a6 overlapStrokeWidth:(double)a7;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (NTKRingsAndDotsView)initWithFrame:(CGRect)frame diameter:(double)diameter ringWidth:(double)width ringGapWidth:(double)gapWidth overlapStrokeWidth:(double)strokeWidth;
 - (void)layoutSubviews;
-- (void)setFilterProvider:(id)a3;
-- (void)setForegroundColor:(id)a3;
-- (void)setHidesOverlapShadow:(BOOL)a3;
-- (void)setRingColors:(id)a3;
-- (void)setRingsFillFractions:(id)a3;
-- (void)setShouldUseMonochromeAccentColor:(BOOL)a3;
-- (void)transitionToMonochromeWithFraction:(double)a3;
+- (void)setFilterProvider:(id)provider;
+- (void)setForegroundColor:(id)color;
+- (void)setHidesOverlapShadow:(BOOL)shadow;
+- (void)setRingColors:(id)colors;
+- (void)setRingsFillFractions:(id)fractions;
+- (void)setShouldUseMonochromeAccentColor:(BOOL)color;
+- (void)transitionToMonochromeWithFraction:(double)fraction;
 @end
 
 @implementation NTKRingsAndDotsView
 
-- (NTKRingsAndDotsView)initWithFrame:(CGRect)a3 diameter:(double)a4 ringWidth:(double)a5 ringGapWidth:(double)a6 overlapStrokeWidth:(double)a7
+- (NTKRingsAndDotsView)initWithFrame:(CGRect)frame diameter:(double)diameter ringWidth:(double)width ringGapWidth:(double)gapWidth overlapStrokeWidth:(double)strokeWidth
 {
   v19.receiver = self;
   v19.super_class = NTKRingsAndDotsView;
-  v10 = [(NTKRingsAndDotsView *)&v19 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v10 = [(NTKRingsAndDotsView *)&v19 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v11 = v10;
   if (v10)
   {
-    v12 = [(NTKRingsAndDotsView *)v10 layer];
-    [v12 setNeedsDisplayOnBoundsChange:1];
+    layer = [(NTKRingsAndDotsView *)v10 layer];
+    [layer setNeedsDisplayOnBoundsChange:1];
 
     [(NTKRingsAndDotsView *)v11 setOpaque:0];
-    [(NTKRingsAndDotsView *)v11 setRingWidth:a5];
-    [(NTKRingsAndDotsView *)v11 setRingGapWidth:a6];
-    [(NTKRingsAndDotsView *)v11 _setDiameter:a4];
+    [(NTKRingsAndDotsView *)v11 setRingWidth:width];
+    [(NTKRingsAndDotsView *)v11 setRingGapWidth:gapWidth];
+    [(NTKRingsAndDotsView *)v11 _setDiameter:diameter];
     v13 = [MEMORY[0x277CBEB18] arrayWithCapacity:3];
     for (i = 0; i != 3; ++i)
     {
@@ -48,7 +48,7 @@
   return v11;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   diameter = self->_diameter;
   v4 = diameter;
@@ -79,16 +79,16 @@ void __37__NTKRingsAndDotsView_layoutSubviews__block_invoke(uint64_t a1, void *a
   [v3 setFrame:?];
 }
 
-- (void)setRingsFillFractions:(id)a3
+- (void)setRingsFillFractions:(id)fractions
 {
-  v4 = a3;
+  fractionsCopy = fractions;
   ringViews = self->_ringViews;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __45__NTKRingsAndDotsView_setRingsFillFractions___block_invoke;
   v7[3] = &unk_278782408;
-  v8 = v4;
-  v6 = v4;
+  v8 = fractionsCopy;
+  v6 = fractionsCopy;
   [(NSArray *)ringViews enumerateObjectsUsingBlock:v7];
 }
 
@@ -101,43 +101,43 @@ void __45__NTKRingsAndDotsView_setRingsFillFractions___block_invoke(uint64_t a1,
   [v5 setFillFraction:v6];
 }
 
-- (void)setHidesOverlapShadow:(BOOL)a3
+- (void)setHidesOverlapShadow:(BOOL)shadow
 {
-  self->_hidesOverlapShadow = a3;
+  self->_hidesOverlapShadow = shadow;
   ringViews = self->_ringViews;
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __45__NTKRingsAndDotsView_setHidesOverlapShadow___block_invoke;
   v4[3] = &__block_descriptor_33_e28_v32__0__NTKRingView_8Q16_B24l;
-  v5 = a3;
+  shadowCopy = shadow;
   [(NSArray *)ringViews enumerateObjectsUsingBlock:v4];
 }
 
-- (void)setForegroundColor:(id)a3
+- (void)setForegroundColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   ringViews = self->_ringViews;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __42__NTKRingsAndDotsView_setForegroundColor___block_invoke;
   v7[3] = &unk_278782408;
-  v8 = v4;
-  v6 = v4;
+  v8 = colorCopy;
+  v6 = colorCopy;
   [(NSArray *)ringViews enumerateObjectsUsingBlock:v7];
 }
 
-- (void)setRingColors:(id)a3
+- (void)setRingColors:(id)colors
 {
-  v5 = a3;
-  if (self->_ringColors != v5)
+  colorsCopy = colors;
+  if (self->_ringColors != colorsCopy)
   {
-    objc_storeStrong(&self->_ringColors, a3);
+    objc_storeStrong(&self->_ringColors, colors);
     ringViews = self->_ringViews;
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __37__NTKRingsAndDotsView_setRingColors___block_invoke;
     v7[3] = &unk_278782408;
-    v8 = v5;
+    v8 = colorsCopy;
     [(NSArray *)ringViews enumerateObjectsUsingBlock:v7];
   }
 }
@@ -150,38 +150,38 @@ void __37__NTKRingsAndDotsView_setRingColors___block_invoke(uint64_t a1, void *a
   [v5 setColor:v6];
 }
 
-- (void)setShouldUseMonochromeAccentColor:(BOOL)a3
+- (void)setShouldUseMonochromeAccentColor:(BOOL)color
 {
   ringViews = self->_ringViews;
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __57__NTKRingsAndDotsView_setShouldUseMonochromeAccentColor___block_invoke;
   v4[3] = &__block_descriptor_33_e28_v32__0__NTKRingView_8Q16_B24l;
-  v5 = a3;
+  colorCopy = color;
   [(NSArray *)ringViews enumerateObjectsUsingBlock:v4];
 }
 
-- (void)setFilterProvider:(id)a3
+- (void)setFilterProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   ringViews = self->_ringViews;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __41__NTKRingsAndDotsView_setFilterProvider___block_invoke;
   v7[3] = &unk_278782408;
-  v8 = v4;
-  v6 = v4;
+  v8 = providerCopy;
+  v6 = providerCopy;
   [(NSArray *)ringViews enumerateObjectsUsingBlock:v7];
 }
 
-- (void)transitionToMonochromeWithFraction:(double)a3
+- (void)transitionToMonochromeWithFraction:(double)fraction
 {
   ringViews = self->_ringViews;
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __58__NTKRingsAndDotsView_transitionToMonochromeWithFraction___block_invoke;
   v4[3] = &__block_descriptor_40_e28_v32__0__NTKRingView_8Q16_B24l;
-  *&v4[4] = a3;
+  *&v4[4] = fraction;
   [(NSArray *)ringViews enumerateObjectsUsingBlock:v4];
 }
 

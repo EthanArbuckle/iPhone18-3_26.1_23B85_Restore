@@ -1,35 +1,35 @@
 @interface HUTitleValueCell
-- (HUTitleValueCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (id)_verticalConstraintsForContentSubview:(id)a3;
+- (HUTitleValueCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (id)_verticalConstraintsForContentSubview:(id)subview;
 - (void)_addTitleLabel;
 - (void)_addValueLabel;
 - (void)_ensureCorrectHeaderViewOrientation;
 - (void)_updateTitle;
 - (void)_updateValue;
-- (void)copy:(id)a3;
+- (void)copy:(id)copy;
 - (void)prepareForReuse;
-- (void)setDisabled:(BOOL)a3;
-- (void)setHideTitle:(BOOL)a3;
-- (void)setHideValue:(BOOL)a3;
-- (void)setTitleColorFollowsTintColor:(BOOL)a3;
-- (void)setTitleFont:(id)a3;
-- (void)setTitleText:(id)a3;
-- (void)setValueColorFollowsTintColor:(BOOL)a3;
-- (void)setValueFont:(id)a3;
-- (void)setValueText:(id)a3;
+- (void)setDisabled:(BOOL)disabled;
+- (void)setHideTitle:(BOOL)title;
+- (void)setHideValue:(BOOL)value;
+- (void)setTitleColorFollowsTintColor:(BOOL)color;
+- (void)setTitleFont:(id)font;
+- (void)setTitleText:(id)text;
+- (void)setValueColorFollowsTintColor:(BOOL)color;
+- (void)setValueFont:(id)font;
+- (void)setValueText:(id)text;
 - (void)tintColorDidChange;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateConstraints;
-- (void)updateUIWithAnimation:(BOOL)a3;
+- (void)updateUIWithAnimation:(BOOL)animation;
 @end
 
 @implementation HUTitleValueCell
 
-- (HUTitleValueCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (HUTitleValueCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v14.receiver = self;
   v14.super_class = HUTitleValueCell;
-  v4 = [(HUIconCell *)&v14 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(HUIconCell *)&v14 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = *MEMORY[0x277D76918];
@@ -48,8 +48,8 @@
     [(UIStackView *)v4->_labelsStackView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIStackView *)v4->_labelsStackView setAxis:0];
     v4->_useVerticalLayoutOnly = 0;
-    v12 = [(HUIconCell *)v4 containerView];
-    [v12 addSubview:v4->_labelsStackView];
+    containerView = [(HUIconCell *)v4 containerView];
+    [containerView addSubview:v4->_labelsStackView];
 
     [(HUTitleValueCell *)v4 _addTitleLabel];
     [(HUTitleValueCell *)v4 _addValueLabel];
@@ -70,14 +70,14 @@
 
   [(HUTitleValueCell *)self setHideValue:0];
   [(HUTitleValueCell *)self setValueText:0];
-  v4 = [objc_opt_class() defaultValueFont];
-  [(HUTitleValueCell *)self setValueFont:v4];
+  defaultValueFont = [objc_opt_class() defaultValueFont];
+  [(HUTitleValueCell *)self setValueFont:defaultValueFont];
 
-  v5 = [(HUTitleValueCell *)self titleLabel];
-  [v5 setNumberOfLines:1];
+  titleLabel = [(HUTitleValueCell *)self titleLabel];
+  [titleLabel setNumberOfLines:1];
 
-  v6 = [(HUTitleValueCell *)self valueLabel];
-  [v6 setNumberOfLines:1];
+  valueLabel = [(HUTitleValueCell *)self valueLabel];
+  [valueLabel setNumberOfLines:1];
 
   [(HUTitleValueCell *)self setValueColorFollowsTintColor:0];
   [(HUTitleValueCell *)self setTitleColorFollowsTintColor:0];
@@ -95,39 +95,39 @@
   [(HUTitleValueCell *)self _updateValue];
 }
 
-- (void)copy:(id)a3
+- (void)copy:(id)copy
 {
-  v6 = [MEMORY[0x277D75810] generalPasteboard];
-  v4 = [(HUTitleValueCell *)self valueLabel];
-  v5 = [v4 text];
-  [v6 setString:v5];
+  generalPasteboard = [MEMORY[0x277D75810] generalPasteboard];
+  valueLabel = [(HUTitleValueCell *)self valueLabel];
+  text = [valueLabel text];
+  [generalPasteboard setString:text];
 }
 
-- (void)setTitleText:(id)a3
+- (void)setTitleText:(id)text
 {
-  objc_storeStrong(&self->_titleText, a3);
-  v5 = a3;
-  v6 = [(HUTitleValueCell *)self titleLabel];
-  [v6 setText:v5];
+  objc_storeStrong(&self->_titleText, text);
+  textCopy = text;
+  titleLabel = [(HUTitleValueCell *)self titleLabel];
+  [titleLabel setText:textCopy];
 
-  v7 = [(HUTitleValueCell *)self titleLabel];
-  [v7 sizeToFit];
+  titleLabel2 = [(HUTitleValueCell *)self titleLabel];
+  [titleLabel2 sizeToFit];
 }
 
-- (void)setTitleFont:(id)a3
+- (void)setTitleFont:(id)font
 {
-  objc_storeStrong(&self->_titleFont, a3);
-  v5 = a3;
-  v6 = [(HUTitleValueCell *)self titleLabel];
-  [v6 setFont:v5];
+  objc_storeStrong(&self->_titleFont, font);
+  fontCopy = font;
+  titleLabel = [(HUTitleValueCell *)self titleLabel];
+  [titleLabel setFont:fontCopy];
 }
 
-- (void)setHideTitle:(BOOL)a3
+- (void)setHideTitle:(BOOL)title
 {
-  if (self->_hideTitle != a3)
+  if (self->_hideTitle != title)
   {
-    self->_hideTitle = a3;
-    if (a3)
+    self->_hideTitle = title;
+    if (title)
     {
       titleLabel = self->_titleLabel;
 
@@ -143,51 +143,51 @@
   }
 }
 
-- (void)setValueText:(id)a3
+- (void)setValueText:(id)text
 {
-  objc_storeStrong(&self->_valueText, a3);
-  v5 = a3;
-  v6 = [(HUTitleValueCell *)self valueLabel];
-  [v6 setText:v5];
+  objc_storeStrong(&self->_valueText, text);
+  textCopy = text;
+  valueLabel = [(HUTitleValueCell *)self valueLabel];
+  [valueLabel setText:textCopy];
 
-  v7 = [(HUTitleValueCell *)self valueLabel];
-  [v7 sizeToFit];
+  valueLabel2 = [(HUTitleValueCell *)self valueLabel];
+  [valueLabel2 sizeToFit];
 }
 
-- (void)setValueFont:(id)a3
+- (void)setValueFont:(id)font
 {
-  objc_storeStrong(&self->_valueFont, a3);
-  v5 = a3;
-  v6 = [(HUTitleValueCell *)self valueLabel];
-  [v6 setFont:v5];
+  objc_storeStrong(&self->_valueFont, font);
+  fontCopy = font;
+  valueLabel = [(HUTitleValueCell *)self valueLabel];
+  [valueLabel setFont:fontCopy];
 }
 
-- (void)setTitleColorFollowsTintColor:(BOOL)a3
+- (void)setTitleColorFollowsTintColor:(BOOL)color
 {
-  v3 = a3;
-  self->_titleColorFollowsTintColor = a3;
-  v5 = [(HUTitleValueCell *)self titleLabel];
-  [v5 _setTextColorFollowsTintColor:v3];
+  colorCopy = color;
+  self->_titleColorFollowsTintColor = color;
+  titleLabel = [(HUTitleValueCell *)self titleLabel];
+  [titleLabel _setTextColorFollowsTintColor:colorCopy];
 
   [(HUTitleValueCell *)self _updateTitle];
 }
 
-- (void)setValueColorFollowsTintColor:(BOOL)a3
+- (void)setValueColorFollowsTintColor:(BOOL)color
 {
-  v3 = a3;
-  self->_valueColorFollowsTintColor = a3;
-  v5 = [(HUTitleValueCell *)self valueLabel];
-  [v5 _setTextColorFollowsTintColor:v3];
+  colorCopy = color;
+  self->_valueColorFollowsTintColor = color;
+  valueLabel = [(HUTitleValueCell *)self valueLabel];
+  [valueLabel _setTextColorFollowsTintColor:colorCopy];
 
   [(HUTitleValueCell *)self _updateValue];
 }
 
-- (void)setHideValue:(BOOL)a3
+- (void)setHideValue:(BOOL)value
 {
-  if (self->_hideValue != a3)
+  if (self->_hideValue != value)
   {
-    self->_hideValue = a3;
-    if (a3)
+    self->_hideValue = value;
+    if (value)
     {
       valueLabel = self->_valueLabel;
 
@@ -203,44 +203,44 @@
   }
 }
 
-- (void)setDisabled:(BOOL)a3
+- (void)setDisabled:(BOOL)disabled
 {
-  v3 = a3;
+  disabledCopy = disabled;
   v5.receiver = self;
   v5.super_class = HUTitleValueCell;
   [(HUIconCell *)&v5 setDisabled:?];
   [(HUTitleValueCell *)self _updateTitle];
-  [(HUTitleValueCell *)self setUserInteractionEnabled:!v3];
+  [(HUTitleValueCell *)self setUserInteractionEnabled:!disabledCopy];
 }
 
 - (void)updateConstraints
 {
   v22[4] = *MEMORY[0x277D85DE8];
-  v3 = [(HUTitleValueCell *)self stackViewConstraints];
+  stackViewConstraints = [(HUTitleValueCell *)self stackViewConstraints];
 
-  if (!v3)
+  if (!stackViewConstraints)
   {
-    v4 = [(HUIconCell *)self containerView];
-    v20 = [v4 topAnchor];
+    containerView = [(HUIconCell *)self containerView];
+    topAnchor = [containerView topAnchor];
 
-    v5 = [(HUIconCell *)self containerView];
-    v19 = [v5 bottomAnchor];
+    containerView2 = [(HUIconCell *)self containerView];
+    bottomAnchor = [containerView2 bottomAnchor];
 
-    v18 = [(UIStackView *)self->_labelsStackView topAnchor];
-    v17 = [v18 constraintEqualToAnchor:v20];
+    topAnchor2 = [(UIStackView *)self->_labelsStackView topAnchor];
+    v17 = [topAnchor2 constraintEqualToAnchor:topAnchor];
     v22[0] = v17;
-    v16 = [(UIStackView *)self->_labelsStackView bottomAnchor];
-    v15 = [v16 constraintEqualToAnchor:v19];
+    bottomAnchor2 = [(UIStackView *)self->_labelsStackView bottomAnchor];
+    v15 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor];
     v22[1] = v15;
-    v14 = [(UIStackView *)self->_labelsStackView leadingAnchor];
-    v6 = [(HUIconCell *)self containerView];
-    v7 = [v6 leadingAnchor];
-    v8 = [v14 constraintEqualToAnchor:v7];
+    leadingAnchor = [(UIStackView *)self->_labelsStackView leadingAnchor];
+    containerView3 = [(HUIconCell *)self containerView];
+    leadingAnchor2 = [containerView3 leadingAnchor];
+    v8 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v22[2] = v8;
-    v9 = [(UIStackView *)self->_labelsStackView trailingAnchor];
-    v10 = [(HUIconCell *)self containerView];
-    v11 = [v10 trailingAnchor];
-    v12 = [v9 constraintEqualToAnchor:v11];
+    trailingAnchor = [(UIStackView *)self->_labelsStackView trailingAnchor];
+    containerView4 = [(HUIconCell *)self containerView];
+    trailingAnchor2 = [containerView4 trailingAnchor];
+    v12 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v22[3] = v12;
     v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v22 count:4];
 
@@ -256,37 +256,37 @@
   [(HUIconCell *)&v21 updateConstraints];
 }
 
-- (id)_verticalConstraintsForContentSubview:(id)a3
+- (id)_verticalConstraintsForContentSubview:(id)subview
 {
   v25[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  subviewCopy = subview;
   if ([(UIStackView *)self->_labelsStackView axis])
   {
-    v5 = [v4 superview];
-    v6 = [(HUTitleValueCell *)self contentView];
-    v7 = [v5 isEqual:v6];
+    superview = [subviewCopy superview];
+    contentView = [(HUTitleValueCell *)self contentView];
+    v7 = [superview isEqual:contentView];
 
     if ((v7 & 1) == 0)
     {
       NSLog(&cfstr_NotAContentvie.isa);
     }
 
-    v22 = [v4 topAnchor];
-    v23 = [(HUTitleValueCell *)self contentView];
-    v21 = [v23 layoutMarginsGuide];
-    v20 = [v21 topAnchor];
-    v19 = [v22 constraintGreaterThanOrEqualToAnchor:v20];
+    topAnchor = [subviewCopy topAnchor];
+    contentView2 = [(HUTitleValueCell *)self contentView];
+    layoutMarginsGuide = [contentView2 layoutMarginsGuide];
+    topAnchor2 = [layoutMarginsGuide topAnchor];
+    v19 = [topAnchor constraintGreaterThanOrEqualToAnchor:topAnchor2];
     v25[0] = v19;
-    v18 = [v4 bottomAnchor];
-    v8 = [(HUTitleValueCell *)self contentView];
-    v9 = [v8 layoutMarginsGuide];
-    v10 = [v9 bottomAnchor];
-    v11 = [v18 constraintLessThanOrEqualToAnchor:v10];
+    bottomAnchor = [subviewCopy bottomAnchor];
+    contentView3 = [(HUTitleValueCell *)self contentView];
+    layoutMarginsGuide2 = [contentView3 layoutMarginsGuide];
+    bottomAnchor2 = [layoutMarginsGuide2 bottomAnchor];
+    v11 = [bottomAnchor constraintLessThanOrEqualToAnchor:bottomAnchor2];
     v25[1] = v11;
-    v12 = [v4 centerYAnchor];
-    v13 = [(HUTitleValueCell *)self contentView];
-    v14 = [v13 centerYAnchor];
-    v15 = [v12 constraintEqualToAnchor:v14];
+    centerYAnchor = [subviewCopy centerYAnchor];
+    contentView4 = [(HUTitleValueCell *)self contentView];
+    centerYAnchor2 = [contentView4 centerYAnchor];
+    v15 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v25[2] = v15;
     v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v25 count:3];
   }
@@ -295,37 +295,37 @@
   {
     v24.receiver = self;
     v24.super_class = HUTitleValueCell;
-    v16 = [(HUIconCell *)&v24 _verticalConstraintsForContentSubview:v4];
+    v16 = [(HUIconCell *)&v24 _verticalConstraintsForContentSubview:subviewCopy];
   }
 
   return v16;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = HUTitleValueCell;
-  [(HUTitleValueCell *)&v4 traitCollectionDidChange:a3];
+  [(HUTitleValueCell *)&v4 traitCollectionDidChange:change];
   [(HUTitleValueCell *)self _ensureCorrectHeaderViewOrientation];
 }
 
 - (void)_ensureCorrectHeaderViewOrientation
 {
   v3 = self->_labelsStackView;
-  v4 = [(HUTitleValueCell *)self titleLabel];
-  v5 = [(HUTitleValueCell *)self valueLabel];
-  v6 = [objc_opt_class() defaultValueFont];
-  [v5 setFont:v6];
+  titleLabel = [(HUTitleValueCell *)self titleLabel];
+  valueLabel = [(HUTitleValueCell *)self valueLabel];
+  defaultValueFont = [objc_opt_class() defaultValueFont];
+  [valueLabel setFont:defaultValueFont];
 
-  if (v4 && v5)
+  if (titleLabel && valueLabel)
   {
-    [v4 sizeToFit];
-    [v5 sizeToFit];
-    v7 = [v4 text];
-    if ([v7 length])
+    [titleLabel sizeToFit];
+    [valueLabel sizeToFit];
+    text = [titleLabel text];
+    if ([text length])
     {
-      v8 = [v5 text];
-      if ([v8 length])
+      text2 = [valueLabel text];
+      if ([text2 length])
       {
         [(HUTitleValueCell *)self labelSpacing];
       }
@@ -347,15 +347,15 @@
     v17 = 3221225472;
     v18 = __55__HUTitleValueCell__ensureCorrectHeaderViewOrientation__block_invoke;
     v19 = &unk_277DC1A90;
-    v20 = self;
-    v10 = v4;
+    selfCopy = self;
+    v10 = titleLabel;
     v21 = v10;
-    v11 = v5;
+    v11 = valueLabel;
     v22 = v11;
     v12 = v3;
     v23 = v12;
     v13 = __55__HUTitleValueCell__ensureCorrectHeaderViewOrientation__block_invoke(&v16);
-    [(UIStackView *)v12 setDistribution:0, v16, v17, v18, v19, v20];
+    [(UIStackView *)v12 setDistribution:0, v16, v17, v18, v19, selfCopy];
     if (v13)
     {
       v14 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D769D0]];
@@ -428,67 +428,67 @@ BOOL __55__HUTitleValueCell__ensureCorrectHeaderViewOrientation__block_invoke(id
   return v20 > v23;
 }
 
-- (void)updateUIWithAnimation:(BOOL)a3
+- (void)updateUIWithAnimation:(BOOL)animation
 {
-  v3 = a3;
+  animationCopy = animation;
   v32[2] = *MEMORY[0x277D85DE8];
-  v5 = [(HUIconCell *)self item];
-  v6 = [v5 latestResults];
+  item = [(HUIconCell *)self item];
+  latestResults = [item latestResults];
 
   v30.receiver = self;
   v30.super_class = HUTitleValueCell;
-  [(HUIconCell *)&v30 updateUIWithAnimation:v3];
-  v7 = [v6 objectForKeyedSubscript:*MEMORY[0x277D13F60]];
+  [(HUIconCell *)&v30 updateUIWithAnimation:animationCopy];
+  v7 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13F60]];
   [(HUTitleValueCell *)self setTitleText:v7];
 
-  v8 = [v6 objectForKeyedSubscript:*MEMORY[0x277D13DC8]];
+  v8 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13DC8]];
   [(HUTitleValueCell *)self setAccessibilityIdentifier:v8];
 
-  v9 = [v6 objectForKeyedSubscript:*MEMORY[0x277D13E20]];
-  if (v9 || ([v6 objectForKeyedSubscript:*MEMORY[0x277D13E30]], (v9 = objc_claimAutoreleasedReturnValue()) != 0))
+  v9 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13E20]];
+  if (v9 || ([latestResults objectForKeyedSubscript:*MEMORY[0x277D13E30]], (v9 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v10 = v9;
+    valueLabel7 = v9;
     v31[0] = *MEMORY[0x277D740A8];
-    v11 = [(HUTitleValueCell *)self valueLabel];
-    v12 = [v11 font];
-    v32[0] = v12;
+    valueLabel = [(HUTitleValueCell *)self valueLabel];
+    font = [valueLabel font];
+    v32[0] = font;
     v31[1] = *MEMORY[0x277D740C0];
-    v13 = [(HUTitleValueCell *)self valueLabel];
-    v14 = [v13 textColor];
-    v32[1] = v14;
+    valueLabel2 = [(HUTitleValueCell *)self valueLabel];
+    textColor = [valueLabel2 textColor];
+    v32[1] = textColor;
     v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v32 forKeys:v31 count:2];
 
-    if ([v10 prefersDynamicString])
+    if ([valueLabel7 prefersDynamicString])
     {
-      v16 = [(HUTitleValueCell *)self valueLabel];
-      [v16 bounds];
-      v19 = [v10 dynamicStringForSize:v15 attributes:{v17, v18}];
-      v20 = [(HUTitleValueCell *)self valueLabel];
-      [v20 setAttributedText:v19];
+      valueLabel3 = [(HUTitleValueCell *)self valueLabel];
+      [valueLabel3 bounds];
+      valueLabel5 = [valueLabel7 dynamicStringForSize:v15 attributes:{v17, v18}];
+      valueLabel4 = [(HUTitleValueCell *)self valueLabel];
+      [valueLabel4 setAttributedText:valueLabel5];
     }
 
     else
     {
-      v16 = [v10 stringWithAttributes:v15];
-      v19 = [(HUTitleValueCell *)self valueLabel];
-      [v19 setAttributedText:v16];
+      valueLabel3 = [valueLabel7 stringWithAttributes:v15];
+      valueLabel5 = [(HUTitleValueCell *)self valueLabel];
+      [valueLabel5 setAttributedText:valueLabel3];
     }
 
-    v21 = [(HUTitleValueCell *)self valueLabel];
-    [v21 sizeToFit];
+    valueLabel6 = [(HUTitleValueCell *)self valueLabel];
+    [valueLabel6 sizeToFit];
   }
 
   else
   {
-    v10 = [(HUTitleValueCell *)self valueLabel];
-    [v10 setAttributedText:0];
+    valueLabel7 = [(HUTitleValueCell *)self valueLabel];
+    [valueLabel7 setAttributedText:0];
   }
 
   objc_opt_class();
-  v22 = [(HUTitleValueCell *)self accessoryView];
+  accessoryView = [(HUTitleValueCell *)self accessoryView];
   if (objc_opt_isKindOfClass())
   {
-    v23 = v22;
+    v23 = accessoryView;
   }
 
   else
@@ -498,22 +498,22 @@ BOOL __55__HUTitleValueCell__ensureCorrectHeaderViewOrientation__block_invoke(id
 
   v24 = v23;
 
-  v25 = [v6 objectForKeyedSubscript:*MEMORY[0x277D13DE0]];
-  v26 = [v25 unsignedIntegerValue];
+  v25 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13DE0]];
+  unsignedIntegerValue = [v25 unsignedIntegerValue];
 
-  if (v26 == 2)
+  if (unsignedIntegerValue == 2)
   {
     if (!v24)
     {
       v27 = [HUBadgeAndDisclosureAccessoryView alloc];
-      v22 = [(HUBadgeAndDisclosureAccessoryView *)v27 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
+      accessoryView = [(HUBadgeAndDisclosureAccessoryView *)v27 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
     }
 
-    v28 = [v6 objectForKeyedSubscript:*MEMORY[0x277D13DD0]];
-    -[HUBadgeAndDisclosureAccessoryView setBadgeCount:](v22, "setBadgeCount:", [v28 integerValue]);
+    v28 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13DD0]];
+    -[HUBadgeAndDisclosureAccessoryView setBadgeCount:](accessoryView, "setBadgeCount:", [v28 integerValue]);
 
-    [(HUBadgeAndDisclosureAccessoryView *)v22 sizeToFit];
-    v29 = v22;
+    [(HUBadgeAndDisclosureAccessoryView *)accessoryView sizeToFit];
+    v29 = accessoryView;
     goto LABEL_16;
   }
 
@@ -530,9 +530,9 @@ LABEL_16:
 
 - (void)_addTitleLabel
 {
-  v3 = [(UILabel *)self->_titleLabel superview];
+  superview = [(UILabel *)self->_titleLabel superview];
 
-  if (v3)
+  if (superview)
   {
     NSLog(&cfstr_TitleLabelAlre.isa, self);
   }
@@ -546,15 +546,15 @@ LABEL_16:
     self->_titleLabel = v6;
 
     [(UILabel *)self->_titleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-    v8 = [(HUTitleValueCell *)self titleFont];
-    [(UILabel *)self->_titleLabel setFont:v8];
+    titleFont = [(HUTitleValueCell *)self titleFont];
+    [(UILabel *)self->_titleLabel setFont:titleFont];
 
-    v9 = [(HUTitleValueCell *)self titleText];
-    [(UILabel *)self->_titleLabel setText:v9];
+    titleText = [(HUTitleValueCell *)self titleText];
+    [(UILabel *)self->_titleLabel setText:titleText];
 
     [(UILabel *)self->_titleLabel _setTextColorFollowsTintColor:[(HUTitleValueCell *)self titleColorFollowsTintColor]];
-    v10 = [MEMORY[0x277D75348] labelColor];
-    [(UILabel *)self->_titleLabel setTextColor:v10];
+    labelColor = [MEMORY[0x277D75348] labelColor];
+    [(UILabel *)self->_titleLabel setTextColor:labelColor];
 
     [(UILabel *)self->_titleLabel setLineBreakMode:0];
     titleLabel = self->_titleLabel;
@@ -567,9 +567,9 @@ LABEL_16:
 
 - (void)_addValueLabel
 {
-  v3 = [(UILabel *)self->_valueLabel superview];
+  superview = [(UILabel *)self->_valueLabel superview];
 
-  if (v3)
+  if (superview)
   {
     NSLog(&cfstr_ValueLabelAlre.isa, self);
   }
@@ -583,11 +583,11 @@ LABEL_16:
     self->_valueLabel = v6;
 
     [(UILabel *)self->_valueLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-    v8 = [(HUTitleValueCell *)self valueFont];
-    [(UILabel *)self->_valueLabel setFont:v8];
+    valueFont = [(HUTitleValueCell *)self valueFont];
+    [(UILabel *)self->_valueLabel setFont:valueFont];
 
-    v9 = [(HUTitleValueCell *)self valueText];
-    [(UILabel *)self->_valueLabel setText:v9];
+    valueText = [(HUTitleValueCell *)self valueText];
+    [(UILabel *)self->_valueLabel setText:valueText];
 
     [(UILabel *)self->_valueLabel _setTextColorFollowsTintColor:[(HUTitleValueCell *)self valueColorFollowsTintColor]];
     [(UILabel *)self->_valueLabel setLineBreakMode:0];

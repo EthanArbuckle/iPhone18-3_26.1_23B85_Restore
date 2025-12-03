@@ -1,13 +1,13 @@
 @interface EMSMockDataSource.MockLocation
 - (_TtCC14ClassroomUIKit17EMSMockDataSource12MockLocation)init;
-- (void)setName:(id)a3;
+- (void)setName:(id)name;
 @end
 
 @implementation EMSMockDataSource.MockLocation
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
-  if (a3)
+  if (name)
   {
     v4 = sub_2436CBD38();
   }

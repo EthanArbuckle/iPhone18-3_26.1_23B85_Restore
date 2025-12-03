@@ -1,13 +1,13 @@
 @interface HKRemoteFeatureAvailabilityOnboardingCountryCodeRule
 - (BOOL)evaluate;
-- (void)processUserInfo:(id)a3;
+- (void)processUserInfo:(id)info;
 @end
 
 @implementation HKRemoteFeatureAvailabilityOnboardingCountryCodeRule
 
-- (void)processUserInfo:(id)a3
+- (void)processUserInfo:(id)info
 {
-  v4 = [a3 objectForKeyedSubscript:@"OnboardingCountryCode"];
+  v4 = [info objectForKeyedSubscript:@"OnboardingCountryCode"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -17,20 +17,20 @@
 
 - (BOOL)evaluate
 {
-  v3 = [(HKRemoteFeatureAvailabilityOnboardingCountryCodeRule *)self onboardingCountryCode];
+  onboardingCountryCode = [(HKRemoteFeatureAvailabilityOnboardingCountryCodeRule *)self onboardingCountryCode];
 
-  if (!v3)
+  if (!onboardingCountryCode)
   {
     return 0;
   }
 
-  v4 = [(HKRemoteFeatureAvailabilityOnboardingCountryCodeRule *)self onboardingCountryCode];
-  if ([v4 isEqualToString:@"NIL_COUNTRYCODE"])
+  onboardingCountryCode2 = [(HKRemoteFeatureAvailabilityOnboardingCountryCodeRule *)self onboardingCountryCode];
+  if ([onboardingCountryCode2 isEqualToString:@"NIL_COUNTRYCODE"])
   {
-    v5 = [(HKRemoteFeatureAvailabilityBaseRule *)self dataSource];
-    v6 = [v5 onboardingCountryCode];
+    dataSource = [(HKRemoteFeatureAvailabilityBaseRule *)self dataSource];
+    onboardingCountryCode3 = [dataSource onboardingCountryCode];
 
-    if (!v6)
+    if (!onboardingCountryCode3)
     {
       return 1;
     }
@@ -40,10 +40,10 @@
   {
   }
 
-  v8 = [(HKRemoteFeatureAvailabilityBaseRule *)self dataSource];
-  v9 = [v8 onboardingCountryCode];
-  v10 = [(HKRemoteFeatureAvailabilityOnboardingCountryCodeRule *)self onboardingCountryCode];
-  v11 = [v9 isEqualToString:v10];
+  dataSource2 = [(HKRemoteFeatureAvailabilityBaseRule *)self dataSource];
+  onboardingCountryCode4 = [dataSource2 onboardingCountryCode];
+  onboardingCountryCode5 = [(HKRemoteFeatureAvailabilityOnboardingCountryCodeRule *)self onboardingCountryCode];
+  v11 = [onboardingCountryCode4 isEqualToString:onboardingCountryCode5];
 
   return v11;
 }

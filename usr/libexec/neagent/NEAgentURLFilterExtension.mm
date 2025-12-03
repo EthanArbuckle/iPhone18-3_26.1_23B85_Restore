@@ -1,40 +1,40 @@
 @interface NEAgentURLFilterExtension
-- (NEAgentURLFilterExtension)initWithPluginType:(id)a3 pluginClass:(int64_t)a4 pluginInfo:(id)a5 queue:(id)a6 factory:(id)a7;
+- (NEAgentURLFilterExtension)initWithPluginType:(id)type pluginClass:(int64_t)class pluginInfo:(id)info queue:(id)queue factory:(id)factory;
 - (NSXPCInterface)driverInterface;
 - (NSXPCInterface)managerInterface;
-- (void)cancelWithError:(id)a3;
+- (void)cancelWithError:(id)error;
 - (void)dealloc;
 - (void)fetchURLFilterServerParameters;
-- (void)getURLFilterClientConnectionWithCompletionHandler:(int)a3 completionHandler:(id)a4;
-- (void)handleAppsUninstalled:(id)a3;
-- (void)handleAppsUpdateBegins:(id)a3;
-- (void)handleAppsUpdateEnding:(id)a3;
-- (void)handleAppsUpdateEnds:(id)a3;
+- (void)getURLFilterClientConnectionWithCompletionHandler:(int)handler completionHandler:(id)completionHandler;
+- (void)handleAppsUninstalled:(id)uninstalled;
+- (void)handleAppsUpdateBegins:(id)begins;
+- (void)handleAppsUpdateEnding:(id)ending;
+- (void)handleAppsUpdateEnds:(id)ends;
 - (void)handleCancel;
-- (void)handleDisposeWithCompletionHandler:(id)a3;
+- (void)handleDisposeWithCompletionHandler:(id)handler;
 - (void)handleXPCError;
 - (void)resetURLFilterCache;
-- (void)sleepWithCompletionHandler:(id)a3;
+- (void)sleepWithCompletionHandler:(id)handler;
 - (void)startURLFilter;
-- (void)startWithConfiguration:(id)a3 completionHandler:(id)a4;
-- (void)updateConfiguration:(id)a3;
+- (void)startWithConfiguration:(id)configuration completionHandler:(id)handler;
+- (void)updateConfiguration:(id)configuration;
 - (void)wakeup;
 @end
 
 @implementation NEAgentURLFilterExtension
 
-- (void)cancelWithError:(id)a3
+- (void)cancelWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = ne_log_obj();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412802;
-    v7 = self;
+    selfCopy = self;
     v8 = 2080;
     v9 = "[NEAgentURLFilterExtension cancelWithError:]";
     v10 = 2112;
-    v11 = v4;
+    v11 = errorCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@: %s - Extension cancelWithError %@", &v6, 0x20u);
   }
 
@@ -60,7 +60,7 @@
     *&v8[8] = 3221225472;
     *&v8[16] = sub_1000085D0;
     v9 = &unk_100024AC0;
-    v10 = self;
+    selfCopy2 = self;
     v11 = 0;
     dispatch_async(Property, v8);
 
@@ -69,14 +69,14 @@
     *&v8[8] = 3221225472;
     *&v8[16] = sub_10000848C;
     v9 = &unk_100024A20;
-    v10 = self;
+    selfCopy2 = self;
     dispatch_async(v7, v8);
   }
 }
 
 - (void)resetURLFilterCache
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     self = objc_getProperty(self, a2, 24, 1);
@@ -86,13 +86,13 @@
   block[1] = 3221225472;
   block[2] = sub_100008944;
   block[3] = &unk_100024A20;
-  block[4] = v2;
+  block[4] = selfCopy;
   dispatch_async(&self->super, block);
 }
 
 - (void)fetchURLFilterServerParameters
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     self = objc_getProperty(self, a2, 24, 1);
@@ -102,13 +102,13 @@
   block[1] = 3221225472;
   block[2] = sub_100008AF4;
   block[3] = &unk_100024A20;
-  block[4] = v2;
+  block[4] = selfCopy;
   dispatch_async(&self->super, block);
 }
 
-- (void)getURLFilterClientConnectionWithCompletionHandler:(int)a3 completionHandler:(id)a4
+- (void)getURLFilterClientConnectionWithCompletionHandler:(int)handler completionHandler:(id)completionHandler
 {
-  v6 = a4;
+  completionHandlerCopy = completionHandler;
   if (self)
   {
     Property = objc_getProperty(self, v5, 24, 1);
@@ -124,14 +124,14 @@
   v9[2] = sub_100008CD8;
   v9[3] = &unk_100024A98;
   v9[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = completionHandlerCopy;
+  v8 = completionHandlerCopy;
   dispatch_async(Property, v9);
 }
 
 - (void)startURLFilter
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     self = objc_getProperty(self, a2, 24, 1);
@@ -141,13 +141,13 @@
   block[1] = 3221225472;
   block[2] = sub_100008EF0;
   block[3] = &unk_100024A20;
-  block[4] = v2;
+  block[4] = selfCopy;
   dispatch_async(&self->super, block);
 }
 
-- (void)updateConfiguration:(id)a3
+- (void)updateConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   if (self)
   {
     Property = objc_getProperty(self, v4, 24, 1);
@@ -163,14 +163,14 @@
   v8[2] = sub_10000B228;
   v8[3] = &unk_100024AC0;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = configurationCopy;
+  v7 = configurationCopy;
   dispatch_async(Property, v8);
 }
 
 - (void)wakeup
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     self = objc_getProperty(self, a2, 24, 1);
@@ -180,13 +180,13 @@
   block[1] = 3221225472;
   block[2] = sub_10000B630;
   block[3] = &unk_100024A20;
-  block[4] = v2;
+  block[4] = selfCopy;
   dispatch_async(&self->super, block);
 }
 
-- (void)sleepWithCompletionHandler:(id)a3
+- (void)sleepWithCompletionHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   if (self)
   {
     Property = objc_getProperty(self, v4, 24, 1);
@@ -202,24 +202,24 @@
   v8[2] = sub_10000B874;
   v8[3] = &unk_100024A98;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = handlerCopy;
+  v7 = handlerCopy;
   dispatch_async(Property, v8);
 }
 
-- (void)startWithConfiguration:(id)a3 completionHandler:(id)a4
+- (void)startWithConfiguration:(id)configuration completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  handlerCopy = handler;
   v8 = ne_log_large_obj();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412802;
-    v17 = self;
+    selfCopy = self;
     v18 = 2080;
     v19 = "[NEAgentURLFilterExtension startWithConfiguration:completionHandler:]";
     v20 = 2112;
-    v21 = v6;
+    v21 = configurationCopy;
     _os_log_debug_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "%@: %s - %@", buf, 0x20u);
   }
 
@@ -238,10 +238,10 @@
   block[2] = sub_10000BBC0;
   block[3] = &unk_1000249B8;
   block[4] = self;
-  v14 = v6;
-  v15 = v7;
-  v11 = v7;
-  v12 = v6;
+  v14 = configurationCopy;
+  v15 = handlerCopy;
+  v11 = handlerCopy;
+  v12 = configurationCopy;
   dispatch_async(Property, block);
 }
 
@@ -269,9 +269,9 @@
   return v3;
 }
 
-- (void)handleAppsUpdateEnds:(id)a3
+- (void)handleAppsUpdateEnds:(id)ends
 {
-  v5 = a3;
+  endsCopy = ends;
   if (self)
   {
     Property = objc_getProperty(self, v4, 24, 1);
@@ -287,14 +287,14 @@
   v8[2] = sub_10000C7C0;
   v8[3] = &unk_100024AC0;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = endsCopy;
+  v7 = endsCopy;
   dispatch_async(Property, v8);
 }
 
-- (void)handleAppsUpdateEnding:(id)a3
+- (void)handleAppsUpdateEnding:(id)ending
 {
-  v5 = a3;
+  endingCopy = ending;
   if (self)
   {
     Property = objc_getProperty(self, v4, 24, 1);
@@ -310,14 +310,14 @@
   v8[2] = sub_10000C9A4;
   v8[3] = &unk_100024AC0;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = endingCopy;
+  v7 = endingCopy;
   dispatch_async(Property, v8);
 }
 
-- (void)handleAppsUpdateBegins:(id)a3
+- (void)handleAppsUpdateBegins:(id)begins
 {
-  v5 = a3;
+  beginsCopy = begins;
   if (self)
   {
     Property = objc_getProperty(self, v4, 24, 1);
@@ -333,14 +333,14 @@
   v8[2] = sub_10000CAEC;
   v8[3] = &unk_100024AC0;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = beginsCopy;
+  v7 = beginsCopy;
   dispatch_async(Property, v8);
 }
 
-- (void)handleAppsUninstalled:(id)a3
+- (void)handleAppsUninstalled:(id)uninstalled
 {
-  v5 = a3;
+  uninstalledCopy = uninstalled;
   if (self)
   {
     Property = objc_getProperty(self, v4, 24, 1);
@@ -355,9 +355,9 @@
   v8[1] = 3221225472;
   v8[2] = sub_10000CE48;
   v8[3] = &unk_100024AC0;
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
+  v9 = uninstalledCopy;
+  selfCopy = self;
+  v7 = uninstalledCopy;
   dispatch_async(Property, v8);
 }
 
@@ -377,14 +377,14 @@
   }
 }
 
-- (void)handleDisposeWithCompletionHandler:(id)a3
+- (void)handleDisposeWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = ne_log_obj();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v12 = self;
+    selfCopy = self;
     v13 = 2080;
     v14 = "[NEAgentURLFilterExtension handleDisposeWithCompletionHandler:]";
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@: %s - enter", buf, 0x16u);
@@ -405,8 +405,8 @@
   v9[2] = sub_10000D374;
   v9[3] = &unk_100024A98;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
+  v10 = handlerCopy;
+  v8 = handlerCopy;
   dispatch_async(Property, v9);
 }
 
@@ -416,7 +416,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v17 = self;
+    selfCopy = self;
     v18 = 2080;
     v19 = "[NEAgentURLFilterExtension dealloc]";
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%@: %s - enter", buf, 0x16u);
@@ -454,12 +454,12 @@
   [(NEAgentURLFilterExtension *)&v15 dealloc];
 }
 
-- (NEAgentURLFilterExtension)initWithPluginType:(id)a3 pluginClass:(int64_t)a4 pluginInfo:(id)a5 queue:(id)a6 factory:(id)a7
+- (NEAgentURLFilterExtension)initWithPluginType:(id)type pluginClass:(int64_t)class pluginInfo:(id)info queue:(id)queue factory:(id)factory
 {
-  v13 = a3;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  typeCopy = type;
+  infoCopy = info;
+  queueCopy = queue;
+  factoryCopy = factory;
   v20.receiver = self;
   v20.super_class = NEAgentURLFilterExtension;
   v17 = [(NEAgentURLFilterExtension *)&v20 init];
@@ -473,18 +473,18 @@
       v23 = 2080;
       v24 = "[NEAgentURLFilterExtension initWithPluginType:pluginClass:pluginInfo:queue:factory:]";
       v25 = 2112;
-      v26 = v13;
+      v26 = typeCopy;
       v27 = 2048;
-      v28 = a4;
+      classCopy = class;
       v29 = 2112;
-      v30 = v14;
+      v30 = infoCopy;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "%@: %s - pluginType %@ pluginClass %ld pluginInfo %@", buf, 0x34u);
     }
 
-    objc_storeWeak(&v17->_managerObjectFactory, v16);
-    objc_storeStrong(&v17->_queue, a6);
-    objc_storeStrong(&v17->_pluginType, a3);
-    objc_storeStrong(&v17->_extensionIdentifier, a3);
+    objc_storeWeak(&v17->_managerObjectFactory, factoryCopy);
+    objc_storeStrong(&v17->_queue, queue);
+    objc_storeStrong(&v17->_pluginType, type);
+    objc_storeStrong(&v17->_extensionIdentifier, type);
   }
 
   return v17;

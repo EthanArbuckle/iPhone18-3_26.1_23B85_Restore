@@ -1,9 +1,9 @@
 @interface NSXMLParser
 + (id)currentParser;
-+ (void)setCurrentParser:(id)a3;
-- (BOOL)_handleParseResult:(int64_t)a3;
++ (void)setCurrentParser:(id)parser;
+- (BOOL)_handleParseResult:(int64_t)result;
 - (BOOL)finishIncrementalParse;
-- (BOOL)parseData:(id)a3;
+- (BOOL)parseData:(id)data;
 - (BOOL)parseFromStream;
 - (NSError)parserError;
 - (NSInteger)columnNumber;
@@ -11,18 +11,18 @@
 - (NSXMLParser)initWithContentsOfURL:(NSURL *)url;
 - (NSXMLParser)initWithData:(NSData *)data;
 - (NSXMLParser)initWithStream:(NSInputStream *)stream;
-- (_xmlParserInput)_xmlExternalEntityWithURL:(const char *)a3 identifier:(const char *)a4 context:(_xmlParserCtxt *)a5 originalLoaderFunction:(void *)a6;
+- (_xmlParserInput)_xmlExternalEntityWithURL:(const char *)l identifier:(const char *)identifier context:(_xmlParserCtxt *)context originalLoaderFunction:(void *)function;
 - (id)initForIncrementalParsing;
 - (void)_initializeSAX2Callbacks;
 - (void)_popNamespaces;
-- (void)_pushNamespaces:(id)a3;
-- (void)_setExpandedParserError:(id)a3;
-- (void)_setParserError:(int64_t)a3;
+- (void)_pushNamespaces:(id)namespaces;
+- (void)_setExpandedParserError:(id)error;
+- (void)_setParserError:(int64_t)error;
 - (void)abortParsing;
 - (void)dealloc;
 - (void)setAllowedExternalEntityURLs:(NSSet *)allowedExternalEntityURLs;
 - (void)setDelegate:(id)delegate;
-- (void)setShouldContinueAfterFatalError:(BOOL)a3;
+- (void)setShouldContinueAfterFatalError:(BOOL)error;
 - (void)setShouldProcessNamespaces:(BOOL)shouldProcessNamespaces;
 - (void)setShouldReportNamespacePrefixes:(BOOL)shouldReportNamespacePrefixes;
 - (void)setShouldResolveExternalEntities:(BOOL)shouldResolveExternalEntities;
@@ -72,7 +72,7 @@
 
 - (BOOL)parseFromStream
 {
-  v3 = self;
+  selfCopy = self;
   [NSXMLParser setCurrentParser:self];
   xmlParserStream = self->xmlParserStream;
   if (xmlParserStream)
@@ -83,7 +83,7 @@
     v7 = [(NSInputStream *)self->xmlParserStream read:v6 maxLength:chunkSize];
     if (v7 == -1)
     {
-      v9 = 0;
+      finishIncrementalParse = 0;
     }
 
     else
@@ -96,7 +96,7 @@
         v7 = [(NSInputStream *)self->xmlParserStream read:v6 maxLength:chunkSize];
       }
 
-      v9 = [(NSXMLParser *)self finishIncrementalParse];
+      finishIncrementalParse = [(NSXMLParser *)self finishIncrementalParse];
     }
 
     free(v6);
@@ -106,12 +106,12 @@
   else
   {
     -[NSXMLParser _setExpandedParserError:](self, "_setExpandedParserError:", +[NSError errorWithDomain:code:userInfo:](NSError, "errorWithDomain:code:userInfo:", @"NSCocoaErrorDomain", -1, [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{@"Could not open data stream", @"NSXMLParserErrorMessage", 0}]));
-    v9 = 0;
+    finishIncrementalParse = 0;
   }
 
   [NSXMLParser setCurrentParser:0];
 
-  return v9;
+  return finishIncrementalParse;
 }
 
 - (BOOL)finishIncrementalParse
@@ -214,13 +214,13 @@
 
   else
   {
-    v7 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:url];
-    if (!v7)
+    data = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:url];
+    if (!data)
     {
-      v7 = [MEMORY[0x1E695DEF0] data];
+      data = [MEMORY[0x1E695DEF0] data];
     }
 
-    v6 = [(NSXMLParser *)self initWithData:v7];
+    v6 = [(NSXMLParser *)self initWithData:data];
   }
 
   v6->_url = url;
@@ -292,12 +292,12 @@
 
 - (NSXMLParser)initWithStream:(NSInputStream *)stream
 {
-  v4 = [(NSXMLParser *)self initForIncrementalParsing];
-  v5 = v4;
-  if (v4)
+  initForIncrementalParsing = [(NSXMLParser *)self initForIncrementalParsing];
+  v5 = initForIncrementalParsing;
+  if (initForIncrementalParsing)
   {
-    v4->_parserFlags |= 0x80uLL;
-    v4->xmlParserStream = stream;
+    initForIncrementalParsing->_parserFlags |= 0x80uLL;
+    initForIncrementalParsing->xmlParserStream = stream;
   }
 
   return v5;
@@ -384,9 +384,9 @@
   }
 }
 
-- (_xmlParserInput)_xmlExternalEntityWithURL:(const char *)a3 identifier:(const char *)a4 context:(_xmlParserCtxt *)a5 originalLoaderFunction:(void *)a6
+- (_xmlParserInput)_xmlExternalEntityWithURL:(const char *)l identifier:(const char *)identifier context:(_xmlParserCtxt *)context originalLoaderFunction:(void *)function
 {
-  v10 = [(NSXMLParser *)self externalEntityResolvingPolicy];
+  externalEntityResolvingPolicy = [(NSXMLParser *)self externalEntityResolvingPolicy];
   if ([objc_msgSend(MEMORY[0x1E695E000] "standardUserDefaults")])
   {
     v11 = 3;
@@ -394,14 +394,14 @@
 
   else
   {
-    v11 = v10;
+    v11 = externalEntityResolvingPolicy;
   }
 
-  v12 = [(NSXMLParser *)self allowedExternalEntityURLs];
-  if (v12)
+  allowedExternalEntityURLs = [(NSXMLParser *)self allowedExternalEntityURLs];
+  if (allowedExternalEntityURLs)
   {
-    v13 = v12;
-    v14 = [[NSString alloc] initWithUTF8String:a3];
+    v13 = allowedExternalEntityURLs;
+    v14 = [[NSString alloc] initWithUTF8String:l];
     v15 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:v14];
     if ([objc_msgSend(v15 "scheme")])
     {
@@ -443,7 +443,7 @@ LABEL_18:
       {
 LABEL_31:
 
-        return (a6)(a3, a4, a5);
+        return (function)(l, identifier, context);
       }
     }
   }
@@ -466,7 +466,7 @@ LABEL_30:
         goto LABEL_31;
       }
 
-      v19 = [[NSString alloc] initWithUTF8String:a3];
+      v19 = [[NSString alloc] initWithUTF8String:l];
       v15 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:v19];
 
       if (v15)
@@ -478,14 +478,14 @@ LABEL_30:
     goto LABEL_31;
   }
 
-  return xmlNoNetExternalEntityLoader(a3, a4, a5);
+  return xmlNoNetExternalEntityLoader(l, identifier, context);
 }
 
-+ (void)setCurrentParser:(id)a3
++ (void)setCurrentParser:(id)parser
 {
-  v4 = [+[NSThread currentThread](NSThread threadDictionary];
-  v5 = v4;
-  if (a3)
+  threadDictionary = [+[NSThread currentThread](NSThread threadDictionary];
+  v5 = threadDictionary;
+  if (parser)
   {
     if (dyld_program_sdk_at_least() && [(NSMutableDictionary *)v5 objectForKey:@"__CurrentNSXMLParser"])
     {
@@ -493,31 +493,31 @@ LABEL_30:
       objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:v7 userInfo:0]);
     }
 
-    v6 = [+[NSThread currentThread](NSThread threadDictionary];
+    threadDictionary2 = [+[NSThread currentThread](NSThread threadDictionary];
 
-    [(NSMutableDictionary *)v6 setObject:a3 forKey:@"__CurrentNSXMLParser"];
+    [(NSMutableDictionary *)threadDictionary2 setObject:parser forKey:@"__CurrentNSXMLParser"];
   }
 
   else
   {
 
-    [(NSMutableDictionary *)v4 removeObjectForKey:@"__CurrentNSXMLParser"];
+    [(NSMutableDictionary *)threadDictionary removeObjectForKey:@"__CurrentNSXMLParser"];
   }
 }
 
 + (id)currentParser
 {
-  v2 = [+[NSThread currentThread](NSThread threadDictionary];
+  threadDictionary = [+[NSThread currentThread](NSThread threadDictionary];
 
-  return [(NSMutableDictionary *)v2 objectForKey:@"__CurrentNSXMLParser"];
+  return [(NSMutableDictionary *)threadDictionary objectForKey:@"__CurrentNSXMLParser"];
 }
 
-- (void)setShouldContinueAfterFatalError:(BOOL)a3
+- (void)setShouldContinueAfterFatalError:(BOOL)error
 {
   if (!self->_parserContext)
   {
     v3 = 32;
-    if (!a3)
+    if (!error)
     {
       v3 = 0;
     }
@@ -526,14 +526,14 @@ LABEL_30:
   }
 }
 
-- (BOOL)_handleParseResult:(int64_t)a3
+- (BOOL)_handleParseResult:(int64_t)result
 {
-  if (!a3)
+  if (!result)
   {
     return 1;
   }
 
-  if (a3 != -1)
+  if (result != -1)
   {
     goto LABEL_7;
   }
@@ -555,14 +555,14 @@ LABEL_30:
 
 LABEL_7:
     LastError = xmlCtxtGetLastError(self->_parserContext);
-    if (LastError && LastError->code == a3)
+    if (LastError && LastError->code == result)
     {
       [(NSXMLParser *)self _setExpandedParserError:_NSErrorFromXMLError(LastError, self)];
     }
 
     else
     {
-      [(NSXMLParser *)self _setParserError:a3];
+      [(NSXMLParser *)self _setParserError:result];
     }
 
     return 0;
@@ -571,7 +571,7 @@ LABEL_7:
   return 1;
 }
 
-- (BOOL)parseData:(id)a3
+- (BOOL)parseData:(id)data
 {
   if ((self->_parserFlags & 0x40) == 0)
   {
@@ -584,7 +584,7 @@ LABEL_7:
   xmlSetStructuredErrorFunc(self, _structuredErrorFunc);
   if (self->_haveDetectedEncoding)
   {
-    v5 = xmlParseChunk(self->_parserContext, [a3 bytes], objc_msgSend(a3, "length"), 0);
+    v5 = xmlParseChunk(self->_parserContext, [data bytes], objc_msgSend(data, "length"), 0);
     if (self->_shouldStopXMLParser)
     {
       self->_shouldStopXMLParser = 0;
@@ -601,20 +601,20 @@ LABEL_7:
   else
   {
     v7 = [(NSData *)self->_bomChunk length];
-    v8 = [a3 length] + v7;
+    v8 = [data length] + v7;
     bomChunk = self->_bomChunk;
     if (v8 > 3)
     {
       if (bomChunk)
       {
-        v11 = objc_alloc_init(MEMORY[0x1E695DF88]);
-        [v11 appendData:self->_bomChunk];
-        [v11 appendData:a3];
+        dataCopy = objc_alloc_init(MEMORY[0x1E695DF88]);
+        [dataCopy appendData:self->_bomChunk];
+        [dataCopy appendData:data];
       }
 
       else
       {
-        v11 = a3;
+        dataCopy = data;
       }
 
       if (self->_delegate)
@@ -627,7 +627,7 @@ LABEL_7:
         saxHandler = 0;
       }
 
-      PushParserCtxt = xmlCreatePushParserCtxt(saxHandler, self, [v11 bytes], 4, 0);
+      PushParserCtxt = xmlCreatePushParserCtxt(saxHandler, self, [dataCopy bytes], 4, 0);
       self->_parserContext = PushParserCtxt;
       if ([(NSXMLParser *)self shouldResolveExternalEntities])
       {
@@ -655,8 +655,8 @@ LABEL_7:
       self->_bomChunk = 0;
       if (v8 != 4)
       {
-        v16 = [v11 bytes];
-        v17 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytesNoCopy:v16 + 4 length:(v8 - 4) freeWhenDone:0];
+        bytes = [dataCopy bytes];
+        v17 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytesNoCopy:bytes + 4 length:(v8 - 4) freeWhenDone:0];
         [(NSXMLParser *)self parseData:v17];
       }
     }
@@ -665,14 +665,14 @@ LABEL_7:
     {
       v10 = objc_alloc_init(MEMORY[0x1E695DF88]);
       [(NSData *)v10 appendData:self->_bomChunk];
-      [(NSData *)v10 appendData:a3];
+      [(NSData *)v10 appendData:data];
 
       self->_bomChunk = v10;
     }
 
     else
     {
-      self->_bomChunk = a3;
+      self->_bomChunk = data;
     }
 
     v6 = 1;
@@ -721,41 +721,41 @@ LABEL_7:
   return result;
 }
 
-- (void)_setExpandedParserError:(id)a3
+- (void)_setExpandedParserError:(id)error
 {
   error = self->_error;
   if (error)
   {
-    v6 = error;
+    errorCopy = error;
   }
 
-  self->_error = a3;
+  self->_error = error;
 }
 
-- (void)_setParserError:(int64_t)a3
+- (void)_setParserError:(int64_t)error
 {
-  v4 = [[NSError alloc] initWithDomain:@"NSXMLParserErrorDomain" code:a3 userInfo:0];
+  v4 = [[NSError alloc] initWithDomain:@"NSXMLParserErrorDomain" code:error userInfo:0];
 
   [(NSXMLParser *)self _setExpandedParserError:v4];
 }
 
-- (void)_pushNamespaces:(id)a3
+- (void)_pushNamespaces:(id)namespaces
 {
   v16 = *MEMORY[0x1E69E9840];
   namespaces = self->_namespaces;
   if (namespaces)
   {
-    if (a3)
+    if (namespaces)
     {
 LABEL_3:
-      [(NSMutableArray *)namespaces addObject:a3];
+      [(NSMutableArray *)namespaces addObject:namespaces];
       if (objc_opt_respondsToSelector())
       {
         v14 = 0u;
         v15 = 0u;
         v12 = 0u;
         v13 = 0u;
-        v6 = [a3 countByEnumeratingWithState:&v12 objects:v11 count:16];
+        v6 = [namespaces countByEnumeratingWithState:&v12 objects:v11 count:16];
         if (v6)
         {
           v7 = v6;
@@ -766,13 +766,13 @@ LABEL_3:
             {
               if (*v13 != v8)
               {
-                objc_enumerationMutation(a3);
+                objc_enumerationMutation(namespaces);
               }
 
-              [self->_delegate parser:self didStartMappingPrefix:*(*(&v12 + 1) + 8 * i) toURI:{objc_msgSend(a3, "objectForKey:", *(*(&v12 + 1) + 8 * i))}];
+              [self->_delegate parser:self didStartMappingPrefix:*(*(&v12 + 1) + 8 * i) toURI:{objc_msgSend(namespaces, "objectForKey:", *(*(&v12 + 1) + 8 * i))}];
             }
 
-            v7 = [a3 countByEnumeratingWithState:&v12 objects:v11 count:16];
+            v7 = [namespaces countByEnumeratingWithState:&v12 objects:v11 count:16];
           }
 
           while (v7);
@@ -787,15 +787,15 @@ LABEL_3:
   {
     namespaces = objc_alloc_init(MEMORY[0x1E695DF70]);
     self->_namespaces = namespaces;
-    if (a3)
+    if (namespaces)
     {
       goto LABEL_3;
     }
   }
 
-  v10 = [MEMORY[0x1E695DFB0] null];
+  null = [MEMORY[0x1E695DFB0] null];
 
-  [(NSMutableArray *)namespaces addObject:v10];
+  [(NSMutableArray *)namespaces addObject:null];
 }
 
 @end

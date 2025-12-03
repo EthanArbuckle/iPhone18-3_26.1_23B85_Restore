@@ -1,41 +1,41 @@
 @interface TPSSubscriptionLabeler
-+ (BOOL)_dictionary:(id)a3 containsCollationEquivalentKey:(id)a4;
-+ (BOOL)isExclusivelyCJKString:(id)a3 characterSets:(id)a4;
-+ (BOOL)isString:(id)a3 exclusivelyInCharacterSet:(USet *)a4;
-+ (double)widthOfString:(id)a3 attributes:(id)a4;
-+ (id)_groupStringsByCollationEquivalency:(id)a3;
-+ (id)_resultWithAllCharacters:(id)a3 string:(id)a4;
-+ (id)displayShortLabelStringsForLongFormShortLabels:(id)a3;
++ (BOOL)_dictionary:(id)_dictionary containsCollationEquivalentKey:(id)key;
++ (BOOL)isExclusivelyCJKString:(id)string characterSets:(id)sets;
++ (BOOL)isString:(id)string exclusivelyInCharacterSet:(USet *)set;
++ (double)widthOfString:(id)string attributes:(id)attributes;
++ (id)_groupStringsByCollationEquivalency:(id)equivalency;
++ (id)_resultWithAllCharacters:(id)characters string:(id)string;
++ (id)displayShortLabelStringsForLongFormShortLabels:(id)labels;
 + (id)fontAttributeDictionary;
-+ (id)localizedBadgeLabelsForUnlocalizedLabels:(id)a3 languageIdentifiers:(id)a4;
-+ (id)localizedBadgeLabelsForUnlocalizedLabels:(id)a3 languageStringOverrides:(id)a4;
-+ (id)localizedLabelForLabel:(id)a3 longForm:(BOOL)a4 languageStringOverrides:(id)a5;
-+ (id)localizedLabelsForLabels:(id)a3 languageIdentifiers:(id)a4;
-+ (id)localizedLabelsForLabels:(id)a3 languageStringOverrides:(id)a4;
-+ (id)localizedStringDictionaryForLanguageIdentifiers:(id)a3 selectedLanguage:(id *)a4;
++ (id)localizedBadgeLabelsForUnlocalizedLabels:(id)labels languageIdentifiers:(id)identifiers;
++ (id)localizedBadgeLabelsForUnlocalizedLabels:(id)labels languageStringOverrides:(id)overrides;
++ (id)localizedLabelForLabel:(id)label longForm:(BOOL)form languageStringOverrides:(id)overrides;
++ (id)localizedLabelsForLabels:(id)labels languageIdentifiers:(id)identifiers;
++ (id)localizedLabelsForLabels:(id)labels languageStringOverrides:(id)overrides;
++ (id)localizedStringDictionaryForLanguageIdentifiers:(id)identifiers selectedLanguage:(id *)language;
 + (id)standardLabelIdentifiers;
-+ (id)stringByShorteningString:(id)a3 maximumWidth:(double)a4 attributes:(id)a5;
-+ (id)stringsByAbbreviatingToPrefixesOfStrings:(id)a3;
-+ (id)stringsByClippingStrings:(id)a3 toWidthOfString:(id)a4;
-+ (id)stringsByNumericallyDisambiguatingStrings:(id)a3;
-- (TPSSubscriptionLabeler)initWithLabelStorage:(id)a3;
-- (id)cachedLocalizedLabelsForUnlocalizedLabels:(id)a3 languageIdentifiers:(id)a4;
-- (void)_validateLabelsForInstalledUnlocalizedLabels:(id)a3 languageIdentifiers:(id)a4;
++ (id)stringByShorteningString:(id)string maximumWidth:(double)width attributes:(id)attributes;
++ (id)stringsByAbbreviatingToPrefixesOfStrings:(id)strings;
++ (id)stringsByClippingStrings:(id)strings toWidthOfString:(id)string;
++ (id)stringsByNumericallyDisambiguatingStrings:(id)strings;
+- (TPSSubscriptionLabeler)initWithLabelStorage:(id)storage;
+- (id)cachedLocalizedLabelsForUnlocalizedLabels:(id)labels languageIdentifiers:(id)identifiers;
+- (void)_validateLabelsForInstalledUnlocalizedLabels:(id)labels languageIdentifiers:(id)identifiers;
 @end
 
 @implementation TPSSubscriptionLabeler
 
-- (TPSSubscriptionLabeler)initWithLabelStorage:(id)a3
+- (TPSSubscriptionLabeler)initWithLabelStorage:(id)storage
 {
-  v4 = a3;
+  storageCopy = storage;
   v28.receiver = self;
   v28.super_class = TPSSubscriptionLabeler;
   v5 = [(TPSSubscriptionLabeler *)&v28 init];
   if (v5)
   {
     v6 = MEMORY[0x277CBEB38];
-    v7 = [v4 path];
-    v8 = [v6 dictionaryWithContentsOfFile:v7];
+    path = [storageCopy path];
+    v8 = [v6 dictionaryWithContentsOfFile:path];
     labelDictionary = v5->_labelDictionary;
     v5->_labelDictionary = v8;
 
@@ -63,15 +63,15 @@
     cachedResult = v5->_cachedResult;
     v5->_cachedResult = v19;
 
-    v21 = [MEMORY[0x277CBEAF8] autoupdatingCurrentLocale];
+    autoupdatingCurrentLocale = [MEMORY[0x277CBEAF8] autoupdatingCurrentLocale];
     updatingLocale = v5->_updatingLocale;
-    v5->_updatingLocale = v21;
+    v5->_updatingLocale = autoupdatingCurrentLocale;
 
     v23 = dispatch_queue_create("com.apple.telephony.labelstore", 0);
     accessQueue = v5->_accessQueue;
     v5->_accessQueue = v23;
 
-    v25 = [v4 copy];
+    v25 = [storageCopy copy];
     url = v5->_url;
     v5->_url = v25;
   }
@@ -79,9 +79,9 @@
   return v5;
 }
 
-+ (id)localizedStringDictionaryForLanguageIdentifiers:(id)a3 selectedLanguage:(id *)a4
++ (id)localizedStringDictionaryForLanguageIdentifiers:(id)identifiers selectedLanguage:(id *)language
 {
-  v5 = a3;
+  identifiersCopy = identifiers;
   v6 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v22 = 0;
   v23 = &v22;
@@ -95,11 +95,11 @@
   v19 = __Block_byref_object_copy__3;
   v20 = __Block_byref_object_dispose__3;
   v21 = 0;
-  if ([v5 count])
+  if ([identifiersCopy count])
   {
     v7 = MEMORY[0x277CCA8D8];
-    v8 = [v6 localizations];
-    v9 = [v7 preferredLocalizationsFromArray:v8 forPreferences:v5];
+    localizations = [v6 localizations];
+    v9 = [v7 preferredLocalizationsFromArray:localizations forPreferences:identifiersCopy];
 
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
@@ -111,9 +111,9 @@
     [v9 enumerateObjectsUsingBlock:v12];
   }
 
-  if (a4)
+  if (language)
   {
-    *a4 = v17[5];
+    *language = v17[5];
   }
 
   v10 = v23[5];
@@ -139,26 +139,26 @@ void __91__TPSSubscriptionLabeler_localizedStringDictionaryForLanguageIdentifier
   }
 }
 
-+ (id)localizedLabelsForLabels:(id)a3 languageIdentifiers:(id)a4
++ (id)localizedLabelsForLabels:(id)labels languageIdentifiers:(id)identifiers
 {
-  v6 = a3;
-  v7 = [a1 localizedStringDictionaryForLanguageIdentifiers:a4 selectedLanguage:0];
-  v8 = [a1 localizedLabelsForLabels:v6 languageStringOverrides:v7];
+  labelsCopy = labels;
+  v7 = [self localizedStringDictionaryForLanguageIdentifiers:identifiers selectedLanguage:0];
+  v8 = [self localizedLabelsForLabels:labelsCopy languageStringOverrides:v7];
 
   return v8;
 }
 
-+ (id)localizedLabelsForLabels:(id)a3 languageStringOverrides:(id)a4
++ (id)localizedLabelsForLabels:(id)labels languageStringOverrides:(id)overrides
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v6, "count")}];
+  labelsCopy = labels;
+  overridesCopy = overrides;
+  v8 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(labelsCopy, "count")}];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v9 = v6;
+  v9 = labelsCopy;
   v10 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v10)
   {
@@ -173,7 +173,7 @@ void __91__TPSSubscriptionLabeler_localizedStringDictionaryForLanguageIdentifier
           objc_enumerationMutation(v9);
         }
 
-        v14 = [a1 localizedLabelForLabel:*(*(&v17 + 1) + 8 * i) longForm:1 languageStringOverrides:{v7, v17}];
+        v14 = [self localizedLabelForLabel:*(*(&v17 + 1) + 8 * i) longForm:1 languageStringOverrides:{overridesCopy, v17}];
         [v8 addObject:v14];
       }
 
@@ -188,11 +188,11 @@ void __91__TPSSubscriptionLabeler_localizedStringDictionaryForLanguageIdentifier
   return v8;
 }
 
-+ (id)localizedLabelForLabel:(id)a3 longForm:(BOOL)a4 languageStringOverrides:(id)a5
++ (id)localizedLabelForLabel:(id)label longForm:(BOOL)form languageStringOverrides:(id)overrides
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = v7;
+  labelCopy = label;
+  overridesCopy = overrides;
+  v9 = labelCopy;
   v10 = v9;
   if ([v9 hasPrefix:@"_$<"])
   {
@@ -200,9 +200,9 @@ void __91__TPSSubscriptionLabeler_localizedStringDictionaryForLanguageIdentifier
     if ([v9 hasSuffix:@">$_"])
     {
       v11 = [v9 substringWithRange:{3, objc_msgSend(v9, "length") - 6}];
-      if (v8)
+      if (overridesCopy)
       {
-        v12 = [v8 objectForKey:@"_$<SUBSCRIPTION_LABEL_UNKNOWN>$_"];
+        v12 = [overridesCopy objectForKey:@"_$<SUBSCRIPTION_LABEL_UNKNOWN>$_"];
         v13 = v12;
         v14 = @"untitled";
         if (v12)
@@ -212,7 +212,7 @@ void __91__TPSSubscriptionLabeler_localizedStringDictionaryForLanguageIdentifier
 
         v15 = v14;
 
-        v16 = [v8 objectForKey:v11];
+        v16 = [overridesCopy objectForKey:v11];
         v17 = v16;
         if (v16)
         {
@@ -226,13 +226,13 @@ void __91__TPSSubscriptionLabeler_localizedStringDictionaryForLanguageIdentifier
 
         v10 = v18;
 
-        if (a4)
+        if (form)
         {
           goto LABEL_18;
         }
 
         v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@_SHORT", v11];
-        v20 = [v8 objectForKey:v19];
+        v20 = [overridesCopy objectForKey:v19];
         v21 = v20;
         if (v20)
         {
@@ -254,7 +254,7 @@ void __91__TPSSubscriptionLabeler_localizedStringDictionaryForLanguageIdentifier
 
         v10 = [v19 localizedStringForKey:v11 value:v24 table:@"SubscriptionLabel"];
 
-        if (a4)
+        if (form)
         {
 LABEL_17:
 
@@ -274,20 +274,20 @@ LABEL_18:
   }
 
 LABEL_19:
-  if (!a4)
+  if (!form)
   {
-    v26 = [v10 localizedUppercaseString];
+    localizedUppercaseString = [v10 localizedUppercaseString];
 
-    v10 = v26;
+    v10 = localizedUppercaseString;
   }
 
   return v10;
 }
 
-- (id)cachedLocalizedLabelsForUnlocalizedLabels:(id)a3 languageIdentifiers:(id)a4
+- (id)cachedLocalizedLabelsForUnlocalizedLabels:(id)labels languageIdentifiers:(id)identifiers
 {
-  v6 = a3;
-  v7 = a4;
+  labelsCopy = labels;
+  identifiersCopy = identifiers;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -300,11 +300,11 @@ LABEL_19:
   v13[2] = __88__TPSSubscriptionLabeler_cachedLocalizedLabelsForUnlocalizedLabels_languageIdentifiers___block_invoke;
   v13[3] = &unk_2782E4010;
   v13[4] = self;
-  v14 = v6;
-  v15 = v7;
+  v14 = labelsCopy;
+  v15 = identifiersCopy;
   v16 = &v17;
-  v9 = v7;
-  v10 = v6;
+  v9 = identifiersCopy;
+  v10 = labelsCopy;
   dispatch_sync(accessQueue, v13);
   v11 = v18[5];
 
@@ -324,70 +324,70 @@ uint64_t __88__TPSSubscriptionLabeler_cachedLocalizedLabelsForUnlocalizedLabels_
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)_validateLabelsForInstalledUnlocalizedLabels:(id)a3 languageIdentifiers:(id)a4
+- (void)_validateLabelsForInstalledUnlocalizedLabels:(id)labels languageIdentifiers:(id)identifiers
 {
-  v6 = a3;
-  v7 = a4;
+  labelsCopy = labels;
+  identifiersCopy = identifiers;
   v28 = 0;
-  v8 = [objc_opt_class() localizedStringDictionaryForLanguageIdentifiers:v7 selectedLanguage:&v28];
+  v8 = [objc_opt_class() localizedStringDictionaryForLanguageIdentifiers:identifiersCopy selectedLanguage:&v28];
 
   v9 = v28;
   if (!v8)
   {
-    v10 = [(TPSSubscriptionLabeler *)self updatingLocale];
-    v11 = [v10 languageCode];
+    updatingLocale = [(TPSSubscriptionLabeler *)self updatingLocale];
+    languageCode = [updatingLocale languageCode];
 
-    v9 = v11;
+    v9 = languageCode;
   }
 
-  v12 = [(TPSSubscriptionLabeler *)self applicableLanguage];
-  v13 = [v9 isEqualToString:v12];
+  applicableLanguage = [(TPSSubscriptionLabeler *)self applicableLanguage];
+  v13 = [v9 isEqualToString:applicableLanguage];
 
-  v14 = [(TPSSubscriptionLabeler *)self applicableUnlocalizedLabels];
-  v15 = [v6 isEqual:v14];
+  applicableUnlocalizedLabels = [(TPSSubscriptionLabeler *)self applicableUnlocalizedLabels];
+  v15 = [labelsCopy isEqual:applicableUnlocalizedLabels];
 
   if (!v13 || (v15 & 1) == 0)
   {
-    v16 = [objc_opt_class() localizedBadgeLabelsForUnlocalizedLabels:v6 languageStringOverrides:v8];
-    v17 = [objc_opt_class() localizedLabelsForLabels:v6 languageStringOverrides:v8];
+    v16 = [objc_opt_class() localizedBadgeLabelsForUnlocalizedLabels:labelsCopy languageStringOverrides:v8];
+    v17 = [objc_opt_class() localizedLabelsForLabels:labelsCopy languageStringOverrides:v8];
     v18 = [v17 copy];
-    v19 = [(TPSSubscriptionLabeler *)self labelDictionary];
-    [v19 setObject:v6 forKey:@"UnlocalizedLabels"];
+    labelDictionary = [(TPSSubscriptionLabeler *)self labelDictionary];
+    [labelDictionary setObject:labelsCopy forKey:@"UnlocalizedLabels"];
 
-    v20 = [(TPSSubscriptionLabeler *)self labelDictionary];
-    [v20 setObject:v9 forKey:@"Language"];
+    labelDictionary2 = [(TPSSubscriptionLabeler *)self labelDictionary];
+    [labelDictionary2 setObject:v9 forKey:@"Language"];
 
-    v21 = [(TPSSubscriptionLabeler *)self labelDictionary];
-    [v21 setObject:v18 forKey:@"LocalizedLabel"];
+    labelDictionary3 = [(TPSSubscriptionLabeler *)self labelDictionary];
+    [labelDictionary3 setObject:v18 forKey:@"LocalizedLabel"];
 
-    v22 = [(TPSSubscriptionLabeler *)self labelDictionary];
-    [v22 setObject:v16 forKey:@"ShortLocalizedLabel"];
+    labelDictionary4 = [(TPSSubscriptionLabeler *)self labelDictionary];
+    [labelDictionary4 setObject:v16 forKey:@"ShortLocalizedLabel"];
 
     v23 = MEMORY[0x277CCAC58];
-    v24 = [(TPSSubscriptionLabeler *)self labelDictionary];
-    v25 = [v23 dataWithPropertyList:v24 format:200 options:0 error:0];
+    labelDictionary5 = [(TPSSubscriptionLabeler *)self labelDictionary];
+    v25 = [v23 dataWithPropertyList:labelDictionary5 format:200 options:0 error:0];
 
     v26 = [(TPSSubscriptionLabeler *)self url];
     [v25 writeToURL:v26 atomically:1];
 
     [(TPSSubscriptionLabeler *)self setApplicableLanguage:v9];
-    [(TPSSubscriptionLabeler *)self setApplicableUnlocalizedLabels:v6];
-    v27 = [TPSSubscriptionLabel labelsFromUnlocalizedLabels:v6 localizedLongLabels:v18 localizedBadgeLabels:v16];
+    [(TPSSubscriptionLabeler *)self setApplicableUnlocalizedLabels:labelsCopy];
+    v27 = [TPSSubscriptionLabel labelsFromUnlocalizedLabels:labelsCopy localizedLongLabels:v18 localizedBadgeLabels:v16];
     [(TPSSubscriptionLabeler *)self setCachedResult:v27];
   }
 }
 
-+ (id)localizedBadgeLabelsForUnlocalizedLabels:(id)a3 languageStringOverrides:(id)a4
++ (id)localizedBadgeLabelsForUnlocalizedLabels:(id)labels languageStringOverrides:(id)overrides
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v6, "count")}];
+  labelsCopy = labels;
+  overridesCopy = overrides;
+  v8 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(labelsCopy, "count")}];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v9 = v6;
+  v9 = labelsCopy;
   v10 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v10)
   {
@@ -402,7 +402,7 @@ uint64_t __88__TPSSubscriptionLabeler_cachedLocalizedLabelsForUnlocalizedLabels_
           objc_enumerationMutation(v9);
         }
 
-        v14 = [objc_opt_class() localizedLabelForLabel:*(*(&v18 + 1) + 8 * i) longForm:0 languageStringOverrides:{v7, v18}];
+        v14 = [objc_opt_class() localizedLabelForLabel:*(*(&v18 + 1) + 8 * i) longForm:0 languageStringOverrides:{overridesCopy, v18}];
         [v8 addObject:v14];
       }
 
@@ -412,47 +412,47 @@ uint64_t __88__TPSSubscriptionLabeler_cachedLocalizedLabelsForUnlocalizedLabels_
     while (v11);
   }
 
-  v15 = [a1 displayShortLabelStringsForLongFormShortLabels:v8];
+  v15 = [self displayShortLabelStringsForLongFormShortLabels:v8];
 
   v16 = *MEMORY[0x277D85DE8];
 
   return v15;
 }
 
-+ (id)localizedBadgeLabelsForUnlocalizedLabels:(id)a3 languageIdentifiers:(id)a4
++ (id)localizedBadgeLabelsForUnlocalizedLabels:(id)labels languageIdentifiers:(id)identifiers
 {
-  v6 = a3;
-  v7 = [a1 localizedStringDictionaryForLanguageIdentifiers:a4 selectedLanguage:0];
-  v8 = [a1 localizedBadgeLabelsForUnlocalizedLabels:v6 languageStringOverrides:v7];
+  labelsCopy = labels;
+  v7 = [self localizedStringDictionaryForLanguageIdentifiers:identifiers selectedLanguage:0];
+  v8 = [self localizedBadgeLabelsForUnlocalizedLabels:labelsCopy languageStringOverrides:v7];
 
   return v8;
 }
 
-+ (id)displayShortLabelStringsForLongFormShortLabels:(id)a3
++ (id)displayShortLabelStringsForLongFormShortLabels:(id)labels
 {
-  v4 = [a1 stringsByAbbreviatingToPrefixesOfStrings:a3];
-  v5 = [a1 stringsByClippingStrings:v4 toWidthOfString:@"𣍊𣍊𣍊"];
+  v4 = [self stringsByAbbreviatingToPrefixesOfStrings:labels];
+  v5 = [self stringsByClippingStrings:v4 toWidthOfString:@"𣍊𣍊𣍊"];
 
-  v6 = [a1 stringsByNumericallyDisambiguatingStrings:v5];
+  v6 = [self stringsByNumericallyDisambiguatingStrings:v5];
 
   return v6;
 }
 
-+ (id)stringsByAbbreviatingToPrefixesOfStrings:(id)a3
++ (id)stringsByAbbreviatingToPrefixesOfStrings:(id)strings
 {
-  v4 = a3;
+  stringsCopy = strings;
   v5 = objc_alloc_init(TPSSubscriptionLabelerCharacterSets);
-  v6 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  v6 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(stringsCopy, "count")}];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __67__TPSSubscriptionLabeler_stringsByAbbreviatingToPrefixesOfStrings___block_invoke;
   v13[3] = &unk_2782E4060;
-  v17 = a1;
+  selfCopy = self;
   v14 = v5;
-  v15 = v4;
+  v15 = stringsCopy;
   v7 = v6;
   v16 = v7;
-  v8 = v4;
+  v8 = stringsCopy;
   v9 = v5;
   [v8 enumerateObjectsUsingBlock:v13];
   v10 = v16;
@@ -545,17 +545,17 @@ void __67__TPSSubscriptionLabeler_stringsByAbbreviatingToPrefixesOfStrings___blo
   }
 }
 
-+ (id)stringsByClippingStrings:(id)a3 toWidthOfString:(id)a4
++ (id)stringsByClippingStrings:(id)strings toWidthOfString:(id)string
 {
   v38 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
+  stringsCopy = strings;
+  stringCopy = string;
+  v8 = stringsCopy;
   v9 = v8;
   if ([v8 count])
   {
-    v10 = [a1 fontAttributeDictionary];
-    [a1 widthOfString:v7 attributes:v10];
+    fontAttributeDictionary = [self fontAttributeDictionary];
+    [self widthOfString:stringCopy attributes:fontAttributeDictionary];
     v12 = v11;
     v33 = 0;
     v34 = &v33;
@@ -565,8 +565,8 @@ void __67__TPSSubscriptionLabeler_stringsByAbbreviatingToPrefixesOfStrings___blo
     v28[1] = 3221225472;
     v28[2] = __67__TPSSubscriptionLabeler_stringsByClippingStrings_toWidthOfString___block_invoke;
     v28[3] = &unk_2782E4088;
-    v31 = a1;
-    v13 = v10;
+    selfCopy = self;
+    v13 = fontAttributeDictionary;
     v32 = v12;
     v29 = v13;
     v30 = &v33;
@@ -655,12 +655,12 @@ uint64_t __67__TPSSubscriptionLabeler_stringsByClippingStrings_toWidthOfString__
   return v3;
 }
 
-+ (double)widthOfString:(id)a3 attributes:(id)a4
++ (double)widthOfString:(id)string attributes:(id)attributes
 {
   v5 = MEMORY[0x277CCA898];
-  v6 = a4;
-  v7 = a3;
-  v8 = [[v5 alloc] initWithString:v7 attributes:v6];
+  attributesCopy = attributes;
+  stringCopy = string;
+  v8 = [[v5 alloc] initWithString:stringCopy attributes:attributesCopy];
 
   v9 = CTLineCreateWithAttributedString(v8);
   BoundsWithOptions = CTLineGetBoundsWithOptions(v9, 0);
@@ -670,31 +670,31 @@ uint64_t __67__TPSSubscriptionLabeler_stringsByClippingStrings_toWidthOfString__
   return width;
 }
 
-+ (id)stringByShorteningString:(id)a3 maximumWidth:(double)a4 attributes:(id)a5
++ (id)stringByShorteningString:(id)string maximumWidth:(double)width attributes:(id)attributes
 {
-  v8 = a3;
-  [a1 widthOfString:v8 attributes:a5];
-  v9 = v8;
-  if (v10 > a4)
+  stringCopy = string;
+  [self widthOfString:stringCopy attributes:attributes];
+  v9 = stringCopy;
+  if (v10 > width)
   {
-    v11 = [v8 rangeOfComposedCharacterSequenceAtIndex:0];
-    v9 = [v8 substringToIndex:v11 + v12];
+    v11 = [stringCopy rangeOfComposedCharacterSequenceAtIndex:0];
+    v9 = [stringCopy substringToIndex:v11 + v12];
   }
 
   return v9;
 }
 
-+ (id)stringsByNumericallyDisambiguatingStrings:(id)a3
++ (id)stringsByNumericallyDisambiguatingStrings:(id)strings
 {
   v39 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v19 = [MEMORY[0x277CCA900] decimalDigitCharacterSet];
-  v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v3, "count")}];
+  stringsCopy = strings;
+  decimalDigitCharacterSet = [MEMORY[0x277CCA900] decimalDigitCharacterSet];
+  v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(stringsCopy, "count")}];
   v35 = 0u;
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  obj = v3;
+  obj = stringsCopy;
   v5 = [obj countByEnumeratingWithState:&v33 objects:v38 count:16];
   if (v5)
   {
@@ -718,7 +718,7 @@ uint64_t __67__TPSSubscriptionLabeler_stringsByClippingStrings_toWidthOfString__
     while (v5);
   }
 
-  v9 = [a1 _groupStringsByCollationEquivalency:v4];
+  v9 = [self _groupStringsByCollationEquivalency:v4];
   [v9 allKeys];
   v31 = 0u;
   v32 = 0u;
@@ -744,8 +744,8 @@ uint64_t __67__TPSSubscriptionLabeler_stringsByClippingStrings_toWidthOfString__
           v27[1] = v27;
           v27[2] = 0x2020000000;
           v28 = 1;
-          v15 = [v14 firstObject];
-          v16 = [v15 rangeOfCharacterFromSet:v19 options:12] != 0x7FFFFFFFFFFFFFFFLL;
+          firstObject = [v14 firstObject];
+          v16 = [firstObject rangeOfCharacterFromSet:decimalDigitCharacterSet options:12] != 0x7FFFFFFFFFFFFFFFLL;
 
           v22[0] = MEMORY[0x277D85DD0];
           v22[1] = 3221225472;
@@ -753,7 +753,7 @@ uint64_t __67__TPSSubscriptionLabeler_stringsByClippingStrings_toWidthOfString__
           v22[3] = &unk_2782E40B0;
           v26 = v16;
           v24 = v27;
-          v25 = a1;
+          selfCopy = self;
           v23 = v9;
           [v14 enumerateObjectsUsingBlock:v22];
 
@@ -799,16 +799,16 @@ void __68__TPSSubscriptionLabeler_stringsByNumericallyDisambiguatingStrings___bl
   [*(a1 + 32) setObject:v3 forKey:v3];
 }
 
-+ (BOOL)_dictionary:(id)a3 containsCollationEquivalentKey:(id)a4
++ (BOOL)_dictionary:(id)_dictionary containsCollationEquivalentKey:(id)key
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  _dictionaryCopy = _dictionary;
+  keyCopy = key;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = v5;
+  v7 = _dictionaryCopy;
   v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {
@@ -822,7 +822,7 @@ void __68__TPSSubscriptionLabeler_stringsByNumericallyDisambiguatingStrings___bl
           objc_enumerationMutation(v7);
         }
 
-        if (![*(*(&v13 + 1) + 8 * i) compare:v6 options:{385, v13}])
+        if (![*(*(&v13 + 1) + 8 * i) compare:keyCopy options:{385, v13}])
         {
           LOBYTE(v8) = 1;
           goto LABEL_11;
@@ -845,11 +845,11 @@ LABEL_11:
   return v8;
 }
 
-+ (id)_groupStringsByCollationEquivalency:(id)a3
++ (id)_groupStringsByCollationEquivalency:(id)equivalency
 {
-  v3 = a3;
+  equivalencyCopy = equivalency;
   v4 = objc_opt_new();
-  v5 = [v3 mutableCopy];
+  v5 = [equivalencyCopy mutableCopy];
   while ([v5 count])
   {
     v6 = objc_opt_new();
@@ -917,35 +917,35 @@ LABEL_6:
   return v2;
 }
 
-+ (BOOL)isExclusivelyCJKString:(id)a3 characterSets:(id)a4
++ (BOOL)isExclusivelyCJKString:(id)string characterSets:(id)sets
 {
-  v6 = a3;
-  LOBYTE(a4) = [a1 isString:v6 exclusivelyInCharacterSet:{objc_msgSend(a4, "CJK")}];
+  stringCopy = string;
+  LOBYTE(sets) = [self isString:stringCopy exclusivelyInCharacterSet:{objc_msgSend(sets, "CJK")}];
 
-  return a4;
+  return sets;
 }
 
-+ (BOOL)isString:(id)a3 exclusivelyInCharacterSet:(USet *)a4
++ (BOOL)isString:(id)string exclusivelyInCharacterSet:(USet *)set
 {
-  v5 = a3;
-  if ([v5 length])
+  stringCopy = string;
+  if ([stringCopy length])
   {
     v6 = objc_opt_class();
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __61__TPSSubscriptionLabeler_isString_exclusivelyInCharacterSet___block_invoke;
     v10[3] = &__block_descriptor_40_e13__24__0r_S8Q16l;
-    v10[4] = a4;
-    v7 = [v6 _resultWithAllCharacters:v10 string:v5];
-    v8 = [v7 BOOLValue];
+    v10[4] = set;
+    v7 = [v6 _resultWithAllCharacters:v10 string:stringCopy];
+    bOOLValue = [v7 BOOLValue];
   }
 
   else
   {
-    v8 = 1;
+    bOOLValue = 1;
   }
 
-  return v8;
+  return bOOLValue;
 }
 
 id __61__TPSSubscriptionLabeler_isString_exclusivelyInCharacterSet___block_invoke(uint64_t a1, uint64_t a2)
@@ -964,25 +964,25 @@ id __61__TPSSubscriptionLabeler_isString_exclusivelyInCharacterSet___block_invok
   return v4;
 }
 
-+ (id)_resultWithAllCharacters:(id)a3 string:(id)a4
++ (id)_resultWithAllCharacters:(id)characters string:(id)string
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [(__CFString *)v6 length];
-  if (![(__CFString *)v6 length])
+  charactersCopy = characters;
+  stringCopy = string;
+  v7 = [(__CFString *)stringCopy length];
+  if (![(__CFString *)stringCopy length])
   {
     goto LABEL_9;
   }
 
-  CharactersPtr = CFStringGetCharactersPtr(v6);
+  CharactersPtr = CFStringGetCharactersPtr(stringCopy);
   if (!CharactersPtr)
   {
     if (v7 <= 0xFE)
     {
-      [(__CFString *)v6 getCharacters:v18 range:0, v7];
+      [(__CFString *)stringCopy getCharacters:v18 range:0, v7];
       v18[v7] = 0;
-      v10 = v5[2];
+      v10 = charactersCopy[2];
       v9 = v18;
       goto LABEL_6;
     }
@@ -991,25 +991,25 @@ id __61__TPSSubscriptionLabeler_isString_exclusivelyInCharacterSet___block_invok
     if (v13)
     {
       v14 = v13;
-      [(__CFString *)v6 getCharacters:v13 range:0, v7];
+      [(__CFString *)stringCopy getCharacters:v13 range:0, v7];
       v14[v7] = 0;
-      v15 = (v5[2])(v5, v14, v7);
+      v15 = (charactersCopy[2])(charactersCopy, v14, v7);
       free(v14);
       goto LABEL_11;
     }
 
 LABEL_9:
-    v10 = v5[2];
-    v11 = v5;
+    v10 = charactersCopy[2];
+    v11 = charactersCopy;
     v9 = 0;
     v12 = 0;
     goto LABEL_10;
   }
 
   v9 = CharactersPtr;
-  v10 = v5[2];
+  v10 = charactersCopy[2];
 LABEL_6:
-  v11 = v5;
+  v11 = charactersCopy;
   v12 = v7;
 LABEL_10:
   v15 = v10(v11, v9, v12);

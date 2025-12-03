@@ -1,13 +1,13 @@
 @interface WFCarPlayConnectionTrigger
-+ (id)localizedDisplayNameWithContext:(id)a3;
++ (id)localizedDisplayNameWithContext:(id)context;
 - (BOOL)hasValidConfiguration;
 - (WFCarPlayConnectionTrigger)init;
-- (WFCarPlayConnectionTrigger)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (WFCarPlayConnectionTrigger)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)localizedDescriptionWithConfigurationSummary;
 - (id)localizedPastTenseDescription;
 - (id)suggestedActions;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFCarPlayConnectionTrigger
@@ -20,28 +20,28 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = WFCarPlayConnectionTrigger;
-  v4 = [(WFTrigger *)&v6 copyWithZone:a3];
+  v4 = [(WFTrigger *)&v6 copyWithZone:zone];
   [v4 setOnConnect:{-[WFCarPlayConnectionTrigger onConnect](self, "onConnect")}];
   [v4 setOnDisconnect:{-[WFCarPlayConnectionTrigger onDisconnect](self, "onDisconnect")}];
   return v4;
 }
 
-- (WFCarPlayConnectionTrigger)initWithCoder:(id)a3
+- (WFCarPlayConnectionTrigger)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = WFCarPlayConnectionTrigger;
-  v5 = [(WFTrigger *)&v10 initWithCoder:v4];
+  v5 = [(WFTrigger *)&v10 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"onConnect"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"onConnect"];
     v5->_onConnect = [v6 BOOLValue];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"onDisconnect"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"onDisconnect"];
     v5->_onDisconnect = [v7 BOOLValue];
 
     v8 = v5;
@@ -50,17 +50,17 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = WFCarPlayConnectionTrigger;
-  v4 = a3;
-  [(WFTrigger *)&v7 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(WFTrigger *)&v7 encodeWithCoder:coderCopy];
   v5 = [MEMORY[0x1E696AD98] numberWithBool:{-[WFCarPlayConnectionTrigger onConnect](self, "onConnect", v7.receiver, v7.super_class)}];
-  [v4 encodeObject:v5 forKey:@"onConnect"];
+  [coderCopy encodeObject:v5 forKey:@"onConnect"];
 
   v6 = [MEMORY[0x1E696AD98] numberWithBool:{-[WFCarPlayConnectionTrigger onDisconnect](self, "onDisconnect")}];
-  [v4 encodeObject:v6 forKey:@"onDisconnect"];
+  [coderCopy encodeObject:v6 forKey:@"onDisconnect"];
 }
 
 - (id)localizedPastTenseDescription
@@ -92,7 +92,7 @@ LABEL_8:
     v8 = 136315394;
     v9 = "[WFCarPlayConnectionTrigger localizedPastTenseDescription]";
     v10 = 2114;
-    v11 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1CA256000, v7, OS_LOG_TYPE_FAULT, "%s Invalid config for %{public}@", &v8, 0x16u);
   }
 
@@ -132,7 +132,7 @@ LABEL_8:
     v8 = 136315394;
     v9 = "[WFCarPlayConnectionTrigger localizedDescriptionWithConfigurationSummary]";
     v10 = 2114;
-    v11 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1CA256000, v7, OS_LOG_TYPE_FAULT, "%s Invalid config for %{public}@", &v8, 0x16u);
   }
 
@@ -169,11 +169,11 @@ LABEL_9:
   return v3;
 }
 
-+ (id)localizedDisplayNameWithContext:(id)a3
++ (id)localizedDisplayNameWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"CarPlay", @"CarPlay");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }

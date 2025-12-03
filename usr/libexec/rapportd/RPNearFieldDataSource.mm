@@ -1,51 +1,51 @@
 @interface RPNearFieldDataSource
-- (RPNearFieldDataSource)initWithDispatchQueue:(id)a3;
+- (RPNearFieldDataSource)initWithDispatchQueue:(id)queue;
 - (id)_AWDLBonjourTransportServiceMetadata;
 - (id)_identityForNFCDeviceDiscovery;
 - (id)_requestMessageMetadata;
 - (id)_selfIdentity;
-- (id)_transportServiceMetadataWithServiceType:(unint64_t)a3;
-- (id)createAuthenticationPayloadWithPkData:(id)a3 bonjourListenerUUID:(id)a4;
-- (id)createRequestMessageWithApplicationLabel:(id)a3 payload:(id)a4;
-- (id)createResponseWithApplicationLabel:(id)a3 payload:(id)a4 forRequestMessage:(id)a5;
-- (id)createTapEventWithApplicationLabel:(id)a3 singleBandAWDLModeRequested:(BOOL)a4 pkData:(id)a5 bonjourListenerUUID:(id)a6 identity:(id)a7 isUnsupportedApplicationLabel:(BOOL)a8 flags:(unsigned int)a9;
+- (id)_transportServiceMetadataWithServiceType:(unint64_t)type;
+- (id)createAuthenticationPayloadWithPkData:(id)data bonjourListenerUUID:(id)d;
+- (id)createRequestMessageWithApplicationLabel:(id)label payload:(id)payload;
+- (id)createResponseWithApplicationLabel:(id)label payload:(id)payload forRequestMessage:(id)message;
+- (id)createTapEventWithApplicationLabel:(id)label singleBandAWDLModeRequested:(BOOL)requested pkData:(id)data bonjourListenerUUID:(id)d identity:(id)identity isUnsupportedApplicationLabel:(BOOL)applicationLabel flags:(unsigned int)flags;
 @end
 
 @implementation RPNearFieldDataSource
 
-- (RPNearFieldDataSource)initWithDispatchQueue:(id)a3
+- (RPNearFieldDataSource)initWithDispatchQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v9.receiver = self;
   v9.super_class = RPNearFieldDataSource;
   v6 = [(RPNearFieldDataSource *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dispatchQueue, a3);
+    objc_storeStrong(&v6->_dispatchQueue, queue);
     sub_100053724();
   }
 
   return v7;
 }
 
-- (id)createAuthenticationPayloadWithPkData:(id)a3 bonjourListenerUUID:(id)a4
+- (id)createAuthenticationPayloadWithPkData:(id)data bonjourListenerUUID:(id)d
 {
-  v6 = a4;
-  v7 = a3;
+  dCopy = d;
+  dataCopy = data;
   v8 = [RPNearFieldAuthenticationPayload alloc];
   v9 = +[NSDate now];
-  v10 = [(RPNearFieldDataSource *)self _identityForNFCDeviceDiscovery];
-  v11 = [(RPNearFieldAuthenticationPayload *)v8 initWithTimeStamp:v9 pkData:v7 bonjourListenerUUID:v6 selfIdentity:v10];
+  _identityForNFCDeviceDiscovery = [(RPNearFieldDataSource *)self _identityForNFCDeviceDiscovery];
+  v11 = [(RPNearFieldAuthenticationPayload *)v8 initWithTimeStamp:v9 pkData:dataCopy bonjourListenerUUID:dCopy selfIdentity:_identityForNFCDeviceDiscovery];
 
   return v11;
 }
 
-- (id)createRequestMessageWithApplicationLabel:(id)a3 payload:(id)a4
+- (id)createRequestMessageWithApplicationLabel:(id)label payload:(id)payload
 {
-  v6 = a4;
-  v7 = a3;
-  if ([v6 type] == 1)
+  payloadCopy = payload;
+  labelCopy = label;
+  if ([payloadCopy type] == 1)
   {
     [(RPNearFieldDataSource *)self _requestMessageMetadata];
   }
@@ -55,25 +55,25 @@
     +[NSArray array];
   }
   v8 = ;
-  v9 = [RPTransportServiceHandoverMessage messageWithMetadata:v8 applicationLabel:v7 payload:v6 version:@"1.1"];
+  v9 = [RPTransportServiceHandoverMessage messageWithMetadata:v8 applicationLabel:labelCopy payload:payloadCopy version:@"1.1"];
 
   return v9;
 }
 
-- (id)createResponseWithApplicationLabel:(id)a3 payload:(id)a4 forRequestMessage:(id)a5
+- (id)createResponseWithApplicationLabel:(id)label payload:(id)payload forRequestMessage:(id)message
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  labelCopy = label;
+  payloadCopy = payload;
+  messageCopy = message;
   v11 = objc_alloc_init(NSMutableArray);
-  if (sub_1000583E8([v9 type]))
+  if (sub_1000583E8([payloadCopy type]))
   {
     v23 = 0u;
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v12 = [v10 transportServicesMetadata];
-    v13 = [v12 countByEnumeratingWithState:&v21 objects:v25 count:16];
+    transportServicesMetadata = [messageCopy transportServicesMetadata];
+    v13 = [transportServicesMetadata countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v13)
     {
       v14 = v13;
@@ -84,13 +84,13 @@
         {
           if (*v22 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(transportServicesMetadata);
           }
 
-          v17 = [*(*(&v21 + 1) + 8 * i) serviceType];
-          if (sub_100072894(v17))
+          serviceType = [*(*(&v21 + 1) + 8 * i) serviceType];
+          if (sub_100072894(serviceType))
           {
-            v18 = [(RPNearFieldDataSource *)self _transportServiceMetadataWithServiceType:v17];
+            v18 = [(RPNearFieldDataSource *)self _transportServiceMetadataWithServiceType:serviceType];
             if (v18)
             {
               [v11 addObject:v18];
@@ -98,33 +98,33 @@
           }
         }
 
-        v14 = [v12 countByEnumeratingWithState:&v21 objects:v25 count:16];
+        v14 = [transportServicesMetadata countByEnumeratingWithState:&v21 objects:v25 count:16];
       }
 
       while (v14);
     }
   }
 
-  v19 = [RPTransportServiceHandoverMessage messageWithMetadata:v11 applicationLabel:v8 payload:v9 version:@"1.1"];
+  v19 = [RPTransportServiceHandoverMessage messageWithMetadata:v11 applicationLabel:labelCopy payload:payloadCopy version:@"1.1"];
 
   return v19;
 }
 
-- (id)createTapEventWithApplicationLabel:(id)a3 singleBandAWDLModeRequested:(BOOL)a4 pkData:(id)a5 bonjourListenerUUID:(id)a6 identity:(id)a7 isUnsupportedApplicationLabel:(BOOL)a8 flags:(unsigned int)a9
+- (id)createTapEventWithApplicationLabel:(id)label singleBandAWDLModeRequested:(BOOL)requested pkData:(id)data bonjourListenerUUID:(id)d identity:(id)identity isUnsupportedApplicationLabel:(BOOL)applicationLabel flags:(unsigned int)flags
 {
-  v14 = a7;
+  identityCopy = identity;
   dispatchQueue = self->_dispatchQueue;
-  v16 = a6;
-  v17 = a5;
-  v18 = a3;
+  dCopy = d;
+  dataCopy = data;
+  labelCopy = label;
   dispatch_assert_queue_V2(dispatchQueue);
-  v19 = [v14 type];
-  v20 = [v14 contactID];
-  v30 = [v14 accountID];
-  v21 = [v14 idsDeviceID];
-  if (v21)
+  type = [identityCopy type];
+  contactID = [identityCopy contactID];
+  accountID = [identityCopy accountID];
+  idsDeviceID = [identityCopy idsDeviceID];
+  if (idsDeviceID)
   {
-    if (a4)
+    if (requested)
     {
 LABEL_3:
       v22 = 1;
@@ -135,9 +135,9 @@ LABEL_3:
   else
   {
     v23 = +[NSUUID UUID];
-    v21 = [v23 UUIDString];
+    idsDeviceID = [v23 UUIDString];
 
-    if (a4)
+    if (requested)
     {
       goto LABEL_3;
     }
@@ -145,19 +145,19 @@ LABEL_3:
 
   v22 = sub_100053724();
 LABEL_6:
-  HIDWORD(v28) = a9;
-  BYTE2(v28) = a8;
-  BYTE1(v28) = v14 != 0;
+  HIDWORD(v28) = flags;
+  BYTE2(v28) = applicationLabel;
+  BYTE1(v28) = identityCopy != 0;
   LOBYTE(v28) = v22;
-  v24 = [RPNearFieldTapEvent initWithIdentifier:"initWithIdentifier:applicationLabel:pkData:bonjourListenerUUID:isSameAccount:contactID:accountID:forceSingleBandAWDLMode:knownIdentity:isUnsupportedApplicationLabel:flags:" applicationLabel:v21 pkData:v18 bonjourListenerUUID:v17 isSameAccount:v16 contactID:v19 == 2 accountID:v20 forceSingleBandAWDLMode:v30 knownIdentity:v28 isUnsupportedApplicationLabel:? flags:?];
+  v24 = [RPNearFieldTapEvent initWithIdentifier:"initWithIdentifier:applicationLabel:pkData:bonjourListenerUUID:isSameAccount:contactID:accountID:forceSingleBandAWDLMode:knownIdentity:isUnsupportedApplicationLabel:flags:" applicationLabel:idsDeviceID pkData:labelCopy bonjourListenerUUID:dataCopy isSameAccount:dCopy contactID:type == 2 accountID:contactID forceSingleBandAWDLMode:accountID knownIdentity:v28 isUnsupportedApplicationLabel:? flags:?];
 
-  if (v19 == 2)
+  if (type == 2)
   {
-    v25 = [v14 name];
-    [(RPNearFieldTapEvent *)v24 setDeviceName:v25];
+    name = [identityCopy name];
+    [(RPNearFieldTapEvent *)v24 setDeviceName:name];
 
-    v26 = [v14 model];
-    [(RPNearFieldTapEvent *)v24 setDeviceModel:v26];
+    model = [identityCopy model];
+    [(RPNearFieldTapEvent *)v24 setDeviceModel:model];
   }
 
   return v24;
@@ -169,19 +169,19 @@ LABEL_6:
   v3 = [v2 identityOfSelfAndReturnError:0];
 
   v4 = objc_opt_new();
-  v5 = [v3 edPKData];
-  [v4 setEdPKData:v5];
+  edPKData = [v3 edPKData];
+  [v4 setEdPKData:edPKData];
 
-  v6 = [v3 edSKData];
-  [v4 setEdSKData:v6];
+  edSKData = [v3 edSKData];
+  [v4 setEdSKData:edSKData];
 
-  v7 = [v3 deviceIRKData];
-  [v4 setDeviceIRKData:v7];
+  deviceIRKData = [v3 deviceIRKData];
+  [v4 setDeviceIRKData:deviceIRKData];
 
-  v8 = [v3 sepPrivateKey];
-  if (v8)
+  sepPrivateKey = [v3 sepPrivateKey];
+  if (sepPrivateKey)
   {
-    [v4 updateWithSEPPrivateKey:v8];
+    [v4 updateWithSEPPrivateKey:sepPrivateKey];
   }
 
   return v4;
@@ -189,45 +189,45 @@ LABEL_6:
 
 - (id)_identityForNFCDeviceDiscovery
 {
-  v2 = [(RPNearFieldDataSource *)self _selfIdentity];
-  if (!v2)
+  _selfIdentity = [(RPNearFieldDataSource *)self _selfIdentity];
+  if (!_selfIdentity)
   {
     if (dword_1001D3860 <= 60 && (dword_1001D3860 != -1 || _LogCategory_Initialize()))
     {
       sub_100117850();
     }
 
-    v2 = [[RPIdentity alloc] initWithType:14];
+    _selfIdentity = [[RPIdentity alloc] initWithType:14];
     v3 = NSRandomData();
-    [v2 setDeviceIRKData:v3];
+    [_selfIdentity setDeviceIRKData:v3];
   }
 
   v4 = +[RPCompanionLinkDaemon sharedCompanionLinkDaemon];
-  v5 = [v4 localDeviceInfo];
-  v6 = [v5 model];
-  [v2 setModel:v6];
+  localDeviceInfo = [v4 localDeviceInfo];
+  model = [localDeviceInfo model];
+  [_selfIdentity setModel:model];
 
   v7 = +[RPIdentityDaemon sharedIdentityDaemon];
-  v8 = [v7 sessionPairingIdentifier];
-  v9 = [v8 UUIDString];
-  [v2 setIdentifier:v9];
+  sessionPairingIdentifier = [v7 sessionPairingIdentifier];
+  uUIDString = [sessionPairingIdentifier UUIDString];
+  [_selfIdentity setIdentifier:uUIDString];
 
-  return v2;
+  return _selfIdentity;
 }
 
-- (id)_transportServiceMetadataWithServiceType:(unint64_t)a3
+- (id)_transportServiceMetadataWithServiceType:(unint64_t)type
 {
-  if (a3 == 1)
+  if (type == 1)
   {
-    v5 = [(RPNearFieldDataSource *)self _AWDLBonjourTransportServiceMetadata];
+    _AWDLBonjourTransportServiceMetadata = [(RPNearFieldDataSource *)self _AWDLBonjourTransportServiceMetadata];
   }
 
   else
   {
-    v5 = 0;
+    _AWDLBonjourTransportServiceMetadata = 0;
   }
 
-  return v5;
+  return _AWDLBonjourTransportServiceMetadata;
 }
 
 - (id)_AWDLBonjourTransportServiceMetadata

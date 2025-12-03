@@ -1,27 +1,27 @@
 @interface FocusAppConfigurationDetailView.Coordinator
-- (void)focusConfigurationViewController:(id)a3 configurationUIStateDidChange:(id)a4;
-- (void)focusConfigurationViewController:(id)a3 didPressButtonWithIdentifier:(id)a4 cellFrame:(CGRect)a5;
+- (void)focusConfigurationViewController:(id)controller configurationUIStateDidChange:(id)change;
+- (void)focusConfigurationViewController:(id)controller didPressButtonWithIdentifier:(id)identifier cellFrame:(CGRect)frame;
 @end
 
 @implementation FocusAppConfigurationDetailView.Coordinator
 
-- (void)focusConfigurationViewController:(id)a3 didPressButtonWithIdentifier:(id)a4 cellFrame:(CGRect)a5
+- (void)focusConfigurationViewController:(id)controller didPressButtonWithIdentifier:(id)identifier cellFrame:(CGRect)frame
 {
   v5 = *(&self->super.isa + OBJC_IVAR____TtCV15FocusSettingsUI31FocusAppConfigurationDetailView11Coordinator_updateConfigurationHandler);
-  v7 = a5;
+  frameCopy = frame;
   v8 = 0;
-  v6 = self;
-  v5(0, &v7);
+  selfCopy = self;
+  v5(0, &frameCopy);
 }
 
-- (void)focusConfigurationViewController:(id)a3 configurationUIStateDidChange:(id)a4
+- (void)focusConfigurationViewController:(id)controller configurationUIStateDidChange:(id)change
 {
   v6 = *(&self->super.isa + OBJC_IVAR____TtCV15FocusSettingsUI31FocusAppConfigurationDetailView11Coordinator_updateConfigurationHandler);
   memset(v9, 0, sizeof(v9));
   v10 = 1;
-  v8 = a4;
-  v7 = self;
-  v6(a4, v9);
+  changeCopy = change;
+  selfCopy = self;
+  v6(change, v9);
 }
 
 @end

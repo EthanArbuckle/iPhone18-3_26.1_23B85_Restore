@@ -1,115 +1,115 @@
 @interface ManagedAssetsClient
 + (id)sharedInstance;
-- (BOOL)addAnchorGroup:(id)a3 clientIdentifier:(id)a4 error:(id *)a5;
-- (BOOL)addAssetChangeEventObserver:(id)a3 type:(unint64_t)a4 events:(unint64_t)a5 error:(id *)a6;
-- (BOOL)addFileEventObserver:(id)a3 fileNames:(id)a4 sharingGroup:(id)a5 profile:(id)a6 events:(unint64_t)a7 error:(id *)a8;
-- (BOOL)addKVStoreEventObserver:(id)a3 storeNames:(id)a4 sharingGroup:(id)a5 profile:(id)a6 events:(unint64_t)a7 error:(id *)a8;
-- (BOOL)addOrUpdateDataForAnchorIdentifier:(id)a3 clientIdentifier:(id)a4 data:(id)a5 error:(id *)a6;
-- (BOOL)addProfileChangeEventObserver:(id)a3 events:(unint64_t)a4 error:(id *)a5;
-- (BOOL)availableSpace:(unint64_t *)a3 error:(id *)a4;
-- (BOOL)checkIfKVStoreGroupExistUsing:(id)a3 exist:(BOOL *)a4 error:(id *)a5;
-- (BOOL)commitFile:(id)a3 attributes:(id)a4 error:(id *)a5;
-- (BOOL)createKVStore:(id)a3 recordFields:(id)a4 attributes:(id)a5 error:(id *)a6;
-- (BOOL)deleteAllAssetsExcept:(id)a3 error:(id *)a4;
-- (BOOL)deleteAllAssetsWithOptions:(id)a3 error:(id *)a4;
-- (BOOL)deleteAllAssetsWithUUID:(id)a3 error:(id *)a4;
-- (BOOL)deleteAllNonDefaultProfilesWithError:(id *)a3;
-- (BOOL)deleteAssetWithHandle:(id)a3 UUID:(id)a4 error:(id *)a5;
-- (BOOL)deleteAssetWithHandle:(id)a3 withOptions:(id)a4 error:(id *)a5;
-- (BOOL)deleteDataInStore:(id)a3 keys:(id)a4 attributes:(id)a5 error:(id *)a6;
-- (BOOL)deleteFile:(id)a3 attributes:(id)a4 error:(id *)a5;
-- (BOOL)deleteKVStore:(id)a3 attributes:(id)a4 error:(id *)a5;
-- (BOOL)deleteProfileWith:(id)a3 error:(id *)a4;
-- (BOOL)diskUsage:(id)a3 attributes:(id)a4 usage:(unint64_t *)a5 error:(id *)a6;
-- (BOOL)exportAssetsToPath:(id)a3 option:(id)a4 profile:(id)a5 error:(id *)a6;
-- (BOOL)fetchCoreRxLensData:(id)a3 recordUUID:(id)a4 accPayload:(id)a5 rxIdL:(int64_t)a6 rxIdR:(int64_t)a7 axisL:(int64_t)a8 axisR:(int64_t)a9 calRequiredL:(BOOL)a10 calRequiredR:(BOOL)a11 version:(unint64_t)a12 attributes:(id)a13 attributesOut:(id *)a14 recordUUIDOut:(id *)a15 error:(id *)a16;
-- (BOOL)importCorePrescription:(id)a3 profile:(id)a4 error:(id *)a5;
-- (BOOL)isSameObserver:(id)a3 error:(id *)a4;
-- (BOOL)persistGuestProfileWithError:(id *)a3;
-- (BOOL)putDataInStore:(id)a3 records:(id)a4 attributes:(id)a5 error:(id *)a6;
-- (BOOL)recreateFileOrKVStoreObserverXPCWith:(id)a3 error:(id *)a4;
-- (BOOL)recreateRemoteObserverXPCWith:(id *)a3;
-- (BOOL)removeAllAnchorGroupsForClient:(id)a3 error:(id *)a4;
-- (BOOL)removeAnchorGroup:(id)a3 clientIdentifier:(id)a4 error:(id *)a5;
-- (BOOL)removeDataForAllAnchors:(id)a3 error:(id *)a4;
-- (BOOL)removeDataForAnchorIdentifiers:(id)a3 clientIdentifier:(id)a4 error:(id *)a5;
-- (BOOL)saveAVPSetupUserOption:(int64_t)a3 error:(id *)a4;
-- (BOOL)switchProfileWith:(id)a3 error:(id *)a4;
-- (BOOL)testDaemon:(id)a3 results:(id *)a4 error:(id *)a5;
-- (BOOL)unpersistGuestProfileWithError:(id *)a3;
-- (BOOL)updateAssetHandle:(id)a3 withOptions:(id)a4 assetData:(id)a5 error:(id *)a6;
-- (BOOL)updateAssetWithHandle:(id)a3 UUID:(id)a4 assetData:(id)a5 assetAlgorithm:(id)a6 error:(id *)a7;
-- (BOOL)updateDataInStore:(id)a3 keys:(id)a4 values:(id)a5 attributes:(id)a6 error:(id *)a7;
+- (BOOL)addAnchorGroup:(id)group clientIdentifier:(id)identifier error:(id *)error;
+- (BOOL)addAssetChangeEventObserver:(id)observer type:(unint64_t)type events:(unint64_t)events error:(id *)error;
+- (BOOL)addFileEventObserver:(id)observer fileNames:(id)names sharingGroup:(id)group profile:(id)profile events:(unint64_t)events error:(id *)error;
+- (BOOL)addKVStoreEventObserver:(id)observer storeNames:(id)names sharingGroup:(id)group profile:(id)profile events:(unint64_t)events error:(id *)error;
+- (BOOL)addOrUpdateDataForAnchorIdentifier:(id)identifier clientIdentifier:(id)clientIdentifier data:(id)data error:(id *)error;
+- (BOOL)addProfileChangeEventObserver:(id)observer events:(unint64_t)events error:(id *)error;
+- (BOOL)availableSpace:(unint64_t *)space error:(id *)error;
+- (BOOL)checkIfKVStoreGroupExistUsing:(id)using exist:(BOOL *)exist error:(id *)error;
+- (BOOL)commitFile:(id)file attributes:(id)attributes error:(id *)error;
+- (BOOL)createKVStore:(id)store recordFields:(id)fields attributes:(id)attributes error:(id *)error;
+- (BOOL)deleteAllAssetsExcept:(id)except error:(id *)error;
+- (BOOL)deleteAllAssetsWithOptions:(id)options error:(id *)error;
+- (BOOL)deleteAllAssetsWithUUID:(id)d error:(id *)error;
+- (BOOL)deleteAllNonDefaultProfilesWithError:(id *)error;
+- (BOOL)deleteAssetWithHandle:(id)handle UUID:(id)d error:(id *)error;
+- (BOOL)deleteAssetWithHandle:(id)handle withOptions:(id)options error:(id *)error;
+- (BOOL)deleteDataInStore:(id)store keys:(id)keys attributes:(id)attributes error:(id *)error;
+- (BOOL)deleteFile:(id)file attributes:(id)attributes error:(id *)error;
+- (BOOL)deleteKVStore:(id)store attributes:(id)attributes error:(id *)error;
+- (BOOL)deleteProfileWith:(id)with error:(id *)error;
+- (BOOL)diskUsage:(id)usage attributes:(id)attributes usage:(unint64_t *)a5 error:(id *)error;
+- (BOOL)exportAssetsToPath:(id)path option:(id)option profile:(id)profile error:(id *)error;
+- (BOOL)fetchCoreRxLensData:(id)data recordUUID:(id)d accPayload:(id)payload rxIdL:(int64_t)l rxIdR:(int64_t)r axisL:(int64_t)axisL axisR:(int64_t)axisR calRequiredL:(BOOL)self0 calRequiredR:(BOOL)self1 version:(unint64_t)self2 attributes:(id)self3 attributesOut:(id *)self4 recordUUIDOut:(id *)self5 error:(id *)self6;
+- (BOOL)importCorePrescription:(id)prescription profile:(id)profile error:(id *)error;
+- (BOOL)isSameObserver:(id)observer error:(id *)error;
+- (BOOL)persistGuestProfileWithError:(id *)error;
+- (BOOL)putDataInStore:(id)store records:(id)records attributes:(id)attributes error:(id *)error;
+- (BOOL)recreateFileOrKVStoreObserverXPCWith:(id)with error:(id *)error;
+- (BOOL)recreateRemoteObserverXPCWith:(id *)with;
+- (BOOL)removeAllAnchorGroupsForClient:(id)client error:(id *)error;
+- (BOOL)removeAnchorGroup:(id)group clientIdentifier:(id)identifier error:(id *)error;
+- (BOOL)removeDataForAllAnchors:(id)anchors error:(id *)error;
+- (BOOL)removeDataForAnchorIdentifiers:(id)identifiers clientIdentifier:(id)identifier error:(id *)error;
+- (BOOL)saveAVPSetupUserOption:(int64_t)option error:(id *)error;
+- (BOOL)switchProfileWith:(id)with error:(id *)error;
+- (BOOL)testDaemon:(id)daemon results:(id *)results error:(id *)error;
+- (BOOL)unpersistGuestProfileWithError:(id *)error;
+- (BOOL)updateAssetHandle:(id)handle withOptions:(id)options assetData:(id)data error:(id *)error;
+- (BOOL)updateAssetWithHandle:(id)handle UUID:(id)d assetData:(id)data assetAlgorithm:(id)algorithm error:(id *)error;
+- (BOOL)updateDataInStore:(id)store keys:(id)keys values:(id)values attributes:(id)attributes error:(id *)error;
 - (ManagedAssetsClient)init;
-- (id)constructV2Blob:(id)a3 expectedSize:(unint64_t)a4 sizeLimit:(unint64_t)a5 profileType:(unint64_t)a6 error:(id *)a7;
-- (id)createAssetWithDescriptor:(id)a3 UUID:(id)a4 error:(id *)a5;
-- (id)exportAssets:(id)a3 option:(id)a4 error:(id *)a5;
-- (id)exportCorePrescription:(id)a3 profile:(id)a4 payloadSize:(unint64_t *)a5 sizeLimit:(unint64_t)a6 profileType:(unint64_t)a7 error:(id *)a8;
-- (id)getAllAnchorGroupsForClient:(id)a3 error:(id *)a4;
-- (id)getAllProfilesWith:(id *)a3 error:(id *)a4;
-- (id)getAssetDataWithHandle:(id)a3 UUID:(id)a4 error:(id *)a5;
-- (id)getAssetMetaDataWithHandle:(id)a3 UUID:(id)a4 error:(id *)a5;
+- (id)constructV2Blob:(id)blob expectedSize:(unint64_t)size sizeLimit:(unint64_t)limit profileType:(unint64_t)type error:(id *)error;
+- (id)createAssetWithDescriptor:(id)descriptor UUID:(id)d error:(id *)error;
+- (id)exportAssets:(id)assets option:(id)option error:(id *)error;
+- (id)exportCorePrescription:(id)prescription profile:(id)profile payloadSize:(unint64_t *)size sizeLimit:(unint64_t)limit profileType:(unint64_t)type error:(id *)error;
+- (id)getAllAnchorGroupsForClient:(id)client error:(id *)error;
+- (id)getAllProfilesWith:(id *)with error:(id *)error;
+- (id)getAssetDataWithHandle:(id)handle UUID:(id)d error:(id *)error;
+- (id)getAssetMetaDataWithHandle:(id)handle UUID:(id)d error:(id *)error;
 - (id)getConnectedClients;
 - (id)getDaemonProcessInfo;
-- (id)getDataForAllAnchors:(id)a3 error:(id *)a4;
-- (id)getDataForAnchorIdentifier:(id)a3 clientIdentifier:(id)a4 error:(id *)a5;
-- (id)getLastSwitchTimeForPersistedGuestWithError:(id *)a3;
-- (id)getProfileLastSwitchInTS:(id)a3 error:(id *)a4;
-- (id)getProfileLastSwitchOutTS:(id)a3 error:(id *)a4;
-- (id)openFile:(id)a3 mode:(unint64_t)a4 attributes:(id)a5 attributesOut:(id *)a6 error:(id *)a7;
-- (id)parseAssetBlob:(id)a3 error:(id *)a4;
-- (id)parseExportOption:(id)a3 error:(id *)a4;
-- (id)parseV2BlobPayload:(id)a3 error:(id *)a4;
-- (id)queryAssetMetaDataWithOptions:(id)a3 error:(id *)a4;
-- (id)queryAssetsWithOptions:(id)a3 error:(id *)a4;
-- (id)queryDataInStore:(id)a3 keys:(id)a4 attributes:(id)a5 error:(id *)a6;
-- (id)queryFile:(id)a3 attributes:(id)a4 error:(id *)a5;
-- (id)writeV2BlobWith:(id)a3 optype:(int64_t)a4 payload:(id)a5 profileType:(unint64_t *)a6 error:(id *)a7;
+- (id)getDataForAllAnchors:(id)anchors error:(id *)error;
+- (id)getDataForAnchorIdentifier:(id)identifier clientIdentifier:(id)clientIdentifier error:(id *)error;
+- (id)getLastSwitchTimeForPersistedGuestWithError:(id *)error;
+- (id)getProfileLastSwitchInTS:(id)s error:(id *)error;
+- (id)getProfileLastSwitchOutTS:(id)s error:(id *)error;
+- (id)openFile:(id)file mode:(unint64_t)mode attributes:(id)attributes attributesOut:(id *)out error:(id *)error;
+- (id)parseAssetBlob:(id)blob error:(id *)error;
+- (id)parseExportOption:(id)option error:(id *)error;
+- (id)parseV2BlobPayload:(id)payload error:(id *)error;
+- (id)queryAssetMetaDataWithOptions:(id)options error:(id *)error;
+- (id)queryAssetsWithOptions:(id)options error:(id *)error;
+- (id)queryDataInStore:(id)store keys:(id)keys attributes:(id)attributes error:(id *)error;
+- (id)queryFile:(id)file attributes:(id)attributes error:(id *)error;
+- (id)writeV2BlobWith:(id)with optype:(int64_t)optype payload:(id)payload profileType:(unint64_t *)type error:(id *)error;
 - (unint64_t)getCurrentProfileType;
-- (void)addOrUpdateDataForAnchorIdentifier:(id)a3 clientIdentifier:(id)a4 data:(id)a5 completion:(id)a6;
-- (void)checkIfCloudZonesWithCompletionHandler:(id)a3;
-- (void)commitFile:(id)a3 attributes:(id)a4 completion:(id)a5;
-- (void)createAssetWithDescriptor:(id)a3 UUID:(id)a4 completion:(id)a5;
-- (void)createKVStore:(id)a3 recordFields:(id)a4 attributes:(id)a5 completion:(id)a6;
-- (void)deleteAllAssetsWithCompletion:(id)a3;
-- (void)deleteAllAssetsWithOptions:(id)a3 completion:(id)a4;
-- (void)deleteAllAssetsWithUUID:(id)a3 completion:(id)a4;
-- (void)deleteAssetWithHandle:(id)a3 UUID:(id)a4 completion:(id)a5;
-- (void)deleteAssetWithHandle:(id)a3 withOptions:(id)a4 completion:(id)a5;
-- (void)deleteAssetsWithOptions:(id)a3 completion:(id)a4;
-- (void)deleteDataInStore:(id)a3 keys:(id)a4 attributes:(id)a5 completion:(id)a6;
-- (void)deleteFile:(id)a3 attributes:(id)a4 completion:(id)a5;
-- (void)deleteKVStore:(id)a3 attributes:(id)a4 completion:(id)a5;
-- (void)didReceiveAssetChangeWith:(unint64_t)a3 assethandles:(id)a4;
-- (void)didReceiveProfileChangeWith:(unint64_t)a3 profile:(id)a4 type:(unint64_t)a5;
-- (void)fetchCoreRxLensData:(id)a3 recordUUID:(id)a4 accPayload:(id)a5 rxIdL:(int64_t)a6 rxIdR:(int64_t)a7 axisL:(int64_t)a8 axisR:(int64_t)a9 calRequiredL:(BOOL)a10 calRequiredR:(BOOL)a11 version:(unint64_t)a12 attributes:(id)a13 completion:(id)a14;
-- (void)fileOrKVStoreObserverXPCExitHandler:(id)a3;
-- (void)getAssetDataWithHandle:(id)a3 UUID:(id)a4 completion:(id)a5;
-- (void)getAssetMetaDataWithHandle:(id)a3 UUID:(id)a4 completion:(id)a5;
-- (void)getDataForAllAnchors:(id)a3 completion:(id)a4;
-- (void)getDataForAnchorIdentifier:(id)a3 clientIdentifier:(id)a4 completion:(id)a5;
-- (void)importAssets:(id)a3 option:(id)a4 completion:(id)a5;
-- (void)importAssetsFromPath:(id)a3 option:(id)a4 completion:(id)a5;
-- (void)openFile:(id)a3 mode:(unint64_t)a4 attributes:(id)a5 completion:(id)a6;
-- (void)prefetchFile:(id)a3 attributes:(id)a4 completion:(id)a5;
-- (void)putDataInStore:(id)a3 records:(id)a4 attributes:(id)a5 completion:(id)a6;
-- (void)queryAssetsWithOptions:(id)a3 completion:(id)a4;
-- (void)queryDataInStore:(id)a3 keys:(id)a4 attributes:(id)a5 completion:(id)a6;
-- (void)queryFile:(id)a3 attributes:(id)a4 completion:(id)a5;
-- (void)recoverRemoteAsset:(id)a3;
+- (void)addOrUpdateDataForAnchorIdentifier:(id)identifier clientIdentifier:(id)clientIdentifier data:(id)data completion:(id)completion;
+- (void)checkIfCloudZonesWithCompletionHandler:(id)handler;
+- (void)commitFile:(id)file attributes:(id)attributes completion:(id)completion;
+- (void)createAssetWithDescriptor:(id)descriptor UUID:(id)d completion:(id)completion;
+- (void)createKVStore:(id)store recordFields:(id)fields attributes:(id)attributes completion:(id)completion;
+- (void)deleteAllAssetsWithCompletion:(id)completion;
+- (void)deleteAllAssetsWithOptions:(id)options completion:(id)completion;
+- (void)deleteAllAssetsWithUUID:(id)d completion:(id)completion;
+- (void)deleteAssetWithHandle:(id)handle UUID:(id)d completion:(id)completion;
+- (void)deleteAssetWithHandle:(id)handle withOptions:(id)options completion:(id)completion;
+- (void)deleteAssetsWithOptions:(id)options completion:(id)completion;
+- (void)deleteDataInStore:(id)store keys:(id)keys attributes:(id)attributes completion:(id)completion;
+- (void)deleteFile:(id)file attributes:(id)attributes completion:(id)completion;
+- (void)deleteKVStore:(id)store attributes:(id)attributes completion:(id)completion;
+- (void)didReceiveAssetChangeWith:(unint64_t)with assethandles:(id)assethandles;
+- (void)didReceiveProfileChangeWith:(unint64_t)with profile:(id)profile type:(unint64_t)type;
+- (void)fetchCoreRxLensData:(id)data recordUUID:(id)d accPayload:(id)payload rxIdL:(int64_t)l rxIdR:(int64_t)r axisL:(int64_t)axisL axisR:(int64_t)axisR calRequiredL:(BOOL)self0 calRequiredR:(BOOL)self1 version:(unint64_t)self2 attributes:(id)self3 completion:(id)self4;
+- (void)fileOrKVStoreObserverXPCExitHandler:(id)handler;
+- (void)getAssetDataWithHandle:(id)handle UUID:(id)d completion:(id)completion;
+- (void)getAssetMetaDataWithHandle:(id)handle UUID:(id)d completion:(id)completion;
+- (void)getDataForAllAnchors:(id)anchors completion:(id)completion;
+- (void)getDataForAnchorIdentifier:(id)identifier clientIdentifier:(id)clientIdentifier completion:(id)completion;
+- (void)importAssets:(id)assets option:(id)option completion:(id)completion;
+- (void)importAssetsFromPath:(id)path option:(id)option completion:(id)completion;
+- (void)openFile:(id)file mode:(unint64_t)mode attributes:(id)attributes completion:(id)completion;
+- (void)prefetchFile:(id)file attributes:(id)attributes completion:(id)completion;
+- (void)putDataInStore:(id)store records:(id)records attributes:(id)attributes completion:(id)completion;
+- (void)queryAssetsWithOptions:(id)options completion:(id)completion;
+- (void)queryDataInStore:(id)store keys:(id)keys attributes:(id)attributes completion:(id)completion;
+- (void)queryFile:(id)file attributes:(id)attributes completion:(id)completion;
+- (void)recoverRemoteAsset:(id)asset;
 - (void)recoveryTaskWhenDaemonIsReady;
-- (void)registerDarwinNotification:(unint64_t)a3;
+- (void)registerDarwinNotification:(unint64_t)notification;
 - (void)remoteObserverXPCExitHandler;
-- (void)removeNotificationObserver:(id)a3;
-- (void)removeNotificationObserverPointer:(id)a3 observerType:(unint64_t)a4;
-- (void)removeObserverFromFilter:(id)a3;
-- (void)saveObserverMetaData:(id)a3 fileNames:(id)a4 sharingGroup:(id)a5 profile:(id)a6 events:(unint64_t)a7 type:(unint64_t)a8;
-- (void)subscribeDarwinNotification:(id)a3;
-- (void)unregisterDarwinNotificationIfNeed:(unint64_t)a3;
-- (void)unsubscribeDarwinNotification:(id)a3;
-- (void)updateAssetHandle:(id)a3 withOptions:(id)a4 assetData:(id)a5 completion:(id)a6;
-- (void)updateAssetWithHandle:(id)a3 UUID:(id)a4 assetData:(id)a5 assetAlgorithm:(id)a6 completion:(id)a7;
-- (void)updateDataInStore:(id)a3 keys:(id)a4 values:(id)a5 attributes:(id)a6 completion:(id)a7;
+- (void)removeNotificationObserver:(id)observer;
+- (void)removeNotificationObserverPointer:(id)pointer observerType:(unint64_t)type;
+- (void)removeObserverFromFilter:(id)filter;
+- (void)saveObserverMetaData:(id)data fileNames:(id)names sharingGroup:(id)group profile:(id)profile events:(unint64_t)events type:(unint64_t)type;
+- (void)subscribeDarwinNotification:(id)notification;
+- (void)unregisterDarwinNotificationIfNeed:(unint64_t)need;
+- (void)unsubscribeDarwinNotification:(id)notification;
+- (void)updateAssetHandle:(id)handle withOptions:(id)options assetData:(id)data completion:(id)completion;
+- (void)updateAssetWithHandle:(id)handle UUID:(id)d assetData:(id)data assetAlgorithm:(id)algorithm completion:(id)completion;
+- (void)updateDataInStore:(id)store keys:(id)keys values:(id)values attributes:(id)attributes completion:(id)completion;
 @end
 
 @implementation ManagedAssetsClient
@@ -128,10 +128,10 @@ void __62__ManagedAssetsClient_Profile__createProfileWith_guest_error___block_in
   }
 }
 
-- (BOOL)switchProfileWith:(id)a3 error:(id *)a4
+- (BOOL)switchProfileWith:(id)with error:(id *)error
 {
   v35 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  withCopy = with;
   v29 = 0;
   v30 = &v29;
   v31 = 0x2020000000;
@@ -146,19 +146,19 @@ void __62__ManagedAssetsClient_Profile__createProfileWith_guest_error___block_in
   if (os_log_type_enabled(_log, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v34 = v6;
+    v34 = withCopy;
     _os_log_impl(&dword_258089000, v7, OS_LOG_TYPE_INFO, "switchProfileWith, uuid: %@", buf, 0xCu);
   }
 
-  if (!v6)
+  if (!withCopy)
   {
     v11 = createManagedAssetError("[ManagedAssetsClient(Profile) switchProfileWith:error:]", 77, -20001, 0, 0, @"Null UUID String.", v8, v9, v20);
     goto LABEL_10;
   }
 
-  if (([v6 isEqualToString:@"DefaultLocalUser"] & 1) == 0)
+  if (([withCopy isEqualToString:@"DefaultLocalUser"] & 1) == 0)
   {
-    v10 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v6];
+    v10 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:withCopy];
     if (v10)
     {
       goto LABEL_8;
@@ -189,12 +189,12 @@ LABEL_8:
   [v15 SwitchProfile:v10 completion:v21];
 
 LABEL_11:
-  if (a4)
+  if (error)
   {
     v16 = v24[5];
     if (v16)
     {
-      *a4 = v16;
+      *error = v16;
     }
   }
 
@@ -216,7 +216,7 @@ void __56__ManagedAssetsClient_Profile__switchProfileWith_error___block_invoke_2
   }
 }
 
-- (BOOL)persistGuestProfileWithError:(id *)a3
+- (BOOL)persistGuestProfileWithError:(id *)error
 {
   v20 = 0;
   v21 = &v20;
@@ -250,12 +250,12 @@ void __56__ManagedAssetsClient_Profile__switchProfileWith_error___block_invoke_2
   v11[5] = &v20;
   [v7 PersistGuestProfileWithCompletion:v11];
 
-  if (a3)
+  if (error)
   {
     v8 = v15[5];
     if (v8)
     {
-      *a3 = v8;
+      *error = v8;
     }
   }
 
@@ -276,7 +276,7 @@ void __61__ManagedAssetsClient_Profile__persistGuestProfileWithError___block_inv
   }
 }
 
-- (BOOL)unpersistGuestProfileWithError:(id *)a3
+- (BOOL)unpersistGuestProfileWithError:(id *)error
 {
   v20 = 0;
   v21 = &v20;
@@ -310,12 +310,12 @@ void __61__ManagedAssetsClient_Profile__persistGuestProfileWithError___block_inv
   v11[5] = &v20;
   [v7 UnpersistGuestProfileWithCompletion:v11];
 
-  if (a3)
+  if (error)
   {
     v8 = v15[5];
     if (v8)
     {
-      *a3 = v8;
+      *error = v8;
     }
   }
 
@@ -336,7 +336,7 @@ void __63__ManagedAssetsClient_Profile__unpersistGuestProfileWithError___block_i
   }
 }
 
-- (id)getLastSwitchTimeForPersistedGuestWithError:(id *)a3
+- (id)getLastSwitchTimeForPersistedGuestWithError:(id *)error
 {
   v20 = 0;
   v21 = &v20;
@@ -372,12 +372,12 @@ void __63__ManagedAssetsClient_Profile__unpersistGuestProfileWithError___block_i
   v11[5] = &v14;
   [v7 GetLastSwitchTimeForPersistedGuestWithCompletion:v11];
 
-  if (a3)
+  if (error)
   {
     v8 = v21[5];
     if (v8)
     {
-      *a3 = v8;
+      *error = v8;
     }
   }
 
@@ -400,10 +400,10 @@ void __76__ManagedAssetsClient_Profile__getLastSwitchTimeForPersistedGuestWithEr
   }
 }
 
-- (BOOL)deleteProfileWith:(id)a3 error:(id *)a4
+- (BOOL)deleteProfileWith:(id)with error:(id *)error
 {
   v35 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  withCopy = with;
   v29 = 0;
   v30 = &v29;
   v31 = 0x2020000000;
@@ -418,11 +418,11 @@ void __76__ManagedAssetsClient_Profile__getLastSwitchTimeForPersistedGuestWithEr
   if (os_log_type_enabled(_log, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v34 = v6;
+    v34 = withCopy;
     _os_log_impl(&dword_258089000, v7, OS_LOG_TYPE_INFO, "deleteProfileWith, uuid: %@", buf, 0xCu);
   }
 
-  if (!v6)
+  if (!withCopy)
   {
     v15 = createManagedAssetError("[ManagedAssetsClient(Profile) deleteProfileWith:error:]", 179, -20001, 0, 0, @"Null UUID String.", v8, v9, v20);
 LABEL_8:
@@ -431,7 +431,7 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v12 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v6];
+  v12 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:withCopy];
   if (!v12)
   {
     v15 = createManagedAssetError("[ManagedAssetsClient(Profile) deleteProfileWith:error:]", 185, -20001, 0, 0, @"Invalid UUID String.", v10, v11, v20);
@@ -454,12 +454,12 @@ LABEL_8:
   [v14 DeleteProfile:v12 completion:v21];
 
 LABEL_9:
-  if (a4)
+  if (error)
   {
     v16 = v24[5];
     if (v16)
     {
-      *a4 = v16;
+      *error = v16;
     }
   }
 
@@ -481,7 +481,7 @@ void __56__ManagedAssetsClient_Profile__deleteProfileWith_error___block_invoke_2
   }
 }
 
-- (id)getAllProfilesWith:(id *)a3 error:(id *)a4
+- (id)getAllProfilesWith:(id *)with error:(id *)error
 {
   v22 = 0;
   v23 = &v22;
@@ -515,15 +515,15 @@ void __56__ManagedAssetsClient_Profile__deleteProfileWith_error___block_invoke_2
   v13[3] = &unk_27985ECA0;
   v13[4] = &v22;
   v13[5] = &v16;
-  v13[6] = a3;
+  v13[6] = with;
   [v9 GetAllProfilesWithCompletion:v13];
 
-  if (a4)
+  if (error)
   {
     v10 = v23[5];
     if (v10)
     {
-      *a4 = v10;
+      *error = v10;
     }
   }
 
@@ -628,7 +628,7 @@ void __53__ManagedAssetsClient_Profile__getCurrentProfileType__block_invoke_9(ui
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)deleteAllNonDefaultProfilesWithError:(id *)a3
+- (BOOL)deleteAllNonDefaultProfilesWithError:(id *)error
 {
   v18 = 0;
   v19 = &v18;
@@ -656,12 +656,12 @@ void __53__ManagedAssetsClient_Profile__getCurrentProfileType__block_invoke_9(ui
   v10[5] = &v18;
   [v6 DeleteAllNonDefaultProfilesWithCompletion:v10];
 
-  if (a3)
+  if (error)
   {
     v7 = v13[5];
     if (v7)
     {
-      *a3 = v7;
+      *error = v7;
     }
   }
 
@@ -700,25 +700,25 @@ void __69__ManagedAssetsClient_Profile__deleteAllNonDefaultProfilesWithError___b
   }
 }
 
-- (BOOL)exportAssetsToPath:(id)a3 option:(id)a4 profile:(id)a5 error:(id *)a6
+- (BOOL)exportAssetsToPath:(id)path option:(id)option profile:(id)profile error:(id *)error
 {
   v43 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  pathCopy = path;
+  optionCopy = option;
+  profileCopy = profile;
   v13 = _log;
   if (os_log_type_enabled(_log, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    *&buf[4] = v12;
+    *&buf[4] = profileCopy;
     *&buf[12] = 2112;
-    *&buf[14] = v11;
+    *&buf[14] = optionCopy;
     *&buf[22] = 2112;
-    v40 = v10;
+    v40 = pathCopy;
     _os_log_impl(&dword_258089000, v13, OS_LOG_TYPE_DEFAULT, "exportAssets, uuid: %@, options: %@ exportFolder: %@", buf, 0x20u);
   }
 
-  if (v12)
+  if (profileCopy)
   {
     *buf = 0;
     *&buf[8] = buf;
@@ -739,10 +739,10 @@ void __69__ManagedAssetsClient_Profile__deleteAllNonDefaultProfilesWithError___b
     v27[3] = &unk_27985ED38;
     v31 = buf;
     v27[4] = self;
-    v28 = v11;
-    v18 = v12;
+    v28 = optionCopy;
+    v18 = profileCopy;
     v29 = v18;
-    v19 = v10;
+    v19 = pathCopy;
     v30 = v19;
     [v17 SerializeAllAssets:v18 option:v28 completion:v27];
 
@@ -750,9 +750,9 @@ void __69__ManagedAssetsClient_Profile__deleteAllNonDefaultProfilesWithError___b
     v21 = v20 == 0;
     if (v20)
     {
-      if (a6)
+      if (error)
       {
-        *a6 = v20;
+        *error = v20;
       }
 
       v22 = _log;
@@ -785,7 +785,7 @@ void __69__ManagedAssetsClient_Profile__deleteAllNonDefaultProfilesWithError___b
   else
   {
     createManagedAssetError("[ManagedAssetsClient(Profile) exportAssetsToPath:option:profile:error:]", 288, -20001, 0, 0, @"Null profile uuid String.", v14, v15, v27[0]);
-    *a6 = v21 = 0;
+    *error = v21 = 0;
   }
 
   v25 = *MEMORY[0x277D85DE8];
@@ -1075,32 +1075,32 @@ LABEL_13:
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (id)exportAssets:(id)a3 option:(id)a4 error:(id *)a5
+- (id)exportAssets:(id)assets option:(id)option error:(id *)error
 {
   v41 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  assetsCopy = assets;
+  optionCopy = option;
   v10 = _log;
   if (os_log_type_enabled(_log, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    *&buf[4] = v8;
+    *&buf[4] = assetsCopy;
     *&buf[12] = 2112;
-    *&buf[14] = v9;
+    *&buf[14] = optionCopy;
     _os_log_impl(&dword_258089000, v10, OS_LOG_TYPE_INFO, "exportAssets, uuid: %@, options: %@", buf, 0x16u);
   }
 
-  if (v8)
+  if (assetsCopy)
   {
-    v13 = [v9 objectForKeyedSubscript:@"com.apple.managedassets.exportoption.maxblobSize"];
+    v13 = [optionCopy objectForKeyedSubscript:@"com.apple.managedassets.exportoption.maxblobSize"];
     if (v13 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v14 = [v13 integerValue];
+      integerValue = [v13 integerValue];
     }
 
     else
     {
-      v14 = -1;
+      integerValue = -1;
     }
 
     *buf = 0;
@@ -1121,19 +1121,19 @@ LABEL_13:
     v30[2] = __58__ManagedAssetsClient_Profile__exportAssets_option_error___block_invoke;
     v30[3] = &unk_27985EC00;
     v30[4] = buf;
-    v16 = [(NSXPCConnection *)conn synchronousRemoteObjectProxyWithErrorHandler:v30, a5];
+    error = [(NSXPCConnection *)conn synchronousRemoteObjectProxyWithErrorHandler:v30, error];
     v24[0] = MEMORY[0x277D85DD0];
     v24[1] = 3221225472;
     v24[2] = __58__ManagedAssetsClient_Profile__exportAssets_option_error___block_invoke_2;
     v24[3] = &unk_27985ED60;
     v27 = buf;
     v24[4] = self;
-    v25 = v9;
-    v17 = v8;
+    v25 = optionCopy;
+    v17 = assetsCopy;
     v28 = &v31;
-    v29 = v14;
+    v29 = integerValue;
     v26 = v17;
-    [v16 SerializeAllAssets:v17 option:v25 completion:v24];
+    [error SerializeAllAssets:v17 option:v25 completion:v24];
 
     v18 = *(*&buf[8] + 40);
     if (v18)
@@ -1158,7 +1158,7 @@ LABEL_13:
   else
   {
     createManagedAssetError("[ManagedAssetsClient(Profile) exportAssets:option:error:]", 440, -20001, 0, 0, @"Null profile uuid String.", v11, v12, v22);
-    *a5 = v19 = 0;
+    *error = v19 = 0;
   }
 
   v20 = *MEMORY[0x277D85DE8];
@@ -1217,10 +1217,10 @@ void __58__ManagedAssetsClient_Profile__exportAssets_option_error___block_invoke
   }
 }
 
-- (id)constructV2Blob:(id)a3 expectedSize:(unint64_t)a4 sizeLimit:(unint64_t)a5 profileType:(unint64_t)a6 error:(id *)a7
+- (id)constructV2Blob:(id)blob expectedSize:(unint64_t)size sizeLimit:(unint64_t)limit profileType:(unint64_t)type error:(id *)error
 {
-  v13 = a3;
-  if (a4 <= a5)
+  blobCopy = blob;
+  if (size <= limit)
   {
     if (os_log_type_enabled(_log, OS_LOG_TYPE_DEBUG))
     {
@@ -1232,22 +1232,22 @@ void __58__ManagedAssetsClient_Profile__exportAssets_option_error___block_invoke
       [ManagedAssetsClient(Profile) constructV2Blob:expectedSize:sizeLimit:profileType:error:];
     }
 
-    v14 = MAConsturctAssetBlob(a4, a6, v13, a7);
-    if (*a7)
+    v14 = MAConsturctAssetBlob(size, type, blobCopy, error);
+    if (*error)
     {
       if (os_log_type_enabled(_log, OS_LOG_TYPE_ERROR))
       {
-        [ManagedAssetsClient(Profile) constructV2Blob:a7 expectedSize:? sizeLimit:? profileType:? error:?];
+        [ManagedAssetsClient(Profile) constructV2Blob:error expectedSize:? sizeLimit:? profileType:? error:?];
       }
 
       v14 = 0;
-      v13 = 0;
+      blobCopy = 0;
     }
   }
 
   else
   {
-    *a7 = createManagedAssetError("[ManagedAssetsClient(Profile) constructV2Blob:expectedSize:sizeLimit:profileType:error:]", 496, -20102, 0, 0, @"exported data size exceeds giving limit: %lu", v11, v12, a5);
+    *error = createManagedAssetError("[ManagedAssetsClient(Profile) constructV2Blob:expectedSize:sizeLimit:profileType:error:]", 496, -20102, 0, 0, @"exported data size exceeds giving limit: %lu", v11, v12, limit);
 
     v14 = 0;
   }
@@ -1255,9 +1255,9 @@ void __58__ManagedAssetsClient_Profile__exportAssets_option_error___block_invoke
   return v14;
 }
 
-- (id)writeV2BlobWith:(id)a3 optype:(int64_t)a4 payload:(id)a5 profileType:(unint64_t *)a6 error:(id *)a7
+- (id)writeV2BlobWith:(id)with optype:(int64_t)optype payload:(id)payload profileType:(unint64_t *)type error:(id *)error
 {
-  v42 = a3;
+  withCopy = with;
   v59 = 0;
   v60 = &v59;
   v61 = 0x3032000000;
@@ -1276,16 +1276,16 @@ void __58__ManagedAssetsClient_Profile__exportAssets_option_error___block_invoke
   v50 = __Block_byref_object_copy_;
   v51 = __Block_byref_object_dispose_;
   v52 = 0;
-  v39 = a5;
-  v46 = [v39 bytes];
-  v9 = [MEMORY[0x277CBEB38] dictionary];
-  v10 = v46;
-  v11 = *(v46 + 6);
-  v46 += 8 * v11 + 16;
+  payloadCopy = payload;
+  bytes = [payloadCopy bytes];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v10 = bytes;
+  v11 = *(bytes + 6);
+  bytes += 8 * v11 + 16;
   if (!v11)
   {
 LABEL_13:
-    *a6 = *(v10 + 8);
+    *type = *(v10 + 8);
     goto LABEL_17;
   }
 
@@ -1294,23 +1294,23 @@ LABEL_13:
   {
     v13 = *(v12 - 1);
     v14 = *v12;
-    v15 = [MEMORY[0x277CBEA90] dataWithBytes:v46 length:v13];
+    v15 = [MEMORY[0x277CBEA90] dataWithBytes:bytes length:v13];
     v16 = [[MASDPlainAsset alloc] initWithData:v15];
     v19 = v16;
     if (!v16)
     {
-      v35 = createManagedAssetError("[ManagedAssetsClient(Profile) writeV2BlobWith:optype:payload:profileType:error:]", 539, -20103, 0, 0, @"fail to parse asset metadata from serialized blob", v17, v18, a6);
+      v35 = createManagedAssetError("[ManagedAssetsClient(Profile) writeV2BlobWith:optype:payload:profileType:error:]", 539, -20103, 0, 0, @"fail to parse asset metadata from serialized blob", v17, v18, type);
       goto LABEL_15;
     }
 
-    v46 += v13;
+    bytes += v13;
     [(MASDPlainAsset *)v16 setAssetState:65];
     if ([(MASDPlainAsset *)v19 type]== 121)
     {
       break;
     }
 
-    v25 = [(MASDPlainAsset *)v19 type];
+    type = [(MASDPlainAsset *)v19 type];
     v45[0] = MEMORY[0x277D85DD0];
     v45[1] = 3221225472;
     v45[2] = __81__ManagedAssetsClient_Profile__writeV2BlobWith_optype_payload_profileType_error___block_invoke;
@@ -1318,16 +1318,16 @@ LABEL_13:
     v45[4] = &v59;
     v45[5] = &v53;
     v45[6] = &v47;
-    [v42 GetTempAssetFileHandle:a4 assetType:v25 assetHandle:0 completion:v45];
+    [withCopy GetTempAssetFileHandle:optype assetType:type assetHandle:0 completion:v45];
     if (v48[5])
     {
       goto LABEL_16;
     }
 
-    v26 = [v60[5] fileDescriptor];
+    fileDescriptor = [v60[5] fileDescriptor];
     v27 = (v48 + 5);
     obj = v48[5];
-    MAWriteDataUsingFileDescriptor(&v46, v26, v14, &obj, v28, v29, v30, v31);
+    MAWriteDataUsingFileDescriptor(&bytes, fileDescriptor, v14, &obj, v28, v29, v30, v31);
     objc_storeStrong(v27, obj);
     v32 = (v48 + 5);
     if (v48[5])
@@ -1344,7 +1344,7 @@ LABEL_13:
       goto LABEL_16;
     }
 
-    [v9 setObject:v15 forKeyedSubscript:v54[5]];
+    [dictionary setObject:v15 forKeyedSubscript:v54[5]];
 LABEL_12:
     v12 += 2;
 
@@ -1359,30 +1359,30 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  v20 = [MEMORY[0x277CBEA90] dataWithBytes:v46 length:v14];
+  v20 = [MEMORY[0x277CBEA90] dataWithBytes:bytes length:v14];
   v23 = v20;
   if (v20)
   {
     v24 = [v20 length];
-    v46 += v24;
-    [v9 setObject:v23 forKeyedSubscript:@"corePrescriptionData"];
+    bytes += v24;
+    [dictionary setObject:v23 forKeyedSubscript:@"corePrescriptionData"];
 
     goto LABEL_12;
   }
 
-  v35 = createManagedAssetError("[ManagedAssetsClient(Profile) writeV2BlobWith:optype:payload:profileType:error:]", 585, -20103, 0, 0, @"fail to get corePrescriptionData from blob", v21, v22, a6);
+  v35 = createManagedAssetError("[ManagedAssetsClient(Profile) writeV2BlobWith:optype:payload:profileType:error:]", 585, -20103, 0, 0, @"fail to get corePrescriptionData from blob", v21, v22, type);
 LABEL_15:
-  *a7 = v35;
+  *error = v35;
 LABEL_16:
 
 LABEL_17:
   if (v48[5])
   {
-    v36 = [v9 allKeys];
-    [v42 DeleteTempAsset:1 tokens:v36];
+    allKeys = [dictionary allKeys];
+    [withCopy DeleteTempAsset:1 tokens:allKeys];
 
-    [v9 removeAllObjects];
-    v9 = 0;
+    [dictionary removeAllObjects];
+    dictionary = 0;
     v37 = v48[5];
   }
 
@@ -1391,13 +1391,13 @@ LABEL_17:
     v37 = 0;
   }
 
-  *a7 = v37;
+  *error = v37;
   _Block_object_dispose(&v47, 8);
 
   _Block_object_dispose(&v53, 8);
   _Block_object_dispose(&v59, 8);
 
-  return v9;
+  return dictionary;
 }
 
 void __81__ManagedAssetsClient_Profile__writeV2BlobWith_optype_payload_profileType_error___block_invoke(void *a1, void *a2, void *a3, uint64_t a4, void *a5)
@@ -1416,21 +1416,21 @@ void __81__ManagedAssetsClient_Profile__writeV2BlobWith_optype_payload_profileTy
   *(v11 + 40) = v10;
 }
 
-- (void)importAssets:(id)a3 option:(id)a4 completion:(id)a5
+- (void)importAssets:(id)assets option:(id)option completion:(id)completion
 {
   v26 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  assetsCopy = assets;
+  optionCopy = option;
+  completionCopy = completion;
   v12 = _log;
   if (os_log_type_enabled(_log, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v25 = v10;
+    v25 = optionCopy;
     _os_log_impl(&dword_258089000, v12, OS_LOG_TYPE_INFO, "importAssets with options: %@", buf, 0xCu);
   }
 
-  if (v11)
+  if (completionCopy)
   {
     backgroundQueue = self->_backgroundQueue;
     block[0] = MEMORY[0x277D85DD0];
@@ -1439,9 +1439,9 @@ void __81__ManagedAssetsClient_Profile__writeV2BlobWith_optype_payload_profileTy
     block[3] = &unk_27985EE28;
     block[4] = self;
     v23 = a2;
-    v20 = v10;
-    v21 = v9;
-    v22 = v11;
+    v20 = optionCopy;
+    v21 = assetsCopy;
+    v22 = completionCopy;
     dispatch_async(backgroundQueue, block);
   }
 
@@ -1708,23 +1708,23 @@ void __63__ManagedAssetsClient_Profile__importAssets_option_completion___block_i
   *(v11 + 40) = v8;
 }
 
-- (void)importAssetsFromPath:(id)a3 option:(id)a4 completion:(id)a5
+- (void)importAssetsFromPath:(id)path option:(id)option completion:(id)completion
 {
   v28 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  pathCopy = path;
+  optionCopy = option;
+  completionCopy = completion;
   v12 = _log;
   if (os_log_type_enabled(_log, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v25 = v10;
+    v25 = optionCopy;
     v26 = 2112;
-    v27 = v9;
+    v27 = pathCopy;
     _os_log_impl(&dword_258089000, v12, OS_LOG_TYPE_DEFAULT, "importAssets with options: %@ importDirectory:%@", buf, 0x16u);
   }
 
-  if (v11)
+  if (completionCopy)
   {
     backgroundQueue = self->_backgroundQueue;
     block[0] = MEMORY[0x277D85DD0];
@@ -1733,9 +1733,9 @@ void __63__ManagedAssetsClient_Profile__importAssets_option_completion___block_i
     block[3] = &unk_27985EEA0;
     block[4] = self;
     v23 = a2;
-    v22 = v11;
-    v20 = v9;
-    v21 = v10;
+    v22 = completionCopy;
+    v20 = pathCopy;
+    v21 = optionCopy;
     dispatch_async(backgroundQueue, block);
   }
 
@@ -2159,9 +2159,9 @@ void __71__ManagedAssetsClient_Profile__importAssetsFromPath_option_completion__
   *(v11 + 40) = v8;
 }
 
-- (id)parseAssetBlob:(id)a3 error:(id *)a4
+- (id)parseAssetBlob:(id)blob error:(id *)error
 {
-  v6 = a3;
+  blobCopy = blob;
   v7 = _log;
   if (os_log_type_enabled(_log, OS_LOG_TYPE_INFO))
   {
@@ -2169,10 +2169,10 @@ void __71__ManagedAssetsClient_Profile__importAssetsFromPath_option_completion__
     _os_log_impl(&dword_258089000, v7, OS_LOG_TYPE_INFO, "parseAssetBlob", buf, 2u);
   }
 
-  if (v6)
+  if (blobCopy)
   {
     v29 = 0;
-    v8 = MAVerifySerializedAssetBlob(v6, &v29);
+    v8 = MAVerifySerializedAssetBlob(blobCopy, &v29);
     v9 = v29;
     v10 = _log;
     v11 = os_log_type_enabled(_log, OS_LOG_TYPE_DEBUG);
@@ -2184,7 +2184,7 @@ void __71__ManagedAssetsClient_Profile__importAssetsFromPath_option_completion__
       }
 
       v28 = v9;
-      v12 = [(ManagedAssetsClient *)self parseV2BlobPayload:v6 error:&v28];
+      v12 = [(ManagedAssetsClient *)self parseV2BlobPayload:blobCopy error:&v28];
       v13 = v28;
     }
 
@@ -2201,18 +2201,18 @@ void __71__ManagedAssetsClient_Profile__importAssetsFromPath_option_completion__
         [ManagedAssetsClient(Profile) parseAssetBlob:v18 error:?];
       }
 
-      v9 = [[MASDSerializedAssets alloc] initWithData:v6];
+      v9 = [[MASDSerializedAssets alloc] initWithData:blobCopy];
       if (v9)
       {
         v21 = [MEMORY[0x277CBEB58] set];
-        v22 = [(MASDSerializedAssets *)v9 assets];
+        assets = [(MASDSerializedAssets *)v9 assets];
         v26[0] = MEMORY[0x277D85DD0];
         v26[1] = 3221225472;
         v26[2] = __53__ManagedAssetsClient_Profile__parseAssetBlob_error___block_invoke;
         v26[3] = &unk_27985EEC8;
         v12 = v21;
         v27 = v12;
-        [v22 enumerateObjectsUsingBlock:v26];
+        [assets enumerateObjectsUsingBlock:v26];
 
         v13 = 0;
       }
@@ -2227,13 +2227,13 @@ void __71__ManagedAssetsClient_Profile__importAssetsFromPath_option_completion__
     if (v13 && os_log_type_enabled(_log, OS_LOG_TYPE_ERROR))
     {
       [ManagedAssetsClient(Profile) parseAssetBlob:error:];
-      if (!a4)
+      if (!error)
       {
         goto LABEL_22;
       }
     }
 
-    else if (!a4)
+    else if (!error)
     {
 LABEL_22:
       v17 = v12;
@@ -2242,7 +2242,7 @@ LABEL_22:
     }
 
     v23 = v13;
-    *a4 = v13;
+    *error = v13;
     goto LABEL_22;
   }
 
@@ -2250,17 +2250,17 @@ LABEL_22:
   if (os_log_type_enabled(_log, OS_LOG_TYPE_ERROR))
   {
     [ManagedAssetsClient(Profile) parseAssetBlob:v14 error:?];
-    if (a4)
+    if (error)
     {
       goto LABEL_10;
     }
   }
 
-  else if (a4)
+  else if (error)
   {
 LABEL_10:
     createManagedAssetError("[ManagedAssetsClient(Profile) parseAssetBlob:error:]", 906, -20001, 0, 0, @"serializedAssetsData is nil", v15, v16, v25);
-    *a4 = v17 = 0;
+    *error = v17 = 0;
     goto LABEL_23;
   }
 
@@ -2270,23 +2270,23 @@ LABEL_23:
   return v17;
 }
 
-- (id)parseV2BlobPayload:(id)a3 error:(id *)a4
+- (id)parseV2BlobPayload:(id)payload error:(id *)error
 {
-  v5 = a3;
+  payloadCopy = payload;
   v6 = [MEMORY[0x277CBEB58] set];
-  v7 = [v5 bytes];
-  v8 = *(v7 + 6);
-  if (*(v7 + 6))
+  bytes = [payloadCopy bytes];
+  v8 = *(bytes + 6);
+  if (*(bytes + 6))
   {
     v9 = 8 * v8 + 16;
-    v10 = (v7 + 20);
+    v10 = (bytes + 20);
     while (1)
     {
       v11 = *(v10 - 1);
       v12 = *v10;
-      v13 = [v5 subdataWithRange:{v9, v11}];
+      v13 = [payloadCopy subdataWithRange:{v9, v11}];
       v14 = v9 + v11;
-      v15 = [v5 subdataWithRange:{v14, v12}];
+      v15 = [payloadCopy subdataWithRange:{v14, v12}];
       v16 = [[MASDPlainAsset alloc] initWithData:v13];
       if (!v16)
       {
@@ -2305,7 +2305,7 @@ LABEL_23:
       }
     }
 
-    *a4 = createManagedAssetError("[ManagedAssetsClient(Profile) parseV2BlobPayload:error:]", 963, -20103, 0, 0, @"fail to decode asset meta data", v17, v18, v21);
+    *error = createManagedAssetError("[ManagedAssetsClient(Profile) parseV2BlobPayload:error:]", 963, -20103, 0, 0, @"fail to decode asset meta data", v17, v18, v21);
     [v6 removeAllObjects];
 
     v6 = 0;
@@ -2316,54 +2316,54 @@ LABEL_7:
   return v6;
 }
 
-- (id)parseExportOption:(id)a3 error:(id *)a4
+- (id)parseExportOption:(id)option error:(id *)error
 {
-  if (a3)
+  if (option)
   {
     v4 = MEMORY[0x277CBEB38];
-    v5 = a3;
-    v6 = [v4 dictionary];
-    v7 = [v5 objectForKeyedSubscript:@"com.apple.managedassets.exportoption.kvstore"];
+    optionCopy = option;
+    dictionary = [v4 dictionary];
+    v7 = [optionCopy objectForKeyedSubscript:@"com.apple.managedassets.exportoption.kvstore"];
 
     if (v7)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [v6 setObject:v7 forKeyedSubscript:@"com.apple.managedassets.exportoption.kvstore"];
+        [dictionary setObject:v7 forKeyedSubscript:@"com.apple.managedassets.exportoption.kvstore"];
       }
     }
   }
 
   else
   {
-    v6 = 0;
+    dictionary = 0;
   }
 
-  return v6;
+  return dictionary;
 }
 
-- (id)exportCorePrescription:(id)a3 profile:(id)a4 payloadSize:(unint64_t *)a5 sizeLimit:(unint64_t)a6 profileType:(unint64_t)a7 error:(id *)a8
+- (id)exportCorePrescription:(id)prescription profile:(id)profile payloadSize:(unint64_t *)size sizeLimit:(unint64_t)limit profileType:(unint64_t)type error:(id *)error
 {
   v44 = *MEMORY[0x277D85DE8];
-  v12 = a3;
+  prescriptionCopy = prescription;
   v13 = MEMORY[0x277CBEB18];
-  v14 = a4;
-  v15 = [v13 arrayWithArray:v12];
-  v16 = [MEMORY[0x277CBEB38] dictionary];
-  [v16 setObject:@"coreRXUserGroup" forKeyedSubscript:@"group"];
-  [v16 setObject:@"user" forKeyedSubscript:@"group.type"];
-  [v16 setObject:v14 forKeyedSubscript:@"uuid"];
+  profileCopy = profile;
+  v15 = [v13 arrayWithArray:prescriptionCopy];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  [dictionary setObject:@"coreRXUserGroup" forKeyedSubscript:@"group"];
+  [dictionary setObject:@"user" forKeyedSubscript:@"group.type"];
+  [dictionary setObject:profileCopy forKeyedSubscript:@"uuid"];
 
-  [v16 setObject:&unk_2869424E0 forKeyedSubscript:@"kvs.options"];
+  [dictionary setObject:&unk_2869424E0 forKeyedSubscript:@"kvs.options"];
   v39 = 0;
-  v17 = [(ManagedAssetsClient *)self checkIfKVStoreGroupExistUsing:v16 exist:&v39 error:a8];
+  v17 = [(ManagedAssetsClient *)self checkIfKVStoreGroupExistUsing:dictionary exist:&v39 error:error];
   v18 = _log;
   if (!v17)
   {
     if (os_log_type_enabled(_log, OS_LOG_TYPE_ERROR))
     {
-      [ManagedAssetsClient(Profile) exportCorePrescription:a8 profile:? payloadSize:? sizeLimit:? profileType:? error:?];
+      [ManagedAssetsClient(Profile) exportCorePrescription:error profile:? payloadSize:? sizeLimit:? profileType:? error:?];
     }
 
     goto LABEL_10;
@@ -2387,13 +2387,13 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v19 = [(ManagedAssetsClient *)self queryDataInStore:@"rxDataSharing2" keys:MEMORY[0x277CBEC10] attributes:v16 error:a8];
+  v19 = [(ManagedAssetsClient *)self queryDataInStore:@"rxDataSharing2" keys:MEMORY[0x277CBEC10] attributes:dictionary error:error];
   v20 = v19;
-  if (*a8)
+  if (*error)
   {
     if (os_log_type_enabled(_log, OS_LOG_TYPE_ERROR))
     {
-      [ManagedAssetsClient(Profile) exportCorePrescription:a8 profile:? payloadSize:? sizeLimit:? profileType:? error:?];
+      [ManagedAssetsClient(Profile) exportCorePrescription:error profile:? payloadSize:? sizeLimit:? profileType:? error:?];
     }
 
     goto LABEL_11;
@@ -2418,12 +2418,12 @@ LABEL_11:
     [ManagedAssetsClient(Profile) exportCorePrescription:profile:payloadSize:sizeLimit:profileType:error:];
   }
 
-  v28 = [MEMORY[0x277CCAC58] dataWithPropertyList:v20 format:200 options:0 error:a8];
-  if (*a8)
+  v28 = [MEMORY[0x277CCAC58] dataWithPropertyList:v20 format:200 options:0 error:error];
+  if (*error)
   {
     if (os_log_type_enabled(_log, OS_LOG_TYPE_ERROR))
     {
-      [ManagedAssetsClient(Profile) exportCorePrescription:a8 profile:? payloadSize:? sizeLimit:? profileType:? error:?];
+      [ManagedAssetsClient(Profile) exportCorePrescription:error profile:? payloadSize:? sizeLimit:? profileType:? error:?];
     }
   }
 
@@ -2438,8 +2438,8 @@ LABEL_11:
       }
 
       v30 = objc_alloc_init(MASDSerializedAssetFileInfo);
-      v31 = [MEMORY[0x277CCAD78] UUID];
-      [v31 UUIDString];
+      uUID = [MEMORY[0x277CCAD78] UUID];
+      [uUID UUIDString];
       v32 = v38 = v28;
       [(MASDSerializedAssetFileInfo *)v30 setAssetHandle:v32];
 
@@ -2461,11 +2461,11 @@ LABEL_11:
 
       [v33 setLastUpdateAlgorithmVersion:@"BYOE Demo"];
       [v33 setLastUpdateOSVersion:@"BYOE Demo"];
-      v36 = [v33 data];
-      [(MASDSerializedAssetFileInfo *)v30 setAssetMetaData:v36];
+      data = [v33 data];
+      [(MASDSerializedAssetFileInfo *)v30 setAssetMetaData:data];
       [v15 addObject:v30];
-      v37 = [v36 length];
-      *a5 += v37 + [v38 length] + 8;
+      v37 = [data length];
+      *size += v37 + [v38 length] + 8;
       v21 = v15;
 
       v28 = v38;
@@ -2474,7 +2474,7 @@ LABEL_11:
 
     if (os_log_type_enabled(_log, OS_LOG_TYPE_ERROR))
     {
-      [ManagedAssetsClient(Profile) exportCorePrescription:a8 profile:? payloadSize:? sizeLimit:? profileType:? error:?];
+      [ManagedAssetsClient(Profile) exportCorePrescription:error profile:? payloadSize:? sizeLimit:? profileType:? error:?];
     }
   }
 
@@ -2482,8 +2482,8 @@ LABEL_11:
 LABEL_32:
 
 LABEL_12:
-  v22 = v12;
-  if (!*a8)
+  v22 = prescriptionCopy;
+  if (!*error)
   {
     if ([v20 count])
     {
@@ -2492,7 +2492,7 @@ LABEL_12:
 
     else
     {
-      v22 = v12;
+      v22 = prescriptionCopy;
     }
   }
 
@@ -2503,17 +2503,17 @@ LABEL_12:
   return v23;
 }
 
-- (BOOL)importCorePrescription:(id)a3 profile:(id)a4 error:(id *)a5
+- (BOOL)importCorePrescription:(id)prescription profile:(id)profile error:(id *)error
 {
   v30 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = [MEMORY[0x277CBEB38] dictionary];
-  [v10 setObject:@"coreRXUserGroup" forKeyedSubscript:@"group"];
-  [v10 setObject:@"user" forKeyedSubscript:@"group.type"];
-  [v10 setObject:v9 forKeyedSubscript:@"uuid"];
-  [v10 setObject:&unk_2869424F8 forKeyedSubscript:@"kvs.options"];
-  v11 = [MEMORY[0x277CCAC58] propertyListWithData:v8 options:2 format:0 error:a5];
+  prescriptionCopy = prescription;
+  profileCopy = profile;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  [dictionary setObject:@"coreRXUserGroup" forKeyedSubscript:@"group"];
+  [dictionary setObject:@"user" forKeyedSubscript:@"group.type"];
+  [dictionary setObject:profileCopy forKeyedSubscript:@"uuid"];
+  [dictionary setObject:&unk_2869424F8 forKeyedSubscript:@"kvs.options"];
+  v11 = [MEMORY[0x277CCAC58] propertyListWithData:prescriptionCopy options:2 format:0 error:error];
   if (os_log_type_enabled(_log, OS_LOG_TYPE_DEBUG))
   {
     [ManagedAssetsClient(Profile) importCorePrescription:profile:error:];
@@ -2522,7 +2522,7 @@ LABEL_12:
 LABEL_4:
       if (os_log_type_enabled(_log, OS_LOG_TYPE_ERROR))
       {
-        [ManagedAssetsClient(Profile) importCorePrescription:a5 profile:? error:?];
+        [ManagedAssetsClient(Profile) importCorePrescription:error profile:? error:?];
       }
 
       goto LABEL_6;
@@ -2534,15 +2534,15 @@ LABEL_4:
     goto LABEL_4;
   }
 
-  if (*a5)
+  if (*error)
   {
     goto LABEL_4;
   }
 
-  v21 = self;
-  v22 = a5;
-  v23 = v9;
-  v24 = v8;
+  selfCopy = self;
+  errorCopy = error;
+  v23 = profileCopy;
+  v24 = prescriptionCopy;
   v27 = 0u;
   v28 = 0u;
   v25 = 0u;
@@ -2563,7 +2563,7 @@ LABEL_4:
         }
 
         v20 = *(*(&v25 + 1) + 8 * i);
-        [v20 setObject:&unk_286942510 forKeyedSubscript:{@"_MA_stagingFrom", v21, v22}];
+        [v20 setObject:&unk_286942510 forKeyedSubscript:{@"_MA_stagingFrom", selfCopy, errorCopy}];
         [v20 setObject:&unk_286942510 forKeyedSubscript:@"_MA_ckSyncState"];
       }
 
@@ -2573,19 +2573,19 @@ LABEL_4:
     while (v17);
   }
 
-  if ([(ManagedAssetsClient *)v21 putDataInStore:@"rxDataSharing2" records:v15 attributes:v10 error:v22])
+  if ([(ManagedAssetsClient *)selfCopy putDataInStore:@"rxDataSharing2" records:v15 attributes:dictionary error:errorCopy])
   {
     v12 = 1;
-    v9 = v23;
-    v8 = v24;
+    profileCopy = v23;
+    prescriptionCopy = v24;
     goto LABEL_7;
   }
 
-  v9 = v23;
-  v8 = v24;
+  profileCopy = v23;
+  prescriptionCopy = v24;
   if (os_log_type_enabled(_log, OS_LOG_TYPE_ERROR))
   {
-    [ManagedAssetsClient(Profile) importCorePrescription:v22 profile:? error:?];
+    [ManagedAssetsClient(Profile) importCorePrescription:errorCopy profile:? error:?];
   }
 
 LABEL_6:
@@ -2596,28 +2596,28 @@ LABEL_7:
   return v12;
 }
 
-- (void)addOrUpdateDataForAnchorIdentifier:(id)a3 clientIdentifier:(id)a4 data:(id)a5 completion:(id)a6
+- (void)addOrUpdateDataForAnchorIdentifier:(id)identifier clientIdentifier:(id)clientIdentifier data:(id)data completion:(id)completion
 {
   v32 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  identifierCopy = identifier;
+  clientIdentifierCopy = clientIdentifier;
+  dataCopy = data;
+  completionCopy = completion;
   v14 = _log_0;
   if (os_log_type_enabled(_log_0, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v29 = v10;
+    v29 = identifierCopy;
     v30 = 2112;
-    v31 = v11;
+    v31 = clientIdentifierCopy;
     _os_log_impl(&dword_258089000, v14, OS_LOG_TYPE_INFO, "async addOrUpdateDataForAnchorIdentifier, anchorIdentifier: %@ clientIdentifier: %@", buf, 0x16u);
   }
 
-  if (v10)
+  if (identifierCopy)
   {
-    if (v11)
+    if (clientIdentifierCopy)
     {
-      if (v12)
+      if (dataCopy)
       {
         backgroundQueue = self->_backgroundQueue;
         block[0] = MEMORY[0x277D85DD0];
@@ -2625,10 +2625,10 @@ LABEL_7:
         block[2] = __106__ManagedAssetsClient_AnchorPersist__addOrUpdateDataForAnchorIdentifier_clientIdentifier_data_completion___block_invoke;
         block[3] = &unk_27985EF90;
         block[4] = self;
-        v27 = v13;
-        v24 = v11;
-        v25 = v10;
-        v26 = v12;
+        v27 = completionCopy;
+        v24 = clientIdentifierCopy;
+        v25 = identifierCopy;
+        v26 = dataCopy;
         dispatch_async(backgroundQueue, block);
 
         v16 = 0;
@@ -2668,9 +2668,9 @@ LABEL_7:
   }
 
   v16 = createManagedAssetError("[ManagedAssetsClient(AnchorPersist) addOrUpdateDataForAnchorIdentifier:clientIdentifier:data:completion:]", v20, -20001, 0, 0, v19, v17, v18, v22);
-  if (v13)
+  if (completionCopy)
   {
-    (*(v13 + 2))(v13, v16);
+    (*(completionCopy + 2))(completionCopy, v16);
   }
 
 LABEL_18:
@@ -2806,27 +2806,27 @@ void __106__ManagedAssetsClient_AnchorPersist__addOrUpdateDataForAnchorIdentifie
   }
 }
 
-- (BOOL)addOrUpdateDataForAnchorIdentifier:(id)a3 clientIdentifier:(id)a4 data:(id)a5 error:(id *)a6
+- (BOOL)addOrUpdateDataForAnchorIdentifier:(id)identifier clientIdentifier:(id)clientIdentifier data:(id)data error:(id *)error
 {
   v66 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  identifierCopy = identifier;
+  clientIdentifierCopy = clientIdentifier;
+  dataCopy = data;
   v13 = _log_0;
   if (os_log_type_enabled(_log_0, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    *&buf[4] = v10;
+    *&buf[4] = identifierCopy;
     *&buf[12] = 2112;
-    *&buf[14] = v11;
+    *&buf[14] = clientIdentifierCopy;
     _os_log_impl(&dword_258089000, v13, OS_LOG_TYPE_INFO, "sync addOrUpdateDataForAnchorIdentifier, anchorIdentifier: %@ clientIdentifier: %@", buf, 0x16u);
   }
 
-  if (v10)
+  if (identifierCopy)
   {
-    if (v11)
+    if (clientIdentifierCopy)
     {
-      if (v12)
+      if (dataCopy)
       {
         *buf = 0;
         *&buf[8] = buf;
@@ -2845,9 +2845,9 @@ void __106__ManagedAssetsClient_AnchorPersist__addOrUpdateDataForAnchorIdentifie
         if (v16)
         {
           v17 = 0;
-          if (a6)
+          if (error)
           {
-            *a6 = v16;
+            *error = v16;
           }
 
           goto LABEL_30;
@@ -2855,7 +2855,7 @@ void __106__ManagedAssetsClient_AnchorPersist__addOrUpdateDataForAnchorIdentifie
 
         v25 = MEMORY[0x277CCACA8];
         v61[0] = @"3DAnchors";
-        v61[1] = v11;
+        v61[1] = clientIdentifierCopy;
         v26 = [MEMORY[0x277CBEA60] arrayWithObjects:v61 count:2];
         v27 = [v25 pathWithComponents:v26];
 
@@ -2871,7 +2871,7 @@ void __106__ManagedAssetsClient_AnchorPersist__addOrUpdateDataForAnchorIdentifie
         v49 = __Block_byref_object_copy__1;
         v50 = __Block_byref_object_dispose__1;
         v51 = 0;
-        v28 = [v10 UUIDString];
+        uUIDString = [identifierCopy UUIDString];
         v59[0] = @"group";
         v59[1] = @"file.options";
         v60[0] = v27;
@@ -2883,18 +2883,18 @@ void __106__ManagedAssetsClient_AnchorPersist__addOrUpdateDataForAnchorIdentifie
         v40[3] = &unk_27985EFB8;
         v43 = &v52;
         v44 = &v46;
-        v30 = v10;
+        v30 = identifierCopy;
         v41 = v30;
-        v42 = v11;
+        v42 = clientIdentifierCopy;
         v45 = buf;
-        [v15 openFile:v28 mode:2 attributes:v29 reply:v40];
+        [v15 openFile:uUIDString mode:2 attributes:v29 reply:v40];
 
         v32 = (*&buf[8] + 40);
         v31 = *(*&buf[8] + 40);
         if (v31)
         {
           v17 = 0;
-          if (!a6)
+          if (!error)
           {
             goto LABEL_29;
           }
@@ -2904,21 +2904,21 @@ void __106__ManagedAssetsClient_AnchorPersist__addOrUpdateDataForAnchorIdentifie
         {
           v33 = v53[5];
           obj = 0;
-          [v33 writeData:v12 error:&obj];
+          [v33 writeData:dataCopy error:&obj];
           objc_storeStrong(v32, obj);
           [v53[5] closeFile];
-          v34 = [v30 UUIDString];
+          uUIDString2 = [v30 UUIDString];
           v35 = v47[5];
           v38[0] = MEMORY[0x277D85DD0];
           v38[1] = 3221225472;
           v38[2] = __101__ManagedAssetsClient_AnchorPersist__addOrUpdateDataForAnchorIdentifier_clientIdentifier_data_error___block_invoke_17;
           v38[3] = &unk_27985EC00;
           v38[4] = buf;
-          [v15 commitFile:v34 attributes:v35 reply:v38];
+          [v15 commitFile:uUIDString2 attributes:v35 reply:v38];
 
           v31 = *(*&buf[8] + 40);
           v17 = v31 == 0;
-          if (!a6)
+          if (!error)
           {
 LABEL_29:
 
@@ -2932,7 +2932,7 @@ LABEL_30:
           }
         }
 
-        *a6 = v31;
+        *error = v31;
         goto LABEL_29;
       }
 
@@ -2941,7 +2941,7 @@ LABEL_30:
         [ManagedAssetsClient(AnchorPersist) addOrUpdateDataForAnchorIdentifier:clientIdentifier:data:completion:];
       }
 
-      if (a6)
+      if (error)
       {
         v20 = createManagedAssetError("[ManagedAssetsClient(AnchorPersist) addOrUpdateDataForAnchorIdentifier:clientIdentifier:data:error:]", 130, -20001, 0, 0, @"anchor data is nil", v23, v24, v38[0]);
         goto LABEL_21;
@@ -2957,7 +2957,7 @@ LABEL_22:
       [ManagedAssetsClient(AnchorPersist) addOrUpdateDataForAnchorIdentifier:clientIdentifier:data:completion:];
     }
 
-    if (!a6)
+    if (!error)
     {
       goto LABEL_22;
     }
@@ -2972,7 +2972,7 @@ LABEL_22:
       [ManagedAssetsClient(AnchorPersist) addOrUpdateDataForAnchorIdentifier:clientIdentifier:data:completion:];
     }
 
-    if (!a6)
+    if (!error)
     {
       goto LABEL_22;
     }
@@ -2982,7 +2982,7 @@ LABEL_22:
 
 LABEL_21:
   v17 = 0;
-  *a6 = v20;
+  *error = v20;
 LABEL_31:
 
   v36 = *MEMORY[0x277D85DE8];
@@ -3039,34 +3039,34 @@ void __101__ManagedAssetsClient_AnchorPersist__addOrUpdateDataForAnchorIdentifie
   }
 }
 
-- (BOOL)removeDataForAnchorIdentifiers:(id)a3 clientIdentifier:(id)a4 error:(id *)a5
+- (BOOL)removeDataForAnchorIdentifiers:(id)identifiers clientIdentifier:(id)identifier error:(id *)error
 {
   v39 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  identifiersCopy = identifiers;
+  identifierCopy = identifier;
   v10 = _log_0;
   if (os_log_type_enabled(_log_0, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    *&buf[4] = v8;
+    *&buf[4] = identifiersCopy;
     *&buf[12] = 2112;
-    *&buf[14] = v9;
+    *&buf[14] = identifierCopy;
     _os_log_impl(&dword_258089000, v10, OS_LOG_TYPE_INFO, "sync removeDataForAnchorIdentifiers, anchorIdentifiers: %@ clientIdentifier: %@", buf, 0x16u);
   }
 
-  if (!v8 || ![v8 count])
+  if (!identifiersCopy || ![identifiersCopy count])
   {
     if (os_log_type_enabled(_log_0, OS_LOG_TYPE_ERROR))
     {
       [ManagedAssetsClient(AnchorPersist) removeDataForAnchorIdentifiers:clientIdentifier:error:];
     }
 
-    if (a5)
+    if (error)
     {
       v18 = createManagedAssetError("[ManagedAssetsClient(AnchorPersist) removeDataForAnchorIdentifiers:clientIdentifier:error:]", 203, -20001, 0, 0, @"anchorIdentifiers is nil or zero array", v16, v17, v27);
 LABEL_13:
       v15 = 0;
-      *a5 = v18;
+      *error = v18;
       goto LABEL_24;
     }
 
@@ -3075,14 +3075,14 @@ LABEL_18:
     goto LABEL_24;
   }
 
-  if (!v9)
+  if (!identifierCopy)
   {
     if (os_log_type_enabled(_log_0, OS_LOG_TYPE_ERROR))
     {
       [ManagedAssetsClient(AnchorPersist) addOrUpdateDataForAnchorIdentifier:clientIdentifier:data:completion:];
     }
 
-    if (a5)
+    if (error)
     {
       v18 = createManagedAssetError("[ManagedAssetsClient(AnchorPersist) removeDataForAnchorIdentifiers:clientIdentifier:error:]", 211, -20001, 0, 0, @"clientIdentifier is nil", v19, v20, v27);
       goto LABEL_13;
@@ -3109,9 +3109,9 @@ LABEL_18:
   {
     v14 = 0;
     v15 = 0;
-    if (a5)
+    if (error)
     {
-      *a5 = v13;
+      *error = v13;
     }
   }
 
@@ -3119,7 +3119,7 @@ LABEL_18:
   {
     v21 = MEMORY[0x277CCACA8];
     v34[0] = @"3DAnchors";
-    v34[1] = v9;
+    v34[1] = identifierCopy;
     v22 = [MEMORY[0x277CBEA60] arrayWithObjects:v34 count:2];
     v23 = [v21 pathWithComponents:v22];
 
@@ -3130,14 +3130,14 @@ LABEL_18:
     v29 = v12;
     v14 = v23;
     v30 = v14;
-    v31 = v9;
+    v31 = identifierCopy;
     v32 = buf;
-    [v8 enumerateObjectsUsingBlock:v28];
+    [identifiersCopy enumerateObjectsUsingBlock:v28];
     v24 = *(*&buf[8] + 40);
     v15 = v24 == 0;
-    if (a5 && v24)
+    if (error && v24)
     {
-      *a5 = v24;
+      *error = v24;
     }
   }
 
@@ -3202,34 +3202,34 @@ void __92__ManagedAssetsClient_AnchorPersist__removeDataForAnchorIdentifiers_cli
   }
 }
 
-- (id)getDataForAnchorIdentifier:(id)a3 clientIdentifier:(id)a4 error:(id *)a5
+- (id)getDataForAnchorIdentifier:(id)identifier clientIdentifier:(id)clientIdentifier error:(id *)error
 {
   v51 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  identifierCopy = identifier;
+  clientIdentifierCopy = clientIdentifier;
   v10 = _log_0;
   if (os_log_type_enabled(_log_0, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    *&buf[4] = v8;
+    *&buf[4] = identifierCopy;
     *&buf[12] = 2112;
-    *&buf[14] = v9;
+    *&buf[14] = clientIdentifierCopy;
     _os_log_impl(&dword_258089000, v10, OS_LOG_TYPE_INFO, "sync getDataForAnchorIdentifier, anchorIdentifier: %@ clientIdentifier: %@", buf, 0x16u);
   }
 
-  if (!v8)
+  if (!identifierCopy)
   {
     if (os_log_type_enabled(_log_0, OS_LOG_TYPE_ERROR))
     {
       [ManagedAssetsClient(AnchorPersist) addOrUpdateDataForAnchorIdentifier:clientIdentifier:data:completion:];
     }
 
-    if (a5)
+    if (error)
     {
       v17 = createManagedAssetError("[ManagedAssetsClient(AnchorPersist) getDataForAnchorIdentifier:clientIdentifier:error:]", 265, -20001, 0, 0, @"anchorIdentifier is nil", v15, v16, obj);
 LABEL_16:
       v14 = 0;
-      *a5 = v17;
+      *error = v17;
       goto LABEL_29;
     }
 
@@ -3238,14 +3238,14 @@ LABEL_17:
     goto LABEL_29;
   }
 
-  if (!v9)
+  if (!clientIdentifierCopy)
   {
     if (os_log_type_enabled(_log_0, OS_LOG_TYPE_ERROR))
     {
       [ManagedAssetsClient(AnchorPersist) addOrUpdateDataForAnchorIdentifier:clientIdentifier:data:completion:];
     }
 
-    if (a5)
+    if (error)
     {
       v17 = createManagedAssetError("[ManagedAssetsClient(AnchorPersist) getDataForAnchorIdentifier:clientIdentifier:error:]", 273, -20001, 0, 0, @"clientIdentifier is nil", v18, v19, obj);
       goto LABEL_16;
@@ -3271,9 +3271,9 @@ LABEL_17:
   if (v13)
   {
     v14 = 0;
-    if (a5)
+    if (error)
     {
-      *a5 = v13;
+      *error = v13;
     }
   }
 
@@ -3281,7 +3281,7 @@ LABEL_17:
   {
     v20 = MEMORY[0x277CCACA8];
     v46[0] = @"3DAnchors";
-    v46[1] = v9;
+    v46[1] = clientIdentifierCopy;
     v21 = [MEMORY[0x277CBEA60] arrayWithObjects:v46 count:2];
     v22 = [v20 pathWithComponents:v21];
 
@@ -3291,7 +3291,7 @@ LABEL_17:
     v40 = __Block_byref_object_copy__1;
     v41 = __Block_byref_object_dispose__1;
     v42 = 0;
-    v23 = [v8 UUIDString];
+    uUIDString = [identifierCopy UUIDString];
     v44 = @"group";
     v45 = v22;
     v24 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v45 forKeys:&v44 count:1];
@@ -3300,11 +3300,11 @@ LABEL_17:
     v32[2] = __88__ManagedAssetsClient_AnchorPersist__getDataForAnchorIdentifier_clientIdentifier_error___block_invoke_23;
     v32[3] = &unk_27985F030;
     v35 = &v37;
-    v25 = v8;
+    v25 = identifierCopy;
     v33 = v25;
-    v34 = v9;
+    v34 = clientIdentifierCopy;
     v36 = buf;
-    [v12 openFile:v23 mode:1 attributes:v24 reply:v32];
+    [v12 openFile:uUIDString mode:1 attributes:v24 reply:v32];
 
     v26 = (*&buf[8] + 40);
     if (*(*&buf[8] + 40))
@@ -3326,9 +3326,9 @@ LABEL_17:
       [v38[5] closeFile];
     }
 
-    if (a5)
+    if (error)
     {
-      *a5 = *(*&buf[8] + 40);
+      *error = *(*&buf[8] + 40);
     }
 
     v14 = v27;
@@ -3383,34 +3383,34 @@ void __88__ManagedAssetsClient_AnchorPersist__getDataForAnchorIdentifier_clientI
   objc_storeStrong((*(*(a1 + v11) + 8) + 40), v6);
 }
 
-- (void)getDataForAllAnchors:(id)a3 completion:(id)a4
+- (void)getDataForAllAnchors:(id)anchors completion:(id)completion
 {
   v35 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  anchorsCopy = anchors;
+  completionCopy = completion;
   v8 = _log_0;
   if (os_log_type_enabled(_log_0, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v34 = v6;
+    v34 = anchorsCopy;
     _os_log_impl(&dword_258089000, v8, OS_LOG_TYPE_INFO, "async getDataForAllAnchors, clientIdentifier: %@", buf, 0xCu);
   }
 
-  if (v7)
+  if (completionCopy)
   {
-    if (v6)
+    if (anchorsCopy)
     {
       conn = self->_conn;
       v28[0] = MEMORY[0x277D85DD0];
       v28[1] = 3221225472;
       v28[2] = __70__ManagedAssetsClient_AnchorPersist__getDataForAllAnchors_completion___block_invoke;
       v28[3] = &unk_27985EF18;
-      v10 = v7;
+      v10 = completionCopy;
       v29 = v10;
       v11 = [(NSXPCConnection *)conn remoteObjectProxyWithErrorHandler:v28];
       v12 = MEMORY[0x277CCACA8];
       v32[0] = @"3DAnchors";
-      v32[1] = v6;
+      v32[1] = anchorsCopy;
       v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v32 count:2];
       v14 = [v12 pathWithComponents:v13];
 
@@ -3424,7 +3424,7 @@ void __88__ManagedAssetsClient_AnchorPersist__getDataForAnchorIdentifier_clientI
       v27 = v10;
       v24 = v11;
       v25 = v14;
-      v26 = v6;
+      v26 = anchorsCopy;
       v16 = v14;
       v17 = v11;
       [v17 queryFile:@"/" attributes:v15 reply:v23];
@@ -3438,7 +3438,7 @@ void __88__ManagedAssetsClient_AnchorPersist__getDataForAnchorIdentifier_clientI
       }
 
       v20 = createManagedAssetError("[ManagedAssetsClient(AnchorPersist) getDataForAllAnchors:completion:]", 337, -20001, 0, 0, @"clientIdentifier is nil", v18, v19, v22);
-      (*(v7 + 2))(v7, 0, v20);
+      (*(completionCopy + 2))(completionCopy, 0, v20);
     }
   }
 
@@ -3557,25 +3557,25 @@ void __70__ManagedAssetsClient_AnchorPersist__getDataForAllAnchors_completion___
   [v5 setObject:v9 forKey:v8];
 }
 
-- (void)getDataForAnchorIdentifier:(id)a3 clientIdentifier:(id)a4 completion:(id)a5
+- (void)getDataForAnchorIdentifier:(id)identifier clientIdentifier:(id)clientIdentifier completion:(id)completion
 {
   v27 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  clientIdentifierCopy = clientIdentifier;
+  completionCopy = completion;
   v11 = _log_0;
   if (os_log_type_enabled(_log_0, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v24 = v8;
+    v24 = identifierCopy;
     v25 = 2112;
-    v26 = v9;
+    v26 = clientIdentifierCopy;
     _os_log_impl(&dword_258089000, v11, OS_LOG_TYPE_INFO, "async getDataForAnchorIdentifier, anchorIdentifier: %@ clientIdentifier: %@", buf, 0x16u);
   }
 
-  if (v8)
+  if (identifierCopy)
   {
-    if (v9)
+    if (clientIdentifierCopy)
     {
       backgroundQueue = self->_backgroundQueue;
       v19[0] = MEMORY[0x277D85DD0];
@@ -3583,9 +3583,9 @@ void __70__ManagedAssetsClient_AnchorPersist__getDataForAllAnchors_completion___
       v19[2] = __93__ManagedAssetsClient_AnchorPersist__getDataForAnchorIdentifier_clientIdentifier_completion___block_invoke;
       v19[3] = &unk_27985F120;
       v19[4] = self;
-      v22 = v10;
-      v20 = v9;
-      v21 = v8;
+      v22 = completionCopy;
+      v20 = clientIdentifierCopy;
+      v21 = identifierCopy;
       dispatch_async(backgroundQueue, v19);
 
       v13 = 0;
@@ -3613,9 +3613,9 @@ void __70__ManagedAssetsClient_AnchorPersist__getDataForAllAnchors_completion___
   }
 
   v13 = createManagedAssetError("[ManagedAssetsClient(AnchorPersist) getDataForAnchorIdentifier:clientIdentifier:completion:]", v17, -20001, 0, 0, v16, v14, v15, v19[0]);
-  if (v10)
+  if (completionCopy)
   {
-    (*(v10 + 2))(v10, 0, v13);
+    (*(completionCopy + 2))(completionCopy, 0, v13);
   }
 
 LABEL_14:
@@ -3712,10 +3712,10 @@ void __93__ManagedAssetsClient_AnchorPersist__getDataForAnchorIdentifier_clientI
   }
 }
 
-- (id)getDataForAllAnchors:(id)a3 error:(id *)a4
+- (id)getDataForAllAnchors:(id)anchors error:(id *)error
 {
   v54 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  anchorsCopy = anchors;
   v38 = 0;
   v39 = &v38;
   v40 = 0x3032000000;
@@ -3726,11 +3726,11 @@ void __93__ManagedAssetsClient_AnchorPersist__getDataForAnchorIdentifier_clientI
   if (os_log_type_enabled(_log_0, OS_LOG_TYPE_INFO))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v6;
+    *(&buf + 4) = anchorsCopy;
     _os_log_impl(&dword_258089000, v7, OS_LOG_TYPE_INFO, "sync getDataForAllAnchors, clientIdentifier: %@", &buf, 0xCu);
   }
 
-  if (v6)
+  if (anchorsCopy)
   {
     *&buf = 0;
     *(&buf + 1) = &buf;
@@ -3748,9 +3748,9 @@ void __93__ManagedAssetsClient_AnchorPersist__getDataForAnchorIdentifier_clientI
     v10 = *(*(&buf + 1) + 40);
     if (v10)
     {
-      if (a4)
+      if (error)
       {
-        *a4 = v10;
+        *error = v10;
       }
 
       v11 = v39[5];
@@ -3766,7 +3766,7 @@ void __93__ManagedAssetsClient_AnchorPersist__getDataForAnchorIdentifier_clientI
       v36 = 0;
       v14 = MEMORY[0x277CCACA8];
       v48[0] = @"3DAnchors";
-      v48[1] = v6;
+      v48[1] = anchorsCopy;
       v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v48 count:2];
       v16 = [v14 pathWithComponents:v15];
 
@@ -3784,9 +3784,9 @@ void __93__ManagedAssetsClient_AnchorPersist__getDataForAnchorIdentifier_clientI
       v18 = *(*(&buf + 1) + 40);
       if (v18)
       {
-        if (a4)
+        if (error)
         {
-          *a4 = v18;
+          *error = v18;
         }
 
         v11 = v39[5];
@@ -3804,18 +3804,18 @@ void __93__ManagedAssetsClient_AnchorPersist__getDataForAnchorIdentifier_clientI
         v25[1] = 3221225472;
         v25[2] = __65__ManagedAssetsClient_AnchorPersist__getDataForAllAnchors_error___block_invoke_3;
         v25[3] = &unk_27985F1C0;
-        v26 = v6;
+        v26 = anchorsCopy;
         p_buf = &buf;
         v28 = &v38;
         v29 = &v31;
         [v9 openFiles:v19 mode:1 attributes:v20 reply:v25];
 
-        if (a4)
+        if (error)
         {
           v21 = *(*(&buf + 1) + 40);
           if (v21)
           {
-            *a4 = v21;
+            *error = v21;
           }
         }
 
@@ -3835,9 +3835,9 @@ void __93__ManagedAssetsClient_AnchorPersist__getDataForAnchorIdentifier_clientI
       [ManagedAssetsClient(AnchorPersist) addOrUpdateDataForAnchorIdentifier:clientIdentifier:data:completion:];
     }
 
-    if (a4)
+    if (error)
     {
-      *a4 = createManagedAssetError("[ManagedAssetsClient(AnchorPersist) getDataForAllAnchors:error:]", 457, -20001, 0, 0, @"clientIdentifier is nil", v12, v13, v24);
+      *error = createManagedAssetError("[ManagedAssetsClient(AnchorPersist) getDataForAllAnchors:error:]", 457, -20001, 0, 0, @"clientIdentifier is nil", v12, v13, v24);
     }
 
     v11 = v39[5];
@@ -3938,19 +3938,19 @@ void __65__ManagedAssetsClient_AnchorPersist__getDataForAllAnchors_error___block
   [v5 setObject:v9 forKey:v8];
 }
 
-- (BOOL)removeDataForAllAnchors:(id)a3 error:(id *)a4
+- (BOOL)removeDataForAllAnchors:(id)anchors error:(id *)error
 {
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  anchorsCopy = anchors;
   v7 = _log_0;
   if (os_log_type_enabled(_log_0, OS_LOG_TYPE_INFO))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v6;
+    *(&buf + 4) = anchorsCopy;
     _os_log_impl(&dword_258089000, v7, OS_LOG_TYPE_INFO, "sync removeDataForAllAnchors, clientIdentifier: %@", &buf, 0xCu);
   }
 
-  if (v6)
+  if (anchorsCopy)
   {
     *&buf = 0;
     *(&buf + 1) = &buf;
@@ -3969,9 +3969,9 @@ void __65__ManagedAssetsClient_AnchorPersist__getDataForAllAnchors_error___block
     if (v10)
     {
       v11 = 0;
-      if (a4)
+      if (error)
       {
-        *a4 = v10;
+        *error = v10;
       }
     }
 
@@ -3979,7 +3979,7 @@ void __65__ManagedAssetsClient_AnchorPersist__getDataForAllAnchors_error___block
     {
       v14 = MEMORY[0x277CCACA8];
       v28[0] = @"3DAnchors";
-      v28[1] = v6;
+      v28[1] = anchorsCopy;
       v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v28 count:2];
       v16 = [v14 pathWithComponents:v15];
 
@@ -3990,15 +3990,15 @@ void __65__ManagedAssetsClient_AnchorPersist__getDataForAllAnchors_error___block
       v22[1] = 3221225472;
       v22[2] = __68__ManagedAssetsClient_AnchorPersist__removeDataForAllAnchors_error___block_invoke_46;
       v22[3] = &unk_27985F1E8;
-      v23 = v6;
+      v23 = anchorsCopy;
       p_buf = &buf;
       [v9 deleteFile:@"/" attributes:v17 reply:v22];
 
       v18 = *(*(&buf + 1) + 40);
       v11 = v18 == 0;
-      if (a4 && v18)
+      if (error && v18)
       {
-        *a4 = v18;
+        *error = v18;
       }
     }
 
@@ -4012,10 +4012,10 @@ void __65__ManagedAssetsClient_AnchorPersist__getDataForAllAnchors_error___block
       [ManagedAssetsClient(AnchorPersist) addOrUpdateDataForAnchorIdentifier:clientIdentifier:data:completion:];
     }
 
-    if (a4)
+    if (error)
     {
       createManagedAssetError("[ManagedAssetsClient(AnchorPersist) removeDataForAllAnchors:error:]", 538, -20001, 0, 0, @"clientIdentifier is nil", v12, v13, v21);
-      *a4 = v11 = 0;
+      *error = v11 = 0;
     }
 
     else
@@ -4055,34 +4055,34 @@ void __68__ManagedAssetsClient_AnchorPersist__removeDataForAllAnchors_error___bl
   }
 }
 
-- (BOOL)addAnchorGroup:(id)a3 clientIdentifier:(id)a4 error:(id *)a5
+- (BOOL)addAnchorGroup:(id)group clientIdentifier:(id)identifier error:(id *)error
 {
   v32 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  groupCopy = group;
+  identifierCopy = identifier;
   v10 = _log_0;
   if (os_log_type_enabled(_log_0, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    *&buf[4] = v8;
+    *&buf[4] = groupCopy;
     *&buf[12] = 2112;
-    *&buf[14] = v9;
+    *&buf[14] = identifierCopy;
     _os_log_impl(&dword_258089000, v10, OS_LOG_TYPE_INFO, "sync addAnchorGroup, groupIdentifier: %@ clientIdentifier: %@", buf, 0x16u);
   }
 
-  if (!v8)
+  if (!groupCopy)
   {
     if (os_log_type_enabled(_log_0, OS_LOG_TYPE_ERROR))
     {
       [ManagedAssetsClient(AnchorPersist) addAnchorGroup:clientIdentifier:error:];
     }
 
-    if (a5)
+    if (error)
     {
       v17 = createManagedAssetError("[ManagedAssetsClient(AnchorPersist) addAnchorGroup:clientIdentifier:error:]", 589, -20001, 0, 0, @"groupIdentifier is nil", v15, v16, v23[0]);
 LABEL_16:
       v14 = 0;
-      *a5 = v17;
+      *error = v17;
       goto LABEL_23;
     }
 
@@ -4091,14 +4091,14 @@ LABEL_17:
     goto LABEL_23;
   }
 
-  if (!v9)
+  if (!identifierCopy)
   {
     if (os_log_type_enabled(_log_0, OS_LOG_TYPE_ERROR))
     {
       [ManagedAssetsClient(AnchorPersist) addOrUpdateDataForAnchorIdentifier:clientIdentifier:data:completion:];
     }
 
-    if (a5)
+    if (error)
     {
       v17 = createManagedAssetError("[ManagedAssetsClient(AnchorPersist) addAnchorGroup:clientIdentifier:error:]", 597, -20001, 0, 0, @"clientIdentifier is nil", v18, v19, v23[0]);
       goto LABEL_16;
@@ -4124,9 +4124,9 @@ LABEL_17:
   if (v13)
   {
     v14 = 0;
-    if (a5)
+    if (error)
     {
-      *a5 = v13;
+      *error = v13;
     }
   }
 
@@ -4136,15 +4136,15 @@ LABEL_17:
     v23[1] = 3221225472;
     v23[2] = __76__ManagedAssetsClient_AnchorPersist__addAnchorGroup_clientIdentifier_error___block_invoke_50;
     v23[3] = &unk_27985F210;
-    v24 = v8;
-    v25 = v9;
+    v24 = groupCopy;
+    v25 = identifierCopy;
     v26 = buf;
     [v12 AddAnchorGroup:v24 clientIdentifier:v25 completion:v23];
     v20 = *(*&buf[8] + 40);
     v14 = v20 == 0;
-    if (a5 && v20)
+    if (error && v20)
     {
-      *a5 = v20;
+      *error = v20;
     }
   }
 
@@ -4182,34 +4182,34 @@ void __76__ManagedAssetsClient_AnchorPersist__addAnchorGroup_clientIdentifier_er
   }
 }
 
-- (BOOL)removeAnchorGroup:(id)a3 clientIdentifier:(id)a4 error:(id *)a5
+- (BOOL)removeAnchorGroup:(id)group clientIdentifier:(id)identifier error:(id *)error
 {
   v32 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  groupCopy = group;
+  identifierCopy = identifier;
   v10 = _log_0;
   if (os_log_type_enabled(_log_0, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    *&buf[4] = v8;
+    *&buf[4] = groupCopy;
     *&buf[12] = 2112;
-    *&buf[14] = v9;
+    *&buf[14] = identifierCopy;
     _os_log_impl(&dword_258089000, v10, OS_LOG_TYPE_INFO, "sync removeAnchorGroup, groupIdentifier: %@ clientIdentifier: %@", buf, 0x16u);
   }
 
-  if (!v8)
+  if (!groupCopy)
   {
     if (os_log_type_enabled(_log_0, OS_LOG_TYPE_ERROR))
     {
       [ManagedAssetsClient(AnchorPersist) addAnchorGroup:clientIdentifier:error:];
     }
 
-    if (a5)
+    if (error)
     {
       v17 = createManagedAssetError("[ManagedAssetsClient(AnchorPersist) removeAnchorGroup:clientIdentifier:error:]", 645, -20001, 0, 0, @"groupIdentifier is nil", v15, v16, v23[0]);
 LABEL_16:
       v14 = 0;
-      *a5 = v17;
+      *error = v17;
       goto LABEL_23;
     }
 
@@ -4218,14 +4218,14 @@ LABEL_17:
     goto LABEL_23;
   }
 
-  if (!v9)
+  if (!identifierCopy)
   {
     if (os_log_type_enabled(_log_0, OS_LOG_TYPE_ERROR))
     {
       [ManagedAssetsClient(AnchorPersist) addOrUpdateDataForAnchorIdentifier:clientIdentifier:data:completion:];
     }
 
-    if (a5)
+    if (error)
     {
       v17 = createManagedAssetError("[ManagedAssetsClient(AnchorPersist) removeAnchorGroup:clientIdentifier:error:]", 653, -20001, 0, 0, @"clientIdentifier is nil", v18, v19, v23[0]);
       goto LABEL_16;
@@ -4251,9 +4251,9 @@ LABEL_17:
   if (v13)
   {
     v14 = 0;
-    if (a5)
+    if (error)
     {
-      *a5 = v13;
+      *error = v13;
     }
   }
 
@@ -4263,15 +4263,15 @@ LABEL_17:
     v23[1] = 3221225472;
     v23[2] = __79__ManagedAssetsClient_AnchorPersist__removeAnchorGroup_clientIdentifier_error___block_invoke_51;
     v23[3] = &unk_27985F210;
-    v24 = v8;
-    v25 = v9;
+    v24 = groupCopy;
+    v25 = identifierCopy;
     v26 = buf;
     [v12 RemoveAnchorGroup:v24 clientIdentifier:v25 completion:v23];
     v20 = *(*&buf[8] + 40);
     v14 = v20 == 0;
-    if (a5 && v20)
+    if (error && v20)
     {
-      *a5 = v20;
+      *error = v20;
     }
   }
 
@@ -4309,10 +4309,10 @@ void __79__ManagedAssetsClient_AnchorPersist__removeAnchorGroup_clientIdentifier
   }
 }
 
-- (id)getAllAnchorGroupsForClient:(id)a3 error:(id *)a4
+- (id)getAllAnchorGroupsForClient:(id)client error:(id *)error
 {
   v32 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  clientCopy = client;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -4323,11 +4323,11 @@ void __79__ManagedAssetsClient_AnchorPersist__removeAnchorGroup_clientIdentifier
   if (os_log_type_enabled(_log_0, OS_LOG_TYPE_INFO))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v6;
+    *(&buf + 4) = clientCopy;
     _os_log_impl(&dword_258089000, v7, OS_LOG_TYPE_INFO, "sync getAllAnchorGroupsForClient, clientIdentifier: %@", &buf, 0xCu);
   }
 
-  if (v6)
+  if (clientCopy)
   {
     *&buf = 0;
     *(&buf + 1) = &buf;
@@ -4345,9 +4345,9 @@ void __79__ManagedAssetsClient_AnchorPersist__removeAnchorGroup_clientIdentifier
     v10 = *(*(&buf + 1) + 40);
     if (v10)
     {
-      if (a4)
+      if (error)
       {
-        *a4 = v10;
+        *error = v10;
       }
 
       v11 = v22[5];
@@ -4359,13 +4359,13 @@ void __79__ManagedAssetsClient_AnchorPersist__removeAnchorGroup_clientIdentifier
       v16[1] = 3221225472;
       v16[2] = __72__ManagedAssetsClient_AnchorPersist__getAllAnchorGroupsForClient_error___block_invoke_52;
       v16[3] = &unk_27985F238;
-      v17 = v6;
+      v17 = clientCopy;
       p_buf = &buf;
       v19 = &v21;
       [v9 GetAllAnchorGroups:v17 completion:v16];
-      if (a4)
+      if (error)
       {
-        *a4 = *(*(&buf + 1) + 40);
+        *error = *(*(&buf + 1) + 40);
       }
 
       v11 = v22[5];
@@ -4381,9 +4381,9 @@ void __79__ManagedAssetsClient_AnchorPersist__removeAnchorGroup_clientIdentifier
       [ManagedAssetsClient(AnchorPersist) addOrUpdateDataForAnchorIdentifier:clientIdentifier:data:completion:];
     }
 
-    if (a4)
+    if (error)
     {
-      *a4 = createManagedAssetError("[ManagedAssetsClient(AnchorPersist) getAllAnchorGroupsForClient:error:]", 700, -20001, 0, 0, @"clientIdentifier is nil", v12, v13, v16[0]);
+      *error = createManagedAssetError("[ManagedAssetsClient(AnchorPersist) getAllAnchorGroupsForClient:error:]", 700, -20001, 0, 0, @"clientIdentifier is nil", v12, v13, v16[0]);
     }
 
     v11 = v22[5];
@@ -4433,19 +4433,19 @@ void __72__ManagedAssetsClient_AnchorPersist__getAllAnchorGroupsForClient_error_
   objc_storeStrong((*(*(a1 + v8) + 8) + 40), v4);
 }
 
-- (BOOL)removeAllAnchorGroupsForClient:(id)a3 error:(id *)a4
+- (BOOL)removeAllAnchorGroupsForClient:(id)client error:(id *)error
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  clientCopy = client;
   v7 = _log_0;
   if (os_log_type_enabled(_log_0, OS_LOG_TYPE_INFO))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v6;
+    *(&buf + 4) = clientCopy;
     _os_log_impl(&dword_258089000, v7, OS_LOG_TYPE_INFO, "sync removeAllAnchorGroupsForClient, clientIdentifier: %@", &buf, 0xCu);
   }
 
-  if (v6)
+  if (clientCopy)
   {
     *&buf = 0;
     *(&buf + 1) = &buf;
@@ -4464,9 +4464,9 @@ void __72__ManagedAssetsClient_AnchorPersist__getAllAnchorGroupsForClient_error_
     if (v10)
     {
       v11 = 0;
-      if (a4)
+      if (error)
       {
-        *a4 = v10;
+        *error = v10;
       }
     }
 
@@ -4476,14 +4476,14 @@ void __72__ManagedAssetsClient_AnchorPersist__getAllAnchorGroupsForClient_error_
       v18[1] = 3221225472;
       v18[2] = __75__ManagedAssetsClient_AnchorPersist__removeAllAnchorGroupsForClient_error___block_invoke_54;
       v18[3] = &unk_27985F1E8;
-      v19 = v6;
+      v19 = clientCopy;
       p_buf = &buf;
       [v9 RemoveAllAnchorGroups:v19 completion:v18];
       v14 = *(*(&buf + 1) + 40);
       v11 = v14 == 0;
-      if (a4 && v14)
+      if (error && v14)
       {
-        *a4 = v14;
+        *error = v14;
       }
     }
 
@@ -4497,10 +4497,10 @@ void __72__ManagedAssetsClient_AnchorPersist__getAllAnchorGroupsForClient_error_
       [ManagedAssetsClient(AnchorPersist) addOrUpdateDataForAnchorIdentifier:clientIdentifier:data:completion:];
     }
 
-    if (a4)
+    if (error)
     {
       createManagedAssetError("[ManagedAssetsClient(AnchorPersist) removeAllAnchorGroupsForClient:error:]", 743, -20001, 0, 0, @"clientIdentifier is nil", v12, v13, v17);
-      *a4 = v11 = 0;
+      *error = v11 = 0;
     }
 
     else
@@ -4540,26 +4540,26 @@ void __75__ManagedAssetsClient_AnchorPersist__removeAllAnchorGroupsForClient_err
   }
 }
 
-- (void)createKVStore:(id)a3 recordFields:(id)a4 attributes:(id)a5 completion:(id)a6
+- (void)createKVStore:(id)store recordFields:(id)fields attributes:(id)attributes completion:(id)completion
 {
   v33 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  storeCopy = store;
+  fieldsCopy = fields;
+  attributesCopy = attributes;
+  completionCopy = completion;
   v14 = _log_1;
   if (os_log_type_enabled(_log_1, OS_LOG_TYPE_DEFAULT))
   {
     v17 = v14;
-    v18 = [v12 objectForKeyedSubscript:@"group"];
+    v18 = [attributesCopy objectForKeyedSubscript:@"group"];
     *buf = 138412546;
-    v30 = v10;
+    v30 = storeCopy;
     v31 = 2112;
     v32 = v18;
     _os_log_impl(&dword_258089000, v17, OS_LOG_TYPE_DEFAULT, "async createKVStore: %@ group: %@", buf, 0x16u);
   }
 
-  if (v13)
+  if (completionCopy)
   {
     conn = self->_conn;
     v27[0] = MEMORY[0x277D85DD0];
@@ -4567,17 +4567,17 @@ void __75__ManagedAssetsClient_AnchorPersist__removeAllAnchorGroupsForClient_err
     v27[2] = __81__ManagedAssetsClient_KVStore__createKVStore_recordFields_attributes_completion___block_invoke;
     v27[3] = &unk_27985EF40;
     v27[4] = self;
-    v20 = v13;
+    v20 = completionCopy;
     v28 = v20;
     v21 = [(NSXPCConnection *)conn remoteObjectProxyWithErrorHandler:v27];
-    v22 = createFieldsArray(v11);
+    v22 = createFieldsArray(fieldsCopy);
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
     v25[2] = __81__ManagedAssetsClient_KVStore__createKVStore_recordFields_attributes_completion___block_invoke_2;
     v25[3] = &unk_27985EF40;
     v25[4] = self;
     v26 = v20;
-    [v21 createKVStore:v10 fields:v22 attributes:v12 reply:v25];
+    [v21 createKVStore:storeCopy fields:v22 attributes:attributesCopy reply:v25];
   }
 
   else
@@ -4647,12 +4647,12 @@ uint64_t __81__ManagedAssetsClient_KVStore__createKVStore_recordFields_attribute
   return (*(*(a1 + 40) + 16))();
 }
 
-- (BOOL)createKVStore:(id)a3 recordFields:(id)a4 attributes:(id)a5 error:(id *)a6
+- (BOOL)createKVStore:(id)store recordFields:(id)fields attributes:(id)attributes error:(id *)error
 {
   v41 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  storeCopy = store;
+  fieldsCopy = fields;
+  attributesCopy = attributes;
   v31 = 0;
   v32 = &v31;
   v33 = 0x3032000000;
@@ -4666,9 +4666,9 @@ uint64_t __81__ManagedAssetsClient_KVStore__createKVStore_recordFields_attribute
   v13 = _log_1;
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [v12 objectForKeyedSubscript:@"group"];
+    v14 = [attributesCopy objectForKeyedSubscript:@"group"];
     *buf = 138412546;
-    v38 = v10;
+    v38 = storeCopy;
     v39 = 2112;
     v40 = v14;
     _os_log_impl(&dword_258089000, v13, OS_LOG_TYPE_DEFAULT, "sync createKVStore: %@ group: %@", buf, 0x16u);
@@ -4681,20 +4681,20 @@ uint64_t __81__ManagedAssetsClient_KVStore__createKVStore_recordFields_attribute
   v26[3] = &unk_27985EC00;
   v26[4] = &v31;
   v16 = [(NSXPCConnection *)conn synchronousRemoteObjectProxyWithErrorHandler:v26];
-  v17 = createFieldsArray(v11);
+  v17 = createFieldsArray(fieldsCopy);
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __76__ManagedAssetsClient_KVStore__createKVStore_recordFields_attributes_error___block_invoke_35;
   v22[3] = &unk_27985F2B0;
   v24 = &v31;
-  v18 = v10;
+  v18 = storeCopy;
   v23 = v18;
   v25 = &v27;
-  [v16 createKVStore:v18 fields:v17 attributes:v12 reply:v22];
+  [v16 createKVStore:v18 fields:v17 attributes:attributesCopy reply:v22];
 
-  if (a6)
+  if (error)
   {
-    *a6 = v32[5];
+    *error = v32[5];
   }
 
   v19 = *(v28 + 24);
@@ -4737,26 +4737,26 @@ void __76__ManagedAssetsClient_KVStore__createKVStore_recordFields_attributes_er
   }
 }
 
-- (void)putDataInStore:(id)a3 records:(id)a4 attributes:(id)a5 completion:(id)a6
+- (void)putDataInStore:(id)store records:(id)records attributes:(id)attributes completion:(id)completion
 {
   v33 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  storeCopy = store;
+  recordsCopy = records;
+  attributesCopy = attributes;
+  completionCopy = completion;
   v14 = _log_1;
   if (os_log_type_enabled(_log_1, OS_LOG_TYPE_INFO))
   {
     v17 = v14;
-    v18 = [v12 objectForKeyedSubscript:@"group"];
+    v18 = [attributesCopy objectForKeyedSubscript:@"group"];
     *buf = 138412546;
-    v30 = v10;
+    v30 = storeCopy;
     v31 = 2112;
     v32 = v18;
     _os_log_impl(&dword_258089000, v17, OS_LOG_TYPE_INFO, "async putDataInStore: %@ group: %@", buf, 0x16u);
   }
 
-  if (v13)
+  if (completionCopy)
   {
     conn = self->_conn;
     v27[0] = MEMORY[0x277D85DD0];
@@ -4764,17 +4764,17 @@ void __76__ManagedAssetsClient_KVStore__createKVStore_recordFields_attributes_er
     v27[2] = __77__ManagedAssetsClient_KVStore__putDataInStore_records_attributes_completion___block_invoke;
     v27[3] = &unk_27985EF40;
     v27[4] = self;
-    v20 = v13;
+    v20 = completionCopy;
     v28 = v20;
     v21 = [(NSXPCConnection *)conn remoteObjectProxyWithErrorHandler:v27];
-    v22 = convertUpdateInput(v11);
+    v22 = convertUpdateInput(recordsCopy);
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
     v25[2] = __77__ManagedAssetsClient_KVStore__putDataInStore_records_attributes_completion___block_invoke_2;
     v25[3] = &unk_27985EF40;
     v25[4] = self;
     v26 = v20;
-    [v21 putDataInStore:v10 records:v22 attributes:v12 reply:v25];
+    [v21 putDataInStore:storeCopy records:v22 attributes:attributesCopy reply:v25];
   }
 
   else
@@ -4844,12 +4844,12 @@ uint64_t __77__ManagedAssetsClient_KVStore__putDataInStore_records_attributes_co
   return (*(*(a1 + 40) + 16))();
 }
 
-- (BOOL)putDataInStore:(id)a3 records:(id)a4 attributes:(id)a5 error:(id *)a6
+- (BOOL)putDataInStore:(id)store records:(id)records attributes:(id)attributes error:(id *)error
 {
   v41 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  storeCopy = store;
+  recordsCopy = records;
+  attributesCopy = attributes;
   v31 = 0;
   v32 = &v31;
   v33 = 0x3032000000;
@@ -4863,9 +4863,9 @@ uint64_t __77__ManagedAssetsClient_KVStore__putDataInStore_records_attributes_co
   v13 = _log_1;
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
-    v14 = [v12 objectForKeyedSubscript:@"group"];
+    v14 = [attributesCopy objectForKeyedSubscript:@"group"];
     *buf = 138412546;
-    v38 = v10;
+    v38 = storeCopy;
     v39 = 2112;
     v40 = v14;
     _os_log_impl(&dword_258089000, v13, OS_LOG_TYPE_INFO, "sync putDataInStore: %@ group: %@", buf, 0x16u);
@@ -4878,20 +4878,20 @@ uint64_t __77__ManagedAssetsClient_KVStore__putDataInStore_records_attributes_co
   v26[3] = &unk_27985EC00;
   v26[4] = &v31;
   v16 = [(NSXPCConnection *)conn synchronousRemoteObjectProxyWithErrorHandler:v26];
-  v17 = convertUpdateInput(v11);
+  v17 = convertUpdateInput(recordsCopy);
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __72__ManagedAssetsClient_KVStore__putDataInStore_records_attributes_error___block_invoke_38;
   v22[3] = &unk_27985F2B0;
   v24 = &v31;
-  v18 = v10;
+  v18 = storeCopy;
   v23 = v18;
   v25 = &v27;
-  [v16 putDataInStore:v18 records:v17 attributes:v12 reply:v22];
+  [v16 putDataInStore:v18 records:v17 attributes:attributesCopy reply:v22];
 
-  if (a6)
+  if (error)
   {
-    *a6 = v32[5];
+    *error = v32[5];
   }
 
   v19 = *(v28 + 24);
@@ -4934,23 +4934,23 @@ void __72__ManagedAssetsClient_KVStore__putDataInStore_records_attributes_error_
   }
 }
 
-- (void)updateDataInStore:(id)a3 keys:(id)a4 values:(id)a5 attributes:(id)a6 completion:(id)a7
+- (void)updateDataInStore:(id)store keys:(id)keys values:(id)values attributes:(id)attributes completion:(id)completion
 {
   v35 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v18 = a7;
-  if (v18)
+  storeCopy = store;
+  keysCopy = keys;
+  valuesCopy = values;
+  attributesCopy = attributes;
+  completionCopy = completion;
+  if (completionCopy)
   {
     v19 = _log_1;
     if (os_log_type_enabled(_log_1, OS_LOG_TYPE_INFO))
     {
       v20 = v19;
-      v21 = [v15 objectForKeyedSubscript:@"group"];
+      v21 = [attributesCopy objectForKeyedSubscript:@"group"];
       *buf = 138412546;
-      v32 = v12;
+      v32 = storeCopy;
       v33 = 2112;
       v34 = v21;
       _os_log_impl(&dword_258089000, v20, OS_LOG_TYPE_INFO, "async updateDataInStore: %@ group: %@", buf, 0x16u);
@@ -4962,7 +4962,7 @@ void __72__ManagedAssetsClient_KVStore__putDataInStore_records_attributes_error_
     v29[2] = __84__ManagedAssetsClient_KVStore__updateDataInStore_keys_values_attributes_completion___block_invoke;
     v29[3] = &unk_27985EF40;
     v29[4] = self;
-    v23 = v18;
+    v23 = completionCopy;
     v30 = v23;
     v24 = [(NSXPCConnection *)conn remoteObjectProxyWithErrorHandler:v29];
     v27[0] = MEMORY[0x277D85DD0];
@@ -4971,7 +4971,7 @@ void __72__ManagedAssetsClient_KVStore__putDataInStore_records_attributes_error_
     v27[3] = &unk_27985EF40;
     v27[4] = self;
     v28 = v23;
-    [v24 updateDataInStore:v12 keys:v13 values:v14 attributes:v15 reply:v27];
+    [v24 updateDataInStore:storeCopy keys:keysCopy values:valuesCopy attributes:attributesCopy reply:v27];
   }
 
   else
@@ -5041,13 +5041,13 @@ uint64_t __84__ManagedAssetsClient_KVStore__updateDataInStore_keys_values_attrib
   return (*(*(a1 + 40) + 16))();
 }
 
-- (BOOL)updateDataInStore:(id)a3 keys:(id)a4 values:(id)a5 attributes:(id)a6 error:(id *)a7
+- (BOOL)updateDataInStore:(id)store keys:(id)keys values:(id)values attributes:(id)attributes error:(id *)error
 {
   v43 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  storeCopy = store;
+  keysCopy = keys;
+  valuesCopy = values;
+  attributesCopy = attributes;
   v33 = 0;
   v34 = &v33;
   v35 = 0x3032000000;
@@ -5061,9 +5061,9 @@ uint64_t __84__ManagedAssetsClient_KVStore__updateDataInStore_keys_values_attrib
   v16 = _log_1;
   if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
   {
-    v17 = [v15 objectForKeyedSubscript:@"group"];
+    v17 = [attributesCopy objectForKeyedSubscript:@"group"];
     *buf = 138412546;
-    v40 = v12;
+    v40 = storeCopy;
     v41 = 2112;
     v42 = v17;
     _os_log_impl(&dword_258089000, v16, OS_LOG_TYPE_INFO, "sync updateDataInStore: %@ group: %@", buf, 0x16u);
@@ -5081,13 +5081,13 @@ uint64_t __84__ManagedAssetsClient_KVStore__updateDataInStore_keys_values_attrib
   v24[2] = __79__ManagedAssetsClient_KVStore__updateDataInStore_keys_values_attributes_error___block_invoke_41;
   v24[3] = &unk_27985F2B0;
   v26 = &v33;
-  v20 = v12;
+  v20 = storeCopy;
   v25 = v20;
   v27 = &v29;
-  [v19 updateDataInStore:v20 keys:v13 values:v14 attributes:v15 reply:v24];
-  if (a7)
+  [v19 updateDataInStore:v20 keys:keysCopy values:valuesCopy attributes:attributesCopy reply:v24];
+  if (error)
   {
-    *a7 = v34[5];
+    *error = v34[5];
   }
 
   v21 = *(v30 + 24);
@@ -5130,26 +5130,26 @@ void __79__ManagedAssetsClient_KVStore__updateDataInStore_keys_values_attributes
   }
 }
 
-- (void)queryDataInStore:(id)a3 keys:(id)a4 attributes:(id)a5 completion:(id)a6
+- (void)queryDataInStore:(id)store keys:(id)keys attributes:(id)attributes completion:(id)completion
 {
   v32 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  storeCopy = store;
+  keysCopy = keys;
+  attributesCopy = attributes;
+  completionCopy = completion;
   v14 = _log_1;
   if (os_log_type_enabled(_log_1, OS_LOG_TYPE_INFO))
   {
     v17 = v14;
-    v18 = [v12 objectForKeyedSubscript:@"group"];
+    v18 = [attributesCopy objectForKeyedSubscript:@"group"];
     *buf = 138412546;
-    v29 = v10;
+    v29 = storeCopy;
     v30 = 2112;
     v31 = v18;
     _os_log_impl(&dword_258089000, v17, OS_LOG_TYPE_INFO, "async queryDataInStore: %@ group: %@", buf, 0x16u);
   }
 
-  if (v13)
+  if (completionCopy)
   {
     conn = self->_conn;
     v26[0] = MEMORY[0x277D85DD0];
@@ -5157,7 +5157,7 @@ void __79__ManagedAssetsClient_KVStore__updateDataInStore_keys_values_attributes
     v26[2] = __76__ManagedAssetsClient_KVStore__queryDataInStore_keys_attributes_completion___block_invoke;
     v26[3] = &unk_27985EF40;
     v26[4] = self;
-    v20 = v13;
+    v20 = completionCopy;
     v27 = v20;
     v21 = [(NSXPCConnection *)conn remoteObjectProxyWithErrorHandler:v26];
     v24[0] = MEMORY[0x277D85DD0];
@@ -5166,7 +5166,7 @@ void __79__ManagedAssetsClient_KVStore__updateDataInStore_keys_values_attributes
     v24[3] = &unk_27985F300;
     v24[4] = self;
     v25 = v20;
-    [v21 queryDataInStore:v10 keys:v11 attributes:v12 reply:v24];
+    [v21 queryDataInStore:storeCopy keys:keysCopy attributes:attributesCopy reply:v24];
   }
 
   else
@@ -5248,12 +5248,12 @@ void __76__ManagedAssetsClient_KVStore__queryDataInStore_keys_attributes_complet
   (*(*(a1 + 48) + 16))();
 }
 
-- (id)queryDataInStore:(id)a3 keys:(id)a4 attributes:(id)a5 error:(id *)a6
+- (id)queryDataInStore:(id)store keys:(id)keys attributes:(id)attributes error:(id *)error
 {
   v42 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  storeCopy = store;
+  keysCopy = keys;
+  attributesCopy = attributes;
   v32 = 0;
   v33 = &v32;
   v34 = 0x3032000000;
@@ -5269,9 +5269,9 @@ void __76__ManagedAssetsClient_KVStore__queryDataInStore_keys_attributes_complet
   v13 = _log_1;
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
-    v14 = [v12 objectForKeyedSubscript:@"group"];
+    v14 = [attributesCopy objectForKeyedSubscript:@"group"];
     *buf = 138412546;
-    v39 = v10;
+    v39 = storeCopy;
     v40 = 2112;
     v41 = v14;
     _os_log_impl(&dword_258089000, v13, OS_LOG_TYPE_INFO, "sync queryDataInStore: %@ group: %@", buf, 0x16u);
@@ -5289,13 +5289,13 @@ void __76__ManagedAssetsClient_KVStore__queryDataInStore_keys_attributes_complet
   v21[2] = __71__ManagedAssetsClient_KVStore__queryDataInStore_keys_attributes_error___block_invoke_45;
   v21[3] = &unk_27985F328;
   v23 = &v32;
-  v17 = v10;
+  v17 = storeCopy;
   v22 = v17;
   v24 = &v26;
-  [v16 queryDataInStore:v17 keys:v11 attributes:v12 reply:v21];
-  if (a6)
+  [v16 queryDataInStore:v17 keys:keysCopy attributes:attributesCopy reply:v21];
+  if (error)
   {
-    *a6 = v33[5];
+    *error = v33[5];
   }
 
   v18 = v27[5];
@@ -5345,26 +5345,26 @@ void __71__ManagedAssetsClient_KVStore__queryDataInStore_keys_attributes_error__
   }
 }
 
-- (void)deleteDataInStore:(id)a3 keys:(id)a4 attributes:(id)a5 completion:(id)a6
+- (void)deleteDataInStore:(id)store keys:(id)keys attributes:(id)attributes completion:(id)completion
 {
   v32 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  storeCopy = store;
+  keysCopy = keys;
+  attributesCopy = attributes;
+  completionCopy = completion;
   v14 = _log_1;
   if (os_log_type_enabled(_log_1, OS_LOG_TYPE_INFO))
   {
     v17 = v14;
-    v18 = [v12 objectForKeyedSubscript:@"group"];
+    v18 = [attributesCopy objectForKeyedSubscript:@"group"];
     *buf = 138412546;
-    v29 = v10;
+    v29 = storeCopy;
     v30 = 2112;
     v31 = v18;
     _os_log_impl(&dword_258089000, v17, OS_LOG_TYPE_INFO, "async deleteDataInStore: %@ group: %@", buf, 0x16u);
   }
 
-  if (v13)
+  if (completionCopy)
   {
     conn = self->_conn;
     v26[0] = MEMORY[0x277D85DD0];
@@ -5372,7 +5372,7 @@ void __71__ManagedAssetsClient_KVStore__queryDataInStore_keys_attributes_error__
     v26[2] = __77__ManagedAssetsClient_KVStore__deleteDataInStore_keys_attributes_completion___block_invoke;
     v26[3] = &unk_27985EF40;
     v26[4] = self;
-    v20 = v13;
+    v20 = completionCopy;
     v27 = v20;
     v21 = [(NSXPCConnection *)conn remoteObjectProxyWithErrorHandler:v26];
     v24[0] = MEMORY[0x277D85DD0];
@@ -5381,7 +5381,7 @@ void __71__ManagedAssetsClient_KVStore__queryDataInStore_keys_attributes_error__
     v24[3] = &unk_27985EF40;
     v24[4] = self;
     v25 = v20;
-    [v21 deleteDataInStore:v10 keys:v11 attributes:v12 reply:v24];
+    [v21 deleteDataInStore:storeCopy keys:keysCopy attributes:attributesCopy reply:v24];
   }
 
   else
@@ -5451,12 +5451,12 @@ uint64_t __77__ManagedAssetsClient_KVStore__deleteDataInStore_keys_attributes_co
   return (*(*(a1 + 40) + 16))();
 }
 
-- (BOOL)deleteDataInStore:(id)a3 keys:(id)a4 attributes:(id)a5 error:(id *)a6
+- (BOOL)deleteDataInStore:(id)store keys:(id)keys attributes:(id)attributes error:(id *)error
 {
   v40 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  storeCopy = store;
+  keysCopy = keys;
+  attributesCopy = attributes;
   v30 = 0;
   v31 = &v30;
   v32 = 0x3032000000;
@@ -5470,9 +5470,9 @@ uint64_t __77__ManagedAssetsClient_KVStore__deleteDataInStore_keys_attributes_co
   v13 = _log_1;
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
-    v14 = [v12 objectForKeyedSubscript:@"group"];
+    v14 = [attributesCopy objectForKeyedSubscript:@"group"];
     *buf = 138412546;
-    v37 = v10;
+    v37 = storeCopy;
     v38 = 2112;
     v39 = v14;
     _os_log_impl(&dword_258089000, v13, OS_LOG_TYPE_INFO, "sync deleteDataInStore: %@ group: %@", buf, 0x16u);
@@ -5490,13 +5490,13 @@ uint64_t __77__ManagedAssetsClient_KVStore__deleteDataInStore_keys_attributes_co
   v21[2] = __72__ManagedAssetsClient_KVStore__deleteDataInStore_keys_attributes_error___block_invoke_48;
   v21[3] = &unk_27985F2B0;
   v23 = &v30;
-  v17 = v10;
+  v17 = storeCopy;
   v22 = v17;
   v24 = &v26;
-  [v16 deleteDataInStore:v17 keys:v11 attributes:v12 reply:v21];
-  if (a6)
+  [v16 deleteDataInStore:v17 keys:keysCopy attributes:attributesCopy reply:v21];
+  if (error)
   {
-    *a6 = v31[5];
+    *error = v31[5];
   }
 
   v18 = *(v27 + 24);
@@ -5539,25 +5539,25 @@ void __72__ManagedAssetsClient_KVStore__deleteDataInStore_keys_attributes_error_
   }
 }
 
-- (void)deleteKVStore:(id)a3 attributes:(id)a4 completion:(id)a5
+- (void)deleteKVStore:(id)store attributes:(id)attributes completion:(id)completion
 {
   v29 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  storeCopy = store;
+  attributesCopy = attributes;
+  completionCopy = completion;
   v11 = _log_1;
   if (os_log_type_enabled(_log_1, OS_LOG_TYPE_DEFAULT))
   {
     v14 = v11;
-    v15 = [v9 objectForKeyedSubscript:@"group"];
+    v15 = [attributesCopy objectForKeyedSubscript:@"group"];
     *buf = 138412546;
-    v26 = v8;
+    v26 = storeCopy;
     v27 = 2112;
     v28 = v15;
     _os_log_impl(&dword_258089000, v14, OS_LOG_TYPE_DEFAULT, "async deleteKVStore: %@ group: %@", buf, 0x16u);
   }
 
-  if (v10)
+  if (completionCopy)
   {
     conn = self->_conn;
     v23[0] = MEMORY[0x277D85DD0];
@@ -5565,7 +5565,7 @@ void __72__ManagedAssetsClient_KVStore__deleteDataInStore_keys_attributes_error_
     v23[2] = __68__ManagedAssetsClient_KVStore__deleteKVStore_attributes_completion___block_invoke;
     v23[3] = &unk_27985EF40;
     v23[4] = self;
-    v17 = v10;
+    v17 = completionCopy;
     v24 = v17;
     v18 = [(NSXPCConnection *)conn remoteObjectProxyWithErrorHandler:v23];
     v21[0] = MEMORY[0x277D85DD0];
@@ -5574,7 +5574,7 @@ void __72__ManagedAssetsClient_KVStore__deleteDataInStore_keys_attributes_error_
     v21[3] = &unk_27985EF40;
     v21[4] = self;
     v22 = v17;
-    [v18 deleteKVStore:v8 attributes:v9 reply:v21];
+    [v18 deleteKVStore:storeCopy attributes:attributesCopy reply:v21];
   }
 
   else
@@ -5644,11 +5644,11 @@ uint64_t __68__ManagedAssetsClient_KVStore__deleteKVStore_attributes_completion_
   return (*(*(a1 + 40) + 16))();
 }
 
-- (BOOL)deleteKVStore:(id)a3 attributes:(id)a4 error:(id *)a5
+- (BOOL)deleteKVStore:(id)store attributes:(id)attributes error:(id *)error
 {
   v37 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  storeCopy = store;
+  attributesCopy = attributes;
   v27 = 0;
   v28 = &v27;
   v29 = 0x3032000000;
@@ -5662,9 +5662,9 @@ uint64_t __68__ManagedAssetsClient_KVStore__deleteKVStore_attributes_completion_
   v10 = _log_1;
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v9 objectForKeyedSubscript:@"group"];
+    v11 = [attributesCopy objectForKeyedSubscript:@"group"];
     *buf = 138412546;
-    v34 = v8;
+    v34 = storeCopy;
     v35 = 2112;
     v36 = v11;
     _os_log_impl(&dword_258089000, v10, OS_LOG_TYPE_DEFAULT, "sync deleteKVStore: %@ group: %@", buf, 0x16u);
@@ -5682,13 +5682,13 @@ uint64_t __68__ManagedAssetsClient_KVStore__deleteKVStore_attributes_completion_
   v18[2] = __63__ManagedAssetsClient_KVStore__deleteKVStore_attributes_error___block_invoke_51;
   v18[3] = &unk_27985F2B0;
   v20 = &v27;
-  v14 = v8;
+  v14 = storeCopy;
   v19 = v14;
   v21 = &v23;
-  [v13 deleteKVStore:v14 attributes:v9 reply:v18];
-  if (a5)
+  [v13 deleteKVStore:v14 attributes:attributesCopy reply:v18];
+  if (error)
   {
-    *a5 = v28[5];
+    *error = v28[5];
   }
 
   v15 = *(v24 + 24);
@@ -5731,10 +5731,10 @@ void __63__ManagedAssetsClient_KVStore__deleteKVStore_attributes_error___block_i
   }
 }
 
-- (BOOL)checkIfKVStoreGroupExistUsing:(id)a3 exist:(BOOL *)a4 error:(id *)a5
+- (BOOL)checkIfKVStoreGroupExistUsing:(id)using exist:(BOOL *)exist error:(id *)error
 {
   v29 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  usingCopy = using;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -5749,7 +5749,7 @@ void __63__ManagedAssetsClient_KVStore__deleteKVStore_attributes_error___block_i
   if (os_log_type_enabled(_log_1, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v28 = v8;
+    v28 = usingCopy;
     _os_log_impl(&dword_258089000, v9, OS_LOG_TYPE_INFO, "sync checkIfKVStoreGroupUsingAttributes: %@", buf, 0xCu);
   }
 
@@ -5766,11 +5766,11 @@ void __63__ManagedAssetsClient_KVStore__deleteKVStore_attributes_error___block_i
   v15[3] = &unk_27985F350;
   v15[4] = &v21;
   v15[5] = &v17;
-  v15[6] = a4;
-  [v11 checkIfKVStoreGroupExistUsing:v8 reply:v15];
-  if (a5)
+  v15[6] = exist;
+  [v11 checkIfKVStoreGroupExistUsing:usingCopy reply:v15];
+  if (error)
   {
-    *a5 = v22[5];
+    *error = v22[5];
   }
 
   v12 = *(v18 + 24);
@@ -5820,25 +5820,25 @@ void __74__ManagedAssetsClient_KVStore__checkIfKVStoreGroupExistUsing_exist_erro
   }
 }
 
-- (void)openFile:(id)a3 mode:(unint64_t)a4 attributes:(id)a5 completion:(id)a6
+- (void)openFile:(id)file mode:(unint64_t)mode attributes:(id)attributes completion:(id)completion
 {
   v31 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  fileCopy = file;
+  attributesCopy = attributes;
+  completionCopy = completion;
   v13 = _log_2;
   if (os_log_type_enabled(_log_2, OS_LOG_TYPE_INFO))
   {
     *buf = 138412802;
-    v26 = v10;
+    v26 = fileCopy;
     v27 = 2048;
-    v28 = a4;
+    modeCopy = mode;
     v29 = 2112;
-    v30 = v11;
+    v30 = attributesCopy;
     _os_log_impl(&dword_258089000, v13, OS_LOG_TYPE_INFO, "sync openFile: %@ mode:%lu attributes: %@", buf, 0x20u);
   }
 
-  if (v12)
+  if (completionCopy)
   {
     conn = self->_conn;
     v23[0] = MEMORY[0x277D85DD0];
@@ -5846,7 +5846,7 @@ void __74__ManagedAssetsClient_KVStore__checkIfKVStoreGroupExistUsing_exist_erro
     v23[2] = __70__ManagedAssetsClient_FileAsset__openFile_mode_attributes_completion___block_invoke;
     v23[3] = &unk_27985EF40;
     v23[4] = self;
-    v17 = v12;
+    v17 = completionCopy;
     v24 = v17;
     v18 = [(NSXPCConnection *)conn remoteObjectProxyWithErrorHandler:v23];
     v21[0] = MEMORY[0x277D85DD0];
@@ -5855,7 +5855,7 @@ void __74__ManagedAssetsClient_KVStore__checkIfKVStoreGroupExistUsing_exist_erro
     v21[3] = &unk_27985F3A0;
     v21[4] = self;
     v22 = v17;
-    [v18 openFile:v10 mode:a4 attributes:v11 reply:v21];
+    [v18 openFile:fileCopy mode:mode attributes:attributesCopy reply:v21];
   }
 
   else
@@ -5911,11 +5911,11 @@ void __70__ManagedAssetsClient_FileAsset__openFile_mode_attributes_completion___
   dispatch_async(v10, v15);
 }
 
-- (id)openFile:(id)a3 mode:(unint64_t)a4 attributes:(id)a5 attributesOut:(id *)a6 error:(id *)a7
+- (id)openFile:(id)file mode:(unint64_t)mode attributes:(id)attributes attributesOut:(id *)out error:(id *)error
 {
   v46 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a5;
+  fileCopy = file;
+  attributesCopy = attributes;
   v34 = 0;
   v35 = &v34;
   v36 = 0x3032000000;
@@ -5938,11 +5938,11 @@ void __70__ManagedAssetsClient_FileAsset__openFile_mode_attributes_completion___
   if (os_log_type_enabled(_log_2, OS_LOG_TYPE_INFO))
   {
     *buf = 138412802;
-    v41 = v12;
+    v41 = fileCopy;
     v42 = 2048;
-    v43 = a4;
+    modeCopy = mode;
     v44 = 2112;
-    v45 = v13;
+    v45 = attributesCopy;
     _os_log_impl(&dword_258089000, v14, OS_LOG_TYPE_INFO, "async openFile: %@ mode:%lu attributes: %@", buf, 0x20u);
   }
 
@@ -5960,15 +5960,15 @@ void __70__ManagedAssetsClient_FileAsset__openFile_mode_attributes_completion___
   v20[4] = &v28;
   v20[5] = &v22;
   v20[6] = &v34;
-  [v16 openFile:v12 mode:a4 attributes:v13 reply:v20];
-  if (a7)
+  [v16 openFile:fileCopy mode:mode attributes:attributesCopy reply:v20];
+  if (error)
   {
-    *a7 = v35[5];
+    *error = v35[5];
   }
 
-  if (a6)
+  if (out)
   {
-    *a6 = v23[5];
+    *out = v23[5];
   }
 
   v17 = v29[5];
@@ -6274,19 +6274,19 @@ LABEL_13:
 LABEL_18:
 }
 
-- (void)commitFile:(id)a3 attributes:(id)a4 completion:(id)a5
+- (void)commitFile:(id)file attributes:(id)attributes completion:(id)completion
 {
   v27 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  fileCopy = file;
+  attributesCopy = attributes;
+  completionCopy = completion;
   v11 = _log_2;
   if (os_log_type_enabled(_log_2, OS_LOG_TYPE_INFO))
   {
     v12 = v11;
-    v13 = [v9 objectForKeyedSubscript:@"group"];
+    v13 = [attributesCopy objectForKeyedSubscript:@"group"];
     *buf = 138412546;
-    v24 = v8;
+    v24 = fileCopy;
     v25 = 2112;
     v26 = v13;
     _os_log_impl(&dword_258089000, v12, OS_LOG_TYPE_INFO, "sync commitFile: %@ group: %@", buf, 0x16u);
@@ -6298,7 +6298,7 @@ LABEL_18:
   v21[2] = __67__ManagedAssetsClient_FileAsset__commitFile_attributes_completion___block_invoke;
   v21[3] = &unk_27985EF40;
   v21[4] = self;
-  v15 = v10;
+  v15 = completionCopy;
   v22 = v15;
   v16 = [(NSXPCConnection *)conn remoteObjectProxyWithErrorHandler:v21];
   v19[0] = MEMORY[0x277D85DD0];
@@ -6308,7 +6308,7 @@ LABEL_18:
   v19[4] = self;
   v20 = v15;
   v17 = v15;
-  [v16 commitFile:v8 attributes:v9 reply:v19];
+  [v16 commitFile:fileCopy attributes:attributesCopy reply:v19];
 
   v18 = *MEMORY[0x277D85DE8];
 }
@@ -6350,11 +6350,11 @@ void __67__ManagedAssetsClient_FileAsset__commitFile_attributes_completion___blo
   }
 }
 
-- (BOOL)commitFile:(id)a3 attributes:(id)a4 error:(id *)a5
+- (BOOL)commitFile:(id)file attributes:(id)attributes error:(id *)error
 {
   v37 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  fileCopy = file;
+  attributesCopy = attributes;
   v27 = 0;
   v28 = &v27;
   v29 = 0x3032000000;
@@ -6368,9 +6368,9 @@ void __67__ManagedAssetsClient_FileAsset__commitFile_attributes_completion___blo
   v10 = _log_2;
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
-    v11 = [v9 objectForKeyedSubscript:@"group"];
+    v11 = [attributesCopy objectForKeyedSubscript:@"group"];
     *buf = 138412546;
-    v34 = v8;
+    v34 = fileCopy;
     v35 = 2112;
     v36 = v11;
     _os_log_impl(&dword_258089000, v10, OS_LOG_TYPE_INFO, "async commitFile: %@ group: %@", buf, 0x16u);
@@ -6388,13 +6388,13 @@ void __67__ManagedAssetsClient_FileAsset__commitFile_attributes_completion___blo
   v18[2] = __62__ManagedAssetsClient_FileAsset__commitFile_attributes_error___block_invoke_52;
   v18[3] = &unk_27985F2B0;
   v20 = &v27;
-  v14 = v8;
+  v14 = fileCopy;
   v19 = v14;
   v21 = &v23;
-  [v13 commitFile:v14 attributes:v9 reply:v18];
-  if (a5)
+  [v13 commitFile:v14 attributes:attributesCopy reply:v18];
+  if (error)
   {
-    *a5 = v28[5];
+    *error = v28[5];
   }
 
   v15 = *(v24 + 24);
@@ -6437,46 +6437,46 @@ void __62__ManagedAssetsClient_FileAsset__commitFile_attributes_error___block_in
   }
 }
 
-- (void)prefetchFile:(id)a3 attributes:(id)a4 completion:(id)a5
+- (void)prefetchFile:(id)file attributes:(id)attributes completion:(id)completion
 {
   v20 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  fileCopy = file;
+  attributesCopy = attributes;
+  completionCopy = completion;
   v10 = _log_2;
   if (os_log_type_enabled(_log_2, OS_LOG_TYPE_INFO))
   {
     v13 = v10;
-    v14 = [v8 objectForKeyedSubscript:@"group"];
+    v14 = [attributesCopy objectForKeyedSubscript:@"group"];
     *v17 = 138412546;
-    *&v17[4] = v7;
+    *&v17[4] = fileCopy;
     v18 = 2112;
     v19 = v14;
     _os_log_impl(&dword_258089000, v13, OS_LOG_TYPE_INFO, "async prefetchFile: %@ group: %@", v17, 0x16u);
   }
 
-  if (v9)
+  if (completionCopy)
   {
     v15 = createManagedAssetError("[ManagedAssetsClient(FileAsset) prefetchFile:attributes:completion:]", 335, -20014, 0, 0, @"prefetchFile is not supported", v11, v12, *v17);
-    v9[2](v9, v15);
+    completionCopy[2](completionCopy, v15);
   }
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deleteFile:(id)a3 attributes:(id)a4 completion:(id)a5
+- (void)deleteFile:(id)file attributes:(id)attributes completion:(id)completion
 {
   v27 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  fileCopy = file;
+  attributesCopy = attributes;
+  completionCopy = completion;
   v11 = _log_2;
   if (os_log_type_enabled(_log_2, OS_LOG_TYPE_INFO))
   {
     v12 = v11;
-    v13 = [v9 objectForKeyedSubscript:@"group"];
+    v13 = [attributesCopy objectForKeyedSubscript:@"group"];
     *buf = 138412546;
-    v24 = v8;
+    v24 = fileCopy;
     v25 = 2112;
     v26 = v13;
     _os_log_impl(&dword_258089000, v12, OS_LOG_TYPE_INFO, "sync deleteFile: %@ group: %@", buf, 0x16u);
@@ -6488,7 +6488,7 @@ void __62__ManagedAssetsClient_FileAsset__commitFile_attributes_error___block_in
   v21[2] = __67__ManagedAssetsClient_FileAsset__deleteFile_attributes_completion___block_invoke;
   v21[3] = &unk_27985EF40;
   v21[4] = self;
-  v15 = v10;
+  v15 = completionCopy;
   v22 = v15;
   v16 = [(NSXPCConnection *)conn remoteObjectProxyWithErrorHandler:v21];
   v19[0] = MEMORY[0x277D85DD0];
@@ -6498,7 +6498,7 @@ void __62__ManagedAssetsClient_FileAsset__commitFile_attributes_error___block_in
   v19[4] = self;
   v20 = v15;
   v17 = v15;
-  [v16 deleteFile:v8 attributes:v9 reply:v19];
+  [v16 deleteFile:fileCopy attributes:attributesCopy reply:v19];
 
   v18 = *MEMORY[0x277D85DE8];
 }
@@ -6540,11 +6540,11 @@ void __67__ManagedAssetsClient_FileAsset__deleteFile_attributes_completion___blo
   }
 }
 
-- (BOOL)deleteFile:(id)a3 attributes:(id)a4 error:(id *)a5
+- (BOOL)deleteFile:(id)file attributes:(id)attributes error:(id *)error
 {
   v37 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  fileCopy = file;
+  attributesCopy = attributes;
   v27 = 0;
   v28 = &v27;
   v29 = 0x3032000000;
@@ -6558,9 +6558,9 @@ void __67__ManagedAssetsClient_FileAsset__deleteFile_attributes_completion___blo
   v10 = _log_2;
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
-    v11 = [v9 objectForKeyedSubscript:@"group"];
+    v11 = [attributesCopy objectForKeyedSubscript:@"group"];
     *buf = 138412546;
-    v34 = v8;
+    v34 = fileCopy;
     v35 = 2112;
     v36 = v11;
     _os_log_impl(&dword_258089000, v10, OS_LOG_TYPE_INFO, "async deleteFile: %@ group: %@", buf, 0x16u);
@@ -6578,13 +6578,13 @@ void __67__ManagedAssetsClient_FileAsset__deleteFile_attributes_completion___blo
   v18[2] = __62__ManagedAssetsClient_FileAsset__deleteFile_attributes_error___block_invoke_57;
   v18[3] = &unk_27985F2B0;
   v20 = &v27;
-  v14 = v8;
+  v14 = fileCopy;
   v19 = v14;
   v21 = &v23;
-  [v13 deleteFile:v14 attributes:v9 reply:v18];
-  if (a5)
+  [v13 deleteFile:v14 attributes:attributesCopy reply:v18];
+  if (error)
   {
-    *a5 = v28[5];
+    *error = v28[5];
   }
 
   v15 = *(v24 + 24);
@@ -6627,23 +6627,23 @@ void __62__ManagedAssetsClient_FileAsset__deleteFile_attributes_error___block_in
   }
 }
 
-- (void)queryFile:(id)a3 attributes:(id)a4 completion:(id)a5
+- (void)queryFile:(id)file attributes:(id)attributes completion:(id)completion
 {
   v27 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  fileCopy = file;
+  attributesCopy = attributes;
+  completionCopy = completion;
   v11 = _log_2;
   if (os_log_type_enabled(_log_2, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v24 = v8;
+    v24 = fileCopy;
     v25 = 2112;
-    v26 = v9;
+    v26 = attributesCopy;
     _os_log_impl(&dword_258089000, v11, OS_LOG_TYPE_INFO, "async queryFile: %@ attributes: %@", buf, 0x16u);
   }
 
-  if (v10)
+  if (completionCopy)
   {
     conn = self->_conn;
     v21[0] = MEMORY[0x277D85DD0];
@@ -6651,7 +6651,7 @@ void __62__ManagedAssetsClient_FileAsset__deleteFile_attributes_error___block_in
     v21[2] = __66__ManagedAssetsClient_FileAsset__queryFile_attributes_completion___block_invoke;
     v21[3] = &unk_27985EF40;
     v21[4] = self;
-    v15 = v10;
+    v15 = completionCopy;
     v22 = v15;
     v16 = [(NSXPCConnection *)conn remoteObjectProxyWithErrorHandler:v21];
     v19[0] = MEMORY[0x277D85DD0];
@@ -6660,7 +6660,7 @@ void __62__ManagedAssetsClient_FileAsset__deleteFile_attributes_error___block_in
     v19[3] = &unk_27985F490;
     v19[4] = self;
     v20 = v15;
-    [v16 queryFile:v8 attributes:v9 reply:v19];
+    [v16 queryFile:fileCopy attributes:attributesCopy reply:v19];
   }
 
   else
@@ -6730,11 +6730,11 @@ uint64_t __66__ManagedAssetsClient_FileAsset__queryFile_attributes_completion___
   return (*(a1[6] + 16))();
 }
 
-- (id)queryFile:(id)a3 attributes:(id)a4 error:(id *)a5
+- (id)queryFile:(id)file attributes:(id)attributes error:(id *)error
 {
   v34 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  fileCopy = file;
+  attributesCopy = attributes;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -6751,9 +6751,9 @@ uint64_t __66__ManagedAssetsClient_FileAsset__queryFile_attributes_completion___
   if (os_log_type_enabled(_log_2, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v31 = v8;
+    v31 = fileCopy;
     v32 = 2112;
-    v33 = v9;
+    v33 = attributesCopy;
     _os_log_impl(&dword_258089000, v10, OS_LOG_TYPE_INFO, "sync queryFile: %@ attributes: %@", buf, 0x16u);
   }
 
@@ -6770,10 +6770,10 @@ uint64_t __66__ManagedAssetsClient_FileAsset__queryFile_attributes_completion___
   v16[3] = &unk_27985F170;
   v16[4] = &v24;
   v16[5] = &v18;
-  [v12 queryFile:v8 attributes:v9 reply:v16];
-  if (a5)
+  [v12 queryFile:fileCopy attributes:attributesCopy reply:v16];
+  if (error)
   {
-    *a5 = v25[5];
+    *error = v25[5];
   }
 
   v13 = v19[5];
@@ -6824,11 +6824,11 @@ void __61__ManagedAssetsClient_FileAsset__queryFile_attributes_error___block_inv
   }
 }
 
-- (BOOL)diskUsage:(id)a3 attributes:(id)a4 usage:(unint64_t *)a5 error:(id *)a6
+- (BOOL)diskUsage:(id)usage attributes:(id)attributes usage:(unint64_t *)a5 error:(id *)error
 {
   v40 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
+  usageCopy = usage;
+  attributesCopy = attributes;
   v30 = 0;
   v31 = &v30;
   v32 = 0x3032000000;
@@ -6842,9 +6842,9 @@ void __61__ManagedAssetsClient_FileAsset__queryFile_attributes_error___block_inv
   v12 = _log_2;
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
-    v13 = [v11 objectForKeyedSubscript:@"group"];
+    v13 = [attributesCopy objectForKeyedSubscript:@"group"];
     *buf = 138412546;
-    v37 = v10;
+    v37 = usageCopy;
     v38 = 2112;
     v39 = v13;
     _os_log_impl(&dword_258089000, v12, OS_LOG_TYPE_INFO, "sync diskUsage: %@ group: %@", buf, 0x16u);
@@ -6864,12 +6864,12 @@ void __61__ManagedAssetsClient_FileAsset__queryFile_attributes_error___block_inv
   v22 = &v30;
   v23 = &v26;
   v24 = a5;
-  v16 = v10;
+  v16 = usageCopy;
   v21 = v16;
-  [v15 getDiskUsage:v16 attributes:v11 reply:v20];
-  if (a6)
+  [v15 getDiskUsage:v16 attributes:attributesCopy reply:v20];
+  if (error)
   {
-    *a6 = v31[5];
+    *error = v31[5];
   }
 
   v17 = *(v27 + 24);
@@ -6913,7 +6913,7 @@ void __67__ManagedAssetsClient_FileAsset__diskUsage_attributes_usage_error___blo
   }
 }
 
-- (BOOL)availableSpace:(unint64_t *)a3 error:(id *)a4
+- (BOOL)availableSpace:(unint64_t *)space error:(id *)error
 {
   v6 = _log_2;
   if (os_log_type_enabled(_log_2, OS_LOG_TYPE_INFO))
@@ -6923,25 +6923,25 @@ void __67__ManagedAssetsClient_FileAsset__diskUsage_attributes_usage_error___blo
   }
 
   v7 = NSHomeDirectory();
-  v8 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v17 = 0;
-  v9 = [v8 attributesOfFileSystemForPath:v7 error:&v17];
+  v9 = [defaultManager attributesOfFileSystemForPath:v7 error:&v17];
   v10 = v17;
 
   if (v9 && (v11 = *MEMORY[0x277CCA1D0], [v9 objectForKeyedSubscript:*MEMORY[0x277CCA1D0]], v12 = objc_claimAutoreleasedReturnValue(), v12, v12))
   {
     v13 = [v9 objectForKeyedSubscript:v11];
-    *a3 = [v13 unsignedLongLongValue];
+    *space = [v13 unsignedLongLongValue];
 
     v14 = 1;
   }
 
   else
   {
-    if (a4)
+    if (error)
     {
       v15 = v10;
-      *a4 = v10;
+      *error = v10;
       if (os_log_type_enabled(_log_2, OS_LOG_TYPE_ERROR))
       {
         [ManagedAssetsClient(FileAsset) availableSpace:error:];
@@ -7066,9 +7066,9 @@ void __54__ManagedAssetsClient_Debugging__getDaemonProcessInfo__block_invoke_6(u
   }
 }
 
-- (id)getProfileLastSwitchOutTS:(id)a3 error:(id *)a4
+- (id)getProfileLastSwitchOutTS:(id)s error:(id *)error
 {
-  v6 = a3;
+  sCopy = s;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
@@ -7088,13 +7088,13 @@ void __54__ManagedAssetsClient_Debugging__getDaemonProcessInfo__block_invoke_6(u
   v11[3] = &unk_27985EC78;
   v11[4] = &v18;
   v11[5] = &v12;
-  [v7 getProfileSwitchTime:v6 mode:0 completion:v11];
-  if (a4)
+  [v7 getProfileSwitchTime:sCopy mode:0 completion:v11];
+  if (error)
   {
     v8 = v19[5];
     if (v8)
     {
-      *a4 = v8;
+      *error = v8;
     }
   }
 
@@ -7134,9 +7134,9 @@ void __66__ManagedAssetsClient_Debugging__getProfileLastSwitchOutTS_error___bloc
   }
 }
 
-- (id)getProfileLastSwitchInTS:(id)a3 error:(id *)a4
+- (id)getProfileLastSwitchInTS:(id)s error:(id *)error
 {
-  v6 = a3;
+  sCopy = s;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
@@ -7156,13 +7156,13 @@ void __66__ManagedAssetsClient_Debugging__getProfileLastSwitchOutTS_error___bloc
   v11[3] = &unk_27985EC78;
   v11[4] = &v18;
   v11[5] = &v12;
-  [v7 getProfileSwitchTime:v6 mode:1 completion:v11];
-  if (a4)
+  [v7 getProfileSwitchTime:sCopy mode:1 completion:v11];
+  if (error)
   {
     v8 = v19[5];
     if (v8)
     {
-      *a4 = v8;
+      *error = v8;
     }
   }
 
@@ -7261,33 +7261,33 @@ uint64_t __37__ManagedAssetsClient_sharedInstance__block_invoke()
     remoteNotifyQueue = v3->_remoteNotifyQueue;
     v3->_remoteNotifyQueue = v12;
 
-    v14 = [MEMORY[0x277CCAC18] weakObjectsPointerArray];
+    weakObjectsPointerArray = [MEMORY[0x277CCAC18] weakObjectsPointerArray];
     remotesharingObservers = v3->_remotesharingObservers;
-    v3->_remotesharingObservers = v14;
+    v3->_remotesharingObservers = weakObjectsPointerArray;
 
-    v16 = [MEMORY[0x277CCAC18] weakObjectsPointerArray];
+    weakObjectsPointerArray2 = [MEMORY[0x277CCAC18] weakObjectsPointerArray];
     assetEventObservers = v3->_assetEventObservers;
-    v3->_assetEventObservers = v16;
+    v3->_assetEventObservers = weakObjectsPointerArray2;
 
-    v18 = [MEMORY[0x277CCAC18] weakObjectsPointerArray];
+    weakObjectsPointerArray3 = [MEMORY[0x277CCAC18] weakObjectsPointerArray];
     profileEventObservers = v3->_profileEventObservers;
-    v3->_profileEventObservers = v18;
+    v3->_profileEventObservers = weakObjectsPointerArray3;
 
-    v20 = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
     assetEventFilters = v3->_assetEventFilters;
-    v3->_assetEventFilters = v20;
+    v3->_assetEventFilters = weakToStrongObjectsMapTable;
 
-    v22 = [MEMORY[0x277CCAB00] weakToWeakObjectsMapTable];
+    weakToWeakObjectsMapTable = [MEMORY[0x277CCAB00] weakToWeakObjectsMapTable];
     profileEventFilters = v3->_profileEventFilters;
-    v3->_profileEventFilters = v22;
+    v3->_profileEventFilters = weakToWeakObjectsMapTable;
 
-    v24 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
     bidirectionalXPCObservers = v3->_bidirectionalXPCObservers;
-    v3->_bidirectionalXPCObservers = v24;
+    v3->_bidirectionalXPCObservers = strongToStrongObjectsMapTable;
 
-    v26 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable2 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
     bidirectionalXPCObserversMetaData = v3->_bidirectionalXPCObserversMetaData;
-    v3->_bidirectionalXPCObserversMetaData = v26;
+    v3->_bidirectionalXPCObserversMetaData = strongToStrongObjectsMapTable2;
 
     v28 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_286947770];
     v29 = MEMORY[0x277CBEB98];
@@ -7380,17 +7380,17 @@ void __27__ManagedAssetsClient_init__block_invoke_210()
   }
 }
 
-- (void)removeNotificationObserverPointer:(id)a3 observerType:(unint64_t)a4
+- (void)removeNotificationObserverPointer:(id)pointer observerType:(unint64_t)type
 {
-  v9 = a3;
-  if (a4 == 3)
+  pointerCopy = pointer;
+  if (type == 3)
   {
     v6 = 64;
   }
 
   else
   {
-    if (a4 != 4)
+    if (type != 4)
     {
       v7 = 0;
       goto LABEL_13;
@@ -7405,7 +7405,7 @@ void __27__ManagedAssetsClient_init__block_invoke_210()
     v8 = 0;
     do
     {
-      if ([v7 pointerAtIndex:v8] == v9)
+      if ([v7 pointerAtIndex:v8] == pointerCopy)
       {
         [v7 removePointerAtIndex:v8];
       }
@@ -7422,23 +7422,23 @@ void __27__ManagedAssetsClient_init__block_invoke_210()
 LABEL_13:
 }
 
-- (BOOL)addAssetChangeEventObserver:(id)a3 type:(unint64_t)a4 events:(unint64_t)a5 error:(id *)a6
+- (BOOL)addAssetChangeEventObserver:(id)observer type:(unint64_t)type events:(unint64_t)events error:(id *)error
 {
   v27 = *MEMORY[0x277D85DE8];
-  v10 = a3;
+  observerCopy = observer;
   v11 = _log_5;
   if (os_log_type_enabled(_log_5, OS_LOG_TYPE_INFO))
   {
     *buf = 138412802;
-    v22 = v10;
+    v22 = observerCopy;
     v23 = 2048;
-    v24 = a4;
+    typeCopy = type;
     v25 = 2048;
-    v26 = a5;
+    eventsCopy = events;
     _os_log_impl(&dword_258089000, v11, OS_LOG_TYPE_INFO, "addAssetChangeEventObserver:%@ type:%lu events:%lu", buf, 0x20u);
   }
 
-  if ((a5 & 0xB2001F) != 0)
+  if ((events & 0xB2001F) != 0)
   {
     notifyQueue = self->_notifyQueue;
     v17[0] = MEMORY[0x277D85DD0];
@@ -7446,19 +7446,19 @@ LABEL_13:
     v17[2] = __69__ManagedAssetsClient_addAssetChangeEventObserver_type_events_error___block_invoke;
     v17[3] = &unk_27985F930;
     v17[4] = self;
-    v18 = v10;
-    v19 = a4;
-    v20 = a5;
+    v18 = observerCopy;
+    typeCopy2 = type;
+    eventsCopy2 = events;
     dispatch_sync(notifyQueue, v17);
   }
 
-  else if (a6)
+  else if (error)
   {
-    *a6 = createManagedAssetError("[ManagedAssetsClient addAssetChangeEventObserver:type:events:error:]", 164, -20001, 0, 0, @"Invalid event mask.", v12, v13, v17[0]);
+    *error = createManagedAssetError("[ManagedAssetsClient addAssetChangeEventObserver:type:events:error:]", 164, -20001, 0, 0, @"Invalid event mask.", v12, v13, v17[0]);
   }
 
   v15 = *MEMORY[0x277D85DE8];
-  return (a5 & 0xB2001F) != 0;
+  return (events & 0xB2001F) != 0;
 }
 
 void __69__ManagedAssetsClient_addAssetChangeEventObserver_type_events_error___block_invoke(uint64_t a1)
@@ -7492,21 +7492,21 @@ void __69__ManagedAssetsClient_addAssetChangeEventObserver_type_events_error___b
   [*(*(a1 + 32) + 88) setObject:v7 forKey:*(a1 + 40)];
 }
 
-- (BOOL)addProfileChangeEventObserver:(id)a3 events:(unint64_t)a4 error:(id *)a5
+- (BOOL)addProfileChangeEventObserver:(id)observer events:(unint64_t)events error:(id *)error
 {
   v23 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  observerCopy = observer;
   v9 = _log_5;
   if (os_log_type_enabled(_log_5, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v20 = v8;
+    v20 = observerCopy;
     v21 = 2048;
-    v22 = a4;
+    eventsCopy = events;
     _os_log_impl(&dword_258089000, v9, OS_LOG_TYPE_INFO, "addProfileChangeEventObserver:%@ events:%lu", buf, 0x16u);
   }
 
-  if ((a4 & 0xC01C0) != 0)
+  if ((events & 0xC01C0) != 0)
   {
     notifyQueue = self->_notifyQueue;
     block[0] = MEMORY[0x277D85DD0];
@@ -7514,18 +7514,18 @@ void __69__ManagedAssetsClient_addAssetChangeEventObserver_type_events_error___b
     block[2] = __66__ManagedAssetsClient_addProfileChangeEventObserver_events_error___block_invoke;
     block[3] = &unk_27985F958;
     block[4] = self;
-    v17 = v8;
-    v18 = a4;
+    v17 = observerCopy;
+    eventsCopy2 = events;
     dispatch_sync(notifyQueue, block);
   }
 
-  else if (a5)
+  else if (error)
   {
-    *a5 = createManagedAssetError("[ManagedAssetsClient addProfileChangeEventObserver:events:error:]", 201, -20001, 0, 0, @"Invalid event mask.", v10, v11, v15);
+    *error = createManagedAssetError("[ManagedAssetsClient addProfileChangeEventObserver:events:error:]", 201, -20001, 0, 0, @"Invalid event mask.", v10, v11, v15);
   }
 
   v13 = *MEMORY[0x277D85DE8];
-  return (a4 & 0xC01C0) != 0;
+  return (events & 0xC01C0) != 0;
 }
 
 void __66__ManagedAssetsClient_addProfileChangeEventObserver_events_error___block_invoke(uint64_t a1)
@@ -7544,67 +7544,67 @@ void __66__ManagedAssetsClient_addProfileChangeEventObserver_events_error___bloc
   [v3 setObject:v4 forKey:*(a1 + 40)];
 }
 
-- (void)saveObserverMetaData:(id)a3 fileNames:(id)a4 sharingGroup:(id)a5 profile:(id)a6 events:(unint64_t)a7 type:(unint64_t)a8
+- (void)saveObserverMetaData:(id)data fileNames:(id)names sharingGroup:(id)group profile:(id)profile events:(unint64_t)events type:(unint64_t)type
 {
-  v21 = a6;
+  profileCopy = profile;
   v14 = MEMORY[0x277CBEB38];
-  v15 = a5;
-  v16 = a4;
-  v17 = a3;
-  v18 = [v14 dictionary];
-  [v18 setObject:v15 forKeyedSubscript:@"group"];
+  groupCopy = group;
+  namesCopy = names;
+  dataCopy = data;
+  dictionary = [v14 dictionary];
+  [dictionary setObject:groupCopy forKeyedSubscript:@"group"];
 
-  v19 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a8];
-  [v18 setObject:v19 forKeyedSubscript:@"observerType"];
+  v19 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:type];
+  [dictionary setObject:v19 forKeyedSubscript:@"observerType"];
 
-  [v18 setObject:v16 forKeyedSubscript:@"resources"];
-  v20 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a7];
-  [v18 setObject:v20 forKeyedSubscript:@"events"];
+  [dictionary setObject:namesCopy forKeyedSubscript:@"resources"];
+  v20 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:events];
+  [dictionary setObject:v20 forKeyedSubscript:@"events"];
 
-  if (v21)
+  if (profileCopy)
   {
-    [v18 setObject:v21 forKeyedSubscript:@"profile"];
+    [dictionary setObject:profileCopy forKeyedSubscript:@"profile"];
   }
 
   os_unfair_lock_lock(&self->_bidirectional_xpcObserver_lock);
-  [(NSMapTable *)self->_bidirectionalXPCObserversMetaData setObject:v18 forKey:v17];
+  [(NSMapTable *)self->_bidirectionalXPCObserversMetaData setObject:dictionary forKey:dataCopy];
 
   os_unfair_lock_unlock(&self->_bidirectional_xpcObserver_lock);
 }
 
-- (BOOL)addFileEventObserver:(id)a3 fileNames:(id)a4 sharingGroup:(id)a5 profile:(id)a6 events:(unint64_t)a7 error:(id *)a8
+- (BOOL)addFileEventObserver:(id)observer fileNames:(id)names sharingGroup:(id)group profile:(id)profile events:(unint64_t)events error:(id *)error
 {
   v36 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
+  observerCopy = observer;
+  namesCopy = names;
+  groupCopy = group;
+  profileCopy = profile;
   v18 = _log_5;
   if (os_log_type_enabled(_log_5, OS_LOG_TYPE_INFO))
   {
     *buf = 138413314;
-    v27 = v14;
+    v27 = observerCopy;
     v28 = 2112;
-    v29 = v15;
+    v29 = namesCopy;
     v30 = 2112;
-    v31 = v16;
+    v31 = groupCopy;
     v32 = 2112;
-    v33 = v17;
+    v33 = profileCopy;
     v34 = 2048;
-    v35 = a7;
+    eventsCopy = events;
     _os_log_impl(&dword_258089000, v18, OS_LOG_TYPE_INFO, "addFileEventObserver:%@ files: %@ group: %@ profile: %@ events:%lu", buf, 0x34u);
   }
 
-  if ([(ManagedAssetsClient *)self isSameObserver:v14 error:a8])
+  if ([(ManagedAssetsClient *)self isSameObserver:observerCopy error:error])
   {
     v19 = 0;
   }
 
   else
   {
-    [(ManagedAssetsClient *)self saveObserverMetaData:v14 fileNames:v15 sharingGroup:v16 profile:v17 events:a7 type:0];
+    [(ManagedAssetsClient *)self saveObserverMetaData:observerCopy fileNames:namesCopy sharingGroup:groupCopy profile:profileCopy events:events type:0];
     v25 = 0;
-    v21 = [(ManagedAssetsClient *)self recreateFileOrKVStoreObserverXPCWith:v14 error:&v25];
+    v21 = [(ManagedAssetsClient *)self recreateFileOrKVStoreObserverXPCWith:observerCopy error:&v25];
     v19 = v25;
     if (v21)
     {
@@ -7613,13 +7613,13 @@ void __66__ManagedAssetsClient_addProfileChangeEventObserver_events_error___bloc
     }
 
     os_unfair_lock_lock(&self->_bidirectional_xpcObserver_lock);
-    [(NSMapTable *)self->_bidirectionalXPCObserversMetaData removeObjectForKey:v14];
+    [(NSMapTable *)self->_bidirectionalXPCObserversMetaData removeObjectForKey:observerCopy];
     os_unfair_lock_unlock(&self->_bidirectional_xpcObserver_lock);
-    if (a8)
+    if (error)
     {
       v22 = v19;
       v20 = 0;
-      *a8 = v19;
+      *error = v19;
       goto LABEL_10;
     }
   }
@@ -7631,30 +7631,30 @@ LABEL_10:
   return v20;
 }
 
-- (BOOL)addKVStoreEventObserver:(id)a3 storeNames:(id)a4 sharingGroup:(id)a5 profile:(id)a6 events:(unint64_t)a7 error:(id *)a8
+- (BOOL)addKVStoreEventObserver:(id)observer storeNames:(id)names sharingGroup:(id)group profile:(id)profile events:(unint64_t)events error:(id *)error
 {
   v36 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
+  observerCopy = observer;
+  namesCopy = names;
+  groupCopy = group;
+  profileCopy = profile;
   v18 = _log_5;
   if (os_log_type_enabled(_log_5, OS_LOG_TYPE_INFO))
   {
     *buf = 138413314;
-    v27 = v14;
+    v27 = observerCopy;
     v28 = 2112;
-    v29 = v15;
+    v29 = namesCopy;
     v30 = 2112;
-    v31 = v16;
+    v31 = groupCopy;
     v32 = 2112;
-    v33 = v17;
+    v33 = profileCopy;
     v34 = 2048;
-    v35 = a7;
+    eventsCopy = events;
     _os_log_impl(&dword_258089000, v18, OS_LOG_TYPE_INFO, "addKVStoreEventObserver:%@ stores: %@ group: %@ profile: %@ events:%lu", buf, 0x34u);
   }
 
-  if ([(ManagedAssetsClient *)self isSameObserver:v14 error:a8])
+  if ([(ManagedAssetsClient *)self isSameObserver:observerCopy error:error])
   {
     v19 = 0;
 LABEL_5:
@@ -7662,26 +7662,26 @@ LABEL_5:
     goto LABEL_11;
   }
 
-  if (!v16)
+  if (!groupCopy)
   {
-    v16 = @"private";
+    groupCopy = @"private";
   }
 
   v20 = 1;
-  [(ManagedAssetsClient *)self saveObserverMetaData:v14 fileNames:v15 sharingGroup:v16 profile:v17 events:a7 type:1];
+  [(ManagedAssetsClient *)self saveObserverMetaData:observerCopy fileNames:namesCopy sharingGroup:groupCopy profile:profileCopy events:events type:1];
   v25 = 0;
-  v21 = [(ManagedAssetsClient *)self recreateFileOrKVStoreObserverXPCWith:v14 error:&v25];
+  v21 = [(ManagedAssetsClient *)self recreateFileOrKVStoreObserverXPCWith:observerCopy error:&v25];
   v19 = v25;
   if (!v21)
   {
     os_unfair_lock_lock(&self->_bidirectional_xpcObserver_lock);
-    [(NSMapTable *)self->_bidirectionalXPCObserversMetaData removeObjectForKey:v14];
+    [(NSMapTable *)self->_bidirectionalXPCObserversMetaData removeObjectForKey:observerCopy];
     os_unfair_lock_unlock(&self->_bidirectional_xpcObserver_lock);
-    if (a8)
+    if (error)
     {
       v22 = v19;
       v20 = 0;
-      *a8 = v19;
+      *error = v19;
       goto LABEL_11;
     }
 
@@ -7694,11 +7694,11 @@ LABEL_11:
   return v20;
 }
 
-- (BOOL)isSameObserver:(id)a3 error:(id *)a4
+- (BOOL)isSameObserver:(id)observer error:(id *)error
 {
-  v6 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_bidirectional_xpcObserver_lock);
-  v7 = [(NSMapTable *)self->_bidirectionalXPCObserversMetaData objectForKey:v6];
+  v7 = [(NSMapTable *)self->_bidirectionalXPCObserversMetaData objectForKey:observerCopy];
 
   os_unfair_lock_unlock(&self->_bidirectional_xpcObserver_lock);
   if (v7)
@@ -7706,7 +7706,7 @@ LABEL_11:
     if (os_log_type_enabled(_log_5, OS_LOG_TYPE_ERROR))
     {
       [ManagedAssetsClient isSameObserver:error:];
-      if (!a4)
+      if (!error)
       {
         goto LABEL_5;
       }
@@ -7714,10 +7714,10 @@ LABEL_11:
       goto LABEL_4;
     }
 
-    if (a4)
+    if (error)
     {
 LABEL_4:
-      *a4 = createManagedAssetError("[ManagedAssetsClient isSameObserver:error:]", 337, -20001, 0, 0, @"Client is trying to re-register the same observer %@", v8, v9, v6);
+      *error = createManagedAssetError("[ManagedAssetsClient isSameObserver:error:]", 337, -20001, 0, 0, @"Client is trying to re-register the same observer %@", v8, v9, observerCopy);
     }
   }
 
@@ -7726,37 +7726,37 @@ LABEL_5:
   return v7 != 0;
 }
 
-- (void)removeObserverFromFilter:(id)a3
+- (void)removeObserverFromFilter:(id)filter
 {
-  v4 = a3;
-  if ([v4 conformsToProtocol:&unk_286947878])
+  filterCopy = filter;
+  if ([filterCopy conformsToProtocol:&unk_286947878])
   {
     if (objc_opt_respondsToSelector())
     {
-      [(NSMapTable *)self->_assetEventFilters removeObjectForKey:v4];
+      [(NSMapTable *)self->_assetEventFilters removeObjectForKey:filterCopy];
       [(ManagedAssetsClient *)self unregisterDarwinNotificationIfNeed:3];
-      [(ManagedAssetsClient *)self removeNotificationObserverPointer:v4 observerType:3];
+      [(ManagedAssetsClient *)self removeNotificationObserverPointer:filterCopy observerType:3];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      [(NSMapTable *)self->_profileEventFilters removeObjectForKey:v4];
+      [(NSMapTable *)self->_profileEventFilters removeObjectForKey:filterCopy];
       [(ManagedAssetsClient *)self unregisterDarwinNotificationIfNeed:4];
-      [(ManagedAssetsClient *)self removeNotificationObserverPointer:v4 observerType:4];
+      [(ManagedAssetsClient *)self removeNotificationObserverPointer:filterCopy observerType:4];
     }
   }
 }
 
-- (void)removeNotificationObserver:(id)a3
+- (void)removeNotificationObserver:(id)observer
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  observerCopy = observer;
   v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", dispatch_queue_get_label(0)];
   v6 = _log_5;
   if (os_log_type_enabled(_log_5, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v14 = v4;
+    v14 = observerCopy;
     v15 = 2112;
     v16 = v5;
     _os_log_impl(&dword_258089000, v6, OS_LOG_TYPE_INFO, "removeNotificationObserver:%@ using queue: %@", buf, 0x16u);
@@ -7764,7 +7764,7 @@ LABEL_5:
 
   if ([notifyQueueLabel isEqualToString:v5])
   {
-    [(ManagedAssetsClient *)self removeObserverFromFilter:v4];
+    [(ManagedAssetsClient *)self removeObserverFromFilter:observerCopy];
   }
 
   else
@@ -7775,38 +7775,38 @@ LABEL_5:
     block[2] = __50__ManagedAssetsClient_removeNotificationObserver___block_invoke;
     block[3] = &unk_27985F980;
     block[4] = self;
-    v12 = v4;
+    v12 = observerCopy;
     dispatch_sync(notifyQueue, block);
   }
 
   os_unfair_lock_lock(&self->_bidirectional_xpcObserver_lock);
-  v8 = [(NSMapTable *)self->_bidirectionalXPCObservers objectForKey:v4];
+  v8 = [(NSMapTable *)self->_bidirectionalXPCObservers objectForKey:observerCopy];
   if (v8)
   {
     v9 = v8;
-    [(NSMapTable *)self->_bidirectionalXPCObservers removeObjectForKey:v4];
+    [(NSMapTable *)self->_bidirectionalXPCObservers removeObjectForKey:observerCopy];
     [v9 invalidate];
   }
 
-  [(NSMapTable *)self->_bidirectionalXPCObserversMetaData removeObjectForKey:v4];
+  [(NSMapTable *)self->_bidirectionalXPCObserversMetaData removeObjectForKey:observerCopy];
   os_unfair_lock_unlock(&self->_bidirectional_xpcObserver_lock);
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)createAssetWithDescriptor:(id)a3 UUID:(id)a4 completion:(id)a5
+- (void)createAssetWithDescriptor:(id)descriptor UUID:(id)d completion:(id)completion
 {
   v29 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  descriptorCopy = descriptor;
+  dCopy = d;
+  completionCopy = completion;
   v12 = _log_5;
   if (os_log_type_enabled(_log_5, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v26 = v9;
+    v26 = descriptorCopy;
     v27 = 2112;
-    v28 = v10;
+    v28 = dCopy;
     _os_log_impl(&dword_258089000, v12, OS_LOG_TYPE_INFO, "async create asset with descriptor:%@ UUID:%@", buf, 0x16u);
   }
 
@@ -7814,13 +7814,13 @@ LABEL_5:
   if (os_log_type_enabled(_log_5, OS_LOG_TYPE_DEBUG))
   {
     [ManagedAssetsClient createAssetWithDescriptor:v13 UUID:? completion:?];
-    if (v11)
+    if (completionCopy)
     {
       goto LABEL_5;
     }
   }
 
-  else if (v11)
+  else if (completionCopy)
   {
 LABEL_5:
     backgroundQueue = self->_backgroundQueue;
@@ -7830,9 +7830,9 @@ LABEL_5:
     block[3] = &unk_27985EEA0;
     block[4] = self;
     v24 = a2;
-    v23 = v11;
-    v21 = v9;
-    v22 = v10;
+    v23 = completionCopy;
+    v21 = descriptorCopy;
+    v22 = dCopy;
     dispatch_async(backgroundQueue, block);
 
     goto LABEL_10;
@@ -8020,25 +8020,25 @@ uint64_t __65__ManagedAssetsClient_createAssetWithDescriptor_UUID_completion___b
   return result;
 }
 
-- (id)createAssetWithDescriptor:(id)a3 UUID:(id)a4 error:(id *)a5
+- (id)createAssetWithDescriptor:(id)descriptor UUID:(id)d error:(id *)error
 {
   v55 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
+  descriptorCopy = descriptor;
+  dCopy = d;
   v11 = _log_5;
   if (os_log_type_enabled(_log_5, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    *&buf[4] = v9;
+    *&buf[4] = descriptorCopy;
     *&buf[12] = 2112;
-    *&buf[14] = v10;
+    *&buf[14] = dCopy;
     _os_log_impl(&dword_258089000, v11, OS_LOG_TYPE_INFO, "create asset with descriptor:%@ UUID:%@", buf, 0x16u);
   }
 
   v12 = _log_5;
   if (os_log_type_enabled(_log_5, OS_LOG_TYPE_DEBUG))
   {
-    [ManagedAssetsClient createAssetWithDescriptor:v12 UUID:v9 error:?];
+    [ManagedAssetsClient createAssetWithDescriptor:v12 UUID:descriptorCopy error:?];
   }
 
   *buf = 0;
@@ -8067,16 +8067,16 @@ uint64_t __65__ManagedAssetsClient_createAssetWithDescriptor_UUID_completion___b
   v31[4] = &v38;
   v31[5] = a2;
   v14 = [(NSXPCConnection *)conn synchronousRemoteObjectProxyWithErrorHandler:v31];
-  v15 = [v9 type];
+  type = [descriptorCopy type];
   v27[0] = MEMORY[0x277D85DD0];
   v27[1] = 3221225472;
   v27[2] = __60__ManagedAssetsClient_createAssetWithDescriptor_UUID_error___block_invoke_262;
   v27[3] = &unk_27985FA48;
   v29 = &v32;
   v30 = &v38;
-  v16 = v9;
+  v16 = descriptorCopy;
   v28 = v16;
-  [v14 GetTempAssetFileHandle:1 assetType:v15 assetHandle:0 completion:v27];
+  [v14 GetTempAssetFileHandle:1 assetType:type assetHandle:0 completion:v27];
   v17 = v33[5];
   if (v39[5])
   {
@@ -8096,7 +8096,7 @@ uint64_t __65__ManagedAssetsClient_createAssetWithDescriptor_UUID_completion___b
     v26[3] = &unk_27985FA70;
     v26[4] = &v38;
     v26[5] = buf;
-    [v14 CreateAsset:v16 uuid:v10 sessionToken:v17 completion:v26];
+    [v14 CreateAsset:v16 uuid:dCopy sessionToken:v17 completion:v26];
   }
 
   v19 = _log_5;
@@ -8108,7 +8108,7 @@ uint64_t __65__ManagedAssetsClient_createAssetWithDescriptor_UUID_completion___b
       *v44 = 138412802;
       v45 = v16;
       v46 = 2112;
-      v47 = v10;
+      v47 = dCopy;
       v48 = 2112;
       v49 = v20;
       _os_log_error_impl(&dword_258089000, v19, OS_LOG_TYPE_ERROR, "fail to create asset with descriptor:%@ UUID:%@ error:%@", v44, 0x20u);
@@ -8121,16 +8121,16 @@ uint64_t __65__ManagedAssetsClient_createAssetWithDescriptor_UUID_completion___b
     *v44 = 138412546;
     v45 = v21;
     v46 = 2112;
-    v47 = v10;
+    v47 = dCopy;
     _os_log_impl(&dword_258089000, v19, OS_LOG_TYPE_DEFAULT, "created asset as handle:%@ UUID:%@", v44, 0x16u);
   }
 
-  if (a5)
+  if (error)
   {
     v22 = v39[5];
     if (v22)
     {
-      *a5 = v22;
+      *error = v22;
     }
   }
 
@@ -8198,21 +8198,21 @@ void __60__ManagedAssetsClient_createAssetWithDescriptor_UUID_error___block_invo
   *(v6 + 40) = v5;
 }
 
-- (void)updateAssetWithHandle:(id)a3 UUID:(id)a4 assetData:(id)a5 assetAlgorithm:(id)a6 completion:(id)a7
+- (void)updateAssetWithHandle:(id)handle UUID:(id)d assetData:(id)data assetAlgorithm:(id)algorithm completion:(id)completion
 {
   v37 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  handleCopy = handle;
+  dCopy = d;
+  dataCopy = data;
+  algorithmCopy = algorithm;
+  completionCopy = completion;
   v18 = _log_5;
   if (os_log_type_enabled(_log_5, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v34 = v13;
+    v34 = handleCopy;
     v35 = 2112;
-    v36 = v14;
+    v36 = dCopy;
     _os_log_impl(&dword_258089000, v18, OS_LOG_TYPE_INFO, "async update asset with handle:%@ UUID:%@", buf, 0x16u);
   }
 
@@ -8220,13 +8220,13 @@ void __60__ManagedAssetsClient_createAssetWithDescriptor_UUID_error___block_invo
   if (os_log_type_enabled(_log_5, OS_LOG_TYPE_DEBUG))
   {
     [ManagedAssetsClient updateAssetWithHandle:v19 UUID:? assetData:? assetAlgorithm:? completion:?];
-    if (v17)
+    if (completionCopy)
     {
       goto LABEL_5;
     }
   }
 
-  else if (v17)
+  else if (completionCopy)
   {
 LABEL_5:
     backgroundQueue = self->_backgroundQueue;
@@ -8236,11 +8236,11 @@ LABEL_5:
     block[3] = &unk_27985FB10;
     block[4] = self;
     v32 = a2;
-    v31 = v17;
-    v27 = v13;
-    v28 = v15;
-    v29 = v14;
-    v30 = v16;
+    v31 = completionCopy;
+    v27 = handleCopy;
+    v28 = dataCopy;
+    v29 = dCopy;
+    v30 = algorithmCopy;
     dispatch_async(backgroundQueue, block);
 
     goto LABEL_10;
@@ -8448,27 +8448,27 @@ uint64_t __86__ManagedAssetsClient_updateAssetWithHandle_UUID_assetData_assetAlg
   return result;
 }
 
-- (BOOL)updateAssetWithHandle:(id)a3 UUID:(id)a4 assetData:(id)a5 assetAlgorithm:(id)a6 error:(id *)a7
+- (BOOL)updateAssetWithHandle:(id)handle UUID:(id)d assetData:(id)data assetAlgorithm:(id)algorithm error:(id *)error
 {
   v53 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
+  handleCopy = handle;
+  dCopy = d;
+  dataCopy = data;
+  algorithmCopy = algorithm;
   v17 = _log_5;
   if (os_log_type_enabled(_log_5, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    *&buf[4] = v13;
+    *&buf[4] = handleCopy;
     *&buf[12] = 2112;
-    *&buf[14] = v14;
+    *&buf[14] = dCopy;
     _os_log_impl(&dword_258089000, v17, OS_LOG_TYPE_INFO, "update asset with handle:%@ UUID:%@", buf, 0x16u);
   }
 
   v18 = _log_5;
   if (os_log_type_enabled(_log_5, OS_LOG_TYPE_DEBUG))
   {
-    [ManagedAssetsClient updateAssetWithHandle:v18 UUID:v15 assetData:? assetAlgorithm:? error:?];
+    [ManagedAssetsClient updateAssetWithHandle:v18 UUID:dataCopy assetData:? assetAlgorithm:? error:?];
   }
 
   *buf = 0;
@@ -8495,11 +8495,11 @@ uint64_t __86__ManagedAssetsClient_updateAssetWithHandle_UUID_assetData_assetAlg
   v31[1] = 3221225472;
   v31[2] = __81__ManagedAssetsClient_updateAssetWithHandle_UUID_assetData_assetAlgorithm_error___block_invoke_267;
   v31[3] = &unk_27985FB38;
-  v21 = v15;
+  v21 = dataCopy;
   v32 = v21;
   v33 = &v36;
   v34 = buf;
-  [v20 GetTempAssetFileHandle:0 assetType:0 assetHandle:v13 completion:v31];
+  [v20 GetTempAssetFileHandle:0 assetType:0 assetHandle:handleCopy completion:v31];
   v22 = v37[5];
   if (*(*&buf[8] + 40))
   {
@@ -8518,7 +8518,7 @@ uint64_t __86__ManagedAssetsClient_updateAssetWithHandle_UUID_assetData_assetAlg
     v30[2] = __81__ManagedAssetsClient_updateAssetWithHandle_UUID_assetData_assetAlgorithm_error___block_invoke_2;
     v30[3] = &unk_27985EC00;
     v30[4] = buf;
-    [v20 UpdateAsset:v13 uuid:v14 sessionToken:v22 algorithmVersion:v16 completion:v30];
+    [v20 UpdateAsset:handleCopy uuid:dCopy sessionToken:v22 algorithmVersion:algorithmCopy completion:v30];
   }
 
   v24 = *(*&buf[8] + 40);
@@ -8529,9 +8529,9 @@ uint64_t __86__ManagedAssetsClient_updateAssetWithHandle_UUID_assetData_assetAlg
     {
       v26 = *(*&buf[8] + 40);
       *v42 = 138412802;
-      v43 = v13;
+      v43 = handleCopy;
       v44 = 2112;
-      v45 = v14;
+      v45 = dCopy;
       v46 = 2112;
       v47 = v26;
       _os_log_error_impl(&dword_258089000, v25, OS_LOG_TYPE_ERROR, "fail to update asset with handle:%@ UUID:%@ error:%@", v42, 0x20u);
@@ -8541,18 +8541,18 @@ uint64_t __86__ManagedAssetsClient_updateAssetWithHandle_UUID_assetData_assetAlg
   else if (os_log_type_enabled(_log_5, OS_LOG_TYPE_DEFAULT))
   {
     *v42 = 138412546;
-    v43 = v13;
+    v43 = handleCopy;
     v44 = 2112;
-    v45 = v14;
+    v45 = dCopy;
     _os_log_impl(&dword_258089000, v25, OS_LOG_TYPE_DEFAULT, "updated asset with handle:%@ UUID:%@", v42, 0x16u);
   }
 
-  if (a7)
+  if (error)
   {
     v27 = *(*&buf[8] + 40);
     if (v27)
     {
-      *a7 = v27;
+      *error = v27;
     }
   }
 
@@ -8623,20 +8623,20 @@ LABEL_9:
   [v9 closeFile];
 }
 
-- (void)updateAssetHandle:(id)a3 withOptions:(id)a4 assetData:(id)a5 completion:(id)a6
+- (void)updateAssetHandle:(id)handle withOptions:(id)options assetData:(id)data completion:(id)completion
 {
   v32 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  handleCopy = handle;
+  optionsCopy = options;
+  dataCopy = data;
+  completionCopy = completion;
   v15 = _log_5;
   if (os_log_type_enabled(_log_5, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v29 = v11;
+    v29 = handleCopy;
     v30 = 2112;
-    v31 = v12;
+    v31 = optionsCopy;
     _os_log_impl(&dword_258089000, v15, OS_LOG_TYPE_INFO, "async update asset with handle:%@ options:%@", buf, 0x16u);
   }
 
@@ -8644,13 +8644,13 @@ LABEL_9:
   if (os_log_type_enabled(_log_5, OS_LOG_TYPE_DEBUG))
   {
     [ManagedAssetsClient updateAssetWithHandle:v16 UUID:? assetData:? assetAlgorithm:? completion:?];
-    if (v14)
+    if (completionCopy)
     {
       goto LABEL_5;
     }
   }
 
-  else if (v14)
+  else if (completionCopy)
   {
 LABEL_5:
     backgroundQueue = self->_backgroundQueue;
@@ -8660,10 +8660,10 @@ LABEL_5:
     v22[3] = &unk_27985FB88;
     v22[4] = self;
     v27 = a2;
-    v26 = v14;
-    v23 = v13;
-    v24 = v11;
-    v25 = v12;
+    v26 = completionCopy;
+    v23 = dataCopy;
+    v24 = handleCopy;
+    v25 = optionsCopy;
     dispatch_async(backgroundQueue, v22);
 
     goto LABEL_10;
@@ -8942,26 +8942,26 @@ uint64_t __74__ManagedAssetsClient_updateAssetHandle_withOptions_assetData_compl
   return result;
 }
 
-- (BOOL)updateAssetHandle:(id)a3 withOptions:(id)a4 assetData:(id)a5 error:(id *)a6
+- (BOOL)updateAssetHandle:(id)handle withOptions:(id)options assetData:(id)data error:(id *)error
 {
   v49 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  handleCopy = handle;
+  optionsCopy = options;
+  dataCopy = data;
   v14 = _log_5;
   if (os_log_type_enabled(_log_5, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    *&buf[4] = v11;
+    *&buf[4] = handleCopy;
     *&buf[12] = 2112;
-    *&buf[14] = v12;
+    *&buf[14] = optionsCopy;
     _os_log_impl(&dword_258089000, v14, OS_LOG_TYPE_INFO, "update asset with handle:%@ options:%@", buf, 0x16u);
   }
 
   v15 = _log_5;
   if (os_log_type_enabled(_log_5, OS_LOG_TYPE_DEBUG))
   {
-    [ManagedAssetsClient updateAssetHandle:v15 withOptions:v13 assetData:? error:?];
+    [ManagedAssetsClient updateAssetHandle:v15 withOptions:dataCopy assetData:? error:?];
   }
 
   *buf = 0;
@@ -8984,7 +8984,7 @@ uint64_t __74__ManagedAssetsClient_updateAssetHandle_withOptions_assetData_compl
   v31[4] = buf;
   v31[5] = a2;
   v17 = [(NSXPCConnection *)conn synchronousRemoteObjectProxyWithErrorHandler:v31];
-  if (!v13)
+  if (!dataCopy)
   {
     goto LABEL_11;
   }
@@ -8993,10 +8993,10 @@ uint64_t __74__ManagedAssetsClient_updateAssetHandle_withOptions_assetData_compl
   v27[1] = 3221225472;
   v27[2] = __69__ManagedAssetsClient_updateAssetHandle_withOptions_assetData_error___block_invoke_273;
   v27[3] = &unk_27985FB38;
-  v28 = v13;
+  v28 = dataCopy;
   v29 = &v32;
   v30 = buf;
-  [v17 GetTempAssetFileHandle:0 assetType:0 assetHandle:v11 completion:v27];
+  [v17 GetTempAssetFileHandle:0 assetType:0 assetHandle:handleCopy completion:v27];
   if (!*(*&buf[8] + 40))
   {
 
@@ -9007,7 +9007,7 @@ LABEL_11:
     v26[2] = __69__ManagedAssetsClient_updateAssetHandle_withOptions_assetData_error___block_invoke_2;
     v26[3] = &unk_27985EC00;
     v26[4] = buf;
-    [v17 UpdateAssetV2:v11 sessionToken:v19 options:v12 completion:v26];
+    [v17 UpdateAssetV2:handleCopy sessionToken:v19 options:optionsCopy completion:v26];
     goto LABEL_12;
   }
 
@@ -9027,9 +9027,9 @@ LABEL_12:
     {
       v22 = *(*&buf[8] + 40);
       *v38 = 138412802;
-      v39 = v11;
+      v39 = handleCopy;
       v40 = 2112;
-      v41 = v12;
+      v41 = optionsCopy;
       v42 = 2112;
       v43 = v22;
       _os_log_error_impl(&dword_258089000, v21, OS_LOG_TYPE_ERROR, "fail to update asset with handle:%@ options:%@ error:%@", v38, 0x20u);
@@ -9039,18 +9039,18 @@ LABEL_12:
   else if (os_log_type_enabled(_log_5, OS_LOG_TYPE_DEFAULT))
   {
     *v38 = 138412546;
-    v39 = v11;
+    v39 = handleCopy;
     v40 = 2112;
-    v41 = v12;
+    v41 = optionsCopy;
     _os_log_impl(&dword_258089000, v21, OS_LOG_TYPE_DEFAULT, "updated asset with handle:%@ options:%@", v38, 0x16u);
   }
 
-  if (a6)
+  if (error)
   {
     v23 = *(*&buf[8] + 40);
     if (v23)
     {
-      *a6 = v23;
+      *error = v23;
     }
   }
 
@@ -9121,61 +9121,61 @@ LABEL_9:
   [v9 closeFile];
 }
 
-- (void)deleteAssetWithHandle:(id)a3 UUID:(id)a4 completion:(id)a5
+- (void)deleteAssetWithHandle:(id)handle UUID:(id)d completion:(id)completion
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  if (a4)
+  handleCopy = handle;
+  completionCopy = completion;
+  if (d)
   {
     v13 = @"com.apple.managedassets.profileUUID";
-    v14[0] = a4;
+    v14[0] = d;
     v10 = MEMORY[0x277CBEAC0];
-    v11 = a4;
-    a4 = [v10 dictionaryWithObjects:v14 forKeys:&v13 count:1];
+    dCopy = d;
+    d = [v10 dictionaryWithObjects:v14 forKeys:&v13 count:1];
   }
 
-  [(ManagedAssetsClient *)self deleteAssetWithHandle:v8 withOptions:a4 completion:v9];
+  [(ManagedAssetsClient *)self deleteAssetWithHandle:handleCopy withOptions:d completion:completionCopy];
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)deleteAssetWithHandle:(id)a3 UUID:(id)a4 error:(id *)a5
+- (BOOL)deleteAssetWithHandle:(id)handle UUID:(id)d error:(id *)error
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  if (a4)
+  handleCopy = handle;
+  if (d)
   {
     v14 = @"com.apple.managedassets.profileUUID";
-    v15[0] = a4;
+    v15[0] = d;
     v9 = MEMORY[0x277CBEAC0];
-    v10 = a4;
-    a4 = [v9 dictionaryWithObjects:v15 forKeys:&v14 count:1];
+    dCopy = d;
+    d = [v9 dictionaryWithObjects:v15 forKeys:&v14 count:1];
   }
 
-  v11 = [(ManagedAssetsClient *)self deleteAssetWithHandle:v8 withOptions:a4 error:a5];
+  v11 = [(ManagedAssetsClient *)self deleteAssetWithHandle:handleCopy withOptions:d error:error];
 
   v12 = *MEMORY[0x277D85DE8];
   return v11;
 }
 
-- (void)deleteAssetWithHandle:(id)a3 withOptions:(id)a4 completion:(id)a5
+- (void)deleteAssetWithHandle:(id)handle withOptions:(id)options completion:(id)completion
 {
   v25 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  handleCopy = handle;
+  optionsCopy = options;
+  completionCopy = completion;
   v11 = _log_5;
   if (os_log_type_enabled(_log_5, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v22 = v8;
+    v22 = handleCopy;
     v23 = 2112;
-    v24 = v9;
+    v24 = optionsCopy;
     _os_log_impl(&dword_258089000, v11, OS_LOG_TYPE_INFO, "async delete asset with handle:%@ with options %@", buf, 0x16u);
   }
 
-  if (v10)
+  if (completionCopy)
   {
     backgroundQueue = self->_backgroundQueue;
     v17[0] = MEMORY[0x277D85DD0];
@@ -9183,9 +9183,9 @@ LABEL_9:
     v17[2] = __68__ManagedAssetsClient_deleteAssetWithHandle_withOptions_completion___block_invoke;
     v17[3] = &unk_27985F120;
     v17[4] = self;
-    v20 = v10;
-    v18 = v8;
-    v19 = v9;
+    v20 = completionCopy;
+    v18 = handleCopy;
+    v19 = optionsCopy;
     dispatch_async(backgroundQueue, v17);
   }
 
@@ -9272,18 +9272,18 @@ uint64_t __68__ManagedAssetsClient_deleteAssetWithHandle_withOptions_completion_
   return result;
 }
 
-- (BOOL)deleteAssetWithHandle:(id)a3 withOptions:(id)a4 error:(id *)a5
+- (BOOL)deleteAssetWithHandle:(id)handle withOptions:(id)options error:(id *)error
 {
   v31 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  handleCopy = handle;
+  optionsCopy = options;
   v10 = _log_5;
   if (os_log_type_enabled(_log_5, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    *&buf[4] = v8;
+    *&buf[4] = handleCopy;
     *&buf[12] = 2112;
-    *&buf[14] = v9;
+    *&buf[14] = optionsCopy;
     _os_log_impl(&dword_258089000, v10, OS_LOG_TYPE_INFO, "delete asset with handle:%@ options:%@", buf, 0x16u);
   }
 
@@ -9305,7 +9305,7 @@ uint64_t __68__ManagedAssetsClient_deleteAssetWithHandle_withOptions_completion_
   v19[2] = __63__ManagedAssetsClient_deleteAssetWithHandle_withOptions_error___block_invoke_2;
   v19[3] = &unk_27985EC00;
   v19[4] = buf;
-  [v12 DeleteAsset:v8 withOptions:v9 completion:v19];
+  [v12 DeleteAsset:handleCopy withOptions:optionsCopy completion:v19];
 
   v13 = *(*&buf[8] + 40);
   v14 = _log_5;
@@ -9315,9 +9315,9 @@ uint64_t __68__ManagedAssetsClient_deleteAssetWithHandle_withOptions_completion_
     {
       v15 = *(*&buf[8] + 40);
       *v21 = 138412802;
-      v22 = v8;
+      v22 = handleCopy;
       v23 = 2112;
-      v24 = v9;
+      v24 = optionsCopy;
       v25 = 2112;
       v26 = v15;
       _os_log_error_impl(&dword_258089000, v14, OS_LOG_TYPE_ERROR, "fail to delete asset with handle:%@ options:%@ error:%@", v21, 0x20u);
@@ -9327,18 +9327,18 @@ uint64_t __68__ManagedAssetsClient_deleteAssetWithHandle_withOptions_completion_
   else if (os_log_type_enabled(_log_5, OS_LOG_TYPE_DEFAULT))
   {
     *v21 = 138412546;
-    v22 = v8;
+    v22 = handleCopy;
     v23 = 2112;
-    v24 = v9;
+    v24 = optionsCopy;
     _os_log_impl(&dword_258089000, v14, OS_LOG_TYPE_DEFAULT, "deleted asset with handle:%@ options:%@", v21, 0x16u);
   }
 
-  if (a5)
+  if (error)
   {
     v16 = *(*&buf[8] + 40);
     if (v16)
     {
-      *a5 = v16;
+      *error = v16;
     }
   }
 
@@ -9348,9 +9348,9 @@ uint64_t __68__ManagedAssetsClient_deleteAssetWithHandle_withOptions_completion_
   return v13 == 0;
 }
 
-- (void)deleteAllAssetsWithCompletion:(id)a3
+- (void)deleteAllAssetsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = _log_5;
   if (os_log_type_enabled(_log_5, OS_LOG_TYPE_INFO))
   {
@@ -9358,7 +9358,7 @@ uint64_t __68__ManagedAssetsClient_deleteAssetWithHandle_withOptions_completion_
     _os_log_impl(&dword_258089000, v5, OS_LOG_TYPE_INFO, "delete all assets", buf, 2u);
   }
 
-  if (v4)
+  if (completionCopy)
   {
     backgroundQueue = self->_backgroundQueue;
     v10[0] = MEMORY[0x277D85DD0];
@@ -9366,7 +9366,7 @@ uint64_t __68__ManagedAssetsClient_deleteAssetWithHandle_withOptions_completion_
     v10[2] = __53__ManagedAssetsClient_deleteAllAssetsWithCompletion___block_invoke;
     v10[3] = &unk_27985F288;
     v10[4] = self;
-    v11 = v4;
+    v11 = completionCopy;
     dispatch_async(backgroundQueue, v10);
   }
 
@@ -9435,15 +9435,15 @@ uint64_t __53__ManagedAssetsClient_deleteAllAssetsWithCompletion___block_invoke_
   return (*(*(a1 + 40) + 16))();
 }
 
-- (BOOL)deleteAllAssetsWithOptions:(id)a3 error:(id *)a4
+- (BOOL)deleteAllAssetsWithOptions:(id)options error:(id *)error
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  optionsCopy = options;
   v7 = _log_5;
   if (os_log_type_enabled(_log_5, OS_LOG_TYPE_INFO))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v6;
+    *(&buf + 4) = optionsCopy;
     _os_log_impl(&dword_258089000, v7, OS_LOG_TYPE_INFO, "delete all assets sync options:%@", &buf, 0xCu);
   }
 
@@ -9465,31 +9465,31 @@ uint64_t __53__ManagedAssetsClient_deleteAllAssetsWithCompletion___block_invoke_
   v16[2] = __56__ManagedAssetsClient_deleteAllAssetsWithOptions_error___block_invoke_2;
   v16[3] = &unk_27985EC00;
   v16[4] = &buf;
-  [v9 DeleteAllAssetsExcept:0 withOptions:v6 completion:v16];
+  [v9 DeleteAllAssetsExcept:0 withOptions:optionsCopy completion:v16];
 
   v10 = _log_5;
   if (*(*(&buf + 1) + 40))
   {
     if (os_log_type_enabled(_log_5, OS_LOG_TYPE_ERROR))
     {
-      [ManagedAssetsClient deleteAllAssetsWithOptions:v6 error:&buf + 8];
+      [ManagedAssetsClient deleteAllAssetsWithOptions:optionsCopy error:&buf + 8];
     }
   }
 
   else if (os_log_type_enabled(_log_5, OS_LOG_TYPE_DEFAULT))
   {
     *v18 = 138412290;
-    v19 = v6;
+    v19 = optionsCopy;
     _os_log_impl(&dword_258089000, v10, OS_LOG_TYPE_DEFAULT, "deleted all assets sync options:%@", v18, 0xCu);
   }
 
   v11 = *(&buf + 1);
-  if (a4)
+  if (error)
   {
     v12 = *(*(&buf + 1) + 40);
     if (v12)
     {
-      *a4 = v12;
+      *error = v12;
       v11 = *(&buf + 1);
     }
   }
@@ -9501,20 +9501,20 @@ uint64_t __53__ManagedAssetsClient_deleteAllAssetsWithCompletion___block_invoke_
   return v13;
 }
 
-- (void)deleteAllAssetsWithOptions:(id)a3 completion:(id)a4
+- (void)deleteAllAssetsWithOptions:(id)options completion:(id)completion
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  optionsCopy = options;
+  completionCopy = completion;
   v8 = _log_5;
   if (os_log_type_enabled(_log_5, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v19 = v6;
+    v19 = optionsCopy;
     _os_log_impl(&dword_258089000, v8, OS_LOG_TYPE_INFO, "delete all assets async options:%@", buf, 0xCu);
   }
 
-  if (v7)
+  if (completionCopy)
   {
     backgroundQueue = self->_backgroundQueue;
     block[0] = MEMORY[0x277D85DD0];
@@ -9522,8 +9522,8 @@ uint64_t __53__ManagedAssetsClient_deleteAllAssetsWithCompletion___block_invoke_
     block[2] = __61__ManagedAssetsClient_deleteAllAssetsWithOptions_completion___block_invoke;
     block[3] = &unk_27985FBD8;
     block[4] = self;
-    v17 = v7;
-    v16 = v6;
+    v17 = completionCopy;
+    v16 = optionsCopy;
     dispatch_async(backgroundQueue, block);
   }
 
@@ -9601,10 +9601,10 @@ uint64_t __61__ManagedAssetsClient_deleteAllAssetsWithOptions_completion___block
   return result;
 }
 
-- (BOOL)deleteAllAssetsExcept:(id)a3 error:(id *)a4
+- (BOOL)deleteAllAssetsExcept:(id)except error:(id *)error
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  exceptCopy = except;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -9615,7 +9615,7 @@ uint64_t __61__ManagedAssetsClient_deleteAllAssetsWithOptions_completion___block
   if (os_log_type_enabled(_log_5, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v27 = v6;
+    v27 = exceptCopy;
     _os_log_impl(&dword_258089000, v7, OS_LOG_TYPE_INFO, "delete all assets except assetHandles: %@", buf, 0xCu);
   }
 
@@ -9630,18 +9630,18 @@ uint64_t __61__ManagedAssetsClient_deleteAllAssetsWithOptions_completion___block
   v16[1] = 3221225472;
   v16[2] = __51__ManagedAssetsClient_deleteAllAssetsExcept_error___block_invoke_2;
   v16[3] = &unk_27985F1E8;
-  v10 = v6;
+  v10 = exceptCopy;
   v17 = v10;
   v18 = &v20;
   [v9 DeleteAllAssetsExcept:v10 withOptions:0 completion:v16];
 
   v11 = v21;
-  if (a4)
+  if (error)
   {
     v12 = v21[5];
     if (v12)
     {
-      *a4 = v12;
+      *error = v12;
       v11 = v21;
     }
   }
@@ -9681,20 +9681,20 @@ void __51__ManagedAssetsClient_deleteAllAssetsExcept_error___block_invoke_2(uint
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deleteAssetsWithOptions:(id)a3 completion:(id)a4
+- (void)deleteAssetsWithOptions:(id)options completion:(id)completion
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  optionsCopy = options;
+  completionCopy = completion;
   v8 = _log_5;
   if (os_log_type_enabled(_log_5, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v19 = v6;
+    v19 = optionsCopy;
     _os_log_impl(&dword_258089000, v8, OS_LOG_TYPE_INFO, "delete assets async options:%@", buf, 0xCu);
   }
 
-  if (v7)
+  if (completionCopy)
   {
     backgroundQueue = self->_backgroundQueue;
     block[0] = MEMORY[0x277D85DD0];
@@ -9702,8 +9702,8 @@ void __51__ManagedAssetsClient_deleteAllAssetsExcept_error___block_invoke_2(uint
     block[2] = __58__ManagedAssetsClient_deleteAssetsWithOptions_completion___block_invoke;
     block[3] = &unk_27985FBD8;
     block[4] = self;
-    v17 = v7;
-    v16 = v6;
+    v17 = completionCopy;
+    v16 = optionsCopy;
     dispatch_async(backgroundQueue, block);
   }
 
@@ -9781,20 +9781,20 @@ uint64_t __58__ManagedAssetsClient_deleteAssetsWithOptions_completion___block_in
   return result;
 }
 
-- (void)deleteAllAssetsWithUUID:(id)a3 completion:(id)a4
+- (void)deleteAllAssetsWithUUID:(id)d completion:(id)completion
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   v8 = _log_5;
   if (os_log_type_enabled(_log_5, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v19 = v6;
+    v19 = dCopy;
     _os_log_impl(&dword_258089000, v8, OS_LOG_TYPE_INFO, "async delete all assets with UUID:%@", buf, 0xCu);
   }
 
-  if (v7)
+  if (completionCopy)
   {
     backgroundQueue = self->_backgroundQueue;
     block[0] = MEMORY[0x277D85DD0];
@@ -9802,8 +9802,8 @@ uint64_t __58__ManagedAssetsClient_deleteAssetsWithOptions_completion___block_in
     block[2] = __58__ManagedAssetsClient_deleteAllAssetsWithUUID_completion___block_invoke;
     block[3] = &unk_27985FBD8;
     block[4] = self;
-    v17 = v7;
-    v16 = v6;
+    v17 = completionCopy;
+    v16 = dCopy;
     dispatch_async(backgroundQueue, block);
   }
 
@@ -9888,15 +9888,15 @@ uint64_t __58__ManagedAssetsClient_deleteAllAssetsWithUUID_completion___block_in
   return result;
 }
 
-- (BOOL)deleteAllAssetsWithUUID:(id)a3 error:(id *)a4
+- (BOOL)deleteAllAssetsWithUUID:(id)d error:(id *)error
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  dCopy = d;
   v7 = _log_5;
   if (os_log_type_enabled(_log_5, OS_LOG_TYPE_INFO))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v6;
+    *(&buf + 4) = dCopy;
     _os_log_impl(&dword_258089000, v7, OS_LOG_TYPE_INFO, "delete all assets with UUID:%@", &buf, 0xCu);
   }
 
@@ -9914,7 +9914,7 @@ uint64_t __58__ManagedAssetsClient_deleteAllAssetsWithUUID_completion___block_in
   v17[4] = &buf;
   v9 = [(NSXPCConnection *)conn synchronousRemoteObjectProxyWithErrorHandler:v17];
   v20 = @"com.apple.managedassets.profileUUID";
-  v21 = v6;
+  v21 = dCopy;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v21 forKeys:&v20 count:1];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
@@ -9929,23 +9929,23 @@ uint64_t __58__ManagedAssetsClient_deleteAllAssetsWithUUID_completion___block_in
   {
     if (os_log_type_enabled(_log_5, OS_LOG_TYPE_ERROR))
     {
-      [ManagedAssetsClient deleteAllAssetsWithUUID:v6 error:&buf + 8];
+      [ManagedAssetsClient deleteAllAssetsWithUUID:dCopy error:&buf + 8];
     }
   }
 
   else if (os_log_type_enabled(_log_5, OS_LOG_TYPE_DEFAULT))
   {
     *v18 = 138412290;
-    v19 = v6;
+    v19 = dCopy;
     _os_log_impl(&dword_258089000, v12, OS_LOG_TYPE_DEFAULT, "deleted all assets with UUID:%@", v18, 0xCu);
   }
 
-  if (a4)
+  if (error)
   {
     v13 = *(*(&buf + 1) + 40);
     if (v13)
     {
-      *a4 = v13;
+      *error = v13;
     }
   }
 
@@ -9955,20 +9955,20 @@ uint64_t __58__ManagedAssetsClient_deleteAllAssetsWithUUID_completion___block_in
   return v11 == 0;
 }
 
-- (void)queryAssetsWithOptions:(id)a3 completion:(id)a4
+- (void)queryAssetsWithOptions:(id)options completion:(id)completion
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  optionsCopy = options;
+  completionCopy = completion;
   v8 = _log_5;
   if (os_log_type_enabled(_log_5, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v19 = v6;
+    v19 = optionsCopy;
     _os_log_impl(&dword_258089000, v8, OS_LOG_TYPE_INFO, "async query assets with options:%@", buf, 0xCu);
   }
 
-  if (v7)
+  if (completionCopy)
   {
     backgroundQueue = self->_backgroundQueue;
     block[0] = MEMORY[0x277D85DD0];
@@ -9976,8 +9976,8 @@ uint64_t __58__ManagedAssetsClient_deleteAllAssetsWithUUID_completion___block_in
     block[2] = __57__ManagedAssetsClient_queryAssetsWithOptions_completion___block_invoke;
     block[3] = &unk_27985FBD8;
     block[4] = self;
-    v17 = v7;
-    v16 = v6;
+    v17 = completionCopy;
+    v16 = optionsCopy;
     dispatch_async(backgroundQueue, block);
   }
 
@@ -10059,15 +10059,15 @@ uint64_t __57__ManagedAssetsClient_queryAssetsWithOptions_completion___block_inv
   return result;
 }
 
-- (id)queryAssetsWithOptions:(id)a3 error:(id *)a4
+- (id)queryAssetsWithOptions:(id)options error:(id *)error
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  optionsCopy = options;
   v7 = _log_5;
   if (os_log_type_enabled(_log_5, OS_LOG_TYPE_INFO))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v6;
+    *(&buf + 4) = optionsCopy;
     _os_log_impl(&dword_258089000, v7, OS_LOG_TYPE_INFO, "query assets with options:%@", &buf, 0xCu);
   }
 
@@ -10096,14 +10096,14 @@ uint64_t __57__ManagedAssetsClient_queryAssetsWithOptions_completion___block_inv
   v16[3] = &unk_27985FC28;
   v16[4] = &v18;
   v16[5] = &buf;
-  [v9 QueryAssets:v6 completion:v16];
+  [v9 QueryAssets:optionsCopy completion:v16];
 
   v10 = _log_5;
   if (*(v19[0] + 40))
   {
     if (os_log_type_enabled(_log_5, OS_LOG_TYPE_ERROR))
     {
-      [ManagedAssetsClient queryAssetsWithOptions:v6 error:v19];
+      [ManagedAssetsClient queryAssetsWithOptions:optionsCopy error:v19];
     }
   }
 
@@ -10115,12 +10115,12 @@ uint64_t __57__ManagedAssetsClient_queryAssetsWithOptions_completion___block_inv
     _os_log_impl(&dword_258089000, v10, OS_LOG_TYPE_INFO, "queried asset result:%@", v21, 0xCu);
   }
 
-  if (a4)
+  if (error)
   {
     v12 = *(v19[0] + 40);
     if (v12)
     {
-      *a4 = v12;
+      *error = v12;
     }
   }
 
@@ -10143,15 +10143,15 @@ void __52__ManagedAssetsClient_queryAssetsWithOptions_error___block_invoke_2(uin
   *(v6 + 40) = v5;
 }
 
-- (id)queryAssetMetaDataWithOptions:(id)a3 error:(id *)a4
+- (id)queryAssetMetaDataWithOptions:(id)options error:(id *)error
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  optionsCopy = options;
   v7 = _log_5;
   if (os_log_type_enabled(_log_5, OS_LOG_TYPE_INFO))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v6;
+    *(&buf + 4) = optionsCopy;
     _os_log_impl(&dword_258089000, v7, OS_LOG_TYPE_INFO, "query assetMetaData with options:%@", &buf, 0xCu);
   }
 
@@ -10180,14 +10180,14 @@ void __52__ManagedAssetsClient_queryAssetsWithOptions_error___block_invoke_2(uin
   v16[3] = &unk_27985F170;
   v16[4] = &v18;
   v16[5] = &buf;
-  [v9 QueryAssetMetaData:v6 completion:v16];
+  [v9 QueryAssetMetaData:optionsCopy completion:v16];
 
   v10 = _log_5;
   if (*(v19[0] + 40))
   {
     if (os_log_type_enabled(_log_5, OS_LOG_TYPE_ERROR))
     {
-      [ManagedAssetsClient queryAssetsWithOptions:v6 error:v19];
+      [ManagedAssetsClient queryAssetsWithOptions:optionsCopy error:v19];
     }
   }
 
@@ -10199,12 +10199,12 @@ void __52__ManagedAssetsClient_queryAssetsWithOptions_error___block_invoke_2(uin
     _os_log_impl(&dword_258089000, v10, OS_LOG_TYPE_INFO, "queried assetMetaData result:%@", v21, 0xCu);
   }
 
-  if (a4)
+  if (error)
   {
     v12 = *(v19[0] + 40);
     if (v12)
     {
-      *a4 = v12;
+      *error = v12;
     }
   }
 
@@ -10227,15 +10227,15 @@ void __59__ManagedAssetsClient_queryAssetMetaDataWithOptions_error___block_invok
   *(v6 + 40) = v5;
 }
 
-- (void)recoverRemoteAsset:(id)a3
+- (void)recoverRemoteAsset:(id)asset
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  assetCopy = asset;
   v5 = _log_5;
   if (os_log_type_enabled(_log_5, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v12 = v4;
+    v12 = assetCopy;
     _os_log_impl(&dword_258089000, v5, OS_LOG_TYPE_INFO, "recoverRemoteAsset: %@", buf, 0xCu);
   }
 
@@ -10244,8 +10244,8 @@ void __59__ManagedAssetsClient_queryAssetMetaDataWithOptions_error___block_invok
   v9[1] = 3221225472;
   v9[2] = __42__ManagedAssetsClient_recoverRemoteAsset___block_invoke_278;
   v9[3] = &unk_27985FC50;
-  v10 = v4;
-  v7 = v4;
+  v10 = assetCopy;
+  v7 = assetCopy;
   [v6 recoverRemoteAsset:v7 completion:v9];
 
   v8 = *MEMORY[0x277D85DE8];
@@ -10284,23 +10284,23 @@ void __42__ManagedAssetsClient_recoverRemoteAsset___block_invoke_278(uint64_t a1
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getAssetDataWithHandle:(id)a3 UUID:(id)a4 completion:(id)a5
+- (void)getAssetDataWithHandle:(id)handle UUID:(id)d completion:(id)completion
 {
   v25 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  handleCopy = handle;
+  dCopy = d;
+  completionCopy = completion;
   v11 = _log_5;
   if (os_log_type_enabled(_log_5, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v22 = v8;
+    v22 = handleCopy;
     v23 = 2112;
-    v24 = v9;
+    v24 = dCopy;
     _os_log_impl(&dword_258089000, v11, OS_LOG_TYPE_INFO, "async get asset data with handle:%@ UUID:%@", buf, 0x16u);
   }
 
-  if (v10)
+  if (completionCopy)
   {
     backgroundQueue = self->_backgroundQueue;
     v17[0] = MEMORY[0x277D85DD0];
@@ -10308,9 +10308,9 @@ void __42__ManagedAssetsClient_recoverRemoteAsset___block_invoke_278(uint64_t a1
     v17[2] = __62__ManagedAssetsClient_getAssetDataWithHandle_UUID_completion___block_invoke;
     v17[3] = &unk_27985F120;
     v17[4] = self;
-    v20 = v10;
-    v18 = v8;
-    v19 = v9;
+    v20 = completionCopy;
+    v18 = handleCopy;
+    v19 = dCopy;
     dispatch_async(backgroundQueue, v17);
   }
 
@@ -10451,18 +10451,18 @@ void __62__ManagedAssetsClient_getAssetDataWithHandle_UUID_completion___block_in
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (id)getAssetDataWithHandle:(id)a3 UUID:(id)a4 error:(id *)a5
+- (id)getAssetDataWithHandle:(id)handle UUID:(id)d error:(id *)error
 {
   v45 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  handleCopy = handle;
+  dCopy = d;
   v10 = _log_5;
   if (os_log_type_enabled(_log_5, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    *&buf[4] = v8;
+    *&buf[4] = handleCopy;
     *&buf[12] = 2112;
-    *&buf[14] = v9;
+    *&buf[14] = dCopy;
     _os_log_impl(&dword_258089000, v10, OS_LOG_TYPE_INFO, "get asset data with handle:%@ UUID:%@", buf, 0x16u);
   }
 
@@ -10490,11 +10490,11 @@ void __62__ManagedAssetsClient_getAssetDataWithHandle_UUID_completion___block_in
   v24[2] = __57__ManagedAssetsClient_getAssetDataWithHandle_UUID_error___block_invoke_2;
   v24[3] = &unk_27985FCC8;
   v24[4] = self;
-  v13 = v8;
+  v13 = handleCopy;
   v25 = v13;
   v26 = buf;
   v27 = &v29;
-  [v12 GetAssetData:v13 uuid:v9 completion:v24];
+  [v12 GetAssetData:v13 uuid:dCopy completion:v24];
 
   v14 = _log_5;
   if (v30[5])
@@ -10505,7 +10505,7 @@ void __62__ManagedAssetsClient_getAssetDataWithHandle_UUID_completion___block_in
       *v35 = 138412802;
       v36 = v13;
       v37 = 2112;
-      v38 = v9;
+      v38 = dCopy;
       v39 = 2112;
       v40 = v15;
       _os_log_error_impl(&dword_258089000, v14, OS_LOG_TYPE_ERROR, "fail to get asset data with handle:%@ UUID:%@ error:%@", v35, 0x20u);
@@ -10521,7 +10521,7 @@ void __62__ManagedAssetsClient_getAssetDataWithHandle_UUID_completion___block_in
       *v35 = 138412802;
       v36 = v13;
       v37 = 2112;
-      v38 = v9;
+      v38 = dCopy;
       v39 = 2048;
       v40 = v17;
       _os_log_impl(&dword_258089000, v16, OS_LOG_TYPE_INFO, "get asset data with handle:%@ UUID:%@ dataSize:%lu", v35, 0x20u);
@@ -10535,12 +10535,12 @@ void __62__ManagedAssetsClient_getAssetDataWithHandle_UUID_completion___block_in
     }
   }
 
-  if (a5)
+  if (error)
   {
     v20 = v30[5];
     if (v20)
     {
-      *a5 = v20;
+      *error = v20;
     }
   }
 
@@ -10611,23 +10611,23 @@ void __57__ManagedAssetsClient_getAssetDataWithHandle_UUID_error___block_invoke_
   *(v18 + 40) = v14;
 }
 
-- (void)getAssetMetaDataWithHandle:(id)a3 UUID:(id)a4 completion:(id)a5
+- (void)getAssetMetaDataWithHandle:(id)handle UUID:(id)d completion:(id)completion
 {
   v25 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  handleCopy = handle;
+  dCopy = d;
+  completionCopy = completion;
   v11 = _log_5;
   if (os_log_type_enabled(_log_5, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v22 = v8;
+    v22 = handleCopy;
     v23 = 2112;
-    v24 = v9;
+    v24 = dCopy;
     _os_log_impl(&dword_258089000, v11, OS_LOG_TYPE_INFO, "async get asset metadata with handle:%@ UUID:%@", buf, 0x16u);
   }
 
-  if (v10)
+  if (completionCopy)
   {
     backgroundQueue = self->_backgroundQueue;
     v17[0] = MEMORY[0x277D85DD0];
@@ -10635,9 +10635,9 @@ void __57__ManagedAssetsClient_getAssetDataWithHandle_UUID_error___block_invoke_
     v17[2] = __66__ManagedAssetsClient_getAssetMetaDataWithHandle_UUID_completion___block_invoke;
     v17[3] = &unk_27985F120;
     v17[4] = self;
-    v20 = v10;
-    v18 = v8;
-    v19 = v9;
+    v20 = completionCopy;
+    v18 = handleCopy;
+    v19 = dCopy;
     dispatch_async(backgroundQueue, v17);
   }
 
@@ -10735,18 +10735,18 @@ uint64_t __66__ManagedAssetsClient_getAssetMetaDataWithHandle_UUID_completion___
   return result;
 }
 
-- (id)getAssetMetaDataWithHandle:(id)a3 UUID:(id)a4 error:(id *)a5
+- (id)getAssetMetaDataWithHandle:(id)handle UUID:(id)d error:(id *)error
 {
   v38 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  handleCopy = handle;
+  dCopy = d;
   v10 = _log_5;
   if (os_log_type_enabled(_log_5, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    *&buf[4] = v8;
+    *&buf[4] = handleCopy;
     *&buf[12] = 2112;
-    *&buf[14] = v9;
+    *&buf[14] = dCopy;
     _os_log_impl(&dword_258089000, v10, OS_LOG_TYPE_INFO, "get asset metadata with handle:%@ UUID:%@", buf, 0x16u);
   }
 
@@ -10775,15 +10775,15 @@ uint64_t __66__ManagedAssetsClient_getAssetMetaDataWithHandle_UUID_completion___
   v20[3] = &unk_27985FD18;
   v20[4] = buf;
   v20[5] = &v22;
-  [v12 GetAssetMeteData:v8 uuid:v9 completion:v20];
+  [v12 GetAssetMeteData:handleCopy uuid:dCopy completion:v20];
 
   v13 = v23;
-  if (a5)
+  if (error)
   {
     v14 = v23[5];
     if (v14)
     {
-      *a5 = v14;
+      *error = v14;
       v13 = v23;
     }
   }
@@ -10795,9 +10795,9 @@ uint64_t __66__ManagedAssetsClient_getAssetMetaDataWithHandle_UUID_completion___
     {
       v16 = v23[5];
       *v28 = 138412802;
-      v29 = v8;
+      v29 = handleCopy;
       v30 = 2112;
-      v31 = v9;
+      v31 = dCopy;
       v32 = 2112;
       v33 = v16;
       _os_log_error_impl(&dword_258089000, v15, OS_LOG_TYPE_ERROR, "fail to get asset metadata with handle:%@ UUID:%@ error:%@", v28, 0x20u);
@@ -10809,9 +10809,9 @@ uint64_t __66__ManagedAssetsClient_getAssetMetaDataWithHandle_UUID_completion___
     if (os_log_type_enabled(_log_5, OS_LOG_TYPE_INFO))
     {
       *v28 = 138412546;
-      v29 = v8;
+      v29 = handleCopy;
       v30 = 2112;
-      v31 = v9;
+      v31 = dCopy;
       _os_log_impl(&dword_258089000, v15, OS_LOG_TYPE_INFO, "get asset metadata with handle:%@ UUID:%@", v28, 0x16u);
     }
 
@@ -10844,9 +10844,9 @@ void __61__ManagedAssetsClient_getAssetMetaDataWithHandle_UUID_error___block_inv
   *(v9 + 40) = v6;
 }
 
-- (void)registerDarwinNotification:(unint64_t)a3
+- (void)registerDarwinNotification:(unint64_t)notification
 {
-  if (a3 == 4)
+  if (notification == 4)
   {
     if ([(NSPointerArray *)self->_profileEventObservers count])
     {
@@ -10857,7 +10857,7 @@ void __61__ManagedAssetsClient_getAssetMetaDataWithHandle_UUID_error___block_inv
     goto LABEL_7;
   }
 
-  if (a3 == 3 && ![(NSPointerArray *)self->_assetEventObservers count])
+  if (notification == 3 && ![(NSPointerArray *)self->_assetEventObservers count])
   {
     v4 = kMASDNotificationTypeAssetChangeEvent;
 LABEL_7:
@@ -10865,13 +10865,13 @@ LABEL_7:
   }
 
 LABEL_8:
-  v5 = [(NSXPCConnection *)self->_conn remoteObjectProxy];
-  [v5 WakeUp];
+  remoteObjectProxy = [(NSXPCConnection *)self->_conn remoteObjectProxy];
+  [remoteObjectProxy WakeUp];
 }
 
-- (void)unregisterDarwinNotificationIfNeed:(unint64_t)a3
+- (void)unregisterDarwinNotificationIfNeed:(unint64_t)need
 {
-  if (a3 == 4)
+  if (need == 4)
   {
     if ([(NSPointerArray *)self->_profileEventObservers count])
     {
@@ -10883,7 +10883,7 @@ LABEL_8:
 
   else
   {
-    if (a3 != 3 || [(NSPointerArray *)self->_assetEventObservers count])
+    if (need != 3 || [(NSPointerArray *)self->_assetEventObservers count])
     {
       return;
     }
@@ -10896,18 +10896,18 @@ LABEL_8:
   [(ManagedAssetsClient *)self unsubscribeDarwinNotification:v5];
 }
 
-- (void)didReceiveAssetChangeWith:(unint64_t)a3 assethandles:(id)a4
+- (void)didReceiveAssetChangeWith:(unint64_t)with assethandles:(id)assethandles
 {
-  v6 = a4;
+  assethandlesCopy = assethandles;
   notifyQueue = self->_notifyQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __62__ManagedAssetsClient_didReceiveAssetChangeWith_assethandles___block_invoke;
   block[3] = &unk_27985F958;
-  v10 = v6;
-  v11 = a3;
+  v10 = assethandlesCopy;
+  withCopy = with;
   block[4] = self;
-  v8 = v6;
+  v8 = assethandlesCopy;
   dispatch_async(notifyQueue, block);
 }
 
@@ -10974,19 +10974,19 @@ void __62__ManagedAssetsClient_didReceiveAssetChangeWith_assethandles___block_in
   }
 }
 
-- (void)didReceiveProfileChangeWith:(unint64_t)a3 profile:(id)a4 type:(unint64_t)a5
+- (void)didReceiveProfileChangeWith:(unint64_t)with profile:(id)profile type:(unint64_t)type
 {
-  v8 = a4;
+  profileCopy = profile;
   notifyQueue = self->_notifyQueue;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __64__ManagedAssetsClient_didReceiveProfileChangeWith_profile_type___block_invoke;
   v11[3] = &unk_27985F930;
   v11[4] = self;
-  v12 = v8;
-  v13 = a3;
-  v14 = a5;
-  v10 = v8;
+  v12 = profileCopy;
+  withCopy = with;
+  typeCopy = type;
+  v10 = profileCopy;
   dispatch_async(notifyQueue, v11);
 }
 
@@ -11028,55 +11028,55 @@ void __64__ManagedAssetsClient_didReceiveProfileChangeWith_profile_type___block_
   }
 }
 
-- (void)subscribeDarwinNotification:(id)a3
+- (void)subscribeDarwinNotification:(id)notification
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  notificationCopy = notification;
   v5 = _log_5;
   if (os_log_type_enabled(_log_5, OS_LOG_TYPE_INFO))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = notificationCopy;
     _os_log_impl(&dword_258089000, v5, OS_LOG_TYPE_INFO, "Subscribe Darwin notification with type %@", &v7, 0xCu);
   }
 
-  CFNotificationCenterAddObserver(self->_darwinCenter, self, _handleDarwinNotification, v4, 0, CFNotificationSuspensionBehaviorDeliverImmediately);
+  CFNotificationCenterAddObserver(self->_darwinCenter, self, _handleDarwinNotification, notificationCopy, 0, CFNotificationSuspensionBehaviorDeliverImmediately);
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)unsubscribeDarwinNotification:(id)a3
+- (void)unsubscribeDarwinNotification:(id)notification
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  notificationCopy = notification;
   v5 = _log_5;
   if (os_log_type_enabled(_log_5, OS_LOG_TYPE_INFO))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = notificationCopy;
     _os_log_impl(&dword_258089000, v5, OS_LOG_TYPE_INFO, "Unsubscribe Darwin notification with type %@", &v7, 0xCu);
   }
 
-  CFNotificationCenterRemoveObserver(self->_darwinCenter, self, v4, 0);
+  CFNotificationCenterRemoveObserver(self->_darwinCenter, self, notificationCopy, 0);
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetchCoreRxLensData:(id)a3 recordUUID:(id)a4 accPayload:(id)a5 rxIdL:(int64_t)a6 rxIdR:(int64_t)a7 axisL:(int64_t)a8 axisR:(int64_t)a9 calRequiredL:(BOOL)a10 calRequiredR:(BOOL)a11 version:(unint64_t)a12 attributes:(id)a13 completion:(id)a14
+- (void)fetchCoreRxLensData:(id)data recordUUID:(id)d accPayload:(id)payload rxIdL:(int64_t)l rxIdR:(int64_t)r axisL:(int64_t)axisL axisR:(int64_t)axisR calRequiredL:(BOOL)self0 calRequiredR:(BOOL)self1 version:(unint64_t)self2 attributes:(id)self3 completion:(id)self4
 {
   v46 = *MEMORY[0x277D85DE8];
-  v18 = a3;
-  v19 = a4;
-  v20 = a5;
-  v21 = a13;
-  v22 = a14;
+  dataCopy = data;
+  dCopy = d;
+  payloadCopy = payload;
+  attributesCopy = attributes;
+  completionCopy = completion;
   v23 = _log_5;
   if (os_log_type_enabled(_log_5, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v43 = v18;
+    v43 = dataCopy;
     v44 = 2112;
-    v45 = v19;
+    v45 = dCopy;
     _os_log_impl(&dword_258089000, v23, OS_LOG_TYPE_INFO, "async fetchCoreRxLensData name:%@ recordUUID:%@", buf, 0x16u);
   }
 
@@ -11087,21 +11087,21 @@ void __64__ManagedAssetsClient_didReceiveProfileChangeWith_profile_type___block_
   v39[3] = &unk_27985FDB8;
   v41 = a2;
   v39[4] = self;
-  v25 = v22;
+  v25 = completionCopy;
   v40 = v25;
   v26 = [(NSXPCConnection *)conn remoteObjectProxyWithErrorHandler:v39];
   v35[0] = MEMORY[0x277D85DD0];
   v35[1] = 3221225472;
   v35[2] = __145__ManagedAssetsClient_fetchCoreRxLensData_recordUUID_accPayload_rxIdL_rxIdR_axisL_axisR_calRequiredL_calRequiredR_version_attributes_completion___block_invoke_2;
   v35[3] = &unk_27985FDE0;
-  v36 = v18;
-  v37 = v19;
+  v36 = dataCopy;
+  v37 = dCopy;
   v38 = v25;
   v27 = v25;
-  v28 = v19;
-  v29 = v18;
-  LOWORD(v31) = __PAIR16__(a11, a10);
-  [v26 fetchCoreRxLensData:v29 recordUUID:v28 accPayload:v20 rxIdL:a6 rxIdR:a7 axisL:a8 axisR:a9 calRequiredL:v31 calRequiredR:a12 version:v21 attributes:v35 reply:?];
+  v28 = dCopy;
+  v29 = dataCopy;
+  LOWORD(v31) = __PAIR16__(requiredR, requiredL);
+  [v26 fetchCoreRxLensData:v29 recordUUID:v28 accPayload:payloadCopy rxIdL:l rxIdR:r axisL:axisL axisR:axisR calRequiredL:v31 calRequiredR:version version:attributesCopy attributes:v35 reply:?];
 
   v30 = *MEMORY[0x277D85DE8];
 }
@@ -11159,13 +11159,13 @@ void __145__ManagedAssetsClient_fetchCoreRxLensData_recordUUID_accPayload_rxIdL_
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)fetchCoreRxLensData:(id)a3 recordUUID:(id)a4 accPayload:(id)a5 rxIdL:(int64_t)a6 rxIdR:(int64_t)a7 axisL:(int64_t)a8 axisR:(int64_t)a9 calRequiredL:(BOOL)a10 calRequiredR:(BOOL)a11 version:(unint64_t)a12 attributes:(id)a13 attributesOut:(id *)a14 recordUUIDOut:(id *)a15 error:(id *)a16
+- (BOOL)fetchCoreRxLensData:(id)data recordUUID:(id)d accPayload:(id)payload rxIdL:(int64_t)l rxIdR:(int64_t)r axisL:(int64_t)axisL axisR:(int64_t)axisR calRequiredL:(BOOL)self0 calRequiredR:(BOOL)self1 version:(unint64_t)self2 attributes:(id)self3 attributesOut:(id *)self4 recordUUIDOut:(id *)self5 error:(id *)self6
 {
   v70 = *MEMORY[0x277D85DE8];
-  v20 = a3;
-  v21 = a4;
-  v22 = a5;
-  v23 = a13;
+  dataCopy = data;
+  dCopy = d;
+  payloadCopy = payload;
+  attributesCopy = attributes;
   v60 = 0;
   v61 = &v60;
   v62 = 0x3032000000;
@@ -11192,9 +11192,9 @@ void __145__ManagedAssetsClient_fetchCoreRxLensData_recordUUID_accPayload_rxIdL_
   if (os_log_type_enabled(_log_5, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v67 = v20;
+    v67 = dataCopy;
     v68 = 2112;
-    v69 = v21;
+    v69 = dCopy;
     _os_log_impl(&dword_258089000, v24, OS_LOG_TYPE_INFO, "sync fetchCoreRxLensData name:%@ recordUUID:%@", buf, 0x16u);
   }
 
@@ -11213,26 +11213,26 @@ void __145__ManagedAssetsClient_fetchCoreRxLensData_recordUUID_accPayload_rxIdL_
   v39 = &v54;
   v40 = &v48;
   v41 = &v60;
-  v27 = v20;
+  v27 = dataCopy;
   v37 = v27;
-  v28 = v21;
+  v28 = dCopy;
   v38 = v28;
   v42 = &v44;
-  LOWORD(v32) = __PAIR16__(a11, a10);
-  [v26 fetchCoreRxLensData:v27 recordUUID:v28 accPayload:v22 rxIdL:a6 rxIdR:a7 axisL:a8 axisR:a9 calRequiredL:v32 calRequiredR:a12 version:v23 attributes:v36 reply:?];
-  if (a15)
+  LOWORD(v32) = __PAIR16__(requiredR, requiredL);
+  [v26 fetchCoreRxLensData:v27 recordUUID:v28 accPayload:payloadCopy rxIdL:l rxIdR:r axisL:axisL axisR:axisR calRequiredL:v32 calRequiredR:version version:attributesCopy attributes:v36 reply:?];
+  if (dOut)
   {
-    *a15 = v55[5];
+    *dOut = v55[5];
   }
 
-  if (a14)
+  if (out)
   {
-    *a14 = v49[5];
+    *out = v49[5];
   }
 
-  if (a16)
+  if (error)
   {
-    *a16 = v61[5];
+    *error = v61[5];
   }
 
   v29 = *(v45 + 24);
@@ -11299,10 +11299,10 @@ void __168__ManagedAssetsClient_fetchCoreRxLensData_recordUUID_accPayload_rxIdL_
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)testDaemon:(id)a3 results:(id *)a4 error:(id *)a5
+- (BOOL)testDaemon:(id)daemon results:(id *)results error:(id *)error
 {
   v36 = *MEMORY[0x277D85DE8];
-  v9 = a3;
+  daemonCopy = daemon;
   v28 = 0;
   v29 = &v28;
   v30 = 0x3032000000;
@@ -11323,7 +11323,7 @@ void __168__ManagedAssetsClient_fetchCoreRxLensData_recordUUID_accPayload_rxIdL_
   if (os_log_type_enabled(_log_5, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v35 = v9;
+    v35 = daemonCopy;
     _os_log_impl(&dword_258089000, v10, OS_LOG_TYPE_INFO, "sync testDaemon inputs: %@", buf, 0xCu);
   }
 
@@ -11342,15 +11342,15 @@ void __168__ManagedAssetsClient_fetchCoreRxLensData_recordUUID_accPayload_rxIdL_
   v16[4] = &v22;
   v16[5] = &v28;
   v16[6] = &v18;
-  [v12 daemonTest:v9 completion:v16];
-  if (a4)
+  [v12 daemonTest:daemonCopy completion:v16];
+  if (results)
   {
-    *a4 = v23[5];
+    *results = v23[5];
   }
 
-  if (a5)
+  if (error)
   {
-    *a5 = v29[5];
+    *error = v29[5];
   }
 
   v13 = *(v19 + 24);
@@ -11511,10 +11511,10 @@ void __52__ManagedAssetsClient_recoveryTaskWhenDaemonIsReady__block_invoke(uint6
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)recreateFileOrKVStoreObserverXPCWith:(id)a3 error:(id *)a4
+- (BOOL)recreateFileOrKVStoreObserverXPCWith:(id)with error:(id *)error
 {
   v42 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  withCopy = with;
   v37 = 0;
   v38[0] = &v37;
   v38[1] = 0x3032000000;
@@ -11522,8 +11522,8 @@ void __52__ManagedAssetsClient_recoveryTaskWhenDaemonIsReady__block_invoke(uint6
   v38[3] = __Block_byref_object_dispose__5;
   v39 = 0;
   os_unfair_lock_lock(&self->_bidirectional_xpcObserver_lock);
-  v7 = [(NSMapTable *)self->_bidirectionalXPCObservers objectForKey:v6];
-  v8 = [(NSMapTable *)self->_bidirectionalXPCObserversMetaData objectForKey:v6];
+  v7 = [(NSMapTable *)self->_bidirectionalXPCObservers objectForKey:withCopy];
+  v8 = [(NSMapTable *)self->_bidirectionalXPCObserversMetaData objectForKey:withCopy];
   os_unfair_lock_unlock(&self->_bidirectional_xpcObserver_lock);
   if (!v7)
   {
@@ -11534,14 +11534,14 @@ void __52__ManagedAssetsClient_recoveryTaskWhenDaemonIsReady__block_invoke(uint6
     v11 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_286947878];
     [v7 setExportedInterface:v11];
 
-    [v7 setExportedObject:v6];
+    [v7 setExportedObject:withCopy];
     objc_initWeak(&location, self);
     v33[0] = MEMORY[0x277D85DD0];
     v33[1] = 3221225472;
     v33[2] = __66__ManagedAssetsClient_recreateFileOrKVStoreObserverXPCWith_error___block_invoke;
     v33[3] = &unk_27985FE80;
     objc_copyWeak(&v35, &location);
-    v12 = v6;
+    v12 = withCopy;
     v34 = v12;
     [v7 setInterruptionHandler:v33];
     v30[0] = MEMORY[0x277D85DD0];
@@ -11570,17 +11570,17 @@ void __52__ManagedAssetsClient_recoveryTaskWhenDaemonIsReady__block_invoke(uint6
     {
       v25 = [v8 objectForKeyedSubscript:@"group"];
       v16 = [v8 objectForKeyedSubscript:@"observerType"];
-      v24 = [v16 integerValue];
+      integerValue = [v16 integerValue];
       v17 = [v8 objectForKeyedSubscript:@"resources"];
       v18 = [v8 objectForKeyedSubscript:@"profile"];
       v19 = [v8 objectForKeyedSubscript:@"events"];
-      v20 = [v19 integerValue];
+      integerValue2 = [v19 integerValue];
       v28[0] = MEMORY[0x277D85DD0];
       v28[1] = 3221225472;
       v28[2] = __66__ManagedAssetsClient_recreateFileOrKVStoreObserverXPCWith_error___block_invoke_290;
       v28[3] = &unk_27985EC00;
       v28[4] = &v37;
-      [v26 RegisterOberverWithGroup:v25 observerType:v24 resourceNames:v17 profile:v18 events:v20 completion:v28];
+      [v26 RegisterOberverWithGroup:v25 observerType:integerValue resourceNames:v17 profile:v18 events:integerValue2 completion:v28];
 
       v21 = _log_5;
       if (!*(v38[0] + 40))
@@ -11611,7 +11611,7 @@ void __52__ManagedAssetsClient_recoveryTaskWhenDaemonIsReady__block_invoke(uint6
     }
 
     v9 = 0;
-    *a4 = v15;
+    *error = v15;
 LABEL_10:
 
     objc_destroyWeak(&v32);
@@ -11654,7 +11654,7 @@ void __66__ManagedAssetsClient_recreateFileOrKVStoreObserverXPCWith_error___bloc
   *(v5 + 40) = v3;
 }
 
-- (BOOL)recreateRemoteObserverXPCWith:(id *)a3
+- (BOOL)recreateRemoteObserverXPCWith:(id *)with
 {
   if (self->_remoteObserverConn)
   {
@@ -11677,13 +11677,13 @@ void __66__ManagedAssetsClient_recreateFileOrKVStoreObserverXPCWith_error___bloc
   v10 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_2869478D8];
   [(NSXPCConnection *)self->_remoteObserverConn setExportedInterface:v10];
 
-  v11 = [(NSXPCConnection *)self->_remoteObserverConn exportedInterface];
+  exportedInterface = [(NSXPCConnection *)self->_remoteObserverConn exportedInterface];
   v12 = MEMORY[0x277CBEB98];
   v13 = objc_opt_class();
   v14 = objc_opt_class();
   v15 = objc_opt_class();
   v16 = [v12 setWithObjects:{v13, v14, v15, objc_opt_class(), 0}];
-  [v11 setClasses:v16 forSelector:sel_didReceiveShareAssets_participant_error_ argumentIndex:0 ofReply:0];
+  [exportedInterface setClasses:v16 forSelector:sel_didReceiveShareAssets_participant_error_ argumentIndex:0 ofReply:0];
 
   [(NSXPCConnection *)self->_remoteObserverConn setExportedObject:self];
   objc_initWeak(&location, self);
@@ -11714,7 +11714,7 @@ void __66__ManagedAssetsClient_recreateFileOrKVStoreObserverXPCWith_error___bloc
   if (v21 || (v23[0] = MEMORY[0x277D85DD0], v23[1] = 3221225472, v23[2] = __53__ManagedAssetsClient_recreateRemoteObserverXPCWith___block_invoke_299, v23[3] = &unk_27985EC00, v23[4] = &v30, [v20 RegisterRemoteSharingOberverWithCompletion:v23], (v21 = v31[5]) != 0))
   {
     v3 = 0;
-    *a3 = v21;
+    *with = v21;
   }
 
   else
@@ -11763,22 +11763,22 @@ void __53__ManagedAssetsClient_recreateRemoteObserverXPCWith___block_invoke_3(ui
   self->_remoteObserverConn = 0;
 }
 
-- (void)fileOrKVStoreObserverXPCExitHandler:(id)a3
+- (void)fileOrKVStoreObserverXPCExitHandler:(id)handler
 {
-  v6 = a3;
+  handlerCopy = handler;
   v4 = [(NSMapTable *)self->_bidirectionalXPCObservers objectForKey:?];
   if (v4)
   {
     v5 = v4;
     [v4 invalidate];
 
-    [(NSMapTable *)self->_bidirectionalXPCObservers removeObjectForKey:v6];
+    [(NSMapTable *)self->_bidirectionalXPCObservers removeObjectForKey:handlerCopy];
   }
 }
 
-- (void)checkIfCloudZonesWithCompletionHandler:(id)a3
+- (void)checkIfCloudZonesWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = _log_5;
   if (os_log_type_enabled(_log_5, OS_LOG_TYPE_INFO))
   {
@@ -11786,14 +11786,14 @@ void __53__ManagedAssetsClient_recreateRemoteObserverXPCWith___block_invoke_3(ui
     _os_log_impl(&dword_258089000, v5, OS_LOG_TYPE_INFO, "checkIfCloudZonesWithCompletionHandler", buf, 2u);
   }
 
-  if (v4)
+  if (handlerCopy)
   {
     conn = self->_conn;
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __62__ManagedAssetsClient_checkIfCloudZonesWithCompletionHandler___block_invoke;
     v14[3] = &unk_27985EF18;
-    v9 = v4;
+    v9 = handlerCopy;
     v15 = v9;
     v10 = [(NSXPCConnection *)conn remoteObjectProxyWithErrorHandler:v14];
     v12[0] = MEMORY[0x277D85DD0];
@@ -11847,7 +11847,7 @@ void __62__ManagedAssetsClient_checkIfCloudZonesWithCompletionHandler___block_in
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)saveAVPSetupUserOption:(int64_t)a3 error:(id *)a4
+- (BOOL)saveAVPSetupUserOption:(int64_t)option error:(id *)error
 {
   v28 = *MEMORY[0x277D85DE8];
   v20 = 0;
@@ -11864,7 +11864,7 @@ void __62__ManagedAssetsClient_checkIfCloudZonesWithCompletionHandler___block_in
   if (os_log_type_enabled(_log_5, OS_LOG_TYPE_INFO))
   {
     *buf = 134217984;
-    v27 = a3;
+    optionCopy = option;
     _os_log_impl(&dword_258089000, v8, OS_LOG_TYPE_INFO, "notifyAVPSetupUserOption:%ld", buf, 0xCu);
   }
 
@@ -11883,10 +11883,10 @@ void __62__ManagedAssetsClient_checkIfCloudZonesWithCompletionHandler___block_in
   v14[3] = &unk_27985EC50;
   v14[4] = &v16;
   v14[5] = &v20;
-  [v10 saveAVPSetupUserOption:a3 completion:v14];
-  if (a4)
+  [v10 saveAVPSetupUserOption:option completion:v14];
+  if (error)
   {
-    *a4 = v21[5];
+    *error = v21[5];
   }
 
   v11 = *(v17 + 24);

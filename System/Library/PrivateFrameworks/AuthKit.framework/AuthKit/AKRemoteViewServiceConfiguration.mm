@@ -1,12 +1,12 @@
 @interface AKRemoteViewServiceConfiguration
-+ (id)configurationForHostWithBundleID:(id)a3 sceneID:(id)a4;
-+ (id)configurationForHostWithBundleID:(id)a3 sceneID:(id)a4 remoteBundleID:(id)a5;
-+ (id)configurationWithRemoteBundleID:(id)a3;
-+ (id)configurationWithRemoteBundleID:(id)a3 remoteClassName:(id)a4;
++ (id)configurationForHostWithBundleID:(id)d sceneID:(id)iD;
++ (id)configurationForHostWithBundleID:(id)d sceneID:(id)iD remoteBundleID:(id)bundleID;
++ (id)configurationWithRemoteBundleID:(id)d;
++ (id)configurationWithRemoteBundleID:(id)d remoteClassName:(id)name;
 + (id)defaultConfiguration;
 - (AKRemoteViewServiceConfiguration)init;
-- (AKRemoteViewServiceConfiguration)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (AKRemoteViewServiceConfiguration)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AKRemoteViewServiceConfiguration
@@ -29,67 +29,67 @@
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (v4->_hostBundleID)
+  objc_storeStrong(location, coder);
+  if (selfCopy->_hostBundleID)
   {
-    [location[0] encodeObject:v4->_hostBundleID forKey:@"_hostBundleID"];
+    [location[0] encodeObject:selfCopy->_hostBundleID forKey:@"_hostBundleID"];
   }
 
-  if (v4->_hostSceneID)
+  if (selfCopy->_hostSceneID)
   {
-    [location[0] encodeObject:v4->_hostSceneID forKey:@"_hostSceneID"];
+    [location[0] encodeObject:selfCopy->_hostSceneID forKey:@"_hostSceneID"];
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (AKRemoteViewServiceConfiguration)initWithCoder:(id)a3
+- (AKRemoteViewServiceConfiguration)initWithCoder:(id)coder
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v14;
-  v14 = 0;
+  objc_storeStrong(location, coder);
+  v3 = selfCopy;
+  selfCopy = 0;
   v12.receiver = v3;
   v12.super_class = AKRemoteViewServiceConfiguration;
-  v14 = [(AKRemoteViewServiceConfiguration *)&v12 init];
-  objc_storeStrong(&v14, v14);
-  if (v14)
+  selfCopy = [(AKRemoteViewServiceConfiguration *)&v12 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
     v4 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"_hostBundleID"];
-    hostBundleID = v14->_hostBundleID;
-    v14->_hostBundleID = v4;
+    hostBundleID = selfCopy->_hostBundleID;
+    selfCopy->_hostBundleID = v4;
     _objc_release(hostBundleID);
     v6 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"_hostSceneID"];
-    hostSceneID = v14->_hostSceneID;
-    v14->_hostSceneID = v6;
+    hostSceneID = selfCopy->_hostSceneID;
+    selfCopy->_hostSceneID = v6;
     _objc_release(hostSceneID);
     v8 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"_remoteBundleID"];
-    remoteBundleID = v14->_remoteBundleID;
-    v14->_remoteBundleID = v8;
+    remoteBundleID = selfCopy->_remoteBundleID;
+    selfCopy->_remoteBundleID = v8;
     _objc_release(remoteBundleID);
   }
 
-  v11 = _objc_retain(v14);
+  v11 = _objc_retain(selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v14, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v11;
 }
 
-+ (id)configurationForHostWithBundleID:(id)a3 sceneID:(id)a4
++ (id)configurationForHostWithBundleID:(id)d sceneID:(id)iD
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v10 = 0;
-  objc_storeStrong(&v10, a4);
+  objc_storeStrong(&v10, iD);
   v9 = +[AKRemoteViewServiceConfiguration defaultConfiguration];
   v5 = [location[0] copy];
   [v9 setHostBundleID:?];
@@ -105,16 +105,16 @@
   return v7;
 }
 
-+ (id)configurationForHostWithBundleID:(id)a3 sceneID:(id)a4 remoteBundleID:(id)a5
++ (id)configurationForHostWithBundleID:(id)d sceneID:(id)iD remoteBundleID:(id)bundleID
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v14 = 0;
-  objc_storeStrong(&v14, a4);
+  objc_storeStrong(&v14, iD);
   v13 = 0;
-  objc_storeStrong(&v13, a5);
+  objc_storeStrong(&v13, bundleID);
   v12 = +[AKRemoteViewServiceConfiguration defaultConfiguration];
   v6 = [location[0] copy];
   [v12 setHostBundleID:?];
@@ -134,14 +134,14 @@
   return v9;
 }
 
-+ (id)configurationWithRemoteBundleID:(id)a3 remoteClassName:(id)a4
++ (id)configurationWithRemoteBundleID:(id)d remoteClassName:(id)name
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v9 = 0;
-  objc_storeStrong(&v9, a4);
+  objc_storeStrong(&v9, name);
   v8 = [AKRemoteViewServiceConfiguration configurationWithRemoteBundleID:location[0]];
   v6 = [v9 copy];
   [(AKRemoteViewServiceConfiguration *)v8 setRemoteClassName:?];
@@ -154,12 +154,12 @@
   return v7;
 }
 
-+ (id)configurationWithRemoteBundleID:(id)a3
++ (id)configurationWithRemoteBundleID:(id)d
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v6 = +[AKRemoteViewServiceConfiguration defaultConfiguration];
   v4 = [location[0] copy];
   [v6 setRemoteBundleID:?];

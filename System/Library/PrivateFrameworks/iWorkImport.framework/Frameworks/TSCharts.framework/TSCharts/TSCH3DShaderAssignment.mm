@@ -1,48 +1,48 @@
 @interface TSCH3DShaderAssignment
-+ (id)assignmentWithAssignee:(id)a3 statement:(id)a4 dependees:(id)a5 program:(id)a6;
++ (id)assignmentWithAssignee:(id)assignee statement:(id)statement dependees:(id)dependees program:(id)program;
 - (BOOL)isMetal;
-- (BOOL)updateLinkageTypeAddVaryingToAdditions:(id)a3;
+- (BOOL)updateLinkageTypeAddVaryingToAdditions:(id)additions;
 - (NSString)string;
-- (TSCH3DShaderAssignment)initWithAssigneeLinkage:(id)a3 statement:(id)a4 dependees:(id)a5 program:(id)a6;
+- (TSCH3DShaderAssignment)initWithAssigneeLinkage:(id)linkage statement:(id)statement dependees:(id)dependees program:(id)program;
 - (TSCH3DShaderType)dominantDependeeLinkageType;
 - (id).cxx_construct;
-- (id)expressionStringForType:(TSCH3DShaderType)a3;
-- (id)forceLinkageForType:(TSCH3DShaderType)a3;
+- (id)expressionStringForType:(TSCH3DShaderType)type;
+- (id)forceLinkageForType:(TSCH3DShaderType)type;
 - (id)resolve;
-- (id)resolveDependeesWithPreviousType:(TSCH3DShaderType)a3;
-- (id)updateDependeesWithPreviousType:(TSCH3DShaderType)a3;
-- (id)updateVaryingAssignmentForLinkage:(id)a3;
+- (id)resolveDependeesWithPreviousType:(TSCH3DShaderType)type;
+- (id)updateDependeesWithPreviousType:(TSCH3DShaderType)type;
+- (id)updateVaryingAssignmentForLinkage:(id)linkage;
 - (id)variableDeclaration;
-- (id)varyingAssignmentForLinkage:(id)a3;
+- (id)varyingAssignmentForLinkage:(id)linkage;
 @end
 
 @implementation TSCH3DShaderAssignment
 
-+ (id)assignmentWithAssignee:(id)a3 statement:(id)a4 dependees:(id)a5 program:(id)a6
++ (id)assignmentWithAssignee:(id)assignee statement:(id)statement dependees:(id)dependees program:(id)program
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [a1 alloc];
-  v19 = objc_msgSend_initWithAssigneeLinkage_statement_dependees_program_(v14, v15, v16, v17, v18, v10, v11, v12, v13);
+  assigneeCopy = assignee;
+  statementCopy = statement;
+  dependeesCopy = dependees;
+  programCopy = program;
+  v14 = [self alloc];
+  v19 = objc_msgSend_initWithAssigneeLinkage_statement_dependees_program_(v14, v15, v16, v17, v18, assigneeCopy, statementCopy, dependeesCopy, programCopy);
 
   return v19;
 }
 
-- (TSCH3DShaderAssignment)initWithAssigneeLinkage:(id)a3 statement:(id)a4 dependees:(id)a5 program:(id)a6
+- (TSCH3DShaderAssignment)initWithAssigneeLinkage:(id)linkage statement:(id)statement dependees:(id)dependees program:(id)program
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  linkageCopy = linkage;
+  statementCopy = statement;
+  dependeesCopy = dependees;
+  programCopy = program;
   v29.receiver = self;
   v29.super_class = TSCH3DShaderAssignment;
   v15 = [(TSCH3DShaderAssignment *)&v29 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_assignee, a3);
+    objc_storeStrong(&v15->_assignee, linkage);
     v28[0] = objc_msgSend_declaredScope(v16->_assignee, v17, v18, v19, v20);
     v28[1] = v21;
     v25 = sub_2761AAAA4(v22, v23, v24, v28, 1);
@@ -53,9 +53,9 @@
     }
 
     v16->_assigneeScope._value = v26;
-    objc_storeStrong(&v16->_statement, a4);
-    objc_storeStrong(&v16->_dependees, a5);
-    objc_storeWeak(&v16->_program, v14);
+    objc_storeStrong(&v16->_statement, statement);
+    objc_storeStrong(&v16->_dependees, dependees);
+    objc_storeWeak(&v16->_program, programCopy);
     v16->_linkageType._value = 0;
   }
 
@@ -82,20 +82,20 @@
   return isMetal;
 }
 
-- (id)varyingAssignmentForLinkage:(id)a3
+- (id)varyingAssignmentForLinkage:(id)linkage
 {
   v63[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v9 = objc_msgSend_variable(v4, v5, v6, v7, v8);
+  linkageCopy = linkage;
+  v9 = objc_msgSend_variable(linkageCopy, v5, v6, v7, v8);
   v63[0] = v9;
   v14 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v10, v11, v12, v13, v63, 1);
   WeakRetained = objc_loadWeakRetained(&self->_program);
-  v20 = objc_msgSend_assignmentWithAssignee_statement_dependees_program_(TSCH3DShaderAssignment, v16, v17, v18, v19, v4, @"@@", v14, WeakRetained);
+  v20 = objc_msgSend_assignmentWithAssignee_statement_dependees_program_(TSCH3DShaderAssignment, v16, v17, v18, v19, linkageCopy, @"@@", v14, WeakRetained);
 
   objc_msgSend_setLinkageType_(v20, v21, v22, v23, v24, 1);
   objc_msgSend_setAssigneeScopeToType_(v20, v25, v26, v27, v28, 16);
   v33 = objc_msgSend_dependeeScopes(v20, v29, v30, v31, v32);
-  if (objc_msgSend_hasBody_(v4, v34, v35, v36, v37, 1))
+  if (objc_msgSend_hasBody_(linkageCopy, v34, v35, v36, v37, 1))
   {
     v62 = 1;
     sub_2761A2008(v33, &v62);
@@ -103,12 +103,12 @@
 
   else
   {
-    if ((objc_msgSend_isAttribute(v4, v38, v39, v40, v41) & 1) == 0)
+    if ((objc_msgSend_isAttribute(linkageCopy, v38, v39, v40, v41) & 1) == 0)
     {
       v46 = MEMORY[0x277D81150];
       v47 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v42, v43, v44, v45, "[TSCH3DShaderAssignment varyingAssignmentForLinkage:]");
       v52 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v48, v49, v50, v51, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCH3DShaderProgram.mm");
-      objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v46, v53, v54, v55, v56, v47, v52, 203, 0, "link must be body or attribute in order to pass by varying %@", v4);
+      objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v46, v53, v54, v55, v56, v47, v52, 203, 0, "link must be body or attribute in order to pass by varying %@", linkageCopy);
 
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v57, v58, v59, v60);
     }
@@ -120,22 +120,22 @@
   return v20;
 }
 
-- (id)updateVaryingAssignmentForLinkage:(id)a3
+- (id)updateVaryingAssignmentForLinkage:(id)linkage
 {
-  v4 = a3;
-  v9 = objc_msgSend_varyingAssignmentForLinkage_(self, v5, v6, v7, v8, v4);
-  objc_msgSend_addShader_scope_(v4, v10, v11, v12, v13, 1, 16);
-  objc_msgSend_addShader_scope_(v4, v14, v15, v16, v17, 2, 16);
-  objc_msgSend_addLinkage_(v4, v18, v19, v20, v21, 3);
-  objc_msgSend_addDeclaredShader_scope_(v4, v22, v23, v24, v25, 1, 16);
-  objc_msgSend_addDeclaredShader_scope_(v4, v26, v27, v28, v29, 2, 16);
+  linkageCopy = linkage;
+  v9 = objc_msgSend_varyingAssignmentForLinkage_(self, v5, v6, v7, v8, linkageCopy);
+  objc_msgSend_addShader_scope_(linkageCopy, v10, v11, v12, v13, 1, 16);
+  objc_msgSend_addShader_scope_(linkageCopy, v14, v15, v16, v17, 2, 16);
+  objc_msgSend_addLinkage_(linkageCopy, v18, v19, v20, v21, 3);
+  objc_msgSend_addDeclaredShader_scope_(linkageCopy, v22, v23, v24, v25, 1, 16);
+  objc_msgSend_addDeclaredShader_scope_(linkageCopy, v26, v27, v28, v29, 2, 16);
 
   return v9;
 }
 
-- (id)updateDependeesWithPreviousType:(TSCH3DShaderType)a3
+- (id)updateDependeesWithPreviousType:(TSCH3DShaderType)type
 {
-  value = a3._value;
+  value = type._value;
   v277 = *MEMORY[0x277D85DE8];
   p_dependeeScopes = &self->_dependeeScopes;
   if (self->_dependeeScopes.__begin_ != self->_dependeeScopes.__end_)
@@ -523,9 +523,9 @@ LABEL_33:
   return v10;
 }
 
-- (BOOL)updateLinkageTypeAddVaryingToAdditions:(id)a3
+- (BOOL)updateLinkageTypeAddVaryingToAdditions:(id)additions
 {
-  v5 = a3;
+  additionsCopy = additions;
   if (objc_msgSend_isSpecial(self->_assignee, v6, v7, v8, v9))
   {
     v14 = objc_msgSend_shaderType(self->_assignee, v10, v11, v12, v13);
@@ -553,7 +553,7 @@ LABEL_6:
     if (v57 == 1 && value == 2)
     {
       v29 = objc_msgSend_updateVaryingAssignmentForLinkage_(self, v24, v25, v26, v27, self->_assignee);
-      objc_msgSend_addObject_(v5, v30, v31, v32, v33, v29);
+      objc_msgSend_addObject_(additionsCopy, v30, v31, v32, v33, v29);
 
       value = self->_linkageType._value;
     }
@@ -572,17 +572,17 @@ LABEL_6:
   return v23 != 0;
 }
 
-- (id)resolveDependeesWithPreviousType:(TSCH3DShaderType)a3
+- (id)resolveDependeesWithPreviousType:(TSCH3DShaderType)type
 {
-  v7 = objc_msgSend_updateDependeesWithPreviousType_(self, a2, v3, v4, v5, a3._value);
+  v7 = objc_msgSend_updateDependeesWithPreviousType_(self, a2, v3, v4, v5, type._value);
   objc_msgSend_addBodyScope_(self->_assignee, v8, v9, v10, v11, self->_linkageType._value);
 
   return v7;
 }
 
-- (id)forceLinkageForType:(TSCH3DShaderType)a3
+- (id)forceLinkageForType:(TSCH3DShaderType)type
 {
-  if (LODWORD(a3._value) == 3 || !LODWORD(a3._value))
+  if (LODWORD(type._value) == 3 || !LODWORD(type._value))
   {
     v8 = MEMORY[0x277D81150];
     v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, v3, v4, v5, "[TSCH3DShaderAssignment forceLinkageForType:]");
@@ -592,9 +592,9 @@ LABEL_6:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v19, v20, v21, v22);
   }
 
-  objc_msgSend_addLinkage_(self->_assignee, a2, v3, v4, v5, a3._value);
+  objc_msgSend_addLinkage_(self->_assignee, a2, v3, v4, v5, type._value);
   v28 = objc_msgSend_linked(self->_assignee, v23, v24, v25, v26);
-  self->_linkageType = a3;
+  self->_linkageType = type;
 
   return objc_msgSend_resolveDependeesWithPreviousType_(self, v27, v29, v30, v31, v28);
 }
@@ -623,7 +623,7 @@ LABEL_6:
   return v40;
 }
 
-- (id)expressionStringForType:(TSCH3DShaderType)a3
+- (id)expressionStringForType:(TSCH3DShaderType)type
 {
   if (objc_msgSend_count(self->_dependees, a2, v3, v4, v5) != self->_dependeeScopes.__end_ - self->_dependeeScopes.__begin_)
   {
@@ -667,7 +667,7 @@ LABEL_6:
         objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v66, v67, v68, v69);
       }
 
-      v70 = objc_msgSend_nameForShader_scope_(v45, v46, v47, v48, v49, a3._value, self->_dependeeScopes.__begin_[v33]._value);
+      v70 = objc_msgSend_nameForShader_scope_(v45, v46, v47, v48, v49, type._value, self->_dependeeScopes.__begin_[v33]._value);
       value = self->_dependeeScopes.__begin_[v33]._value;
       if (!objc_msgSend_isMetal(self, v72, v73, v74, v75))
       {

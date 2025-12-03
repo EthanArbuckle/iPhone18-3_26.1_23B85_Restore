@@ -16,7 +16,7 @@
 
 - (id)TPSSafeObjectForKey:()TPSCoreAdditions
 {
-  v1 = [a1 objectForKeyedSubscript:?];
+  v1 = [self objectForKeyedSubscript:?];
   if (v1 == *MEMORY[0x1E695E738])
   {
 
@@ -30,7 +30,7 @@
 {
   v20 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [a1 objectForKeyedSubscript:v4];
+  v5 = [self objectForKeyedSubscript:v4];
   v6 = objc_opt_class();
   if (v5)
   {
@@ -65,7 +65,7 @@
 {
   v20 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [a1 objectForKeyedSubscript:v4];
+  v5 = [self objectForKeyedSubscript:v4];
   v6 = objc_opt_class();
   if (v5)
   {
@@ -100,7 +100,7 @@
 {
   v20 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [a1 objectForKeyedSubscript:v4];
+  v5 = [self objectForKeyedSubscript:v4];
   v6 = objc_opt_class();
   if (v5)
   {
@@ -135,7 +135,7 @@
 {
   v20 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [a1 objectForKeyedSubscript:v4];
+  v5 = [self objectForKeyedSubscript:v4];
   v6 = objc_opt_class();
   if (v5)
   {
@@ -168,31 +168,31 @@
 
 - (uint64_t)TPSSafeIntegerForKey:()TPSCoreAdditions
 {
-  v1 = [a1 TPSSafeObjectForKey:?];
-  v2 = [v1 integerValue];
+  v1 = [self TPSSafeObjectForKey:?];
+  integerValue = [v1 integerValue];
 
-  return v2;
+  return integerValue;
 }
 
 - (uint64_t)TPSSafeUIntegerForKey:()TPSCoreAdditions
 {
-  v1 = [a1 TPSSafeObjectForKey:?];
-  v2 = [v1 unsignedIntegerValue];
+  v1 = [self TPSSafeObjectForKey:?];
+  unsignedIntegerValue = [v1 unsignedIntegerValue];
 
-  return v2;
+  return unsignedIntegerValue;
 }
 
 - (uint64_t)TPSSafeIntForKey:()TPSCoreAdditions
 {
-  v1 = [a1 TPSSafeObjectForKey:?];
-  v2 = [v1 intValue];
+  v1 = [self TPSSafeObjectForKey:?];
+  intValue = [v1 intValue];
 
-  return v2;
+  return intValue;
 }
 
 - (double)TPSSafeDoubleForKey:()TPSCoreAdditions
 {
-  v1 = [a1 TPSSafeObjectForKey:?];
+  v1 = [self TPSSafeObjectForKey:?];
   [v1 doubleValue];
   v3 = v2;
 
@@ -201,7 +201,7 @@
 
 - (float)TPSSafeFloatForKey:()TPSCoreAdditions
 {
-  v1 = [a1 TPSSafeObjectForKey:?];
+  v1 = [self TPSSafeObjectForKey:?];
   [v1 floatValue];
   v3 = v2;
 
@@ -210,10 +210,10 @@
 
 - (uint64_t)TPSSafeBoolForKey:()TPSCoreAdditions
 {
-  v1 = [a1 TPSSafeObjectForKey:?];
-  v2 = [v1 BOOLValue];
+  v1 = [self TPSSafeObjectForKey:?];
+  bOOLValue = [v1 BOOLValue];
 
-  return v2;
+  return bOOLValue;
 }
 
 @end

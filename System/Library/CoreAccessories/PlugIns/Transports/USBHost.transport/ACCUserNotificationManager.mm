@@ -1,14 +1,14 @@
 @interface ACCUserNotificationManager
 + (id)sharedManager;
 - (ACCUserNotificationManager)init;
-- (id)userNotificationWithUUID:(id)a3;
+- (id)userNotificationWithUUID:(id)d;
 - (void)dismissAllNotifications;
-- (void)dismissNotification:(id)a3;
-- (void)dismissNotificationWithIdentifier:(id)a3;
-- (void)dismissNotificationsWithGroupIdentifier:(id)a3;
-- (void)presentNotification:(id)a3 completionHandler:(id)a4;
-- (void)removeUserNotification:(id)a3;
-- (void)updateNotification:(id)a3;
+- (void)dismissNotification:(id)notification;
+- (void)dismissNotificationWithIdentifier:(id)identifier;
+- (void)dismissNotificationsWithGroupIdentifier:(id)identifier;
+- (void)presentNotification:(id)notification completionHandler:(id)handler;
+- (void)removeUserNotification:(id)notification;
+- (void)updateNotification:(id)notification;
 @end
 
 @implementation ACCUserNotificationManager
@@ -30,9 +30,9 @@
     userNotifications = v2->_userNotifications;
     v2->_userNotifications = v7;
 
-    v9 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     completionHandlers = v2->_completionHandlers;
-    v2->_completionHandlers = v9;
+    v2->_completionHandlers = dictionary;
 
     v11 = objc_alloc_init(MEMORY[0x277CCAC60]);
     lock = v2->_lock;
@@ -42,43 +42,43 @@
   return v2;
 }
 
-- (void)presentNotification:(id)a3 completionHandler:(id)a4
+- (void)presentNotification:(id)notification completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  notificationCopy = notification;
+  handlerCopy = handler;
+  if (notificationCopy)
   {
-    v8 = [v6 identifier];
+    identifier = [notificationCopy identifier];
 
-    if (v8)
+    if (identifier)
     {
-      v9 = [v6 identifier];
-      [(ACCUserNotificationManager *)self dismissNotificationWithIdentifier:v9];
+      identifier2 = [notificationCopy identifier];
+      [(ACCUserNotificationManager *)self dismissNotificationWithIdentifier:identifier2];
     }
 
-    v10 = [(ACCUserNotificationManager *)self lock];
-    [v10 lock];
+    lock = [(ACCUserNotificationManager *)self lock];
+    [lock lock];
 
-    v11 = [(ACCUserNotificationManager *)self userNotifications];
-    [v11 addObject:v6];
+    userNotifications = [(ACCUserNotificationManager *)self userNotifications];
+    [userNotifications addObject:notificationCopy];
 
-    if (v7)
+    if (handlerCopy)
     {
-      v12 = [(ACCUserNotificationManager *)self completionHandlers];
-      v13 = MEMORY[0x2383AB1E0](v7);
-      v14 = [v6 uuid];
-      [v12 setObject:v13 forKey:v14];
+      completionHandlers = [(ACCUserNotificationManager *)self completionHandlers];
+      v13 = MEMORY[0x2383AB1E0](handlerCopy);
+      uuid = [notificationCopy uuid];
+      [completionHandlers setObject:v13 forKey:uuid];
     }
 
-    v15 = [(ACCUserNotificationManager *)self lock];
-    [v15 unlock];
+    lock2 = [(ACCUserNotificationManager *)self lock];
+    [lock2 unlock];
 
-    [v6 createBackingUserNotification];
-    v16 = [v6 userNotificationCFDict];
+    [notificationCopy createBackingUserNotification];
+    userNotificationCFDict = [notificationCopy userNotificationCFDict];
 
-    if (v16)
+    if (userNotificationCFDict)
     {
-      v17 = [v6 type] - 1;
+      v17 = [notificationCopy type] - 1;
       if (v17 > 2)
       {
         v18 = 3;
@@ -94,18 +94,18 @@
       v37 = &v36;
       v38 = 0x2020000000;
       v19 = *MEMORY[0x277CBECE8];
-      v20 = [v6 userNotificationCFDict];
-      v21 = CFUserNotificationCreate(v19, 0.0, v18, &error, v20);
+      userNotificationCFDict2 = [notificationCopy userNotificationCFDict];
+      v21 = CFUserNotificationCreate(v19, 0.0, v18, &error, userNotificationCFDict2);
 
       v39 = v21;
       if (error || !v37[3])
       {
-        v22 = [(ACCUserNotificationManager *)self lock];
-        [v22 lock];
+        lock3 = [(ACCUserNotificationManager *)self lock];
+        [lock3 lock];
 
-        [v6 setUserNotificationCF:0];
-        v23 = [(ACCUserNotificationManager *)self lock];
-        [v23 unlock];
+        [notificationCopy setUserNotificationCF:0];
+        lock4 = [(ACCUserNotificationManager *)self lock];
+        [lock4 unlock];
 
         v24 = v37[3];
         if (v24)
@@ -117,36 +117,36 @@
 
       else
       {
-        v25 = [(ACCUserNotificationManager *)self lock];
-        [v25 lock];
+        lock5 = [(ACCUserNotificationManager *)self lock];
+        [lock5 lock];
 
-        [v6 setUserNotificationCF:v37[3]];
-        v26 = [(ACCUserNotificationManager *)self lock];
-        [v26 unlock];
+        [notificationCopy setUserNotificationCF:v37[3]];
+        lock6 = [(ACCUserNotificationManager *)self lock];
+        [lock6 unlock];
 
-        [v6 timeout];
+        [notificationCopy timeout];
         if (v27 > 0.0)
         {
-          [v6 timeout];
+          [notificationCopy timeout];
           v29 = dispatch_time(0, (v28 * 1000000000.0));
           block[0] = MEMORY[0x277D85DD0];
           block[1] = 3221225472;
           block[2] = __68__ACCUserNotificationManager_presentNotification_completionHandler___block_invoke;
           block[3] = &unk_2789ECFA0;
           block[4] = self;
-          v35 = v6;
+          v35 = notificationCopy;
           dispatch_after(v29, MEMORY[0x277D85CD0], block);
         }
 
-        v30 = [(ACCUserNotificationManager *)self queue];
+        queue = [(ACCUserNotificationManager *)self queue];
         v31[0] = MEMORY[0x277D85DD0];
         v31[1] = 3221225472;
         v31[2] = __68__ACCUserNotificationManager_presentNotification_completionHandler___block_invoke_2;
         v31[3] = &unk_2789ED178;
         v33 = &v36;
         v31[4] = self;
-        v32 = v6;
-        dispatch_async(v30, v31);
+        v32 = notificationCopy;
+        dispatch_async(queue, v31);
       }
 
       _Block_object_dispose(&v36, 8);
@@ -200,22 +200,22 @@ void __68__ACCUserNotificationManager_presentNotification_completionHandler___bl
   [*(a1 + 32) removeUserNotification:*(a1 + 40)];
 }
 
-- (void)dismissNotification:(id)a3
+- (void)dismissNotification:(id)notification
 {
-  v4 = a3;
-  if (v4)
+  notificationCopy = notification;
+  if (notificationCopy)
   {
-    v10 = v4;
-    v5 = [(ACCUserNotificationManager *)self lock];
-    [v5 lock];
+    v10 = notificationCopy;
+    lock = [(ACCUserNotificationManager *)self lock];
+    [lock lock];
 
-    v6 = [v10 userNotificationCF];
-    if (v6)
+    userNotificationCF = [v10 userNotificationCF];
+    if (userNotificationCF)
     {
-      v7 = v6;
-      CFRetain(v6);
-      v8 = [(ACCUserNotificationManager *)self lock];
-      [v8 unlock];
+      v7 = userNotificationCF;
+      CFRetain(userNotificationCF);
+      lock2 = [(ACCUserNotificationManager *)self lock];
+      [lock2 unlock];
 
       CFUserNotificationCancel(v7);
       CFRelease(v7);
@@ -223,30 +223,30 @@ void __68__ACCUserNotificationManager_presentNotification_completionHandler___bl
 
     else
     {
-      v9 = [(ACCUserNotificationManager *)self lock];
-      [v9 unlock];
+      lock3 = [(ACCUserNotificationManager *)self lock];
+      [lock3 unlock];
     }
 
-    v4 = v10;
+    notificationCopy = v10;
   }
 }
 
-- (void)dismissNotificationWithIdentifier:(id)a3
+- (void)dismissNotificationWithIdentifier:(id)identifier
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v5 = [(ACCUserNotificationManager *)self lock];
-    [v5 lock];
+    lock = [(ACCUserNotificationManager *)self lock];
+    [lock lock];
 
     v6 = [MEMORY[0x277CBEB58] set];
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v7 = [(ACCUserNotificationManager *)self userNotifications];
-    v8 = [v7 countByEnumeratingWithState:&v26 objects:v31 count:16];
+    userNotifications = [(ACCUserNotificationManager *)self userNotifications];
+    v8 = [userNotifications countByEnumeratingWithState:&v26 objects:v31 count:16];
     if (v8)
     {
       v9 = v8;
@@ -257,12 +257,12 @@ void __68__ACCUserNotificationManager_presentNotification_completionHandler___bl
         {
           if (*v27 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(userNotifications);
           }
 
           v12 = *(*(&v26 + 1) + 8 * i);
-          v13 = [v12 identifier];
-          v14 = [v13 isEqualToString:v4];
+          identifier = [v12 identifier];
+          v14 = [identifier isEqualToString:identifierCopy];
 
           if (v14)
           {
@@ -270,7 +270,7 @@ void __68__ACCUserNotificationManager_presentNotification_completionHandler___bl
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v26 objects:v31 count:16];
+        v9 = [userNotifications countByEnumeratingWithState:&v26 objects:v31 count:16];
       }
 
       while (v9);
@@ -304,29 +304,29 @@ void __68__ACCUserNotificationManager_presentNotification_completionHandler___bl
       while (v17);
     }
 
-    v20 = [(ACCUserNotificationManager *)self lock];
-    [v20 unlock];
+    lock2 = [(ACCUserNotificationManager *)self lock];
+    [lock2 unlock];
   }
 
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)dismissNotificationsWithGroupIdentifier:(id)a3
+- (void)dismissNotificationsWithGroupIdentifier:(id)identifier
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v5 = [(ACCUserNotificationManager *)self lock];
-    [v5 lock];
+    lock = [(ACCUserNotificationManager *)self lock];
+    [lock lock];
 
     v6 = [MEMORY[0x277CBEB58] set];
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v7 = [(ACCUserNotificationManager *)self userNotifications];
-    v8 = [v7 countByEnumeratingWithState:&v26 objects:v31 count:16];
+    userNotifications = [(ACCUserNotificationManager *)self userNotifications];
+    v8 = [userNotifications countByEnumeratingWithState:&v26 objects:v31 count:16];
     if (v8)
     {
       v9 = v8;
@@ -337,12 +337,12 @@ void __68__ACCUserNotificationManager_presentNotification_completionHandler___bl
         {
           if (*v27 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(userNotifications);
           }
 
           v12 = *(*(&v26 + 1) + 8 * i);
-          v13 = [v12 groupIdentifier];
-          v14 = [v13 isEqualToString:v4];
+          groupIdentifier = [v12 groupIdentifier];
+          v14 = [groupIdentifier isEqualToString:identifierCopy];
 
           if (v14)
           {
@@ -350,7 +350,7 @@ void __68__ACCUserNotificationManager_presentNotification_completionHandler___bl
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v26 objects:v31 count:16];
+        v9 = [userNotifications countByEnumeratingWithState:&v26 objects:v31 count:16];
       }
 
       while (v9);
@@ -384,8 +384,8 @@ void __68__ACCUserNotificationManager_presentNotification_completionHandler___bl
       while (v17);
     }
 
-    v20 = [(ACCUserNotificationManager *)self lock];
-    [v20 unlock];
+    lock2 = [(ACCUserNotificationManager *)self lock];
+    [lock2 unlock];
   }
 
   v21 = *MEMORY[0x277D85DE8];
@@ -394,11 +394,11 @@ void __68__ACCUserNotificationManager_presentNotification_completionHandler___bl
 - (void)dismissAllNotifications
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [(ACCUserNotificationManager *)self lock];
-  [v3 lock];
+  lock = [(ACCUserNotificationManager *)self lock];
+  [lock lock];
 
-  v4 = [(ACCUserNotificationManager *)self userNotifications];
-  v5 = [v4 copy];
+  userNotifications = [(ACCUserNotificationManager *)self userNotifications];
+  v5 = [userNotifications copy];
 
   v15 = 0u;
   v16 = 0u;
@@ -430,25 +430,25 @@ void __68__ACCUserNotificationManager_presentNotification_completionHandler___bl
     while (v8);
   }
 
-  v11 = [(ACCUserNotificationManager *)self lock];
-  [v11 unlock];
+  lock2 = [(ACCUserNotificationManager *)self lock];
+  [lock2 unlock];
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (id)userNotificationWithUUID:(id)a3
+- (id)userNotificationWithUUID:(id)d
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ACCUserNotificationManager *)self lock];
-  [v5 lock];
+  dCopy = d;
+  lock = [(ACCUserNotificationManager *)self lock];
+  [lock lock];
 
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [(ACCUserNotificationManager *)self userNotifications];
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  userNotifications = [(ACCUserNotificationManager *)self userNotifications];
+  v7 = [userNotifications countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
     v8 = *v17;
@@ -458,12 +458,12 @@ void __68__ACCUserNotificationManager_presentNotification_completionHandler___bl
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(userNotifications);
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
-        v11 = [v10 uuid];
-        v12 = [v11 isEqualToString:v4];
+        uuid = [v10 uuid];
+        v12 = [uuid isEqualToString:dCopy];
 
         if (v12)
         {
@@ -472,7 +472,7 @@ void __68__ACCUserNotificationManager_presentNotification_completionHandler___bl
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v7 = [userNotifications countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v7)
       {
         continue;
@@ -484,43 +484,43 @@ void __68__ACCUserNotificationManager_presentNotification_completionHandler___bl
 
 LABEL_11:
 
-  v13 = [(ACCUserNotificationManager *)self lock];
-  [v13 unlock];
+  lock2 = [(ACCUserNotificationManager *)self lock];
+  [lock2 unlock];
 
   v14 = *MEMORY[0x277D85DE8];
 
   return v7;
 }
 
-- (void)removeUserNotification:(id)a3
+- (void)removeUserNotification:(id)notification
 {
-  if (a3)
+  if (notification)
   {
-    v4 = a3;
-    v5 = [(ACCUserNotificationManager *)self lock];
-    [v5 lock];
+    notificationCopy = notification;
+    lock = [(ACCUserNotificationManager *)self lock];
+    [lock lock];
 
-    v6 = [(ACCUserNotificationManager *)self userNotifications];
-    [v6 removeObject:v4];
+    userNotifications = [(ACCUserNotificationManager *)self userNotifications];
+    [userNotifications removeObject:notificationCopy];
 
-    v7 = [(ACCUserNotificationManager *)self completionHandlers];
-    v8 = [v4 uuid];
-    [v7 removeObjectForKey:v8];
+    completionHandlers = [(ACCUserNotificationManager *)self completionHandlers];
+    uuid = [notificationCopy uuid];
+    [completionHandlers removeObjectForKey:uuid];
 
-    [v4 setUserNotificationCF:0];
-    v9 = [(ACCUserNotificationManager *)self lock];
-    [v9 unlock];
+    [notificationCopy setUserNotificationCF:0];
+    lock2 = [(ACCUserNotificationManager *)self lock];
+    [lock2 unlock];
   }
 }
 
-- (void)updateNotification:(id)a3
+- (void)updateNotification:(id)notification
 {
-  v10 = a3;
-  v4 = [(ACCUserNotificationManager *)self lock];
-  [v4 lock];
+  notificationCopy = notification;
+  lock = [(ACCUserNotificationManager *)self lock];
+  [lock lock];
 
-  [v10 updateBackingUserNotification];
-  v5 = [v10 type] - 1;
+  [notificationCopy updateBackingUserNotification];
+  v5 = [notificationCopy type] - 1;
   if (v5 > 2)
   {
     v6 = 3;
@@ -531,12 +531,12 @@ LABEL_11:
     v6 = qword_233713840[v5];
   }
 
-  v7 = [v10 userNotificationCF];
-  v8 = [v10 userNotificationCFDict];
-  CFUserNotificationUpdate(v7, 0.0, v6, v8);
+  userNotificationCF = [notificationCopy userNotificationCF];
+  userNotificationCFDict = [notificationCopy userNotificationCFDict];
+  CFUserNotificationUpdate(userNotificationCF, 0.0, v6, userNotificationCFDict);
 
-  v9 = [(ACCUserNotificationManager *)self lock];
-  [v9 unlock];
+  lock2 = [(ACCUserNotificationManager *)self lock];
+  [lock2 unlock];
 }
 
 + (id)sharedManager
@@ -545,7 +545,7 @@ LABEL_11:
   block[1] = 3221225472;
   block[2] = __43__ACCUserNotificationManager_sharedManager__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedManager_once_0 != -1)
   {
     dispatch_once(&sharedManager_once_0, block);

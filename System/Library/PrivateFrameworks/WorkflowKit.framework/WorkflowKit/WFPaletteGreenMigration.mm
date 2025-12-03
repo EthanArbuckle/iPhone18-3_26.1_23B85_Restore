@@ -1,15 +1,15 @@
 @interface WFPaletteGreenMigration
-+ (BOOL)workflowNeedsMigration:(id)a3 fromClientVersion:(id)a4;
++ (BOOL)workflowNeedsMigration:(id)migration fromClientVersion:(id)version;
 - (void)migrateWorkflow;
 @end
 
 @implementation WFPaletteGreenMigration
 
-+ (BOOL)workflowNeedsMigration:(id)a3 fromClientVersion:(id)a4
++ (BOOL)workflowNeedsMigration:(id)migration fromClientVersion:(id)version
 {
-  v5 = a4;
-  v6 = [a3 objectForKey:@"WFWorkflowIcon"];
-  v7 = WFCompareBundleVersions(v5, @"128");
+  versionCopy = version;
+  v6 = [migration objectForKey:@"WFWorkflowIcon"];
+  v7 = WFCompareBundleVersions(versionCopy, @"128");
 
   if (v7 == 3)
   {
@@ -27,21 +27,21 @@
 
 - (void)migrateWorkflow
 {
-  v3 = [(WFWorkflowMigration *)self workflow];
-  v8 = [v3 objectForKey:@"WFWorkflowIcon"];
+  workflow = [(WFWorkflowMigration *)self workflow];
+  v8 = [workflow objectForKey:@"WFWorkflowIcon"];
 
   v4 = [v8 objectForKey:@"WFWorkflowIconStartColor"];
-  v5 = [v4 unsignedIntValue];
+  unsignedIntValue = [v4 unsignedIntValue];
 
-  if (v5 == -1512163329)
+  if (unsignedIntValue == -1512163329)
   {
     [v8 setObject:&unk_1F4A9A6C0 forKey:@"WFWorkflowIconStartColor"];
   }
 
   v6 = [v8 objectForKey:@"WFWorkflowIconEndColor"];
-  v7 = [v6 unsignedIntValue];
+  unsignedIntValue2 = [v6 unsignedIntValue];
 
-  if (v7 == -1512163329)
+  if (unsignedIntValue2 == -1512163329)
   {
     [v8 setObject:&unk_1F4A9A6C0 forKey:@"WFWorkflowIconEndColor"];
   }

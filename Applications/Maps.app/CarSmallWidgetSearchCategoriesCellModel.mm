@@ -1,5 +1,5 @@
 @interface CarSmallWidgetSearchCategoriesCellModel
-- (CarSmallWidgetSearchCategoriesCellModel)initWithBrowseCategory:(id)a3;
+- (CarSmallWidgetSearchCategoriesCellModel)initWithBrowseCategory:(id)category;
 - (id)image;
 - (id)title;
 @end
@@ -25,33 +25,33 @@
 
 - (id)title
 {
-  v3 = [(BrowseCategory *)self->_category alternativeName];
-  v4 = v3;
-  if (v3)
+  alternativeName = [(BrowseCategory *)self->_category alternativeName];
+  v4 = alternativeName;
+  if (alternativeName)
   {
-    v5 = v3;
+    name = alternativeName;
   }
 
   else
   {
-    v5 = [(BrowseCategory *)self->_category name];
+    name = [(BrowseCategory *)self->_category name];
   }
 
-  v6 = v5;
+  v6 = name;
 
   return v6;
 }
 
-- (CarSmallWidgetSearchCategoriesCellModel)initWithBrowseCategory:(id)a3
+- (CarSmallWidgetSearchCategoriesCellModel)initWithBrowseCategory:(id)category
 {
-  v5 = a3;
+  categoryCopy = category;
   v9.receiver = self;
   v9.super_class = CarSmallWidgetSearchCategoriesCellModel;
   v6 = [(CarSmallWidgetSearchCategoriesCellModel *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_category, a3);
+    objc_storeStrong(&v6->_category, category);
   }
 
   return v7;

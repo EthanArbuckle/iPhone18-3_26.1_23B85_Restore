@@ -13,8 +13,8 @@
 
   [(LPCaptionButtonPresentationProperties *)v2 setType:1];
   v4 = objc_alloc_init(LPCaptionButtonCollapsedPresentationProperties);
-  v5 = [objc_opt_class() collapsedButtonIcon];
-  [(LPCaptionButtonCollapsedPresentationProperties *)v4 setIcon:v5];
+  collapsedButtonIcon = [objc_opt_class() collapsedButtonIcon];
+  [(LPCaptionButtonCollapsedPresentationProperties *)v4 setIcon:collapsedButtonIcon];
 
   [(LPCaptionButtonCollapsedPresentationProperties *)v4 setLayoutRatioThreshold:0.349999994];
   [(LPCaptionButtonCollapsedPresentationProperties *)v4 setShouldHideIconsWhenCollapsed:1];
@@ -29,10 +29,10 @@
   v2 = *MEMORY[0x1E69DDD58];
   v3 = [MEMORY[0x1E69DCAD8] configurationWithTextStyle:v2 scale:2];
   v4 = MEMORY[0x1E69DCAD8];
-  v5 = [MEMORY[0x1E69DC888] whiteColor];
-  v12[0] = v5;
-  v6 = [MEMORY[0x1E69DC888] systemGreenColor];
-  v12[1] = v6;
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  v12[0] = whiteColor;
+  systemGreenColor = [MEMORY[0x1E69DC888] systemGreenColor];
+  v12[1] = systemGreenColor;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:2];
   v8 = [v4 configurationWithPaletteColors:v7];
   v9 = [v3 configurationByApplyingConfiguration:v8];

@@ -29,10 +29,10 @@
     [NSDate(MTUtilities) mtIsBeforeDate:];
   }
 
-  v5 = [a1 earlierDate:v4];
-  if (v5 == a1)
+  v5 = [self earlierDate:v4];
+  if (v5 == self)
   {
-    v6 = [a1 isEqualToDate:v4] ^ 1;
+    v6 = [self isEqualToDate:v4] ^ 1;
   }
 
   else
@@ -51,8 +51,8 @@
     [NSDate(MTUtilities) mtIsBeforeOrSameAsDate:];
   }
 
-  v5 = [a1 earlierDate:v4];
-  v6 = v5 == a1;
+  v5 = [self earlierDate:v4];
+  v6 = v5 == self;
 
   return v6;
 }
@@ -65,10 +65,10 @@
     [NSDate(MTUtilities) mtIsAfterDate:];
   }
 
-  v5 = [a1 laterDate:v4];
-  if (v5 == a1)
+  v5 = [self laterDate:v4];
+  if (v5 == self)
   {
-    v6 = [a1 isEqualToDate:v4] ^ 1;
+    v6 = [self isEqualToDate:v4] ^ 1;
   }
 
   else
@@ -87,8 +87,8 @@
     [NSDate(MTUtilities) mtIsAfterOrSameAsDate:];
   }
 
-  v5 = [a1 laterDate:v4];
-  v6 = v5 == a1;
+  v5 = [self laterDate:v4];
+  v6 = v5 == self;
 
   return v6;
 }
@@ -97,21 +97,21 @@
 {
   v4 = a3;
   v5 = [MEMORY[0x1E695DEE8] calendarWithIdentifier:*MEMORY[0x1E695D850]];
-  v6 = [v5 components:224 fromDate:a1];
+  v6 = [v5 components:224 fromDate:self];
   v7 = [v6 isEqual:v4];
 
   if (v7)
   {
-    v8 = a1;
+    selfCopy = self;
   }
 
   else
   {
-    v9 = [v5 mtPreviousDateBeforeDate:a1 matchingComponents:v4];
-    v10 = [v5 mtNextDateAfterDate:a1 matchingComponents:v4];
-    [a1 timeIntervalSinceDate:v9];
+    v9 = [v5 mtPreviousDateBeforeDate:self matchingComponents:v4];
+    v10 = [v5 mtNextDateAfterDate:self matchingComponents:v4];
+    [self timeIntervalSinceDate:v9];
     v12 = v11;
-    [v10 timeIntervalSinceDate:a1];
+    [v10 timeIntervalSinceDate:self];
     if (v13 >= v12)
     {
       v14 = v9;
@@ -122,10 +122,10 @@
       v14 = v10;
     }
 
-    v8 = v14;
+    selfCopy = v14;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 + (id)mtLatest:()MTUtilities
@@ -228,8 +228,8 @@
 
 - (id)mtMidnightForDate
 {
-  v2 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v3 = [v2 startOfDayForDate:a1];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  v3 = [currentCalendar startOfDayForDate:self];
 
   return v3;
 }
@@ -237,7 +237,7 @@
 - (id)mtDescription
 {
   v2 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:@"en_US"];
-  v3 = [a1 descriptionWithLocale:v2];
+  v3 = [self descriptionWithLocale:v2];
 
   return v3;
 }

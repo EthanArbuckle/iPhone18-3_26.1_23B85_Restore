@@ -1,12 +1,12 @@
 @interface TSWPStorageBroadcaster
 - (unint64_t)observerCount;
 - (unint64_t)paragraphObserverCount;
-- (void)addObserver:(id)a3;
-- (void)addParagraphObserver:(id)a3;
+- (void)addObserver:(id)observer;
+- (void)addParagraphObserver:(id)observer;
 - (void)dealloc;
 - (void)removeAllObservers;
-- (void)removeObserver:(id)a3;
-- (void)removeParagraphObserver:(id)a3;
+- (void)removeObserver:(id)observer;
+- (void)removeParagraphObserver:(id)observer;
 @end
 
 @implementation TSWPStorageBroadcaster
@@ -46,105 +46,105 @@
 
 - (unint64_t)observerCount
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v5 = objc_msgSend_allObjects(v2->_observers, v3, v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = objc_msgSend_allObjects(selfCopy->_observers, v3, v4);
   v8 = objc_msgSend_count(v5, v6, v7);
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
   return v8;
 }
 
 - (unint64_t)paragraphObserverCount
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v5 = objc_msgSend_allObjects(v2->_paragraphObservers, v3, v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = objc_msgSend_allObjects(selfCopy->_paragraphObservers, v3, v4);
   v8 = objc_msgSend_count(v5, v6, v7);
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
   return v8;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  if (v4)
+  observerCopy = observer;
+  if (observerCopy)
   {
-    v12 = v4;
-    v5 = self;
-    objc_sync_enter(v5);
-    observers = v5->_observers;
+    v12 = observerCopy;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    observers = selfCopy->_observers;
     if (!observers)
     {
       v8 = objc_alloc(MEMORY[0x277CCAA50]);
       v10 = objc_msgSend_initWithOptions_capacity_(v8, v9, 517, 0);
-      v11 = v5->_observers;
-      v5->_observers = v10;
+      v11 = selfCopy->_observers;
+      selfCopy->_observers = v10;
 
-      observers = v5->_observers;
+      observers = selfCopy->_observers;
     }
 
     objc_msgSend_addObject_(observers, v6, v12);
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
 
-    v4 = v12;
+    observerCopy = v12;
   }
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  if (v4)
+  observerCopy = observer;
+  if (observerCopy)
   {
-    v7 = v4;
-    v5 = self;
-    objc_sync_enter(v5);
-    objc_msgSend_removeObject_(v5->_observers, v6, v7);
-    objc_sync_exit(v5);
+    v7 = observerCopy;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    objc_msgSend_removeObject_(selfCopy->_observers, v6, v7);
+    objc_sync_exit(selfCopy);
 
-    v4 = v7;
+    observerCopy = v7;
   }
 }
 
-- (void)addParagraphObserver:(id)a3
+- (void)addParagraphObserver:(id)observer
 {
-  v4 = a3;
-  if (v4)
+  observerCopy = observer;
+  if (observerCopy)
   {
-    v12 = v4;
-    v5 = self;
-    objc_sync_enter(v5);
-    paragraphObservers = v5->_paragraphObservers;
+    v12 = observerCopy;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    paragraphObservers = selfCopy->_paragraphObservers;
     if (!paragraphObservers)
     {
       v8 = objc_alloc(MEMORY[0x277CCAA50]);
       v10 = objc_msgSend_initWithOptions_capacity_(v8, v9, 517, 0);
-      v11 = v5->_paragraphObservers;
-      v5->_paragraphObservers = v10;
+      v11 = selfCopy->_paragraphObservers;
+      selfCopy->_paragraphObservers = v10;
 
-      paragraphObservers = v5->_paragraphObservers;
+      paragraphObservers = selfCopy->_paragraphObservers;
     }
 
     objc_msgSend_addObject_(paragraphObservers, v6, v12);
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
 
-    v4 = v12;
+    observerCopy = v12;
   }
 }
 
-- (void)removeParagraphObserver:(id)a3
+- (void)removeParagraphObserver:(id)observer
 {
-  v4 = a3;
-  if (v4)
+  observerCopy = observer;
+  if (observerCopy)
   {
-    v7 = v4;
-    v5 = self;
-    objc_sync_enter(v5);
-    objc_msgSend_removeObject_(v5->_paragraphObservers, v6, v7);
-    objc_sync_exit(v5);
+    v7 = observerCopy;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    objc_msgSend_removeObject_(selfCopy->_paragraphObservers, v6, v7);
+    objc_sync_exit(selfCopy);
 
-    v4 = v7;
+    observerCopy = v7;
   }
 }
 

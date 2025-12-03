@@ -3,12 +3,12 @@
 - (BOOL)forceEditingMode;
 - (BOOL)hidesNavigationBackButton;
 - (BOOL)isInUserTriggeredSelectionMode;
-- (_TtC26DocumentManagerExecutables33DOCBrowserContainedViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC26DocumentManagerExecutables33DOCBrowserContainedViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (_TtP26DocumentManagerExecutables34DOCBrowserContainedActionReporting_)actionReporting;
-- (void)effectiveAppearanceDidChange:(id)a3;
-- (void)setAllowsPickingMultipleItems:(BOOL)a3;
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4;
-- (void)setForceEditingMode:(BOOL)a3;
+- (void)effectiveAppearanceDidChange:(id)change;
+- (void)setAllowsPickingMultipleItems:(BOOL)items;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
+- (void)setForceEditingMode:(BOOL)mode;
 - (void)viewDidLoad;
 @end
 
@@ -29,10 +29,10 @@
   return *(self + v3);
 }
 
-- (void)setAllowsPickingMultipleItems:(BOOL)a3
+- (void)setAllowsPickingMultipleItems:(BOOL)items
 {
-  v4 = self;
-  DOCBrowserContainedViewController.allowsPickingMultipleItems.setter(a3);
+  selfCopy = self;
+  DOCBrowserContainedViewController.allowsPickingMultipleItems.setter(items);
 }
 
 - (BOOL)forceEditingMode
@@ -42,13 +42,13 @@
   return *(self + v3);
 }
 
-- (void)setForceEditingMode:(BOOL)a3
+- (void)setForceEditingMode:(BOOL)mode
 {
-  v3 = a3;
+  modeCopy = mode;
   v5 = OBJC_IVAR____TtC26DocumentManagerExecutables33DOCBrowserContainedViewController_forceEditingMode;
   swift_beginAccess();
-  *(self + v5) = v3;
-  if (v3)
+  *(self + v5) = modeCopy;
+  if (modeCopy)
   {
     [(DOCBrowserContainedViewController *)self setEditing:1 animated:0];
   }
@@ -56,10 +56,10 @@
 
 - (BOOL)isInUserTriggeredSelectionMode
 {
-  v2 = self;
-  if ([(DOCBrowserContainedViewController *)v2 isEditing])
+  selfCopy = self;
+  if ([(DOCBrowserContainedViewController *)selfCopy isEditing])
   {
-    v3 = (*((*MEMORY[0x277D85000] & *v2) + 0x148))();
+    v3 = (*((*MEMORY[0x277D85000] & *selfCopy) + 0x148))();
 
     v4 = v3 ^ 1;
   }
@@ -83,30 +83,30 @@
   DOCBrowserContainedViewController.updateUIPDocLandingBackground(appearance:)(0);
 }
 
-- (void)effectiveAppearanceDidChange:(id)a3
+- (void)effectiveAppearanceDidChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
-  DOCBrowserContainedViewController.effectiveAppearanceDidChange(_:)(v4);
+  changeCopy = change;
+  selfCopy = self;
+  DOCBrowserContainedViewController.effectiveAppearanceDidChange(_:)(changeCopy);
 }
 
-- (_TtC26DocumentManagerExecutables33DOCBrowserContainedViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC26DocumentManagerExecutables33DOCBrowserContainedViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
-  v6 = self;
-  DOCBrowserContainedViewController.setEditing(_:animated:)(a3, a4);
+  selfCopy = self;
+  DOCBrowserContainedViewController.setEditing(_:animated:)(editing, animated);
 }
 
 - (BOOL)hidesNavigationBackButton
 {
   v2 = *((*MEMORY[0x277D85000] & *self) + 0x100);
-  v3 = self;
+  selfCopy = self;
   if (!v2())
   {
     v7 = MEMORY[0x277D84F90];

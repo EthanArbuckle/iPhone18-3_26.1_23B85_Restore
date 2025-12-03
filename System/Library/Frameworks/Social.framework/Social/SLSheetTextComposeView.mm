@@ -1,20 +1,20 @@
 @interface SLSheetTextComposeView
 - (BOOL)becomeFirstResponder;
 - (BOOL)resignFirstResponder;
-- (SLSheetTextComposeView)initWithFrame:(CGRect)a3;
+- (SLSheetTextComposeView)initWithFrame:(CGRect)frame;
 - (void)_assembleView;
 - (void)layoutSubviews;
 - (void)restoreKeyboard;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation SLSheetTextComposeView
 
-- (SLSheetTextComposeView)initWithFrame:(CGRect)a3
+- (SLSheetTextComposeView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = SLSheetTextComposeView;
-  v3 = [(SLSheetTextComposeView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SLSheetTextComposeView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -27,38 +27,38 @@
 - (void)_assembleView
 {
   [(SLSheetTextComposeView *)self setClipsToBounds:1];
-  v3 = [MEMORY[0x1E69DC888] clearColor];
-  [(SLSheetTextComposeView *)self setBackgroundColor:v3];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [(SLSheetTextComposeView *)self setBackgroundColor:clearColor];
 
   [(SLSheetTextComposeView *)self setOpaque:0];
   v4 = objc_alloc_init(MEMORY[0x1E69DD168]);
   [(SLSheetTextComposeView *)self setTextView:v4];
 
-  v5 = [(SLSheetTextComposeView *)self textView];
-  [v5 setClipsToBounds:0];
+  textView = [(SLSheetTextComposeView *)self textView];
+  [textView setClipsToBounds:0];
 
-  v6 = [(SLSheetTextComposeView *)self textView];
-  [v6 setAutoresizingMask:18];
+  textView2 = [(SLSheetTextComposeView *)self textView];
+  [textView2 setAutoresizingMask:18];
 
-  v7 = [MEMORY[0x1E69DC888] clearColor];
-  v8 = [(SLSheetTextComposeView *)self textView];
-  [v8 setBackgroundColor:v7];
+  clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+  textView3 = [(SLSheetTextComposeView *)self textView];
+  [textView3 setBackgroundColor:clearColor2];
 
-  v9 = [(SLSheetTextComposeView *)self textView];
-  [v9 setOpaque:0];
+  textView4 = [(SLSheetTextComposeView *)self textView];
+  [textView4 setOpaque:0];
 
-  v10 = [(SLSheetTextComposeView *)self textView];
-  [v10 setContentMode:3];
+  textView5 = [(SLSheetTextComposeView *)self textView];
+  [textView5 setContentMode:3];
 
   v11 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDCF8]];
-  v12 = [(SLSheetTextComposeView *)self textView];
-  [v12 setFont:v11];
+  textView6 = [(SLSheetTextComposeView *)self textView];
+  [textView6 setFont:v11];
 
-  v13 = [(SLSheetTextComposeView *)self textView];
-  [v13 setBounces:1];
+  textView7 = [(SLSheetTextComposeView *)self textView];
+  [textView7 setBounces:1];
 
-  v14 = [(SLSheetTextComposeView *)self textView];
-  [v14 setAlwaysBounceVertical:1];
+  textView8 = [(SLSheetTextComposeView *)self textView];
+  [textView8 setAlwaysBounceVertical:1];
 
   v15 = objc_opt_new();
   placeholderLabel = self->_placeholderLabel;
@@ -66,42 +66,42 @@
 
   [(UILabel *)self->_placeholderLabel setNumberOfLines:0];
   v17 = self->_placeholderLabel;
-  v18 = [(SLSheetTextComposeView *)self textView];
-  v19 = [v18 font];
-  [(UILabel *)v17 setFont:v19];
+  textView9 = [(SLSheetTextComposeView *)self textView];
+  font = [textView9 font];
+  [(UILabel *)v17 setFont:font];
 
   v20 = self->_placeholderLabel;
-  v21 = [MEMORY[0x1E69DC888] placeholderTextColor];
-  [(UILabel *)v20 setTextColor:v21];
+  placeholderTextColor = [MEMORY[0x1E69DC888] placeholderTextColor];
+  [(UILabel *)v20 setTextColor:placeholderTextColor];
 
   [(SLSheetTextComposeView *)self addSubview:self->_placeholderLabel];
-  v22 = [(SLSheetTextComposeView *)self textView];
-  [(SLSheetTextComposeView *)self addSubview:v22];
+  textView10 = [(SLSheetTextComposeView *)self textView];
+  [(SLSheetTextComposeView *)self addSubview:textView10];
 }
 
 - (BOOL)becomeFirstResponder
 {
-  v2 = [(SLSheetTextComposeView *)self textView];
-  v3 = [v2 becomeFirstResponder];
+  textView = [(SLSheetTextComposeView *)self textView];
+  becomeFirstResponder = [textView becomeFirstResponder];
 
-  return v3;
+  return becomeFirstResponder;
 }
 
 - (BOOL)resignFirstResponder
 {
-  v2 = [(SLSheetTextComposeView *)self textView];
-  v3 = [v2 resignFirstResponder];
+  textView = [(SLSheetTextComposeView *)self textView];
+  resignFirstResponder = [textView resignFirstResponder];
 
-  return v3;
+  return resignFirstResponder;
 }
 
 - (void)layoutSubviews
 {
-  v3 = [(SLSheetTextComposeView *)self _shouldReverseLayoutDirection];
+  _shouldReverseLayoutDirection = [(SLSheetTextComposeView *)self _shouldReverseLayoutDirection];
   [(SLSheetTextComposeView *)self textRightInset];
   v5 = -v4;
-  v6 = [(SLSheetTextComposeView *)self textView];
-  [v6 setScrollIndicatorInsets:{0.0, 0.0, 0.0, v5}];
+  textView = [(SLSheetTextComposeView *)self textView];
+  [textView setScrollIndicatorInsets:{0.0, 0.0, 0.0, v5}];
 
   [(SLSheetTextComposeView *)self bounds];
   v8 = v7;
@@ -110,16 +110,16 @@
   v14 = v13;
   [(SLSheetTextComposeView *)self textRightInset];
   v16 = v12 - v15;
-  if (v3)
+  if (_shouldReverseLayoutDirection)
   {
     [(SLSheetTextComposeView *)self textRightInset];
     v8 = v8 + v17;
   }
 
-  v18 = [(SLSheetTextComposeView *)self textView];
-  [v18 setFrame:{v8, v10, v16, v14}];
+  textView2 = [(SLSheetTextComposeView *)self textView];
+  [textView2 setFrame:{v8, v10, v16, v14}];
 
-  if (v3)
+  if (_shouldReverseLayoutDirection)
   {
     v26.origin.x = v8;
     v26.origin.y = v10;
@@ -150,31 +150,31 @@
 
 - (void)restoreKeyboard
 {
-  v2 = [MEMORY[0x1E69DCBB8] activeKeyboard];
-  [v2 setShowsCandidatesInline:0];
+  activeKeyboard = [MEMORY[0x1E69DCBB8] activeKeyboard];
+  [activeKeyboard setShowsCandidatesInline:0];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v13.receiver = self;
   v13.super_class = SLSheetTextComposeView;
-  v4 = a3;
-  [(SLSheetTextComposeView *)&v13 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(SLSheetTextComposeView *)&v13 traitCollectionDidChange:changeCopy];
   v5 = [(SLSheetTextComposeView *)self traitCollection:v13.receiver];
-  v6 = [v5 preferredContentSizeCategory];
-  v7 = [v4 preferredContentSizeCategory];
+  preferredContentSizeCategory = [v5 preferredContentSizeCategory];
+  preferredContentSizeCategory2 = [changeCopy preferredContentSizeCategory];
 
-  LOBYTE(v4) = [v6 isEqualToString:v7];
-  if ((v4 & 1) == 0)
+  LOBYTE(changeCopy) = [preferredContentSizeCategory isEqualToString:preferredContentSizeCategory2];
+  if ((changeCopy & 1) == 0)
   {
     v8 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDCF8]];
-    v9 = [(SLSheetTextComposeView *)self textView];
-    [v9 setFont:v8];
+    textView = [(SLSheetTextComposeView *)self textView];
+    [textView setFont:v8];
 
     placeholderLabel = self->_placeholderLabel;
-    v11 = [(SLSheetTextComposeView *)self textView];
-    v12 = [v11 font];
-    [(UILabel *)placeholderLabel setFont:v12];
+    textView2 = [(SLSheetTextComposeView *)self textView];
+    font = [textView2 font];
+    [(UILabel *)placeholderLabel setFont:font];
 
     [(SLSheetTextComposeView *)self setNeedsLayout];
     [(SLSheetTextComposeView *)self layoutIfNeeded];

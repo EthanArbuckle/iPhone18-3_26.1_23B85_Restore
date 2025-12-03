@@ -1,7 +1,7 @@
 @interface SPUISMusicResultBuilder
-+ (BOOL)supportsResult:(id)a3;
-+ (id)stringWithAlbum:(id)a3 releaseDate:(id)a4;
-- (SPUISMusicResultBuilder)initWithResult:(id)a3;
++ (BOOL)supportsResult:(id)result;
++ (id)stringWithAlbum:(id)album releaseDate:(id)date;
+- (SPUISMusicResultBuilder)initWithResult:(id)result;
 - (id)buildButtonItems;
 - (id)buildCompactCardSection;
 - (id)buildDescriptions;
@@ -12,24 +12,24 @@
 
 @implementation SPUISMusicResultBuilder
 
-+ (id)stringWithAlbum:(id)a3 releaseDate:(id)a4
++ (id)stringWithAlbum:(id)album releaseDate:(id)date
 {
-  v5 = a3;
-  v6 = a4;
+  albumCopy = album;
+  dateCopy = date;
   v7 = objc_opt_new();
-  if ([v5 length])
+  if ([albumCopy length])
   {
-    [v7 addObject:v5];
+    [v7 addObject:albumCopy];
   }
 
-  if (v6)
+  if (dateCopy)
   {
     v8 = +[SPUISDateFormatManager calendar];
-    v9 = [v8 component:4 fromDate:v6];
+    v9 = [v8 component:4 fromDate:dateCopy];
 
     v10 = [MEMORY[0x277CCABB0] numberWithInteger:v9];
-    v11 = [v10 stringValue];
-    [v7 addObject:v11];
+    stringValue = [v10 stringValue];
+    [v7 addObject:stringValue];
   }
 
   v12 = [v7 componentsJoinedByString:@" · "];
@@ -37,16 +37,16 @@
   return v12;
 }
 
-+ (BOOL)supportsResult:(id)a3
++ (BOOL)supportsResult:(id)result
 {
-  v4 = a3;
-  v5 = [v4 applicationBundleIdentifier];
-  v6 = [a1 bundleId];
-  if ([v5 isEqualToString:v6])
+  resultCopy = result;
+  applicationBundleIdentifier = [resultCopy applicationBundleIdentifier];
+  bundleId = [self bundleId];
+  if ([applicationBundleIdentifier isEqualToString:bundleId])
   {
-    v9.receiver = a1;
+    v9.receiver = self;
     v9.super_class = &OBJC_METACLASS___SPUISMusicResultBuilder;
-    v7 = objc_msgSendSuper2(&v9, sel_supportsResult_, v4);
+    v7 = objc_msgSendSuper2(&v9, sel_supportsResult_, resultCopy);
   }
 
   else
@@ -57,33 +57,33 @@
   return v7;
 }
 
-- (SPUISMusicResultBuilder)initWithResult:(id)a3
+- (SPUISMusicResultBuilder)initWithResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v14.receiver = self;
   v14.super_class = SPUISMusicResultBuilder;
-  v5 = [(SPUISResultBuilder *)&v14 initWithResult:v4];
+  v5 = [(SPUISResultBuilder *)&v14 initWithResult:resultCopy];
   if (v5)
   {
-    v6 = [v4 valueForAttribute:*MEMORY[0x277CC23F8] withType:objc_opt_class()];
+    v6 = [resultCopy valueForAttribute:*MEMORY[0x277CC23F8] withType:objc_opt_class()];
     [(SPUISMusicResultBuilder *)v5 setAlbum:v6];
 
-    v7 = [v4 valueForAttribute:*MEMORY[0x277CC2480] withType:objc_opt_class()];
+    v7 = [resultCopy valueForAttribute:*MEMORY[0x277CC2480] withType:objc_opt_class()];
     [(SPUISMusicResultBuilder *)v5 setArtist:v7];
 
-    v8 = [v4 valueForAttribute:*MEMORY[0x277CC3208] withType:objc_opt_class()];
+    v8 = [resultCopy valueForAttribute:*MEMORY[0x277CC3208] withType:objc_opt_class()];
     [(SPUISMusicResultBuilder *)v5 setMediaId:v8];
 
-    v9 = [v4 valueForAttribute:*MEMORY[0x277CC2780] withType:objc_opt_class()];
+    v9 = [resultCopy valueForAttribute:*MEMORY[0x277CC2780] withType:objc_opt_class()];
     [(SPUISMusicResultBuilder *)v5 setSongLengthInSeconds:v9];
 
-    v10 = [v4 valueForAttribute:*MEMORY[0x277CC2640] withType:objc_opt_class()];
+    v10 = [resultCopy valueForAttribute:*MEMORY[0x277CC2640] withType:objc_opt_class()];
     [(SPUISMusicResultBuilder *)v5 setCreationDate:v10];
 
-    v11 = [v4 valueForAttribute:*MEMORY[0x277CC2760] withType:objc_opt_class()];
+    v11 = [resultCopy valueForAttribute:*MEMORY[0x277CC2760] withType:objc_opt_class()];
     [(SPUISMusicResultBuilder *)v5 setSong:v11];
 
-    v12 = [v4 valueForAttribute:*MEMORY[0x277CC2668] withType:objc_opt_class()];
+    v12 = [resultCopy valueForAttribute:*MEMORY[0x277CC2668] withType:objc_opt_class()];
     -[SPUISMusicResultBuilder setIsExplicit:](v5, "setIsExplicit:", [v12 BOOLValue]);
   }
 
@@ -94,51 +94,51 @@
 {
   v6.receiver = self;
   v6.super_class = SPUISMusicResultBuilder;
-  v3 = [(SPUISResultBuilder *)&v6 buildResult];
-  v4 = [(SPUISMusicResultBuilder *)self mediaId];
-  [v3 setIdentifier:v4];
+  buildResult = [(SPUISResultBuilder *)&v6 buildResult];
+  mediaId = [(SPUISMusicResultBuilder *)self mediaId];
+  [buildResult setIdentifier:mediaId];
 
-  return v3;
+  return buildResult;
 }
 
 - (id)buildCompactCardSection
 {
   v8.receiver = self;
   v8.super_class = SPUISMusicResultBuilder;
-  v2 = [(SPUISResultBuilder *)&v8 buildCompactCardSection];
-  v3 = [v2 footnote];
+  buildCompactCardSection = [(SPUISResultBuilder *)&v8 buildCompactCardSection];
+  footnote = [buildCompactCardSection footnote];
 
-  if (v3)
+  if (footnote)
   {
-    v4 = [v2 descriptions];
-    v5 = [v2 footnote];
-    v6 = [v4 arrayByAddingObject:v5];
-    [v2 setDescriptions:v6];
+    descriptions = [buildCompactCardSection descriptions];
+    footnote2 = [buildCompactCardSection footnote];
+    v6 = [descriptions arrayByAddingObject:footnote2];
+    [buildCompactCardSection setDescriptions:v6];
   }
 
-  [v2 setFootnote:0];
+  [buildCompactCardSection setFootnote:0];
 
-  return v2;
+  return buildCompactCardSection;
 }
 
 - (id)buildTitle
 {
   v3 = objc_opt_new();
   v4 = objc_opt_new();
-  v5 = [(SPUISMusicResultBuilder *)self song];
+  song = [(SPUISMusicResultBuilder *)self song];
 
-  if (v5)
+  if (song)
   {
     v6 = MEMORY[0x277D4C3A0];
-    v7 = [(SPUISMusicResultBuilder *)self song];
-    v8 = [v6 textWithString:v7];
+    song2 = [(SPUISMusicResultBuilder *)self song];
+    v8 = [v6 textWithString:song2];
     [v3 addObject:v8];
   }
 
   if ([(SPUISMusicResultBuilder *)self isExplicit])
   {
-    v9 = [v3 firstObject];
-    [v9 setIsEmphasized:1];
+    firstObject = [v3 firstObject];
+    [firstObject setIsEmphasized:1];
 
     v10 = objc_opt_new();
     [v10 setSymbolName:@"e.square.fill"];
@@ -161,10 +161,10 @@
 {
   v27[2] = *MEMORY[0x277D85DE8];
   v3 = objc_opt_new();
-  v4 = [(SPUISResultBuilder *)self result];
-  v5 = [v4 contentType];
-  v6 = [*MEMORY[0x277CE1E28] identifier];
-  if ([v5 isEqualToString:v6])
+  result = [(SPUISResultBuilder *)self result];
+  contentType = [result contentType];
+  identifier = [*MEMORY[0x277CE1E28] identifier];
+  if ([contentType isEqualToString:identifier])
   {
     v7 = @"PLAYLIST";
   }
@@ -177,21 +177,21 @@
   v8 = [SPUISUtilities localizedStringForKey:v7];
   [v3 addObject:v8];
 
-  v9 = [(SPUISMusicResultBuilder *)self artist];
-  v10 = [v9 length];
+  artist = [(SPUISMusicResultBuilder *)self artist];
+  v10 = [artist length];
 
   if (v10)
   {
-    v11 = [(SPUISMusicResultBuilder *)self artist];
-    [v3 addObject:v11];
+    artist2 = [(SPUISMusicResultBuilder *)self artist];
+    [v3 addObject:artist2];
   }
 
-  v12 = [(SPUISMusicResultBuilder *)self songLengthInSeconds];
+  songLengthInSeconds = [(SPUISMusicResultBuilder *)self songLengthInSeconds];
 
-  if (v12)
+  if (songLengthInSeconds)
   {
-    v13 = [(SPUISMusicResultBuilder *)self songLengthInSeconds];
-    [v13 doubleValue];
+    songLengthInSeconds2 = [(SPUISMusicResultBuilder *)self songLengthInSeconds];
+    [songLengthInSeconds2 doubleValue];
     v14 = [SPUISDateFormatManager stringFromTimeInterval:?];
     [v3 addObject:v14];
   }
@@ -222,8 +222,8 @@
 - (id)buildThumbnail
 {
   v3 = objc_opt_new();
-  v4 = [(SPUISMusicResultBuilder *)self mediaId];
-  [v3 setSpotlightIdentifier:v4];
+  mediaId = [(SPUISMusicResultBuilder *)self mediaId];
+  [v3 setSpotlightIdentifier:mediaId];
 
   return v3;
 }
@@ -231,17 +231,17 @@
 - (id)buildButtonItems
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v3 = [(SPUISMusicResultBuilder *)self mediaId];
+  mediaId = [(SPUISMusicResultBuilder *)self mediaId];
 
-  if (v3)
+  if (mediaId)
   {
     v4 = objc_opt_new();
-    v5 = [(SPUISMusicResultBuilder *)self mediaId];
-    [v4 setMediaIdentifier:v5];
+    mediaId2 = [(SPUISMusicResultBuilder *)self mediaId];
+    [v4 setMediaIdentifier:mediaId2];
 
     v6 = *MEMORY[0x277CE1E28];
-    v7 = [(SPUISResultBuilder *)self uniformType];
-    LODWORD(v6) = [v6 conformsToType:v7];
+    uniformType = [(SPUISResultBuilder *)self uniformType];
+    LODWORD(v6) = [v6 conformsToType:uniformType];
 
     if (v6)
     {

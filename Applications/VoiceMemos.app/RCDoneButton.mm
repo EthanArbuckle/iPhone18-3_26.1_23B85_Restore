@@ -1,6 +1,6 @@
 @interface RCDoneButton
 - (NSString)title;
-- (void)setTitle:(id)a3;
+- (void)setTitle:(id)title;
 - (void)updateConfiguration;
 @end
 
@@ -14,20 +14,20 @@
   return v2;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
   v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v5 = (self + OBJC_IVAR____TtC10VoiceMemos12RCDoneButton_titleString);
   *v5 = v4;
   v5[1] = v6;
-  v7 = self;
+  selfCopy = self;
 
-  [(RCDoneButton *)v7 setNeedsUpdateConfiguration];
+  [(RCDoneButton *)selfCopy setNeedsUpdateConfiguration];
 }
 
 - (void)updateConfiguration
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001B5274();
 }
 

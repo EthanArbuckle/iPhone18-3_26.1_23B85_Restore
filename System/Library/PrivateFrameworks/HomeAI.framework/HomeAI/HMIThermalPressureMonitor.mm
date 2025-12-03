@@ -38,9 +38,9 @@ uint64_t __43__HMIThermalPressureMonitor_sharedInstance__block_invoke()
   {
     v4 = HMIDispatchQueueNameString(v2, 0);
     v5 = v4;
-    v6 = [v4 UTF8String];
+    uTF8String = [v4 UTF8String];
     v7 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v8 = dispatch_queue_create(v6, v7);
+    v8 = dispatch_queue_create(uTF8String, v7);
     notificationQueue = v3->_notificationQueue;
     v3->_notificationQueue = v8;
 
@@ -88,7 +88,7 @@ void __33__HMIThermalPressureMonitor_init__block_invoke(uint64_t a1)
   notify_cancel(out_token);
   self->_thermalPressureLevel = _mapOSThermalLevelToHMIThermalLevel(v9);
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -102,8 +102,8 @@ void __33__HMIThermalPressureMonitor_init__block_invoke(uint64_t a1)
   }
 
   objc_autoreleasePoolPop(v3);
-  v8 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v8 postNotificationName:@"HMIThermalPressureLevelDidChangeNotification" object:v4];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"HMIThermalPressureLevelDidChangeNotification" object:selfCopy];
 }
 
 - (void)dealloc

@@ -1,27 +1,27 @@
 @interface HKMultimap
 + (id)multimapWithStrongObjects;
 + (id)multimapWithWeakObjects;
-- (BOOL)isEqual:(id)a3;
-- (HKMultimap)initWithType:(int64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)objectsForKey:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (HKMultimap)initWithType:(int64_t)type;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)objectsForKey:(id)key;
 - (unint64_t)count;
-- (void)removeObject:(id)a3;
-- (void)removeObject:(id)a3 forKey:(id)a4;
-- (void)removeObjectsForKey:(id)a3;
-- (void)setObject:(id)a3 forKey:(id)a4;
+- (void)removeObject:(id)object;
+- (void)removeObject:(id)object forKey:(id)key;
+- (void)removeObjectsForKey:(id)key;
+- (void)setObject:(id)object forKey:(id)key;
 @end
 
 @implementation HKMultimap
 
-- (HKMultimap)initWithType:(int64_t)a3
+- (HKMultimap)initWithType:(int64_t)type
 {
   v8.receiver = self;
   v8.super_class = HKMultimap;
   v4 = [(HKMultimap *)&v8 init];
   if (v4)
   {
-    if (a3 == 1)
+    if (type == 1)
     {
       [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
     }
@@ -40,39 +40,39 @@
 
 + (id)multimapWithWeakObjects
 {
-  v2 = [[a1 alloc] initWithType:1];
+  v2 = [[self alloc] initWithType:1];
 
   return v2;
 }
 
 + (id)multimapWithStrongObjects
 {
-  v2 = [[a1 alloc] initWithType:0];
+  v2 = [[self alloc] initWithType:0];
 
   return v2;
 }
 
 - (unint64_t)count
 {
-  v2 = [(NSMapTable *)self->_table objectEnumerator];
-  v3 = [v2 allObjects];
-  v4 = [v3 count];
+  objectEnumerator = [(NSMapTable *)self->_table objectEnumerator];
+  allObjects = [objectEnumerator allObjects];
+  v4 = [allObjects count];
 
   return v4;
 }
 
-- (void)removeObject:(id)a3
+- (void)removeObject:(id)object
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(NSMapTable *)self->_table keyEnumerator];
-  v6 = [v5 allObjects];
+  objectCopy = object;
+  keyEnumerator = [(NSMapTable *)self->_table keyEnumerator];
+  allObjects = [keyEnumerator allObjects];
 
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v7 = v6;
+  v7 = allObjects;
   v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v8)
   {
@@ -88,7 +88,7 @@
         }
 
         v12 = *(*(&v14 + 1) + 8 * i);
-        if ([(_HKMappingKey *)v12 objectMatches:v4])
+        if ([(_HKMappingKey *)v12 objectMatches:objectCopy])
         {
           [(NSMapTable *)self->_table removeObjectForKey:v12, v14];
         }
@@ -103,18 +103,18 @@
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeObjectsForKey:(id)a3
+- (void)removeObjectsForKey:(id)key
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(NSMapTable *)self->_table keyEnumerator];
-  v6 = [v5 allObjects];
+  keyCopy = key;
+  keyEnumerator = [(NSMapTable *)self->_table keyEnumerator];
+  allObjects = [keyEnumerator allObjects];
 
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v7 = v6;
+  v7 = allObjects;
   v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v8)
   {
@@ -131,7 +131,7 @@
         }
 
         v12 = *(*(&v14 + 1) + 8 * v11);
-        if (v12 && [*(v12 + 16) isEqual:{v4, v14}])
+        if (v12 && [*(v12 + 16) isEqual:{keyCopy, v14}])
         {
           [(NSMapTable *)self->_table removeObjectForKey:v12];
         }
@@ -149,17 +149,17 @@
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (id)objectsForKey:(id)a3
+- (id)objectsForKey:(id)key
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  keyCopy = key;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = [(NSMapTable *)self->_table keyEnumerator];
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  keyEnumerator = [(NSMapTable *)self->_table keyEnumerator];
+  v7 = [keyEnumerator countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -170,18 +170,18 @@
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(keyEnumerator);
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
-        if (v11 && [*(v11 + 16) isEqual:v4])
+        if (v11 && [*(v11 + 16) isEqual:keyCopy])
         {
           v12 = [(NSMapTable *)self->_table objectForKey:v11];
           [v5 addObject:v12];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [keyEnumerator countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v8);
@@ -192,10 +192,10 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -205,7 +205,7 @@
     v5 = objc_opt_class();
     if ([v5 isEqual:objc_opt_class()])
     {
-      v6 = [(NSMapTable *)self->_table isEqual:v4->_table];
+      v6 = [(NSMapTable *)self->_table isEqual:equalCopy->_table];
     }
 
     else
@@ -217,30 +217,30 @@
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [[HKMultimap alloc] initWithType:0];
-  v6 = [(NSMapTable *)self->_table copyWithZone:a3];
+  v6 = [(NSMapTable *)self->_table copyWithZone:zone];
   table = v5->_table;
   v5->_table = v6;
 
   return v5;
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[_HKMappingKey alloc] initWithObject:v7 andKey:v6];
+  keyCopy = key;
+  objectCopy = object;
+  v8 = [[_HKMappingKey alloc] initWithObject:objectCopy andKey:keyCopy];
 
-  [(NSMapTable *)self->_table setObject:v7 forKey:v8];
+  [(NSMapTable *)self->_table setObject:objectCopy forKey:v8];
 }
 
-- (void)removeObject:(id)a3 forKey:(id)a4
+- (void)removeObject:(id)object forKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[_HKMappingKey alloc] initWithObject:v7 andKey:v6];
+  keyCopy = key;
+  objectCopy = object;
+  v8 = [[_HKMappingKey alloc] initWithObject:objectCopy andKey:keyCopy];
 
   [(NSMapTable *)self->_table removeObjectForKey:v8];
 }

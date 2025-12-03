@@ -1,7 +1,7 @@
 @interface CMPickupManager
 - (CMPickupManager)init;
 - (void)dealloc;
-- (void)onPickupStateUpdated:(const Sample *)a3;
+- (void)onPickupStateUpdated:(const Sample *)updated;
 - (void)startPickupUpdates;
 - (void)stopPickupUpdates;
 @end
@@ -73,9 +73,9 @@
   dispatch_sync(fPrivateQueue, block);
 }
 
-- (void)onPickupStateUpdated:(const Sample *)a3
+- (void)onPickupStateUpdated:(const Sample *)updated
 {
-  timestamp_low = LOBYTE(a3->timestamp);
+  timestamp_low = LOBYTE(updated->timestamp);
   v4 = timestamp_low == 1;
   v5 = timestamp_low == 2;
   fPrivateQueue = self->fPrivateQueue;

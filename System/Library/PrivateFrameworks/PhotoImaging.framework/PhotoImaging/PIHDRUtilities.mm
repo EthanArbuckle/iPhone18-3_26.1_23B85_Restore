@@ -1,15 +1,15 @@
 @interface PIHDRUtilities
-+ (BOOL)_renderImage:(id)a3 toPixelBuffer:(__CVBuffer *)a4;
-+ (__CVBuffer)_newHLGPixelBufferOfSize:(CGSize)a3;
-+ (__CVBuffer)newHLGPixelBufferFromSDRImage:(CGImage *)a3;
++ (BOOL)_renderImage:(id)image toPixelBuffer:(__CVBuffer *)buffer;
++ (__CVBuffer)_newHLGPixelBufferOfSize:(CGSize)size;
++ (__CVBuffer)newHLGPixelBufferFromSDRImage:(CGImage *)image;
 @end
 
 @implementation PIHDRUtilities
 
-+ (__CVBuffer)_newHLGPixelBufferOfSize:(CGSize)a3
++ (__CVBuffer)_newHLGPixelBufferOfSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v19[2] = *MEMORY[0x1E69E9840];
   pixelBufferOut = 0;
   v5 = *MEMORY[0x1E69660D8];
@@ -42,15 +42,15 @@
   return v12;
 }
 
-+ (BOOL)_renderImage:(id)a3 toPixelBuffer:(__CVBuffer *)a4
++ (BOOL)_renderImage:(id)image toPixelBuffer:(__CVBuffer *)buffer
 {
-  v5 = a3;
-  if (a4)
+  imageCopy = image;
+  if (buffer)
   {
-    v6 = [objc_alloc(MEMORY[0x1E695F678]) initWithPixelBuffer:a4];
-    v7 = [MEMORY[0x1E695F620] context];
+    v6 = [objc_alloc(MEMORY[0x1E695F678]) initWithPixelBuffer:buffer];
+    context = [MEMORY[0x1E695F620] context];
     v16 = 0;
-    v8 = [v7 startTaskToRender:v5 toDestination:v6 error:&v16];
+    v8 = [context startTaskToRender:imageCopy toDestination:v6 error:&v16];
     v9 = v16;
 
     v15 = v9;
@@ -70,7 +70,7 @@
     v13 = !v12;
     if (v12)
     {
-      NSLog(&cfstr_FailedToStartR.isa, v5, v6, v11);
+      NSLog(&cfstr_FailedToStartR.isa, imageCopy, v6, v11);
     }
 
     else
@@ -87,10 +87,10 @@
   return v13;
 }
 
-+ (__CVBuffer)newHLGPixelBufferFromSDRImage:(CGImage *)a3
++ (__CVBuffer)newHLGPixelBufferFromSDRImage:(CGImage *)image
 {
   v27 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!image)
   {
     v10 = NUAssertLogger_29300();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -112,8 +112,8 @@
         v18 = dispatch_get_specific(*v12);
         v19 = MEMORY[0x1E696AF00];
         v20 = v18;
-        v21 = [v19 callStackSymbols];
-        v22 = [v21 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v19 callStackSymbols];
+        v22 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v24 = v18;
         v25 = 2114;
@@ -124,8 +124,8 @@
 
     else if (v15)
     {
-      v16 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v17 = [v16 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v17 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v24 = v17;
       _os_log_error_impl(&dword_1C7694000, v14, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -137,10 +137,10 @@
   v4 = [MEMORY[0x1E695F658] imageWithCGImage:?];
   v5 = [v4 imageByApplyingFilter:@"PIHDRInverseHLGFilter"];
   [v5 extent];
-  v8 = [a1 _newHLGPixelBufferOfSize:{v6, v7}];
-  if (([a1 _renderImage:v5 toPixelBuffer:v8] & 1) == 0)
+  v8 = [self _newHLGPixelBufferOfSize:{v6, v7}];
+  if (([self _renderImage:v5 toPixelBuffer:v8] & 1) == 0)
   {
-    [a1 recycleHLGPixelBuffer:v8];
+    [self recycleHLGPixelBuffer:v8];
     v8 = 0;
   }
 

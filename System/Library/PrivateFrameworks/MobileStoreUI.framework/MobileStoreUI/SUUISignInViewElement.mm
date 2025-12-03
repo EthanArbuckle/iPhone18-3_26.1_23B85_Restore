@@ -1,14 +1,14 @@
 @interface SUUISignInViewElement
-- (SUUISignInViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5;
+- (SUUISignInViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory;
 @end
 
 @implementation SUUISignInViewElement
 
-- (SUUISignInViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5
+- (SUUISignInViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory
 {
   v6.receiver = self;
   v6.super_class = SUUISignInViewElement;
-  return [(SUUIViewElement *)&v6 initWithDOMElement:a3 parent:a4 elementFactory:a5];
+  return [(SUUIViewElement *)&v6 initWithDOMElement:element parent:parent elementFactory:factory];
 }
 
 @end

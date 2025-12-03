@@ -1,13 +1,13 @@
 @interface SGDPluginManager
 + (id)sharedInstance;
-+ (void)_processHistoricalDataRequestsForPluginIdentifier:(id)a3 result:(id)a4;
++ (void)_processHistoricalDataRequestsForPluginIdentifier:(id)identifier result:(id)result;
 - (SGDPluginManager)init;
-- (id)_processSearchableItem:(id)a3 harvestMetrics:(id)a4 userAction:(id)a5;
-- (void)deleteSpotlightReferencesWithBundleIdentifier:(id)a3 completion:(id)a4;
-- (void)deleteSpotlightReferencesWithBundleIdentifier:(id)a3 domainIdentifiers:(id)a4 completion:(id)a5;
-- (void)deleteSpotlightReferencesWithBundleIdentifier:(id)a3 uniqueIdentifiers:(id)a4 completion:(id)a5;
-- (void)processInteraction:(id)a3 bundleIdentifier:(id)a4 protectionClass:(id)a5 completion:(id)a6;
-- (void)purgeSpotlightReferencesWithBundleIdentifier:(id)a3 uniqueIdentifiers:(id)a4 completion:(id)a5;
+- (id)_processSearchableItem:(id)item harvestMetrics:(id)metrics userAction:(id)action;
+- (void)deleteSpotlightReferencesWithBundleIdentifier:(id)identifier completion:(id)completion;
+- (void)deleteSpotlightReferencesWithBundleIdentifier:(id)identifier domainIdentifiers:(id)identifiers completion:(id)completion;
+- (void)deleteSpotlightReferencesWithBundleIdentifier:(id)identifier uniqueIdentifiers:(id)identifiers completion:(id)completion;
+- (void)processInteraction:(id)interaction bundleIdentifier:(id)identifier protectionClass:(id)class completion:(id)completion;
+- (void)purgeSpotlightReferencesWithBundleIdentifier:(id)identifier uniqueIdentifiers:(id)identifiers completion:(id)completion;
 @end
 
 @implementation SGDPluginManager
@@ -18,7 +18,7 @@
   block[1] = 3221225472;
   block[2] = __34__SGDPluginManager_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance__pasOnceToken2_6418 != -1)
   {
     dispatch_once(&sharedInstance__pasOnceToken2_6418, block);
@@ -29,19 +29,19 @@
   return v2;
 }
 
-- (void)deleteSpotlightReferencesWithBundleIdentifier:(id)a3 completion:(id)a4
+- (void)deleteSpotlightReferencesWithBundleIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __77__SGDPluginManager_deleteSpotlightReferencesWithBundleIdentifier_completion___block_invoke;
   v10[3] = &unk_278955A98;
   v10[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = identifierCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = identifierCopy;
   SGNotUserInitiated(@"plugin-deleteSpotlightReferences", 2, v10);
 }
 
@@ -113,22 +113,22 @@ uint64_t __77__SGDPluginManager_deleteSpotlightReferencesWithBundleIdentifier_co
   return result;
 }
 
-- (void)deleteSpotlightReferencesWithBundleIdentifier:(id)a3 domainIdentifiers:(id)a4 completion:(id)a5
+- (void)deleteSpotlightReferencesWithBundleIdentifier:(id)identifier domainIdentifiers:(id)identifiers completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  identifiersCopy = identifiers;
+  completionCopy = completion;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __95__SGDPluginManager_deleteSpotlightReferencesWithBundleIdentifier_domainIdentifiers_completion___block_invoke;
   v14[3] = &unk_27894E090;
   v14[4] = self;
-  v15 = v9;
-  v16 = v8;
-  v17 = v10;
-  v11 = v10;
-  v12 = v8;
-  v13 = v9;
+  v15 = identifiersCopy;
+  v16 = identifierCopy;
+  v17 = completionCopy;
+  v11 = completionCopy;
+  v12 = identifierCopy;
+  v13 = identifiersCopy;
   SGNotUserInitiated(@"plugin-deleteSpotlightReferences", 2, v14);
 }
 
@@ -203,22 +203,22 @@ uint64_t __95__SGDPluginManager_deleteSpotlightReferencesWithBundleIdentifier_do
   return result;
 }
 
-- (void)deleteSpotlightReferencesWithBundleIdentifier:(id)a3 uniqueIdentifiers:(id)a4 completion:(id)a5
+- (void)deleteSpotlightReferencesWithBundleIdentifier:(id)identifier uniqueIdentifiers:(id)identifiers completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  identifiersCopy = identifiers;
+  completionCopy = completion;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __95__SGDPluginManager_deleteSpotlightReferencesWithBundleIdentifier_uniqueIdentifiers_completion___block_invoke;
   v14[3] = &unk_27894E090;
   v14[4] = self;
-  v15 = v9;
-  v16 = v8;
-  v17 = v10;
-  v11 = v10;
-  v12 = v8;
-  v13 = v9;
+  v15 = identifiersCopy;
+  v16 = identifierCopy;
+  v17 = completionCopy;
+  v11 = completionCopy;
+  v12 = identifierCopy;
+  v13 = identifiersCopy;
   SGNotUserInitiated(@"plugin-deleteSpotlightReferences", 2, v14);
 }
 
@@ -293,22 +293,22 @@ uint64_t __95__SGDPluginManager_deleteSpotlightReferencesWithBundleIdentifier_un
   return result;
 }
 
-- (void)purgeSpotlightReferencesWithBundleIdentifier:(id)a3 uniqueIdentifiers:(id)a4 completion:(id)a5
+- (void)purgeSpotlightReferencesWithBundleIdentifier:(id)identifier uniqueIdentifiers:(id)identifiers completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  identifiersCopy = identifiers;
+  completionCopy = completion;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __94__SGDPluginManager_purgeSpotlightReferencesWithBundleIdentifier_uniqueIdentifiers_completion___block_invoke;
   v14[3] = &unk_27894E090;
   v14[4] = self;
-  v15 = v9;
-  v16 = v8;
-  v17 = v10;
-  v11 = v10;
-  v12 = v8;
-  v13 = v9;
+  v15 = identifiersCopy;
+  v16 = identifierCopy;
+  v17 = completionCopy;
+  v11 = completionCopy;
+  v12 = identifierCopy;
+  v13 = identifiersCopy;
   SGNotUserInitiated(@"plugin-purgeSpotlightReferences", 2, v14);
 }
 
@@ -383,28 +383,28 @@ uint64_t __94__SGDPluginManager_purgeSpotlightReferencesWithBundleIdentifier_uni
   return result;
 }
 
-- (void)processInteraction:(id)a3 bundleIdentifier:(id)a4 protectionClass:(id)a5 completion:(id)a6
+- (void)processInteraction:(id)interaction bundleIdentifier:(id)identifier protectionClass:(id)class completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  interactionCopy = interaction;
+  identifierCopy = identifier;
+  classCopy = class;
+  completionCopy = completion;
   v14 = [SGXpcTransaction transactionWithName:"SGDPluginManager.processInteraction"];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __83__SGDPluginManager_processInteraction_bundleIdentifier_protectionClass_completion___block_invoke;
   v20[3] = &unk_27894C480;
   v20[4] = self;
-  v21 = v10;
-  v22 = v11;
-  v23 = v12;
+  v21 = interactionCopy;
+  v22 = identifierCopy;
+  v23 = classCopy;
   v24 = v14;
-  v25 = v13;
+  v25 = completionCopy;
   v15 = v14;
-  v16 = v13;
-  v17 = v12;
-  v18 = v11;
-  v19 = v10;
+  v16 = completionCopy;
+  v17 = classCopy;
+  v18 = identifierCopy;
+  v19 = interactionCopy;
   SGNotUserInitiated(@"plugin-processInteraction", 2, v20);
 }
 
@@ -528,35 +528,35 @@ void __83__SGDPluginManager_processInteraction_bundleIdentifier_protectionClass_
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_processSearchableItem:(id)a3 harvestMetrics:(id)a4 userAction:(id)a5
+- (id)_processSearchableItem:(id)item harvestMetrics:(id)metrics userAction:(id)action
 {
   v61 = *MEMORY[0x277D85DE8];
-  v44 = a3;
-  v8 = a4;
-  v9 = a5;
+  itemCopy = item;
+  metricsCopy = metrics;
+  actionCopy = action;
   v10 = &selRef_processUserAction_searchableItem_;
-  if (!v9)
+  if (!actionCopy)
   {
     v10 = &selRef_processSearchableItem_;
   }
 
   v11 = *v10;
-  v47 = v8;
-  [v8 startTimer:kHarvestMetricsPluginsTimer];
+  v47 = metricsCopy;
+  [metricsCopy startTimer:kHarvestMetricsPluginsTimer];
   v50 = 0u;
   v51 = 0u;
   v48 = 0u;
   v49 = 0u;
   obj = [(NSDictionary *)self->_plugins allKeys];
   v12 = [obj countByEnumeratingWithState:&v48 objects:v60 count:16];
-  v42 = v9;
+  v42 = actionCopy;
   if (v12)
   {
     v14 = v12;
     v46 = 0;
     v15 = *v49;
     v16 = @"NSUA";
-    if (!v9)
+    if (!actionCopy)
     {
       v16 = @"CSSI";
     }
@@ -581,57 +581,57 @@ void __83__SGDPluginManager_processInteraction_bundleIdentifier_protectionClass_
         if (objc_opt_respondsToSelector())
         {
           v21 = v11;
-          v22 = self;
+          selfCopy = self;
           v23 = sgLogHandle();
           if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
           {
-            v41 = [v44 uniqueIdentifier];
-            v35 = [v44 bundleID];
+            uniqueIdentifier = [itemCopy uniqueIdentifier];
+            bundleID = [itemCopy bundleID];
             *buf = 138413058;
             v53 = v40;
             v54 = 2112;
-            v55 = v41;
+            v55 = uniqueIdentifier;
             v56 = 2112;
-            v57 = v35;
+            v57 = bundleID;
             v58 = 2112;
             v59 = v18;
             _os_log_debug_impl(&dword_231E60000, v23, OS_LOG_TYPE_DEBUG, "Sending processing of %@ %@ from %@ to plugin %@", buf, 0x2Au);
           }
 
-          v24 = [v20 identifier];
-          [v47 startTimer:v24];
+          identifier = [v20 identifier];
+          [v47 startTimer:identifier];
 
-          v25 = [v20 identifier];
-          [SGDPowerLog pluginStartProcessingSearchableItem:v25];
+          identifier2 = [v20 identifier];
+          [SGDPowerLog pluginStartProcessingSearchableItem:identifier2];
 
           if (v42)
           {
-            [v20 processUserAction:v42 searchableItem:v44];
+            [v20 processUserAction:v42 searchableItem:itemCopy];
           }
 
           else
           {
-            [v20 processSearchableItem:v44];
+            [v20 processSearchableItem:itemCopy];
           }
           v26 = ;
-          v27 = [v20 identifier];
-          [SGDPowerLog pluginEndProcessingSearchableItem:v27];
+          identifier3 = [v20 identifier];
+          [SGDPowerLog pluginEndProcessingSearchableItem:identifier3];
 
-          v28 = [v20 identifier];
-          [v47 endTimer:v28 significantWork:1];
+          identifier4 = [v20 identifier];
+          [v47 endTimer:identifier4 significantWork:1];
 
-          v29 = [v26 error];
+          error = [v26 error];
 
-          if (v29)
+          if (error)
           {
             v30 = sgLogHandle();
             if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
             {
-              v36 = [v26 error];
+              error2 = [v26 error];
               *buf = v39;
               v53 = v18;
               v54 = 2112;
-              v55 = v36;
+              v55 = error2;
               _os_log_error_impl(&dword_231E60000, v30, OS_LOG_TYPE_ERROR, "Plugin reported error: %@: %@", buf, 0x16u);
             }
 
@@ -641,20 +641,20 @@ void __83__SGDPluginManager_processInteraction_bundleIdentifier_protectionClass_
               v31 = objc_opt_new();
             }
 
-            v32 = [v26 error];
+            error3 = [v26 error];
             v46 = v31;
-            [v31 setObject:v32 forKeyedSubscript:v18];
+            [v31 setObject:error3 forKeyedSubscript:v18];
           }
 
-          v33 = [v26 historicalDataRequests];
-          v34 = [v33 count];
+          historicalDataRequests = [v26 historicalDataRequests];
+          v34 = [historicalDataRequests count];
 
           if (v34)
           {
             [SGDPluginManager _processHistoricalDataRequestsForPluginIdentifier:v18 result:v26];
           }
 
-          self = v22;
+          self = selfCopy;
           v11 = v21;
           v14 = v43;
         }
@@ -721,50 +721,50 @@ void __83__SGDPluginManager_processInteraction_bundleIdentifier_protectionClass_
         v12 = *(*(&v28 + 1) + 8 * i);
         if ((objc_opt_respondsToSelector() & 1) == 0)
         {
-          v14 = [v12 identifier];
-          [v4 setObject:v12 forKeyedSubscript:v14];
+          identifier = [v12 identifier];
+          [v4 setObject:v12 forKeyedSubscript:identifier];
           goto LABEL_15;
         }
 
-        v13 = [v12 identifier];
-        [SGDPowerLog pluginStartSetup:v13];
+        identifier2 = [v12 identifier];
+        [SGDPowerLog pluginStartSetup:identifier2];
 
-        v14 = [v12 setup];
-        v15 = [v12 identifier];
-        [SGDPowerLog pluginEndSetup:v15];
+        identifier = [v12 setup];
+        identifier3 = [v12 identifier];
+        [SGDPowerLog pluginEndSetup:identifier3];
 
-        v16 = [v14 error];
+        error = [identifier error];
 
-        if (v16)
+        if (error)
         {
-          v17 = sgLogHandle();
-          if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+          identifier6 = sgLogHandle();
+          if (os_log_type_enabled(identifier6, OS_LOG_TYPE_ERROR))
           {
-            v18 = [v12 identifier];
-            v19 = [v14 error];
+            identifier4 = [v12 identifier];
+            error2 = [identifier error];
             *buf = 138412546;
-            v34 = v18;
+            v34 = identifier4;
             v35 = 2112;
-            v36 = v19;
-            _os_log_error_impl(&dword_231E60000, v17, OS_LOG_TYPE_ERROR, "Error during %@ setup: %@", buf, 0x16u);
+            v36 = error2;
+            _os_log_error_impl(&dword_231E60000, identifier6, OS_LOG_TYPE_ERROR, "Error during %@ setup: %@", buf, 0x16u);
           }
         }
 
         else
         {
-          v20 = [v12 identifier];
-          [v4 setObject:v12 forKeyedSubscript:v20];
+          identifier5 = [v12 identifier];
+          [v4 setObject:v12 forKeyedSubscript:identifier5];
 
-          v21 = [v14 historicalDataRequests];
-          v22 = [v21 count];
+          historicalDataRequests = [identifier historicalDataRequests];
+          v22 = [historicalDataRequests count];
 
           if (!v22)
           {
             goto LABEL_15;
           }
 
-          v17 = [v12 identifier];
-          [SGDPluginManager _processHistoricalDataRequestsForPluginIdentifier:v17 result:v14];
+          identifier6 = [v12 identifier];
+          [SGDPluginManager _processHistoricalDataRequestsForPluginIdentifier:identifier6 result:identifier];
         }
 
 LABEL_15:
@@ -789,19 +789,19 @@ LABEL_17:
   return v3;
 }
 
-+ (void)_processHistoricalDataRequestsForPluginIdentifier:(id)a3 result:(id)a4
++ (void)_processHistoricalDataRequestsForPluginIdentifier:(id)identifier result:(id)result
 {
   v26 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  resultCopy = result;
   v7 = +[SGDSpotlightCommander sharedInstance];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v16 = v6;
-  v8 = [v6 historicalDataRequests];
-  v9 = [v8 countByEnumeratingWithState:&v17 objects:v25 count:16];
+  v16 = resultCopy;
+  historicalDataRequests = [resultCopy historicalDataRequests];
+  v9 = [historicalDataRequests countByEnumeratingWithState:&v17 objects:v25 count:16];
   if (v9)
   {
     v10 = v9;
@@ -813,7 +813,7 @@ LABEL_17:
       {
         if (*v18 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(historicalDataRequests);
         }
 
         v13 = *(*(&v17 + 1) + 8 * v12);
@@ -821,7 +821,7 @@ LABEL_17:
         if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
         {
           *buf = 138412546;
-          v22 = v5;
+          v22 = identifierCopy;
           v23 = 2112;
           v24 = v13;
           _os_log_debug_impl(&dword_231E60000, v14, OS_LOG_TYPE_DEBUG, "Plugin %@ requesting historical data: %@", buf, 0x16u);
@@ -832,7 +832,7 @@ LABEL_17:
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v17 objects:v25 count:16];
+      v10 = [historicalDataRequests countByEnumeratingWithState:&v17 objects:v25 count:16];
     }
 
     while (v10);

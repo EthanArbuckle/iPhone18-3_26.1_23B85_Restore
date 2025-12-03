@@ -1,12 +1,12 @@
 @interface MSDTestInterface
 + (id)sharedInstance;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (id)getTimeStamp;
-- (id)sanitizeTestLog:(id)a3;
-- (void)pushTestEvent:(id)a3 ofType:(id)a4;
-- (void)pushTestLog:(id)a3;
-- (void)sendCommandsToDemod:(id)a3 replyFromDemod:(id)a4;
-- (void)sendTestEvents:(id)a3;
+- (id)sanitizeTestLog:(id)log;
+- (void)pushTestEvent:(id)event ofType:(id)type;
+- (void)pushTestLog:(id)log;
+- (void)sendCommandsToDemod:(id)demod replyFromDemod:(id)fromDemod;
+- (void)sendTestEvents:(id)events;
 - (void)start;
 @end
 
@@ -37,11 +37,11 @@
   v4 = [[NSXPCListener alloc] initWithMachServiceName:@"com.apple.msdtest.service"];
   [(MSDTestInterface *)self setXpcListener:v4];
 
-  v5 = [(MSDTestInterface *)self xpcListener];
-  [v5 setDelegate:self];
+  xpcListener = [(MSDTestInterface *)self xpcListener];
+  [xpcListener setDelegate:self];
 
-  v6 = [(MSDTestInterface *)self xpcListener];
-  [v6 resume];
+  xpcListener2 = [(MSDTestInterface *)self xpcListener];
+  [xpcListener2 resume];
 }
 
 - (id)getTimeStamp
@@ -52,61 +52,61 @@
   return v3;
 }
 
-- (void)pushTestEvent:(id)a3 ofType:(id)a4
+- (void)pushTestEvent:(id)event ofType:(id)type
 {
-  v5 = a4;
-  v6 = a3;
+  typeCopy = type;
+  eventCopy = event;
   v8 = +[NSNotificationCenter defaultCenter];
-  v7 = [NSDictionary dictionaryWithObjectsAndKeys:v6, v5, 0];
+  v7 = [NSDictionary dictionaryWithObjectsAndKeys:eventCopy, typeCopy, 0];
 
   [v8 postNotificationName:@"TestNotification" object:0 userInfo:v7];
 }
 
-- (void)sendTestEvents:(id)a3
+- (void)sendTestEvents:(id)events
 {
-  v4 = a3;
-  v5 = [(MSDTestInterface *)self xpcConnection];
+  eventsCopy = events;
+  xpcConnection = [(MSDTestInterface *)self xpcConnection];
 
-  if (v5)
+  if (xpcConnection)
   {
-    v6 = [(MSDTestInterface *)self testQueue];
+    testQueue = [(MSDTestInterface *)self testQueue];
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_100025F0C;
     v7[3] = &unk_10016A258;
     v7[4] = self;
-    v8 = v4;
-    dispatch_async(v6, v7);
+    v8 = eventsCopy;
+    dispatch_async(testQueue, v7);
   }
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
   v6 = sub_100063A54();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138543618;
-    v14 = v5;
+    v14 = connectionCopy;
     v15 = 1024;
-    v16 = [v5 processIdentifier];
+    processIdentifier = [connectionCopy processIdentifier];
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Received new connection.:%{public}@ procID:%d", &v13, 0x12u);
   }
 
   if (os_variant_has_internal_content())
   {
-    v7 = [v5 valueForEntitlement:@"com.apple.private.mobilestoredemo.testInterface"];
+    v7 = [connectionCopy valueForEntitlement:@"com.apple.private.mobilestoredemo.testInterface"];
     v8 = v7;
     if (v7 && [v7 BOOLValue])
     {
       v9 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___MSDSendTestCommand];
-      [v5 setExportedInterface:v9];
+      [connectionCopy setExportedInterface:v9];
 
-      [v5 setExportedObject:self];
+      [connectionCopy setExportedObject:self];
       v10 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___MSDPushTestLog];
-      [v5 setRemoteObjectInterface:v10];
-      [(MSDTestInterface *)self setXpcConnection:v5];
-      [v5 resume];
+      [connectionCopy setRemoteObjectInterface:v10];
+      [(MSDTestInterface *)self setXpcConnection:connectionCopy];
+      [connectionCopy resume];
       v11 = 1;
     }
 
@@ -132,18 +132,18 @@
   return v11;
 }
 
-- (void)sendCommandsToDemod:(id)a3 replyFromDemod:(id)a4
+- (void)sendCommandsToDemod:(id)demod replyFromDemod:(id)fromDemod
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 objectForKey:@"getNotifications"];
+  demodCopy = demod;
+  fromDemodCopy = fromDemod;
+  v8 = [demodCopy objectForKey:@"getNotifications"];
   if (v8)
   {
     v9 = v8;
-    v10 = [v6 objectForKey:@"getNotifications"];
-    v11 = [v10 BOOLValue];
+    v10 = [demodCopy objectForKey:@"getNotifications"];
+    bOOLValue = [v10 BOOLValue];
 
-    if (v11)
+    if (bOOLValue)
     {
       v12 = +[NSNotificationCenter defaultCenter];
       v13 = objc_alloc_init(NSOperationQueue);
@@ -156,43 +156,43 @@
     }
   }
 
-  v15 = [v6 objectForKey:@"totalDownloadThreads"];
+  v15 = [demodCopy objectForKey:@"totalDownloadThreads"];
 
   if (v15)
   {
     v16 = +[MSDWorkQueueSet sharedInstance];
-    v17 = [v16 operationQueue];
-    v18 = [v6 objectForKey:@"totalDownloadThreads"];
-    [v17 setMaxConcurrentOperationCount:{objc_msgSend(v18, "integerValue")}];
+    operationQueue = [v16 operationQueue];
+    v18 = [demodCopy objectForKey:@"totalDownloadThreads"];
+    [operationQueue setMaxConcurrentOperationCount:{objc_msgSend(v18, "integerValue")}];
   }
 
-  v7[2](v7, @"commands accepted");
+  fromDemodCopy[2](fromDemodCopy, @"commands accepted");
 }
 
-- (void)pushTestLog:(id)a3
+- (void)pushTestLog:(id)log
 {
-  v4 = [(MSDTestInterface *)self sanitizeTestLog:a3];
+  v4 = [(MSDTestInterface *)self sanitizeTestLog:log];
   if (v4)
   {
     v7 = v4;
-    v5 = [(MSDTestInterface *)self xpcConnection];
-    v6 = [v5 remoteObjectProxy];
-    [v6 pushTestLog:v7];
+    xpcConnection = [(MSDTestInterface *)self xpcConnection];
+    remoteObjectProxy = [xpcConnection remoteObjectProxy];
+    [remoteObjectProxy pushTestLog:v7];
 
     v4 = v7;
   }
 }
 
-- (id)sanitizeTestLog:(id)a3
+- (id)sanitizeTestLog:(id)log
 {
-  v4 = a3;
-  v5 = [v4 mutableCopy];
-  v6 = [v4 objectForKey:@"testLogLevel"];
-  v7 = [v6 integerValue];
+  logCopy = log;
+  v5 = [logCopy mutableCopy];
+  v6 = [logCopy objectForKey:@"testLogLevel"];
+  integerValue = [v6 integerValue];
 
-  v8 = [v4 objectForKey:@"testLogLevel"];
+  v8 = [logCopy objectForKey:@"testLogLevel"];
 
-  if (v8 && (v9 = [(MSDTestInterface *)self defaultLogLevel], v8, v7 <= v9))
+  if (v8 && (v9 = [(MSDTestInterface *)self defaultLogLevel], v8, integerValue <= v9))
   {
     v10 = 0;
   }

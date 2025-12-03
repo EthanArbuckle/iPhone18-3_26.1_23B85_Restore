@@ -1,6 +1,6 @@
 @interface HROnboardingAtrialFibrillationGateViewControllerAccessibility
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)_axSetupSelectionRow:(id)a3 expectedResult:(BOOL)a4;
+- (void)_axSetupSelectionRow:(id)row expectedResult:(BOOL)result;
 @end
 
 @implementation HROnboardingAtrialFibrillationGateViewControllerAccessibility
@@ -12,27 +12,27 @@
   [(HROnboardingAtrialFibrillationGateViewControllerAccessibility *)&v2 _accessibilityLoadAccessibilityInformation];
 }
 
-- (void)_axSetupSelectionRow:(id)a3 expectedResult:(BOOL)a4
+- (void)_axSetupSelectionRow:(id)row expectedResult:(BOOL)result
 {
-  v6 = a3;
-  if (v6)
+  rowCopy = row;
+  if (rowCopy)
   {
     objc_initWeak(&location, self);
-    objc_initWeak(&from, v6);
-    [v6 setIsAccessibilityElement:1];
+    objc_initWeak(&from, rowCopy);
+    [rowCopy setIsAccessibilityElement:1];
     v10[0] = MEMORY[0x29EDCA5F8];
     v10[1] = 3221225472;
     v10[2] = __101__HROnboardingAtrialFibrillationGateViewControllerAccessibility__axSetupSelectionRow_expectedResult___block_invoke;
     v10[3] = &unk_29F2C5D10;
     objc_copyWeak(&v11, &from);
-    [v6 _setAccessibilityLabelBlock:v10];
+    [rowCopy _setAccessibilityLabelBlock:v10];
     v7[0] = MEMORY[0x29EDCA5F8];
     v7[1] = 3221225472;
     v7[2] = __101__HROnboardingAtrialFibrillationGateViewControllerAccessibility__axSetupSelectionRow_expectedResult___block_invoke_2;
     v7[3] = &unk_29F2C5D38;
     objc_copyWeak(&v8, &location);
-    v9 = a4;
-    [v6 _setAccessibilityTraitsBlock:v7];
+    resultCopy = result;
+    [rowCopy _setAccessibilityTraitsBlock:v7];
     objc_destroyWeak(&v8);
     objc_destroyWeak(&v11);
     objc_destroyWeak(&from);

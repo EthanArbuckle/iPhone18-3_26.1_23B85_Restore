@@ -10,16 +10,16 @@
   v3 = [[NSUserDefaults alloc] initWithSuiteName:@"com.apple.springboard"];
   [(DDRTaskResetDeviceMagneticCover *)self setDefaults:v3];
 
-  v4 = [(DDRTaskResetDeviceMagneticCover *)self defaults];
-  -[DDRTaskResetDeviceMagneticCover setHasSeenCaseLatchCover:](self, "setHasSeenCaseLatchCover:", [v4 BOOLForKey:@"SBHasSeenACaseLatchCoverOnce"]);
+  defaults = [(DDRTaskResetDeviceMagneticCover *)self defaults];
+  -[DDRTaskResetDeviceMagneticCover setHasSeenCaseLatchCover:](self, "setHasSeenCaseLatchCover:", [defaults BOOLForKey:@"SBHasSeenACaseLatchCoverOnce"]);
 }
 
 - (void)run
 {
   if ([(DDRTaskResetDeviceMagneticCover *)self hasSeenCaseLatchCover])
   {
-    v3 = [(DDRTaskResetDeviceMagneticCover *)self defaults];
-    [v3 setBool:1 forKey:@"SBHasSeenACaseLatchCoverOnce"];
+    defaults = [(DDRTaskResetDeviceMagneticCover *)self defaults];
+    [defaults setBool:1 forKey:@"SBHasSeenACaseLatchCoverOnce"];
   }
 }
 

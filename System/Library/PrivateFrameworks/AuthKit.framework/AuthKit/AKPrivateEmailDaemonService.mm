@@ -1,79 +1,79 @@
 @interface AKPrivateEmailDaemonService
 - (AKPrivateEmailDaemonService)init;
-- (AKPrivateEmailDaemonService)initWithClient:(id)a3 store:(id)a4;
+- (AKPrivateEmailDaemonService)initWithClient:(id)client store:(id)store;
 - (BOOL)_verifyEntitlements;
-- (void)_cacheFetchedPrivateEmail:(id)a3 keyAlreadyHashed:(BOOL)a4 error:(id)a5 completion:(id)a6;
-- (void)_performFetchSiwAHmeRequestWithContext:(id)a3 completion:(id)a4;
-- (void)_performRegisterRequestWithContext:(id)a3 completion:(id)a4;
-- (void)_performRequestForContext:(id)a3 completion:(id)a4;
+- (void)_cacheFetchedPrivateEmail:(id)email keyAlreadyHashed:(BOOL)hashed error:(id)error completion:(id)completion;
+- (void)_performFetchSiwAHmeRequestWithContext:(id)context completion:(id)completion;
+- (void)_performRegisterRequestWithContext:(id)context completion:(id)completion;
+- (void)_performRequestForContext:(id)context completion:(id)completion;
 - (void)dealloc;
-- (void)deletePrivateEmailDatabaseWithCompletion:(id)a3;
-- (void)fetchPrivateEmailForAltDSID:(id)a3 withKey:(id)a4 completion:(id)a5;
-- (void)fetchPrivateEmailWithContext:(id)a3 completion:(id)a4;
-- (void)fetchSignInWithApplePrivateEmailWithContext:(id)a3 completion:(id)a4;
-- (void)getContextForRequestContext:(id)a3 completion:(id)a4;
-- (void)listAllPrivateEmailsForAltDSID:(id)a3 completion:(id)a4;
-- (void)lookupPrivateEmailForAltDSID:(id)a3 withKey:(id)a4 completion:(id)a5;
-- (void)lookupPrivateEmailWithContext:(id)a3 completion:(id)a4;
-- (void)presentPrivateEmailUIForContext:(id)a3 completion:(id)a4;
-- (void)privateEmailListVersionWithCompletion:(id)a3;
-- (void)registerPrivateEmailForAltDSID:(id)a3 withKey:(id)a4 completion:(id)a5;
-- (void)registerPrivateEmailWithContext:(id)a3 completion:(id)a4;
-- (void)removePrivateEmailKey:(id)a3 completion:(id)a4;
-- (void)removePrivateEmailWithContext:(id)a3 completion:(id)a4;
+- (void)deletePrivateEmailDatabaseWithCompletion:(id)completion;
+- (void)fetchPrivateEmailForAltDSID:(id)d withKey:(id)key completion:(id)completion;
+- (void)fetchPrivateEmailWithContext:(id)context completion:(id)completion;
+- (void)fetchSignInWithApplePrivateEmailWithContext:(id)context completion:(id)completion;
+- (void)getContextForRequestContext:(id)context completion:(id)completion;
+- (void)listAllPrivateEmailsForAltDSID:(id)d completion:(id)completion;
+- (void)lookupPrivateEmailForAltDSID:(id)d withKey:(id)key completion:(id)completion;
+- (void)lookupPrivateEmailWithContext:(id)context completion:(id)completion;
+- (void)presentPrivateEmailUIForContext:(id)context completion:(id)completion;
+- (void)privateEmailListVersionWithCompletion:(id)completion;
+- (void)registerPrivateEmailForAltDSID:(id)d withKey:(id)key completion:(id)completion;
+- (void)registerPrivateEmailWithContext:(id)context completion:(id)completion;
+- (void)removePrivateEmailKey:(id)key completion:(id)completion;
+- (void)removePrivateEmailWithContext:(id)context completion:(id)completion;
 @end
 
 @implementation AKPrivateEmailDaemonService
 
 - (AKPrivateEmailDaemonService)init
 {
-  v3 = self;
+  selfCopy = self;
   [(AKPrivateEmailDaemonService *)self doesNotRecognizeSelector:a2];
-  objc_storeStrong(&v3, 0);
+  objc_storeStrong(&selfCopy, 0);
   return 0;
 }
 
-- (AKPrivateEmailDaemonService)initWithClient:(id)a3 store:(id)a4
+- (AKPrivateEmailDaemonService)initWithClient:(id)client store:(id)store
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, client);
   v12 = 0;
-  objc_storeStrong(&v12, a4);
-  v4 = v14;
-  v14 = 0;
+  objc_storeStrong(&v12, store);
+  v4 = selfCopy;
+  selfCopy = 0;
   v11.receiver = v4;
   v11.super_class = AKPrivateEmailDaemonService;
   v9 = [(AKPrivateEmailDaemonService *)&v11 init];
-  v14 = v9;
-  objc_storeStrong(&v14, v9);
+  selfCopy = v9;
+  objc_storeStrong(&selfCopy, v9);
   if (v9)
   {
     v10 = _AKLogHme();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [location[0] bundleID];
-      sub_1000194D4(v15, v7);
+      bundleID = [location[0] bundleID];
+      sub_1000194D4(v15, bundleID);
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Private email service initialized with client id %@", v15, 0xCu);
-      _objc_release(v7);
+      _objc_release(bundleID);
     }
 
     objc_storeStrong(&v10, 0);
-    objc_storeStrong(&v14->_client, location[0]);
-    objc_storeStrong(&v14->_store, v12);
+    objc_storeStrong(&selfCopy->_client, location[0]);
+    objc_storeStrong(&selfCopy->_store, v12);
   }
 
-  v6 = _objc_retain(v14);
+  v6 = _objc_retain(selfCopy);
   objc_storeStrong(&v12, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v14, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v6;
 }
 
 - (void)dealloc
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = _AKLogHme();
   v6 = OS_LOG_TYPE_DEFAULT;
@@ -86,56 +86,56 @@
   }
 
   objc_storeStrong(location, 0);
-  v4.receiver = v8;
+  v4.receiver = selfCopy;
   v4.super_class = AKPrivateEmailDaemonService;
   [(AKPrivateEmailDaemonService *)&v4 dealloc];
 }
 
-- (void)lookupPrivateEmailForAltDSID:(id)a3 withKey:(id)a4 completion:(id)a5
+- (void)lookupPrivateEmailForAltDSID:(id)d withKey:(id)key completion:(id)completion
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v10 = 0;
-  objc_storeStrong(&v10, a4);
+  objc_storeStrong(&v10, key);
   v9 = 0;
-  objc_storeStrong(&v9, a5);
+  objc_storeStrong(&v9, completion);
   v5 = [AKPrivateEmailContext alloc];
   v8 = [v5 initWithKey:v10 altDSID:location[0]];
-  [(AKPrivateEmailDaemonService *)v12 lookupPrivateEmailWithContext:v8 completion:v9];
+  [(AKPrivateEmailDaemonService *)selfCopy lookupPrivateEmailWithContext:v8 completion:v9];
   objc_storeStrong(&v8, 0);
   objc_storeStrong(&v9, 0);
   objc_storeStrong(&v10, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)lookupPrivateEmailWithContext:(id)a3 completion:(id)a4
+- (void)lookupPrivateEmailWithContext:(id)context completion:(id)completion
 {
-  v30 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v28 = 0;
-  objc_storeStrong(&v28, a4);
+  objc_storeStrong(&v28, completion);
   v27 = 0;
   v26 = 0;
   v18 = +[AKAccountManager sharedInstance];
-  v17 = [location[0] altDSID];
+  altDSID = [location[0] altDSID];
   v25 = [AKAccountManager authKitAccountWithAltDSID:v18 error:"authKitAccountWithAltDSID:error:"];
-  _objc_release(v17);
+  _objc_release(altDSID);
   _objc_release(v18);
   if (v25)
   {
     [location[0] sanitiseInternalState];
-    v14 = [(AKPrivateEmailDaemonService *)v30 store];
+    store = [(AKPrivateEmailDaemonService *)selfCopy store];
     v22 = v27;
-    v13 = [(AKPrivateEmailStorage *)v14 emailForContext:location[0] error:&v22];
+    v13 = [(AKPrivateEmailStorage *)store emailForContext:location[0] error:&v22];
     objc_storeStrong(&v27, v22);
     v6 = v26;
     v26 = v13;
     _objc_release(v6);
-    _objc_release(v14);
+    _objc_release(store);
     if (v26)
     {
       v19 = _AKLogHme();
@@ -143,10 +143,10 @@
       {
         v9 = [location[0] key];
         v7 = v26;
-        v8 = [location[0] clientAppBundleId];
-        sub_10004DCC8(v31, v9, v7, v8);
+        clientAppBundleId = [location[0] clientAppBundleId];
+        sub_10004DCC8(v31, v9, v7, clientAppBundleId);
         _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "Email found for %@: %@ [bundle:%@]", v31, 0x20u);
-        _objc_release(v8);
+        _objc_release(clientAppBundleId);
         _objc_release(v9);
       }
 
@@ -159,14 +159,14 @@
       v20 = OS_LOG_TYPE_DEFAULT;
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
       {
-        v12 = [location[0] altDSID];
+        altDSID2 = [location[0] altDSID];
         v11 = [location[0] key];
-        v10 = [location[0] clientAppBundleId];
-        sub_10004DCC8(v32, v12, v11, v10);
+        clientAppBundleId2 = [location[0] clientAppBundleId];
+        sub_10004DCC8(v32, altDSID2, v11, clientAppBundleId2);
         _os_log_impl(&_mh_execute_header, v21, v20, "No match found with given altDSID: %@ for key %@ [bundle:%@]", v32, 0x20u);
-        _objc_release(v10);
+        _objc_release(clientAppBundleId2);
         _objc_release(v11);
-        _objc_release(v12);
+        _objc_release(altDSID2);
       }
 
       objc_storeStrong(&v21, 0);
@@ -179,10 +179,10 @@
     v23 = OS_LOG_TYPE_ERROR;
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
     {
-      v15 = [location[0] altDSID];
-      sub_1000194D4(v33, v15);
+      altDSID3 = [location[0] altDSID];
+      sub_1000194D4(v33, altDSID3);
       _os_log_error_impl(&_mh_execute_header, v24, v23, "No account found with given altDSID: %@, failing private email lookup", v33, 0xCu);
-      _objc_release(v15);
+      _objc_release(altDSID3);
     }
 
     objc_storeStrong(&v24, 0);
@@ -200,40 +200,40 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)fetchPrivateEmailForAltDSID:(id)a3 withKey:(id)a4 completion:(id)a5
+- (void)fetchPrivateEmailForAltDSID:(id)d withKey:(id)key completion:(id)completion
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v10 = 0;
-  objc_storeStrong(&v10, a4);
+  objc_storeStrong(&v10, key);
   v9 = 0;
-  objc_storeStrong(&v9, a5);
+  objc_storeStrong(&v9, completion);
   v5 = [AKPrivateEmailContext alloc];
   v8 = [v5 initWithKey:v10 altDSID:location[0]];
-  [(AKPrivateEmailDaemonService *)v12 fetchPrivateEmailWithContext:v8 completion:v9];
+  [(AKPrivateEmailDaemonService *)selfCopy fetchPrivateEmailWithContext:v8 completion:v9];
   objc_storeStrong(&v8, 0);
   objc_storeStrong(&v9, 0);
   objc_storeStrong(&v10, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)fetchPrivateEmailWithContext:(id)a3 completion:(id)a4
+- (void)fetchPrivateEmailWithContext:(id)context completion:(id)completion
 {
-  v48 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v46 = 0;
-  objc_storeStrong(&v46, a4);
-  v45 = [(AKPrivateEmailDaemonService *)v48 _verifyEntitlements];
-  if ((v45 & 1) == 1)
+  objc_storeStrong(&v46, completion);
+  _verifyEntitlements = [(AKPrivateEmailDaemonService *)selfCopy _verifyEntitlements];
+  if ((_verifyEntitlements & 1) == 1)
   {
     v22 = +[AKAccountManager sharedInstance];
-    v21 = [location[0] altDSID];
+    altDSID = [location[0] altDSID];
     v41 = [AKAccountManager authKitAccountWithAltDSID:v22 error:"authKitAccountWithAltDSID:error:"];
-    _objc_release(v21);
+    _objc_release(altDSID);
     _objc_release(v22);
     if (v41)
     {
@@ -252,7 +252,7 @@
         }
 
         objc_storeStrong(&oslog, 0);
-        [(AKPrivateEmailDaemonService *)v48 _performRequestForContext:location[0] completion:v46];
+        [(AKPrivateEmailDaemonService *)selfCopy _performRequestForContext:location[0] completion:v46];
       }
 
       else
@@ -284,10 +284,10 @@
         _objc_release(v11);
         _objc_release(v12);
         _objc_release(v13);
-        v14 = [v38 domain];
-        v4 = [v38 code];
-        v35 = [NSError errorWithDomain:v14 code:v4 userInfo:v36];
-        _objc_release(v14);
+        domain = [v38 domain];
+        code = [v38 code];
+        v35 = [NSError errorWithDomain:domain code:code userInfo:v36];
+        _objc_release(domain);
         v16 = +[AKAlertHandler sharedInstance];
         v15 = v35;
         v28 = _NSConcreteStackBlock;
@@ -315,10 +315,10 @@
       v39 = OS_LOG_TYPE_ERROR;
       if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
       {
-        v20 = [location[0] altDSID];
-        sub_1000194D4(v53, v20);
+        altDSID2 = [location[0] altDSID];
+        sub_1000194D4(v53, altDSID2);
         _os_log_error_impl(&_mh_execute_header, v40, v39, "No valid account fount for altDSID: %@, failing hme fetch", v53, 0xCu);
-        _objc_release(v20);
+        _objc_release(altDSID2);
       }
 
       objc_storeStrong(&v40, 0);
@@ -338,10 +338,10 @@
     v43 = OS_LOG_TYPE_ERROR;
     if (os_log_type_enabled(v44, OS_LOG_TYPE_ERROR))
     {
-      v25 = [location[0] altDSID];
-      sub_1000194D4(v54, v25);
+      altDSID3 = [location[0] altDSID];
+      sub_1000194D4(v54, altDSID3);
       _os_log_error_impl(&_mh_execute_header, v44, v43, "Insufficient entitlement for altDSID: %@, failing hme context fetch", v54, 0xCu);
-      _objc_release(v25);
+      _objc_release(altDSID3);
     }
 
     objc_storeStrong(&v44, 0);
@@ -356,39 +356,39 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)registerPrivateEmailForAltDSID:(id)a3 withKey:(id)a4 completion:(id)a5
+- (void)registerPrivateEmailForAltDSID:(id)d withKey:(id)key completion:(id)completion
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v10 = 0;
-  objc_storeStrong(&v10, a4);
+  objc_storeStrong(&v10, key);
   v9 = 0;
-  objc_storeStrong(&v9, a5);
+  objc_storeStrong(&v9, completion);
   v5 = [AKPrivateEmailContext alloc];
   v8 = [v5 initWithKey:v10 altDSID:location[0] originType:AKPrivateEmailOriginTypeMailApp originIdentifier:0];
-  [(AKPrivateEmailDaemonService *)v12 registerPrivateEmailWithContext:v8 completion:v9];
+  [(AKPrivateEmailDaemonService *)selfCopy registerPrivateEmailWithContext:v8 completion:v9];
   objc_storeStrong(&v8, 0);
   objc_storeStrong(&v9, 0);
   objc_storeStrong(&v10, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)registerPrivateEmailWithContext:(id)a3 completion:(id)a4
+- (void)registerPrivateEmailWithContext:(id)context completion:(id)completion
 {
-  v26 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v24 = 0;
-  objc_storeStrong(&v24, a4);
-  if ([(AKPrivateEmailDaemonService *)v26 _verifyEntitlements])
+  objc_storeStrong(&v24, completion);
+  if ([(AKPrivateEmailDaemonService *)selfCopy _verifyEntitlements])
   {
     v10 = +[AKAccountManager sharedInstance];
-    v9 = [location[0] altDSID];
+    altDSID = [location[0] altDSID];
     v20 = [AKAccountManager authKitAccountWithAltDSID:v10 error:"authKitAccountWithAltDSID:error:"];
-    _objc_release(v9);
+    _objc_release(altDSID);
     _objc_release(v10);
     if (v20)
     {
@@ -398,7 +398,7 @@
       objc_storeStrong(&v17, v16);
       if (v5 == 1)
       {
-        [(AKPrivateEmailDaemonService *)v26 _performRegisterRequestWithContext:location[0] completion:v24];
+        [(AKPrivateEmailDaemonService *)selfCopy _performRegisterRequestWithContext:location[0] completion:v24];
       }
 
       else
@@ -406,10 +406,10 @@
         v15 = _AKLogHme();
         if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
         {
-          v4 = [location[0] altDSID];
-          sub_1000194D4(v27, v4);
+          altDSID2 = [location[0] altDSID];
+          sub_1000194D4(v27, altDSID2);
           _os_log_error_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "Account not eligible to perform register Private Email - altDSID: %@", v27, 0xCu);
-          _objc_release(v4);
+          _objc_release(altDSID2);
         }
 
         objc_storeStrong(&v15, 0);
@@ -426,10 +426,10 @@
       v18 = OS_LOG_TYPE_ERROR;
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
       {
-        v8 = [location[0] altDSID];
-        sub_1000194D4(v28, v8);
+        altDSID3 = [location[0] altDSID];
+        sub_1000194D4(v28, altDSID3);
         _os_log_error_impl(&_mh_execute_header, v19, v18, "No valid account found for altDSID: %@, aborting register private email", v28, 0xCu);
-        _objc_release(v8);
+        _objc_release(altDSID3);
       }
 
       objc_storeStrong(&v19, 0);
@@ -449,10 +449,10 @@
     v22 = OS_LOG_TYPE_ERROR;
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
-      v13 = [location[0] altDSID];
-      sub_1000194D4(v29, v13);
+      altDSID4 = [location[0] altDSID];
+      sub_1000194D4(v29, altDSID4);
       _os_log_error_impl(&_mh_execute_header, v23, v22, "Insufficient entitlement for altDSID: %@, aborting register private email", v29, 0xCu);
-      _objc_release(v13);
+      _objc_release(altDSID4);
     }
 
     objc_storeStrong(&v23, 0);
@@ -467,25 +467,25 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)getContextForRequestContext:(id)a3 completion:(id)a4
+- (void)getContextForRequestContext:(id)context completion:(id)completion
 {
-  v31 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v29 = 0;
-  objc_storeStrong(&v29, a4);
-  v28 = [(AKPrivateEmailDaemonService *)v31 _verifyEntitlements];
-  if ((v28 & 1) == 1)
+  objc_storeStrong(&v29, completion);
+  _verifyEntitlements = [(AKPrivateEmailDaemonService *)selfCopy _verifyEntitlements];
+  if ((_verifyEntitlements & 1) == 1)
   {
-    v14 = [location[0] altDSID];
-    _objc_release(v14);
-    if (v14)
+    altDSID = [location[0] altDSID];
+    _objc_release(altDSID);
+    if (altDSID)
     {
       v13 = +[AKAccountManager sharedInstance];
-      v12 = [location[0] altDSID];
+      altDSID2 = [location[0] altDSID];
       v24 = [AKAccountManager authKitAccountWithAltDSID:v13 error:"authKitAccountWithAltDSID:error:"];
-      _objc_release(v12);
+      _objc_release(altDSID2);
       _objc_release(v13);
       if (v24)
       {
@@ -515,7 +515,7 @@
       {
         [location[0] sanitiseInternalState];
         v4 = [AKPrivateEmailContext alloc];
-        v5 = [v4 initWithContext:location[0] client:v31->_client];
+        v5 = [v4 initWithContext:location[0] client:selfCopy->_client];
         v19 = v5;
         if (v5)
         {
@@ -584,15 +584,15 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)listAllPrivateEmailsForAltDSID:(id)a3 completion:(id)a4
+- (void)listAllPrivateEmailsForAltDSID:(id)d completion:(id)completion
 {
-  v27 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v25 = 0;
-  objc_storeStrong(&v25, a4);
-  if ([(AKPrivateEmailDaemonService *)v27 _verifyEntitlements])
+  objc_storeStrong(&v25, completion);
+  if ([(AKPrivateEmailDaemonService *)selfCopy _verifyEntitlements])
   {
     v21 = 0;
     v20 = 0;
@@ -601,14 +601,14 @@
     _objc_release(v9);
     if (v19)
     {
-      v8 = [(AKPrivateEmailDaemonService *)v27 store];
+      store = [(AKPrivateEmailDaemonService *)selfCopy store];
       v16 = v21;
-      v7 = [(AKPrivateEmailStorage *)v8 fetchAllPrivateEmailsWithError:&v16];
+      v7 = [(AKPrivateEmailStorage *)store fetchAllPrivateEmailsWithError:&v16];
       objc_storeStrong(&v21, v16);
       v6 = v20;
       v20 = v7;
       _objc_release(v6);
-      _objc_release(v8);
+      _objc_release(store);
       if (v21)
       {
         v15 = _AKLogHme();
@@ -681,14 +681,14 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)presentPrivateEmailUIForContext:(id)a3 completion:(id)a4
+- (void)presentPrivateEmailUIForContext:(id)context completion:(id)completion
 {
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v15 = 0;
-  objc_storeStrong(&v15, a4);
+  objc_storeStrong(&v15, completion);
   v14 = _AKLogSystem();
   v13 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
@@ -698,7 +698,7 @@
   }
 
   objc_storeStrong(&v14, 0);
-  client = v17->_client;
+  client = selfCopy->_client;
   v6 = _NSConcreteStackBlock;
   v7 = -1073741824;
   v8 = 0;
@@ -713,20 +713,20 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)deletePrivateEmailDatabaseWithCompletion:(id)a3
+- (void)deletePrivateEmailDatabaseWithCompletion:(id)completion
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if ([(AKClient *)v15->_client hasInternalAccess]|| [(AKClient *)v15->_client hasOwnerAccess])
+  objc_storeStrong(location, completion);
+  if ([(AKClient *)selfCopy->_client hasInternalAccess]|| [(AKClient *)selfCopy->_client hasOwnerAccess])
   {
     v9 = 0;
-    v3 = [(AKPrivateEmailDaemonService *)v15 store];
+    store = [(AKPrivateEmailDaemonService *)selfCopy store];
     v8 = v9;
-    [(AKPrivateEmailStorage *)v3 clearDatabase:&v8];
+    [(AKPrivateEmailStorage *)store clearDatabase:&v8];
     objc_storeStrong(&v9, v8);
-    _objc_release(v3);
+    _objc_release(store);
     if (v9)
     {
       (*(location[0] + 2))(location[0], 0, v9);
@@ -764,19 +764,19 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)privateEmailListVersionWithCompletion:(id)a3
+- (void)privateEmailListVersionWithCompletion:(id)completion
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if ([(AKClient *)v14->_client hasInternalAccess]|| [(AKClient *)v14->_client hasOwnerAccess])
+  objc_storeStrong(location, completion);
+  if ([(AKClient *)selfCopy->_client hasInternalAccess]|| [(AKClient *)selfCopy->_client hasOwnerAccess])
   {
-    v3 = [(AKPrivateEmailDaemonService *)v14 store];
-    v8 = [(AKPrivateEmailStorage *)v3 currentEmailListVersion];
-    _objc_release(v3);
-    (*(location[0] + 2))(location[0], v8);
-    objc_storeStrong(&v8, 0);
+    store = [(AKPrivateEmailDaemonService *)selfCopy store];
+    currentEmailListVersion = [(AKPrivateEmailStorage *)store currentEmailListVersion];
+    _objc_release(store);
+    (*(location[0] + 2))(location[0], currentEmailListVersion);
+    objc_storeStrong(&currentEmailListVersion, 0);
     v9 = 0;
   }
 
@@ -803,31 +803,31 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)removePrivateEmailKey:(id)a3 completion:(id)a4
+- (void)removePrivateEmailKey:(id)key completion:(id)completion
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, key);
   v7 = 0;
-  objc_storeStrong(&v7, a4);
+  objc_storeStrong(&v7, completion);
   v4 = [AKPrivateEmailContext alloc];
   v6 = [v4 initWithKey:location[0]];
-  [(AKPrivateEmailDaemonService *)v9 removePrivateEmailWithContext:v6 completion:v7];
+  [(AKPrivateEmailDaemonService *)selfCopy removePrivateEmailWithContext:v6 completion:v7];
   objc_storeStrong(&v6, 0);
   objc_storeStrong(&v7, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)removePrivateEmailWithContext:(id)a3 completion:(id)a4
+- (void)removePrivateEmailWithContext:(id)context completion:(id)completion
 {
-  v31 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v29 = 0;
-  objc_storeStrong(&v29, a4);
-  if ([(AKClient *)v31->_client hasPrivateAccess]|| [(AKClient *)v31->_client hasOwnerAccess])
+  objc_storeStrong(&v29, completion);
+  if ([(AKClient *)selfCopy->_client hasPrivateAccess]|| [(AKClient *)selfCopy->_client hasOwnerAccess])
   {
     v24 = _AKLogHme();
     v23 = 16;
@@ -841,11 +841,11 @@
 
     objc_storeStrong(&v24, 0);
     v21 = 0;
-    v7 = [(AKPrivateEmailDaemonService *)v31 store];
+    store = [(AKPrivateEmailDaemonService *)selfCopy store];
     v20 = v21;
-    [(AKPrivateEmailStorage *)v7 removePrivateEmailForContext:location[0] error:&v20];
+    [(AKPrivateEmailStorage *)store removePrivateEmailForContext:location[0] error:&v20];
     objc_storeStrong(&v21, v20);
-    _objc_release(v7);
+    _objc_release(store);
     if (v21)
     {
       v19 = _AKLogHme();
@@ -907,20 +907,20 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)fetchSignInWithApplePrivateEmailWithContext:(id)a3 completion:(id)a4
+- (void)fetchSignInWithApplePrivateEmailWithContext:(id)context completion:(id)completion
 {
-  v37 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v35 = 0;
-  objc_storeStrong(&v35, a4);
-  if ([(AKPrivateEmailDaemonService *)v37 _verifyEntitlements])
+  objc_storeStrong(&v35, completion);
+  if ([(AKPrivateEmailDaemonService *)selfCopy _verifyEntitlements])
   {
     v14 = +[AKAccountManager sharedInstance];
-    v13 = [location[0] altDSID];
+    altDSID = [location[0] altDSID];
     v31 = [AKAccountManager authKitAccountWithAltDSID:v14 error:"authKitAccountWithAltDSID:error:"];
-    _objc_release(v13);
+    _objc_release(altDSID);
     _objc_release(v14);
     if (v31)
     {
@@ -937,19 +937,19 @@
         v8 = 0;
         if (v26)
         {
-          v25 = [v26 absoluteString];
+          absoluteString = [v26 absoluteString];
           v24 = 1;
-          v8 = [v25 length] != 0;
+          v8 = [absoluteString length] != 0;
         }
 
         if (v24)
         {
-          _objc_release(v25);
+          _objc_release(absoluteString);
         }
 
         if (v8)
         {
-          [(AKPrivateEmailDaemonService *)v37 _performFetchSiwAHmeRequestWithContext:location[0] completion:v35];
+          [(AKPrivateEmailDaemonService *)selfCopy _performFetchSiwAHmeRequestWithContext:location[0] completion:v35];
         }
 
         else
@@ -978,10 +978,10 @@
         v19 = _AKLogHme();
         if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
         {
-          v4 = [location[0] altDSID];
-          sub_1000194D4(v38, v4);
+          altDSID2 = [location[0] altDSID];
+          sub_1000194D4(v38, altDSID2);
           _os_log_error_impl(&_mh_execute_header, v19, OS_LOG_TYPE_ERROR, "Account not eligible to perform fetchSiwAHme - altDSID: %@", v38, 0xCu);
-          _objc_release(v4);
+          _objc_release(altDSID2);
         }
 
         objc_storeStrong(&v19, 0);
@@ -998,10 +998,10 @@
       v29 = OS_LOG_TYPE_ERROR;
       if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
       {
-        v12 = [location[0] altDSID];
-        sub_1000194D4(v39, v12);
+        altDSID3 = [location[0] altDSID];
+        sub_1000194D4(v39, altDSID3);
         _os_log_error_impl(&_mh_execute_header, v30, v29, "No valid account found for altDSID: %@, aborting fetchSiwAHme", v39, 0xCu);
-        _objc_release(v12);
+        _objc_release(altDSID3);
       }
 
       objc_storeStrong(&v30, 0);
@@ -1021,10 +1021,10 @@
     v33 = OS_LOG_TYPE_ERROR;
     if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
     {
-      v17 = [location[0] altDSID];
-      sub_1000194D4(v40, v17);
+      altDSID4 = [location[0] altDSID];
+      sub_1000194D4(v40, altDSID4);
       _os_log_error_impl(&_mh_execute_header, v34, v33, "Insufficient entitlement for altDSID: %@, aborting fetchSiwAHme", v40, 0xCu);
-      _objc_release(v17);
+      _objc_release(altDSID4);
     }
 
     objc_storeStrong(&v34, 0);
@@ -1039,14 +1039,14 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_performRequestForContext:(id)a3 completion:(id)a4
+- (void)_performRequestForContext:(id)context completion:(id)completion
 {
-  v22 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v20 = 0;
-  objc_storeStrong(&v20, a4);
+  objc_storeStrong(&v20, completion);
   v19 = _AKLogHme();
   v18 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
@@ -1061,13 +1061,13 @@
   v17 = objc_alloc_init(AKPrivateEmailPresenter);
   v6 = v17;
   v4 = location[0];
-  client = v22->_client;
+  client = selfCopy->_client;
   v9 = _NSConcreteStackBlock;
   v10 = -1073741824;
   v11 = 0;
   v12 = sub_1000F82BC;
   v13 = &unk_100323398;
-  v14 = _objc_retain(v22);
+  v14 = _objc_retain(selfCopy);
   v16 = _objc_retain(v20);
   v15 = _objc_retain(v17);
   [(AKPrivateEmailPresenter *)v6 presentPrivateEmailWithContext:v4 client:client completion:&v9];
@@ -1079,21 +1079,21 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_performRegisterRequestWithContext:(id)a3 completion:(id)a4
+- (void)_performRegisterRequestWithContext:(id)context completion:(id)completion
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v13 = 0;
-  objc_storeStrong(&v13, a4);
+  objc_storeStrong(&v13, completion);
   v12 = objc_alloc_init(AKAppleIDAuthenticationContext);
-  v8 = [location[0] altDSID];
+  altDSID = [location[0] altDSID];
   [v12 setAltDSID:?];
-  _objc_release(v8);
+  _objc_release(altDSID);
   v4 = [AKPrivateEmailRegistrationRequestProvider alloc];
   v11 = [(AKPrivateEmailRegistrationRequestProvider *)v4 initWithContext:v12 urlBagKey:AKURLBagKeyPrivateEmailRegister];
-  [(AKURLRequestProviderImpl *)v11 setClient:v15->_client];
+  [(AKURLRequestProviderImpl *)v11 setClient:selfCopy->_client];
   [(AKGrandSlamRequestProvider *)v11 setAuthenticatedRequest:1];
   v5 = [AKServiceControllerImpl alloc];
   v10 = [(AKServiceControllerImpl *)v5 initWithRequestProvider:v11];
@@ -1108,14 +1108,14 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_performFetchSiwAHmeRequestWithContext:(id)a3 completion:(id)a4
+- (void)_performFetchSiwAHmeRequestWithContext:(id)context completion:(id)completion
 {
-  v20 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v18 = 0;
-  objc_storeStrong(&v18, a4);
+  objc_storeStrong(&v18, completion);
   v17 = _AKLogHme();
   v16 = 2;
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
@@ -1128,12 +1128,12 @@
 
   objc_storeStrong(&v17, 0);
   v14 = objc_alloc_init(AKAppleIDAuthenticationContext);
-  v7 = [location[0] altDSID];
+  altDSID = [location[0] altDSID];
   [v14 setAltDSID:?];
-  _objc_release(v7);
+  _objc_release(altDSID);
   v4 = [AKPrivateEmailRegistrationRequestProvider alloc];
   v13 = [(AKPrivateEmailRegistrationRequestProvider *)v4 initWithContext:v14 urlBagKey:AKURLBagKeyPrivateEmailFetchSIWAHme];
-  [(AKURLRequestProviderImpl *)v13 setClient:v20->_client];
+  [(AKURLRequestProviderImpl *)v13 setClient:selfCopy->_client];
   [(AKGrandSlamRequestProvider *)v13 setAuthenticatedRequest:1];
   v5 = [AKServiceControllerImpl alloc];
   v12 = [(AKServiceControllerImpl *)v5 initWithRequestProvider:v13];
@@ -1148,25 +1148,25 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_cacheFetchedPrivateEmail:(id)a3 keyAlreadyHashed:(BOOL)a4 error:(id)a5 completion:(id)a6
+- (void)_cacheFetchedPrivateEmail:(id)email keyAlreadyHashed:(BOOL)hashed error:(id)error completion:(id)completion
 {
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v15 = a4;
+  objc_storeStrong(location, email);
+  hashedCopy = hashed;
   v14 = 0;
-  objc_storeStrong(&v14, a5);
+  objc_storeStrong(&v14, error);
   v13 = 0;
-  objc_storeStrong(&v13, a6);
+  objc_storeStrong(&v13, completion);
   if (location[0])
   {
     v12 = 0;
-    v6 = [(AKPrivateEmailDaemonService *)v17 store];
+    store = [(AKPrivateEmailDaemonService *)selfCopy store];
     v11 = v12;
-    [(AKPrivateEmailStorage *)v6 setPrivateEmail:location[0] keyAlreadyHashed:v15 error:&v11];
+    [(AKPrivateEmailStorage *)store setPrivateEmail:location[0] keyAlreadyHashed:hashedCopy error:&v11];
     objc_storeStrong(&v12, v11);
-    _objc_release(v6);
+    _objc_release(store);
     if (v12)
     {
       v10 = _AKLogHme();
@@ -1190,12 +1190,12 @@
 
 - (BOOL)_verifyEntitlements
 {
-  v14 = self;
+  selfCopy = self;
   v13 = a2;
-  v12 = [(AKClient *)self->_client hasOwnerAccess];
-  v11 = [(AKClient *)v14->_client hasInternalAccess];
-  v10 = [(AKClient *)v14->_client hasPrivateAccess];
-  if (v12)
+  hasOwnerAccess = [(AKClient *)self->_client hasOwnerAccess];
+  hasInternalAccess = [(AKClient *)selfCopy->_client hasInternalAccess];
+  hasPrivateAccess = [(AKClient *)selfCopy->_client hasPrivateAccess];
+  if (hasOwnerAccess)
   {
     location = _AKLogHme();
     v8 = OS_LOG_TYPE_DEFAULT;
@@ -1211,24 +1211,24 @@
     return 1;
   }
 
-  else if (v11)
+  else if (hasInternalAccess)
   {
     oslog = _AKLogHme();
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
-      v3 = [NSNumber numberWithBool:v11 & 1];
+      v3 = [NSNumber numberWithBool:hasInternalAccess & 1];
       sub_1000194D4(v16, v3);
       _os_log_impl(&_mh_execute_header, oslog, OS_LOG_TYPE_DEFAULT, "Internal request made by internal client? %@", v16, 0xCu);
       _objc_release(v3);
     }
 
     objc_storeStrong(&oslog, 0);
-    return v11 & 1;
+    return hasInternalAccess & 1;
   }
 
-  else if (v10)
+  else if (hasPrivateAccess)
   {
-    return v10 & 1;
+    return hasPrivateAccess & 1;
   }
 
   else

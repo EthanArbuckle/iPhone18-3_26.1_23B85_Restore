@@ -1,12 +1,12 @@
 @interface WebGeolocationPolicyListener
 - (BOOL)shouldClearCache;
-- (WebGeolocationPolicyListener)initWithGeolocation:(NakedPtr<WebCore:(id)a4 :Geolocation>)a3 forWebView:;
+- (WebGeolocationPolicyListener)initWithGeolocation:(NakedPtr<WebCore:(id)geolocation :Geolocation>)a3 forWebView:;
 - (id).cxx_construct;
 @end
 
 @implementation WebGeolocationPolicyListener
 
-- (WebGeolocationPolicyListener)initWithGeolocation:(NakedPtr<WebCore:(id)a4 :Geolocation>)a3 forWebView:
+- (WebGeolocationPolicyListener)initWithGeolocation:(NakedPtr<WebCore:(id)geolocation :Geolocation>)a3 forWebView:
 {
   v15.receiver = self;
   v15.super_class = WebGeolocationPolicyListener;
@@ -28,7 +28,7 @@
   if (!m_ptr)
   {
 LABEL_7:
-    if (!a4)
+    if (!geolocation)
     {
       goto LABEL_9;
     }
@@ -44,15 +44,15 @@ LABEL_7:
 
   v13 = MEMORY[0x1CCA64030]();
   bmalloc::api::tzoneFree(v13, v14);
-  if (a4)
+  if (geolocation)
   {
 LABEL_8:
-    v10 = a4;
+    geolocationCopy = geolocation;
   }
 
 LABEL_9:
   v11 = v7->_webView.m_ptr;
-  v7->_webView.m_ptr = a4;
+  v7->_webView.m_ptr = geolocation;
   if (v11)
   {
   }
@@ -107,9 +107,9 @@ uint64_t __51__WebGeolocationPolicyListener_denyOnlyThisRequest__block_invoke(ui
 - (BOOL)shouldClearCache
 {
   WebThreadLock();
-  v3 = [(WebView *)self->_webView.m_ptr preferences];
+  preferences = [(WebView *)self->_webView.m_ptr preferences];
 
-  return [(WebPreferences *)v3 _alwaysRequestGeolocationPermission];
+  return [(WebPreferences *)preferences _alwaysRequestGeolocationPermission];
 }
 
 - (id).cxx_construct

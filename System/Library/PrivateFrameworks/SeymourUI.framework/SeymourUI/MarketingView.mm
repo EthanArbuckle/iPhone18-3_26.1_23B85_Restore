@@ -1,6 +1,6 @@
 @interface MarketingView
-- (void)actionItemButtonTapped:(id)a3;
-- (void)dismissButtonTapped:(id)a3;
+- (void)actionItemButtonTapped:(id)tapped;
+- (void)dismissButtonTapped:(id)tapped;
 - (void)layoutSubviews;
 @end
 
@@ -8,21 +8,21 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_20BDEA930();
 }
 
-- (void)actionItemButtonTapped:(id)a3
+- (void)actionItemButtonTapped:(id)tapped
 {
-  v4 = a3;
-  v5 = self;
-  sub_20BDECA9C(v4);
+  tappedCopy = tapped;
+  selfCopy = self;
+  sub_20BDECA9C(tappedCopy);
 }
 
-- (void)dismissButtonTapped:(id)a3
+- (void)dismissButtonTapped:(id)tapped
 {
-  v4 = a3;
-  v5 = self;
+  tappedCopy = tapped;
+  selfCopy = self;
   sub_20BDEF89C();
 }
 

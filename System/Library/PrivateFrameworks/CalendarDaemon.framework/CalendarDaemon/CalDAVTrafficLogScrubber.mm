@@ -1,12 +1,12 @@
 @interface CalDAVTrafficLogScrubber
-+ (BOOL)redactLog:(id)a3 toOutputFile:(id)a4 context:(id)a5;
++ (BOOL)redactLog:(id)log toOutputFile:(id)file context:(id)context;
 + (id)log;
 - (BOOL)scrub;
 - (CalDAVTrafficLogScrubber)init;
 - (id)decompressedInputFile;
 - (id)temporaryUncompressedFile;
 - (void)cleanUp;
-- (void)compressFileAt:(id)a3 to:(id)a4;
+- (void)compressFileAt:(id)at to:(id)to;
 - (void)decompressedInputFile;
 - (void)scrub;
 @end
@@ -32,20 +32,20 @@ uint64_t __31__CalDAVTrafficLogScrubber_log__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-+ (BOOL)redactLog:(id)a3 toOutputFile:(id)a4 context:(id)a5
++ (BOOL)redactLog:(id)log toOutputFile:(id)file context:(id)context
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  contextCopy = context;
+  fileCopy = file;
+  logCopy = log;
   v10 = objc_alloc_init(CalDAVTrafficLogScrubber);
-  [(CalDAVTrafficLogScrubber *)v10 setContext:v7];
-  [(CalDAVTrafficLogScrubber *)v10 setInputURL:v9];
+  [(CalDAVTrafficLogScrubber *)v10 setContext:contextCopy];
+  [(CalDAVTrafficLogScrubber *)v10 setInputURL:logCopy];
 
-  [(CalDAVTrafficLogScrubber *)v10 setOutputURL:v8];
+  [(CalDAVTrafficLogScrubber *)v10 setOutputURL:fileCopy];
   if ([(CalDAVTrafficLogScrubber *)v10 scrub])
   {
     [(CalDAVTrafficLogScrubber *)v10 cleanUp];
-    v11 = [v7 canceled] ^ 1;
+    v11 = [contextCopy canceled] ^ 1;
   }
 
   else
@@ -110,21 +110,21 @@ uint64_t __31__CalDAVTrafficLogScrubber_log__block_invoke()
 
 - (BOOL)scrub
 {
-  v2 = self;
+  selfCopy = self;
   v85 = *MEMORY[0x277D85DE8];
-  v3 = [(CalDAVTrafficLogScrubber *)self decompressedInputFile];
-  v4 = [(CalDAVTrafficLogScrubber *)v2 temporaryUncompressedFile];
-  [(NSMutableArray *)v2->_urlsToCleanUp addObject:v4];
-  v5 = [(CalDAVTrafficLogScrubber *)v2 context];
-  [v5 log:{@"Redacting log at %@...", v3}];
+  decompressedInputFile = [(CalDAVTrafficLogScrubber *)self decompressedInputFile];
+  temporaryUncompressedFile = [(CalDAVTrafficLogScrubber *)selfCopy temporaryUncompressedFile];
+  [(NSMutableArray *)selfCopy->_urlsToCleanUp addObject:temporaryUncompressedFile];
+  context = [(CalDAVTrafficLogScrubber *)selfCopy context];
+  [context log:{@"Redacting log at %@...", decompressedInputFile}];
 
-  if (!v3)
+  if (!decompressedInputFile)
   {
     goto LABEL_89;
   }
 
-  v6 = [v3 path];
-  v7 = fopen([v6 fileSystemRepresentation], "r");
+  path = [decompressedInputFile path];
+  v7 = fopen([path fileSystemRepresentation], "r");
 
   if (!v7)
   {
@@ -135,17 +135,17 @@ uint64_t __31__CalDAVTrafficLogScrubber_log__block_invoke()
     }
   }
 
-  v72 = v4;
-  v73 = v2;
-  v71 = v3;
-  v9 = [v4 path];
-  v10 = fopen([v9 fileSystemRepresentation], "w");
+  v72 = temporaryUncompressedFile;
+  v73 = selfCopy;
+  v71 = decompressedInputFile;
+  path2 = [temporaryUncompressedFile path];
+  v10 = fopen([path2 fileSystemRepresentation], "w");
 
   if (v10)
   {
     if (v7)
     {
-      if (([(CADDiagnosticLogContext *)v2->_context canceled]& 1) != 0)
+      if (([(CADDiagnosticLogContext *)selfCopy->_context canceled]& 1) != 0)
       {
         goto LABEL_84;
       }
@@ -345,11 +345,11 @@ LABEL_14:
                 fputNSString(v10, v27);
                 fputs(": ", v10);
                 v28 = [v22 substringFromIndex:v25 + v26];
-                v29 = [v27 lowercaseString];
-                v30 = [v79 objectForKeyedSubscript:v29];
-                v31 = [v30 integerValue];
+                lowercaseString = [v27 lowercaseString];
+                v30 = [v79 objectForKeyedSubscript:lowercaseString];
+                integerValue = [v30 integerValue];
 
-                v32 = CalRedactString(v31, v28);
+                v32 = CalRedactString(integerValue, v28);
                 fputNSString(v10, v32);
                 fputc(10, v10);
               }
@@ -421,11 +421,11 @@ LABEL_60:
         v57 = objc_alloc_init(CalXMLSanitizer);
         [(CalXMLSanitizer *)v57 setOutput:v10];
         [v37 setDelegate:v57];
-        v58 = [v37 parse];
-        v59 = [(CalXMLSanitizer *)v57 scrubbedXML];
-        fputNSString(v10, v59);
+        parse = [v37 parse];
+        scrubbedXML = [(CalXMLSanitizer *)v57 scrubbedXML];
+        fputNSString(v10, scrubbedXML);
 
-        if ((v58 & 1) == 0)
+        if ((parse & 1) == 0)
         {
           fputNSString(v10, @"[Parse failure: [NSXMLParser parse] returned NO]\n");
         }
@@ -459,17 +459,17 @@ LABEL_84:
 
   fclose(v10);
 LABEL_87:
-  v2 = v73;
-  v3 = v71;
-  v4 = v72;
+  selfCopy = v73;
+  decompressedInputFile = v71;
+  temporaryUncompressedFile = v72;
   if (([(CADDiagnosticLogContext *)v73->_context canceled]& 1) == 0)
   {
     [CADDiagnosticsUtils compressFileAt:v72 to:v73->_outputURL context:v73->_context];
   }
 
 LABEL_89:
-  v68 = [(CalDAVTrafficLogScrubber *)v2 context];
-  [v68 log:{@"...finished redacting log from %@", v3}];
+  context2 = [(CalDAVTrafficLogScrubber *)selfCopy context];
+  [context2 log:{@"...finished redacting log from %@", decompressedInputFile}];
 
   v69 = *MEMORY[0x277D85DE8];
   return 1;
@@ -477,10 +477,10 @@ LABEL_89:
 
 - (id)temporaryUncompressedFile
 {
-  v3 = [(NSURL *)self->_outputURL URLByDeletingPathExtension];
-  v4 = [v3 lastPathComponent];
+  uRLByDeletingPathExtension = [(NSURL *)self->_outputURL URLByDeletingPathExtension];
+  lastPathComponent = [uRLByDeletingPathExtension lastPathComponent];
 
-  v5 = [v4 stringByAppendingString:@"~temp"];
+  v5 = [lastPathComponent stringByAppendingString:@"~temp"];
 
   v6 = [(CADDiagnosticLogContext *)self->_context temporaryFileForName:v5];
 
@@ -492,8 +492,8 @@ LABEL_89:
   v2 = MEMORY[0x28223BE20](self);
   v43[4096] = *MEMORY[0x277D85DE8];
   v3 = v2 + 2;
-  v4 = [v2[2] pathExtension];
-  v5 = [v4 isEqualToString:@"gz"];
+  pathExtension = [v2[2] pathExtension];
+  v5 = [pathExtension isEqualToString:@"gz"];
 
   if ((v5 & 1) == 0)
   {
@@ -501,16 +501,16 @@ LABEL_89:
     goto LABEL_47;
   }
 
-  v6 = [v2[3] URLByDeletingPathExtension];
-  v7 = [v6 lastPathComponent];
+  uRLByDeletingPathExtension = [v2[3] URLByDeletingPathExtension];
+  lastPathComponent = [uRLByDeletingPathExtension lastPathComponent];
 
-  v36 = v7;
-  v8 = [v2[4] temporaryFileForName:v7];
-  v9 = [v2[2] path];
+  v36 = lastPathComponent;
+  v8 = [v2[4] temporaryFileForName:lastPathComponent];
+  path = [v2[2] path];
   v35 = v8;
-  v10 = [v8 path];
-  v11 = v9;
-  v12 = v10;
+  path2 = [v8 path];
+  v11 = path;
+  v12 = path2;
   memset(&strm.avail_out + 1, 0, 76);
   *&strm.avail_in = 0u;
   strm.next_in = v43;
@@ -704,12 +704,12 @@ LABEL_47:
   return v18;
 }
 
-- (void)compressFileAt:(id)a3 to:(id)a4
+- (void)compressFileAt:(id)at to:(id)to
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 path];
-  v8 = fopen([v7 fileSystemRepresentation], "r");
+  atCopy = at;
+  toCopy = to;
+  path = [atCopy path];
+  v8 = fopen([path fileSystemRepresentation], "r");
 
   if (!v8)
   {
@@ -720,8 +720,8 @@ LABEL_47:
     }
   }
 
-  v10 = [v6 path];
-  v11 = fopen([v10 fileSystemRepresentation], "w");
+  path2 = [toCopy path];
+  v11 = fopen([path2 fileSystemRepresentation], "w");
 
   if (!v11)
   {
@@ -766,7 +766,7 @@ LABEL_47:
 - (void)decompressedInputFile
 {
   v7 = *MEMORY[0x277D85DE8];
-  v1 = *a1;
+  v1 = *self;
   OUTLINED_FUNCTION_2_0();
   v6 = v2;
   _os_log_error_impl(&dword_22430B000, v3, OS_LOG_TYPE_ERROR, "Couldn't decompress input file (%@) to output file (%@).", v5, 0x16u);

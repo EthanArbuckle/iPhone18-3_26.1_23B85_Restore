@@ -1,18 +1,18 @@
 @interface SAStructuredDictationPlaceResult
-- (id)ad_transcriptionResultWithAddressBookManager:(id)a3;
+- (id)ad_transcriptionResultWithAddressBookManager:(id)manager;
 @end
 
 @implementation SAStructuredDictationPlaceResult
 
-- (id)ad_transcriptionResultWithAddressBookManager:(id)a3
+- (id)ad_transcriptionResultWithAddressBookManager:(id)manager
 {
-  v3 = self;
+  selfCopy = self;
   v4 = objc_alloc_init(STSiriLocation);
-  v5 = [(SAStructuredDictationPlaceResult *)v3 resultData];
-  [v4 setGeoResult:v5];
+  resultData = [(SAStructuredDictationPlaceResult *)selfCopy resultData];
+  [v4 setGeoResult:resultData];
 
-  v6 = [(SAStructuredDictationPlaceResult *)v3 placeResultType];
-  v7 = [v6 isEqualToString:SAStructuredDictationPlaceResultPlaceResultTypeFORWARD_GEOCODEValue];
+  placeResultType = [(SAStructuredDictationPlaceResult *)selfCopy placeResultType];
+  v7 = [placeResultType isEqualToString:SAStructuredDictationPlaceResultPlaceResultTypeFORWARD_GEOCODEValue];
 
   if (v7)
   {
@@ -21,8 +21,8 @@
 
   else
   {
-    v9 = [(SAStructuredDictationPlaceResult *)v3 placeResultType];
-    v10 = [v9 isEqualToString:SAStructuredDictationPlaceResultPlaceResultTypePLACE_SEARCHValue];
+    placeResultType2 = [(SAStructuredDictationPlaceResult *)selfCopy placeResultType];
+    v10 = [placeResultType2 isEqualToString:SAStructuredDictationPlaceResultPlaceResultTypePLACE_SEARCHValue];
 
     if (!v10)
     {

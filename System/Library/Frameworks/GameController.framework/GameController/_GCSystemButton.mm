@@ -1,7 +1,7 @@
 @interface _GCSystemButton
 - (NSString)description;
 - (_GCSystemButton)init;
-- (id)_initWithLocalizedName:(void *)a3 sfSymbolName:;
+- (id)_initWithLocalizedName:(void *)name sfSymbolName:;
 - (void)invalidate;
 @end
 
@@ -31,20 +31,20 @@
   return v5;
 }
 
-- (id)_initWithLocalizedName:(void *)a3 sfSymbolName:
+- (id)_initWithLocalizedName:(void *)name sfSymbolName:
 {
   v6 = a2;
-  v7 = a3;
-  if (a1)
+  nameCopy = name;
+  if (self)
   {
-    v9.receiver = a1;
+    v9.receiver = self;
     v9.super_class = _GCSystemButton;
-    a1 = objc_msgSendSuper2(&v9, sel_init);
-    objc_storeStrong(a1 + 2, a2);
-    objc_storeStrong(a1 + 3, a3);
+    self = objc_msgSendSuper2(&v9, sel_init);
+    objc_storeStrong(self + 2, a2);
+    objc_storeStrong(self + 3, name);
   }
 
-  return a1;
+  return self;
 }
 
 @end

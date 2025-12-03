@@ -1,10 +1,10 @@
 @interface MTSessionManager
 + (void)warmUp;
 - (MTSessionManager)init;
-- (MTSessionManager)initWithConnectionProvider:(id)a3 metrics:(id)a4;
-- (MTSessionManager)initWithConnectionProvider:(id)a3 metrics:(id)a4 notificationCenter:(id)a5;
-- (id)_initWithConnectionProvidingBlock:(id)a3 metrics:(id)a4;
-- (id)_initWithConnectionProvidingBlock:(id)a3 metrics:(id)a4 notificationCenter:(id)a5;
+- (MTSessionManager)initWithConnectionProvider:(id)provider metrics:(id)metrics;
+- (MTSessionManager)initWithConnectionProvider:(id)provider metrics:(id)metrics notificationCenter:(id)center;
+- (id)_initWithConnectionProvidingBlock:(id)block metrics:(id)metrics;
+- (id)_initWithConnectionProvidingBlock:(id)block metrics:(id)metrics notificationCenter:(id)center;
 - (void)dealloc;
 - (void)endAlertingSession;
 - (void)reconnect;
@@ -19,7 +19,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543362;
-    v8 = a1;
+    selfCopy = self;
     _os_log_impl(&dword_1B1F9F000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ warming...", &v7, 0xCu);
   }
 
@@ -43,17 +43,17 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B1F9F000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ ending alerting session", buf, 0xCu);
   }
 
-  v4 = [(MTSessionManager *)self connectionProvider];
+  connectionProvider = [(MTSessionManager *)self connectionProvider];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __38__MTSessionManager_endAlertingSession__block_invoke_2;
   v6[3] = &unk_1E7B0D658;
   v6[4] = self;
-  [v4 performRemoteBlock:&__block_literal_global_16_0 withErrorHandler:v6];
+  [connectionProvider performRemoteBlock:&__block_literal_global_16_0 withErrorHandler:v6];
 
   v5 = *MEMORY[0x1E69E9840];
 }
@@ -85,51 +85,51 @@ void __36__MTSessionManager_initWithMetrics___block_invoke_2(uint64_t a1)
   [WeakRetained reconnect];
 }
 
-- (MTSessionManager)initWithConnectionProvider:(id)a3 metrics:(id)a4
+- (MTSessionManager)initWithConnectionProvider:(id)provider metrics:(id)metrics
 {
-  v6 = a3;
+  providerCopy = provider;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __55__MTSessionManager_initWithConnectionProvider_metrics___block_invoke;
   v10[3] = &unk_1E7B0FA58;
-  v11 = v6;
-  v7 = v6;
-  v8 = [(MTSessionManager *)self _initWithConnectionProvidingBlock:v10 metrics:a4];
+  v11 = providerCopy;
+  v7 = providerCopy;
+  v8 = [(MTSessionManager *)self _initWithConnectionProvidingBlock:v10 metrics:metrics];
 
   return v8;
 }
 
-- (MTSessionManager)initWithConnectionProvider:(id)a3 metrics:(id)a4 notificationCenter:(id)a5
+- (MTSessionManager)initWithConnectionProvider:(id)provider metrics:(id)metrics notificationCenter:(id)center
 {
-  v8 = a3;
+  providerCopy = provider;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __74__MTSessionManager_initWithConnectionProvider_metrics_notificationCenter___block_invoke;
   v12[3] = &unk_1E7B0FA58;
-  v13 = v8;
-  v9 = v8;
-  v10 = [(MTSessionManager *)self _initWithConnectionProvidingBlock:v12 metrics:a4 notificationCenter:a5];
+  v13 = providerCopy;
+  v9 = providerCopy;
+  v10 = [(MTSessionManager *)self _initWithConnectionProvidingBlock:v12 metrics:metrics notificationCenter:center];
 
   return v10;
 }
 
-- (id)_initWithConnectionProvidingBlock:(id)a3 metrics:(id)a4
+- (id)_initWithConnectionProvidingBlock:(id)block metrics:(id)metrics
 {
   v6 = MEMORY[0x1E696AD88];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 defaultCenter];
-  v10 = [(MTSessionManager *)self _initWithConnectionProvidingBlock:v8 metrics:v7 notificationCenter:v9];
+  metricsCopy = metrics;
+  blockCopy = block;
+  defaultCenter = [v6 defaultCenter];
+  v10 = [(MTSessionManager *)self _initWithConnectionProvidingBlock:blockCopy metrics:metricsCopy notificationCenter:defaultCenter];
 
   return v10;
 }
 
-- (id)_initWithConnectionProvidingBlock:(id)a3 metrics:(id)a4 notificationCenter:(id)a5
+- (id)_initWithConnectionProvidingBlock:(id)block metrics:(id)metrics notificationCenter:(id)center
 {
   v22 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  blockCopy = block;
+  metricsCopy = metrics;
+  centerCopy = center;
   v19.receiver = self;
   v19.super_class = MTSessionManager;
   v11 = [(MTSessionManager *)&v19 init];
@@ -143,13 +143,13 @@ void __36__MTSessionManager_initWithMetrics___block_invoke_2(uint64_t a1)
       _os_log_impl(&dword_1B1F9F000, v12, OS_LOG_TYPE_DEFAULT, "%{public}@ initializing...", buf, 0xCu);
     }
 
-    objc_storeStrong(&v11->_notificationCenter, a5);
+    objc_storeStrong(&v11->_notificationCenter, center);
     v13 = [[MTSessionManagerExportedObject alloc] initWithSessionManager:v11];
     exportedObject = v11->_exportedObject;
     v11->_exportedObject = v13;
 
-    objc_storeStrong(&v11->_metrics, a4);
-    v15 = v8[2](v8, v11);
+    objc_storeStrong(&v11->_metrics, metrics);
+    v15 = blockCopy[2](blockCopy, v11);
     connectionProvider = v11->_connectionProvider;
     v11->_connectionProvider = v15;
   }
@@ -165,7 +165,7 @@ void __36__MTSessionManager_initWithMetrics___block_invoke_2(uint64_t a1)
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B1F9F000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ deallocing...", buf, 0xCu);
   }
 
@@ -178,8 +178,8 @@ void __36__MTSessionManager_initWithMetrics___block_invoke_2(uint64_t a1)
 
 - (void)reconnect
 {
-  v2 = [(MTSessionManager *)self connectionProvider];
-  [v2 performRemoteBlock:&__block_literal_global_14_1 withErrorHandler:0];
+  connectionProvider = [(MTSessionManager *)self connectionProvider];
+  [connectionProvider performRemoteBlock:&__block_literal_global_14_1 withErrorHandler:0];
 }
 
 void __38__MTSessionManager_endAlertingSession__block_invoke_2(uint64_t a1, void *a2)

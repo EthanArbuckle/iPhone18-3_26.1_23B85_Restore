@@ -1,8 +1,8 @@
 @interface AR3DSkeletonLiftingTechnique
 - (AR3DSkeletonLiftingTechnique)init;
 - (double)requiredTimeInterval;
-- (id)processEspressoTensor:(id)a3;
-- (void)_prepareOnce:(BOOL)a3;
+- (id)processEspressoTensor:(id)tensor;
+- (void)_prepareOnce:(BOOL)once;
 @end
 
 @implementation AR3DSkeletonLiftingTechnique
@@ -18,7 +18,7 @@
     *buf = 138543618;
     v11 = v5;
     v12 = 2048;
-    v13 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C241C000, v3, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: Initializing", buf, 0x16u);
   }
 
@@ -30,7 +30,7 @@
   return v7;
 }
 
-- (void)_prepareOnce:(BOOL)a3
+- (void)_prepareOnce:(BOOL)once
 {
   v21 = *MEMORY[0x1E69E9840];
   v4 = CreateABPK3DLiftingAlgorithm();
@@ -56,7 +56,7 @@
         *buf = 138543618;
         v18 = v10;
         v19 = 2048;
-        v20 = self;
+        selfCopy2 = self;
         _os_log_impl(&dword_1C241C000, v8, OS_LOG_TYPE_ERROR, "%{public}@ <%p>: ABPK3DLiftingAlgorithm could not be initialized!", buf, 0x16u);
       }
     }
@@ -68,7 +68,7 @@
       *buf = 138543618;
       v18 = v12;
       v19 = 2048;
-      v20 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1C241C000, v8, OS_LOG_TYPE_INFO, "Error: %{public}@ <%p>: ABPK3DLiftingAlgorithm could not be initialized!", buf, 0x16u);
     }
 
@@ -118,10 +118,10 @@ uint64_t __52__AR3DSkeletonLiftingTechnique_requiredTimeInterval__block_invoke()
   return result;
 }
 
-- (id)processEspressoTensor:(id)a3
+- (id)processEspressoTensor:(id)tensor
 {
   v47 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  tensorCopy = tensor;
   v5 = _ARLogGeneral();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -130,7 +130,7 @@ uint64_t __52__AR3DSkeletonLiftingTechnique_requiredTimeInterval__block_invoke()
     *buf = 138543618;
     v44 = v7;
     v45 = 2048;
-    v46 = self;
+    selfCopy2 = self;
     _os_log_impl(&dword_1C241C000, v5, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: ProcessEspressoTensor", buf, 0x16u);
   }
 
@@ -141,7 +141,7 @@ uint64_t __52__AR3DSkeletonLiftingTechnique_requiredTimeInterval__block_invoke()
     goto LABEL_13;
   }
 
-  v8 = v4;
+  v8 = tensorCopy;
   if (ARIsANEVersionEqualOrPriorToH12())
   {
     [v8 trackedDetectionResult];
@@ -158,8 +158,8 @@ uint64_t __52__AR3DSkeletonLiftingTechnique_requiredTimeInterval__block_invoke()
     goto LABEL_11;
   }
 
-  v12 = [v9 liftingData];
-  v13 = [v12 liftingData3D] == 0;
+  liftingData = [v9 liftingData];
+  v13 = [liftingData liftingData3D] == 0;
 
   if (v13)
   {
@@ -182,8 +182,8 @@ uint64_t __52__AR3DSkeletonLiftingTechnique_requiredTimeInterval__block_invoke()
   {
 LABEL_19:
     v29 = [AR3DSkeletonDetectionResult alloc];
-    v30 = [(ABPK3DLiftingAlgorithm *)self->_liftingAlgorithm getLiftingResults];
-    v15 = -[AR3DSkeletonDetectionResult initWithJoints:numberOfJoints:referenceDetectionResult:](v29, "initWithJoints:numberOfJoints:referenceDetectionResult:", [v30 joints], 17, v11);
+    getLiftingResults = [(ABPK3DLiftingAlgorithm *)self->_liftingAlgorithm getLiftingResults];
+    v15 = -[AR3DSkeletonDetectionResult initWithJoints:numberOfJoints:referenceDetectionResult:](v29, "initWithJoints:numberOfJoints:referenceDetectionResult:", [getLiftingResults joints], 17, v11);
 
     v10 = objc_opt_new();
     if (v15)
@@ -207,27 +207,27 @@ LABEL_19:
     goto LABEL_12;
   }
 
-  v17 = [v8 trackedDetectionResult];
-  v18 = v17 == 0;
+  trackedDetectionResult = [v8 trackedDetectionResult];
+  v18 = trackedDetectionResult == 0;
 
   if (!v18)
   {
     v41 = objc_alloc(MEMORY[0x1E698A8F8]);
-    v38 = [v8 trackedDetectionResult];
-    v40 = [v38 rawJointsOutput];
-    v37 = [v8 rawDetectionResult];
-    v39 = [v37 jointTrackingStates];
-    v36 = [v8 rawDetectionResult];
-    v19 = [v36 jointCount];
-    v35 = [v8 rawDetectionResult];
-    [v35 imageResolution];
+    trackedDetectionResult2 = [v8 trackedDetectionResult];
+    rawJointsOutput = [trackedDetectionResult2 rawJointsOutput];
+    rawDetectionResult = [v8 rawDetectionResult];
+    jointTrackingStates = [rawDetectionResult jointTrackingStates];
+    rawDetectionResult2 = [v8 rawDetectionResult];
+    jointCount = [rawDetectionResult2 jointCount];
+    rawDetectionResult3 = [v8 rawDetectionResult];
+    [rawDetectionResult3 imageResolution];
     v21 = v20;
     v23 = v22;
-    v24 = [v8 rawDetectionResult];
-    v25 = [v24 rotation];
-    v26 = [v8 trackedDetectionResult];
-    v27 = [v26 liftingData];
-    v28 = [v41 initWithJoints:v40 trackingStates:v39 numberOfJoints:v19 imageResolution:v25 rotation:v27 croppedRect:v21 liftingData:{v23, 0.0, 0.0, 1.0, 1.0}];
+    rawDetectionResult4 = [v8 rawDetectionResult];
+    rotation = [rawDetectionResult4 rotation];
+    trackedDetectionResult3 = [v8 trackedDetectionResult];
+    liftingData2 = [trackedDetectionResult3 liftingData];
+    v28 = [v41 initWithJoints:rawJointsOutput trackingStates:jointTrackingStates numberOfJoints:jointCount imageResolution:rotation rotation:liftingData2 croppedRect:v21 liftingData:{v23, 0.0, 0.0, 1.0, 1.0}];
 
     v11 = v28;
     goto LABEL_19;
@@ -241,7 +241,7 @@ LABEL_19:
     *buf = 138543618;
     v44 = v34;
     v45 = 2048;
-    v46 = self;
+    selfCopy2 = self;
     _os_log_impl(&dword_1C241C000, v32, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: trackedDetectionResult is nil, bailing out", buf, 0x16u);
   }
 

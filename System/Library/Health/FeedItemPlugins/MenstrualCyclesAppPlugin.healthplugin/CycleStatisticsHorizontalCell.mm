@@ -1,10 +1,10 @@
 @interface CycleStatisticsHorizontalCell
-- (_TtC24MenstrualCyclesAppPlugin29CycleStatisticsHorizontalCell)initWithCoder:(id)a3;
+- (_TtC24MenstrualCyclesAppPlugin29CycleStatisticsHorizontalCell)initWithCoder:(id)coder;
 @end
 
 @implementation CycleStatisticsHorizontalCell
 
-- (_TtC24MenstrualCyclesAppPlugin29CycleStatisticsHorizontalCell)initWithCoder:(id)a3
+- (_TtC24MenstrualCyclesAppPlugin29CycleStatisticsHorizontalCell)initWithCoder:(id)coder
 {
   v3 = self + OBJC_IVAR____TtC24MenstrualCyclesAppPlugin29CycleStatisticsHorizontalCell_item;
   *v3 = 0u;

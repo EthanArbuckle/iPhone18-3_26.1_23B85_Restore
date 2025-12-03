@@ -1,35 +1,35 @@
 @interface SBUIActionPlatterViewController
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (SBUIActionPlatterViewController)initWithActions:(id)a3 gestureRecognizer:(id)a4;
-- (SBUIActionPlatterViewController)initWithCoder:(id)a3;
-- (SBUIActionPlatterViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (SBUIActionPlatterViewController)initWithActions:(id)actions gestureRecognizer:(id)recognizer;
+- (SBUIActionPlatterViewController)initWithCoder:(id)coder;
+- (SBUIActionPlatterViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (SBUIActionPlatterViewControllerDelegate)delegate;
 - (UILongPressGestureRecognizer)gestureRecognizer;
-- (void)_handleLongPressGestureRecognizer:(id)a3;
+- (void)_handleLongPressGestureRecognizer:(id)recognizer;
 - (void)_updateKeylineViews;
 - (void)loadView;
-- (void)setDelegate:(id)a3;
-- (void)setImagePosition:(int64_t)a3;
-- (void)setReversesActions:(BOOL)a3;
-- (void)setSystemInteractionStartIndex:(unint64_t)a3;
+- (void)setDelegate:(id)delegate;
+- (void)setImagePosition:(int64_t)position;
+- (void)setReversesActions:(BOOL)actions;
+- (void)setSystemInteractionStartIndex:(unint64_t)index;
 @end
 
 @implementation SBUIActionPlatterViewController
 
-- (SBUIActionPlatterViewController)initWithActions:(id)a3 gestureRecognizer:(id)a4
+- (SBUIActionPlatterViewController)initWithActions:(id)actions gestureRecognizer:(id)recognizer
 {
-  v6 = a3;
-  v7 = a4;
+  actionsCopy = actions;
+  recognizerCopy = recognizer;
   v12.receiver = self;
   v12.super_class = SBUIActionPlatterViewController;
   v8 = [(SBUIActionPlatterViewController *)&v12 initWithNibName:0 bundle:0];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [actionsCopy copy];
     actions = v8->_actions;
     v8->_actions = v9;
 
-    objc_storeWeak(&v8->_gestureRecognizer, v7);
+    objc_storeWeak(&v8->_gestureRecognizer, recognizerCopy);
     v8->_reversesActions = 0;
     v8->_imagePosition = 0;
     v8->_systemInteractionStartIndex = 0x7FFFFFFFFFFFFFFFLL;
@@ -38,7 +38,7 @@
   return v8;
 }
 
-- (SBUIActionPlatterViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (SBUIActionPlatterViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE648];
@@ -49,18 +49,18 @@
   return [(SBUIActionPlatterViewController *)self initWithActions:0 gestureRecognizer:0];
 }
 
-- (SBUIActionPlatterViewController)initWithCoder:(id)a3
+- (SBUIActionPlatterViewController)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x277CBEAD8];
   v5 = *MEMORY[0x277CBE658];
-  v6 = a3;
+  coderCopy = coder;
   v7 = objc_opt_class();
   v8 = NSStringFromClass(v7);
   [v4 raise:v5 format:{@"%@ does not support unarchiving from a nib.", v8}];
 
   v11.receiver = self;
   v11.super_class = SBUIActionPlatterViewController;
-  v9 = [(SBUIActionPlatterViewController *)&v11 initWithCoder:v6];
+  v9 = [(SBUIActionPlatterViewController *)&v11 initWithCoder:coderCopy];
 
   return v9;
 }
@@ -75,25 +75,25 @@
   v7 = *(MEMORY[0x277CBF3A0] + 16);
   v8 = *(MEMORY[0x277CBF3A0] + 24);
   v9 = [v4 initWithFrame:{*MEMORY[0x277CBF3A0], v6, v7, v8}];
-  v10 = [(SBUIActionPlatterViewController *)self actions];
-  if ([v10 count])
+  actions = [(SBUIActionPlatterViewController *)self actions];
+  if ([actions count])
   {
     v11 = objc_alloc_init(MEMORY[0x277CBEB18]);
     if ([(SBUIActionPlatterViewController *)self reversesActions])
     {
-      v12 = [v10 reverseObjectEnumerator];
-      v13 = [v12 allObjects];
+      reverseObjectEnumerator = [actions reverseObjectEnumerator];
+      allObjects = [reverseObjectEnumerator allObjects];
 
-      v10 = v13;
+      actions = allObjects;
     }
 
-    v14 = [(SBUIActionPlatterViewController *)self imagePosition];
+    imagePosition = [(SBUIActionPlatterViewController *)self imagePosition];
     v57 = 0u;
     v58 = 0u;
     v59 = 0u;
     v60 = 0u;
-    v10 = v10;
-    v15 = [v10 countByEnumeratingWithState:&v57 objects:v61 count:16];
+    actions = actions;
+    v15 = [actions countByEnumeratingWithState:&v57 objects:v61 count:16];
     if (v15)
     {
       v16 = v15;
@@ -104,18 +104,18 @@
         {
           if (*v58 != v17)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(actions);
           }
 
           v19 = *(*(&v57 + 1) + 8 * i);
           v20 = [SBUIActionView alloc];
           v21 = [(SBUIActionView *)v20 initWithAction:v19, v57];
-          [(SBUIActionView *)v21 setImagePosition:v14];
+          [(SBUIActionView *)v21 setImagePosition:imagePosition];
           [(SBUIActionView *)v21 setTranslatesAutoresizingMaskIntoConstraints:0];
           [v11 addObject:v21];
         }
 
-        v16 = [v10 countByEnumeratingWithState:&v57 objects:v61 count:16];
+        v16 = [actions countByEnumeratingWithState:&v57 objects:v61 count:16];
       }
 
       while (v16);
@@ -145,44 +145,44 @@
   [(UIView *)self->_keylinesContainerView setTranslatesAutoresizingMaskIntoConstraints:0];
   [v9 addSubview:self->_keylinesContainerView];
   [(SBUIActionPlatterViewController *)self _updateKeylineViews];
-  v27 = [(UIStackView *)self->_stackView leftAnchor];
-  v28 = [v9 leftAnchor];
-  v29 = [v27 constraintEqualToAnchor:v28];
+  leftAnchor = [(UIStackView *)self->_stackView leftAnchor];
+  leftAnchor2 = [v9 leftAnchor];
+  v29 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
   [v29 setActive:1];
 
-  v30 = [(UIStackView *)self->_stackView rightAnchor];
-  v31 = [v9 rightAnchor];
-  v32 = [v30 constraintEqualToAnchor:v31];
+  rightAnchor = [(UIStackView *)self->_stackView rightAnchor];
+  rightAnchor2 = [v9 rightAnchor];
+  v32 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
   [v32 setActive:1];
 
-  v33 = [(UIStackView *)self->_stackView topAnchor];
-  v34 = [v9 topAnchor];
-  v35 = [v33 constraintEqualToAnchor:v34];
+  topAnchor = [(UIStackView *)self->_stackView topAnchor];
+  topAnchor2 = [v9 topAnchor];
+  v35 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v35 setActive:1];
 
-  v36 = [(UIStackView *)self->_stackView bottomAnchor];
-  v37 = [v9 bottomAnchor];
-  v38 = [v36 constraintEqualToAnchor:v37];
+  bottomAnchor = [(UIStackView *)self->_stackView bottomAnchor];
+  bottomAnchor2 = [v9 bottomAnchor];
+  v38 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   [v38 setActive:1];
 
-  v39 = [(UIView *)self->_keylinesContainerView leftAnchor];
-  v40 = [v9 leftAnchor];
-  v41 = [v39 constraintEqualToAnchor:v40];
+  leftAnchor3 = [(UIView *)self->_keylinesContainerView leftAnchor];
+  leftAnchor4 = [v9 leftAnchor];
+  v41 = [leftAnchor3 constraintEqualToAnchor:leftAnchor4];
   [v41 setActive:1];
 
-  v42 = [(UIView *)self->_keylinesContainerView rightAnchor];
-  v43 = [v9 rightAnchor];
-  v44 = [v42 constraintEqualToAnchor:v43];
+  rightAnchor3 = [(UIView *)self->_keylinesContainerView rightAnchor];
+  rightAnchor4 = [v9 rightAnchor];
+  v44 = [rightAnchor3 constraintEqualToAnchor:rightAnchor4];
   [v44 setActive:1];
 
-  v45 = [(UIView *)self->_keylinesContainerView topAnchor];
-  v46 = [v9 topAnchor];
-  v47 = [v45 constraintEqualToAnchor:v46];
+  topAnchor3 = [(UIView *)self->_keylinesContainerView topAnchor];
+  topAnchor4 = [v9 topAnchor];
+  v47 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   [v47 setActive:1];
 
-  v48 = [(UIView *)self->_keylinesContainerView bottomAnchor];
-  v49 = [v9 bottomAnchor];
-  v50 = [v48 constraintEqualToAnchor:v49];
+  bottomAnchor3 = [(UIView *)self->_keylinesContainerView bottomAnchor];
+  bottomAnchor4 = [v9 bottomAnchor];
+  v50 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   [v50 setActive:1];
 
   v51 = [objc_alloc(MEMORY[0x277D75708]) initWithTarget:self action:sel__handleLongPressGestureRecognizer_];
@@ -190,8 +190,8 @@
   [v51 setMinimumPressDuration:0.0];
   [v9 addGestureRecognizer:v51];
   v52 = objc_alloc(MEMORY[0x277D75A10]);
-  v53 = [MEMORY[0x277D76228] defaultConfiguration];
-  v54 = [v52 initWithConfiguration:v53 coordinateSpace:v9];
+  defaultConfiguration = [MEMORY[0x277D76228] defaultConfiguration];
+  v54 = [v52 initWithConfiguration:defaultConfiguration coordinateSpace:v9];
   feedbackRetargetBehavior = self->_feedbackRetargetBehavior;
   self->_feedbackRetargetBehavior = v54;
 
@@ -199,30 +199,30 @@
   v56 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setSystemInteractionStartIndex:(unint64_t)a3
+- (void)setSystemInteractionStartIndex:(unint64_t)index
 {
-  if (self->_systemInteractionStartIndex != a3)
+  if (self->_systemInteractionStartIndex != index)
   {
-    self->_systemInteractionStartIndex = a3;
+    self->_systemInteractionStartIndex = index;
     [(SBUIActionPlatterViewController *)self _updateKeylineViews];
   }
 }
 
-- (void)setReversesActions:(BOOL)a3
+- (void)setReversesActions:(BOOL)actions
 {
   v16 = *MEMORY[0x277D85DE8];
-  if (self->_reversesActions != a3)
+  if (self->_reversesActions != actions)
   {
-    self->_reversesActions = a3;
+    self->_reversesActions = actions;
     if ([(SBUIActionPlatterViewController *)self isViewLoaded])
     {
-      v4 = [(UIStackView *)self->_stackView arrangedSubviews];
+      arrangedSubviews = [(UIStackView *)self->_stackView arrangedSubviews];
       v11 = 0u;
       v12 = 0u;
       v13 = 0u;
       v14 = 0u;
-      v5 = [v4 reverseObjectEnumerator];
-      v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      reverseObjectEnumerator = [arrangedSubviews reverseObjectEnumerator];
+      v6 = [reverseObjectEnumerator countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v6)
       {
         v7 = v6;
@@ -233,13 +233,13 @@
           {
             if (*v12 != v8)
             {
-              objc_enumerationMutation(v5);
+              objc_enumerationMutation(reverseObjectEnumerator);
             }
 
             [(UIStackView *)self->_stackView addArrangedSubview:*(*(&v11 + 1) + 8 * i)];
           }
 
-          v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+          v7 = [reverseObjectEnumerator countByEnumeratingWithState:&v11 objects:v15 count:16];
         }
 
         while (v7);
@@ -252,20 +252,20 @@
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setImagePosition:(int64_t)a3
+- (void)setImagePosition:(int64_t)position
 {
   v16 = *MEMORY[0x277D85DE8];
-  if (self->_imagePosition != a3)
+  if (self->_imagePosition != position)
   {
-    self->_imagePosition = a3;
+    self->_imagePosition = position;
     if ([(SBUIActionPlatterViewController *)self isViewLoaded])
     {
       v13 = 0u;
       v14 = 0u;
       v11 = 0u;
       v12 = 0u;
-      v5 = [(UIStackView *)self->_stackView arrangedSubviews];
-      v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      arrangedSubviews = [(UIStackView *)self->_stackView arrangedSubviews];
+      v6 = [arrangedSubviews countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v6)
       {
         v7 = v6;
@@ -276,13 +276,13 @@
           {
             if (*v12 != v8)
             {
-              objc_enumerationMutation(v5);
+              objc_enumerationMutation(arrangedSubviews);
             }
 
-            [*(*(&v11 + 1) + 8 * i) setImagePosition:a3];
+            [*(*(&v11 + 1) + 8 * i) setImagePosition:position];
           }
 
-          v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+          v7 = [arrangedSubviews countByEnumeratingWithState:&v11 objects:v15 count:16];
         }
 
         while (v7);
@@ -293,9 +293,9 @@
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained != obj)
@@ -324,8 +324,8 @@
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v3 = [(UIView *)self->_keylinesContainerView subviews];
-  v4 = [v3 countByEnumeratingWithState:&v27 objects:v31 count:16];
+  subviews = [(UIView *)self->_keylinesContainerView subviews];
+  v4 = [subviews countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v4)
   {
     v5 = v4;
@@ -337,21 +337,21 @@
       {
         if (*v28 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(subviews);
         }
 
         [*(*(&v27 + 1) + 8 * v7++) removeFromSuperview];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v27 objects:v31 count:16];
+      v5 = [subviews countByEnumeratingWithState:&v27 objects:v31 count:16];
     }
 
     while (v5);
   }
 
-  v8 = [(UIStackView *)self->_stackView arrangedSubviews];
-  if ([v8 count] >= 2)
+  arrangedSubviews = [(UIStackView *)self->_stackView arrangedSubviews];
+  if ([arrangedSubviews count] >= 2)
   {
     v9 = *MEMORY[0x277CBF3A0];
     v10 = *(MEMORY[0x277CBF3A0] + 8);
@@ -360,24 +360,24 @@
     v13 = 1;
     do
     {
-      v14 = [v8 objectAtIndexedSubscript:v13];
+      v14 = [arrangedSubviews objectAtIndexedSubscript:v13];
       v15 = [[SBUIActionKeylineView alloc] initWithFrame:v9, v10, v11, v12];
       [(SBUIActionKeylineView *)v15 setTranslatesAutoresizingMaskIntoConstraints:0];
       [(UIView *)self->_keylinesContainerView addSubview:v15];
-      v16 = [(SBUIActionKeylineView *)v15 leadingAnchor];
-      v17 = [v14 leadingAnchor];
+      leadingAnchor = [(SBUIActionKeylineView *)v15 leadingAnchor];
+      leadingAnchor2 = [v14 leadingAnchor];
       [v14 leadingContentMargin];
-      v18 = [v16 constraintEqualToAnchor:v17 constant:?];
+      v18 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:?];
       [v18 setActive:1];
 
-      v19 = [(SBUIActionKeylineView *)v15 trailingAnchor];
-      v20 = [v14 trailingAnchor];
-      v21 = [v19 constraintEqualToAnchor:v20];
+      trailingAnchor = [(SBUIActionKeylineView *)v15 trailingAnchor];
+      trailingAnchor2 = [v14 trailingAnchor];
+      v21 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
       [v21 setActive:1];
 
-      v22 = [(SBUIActionKeylineView *)v15 topAnchor];
-      v23 = [v14 topAnchor];
-      v24 = [v22 constraintEqualToAnchor:v23];
+      topAnchor = [(SBUIActionKeylineView *)v15 topAnchor];
+      topAnchor2 = [v14 topAnchor];
+      v24 = [topAnchor constraintEqualToAnchor:topAnchor2];
       [v24 setActive:1];
 
       if (v13 == self->_systemInteractionStartIndex)
@@ -395,23 +395,23 @@
       ++v13;
     }
 
-    while (v13 < [v8 count]);
+    while (v13 < [arrangedSubviews count]);
   }
 
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleLongPressGestureRecognizer:(id)a3
+- (void)_handleLongPressGestureRecognizer:(id)recognizer
 {
   v48 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(UIStackView *)self->_stackView arrangedSubviews];
-  if ([v5 count])
+  recognizerCopy = recognizer;
+  arrangedSubviews = [(UIStackView *)self->_stackView arrangedSubviews];
+  if ([arrangedSubviews count])
   {
     if (*&self->_delegateRespondsTo)
     {
-      v7 = [(SBUIActionPlatterViewController *)self delegate];
-      v6 = [v7 actionPlatterViewControllerShouldRespondToTouches:self];
+      delegate = [(SBUIActionPlatterViewController *)self delegate];
+      v6 = [delegate actionPlatterViewControllerShouldRespondToTouches:self];
     }
 
     else
@@ -419,8 +419,8 @@
       v6 = 1;
     }
 
-    v8 = [v4 state];
-    if ((v8 - 3) < 2)
+    state = [recognizerCopy state];
+    if ((state - 3) < 2)
     {
       if ([(UISelectionFeedbackGenerator *)self->_feedbackRetargetBehavior isActive])
       {
@@ -428,7 +428,7 @@
       }
     }
 
-    else if ((v8 - 1) <= 1 && ([(UISelectionFeedbackGenerator *)self->_feedbackRetargetBehavior isActive]& 1) == 0)
+    else if ((state - 1) <= 1 && ([(UISelectionFeedbackGenerator *)self->_feedbackRetargetBehavior isActive]& 1) == 0)
     {
       [(UISelectionFeedbackGenerator *)self->_feedbackRetargetBehavior activateWithCompletionBlock:0];
     }
@@ -439,7 +439,7 @@
       v44 = 0uLL;
       v41 = 0uLL;
       v42 = 0uLL;
-      v9 = v5;
+      v9 = arrangedSubviews;
       v10 = [v9 countByEnumeratingWithState:&v41 objects:v47 count:16];
       if (v10)
       {
@@ -454,7 +454,7 @@
             }
 
             v13 = *(*(&v41 + 1) + 8 * i);
-            [v4 locationInView:v13];
+            [recognizerCopy locationInView:v13];
             v15 = v14;
             v17 = v16;
             [v13 bounds];
@@ -499,7 +499,7 @@ LABEL_30:
             }
 
             v27 = *(*(&v37 + 1) + 8 * j);
-            if ([v4 state] == 2)
+            if ([recognizerCopy state] == 2)
             {
               feedbackRetargetBehavior = self->_feedbackRetargetBehavior;
             }
@@ -518,14 +518,14 @@ LABEL_30:
         while (v24);
       }
 
-      if ([v4 state] == 3)
+      if ([recognizerCopy state] == 3)
       {
-        v29 = [v10 action];
-        v30 = v29;
-        if (v29)
+        action = [v10 action];
+        v30 = action;
+        if (action)
         {
-          v31 = [v29 handler];
-          v31[2]();
+          handler = [action handler];
+          handler[2]();
         }
       }
     }
@@ -536,7 +536,7 @@ LABEL_30:
       v36 = 0uLL;
       v33 = 0uLL;
       v34 = 0uLL;
-      v10 = v5;
+      v10 = arrangedSubviews;
       v18 = [v10 countByEnumeratingWithState:&v33 objects:v45 count:16];
       if (v18)
       {
@@ -565,9 +565,9 @@ LABEL_30:
   v32 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
+  beginCopy = begin;
   if ((*&self->_delegateRespondsTo & 1) != 0 && (-[SBUIActionPlatterViewController delegate](self, "delegate"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 actionPlatterViewControllerShouldRespondToTouches:self], v5, !v6))
   {
     v9 = 0;
@@ -575,11 +575,11 @@ LABEL_30:
 
   else
   {
-    v7 = [(SBUIActionPlatterViewController *)self gestureRecognizer];
-    v8 = v7;
-    if (v7)
+    gestureRecognizer = [(SBUIActionPlatterViewController *)self gestureRecognizer];
+    v8 = gestureRecognizer;
+    if (gestureRecognizer)
     {
-      v9 = [v7 state] == 0;
+      v9 = [gestureRecognizer state] == 0;
     }
 
     else

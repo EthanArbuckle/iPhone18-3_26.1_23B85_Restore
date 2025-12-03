@@ -1,28 +1,28 @@
 @interface SBCenterWindowToExistingSplitViewSwitcherModifier
-- (BOOL)_wasPreviousCenterAppLayout:(id)a3 layoutRole:(int64_t)a4;
-- (BOOL)isLayoutRoleBlurred:(int64_t)a3 inAppLayout:(id)a4;
-- (BOOL)isLayoutRoleMatchMovedToScene:(int64_t)a3 inAppLayout:(id)a4;
-- (CGRect)frameForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 withBounds:(CGRect)a5;
-- (SBCenterWindowToExistingSplitViewSwitcherModifier)initWithTransitionID:(id)a3 fromAppLayout:(id)a4 toAppLayout:(id)a5;
-- (double)blurDelayForLayoutRole:(int64_t)a3 inAppLayout:(id)a4;
-- (double)dimmingAlphaForLayoutRole:(int64_t)a3 inAppLayout:(id)a4;
-- (double)opacityForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 atIndex:(unint64_t)a5;
-- (id)handleSceneReadyEvent:(id)a3;
-- (id)topMostLayoutRolesForAppLayout:(id)a3;
+- (BOOL)_wasPreviousCenterAppLayout:(id)layout layoutRole:(int64_t)role;
+- (BOOL)isLayoutRoleBlurred:(int64_t)blurred inAppLayout:(id)layout;
+- (BOOL)isLayoutRoleMatchMovedToScene:(int64_t)scene inAppLayout:(id)layout;
+- (CGRect)frameForLayoutRole:(int64_t)role inAppLayout:(id)layout withBounds:(CGRect)bounds;
+- (SBCenterWindowToExistingSplitViewSwitcherModifier)initWithTransitionID:(id)d fromAppLayout:(id)layout toAppLayout:(id)appLayout;
+- (double)blurDelayForLayoutRole:(int64_t)role inAppLayout:(id)layout;
+- (double)dimmingAlphaForLayoutRole:(int64_t)role inAppLayout:(id)layout;
+- (double)opacityForLayoutRole:(int64_t)role inAppLayout:(id)layout atIndex:(unint64_t)index;
+- (id)handleSceneReadyEvent:(id)event;
+- (id)topMostLayoutRolesForAppLayout:(id)layout;
 - (id)visibleAppLayouts;
 @end
 
 @implementation SBCenterWindowToExistingSplitViewSwitcherModifier
 
-- (SBCenterWindowToExistingSplitViewSwitcherModifier)initWithTransitionID:(id)a3 fromAppLayout:(id)a4 toAppLayout:(id)a5
+- (SBCenterWindowToExistingSplitViewSwitcherModifier)initWithTransitionID:(id)d fromAppLayout:(id)layout toAppLayout:(id)appLayout
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v9)
+  dCopy = d;
+  layoutCopy = layout;
+  appLayoutCopy = appLayout;
+  v11 = appLayoutCopy;
+  if (layoutCopy)
   {
-    if (v10)
+    if (appLayoutCopy)
     {
       goto LABEL_3;
     }
@@ -41,12 +41,12 @@
 LABEL_3:
   v19.receiver = self;
   v19.super_class = SBCenterWindowToExistingSplitViewSwitcherModifier;
-  v12 = [(SBTransitionSwitcherModifier *)&v19 initWithTransitionID:v8];
+  v12 = [(SBTransitionSwitcherModifier *)&v19 initWithTransitionID:dCopy];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_fromAppLayout, a4);
-    objc_storeStrong(&v13->_toAppLayout, a5);
+    objc_storeStrong(&v12->_fromAppLayout, layout);
+    objc_storeStrong(&v13->_toAppLayout, appLayout);
     v14 = [(SBAppLayout *)v13->_fromAppLayout itemForLayoutRole:4];
     v15 = [(SBAppLayout *)v13->_toAppLayout layoutRoleForItem:v14];
     v13->_layoutRoleBeingReplaced = v15;
@@ -68,11 +68,11 @@ LABEL_3:
   return v13;
 }
 
-- (id)handleSceneReadyEvent:(id)a3
+- (id)handleSceneReadyEvent:(id)event
 {
   v7.receiver = self;
   v7.super_class = SBCenterWindowToExistingSplitViewSwitcherModifier;
-  v3 = [(SBSwitcherModifier *)&v7 handleSceneReadyEvent:a3];
+  v3 = [(SBSwitcherModifier *)&v7 handleSceneReadyEvent:event];
   v4 = [[SBUpdateLayoutSwitcherEventResponse alloc] initWithOptions:64 updateMode:3];
   v5 = SBAppendSwitcherModifierResponse(v4, v3);
 
@@ -83,31 +83,31 @@ LABEL_3:
 {
   v6.receiver = self;
   v6.super_class = SBCenterWindowToExistingSplitViewSwitcherModifier;
-  v3 = [(SBCenterWindowToExistingSplitViewSwitcherModifier *)&v6 visibleAppLayouts];
-  v4 = [v3 mutableCopy];
+  visibleAppLayouts = [(SBCenterWindowToExistingSplitViewSwitcherModifier *)&v6 visibleAppLayouts];
+  v4 = [visibleAppLayouts mutableCopy];
 
   [v4 addObject:self->_appLayoutBeingReplaced];
 
   return v4;
 }
 
-- (CGRect)frameForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 withBounds:(CGRect)a5
+- (CGRect)frameForLayoutRole:(int64_t)role inAppLayout:(id)layout withBounds:(CGRect)bounds
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v34.receiver = self;
   v34.super_class = SBCenterWindowToExistingSplitViewSwitcherModifier;
-  v11 = a4;
-  [(SBCenterWindowToExistingSplitViewSwitcherModifier *)&v34 frameForLayoutRole:a3 inAppLayout:v11 withBounds:x, y, width, height];
+  layoutCopy = layout;
+  [(SBCenterWindowToExistingSplitViewSwitcherModifier *)&v34 frameForLayoutRole:role inAppLayout:layoutCopy withBounds:x, y, width, height];
   v13 = v12;
   v15 = v14;
   v17 = v16;
   v19 = v18;
-  LODWORD(a3) = [(SBAppLayout *)self->_appLayoutBeingReplaced isEqual:v11, v34.receiver, v34.super_class];
+  LODWORD(role) = [(SBAppLayout *)self->_appLayoutBeingReplaced isEqual:layoutCopy, v34.receiver, v34.super_class];
 
-  if (a3)
+  if (role)
   {
     layoutRoleBeingReplaced = self->_layoutRoleBeingReplaced;
     fromAppLayout = self->_fromAppLayout;
@@ -130,17 +130,17 @@ LABEL_3:
   return result;
 }
 
-- (double)opacityForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 atIndex:(unint64_t)a5
+- (double)opacityForLayoutRole:(int64_t)role inAppLayout:(id)layout atIndex:(unint64_t)index
 {
   v12.receiver = self;
   v12.super_class = SBCenterWindowToExistingSplitViewSwitcherModifier;
-  v8 = a4;
-  [(SBCenterWindowToExistingSplitViewSwitcherModifier *)&v12 opacityForLayoutRole:a3 inAppLayout:v8 atIndex:a5];
+  layoutCopy = layout;
+  [(SBCenterWindowToExistingSplitViewSwitcherModifier *)&v12 opacityForLayoutRole:role inAppLayout:layoutCopy atIndex:index];
   v10 = v9;
-  LODWORD(a5) = [(SBAppLayout *)self->_appLayoutBeingReplaced isEqual:v8, v12.receiver, v12.super_class];
+  LODWORD(index) = [(SBAppLayout *)self->_appLayoutBeingReplaced isEqual:layoutCopy, v12.receiver, v12.super_class];
 
   result = 1.0;
-  if (!a5)
+  if (!index)
   {
     return v10;
   }
@@ -148,77 +148,77 @@ LABEL_3:
   return result;
 }
 
-- (double)dimmingAlphaForLayoutRole:(int64_t)a3 inAppLayout:(id)a4
+- (double)dimmingAlphaForLayoutRole:(int64_t)role inAppLayout:(id)layout
 {
   v12.receiver = self;
   v12.super_class = SBCenterWindowToExistingSplitViewSwitcherModifier;
-  v6 = a4;
-  [(SBCenterWindowToExistingSplitViewSwitcherModifier *)&v12 dimmingAlphaForLayoutRole:a3 inAppLayout:v6];
+  layoutCopy = layout;
+  [(SBCenterWindowToExistingSplitViewSwitcherModifier *)&v12 dimmingAlphaForLayoutRole:role inAppLayout:layoutCopy];
   v8 = v7;
-  LODWORD(a3) = [(SBAppLayout *)self->_appLayoutBeingReplaced isEqual:v6, v12.receiver, v12.super_class];
+  LODWORD(role) = [(SBAppLayout *)self->_appLayoutBeingReplaced isEqual:layoutCopy, v12.receiver, v12.super_class];
 
-  if (a3)
+  if (role)
   {
-    v9 = [(SBCenterWindowToExistingSplitViewSwitcherModifier *)self medusaSettings];
-    [v9 defaultDimmingOpacity];
+    medusaSettings = [(SBCenterWindowToExistingSplitViewSwitcherModifier *)self medusaSettings];
+    [medusaSettings defaultDimmingOpacity];
     v8 = v10;
   }
 
   return v8;
 }
 
-- (BOOL)isLayoutRoleBlurred:(int64_t)a3 inAppLayout:(id)a4
+- (BOOL)isLayoutRoleBlurred:(int64_t)blurred inAppLayout:(id)layout
 {
-  v6 = a4;
+  layoutCopy = layout;
   v9.receiver = self;
   v9.super_class = SBCenterWindowToExistingSplitViewSwitcherModifier;
-  LOBYTE(v7) = [(SBCenterWindowToExistingSplitViewSwitcherModifier *)&v9 isLayoutRoleBlurred:a3 inAppLayout:v6];
-  if ([(SBCenterWindowToExistingSplitViewSwitcherModifier *)self _wasPreviousCenterAppLayout:v6 layoutRole:a3])
+  LOBYTE(v7) = [(SBCenterWindowToExistingSplitViewSwitcherModifier *)&v9 isLayoutRoleBlurred:blurred inAppLayout:layoutCopy];
+  if ([(SBCenterWindowToExistingSplitViewSwitcherModifier *)self _wasPreviousCenterAppLayout:layoutCopy layoutRole:blurred])
   {
-    v7 = [(SBCenterWindowToExistingSplitViewSwitcherModifier *)self isLayoutRoleContentReady:a3 inAppLayout:v6]^ 1;
+    v7 = [(SBCenterWindowToExistingSplitViewSwitcherModifier *)self isLayoutRoleContentReady:blurred inAppLayout:layoutCopy]^ 1;
   }
 
   return v7;
 }
 
-- (double)blurDelayForLayoutRole:(int64_t)a3 inAppLayout:(id)a4
+- (double)blurDelayForLayoutRole:(int64_t)role inAppLayout:(id)layout
 {
   v13.receiver = self;
   v13.super_class = SBCenterWindowToExistingSplitViewSwitcherModifier;
-  v6 = a4;
-  [(SBCenterWindowToExistingSplitViewSwitcherModifier *)&v13 blurDelayForLayoutRole:a3 inAppLayout:v6];
+  layoutCopy = layout;
+  [(SBCenterWindowToExistingSplitViewSwitcherModifier *)&v13 blurDelayForLayoutRole:role inAppLayout:layoutCopy];
   v8 = v7;
-  LODWORD(a3) = [(SBCenterWindowToExistingSplitViewSwitcherModifier *)self _wasPreviousCenterAppLayout:v6 layoutRole:a3, v13.receiver, v13.super_class];
+  LODWORD(role) = [(SBCenterWindowToExistingSplitViewSwitcherModifier *)self _wasPreviousCenterAppLayout:layoutCopy layoutRole:role, v13.receiver, v13.super_class];
 
-  if (a3)
+  if (role)
   {
-    v9 = [(SBCenterWindowToExistingSplitViewSwitcherModifier *)self switcherSettings];
-    v10 = [v9 animationSettings];
-    [v10 resizeBlurDelay];
+    switcherSettings = [(SBCenterWindowToExistingSplitViewSwitcherModifier *)self switcherSettings];
+    animationSettings = [switcherSettings animationSettings];
+    [animationSettings resizeBlurDelay];
     v8 = v11;
   }
 
   return v8;
 }
 
-- (BOOL)isLayoutRoleMatchMovedToScene:(int64_t)a3 inAppLayout:(id)a4
+- (BOOL)isLayoutRoleMatchMovedToScene:(int64_t)scene inAppLayout:(id)layout
 {
   v9.receiver = self;
   v9.super_class = SBCenterWindowToExistingSplitViewSwitcherModifier;
-  v6 = a4;
-  v7 = [(SBCenterWindowToExistingSplitViewSwitcherModifier *)&v9 isLayoutRoleMatchMovedToScene:a3 inAppLayout:v6];
-  LOBYTE(a3) = [(SBCenterWindowToExistingSplitViewSwitcherModifier *)self _wasPreviousCenterAppLayout:v6 layoutRole:a3, v9.receiver, v9.super_class];
+  layoutCopy = layout;
+  v7 = [(SBCenterWindowToExistingSplitViewSwitcherModifier *)&v9 isLayoutRoleMatchMovedToScene:scene inAppLayout:layoutCopy];
+  LOBYTE(scene) = [(SBCenterWindowToExistingSplitViewSwitcherModifier *)self _wasPreviousCenterAppLayout:layoutCopy layoutRole:scene, v9.receiver, v9.super_class];
 
-  return (a3 | v7) & 1;
+  return (scene | v7) & 1;
 }
 
-- (id)topMostLayoutRolesForAppLayout:(id)a3
+- (id)topMostLayoutRolesForAppLayout:(id)layout
 {
   v11.receiver = self;
   v11.super_class = SBCenterWindowToExistingSplitViewSwitcherModifier;
-  v4 = a3;
-  v5 = [(SBCenterWindowToExistingSplitViewSwitcherModifier *)&v11 topMostLayoutRolesForAppLayout:v4];
-  v6 = [(SBCenterWindowToExistingSplitViewSwitcherModifier *)self _wasPreviousCenterAppLayout:v4 layoutRole:self->_layoutRoleBeingReplaced, v11.receiver, v11.super_class];
+  layoutCopy = layout;
+  v5 = [(SBCenterWindowToExistingSplitViewSwitcherModifier *)&v11 topMostLayoutRolesForAppLayout:layoutCopy];
+  v6 = [(SBCenterWindowToExistingSplitViewSwitcherModifier *)self _wasPreviousCenterAppLayout:layoutCopy layoutRole:self->_layoutRoleBeingReplaced, v11.receiver, v11.super_class];
 
   if (v6)
   {
@@ -235,16 +235,16 @@ LABEL_3:
   return v5;
 }
 
-- (BOOL)_wasPreviousCenterAppLayout:(id)a3 layoutRole:(int64_t)a4
+- (BOOL)_wasPreviousCenterAppLayout:(id)layout layoutRole:(int64_t)role
 {
   fromAppLayout = self->_fromAppLayout;
-  v7 = a3;
+  layoutCopy = layout;
   v8 = [(SBAppLayout *)fromAppLayout itemForLayoutRole:4];
-  v9 = [v7 itemForLayoutRole:self->_layoutRoleBeingReplaced];
+  v9 = [layoutCopy itemForLayoutRole:self->_layoutRoleBeingReplaced];
 
   if ([(SBDisplayItem *)v8 isEqualToItem:v9])
   {
-    v10 = self->_layoutRoleBeingReplaced == a4;
+    v10 = self->_layoutRoleBeingReplaced == role;
   }
 
   else

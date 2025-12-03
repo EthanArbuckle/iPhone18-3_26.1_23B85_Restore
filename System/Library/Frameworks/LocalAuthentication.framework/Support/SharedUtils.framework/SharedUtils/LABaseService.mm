@@ -1,12 +1,12 @@
 @interface LABaseService
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (LABaseService)init;
 - (LAServiceManager)manager;
 - (NSXPCListenerEndpoint)endpoint;
 - (id)exportedInterface;
 - (id)exportedObject;
 - (void)_assertRunningInCorrectQueue;
-- (void)_disconnectClient:(id)a3;
+- (void)_disconnectClient:(id)client;
 - (void)dealloc;
 - (void)exportedInterface;
 - (void)init;
@@ -45,18 +45,18 @@
   listener = self->_listener;
   if (!listener)
   {
-    v4 = [MEMORY[0x1E696B0D8] anonymousListener];
+    anonymousListener = [MEMORY[0x1E696B0D8] anonymousListener];
     v5 = self->_listener;
-    self->_listener = v4;
+    self->_listener = anonymousListener;
 
     [(NSXPCListener *)self->_listener setDelegate:self];
-    v6 = [(LABaseService *)self queue];
+    queue = [(LABaseService *)self queue];
 
-    if (v6)
+    if (queue)
     {
       v7 = self->_listener;
-      v8 = [(LABaseService *)self queue];
-      [(NSXPCListener *)v7 _setQueue:v8];
+      queue2 = [(LABaseService *)self queue];
+      [(NSXPCListener *)v7 _setQueue:queue2];
     }
 
     [(NSXPCListener *)self->_listener resume];
@@ -68,12 +68,12 @@
 
 - (void)_assertRunningInCorrectQueue
 {
-  v3 = [(LABaseService *)self queue];
+  queue = [(LABaseService *)self queue];
 
-  if (v3)
+  if (queue)
   {
-    v4 = [(LABaseService *)self queue];
-    dispatch_assert_queue_V2(v4);
+    queue2 = [(LABaseService *)self queue];
+    dispatch_assert_queue_V2(queue2);
   }
 }
 
@@ -82,7 +82,7 @@
   v11 = *MEMORY[0x1E69E9840];
   v5 = [*a2 count];
   v7 = 138412546;
-  v8 = a1;
+  selfCopy = self;
   v9 = 2048;
   v10 = v5;
   _os_log_debug_impl(&dword_1DF403000, a3, OS_LOG_TYPE_DEBUG, "Deallocated service: %@ clients: %ld", &v7, 0x16u);
@@ -110,10 +110,10 @@
   return v2;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   [(LABaseService *)self _assertRunningInCorrectQueue];
   v18 = 0;
   v19[0] = &v18;
@@ -121,18 +121,18 @@
   v19[2] = __Block_byref_object_copy_;
   v19[3] = __Block_byref_object_dispose_;
   v20 = objc_opt_new();
-  v8 = [(LABaseService *)self exportedInterface];
-  [v7 setExportedInterface:v8];
+  exportedInterface = [(LABaseService *)self exportedInterface];
+  [connectionCopy setExportedInterface:exportedInterface];
 
-  v9 = [(LABaseService *)self exportedObject];
-  [v7 setExportedObject:v9];
+  exportedObject = [(LABaseService *)self exportedObject];
+  [connectionCopy setExportedObject:exportedObject];
 
-  v10 = [(LABaseService *)self queue];
+  queue = [(LABaseService *)self queue];
 
-  if (v10)
+  if (queue)
   {
-    v11 = [(LABaseService *)self queue];
-    [v7 _setQueue:v11];
+    queue2 = [(LABaseService *)self queue];
+    [connectionCopy _setQueue:queue2];
   }
 
   objc_initWeak(&location, self);
@@ -142,12 +142,12 @@
   v15[3] = &unk_1E86B5D90;
   objc_copyWeak(&v16, &location);
   v15[4] = &v18;
-  [v7 setInterruptionHandler:v15];
-  v12 = [v7 interruptionHandler];
-  [v7 setInvalidationHandler:v12];
+  [connectionCopy setInterruptionHandler:v15];
+  interruptionHandler = [connectionCopy interruptionHandler];
+  [connectionCopy setInvalidationHandler:interruptionHandler];
 
-  [(NSMutableDictionary *)self->_clients setObject:v7 forKeyedSubscript:*(v19[0] + 40)];
-  [v7 resume];
+  [(NSMutableDictionary *)self->_clients setObject:connectionCopy forKeyedSubscript:*(v19[0] + 40)];
+  [connectionCopy resume];
   v13 = LACLogService();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
@@ -176,13 +176,13 @@ void __52__LABaseService_listener_shouldAcceptNewConnection___block_invoke(uint6
   }
 }
 
-- (void)_disconnectClient:(id)a3
+- (void)_disconnectClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   [(LABaseService *)self _assertRunningInCorrectQueue];
-  if (v4)
+  if (clientCopy)
   {
-    v5 = [(NSMutableDictionary *)self->_clients objectForKeyedSubscript:v4];
+    v5 = [(NSMutableDictionary *)self->_clients objectForKeyedSubscript:clientCopy];
 
     if (v5)
     {
@@ -192,10 +192,10 @@ void __52__LABaseService_listener_shouldAcceptNewConnection___block_invoke(uint6
         [LABaseService _disconnectClient:];
       }
 
-      v7 = [(NSMutableDictionary *)self->_clients objectForKeyedSubscript:v4];
+      v7 = [(NSMutableDictionary *)self->_clients objectForKeyedSubscript:clientCopy];
       [v7 invalidate];
 
-      [(NSMutableDictionary *)self->_clients setObject:0 forKeyedSubscript:v4];
+      [(NSMutableDictionary *)self->_clients setObject:0 forKeyedSubscript:clientCopy];
     }
   }
 

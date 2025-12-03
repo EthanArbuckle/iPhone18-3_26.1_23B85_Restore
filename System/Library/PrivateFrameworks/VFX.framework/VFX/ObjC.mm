@@ -1,13 +1,13 @@
 @interface ObjC
-+ (BOOL)catchException:(id)a3 error:(id *)a4;
++ (BOOL)catchException:(id)exception error:(id *)error;
 @end
 
 @implementation ObjC
 
-+ (BOOL)catchException:(id)a3 error:(id *)a4
++ (BOOL)catchException:(id)exception error:(id *)error
 {
-  v4 = a3;
-  v4[2]();
+  exceptionCopy = exception;
+  exceptionCopy[2]();
 
   return 1;
 }

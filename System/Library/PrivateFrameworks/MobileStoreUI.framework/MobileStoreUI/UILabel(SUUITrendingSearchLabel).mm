@@ -13,21 +13,21 @@
     v5 = objc_alloc_init(MEMORY[0x277D756B8]);
     [v5 setNumberOfLines:{objc_msgSend(v4, "numberOfLines")}];
     [v5 setTextAlignment:1];
-    v6 = [v4 style];
-    v7 = SUUIViewElementFontWithStyle(v6);
-    if (!v7)
+    style = [v4 style];
+    sUUITrending_defaultTitleFont = SUUIViewElementFontWithStyle(style);
+    if (!sUUITrending_defaultTitleFont)
     {
-      v7 = [a1 SUUITrending_defaultTitleFont];
+      sUUITrending_defaultTitleFont = [self SUUITrending_defaultTitleFont];
     }
 
-    v8 = SUUIViewElementPlainColorWithStyle(v6, 0);
-    if (!v8)
+    sUUITrending_defaultTitleColor = SUUIViewElementPlainColorWithStyle(style, 0);
+    if (!sUUITrending_defaultTitleColor)
     {
-      v8 = [a1 SUUITrending_defaultTitleColor];
+      sUUITrending_defaultTitleColor = [self SUUITrending_defaultTitleColor];
     }
 
-    v9 = [v4 text];
-    v10 = [v9 attributedStringWithDefaultFont:v7 foregroundColor:v8 style:v6];
+    text = [v4 text];
+    v10 = [text attributedStringWithDefaultFont:sUUITrending_defaultTitleFont foregroundColor:sUUITrending_defaultTitleColor style:style];
 
     [v5 setAttributedText:v10];
   }
@@ -47,13 +47,13 @@
   if (v4 && [v4 length])
   {
     v6 = objc_alloc_init(MEMORY[0x277D756B8]);
-    v7 = [a1 SUUITrending_defaultTitleFont];
-    [v6 setFont:v7];
+    sUUITrending_defaultTitleFont = [self SUUITrending_defaultTitleFont];
+    [v6 setFont:sUUITrending_defaultTitleFont];
 
     [v6 setText:v5];
     [v6 setTextAlignment:1];
-    v8 = [a1 SUUITrending_defaultTitleColor];
-    [v6 setTextColor:v8];
+    sUUITrending_defaultTitleColor = [self SUUITrending_defaultTitleColor];
+    [v6 setTextColor:sUUITrending_defaultTitleColor];
   }
 
   else

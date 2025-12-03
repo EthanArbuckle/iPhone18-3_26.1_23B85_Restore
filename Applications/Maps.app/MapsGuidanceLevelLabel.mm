@@ -1,5 +1,5 @@
 @interface MapsGuidanceLevelLabel
-- (MapsGuidanceLevelLabel)initWithFrame:(CGRect)a3;
+- (MapsGuidanceLevelLabel)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 - (void)sizeToFit;
 @end
@@ -51,11 +51,11 @@
   [(MapsGuidanceLevelLabel *)self setBounds:0.0, 0.0, v20];
 }
 
-- (MapsGuidanceLevelLabel)initWithFrame:(CGRect)a3
+- (MapsGuidanceLevelLabel)initWithFrame:(CGRect)frame
 {
   v15.receiver = self;
   v15.super_class = MapsGuidanceLevelLabel;
-  v3 = [(MapsGuidanceLevelLabel *)&v15 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MapsGuidanceLevelLabel *)&v15 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
@@ -77,11 +77,11 @@
     roundedCorner = v3->_roundedCorner;
     v3->_roundedCorner = v9;
 
-    v11 = [(UILabel *)v3->_label backgroundColor];
-    -[CAShapeLayer setFillColor:](v3->_roundedCorner, "setFillColor:", [v11 CGColor]);
+    backgroundColor = [(UILabel *)v3->_label backgroundColor];
+    -[CAShapeLayer setFillColor:](v3->_roundedCorner, "setFillColor:", [backgroundColor CGColor]);
 
-    v12 = [(MapsGuidanceLevelLabel *)v3 layer];
-    [v12 addSublayer:v3->_roundedCorner];
+    layer = [(MapsGuidanceLevelLabel *)v3 layer];
+    [layer addSublayer:v3->_roundedCorner];
 
     v13 = v3;
   }

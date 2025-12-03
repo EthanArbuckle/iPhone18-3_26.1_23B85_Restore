@@ -1,6 +1,6 @@
 @interface TSUDispatchLock
 - (TSUDispatchLock)init;
-- (TSUDispatchLock)initWithLabel:(id)a3;
+- (TSUDispatchLock)initWithLabel:(id)label;
 - (void)assertHasReadLock;
 - (void)assertHasWriteLock;
 @end
@@ -23,16 +23,16 @@
   objc_exception_throw(v7);
 }
 
-- (TSUDispatchLock)initWithLabel:(id)a3
+- (TSUDispatchLock)initWithLabel:(id)label
 {
-  v4 = a3;
+  labelCopy = label;
   v10.receiver = self;
   v10.super_class = TSUDispatchLock;
   v5 = [(TSUDispatchLock *)&v10 init];
   if (v5)
   {
     v6 = dispatch_queue_attr_make_with_autorelease_frequency(MEMORY[0x277D85CD8], DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v7 = TSUCreateRecursiveQueue(v4, v6);
+    v7 = TSUCreateRecursiveQueue(labelCopy, v6);
     underlyingQueue = v5->_underlyingQueue;
     v5->_underlyingQueue = v7;
   }

@@ -1,80 +1,80 @@
 @interface HKSignedClinicalDataRecord
-+ (id)_newSignedClinicalDataRecordWithType:(id)a3 note:(id)a4 enteredInError:(BOOL)a5 modifiedDate:(id)a6 originIdentifier:(id)a7 locale:(id)a8 extractionVersion:(int64_t)a9 device:(id)a10 metadata:(id)a11 sortDate:(id)a12 country:(id)a13 state:(unint64_t)a14 credentialTypes:(id)a15 issuerIdentifier:(id)a16 issuedDate:(id)a17 relevantDate:(id)a18 expirationDate:(id)a19 signatureStatus:(int64_t)a20 subject:(id)a21 items:(id)a22 dataValue:(id)a23 sourceType:(int64_t)a24 config:(id)a25;
++ (id)_newSignedClinicalDataRecordWithType:(id)type note:(id)note enteredInError:(BOOL)error modifiedDate:(id)date originIdentifier:(id)identifier locale:(id)locale extractionVersion:(int64_t)version device:(id)self0 metadata:(id)self1 sortDate:(id)self2 country:(id)self3 state:(unint64_t)self4 credentialTypes:(id)self5 issuerIdentifier:(id)self6 issuedDate:(id)self7 relevantDate:(id)self8 expirationDate:(id)self9 signatureStatus:(int64_t)status subject:(id)subject items:(id)items dataValue:(id)value sourceType:(int64_t)sourceType config:(id)config;
 + (id)cachedConceptRelationshipKeyPaths;
 + (id)indexableConceptKeyPaths;
-+ (id)signedClinicalDataRecordWithType:(id)a3 note:(id)a4 enteredInError:(BOOL)a5 modifiedDate:(id)a6 originIdentifier:(id)a7 locale:(id)a8 extractionVersion:(int64_t)a9 device:(id)a10 metadata:(id)a11 country:(id)a12 state:(unint64_t)a13 credentialTypes:(id)a14 issuerIdentifier:(id)a15 issuedDate:(id)a16 relevantDate:(id)a17 expirationDate:(id)a18 signatureStatus:(int64_t)a19 subject:(id)a20 items:(id)a21 dataValue:(id)a22 sourceType:(int64_t)a23;
-- (BOOL)applyConcepts:(id)a3 forKeyPath:(id)a4 error:(id *)a5;
-- (BOOL)isEquivalent:(id)a3;
++ (id)signedClinicalDataRecordWithType:(id)type note:(id)note enteredInError:(BOOL)error modifiedDate:(id)date originIdentifier:(id)identifier locale:(id)locale extractionVersion:(int64_t)version device:(id)self0 metadata:(id)self1 country:(id)self2 state:(unint64_t)self3 credentialTypes:(id)self4 issuerIdentifier:(id)self5 issuedDate:(id)self6 relevantDate:(id)self7 expirationDate:(id)self8 signatureStatus:(int64_t)self9 subject:(id)subject items:(id)items dataValue:(id)value sourceType:(int64_t)sourceType;
+- (BOOL)applyConcepts:(id)concepts forKeyPath:(id)path error:(id *)error;
+- (BOOL)isEquivalent:(id)equivalent;
 - (HKSignedClinicalDataRecord)init;
-- (HKSignedClinicalDataRecord)initWithCoder:(id)a3;
+- (HKSignedClinicalDataRecord)initWithCoder:(id)coder;
 - (NSString)description;
 - (NSString)recordIssuerDisplayName;
 - (NSString)recordItemsDisplayName;
 - (NSString)recordTypeDisplayName;
-- (id)_validateWithConfiguration:(HKObjectValidationConfiguration)a3;
-- (id)codingsForKeyPath:(id)a3 error:(id *)a4;
-- (void)_setCredentialTypes:(id)a3;
-- (void)_setDataValue:(id)a3;
-- (void)_setExpirationDate:(id)a3;
-- (void)_setIssuedDate:(id)a3;
-- (void)_setIssuerIdentifier:(id)a3;
-- (void)_setItems:(id)a3;
-- (void)_setRelevantDate:(id)a3;
-- (void)_setSubject:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)_validateWithConfiguration:(HKObjectValidationConfiguration)configuration;
+- (id)codingsForKeyPath:(id)path error:(id *)error;
+- (void)_setCredentialTypes:(id)types;
+- (void)_setDataValue:(id)value;
+- (void)_setExpirationDate:(id)date;
+- (void)_setIssuedDate:(id)date;
+- (void)_setIssuerIdentifier:(id)identifier;
+- (void)_setItems:(id)items;
+- (void)_setRelevantDate:(id)date;
+- (void)_setSubject:(id)subject;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKSignedClinicalDataRecord
 
-+ (id)_newSignedClinicalDataRecordWithType:(id)a3 note:(id)a4 enteredInError:(BOOL)a5 modifiedDate:(id)a6 originIdentifier:(id)a7 locale:(id)a8 extractionVersion:(int64_t)a9 device:(id)a10 metadata:(id)a11 sortDate:(id)a12 country:(id)a13 state:(unint64_t)a14 credentialTypes:(id)a15 issuerIdentifier:(id)a16 issuedDate:(id)a17 relevantDate:(id)a18 expirationDate:(id)a19 signatureStatus:(int64_t)a20 subject:(id)a21 items:(id)a22 dataValue:(id)a23 sourceType:(int64_t)a24 config:(id)a25
++ (id)_newSignedClinicalDataRecordWithType:(id)type note:(id)note enteredInError:(BOOL)error modifiedDate:(id)date originIdentifier:(id)identifier locale:(id)locale extractionVersion:(int64_t)version device:(id)self0 metadata:(id)self1 sortDate:(id)self2 country:(id)self3 state:(unint64_t)self4 credentialTypes:(id)self5 issuerIdentifier:(id)self6 issuedDate:(id)self7 relevantDate:(id)self8 expirationDate:(id)self9 signatureStatus:(int64_t)status subject:(id)subject items:(id)items dataValue:(id)value sourceType:(int64_t)sourceType config:(id)config
 {
-  v60 = a5;
-  v25 = a15;
-  v26 = a16;
-  v27 = a17;
-  v28 = a18;
-  v29 = a19;
-  v30 = a21;
-  v31 = a22;
-  v32 = a23;
-  v33 = a25;
+  errorCopy = error;
+  typesCopy = types;
+  issuerIdentifierCopy = issuerIdentifier;
+  issuedDateCopy = issuedDate;
+  relevantDateCopy = relevantDate;
+  expirationDateCopy = expirationDate;
+  subjectCopy = subject;
+  itemsCopy = items;
+  valueCopy = value;
+  configCopy = config;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __311__HKSignedClinicalDataRecord__newSignedClinicalDataRecordWithType_note_enteredInError_modifiedDate_originIdentifier_locale_extractionVersion_device_metadata_sortDate_country_state_credentialTypes_issuerIdentifier_issuedDate_relevantDate_expirationDate_signatureStatus_subject_items_dataValue_sourceType_config___block_invoke;
   aBlock[3] = &unk_1E737A1F8;
-  v64 = v25;
-  v65 = v26;
-  v66 = v27;
-  v67 = v28;
-  v68 = v29;
-  v69 = v30;
-  v70 = v31;
-  v71 = v32;
-  v73 = a20;
-  v74 = a24;
-  v72 = v33;
-  v59 = v33;
-  v58 = v32;
-  v57 = v31;
-  v56 = v30;
-  v55 = v29;
-  v54 = v28;
-  v53 = v27;
-  v52 = v26;
-  v51 = v25;
-  v34 = a13;
-  v35 = a12;
-  v36 = a11;
-  v37 = a10;
-  v38 = a8;
-  v39 = a7;
-  v40 = a6;
-  v41 = a4;
-  v42 = a3;
+  v64 = typesCopy;
+  v65 = issuerIdentifierCopy;
+  v66 = issuedDateCopy;
+  v67 = relevantDateCopy;
+  v68 = expirationDateCopy;
+  v69 = subjectCopy;
+  v70 = itemsCopy;
+  v71 = valueCopy;
+  statusCopy = status;
+  sourceTypeCopy = sourceType;
+  v72 = configCopy;
+  v59 = configCopy;
+  v58 = valueCopy;
+  v57 = itemsCopy;
+  v56 = subjectCopy;
+  v55 = expirationDateCopy;
+  v54 = relevantDateCopy;
+  v53 = issuedDateCopy;
+  v52 = issuerIdentifierCopy;
+  v51 = typesCopy;
+  countryCopy = country;
+  sortDateCopy = sortDate;
+  metadataCopy = metadata;
+  deviceCopy = device;
+  localeCopy = locale;
+  identifierCopy = identifier;
+  dateCopy = date;
+  noteCopy = note;
+  typeCopy = type;
   v43 = _Block_copy(aBlock);
-  v62.receiver = a1;
+  v62.receiver = self;
   v62.super_class = &OBJC_METACLASS___HKSignedClinicalDataRecord;
-  v61 = objc_msgSendSuper2(&v62, sel__newMedicalRecordWithType_note_enteredInError_modifiedDate_originIdentifier_locale_extractionVersion_device_metadata_sortDate_country_state_config_, v42, v41, v60, v40, v39, v38, a9, v37, v36, v35, v34, a14, v43);
+  v61 = objc_msgSendSuper2(&v62, sel__newMedicalRecordWithType_note_enteredInError_modifiedDate_originIdentifier_locale_extractionVersion_device_metadata_sortDate_country_state_config_, typeCopy, noteCopy, errorCopy, dateCopy, identifierCopy, localeCopy, version, deviceCopy, metadataCopy, sortDateCopy, countryCopy, state, v43);
 
   return v61;
 }
@@ -150,80 +150,80 @@ uint64_t __311__HKSignedClinicalDataRecord__newSignedClinicalDataRecordWithType_
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = HKSignedClinicalDataRecord;
-  v4 = a3;
-  [(HKMedicalRecord *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_credentialTypes forKey:{@"CredentialTypes", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_issuerIdentifier forKey:@"IssuerIdentifier"];
-  [v4 encodeObject:self->_issuedDate forKey:@"IssuedDate"];
-  [v4 encodeObject:self->_relevantDate forKey:@"RelevantDate"];
-  [v4 encodeObject:self->_expirationDate forKey:@"ExpirationDate"];
-  [v4 encodeInteger:self->_signatureStatus forKey:@"SignatureStatus"];
-  [v4 encodeObject:self->_subject forKey:@"Subject"];
-  [v4 encodeObject:self->_items forKey:@"Items"];
-  [v4 encodeObject:self->_dataValue forKey:@"DataValue"];
-  [v4 encodeInteger:self->_sourceType forKey:@"SourceType"];
+  coderCopy = coder;
+  [(HKMedicalRecord *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_credentialTypes forKey:{@"CredentialTypes", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_issuerIdentifier forKey:@"IssuerIdentifier"];
+  [coderCopy encodeObject:self->_issuedDate forKey:@"IssuedDate"];
+  [coderCopy encodeObject:self->_relevantDate forKey:@"RelevantDate"];
+  [coderCopy encodeObject:self->_expirationDate forKey:@"ExpirationDate"];
+  [coderCopy encodeInteger:self->_signatureStatus forKey:@"SignatureStatus"];
+  [coderCopy encodeObject:self->_subject forKey:@"Subject"];
+  [coderCopy encodeObject:self->_items forKey:@"Items"];
+  [coderCopy encodeObject:self->_dataValue forKey:@"DataValue"];
+  [coderCopy encodeInteger:self->_sourceType forKey:@"SourceType"];
 }
 
-- (HKSignedClinicalDataRecord)initWithCoder:(id)a3
+- (HKSignedClinicalDataRecord)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v25.receiver = self;
   v25.super_class = HKSignedClinicalDataRecord;
-  v5 = [(HKMedicalRecord *)&v25 initWithCoder:v4];
+  v5 = [(HKMedicalRecord *)&v25 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = [MEMORY[0x1E695DFD8] hk_typesForArrayOf:objc_opt_class()];
-    v7 = [v4 decodeObjectOfClasses:v6 forKey:@"CredentialTypes"];
+    v7 = [coderCopy decodeObjectOfClasses:v6 forKey:@"CredentialTypes"];
     credentialTypes = v5->_credentialTypes;
     v5->_credentialTypes = v7;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"IssuerIdentifier"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"IssuerIdentifier"];
     issuerIdentifier = v5->_issuerIdentifier;
     v5->_issuerIdentifier = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"IssuedDate"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"IssuedDate"];
     issuedDate = v5->_issuedDate;
     v5->_issuedDate = v11;
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"RelevantDate"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"RelevantDate"];
     relevantDate = v5->_relevantDate;
     v5->_relevantDate = v13;
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ExpirationDate"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ExpirationDate"];
     expirationDate = v5->_expirationDate;
     v5->_expirationDate = v15;
 
-    v5->_signatureStatus = [v4 decodeIntegerForKey:@"SignatureStatus"];
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Subject"];
+    v5->_signatureStatus = [coderCopy decodeIntegerForKey:@"SignatureStatus"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Subject"];
     subject = v5->_subject;
     v5->_subject = v17;
 
     v19 = [MEMORY[0x1E695DFD8] hk_typesForArrayOf:objc_opt_class()];
-    v20 = [v4 decodeObjectOfClasses:v19 forKey:@"Items"];
+    v20 = [coderCopy decodeObjectOfClasses:v19 forKey:@"Items"];
     items = v5->_items;
     v5->_items = v20;
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"DataValue"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"DataValue"];
     dataValue = v5->_dataValue;
     v5->_dataValue = v22;
 
-    v5->_sourceType = [v4 decodeIntegerForKey:@"SourceType"];
+    v5->_sourceType = [coderCopy decodeIntegerForKey:@"SourceType"];
   }
 
   return v5;
 }
 
-- (BOOL)isEquivalent:(id)a3
+- (BOOL)isEquivalent:(id)equivalent
 {
-  v4 = a3;
+  equivalentCopy = equivalent;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equivalentCopy;
     v60.receiver = self;
     v60.super_class = HKSignedClinicalDataRecord;
     if (![(HKMedicalRecord *)&v60 isEquivalent:v5])
@@ -231,25 +231,25 @@ uint64_t __311__HKSignedClinicalDataRecord__newSignedClinicalDataRecordWithType_
       goto LABEL_45;
     }
 
-    v6 = [(HKSignedClinicalDataRecord *)self credentialTypes];
-    v7 = [v5 credentialTypes];
-    v8 = v7;
-    if (v6 == v7)
+    credentialTypes = [(HKSignedClinicalDataRecord *)self credentialTypes];
+    credentialTypes2 = [v5 credentialTypes];
+    v8 = credentialTypes2;
+    if (credentialTypes == credentialTypes2)
     {
     }
 
     else
     {
-      v9 = [v5 credentialTypes];
-      if (!v9)
+      credentialTypes3 = [v5 credentialTypes];
+      if (!credentialTypes3)
       {
         goto LABEL_44;
       }
 
-      v10 = v9;
-      v11 = [(HKSignedClinicalDataRecord *)self credentialTypes];
-      v12 = [v5 credentialTypes];
-      v13 = [v11 isEqualToArray:v12];
+      v10 = credentialTypes3;
+      credentialTypes4 = [(HKSignedClinicalDataRecord *)self credentialTypes];
+      credentialTypes5 = [v5 credentialTypes];
+      v13 = [credentialTypes4 isEqualToArray:credentialTypes5];
 
       if (!v13)
       {
@@ -257,25 +257,25 @@ uint64_t __311__HKSignedClinicalDataRecord__newSignedClinicalDataRecordWithType_
       }
     }
 
-    v6 = [(HKSignedClinicalDataRecord *)self issuerIdentifier];
-    v15 = [v5 issuerIdentifier];
-    v8 = v15;
-    if (v6 == v15)
+    credentialTypes = [(HKSignedClinicalDataRecord *)self issuerIdentifier];
+    issuerIdentifier = [v5 issuerIdentifier];
+    v8 = issuerIdentifier;
+    if (credentialTypes == issuerIdentifier)
     {
     }
 
     else
     {
-      v16 = [v5 issuerIdentifier];
-      if (!v16)
+      issuerIdentifier2 = [v5 issuerIdentifier];
+      if (!issuerIdentifier2)
       {
         goto LABEL_44;
       }
 
-      v17 = v16;
-      v18 = [(HKSignedClinicalDataRecord *)self issuerIdentifier];
-      v19 = [v5 issuerIdentifier];
-      v20 = [v18 isEqualToString:v19];
+      v17 = issuerIdentifier2;
+      issuerIdentifier3 = [(HKSignedClinicalDataRecord *)self issuerIdentifier];
+      issuerIdentifier4 = [v5 issuerIdentifier];
+      v20 = [issuerIdentifier3 isEqualToString:issuerIdentifier4];
 
       if (!v20)
       {
@@ -283,25 +283,25 @@ uint64_t __311__HKSignedClinicalDataRecord__newSignedClinicalDataRecordWithType_
       }
     }
 
-    v6 = [(HKSignedClinicalDataRecord *)self issuedDate];
-    v21 = [v5 issuedDate];
-    v8 = v21;
-    if (v6 == v21)
+    credentialTypes = [(HKSignedClinicalDataRecord *)self issuedDate];
+    issuedDate = [v5 issuedDate];
+    v8 = issuedDate;
+    if (credentialTypes == issuedDate)
     {
     }
 
     else
     {
-      v22 = [v5 issuedDate];
-      if (!v22)
+      issuedDate2 = [v5 issuedDate];
+      if (!issuedDate2)
       {
         goto LABEL_44;
       }
 
-      v23 = v22;
-      v24 = [(HKSignedClinicalDataRecord *)self issuedDate];
-      v25 = [v5 issuedDate];
-      v26 = [v24 isEqual:v25];
+      v23 = issuedDate2;
+      issuedDate3 = [(HKSignedClinicalDataRecord *)self issuedDate];
+      issuedDate4 = [v5 issuedDate];
+      v26 = [issuedDate3 isEqual:issuedDate4];
 
       if (!v26)
       {
@@ -309,25 +309,25 @@ uint64_t __311__HKSignedClinicalDataRecord__newSignedClinicalDataRecordWithType_
       }
     }
 
-    v6 = [(HKSignedClinicalDataRecord *)self relevantDate];
-    v27 = [v5 relevantDate];
-    v8 = v27;
-    if (v6 == v27)
+    credentialTypes = [(HKSignedClinicalDataRecord *)self relevantDate];
+    relevantDate = [v5 relevantDate];
+    v8 = relevantDate;
+    if (credentialTypes == relevantDate)
     {
     }
 
     else
     {
-      v28 = [v5 relevantDate];
-      if (!v28)
+      relevantDate2 = [v5 relevantDate];
+      if (!relevantDate2)
       {
         goto LABEL_44;
       }
 
-      v29 = v28;
-      v30 = [(HKSignedClinicalDataRecord *)self relevantDate];
-      v31 = [v5 relevantDate];
-      v32 = [v30 isEqual:v31];
+      v29 = relevantDate2;
+      relevantDate3 = [(HKSignedClinicalDataRecord *)self relevantDate];
+      relevantDate4 = [v5 relevantDate];
+      v32 = [relevantDate3 isEqual:relevantDate4];
 
       if (!v32)
       {
@@ -335,25 +335,25 @@ uint64_t __311__HKSignedClinicalDataRecord__newSignedClinicalDataRecordWithType_
       }
     }
 
-    v6 = [(HKSignedClinicalDataRecord *)self expirationDate];
-    v33 = [v5 expirationDate];
-    v8 = v33;
-    if (v6 == v33)
+    credentialTypes = [(HKSignedClinicalDataRecord *)self expirationDate];
+    expirationDate = [v5 expirationDate];
+    v8 = expirationDate;
+    if (credentialTypes == expirationDate)
     {
     }
 
     else
     {
-      v34 = [v5 expirationDate];
-      if (!v34)
+      expirationDate2 = [v5 expirationDate];
+      if (!expirationDate2)
       {
         goto LABEL_44;
       }
 
-      v35 = v34;
-      v36 = [(HKSignedClinicalDataRecord *)self expirationDate];
-      v37 = [v5 expirationDate];
-      v38 = [v36 isEqual:v37];
+      v35 = expirationDate2;
+      expirationDate3 = [(HKSignedClinicalDataRecord *)self expirationDate];
+      expirationDate4 = [v5 expirationDate];
+      v38 = [expirationDate3 isEqual:expirationDate4];
 
       if (!v38)
       {
@@ -361,31 +361,31 @@ uint64_t __311__HKSignedClinicalDataRecord__newSignedClinicalDataRecordWithType_
       }
     }
 
-    v39 = [(HKSignedClinicalDataRecord *)self signatureStatus];
-    if (v39 != [v5 signatureStatus])
+    signatureStatus = [(HKSignedClinicalDataRecord *)self signatureStatus];
+    if (signatureStatus != [v5 signatureStatus])
     {
       goto LABEL_45;
     }
 
-    v6 = [(HKSignedClinicalDataRecord *)self subject];
-    v40 = [v5 subject];
-    v8 = v40;
-    if (v6 == v40)
+    credentialTypes = [(HKSignedClinicalDataRecord *)self subject];
+    subject = [v5 subject];
+    v8 = subject;
+    if (credentialTypes == subject)
     {
     }
 
     else
     {
-      v41 = [v5 subject];
-      if (!v41)
+      subject2 = [v5 subject];
+      if (!subject2)
       {
         goto LABEL_44;
       }
 
-      v42 = v41;
-      v43 = [(HKSignedClinicalDataRecord *)self subject];
-      v44 = [v5 subject];
-      v45 = [v43 isEqual:v44];
+      v42 = subject2;
+      subject3 = [(HKSignedClinicalDataRecord *)self subject];
+      subject4 = [v5 subject];
+      v45 = [subject3 isEqual:subject4];
 
       if (!v45)
       {
@@ -393,25 +393,25 @@ uint64_t __311__HKSignedClinicalDataRecord__newSignedClinicalDataRecordWithType_
       }
     }
 
-    v6 = [(HKSignedClinicalDataRecord *)self items];
-    v46 = [v5 items];
-    v8 = v46;
-    if (v6 == v46)
+    credentialTypes = [(HKSignedClinicalDataRecord *)self items];
+    items = [v5 items];
+    v8 = items;
+    if (credentialTypes == items)
     {
     }
 
     else
     {
-      v47 = [v5 items];
-      if (!v47)
+      items2 = [v5 items];
+      if (!items2)
       {
         goto LABEL_44;
       }
 
-      v48 = v47;
-      v49 = [(HKSignedClinicalDataRecord *)self items];
-      v50 = [v5 items];
-      v51 = [v49 isEqualToArray:v50];
+      v48 = items2;
+      items3 = [(HKSignedClinicalDataRecord *)self items];
+      items4 = [v5 items];
+      v51 = [items3 isEqualToArray:items4];
 
       if (!v51)
       {
@@ -419,25 +419,25 @@ uint64_t __311__HKSignedClinicalDataRecord__newSignedClinicalDataRecordWithType_
       }
     }
 
-    v6 = [(HKSignedClinicalDataRecord *)self dataValue];
-    v52 = [v5 dataValue];
-    v8 = v52;
-    if (v6 == v52)
+    credentialTypes = [(HKSignedClinicalDataRecord *)self dataValue];
+    dataValue = [v5 dataValue];
+    v8 = dataValue;
+    if (credentialTypes == dataValue)
     {
 
 LABEL_49:
-      v59 = [(HKSignedClinicalDataRecord *)self sourceType];
-      v14 = v59 == [v5 sourceType];
+      sourceType = [(HKSignedClinicalDataRecord *)self sourceType];
+      v14 = sourceType == [v5 sourceType];
       goto LABEL_46;
     }
 
-    v53 = [v5 dataValue];
-    if (v53)
+    dataValue2 = [v5 dataValue];
+    if (dataValue2)
     {
-      v54 = v53;
-      v55 = [(HKSignedClinicalDataRecord *)self dataValue];
-      v56 = [v5 dataValue];
-      v57 = [v55 isEqual:v56];
+      v54 = dataValue2;
+      dataValue3 = [(HKSignedClinicalDataRecord *)self dataValue];
+      dataValue4 = [v5 dataValue];
+      v57 = [dataValue3 isEqual:dataValue4];
 
       if (v57)
       {
@@ -462,83 +462,83 @@ LABEL_47:
   return v14;
 }
 
-- (void)_setCredentialTypes:(id)a3
+- (void)_setCredentialTypes:(id)types
 {
-  v4 = [a3 copy];
+  v4 = [types copy];
   credentialTypes = self->_credentialTypes;
   self->_credentialTypes = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)_setIssuerIdentifier:(id)a3
+- (void)_setIssuerIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   issuerIdentifier = self->_issuerIdentifier;
   self->_issuerIdentifier = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)_setIssuedDate:(id)a3
+- (void)_setIssuedDate:(id)date
 {
-  v4 = [a3 copy];
+  v4 = [date copy];
   issuedDate = self->_issuedDate;
   self->_issuedDate = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)_setRelevantDate:(id)a3
+- (void)_setRelevantDate:(id)date
 {
-  v4 = [a3 copy];
+  v4 = [date copy];
   relevantDate = self->_relevantDate;
   self->_relevantDate = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)_setExpirationDate:(id)a3
+- (void)_setExpirationDate:(id)date
 {
-  v4 = [a3 copy];
+  v4 = [date copy];
   expirationDate = self->_expirationDate;
   self->_expirationDate = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)_setSubject:(id)a3
+- (void)_setSubject:(id)subject
 {
-  v4 = [a3 copy];
+  v4 = [subject copy];
   subject = self->_subject;
   self->_subject = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)_setItems:(id)a3
+- (void)_setItems:(id)items
 {
-  v4 = [a3 copy];
+  v4 = [items copy];
   items = self->_items;
   self->_items = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)_setDataValue:(id)a3
+- (void)_setDataValue:(id)value
 {
-  v4 = [a3 copy];
+  v4 = [value copy];
   dataValue = self->_dataValue;
   self->_dataValue = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (id)_validateWithConfiguration:(HKObjectValidationConfiguration)a3
+- (id)_validateWithConfiguration:(HKObjectValidationConfiguration)configuration
 {
   v13.receiver = self;
   v13.super_class = HKSignedClinicalDataRecord;
-  v5 = [(HKMedicalRecord *)&v13 _validateWithConfiguration:a3.var0, a3.var1];
+  v5 = [(HKMedicalRecord *)&v13 _validateWithConfiguration:configuration.var0, configuration.var1];
   v6 = v5;
   if (v5)
   {
@@ -618,16 +618,16 @@ LABEL_18:
 
 - (NSString)recordTypeDisplayName
 {
-  v2 = [(HKSignedClinicalDataRecord *)self credentialTypes];
-  v3 = [HKSignedClinicalDataUtilities recordTypeDisplayNameWithTypes:v2];
+  credentialTypes = [(HKSignedClinicalDataRecord *)self credentialTypes];
+  v3 = [HKSignedClinicalDataUtilities recordTypeDisplayNameWithTypes:credentialTypes];
 
   return v3;
 }
 
 - (NSString)recordItemsDisplayName
 {
-  v2 = [(HKSignedClinicalDataRecord *)self items];
-  v3 = [v2 hk_map:&__block_literal_global_56];
+  items = [(HKSignedClinicalDataRecord *)self items];
+  v3 = [items hk_map:&__block_literal_global_56];
   v4 = [HKSignedClinicalDataUtilities recordItemsDisplayNameWithItems:v3];
 
   return v4;
@@ -643,8 +643,8 @@ id __67__HKSignedClinicalDataRecord_HealthRecords__recordItemsDisplayName__block
 
 - (NSString)recordIssuerDisplayName
 {
-  v3 = [(HKSignedClinicalDataRecord *)self issuerIdentifier];
-  v4 = [HKSignedClinicalDataUtilities preferredRecordIssuerDisplayNameWithIssuerIdentifier:v3];
+  issuerIdentifier = [(HKSignedClinicalDataRecord *)self issuerIdentifier];
+  v4 = [HKSignedClinicalDataUtilities preferredRecordIssuerDisplayNameWithIssuerIdentifier:issuerIdentifier];
 
   if ([v4 length])
   {
@@ -653,19 +653,19 @@ id __67__HKSignedClinicalDataRecord_HealthRecords__recordItemsDisplayName__block
 
   else
   {
-    v6 = [(HKObject *)self sourceRevision];
-    v7 = [v6 source];
-    v8 = [v7 name];
+    sourceRevision = [(HKObject *)self sourceRevision];
+    source = [sourceRevision source];
+    name = [source name];
 
-    if ([v8 length])
+    if ([name length])
     {
-      v5 = v8;
+      v5 = name;
     }
 
     else
     {
-      v9 = [(HKSignedClinicalDataRecord *)self issuerIdentifier];
-      v5 = [HKSignedClinicalDataUtilities recordIssuerDisplayNameWithIssuerIdentifier:v9];
+      issuerIdentifier2 = [(HKSignedClinicalDataRecord *)self issuerIdentifier];
+      v5 = [HKSignedClinicalDataUtilities recordIssuerDisplayNameWithIssuerIdentifier:issuerIdentifier2];
     }
   }
 
@@ -674,7 +674,7 @@ id __67__HKSignedClinicalDataRecord_HealthRecords__recordItemsDisplayName__block
 
 + (id)indexableConceptKeyPaths
 {
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___HKSignedClinicalDataRecord;
   v2 = objc_msgSendSuper2(&v6, sel_indexableConceptKeyPaths);
   v3 = [v2 mutableCopy];
@@ -687,27 +687,27 @@ id __67__HKSignedClinicalDataRecord_HealthRecords__recordItemsDisplayName__block
 
 + (id)cachedConceptRelationshipKeyPaths
 {
-  v4.receiver = a1;
+  v4.receiver = self;
   v4.super_class = &OBJC_METACLASS___HKSignedClinicalDataRecord;
   v2 = objc_msgSendSuper2(&v4, sel_cachedConceptRelationshipKeyPaths);
 
   return v2;
 }
 
-- (id)codingsForKeyPath:(id)a3 error:(id *)a4
+- (id)codingsForKeyPath:(id)path error:(id *)error
 {
-  v6 = a3;
-  v7 = [HKConceptIndexUtilities firstComponentForKeyPath:v6 error:a4];
+  pathCopy = path;
+  v7 = [HKConceptIndexUtilities firstComponentForKeyPath:pathCopy error:error];
   v8 = v7;
   if (v7)
   {
     if ([v7 isEqualToString:@"items"])
     {
-      v9 = [HKConceptIndexUtilities keyPathRemovingFirstComponentFromKeyPath:v6 error:a4];
+      v9 = [HKConceptIndexUtilities keyPathRemovingFirstComponentFromKeyPath:pathCopy error:error];
       if (v9)
       {
-        v10 = [(HKSignedClinicalDataRecord *)self items];
-        v11 = [v10 codingsForKeyPath:v9 error:a4];
+        items = [(HKSignedClinicalDataRecord *)self items];
+        v11 = [items codingsForKeyPath:v9 error:error];
       }
 
       else
@@ -720,7 +720,7 @@ id __67__HKSignedClinicalDataRecord_HealthRecords__recordItemsDisplayName__block
     {
       v13.receiver = self;
       v13.super_class = HKSignedClinicalDataRecord;
-      v11 = [(HKMedicalRecord *)&v13 codingsForKeyPath:v6 error:a4];
+      v11 = [(HKMedicalRecord *)&v13 codingsForKeyPath:pathCopy error:error];
     }
   }
 
@@ -732,30 +732,30 @@ id __67__HKSignedClinicalDataRecord_HealthRecords__recordItemsDisplayName__block
   return v11;
 }
 
-- (BOOL)applyConcepts:(id)a3 forKeyPath:(id)a4 error:(id *)a5
+- (BOOL)applyConcepts:(id)concepts forKeyPath:(id)path error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [HKConceptIndexUtilities firstComponentForKeyPath:v9 error:a5];
+  conceptsCopy = concepts;
+  pathCopy = path;
+  v10 = [HKConceptIndexUtilities firstComponentForKeyPath:pathCopy error:error];
   v11 = v10;
   if (v10)
   {
     if ([v10 isEqualToString:@"items"])
     {
-      v12 = [HKConceptIndexUtilities keyPathRemovingFirstComponentFromKeyPath:v9 error:a5];
+      v12 = [HKConceptIndexUtilities keyPathRemovingFirstComponentFromKeyPath:pathCopy error:error];
       if (v12)
       {
-        v13 = [(HKSignedClinicalDataRecord *)self items];
+        items = [(HKSignedClinicalDataRecord *)self items];
 
-        if (v13)
+        if (items)
         {
-          v14 = [(HKSignedClinicalDataRecord *)self items];
-          v15 = [v14 applyConcepts:v8 forKeyPath:v12 error:a5];
+          items2 = [(HKSignedClinicalDataRecord *)self items];
+          v15 = [items2 applyConcepts:conceptsCopy forKeyPath:v12 error:error];
         }
 
         else
         {
-          v15 = HKIndexableObjectCheckCardinalityForIndexRestore([v8 count], 0, v9, a5);
+          v15 = HKIndexableObjectCheckCardinalityForIndexRestore([conceptsCopy count], 0, pathCopy, error);
         }
       }
 
@@ -769,7 +769,7 @@ id __67__HKSignedClinicalDataRecord_HealthRecords__recordItemsDisplayName__block
     {
       v17.receiver = self;
       v17.super_class = HKSignedClinicalDataRecord;
-      v15 = [(HKMedicalRecord *)&v17 applyConcepts:v8 forKeyPath:v9 error:a5];
+      v15 = [(HKMedicalRecord *)&v17 applyConcepts:conceptsCopy forKeyPath:pathCopy error:error];
     }
   }
 
@@ -781,27 +781,27 @@ id __67__HKSignedClinicalDataRecord_HealthRecords__recordItemsDisplayName__block
   return v15;
 }
 
-+ (id)signedClinicalDataRecordWithType:(id)a3 note:(id)a4 enteredInError:(BOOL)a5 modifiedDate:(id)a6 originIdentifier:(id)a7 locale:(id)a8 extractionVersion:(int64_t)a9 device:(id)a10 metadata:(id)a11 country:(id)a12 state:(unint64_t)a13 credentialTypes:(id)a14 issuerIdentifier:(id)a15 issuedDate:(id)a16 relevantDate:(id)a17 expirationDate:(id)a18 signatureStatus:(int64_t)a19 subject:(id)a20 items:(id)a21 dataValue:(id)a22 sourceType:(int64_t)a23
++ (id)signedClinicalDataRecordWithType:(id)type note:(id)note enteredInError:(BOOL)error modifiedDate:(id)date originIdentifier:(id)identifier locale:(id)locale extractionVersion:(int64_t)version device:(id)self0 metadata:(id)self1 country:(id)self2 state:(unint64_t)self3 credentialTypes:(id)self4 issuerIdentifier:(id)self5 issuedDate:(id)self6 relevantDate:(id)self7 expirationDate:(id)self8 signatureStatus:(int64_t)self9 subject:(id)subject items:(id)items dataValue:(id)value sourceType:(int64_t)sourceType
 {
-  v40 = a5;
-  v42 = a16;
-  v23 = a22;
-  v24 = a21;
-  v32 = a20;
-  v31 = a18;
-  v25 = a17;
-  v30 = a15;
-  v29 = a14;
-  v43 = a12;
-  v44 = a11;
-  v47 = a10;
-  v34 = a8;
-  v46 = a7;
-  v26 = a6;
-  v37 = a4;
-  v27 = a3;
-  v39 = [HKSemanticDate semanticDateWithKeyPath:@"issuedDate" date:v42];
-  v41 = [HKSignedClinicalDataRecord signedClinicalDataRecordWithType:v27 note:v37 enteredInError:v40 modifiedDate:v26 originIdentifier:v46 locale:v34 extractionVersion:a9 device:v47 metadata:v44 sortDate:v39 country:v43 state:a13 credentialTypes:v29 issuerIdentifier:v30 issuedDate:v42 relevantDate:v25 expirationDate:v31 signatureStatus:a19 subject:v32 items:v24 dataValue:v23 sourceType:a23];
+  errorCopy = error;
+  issuedDateCopy = issuedDate;
+  valueCopy = value;
+  itemsCopy = items;
+  subjectCopy = subject;
+  expirationDateCopy = expirationDate;
+  relevantDateCopy = relevantDate;
+  issuerIdentifierCopy = issuerIdentifier;
+  typesCopy = types;
+  countryCopy = country;
+  metadataCopy = metadata;
+  deviceCopy = device;
+  localeCopy = locale;
+  identifierCopy = identifier;
+  dateCopy = date;
+  noteCopy = note;
+  typeCopy = type;
+  v39 = [HKSemanticDate semanticDateWithKeyPath:@"issuedDate" date:issuedDateCopy];
+  v41 = [HKSignedClinicalDataRecord signedClinicalDataRecordWithType:typeCopy note:noteCopy enteredInError:errorCopy modifiedDate:dateCopy originIdentifier:identifierCopy locale:localeCopy extractionVersion:version device:deviceCopy metadata:metadataCopy sortDate:v39 country:countryCopy state:state credentialTypes:typesCopy issuerIdentifier:issuerIdentifierCopy issuedDate:issuedDateCopy relevantDate:relevantDateCopy expirationDate:expirationDateCopy signatureStatus:status subject:subjectCopy items:itemsCopy dataValue:valueCopy sourceType:sourceType];
 
   return v41;
 }

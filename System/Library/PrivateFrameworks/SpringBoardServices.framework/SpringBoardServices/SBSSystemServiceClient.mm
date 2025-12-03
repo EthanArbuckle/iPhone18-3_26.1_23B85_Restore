@@ -9,90 +9,90 @@
 - (NSDictionary)widgetControllerStateDump;
 - (NSMutableArray)systemApertureModelStateDump;
 - (NSMutableDictionary)animationFrameRecordings;
-- (id)acquireAssertionForReachabilityEnabled:(BOOL)a3;
-- (id)acquireHUDHiddenAssertionForIdentifier:(id)a3;
+- (id)acquireAssertionForReachabilityEnabled:(BOOL)enabled;
+- (id)acquireHUDHiddenAssertionForIdentifier:(id)identifier;
 - (id)availableRecordableFlipBookElementIdentifiers;
-- (id)deserializedStringArrayForKey:(const char *)a3 fromPayload:(id)a4;
-- (id)registerAssociatedHintViewContextId:(unsigned int)a3 layerRenderId:(unint64_t)a4 layerSize:(CGSize)a5 forButtonKind:(int64_t)a6;
+- (id)deserializedStringArrayForKey:(const char *)key fromPayload:(id)payload;
+- (id)registerAssociatedHintViewContextId:(unsigned int)id layerRenderId:(unint64_t)renderId layerSize:(CGSize)size forButtonKind:(int64_t)kind;
 - (int64_t)passcodePolicy;
-- (int64_t)toggleStateForButtonKind:(int64_t)a3;
-- (void)_handleButtonEventConsumePressMessage:(id)a3;
-- (void)acquireAssertionOfType:(int64_t)a3 forReason:(id)a4 withCompletion:(id)a5;
-- (void)addWidgetStackWithIdentifiers:(id)a3 toPage:(int)a4 withSizing:(int)a5;
-- (void)addWidgetWithIdentifier:(id)a3 toPage:(int)a4 withSizing:(int)a5;
+- (int64_t)toggleStateForButtonKind:(int64_t)kind;
+- (void)_handleButtonEventConsumePressMessage:(id)message;
+- (void)acquireAssertionOfType:(int64_t)type forReason:(id)reason withCompletion:(id)completion;
+- (void)addWidgetStackWithIdentifiers:(id)identifiers toPage:(int)page withSizing:(int)sizing;
+- (void)addWidgetWithIdentifier:(id)identifier toPage:(int)page withSizing:(int)sizing;
 - (void)addWidgetsToEachPage;
 - (void)clearAllUserNotifications;
-- (void)countScenesForBundleIdentifier:(id)a3 withCompletion:(id)a4;
-- (void)disableRemoteStateDumpWithCompletion:(id)a3;
-- (void)enableRemoteStateDumpWithTimeout:(int64_t)a3 completion:(id)a4;
+- (void)countScenesForBundleIdentifier:(id)identifier withCompletion:(id)completion;
+- (void)disableRemoteStateDumpWithCompletion:(id)completion;
+- (void)enableRemoteStateDumpWithTimeout:(int64_t)timeout completion:(id)completion;
 - (void)enterLostMode;
 - (void)exitLostMode;
-- (void)fetchHapticTypeForButtonKind:(int64_t)a3 completion:(id)a4;
-- (void)fetchUnlockCredentialSetWithCompletion:(id)a3;
-- (void)handleMessage:(id)a3 withType:(int64_t)a4;
-- (void)initiateSecureFlipBookRecordingsForElement:(id)a3 withCompletion:(id)a4;
-- (void)loadStashedSwitcherModelFromPath:(id)a3;
-- (void)requestAppSwitcherAppearanceForHiddenApplicationWithBundleIdentifier:(id)a3 reacquiringExistingAssertion:(id)a4 completion:(id)a5;
-- (void)requestResetLayoutAttributesWithCompletion:(id)a3;
-- (void)requestStateDump:(unint64_t)a3 withCompletion:(id)a4;
-- (void)requestSystemApertureStateDumpWithCompletion:(id)a3;
-- (void)requestSystemGlowEffectWithInitialStyle:(int64_t)a3 completion:(id)a4;
-- (void)requestUpdateSwitcherWindowingMode:(int)a3 withCompletion:(id)a4;
-- (void)resetToHomeScreenAnimated:(BOOL)a3;
-- (void)setAccessoryType:(int64_t)a3 attached:(BOOL)a4;
-- (void)setAlertsEnabled:(BOOL)a3;
-- (void)setAmbientPresentationState:(int64_t)a3;
-- (void)setApplicationBundleIdentifier:(id)a3 blockedForScreenTime:(BOOL)a4;
-- (void)setButtonEventServiceIsWaitingForServerMessages:(BOOL)a3;
-- (void)setChamoisHideStripsEnabled:(BOOL)a3;
-- (void)setChamoisPrefersDockHidden:(BOOL)a3;
-- (void)setChamoisWindowingUIEnabled:(BOOL)a3;
-- (void)setEventMask:(unint64_t)a3 forButtonKind:(int64_t)a4 priority:(int64_t)a5;
-- (void)setHapticType:(int64_t)a3 forButtonKind:(int64_t)a4;
-- (void)setHiddenFeaturesEnabled:(BOOL)a3;
-- (void)setIdleTimerEnabled:(BOOL)a3;
-- (void)setMallocStackLoggingEnabled:(BOOL)a3;
-- (void)setOrientationLockEnabled:(BOOL)a3;
-- (void)setPasscodePolicy:(int64_t)a3;
-- (void)setReachabilityActive:(BOOL)a3;
-- (void)setRequestsHIDEvents:(BOOL)a3 token:(id)a4 forButtonKind:(int64_t)a5;
-- (void)setSpringBoardAnimationFrameRecordingEnabledForUpdateTypes:(unint64_t)a3;
-- (void)setSystemApertureUnderAutomationTesting:(BOOL)a3;
-- (void)setTestRunnerRecoveryApplicationBundleIdentifier:(id)a3;
+- (void)fetchHapticTypeForButtonKind:(int64_t)kind completion:(id)completion;
+- (void)fetchUnlockCredentialSetWithCompletion:(id)completion;
+- (void)handleMessage:(id)message withType:(int64_t)type;
+- (void)initiateSecureFlipBookRecordingsForElement:(id)element withCompletion:(id)completion;
+- (void)loadStashedSwitcherModelFromPath:(id)path;
+- (void)requestAppSwitcherAppearanceForHiddenApplicationWithBundleIdentifier:(id)identifier reacquiringExistingAssertion:(id)assertion completion:(id)completion;
+- (void)requestResetLayoutAttributesWithCompletion:(id)completion;
+- (void)requestStateDump:(unint64_t)dump withCompletion:(id)completion;
+- (void)requestSystemApertureStateDumpWithCompletion:(id)completion;
+- (void)requestSystemGlowEffectWithInitialStyle:(int64_t)style completion:(id)completion;
+- (void)requestUpdateSwitcherWindowingMode:(int)mode withCompletion:(id)completion;
+- (void)resetToHomeScreenAnimated:(BOOL)animated;
+- (void)setAccessoryType:(int64_t)type attached:(BOOL)attached;
+- (void)setAlertsEnabled:(BOOL)enabled;
+- (void)setAmbientPresentationState:(int64_t)state;
+- (void)setApplicationBundleIdentifier:(id)identifier blockedForScreenTime:(BOOL)time;
+- (void)setButtonEventServiceIsWaitingForServerMessages:(BOOL)messages;
+- (void)setChamoisHideStripsEnabled:(BOOL)enabled;
+- (void)setChamoisPrefersDockHidden:(BOOL)hidden;
+- (void)setChamoisWindowingUIEnabled:(BOOL)enabled;
+- (void)setEventMask:(unint64_t)mask forButtonKind:(int64_t)kind priority:(int64_t)priority;
+- (void)setHapticType:(int64_t)type forButtonKind:(int64_t)kind;
+- (void)setHiddenFeaturesEnabled:(BOOL)enabled;
+- (void)setIdleTimerEnabled:(BOOL)enabled;
+- (void)setMallocStackLoggingEnabled:(BOOL)enabled;
+- (void)setOrientationLockEnabled:(BOOL)enabled;
+- (void)setPasscodePolicy:(int64_t)policy;
+- (void)setReachabilityActive:(BOOL)active;
+- (void)setRequestsHIDEvents:(BOOL)events token:(id)token forButtonKind:(int64_t)kind;
+- (void)setSpringBoardAnimationFrameRecordingEnabledForUpdateTypes:(unint64_t)types;
+- (void)setSystemApertureUnderAutomationTesting:(BOOL)testing;
+- (void)setTestRunnerRecoveryApplicationBundleIdentifier:(id)identifier;
 - (void)setUserPresenceDetectedSinceWake;
-- (void)stashSwitcherModelToPath:(id)a3;
+- (void)stashSwitcherModelToPath:(id)path;
 - (void)suspendAllDisplays;
 - (void)toggleMenuBarVisibility;
-- (void)updateHintViewContentVisibility:(int64_t)a3 forButton:(int64_t)a4 animationSettings:(id)a5;
-- (void)updateSystemGlowStyle:(int64_t)a3;
-- (void)writeStateDump:(unint64_t)a3 toTextFileAtPath:(id)a4;
-- (void)writeSystemApertureStateDumpToTextFileAtPath:(id)a3;
+- (void)updateHintViewContentVisibility:(int64_t)visibility forButton:(int64_t)button animationSettings:(id)settings;
+- (void)updateSystemGlowStyle:(int64_t)style;
+- (void)writeStateDump:(unint64_t)dump toTextFileAtPath:(id)path;
+- (void)writeSystemApertureStateDumpToTextFileAtPath:(id)path;
 @end
 
 @implementation SBSSystemServiceClient
 
-- (void)requestAppSwitcherAppearanceForHiddenApplicationWithBundleIdentifier:(id)a3 reacquiringExistingAssertion:(id)a4 completion:(id)a5
+- (void)requestAppSwitcherAppearanceForHiddenApplicationWithBundleIdentifier:(id)identifier reacquiringExistingAssertion:(id)assertion completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v11)
+  identifierCopy = identifier;
+  assertionCopy = assertion;
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [SBSSystemServiceClient requestAppSwitcherAppearanceForHiddenApplicationWithBundleIdentifier:a2 reacquiringExistingAssertion:self completion:?];
   }
 
-  v12 = [v10 receiveRight];
-  if (v12 || (v12 = objc_alloc_init(MEMORY[0x1E698E6C0]), ([v12 isUsable] & 1) != 0))
+  receiveRight = [assertionCopy receiveRight];
+  if (receiveRight || (receiveRight = objc_alloc_init(MEMORY[0x1E698E6C0]), ([receiveRight isUsable] & 1) != 0))
   {
-    objc_initWeak(&location, v10);
+    objc_initWeak(&location, assertionCopy);
     v13 = MEMORY[0x1E699FCF8];
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __135__SBSSystemServiceClient_requestAppSwitcherAppearanceForHiddenApplicationWithBundleIdentifier_reacquiringExistingAssertion_completion___block_invoke;
     v21[3] = &unk_1E7360440;
-    v14 = v12;
+    v14 = receiveRight;
     v22 = v14;
-    v23 = v9;
+    v23 = identifierCopy;
     v15 = [v13 messageWithPacker:v21];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
@@ -100,11 +100,11 @@
     v16[3] = &unk_1E7360490;
     v16[4] = self;
     objc_copyWeak(&v19, &location);
-    v20 = v10 != 0;
-    v12 = v14;
-    v17 = v12;
-    v18 = v11;
-    [(FBSServiceFacilityClient *)self sendMessage:v15 withType:0 replyHandler:v16 waitForReply:v10 != 0 timeout:0.0];
+    v20 = assertionCopy != 0;
+    receiveRight = v14;
+    v17 = receiveRight;
+    v18 = completionCopy;
+    [(FBSServiceFacilityClient *)self sendMessage:v15 withType:0 replyHandler:v16 waitForReply:assertionCopy != 0 timeout:0.0];
 
     objc_destroyWeak(&v19);
     objc_destroyWeak(&location);
@@ -112,7 +112,7 @@
 
   else
   {
-    (*(v11 + 2))(v11, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 }
 
@@ -195,17 +195,17 @@ LABEL_12:
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)requestResetLayoutAttributesWithCompletion:(id)a3
+- (void)requestResetLayoutAttributesWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E699FCF8] message];
+  completionCopy = completion;
+  message = [MEMORY[0x1E699FCF8] message];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __69__SBSSystemServiceClient_requestResetLayoutAttributesWithCompletion___block_invoke;
   v7[3] = &unk_1E735FD90;
-  v8 = v4;
-  v6 = v4;
-  [(FBSServiceFacilityClient *)self sendMessage:v5 withType:1 replyHandler:v7 waitForReply:0 timeout:0.0];
+  v8 = completionCopy;
+  v6 = completionCopy;
+  [(FBSServiceFacilityClient *)self sendMessage:message withType:1 replyHandler:v7 waitForReply:0 timeout:0.0];
 }
 
 uint64_t __69__SBSSystemServiceClient_requestResetLayoutAttributesWithCompletion___block_invoke(uint64_t a1)
@@ -219,21 +219,21 @@ uint64_t __69__SBSSystemServiceClient_requestResetLayoutAttributesWithCompletion
   return result;
 }
 
-- (void)requestUpdateSwitcherWindowingMode:(int)a3 withCompletion:(id)a4
+- (void)requestUpdateSwitcherWindowingMode:(int)mode withCompletion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __76__SBSSystemServiceClient_requestUpdateSwitcherWindowingMode_withCompletion___block_invoke;
   v11[3] = &__block_descriptor_36_e33_v16__0__NSObject_OS_xpc_object__8l;
-  v12 = a3;
+  modeCopy = mode;
   v7 = [MEMORY[0x1E699FCF8] messageWithPacker:v11];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __76__SBSSystemServiceClient_requestUpdateSwitcherWindowingMode_withCompletion___block_invoke_2;
   v9[3] = &unk_1E735FD90;
-  v10 = v6;
-  v8 = v6;
+  v10 = completionCopy;
+  v8 = completionCopy;
   [(FBSServiceFacilityClient *)self sendMessage:v7 withType:2 replyHandler:v9 waitForReply:0 timeout:0.0];
 }
 
@@ -248,18 +248,18 @@ uint64_t __76__SBSSystemServiceClient_requestUpdateSwitcherWindowingMode_withCom
   return result;
 }
 
-- (void)fetchUnlockCredentialSetWithCompletion:(id)a3
+- (void)fetchUnlockCredentialSetWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v5 = [MEMORY[0x1E699FCF8] message];
+    message = [MEMORY[0x1E699FCF8] message];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __65__SBSSystemServiceClient_fetchUnlockCredentialSetWithCompletion___block_invoke;
     v6[3] = &unk_1E735FD90;
-    v7 = v4;
-    [(FBSServiceFacilityClient *)self sendMessage:v5 withType:3 replyHandler:v6 waitForReply:0 timeout:0.0];
+    v7 = completionCopy;
+    [(FBSServiceFacilityClient *)self sendMessage:message withType:3 replyHandler:v6 waitForReply:0 timeout:0.0];
   }
 }
 
@@ -281,25 +281,25 @@ void __65__SBSSystemServiceClient_fetchUnlockCredentialSetWithCompletion___block
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)acquireAssertionOfType:(int64_t)a3 forReason:(id)a4 withCompletion:(id)a5
+- (void)acquireAssertionOfType:(int64_t)type forReason:(id)reason withCompletion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
-  if (v9)
+  reasonCopy = reason;
+  completionCopy = completion;
+  if (completionCopy)
   {
     v10 = MEMORY[0x1E699FCF8];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __74__SBSSystemServiceClient_acquireAssertionOfType_forReason_withCompletion___block_invoke;
     v14[3] = &unk_1E735FE20;
-    v16 = a3;
-    v15 = v8;
+    typeCopy = type;
+    v15 = reasonCopy;
     v11 = [v10 messageWithPacker:v14];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __74__SBSSystemServiceClient_acquireAssertionOfType_forReason_withCompletion___block_invoke_2;
     v12[3] = &unk_1E735FD90;
-    v13 = v9;
+    v13 = completionCopy;
     [(FBSServiceFacilityClient *)self sendMessage:v11 withType:4 replyHandler:v12 waitForReply:0 timeout:0.0];
   }
 }
@@ -330,12 +330,12 @@ void __74__SBSSystemServiceClient_acquireAssertionOfType_forReason_withCompletio
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)setButtonEventServiceIsWaitingForServerMessages:(BOOL)a3
+- (void)setButtonEventServiceIsWaitingForServerMessages:(BOOL)messages
 {
-  if (self->_buttonEventServiceIsWaitingForServerMessages != a3)
+  if (self->_buttonEventServiceIsWaitingForServerMessages != messages)
   {
     v5 = objc_opt_class();
-    if (a3)
+    if (messages)
     {
       v6 = [v5 checkOutClientWithClass:v5];
     }
@@ -345,11 +345,11 @@ void __74__SBSSystemServiceClient_acquireAssertionOfType_forReason_withCompletio
       [v5 checkInClient:self];
     }
 
-    self->_buttonEventServiceIsWaitingForServerMessages = a3;
+    self->_buttonEventServiceIsWaitingForServerMessages = messages;
   }
 }
 
-- (int64_t)toggleStateForButtonKind:(int64_t)a3
+- (int64_t)toggleStateForButtonKind:(int64_t)kind
 {
   v9 = 0;
   v10 = &v9;
@@ -359,7 +359,7 @@ void __74__SBSSystemServiceClient_acquireAssertionOfType_forReason_withCompletio
   v8[1] = 3221225472;
   v8[2] = __51__SBSSystemServiceClient_toggleStateForButtonKind___block_invoke;
   v8[3] = &__block_descriptor_40_e33_v16__0__NSObject_OS_xpc_object__8l;
-  v8[4] = a3;
+  v8[4] = kind;
   v4 = [MEMORY[0x1E699FCF8] messageWithPacker:v8];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
@@ -389,16 +389,16 @@ void __51__SBSSystemServiceClient_toggleStateForButtonKind___block_invoke_2(uint
   }
 }
 
-- (void)setEventMask:(unint64_t)a3 forButtonKind:(int64_t)a4 priority:(int64_t)a5
+- (void)setEventMask:(unint64_t)mask forButtonKind:(int64_t)kind priority:(int64_t)priority
 {
-  [(SBSSystemServiceClient *)self setButtonEventServiceIsWaitingForServerMessages:a3 != 0];
+  [(SBSSystemServiceClient *)self setButtonEventServiceIsWaitingForServerMessages:mask != 0];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __62__SBSSystemServiceClient_setEventMask_forButtonKind_priority___block_invoke;
   v10[3] = &__block_descriptor_56_e33_v16__0__NSObject_OS_xpc_object__8l;
-  v10[4] = a3;
-  v10[5] = a5;
-  v10[6] = a4;
+  v10[4] = mask;
+  v10[5] = priority;
+  v10[6] = kind;
   v9 = [MEMORY[0x1E699FCF8] messageWithPacker:v10];
   [(FBSServiceFacilityClient *)self sendMessage:v9 withType:5];
 }
@@ -412,18 +412,18 @@ void __62__SBSSystemServiceClient_setEventMask_forButtonKind_priority___block_in
   xpc_dictionary_set_int64(xdict, "buttonKind", a1[6]);
 }
 
-- (void)setRequestsHIDEvents:(BOOL)a3 token:(id)a4 forButtonKind:(int64_t)a5
+- (void)setRequestsHIDEvents:(BOOL)events token:(id)token forButtonKind:(int64_t)kind
 {
-  v8 = a4;
+  tokenCopy = token;
   v9 = MEMORY[0x1E699FCF8];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __67__SBSSystemServiceClient_setRequestsHIDEvents_token_forButtonKind___block_invoke;
   v12[3] = &unk_1E73604D8;
-  v15 = a3;
-  v13 = v8;
-  v14 = a5;
-  v10 = v8;
+  eventsCopy = events;
+  v13 = tokenCopy;
+  kindCopy = kind;
+  v10 = tokenCopy;
   v11 = [v9 messageWithPacker:v12];
   [(FBSServiceFacilityClient *)self sendMessage:v11 withType:6];
 }
@@ -439,9 +439,9 @@ void __67__SBSSystemServiceClient_setRequestsHIDEvents_token_forButtonKind___blo
   }
 }
 
-- (void)_handleButtonEventConsumePressMessage:(id)a3
+- (void)_handleButtonEventConsumePressMessage:(id)message
 {
-  xdict = [a3 payload];
+  xdict = [message payload];
   int64 = xpc_dictionary_get_int64(xdict, "eventType");
   v4 = xpc_dictionary_get_int64(xdict, "priority");
   v5 = xpc_dictionary_get_int64(xdict, "buttonKind");
@@ -449,14 +449,14 @@ void __67__SBSSystemServiceClient_setRequestsHIDEvents_token_forButtonKind___blo
   [v6 handleButtonPressMessage:int64 forButtonKind:v5 priority:v4];
 }
 
-- (void)setHapticType:(int64_t)a3 forButtonKind:(int64_t)a4
+- (void)setHapticType:(int64_t)type forButtonKind:(int64_t)kind
 {
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __54__SBSSystemServiceClient_setHapticType_forButtonKind___block_invoke;
   v6[3] = &__block_descriptor_48_e33_v16__0__NSObject_OS_xpc_object__8l;
-  v6[4] = a4;
-  v6[5] = a3;
+  v6[4] = kind;
+  v6[5] = type;
   v5 = [MEMORY[0x1E699FCF8] messageWithPacker:v6];
   [(FBSServiceFacilityClient *)self sendMessage:v5 withType:8];
 }
@@ -469,21 +469,21 @@ void __54__SBSSystemServiceClient_setHapticType_forButtonKind___block_invoke(uin
   xpc_dictionary_set_int64(xdict, "hapticType", *(a1 + 40));
 }
 
-- (void)fetchHapticTypeForButtonKind:(int64_t)a3 completion:(id)a4
+- (void)fetchHapticTypeForButtonKind:(int64_t)kind completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __66__SBSSystemServiceClient_fetchHapticTypeForButtonKind_completion___block_invoke;
   v11[3] = &__block_descriptor_40_e33_v16__0__NSObject_OS_xpc_object__8l;
-  v11[4] = a3;
+  v11[4] = kind;
   v7 = [MEMORY[0x1E699FCF8] messageWithPacker:v11];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __66__SBSSystemServiceClient_fetchHapticTypeForButtonKind_completion___block_invoke_2;
   v9[3] = &unk_1E735FD90;
-  v10 = v6;
-  v8 = v6;
+  v10 = completionCopy;
+  v8 = completionCopy;
   [(FBSServiceFacilityClient *)self sendMessage:v7 withType:9 replyHandler:v9 waitForReply:0 timeout:0.0];
 }
 
@@ -536,10 +536,10 @@ void __57__SBSSystemServiceClient_getAssociatedHintViewsSupported__block_invoke_
   }
 }
 
-- (id)registerAssociatedHintViewContextId:(unsigned int)a3 layerRenderId:(unint64_t)a4 layerSize:(CGSize)a5 forButtonKind:(int64_t)a6
+- (id)registerAssociatedHintViewContextId:(unsigned int)id layerRenderId:(unint64_t)renderId layerSize:(CGSize)size forButtonKind:(int64_t)kind
 {
-  height = a5.height;
-  width = a5.width;
+  height = size.height;
+  width = size.width;
   v12 = objc_alloc_init(MEMORY[0x1E698E6C0]);
   if ([v12 isUsable])
   {
@@ -553,12 +553,12 @@ void __57__SBSSystemServiceClient_getAssociatedHintViewsSupported__block_invoke_
     v28[2] = __100__SBSSystemServiceClient_registerAssociatedHintViewContextId_layerRenderId_layerSize_forButtonKind___block_invoke;
     v28[3] = &unk_1E7360540;
     v14 = v12;
-    v34 = a3;
+    idCopy = id;
     v29 = v14;
-    v30 = a4;
+    renderIdCopy = renderId;
     v31 = width;
     v32 = height;
-    v33 = a6;
+    kindCopy = kind;
     v15 = [v13 messageWithPacker:v28];
     v27[0] = MEMORY[0x1E69E9820];
     v27[1] = 3221225472;
@@ -569,25 +569,25 @@ void __57__SBSSystemServiceClient_getAssociatedHintViewsSupported__block_invoke_
 
     if (v36[3])
     {
-      v16 = [MEMORY[0x1E696AAE8] mainBundle];
-      v17 = [v16 bundleIdentifier];
-      v18 = v17;
-      if (v17)
+      mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+      bundleIdentifier = [mainBundle bundleIdentifier];
+      v18 = bundleIdentifier;
+      if (bundleIdentifier)
       {
-        v19 = v17;
+        bundlePath = bundleIdentifier;
       }
 
       else
       {
-        v21 = [MEMORY[0x1E696AAE8] mainBundle];
-        v19 = [v21 bundlePath];
+        mainBundle2 = [MEMORY[0x1E696AAE8] mainBundle];
+        bundlePath = [mainBundle2 bundlePath];
       }
 
-      v22 = [MEMORY[0x1E696AEC0] stringWithFormat:@"SBSHardwareButtonService request from %@", v19];
+      v22 = [MEMORY[0x1E696AEC0] stringWithFormat:@"SBSHardwareButtonService request from %@", bundlePath];
       v23 = [SBSHardwareButtonHintViewAssertion alloc];
-      v24 = [MEMORY[0x1E696AFB0] UUID];
-      v25 = [v24 UUIDString];
-      v20 = [(SBSHardwareButtonHintViewAssertion *)v23 initWithButtonKind:a6 assertionName:v25 reason:v22 receiveRight:v14];
+      uUID = [MEMORY[0x1E696AFB0] UUID];
+      uUIDString = [uUID UUIDString];
+      v20 = [(SBSHardwareButtonHintViewAssertion *)v23 initWithButtonKind:kind assertionName:uUIDString reason:v22 receiveRight:v14];
     }
 
     else
@@ -634,18 +634,18 @@ void __100__SBSSystemServiceClient_registerAssociatedHintViewContextId_layerRend
   }
 }
 
-- (void)updateHintViewContentVisibility:(int64_t)a3 forButton:(int64_t)a4 animationSettings:(id)a5
+- (void)updateHintViewContentVisibility:(int64_t)visibility forButton:(int64_t)button animationSettings:(id)settings
 {
-  v8 = a5;
+  settingsCopy = settings;
   v9 = MEMORY[0x1E699FCF8];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __86__SBSSystemServiceClient_updateHintViewContentVisibility_forButton_animationSettings___block_invoke;
   v12[3] = &unk_1E7360568;
-  v14 = a3;
-  v15 = a4;
-  v13 = v8;
-  v10 = v8;
+  visibilityCopy = visibility;
+  buttonCopy = button;
+  v13 = settingsCopy;
+  v10 = settingsCopy;
   v11 = [v9 messageWithPacker:v12];
   [(FBSServiceFacilityClient *)self sendMessage:v11 withType:12];
 }
@@ -659,9 +659,9 @@ void __86__SBSSystemServiceClient_updateHintViewContentVisibility_forButton_anim
   BSSerializeBSXPCEncodableObjectToXPCDictionaryWithKey();
 }
 
-- (void)requestSystemGlowEffectWithInitialStyle:(int64_t)a3 completion:(id)a4
+- (void)requestSystemGlowEffectWithInitialStyle:(int64_t)style completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = objc_alloc_init(MEMORY[0x1E698E6C0]);
   if ([v7 isUsable])
   {
@@ -672,20 +672,20 @@ void __86__SBSSystemServiceClient_updateHintViewContentVisibility_forButton_anim
     v14[3] = &unk_1E735FE20;
     v9 = v7;
     v15 = v9;
-    v16 = a3;
+    styleCopy = style;
     v10 = [v8 messageWithPacker:v14];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __77__SBSSystemServiceClient_requestSystemGlowEffectWithInitialStyle_completion___block_invoke_2;
     v11[3] = &unk_1E7360590;
     v12 = v9;
-    v13 = v6;
+    v13 = completionCopy;
     [(FBSServiceFacilityClient *)self sendMessage:v10 withType:13 replyHandler:v11 waitForReply:0 timeout:0.0];
   }
 
-  else if (v6)
+  else if (completionCopy)
   {
-    (*(v6 + 2))(v6, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
@@ -747,24 +747,24 @@ void __77__SBSSystemServiceClient_requestSystemGlowEffectWithInitialStyle_comple
   }
 }
 
-- (void)updateSystemGlowStyle:(int64_t)a3
+- (void)updateSystemGlowStyle:(int64_t)style
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __48__SBSSystemServiceClient_updateSystemGlowStyle___block_invoke;
   v5[3] = &__block_descriptor_40_e33_v16__0__NSObject_OS_xpc_object__8l;
-  v5[4] = a3;
+  v5[4] = style;
   v4 = [MEMORY[0x1E699FCF8] messageWithPacker:v5];
   [(FBSServiceFacilityClient *)self sendMessage:v4 withType:14];
 }
 
-- (void)setPasscodePolicy:(int64_t)a3
+- (void)setPasscodePolicy:(int64_t)policy
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __44__SBSSystemServiceClient_setPasscodePolicy___block_invoke;
   v5[3] = &__block_descriptor_40_e33_v16__0__NSObject_OS_xpc_object__8l;
-  v5[4] = a3;
+  v5[4] = policy;
   v4 = [MEMORY[0x1E699FCF8] messageWithPacker:v5];
   [(FBSServiceFacilityClient *)self sendMessage:v4 withType:15];
 }
@@ -775,13 +775,13 @@ void __77__SBSSystemServiceClient_requestSystemGlowEffectWithInitialStyle_comple
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v3 = [MEMORY[0x1E699FCF8] message];
+  message = [MEMORY[0x1E699FCF8] message];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __40__SBSSystemServiceClient_passcodePolicy__block_invoke;
   v6[3] = &unk_1E735FE70;
   v6[4] = &v7;
-  [(FBSServiceFacilityClient *)self sendMessage:v3 withType:16 replyHandler:v6 waitForReply:1 timeout:0.0];
+  [(FBSServiceFacilityClient *)self sendMessage:message withType:16 replyHandler:v6 waitForReply:1 timeout:0.0];
 
   v4 = v8[3];
   _Block_object_dispose(&v7, 8);
@@ -806,102 +806,102 @@ void __40__SBSSystemServiceClient_passcodePolicy__block_invoke(uint64_t a1, void
 
 - (void)suspendAllDisplays
 {
-  v3 = [MEMORY[0x1E699FCF8] message];
-  [(FBSServiceFacilityClient *)self sendMessage:v3 withType:17];
+  message = [MEMORY[0x1E699FCF8] message];
+  [(FBSServiceFacilityClient *)self sendMessage:message withType:17];
 }
 
 - (void)clearAllUserNotifications
 {
-  v3 = [MEMORY[0x1E699FCF8] message];
-  [(FBSServiceFacilityClient *)self sendMessage:v3 withType:18];
+  message = [MEMORY[0x1E699FCF8] message];
+  [(FBSServiceFacilityClient *)self sendMessage:message withType:18];
 }
 
 - (void)setUserPresenceDetectedSinceWake
 {
-  v3 = [MEMORY[0x1E699FCF8] message];
-  [(FBSServiceFacilityClient *)self sendMessage:v3 withType:46];
+  message = [MEMORY[0x1E699FCF8] message];
+  [(FBSServiceFacilityClient *)self sendMessage:message withType:46];
 }
 
-- (void)setAlertsEnabled:(BOOL)a3
+- (void)setAlertsEnabled:(BOOL)enabled
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __43__SBSSystemServiceClient_setAlertsEnabled___block_invoke;
   v5[3] = &__block_descriptor_33_e33_v16__0__NSObject_OS_xpc_object__8l;
-  v6 = a3;
+  enabledCopy = enabled;
   v4 = [MEMORY[0x1E699FCF8] messageWithPacker:v5];
   [(FBSServiceFacilityClient *)self sendMessage:v4 withType:19];
 }
 
-- (void)setHiddenFeaturesEnabled:(BOOL)a3
+- (void)setHiddenFeaturesEnabled:(BOOL)enabled
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __51__SBSSystemServiceClient_setHiddenFeaturesEnabled___block_invoke;
   v5[3] = &__block_descriptor_33_e33_v16__0__NSObject_OS_xpc_object__8l;
-  v6 = a3;
+  enabledCopy = enabled;
   v4 = [MEMORY[0x1E699FCF8] messageWithPacker:v5];
   [(FBSServiceFacilityClient *)self sendMessage:v4 withType:20];
 }
 
-- (void)setIdleTimerEnabled:(BOOL)a3
+- (void)setIdleTimerEnabled:(BOOL)enabled
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __46__SBSSystemServiceClient_setIdleTimerEnabled___block_invoke;
   v5[3] = &__block_descriptor_33_e33_v16__0__NSObject_OS_xpc_object__8l;
-  v6 = a3;
+  enabledCopy = enabled;
   v4 = [MEMORY[0x1E699FCF8] messageWithPacker:v5];
   [(FBSServiceFacilityClient *)self sendMessage:v4 withType:21];
 }
 
-- (void)setOrientationLockEnabled:(BOOL)a3
+- (void)setOrientationLockEnabled:(BOOL)enabled
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __52__SBSSystemServiceClient_setOrientationLockEnabled___block_invoke;
   v5[3] = &__block_descriptor_33_e33_v16__0__NSObject_OS_xpc_object__8l;
-  v6 = a3;
+  enabledCopy = enabled;
   v4 = [MEMORY[0x1E699FCF8] messageWithPacker:v5];
   [(FBSServiceFacilityClient *)self sendMessage:v4 withType:22];
 }
 
-- (void)setMallocStackLoggingEnabled:(BOOL)a3
+- (void)setMallocStackLoggingEnabled:(BOOL)enabled
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __55__SBSSystemServiceClient_setMallocStackLoggingEnabled___block_invoke;
   v5[3] = &__block_descriptor_33_e33_v16__0__NSObject_OS_xpc_object__8l;
-  v6 = a3;
+  enabledCopy = enabled;
   v4 = [MEMORY[0x1E699FCF8] messageWithPacker:v5];
   [(FBSServiceFacilityClient *)self sendMessage:v4 withType:23];
 }
 
-- (void)setReachabilityActive:(BOOL)a3
+- (void)setReachabilityActive:(BOOL)active
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __48__SBSSystemServiceClient_setReachabilityActive___block_invoke;
   v5[3] = &__block_descriptor_33_e33_v16__0__NSObject_OS_xpc_object__8l;
-  v6 = a3;
+  activeCopy = active;
   v4 = [MEMORY[0x1E699FCF8] messageWithPacker:v5];
   [(FBSServiceFacilityClient *)self sendMessage:v4 withType:24];
 }
 
-- (void)setAmbientPresentationState:(int64_t)a3
+- (void)setAmbientPresentationState:(int64_t)state
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __54__SBSSystemServiceClient_setAmbientPresentationState___block_invoke;
   v5[3] = &__block_descriptor_40_e33_v16__0__NSObject_OS_xpc_object__8l;
-  v5[4] = a3;
+  v5[4] = state;
   v4 = [MEMORY[0x1E699FCF8] messageWithPacker:v5];
   [(FBSServiceFacilityClient *)self sendMessage:v4 withType:26];
 }
 
-- (id)acquireAssertionForReachabilityEnabled:(BOOL)a3
+- (id)acquireAssertionForReachabilityEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v5 = objc_alloc_init(MEMORY[0x1E698E6C0]);
   if ([v5 isUsable])
   {
@@ -912,27 +912,27 @@ void __40__SBSSystemServiceClient_passcodePolicy__block_invoke(uint64_t a1, void
     v19[3] = &unk_1E73605D8;
     v7 = v5;
     v20 = v7;
-    v21 = v3;
+    v21 = enabledCopy;
     v8 = [v6 messageWithPacker:v19];
     [(FBSServiceFacilityClient *)self sendMessage:v8 withType:25 replyHandler:&__block_literal_global_37 waitForReply:1 timeout:0.0];
 
-    v9 = [MEMORY[0x1E696AAE8] mainBundle];
-    v10 = [v9 bundleIdentifier];
-    v11 = v10;
-    if (v10)
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
+    v11 = bundleIdentifier;
+    if (bundleIdentifier)
     {
-      v12 = v10;
+      bundlePath = bundleIdentifier;
     }
 
     else
     {
-      v14 = [MEMORY[0x1E696AAE8] mainBundle];
-      v12 = [v14 bundlePath];
+      mainBundle2 = [MEMORY[0x1E696AAE8] mainBundle];
+      bundlePath = [mainBundle2 bundlePath];
     }
 
-    v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"SBSTestAutomationService request from %@", v12];
+    v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"SBSTestAutomationService request from %@", bundlePath];
     v16 = @"disabled";
-    if (v3)
+    if (enabledCopy)
     {
       v16 = @"enabled";
     }
@@ -958,25 +958,25 @@ void __65__SBSSystemServiceClient_acquireAssertionForReachabilityEnabled___block
   BSSerializeBSXPCEncodableObjectToXPCDictionaryWithKey();
 }
 
-- (void)resetToHomeScreenAnimated:(BOOL)a3
+- (void)resetToHomeScreenAnimated:(BOOL)animated
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __52__SBSSystemServiceClient_resetToHomeScreenAnimated___block_invoke;
   v5[3] = &__block_descriptor_33_e33_v16__0__NSObject_OS_xpc_object__8l;
-  v6 = a3;
+  animatedCopy = animated;
   v4 = [MEMORY[0x1E699FCF8] messageWithPacker:v5];
   [(FBSServiceFacilityClient *)self sendMessage:v4 withType:27];
 }
 
-- (void)setAccessoryType:(int64_t)a3 attached:(BOOL)a4
+- (void)setAccessoryType:(int64_t)type attached:(BOOL)attached
 {
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __52__SBSSystemServiceClient_setAccessoryType_attached___block_invoke;
   v6[3] = &__block_descriptor_41_e33_v16__0__NSObject_OS_xpc_object__8l;
-  v6[4] = a3;
-  v7 = a4;
+  v6[4] = type;
+  attachedCopy = attached;
   v5 = [MEMORY[0x1E699FCF8] messageWithPacker:v6];
   [(FBSServiceFacilityClient *)self sendMessage:v5 withType:28];
 }
@@ -989,17 +989,17 @@ void __52__SBSSystemServiceClient_setAccessoryType_attached___block_invoke(uint6
   xpc_dictionary_set_BOOL(xdict, "enabledState", *(a1 + 40));
 }
 
-- (void)setApplicationBundleIdentifier:(id)a3 blockedForScreenTime:(BOOL)a4
+- (void)setApplicationBundleIdentifier:(id)identifier blockedForScreenTime:(BOOL)time
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v7 = MEMORY[0x1E699FCF8];
   v10 = MEMORY[0x1E69E9820];
   v11 = 3221225472;
   v12 = __78__SBSSystemServiceClient_setApplicationBundleIdentifier_blockedForScreenTime___block_invoke;
   v13 = &unk_1E73605D8;
-  v14 = v6;
-  v15 = a4;
-  v8 = v6;
+  v14 = identifierCopy;
+  timeCopy = time;
+  v8 = identifierCopy;
   v9 = [v7 messageWithPacker:&v10];
   [(FBSServiceFacilityClient *)self sendMessage:v9 withType:30, v10, v11, v12, v13];
 }
@@ -1011,23 +1011,23 @@ void __78__SBSSystemServiceClient_setApplicationBundleIdentifier_blockedForScree
   xpc_dictionary_set_BOOL(xdict, "screenTimeBlocked", *(a1 + 40));
 }
 
-- (void)setTestRunnerRecoveryApplicationBundleIdentifier:(id)a3
+- (void)setTestRunnerRecoveryApplicationBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = MEMORY[0x1E699FCF8];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __75__SBSSystemServiceClient_setTestRunnerRecoveryApplicationBundleIdentifier___block_invoke;
   v8[3] = &unk_1E735FDF8;
-  v9 = v4;
-  v6 = v4;
+  v9 = identifierCopy;
+  v6 = identifierCopy;
   v7 = [v5 messageWithPacker:v8];
   [(FBSServiceFacilityClient *)self sendMessage:v7 withType:31];
 }
 
-- (id)acquireHUDHiddenAssertionForIdentifier:(id)a3
+- (id)acquireHUDHiddenAssertionForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = objc_alloc_init(MEMORY[0x1E698E6C0]);
   if ([v5 isUsable])
   {
@@ -1038,26 +1038,26 @@ void __78__SBSSystemServiceClient_setApplicationBundleIdentifier_blockedForScree
     v18[3] = &unk_1E7360440;
     v7 = v5;
     v19 = v7;
-    v8 = v4;
+    v8 = identifierCopy;
     v20 = v8;
     v9 = [v6 messageWithPacker:v18];
     [(FBSServiceFacilityClient *)self sendMessage:v9 withType:29 replyHandler:&__block_literal_global_52 waitForReply:1 timeout:0.0];
 
-    v10 = [MEMORY[0x1E696AAE8] mainBundle];
-    v11 = [v10 bundleIdentifier];
-    v12 = v11;
-    if (v11)
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
+    v12 = bundleIdentifier;
+    if (bundleIdentifier)
     {
-      v13 = v11;
+      bundlePath = bundleIdentifier;
     }
 
     else
     {
-      v15 = [MEMORY[0x1E696AAE8] mainBundle];
-      v13 = [v15 bundlePath];
+      mainBundle2 = [MEMORY[0x1E696AAE8] mainBundle];
+      bundlePath = [mainBundle2 bundlePath];
     }
 
-    v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"SBSTestAutomationService request from %@", v13];
+    v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"SBSTestAutomationService request from %@", bundlePath];
     v14 = [[SBSAssertion alloc] initWithAssertionName:v8 reason:v16 receiveRight:v7];
   }
 
@@ -1078,24 +1078,24 @@ void __65__SBSSystemServiceClient_acquireHUDHiddenAssertionForIdentifier___block
   BSSerializeBSXPCEncodableObjectToXPCDictionaryWithKey();
 }
 
-- (void)countScenesForBundleIdentifier:(id)a3 withCompletion:(id)a4
+- (void)countScenesForBundleIdentifier:(id)identifier withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v8 = MEMORY[0x1E699FCF8];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __72__SBSSystemServiceClient_countScenesForBundleIdentifier_withCompletion___block_invoke;
   v14[3] = &unk_1E735FDF8;
-  v15 = v6;
-  v9 = v6;
+  v15 = identifierCopy;
+  v9 = identifierCopy;
   v10 = [v8 messageWithPacker:v14];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __72__SBSSystemServiceClient_countScenesForBundleIdentifier_withCompletion___block_invoke_2;
   v12[3] = &unk_1E735FD90;
-  v13 = v7;
-  v11 = v7;
+  v13 = completionCopy;
+  v11 = completionCopy;
   [(FBSServiceFacilityClient *)self sendMessage:v10 withType:32 replyHandler:v12 waitForReply:0 timeout:0.0];
 }
 
@@ -1110,52 +1110,52 @@ void __72__SBSSystemServiceClient_countScenesForBundleIdentifier_withCompletion_
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)stashSwitcherModelToPath:(id)a3
+- (void)stashSwitcherModelToPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v5 = MEMORY[0x1E699FCF8];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __51__SBSSystemServiceClient_stashSwitcherModelToPath___block_invoke;
   v8[3] = &unk_1E735FDF8;
-  v9 = v4;
-  v6 = v4;
+  v9 = pathCopy;
+  v6 = pathCopy;
   v7 = [v5 messageWithPacker:v8];
   [(FBSServiceFacilityClient *)self sendMessage:v7 withType:33];
 }
 
-- (void)loadStashedSwitcherModelFromPath:(id)a3
+- (void)loadStashedSwitcherModelFromPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v5 = MEMORY[0x1E699FCF8];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __59__SBSSystemServiceClient_loadStashedSwitcherModelFromPath___block_invoke;
   v8[3] = &unk_1E735FDF8;
-  v9 = v4;
-  v6 = v4;
+  v9 = pathCopy;
+  v6 = pathCopy;
   v7 = [v5 messageWithPacker:v8];
   [(FBSServiceFacilityClient *)self sendMessage:v7 withType:34];
 }
 
 - (void)addWidgetsToEachPage
 {
-  v3 = [MEMORY[0x1E699FCF8] message];
-  [(FBSServiceFacilityClient *)self sendMessage:v3 withType:35 replyHandler:&__block_literal_global_54_0 waitForReply:1 timeout:0.0];
+  message = [MEMORY[0x1E699FCF8] message];
+  [(FBSServiceFacilityClient *)self sendMessage:message withType:35 replyHandler:&__block_literal_global_54_0 waitForReply:1 timeout:0.0];
 }
 
-- (void)addWidgetWithIdentifier:(id)a3 toPage:(int)a4 withSizing:(int)a5
+- (void)addWidgetWithIdentifier:(id)identifier toPage:(int)page withSizing:(int)sizing
 {
-  v8 = a3;
+  identifierCopy = identifier;
   v9 = MEMORY[0x1E699FCF8];
   v12 = MEMORY[0x1E69E9820];
   v13 = 3221225472;
   v14 = __68__SBSSystemServiceClient_addWidgetWithIdentifier_toPage_withSizing___block_invoke;
   v15 = &unk_1E735FE20;
-  v16 = v8;
-  v17 = a4;
-  v18 = a5;
-  v10 = v8;
+  v16 = identifierCopy;
+  pageCopy = page;
+  sizingCopy = sizing;
+  v10 = identifierCopy;
   v11 = [v9 messageWithPacker:&v12];
   [(FBSServiceFacilityClient *)self sendMessage:v11 withType:36 replyHandler:&__block_literal_global_56 waitForReply:1 timeout:0.0, v12, v13, v14, v15];
 }
@@ -1168,18 +1168,18 @@ void __68__SBSSystemServiceClient_addWidgetWithIdentifier_toPage_withSizing___bl
   xpc_dictionary_set_int64(xdict, "sizeInteger", *(a1 + 44));
 }
 
-- (void)addWidgetStackWithIdentifiers:(id)a3 toPage:(int)a4 withSizing:(int)a5
+- (void)addWidgetStackWithIdentifiers:(id)identifiers toPage:(int)page withSizing:(int)sizing
 {
-  v8 = a3;
+  identifiersCopy = identifiers;
   v9 = MEMORY[0x1E699FCF8];
   v12 = MEMORY[0x1E69E9820];
   v13 = 3221225472;
   v14 = __74__SBSSystemServiceClient_addWidgetStackWithIdentifiers_toPage_withSizing___block_invoke;
   v15 = &unk_1E735FE20;
-  v16 = v8;
-  v17 = a4;
-  v18 = a5;
-  v10 = v8;
+  v16 = identifiersCopy;
+  pageCopy = page;
+  sizingCopy = sizing;
+  v10 = identifiersCopy;
   v11 = [v9 messageWithPacker:&v12];
   [(FBSServiceFacilityClient *)self sendMessage:v11 withType:37 replyHandler:&__block_literal_global_61 waitForReply:1 timeout:0.0, v12, v13, v14, v15];
 }
@@ -1201,14 +1201,14 @@ id __74__SBSSystemServiceClient_addWidgetStackWithIdentifiers_toPage_withSizing_
 
 - (void)enterLostMode
 {
-  v3 = [MEMORY[0x1E699FCF8] message];
-  [(FBSServiceFacilityClient *)self sendMessage:v3 withType:38];
+  message = [MEMORY[0x1E699FCF8] message];
+  [(FBSServiceFacilityClient *)self sendMessage:message withType:38];
 }
 
 - (void)exitLostMode
 {
-  v3 = [MEMORY[0x1E699FCF8] message];
-  [(FBSServiceFacilityClient *)self sendMessage:v3 withType:39];
+  message = [MEMORY[0x1E699FCF8] message];
+  [(FBSServiceFacilityClient *)self sendMessage:message withType:39];
 }
 
 - (BOOL)isChamoisWindowingUIEnabled
@@ -1217,13 +1217,13 @@ id __74__SBSSystemServiceClient_addWidgetStackWithIdentifiers_toPage_withSizing_
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [MEMORY[0x1E699FCF8] message];
+  message = [MEMORY[0x1E699FCF8] message];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __53__SBSSystemServiceClient_isChamoisWindowingUIEnabled__block_invoke;
   v5[3] = &unk_1E735FE70;
   v5[4] = &v6;
-  [(FBSServiceFacilityClient *)self sendMessage:v3 withType:40 replyHandler:v5 waitForReply:1 timeout:10.0];
+  [(FBSServiceFacilityClient *)self sendMessage:message withType:40 replyHandler:v5 waitForReply:1 timeout:10.0];
 
   LOBYTE(self) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
@@ -1246,13 +1246,13 @@ void __53__SBSSystemServiceClient_isChamoisWindowingUIEnabled__block_invoke(uint
   }
 }
 
-- (void)setChamoisWindowingUIEnabled:(BOOL)a3
+- (void)setChamoisWindowingUIEnabled:(BOOL)enabled
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __55__SBSSystemServiceClient_setChamoisWindowingUIEnabled___block_invoke;
   v5[3] = &__block_descriptor_33_e33_v16__0__NSObject_OS_xpc_object__8l;
-  v6 = a3;
+  enabledCopy = enabled;
   v4 = [MEMORY[0x1E699FCF8] messageWithPacker:v5];
   [(FBSServiceFacilityClient *)self sendMessage:v4 withType:41 replyHandler:&__block_literal_global_63_0 waitForReply:1 timeout:10.0];
 }
@@ -1263,13 +1263,13 @@ void __53__SBSSystemServiceClient_isChamoisWindowingUIEnabled__block_invoke(uint
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [MEMORY[0x1E699FCF8] message];
+  message = [MEMORY[0x1E699FCF8] message];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __50__SBSSystemServiceClient_chamoisPrefersDockHidden__block_invoke;
   v5[3] = &unk_1E735FE70;
   v5[4] = &v6;
-  [(FBSServiceFacilityClient *)self sendMessage:v3 withType:42 replyHandler:v5 waitForReply:1 timeout:10.0];
+  [(FBSServiceFacilityClient *)self sendMessage:message withType:42 replyHandler:v5 waitForReply:1 timeout:10.0];
 
   LOBYTE(self) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
@@ -1292,13 +1292,13 @@ void __50__SBSSystemServiceClient_chamoisPrefersDockHidden__block_invoke(uint64_
   }
 }
 
-- (void)setChamoisPrefersDockHidden:(BOOL)a3
+- (void)setChamoisPrefersDockHidden:(BOOL)hidden
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __54__SBSSystemServiceClient_setChamoisPrefersDockHidden___block_invoke;
   v5[3] = &__block_descriptor_33_e33_v16__0__NSObject_OS_xpc_object__8l;
-  v6 = a3;
+  hiddenCopy = hidden;
   v4 = [MEMORY[0x1E699FCF8] messageWithPacker:v5];
   [(FBSServiceFacilityClient *)self sendMessage:v4 withType:43 replyHandler:&__block_literal_global_65 waitForReply:1 timeout:10.0];
 }
@@ -1309,13 +1309,13 @@ void __50__SBSSystemServiceClient_chamoisPrefersDockHidden__block_invoke(uint64_
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [MEMORY[0x1E699FCF8] message];
+  message = [MEMORY[0x1E699FCF8] message];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __51__SBSSystemServiceClient_chamoisPrefersStripHidden__block_invoke;
   v5[3] = &unk_1E735FE70;
   v5[4] = &v6;
-  [(FBSServiceFacilityClient *)self sendMessage:v3 withType:44 replyHandler:v5 waitForReply:1 timeout:10.0];
+  [(FBSServiceFacilityClient *)self sendMessage:message withType:44 replyHandler:v5 waitForReply:1 timeout:10.0];
 
   LOBYTE(self) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
@@ -1338,13 +1338,13 @@ void __51__SBSSystemServiceClient_chamoisPrefersStripHidden__block_invoke(uint64
   }
 }
 
-- (void)setChamoisHideStripsEnabled:(BOOL)a3
+- (void)setChamoisHideStripsEnabled:(BOOL)enabled
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __54__SBSSystemServiceClient_setChamoisHideStripsEnabled___block_invoke;
   v5[3] = &__block_descriptor_33_e33_v16__0__NSObject_OS_xpc_object__8l;
-  v6 = a3;
+  enabledCopy = enabled;
   v4 = [MEMORY[0x1E699FCF8] messageWithPacker:v5];
   [(FBSServiceFacilityClient *)self sendMessage:v4 withType:45 replyHandler:&__block_literal_global_67 waitForReply:1 timeout:10.0];
 }
@@ -1355,13 +1355,13 @@ void __51__SBSSystemServiceClient_chamoisPrefersStripHidden__block_invoke(uint64
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [MEMORY[0x1E699FCF8] message];
+  message = [MEMORY[0x1E699FCF8] message];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __54__SBSSystemServiceClient_deviceSupportsSystemAperture__block_invoke;
   v5[3] = &unk_1E735FE70;
   v5[4] = &v6;
-  [(FBSServiceFacilityClient *)self sendMessage:v3 withType:47 replyHandler:v5 waitForReply:1 timeout:0.0];
+  [(FBSServiceFacilityClient *)self sendMessage:message withType:47 replyHandler:v5 waitForReply:1 timeout:0.0];
 
   LOBYTE(self) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
@@ -1384,24 +1384,24 @@ void __54__SBSSystemServiceClient_deviceSupportsSystemAperture__block_invoke(uin
   }
 }
 
-- (void)setSpringBoardAnimationFrameRecordingEnabledForUpdateTypes:(unint64_t)a3
+- (void)setSpringBoardAnimationFrameRecordingEnabledForUpdateTypes:(unint64_t)types
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __85__SBSSystemServiceClient_setSpringBoardAnimationFrameRecordingEnabledForUpdateTypes___block_invoke;
   v5[3] = &__block_descriptor_40_e33_v16__0__NSObject_OS_xpc_object__8l;
-  v5[4] = a3;
+  v5[4] = types;
   v4 = [MEMORY[0x1E699FCF8] messageWithPacker:v5];
   [(FBSServiceFacilityClient *)self sendMessage:v4 withType:50 replyHandler:&__block_literal_global_69_0 waitForReply:1 timeout:10.0];
 }
 
-- (void)setSystemApertureUnderAutomationTesting:(BOOL)a3
+- (void)setSystemApertureUnderAutomationTesting:(BOOL)testing
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __66__SBSSystemServiceClient_setSystemApertureUnderAutomationTesting___block_invoke;
   v5[3] = &__block_descriptor_33_e33_v16__0__NSObject_OS_xpc_object__8l;
-  v6 = a3;
+  testingCopy = testing;
   v4 = [MEMORY[0x1E699FCF8] messageWithPacker:v5];
   [(FBSServiceFacilityClient *)self sendMessage:v4 withType:52 replyHandler:&__block_literal_global_71 waitForReply:1 timeout:0.0];
 }
@@ -1414,13 +1414,13 @@ void __54__SBSSystemServiceClient_deviceSupportsSystemAperture__block_invoke(uin
   v10 = __Block_byref_object_copy__0;
   v11 = __Block_byref_object_dispose__0;
   v12 = objc_opt_new();
-  v3 = [MEMORY[0x1E699FCF8] message];
+  message = [MEMORY[0x1E699FCF8] message];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __50__SBSSystemServiceClient_animationFrameRecordings__block_invoke;
   v6[3] = &unk_1E735FE70;
   v6[4] = &v7;
-  [(FBSServiceFacilityClient *)self sendMessage:v3 withType:51 replyHandler:v6 waitForReply:1 timeout:0.0];
+  [(FBSServiceFacilityClient *)self sendMessage:message withType:51 replyHandler:v6 waitForReply:1 timeout:0.0];
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -1459,13 +1459,13 @@ void __50__SBSSystemServiceClient_animationFrameRecordings__block_invoke(uint64_
   v10 = __Block_byref_object_copy__0;
   v11 = __Block_byref_object_dispose__0;
   v12 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v3 = [MEMORY[0x1E699FCF8] message];
+  message = [MEMORY[0x1E699FCF8] message];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __49__SBSSystemServiceClient_systemApertureStateDump__block_invoke;
   v6[3] = &unk_1E735FE70;
   v6[4] = &v7;
-  [(FBSServiceFacilityClient *)self sendMessage:v3 withType:48 replyHandler:v6 waitForReply:1 timeout:0.0];
+  [(FBSServiceFacilityClient *)self sendMessage:message withType:48 replyHandler:v6 waitForReply:1 timeout:0.0];
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -1521,13 +1521,13 @@ id __49__SBSSystemServiceClient_systemApertureStateDump__block_invoke_2(void *a1
   v10 = __Block_byref_object_copy__0;
   v11 = __Block_byref_object_dispose__0;
   v12 = objc_opt_new();
-  v3 = [MEMORY[0x1E699FCF8] message];
+  message = [MEMORY[0x1E699FCF8] message];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __54__SBSSystemServiceClient_systemApertureModelStateDump__block_invoke;
   v6[3] = &unk_1E735FE70;
   v6[4] = &v7;
-  [(FBSServiceFacilityClient *)self sendMessage:v3 withType:53 replyHandler:v6 waitForReply:1 timeout:0.0];
+  [(FBSServiceFacilityClient *)self sendMessage:message withType:53 replyHandler:v6 waitForReply:1 timeout:0.0];
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -1564,13 +1564,13 @@ void __54__SBSSystemServiceClient_systemApertureModelStateDump__block_invoke(uin
   v10 = __Block_byref_object_copy__0;
   v11 = __Block_byref_object_dispose__0;
   v12 = objc_opt_new();
-  v3 = [MEMORY[0x1E699FCF8] message];
+  message = [MEMORY[0x1E699FCF8] message];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __51__SBSSystemServiceClient_widgetControllerStateDump__block_invoke;
   v6[3] = &unk_1E735FE70;
   v6[4] = &v7;
-  [(FBSServiceFacilityClient *)self sendMessage:v3 withType:49 replyHandler:v6 waitForReply:1 timeout:0.0];
+  [(FBSServiceFacilityClient *)self sendMessage:message withType:49 replyHandler:v6 waitForReply:1 timeout:0.0];
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -1599,7 +1599,7 @@ void __51__SBSSystemServiceClient_widgetControllerStateDump__block_invoke(uint64
   }
 }
 
-- (id)deserializedStringArrayForKey:(const char *)a3 fromPayload:(id)a4
+- (id)deserializedStringArrayForKey:(const char *)key fromPayload:(id)payload
 {
   v4 = BSCreateDeserializedArrayFromXPCDictionaryWithKey();
 
@@ -1623,17 +1623,17 @@ __CFString *__68__SBSSystemServiceClient_deserializedStringArrayForKey_fromPaylo
   return v4;
 }
 
-- (void)requestSystemApertureStateDumpWithCompletion:(id)a3
+- (void)requestSystemApertureStateDumpWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E699FCF8] message];
+  completionCopy = completion;
+  message = [MEMORY[0x1E699FCF8] message];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __71__SBSSystemServiceClient_requestSystemApertureStateDumpWithCompletion___block_invoke;
   v7[3] = &unk_1E735FD90;
-  v8 = v4;
-  v6 = v4;
-  [(FBSServiceFacilityClient *)self sendMessage:v5 withType:57 replyHandler:v7 waitForReply:0 timeout:0.0];
+  v8 = completionCopy;
+  v6 = completionCopy;
+  [(FBSServiceFacilityClient *)self sendMessage:message withType:57 replyHandler:v7 waitForReply:0 timeout:0.0];
 }
 
 void __71__SBSSystemServiceClient_requestSystemApertureStateDumpWithCompletion___block_invoke(uint64_t a1, void *a2)
@@ -1663,16 +1663,16 @@ void __71__SBSSystemServiceClient_requestSystemApertureStateDumpWithCompletion__
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)writeSystemApertureStateDumpToTextFileAtPath:(id)a3
+- (void)writeSystemApertureStateDumpToTextFileAtPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v5 = MEMORY[0x1E699FCF8];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __71__SBSSystemServiceClient_writeSystemApertureStateDumpToTextFileAtPath___block_invoke;
   v8[3] = &unk_1E735FDF8;
-  v9 = v4;
-  v6 = v4;
+  v9 = pathCopy;
+  v6 = pathCopy;
   v7 = [v5 messageWithPacker:v8];
   [(FBSServiceFacilityClient *)self sendMessage:v7 withType:56 replyHandler:&__block_literal_global_90_0 waitForReply:1 timeout:0.0];
 }
@@ -1688,21 +1688,21 @@ void __71__SBSSystemServiceClient_writeSystemApertureStateDumpToTextFileAtPath__
   }
 }
 
-- (void)requestStateDump:(unint64_t)a3 withCompletion:(id)a4
+- (void)requestStateDump:(unint64_t)dump withCompletion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __58__SBSSystemServiceClient_requestStateDump_withCompletion___block_invoke;
   v11[3] = &__block_descriptor_40_e33_v16__0__NSObject_OS_xpc_object__8l;
-  v11[4] = a3;
+  v11[4] = dump;
   v7 = [MEMORY[0x1E699FCF8] messageWithPacker:v11];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __58__SBSSystemServiceClient_requestStateDump_withCompletion___block_invoke_2;
   v9[3] = &unk_1E735FD90;
-  v10 = v6;
-  v8 = v6;
+  v10 = completionCopy;
+  v8 = completionCopy;
   [(FBSServiceFacilityClient *)self sendMessage:v7 withType:58 replyHandler:v9 waitForReply:0 timeout:0.0];
 }
 
@@ -1730,17 +1730,17 @@ LABEL_5:
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)writeStateDump:(unint64_t)a3 toTextFileAtPath:(id)a4
+- (void)writeStateDump:(unint64_t)dump toTextFileAtPath:(id)path
 {
-  v6 = a4;
+  pathCopy = path;
   v7 = MEMORY[0x1E699FCF8];
   v10 = MEMORY[0x1E69E9820];
   v11 = 3221225472;
   v12 = __58__SBSSystemServiceClient_writeStateDump_toTextFileAtPath___block_invoke;
   v13 = &unk_1E735FE20;
-  v14 = v6;
-  v15 = a3;
-  v8 = v6;
+  v14 = pathCopy;
+  dumpCopy = dump;
+  v8 = pathCopy;
   v9 = [v7 messageWithPacker:&v10];
   [(FBSServiceFacilityClient *)self sendMessage:v9 withType:59 replyHandler:&__block_literal_global_95 waitForReply:1 timeout:0.0, v10, v11, v12, v13];
 }
@@ -1756,21 +1756,21 @@ void __58__SBSSystemServiceClient_writeStateDump_toTextFileAtPath___block_invoke
   }
 }
 
-- (void)enableRemoteStateDumpWithTimeout:(int64_t)a3 completion:(id)a4
+- (void)enableRemoteStateDumpWithTimeout:(int64_t)timeout completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __70__SBSSystemServiceClient_enableRemoteStateDumpWithTimeout_completion___block_invoke;
   v11[3] = &__block_descriptor_40_e33_v16__0__NSObject_OS_xpc_object__8l;
-  v11[4] = a3;
+  v11[4] = timeout;
   v7 = [MEMORY[0x1E699FCF8] messageWithPacker:v11];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __70__SBSSystemServiceClient_enableRemoteStateDumpWithTimeout_completion___block_invoke_2;
   v9[3] = &unk_1E735FD90;
-  v10 = v6;
-  v8 = v6;
+  v10 = completionCopy;
+  v8 = completionCopy;
   [(FBSServiceFacilityClient *)self sendMessage:v7 withType:60 replyHandler:v9 waitForReply:0 timeout:0.0];
 }
 
@@ -1790,17 +1790,17 @@ void __70__SBSSystemServiceClient_enableRemoteStateDumpWithTimeout_completion___
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)disableRemoteStateDumpWithCompletion:(id)a3
+- (void)disableRemoteStateDumpWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E699FCF8] message];
+  completionCopy = completion;
+  message = [MEMORY[0x1E699FCF8] message];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __63__SBSSystemServiceClient_disableRemoteStateDumpWithCompletion___block_invoke;
   v7[3] = &unk_1E735FD90;
-  v8 = v4;
-  v6 = v4;
-  [(FBSServiceFacilityClient *)self sendMessage:v5 withType:61 replyHandler:v7 waitForReply:0 timeout:0.0];
+  v8 = completionCopy;
+  v6 = completionCopy;
+  [(FBSServiceFacilityClient *)self sendMessage:message withType:61 replyHandler:v7 waitForReply:0 timeout:0.0];
 }
 
 void __63__SBSSystemServiceClient_disableRemoteStateDumpWithCompletion___block_invoke(uint64_t a1, void *a2)
@@ -1819,24 +1819,24 @@ void __63__SBSSystemServiceClient_disableRemoteStateDumpWithCompletion___block_i
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)initiateSecureFlipBookRecordingsForElement:(id)a3 withCompletion:(id)a4
+- (void)initiateSecureFlipBookRecordingsForElement:(id)element withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  elementCopy = element;
+  completionCopy = completion;
   v8 = MEMORY[0x1E699FCF8];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __84__SBSSystemServiceClient_initiateSecureFlipBookRecordingsForElement_withCompletion___block_invoke;
   v14[3] = &unk_1E735FDF8;
-  v15 = v6;
-  v9 = v6;
+  v15 = elementCopy;
+  v9 = elementCopy;
   v10 = [v8 messageWithPacker:v14];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __84__SBSSystemServiceClient_initiateSecureFlipBookRecordingsForElement_withCompletion___block_invoke_2;
   v12[3] = &unk_1E735FD90;
-  v13 = v7;
-  v11 = v7;
+  v13 = completionCopy;
+  v11 = completionCopy;
   [(FBSServiceFacilityClient *)self sendMessage:v10 withType:54 replyHandler:v12 waitForReply:1 timeout:180.0];
 }
 
@@ -1892,13 +1892,13 @@ void __84__SBSSystemServiceClient_initiateSecureFlipBookRecordingsForElement_wit
   v10 = __Block_byref_object_copy__0;
   v11 = __Block_byref_object_dispose__0;
   v12 = objc_opt_new();
-  v3 = [MEMORY[0x1E699FCF8] message];
+  message = [MEMORY[0x1E699FCF8] message];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __71__SBSSystemServiceClient_availableRecordableFlipBookElementIdentifiers__block_invoke;
   v6[3] = &unk_1E735FE70;
   v6[4] = &v7;
-  [(FBSServiceFacilityClient *)self sendMessage:v3 withType:55 replyHandler:v6 waitForReply:1 timeout:0.0];
+  [(FBSServiceFacilityClient *)self sendMessage:message withType:55 replyHandler:v6 waitForReply:1 timeout:0.0];
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -1928,13 +1928,13 @@ void __71__SBSSystemServiceClient_availableRecordableFlipBookElementIdentifiers_
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [MEMORY[0x1E699FCF8] message];
+  message = [MEMORY[0x1E699FCF8] message];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __44__SBSSystemServiceClient_isMenuBarSupported__block_invoke;
   v5[3] = &unk_1E735FE70;
   v5[4] = &v6;
-  [(FBSServiceFacilityClient *)self sendMessage:v3 withType:62 replyHandler:v5 waitForReply:1 timeout:0.0];
+  [(FBSServiceFacilityClient *)self sendMessage:message withType:62 replyHandler:v5 waitForReply:1 timeout:0.0];
 
   LOBYTE(self) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
@@ -1954,15 +1954,15 @@ void __44__SBSSystemServiceClient_isMenuBarSupported__block_invoke(uint64_t a1, 
 
 - (void)toggleMenuBarVisibility
 {
-  v3 = [MEMORY[0x1E699FCF8] message];
-  [(FBSServiceFacilityClient *)self sendMessage:v3 withType:63 replyHandler:&__block_literal_global_103 waitForReply:0 timeout:0.0];
+  message = [MEMORY[0x1E699FCF8] message];
+  [(FBSServiceFacilityClient *)self sendMessage:message withType:63 replyHandler:&__block_literal_global_103 waitForReply:0 timeout:0.0];
 }
 
-- (void)handleMessage:(id)a3 withType:(int64_t)a4
+- (void)handleMessage:(id)message withType:(int64_t)type
 {
-  if (!a4)
+  if (!type)
   {
-    [(SBSSystemServiceClient *)self _handleButtonEventConsumePressMessage:a3];
+    [(SBSSystemServiceClient *)self _handleButtonEventConsumePressMessage:message];
   }
 }
 

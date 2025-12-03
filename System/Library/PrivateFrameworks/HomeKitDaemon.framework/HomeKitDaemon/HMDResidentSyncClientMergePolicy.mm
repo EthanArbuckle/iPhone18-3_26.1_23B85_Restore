@@ -1,7 +1,7 @@
 @interface HMDResidentSyncClientMergePolicy
-- (BOOL)resolveConstraintConflicts:(id)a3 error:(id *)a4;
-- (BOOL)resolveOptimisticLockingVersionConflicts:(id)a3 error:(id *)a4;
-- (HMDResidentSyncClientMergePolicy)initWithFaultLogging:(BOOL)a3;
+- (BOOL)resolveConstraintConflicts:(id)conflicts error:(id *)error;
+- (BOOL)resolveOptimisticLockingVersionConflicts:(id)conflicts error:(id *)error;
+- (HMDResidentSyncClientMergePolicy)initWithFaultLogging:(BOOL)logging;
 - (id)logIdentifier;
 @end
 
@@ -14,16 +14,16 @@
   return NSStringFromClass(v2);
 }
 
-- (BOOL)resolveConstraintConflicts:(id)a3 error:(id *)a4
+- (BOOL)resolveConstraintConflicts:(id)conflicts error:(id *)error
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  conflictsCopy = conflicts;
   v7 = *MEMORY[0x277CBE160];
   v21 = 0;
-  v8 = [v7 resolveConstraintConflicts:v6 error:&v21];
+  v8 = [v7 resolveConstraintConflicts:conflictsCopy error:&v21];
   v9 = v21;
   v10 = objc_autoreleasePoolPush();
-  v11 = self;
+  selfCopy = self;
   v12 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
@@ -35,7 +35,7 @@
 
   objc_autoreleasePoolPop(v10);
   v14 = objc_autoreleasePoolPush();
-  v15 = v11;
+  v15 = selfCopy;
   v16 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
   {
@@ -48,22 +48,22 @@
   }
 
   objc_autoreleasePoolPop(v14);
-  if (a4)
+  if (error)
   {
     v18 = v9;
-    *a4 = v9;
+    *error = v9;
   }
 
   v19 = *MEMORY[0x277D85DE8];
   return v8;
 }
 
-- (BOOL)resolveOptimisticLockingVersionConflicts:(id)a3 error:(id *)a4
+- (BOOL)resolveOptimisticLockingVersionConflicts:(id)conflicts error:(id *)error
 {
   v36 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  conflictsCopy = conflicts;
   v7 = objc_autoreleasePoolPush();
-  v8 = self;
+  selfCopy = self;
   v9 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
@@ -71,7 +71,7 @@
     *buf = 138543618;
     *&buf[4] = v10;
     *&buf[12] = 2048;
-    *&buf[14] = [v6 count];
+    *&buf[14] = [conflictsCopy count];
     _os_log_impl(&dword_229538000, v9, OS_LOG_TYPE_INFO, "%{public}@Detected %tu merge conflict(s)", buf, 0x16u);
   }
 
@@ -84,16 +84,16 @@
   v29[1] = 3221225472;
   v29[2] = __83__HMDResidentSyncClientMergePolicy_resolveOptimisticLockingVersionConflicts_error___block_invoke;
   v29[3] = &unk_27867EAB8;
-  v29[4] = v8;
+  v29[4] = selfCopy;
   v29[5] = buf;
-  [v6 hmf_enumerateWithAutoreleasePoolUsingBlock:v29];
+  [conflictsCopy hmf_enumerateWithAutoreleasePoolUsingBlock:v29];
   if ((*(*&buf[8] + 24) & 1) == 0)
   {
     v14 = *MEMORY[0x277CBE160];
     v28 = 0;
-    v13 = [v14 resolveOptimisticLockingVersionConflicts:v6 error:&v28];
+    v13 = [v14 resolveOptimisticLockingVersionConflicts:conflictsCopy error:&v28];
     v12 = v28;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_14;
     }
@@ -101,10 +101,10 @@
     goto LABEL_13;
   }
 
-  v26.receiver = v8;
+  v26.receiver = selfCopy;
   v26.super_class = HMDResidentSyncClientMergePolicy;
   v27 = 0;
-  v11 = [(NSMergePolicy *)&v26 resolveOptimisticLockingVersionConflicts:v6 error:&v27];
+  v11 = [(NSMergePolicy *)&v26 resolveOptimisticLockingVersionConflicts:conflictsCopy error:&v27];
   v12 = v27;
   if (v11)
   {
@@ -113,7 +113,7 @@
   }
 
   v15 = objc_autoreleasePoolPush();
-  v16 = v8;
+  v16 = selfCopy;
   v17 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
   {
@@ -139,11 +139,11 @@
 
   objc_autoreleasePoolPop(v19);
   v13 = 0;
-  if (a4)
+  if (error)
   {
 LABEL_13:
     v23 = v12;
-    *a4 = v12;
+    *error = v12;
   }
 
 LABEL_14:
@@ -1087,15 +1087,15 @@ LABEL_49:
   v62 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDResidentSyncClientMergePolicy)initWithFaultLogging:(BOOL)a3
+- (HMDResidentSyncClientMergePolicy)initWithFaultLogging:(BOOL)logging
 {
-  v3 = a3;
+  loggingCopy = logging;
   v6.receiver = self;
   v6.super_class = HMDResidentSyncClientMergePolicy;
   result = [(NSMergePolicy *)&v6 initWithMergeType:2];
   if (result)
   {
-    if (v3)
+    if (loggingCopy)
     {
       v5 = 17;
     }

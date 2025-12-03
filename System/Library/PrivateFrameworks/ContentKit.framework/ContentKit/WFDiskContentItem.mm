@@ -1,11 +1,11 @@
 @interface WFDiskContentItem
 + (id)allProperties;
-+ (id)localizedPluralTypeDescriptionWithContext:(id)a3;
-+ (id)localizedTypeDescriptionWithContext:(id)a3;
++ (id)localizedPluralTypeDescriptionWithContext:(id)context;
++ (id)localizedTypeDescriptionWithContext:(id)context;
 + (id)ownedTypes;
 + (id)propertyBuilders;
 - (WFDisk)disk;
-- (void)generateFileRepresentation:(id)a3 options:(id)a4 forType:(id)a5;
+- (void)generateFileRepresentation:(id)representation options:(id)options forType:(id)type;
 @end
 
 @implementation WFDiskContentItem
@@ -14,10 +14,10 @@
 {
   v22 = *MEMORY[0x277D85DE8];
   v3 = objc_opt_new();
-  [a1 superclass];
+  [self superclass];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [objc_msgSend(a1 "superclass")];
+    v4 = [objc_msgSend(self "superclass")];
     v5 = [v4 if_compactMap:&__block_literal_global_13961];
     v6 = [v5 mutableCopy];
 
@@ -28,10 +28,10 @@
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = [a1 properties];
-  v8 = [v7 reverseObjectEnumerator];
+  properties = [self properties];
+  reverseObjectEnumerator = [properties reverseObjectEnumerator];
 
-  v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v9 = [reverseObjectEnumerator countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v9)
   {
     v10 = v9;
@@ -42,7 +42,7 @@
       {
         if (*v18 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         v13 = *(*(&v17 + 1) + 8 * i);
@@ -63,7 +63,7 @@
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v10 = [reverseObjectEnumerator countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v10);
@@ -119,20 +119,20 @@ void *__34__WFDiskContentItem_allProperties__block_invoke(uint64_t a1, void *a2)
   return v4;
 }
 
-+ (id)localizedPluralTypeDescriptionWithContext:(id)a3
++ (id)localizedPluralTypeDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"External Drives", @"External Drives");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
 
-+ (id)localizedTypeDescriptionWithContext:(id)a3
++ (id)localizedTypeDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"External Drive", @"External Drive");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
@@ -151,13 +151,13 @@ void *__34__WFDiskContentItem_allProperties__block_invoke(uint64_t a1, void *a2)
   v13[3] = *MEMORY[0x277D85DE8];
   v3 = WFLocalizedContentPropertyNameMarker(@"Drive Identifier");
   v4 = [WFContentPropertyBuilder keyPath:@"disk.volumeUUID" name:v3 class:objc_opt_class()];
-  v5 = [a1 itemPathPropertyBuilder];
+  itemPathPropertyBuilder = [self itemPathPropertyBuilder];
   v6 = WFLocalizedContentPropertyNameMarker(@"Drive Path");
-  v7 = [v5 displayName:v6];
+  v7 = [itemPathPropertyBuilder displayName:v6];
   v13[1] = v7;
-  v8 = [a1 modificationDatePropertyBuilder];
+  modificationDatePropertyBuilder = [self modificationDatePropertyBuilder];
   v9 = WFLocalizedContentPropertyNameMarker(@"Drive Last Modified Date");
-  v10 = [v8 displayName:v9];
+  v10 = [modificationDatePropertyBuilder displayName:v9];
   v13[2] = v10;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:3];
 
@@ -171,12 +171,12 @@ void *__34__WFDiskContentItem_allProperties__block_invoke(uint64_t a1, void *a2)
   return [(WFContentItem *)self objectForClass:v3];
 }
 
-- (void)generateFileRepresentation:(id)a3 options:(id)a4 forType:(id)a5
+- (void)generateFileRepresentation:(id)representation options:(id)options forType:(id)type
 {
-  v7 = a3;
-  v9 = [(WFDiskContentItem *)self disk];
-  v8 = [v9 fileRepresentation];
-  (*(a3 + 2))(v7, v8, 0);
+  representationCopy = representation;
+  disk = [(WFDiskContentItem *)self disk];
+  fileRepresentation = [disk fileRepresentation];
+  (*(representation + 2))(representationCopy, fileRepresentation, 0);
 }
 
 @end

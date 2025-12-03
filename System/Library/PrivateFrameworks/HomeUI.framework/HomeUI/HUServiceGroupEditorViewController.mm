@@ -1,52 +1,52 @@
 @interface HUServiceGroupEditorViewController
-+ (id)forCreatingNewServiceGroupWithServices:(id)a3 inHome:(id)a4;
-- (BOOL)collectionView:(id)a3 shouldHighlightItemAtIndexPath:(id)a4;
-- (BOOL)shouldShowHeaderForSection:(id)a3;
-- (Class)cellClassForItem:(id)a3 indexPath:(id)a4;
-- (HUServiceGroupEditorViewController)initWithItemManager:(id)a3 collectionViewLayout:(id)a4;
-- (id)buildItemModuleControllerForModule:(id)a3;
-- (id)displayedItemsInSection:(id)a3;
-- (id)initUsingCompositionalLayoutWithItemManager:(id)a3;
-- (id)layoutSectionForSection:(int64_t)a3 layoutEnvironment:(id)a4;
-- (id)listContentConfigurationForSupplementaryElementOfKind:(id)a3 atIndexPath:(id)a4;
-- (void)cancelWithSender:(id)a3;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)doneWithSender:(id)a3;
-- (void)itemManagerDidUpdate:(id)a3;
-- (void)textDidChange:(id)a3 forTextField:(id)a4 item:(id)a5;
-- (void)textFieldDidEndEditing:(id)a3 item:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
++ (id)forCreatingNewServiceGroupWithServices:(id)services inHome:(id)home;
+- (BOOL)collectionView:(id)view shouldHighlightItemAtIndexPath:(id)path;
+- (BOOL)shouldShowHeaderForSection:(id)section;
+- (Class)cellClassForItem:(id)item indexPath:(id)path;
+- (HUServiceGroupEditorViewController)initWithItemManager:(id)manager collectionViewLayout:(id)layout;
+- (id)buildItemModuleControllerForModule:(id)module;
+- (id)displayedItemsInSection:(id)section;
+- (id)initUsingCompositionalLayoutWithItemManager:(id)manager;
+- (id)layoutSectionForSection:(int64_t)section layoutEnvironment:(id)environment;
+- (id)listContentConfigurationForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path;
+- (void)cancelWithSender:(id)sender;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)doneWithSender:(id)sender;
+- (void)itemManagerDidUpdate:(id)update;
+- (void)textDidChange:(id)change forTextField:(id)field item:(id)item;
+- (void)textFieldDidEndEditing:(id)editing item:(id)item;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
 @implementation HUServiceGroupEditorViewController
 
-+ (id)forCreatingNewServiceGroupWithServices:(id)a3 inHome:(id)a4
++ (id)forCreatingNewServiceGroupWithServices:(id)services inHome:(id)home
 {
   sub_20CECF940(0, &qword_27C81AEC0);
   v5 = sub_20D567A78();
-  v6 = a4;
-  v7 = _s6HomeUI32ServiceGroupEditorViewControllerC014forCreatingNewcD04with2inACXDSaySo9HMServiceCG_So6HMHomeCtFZ_0(v5, v6);
+  homeCopy = home;
+  v7 = _s6HomeUI32ServiceGroupEditorViewControllerC014forCreatingNewcD04with2inACXDSaySo9HMServiceCG_So6HMHomeCtFZ_0(v5, homeCopy);
 
   return v7;
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_20CED1564();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_20CED17C0(a3);
+  selfCopy = self;
+  sub_20CED17C0(appear);
 }
 
-- (void)doneWithSender:(id)a3
+- (void)doneWithSender:(id)sender
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_20D568628();
   swift_unknownObjectRelease();
   sub_20CED1BA4(v5);
@@ -54,90 +54,90 @@
   __swift_destroy_boxed_opaque_existential_1(v5);
 }
 
-- (void)cancelWithSender:(id)a3
+- (void)cancelWithSender:(id)sender
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_20D568628();
   swift_unknownObjectRelease();
   swift_beginAccess();
   Strong = swift_unknownObjectWeakLoadStrong();
   if (Strong)
   {
-    v6 = [Strong finishPresentation:v4 animated:1];
+    v6 = [Strong finishPresentation:selfCopy animated:1];
 
     swift_unknownObjectRelease();
-    v4 = v6;
+    selfCopy = v6;
   }
 
   __swift_destroy_boxed_opaque_existential_1(v7);
 }
 
-- (id)layoutSectionForSection:(int64_t)a3 layoutEnvironment:(id)a4
+- (id)layoutSectionForSection:(int64_t)section layoutEnvironment:(id)environment
 {
   swift_unknownObjectRetain();
-  v7 = self;
-  v8 = sub_20CED257C(a3, a4);
+  selfCopy = self;
+  v8 = sub_20CED257C(section, environment);
   swift_unknownObjectRelease();
 
   return v8;
 }
 
-- (Class)cellClassForItem:(id)a3 indexPath:(id)a4
+- (Class)cellClassForItem:(id)item indexPath:(id)path
 {
   v6 = sub_20D5638C8();
   v7 = *(v6 - 8);
   MEMORY[0x28223BE20](v6);
   v9 = &v13 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_20D563878();
-  v10 = a3;
-  v11 = self;
-  sub_20CED26C8(v10);
+  itemCopy = item;
+  selfCopy = self;
+  sub_20CED26C8(itemCopy);
 
   (*(v7 + 8))(v9, v6);
   return swift_getObjCClassFromMetadata();
 }
 
-- (id)buildItemModuleControllerForModule:(id)a3
+- (id)buildItemModuleControllerForModule:(id)module
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_20CED3BE0(v4);
+  moduleCopy = module;
+  selfCopy = self;
+  v6 = sub_20CED3BE0(moduleCopy);
 
   return v6;
 }
 
-- (void)textDidChange:(id)a3 forTextField:(id)a4 item:(id)a5
+- (void)textDidChange:(id)change forTextField:(id)field item:(id)item
 {
   v6 = sub_20D567838();
   v7 = (self + OBJC_IVAR___HUServiceGroupEditorViewController_editingName);
   *v7 = v6;
   v7[1] = v8;
-  v9 = self;
+  selfCopy = self;
 
   sub_20D5663C8();
   sub_20CED18F4();
 }
 
-- (void)textFieldDidEndEditing:(id)a3 item:(id)a4
+- (void)textFieldDidEndEditing:(id)editing item:(id)item
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_20CED3DA4(v6);
+  editingCopy = editing;
+  itemCopy = item;
+  selfCopy = self;
+  sub_20CED3DA4(editingCopy);
 }
 
-- (void)itemManagerDidUpdate:(id)a3
+- (void)itemManagerDidUpdate:(id)update
 {
   v6.receiver = self;
   v6.super_class = type metadata accessor for ServiceGroupEditorViewController();
-  v4 = a3;
+  updateCopy = update;
   v5 = v6.receiver;
-  [(HUItemCollectionViewController *)&v6 itemManagerDidUpdate:v4];
+  [(HUItemCollectionViewController *)&v6 itemManagerDidUpdate:updateCopy];
   sub_20CED18F4();
 }
 
-- (id)listContentConfigurationForSupplementaryElementOfKind:(id)a3 atIndexPath:(id)a4
+- (id)listContentConfigurationForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path
 {
   v6 = sub_20D5638C8();
   v7 = *(v6 - 8);
@@ -148,25 +148,25 @@
   sub_20D563878();
   if (v10 == sub_20D567838() && v12 == v13)
   {
-    v18 = a3;
-    v19 = self;
+    kindCopy = kind;
+    selfCopy = self;
   }
 
   else
   {
     v15 = sub_20D568BF8();
-    v16 = a3;
-    v17 = self;
+    kindCopy2 = kind;
+    selfCopy2 = self;
 
     if ((v15 & 1) == 0)
     {
       v21 = sub_20D563868();
       v22 = type metadata accessor for ServiceGroupEditorViewController();
-      v24.receiver = v17;
+      v24.receiver = selfCopy2;
       v24.super_class = v22;
-      v20 = [(HUItemCollectionViewController *)&v24 listContentConfigurationForSupplementaryElementOfKind:v16 atIndexPath:v21];
+      v20 = [(HUItemCollectionViewController *)&v24 listContentConfigurationForSupplementaryElementOfKind:kindCopy2 atIndexPath:v21];
 
-      self = v16;
+      self = kindCopy2;
       goto LABEL_12;
     }
   }
@@ -184,49 +184,49 @@ LABEL_12:
   return v20;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
   v6 = sub_20D5638C8();
   v7 = *(v6 - 8);
   MEMORY[0x28223BE20](v6);
   v9 = &v14 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_20D563878();
-  v10 = a3;
-  v11 = self;
+  viewCopy = view;
+  selfCopy = self;
   v12 = sub_20D563868();
   v13 = type metadata accessor for ServiceGroupEditorViewController();
-  v14.receiver = v11;
+  v14.receiver = selfCopy;
   v14.super_class = v13;
-  [(HUItemCollectionViewController *)&v14 collectionView:v10 didSelectItemAtIndexPath:v12];
+  [(HUItemCollectionViewController *)&v14 collectionView:viewCopy didSelectItemAtIndexPath:v12];
 
   sub_20CED18F4();
   (*(v7 + 8))(v9, v6);
 }
 
-- (BOOL)collectionView:(id)a3 shouldHighlightItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view shouldHighlightItemAtIndexPath:(id)path
 {
   v6 = sub_20D5638C8();
   v7 = *(v6 - 8);
   MEMORY[0x28223BE20](v6);
   v9 = &v13 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_20D563878();
-  v10 = a3;
-  v11 = self;
+  viewCopy = view;
+  selfCopy = self;
   LOBYTE(self) = sub_20CED3FAC();
 
   (*(v7 + 8))(v9, v6);
   return self & 1;
 }
 
-- (id)displayedItemsInSection:(id)a3
+- (id)displayedItemsInSection:(id)section
 {
-  v4 = a3;
-  v5 = self;
-  v6 = [(HUItemCollectionViewController *)v5 itemManager];
-  v7 = [(HUItemCollectionViewController *)v5 itemManager];
-  v8 = [(HFItemManager *)v7 sectionIndexForDisplayedSectionIdentifier:v4];
+  sectionCopy = section;
+  selfCopy = self;
+  itemManager = [(HUItemCollectionViewController *)selfCopy itemManager];
+  itemManager2 = [(HUItemCollectionViewController *)selfCopy itemManager];
+  v8 = [(HFItemManager *)itemManager2 sectionIndexForDisplayedSectionIdentifier:sectionCopy];
 
-  v9 = [(HFItemManager *)v6 displayedItemsInSection:v8];
+  v9 = [(HFItemManager *)itemManager displayedItemsInSection:v8];
   if (!v9)
   {
     sub_20CECF940(0, &qword_281120AC0);
@@ -237,23 +237,23 @@ LABEL_12:
   return v9;
 }
 
-- (BOOL)shouldShowHeaderForSection:(id)a3
+- (BOOL)shouldShowHeaderForSection:(id)section
 {
   sub_20D567838();
-  v4 = self;
+  selfCopy = self;
   v5 = sub_20CED3114();
 
   return v5;
 }
 
-- (HUServiceGroupEditorViewController)initWithItemManager:(id)a3 collectionViewLayout:(id)a4
+- (HUServiceGroupEditorViewController)initWithItemManager:(id)manager collectionViewLayout:(id)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (id)initUsingCompositionalLayoutWithItemManager:(id)a3
+- (id)initUsingCompositionalLayoutWithItemManager:(id)manager
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

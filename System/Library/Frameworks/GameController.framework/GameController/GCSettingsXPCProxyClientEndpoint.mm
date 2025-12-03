@@ -1,21 +1,21 @@
 @interface GCSettingsXPCProxyClientEndpoint
 - (GCSettingsXPCProxyClientEndpoint)init;
-- (GCSettingsXPCProxyClientEndpoint)initWithIdentifier:(id)a3 initialValueForProfile:(id)a4;
-- (void)_remoteEndpointHasSetProfile:(id)a3;
-- (void)fetchObjectIdentifierWithReply:(id)a3;
+- (GCSettingsXPCProxyClientEndpoint)initWithIdentifier:(id)identifier initialValueForProfile:(id)profile;
+- (void)_remoteEndpointHasSetProfile:(id)profile;
+- (void)fetchObjectIdentifierWithReply:(id)reply;
 - (void)invalidateConnection;
-- (void)newProfile:(id)a3;
+- (void)newProfile:(id)profile;
 - (void)refreshProfile;
-- (void)setRemoteEndpoint:(id)a3 connection:(id)a4;
+- (void)setRemoteEndpoint:(id)endpoint connection:(id)connection;
 @end
 
 @implementation GCSettingsXPCProxyClientEndpoint
 
-- (GCSettingsXPCProxyClientEndpoint)initWithIdentifier:(id)a3 initialValueForProfile:(id)a4
+- (GCSettingsXPCProxyClientEndpoint)initWithIdentifier:(id)identifier initialValueForProfile:(id)profile
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  profileCopy = profile;
   v14.receiver = self;
   v14.super_class = GCSettingsXPCProxyClientEndpoint;
   v8 = [(GCSettingsXPCProxyClientEndpoint *)&v14 init];
@@ -25,17 +25,17 @@
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v16 = v6;
+      v16 = identifierCopy;
       v17 = 2112;
-      v18 = v7;
+      v18 = profileCopy;
       _os_log_impl(&dword_1D2CD5000, v9, OS_LOG_TYPE_INFO, "GCSettingsXPCProxyClientEndpoint initWithIdentifier: %@ initialProfile: %@", buf, 0x16u);
     }
 
-    v10 = [v6 copyWithZone:0];
+    v10 = [identifierCopy copyWithZone:0];
     identifier = v8->_identifier;
     v8->_identifier = v10;
 
-    objc_storeStrong(&v8->_settingsProfile, a4);
+    objc_storeStrong(&v8->_settingsProfile, profile);
   }
 
   v12 = *MEMORY[0x1E69E9840];
@@ -49,10 +49,10 @@
   return 0;
 }
 
-- (void)setRemoteEndpoint:(id)a3 connection:(id)a4
+- (void)setRemoteEndpoint:(id)endpoint connection:(id)connection
 {
-  v7 = a3;
-  v8 = a4;
+  endpointCopy = endpoint;
+  connectionCopy = connection;
   objc_initWeak(&location, self);
   v15 = MEMORY[0x1E69E9820];
   v16 = 3221225472;
@@ -60,15 +60,15 @@
   v18 = &unk_1E8418D18;
   objc_copyWeak(&v19, &location);
   v9 = _Block_copy(&v15);
-  v10 = [v8 addInterruptionHandler:{v9, v15, v16, v17, v18}];
+  v10 = [connectionCopy addInterruptionHandler:{v9, v15, v16, v17, v18}];
   connectionInterruptionRegistration = self->_connectionInterruptionRegistration;
   self->_connectionInterruptionRegistration = v10;
 
-  v12 = [v8 addInvalidationHandler:v9];
+  v12 = [connectionCopy addInvalidationHandler:v9];
   connectionInvalidationRegistration = self->_connectionInvalidationRegistration;
   self->_connectionInvalidationRegistration = v12;
 
-  objc_storeStrong(&self->_serverEndpoint, a3);
+  objc_storeStrong(&self->_serverEndpoint, endpoint);
   v14 = getGCSettingsLogger();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
@@ -102,19 +102,19 @@ void __65__GCSettingsXPCProxyClientEndpoint_setRemoteEndpoint_connection___block
   }
 }
 
-- (void)_remoteEndpointHasSetProfile:(id)a3
+- (void)_remoteEndpointHasSetProfile:(id)profile
 {
-  v5 = a3;
+  profileCopy = profile;
   WeakRetained = objc_loadWeakRetained(&self->_controller);
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __65__GCSettingsXPCProxyClientEndpoint__remoteEndpointHasSetProfile___block_invoke;
   v9[3] = &unk_1E8418CC8;
   v10 = WeakRetained;
-  v11 = self;
-  v12 = v5;
+  selfCopy = self;
+  v12 = profileCopy;
   v13 = a2;
-  v7 = v5;
+  v7 = profileCopy;
   v8 = WeakRetained;
   dispatch_async(MEMORY[0x1E69E96A0], v9);
 }
@@ -135,16 +135,16 @@ uint64_t __65__GCSettingsXPCProxyClientEndpoint__remoteEndpointHasSetProfile___b
   return result;
 }
 
-- (void)newProfile:(id)a3
+- (void)newProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __47__GCSettingsXPCProxyClientEndpoint_newProfile___block_invoke;
   v6[3] = &unk_1E8418C50;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = profileCopy;
+  v5 = profileCopy;
   _os_activity_initiate(&dword_1D2CD5000, "(Settings XPC Proxy Client Endpoint) New Profile", OS_ACTIVITY_FLAG_DEFAULT, v6);
 }
 
@@ -214,11 +214,11 @@ void __56__GCSettingsXPCProxyClientEndpoint_invalidateConnection__block_invoke(u
   *(v6 + 16) = 0;
 }
 
-- (void)fetchObjectIdentifierWithReply:(id)a3
+- (void)fetchObjectIdentifierWithReply:(id)reply
 {
-  v5 = a3;
-  v6 = [(GCSettingsXPCProxyClientEndpoint *)self identifier];
-  (*(a3 + 2))(v5, v6);
+  replyCopy = reply;
+  identifier = [(GCSettingsXPCProxyClientEndpoint *)self identifier];
+  (*(reply + 2))(replyCopy, identifier);
 }
 
 - (void)setRemoteEndpoint:connection:.cold.1()

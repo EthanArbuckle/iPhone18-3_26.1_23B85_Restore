@@ -1,5 +1,5 @@
 @interface MBLoadingStatusView
-- (MBLoadingStatusView)initWithStatusText:(id)a3 backgroundColor:(id)a4;
+- (MBLoadingStatusView)initWithStatusText:(id)text backgroundColor:(id)color;
 - (void)commonInit;
 - (void)startAnimating;
 - (void)stopAnimating;
@@ -7,10 +7,10 @@
 
 @implementation MBLoadingStatusView
 
-- (MBLoadingStatusView)initWithStatusText:(id)a3 backgroundColor:(id)a4
+- (MBLoadingStatusView)initWithStatusText:(id)text backgroundColor:(id)color
 {
-  v6 = a3;
-  v7 = a4;
+  textCopy = text;
+  colorCopy = color;
   v15.receiver = self;
   v15.super_class = MBLoadingStatusView;
   v8 = [(MBLoadingStatusView *)&v15 initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
@@ -24,10 +24,10 @@
     statusLabel = v8->_statusLabel;
     v8->_statusLabel = v11;
 
-    [(UILabel *)v8->_statusLabel setText:v6];
-    if (v7)
+    [(UILabel *)v8->_statusLabel setText:textCopy];
+    if (colorCopy)
     {
-      [(MBLoadingStatusView *)v8 setBackgroundColor:v7];
+      [(MBLoadingStatusView *)v8 setBackgroundColor:colorCopy];
     }
 
     else
@@ -65,17 +65,17 @@
   [v7 setSpacing:12.0];
   [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
   [(MBLoadingStatusView *)self addSubview:v7];
-  v17 = [v7 leadingAnchor];
-  v8 = [(MBLoadingStatusView *)self leadingAnchor];
-  v9 = [v17 constraintEqualToAnchor:v8];
+  leadingAnchor = [v7 leadingAnchor];
+  leadingAnchor2 = [(MBLoadingStatusView *)self leadingAnchor];
+  v9 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v18[0] = v9;
-  v10 = [v7 trailingAnchor];
-  v11 = [(MBLoadingStatusView *)self trailingAnchor];
-  v12 = [v10 constraintEqualToAnchor:v11];
+  trailingAnchor = [v7 trailingAnchor];
+  trailingAnchor2 = [(MBLoadingStatusView *)self trailingAnchor];
+  v12 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v18[1] = v12;
-  v13 = [v7 centerYAnchor];
-  v14 = [(MBLoadingStatusView *)self centerYAnchor];
-  v15 = [v13 constraintEqualToAnchor:v14];
+  centerYAnchor = [v7 centerYAnchor];
+  centerYAnchor2 = [(MBLoadingStatusView *)self centerYAnchor];
+  v15 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v18[2] = v15;
   v16 = [NSArray arrayWithObjects:v18 count:3];
   [NSLayoutConstraint activateConstraints:v16];

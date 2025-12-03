@@ -1,33 +1,33 @@
 @interface LTSchemaSpeechTranslationEvent
-- (BOOL)isEqual:(id)a3;
-- (LTSchemaSpeechTranslationEvent)initWithDictionary:(id)a3;
-- (LTSchemaSpeechTranslationEvent)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (LTSchemaSpeechTranslationEvent)initWithDictionary:(id)dictionary;
+- (LTSchemaSpeechTranslationEvent)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasIsAutomaticLID:(BOOL)a3;
-- (void)setHasStatus:(BOOL)a3;
-- (void)setHasTimeToCancel:(BOOL)a3;
-- (void)setHasTimeToFirstPartialDisplayed:(BOOL)a3;
-- (void)setHasTimeToRecordingDialogDismissed:(BOOL)a3;
-- (void)setHasTimeToShowTranslationCard:(BOOL)a3;
-- (void)setHasUiMode:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasIsAutomaticLID:(BOOL)d;
+- (void)setHasStatus:(BOOL)status;
+- (void)setHasTimeToCancel:(BOOL)cancel;
+- (void)setHasTimeToFirstPartialDisplayed:(BOOL)displayed;
+- (void)setHasTimeToRecordingDialogDismissed:(BOOL)dismissed;
+- (void)setHasTimeToShowTranslationCard:(BOOL)card;
+- (void)setHasUiMode:(BOOL)mode;
+- (void)writeTo:(id)to;
 @end
 
 @implementation LTSchemaSpeechTranslationEvent
 
-- (LTSchemaSpeechTranslationEvent)initWithDictionary:(id)a3
+- (LTSchemaSpeechTranslationEvent)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v33.receiver = self;
   v33.super_class = LTSchemaSpeechTranslationEvent;
   v5 = [(LTSchemaSpeechTranslationEvent *)&v33 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"task"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"task"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -36,7 +36,7 @@
     }
 
     v32 = v6;
-    v8 = [v4 objectForKeyedSubscript:@"sessionID"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"sessionID"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -44,7 +44,7 @@
       [(LTSchemaSpeechTranslationEvent *)v5 setSessionID:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"requestID"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"requestID"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -52,14 +52,14 @@
       [(LTSchemaSpeechTranslationEvent *)v5 setRequestID:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"inRestrictedMode"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"inRestrictedMode"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[LTSchemaSpeechTranslationEvent setInRestrictedMode:](v5, "setInRestrictedMode:", [v12 BOOLValue]);
     }
 
-    v13 = [v4 objectForKeyedSubscript:@"isAutomaticLID"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"isAutomaticLID"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -67,7 +67,7 @@
     }
 
     v30 = v12;
-    v14 = [v4 objectForKeyedSubscript:@"error"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"error"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -76,14 +76,14 @@
     }
 
     v28 = v14;
-    v16 = [v4 objectForKeyedSubscript:@"uiMode"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"uiMode"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[LTSchemaSpeechTranslationEvent setUiMode:](v5, "setUiMode:", [v16 intValue]);
     }
 
-    v17 = [v4 objectForKeyedSubscript:{@"mobileAssetConfigVersion", v16}];
+    v17 = [dictionaryCopy objectForKeyedSubscript:{@"mobileAssetConfigVersion", v16}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -91,14 +91,14 @@
       [(LTSchemaSpeechTranslationEvent *)v5 setMobileAssetConfigVersion:v18];
     }
 
-    v19 = [v4 objectForKeyedSubscript:@"timeToFirstPartialDisplayed"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"timeToFirstPartialDisplayed"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[LTSchemaSpeechTranslationEvent setTimeToFirstPartialDisplayed:](v5, "setTimeToFirstPartialDisplayed:", [v19 unsignedIntValue]);
     }
 
-    v20 = [v4 objectForKeyedSubscript:@"timeToRecordingDialogDismissed"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"timeToRecordingDialogDismissed"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -107,7 +107,7 @@
 
     v29 = v13;
     v31 = v8;
-    v21 = [v4 objectForKeyedSubscript:@"timeToShowTranslationCard"];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"timeToShowTranslationCard"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -115,14 +115,14 @@
     }
 
     v22 = v10;
-    v23 = [v4 objectForKeyedSubscript:@"timeToCancel"];
+    v23 = [dictionaryCopy objectForKeyedSubscript:@"timeToCancel"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[LTSchemaSpeechTranslationEvent setTimeToCancel:](v5, "setTimeToCancel:", [v23 unsignedIntValue]);
     }
 
-    v24 = [v4 objectForKeyedSubscript:@"status"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"status"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -135,30 +135,30 @@
   return v5;
 }
 
-- (LTSchemaSpeechTranslationEvent)initWithJSON:(id)a3
+- (LTSchemaSpeechTranslationEvent)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(LTSchemaSpeechTranslationEvent *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(LTSchemaSpeechTranslationEvent *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(LTSchemaSpeechTranslationEvent *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -171,20 +171,20 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_error)
   {
-    v4 = [(LTSchemaSpeechTranslationEvent *)self error];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    error = [(LTSchemaSpeechTranslationEvent *)self error];
+    dictionaryRepresentation = [error dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"error"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"error"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"error"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"error"];
     }
   }
 
@@ -192,7 +192,7 @@
   if (has)
   {
     v8 = [MEMORY[0x1E696AD98] numberWithBool:{-[LTSchemaSpeechTranslationEvent inRestrictedMode](self, "inRestrictedMode")}];
-    [v3 setObject:v8 forKeyedSubscript:@"inRestrictedMode"];
+    [dictionary setObject:v8 forKeyedSubscript:@"inRestrictedMode"];
 
     has = self->_has;
   }
@@ -200,28 +200,28 @@
   if ((has & 2) != 0)
   {
     v9 = [MEMORY[0x1E696AD98] numberWithBool:{-[LTSchemaSpeechTranslationEvent isAutomaticLID](self, "isAutomaticLID")}];
-    [v3 setObject:v9 forKeyedSubscript:@"isAutomaticLID"];
+    [dictionary setObject:v9 forKeyedSubscript:@"isAutomaticLID"];
   }
 
   if (self->_mobileAssetConfigVersion)
   {
-    v10 = [(LTSchemaSpeechTranslationEvent *)self mobileAssetConfigVersion];
-    v11 = [v10 copy];
-    [v3 setObject:v11 forKeyedSubscript:@"mobileAssetConfigVersion"];
+    mobileAssetConfigVersion = [(LTSchemaSpeechTranslationEvent *)self mobileAssetConfigVersion];
+    v11 = [mobileAssetConfigVersion copy];
+    [dictionary setObject:v11 forKeyedSubscript:@"mobileAssetConfigVersion"];
   }
 
   if (self->_requestID)
   {
-    v12 = [(LTSchemaSpeechTranslationEvent *)self requestID];
-    v13 = [v12 copy];
-    [v3 setObject:v13 forKeyedSubscript:@"requestID"];
+    requestID = [(LTSchemaSpeechTranslationEvent *)self requestID];
+    v13 = [requestID copy];
+    [dictionary setObject:v13 forKeyedSubscript:@"requestID"];
   }
 
   if (self->_sessionID)
   {
-    v14 = [(LTSchemaSpeechTranslationEvent *)self sessionID];
-    v15 = [v14 copy];
-    [v3 setObject:v15 forKeyedSubscript:@"sessionID"];
+    sessionID = [(LTSchemaSpeechTranslationEvent *)self sessionID];
+    v15 = [sessionID copy];
+    [dictionary setObject:v15 forKeyedSubscript:@"sessionID"];
   }
 
   if ((*&self->_has & 0x80000000) != 0)
@@ -237,22 +237,22 @@
       v17 = off_1E78D8D88[v16];
     }
 
-    [v3 setObject:v17 forKeyedSubscript:@"status"];
+    [dictionary setObject:v17 forKeyedSubscript:@"status"];
   }
 
   if (self->_task)
   {
-    v18 = [(LTSchemaSpeechTranslationEvent *)self task];
-    v19 = [v18 dictionaryRepresentation];
-    if (v19)
+    task = [(LTSchemaSpeechTranslationEvent *)self task];
+    dictionaryRepresentation2 = [task dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v19 forKeyedSubscript:@"task"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"task"];
     }
 
     else
     {
-      v20 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v20 forKeyedSubscript:@"task"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"task"];
     }
   }
 
@@ -260,7 +260,7 @@
   if ((v21 & 0x40) != 0)
   {
     v22 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[LTSchemaSpeechTranslationEvent timeToCancel](self, "timeToCancel")}];
-    [v3 setObject:v22 forKeyedSubscript:@"timeToCancel"];
+    [dictionary setObject:v22 forKeyedSubscript:@"timeToCancel"];
 
     v21 = self->_has;
     if ((v21 & 8) == 0)
@@ -281,7 +281,7 @@ LABEL_28:
   }
 
   v23 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[LTSchemaSpeechTranslationEvent timeToFirstPartialDisplayed](self, "timeToFirstPartialDisplayed")}];
-  [v3 setObject:v23 forKeyedSubscript:@"timeToFirstPartialDisplayed"];
+  [dictionary setObject:v23 forKeyedSubscript:@"timeToFirstPartialDisplayed"];
 
   v21 = self->_has;
   if ((v21 & 0x10) == 0)
@@ -294,7 +294,7 @@ LABEL_29:
 
 LABEL_35:
     v25 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[LTSchemaSpeechTranslationEvent timeToShowTranslationCard](self, "timeToShowTranslationCard")}];
-    [v3 setObject:v25 forKeyedSubscript:@"timeToShowTranslationCard"];
+    [dictionary setObject:v25 forKeyedSubscript:@"timeToShowTranslationCard"];
 
     if ((*&self->_has & 4) == 0)
     {
@@ -313,13 +313,13 @@ LABEL_36:
       v27 = off_1E78D8DA0[v26];
     }
 
-    [v3 setObject:v27 forKeyedSubscript:@"uiMode"];
+    [dictionary setObject:v27 forKeyedSubscript:@"uiMode"];
     goto LABEL_40;
   }
 
 LABEL_34:
   v24 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[LTSchemaSpeechTranslationEvent timeToRecordingDialogDismissed](self, "timeToRecordingDialogDismissed")}];
-  [v3 setObject:v24 forKeyedSubscript:@"timeToRecordingDialogDismissed"];
+  [dictionary setObject:v24 forKeyedSubscript:@"timeToRecordingDialogDismissed"];
 
   v21 = self->_has;
   if ((v21 & 0x20) != 0)
@@ -334,9 +334,9 @@ LABEL_30:
   }
 
 LABEL_40:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -444,28 +444,28 @@ LABEL_14:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13 ^ v14 ^ v15;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_37;
   }
 
-  v5 = [(LTSchemaSpeechTranslationEvent *)self task];
-  v6 = [v4 task];
-  if ((v5 != 0) == (v6 == 0))
+  task = [(LTSchemaSpeechTranslationEvent *)self task];
+  task2 = [equalCopy task];
+  if ((task != 0) == (task2 == 0))
   {
     goto LABEL_36;
   }
 
-  v7 = [(LTSchemaSpeechTranslationEvent *)self task];
-  if (v7)
+  task3 = [(LTSchemaSpeechTranslationEvent *)self task];
+  if (task3)
   {
-    v8 = v7;
-    v9 = [(LTSchemaSpeechTranslationEvent *)self task];
-    v10 = [v4 task];
-    v11 = [v9 isEqual:v10];
+    v8 = task3;
+    task4 = [(LTSchemaSpeechTranslationEvent *)self task];
+    task5 = [equalCopy task];
+    v11 = [task4 isEqual:task5];
 
     if (!v11)
     {
@@ -477,20 +477,20 @@ LABEL_14:
   {
   }
 
-  v5 = [(LTSchemaSpeechTranslationEvent *)self sessionID];
-  v6 = [v4 sessionID];
-  if ((v5 != 0) == (v6 == 0))
+  task = [(LTSchemaSpeechTranslationEvent *)self sessionID];
+  task2 = [equalCopy sessionID];
+  if ((task != 0) == (task2 == 0))
   {
     goto LABEL_36;
   }
 
-  v12 = [(LTSchemaSpeechTranslationEvent *)self sessionID];
-  if (v12)
+  sessionID = [(LTSchemaSpeechTranslationEvent *)self sessionID];
+  if (sessionID)
   {
-    v13 = v12;
-    v14 = [(LTSchemaSpeechTranslationEvent *)self sessionID];
-    v15 = [v4 sessionID];
-    v16 = [v14 isEqual:v15];
+    v13 = sessionID;
+    sessionID2 = [(LTSchemaSpeechTranslationEvent *)self sessionID];
+    sessionID3 = [equalCopy sessionID];
+    v16 = [sessionID2 isEqual:sessionID3];
 
     if (!v16)
     {
@@ -502,20 +502,20 @@ LABEL_14:
   {
   }
 
-  v5 = [(LTSchemaSpeechTranslationEvent *)self requestID];
-  v6 = [v4 requestID];
-  if ((v5 != 0) == (v6 == 0))
+  task = [(LTSchemaSpeechTranslationEvent *)self requestID];
+  task2 = [equalCopy requestID];
+  if ((task != 0) == (task2 == 0))
   {
     goto LABEL_36;
   }
 
-  v17 = [(LTSchemaSpeechTranslationEvent *)self requestID];
-  if (v17)
+  requestID = [(LTSchemaSpeechTranslationEvent *)self requestID];
+  if (requestID)
   {
-    v18 = v17;
-    v19 = [(LTSchemaSpeechTranslationEvent *)self requestID];
-    v20 = [v4 requestID];
-    v21 = [v19 isEqual:v20];
+    v18 = requestID;
+    requestID2 = [(LTSchemaSpeechTranslationEvent *)self requestID];
+    requestID3 = [equalCopy requestID];
+    v21 = [requestID2 isEqual:requestID3];
 
     if (!v21)
     {
@@ -528,7 +528,7 @@ LABEL_14:
   }
 
   has = self->_has;
-  v23 = v4[84];
+  v23 = equalCopy[84];
   if ((*&has & 1) != (v23 & 1))
   {
     goto LABEL_37;
@@ -537,13 +537,13 @@ LABEL_14:
   if (*&has)
   {
     inRestrictedMode = self->_inRestrictedMode;
-    if (inRestrictedMode != [v4 inRestrictedMode])
+    if (inRestrictedMode != [equalCopy inRestrictedMode])
     {
       goto LABEL_37;
     }
 
     has = self->_has;
-    v23 = v4[84];
+    v23 = equalCopy[84];
   }
 
   v25 = (*&has >> 1) & 1;
@@ -555,26 +555,26 @@ LABEL_14:
   if (v25)
   {
     isAutomaticLID = self->_isAutomaticLID;
-    if (isAutomaticLID != [v4 isAutomaticLID])
+    if (isAutomaticLID != [equalCopy isAutomaticLID])
     {
       goto LABEL_37;
     }
   }
 
-  v5 = [(LTSchemaSpeechTranslationEvent *)self error];
-  v6 = [v4 error];
-  if ((v5 != 0) == (v6 == 0))
+  task = [(LTSchemaSpeechTranslationEvent *)self error];
+  task2 = [equalCopy error];
+  if ((task != 0) == (task2 == 0))
   {
     goto LABEL_36;
   }
 
-  v27 = [(LTSchemaSpeechTranslationEvent *)self error];
-  if (v27)
+  error = [(LTSchemaSpeechTranslationEvent *)self error];
+  if (error)
   {
-    v28 = v27;
-    v29 = [(LTSchemaSpeechTranslationEvent *)self error];
-    v30 = [v4 error];
-    v31 = [v29 isEqual:v30];
+    v28 = error;
+    error2 = [(LTSchemaSpeechTranslationEvent *)self error];
+    error3 = [equalCopy error];
+    v31 = [error2 isEqual:error3];
 
     if (!v31)
     {
@@ -587,7 +587,7 @@ LABEL_14:
   }
 
   v32 = (*&self->_has >> 2) & 1;
-  if (v32 != ((v4[84] >> 2) & 1))
+  if (v32 != ((equalCopy[84] >> 2) & 1))
   {
     goto LABEL_37;
   }
@@ -595,28 +595,28 @@ LABEL_14:
   if (v32)
   {
     uiMode = self->_uiMode;
-    if (uiMode != [v4 uiMode])
+    if (uiMode != [equalCopy uiMode])
     {
       goto LABEL_37;
     }
   }
 
-  v5 = [(LTSchemaSpeechTranslationEvent *)self mobileAssetConfigVersion];
-  v6 = [v4 mobileAssetConfigVersion];
-  if ((v5 != 0) == (v6 == 0))
+  task = [(LTSchemaSpeechTranslationEvent *)self mobileAssetConfigVersion];
+  task2 = [equalCopy mobileAssetConfigVersion];
+  if ((task != 0) == (task2 == 0))
   {
 LABEL_36:
 
     goto LABEL_37;
   }
 
-  v34 = [(LTSchemaSpeechTranslationEvent *)self mobileAssetConfigVersion];
-  if (v34)
+  mobileAssetConfigVersion = [(LTSchemaSpeechTranslationEvent *)self mobileAssetConfigVersion];
+  if (mobileAssetConfigVersion)
   {
-    v35 = v34;
-    v36 = [(LTSchemaSpeechTranslationEvent *)self mobileAssetConfigVersion];
-    v37 = [v4 mobileAssetConfigVersion];
-    v38 = [v36 isEqual:v37];
+    v35 = mobileAssetConfigVersion;
+    mobileAssetConfigVersion2 = [(LTSchemaSpeechTranslationEvent *)self mobileAssetConfigVersion];
+    mobileAssetConfigVersion3 = [equalCopy mobileAssetConfigVersion];
+    v38 = [mobileAssetConfigVersion2 isEqual:mobileAssetConfigVersion3];
 
     if (!v38)
     {
@@ -630,19 +630,19 @@ LABEL_36:
 
   v41 = self->_has;
   v42 = (*&v41 >> 3) & 1;
-  v43 = v4[84];
+  v43 = equalCopy[84];
   if (v42 == ((v43 >> 3) & 1))
   {
     if (v42)
     {
       timeToFirstPartialDisplayed = self->_timeToFirstPartialDisplayed;
-      if (timeToFirstPartialDisplayed != [v4 timeToFirstPartialDisplayed])
+      if (timeToFirstPartialDisplayed != [equalCopy timeToFirstPartialDisplayed])
       {
         goto LABEL_37;
       }
 
       v41 = self->_has;
-      v43 = v4[84];
+      v43 = equalCopy[84];
     }
 
     v45 = (*&v41 >> 4) & 1;
@@ -651,13 +651,13 @@ LABEL_36:
       if (v45)
       {
         timeToRecordingDialogDismissed = self->_timeToRecordingDialogDismissed;
-        if (timeToRecordingDialogDismissed != [v4 timeToRecordingDialogDismissed])
+        if (timeToRecordingDialogDismissed != [equalCopy timeToRecordingDialogDismissed])
         {
           goto LABEL_37;
         }
 
         v41 = self->_has;
-        v43 = v4[84];
+        v43 = equalCopy[84];
       }
 
       v47 = (*&v41 >> 5) & 1;
@@ -666,13 +666,13 @@ LABEL_36:
         if (v47)
         {
           timeToShowTranslationCard = self->_timeToShowTranslationCard;
-          if (timeToShowTranslationCard != [v4 timeToShowTranslationCard])
+          if (timeToShowTranslationCard != [equalCopy timeToShowTranslationCard])
           {
             goto LABEL_37;
           }
 
           v41 = self->_has;
-          v43 = v4[84];
+          v43 = equalCopy[84];
         }
 
         v49 = (*&v41 >> 6) & 1;
@@ -681,18 +681,18 @@ LABEL_36:
           if (v49)
           {
             timeToCancel = self->_timeToCancel;
-            if (timeToCancel != [v4 timeToCancel])
+            if (timeToCancel != [equalCopy timeToCancel])
             {
               goto LABEL_37;
             }
 
             v41 = self->_has;
-            v43 = v4[84];
+            v43 = equalCopy[84];
           }
 
           if (((v43 ^ *&v41) & 0x80) == 0)
           {
-            if ((*&v41 & 0x80) == 0 || (status = self->_status, status == [v4 status]))
+            if ((*&v41 & 0x80) == 0 || (status = self->_status, status == [equalCopy status]))
             {
               v39 = 1;
               goto LABEL_38;
@@ -710,27 +710,27 @@ LABEL_38:
   return v39;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v14 = a3;
-  v4 = [(LTSchemaSpeechTranslationEvent *)self task];
+  toCopy = to;
+  task = [(LTSchemaSpeechTranslationEvent *)self task];
 
-  if (v4)
+  if (task)
   {
-    v5 = [(LTSchemaSpeechTranslationEvent *)self task];
+    task2 = [(LTSchemaSpeechTranslationEvent *)self task];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(LTSchemaSpeechTranslationEvent *)self sessionID];
+  sessionID = [(LTSchemaSpeechTranslationEvent *)self sessionID];
 
-  if (v6)
+  if (sessionID)
   {
     PBDataWriterWriteStringField();
   }
 
-  v7 = [(LTSchemaSpeechTranslationEvent *)self requestID];
+  requestID = [(LTSchemaSpeechTranslationEvent *)self requestID];
 
-  if (v7)
+  if (requestID)
   {
     PBDataWriterWriteStringField();
   }
@@ -747,11 +747,11 @@ LABEL_38:
     PBDataWriterWriteBOOLField();
   }
 
-  v9 = [(LTSchemaSpeechTranslationEvent *)self error];
+  error = [(LTSchemaSpeechTranslationEvent *)self error];
 
-  if (v9)
+  if (error)
   {
-    v10 = [(LTSchemaSpeechTranslationEvent *)self error];
+    error2 = [(LTSchemaSpeechTranslationEvent *)self error];
     PBDataWriterWriteSubmessage();
   }
 
@@ -760,19 +760,19 @@ LABEL_38:
     PBDataWriterWriteInt32Field();
   }
 
-  v11 = [(LTSchemaSpeechTranslationEvent *)self mobileAssetConfigVersion];
+  mobileAssetConfigVersion = [(LTSchemaSpeechTranslationEvent *)self mobileAssetConfigVersion];
 
-  if (v11)
+  if (mobileAssetConfigVersion)
   {
     PBDataWriterWriteStringField();
   }
 
   v12 = self->_has;
-  v13 = v14;
+  v13 = toCopy;
   if ((v12 & 8) != 0)
   {
     PBDataWriterWriteUint32Field();
-    v13 = v14;
+    v13 = toCopy;
     v12 = self->_has;
     if ((v12 & 0x10) == 0)
     {
@@ -792,7 +792,7 @@ LABEL_19:
   }
 
   PBDataWriterWriteUint32Field();
-  v13 = v14;
+  v13 = toCopy;
   v12 = self->_has;
   if ((v12 & 0x20) == 0)
   {
@@ -804,7 +804,7 @@ LABEL_20:
 
 LABEL_28:
     PBDataWriterWriteUint32Field();
-    v13 = v14;
+    v13 = toCopy;
     if ((*&self->_has & 0x80) == 0)
     {
       goto LABEL_22;
@@ -815,7 +815,7 @@ LABEL_28:
 
 LABEL_27:
   PBDataWriterWriteUint32Field();
-  v13 = v14;
+  v13 = toCopy;
   v12 = self->_has;
   if ((v12 & 0x40) != 0)
   {
@@ -830,13 +830,13 @@ LABEL_21:
 
 LABEL_29:
   PBDataWriterWriteInt32Field();
-  v13 = v14;
+  v13 = toCopy;
 LABEL_22:
 }
 
-- (void)setHasStatus:(BOOL)a3
+- (void)setHasStatus:(BOOL)status
 {
-  if (a3)
+  if (status)
   {
     v3 = 0x80;
   }
@@ -849,9 +849,9 @@ LABEL_22:
   *&self->_has = v3 & 0x80 | *&self->_has & 0x7F;
 }
 
-- (void)setHasTimeToCancel:(BOOL)a3
+- (void)setHasTimeToCancel:(BOOL)cancel
 {
-  if (a3)
+  if (cancel)
   {
     v3 = 64;
   }
@@ -864,9 +864,9 @@ LABEL_22:
   *&self->_has = *&self->_has & 0xBF | v3;
 }
 
-- (void)setHasTimeToShowTranslationCard:(BOOL)a3
+- (void)setHasTimeToShowTranslationCard:(BOOL)card
 {
-  if (a3)
+  if (card)
   {
     v3 = 32;
   }
@@ -879,9 +879,9 @@ LABEL_22:
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasTimeToRecordingDialogDismissed:(BOOL)a3
+- (void)setHasTimeToRecordingDialogDismissed:(BOOL)dismissed
 {
-  if (a3)
+  if (dismissed)
   {
     v3 = 16;
   }
@@ -894,9 +894,9 @@ LABEL_22:
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasTimeToFirstPartialDisplayed:(BOOL)a3
+- (void)setHasTimeToFirstPartialDisplayed:(BOOL)displayed
 {
-  if (a3)
+  if (displayed)
   {
     v3 = 8;
   }
@@ -909,9 +909,9 @@ LABEL_22:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasUiMode:(BOOL)a3
+- (void)setHasUiMode:(BOOL)mode
 {
-  if (a3)
+  if (mode)
   {
     v3 = 4;
   }
@@ -924,9 +924,9 @@ LABEL_22:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasIsAutomaticLID:(BOOL)a3
+- (void)setHasIsAutomaticLID:(BOOL)d
 {
-  if (a3)
+  if (d)
   {
     v3 = 2;
   }
@@ -939,26 +939,26 @@ LABEL_22:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v13.receiver = self;
   v13.super_class = LTSchemaSpeechTranslationEvent;
-  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:v4];
-  v6 = [(LTSchemaSpeechTranslationEvent *)self task];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:policyCopy];
+  task = [(LTSchemaSpeechTranslationEvent *)self task];
+  v7 = [task applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(LTSchemaSpeechTranslationEvent *)self deleteTask];
   }
 
-  v9 = [(LTSchemaSpeechTranslationEvent *)self error];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  error = [(LTSchemaSpeechTranslationEvent *)self error];
+  v10 = [error applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(LTSchemaSpeechTranslationEvent *)self deleteError];
   }

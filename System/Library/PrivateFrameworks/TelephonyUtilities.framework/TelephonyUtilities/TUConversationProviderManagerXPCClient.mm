@@ -6,22 +6,22 @@
 + (TUConversationProviderManagerXPCServer)synchronousServer;
 - (NSXPCConnection)xpcConnection;
 - (TUConversationProviderManagerXPCClient)init;
-- (id)asynchronousServerWithErrorHandler:(id)a3;
-- (id)synchronousServerWithErrorHandler:(id)a3;
-- (void)_invokeCompletionHandler:(id)a3;
+- (id)asynchronousServerWithErrorHandler:(id)handler;
+- (id)synchronousServerWithErrorHandler:(id)handler;
+- (void)_invokeCompletionHandler:(id)handler;
 - (void)_requestInitialStateIfNecessary;
-- (void)_requestInitialStateWithCompletionHandler:(id)a3;
-- (void)conversationProviderForIdentifier:(id)a3 completionHandler:(id)a4;
+- (void)_requestInitialStateWithCompletionHandler:(id)handler;
+- (void)conversationProviderForIdentifier:(id)identifier completionHandler:(id)handler;
 - (void)dealloc;
-- (void)doesHandle:(id)a3 correspondToConversationProvider:(id)a4 completionHandler:(id)a5;
-- (void)generatePseudonymHandleForConversationProvider:(id)a3 expiryDuration:(double)a4 URI:(id)a5 completionHandler:(id)a6;
+- (void)doesHandle:(id)handle correspondToConversationProvider:(id)provider completionHandler:(id)handler;
+- (void)generatePseudonymHandleForConversationProvider:(id)provider expiryDuration:(double)duration URI:(id)i completionHandler:(id)handler;
 - (void)init;
 - (void)invalidate;
-- (void)registerConversationProvider:(id)a3 completionHandler:(id)a4;
-- (void)registerForCallbacksForProvider:(id)a3 completionHandler:(id)a4;
-- (void)registerWithCompletionHandler:(id)a3;
-- (void)renewPseudonymHandle:(id)a3 forConversationProvider:(id)a4 expirationDate:(id)a5 completionHandler:(id)a6;
-- (void)revokePseudonymHandle:(id)a3 forConversationProvider:(id)a4 completionHandler:(id)a5;
+- (void)registerConversationProvider:(id)provider completionHandler:(id)handler;
+- (void)registerForCallbacksForProvider:(id)provider completionHandler:(id)handler;
+- (void)registerWithCompletionHandler:(id)handler;
+- (void)renewPseudonymHandle:(id)handle forConversationProvider:(id)provider expirationDate:(id)date completionHandler:(id)handler;
+- (void)revokePseudonymHandle:(id)handle forConversationProvider:(id)provider completionHandler:(id)handler;
 @end
 
 @implementation TUConversationProviderManagerXPCClient
@@ -133,18 +133,18 @@ uint64_t __46__TUConversationProviderManagerXPCClient_init__block_invoke_2(uint6
   [(TUConversationProviderManagerXPCClient *)&v3 dealloc];
 }
 
-- (void)registerWithCompletionHandler:(id)a3
+- (void)registerWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(TUConversationProviderManagerXPCClient *)self queue];
+  handlerCopy = handler;
+  queue = [(TUConversationProviderManagerXPCClient *)self queue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __72__TUConversationProviderManagerXPCClient_registerWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E7424E20;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  dispatch_async(queue, v7);
 }
 
 uint64_t __72__TUConversationProviderManagerXPCClient_registerWithCompletionHandler___block_invoke(uint64_t a1)
@@ -165,18 +165,18 @@ uint64_t __72__TUConversationProviderManagerXPCClient_registerWithCompletionHand
   }
 }
 
-- (void)conversationProviderForIdentifier:(id)a3 completionHandler:(id)a4
+- (void)conversationProviderForIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v11 = MEMORY[0x1E69E9820];
   v12 = 3221225472;
   v13 = __94__TUConversationProviderManagerXPCClient_conversationProviderForIdentifier_completionHandler___block_invoke;
   v14 = &unk_1E74264D0;
-  v15 = v6;
-  v16 = v7;
-  v8 = v7;
-  v9 = v6;
+  v15 = identifierCopy;
+  v16 = handlerCopy;
+  v8 = handlerCopy;
+  v9 = identifierCopy;
   v10 = [(TUConversationProviderManagerXPCClient *)self asynchronousServerWithErrorHandler:&v11];
   [v10 conversationProviderForIdentifier:v9 completionHandler:{v8, v11, v12, v13, v14}];
 }
@@ -205,18 +205,18 @@ void __94__TUConversationProviderManagerXPCClient_conversationProviderForIdentif
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)registerForCallbacksForProvider:(id)a3 completionHandler:(id)a4
+- (void)registerForCallbacksForProvider:(id)provider completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  providerCopy = provider;
+  handlerCopy = handler;
   v11 = MEMORY[0x1E69E9820];
   v12 = 3221225472;
   v13 = __92__TUConversationProviderManagerXPCClient_registerForCallbacksForProvider_completionHandler___block_invoke;
   v14 = &unk_1E74264D0;
-  v15 = v6;
-  v16 = v7;
-  v8 = v7;
-  v9 = v6;
+  v15 = providerCopy;
+  v16 = handlerCopy;
+  v8 = handlerCopy;
+  v9 = providerCopy;
   v10 = [(TUConversationProviderManagerXPCClient *)self asynchronousServerWithErrorHandler:&v11];
   [v10 registerForCallbacksForProvider:v9 completionHandler:{v8, v11, v12, v13, v14}];
 }
@@ -245,18 +245,18 @@ void __92__TUConversationProviderManagerXPCClient_registerForCallbacksForProvide
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)registerConversationProvider:(id)a3 completionHandler:(id)a4
+- (void)registerConversationProvider:(id)provider completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  providerCopy = provider;
+  handlerCopy = handler;
   v11 = MEMORY[0x1E69E9820];
   v12 = 3221225472;
   v13 = __89__TUConversationProviderManagerXPCClient_registerConversationProvider_completionHandler___block_invoke;
   v14 = &unk_1E74264D0;
-  v15 = v6;
-  v16 = v7;
-  v8 = v7;
-  v9 = v6;
+  v15 = providerCopy;
+  v16 = handlerCopy;
+  v8 = handlerCopy;
+  v9 = providerCopy;
   v10 = [(TUConversationProviderManagerXPCClient *)self asynchronousServerWithErrorHandler:&v11];
   [v10 registerConversationProvider:v9 completionHandler:{v8, v11, v12, v13, v14}];
 }
@@ -285,21 +285,21 @@ void __89__TUConversationProviderManagerXPCClient_registerConversationProvider_c
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)generatePseudonymHandleForConversationProvider:(id)a3 expiryDuration:(double)a4 URI:(id)a5 completionHandler:(id)a6
+- (void)generatePseudonymHandleForConversationProvider:(id)provider expiryDuration:(double)duration URI:(id)i completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a6;
+  providerCopy = provider;
+  handlerCopy = handler;
   v16 = MEMORY[0x1E69E9820];
   v17 = 3221225472;
   v18 = __126__TUConversationProviderManagerXPCClient_generatePseudonymHandleForConversationProvider_expiryDuration_URI_completionHandler___block_invoke;
   v19 = &unk_1E74264D0;
-  v20 = v10;
-  v21 = v11;
-  v12 = v11;
-  v13 = v10;
-  v14 = a5;
+  v20 = providerCopy;
+  v21 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = providerCopy;
+  iCopy = i;
   v15 = [(TUConversationProviderManagerXPCClient *)self asynchronousServerWithErrorHandler:&v16];
-  [v15 generatePseudonymHandleForConversationProvider:v13 expiryDuration:v14 URI:v12 completionHandler:{a4, v16, v17, v18, v19}];
+  [v15 generatePseudonymHandleForConversationProvider:v13 expiryDuration:iCopy URI:v12 completionHandler:{duration, v16, v17, v18, v19}];
 }
 
 void __126__TUConversationProviderManagerXPCClient_generatePseudonymHandleForConversationProvider_expiryDuration_URI_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -326,24 +326,24 @@ void __126__TUConversationProviderManagerXPCClient_generatePseudonymHandleForCon
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)renewPseudonymHandle:(id)a3 forConversationProvider:(id)a4 expirationDate:(id)a5 completionHandler:(id)a6
+- (void)renewPseudonymHandle:(id)handle forConversationProvider:(id)provider expirationDate:(id)date completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  handleCopy = handle;
+  providerCopy = provider;
+  handlerCopy = handler;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __120__TUConversationProviderManagerXPCClient_renewPseudonymHandle_forConversationProvider_expirationDate_completionHandler___block_invoke;
   v18[3] = &unk_1E74256A8;
-  v19 = v10;
-  v20 = v11;
-  v21 = v12;
-  v13 = v12;
-  v14 = v11;
-  v15 = v10;
-  v16 = a5;
+  v19 = handleCopy;
+  v20 = providerCopy;
+  v21 = handlerCopy;
+  v13 = handlerCopy;
+  v14 = providerCopy;
+  v15 = handleCopy;
+  dateCopy = date;
   v17 = [(TUConversationProviderManagerXPCClient *)self asynchronousServerWithErrorHandler:v18];
-  [v17 renewPseudonymHandle:v15 forConversationProvider:v14 expirationDate:v16 completionHandler:v13];
+  [v17 renewPseudonymHandle:v15 forConversationProvider:v14 expirationDate:dateCopy completionHandler:v13];
 }
 
 void __120__TUConversationProviderManagerXPCClient_renewPseudonymHandle_forConversationProvider_expirationDate_completionHandler___block_invoke(void *a1, void *a2)
@@ -373,21 +373,21 @@ void __120__TUConversationProviderManagerXPCClient_renewPseudonymHandle_forConve
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)revokePseudonymHandle:(id)a3 forConversationProvider:(id)a4 completionHandler:(id)a5
+- (void)revokePseudonymHandle:(id)handle forConversationProvider:(id)provider completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  handleCopy = handle;
+  providerCopy = provider;
+  handlerCopy = handler;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __106__TUConversationProviderManagerXPCClient_revokePseudonymHandle_forConversationProvider_completionHandler___block_invoke;
   v15[3] = &unk_1E74256A8;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v11 = v10;
-  v12 = v9;
-  v13 = v8;
+  v16 = handleCopy;
+  v17 = providerCopy;
+  v18 = handlerCopy;
+  v11 = handlerCopy;
+  v12 = providerCopy;
+  v13 = handleCopy;
   v14 = [(TUConversationProviderManagerXPCClient *)self asynchronousServerWithErrorHandler:v15];
   [v14 revokePseudonymHandle:v13 forConversationProvider:v12 completionHandler:v11];
 }
@@ -419,21 +419,21 @@ void __106__TUConversationProviderManagerXPCClient_revokePseudonymHandle_forConv
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)doesHandle:(id)a3 correspondToConversationProvider:(id)a4 completionHandler:(id)a5
+- (void)doesHandle:(id)handle correspondToConversationProvider:(id)provider completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  handleCopy = handle;
+  providerCopy = provider;
+  handlerCopy = handler;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __104__TUConversationProviderManagerXPCClient_doesHandle_correspondToConversationProvider_completionHandler___block_invoke;
   v15[3] = &unk_1E74256A8;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v11 = v10;
-  v12 = v9;
-  v13 = v8;
+  v16 = handleCopy;
+  v17 = providerCopy;
+  v18 = handlerCopy;
+  v11 = handlerCopy;
+  v12 = providerCopy;
+  v13 = handleCopy;
   v14 = [(TUConversationProviderManagerXPCClient *)self asynchronousServerWithErrorHandler:v15];
   [v14 doesHandle:v13 correspondToConversationProvider:v12 completionHandler:v11];
 }
@@ -468,13 +468,13 @@ void __104__TUConversationProviderManagerXPCClient_doesHandle_correspondToConver
 - (void)invalidate
 {
   objc_initWeak(&location, self);
-  v3 = [(TUConversationProviderManagerXPCClient *)self queue];
+  queue = [(TUConversationProviderManagerXPCClient *)self queue];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __52__TUConversationProviderManagerXPCClient_invalidate__block_invoke;
   v4[3] = &unk_1E7424998;
   objc_copyWeak(&v5, &location);
-  dispatch_async(v3, v4);
+  dispatch_async(queue, v4);
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -502,8 +502,8 @@ uint64_t __52__TUConversationProviderManagerXPCClient_invalidate__block_invoke(u
 
 - (void)_requestInitialStateIfNecessary
 {
-  v3 = [(TUConversationProviderManagerXPCClient *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(TUConversationProviderManagerXPCClient *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   if (![(TUConversationProviderManagerXPCClient *)self hasRequestedInitialState])
   {
@@ -512,22 +512,22 @@ uint64_t __52__TUConversationProviderManagerXPCClient_invalidate__block_invoke(u
   }
 }
 
-- (void)_requestInitialStateWithCompletionHandler:(id)a3
+- (void)_requestInitialStateWithCompletionHandler:(id)handler
 {
-  v5 = a3;
-  v4 = [(TUConversationProviderManagerXPCClient *)self queue];
-  dispatch_assert_queue_V2(v4);
+  handlerCopy = handler;
+  queue = [(TUConversationProviderManagerXPCClient *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   [(TUConversationProviderManagerXPCClient *)self setHasRequestedInitialState:1];
-  [(TUConversationProviderManagerXPCClient *)self _invokeCompletionHandler:v5];
+  [(TUConversationProviderManagerXPCClient *)self _invokeCompletionHandler:handlerCopy];
 }
 
-- (void)_invokeCompletionHandler:(id)a3
+- (void)_invokeCompletionHandler:(id)handler
 {
-  if (a3)
+  if (handler)
   {
     v4 = dispatch_get_global_queue(21, 0);
-    dispatch_async(v4, a3);
+    dispatch_async(v4, handler);
   }
 }
 
@@ -539,14 +539,14 @@ uint64_t __52__TUConversationProviderManagerXPCClient_invalidate__block_invoke(u
   v10 = __Block_byref_object_copy__13;
   v11 = __Block_byref_object_dispose__13;
   v12 = 0;
-  v3 = [(TUConversationProviderManagerXPCClient *)self queue];
+  queue = [(TUConversationProviderManagerXPCClient *)self queue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __55__TUConversationProviderManagerXPCClient_xpcConnection__block_invoke;
   v6[3] = &unk_1E7425C58;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(queue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -661,9 +661,9 @@ uint64_t __55__TUConversationProviderManagerXPCClient_xpcConnection__block_invok
   return [*(*(a1 + 32) + 16) invalidate];
 }
 
-- (id)asynchronousServerWithErrorHandler:(id)a3
+- (id)asynchronousServerWithErrorHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&sAsynchronousServer_3);
   v6 = WeakRetained;
   if (WeakRetained)
@@ -673,16 +673,16 @@ uint64_t __55__TUConversationProviderManagerXPCClient_xpcConnection__block_invok
 
   else
   {
-    v8 = [(TUConversationProviderManagerXPCClient *)self xpcConnection];
-    v7 = [v8 remoteObjectProxyWithErrorHandler:v4];
+    xpcConnection = [(TUConversationProviderManagerXPCClient *)self xpcConnection];
+    v7 = [xpcConnection remoteObjectProxyWithErrorHandler:handlerCopy];
   }
 
   return v7;
 }
 
-- (id)synchronousServerWithErrorHandler:(id)a3
+- (id)synchronousServerWithErrorHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&sSynchronousServer_3);
   v6 = WeakRetained;
   if (WeakRetained)
@@ -692,8 +692,8 @@ uint64_t __55__TUConversationProviderManagerXPCClient_xpcConnection__block_invok
 
   else
   {
-    v8 = [(TUConversationProviderManagerXPCClient *)self xpcConnection];
-    v7 = [v8 synchronousRemoteObjectProxyWithErrorHandler:v4];
+    xpcConnection = [(TUConversationProviderManagerXPCClient *)self xpcConnection];
+    v7 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:handlerCopy];
   }
 
   return v7;
@@ -725,7 +725,7 @@ uint64_t __55__TUConversationProviderManagerXPCClient_xpcConnection__block_invok
   block[1] = 3221225472;
   block[2] = __87__TUConversationProviderManagerXPCClient_conversationProviderManagerClientXPCInterface__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (conversationProviderManagerClientXPCInterface_onceToken != -1)
   {
     dispatch_once(&conversationProviderManagerClientXPCInterface_onceToken, block);
@@ -753,7 +753,7 @@ void __87__TUConversationProviderManagerXPCClient_conversationProviderManagerCli
   block[1] = 3221225472;
   block[2] = __87__TUConversationProviderManagerXPCClient_conversationProviderManagerServerXPCInterface__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (conversationProviderManagerServerXPCInterface_onceToken != -1)
   {
     dispatch_once(&conversationProviderManagerServerXPCInterface_onceToken, block);
@@ -783,7 +783,7 @@ void __87__TUConversationProviderManagerXPCClient_conversationProviderManagerSer
 {
   v8 = *MEMORY[0x1E69E9840];
   v4 = 134218240;
-  v5 = a1;
+  selfCopy = self;
   v6 = 2048;
   v7 = a2;
   _os_log_debug_impl(&dword_1956FD000, log, OS_LOG_TYPE_DEBUG, "Registering TUConversationProviderManagerXPCClient %p with async server %p", &v4, 0x16u);

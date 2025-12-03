@@ -2,20 +2,20 @@
 - (CGAffineTransform)_derivedContentViewTransform;
 - (CGAffineTransform)contentViewTransform;
 - (CGSize)intrinsicContentSize;
-- (PUIScalingContainerView)initWithFrame:(CGRect)a3;
+- (PUIScalingContainerView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setContentView:(id)a3;
-- (void)setContentViewTransform:(CGAffineTransform *)a3;
+- (void)setContentView:(id)view;
+- (void)setContentViewTransform:(CGAffineTransform *)transform;
 @end
 
 @implementation PUIScalingContainerView
 
-- (PUIScalingContainerView)initWithFrame:(CGRect)a3
+- (PUIScalingContainerView)initWithFrame:(CGRect)frame
 {
   v10.receiver = self;
   v10.super_class = PUIScalingContainerView;
-  v3 = [(PUIScalingContainerView *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PUIScalingContainerView *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [PUITransformContainerView alloc];
@@ -37,8 +37,8 @@
 
 - (CGSize)intrinsicContentSize
 {
-  v3 = [(PUIScalingContainerView *)self contentView];
-  [v3 bounds];
+  contentView = [(PUIScalingContainerView *)self contentView];
+  [contentView bounds];
   v8 = v5;
   v9 = v4;
 
@@ -88,8 +88,8 @@
   v33 = width;
   v34 = y;
   v35 = x;
-  v14 = [(PUIScalingContainerView *)self contentView];
-  [v14 bounds];
+  contentView = [(PUIScalingContainerView *)self contentView];
+  [contentView bounds];
   v16 = v15;
   v18 = v17;
   v20 = v19;
@@ -104,11 +104,11 @@
   v44.size.width = v11;
   v44.size.height = v12;
   v23 = CGRectEqualToRect(v40, v44);
-  v24 = [(PUIScalingContainerView *)self contentView];
-  v25 = v24;
+  contentView2 = [(PUIScalingContainerView *)self contentView];
+  v25 = contentView2;
   if (v23)
   {
-    [v24 setHidden:1];
+    [contentView2 setHidden:1];
 
 LABEL_4:
     v26 = MEMORY[0x1E695EFD0];
@@ -119,7 +119,7 @@ LABEL_4:
     return result;
   }
 
-  [v24 setHidden:0];
+  [contentView2 setHidden:0];
 
   v28 = v33 / v20;
   v41.origin.x = v35;
@@ -146,29 +146,29 @@ LABEL_4:
   return CGAffineTransformConcat(retstr, &t1, &t2);
 }
 
-- (void)setContentView:(id)a3
+- (void)setContentView:(id)view
 {
-  [(PUITransformContainerView *)self->_containerView setContentView:a3];
+  [(PUITransformContainerView *)self->_containerView setContentView:view];
 
   [(PUIScalingContainerView *)self setNeedsLayout];
 }
 
-- (void)setContentViewTransform:(CGAffineTransform *)a3
+- (void)setContentViewTransform:(CGAffineTransform *)transform
 {
   p_contentViewTransform = &self->_contentViewTransform;
-  v6 = *&a3->c;
-  *&t1.a = *&a3->a;
+  v6 = *&transform->c;
+  *&t1.a = *&transform->a;
   *&t1.c = v6;
-  *&t1.tx = *&a3->tx;
+  *&t1.tx = *&transform->tx;
   v7 = *&self->_contentViewTransform.c;
   *&v10.a = *&self->_contentViewTransform.a;
   *&v10.c = v7;
   *&v10.tx = *&self->_contentViewTransform.tx;
   if (!CGAffineTransformEqualToTransform(&t1, &v10))
   {
-    v8 = *&a3->a;
-    v9 = *&a3->tx;
-    *&p_contentViewTransform->c = *&a3->c;
+    v8 = *&transform->a;
+    v9 = *&transform->tx;
+    *&p_contentViewTransform->c = *&transform->c;
     *&p_contentViewTransform->tx = v9;
     *&p_contentViewTransform->a = v8;
     [(PUIScalingContainerView *)self setNeedsLayout];

@@ -1,8 +1,8 @@
 @interface WFCurrentAppVariable
-- (WFCurrentAppVariable)initWithAggrandizements:(id)a3;
+- (WFCurrentAppVariable)initWithAggrandizements:(id)aggrandizements;
 - (id)icon;
 - (id)possibleContentClasses;
-- (void)retrieveContentCollectionWithVariableSource:(id)a3 completionHandler:(id)a4;
+- (void)retrieveContentCollectionWithVariableSource:(id)source completionHandler:(id)handler;
 @end
 
 @implementation WFCurrentAppVariable
@@ -19,22 +19,22 @@
 {
   v2 = objc_alloc(MEMORY[0x1E69E0D70]);
   v3 = [MEMORY[0x1E69E09E0] colorWithSystemColor:1];
-  v4 = [MEMORY[0x1E69E0B48] clearBackground];
-  v5 = [v2 initWithSymbolName:@"app.dashed" symbolColor:v3 background:v4];
+  clearBackground = [MEMORY[0x1E69E0B48] clearBackground];
+  v5 = [v2 initWithSymbolName:@"app.dashed" symbolColor:v3 background:clearBackground];
 
   return v5;
 }
 
-- (void)retrieveContentCollectionWithVariableSource:(id)a3 completionHandler:(id)a4
+- (void)retrieveContentCollectionWithVariableSource:(id)source completionHandler:(id)handler
 {
-  v4 = a4;
+  handlerCopy = handler;
   v5 = objc_opt_new();
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __86__WFCurrentAppVariable_retrieveContentCollectionWithVariableSource_completionHandler___block_invoke;
   v7[3] = &unk_1E837F588;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   [v5 getCurrentAppWithCompletionHandler:v7];
 }
 
@@ -87,9 +87,9 @@ void __86__WFCurrentAppVariable_retrieveContentCollectionWithVariableSource_comp
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (WFCurrentAppVariable)initWithAggrandizements:(id)a3
+- (WFCurrentAppVariable)initWithAggrandizements:(id)aggrandizements
 {
-  v4 = WFVariableDictionaryWithAggrandizements(a3);
+  v4 = WFVariableDictionaryWithAggrandizements(aggrandizements);
   v5 = [(WFVariable *)self initWithDictionary:v4 variableProvider:0];
 
   return v5;

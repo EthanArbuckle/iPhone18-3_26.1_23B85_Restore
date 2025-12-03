@@ -1,33 +1,33 @@
 @interface LNAssistantDefinedSchemaConformance
-- (BOOL)isEqual:(id)a3;
-- (LNAssistantDefinedSchemaConformance)initWithCoder:(id)a3;
-- (LNAssistantDefinedSchemaConformance)initWithName:(id)a3 version:(id)a4 domain:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (LNAssistantDefinedSchemaConformance)initWithCoder:(id)coder;
+- (LNAssistantDefinedSchemaConformance)initWithName:(id)name version:(id)version domain:(id)domain;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNAssistantDefinedSchemaConformance
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(LNAssistantDefinedSchemaConformance *)self name];
-  [v4 encodeObject:v5 forKey:@"name"];
+  coderCopy = coder;
+  name = [(LNAssistantDefinedSchemaConformance *)self name];
+  [coderCopy encodeObject:name forKey:@"name"];
 
-  v6 = [(LNAssistantDefinedSchemaConformance *)self version];
-  [v4 encodeObject:v6 forKey:@"version"];
+  version = [(LNAssistantDefinedSchemaConformance *)self version];
+  [coderCopy encodeObject:version forKey:@"version"];
 
-  v7 = [(LNAssistantDefinedSchemaConformance *)self domain];
-  [v4 encodeObject:v7 forKey:@"domain"];
+  domain = [(LNAssistantDefinedSchemaConformance *)self domain];
+  [coderCopy encodeObject:domain forKey:@"domain"];
 }
 
-- (LNAssistantDefinedSchemaConformance)initWithCoder:(id)a3
+- (LNAssistantDefinedSchemaConformance)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"version"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"domain"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"version"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"domain"];
 
   if (v5)
   {
@@ -41,35 +41,35 @@
 
   if (v8)
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(LNAssistantDefinedSchemaConformance *)self initWithName:v5 version:v6 domain:v7];
-    v9 = self;
+    selfCopy = self;
   }
 
-  return v9;
+  return selfCopy;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(LNAssistantDefinedSchemaConformance *)self name];
-  v4 = [v3 hash];
-  v5 = [(LNAssistantDefinedSchemaConformance *)self version];
-  v6 = [v5 hash];
+  name = [(LNAssistantDefinedSchemaConformance *)self name];
+  v4 = [name hash];
+  version = [(LNAssistantDefinedSchemaConformance *)self version];
+  v6 = [version hash];
 
   return v6 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self != v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self != equalCopy)
   {
-    v6 = v4;
+    v6 = equalCopy;
     if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       LOBYTE(v12) = 0;
@@ -78,10 +78,10 @@ LABEL_27:
       goto LABEL_28;
     }
 
-    v7 = [(LNAssistantDefinedSchemaConformance *)self name];
-    v8 = [(LNAssistantDefinedSchemaConformance *)v6 name];
-    v9 = v7;
-    v10 = v8;
+    name = [(LNAssistantDefinedSchemaConformance *)self name];
+    name2 = [(LNAssistantDefinedSchemaConformance *)v6 name];
+    v9 = name;
+    v10 = name2;
     v11 = v10;
     if (v9 == v10)
     {
@@ -108,10 +108,10 @@ LABEL_26:
       }
     }
 
-    v16 = [(LNAssistantDefinedSchemaConformance *)self version];
-    v17 = [(LNAssistantDefinedSchemaConformance *)v6 version];
-    v14 = v16;
-    v18 = v17;
+    version = [(LNAssistantDefinedSchemaConformance *)self version];
+    version2 = [(LNAssistantDefinedSchemaConformance *)v6 version];
+    v14 = version;
+    v18 = version2;
     v13 = v18;
     if (v14 == v18)
     {
@@ -138,10 +138,10 @@ LABEL_25:
       }
     }
 
-    v21 = [(LNAssistantDefinedSchemaConformance *)self domain];
-    v22 = [(LNAssistantDefinedSchemaConformance *)v6 domain];
-    v20 = v21;
-    v23 = v22;
+    domain = [(LNAssistantDefinedSchemaConformance *)self domain];
+    domain2 = [(LNAssistantDefinedSchemaConformance *)v6 domain];
+    v20 = domain;
+    v23 = domain2;
     v19 = v23;
     if (v20 == v23)
     {
@@ -171,22 +171,22 @@ LABEL_28:
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(LNAssistantDefinedSchemaConformance *)self name];
-  v7 = [(LNAssistantDefinedSchemaConformance *)self version];
-  v8 = [(LNAssistantDefinedSchemaConformance *)self domain];
-  v9 = [v3 stringWithFormat:@"<%@: %p, name: %@, version: %@, domain: %@>", v5, self, v6, v7, v8];
+  name = [(LNAssistantDefinedSchemaConformance *)self name];
+  version = [(LNAssistantDefinedSchemaConformance *)self version];
+  domain = [(LNAssistantDefinedSchemaConformance *)self domain];
+  v9 = [v3 stringWithFormat:@"<%@: %p, name: %@, version: %@, domain: %@>", v5, self, name, version, domain];
 
   return v9;
 }
 
-- (LNAssistantDefinedSchemaConformance)initWithName:(id)a3 version:(id)a4 domain:(id)a5
+- (LNAssistantDefinedSchemaConformance)initWithName:(id)name version:(id)version domain:(id)domain
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v9)
+  nameCopy = name;
+  versionCopy = version;
+  domainCopy = domain;
+  if (nameCopy)
   {
-    if (v10)
+    if (versionCopy)
     {
       goto LABEL_3;
     }
@@ -194,17 +194,17 @@ LABEL_28:
 
   else
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"LNAssistantDefinedSchemaConformance.m" lineNumber:17 description:{@"Invalid parameter not satisfying: %@", @"name"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNAssistantDefinedSchemaConformance.m" lineNumber:17 description:{@"Invalid parameter not satisfying: %@", @"name"}];
 
-    if (v10)
+    if (versionCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v22 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v22 handleFailureInMethod:a2 object:self file:@"LNAssistantDefinedSchemaConformance.m" lineNumber:18 description:{@"Invalid parameter not satisfying: %@", @"version"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"LNAssistantDefinedSchemaConformance.m" lineNumber:18 description:{@"Invalid parameter not satisfying: %@", @"version"}];
 
 LABEL_3:
   v23.receiver = self;
@@ -212,15 +212,15 @@ LABEL_3:
   v12 = [(LNAssistantDefinedSchemaConformance *)&v23 init];
   if (v12)
   {
-    v13 = [v9 copy];
+    v13 = [nameCopy copy];
     name = v12->_name;
     v12->_name = v13;
 
-    v15 = [v10 copy];
+    v15 = [versionCopy copy];
     version = v12->_version;
     v12->_version = v15;
 
-    v17 = [v11 copy];
+    v17 = [domainCopy copy];
     domain = v12->_domain;
     v12->_domain = v17;
 

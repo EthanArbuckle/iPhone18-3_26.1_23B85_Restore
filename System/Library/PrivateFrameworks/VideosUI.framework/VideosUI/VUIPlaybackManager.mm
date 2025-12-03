@@ -1,15 +1,15 @@
 @interface VUIPlaybackManager
-+ (BOOL)_isFullScreenPlaybackState:(id)a3;
-+ (BOOL)_isShowingExtrasState:(id)a3;
++ (BOOL)_isFullScreenPlaybackState:(id)state;
++ (BOOL)_isShowingExtrasState:(id)state;
 + (BOOL)_isTipKitEnabled;
 + (id)sharedInstance;
-- (BOOL)_allowedToAutoPlayForType:(unint64_t)a3;
+- (BOOL)_allowedToAutoPlayForType:(unint64_t)type;
 - (BOOL)_audioContainsAirPlayRoute;
 - (BOOL)_audioContainsHDMIRoute;
-- (BOOL)_didWatchContentToEndForPlayer:(id)a3;
+- (BOOL)_didWatchContentToEndForPlayer:(id)player;
 - (BOOL)_hidePresentingViewControllerDuringPlayback;
 - (BOOL)_isAssistiveAccessEnabled;
-- (BOOL)_multiviewContainsMediaInfo:(id)a3;
+- (BOOL)_multiviewContainsMediaInfo:(id)info;
 - (BOOL)_shouldShowPerformanceDebugger;
 - (BOOL)_shouldShowTimedMetadataDebugger;
 - (BOOL)allowedToAutoPlay;
@@ -19,13 +19,13 @@
 - (BOOL)isPIPing;
 - (BOOL)isPIPingBackgroundPlayback;
 - (BOOL)isPlaybackUIBeingShown;
-- (BOOL)isPlaylistBeingPresented:(id)a3;
-- (BOOL)isPlaylistBeingPresentedFullScreen:(id)a3;
-- (BOOL)isPlaylistBeingPresentedInMultiview:(id)a3;
+- (BOOL)isPlaylistBeingPresented:(id)presented;
+- (BOOL)isPlaylistBeingPresentedFullScreen:(id)screen;
+- (BOOL)isPlaylistBeingPresentedInMultiview:(id)multiview;
 - (BOOL)isPostPlayActive;
 - (BOOL)isShowingExtras;
 - (BOOL)mediaSupportsStartOver;
-- (CGRect)_calculatePostPlayPipRectForParent:(id)a3;
+- (CGRect)_calculatePostPlayPipRectForParent:(id)parent;
 - (NSArray)multiviewIdentifiers;
 - (TVPMediaItem)currentMediaItem;
 - (VUIControllerPresenter)fullScreenViewControllerForPresentation;
@@ -33,73 +33,73 @@
 - (VUIPlaybackManager)init;
 - (VUIPlayer)activePlayer;
 - (VUIPlayer)backgroundMediaPlayer;
-- (double)detailsViewHeightForMultiPlayerViewController:(id)a3;
+- (double)detailsViewHeightForMultiPlayerViewController:(id)controller;
 - (id)_currentlyPlayingMultiviewInfo;
 - (id)_deepLinkPlaybackURLForCurrentMediaItem;
-- (id)_getLivePostPlayPrefetchPlayerIfApplicable:(id)a3;
-- (id)_multiviewInfoForPlayer:(id)a3;
-- (id)_multiviewInfoForPlayerViewController:(id)a3;
-- (id)_multiviewInfoForPlaylist:(id)a3;
+- (id)_getLivePostPlayPrefetchPlayerIfApplicable:(id)applicable;
+- (id)_multiviewInfoForPlayer:(id)player;
+- (id)_multiviewInfoForPlayerViewController:(id)controller;
+- (id)_multiviewInfoForPlaylist:(id)playlist;
 - (id)createContentSelectionViewController;
 - (id)createPlayerViewController;
-- (id)detailsViewControllerForMultiPlayerViewController:(id)a3;
+- (id)detailsViewControllerForMultiPlayerViewController:(id)controller;
 - (id)extrasNavigationController;
-- (id)playerViewController:(id)a3 displayNameForMediaSelectionOption:(id)a4;
-- (id)playerViewController:(id)a3 targetViewForDismissalAnimationWithProposedTargetView:(id)a4;
+- (id)playerViewController:(id)controller displayNameForMediaSelectionOption:(id)option;
+- (id)playerViewController:(id)controller targetViewForDismissalAnimationWithProposedTargetView:(id)view;
 - (int64_t)maxMultiviewPlayerCount;
 - (int64_t)multiviewPlayerCount;
-- (unint64_t)indexOfMediaItemInMultiviewWithIdentifier:(id)a3;
-- (unint64_t)indexOfMediaItemInMultiviewWithPlayer:(id)a3;
-- (void)_accountDidChange:(id)a3;
-- (void)_addMultiviewButtonIfSupportedWithWindowSize:(CGSize)a3;
+- (unint64_t)indexOfMediaItemInMultiviewWithIdentifier:(id)identifier;
+- (unint64_t)indexOfMediaItemInMultiviewWithPlayer:(id)player;
+- (void)_accountDidChange:(id)change;
+- (void)_addMultiviewButtonIfSupportedWithWindowSize:(CGSize)size;
 - (void)_addPerformanceDebuggerView;
-- (void)_addPlayerToTimedMetadataManager:(id)a3;
-- (void)_addProductPlacementFeatureFromMediaItem:(id)a3;
+- (void)_addPlayerToTimedMetadataManager:(id)manager;
+- (void)_addProductPlacementFeatureFromMediaItem:(id)item;
 - (void)_addRadioBroadcastTipIfNeeded;
-- (void)_addRollsInfoFeaturesFromMediaItem:(id)a3;
-- (void)_addSkipIntroFeatureToMonitorIfNeeded:(BOOL)a3;
-- (void)_addSkipTriggerFeaturesToMonitor:(id)a3;
-- (void)_addTVRatingFeatureFromMediaItem:(id)a3 duration:(double)a4;
+- (void)_addRollsInfoFeaturesFromMediaItem:(id)item;
+- (void)_addSkipIntroFeatureToMonitorIfNeeded:(BOOL)needed;
+- (void)_addSkipTriggerFeaturesToMonitor:(id)monitor;
+- (void)_addTVRatingFeatureFromMediaItem:(id)item duration:(double)duration;
 - (void)_addTappableViewToRemoveSkipButton;
 - (void)_addTimedMetadataDebuggerView;
 - (void)_addVideoDimmingViewForPostPlay;
-- (void)_appControllerDidStart:(id)a3;
-- (void)_applicationDidBecomeActive:(id)a3;
-- (void)_applicationDidEnterBackground:(id)a3;
-- (void)_applicationWillEnterForeground:(id)a3;
-- (void)_applicationWillResignActive:(id)a3;
-- (void)_audioSessionRouteDidChange:(id)a3;
+- (void)_appControllerDidStart:(id)start;
+- (void)_applicationDidBecomeActive:(id)active;
+- (void)_applicationDidEnterBackground:(id)background;
+- (void)_applicationWillEnterForeground:(id)foreground;
+- (void)_applicationWillResignActive:(id)active;
+- (void)_audioSessionRouteDidChange:(id)change;
 - (void)_avPlayerViewControllerPresentationDidTimeout;
 - (void)_clearActivityItemsConfiguration;
 - (void)_configureStillWatchingFeatureMonitoringIfLivePlayback;
-- (void)_currentMediaItemDidChange:(id)a3;
-- (void)_currentMediaItemWillChange:(id)a3;
-- (void)_didPlayToEnd:(id)a3;
-- (void)_dismissPostPlayWithSwipe:(id)a3;
-- (void)_donateLanguageCodeFromPlayer:(id)a3 useAudio:(BOOL)a4;
-- (void)_donateUserActivityForMediaItem:(id)a3;
-- (void)_downloadProductPlacementImageIfAvailable:(id)a3;
-- (void)_downloadRatingImageIfAvailable:(id)a3;
-- (void)_externalPlaybackTypeDidChange:(id)a3;
-- (void)_groupActivityDidEnd:(id)a3;
-- (void)_handleDismissSkipButtonGesture:(id)a3;
-- (void)_handleLongLoadingTimeout:(id)a3;
-- (void)_handlePausedTooLong:(id)a3;
-- (void)_handleTapAwayFromPostPlayGesture:(id)a3;
+- (void)_currentMediaItemDidChange:(id)change;
+- (void)_currentMediaItemWillChange:(id)change;
+- (void)_didPlayToEnd:(id)end;
+- (void)_dismissPostPlayWithSwipe:(id)swipe;
+- (void)_donateLanguageCodeFromPlayer:(id)player useAudio:(BOOL)audio;
+- (void)_donateUserActivityForMediaItem:(id)item;
+- (void)_downloadProductPlacementImageIfAvailable:(id)available;
+- (void)_downloadRatingImageIfAvailable:(id)available;
+- (void)_externalPlaybackTypeDidChange:(id)change;
+- (void)_groupActivityDidEnd:(id)end;
+- (void)_handleDismissSkipButtonGesture:(id)gesture;
+- (void)_handleLongLoadingTimeout:(id)timeout;
+- (void)_handlePausedTooLong:(id)long;
+- (void)_handleTapAwayFromPostPlayGesture:(id)gesture;
 - (void)_mainPlayerViewControllerRemoveAllCustomControlItems;
 - (void)_mainPlayerViewControllerSetupControlItems;
-- (void)_markMainPlayerMediaItemPlayingPictureInPictureMetadataAsActive:(BOOL)a3 forAVPlayerViewController:(id)a4;
-- (void)_markMainPlayerMediaItemPostPlayActive:(BOOL)a3;
-- (void)_markMediaItemToDeleteOnCompletionForMediaItem:(id)a3 deleteOnCompletion:(BOOL)a4;
-- (void)_muteAllMultiviewPlayersExcept:(id)a3;
-- (void)_networkReachbilityDidChange:(id)a3;
+- (void)_markMainPlayerMediaItemPlayingPictureInPictureMetadataAsActive:(BOOL)active forAVPlayerViewController:(id)controller;
+- (void)_markMainPlayerMediaItemPostPlayActive:(BOOL)active;
+- (void)_markMediaItemToDeleteOnCompletionForMediaItem:(id)item deleteOnCompletion:(BOOL)completion;
+- (void)_muteAllMultiviewPlayersExcept:(id)except;
+- (void)_networkReachbilityDidChange:(id)change;
 - (void)_notifyAVPlayerViewControllerDisplaySize;
 - (void)_performEnterBackgroundOperations;
 - (void)_performEnterForegroundOperations;
-- (void)_playbackErrorDidOccur:(id)a3;
-- (void)_playbackStateDidChange:(id)a3;
-- (void)_playerRateDidChange:(id)a3;
-- (void)_postPlayItemSelected:(id)a3;
+- (void)_playbackErrorDidOccur:(id)occur;
+- (void)_playbackStateDidChange:(id)change;
+- (void)_playerRateDidChange:(id)change;
+- (void)_postPlayItemSelected:(id)selected;
 - (void)_pushMoreInfoControllerIfNeeded;
 - (void)_registerApplicationNotifications;
 - (void)_registerAudioSessionNotifications;
@@ -108,98 +108,98 @@
 - (void)_removeAdvisoryViews;
 - (void)_removeMoreInfoViewControllerIfNeeded;
 - (void)_removeMultiviewButton;
-- (void)_removePlayerFromTimedMetadataManager:(id)a3;
+- (void)_removePlayerFromTimedMetadataManager:(id)manager;
 - (void)_removePrerollFadeIn;
 - (void)_removeTappableViewForSkipButtonIfNeeded;
 - (void)_removeVideoDimmingViewForPostPlay;
 - (void)_resetAutoPlayBingeWatchingQualifications;
-- (void)_selectedAudioOptionDidChangeForPlayer:(id)a3;
-- (void)_setExtrasButtonVisible:(BOOL)a3;
-- (void)_setupBootstrapPostPlayFeatureMonitorForMediaItem:(id)a3;
+- (void)_selectedAudioOptionDidChangeForPlayer:(id)player;
+- (void)_setExtrasButtonVisible:(BOOL)visible;
+- (void)_setupBootstrapPostPlayFeatureMonitorForMediaItem:(id)item;
 - (void)_setupFeaturesFromMainPlayersCurrentMediaItem;
 - (void)_setupInfoTab;
-- (void)_setupPerformanceDebugger:(id)a3;
-- (void)_setupPlayerViewController:(id)a3;
+- (void)_setupPerformanceDebugger:(id)debugger;
+- (void)_setupPlayerViewController:(id)controller;
 - (void)_showOrUpdateAdvisoryViewsIfNeeded;
-- (void)_showProductPlacement:(BOOL)a3 withImage:(id)a4 animated:(BOOL)a5;
-- (void)_showShareMediaMenuForMediaItem:(id)a3;
-- (void)_showSkipAndPromoView:(BOOL)a3 animated:(BOOL)a4;
-- (void)_showStillWatchingAlertFeature:(id)a3;
-- (void)_showTVRating:(BOOL)a3 withRatingImage:(id)a4 photoSensitivityImage:(id)a5 highMotionWarningImage:(id)a6 animated:(BOOL)a7;
-- (void)_skipButtonTapped:(id)a3;
+- (void)_showProductPlacement:(BOOL)placement withImage:(id)image animated:(BOOL)animated;
+- (void)_showShareMediaMenuForMediaItem:(id)item;
+- (void)_showSkipAndPromoView:(BOOL)view animated:(BOOL)animated;
+- (void)_showStillWatchingAlertFeature:(id)feature;
+- (void)_showTVRating:(BOOL)rating withRatingImage:(id)image photoSensitivityImage:(id)sensitivityImage highMotionWarningImage:(id)warningImage animated:(BOOL)animated;
+- (void)_skipButtonTapped:(id)tapped;
 - (void)_startPlaybackFromBeginning;
 - (void)_togglePlayerTabs;
 - (void)_unmuteNextAvailableMultiviewPlayer;
-- (void)_updateActivityItemsConfigurationWithSharedWatchId:(id)a3 sharedWatchUrl:(id)a4 previewMetadata:(id)a5 mediaItem:(id)a6;
+- (void)_updateActivityItemsConfigurationWithSharedWatchId:(id)id sharedWatchUrl:(id)url previewMetadata:(id)metadata mediaItem:(id)item;
 - (void)_updateMultiviewButtonState;
 - (void)_updateMultiviewReportingMetrics;
 - (void)_updateRequiresLinearPlayback;
-- (void)_updateTimeBoundFeature:(id)a3 animated:(BOOL)a4;
-- (void)_updateTimeTriggeredFeature:(id)a3 animated:(BOOL)a4;
-- (void)addPlaylistToMultiview:(id)a3 atIndex:(int64_t)a4 animated:(BOOL)a5 completion:(id)a6;
-- (void)addTipKitState:(unint64_t)a3;
-- (void)autoPlayTimerDidCompleteForPostPlayView:(id)a3;
-- (void)configureAudioSessionForBackgroundPlayback:(BOOL)a3 usingPlaybackCategory:(BOOL)a4 isMultiview:(BOOL)a5;
-- (void)dismissPlaybackAnimated:(BOOL)a3 leaveGroupActivitySession:(BOOL)a4 completion:(id)a5;
-- (void)dismissPostPlayAnimated:(BOOL)a3;
+- (void)_updateTimeBoundFeature:(id)feature animated:(BOOL)animated;
+- (void)_updateTimeTriggeredFeature:(id)feature animated:(BOOL)animated;
+- (void)addPlaylistToMultiview:(id)multiview atIndex:(int64_t)index animated:(BOOL)animated completion:(id)completion;
+- (void)addTipKitState:(unint64_t)state;
+- (void)autoPlayTimerDidCompleteForPostPlayView:(id)view;
+- (void)configureAudioSessionForBackgroundPlayback:(BOOL)playback usingPlaybackCategory:(BOOL)category isMultiview:(BOOL)multiview;
+- (void)dismissPlaybackAnimated:(BOOL)animated leaveGroupActivitySession:(BOOL)session completion:(id)completion;
+- (void)dismissPostPlayAnimated:(BOOL)animated;
 - (void)extrasBackButtonPressed;
-- (void)extrasContext:(id)a3 extrasVisibilityNeedsUpdate:(BOOL)a4;
-- (void)extrasContext:(id)a3 hadFatalError:(id)a4;
-- (void)extrasContextDidLoadMainMenuItems:(id)a3;
+- (void)extrasContext:(id)context extrasVisibilityNeedsUpdate:(BOOL)update;
+- (void)extrasContext:(id)context hadFatalError:(id)error;
+- (void)extrasContextDidLoadMainMenuItems:(id)items;
 - (void)extrasDoneButtonPressed;
-- (void)extrasMenuItemSelected:(id)a3 atIndex:(unint64_t)a4;
-- (void)extrasRequestsMediaPlayback:(id)a3 isBackground:(BOOL)a4;
-- (void)featureMonitor:(id)a3 featureDidChangeState:(id)a4 animated:(BOOL)a5;
-- (void)mediaInfoDidChangeTo:(id)a3 canPlay:(BOOL)a4 wasAutoPlayed:(BOOL)a5;
-- (void)multiPlayerDetailsViewControllerDidDeselectLockupWithIdentifier:(id)a3 impressionsData:(id)a4 locationData:(id)a5;
-- (void)multiPlayerDetailsViewControllerDidSelectLockupWithIdentifier:(id)a3 impressionsData:(id)a4 locationData:(id)a5;
-- (void)multiPlayerViewController:(id)a3 detailsViewControllerDidAppear:(id)a4;
-- (void)multiPlayerViewController:(id)a3 detailsViewControllerDidDisappear:(id)a4;
-- (void)multiPlayerViewController:(id)a3 detailsViewControllerWillAppear:(id)a4;
-- (void)multiPlayerViewController:(id)a3 detailsViewControllerWillDisappear:(id)a4;
-- (void)multiPlayerViewController:(id)a3 didBeginDropWithMediaInfo:(id)a4 atIndex:(int64_t)a5;
-- (void)multiPlayerViewController:(id)a3 didCrossSupportedScreenSizeBoundary:(BOOL)a4;
-- (void)multiPlayerViewController:(id)a3 didDismissWithPlayerViewController:(id)a4 withReason:(unint64_t)a5;
-- (void)multiPlayerViewController:(id)a3 didDropWithMediaInfo:(id)a4 overPlayerAtIndex:(int64_t)a5;
-- (void)multiPlayerViewController:(id)a3 didEndDropWithMediaInfo:(id)a4;
-- (void)multiPlayerViewController:(id)a3 didEnterFullscreenWithPlayerViewController:(id)a4;
-- (void)multiPlayerViewController:(id)a3 didExitFullscreenWithPlayerViewController:(id)a4;
-- (void)multiPlayerViewController:(id)a3 didPinchPlayerToDismiss:(id)a4;
-- (void)multiPlayerViewController:(id)a3 didRemovePlayer:(id)a4 atIndex:(int64_t)a5;
-- (void)multiPlayerViewController:(id)a3 didSelectPlayerViewController:(id)a4;
-- (void)multiPlayerViewController:(id)a3 didSwapPlayerViewControllerAtIndex:(int64_t)a4 withPlayerAtIndex:(int64_t)a5;
-- (void)multiPlayerViewController:(id)a3 playerViewController:(id)a4 didResizeToFrame:(CGRect)a5;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)playbackContainerViewControllerBackgroundPlaybackWillBegin:(id)a3;
-- (void)playbackContainerViewControllerDidDisappear:(id)a3;
-- (void)playbackContainerViewControllerDidFinishLoadingPostPlay:(id)a3;
-- (void)playbackContainerViewControllerExitPictureInPicturePressed:(id)a3;
-- (void)playbackContainerViewControllerWillTransitionToSize:(CGSize)a3;
-- (void)playerViewController:(id)a3 contentViewWillTransitionToSize:(CGSize)a4 withTransitionCoordinator:(id)a5;
-- (void)playerViewController:(id)a3 failedToStartPictureInPictureWithError:(id)a4;
-- (void)playerViewController:(id)a3 restoreUserInterfaceForPictureInPictureStopWithCompletionHandler:(id)a4;
-- (void)playerViewController:(id)a3 willEndFullScreenPresentationWithAnimationCoordinator:(id)a4;
-- (void)playerViewController:(id)a3 willTransitionToVisibilityOfPlaybackControls:(BOOL)a4 withAnimationCoordinator:(id)a5;
-- (void)playerViewControllerDidStartPictureInPicture:(id)a3;
-- (void)playerViewControllerDidStopPictureInPicture:(id)a3;
-- (void)playerViewControllerWillStartPictureInPicture:(id)a3;
-- (void)playerViewControllerWillStopPictureInPicture:(id)a3;
-- (void)presentContainerViewController:(id)a3 withPlayer:(id)a4 andPlayerViewController:(id)a5 completion:(id)a6;
-- (void)presentExtrasWithURL:(id)a3 storeID:(id)a4 actionParams:(id)a5 hlsURL:(id)a6 fromViewController:(id)a7 completion:(id)a8;
-- (void)presentMultiviewWithPlaylists:(id)a3 fromViewController:(id)a4 animated:(BOOL)a5;
-- (void)presentPlaylist:(id)a3 fromViewController:(id)a4 dismissalOperation:(int64_t)a5 allowsCellular:(BOOL)a6 animated:(BOOL)a7 userInfo:(id)a8 completion:(id)a9;
-- (void)presentViewControllerOnExtrasNav:(id)a3;
-- (void)removeFromMultiviewWithIdentifier:(id)a3 animated:(BOOL)a4;
-- (void)removePlaylistFromMultiview:(id)a3 animated:(BOOL)a4;
-- (void)replacePlaylistInMultiviewAtIndex:(int64_t)a3 withPlaylist:(id)a4 animated:(BOOL)a5;
-- (void)restoreBackgroundMediaControllerFromPIP:(id)a3;
-- (void)setActivePlayer:(id)a3;
-- (void)setAvPlayerViewController:(id)a3;
-- (void)setBackgroundMediaControllerForPIP:(id)a3;
+- (void)extrasMenuItemSelected:(id)selected atIndex:(unint64_t)index;
+- (void)extrasRequestsMediaPlayback:(id)playback isBackground:(BOOL)background;
+- (void)featureMonitor:(id)monitor featureDidChangeState:(id)state animated:(BOOL)animated;
+- (void)mediaInfoDidChangeTo:(id)to canPlay:(BOOL)play wasAutoPlayed:(BOOL)played;
+- (void)multiPlayerDetailsViewControllerDidDeselectLockupWithIdentifier:(id)identifier impressionsData:(id)data locationData:(id)locationData;
+- (void)multiPlayerDetailsViewControllerDidSelectLockupWithIdentifier:(id)identifier impressionsData:(id)data locationData:(id)locationData;
+- (void)multiPlayerViewController:(id)controller detailsViewControllerDidAppear:(id)appear;
+- (void)multiPlayerViewController:(id)controller detailsViewControllerDidDisappear:(id)disappear;
+- (void)multiPlayerViewController:(id)controller detailsViewControllerWillAppear:(id)appear;
+- (void)multiPlayerViewController:(id)controller detailsViewControllerWillDisappear:(id)disappear;
+- (void)multiPlayerViewController:(id)controller didBeginDropWithMediaInfo:(id)info atIndex:(int64_t)index;
+- (void)multiPlayerViewController:(id)controller didCrossSupportedScreenSizeBoundary:(BOOL)boundary;
+- (void)multiPlayerViewController:(id)controller didDismissWithPlayerViewController:(id)viewController withReason:(unint64_t)reason;
+- (void)multiPlayerViewController:(id)controller didDropWithMediaInfo:(id)info overPlayerAtIndex:(int64_t)index;
+- (void)multiPlayerViewController:(id)controller didEndDropWithMediaInfo:(id)info;
+- (void)multiPlayerViewController:(id)controller didEnterFullscreenWithPlayerViewController:(id)viewController;
+- (void)multiPlayerViewController:(id)controller didExitFullscreenWithPlayerViewController:(id)viewController;
+- (void)multiPlayerViewController:(id)controller didPinchPlayerToDismiss:(id)dismiss;
+- (void)multiPlayerViewController:(id)controller didRemovePlayer:(id)player atIndex:(int64_t)index;
+- (void)multiPlayerViewController:(id)controller didSelectPlayerViewController:(id)viewController;
+- (void)multiPlayerViewController:(id)controller didSwapPlayerViewControllerAtIndex:(int64_t)index withPlayerAtIndex:(int64_t)atIndex;
+- (void)multiPlayerViewController:(id)controller playerViewController:(id)viewController didResizeToFrame:(CGRect)frame;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)playbackContainerViewControllerBackgroundPlaybackWillBegin:(id)begin;
+- (void)playbackContainerViewControllerDidDisappear:(id)disappear;
+- (void)playbackContainerViewControllerDidFinishLoadingPostPlay:(id)play;
+- (void)playbackContainerViewControllerExitPictureInPicturePressed:(id)pressed;
+- (void)playbackContainerViewControllerWillTransitionToSize:(CGSize)size;
+- (void)playerViewController:(id)controller contentViewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
+- (void)playerViewController:(id)controller failedToStartPictureInPictureWithError:(id)error;
+- (void)playerViewController:(id)controller restoreUserInterfaceForPictureInPictureStopWithCompletionHandler:(id)handler;
+- (void)playerViewController:(id)controller willEndFullScreenPresentationWithAnimationCoordinator:(id)coordinator;
+- (void)playerViewController:(id)controller willTransitionToVisibilityOfPlaybackControls:(BOOL)controls withAnimationCoordinator:(id)coordinator;
+- (void)playerViewControllerDidStartPictureInPicture:(id)picture;
+- (void)playerViewControllerDidStopPictureInPicture:(id)picture;
+- (void)playerViewControllerWillStartPictureInPicture:(id)picture;
+- (void)playerViewControllerWillStopPictureInPicture:(id)picture;
+- (void)presentContainerViewController:(id)controller withPlayer:(id)player andPlayerViewController:(id)viewController completion:(id)completion;
+- (void)presentExtrasWithURL:(id)l storeID:(id)d actionParams:(id)params hlsURL:(id)rL fromViewController:(id)controller completion:(id)completion;
+- (void)presentMultiviewWithPlaylists:(id)playlists fromViewController:(id)controller animated:(BOOL)animated;
+- (void)presentPlaylist:(id)playlist fromViewController:(id)controller dismissalOperation:(int64_t)operation allowsCellular:(BOOL)cellular animated:(BOOL)animated userInfo:(id)info completion:(id)completion;
+- (void)presentViewControllerOnExtrasNav:(id)nav;
+- (void)removeFromMultiviewWithIdentifier:(id)identifier animated:(BOOL)animated;
+- (void)removePlaylistFromMultiview:(id)multiview animated:(BOOL)animated;
+- (void)replacePlaylistInMultiviewAtIndex:(int64_t)index withPlaylist:(id)playlist animated:(BOOL)animated;
+- (void)restoreBackgroundMediaControllerFromPIP:(id)p;
+- (void)setActivePlayer:(id)player;
+- (void)setAvPlayerViewController:(id)controller;
+- (void)setBackgroundMediaControllerForPIP:(id)p;
 - (void)startPictureInPicture;
-- (void)startPictureInPictureWithCompletion:(id)a3;
-- (void)transferPlaybackToBackgroundMediaController:(id)a3;
-- (void)upNextButtonTapped:(id)a3;
+- (void)startPictureInPictureWithCompletion:(id)completion;
+- (void)transferPlaybackToBackgroundMediaController:(id)controller;
+- (void)upNextButtonTapped:(id)tapped;
 @end
 
 @implementation VUIPlaybackManager
@@ -271,26 +271,26 @@ void __36__VUIPlaybackManager_sharedInstance__block_invoke()
     [(TVPStateMachine *)v15->_stateMachine setCallsStateChangeHandlerSynchronously:1];
     [(VUIPlaybackManager *)v15 _registerStateMachineHandlers];
     [(TVPStateMachine *)v15->_stateMachine setShouldAcceptEvents:1];
-    v18 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     multiviewPlaybackInfo = v15->_multiviewPlaybackInfo;
-    v15->_multiviewPlaybackInfo = v18;
+    v15->_multiviewPlaybackInfo = array;
 
     if ([(VUIPlaybackManager *)v15 _shouldShowPerformanceDebugger])
     {
       v20 = +[VUIInterfaceFactory sharedInstance];
-      v21 = [v20 documentCreator];
-      v22 = [v21 performanceDebuggerViewController];
+      documentCreator = [v20 documentCreator];
+      performanceDebuggerViewController = [documentCreator performanceDebuggerViewController];
       performanceDebuggerViewController = v15->_performanceDebuggerViewController;
-      v15->_performanceDebuggerViewController = v22;
+      v15->_performanceDebuggerViewController = performanceDebuggerViewController;
     }
 
     if ([(VUIPlaybackManager *)v15 _shouldShowTimedMetadataDebugger])
     {
       v24 = +[VUIInterfaceFactory sharedInstance];
-      v25 = [v24 documentCreator];
-      v26 = [v25 timedMetadataDebuggerViewController];
+      documentCreator2 = [v24 documentCreator];
+      timedMetadataDebuggerViewController = [documentCreator2 timedMetadataDebuggerViewController];
       timedMetadataDebuggerViewController = v15->_timedMetadataDebuggerViewController;
-      v15->_timedMetadataDebuggerViewController = v26;
+      v15->_timedMetadataDebuggerViewController = timedMetadataDebuggerViewController;
     }
 
     objc_destroyWeak(&v31);
@@ -302,29 +302,29 @@ void __36__VUIPlaybackManager_sharedInstance__block_invoke()
 
 - (void)_registerApplicationNotifications
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 addObserver:self selector:sel__applicationWillResignActive_ name:*MEMORY[0x1E69DDBC8] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__applicationWillResignActive_ name:*MEMORY[0x1E69DDBC8] object:0];
 
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 addObserver:self selector:sel__applicationDidEnterBackground_ name:*MEMORY[0x1E69DDAC8] object:0];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel__applicationDidEnterBackground_ name:*MEMORY[0x1E69DDAC8] object:0];
 
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v5 addObserver:self selector:sel__applicationDidBecomeActive_ name:*MEMORY[0x1E69DDAB0] object:0];
+  defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter3 addObserver:self selector:sel__applicationDidBecomeActive_ name:*MEMORY[0x1E69DDAB0] object:0];
 
-  v6 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v6 addObserver:self selector:sel__applicationWillEnterForeground_ name:*MEMORY[0x1E69DDBC0] object:0];
+  defaultCenter4 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter4 addObserver:self selector:sel__applicationWillEnterForeground_ name:*MEMORY[0x1E69DDBC0] object:0];
 
-  v7 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v7 addObserver:self selector:sel__accountDidChange_ name:*MEMORY[0x1E69E1660] object:0];
+  defaultCenter5 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter5 addObserver:self selector:sel__accountDidChange_ name:*MEMORY[0x1E69E1660] object:0];
 
-  v8 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v8 addObserver:self selector:sel__groupActivityDidEnd_ name:@"VUIGroupWatchActivitySessionDidEndNotification" object:0];
+  defaultCenter6 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter6 addObserver:self selector:sel__groupActivityDidEnd_ name:@"VUIGroupWatchActivitySessionDidEndNotification" object:0];
 }
 
 - (void)_registerAudioSessionNotifications
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 addObserver:self selector:sel__audioSessionRouteDidChange_ name:*MEMORY[0x1E6958228] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__audioSessionRouteDidChange_ name:*MEMORY[0x1E6958228] object:0];
 }
 
 - (void)_registerStateMachineHandlers
@@ -491,17 +491,17 @@ void __36__VUIPlaybackManager_sharedInstance__block_invoke()
   objc_copyWeak(&v564, &v618);
   v319 = _Block_copy(v563);
   v20 = objc_loadWeakRetained(&v618);
-  v21 = [v20 stateMachine];
+  stateMachine = [v20 stateMachine];
   v561[0] = MEMORY[0x1E69E9820];
   v561[1] = 3221225472;
   v561[2] = __51__VUIPlaybackManager__registerStateMachineHandlers__block_invoke_14;
   v561[3] = &unk_1E8730120;
   v22 = v12;
   v562 = v22;
-  [v21 registerHandlerForEvent:@"Present playlist" onState:@"Showing video full screen with post play content on screen" withBlock:v561];
+  [stateMachine registerHandlerForEvent:@"Present playlist" onState:@"Showing video full screen with post play content on screen" withBlock:v561];
 
   v23 = objc_loadWeakRetained(&v618);
-  v24 = [v23 stateMachine];
+  stateMachine2 = [v23 stateMachine];
   v558[0] = MEMORY[0x1E69E9820];
   v558[1] = 3221225472;
   v558[2] = __51__VUIPlaybackManager__registerStateMachineHandlers__block_invoke_17;
@@ -509,10 +509,10 @@ void __36__VUIPlaybackManager_sharedInstance__block_invoke()
   objc_copyWeak(&v560, &v618);
   v25 = v22;
   v559 = v25;
-  [v24 registerHandlerForEvent:@"Present playlist" onState:@"Showing post play content without playback UI" withBlock:v558];
+  [stateMachine2 registerHandlerForEvent:@"Present playlist" onState:@"Showing post play content without playback UI" withBlock:v558];
 
   v26 = objc_loadWeakRetained(&v618);
-  v27 = [v26 stateMachine];
+  stateMachine3 = [v26 stateMachine];
   v551[0] = MEMORY[0x1E69E9820];
   v551[1] = 3221225472;
   v551[2] = __51__VUIPlaybackManager__registerStateMachineHandlers__block_invoke_20;
@@ -528,10 +528,10 @@ void __36__VUIPlaybackManager_sharedInstance__block_invoke()
   v555 = v289;
   v326 = v325;
   v556 = v326;
-  [v27 registerDefaultHandlerForEvent:@"Present playlist" withBlock:v551];
+  [stateMachine3 registerDefaultHandlerForEvent:@"Present playlist" withBlock:v551];
 
   v30 = objc_loadWeakRetained(&v618);
-  v31 = [v30 stateMachine];
+  stateMachine4 = [v30 stateMachine];
   v647[0] = @"Showing Extras content";
   v647[1] = @"Showing extras video picture in picture on extras content";
   v32 = [MEMORY[0x1E695DEC8] arrayWithObjects:v647 count:2];
@@ -542,10 +542,10 @@ void __36__VUIPlaybackManager_sharedInstance__block_invoke()
   v323 = v10;
   v549 = v323;
   objc_copyWeak(&v550, &v618);
-  [v31 registerHandlerForEvent:@"Present playlist" onStates:v32 withBlock:v548];
+  [stateMachine4 registerHandlerForEvent:@"Present playlist" onStates:v32 withBlock:v548];
 
   v33 = objc_loadWeakRetained(&v618);
-  v34 = [v33 stateMachine];
+  stateMachine5 = [v33 stateMachine];
   v544[0] = MEMORY[0x1E69E9820];
   v544[1] = 3221225472;
   v544[2] = __51__VUIPlaybackManager__registerStateMachineHandlers__block_invoke_5_1045;
@@ -555,10 +555,10 @@ void __36__VUIPlaybackManager_sharedInstance__block_invoke()
   v545 = v35;
   v294 = v29;
   v546 = v294;
-  [v34 registerHandlerForEvent:@"Present player container view controller" onState:@"Not showing anything" withBlock:v544];
+  [stateMachine5 registerHandlerForEvent:@"Present player container view controller" onState:@"Not showing anything" withBlock:v544];
 
   v36 = objc_loadWeakRetained(&v618);
-  v37 = [v36 stateMachine];
+  stateMachine6 = [v36 stateMachine];
   v646[0] = @"Not showing anything";
   v646[1] = @"Showing main video picture in picture";
   v38 = [MEMORY[0x1E695DEC8] arrayWithObjects:v646 count:2];
@@ -568,20 +568,20 @@ void __36__VUIPlaybackManager_sharedInstance__block_invoke()
   v542[3] = &unk_1E8730120;
   v290 = v17;
   v543 = v290;
-  [v37 registerHandlerForEvent:@"Show multiview playback" onStates:v38 withBlock:v542];
+  [stateMachine6 registerHandlerForEvent:@"Show multiview playback" onStates:v38 withBlock:v542];
 
   v39 = objc_loadWeakRetained(&v618);
-  v40 = [v39 stateMachine];
+  stateMachine7 = [v39 stateMachine];
   v540[0] = MEMORY[0x1E69E9820];
   v540[1] = 3221225472;
   v540[2] = __51__VUIPlaybackManager__registerStateMachineHandlers__block_invoke_9_1049;
   v540[3] = &unk_1E8730120;
   v41 = v19;
   v541 = v41;
-  [v40 registerHandlerForEvent:@"Show multiview playback" onState:@"Showing video full screen" withBlock:v540];
+  [stateMachine7 registerHandlerForEvent:@"Show multiview playback" onState:@"Showing video full screen" withBlock:v540];
 
   v42 = objc_loadWeakRetained(&v618);
-  v43 = [v42 stateMachine];
+  stateMachine8 = [v42 stateMachine];
   v537[0] = MEMORY[0x1E69E9820];
   v537[1] = 3221225472;
   v537[2] = __51__VUIPlaybackManager__registerStateMachineHandlers__block_invoke_10_1050;
@@ -589,10 +589,10 @@ void __36__VUIPlaybackManager_sharedInstance__block_invoke()
   objc_copyWeak(&v539, &v618);
   v44 = v319;
   v538 = v44;
-  [v43 registerHandlerForEvent:@"Show multiview playback" onState:@"Showing multiview playback fullscreen" withBlock:v537];
+  [stateMachine8 registerHandlerForEvent:@"Show multiview playback" onState:@"Showing multiview playback fullscreen" withBlock:v537];
 
   v45 = objc_loadWeakRetained(&v618);
-  v46 = [v45 stateMachine];
+  stateMachine9 = [v45 stateMachine];
   v645[0] = @"Showing multiview playback";
   v645[1] = @"Showing multiview playback fullscreen";
   v645[2] = @"Showing multiview playback fullscreen due to small screen size";
@@ -604,10 +604,10 @@ void __36__VUIPlaybackManager_sharedInstance__block_invoke()
   objc_copyWeak(&v536, &v618);
   v48 = v35;
   v535 = v48;
-  [v46 registerHandlerForEvent:@"Dismiss multiview playback" onStates:v47 withBlock:v534];
+  [stateMachine9 registerHandlerForEvent:@"Dismiss multiview playback" onStates:v47 withBlock:v534];
 
   v49 = objc_loadWeakRetained(&v618);
-  v50 = [v49 stateMachine];
+  stateMachine10 = [v49 stateMachine];
   v530[0] = MEMORY[0x1E69E9820];
   v530[1] = 3221225472;
   v530[2] = __51__VUIPlaybackManager__registerStateMachineHandlers__block_invoke_16_1106;
@@ -617,10 +617,10 @@ void __36__VUIPlaybackManager_sharedInstance__block_invoke()
   objc_copyWeak(&v533, &v618);
   v532 = &__block_literal_global_1013;
   v530[4] = self;
-  [v50 registerHandlerForEvent:@"Add multiview playback" onState:@"Showing multiview playback" withBlock:v530];
+  [stateMachine10 registerHandlerForEvent:@"Add multiview playback" onState:@"Showing multiview playback" withBlock:v530];
 
   v52 = objc_loadWeakRetained(&v618);
-  v53 = [v52 stateMachine];
+  stateMachine11 = [v52 stateMachine];
   v644[0] = @"Showing multiview playback fullscreen";
   v644[1] = @"Showing multiview playback fullscreen due to small screen size";
   v54 = [MEMORY[0x1E695DEC8] arrayWithObjects:v644 count:2];
@@ -631,38 +631,38 @@ void __36__VUIPlaybackManager_sharedInstance__block_invoke()
   objc_copyWeak(&v529, &v618);
   v55 = v44;
   v528 = v55;
-  [v53 registerHandlerForEvent:@"Add multiview playback" onStates:v54 withBlock:v527];
+  [stateMachine11 registerHandlerForEvent:@"Add multiview playback" onStates:v54 withBlock:v527];
 
   v56 = objc_loadWeakRetained(&v618);
-  v57 = [v56 stateMachine];
+  stateMachine12 = [v56 stateMachine];
   v525[0] = MEMORY[0x1E69E9820];
   v525[1] = 3221225472;
   v525[2] = __51__VUIPlaybackManager__registerStateMachineHandlers__block_invoke_21;
   v525[3] = &unk_1E8730120;
   v288 = v41;
   v526 = v288;
-  [v57 registerHandlerForEvent:@"Add multiview playback" onState:@"Showing video full screen" withBlock:v525];
+  [stateMachine12 registerHandlerForEvent:@"Add multiview playback" onState:@"Showing video full screen" withBlock:v525];
 
   v58 = objc_loadWeakRetained(&v618);
-  v59 = [v58 stateMachine];
+  stateMachine13 = [v58 stateMachine];
   v523[0] = MEMORY[0x1E69E9820];
   v523[1] = 3221225472;
   v523[2] = __51__VUIPlaybackManager__registerStateMachineHandlers__block_invoke_22;
   v523[3] = &unk_1E872FAD8;
   objc_copyWeak(&v524, &v618);
-  [v59 registerHandlerForEvent:@"Remove multiview playback" onState:@"Showing multiview playback" withBlock:v523];
+  [stateMachine13 registerHandlerForEvent:@"Remove multiview playback" onState:@"Showing multiview playback" withBlock:v523];
 
   v60 = objc_loadWeakRetained(&v618);
-  v61 = [v60 stateMachine];
+  stateMachine14 = [v60 stateMachine];
   v521[0] = MEMORY[0x1E69E9820];
   v521[1] = 3221225472;
   v521[2] = __51__VUIPlaybackManager__registerStateMachineHandlers__block_invoke_23;
   v521[3] = &unk_1E872FAD8;
   objc_copyWeak(&v522, &v618);
-  [v61 registerHandlerForEvent:@"Playback was removed from multiview" onState:@"Showing multiview playback" withBlock:v521];
+  [stateMachine14 registerHandlerForEvent:@"Playback was removed from multiview" onState:@"Showing multiview playback" withBlock:v521];
 
   v62 = objc_loadWeakRetained(&v618);
-  v63 = [v62 stateMachine];
+  stateMachine15 = [v62 stateMachine];
   v518[0] = MEMORY[0x1E69E9820];
   v518[1] = 3221225472;
   v518[2] = __51__VUIPlaybackManager__registerStateMachineHandlers__block_invoke_24;
@@ -670,10 +670,10 @@ void __36__VUIPlaybackManager_sharedInstance__block_invoke()
   objc_copyWeak(&v520, &v618);
   v287 = v51;
   v519 = v287;
-  [v63 registerHandlerForEvent:@"Replace multiview playback" onState:@"Showing multiview playback" withBlock:v518];
+  [stateMachine15 registerHandlerForEvent:@"Replace multiview playback" onState:@"Showing multiview playback" withBlock:v518];
 
   v64 = objc_loadWeakRetained(&v618);
-  v65 = [v64 stateMachine];
+  stateMachine16 = [v64 stateMachine];
   v515[0] = MEMORY[0x1E69E9820];
   v515[1] = 3221225472;
   v515[2] = __51__VUIPlaybackManager__registerStateMachineHandlers__block_invoke_25;
@@ -681,10 +681,10 @@ void __36__VUIPlaybackManager_sharedInstance__block_invoke()
   objc_copyWeak(&v517, &v618);
   v66 = v55;
   v516 = v66;
-  [v65 registerHandlerForEvent:@"Did select multiview player" onState:@"Showing multiview playback" withBlock:v515];
+  [stateMachine16 registerHandlerForEvent:@"Did select multiview player" onState:@"Showing multiview playback" withBlock:v515];
 
   v67 = objc_loadWeakRetained(&v618);
-  v68 = [v67 stateMachine];
+  stateMachine17 = [v67 stateMachine];
   v512[0] = MEMORY[0x1E69E9820];
   v512[1] = 3221225472;
   v512[2] = __51__VUIPlaybackManager__registerStateMachineHandlers__block_invoke_26;
@@ -692,10 +692,10 @@ void __36__VUIPlaybackManager_sharedInstance__block_invoke()
   objc_copyWeak(&v514, &v618);
   v320 = v316;
   v513 = v320;
-  [v68 registerHandlerForEvent:@"Multiview did enter fullscreen" onState:@"Showing multiview playback" withBlock:v512];
+  [stateMachine17 registerHandlerForEvent:@"Multiview did enter fullscreen" onState:@"Showing multiview playback" withBlock:v512];
 
   v69 = objc_loadWeakRetained(&v618);
-  v70 = [v69 stateMachine];
+  stateMachine18 = [v69 stateMachine];
   v643[0] = @"Showing video full screen";
   v643[1] = @"Showing multiview playback fullscreen";
   v643[2] = @"Showing multiview playback fullscreen due to small screen size";
@@ -708,10 +708,10 @@ void __36__VUIPlaybackManager_sharedInstance__block_invoke()
   objc_copyWeak(&v511, &v618);
   v286 = v326;
   v510 = v286;
-  [v70 registerHandlerForEvent:@"Media info did change" onStates:v71 withBlock:v509];
+  [stateMachine18 registerHandlerForEvent:@"Media info did change" onStates:v71 withBlock:v509];
 
   v72 = objc_loadWeakRetained(&v618);
-  v73 = [v72 stateMachine];
+  stateMachine19 = [v72 stateMachine];
   v642[0] = @"Showing multiview playback fullscreen";
   v642[1] = @"Showing multiview playback fullscreen due to small screen size";
   v74 = [MEMORY[0x1E695DEC8] arrayWithObjects:v642 count:2];
@@ -722,10 +722,10 @@ void __36__VUIPlaybackManager_sharedInstance__block_invoke()
   objc_copyWeak(&v508, &v618);
   v327 = v66;
   v507 = v327;
-  [v73 registerHandlerForEvent:@"Multiview did exit fullscreen" onStates:v74 withBlock:v506];
+  [stateMachine19 registerHandlerForEvent:@"Multiview did exit fullscreen" onStates:v74 withBlock:v506];
 
   v75 = objc_loadWeakRetained(&v618);
-  v76 = [v75 stateMachine];
+  stateMachine20 = [v75 stateMachine];
   v641[0] = @"Showing video full screen";
   v641[1] = @"Showing long loading dialog";
   v641[2] = @"Showing Extras content";
@@ -744,14 +744,14 @@ void __36__VUIPlaybackManager_sharedInstance__block_invoke()
   v504[3] = &unk_1E8730120;
   v78 = v48;
   v505 = v78;
-  [v76 registerHandlerForEvent:@"Dismiss playback" onStates:v77 withBlock:v504];
+  [stateMachine20 registerHandlerForEvent:@"Dismiss playback" onStates:v77 withBlock:v504];
 
   v79 = objc_loadWeakRetained(&v618);
-  v80 = [v79 stateMachine];
-  [v80 registerHandlerForEvent:@"Dismiss playback" onState:@"Waiting for AVPlayerViewController presentation to complete" withBlock:&__block_literal_global_1118];
+  stateMachine21 = [v79 stateMachine];
+  [stateMachine21 registerHandlerForEvent:@"Dismiss playback" onState:@"Waiting for AVPlayerViewController presentation to complete" withBlock:&__block_literal_global_1118];
 
   v81 = objc_loadWeakRetained(&v618);
-  v82 = [v81 stateMachine];
+  stateMachine22 = [v81 stateMachine];
   v640[0] = @"Waiting for Extras AVPlayerViewController presentation to complete";
   v640[1] = @"Showing main video picture in picture";
   v640[2] = @"Showing extras video picture in picture on extras content";
@@ -763,39 +763,39 @@ void __36__VUIPlaybackManager_sharedInstance__block_invoke()
   v502[3] = &unk_1E8730120;
   v84 = v78;
   v503 = v84;
-  [v82 registerHandlerForEvent:@"Dismiss playback" onStates:v83 withBlock:v502];
+  [stateMachine22 registerHandlerForEvent:@"Dismiss playback" onStates:v83 withBlock:v502];
 
   v85 = objc_loadWeakRetained(&v618);
-  v86 = [v85 stateMachine];
+  stateMachine23 = [v85 stateMachine];
   v500[0] = MEMORY[0x1E69E9820];
   v500[1] = 3221225472;
   v500[2] = __51__VUIPlaybackManager__registerStateMachineHandlers__block_invoke_5_1120;
   v500[3] = &unk_1E872FAD8;
   objc_copyWeak(&v501, &v618);
-  [v86 registerHandlerForEvent:@"Dismiss playback" onState:@"Playing background media in picture and picture" withBlock:v500];
+  [stateMachine23 registerHandlerForEvent:@"Dismiss playback" onState:@"Playing background media in picture and picture" withBlock:v500];
 
   v87 = objc_loadWeakRetained(&v618);
-  v88 = [v87 stateMachine];
+  stateMachine24 = [v87 stateMachine];
   v498[0] = MEMORY[0x1E69E9820];
   v498[1] = 3221225472;
   v498[2] = __51__VUIPlaybackManager__registerStateMachineHandlers__block_invoke_7_1122;
   v498[3] = &unk_1E8730120;
   v89 = v84;
   v499 = v89;
-  [v88 registerHandlerForEvent:@"Done Button Pressed" onState:@"Showing Extras content" withBlock:v498];
+  [stateMachine24 registerHandlerForEvent:@"Done Button Pressed" onState:@"Showing Extras content" withBlock:v498];
 
   v90 = objc_loadWeakRetained(&v618);
-  v91 = [v90 stateMachine];
+  stateMachine25 = [v90 stateMachine];
   v496[0] = MEMORY[0x1E69E9820];
   v496[1] = 3221225472;
   v496[2] = __51__VUIPlaybackManager__registerStateMachineHandlers__block_invoke_8_1123;
   v496[3] = &unk_1E8730120;
   v330 = v314;
   v497 = v330;
-  [v91 registerHandlerForEvent:@"Done Button Pressed" onState:@"Showing extras video picture in picture on extras content" withBlock:v496];
+  [stateMachine25 registerHandlerForEvent:@"Done Button Pressed" onState:@"Showing extras video picture in picture on extras content" withBlock:v496];
 
   v92 = objc_loadWeakRetained(&v618);
-  v93 = [v92 stateMachine];
+  stateMachine26 = [v92 stateMachine];
   v493[0] = MEMORY[0x1E69E9820];
   v493[1] = 3221225472;
   v493[2] = __51__VUIPlaybackManager__registerStateMachineHandlers__block_invoke_9_1124;
@@ -803,10 +803,10 @@ void __36__VUIPlaybackManager_sharedInstance__block_invoke()
   objc_copyWeak(&v495, &v618);
   v94 = v89;
   v494 = v94;
-  [v93 registerHandlerForEvent:@"AVPlayerViewController presentation did complete" onState:@"Waiting for AVPlayerViewController presentation to complete" withBlock:v493];
+  [stateMachine26 registerHandlerForEvent:@"AVPlayerViewController presentation did complete" onState:@"Waiting for AVPlayerViewController presentation to complete" withBlock:v493];
 
   v95 = objc_loadWeakRetained(&v618);
-  v96 = [v95 stateMachine];
+  stateMachine27 = [v95 stateMachine];
   v490[0] = MEMORY[0x1E69E9820];
   v490[1] = 3221225472;
   v490[2] = __51__VUIPlaybackManager__registerStateMachineHandlers__block_invoke_2_1128;
@@ -814,10 +814,10 @@ void __36__VUIPlaybackManager_sharedInstance__block_invoke()
   objc_copyWeak(&v492, &v618);
   v97 = v312;
   v491 = v97;
-  [v96 registerHandlerForEvent:@"AVPlayerViewController presentation did complete" onState:@"Waiting for Extras AVPlayerViewController presentation to complete" withBlock:v490];
+  [stateMachine27 registerHandlerForEvent:@"AVPlayerViewController presentation did complete" onState:@"Waiting for Extras AVPlayerViewController presentation to complete" withBlock:v490];
 
   v98 = objc_loadWeakRetained(&v618);
-  v99 = [v98 stateMachine];
+  stateMachine28 = [v98 stateMachine];
   v487[0] = MEMORY[0x1E69E9820];
   v487[1] = 3221225472;
   v487[2] = __51__VUIPlaybackManager__registerStateMachineHandlers__block_invoke_1130;
@@ -825,30 +825,30 @@ void __36__VUIPlaybackManager_sharedInstance__block_invoke()
   objc_copyWeak(&v489, &v618);
   v100 = v94;
   v488 = v100;
-  [v99 registerHandlerForEvent:@"AVPlayerViewController presentation did complete" onState:@"Waiting for AVPlayerViewController presentation to complete to dismiss" withBlock:v487];
+  [stateMachine28 registerHandlerForEvent:@"AVPlayerViewController presentation did complete" onState:@"Waiting for AVPlayerViewController presentation to complete to dismiss" withBlock:v487];
 
   v101 = objc_loadWeakRetained(&v618);
-  v102 = [v101 stateMachine];
+  stateMachine29 = [v101 stateMachine];
   v485[0] = MEMORY[0x1E69E9820];
   v485[1] = 3221225472;
   v485[2] = __51__VUIPlaybackManager__registerStateMachineHandlers__block_invoke_3_1132;
   v485[3] = &unk_1E8730120;
   v103 = v100;
   v486 = v103;
-  [v102 registerHandlerForEvent:@"AVPlayerViewController presentation did timeout" onState:@"Waiting for AVPlayerViewController presentation to complete" withBlock:v485];
+  [stateMachine29 registerHandlerForEvent:@"AVPlayerViewController presentation did timeout" onState:@"Waiting for AVPlayerViewController presentation to complete" withBlock:v485];
 
   v104 = objc_loadWeakRetained(&v618);
-  v105 = [v104 stateMachine];
+  stateMachine30 = [v104 stateMachine];
   v483[0] = MEMORY[0x1E69E9820];
   v483[1] = 3221225472;
   v483[2] = __51__VUIPlaybackManager__registerStateMachineHandlers__block_invoke_5_1134;
   v483[3] = &unk_1E8730120;
   v106 = v103;
   v484 = v106;
-  [v105 registerHandlerForEvent:@"AVPlayerViewController presentation did timeout" onState:@"Waiting for AVPlayerViewController presentation to complete to dismiss" withBlock:v483];
+  [stateMachine30 registerHandlerForEvent:@"AVPlayerViewController presentation did timeout" onState:@"Waiting for AVPlayerViewController presentation to complete to dismiss" withBlock:v483];
 
   v107 = objc_loadWeakRetained(&v618);
-  v108 = [v107 stateMachine];
+  stateMachine31 = [v107 stateMachine];
   v639[0] = @"Showing video full screen";
   v639[1] = @"Showing multiview playback fullscreen";
   v109 = [MEMORY[0x1E695DEC8] arrayWithObjects:v639 count:2];
@@ -857,19 +857,19 @@ void __36__VUIPlaybackManager_sharedInstance__block_invoke()
   v481[2] = __51__VUIPlaybackManager__registerStateMachineHandlers__block_invoke_7_1136;
   v481[3] = &unk_1E872FAD8;
   objc_copyWeak(&v482, &v618);
-  [v108 registerHandlerForEvent:@"Will start picture in picture" onStates:v109 withBlock:v481];
+  [stateMachine31 registerHandlerForEvent:@"Will start picture in picture" onStates:v109 withBlock:v481];
 
   v110 = objc_loadWeakRetained(&v618);
-  v111 = [v110 stateMachine];
+  stateMachine32 = [v110 stateMachine];
   v479[0] = MEMORY[0x1E69E9820];
   v479[1] = 3221225472;
   v479[2] = __51__VUIPlaybackManager__registerStateMachineHandlers__block_invoke_8_1137;
   v479[3] = &unk_1E872FAD8;
   objc_copyWeak(&v480, &v618);
-  [v111 registerHandlerForEvent:@"Will start picture in picture" onState:@"Showing multiview playback" withBlock:v479];
+  [stateMachine32 registerHandlerForEvent:@"Will start picture in picture" onState:@"Showing multiview playback" withBlock:v479];
 
   v112 = objc_loadWeakRetained(&v618);
-  v113 = [v112 stateMachine];
+  stateMachine33 = [v112 stateMachine];
   v476[0] = MEMORY[0x1E69E9820];
   v476[1] = 3221225472;
   v476[2] = __51__VUIPlaybackManager__registerStateMachineHandlers__block_invoke_9_1138;
@@ -877,20 +877,20 @@ void __36__VUIPlaybackManager_sharedInstance__block_invoke()
   v114 = v310;
   v477 = v114;
   objc_copyWeak(&v478, &v618);
-  [v113 registerHandlerForEvent:@"Will start picture in picture" onState:@"Showing extras video full screen outside extras content" withBlock:v476];
+  [stateMachine33 registerHandlerForEvent:@"Will start picture in picture" onState:@"Showing extras video full screen outside extras content" withBlock:v476];
 
   v115 = objc_loadWeakRetained(&v618);
-  v116 = [v115 stateMachine];
+  stateMachine34 = [v115 stateMachine];
   v474[0] = MEMORY[0x1E69E9820];
   v474[1] = 3221225472;
   v474[2] = __51__VUIPlaybackManager__registerStateMachineHandlers__block_invoke_10_1139;
   v474[3] = &unk_1E8730120;
   v117 = v306;
   v475 = v117;
-  [v116 registerHandlerForEvent:@"Will start picture in picture" onState:@"Showing video full screen with post play content on screen" withBlock:v474];
+  [stateMachine34 registerHandlerForEvent:@"Will start picture in picture" onState:@"Showing video full screen with post play content on screen" withBlock:v474];
 
   v118 = objc_loadWeakRetained(&v618);
-  v119 = [v118 stateMachine];
+  stateMachine35 = [v118 stateMachine];
   v638[0] = @"Showing main video picture in picture";
   v638[1] = @"Showing multiview playback in PIP";
   v638[2] = @"Showing multiview playback fullscreen";
@@ -902,20 +902,20 @@ void __36__VUIPlaybackManager_sharedInstance__block_invoke()
   objc_copyWeak(&v473, &v618);
   v121 = v114;
   v472 = v121;
-  [v119 registerHandlerForEvent:@"Did start picture in picture" onStates:v120 withBlock:v471];
+  [stateMachine35 registerHandlerForEvent:@"Did start picture in picture" onStates:v120 withBlock:v471];
 
   v122 = objc_loadWeakRetained(&v618);
-  v123 = [v122 stateMachine];
+  stateMachine36 = [v122 stateMachine];
   v469[0] = MEMORY[0x1E69E9820];
   v469[1] = 3221225472;
   v469[2] = __51__VUIPlaybackManager__registerStateMachineHandlers__block_invoke_12_1141;
   v469[3] = &unk_1E8730120;
   v315 = v308;
   v470 = v315;
-  [v123 registerHandlerForEvent:@"Did start picture in picture" onState:@"Showing extras video picture in picture on extras content" withBlock:v469];
+  [stateMachine36 registerHandlerForEvent:@"Did start picture in picture" onState:@"Showing extras video picture in picture on extras content" withBlock:v469];
 
   v124 = objc_loadWeakRetained(&v618);
-  v125 = [v124 stateMachine];
+  stateMachine37 = [v124 stateMachine];
   v466[0] = MEMORY[0x1E69E9820];
   v466[1] = 3221225472;
   v466[2] = __51__VUIPlaybackManager__registerStateMachineHandlers__block_invoke_13_1142;
@@ -923,14 +923,14 @@ void __36__VUIPlaybackManager_sharedInstance__block_invoke()
   objc_copyWeak(&v468, &v618);
   v313 = v121;
   v467 = v313;
-  [v125 registerHandlerForEvent:@"Did start picture in picture" onState:@"Showing multiview playback" withBlock:v466];
+  [stateMachine37 registerHandlerForEvent:@"Did start picture in picture" onState:@"Showing multiview playback" withBlock:v466];
 
   v126 = objc_loadWeakRetained(&v618);
-  v127 = [v126 stateMachine];
-  [v127 registerHandlerForEvent:@"Picture in picture presentation did fail" onState:@"Showing main video picture in picture" withBlock:&__block_literal_global_1145];
+  stateMachine38 = [v126 stateMachine];
+  [stateMachine38 registerHandlerForEvent:@"Picture in picture presentation did fail" onState:@"Showing main video picture in picture" withBlock:&__block_literal_global_1145];
 
   v128 = objc_loadWeakRetained(&v618);
-  v129 = [v128 stateMachine];
+  stateMachine39 = [v128 stateMachine];
   v637[0] = @"Showing video full screen";
   v637[1] = @"Showing error message on playback UI";
   v637[2] = @"Showing multiview playback fullscreen";
@@ -943,18 +943,18 @@ void __36__VUIPlaybackManager_sharedInstance__block_invoke()
   objc_copyWeak(&v465, &v618);
   v131 = v106;
   v464 = v131;
-  [v129 registerHandlerForEvent:@"AVPlayerViewController did end full screen presentation" onStates:v130 withBlock:v463];
+  [stateMachine39 registerHandlerForEvent:@"AVPlayerViewController did end full screen presentation" onStates:v130 withBlock:v463];
 
   v132 = objc_loadWeakRetained(&v618);
-  v133 = [v132 stateMachine];
-  [v133 registerHandlerForEvent:@"AVPlayerViewController did end full screen presentation" onState:@"Transferring player to background media" withBlock:&__block_literal_global_1150];
+  stateMachine40 = [v132 stateMachine];
+  [stateMachine40 registerHandlerForEvent:@"AVPlayerViewController did end full screen presentation" onState:@"Transferring player to background media" withBlock:&__block_literal_global_1150];
 
   v134 = objc_loadWeakRetained(&v618);
-  v135 = [v134 stateMachine];
-  [v135 registerDefaultHandlerForEvent:@"Restore user interface for picture in picture stop" withBlock:&__block_literal_global_1153];
+  stateMachine41 = [v134 stateMachine];
+  [stateMachine41 registerDefaultHandlerForEvent:@"Restore user interface for picture in picture stop" withBlock:&__block_literal_global_1153];
 
   v136 = objc_loadWeakRetained(&v618);
-  v137 = [v136 stateMachine];
+  stateMachine42 = [v136 stateMachine];
   v636[0] = @"Showing main video picture in picture";
   v636[1] = @"Showing multiview playback in PIP";
   v636[2] = @"Showing multiview playback fullscreen in PIP";
@@ -964,28 +964,28 @@ void __36__VUIPlaybackManager_sharedInstance__block_invoke()
   v461[2] = __51__VUIPlaybackManager__registerStateMachineHandlers__block_invoke_1154;
   v461[3] = &unk_1E872FAD8;
   objc_copyWeak(&v462, &v618);
-  [v137 registerHandlerForEvent:@"Restore user interface for picture in picture stop" onStates:v138 withBlock:v461];
+  [stateMachine42 registerHandlerForEvent:@"Restore user interface for picture in picture stop" onStates:v138 withBlock:v461];
 
   v139 = objc_loadWeakRetained(&v618);
-  v140 = [v139 stateMachine];
+  stateMachine43 = [v139 stateMachine];
   v459[0] = MEMORY[0x1E69E9820];
   v459[1] = 3221225472;
   v459[2] = __51__VUIPlaybackManager__registerStateMachineHandlers__block_invoke_1158;
   v459[3] = &unk_1E872FAD8;
   objc_copyWeak(&v460, &v618);
-  [v140 registerHandlerForEvent:@"Restore user interface for picture in picture stop" onState:@"Showing extras video picture in picture on extras content" withBlock:v459];
+  [stateMachine43 registerHandlerForEvent:@"Restore user interface for picture in picture stop" onState:@"Showing extras video picture in picture on extras content" withBlock:v459];
 
   v141 = objc_loadWeakRetained(&v618);
-  v142 = [v141 stateMachine];
+  stateMachine44 = [v141 stateMachine];
   v457[0] = MEMORY[0x1E69E9820];
   v457[1] = 3221225472;
   v457[2] = __51__VUIPlaybackManager__registerStateMachineHandlers__block_invoke_1161;
   v457[3] = &unk_1E872FAD8;
   objc_copyWeak(&v458, &v618);
-  [v142 registerHandlerForEvent:@"Restore user interface for picture in picture stop" onState:@"Showing extras video picture in picture outside extras content" withBlock:v457];
+  [stateMachine44 registerHandlerForEvent:@"Restore user interface for picture in picture stop" onState:@"Showing extras video picture in picture outside extras content" withBlock:v457];
 
   v143 = objc_loadWeakRetained(&v618);
-  v144 = [v143 stateMachine];
+  stateMachine45 = [v143 stateMachine];
   v635[0] = @"Showing main video picture in picture";
   v635[1] = @"Showing multiview playback in PIP";
   v145 = [MEMORY[0x1E695DEC8] arrayWithObjects:v635 count:2];
@@ -996,10 +996,10 @@ void __36__VUIPlaybackManager_sharedInstance__block_invoke()
   objc_copyWeak(&v456, &v618);
   v146 = v131;
   v455 = v146;
-  [v144 registerHandlerForEvent:@"Did stop picture in picture" onStates:v145 withBlock:v454];
+  [stateMachine45 registerHandlerForEvent:@"Did stop picture in picture" onStates:v145 withBlock:v454];
 
   v147 = objc_loadWeakRetained(&v618);
-  v148 = [v147 stateMachine];
+  stateMachine46 = [v147 stateMachine];
   v634[0] = @"Showing extras video picture in picture on extras content";
   v634[1] = @"Showing extras video picture in picture outside extras content";
   v149 = [MEMORY[0x1E695DEC8] arrayWithObjects:v634 count:2];
@@ -1008,10 +1008,10 @@ void __36__VUIPlaybackManager_sharedInstance__block_invoke()
   v452[2] = __51__VUIPlaybackManager__registerStateMachineHandlers__block_invoke_2_1166;
   v452[3] = &unk_1E872FAD8;
   objc_copyWeak(&v453, &v618);
-  [v148 registerHandlerForEvent:@"Did stop picture in picture" onStates:v149 withBlock:v452];
+  [stateMachine46 registerHandlerForEvent:@"Did stop picture in picture" onStates:v149 withBlock:v452];
 
   v150 = objc_loadWeakRetained(&v618);
-  v151 = [v150 stateMachine];
+  stateMachine47 = [v150 stateMachine];
   v449[0] = MEMORY[0x1E69E9820];
   v449[1] = 3221225472;
   v449[2] = __51__VUIPlaybackManager__registerStateMachineHandlers__block_invoke_1168;
@@ -1019,10 +1019,10 @@ void __36__VUIPlaybackManager_sharedInstance__block_invoke()
   objc_copyWeak(&v451, &v618);
   v152 = v302;
   v450 = v152;
-  [v151 registerHandlerForEvent:@"Did stop picture in picture" onState:@"Showing video full screen" withBlock:v449];
+  [stateMachine47 registerHandlerForEvent:@"Did stop picture in picture" onState:@"Showing video full screen" withBlock:v449];
 
   v153 = objc_loadWeakRetained(&v618);
-  v154 = [v153 stateMachine];
+  stateMachine48 = [v153 stateMachine];
   v445[0] = MEMORY[0x1E69E9820];
   v445[1] = 3221225472;
   v445[2] = __51__VUIPlaybackManager__registerStateMachineHandlers__block_invoke_1169;
@@ -1032,24 +1032,24 @@ void __36__VUIPlaybackManager_sharedInstance__block_invoke()
   v446 = v155;
   v156 = v304;
   v447 = v156;
-  [v154 registerDefaultHandlerForEvent:@"Playback state did change" withBlock:v445];
+  [stateMachine48 registerDefaultHandlerForEvent:@"Playback state did change" withBlock:v445];
 
   v157 = objc_loadWeakRetained(&v618);
-  v158 = [v157 stateMachine];
+  stateMachine49 = [v157 stateMachine];
   v443[0] = MEMORY[0x1E69E9820];
   v443[1] = 3221225472;
   v443[2] = __51__VUIPlaybackManager__registerStateMachineHandlers__block_invoke_3_1171;
   v443[3] = &unk_1E8730120;
   v159 = v117;
   v444 = v159;
-  [v158 registerHandlerForEvent:@"Playback state did change" onState:@"Waiting for playback to start to return to fullscreen" withBlock:v443];
+  [stateMachine49 registerHandlerForEvent:@"Playback state did change" onState:@"Waiting for playback to start to return to fullscreen" withBlock:v443];
 
   v160 = objc_loadWeakRetained(&v618);
-  v161 = [v160 stateMachine];
-  [v161 registerHandlerForEvent:@"Playback state did change" onState:@"Showing video full screen with post play content on screen" withBlock:&__block_literal_global_1175];
+  stateMachine50 = [v160 stateMachine];
+  [stateMachine50 registerHandlerForEvent:@"Playback state did change" onState:@"Showing video full screen with post play content on screen" withBlock:&__block_literal_global_1175];
 
   v162 = objc_loadWeakRetained(&v618);
-  v163 = [v162 stateMachine];
+  stateMachine51 = [v162 stateMachine];
   v633[0] = @"Showing video full screen";
   v633[1] = @"Showing long loading dialog";
   v633[2] = @"Showing playback in assistive access";
@@ -1067,37 +1067,37 @@ void __36__VUIPlaybackManager_sharedInstance__block_invoke()
   v440 = v317;
   v167 = v156;
   v441 = v167;
-  [v163 registerHandlerForEvent:@"Playback state did change" onStates:v164 withBlock:v437];
+  [stateMachine51 registerHandlerForEvent:@"Playback state did change" onStates:v164 withBlock:v437];
 
   v168 = objc_loadWeakRetained(&v618);
-  v169 = [v168 stateMachine];
-  [v169 registerHandlerForEvent:@"Playback state did change" onState:@"Waiting for Extras AVPlayerViewController presentation to complete" withBlock:&__block_literal_global_1181];
+  stateMachine52 = [v168 stateMachine];
+  [stateMachine52 registerHandlerForEvent:@"Playback state did change" onState:@"Waiting for Extras AVPlayerViewController presentation to complete" withBlock:&__block_literal_global_1181];
 
   v170 = objc_loadWeakRetained(&v618);
-  v171 = [v170 stateMachine];
+  stateMachine53 = [v170 stateMachine];
   v435[0] = MEMORY[0x1E69E9820];
   v435[1] = 3221225472;
   v435[2] = __51__VUIPlaybackManager__registerStateMachineHandlers__block_invoke_3_1182;
   v435[3] = &unk_1E872FAD8;
   objc_copyWeak(&v436, &v618);
-  [v171 registerHandlerForEvent:@"Playback state did change" onState:@"Showing extras video picture in picture on extras content" withBlock:v435];
+  [stateMachine53 registerHandlerForEvent:@"Playback state did change" onState:@"Showing extras video picture in picture on extras content" withBlock:v435];
 
   v172 = objc_loadWeakRetained(&v618);
-  v173 = [v172 stateMachine];
-  [v173 registerHandlerForEvent:@"Playback state did change" onState:@"Showing Extras content" withBlock:&__block_literal_global_1186];
+  stateMachine54 = [v172 stateMachine];
+  [stateMachine54 registerHandlerForEvent:@"Playback state did change" onState:@"Showing Extras content" withBlock:&__block_literal_global_1186];
 
   v174 = objc_loadWeakRetained(&v618);
-  v175 = [v174 stateMachine];
+  stateMachine55 = [v174 stateMachine];
   v632[0] = @"Waiting for AVPlayerViewController presentation to complete";
   v632[1] = @"Waiting for AVPlayerViewController presentation to complete to dismiss";
   v632[2] = @"Waiting for Extras AVPlayerViewController presentation to complete";
   v632[3] = @"Showing error message on playback UI";
   v632[4] = @"Showing error message without playback UI";
   v176 = [MEMORY[0x1E695DEC8] arrayWithObjects:v632 count:5];
-  [v175 registerHandlerForEvent:@"Playback state did change" onStates:v176 withBlock:&__block_literal_global_1189];
+  [stateMachine55 registerHandlerForEvent:@"Playback state did change" onStates:v176 withBlock:&__block_literal_global_1189];
 
   v177 = objc_loadWeakRetained(&v618);
-  v178 = [v177 stateMachine];
+  stateMachine56 = [v177 stateMachine];
   v431[0] = MEMORY[0x1E69E9820];
   v431[1] = 3221225472;
   v431[2] = __51__VUIPlaybackManager__registerStateMachineHandlers__block_invoke_7_1190;
@@ -1107,20 +1107,20 @@ void __36__VUIPlaybackManager_sharedInstance__block_invoke()
   v432 = v179;
   v311 = v167;
   v433 = v311;
-  [v178 registerHandlerForEvent:@"Playback state did change" onState:@"Showing error message without playback UI" withBlock:v431];
+  [stateMachine56 registerHandlerForEvent:@"Playback state did change" onState:@"Showing error message without playback UI" withBlock:v431];
 
   v180 = objc_loadWeakRetained(&v618);
-  v181 = [v180 stateMachine];
+  stateMachine57 = [v180 stateMachine];
   v428[0] = MEMORY[0x1E69E9820];
   v428[1] = 3221225472;
   v428[2] = __51__VUIPlaybackManager__registerStateMachineHandlers__block_invoke_9_1192;
   v428[3] = &unk_1E872FAB0;
   objc_copyWeak(&v430, &v618);
   v429 = &__block_literal_global_1013;
-  [v181 registerHandlerForEvent:@"Playback state did change" onState:@"Showing multiview playback" withBlock:v428];
+  [stateMachine57 registerHandlerForEvent:@"Playback state did change" onState:@"Showing multiview playback" withBlock:v428];
 
   v182 = objc_loadWeakRetained(&v618);
-  v183 = [v182 stateMachine];
+  stateMachine58 = [v182 stateMachine];
   v425[0] = MEMORY[0x1E69E9820];
   v425[1] = 3221225472;
   v425[2] = __51__VUIPlaybackManager__registerStateMachineHandlers__block_invoke_10_1193;
@@ -1128,10 +1128,10 @@ void __36__VUIPlaybackManager_sharedInstance__block_invoke()
   objc_copyWeak(&v427, &v618);
   v309 = v300;
   v426 = v309;
-  [v183 registerHandlerForEvent:@"Extras button pressed" onState:@"Showing video full screen" withBlock:v425];
+  [stateMachine58 registerHandlerForEvent:@"Extras button pressed" onState:@"Showing video full screen" withBlock:v425];
 
   v184 = objc_loadWeakRetained(&v618);
-  v185 = [v184 stateMachine];
+  stateMachine59 = [v184 stateMachine];
   v631[0] = @"Showing Extras content";
   v631[1] = @"Showing extras video picture in picture on extras content";
   v186 = [MEMORY[0x1E695DEC8] arrayWithObjects:v631 count:2];
@@ -1140,19 +1140,19 @@ void __36__VUIPlaybackManager_sharedInstance__block_invoke()
   v423[2] = __51__VUIPlaybackManager__registerStateMachineHandlers__block_invoke_1194;
   v423[3] = &unk_1E872FAD8;
   objc_copyWeak(&v424, &v618);
-  [v185 registerHandlerForEvent:@"Extras menu item selected" onStates:v186 withBlock:v423];
+  [stateMachine59 registerHandlerForEvent:@"Extras menu item selected" onStates:v186 withBlock:v423];
 
   v187 = objc_loadWeakRetained(&v618);
-  v188 = [v187 stateMachine];
+  stateMachine60 = [v187 stateMachine];
   v421[0] = MEMORY[0x1E69E9820];
   v421[1] = 3221225472;
   v421[2] = __51__VUIPlaybackManager__registerStateMachineHandlers__block_invoke_3_1196;
   v421[3] = &unk_1E872FAD8;
   objc_copyWeak(&v422, &v618);
-  [v188 registerHandlerForEvent:@"Extras visibility needs update" onState:@"Showing video full screen" withBlock:v421];
+  [stateMachine60 registerHandlerForEvent:@"Extras visibility needs update" onState:@"Showing video full screen" withBlock:v421];
 
   v189 = objc_loadWeakRetained(&v618);
-  v190 = [v189 stateMachine];
+  stateMachine61 = [v189 stateMachine];
   v418[0] = MEMORY[0x1E69E9820];
   v418[1] = 3221225472;
   v418[2] = __51__VUIPlaybackManager__registerStateMachineHandlers__block_invoke_1197;
@@ -1160,29 +1160,29 @@ void __36__VUIPlaybackManager_sharedInstance__block_invoke()
   objc_copyWeak(&v420, &v618);
   v191 = v323;
   v419 = v191;
-  [v190 registerHandlerForEvent:@"Extras visibility needs update" onState:@"Showing Extras content" withBlock:v418];
+  [stateMachine61 registerHandlerForEvent:@"Extras visibility needs update" onState:@"Showing Extras content" withBlock:v418];
 
   v192 = objc_loadWeakRetained(&v618);
-  v193 = [v192 stateMachine];
+  stateMachine62 = [v192 stateMachine];
   v416[0] = MEMORY[0x1E69E9820];
   v416[1] = 3221225472;
   v416[2] = __51__VUIPlaybackManager__registerStateMachineHandlers__block_invoke_1198;
   v416[3] = &unk_1E8730120;
   v331 = v330;
   v417 = v331;
-  [v193 registerHandlerForEvent:@"Extras visibility needs update" onState:@"Showing extras video picture in picture on extras content" withBlock:v416];
+  [stateMachine62 registerHandlerForEvent:@"Extras visibility needs update" onState:@"Showing extras video picture in picture on extras content" withBlock:v416];
 
   v194 = objc_loadWeakRetained(&v618);
-  v195 = [v194 stateMachine];
+  stateMachine63 = [v194 stateMachine];
   v414[0] = MEMORY[0x1E69E9820];
   v414[1] = 3221225472;
   v414[2] = __51__VUIPlaybackManager__registerStateMachineHandlers__block_invoke_1199;
   v414[3] = &unk_1E872FAD8;
   objc_copyWeak(&v415, &v618);
-  [v195 registerDefaultHandlerForEvent:@"Extras failure did occur" withBlock:v414];
+  [stateMachine63 registerDefaultHandlerForEvent:@"Extras failure did occur" withBlock:v414];
 
   v196 = objc_loadWeakRetained(&v618);
-  v197 = [v196 stateMachine];
+  stateMachine64 = [v196 stateMachine];
   v411[0] = MEMORY[0x1E69E9820];
   v411[1] = 3221225472;
   v411[2] = __51__VUIPlaybackManager__registerStateMachineHandlers__block_invoke_3_1201;
@@ -1190,20 +1190,20 @@ void __36__VUIPlaybackManager_sharedInstance__block_invoke()
   v198 = v191;
   v412 = v198;
   objc_copyWeak(&v413, &v618);
-  [v197 registerHandlerForEvent:@"Extras failure did occur" onState:@"Showing Extras content" withBlock:v411];
+  [stateMachine64 registerHandlerForEvent:@"Extras failure did occur" onState:@"Showing Extras content" withBlock:v411];
 
   v199 = objc_loadWeakRetained(&v618);
-  v200 = [v199 stateMachine];
+  stateMachine65 = [v199 stateMachine];
   v409[0] = MEMORY[0x1E69E9820];
   v409[1] = 3221225472;
   v409[2] = __51__VUIPlaybackManager__registerStateMachineHandlers__block_invoke_5_1203;
   v409[3] = &unk_1E8730120;
   v201 = v198;
   v410 = v201;
-  [v200 registerHandlerForEvent:@"Back button pressed" onState:@"Showing Extras content" withBlock:v409];
+  [stateMachine65 registerHandlerForEvent:@"Back button pressed" onState:@"Showing Extras content" withBlock:v409];
 
   v202 = objc_loadWeakRetained(&v618);
-  v203 = [v202 stateMachine];
+  stateMachine66 = [v202 stateMachine];
   v405[0] = MEMORY[0x1E69E9820];
   v405[1] = 3221225472;
   v405[2] = __51__VUIPlaybackManager__registerStateMachineHandlers__block_invoke_6_1204;
@@ -1213,10 +1213,10 @@ void __36__VUIPlaybackManager_sharedInstance__block_invoke()
   v406 = v324;
   v204 = v201;
   v407 = v204;
-  [v203 registerHandlerForEvent:@"Back button pressed" onState:@"Showing extras video picture in picture on extras content" withBlock:v405];
+  [stateMachine66 registerHandlerForEvent:@"Back button pressed" onState:@"Showing extras video picture in picture on extras content" withBlock:v405];
 
   v205 = objc_loadWeakRetained(&v618);
-  v206 = [v205 stateMachine];
+  stateMachine67 = [v205 stateMachine];
   v401[0] = MEMORY[0x1E69E9820];
   v401[1] = 3221225472;
   v401[2] = __51__VUIPlaybackManager__registerStateMachineHandlers__block_invoke_7_1205;
@@ -1226,10 +1226,10 @@ void __36__VUIPlaybackManager_sharedInstance__block_invoke()
   v402 = v307;
   v207 = v298;
   v403 = v207;
-  [v206 registerHandlerForEvent:@"Extras playback requested" onState:@"Showing Extras content" withBlock:v401];
+  [stateMachine67 registerHandlerForEvent:@"Extras playback requested" onState:@"Showing Extras content" withBlock:v401];
 
   v208 = objc_loadWeakRetained(&v618);
-  v209 = [v208 stateMachine];
+  stateMachine68 = [v208 stateMachine];
   v398[0] = MEMORY[0x1E69E9820];
   v398[1] = 3221225472;
   v398[2] = __51__VUIPlaybackManager__registerStateMachineHandlers__block_invoke_9_1213;
@@ -1237,10 +1237,10 @@ void __36__VUIPlaybackManager_sharedInstance__block_invoke()
   objc_copyWeak(&v400, &v618);
   v303 = v207;
   v399 = v303;
-  [v209 registerHandlerForEvent:@"Extras playback requested" onState:@"Showing extras video picture in picture on extras content" withBlock:v398];
+  [stateMachine68 registerHandlerForEvent:@"Extras playback requested" onState:@"Showing extras video picture in picture on extras content" withBlock:v398];
 
   v210 = objc_loadWeakRetained(&v618);
-  v211 = [v210 stateMachine];
+  stateMachine69 = [v210 stateMachine];
   v630[0] = @"Waiting for AVPlayerViewController presentation to complete";
   v630[1] = @"Waiting for AVPlayerViewController presentation to complete to dismiss";
   v630[2] = @"Waiting for Extras AVPlayerViewController presentation to complete";
@@ -1251,10 +1251,10 @@ void __36__VUIPlaybackManager_sharedInstance__block_invoke()
   v396[2] = __51__VUIPlaybackManager__registerStateMachineHandlers__block_invoke_2_1216;
   v396[3] = &unk_1E872FAD8;
   objc_copyWeak(&v397, &v618);
-  [v211 registerHandlerForEvent:@"Error did occur" onStates:v212 withBlock:v396];
+  [stateMachine69 registerHandlerForEvent:@"Error did occur" onStates:v212 withBlock:v396];
 
   v213 = objc_loadWeakRetained(&v618);
-  v214 = [v213 stateMachine];
+  stateMachine70 = [v213 stateMachine];
   v629[0] = @"Showing video full screen";
   v629[1] = @"Showing video full screen with post play content on screen";
   v629[2] = @"Showing main video picture in picture";
@@ -1267,10 +1267,10 @@ void __36__VUIPlaybackManager_sharedInstance__block_invoke()
   v216 = v159;
   v394 = v216;
   objc_copyWeak(&v395, &v618);
-  [v214 registerHandlerForEvent:@"Error did occur" onStates:v215 withBlock:v393];
+  [stateMachine70 registerHandlerForEvent:@"Error did occur" onStates:v215 withBlock:v393];
 
   v217 = objc_loadWeakRetained(&v618);
-  v218 = [v217 stateMachine];
+  stateMachine71 = [v217 stateMachine];
   v628[0] = @"Showing error message on playback UI";
   v628[1] = @"Showing error message without playback UI";
   v219 = [MEMORY[0x1E695DEC8] arrayWithObjects:v628 count:2];
@@ -1284,32 +1284,32 @@ void __36__VUIPlaybackManager_sharedInstance__block_invoke()
   v220 = v179;
   v390 = v220;
   v391 = &__block_literal_global_959;
-  [v218 registerHandlerForEvent:@"Error alert dismissed" onStates:v219 withBlock:v388];
+  [stateMachine71 registerHandlerForEvent:@"Error alert dismissed" onStates:v219 withBlock:v388];
 
   v221 = objc_loadWeakRetained(&v618);
-  v222 = [v221 stateMachine];
-  [v222 registerHandlerForEvent:@"Download again button pressed" onState:@"Showing error message on playback UI" withBlock:&__block_literal_global_1368];
+  stateMachine72 = [v221 stateMachine];
+  [stateMachine72 registerHandlerForEvent:@"Download again button pressed" onState:@"Showing error message on playback UI" withBlock:&__block_literal_global_1368];
 
   v223 = objc_loadWeakRetained(&v618);
-  v224 = [v223 stateMachine];
+  stateMachine73 = [v223 stateMachine];
   v386[0] = MEMORY[0x1E69E9820];
   v386[1] = 3221225472;
   v386[2] = __51__VUIPlaybackManager__registerStateMachineHandlers__block_invoke_5_1370;
   v386[3] = &unk_1E872FAD8;
   objc_copyWeak(&v387, &v618);
-  [v224 registerHandlerForEvent:@"Force streaming video button pressed" onState:@"Showing error message on playback UI" withBlock:v386];
+  [stateMachine73 registerHandlerForEvent:@"Force streaming video button pressed" onState:@"Showing error message on playback UI" withBlock:v386];
 
   v225 = objc_loadWeakRetained(&v618);
-  v226 = [v225 stateMachine];
+  stateMachine74 = [v225 stateMachine];
   v384[0] = MEMORY[0x1E69E9820];
   v384[1] = 3221225472;
   v384[2] = __51__VUIPlaybackManager__registerStateMachineHandlers__block_invoke_6_1371;
   v384[3] = &unk_1E872FAD8;
   objc_copyWeak(&v385, &v618);
-  [v226 registerHandlerForEvent:@"Play using cellular data button pressed" onState:@"Showing error message on playback UI" withBlock:v384];
+  [stateMachine74 registerHandlerForEvent:@"Play using cellular data button pressed" onState:@"Showing error message on playback UI" withBlock:v384];
 
   v227 = objc_loadWeakRetained(&v618);
-  v228 = [v227 stateMachine];
+  stateMachine75 = [v227 stateMachine];
   v627[0] = @"Showing multiview playback";
   v627[1] = @"Showing multiview playback in PIP";
   v229 = [MEMORY[0x1E695DEC8] arrayWithObjects:v627 count:2];
@@ -1320,10 +1320,10 @@ void __36__VUIPlaybackManager_sharedInstance__block_invoke()
   v321 = v320;
   v382 = v321;
   objc_copyWeak(&v383, &v618);
-  [v228 registerHandlerForEvent:@"Application did enter background" onStates:v229 withBlock:v381];
+  [stateMachine75 registerHandlerForEvent:@"Application did enter background" onStates:v229 withBlock:v381];
 
   v230 = objc_loadWeakRetained(&v618);
-  v231 = [v230 stateMachine];
+  stateMachine76 = [v230 stateMachine];
   v626[0] = @"Showing video full screen";
   v626[1] = @"Showing long loading dialog";
   v232 = [MEMORY[0x1E695DEC8] arrayWithObjects:v626 count:2];
@@ -1332,19 +1332,19 @@ void __36__VUIPlaybackManager_sharedInstance__block_invoke()
   v379[2] = __51__VUIPlaybackManager__registerStateMachineHandlers__block_invoke_9_1374;
   v379[3] = &unk_1E872FAD8;
   objc_copyWeak(&v380, &v618);
-  [v231 registerHandlerForEvent:@"Application did enter background" onStates:v232 withBlock:v379];
+  [stateMachine76 registerHandlerForEvent:@"Application did enter background" onStates:v232 withBlock:v379];
 
   v233 = objc_loadWeakRetained(&v618);
-  v234 = [v233 stateMachine];
+  stateMachine77 = [v233 stateMachine];
   v377[0] = MEMORY[0x1E69E9820];
   v377[1] = 3221225472;
   v377[2] = __51__VUIPlaybackManager__registerStateMachineHandlers__block_invoke_10_1375;
   v377[3] = &unk_1E872FAD8;
   objc_copyWeak(&v378, &v618);
-  [v234 registerDefaultHandlerForEvent:@"Application did enter background" withBlock:v377];
+  [stateMachine77 registerDefaultHandlerForEvent:@"Application did enter background" withBlock:v377];
 
   v235 = objc_loadWeakRetained(&v618);
-  v236 = [v235 stateMachine];
+  stateMachine78 = [v235 stateMachine];
   v625[0] = @"Showing video full screen";
   v625[1] = @"Showing extras video full screen outside extras content";
   v625[2] = @"Showing video full screen with post play content on screen";
@@ -1356,10 +1356,10 @@ void __36__VUIPlaybackManager_sharedInstance__block_invoke()
   objc_copyWeak(&v376, &v618);
   v238 = v317;
   v375 = v238;
-  [v236 registerHandlerForEvent:@"Application will enter foreground" onStates:v237 withBlock:v374];
+  [stateMachine78 registerHandlerForEvent:@"Application will enter foreground" onStates:v237 withBlock:v374];
 
   v239 = objc_loadWeakRetained(&v618);
-  v240 = [v239 stateMachine];
+  stateMachine79 = [v239 stateMachine];
   v624[0] = @"Showing multiview playback";
   v624[1] = @"Showing multiview playback in PIP";
   v241 = [MEMORY[0x1E695DEC8] arrayWithObjects:v624 count:2];
@@ -1370,28 +1370,28 @@ void __36__VUIPlaybackManager_sharedInstance__block_invoke()
   v328 = v327;
   v372 = v328;
   objc_copyWeak(&v373, &v618);
-  [v240 registerHandlerForEvent:@"Application will enter foreground" onStates:v241 withBlock:v371];
+  [stateMachine79 registerHandlerForEvent:@"Application will enter foreground" onStates:v241 withBlock:v371];
 
   v242 = objc_loadWeakRetained(&v618);
-  v243 = [v242 stateMachine];
+  stateMachine80 = [v242 stateMachine];
   v369[0] = MEMORY[0x1E69E9820];
   v369[1] = 3221225472;
   v369[2] = __51__VUIPlaybackManager__registerStateMachineHandlers__block_invoke_3_1379;
   v369[3] = &unk_1E872FAD8;
   objc_copyWeak(&v370, &v618);
-  [v243 registerDefaultHandlerForEvent:@"Application will enter foreground" withBlock:v369];
+  [stateMachine80 registerDefaultHandlerForEvent:@"Application will enter foreground" withBlock:v369];
 
   v244 = objc_loadWeakRetained(&v618);
-  v245 = [v244 stateMachine];
+  stateMachine81 = [v244 stateMachine];
   v367[0] = MEMORY[0x1E69E9820];
   v367[1] = 3221225472;
   v367[2] = __51__VUIPlaybackManager__registerStateMachineHandlers__block_invoke_5_1381;
   v367[3] = &unk_1E872FAD8;
   objc_copyWeak(&v368, &v618);
-  [v245 registerHandlerForEvent:@"Application will resign active" onState:@"Showing Extras content" withBlock:v367];
+  [stateMachine81 registerHandlerForEvent:@"Application will resign active" onState:@"Showing Extras content" withBlock:v367];
 
   v246 = objc_loadWeakRetained(&v618);
-  v247 = [v246 stateMachine];
+  stateMachine82 = [v246 stateMachine];
   v364[0] = MEMORY[0x1E69E9820];
   v364[1] = 3221225472;
   v364[2] = __51__VUIPlaybackManager__registerStateMachineHandlers__block_invoke_6_1382;
@@ -1399,19 +1399,19 @@ void __36__VUIPlaybackManager_sharedInstance__block_invoke()
   objc_copyWeak(&v366, &v618);
   v318 = v204;
   v365 = v318;
-  [v247 registerHandlerForEvent:@"Application did become active" onState:@"Showing Extras content" withBlock:v364];
+  [stateMachine82 registerHandlerForEvent:@"Application did become active" onState:@"Showing Extras content" withBlock:v364];
 
   v248 = objc_loadWeakRetained(&v618);
-  v249 = [v248 stateMachine];
+  stateMachine83 = [v248 stateMachine];
   v362[0] = MEMORY[0x1E69E9820];
   v362[1] = 3221225472;
   v362[2] = __51__VUIPlaybackManager__registerStateMachineHandlers__block_invoke_7_1383;
   v362[3] = &unk_1E872FAD8;
   objc_copyWeak(&v363, &v618);
-  [v249 registerHandlerForEvent:@"External playback type did change" onState:@"Showing multiview playback" withBlock:v362];
+  [stateMachine83 registerHandlerForEvent:@"External playback type did change" onState:@"Showing multiview playback" withBlock:v362];
 
   v250 = objc_loadWeakRetained(&v618);
-  v251 = [v250 stateMachine];
+  stateMachine84 = [v250 stateMachine];
   v623[0] = @"Showing video full screen";
   v623[1] = @"Showing main video picture in picture";
   v252 = [MEMORY[0x1E695DEC8] arrayWithObjects:v623 count:2];
@@ -1422,10 +1422,10 @@ void __36__VUIPlaybackManager_sharedInstance__block_invoke()
   objc_copyWeak(&v361, &v618);
   v301 = v293;
   v360 = v301;
-  [v251 registerHandlerForEvent:@"Post play configuration time reached" onStates:v252 withBlock:v359];
+  [stateMachine84 registerHandlerForEvent:@"Post play configuration time reached" onStates:v252 withBlock:v359];
 
   v253 = objc_loadWeakRetained(&v618);
-  v254 = [v253 stateMachine];
+  stateMachine85 = [v253 stateMachine];
   v356[0] = MEMORY[0x1E69E9820];
   v356[1] = 3221225472;
   v356[2] = __51__VUIPlaybackManager__registerStateMachineHandlers__block_invoke_2_1385;
@@ -1433,10 +1433,10 @@ void __36__VUIPlaybackManager_sharedInstance__block_invoke()
   objc_copyWeak(&v358, &v618);
   v255 = v238;
   v357 = v255;
-  [v254 registerHandlerForEvent:@"Post play has been configured" onState:@"Showing video full screen" withBlock:v356];
+  [stateMachine85 registerHandlerForEvent:@"Post play has been configured" onState:@"Showing video full screen" withBlock:v356];
 
   v256 = objc_loadWeakRetained(&v618);
-  v257 = [v256 stateMachine];
+  stateMachine86 = [v256 stateMachine];
   v353[0] = MEMORY[0x1E69E9820];
   v353[1] = 3221225472;
   v353[2] = __51__VUIPlaybackManager__registerStateMachineHandlers__block_invoke_3_1386;
@@ -1444,10 +1444,10 @@ void __36__VUIPlaybackManager_sharedInstance__block_invoke()
   objc_copyWeak(&v355, &v618);
   v299 = v255;
   v354 = v299;
-  [v257 registerHandlerForEvent:@"Post play time boundary crossed" onState:@"Showing video full screen" withBlock:v353];
+  [stateMachine86 registerHandlerForEvent:@"Post play time boundary crossed" onState:@"Showing video full screen" withBlock:v353];
 
   v258 = objc_loadWeakRetained(&v618);
-  v259 = [v258 stateMachine];
+  stateMachine87 = [v258 stateMachine];
   v350[0] = MEMORY[0x1E69E9820];
   v350[1] = 3221225472;
   v350[2] = __51__VUIPlaybackManager__registerStateMachineHandlers__block_invoke_4_1387;
@@ -1455,10 +1455,10 @@ void __36__VUIPlaybackManager_sharedInstance__block_invoke()
   v260 = v216;
   v351 = v260;
   objc_copyWeak(&v352, &v618);
-  [v259 registerHandlerForEvent:@"Post play cancelled" onState:@"Showing video full screen with post play content on screen" withBlock:v350];
+  [stateMachine87 registerHandlerForEvent:@"Post play cancelled" onState:@"Showing video full screen with post play content on screen" withBlock:v350];
 
   v261 = objc_loadWeakRetained(&v618);
-  v262 = [v261 stateMachine];
+  stateMachine88 = [v261 stateMachine];
   v622[0] = @"Post play item selected";
   v622[1] = @"Post play auto play timer did complete";
   v263 = [MEMORY[0x1E695DEC8] arrayWithObjects:v622 count:2];
@@ -1473,10 +1473,10 @@ void __36__VUIPlaybackManager_sharedInstance__block_invoke()
   objc_copyWeak(&v349, &v618);
   v265 = v220;
   v348 = v265;
-  [v262 registerHandlerForEvents:v263 onStates:v264 withBlock:v346];
+  [stateMachine88 registerHandlerForEvents:v263 onStates:v264 withBlock:v346];
 
   v266 = objc_loadWeakRetained(&v618);
-  v267 = [v266 stateMachine];
+  stateMachine89 = [v266 stateMachine];
   v343[0] = MEMORY[0x1E69E9820];
   v343[1] = 3221225472;
   v343[2] = __51__VUIPlaybackManager__registerStateMachineHandlers__block_invoke_2_1393;
@@ -1484,10 +1484,10 @@ void __36__VUIPlaybackManager_sharedInstance__block_invoke()
   objc_copyWeak(&v345, &v618);
   v268 = v265;
   v344 = v268;
-  [v267 registerHandlerForEvent:@"Post play hide playback" onState:@"Showing video full screen with post play content on screen" withBlock:v343];
+  [stateMachine89 registerHandlerForEvent:@"Post play hide playback" onState:@"Showing video full screen with post play content on screen" withBlock:v343];
 
   v269 = objc_loadWeakRetained(&v618);
-  v270 = [v269 stateMachine];
+  stateMachine90 = [v269 stateMachine];
   v620[0] = @"Showing video full screen with post play content on screen";
   v620[1] = @"Showing post play content without playback UI";
   v271 = [MEMORY[0x1E695DEC8] arrayWithObjects:v620 count:2];
@@ -1497,23 +1497,23 @@ void __36__VUIPlaybackManager_sharedInstance__block_invoke()
   v341[3] = &unk_1E8730120;
   v272 = v268;
   v342 = v272;
-  [v270 registerHandlerForEvent:@"Playback container did disappear" onStates:v271 withBlock:v341];
+  [stateMachine90 registerHandlerForEvent:@"Playback container did disappear" onStates:v271 withBlock:v341];
 
   v273 = objc_loadWeakRetained(&v618);
-  v274 = [v273 stateMachine];
-  [v274 registerHandlerForEvent:@"Background media enter picture in picture" onState:@"Not showing anything" withBlock:&__block_literal_global_1398];
+  stateMachine91 = [v273 stateMachine];
+  [stateMachine91 registerHandlerForEvent:@"Background media enter picture in picture" onState:@"Not showing anything" withBlock:&__block_literal_global_1398];
 
   v275 = objc_loadWeakRetained(&v618);
-  v276 = [v275 stateMachine];
+  stateMachine92 = [v275 stateMachine];
   v339[0] = MEMORY[0x1E69E9820];
   v339[1] = 3221225472;
   v339[2] = __51__VUIPlaybackManager__registerStateMachineHandlers__block_invoke_2_1399;
   v339[3] = &unk_1E872FAD8;
   objc_copyWeak(&v340, &v618);
-  [v276 registerHandlerForEvent:@"Background media picture in picture did end" onState:@"Playing background media in picture and picture" withBlock:v339];
+  [stateMachine92 registerHandlerForEvent:@"Background media picture in picture did end" onState:@"Playing background media in picture and picture" withBlock:v339];
 
   v277 = objc_loadWeakRetained(&v618);
-  v278 = [v277 stateMachine];
+  stateMachine93 = [v277 stateMachine];
   v619[0] = @"Showing video full screen";
   v619[1] = @"Showing multiview playback fullscreen";
   v279 = [MEMORY[0x1E695DEC8] arrayWithObjects:v619 count:2];
@@ -1524,29 +1524,29 @@ void __36__VUIPlaybackManager_sharedInstance__block_invoke()
   objc_copyWeak(&v338, &v618);
   v295 = v272;
   v337 = v295;
-  [v278 registerHandlerForEvent:@"Transfer player to background media controller" onStates:v279 withBlock:v336];
+  [stateMachine93 registerHandlerForEvent:@"Transfer player to background media controller" onStates:v279 withBlock:v336];
 
   v280 = objc_loadWeakRetained(&v618);
-  v281 = [v280 stateMachine];
-  [v281 registerHandlerForEvent:@"Main player long loading timer did fire" onState:@"Showing video full screen" withBlock:&__block_literal_global_1405];
+  stateMachine94 = [v280 stateMachine];
+  [stateMachine94 registerHandlerForEvent:@"Main player long loading timer did fire" onState:@"Showing video full screen" withBlock:&__block_literal_global_1405];
 
   v282 = objc_loadWeakRetained(&v618);
-  v283 = [v282 stateMachine];
+  stateMachine95 = [v282 stateMachine];
   v334[0] = MEMORY[0x1E69E9820];
   v334[1] = 3221225472;
   v334[2] = __51__VUIPlaybackManager__registerStateMachineHandlers__block_invoke_7_1406;
   v334[3] = &unk_1E872FAD8;
   objc_copyWeak(&v335, &v618);
-  [v283 registerHandlerForEvent:@"Exit playback button pressed" onState:@"Showing long loading dialog" withBlock:v334];
+  [stateMachine95 registerHandlerForEvent:@"Exit playback button pressed" onState:@"Showing long loading dialog" withBlock:v334];
 
   v284 = objc_loadWeakRetained(&v618);
-  v285 = [v284 stateMachine];
+  stateMachine96 = [v284 stateMachine];
   v332[0] = MEMORY[0x1E69E9820];
   v332[1] = 3221225472;
   v332[2] = __51__VUIPlaybackManager__registerStateMachineHandlers__block_invoke_1410;
   v332[3] = &unk_1E872FAD8;
   objc_copyWeak(&v333, &v618);
-  [v285 registerHandlerForEvent:@"Continue watching button pressed" onState:@"Showing long loading dialog" withBlock:v332];
+  [stateMachine96 registerHandlerForEvent:@"Continue watching button pressed" onState:@"Showing long loading dialog" withBlock:v332];
 
   objc_destroyWeak(&v333);
   objc_destroyWeak(&v335);
@@ -1683,48 +1683,48 @@ void __36__VUIPlaybackManager_sharedInstance__block_invoke()
 
 - (BOOL)_shouldShowPerformanceDebugger
 {
-  v2 = [MEMORY[0x1E69DF6E0] sharedInstance];
-  if ([v2 performanceDebuggerEnabled])
+  mEMORY[0x1E69DF6E0] = [MEMORY[0x1E69DF6E0] sharedInstance];
+  if ([mEMORY[0x1E69DF6E0] performanceDebuggerEnabled])
   {
-    v3 = 1;
+    performanceDebuggerVerboseEnabled = 1;
   }
 
   else
   {
-    v4 = [MEMORY[0x1E69DF6E0] sharedInstance];
-    v3 = [v4 performanceDebuggerVerboseEnabled];
+    mEMORY[0x1E69DF6E0]2 = [MEMORY[0x1E69DF6E0] sharedInstance];
+    performanceDebuggerVerboseEnabled = [mEMORY[0x1E69DF6E0]2 performanceDebuggerVerboseEnabled];
   }
 
-  return v3;
+  return performanceDebuggerVerboseEnabled;
 }
 
 - (BOOL)_shouldShowTimedMetadataDebugger
 {
-  v2 = [MEMORY[0x1E69DF6E0] sharedInstance];
-  if ([v2 capellaDebuggerEnabled])
+  mEMORY[0x1E69DF6E0] = [MEMORY[0x1E69DF6E0] sharedInstance];
+  if ([mEMORY[0x1E69DF6E0] capellaDebuggerEnabled])
   {
-    v3 = 1;
+    capellaMusicInfoEnabled = 1;
   }
 
   else
   {
-    v4 = [MEMORY[0x1E69DF6E0] sharedInstance];
-    v3 = [v4 capellaMusicInfoEnabled];
+    mEMORY[0x1E69DF6E0]2 = [MEMORY[0x1E69DF6E0] sharedInstance];
+    capellaMusicInfoEnabled = [mEMORY[0x1E69DF6E0]2 capellaMusicInfoEnabled];
   }
 
-  return v3;
+  return capellaMusicInfoEnabled;
 }
 
 - (void)_performEnterForegroundOperations
 {
   v31 = *MEMORY[0x1E69E9840];
-  v3 = [(VUIPlaybackManager *)self datePlaybackWasPaused];
+  datePlaybackWasPaused = [(VUIPlaybackManager *)self datePlaybackWasPaused];
 
-  if (v3)
+  if (datePlaybackWasPaused)
   {
-    v4 = [MEMORY[0x1E695DF00] date];
-    v5 = [(VUIPlaybackManager *)self datePlaybackWasPaused];
-    [v4 timeIntervalSinceDate:v5];
+    date = [MEMORY[0x1E695DF00] date];
+    datePlaybackWasPaused2 = [(VUIPlaybackManager *)self datePlaybackWasPaused];
+    [date timeIntervalSinceDate:datePlaybackWasPaused2];
     v7 = v6;
 
     v8 = sLogObject_5;
@@ -1766,8 +1766,8 @@ LABEL_20:
     }
 
     v12 = [MEMORY[0x1E695DFF0] scheduledTimerWithTimeInterval:self target:sel__handlePausedTooLong_ selector:0 userInfo:0 repeats:900.0];
-    v13 = [(VUIPlaybackManager *)self pausedTooLongTimer];
-    [v13 invalidate];
+    pausedTooLongTimer = [(VUIPlaybackManager *)self pausedTooLongTimer];
+    [pausedTooLongTimer invalidate];
 
     [(VUIPlaybackManager *)self setPausedTooLongTimer:v12];
   }
@@ -1785,13 +1785,13 @@ LABEL_20:
     goto LABEL_18;
   }
 
-  v14 = [(VUIPlaybackManager *)self dateAppWasBackgrounded];
+  dateAppWasBackgrounded = [(VUIPlaybackManager *)self dateAppWasBackgrounded];
 
-  if (v14)
+  if (dateAppWasBackgrounded)
   {
-    v15 = [MEMORY[0x1E695DF00] date];
-    v16 = [(VUIPlaybackManager *)self dateAppWasBackgrounded];
-    [v15 timeIntervalSinceDate:v16];
+    date2 = [MEMORY[0x1E695DF00] date];
+    dateAppWasBackgrounded2 = [(VUIPlaybackManager *)self dateAppWasBackgrounded];
+    [date2 timeIntervalSinceDate:dateAppWasBackgrounded2];
     v18 = v17;
 
     if (v18 <= 60.0)
@@ -1832,9 +1832,9 @@ LABEL_20:
         _os_log_impl(&dword_1E323F000, v20, OS_LOG_TYPE_DEFAULT, "Restarting playback since app has been backgrounded for too long", &v27, 2u);
       }
 
-      v25 = [(VUIPlaybackManager *)self activePlayer];
-      v26 = [MEMORY[0x1E69D5A40] paused];
-      [v25 restartPlaybackWithState:v26];
+      activePlayer = [(VUIPlaybackManager *)self activePlayer];
+      paused = [MEMORY[0x1E69D5A40] paused];
+      [activePlayer restartPlaybackWithState:paused];
     }
   }
 
@@ -1846,9 +1846,9 @@ LABEL_20:
 
 - (BOOL)isFullscreenPlaybackUIBeingShown
 {
-  v2 = [(VUIPlaybackManager *)self stateMachine];
-  v3 = [v2 currentState];
-  v4 = [VUIPlaybackManager _isFullScreenPlaybackState:v3];
+  stateMachine = [(VUIPlaybackManager *)self stateMachine];
+  currentState = [stateMachine currentState];
+  v4 = [VUIPlaybackManager _isFullScreenPlaybackState:currentState];
 
   return v4;
 }
@@ -1956,14 +1956,14 @@ void __26__VUIPlaybackManager_init__block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   v81 = *MEMORY[0x1E69E9840];
-  v60 = a3;
-  v61 = a4;
-  v10 = a5;
-  v59 = v10;
-  if (__PlayerAVPlayerKVOContext_0 == a6)
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  v59 = changeCopy;
+  if (__PlayerAVPlayerKVOContext_0 == context)
   {
     val = [(VUIPlaybackManager *)self activePlayer];
     v11 = sLogObject_5;
@@ -1972,19 +1972,19 @@ void __26__VUIPlaybackManager_init__block_invoke_2(uint64_t a1)
       *buf = 138412546;
       v78 = val;
       v79 = 2112;
-      v80 = v61;
+      v80 = objectCopy;
       _os_log_impl(&dword_1E323F000, v11, OS_LOG_TYPE_DEFAULT, "AVPVC setPlayer late (KVO), activePlayer: %@, object: %@", buf, 0x16u);
     }
 
-    if (val != v61)
+    if (val != objectCopy)
     {
-      v12 = v61;
+      v12 = objectCopy;
       v68 = 0u;
       v69 = 0u;
       v70 = 0u;
       v71 = 0u;
-      v13 = [(VUIPlaybackManager *)self multiviewPlaybackInfo];
-      v14 = [v13 countByEnumeratingWithState:&v68 objects:v76 count:16];
+      multiviewPlaybackInfo = [(VUIPlaybackManager *)self multiviewPlaybackInfo];
+      v14 = [multiviewPlaybackInfo countByEnumeratingWithState:&v68 objects:v76 count:16];
       if (v14)
       {
         v15 = *v69;
@@ -1994,22 +1994,22 @@ void __26__VUIPlaybackManager_init__block_invoke_2(uint64_t a1)
           {
             if (*v69 != v15)
             {
-              objc_enumerationMutation(v13);
+              objc_enumerationMutation(multiviewPlaybackInfo);
             }
 
             v17 = *(*(&v68 + 1) + 8 * i);
-            v18 = [v17 player];
-            v19 = [v18 playlist];
-            v20 = [v12 playlist];
-            v21 = [v19 isEqualToPlaylist:v20];
+            player = [v17 player];
+            playlist = [player playlist];
+            playlist2 = [v12 playlist];
+            v21 = [playlist isEqualToPlaylist:playlist2];
 
             if (v21)
             {
-              v37 = [v17 player];
-              objc_initWeak(buf, v37);
+              player2 = [v17 player];
+              objc_initWeak(buf, player2);
 
-              v38 = [v17 playerViewController];
-              objc_initWeak(&location, v38);
+              playerViewController = [v17 playerViewController];
+              objc_initWeak(&location, playerViewController);
 
               block[0] = MEMORY[0x1E69E9820];
               block[1] = 3221225472;
@@ -2026,7 +2026,7 @@ void __26__VUIPlaybackManager_init__block_invoke_2(uint64_t a1)
             }
           }
 
-          v14 = [v13 countByEnumeratingWithState:&v68 objects:v76 count:16];
+          v14 = [multiviewPlaybackInfo countByEnumeratingWithState:&v68 objects:v76 count:16];
           if (v14)
           {
             continue;
@@ -2041,18 +2041,18 @@ LABEL_38:
       goto LABEL_52;
     }
 
-    v39 = [(VUIPlaybackManager *)self mainPlayer];
-    v40 = v39 == v61;
+    mainPlayer = [(VUIPlaybackManager *)self mainPlayer];
+    v40 = mainPlayer == objectCopy;
 
     if (v40)
     {
-      v57 = [(VUIPlaybackManager *)self mainAVPlayerViewController];
+      mainAVPlayerViewController = [(VUIPlaybackManager *)self mainAVPlayerViewController];
     }
 
     else
     {
-      v41 = [(VUIPlaybackManager *)self extrasPlayer];
-      v42 = v41 == v61;
+      extrasPlayer = [(VUIPlaybackManager *)self extrasPlayer];
+      v42 = extrasPlayer == objectCopy;
 
       if (!v42)
       {
@@ -2076,60 +2076,60 @@ LABEL_52:
         goto LABEL_53;
       }
 
-      v57 = [(VUIPlaybackManager *)self extrasAVPlayerViewController];
+      mainAVPlayerViewController = [(VUIPlaybackManager *)self extrasAVPlayerViewController];
     }
 
-    v12 = v57;
+    v12 = mainAVPlayerViewController;
     goto LABEL_51;
   }
 
-  if (__PlayerInitialMediaItemHasCompletedInitialLoadingKVOContext == a6)
+  if (__PlayerInitialMediaItemHasCompletedInitialLoadingKVOContext == context)
   {
-    v22 = [(VUIPlaybackManager *)self activePlayer];
-    if (v22 == v61)
+    activePlayer = [(VUIPlaybackManager *)self activePlayer];
+    if (activePlayer == objectCopy)
     {
-      v23 = [(VUIPlaybackManager *)self activePlayer];
-      v24 = [v23 initialMediaItemHasCompletedInitialLoading];
+      activePlayer2 = [(VUIPlaybackManager *)self activePlayer];
+      initialMediaItemHasCompletedInitialLoading = [activePlayer2 initialMediaItemHasCompletedInitialLoading];
 
-      if (!v24)
+      if (!initialMediaItemHasCompletedInitialLoading)
       {
         goto LABEL_53;
       }
 
-      v25 = [(VUIPlaybackManager *)self activePlayer];
-      v26 = [v25 currentMediaItem];
-      v22 = [v26 mediaItemMetadataForProperty:*MEMORY[0x1E69D5CA8]];
+      activePlayer3 = [(VUIPlaybackManager *)self activePlayer];
+      currentMediaItem = [activePlayer3 currentMediaItem];
+      activePlayer = [currentMediaItem mediaItemMetadataForProperty:*MEMORY[0x1E69D5CA8]];
 
-      if (v22 && ([v22 complete] & 1) == 0)
+      if (activePlayer && ([activePlayer complete] & 1) == 0)
       {
-        [v22 addEndEventWithName:*MEMORY[0x1E69D6040]];
-        [v22 addSingleShotEventWithName:*MEMORY[0x1E69D6020] value:*MEMORY[0x1E69D6070]];
+        [activePlayer addEndEventWithName:*MEMORY[0x1E69D6040]];
+        [activePlayer addSingleShotEventWithName:*MEMORY[0x1E69D6020] value:*MEMORY[0x1E69D6070]];
       }
 
-      v27 = [(VUIPlaybackManager *)self activePlayer];
-      v28 = [v27 currentMediaItem];
+      activePlayer4 = [(VUIPlaybackManager *)self activePlayer];
+      currentMediaItem2 = [activePlayer4 currentMediaItem];
 
-      if (v28)
+      if (currentMediaItem2)
       {
         [(VUIPlaybackManager *)self _setupFeaturesFromMainPlayersCurrentMediaItem];
       }
 
-      v29 = [(VUIPlaybackManager *)self initialPlaybackStartDate];
+      initialPlaybackStartDate = [(VUIPlaybackManager *)self initialPlaybackStartDate];
 
-      if (!v29)
+      if (!initialPlaybackStartDate)
       {
-        v30 = [MEMORY[0x1E695DF00] date];
-        [(VUIPlaybackManager *)self setInitialPlaybackStartDate:v30];
+        date = [MEMORY[0x1E695DF00] date];
+        [(VUIPlaybackManager *)self setInitialPlaybackStartDate:date];
       }
 
       [(VUIPlaybackManager *)self setAutoPlayedVideosCount:[(VUIPlaybackManager *)self autoPlayedVideosCount]+ 1];
-      v31 = [v28 mediaItemMetadataForProperty:*MEMORY[0x1E69D5C68]];
+      v31 = [currentMediaItem2 mediaItemMetadataForProperty:*MEMORY[0x1E69D5C68]];
       if ([v31 integerValue] == 3)
       {
-        v32 = [(VUIPlaybackManager *)self activePlayer];
-        v33 = [v32 externalPlaybackType];
+        activePlayer5 = [(VUIPlaybackManager *)self activePlayer];
+        externalPlaybackType = [activePlayer5 externalPlaybackType];
 
-        if (v33 == 2)
+        if (externalPlaybackType == 2)
         {
           v34 = +[VUIPlaybackSettings sharedSettings];
           [v34 setPreferAVAdapterCompatibility:1];
@@ -2143,11 +2143,11 @@ LABEL_52:
     goto LABEL_53;
   }
 
-  if (__PlayerAVPlayerViewControllerDisplaySizeKVOContext == a6)
+  if (__PlayerAVPlayerViewControllerDisplaySizeKVOContext == context)
   {
-    v36 = [(VUIPlaybackManager *)self avPlayerViewController];
+    avPlayerViewController = [(VUIPlaybackManager *)self avPlayerViewController];
 
-    if (v36 == v61)
+    if (avPlayerViewController == objectCopy)
     {
       [(VUIPlaybackManager *)self _notifyAVPlayerViewControllerDisplaySize];
       [(VUIPlaybackManager *)self _showOrUpdateAdvisoryViewsIfNeeded];
@@ -2155,17 +2155,17 @@ LABEL_52:
     }
   }
 
-  else if (__PlayerMediaItemDurationKVOContext == a6)
+  else if (__PlayerMediaItemDurationKVOContext == context)
   {
-    v43 = [(VUIPlaybackManager *)self mainPlayer];
+    mainPlayer2 = [(VUIPlaybackManager *)self mainPlayer];
 
-    if (v43 == v61)
+    if (mainPlayer2 == objectCopy)
     {
       [(VUIPlaybackManager *)self _configureStillWatchingFeatureMonitoringIfLivePlayback];
       v44 = +[VUIPlaybackTabManager sharedInstance];
-      v45 = [v44 isPlayerTabsEnabled];
+      isPlayerTabsEnabled = [v44 isPlayerTabsEnabled];
 
-      if (v45)
+      if (isPlayerTabsEnabled)
       {
         objc_initWeak(buf, self);
         v46 = +[VUIPlaybackTabManager sharedInstance];
@@ -2185,45 +2185,45 @@ LABEL_52:
     }
   }
 
-  else if (__PlayerViewControllerFrameKVOContext == a6)
+  else if (__PlayerViewControllerFrameKVOContext == context)
   {
-    v48 = [(VUIPlaybackManager *)self multiPlayerViewController];
-    [v61 frame];
-    v51 = [v48 isSupportedScreenSize:{v49, v50}];
+    multiPlayerViewController = [(VUIPlaybackManager *)self multiPlayerViewController];
+    [objectCopy frame];
+    v51 = [multiPlayerViewController isSupportedScreenSize:{v49, v50}];
 
     if (v51)
     {
-      v52 = [(VUIPlaybackManager *)self avPlayerViewController];
-      v53 = [(VUIPlaybackManager *)self multiPlayerViewController];
-      [v52 setDelegate:v53];
+      avPlayerViewController2 = [(VUIPlaybackManager *)self avPlayerViewController];
+      multiPlayerViewController2 = [(VUIPlaybackManager *)self multiPlayerViewController];
+      [avPlayerViewController2 setDelegate:multiPlayerViewController2];
 
-      v54 = [(VUIPlaybackManager *)self playbackContainerViewController];
-      v55 = [(VUIPlaybackManager *)self multiPlayerViewController];
-      [v54 embedMultiPlayerViewController:v55];
+      playbackContainerViewController = [(VUIPlaybackManager *)self playbackContainerViewController];
+      multiPlayerViewController3 = [(VUIPlaybackManager *)self multiPlayerViewController];
+      [playbackContainerViewController embedMultiPlayerViewController:multiPlayerViewController3];
 
-      v56 = [(VUIPlaybackManager *)self multiPlayerViewController];
-      [v56 exitFullscreenWithCompletion:0];
+      multiPlayerViewController4 = [(VUIPlaybackManager *)self multiPlayerViewController];
+      [multiPlayerViewController4 exitFullscreenWithCompletion:0];
 
-      [v61 removeObserver:self forKeyPath:@"frame" context:__PlayerViewControllerFrameKVOContext];
+      [objectCopy removeObserver:self forKeyPath:@"frame" context:__PlayerViewControllerFrameKVOContext];
       [(VUIPlaybackManager *)self setTrackingPlayerViewFrame:0];
     }
   }
 
-  else if (__PlayerSelectedAudioOptionKVOContext == a6)
+  else if (__PlayerSelectedAudioOptionKVOContext == context)
   {
-    [(VUIPlaybackManager *)self _selectedAudioOptionDidChangeForPlayer:v61];
+    [(VUIPlaybackManager *)self _selectedAudioOptionDidChangeForPlayer:objectCopy];
   }
 
-  else if (__PlayerSelectedSubtitleOptionKVOContext == a6)
+  else if (__PlayerSelectedSubtitleOptionKVOContext == context)
   {
-    [(VUIPlaybackManager *)self _selectedSubtitleOptionDidChangeForPlayer:v61];
+    [(VUIPlaybackManager *)self _selectedSubtitleOptionDidChangeForPlayer:objectCopy];
   }
 
   else
   {
     v62.receiver = self;
     v62.super_class = VUIPlaybackManager;
-    [(VUIPlaybackManager *)&v62 observeValueForKeyPath:v60 ofObject:v61 change:v10 context:a6];
+    [(VUIPlaybackManager *)&v62 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 
 LABEL_53:
@@ -2284,23 +2284,23 @@ void __69__VUIPlaybackManager_observeValueForKeyPath_ofObject_change_context___b
   [v3 _updateMultiviewButtonState];
 }
 
-- (void)presentPlaylist:(id)a3 fromViewController:(id)a4 dismissalOperation:(int64_t)a5 allowsCellular:(BOOL)a6 animated:(BOOL)a7 userInfo:(id)a8 completion:(id)a9
+- (void)presentPlaylist:(id)playlist fromViewController:(id)controller dismissalOperation:(int64_t)operation allowsCellular:(BOOL)cellular animated:(BOOL)animated userInfo:(id)info completion:(id)completion
 {
-  v10 = a7;
-  v11 = a6;
+  animatedCopy = animated;
+  cellularCopy = cellular;
   v62 = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v16 = a4;
-  v17 = a8;
-  v18 = a9;
+  playlistCopy = playlist;
+  controllerCopy = controller;
+  infoCopy = info;
+  completionCopy = completion;
   v19 = sLogObject_5;
   if (os_log_type_enabled(sLogObject_5, OS_LOG_TYPE_DEFAULT))
   {
     v20 = @"NO";
     *buf = 138413570;
-    v51 = v15;
+    v51 = playlistCopy;
     v52 = 2112;
-    if (v11)
+    if (cellularCopy)
     {
       v21 = @"YES";
     }
@@ -2310,24 +2310,24 @@ void __69__VUIPlaybackManager_observeValueForKeyPath_ofObject_change_context___b
       v21 = @"NO";
     }
 
-    v53 = v16;
-    if (v10)
+    v53 = controllerCopy;
+    if (animatedCopy)
     {
       v20 = @"YES";
     }
 
     v54 = 2048;
-    v55 = a5;
+    operationCopy = operation;
     v56 = 2112;
     v57 = v21;
     v58 = 2112;
     v59 = v20;
     v60 = 2112;
-    v61 = v17;
+    v61 = infoCopy;
     _os_log_impl(&dword_1E323F000, v19, OS_LOG_TYPE_DEFAULT, "presentPlaylist:%@, presentingViewController:%@, dismissalOperation:%ld, allowsCellular:%@, animated:%@, userInfo:%@", buf, 0x3Eu);
   }
 
-  if (!v15 || ([v15 trackList], v22 = objc_claimAutoreleasedReturnValue(), v23 = objc_msgSend(v22, "count"), v22, !v23))
+  if (!playlistCopy || ([playlistCopy trackList], v22 = objc_claimAutoreleasedReturnValue(), v23 = objc_msgSend(v22, "count"), v22, !v23))
   {
     v43 = sLogObject_5;
     if (!os_log_type_enabled(sLogObject_5, OS_LOG_TYPE_DEFAULT))
@@ -2340,13 +2340,13 @@ void __69__VUIPlaybackManager_observeValueForKeyPath_ofObject_change_context___b
     goto LABEL_26;
   }
 
-  if (v16)
+  if (controllerCopy)
   {
-    v24 = [(VUIPlaybackManager *)self stateMachine];
-    v25 = [v24 currentState];
+    stateMachine = [(VUIPlaybackManager *)self stateMachine];
+    currentState = [stateMachine currentState];
 
-    v47 = v25;
-    if ((([v25 isEqualToString:@"Showing main video picture in picture"] & 1) != 0 || (objc_msgSend(v25, "isEqualToString:", @"Showing extras video picture in picture on extras content") & 1) != 0 || objc_msgSend(v25, "isEqualToString:", @"Showing extras video picture in picture outside extras content")) && (-[VUIPlaybackManager activePlayer](self, "activePlayer"), v26 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v26, "playlist"), v27 = v10, v28 = v16, v29 = v11, v30 = v17, v31 = self, v32 = objc_claimAutoreleasedReturnValue(), v33 = objc_msgSend(v15, "isEqualToPlaylist:", v32), v32, self = v31, v17 = v30, v11 = v29, v16 = v28, v10 = v27, v26, v33) && !+[VUIGroupActivitiesManagerObjC isEligibleForSession](VUIGroupActivitiesManagerObjC, "isEligibleForSession"))
+    v47 = currentState;
+    if ((([currentState isEqualToString:@"Showing main video picture in picture"] & 1) != 0 || (objc_msgSend(currentState, "isEqualToString:", @"Showing extras video picture in picture on extras content") & 1) != 0 || objc_msgSend(currentState, "isEqualToString:", @"Showing extras video picture in picture outside extras content")) && (-[VUIPlaybackManager activePlayer](self, "activePlayer"), v26 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v26, "playlist"), v27 = animatedCopy, v28 = controllerCopy, v29 = cellularCopy, v30 = infoCopy, v31 = self, v32 = objc_claimAutoreleasedReturnValue(), v33 = objc_msgSend(playlistCopy, "isEqualToPlaylist:", v32), v32, self = v31, infoCopy = v30, cellularCopy = v29, controllerCopy = v28, animatedCopy = v27, v26, v33) && !+[VUIGroupActivitiesManagerObjC isEligibleForSession](VUIGroupActivitiesManagerObjC, "isEligibleForSession"))
     {
       v45 = sLogObject_5;
       if (os_log_type_enabled(sLogObject_5, OS_LOG_TYPE_DEFAULT))
@@ -2355,8 +2355,8 @@ void __69__VUIPlaybackManager_observeValueForKeyPath_ofObject_change_context___b
         _os_log_impl(&dword_1E323F000, v45, OS_LOG_TYPE_DEFAULT, "Content is already being played in PIP.  Calling stopPictureInPicture to restore to fullscreen", buf, 2u);
       }
 
-      v39 = [(VUIPlaybackManager *)self avPlayerViewController];
-      [v39 stopPictureInPicture];
+      avPlayerViewController = [(VUIPlaybackManager *)self avPlayerViewController];
+      [avPlayerViewController stopPictureInPicture];
     }
 
     else
@@ -2374,34 +2374,34 @@ void __69__VUIPlaybackManager_observeValueForKeyPath_ofObject_change_context___b
 
       v48[0] = @"PlaylistKey";
       v48[1] = @"PresentingViewControllerKey";
-      v49[0] = v15;
-      v49[1] = v16;
+      v49[0] = playlistCopy;
+      v49[1] = controllerCopy;
       v48[2] = @"DismissalOperationKey";
       v35 = [MEMORY[0x1E696AD98] numberWithInteger:v34];
       v49[2] = v35;
       v48[3] = @"AnimatedKey";
-      v36 = [MEMORY[0x1E696AD98] numberWithBool:v10];
+      v36 = [MEMORY[0x1E696AD98] numberWithBool:animatedCopy];
       v49[3] = v36;
       v48[4] = @"AllowCellularUsageKey";
-      v37 = [MEMORY[0x1E696AD98] numberWithBool:v11];
+      v37 = [MEMORY[0x1E696AD98] numberWithBool:cellularCopy];
       v49[4] = v37;
       v38 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v49 forKeys:v48 count:5];
-      v39 = [v38 mutableCopy];
+      avPlayerViewController = [v38 mutableCopy];
 
-      if (v17)
+      if (infoCopy)
       {
-        [v39 addEntriesFromDictionary:v17];
+        [avPlayerViewController addEntriesFromDictionary:infoCopy];
       }
 
-      if (v18)
+      if (completionCopy)
       {
-        v40 = _Block_copy(v18);
+        v40 = _Block_copy(completionCopy);
         v41 = [v40 copy];
-        [v39 setObject:v41 forKey:@"CompletionKey"];
+        [avPlayerViewController setObject:v41 forKey:@"CompletionKey"];
       }
 
-      v42 = [v46 stateMachine];
-      [v42 postEvent:@"Present playlist" withContext:0 userInfo:v39];
+      stateMachine2 = [v46 stateMachine];
+      [stateMachine2 postEvent:@"Present playlist" withContext:0 userInfo:avPlayerViewController];
     }
 
     goto LABEL_35;
@@ -2417,45 +2417,45 @@ LABEL_26:
   }
 
 LABEL_27:
-  if (v18)
+  if (completionCopy)
   {
-    v18[2](v18);
+    completionCopy[2](completionCopy);
   }
 
 LABEL_35:
 }
 
-- (void)presentContainerViewController:(id)a3 withPlayer:(id)a4 andPlayerViewController:(id)a5 completion:(id)a6
+- (void)presentContainerViewController:(id)controller withPlayer:(id)player andPlayerViewController:(id)viewController completion:(id)completion
 {
   v10 = MEMORY[0x1E695DF90];
-  v11 = a6;
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
-  v18 = [v10 dictionary];
-  [v18 vui_setObjectIfNotNil:v14 forKey:@"PlaybackContainerKey"];
+  completionCopy = completion;
+  viewControllerCopy = viewController;
+  playerCopy = player;
+  controllerCopy = controller;
+  dictionary = [v10 dictionary];
+  [dictionary vui_setObjectIfNotNil:controllerCopy forKey:@"PlaybackContainerKey"];
 
-  [v18 vui_setObjectIfNotNil:v12 forKey:@"PlayerViewControllerKey"];
-  [v18 vui_setObjectIfNotNil:v13 forKey:@"PlayerKey"];
+  [dictionary vui_setObjectIfNotNil:viewControllerCopy forKey:@"PlayerViewControllerKey"];
+  [dictionary vui_setObjectIfNotNil:playerCopy forKey:@"PlayerKey"];
 
-  v15 = _Block_copy(v11);
-  [v18 vui_setObjectIfNotNil:v15 forKey:@"CompletionKey"];
+  v15 = _Block_copy(completionCopy);
+  [dictionary vui_setObjectIfNotNil:v15 forKey:@"CompletionKey"];
 
-  v16 = [(VUIPlaybackManager *)self stateMachine];
-  v17 = [v18 copy];
-  [v16 postEvent:@"Present player container view controller" withContext:0 userInfo:v17];
+  stateMachine = [(VUIPlaybackManager *)self stateMachine];
+  v17 = [dictionary copy];
+  [stateMachine postEvent:@"Present player container view controller" withContext:0 userInfo:v17];
 }
 
-- (void)presentExtrasWithURL:(id)a3 storeID:(id)a4 actionParams:(id)a5 hlsURL:(id)a6 fromViewController:(id)a7 completion:(id)a8
+- (void)presentExtrasWithURL:(id)l storeID:(id)d actionParams:(id)params hlsURL:(id)rL fromViewController:(id)controller completion:(id)completion
 {
   v36[3] = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  if (!v14 || ![v15 length] || !objc_msgSend(v16, "length"))
+  lCopy = l;
+  dCopy = d;
+  paramsCopy = params;
+  rLCopy = rL;
+  controllerCopy = controller;
+  completionCopy = completion;
+  if (!lCopy || ![dCopy length] || !objc_msgSend(paramsCopy, "length"))
   {
     v29 = sLogObject_5;
     if (!os_log_type_enabled(sLogObject_5, OS_LOG_TYPE_DEFAULT))
@@ -2473,7 +2473,7 @@ LABEL_14:
 
   v20 = sLogObject_5;
   v21 = os_log_type_enabled(sLogObject_5, OS_LOG_TYPE_DEFAULT);
-  if (!v18)
+  if (!controllerCopy)
   {
     if (!v21)
     {
@@ -2495,21 +2495,21 @@ LABEL_14:
   v22 = *MEMORY[0x1E69D5AE0];
   v35[0] = *MEMORY[0x1E69D5BB0];
   v35[1] = v22;
-  v36[0] = v14;
-  v36[1] = v16;
+  v36[0] = lCopy;
+  v36[1] = paramsCopy;
   v35[2] = *MEMORY[0x1E69D5DA8];
-  v36[2] = v15;
+  v36[2] = dCopy;
   v23 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v36 forKeys:v35 count:3];
   v24 = [v23 mutableCopy];
 
-  if (v17)
+  if (rLCopy)
   {
-    [v24 setObject:v17 forKey:@"HLSURLKey"];
+    [v24 setObject:rLCopy forKey:@"HLSURLKey"];
   }
 
   v33[0] = @"PresentingViewControllerKey";
   v33[1] = @"DismissalOperationKey";
-  v34[0] = v18;
+  v34[0] = controllerCopy;
   v34[1] = &unk_1F5E5CFA8;
   v33[2] = @"AnimatedKey";
   v33[3] = @"ExtrasDictionaryKey";
@@ -2518,26 +2518,26 @@ LABEL_14:
   v25 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v34 forKeys:v33 count:4];
   v26 = [v25 mutableCopy];
 
-  if (v19)
+  if (completionCopy)
   {
-    v27 = [v19 copy];
+    v27 = [completionCopy copy];
     [v26 setObject:v27 forKey:@"CompletionKey"];
   }
 
-  v28 = [(VUIPlaybackManager *)self stateMachine];
-  [v28 postEvent:@"Present playlist" withContext:0 userInfo:v26];
+  stateMachine = [(VUIPlaybackManager *)self stateMachine];
+  [stateMachine postEvent:@"Present playlist" withContext:0 userInfo:v26];
 
 LABEL_15:
 }
 
-- (BOOL)isPlaylistBeingPresented:(id)a3
+- (BOOL)isPlaylistBeingPresented:(id)presented
 {
-  v4 = a3;
-  if (v4 && (-[VUIPlaybackManager activePlayer](self, "activePlayer"), v5 = objc_claimAutoreleasedReturnValue(), [v5 playlist], v6 = objc_claimAutoreleasedReturnValue(), v6, v5, v6))
+  presentedCopy = presented;
+  if (presentedCopy && (-[VUIPlaybackManager activePlayer](self, "activePlayer"), v5 = objc_claimAutoreleasedReturnValue(), [v5 playlist], v6 = objc_claimAutoreleasedReturnValue(), v6, v5, v6))
   {
-    v7 = [(VUIPlaybackManager *)self activePlayer];
-    v8 = [v7 playlist];
-    v9 = [v4 isEqualToPlaylist:v8];
+    activePlayer = [(VUIPlaybackManager *)self activePlayer];
+    playlist = [activePlayer playlist];
+    v9 = [presentedCopy isEqualToPlaylist:playlist];
   }
 
   else
@@ -2548,15 +2548,15 @@ LABEL_15:
   return v9;
 }
 
-- (BOOL)isPlaylistBeingPresentedFullScreen:(id)a3
+- (BOOL)isPlaylistBeingPresentedFullScreen:(id)screen
 {
-  v4 = a3;
-  if ([(VUIPlaybackManager *)self isFullscreenPlaybackUIBeingShown]&& [(VUIPlaybackManager *)self isPlaylistBeingPresented:v4])
+  screenCopy = screen;
+  if ([(VUIPlaybackManager *)self isFullscreenPlaybackUIBeingShown]&& [(VUIPlaybackManager *)self isPlaylistBeingPresented:screenCopy])
   {
     v5 = 1;
   }
 
-  else if ([(VUIPlaybackManager *)self isPlaylistBeingPresentedInMultiview:v4])
+  else if ([(VUIPlaybackManager *)self isPlaylistBeingPresentedInMultiview:screenCopy])
   {
     v5 = [(VUIPlaybackManager *)self multiviewPlayerCount]== 1;
   }
@@ -2569,20 +2569,20 @@ LABEL_15:
   return v5;
 }
 
-- (BOOL)isPlaylistBeingPresentedInMultiview:(id)a3
+- (BOOL)isPlaylistBeingPresentedInMultiview:(id)multiview
 {
-  v3 = [(VUIPlaybackManager *)self _multiviewInfoForPlaylist:a3];
+  v3 = [(VUIPlaybackManager *)self _multiviewInfoForPlaylist:multiview];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (void)dismissPlaybackAnimated:(BOOL)a3 leaveGroupActivitySession:(BOOL)a4 completion:(id)a5
+- (void)dismissPlaybackAnimated:(BOOL)animated leaveGroupActivitySession:(BOOL)session completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  sessionCopy = session;
+  animatedCopy = animated;
   v21[1] = *MEMORY[0x1E69E9840];
-  v8 = a5;
+  completionCopy = completion;
   v9 = sLogObject_5;
   if (os_log_type_enabled(sLogObject_5, OS_LOG_TYPE_DEFAULT))
   {
@@ -2607,7 +2607,7 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  if (!v5)
+  if (!sessionCopy)
   {
     if (!v12)
     {
@@ -2627,161 +2627,161 @@ LABEL_12:
 
   +[VUIGroupActivitiesManagerObjC leaveSession];
 LABEL_13:
-  v14 = [MEMORY[0x1E696AD98] numberWithBool:{v6, v19, @"AnimatedKey"}];
+  v14 = [MEMORY[0x1E696AD98] numberWithBool:{animatedCopy, v19, @"AnimatedKey"}];
   v21[0] = v14;
   v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v21 forKeys:&v20 count:1];
   v16 = [v15 mutableCopy];
 
-  if (v8)
+  if (completionCopy)
   {
-    v17 = [v8 copy];
+    v17 = [completionCopy copy];
     [v16 setObject:v17 forKey:@"CompletionKey"];
   }
 
-  v18 = [(VUIPlaybackManager *)self stateMachine];
-  [v18 postEvent:@"Dismiss playback" withContext:0 userInfo:v16];
+  stateMachine = [(VUIPlaybackManager *)self stateMachine];
+  [stateMachine postEvent:@"Dismiss playback" withContext:0 userInfo:v16];
 }
 
-- (void)dismissPostPlayAnimated:(BOOL)a3
+- (void)dismissPostPlayAnimated:(BOOL)animated
 {
   v8[1] = *MEMORY[0x1E69E9840];
   v7 = @"PostPlaySlideOutAnimationKey";
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:animated];
   v8[0] = v4;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v8 forKeys:&v7 count:1];
 
-  v6 = [(VUIPlaybackManager *)self stateMachine];
-  [v6 postEvent:@"Post play cancelled" withContext:0 userInfo:v5];
+  stateMachine = [(VUIPlaybackManager *)self stateMachine];
+  [stateMachine postEvent:@"Post play cancelled" withContext:0 userInfo:v5];
 }
 
-- (void)presentMultiviewWithPlaylists:(id)a3 fromViewController:(id)a4 animated:(BOOL)a5
+- (void)presentMultiviewWithPlaylists:(id)playlists fromViewController:(id)controller animated:(BOOL)animated
 {
-  v5 = a5;
-  v13 = a3;
-  v8 = a4;
-  v9 = [MEMORY[0x1E695DF90] dictionary];
-  v10 = [MEMORY[0x1E696AD98] numberWithBool:v5];
-  [v9 setObject:v10 forKey:@"AnimatedKey"];
+  animatedCopy = animated;
+  playlistsCopy = playlists;
+  controllerCopy = controller;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v10 = [MEMORY[0x1E696AD98] numberWithBool:animatedCopy];
+  [dictionary setObject:v10 forKey:@"AnimatedKey"];
 
-  if ([v13 count])
+  if ([playlistsCopy count])
   {
-    [v9 setObject:v13 forKey:@"PlaylistsKey"];
+    [dictionary setObject:playlistsCopy forKey:@"PlaylistsKey"];
   }
 
-  if (v8)
+  if (controllerCopy)
   {
-    [v9 setObject:v8 forKey:@"PresentingViewControllerKey"];
+    [dictionary setObject:controllerCopy forKey:@"PresentingViewControllerKey"];
   }
 
-  v11 = [(VUIPlaybackManager *)self stateMachine];
-  v12 = [v9 copy];
-  [v11 postEvent:@"Show multiview playback" withContext:0 userInfo:v12];
+  stateMachine = [(VUIPlaybackManager *)self stateMachine];
+  v12 = [dictionary copy];
+  [stateMachine postEvent:@"Show multiview playback" withContext:0 userInfo:v12];
 }
 
-- (void)addPlaylistToMultiview:(id)a3 atIndex:(int64_t)a4 animated:(BOOL)a5 completion:(id)a6
+- (void)addPlaylistToMultiview:(id)multiview atIndex:(int64_t)index animated:(BOOL)animated completion:(id)completion
 {
-  v7 = a5;
-  v17 = a3;
-  v10 = a6;
-  v11 = [MEMORY[0x1E695DF90] dictionary];
-  v12 = [MEMORY[0x1E696AD98] numberWithBool:v7];
-  [v11 setObject:v12 forKey:@"AnimatedKey"];
+  animatedCopy = animated;
+  multiviewCopy = multiview;
+  completionCopy = completion;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v12 = [MEMORY[0x1E696AD98] numberWithBool:animatedCopy];
+  [dictionary setObject:v12 forKey:@"AnimatedKey"];
 
-  if (v17)
+  if (multiviewCopy)
   {
-    [v11 setObject:v17 forKey:@"PlaylistKey"];
+    [dictionary setObject:multiviewCopy forKey:@"PlaylistKey"];
   }
 
-  if ((a4 & 0x8000000000000000) == 0)
+  if ((index & 0x8000000000000000) == 0)
   {
-    v13 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
-    [v11 setObject:v13 forKey:@"IndexKey"];
+    v13 = [MEMORY[0x1E696AD98] numberWithInteger:index];
+    [dictionary setObject:v13 forKey:@"IndexKey"];
   }
 
-  if (v10)
+  if (completionCopy)
   {
-    v14 = _Block_copy(v10);
-    [v11 setObject:v14 forKey:@"CompletionKey"];
+    v14 = _Block_copy(completionCopy);
+    [dictionary setObject:v14 forKey:@"CompletionKey"];
   }
 
-  v15 = [(VUIPlaybackManager *)self stateMachine];
-  v16 = [v11 copy];
-  [v15 postEvent:@"Add multiview playback" withContext:0 userInfo:v16];
+  stateMachine = [(VUIPlaybackManager *)self stateMachine];
+  v16 = [dictionary copy];
+  [stateMachine postEvent:@"Add multiview playback" withContext:0 userInfo:v16];
 }
 
-- (void)replacePlaylistInMultiviewAtIndex:(int64_t)a3 withPlaylist:(id)a4 animated:(BOOL)a5
+- (void)replacePlaylistInMultiviewAtIndex:(int64_t)index withPlaylist:(id)playlist animated:(BOOL)animated
 {
-  v5 = a5;
-  v13 = a4;
-  v8 = [MEMORY[0x1E695DF90] dictionary];
-  v9 = [MEMORY[0x1E696AD98] numberWithBool:v5];
-  [v8 setObject:v9 forKey:@"AnimatedKey"];
+  animatedCopy = animated;
+  playlistCopy = playlist;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v9 = [MEMORY[0x1E696AD98] numberWithBool:animatedCopy];
+  [dictionary setObject:v9 forKey:@"AnimatedKey"];
 
-  v10 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  [v8 setObject:v10 forKey:@"IndexKey"];
+  v10 = [MEMORY[0x1E696AD98] numberWithInteger:index];
+  [dictionary setObject:v10 forKey:@"IndexKey"];
 
-  if (v13)
+  if (playlistCopy)
   {
-    [v8 setObject:v13 forKey:@"PlaylistKey"];
+    [dictionary setObject:playlistCopy forKey:@"PlaylistKey"];
   }
 
-  v11 = [(VUIPlaybackManager *)self stateMachine];
-  v12 = [v8 copy];
-  [v11 postEvent:@"Replace multiview playback" withContext:0 userInfo:v12];
+  stateMachine = [(VUIPlaybackManager *)self stateMachine];
+  v12 = [dictionary copy];
+  [stateMachine postEvent:@"Replace multiview playback" withContext:0 userInfo:v12];
 }
 
-- (void)removePlaylistFromMultiview:(id)a3 animated:(BOOL)a4
+- (void)removePlaylistFromMultiview:(id)multiview animated:(BOOL)animated
 {
-  v4 = a4;
-  v10 = a3;
-  v6 = [MEMORY[0x1E695DF90] dictionary];
-  v7 = [MEMORY[0x1E696AD98] numberWithBool:v4];
-  [v6 setObject:v7 forKey:@"AnimatedKey"];
+  animatedCopy = animated;
+  multiviewCopy = multiview;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v7 = [MEMORY[0x1E696AD98] numberWithBool:animatedCopy];
+  [dictionary setObject:v7 forKey:@"AnimatedKey"];
 
-  if (v10)
+  if (multiviewCopy)
   {
-    [v6 setObject:v10 forKey:@"PlaylistKey"];
+    [dictionary setObject:multiviewCopy forKey:@"PlaylistKey"];
   }
 
-  v8 = [(VUIPlaybackManager *)self stateMachine];
-  v9 = [v6 copy];
-  [v8 postEvent:@"Remove multiview playback" withContext:0 userInfo:v9];
+  stateMachine = [(VUIPlaybackManager *)self stateMachine];
+  v9 = [dictionary copy];
+  [stateMachine postEvent:@"Remove multiview playback" withContext:0 userInfo:v9];
 }
 
-- (void)removeFromMultiviewWithIdentifier:(id)a3 animated:(BOOL)a4
+- (void)removeFromMultiviewWithIdentifier:(id)identifier animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = [(VUIPlaybackManager *)self indexOfMediaItemInMultiviewWithIdentifier:a3];
+  animatedCopy = animated;
+  v6 = [(VUIPlaybackManager *)self indexOfMediaItemInMultiviewWithIdentifier:identifier];
   if (v6 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v7 = v6;
-    v8 = [(VUIPlaybackManager *)self multiviewPlaybackInfo];
-    v9 = [v8 count];
+    multiviewPlaybackInfo = [(VUIPlaybackManager *)self multiviewPlaybackInfo];
+    v9 = [multiviewPlaybackInfo count];
 
     if (v7 < v9)
     {
-      v10 = [(VUIPlaybackManager *)self multiviewPlaybackInfo];
-      v15 = [v10 objectAtIndex:v7];
+      multiviewPlaybackInfo2 = [(VUIPlaybackManager *)self multiviewPlaybackInfo];
+      v15 = [multiviewPlaybackInfo2 objectAtIndex:v7];
 
-      v11 = [v15 player];
-      v12 = [v11 playlist];
+      player = [v15 player];
+      playlist = [player playlist];
 
-      if (v12)
+      if (playlist)
       {
-        v13 = [v15 player];
-        v14 = [v13 playlist];
+        player2 = [v15 player];
+        playlist2 = [player2 playlist];
 
-        [(VUIPlaybackManager *)self removePlaylistFromMultiview:v14 animated:v4];
+        [(VUIPlaybackManager *)self removePlaylistFromMultiview:playlist2 animated:animatedCopy];
       }
     }
   }
 }
 
-- (unint64_t)indexOfMediaItemInMultiviewWithIdentifier:(id)a3
+- (unint64_t)indexOfMediaItemInMultiviewWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(VUIPlaybackManager *)self multiviewPlaybackInfo];
-  v6 = [v5 count];
+  identifierCopy = identifier;
+  multiviewPlaybackInfo = [(VUIPlaybackManager *)self multiviewPlaybackInfo];
+  v6 = [multiviewPlaybackInfo count];
 
   if (v6)
   {
@@ -2789,22 +2789,22 @@ LABEL_13:
     v8 = *MEMORY[0x1E69D5AE8];
     while (1)
     {
-      v9 = [(VUIPlaybackManager *)self multiviewPlaybackInfo];
-      v10 = [v9 objectAtIndex:v7];
+      multiviewPlaybackInfo2 = [(VUIPlaybackManager *)self multiviewPlaybackInfo];
+      v10 = [multiviewPlaybackInfo2 objectAtIndex:v7];
 
-      v11 = [v10 player];
-      v12 = [v11 currentMediaItem];
-      v13 = [v12 mediaItemMetadataForProperty:v8];
+      player = [v10 player];
+      currentMediaItem = [player currentMediaItem];
+      v13 = [currentMediaItem mediaItemMetadataForProperty:v8];
 
-      LOBYTE(v11) = [v13 isEqualToString:v4];
-      if (v11)
+      LOBYTE(player) = [v13 isEqualToString:identifierCopy];
+      if (player)
       {
         break;
       }
 
       ++v7;
-      v14 = [(VUIPlaybackManager *)self multiviewPlaybackInfo];
-      v15 = [v14 count];
+      multiviewPlaybackInfo3 = [(VUIPlaybackManager *)self multiviewPlaybackInfo];
+      v15 = [multiviewPlaybackInfo3 count];
 
       if (v7 >= v15)
       {
@@ -2822,30 +2822,30 @@ LABEL_5:
   return v7;
 }
 
-- (unint64_t)indexOfMediaItemInMultiviewWithPlayer:(id)a3
+- (unint64_t)indexOfMediaItemInMultiviewWithPlayer:(id)player
 {
-  v4 = a3;
-  v5 = [(VUIPlaybackManager *)self multiviewPlaybackInfo];
-  v6 = [v5 count];
+  playerCopy = player;
+  multiviewPlaybackInfo = [(VUIPlaybackManager *)self multiviewPlaybackInfo];
+  v6 = [multiviewPlaybackInfo count];
 
   if (v6)
   {
     v7 = 0;
     while (1)
     {
-      v8 = [(VUIPlaybackManager *)self multiviewPlaybackInfo];
-      v9 = [v8 objectAtIndex:v7];
+      multiviewPlaybackInfo2 = [(VUIPlaybackManager *)self multiviewPlaybackInfo];
+      v9 = [multiviewPlaybackInfo2 objectAtIndex:v7];
 
-      v10 = [v9 player];
+      player = [v9 player];
 
-      if (v10 == v4)
+      if (player == playerCopy)
       {
         break;
       }
 
       ++v7;
-      v11 = [(VUIPlaybackManager *)self multiviewPlaybackInfo];
-      v12 = [v11 count];
+      multiviewPlaybackInfo3 = [(VUIPlaybackManager *)self multiviewPlaybackInfo];
+      v12 = [multiviewPlaybackInfo3 count];
 
       if (v7 >= v12)
       {
@@ -2865,8 +2865,8 @@ LABEL_5:
 
 - (int64_t)multiviewPlayerCount
 {
-  v2 = [(VUIPlaybackManager *)self multiviewPlaybackInfo];
-  v3 = [v2 count];
+  multiviewPlaybackInfo = [(VUIPlaybackManager *)self multiviewPlaybackInfo];
+  v3 = [multiviewPlaybackInfo count];
 
   return v3;
 }
@@ -2874,32 +2874,32 @@ LABEL_5:
 - (int64_t)maxMultiviewPlayerCount
 {
   v2 = +[VUIFeaturesConfiguration sharedInstance];
-  v3 = [v2 multiviewConfig];
-  v4 = [v3 maximumPlayerCount];
+  multiviewConfig = [v2 multiviewConfig];
+  maximumPlayerCount = [multiviewConfig maximumPlayerCount];
 
-  return v4;
+  return maximumPlayerCount;
 }
 
 - (BOOL)isMultiviewPlaybackUIBeingShown
 {
-  v2 = [(VUIPlaybackManager *)self stateMachine];
-  v3 = [v2 currentState];
-  v4 = [v3 isEqualToString:@"Showing multiview playback"];
+  stateMachine = [(VUIPlaybackManager *)self stateMachine];
+  currentState = [stateMachine currentState];
+  v4 = [currentState isEqualToString:@"Showing multiview playback"];
 
   return v4;
 }
 
-+ (BOOL)_isFullScreenPlaybackState:(id)a3
++ (BOOL)_isFullScreenPlaybackState:(id)state
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Showing video full screen"] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"Showing video full screen with post play content on screen") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"Waiting for AVPlayerViewController presentation to complete") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"Showing extras video full screen outside extras content") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"Showing multiview playback fullscreen") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"Showing multiview playback fullscreen due to small screen size"))
+  stateCopy = state;
+  if ([stateCopy isEqualToString:@"Showing video full screen"] & 1) != 0 || (objc_msgSend(stateCopy, "isEqualToString:", @"Showing video full screen with post play content on screen") & 1) != 0 || (objc_msgSend(stateCopy, "isEqualToString:", @"Waiting for AVPlayerViewController presentation to complete") & 1) != 0 || (objc_msgSend(stateCopy, "isEqualToString:", @"Showing extras video full screen outside extras content") & 1) != 0 || (objc_msgSend(stateCopy, "isEqualToString:", @"Showing multiview playback fullscreen") & 1) != 0 || (objc_msgSend(stateCopy, "isEqualToString:", @"Showing multiview playback fullscreen due to small screen size"))
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"Showing playback in assistive access"];
+    v4 = [stateCopy isEqualToString:@"Showing playback in assistive access"];
   }
 
   return v4;
@@ -2907,9 +2907,9 @@ LABEL_5:
 
 - (BOOL)isShowingExtras
 {
-  v2 = [(VUIPlaybackManager *)self stateMachine];
-  v3 = [v2 currentState];
-  v4 = [VUIPlaybackManager _isShowingExtrasState:v3];
+  stateMachine = [(VUIPlaybackManager *)self stateMachine];
+  currentState = [stateMachine currentState];
+  v4 = [VUIPlaybackManager _isShowingExtrasState:currentState];
 
   return v4;
 }
@@ -2920,26 +2920,26 @@ LABEL_5:
   if (v2)
   {
     v3 = +[VUIFeaturesConfiguration sharedInstance];
-    v4 = [v3 tipKitConfig];
-    v5 = [v4 isEnabled];
+    tipKitConfig = [v3 tipKitConfig];
+    isEnabled = [tipKitConfig isEnabled];
 
-    LOBYTE(v2) = v5;
+    LOBYTE(v2) = isEnabled;
   }
 
   return v2;
 }
 
-+ (BOOL)_isShowingExtrasState:(id)a3
++ (BOOL)_isShowingExtrasState:(id)state
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Showing Extras content"])
+  stateCopy = state;
+  if ([stateCopy isEqualToString:@"Showing Extras content"])
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"Showing extras video picture in picture on extras content"];
+    v4 = [stateCopy isEqualToString:@"Showing extras video picture in picture on extras content"];
   }
 
   return v4;
@@ -2947,47 +2947,47 @@ LABEL_5:
 
 - (BOOL)isPlaybackUIBeingShown
 {
-  v2 = [(VUIPlaybackManager *)self stateMachine];
-  v3 = [v2 currentState];
-  v4 = [v3 isEqualToString:@"Not showing anything"];
+  stateMachine = [(VUIPlaybackManager *)self stateMachine];
+  currentState = [stateMachine currentState];
+  v4 = [currentState isEqualToString:@"Not showing anything"];
 
   return v4 ^ 1;
 }
 
 - (BOOL)isPIPing
 {
-  v2 = [(VUIPlaybackManager *)self stateMachine];
-  v3 = [v2 currentState];
+  stateMachine = [(VUIPlaybackManager *)self stateMachine];
+  currentState = [stateMachine currentState];
 
   v4 = PIPStates();
-  v5 = [v4 containsObject:v3];
+  v5 = [v4 containsObject:currentState];
 
   return v5;
 }
 
 - (BOOL)isPIPingBackgroundPlayback
 {
-  v2 = [(VUIPlaybackManager *)self stateMachine];
-  v3 = [v2 currentState];
+  stateMachine = [(VUIPlaybackManager *)self stateMachine];
+  currentState = [stateMachine currentState];
 
-  LOBYTE(v2) = [v3 isEqualToString:@"Playing background media in picture and picture"];
-  return v2;
+  LOBYTE(stateMachine) = [currentState isEqualToString:@"Playing background media in picture and picture"];
+  return stateMachine;
 }
 
 - (TVPMediaItem)currentMediaItem
 {
-  v2 = [(VUIPlaybackManager *)self activePlayer];
-  v3 = [v2 currentMediaItem];
+  activePlayer = [(VUIPlaybackManager *)self activePlayer];
+  currentMediaItem = [activePlayer currentMediaItem];
 
-  return v3;
+  return currentMediaItem;
 }
 
 - (BOOL)currentPlaylistAllowsCellular
 {
-  v2 = [(VUIPlaybackManager *)self activePlayer];
-  v3 = [v2 allowsCellularUsage];
+  activePlayer = [(VUIPlaybackManager *)self activePlayer];
+  allowsCellularUsage = [activePlayer allowsCellularUsage];
 
-  return v3;
+  return allowsCellularUsage;
 }
 
 - (id)createPlayerViewController
@@ -2998,31 +2998,31 @@ LABEL_5:
   return v3;
 }
 
-- (void)_setupPlayerViewController:(id)a3
+- (void)_setupPlayerViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v5 = objc_initWeak(&location, self);
-  [v4 setDelegate:self];
+  [controllerCopy setDelegate:self];
 
-  [v4 setEntersFullScreenWhenPlaybackBegins:1];
-  [v4 setAllowsPictureInPicturePlayback:{+[VUITVExtension isRunningInCompanionApp](VUITVExtension, "isRunningInCompanionApp") ^ 1}];
-  v6 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v7 = [v6 BOOLForKey:@"ForcePlaybackControls"];
+  [controllerCopy setEntersFullScreenWhenPlaybackBegins:1];
+  [controllerCopy setAllowsPictureInPicturePlayback:{+[VUITVExtension isRunningInCompanionApp](VUITVExtension, "isRunningInCompanionApp") ^ 1}];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v7 = [standardUserDefaults BOOLForKey:@"ForcePlaybackControls"];
 
   if (v7)
   {
-    [v4 setCanHidePlaybackControls:0];
+    [controllerCopy setCanHidePlaybackControls:0];
   }
 
   objc_destroyWeak(&location);
 }
 
-- (void)setBackgroundMediaControllerForPIP:(id)a3
+- (void)setBackgroundMediaControllerForPIP:(id)p
 {
   [(VUIPlaybackManager *)self setPIPedBackgroundMediaController:?];
-  v5 = [(VUIPlaybackManager *)self stateMachine];
-  v7 = v5;
-  if (a3)
+  stateMachine = [(VUIPlaybackManager *)self stateMachine];
+  v7 = stateMachine;
+  if (p)
   {
     v6 = @"Background media enter picture in picture";
   }
@@ -3032,76 +3032,76 @@ LABEL_5:
     v6 = @"Background media picture in picture did end";
   }
 
-  [v5 postEvent:v6];
+  [stateMachine postEvent:v6];
 }
 
-- (void)restoreBackgroundMediaControllerFromPIP:(id)a3
+- (void)restoreBackgroundMediaControllerFromPIP:(id)p
 {
-  v4 = a3;
+  pCopy = p;
   v5 = +[VUIApplicationRouter currentNavigationController];
-  v6 = [v5 topViewController];
-  v7 = [v6 presentedViewController];
-  if (v7)
+  topViewController = [v5 topViewController];
+  presentedViewController = [topViewController presentedViewController];
+  if (presentedViewController)
   {
-    v13 = v7;
+    rootViewController = presentedViewController;
   }
 
   else
   {
     v8 = +[VUITVAppLauncher sharedInstance];
-    v9 = [v8 appWindow];
+    appWindow = [v8 appWindow];
 
-    v13 = [v9 rootViewController];
+    rootViewController = [appWindow rootViewController];
 
-    if (!v13)
+    if (!rootViewController)
     {
       v10 = +[VUIInterfaceFactory sharedInstance];
-      v13 = [v10 controllerPresenter];
+      rootViewController = [v10 controllerPresenter];
     }
   }
 
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [v13 isBeingDismissed])
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [rootViewController isBeingDismissed])
   {
-    v11 = [v13 presentingViewController];
+    presentingViewController = [rootViewController presentingViewController];
 
-    v13 = v11;
+    rootViewController = presentingViewController;
   }
 
-  v12 = [(VUIPlaybackManager *)self PIPedBackgroundMediaController];
-  [v13 presentViewController:v12 animated:1 completion:v4];
+  pIPedBackgroundMediaController = [(VUIPlaybackManager *)self PIPedBackgroundMediaController];
+  [rootViewController presentViewController:pIPedBackgroundMediaController animated:1 completion:pCopy];
 }
 
 - (VUIPlayer)backgroundMediaPlayer
 {
-  v2 = [(VUIPlaybackManager *)self PIPedBackgroundMediaController];
-  if ([v2 conformsToProtocol:&unk_1F5F3C698])
+  pIPedBackgroundMediaController = [(VUIPlaybackManager *)self PIPedBackgroundMediaController];
+  if ([pIPedBackgroundMediaController conformsToProtocol:&unk_1F5F3C698])
   {
-    v3 = [v2 activePlayer];
+    activePlayer = [pIPedBackgroundMediaController activePlayer];
   }
 
   else
   {
-    v3 = 0;
+    activePlayer = 0;
   }
 
-  return v3;
+  return activePlayer;
 }
 
-- (void)setAvPlayerViewController:(id)a3
+- (void)setAvPlayerViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   p_avPlayerViewController = &self->_avPlayerViewController;
   avPlayerViewController = self->_avPlayerViewController;
-  v8 = v5;
-  if (avPlayerViewController != v5)
+  v8 = controllerCopy;
+  if (avPlayerViewController != controllerCopy)
   {
     if (avPlayerViewController)
     {
       [(AVPlayerViewController *)avPlayerViewController removeObserver:self forKeyPath:@"videoBounds" context:__PlayerAVPlayerViewControllerDisplaySizeKVOContext];
     }
 
-    objc_storeStrong(&self->_avPlayerViewController, a3);
+    objc_storeStrong(&self->_avPlayerViewController, controller);
     if (*p_avPlayerViewController)
     {
       [(AVPlayerViewController *)*p_avPlayerViewController addObserver:self forKeyPath:@"videoBounds" options:0 context:__PlayerAVPlayerViewControllerDisplaySizeKVOContext];
@@ -3109,9 +3109,9 @@ LABEL_5:
   }
 }
 
-- (void)setActivePlayer:(id)a3
+- (void)setActivePlayer:(id)player
 {
-  obj = a3;
+  obj = player;
   WeakRetained = objc_loadWeakRetained(&self->_activePlayer);
 
   v5 = obj;
@@ -3125,15 +3125,15 @@ LABEL_5:
 - (BOOL)_audioContainsAirPlayRoute
 {
   v17 = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E6958460] sharedInstance];
-  v3 = [v2 currentRoute];
-  v4 = [v3 outputs];
+  mEMORY[0x1E6958460] = [MEMORY[0x1E6958460] sharedInstance];
+  currentRoute = [mEMORY[0x1E6958460] currentRoute];
+  outputs = [currentRoute outputs];
 
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = v4;
+  v5 = outputs;
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
@@ -3148,9 +3148,9 @@ LABEL_5:
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v12 + 1) + 8 * i) portType];
+        portType = [*(*(&v12 + 1) + 8 * i) portType];
 
-        if (v10 == v8)
+        if (portType == v8)
         {
           LOBYTE(v6) = 1;
           goto LABEL_11;
@@ -3175,15 +3175,15 @@ LABEL_11:
 - (BOOL)_audioContainsHDMIRoute
 {
   v17 = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E6958460] sharedInstance];
-  v3 = [v2 currentRoute];
-  v4 = [v3 outputs];
+  mEMORY[0x1E6958460] = [MEMORY[0x1E6958460] sharedInstance];
+  currentRoute = [mEMORY[0x1E6958460] currentRoute];
+  outputs = [currentRoute outputs];
 
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = v4;
+  v5 = outputs;
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
@@ -3198,9 +3198,9 @@ LABEL_11:
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v12 + 1) + 8 * i) portType];
+        portType = [*(*(&v12 + 1) + 8 * i) portType];
 
-        if (v10 == v8)
+        if (portType == v8)
         {
           LOBYTE(v6) = 1;
           goto LABEL_11;
@@ -3222,22 +3222,22 @@ LABEL_11:
   return v6;
 }
 
-- (void)configureAudioSessionForBackgroundPlayback:(BOOL)a3 usingPlaybackCategory:(BOOL)a4 isMultiview:(BOOL)a5
+- (void)configureAudioSessionForBackgroundPlayback:(BOOL)playback usingPlaybackCategory:(BOOL)category isMultiview:(BOOL)multiview
 {
-  v9 = [(VUIPlaybackManager *)self stateMachine];
-  v10 = [v9 currentState];
-  v11 = [v10 isEqualToString:@"Not showing anything"] ^ 1;
+  stateMachine = [(VUIPlaybackManager *)self stateMachine];
+  currentState = [stateMachine currentState];
+  v11 = [currentState isEqualToString:@"Not showing anything"] ^ 1;
 
-  v12 = [(VUIPlaybackManager *)self audioSessionSerialQueue];
+  audioSessionSerialQueue = [(VUIPlaybackManager *)self audioSessionSerialQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __99__VUIPlaybackManager_configureAudioSessionForBackgroundPlayback_usingPlaybackCategory_isMultiview___block_invoke;
   block[3] = &__block_descriptor_36_e5_v8__0l;
-  v14 = a3;
+  playbackCopy = playback;
   v15 = v11;
-  v16 = a4;
-  v17 = a5;
-  dispatch_async(v12, block);
+  categoryCopy = category;
+  multiviewCopy = multiview;
+  dispatch_async(audioSessionSerialQueue, block);
 }
 
 void __99__VUIPlaybackManager_configureAudioSessionForBackgroundPlayback_usingPlaybackCategory_isMultiview___block_invoke(_BYTE *a1)
@@ -3397,114 +3397,114 @@ void __99__VUIPlaybackManager_configureAudioSessionForBackgroundPlayback_usingPl
 
 - (VUIControllerPresenter)fullScreenViewControllerForPresentation
 {
-  if (!-[VUIPlaybackManager isFullscreenPlaybackUIBeingShown](self, "isFullscreenPlaybackUIBeingShown") || (-[VUIPlaybackManager avPlayerViewController](self, "avPlayerViewController"), v3 = objc_claimAutoreleasedReturnValue(), [v3 vui_viewControllerForFullScreenPresentation], v4 = objc_claimAutoreleasedReturnValue(), v3, !v4))
+  if (!-[VUIPlaybackManager isFullscreenPlaybackUIBeingShown](self, "isFullscreenPlaybackUIBeingShown") || (-[VUIPlaybackManager avPlayerViewController](self, "avPlayerViewController"), v3 = objc_claimAutoreleasedReturnValue(), [v3 vui_viewControllerForFullScreenPresentation], rootViewController = objc_claimAutoreleasedReturnValue(), v3, !rootViewController))
   {
     v5 = +[VUITVAppLauncher sharedInstance];
-    v6 = [v5 appWindow];
-    v4 = [v6 rootViewController];
+    appWindow = [v5 appWindow];
+    rootViewController = [appWindow rootViewController];
   }
 
-  return v4;
+  return rootViewController;
 }
 
 - (BOOL)isPostPlayActive
 {
-  v3 = [(VUIPlaybackManager *)self stateMachine];
-  v4 = [v3 currentState];
-  if ([v4 isEqualToString:@"Showing video full screen with post play content on screen"])
+  stateMachine = [(VUIPlaybackManager *)self stateMachine];
+  currentState = [stateMachine currentState];
+  if ([currentState isEqualToString:@"Showing video full screen with post play content on screen"])
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [(VUIPlaybackManager *)self stateMachine];
-    v7 = [v6 currentState];
-    v5 = [v7 isEqualToString:@"Showing post play content without playback UI"];
+    stateMachine2 = [(VUIPlaybackManager *)self stateMachine];
+    currentState2 = [stateMachine2 currentState];
+    v5 = [currentState2 isEqualToString:@"Showing post play content without playback UI"];
   }
 
   return v5;
 }
 
-- (void)transferPlaybackToBackgroundMediaController:(id)a3
+- (void)transferPlaybackToBackgroundMediaController:(id)controller
 {
-  v8 = a3;
-  v4 = [MEMORY[0x1E695DF90] dictionary];
-  if (v8)
+  controllerCopy = controller;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  if (controllerCopy)
   {
-    v5 = [v8 copy];
-    [v4 setObject:v5 forKey:@"CompletionKey"];
+    v5 = [controllerCopy copy];
+    [dictionary setObject:v5 forKey:@"CompletionKey"];
   }
 
-  v6 = [(VUIPlaybackManager *)self stateMachine];
-  v7 = [v4 copy];
-  [v6 postEvent:@"Transfer player to background media controller" withContext:0 userInfo:v7];
+  stateMachine = [(VUIPlaybackManager *)self stateMachine];
+  v7 = [dictionary copy];
+  [stateMachine postEvent:@"Transfer player to background media controller" withContext:0 userInfo:v7];
 }
 
 - (void)startPictureInPicture
 {
-  v2 = [(VUIPlaybackManager *)self avPlayerViewController];
-  [v2 startPictureInPicture];
+  avPlayerViewController = [(VUIPlaybackManager *)self avPlayerViewController];
+  [avPlayerViewController startPictureInPicture];
 }
 
-- (void)startPictureInPictureWithCompletion:(id)a3
+- (void)startPictureInPictureWithCompletion:(id)completion
 {
-  v6 = a3;
-  v4 = [(VUIPlaybackManager *)self avPlayerViewController];
+  completionCopy = completion;
+  avPlayerViewController = [(VUIPlaybackManager *)self avPlayerViewController];
 
-  if (!v6 || v4)
+  if (!completionCopy || avPlayerViewController)
   {
-    [(VUIPlaybackManager *)self setPipCompletion:v6];
+    [(VUIPlaybackManager *)self setPipCompletion:completionCopy];
     [(VUIPlaybackManager *)self startPictureInPicture];
   }
 
   else
   {
     v5 = [MEMORY[0x1E696ABC0] errorWithDomain:@"TVPlaybackErrorDomain" code:801 userInfo:0];
-    v6[2](v6, v5);
+    completionCopy[2](completionCopy, v5);
   }
 }
 
-- (void)addTipKitState:(unint64_t)a3
+- (void)addTipKitState:(unint64_t)state
 {
   if ([(VUIPlaybackManager *)self tipKitStates]!= 3)
   {
-    [(VUIPlaybackManager *)self setTipKitStates:[(VUIPlaybackManager *)self tipKitStates]| a3];
+    [(VUIPlaybackManager *)self setTipKitStates:[(VUIPlaybackManager *)self tipKitStates]| state];
     if ([(VUIPlaybackManager *)self tipKitStates]== 3)
     {
-      v5 = [(VUIPlaybackManager *)self playerViewController];
-      [_TtC8VideosUI23PlayerTipKitManagerObjC scheduleTips:v5];
+      playerViewController = [(VUIPlaybackManager *)self playerViewController];
+      [_TtC8VideosUI23PlayerTipKitManagerObjC scheduleTips:playerViewController];
     }
   }
 }
 
-- (void)playerViewController:(id)a3 willEndFullScreenPresentationWithAnimationCoordinator:(id)a4
+- (void)playerViewController:(id)controller willEndFullScreenPresentationWithAnimationCoordinator:(id)coordinator
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  coordinatorCopy = coordinator;
   objc_initWeak(&location, self);
   if ([(VUIPlaybackManager *)self _hidePresentingViewControllerDuringPlayback])
   {
     v8 = sLogObject_5;
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [(VUIPlaybackManager *)self playbackContainerViewController];
-      v10 = [v9 presentingViewController];
+      playbackContainerViewController = [(VUIPlaybackManager *)self playbackContainerViewController];
+      presentingViewController = [playbackContainerViewController presentingViewController];
       *buf = 138412290;
-      v26 = v10;
+      v26 = presentingViewController;
       _os_log_impl(&dword_1E323F000, v8, OS_LOG_TYPE_DEFAULT, "Setting %@ alpha to zero before starting transition", buf, 0xCu);
     }
 
-    v11 = [(VUIPlaybackManager *)self playbackContainerViewController];
-    v12 = [v11 presentingViewController];
-    v13 = [v12 view];
-    [v13 setHidden:0];
+    playbackContainerViewController2 = [(VUIPlaybackManager *)self playbackContainerViewController];
+    presentingViewController2 = [playbackContainerViewController2 presentingViewController];
+    view = [presentingViewController2 view];
+    [view setHidden:0];
 
-    v14 = [(VUIPlaybackManager *)self playbackContainerViewController];
-    v15 = [v14 presentingViewController];
-    v16 = [v15 view];
-    [v16 setAlpha:0.0];
+    playbackContainerViewController3 = [(VUIPlaybackManager *)self playbackContainerViewController];
+    presentingViewController3 = [playbackContainerViewController3 presentingViewController];
+    view2 = [presentingViewController3 view];
+    [view2 setAlpha:0.0];
   }
 
   v22[0] = MEMORY[0x1E69E9820];
@@ -3517,10 +3517,10 @@ void __99__VUIPlaybackManager_configureAudioSessionForBackgroundPlayback_usingPl
   v18[2] = __97__VUIPlaybackManager_playerViewController_willEndFullScreenPresentationWithAnimationCoordinator___block_invoke_2;
   v18[3] = &unk_1E8730D00;
   objc_copyWeak(&v21, &location);
-  v17 = v6;
+  v17 = controllerCopy;
   v19 = v17;
-  v20 = self;
-  [v7 animateAlongsideTransition:v22 completion:v18];
+  selfCopy = self;
+  [coordinatorCopy animateAlongsideTransition:v22 completion:v18];
 
   objc_destroyWeak(&v21);
   objc_destroyWeak(&v23);
@@ -3588,83 +3588,83 @@ void __97__VUIPlaybackManager_playerViewController_willEndFullScreenPresentation
   }
 }
 
-- (void)playerViewControllerWillStartPictureInPicture:(id)a3
+- (void)playerViewControllerWillStartPictureInPicture:(id)picture
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  pictureCopy = picture;
   v5 = sLogObject_5;
   if (os_log_type_enabled(sLogObject_5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v11 = v4;
+    v11 = pictureCopy;
     _os_log_impl(&dword_1E323F000, v5, OS_LOG_TYPE_DEFAULT, "playerViewControllerWillStartPictureInPicture: %@", buf, 0xCu);
   }
 
-  v6 = [(VUIPlaybackManager *)self stateMachine];
+  stateMachine = [(VUIPlaybackManager *)self stateMachine];
   v8 = @"PlayerViewControllerKey";
-  v9 = v4;
+  v9 = pictureCopy;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v9 forKeys:&v8 count:1];
-  [v6 postEvent:@"Will start picture in picture" withContext:0 userInfo:v7];
+  [stateMachine postEvent:@"Will start picture in picture" withContext:0 userInfo:v7];
 }
 
-- (void)playerViewControllerDidStartPictureInPicture:(id)a3
+- (void)playerViewControllerDidStartPictureInPicture:(id)picture
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  pictureCopy = picture;
   v5 = sLogObject_5;
   if (os_log_type_enabled(sLogObject_5, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412290;
-    v10 = v4;
+    v10 = pictureCopy;
     _os_log_impl(&dword_1E323F000, v5, OS_LOG_TYPE_DEFAULT, "playerViewControllerDidStartPictureInPicture: %@", &v9, 0xCu);
   }
 
-  [(VUIPlaybackManager *)self _markMainPlayerMediaItemPlayingPictureInPictureMetadataAsActive:1 forAVPlayerViewController:v4];
-  v6 = [MEMORY[0x1E695DF90] dictionary];
-  [v6 vui_setObjectIfNotNil:v4 forKey:@"PlayerViewControllerKey"];
-  v7 = [(VUIPlaybackManager *)self stateMachine];
-  v8 = [v6 copy];
-  [v7 postEvent:@"Did start picture in picture" withContext:0 userInfo:v8];
+  [(VUIPlaybackManager *)self _markMainPlayerMediaItemPlayingPictureInPictureMetadataAsActive:1 forAVPlayerViewController:pictureCopy];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary vui_setObjectIfNotNil:pictureCopy forKey:@"PlayerViewControllerKey"];
+  stateMachine = [(VUIPlaybackManager *)self stateMachine];
+  v8 = [dictionary copy];
+  [stateMachine postEvent:@"Did start picture in picture" withContext:0 userInfo:v8];
 }
 
-- (void)playerViewController:(id)a3 failedToStartPictureInPictureWithError:(id)a4
+- (void)playerViewController:(id)controller failedToStartPictureInPictureWithError:(id)error
 {
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  errorCopy = error;
   v8 = sLogObject_5;
   if (os_log_type_enabled(sLogObject_5, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138412546;
-    v13 = v6;
+    v13 = controllerCopy;
     v14 = 2112;
-    v15 = v7;
+    v15 = errorCopy;
     _os_log_impl(&dword_1E323F000, v8, OS_LOG_TYPE_DEFAULT, "playerViewController:failedToStartPictureInPictureWithError: %@, %@", &v12, 0x16u);
   }
 
-  v9 = [(VUIPlaybackManager *)self stateMachine];
-  [v9 postEvent:@"Picture in picture presentation did fail"];
+  stateMachine = [(VUIPlaybackManager *)self stateMachine];
+  [stateMachine postEvent:@"Picture in picture presentation did fail"];
 
-  v10 = [(VUIPlaybackManager *)self pipCompletion];
+  pipCompletion = [(VUIPlaybackManager *)self pipCompletion];
 
-  if (v10)
+  if (pipCompletion)
   {
-    v11 = [(VUIPlaybackManager *)self pipCompletion];
-    (v11)[2](v11, v7);
+    pipCompletion2 = [(VUIPlaybackManager *)self pipCompletion];
+    (pipCompletion2)[2](pipCompletion2, errorCopy);
 
     [(VUIPlaybackManager *)self setPipCompletion:0];
   }
 }
 
-- (void)playerViewControllerWillStopPictureInPicture:(id)a3
+- (void)playerViewControllerWillStopPictureInPicture:(id)picture
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  pictureCopy = picture;
   v5 = sLogObject_5;
   if (os_log_type_enabled(sLogObject_5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v8 = v4;
+    v8 = pictureCopy;
     _os_log_impl(&dword_1E323F000, v5, OS_LOG_TYPE_DEFAULT, "playerViewControllerWillStopPictureInPicture: %@", buf, 0xCu);
   }
 
@@ -3682,26 +3682,26 @@ void __67__VUIPlaybackManager_playerViewControllerWillStopPictureInPicture___blo
   [v1 postEvent:@"Will stop picture in picture"];
 }
 
-- (void)playerViewControllerDidStopPictureInPicture:(id)a3
+- (void)playerViewControllerDidStopPictureInPicture:(id)picture
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  pictureCopy = picture;
   v5 = sLogObject_5;
   if (os_log_type_enabled(sLogObject_5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v10 = v4;
+    v10 = pictureCopy;
     _os_log_impl(&dword_1E323F000, v5, OS_LOG_TYPE_DEFAULT, "playerViewControllerDidStopPictureInPicture: %@", buf, 0xCu);
   }
 
-  [(VUIPlaybackManager *)self _markMainPlayerMediaItemPlayingPictureInPictureMetadataAsActive:0 forAVPlayerViewController:v4];
+  [(VUIPlaybackManager *)self _markMainPlayerMediaItemPlayingPictureInPictureMetadataAsActive:0 forAVPlayerViewController:pictureCopy];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __66__VUIPlaybackManager_playerViewControllerDidStopPictureInPicture___block_invoke;
   v7[3] = &unk_1E872D990;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = pictureCopy;
+  v6 = pictureCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v7);
 }
 
@@ -3716,44 +3716,44 @@ void __66__VUIPlaybackManager_playerViewControllerDidStopPictureInPicture___bloc
   [v2 postEvent:@"Did stop picture in picture" withContext:0 userInfo:v4];
 }
 
-- (id)playerViewController:(id)a3 displayNameForMediaSelectionOption:(id)a4
+- (id)playerViewController:(id)controller displayNameForMediaSelectionOption:(id)option
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a4;
-  v5 = [v4 vui_localizedDisplayNameOverride];
-  if (v5)
+  optionCopy = option;
+  vui_localizedDisplayNameOverride = [optionCopy vui_localizedDisplayNameOverride];
+  if (vui_localizedDisplayNameOverride)
   {
     v6 = sLogObject_5;
     if (os_log_type_enabled(sLogObject_5, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 138412546;
-      v9 = v4;
+      v9 = optionCopy;
       v10 = 2112;
-      v11 = v5;
+      v11 = vui_localizedDisplayNameOverride;
       _os_log_impl(&dword_1E323F000, v6, OS_LOG_TYPE_DEFAULT, "App providing localized display name for %@: %@", &v8, 0x16u);
     }
   }
 
-  return v5;
+  return vui_localizedDisplayNameOverride;
 }
 
-- (void)playerViewController:(id)a3 restoreUserInterfaceForPictureInPictureStopWithCompletionHandler:(id)a4
+- (void)playerViewController:(id)controller restoreUserInterfaceForPictureInPictureStopWithCompletionHandler:(id)handler
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  handlerCopy = handler;
   v8 = sLogObject_5;
   if (os_log_type_enabled(sLogObject_5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v17 = v6;
+    v17 = controllerCopy;
     _os_log_impl(&dword_1E323F000, v8, OS_LOG_TYPE_DEFAULT, "playerViewController:restoreUserInterfaceForPictureInPictureStopWithCompletionHandler: %@", buf, 0xCu);
   }
 
-  if (v7)
+  if (handlerCopy)
   {
     v14 = @"CompletionKey";
-    v9 = [v7 copy];
+    v9 = [handlerCopy copy];
     v15 = v9;
     v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v15 forKeys:&v14 count:1];
   }
@@ -3779,23 +3779,23 @@ void __108__VUIPlaybackManager_playerViewController_restoreUserInterfaceForPictu
   [v2 postEvent:@"Restore user interface for picture in picture stop" withContext:0 userInfo:*(a1 + 40)];
 }
 
-- (void)playerViewController:(id)a3 contentViewWillTransitionToSize:(CGSize)a4 withTransitionCoordinator:(id)a5
+- (void)playerViewController:(id)controller contentViewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v26[1] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a5;
-  v11 = [(VUIPlaybackManager *)self skipButton];
-  if (v11)
+  controllerCopy = controller;
+  coordinatorCopy = coordinator;
+  skipButton = [(VUIPlaybackManager *)self skipButton];
+  if (skipButton)
   {
   }
 
   else
   {
-    v12 = [(VUIPlaybackManager *)self promoMetadataView];
+    promoMetadataView = [(VUIPlaybackManager *)self promoMetadataView];
 
-    if (!v12)
+    if (!promoMetadataView)
     {
       goto LABEL_5;
     }
@@ -3810,23 +3810,23 @@ void __108__VUIPlaybackManager_playerViewController_restoreUserInterfaceForPictu
   v23[2] = *&height;
   v21[4] = self;
   objc_copyWeak(v23, &location);
-  v22 = v9;
-  [v10 animateAlongsideTransition:v21 completion:&__block_literal_global_622];
+  v22 = controllerCopy;
+  [coordinatorCopy animateAlongsideTransition:v21 completion:&__block_literal_global_622];
 
   objc_destroyWeak(v23);
   objc_destroyWeak(&location);
 LABEL_5:
-  v13 = [(VUIPlaybackManager *)self mainAVPlayerViewController];
-  v14 = v13 == v9;
+  mainAVPlayerViewController = [(VUIPlaybackManager *)self mainAVPlayerViewController];
+  v14 = mainAVPlayerViewController == controllerCopy;
 
   if (v14)
   {
-    v15 = [(VUIPlaybackManager *)self mainLivePostPlayController];
-    [v15 playerViewControllerWillTransitionToSize:v10 withTransitionCoordinator:{width, height}];
+    mainLivePostPlayController = [(VUIPlaybackManager *)self mainLivePostPlayController];
+    [mainLivePostPlayController playerViewControllerWillTransitionToSize:coordinatorCopy withTransitionCoordinator:{width, height}];
   }
 
-  v16 = [(VUIPlaybackManager *)self extrasContext];
-  if ([v16 shouldExtrasBeVisibleForSize:{width, height}])
+  extrasContext = [(VUIPlaybackManager *)self extrasContext];
+  if ([extrasContext shouldExtrasBeVisibleForSize:{width, height}])
   {
     v17 = +[VUIGroupActivitiesManagerObjC isSessionActive]^ 1;
   }
@@ -3836,12 +3836,12 @@ LABEL_5:
     v17 = 0;
   }
 
-  v18 = [(VUIPlaybackManager *)self stateMachine];
+  stateMachine = [(VUIPlaybackManager *)self stateMachine];
   v25 = @"ExtrasShouldBeVisibleKey";
   v19 = [MEMORY[0x1E696AD98] numberWithBool:v17];
   v26[0] = v19;
   v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v26 forKeys:&v25 count:1];
-  [v18 postEvent:@"Extras visibility needs update" withContext:0 userInfo:v20];
+  [stateMachine postEvent:@"Extras visibility needs update" withContext:0 userInfo:v20];
 }
 
 void __101__VUIPlaybackManager_playerViewController_contentViewWillTransitionToSize_withTransitionCoordinator___block_invoke(uint64_t a1, void *a2)
@@ -3999,64 +3999,64 @@ LABEL_30:
   [v42 setNeedsLayout];
 }
 
-- (void)extrasRequestsMediaPlayback:(id)a3 isBackground:(BOOL)a4
+- (void)extrasRequestsMediaPlayback:(id)playback isBackground:(BOOL)background
 {
   v15[2] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (playback)
   {
-    v4 = a4;
-    v6 = a3;
+    backgroundCopy = background;
+    playbackCopy = playback;
     v7 = objc_opt_new();
-    v8 = [(VUIPlaybackManager *)self extrasContext];
-    v9 = [v8 tvpMediaItem];
+    extrasContext = [(VUIPlaybackManager *)self extrasContext];
+    tvpMediaItem = [extrasContext tvpMediaItem];
 
-    v10 = [v7 playlistForIKMediaElements:v6 withMediaItem:v9 isExtrasContent:1];
+    v10 = [v7 playlistForIKMediaElements:playbackCopy withMediaItem:tvpMediaItem isExtrasContent:1];
 
     if (v10)
     {
-      v11 = [(VUIPlaybackManager *)self stateMachine];
+      stateMachine = [(VUIPlaybackManager *)self stateMachine];
       v14[0] = @"PlaylistKey";
       v14[1] = @"IsBackgroundPlaybackKey";
       v15[0] = v10;
-      v12 = [MEMORY[0x1E696AD98] numberWithBool:v4];
+      v12 = [MEMORY[0x1E696AD98] numberWithBool:backgroundCopy];
       v15[1] = v12;
       v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:v14 count:2];
-      [v11 postEvent:@"Extras playback requested" withContext:0 userInfo:v13];
+      [stateMachine postEvent:@"Extras playback requested" withContext:0 userInfo:v13];
     }
   }
 }
 
-- (void)playerViewController:(id)a3 willTransitionToVisibilityOfPlaybackControls:(BOOL)a4 withAnimationCoordinator:(id)a5
+- (void)playerViewController:(id)controller willTransitionToVisibilityOfPlaybackControls:(BOOL)controls withAnimationCoordinator:(id)coordinator
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  [(VUIPlaybackManager *)self setTransportBarVisible:v6];
-  v10 = [(VUIPlaybackManager *)self mainLivePostPlayController];
-  [v10 playerControlsVisibilityChanged:v6];
+  controlsCopy = controls;
+  controllerCopy = controller;
+  coordinatorCopy = coordinator;
+  [(VUIPlaybackManager *)self setTransportBarVisible:controlsCopy];
+  mainLivePostPlayController = [(VUIPlaybackManager *)self mainLivePostPlayController];
+  [mainLivePostPlayController playerControlsVisibilityChanged:controlsCopy];
 
-  if (v6)
+  if (controlsCopy)
   {
-    v11 = [(VUIPlaybackManager *)self activePlayer];
-    v12 = [v11 state];
-    v13 = [MEMORY[0x1E69D5A40] loading];
+    activePlayer = [(VUIPlaybackManager *)self activePlayer];
+    state = [activePlayer state];
+    loading = [MEMORY[0x1E69D5A40] loading];
 
-    if (v12 != v13)
+    if (state != loading)
     {
       [(VUIPlaybackManager *)self _resetAutoPlayBingeWatchingQualifications];
     }
 
-    v14 = [(VUIPlaybackManager *)self activePlayer];
-    v15 = [v14 currentMediaItem];
-    v16 = [v15 mediaItemMetadataForProperty:@"VUIMediaItemMetadataMakeAdditionalPlayerTabsRequest"];
-    v17 = [v16 BOOLValue];
+    activePlayer2 = [(VUIPlaybackManager *)self activePlayer];
+    currentMediaItem = [activePlayer2 currentMediaItem];
+    v16 = [currentMediaItem mediaItemMetadataForProperty:@"VUIMediaItemMetadataMakeAdditionalPlayerTabsRequest"];
+    bOOLValue = [v16 BOOLValue];
 
-    if (v17)
+    if (bOOLValue)
     {
       objc_initWeak(&location, self);
       v18 = +[VUIPlaybackTabManager sharedInstance];
-      v19 = [(VUIPlaybackManager *)self multiviewIdentifiers];
-      v20 = [v19 copy];
+      multiviewIdentifiers = [(VUIPlaybackManager *)self multiviewIdentifiers];
+      v20 = [multiviewIdentifiers copy];
       v21[0] = MEMORY[0x1E69E9820];
       v21[1] = 3221225472;
       v21[2] = __113__VUIPlaybackManager_playerViewController_willTransitionToVisibilityOfPlaybackControls_withAnimationCoordinator___block_invoke;
@@ -4084,74 +4084,74 @@ void __113__VUIPlaybackManager_playerViewController_willTransitionToVisibilityOf
 - (void)extrasDoneButtonPressed
 {
   v5[1] = *MEMORY[0x1E69E9840];
-  v2 = [(VUIPlaybackManager *)self stateMachine];
+  stateMachine = [(VUIPlaybackManager *)self stateMachine];
   v4 = @"AnimatedKey";
   v5[0] = MEMORY[0x1E695E118];
   v3 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v5 forKeys:&v4 count:1];
-  [v2 postEvent:@"Done Button Pressed" withContext:0 userInfo:v3];
+  [stateMachine postEvent:@"Done Button Pressed" withContext:0 userInfo:v3];
 }
 
-- (void)extrasMenuItemSelected:(id)a3 atIndex:(unint64_t)a4
+- (void)extrasMenuItemSelected:(id)selected atIndex:(unint64_t)index
 {
   v11[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(VUIPlaybackManager *)self stateMachine];
+  selectedCopy = selected;
+  stateMachine = [(VUIPlaybackManager *)self stateMachine];
   v10[0] = @"MenuItemElementKey";
   v10[1] = @"MenuItemIndexKey";
-  v11[0] = v6;
-  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
+  v11[0] = selectedCopy;
+  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:index];
   v11[1] = v8;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:v10 count:2];
 
-  [v7 postEvent:@"Extras menu item selected" withContext:0 userInfo:v9];
+  [stateMachine postEvent:@"Extras menu item selected" withContext:0 userInfo:v9];
 }
 
 - (void)extrasBackButtonPressed
 {
-  v2 = [(VUIPlaybackManager *)self stateMachine];
-  [v2 postEvent:@"Back button pressed"];
+  stateMachine = [(VUIPlaybackManager *)self stateMachine];
+  [stateMachine postEvent:@"Back button pressed"];
 }
 
-- (void)extrasContext:(id)a3 hadFatalError:(id)a4
+- (void)extrasContext:(id)context hadFatalError:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   v6 = sLogObject_5;
   if (os_log_type_enabled(sLogObject_5, OS_LOG_TYPE_ERROR))
   {
-    [VUIPlaybackManager extrasContext:v5 hadFatalError:v6];
+    [VUIPlaybackManager extrasContext:errorCopy hadFatalError:v6];
   }
 
-  v7 = [(VUIPlaybackManager *)self stateMachine];
-  [v7 postEvent:@"Extras failure did occur"];
+  stateMachine = [(VUIPlaybackManager *)self stateMachine];
+  [stateMachine postEvent:@"Extras failure did occur"];
 }
 
-- (void)extrasContextDidLoadMainMenuItems:(id)a3
+- (void)extrasContextDidLoadMainMenuItems:(id)items
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(VUIPlaybackManager *)self extrasContext];
-  v6 = [v5 mainMenuItemElements];
+  itemsCopy = items;
+  extrasContext = [(VUIPlaybackManager *)self extrasContext];
+  mainMenuItemElements = [extrasContext mainMenuItemElements];
 
   v7 = sLogObject_5;
   if (os_log_type_enabled(sLogObject_5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = v7;
     v17 = 134217984;
-    v18 = [v6 count];
+    v18 = [mainMenuItemElements count];
     _os_log_impl(&dword_1E323F000, v8, OS_LOG_TYPE_DEFAULT, "Extras context did load %lu main menu items", &v17, 0xCu);
   }
 
-  v9 = [(VUIPlaybackManager *)self extrasControlItem];
+  extrasControlItem = [(VUIPlaybackManager *)self extrasControlItem];
 
-  if (!v9 && [v6 count])
+  if (!extrasControlItem && [mainMenuItemElements count])
   {
-    v10 = [(VUIPlaybackManager *)self avPlayerViewController];
-    v11 = [v10 view];
-    [v11 bounds];
+    avPlayerViewController = [(VUIPlaybackManager *)self avPlayerViewController];
+    view = [avPlayerViewController view];
+    [view bounds];
     v13 = v12;
     v15 = v14;
 
-    if ([v4 shouldExtrasBeVisibleForSize:{v13, v15}])
+    if ([itemsCopy shouldExtrasBeVisibleForSize:{v13, v15}])
     {
       v16 = +[VUIGroupActivitiesManagerObjC isSessionActive]^ 1;
     }
@@ -4165,25 +4165,25 @@ void __113__VUIPlaybackManager_playerViewController_willTransitionToVisibilityOf
   }
 }
 
-- (void)extrasContext:(id)a3 extrasVisibilityNeedsUpdate:(BOOL)a4
+- (void)extrasContext:(id)context extrasVisibilityNeedsUpdate:(BOOL)update
 {
-  v4 = a4;
+  updateCopy = update;
   v9[1] = *MEMORY[0x1E69E9840];
-  v5 = [(VUIPlaybackManager *)self stateMachine];
+  stateMachine = [(VUIPlaybackManager *)self stateMachine];
   v8 = @"ExtrasShouldBeVisibleKey";
-  v6 = [MEMORY[0x1E696AD98] numberWithBool:v4];
+  v6 = [MEMORY[0x1E696AD98] numberWithBool:updateCopy];
   v9[0] = v6;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:&v8 count:1];
-  [v5 postEvent:@"Extras visibility needs update" withContext:0 userInfo:v7];
+  [stateMachine postEvent:@"Extras visibility needs update" withContext:0 userInfo:v7];
 }
 
-- (void)featureMonitor:(id)a3 featureDidChangeState:(id)a4 animated:(BOOL)a5
+- (void)featureMonitor:(id)monitor featureDidChangeState:(id)state animated:(BOOL)animated
 {
-  v5 = a5;
-  v7 = a4;
-  if ([v7 conformsToProtocol:&unk_1F5E94048])
+  animatedCopy = animated;
+  stateCopy = state;
+  if ([stateCopy conformsToProtocol:&unk_1F5E94048])
   {
-    [(VUIPlaybackManager *)self _updateTimeBoundFeature:v7 animated:v5];
+    [(VUIPlaybackManager *)self _updateTimeBoundFeature:stateCopy animated:animatedCopy];
   }
 
   else
@@ -4191,39 +4191,39 @@ void __113__VUIPlaybackManager_playerViewController_willTransitionToVisibilityOf
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(VUIPlaybackManager *)self _updateTimeTriggeredFeature:v7 animated:v5];
+      [(VUIPlaybackManager *)self _updateTimeTriggeredFeature:stateCopy animated:animatedCopy];
     }
   }
 }
 
-- (void)playbackContainerViewControllerDidFinishLoadingPostPlay:(id)a3
+- (void)playbackContainerViewControllerDidFinishLoadingPostPlay:(id)play
 {
-  v3 = [(VUIPlaybackManager *)self stateMachine];
-  [v3 postEvent:@"Post play has been configured" withContext:0 userInfo:0];
+  stateMachine = [(VUIPlaybackManager *)self stateMachine];
+  [stateMachine postEvent:@"Post play has been configured" withContext:0 userInfo:0];
 }
 
-- (void)playbackContainerViewControllerExitPictureInPicturePressed:(id)a3
+- (void)playbackContainerViewControllerExitPictureInPicturePressed:(id)pressed
 {
-  v3 = [(VUIPlaybackManager *)self stateMachine];
-  [v3 postEvent:@"Post play cancelled"];
+  stateMachine = [(VUIPlaybackManager *)self stateMachine];
+  [stateMachine postEvent:@"Post play cancelled"];
 }
 
-- (void)playbackContainerViewControllerBackgroundPlaybackWillBegin:(id)a3
+- (void)playbackContainerViewControllerBackgroundPlaybackWillBegin:(id)begin
 {
-  v3 = [(VUIPlaybackManager *)self stateMachine];
-  [v3 postEvent:@"Post play hide playback"];
+  stateMachine = [(VUIPlaybackManager *)self stateMachine];
+  [stateMachine postEvent:@"Post play hide playback"];
 }
 
-- (void)playbackContainerViewControllerDidDisappear:(id)a3
+- (void)playbackContainerViewControllerDidDisappear:(id)disappear
 {
-  v3 = [(VUIPlaybackManager *)self stateMachine];
-  [v3 postEvent:@"Playback container did disappear"];
+  stateMachine = [(VUIPlaybackManager *)self stateMachine];
+  [stateMachine postEvent:@"Playback container did disappear"];
 }
 
-- (void)playbackContainerViewControllerWillTransitionToSize:(CGSize)a3
+- (void)playbackContainerViewControllerWillTransitionToSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v5 = +[VUIPlaybackTabManager sharedInstance];
   [v5 updatePlayerViewSize:{width, height}];
 }
@@ -4231,13 +4231,13 @@ void __113__VUIPlaybackManager_playerViewController_willTransitionToVisibilityOf
 - (NSArray)multiviewIdentifiers
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [(VUIPlaybackManager *)self multiviewPlaybackInfo];
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  multiviewPlaybackInfo = [(VUIPlaybackManager *)self multiviewPlaybackInfo];
+  v5 = [multiviewPlaybackInfo countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -4249,35 +4249,35 @@ void __113__VUIPlaybackManager_playerViewController_willTransitionToVisibilityOf
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(multiviewPlaybackInfo);
         }
 
-        v10 = [*(*(&v14 + 1) + 8 * i) player];
-        v11 = [v10 currentMediaItem];
-        v12 = [v11 mediaItemMetadataForProperty:v8];
+        player = [*(*(&v14 + 1) + 8 * i) player];
+        currentMediaItem = [player currentMediaItem];
+        v12 = [currentMediaItem mediaItemMetadataForProperty:v8];
 
         if (v12)
         {
-          [v3 addObject:v12];
+          [array addObject:v12];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [multiviewPlaybackInfo countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v6);
   }
 
-  return v3;
+  return array;
 }
 
 - (BOOL)mediaSupportsStartOver
 {
-  v2 = [(VUIPlaybackManager *)self currentMediaItem];
-  v3 = [v2 mediaItemMetadataForProperty:@"VUIMediaItemMetadataSupportsStartOver"];
-  v4 = [v3 BOOLValue];
+  currentMediaItem = [(VUIPlaybackManager *)self currentMediaItem];
+  v3 = [currentMediaItem mediaItemMetadataForProperty:@"VUIMediaItemMetadataSupportsStartOver"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (id)createContentSelectionViewController
@@ -4289,28 +4289,28 @@ void __113__VUIPlaybackManager_playerViewController_willTransitionToVisibilityOf
     _os_log_impl(&dword_1E323F000, v3, OS_LOG_TYPE_DEFAULT, "Creating content selection view controller", v17, 2u);
   }
 
-  v4 = [(VUIPlaybackManager *)self multiviewPlaybackInfo];
-  v5 = [v4 firstObject];
+  multiviewPlaybackInfo = [(VUIPlaybackManager *)self multiviewPlaybackInfo];
+  firstObject = [multiviewPlaybackInfo firstObject];
 
   v6 = +[VUIPlaybackTabManager sharedInstance];
-  v7 = [v6 tabsInfo];
-  v8 = [v7 multiviewTabInfo];
+  tabsInfo = [v6 tabsInfo];
+  multiviewTabInfo = [tabsInfo multiviewTabInfo];
 
-  if (v8)
+  if (multiviewTabInfo)
   {
-    v9 = [v5 broadcastLocale];
-    v10 = v9;
+    broadcastLocale = [firstObject broadcastLocale];
+    v10 = broadcastLocale;
     v11 = &stru_1F5DB25C0;
-    if (v9)
+    if (broadcastLocale)
     {
-      v11 = v9;
+      v11 = broadcastLocale;
     }
 
     v12 = v11;
 
     v13 = +[VUIPlaybackTabManager sharedInstance];
-    v14 = [v5 playsFromStart];
-    v15 = [v13 createHUDViewControllerWithTabInfo:v8 excludingCanonicals:MEMORY[0x1E695E0F0] isMultiview:1 locale:v12 playsFromStart:v14];
+    playsFromStart = [firstObject playsFromStart];
+    v15 = [v13 createHUDViewControllerWithTabInfo:multiviewTabInfo excludingCanonicals:MEMORY[0x1E695E0F0] isMultiview:1 locale:v12 playsFromStart:playsFromStart];
   }
 
   else
@@ -4321,12 +4321,12 @@ void __113__VUIPlaybackManager_playerViewController_willTransitionToVisibilityOf
   return v15;
 }
 
-- (void)_playbackStateDidChange:(id)a3
+- (void)_playbackStateDidChange:(id)change
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKey:*MEMORY[0x1E69D6098]];
+  changeCopy = change;
+  userInfo = [changeCopy userInfo];
+  v6 = [userInfo objectForKey:*MEMORY[0x1E69D6098]];
 
   v7 = sLogObject_5;
   if (os_log_type_enabled(sLogObject_5, OS_LOG_TYPE_DEFAULT))
@@ -4336,10 +4336,10 @@ void __113__VUIPlaybackManager_playerViewController_willTransitionToVisibilityOf
     _os_log_impl(&dword_1E323F000, v7, OS_LOG_TYPE_DEFAULT, "Playback state did change to %@", &v29, 0xCu);
   }
 
-  v8 = [v4 object];
-  v9 = [(VUIPlaybackManager *)self mainPlayer];
+  object = [changeCopy object];
+  mainPlayer = [(VUIPlaybackManager *)self mainPlayer];
 
-  if (v8 != v9)
+  if (object != mainPlayer)
   {
     v10 = 0;
     goto LABEL_5;
@@ -4350,17 +4350,17 @@ void __113__VUIPlaybackManager_playerViewController_willTransitionToVisibilityOf
     goto LABEL_11;
   }
 
-  v15 = [MEMORY[0x1E69D5A40] playing];
-  v16 = v15;
-  if (v6 == v15)
+  playing = [MEMORY[0x1E69D5A40] playing];
+  v16 = playing;
+  if (v6 == playing)
   {
   }
 
   else
   {
-    v17 = [MEMORY[0x1E69D5A40] paused];
+    paused = [MEMORY[0x1E69D5A40] paused];
 
-    if (v6 != v17)
+    if (v6 != paused)
     {
 LABEL_11:
       v10 = 0;
@@ -4372,17 +4372,17 @@ LABEL_11:
   [(VUIPlaybackManager *)self _addRadioBroadcastTipIfNeeded];
   v10 = MEMORY[0x1E695E118];
 LABEL_14:
-  v18 = [MEMORY[0x1E69D5A40] loading];
+  loading = [MEMORY[0x1E69D5A40] loading];
 
-  v19 = [(VUIPlaybackManager *)self mainPlayerLongLoadingTimer];
+  mainPlayerLongLoadingTimer = [(VUIPlaybackManager *)self mainPlayerLongLoadingTimer];
 
-  if (v6 == v18)
+  if (v6 == loading)
   {
-    if (!v19)
+    if (!mainPlayerLongLoadingTimer)
     {
       v22 = +[VUIFeaturesConfiguration sharedInstance];
-      v23 = [v22 nowPlayingConfig];
-      [v23 longLoadingTimeout];
+      nowPlayingConfig = [v22 nowPlayingConfig];
+      [nowPlayingConfig longLoadingTimeout];
       v25 = v24;
 
       v26 = sLogObject_5;
@@ -4411,7 +4411,7 @@ LABEL_14:
     }
   }
 
-  else if (v19)
+  else if (mainPlayerLongLoadingTimer)
   {
     v20 = sLogObject_5;
     if (os_log_type_enabled(sLogObject_5, OS_LOG_TYPE_DEFAULT))
@@ -4420,35 +4420,35 @@ LABEL_14:
       _os_log_impl(&dword_1E323F000, v20, OS_LOG_TYPE_DEFAULT, "Invalidating long loading timer", &v29, 2u);
     }
 
-    v21 = [(VUIPlaybackManager *)self mainPlayerLongLoadingTimer];
-    [v21 invalidate];
+    mainPlayerLongLoadingTimer2 = [(VUIPlaybackManager *)self mainPlayerLongLoadingTimer];
+    [mainPlayerLongLoadingTimer2 invalidate];
 
     [(VUIPlaybackManager *)self setMainPlayerLongLoadingTimer:0];
   }
 
 LABEL_5:
-  v11 = [v4 userInfo];
-  v12 = [v11 mutableCopy];
+  userInfo2 = [changeCopy userInfo];
+  v12 = [userInfo2 mutableCopy];
 
   if (v10)
   {
     [v12 setObject:v10 forKey:@"DidMainPlayerJustCompleteInitialLoadingKey"];
   }
 
-  v13 = [(VUIPlaybackManager *)self stateMachine];
-  v14 = [v4 object];
-  [v13 postEvent:@"Playback state did change" withContext:v14 userInfo:v12];
+  stateMachine = [(VUIPlaybackManager *)self stateMachine];
+  object2 = [changeCopy object];
+  [stateMachine postEvent:@"Playback state did change" withContext:object2 userInfo:v12];
 }
 
-- (void)_markMediaItemToDeleteOnCompletionForMediaItem:(id)a3 deleteOnCompletion:(BOOL)a4
+- (void)_markMediaItemToDeleteOnCompletionForMediaItem:(id)item deleteOnCompletion:(BOOL)completion
 {
-  v4 = a4;
+  completionCopy = completion;
   v15 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 mediaItemMetadataForProperty:*MEMORY[0x1E69D5DA8]];
+  itemCopy = item;
+  v6 = [itemCopy mediaItemMetadataForProperty:*MEMORY[0x1E69D5DA8]];
   v7 = +[VUIMediaLibraryManager defaultManager];
-  v8 = [v7 sidebandMediaLibrary];
-  v9 = [v8 videoForAdamID:v6 useMainThreadContext:1];
+  sidebandMediaLibrary = [v7 sidebandMediaLibrary];
+  v9 = [sidebandMediaLibrary videoForAdamID:v6 useMainThreadContext:1];
 
   if (v9 && [v9 triggerType] == 1)
   {
@@ -4456,25 +4456,25 @@ LABEL_5:
     if (os_log_type_enabled(sLogObject_5, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 138412290;
-      v14 = v5;
+      v14 = itemCopy;
       _os_log_impl(&dword_1E323F000, v10, OS_LOG_TYPE_DEFAULT, "marking %@ to delete on completion", &v13, 0xCu);
     }
 
-    [v9 setShouldDeleteAfterCompletion:v4];
+    [v9 setShouldDeleteAfterCompletion:completionCopy];
     v11 = +[VUIMediaLibraryManager defaultManager];
-    v12 = [v11 sidebandMediaLibrary];
-    [v12 saveChangesToManagedObjects];
+    sidebandMediaLibrary2 = [v11 sidebandMediaLibrary];
+    [sidebandMediaLibrary2 saveChangesToManagedObjects];
   }
 }
 
-- (BOOL)_didWatchContentToEndForPlayer:(id)a3
+- (BOOL)_didWatchContentToEndForPlayer:(id)player
 {
-  v3 = a3;
-  v4 = [v3 currentMediaItem];
-  v5 = [v4 mediaItemMetadataForProperty:*MEMORY[0x1E69D5CB0]];
+  playerCopy = player;
+  currentMediaItem = [playerCopy currentMediaItem];
+  v5 = [currentMediaItem mediaItemMetadataForProperty:*MEMORY[0x1E69D5CB0]];
 
-  v6 = [v3 currentMediaItem];
-  v7 = [v6 mediaItemMetadataForProperty:*MEMORY[0x1E69D5DF8]];
+  currentMediaItem2 = [playerCopy currentMediaItem];
+  v7 = [currentMediaItem2 mediaItemMetadataForProperty:*MEMORY[0x1E69D5DF8]];
 
   if (!(v5 | v7))
   {
@@ -4499,7 +4499,7 @@ LABEL_5:
     }
   }
 
-  [v3 duration];
+  [playerCopy duration];
   v13 = fmin(v12, v8);
   if (v13 == 0.0)
   {
@@ -4509,103 +4509,103 @@ LABEL_14:
 
   else
   {
-    [v3 elapsedTime];
+    [playerCopy elapsedTime];
     v15 = v14 >= v13;
   }
 
   return v15;
 }
 
-- (void)_currentMediaItemWillChange:(id)a3
+- (void)_currentMediaItemWillChange:(id)change
 {
-  v7 = a3;
+  changeCopy = change;
   if (_os_feature_enabled_impl())
   {
-    v4 = [v7 object];
-    v5 = [(VUIPlaybackManager *)self _didWatchContentToEndForPlayer:v4];
-    v6 = [v4 currentMediaItem];
-    [(VUIPlaybackManager *)self _markMediaItemToDeleteOnCompletionForMediaItem:v6 deleteOnCompletion:v5];
+    object = [changeCopy object];
+    v5 = [(VUIPlaybackManager *)self _didWatchContentToEndForPlayer:object];
+    currentMediaItem = [object currentMediaItem];
+    [(VUIPlaybackManager *)self _markMediaItemToDeleteOnCompletionForMediaItem:currentMediaItem deleteOnCompletion:v5];
   }
 }
 
-- (void)_currentMediaItemDidChange:(id)a3
+- (void)_currentMediaItemDidChange:(id)change
 {
   [(VUIPlaybackManager *)self _updateRequiresLinearPlayback];
-  v4 = [(VUIPlaybackManager *)self featureMonitor];
-  [v4 removeFeaturesMatching:&unk_1F5E5E868];
+  featureMonitor = [(VUIPlaybackManager *)self featureMonitor];
+  [featureMonitor removeFeaturesMatching:&unk_1F5E5E868];
 
-  v5 = [(VUIPlaybackManager *)self currentMediaItem];
+  currentMediaItem = [(VUIPlaybackManager *)self currentMediaItem];
 
-  if (v5)
+  if (currentMediaItem)
   {
-    v6 = [(VUIPlaybackManager *)self currentMediaItem];
-    [(VUIPlaybackManager *)self _donateUserActivityForMediaItem:v6];
+    currentMediaItem2 = [(VUIPlaybackManager *)self currentMediaItem];
+    [(VUIPlaybackManager *)self _donateUserActivityForMediaItem:currentMediaItem2];
 
-    v7 = [(VUIPlaybackManager *)self stateMachine];
-    v8 = [v7 currentState];
-    v9 = [v8 isEqualToString:@"Showing multiview playback"];
+    stateMachine = [(VUIPlaybackManager *)self stateMachine];
+    currentState = [stateMachine currentState];
+    v9 = [currentState isEqualToString:@"Showing multiview playback"];
 
     if ((v9 & 1) == 0)
     {
       v11 = +[VUIPlaybackTabManager sharedInstance];
-      v10 = [(VUIPlaybackManager *)self avPlayerViewController];
-      [v11 resetPlayerTabsForPlayerViewController:v10];
+      avPlayerViewController = [(VUIPlaybackManager *)self avPlayerViewController];
+      [v11 resetPlayerTabsForPlayerViewController:avPlayerViewController];
     }
   }
 }
 
-- (void)_playbackErrorDidOccur:(id)a3
+- (void)_playbackErrorDidOccur:(id)occur
 {
-  v4 = a3;
-  v7 = [(VUIPlaybackManager *)self stateMachine];
-  v5 = [v4 object];
-  v6 = [v4 userInfo];
+  occurCopy = occur;
+  stateMachine = [(VUIPlaybackManager *)self stateMachine];
+  object = [occurCopy object];
+  userInfo = [occurCopy userInfo];
 
-  [v7 postEvent:@"Error did occur" withContext:v5 userInfo:v6];
+  [stateMachine postEvent:@"Error did occur" withContext:object userInfo:userInfo];
 }
 
-- (void)_externalPlaybackTypeDidChange:(id)a3
+- (void)_externalPlaybackTypeDidChange:(id)change
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = [a3 object];
-  v5 = [(VUIPlaybackManager *)self mainPlayer];
+  object = [change object];
+  mainPlayer = [(VUIPlaybackManager *)self mainPlayer];
 
-  if (v4 == v5)
+  if (object == mainPlayer)
   {
     v6 = sLogObject_5;
     if (os_log_type_enabled(sLogObject_5, OS_LOG_TYPE_DEFAULT))
     {
       v7 = v6;
-      v8 = [(VUIPlaybackManager *)self mainPlayer];
+      mainPlayer2 = [(VUIPlaybackManager *)self mainPlayer];
       v14 = 134217984;
-      v15 = [v8 externalPlaybackType];
+      externalPlaybackType = [mainPlayer2 externalPlaybackType];
       _os_log_impl(&dword_1E323F000, v7, OS_LOG_TYPE_DEFAULT, "ExternalPlaybacktype did change externalPlaybackType = %ld", &v14, 0xCu);
     }
 
-    v9 = [(VUIPlaybackManager *)self avPlayerViewController];
-    v10 = [(VUIPlaybackManager *)self mainPlayer];
-    v11 = [v10 externalPlaybackType] != 0;
+    avPlayerViewController = [(VUIPlaybackManager *)self avPlayerViewController];
+    mainPlayer3 = [(VUIPlaybackManager *)self mainPlayer];
+    v11 = [mainPlayer3 externalPlaybackType] != 0;
 
-    v12 = [v9 configuration];
-    [v12 setExcludedControls:32 * v11];
-    [v9 setConfiguration:v12];
+    configuration = [avPlayerViewController configuration];
+    [configuration setExcludedControls:32 * v11];
+    [avPlayerViewController setConfiguration:configuration];
   }
 
-  v13 = [(VUIPlaybackManager *)self stateMachine];
-  [v13 postEvent:@"External playback type did change"];
+  stateMachine = [(VUIPlaybackManager *)self stateMachine];
+  [stateMachine postEvent:@"External playback type did change"];
 }
 
 - (void)_togglePlayerTabs
 {
   v3 = +[VUIPlaybackTabManager sharedInstance];
-  v4 = [v3 isPlayerTabsEnabled];
+  isPlayerTabsEnabled = [v3 isPlayerTabsEnabled];
 
-  if (v4)
+  if (isPlayerTabsEnabled)
   {
     objc_initWeak(&location, self);
     v5 = +[VUIPlaybackTabManager sharedInstance];
-    v6 = [(VUIPlaybackManager *)self avPlayerViewController];
-    [v5 resetPlayerTabsForPlayerViewController:v6];
+    avPlayerViewController = [(VUIPlaybackManager *)self avPlayerViewController];
+    [v5 resetPlayerTabsForPlayerViewController:avPlayerViewController];
 
     v7 = +[VUIPlaybackTabManager sharedInstance];
     v8[0] = MEMORY[0x1E69E9820];
@@ -4627,7 +4627,7 @@ void __39__VUIPlaybackManager__togglePlayerTabs__block_invoke(uint64_t a1)
   [WeakRetained _updateMultiviewButtonState];
 }
 
-- (void)_appControllerDidStart:(id)a3
+- (void)_appControllerDidStart:(id)start
 {
   v4 = sLogObject_5;
   if (os_log_type_enabled(sLogObject_5, OS_LOG_TYPE_DEFAULT))
@@ -4639,7 +4639,7 @@ void __39__VUIPlaybackManager__togglePlayerTabs__block_invoke(uint64_t a1)
   [(VUIPlaybackManager *)self _togglePlayerTabs];
 }
 
-- (void)_networkReachbilityDidChange:(id)a3
+- (void)_networkReachbilityDidChange:(id)change
 {
   v22 = *MEMORY[0x1E69E9840];
   v4 = +[_TtC8VideosUI38VUINetworkReachabilityMonitorObjCProxy isNetworkReachable];
@@ -4657,16 +4657,16 @@ void __39__VUIPlaybackManager__togglePlayerTabs__block_invoke(uint64_t a1)
     _os_log_impl(&dword_1E323F000, v5, OS_LOG_TYPE_DEFAULT, "Network reachability did change. Is reachable: %@", buf, 0xCu);
   }
 
-  v7 = [(VUIPlaybackManager *)self avPlayerViewController];
-  v8 = [v7 view];
-  [v8 bounds];
+  avPlayerViewController = [(VUIPlaybackManager *)self avPlayerViewController];
+  view = [avPlayerViewController view];
+  [view bounds];
   v10 = v9;
   v12 = v11;
 
   if (v4)
   {
-    v13 = [(VUIPlaybackManager *)self extrasContext];
-    if ([v13 shouldExtrasBeVisibleForSize:{v10, v12}])
+    extrasContext = [(VUIPlaybackManager *)self extrasContext];
+    if ([extrasContext shouldExtrasBeVisibleForSize:{v10, v12}])
     {
       v14 = +[VUIGroupActivitiesManagerObjC isSessionActive]^ 1;
     }
@@ -4682,38 +4682,38 @@ void __39__VUIPlaybackManager__togglePlayerTabs__block_invoke(uint64_t a1)
     v14 = 0;
   }
 
-  v15 = [(VUIPlaybackManager *)self stateMachine];
+  stateMachine = [(VUIPlaybackManager *)self stateMachine];
   v16 = [MEMORY[0x1E696AD98] numberWithBool:{v14, @"ExtrasShouldBeVisibleKey"}];
   v19 = v16;
   v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v19 forKeys:&v18 count:1];
-  [v15 postEvent:@"Extras visibility needs update" withContext:0 userInfo:v17];
+  [stateMachine postEvent:@"Extras visibility needs update" withContext:0 userInfo:v17];
 
   [(VUIPlaybackManager *)self _togglePlayerTabs];
 }
 
-- (void)_playerRateDidChange:(id)a3
+- (void)_playerRateDidChange:(id)change
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  changeCopy = change;
   v5 = sLogObject_5;
   if (os_log_type_enabled(sLogObject_5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = [v4 object];
+    object = [changeCopy object];
     v17 = 138412290;
-    v18 = v7;
+    v18 = object;
     _os_log_impl(&dword_1E323F000, v6, OS_LOG_TYPE_DEFAULT, "Player rate did change %@", &v17, 0xCu);
   }
 
-  v8 = [v4 object];
-  v9 = [(VUIPlaybackManager *)self _multiviewInfoForPlayer:v8];
-  v10 = [v4 userInfo];
-  v11 = [v10 objectForKey:*MEMORY[0x1E6987A90]];
+  object2 = [changeCopy object];
+  v9 = [(VUIPlaybackManager *)self _multiviewInfoForPlayer:object2];
+  userInfo = [changeCopy userInfo];
+  v11 = [userInfo objectForKey:*MEMORY[0x1E6987A90]];
 
   if (v9)
   {
-    v12 = [v9 player];
-    [v12 rate];
+    player = [v9 player];
+    [player rate];
     v14 = v13;
 
     if (v14 == 0.0)
@@ -4722,7 +4722,7 @@ void __39__VUIPlaybackManager__togglePlayerTabs__block_invoke(uint64_t a1)
       if (os_log_type_enabled(sLogObject_5, OS_LOG_TYPE_DEFAULT))
       {
         v17 = 138412546;
-        v18 = v8;
+        v18 = object2;
         v19 = 2112;
         v20 = v11;
         _os_log_impl(&dword_1E323F000, v15, OS_LOG_TYPE_DEFAULT, "Player %@ paused due to %@", &v17, 0x16u);
@@ -4740,21 +4740,21 @@ void __39__VUIPlaybackManager__togglePlayerTabs__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_didPlayToEnd:(id)a3
+- (void)_didPlayToEnd:(id)end
 {
   if (![(VUIPlaybackManager *)self _isNewPostPlayEnabled])
   {
-    v4 = [(VUIPlaybackManager *)self postPlayView];
-    v5 = [v4 type];
+    postPlayView = [(VUIPlaybackManager *)self postPlayView];
+    type = [postPlayView type];
 
-    v6 = [(VUIPlaybackManager *)self _allowedToAutoPlayForType:v5];
-    v7 = [(VUIPlaybackManager *)self postPlayView];
-    if (v7)
+    v6 = [(VUIPlaybackManager *)self _allowedToAutoPlayForType:type];
+    postPlayView2 = [(VUIPlaybackManager *)self postPlayView];
+    if (postPlayView2)
     {
-      v8 = v7;
-      v9 = [(VUIPlaybackManager *)self isPostPlayActive];
+      v8 = postPlayView2;
+      isPostPlayActive = [(VUIPlaybackManager *)self isPostPlayActive];
 
-      if (!v6 && v9)
+      if (!v6 && isPostPlayActive)
       {
 
         [(VUIPlaybackManager *)self dismissPlaybackAnimated:1 leaveGroupActivitySession:0 completion:0];
@@ -4763,47 +4763,47 @@ void __39__VUIPlaybackManager__togglePlayerTabs__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_applicationDidEnterBackground:(id)a3
+- (void)_applicationDidEnterBackground:(id)background
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = [MEMORY[0x1E695DF00] date];
+  date = [MEMORY[0x1E695DF00] date];
   v5 = sLogObject_5;
   if (os_log_type_enabled(sLogObject_5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = date;
     _os_log_impl(&dword_1E323F000, v5, OS_LOG_TYPE_DEFAULT, "Setting app background date to %@", &v7, 0xCu);
   }
 
-  [(VUIPlaybackManager *)self setDateAppWasBackgrounded:v4];
-  v6 = [(VUIPlaybackManager *)self stateMachine];
-  [v6 postEvent:@"Application did enter background"];
+  [(VUIPlaybackManager *)self setDateAppWasBackgrounded:date];
+  stateMachine = [(VUIPlaybackManager *)self stateMachine];
+  [stateMachine postEvent:@"Application did enter background"];
 }
 
-- (void)_applicationWillEnterForeground:(id)a3
+- (void)_applicationWillEnterForeground:(id)foreground
 {
-  v3 = [(VUIPlaybackManager *)self stateMachine];
-  [v3 postEvent:@"Application will enter foreground"];
+  stateMachine = [(VUIPlaybackManager *)self stateMachine];
+  [stateMachine postEvent:@"Application will enter foreground"];
 }
 
-- (void)_applicationWillResignActive:(id)a3
+- (void)_applicationWillResignActive:(id)active
 {
-  v3 = [(VUIPlaybackManager *)self stateMachine];
-  [v3 postEvent:@"Application will resign active"];
+  stateMachine = [(VUIPlaybackManager *)self stateMachine];
+  [stateMachine postEvent:@"Application will resign active"];
 }
 
-- (void)_applicationDidBecomeActive:(id)a3
+- (void)_applicationDidBecomeActive:(id)active
 {
-  v3 = [(VUIPlaybackManager *)self stateMachine];
-  [v3 postEvent:@"Application did become active"];
+  stateMachine = [(VUIPlaybackManager *)self stateMachine];
+  [stateMachine postEvent:@"Application did become active"];
 }
 
-- (void)_accountDidChange:(id)a3
+- (void)_accountDidChange:(id)change
 {
-  v4 = [MEMORY[0x1E69E14B0] sharedInstance];
-  v5 = [v4 activeAccount];
+  mEMORY[0x1E69E14B0] = [MEMORY[0x1E69E14B0] sharedInstance];
+  activeAccount = [mEMORY[0x1E69E14B0] activeAccount];
 
-  if (!v5)
+  if (!activeAccount)
   {
     v6 = sLogObject_5;
     if (os_log_type_enabled(sLogObject_5, OS_LOG_TYPE_DEFAULT))
@@ -4816,77 +4816,77 @@ void __39__VUIPlaybackManager__togglePlayerTabs__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_groupActivityDidEnd:(id)a3
+- (void)_groupActivityDidEnd:(id)end
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  endCopy = end;
   v5 = sLogObject_5;
   if (os_log_type_enabled(sLogObject_5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = endCopy;
     _os_log_impl(&dword_1E323F000, v5, OS_LOG_TYPE_DEFAULT, "group activity did end %@", &v7, 0xCu);
   }
 
-  v6 = [(VUIPlaybackManager *)self multiPlayerViewController];
-  [v6 setFullscreenGesturesEnabled:1];
+  multiPlayerViewController = [(VUIPlaybackManager *)self multiPlayerViewController];
+  [multiPlayerViewController setFullscreenGesturesEnabled:1];
 }
 
-- (void)_audioSessionRouteDidChange:(id)a3
+- (void)_audioSessionRouteDidChange:(id)change
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  changeCopy = change;
   v5 = sLogObject_5;
   if (os_log_type_enabled(sLogObject_5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = v4;
+    v9 = changeCopy;
     _os_log_impl(&dword_1E323F000, v5, OS_LOG_TYPE_DEFAULT, "session route did change %@", &v8, 0xCu);
   }
 
   if ([(VUIPlaybackManager *)self _audioContainsHDMIRoute])
   {
-    v6 = [(VUIPlaybackManager *)self _currentlyPlayingMultiviewInfo];
-    v7 = [v6 player];
-    [v7 play];
+    _currentlyPlayingMultiviewInfo = [(VUIPlaybackManager *)self _currentlyPlayingMultiviewInfo];
+    player = [_currentlyPlayingMultiviewInfo player];
+    [player play];
   }
 }
 
-- (void)_selectedAudioOptionDidChangeForPlayer:(id)a3
+- (void)_selectedAudioOptionDidChangeForPlayer:(id)player
 {
-  v5 = a3;
-  v4 = [(VUIPlaybackManager *)self mainPlayer];
+  playerCopy = player;
+  mainPlayer = [(VUIPlaybackManager *)self mainPlayer];
 
-  if (v4 == v5)
+  if (mainPlayer == playerCopy)
   {
-    [v5 handleRadioBroadcastSelected];
+    [playerCopy handleRadioBroadcastSelected];
   }
 
-  [(VUIPlaybackManager *)self _donateLanguageCodeFromPlayer:v5 useAudio:1];
+  [(VUIPlaybackManager *)self _donateLanguageCodeFromPlayer:playerCopy useAudio:1];
 }
 
-- (void)_donateLanguageCodeFromPlayer:(id)a3 useAudio:(BOOL)a4
+- (void)_donateLanguageCodeFromPlayer:(id)player useAudio:(BOOL)audio
 {
-  v4 = a4;
+  audioCopy = audio;
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = v6;
-  if (v4)
+  playerCopy = player;
+  v7 = playerCopy;
+  if (audioCopy)
   {
-    [v6 selectedAudioOption];
+    [playerCopy selectedAudioOption];
   }
 
   else
   {
-    [v6 selectedSubtitleOption];
+    [playerCopy selectedSubtitleOption];
   }
   v8 = ;
-  v9 = [v8 languageCodeBCP47];
+  languageCodeBCP47 = [v8 languageCodeBCP47];
 
-  if (v9)
+  if (languageCodeBCP47)
   {
-    v10 = [v7 currentMediaItem];
-    v11 = [v10 mediaItemMetadataForProperty:*MEMORY[0x1E69D5DA8]];
+    currentMediaItem = [v7 currentMediaItem];
+    v11 = [currentMediaItem mediaItemMetadataForProperty:*MEMORY[0x1E69D5DA8]];
 
     objc_initWeak(&location, self);
     v12 = sLogObject_5;
@@ -4894,30 +4894,30 @@ void __39__VUIPlaybackManager__togglePlayerTabs__block_invoke(uint64_t a1)
     {
       v13 = @"subtitle";
       *buf = 138412802;
-      if (v4)
+      if (audioCopy)
       {
         v13 = @"audio";
       }
 
       v23 = v13;
       v24 = 2112;
-      v25 = v9;
+      v25 = languageCodeBCP47;
       v26 = 2112;
       v27 = v7;
       _os_log_impl(&dword_1E323F000, v12, OS_LOG_TYPE_DEFAULT, "Donating %@ language code: %@ from player %@", buf, 0x20u);
     }
 
-    v14 = [(VUIPlaybackManager *)self biomeSerialQueue];
+    biomeSerialQueue = [(VUIPlaybackManager *)self biomeSerialQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __61__VUIPlaybackManager__donateLanguageCodeFromPlayer_useAudio___block_invoke;
     block[3] = &unk_1E8730D70;
-    v20 = v4;
+    v20 = audioCopy;
     v17 = v11;
-    v18 = v9;
+    v18 = languageCodeBCP47;
     v15 = v11;
     objc_copyWeak(&v19, &location);
-    dispatch_async(v14, block);
+    dispatch_async(biomeSerialQueue, block);
 
     objc_destroyWeak(&v19);
     objc_destroyWeak(&location);
@@ -4946,81 +4946,81 @@ void __61__VUIPlaybackManager__donateLanguageCodeFromPlayer_useAudio___block_inv
 {
   if (+[VUIPlaybackManager _isTipKitEnabled])
   {
-    v3 = [(VUIPlaybackManager *)self playerViewController];
-    v6 = [v3 configuration];
+    playerViewController = [(VUIPlaybackManager *)self playerViewController];
+    configuration = [playerViewController configuration];
 
-    v4 = [(VUIPlaybackManager *)self mainPlayer];
-    +[PlayerTipKitManagerObjC addTipsToConfiguration:isRadioBroadcastEnabled:](_TtC8VideosUI23PlayerTipKitManagerObjC, "addTipsToConfiguration:isRadioBroadcastEnabled:", v6, [v4 isRadioBroadcastSupported]);
+    mainPlayer = [(VUIPlaybackManager *)self mainPlayer];
+    +[PlayerTipKitManagerObjC addTipsToConfiguration:isRadioBroadcastEnabled:](_TtC8VideosUI23PlayerTipKitManagerObjC, "addTipsToConfiguration:isRadioBroadcastEnabled:", configuration, [mainPlayer isRadioBroadcastSupported]);
 
-    v5 = [(VUIPlaybackManager *)self playerViewController];
-    [v5 setConfiguration:v6];
+    playerViewController2 = [(VUIPlaybackManager *)self playerViewController];
+    [playerViewController2 setConfiguration:configuration];
 
     [(VUIPlaybackManager *)self addTipKitState:1];
   }
 }
 
-- (void)_markMainPlayerMediaItemPlayingPictureInPictureMetadataAsActive:(BOOL)a3 forAVPlayerViewController:(id)a4
+- (void)_markMainPlayerMediaItemPlayingPictureInPictureMetadataAsActive:(BOOL)active forAVPlayerViewController:(id)controller
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(VUIPlaybackManager *)self mainAVPlayerViewController];
+  activeCopy = active;
+  controllerCopy = controller;
+  mainAVPlayerViewController = [(VUIPlaybackManager *)self mainAVPlayerViewController];
 
-  if (v7 == v6)
+  if (mainAVPlayerViewController == controllerCopy)
   {
-    v10 = [(VUIPlaybackManager *)self mainPlayer];
-    v8 = [v10 currentMediaItem];
-    if (v8)
+    mainPlayer = [(VUIPlaybackManager *)self mainPlayer];
+    currentMediaItem = [mainPlayer currentMediaItem];
+    if (currentMediaItem)
     {
-      v9 = [MEMORY[0x1E696AD98] numberWithBool:v4];
-      [v8 setMediaItemMetadata:v9 forProperty:@"VUIMediaItemMetadataKeyIsPlayingInPIP"];
+      v9 = [MEMORY[0x1E696AD98] numberWithBool:activeCopy];
+      [currentMediaItem setMediaItemMetadata:v9 forProperty:@"VUIMediaItemMetadataKeyIsPlayingInPIP"];
     }
   }
 }
 
-- (void)_markMainPlayerMediaItemPostPlayActive:(BOOL)a3
+- (void)_markMainPlayerMediaItemPostPlayActive:(BOOL)active
 {
-  v3 = a3;
-  v6 = [(VUIPlaybackManager *)self mainPlayer];
-  v4 = [v6 currentMediaItem];
-  if (v4)
+  activeCopy = active;
+  mainPlayer = [(VUIPlaybackManager *)self mainPlayer];
+  currentMediaItem = [mainPlayer currentMediaItem];
+  if (currentMediaItem)
   {
-    v5 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-    [v4 setMediaItemMetadata:v5 forProperty:@"VUIMediaItemMetadataKeyIsPlayingInPostPlay"];
+    v5 = [MEMORY[0x1E696AD98] numberWithBool:activeCopy];
+    [currentMediaItem setMediaItemMetadata:v5 forProperty:@"VUIMediaItemMetadataKeyIsPlayingInPostPlay"];
   }
 }
 
 - (void)_notifyAVPlayerViewControllerDisplaySize
 {
-  v13 = [(VUIPlaybackManager *)self avPlayerViewController];
+  avPlayerViewController = [(VUIPlaybackManager *)self avPlayerViewController];
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  [v13 videoDisplaySize];
+  [avPlayerViewController videoDisplaySize];
   v6 = v5;
   v7 = v4;
   if (v5 != *MEMORY[0x1E695F060] || v4 != *(MEMORY[0x1E695F060] + 8))
   {
-    [v13 videoDisplayScale];
+    [avPlayerViewController videoDisplayScale];
     v15.height = round(v7) * v9;
     v15.width = round(v6) * v9;
     DictionaryRepresentation = CGSizeCreateDictionaryRepresentation(v15);
     [v3 vui_setObjectIfNotNil:DictionaryRepresentation forKey:VUIPlaybackManagerNotificationKeyDisplaySize[0]];
-    v11 = [(VUIPlaybackManager *)self activePlayer];
-    [v3 vui_setObjectIfNotNil:v11 forKey:VUIPlaybackManagerNotificationKeyPlayer[0]];
+    activePlayer = [(VUIPlaybackManager *)self activePlayer];
+    [v3 vui_setObjectIfNotNil:activePlayer forKey:VUIPlaybackManagerNotificationKeyPlayer[0]];
 
-    v12 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v12 postNotificationName:VUIPlaybackManagerVideoDisplaySizeDidChange[0] object:self userInfo:v3];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:VUIPlaybackManagerVideoDisplaySizeDidChange[0] object:self userInfo:v3];
   }
 }
 
-- (void)_setExtrasButtonVisible:(BOOL)a3
+- (void)_setExtrasButtonVisible:(BOOL)visible
 {
-  if (a3)
+  if (visible)
   {
-    v4 = [(VUIPlaybackManager *)self extrasControlItem];
+    extrasControlItem = [(VUIPlaybackManager *)self extrasControlItem];
 
-    if (!v4)
+    if (!extrasControlItem)
     {
-      v5 = [MEMORY[0x1E696AAE8] vui_videosUIBundle];
-      v6 = [v5 localizedStringForKey:@"EXTRAS_BUTTON_TITLE" value:0 table:@"VideosExtras"];
+      vui_videosUIBundle = [MEMORY[0x1E696AAE8] vui_videosUIBundle];
+      v6 = [vui_videosUIBundle localizedStringForKey:@"EXTRAS_BUTTON_TITLE" value:0 table:@"VideosExtras"];
 
       if (MEMORY[0x1E6913230]())
       {
@@ -5074,47 +5074,47 @@ void __46__VUIPlaybackManager__setExtrasButtonVisible___block_invoke(uint64_t a1
 - (void)_mainPlayerViewControllerSetupControlItems
 {
   v7 = objc_opt_new();
-  v3 = [(VUIPlaybackManager *)self extrasControlItem];
-  if (v3)
+  extrasControlItem = [(VUIPlaybackManager *)self extrasControlItem];
+  if (extrasControlItem)
   {
-    [v7 addObject:v3];
+    [v7 addObject:extrasControlItem];
   }
 
-  v4 = [(VUIPlaybackManager *)self multiViewControlItem];
-  if (v4)
+  multiViewControlItem = [(VUIPlaybackManager *)self multiViewControlItem];
+  if (multiViewControlItem)
   {
-    [v7 addObject:v4];
+    [v7 addObject:multiViewControlItem];
   }
 
-  v5 = [(VUIPlaybackManager *)self shareControlItem];
-  if (v5)
+  shareControlItem = [(VUIPlaybackManager *)self shareControlItem];
+  if (shareControlItem)
   {
-    [v7 addObject:v5];
+    [v7 addObject:shareControlItem];
   }
 
-  v6 = [(VUIPlaybackManager *)self mainAVPlayerViewController];
-  [v6 setCustomControlItems:v7];
+  mainAVPlayerViewController = [(VUIPlaybackManager *)self mainAVPlayerViewController];
+  [mainAVPlayerViewController setCustomControlItems:v7];
 }
 
 - (void)_setupFeaturesFromMainPlayersCurrentMediaItem
 {
-  v3 = [(VUIPlaybackManager *)self mainPlayer];
-  v4 = [v3 currentMediaItem];
+  mainPlayer = [(VUIPlaybackManager *)self mainPlayer];
+  currentMediaItem = [mainPlayer currentMediaItem];
 
-  if (v4)
+  if (currentMediaItem)
   {
-    [(VUIPlaybackManager *)self _downloadRatingImageIfAvailable:v4];
-    [(VUIPlaybackManager *)self _downloadProductPlacementImageIfAvailable:v4];
-    [(VUIPlaybackManager *)self _setupBootstrapPostPlayFeatureMonitorForMediaItem:v4];
-    [(VUIPlaybackManager *)self _addRollsInfoFeaturesFromMediaItem:v4];
-    [(VUIPlaybackManager *)self _addSkipTriggerFeaturesToMonitor:v4];
+    [(VUIPlaybackManager *)self _downloadRatingImageIfAvailable:currentMediaItem];
+    [(VUIPlaybackManager *)self _downloadProductPlacementImageIfAvailable:currentMediaItem];
+    [(VUIPlaybackManager *)self _setupBootstrapPostPlayFeatureMonitorForMediaItem:currentMediaItem];
+    [(VUIPlaybackManager *)self _addRollsInfoFeaturesFromMediaItem:currentMediaItem];
+    [(VUIPlaybackManager *)self _addSkipTriggerFeaturesToMonitor:currentMediaItem];
   }
 }
 
-- (void)_downloadRatingImageIfAvailable:(id)a3
+- (void)_downloadRatingImageIfAvailable:(id)available
 {
-  v4 = a3;
-  v5 = [v4 mediaItemMetadataForProperty:*MEMORY[0x1E69D5D48]];
+  availableCopy = available;
+  v5 = [availableCopy mediaItemMetadataForProperty:*MEMORY[0x1E69D5D48]];
   v6 = v5;
   if (!v5)
   {
@@ -5122,46 +5122,46 @@ void __46__VUIPlaybackManager__setExtrasButtonVisible___block_invoke(uint64_t a1
     goto LABEL_6;
   }
 
-  v7 = [v5 BOOLValue];
-  if (+[VUIGroupActivitiesManagerObjC isSessionActive]|| v7)
+  bOOLValue = [v5 BOOLValue];
+  if (+[VUIGroupActivitiesManagerObjC isSessionActive]|| bOOLValue)
   {
 LABEL_6:
-    v8 = [(VUIPlaybackManager *)self ratingImage];
+    ratingImage = [(VUIPlaybackManager *)self ratingImage];
 
-    if (v8)
+    if (ratingImage)
     {
       goto LABEL_19;
     }
 
-    v9 = [v4 mediaItemMetadataForProperty:*MEMORY[0x1E69D5C28]];
+    v9 = [availableCopy mediaItemMetadataForProperty:*MEMORY[0x1E69D5C28]];
     [v9 floatValue];
     v11 = v10;
-    v12 = [v4 mediaItemMetadataForProperty:@"VUIMediaItemMetadataRatingImageTVImageProxy"];
+    v12 = [availableCopy mediaItemMetadataForProperty:@"VUIMediaItemMetadataRatingImageTVImageProxy"];
     [(VUIPlaybackManager *)self setRatingImageProxy:v12];
 
-    v13 = [v4 mediaItemMetadataForProperty:@"VUIMediaItemMetadataHighMotionTVImageProxy"];
+    v13 = [availableCopy mediaItemMetadataForProperty:@"VUIMediaItemMetadataHighMotionTVImageProxy"];
     [(VUIPlaybackManager *)self setHighMotionImageProxy:v13];
 
-    v14 = [v4 mediaItemMetadataForProperty:@"VUIMediaItemMetadataPhotoSensitivityTVImageProxy"];
+    v14 = [availableCopy mediaItemMetadataForProperty:@"VUIMediaItemMetadataPhotoSensitivityTVImageProxy"];
     [(VUIPlaybackManager *)self setPhotoSensitivityImageProxy:v14];
 
-    v15 = [(VUIPlaybackManager *)self ratingImageProxy];
-    if (v15)
+    ratingImageProxy = [(VUIPlaybackManager *)self ratingImageProxy];
+    if (ratingImageProxy)
     {
     }
 
     else
     {
-      v16 = [(VUIPlaybackManager *)self highMotionImageProxy];
+      highMotionImageProxy = [(VUIPlaybackManager *)self highMotionImageProxy];
 
-      if (!v16)
+      if (!highMotionImageProxy)
       {
-        if (!v4)
+        if (!availableCopy)
         {
           goto LABEL_18;
         }
 
-        v17 = [v4 mediaItemMetadataForProperty:*MEMORY[0x1E69D5CD0]];
+        v17 = [availableCopy mediaItemMetadataForProperty:*MEMORY[0x1E69D5CD0]];
         if ([v17 length])
         {
           v30 = objc_opt_new();
@@ -5171,7 +5171,7 @@ LABEL_6:
           [v30 setFormat:v31];
 
           [v30 setImageURL:v17];
-          v32 = [v4 mediaItemMetadataForProperty:*MEMORY[0x1E69D5C98]];
+          v32 = [availableCopy mediaItemMetadataForProperty:*MEMORY[0x1E69D5C98]];
           if ([v32 length])
           {
             v33 = objc_opt_new();
@@ -5195,7 +5195,7 @@ LABEL_6:
           v33 = 0;
         }
 
-        v35 = [v4 mediaItemMetadataForProperty:*MEMORY[0x1E69D5C30]];
+        v35 = [availableCopy mediaItemMetadataForProperty:*MEMORY[0x1E69D5C30]];
         if ([v35 length])
         {
           v36 = objc_opt_new();
@@ -5215,17 +5215,17 @@ LABEL_6:
         if (v30 | v36)
         {
           objc_initWeak(location, self);
-          v38 = [(VUIPlaybackManager *)self logoImageDownloader];
+          logoImageDownloader = [(VUIPlaybackManager *)self logoImageDownloader];
           v40[0] = MEMORY[0x1E69E9820];
           v40[1] = 3221225472;
           v40[2] = __54__VUIPlaybackManager__downloadRatingImageIfAvailable___block_invoke_8;
           v40[3] = &unk_1E8730DE8;
           objc_copyWeak(v43, location);
-          v39 = v4;
+          v39 = availableCopy;
           v43[1] = *&v11;
           v41 = v39;
-          v42 = self;
-          [v38 downloadImagesWithAdvisoryImageInfo:v30 photoSensitivityImageInfo:v33 highMotionWarningImageInfo:v36 completion:v40];
+          selfCopy = self;
+          [logoImageDownloader downloadImagesWithAdvisoryImageInfo:v30 photoSensitivityImageInfo:v33 highMotionWarningImageInfo:v36 completion:v40];
 
           objc_destroyWeak(v43);
           objc_destroyWeak(location);
@@ -5233,7 +5233,7 @@ LABEL_6:
 
         else
         {
-          [(VUIPlaybackManager *)self _addProductPlacementFeatureFromMediaItem:v4];
+          [(VUIPlaybackManager *)self _addProductPlacementFeatureFromMediaItem:availableCopy];
         }
 
 LABEL_17:
@@ -5245,11 +5245,11 @@ LABEL_18:
 
     v17 = dispatch_group_create();
     objc_initWeak(location, self);
-    v18 = [(VUIPlaybackManager *)self ratingImageProxy];
+    ratingImageProxy2 = [(VUIPlaybackManager *)self ratingImageProxy];
 
-    if (v18)
+    if (ratingImageProxy2)
     {
-      v19 = [(VUIPlaybackManager *)self ratingImageProxy];
+      ratingImageProxy3 = [(VUIPlaybackManager *)self ratingImageProxy];
       v52[0] = MEMORY[0x1E69E9820];
       v52[1] = 3221225472;
       v52[2] = __54__VUIPlaybackManager__downloadRatingImageIfAvailable___block_invoke;
@@ -5257,38 +5257,38 @@ LABEL_18:
       objc_copyWeak(&v54, location);
       v20 = v17;
       v53 = v20;
-      [v19 setCompletionHandler:v52];
+      [ratingImageProxy3 setCompletionHandler:v52];
 
       dispatch_group_enter(v20);
-      v21 = [(VUIPlaybackManager *)self ratingImageProxy];
-      [v21 load];
+      ratingImageProxy4 = [(VUIPlaybackManager *)self ratingImageProxy];
+      [ratingImageProxy4 load];
 
       objc_destroyWeak(&v54);
     }
 
-    v22 = [(VUIPlaybackManager *)self highMotionImageProxy];
+    highMotionImageProxy2 = [(VUIPlaybackManager *)self highMotionImageProxy];
 
-    if (v22)
+    if (highMotionImageProxy2)
     {
-      v23 = [(VUIPlaybackManager *)self highMotionImageProxy];
+      highMotionImageProxy3 = [(VUIPlaybackManager *)self highMotionImageProxy];
       v50[0] = MEMORY[0x1E69E9820];
       v50[1] = 3221225472;
       v50[2] = __54__VUIPlaybackManager__downloadRatingImageIfAvailable___block_invoke_3;
       v50[3] = &unk_1E8730DC0;
       v24 = v17;
       v51 = v24;
-      [v23 setCompletionHandler:v50];
+      [highMotionImageProxy3 setCompletionHandler:v50];
 
       dispatch_group_enter(v24);
-      v25 = [(VUIPlaybackManager *)self highMotionImageProxy];
-      [v25 load];
+      highMotionImageProxy4 = [(VUIPlaybackManager *)self highMotionImageProxy];
+      [highMotionImageProxy4 load];
     }
 
-    v26 = [(VUIPlaybackManager *)self photoSensitivityImageProxy];
+    photoSensitivityImageProxy = [(VUIPlaybackManager *)self photoSensitivityImageProxy];
 
-    if (v26)
+    if (photoSensitivityImageProxy)
     {
-      v27 = [(VUIPlaybackManager *)self photoSensitivityImageProxy];
+      photoSensitivityImageProxy2 = [(VUIPlaybackManager *)self photoSensitivityImageProxy];
       v47[0] = MEMORY[0x1E69E9820];
       v47[1] = 3221225472;
       v47[2] = __54__VUIPlaybackManager__downloadRatingImageIfAvailable___block_invoke_5;
@@ -5296,11 +5296,11 @@ LABEL_18:
       objc_copyWeak(&v49, location);
       v28 = v17;
       v48 = v28;
-      [v27 setCompletionHandler:v47];
+      [photoSensitivityImageProxy2 setCompletionHandler:v47];
 
       dispatch_group_enter(v28);
-      v29 = [(VUIPlaybackManager *)self photoSensitivityImageProxy];
-      [v29 load];
+      photoSensitivityImageProxy3 = [(VUIPlaybackManager *)self photoSensitivityImageProxy];
+      [photoSensitivityImageProxy3 load];
 
       objc_destroyWeak(&v49);
     }
@@ -5310,7 +5310,7 @@ LABEL_18:
     block[2] = __54__VUIPlaybackManager__downloadRatingImageIfAvailable___block_invoke_7;
     block[3] = &unk_1E872FA60;
     objc_copyWeak(v46, location);
-    v45 = v4;
+    v45 = availableCopy;
     v46[1] = *&v11;
     dispatch_group_notify(v17, MEMORY[0x1E69E96A0], block);
 
@@ -5319,7 +5319,7 @@ LABEL_18:
     goto LABEL_17;
   }
 
-  [(VUIPlaybackManager *)self _addProductPlacementFeatureFromMediaItem:v4];
+  [(VUIPlaybackManager *)self _addProductPlacementFeatureFromMediaItem:availableCopy];
 LABEL_19:
 }
 
@@ -5444,16 +5444,16 @@ LABEL_6:
   [*(a1 + 40) _downloadProductPlacementImageIfAvailable:*(a1 + 32)];
 }
 
-- (void)_downloadProductPlacementImageIfAvailable:(id)a3
+- (void)_downloadProductPlacementImageIfAvailable:(id)available
 {
-  v4 = a3;
-  v5 = [(VUIPlaybackManager *)self productPlacementImage];
+  availableCopy = available;
+  productPlacementImage = [(VUIPlaybackManager *)self productPlacementImage];
 
-  if (v4 && !v5)
+  if (availableCopy && !productPlacementImage)
   {
-    v6 = [v4 mediaItemMetadataForProperty:*MEMORY[0x1E69D5CB8]];
-    v7 = [v6 imageUrlStringFormat];
-    if ([v7 length])
+    v6 = [availableCopy mediaItemMetadataForProperty:*MEMORY[0x1E69D5CB8]];
+    imageUrlStringFormat = [v6 imageUrlStringFormat];
+    if ([imageUrlStringFormat length])
     {
       v8 = objc_opt_new();
       [v8 setWidth:100];
@@ -5462,13 +5462,13 @@ LABEL_6:
       [v8 setFormat:v9];
 
       objc_initWeak(&location, self);
-      v10 = [(VUIPlaybackManager *)self logoImageDownloader];
+      logoImageDownloader = [(VUIPlaybackManager *)self logoImageDownloader];
       v11[0] = MEMORY[0x1E69E9820];
       v11[1] = 3221225472;
       v11[2] = __64__VUIPlaybackManager__downloadProductPlacementImageIfAvailable___block_invoke;
       v11[3] = &unk_1E8730E10;
       objc_copyWeak(&v12, &location);
-      [v10 downloadImagesWithAdvisoryImageInfo:v8 photoSensitivityImageInfo:0 highMotionWarningImageInfo:0 completion:v11];
+      [logoImageDownloader downloadImagesWithAdvisoryImageInfo:v8 photoSensitivityImageInfo:0 highMotionWarningImageInfo:0 completion:v11];
 
       objc_destroyWeak(&v12);
       objc_destroyWeak(&location);
@@ -5486,12 +5486,12 @@ void __64__VUIPlaybackManager__downloadProductPlacementImageIfAvailable___block_
   }
 }
 
-- (void)_addTVRatingFeatureFromMediaItem:(id)a3 duration:(double)a4
+- (void)_addTVRatingFeatureFromMediaItem:(id)item duration:(double)duration
 {
   v28 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (item)
   {
-    v6 = [a3 mediaItemMetadataForProperty:*MEMORY[0x1E69D5D08]];
+    v6 = [item mediaItemMetadataForProperty:*MEMORY[0x1E69D5D08]];
     if ([v6 count])
     {
       v7 = objc_opt_new();
@@ -5544,7 +5544,7 @@ void __64__VUIPlaybackManager__downloadProductPlacementImageIfAvailable___block_
       v7 = 0;
     }
 
-    v21 = [[VUINowPlayingTVAdvisoryFeature alloc] initWithType:9 startTime:0.0 duration:a4];
+    v21 = [[VUINowPlayingTVAdvisoryFeature alloc] initWithType:9 startTime:0.0 duration:duration];
     if (v21)
     {
       if ([v7 count])
@@ -5553,29 +5553,29 @@ void __64__VUIPlaybackManager__downloadProductPlacementImageIfAvailable___block_
       }
 
       [(VUINowPlayingTimeBoundFeature *)v21 setAutoRemove:1, v23];
-      v22 = [(VUIPlaybackManager *)self featureMonitor];
-      [v22 addFeature:v21];
+      featureMonitor = [(VUIPlaybackManager *)self featureMonitor];
+      [featureMonitor addFeature:v21];
     }
   }
 }
 
-- (void)_addProductPlacementFeatureFromMediaItem:(id)a3
+- (void)_addProductPlacementFeatureFromMediaItem:(id)item
 {
   v36 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  itemCopy = item;
+  v5 = itemCopy;
+  if (itemCopy)
   {
-    v6 = [v4 mediaItemMetadataForProperty:*MEMORY[0x1E69D5CB8]];
-    v7 = [(VUIPlaybackManager *)self productPlacementImage];
-    if (v7)
+    v6 = [itemCopy mediaItemMetadataForProperty:*MEMORY[0x1E69D5CB8]];
+    productPlacementImage = [(VUIPlaybackManager *)self productPlacementImage];
+    if (productPlacementImage)
     {
     }
 
     else
     {
-      v8 = [v6 localizedInfoString];
-      v9 = [v8 length];
+      localizedInfoString = [v6 localizedInfoString];
+      v9 = [localizedInfoString length];
 
       if (!v9)
       {
@@ -5637,8 +5637,8 @@ LABEL_22:
       v11 = 0;
     }
 
-    v25 = [v6 duration];
-    [v25 doubleValue];
+    duration = [v6 duration];
+    [duration doubleValue];
     v27 = v26;
 
     v28 = [[VUINowPlayingTVAdvisoryFeature alloc] initWithType:13 startTime:0.0 duration:v27];
@@ -5651,8 +5651,8 @@ LABEL_22:
 
       [(VUINowPlayingTimeBoundFeature *)v28 setUserInfo:v6];
       [(VUINowPlayingTimeBoundFeature *)v28 setAutoRemove:1];
-      v29 = [(VUIPlaybackManager *)self featureMonitor];
-      [v29 addFeature:v28];
+      featureMonitor = [(VUIPlaybackManager *)self featureMonitor];
+      [featureMonitor addFeature:v28];
     }
 
     goto LABEL_22;
@@ -5661,10 +5661,10 @@ LABEL_22:
 LABEL_23:
 }
 
-- (void)_addRollsInfoFeaturesFromMediaItem:(id)a3
+- (void)_addRollsInfoFeaturesFromMediaItem:(id)item
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = [a3 mediaItemMetadataForProperty:*MEMORY[0x1E69D5D08]];
+  v4 = [item mediaItemMetadataForProperty:*MEMORY[0x1E69D5D08]];
   if ([v4 count])
   {
     v21 = 0u;
@@ -5687,10 +5687,10 @@ LABEL_23:
           }
 
           v10 = *(*(&v19 + 1) + 8 * i);
-          v11 = [v10 type];
-          if ((v11 - 1) <= 2)
+          type = [v10 type];
+          if ((type - 1) <= 2)
           {
-            v12 = v11;
+            v12 = type;
             v13 = [VUINowPlayingTimeBoundFeature alloc];
             [v10 start];
             v15 = v14;
@@ -5699,8 +5699,8 @@ LABEL_23:
             if (v17)
             {
               -[VUINowPlayingTimeBoundFeature setSkippable:](v17, "setSkippable:", [v10 isSkippable]);
-              v18 = [(VUIPlaybackManager *)self featureMonitor];
-              [v18 addFeature:v17];
+              featureMonitor = [(VUIPlaybackManager *)self featureMonitor];
+              [featureMonitor addFeature:v17];
             }
           }
         }
@@ -5713,10 +5713,10 @@ LABEL_23:
   }
 }
 
-- (void)_addSkipTriggerFeaturesToMonitor:(id)a3
+- (void)_addSkipTriggerFeaturesToMonitor:(id)monitor
 {
   v64 = *MEMORY[0x1E69E9840];
-  v3 = [a3 mediaItemMetadataForProperty:*MEMORY[0x1E69D5D58]];
+  v3 = [monitor mediaItemMetadataForProperty:*MEMORY[0x1E69D5D58]];
   v4 = [v3 count];
   v5 = sLogObject_5;
   v6 = os_log_type_enabled(sLogObject_5, OS_LOG_TYPE_DEFAULT);
@@ -5763,8 +5763,8 @@ LABEL_23:
             {
               [(VUINowPlayingTimeBoundFeature *)v18 setUserInfo:v13];
               v20 = +[VUIFeaturesConfiguration sharedInstance];
-              v21 = [v20 nowPlayingConfig];
-              [v21 prerollFadeInEndOffset];
+              nowPlayingConfig = [v20 nowPlayingConfig];
+              [nowPlayingConfig prerollFadeInEndOffset];
               v23 = v22;
 
               [v13 target];
@@ -5781,11 +5781,11 @@ LABEL_23:
                   v32 = v31;
                   [v13 start];
                   *&v34 = v32 - v33;
-                  v35 = [v13 promoInfo];
+                  promoInfo = [v13 promoInfo];
                   *buf = 134218242;
                   v60 = v34;
                   v61 = 2112;
-                  v62 = *&v35;
+                  v62 = *&promoInfo;
                   _os_log_impl(&dword_1E323F000, v30, OS_LOG_TYPE_DEFAULT, "Pre-roll too short to fade back or not a promo, duration=%1.2f, promoInfo=%@", buf, 0x16u);
                 }
 
@@ -5821,8 +5821,8 @@ LABEL_23:
               if (v50)
               {
                 [(VUINowPlayingTimeBoundFeature *)v50 setUserInfo:v19];
-                v52 = [(VUIPlaybackManager *)self featureMonitor];
-                [v52 addFeature:v51];
+                featureMonitor = [(VUIPlaybackManager *)self featureMonitor];
+                [featureMonitor addFeature:v51];
               }
             }
           }
@@ -5844,7 +5844,7 @@ LABEL_23:
   }
 }
 
-- (void)_addSkipIntroFeatureToMonitorIfNeeded:(BOOL)a3
+- (void)_addSkipIntroFeatureToMonitorIfNeeded:(BOOL)needed
 {
   v58 = *MEMORY[0x1E69E9840];
   if (![(VUIPlaybackManager *)self transportBarVisible])
@@ -5861,21 +5861,21 @@ LABEL_23:
 
     else
     {
-      v6 = [(VUIPlaybackManager *)self featureMonitor];
-      v7 = [v6 activeFeatureForType:7];
+      featureMonitor = [(VUIPlaybackManager *)self featureMonitor];
+      v7 = [featureMonitor activeFeatureForType:7];
       if (v7)
       {
-        [v6 deactivateFeature:v7 animated:1];
+        [featureMonitor deactivateFeature:v7 animated:1];
       }
 
-      v8 = [v6 featuresForType:8];
+      v8 = [featureMonitor featuresForType:8];
       if ([v8 count])
       {
-        v9 = [v6 player];
-        v10 = v9;
-        if (v9)
+        player = [featureMonitor player];
+        v10 = player;
+        if (player)
         {
-          [v9 elapsedTime];
+          [player elapsedTime];
           v12 = v11;
           v49 = 0u;
           v50 = 0u;
@@ -5888,10 +5888,10 @@ LABEL_23:
             v15 = v14;
             v45 = v10;
             v46 = v8;
-            v44 = a3;
-            v43 = self;
+            neededCopy = needed;
+            selfCopy = self;
             v47 = v7;
-            v48 = v6;
+            v48 = featureMonitor;
             v16 = 0;
             v17 = *v50;
             p_info = VUIPlayer.info;
@@ -5904,13 +5904,13 @@ LABEL_23:
                   objc_enumerationMutation(v13);
                 }
 
-                v20 = [*(*(&v49 + 1) + 8 * i) userInfo];
-                v21 = [v20 userInfo];
-                [v21 start];
+                userInfo = [*(*(&v49 + 1) + 8 * i) userInfo];
+                v20UserInfo = [userInfo userInfo];
+                [v20UserInfo start];
                 v23 = v22;
-                [v21 target];
+                [v20UserInfo target];
                 v25 = v24;
-                [v21 duration];
+                [v20UserInfo duration];
                 v27 = v12 >= v23 && v12 < v25;
                 v28 = v25 - v12;
                 if (v27 && v28 > 5.0)
@@ -5929,11 +5929,11 @@ LABEL_23:
                   [v31 setAutoRemove:1];
                   if (v31)
                   {
-                    [v31 setUserInfo:v21];
+                    [v31 setUserInfo:v20UserInfo];
                     if (v16)
                     {
-                      v32 = [v16 userInfo];
-                      [v32 start];
+                      userInfo2 = [v16 userInfo];
+                      [userInfo2 start];
                       if (v33 < v23)
                       {
                         v34 = v31;
@@ -5963,7 +5963,7 @@ LABEL_23:
             if (v16)
             {
               v39 = sLogObject_5;
-              v6 = v48;
+              featureMonitor = v48;
               v10 = v45;
               v8 = v46;
               if (os_log_type_enabled(sLogObject_5, OS_LOG_TYPE_DEFAULT))
@@ -5978,7 +5978,7 @@ LABEL_23:
               }
 
               [v48 addFeature:v16];
-              if (!v44)
+              if (!neededCopy)
               {
                 v42 = sLogObject_5;
                 if (os_log_type_enabled(sLogObject_5, OS_LOG_TYPE_DEFAULT))
@@ -5987,7 +5987,7 @@ LABEL_23:
                   _os_log_impl(&dword_1E323F000, v42, OS_LOG_TYPE_DEFAULT, "Removing preroll fade in due to user interaction", buf, 2u);
                 }
 
-                [(VUIPlaybackManager *)v43 _removePrerollFadeIn];
+                [(VUIPlaybackManager *)selfCopy _removePrerollFadeIn];
               }
 
               v7 = v47;
@@ -5996,7 +5996,7 @@ LABEL_23:
             else
             {
               v7 = v47;
-              v6 = v48;
+              featureMonitor = v48;
               v10 = v45;
               v8 = v46;
             }
@@ -6015,13 +6015,13 @@ LABEL_23:
 
 - (id)_deepLinkPlaybackURLForCurrentMediaItem
 {
-  v2 = [(VUIPlaybackManager *)self activePlayer];
-  v3 = [v2 currentMediaItem];
+  activePlayer = [(VUIPlaybackManager *)self activePlayer];
+  currentMediaItem = [activePlayer currentMediaItem];
 
-  v4 = [v3 mediaItemMetadataForProperty:*MEMORY[0x1E69D5AE8]];
-  v5 = [v3 mediaItemMetadataForProperty:*MEMORY[0x1E69D5D50]];
-  v6 = [v3 mediaItemMetadataForProperty:*MEMORY[0x1E69D5D28]];
-  v7 = [v3 mediaItemMetadataForProperty:*MEMORY[0x1E69D5C78]];
+  v4 = [currentMediaItem mediaItemMetadataForProperty:*MEMORY[0x1E69D5AE8]];
+  v5 = [currentMediaItem mediaItemMetadataForProperty:*MEMORY[0x1E69D5D50]];
+  v6 = [currentMediaItem mediaItemMetadataForProperty:*MEMORY[0x1E69D5D28]];
+  v7 = [currentMediaItem mediaItemMetadataForProperty:*MEMORY[0x1E69D5C78]];
   if ([v4 length] && objc_msgSend(v7, "length"))
   {
     if ([v7 isEqualToString:*MEMORY[0x1E69D5EB8]] & 1) != 0 || (objc_msgSend(v7, "isEqualToString:", *MEMORY[0x1E69D5EC8]))
@@ -6056,66 +6056,66 @@ LABEL_10:
   [v3 playbackFromBeginningTimeOffset];
   v5 = v4;
 
-  v6 = [(VUIPlaybackManager *)self activePlayer];
-  [v6 setElapsedTime:1 precise:v5];
+  activePlayer = [(VUIPlaybackManager *)self activePlayer];
+  [activePlayer setElapsedTime:1 precise:v5];
 
-  v7 = [(VUIPlaybackManager *)self activePlayer];
-  [v7 play];
+  activePlayer2 = [(VUIPlaybackManager *)self activePlayer];
+  [activePlayer2 play];
 }
 
 - (void)_pushMoreInfoControllerIfNeeded
 {
-  v2 = [(VUIPlaybackManager *)self moreInfoCanonicalViewController];
-  if (v2)
+  moreInfoCanonicalViewController = [(VUIPlaybackManager *)self moreInfoCanonicalViewController];
+  if (moreInfoCanonicalViewController)
   {
-    v4 = v2;
+    v4 = moreInfoCanonicalViewController;
     v3 = +[VUIApplicationRouter currentNavigationController];
     [v3 pushViewController:v4 animated:1];
 
-    v2 = v4;
+    moreInfoCanonicalViewController = v4;
   }
 }
 
 - (void)_removeMoreInfoViewControllerIfNeeded
 {
-  v3 = [(VUIPlaybackManager *)self moreInfoCanonicalViewController];
-  if (v3)
+  moreInfoCanonicalViewController = [(VUIPlaybackManager *)self moreInfoCanonicalViewController];
+  if (moreInfoCanonicalViewController)
   {
-    v11 = v3;
-    v4 = [v3 navigationController];
-    v5 = [v4 viewControllers];
+    v11 = moreInfoCanonicalViewController;
+    navigationController = [moreInfoCanonicalViewController navigationController];
+    viewControllers = [navigationController viewControllers];
 
-    v6 = [v5 indexOfObject:v11];
+    v6 = [viewControllers indexOfObject:v11];
     if (v6 != 0x7FFFFFFFFFFFFFFFLL)
     {
       v7 = v6;
-      v8 = [v5 mutableCopy];
+      v8 = [viewControllers mutableCopy];
       [v8 removeObjectAtIndex:v7];
       v9 = [v8 copy];
-      v10 = [v11 navigationController];
-      [v10 setViewControllers:v9];
+      navigationController2 = [v11 navigationController];
+      [navigationController2 setViewControllers:v9];
 
       [(VUIPlaybackManager *)self setMoreInfoCanonicalViewController:0];
     }
 
-    v3 = v11;
+    moreInfoCanonicalViewController = v11;
   }
 }
 
 - (void)_setupInfoTab
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   objc_initWeak(&location, self);
   v4 = +[VUIPlaybackTabManager sharedInstance];
-  v5 = [v4 shouldShowPlayFromBeginningButtonForMediaInfo];
+  shouldShowPlayFromBeginningButtonForMediaInfo = [v4 shouldShowPlayFromBeginningButtonForMediaInfo];
 
-  if (v5)
+  if (shouldShowPlayFromBeginningButtonForMediaInfo)
   {
     v6 = +[VUIPlaybackTabManager sharedInstance];
-    v7 = [v6 playTitleForFromBeginningAction];
+    playTitleForFromBeginningAction = [v6 playTitleForFromBeginningAction];
 
     v8 = +[VUIPlaybackTabManager sharedInstance];
-    v9 = [v8 playImageForFromBeginningAction];
+    playImageForFromBeginningAction = [v8 playImageForFromBeginningAction];
 
     v10 = MEMORY[0x1E69DC628];
     v24[0] = MEMORY[0x1E69E9820];
@@ -6123,22 +6123,22 @@ LABEL_10:
     v24[2] = __35__VUIPlaybackManager__setupInfoTab__block_invoke;
     v24[3] = &unk_1E8730E38;
     objc_copyWeak(&v25, &location);
-    v11 = [v10 actionWithTitle:v7 image:v9 identifier:0 handler:v24];
-    [v3 addObject:v11];
+    v11 = [v10 actionWithTitle:playTitleForFromBeginningAction image:playImageForFromBeginningAction identifier:0 handler:v24];
+    [array addObject:v11];
 
     objc_destroyWeak(&v25);
   }
 
   v12 = +[VUIPlaybackTabManager sharedInstance];
-  v13 = [v12 shouldShowMoreInfoButton];
+  shouldShowMoreInfoButton = [v12 shouldShowMoreInfoButton];
 
-  if (v13)
+  if (shouldShowMoreInfoButton)
   {
     v14 = +[VUIPlaybackTabManager sharedInstance];
-    v15 = [v14 moreInfoTitle];
+    moreInfoTitle = [v14 moreInfoTitle];
 
     v16 = +[VUIPlaybackTabManager sharedInstance];
-    v17 = [v16 moreInfoImage];
+    moreInfoImage = [v16 moreInfoImage];
 
     v18 = MEMORY[0x1E69DC628];
     v22[0] = MEMORY[0x1E69E9820];
@@ -6146,15 +6146,15 @@ LABEL_10:
     v22[2] = __35__VUIPlaybackManager__setupInfoTab__block_invoke_2;
     v22[3] = &unk_1E8730E38;
     objc_copyWeak(&v23, &location);
-    v19 = [v18 actionWithTitle:v15 image:v17 identifier:0 handler:v22];
-    [v3 addObject:v19];
+    v19 = [v18 actionWithTitle:moreInfoTitle image:moreInfoImage identifier:0 handler:v22];
+    [array addObject:v19];
 
     objc_destroyWeak(&v23);
   }
 
-  v20 = [(VUIPlaybackManager *)self avPlayerViewController];
-  v21 = [v3 copy];
-  [v20 setInfoViewActions:v21];
+  avPlayerViewController = [(VUIPlaybackManager *)self avPlayerViewController];
+  v21 = [array copy];
+  [avPlayerViewController setInfoViewActions:v21];
 
   objc_destroyWeak(&location);
 }
@@ -6203,45 +6203,45 @@ void __35__VUIPlaybackManager__setupInfoTab__block_invoke_2(uint64_t a1, void *a
   }
 }
 
-- (void)_addPlayerToTimedMetadataManager:(id)a3
+- (void)_addPlayerToTimedMetadataManager:(id)manager
 {
-  v3 = a3;
+  managerCopy = manager;
   v4 = +[VUIInterfaceFactory sharedInstance];
-  v5 = [v4 timedMetadataManager];
+  timedMetadataManager = [v4 timedMetadataManager];
 
-  [v5 addObserverForPlayer:v3];
+  [timedMetadataManager addObserverForPlayer:managerCopy];
 }
 
-- (void)_removePlayerFromTimedMetadataManager:(id)a3
+- (void)_removePlayerFromTimedMetadataManager:(id)manager
 {
-  v3 = a3;
+  managerCopy = manager;
   v4 = +[VUIInterfaceFactory sharedInstance];
-  v5 = [v4 timedMetadataManager];
+  timedMetadataManager = [v4 timedMetadataManager];
 
-  [v5 removeObserverForPlayer:v3];
+  [timedMetadataManager removeObserverForPlayer:managerCopy];
 }
 
 - (BOOL)_hidePresentingViewControllerDuringPlayback
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"EnableHidePresentingViewControllerDuringPlayback"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"EnableHidePresentingViewControllerDuringPlayback"];
 
   return v3;
 }
 
-- (void)_setupBootstrapPostPlayFeatureMonitorForMediaItem:(id)a3
+- (void)_setupBootstrapPostPlayFeatureMonitorForMediaItem:(id)item
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(VUIPlaybackManager *)self activePlayer];
-  [v5 duration];
+  itemCopy = item;
+  activePlayer = [(VUIPlaybackManager *)self activePlayer];
+  [activePlayer duration];
   v7 = v6;
 
   if (v7 != *MEMORY[0x1E69D5A80])
   {
-    v8 = [v4 mediaItemMetadataForProperty:*MEMORY[0x1E69D5CB0]];
+    v8 = [itemCopy mediaItemMetadataForProperty:*MEMORY[0x1E69D5CB0]];
     v9 = +[VUIFeaturesConfiguration sharedInstance];
-    v10 = [v9 playbackUpNextConfig];
+    playbackUpNextConfig = [v9 playbackUpNextConfig];
 
     v11 = MEMORY[0x1E696AD98];
     if (v8)
@@ -6252,43 +6252,43 @@ void __35__VUIPlaybackManager__setupInfoTab__block_invoke_2(uint64_t a1, void *a
 
     else
     {
-      [v10 minTimeIntervalFromEndToDisplay];
+      [playbackUpNextConfig minTimeIntervalFromEndToDisplay];
       v13 = v7 - v14;
     }
 
-    [v10 bootstrapInterval];
+    [playbackUpNextConfig bootstrapInterval];
     v16 = [v11 numberWithDouble:v13 - v15];
     if (v16)
     {
       [v8 doubleValue];
       if (v17 >= 0.0)
       {
-        v18 = [(VUIPlaybackManager *)self featureMonitor];
+        featureMonitor = [(VUIPlaybackManager *)self featureMonitor];
         [v16 doubleValue];
         v20 = v19;
-        v21 = [v18 featuresForType:3];
-        v22 = [v21 firstObject];
+        v21 = [featureMonitor featuresForType:3];
+        firstObject = [v21 firstObject];
 
-        if (v22)
+        if (firstObject)
         {
-          [(VUINowPlayingTimeBoundFeature *)v22 setStartTime:v20];
+          [(VUINowPlayingTimeBoundFeature *)firstObject setStartTime:v20];
         }
 
         else
         {
-          v22 = [[VUINowPlayingTimeBoundFeature alloc] initWithType:3 startTime:v20 duration:INFINITY];
+          firstObject = [[VUINowPlayingTimeBoundFeature alloc] initWithType:3 startTime:v20 duration:INFINITY];
         }
 
-        [(VUINowPlayingTimeBoundFeature *)v22 setAutoRemove:1];
+        [(VUINowPlayingTimeBoundFeature *)firstObject setAutoRemove:1];
         v23 = sLogObject_5;
         if (os_log_type_enabled(sLogObject_5, OS_LOG_TYPE_DEFAULT))
         {
           v24 = 138412290;
-          v25 = v22;
+          v25 = firstObject;
           _os_log_impl(&dword_1E323F000, v23, OS_LOG_TYPE_DEFAULT, "setup post play bootstrap feature:<%@>", &v24, 0xCu);
         }
 
-        [v18 addFeature:v22];
+        [featureMonitor addFeature:firstObject];
       }
     }
   }
@@ -6296,34 +6296,34 @@ void __35__VUIPlaybackManager__setupInfoTab__block_invoke_2(uint64_t a1, void *a
 
 - (void)_addVideoDimmingViewForPostPlay
 {
-  v3 = [(VUIPlaybackManager *)self postPlayView];
-  if (v3)
+  postPlayView = [(VUIPlaybackManager *)self postPlayView];
+  if (postPlayView)
   {
-    v4 = [(VUIPlaybackManager *)self avPlayerViewController];
-    v5 = [v4 contentOverlayView];
+    avPlayerViewController = [(VUIPlaybackManager *)self avPlayerViewController];
+    contentOverlayView = [avPlayerViewController contentOverlayView];
 
-    if (v5)
+    if (contentOverlayView)
     {
-      v6 = [v5 viewWithTag:88];
+      v6 = [contentOverlayView viewWithTag:88];
       if (!v6)
       {
-        v7 = [v5 safeAreaLayoutGuide];
-        [v7 layoutFrame];
+        safeAreaLayoutGuide = [contentOverlayView safeAreaLayoutGuide];
+        [safeAreaLayoutGuide layoutFrame];
         v9 = v8;
         v11 = v10;
         v13 = v12;
         v15 = v14;
 
         v16 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{v9, v11, v13, v15}];
-        v17 = [MEMORY[0x1E69DC888] blackColor];
-        [v16 setBackgroundColor:v17];
+        blackColor = [MEMORY[0x1E69DC888] blackColor];
+        [v16 setBackgroundColor:blackColor];
 
         [v16 setAlpha:0.0];
         [v16 setAutoresizingMask:18];
         v18 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:self action:sel__handleTapAwayFromPostPlayGesture_];
         [v16 setTag:88];
         [v16 addGestureRecognizer:v18];
-        [v5 insertSubview:v16 belowSubview:v3];
+        [contentOverlayView insertSubview:v16 belowSubview:postPlayView];
         v19 = MEMORY[0x1E69DD250];
         v20[0] = MEMORY[0x1E69E9820];
         v20[1] = 3221225472;
@@ -6339,14 +6339,14 @@ void __35__VUIPlaybackManager__setupInfoTab__block_invoke_2(uint64_t a1, void *a
 
 - (void)_removeVideoDimmingViewForPostPlay
 {
-  v3 = [(VUIPlaybackManager *)self avPlayerViewController];
+  avPlayerViewController = [(VUIPlaybackManager *)self avPlayerViewController];
 
-  if (v3)
+  if (avPlayerViewController)
   {
-    v4 = [(VUIPlaybackManager *)self avPlayerViewController];
-    v5 = [v4 contentOverlayView];
+    avPlayerViewController2 = [(VUIPlaybackManager *)self avPlayerViewController];
+    contentOverlayView = [avPlayerViewController2 contentOverlayView];
 
-    v6 = [v5 viewWithTag:88];
+    v6 = [contentOverlayView viewWithTag:88];
     v7 = v6;
     if (v6)
     {
@@ -6366,107 +6366,107 @@ void __35__VUIPlaybackManager__setupInfoTab__block_invoke_2(uint64_t a1, void *a
   }
 }
 
-- (void)_handleTapAwayFromPostPlayGesture:(id)a3
+- (void)_handleTapAwayFromPostPlayGesture:(id)gesture
 {
-  if ([a3 state] == 3)
+  if ([gesture state] == 3)
   {
-    v6 = [(VUIPlaybackManager *)self stateMachine];
+    stateMachine = [(VUIPlaybackManager *)self stateMachine];
     v4 = objc_alloc(MEMORY[0x1E695DF20]);
     v5 = [v4 initWithObjectsAndKeys:{MEMORY[0x1E695E110], @"PostPlaySlideOutAnimationKey", 0}];
-    [v6 postEvent:@"Post play cancelled" withContext:0 userInfo:v5];
+    [stateMachine postEvent:@"Post play cancelled" withContext:0 userInfo:v5];
   }
 }
 
-- (void)_postPlayItemSelected:(id)a3
+- (void)_postPlayItemSelected:(id)selected
 {
-  v3 = [(VUIPlaybackManager *)self stateMachine];
-  [v3 postEvent:@"Post play item selected"];
+  stateMachine = [(VUIPlaybackManager *)self stateMachine];
+  [stateMachine postEvent:@"Post play item selected"];
 }
 
-- (void)_dismissPostPlayWithSwipe:(id)a3
+- (void)_dismissPostPlayWithSwipe:(id)swipe
 {
-  v5 = [(VUIPlaybackManager *)self stateMachine];
+  stateMachine = [(VUIPlaybackManager *)self stateMachine];
   v3 = objc_alloc(MEMORY[0x1E695DF20]);
   v4 = [v3 initWithObjectsAndKeys:{MEMORY[0x1E695E118], @"PostPlaySlideOutAnimationKey", 0}];
-  [v5 postEvent:@"Post play cancelled" withContext:0 userInfo:v4];
+  [stateMachine postEvent:@"Post play cancelled" withContext:0 userInfo:v4];
 }
 
 - (void)_resetAutoPlayBingeWatchingQualifications
 {
-  v3 = [MEMORY[0x1E695DF00] date];
-  [(VUIPlaybackManager *)self setInitialPlaybackStartDate:v3];
+  date = [MEMORY[0x1E695DF00] date];
+  [(VUIPlaybackManager *)self setInitialPlaybackStartDate:date];
 
   [(VUIPlaybackManager *)self setAutoPlayedVideosCount:0];
 }
 
-- (void)multiPlayerDetailsViewControllerDidSelectLockupWithIdentifier:(id)a3 impressionsData:(id)a4 locationData:(id)a5
+- (void)multiPlayerDetailsViewControllerDidSelectLockupWithIdentifier:(id)identifier impressionsData:(id)data locationData:(id)locationData
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(VUIPlaybackManager *)self multiPlayerViewController];
-  [v11 recordMetricsEventWithIdentifier:v10 impressionsData:v9 locationData:v8 didAddPlayer:1];
+  locationDataCopy = locationData;
+  dataCopy = data;
+  identifierCopy = identifier;
+  multiPlayerViewController = [(VUIPlaybackManager *)self multiPlayerViewController];
+  [multiPlayerViewController recordMetricsEventWithIdentifier:identifierCopy impressionsData:dataCopy locationData:locationDataCopy didAddPlayer:1];
 }
 
-- (void)multiPlayerDetailsViewControllerDidDeselectLockupWithIdentifier:(id)a3 impressionsData:(id)a4 locationData:(id)a5
+- (void)multiPlayerDetailsViewControllerDidDeselectLockupWithIdentifier:(id)identifier impressionsData:(id)data locationData:(id)locationData
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(VUIPlaybackManager *)self multiPlayerViewController];
-  [v11 recordMetricsEventWithIdentifier:v10 impressionsData:v9 locationData:v8 didAddPlayer:0];
+  locationDataCopy = locationData;
+  dataCopy = data;
+  identifierCopy = identifier;
+  multiPlayerViewController = [(VUIPlaybackManager *)self multiPlayerViewController];
+  [multiPlayerViewController recordMetricsEventWithIdentifier:identifierCopy impressionsData:dataCopy locationData:locationDataCopy didAddPlayer:0];
 }
 
-- (id)detailsViewControllerForMultiPlayerViewController:(id)a3
+- (id)detailsViewControllerForMultiPlayerViewController:(id)controller
 {
-  v4 = [(VUIPlaybackManager *)self multiviewPlaybackInfo];
-  v5 = [v4 firstObject];
+  multiviewPlaybackInfo = [(VUIPlaybackManager *)self multiviewPlaybackInfo];
+  firstObject = [multiviewPlaybackInfo firstObject];
 
   v6 = +[VUIPlaybackTabManager sharedInstance];
-  v7 = [v6 tabsInfo];
-  v8 = [v7 multiviewTabInfo];
+  tabsInfo = [v6 tabsInfo];
+  multiviewTabInfo = [tabsInfo multiviewTabInfo];
 
-  if (v8)
+  if (multiviewTabInfo)
   {
-    v9 = [v5 broadcastLocale];
-    v10 = v9;
+    broadcastLocale = [firstObject broadcastLocale];
+    v10 = broadcastLocale;
     v11 = &stru_1F5DB25C0;
-    if (v9)
+    if (broadcastLocale)
     {
-      v11 = v9;
+      v11 = broadcastLocale;
     }
 
     v12 = v11;
 
     v13 = +[VUIPlaybackTabManager sharedInstance];
-    v14 = [v5 playsFromStart];
-    v15 = [v13 createHUDViewControllerWithTabInfo:v8 excludingCanonicals:MEMORY[0x1E695E0F0] isMultiview:1 locale:v12 playsFromStart:v14];
+    playsFromStart = [firstObject playsFromStart];
+    v15 = [v13 createHUDViewControllerWithTabInfo:multiviewTabInfo excludingCanonicals:MEMORY[0x1E695E0F0] isMultiview:1 locale:v12 playsFromStart:playsFromStart];
 
-    v16 = [v15 hudContentViewController];
-    LODWORD(v13) = [v16 conformsToProtocol:&unk_1F5F3CDE0];
+    hudContentViewController = [v15 hudContentViewController];
+    LODWORD(v13) = [hudContentViewController conformsToProtocol:&unk_1F5F3CDE0];
 
     if (v13)
     {
-      v17 = [v15 hudContentViewController];
-      [v17 setDetailDelegate:self];
-      [(VUIPlaybackManager *)self setMultiPlayerDetailsViewController:v17];
+      hudContentViewController2 = [v15 hudContentViewController];
+      [hudContentViewController2 setDetailDelegate:self];
+      [(VUIPlaybackManager *)self setMultiPlayerDetailsViewController:hudContentViewController2];
     }
 
-    v18 = [v15 hudContentViewController];
+    hudContentViewController3 = [v15 hudContentViewController];
   }
 
   else
   {
-    v18 = 0;
+    hudContentViewController3 = 0;
   }
 
-  return v18;
+  return hudContentViewController3;
 }
 
-- (double)detailsViewHeightForMultiPlayerViewController:(id)a3
+- (double)detailsViewHeightForMultiPlayerViewController:(id)controller
 {
-  v3 = [(VUIPlaybackManager *)self multiPlayerDetailsViewController];
-  [v3 contentsHeight];
+  multiPlayerDetailsViewController = [(VUIPlaybackManager *)self multiPlayerDetailsViewController];
+  [multiPlayerDetailsViewController contentsHeight];
   if (v4 <= 0.0)
   {
     v5 = 326.5;
@@ -6480,15 +6480,15 @@ void __35__VUIPlaybackManager__setupInfoTab__block_invoke_2(uint64_t a1, void *a
   return v5;
 }
 
-- (void)multiPlayerViewController:(id)a3 didEnterFullscreenWithPlayerViewController:(id)a4
+- (void)multiPlayerViewController:(id)controller didEnterFullscreenWithPlayerViewController:(id)viewController
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  if (a4)
+  if (viewController)
   {
     v9 = @"PlayerViewControllerKey";
-    v10[0] = a4;
+    v10[0] = viewController;
     v5 = MEMORY[0x1E695DF20];
-    v6 = a4;
+    viewControllerCopy = viewController;
     v7 = [v5 dictionaryWithObjects:v10 forKeys:&v9 count:1];
   }
 
@@ -6497,19 +6497,19 @@ void __35__VUIPlaybackManager__setupInfoTab__block_invoke_2(uint64_t a1, void *a
     v7 = 0;
   }
 
-  v8 = [(VUIPlaybackManager *)self stateMachine];
-  [v8 postEvent:@"Multiview did enter fullscreen" withContext:0 userInfo:v7];
+  stateMachine = [(VUIPlaybackManager *)self stateMachine];
+  [stateMachine postEvent:@"Multiview did enter fullscreen" withContext:0 userInfo:v7];
 }
 
-- (void)multiPlayerViewController:(id)a3 didExitFullscreenWithPlayerViewController:(id)a4
+- (void)multiPlayerViewController:(id)controller didExitFullscreenWithPlayerViewController:(id)viewController
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  if (a4)
+  if (viewController)
   {
     v9 = @"PlayerViewControllerKey";
-    v10[0] = a4;
+    v10[0] = viewController;
     v5 = MEMORY[0x1E695DF20];
-    v6 = a4;
+    viewControllerCopy = viewController;
     v7 = [v5 dictionaryWithObjects:v10 forKeys:&v9 count:1];
   }
 
@@ -6518,42 +6518,42 @@ void __35__VUIPlaybackManager__setupInfoTab__block_invoke_2(uint64_t a1, void *a
     v7 = 0;
   }
 
-  v8 = [(VUIPlaybackManager *)self stateMachine];
-  [v8 postEvent:@"Multiview did exit fullscreen" withContext:0 userInfo:v7];
+  stateMachine = [(VUIPlaybackManager *)self stateMachine];
+  [stateMachine postEvent:@"Multiview did exit fullscreen" withContext:0 userInfo:v7];
 }
 
-- (void)multiPlayerViewController:(id)a3 didDismissWithPlayerViewController:(id)a4 withReason:(unint64_t)a5
+- (void)multiPlayerViewController:(id)controller didDismissWithPlayerViewController:(id)viewController withReason:(unint64_t)reason
 {
   v6 = MEMORY[0x1E695DF90];
-  v7 = a4;
-  v10 = [v6 dictionary];
-  [v10 vui_setObjectIfNotNil:v7 forKey:@"PlayerViewControllerKey"];
+  viewControllerCopy = viewController;
+  dictionary = [v6 dictionary];
+  [dictionary vui_setObjectIfNotNil:viewControllerCopy forKey:@"PlayerViewControllerKey"];
 
-  v8 = [(VUIPlaybackManager *)self stateMachine];
-  v9 = [v10 copy];
-  [v8 postEvent:@"Dismiss multiview playback" withContext:0 userInfo:v9];
+  stateMachine = [(VUIPlaybackManager *)self stateMachine];
+  v9 = [dictionary copy];
+  [stateMachine postEvent:@"Dismiss multiview playback" withContext:0 userInfo:v9];
 }
 
-- (void)multiPlayerViewController:(id)a3 detailsViewControllerWillAppear:(id)a4
+- (void)multiPlayerViewController:(id)controller detailsViewControllerWillAppear:(id)appear
 {
   v30 = *MEMORY[0x1E69E9840];
-  v22 = a3;
-  v6 = a4;
+  controllerCopy = controller;
+  appearCopy = appear;
   v7 = sLogObject_5;
   if (os_log_type_enabled(sLogObject_5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v29 = v6;
+    v29 = appearCopy;
     _os_log_impl(&dword_1E323F000, v7, OS_LOG_TYPE_DEFAULT, "Multi player view controller details view controller will appear %@", buf, 0xCu);
   }
 
-  v8 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v9 = [(VUIPlaybackManager *)self multiviewPlaybackInfo];
-  v10 = [v9 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  multiviewPlaybackInfo = [(VUIPlaybackManager *)self multiviewPlaybackInfo];
+  v10 = [multiviewPlaybackInfo countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v10)
   {
     v11 = v10;
@@ -6568,16 +6568,16 @@ void __35__VUIPlaybackManager__setupInfoTab__block_invoke_2(uint64_t a1, void *a
       {
         if (*v24 != v13)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(multiviewPlaybackInfo);
         }
 
-        v17 = [*(*(&v23 + 1) + 8 * v15) player];
-        v18 = [v17 currentMediaItem];
-        v12 = [v18 mediaItemMetadataForProperty:v14];
+        player = [*(*(&v23 + 1) + 8 * v15) player];
+        currentMediaItem = [player currentMediaItem];
+        v12 = [currentMediaItem mediaItemMetadataForProperty:v14];
 
         if ([v12 length])
         {
-          [v8 addObject:v12];
+          [array addObject:v12];
         }
 
         ++v15;
@@ -6585,7 +6585,7 @@ void __35__VUIPlaybackManager__setupInfoTab__block_invoke_2(uint64_t a1, void *a
       }
 
       while (v11 != v15);
-      v11 = [v9 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v11 = [multiviewPlaybackInfo countByEnumeratingWithState:&v23 objects:v27 count:16];
     }
 
     while (v11);
@@ -6598,7 +6598,7 @@ void __35__VUIPlaybackManager__setupInfoTab__block_invoke_2(uint64_t a1, void *a
 
   if (v21)
   {
-    v19 = [v8 copy];
+    v19 = [array copy];
     [v21 updateWithSelectedPlaybackIdentifiers:v19 reloadingData:0];
 
     v20 = +[VUIPlaybackTabManager sharedInstance];
@@ -6606,71 +6606,71 @@ void __35__VUIPlaybackManager__setupInfoTab__block_invoke_2(uint64_t a1, void *a
   }
 }
 
-- (void)multiPlayerViewController:(id)a3 detailsViewControllerDidAppear:(id)a4
+- (void)multiPlayerViewController:(id)controller detailsViewControllerDidAppear:(id)appear
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = a4;
+  appearCopy = appear;
   v5 = sLogObject_5;
   if (os_log_type_enabled(sLogObject_5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = appearCopy;
     _os_log_impl(&dword_1E323F000, v5, OS_LOG_TYPE_DEFAULT, "Multi player view controller details view controller did appear %@", &v6, 0xCu);
   }
 }
 
-- (void)multiPlayerViewController:(id)a3 detailsViewControllerWillDisappear:(id)a4
+- (void)multiPlayerViewController:(id)controller detailsViewControllerWillDisappear:(id)disappear
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = a4;
+  disappearCopy = disappear;
   v5 = sLogObject_5;
   if (os_log_type_enabled(sLogObject_5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = disappearCopy;
     _os_log_impl(&dword_1E323F000, v5, OS_LOG_TYPE_DEFAULT, "Multi player view controller details view controller will disappear %@", &v6, 0xCu);
   }
 }
 
-- (void)multiPlayerViewController:(id)a3 detailsViewControllerDidDisappear:(id)a4
+- (void)multiPlayerViewController:(id)controller detailsViewControllerDidDisappear:(id)disappear
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = a4;
+  disappearCopy = disappear;
   v5 = sLogObject_5;
   if (os_log_type_enabled(sLogObject_5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = disappearCopy;
     _os_log_impl(&dword_1E323F000, v5, OS_LOG_TYPE_DEFAULT, "Multi player view controller details view controller did disappear %@", &v6, 0xCu);
   }
 }
 
-- (void)multiPlayerViewController:(id)a3 didSelectPlayerViewController:(id)a4
+- (void)multiPlayerViewController:(id)controller didSelectPlayerViewController:(id)viewController
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [(VUIPlaybackManager *)self stateMachine];
+  viewControllerCopy = viewController;
+  stateMachine = [(VUIPlaybackManager *)self stateMachine];
   v8 = @"PlayerViewControllerKey";
-  v9[0] = v5;
+  v9[0] = viewControllerCopy;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:&v8 count:1];
 
-  [v6 postEvent:@"Did select multiview player" withContext:0 userInfo:v7];
+  [stateMachine postEvent:@"Did select multiview player" withContext:0 userInfo:v7];
 }
 
-- (void)multiPlayerViewController:(id)a3 didSwapPlayerViewControllerAtIndex:(int64_t)a4 withPlayerAtIndex:(int64_t)a5
+- (void)multiPlayerViewController:(id)controller didSwapPlayerViewControllerAtIndex:(int64_t)index withPlayerAtIndex:(int64_t)atIndex
 {
-  v14 = a3;
-  v8 = [(VUIPlaybackManager *)self multiviewPlaybackInfo];
-  v9 = [v8 count];
+  controllerCopy = controller;
+  multiviewPlaybackInfo = [(VUIPlaybackManager *)self multiviewPlaybackInfo];
+  v9 = [multiviewPlaybackInfo count];
 
   if (v9 >= 2)
   {
-    v10 = [(VUIPlaybackManager *)self multiviewPlaybackInfo];
-    [v10 exchangeObjectAtIndex:a4 withObjectAtIndex:a5];
+    multiviewPlaybackInfo2 = [(VUIPlaybackManager *)self multiviewPlaybackInfo];
+    [multiviewPlaybackInfo2 exchangeObjectAtIndex:index withObjectAtIndex:atIndex];
 
-    if ([v14 distribution] == 1)
+    if ([controllerCopy distribution] == 1)
     {
-      if (!a4)
+      if (!index)
       {
         goto LABEL_8;
       }
@@ -6678,28 +6678,28 @@ void __35__VUIPlaybackManager__setupInfoTab__block_invoke_2(uint64_t a1, void *a
 
     else
     {
-      v11 = [(VUIPlaybackManager *)self multiviewPlaybackInfo];
-      if ([v11 count] != 3)
+      multiviewPlaybackInfo3 = [(VUIPlaybackManager *)self multiviewPlaybackInfo];
+      if ([multiviewPlaybackInfo3 count] != 3)
       {
 LABEL_9:
 
         goto LABEL_10;
       }
 
-      if (!a4)
+      if (!index)
       {
 LABEL_8:
-        v12 = [(VUIPlaybackManager *)self multiviewPlaybackInfo];
-        v11 = [v12 objectAtIndex:0];
+        multiviewPlaybackInfo4 = [(VUIPlaybackManager *)self multiviewPlaybackInfo];
+        multiviewPlaybackInfo3 = [multiviewPlaybackInfo4 objectAtIndex:0];
 
-        v13 = [v11 playerViewController];
-        [(VUIPlaybackManager *)self _muteAllMultiviewPlayersExcept:v13];
+        playerViewController = [multiviewPlaybackInfo3 playerViewController];
+        [(VUIPlaybackManager *)self _muteAllMultiviewPlayersExcept:playerViewController];
 
         goto LABEL_9;
       }
     }
 
-    if (a5)
+    if (atIndex)
     {
       goto LABEL_10;
     }
@@ -6710,77 +6710,77 @@ LABEL_8:
 LABEL_10:
 }
 
-- (void)multiPlayerViewController:(id)a3 didBeginDropWithMediaInfo:(id)a4 atIndex:(int64_t)a5
+- (void)multiPlayerViewController:(id)controller didBeginDropWithMediaInfo:(id)info atIndex:(int64_t)index
 {
   v16 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  controllerCopy = controller;
+  infoCopy = info;
   v10 = sLogObject_5;
   if (os_log_type_enabled(sLogObject_5, OS_LOG_TYPE_DEFAULT))
   {
     v14 = 138412290;
-    v15 = v9;
+    v15 = infoCopy;
     _os_log_impl(&dword_1E323F000, v10, OS_LOG_TYPE_DEFAULT, "Multi player view controller did begin drop with %@", &v14, 0xCu);
   }
 
-  if (![(VUIPlaybackManager *)self _multiviewContainsMediaInfo:v9])
+  if (![(VUIPlaybackManager *)self _multiviewContainsMediaInfo:infoCopy])
   {
-    v11 = [(VUIPlaybackManager *)self multiviewPlayerCount];
-    if (v11 < [(VUIPlaybackManager *)self maxMultiviewPlayerCount])
+    multiviewPlayerCount = [(VUIPlaybackManager *)self multiviewPlayerCount];
+    if (multiviewPlayerCount < [(VUIPlaybackManager *)self maxMultiviewPlayerCount])
     {
-      [v8 setProspectivePlayerVisible:1 atIndex:a5 animated:1 completion:0];
-      v12 = [(VUIPlaybackManager *)self multiviewPlaybackInfo];
+      [controllerCopy setProspectivePlayerVisible:1 atIndex:index animated:1 completion:0];
+      multiviewPlaybackInfo = [(VUIPlaybackManager *)self multiviewPlaybackInfo];
       v13 = +[VUIMultiviewPlaybackInfo prospectivePlaybackInfo];
-      [v12 insertObject:v13 atIndex:a5];
+      [multiviewPlaybackInfo insertObject:v13 atIndex:index];
 
       [(VUIPlaybackManager *)self _updateMultiviewReportingMetrics];
     }
   }
 }
 
-- (void)multiPlayerViewController:(id)a3 didEndDropWithMediaInfo:(id)a4
+- (void)multiPlayerViewController:(id)controller didEndDropWithMediaInfo:(id)info
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  infoCopy = info;
   v8 = sLogObject_5;
   if (os_log_type_enabled(sLogObject_5, OS_LOG_TYPE_DEFAULT))
   {
     v19 = 138412290;
-    v20 = v7;
+    v20 = infoCopy;
     _os_log_impl(&dword_1E323F000, v8, OS_LOG_TYPE_DEFAULT, "Multi player view controller did end drop with %@", &v19, 0xCu);
   }
 
-  v9 = [v6 prospectivePlayerIndex];
-  if (v9 != 0x7FFFFFFFFFFFFFFFLL)
+  prospectivePlayerIndex = [controllerCopy prospectivePlayerIndex];
+  if (prospectivePlayerIndex != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v10 = v9;
-    v11 = [(VUIPlaybackManager *)self multiviewPlaybackInfo];
-    if (v10 >= [v11 count])
+    v10 = prospectivePlayerIndex;
+    multiviewPlaybackInfo = [(VUIPlaybackManager *)self multiviewPlaybackInfo];
+    if (v10 >= [multiviewPlaybackInfo count])
     {
 LABEL_8:
 
       goto LABEL_9;
     }
 
-    v12 = [(VUIPlaybackManager *)self multiviewPlaybackInfo];
-    v13 = [v12 objectAtIndex:v10];
+    multiviewPlaybackInfo2 = [(VUIPlaybackManager *)self multiviewPlaybackInfo];
+    v13 = [multiviewPlaybackInfo2 objectAtIndex:v10];
     v14 = +[VUIMultiviewPlaybackInfo prospectivePlaybackInfo];
 
     if (v13 == v14)
     {
-      v15 = [(VUIPlaybackManager *)self multiviewPlaybackInfo];
-      v11 = [v15 objectAtIndex:v10];
+      multiviewPlaybackInfo3 = [(VUIPlaybackManager *)self multiviewPlaybackInfo];
+      multiviewPlaybackInfo = [multiviewPlaybackInfo3 objectAtIndex:v10];
 
-      v16 = [(VUIPlaybackManager *)self multiviewPlaybackInfo];
-      [v16 removeObjectAtIndex:v10];
+      multiviewPlaybackInfo4 = [(VUIPlaybackManager *)self multiviewPlaybackInfo];
+      [multiviewPlaybackInfo4 removeObjectAtIndex:v10];
 
-      v17 = [v11 player];
+      player = [multiviewPlaybackInfo player];
 
-      if (v17)
+      if (player)
       {
-        v18 = [v11 player];
-        [VUIPlaybackEndManagerObjC remove:v18];
+        player2 = [multiviewPlaybackInfo player];
+        [VUIPlaybackEndManagerObjC remove:player2];
       }
 
       goto LABEL_8;
@@ -6788,42 +6788,42 @@ LABEL_8:
   }
 
 LABEL_9:
-  [v6 setProspectivePlayerVisible:0 animated:1 completion:0];
+  [controllerCopy setProspectivePlayerVisible:0 animated:1 completion:0];
 }
 
-- (void)multiPlayerViewController:(id)a3 didDropWithMediaInfo:(id)a4 overPlayerAtIndex:(int64_t)a5
+- (void)multiPlayerViewController:(id)controller didDropWithMediaInfo:(id)info overPlayerAtIndex:(int64_t)index
 {
   v32 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  controllerCopy = controller;
+  infoCopy = info;
   objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __87__VUIPlaybackManager_multiPlayerViewController_didDropWithMediaInfo_overPlayerAtIndex___block_invoke;
   aBlock[3] = &unk_1E872F8D0;
-  v10 = v8;
+  v10 = controllerCopy;
   v25 = v10;
   objc_copyWeak(&v26, &location);
   v11 = _Block_copy(aBlock);
-  v12 = [(VUIPlaybackManager *)self multiviewPlaybackInfo];
-  v13 = [v12 objectAtIndex:a5];
+  multiviewPlaybackInfo = [(VUIPlaybackManager *)self multiviewPlaybackInfo];
+  v13 = [multiviewPlaybackInfo objectAtIndex:index];
   v14 = +[VUIMultiviewPlaybackInfo prospectivePlaybackInfo];
   v15 = v13 == v14;
 
   if (v15)
   {
-    v16 = [(VUIPlaybackManager *)self multiviewPlaybackInfo];
-    v17 = [v16 objectAtIndex:a5];
+    multiviewPlaybackInfo2 = [(VUIPlaybackManager *)self multiviewPlaybackInfo];
+    v17 = [multiviewPlaybackInfo2 objectAtIndex:index];
 
-    v18 = [(VUIPlaybackManager *)self multiviewPlaybackInfo];
-    [v18 removeObjectAtIndex:a5];
+    multiviewPlaybackInfo3 = [(VUIPlaybackManager *)self multiviewPlaybackInfo];
+    [multiviewPlaybackInfo3 removeObjectAtIndex:index];
 
-    v19 = [v17 player];
+    player = [v17 player];
 
-    if (v19)
+    if (player)
     {
-      v20 = [v17 player];
-      [VUIPlaybackEndManagerObjC remove:v20];
+      player2 = [v17 player];
+      [VUIPlaybackEndManagerObjC remove:player2];
     }
   }
 
@@ -6831,36 +6831,36 @@ LABEL_9:
   if (os_log_type_enabled(sLogObject_5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v29 = v9;
+    v29 = infoCopy;
     v30 = 2048;
-    v31 = a5;
+    indexCopy = index;
     _os_log_impl(&dword_1E323F000, v21, OS_LOG_TYPE_DEFAULT, "Multi player view controller did drop with %@ - %ld", buf, 0x16u);
   }
 
-  if (a5 != 0x7FFFFFFFFFFFFFFFLL)
+  if (index != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v22 = [(VUIPlaybackManager *)self multiviewPlayerCount];
-    if (v22 == [(VUIPlaybackManager *)self maxMultiviewPlayerCount])
+    multiviewPlayerCount = [(VUIPlaybackManager *)self multiviewPlayerCount];
+    if (multiviewPlayerCount == [(VUIPlaybackManager *)self maxMultiviewPlayerCount])
     {
-      v23 = [v9 tvpPlaylist];
-      [(VUIPlaybackManager *)self replacePlaylistInMultiviewAtIndex:a5 withPlaylist:v23 animated:1];
+      tvpPlaylist = [infoCopy tvpPlaylist];
+      [(VUIPlaybackManager *)self replacePlaylistInMultiviewAtIndex:index withPlaylist:tvpPlaylist animated:1];
 LABEL_14:
 
       goto LABEL_15;
     }
   }
 
-  if (![(VUIPlaybackManager *)self _multiviewContainsMediaInfo:v9])
+  if (![(VUIPlaybackManager *)self _multiviewContainsMediaInfo:infoCopy])
   {
-    v23 = [v9 tvpPlaylist];
-    if (a5 == 0x7FFFFFFFFFFFFFFFLL)
+    tvpPlaylist = [infoCopy tvpPlaylist];
+    if (index == 0x7FFFFFFFFFFFFFFFLL)
     {
-      [(VUIPlaybackManager *)self addPlaylistToMultiview:v23 animated:1 completion:v11];
+      [(VUIPlaybackManager *)self addPlaylistToMultiview:tvpPlaylist animated:1 completion:v11];
     }
 
     else
     {
-      [(VUIPlaybackManager *)self addPlaylistToMultiview:v23 atIndex:a5 animated:1 completion:v11];
+      [(VUIPlaybackManager *)self addPlaylistToMultiview:tvpPlaylist atIndex:index animated:1 completion:v11];
     }
 
     goto LABEL_14;
@@ -6883,50 +6883,50 @@ void __87__VUIPlaybackManager_multiPlayerViewController_didDropWithMediaInfo_ove
   [v2 updateVisibleCellsWithPlaybackIdentifiers:v5];
 }
 
-- (void)multiPlayerViewController:(id)a3 didRemovePlayer:(id)a4 atIndex:(int64_t)a5
+- (void)multiPlayerViewController:(id)controller didRemovePlayer:(id)player atIndex:(int64_t)index
 {
-  v7 = [(VUIPlaybackManager *)self multiviewPlaybackInfo:a3];
+  v7 = [(VUIPlaybackManager *)self multiviewPlaybackInfo:controller];
   v8 = [v7 count];
 
-  if (v8 > a5)
+  if (v8 > index)
   {
-    v9 = [(VUIPlaybackManager *)self multiviewPlaybackInfo];
-    v15 = [v9 objectAtIndex:a5];
+    multiviewPlaybackInfo = [(VUIPlaybackManager *)self multiviewPlaybackInfo];
+    v15 = [multiviewPlaybackInfo objectAtIndex:index];
 
-    v10 = [(VUIPlaybackManager *)self multiviewPlaybackInfo];
-    [v10 removeObjectAtIndex:a5];
+    multiviewPlaybackInfo2 = [(VUIPlaybackManager *)self multiviewPlaybackInfo];
+    [multiviewPlaybackInfo2 removeObjectAtIndex:index];
 
-    v11 = [v15 player];
+    player = [v15 player];
 
-    if (v11)
+    if (player)
     {
-      v12 = [v15 player];
-      [VUIPlaybackEndManagerObjC remove:v12];
+      player2 = [v15 player];
+      [VUIPlaybackEndManagerObjC remove:player2];
     }
 
-    v13 = [v15 player];
-    [v13 stop];
+    player3 = [v15 player];
+    [player3 stop];
 
-    v14 = [v15 player];
-    [v14 invalidate];
+    player4 = [v15 player];
+    [player4 invalidate];
 
     [(VUIPlaybackManager *)self _unmuteNextAvailableMultiviewPlayer];
   }
 }
 
-- (void)multiPlayerViewController:(id)a3 didCrossSupportedScreenSizeBoundary:(BOOL)a4
+- (void)multiPlayerViewController:(id)controller didCrossSupportedScreenSizeBoundary:(BOOL)boundary
 {
-  v6 = a3;
-  if (!a4)
+  controllerCopy = controller;
+  if (!boundary)
   {
-    v7 = [MEMORY[0x1E69DC668] sharedApplication];
-    v8 = [v7 applicationState];
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+    applicationState = [mEMORY[0x1E69DC668] applicationState];
 
-    if (v8 != 2)
+    if (applicationState != 2)
     {
-      v9 = [(VUIPlaybackManager *)self _currentlyPlayingMultiviewInfo];
-      v10 = [v9 playerViewController];
-      if (v10)
+      _currentlyPlayingMultiviewInfo = [(VUIPlaybackManager *)self _currentlyPlayingMultiviewInfo];
+      playerViewController = [_currentlyPlayingMultiviewInfo playerViewController];
+      if (playerViewController)
       {
         objc_initWeak(&location, self);
         v11[0] = MEMORY[0x1E69E9820];
@@ -6934,8 +6934,8 @@ void __87__VUIPlaybackManager_multiPlayerViewController_didDropWithMediaInfo_ove
         v11[2] = __84__VUIPlaybackManager_multiPlayerViewController_didCrossSupportedScreenSizeBoundary___block_invoke;
         v11[3] = &unk_1E872F038;
         objc_copyWeak(&v13, &location);
-        v12 = v10;
-        [v6 enterFullscreenWithPlayerViewController:v12 completion:v11];
+        v12 = playerViewController;
+        [controllerCopy enterFullscreenWithPlayerViewController:v12 completion:v11];
 
         objc_destroyWeak(&v13);
         objc_destroyWeak(&location);
@@ -6960,7 +6960,7 @@ void __84__VUIPlaybackManager_multiPlayerViewController_didCrossSupportedScreenS
   }
 }
 
-- (void)multiPlayerViewController:(id)a3 didPinchPlayerToDismiss:(id)a4
+- (void)multiPlayerViewController:(id)controller didPinchPlayerToDismiss:(id)dismiss
 {
   v5 = sLogObject_5;
   if (os_log_type_enabled(sLogObject_5, OS_LOG_TYPE_DEFAULT))
@@ -6969,48 +6969,48 @@ void __84__VUIPlaybackManager_multiPlayerViewController_didCrossSupportedScreenS
     _os_log_impl(&dword_1E323F000, v5, OS_LOG_TYPE_DEFAULT, "Showing multiview from a pinch", v7, 2u);
   }
 
-  v6 = [(VUIPlaybackManager *)self stateMachine];
-  [v6 postEvent:@"Show multiview playback" withContext:0 userInfo:0];
+  stateMachine = [(VUIPlaybackManager *)self stateMachine];
+  [stateMachine postEvent:@"Show multiview playback" withContext:0 userInfo:0];
 }
 
-- (void)multiPlayerViewController:(id)a3 playerViewController:(id)a4 didResizeToFrame:(CGRect)a5
+- (void)multiPlayerViewController:(id)controller playerViewController:(id)viewController didResizeToFrame:(CGRect)frame
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v17 = [(VUIPlaybackManager *)self _multiviewInfoForPlayerViewController:a4];
-  v9 = [v17 player];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  v17 = [(VUIPlaybackManager *)self _multiviewInfoForPlayerViewController:viewController];
+  player = [v17 player];
   v19.origin.x = x;
   v19.origin.y = y;
   v19.size.width = width;
   v19.size.height = height;
   v10 = [MEMORY[0x1E696AD98] numberWithDouble:CGRectGetWidth(v19)];
-  [v9 setReportingValueWithNumber:v10 forKey:@"multiviewWidth"];
+  [player setReportingValueWithNumber:v10 forKey:@"multiviewWidth"];
 
-  v11 = [v17 player];
+  player2 = [v17 player];
   v20.origin.x = x;
   v20.origin.y = y;
   v20.size.width = width;
   v20.size.height = height;
   v12 = [MEMORY[0x1E696AD98] numberWithDouble:CGRectGetHeight(v20)];
-  [v11 setReportingValueWithNumber:v12 forKey:@"multiviewHeight"];
+  [player2 setReportingValueWithNumber:v12 forKey:@"multiviewHeight"];
 
-  v13 = [v17 player];
+  player3 = [v17 player];
   v21.origin.x = x;
   v21.origin.y = y;
   v21.size.width = width;
   v21.size.height = height;
   v14 = [MEMORY[0x1E696AD98] numberWithDouble:CGRectGetMinX(v21)];
-  [v13 setReportingValueWithNumber:v14 forKey:@"multiviewOriginX"];
+  [player3 setReportingValueWithNumber:v14 forKey:@"multiviewOriginX"];
 
-  v15 = [v17 player];
+  player4 = [v17 player];
   v22.origin.x = x;
   v22.origin.y = y;
   v22.size.width = width;
   v22.size.height = height;
   v16 = [MEMORY[0x1E696AD98] numberWithDouble:CGRectGetMinY(v22)];
-  [v15 setReportingValueWithNumber:v16 forKey:@"multiviewOriginY"];
+  [player4 setReportingValueWithNumber:v16 forKey:@"multiviewOriginY"];
 }
 
 - (id)_currentlyPlayingMultiviewInfo
@@ -7020,8 +7020,8 @@ void __84__VUIPlaybackManager_multiPlayerViewController_didCrossSupportedScreenS
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(VUIPlaybackManager *)self multiviewPlaybackInfo];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  multiviewPlaybackInfo = [(VUIPlaybackManager *)self multiviewPlaybackInfo];
+  v3 = [multiviewPlaybackInfo countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = *v9;
@@ -7031,7 +7031,7 @@ void __84__VUIPlaybackManager_multiPlayerViewController_didCrossSupportedScreenS
       {
         if (*v9 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(multiviewPlaybackInfo);
         }
 
         v6 = *(*(&v8 + 1) + 8 * i);
@@ -7042,7 +7042,7 @@ void __84__VUIPlaybackManager_multiPlayerViewController_didCrossSupportedScreenS
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v3 = [multiviewPlaybackInfo countByEnumeratingWithState:&v8 objects:v12 count:16];
       if (v3)
       {
         continue;
@@ -7059,23 +7059,23 @@ LABEL_11:
 
 - (void)_unmuteNextAvailableMultiviewPlayer
 {
-  v3 = [(VUIPlaybackManager *)self _currentlyPlayingMultiviewInfo];
-  if (!v3)
+  _currentlyPlayingMultiviewInfo = [(VUIPlaybackManager *)self _currentlyPlayingMultiviewInfo];
+  if (!_currentlyPlayingMultiviewInfo)
   {
-    v4 = [(VUIPlaybackManager *)self multiviewPlaybackInfo];
-    v5 = [v4 firstObject];
+    multiviewPlaybackInfo = [(VUIPlaybackManager *)self multiviewPlaybackInfo];
+    firstObject = [multiviewPlaybackInfo firstObject];
 
-    if (v5)
+    if (firstObject)
     {
-      v6 = [v5 player];
+      player = [firstObject player];
 
-      if (v6)
+      if (player)
       {
         v7[0] = MEMORY[0x1E69E9820];
         v7[1] = 3221225472;
         v7[2] = __57__VUIPlaybackManager__unmuteNextAvailableMultiviewPlayer__block_invoke;
         v7[3] = &unk_1E872D768;
-        v8 = v5;
+        v8 = firstObject;
         [v8 swapActiveAudioWithPlaybackInfo:0 completion:v7];
       }
     }
@@ -7089,16 +7089,16 @@ void __57__VUIPlaybackManager__unmuteNextAvailableMultiviewPlayer__block_invoke(
   [v2 setCanStartPictureInPictureAutomaticallyFromInline:1];
 }
 
-- (id)_multiviewInfoForPlayer:(id)a3
+- (id)_multiviewInfoForPlayer:(id)player
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  playerCopy = player;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [(VUIPlaybackManager *)self multiviewPlaybackInfo];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  multiviewPlaybackInfo = [(VUIPlaybackManager *)self multiviewPlaybackInfo];
+  v6 = [multiviewPlaybackInfo countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = *v13;
@@ -7108,20 +7108,20 @@ void __57__VUIPlaybackManager__unmuteNextAvailableMultiviewPlayer__block_invoke(
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(multiviewPlaybackInfo);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
-        v10 = [v9 player];
+        player = [v9 player];
 
-        if (v10 == v4)
+        if (player == playerCopy)
         {
           v6 = v9;
           goto LABEL_11;
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [multiviewPlaybackInfo countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v6)
       {
         continue;
@@ -7136,53 +7136,53 @@ LABEL_11:
   return v6;
 }
 
-- (BOOL)_multiviewContainsMediaInfo:(id)a3
+- (BOOL)_multiviewContainsMediaInfo:(id)info
 {
-  v4 = [a3 tvpPlaylist];
-  v5 = [v4 currentMediaItem];
-  v6 = [v5 mediaItemMetadataForProperty:*MEMORY[0x1E69D5AE8]];
+  tvpPlaylist = [info tvpPlaylist];
+  currentMediaItem = [tvpPlaylist currentMediaItem];
+  v6 = [currentMediaItem mediaItemMetadataForProperty:*MEMORY[0x1E69D5AE8]];
 
   LOBYTE(self) = [(VUIPlaybackManager *)self multiviewContainsMediaItemWithIdentifier:v6];
   return self;
 }
 
-- (void)upNextButtonTapped:(id)a3
+- (void)upNextButtonTapped:(id)tapped
 {
-  v10 = [(VUIPlaybackManager *)self promoMetadataView];
-  v4 = [v10 skipInfo];
-  v5 = [v4 promoInfo];
-  v6 = [(VUIPlaybackManager *)self activePlayer];
-  v7 = [v6 currentMediaItem];
+  promoMetadataView = [(VUIPlaybackManager *)self promoMetadataView];
+  skipInfo = [promoMetadataView skipInfo];
+  promoInfo = [skipInfo promoInfo];
+  activePlayer = [(VUIPlaybackManager *)self activePlayer];
+  currentMediaItem = [activePlayer currentMediaItem];
 
-  v8 = [VUIMetricsMediaEvent clickMetricsForUpNextWithPromoInfo:v5 onMediaItem:v7];
-  v9 = [(VUIPlaybackManager *)self metricsRecorder];
-  [v9 recordClick:v8 locationIndex:0];
+  v8 = [VUIMetricsMediaEvent clickMetricsForUpNextWithPromoInfo:promoInfo onMediaItem:currentMediaItem];
+  metricsRecorder = [(VUIPlaybackManager *)self metricsRecorder];
+  [metricsRecorder recordClick:v8 locationIndex:0];
 
   [(VUIPlaybackManager *)self _removePrerollFadeIn];
 }
 
-- (void)autoPlayTimerDidCompleteForPostPlayView:(id)a3
+- (void)autoPlayTimerDidCompleteForPostPlayView:(id)view
 {
-  v3 = [(VUIPlaybackManager *)self stateMachine];
-  [v3 postEvent:@"Post play auto play timer did complete"];
+  stateMachine = [(VUIPlaybackManager *)self stateMachine];
+  [stateMachine postEvent:@"Post play auto play timer did complete"];
 }
 
 - (BOOL)allowedToAutoPlay
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = [(VUIPlaybackManager *)self initialPlaybackStartDate];
+  initialPlaybackStartDate = [(VUIPlaybackManager *)self initialPlaybackStartDate];
 
-  if (!v3)
+  if (!initialPlaybackStartDate)
   {
     return 1;
   }
 
   v4 = +[VUIFeaturesConfiguration sharedInstance];
-  v5 = [v4 playbackUpNextConfig];
+  playbackUpNextConfig = [v4 playbackUpNextConfig];
 
-  v6 = [MEMORY[0x1E695DF00] date];
-  v7 = [(VUIPlaybackManager *)self initialPlaybackStartDate];
-  [v6 timeIntervalSinceDate:v7];
+  date = [MEMORY[0x1E695DF00] date];
+  initialPlaybackStartDate2 = [(VUIPlaybackManager *)self initialPlaybackStartDate];
+  [date timeIntervalSinceDate:initialPlaybackStartDate2];
   v9 = v8;
 
   v10 = sLogObject_5;
@@ -7197,12 +7197,12 @@ LABEL_11:
   if (os_log_type_enabled(sLogObject_5, OS_LOG_TYPE_DEFAULT))
   {
     v12 = v11;
-    v13 = [v5 maximumAutoPlayableItems];
-    v14 = [(VUIPlaybackManager *)self autoPlayedVideosCount];
+    maximumAutoPlayableItems = [playbackUpNextConfig maximumAutoPlayableItems];
+    autoPlayedVideosCount = [(VUIPlaybackManager *)self autoPlayedVideosCount];
     v19 = 134218240;
-    v20 = *&v13;
+    v20 = *&maximumAutoPlayableItems;
     v21 = 2048;
-    v22 = v14;
+    v22 = autoPlayedVideosCount;
     _os_log_impl(&dword_1E323F000, v12, OS_LOG_TYPE_DEFAULT, "maximum auto playable items:(%lu) current count:(%lu)", &v19, 0x16u);
   }
 
@@ -7213,11 +7213,11 @@ LABEL_11:
 
   else
   {
-    [v5 minAutoPlayStopTime];
+    [playbackUpNextConfig minAutoPlayStopTime];
     if (v9 >= v16)
     {
-      v17 = [(VUIPlaybackManager *)self autoPlayedVideosCount];
-      v15 = v17 < [v5 maximumAutoPlayableItems];
+      autoPlayedVideosCount2 = [(VUIPlaybackManager *)self autoPlayedVideosCount];
+      v15 = autoPlayedVideosCount2 < [playbackUpNextConfig maximumAutoPlayableItems];
     }
 
     else
@@ -7229,9 +7229,9 @@ LABEL_11:
   return v15;
 }
 
-- (BOOL)_allowedToAutoPlayForType:(unint64_t)a3
+- (BOOL)_allowedToAutoPlayForType:(unint64_t)type
 {
-  v4 = [VUISettingsManager isPostPlayAutoPlayEnabledForType:postPlayAutoPlayTypeFromViewType(a3)];
+  v4 = [VUISettingsManager isPostPlayAutoPlayEnabledForType:postPlayAutoPlayTypeFromViewType(type)];
   if (![(VUIPlaybackManager *)self _isNewPostPlayEnabled]&& !v4)
   {
     return 0;
@@ -7240,14 +7240,14 @@ LABEL_11:
   return [(VUIPlaybackManager *)self allowedToAutoPlay];
 }
 
-- (id)playerViewController:(id)a3 targetViewForDismissalAnimationWithProposedTargetView:(id)a4
+- (id)playerViewController:(id)controller targetViewForDismissalAnimationWithProposedTargetView:(id)view
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  viewCopy = view;
   if (+[VUITVExtension isRunningInCompanionApp])
   {
-    v8 = [v6 view];
-    [v8 bounds];
+    view = [controllerCopy view];
+    [view bounds];
     v10 = v9;
     v12 = v11;
     v14 = v13;
@@ -7258,20 +7258,20 @@ LABEL_11:
     v63.size.width = v14;
     v63.size.height = v16;
     v17 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{v10, CGRectGetHeight(v63) + -1.0, v14, v16}];
-    v18 = [v6 view];
-    [v18 addSubview:v17];
+    view2 = [controllerCopy view];
+    [view2 addSubview:v17];
 
     goto LABEL_13;
   }
 
-  v19 = [(VUIPlaybackManager *)self stateMachine];
-  v20 = [v19 currentState];
-  v21 = [v20 isEqualToString:@"Showing video full screen with post play content on screen"];
+  stateMachine = [(VUIPlaybackManager *)self stateMachine];
+  currentState = [stateMachine currentState];
+  v21 = [currentState isEqualToString:@"Showing video full screen with post play content on screen"];
 
   if (v21)
   {
-    v22 = [(VUIPlaybackManager *)self playbackContainerViewController];
-    [(VUIPlaybackManager *)self _calculatePostPlayPipRectForParent:v22];
+    playbackContainerViewController = [(VUIPlaybackManager *)self playbackContainerViewController];
+    [(VUIPlaybackManager *)self _calculatePostPlayPipRectForParent:playbackContainerViewController];
     v24 = v23;
     v26 = v25;
     v28 = v27;
@@ -7289,21 +7289,21 @@ LABEL_11:
     goto LABEL_10;
   }
 
-  v31 = [(VUIPlaybackManager *)self stateMachine];
-  v32 = [v31 currentState];
-  if ([v32 isEqualToString:@"Showing multiview playback"])
+  stateMachine2 = [(VUIPlaybackManager *)self stateMachine];
+  currentState2 = [stateMachine2 currentState];
+  if ([currentState2 isEqualToString:@"Showing multiview playback"])
   {
 
 LABEL_9:
-    v36 = [(VUIPlaybackManager *)self multiPlayerViewController];
-    [v36 presentationRectForPlayerViewController:v6];
+    multiPlayerViewController = [(VUIPlaybackManager *)self multiPlayerViewController];
+    [multiPlayerViewController presentationRectForPlayerViewController:controllerCopy];
     v24 = v37;
     v26 = v38;
     v28 = v39;
     v30 = v40;
 
 LABEL_10:
-    v41 = v7;
+    v41 = viewCopy;
     v42 = v24;
     v43 = v26;
     v44 = v28;
@@ -7311,22 +7311,22 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v33 = [(VUIPlaybackManager *)self stateMachine];
-  v34 = [v33 currentState];
-  v35 = [v34 isEqualToString:@"Showing multiview playback in PIP"];
+  stateMachine3 = [(VUIPlaybackManager *)self stateMachine];
+  currentState3 = [stateMachine3 currentState];
+  v35 = [currentState3 isEqualToString:@"Showing multiview playback in PIP"];
 
   if (v35)
   {
     goto LABEL_9;
   }
 
-  v47 = [(VUIPlaybackManager *)self stateMachine];
-  v48 = [v47 currentState];
-  v49 = [v48 isEqualToString:@"Transferring player to background media"];
+  stateMachine4 = [(VUIPlaybackManager *)self stateMachine];
+  currentState4 = [stateMachine4 currentState];
+  v49 = [currentState4 isEqualToString:@"Transferring player to background media"];
 
-  v50 = [(VUIPlaybackManager *)self playbackContainerViewController];
-  v51 = [v50 view];
-  [v51 bounds];
+  playbackContainerViewController2 = [(VUIPlaybackManager *)self playbackContainerViewController];
+  view3 = [playbackContainerViewController2 view];
+  [view3 bounds];
   v54 = v53;
   v56 = v55;
   v58 = v57;
@@ -7334,15 +7334,15 @@ LABEL_10:
   {
     v59 = v52;
 
-    v60 = [(VUIPlaybackManager *)self playbackContainerViewController];
-    v61 = [v60 view];
+    playbackContainerViewController3 = [(VUIPlaybackManager *)self playbackContainerViewController];
+    view4 = [playbackContainerViewController3 view];
 
-    [v61 setFrame:{v54, v59, v56, v58}];
-    v7 = v61;
+    [view4 setFrame:{v54, v59, v56, v58}];
+    viewCopy = view4;
     goto LABEL_12;
   }
 
-  v41 = v7;
+  v41 = viewCopy;
   v42 = v54;
   v43 = v58;
   v44 = v56;
@@ -7350,49 +7350,49 @@ LABEL_10:
 LABEL_11:
   [v41 setFrame:{v42, v43, v44, v45}];
 LABEL_12:
-  v7 = v7;
-  v17 = v7;
+  viewCopy = viewCopy;
+  v17 = viewCopy;
 LABEL_13:
 
   return v17;
 }
 
-- (void)_updateTimeBoundFeature:(id)a3 animated:(BOOL)a4
+- (void)_updateTimeBoundFeature:(id)feature animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v33 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  featureCopy = feature;
   v7 = sLogObject_5;
   if (os_log_type_enabled(sLogObject_5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v32 = v6;
+    v32 = featureCopy;
     _os_log_impl(&dword_1E323F000, v7, OS_LOG_TYPE_DEFAULT, "Updating UI with time bound feature - %@", buf, 0xCu);
   }
 
-  v8 = [v6 type];
-  if (v8 > 6)
+  type = [featureCopy type];
+  if (type > 6)
   {
-    if (v8 <= 8)
+    if (type <= 8)
     {
-      if (v8 != 7)
+      if (type != 7)
       {
         [(VUIPlaybackManager *)self _addSkipIntroFeatureToMonitorIfNeeded:1];
         goto LABEL_38;
       }
 
-      if ([v6 isActive])
+      if ([featureCopy isActive])
       {
-        [(VUIPlaybackManager *)self _showSkipAndPromoView:1 animated:v4];
+        [(VUIPlaybackManager *)self _showSkipAndPromoView:1 animated:animatedCopy];
         goto LABEL_38;
       }
 
-      v22 = [(VUIPlaybackManager *)self featureMonitor];
-      v13 = [v22 activeFeatureForType:7];
+      featureMonitor = [(VUIPlaybackManager *)self featureMonitor];
+      userInfo = [featureMonitor activeFeatureForType:7];
 
-      if (!v13)
+      if (!userInfo)
       {
-        [(VUIPlaybackManager *)self _showSkipAndPromoView:0 animated:v4];
+        [(VUIPlaybackManager *)self _showSkipAndPromoView:0 animated:animatedCopy];
       }
 
 LABEL_34:
@@ -7400,23 +7400,23 @@ LABEL_34:
       goto LABEL_38;
     }
 
-    if (v8 != 9)
+    if (type != 9)
     {
-      if (v8 != 13)
+      if (type != 13)
       {
         goto LABEL_38;
       }
 
-      v13 = [v6 userInfo];
-      v14 = [(VUIPlaybackManager *)self productPlacementImage];
-      if (v14)
+      userInfo = [featureCopy userInfo];
+      productPlacementImage = [(VUIPlaybackManager *)self productPlacementImage];
+      if (productPlacementImage)
       {
       }
 
       else
       {
-        v23 = [v13 localizedInfoString];
-        v24 = [v23 length];
+        localizedInfoString = [userInfo localizedInfoString];
+        v24 = [localizedInfoString length];
 
         if (!v24)
         {
@@ -7424,36 +7424,36 @@ LABEL_34:
         }
       }
 
-      v25 = [v6 isActive];
-      v26 = [(VUIPlaybackManager *)self productPlacementImage];
-      [(VUIPlaybackManager *)self _showProductPlacement:v25 withImage:v26 animated:v4];
+      isActive = [featureCopy isActive];
+      productPlacementImage2 = [(VUIPlaybackManager *)self productPlacementImage];
+      [(VUIPlaybackManager *)self _showProductPlacement:isActive withImage:productPlacementImage2 animated:animatedCopy];
 
       goto LABEL_34;
     }
 
-    v15 = [v6 isActive];
-    v16 = [(VUIPlaybackManager *)self ratingImage];
-    v17 = [(VUIPlaybackManager *)self photoSensitivityImage];
-    v18 = [(VUIPlaybackManager *)self highMotionWarningImage];
-    [(VUIPlaybackManager *)self _showTVRating:v15 withRatingImage:v16 photoSensitivityImage:v17 highMotionWarningImage:v18 animated:v4];
+    isActive2 = [featureCopy isActive];
+    ratingImage = [(VUIPlaybackManager *)self ratingImage];
+    photoSensitivityImage = [(VUIPlaybackManager *)self photoSensitivityImage];
+    highMotionWarningImage = [(VUIPlaybackManager *)self highMotionWarningImage];
+    [(VUIPlaybackManager *)self _showTVRating:isActive2 withRatingImage:ratingImage photoSensitivityImage:photoSensitivityImage highMotionWarningImage:highMotionWarningImage animated:animatedCopy];
 
-    if ([v6 isActive])
+    if ([featureCopy isActive])
     {
       goto LABEL_38;
     }
 
-    v19 = [(VUIPlaybackManager *)self currentMediaItem];
-    v20 = [v19 mediaItemMetadataForProperty:*MEMORY[0x1E69D5CB8]];
+    currentMediaItem = [(VUIPlaybackManager *)self currentMediaItem];
+    v20 = [currentMediaItem mediaItemMetadataForProperty:*MEMORY[0x1E69D5CB8]];
 
-    v21 = [(VUIPlaybackManager *)self productPlacementImage];
-    if (v21)
+    productPlacementImage3 = [(VUIPlaybackManager *)self productPlacementImage];
+    if (productPlacementImage3)
     {
     }
 
     else
     {
-      v27 = [v20 localizedInfoString];
-      v28 = [v27 length];
+      localizedInfoString2 = [v20 localizedInfoString];
+      v28 = [localizedInfoString2 length];
 
       if (!v28)
       {
@@ -7473,14 +7473,14 @@ LABEL_37:
     goto LABEL_37;
   }
 
-  if ((v8 - 4) >= 3)
+  if ((type - 4) >= 3)
   {
-    if (v8 == 2)
+    if (type == 2)
     {
-      if ([v6 isActive])
+      if ([featureCopy isActive])
       {
-        v10 = [(VUIPlaybackManager *)self stateMachine];
-        v11 = v10;
+        stateMachine = [(VUIPlaybackManager *)self stateMachine];
+        v11 = stateMachine;
         v12 = @"Post play time boundary crossed";
       }
 
@@ -7491,32 +7491,32 @@ LABEL_37:
           goto LABEL_38;
         }
 
-        v10 = [(VUIPlaybackManager *)self stateMachine];
-        v11 = v10;
+        stateMachine = [(VUIPlaybackManager *)self stateMachine];
+        v11 = stateMachine;
         v12 = @"Post play cancelled";
       }
     }
 
     else
     {
-      if (v8 != 3 || ![v6 isActive])
+      if (type != 3 || ![featureCopy isActive])
       {
         goto LABEL_38;
       }
 
-      v10 = [(VUIPlaybackManager *)self stateMachine];
-      v11 = v10;
+      stateMachine = [(VUIPlaybackManager *)self stateMachine];
+      v11 = stateMachine;
       v12 = @"Post play configuration time reached";
     }
 
-    [v10 postEvent:v12];
+    [stateMachine postEvent:v12];
 
     goto LABEL_38;
   }
 
-  if ([v6 isActive])
+  if ([featureCopy isActive])
   {
-    v9 = [v6 isSkippable] ^ 1;
+    v9 = [featureCopy isSkippable] ^ 1;
   }
 
   else
@@ -7536,33 +7536,33 @@ void __55__VUIPlaybackManager__updateTimeBoundFeature_animated___block_invoke(ui
   [v1 _addProductPlacementFeatureFromMediaItem:v2];
 }
 
-- (void)mediaInfoDidChangeTo:(id)a3 canPlay:(BOOL)a4 wasAutoPlayed:(BOOL)a5
+- (void)mediaInfoDidChangeTo:(id)to canPlay:(BOOL)play wasAutoPlayed:(BOOL)played
 {
-  v6 = a4;
+  playCopy = play;
   v23[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  if (v6 && !a5)
+  toCopy = to;
+  if (playCopy && !played)
   {
     [(VUIPlaybackManager *)self _resetAutoPlayBingeWatchingQualifications];
   }
 
   v22 = @"CanPlayMediaKey";
-  v9 = [MEMORY[0x1E696AD98] numberWithBool:v6];
+  v9 = [MEMORY[0x1E696AD98] numberWithBool:playCopy];
   v23[0] = v9;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:&v22 count:1];
   v11 = [v10 mutableCopy];
 
-  if (v8)
+  if (toCopy)
   {
-    [v11 setObject:v8 forKey:@"PlaylistKey"];
+    [v11 setObject:toCopy forKey:@"PlaylistKey"];
   }
 
-  v12 = [(VUIPlaybackManager *)self avPlayerViewController];
+  avPlayerViewController = [(VUIPlaybackManager *)self avPlayerViewController];
 
-  if (v12)
+  if (avPlayerViewController)
   {
-    v13 = [(VUIPlaybackManager *)self avPlayerViewController];
-    [v11 setObject:v13 forKey:@"PlayerViewControllerKey"];
+    avPlayerViewController2 = [(VUIPlaybackManager *)self avPlayerViewController];
+    [v11 setObject:avPlayerViewController2 forKey:@"PlayerViewControllerKey"];
   }
 
   v14 = sLogObject_5;
@@ -7571,32 +7571,32 @@ void __55__VUIPlaybackManager__updateTimeBoundFeature_animated___block_invoke(ui
     v15 = v14;
     v16 = VUIBoolLogString();
     v18 = 138412546;
-    v19 = v8;
+    v19 = toCopy;
     v20 = 2112;
     v21 = v16;
     _os_log_impl(&dword_1E323F000, v15, OS_LOG_TYPE_DEFAULT, "Now playing view controller media info changed:<%@>, canPlay:<%@>", &v18, 0x16u);
   }
 
-  v17 = [(VUIPlaybackManager *)self stateMachine];
-  [v17 postEvent:@"Media info did change" withContext:0 userInfo:v11];
+  stateMachine = [(VUIPlaybackManager *)self stateMachine];
+  [stateMachine postEvent:@"Media info did change" withContext:0 userInfo:v11];
 }
 
-- (void)_showShareMediaMenuForMediaItem:(id)a3
+- (void)_showShareMediaMenuForMediaItem:(id)item
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  itemCopy = item;
   v5 = sLogObject_5;
   if (os_log_type_enabled(sLogObject_5, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412290;
-    v10 = v4;
+    v10 = itemCopy;
     _os_log_impl(&dword_1E323F000, v5, OS_LOG_TYPE_DEFAULT, "Try to show share button for item: %@", &v9, 0xCu);
   }
 
-  if ([VUIMediaShareCoordinator shouldShowShareForMediaItem:v4])
+  if ([VUIMediaShareCoordinator shouldShowShareForMediaItem:itemCopy])
   {
-    v6 = [(VUIPlaybackManager *)self mainAVPlayerViewController];
-    v7 = [VUIMediaShareControlButton shareControlItemForMediaItem:v4 inPlayerViewController:v6];
+    mainAVPlayerViewController = [(VUIPlaybackManager *)self mainAVPlayerViewController];
+    v7 = [VUIMediaShareControlButton shareControlItemForMediaItem:itemCopy inPlayerViewController:mainAVPlayerViewController];
 
     [(VUIPlaybackManager *)self setShareControlItem:v7];
     [(VUIPlaybackManager *)self _mainPlayerViewControllerSetupControlItems];
@@ -7608,7 +7608,7 @@ void __55__VUIPlaybackManager__updateTimeBoundFeature_animated___block_invoke(ui
     if (os_log_type_enabled(sLogObject_5, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138412290;
-      v10 = v4;
+      v10 = itemCopy;
       _os_log_impl(&dword_1E323F000, v8, OS_LOG_TYPE_DEFAULT, "This item: %@ doesn't support share in player", &v9, 0xCu);
     }
   }
@@ -7616,14 +7616,14 @@ void __55__VUIPlaybackManager__updateTimeBoundFeature_animated___block_invoke(ui
 
 - (void)_removeAdvisoryViews
 {
-  v2 = [(VUIPlaybackManager *)self ratingView];
-  [v2 removeAllViews];
+  ratingView = [(VUIPlaybackManager *)self ratingView];
+  [ratingView removeAllViews];
 }
 
 - (void)_showOrUpdateAdvisoryViewsIfNeeded
 {
-  v38 = [(VUIPlaybackManager *)self avPlayerViewController];
-  [v38 videoBounds];
+  avPlayerViewController = [(VUIPlaybackManager *)self avPlayerViewController];
+  [avPlayerViewController videoBounds];
   x = v40.origin.x;
   y = v40.origin.y;
   width = v40.size.width;
@@ -7635,12 +7635,12 @@ void __55__VUIPlaybackManager__updateTimeBoundFeature_animated___block_invoke(ui
 
   if ([(VUIPlaybackManager *)self shouldDisplayTVRatingWhenVideoBoundsIsAvailable])
   {
-    v7 = [(VUIPlaybackManager *)self ratingImage];
-    if (v7)
+    ratingImage = [(VUIPlaybackManager *)self ratingImage];
+    if (ratingImage)
     {
-      v8 = [(VUIPlaybackManager *)self photoSensitivityImage];
-      v9 = [(VUIPlaybackManager *)self highMotionWarningImage];
-      [(VUIPlaybackManager *)self _showTVRating:1 withRatingImage:v7 photoSensitivityImage:v8 highMotionWarningImage:v9 animated:[(VUIPlaybackManager *)self shouldAnimateTVRatingView]];
+      photoSensitivityImage = [(VUIPlaybackManager *)self photoSensitivityImage];
+      highMotionWarningImage = [(VUIPlaybackManager *)self highMotionWarningImage];
+      [(VUIPlaybackManager *)self _showTVRating:1 withRatingImage:ratingImage photoSensitivityImage:photoSensitivityImage highMotionWarningImage:highMotionWarningImage animated:[(VUIPlaybackManager *)self shouldAnimateTVRatingView]];
 
       [(VUIPlaybackManager *)self setShouldDisplayTVRatingWhenVideoBoundsIsAvailable:0];
       [(VUIPlaybackManager *)self setShouldAnimateTVRatingView:0];
@@ -7651,31 +7651,31 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  v10 = [(VUIPlaybackManager *)self ratingView];
+  ratingView = [(VUIPlaybackManager *)self ratingView];
 
-  if (v10)
+  if (ratingView)
   {
-    v7 = [(VUIPlaybackManager *)self ratingView];
-    [v7 frame];
-    v11 = [v7 layout];
-    [v11 margin];
+    ratingImage = [(VUIPlaybackManager *)self ratingView];
+    [ratingImage frame];
+    layout = [ratingImage layout];
+    [layout margin];
     v13 = v12;
     v15 = v14;
     v17 = v16;
-    v18 = [v7 traitCollection];
-    v19 = [v18 userInterfaceIdiom];
+    traitCollection = [ratingImage traitCollection];
+    userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-    if (!v19 && ([MEMORY[0x1E69DD2E8] vui_interfaceOrientation] - 1) < 2 || +[VUIUtilities isIpadPortrait](VUIUtilities, "isIpadPortrait"))
+    if (!userInterfaceIdiom && ([MEMORY[0x1E69DD2E8] vui_interfaceOrientation] - 1) < 2 || +[VUIUtilities isIpadPortrait](VUIUtilities, "isIpadPortrait"))
     {
-      [v11 portraitMargin];
+      [layout portraitMargin];
       v13 = v20;
       v15 = v21;
       v17 = v22;
     }
 
-    if ([v7 vuiIsRTL])
+    if ([ratingImage vuiIsRTL])
     {
-      [v7 sizeThatFits:{width, height}];
+      [ratingImage sizeThatFits:{width, height}];
       v24 = width - (v17 + v23);
     }
 
@@ -7684,8 +7684,8 @@ LABEL_14:
       v24 = x + v15;
     }
 
-    [v7 sizeThatFits:{width, height}];
-    [v7 setFrame:{v24, y + v13, v25, v26}];
+    [ratingImage sizeThatFits:{width, height}];
+    [ratingImage setFrame:{v24, y + v13, v25, v26}];
 
     goto LABEL_14;
   }
@@ -7693,8 +7693,8 @@ LABEL_14:
 LABEL_15:
   if ([(VUIPlaybackManager *)self shouldDisplayProductPlacementWhenVideoBoundsIsAvailable]&& ([(VUIPlaybackManager *)self ratingView], v27 = objc_claimAutoreleasedReturnValue(), v27, !v27))
   {
-    v37 = [(VUIPlaybackManager *)self productPlacementImage];
-    [(VUIPlaybackManager *)self _showProductPlacement:1 withImage:v37 animated:[(VUIPlaybackManager *)self shouldAnimateProductPlacementView]];
+    productPlacementImage = [(VUIPlaybackManager *)self productPlacementImage];
+    [(VUIPlaybackManager *)self _showProductPlacement:1 withImage:productPlacementImage animated:[(VUIPlaybackManager *)self shouldAnimateProductPlacementView]];
 
     [(VUIPlaybackManager *)self setShouldDisplayProductPlacementWhenVideoBoundsIsAvailable:0];
     [(VUIPlaybackManager *)self setShouldAnimateProductPlacementView:0];
@@ -7702,30 +7702,30 @@ LABEL_15:
 
   else
   {
-    v28 = [(VUIPlaybackManager *)self productPlacementView];
+    productPlacementView = [(VUIPlaybackManager *)self productPlacementView];
 
-    if (v28)
+    if (productPlacementView)
     {
-      v29 = [(VUIPlaybackManager *)self productPlacementView];
-      v30 = [v29 layout];
-      [v30 margin];
+      productPlacementView2 = [(VUIPlaybackManager *)self productPlacementView];
+      layout2 = [productPlacementView2 layout];
+      [layout2 margin];
       v32 = x + v31;
-      [v30 margin];
+      [layout2 margin];
       v34 = y + v33;
-      [v29 sizeThatFits:{width, height}];
-      [v29 setFrame:{v32, v34, v35, v36}];
+      [productPlacementView2 sizeThatFits:{width, height}];
+      [productPlacementView2 setFrame:{v32, v34, v35, v36}];
     }
   }
 
 LABEL_20:
 }
 
-- (void)_showTVRating:(BOOL)a3 withRatingImage:(id)a4 photoSensitivityImage:(id)a5 highMotionWarningImage:(id)a6 animated:(BOOL)a7
+- (void)_showTVRating:(BOOL)rating withRatingImage:(id)image photoSensitivityImage:(id)sensitivityImage highMotionWarningImage:(id)warningImage animated:(BOOL)animated
 {
-  v10 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  ratingCopy = rating;
+  imageCopy = image;
+  sensitivityImageCopy = sensitivityImage;
+  warningImageCopy = warningImage;
   objc_initWeak(location, self);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -7738,25 +7738,25 @@ LABEL_20:
   v26[2] = __106__VUIPlaybackManager__showTVRating_withRatingImage_photoSensitivityImage_highMotionWarningImage_animated___block_invoke_2;
   v26[3] = &unk_1E8730E88;
   objc_copyWeak(&v31, location);
-  v16 = v12;
+  v16 = imageCopy;
   v27 = v16;
-  v17 = v13;
+  v17 = sensitivityImageCopy;
   v28 = v17;
-  v18 = v14;
+  v18 = warningImageCopy;
   v29 = v18;
   v19 = v15;
   v30 = v19;
-  v32 = a7;
+  animatedCopy = animated;
   v20 = _Block_copy(v26);
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __106__VUIPlaybackManager__showTVRating_withRatingImage_photoSensitivityImage_highMotionWarningImage_animated___block_invoke_5;
   v23[3] = &unk_1E872EDE0;
   objc_copyWeak(&v24, location);
-  v25 = a7;
+  animatedCopy2 = animated;
   v21 = _Block_copy(v23);
   v22 = v21;
-  if (v10)
+  if (ratingCopy)
   {
     v21 = v20;
   }
@@ -8002,29 +8002,29 @@ void __106__VUIPlaybackManager__showTVRating_withRatingImage_photoSensitivityIma
   [WeakRetained setPlatterView:0];
 }
 
-- (void)_showProductPlacement:(BOOL)a3 withImage:(id)a4 animated:(BOOL)a5
+- (void)_showProductPlacement:(BOOL)placement withImage:(id)image animated:(BOOL)animated
 {
-  v6 = a3;
-  v8 = a4;
+  placementCopy = placement;
+  imageCopy = image;
   objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __63__VUIPlaybackManager__showProductPlacement_withImage_animated___block_invoke;
   aBlock[3] = &unk_1E872F708;
   objc_copyWeak(&v21, &location);
-  v9 = v8;
+  v9 = imageCopy;
   v20 = v9;
-  v22 = a5;
+  animatedCopy = animated;
   v10 = _Block_copy(aBlock);
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __63__VUIPlaybackManager__showProductPlacement_withImage_animated___block_invoke_3;
   v16[3] = &unk_1E872EDE0;
   objc_copyWeak(&v17, &location);
-  v18 = a5;
+  animatedCopy2 = animated;
   v11 = _Block_copy(v16);
   v15 = v11;
-  if (v6)
+  if (placementCopy)
   {
     v11 = v10;
   }
@@ -8112,29 +8112,29 @@ uint64_t __63__VUIPlaybackManager__showProductPlacement_withImage_animated___blo
   return [v2 setProductPlacementView:0];
 }
 
-- (void)_showSkipAndPromoView:(BOOL)a3 animated:(BOOL)a4
+- (void)_showSkipAndPromoView:(BOOL)view animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
+  animatedCopy = animated;
+  viewCopy = view;
   v63 = *MEMORY[0x1E69E9840];
   v7 = sLogObject_5;
   if (os_log_type_enabled(sLogObject_5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    *&buf[4] = v5;
+    *&buf[4] = viewCopy;
     _os_log_impl(&dword_1E323F000, v7, OS_LOG_TYPE_DEFAULT, "Promo view show = %d", buf, 8u);
   }
 
-  v8 = [(VUIPlaybackManager *)self featureMonitor];
-  v9 = [v8 activeFeatureForType:7];
+  featureMonitor = [(VUIPlaybackManager *)self featureMonitor];
+  v9 = [featureMonitor activeFeatureForType:7];
 
-  v10 = [v9 userInfo];
-  if (v5)
+  userInfo = [v9 userInfo];
+  if (viewCopy)
   {
-    v11 = [(VUIPlaybackManager *)self avPlayerViewController];
-    v12 = [v11 view];
+    avPlayerViewController = [(VUIPlaybackManager *)self avPlayerViewController];
+    view = [avPlayerViewController view];
 
-    if (v12)
+    if (view)
     {
       objc_initWeak(&location, self);
       aBlock[0] = MEMORY[0x1E69E9820];
@@ -8143,19 +8143,19 @@ uint64_t __63__VUIPlaybackManager__showProductPlacement_withImage_animated___blo
       aBlock[3] = &unk_1E872E4B8;
       objc_copyWeak(&v57, &location);
       v13 = _Block_copy(aBlock);
-      v14 = [(VUIPlaybackManager *)self promoMetadataView];
-      if (!v14 || (-[VUIPlaybackManager promoMetadataView](self, "promoMetadataView"), v15 = objc_claimAutoreleasedReturnValue(), [v15 superview], v16 = objc_claimAutoreleasedReturnValue(), v17 = v16 == 0, v16, v15, v14, v17))
+      promoMetadataView = [(VUIPlaybackManager *)self promoMetadataView];
+      if (!promoMetadataView || (-[VUIPlaybackManager promoMetadataView](self, "promoMetadataView"), v15 = objc_claimAutoreleasedReturnValue(), [v15 superview], v16 = objc_claimAutoreleasedReturnValue(), v17 = v16 == 0, v16, v15, promoMetadataView, v17))
       {
         v24 = objc_alloc_init(VUIPromoMetadataView);
         [(VUIPromoMetadataView *)v24 setDelegate:self];
         [(VUIPromoMetadataView *)v24 setTranslatesAutoresizingMaskIntoConstraints:0];
-        [(VUIPromoMetadataView *)v24 updateWithInfo:v10];
+        [(VUIPromoMetadataView *)v24 updateWithInfo:userInfo];
         [(VUIPlaybackManager *)self setPromoMetadataView:v24];
         v25 = MEMORY[0x1E69DD2E8];
-        [v12 bounds];
+        [view bounds];
         v26 = [v25 vui_currentSizeClassForWindowWidth:CGRectGetWidth(v64)];
         v27 = MEMORY[0x1E69DD2E8];
-        [v12 bounds];
+        [view bounds];
         v28 = [v27 vui_currentSizeClassForWindowWidth:CGRectGetHeight(v65)];
         *buf = 0;
         v60 = buf;
@@ -8196,17 +8196,17 @@ uint64_t __63__VUIPlaybackManager__showProductPlacement_withImage_animated___blo
         v45[1] = 3221225472;
         v45[2] = __53__VUIPlaybackManager__showSkipAndPromoView_animated___block_invoke_3;
         v45[3] = &unk_1E8730EB0;
-        v46 = v12;
+        v46 = view;
         v32 = v24;
         v52 = v31;
         v47 = v32;
         v49 = v53;
         objc_copyWeak(&v51, &location);
         v50 = buf;
-        v48 = v10;
+        v48 = userInfo;
         v33 = _Block_copy(v45);
         v34 = v33;
-        if (v4)
+        if (animatedCopy)
         {
           [(VUIPromoMetadataView *)v32 setAlpha:0.0];
           v34[2](v34);
@@ -8236,10 +8236,10 @@ uint64_t __63__VUIPlaybackManager__showProductPlacement_withImage_animated___blo
 
       else
       {
-        v18 = [(VUIPlaybackManager *)self promoMetadataView];
-        [v18 setAlpha:0.0];
-        [v18 updateWithInfo:v10];
-        if (v4)
+        promoMetadataView2 = [(VUIPlaybackManager *)self promoMetadataView];
+        [promoMetadataView2 setAlpha:0.0];
+        [promoMetadataView2 updateWithInfo:userInfo];
+        if (animatedCopy)
         {
           v13[2](v13);
           v19 = MEMORY[0x1E69DD250];
@@ -8247,13 +8247,13 @@ uint64_t __63__VUIPlaybackManager__showProductPlacement_withImage_animated___blo
           v54[1] = 3221225472;
           v54[2] = __53__VUIPlaybackManager__showSkipAndPromoView_animated___block_invoke_2;
           v54[3] = &unk_1E872D768;
-          v55 = v18;
+          v55 = promoMetadataView2;
           [v19 animateWithDuration:5242880 delay:v54 options:0 animations:0.5 completion:0.0];
         }
 
         else
         {
-          [v18 setAlpha:1.0];
+          [promoMetadataView2 setAlpha:1.0];
           v13[2](v13);
         }
 
@@ -8265,28 +8265,28 @@ uint64_t __63__VUIPlaybackManager__showProductPlacement_withImage_animated___blo
 
   else
   {
-    v20 = [(VUIPlaybackManager *)self promoMetadataView];
+    promoMetadataView3 = [(VUIPlaybackManager *)self promoMetadataView];
     [(VUIPlaybackManager *)self setPromoMetadataView:0];
     objc_initWeak(buf, self);
     v40[0] = MEMORY[0x1E69E9820];
     v40[1] = 3221225472;
     v40[2] = __53__VUIPlaybackManager__showSkipAndPromoView_animated___block_invoke_5;
     v40[3] = &unk_1E87301C0;
-    v12 = v20;
-    v41 = v12;
+    view = promoMetadataView3;
+    v41 = view;
     objc_copyWeak(&v42, buf);
     v21 = _Block_copy(v40);
-    v22 = [(VUIPlaybackManager *)self metricsRecorder];
-    [v22 recordImpressions];
+    metricsRecorder = [(VUIPlaybackManager *)self metricsRecorder];
+    [metricsRecorder recordImpressions];
 
-    if (v4)
+    if (animatedCopy)
     {
       v23 = MEMORY[0x1E69DD250];
       v38[0] = MEMORY[0x1E69E9820];
       v38[1] = 3221225472;
       v38[2] = __53__VUIPlaybackManager__showSkipAndPromoView_animated___block_invoke_6;
       v38[3] = &unk_1E872D768;
-      v39 = v12;
+      v39 = view;
       v36[0] = MEMORY[0x1E69E9820];
       v36[1] = 3221225472;
       v36[2] = __53__VUIPlaybackManager__showSkipAndPromoView_animated___block_invoke_7;
@@ -8297,7 +8297,7 @@ uint64_t __63__VUIPlaybackManager__showProductPlacement_withImage_animated___blo
 
     else
     {
-      [v12 setAlpha:0.0];
+      [view setAlpha:0.0];
       v21[2](v21);
     }
 
@@ -8438,50 +8438,50 @@ void __53__VUIPlaybackManager__showSkipAndPromoView_animated___block_invoke_5(ui
   [v13 setConfiguration:v12];
 }
 
-- (void)_skipButtonTapped:(id)a3
+- (void)_skipButtonTapped:(id)tapped
 {
-  v4 = [(VUIPlaybackManager *)self featureMonitor];
-  v23 = [v4 activeFeatureForType:7];
+  featureMonitor = [(VUIPlaybackManager *)self featureMonitor];
+  v23 = [featureMonitor activeFeatureForType:7];
 
   v5 = v23;
   if (v23)
   {
-    v6 = [v23 userInfo];
+    userInfo = [v23 userInfo];
 
     v5 = v23;
-    if (v6)
+    if (userInfo)
     {
-      v7 = [v23 userInfo];
-      [v7 target];
+      userInfo2 = [v23 userInfo];
+      [userInfo2 target];
       if (v8 > 0.0)
       {
         v9 = v8;
         v10 = objc_alloc_init(MEMORY[0x1E695DF90]);
-        v11 = [(VUIPlaybackManager *)self activePlayer];
-        [v10 vui_setObjectIfNotNil:v11 forKey:VUIPlaybackManagerNotificationKeyPlayer[0]];
+        activePlayer = [(VUIPlaybackManager *)self activePlayer];
+        [v10 vui_setObjectIfNotNil:activePlayer forKey:VUIPlaybackManagerNotificationKeyPlayer[0]];
 
         [v10 vui_setObjectIfNotNil:&unk_1F5E5D0C8 forKey:VUIPlaybackManagerSeekReasonKey[0]];
-        [v10 vui_setObjectIfNotNil:v7 forKey:VUIPlaybackManagerSeekInfoKey];
-        v12 = [MEMORY[0x1E696AD88] defaultCenter];
+        [v10 vui_setObjectIfNotNil:userInfo2 forKey:VUIPlaybackManagerSeekInfoKey];
+        defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
         v13 = VUIPlaybackManagerWillSkipIntroNotification[0];
         v14 = [v10 copy];
-        [v12 postNotificationName:v13 object:self userInfo:v14];
+        [defaultCenter postNotificationName:v13 object:self userInfo:v14];
 
-        v15 = [(VUIPlaybackManager *)self activePlayer];
-        v16 = [v15 currentMediaItem];
+        activePlayer2 = [(VUIPlaybackManager *)self activePlayer];
+        currentMediaItem = [activePlayer2 currentMediaItem];
 
-        v17 = [VUIMetricsMediaEvent clickMetricsForSkipInfo:v7 onMediaItem:v16];
-        v18 = [v7 promoInfo];
-        v19 = v18 != 0;
+        v17 = [VUIMetricsMediaEvent clickMetricsForSkipInfo:userInfo2 onMediaItem:currentMediaItem];
+        promoInfo = [userInfo2 promoInfo];
+        v19 = promoInfo != 0;
 
-        v20 = [(VUIPlaybackManager *)self metricsRecorder];
-        [v20 recordClick:v17 locationIndex:v19];
+        metricsRecorder = [(VUIPlaybackManager *)self metricsRecorder];
+        [metricsRecorder recordClick:v17 locationIndex:v19];
 
-        v21 = [(VUIPlaybackManager *)self activePlayer];
-        [v21 setElapsedTime:1 precise:v9];
+        activePlayer3 = [(VUIPlaybackManager *)self activePlayer];
+        [activePlayer3 setElapsedTime:1 precise:v9];
 
-        v22 = [(VUIPlaybackManager *)self activePlayer];
-        [v22 play];
+        activePlayer4 = [(VUIPlaybackManager *)self activePlayer];
+        [activePlayer4 play];
 
         [(VUIPlaybackManager *)self _resetAutoPlayBingeWatchingQualifications];
       }
@@ -8494,17 +8494,17 @@ void __53__VUIPlaybackManager__showSkipAndPromoView_animated___block_invoke_5(ui
 - (void)_updateRequiresLinearPlayback
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = [(VUIPlaybackManager *)self mainAVPlayerViewController];
-  if (v3)
+  mainAVPlayerViewController = [(VUIPlaybackManager *)self mainAVPlayerViewController];
+  if (mainAVPlayerViewController)
   {
-    v4 = [(VUIPlaybackManager *)self mainPlayer];
-    v5 = [v4 currentMediaItem];
-    v6 = [v5 hasTrait:*MEMORY[0x1E69D5E30]];
+    mainPlayer = [(VUIPlaybackManager *)self mainPlayer];
+    currentMediaItem = [mainPlayer currentMediaItem];
+    v6 = [currentMediaItem hasTrait:*MEMORY[0x1E69D5E30]];
 
-    v7 = [v3 requiresLinearPlayback];
+    requiresLinearPlayback = [mainAVPlayerViewController requiresLinearPlayback];
     if (v6)
     {
-      if ((v7 & 1) == 0)
+      if ((requiresLinearPlayback & 1) == 0)
       {
         v8 = sLogObject_5;
         if (os_log_type_enabled(sLogObject_5, OS_LOG_TYPE_DEFAULT))
@@ -8513,21 +8513,21 @@ void __53__VUIPlaybackManager__showSkipAndPromoView_animated___block_invoke_5(ui
           _os_log_impl(&dword_1E323F000, v8, OS_LOG_TYPE_DEFAULT, "Overriding requiresLinearPlayback to YES due to TVPMediaItemTraitDisableScrubbing", &v14, 2u);
         }
 
-        v9 = 1;
+        requiresLinearPlayback3 = 1;
 LABEL_13:
-        [v3 setRequiresLinearPlayback:v9];
+        [mainAVPlayerViewController setRequiresLinearPlayback:requiresLinearPlayback3];
       }
     }
 
-    else if (v7 != [(VUIPlaybackManager *)self requiresLinearPlayback])
+    else if (requiresLinearPlayback != [(VUIPlaybackManager *)self requiresLinearPlayback])
     {
       v10 = sLogObject_5;
       if (os_log_type_enabled(sLogObject_5, OS_LOG_TYPE_DEFAULT))
       {
         v11 = v10;
-        v12 = [(VUIPlaybackManager *)self requiresLinearPlayback];
+        requiresLinearPlayback2 = [(VUIPlaybackManager *)self requiresLinearPlayback];
         v13 = @"NO";
-        if (v12)
+        if (requiresLinearPlayback2)
         {
           v13 = @"YES";
         }
@@ -8537,7 +8537,7 @@ LABEL_13:
         _os_log_impl(&dword_1E323F000, v11, OS_LOG_TYPE_DEFAULT, "Setting requiresLinearPlayback to %@", &v14, 0xCu);
       }
 
-      v9 = [(VUIPlaybackManager *)self requiresLinearPlayback];
+      requiresLinearPlayback3 = [(VUIPlaybackManager *)self requiresLinearPlayback];
       goto LABEL_13;
     }
 
@@ -8548,15 +8548,15 @@ LABEL_13:
 - (void)_updateMultiviewButtonState
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = [(VUIPlaybackManager *)self mainAVPlayerViewController];
+  mainAVPlayerViewController = [(VUIPlaybackManager *)self mainAVPlayerViewController];
   v4 = +[VUIPlaybackTabManager sharedInstance];
-  v5 = [v4 tabsInfo];
-  v6 = [v5 multiviewTabInfo];
-  if (v6)
+  tabsInfo = [v4 tabsInfo];
+  multiviewTabInfo = [tabsInfo multiviewTabInfo];
+  if (multiviewTabInfo)
   {
     v7 = +[VUIFeaturesConfiguration sharedInstance];
-    v8 = [v7 multiviewConfig];
-    if ([v8 isEnabled])
+    multiviewConfig = [v7 multiviewConfig];
+    if ([multiviewConfig isEnabled])
     {
       v9 = !+[VUIGroupActivitiesManagerObjC isSessionActive];
     }
@@ -8572,10 +8572,10 @@ LABEL_13:
     v9 = 0;
   }
 
-  v10 = [v3 view];
-  v11 = [v10 window];
+  view = [mainAVPlayerViewController view];
+  window = [view window];
 
-  [v11 bounds];
+  [window bounds];
   v13 = v12;
   v15 = v14;
   v16 = sLogObject_5;
@@ -8606,22 +8606,22 @@ LABEL_13:
   [(VUIPlaybackManager *)self addTipKitState:2];
 }
 
-- (void)_addMultiviewButtonIfSupportedWithWindowSize:(CGSize)a3
+- (void)_addMultiviewButtonIfSupportedWithWindowSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v32 = *MEMORY[0x1E69E9840];
-  v6 = [(VUIPlaybackManager *)self multiPlayerViewController];
-  if (!v6)
+  multiPlayerViewController = [(VUIPlaybackManager *)self multiPlayerViewController];
+  if (!multiPlayerViewController)
   {
     v7 = +[VUIInterfaceFactory sharedInstance];
-    v8 = [v7 documentCreator];
-    v6 = [v8 createMultiPlayerViewControllerWithPlayerViewControllers:MEMORY[0x1E695E0F0] showingDetails:0];
+    documentCreator = [v7 documentCreator];
+    multiPlayerViewController = [documentCreator createMultiPlayerViewControllerWithPlayerViewControllers:MEMORY[0x1E695E0F0] showingDetails:0];
 
-    [v6 setDelegate:self];
+    [multiPlayerViewController setDelegate:self];
   }
 
-  v9 = [v6 isSupportedScreenSize:{width, height}];
+  v9 = [multiPlayerViewController isSupportedScreenSize:{width, height}];
   v10 = sLogObject_5;
   if (os_log_type_enabled(sLogObject_5, OS_LOG_TYPE_DEFAULT))
   {
@@ -8639,8 +8639,8 @@ LABEL_13:
 
   if (v9)
   {
-    v14 = [(VUIPlaybackManager *)self multiViewControlItem];
-    v15 = v14 == 0;
+    multiViewControlItem = [(VUIPlaybackManager *)self multiViewControlItem];
+    v15 = multiViewControlItem == 0;
 
     if (v15)
     {
@@ -8655,8 +8655,8 @@ LABEL_13:
       v22 = [v19 initWithTitle:v21 type:0];
 
       [v22 setImage:v18];
-      v23 = [MEMORY[0x1E69DC888] whiteColor];
-      [v22 setTintColor:v23];
+      whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+      [v22 setTintColor:whiteColor];
 
       v26[0] = MEMORY[0x1E69E9820];
       v26[1] = 3221225472;
@@ -8705,8 +8705,8 @@ void __67__VUIPlaybackManager__addMultiviewButtonIfSupportedWithWindowSize___blo
   {
     v4 = v3;
     v5 = +[VUIPlaybackTabManager sharedInstance];
-    v6 = [v5 tabsInfo];
-    v7 = [v6 multiviewTabInfo];
+    tabsInfo = [v5 tabsInfo];
+    multiviewTabInfo = [tabsInfo multiviewTabInfo];
     v8 = VUIBoolLogString();
     [MEMORY[0x1E69DF6F0] isPad];
     v9 = VUIBoolLogString();
@@ -8724,11 +8724,11 @@ void __67__VUIPlaybackManager__addMultiviewButtonIfSupportedWithWindowSize___blo
 - (void)_removePrerollFadeIn
 {
   v29 = *MEMORY[0x1E69E9840];
-  v3 = [(VUIPlaybackManager *)self featureMonitor];
-  v4 = [v3 featuresForType:8];
+  featureMonitor = [(VUIPlaybackManager *)self featureMonitor];
+  v4 = [featureMonitor featuresForType:8];
 
-  v5 = [(VUIPlaybackManager *)self activePlayer];
-  [v5 elapsedTime];
+  activePlayer = [(VUIPlaybackManager *)self activePlayer];
+  [activePlayer elapsedTime];
   v7 = v6;
 
   v26 = 0u;
@@ -8752,16 +8752,16 @@ void __67__VUIPlaybackManager__addMultiviewButtonIfSupportedWithWindowSize___blo
         }
 
         v13 = *(*(&v24 + 1) + 8 * v12);
-        v14 = [v13 userInfo];
+        userInfo = [v13 userInfo];
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
 
         if (isKindOfClass)
         {
-          v16 = [v13 userInfo];
-          v17 = [v16 userInfo];
-          v18 = [v17 promoInfo];
-          if (v18 && ([v17 start], v7 >= v19) && (objc_msgSend(v17, "target"), v7 <= v20))
+          userInfo2 = [v13 userInfo];
+          v16UserInfo = [userInfo2 userInfo];
+          promoInfo = [v16UserInfo promoInfo];
+          if (promoInfo && ([v16UserInfo start], v7 >= v19) && (objc_msgSend(v16UserInfo, "target"), v7 <= v20))
           {
             [v13 restartTime];
             v22 = v21;
@@ -8792,28 +8792,28 @@ void __67__VUIPlaybackManager__addMultiviewButtonIfSupportedWithWindowSize___blo
 - (void)_addTimedMetadataDebuggerView
 {
   v20[4] = *MEMORY[0x1E69E9840];
-  v3 = [(VUIPlaybackManager *)self avPlayerViewController];
-  v4 = [v3 contentOverlayView];
+  avPlayerViewController = [(VUIPlaybackManager *)self avPlayerViewController];
+  contentOverlayView = [avPlayerViewController contentOverlayView];
 
-  v5 = [(VUITimedMetadataDebuggerViewController *)self->_timedMetadataDebuggerViewController view];
-  [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v4 addSubview:v5];
+  view = [(VUITimedMetadataDebuggerViewController *)self->_timedMetadataDebuggerViewController view];
+  [view setTranslatesAutoresizingMaskIntoConstraints:0];
+  [contentOverlayView addSubview:view];
   v14 = MEMORY[0x1E696ACD8];
-  v19 = [v5 topAnchor];
-  v18 = [v4 topAnchor];
-  v17 = [v19 constraintEqualToAnchor:v18];
+  topAnchor = [view topAnchor];
+  topAnchor2 = [contentOverlayView topAnchor];
+  v17 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v20[0] = v17;
-  v16 = [v5 bottomAnchor];
-  v15 = [v4 bottomAnchor];
-  v6 = [v16 constraintEqualToAnchor:v15];
+  bottomAnchor = [view bottomAnchor];
+  bottomAnchor2 = [contentOverlayView bottomAnchor];
+  v6 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v20[1] = v6;
-  v7 = [v5 leadingAnchor];
-  v8 = [v4 leadingAnchor];
-  v9 = [v7 constraintEqualToAnchor:v8];
+  leadingAnchor = [view leadingAnchor];
+  leadingAnchor2 = [contentOverlayView leadingAnchor];
+  v9 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v20[2] = v9;
-  v10 = [v5 trailingAnchor];
-  v11 = [v4 trailingAnchor];
-  v12 = [v10 constraintEqualToAnchor:v11];
+  trailingAnchor = [view trailingAnchor];
+  trailingAnchor2 = [contentOverlayView trailingAnchor];
+  v12 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v20[3] = v12;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:4];
   [v14 activateConstraints:v13];
@@ -8822,48 +8822,48 @@ void __67__VUIPlaybackManager__addMultiviewButtonIfSupportedWithWindowSize___blo
 - (void)_addPerformanceDebuggerView
 {
   v21[4] = *MEMORY[0x1E69E9840];
-  v3 = [(VUIPlaybackManager *)self avPlayerViewController];
-  v4 = [v3 contentOverlayView];
+  avPlayerViewController = [(VUIPlaybackManager *)self avPlayerViewController];
+  contentOverlayView = [avPlayerViewController contentOverlayView];
 
-  v5 = [(VUIPlaybackManager *)self performanceDebuggerViewController];
-  v6 = [v5 view];
+  performanceDebuggerViewController = [(VUIPlaybackManager *)self performanceDebuggerViewController];
+  view = [performanceDebuggerViewController view];
 
-  [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v4 addSubview:v6];
+  [view setTranslatesAutoresizingMaskIntoConstraints:0];
+  [contentOverlayView addSubview:view];
   self->_hasPerformanceDebuggerAppeared = 0;
   v15 = MEMORY[0x1E696ACD8];
-  v20 = [v6 topAnchor];
-  v19 = [v4 topAnchor];
-  v18 = [v20 constraintEqualToAnchor:v19];
+  topAnchor = [view topAnchor];
+  topAnchor2 = [contentOverlayView topAnchor];
+  v18 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v21[0] = v18;
-  v17 = [v6 bottomAnchor];
-  v16 = [v4 bottomAnchor];
-  v7 = [v17 constraintEqualToAnchor:v16];
+  bottomAnchor = [view bottomAnchor];
+  bottomAnchor2 = [contentOverlayView bottomAnchor];
+  v7 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v21[1] = v7;
-  v8 = [v6 leadingAnchor];
-  v9 = [v4 leadingAnchor];
-  v10 = [v8 constraintEqualToAnchor:v9];
+  leadingAnchor = [view leadingAnchor];
+  leadingAnchor2 = [contentOverlayView leadingAnchor];
+  v10 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v21[2] = v10;
-  v11 = [v6 trailingAnchor];
-  v12 = [v4 trailingAnchor];
-  v13 = [v11 constraintEqualToAnchor:v12];
+  trailingAnchor = [view trailingAnchor];
+  trailingAnchor2 = [contentOverlayView trailingAnchor];
+  v13 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v21[3] = v13;
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:4];
   [v15 activateConstraints:v14];
 }
 
-- (void)_setupPerformanceDebugger:(id)a3
+- (void)_setupPerformanceDebugger:(id)debugger
 {
-  v4 = a3;
-  v5 = [(VUIPlaybackManager *)self performanceDebuggerViewController];
-  v6 = [v4 startupEventsDict];
+  debuggerCopy = debugger;
+  performanceDebuggerViewController = [(VUIPlaybackManager *)self performanceDebuggerViewController];
+  startupEventsDict = [debuggerCopy startupEventsDict];
 
-  [v5 setupWithPlaybackEventsDictionary:v6];
-  v7 = [MEMORY[0x1E69DF6E0] sharedInstance];
-  LODWORD(v5) = [v7 performanceDebuggerVerboseEnabled];
+  [performanceDebuggerViewController setupWithPlaybackEventsDictionary:startupEventsDict];
+  mEMORY[0x1E69DF6E0] = [MEMORY[0x1E69DF6E0] sharedInstance];
+  LODWORD(performanceDebuggerViewController) = [mEMORY[0x1E69DF6E0] performanceDebuggerVerboseEnabled];
 
   v8 = 5.0;
-  if (v5)
+  if (performanceDebuggerViewController)
   {
     v8 = 30.0;
   }
@@ -8885,50 +8885,50 @@ void __48__VUIPlaybackManager__setupPerformanceDebugger___block_invoke(uint64_t 
 
 - (void)_addTappableViewToRemoveSkipButton
 {
-  v22 = [(VUIPlaybackManager *)self skipButton];
-  v3 = [(VUIPlaybackManager *)self promoMetadataView];
-  if (v22 | v3)
+  skipButton = [(VUIPlaybackManager *)self skipButton];
+  promoMetadataView = [(VUIPlaybackManager *)self promoMetadataView];
+  if (skipButton | promoMetadataView)
   {
-    v4 = [(VUIPlaybackManager *)self avPlayerViewController];
-    v5 = [v4 view];
+    avPlayerViewController = [(VUIPlaybackManager *)self avPlayerViewController];
+    view = [avPlayerViewController view];
 
-    if (v5)
+    if (view)
     {
       v6 = objc_alloc(MEMORY[0x1E69DD250]);
-      [v5 bounds];
+      [view bounds];
       v7 = [v6 initWithFrame:?];
       v8 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:self action:sel__handleDismissSkipButtonGesture_];
       [v7 setTag:76];
       [v7 addGestureRecognizer:v8];
-      if (v22)
+      if (skipButton)
       {
-        v9 = v22;
+        v9 = skipButton;
       }
 
       else
       {
-        v9 = v3;
+        v9 = promoMetadataView;
       }
 
-      [v5 insertSubview:v7 belowSubview:v9];
-      v10 = [v7 leadingAnchor];
-      v11 = [v5 leadingAnchor];
-      v12 = [v10 constraintEqualToAnchor:v11];
+      [view insertSubview:v7 belowSubview:v9];
+      leadingAnchor = [v7 leadingAnchor];
+      leadingAnchor2 = [view leadingAnchor];
+      v12 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
       [v12 setActive:1];
 
-      v13 = [v7 trailingAnchor];
-      v14 = [v5 trailingAnchor];
-      v15 = [v13 constraintEqualToAnchor:v14];
+      trailingAnchor = [v7 trailingAnchor];
+      trailingAnchor2 = [view trailingAnchor];
+      v15 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
       [v15 setActive:1];
 
-      v16 = [v7 rightAnchor];
-      v17 = [v5 rightAnchor];
-      v18 = [v16 constraintEqualToAnchor:v17];
+      rightAnchor = [v7 rightAnchor];
+      rightAnchor2 = [view rightAnchor];
+      v18 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
       [v18 setActive:1];
 
-      v19 = [v7 bottomAnchor];
-      v20 = [v5 bottomAnchor];
-      v21 = [v19 constraintEqualToAnchor:v20];
+      bottomAnchor = [v7 bottomAnchor];
+      bottomAnchor2 = [view bottomAnchor];
+      v21 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
       [v21 setActive:1];
     }
   }
@@ -8937,15 +8937,15 @@ void __48__VUIPlaybackManager__setupPerformanceDebugger___block_invoke(uint64_t 
 - (void)_removeTappableViewForSkipButtonIfNeeded
 {
   v14 = *MEMORY[0x1E69E9840];
-  v2 = [(VUIPlaybackManager *)self avPlayerViewController];
-  v3 = [v2 view];
+  avPlayerViewController = [(VUIPlaybackManager *)self avPlayerViewController];
+  view = [avPlayerViewController view];
 
   v11 = 0u;
   v12 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v4 = [v3 subviews];
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  subviews = [view subviews];
+  v5 = [subviews countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = *v10;
@@ -8955,7 +8955,7 @@ void __48__VUIPlaybackManager__setupPerformanceDebugger___block_invoke(uint64_t 
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(subviews);
         }
 
         v8 = *(*(&v9 + 1) + 8 * i);
@@ -8966,7 +8966,7 @@ void __48__VUIPlaybackManager__setupPerformanceDebugger___block_invoke(uint64_t 
         }
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [subviews countByEnumeratingWithState:&v9 objects:v13 count:16];
       if (v5)
       {
         continue;
@@ -8981,13 +8981,13 @@ LABEL_11:
   [v5 removeFromSuperview];
 }
 
-- (void)_handleDismissSkipButtonGesture:(id)a3
+- (void)_handleDismissSkipButtonGesture:(id)gesture
 {
   v18 = *MEMORY[0x1E69E9840];
-  if ([a3 state] == 3)
+  if ([gesture state] == 3)
   {
-    v4 = [(VUIPlaybackManager *)self featureMonitor];
-    v5 = [v4 featuresForType:7];
+    featureMonitor = [(VUIPlaybackManager *)self featureMonitor];
+    v5 = [featureMonitor featuresForType:7];
 
     v15 = 0u;
     v16 = 0u;
@@ -9010,8 +9010,8 @@ LABEL_11:
           }
 
           v11 = *(*(&v13 + 1) + 8 * v10);
-          v12 = [(VUIPlaybackManager *)self featureMonitor];
-          [v12 deactivateFeature:v11 animated:1];
+          featureMonitor2 = [(VUIPlaybackManager *)self featureMonitor];
+          [featureMonitor2 deactivateFeature:v11 animated:1];
 
           ++v10;
         }
@@ -9029,56 +9029,56 @@ LABEL_11:
 
 - (void)_configureStillWatchingFeatureMonitoringIfLivePlayback
 {
-  v3 = [(VUIPlaybackManager *)self mainPlayer];
-  [v3 duration];
+  mainPlayer = [(VUIPlaybackManager *)self mainPlayer];
+  [mainPlayer duration];
   v5 = v4;
 
   if (v5 == *MEMORY[0x1E69D5A78])
   {
     v6 = +[VUIFeaturesConfiguration sharedInstance];
-    v10 = [v6 nowPlayingConfig];
+    nowPlayingConfig = [v6 nowPlayingConfig];
 
-    if ([v10 showsStillWatchingAlert])
+    if ([nowPlayingConfig showsStillWatchingAlert])
     {
-      [v10 stillWatchingAlertDuration];
+      [nowPlayingConfig stillWatchingAlertDuration];
       if (v7 > 0.0)
       {
         v8 = [[VUINowPlayingTimerTriggeredFeature alloc] initWithType:10 duration:1 repeats:v7];
-        v9 = [(VUIPlaybackManager *)self featureMonitor];
-        [v9 addFeature:v8];
+        featureMonitor = [(VUIPlaybackManager *)self featureMonitor];
+        [featureMonitor addFeature:v8];
       }
     }
   }
 }
 
-- (void)_updateTimeTriggeredFeature:(id)a3 animated:(BOOL)a4
+- (void)_updateTimeTriggeredFeature:(id)feature animated:(BOOL)animated
 {
-  v5 = a3;
+  featureCopy = feature;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [v5 type] == 10)
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [featureCopy type] == 10)
   {
-    [(VUIPlaybackManager *)self _showStillWatchingAlertFeature:v5];
+    [(VUIPlaybackManager *)self _showStillWatchingAlertFeature:featureCopy];
   }
 }
 
-- (void)_showStillWatchingAlertFeature:(id)a3
+- (void)_showStillWatchingAlertFeature:(id)feature
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 isActive])
+  featureCopy = feature;
+  v5 = featureCopy;
+  if (featureCopy && [featureCopy isActive])
   {
     objc_initWeak(&location, self);
     v6 = +[VUIFeaturesConfiguration sharedInstance];
-    v7 = [v6 nowPlayingConfig];
-    [v7 alertIdleTimeout];
+    nowPlayingConfig = [v6 nowPlayingConfig];
+    [nowPlayingConfig alertIdleTimeout];
     v9 = v8;
 
-    v10 = [(VUIPlaybackManager *)self mainPlayer];
-    v11 = [v10 currentMediaItem];
-    v12 = [v11 mediaItemMetadataForProperty:*MEMORY[0x1E69D5DC0]];
+    mainPlayer = [(VUIPlaybackManager *)self mainPlayer];
+    currentMediaItem = [mainPlayer currentMediaItem];
+    v12 = [currentMediaItem mediaItemMetadataForProperty:*MEMORY[0x1E69D5DC0]];
 
-    v13 = [(VUIPlaybackManager *)self avPlayerViewController];
-    v14 = [v13 vui_viewControllerForFullScreenPresentation];
+    avPlayerViewController = [(VUIPlaybackManager *)self avPlayerViewController];
+    vui_viewControllerForFullScreenPresentation = [avPlayerViewController vui_viewControllerForFullScreenPresentation];
 
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
@@ -9086,7 +9086,7 @@ LABEL_11:
     v15[3] = &unk_1E8730F00;
     objc_copyWeak(&v17, &location);
     v16 = v5;
-    [VUIStillWatchingAlertPresenter presentWithTitle:v12 presentingController:v14 timeout:v15 responseHandler:v9];
+    [VUIStillWatchingAlertPresenter presentWithTitle:v12 presentingController:vui_viewControllerForFullScreenPresentation timeout:v15 responseHandler:v9];
 
     objc_destroyWeak(&v17);
     objc_destroyWeak(&location);
@@ -9109,9 +9109,9 @@ uint64_t __53__VUIPlaybackManager__showStillWatchingAlertFeature___block_invoke(
 - (void)_performEnterBackgroundOperations
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = [(VUIPlaybackManager *)self pausedTooLongTimer];
+  pausedTooLongTimer = [(VUIPlaybackManager *)self pausedTooLongTimer];
 
-  if (v3)
+  if (pausedTooLongTimer)
   {
     v4 = sLogObject_5;
     if (os_log_type_enabled(sLogObject_5, OS_LOG_TYPE_DEFAULT))
@@ -9120,8 +9120,8 @@ uint64_t __53__VUIPlaybackManager__showStillWatchingAlertFeature___block_invoke(
       _os_log_impl(&dword_1E323F000, v4, OS_LOG_TYPE_DEFAULT, "Invalidating paused too long timer because app was backgrounded. Will re-create timer when app is foregrounded", v15, 2u);
     }
 
-    v5 = [(VUIPlaybackManager *)self pausedTooLongTimer];
-    [v5 invalidate];
+    pausedTooLongTimer2 = [(VUIPlaybackManager *)self pausedTooLongTimer];
+    [pausedTooLongTimer2 invalidate];
 
     [(VUIPlaybackManager *)self setPausedTooLongTimer:0];
   }
@@ -9142,10 +9142,10 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v6 = [(VUIPlaybackManager *)self activePlayer];
-  v7 = [v6 externalPlaybackType];
+  activePlayer = [(VUIPlaybackManager *)self activePlayer];
+  externalPlaybackType = [activePlayer externalPlaybackType];
 
-  if (v7)
+  if (externalPlaybackType)
   {
     v8 = sLogObject_5;
     if (os_log_type_enabled(sLogObject_5, OS_LOG_TYPE_DEFAULT))
@@ -9161,9 +9161,9 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v11 = [(VUIPlaybackManager *)self activePlayer];
-  v12 = [v11 currentMediaItem];
-  v13 = [v12 hasTrait:*MEMORY[0x1E69D5E80]];
+  activePlayer2 = [(VUIPlaybackManager *)self activePlayer];
+  currentMediaItem = [activePlayer2 currentMediaItem];
+  v13 = [currentMediaItem hasTrait:*MEMORY[0x1E69D5E80]];
 
   v8 = sLogObject_5;
   v14 = os_log_type_enabled(sLogObject_5, OS_LOG_TYPE_DEFAULT);
@@ -9194,17 +9194,17 @@ LABEL_13:
 
 - (void)_avPlayerViewControllerPresentationDidTimeout
 {
-  v2 = [(VUIPlaybackManager *)self stateMachine];
-  [v2 postEvent:@"AVPlayerViewController presentation did timeout"];
+  stateMachine = [(VUIPlaybackManager *)self stateMachine];
+  [stateMachine postEvent:@"AVPlayerViewController presentation did timeout"];
 }
 
-- (void)_donateUserActivityForMediaItem:(id)a3
+- (void)_donateUserActivityForMediaItem:(id)item
 {
   v4 = MEMORY[0x1E696B090];
-  v5 = a3;
+  itemCopy = item;
   v10 = [[v4 alloc] initWithActivityType:@"com.apple.UMC.externalMediaContent"];
-  v6 = [v5 mediaItemMetadataForProperty:*MEMORY[0x1E69D5AE8]];
-  v7 = [v5 mediaItemMetadataForProperty:@"VUIMediaItemMetadataKeyDeepLinkURL"];
+  v6 = [itemCopy mediaItemMetadataForProperty:*MEMORY[0x1E69D5AE8]];
+  v7 = [itemCopy mediaItemMetadataForProperty:@"VUIMediaItemMetadataKeyDeepLinkURL"];
 
   if (v6)
   {
@@ -9220,26 +9220,26 @@ LABEL_13:
   {
     [v10 setExternalMediaContentIdentifier:v6];
     [v10 setWebpageURL:v7];
-    v9 = [(VUIPlaybackManager *)self avPlayerViewController];
-    [v9 setUserActivity:v10];
+    avPlayerViewController = [(VUIPlaybackManager *)self avPlayerViewController];
+    [avPlayerViewController setUserActivity:v10];
 
     [v10 becomeCurrent];
   }
 }
 
-- (CGRect)_calculatePostPlayPipRectForParent:(id)a3
+- (CGRect)_calculatePostPlayPipRectForParent:(id)parent
 {
-  v4 = [a3 view];
-  v5 = [MEMORY[0x1E69DD2E8] vui_currentSizeClass];
-  v6 = [MEMORY[0x1E69DC938] currentDevice];
-  v7 = [v6 orientation];
+  view = [parent view];
+  vui_currentSizeClass = [MEMORY[0x1E69DD2E8] vui_currentSizeClass];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  orientation = [currentDevice orientation];
 
-  v8 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v8 bounds];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen bounds];
   v10 = v9;
   v12 = v11;
 
-  v13 = [VUIUtilities isPortraitIgnoringFlatOrientation:v7 viewSize:v10, v12];
+  v13 = [VUIUtilities isPortraitIgnoringFlatOrientation:orientation viewSize:v10, v12];
   if ([MEMORY[0x1E69DF6F0] isPhone])
   {
     if (!v13)
@@ -9251,21 +9251,21 @@ LABEL_7:
     }
   }
 
-  else if (v5 >= 3 && !v13)
+  else if (vui_currentSizeClass >= 3 && !v13)
   {
     v14 = 38.0;
     goto LABEL_7;
   }
 
-  [v4 safeAreaInsets];
+  [view safeAreaInsets];
   v14 = v15 + 60.0;
   v16 = 16.0;
 LABEL_8:
-  v17 = [MEMORY[0x1E69DF6F0] isPad];
-  [v4 bounds];
+  isPad = [MEMORY[0x1E69DF6F0] isPad];
+  [view bounds];
   v19 = v18;
-  v20 = [(VUIPlaybackManager *)self mainPlayer];
-  [v20 currentMediaItemPresentationSize];
+  mainPlayer = [(VUIPlaybackManager *)self mainPlayer];
+  [mainPlayer currentMediaItemPresentationSize];
   v22 = v21;
   v24 = v23;
 
@@ -9279,7 +9279,7 @@ LABEL_8:
 
   else
   {
-    if (v17)
+    if (isPad)
     {
       v25 = 300.0;
     }
@@ -9290,7 +9290,7 @@ LABEL_8:
     }
 
     v26 = v25 / (v22 / v24);
-    if ([v4 vuiIsRTL])
+    if ([view vuiIsRTL])
     {
       v27 = v16;
     }
@@ -9314,33 +9314,33 @@ LABEL_8:
 
 - (BOOL)_isAssistiveAccessEnabled
 {
-  v2 = [MEMORY[0x1E6994658] sharedSystemShellSwitcher];
-  v3 = [v2 isClarityBoardEnabled];
+  mEMORY[0x1E6994658] = [MEMORY[0x1E6994658] sharedSystemShellSwitcher];
+  isClarityBoardEnabled = [mEMORY[0x1E6994658] isClarityBoardEnabled];
 
-  return v3;
+  return isClarityBoardEnabled;
 }
 
-- (void)_updateActivityItemsConfigurationWithSharedWatchId:(id)a3 sharedWatchUrl:(id)a4 previewMetadata:(id)a5 mediaItem:(id)a6
+- (void)_updateActivityItemsConfigurationWithSharedWatchId:(id)id sharedWatchUrl:(id)url previewMetadata:(id)metadata mediaItem:(id)item
 {
   v48 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [v13 mediaItemMetadataForProperty:*MEMORY[0x1E69D5AE8]];
-  v15 = [v13 mediaItemMetadataForProperty:*MEMORY[0x1E69D5DA8]];
-  v16 = [v13 mediaItemMetadataForProperty:*MEMORY[0x1E69D5C38]];
-  v17 = [v16 BOOLValue];
+  idCopy = id;
+  urlCopy = url;
+  metadataCopy = metadata;
+  itemCopy = item;
+  v14 = [itemCopy mediaItemMetadataForProperty:*MEMORY[0x1E69D5AE8]];
+  v15 = [itemCopy mediaItemMetadataForProperty:*MEMORY[0x1E69D5DA8]];
+  v16 = [itemCopy mediaItemMetadataForProperty:*MEMORY[0x1E69D5C38]];
+  bOOLValue = [v16 BOOLValue];
 
   if (![v14 length])
   {
-    if (([v15 length] == 0) | v17 & 1)
+    if (([v15 length] == 0) | bOOLValue & 1)
     {
       goto LABEL_3;
     }
 
 LABEL_7:
-    v19 = [v13 mediaItemMetadataForProperty:@"VUIMediaItemMetadataKeyDeepLinkURL"];
+    v19 = [itemCopy mediaItemMetadataForProperty:@"VUIMediaItemMetadataKeyDeepLinkURL"];
     if (v19)
     {
       v20 = sLogObject_5;
@@ -9351,45 +9351,45 @@ LABEL_7:
         _os_log_impl(&dword_1E323F000, v20, OS_LOG_TYPE_DEFAULT, "Adding launch playback URL %@", buf, 0xCu);
       }
 
-      v21 = [objc_alloc(MEMORY[0x1E696ACA0]) initWithObject:v19];
+      playable2 = [objc_alloc(MEMORY[0x1E696ACA0]) initWithObject:v19];
     }
 
     else
     {
-      v21 = 0;
+      playable2 = 0;
     }
 
     v44 = v19;
-    if (!v12)
+    if (!metadataCopy)
     {
 LABEL_29:
-      if (v21)
+      if (playable2)
       {
 LABEL_30:
-        v43 = v11;
-        v31 = v10;
+        v43 = urlCopy;
+        v31 = idCopy;
         v32 = objc_alloc(MEMORY[0x1E69DC640]);
-        v45 = v21;
+        v45 = playable2;
         [MEMORY[0x1E695DEC8] arrayWithObjects:&v45 count:1];
-        v34 = v33 = v21;
+        v34 = v33 = playable2;
         v35 = [v32 initWithItemProviders:v34];
         [(VUIPlaybackManager *)self setItemsConfiguration:v35];
 
         v36 = +[VUITVAppLauncher sharedInstance];
-        v37 = [v36 appWindow];
-        [v37 windowScene];
+        appWindow = [v36 appWindow];
+        [appWindow windowScene];
         v38 = v14;
-        v39 = v12;
+        v39 = metadataCopy;
         v41 = v40 = v15;
 
-        v21 = v33;
-        v10 = v31;
-        v11 = v43;
+        playable2 = v33;
+        idCopy = v31;
+        urlCopy = v43;
         v19 = v44;
         [v41 setActivityItemsConfigurationSource:self];
 
         v15 = v40;
-        v12 = v39;
+        metadataCopy = v39;
         v14 = v38;
 LABEL_34:
 
@@ -9401,15 +9401,15 @@ LABEL_33:
       goto LABEL_34;
     }
 
-    v22 = v21;
+    v22 = playable2;
     if (+[VUIGroupActivitiesManagerObjC isConfigured])
     {
       v23 = v15;
-      v42 = v10;
-      v24 = [v12 playable];
-      v25 = [v24 useSharedPlayableForCowatching];
+      v42 = idCopy;
+      playable = [metadataCopy playable];
+      useSharedPlayableForCowatching = [playable useSharedPlayableForCowatching];
 
-      if (v25)
+      if (useSharedPlayableForCowatching)
       {
         v26 = sLogObject_5;
         if (os_log_type_enabled(sLogObject_5, OS_LOG_TYPE_DEFAULT))
@@ -9418,30 +9418,30 @@ LABEL_33:
           _os_log_impl(&dword_1E323F000, v26, OS_LOG_TYPE_DEFAULT, "Adding group activity with shared playable", buf, 2u);
         }
 
-        v21 = [v12 playable];
-        v27 = [VUIGroupActivitiesManagerObjC itemProviderForActivityWithPlayable:v21 previewMetadata:v12 existingItemProvider:v22];
+        playable2 = [metadataCopy playable];
+        v27 = [VUIGroupActivitiesManagerObjC itemProviderForActivityWithPlayable:playable2 previewMetadata:metadataCopy existingItemProvider:v22];
 
-        v10 = v42;
+        idCopy = v42;
         goto LABEL_28;
       }
 
-      v10 = v42;
-      if (v42 && v11)
+      idCopy = v42;
+      if (v42 && urlCopy)
       {
         v28 = sLogObject_5;
         if (os_log_type_enabled(sLogObject_5, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v47 = v11;
+          v47 = urlCopy;
           _os_log_impl(&dword_1E323F000, v28, OS_LOG_TYPE_DEFAULT, "Adding shared watch URL %@", buf, 0xCu);
         }
 
-        v29 = [VUIGroupActivitiesManagerObjC itemProviderForActivityWithSharedWatchId:v42 sharedWatchUrl:v11 previewMetadata:v12 existingItemProvider:v21];
+        v29 = [VUIGroupActivitiesManagerObjC itemProviderForActivityWithSharedWatchId:v42 sharedWatchUrl:urlCopy previewMetadata:metadataCopy existingItemProvider:playable2];
 LABEL_27:
         v27 = v29;
 LABEL_28:
 
-        v21 = v27;
+        playable2 = v27;
         v15 = v23;
         v19 = v44;
         goto LABEL_29;
@@ -9457,7 +9457,7 @@ LABEL_28:
           _os_log_impl(&dword_1E323F000, v30, OS_LOG_TYPE_DEFAULT, "Adding group activity with adam id %@", buf, 0xCu);
         }
 
-        v29 = [VUIGroupActivitiesManagerObjC itemProviderForActivityWithAdamId:v23 previewMetadata:v12 existingItemProvider:v21];
+        v29 = [VUIGroupActivitiesManagerObjC itemProviderForActivityWithAdamId:v23 previewMetadata:metadataCopy existingItemProvider:playable2];
         goto LABEL_27;
       }
 
@@ -9465,7 +9465,7 @@ LABEL_28:
       v19 = v44;
     }
 
-    if (v21)
+    if (playable2)
     {
       goto LABEL_30;
     }
@@ -9473,7 +9473,7 @@ LABEL_28:
     goto LABEL_33;
   }
 
-  if (!v17)
+  if (!bOOLValue)
   {
     goto LABEL_7;
   }
@@ -9494,22 +9494,22 @@ LABEL_35:
 {
   [(VUIPlaybackManager *)self setItemsConfiguration:0];
   v2 = +[VUITVAppLauncher sharedInstance];
-  v3 = [v2 appWindow];
-  v4 = [v3 windowScene];
+  appWindow = [v2 appWindow];
+  windowScene = [appWindow windowScene];
 
-  [v4 setActivityItemsConfigurationSource:0];
+  [windowScene setActivityItemsConfigurationSource:0];
 }
 
-- (id)_multiviewInfoForPlayerViewController:(id)a3
+- (id)_multiviewInfoForPlayerViewController:(id)controller
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  controllerCopy = controller;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [(VUIPlaybackManager *)self multiviewPlaybackInfo];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  multiviewPlaybackInfo = [(VUIPlaybackManager *)self multiviewPlaybackInfo];
+  v6 = [multiviewPlaybackInfo countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = *v13;
@@ -9519,20 +9519,20 @@ LABEL_35:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(multiviewPlaybackInfo);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
-        v10 = [v9 playerViewController];
+        playerViewController = [v9 playerViewController];
 
-        if (v10 == v4)
+        if (playerViewController == controllerCopy)
         {
           v6 = v9;
           goto LABEL_11;
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [multiviewPlaybackInfo countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v6)
       {
         continue;
@@ -9547,16 +9547,16 @@ LABEL_11:
   return v6;
 }
 
-- (id)_multiviewInfoForPlaylist:(id)a3
+- (id)_multiviewInfoForPlaylist:(id)playlist
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  playlistCopy = playlist;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(VUIPlaybackManager *)self multiviewPlaybackInfo];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  multiviewPlaybackInfo = [(VUIPlaybackManager *)self multiviewPlaybackInfo];
+  v6 = [multiviewPlaybackInfo countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = *v15;
@@ -9566,13 +9566,13 @@ LABEL_11:
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(multiviewPlaybackInfo);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 player];
-        v11 = [v10 playlist];
-        v12 = [v11 isEqualToPlaylist:v4];
+        player = [v9 player];
+        playlist = [player playlist];
+        v12 = [playlist isEqualToPlaylist:playlistCopy];
 
         if (v12)
         {
@@ -9581,7 +9581,7 @@ LABEL_11:
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [multiviewPlaybackInfo countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v6)
       {
         continue;
@@ -9596,24 +9596,24 @@ LABEL_11:
   return v6;
 }
 
-- (void)_muteAllMultiviewPlayersExcept:(id)a3
+- (void)_muteAllMultiviewPlayersExcept:(id)except
 {
-  v4 = [(VUIPlaybackManager *)self _multiviewInfoForPlayerViewController:a3];
-  v5 = [(VUIPlaybackManager *)self _currentlyPlayingMultiviewInfo];
+  v4 = [(VUIPlaybackManager *)self _multiviewInfoForPlayerViewController:except];
+  _currentlyPlayingMultiviewInfo = [(VUIPlaybackManager *)self _currentlyPlayingMultiviewInfo];
   if (v4)
   {
-    v6 = [v4 player];
+    player = [v4 player];
 
-    if (v6)
+    if (player)
     {
-      if (v4 != v5)
+      if (v4 != _currentlyPlayingMultiviewInfo)
       {
         v7[0] = MEMORY[0x1E69E9820];
         v7[1] = 3221225472;
         v7[2] = __53__VUIPlaybackManager__muteAllMultiviewPlayersExcept___block_invoke;
         v7[3] = &unk_1E872D990;
         v8 = v4;
-        v9 = v5;
+        v9 = _currentlyPlayingMultiviewInfo;
         [v8 swapActiveAudioWithPlaybackInfo:v9 completion:v7];
       }
     }
@@ -9634,13 +9634,13 @@ void __53__VUIPlaybackManager__muteAllMultiviewPlayersExcept___block_invoke(uint
 - (void)_updateMultiviewReportingMetrics
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [(VUIPlaybackManager *)self stateMachine];
-  v4 = [v3 currentState];
-  if ([v4 isEqualToString:@"Showing multiview playback"])
+  stateMachine = [(VUIPlaybackManager *)self stateMachine];
+  currentState = [stateMachine currentState];
+  if ([currentState isEqualToString:@"Showing multiview playback"])
   {
     v5 = MEMORY[0x1E696AD98];
-    v6 = [(VUIPlaybackManager *)self multiviewPlaybackInfo];
-    v7 = [v5 numberWithUnsignedInteger:{objc_msgSend(v6, "count")}];
+    multiviewPlaybackInfo = [(VUIPlaybackManager *)self multiviewPlaybackInfo];
+    v7 = [v5 numberWithUnsignedInteger:{objc_msgSend(multiviewPlaybackInfo, "count")}];
   }
 
   else
@@ -9652,8 +9652,8 @@ void __53__VUIPlaybackManager__muteAllMultiviewPlayersExcept___block_invoke(uint
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v8 = [(VUIPlaybackManager *)self multiviewPlaybackInfo];
-  v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  multiviewPlaybackInfo2 = [(VUIPlaybackManager *)self multiviewPlaybackInfo];
+  v9 = [multiviewPlaybackInfo2 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v9)
   {
     v10 = v9;
@@ -9665,27 +9665,27 @@ void __53__VUIPlaybackManager__muteAllMultiviewPlayersExcept___block_invoke(uint
       {
         if (*v15 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(multiviewPlaybackInfo2);
         }
 
-        v13 = [*(*(&v14 + 1) + 8 * v12) player];
-        [v13 setReportingValueWithNumber:v7 forKey:@"multiviewCount"];
+        player = [*(*(&v14 + 1) + 8 * v12) player];
+        [player setReportingValueWithNumber:v7 forKey:@"multiviewCount"];
 
         ++v12;
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v10 = [multiviewPlaybackInfo2 countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v10);
   }
 }
 
-- (void)_handlePausedTooLong:(id)a3
+- (void)_handlePausedTooLong:(id)long
 {
-  v4 = [(VUIPlaybackManager *)self pausedTooLongTimer];
-  [v4 invalidate];
+  pausedTooLongTimer = [(VUIPlaybackManager *)self pausedTooLongTimer];
+  [pausedTooLongTimer invalidate];
 
   [(VUIPlaybackManager *)self setPausedTooLongTimer:0];
   v5 = sLogObject_5;
@@ -9698,37 +9698,37 @@ void __53__VUIPlaybackManager__muteAllMultiviewPlayersExcept___block_invoke(uint
   [(VUIPlaybackManager *)self dismissPlaybackAnimated:1 leaveGroupActivitySession:1 completion:0];
 }
 
-- (void)_handleLongLoadingTimeout:(id)a3
+- (void)_handleLongLoadingTimeout:(id)timeout
 {
-  v4 = [(VUIPlaybackManager *)self mainPlayerLongLoadingTimer];
-  [v4 invalidate];
+  mainPlayerLongLoadingTimer = [(VUIPlaybackManager *)self mainPlayerLongLoadingTimer];
+  [mainPlayerLongLoadingTimer invalidate];
 
   [(VUIPlaybackManager *)self setMainPlayerLongLoadingTimer:0];
-  v5 = [(VUIPlaybackManager *)self stateMachine];
-  [v5 postEvent:@"Main player long loading timer did fire" withContext:0 userInfo:0];
+  stateMachine = [(VUIPlaybackManager *)self stateMachine];
+  [stateMachine postEvent:@"Main player long loading timer did fire" withContext:0 userInfo:0];
 }
 
-- (id)_getLivePostPlayPrefetchPlayerIfApplicable:(id)a3
+- (id)_getLivePostPlayPrefetchPlayerIfApplicable:(id)applicable
 {
-  v4 = a3;
-  v5 = [(VUIPlaybackManager *)self mainLivePostPlayController];
-  v6 = [v5 prefetchedPlayer];
+  applicableCopy = applicable;
+  mainLivePostPlayController = [(VUIPlaybackManager *)self mainLivePostPlayController];
+  prefetchedPlayer = [mainLivePostPlayController prefetchedPlayer];
 
-  if (v6)
+  if (prefetchedPlayer)
   {
-    v7 = [(VUIPlaybackManager *)self mainLivePostPlayController];
-    [v7 setPrefetchedPlayer:0];
+    mainLivePostPlayController2 = [(VUIPlaybackManager *)self mainLivePostPlayController];
+    [mainLivePostPlayController2 setPrefetchedPlayer:0];
 
-    v8 = [v6 playlist];
-    v9 = v8;
-    if (v4 && v8 && [v8 isEqualToPlaylist:v4])
+    playlist = [prefetchedPlayer playlist];
+    v9 = playlist;
+    if (applicableCopy && playlist && [playlist isEqualToPlaylist:applicableCopy])
     {
-      v10 = v6;
+      v10 = prefetchedPlayer;
     }
 
     else
     {
-      [v6 invalidate];
+      [prefetchedPlayer invalidate];
       v10 = 0;
     }
   }
@@ -9741,29 +9741,29 @@ void __53__VUIPlaybackManager__muteAllMultiviewPlayersExcept___block_invoke(uint
   return v10;
 }
 
-- (void)presentViewControllerOnExtrasNav:(id)a3
+- (void)presentViewControllerOnExtrasNav:(id)nav
 {
   v4 = MEMORY[0x1E69DCCD8];
-  v5 = a3;
-  v9 = [[v4 alloc] initWithRootViewController:v5];
+  navCopy = nav;
+  v9 = [[v4 alloc] initWithRootViewController:navCopy];
 
   [v9 setModalPresentationStyle:0];
-  v6 = [(VUIPlaybackManager *)self backgroundAudioPlayer];
-  [v6 stop];
+  backgroundAudioPlayer = [(VUIPlaybackManager *)self backgroundAudioPlayer];
+  [backgroundAudioPlayer stop];
 
-  v7 = [(VUIPlaybackManager *)self extrasContext];
-  v8 = [v7 extrasRootViewController];
-  [v8 presentViewController:v9 animated:1 completion:0];
+  extrasContext = [(VUIPlaybackManager *)self extrasContext];
+  extrasRootViewController = [extrasContext extrasRootViewController];
+  [extrasRootViewController presentViewController:v9 animated:1 completion:0];
 }
 
 - (id)extrasNavigationController
 {
   v2 = +[VUIPlaybackManager sharedInstance];
-  v3 = [v2 extrasContext];
-  v4 = [v3 extrasRootViewController];
-  v5 = [v4 navigationController];
+  extrasContext = [v2 extrasContext];
+  extrasRootViewController = [extrasContext extrasRootViewController];
+  navigationController = [extrasRootViewController navigationController];
 
-  return v5;
+  return navigationController;
 }
 
 - (void)_registerBroadcastEndHandler

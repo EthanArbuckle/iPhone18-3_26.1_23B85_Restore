@@ -1,18 +1,18 @@
 @interface AGXG18PFamilyVisibleFunctionTable
-- (AGXG18PFamilyVisibleFunctionTable)initWithDevice:(id)a3 functionCount:(int64_t)a4 options:(unint64_t)a5 isSuballocDisabled:(BOOL)a6 clonedResourceIndex:(unint64_t)a7 clonedVisibleFunctionHeap:(void *)a8 type:(int)a9;
-- (AGXG18PFamilyVisibleFunctionTable)initWithDevice:(id)a3 functionCount:(int64_t)a4 options:(unint64_t)a5 isSuballocDisabled:(BOOL)a6 resourceIndex:(unint64_t)a7 pipelineState:(id)a8 stage:(unint64_t)a9;
-- (AGXG18PFamilyVisibleFunctionTable)initWithDevice:(id)a3 functionCount:(int64_t)a4 options:(unint64_t)a5 isSuballocDisabled:(BOOL)a6 resourceIndex:(unint64_t)a7 pipelineState:(id)a8 type:(int)a9;
+- (AGXG18PFamilyVisibleFunctionTable)initWithDevice:(id)device functionCount:(int64_t)count options:(unint64_t)options isSuballocDisabled:(BOOL)disabled clonedResourceIndex:(unint64_t)index clonedVisibleFunctionHeap:(void *)heap type:(int)type;
+- (AGXG18PFamilyVisibleFunctionTable)initWithDevice:(id)device functionCount:(int64_t)count options:(unint64_t)options isSuballocDisabled:(BOOL)disabled resourceIndex:(unint64_t)index pipelineState:(id)state stage:(unint64_t)stage;
+- (AGXG18PFamilyVisibleFunctionTable)initWithDevice:(id)device functionCount:(int64_t)count options:(unint64_t)options isSuballocDisabled:(BOOL)disabled resourceIndex:(unint64_t)index pipelineState:(id)state type:(int)type;
 - (id).cxx_construct;
-- (id)clone:(id)a3 clonedResourceIndex:(unint64_t)a4 clonedVisibleFunctionHeap:(void *)a5 cloneHandleMap:(void *)a6;
-- (unint64_t)bufferAddressAtIndex:(unint64_t)a3;
+- (id)clone:(id)clone clonedResourceIndex:(unint64_t)index clonedVisibleFunctionHeap:(void *)heap cloneHandleMap:(void *)map;
+- (unint64_t)bufferAddressAtIndex:(unint64_t)index;
 - (void)dealloc;
-- (void)setBuffer:(id)a3 offset:(unint64_t)a4 atIndex:(unint64_t)a5;
-- (void)setBuffers:(const void *)a3 offsets:(const unint64_t *)a4 withRange:(_NSRange)a5;
-- (void)setFunction:(id)a3 atIndex:(unint64_t)a4;
-- (void)setFunctions:(const void *)a3 withRange:(_NSRange)a4;
-- (void)setValue:(unint64_t)a3 withRange:(_NSRange)a4;
-- (void)setVisibleFunctionTable:(id)a3 atBufferIndex:(unint64_t)a4;
-- (void)setVisibleFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4;
+- (void)setBuffer:(id)buffer offset:(unint64_t)offset atIndex:(unint64_t)index;
+- (void)setBuffers:(const void *)buffers offsets:(const unint64_t *)offsets withRange:(_NSRange)range;
+- (void)setFunction:(id)function atIndex:(unint64_t)index;
+- (void)setFunctions:(const void *)functions withRange:(_NSRange)range;
+- (void)setValue:(unint64_t)value withRange:(_NSRange)range;
+- (void)setVisibleFunctionTable:(id)table atBufferIndex:(unint64_t)index;
+- (void)setVisibleFunctionTables:(const void *)tables withBufferRange:(_NSRange)range;
 @end
 
 @implementation AGXG18PFamilyVisibleFunctionTable
@@ -25,20 +25,20 @@
   return self;
 }
 
-- (void)setValue:(unint64_t)a3 withRange:(_NSRange)a4
+- (void)setValue:(unint64_t)value withRange:(_NSRange)range
 {
-  if (a4.length)
+  if (range.length)
   {
     v4 = *(&self->super.super.super.super.super._allocationType + *MEMORY[0x29EDC5638]) + 256;
-    if (a4.length <= 9)
+    if (range.length <= 9)
     {
       v5 = 0;
 LABEL_4:
-      v6 = a4.length - v5;
-      v7 = a4.location + v5;
+      v6 = range.length - v5;
+      v7 = range.location + v5;
       do
       {
-        *(v4 + 8 * v7++) = a3;
+        *(v4 + 8 * v7++) = value;
         --v6;
       }
 
@@ -47,20 +47,20 @@ LABEL_4:
     }
 
     v5 = 0;
-    if (__CFADD__(a4.location, LODWORD(a4.length) - 1))
+    if (__CFADD__(range.location, LODWORD(range.length) - 1))
     {
       goto LABEL_4;
     }
 
-    if ((a4.length - 1) >> 32)
+    if ((range.length - 1) >> 32)
     {
       goto LABEL_4;
     }
 
-    v5 = a4.length & 0x1FFFFFFFCLL;
-    v8 = vdupq_n_s64(a3);
-    location = a4.location;
-    v10 = a4.length & 0x1FFFFFFFCLL;
+    v5 = range.length & 0x1FFFFFFFCLL;
+    v8 = vdupq_n_s64(value);
+    location = range.location;
+    v10 = range.length & 0x1FFFFFFFCLL;
     do
     {
       v11 = (v4 + 8 * location);
@@ -71,23 +71,23 @@ LABEL_4:
     }
 
     while (v10);
-    if (a4.length != v5)
+    if (range.length != v5)
     {
       goto LABEL_4;
     }
   }
 }
 
-- (void)setVisibleFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4
+- (void)setVisibleFunctionTables:(const void *)tables withBufferRange:(_NSRange)range
 {
-  if (a4.length)
+  if (range.length)
   {
     v4 = *(&self->super.super.super.super.super._allocationType + *MEMORY[0x29EDC5638]) + 8;
     do
     {
-      if (*a3)
+      if (*tables)
       {
-        v5 = *(*a3 + 94);
+        v5 = *(*tables + 94);
       }
 
       else
@@ -95,21 +95,21 @@ LABEL_4:
         v5 = 291945216;
       }
 
-      *(v4 + 8 * LODWORD(a4.location)) = v5;
-      ++a4.location;
-      ++a3;
-      --a4.length;
+      *(v4 + 8 * LODWORD(range.location)) = v5;
+      ++range.location;
+      ++tables;
+      --range.length;
     }
 
-    while (a4.length);
+    while (range.length);
   }
 }
 
-- (void)setVisibleFunctionTable:(id)a3 atBufferIndex:(unint64_t)a4
+- (void)setVisibleFunctionTable:(id)table atBufferIndex:(unint64_t)index
 {
-  if (a3)
+  if (table)
   {
-    v4 = *(a3 + 94);
+    v4 = *(table + 94);
   }
 
   else
@@ -117,20 +117,20 @@ LABEL_4:
     v4 = 291945216;
   }
 
-  *(*(&self->super.super.super.super.super._allocationType + *MEMORY[0x29EDC5638]) + 8 * a4 + 8) = v4;
+  *(*(&self->super.super.super.super.super._allocationType + *MEMORY[0x29EDC5638]) + 8 * index + 8) = v4;
 }
 
-- (void)setBuffers:(const void *)a3 offsets:(const unint64_t *)a4 withRange:(_NSRange)a5
+- (void)setBuffers:(const void *)buffers offsets:(const unint64_t *)offsets withRange:(_NSRange)range
 {
-  if (a5.length)
+  if (range.length)
   {
     v5 = *MEMORY[0x29EDC5638];
     v6 = *(&self->super.super.super.super.super._allocationType + v5) + 8;
     do
     {
-      if (*a3)
+      if (*buffers)
       {
-        v7 = *(*a3 + v5 + 8) + *a4;
+        v7 = *(*buffers + v5 + 8) + *offsets;
       }
 
       else
@@ -138,24 +138,24 @@ LABEL_4:
         v7 = 291945216;
       }
 
-      *(v6 + 8 * LODWORD(a5.location)) = v7;
-      ++a4;
-      ++a5.location;
-      ++a3;
-      --a5.length;
+      *(v6 + 8 * LODWORD(range.location)) = v7;
+      ++offsets;
+      ++range.location;
+      ++buffers;
+      --range.length;
     }
 
-    while (a5.length);
+    while (range.length);
   }
 }
 
-- (void)setBuffer:(id)a3 offset:(unint64_t)a4 atIndex:(unint64_t)a5
+- (void)setBuffer:(id)buffer offset:(unint64_t)offset atIndex:(unint64_t)index
 {
   v5 = *MEMORY[0x29EDC5638];
   v6 = *(&self->super.super.super.super.super._allocationType + v5);
-  if (a3)
+  if (buffer)
   {
-    v7 = *(a3 + v5 + 8) + a4;
+    v7 = *(buffer + v5 + 8) + offset;
   }
 
   else
@@ -163,50 +163,50 @@ LABEL_4:
     v7 = 291945216;
   }
 
-  *(v6 + 8 * a5 + 8) = v7;
+  *(v6 + 8 * index + 8) = v7;
 }
 
-- (unint64_t)bufferAddressAtIndex:(unint64_t)a3
+- (unint64_t)bufferAddressAtIndex:(unint64_t)index
 {
-  if (*(*(&self->super.super.super.super.super._allocationType + *MEMORY[0x29EDC5638]) + 8 * a3 + 8) == 291945216)
+  if (*(*(&self->super.super.super.super.super._allocationType + *MEMORY[0x29EDC5638]) + 8 * index + 8) == 291945216)
   {
     return 0;
   }
 
   else
   {
-    return *(*(&self->super.super.super.super.super._allocationType + *MEMORY[0x29EDC5638]) + 8 * a3 + 8);
+    return *(*(&self->super.super.super.super.super._allocationType + *MEMORY[0x29EDC5638]) + 8 * index + 8);
   }
 }
 
-- (void)setFunctions:(const void *)a3 withRange:(_NSRange)a4
+- (void)setFunctions:(const void *)functions withRange:(_NSRange)range
 {
-  if (a4.length)
+  if (range.length)
   {
     v4 = *(&self->super.super.super.super.super._allocationType + *MEMORY[0x29EDC5638]) + 256;
     do
     {
-      v5 = *a3;
-      if (*a3)
+      v5 = *functions;
+      if (*functions)
       {
         v5 = v5[5];
       }
 
-      *(v4 + 8 * LODWORD(a4.location)) = v5;
-      ++a4.location;
-      ++a3;
-      --a4.length;
+      *(v4 + 8 * LODWORD(range.location)) = v5;
+      ++range.location;
+      ++functions;
+      --range.length;
     }
 
-    while (a4.length);
+    while (range.length);
   }
 }
 
-- (void)setFunction:(id)a3 atIndex:(unint64_t)a4
+- (void)setFunction:(id)function atIndex:(unint64_t)index
 {
-  if (a3)
+  if (function)
   {
-    v4 = *(a3 + 5);
+    v4 = *(function + 5);
   }
 
   else
@@ -214,7 +214,7 @@ LABEL_4:
     v4 = 0;
   }
 
-  *(*(&self->super.super.super.super.super._allocationType + *MEMORY[0x29EDC5638]) + 8 * a4 + 256) = v4;
+  *(*(&self->super.super.super.super.super._allocationType + *MEMORY[0x29EDC5638]) + 8 * index + 256) = v4;
 }
 
 - (void)dealloc
@@ -226,7 +226,7 @@ LABEL_4:
     {
       v4 = heap[419];
       os_unfair_lock_lock(v4);
-      v5 = [(AGXG18PFamilyVisibleFunctionTable *)self resourceIndex];
+      resourceIndex = [(AGXG18PFamilyVisibleFunctionTable *)self resourceIndex];
       v6 = *(v4 + 16);
       if (v6)
       {
@@ -234,16 +234,16 @@ LABEL_4:
         v7.i16[0] = vaddlv_u8(v7);
         if (v7.u32[0] > 1uLL)
         {
-          v8 = v5;
-          if (v5 >= *&v6)
+          v8 = resourceIndex;
+          if (resourceIndex >= *&v6)
           {
-            v8 = v5 % *&v6;
+            v8 = resourceIndex % *&v6;
           }
         }
 
         else
         {
-          v8 = (*&v6 - 1) & v5;
+          v8 = (*&v6 - 1) & resourceIndex;
         }
 
         v13 = *(*(v4 + 8) + 8 * v8);
@@ -258,9 +258,9 @@ LABEL_4:
               while (1)
               {
                 v17 = v14[1];
-                if (v17 == v5)
+                if (v17 == resourceIndex)
                 {
-                  if (v14[2] == v5)
+                  if (v14[2] == resourceIndex)
                   {
                     goto LABEL_45;
                   }
@@ -282,9 +282,9 @@ LABEL_4:
             do
             {
               v16 = v14[1];
-              if (v16 == v5)
+              if (v16 == resourceIndex)
               {
-                if (v14[2] == v5)
+                if (v14[2] == resourceIndex)
                 {
                   goto LABEL_45;
                 }
@@ -316,7 +316,7 @@ LABEL_4:
     {
       v4 = heap[82];
       os_unfair_lock_lock(v4);
-      v9 = [(AGXG18PFamilyVisibleFunctionTable *)self resourceIndex];
+      resourceIndex2 = [(AGXG18PFamilyVisibleFunctionTable *)self resourceIndex];
       v10 = *(v4 + 16);
       if (v10)
       {
@@ -324,16 +324,16 @@ LABEL_4:
         v11.i16[0] = vaddlv_u8(v11);
         if (v11.u32[0] > 1uLL)
         {
-          v12 = v9;
-          if (v9 >= *&v10)
+          v12 = resourceIndex2;
+          if (resourceIndex2 >= *&v10)
           {
-            v12 = v9 % *&v10;
+            v12 = resourceIndex2 % *&v10;
           }
         }
 
         else
         {
-          v12 = (*&v10 - 1) & v9;
+          v12 = (*&v10 - 1) & resourceIndex2;
         }
 
         v18 = *(*(v4 + 8) + 8 * v12);
@@ -348,9 +348,9 @@ LABEL_4:
               while (1)
               {
                 v21 = v14[1];
-                if (v21 == v9)
+                if (v21 == resourceIndex2)
                 {
-                  if (v14[2] == v9)
+                  if (v14[2] == resourceIndex2)
                   {
                     goto LABEL_45;
                   }
@@ -372,9 +372,9 @@ LABEL_4:
             do
             {
               v20 = v14[1];
-              if (v20 == v9)
+              if (v20 == resourceIndex2)
               {
-                if (v14[2] == v9)
+                if (v14[2] == resourceIndex2)
                 {
 LABEL_45:
                   std::__hash_table<std::__hash_value_type<unsigned long long,AGX::WeakObjCPtr<AGXG18PFamilyVisibleFunctionTable>>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,AGX::WeakObjCPtr<AGXG18PFamilyVisibleFunctionTable>>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,AGX::WeakObjCPtr<AGXG18PFamilyVisibleFunctionTable>>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,AGX::WeakObjCPtr<AGXG18PFamilyVisibleFunctionTable>>>>::remove(&__p, (v4 + 8), v14);
@@ -424,14 +424,14 @@ LABEL_49:
   [(IOGPUMetalBuffer *)&v23 dealloc];
 }
 
-- (id)clone:(id)a3 clonedResourceIndex:(unint64_t)a4 clonedVisibleFunctionHeap:(void *)a5 cloneHandleMap:(void *)a6
+- (id)clone:(id)clone clonedResourceIndex:(unint64_t)index clonedVisibleFunctionHeap:(void *)heap cloneHandleMap:(void *)map
 {
   v11 = *MEMORY[0x29EDC5638];
   v12 = (&self->super.super.super.super.super.super.super.isa + v11);
   v13 = **(&self->super.super.super.super.super._allocationType + v11);
   v14 = [AGXG18PFamilyVisibleFunctionTable alloc];
   LODWORD(v29) = self->_impl.resource_indirection_heap_allocation.resource_;
-  v15 = [(AGXG18PFamilyVisibleFunctionTable *)v14 initWithDevice:a3 functionCount:v13 options:0 isSuballocDisabled:*(*(a3 + 106) + 16989) clonedResourceIndex:a4 clonedVisibleFunctionHeap:a5 type:v29];
+  v15 = [(AGXG18PFamilyVisibleFunctionTable *)v14 initWithDevice:clone functionCount:v13 options:0 isSuballocDisabled:*(*(clone + 106) + 16989) clonedResourceIndex:index clonedVisibleFunctionHeap:heap type:v29];
   memcpy(*(&v15->super.super.super.super.super._allocationType + v11), v12[3], 8 * v13 + 256);
   *v12 = 0;
   v12[2] = (v12[2] & 0x1FFFFFFFFFFFFFFFLL | 0x8000000000000000);
@@ -443,7 +443,7 @@ LABEL_49:
       v18 = *(v17 + 8 * i);
       if (v18)
       {
-        v19 = *(a6 + 8);
+        v19 = *(map + 8);
         if (v19)
         {
           v20 = vcnt_s8(v19);
@@ -462,7 +462,7 @@ LABEL_49:
             v21 = (*&v19 - 1) & v18;
           }
 
-          v22 = *(*a6 + 8 * v21);
+          v22 = *(*map + 8 * v21);
           if (v22)
           {
             v23 = *v22;
@@ -544,16 +544,16 @@ LABEL_4:
   return v15;
 }
 
-- (AGXG18PFamilyVisibleFunctionTable)initWithDevice:(id)a3 functionCount:(int64_t)a4 options:(unint64_t)a5 isSuballocDisabled:(BOOL)a6 clonedResourceIndex:(unint64_t)a7 clonedVisibleFunctionHeap:(void *)a8 type:(int)a9
+- (AGXG18PFamilyVisibleFunctionTable)initWithDevice:(id)device functionCount:(int64_t)count options:(unint64_t)options isSuballocDisabled:(BOOL)disabled clonedResourceIndex:(unint64_t)index clonedVisibleFunctionHeap:(void *)heap type:(int)type
 {
-  v10 = a7;
-  v11 = a4;
+  indexCopy = index;
+  countCopy = count;
   v25[11] = 0;
-  v12 = initializeWithDevice<AGXG18PFamilyVisibleFunctionTable>(self, a3, 8 * a4 + 256, a5, a6, v25);
+  v12 = initializeWithDevice<AGXG18PFamilyVisibleFunctionTable>(self, device, 8 * count + 256, options, disabled, v25);
   v13 = *MEMORY[0x29EDC5638];
   v14 = &v12[v13];
   v15 = *&v12[v13 + 24];
-  AGX::Mempool<32u,0u,true,0u,0u,unsigned long long>::RangeAllocation::RangeAllocation(&v26, a8, v10);
+  AGX::Mempool<32u,0u,true,0u,0u,unsigned long long>::RangeAllocation::RangeAllocation(&v26, heap, indexCopy);
   v16 = *(v12 + 94);
   *(v12 + 94) = v26;
   v26 = v16;
@@ -582,39 +582,39 @@ LABEL_4:
   os_unfair_lock_assert_owner(v22 + 188);
   *(*(*&v22[6 * v22[170]._os_unfair_lock_opaque + 4]._os_unfair_lock_opaque + v13 + 24) + 8 * v23) = v21;
   os_unfair_lock_unlock(v19 + 188);
-  *v15 = v11;
+  *v15 = countCopy;
   memset_pattern16(v15 + 2, &unk_29D2F27D0, 0xF8uLL);
-  *(v12 + 100) = a9;
+  *(v12 + 100) = type;
   *(v12 + 51) = 0;
   *&v12[v13] = 0;
   *(v14 + 2) = *(v14 + 2) & 0x1FFFFFFFFFFFFFFFLL | 0x8000000000000000;
   return v12;
 }
 
-- (AGXG18PFamilyVisibleFunctionTable)initWithDevice:(id)a3 functionCount:(int64_t)a4 options:(unint64_t)a5 isSuballocDisabled:(BOOL)a6 resourceIndex:(unint64_t)a7 pipelineState:(id)a8 stage:(unint64_t)a9
+- (AGXG18PFamilyVisibleFunctionTable)initWithDevice:(id)device functionCount:(int64_t)count options:(unint64_t)options isSuballocDisabled:(BOOL)disabled resourceIndex:(unint64_t)index pipelineState:(id)state stage:(unint64_t)stage
 {
-  if ((a9 & (a9 - 1)) != 0)
+  if ((stage & (stage - 1)) != 0)
   {
     return 0;
   }
 
   else
   {
-    return [(AGXG18PFamilyVisibleFunctionTable *)self initWithDevice:a3 functionCount:a4 options:a5 isSuballocDisabled:a6 resourceIndex:a7 pipelineState:a8 type:?];
+    return [(AGXG18PFamilyVisibleFunctionTable *)self initWithDevice:device functionCount:count options:options isSuballocDisabled:disabled resourceIndex:index pipelineState:state type:?];
   }
 }
 
-- (AGXG18PFamilyVisibleFunctionTable)initWithDevice:(id)a3 functionCount:(int64_t)a4 options:(unint64_t)a5 isSuballocDisabled:(BOOL)a6 resourceIndex:(unint64_t)a7 pipelineState:(id)a8 type:(int)a9
+- (AGXG18PFamilyVisibleFunctionTable)initWithDevice:(id)device functionCount:(int64_t)count options:(unint64_t)options isSuballocDisabled:(BOOL)disabled resourceIndex:(unint64_t)index pipelineState:(id)state type:(int)type
 {
-  v9 = a7;
-  v10 = a4;
+  indexCopy = index;
+  countCopy = count;
   v31 = 0;
-  v12 = initializeWithDevice<AGXG18PFamilyVisibleFunctionTable>(self, a3, 8 * a4 + 256, a5, a6, v30);
+  v12 = initializeWithDevice<AGXG18PFamilyVisibleFunctionTable>(self, device, 8 * count + 256, options, disabled, v30);
   block[0] = MEMORY[0x29EDCA5F8];
   block[1] = 3221225472;
   block[2] = __126__AGXG18PFamilyVisibleFunctionTable_initWithDevice_functionCount_options_isSuballocDisabled_resourceIndex_pipelineState_type___block_invoke;
   block[3] = &unk_29F3438F8;
-  block[4] = a3;
+  block[4] = device;
   if ([AGXG18PFamilyVisibleFunctionTable initWithDevice:functionCount:options:isSuballocDisabled:resourceIndex:pipelineState:type:]::once != -1)
   {
     dispatch_once(&[AGXG18PFamilyVisibleFunctionTable initWithDevice:functionCount:options:isSuballocDisabled:resourceIndex:pipelineState:type:]::once, block);
@@ -623,7 +623,7 @@ LABEL_4:
   v13 = *MEMORY[0x29EDC5638];
   v14 = &v12[v13];
   v15 = *&v12[v13 + 24];
-  AGX::Mempool<32u,0u,true,0u,0u,unsigned long long>::RangeAllocation::RangeAllocation(&v32, (*(a3 + 106) + 13360), v9);
+  AGX::Mempool<32u,0u,true,0u,0u,unsigned long long>::RangeAllocation::RangeAllocation(&v32, (*(device + 106) + 13360), indexCopy);
   v16 = *(v12 + 94);
   *(v12 + 94) = v32;
   LODWORD(v32) = v16;
@@ -652,25 +652,25 @@ LABEL_4:
   os_unfair_lock_assert_owner(v22 + 188);
   *(*(*&v22[6 * v22[170]._os_unfair_lock_opaque + 4]._os_unfair_lock_opaque + v13 + 24) + 8 * v23) = v21;
   os_unfair_lock_unlock(v19 + 188);
-  *v15 = v10;
+  *v15 = countCopy;
   memset_pattern16(v15 + 2, &unk_29D2F27D0, 0xF8uLL);
-  *(v12 + 100) = a9;
-  v24 = a8;
-  *(v12 + 51) = v24;
+  *(v12 + 100) = type;
+  stateCopy = state;
+  *(v12 + 51) = stateCopy;
   if (*(v12 + 100))
   {
-    v25 = v24[419];
+    v25 = stateCopy[419];
   }
 
   else
   {
-    v25 = v24[82];
+    v25 = stateCopy[82];
   }
 
   os_unfair_lock_lock(v25);
-  v35 = [v12 resourceIndex];
-  v32 = &v35;
-  v26 = std::__hash_table<std::__hash_value_type<unsigned long long,AGX::WeakObjCPtr<AGXG18PFamilyVisibleFunctionTable>>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,AGX::WeakObjCPtr<AGXG18PFamilyVisibleFunctionTable>>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,AGX::WeakObjCPtr<AGXG18PFamilyVisibleFunctionTable>>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,AGX::WeakObjCPtr<AGXG18PFamilyVisibleFunctionTable>>>>::__emplace_unique_key_args<unsigned long long,std::piecewise_construct_t const&,std::tuple<unsigned long long const&>,std::tuple<>>((v25 + 8), v35);
+  resourceIndex = [v12 resourceIndex];
+  v32 = &resourceIndex;
+  v26 = std::__hash_table<std::__hash_value_type<unsigned long long,AGX::WeakObjCPtr<AGXG18PFamilyVisibleFunctionTable>>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,AGX::WeakObjCPtr<AGXG18PFamilyVisibleFunctionTable>>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,AGX::WeakObjCPtr<AGXG18PFamilyVisibleFunctionTable>>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,AGX::WeakObjCPtr<AGXG18PFamilyVisibleFunctionTable>>>>::__emplace_unique_key_args<unsigned long long,std::piecewise_construct_t const&,std::tuple<unsigned long long const&>,std::tuple<>>((v25 + 8), resourceIndex);
   objc_storeWeak(v26 + 3, v12);
   os_unfair_lock_unlock(v25);
   *v14 = 0;

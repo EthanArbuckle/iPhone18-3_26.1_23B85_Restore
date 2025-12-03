@@ -2,20 +2,20 @@
 + (BOOL)_deviceIsCarplayCapable;
 + (MPPlayableContentManager)sharedContentManager;
 - (BOOL)_areContentLimitsEnforced;
-- (BOOL)_contentItemWasSentToMediaRemote:(id)a3;
+- (BOOL)_contentItemWasSentToMediaRemote:(id)remote;
 - (BOOL)_musicListsLimited;
-- (BOOL)_onQueueContentItemWasSentToMediaRemote:(id)a3;
+- (BOOL)_onQueueContentItemWasSentToMediaRemote:(id)remote;
 - (MPPlayableContentManager)init;
 - (id)_init;
 - (id)dataSource;
 - (id)delegate;
-- (void)_browsableContentEndpointChanged:(id)a3;
-- (void)_contentItemChangedNotification:(id)a3;
-- (void)_enqueueArtworkUpdate:(id)a3 size:(CGSize)a4 withCompletion:(id)a5;
-- (void)_enqueueArtworkUpdate:(id)a3 withCompletion:(id)a4;
-- (void)_handlePlaybackInitializationCompletedWithContext:(id)a3 error:(id)a4;
-- (void)_limitedUIChanged:(id)a3;
-- (void)_markContentItemsAsSentToMediaRemote:(id)a3;
+- (void)_browsableContentEndpointChanged:(id)changed;
+- (void)_contentItemChangedNotification:(id)notification;
+- (void)_enqueueArtworkUpdate:(id)update size:(CGSize)size withCompletion:(id)completion;
+- (void)_enqueueArtworkUpdate:(id)update withCompletion:(id)completion;
+- (void)_handlePlaybackInitializationCompletedWithContext:(id)context error:(id)error;
+- (void)_limitedUIChanged:(id)changed;
+- (void)_markContentItemsAsSentToMediaRemote:(id)remote;
 - (void)_pushContentItemsUpdate;
 - (void)_scheduleUpdateSupportedAPIs;
 - (void)_setupMediaRemoteEndpoint;
@@ -26,8 +26,8 @@
 - (void)dealloc;
 - (void)endUpdates;
 - (void)reloadData;
-- (void)sessionDidConnect:(id)a3;
-- (void)sessionDidDisconnect:(id)a3;
+- (void)sessionDidConnect:(id)connect;
+- (void)sessionDidDisconnect:(id)disconnect;
 - (void)setDataSource:(id)dataSource;
 - (void)setDelegate:(id)delegate;
 - (void)setNowPlayingIdentifiers:(NSArray *)nowPlayingIdentifiers;
@@ -73,10 +73,10 @@ uint64_t __56__MPPlayableContentManager__scheduleUpdateSupportedAPIs__block_invo
 - (void)_updateSupportedAPIs
 {
   v9 = *MEMORY[0x1E69E9840];
-  v3 = [(MPPlayableContentManager *)self delegate];
+  delegate = [(MPPlayableContentManager *)self delegate];
   objc_opt_respondsToSelector();
   objc_opt_respondsToSelector();
-  v4 = [(MPPlayableContentManager *)self dataSource];
+  dataSource = [(MPPlayableContentManager *)self dataSource];
   objc_opt_respondsToSelector();
   objc_opt_respondsToSelector();
   objc_opt_respondsToSelector();
@@ -109,55 +109,55 @@ void __48__MPPlayableContentManager__updateSupportedAPIs__block_invoke(uint64_t 
 
 - (BOOL)_areContentLimitsEnforced
 {
-  v3 = [(CARSessionStatus *)self->_currentSessionStatus currentSession];
-  v4 = [v3 limitUserInterfaces];
-  if ([v4 BOOLValue])
+  currentSession = [(CARSessionStatus *)self->_currentSessionStatus currentSession];
+  limitUserInterfaces = [currentSession limitUserInterfaces];
+  if ([limitUserInterfaces BOOLValue])
   {
-    v5 = [(MPPlayableContentManager *)self _musicListsLimited];
+    _musicListsLimited = [(MPPlayableContentManager *)self _musicListsLimited];
   }
 
   else
   {
-    v5 = 0;
+    _musicListsLimited = 0;
   }
 
-  return v5;
+  return _musicListsLimited;
 }
 
 - (BOOL)_musicListsLimited
 {
-  v2 = [(CARSessionStatus *)self->_currentSessionStatus currentSession];
-  v3 = [v2 configuration];
-  v4 = ([v3 limitableUserInterfaces] >> 3) & 1;
+  currentSession = [(CARSessionStatus *)self->_currentSessionStatus currentSession];
+  configuration = [currentSession configuration];
+  v4 = ([configuration limitableUserInterfaces] >> 3) & 1;
 
   return v4;
 }
 
-- (void)_browsableContentEndpointChanged:(id)a3
+- (void)_browsableContentEndpointChanged:(id)changed
 {
-  v12 = [(CARSessionStatus *)self->_currentSessionStatus currentSession];
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
+  currentSession = [(CARSessionStatus *)self->_currentSessionStatus currentSession];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v5 = getCARSessionLimitUserInterfacesChangedNotification();
-  [v4 removeObserver:self name:v5 object:0];
+  [defaultCenter removeObserver:self name:v5 object:0];
 
-  v6 = [(MPPlayableContentManager *)self context];
-  if (v12)
+  context = [(MPPlayableContentManager *)self context];
+  if (currentSession)
   {
-    [v6 setEndpointAvailable:1];
+    [context setEndpointAvailable:1];
 
-    v6 = getCARSessionLimitUserInterfacesChangedNotification();
-    [v4 addObserver:self selector:sel__limitedUIChanged_ name:v6 object:0];
+    context = getCARSessionLimitUserInterfacesChangedNotification();
+    [defaultCenter addObserver:self selector:sel__limitedUIChanged_ name:context object:0];
   }
 
   else
   {
-    [v6 setEndpointAvailable:0];
+    [context setEndpointAvailable:0];
   }
 
-  v7 = [(MPPlayableContentManager *)self context];
-  [v7 setContentLimitsEnforced:{-[MPPlayableContentManager _areContentLimitsEnforced](self, "_areContentLimitsEnforced")}];
+  context2 = [(MPPlayableContentManager *)self context];
+  [context2 setContentLimitsEnforced:{-[MPPlayableContentManager _areContentLimitsEnforced](self, "_areContentLimitsEnforced")}];
 
-  v8 = [(MPPlayableContentManager *)self context];
+  context3 = [(MPPlayableContentManager *)self context];
   if ([(MPPlayableContentManager *)self _musicListsLimited])
   {
     v9 = 12;
@@ -168,23 +168,23 @@ void __48__MPPlayableContentManager__updateSupportedAPIs__block_invoke(uint64_t 
     v9 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  [v8 setEnforcedContentItemsCount:v9];
+  [context3 setEnforcedContentItemsCount:v9];
 
-  v10 = [(MPPlayableContentManager *)self delegate];
+  delegate = [(MPPlayableContentManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v11 = [(MPPlayableContentManager *)self context];
-    [v10 playableContentManager:self didUpdateContext:v11];
+    context4 = [(MPPlayableContentManager *)self context];
+    [delegate playableContentManager:self didUpdateContext:context4];
   }
 }
 
-- (void)_limitedUIChanged:(id)a3
+- (void)_limitedUIChanged:(id)changed
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = [(MPPlayableContentManager *)self context];
-  [v4 setContentLimitsEnforced:{-[MPPlayableContentManager _areContentLimitsEnforced](self, "_areContentLimitsEnforced")}];
+  context = [(MPPlayableContentManager *)self context];
+  [context setContentLimitsEnforced:{-[MPPlayableContentManager _areContentLimitsEnforced](self, "_areContentLimitsEnforced")}];
 
-  v5 = [(MPPlayableContentManager *)self context];
+  context2 = [(MPPlayableContentManager *)self context];
   if ([(MPPlayableContentManager *)self _musicListsLimited])
   {
     v6 = 12;
@@ -195,7 +195,7 @@ void __48__MPPlayableContentManager__updateSupportedAPIs__block_invoke(uint64_t 
     v6 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  [v5 setEnforcedContentItemsCount:v6];
+  [context2 setEnforcedContentItemsCount:v6];
 
   v7 = os_log_create("com.apple.amp.mediaplayer", "RemoteControl");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -206,25 +206,25 @@ void __48__MPPlayableContentManager__updateSupportedAPIs__block_invoke(uint64_t 
     _os_log_impl(&dword_1A238D000, v7, OS_LOG_TYPE_DEFAULT, "Content manager updated limited UI: %@", &v11, 0xCu);
   }
 
-  v9 = [(MPPlayableContentManager *)self delegate];
+  delegate = [(MPPlayableContentManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v10 = [(MPPlayableContentManager *)self context];
-    [v9 playableContentManager:self didUpdateContext:v10];
+    context3 = [(MPPlayableContentManager *)self context];
+    [delegate playableContentManager:self didUpdateContext:context3];
   }
 }
 
-- (void)_markContentItemsAsSentToMediaRemote:(id)a3
+- (void)_markContentItemsAsSentToMediaRemote:(id)remote
 {
-  v4 = a3;
+  remoteCopy = remote;
   serialQueue = self->_serialQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __65__MPPlayableContentManager__markContentItemsAsSentToMediaRemote___block_invoke;
   v7[3] = &unk_1E76823C0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = remoteCopy;
+  selfCopy = self;
+  v6 = remoteCopy;
   dispatch_sync(serialQueue, v7);
 }
 
@@ -270,18 +270,18 @@ void __65__MPPlayableContentManager__markContentItemsAsSentToMediaRemote___block
   }
 }
 
-- (BOOL)_onQueueContentItemWasSentToMediaRemote:(id)a3
+- (BOOL)_onQueueContentItemWasSentToMediaRemote:(id)remote
 {
   contentItemIdentifiersSentToMediaRemote = self->_contentItemIdentifiersSentToMediaRemote;
-  v4 = [a3 identifier];
-  LOBYTE(contentItemIdentifiersSentToMediaRemote) = [(NSMutableSet *)contentItemIdentifiersSentToMediaRemote containsObject:v4];
+  identifier = [remote identifier];
+  LOBYTE(contentItemIdentifiersSentToMediaRemote) = [(NSMutableSet *)contentItemIdentifiersSentToMediaRemote containsObject:identifier];
 
   return contentItemIdentifiersSentToMediaRemote;
 }
 
-- (BOOL)_contentItemWasSentToMediaRemote:(id)a3
+- (BOOL)_contentItemWasSentToMediaRemote:(id)remote
 {
-  v4 = a3;
+  remoteCopy = remote;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -291,10 +291,10 @@ void __65__MPPlayableContentManager__markContentItemsAsSentToMediaRemote___block
   block[1] = 3221225472;
   block[2] = __61__MPPlayableContentManager__contentItemWasSentToMediaRemote___block_invoke;
   block[3] = &unk_1E7681330;
-  v9 = v4;
+  v9 = remoteCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
+  v6 = remoteCopy;
   dispatch_sync(serialQueue, block);
   LOBYTE(serialQueue) = *(v12 + 24);
 
@@ -309,12 +309,12 @@ uint64_t __61__MPPlayableContentManager__contentItemWasSentToMediaRemote___block
   return result;
 }
 
-- (void)_handlePlaybackInitializationCompletedWithContext:(id)a3 error:(id)a4
+- (void)_handlePlaybackInitializationCompletedWithContext:(id)context error:(id)error
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if ([v5 serviced])
+  contextCopy = context;
+  errorCopy = error;
+  if ([contextCopy serviced])
   {
     v7 = os_log_create("com.apple.amp.mediaplayer", "RemoteControl");
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -326,8 +326,8 @@ uint64_t __61__MPPlayableContentManager__contentItemWasSentToMediaRemote___block
     }
   }
 
-  v9 = [v5 indexPath];
-  v10 = [v9 length];
+  indexPath = [contextCopy indexPath];
+  v10 = [indexPath length];
   v11 = malloc_type_malloc(0x10uLL, 0x1010040FDD9F14CuLL);
   v11[1] = v10;
   if (v10)
@@ -337,7 +337,7 @@ uint64_t __61__MPPlayableContentManager__contentItemWasSentToMediaRemote___block
     v13 = 1;
     do
     {
-      *(*v11 + v12) = [v9 indexAtPosition:v12];
+      *(*v11 + v12) = [indexPath indexAtPosition:v12];
       v12 = v13;
     }
 
@@ -354,15 +354,15 @@ uint64_t __61__MPPlayableContentManager__contentItemWasSentToMediaRemote___block
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     v16 = 138543618;
-    v17 = v9;
+    v17 = indexPath;
     v18 = 2114;
-    v19 = v6;
+    v19 = errorCopy;
     _os_log_impl(&dword_1A238D000, v15, OS_LOG_TYPE_DEFAULT, "Playback initialization completed at index path: %{public}@, error: %{public}@", &v16, 0x16u);
   }
 
   free(*v11);
   free(v11);
-  [v5 setServiced:1];
+  [contextCopy setServiced:1];
 }
 
 - (void)_pushContentItemsUpdate
@@ -431,22 +431,22 @@ void __51__MPPlayableContentManager__pushContentItemsUpdate__block_invoke(uint64
 
 - (void)_tearDownNotifications
 {
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 removeObserver:self name:@"_MPContentItemDidChangeNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:@"_MPContentItemDidChangeNotification" object:0];
   v3 = getCARSessionLimitUserInterfacesChangedNotification();
-  [v4 removeObserver:self name:v3 object:0];
+  [defaultCenter removeObserver:self name:v3 object:0];
 
-  [v4 removeObserver:self name:*MEMORY[0x1E69B0C38] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69B0C38] object:0];
 }
 
 - (void)_setupNotifications
 {
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 addObserver:self selector:sel__contentItemChangedNotification_ name:@"_MPContentItemDidChangeNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__contentItemChangedNotification_ name:@"_MPContentItemDidChangeNotification" object:0];
   v3 = getCARSessionLimitUserInterfacesChangedNotification();
-  [v4 addObserver:self selector:sel__limitedUIChanged_ name:v3 object:0];
+  [defaultCenter addObserver:self selector:sel__limitedUIChanged_ name:v3 object:0];
 
-  [v4 addObserver:self selector:sel__browsableContentEndpointChanged_ name:*MEMORY[0x1E69B0C38] object:0];
+  [defaultCenter addObserver:self selector:sel__browsableContentEndpointChanged_ name:*MEMORY[0x1E69B0C38] object:0];
 }
 
 - (void)_setupMediaRemoteEndpoint
@@ -462,12 +462,12 @@ void __51__MPPlayableContentManager__pushContentItemsUpdate__block_invoke(uint64
   MRMediaRemoteSetBrowsableContentEndpoint();
 }
 
-- (void)_enqueueArtworkUpdate:(id)a3 size:(CGSize)a4 withCompletion:(id)a5
+- (void)_enqueueArtworkUpdate:(id)update size:(CGSize)size withCompletion:(id)completion
 {
-  height = a4.height;
-  width = a4.width;
-  v9 = a3;
-  v10 = a5;
+  height = size.height;
+  width = size.width;
+  updateCopy = update;
+  completionCopy = completion;
   artworkUpdateQueue = self->_artworkUpdateQueue;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
@@ -475,10 +475,10 @@ void __51__MPPlayableContentManager__pushContentItemsUpdate__block_invoke(uint64
   v14[3] = &unk_1E7680158;
   v17 = width;
   v18 = height;
-  v15 = v9;
-  v16 = v10;
-  v12 = v10;
-  v13 = v9;
+  v15 = updateCopy;
+  v16 = completionCopy;
+  v12 = completionCopy;
+  v13 = updateCopy;
   [(NSOperationQueue *)artworkUpdateQueue addOperationWithBlock:v14];
 }
 
@@ -563,19 +563,19 @@ void __70__MPPlayableContentManager__enqueueArtworkUpdate_size_withCompletion___
   (*(v21 + 16))(v21, v22);
 }
 
-- (void)_enqueueArtworkUpdate:(id)a3 withCompletion:(id)a4
+- (void)_enqueueArtworkUpdate:(id)update withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  updateCopy = update;
+  completionCopy = completion;
   artworkUpdateQueue = self->_artworkUpdateQueue;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __65__MPPlayableContentManager__enqueueArtworkUpdate_withCompletion___block_invoke;
   v11[3] = &unk_1E76824C8;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = updateCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = updateCopy;
   [(NSOperationQueue *)artworkUpdateQueue addOperationWithBlock:v11];
 }
 
@@ -585,18 +585,18 @@ void __65__MPPlayableContentManager__enqueueArtworkUpdate_withCompletion___block
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)sessionDidDisconnect:(id)a3
+- (void)sessionDidDisconnect:(id)disconnect
 {
   [(MPPlayableContentManager *)self _tearDownMediaRemoteEndpoint];
 
   [(MPPlayableContentManager *)self _tearDownNotifications];
 }
 
-- (void)sessionDidConnect:(id)a3
+- (void)sessionDidConnect:(id)connect
 {
   v5 = os_log_create("com.apple.amp.mediaplayer", "RemoteControl");
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
-  if (a3)
+  if (connect)
   {
     if (v6)
     {
@@ -650,17 +650,17 @@ void __65__MPPlayableContentManager__enqueueArtworkUpdate_withCompletion___block
   }
 }
 
-- (void)_contentItemChangedNotification:(id)a3
+- (void)_contentItemChangedNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   serialQueue = self->_serialQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __60__MPPlayableContentManager__contentItemChangedNotification___block_invoke;
   v7[3] = &unk_1E76823C0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = notificationCopy;
+  selfCopy = self;
+  v6 = notificationCopy;
   dispatch_async(serialQueue, v7);
 }
 
@@ -694,8 +694,8 @@ void __60__MPPlayableContentManager__contentItemChangedNotification___block_invo
   {
     if (dyld_program_sdk_at_least())
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v6 handleFailureInMethod:a2 object:self file:@"MPPlayableContentManager.m" lineNumber:216 description:@"-[MPPlayableContentManager setNowPlayingIdentifiers:] nowPlayingIdentifiers cannot be nil."];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"MPPlayableContentManager.m" lineNumber:216 description:@"-[MPPlayableContentManager setNowPlayingIdentifiers:] nowPlayingIdentifiers cannot be nil."];
 
       v5 = 0;
     }
@@ -893,9 +893,9 @@ uint64_t __38__MPPlayableContentManager_reloadData__block_invoke(uint64_t a1)
 
     [(NSOperationQueue *)v2->_artworkUpdateQueue setMaxConcurrentOperationCount:5];
     v2->_scheduledSupportedAPIsChange = 0;
-    v13 = [objc_opt_class() _deviceIsCarplayCapable];
+    _deviceIsCarplayCapable = [objc_opt_class() _deviceIsCarplayCapable];
     v14 = 0;
-    if (v13)
+    if (_deviceIsCarplayCapable)
     {
       v25 = 0;
       v26 = &v25;

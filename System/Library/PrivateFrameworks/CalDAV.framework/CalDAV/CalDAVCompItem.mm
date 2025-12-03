@@ -1,19 +1,19 @@
 @interface CalDAVCompItem
-- (void)parserFoundAttributes:(id)a3;
-- (void)write:(id)a3;
+- (void)parserFoundAttributes:(id)attributes;
+- (void)write:(id)write;
 @end
 
 @implementation CalDAVCompItem
 
-- (void)parserFoundAttributes:(id)a3
+- (void)parserFoundAttributes:(id)attributes
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  attributesCopy = attributes;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v5 = [attributesCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v5)
   {
     v6 = v5;
@@ -25,21 +25,21 @@
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(attributesCopy);
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        v11 = [v10 name];
-        v12 = [v11 isEqualToString:v8];
+        name = [v10 name];
+        v12 = [name isEqualToString:v8];
 
         if (v12)
         {
-          v13 = [v10 value];
-          [(CalDAVCompItem *)self setNameAttribute:v13];
+          value = [v10 value];
+          [(CalDAVCompItem *)self setNameAttribute:value];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v6 = [attributesCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v6);
@@ -48,25 +48,25 @@
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)write:(id)a3
+- (void)write:(id)write
 {
-  v4 = a3;
-  v5 = [(CalDAVCompItem *)self nameAttribute];
+  writeCopy = write;
+  nameAttribute = [(CalDAVCompItem *)self nameAttribute];
 
-  if (v5)
+  if (nameAttribute)
   {
-    v6 = [(CoreDAVItem *)self name];
-    v7 = [(CoreDAVItem *)self nameSpace];
+    name = [(CoreDAVItem *)self name];
+    nameSpace = [(CoreDAVItem *)self nameSpace];
     v8 = *MEMORY[0x277CFDFA8];
-    v9 = [(CalDAVCompItem *)self nameAttribute];
-    [v4 appendElement:v6 inNamespace:v7 withStringContent:0 withAttributeNamesAndValues:{v8, v9, 0}];
+    nameAttribute2 = [(CalDAVCompItem *)self nameAttribute];
+    [writeCopy appendElement:name inNamespace:nameSpace withStringContent:0 withAttributeNamesAndValues:{v8, nameAttribute2, 0}];
   }
 
   else
   {
     v10.receiver = self;
     v10.super_class = CalDAVCompItem;
-    [(CoreDAVItem *)&v10 write:v4];
+    [(CoreDAVItem *)&v10 write:writeCopy];
   }
 }
 

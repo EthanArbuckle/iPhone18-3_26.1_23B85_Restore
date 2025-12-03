@@ -1,13 +1,13 @@
 @interface ActivityFeedAddFriendsView
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (void)layoutSubviews;
 @end
 
 @implementation ActivityFeedAddFriendsView
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v3 = self;
+  selfCopy = self;
   sub_24E20C558();
   v5 = v4;
   v7 = v6;
@@ -21,7 +21,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_24E20C6D0();
 }
 

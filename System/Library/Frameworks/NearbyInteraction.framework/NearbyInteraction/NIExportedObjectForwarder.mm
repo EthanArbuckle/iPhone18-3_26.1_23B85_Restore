@@ -1,15 +1,15 @@
 @interface NIExportedObjectForwarder
-- (NIExportedObjectForwarder)initWithExportedObject:(id)a3;
+- (NIExportedObjectForwarder)initWithExportedObject:(id)object;
 - (id)exportedObject;
-- (id)methodSignatureForSelector:(SEL)a3;
+- (id)methodSignatureForSelector:(SEL)selector;
 @end
 
 @implementation NIExportedObjectForwarder
 
-- (NIExportedObjectForwarder)initWithExportedObject:(id)a3
+- (NIExportedObjectForwarder)initWithExportedObject:(id)object
 {
-  v5 = a3;
-  if (!v5)
+  objectCopy = object;
+  if (!objectCopy)
   {
     [(NIExportedObjectForwarder *)a2 initWithExportedObject:?];
   }
@@ -20,18 +20,18 @@
   v7 = v6;
   if (v6)
   {
-    [(NIExportedObjectForwarder *)v6 setExportedObject:v5];
+    [(NIExportedObjectForwarder *)v6 setExportedObject:objectCopy];
     [(NIExportedObjectForwarder *)v7 setExportedObjectClass:objc_opt_class()];
   }
 
   return v7;
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
-  v4 = [(NIExportedObjectForwarder *)self exportedObjectClass];
+  exportedObjectClass = [(NIExportedObjectForwarder *)self exportedObjectClass];
 
-  return [(objc_class *)v4 instanceMethodSignatureForSelector:a3];
+  return [(objc_class *)exportedObjectClass instanceMethodSignatureForSelector:selector];
 }
 
 - (id)exportedObject

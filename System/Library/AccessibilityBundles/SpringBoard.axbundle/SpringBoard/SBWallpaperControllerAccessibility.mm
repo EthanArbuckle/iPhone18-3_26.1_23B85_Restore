@@ -1,16 +1,16 @@
 @interface SBWallpaperControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (SBWallpaperControllerAccessibility)initWithWindowScene:(id)a3 orientation:(int64_t)a4 variant:(int64_t)a5 wallpaperConfigurationManager:(id)a6 cachingIdentifier:(id)a7;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (SBWallpaperControllerAccessibility)initWithWindowScene:(id)scene orientation:(int64_t)orientation variant:(int64_t)variant wallpaperConfigurationManager:(id)manager cachingIdentifier:(id)identifier;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation SBWallpaperControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBWallpaperController" hasInstanceVariable:@"_wallpaperWindow" withType:"UIWindow"];
-  [v3 validateClass:@"SBWallpaperController" hasInstanceMethod:@"initWithWindowScene:orientation:variant:wallpaperConfigurationManager:cachingIdentifier:" withFullSignature:{"@", "q", "q", "@", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBWallpaperController" hasInstanceVariable:@"_wallpaperWindow" withType:"UIWindow"];
+  [validationsCopy validateClass:@"SBWallpaperController" hasInstanceMethod:@"initWithWindowScene:orientation:variant:wallpaperConfigurationManager:cachingIdentifier:" withFullSignature:{"@", "q", "q", "@", "@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -22,11 +22,11 @@
   [v3 setAccessibilityElementsHidden:1];
 }
 
-- (SBWallpaperControllerAccessibility)initWithWindowScene:(id)a3 orientation:(int64_t)a4 variant:(int64_t)a5 wallpaperConfigurationManager:(id)a6 cachingIdentifier:(id)a7
+- (SBWallpaperControllerAccessibility)initWithWindowScene:(id)scene orientation:(int64_t)orientation variant:(int64_t)variant wallpaperConfigurationManager:(id)manager cachingIdentifier:(id)identifier
 {
   v9.receiver = self;
   v9.super_class = SBWallpaperControllerAccessibility;
-  v7 = [(SBWallpaperControllerAccessibility *)&v9 initWithWindowScene:a3 orientation:a4 variant:a5 wallpaperConfigurationManager:a6 cachingIdentifier:a7];
+  v7 = [(SBWallpaperControllerAccessibility *)&v9 initWithWindowScene:scene orientation:orientation variant:variant wallpaperConfigurationManager:manager cachingIdentifier:identifier];
   [(SBWallpaperControllerAccessibility *)v7 _accessibilityLoadAccessibilityInformation];
 
   return v7;

@@ -1,49 +1,49 @@
 @interface SPScannedObject
 - (NSData)optional;
-- (SPScannedObject)initWithAdvertisementType:(int64_t)a3 poshNetwork:(unsigned __int8)a4 nearOwner:(BOOL)a5 vendorPayload:(id)a6 scanDate:(id)a7 address:(id)a8 advertisement:(id)a9 status:(unsigned __int8)a10 ek:(unsigned __int8)a11 hint:(id)a12 rssi:(int64_t)a13 indexInformation:(id)a14 acccessoryInformation:(id)a15;
-- (SPScannedObject)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SPScannedObject)initWithAdvertisementType:(int64_t)type poshNetwork:(unsigned __int8)network nearOwner:(BOOL)owner vendorPayload:(id)payload scanDate:(id)date address:(id)address advertisement:(id)advertisement status:(unsigned __int8)self0 ek:(unsigned __int8)self1 hint:(id)self2 rssi:(int64_t)self3 indexInformation:(id)self4 acccessoryInformation:(id)self5;
+- (SPScannedObject)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SPScannedObject
 
-- (SPScannedObject)initWithAdvertisementType:(int64_t)a3 poshNetwork:(unsigned __int8)a4 nearOwner:(BOOL)a5 vendorPayload:(id)a6 scanDate:(id)a7 address:(id)a8 advertisement:(id)a9 status:(unsigned __int8)a10 ek:(unsigned __int8)a11 hint:(id)a12 rssi:(int64_t)a13 indexInformation:(id)a14 acccessoryInformation:(id)a15
+- (SPScannedObject)initWithAdvertisementType:(int64_t)type poshNetwork:(unsigned __int8)network nearOwner:(BOOL)owner vendorPayload:(id)payload scanDate:(id)date address:(id)address advertisement:(id)advertisement status:(unsigned __int8)self0 ek:(unsigned __int8)self1 hint:(id)self2 rssi:(int64_t)self3 indexInformation:(id)self4 acccessoryInformation:(id)self5
 {
-  v19 = a6;
-  v20 = a7;
-  obj = a8;
-  v21 = a8;
-  v32 = a9;
-  v22 = a12;
-  v31 = a14;
-  v30 = a15;
+  payloadCopy = payload;
+  dateCopy = date;
+  obj = address;
+  addressCopy = address;
+  advertisementCopy = advertisement;
+  hintCopy = hint;
+  informationCopy = information;
+  acccessoryInformationCopy = acccessoryInformation;
   v33.receiver = self;
   v33.super_class = SPScannedObject;
   v23 = [(SPScannedObject *)&v33 init];
   v24 = v23;
   if (v23)
   {
-    v23->_advertisementType = a3;
-    v23->_poshNetwork = a4;
-    v23->_nearOwner = a5;
-    objc_storeStrong(&v23->_vendorPayload, a6);
-    objc_storeStrong(&v24->_scanDate, a7);
+    v23->_advertisementType = type;
+    v23->_poshNetwork = network;
+    v23->_nearOwner = owner;
+    objc_storeStrong(&v23->_vendorPayload, payload);
+    objc_storeStrong(&v24->_scanDate, date);
     objc_storeStrong(&v24->_address, obj);
-    objc_storeStrong(&v24->_advertisement, a9);
-    v24->_status = a10;
-    v24->_ek = a11;
-    objc_storeStrong(&v24->_hint, a12);
-    v24->_rssi = a13;
-    objc_storeStrong(&v24->_indexInformation, a14);
-    objc_storeStrong(&v24->_accessoryInformation, a15);
+    objc_storeStrong(&v24->_advertisement, advertisement);
+    v24->_status = status;
+    v24->_ek = ek;
+    objc_storeStrong(&v24->_hint, hint);
+    v24->_rssi = rssi;
+    objc_storeStrong(&v24->_indexInformation, information);
+    objc_storeStrong(&v24->_accessoryInformation, acccessoryInformation);
   }
 
   return v24;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v18 = [SPScannedObject alloc];
   poshNetwork = self->_poshNetwork;
@@ -56,66 +56,66 @@
   v11 = *&self->_status;
   v17 = *&self->_hint;
   indexInformation = self->_indexInformation;
-  v13 = [(SPScannedObject *)self accessoryInformation];
+  accessoryInformation = [(SPScannedObject *)self accessoryInformation];
   LOWORD(v16) = v11;
-  v14 = [SPScannedObject initWithAdvertisementType:v18 poshNetwork:"initWithAdvertisementType:poshNetwork:nearOwner:vendorPayload:scanDate:address:advertisement:status:ek:hint:rssi:indexInformation:acccessoryInformation:" nearOwner:advertisementType vendorPayload:poshNetwork scanDate:nearOwner address:vendorPayload advertisement:scanDate status:address ek:advertisement hint:v16 rssi:v17 indexInformation:indexInformation acccessoryInformation:v13];
+  v14 = [SPScannedObject initWithAdvertisementType:v18 poshNetwork:"initWithAdvertisementType:poshNetwork:nearOwner:vendorPayload:scanDate:address:advertisement:status:ek:hint:rssi:indexInformation:acccessoryInformation:" nearOwner:advertisementType vendorPayload:poshNetwork scanDate:nearOwner address:vendorPayload advertisement:scanDate status:address ek:advertisement hint:v16 rssi:v17 indexInformation:indexInformation acccessoryInformation:accessoryInformation];
 
   return v14;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   advertisementType_low = LODWORD(self->_advertisementType);
-  v5 = a3;
-  [v5 encodeInt:advertisementType_low forKey:@"advertisementType"];
-  [v5 encodeInt:self->_poshNetwork forKey:@"poshNetwork"];
-  [v5 encodeBool:self->_nearOwner forKey:@"nearOwner"];
-  [v5 encodeObject:self->_vendorPayload forKey:@"vendorPayload"];
-  [v5 encodeObject:self->_scanDate forKey:@"scanDate"];
-  [v5 encodeObject:self->_address forKey:@"address"];
-  [v5 encodeObject:self->_advertisement forKey:@"advertisement"];
-  [v5 encodeInt:self->_status forKey:@"status"];
-  [v5 encodeInt:self->_ek forKey:@"ek"];
-  [v5 encodeObject:self->_hint forKey:@"hint"];
-  [v5 encodeInteger:self->_rssi forKey:@"rssi"];
-  [v5 encodeObject:self->_indexInformation forKey:@"indexInformation"];
-  [v5 encodeObject:self->_accessoryInformation forKey:@"accessoryInformation"];
+  coderCopy = coder;
+  [coderCopy encodeInt:advertisementType_low forKey:@"advertisementType"];
+  [coderCopy encodeInt:self->_poshNetwork forKey:@"poshNetwork"];
+  [coderCopy encodeBool:self->_nearOwner forKey:@"nearOwner"];
+  [coderCopy encodeObject:self->_vendorPayload forKey:@"vendorPayload"];
+  [coderCopy encodeObject:self->_scanDate forKey:@"scanDate"];
+  [coderCopy encodeObject:self->_address forKey:@"address"];
+  [coderCopy encodeObject:self->_advertisement forKey:@"advertisement"];
+  [coderCopy encodeInt:self->_status forKey:@"status"];
+  [coderCopy encodeInt:self->_ek forKey:@"ek"];
+  [coderCopy encodeObject:self->_hint forKey:@"hint"];
+  [coderCopy encodeInteger:self->_rssi forKey:@"rssi"];
+  [coderCopy encodeObject:self->_indexInformation forKey:@"indexInformation"];
+  [coderCopy encodeObject:self->_accessoryInformation forKey:@"accessoryInformation"];
 }
 
-- (SPScannedObject)initWithCoder:(id)a3
+- (SPScannedObject)initWithCoder:(id)coder
 {
-  v4 = a3;
-  self->_advertisementType = [v4 decodeIntForKey:@"advertisementType"];
-  self->_poshNetwork = [v4 decodeIntForKey:@"poshNetwork"];
-  self->_nearOwner = [v4 decodeBoolForKey:@"nearOwner"];
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"vendorPayload"];
+  coderCopy = coder;
+  self->_advertisementType = [coderCopy decodeIntForKey:@"advertisementType"];
+  self->_poshNetwork = [coderCopy decodeIntForKey:@"poshNetwork"];
+  self->_nearOwner = [coderCopy decodeBoolForKey:@"nearOwner"];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"vendorPayload"];
   vendorPayload = self->_vendorPayload;
   self->_vendorPayload = v5;
 
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"scanDate"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"scanDate"];
   scanDate = self->_scanDate;
   self->_scanDate = v7;
 
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"address"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"address"];
   address = self->_address;
   self->_address = v9;
 
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"advertisement"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"advertisement"];
   advertisement = self->_advertisement;
   self->_advertisement = v11;
 
-  self->_status = [v4 decodeIntForKey:@"status"];
-  v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"hint"];
+  self->_status = [coderCopy decodeIntForKey:@"status"];
+  v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"hint"];
   hint = self->_hint;
   self->_hint = v13;
 
-  self->_ek = [v4 decodeIntForKey:@"ek"];
-  self->_rssi = [v4 decodeIntegerForKey:@"rssi"];
-  v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"indexInformation"];
+  self->_ek = [coderCopy decodeIntForKey:@"ek"];
+  self->_rssi = [coderCopy decodeIntegerForKey:@"rssi"];
+  v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"indexInformation"];
   indexInformation = self->_indexInformation;
   self->_indexInformation = v15;
 
-  v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"accessoryInformation"];
+  v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accessoryInformation"];
 
   accessoryInformation = self->_accessoryInformation;
   self->_accessoryInformation = v17;
@@ -126,15 +126,15 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(SPScannedObject *)self scanDate];
-  v5 = [(SPScannedObject *)self address];
-  v6 = [v5 fm_hexString];
-  v7 = [(SPScannedObject *)self advertisement];
-  v8 = [v7 fm_hexString];
-  v9 = [(SPScannedObject *)self status];
+  scanDate = [(SPScannedObject *)self scanDate];
+  address = [(SPScannedObject *)self address];
+  fm_hexString = [address fm_hexString];
+  advertisement = [(SPScannedObject *)self advertisement];
+  fm_hexString2 = [advertisement fm_hexString];
+  status = [(SPScannedObject *)self status];
   v10 = [(SPScannedObject *)self ek];
-  v11 = [(SPScannedObject *)self hint];
-  v12 = [v3 stringWithFormat:@"<scanDate: %@, address: %@, adv: %@, status: %x, ek: %x hint: %@, rssi: %ld>"], v4, v6, v8, v9, v10, v11, -[SPScannedObject rssi](self, "rssi"));
+  hint = [(SPScannedObject *)self hint];
+  v12 = [v3 stringWithFormat:@"<scanDate: %@, address: %@, adv: %@, status: %x, ek: %x hint: %@, rssi: %ld>"], scanDate, fm_hexString, fm_hexString2, status, v10, hint, -[SPScannedObject rssi](self, "rssi"));
 
   return v12;
 }
@@ -143,14 +143,14 @@
 {
   v3 = objc_alloc_init(MEMORY[0x277CBEB28]);
   [v3 appendBytes:&self->_ek length:1];
-  v4 = [(SPScannedObject *)self hint];
+  hint = [(SPScannedObject *)self hint];
 
-  if (v4)
+  if (hint)
   {
-    v5 = [(SPScannedObject *)self hint];
-    v6 = [v5 unsignedCharValue];
+    hint2 = [(SPScannedObject *)self hint];
+    unsignedCharValue = [hint2 unsignedCharValue];
 
-    v8 = v6;
+    v8 = unsignedCharValue;
     [v3 appendBytes:&v8 length:1];
   }
 

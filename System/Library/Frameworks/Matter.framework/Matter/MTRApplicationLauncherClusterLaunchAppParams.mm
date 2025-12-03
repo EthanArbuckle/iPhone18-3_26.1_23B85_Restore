@@ -1,8 +1,8 @@
 @interface MTRApplicationLauncherClusterLaunchAppParams
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3;
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader;
 - (MTRApplicationLauncherClusterLaunchAppParams)init;
-- (id)_encodeAsDataValue:(id *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_encodeAsDataValue:(id *)value;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -32,20 +32,20 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRApplicationLauncherClusterLaunchAppParams);
-  v5 = [(MTRApplicationLauncherClusterLaunchAppParams *)self application];
-  [(MTRApplicationLauncherClusterLaunchAppParams *)v4 setApplication:v5];
+  application = [(MTRApplicationLauncherClusterLaunchAppParams *)self application];
+  [(MTRApplicationLauncherClusterLaunchAppParams *)v4 setApplication:application];
 
-  v6 = [(MTRApplicationLauncherClusterLaunchAppParams *)self data];
-  [(MTRApplicationLauncherClusterLaunchAppParams *)v4 setData:v6];
+  data = [(MTRApplicationLauncherClusterLaunchAppParams *)self data];
+  [(MTRApplicationLauncherClusterLaunchAppParams *)v4 setData:data];
 
-  v7 = [(MTRApplicationLauncherClusterLaunchAppParams *)self timedInvokeTimeoutMs];
-  [(MTRApplicationLauncherClusterLaunchAppParams *)v4 setTimedInvokeTimeoutMs:v7];
+  timedInvokeTimeoutMs = [(MTRApplicationLauncherClusterLaunchAppParams *)self timedInvokeTimeoutMs];
+  [(MTRApplicationLauncherClusterLaunchAppParams *)v4 setTimedInvokeTimeoutMs:timedInvokeTimeoutMs];
 
-  v8 = [(MTRApplicationLauncherClusterLaunchAppParams *)self serverSideProcessingTimeout];
-  [(MTRApplicationLauncherClusterLaunchAppParams *)v4 setServerSideProcessingTimeout:v8];
+  serverSideProcessingTimeout = [(MTRApplicationLauncherClusterLaunchAppParams *)self serverSideProcessingTimeout];
+  [(MTRApplicationLauncherClusterLaunchAppParams *)v4 setServerSideProcessingTimeout:serverSideProcessingTimeout];
 
   return v4;
 }
@@ -62,39 +62,39 @@
   return v8;
 }
 
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader
 {
   v28[0] = 0;
   v31 = 0;
   v27[0] = 0;
   v27[1] = 0;
   v26 = v27;
-  v5 = [(MTRApplicationLauncherClusterLaunchAppParams *)self application];
+  application = [(MTRApplicationLauncherClusterLaunchAppParams *)self application];
 
-  if (v5)
+  if (application)
   {
     v28[0] = 1;
     v30 = 0uLL;
     v29 = 0;
-    v6 = [(MTRApplicationLauncherClusterLaunchAppParams *)self application];
-    v7 = [v6 catalogVendorID];
-    LOWORD(v29) = [v7 unsignedShortValue];
+    application2 = [(MTRApplicationLauncherClusterLaunchAppParams *)self application];
+    catalogVendorID = [application2 catalogVendorID];
+    LOWORD(v29) = [catalogVendorID unsignedShortValue];
 
-    v8 = [(MTRApplicationLauncherClusterLaunchAppParams *)self application];
-    v9 = [v8 applicationID];
-    sub_238DB9BD8(v20, [v9 UTF8String], objc_msgSend(v9, "lengthOfBytesUsingEncoding:", 4));
+    application3 = [(MTRApplicationLauncherClusterLaunchAppParams *)self application];
+    applicationID = [application3 applicationID];
+    sub_238DB9BD8(v20, [applicationID UTF8String], objc_msgSend(applicationID, "lengthOfBytesUsingEncoding:", 4));
 
     v30 = v20[0];
   }
 
-  v10 = [(MTRApplicationLauncherClusterLaunchAppParams *)self data];
+  data = [(MTRApplicationLauncherClusterLaunchAppParams *)self data];
 
-  if (v10)
+  if (data)
   {
     v31 = 1;
     v32 = 0uLL;
-    v11 = [(MTRApplicationLauncherClusterLaunchAppParams *)self data];
-    sub_238DB6950(v20, [v11 bytes], objc_msgSend(v11, "length"));
+    data2 = [(MTRApplicationLauncherClusterLaunchAppParams *)self data];
+    sub_238DB6950(v20, [data2 bytes], objc_msgSend(data2, "length"));
 
     v32 = v20[0];
   }
@@ -118,8 +118,8 @@
 
     else
     {
-      sub_238DD2F90(a3, &v25);
-      v12 = sub_2393C7114(a3, 21, 256);
+      sub_238DD2F90(reader, &v25);
+      v12 = sub_2393C7114(reader, 21, 256);
       v15 = v19;
       v14 = v12;
     }
@@ -147,19 +147,19 @@
   return result;
 }
 
-- (id)_encodeAsDataValue:(id *)a3
+- (id)_encodeAsDataValue:(id *)value
 {
   v5 = sub_2393C5AAC(v12);
   v13 = 0;
   v7 = [(MTRApplicationLauncherClusterLaunchAppParams *)self _encodeToTLVReader:v12, v5];
   if (v7)
   {
-    if (a3)
+    if (value)
     {
       v8 = sub_23921C1E4(MTRError, v7, v6);
       v9 = 0;
 LABEL_7:
-      *a3 = v8;
+      *value = v8;
       goto LABEL_9;
     }
 
@@ -170,7 +170,7 @@ LABEL_7:
   {
     v10 = sub_238EE60DC(v12, 0);
     v9 = v10;
-    if (a3 && !v10)
+    if (value && !v10)
     {
       v8 = sub_23921C1E4(MTRError, 0x7B8100000003, "/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/zap-generated/MTRCommandPayloadsObjc.mm");
       goto LABEL_7;

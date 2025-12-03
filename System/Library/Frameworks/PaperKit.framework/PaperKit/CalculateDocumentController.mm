@@ -6,7 +6,7 @@
 
 - (void)sendExpressionsChanged
 {
-  v2 = self;
+  selfCopy = self;
   CalculateDocumentController.sendExpressionsChanged()();
 }
 

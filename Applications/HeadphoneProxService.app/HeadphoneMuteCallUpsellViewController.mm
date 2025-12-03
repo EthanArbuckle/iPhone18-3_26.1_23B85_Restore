@@ -1,5 +1,5 @@
 @interface HeadphoneMuteCallUpsellViewController
-- (_TtC20HeadphoneProxService37HeadphoneMuteCallUpsellViewController)initWithContentView:(id)a3;
+- (_TtC20HeadphoneProxService37HeadphoneMuteCallUpsellViewController)initWithContentView:(id)view;
 - (void)viewDidLoad;
 @end
 
@@ -7,11 +7,11 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_10004FA6C();
 }
 
-- (_TtC20HeadphoneProxService37HeadphoneMuteCallUpsellViewController)initWithContentView:(id)a3
+- (_TtC20HeadphoneProxService37HeadphoneMuteCallUpsellViewController)initWithContentView:(id)view
 {
   ObjectType = swift_getObjectType();
   *&self->PRXCardContentViewController_opaque[OBJC_IVAR____TtC20HeadphoneProxService37HeadphoneMuteCallUpsellViewController_tintColor] = 0;
@@ -20,7 +20,7 @@
   self->PRXCardContentViewController_opaque[OBJC_IVAR____TtC20HeadphoneProxService37HeadphoneMuteCallUpsellViewController_type] = 7;
   v7.receiver = self;
   v7.super_class = ObjectType;
-  return [(HeadphoneMuteCallUpsellViewController *)&v7 initWithContentView:a3];
+  return [(HeadphoneMuteCallUpsellViewController *)&v7 initWithContentView:view];
 }
 
 @end

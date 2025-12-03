@@ -1,42 +1,42 @@
 @interface CCUISteppedSliderView
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4;
-- (CCUISteppedSliderView)initWithFrame:(CGRect)a3;
-- (float)_valueForTouchLocation:(CGPoint)a3;
-- (float)_valueFromStep:(unint64_t)a3;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer;
+- (CCUISteppedSliderView)initWithFrame:(CGRect)frame;
+- (float)_valueForTouchLocation:(CGPoint)location;
+- (float)_valueFromStep:(unint64_t)step;
 - (id)_additionalTopLevelBlockingGestureRecognizers;
-- (id)_createBackgroundViewForStep:(unint64_t)a3;
+- (id)_createBackgroundViewForStep:(unint64_t)step;
 - (id)_createSeparatorView;
-- (unint64_t)_stepFromValue:(float)a3 avoidCurrentStep:(BOOL)a4;
+- (unint64_t)_stepFromValue:(float)value avoidCurrentStep:(BOOL)step;
 - (void)_adjustStepIfNecessaryForFirstStepBehaviorChange;
-- (void)_createSeparatorViewsForNumberOfSteps:(unint64_t)a3;
-- (void)_createStepViewsForNumberOfSteps:(unint64_t)a3;
-- (void)_handleHoverGestureRecognizer:(id)a3;
-- (void)_handleValueTapGestureRecognizer:(id)a3;
+- (void)_createSeparatorViewsForNumberOfSteps:(unint64_t)steps;
+- (void)_createStepViewsForNumberOfSteps:(unint64_t)steps;
+- (void)_handleHoverGestureRecognizer:(id)recognizer;
+- (void)_handleValueTapGestureRecognizer:(id)recognizer;
 - (void)_layoutStepViews;
-- (void)_updateStepFromValue:(float)a3 toggleCurrentStep:(BOOL)a4 andUpdateValue:(BOOL)a5;
+- (void)_updateStepFromValue:(float)value toggleCurrentStep:(BOOL)step andUpdateValue:(BOOL)updateValue;
 - (void)_updateStepViewVisibility;
-- (void)applyContinuousSliderCornerRadius:(double)a3;
-- (void)applyInoperativeAppearance:(BOOL)a3;
-- (void)contentModuleWillTransitionToExpandedContentMode:(BOOL)a3;
+- (void)applyContinuousSliderCornerRadius:(double)radius;
+- (void)applyInoperativeAppearance:(BOOL)appearance;
+- (void)contentModuleWillTransitionToExpandedContentMode:(BOOL)mode;
 - (void)didMoveToWindow;
 - (void)layoutElasticContentViews;
-- (void)setFirstStepIsDisabled:(BOOL)a3;
-- (void)setFirstStepIsOff:(BOOL)a3;
-- (void)setInoperative:(BOOL)a3;
-- (void)setNumberOfSteps:(unint64_t)a3;
-- (void)setStep:(unint64_t)a3;
-- (void)setValue:(float)a3 isAdjusted:(BOOL)a4 andUpdateStep:(BOOL)a5 animated:(BOOL)a6;
-- (void)setValueVisible:(BOOL)a3;
+- (void)setFirstStepIsDisabled:(BOOL)disabled;
+- (void)setFirstStepIsOff:(BOOL)off;
+- (void)setInoperative:(BOOL)inoperative;
+- (void)setNumberOfSteps:(unint64_t)steps;
+- (void)setStep:(unint64_t)step;
+- (void)setValue:(float)value isAdjusted:(BOOL)adjusted andUpdateStep:(BOOL)step animated:(BOOL)animated;
+- (void)setValueVisible:(BOOL)visible;
 @end
 
 @implementation CCUISteppedSliderView
 
-- (CCUISteppedSliderView)initWithFrame:(CGRect)a3
+- (CCUISteppedSliderView)initWithFrame:(CGRect)frame
 {
   v19.receiver = self;
   v19.super_class = CCUISteppedSliderView;
-  v3 = [(CCUIBaseSliderView *)&v19 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CCUIBaseSliderView *)&v19 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -52,8 +52,8 @@
 
     [(UIView *)v4->_stepViewsContainer setUserInteractionEnabled:0];
     [(UIView *)v4->_stepViewsContainer setClipsToBounds:1];
-    v11 = [(CCUIBaseSliderView *)v4 glyphContainerView];
-    [v11 addSubview:v4->_stepViewsContainer];
+    glyphContainerView = [(CCUIBaseSliderView *)v4 glyphContainerView];
+    [glyphContainerView addSubview:v4->_stepViewsContainer];
 
     v12 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:v4 action:sel__handleValueTapGestureRecognizer_];
     tapGestureRecognizer = v4->_tapGestureRecognizer;
@@ -64,10 +64,10 @@
     [(UITapGestureRecognizer *)v4->_tapGestureRecognizer setDelaysTouchesEnded:0];
     [(CCUISteppedSliderView *)v4 addGestureRecognizer:v4->_tapGestureRecognizer];
     [(CCUIBaseSliderView *)v4 setShouldProvideBuiltInFeedback:0];
-    v14 = [MEMORY[0x1E69DC938] currentDevice];
-    v15 = [v14 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (v15 == 1)
+    if (userInterfaceIdiom == 1)
     {
       v16 = [objc_alloc(MEMORY[0x1E69DCAA0]) initWithTarget:v4 action:sel__handleHoverGestureRecognizer_];
       hoverGestureRecognizer = v4->_hoverGestureRecognizer;
@@ -80,39 +80,39 @@
   return v4;
 }
 
-- (void)setValue:(float)a3 isAdjusted:(BOOL)a4 andUpdateStep:(BOOL)a5 animated:(BOOL)a6
+- (void)setValue:(float)value isAdjusted:(BOOL)adjusted andUpdateStep:(BOOL)step animated:(BOOL)animated
 {
-  v6 = a6;
-  v7 = a5;
-  v8 = a4;
+  animatedCopy = animated;
+  stepCopy = step;
+  adjustedCopy = adjusted;
   [(CCUIBaseSliderView *)self value];
-  if (*&v11 != a3)
+  if (*&v11 != value)
   {
-    v12 = -1.0;
-    if (v8)
+    valueCopy = -1.0;
+    if (adjustedCopy)
     {
-      v12 = a3;
+      valueCopy = value;
     }
 
-    self->_valueAdjustedForSteppedSlider = v12;
-    if (v7)
+    self->_valueAdjustedForSteppedSlider = valueCopy;
+    if (stepCopy)
     {
-      *&v11 = a3;
+      *&v11 = value;
       self->_step = [(CCUISteppedSliderView *)self _stepFromValue:v11];
     }
 
     v13.receiver = self;
     v13.super_class = CCUISteppedSliderView;
-    *&v11 = a3;
-    [(CCUIBaseSliderView *)&v13 setValue:v6 animated:v11];
+    *&v11 = value;
+    [(CCUIBaseSliderView *)&v13 setValue:animatedCopy animated:v11];
   }
 }
 
-- (void)setStep:(unint64_t)a3
+- (void)setStep:(unint64_t)step
 {
-  if (self->_step != a3 && self->_numberOfSteps >= a3 || self->_valueAdjustedForSteppedSlider != -1.0)
+  if (self->_step != step && self->_numberOfSteps >= step || self->_valueAdjustedForSteppedSlider != -1.0)
   {
-    self->_step = a3;
+    self->_step = step;
     [(CCUISteppedSliderView *)self _valueFromStep:?];
     [(CCUISteppedSliderView *)self setValue:0 isAdjusted:0 andUpdateStep:0 animated:?];
 
@@ -120,27 +120,27 @@
   }
 }
 
-- (void)setNumberOfSteps:(unint64_t)a3
+- (void)setNumberOfSteps:(unint64_t)steps
 {
-  if (a3 <= 1)
+  if (steps <= 1)
   {
-    v3 = 1;
+    stepsCopy = 1;
   }
 
   else
   {
-    v3 = a3;
+    stepsCopy = steps;
   }
 
-  if (self->_numberOfSteps != v3)
+  if (self->_numberOfSteps != stepsCopy)
   {
-    self->_numberOfSteps = v3;
-    [(CCUISteppedSliderView *)self _createStepViewsForNumberOfSteps:v3];
-    [(CCUISteppedSliderView *)self _createSeparatorViewsForNumberOfSteps:v3];
+    self->_numberOfSteps = stepsCopy;
+    [(CCUISteppedSliderView *)self _createStepViewsForNumberOfSteps:stepsCopy];
+    [(CCUISteppedSliderView *)self _createSeparatorViewsForNumberOfSteps:stepsCopy];
     if (!self->_selectionFeedbackGenerator)
     {
-      v5 = [MEMORY[0x1E69DD6E8] lightConfiguration];
-      v8 = [v5 tweakedConfigurationForClass:objc_opt_class() usage:@"sliderDetent"];
+      lightConfiguration = [MEMORY[0x1E69DD6E8] lightConfiguration];
+      v8 = [lightConfiguration tweakedConfigurationForClass:objc_opt_class() usage:@"sliderDetent"];
 
       v6 = [objc_alloc(MEMORY[0x1E69DCF40]) initWithConfiguration:v8 view:self];
       selectionFeedbackGenerator = self->_selectionFeedbackGenerator;
@@ -149,45 +149,45 @@
   }
 }
 
-- (void)setFirstStepIsDisabled:(BOOL)a3
+- (void)setFirstStepIsDisabled:(BOOL)disabled
 {
-  if (self->_firstStepIsDisabled != a3)
+  if (self->_firstStepIsDisabled != disabled)
   {
-    self->_firstStepIsDisabled = a3;
+    self->_firstStepIsDisabled = disabled;
     [(CCUISteppedSliderView *)self _createStepViewsForNumberOfSteps:self->_numberOfSteps];
 
     [(CCUISteppedSliderView *)self _adjustStepIfNecessaryForFirstStepBehaviorChange];
   }
 }
 
-- (void)setFirstStepIsOff:(BOOL)a3
+- (void)setFirstStepIsOff:(BOOL)off
 {
-  if (self->_firstStepIsOff != a3)
+  if (self->_firstStepIsOff != off)
   {
-    self->_firstStepIsOff = a3;
+    self->_firstStepIsOff = off;
     [(CCUISteppedSliderView *)self _createStepViewsForNumberOfSteps:self->_numberOfSteps];
 
     [(CCUISteppedSliderView *)self _adjustStepIfNecessaryForFirstStepBehaviorChange];
   }
 }
 
-- (void)setInoperative:(BOOL)a3
+- (void)setInoperative:(BOOL)inoperative
 {
-  v3 = a3;
+  inoperativeCopy = inoperative;
   v5.receiver = self;
   v5.super_class = CCUISteppedSliderView;
   [(CCUIBaseSliderView *)&v5 setInoperative:?];
-  [(UITapGestureRecognizer *)self->_tapGestureRecognizer setEnabled:!v3];
+  [(UITapGestureRecognizer *)self->_tapGestureRecognizer setEnabled:!inoperativeCopy];
 }
 
-- (void)setValueVisible:(BOOL)a3
+- (void)setValueVisible:(BOOL)visible
 {
-  v3 = a3;
+  visibleCopy = visible;
   v6.receiver = self;
   v6.super_class = CCUISteppedSliderView;
   [(CCUIBaseSliderView *)&v6 setValueVisible:?];
   v5 = 0.0;
-  if (v3)
+  if (visibleCopy)
   {
     v5 = 1.0;
   }
@@ -195,20 +195,20 @@
   [(UIView *)self->_stepViewsContainer setAlpha:v5];
 }
 
-- (void)applyInoperativeAppearance:(BOOL)a3
+- (void)applyInoperativeAppearance:(BOOL)appearance
 {
   v4.receiver = self;
   v4.super_class = CCUISteppedSliderView;
-  [(CCUIBaseSliderView *)&v4 applyInoperativeAppearance:a3];
+  [(CCUIBaseSliderView *)&v4 applyInoperativeAppearance:appearance];
   [(CCUISteppedSliderView *)self _updateStepViewVisibility];
 }
 
-- (void)applyContinuousSliderCornerRadius:(double)a3
+- (void)applyContinuousSliderCornerRadius:(double)radius
 {
   v5.receiver = self;
   v5.super_class = CCUISteppedSliderView;
   [(CCUIBaseSliderView *)&v5 applyContinuousSliderCornerRadius:?];
-  [(UIView *)self->_stepViewsContainer _setContinuousCornerRadius:a3];
+  [(UIView *)self->_stepViewsContainer _setContinuousCornerRadius:radius];
 }
 
 - (void)layoutElasticContentViews
@@ -217,8 +217,8 @@
   v5.super_class = CCUISteppedSliderView;
   [(CCUIBaseSliderView *)&v5 layoutElasticContentViews];
   stepViewsContainer = self->_stepViewsContainer;
-  v4 = [(CCUIBaseSliderView *)self elasticContentView];
-  [v4 bounds];
+  elasticContentView = [(CCUIBaseSliderView *)self elasticContentView];
+  [elasticContentView bounds];
   [(UIView *)stepViewsContainer setFrame:?];
 
   [(CCUIBaseSliderView *)self value];
@@ -229,10 +229,10 @@
 
 - (void)_layoutStepViews
 {
-  v3 = [(CCUIBaseSliderView *)self shouldIntegralizeContentLayout];
-  v4 = [(CCUIBaseSliderView *)self shouldIntegralizeValueLayout];
-  v5 = [(CCUISteppedSliderView *)self traitCollection];
-  [v5 displayScale];
+  shouldIntegralizeContentLayout = [(CCUIBaseSliderView *)self shouldIntegralizeContentLayout];
+  shouldIntegralizeValueLayout = [(CCUIBaseSliderView *)self shouldIntegralizeValueLayout];
+  traitCollection = [(CCUISteppedSliderView *)self traitCollection];
+  [traitCollection displayScale];
   v46 = v6;
 
   [(UIView *)self->_stepViewsContainer bounds];
@@ -258,7 +258,7 @@
       v15 = self->_numberOfSteps;
       if (v12 + 1 != v15)
       {
-        if (v3)
+        if (shouldIntegralizeContentLayout)
         {
           UIRectIntegralWithScale();
           v17 = v16;
@@ -304,7 +304,7 @@
       }
 
       v25 = 0.0;
-      if (v3)
+      if (shouldIntegralizeContentLayout)
       {
         v26 = v47;
         UIRectIntegralWithScale();
@@ -337,13 +337,13 @@
       v38 = v37;
       if (self->_valueAdjustedForSteppedSlider == v37 && v12 + 1 == step)
       {
-        v40 = [(CCUISteppedSliderView *)self numberOfSteps];
+        numberOfSteps = [(CCUISteppedSliderView *)self numberOfSteps];
         v53.origin.x = v25;
         v53.origin.y = v29;
         v53.size.width = v31;
         v53.size.height = v33;
-        v41 = CGRectGetHeight(v53) * (ceil((v38 * v40)) - (v38 * v40));
-        if (v4)
+        v41 = CGRectGetHeight(v53) * (ceil((v38 * numberOfSteps)) - (v38 * numberOfSteps));
+        if (shouldIntegralizeValueLayout)
         {
           UIRoundToScale();
         }
@@ -377,12 +377,12 @@
 
 - (void)_updateStepViewVisibility
 {
-  v3 = [(CCUIBaseSliderView *)self hasInoperativeAppearance];
+  hasInoperativeAppearance = [(CCUIBaseSliderView *)self hasInoperativeAppearance];
   numberOfSteps = self->_numberOfSteps;
   if (numberOfSteps)
   {
     v5 = 0;
-    if (v3)
+    if (hasInoperativeAppearance)
     {
       v6 = 0.6;
     }
@@ -419,7 +419,7 @@
         if (v5 < v11)
         {
           v15 = [(CCUISteppedSliderView *)self visualStylingProviderForCategory:2];
-          v16 = [(CCUISteppedSliderView *)self firstStepIsOff];
+          firstStepIsOff = [(CCUISteppedSliderView *)self firstStepIsOff];
           if (v5)
           {
             v17 = 0;
@@ -427,21 +427,21 @@
 
           else
           {
-            v17 = v16;
+            v17 = firstStepIsOff;
           }
 
           if (v17 || v5 == step - 1)
           {
-            v18 = [v15 _visualStylingForStyle:5];
+            _controlCenterKeyLineOnLightVisualStyling = [v15 _visualStylingForStyle:5];
           }
 
           else
           {
-            v18 = [v15 _controlCenterKeyLineOnLightVisualStyling];
+            _controlCenterKeyLineOnLightVisualStyling = [v15 _controlCenterKeyLineOnLightVisualStyling];
           }
 
-          v23 = v18;
-          [v10 mt_replaceVisualStyling:v18];
+          v23 = _controlCenterKeyLineOnLightVisualStyling;
+          [v10 mt_replaceVisualStyling:_controlCenterKeyLineOnLightVisualStyling];
           [v9 setAlpha:v6];
 
           goto LABEL_28;
@@ -474,14 +474,14 @@ LABEL_28:
   [(CCUISteppedSliderView *)self setNeedsLayout];
 }
 
-- (void)contentModuleWillTransitionToExpandedContentMode:(BOOL)a3
+- (void)contentModuleWillTransitionToExpandedContentMode:(BOOL)mode
 {
-  v3 = a3;
+  modeCopy = mode;
   v6.receiver = self;
   v6.super_class = CCUISteppedSliderView;
   [(CCUIBaseSliderView *)&v6 contentModuleWillTransitionToExpandedContentMode:?];
   selectionFeedbackGenerator = self->_selectionFeedbackGenerator;
-  if (v3)
+  if (modeCopy)
   {
     [(UISelectionFeedbackGenerator *)selectionFeedbackGenerator userInteractionStarted];
   }
@@ -492,24 +492,24 @@ LABEL_28:
   }
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  v4 = a4;
+  gestureRecognizerCopy = gestureRecognizer;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   return (isKindOfClass & 1) == 0;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer
 {
-  v5 = a4;
-  v6 = [(CCUIBaseSliderView *)self _panGestureRecognizer];
+  gestureRecognizerCopy = gestureRecognizer;
+  _panGestureRecognizer = [(CCUIBaseSliderView *)self _panGestureRecognizer];
 
-  return v6 == v5;
+  return _panGestureRecognizer == gestureRecognizerCopy;
 }
 
-- (void)_createStepViewsForNumberOfSteps:(unint64_t)a3
+- (void)_createStepViewsForNumberOfSteps:(unint64_t)steps
 {
   v19 = *MEMORY[0x1E69E9840];
   v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:?];
@@ -543,7 +543,7 @@ LABEL_28:
     while (v8);
   }
 
-  if (a3)
+  if (steps)
   {
     v11 = 0;
     do
@@ -555,7 +555,7 @@ LABEL_28:
       ++v11;
     }
 
-    while (a3 != v11);
+    while (steps != v11);
   }
 
   stepBackgroundViews = self->_stepBackgroundViews;
@@ -564,15 +564,15 @@ LABEL_28:
   [(CCUISteppedSliderView *)self setNeedsLayout];
 }
 
-- (void)_createSeparatorViewsForNumberOfSteps:(unint64_t)a3
+- (void)_createSeparatorViewsForNumberOfSteps:(unint64_t)steps
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3 - 1;
-  for (i = [MEMORY[0x1E695DF70] arrayWithCapacity:a3 - 1];
+  v4 = steps - 1;
+  for (i = [MEMORY[0x1E695DF70] arrayWithCapacity:steps - 1];
   {
-    v6 = [(CCUISteppedSliderView *)self _createSeparatorView];
-    [(UIView *)self->_stepViewsContainer addSubview:v6];
-    [(NSArray *)i addObject:v6];
+    _createSeparatorView = [(CCUISteppedSliderView *)self _createSeparatorView];
+    [(UIView *)self->_stepViewsContainer addSubview:_createSeparatorView];
+    [(NSArray *)i addObject:_createSeparatorView];
   }
 
   v15 = 0u;
@@ -611,9 +611,9 @@ LABEL_28:
   [(CCUISteppedSliderView *)self setNeedsLayout];
 }
 
-- (id)_createBackgroundViewForStep:(unint64_t)a3
+- (id)_createBackgroundViewForStep:(unint64_t)step
 {
-  if (a3 || ![(CCUISteppedSliderView *)self firstStepIsOff])
+  if (step || ![(CCUISteppedSliderView *)self firstStepIsOff])
   {
     v3 = +[CCUIControlCenterMaterialView _lightFillView];
   }
@@ -648,24 +648,24 @@ LABEL_28:
   }
 }
 
-- (unint64_t)_stepFromValue:(float)a3 avoidCurrentStep:(BOOL)a4
+- (unint64_t)_stepFromValue:(float)value avoidCurrentStep:(BOOL)step
 {
-  v4 = a4;
+  stepCopy = step;
   if ([(CCUISteppedSliderView *)self firstStepIsDisabled])
   {
-    v7 = 1;
+    firstStepIsOff = 1;
   }
 
   else
   {
-    v7 = [(CCUISteppedSliderView *)self firstStepIsOff];
+    firstStepIsOff = [(CCUISteppedSliderView *)self firstStepIsOff];
   }
 
   numberOfSteps = self->_numberOfSteps;
-  v9 = vcvtps_u32_f32(numberOfSteps * a3);
-  if (v7 > v9)
+  v9 = vcvtps_u32_f32(numberOfSteps * value);
+  if (firstStepIsOff > v9)
   {
-    v9 = v7;
+    v9 = firstStepIsOff;
   }
 
   if (numberOfSteps >= v9)
@@ -678,11 +678,11 @@ LABEL_28:
     result = self->_numberOfSteps;
   }
 
-  if (v4 && result == self->_step)
+  if (stepCopy && result == self->_step)
   {
-    if (result - 1 <= v7)
+    if (result - 1 <= firstStepIsOff)
     {
-      return v7;
+      return firstStepIsOff;
     }
 
     else
@@ -694,12 +694,12 @@ LABEL_28:
   return result;
 }
 
-- (float)_valueFromStep:(unint64_t)a3
+- (float)_valueFromStep:(unint64_t)step
 {
   numberOfSteps = self->_numberOfSteps;
   if (numberOfSteps)
   {
-    return a3 / numberOfSteps;
+    return step / numberOfSteps;
   }
 
   else
@@ -708,20 +708,20 @@ LABEL_28:
   }
 }
 
-- (float)_valueForTouchLocation:(CGPoint)a3
+- (float)_valueForTouchLocation:(CGPoint)location
 {
-  y = a3.y;
+  y = location.y;
   [(CCUISteppedSliderView *)self bounds];
   Height = CGRectGetHeight(v6);
   return (Height - y) / Height;
 }
 
-- (void)_handleValueTapGestureRecognizer:(id)a3
+- (void)_handleValueTapGestureRecognizer:(id)recognizer
 {
-  v4 = a3;
-  if ([v4 state] == 3)
+  recognizerCopy = recognizer;
+  if ([recognizerCopy state] == 3)
   {
-    [v4 locationInView:self];
+    [recognizerCopy locationInView:self];
     [(CCUISteppedSliderView *)self _valueForTouchLocation:?];
     [(CCUISteppedSliderView *)self _updateStepFromValue:1 toggleCurrentStep:1 andUpdateValue:?];
     v7[0] = MEMORY[0x1E69E9820];
@@ -730,13 +730,13 @@ LABEL_28:
     v7[3] = &unk_1E83EA478;
     v7[4] = self;
     [MEMORY[0x1E69DD250] performWithoutAnimation:v7];
-    v5 = [(CCUISteppedSliderView *)self window];
+    window = [(CCUISteppedSliderView *)self window];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __58__CCUISteppedSliderView__handleValueTapGestureRecognizer___block_invoke_2;
     v6[3] = &unk_1E83EA478;
     v6[4] = self;
-    [CCUIContentModuleContext performWithoutAnimationWhileHiddenInWindow:v5 actions:v6];
+    [CCUIContentModuleContext performWithoutAnimationWhileHiddenInWindow:window actions:v6];
 
     [(CCUISteppedSliderView *)self sendActionsForControlEvents:4096];
     [(CCUISteppedSliderView *)self sendActionsForControlEvents:CCUIBaseSliderViewControlEventPresentationValueChanged];
@@ -753,13 +753,13 @@ uint64_t __58__CCUISteppedSliderView__handleValueTapGestureRecognizer___block_in
   return [MEMORY[0x1E69DD250] animateWithDuration:v2 animations:0.1];
 }
 
-- (void)_updateStepFromValue:(float)a3 toggleCurrentStep:(BOOL)a4 andUpdateValue:(BOOL)a5
+- (void)_updateStepFromValue:(float)value toggleCurrentStep:(BOOL)step andUpdateValue:(BOOL)updateValue
 {
-  v5 = a5;
+  updateValueCopy = updateValue;
   step = self->_step;
-  v8 = [(CCUISteppedSliderView *)self _stepFromValue:a4 avoidCurrentStep:?];
+  v8 = [(CCUISteppedSliderView *)self _stepFromValue:step avoidCurrentStep:?];
   self->_step = v8;
-  if (v5)
+  if (updateValueCopy)
   {
     [(CCUISteppedSliderView *)self _valueFromStep:v8];
     [(CCUISteppedSliderView *)self setValue:0 isAdjusted:0 andUpdateStep:0 animated:?];
@@ -774,13 +774,13 @@ uint64_t __58__CCUISteppedSliderView__handleValueTapGestureRecognizer___block_in
   }
 }
 
-- (void)_handleHoverGestureRecognizer:(id)a3
+- (void)_handleHoverGestureRecognizer:(id)recognizer
 {
   isHoverHighlighting = self->_isHoverHighlighting;
   hoverStep = self->_hoverStep;
-  v6 = a3;
-  v7 = [v6 state];
-  [v6 locationInView:self];
+  recognizerCopy = recognizer;
+  state = [recognizerCopy state];
+  [recognizerCopy locationInView:self];
   v9 = v8;
   v11 = v10;
 
@@ -793,7 +793,7 @@ uint64_t __58__CCUISteppedSliderView__handleValueTapGestureRecognizer___block_in
   v14[6] = v11;
   v14[4] = self;
   [(NSArray *)stepBackgroundViews enumerateObjectsUsingBlock:v14];
-  v13 = v7 != 3;
+  v13 = state != 3;
   self->_isHoverHighlighting = v13;
   if (isHoverHighlighting != v13 || hoverStep != self->_hoverStep)
   {

@@ -1,26 +1,26 @@
 @interface AWDDNSDomainStats
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsNetworkType:(id)a3;
-- (int)StringAsRecordType:(id)a3;
+- (int)StringAsNetworkType:(id)type;
+- (int)StringAsRecordType:(id)type;
 - (int)networkType;
 - (int)recordType;
 - (unint64_t)hash;
-- (unsigned)answeredQuerySendCountAtIndex:(unint64_t)a3;
-- (unsigned)dnsOverTCPStateAtIndex:(unint64_t)a3;
-- (unsigned)expiredAnswerStateAtIndex:(unint64_t)a3;
-- (unsigned)negAnsweredQuerySendCountAtIndex:(unint64_t)a3;
-- (unsigned)negResponseLatencyMsAtIndex:(unint64_t)a3;
-- (unsigned)responseLatencyMsAtIndex:(unint64_t)a3;
-- (unsigned)unansweredQueryDurationMsAtIndex:(unint64_t)a3;
-- (unsigned)unansweredQuerySendCountAtIndex:(unint64_t)a3;
-- (void)copyTo:(id)a3;
+- (unsigned)answeredQuerySendCountAtIndex:(unint64_t)index;
+- (unsigned)dnsOverTCPStateAtIndex:(unint64_t)index;
+- (unsigned)expiredAnswerStateAtIndex:(unint64_t)index;
+- (unsigned)negAnsweredQuerySendCountAtIndex:(unint64_t)index;
+- (unsigned)negResponseLatencyMsAtIndex:(unint64_t)index;
+- (unsigned)responseLatencyMsAtIndex:(unint64_t)index;
+- (unsigned)unansweredQueryDurationMsAtIndex:(unint64_t)index;
+- (unsigned)unansweredQuerySendCountAtIndex:(unint64_t)index;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasRecordType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasRecordType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDDNSDomainStats
@@ -54,53 +54,53 @@
   }
 }
 
-- (int)StringAsNetworkType:(id)a3
+- (int)StringAsNetworkType:(id)type
 {
-  if ([a3 isEqualToString:@"NonCellular"])
+  if ([type isEqualToString:@"NonCellular"])
   {
     return 0;
   }
 
   else
   {
-    return [a3 isEqualToString:@"Cellular"];
+    return [type isEqualToString:@"Cellular"];
   }
 }
 
-- (unsigned)answeredQuerySendCountAtIndex:(unint64_t)a3
+- (unsigned)answeredQuerySendCountAtIndex:(unint64_t)index
 {
   p_answeredQuerySendCounts = &self->_answeredQuerySendCounts;
   count = self->_answeredQuerySendCounts.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", a3, count), 0), "raise"}];
+    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", index, count), 0), "raise"}];
   }
 
-  return p_answeredQuerySendCounts->list[a3];
+  return p_answeredQuerySendCounts->list[index];
 }
 
-- (unsigned)unansweredQuerySendCountAtIndex:(unint64_t)a3
+- (unsigned)unansweredQuerySendCountAtIndex:(unint64_t)index
 {
   p_unansweredQuerySendCounts = &self->_unansweredQuerySendCounts;
   count = self->_unansweredQuerySendCounts.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", a3, count), 0), "raise"}];
+    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", index, count), 0), "raise"}];
   }
 
-  return p_unansweredQuerySendCounts->list[a3];
+  return p_unansweredQuerySendCounts->list[index];
 }
 
-- (unsigned)responseLatencyMsAtIndex:(unint64_t)a3
+- (unsigned)responseLatencyMsAtIndex:(unint64_t)index
 {
   p_responseLatencyMs = &self->_responseLatencyMs;
   count = self->_responseLatencyMs.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", a3, count), 0), "raise"}];
+    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", index, count), 0), "raise"}];
   }
 
-  return p_responseLatencyMs->list[a3];
+  return p_responseLatencyMs->list[index];
 }
 
 - (int)recordType
@@ -116,9 +116,9 @@
   }
 }
 
-- (void)setHasRecordType:(BOOL)a3
+- (void)setHasRecordType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -131,24 +131,24 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (int)StringAsRecordType:(id)a3
+- (int)StringAsRecordType:(id)type
 {
-  if ([a3 isEqualToString:@"Unspecified"])
+  if ([type isEqualToString:@"Unspecified"])
   {
     return 0;
   }
 
-  if ([a3 isEqualToString:@"Any"])
+  if ([type isEqualToString:@"Any"])
   {
     return 1;
   }
 
-  if ([a3 isEqualToString:@"A"])
+  if ([type isEqualToString:@"A"])
   {
     return 2;
   }
 
-  if ([a3 isEqualToString:@"AAAA"])
+  if ([type isEqualToString:@"AAAA"])
   {
     return 3;
   }
@@ -156,64 +156,64 @@
   return 0;
 }
 
-- (unsigned)negAnsweredQuerySendCountAtIndex:(unint64_t)a3
+- (unsigned)negAnsweredQuerySendCountAtIndex:(unint64_t)index
 {
   p_negAnsweredQuerySendCounts = &self->_negAnsweredQuerySendCounts;
   count = self->_negAnsweredQuerySendCounts.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", a3, count), 0), "raise"}];
+    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", index, count), 0), "raise"}];
   }
 
-  return p_negAnsweredQuerySendCounts->list[a3];
+  return p_negAnsweredQuerySendCounts->list[index];
 }
 
-- (unsigned)negResponseLatencyMsAtIndex:(unint64_t)a3
+- (unsigned)negResponseLatencyMsAtIndex:(unint64_t)index
 {
   p_negResponseLatencyMs = &self->_negResponseLatencyMs;
   count = self->_negResponseLatencyMs.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", a3, count), 0), "raise"}];
+    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", index, count), 0), "raise"}];
   }
 
-  return p_negResponseLatencyMs->list[a3];
+  return p_negResponseLatencyMs->list[index];
 }
 
-- (unsigned)unansweredQueryDurationMsAtIndex:(unint64_t)a3
+- (unsigned)unansweredQueryDurationMsAtIndex:(unint64_t)index
 {
   p_unansweredQueryDurationMs = &self->_unansweredQueryDurationMs;
   count = self->_unansweredQueryDurationMs.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", a3, count), 0), "raise"}];
+    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", index, count), 0), "raise"}];
   }
 
-  return p_unansweredQueryDurationMs->list[a3];
+  return p_unansweredQueryDurationMs->list[index];
 }
 
-- (unsigned)expiredAnswerStateAtIndex:(unint64_t)a3
+- (unsigned)expiredAnswerStateAtIndex:(unint64_t)index
 {
   p_expiredAnswerStates = &self->_expiredAnswerStates;
   count = self->_expiredAnswerStates.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", a3, count), 0), "raise"}];
+    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", index, count), 0), "raise"}];
   }
 
-  return p_expiredAnswerStates->list[a3];
+  return p_expiredAnswerStates->list[index];
 }
 
-- (unsigned)dnsOverTCPStateAtIndex:(unint64_t)a3
+- (unsigned)dnsOverTCPStateAtIndex:(unint64_t)index
 {
   p_dnsOverTCPStates = &self->_dnsOverTCPStates;
   count = self->_dnsOverTCPStates.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", a3, count), 0), "raise"}];
+    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", index, count), 0), "raise"}];
   }
 
-  return p_dnsOverTCPStates->list[a3];
+  return p_dnsOverTCPStates->list[index];
 }
 
 - (id)description
@@ -225,7 +225,7 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   if (*&self->_has)
   {
     networkType = self->_networkType;
@@ -247,18 +247,18 @@
       v5 = @"NonCellular";
     }
 
-    [v3 setObject:v5 forKey:@"networkType"];
+    [dictionary setObject:v5 forKey:@"networkType"];
   }
 
   domain = self->_domain;
   if (domain)
   {
-    [v3 setObject:domain forKey:@"domain"];
+    [dictionary setObject:domain forKey:@"domain"];
   }
 
-  [v3 setObject:PBRepeatedUInt32NSArray() forKey:@"answeredQuerySendCount"];
-  [v3 setObject:PBRepeatedUInt32NSArray() forKey:@"unansweredQuerySendCount"];
-  [v3 setObject:PBRepeatedUInt32NSArray() forKey:@"responseLatencyMs"];
+  [dictionary setObject:PBRepeatedUInt32NSArray() forKey:@"answeredQuerySendCount"];
+  [dictionary setObject:PBRepeatedUInt32NSArray() forKey:@"unansweredQuerySendCount"];
+  [dictionary setObject:PBRepeatedUInt32NSArray() forKey:@"responseLatencyMs"];
   if ((*&self->_has & 2) != 0)
   {
     recordType = self->_recordType;
@@ -272,18 +272,18 @@
       v8 = off_29EE32A08[recordType];
     }
 
-    [v3 setObject:v8 forKey:@"recordType"];
+    [dictionary setObject:v8 forKey:@"recordType"];
   }
 
-  [v3 setObject:PBRepeatedUInt32NSArray() forKey:@"negAnsweredQuerySendCount"];
-  [v3 setObject:PBRepeatedUInt32NSArray() forKey:@"negResponseLatencyMs"];
-  [v3 setObject:PBRepeatedUInt32NSArray() forKey:@"unansweredQueryDurationMs"];
-  [v3 setObject:PBRepeatedUInt32NSArray() forKey:@"expiredAnswerState"];
-  [v3 setObject:PBRepeatedUInt32NSArray() forKey:@"dnsOverTCPState"];
-  return v3;
+  [dictionary setObject:PBRepeatedUInt32NSArray() forKey:@"negAnsweredQuerySendCount"];
+  [dictionary setObject:PBRepeatedUInt32NSArray() forKey:@"negResponseLatencyMs"];
+  [dictionary setObject:PBRepeatedUInt32NSArray() forKey:@"unansweredQueryDurationMs"];
+  [dictionary setObject:PBRepeatedUInt32NSArray() forKey:@"expiredAnswerState"];
+  [dictionary setObject:PBRepeatedUInt32NSArray() forKey:@"dnsOverTCPState"];
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (*&self->_has)
   {
@@ -456,141 +456,141 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if (*&self->_has)
   {
-    *(a3 + 52) = self->_networkType;
-    *(a3 + 216) |= 1u;
+    *(to + 52) = self->_networkType;
+    *(to + 216) |= 1u;
   }
 
   if (self->_domain)
   {
-    [a3 setDomain:?];
+    [to setDomain:?];
   }
 
   if ([(AWDDNSDomainStats *)self answeredQuerySendCountsCount])
   {
-    [a3 clearAnsweredQuerySendCounts];
-    v5 = [(AWDDNSDomainStats *)self answeredQuerySendCountsCount];
-    if (v5)
+    [to clearAnsweredQuerySendCounts];
+    answeredQuerySendCountsCount = [(AWDDNSDomainStats *)self answeredQuerySendCountsCount];
+    if (answeredQuerySendCountsCount)
     {
-      v6 = v5;
+      v6 = answeredQuerySendCountsCount;
       for (i = 0; i != v6; ++i)
       {
-        [a3 addAnsweredQuerySendCount:{-[AWDDNSDomainStats answeredQuerySendCountAtIndex:](self, "answeredQuerySendCountAtIndex:", i)}];
+        [to addAnsweredQuerySendCount:{-[AWDDNSDomainStats answeredQuerySendCountAtIndex:](self, "answeredQuerySendCountAtIndex:", i)}];
       }
     }
   }
 
   if ([(AWDDNSDomainStats *)self unansweredQuerySendCountsCount])
   {
-    [a3 clearUnansweredQuerySendCounts];
-    v8 = [(AWDDNSDomainStats *)self unansweredQuerySendCountsCount];
-    if (v8)
+    [to clearUnansweredQuerySendCounts];
+    unansweredQuerySendCountsCount = [(AWDDNSDomainStats *)self unansweredQuerySendCountsCount];
+    if (unansweredQuerySendCountsCount)
     {
-      v9 = v8;
+      v9 = unansweredQuerySendCountsCount;
       for (j = 0; j != v9; ++j)
       {
-        [a3 addUnansweredQuerySendCount:{-[AWDDNSDomainStats unansweredQuerySendCountAtIndex:](self, "unansweredQuerySendCountAtIndex:", j)}];
+        [to addUnansweredQuerySendCount:{-[AWDDNSDomainStats unansweredQuerySendCountAtIndex:](self, "unansweredQuerySendCountAtIndex:", j)}];
       }
     }
   }
 
   if ([(AWDDNSDomainStats *)self responseLatencyMsCount])
   {
-    [a3 clearResponseLatencyMs];
-    v11 = [(AWDDNSDomainStats *)self responseLatencyMsCount];
-    if (v11)
+    [to clearResponseLatencyMs];
+    responseLatencyMsCount = [(AWDDNSDomainStats *)self responseLatencyMsCount];
+    if (responseLatencyMsCount)
     {
-      v12 = v11;
+      v12 = responseLatencyMsCount;
       for (k = 0; k != v12; ++k)
       {
-        [a3 addResponseLatencyMs:{-[AWDDNSDomainStats responseLatencyMsAtIndex:](self, "responseLatencyMsAtIndex:", k)}];
+        [to addResponseLatencyMs:{-[AWDDNSDomainStats responseLatencyMsAtIndex:](self, "responseLatencyMsAtIndex:", k)}];
       }
     }
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    *(a3 + 53) = self->_recordType;
-    *(a3 + 216) |= 2u;
+    *(to + 53) = self->_recordType;
+    *(to + 216) |= 2u;
   }
 
   if ([(AWDDNSDomainStats *)self negAnsweredQuerySendCountsCount])
   {
-    [a3 clearNegAnsweredQuerySendCounts];
-    v14 = [(AWDDNSDomainStats *)self negAnsweredQuerySendCountsCount];
-    if (v14)
+    [to clearNegAnsweredQuerySendCounts];
+    negAnsweredQuerySendCountsCount = [(AWDDNSDomainStats *)self negAnsweredQuerySendCountsCount];
+    if (negAnsweredQuerySendCountsCount)
     {
-      v15 = v14;
+      v15 = negAnsweredQuerySendCountsCount;
       for (m = 0; m != v15; ++m)
       {
-        [a3 addNegAnsweredQuerySendCount:{-[AWDDNSDomainStats negAnsweredQuerySendCountAtIndex:](self, "negAnsweredQuerySendCountAtIndex:", m)}];
+        [to addNegAnsweredQuerySendCount:{-[AWDDNSDomainStats negAnsweredQuerySendCountAtIndex:](self, "negAnsweredQuerySendCountAtIndex:", m)}];
       }
     }
   }
 
   if ([(AWDDNSDomainStats *)self negResponseLatencyMsCount])
   {
-    [a3 clearNegResponseLatencyMs];
-    v17 = [(AWDDNSDomainStats *)self negResponseLatencyMsCount];
-    if (v17)
+    [to clearNegResponseLatencyMs];
+    negResponseLatencyMsCount = [(AWDDNSDomainStats *)self negResponseLatencyMsCount];
+    if (negResponseLatencyMsCount)
     {
-      v18 = v17;
+      v18 = negResponseLatencyMsCount;
       for (n = 0; n != v18; ++n)
       {
-        [a3 addNegResponseLatencyMs:{-[AWDDNSDomainStats negResponseLatencyMsAtIndex:](self, "negResponseLatencyMsAtIndex:", n)}];
+        [to addNegResponseLatencyMs:{-[AWDDNSDomainStats negResponseLatencyMsAtIndex:](self, "negResponseLatencyMsAtIndex:", n)}];
       }
     }
   }
 
   if ([(AWDDNSDomainStats *)self unansweredQueryDurationMsCount])
   {
-    [a3 clearUnansweredQueryDurationMs];
-    v20 = [(AWDDNSDomainStats *)self unansweredQueryDurationMsCount];
-    if (v20)
+    [to clearUnansweredQueryDurationMs];
+    unansweredQueryDurationMsCount = [(AWDDNSDomainStats *)self unansweredQueryDurationMsCount];
+    if (unansweredQueryDurationMsCount)
     {
-      v21 = v20;
+      v21 = unansweredQueryDurationMsCount;
       for (ii = 0; ii != v21; ++ii)
       {
-        [a3 addUnansweredQueryDurationMs:{-[AWDDNSDomainStats unansweredQueryDurationMsAtIndex:](self, "unansweredQueryDurationMsAtIndex:", ii)}];
+        [to addUnansweredQueryDurationMs:{-[AWDDNSDomainStats unansweredQueryDurationMsAtIndex:](self, "unansweredQueryDurationMsAtIndex:", ii)}];
       }
     }
   }
 
   if ([(AWDDNSDomainStats *)self expiredAnswerStatesCount])
   {
-    [a3 clearExpiredAnswerStates];
-    v23 = [(AWDDNSDomainStats *)self expiredAnswerStatesCount];
-    if (v23)
+    [to clearExpiredAnswerStates];
+    expiredAnswerStatesCount = [(AWDDNSDomainStats *)self expiredAnswerStatesCount];
+    if (expiredAnswerStatesCount)
     {
-      v24 = v23;
+      v24 = expiredAnswerStatesCount;
       for (jj = 0; jj != v24; ++jj)
       {
-        [a3 addExpiredAnswerState:{-[AWDDNSDomainStats expiredAnswerStateAtIndex:](self, "expiredAnswerStateAtIndex:", jj)}];
+        [to addExpiredAnswerState:{-[AWDDNSDomainStats expiredAnswerStateAtIndex:](self, "expiredAnswerStateAtIndex:", jj)}];
       }
     }
   }
 
   if ([(AWDDNSDomainStats *)self dnsOverTCPStatesCount])
   {
-    [a3 clearDnsOverTCPStates];
-    v26 = [(AWDDNSDomainStats *)self dnsOverTCPStatesCount];
-    if (v26)
+    [to clearDnsOverTCPStates];
+    dnsOverTCPStatesCount = [(AWDDNSDomainStats *)self dnsOverTCPStatesCount];
+    if (dnsOverTCPStatesCount)
     {
-      v27 = v26;
+      v27 = dnsOverTCPStatesCount;
       for (kk = 0; kk != v27; ++kk)
       {
-        [a3 addDnsOverTCPState:{-[AWDDNSDomainStats dnsOverTCPStateAtIndex:](self, "dnsOverTCPStateAtIndex:", kk)}];
+        [to addDnsOverTCPState:{-[AWDDNSDomainStats dnsOverTCPStateAtIndex:](self, "dnsOverTCPStateAtIndex:", kk)}];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -598,7 +598,7 @@
     *(v5 + 216) |= 1u;
   }
 
-  *(v6 + 200) = [(NSString *)self->_domain copyWithZone:a3];
+  *(v6 + 200) = [(NSString *)self->_domain copyWithZone:zone];
   PBRepeatedUInt32Copy();
   PBRepeatedUInt32Copy();
   PBRepeatedUInt32Copy();
@@ -616,43 +616,43 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (![a3 isMemberOfClass:objc_opt_class()])
+  if (![equal isMemberOfClass:objc_opt_class()])
   {
     return 0;
   }
 
-  v5 = *(a3 + 216);
+  v5 = *(equal + 216);
   if (*&self->_has)
   {
-    if ((*(a3 + 216) & 1) == 0 || self->_networkType != *(a3 + 52))
+    if ((*(equal + 216) & 1) == 0 || self->_networkType != *(equal + 52))
     {
       return 0;
     }
   }
 
-  else if (*(a3 + 216))
+  else if (*(equal + 216))
   {
     return 0;
   }
 
   domain = self->_domain;
-  if (domain | *(a3 + 25) && ![(NSString *)domain isEqual:?]|| !PBRepeatedUInt32IsEqual() || !PBRepeatedUInt32IsEqual() || !PBRepeatedUInt32IsEqual())
+  if (domain | *(equal + 25) && ![(NSString *)domain isEqual:?]|| !PBRepeatedUInt32IsEqual() || !PBRepeatedUInt32IsEqual() || !PBRepeatedUInt32IsEqual())
   {
     return 0;
   }
 
-  v7 = *(a3 + 216);
+  v7 = *(equal + 216);
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(a3 + 216) & 2) == 0 || self->_recordType != *(a3 + 53))
+    if ((*(equal + 216) & 2) == 0 || self->_recordType != *(equal + 53))
     {
       return 0;
     }
   }
 
-  else if ((*(a3 + 216) & 2) != 0)
+  else if ((*(equal + 216) & 2) != 0)
   {
     return 0;
   }
@@ -698,102 +698,102 @@
   return v10 ^ v12 ^ PBRepeatedUInt32Hash();
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if (*(a3 + 216))
+  if (*(from + 216))
   {
-    self->_networkType = *(a3 + 52);
+    self->_networkType = *(from + 52);
     *&self->_has |= 1u;
   }
 
-  if (*(a3 + 25))
+  if (*(from + 25))
   {
     [(AWDDNSDomainStats *)self setDomain:?];
   }
 
-  v5 = [a3 answeredQuerySendCountsCount];
-  if (v5)
+  answeredQuerySendCountsCount = [from answeredQuerySendCountsCount];
+  if (answeredQuerySendCountsCount)
   {
-    v6 = v5;
+    v6 = answeredQuerySendCountsCount;
     for (i = 0; i != v6; ++i)
     {
-      -[AWDDNSDomainStats addAnsweredQuerySendCount:](self, "addAnsweredQuerySendCount:", [a3 answeredQuerySendCountAtIndex:i]);
+      -[AWDDNSDomainStats addAnsweredQuerySendCount:](self, "addAnsweredQuerySendCount:", [from answeredQuerySendCountAtIndex:i]);
     }
   }
 
-  v8 = [a3 unansweredQuerySendCountsCount];
-  if (v8)
+  unansweredQuerySendCountsCount = [from unansweredQuerySendCountsCount];
+  if (unansweredQuerySendCountsCount)
   {
-    v9 = v8;
+    v9 = unansweredQuerySendCountsCount;
     for (j = 0; j != v9; ++j)
     {
-      -[AWDDNSDomainStats addUnansweredQuerySendCount:](self, "addUnansweredQuerySendCount:", [a3 unansweredQuerySendCountAtIndex:j]);
+      -[AWDDNSDomainStats addUnansweredQuerySendCount:](self, "addUnansweredQuerySendCount:", [from unansweredQuerySendCountAtIndex:j]);
     }
   }
 
-  v11 = [a3 responseLatencyMsCount];
-  if (v11)
+  responseLatencyMsCount = [from responseLatencyMsCount];
+  if (responseLatencyMsCount)
   {
-    v12 = v11;
+    v12 = responseLatencyMsCount;
     for (k = 0; k != v12; ++k)
     {
-      -[AWDDNSDomainStats addResponseLatencyMs:](self, "addResponseLatencyMs:", [a3 responseLatencyMsAtIndex:k]);
+      -[AWDDNSDomainStats addResponseLatencyMs:](self, "addResponseLatencyMs:", [from responseLatencyMsAtIndex:k]);
     }
   }
 
-  if ((*(a3 + 216) & 2) != 0)
+  if ((*(from + 216) & 2) != 0)
   {
-    self->_recordType = *(a3 + 53);
+    self->_recordType = *(from + 53);
     *&self->_has |= 2u;
   }
 
-  v14 = [a3 negAnsweredQuerySendCountsCount];
-  if (v14)
+  negAnsweredQuerySendCountsCount = [from negAnsweredQuerySendCountsCount];
+  if (negAnsweredQuerySendCountsCount)
   {
-    v15 = v14;
+    v15 = negAnsweredQuerySendCountsCount;
     for (m = 0; m != v15; ++m)
     {
-      -[AWDDNSDomainStats addNegAnsweredQuerySendCount:](self, "addNegAnsweredQuerySendCount:", [a3 negAnsweredQuerySendCountAtIndex:m]);
+      -[AWDDNSDomainStats addNegAnsweredQuerySendCount:](self, "addNegAnsweredQuerySendCount:", [from negAnsweredQuerySendCountAtIndex:m]);
     }
   }
 
-  v17 = [a3 negResponseLatencyMsCount];
-  if (v17)
+  negResponseLatencyMsCount = [from negResponseLatencyMsCount];
+  if (negResponseLatencyMsCount)
   {
-    v18 = v17;
+    v18 = negResponseLatencyMsCount;
     for (n = 0; n != v18; ++n)
     {
-      -[AWDDNSDomainStats addNegResponseLatencyMs:](self, "addNegResponseLatencyMs:", [a3 negResponseLatencyMsAtIndex:n]);
+      -[AWDDNSDomainStats addNegResponseLatencyMs:](self, "addNegResponseLatencyMs:", [from negResponseLatencyMsAtIndex:n]);
     }
   }
 
-  v20 = [a3 unansweredQueryDurationMsCount];
-  if (v20)
+  unansweredQueryDurationMsCount = [from unansweredQueryDurationMsCount];
+  if (unansweredQueryDurationMsCount)
   {
-    v21 = v20;
+    v21 = unansweredQueryDurationMsCount;
     for (ii = 0; ii != v21; ++ii)
     {
-      -[AWDDNSDomainStats addUnansweredQueryDurationMs:](self, "addUnansweredQueryDurationMs:", [a3 unansweredQueryDurationMsAtIndex:ii]);
+      -[AWDDNSDomainStats addUnansweredQueryDurationMs:](self, "addUnansweredQueryDurationMs:", [from unansweredQueryDurationMsAtIndex:ii]);
     }
   }
 
-  v23 = [a3 expiredAnswerStatesCount];
-  if (v23)
+  expiredAnswerStatesCount = [from expiredAnswerStatesCount];
+  if (expiredAnswerStatesCount)
   {
-    v24 = v23;
+    v24 = expiredAnswerStatesCount;
     for (jj = 0; jj != v24; ++jj)
     {
-      -[AWDDNSDomainStats addExpiredAnswerState:](self, "addExpiredAnswerState:", [a3 expiredAnswerStateAtIndex:jj]);
+      -[AWDDNSDomainStats addExpiredAnswerState:](self, "addExpiredAnswerState:", [from expiredAnswerStateAtIndex:jj]);
     }
   }
 
-  v26 = [a3 dnsOverTCPStatesCount];
-  if (v26)
+  dnsOverTCPStatesCount = [from dnsOverTCPStatesCount];
+  if (dnsOverTCPStatesCount)
   {
-    v27 = v26;
+    v27 = dnsOverTCPStatesCount;
     for (kk = 0; kk != v27; ++kk)
     {
-      -[AWDDNSDomainStats addDnsOverTCPState:](self, "addDnsOverTCPState:", [a3 dnsOverTCPStateAtIndex:kk]);
+      -[AWDDNSDomainStats addDnsOverTCPState:](self, "addDnsOverTCPState:", [from dnsOverTCPStateAtIndex:kk]);
     }
   }
 }

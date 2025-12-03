@@ -1,43 +1,43 @@
 @interface CESRPriorInfo
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToPriorInfo:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToPriorInfo:(id)info;
 - (CESRPriorInfo)init;
-- (CESRPriorInfo)initWithCoder:(id)a3;
-- (CESRPriorInfo)initWithOrdinality:(unsigned int)a3 score:(float)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CESRPriorInfo)initWithCoder:(id)coder;
+- (CESRPriorInfo)initWithOrdinality:(unsigned int)ordinality score:(float)score;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CESRPriorInfo
 
-- (CESRPriorInfo)initWithCoder:(id)a3
+- (CESRPriorInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = CESRPriorInfo;
   v5 = [(CESRPriorInfo *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"o"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"o"];
     v5->_ordinality = [v6 unsignedIntValue];
 
-    [v4 decodeFloatForKey:@"s"];
+    [coderCopy decodeFloatForKey:@"s"];
     v5->_score = v7;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
+  coderCopy = coder;
   v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_ordinality];
-  [v6 encodeObject:v4 forKey:@"o"];
+  [coderCopy encodeObject:v4 forKey:@"o"];
 
   *&v5 = self->_score;
-  [v6 encodeFloat:@"s" forKey:v5];
+  [coderCopy encodeFloat:@"s" forKey:v5];
 }
 
 - (unint64_t)hash
@@ -51,14 +51,14 @@
   return v7 ^ v4;
 }
 
-- (BOOL)isEqualToPriorInfo:(id)a3
+- (BOOL)isEqualToPriorInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   ordinality = self->_ordinality;
-  if (ordinality == [v4 ordinality])
+  if (ordinality == [infoCopy ordinality])
   {
     score = self->_score;
-    [v4 score];
+    [infoCopy score];
     v8 = score == v7;
   }
 
@@ -70,18 +70,18 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CESRPriorInfo *)self isEqualToPriorInfo:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CESRPriorInfo *)self isEqualToPriorInfo:v5];
   }
 
   return v6;
@@ -97,15 +97,15 @@
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_opt_class() allocWithZone:a3];
+  result = [objc_opt_class() allocWithZone:zone];
   *(result + 2) = self->_ordinality;
   *(result + 3) = LODWORD(self->_score);
   return result;
 }
 
-- (CESRPriorInfo)initWithOrdinality:(unsigned int)a3 score:(float)a4
+- (CESRPriorInfo)initWithOrdinality:(unsigned int)ordinality score:(float)score
 {
   v17 = *MEMORY[0x277D85DE8];
   v12.receiver = self;
@@ -117,10 +117,10 @@
     goto LABEL_5;
   }
 
-  v6->_score = a4;
-  if (a4 >= 0.0 && a4 <= 1.0)
+  v6->_score = score;
+  if (score >= 0.0 && score <= 1.0)
   {
-    v6->_ordinality = a3;
+    v6->_ordinality = ordinality;
 LABEL_5:
     v8 = v6;
     goto LABEL_9;
@@ -132,7 +132,7 @@ LABEL_5:
     *buf = 136315394;
     v14 = "[CESRPriorInfo initWithOrdinality:score:]";
     v15 = 2048;
-    v16 = a4;
+    scoreCopy = score;
     _os_log_error_impl(&dword_225EEB000, v9, OS_LOG_TYPE_ERROR, "%s Invalid score: %f", buf, 0x16u);
   }
 

@@ -1,56 +1,56 @@
 @interface IREventMO
-+ (id)IREventMOWithIREventDO:(id)a3 historyEventMO:(id)a4 inManagedObjectContext:(id)a5;
-+ (void)setPropertiesOfEventMO:(id)a3 withEventDO:(id)a4;
++ (id)IREventMOWithIREventDO:(id)o historyEventMO:(id)mO inManagedObjectContext:(id)context;
++ (void)setPropertiesOfEventMO:(id)o withEventDO:(id)dO;
 - (id)convert;
 @end
 
 @implementation IREventMO
 
-+ (id)IREventMOWithIREventDO:(id)a3 historyEventMO:(id)a4 inManagedObjectContext:(id)a5
++ (id)IREventMOWithIREventDO:(id)o historyEventMO:(id)mO inManagedObjectContext:(id)context
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[IREventMO alloc] initWithContext:v7];
+  contextCopy = context;
+  mOCopy = mO;
+  oCopy = o;
+  v10 = [[IREventMO alloc] initWithContext:contextCopy];
 
-  [(IREventMO *)v10 setHistoryEvent:v8];
-  [IREventMO setPropertiesOfEventMO:v10 withEventDO:v9];
+  [(IREventMO *)v10 setHistoryEvent:mOCopy];
+  [IREventMO setPropertiesOfEventMO:v10 withEventDO:oCopy];
 
   return v10;
 }
 
-+ (void)setPropertiesOfEventMO:(id)a3 withEventDO:(id)a4
++ (void)setPropertiesOfEventMO:(id)o withEventDO:(id)dO
 {
-  v5 = a4;
-  v10 = a3;
-  [v10 setEventType:{objc_msgSend(v5, "eventType")}];
-  [v10 setEventSubtype:{objc_msgSend(v5, "eventSubType")}];
-  v6 = [v5 name];
-  [v10 setName:v6];
+  dOCopy = dO;
+  oCopy = o;
+  [oCopy setEventType:{objc_msgSend(dOCopy, "eventType")}];
+  [oCopy setEventSubtype:{objc_msgSend(dOCopy, "eventSubType")}];
+  name = [dOCopy name];
+  [oCopy setName:name];
 
-  v7 = [v5 bundleID];
-  [v10 setBundleID:v7];
+  bundleID = [dOCopy bundleID];
+  [oCopy setBundleID:bundleID];
 
-  v8 = [v5 contextIdentifier];
-  [v10 setContextIdentifier:v8];
+  contextIdentifier = [dOCopy contextIdentifier];
+  [oCopy setContextIdentifier:contextIdentifier];
 
-  [v10 setIsOutsideApp:{objc_msgSend(v5, "isOutsideApp")}];
-  v9 = [v5 isEligibleApp];
+  [oCopy setIsOutsideApp:{objc_msgSend(dOCopy, "isOutsideApp")}];
+  isEligibleApp = [dOCopy isEligibleApp];
 
-  [v10 setIsEligibleApp:v9];
+  [oCopy setIsEligibleApp:isEligibleApp];
 }
 
 - (id)convert
 {
   v3 = [IREventDO alloc];
-  v4 = [(IREventMO *)self eventType];
-  v5 = [(IREventMO *)self eventSubtype];
-  v6 = [(IREventMO *)self name];
-  v7 = [(IREventMO *)self bundleID];
-  v8 = [(IREventMO *)self contextIdentifier];
-  v9 = [(IREventMO *)self isOutsideApp];
+  eventType = [(IREventMO *)self eventType];
+  eventSubtype = [(IREventMO *)self eventSubtype];
+  name = [(IREventMO *)self name];
+  bundleID = [(IREventMO *)self bundleID];
+  contextIdentifier = [(IREventMO *)self contextIdentifier];
+  isOutsideApp = [(IREventMO *)self isOutsideApp];
   LOBYTE(v12) = [(IREventMO *)self isEligibleApp];
-  v10 = [(IREventDO *)v3 initWithEventType:v4 eventSubType:v5 name:v6 bundleID:v7 contextIdentifier:v8 isOutsideApp:v9 isEligibleApp:v12];
+  v10 = [(IREventDO *)v3 initWithEventType:eventType eventSubType:eventSubtype name:name bundleID:bundleID contextIdentifier:contextIdentifier isOutsideApp:isOutsideApp isEligibleApp:v12];
 
   return v10;
 }

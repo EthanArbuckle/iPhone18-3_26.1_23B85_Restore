@@ -1,8 +1,8 @@
 @interface SubscriptionOffersViewController
-- (_TtC16NewsSubscription32SubscriptionOffersViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (_TtC16NewsSubscription32SubscriptionOffersViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)traitCollectionDidChange:(id)change;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
@@ -10,24 +10,24 @@
 
 @implementation SubscriptionOffersViewController
 
-- (_TtC16NewsSubscription32SubscriptionOffersViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC16NewsSubscription32SubscriptionOffersViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v4.receiver = self;
   v4.super_class = swift_getObjectType();
-  [(SubscriptionOffersViewController *)&v4 viewDidAppear:v3];
+  [(SubscriptionOffersViewController *)&v4 viewDidAppear:appearCopy];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   ObjectType = swift_getObjectType();
   v6 = sub_1D78B33C4();
   v7 = *(v6 - 8);
@@ -35,9 +35,9 @@
   v9 = &v17 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   v17.receiver = self;
   v17.super_class = ObjectType;
-  v10 = self;
-  [(SubscriptionOffersViewController *)&v17 viewDidDisappear:v3];
-  v11 = *(&v10->super.super.super.isa + OBJC_IVAR____TtC16NewsSubscription32SubscriptionOffersViewController_eventHandler);
+  selfCopy = self;
+  [(SubscriptionOffersViewController *)&v17 viewDidDisappear:disappearCopy];
+  v11 = *(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC16NewsSubscription32SubscriptionOffersViewController_eventHandler);
   sub_1D78B33B4();
   v12 = sub_1D78B33A4();
   v14 = v13;
@@ -53,7 +53,7 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D77863BC();
 }
 
@@ -89,14 +89,14 @@
   sub_1D78B4714();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
-  v4 = a3;
+  changeCopy = change;
   v5 = v7.receiver;
-  [(SubscriptionOffersViewController *)&v7 traitCollectionDidChange:v4];
-  v6 = [v5 traitCollection];
+  [(SubscriptionOffersViewController *)&v7 traitCollectionDidChange:changeCopy];
+  traitCollection = [v5 traitCollection];
   sub_1D77886C0();
 }
 

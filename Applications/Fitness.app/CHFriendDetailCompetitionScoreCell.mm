@@ -1,15 +1,15 @@
 @interface CHFriendDetailCompetitionScoreCell
-- (CHFriendDetailCompetitionScoreCell)initWithFrame:(CGRect)a3;
+- (CHFriendDetailCompetitionScoreCell)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation CHFriendDetailCompetitionScoreCell
 
-- (CHFriendDetailCompetitionScoreCell)initWithFrame:(CGRect)a3
+- (CHFriendDetailCompetitionScoreCell)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = CHFriendDetailCompetitionScoreCell;
-  v3 = [(CHFriendDetailCompetitionScoreCell *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CHFriendDetailCompetitionScoreCell *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[ASCompetitionScoreViewConfiguration companionTotalScoreFriendDetailConfiguration];

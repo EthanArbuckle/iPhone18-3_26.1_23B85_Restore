@@ -1,36 +1,36 @@
 @interface AAUIDeviceSpecifierProvider
-- (AAUIDeviceSpecifierProvider)initWithAccountManager:(id)a3;
+- (AAUIDeviceSpecifierProvider)initWithAccountManager:(id)manager;
 - (AAUIDeviceSpecifierProviderDelegate)delegate;
-- (BOOL)_isSpecifierEnabled:(id)a3;
+- (BOOL)_isSpecifierEnabled:(id)enabled;
 - (BOOL)_shouldShowDeviceSpecifiers;
 - (NSArray)specifiers;
 - (id)_appleAccount;
 - (id)_deviceList;
-- (id)_iconURLForDevice:(id)a3;
-- (id)_specifierForDevice:(id)a3;
+- (id)_iconURLForDevice:(id)device;
+- (id)_specifierForDevice:(id)device;
 - (id)_specifierForError;
-- (id)_specifiersForDeviceList:(id)a3;
-- (void)_deviceSpecifierWasTapped:(id)a3;
-- (void)deviceListModified:(id)a3;
+- (id)_specifiersForDeviceList:(id)list;
+- (void)_deviceSpecifierWasTapped:(id)tapped;
+- (void)deviceListModified:(id)modified;
 - (void)refreshDeviceList;
-- (void)userTappedAppleCare:(id)a3 completion:(id)a4;
+- (void)userTappedAppleCare:(id)care completion:(id)completion;
 - (void)userTappedBackup;
 - (void)userTappedFMIP;
 @end
 
 @implementation AAUIDeviceSpecifierProvider
 
-- (AAUIDeviceSpecifierProvider)initWithAccountManager:(id)a3
+- (AAUIDeviceSpecifierProvider)initWithAccountManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v10.receiver = self;
   v10.super_class = AAUIDeviceSpecifierProvider;
   v6 = [(AAUIDeviceSpecifierProvider *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_accountManager, a3);
-    v8 = [(AAUIDeviceSpecifierProvider *)v7 _deviceList];
+    objc_storeStrong(&v6->_accountManager, manager);
+    _deviceList = [(AAUIDeviceSpecifierProvider *)v7 _deviceList];
   }
 
   return v7;
@@ -48,16 +48,16 @@
 
 - (id)_appleAccount
 {
-  v2 = [(AIDAAccountManager *)self->_accountManager accounts];
-  v3 = [v2 objectForKeyedSubscript:AIDAServiceTypeCloud];
+  accounts = [(AIDAAccountManager *)self->_accountManager accounts];
+  v3 = [accounts objectForKeyedSubscript:AIDAServiceTypeCloud];
 
   return v3;
 }
 
 - (BOOL)_shouldShowDeviceSpecifiers
 {
-  v2 = [(AAUIDeviceSpecifierProvider *)self _appleAccount];
-  if (v2)
+  _appleAccount = [(AAUIDeviceSpecifierProvider *)self _appleAccount];
+  if (_appleAccount)
   {
     v3 = +[AADeviceInfo isMultiUserMode]^ 1;
   }
@@ -81,8 +81,8 @@
       v5 = [PSSpecifier groupSpecifierWithID:@"GROUP_DEVICES"];
       [v4 addObject:v5];
 
-      v6 = [(AAUIDeviceSpecifierProvider *)self _deviceList];
-      v7 = [(AAUIDeviceSpecifierProvider *)self _specifiersForDeviceList:v6];
+      _deviceList = [(AAUIDeviceSpecifierProvider *)self _deviceList];
+      v7 = [(AAUIDeviceSpecifierProvider *)self _specifiersForDeviceList:_deviceList];
       [v4 addObjectsFromArray:v7];
     }
 
@@ -107,39 +107,39 @@
   return v4;
 }
 
-- (id)_specifiersForDeviceList:(id)a3
+- (id)_specifiersForDeviceList:(id)list
 {
-  v4 = a3;
-  v5 = [v4 loadError];
+  listCopy = list;
+  loadError = [listCopy loadError];
 
-  if (v5)
+  if (loadError)
   {
-    v6 = [(AAUIDeviceSpecifierProvider *)self _specifierForError];
-    v25 = v6;
+    _specifierForError = [(AAUIDeviceSpecifierProvider *)self _specifierForError];
+    v25 = _specifierForError;
     v7 = &v25;
 LABEL_3:
     v8 = [NSArray arrayWithObjects:v7 count:1];
     goto LABEL_13;
   }
 
-  v9 = [v4 devices];
-  v10 = [v9 count];
+  devices = [listCopy devices];
+  v10 = [devices count];
 
   if (!v10)
   {
-    v6 = [(AAUIDeviceSpecifierProvider *)self _specifierForSpinner];
-    v24 = v6;
+    _specifierForError = [(AAUIDeviceSpecifierProvider *)self _specifierForSpinner];
+    v24 = _specifierForError;
     v7 = &v24;
     goto LABEL_3;
   }
 
-  v6 = +[NSMutableArray array];
+  _specifierForError = +[NSMutableArray array];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v11 = [v4 devices];
-  v12 = [v11 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  devices2 = [listCopy devices];
+  v12 = [devices2 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v12)
   {
     v13 = v12;
@@ -150,45 +150,45 @@ LABEL_3:
       {
         if (*v20 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(devices2);
         }
 
         v16 = [(AAUIDeviceSpecifierProvider *)self _specifierForDevice:*(*(&v19 + 1) + 8 * i)];
-        [v6 addObject:v16];
+        [_specifierForError addObject:v16];
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v13 = [devices2 countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v13);
   }
 
-  v8 = [v6 copy];
+  v8 = [_specifierForError copy];
 LABEL_13:
   v17 = v8;
 
   return v17;
 }
 
-- (id)_specifierForDevice:(id)a3
+- (id)_specifierForDevice:(id)device
 {
-  v4 = a3;
-  v5 = [v4 name];
-  v6 = [PSSpecifier preferenceSpecifierNamed:v5 target:self set:0 get:0 detail:0 cell:1 edit:0];
+  deviceCopy = device;
+  name = [deviceCopy name];
+  v6 = [PSSpecifier preferenceSpecifierNamed:name target:self set:0 get:0 detail:0 cell:1 edit:0];
 
   [v6 setProperty:objc_opt_class() forKey:PSCellClassKey];
-  v7 = [v4 name];
-  [v6 setProperty:v7 forKey:PSTitleKey];
+  name2 = [deviceCopy name];
+  [v6 setProperty:name2 forKey:PSTitleKey];
 
-  v8 = [v4 modelDisplayName];
-  [v6 setProperty:v8 forKey:PSTableCellSubtitleTextKey];
+  modelDisplayName = [deviceCopy modelDisplayName];
+  [v6 setProperty:modelDisplayName forKey:PSTableCellSubtitleTextKey];
 
   [v6 setProperty:&__kCFBooleanTrue forKey:PSLazyIconLoading];
-  v9 = [(AAUIDeviceSpecifierProvider *)self _iconURLForDevice:v4];
+  v9 = [(AAUIDeviceSpecifierProvider *)self _iconURLForDevice:deviceCopy];
   [v6 setProperty:v9 forKey:PSLazyIconURL];
 
   [v6 setControllerLoadAction:"_deviceSpecifierWasTapped:"];
-  [v6 setUserInfo:v4];
+  [v6 setUserInfo:deviceCopy];
 
   v10 = [NSNumber numberWithBool:[(AAUIDeviceSpecifierProvider *)self _isSpecifierEnabled:v6]];
   [v6 setProperty:v10 forKey:PSEnabledKey];
@@ -196,50 +196,50 @@ LABEL_13:
   return v6;
 }
 
-- (BOOL)_isSpecifierEnabled:(id)a3
+- (BOOL)_isSpecifierEnabled:(id)enabled
 {
-  v4 = [(AAUIDeviceSpecifierProvider *)self _appleAccount];
-  if (v4)
+  _appleAccount = [(AAUIDeviceSpecifierProvider *)self _appleAccount];
+  if (_appleAccount)
   {
-    v5 = [(AAUIDeviceSpecifierProvider *)self _appleAccount];
-    v6 = [v5 aa_isPrimaryEmailVerified];
+    _appleAccount2 = [(AAUIDeviceSpecifierProvider *)self _appleAccount];
+    aa_isPrimaryEmailVerified = [_appleAccount2 aa_isPrimaryEmailVerified];
   }
 
   else
   {
-    v6 = 0;
+    aa_isPrimaryEmailVerified = 0;
   }
 
-  return v6;
+  return aa_isPrimaryEmailVerified;
 }
 
-- (id)_iconURLForDevice:(id)a3
+- (id)_iconURLForDevice:(id)device
 {
-  v3 = [a3 modelSmallPhotoURL3x];
-  v4 = [NSURL URLWithString:v3];
+  modelSmallPhotoURL3x = [device modelSmallPhotoURL3x];
+  v4 = [NSURL URLWithString:modelSmallPhotoURL3x];
 
   return v4;
 }
 
-- (void)_deviceSpecifierWasTapped:(id)a3
+- (void)_deviceSpecifierWasTapped:(id)tapped
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
+  tappedCopy = tapped;
+  userInfo = [tappedCopy userInfo];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v5 deviceDetailUri];
-    v7 = [NSURL URLWithString:v6];
+    deviceDetailUri = [userInfo deviceDetailUri];
+    v7 = [NSURL URLWithString:deviceDetailUri];
 
     if (v7)
     {
-      objc_storeStrong(&self->_deviceRecentlyTapped, v5);
+      objc_storeStrong(&self->_deviceRecentlyTapped, userInfo);
       v8 = [[NSMutableURLRequest alloc] initWithURL:v7];
-      v9 = [v5 deviceDetailHttpMethod];
-      [v8 setHTTPMethod:v9];
+      deviceDetailHttpMethod = [userInfo deviceDetailHttpMethod];
+      [v8 setHTTPMethod:deviceDetailHttpMethod];
 
-      v10 = [(AAUIDeviceSpecifierProvider *)self delegate];
-      [v10 specifierProvider:self loadRequest:v8 withIdentifier:@"_AAUIRemotePageIdentifierTrustedDevice" specifier:v4];
+      delegate = [(AAUIDeviceSpecifierProvider *)self delegate];
+      [delegate specifierProvider:self loadRequest:v8 withIdentifier:@"_AAUIRemotePageIdentifierTrustedDevice" specifier:tappedCopy];
     }
 
     else
@@ -280,7 +280,7 @@ LABEL_13:
   return deviceList;
 }
 
-- (void)deviceListModified:(id)a3
+- (void)deviceListModified:(id)modified
 {
   v4 = self->_specifiers;
   specifiers = self->_specifiers;
@@ -300,30 +300,30 @@ LABEL_13:
 {
   if (!self->_backupSettingsController)
   {
-    v3 = [(AAUIDeviceSpecifierProvider *)self _appleAccount];
-    v4 = [ICSViewBuilder buildBackupViewControllerWithAccount:v3];
+    _appleAccount = [(AAUIDeviceSpecifierProvider *)self _appleAccount];
+    v4 = [ICSViewBuilder buildBackupViewControllerWithAccount:_appleAccount];
     backupSettingsController = self->_backupSettingsController;
     self->_backupSettingsController = v4;
   }
 
-  v6 = [(AAUIDeviceSpecifierProvider *)self delegate];
-  [v6 specifierProvider:self showViewController:self->_backupSettingsController];
+  delegate = [(AAUIDeviceSpecifierProvider *)self delegate];
+  [delegate specifierProvider:self showViewController:self->_backupSettingsController];
 }
 
 - (void)userTappedFMIP
 {
   v5 = objc_alloc_init(FMDUIFMIPiCloudSettingsViewController);
-  v3 = [(AAUIDeviceSpecifierProvider *)self _appleAccount];
-  [v5 setAccount:v3];
+  _appleAccount = [(AAUIDeviceSpecifierProvider *)self _appleAccount];
+  [v5 setAccount:_appleAccount];
 
-  v4 = [(AAUIDeviceSpecifierProvider *)self delegate];
-  [v4 specifierProvider:self showViewController:v5];
+  delegate = [(AAUIDeviceSpecifierProvider *)self delegate];
+  [delegate specifierProvider:self showViewController:v5];
 }
 
-- (void)userTappedAppleCare:(id)a3 completion:(id)a4
+- (void)userTappedAppleCare:(id)care completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  careCopy = care;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
@@ -331,9 +331,9 @@ LABEL_13:
   v9[3] = &unk_594C8;
   objc_copyWeak(&v11, &location);
   v9[4] = self;
-  v8 = v7;
+  v8 = completionCopy;
   v10 = v8;
-  [NDODeviceCoverageDetailsUI deviceCoverageDetailsViewControllerForSerialNumber:v6 source:0 completion:v9];
+  [NDODeviceCoverageDetailsUI deviceCoverageDetailsViewControllerForSerialNumber:careCopy source:0 completion:v9];
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);

@@ -1,5 +1,5 @@
 @interface CSProminentLabeledElementViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityViewIsVisible;
 - (id)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
@@ -7,20 +7,20 @@
 
 @implementation CSProminentLabeledElementViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CSProminentLabeledElementView" isKindOfClass:@"CSProminentTextElementView"];
-  [v3 validateClass:@"CSProminentLabeledElementView" isKindOfClass:@"UIView"];
-  [v3 validateClass:@"CSProminentTextElementView" hasInstanceMethod:@"textLabel" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CSProminentLabeledElementView" isKindOfClass:@"CSProminentTextElementView"];
+  [validationsCopy validateClass:@"CSProminentLabeledElementView" isKindOfClass:@"UIView"];
+  [validationsCopy validateClass:@"CSProminentTextElementView" hasInstanceMethod:@"textLabel" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel
 {
   v2 = [(CSProminentLabeledElementViewAccessibility *)self safeValueForKey:@"textLabel"];
-  v3 = [v2 accessibilityLabel];
+  accessibilityLabel = [v2 accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (BOOL)_accessibilityViewIsVisible

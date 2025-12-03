@@ -7,9 +7,9 @@
 - (void)retrieveImageDataWithCompletion:()Loading
 {
   v4 = a3;
-  if ([a1 _isSystem])
+  if ([self _isSystem])
   {
-    v4[2](v4, a1, 0);
+    v4[2](v4, self, 0);
   }
 
   else
@@ -19,7 +19,7 @@
     v5[2] = __52__INImage_Loading__retrieveImageDataWithCompletion___block_invoke;
     v5[3] = &unk_1E7B02718;
     v6 = v4;
-    [a1 _retrieveImageDataWithReply:v5];
+    [self _retrieveImageDataWithReply:v5];
   }
 }
 

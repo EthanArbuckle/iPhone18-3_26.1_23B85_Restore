@@ -5,28 +5,28 @@
 - (int)_bonjourStart;
 - (int)_mdStart;
 - (int)_wifiStart;
-- (void)_activateWithCompletion:(id)a3;
-- (void)_bleHandleDeviceFound:(id)a3;
-- (void)_bleHandleDeviceLost:(id)a3;
-- (void)_bonjourHandleAddOrUpdateDevice:(id)a3;
-- (void)_bonjourHandleEventType:(unsigned int)a3 info:(id)a4;
-- (void)_bonjourHandleRemoveDevice:(id)a3;
+- (void)_activateWithCompletion:(id)completion;
+- (void)_bleHandleDeviceFound:(id)found;
+- (void)_bleHandleDeviceLost:(id)lost;
+- (void)_bonjourHandleAddOrUpdateDevice:(id)device;
+- (void)_bonjourHandleEventType:(unsigned int)type info:(id)info;
+- (void)_bonjourHandleRemoveDevice:(id)device;
 - (void)_cleanup;
-- (void)_foundDevice:(id)a3;
+- (void)_foundDevice:(id)device;
 - (void)_interrupted;
 - (void)_invalidate;
 - (void)_invalidated;
 - (void)_lostAllDevices;
-- (void)_lostDeviceByIdentifier:(id)a3;
-- (void)_mdHandleDeviceChanged:(id)a3 changes:(unsigned int)a4;
-- (void)_mdHandleDeviceFound:(id)a3;
-- (void)_mdHandleDeviceLost:(id)a3;
-- (void)_wifiHandleDeviceFound:(id)a3;
-- (void)_wifiHandleDeviceLost:(id)a3;
-- (void)activateWithCompletion:(id)a3;
+- (void)_lostDeviceByIdentifier:(id)identifier;
+- (void)_mdHandleDeviceChanged:(id)changed changes:(unsigned int)changes;
+- (void)_mdHandleDeviceFound:(id)found;
+- (void)_mdHandleDeviceLost:(id)lost;
+- (void)_wifiHandleDeviceFound:(id)found;
+- (void)_wifiHandleDeviceLost:(id)lost;
+- (void)activateWithCompletion:(id)completion;
 - (void)dealloc;
 - (void)invalidate;
-- (void)setBLEPayloadFilterData:(id)a3 mask:(id)a4;
+- (void)setBLEPayloadFilterData:(id)data mask:(id)mask;
 @end
 
 @implementation RPLegacyDeviceDiscovery
@@ -94,22 +94,22 @@
   return 0;
 }
 
-- (void)setBLEPayloadFilterData:(id)a3 mask:(id)a4
+- (void)setBLEPayloadFilterData:(id)data mask:(id)mask
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  maskCopy = mask;
   if (gLogCategory_RPLegacySupport <= 30 && (gLogCategory_RPLegacySupport != -1 || _LogCategory_Initialize()))
   {
-    v15 = v6;
-    v16 = v7;
+    v15 = dataCopy;
+    v16 = maskCopy;
     LogPrintF();
   }
 
-  v8 = [v6 length];
-  if (v8 == [v7 length])
+  v8 = [dataCopy length];
+  if (v8 == [maskCopy length])
   {
-    v9 = [v6 copy];
-    v10 = [v7 copy];
+    v9 = [dataCopy copy];
+    v10 = [maskCopy copy];
     dispatchQueue = self->_dispatchQueue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
@@ -125,7 +125,7 @@
 
   else
   {
-    v14 = [RPLegacyDeviceDiscovery setBLEPayloadFilterData:v6 mask:v7];
+    v14 = [RPLegacyDeviceDiscovery setBLEPayloadFilterData:dataCopy mask:maskCopy];
     __56__RPLegacyDeviceDiscovery_setBLEPayloadFilterData_mask___block_invoke(v14);
   }
 }
@@ -139,23 +139,23 @@ void __56__RPLegacyDeviceDiscovery_setBLEPayloadFilterData_mask___block_invoke(u
   objc_storeStrong(v3, v2);
 }
 
-- (void)activateWithCompletion:(id)a3
+- (void)activateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __50__RPLegacyDeviceDiscovery_activateWithCompletion___block_invoke;
   v7[3] = &unk_1E7C92E20;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)_activateWithCompletion:(id)a3
+- (void)_activateWithCompletion:(id)completion
 {
-  v11 = a3;
+  completionCopy = completion;
   if (gLogCategory_RPLegacySupport <= 30 && (gLogCategory_RPLegacySupport != -1 || _LogCategory_Initialize()))
   {
     [RPLegacyDeviceDiscovery _activateWithCompletion:];
@@ -171,7 +171,7 @@ void __56__RPLegacyDeviceDiscovery_setBLEPayloadFilterData_mask___block_invoke(u
       self->_verifyDevices = [(NSString *)serviceType isEqual:@"RPLegacyServiceTypeSystem"];
       if (*[(NSString *)self->_serviceType UTF8String]== 95)
       {
-        v6 = [(RPLegacyDeviceDiscovery *)self _bonjourStart];
+        _bonjourStart = [(RPLegacyDeviceDiscovery *)self _bonjourStart];
         goto LABEL_14;
       }
 
@@ -180,7 +180,7 @@ void __56__RPLegacyDeviceDiscovery_setBLEPayloadFilterData_mask___block_invoke(u
       {
 
 LABEL_13:
-        v6 = [(RPLegacyDeviceDiscovery *)self _bleStart];
+        _bonjourStart = [(RPLegacyDeviceDiscovery *)self _bleStart];
         goto LABEL_14;
       }
 
@@ -193,15 +193,15 @@ LABEL_13:
 
       if ([(NSString *)*p_serviceType isEqual:@"RPLegacyServiceTypeMobileDevice"])
       {
-        v6 = [(RPLegacyDeviceDiscovery *)self _mdStart];
+        _bonjourStart = [(RPLegacyDeviceDiscovery *)self _mdStart];
         goto LABEL_14;
       }
 
       if (([(NSString *)*p_serviceType isEqual:@"RPLegacyServiceTypeWACAirPlay"]& 1) != 0 || [(NSString *)*p_serviceType isEqual:@"RPLegacyServiceTypeWACGeneric"])
       {
-        v6 = [(RPLegacyDeviceDiscovery *)self _wifiStart];
+        _bonjourStart = [(RPLegacyDeviceDiscovery *)self _wifiStart];
 LABEL_14:
-        if (!v6)
+        if (!_bonjourStart)
         {
           goto LABEL_18;
         }
@@ -228,13 +228,13 @@ LABEL_15:
   }
 
 LABEL_18:
-  v8 = v11;
-  if (v11)
+  v8 = completionCopy;
+  if (completionCopy)
   {
     v9 = RPErrorF();
-    (*(v11 + 2))(v11, v9);
+    (*(completionCopy + 2))(completionCopy, v9);
 
-    v8 = v11;
+    v8 = completionCopy;
   }
 }
 
@@ -314,25 +314,25 @@ LABEL_18:
   }
 }
 
-- (void)_foundDevice:(id)a3
+- (void)_foundDevice:(id)device
 {
-  v7 = a3;
-  if (([v7 reported] & 1) == 0)
+  deviceCopy = device;
+  if (([deviceCopy reported] & 1) == 0)
   {
-    if (!self->_verifyDevices || (v4 = [v7 state], v4 == 4) || v4 == 2)
+    if (!self->_verifyDevices || (v4 = [deviceCopy state], v4 == 4) || v4 == 2)
     {
-      [v7 setReported:1];
+      [deviceCopy setReported:1];
       deviceFoundHandler = self->_deviceFoundHandler;
       if (deviceFoundHandler)
       {
-        v6 = [v7 device];
-        deviceFoundHandler[2](deviceFoundHandler, v6);
+        device = [deviceCopy device];
+        deviceFoundHandler[2](deviceFoundHandler, device);
       }
     }
 
     else
     {
-      [v7 pairVerify];
+      [deviceCopy pairVerify];
     }
   }
 }
@@ -539,13 +539,13 @@ LABEL_13:
   }
 }
 
-- (void)_bleHandleDeviceLost:(id)a3
+- (void)_bleHandleDeviceLost:(id)lost
 {
-  v5 = a3;
-  v4 = [v5 identifier];
-  if (v4)
+  lostCopy = lost;
+  identifier = [lostCopy identifier];
+  if (identifier)
   {
-    [(RPLegacyDeviceDiscovery *)self _lostDeviceByIdentifier:v4];
+    [(RPLegacyDeviceDiscovery *)self _lostDeviceByIdentifier:identifier];
   }
 
   else
@@ -601,15 +601,15 @@ LABEL_13:
   return v5;
 }
 
-- (void)_bonjourHandleEventType:(unsigned int)a3 info:(id)a4
+- (void)_bonjourHandleEventType:(unsigned int)type info:(id)info
 {
-  v6 = a4;
-  v7 = v6;
-  if (a3 > 2)
+  infoCopy = info;
+  v7 = infoCopy;
+  if (type > 2)
   {
-    if (a3 == 3)
+    if (type == 3)
     {
-      v8 = v6;
+      v8 = infoCopy;
       if (self->_bonjourBrowser)
       {
         BonjourBrowser_Stop();
@@ -622,12 +622,12 @@ LABEL_13:
 
     else
     {
-      if (a3 != 4)
+      if (type != 4)
       {
         goto LABEL_16;
       }
 
-      v8 = v6;
+      v8 = infoCopy;
       if (gLogCategory_RPLegacySupport <= 30 && (gLogCategory_RPLegacySupport != -1 || _LogCategory_Initialize()))
       {
         [RPLegacyDeviceDiscovery _bonjourHandleEventType:info:];
@@ -637,31 +637,31 @@ LABEL_13:
     }
   }
 
-  else if (a3 == 1)
+  else if (type == 1)
   {
-    v8 = v6;
-    [(RPLegacyDeviceDiscovery *)self _bonjourHandleAddOrUpdateDevice:v6];
+    v8 = infoCopy;
+    [(RPLegacyDeviceDiscovery *)self _bonjourHandleAddOrUpdateDevice:infoCopy];
   }
 
   else
   {
-    if (a3 != 2)
+    if (type != 2)
     {
       goto LABEL_16;
     }
 
-    v8 = v6;
-    [(RPLegacyDeviceDiscovery *)self _bonjourHandleRemoveDevice:v6];
+    v8 = infoCopy;
+    [(RPLegacyDeviceDiscovery *)self _bonjourHandleRemoveDevice:infoCopy];
   }
 
   v7 = v8;
 LABEL_16:
 }
 
-- (void)_bonjourHandleAddOrUpdateDevice:(id)a3
+- (void)_bonjourHandleAddOrUpdateDevice:(id)device
 {
   v15[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  deviceCopy = device;
   v15[0] = 0;
   v15[1] = 0;
   BonjourDevice_GetDeviceID();
@@ -670,8 +670,8 @@ LABEL_16:
   if (v6)
   {
     v7 = v6;
-    v8 = [(RPDeviceContext *)v6 device];
-    v9 = [(RPDevice *)v8 updateWithBonjourDevice:v4];
+    device = [(RPDeviceContext *)v6 device];
+    v9 = [(RPDevice *)device updateWithBonjourDevice:deviceCopy];
     if (gLogCategory_RPLegacySupport <= 30 && (gLogCategory_RPLegacySupport != -1 || _LogCategory_Initialize()))
     {
       LogPrintF();
@@ -680,16 +680,16 @@ LABEL_16:
     deviceChangedHandler = self->_deviceChangedHandler;
     if (deviceChangedHandler)
     {
-      deviceChangedHandler[2](deviceChangedHandler, v8, v9);
+      deviceChangedHandler[2](deviceChangedHandler, device, v9);
     }
   }
 
   else
   {
-    v8 = objc_alloc_init(RPDevice);
-    [(RPDevice *)v8 setIdentifierUUID:v5];
+    device = objc_alloc_init(RPDevice);
+    [(RPDevice *)device setIdentifierUUID:v5];
     v7 = objc_alloc_init(RPDeviceContext);
-    [(RPDeviceContext *)v7 setDevice:v8];
+    [(RPDeviceContext *)v7 setDevice:device];
     [(RPDeviceContext *)v7 setDiscovery:self];
     devices = self->_devices;
     if (!devices)
@@ -702,7 +702,7 @@ LABEL_16:
     }
 
     [(NSMutableDictionary *)devices setObject:v7 forKeyedSubscript:v5];
-    [(RPDevice *)v8 updateWithBonjourDevice:v4];
+    [(RPDevice *)device updateWithBonjourDevice:deviceCopy];
     if (gLogCategory_RPLegacySupport <= 30 && (gLogCategory_RPLegacySupport != -1 || _LogCategory_Initialize()))
     {
       [RPLegacyDeviceDiscovery _bonjourHandleAddOrUpdateDevice:];
@@ -714,10 +714,10 @@ LABEL_16:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_bonjourHandleRemoveDevice:(id)a3
+- (void)_bonjourHandleRemoveDevice:(id)device
 {
   v7[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  deviceCopy = device;
   v7[0] = 0;
   v7[1] = 0;
   BonjourDevice_GetDeviceID();
@@ -773,13 +773,13 @@ uint64_t __35__RPLegacyDeviceDiscovery__mdStart__block_invoke_4(uint64_t a1)
   return [v4 _invalidated];
 }
 
-- (void)_mdHandleDeviceLost:(id)a3
+- (void)_mdHandleDeviceLost:(id)lost
 {
-  v5 = a3;
-  v4 = [v5 identifier];
-  if (v4)
+  lostCopy = lost;
+  identifier = [lostCopy identifier];
+  if (identifier)
   {
-    [(RPLegacyDeviceDiscovery *)self _lostDeviceByIdentifier:v4];
+    [(RPLegacyDeviceDiscovery *)self _lostDeviceByIdentifier:identifier];
   }
 
   else
@@ -788,11 +788,11 @@ uint64_t __35__RPLegacyDeviceDiscovery__mdStart__block_invoke_4(uint64_t a1)
   }
 }
 
-- (void)_mdHandleDeviceChanged:(id)a3 changes:(unsigned int)a4
+- (void)_mdHandleDeviceChanged:(id)changed changes:(unsigned int)changes
 {
-  v13 = a3;
-  v5 = [v13 identifier];
-  if (!v5)
+  changedCopy = changed;
+  identifier = [changedCopy identifier];
+  if (!identifier)
   {
     if (gLogCategory_RPLegacySupport <= 90 && (gLogCategory_RPLegacySupport != -1 || _LogCategory_Initialize()))
     {
@@ -802,7 +802,7 @@ uint64_t __35__RPLegacyDeviceDiscovery__mdStart__block_invoke_4(uint64_t a1)
     goto LABEL_15;
   }
 
-  v6 = [(NSMutableDictionary *)self->_devices objectForKeyedSubscript:v5];
+  v6 = [(NSMutableDictionary *)self->_devices objectForKeyedSubscript:identifier];
   if (!v6)
   {
     if (gLogCategory_RPLegacySupport <= 90 && (gLogCategory_RPLegacySupport != -1 || _LogCategory_Initialize()))
@@ -812,19 +812,19 @@ uint64_t __35__RPLegacyDeviceDiscovery__mdStart__block_invoke_4(uint64_t a1)
 
 LABEL_15:
     v7 = 0;
-    v8 = 0;
+    device = 0;
     goto LABEL_5;
   }
 
   v7 = v6;
-  v8 = [v6 device];
-  v9 = [v8 updateWithMobileDevice:v13];
+  device = [v6 device];
+  v9 = [device updateWithMobileDevice:changedCopy];
   deviceChangedHandler = self->_deviceChangedHandler;
   if (deviceChangedHandler)
   {
     v11 = v9;
-    v12 = [v7 device];
-    deviceChangedHandler[2](deviceChangedHandler, v12, v11);
+    device2 = [v7 device];
+    deviceChangedHandler[2](deviceChangedHandler, device2, v11);
   }
 
 LABEL_5:
@@ -914,22 +914,22 @@ uint64_t __37__RPLegacyDeviceDiscovery__wifiStart__block_invoke_5(uint64_t a1)
   return [v4 _invalidated];
 }
 
-- (void)_wifiHandleDeviceFound:(id)a3
+- (void)_wifiHandleDeviceFound:(id)found
 {
-  v13 = a3;
-  v4 = [v13 identifier];
-  if (v4)
+  foundCopy = found;
+  identifier = [foundCopy identifier];
+  if (identifier)
   {
-    v5 = [(NSMutableDictionary *)self->_devices objectForKeyedSubscript:v4];
-    v6 = [v13 deviceIEDeviceID];
-    if (v6)
+    v5 = [(NSMutableDictionary *)self->_devices objectForKeyedSubscript:identifier];
+    deviceIEDeviceID = [foundCopy deviceIEDeviceID];
+    if (deviceIEDeviceID)
     {
-      v7 = v6;
+      v7 = deviceIEDeviceID;
       if (self->_wifiAirPlayWAC)
       {
-        v8 = [v13 deviceIEFlags];
+        deviceIEFlags = [foundCopy deviceIEFlags];
 
-        if ((v8 & 0x80000000) == 0)
+        if ((deviceIEFlags & 0x80000000) == 0)
         {
           goto LABEL_5;
         }
@@ -941,15 +941,15 @@ uint64_t __37__RPLegacyDeviceDiscovery__wifiStart__block_invoke_5(uint64_t a1)
 
       if (v5)
       {
-        v9 = [(RPDeviceContext *)v5 device];
+        device = [(RPDeviceContext *)v5 device];
       }
 
       else
       {
-        v9 = objc_alloc_init(RPDevice);
-        [(RPDevice *)v9 setIdentifierUUID:v4];
+        device = objc_alloc_init(RPDevice);
+        [(RPDevice *)device setIdentifierUUID:identifier];
         v5 = objc_alloc_init(RPDeviceContext);
-        [(RPDeviceContext *)v5 setDevice:v9];
+        [(RPDeviceContext *)v5 setDevice:device];
         [(RPDeviceContext *)v5 setDiscovery:self];
         devices = self->_devices;
         if (!devices)
@@ -961,10 +961,10 @@ uint64_t __37__RPLegacyDeviceDiscovery__wifiStart__block_invoke_5(uint64_t a1)
           devices = self->_devices;
         }
 
-        [(NSMutableDictionary *)devices setObject:v5 forKeyedSubscript:v4];
+        [(NSMutableDictionary *)devices setObject:v5 forKeyedSubscript:identifier];
       }
 
-      [(RPDevice *)v9 updateWithWiFiDevice:v13 changes:0xFFFFFFFFLL];
+      [(RPDevice *)device updateWithWiFiDevice:foundCopy changes:0xFFFFFFFFLL];
       [(RPLegacyDeviceDiscovery *)self _foundDevice:v5];
 
 LABEL_14:
@@ -977,7 +977,7 @@ LABEL_5:
       goto LABEL_15;
     }
 
-    [(RPLegacyDeviceDiscovery *)self _wifiHandleDeviceLost:v13];
+    [(RPLegacyDeviceDiscovery *)self _wifiHandleDeviceLost:foundCopy];
     goto LABEL_14;
   }
 
@@ -985,13 +985,13 @@ LABEL_5:
 LABEL_15:
 }
 
-- (void)_wifiHandleDeviceLost:(id)a3
+- (void)_wifiHandleDeviceLost:(id)lost
 {
-  v5 = a3;
-  v4 = [v5 identifier];
-  if (v4)
+  lostCopy = lost;
+  identifier = [lostCopy identifier];
+  if (identifier)
   {
-    [(RPLegacyDeviceDiscovery *)self _lostDeviceByIdentifier:v4];
+    [(RPLegacyDeviceDiscovery *)self _lostDeviceByIdentifier:identifier];
   }
 
   else
@@ -1000,20 +1000,20 @@ LABEL_15:
   }
 }
 
-- (void)_lostDeviceByIdentifier:(id)a3
+- (void)_lostDeviceByIdentifier:(id)identifier
 {
-  v7 = a3;
+  identifierCopy = identifier;
   v4 = [(NSMutableDictionary *)self->_devices objectForKeyedSubscript:?];
   if (v4)
   {
-    [(NSMutableDictionary *)self->_devices removeObjectForKey:v7];
+    [(NSMutableDictionary *)self->_devices removeObjectForKey:identifierCopy];
     if ([v4 reported])
     {
       deviceLostHandler = self->_deviceLostHandler;
       if (deviceLostHandler)
       {
-        v6 = [v4 device];
-        deviceLostHandler[2](deviceLostHandler, v6);
+        device = [v4 device];
+        deviceLostHandler[2](deviceLostHandler, device);
       }
     }
 
@@ -1021,11 +1021,11 @@ LABEL_15:
   }
 }
 
-- (void)_bleHandleDeviceFound:(id)a3
+- (void)_bleHandleDeviceFound:(id)found
 {
-  v11 = a3;
-  v4 = [v11 identifier];
-  if (!v4)
+  foundCopy = found;
+  identifier = [foundCopy identifier];
+  if (!identifier)
   {
     if (gLogCategory_RPLegacySupport <= 90 && (gLogCategory_RPLegacySupport != -1 || _LogCategory_Initialize()))
     {
@@ -1035,14 +1035,14 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  if (self->_deviceActionType && [v11 deviceActionType] != self->_deviceActionType)
+  if (self->_deviceActionType && [foundCopy deviceActionType] != self->_deviceActionType)
   {
 LABEL_16:
     v7 = 0;
     goto LABEL_8;
   }
 
-  v5 = [(NSMutableDictionary *)self->_devices objectForKeyedSubscript:v4];
+  v5 = [(NSMutableDictionary *)self->_devices objectForKeyedSubscript:identifier];
   if (v5)
   {
     v7 = v5;
@@ -1051,7 +1051,7 @@ LABEL_16:
   else
   {
     v6 = objc_alloc_init(RPDevice);
-    [(RPDevice *)v6 setIdentifierUUID:v4];
+    [(RPDevice *)v6 setIdentifierUUID:identifier];
     [OUTLINED_FUNCTION_4() updateWithSFDevice:? changes:?];
     v7 = objc_alloc_init(RPDeviceContext);
     [(RPDeviceContext *)v7 setDevice:v6];
@@ -1066,20 +1066,20 @@ LABEL_16:
       devices = self->_devices;
     }
 
-    [(NSMutableDictionary *)devices setObject:v7 forKeyedSubscript:v4];
+    [(NSMutableDictionary *)devices setObject:v7 forKeyedSubscript:identifier];
     [(RPLegacyDeviceDiscovery *)self _foundDevice:v7];
   }
 
 LABEL_8:
 }
 
-- (void)_mdHandleDeviceFound:(id)a3
+- (void)_mdHandleDeviceFound:(id)found
 {
-  v11 = a3;
-  v4 = [v11 identifier];
-  if (v4)
+  foundCopy = found;
+  identifier = [foundCopy identifier];
+  if (identifier)
   {
-    v5 = [(NSMutableDictionary *)self->_devices objectForKeyedSubscript:v4];
+    v5 = [(NSMutableDictionary *)self->_devices objectForKeyedSubscript:identifier];
     if (v5)
     {
       v7 = v5;
@@ -1088,7 +1088,7 @@ LABEL_8:
     else
     {
       v6 = objc_alloc_init(RPDevice);
-      [(RPDevice *)v6 setIdentifierUUID:v4];
+      [(RPDevice *)v6 setIdentifierUUID:identifier];
       [OUTLINED_FUNCTION_4() updateWithMobileDevice:?];
       v7 = objc_alloc_init(RPDeviceContext);
       [(RPDeviceContext *)v7 setDevice:v6];
@@ -1103,7 +1103,7 @@ LABEL_8:
         devices = self->_devices;
       }
 
-      [(NSMutableDictionary *)devices setObject:v7 forKeyedSubscript:v4];
+      [(NSMutableDictionary *)devices setObject:v7 forKeyedSubscript:identifier];
       [(RPLegacyDeviceDiscovery *)self _foundDevice:v7];
     }
   }

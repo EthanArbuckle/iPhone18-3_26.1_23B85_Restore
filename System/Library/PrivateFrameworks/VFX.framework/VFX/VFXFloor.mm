@@ -1,31 +1,31 @@
 @interface VFXFloor
 + (id)floor;
 - (VFXFloor)init;
-- (VFXFloor)initWithCoder:(id)a3;
-- (VFXFloor)initWithFloorGeometryRef:(__CFXFloor *)a3;
+- (VFXFloor)initWithCoder:(id)coder;
+- (VFXFloor)initWithFloorGeometryRef:(__CFXFloor *)ref;
 - (float)length;
 - (float)reflectionFalloffEnd;
 - (float)reflectionFalloffStart;
 - (float)reflectionResolutionScaleFactor;
 - (float)reflectivity;
 - (float)width;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (uint64_t)__createCFObject;
 - (unint64_t)reflectionCategoryBitMask;
 - (unint64_t)reflectionSampleCount;
-- (void)_customDecodingOfVFXFloor:(id)a3;
+- (void)_customDecodingOfVFXFloor:(id)floor;
 - (void)_updateModelFromPresentation;
 - (void)_updatePresentationFromModel;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)setLength:(float)a3;
-- (void)setReflectionCategoryBitMask:(unint64_t)a3;
-- (void)setReflectionFalloffEnd:(float)a3;
-- (void)setReflectionFalloffStart:(float)a3;
-- (void)setReflectionResolutionScaleFactor:(float)a3;
-- (void)setReflectionSampleCount:(unint64_t)a3;
-- (void)setReflectivity:(float)a3;
-- (void)setWidth:(float)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setLength:(float)length;
+- (void)setReflectionCategoryBitMask:(unint64_t)mask;
+- (void)setReflectionFalloffEnd:(float)end;
+- (void)setReflectionFalloffStart:(float)start;
+- (void)setReflectionResolutionScaleFactor:(float)factor;
+- (void)setReflectionSampleCount:(unint64_t)count;
+- (void)setReflectivity:(float)reflectivity;
+- (void)setWidth:(float)width;
 @end
 
 @implementation VFXFloor
@@ -101,11 +101,11 @@
   return v7;
 }
 
-- (VFXFloor)initWithFloorGeometryRef:(__CFXFloor *)a3
+- (VFXFloor)initWithFloorGeometryRef:(__CFXFloor *)ref
 {
   v9.receiver = self;
   v9.super_class = VFXFloor;
-  v3 = [(VFXModel *)&v9 initWithModelRef:a3];
+  v3 = [(VFXModel *)&v9 initWithModelRef:ref];
   v7 = v3;
   if (v3)
   {
@@ -124,47 +124,47 @@
 
 + (id)floor
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
 
-- (void)setReflectionResolutionScaleFactor:(float)a3
+- (void)setReflectionResolutionScaleFactor:(float)factor
 {
-  if (self->_reflectionResolutionScaleFactor != a3)
+  if (self->_reflectionResolutionScaleFactor != factor)
   {
     v7 = v3;
     v8 = v4;
-    self->_reflectionResolutionScaleFactor = a3;
-    *(self + 176) = *(self + 176) & 0xFD | (2 * (a3 != 0.0));
+    self->_reflectionResolutionScaleFactor = factor;
+    *(self + 176) = *(self + 176) & 0xFD | (2 * (factor != 0.0));
     v5[1] = 3221225472;
     v5[0] = MEMORY[0x1E69E9820];
     v5[2] = sub_1AF317868;
     v5[3] = &unk_1E7A7E270;
-    if (a3 == 0.0)
+    if (factor == 0.0)
     {
-      a3 = 0.5;
+      factor = 0.5;
     }
 
     v5[4] = self;
-    v6 = a3;
+    factorCopy = factor;
     objc_msgSend_postCommandWithObject_applyBlock_(VFXTransaction, a2, self, v5);
   }
 }
 
-- (void)setReflectionCategoryBitMask:(unint64_t)a3
+- (void)setReflectionCategoryBitMask:(unint64_t)mask
 {
-  if (self->_reflectionCategoryBitMask != a3)
+  if (self->_reflectionCategoryBitMask != mask)
   {
     v5[6] = v3;
     v5[7] = v4;
-    self->_reflectionCategoryBitMask = a3;
+    self->_reflectionCategoryBitMask = mask;
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = sub_1AF31793C;
     v5[3] = &unk_1E7A7E248;
     v5[4] = self;
-    v5[5] = a3;
+    v5[5] = mask;
     objc_msgSend_postCommandWithObject_applyBlock_(VFXTransaction, a2, self, v5);
   }
 }
@@ -193,19 +193,19 @@
   return v5;
 }
 
-- (void)setWidth:(float)a3
+- (void)setWidth:(float)width
 {
-  if (self->_width != a3)
+  if (self->_width != width)
   {
     v7 = v3;
     v8 = v4;
-    self->_width = a3;
+    self->_width = width;
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = sub_1AF317A98;
     v5[3] = &unk_1E7A7E270;
     v5[4] = self;
-    v6 = a3;
+    widthCopy = width;
     objc_msgSend_postCommandWithObject_key_applyBlock_(VFXTransaction, a2, self, @"width", v5);
   }
 }
@@ -234,19 +234,19 @@
   return v5;
 }
 
-- (void)setLength:(float)a3
+- (void)setLength:(float)length
 {
-  if (self->_length != a3)
+  if (self->_length != length)
   {
     v7 = v3;
     v8 = v4;
-    self->_length = a3;
+    self->_length = length;
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = sub_1AF317BFC;
     v5[3] = &unk_1E7A7E270;
     v5[4] = self;
-    v6 = a3;
+    lengthCopy = length;
     objc_msgSend_postCommandWithObject_key_applyBlock_(VFXTransaction, a2, self, @"length", v5);
   }
 }
@@ -299,19 +299,19 @@
   return v5;
 }
 
-- (void)setReflectionFalloffEnd:(float)a3
+- (void)setReflectionFalloffEnd:(float)end
 {
-  if (self->_reflectionFalloffEnd != a3)
+  if (self->_reflectionFalloffEnd != end)
   {
     v7 = v3;
     v8 = v4;
-    self->_reflectionFalloffEnd = a3;
+    self->_reflectionFalloffEnd = end;
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = sub_1AF317DD8;
     v5[3] = &unk_1E7A7E270;
     v5[4] = self;
-    v6 = a3;
+    endCopy = end;
     objc_msgSend_postCommandWithObject_key_applyBlock_(VFXTransaction, a2, self, @"reflectionFalloffEnd", v5);
   }
 }
@@ -340,19 +340,19 @@
   return v5;
 }
 
-- (void)setReflectionFalloffStart:(float)a3
+- (void)setReflectionFalloffStart:(float)start
 {
-  if (self->_reflectionFalloffStart != a3)
+  if (self->_reflectionFalloffStart != start)
   {
     v7 = v3;
     v8 = v4;
-    self->_reflectionFalloffStart = a3;
+    self->_reflectionFalloffStart = start;
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = sub_1AF317F34;
     v5[3] = &unk_1E7A7E270;
     v5[4] = self;
-    v6 = a3;
+    startCopy = start;
     objc_msgSend_postCommandWithObject_key_applyBlock_(VFXTransaction, a2, self, @"reflectionFalloffStart", v5);
   }
 }
@@ -405,19 +405,19 @@
   return v5;
 }
 
-- (void)setReflectionSampleCount:(unint64_t)a3
+- (void)setReflectionSampleCount:(unint64_t)count
 {
-  if (self->_reflectionSampleCount != a3)
+  if (self->_reflectionSampleCount != count)
   {
     v5[6] = v3;
     v5[7] = v4;
-    self->_reflectionSampleCount = a3;
+    self->_reflectionSampleCount = count;
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = sub_1AF318100;
     v5[3] = &unk_1E7A7E248;
     v5[4] = self;
-    v5[5] = a3;
+    v5[5] = count;
     objc_msgSend_postCommandWithObject_applyBlock_(VFXTransaction, a2, self, v5);
   }
 }
@@ -446,24 +446,24 @@
   return v5;
 }
 
-- (void)setReflectivity:(float)a3
+- (void)setReflectivity:(float)reflectivity
 {
-  if (self->_reflectivity != a3)
+  if (self->_reflectivity != reflectivity)
   {
     v7 = v3;
     v8 = v4;
-    self->_reflectivity = a3;
+    self->_reflectivity = reflectivity;
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = sub_1AF31825C;
     v5[3] = &unk_1E7A7E270;
     v5[4] = self;
-    v6 = a3;
+    reflectivityCopy = reflectivity;
     objc_msgSend_postCommandWithObject_key_applyBlock_(VFXTransaction, a2, self, @"reflectivity", v5);
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   objc_msgSend_begin(VFXTransaction, v5, v6, v7);
@@ -491,38 +491,38 @@
   return v4;
 }
 
-- (void)_customDecodingOfVFXFloor:(id)a3
+- (void)_customDecodingOfVFXFloor:(id)floor
 {
-  v5 = objc_msgSend_modelRef(self, a2, a3, v3);
+  v5 = objc_msgSend_modelRef(self, a2, floor, v3);
   self->_reflectivity = sub_1AF16EC88(v5);
   v9 = objc_msgSend_modelRef(self, v6, v7, v8);
   self->_reflectionCategoryBitMask = sub_1AF16F0D8(v9);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v24.receiver = self;
   v24.super_class = VFXFloor;
   [(VFXModel *)&v24 encodeWithCoder:?];
   *&v5 = self->_reflectivity;
-  objc_msgSend_encodeFloat_forKey_(a3, v6, @"reflectivity", v7, v5);
+  objc_msgSend_encodeFloat_forKey_(coder, v6, @"reflectivity", v7, v5);
   *&v8 = self->_reflectionFalloffStart;
-  objc_msgSend_encodeFloat_forKey_(a3, v9, @"reflectionFalloffStart", v10, v8);
+  objc_msgSend_encodeFloat_forKey_(coder, v9, @"reflectionFalloffStart", v10, v8);
   *&v11 = self->_reflectionFalloffEnd;
-  objc_msgSend_encodeFloat_forKey_(a3, v12, @"reflectionFalloffEnd", v13, v11);
+  objc_msgSend_encodeFloat_forKey_(coder, v12, @"reflectionFalloffEnd", v13, v11);
   *&v14 = self->_width;
-  objc_msgSend_encodeFloat_forKey_(a3, v15, @"width", v16, v14);
+  objc_msgSend_encodeFloat_forKey_(coder, v15, @"width", v16, v14);
   *&v17 = self->_length;
-  objc_msgSend_encodeFloat_forKey_(a3, v18, @"length", v19, v17);
-  objc_msgSend_encodeInteger_forKey_(a3, v20, self->_reflectionCategoryBitMask, @"reflectionCategoryBitMask");
+  objc_msgSend_encodeFloat_forKey_(coder, v18, @"length", v19, v17);
+  objc_msgSend_encodeInteger_forKey_(coder, v20, self->_reflectionCategoryBitMask, @"reflectionCategoryBitMask");
   if ((*(self + 176) & 2) != 0)
   {
     *&v23 = self->_reflectionResolutionScaleFactor;
-    objc_msgSend_encodeFloat_forKey_(a3, v21, @"reflectionResolutionScaleFactor", v22, v23);
+    objc_msgSend_encodeFloat_forKey_(coder, v21, @"reflectionResolutionScaleFactor", v22, v23);
   }
 }
 
-- (VFXFloor)initWithCoder:(id)a3
+- (VFXFloor)initWithCoder:(id)coder
 {
   v50.receiver = self;
   v50.super_class = VFXFloor;
@@ -531,26 +531,26 @@
   {
     v8 = objc_msgSend_immediateMode(VFXTransaction, v4, v5, v6);
     objc_msgSend_setImmediateMode_(VFXTransaction, v9, 1, v10);
-    objc_msgSend__customDecodingOfVFXFloor_(v7, v11, a3, v12);
-    objc_msgSend_decodeFloatForKey_(a3, v13, @"reflectivity", v14);
+    objc_msgSend__customDecodingOfVFXFloor_(v7, v11, coder, v12);
+    objc_msgSend_decodeFloatForKey_(coder, v13, @"reflectivity", v14);
     objc_msgSend_setReflectivity_(v7, v15, v16, v17);
-    objc_msgSend_decodeFloatForKey_(a3, v18, @"reflectionFalloffStart", v19);
+    objc_msgSend_decodeFloatForKey_(coder, v18, @"reflectionFalloffStart", v19);
     objc_msgSend_setReflectionFalloffStart_(v7, v20, v21, v22);
-    objc_msgSend_decodeFloatForKey_(a3, v23, @"reflectionFalloffEnd", v24);
+    objc_msgSend_decodeFloatForKey_(coder, v23, @"reflectionFalloffEnd", v24);
     objc_msgSend_setReflectionFalloffEnd_(v7, v25, v26, v27);
-    objc_msgSend_decodeFloatForKey_(a3, v28, @"width", v29);
+    objc_msgSend_decodeFloatForKey_(coder, v28, @"width", v29);
     objc_msgSend_setWidth_(v7, v30, v31, v32);
-    objc_msgSend_decodeFloatForKey_(a3, v33, @"length", v34);
+    objc_msgSend_decodeFloatForKey_(coder, v33, @"length", v34);
     objc_msgSend_setLength_(v7, v35, v36, v37);
-    if (objc_msgSend_containsValueForKey_(a3, v38, @"reflectionCategoryBitMask", v39))
+    if (objc_msgSend_containsValueForKey_(coder, v38, @"reflectionCategoryBitMask", v39))
     {
-      v42 = objc_msgSend_decodeIntegerForKey_(a3, v40, @"reflectionCategoryBitMask", v41);
+      v42 = objc_msgSend_decodeIntegerForKey_(coder, v40, @"reflectionCategoryBitMask", v41);
       objc_msgSend_setReflectionCategoryBitMask_(v7, v43, v42, v44);
     }
 
-    if (objc_msgSend_containsValueForKey_(a3, v40, @"reflectionResolutionScaleFactor", v41))
+    if (objc_msgSend_containsValueForKey_(coder, v40, @"reflectionResolutionScaleFactor", v41))
     {
-      objc_msgSend_decodeFloatForKey_(a3, v45, @"reflectionResolutionScaleFactor", v46);
+      objc_msgSend_decodeFloatForKey_(coder, v45, @"reflectionResolutionScaleFactor", v46);
       if (v48 != 0.0)
       {
         objc_msgSend_setReflectionResolutionScaleFactor_(v7, v45, v47, v46);

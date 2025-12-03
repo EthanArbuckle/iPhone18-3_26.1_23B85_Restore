@@ -1,44 +1,44 @@
 @interface NWStatisticsManager
-- (BOOL)addAllForProvider:(int)a3 filter:(unint64_t)a4 events:(unint64_t)a5 pid:(int)a6 uuid:(unsigned __int8 *)(a7;
-- (BOOL)addAllRoute:(unint64_t)a3;
-- (BOOL)addAllTCP:(unint64_t)a3 events:(unint64_t)a4 pid:(int)a5 uuid:(unsigned __int8 *)(a6;
-- (BOOL)addAllUDP:(unint64_t)a3 events:(unint64_t)a4 pid:(int)a5 uuid:(unsigned __int8 *)(a6;
-- (BOOL)addSource:(id)a3 request:(nstat_msg_add_src *)a4 length:(unint64_t)a5;
-- (BOOL)performQuery:(unsigned int)a3 sourceRef:(unint64_t)a4 completion:(id)a5;
-- (BOOL)queryAll:(id)a3;
-- (BOOL)sendMessage:(nstat_msg_hdr *)a3 length:(int64_t)a4;
+- (BOOL)addAllForProvider:(int)provider filter:(unint64_t)filter events:(unint64_t)events pid:(int)pid uuid:(unsigned __int8 *)(a7;
+- (BOOL)addAllRoute:(unint64_t)route;
+- (BOOL)addAllTCP:(unint64_t)p events:(unint64_t)events pid:(int)pid uuid:(unsigned __int8 *)(a6;
+- (BOOL)addAllUDP:(unint64_t)p events:(unint64_t)events pid:(int)pid uuid:(unsigned __int8 *)(a6;
+- (BOOL)addSource:(id)source request:(nstat_msg_add_src *)request length:(unint64_t)length;
+- (BOOL)performQuery:(unsigned int)query sourceRef:(unint64_t)ref completion:(id)completion;
+- (BOOL)queryAll:(id)all;
+- (BOOL)sendMessage:(nstat_msg_hdr *)message length:(int64_t)length;
 - (NSSet)sources;
 - (NWStatisticsManager)init;
-- (NWStatisticsManager)initWithQueue:(id)a3;
+- (NWStatisticsManager)initWithQueue:(id)queue;
 - (NWStatisticsManagerDelegate)delegate;
-- (unint64_t)_nextReferenceForTarget:(unint64_t)a3 command:(unsigned int)a4;
-- (unsigned)commandFromReference:(unint64_t)a3;
+- (unint64_t)_nextReferenceForTarget:(unint64_t)target command:(unsigned int)command;
+- (unsigned)commandFromReference:(unint64_t)reference;
 - (void)dealloc;
-- (void)dispatchDidAddSource:(id)a3;
-- (void)dispatchDidReceiveCounts:(id)a3 fromUpdate:(BOOL)a4;
-- (void)dispatchDidReceiveDescription:(id)a3;
-- (void)dispatchDidReceiveType:(unsigned int)a3 source:(id)a4;
-- (void)handleMessage:(nstat_msg_hdr *)a3 length:(int64_t)a4;
+- (void)dispatchDidAddSource:(id)source;
+- (void)dispatchDidReceiveCounts:(id)counts fromUpdate:(BOOL)update;
+- (void)dispatchDidReceiveDescription:(id)description;
+- (void)dispatchDidReceiveType:(unsigned int)type source:(id)source;
+- (void)handleMessage:(nstat_msg_hdr *)message length:(int64_t)length;
 - (void)handleReadEvent;
-- (void)handleSystemInformationCounts:(nstat_sysinfo_counts *)a3;
+- (void)handleSystemInformationCounts:(nstat_sysinfo_counts *)counts;
 - (void)invalidate;
-- (void)performAllCompletions:(id)a3;
-- (void)queryAllCounts:(id)a3;
-- (void)queryAllDescriptions:(id)a3;
-- (void)querySource:(id)a3 completion:(id)a4;
-- (void)removeSource:(id)a3;
-- (void)removeSourceInternal:(unint64_t)a3 isFromClient:(BOOL)a4;
+- (void)performAllCompletions:(id)completions;
+- (void)queryAllCounts:(id)counts;
+- (void)queryAllDescriptions:(id)descriptions;
+- (void)querySource:(id)source completion:(id)completion;
+- (void)removeSource:(id)source;
+- (void)removeSourceInternal:(unint64_t)internal isFromClient:(BOOL)client;
 - (void)reportInternalCounts;
-- (void)sendRemoveSourceInternal:(unint64_t)a3;
-- (void)sendRequestMessage:(int)a3 sourceRef:(unint64_t)a4;
-- (void)setDelegate:(id)a3;
-- (void)setInterfaceTraceFd:(int)a3;
-- (void)setMgrflags:(unsigned int)a3;
-- (void)setQueuePriority:(int64_t)a3;
+- (void)sendRemoveSourceInternal:(unint64_t)internal;
+- (void)sendRequestMessage:(int)message sourceRef:(unint64_t)ref;
+- (void)setDelegate:(id)delegate;
+- (void)setInterfaceTraceFd:(int)fd;
+- (void)setMgrflags:(unsigned int)mgrflags;
+- (void)setQueuePriority:(int64_t)priority;
 - (void)startQueuedQuery;
 - (void)subscribeToSystemInformation;
-- (void)trace:(char *)a3;
-- (void)traceMemoryBuf:(char *)a3 length:(int64_t)a4 tag:(char *)a5;
+- (void)trace:(char *)trace;
+- (void)traceMemoryBuf:(char *)buf length:(int64_t)length tag:(char *)tag;
 @end
 
 @implementation NWStatisticsManager
@@ -51,10 +51,10 @@
   {
     for (i = v4; i > 0; i = recv([(NWStatisticsManager *)self sockfd], [(NWStatisticsManager *)self readBuffer], 0x1000uLL, 0))
     {
-      v6 = [(NWStatisticsManager *)self readBuffer];
+      readBuffer = [(NWStatisticsManager *)self readBuffer];
       if (i >= 0x10)
       {
-        v7 = v6;
+        v7 = readBuffer;
         do
         {
           v8 = *(v7 + 6);
@@ -95,8 +95,8 @@
 - (void)startQueuedQuery
 {
   v33 = *MEMORY[0x277D85DE8];
-  v3 = [(NSMutableDictionary *)self->_queuedQueryAlls allKeys];
-  v4 = [v3 sortedArrayUsingSelector:sel_compare_];
+  allKeys = [(NSMutableDictionary *)self->_queuedQueryAlls allKeys];
+  v4 = [allKeys sortedArrayUsingSelector:sel_compare_];
 
   if (([(NWStatisticsManager *)self mgrflags]& 0x10) != 0)
   {
@@ -132,23 +132,23 @@
       v18 = MEMORY[0x25F875560](v16);
       [(NSMutableDictionary *)currentQueries setObject:v18 forKey:v14];
 
-      v19 = [v14 unsignedLongLongValue];
-      self->_currentQueryAllReference = v19;
+      unsignedLongLongValue = [v14 unsignedLongLongValue];
+      self->_currentQueryAllReference = unsignedLongLongValue;
       *&buf[8] = 0;
-      *&buf[8] = [(NWStatisticsManager *)self commandFromReference:v19];
-      *buf = v19;
+      *&buf[8] = [(NWStatisticsManager *)self commandFromReference:unsignedLongLongValue];
+      *buf = unsignedLongLongValue;
       *&buf[16] = -1;
       *&buf[14] = 2;
       if (![(NWStatisticsManager *)self sendMessage:buf length:24])
       {
-        [(NWStatisticsManager *)self handleCompletion:v19 message:0 length:0];
+        [(NWStatisticsManager *)self handleCompletion:unsignedLongLongValue message:0 length:0];
         v20 = NStatGetLog();
         if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
         {
           *v28 = 134218240;
-          v29 = self;
+          selfCopy = self;
           v30 = 2048;
-          v31 = v19;
+          v31 = unsignedLongLongValue;
           _os_log_impl(&dword_25BA3A000, v20, OS_LOG_TYPE_ERROR, "Manager %p: Failure to send message with reference %llu", v28, 0x16u);
         }
 
@@ -163,32 +163,32 @@
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (void)traceMemoryBuf:(char *)a3 length:(int64_t)a4 tag:(char *)a5
+- (void)traceMemoryBuf:(char *)buf length:(int64_t)length tag:(char *)tag
 {
   v23 = *MEMORY[0x277D85DE8];
-  v8 = self;
-  objc_sync_enter(v8);
-  if ((v8->_interfaceTraceFd & 0x80000000) == 0 && v8->_iftracebuf)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ((selfCopy->_interfaceTraceFd & 0x80000000) == 0 && selfCopy->_iftracebuf)
   {
     v16.tv_sec = 0;
     *&v16.tv_usec = 0;
     gettimeofday(&v16, 0);
-    __snprintf_chk(v8->_iftracebuf, 0x1100uLL, 0, 0xFFFFFFFFFFFFFFFFLL, "%ld.%06d %s len %zu\n", v16.tv_sec, v16.tv_usec, a5, a4);
-    v9 = strlen(v8->_iftracebuf) + 1;
-    v10 = v9 + a4;
-    if ((v9 + a4) >> 8 > 0x10)
+    __snprintf_chk(selfCopy->_iftracebuf, 0x1100uLL, 0, 0xFFFFFFFFFFFFFFFFLL, "%ld.%06d %s len %zu\n", v16.tv_sec, v16.tv_usec, tag, length);
+    v9 = strlen(selfCopy->_iftracebuf) + 1;
+    v10 = v9 + length;
+    if ((v9 + length) >> 8 > 0x10)
     {
       v11 = NStatGetLog();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
       {
-        [NWStatisticsManager traceMemoryBuf:a5 length:a4 tag:v11];
+        [NWStatisticsManager traceMemoryBuf:tag length:length tag:v11];
       }
 
       goto LABEL_9;
     }
 
-    memcpy(&v8->_iftracebuf[v9], a3, a4);
-    if (write(v8->_interfaceTraceFd, v8->_iftracebuf, v10) < 0)
+    memcpy(&selfCopy->_iftracebuf[v9], buf, length);
+    if (write(selfCopy->_interfaceTraceFd, selfCopy->_iftracebuf, v10) < 0)
     {
       v11 = NStatGetLog();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -197,7 +197,7 @@
         v13 = __error();
         v14 = strerror(*v13);
         *buf = 136315650;
-        v18 = a5;
+        tagCopy = tag;
         v19 = 1024;
         v20 = v12;
         v21 = 2080;
@@ -209,56 +209,56 @@ LABEL_9:
     }
   }
 
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)trace:(char *)a3
+- (void)trace:(char *)trace
 {
-  if (a3 && (self->_interfaceTraceFd & 0x80000000) == 0)
+  if (trace && (self->_interfaceTraceFd & 0x80000000) == 0)
   {
-    v5 = strlen(a3) + 1;
+    v5 = strlen(trace) + 1;
 
-    [(NWStatisticsManager *)self traceMemoryBuf:a3 length:v5 tag:"Trace"];
+    [(NWStatisticsManager *)self traceMemoryBuf:trace length:v5 tag:"Trace"];
   }
 }
 
-- (BOOL)sendMessage:(nstat_msg_hdr *)a3 length:(int64_t)a4
+- (BOOL)sendMessage:(nstat_msg_hdr *)message length:(int64_t)length
 {
-  v7 = [(NWStatisticsManager *)self readSource];
+  readSource = [(NWStatisticsManager *)self readSource];
 
-  if (v7)
+  if (readSource)
   {
-    a3->length = a4;
-    a3->flags |= 1u;
+    message->length = length;
+    message->flags |= 1u;
     if ((self->_interfaceTraceFd & 0x80000000) == 0 && self->_iftracebuf)
     {
-      [(NWStatisticsManager *)self traceMemoryBuf:a3 length:a4 tag:"Output"];
+      [(NWStatisticsManager *)self traceMemoryBuf:message length:length tag:"Output"];
     }
 
-    if (send([(NWStatisticsManager *)self sockfd], a3, a4, 0) == a4)
+    if (send([(NWStatisticsManager *)self sockfd], message, length, 0) == length)
     {
       return 1;
     }
 
-    if (a3->context)
+    if (message->context)
     {
-      [(NWStatisticsManager *)self handleCompletion:a3->context message:0 length:0];
+      [(NWStatisticsManager *)self handleCompletion:message->context message:0 length:0];
     }
   }
 
   return 0;
 }
 
-- (void)handleSystemInformationCounts:(nstat_sysinfo_counts *)a3
+- (void)handleSystemInformationCounts:(nstat_sysinfo_counts *)counts
 {
-  v5 = [(NWStatisticsManager *)self delegate];
-  if ((objc_opt_respondsToSelector() & 1) != 0 && ((a3->var0 - 8) / 0x28) >= 1)
+  delegate = [(NWStatisticsManager *)self delegate];
+  if ((objc_opt_respondsToSelector() & 1) != 0 && ((counts->var0 - 8) / 0x28) >= 1)
   {
-    v6 = ((a3->var0 - 8) / 0x28) & 0x7FFFFFFF;
+    v6 = ((counts->var0 - 8) / 0x28) & 0x7FFFFFFF;
     v7 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:v6];
-    p_var3 = &a3->var2[0].var3;
+    p_var3 = &counts->var2[0].var3;
     while (1)
     {
       v9 = *(p_var3 - 8);
@@ -303,7 +303,7 @@ LABEL_15:
       {
         if ([v7 count])
         {
-          v14 = [(NWStatisticsManager *)self clientQueue];
+          clientQueue = [(NWStatisticsManager *)self clientQueue];
           v16[0] = MEMORY[0x277D85DD0];
           v16[1] = 3221225472;
           v16[2] = __53__NWStatisticsManager_handleSystemInformationCounts___block_invoke;
@@ -311,7 +311,7 @@ LABEL_15:
           v16[4] = self;
           v17 = v7;
           v15 = v7;
-          dispatch_async(v14, v16);
+          dispatch_async(clientQueue, v16);
         }
 
         else
@@ -360,7 +360,7 @@ void __53__NWStatisticsManager_handleSystemInformationCounts___block_invoke(uint
     numUpdatesLazyDispatched = self->_numUpdatesLazyDispatched;
     numUpdatesLazySkipped = self->_numUpdatesLazySkipped;
     *buf = 134220544;
-    v31 = self;
+    selfCopy = self;
     v32 = 2048;
     v33 = numSourceAddsReceived;
     v34 = 2048;
@@ -402,18 +402,18 @@ void __53__NWStatisticsManager_handleSystemInformationCounts___block_invoke(uint
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)dispatchDidAddSource:(id)a3
+- (void)dispatchDidAddSource:(id)source
 {
-  v4 = a3;
-  v5 = [(NWStatisticsManager *)self clientQueue];
+  sourceCopy = source;
+  clientQueue = [(NWStatisticsManager *)self clientQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __44__NWStatisticsManager_dispatchDidAddSource___block_invoke;
   v7[3] = &unk_27996DB70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = sourceCopy;
+  v6 = sourceCopy;
+  dispatch_async(clientQueue, v7);
 }
 
 void __44__NWStatisticsManager_dispatchDidAddSource___block_invoke(uint64_t a1)
@@ -427,17 +427,17 @@ void __44__NWStatisticsManager_dispatchDidAddSource___block_invoke(uint64_t a1)
   }
 }
 
-- (void)dispatchDidReceiveDescription:(id)a3
+- (void)dispatchDidReceiveDescription:(id)description
 {
-  v4 = a3;
-  v5 = [(NWStatisticsManager *)self clientQueue];
+  descriptionCopy = description;
+  clientQueue = [(NWStatisticsManager *)self clientQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __53__NWStatisticsManager_dispatchDidReceiveDescription___block_invoke;
   block[3] = &unk_27996DB98;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v8 = descriptionCopy;
+  v6 = descriptionCopy;
+  dispatch_async(clientQueue, block);
 }
 
 void __53__NWStatisticsManager_dispatchDidReceiveDescription___block_invoke(uint64_t a1)
@@ -454,17 +454,17 @@ void __53__NWStatisticsManager_dispatchDidReceiveDescription___block_invoke(uint
   }
 }
 
-- (void)dispatchDidReceiveCounts:(id)a3 fromUpdate:(BOOL)a4
+- (void)dispatchDidReceiveCounts:(id)counts fromUpdate:(BOOL)update
 {
-  v5 = a3;
-  v6 = [(NWStatisticsManager *)self clientQueue];
+  countsCopy = counts;
+  clientQueue = [(NWStatisticsManager *)self clientQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __59__NWStatisticsManager_dispatchDidReceiveCounts_fromUpdate___block_invoke;
   block[3] = &unk_27996DB98;
-  v9 = v5;
-  v7 = v5;
-  dispatch_async(v6, block);
+  v9 = countsCopy;
+  v7 = countsCopy;
+  dispatch_async(clientQueue, block);
 }
 
 void __59__NWStatisticsManager_dispatchDidReceiveCounts_fromUpdate___block_invoke(uint64_t a1)
@@ -481,21 +481,21 @@ void __59__NWStatisticsManager_dispatchDidReceiveCounts_fromUpdate___block_invok
   }
 }
 
-- (void)dispatchDidReceiveType:(unsigned int)a3 source:(id)a4
+- (void)dispatchDidReceiveType:(unsigned int)type source:(id)source
 {
-  v6 = a4;
-  v7 = v6;
-  if (a3 == 10003)
+  sourceCopy = source;
+  v7 = sourceCopy;
+  if (type == 10003)
   {
-    v11 = v6;
-    v6 = [(NWStatisticsManager *)self dispatchDidReceiveDescription:v6];
+    v11 = sourceCopy;
+    sourceCopy = [(NWStatisticsManager *)self dispatchDidReceiveDescription:sourceCopy];
   }
 
   else
   {
-    if (a3 == 10004)
+    if (type == 10004)
     {
-      v8 = self;
+      selfCopy2 = self;
       v11 = v7;
       v9 = v7;
       v10 = 0;
@@ -503,33 +503,33 @@ void __59__NWStatisticsManager_dispatchDidReceiveCounts_fromUpdate___block_invok
 
     else
     {
-      if (a3 != 10006)
+      if (type != 10006)
       {
         goto LABEL_9;
       }
 
-      v11 = v6;
-      [(NWStatisticsManager *)self dispatchDidReceiveDescription:v6];
-      v8 = self;
+      v11 = sourceCopy;
+      [(NWStatisticsManager *)self dispatchDidReceiveDescription:sourceCopy];
+      selfCopy2 = self;
       v9 = v11;
       v10 = 1;
     }
 
-    v6 = [(NWStatisticsManager *)v8 dispatchDidReceiveCounts:v9 fromUpdate:v10];
+    sourceCopy = [(NWStatisticsManager *)selfCopy2 dispatchDidReceiveCounts:v9 fromUpdate:v10];
   }
 
   v7 = v11;
 LABEL_9:
 
-  MEMORY[0x2821F96F8](v6, v7);
+  MEMORY[0x2821F96F8](sourceCopy, v7);
 }
 
-- (void)sendRequestMessage:(int)a3 sourceRef:(unint64_t)a4
+- (void)sendRequestMessage:(int)message sourceRef:(unint64_t)ref
 {
-  v7 = [(NWStatisticsManager *)self internalQueue];
-  dispatch_assert_queue_V2(v7);
+  internalQueue = [(NWStatisticsManager *)self internalQueue];
+  dispatch_assert_queue_V2(internalQueue);
 
-  if (a4 == -1)
+  if (ref == -1)
   {
     [NWStatisticsManager sendRequestMessage:sourceRef:];
   }
@@ -537,26 +537,26 @@ LABEL_9:
   if (![(NWStatisticsManager *)self isInvalidated])
   {
     v8[0] = 0;
-    v8[1] = a3;
-    v8[2] = a4;
+    v8[1] = message;
+    v8[2] = ref;
     [(NWStatisticsManager *)self sendMessage:v8 length:24];
   }
 }
 
-- (void)handleMessage:(nstat_msg_hdr *)a3 length:(int64_t)a4
+- (void)handleMessage:(nstat_msg_hdr *)message length:(int64_t)length
 {
   v80 = *MEMORY[0x277D85DE8];
-  type = a3->type;
+  type = message->type;
   if (type <= 10001)
   {
     if (type == 1)
     {
-      if (a4 < 0x28)
+      if (length < 0x28)
       {
         v42 = NStatGetLog();
         if (os_log_type_enabled(v42, OS_LOG_TYPE_DEBUG))
         {
-          [NWStatisticsManager handleMessage:a3 length:v42];
+          [NWStatisticsManager handleMessage:message length:v42];
         }
       }
 
@@ -567,24 +567,24 @@ LABEL_9:
           v27 = NStatGetLog();
           if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
           {
-            context = a3[1].context;
-            v29 = *&a3[1].type;
-            v30 = a3[2].context;
+            context = message[1].context;
+            v29 = *&message[1].type;
+            v30 = message[2].context;
             v31 = msgTypeToString(v30);
-            v32 = WORD2(a3[2].context);
-            context_high = HIWORD(a3[2].context);
-            if (a4 < 0x30)
+            v32 = WORD2(message[2].context);
+            context_high = HIWORD(message[2].context);
+            if (length < 0x30)
             {
               v34 = 0;
             }
 
             else
             {
-              v34 = *&a3[2].type;
+              v34 = *&message[2].type;
             }
 
             *buf = 134219778;
-            v69 = self;
+            selfCopy3 = self;
             v70 = 1024;
             *v71 = context;
             *&v71[4] = 2048;
@@ -605,16 +605,16 @@ LABEL_9:
 
         if (([(NWStatisticsManager *)self mgrflags]& 0x80) != 0)
         {
-          context_low = LODWORD(a3[1].context);
-          v54 = *&a3[1].type;
-          msgTypeToString(a3[2].context);
-          v61 = WORD2(a3[2].context);
-          if (a4 >= 0x30)
+          context_low = LODWORD(message[1].context);
+          v54 = *&message[1].type;
+          msgTypeToString(message[2].context);
+          v61 = WORD2(message[2].context);
+          if (length >= 0x30)
           {
-            v62 = *&a3[2].type;
+            v62 = *&message[2].type;
           }
 
-          v66 = HIWORD(a3[2].context);
+          v66 = HIWORD(message[2].context);
           NStatMgrTraceF(self, "%s Manager %p: error: %d hdr {0x%lld, %d (%s) %d, 0x%x} srcref %lld}", v55, v56, v57, v58, v59, v60, "[NWStatisticsManager handleMessage:length:]");
         }
       }
@@ -627,7 +627,7 @@ LABEL_9:
       goto LABEL_71;
     }
 
-    if (a4 >= 0x20)
+    if (length >= 0x20)
     {
       mgrflags = self->_mgrflags;
       if ((mgrflags & 0x20) != 0)
@@ -636,18 +636,18 @@ LABEL_9:
         if ((mgrflags & 0x40) != 0)
         {
           ++self->_numSourcesQueried;
-          [(NWStatisticsManager *)self sendRequestMessage:1007 sourceRef:a3[1].context];
+          [(NWStatisticsManager *)self sendRequestMessage:1007 sourceRef:message[1].context];
         }
       }
 
       else
       {
-        v15 = [NWStatisticsSource createSourceForProvider:a3[1].type srcRef:a3[1].context manager:self];
+        v15 = [NWStatisticsSource createSourceForProvider:message[1].type srcRef:message[1].context manager:self];
         if (v15)
         {
-          v16 = [(NWStatisticsManager *)self _internalSources];
-          v17 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a3[1].context];
-          [v16 setObject:v15 forKey:v17];
+          _internalSources = [(NWStatisticsManager *)self _internalSources];
+          v17 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:message[1].context];
+          [_internalSources setObject:v15 forKey:v17];
 
           ++self->_numSourcesInserted;
           [(NWStatisticsManager *)self dispatchDidAddSource:v15];
@@ -655,7 +655,7 @@ LABEL_9:
 
         else
         {
-          [(NWStatisticsManager *)self sendRemoveSourceInternal:a3[1].context];
+          [(NWStatisticsManager *)self sendRemoveSourceInternal:message[1].context];
         }
       }
     }
@@ -679,20 +679,20 @@ LABEL_71:
     if ((type - 10002) < 3)
     {
 LABEL_5:
-      if (a4 >= 0x18)
+      if (length >= 0x18)
       {
-        v8 = a3[1].context;
-        v9 = [(NWStatisticsManager *)self _internalSources];
+        v8 = message[1].context;
+        _internalSources2 = [(NWStatisticsManager *)self _internalSources];
         v10 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v8];
-        v67 = [v9 objectForKey:v10];
+        v67 = [_internalSources2 objectForKey:v10];
 
-        v12 = a3->type;
+        v12 = message->type;
         if (v12 == 10002)
         {
           v13 = v67;
           if (v67)
           {
-            v11 = [(NWStatisticsManager *)self removeSourceInternal:v8 isFromClient:0];
+            removing = [(NWStatisticsManager *)self removeSourceInternal:v8 isFromClient:0];
 LABEL_9:
             v13 = v67;
           }
@@ -703,22 +703,22 @@ LABEL_9:
           v13 = v67;
           if (v67)
           {
-            v11 = [v67 removing];
+            removing = [v67 removing];
             v13 = v67;
-            if ((v11 & 1) == 0)
+            if ((removing & 1) == 0)
             {
-              v11 = [v67 handleMessage:a3 length:a4];
+              removing = [v67 handleMessage:message length:length];
               v13 = v67;
-              if (v11)
+              if (removing)
               {
-                if ((self->_mgrflags & 8) != 0 && (a3->flags & 4) != 0)
+                if ((self->_mgrflags & 8) != 0 && (message->flags & 4) != 0)
                 {
                   ++self->_numUpdatesSkipped;
                   goto LABEL_73;
                 }
 
                 ++self->_numUpdatesDispatched;
-                v11 = [(NWStatisticsManager *)self dispatchDidReceiveType:a3->type source:v67];
+                removing = [(NWStatisticsManager *)self dispatchDidReceiveType:message->type source:v67];
                 goto LABEL_9;
               }
             }
@@ -741,22 +741,22 @@ LABEL_9:
               v43 = 2;
             }
 
-            v46 = LODWORD(a3[v43].context);
+            v46 = LODWORD(message[v43].context);
             if ((v46 - 11) >= 0xFFFFFFF6 && ((self->_providerFilters[v46] & 0x100000) != 0 || (self->_mgrflags & 0x20) != 0))
             {
               v47 = [NWStatisticsSource createSourceForProvider:"createSourceForProvider:srcRef:manager:" srcRef:? manager:?];
               if (v47)
               {
-                v48 = [(NWStatisticsManager *)self _internalSources];
+                _internalSources3 = [(NWStatisticsManager *)self _internalSources];
                 v49 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v8];
-                [v48 setObject:v47 forKey:v49];
+                [_internalSources3 setObject:v47 forKey:v49];
 
                 ++self->_numSourcesInserted;
-                v50 = [v47 handleMessage:a3 length:a4];
+                v50 = [v47 handleMessage:message length:length];
                 [(NWStatisticsManager *)self dispatchDidAddSource:v47];
                 if (v50)
                 {
-                  if ((self->_mgrflags & 8) != 0 && (a3->flags & 4) != 0)
+                  if ((self->_mgrflags & 8) != 0 && (message->flags & 4) != 0)
                   {
                     ++self->_numUpdatesLazySkipped;
                   }
@@ -764,7 +764,7 @@ LABEL_9:
                   else
                   {
                     ++self->_numUpdatesLazyDispatched;
-                    [(NWStatisticsManager *)self dispatchDidReceiveType:a3->type source:v47];
+                    [(NWStatisticsManager *)self dispatchDidReceiveType:message->type source:v47];
                   }
                 }
               }
@@ -777,7 +777,7 @@ LABEL_9:
 LABEL_73:
         v64 = *MEMORY[0x277D85DE8];
 
-        MEMORY[0x2821F96F8](v11, v13);
+        MEMORY[0x2821F96F8](removing, v13);
         return;
       }
 
@@ -794,15 +794,15 @@ LABEL_73:
       goto LABEL_5;
     }
 
-    if (a4 < 0x1C)
+    if (length < 0x1C)
     {
       v35 = NStatGetLog();
       if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
       {
         *buf = 134218240;
-        v69 = self;
+        selfCopy3 = self;
         v70 = 2048;
-        *v71 = a4;
+        *v71 = length;
         _os_log_impl(&dword_25BA3A000, v35, OS_LOG_TYPE_ERROR, "Manager %p: Received message too short SYSINFO_COUNTS length %zd could not read nstat_sysinfo_len", buf, 0x16u);
       }
 
@@ -814,17 +814,17 @@ LABEL_73:
       goto LABEL_71;
     }
 
-    p_type = &a3[1].type;
-    if (a3[1].type + 24 > a4)
+    p_type = &message[1].type;
+    if (message[1].type + 24 > length)
     {
       v19 = NStatGetLog();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
       {
         v20 = *p_type + 24;
         *buf = 134218496;
-        v69 = self;
+        selfCopy3 = self;
         v70 = 2048;
-        *v71 = a4;
+        *v71 = length;
         *&v71[8] = 2048;
         *&v71[10] = v20;
         _os_log_impl(&dword_25BA3A000, v19, OS_LOG_TYPE_ERROR, "Manager %p: Received message too short SYSINFO_COUNTS length %zd < %zd", buf, 0x20u);
@@ -840,35 +840,35 @@ LABEL_73:
     }
 
     v44 = *MEMORY[0x277D85DE8];
-    v45 = &a3[1].type;
+    v45 = &message[1].type;
 
     [(NWStatisticsManager *)self handleSystemInformationCounts:v45];
   }
 }
 
-- (BOOL)addSource:(id)a3 request:(nstat_msg_add_src *)a4 length:(unint64_t)a5
+- (BOOL)addSource:(id)source request:(nstat_msg_add_src *)request length:(unint64_t)length
 {
-  v8 = a3;
+  sourceCopy = source;
   v9 = dispatch_semaphore_create(0);
   if (v9)
   {
     v10 = v9;
-    a4->var0.context = 0;
-    v11 = [(NWStatisticsManager *)self internalQueue];
+    request->var0.context = 0;
+    internalQueue = [(NWStatisticsManager *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __48__NWStatisticsManager_addSource_request_length___block_invoke;
     block[3] = &unk_27996DBE8;
     block[4] = self;
-    v12 = v8;
+    v12 = sourceCopy;
     v18 = v12;
     v13 = v10;
     v19 = v13;
-    v20 = a4;
-    v21 = a5;
-    dispatch_sync(v11, block);
+    requestCopy = request;
+    lengthCopy = length;
+    dispatch_sync(internalQueue, block);
 
-    if (a4->var0.context)
+    if (request->var0.context)
     {
       v14 = dispatch_time(0, 10000000000);
       dispatch_semaphore_wait(v13, v14);
@@ -931,27 +931,27 @@ uint64_t __48__NWStatisticsManager_addSource_request_length___block_invoke_2(uin
   return 1;
 }
 
-- (void)sendRemoveSourceInternal:(unint64_t)a3
+- (void)sendRemoveSourceInternal:(unint64_t)internal
 {
   v3[0] = 0;
   v3[1] = 1003;
-  v3[2] = a3;
+  v3[2] = internal;
   [(NWStatisticsManager *)self sendMessage:v3 length:24];
 }
 
-- (void)removeSourceInternal:(unint64_t)a3 isFromClient:(BOOL)a4
+- (void)removeSourceInternal:(unint64_t)internal isFromClient:(BOOL)client
 {
-  v4 = a4;
-  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a3];
-  v7 = [(NWStatisticsManager *)self _internalSources];
-  v8 = [v7 objectForKey:v6];
+  clientCopy = client;
+  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:internal];
+  _internalSources = [(NWStatisticsManager *)self _internalSources];
+  v8 = [_internalSources objectForKey:v6];
 
   if (!v8)
   {
     goto LABEL_13;
   }
 
-  if (v4)
+  if (clientCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -980,21 +980,21 @@ LABEL_7:
   }
 
 LABEL_10:
-  v11 = [(NWStatisticsManager *)self _internalSources];
-  [v11 removeObjectForKey:v6];
+  _internalSources2 = [(NWStatisticsManager *)self _internalSources];
+  [_internalSources2 removeObjectForKey:v6];
 
   ++self->_numSourcesRemoved;
-  v12 = [(NWStatisticsManager *)self delegate];
+  delegate = [(NWStatisticsManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v13 = [(NWStatisticsManager *)self clientQueue];
+    clientQueue = [(NWStatisticsManager *)self clientQueue];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __57__NWStatisticsManager_removeSourceInternal_isFromClient___block_invoke;
     v14[3] = &unk_27996DB70;
     v14[4] = self;
     v15 = v8;
-    dispatch_async(v13, v14);
+    dispatch_async(clientQueue, v14);
   }
 
 LABEL_13:
@@ -1013,13 +1013,13 @@ void __57__NWStatisticsManager_removeSourceInternal_isFromClient___block_invoke(
 
 - (void)subscribeToSystemInformation
 {
-  v3 = [(NWStatisticsManager *)self internalQueue];
+  internalQueue = [(NWStatisticsManager *)self internalQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __51__NWStatisticsManager_subscribeToSystemInformation__block_invoke;
   block[3] = &unk_27996DB98;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(internalQueue, block);
 }
 
 uint64_t __51__NWStatisticsManager_subscribeToSystemInformation__block_invoke(uint64_t result)
@@ -1035,30 +1035,30 @@ uint64_t __51__NWStatisticsManager_subscribeToSystemInformation__block_invoke(ui
   return result;
 }
 
-- (BOOL)addAllForProvider:(int)a3 filter:(unint64_t)a4 events:(unint64_t)a5 pid:(int)a6 uuid:(unsigned __int8 *)(a7
+- (BOOL)addAllForProvider:(int)provider filter:(unint64_t)filter events:(unint64_t)events pid:(int)pid uuid:(unsigned __int8 *)(a7
 {
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
   v22 = 0;
-  if ((a3 - 2) >= 4 && a3 != 8)
+  if ((provider - 2) >= 4 && provider != 8)
   {
     __assert_rtn("[NWStatisticsManager addAllForProvider:filter:events:pid:uuid:]", "NWStatisticsManager.m", 869, "(provider == NSTAT_PROVIDER_TCP_KERNEL) || (provider == NSTAT_PROVIDER_TCP_USERLAND) || (provider == NSTAT_PROVIDER_UDP_KERNEL) || (provider == NSTAT_PROVIDER_UDP_USERLAND) || (provider == NSTAT_PROVIDER_QUIC_USERLAND)");
   }
 
-  v13 = [(NWStatisticsManager *)self internalQueue];
+  internalQueue = [(NWStatisticsManager *)self internalQueue];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __64__NWStatisticsManager_addAllForProvider_filter_events_pid_uuid___block_invoke;
   v16[3] = &unk_27996DC10;
-  v16[6] = a4;
-  v16[7] = a5;
-  v17 = a3;
-  v18 = a6;
+  v16[6] = filter;
+  v16[7] = events;
+  providerCopy = provider;
+  pidCopy = pid;
   v16[8] = a7;
   v16[4] = self;
   v16[5] = &v19;
-  dispatch_sync(v13, v16);
+  dispatch_sync(internalQueue, v16);
 
   v14 = *(v20 + 24);
   _Block_object_dispose(&v19, 8);
@@ -1121,11 +1121,11 @@ void __64__NWStatisticsManager_addAllForProvider_filter_events_pid_uuid___block_
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)addAllTCP:(unint64_t)a3 events:(unint64_t)a4 pid:(int)a5 uuid:(unsigned __int8 *)(a6
+- (BOOL)addAllTCP:(unint64_t)p events:(unint64_t)events pid:(int)pid uuid:(unsigned __int8 *)(a6
 {
-  if ((a3 & 0x30000000) != 0)
+  if ((p & 0x30000000) != 0)
   {
-    v8 = a3 & 0x30000000;
+    v8 = p & 0x30000000;
   }
 
   else
@@ -1134,20 +1134,20 @@ void __64__NWStatisticsManager_addAllForProvider_filter_events_pid_uuid___block_
   }
 
   v9 = -805306369;
-  if (!a5)
+  if (!pid)
   {
     v9 = -855638017;
   }
 
-  v10 = v9 & a3;
-  if ((a3 & 0x3000000) != 0)
+  v10 = v9 & p;
+  if ((p & 0x3000000) != 0)
   {
-    v11 = a5;
+    pidCopy = pid;
   }
 
   else
   {
-    v11 = 0;
+    pidCopy = 0;
   }
 
   if (a6)
@@ -1160,7 +1160,7 @@ void __64__NWStatisticsManager_addAllForProvider_filter_events_pid_uuid___block_
     v12 = v10 & 0xFFFFFFFFC3FFFFFFLL;
   }
 
-  if ((a3 & 0xC000000) != 0)
+  if ((p & 0xC000000) != 0)
   {
     v13 = a6;
   }
@@ -1170,21 +1170,21 @@ void __64__NWStatisticsManager_addAllForProvider_filter_events_pid_uuid___block_
     v13 = 0;
   }
 
-  v14 = (v8 & 0x10000000) == 0 || [(NWStatisticsManager *)self addAllForProvider:2 filter:v12 events:a4 pid:v11 uuid:v13];
+  v14 = (v8 & 0x10000000) == 0 || [(NWStatisticsManager *)self addAllForProvider:2 filter:v12 events:events pid:pidCopy uuid:v13];
   if (v8 >> 29 && v14)
   {
 
-    LOBYTE(v14) = [(NWStatisticsManager *)self addAllForProvider:3 filter:v12 events:a4 pid:v11 uuid:v13];
+    LOBYTE(v14) = [(NWStatisticsManager *)self addAllForProvider:3 filter:v12 events:events pid:pidCopy uuid:v13];
   }
 
   return v14;
 }
 
-- (BOOL)addAllUDP:(unint64_t)a3 events:(unint64_t)a4 pid:(int)a5 uuid:(unsigned __int8 *)(a6
+- (BOOL)addAllUDP:(unint64_t)p events:(unint64_t)events pid:(int)pid uuid:(unsigned __int8 *)(a6
 {
-  if ((a3 & 0x70000000) != 0)
+  if ((p & 0x70000000) != 0)
   {
-    v8 = a3 & 0x70000000;
+    v8 = p & 0x70000000;
   }
 
   else
@@ -1193,20 +1193,20 @@ void __64__NWStatisticsManager_addAllForProvider_filter_events_pid_uuid___block_
   }
 
   v9 = -1879048193;
-  if (!a5)
+  if (!pid)
   {
     v9 = -1929379841;
   }
 
-  v10 = v9 & a3;
-  if ((a3 & 0x3000000) != 0)
+  v10 = v9 & p;
+  if ((p & 0x3000000) != 0)
   {
-    v11 = a5;
+    pidCopy = pid;
   }
 
   else
   {
-    v11 = 0;
+    pidCopy = 0;
   }
 
   if (a6)
@@ -1219,7 +1219,7 @@ void __64__NWStatisticsManager_addAllForProvider_filter_events_pid_uuid___block_
     v12 = v10 & 0xFFFFFFFF83FFFFFFLL;
   }
 
-  if ((a3 & 0xC000000) != 0)
+  if ((p & 0xC000000) != 0)
   {
     v13 = a6;
   }
@@ -1231,7 +1231,7 @@ void __64__NWStatisticsManager_addAllForProvider_filter_events_pid_uuid___block_
 
   if ((v8 & 0x10000000) != 0)
   {
-    v14 = [(NWStatisticsManager *)self addAllForProvider:4 filter:v12 events:a4 pid:v11 uuid:v13];
+    v14 = [(NWStatisticsManager *)self addAllForProvider:4 filter:v12 events:events pid:pidCopy uuid:v13];
     if ((v8 & 0x20000000) == 0)
     {
       goto LABEL_21;
@@ -1249,39 +1249,39 @@ void __64__NWStatisticsManager_addAllForProvider_filter_events_pid_uuid___block_
 
   if (v14)
   {
-    v14 = [(NWStatisticsManager *)self addAllForProvider:5 filter:v12 events:a4 pid:v11 uuid:v13];
+    v14 = [(NWStatisticsManager *)self addAllForProvider:5 filter:v12 events:events pid:pidCopy uuid:v13];
   }
 
 LABEL_21:
   if (v8 >> 30 && v14)
   {
 
-    LOBYTE(v14) = [(NWStatisticsManager *)self addAllForProvider:8 filter:v12 events:a4 pid:v11 uuid:v13];
+    LOBYTE(v14) = [(NWStatisticsManager *)self addAllForProvider:8 filter:v12 events:events pid:pidCopy uuid:v13];
   }
 
   return v14;
 }
 
-- (BOOL)addAllRoute:(unint64_t)a3
+- (BOOL)addAllRoute:(unint64_t)route
 {
-  v4 = self;
+  selfCopy = self;
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;
   v11 = 0;
-  v5 = [(NWStatisticsManager *)self internalQueue];
+  internalQueue = [(NWStatisticsManager *)self internalQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __35__NWStatisticsManager_addAllRoute___block_invoke;
   block[3] = &unk_27996DC38;
   block[5] = &v8;
-  block[6] = a3;
-  block[4] = v4;
-  dispatch_sync(v5, block);
+  block[6] = route;
+  block[4] = selfCopy;
+  dispatch_sync(internalQueue, block);
 
-  LOBYTE(v4) = *(v9 + 24);
+  LOBYTE(selfCopy) = *(v9 + 24);
   _Block_object_dispose(&v8, 8);
-  return v4;
+  return selfCopy;
 }
 
 void __35__NWStatisticsManager_addAllRoute___block_invoke(uint64_t a1)
@@ -1325,20 +1325,20 @@ void __35__NWStatisticsManager_addAllRoute___block_invoke(uint64_t a1)
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeSource:(id)a3
+- (void)removeSource:(id)source
 {
-  v4 = [a3 reference];
-  v5 = [(NWStatisticsManager *)self internalQueue];
+  reference = [source reference];
+  internalQueue = [(NWStatisticsManager *)self internalQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __36__NWStatisticsManager_removeSource___block_invoke;
   v6[3] = &unk_27996DC60;
   v6[4] = self;
-  v6[5] = v4;
-  dispatch_async(v5, v6);
+  v6[5] = reference;
+  dispatch_async(internalQueue, v6);
 }
 
-- (unint64_t)_nextReferenceForTarget:(unint64_t)a3 command:(unsigned int)a4
+- (unint64_t)_nextReferenceForTarget:(unint64_t)target command:(unsigned int)command
 {
   v4 = self->_querySequenceNumber + 1;
   self->_querySequenceNumber = v4;
@@ -1346,22 +1346,22 @@ void __35__NWStatisticsManager_addAllRoute___block_invoke(uint64_t a1)
   v6 = v5 | 2;
   v7 = v5 | 1;
   v8 = v5 | 3;
-  if (a4 != 1007)
+  if (command != 1007)
   {
     v8 = v5;
   }
 
-  if (a4 != 1005)
+  if (command != 1005)
   {
     v7 = v8;
   }
 
-  if (a4 != 1004)
+  if (command != 1004)
   {
     v6 = v7;
   }
 
-  if (a3 == -1)
+  if (target == -1)
   {
     return v6;
   }
@@ -1372,9 +1372,9 @@ void __35__NWStatisticsManager_addAllRoute___block_invoke(uint64_t a1)
   }
 }
 
-- (unsigned)commandFromReference:(unint64_t)a3
+- (unsigned)commandFromReference:(unint64_t)reference
 {
-  if ((a3 & 3) == 2)
+  if ((reference & 3) == 2)
   {
     v3 = 1004;
   }
@@ -1384,7 +1384,7 @@ void __35__NWStatisticsManager_addAllRoute___block_invoke(uint64_t a1)
     v3 = 1007;
   }
 
-  if ((a3 & 3) == 1)
+  if ((reference & 3) == 1)
   {
     return 1005;
   }
@@ -1395,10 +1395,10 @@ void __35__NWStatisticsManager_addAllRoute___block_invoke(uint64_t a1)
   }
 }
 
-- (BOOL)performQuery:(unsigned int)a3 sourceRef:(unint64_t)a4 completion:(id)a5
+- (BOOL)performQuery:(unsigned int)query sourceRef:(unint64_t)ref completion:(id)completion
 {
   v46 = *MEMORY[0x277D85DE8];
-  v8 = a5;
+  completionCopy = completion;
   v34 = 0;
   v35 = &v34;
   v36 = 0x2020000000;
@@ -1410,17 +1410,17 @@ void __35__NWStatisticsManager_addAllRoute___block_invoke(uint64_t a1)
     {
       v10 = "NSTAT_MSG_TYPE_GET_SRC_DESC";
       v11 = "UNKNOWN -???";
-      if (a3 == 1007)
+      if (query == 1007)
       {
         v11 = "NSTAT_MSG_TYPE_GET_UPDATE";
       }
 
-      if (a3 != 1005)
+      if (query != 1005)
       {
         v10 = v11;
       }
 
-      if (a3 == 1004)
+      if (query == 1004)
       {
         v12 = "NSTAT_MSG_TYPE_QUERY_SRC";
       }
@@ -1430,13 +1430,13 @@ void __35__NWStatisticsManager_addAllRoute___block_invoke(uint64_t a1)
         v12 = v10;
       }
 
-      v13 = MEMORY[0x25F875560](v8);
+      v13 = MEMORY[0x25F875560](completionCopy);
       *buf = 134218754;
-      v39 = self;
+      selfCopy = self;
       v40 = 2080;
       v41 = v12;
       v42 = 2048;
-      v43 = a4;
+      refCopy = ref;
       v44 = 2048;
       v45 = v13;
       _os_log_impl(&dword_25BA3A000, v9, OS_LOG_TYPE_DEBUG, "Manager %p: Entry command %s  source ref %llu completion %p", buf, 0x2Au);
@@ -1445,39 +1445,39 @@ void __35__NWStatisticsManager_addAllRoute___block_invoke(uint64_t a1)
 
   if (([(NWStatisticsManager *)self mgrflags]& 0x80) != 0)
   {
-    v26 = MEMORY[0x25F875560](v8);
+    v26 = MEMORY[0x25F875560](completionCopy);
     NStatMgrTraceF(self, "%s Manager %p: Entry command %s  source ref %llu completion %p", v14, v15, v16, v17, v18, v19, "[NWStatisticsManager performQuery:sourceRef:completion:]");
   }
 
-  v20 = [(NWStatisticsManager *)self internalQueue];
-  dispatch_assert_queue_not_V2(v20);
+  internalQueue = [(NWStatisticsManager *)self internalQueue];
+  dispatch_assert_queue_not_V2(internalQueue);
 
-  if (a4 == -1 || v8)
+  if (ref == -1 || completionCopy)
   {
-    v22 = [(NWStatisticsManager *)self internalQueue];
+    internalQueue2 = [(NWStatisticsManager *)self internalQueue];
     v27[0] = MEMORY[0x277D85DD0];
     v27[1] = 3221225472;
     v27[2] = __57__NWStatisticsManager_performQuery_sourceRef_completion___block_invoke_2;
     v27[3] = &unk_27996DD00;
     v27[4] = self;
-    v30 = a4;
-    v31 = a3;
-    v28 = v8;
+    refCopy2 = ref;
+    queryCopy = query;
+    v28 = completionCopy;
     v29 = &v34;
-    dispatch_sync(v22, v27);
+    dispatch_sync(internalQueue2, v27);
   }
 
   else
   {
-    v21 = [(NWStatisticsManager *)self internalQueue];
+    internalQueue3 = [(NWStatisticsManager *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __57__NWStatisticsManager_performQuery_sourceRef_completion___block_invoke;
     block[3] = &unk_27996DC88;
-    v33 = a3;
+    queryCopy2 = query;
     block[4] = self;
-    block[5] = a4;
-    dispatch_async(v21, block);
+    block[5] = ref;
+    dispatch_async(internalQueue3, block);
 
     *(v35 + 24) = 1;
   }
@@ -1802,18 +1802,18 @@ uint64_t __57__NWStatisticsManager_performQuery_sourceRef_completion___block_inv
   return result;
 }
 
-- (void)queryAllCounts:(id)a3
+- (void)queryAllCounts:(id)counts
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  countsCopy = counts;
   if (([(NWStatisticsManager *)self mgrflags]& 0x10) != 0)
   {
     v5 = NStatGetLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
-      v6 = MEMORY[0x25F875560](v4);
+      v6 = MEMORY[0x25F875560](countsCopy);
       *buf = 134218240;
-      v16 = self;
+      selfCopy = self;
       v17 = 2048;
       v18 = v6;
       _os_log_impl(&dword_25BA3A000, v5, OS_LOG_TYPE_DEBUG, "Manager %p: Query all counts, completion %p", buf, 0x16u);
@@ -1822,38 +1822,38 @@ uint64_t __57__NWStatisticsManager_performQuery_sourceRef_completion___block_inv
 
   if (([(NWStatisticsManager *)self mgrflags]& 0x80) != 0)
   {
-    v14 = MEMORY[0x25F875560](v4);
+    v14 = MEMORY[0x25F875560](countsCopy);
     NStatMgrTraceF(self, "%s Manager %p: Query all counts, completion %p", v7, v8, v9, v10, v11, v12, "[NWStatisticsManager queryAllCounts:]");
   }
 
   if ([(NWStatisticsManager *)self isInvalidated])
   {
-    if (v4)
+    if (countsCopy)
     {
-      v4[2](v4);
+      countsCopy[2](countsCopy);
     }
   }
 
   else
   {
-    [(NWStatisticsManager *)self performQuery:1004 sourceRef:-1 completion:v4];
+    [(NWStatisticsManager *)self performQuery:1004 sourceRef:-1 completion:countsCopy];
   }
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)queryAllDescriptions:(id)a3
+- (void)queryAllDescriptions:(id)descriptions
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  descriptionsCopy = descriptions;
   if (([(NWStatisticsManager *)self mgrflags]& 0x10) != 0)
   {
     v5 = NStatGetLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
-      v6 = MEMORY[0x25F875560](v4);
+      v6 = MEMORY[0x25F875560](descriptionsCopy);
       *buf = 134218240;
-      v16 = self;
+      selfCopy = self;
       v17 = 2048;
       v18 = v6;
       _os_log_impl(&dword_25BA3A000, v5, OS_LOG_TYPE_DEBUG, "Manager %p: Query all descriptions, completion %p", buf, 0x16u);
@@ -1862,38 +1862,38 @@ uint64_t __57__NWStatisticsManager_performQuery_sourceRef_completion___block_inv
 
   if (([(NWStatisticsManager *)self mgrflags]& 0x80) != 0)
   {
-    v14 = MEMORY[0x25F875560](v4);
+    v14 = MEMORY[0x25F875560](descriptionsCopy);
     NStatMgrTraceF(self, "%s Manager %p: Query all descriptions, completion %p", v7, v8, v9, v10, v11, v12, "[NWStatisticsManager queryAllDescriptions:]");
   }
 
   if ([(NWStatisticsManager *)self isInvalidated])
   {
-    if (v4)
+    if (descriptionsCopy)
     {
-      v4[2](v4);
+      descriptionsCopy[2](descriptionsCopy);
     }
   }
 
   else
   {
-    [(NWStatisticsManager *)self performQuery:1005 sourceRef:-1 completion:v4];
+    [(NWStatisticsManager *)self performQuery:1005 sourceRef:-1 completion:descriptionsCopy];
   }
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)queryAll:(id)a3
+- (BOOL)queryAll:(id)all
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  allCopy = all;
   if (([(NWStatisticsManager *)self mgrflags]& 0x10) != 0)
   {
     v5 = NStatGetLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
-      v6 = MEMORY[0x25F875560](v4);
+      v6 = MEMORY[0x25F875560](allCopy);
       *buf = 134218240;
-      v18 = self;
+      selfCopy = self;
       v19 = 2048;
       v20 = v6;
       _os_log_impl(&dword_25BA3A000, v5, OS_LOG_TYPE_DEBUG, "Manager %p: Query all update, completion %p", buf, 0x16u);
@@ -1902,15 +1902,15 @@ uint64_t __57__NWStatisticsManager_performQuery_sourceRef_completion___block_inv
 
   if (([(NWStatisticsManager *)self mgrflags]& 0x80) != 0)
   {
-    v16 = MEMORY[0x25F875560](v4);
+    v16 = MEMORY[0x25F875560](allCopy);
     NStatMgrTraceF(self, "%s Manager %p: Query all update, completion %p", v7, v8, v9, v10, v11, v12, "[NWStatisticsManager queryAll:]");
   }
 
   if ([(NWStatisticsManager *)self isInvalidated])
   {
-    if (v4)
+    if (allCopy)
     {
-      v4[2](v4);
+      allCopy[2](allCopy);
     }
 
     v13 = 0;
@@ -1918,31 +1918,31 @@ uint64_t __57__NWStatisticsManager_performQuery_sourceRef_completion___block_inv
 
   else
   {
-    v13 = [(NWStatisticsManager *)self performQuery:1007 sourceRef:-1 completion:v4];
+    v13 = [(NWStatisticsManager *)self performQuery:1007 sourceRef:-1 completion:allCopy];
   }
 
   v14 = *MEMORY[0x277D85DE8];
   return v13;
 }
 
-- (void)querySource:(id)a3 completion:(id)a4
+- (void)querySource:(id)source completion:(id)completion
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  sourceCopy = source;
+  completionCopy = completion;
   if (([(NWStatisticsManager *)self mgrflags]& 0x10) != 0)
   {
     v8 = NStatGetLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
-      v9 = [v6 reference];
-      v10 = MEMORY[0x25F875560](v7);
+      reference = [sourceCopy reference];
+      v10 = MEMORY[0x25F875560](completionCopy);
       *buf = 134218752;
-      v20 = self;
+      selfCopy = self;
       v21 = 2048;
-      v22 = v6;
+      v22 = sourceCopy;
       v23 = 2048;
-      v24 = v9;
+      v24 = reference;
       v25 = 2048;
       v26 = v10;
       _os_log_impl(&dword_25BA3A000, v8, OS_LOG_TYPE_DEBUG, "Manager %p: Query Source for %p, %llu  completion %p", buf, 0x2Au);
@@ -1951,28 +1951,28 @@ uint64_t __57__NWStatisticsManager_performQuery_sourceRef_completion___block_inv
 
   if (([(NWStatisticsManager *)self mgrflags]& 0x80) != 0)
   {
-    [v6 reference];
-    v18 = MEMORY[0x25F875560](v7);
+    [sourceCopy reference];
+    v18 = MEMORY[0x25F875560](completionCopy);
     NStatMgrTraceF(self, "%s Manager %p: Query Source for %p, %llu  completion %p", v11, v12, v13, v14, v15, v16, "[NWStatisticsManager querySource:completion:]");
   }
 
   if ([(NWStatisticsManager *)self isInvalidated])
   {
-    if (v7)
+    if (completionCopy)
     {
-      v7[2](v7);
+      completionCopy[2](completionCopy);
     }
   }
 
   else
   {
-    -[NWStatisticsManager performQuery:sourceRef:completion:](self, "performQuery:sourceRef:completion:", 1007, [v6 reference], v7);
+    -[NWStatisticsManager performQuery:sourceRef:completion:](self, "performQuery:sourceRef:completion:", 1007, [sourceCopy reference], completionCopy);
   }
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setQueuePriority:(int64_t)a3
+- (void)setQueuePriority:(int64_t)priority
 {
   v3 = NStatGetLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
@@ -1981,16 +1981,16 @@ uint64_t __57__NWStatisticsManager_performQuery_sourceRef_completion___block_inv
   }
 }
 
-- (void)setMgrflags:(unsigned int)a3
+- (void)setMgrflags:(unsigned int)mgrflags
 {
-  v5 = [(NWStatisticsManager *)self internalQueue];
+  internalQueue = [(NWStatisticsManager *)self internalQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __35__NWStatisticsManager_setMgrflags___block_invoke;
   v6[3] = &unk_27996DD28;
-  v7 = a3;
+  mgrflagsCopy = mgrflags;
   v6[4] = self;
-  dispatch_async(v5, v6);
+  dispatch_async(internalQueue, v6);
 }
 
 uint64_t __35__NWStatisticsManager_setMgrflags___block_invoke(uint64_t result)
@@ -2005,16 +2005,16 @@ uint64_t __35__NWStatisticsManager_setMgrflags___block_invoke(uint64_t result)
   return result;
 }
 
-- (void)setInterfaceTraceFd:(int)a3
+- (void)setInterfaceTraceFd:(int)fd
 {
-  v5 = [(NWStatisticsManager *)self internalQueue];
+  internalQueue = [(NWStatisticsManager *)self internalQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __43__NWStatisticsManager_setInterfaceTraceFd___block_invoke;
   v6[3] = &unk_27996DD28;
   v6[4] = self;
-  v7 = a3;
-  dispatch_async(v5, v6);
+  fdCopy = fd;
+  dispatch_async(internalQueue, v6);
 }
 
 void __43__NWStatisticsManager_setInterfaceTraceFd___block_invoke(uint64_t a1)
@@ -2039,18 +2039,18 @@ void __43__NWStatisticsManager_setInterfaceTraceFd___block_invoke(uint64_t a1)
   objc_sync_exit(obj);
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(NWStatisticsManager *)self internalQueue];
+  delegateCopy = delegate;
+  internalQueue = [(NWStatisticsManager *)self internalQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __35__NWStatisticsManager_setDelegate___block_invoke;
   v7[3] = &unk_27996DB70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = delegateCopy;
+  v6 = delegateCopy;
+  dispatch_sync(internalQueue, v7);
 }
 
 uint64_t __35__NWStatisticsManager_setDelegate___block_invoke(uint64_t a1)
@@ -2076,14 +2076,14 @@ uint64_t __35__NWStatisticsManager_setDelegate___block_invoke(uint64_t a1)
   v10 = __Block_byref_object_copy__0;
   v11 = __Block_byref_object_dispose__0;
   v12 = 0;
-  v3 = [(NWStatisticsManager *)self internalQueue];
+  internalQueue = [(NWStatisticsManager *)self internalQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __30__NWStatisticsManager_sources__block_invoke;
   v6[3] = &unk_27996DD50;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(internalQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -2102,16 +2102,16 @@ void __30__NWStatisticsManager_sources__block_invoke(uint64_t a1)
   *(v5 + 40) = v4;
 }
 
-- (void)performAllCompletions:(id)a3
+- (void)performAllCompletions:(id)completions
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __45__NWStatisticsManager_performAllCompletions___block_invoke;
   v4[3] = &unk_27996DDA0;
   v4[4] = self;
-  v3 = a3;
-  [v3 enumerateKeysAndObjectsUsingBlock:v4];
-  [v3 removeAllObjects];
+  completionsCopy = completions;
+  [completionsCopy enumerateKeysAndObjectsUsingBlock:v4];
+  [completionsCopy removeAllObjects];
 }
 
 void __45__NWStatisticsManager_performAllCompletions___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3)
@@ -2129,13 +2129,13 @@ void __45__NWStatisticsManager_performAllCompletions___block_invoke(uint64_t a1,
 
 - (void)invalidate
 {
-  v3 = [(NWStatisticsManager *)self internalQueue];
+  internalQueue = [(NWStatisticsManager *)self internalQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __33__NWStatisticsManager_invalidate__block_invoke;
   block[3] = &unk_27996DB98;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(internalQueue, block);
 }
 
 uint64_t __33__NWStatisticsManager_invalidate__block_invoke(uint64_t a1)
@@ -2230,16 +2230,16 @@ uint64_t __33__NWStatisticsManager_invalidate__block_invoke(uint64_t a1)
   [(NWStatisticsManager *)&v6 dealloc];
 }
 
-- (NWStatisticsManager)initWithQueue:(id)a3
+- (NWStatisticsManager)initWithQueue:(id)queue
 {
   v80 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  queueCopy = queue;
   v69.receiver = self;
   v69.super_class = NWStatisticsManager;
   v6 = [(NWStatisticsManager *)&v69 init];
   v7 = v6;
   v8 = 0;
-  if (v5 && v6)
+  if (queueCopy && v6)
   {
     v9 = NStatGetLog();
     v10 = socket(32, 2, 2);
@@ -2330,10 +2330,10 @@ LABEL_8:
       goto LABEL_13;
     }
 
-    objc_storeStrong(&v7->_clientQueue, a3);
+    objc_storeStrong(&v7->_clientQueue, queue);
     snprintf(__str, 0x3BuLL, "com.apple.network.statistics.manager.%p", v7);
     relative_priority_ptr = 0;
-    qos_class = dispatch_queue_get_qos_class(v5, &relative_priority_ptr);
+    qos_class = dispatch_queue_get_qos_class(queueCopy, &relative_priority_ptr);
     v19 = dispatch_queue_attr_make_with_qos_class(0, qos_class, relative_priority_ptr);
     v20 = dispatch_queue_create(__str, v19);
     internalQueue = v7->_internalQueue;
@@ -2375,8 +2375,8 @@ LABEL_8:
           v34 = MEMORY[0x277CCACA8];
           v35 = traceFilePrefix;
           id = v7->_id;
-          v37 = [MEMORY[0x277CBEAA8] date];
-          v38 = [v31 stringFromDate:v37];
+          date = [MEMORY[0x277CBEAA8] date];
+          v38 = [v31 stringFromDate:date];
           v39 = [v34 stringWithFormat:@"%@-%d.%@.trace", v35, id, v38];
 
           v40 = open([v39 UTF8String], 513, 438);

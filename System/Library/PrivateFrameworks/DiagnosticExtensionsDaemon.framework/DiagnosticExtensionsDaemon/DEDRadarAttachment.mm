@@ -1,13 +1,13 @@
 @interface DEDRadarAttachment
-- (DEDRadarAttachment)initWithDictionary:(id)a3;
+- (DEDRadarAttachment)initWithDictionary:(id)dictionary;
 - (id)description;
 @end
 
 @implementation DEDRadarAttachment
 
-- (DEDRadarAttachment)initWithDictionary:(id)a3
+- (DEDRadarAttachment)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v8.receiver = self;
   v8.super_class = DEDRadarAttachment;
   v5 = [(DEDRadarAttachment *)&v8 init];
@@ -16,7 +16,7 @@
     goto LABEL_4;
   }
 
-  v6 = [v4 objectForKeyedSubscript:@"fileName"];
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"fileName"];
   if (v6)
   {
     [(DEDRadarAttachment *)v5 setFileName:v6];
@@ -32,8 +32,8 @@ LABEL_4:
 {
   v11[1] = *MEMORY[0x277D85DE8];
   v10 = @"fileName";
-  v2 = [(DEDRadarAttachment *)self fileName];
-  v11[0] = v2;
+  fileName = [(DEDRadarAttachment *)self fileName];
+  v11[0] = fileName;
   v3 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:&v10 count:1];
 
   v4 = MEMORY[0x277CCACA8];

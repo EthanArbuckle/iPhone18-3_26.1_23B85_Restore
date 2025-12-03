@@ -1,44 +1,44 @@
 @interface ICCompatibilityControllerDevice
-+ (int64_t)maximumNotesVersionForHardwareInfo:(ICDeviceHardwareInfo *)a3;
-+ (int64_t)notesVersionForDeviceInfo:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (ICCompatibilityControllerDevice)initWithCoder:(id)a3;
-- (ICCompatibilityControllerDevice)initWithMigrationDeviceInfo:(id)a3;
-- (ICCompatibilityControllerDevice)initWithNotesVersion:(int64_t)a3 maximumNotesVersion:(int64_t)a4 name:(id)a5;
++ (int64_t)maximumNotesVersionForHardwareInfo:(ICDeviceHardwareInfo *)info;
++ (int64_t)notesVersionForDeviceInfo:(id)info;
+- (BOOL)isEqual:(id)equal;
+- (ICCompatibilityControllerDevice)initWithCoder:(id)coder;
+- (ICCompatibilityControllerDevice)initWithMigrationDeviceInfo:(id)info;
+- (ICCompatibilityControllerDevice)initWithNotesVersion:(int64_t)version maximumNotesVersion:(int64_t)notesVersion name:(id)name;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ICCompatibilityControllerDevice
 
-- (ICCompatibilityControllerDevice)initWithNotesVersion:(int64_t)a3 maximumNotesVersion:(int64_t)a4 name:(id)a5
+- (ICCompatibilityControllerDevice)initWithNotesVersion:(int64_t)version maximumNotesVersion:(int64_t)notesVersion name:(id)name
 {
-  v9 = a5;
+  nameCopy = name;
   v13.receiver = self;
   v13.super_class = ICCompatibilityControllerDevice;
   v10 = [(ICCompatibilityControllerDevice *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    v10->_notesVersion = a3;
-    v10->_maximumNotesVersion = a4;
-    objc_storeStrong(&v10->_name, a5);
+    v10->_notesVersion = version;
+    v10->_maximumNotesVersion = notesVersion;
+    objc_storeStrong(&v10->_name, name);
   }
 
   return v11;
 }
 
-- (ICCompatibilityControllerDevice)initWithMigrationDeviceInfo:(id)a3
+- (ICCompatibilityControllerDevice)initWithMigrationDeviceInfo:(id)info
 {
-  v4 = a3;
-  if (([v4 isIOSDevice] & 1) != 0 || objc_msgSend(v4, "isOSXDevice"))
+  infoCopy = info;
+  if (([infoCopy isIOSDevice] & 1) != 0 || objc_msgSend(infoCopy, "isOSXDevice"))
   {
-    v5 = [objc_opt_class() notesVersionForDeviceInfo:v4];
+    v5 = [objc_opt_class() notesVersionForDeviceInfo:infoCopy];
     v6 = objc_opt_class();
-    if (v4)
+    if (infoCopy)
     {
-      [v4 hardwareInfo];
+      [infoCopy hardwareInfo];
     }
 
     else
@@ -47,18 +47,18 @@
     }
 
     v7 = [v6 maximumNotesVersionForHardwareInfo:v11];
-    v8 = [v4 name];
-    self = [(ICCompatibilityControllerDevice *)self initWithNotesVersion:v5 maximumNotesVersion:v7 name:v8];
+    name = [infoCopy name];
+    self = [(ICCompatibilityControllerDevice *)self initWithNotesVersion:v5 maximumNotesVersion:v7 name:name];
 
-    v9 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
 - (id)description
@@ -66,8 +66,8 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(ICCompatibilityControllerDevice *)self notesVersion];
-  if (v6 == 0x7FFFFFFFFFFFFFFFLL)
+  notesVersion = [(ICCompatibilityControllerDevice *)self notesVersion];
+  if (notesVersion == 0x7FFFFFFFFFFFFFFFLL)
   {
     v7 = @"—";
   }
@@ -78,8 +78,8 @@
     v7 = NSStringFromNotesVersion();
   }
 
-  v8 = [(ICCompatibilityControllerDevice *)self maximumNotesVersion];
-  if (v8 == 0x7FFFFFFFFFFFFFFFLL)
+  maximumNotesVersion = [(ICCompatibilityControllerDevice *)self maximumNotesVersion];
+  if (maximumNotesVersion == 0x7FFFFFFFFFFFFFFFLL)
   {
     v9 = @"—";
   }
@@ -90,37 +90,37 @@
     v9 = NSStringFromNotesVersion();
   }
 
-  v10 = [(ICCompatibilityControllerDevice *)self name];
-  v11 = [v3 stringWithFormat:@"<%@: %p, notesVersion: %@, maximumNotesVersion: %@, name: %@>", v5, self, v7, v9, v10];
+  name = [(ICCompatibilityControllerDevice *)self name];
+  v11 = [v3 stringWithFormat:@"<%@: %p, notesVersion: %@, maximumNotesVersion: %@, name: %@>", v5, self, v7, v9, name];
 
-  if (v8 != 0x7FFFFFFFFFFFFFFFLL)
+  if (maximumNotesVersion != 0x7FFFFFFFFFFFFFFFLL)
   {
   }
 
-  if (v6 != 0x7FFFFFFFFFFFFFFFLL)
+  if (notesVersion != 0x7FFFFFFFFFFFFFFFLL)
   {
   }
 
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   v5 = ICDynamicCast();
 
-  v6 = [v5 notesVersion];
-  if (v6 == -[ICCompatibilityControllerDevice notesVersion](self, "notesVersion") && (v7 = [v5 maximumNotesVersion], v7 == -[ICCompatibilityControllerDevice maximumNotesVersion](self, "maximumNotesVersion")))
+  notesVersion = [v5 notesVersion];
+  if (notesVersion == -[ICCompatibilityControllerDevice notesVersion](self, "notesVersion") && (v7 = [v5 maximumNotesVersion], v7 == -[ICCompatibilityControllerDevice maximumNotesVersion](self, "maximumNotesVersion")))
   {
-    v8 = [v5 name];
-    v9 = [(ICCompatibilityControllerDevice *)self name];
-    v10 = [v8 isEqualToString:v9];
+    name = [v5 name];
+    name2 = [(ICCompatibilityControllerDevice *)self name];
+    v10 = [name isEqualToString:name2];
   }
 
   else
@@ -137,24 +137,24 @@
   v4 = [v3 hash];
   v5 = [MEMORY[0x277CCABB0] numberWithLongLong:{-[ICCompatibilityControllerDevice maximumNotesVersion](self, "maximumNotesVersion")}];
   v6 = [v5 hash];
-  v7 = [(ICCompatibilityControllerDevice *)self name];
-  [v7 hash];
+  name = [(ICCompatibilityControllerDevice *)self name];
+  [name hash];
   v15 = ICHashWithHashKeys(v4, v8, v9, v10, v11, v12, v13, v14, v6);
 
   return v15;
 }
 
-- (ICCompatibilityControllerDevice)initWithCoder:(id)a3
+- (ICCompatibilityControllerDevice)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = ICCompatibilityControllerDevice;
   v5 = [(ICCompatibilityControllerDevice *)&v9 init];
   if (v5)
   {
-    v5->_notesVersion = [v4 decodeIntegerForKey:@"notesVersion"];
-    v5->_maximumNotesVersion = [v4 decodeIntegerForKey:@"maximumNotesVersion"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+    v5->_notesVersion = [coderCopy decodeIntegerForKey:@"notesVersion"];
+    v5->_maximumNotesVersion = [coderCopy decodeIntegerForKey:@"maximumNotesVersion"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
     name = v5->_name;
     v5->_name = v6;
   }
@@ -162,37 +162,37 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:-[ICCompatibilityControllerDevice notesVersion](self forKey:{"notesVersion"), @"notesVersion"}];
-  [v4 encodeInteger:-[ICCompatibilityControllerDevice maximumNotesVersion](self forKey:{"maximumNotesVersion"), @"maximumNotesVersion"}];
-  v5 = [(ICCompatibilityControllerDevice *)self name];
-  [v4 encodeObject:v5 forKey:@"name"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[ICCompatibilityControllerDevice notesVersion](self forKey:{"notesVersion"), @"notesVersion"}];
+  [coderCopy encodeInteger:-[ICCompatibilityControllerDevice maximumNotesVersion](self forKey:{"maximumNotesVersion"), @"maximumNotesVersion"}];
+  name = [(ICCompatibilityControllerDevice *)self name];
+  [coderCopy encodeObject:name forKey:@"name"];
 }
 
-+ (int64_t)notesVersionForDeviceInfo:(id)a3
++ (int64_t)notesVersionForDeviceInfo:(id)info
 {
-  v3 = a3;
-  v4 = [v3 softwareVersion];
-  v5 = [v4 lowercaseString];
-  v6 = [v5 hasPrefix:@"osx"];
+  infoCopy = info;
+  softwareVersion = [infoCopy softwareVersion];
+  lowercaseString = [softwareVersion lowercaseString];
+  v6 = [lowercaseString hasPrefix:@"osx"];
 
   if (!v6)
   {
 LABEL_13:
-    v7 = [v3 softwareVersion];
-    v8 = [v7 lowercaseString];
-    v9 = [v8 hasPrefix:@"ios"];
+    softwareVersion2 = [infoCopy softwareVersion];
+    lowercaseString2 = [softwareVersion2 lowercaseString];
+    v9 = [lowercaseString2 hasPrefix:@"ios"];
 
     if (!v9)
     {
 LABEL_35:
-      v11 = [v3 softwareVersion];
-      v12 = [v11 lowercaseString];
-      v13 = [v12 hasPrefix:@"visionos"];
+      softwareVersion3 = [infoCopy softwareVersion];
+      lowercaseString3 = [softwareVersion3 lowercaseString];
+      v13 = [lowercaseString3 hasPrefix:@"visionos"];
 
-      if (!v13 || ([v3 upgradedToMajor:1 minor:0] & 1) == 0)
+      if (!v13 || ([infoCopy upgradedToMajor:1 minor:0] & 1) == 0)
       {
         v10 = 0x7FFFFFFFFFFFFFFFLL;
         goto LABEL_39;
@@ -201,70 +201,70 @@ LABEL_35:
       goto LABEL_37;
     }
 
-    if (([v3 upgradedToMajor:17 minor:0] & 1) == 0)
+    if (([infoCopy upgradedToMajor:17 minor:0] & 1) == 0)
     {
-      if ([v3 upgradedToMajor:16 minor:0])
+      if ([infoCopy upgradedToMajor:16 minor:0])
       {
         goto LABEL_16;
       }
 
-      if ([v3 upgradedToMajor:15 minor:4])
+      if ([infoCopy upgradedToMajor:15 minor:4])
       {
 LABEL_18:
         v10 = 8;
         goto LABEL_39;
       }
 
-      if ([v3 upgradedToMajor:15 minor:0])
+      if ([infoCopy upgradedToMajor:15 minor:0])
       {
 LABEL_20:
         v10 = 7;
         goto LABEL_39;
       }
 
-      if ([v3 upgradedToMajor:14 minor:5])
+      if ([infoCopy upgradedToMajor:14 minor:5])
       {
 LABEL_22:
         v10 = 6;
         goto LABEL_39;
       }
 
-      if ([v3 upgradedToMajor:14 minor:0])
+      if ([infoCopy upgradedToMajor:14 minor:0])
       {
 LABEL_24:
         v10 = 5;
         goto LABEL_39;
       }
 
-      if ([v3 upgradedToMajor:13 minor:0])
+      if ([infoCopy upgradedToMajor:13 minor:0])
       {
 LABEL_26:
         v10 = 4;
         goto LABEL_39;
       }
 
-      if ([v3 upgradedToMajor:12 minor:0])
+      if ([infoCopy upgradedToMajor:12 minor:0])
       {
 LABEL_28:
         v10 = 3;
         goto LABEL_39;
       }
 
-      if ([v3 upgradedToMajor:11 minor:0])
+      if ([infoCopy upgradedToMajor:11 minor:0])
       {
 LABEL_30:
         v10 = 2;
         goto LABEL_39;
       }
 
-      if ([v3 upgradedToMajor:10 minor:0])
+      if ([infoCopy upgradedToMajor:10 minor:0])
       {
 LABEL_32:
         v10 = 1;
         goto LABEL_39;
       }
 
-      if ([v3 upgradedToMajor:9 minor:0])
+      if ([infoCopy upgradedToMajor:9 minor:0])
       {
 LABEL_34:
         v10 = 0;
@@ -279,54 +279,54 @@ LABEL_37:
     goto LABEL_39;
   }
 
-  if ([v3 upgradedToMajor:14 minor:0])
+  if ([infoCopy upgradedToMajor:14 minor:0])
   {
     goto LABEL_37;
   }
 
-  if (([v3 upgradedToMajor:13 minor:0] & 1) == 0)
+  if (([infoCopy upgradedToMajor:13 minor:0] & 1) == 0)
   {
-    if ([v3 upgradedToMajor:12 minor:3])
+    if ([infoCopy upgradedToMajor:12 minor:3])
     {
       goto LABEL_18;
     }
 
-    if ([v3 upgradedToMajor:12 minor:0])
+    if ([infoCopy upgradedToMajor:12 minor:0])
     {
       goto LABEL_20;
     }
 
-    if ([v3 upgradedToMajor:11 minor:3])
+    if ([infoCopy upgradedToMajor:11 minor:3])
     {
       goto LABEL_22;
     }
 
-    if ([v3 upgradedToMajor:11 minor:0])
+    if ([infoCopy upgradedToMajor:11 minor:0])
     {
       goto LABEL_24;
     }
 
-    if ([v3 upgradedToMajor:10 minor:15])
+    if ([infoCopy upgradedToMajor:10 minor:15])
     {
       goto LABEL_26;
     }
 
-    if ([v3 upgradedToMajor:10 minor:14])
+    if ([infoCopy upgradedToMajor:10 minor:14])
     {
       goto LABEL_28;
     }
 
-    if ([v3 upgradedToMajor:10 minor:13])
+    if ([infoCopy upgradedToMajor:10 minor:13])
     {
       goto LABEL_30;
     }
 
-    if ([v3 upgradedToMajor:10 minor:12])
+    if ([infoCopy upgradedToMajor:10 minor:12])
     {
       goto LABEL_32;
     }
 
-    if ([v3 upgradedToMajor:10 minor:11])
+    if ([infoCopy upgradedToMajor:10 minor:11])
     {
       goto LABEL_34;
     }
@@ -341,16 +341,16 @@ LABEL_39:
   return v10;
 }
 
-+ (int64_t)maximumNotesVersionForHardwareInfo:(ICDeviceHardwareInfo *)a3
++ (int64_t)maximumNotesVersionForHardwareInfo:(ICDeviceHardwareInfo *)info
 {
-  switch(a3->modelName)
+  switch(info->modelName)
   {
     case 0uLL:
     case 0xCuLL:
     case 0xDuLL:
       return 0x7FFFFFFFFFFFFFFFLL;
     case 1uLL:
-      version = a3->version;
+      version = info->version;
       if (version <= 9)
       {
         if ((version - 1) < 8)
@@ -383,7 +383,7 @@ LABEL_39:
           return +[ICCloudSyncingObject currentNotesVersion];
         }
 
-        v9 = (a3->subVersion - 1) >= 3;
+        v9 = (info->subVersion - 1) >= 3;
         v10 = 6;
         v11 = 4;
         goto LABEL_54;
@@ -409,7 +409,7 @@ LABEL_39:
       return +[ICCloudSyncingObject currentNotesVersion];
     case 3uLL:
     case 5uLL:
-      v4 = a3->version - 1;
+      v4 = info->version - 1;
       if (v4 >= 7)
       {
         return +[ICCloudSyncingObject currentNotesVersion];
@@ -418,7 +418,7 @@ LABEL_39:
       v5 = &unk_2150C0910;
       return v5[v4];
     case 4uLL:
-      v4 = a3->version - 1;
+      v4 = info->version - 1;
       if (v4 >= 6)
       {
         return +[ICCloudSyncingObject currentNotesVersion];
@@ -427,7 +427,7 @@ LABEL_39:
       v5 = &unk_2150C08E0;
       return v5[v4];
     case 6uLL:
-      v4 = a3->version - 1;
+      v4 = info->version - 1;
       if (v4 >= 0xA)
       {
         return +[ICCloudSyncingObject currentNotesVersion];
@@ -436,7 +436,7 @@ LABEL_39:
       v5 = &unk_2150C0948;
       return v5[v4];
     case 7uLL:
-      v6 = a3->version;
+      v6 = info->version;
       if (v6 <= 8)
       {
         if ((v6 - 3) < 3)
@@ -469,7 +469,7 @@ LABEL_39:
           return +[ICCloudSyncingObject currentNotesVersion];
         }
 
-        v9 = (a3->subVersion - 1) >= 3;
+        v9 = (info->subVersion - 1) >= 3;
         v10 = 8;
         v11 = 6;
 LABEL_54:
@@ -496,7 +496,7 @@ LABEL_54:
 
       return +[ICCloudSyncingObject currentNotesVersion];
     case 8uLL:
-      v4 = a3->version - 1;
+      v4 = info->version - 1;
       if (v4 >= 7)
       {
         return +[ICCloudSyncingObject currentNotesVersion];
@@ -505,7 +505,7 @@ LABEL_54:
       v5 = &unk_2150C0998;
       return v5[v4];
     case 9uLL:
-      v4 = a3->version - 1;
+      v4 = info->version - 1;
       if (v4 >= 7)
       {
         return 8;
@@ -514,7 +514,7 @@ LABEL_54:
       v5 = &unk_2150C09D0;
       return v5[v4];
     case 0xAuLL:
-      v4 = a3->version - 1;
+      v4 = info->version - 1;
       if (v4 >= 0xA)
       {
         return +[ICCloudSyncingObject currentNotesVersion];
@@ -523,7 +523,7 @@ LABEL_54:
       v5 = &unk_2150C0A08;
       return v5[v4];
     case 0xBuLL:
-      v8 = a3->version;
+      v8 = info->version;
       if (v8 > 3)
       {
         switch(v8)
@@ -550,7 +550,7 @@ LABEL_54:
         {
           if (v8 == 3)
           {
-            return (a3->subVersion - 4) < 0xFFFFFFFFFFFFFFFDLL;
+            return (info->subVersion - 4) < 0xFFFFFFFFFFFFFFFDLL;
           }
 
           return +[ICCloudSyncingObject currentNotesVersion];

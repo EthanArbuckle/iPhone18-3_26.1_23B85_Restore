@@ -5,44 +5,44 @@
 - (void)_updateDayHeaderFrames;
 - (void)contentSizeCategoryChanged;
 - (void)didScroll;
-- (void)updatePalette:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)updatePalette:(id)palette;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
-- (void)viewIsAppearing:(BOOL)a3;
+- (void)viewIsAppearing:(BOOL)appearing;
 - (void)weekNumbersPrefChanged;
 @end
 
 @implementation CompactMonthViewController
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
   v4.receiver = self;
   v4.super_class = CompactMonthViewController;
-  [(CompactMonthViewController *)&v4 viewIsAppearing:a3];
+  [(CompactMonthViewController *)&v4 viewIsAppearing:appearing];
   [(CompactMonthViewController *)self ekui_adjustNavBarToTranslucentGrayStyleWithSeparator];
 }
 
 - (void)weekNumbersPrefChanged
 {
   v3 = +[CUIKPreferences sharedPreferences];
-  v4 = [v3 showWeekNumbers];
+  showWeekNumbers = [v3 showWeekNumbers];
 
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100125B64;
   v5[3] = &unk_10020FA68;
-  v6 = v4;
+  v6 = showWeekNumbers;
   [(InfiniteScrollViewController *)self enumerateScrollViewSubviews:v5];
 }
 
-- (void)updatePalette:(id)a3
+- (void)updatePalette:(id)palette
 {
-  v4 = a3;
-  [v4 setTodayButtonVisible:0];
-  [v4 setDateStringVisible:1];
-  [v4 setWeekdayHeaderVisible:1];
-  [v4 setDividerLineVisible:1];
-  [v4 setDayScrubberController:0];
+  paletteCopy = palette;
+  [paletteCopy setTodayButtonVisible:0];
+  [paletteCopy setDateStringVisible:1];
+  [paletteCopy setWeekdayHeaderVisible:1];
+  [paletteCopy setDividerLineVisible:1];
+  [paletteCopy setDayScrubberController:0];
   if (CalSolariumEnabled())
   {
     v5 = 3;
@@ -53,34 +53,34 @@
     v5 = 1;
   }
 
-  [v4 setFocusBannerPlacement:v5];
-  [v4 sizeToFit];
-  [v4 frame];
+  [paletteCopy setFocusBannerPlacement:v5];
+  [paletteCopy sizeToFit];
+  [paletteCopy frame];
   v7 = v6;
-  v8 = [v4 containingPalette];
+  containingPalette = [paletteCopy containingPalette];
 
-  [v8 setPreferredHeight:v7];
-  v9 = [(CompactMonthViewController *)self view];
-  [v9 setNeedsLayout];
+  [containingPalette setPreferredHeight:v7];
+  view = [(CompactMonthViewController *)self view];
+  [view setNeedsLayout];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v10.receiver = self;
   v10.super_class = CompactMonthViewController;
-  [(MonthViewController *)&v10 viewDidAppear:a3];
+  [(MonthViewController *)&v10 viewDidAppear:appear];
   v4 = kCalUILogHandle;
   if (os_log_type_enabled(kCalUILogHandle, OS_LOG_TYPE_INFO))
   {
     v5 = v4;
     v6 = objc_opt_class();
     v7 = NSStringFromClass(v6);
-    v8 = [(CUIKCalendarModel *)self->super.super.super._model selectedDate];
-    v9 = [v8 date];
+    selectedDate = [(CUIKCalendarModel *)self->super.super.super._model selectedDate];
+    date = [selectedDate date];
     *buf = 138543618;
     v12 = v7;
     v13 = 2114;
-    v14 = v9;
+    v14 = date;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[UserStateLog] State -> %{public}@ viewDidAppear. date = %{public}@", buf, 0x16u);
   }
 
@@ -97,41 +97,41 @@
 
 - (void)didScroll
 {
-  v3 = [(InfiniteScrollViewController *)self firstViewOnScreen];
-  v7 = [v3 calendarDate];
+  firstViewOnScreen = [(InfiniteScrollViewController *)self firstViewOnScreen];
+  calendarDate = [firstViewOnScreen calendarDate];
 
-  v4 = [v7 weekOfMonth];
-  if (v4 == [v7 weeksInMonth])
+  weekOfMonth = [calendarDate weekOfMonth];
+  if (weekOfMonth == [calendarDate weeksInMonth])
   {
-    v5 = [v7 calendarDateByAddingWeeks:1];
+    v5 = [calendarDate calendarDateByAddingWeeks:1];
 
-    v7 = v5;
+    calendarDate = v5;
   }
 
   if (CalSolariumEnabled())
   {
-    [(MonthViewController *)self _updateNavigationTitleControllerToDate:v7];
+    [(MonthViewController *)self _updateNavigationTitleControllerToDate:calendarDate];
   }
 
   else
   {
-    v6 = [(CompactMonthViewController *)self navigationController];
-    [v6 setNavBarStringFromDate:v7 includeMonth:1 includeYear:{-[CompactMonthViewController showsYearInMonthLabel](self, "showsYearInMonthLabel")}];
+    navigationController = [(CompactMonthViewController *)self navigationController];
+    [navigationController setNavBarStringFromDate:calendarDate includeMonth:1 includeYear:{-[CompactMonthViewController showsYearInMonthLabel](self, "showsYearInMonthLabel")}];
   }
 }
 
 - (id)dayHeaderFrames
 {
-  v3 = [(CompactMonthViewController *)self navigationController];
-  v4 = [v3 paletteView];
+  navigationController = [(CompactMonthViewController *)self navigationController];
+  paletteView = [navigationController paletteView];
 
-  if (!v4)
+  if (!paletteView)
   {
     goto LABEL_14;
   }
 
-  v5 = [(InfiniteScrollViewController *)self firstView];
-  if (!v5)
+  firstView = [(InfiniteScrollViewController *)self firstView];
+  if (!firstView)
   {
     v7 = [CompactMonthWeekView alloc];
     v8 = +[NSDate date];
@@ -144,8 +144,8 @@
     v13 = v12;
     v15 = v14;
     v17 = v16;
-    v18 = [(CompactMonthViewController *)self view];
-    [v18 frame];
+    view = [(CompactMonthViewController *)self view];
+    [view frame];
     v20 = v19;
 
     [(CompactMonthWeekView *)v6 setFrame:v13, v15, v20, v17];
@@ -159,29 +159,29 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  v6 = v5;
+  v6 = firstView;
 LABEL_5:
   [(CompactMonthWeekView *)v6 layoutIfNeeded];
-  v21 = [(CompactMonthWeekView *)v6 dayNumberCellFrames];
-  v22 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v21, "count")}];
-  if ([v21 count])
+  dayNumberCellFrames = [(CompactMonthWeekView *)v6 dayNumberCellFrames];
+  v22 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(dayNumberCellFrames, "count")}];
+  if ([dayNumberCellFrames count])
   {
-    for (i = 0; i < [v21 count]; ++i)
+    for (i = 0; i < [dayNumberCellFrames count]; ++i)
     {
-      v24 = [v21 objectAtIndexedSubscript:i];
+      v24 = [dayNumberCellFrames objectAtIndexedSubscript:i];
       [v24 CGRectValue];
       v26 = v25;
       v28 = v27;
       v30 = v29;
       v32 = v31;
 
-      v33 = [(CompactMonthViewController *)self traitCollection];
-      if ([v33 horizontalSizeClass] == 1)
+      traitCollection = [(CompactMonthViewController *)self traitCollection];
+      if ([traitCollection horizontalSizeClass] == 1)
       {
-        v34 = [(CompactMonthViewController *)self traitCollection];
-        v35 = [v34 verticalSizeClass];
+        traitCollection2 = [(CompactMonthViewController *)self traitCollection];
+        verticalSizeClass = [traitCollection2 verticalSizeClass];
 
-        if (v35 == 2)
+        if (verticalSizeClass == 2)
         {
           goto LABEL_12;
         }
@@ -191,13 +191,13 @@ LABEL_5:
       {
       }
 
-      [(CompactMonthWeekView *)v6 convertRect:v4 toView:v26, v28, v30, v32];
+      [(CompactMonthWeekView *)v6 convertRect:paletteView toView:v26, v28, v30, v32];
       v26 = v36;
       v30 = v37;
 LABEL_12:
-      [v4 bounds];
+      [paletteView bounds];
       v39 = v38;
-      [v4 bounds];
+      [paletteView bounds];
       v40 = [NSValue valueWithCGRect:v26, v39, v30];
       [v22 addObject:v40];
     }
@@ -210,25 +210,25 @@ LABEL_15:
 
 - (void)_updateDayHeaderFrames
 {
-  v3 = [(CompactMonthViewController *)self navigationController];
-  v8 = [v3 paletteView];
+  navigationController = [(CompactMonthViewController *)self navigationController];
+  paletteView = [navigationController paletteView];
 
-  v4 = v8;
-  if (v8)
+  v4 = paletteView;
+  if (paletteView)
   {
-    v5 = [(CompactMonthViewController *)self dayHeaderFrames];
-    [v8 setDayHeaderFrames:v5];
+    dayHeaderFrames = [(CompactMonthViewController *)self dayHeaderFrames];
+    [paletteView setDayHeaderFrames:dayHeaderFrames];
 
-    v6 = [(CompactMonthViewController *)self view];
-    v7 = [v6 window];
+    view = [(CompactMonthViewController *)self view];
+    window = [view window];
 
-    if (v7)
+    if (window)
     {
       EKUIPushFallbackSizingContextWithViewHierarchy();
       EKUIPopFallbackSizingContextWithViewHierarchy();
     }
 
-    v4 = v8;
+    v4 = paletteView;
   }
 }
 
@@ -268,13 +268,13 @@ LABEL_15:
 
 + (double)topOfMonthNameLabelToGrayLineDistance
 {
-  v2 = [a1 monthNameFont];
+  monthNameFont = [self monthNameFont];
   v3 = *&qword_100251D68;
   if (*&qword_100251D68 == 0.0)
   {
     v4 = objc_alloc_init(UILabel);
     [v4 setText:@"0"];
-    [v4 setFont:v2];
+    [v4 setFont:monthNameFont];
     [v4 sizeToFit];
     [v4 _firstLineBaselineOffsetFromBoundsTop];
     v6 = v5;

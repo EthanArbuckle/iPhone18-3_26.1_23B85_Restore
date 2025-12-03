@@ -1,19 +1,19 @@
 @interface SFSafariSettings
-+ (void)openExportBrowsingDataSettingsWithCompletionHandler:(id)a3;
++ (void)openExportBrowsingDataSettingsWithCompletionHandler:(id)handler;
 - (SFSafariSettings)init;
 @end
 
 @implementation SFSafariSettings
 
-+ (void)openExportBrowsingDataSettingsWithCompletionHandler:(id)a3
++ (void)openExportBrowsingDataSettingsWithCompletionHandler:(id)handler
 {
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EC7DEE08);
   MEMORY[0x1EEE9AC00]();
   v6 = &v12 - v5;
-  v7 = _Block_copy(a3);
+  v7 = _Block_copy(handler);
   v8 = swift_allocObject();
   *(v8 + 16) = v7;
-  *(v8 + 24) = a1;
+  *(v8 + 24) = self;
   v9 = sub_1D47BF360();
   (*(*(v9 - 8) + 56))(v6, 1, 1, v9);
   v10 = swift_allocObject();

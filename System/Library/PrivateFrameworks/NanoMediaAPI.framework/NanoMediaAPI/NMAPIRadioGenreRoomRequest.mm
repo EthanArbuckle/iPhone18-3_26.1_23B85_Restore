@@ -1,41 +1,41 @@
 @interface NMAPIRadioGenreRoomRequest
-- (NMAPIRadioGenreRoomRequest)initWithURL:(id)a3;
-- (id)_bagRoomURLRegularExpressionWithStoreURLBag:(id)a3;
-- (id)_roomIdentifierWithStoreURLBag:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)urlComponentsWithStoreURLBag:(id)a3 error:(id *)a4;
+- (NMAPIRadioGenreRoomRequest)initWithURL:(id)l;
+- (id)_bagRoomURLRegularExpressionWithStoreURLBag:(id)bag;
+- (id)_roomIdentifierWithStoreURLBag:(id)bag;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)urlComponentsWithStoreURLBag:(id)bag error:(id *)error;
 @end
 
 @implementation NMAPIRadioGenreRoomRequest
 
-- (NMAPIRadioGenreRoomRequest)initWithURL:(id)a3
+- (NMAPIRadioGenreRoomRequest)initWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v8.receiver = self;
   v8.super_class = NMAPIRadioGenreRoomRequest;
   v5 = [(MPStoreModelRequest *)&v8 init];
   if (v5)
   {
-    v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"Radio Genre Room URL : %@", v4];
-    [(NMAPIRadioGenreRoomRequest *)v5 setLabel:v6];
+    lCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Radio Genre Room URL : %@", lCopy];
+    [(NMAPIRadioGenreRoomRequest *)v5 setLabel:lCopy];
 
-    [(NMAPIRadioGenreRoomRequest *)v5 setURL:v4];
+    [(NMAPIRadioGenreRoomRequest *)v5 setURL:lCopy];
   }
 
   return v5;
 }
 
-- (id)urlComponentsWithStoreURLBag:(id)a3 error:(id *)a4
+- (id)urlComponentsWithStoreURLBag:(id)bag error:(id *)error
 {
   v25[4] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  bagCopy = bag;
   v23.receiver = self;
   v23.super_class = NMAPIRadioGenreRoomRequest;
-  v7 = [(NMAPIRequest *)&v23 urlComponentsWithStoreURLBag:v6 error:a4];
-  v8 = MusicURLPathStorefrontWithURLBag(v6);
+  v7 = [(NMAPIRequest *)&v23 urlComponentsWithStoreURLBag:bagCopy error:error];
+  v8 = MusicURLPathStorefrontWithURLBag(bagCopy);
   if (v8)
   {
-    v9 = [(NMAPIRadioGenreRoomRequest *)self _roomIdentifierWithStoreURLBag:v6];
+    v9 = [(NMAPIRadioGenreRoomRequest *)self _roomIdentifierWithStoreURLBag:bagCopy];
     v10 = v9;
     if (v9)
     {
@@ -48,11 +48,11 @@
       v13 = [v11 pathWithComponents:v12];
       [v7 setPath:v13];
 
-      v14 = [v7 queryItems];
+      queryItems = [v7 queryItems];
       v15 = [MEMORY[0x277CCAD18] queryItemWithName:@"art[url]" value:{@"f, c"}];
       v24 = v15;
       v16 = [MEMORY[0x277CBEA60] arrayWithObjects:&v24 count:1];
-      v17 = [v14 arrayByAddingObjectsFromArray:v16];
+      v17 = [queryItems arrayByAddingObjectsFromArray:v16];
       [v7 setQueryItems:v17];
 
       v18 = v7;
@@ -66,10 +66,10 @@
         [NMAPIRadioGenreRoomRequest urlComponentsWithStoreURLBag:error:];
       }
 
-      if (a4)
+      if (error)
       {
         [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D7F900] code:-7201 userInfo:0];
-        *a4 = v18 = 0;
+        *error = v18 = 0;
       }
 
       else
@@ -87,10 +87,10 @@
       [NMAPIRadioGenreRoomRequest urlComponentsWithStoreURLBag:error:];
     }
 
-    if (a4)
+    if (error)
     {
       [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D7F900] code:-7201 userInfo:0];
-      *a4 = v18 = 0;
+      *error = v18 = 0;
     }
 
     else
@@ -104,18 +104,18 @@
   return v18;
 }
 
-- (id)_roomIdentifierWithStoreURLBag:(id)a3
+- (id)_roomIdentifierWithStoreURLBag:(id)bag
 {
-  v4 = a3;
+  bagCopy = bag;
   v5 = [(NMAPIRadioGenreRoomRequest *)self URL];
-  v6 = [v5 absoluteString];
+  absoluteString = [v5 absoluteString];
 
-  v7 = [(NMAPIRadioGenreRoomRequest *)self _bagRoomURLRegularExpressionWithStoreURLBag:v4];
+  v7 = [(NMAPIRadioGenreRoomRequest *)self _bagRoomURLRegularExpressionWithStoreURLBag:bagCopy];
 
-  v8 = [v7 matchesInString:v6 options:0 range:{0, objc_msgSend(v6, "length")}];
-  v9 = [v8 firstObject];
-  v10 = v9;
-  if (!v9)
+  v8 = [v7 matchesInString:absoluteString options:0 range:{0, objc_msgSend(absoluteString, "length")}];
+  firstObject = [v8 firstObject];
+  v10 = firstObject;
+  if (!firstObject)
   {
     v14 = NMLogForCategory(9);
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -126,8 +126,8 @@
     goto LABEL_8;
   }
 
-  v11 = [v9 rangeWithName:@"identifier"];
-  if (v11 == 0x7FFFFFFFFFFFFFFFLL || ([v6 substringWithRange:{v11, v12}], (v13 = objc_claimAutoreleasedReturnValue()) == 0))
+  v11 = [firstObject rangeWithName:@"identifier"];
+  if (v11 == 0x7FFFFFFFFFFFFFFFLL || ([absoluteString substringWithRange:{v11, v12}], (v13 = objc_claimAutoreleasedReturnValue()) == 0))
   {
     v14 = NMLogForCategory(9);
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -143,9 +143,9 @@ LABEL_8:
   return v13;
 }
 
-- (id)_bagRoomURLRegularExpressionWithStoreURLBag:(id)a3
+- (id)_bagRoomURLRegularExpressionWithStoreURLBag:(id)bag
 {
-  v3 = [a3 dictionaryForBagKey:*MEMORY[0x277D7F9E8]];
+  v3 = [bag dictionaryForBagKey:*MEMORY[0x277D7F9E8]];
   if (_NSIsNSDictionary())
   {
     v4 = [v3 objectForKey:@"viewRoomUrlRegex"];
@@ -178,11 +178,11 @@ LABEL_8:
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = NMAPIRadioGenreRoomRequest;
-  v4 = [(NMAPIRequest *)&v7 copyWithZone:a3];
+  v4 = [(NMAPIRequest *)&v7 copyWithZone:zone];
   v5 = v4;
   if (v4)
   {

@@ -1,46 +1,46 @@
 @interface TSSTheme
-+ (TSSTheme)themeWithContext:(id)a3 alternate:(int)a4;
++ (TSSTheme)themeWithContext:(id)context alternate:(int)alternate;
 + (id)presetBootstrapOrder;
 + (id)presetSources;
-+ (void)registerPresetSourceClass:(Class)a3;
++ (void)registerPresetSourceClass:(Class)class;
 + (void)registerPresetSourceClasses;
-- (BOOL)containsCGColor:(CGColor *)a3;
-- (BOOL)isEqual:(id)a3;
-- (TSSTheme)initWithContext:(id)a3;
+- (BOOL)containsCGColor:(CGColor *)color;
+- (BOOL)isEqual:(id)equal;
+- (TSSTheme)initWithContext:(id)context;
 - (id)childEnumerator;
-- (id)modelPathComponentForChild:(id)a3;
-- (id)presetOfKind:(id)a3 index:(unint64_t)a4;
-- (id)presetsOfKind:(id)a3;
-- (unint64_t)indexOfPreset:(id)a3;
-- (void)addPreset:(id)a3 ofKind:(id)a4;
-- (void)bootstrapThemeAlternate:(int)a3;
+- (id)modelPathComponentForChild:(id)child;
+- (id)presetOfKind:(id)kind index:(unint64_t)index;
+- (id)presetsOfKind:(id)kind;
+- (unint64_t)indexOfPreset:(id)preset;
+- (void)addPreset:(id)preset ofKind:(id)kind;
+- (void)bootstrapThemeAlternate:(int)alternate;
 - (void)checkThemeStylesheetConsistency;
 - (void)dealloc;
-- (void)insertPreset:(id)a3 ofKind:(id)a4 atIndex:(unint64_t)a5;
-- (void)movePresetOfKind:(id)a3 fromIndex:(unint64_t)a4 toIndex:(unint64_t)a5;
-- (void)removePreset:(id)a3;
-- (void)setPresets:(id)a3 ofKind:(id)a4;
+- (void)insertPreset:(id)preset ofKind:(id)kind atIndex:(unint64_t)index;
+- (void)movePresetOfKind:(id)kind fromIndex:(unint64_t)index toIndex:(unint64_t)toIndex;
+- (void)removePreset:(id)preset;
+- (void)setPresets:(id)presets ofKind:(id)kind;
 @end
 
 @implementation TSSTheme
 
-+ (TSSTheme)themeWithContext:(id)a3 alternate:(int)a4
++ (TSSTheme)themeWithContext:(id)context alternate:(int)alternate
 {
-  v4 = *&a4;
-  v5 = [[a1 alloc] initWithContext:a3];
+  v4 = *&alternate;
+  v5 = [[self alloc] initWithContext:context];
   [v5 bootstrapThemeAlternate:v4];
 
   return v5;
 }
 
-- (TSSTheme)initWithContext:(id)a3
+- (TSSTheme)initWithContext:(id)context
 {
   v7.receiver = self;
   v7.super_class = TSSTheme;
   v4 = [(TSPObject *)&v7 initWithContext:?];
   if (v4)
   {
-    v5 = [[TSSStylesheet alloc] initWithContext:a3];
+    v5 = [[TSSStylesheet alloc] initWithContext:context];
     v4->mStylesheet = v5;
     [(TSSStylesheet *)v5 setIsLocked:1];
     v4->mPresetsByKind = objc_opt_new();
@@ -57,9 +57,9 @@
   [(TSSTheme *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v4) = 1;
   }
@@ -105,19 +105,19 @@ uint64_t __25__TSSTheme_presetSources__block_invoke()
 {
   v3 = objc_opt_class();
 
-  [a1 registerPresetSourceClass:v3];
+  [self registerPresetSourceClass:v3];
 }
 
-+ (void)registerPresetSourceClass:(Class)a3
++ (void)registerPresetSourceClass:(Class)class
 {
-  v5 = [(objc_class *)a3 presetKinds];
+  presetKinds = [(objc_class *)class presetKinds];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __38__TSSTheme_registerPresetSourceClass___block_invoke;
   v6[3] = &unk_279D480A8;
-  v6[4] = a1;
-  v6[5] = a3;
-  [v5 enumerateObjectsUsingBlock:v6];
+  v6[4] = self;
+  v6[5] = class;
+  [presetKinds enumerateObjectsUsingBlock:v6];
 }
 
 uint64_t __38__TSSTheme_registerPresetSourceClass___block_invoke(uint64_t a1, uint64_t a2)
@@ -128,9 +128,9 @@ uint64_t __38__TSSTheme_registerPresetSourceClass___block_invoke(uint64_t a1, ui
   return [v4 setObject:v3 forKeyedSubscript:a2];
 }
 
-- (id)presetsOfKind:(id)a3
+- (id)presetsOfKind:(id)kind
 {
-  if (a3)
+  if (kind)
   {
     return [(NSMutableDictionary *)self->mPresetsByKind objectForKeyedSubscript:?];
   }
@@ -141,81 +141,81 @@ uint64_t __38__TSSTheme_registerPresetSourceClass___block_invoke(uint64_t a1, ui
   }
 }
 
-- (void)setPresets:(id)a3 ofKind:(id)a4
+- (void)setPresets:(id)presets ofKind:(id)kind
 {
-  if (!a4)
+  if (!kind)
   {
-    v7 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSSTheme setPresets:ofKind:]"];
-    [v7 handleFailureInFunction:v8 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/styles/TSSTheme.m"), 210, @"invalid nil value for '%s'", "kind"}];
+    [currentHandler handleFailureInFunction:v8 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/styles/TSSTheme.m"), 210, @"invalid nil value for '%s'", "kind"}];
   }
 
   [(TSPObject *)self willModify];
-  if (a3 && [a3 count])
+  if (presets && [presets count])
   {
-    v9 = [a3 mutableCopy];
+    v9 = [presets mutableCopy];
     mPresetsByKind = self->mPresetsByKind;
 
-    [(NSMutableDictionary *)mPresetsByKind setObject:v9 forKeyedSubscript:a4];
+    [(NSMutableDictionary *)mPresetsByKind setObject:v9 forKeyedSubscript:kind];
   }
 
   else
   {
     v11 = self->mPresetsByKind;
 
-    [(NSMutableDictionary *)v11 removeObjectForKey:a4];
+    [(NSMutableDictionary *)v11 removeObjectForKey:kind];
   }
 }
 
-- (void)addPreset:(id)a3 ofKind:(id)a4
+- (void)addPreset:(id)preset ofKind:(id)kind
 {
-  v7 = [(NSMutableDictionary *)self->mPresetsByKind objectForKeyedSubscript:a4];
-  if (!v7 || ([v7 containsObject:a3] & 1) == 0)
+  v7 = [(NSMutableDictionary *)self->mPresetsByKind objectForKeyedSubscript:kind];
+  if (!v7 || ([v7 containsObject:preset] & 1) == 0)
   {
 
-    [(TSSTheme *)self insertPreset:a3 ofKind:a4 atIndex:-1];
+    [(TSSTheme *)self insertPreset:preset ofKind:kind atIndex:-1];
   }
 }
 
-- (void)insertPreset:(id)a3 ofKind:(id)a4 atIndex:(unint64_t)a5
+- (void)insertPreset:(id)preset ofKind:(id)kind atIndex:(unint64_t)index
 {
   [(TSPObject *)self willModify];
-  v9 = [(NSMutableDictionary *)self->mPresetsByKind objectForKeyedSubscript:a4];
-  if (!v9)
+  array = [(NSMutableDictionary *)self->mPresetsByKind objectForKeyedSubscript:kind];
+  if (!array)
   {
-    v9 = [MEMORY[0x277CBEB18] array];
-    [(NSMutableDictionary *)self->mPresetsByKind setObject:v9 forKeyedSubscript:a4];
+    array = [MEMORY[0x277CBEB18] array];
+    [(NSMutableDictionary *)self->mPresetsByKind setObject:array forKeyedSubscript:kind];
   }
 
-  if (a5 == -1 || [v9 count] <= a5)
+  if (index == -1 || [array count] <= index)
   {
 
-    [v9 addObject:a3];
+    [array addObject:preset];
   }
 
   else
   {
 
-    [v9 insertObject:a3 atIndex:a5];
+    [array insertObject:preset atIndex:index];
   }
 }
 
-- (void)removePreset:(id)a3
+- (void)removePreset:(id)preset
 {
-  if (a3)
+  if (preset)
   {
-    v5 = -[NSMutableDictionary objectForKeyedSubscript:](self->mPresetsByKind, "objectForKeyedSubscript:", [a3 presetKind]);
+    v5 = -[NSMutableDictionary objectForKeyedSubscript:](self->mPresetsByKind, "objectForKeyedSubscript:", [preset presetKind]);
     if (v5)
     {
       v6 = v5;
       [(TSPObject *)self willModify];
 
-      [v6 removeObject:a3];
+      [v6 removeObject:preset];
     }
   }
 }
 
-- (void)movePresetOfKind:(id)a3 fromIndex:(unint64_t)a4 toIndex:(unint64_t)a5
+- (void)movePresetOfKind:(id)kind fromIndex:(unint64_t)index toIndex:(unint64_t)toIndex
 {
   v9 = [-[TSSTheme presetsOfKind:](self "presetsOfKind:"mutableCopy"")];
   if (!v9)
@@ -224,42 +224,42 @@ uint64_t __38__TSSTheme_registerPresetSourceClass___block_invoke(uint64_t a1, ui
   }
 
   v11 = v9;
-  if ([v9 count] > a4 && objc_msgSend(v11, "count") > a5)
+  if ([v9 count] > index && objc_msgSend(v11, "count") > toIndex)
   {
-    v10 = [(TSSTheme *)self presetOfKind:a3 index:a4];
+    v10 = [(TSSTheme *)self presetOfKind:kind index:index];
     [v11 removeObject:v10];
-    [v11 insertObject:v10 atIndex:a5];
-    [(TSSTheme *)self setPresets:v11 ofKind:a3];
+    [v11 insertObject:v10 atIndex:toIndex];
+    [(TSSTheme *)self setPresets:v11 ofKind:kind];
   }
 }
 
-- (id)presetOfKind:(id)a3 index:(unint64_t)a4
+- (id)presetOfKind:(id)kind index:(unint64_t)index
 {
   v6 = [(TSSTheme *)self presetsOfKind:?];
-  if ([v6 count] <= a4)
+  if ([v6 count] <= index)
   {
-    v8 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSSTheme presetOfKind:index:]"];
-    [v8 handleFailureInFunction:v9 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/styles/TSSTheme.m"), 303, @"Attempt to request %@ preset for out of bounds index %lu.", a3, a4}];
+    [currentHandler handleFailureInFunction:v9 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/styles/TSSTheme.m"), 303, @"Attempt to request %@ preset for out of bounds index %lu.", kind, index}];
     return 0;
   }
 
   else
   {
 
-    return [v6 objectAtIndexedSubscript:a4];
+    return [v6 objectAtIndexedSubscript:index];
   }
 }
 
-- (unint64_t)indexOfPreset:(id)a3
+- (unint64_t)indexOfPreset:(id)preset
 {
-  v5 = [a3 presetKind];
-  if (v5 == String)
+  presetKind = [preset presetKind];
+  if (presetKind == String)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v6 = [(NSMutableDictionary *)self->mPresetsByKind objectForKeyedSubscript:v5];
+  v6 = [(NSMutableDictionary *)self->mPresetsByKind objectForKeyedSubscript:presetKind];
   if (!v6)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
@@ -271,18 +271,18 @@ uint64_t __38__TSSTheme_registerPresetSourceClass___block_invoke(uint64_t a1, ui
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  return [v7 indexOfObjectIdenticalTo:a3];
+  return [v7 indexOfObjectIdenticalTo:preset];
 }
 
-- (BOOL)containsCGColor:(CGColor *)a3
+- (BOOL)containsCGColor:(CGColor *)color
 {
   v15 = *MEMORY[0x277D85DE8];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [(TSSTheme *)self colors];
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  colors = [(TSSTheme *)self colors];
+  v5 = [colors countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -294,10 +294,10 @@ uint64_t __38__TSSTheme_registerPresetSourceClass___block_invoke(uint64_t a1, ui
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(colors);
         }
 
-        if (CGColorEqualToColor(a3, [*(*(&v10 + 1) + 8 * v8) CGColor]))
+        if (CGColorEqualToColor(color, [*(*(&v10 + 1) + 8 * v8) CGColor]))
         {
           LOBYTE(v5) = 1;
           return v5;
@@ -307,7 +307,7 @@ uint64_t __38__TSSTheme_registerPresetSourceClass___block_invoke(uint64_t a1, ui
       }
 
       while (v6 != v8);
-      v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [colors countByEnumeratingWithState:&v10 objects:v14 count:16];
       v6 = v5;
       if (v5)
       {
@@ -352,7 +352,7 @@ uint64_t __27__TSSTheme_childEnumerator__block_invoke(uint64_t a1, uint64_t a2, 
   return result;
 }
 
-- (id)modelPathComponentForChild:(id)a3
+- (id)modelPathComponentForChild:(id)child
 {
   objc_opt_class();
   v5 = TSUClassAndProtocolCast();
@@ -363,7 +363,7 @@ uint64_t __27__TSSTheme_childEnumerator__block_invoke(uint64_t a1, uint64_t a2, 
 
   else
   {
-    return [MEMORY[0x277CCACA8] stringWithFormat:@"?%s-%p?", object_getClassName(a3), a3];
+    return [MEMORY[0x277CCACA8] stringWithFormat:@"?%s-%p?", object_getClassName(child), child];
   }
 }
 
@@ -386,11 +386,11 @@ uint64_t __27__TSSTheme_childEnumerator__block_invoke(uint64_t a1, uint64_t a2, 
   return [MEMORY[0x277CBEA60] arrayWithObjects:v3 count:13];
 }
 
-- (void)bootstrapThemeAlternate:(int)a3
+- (void)bootstrapThemeAlternate:(int)alternate
 {
-  v3 = *&a3;
+  v3 = *&alternate;
   v16 = *MEMORY[0x277D85DE8];
-  v5 = [(TSSTheme *)self isLocked];
+  isLocked = [(TSSTheme *)self isLocked];
   [(TSSTheme *)self setIsLocked:0];
   if (([(TSSTheme *)self isMemberOfClass:objc_opt_class()]& 1) == 0)
   {
@@ -398,8 +398,8 @@ uint64_t __27__TSSTheme_childEnumerator__block_invoke(uint64_t a1, uint64_t a2, 
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v6 = [objc_opt_class() presetBootstrapOrder];
-    v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    presetBootstrapOrder = [objc_opt_class() presetBootstrapOrder];
+    v7 = [presetBootstrapOrder countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v7)
     {
       v8 = v7;
@@ -411,7 +411,7 @@ uint64_t __27__TSSTheme_childEnumerator__block_invoke(uint64_t a1, uint64_t a2, 
         {
           if (*v12 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(presetBootstrapOrder);
           }
 
           [objc_msgSend(objc_msgSend(objc_opt_class() "presetSources")];
@@ -419,7 +419,7 @@ uint64_t __27__TSSTheme_childEnumerator__block_invoke(uint64_t a1, uint64_t a2, 
         }
 
         while (v8 != v10);
-        v8 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v8 = [presetBootstrapOrder countByEnumeratingWithState:&v11 objects:v15 count:16];
       }
 
       while (v8);
@@ -427,7 +427,7 @@ uint64_t __27__TSSTheme_childEnumerator__block_invoke(uint64_t a1, uint64_t a2, 
   }
 
   [(TSSTheme *)self setThemeIdentifier:[(TSSTheme *)self p_identifierForBootstrapTheme:v3]];
-  [(TSSTheme *)self setIsLocked:v5];
+  [(TSSTheme *)self setIsLocked:isLocked];
 }
 
 - (void)checkThemeStylesheetConsistency

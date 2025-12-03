@@ -1,20 +1,20 @@
 @interface SKUIBarRatingView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SKUIBarRatingView)initWithFrame:(CGRect)a3;
-- (void)drawRect:(CGRect)a3;
-- (void)setBarRatingStyle:(int64_t)a3;
-- (void)setNumberOfBars:(int64_t)a3;
-- (void)setRatingValue:(float)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SKUIBarRatingView)initWithFrame:(CGRect)frame;
+- (void)drawRect:(CGRect)rect;
+- (void)setBarRatingStyle:(int64_t)style;
+- (void)setNumberOfBars:(int64_t)bars;
+- (void)setRatingValue:(float)value;
 @end
 
 @implementation SKUIBarRatingView
 
-- (SKUIBarRatingView)initWithFrame:(CGRect)a3
+- (SKUIBarRatingView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIBarRatingView initWithFrame:];
@@ -31,36 +31,36 @@
   return result;
 }
 
-- (void)setBarRatingStyle:(int64_t)a3
+- (void)setBarRatingStyle:(int64_t)style
 {
-  if (self->_barRatingStyle != a3)
+  if (self->_barRatingStyle != style)
   {
-    self->_barRatingStyle = a3;
+    self->_barRatingStyle = style;
     [(SKUIBarRatingView *)self setNeedsDisplay];
   }
 }
 
-- (void)setNumberOfBars:(int64_t)a3
+- (void)setNumberOfBars:(int64_t)bars
 {
-  if (self->_numberOfBars != a3)
+  if (self->_numberOfBars != bars)
   {
-    self->_numberOfBars = a3;
+    self->_numberOfBars = bars;
     [(SKUIBarRatingView *)self setNeedsDisplay];
   }
 }
 
-- (void)setRatingValue:(float)a3
+- (void)setRatingValue:(float)value
 {
-  if (self->_ratingValue != a3)
+  if (self->_ratingValue != value)
   {
-    self->_ratingValue = a3;
+    self->_ratingValue = value;
     [(SKUIBarRatingView *)self setNeedsDisplay];
   }
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  v18 = [(SKUIBarRatingView *)self tintColor:a3.origin.x];
+  v18 = [(SKUIBarRatingView *)self tintColor:rect.origin.x];
   v4 = [v18 colorWithAlphaComponent:0.15];
   v5 = [v18 colorWithAlphaComponent:0.45];
   numberOfBars = self->_numberOfBars;
@@ -121,7 +121,7 @@
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   numberOfBars = self->_numberOfBars;
   v4 = numberOfBars;

@@ -10,22 +10,22 @@
 
 - (uint64_t)itk_hasCompactSize
 {
-  if ([a1 itk_hasCompactWidth])
+  if ([self itk_hasCompactWidth])
   {
     return 1;
   }
 
-  return [a1 itk_hasCompactHeight];
+  return [self itk_hasCompactHeight];
 }
 
 - (BOOL)itk_hasEqualSizeToTraitCollection:()ITK
 {
   v4 = a3;
-  v5 = [a1 horizontalSizeClass];
-  if (v5 == [v4 horizontalSizeClass])
+  horizontalSizeClass = [self horizontalSizeClass];
+  if (horizontalSizeClass == [v4 horizontalSizeClass])
   {
-    v6 = [a1 verticalSizeClass];
-    v7 = v6 == [v4 verticalSizeClass];
+    verticalSizeClass = [self verticalSizeClass];
+    v7 = verticalSizeClass == [v4 verticalSizeClass];
   }
 
   else
@@ -38,16 +38,16 @@
 
 - (id)itk_traitCollectionClampedToNonaccessibilityContentSize
 {
-  v1 = a1;
-  v2 = [v1 preferredContentSizeCategory];
-  if (([v2 isEqualToString:*MEMORY[0x277D76800]] & 1) != 0 || (objc_msgSend(v2, "isEqualToString:", *MEMORY[0x277D767F8]) & 1) != 0 || (objc_msgSend(v2, "isEqualToString:", *MEMORY[0x277D767F0]) & 1) != 0 || objc_msgSend(v2, "isEqualToString:", *MEMORY[0x277D767E8]))
+  selfCopy = self;
+  preferredContentSizeCategory = [selfCopy preferredContentSizeCategory];
+  if (([preferredContentSizeCategory isEqualToString:*MEMORY[0x277D76800]] & 1) != 0 || (objc_msgSend(preferredContentSizeCategory, "isEqualToString:", *MEMORY[0x277D767F8]) & 1) != 0 || (objc_msgSend(preferredContentSizeCategory, "isEqualToString:", *MEMORY[0x277D767F0]) & 1) != 0 || objc_msgSend(preferredContentSizeCategory, "isEqualToString:", *MEMORY[0x277D767E8]))
   {
-    v3 = [v1 traitCollectionByModifyingTraits:&__block_literal_global_2];
+    v3 = [selfCopy traitCollectionByModifyingTraits:&__block_literal_global_2];
 
-    v1 = v3;
+    selfCopy = v3;
   }
 
-  return v1;
+  return selfCopy;
 }
 
 - (id)itk_traitCollectionWithContentSize:()ITK
@@ -59,25 +59,25 @@
   v8[3] = &unk_2797B0558;
   v9 = v4;
   v5 = v4;
-  v6 = [a1 traitCollectionByModifyingTraits:v8];
+  v6 = [self traitCollectionByModifyingTraits:v8];
 
   return v6;
 }
 
 - (double)itk_contentSizeScaleFactor
 {
-  v1 = [a1 preferredContentSizeCategory];
-  if (v1 == *MEMORY[0x277D76830])
+  preferredContentSizeCategory = [self preferredContentSizeCategory];
+  if (preferredContentSizeCategory == *MEMORY[0x277D76830])
   {
     v2 = 0.8;
   }
 
-  else if (v1 == *MEMORY[0x277D76858])
+  else if (preferredContentSizeCategory == *MEMORY[0x277D76858])
   {
     v2 = 0.85;
   }
 
-  else if (v1 == *MEMORY[0x277D76840])
+  else if (preferredContentSizeCategory == *MEMORY[0x277D76840])
   {
     v2 = 0.9;
   }
@@ -85,44 +85,44 @@
   else
   {
     v2 = 1.0;
-    if (v1 != *MEMORY[0x277D76838] && v1 != *MEMORY[0x277D76860])
+    if (preferredContentSizeCategory != *MEMORY[0x277D76838] && preferredContentSizeCategory != *MEMORY[0x277D76860])
     {
-      if (v1 == *MEMORY[0x277D76828])
+      if (preferredContentSizeCategory == *MEMORY[0x277D76828])
       {
         v2 = 1.1;
       }
 
-      else if (v1 == *MEMORY[0x277D76820])
+      else if (preferredContentSizeCategory == *MEMORY[0x277D76820])
       {
         v2 = 1.2;
       }
 
-      else if (v1 == *MEMORY[0x277D76818])
+      else if (preferredContentSizeCategory == *MEMORY[0x277D76818])
       {
         v2 = 1.35;
       }
 
-      else if (v1 == *MEMORY[0x277D76808])
+      else if (preferredContentSizeCategory == *MEMORY[0x277D76808])
       {
         v2 = 1.6;
       }
 
-      else if (v1 == *MEMORY[0x277D76800])
+      else if (preferredContentSizeCategory == *MEMORY[0x277D76800])
       {
         v2 = 1.9;
       }
 
-      else if (v1 == *MEMORY[0x277D767F8])
+      else if (preferredContentSizeCategory == *MEMORY[0x277D767F8])
       {
         v2 = 2.35;
       }
 
-      else if (v1 == *MEMORY[0x277D767F0])
+      else if (preferredContentSizeCategory == *MEMORY[0x277D767F0])
       {
         v2 = 2.75;
       }
 
-      else if (v1 == *MEMORY[0x277D767E8])
+      else if (preferredContentSizeCategory == *MEMORY[0x277D767E8])
       {
         v2 = 3.1;
       }

@@ -1,10 +1,10 @@
 @interface MUPlaceHeaderButtonsSectionController
-- (MUPlaceHeaderButtonsSectionController)initWithPlaceItem:(id)a3 configuration:(id)a4;
+- (MUPlaceHeaderButtonsSectionController)initWithPlaceItem:(id)item configuration:(id)configuration;
 - (MUPlaceHeaderButtonsSectionControllerDelegate)headerDelegate;
-- (void)headerButtonsSectionController:(id)a3 didSelectPrimaryType:(unint64_t)a4 withPresentationOptions:(id)a5;
-- (void)headerButtonsSectionControllerDidUpdateContent:(id)a3;
-- (void)setPlaceItem:(id)a3;
-- (void)setPrimaryButtonType:(unint64_t)a3;
+- (void)headerButtonsSectionController:(id)controller didSelectPrimaryType:(unint64_t)type withPresentationOptions:(id)options;
+- (void)headerButtonsSectionControllerDidUpdateContent:(id)content;
+- (void)setPlaceItem:(id)item;
+- (void)setPrimaryButtonType:(unint64_t)type;
 @end
 
 @implementation MUPlaceHeaderButtonsSectionController
@@ -16,39 +16,39 @@
   return WeakRetained;
 }
 
-- (void)headerButtonsSectionController:(id)a3 didSelectPrimaryType:(unint64_t)a4 withPresentationOptions:(id)a5
+- (void)headerButtonsSectionController:(id)controller didSelectPrimaryType:(unint64_t)type withPresentationOptions:(id)options
 {
-  v7 = a5;
-  v8 = [(MUPlaceHeaderButtonsSectionController *)self headerDelegate];
-  [v8 placeHeaderButtonsSectionController:self didSelectPrimaryType:a4 withPresentationOptions:v7];
+  optionsCopy = options;
+  headerDelegate = [(MUPlaceHeaderButtonsSectionController *)self headerDelegate];
+  [headerDelegate placeHeaderButtonsSectionController:self didSelectPrimaryType:type withPresentationOptions:optionsCopy];
 }
 
-- (void)headerButtonsSectionControllerDidUpdateContent:(id)a3
+- (void)headerButtonsSectionControllerDidUpdateContent:(id)content
 {
-  v4 = [(MUPlaceSectionController *)self delegate];
-  [v4 placeSectionControllerDidUpdateContent:self];
+  delegate = [(MUPlaceSectionController *)self delegate];
+  [delegate placeSectionControllerDidUpdateContent:self];
 }
 
-- (void)setPlaceItem:(id)a3
+- (void)setPlaceItem:(id)item
 {
-  v5 = a3;
-  if (self->_placeItem != v5)
+  itemCopy = item;
+  if (self->_placeItem != itemCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_placeItem, a3);
+    v6 = itemCopy;
+    objc_storeStrong(&self->_placeItem, item);
     [(MUHeaderButtonsSectionController *)self->_headerSectionController setPrimaryButtonType:0];
-    v5 = v6;
+    itemCopy = v6;
   }
 }
 
-- (void)setPrimaryButtonType:(unint64_t)a3
+- (void)setPrimaryButtonType:(unint64_t)type
 {
-  if (a3 == 1)
+  if (type == 1)
   {
-    v4 = [(MUPlaceHeaderButtonsSectionControllerConfiguration *)self->_configuration buttonModuleConfiguration];
-    v5 = [v4 shouldSuppressDirections];
+    buttonModuleConfiguration = [(MUPlaceHeaderButtonsSectionControllerConfiguration *)self->_configuration buttonModuleConfiguration];
+    shouldSuppressDirections = [buttonModuleConfiguration shouldSuppressDirections];
 
-    if (v5)
+    if (shouldSuppressDirections)
     {
       v6 = MUGetPlaceCardLog();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -57,26 +57,26 @@
         _os_log_impl(&dword_1C5620000, v6, OS_LOG_TYPE_INFO, "MUPlaceHeaderButtonsSectionController: The module configuration requests suppressing directions, so overriding primary button type to None", v7, 2u);
       }
 
-      a3 = 0;
+      type = 0;
     }
 
     else
     {
-      a3 = 1;
+      type = 1;
     }
   }
 
-  [(MUHeaderButtonsSectionController *)self->_headerSectionController setPrimaryButtonType:a3];
+  [(MUHeaderButtonsSectionController *)self->_headerSectionController setPrimaryButtonType:type];
 }
 
-- (MUPlaceHeaderButtonsSectionController)initWithPlaceItem:(id)a3 configuration:(id)a4
+- (MUPlaceHeaderButtonsSectionController)initWithPlaceItem:(id)item configuration:(id)configuration
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 mapItem];
+  itemCopy = item;
+  configurationCopy = configuration;
+  mapItem = [itemCopy mapItem];
   v26.receiver = self;
   v26.super_class = MUPlaceHeaderButtonsSectionController;
-  v10 = [(MUPlaceSectionController *)&v26 initWithMapItem:v9];
+  v10 = [(MUPlaceSectionController *)&v26 initWithMapItem:mapItem];
 
   if (!v10)
   {
@@ -90,15 +90,15 @@
     _os_signpost_emit_with_name_impl(&dword_1C5620000, v11, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "MUPlaceHeaderButtonsSectionControllerInit", "", v25, 2u);
   }
 
-  objc_storeStrong(&v10->_placeItem, a3);
-  objc_storeStrong(&v10->_configuration, a4);
+  objc_storeStrong(&v10->_placeItem, item);
+  objc_storeStrong(&v10->_configuration, configuration);
   v12 = objc_alloc_init(MUHeaderButtonsViewConfiguration);
   [(MUHeaderButtonsViewConfiguration *)v12 setShowMoreButton:[(MUPlaceHeaderButtonsSectionControllerConfiguration *)v10->_configuration showMoreButton]];
   if ([(MUPlaceHeaderButtonsSectionControllerConfiguration *)v10->_configuration canShowDetourTime])
   {
-    v13 = [(_MKPlaceItem *)v10->_placeItem mapItem];
-    v14 = [v13 _detourInfo];
-    [v14 detourTime];
+    mapItem2 = [(_MKPlaceItem *)v10->_placeItem mapItem];
+    _detourInfo = [mapItem2 _detourInfo];
+    [_detourInfo detourTime];
     [(MUHeaderButtonsViewConfiguration *)v12 setDetourTime:?];
   }
 
@@ -107,13 +107,13 @@
     [(MUHeaderButtonsViewConfiguration *)v12 setDetourTime:0.0];
   }
 
-  v15 = [(MUPlaceHeaderButtonsSectionControllerConfiguration *)v10->_configuration menuProvider];
-  [(MUHeaderButtonsViewConfiguration *)v12 setMenuProvider:v15];
+  menuProvider = [(MUPlaceHeaderButtonsSectionControllerConfiguration *)v10->_configuration menuProvider];
+  [(MUHeaderButtonsViewConfiguration *)v12 setMenuProvider:menuProvider];
 
-  v16 = [(_MKPlaceItem *)v10->_placeItem mapItem];
-  v17 = [v16 _hasFlyover];
+  mapItem3 = [(_MKPlaceItem *)v10->_placeItem mapItem];
+  _hasFlyover = [mapItem3 _hasFlyover];
 
-  if (v17)
+  if (_hasFlyover)
   {
     v18 = &unk_1F450E3C8;
 LABEL_13:
@@ -135,8 +135,8 @@ LABEL_13:
 
 LABEL_14:
   v19 = [MUHeaderButtonsSectionController alloc];
-  v20 = [(MUPlaceHeaderButtonsSectionControllerConfiguration *)v10->_configuration etaProvider];
-  v21 = [(MUHeaderButtonsSectionController *)v19 initWithETAProvider:v20 headerButtonsConfiguration:v12];
+  etaProvider = [(MUPlaceHeaderButtonsSectionControllerConfiguration *)v10->_configuration etaProvider];
+  v21 = [(MUHeaderButtonsSectionController *)v19 initWithETAProvider:etaProvider headerButtonsConfiguration:v12];
   headerSectionController = v10->_headerSectionController;
   v10->_headerSectionController = v21;
 

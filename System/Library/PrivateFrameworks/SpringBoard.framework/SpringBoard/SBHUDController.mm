@@ -1,52 +1,52 @@
 @interface SBHUDController
-+ (id)_defaultCrossfadeAnimatorForHUDController:(id)a3;
++ (id)_defaultCrossfadeAnimatorForHUDController:(id)controller;
 - (BOOL)anyHUDsVisible;
 - (SBHUDController)init;
-- (id)HUDSessionForViewController:(id)a3 identifier:(id)a4;
-- (id)acquireHUDHiddenAssertionForIdentifier:(id)a3 withReason:(id)a4;
-- (id)animationControllerForDismissedController:(id)a3;
-- (id)animationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)knownHUDControllerForIdentifier:(id)a3;
+- (id)HUDSessionForViewController:(id)controller identifier:(id)identifier;
+- (id)acquireHUDHiddenAssertionForIdentifier:(id)identifier withReason:(id)reason;
+- (id)animationControllerForDismissedController:(id)controller;
+- (id)animationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)knownHUDControllerForIdentifier:(id)identifier;
 - (id)knownHUDs;
-- (id)presentedHUDControllerForIdentifier:(id)a3;
+- (id)presentedHUDControllerForIdentifier:(id)identifier;
 - (id)presentedHUDs;
 - (id)presentingHUDs;
 - (id)succinctDescription;
 - (void)_createHUDWindowIfNeeded;
-- (void)_dismissHUD:(id)a3 animated:(BOOL)a4;
-- (void)_finishedTransitionForHUD:(id)a3 intendedState:(int64_t)a4 finalState:(int64_t)a5;
+- (void)_dismissHUD:(id)d animated:(BOOL)animated;
+- (void)_finishedTransitionForHUD:(id)d intendedState:(int64_t)state finalState:(int64_t)finalState;
 - (void)_hideWindowIfPossible;
-- (void)_notificationFiredToDismissHUDs:(id)a3;
-- (void)_presentHUD:(id)a3 animated:(BOOL)a4;
+- (void)_notificationFiredToDismissHUDs:(id)ds;
+- (void)_presentHUD:(id)d animated:(BOOL)animated;
 - (void)_setupStateCapture;
 - (void)_tearDown;
 - (void)dealloc;
-- (void)dismissHUDs:(BOOL)a3;
-- (void)hudViewController:(id)a3 didDismissHUD:(id)a4;
-- (void)hudViewController:(id)a3 didPresentHUD:(id)a4;
-- (void)hudViewController:(id)a3 willDismissHUD:(id)a4;
-- (void)hudViewController:(id)a3 willPresentHUD:(id)a4;
-- (void)windowSceneDidConnect:(id)a3;
-- (void)zStackParticipant:(id)a3 updatePreferences:(id)a4;
+- (void)dismissHUDs:(BOOL)ds;
+- (void)hudViewController:(id)controller didDismissHUD:(id)d;
+- (void)hudViewController:(id)controller didPresentHUD:(id)d;
+- (void)hudViewController:(id)controller willDismissHUD:(id)d;
+- (void)hudViewController:(id)controller willPresentHUD:(id)d;
+- (void)windowSceneDidConnect:(id)connect;
+- (void)zStackParticipant:(id)participant updatePreferences:(id)preferences;
 @end
 
 @implementation SBHUDController
 
 - (id)knownHUDs
 {
-  v3 = [(SBHUDController *)self presentedHUDs];
-  v4 = v3;
-  if (!v3)
+  presentedHUDs = [(SBHUDController *)self presentedHUDs];
+  v4 = presentedHUDs;
+  if (!presentedHUDs)
   {
     v4 = [MEMORY[0x277CBEB98] set];
   }
 
-  v5 = [(SBHUDController *)self presentingHUDs];
-  if (v5)
+  presentingHUDs = [(SBHUDController *)self presentingHUDs];
+  if (presentingHUDs)
   {
-    v6 = [v4 setByAddingObjectsFromSet:v5];
+    v6 = [v4 setByAddingObjectsFromSet:presentingHUDs];
   }
 
   else
@@ -55,7 +55,7 @@
     v6 = [v4 setByAddingObjectsFromSet:v7];
   }
 
-  if (!v3)
+  if (!presentedHUDs)
   {
   }
 
@@ -64,11 +64,11 @@
 
 - (id)presentedHUDs
 {
-  v2 = [(SBHUDController *)self hudViewController];
-  v3 = v2;
-  if (v2)
+  hudViewController = [(SBHUDController *)self hudViewController];
+  v3 = hudViewController;
+  if (hudViewController)
   {
-    v4 = *(v2 + 1000);
+    v4 = *(hudViewController + 1000);
   }
 
   else
@@ -83,11 +83,11 @@
 
 - (id)presentingHUDs
 {
-  v2 = [(SBHUDController *)self hudViewController];
-  v3 = v2;
-  if (v2)
+  hudViewController = [(SBHUDController *)self hudViewController];
+  v3 = hudViewController;
+  if (hudViewController)
   {
-    v4 = *(v2 + 1008);
+    v4 = *(hudViewController + 1008);
   }
 
   else
@@ -117,9 +117,9 @@
 
     [(PTSettings *)v2->_settings addKeyObserver:v2];
     [(SBHUDController *)v2 _setupStateCapture];
-    v7 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v7 addObserver:v2 selector:sel__notificationFiredToDismissHUDs_ name:*MEMORY[0x277D67A18] object:0];
-    [v7 addObserver:v2 selector:sel__notificationFiredToDismissHUDs_ name:@"SBLockScreenUIRelockedNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__notificationFiredToDismissHUDs_ name:*MEMORY[0x277D67A18] object:0];
+    [defaultCenter addObserver:v2 selector:sel__notificationFiredToDismissHUDs_ name:@"SBLockScreenUIRelockedNotification" object:0];
   }
 
   return v2;
@@ -135,34 +135,34 @@
 
 - (id)succinctDescription
 {
-  v2 = [(SBHUDController *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBHUDController *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBHUDController *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBHUDController *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v4 = [MEMORY[0x277CF0C00] builderWithObject:self];
   v5 = [v4 appendObject:self->_windowScene withName:@"windowScene"];
   v6 = [v4 appendObject:self->_settings withName:@"settings"];
   v7 = [v4 appendObject:self->_hudHiddenAssertions withName:@"hudHiddenAssertions"];
   v8 = [v4 appendPointer:self->_hudViewController withName:@"hudViewController"];
-  v9 = [(SBHUDController *)self presentedHUDs];
-  v10 = [v9 allObjects];
-  v11 = v10;
+  presentedHUDs = [(SBHUDController *)self presentedHUDs];
+  allObjects = [presentedHUDs allObjects];
+  v11 = allObjects;
   v12 = MEMORY[0x277CBEBF8];
-  if (v10)
+  if (allObjects)
   {
-    v13 = v10;
+    v13 = allObjects;
   }
 
   else
@@ -172,12 +172,12 @@
 
   [v4 appendArraySection:v13 withName:@"presentedHUDs" skipIfEmpty:1];
 
-  v14 = [(SBHUDController *)self knownHUDs];
-  v15 = [v14 allObjects];
-  v16 = v15;
-  if (v15)
+  knownHUDs = [(SBHUDController *)self knownHUDs];
+  allObjects2 = [knownHUDs allObjects];
+  v16 = allObjects2;
+  if (allObjects2)
   {
-    v17 = v15;
+    v17 = allObjects2;
   }
 
   else
@@ -216,27 +216,27 @@ id __37__SBHUDController__setupStateCapture__block_invoke(uint64_t a1)
 
 - (BOOL)anyHUDsVisible
 {
-  v2 = [(SBHUDController *)self presentedHUDs];
-  v3 = [v2 bs_filter:&__block_literal_global_141];
+  presentedHUDs = [(SBHUDController *)self presentedHUDs];
+  v3 = [presentedHUDs bs_filter:&__block_literal_global_141];
   v4 = [v3 count] != 0;
 
   return v4;
 }
 
-- (id)presentedHUDControllerForIdentifier:(id)a3
+- (id)presentedHUDControllerForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(SBHUDController *)self presentedHUDs];
+  identifierCopy = identifier;
+  presentedHUDs = [(SBHUDController *)self presentedHUDs];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __55__SBHUDController_presentedHUDControllerForIdentifier___block_invoke;
   v10[3] = &unk_2783B4FE0;
-  v11 = v4;
-  v6 = v4;
-  v7 = [v5 bs_filter:v10];
-  v8 = [v7 anyObject];
+  v11 = identifierCopy;
+  v6 = identifierCopy;
+  v7 = [presentedHUDs bs_filter:v10];
+  anyObject = [v7 anyObject];
 
-  return v8;
+  return anyObject;
 }
 
 uint64_t __55__SBHUDController_presentedHUDControllerForIdentifier___block_invoke(uint64_t a1, void *a2)
@@ -247,20 +247,20 @@ uint64_t __55__SBHUDController_presentedHUDControllerForIdentifier___block_invok
   return v4;
 }
 
-- (id)knownHUDControllerForIdentifier:(id)a3
+- (id)knownHUDControllerForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(SBHUDController *)self knownHUDs];
+  identifierCopy = identifier;
+  knownHUDs = [(SBHUDController *)self knownHUDs];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __51__SBHUDController_knownHUDControllerForIdentifier___block_invoke;
   v10[3] = &unk_2783B4FE0;
-  v11 = v4;
-  v6 = v4;
-  v7 = [v5 bs_filter:v10];
-  v8 = [v7 anyObject];
+  v11 = identifierCopy;
+  v6 = identifierCopy;
+  v7 = [knownHUDs bs_filter:v10];
+  anyObject = [v7 anyObject];
 
-  return v8;
+  return anyObject;
 }
 
 uint64_t __51__SBHUDController_knownHUDControllerForIdentifier___block_invoke(uint64_t a1, void *a2)
@@ -271,12 +271,12 @@ uint64_t __51__SBHUDController_knownHUDControllerForIdentifier___block_invoke(ui
   return v4;
 }
 
-- (id)HUDSessionForViewController:(id)a3 identifier:(id)a4
+- (id)HUDSessionForViewController:(id)controller identifier:(id)identifier
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SBHUDController *)self knownHUDControllerForIdentifier:v6];
-  v9 = [_SBHUDModel HUDModelForController:self viewController:v7 identifier:v6];
+  identifierCopy = identifier;
+  controllerCopy = controller;
+  v8 = [(SBHUDController *)self knownHUDControllerForIdentifier:identifierCopy];
+  v9 = [_SBHUDModel HUDModelForController:self viewController:controllerCopy identifier:identifierCopy];
 
   if ([v8 isEqual:v9])
   {
@@ -293,38 +293,38 @@ uint64_t __51__SBHUDController_knownHUDControllerForIdentifier___block_invoke(ui
   return v10;
 }
 
-- (id)acquireHUDHiddenAssertionForIdentifier:(id)a3 withReason:(id)a4
+- (id)acquireHUDHiddenAssertionForIdentifier:(id)identifier withReason:(id)reason
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v7 = MEMORY[0x277CF0CE8];
-  v8 = a4;
+  reasonCopy = reason;
   v9 = [v7 alloc];
   v14 = MEMORY[0x277D85DD0];
   v15 = 3221225472;
   v16 = __69__SBHUDController_acquireHUDHiddenAssertionForIdentifier_withReason___block_invoke;
   v17 = &unk_2783B18A8;
-  v18 = self;
-  v19 = v6;
-  v10 = v6;
-  v11 = [v9 initWithIdentifier:v10 forReason:v8 invalidationBlock:&v14];
+  selfCopy = self;
+  v19 = identifierCopy;
+  v10 = identifierCopy;
+  v11 = [v9 initWithIdentifier:v10 forReason:reasonCopy invalidationBlock:&v14];
 
-  [(NSCountedSet *)self->_hudHiddenAssertions addObject:v10, v14, v15, v16, v17, v18];
+  [(NSCountedSet *)self->_hudHiddenAssertions addObject:v10, v14, v15, v16, v17, selfCopy];
   v12 = [(SBHUDController *)self knownHUDControllerForIdentifier:v10];
   [v12 dismissAnimated:0];
 
   return v11;
 }
 
-- (void)dismissHUDs:(BOOL)a3
+- (void)dismissHUDs:(BOOL)ds
 {
-  v3 = a3;
+  dsCopy = ds;
   v14 = *MEMORY[0x277D85DE8];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [(SBHUDController *)self knownHUDs];
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  knownHUDs = [(SBHUDController *)self knownHUDs];
+  v5 = [knownHUDs countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -336,38 +336,38 @@ uint64_t __51__SBHUDController_knownHUDControllerForIdentifier___block_invoke(ui
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(knownHUDs);
         }
 
-        [*(*(&v9 + 1) + 8 * v8++) dismissAnimated:v3];
+        [*(*(&v9 + 1) + 8 * v8++) dismissAnimated:dsCopy];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [knownHUDs countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)_presentHUD:(id)a3 animated:(BOOL)a4
+- (void)_presentHUD:(id)d animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  dCopy = d;
   hudHiddenAssertions = self->_hudHiddenAssertions;
-  v8 = [v6 identifier];
-  v9 = [(NSCountedSet *)hudHiddenAssertions countForObject:v8];
+  identifier = [dCopy identifier];
+  v9 = [(NSCountedSet *)hudHiddenAssertions countForObject:identifier];
 
   if (v9)
   {
-    v10 = SBLogCommon();
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+    hUDWindow = SBLogCommon();
+    if (os_log_type_enabled(hUDWindow, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [v6 identifier];
+      identifier2 = [dCopy identifier];
       v12 = @"s";
       *buf = 138412802;
-      v18 = v11;
+      v18 = identifier2;
       if (v9 == 1)
       {
         v12 = &stru_283094718;
@@ -377,32 +377,32 @@ uint64_t __51__SBHUDController_knownHUDControllerForIdentifier___block_invoke(ui
       v20 = v9;
       v21 = 2112;
       v22 = v12;
-      _os_log_impl(&dword_21ED4E000, v10, OS_LOG_TYPE_DEFAULT, "[SBHUDController] ignoring request to present HUD with identifier '%@' due to %lu outstanding assertion%@", buf, 0x20u);
+      _os_log_impl(&dword_21ED4E000, hUDWindow, OS_LOG_TYPE_DEFAULT, "[SBHUDController] ignoring request to present HUD with identifier '%@' due to %lu outstanding assertion%@", buf, 0x20u);
     }
 
     goto LABEL_9;
   }
 
-  v13 = [(SBHUDController *)self windowScene];
+  windowScene = [(SBHUDController *)self windowScene];
 
-  if (v13)
+  if (windowScene)
   {
     [(SBHUDController *)self _createHUDWindowIfNeeded];
-    v10 = [(SBHUDController *)self HUDWindow];
-    if ([v10 isHidden])
+    hUDWindow = [(SBHUDController *)self HUDWindow];
+    if ([hUDWindow isHidden])
     {
-      [v10 makeKeyAndVisible];
+      [hUDWindow makeKeyAndVisible];
     }
 
-    v14 = [(SBHUDController *)self hudViewController];
-    if ([_SBHUDHostViewController isHUDBeingDismissed:v14])
+    hudViewController = [(SBHUDController *)self hudViewController];
+    if ([_SBHUDHostViewController isHUDBeingDismissed:hudViewController])
     {
-      [_SBHUDHostViewController reverseHUDDismissal:v14];
+      [_SBHUDHostViewController reverseHUDDismissal:hudViewController];
     }
 
-    else if (([v6 isPresented] & 1) != 0 || objc_msgSend(v6, "isPresenting"))
+    else if (([dCopy isPresented] & 1) != 0 || objc_msgSend(dCopy, "isPresenting"))
     {
-      [v6 rescheduleDismissalTimer];
+      [dCopy rescheduleDismissalTimer];
 LABEL_16:
 
       goto LABEL_9;
@@ -413,28 +413,28 @@ LABEL_16:
     v15[2] = __40__SBHUDController__presentHUD_animated___block_invoke;
     v15[3] = &unk_2783B5008;
     v15[4] = self;
-    v16 = v6;
-    [(_SBHUDHostViewController *)v14 presentHUD:v16 animated:v4 completion:v15];
+    v16 = dCopy;
+    [(_SBHUDHostViewController *)hudViewController presentHUD:v16 animated:animatedCopy completion:v15];
 
     goto LABEL_16;
   }
 
-  v10 = SBLogCommon();
-  if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+  hUDWindow = SBLogCommon();
+  if (os_log_type_enabled(hUDWindow, OS_LOG_TYPE_ERROR))
   {
-    [SBHUDController _presentHUD:v6 animated:v10];
+    [SBHUDController _presentHUD:dCopy animated:hUDWindow];
   }
 
 LABEL_9:
 }
 
-- (void)_dismissHUD:(id)a3 animated:(BOOL)a4
+- (void)_dismissHUD:(id)d animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(SBHUDController *)self hudViewController];
-  v8 = v7;
-  if (v7 && ([v7 _transitionContextMatchingHUD:v6 withinContainer:v7[128]], v9 = objc_claimAutoreleasedReturnValue(), v9, v9))
+  animatedCopy = animated;
+  dCopy = d;
+  hudViewController = [(SBHUDController *)self hudViewController];
+  v8 = hudViewController;
+  if (hudViewController && ([hudViewController _transitionContextMatchingHUD:dCopy withinContainer:hudViewController[128]], v9 = objc_claimAutoreleasedReturnValue(), v9, v9))
   {
     [_SBHUDHostViewController reverseHUDPresentation:v8];
   }
@@ -446,63 +446,63 @@ LABEL_9:
     v10[2] = __40__SBHUDController__dismissHUD_animated___block_invoke;
     v10[3] = &unk_2783B5008;
     v10[4] = self;
-    v11 = v6;
-    [(_SBHUDHostViewController *)v8 dismissHUD:v11 animated:v4 completion:v10];
+    v11 = dCopy;
+    [(_SBHUDHostViewController *)v8 dismissHUD:v11 animated:animatedCopy completion:v10];
   }
 }
 
-- (void)_finishedTransitionForHUD:(id)a3 intendedState:(int64_t)a4 finalState:(int64_t)a5
+- (void)_finishedTransitionForHUD:(id)d intendedState:(int64_t)state finalState:(int64_t)finalState
 {
-  v8 = a3;
-  if (a5 != a4)
+  dCopy = d;
+  if (finalState != state)
   {
-    [v8 invalidateDismissalTimer];
+    [dCopy invalidateDismissalTimer];
   }
 
-  if (!a5)
+  if (!finalState)
   {
-    [v8 rescheduleDismissalTimer];
+    [dCopy rescheduleDismissalTimer];
   }
 
   [(SBFZStackParticipant *)self->_zStackParticipant setNeedsUpdatePreferencesWithReason:@"SBHUDController finishedTransitionForHUD"];
   [(SBHUDController *)self _hideWindowIfPossible];
 }
 
-- (void)windowSceneDidConnect:(id)a3
+- (void)windowSceneDidConnect:(id)connect
 {
-  objc_storeStrong(&self->_windowScene, a3);
-  v5 = a3;
-  v8 = [v5 zStackResolver];
-  v6 = [v8 acquireParticipantWithIdentifier:18 delegate:self];
+  objc_storeStrong(&self->_windowScene, connect);
+  connectCopy = connect;
+  zStackResolver = [connectCopy zStackResolver];
+  v6 = [zStackResolver acquireParticipantWithIdentifier:18 delegate:self];
   zStackParticipant = self->_zStackParticipant;
   self->_zStackParticipant = v6;
 }
 
 - (void)_createHUDWindowIfNeeded
 {
-  v6 = [[_SBHUDHostViewController alloc] initWithHUDController:a1];
-  v7 = *(a1 + 48);
-  *(a1 + 48) = v6;
+  v6 = [[_SBHUDHostViewController alloc] initWithHUDController:self];
+  v7 = *(self + 48);
+  *(self + 48) = v6;
 
-  v8 = *(a1 + 48);
+  v8 = *(self + 48);
   if (v8)
   {
-    objc_storeWeak((v8 + 1048), a1);
+    objc_storeWeak((v8 + 1048), self);
   }
 
   v9 = [(SBFTouchPassThroughWindow *)[SBHUDWindow alloc] initWithWindowScene:a2 role:@"SBTraitsParticipantRoleHUD" debugName:@"HUDWindow"];
   *a3 = v9;
-  [(SBHUDWindow *)v9 setRootViewController:*(a1 + 48)];
+  [(SBHUDWindow *)v9 setRootViewController:*(self + 48)];
   [(SBHUDWindow *)v9 setOpaque:0];
   [(SBHUDWindow *)v9 setWindowLevel:*MEMORY[0x277D76A38]];
 
-  objc_storeStrong((a1 + 40), v9);
+  objc_storeStrong((self + 40), v9);
 }
 
 - (void)_hideWindowIfPossible
 {
-  v8 = [(SBHUDController *)self presentedHUDs];
-  if (![v8 count])
+  presentedHUDs = [(SBHUDController *)self presentedHUDs];
+  if (![presentedHUDs count])
   {
 
 LABEL_6:
@@ -512,11 +512,11 @@ LABEL_6:
     return;
   }
 
-  v3 = [(SBHUDController *)self hudViewController];
-  if (v3)
+  hudViewController = [(SBHUDController *)self hudViewController];
+  if (hudViewController)
   {
-    v4 = v3;
-    v5 = [*(v3 + 1024) count];
+    v4 = hudViewController;
+    v5 = [*(hudViewController + 1024) count];
     v6 = [v4[129] count];
 
     if (!(v6 + v5))
@@ -528,43 +528,43 @@ LABEL_6:
   }
 }
 
-- (void)_notificationFiredToDismissHUDs:(id)a3
+- (void)_notificationFiredToDismissHUDs:(id)ds
 {
   v8 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dsCopy = ds;
   v5 = SBLogCommon();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = dsCopy;
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "[SBHUDController] Dismissing all HUDs because of notification: %@", &v6, 0xCu);
   }
 
   [(SBHUDController *)self dismissHUDs:1];
 }
 
-- (void)zStackParticipant:(id)a3 updatePreferences:(id)a4
+- (void)zStackParticipant:(id)participant updatePreferences:(id)preferences
 {
-  v6 = a3;
-  v7 = a4;
+  participantCopy = participant;
+  preferencesCopy = preferences;
   v10 = 0;
   v11 = &v10;
   v12 = 0x3032000000;
   v13 = __Block_byref_object_copy__52;
   v14 = __Block_byref_object_dispose__52;
   v15 = 0;
-  v8 = [(SBHUDController *)self presentedHUDs];
-  if ([v8 count])
+  presentedHUDs = [(SBHUDController *)self presentedHUDs];
+  if ([presentedHUDs count])
   {
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __55__SBHUDController_zStackParticipant_updatePreferences___block_invoke;
     v9[3] = &unk_2783B5030;
     v9[4] = &v10;
-    [v8 enumerateObjectsUsingBlock:v9];
+    [presentedHUDs enumerateObjectsUsingBlock:v9];
   }
 
-  [v7 setPhysicalButtonSceneTargets:v11[5]];
+  [preferencesCopy setPhysicalButtonSceneTargets:v11[5]];
 
   _Block_object_dispose(&v10, 8);
 }
@@ -593,70 +593,70 @@ void __55__SBHUDController_zStackParticipant_updatePreferences___block_invoke(ui
   }
 }
 
-- (void)hudViewController:(id)a3 willDismissHUD:(id)a4
+- (void)hudViewController:(id)controller willDismissHUD:(id)d
 {
-  v7 = a3;
-  v5 = a4;
+  controllerCopy = controller;
+  dCopy = d;
   if (objc_opt_respondsToSelector())
   {
-    [v5 hudViewController:v7 willDismissHUD:v5];
+    [dCopy hudViewController:controllerCopy willDismissHUD:dCopy];
   }
 
-  v6 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v6 postNotificationName:@"SBHUDControllerWillDismissHUDNotificationName" object:v5];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"SBHUDControllerWillDismissHUDNotificationName" object:dCopy];
 }
 
-- (void)hudViewController:(id)a3 didDismissHUD:(id)a4
+- (void)hudViewController:(id)controller didDismissHUD:(id)d
 {
-  v8 = a3;
-  v6 = a4;
+  controllerCopy = controller;
+  dCopy = d;
   if (objc_opt_respondsToSelector())
   {
-    [v6 hudViewController:v8 didDismissHUD:v6];
+    [dCopy hudViewController:controllerCopy didDismissHUD:dCopy];
   }
 
-  v7 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v7 postNotificationName:@"SBHUDControllerDidDismissHUDNotificationName" object:v6];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"SBHUDControllerDidDismissHUDNotificationName" object:dCopy];
 
   [(SBHUDController *)self _hideWindowIfPossible];
 }
 
-- (void)hudViewController:(id)a3 didPresentHUD:(id)a4
+- (void)hudViewController:(id)controller didPresentHUD:(id)d
 {
-  v7 = a3;
-  v5 = a4;
+  controllerCopy = controller;
+  dCopy = d;
   if (objc_opt_respondsToSelector())
   {
-    [v5 hudViewController:v7 didPresentHUD:v5];
+    [dCopy hudViewController:controllerCopy didPresentHUD:dCopy];
   }
 
-  v6 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v6 postNotificationName:@"SBHUDControllerDidPresentHUDNotificationName" object:v5];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"SBHUDControllerDidPresentHUDNotificationName" object:dCopy];
 }
 
-- (void)hudViewController:(id)a3 willPresentHUD:(id)a4
+- (void)hudViewController:(id)controller willPresentHUD:(id)d
 {
-  v7 = a3;
-  v5 = a4;
+  controllerCopy = controller;
+  dCopy = d;
   if (objc_opt_respondsToSelector())
   {
-    [v5 hudViewController:v7 willPresentHUD:v5];
+    [dCopy hudViewController:controllerCopy willPresentHUD:dCopy];
   }
 
-  v6 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v6 postNotificationName:@"SBHUDControllerWillPresentHUDNotificationName" object:v5];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"SBHUDControllerWillPresentHUDNotificationName" object:dCopy];
 }
 
-+ (id)_defaultCrossfadeAnimatorForHUDController:(id)a3
++ (id)_defaultCrossfadeAnimatorForHUDController:(id)controller
 {
-  v3 = a3;
+  controllerCopy = controller;
   v4 = [SBUIAnimationPropertyAnimator alloc];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __61__SBHUDController__defaultCrossfadeAnimatorForHUDController___block_invoke;
   v8[3] = &unk_2783B50A8;
-  v9 = v3;
-  v5 = v3;
+  v9 = controllerCopy;
+  v5 = controllerCopy;
   v6 = [(SBUIAnimationPropertyAnimator *)v4 initWithPropertyAnimatorGenerator:v8];
 
   return v6;
@@ -765,14 +765,14 @@ uint64_t __61__SBHUDController__defaultCrossfadeAnimatorForHUDController___block
   return [v3 completeTransition:v4];
 }
 
-- (id)animationControllerForDismissedController:(id)a3
+- (id)animationControllerForDismissedController:(id)controller
 {
   v4 = objc_opt_class();
 
   return [v4 _defaultCrossfadeAnimatorForHUDController:self];
 }
 
-- (id)animationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5
+- (id)animationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController
 {
   v6 = objc_opt_class();
 

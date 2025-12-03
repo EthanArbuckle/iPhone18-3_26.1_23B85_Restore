@@ -1,37 +1,37 @@
 @interface UITextFormattingViewControllerFormattingDescriptor
-+ (BOOL)_canToggleTrait:(unsigned int)a3 forFont:(id)a4;
-+ (BOOL)_canToggleTrait:(unsigned int)a3 forFont:(id)a4 inText:(id)a5;
-- (BOOL)isEqual:(id)a3;
++ (BOOL)_canToggleTrait:(unsigned int)trait forFont:(id)font;
++ (BOOL)_canToggleTrait:(unsigned int)trait forFont:(id)font inText:(id)text;
+- (BOOL)isEqual:(id)equal;
 - (UITextFormattingViewControllerFormattingDescriptor)init;
-- (UITextFormattingViewControllerFormattingDescriptor)initWithAttributes:(id)a3;
-- (UITextFormattingViewControllerFormattingDescriptor)initWithCoder:(id)a3;
-- (UITextFormattingViewControllerFormattingDescriptor)initWithString:(id)a3 range:(_NSRange)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (UITextFormattingViewControllerFormattingDescriptor)initWithAttributes:(id)attributes;
+- (UITextFormattingViewControllerFormattingDescriptor)initWithCoder:(id)coder;
+- (UITextFormattingViewControllerFormattingDescriptor)initWithString:(id)string range:(_NSRange)range;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setListStyle:(int64_t)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setListStyle:(int64_t)style;
 @end
 
 @implementation UITextFormattingViewControllerFormattingDescriptor
 
-+ (BOOL)_canToggleTrait:(unsigned int)a3 forFont:(id)a4
++ (BOOL)_canToggleTrait:(unsigned int)trait forFont:(id)font
 {
-  v5 = a4;
-  v6 = sub_189077318(a3);
+  fontCopy = font;
+  v6 = sub_189077318(trait);
   sub_188A34624(0, &qword_1ED48C4A0);
   v7 = sub_18A4A7C88();
 
   return (v7 & 1) == 0;
 }
 
-+ (BOOL)_canToggleTrait:(unsigned int)a3 forFont:(id)a4 inText:(id)a5
++ (BOOL)_canToggleTrait:(unsigned int)trait forFont:(id)font inText:(id)text
 {
   v7 = sub_18A4A7288();
   v9 = v8;
-  v10 = a4;
-  LOBYTE(a3) = sub_189076044(a3, v7, v9);
+  fontCopy = font;
+  LOBYTE(trait) = sub_189076044(trait, v7, v9);
 
-  return a3 & 1;
+  return trait & 1;
 }
 
 - (UITextFormattingViewControllerFormattingDescriptor)init
@@ -63,14 +63,14 @@
   return v2;
 }
 
-- (UITextFormattingViewControllerFormattingDescriptor)initWithString:(id)a3 range:(_NSRange)a4
+- (UITextFormattingViewControllerFormattingDescriptor)initWithString:(id)string range:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v7 = a3;
-  if (location + length <= [v7 length])
+  length = range.length;
+  location = range.location;
+  stringCopy = string;
+  if (location + length <= [stringCopy length])
   {
-    v9 = [v7 attributesAtIndex:location effectiveRange:0];
+    v9 = [stringCopy attributesAtIndex:location effectiveRange:0];
     v10 = [v9 mutableCopy];
 
     v11 = objc_opt_new();
@@ -96,7 +96,7 @@
     v30 = v25;
     v16 = v14;
     v31 = v16;
-    [v7 enumerateAttributesInRange:location options:length usingBlock:{0, v27}];
+    [stringCopy enumerateAttributesInRange:location options:length usingBlock:{0, v27}];
     if ([v15 count] >= 2)
     {
       [v10 setValue:v15 forKey:*off_1E70EC918];
@@ -121,14 +121,14 @@
     if ([v15 count])
     {
       v24 = v10;
-      v18 = [v15 firstObject];
-      v19 = [v7 string];
-      v20 = [v19 substringWithRange:{location, length}];
-      [(UITextFormattingViewControllerFormattingDescriptor *)v17 set_canToggleBold:[UITextFormattingViewControllerFormattingDescriptor _canToggleTrait:2 forFont:v18 inText:v20]];
+      firstObject = [v15 firstObject];
+      string = [stringCopy string];
+      v20 = [string substringWithRange:{location, length}];
+      [(UITextFormattingViewControllerFormattingDescriptor *)v17 set_canToggleBold:[UITextFormattingViewControllerFormattingDescriptor _canToggleTrait:2 forFont:firstObject inText:v20]];
 
-      v21 = [v7 string];
-      v22 = [v21 substringWithRange:{location, length}];
-      [(UITextFormattingViewControllerFormattingDescriptor *)v17 set_canToggleItalic:[UITextFormattingViewControllerFormattingDescriptor _canToggleTrait:1 forFont:v18 inText:v22]];
+      string2 = [stringCopy string];
+      v22 = [string2 substringWithRange:{location, length}];
+      [(UITextFormattingViewControllerFormattingDescriptor *)v17 set_canToggleItalic:[UITextFormattingViewControllerFormattingDescriptor _canToggleTrait:1 forFont:firstObject inText:v22]];
 
       v10 = v24;
     }
@@ -186,18 +186,18 @@ void __75__UITextFormattingViewControllerFormattingDescriptor_initWithString_ran
   }
 }
 
-- (UITextFormattingViewControllerFormattingDescriptor)initWithAttributes:(id)a3
+- (UITextFormattingViewControllerFormattingDescriptor)initWithAttributes:(id)attributes
 {
   v69[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  attributesCopy = attributes;
   v5 = [(UITextFormattingViewControllerFormattingDescriptor *)self init];
   if (!v5)
   {
     goto LABEL_42;
   }
 
-  obj = [v4 objectForKey:*off_1E70EC918];
-  v6 = [v4 objectForKey:*off_1E70EC978];
+  obj = [attributesCopy objectForKey:*off_1E70EC918];
+  v6 = [attributesCopy objectForKey:*off_1E70EC978];
   v7 = v6;
   if (v6)
   {
@@ -234,7 +234,7 @@ LABEL_4:
   }
 
 LABEL_5:
-  v12 = [v4 objectForKey:*off_1E70EC920];
+  v12 = [attributesCopy objectForKey:*off_1E70EC920];
   v13 = v12;
   if (v12)
   {
@@ -244,7 +244,7 @@ LABEL_5:
     v5->_textColors = v14;
   }
 
-  v16 = [v4 objectForKey:*off_1E70EC988];
+  v16 = [attributesCopy objectForKey:*off_1E70EC988];
   if (!v16)
   {
     goto LABEL_16;
@@ -312,15 +312,15 @@ LABEL_13:
   v13 = v18;
   v16 = v51;
 LABEL_17:
-  v28 = [v4 objectForKey:*off_1E70ECAD8];
+  v28 = [attributesCopy objectForKey:*off_1E70ECAD8];
   v5->_underlinePresent = [v28 BOOLValue];
 
-  v29 = [v4 objectForKey:*off_1E70EC9C8];
+  v29 = [attributesCopy objectForKey:*off_1E70EC9C8];
   v5->_strikethroughPresent = [v29 BOOLValue];
 
   v5->__blockquote = 0;
   v30 = [MEMORY[0x1E695DFA8] set];
-  v31 = [v4 objectForKey:*off_1E70ECA08];
+  v31 = [attributesCopy objectForKey:*off_1E70ECA08];
   v52 = v30;
   if (v31)
   {
@@ -365,7 +365,7 @@ LABEL_17:
     v5->__customComponentKeys = v37;
   }
 
-  v39 = [v4 objectForKey:*off_1E70ECA40];
+  v39 = [attributesCopy objectForKey:*off_1E70ECA40];
   v40 = objc_opt_new();
   if (!v39)
   {
@@ -398,7 +398,7 @@ LABEL_17:
 
 LABEL_36:
   [(UITextFormattingViewControllerFormattingDescriptor *)v5 setHighlights:v40];
-  v42 = [v4 objectForKey:*off_1E70ECA80];
+  v42 = [attributesCopy objectForKey:*off_1E70ECA80];
   if (![(NSSet *)v5->_highlights count]&& v42)
   {
     v43 = [MEMORY[0x1E695DFD8] setWithObject:@"UITextFormattingViewControllerHighlightDefault"];
@@ -407,17 +407,17 @@ LABEL_36:
 
   if ([(NSArray *)v5->_fonts count])
   {
-    v44 = [(NSArray *)v5->_fonts firstObject];
+    firstObject = [(NSArray *)v5->_fonts firstObject];
     v45 = v31;
     v46 = v39;
     v47 = v40;
     v48 = v45;
-    [(UITextFormattingViewControllerFormattingDescriptor *)v5 set_canToggleBold:[UITextFormattingViewControllerFormattingDescriptor _canToggleTrait:2 forFont:v44]];
+    [(UITextFormattingViewControllerFormattingDescriptor *)v5 set_canToggleBold:[UITextFormattingViewControllerFormattingDescriptor _canToggleTrait:2 forFont:firstObject]];
     v49 = v48;
     v40 = v47;
     v39 = v46;
     v31 = v49;
-    [(UITextFormattingViewControllerFormattingDescriptor *)v5 set_canToggleItalic:[UITextFormattingViewControllerFormattingDescriptor _canToggleTrait:1 forFont:v44]];
+    [(UITextFormattingViewControllerFormattingDescriptor *)v5 set_canToggleItalic:[UITextFormattingViewControllerFormattingDescriptor _canToggleTrait:1 forFont:firstObject]];
   }
 
 LABEL_42:
@@ -512,19 +512,19 @@ void __73__UITextFormattingViewControllerFormattingDescriptor_initWithAttributes
   [v2 addObject:v3];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(UITextFormattingViewControllerFormattingDescriptor *)self formattingStyleKey];
-  [v4 setFormattingStyleKey:v5];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  formattingStyleKey = [(UITextFormattingViewControllerFormattingDescriptor *)self formattingStyleKey];
+  [v4 setFormattingStyleKey:formattingStyleKey];
 
-  v6 = [(UITextFormattingViewControllerFormattingDescriptor *)self fonts];
-  v7 = [v6 copy];
+  fonts = [(UITextFormattingViewControllerFormattingDescriptor *)self fonts];
+  v7 = [fonts copy];
   v8 = v4[6];
   v4[6] = v7;
 
-  v9 = [(UITextFormattingViewControllerFormattingDescriptor *)self textColors];
-  v10 = [v9 copy];
+  textColors = [(UITextFormattingViewControllerFormattingDescriptor *)self textColors];
+  v10 = [textColors copy];
   v11 = v4[7];
   v4[7] = v10;
 
@@ -534,25 +534,25 @@ void __73__UITextFormattingViewControllerFormattingDescriptor_initWithAttributes
   [v4 setUnderlinePresent:{-[UITextFormattingViewControllerFormattingDescriptor underlinePresent](self, "underlinePresent")}];
   [v4 setStrikethrough:{-[UITextFormattingViewControllerFormattingDescriptor strikethrough](self, "strikethrough")}];
   [v4 setStrikethroughPresent:{-[UITextFormattingViewControllerFormattingDescriptor strikethroughPresent](self, "strikethroughPresent")}];
-  v13 = [(UITextFormattingViewControllerFormattingDescriptor *)self textAlignments];
-  [v4 setTextAlignments:v13];
+  textAlignments = [(UITextFormattingViewControllerFormattingDescriptor *)self textAlignments];
+  [v4 setTextAlignments:textAlignments];
 
   [v4 setListStyle:{-[UITextFormattingViewControllerFormattingDescriptor listStyle](self, "listStyle")}];
-  v14 = [(UITextFormattingViewControllerFormattingDescriptor *)self textLists];
-  [v4 setTextLists:v14];
+  textLists = [(UITextFormattingViewControllerFormattingDescriptor *)self textLists];
+  [v4 setTextLists:textLists];
 
-  v15 = [(UITextFormattingViewControllerFormattingDescriptor *)self highlights];
-  [v4 setHighlights:v15];
+  highlights = [(UITextFormattingViewControllerFormattingDescriptor *)self highlights];
+  [v4 setHighlights:highlights];
 
-  v16 = [(UITextFormattingViewControllerFormattingDescriptor *)self _paragraphStyle];
-  [v4 set_paragraphStyle:v16];
+  _paragraphStyle = [(UITextFormattingViewControllerFormattingDescriptor *)self _paragraphStyle];
+  [v4 set_paragraphStyle:_paragraphStyle];
 
-  v17 = [(UITextFormattingViewControllerFormattingDescriptor *)self _customComponentKeys];
-  v18 = [v17 copy];
+  _customComponentKeys = [(UITextFormattingViewControllerFormattingDescriptor *)self _customComponentKeys];
+  v18 = [_customComponentKeys copy];
   [v4 set_customComponentKeys:v18];
 
-  v19 = [(UITextFormattingViewControllerFormattingDescriptor *)self _emphasisStyleKey];
-  [v4 set_emphasisStyleKey:v19];
+  _emphasisStyleKey = [(UITextFormattingViewControllerFormattingDescriptor *)self _emphasisStyleKey];
+  [v4 set_emphasisStyleKey:_emphasisStyleKey];
 
   [v4 set_blockquote:{-[UITextFormattingViewControllerFormattingDescriptor _blockquote](self, "_blockquote")}];
   [v4 set_canToggleBold:{-[UITextFormattingViewControllerFormattingDescriptor _canToggleBold](self, "_canToggleBold")}];
@@ -560,10 +560,10 @@ void __73__UITextFormattingViewControllerFormattingDescriptor_initWithAttributes
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     LOBYTE(v17) = 1;
   }
@@ -573,48 +573,48 @@ void __73__UITextFormattingViewControllerFormattingDescriptor_initWithAttributes
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(UITextFormattingViewControllerFormattingDescriptor *)self formattingStyleKey];
-      v7 = [(UITextFormattingViewControllerFormattingDescriptor *)v5 formattingStyleKey];
-      if ([v6 isEqualToString:v7])
+      v5 = equalCopy;
+      formattingStyleKey = [(UITextFormattingViewControllerFormattingDescriptor *)self formattingStyleKey];
+      formattingStyleKey2 = [(UITextFormattingViewControllerFormattingDescriptor *)v5 formattingStyleKey];
+      if ([formattingStyleKey isEqualToString:formattingStyleKey2])
       {
-        v8 = [(UITextFormattingViewControllerFormattingDescriptor *)self fonts];
-        v9 = [(UITextFormattingViewControllerFormattingDescriptor *)v5 fonts];
-        if ([v8 isEqualToArray:v9])
+        fonts = [(UITextFormattingViewControllerFormattingDescriptor *)self fonts];
+        fonts2 = [(UITextFormattingViewControllerFormattingDescriptor *)v5 fonts];
+        if ([fonts isEqualToArray:fonts2])
         {
-          v10 = [(UITextFormattingViewControllerFormattingDescriptor *)self textColors];
-          v11 = [(UITextFormattingViewControllerFormattingDescriptor *)v5 textColors];
-          if ([v10 isEqualToArray:v11] && (-[UITextFormattingViewControllerFormattingDescriptor lineHeight](self, "lineHeight"), v13 = v12, -[UITextFormattingViewControllerFormattingDescriptor lineHeight](v5, "lineHeight"), v13 == v14) && (v15 = -[UITextFormattingViewControllerFormattingDescriptor underlinePresent](self, "underlinePresent"), v15 == -[UITextFormattingViewControllerFormattingDescriptor underlinePresent](v5, "underlinePresent")) && (v16 = -[UITextFormattingViewControllerFormattingDescriptor strikethroughPresent](self, "strikethroughPresent"), v16 == -[UITextFormattingViewControllerFormattingDescriptor strikethroughPresent](v5, "strikethroughPresent")))
+          textColors = [(UITextFormattingViewControllerFormattingDescriptor *)self textColors];
+          textColors2 = [(UITextFormattingViewControllerFormattingDescriptor *)v5 textColors];
+          if ([textColors isEqualToArray:textColors2] && (-[UITextFormattingViewControllerFormattingDescriptor lineHeight](self, "lineHeight"), v13 = v12, -[UITextFormattingViewControllerFormattingDescriptor lineHeight](v5, "lineHeight"), v13 == v14) && (v15 = -[UITextFormattingViewControllerFormattingDescriptor underlinePresent](self, "underlinePresent"), v15 == -[UITextFormattingViewControllerFormattingDescriptor underlinePresent](v5, "underlinePresent")) && (v16 = -[UITextFormattingViewControllerFormattingDescriptor strikethroughPresent](self, "strikethroughPresent"), v16 == -[UITextFormattingViewControllerFormattingDescriptor strikethroughPresent](v5, "strikethroughPresent")))
           {
-            v19 = [(UITextFormattingViewControllerFormattingDescriptor *)self textAlignments];
-            v37 = [(UITextFormattingViewControllerFormattingDescriptor *)v5 textAlignments];
-            v38 = v19;
-            if ([v19 isEqualToSet:v37])
+            textAlignments = [(UITextFormattingViewControllerFormattingDescriptor *)self textAlignments];
+            textAlignments2 = [(UITextFormattingViewControllerFormattingDescriptor *)v5 textAlignments];
+            v38 = textAlignments;
+            if ([textAlignments isEqualToSet:textAlignments2])
             {
-              v20 = [(UITextFormattingViewControllerFormattingDescriptor *)self textLists];
-              v35 = [(UITextFormattingViewControllerFormattingDescriptor *)v5 textLists];
-              v36 = v20;
-              if ([v20 isEqualToSet:v35])
+              textLists = [(UITextFormattingViewControllerFormattingDescriptor *)self textLists];
+              textLists2 = [(UITextFormattingViewControllerFormattingDescriptor *)v5 textLists];
+              v36 = textLists;
+              if ([textLists isEqualToSet:textLists2])
               {
-                v21 = [(UITextFormattingViewControllerFormattingDescriptor *)self highlights];
-                v33 = [(UITextFormattingViewControllerFormattingDescriptor *)v5 highlights];
-                v34 = v21;
-                if ([v21 isEqualToSet:v33])
+                highlights = [(UITextFormattingViewControllerFormattingDescriptor *)self highlights];
+                highlights2 = [(UITextFormattingViewControllerFormattingDescriptor *)v5 highlights];
+                v34 = highlights;
+                if ([highlights isEqualToSet:highlights2])
                 {
-                  v22 = [(UITextFormattingViewControllerFormattingDescriptor *)self _customComponentKeys];
-                  v31 = [(UITextFormattingViewControllerFormattingDescriptor *)v5 _customComponentKeys];
-                  v32 = v22;
-                  if ([v22 isEqualToSet:v31])
+                  _customComponentKeys = [(UITextFormattingViewControllerFormattingDescriptor *)self _customComponentKeys];
+                  _customComponentKeys2 = [(UITextFormattingViewControllerFormattingDescriptor *)v5 _customComponentKeys];
+                  v32 = _customComponentKeys;
+                  if ([_customComponentKeys isEqualToSet:_customComponentKeys2])
                   {
-                    v23 = [(UITextFormattingViewControllerFormattingDescriptor *)self _emphasisStyleKey];
-                    v24 = [(UITextFormattingViewControllerFormattingDescriptor *)v5 _emphasisStyleKey];
-                    v30 = v23;
-                    v25 = v23;
-                    v26 = v24;
-                    if ([v25 isEqualToString:v24] && (v28 = -[UITextFormattingViewControllerFormattingDescriptor _blockquote](self, "_blockquote"), v28 == -[UITextFormattingViewControllerFormattingDescriptor _blockquote](v5, "_blockquote")) && (v29 = -[UITextFormattingViewControllerFormattingDescriptor _canToggleBold](self, "_canToggleBold"), v29 == -[UITextFormattingViewControllerFormattingDescriptor _canToggleBold](v5, "_canToggleBold")))
+                    _emphasisStyleKey = [(UITextFormattingViewControllerFormattingDescriptor *)self _emphasisStyleKey];
+                    _emphasisStyleKey2 = [(UITextFormattingViewControllerFormattingDescriptor *)v5 _emphasisStyleKey];
+                    v30 = _emphasisStyleKey;
+                    v25 = _emphasisStyleKey;
+                    v26 = _emphasisStyleKey2;
+                    if ([v25 isEqualToString:_emphasisStyleKey2] && (v28 = -[UITextFormattingViewControllerFormattingDescriptor _blockquote](self, "_blockquote"), v28 == -[UITextFormattingViewControllerFormattingDescriptor _blockquote](v5, "_blockquote")) && (v29 = -[UITextFormattingViewControllerFormattingDescriptor _canToggleBold](self, "_canToggleBold"), v29 == -[UITextFormattingViewControllerFormattingDescriptor _canToggleBold](v5, "_canToggleBold")))
                     {
-                      v27 = [(UITextFormattingViewControllerFormattingDescriptor *)self _canToggleItalic];
-                      v17 = v27 ^ [(UITextFormattingViewControllerFormattingDescriptor *)v5 _canToggleItalic]^ 1;
+                      _canToggleItalic = [(UITextFormattingViewControllerFormattingDescriptor *)self _canToggleItalic];
+                      v17 = _canToggleItalic ^ [(UITextFormattingViewControllerFormattingDescriptor *)v5 _canToggleItalic]^ 1;
                     }
 
                     else
@@ -676,148 +676,148 @@ void __73__UITextFormattingViewControllerFormattingDescriptor_initWithAttributes
 
 - (unint64_t)hash
 {
-  v29 = [(UITextFormattingViewControllerFormattingDescriptor *)self formattingStyleKey];
-  v25 = [v29 hash];
-  v28 = [(UITextFormattingViewControllerFormattingDescriptor *)self fonts];
-  v24 = [v28 hash];
-  v27 = [(UITextFormattingViewControllerFormattingDescriptor *)self textColors];
-  v23 = [v27 hash];
+  formattingStyleKey = [(UITextFormattingViewControllerFormattingDescriptor *)self formattingStyleKey];
+  v25 = [formattingStyleKey hash];
+  fonts = [(UITextFormattingViewControllerFormattingDescriptor *)self fonts];
+  v24 = [fonts hash];
+  textColors = [(UITextFormattingViewControllerFormattingDescriptor *)self textColors];
+  v23 = [textColors hash];
   v3 = MEMORY[0x1E696AD98];
   [(UITextFormattingViewControllerFormattingDescriptor *)self lineHeight];
   v26 = [v3 numberWithDouble:?];
   v21 = [v26 hash];
-  v19 = [(UITextFormattingViewControllerFormattingDescriptor *)self underlinePresent];
-  v18 = [(UITextFormattingViewControllerFormattingDescriptor *)self strikethroughPresent];
-  v22 = [(UITextFormattingViewControllerFormattingDescriptor *)self textAlignments];
-  v17 = [v22 hash];
-  v20 = [(UITextFormattingViewControllerFormattingDescriptor *)self textLists];
-  v16 = [v20 hash];
-  v4 = [(UITextFormattingViewControllerFormattingDescriptor *)self highlights];
-  v15 = [v4 hash];
-  v5 = [(UITextFormattingViewControllerFormattingDescriptor *)self _paragraphStyle];
-  v6 = [v5 hash];
-  v7 = [(UITextFormattingViewControllerFormattingDescriptor *)self _customComponentKeys];
-  v8 = [v7 hash];
-  v9 = [(UITextFormattingViewControllerFormattingDescriptor *)self _emphasisStyleKey];
-  v10 = [v9 hash];
-  v11 = [(UITextFormattingViewControllerFormattingDescriptor *)self _blockquote];
-  v12 = [(UITextFormattingViewControllerFormattingDescriptor *)self _canToggleBold];
-  v13 = v25 ^ v24 ^ v23 ^ v19 ^ v18 ^ v17 ^ v21 ^ v16 ^ v15 ^ v6 ^ v8 ^ v10 ^ v11 ^ v12 ^ [(UITextFormattingViewControllerFormattingDescriptor *)self _canToggleItalic];
+  underlinePresent = [(UITextFormattingViewControllerFormattingDescriptor *)self underlinePresent];
+  strikethroughPresent = [(UITextFormattingViewControllerFormattingDescriptor *)self strikethroughPresent];
+  textAlignments = [(UITextFormattingViewControllerFormattingDescriptor *)self textAlignments];
+  v17 = [textAlignments hash];
+  textLists = [(UITextFormattingViewControllerFormattingDescriptor *)self textLists];
+  v16 = [textLists hash];
+  highlights = [(UITextFormattingViewControllerFormattingDescriptor *)self highlights];
+  v15 = [highlights hash];
+  _paragraphStyle = [(UITextFormattingViewControllerFormattingDescriptor *)self _paragraphStyle];
+  v6 = [_paragraphStyle hash];
+  _customComponentKeys = [(UITextFormattingViewControllerFormattingDescriptor *)self _customComponentKeys];
+  v8 = [_customComponentKeys hash];
+  _emphasisStyleKey = [(UITextFormattingViewControllerFormattingDescriptor *)self _emphasisStyleKey];
+  v10 = [_emphasisStyleKey hash];
+  _blockquote = [(UITextFormattingViewControllerFormattingDescriptor *)self _blockquote];
+  _canToggleBold = [(UITextFormattingViewControllerFormattingDescriptor *)self _canToggleBold];
+  v13 = v25 ^ v24 ^ v23 ^ underlinePresent ^ strikethroughPresent ^ v17 ^ v21 ^ v16 ^ v15 ^ v6 ^ v8 ^ v10 ^ _blockquote ^ _canToggleBold ^ [(UITextFormattingViewControllerFormattingDescriptor *)self _canToggleItalic];
 
   return v13 ^ 1;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v14 = a3;
-  v4 = [(UITextFormattingViewControllerFormattingDescriptor *)self formattingStyleKey];
-  [v14 encodeObject:v4 forKey:@"_FormattingStyleKey"];
+  coderCopy = coder;
+  formattingStyleKey = [(UITextFormattingViewControllerFormattingDescriptor *)self formattingStyleKey];
+  [coderCopy encodeObject:formattingStyleKey forKey:@"_FormattingStyleKey"];
 
-  v5 = [(UITextFormattingViewControllerFormattingDescriptor *)self fonts];
-  [v14 encodeObject:v5 forKey:@"_Fonts"];
+  fonts = [(UITextFormattingViewControllerFormattingDescriptor *)self fonts];
+  [coderCopy encodeObject:fonts forKey:@"_Fonts"];
 
-  v6 = [(UITextFormattingViewControllerFormattingDescriptor *)self textColors];
-  [v14 encodeObject:v6 forKey:@"_TextColors"];
+  textColors = [(UITextFormattingViewControllerFormattingDescriptor *)self textColors];
+  [coderCopy encodeObject:textColors forKey:@"_TextColors"];
 
   [(UITextFormattingViewControllerFormattingDescriptor *)self lineHeight];
   *&v7 = v7;
-  [v14 encodeFloat:@"_LineHeight" forKey:v7];
-  [v14 encodeInteger:-[UITextFormattingViewControllerFormattingDescriptor underline](self forKey:{"underline"), @"Underline"}];
-  [v14 encodeBool:-[UITextFormattingViewControllerFormattingDescriptor underlinePresent](self forKey:{"underlinePresent"), @"_UnderlinePresent"}];
-  [v14 encodeInteger:-[UITextFormattingViewControllerFormattingDescriptor strikethrough](self forKey:{"strikethrough"), @"_Strikethrough"}];
-  [v14 encodeBool:-[UITextFormattingViewControllerFormattingDescriptor strikethroughPresent](self forKey:{"strikethroughPresent"), @"_StrikethroughPresent"}];
-  v8 = [(UITextFormattingViewControllerFormattingDescriptor *)self textAlignments];
-  [v14 encodeObject:v8 forKey:@"_TextAlignments"];
+  [coderCopy encodeFloat:@"_LineHeight" forKey:v7];
+  [coderCopy encodeInteger:-[UITextFormattingViewControllerFormattingDescriptor underline](self forKey:{"underline"), @"Underline"}];
+  [coderCopy encodeBool:-[UITextFormattingViewControllerFormattingDescriptor underlinePresent](self forKey:{"underlinePresent"), @"_UnderlinePresent"}];
+  [coderCopy encodeInteger:-[UITextFormattingViewControllerFormattingDescriptor strikethrough](self forKey:{"strikethrough"), @"_Strikethrough"}];
+  [coderCopy encodeBool:-[UITextFormattingViewControllerFormattingDescriptor strikethroughPresent](self forKey:{"strikethroughPresent"), @"_StrikethroughPresent"}];
+  textAlignments = [(UITextFormattingViewControllerFormattingDescriptor *)self textAlignments];
+  [coderCopy encodeObject:textAlignments forKey:@"_TextAlignments"];
 
-  [v14 encodeInteger:-[UITextFormattingViewControllerFormattingDescriptor listStyle](self forKey:{"listStyle"), @"_ListStyle"}];
-  v9 = [(UITextFormattingViewControllerFormattingDescriptor *)self textLists];
-  [v14 encodeObject:v9 forKey:@"_TextLists"];
+  [coderCopy encodeInteger:-[UITextFormattingViewControllerFormattingDescriptor listStyle](self forKey:{"listStyle"), @"_ListStyle"}];
+  textLists = [(UITextFormattingViewControllerFormattingDescriptor *)self textLists];
+  [coderCopy encodeObject:textLists forKey:@"_TextLists"];
 
-  v10 = [(UITextFormattingViewControllerFormattingDescriptor *)self highlights];
-  [v14 encodeObject:v10 forKey:@"_Highlights"];
+  highlights = [(UITextFormattingViewControllerFormattingDescriptor *)self highlights];
+  [coderCopy encodeObject:highlights forKey:@"_Highlights"];
 
-  v11 = [(UITextFormattingViewControllerFormattingDescriptor *)self _paragraphStyle];
-  [v14 encodeInteger:v11 forKey:@"_ParagraphStyle"];
+  _paragraphStyle = [(UITextFormattingViewControllerFormattingDescriptor *)self _paragraphStyle];
+  [coderCopy encodeInteger:_paragraphStyle forKey:@"_ParagraphStyle"];
 
-  v12 = [(UITextFormattingViewControllerFormattingDescriptor *)self _customComponentKeys];
-  [v14 encodeObject:v12 forKey:@"_CustomComponentKeys"];
+  _customComponentKeys = [(UITextFormattingViewControllerFormattingDescriptor *)self _customComponentKeys];
+  [coderCopy encodeObject:_customComponentKeys forKey:@"_CustomComponentKeys"];
 
-  v13 = [(UITextFormattingViewControllerFormattingDescriptor *)self _emphasisStyleKey];
-  [v14 encodeObject:v13 forKey:@"_EmphasisStyleKey"];
+  _emphasisStyleKey = [(UITextFormattingViewControllerFormattingDescriptor *)self _emphasisStyleKey];
+  [coderCopy encodeObject:_emphasisStyleKey forKey:@"_EmphasisStyleKey"];
 
-  [v14 encodeInteger:-[UITextFormattingViewControllerFormattingDescriptor _blockquote](self forKey:{"_blockquote"), @"_Blockquote"}];
-  [v14 encodeBool:-[UITextFormattingViewControllerFormattingDescriptor _canToggleBold](self forKey:{"_canToggleBold"), @"_CanToggleBold"}];
-  [v14 encodeBool:-[UITextFormattingViewControllerFormattingDescriptor _canToggleItalic](self forKey:{"_canToggleItalic"), @"_CanToggleItalic"}];
+  [coderCopy encodeInteger:-[UITextFormattingViewControllerFormattingDescriptor _blockquote](self forKey:{"_blockquote"), @"_Blockquote"}];
+  [coderCopy encodeBool:-[UITextFormattingViewControllerFormattingDescriptor _canToggleBold](self forKey:{"_canToggleBold"), @"_CanToggleBold"}];
+  [coderCopy encodeBool:-[UITextFormattingViewControllerFormattingDescriptor _canToggleItalic](self forKey:{"_canToggleItalic"), @"_CanToggleItalic"}];
 }
 
-- (UITextFormattingViewControllerFormattingDescriptor)initWithCoder:(id)a3
+- (UITextFormattingViewControllerFormattingDescriptor)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(UITextFormattingViewControllerFormattingDescriptor *)self init];
   if (v5)
   {
     v6 = _UITextFormattingViewControllerFormattingDescriptorClasses();
-    v7 = [v4 decodeObjectOfClasses:v6 forKey:@"_FormattingStyleKey"];
+    v7 = [coderCopy decodeObjectOfClasses:v6 forKey:@"_FormattingStyleKey"];
     [(UITextFormattingViewControllerFormattingDescriptor *)v5 setFormattingStyleKey:v7];
 
     v8 = _UITextFormattingViewControllerFormattingDescriptorClasses();
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"_Fonts"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"_Fonts"];
     [(UITextFormattingViewControllerFormattingDescriptor *)v5 setFonts:v9];
 
     v10 = _UITextFormattingViewControllerFormattingDescriptorClasses();
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"_TextColors"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"_TextColors"];
     [(UITextFormattingViewControllerFormattingDescriptor *)v5 setTextColors:v11];
 
-    [v4 decodeFloatForKey:@"_LineHeight"];
+    [coderCopy decodeFloatForKey:@"_LineHeight"];
     [(UITextFormattingViewControllerFormattingDescriptor *)v5 setLineHeight:v12];
-    -[UITextFormattingViewControllerFormattingDescriptor setUnderline:](v5, "setUnderline:", [v4 decodeIntegerForKey:@"Underline"]);
-    -[UITextFormattingViewControllerFormattingDescriptor setUnderlinePresent:](v5, "setUnderlinePresent:", [v4 decodeBoolForKey:@"_UnderlinePresent"]);
-    -[UITextFormattingViewControllerFormattingDescriptor setStrikethrough:](v5, "setStrikethrough:", [v4 decodeIntegerForKey:@"_Strikethrough"]);
-    -[UITextFormattingViewControllerFormattingDescriptor setStrikethroughPresent:](v5, "setStrikethroughPresent:", [v4 decodeBoolForKey:@"_StrikethroughPresent"]);
+    -[UITextFormattingViewControllerFormattingDescriptor setUnderline:](v5, "setUnderline:", [coderCopy decodeIntegerForKey:@"Underline"]);
+    -[UITextFormattingViewControllerFormattingDescriptor setUnderlinePresent:](v5, "setUnderlinePresent:", [coderCopy decodeBoolForKey:@"_UnderlinePresent"]);
+    -[UITextFormattingViewControllerFormattingDescriptor setStrikethrough:](v5, "setStrikethrough:", [coderCopy decodeIntegerForKey:@"_Strikethrough"]);
+    -[UITextFormattingViewControllerFormattingDescriptor setStrikethroughPresent:](v5, "setStrikethroughPresent:", [coderCopy decodeBoolForKey:@"_StrikethroughPresent"]);
     v13 = _UITextFormattingViewControllerFormattingDescriptorClasses();
-    v14 = [v4 decodeObjectOfClasses:v13 forKey:@"_TextAlignments"];
+    v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"_TextAlignments"];
     [(UITextFormattingViewControllerFormattingDescriptor *)v5 setTextAlignments:v14];
 
-    -[UITextFormattingViewControllerFormattingDescriptor setListStyle:](v5, "setListStyle:", [v4 decodeIntegerForKey:@"_ListStyle"]);
+    -[UITextFormattingViewControllerFormattingDescriptor setListStyle:](v5, "setListStyle:", [coderCopy decodeIntegerForKey:@"_ListStyle"]);
     v15 = _UITextFormattingViewControllerFormattingDescriptorClasses();
-    v16 = [v4 decodeObjectOfClasses:v15 forKey:@"_TextLists"];
+    v16 = [coderCopy decodeObjectOfClasses:v15 forKey:@"_TextLists"];
     [(UITextFormattingViewControllerFormattingDescriptor *)v5 setTextLists:v16];
 
     v17 = _UITextFormattingViewControllerFormattingDescriptorClasses();
-    v18 = [v4 decodeObjectOfClasses:v17 forKey:@"_Highlights"];
+    v18 = [coderCopy decodeObjectOfClasses:v17 forKey:@"_Highlights"];
     [(UITextFormattingViewControllerFormattingDescriptor *)v5 setHighlights:v18];
 
     v19 = _UITextFormattingViewControllerFormattingDescriptorClasses();
-    v20 = [v4 decodeObjectOfClasses:v19 forKey:@"_ParagraphStyle"];
+    v20 = [coderCopy decodeObjectOfClasses:v19 forKey:@"_ParagraphStyle"];
     [(UITextFormattingViewControllerFormattingDescriptor *)v5 set_paragraphStyle:v20];
 
     v21 = _UITextFormattingViewControllerFormattingDescriptorClasses();
-    v22 = [v4 decodeObjectOfClasses:v21 forKey:@"_CustomComponentKeys"];
+    v22 = [coderCopy decodeObjectOfClasses:v21 forKey:@"_CustomComponentKeys"];
     [(UITextFormattingViewControllerFormattingDescriptor *)v5 set_customComponentKeys:v22];
 
     v23 = _UITextFormattingViewControllerFormattingDescriptorClasses();
-    v24 = [v4 decodeObjectOfClasses:v23 forKey:@"_EmphasisStyleKey"];
+    v24 = [coderCopy decodeObjectOfClasses:v23 forKey:@"_EmphasisStyleKey"];
     [(UITextFormattingViewControllerFormattingDescriptor *)v5 set_emphasisStyleKey:v24];
 
-    -[UITextFormattingViewControllerFormattingDescriptor set_blockquote:](v5, "set_blockquote:", [v4 decodeIntegerForKey:@"_Blockquote"]);
-    -[UITextFormattingViewControllerFormattingDescriptor set_canToggleBold:](v5, "set_canToggleBold:", [v4 decodeBoolForKey:@"_CanToggleBold"]);
-    -[UITextFormattingViewControllerFormattingDescriptor set_canToggleItalic:](v5, "set_canToggleItalic:", [v4 decodeBoolForKey:@"_CanToggleItalic"]);
+    -[UITextFormattingViewControllerFormattingDescriptor set_blockquote:](v5, "set_blockquote:", [coderCopy decodeIntegerForKey:@"_Blockquote"]);
+    -[UITextFormattingViewControllerFormattingDescriptor set_canToggleBold:](v5, "set_canToggleBold:", [coderCopy decodeBoolForKey:@"_CanToggleBold"]);
+    -[UITextFormattingViewControllerFormattingDescriptor set_canToggleItalic:](v5, "set_canToggleItalic:", [coderCopy decodeBoolForKey:@"_CanToggleItalic"]);
   }
 
   return v5;
 }
 
-- (void)setListStyle:(int64_t)a3
+- (void)setListStyle:(int64_t)style
 {
-  if (a3 > 2)
+  if (style > 2)
   {
-    if (a3 == 3)
+    if (style == 3)
     {
       v5 = @"UITextFormattingViewControllerTextListDecimal";
       goto LABEL_11;
     }
 
-    if (a3 == 98)
+    if (style == 98)
     {
       v5 = @"UITextFormattingViewControllerTextListOther";
       goto LABEL_11;
@@ -826,13 +826,13 @@ void __73__UITextFormattingViewControllerFormattingDescriptor_initWithAttributes
 
   else
   {
-    if (a3 == 1)
+    if (style == 1)
     {
       v5 = @"UITextFormattingViewControllerTextListDisc";
       goto LABEL_11;
     }
 
-    if (a3 == 2)
+    if (style == 2)
     {
       v5 = @"UITextFormattingViewControllerTextListHyphen";
 LABEL_11:
@@ -846,7 +846,7 @@ LABEL_12:
   textLists = self->_textLists;
   self->_textLists = v6;
 
-  self->_listStyle = a3;
+  self->_listStyle = style;
 }
 
 @end

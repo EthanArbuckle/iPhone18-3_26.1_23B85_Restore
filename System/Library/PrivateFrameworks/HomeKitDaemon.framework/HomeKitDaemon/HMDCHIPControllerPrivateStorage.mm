@@ -1,23 +1,23 @@
 @interface HMDCHIPControllerPrivateStorage
 + (id)logCategory;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)removeAllSDKKeyValuePairs;
-- (BOOL)removeValueForSDKKey:(id)a3;
-- (BOOL)setSDKKeyValuePairs:(id)a3;
-- (BOOL)setValue:(id)a3 forSDKKey:(id)a4;
-- (HMDCHIPControllerPrivateStorage)initWithHome:(id)a3;
+- (BOOL)removeValueForSDKKey:(id)key;
+- (BOOL)setSDKKeyValuePairs:(id)pairs;
+- (BOOL)setValue:(id)value forSDKKey:(id)key;
+- (HMDCHIPControllerPrivateStorage)initWithHome:(id)home;
 - (HMDHome)home;
 - (NSDictionary)debugDictionaryRepresentation;
 - (NSNumber)cachedLocalControllerNodeID;
 - (id)allSDKKeyValuePairs;
 - (id)attributeDescriptions;
-- (id)fetchKeyValuePairForKey:(void *)a3 home:(void *)a4 context:;
-- (id)fetchRequestForHome:(unint64_t)a3 maxExpectedCount:;
-- (id)homeWithContext:(void *)a1;
+- (id)fetchKeyValuePairForKey:(void *)key home:(void *)home context:;
+- (id)fetchRequestForHome:(unint64_t)home maxExpectedCount:;
+- (id)homeWithContext:(void *)context;
 - (id)logIdentifier;
-- (id)privateDataSourceForControllerNodeID:(id)a3;
-- (id)valueForSDKKey:(id)a3;
-- (uint64_t)removeAllForHome:(void *)a3 context:;
+- (id)privateDataSourceForControllerNodeID:(id)d;
+- (id)valueForSDKKey:(id)key;
+- (uint64_t)removeAllForHome:(void *)home context:;
 - (unint64_t)hash;
 @end
 
@@ -34,12 +34,12 @@
 {
   v12[2] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277D0F778]);
-  v4 = [(HMDCHIPControllerPrivateStorage *)self home];
-  v5 = [v3 initWithName:@"Home" value:v4];
+  home = [(HMDCHIPControllerPrivateStorage *)self home];
+  v5 = [v3 initWithName:@"Home" value:home];
   v12[0] = v5;
   v6 = objc_alloc(MEMORY[0x277D0F778]);
-  v7 = [(HMDCHIPControllerPrivateStorage *)self controllerNodeID];
-  v8 = [v6 initWithName:@"Controller Node ID" value:v7];
+  controllerNodeID = [(HMDCHIPControllerPrivateStorage *)self controllerNodeID];
+  v8 = [v6 initWithName:@"Controller Node ID" value:controllerNodeID];
   v12[1] = v8;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:2];
 
@@ -51,33 +51,33 @@
 - (id)logIdentifier
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HMDCHIPControllerPrivateStorage *)self home];
-  v5 = [v4 uuid];
-  v6 = [(HMDCHIPControllerPrivateStorage *)self controllerNodeID];
-  v7 = [v3 stringWithFormat:@"%@/%@", v5, v6];
+  home = [(HMDCHIPControllerPrivateStorage *)self home];
+  uuid = [home uuid];
+  controllerNodeID = [(HMDCHIPControllerPrivateStorage *)self controllerNodeID];
+  v7 = [v3 stringWithFormat:@"%@/%@", uuid, controllerNodeID];
 
   return v7;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(HMDCHIPControllerPrivateStorage *)self home];
-  v4 = [v3 uuid];
-  v5 = [v4 hash];
+  home = [(HMDCHIPControllerPrivateStorage *)self home];
+  uuid = [home uuid];
+  v5 = [uuid hash];
 
-  v6 = [(HMDCHIPControllerPrivateStorage *)self controllerNodeID];
-  v7 = [v6 hash];
+  controllerNodeID = [(HMDCHIPControllerPrivateStorage *)self controllerNodeID];
+  v7 = [controllerNodeID hash];
 
   return v7 ^ v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -88,8 +88,8 @@
   v6 = v5;
   if (v6 && (-[HMDCHIPControllerPrivateStorage home](self, "home"), v7 = objc_claimAutoreleasedReturnValue(), [v6 home], v8 = objc_claimAutoreleasedReturnValue(), v9 = HMFEqualObjects(), v8, v7, v9))
   {
-    v10 = [(HMDCHIPControllerPrivateStorage *)self controllerNodeID];
-    v11 = [v6 controllerNodeID];
+    controllerNodeID = [(HMDCHIPControllerPrivateStorage *)self controllerNodeID];
+    controllerNodeID2 = [v6 controllerNodeID];
     v12 = HMFEqualObjects();
   }
 
@@ -103,11 +103,11 @@
 
 - (BOOL)removeAllSDKKeyValuePairs
 {
-  v3 = [(HMDCHIPControllerPrivateStorage *)self home];
-  v4 = [v3 backingStore];
-  v5 = [v4 context];
+  home = [(HMDCHIPControllerPrivateStorage *)self home];
+  backingStore = [home backingStore];
+  context = [backingStore context];
 
-  v6 = [v5 managedObjectContext];
+  managedObjectContext = [context managedObjectContext];
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -117,14 +117,14 @@
   v9[2] = __60__HMDCHIPControllerPrivateStorage_removeAllSDKKeyValuePairs__block_invoke;
   v9[3] = &unk_27868A4D8;
   v9[4] = self;
-  v7 = v6;
+  v7 = managedObjectContext;
   v10 = v7;
   v11 = &v12;
-  [v5 unsafeSynchronousBlock:v9];
-  LOBYTE(v3) = *(v13 + 24);
+  [context unsafeSynchronousBlock:v9];
+  LOBYTE(home) = *(v13 + 24);
 
   _Block_object_dispose(&v12, 8);
-  return v3;
+  return home;
 }
 
 void __60__HMDCHIPControllerPrivateStorage_removeAllSDKKeyValuePairs__block_invoke(uint64_t a1)
@@ -139,17 +139,17 @@ void __60__HMDCHIPControllerPrivateStorage_removeAllSDKKeyValuePairs__block_invo
   objc_autoreleasePoolPop(v2);
 }
 
-- (id)homeWithContext:(void *)a1
+- (id)homeWithContext:(void *)context
 {
   v21 = *MEMORY[0x277D85DE8];
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (context)
   {
     [v3 assertIsExecuting];
-    v5 = [a1 home];
-    v6 = [v5 uuid];
-    v7 = [(_MKFModel *)_MKFHome modelWithModelID:v6 context:v4];
+    home = [context home];
+    uuid = [home uuid];
+    v7 = [(_MKFModel *)_MKFHome modelWithModelID:uuid context:v4];
 
     if (v7)
     {
@@ -159,17 +159,17 @@ void __60__HMDCHIPControllerPrivateStorage_removeAllSDKKeyValuePairs__block_invo
     else
     {
       v9 = objc_autoreleasePoolPush();
-      v10 = a1;
+      contextCopy = context;
       v11 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
         v12 = HMFGetLogIdentifier();
-        v13 = [v10 home];
-        v14 = [v13 uuid];
+        home2 = [contextCopy home];
+        uuid2 = [home2 uuid];
         v17 = 138543618;
         v18 = v12;
         v19 = 2112;
-        v20 = v14;
+        v20 = uuid2;
         _os_log_impl(&dword_229538000, v11, OS_LOG_TYPE_ERROR, "%{public}@Unable to find home %@", &v17, 0x16u);
       }
 
@@ -187,27 +187,27 @@ void __60__HMDCHIPControllerPrivateStorage_removeAllSDKKeyValuePairs__block_invo
   return v7;
 }
 
-- (uint64_t)removeAllForHome:(void *)a3 context:
+- (uint64_t)removeAllForHome:(void *)home context:
 {
   v26 = *MEMORY[0x277D85DE8];
   v5 = a2;
-  v6 = a3;
-  v7 = v6;
-  if (a1)
+  homeCopy = home;
+  v7 = homeCopy;
+  if (self)
   {
-    [v6 assertIsExecuting];
-    v8 = [(HMDCHIPControllerPrivateStorage *)a1 fetchRequestForHome:v5 maxExpectedCount:0];
+    [homeCopy assertIsExecuting];
+    v8 = [(HMDCHIPControllerPrivateStorage *)self fetchRequestForHome:v5 maxExpectedCount:0];
     v9 = [objc_alloc(MEMORY[0x277CBE360]) initWithFetchRequest:v8];
     v21 = 0;
     v10 = [v7 executeRequest:v9 error:&v21];
     v11 = v21;
-    v12 = [v10 result];
-    v13 = [v12 BOOLValue];
+    result = [v10 result];
+    bOOLValue = [result BOOLValue];
 
-    if ((v13 & 1) == 0)
+    if ((bOOLValue & 1) == 0)
     {
       v14 = objc_autoreleasePoolPush();
-      v15 = a1;
+      selfCopy = self;
       v16 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
       {
@@ -228,14 +228,14 @@ void __60__HMDCHIPControllerPrivateStorage_removeAllSDKKeyValuePairs__block_invo
 
   else
   {
-    v13 = 0;
+    bOOLValue = 0;
   }
 
   v18 = *MEMORY[0x277D85DE8];
-  return v13;
+  return bOOLValue;
 }
 
-- (id)fetchRequestForHome:(unint64_t)a3 maxExpectedCount:
+- (id)fetchRequestForHome:(unint64_t)home maxExpectedCount:
 {
   v14[2] = *MEMORY[0x277D85DE8];
   v5 = a2;
@@ -248,19 +248,19 @@ void __60__HMDCHIPControllerPrivateStorage_removeAllSDKKeyValuePairs__block_invo
   v8 = MEMORY[0x277CCAC30];
   if (v5)
   {
-    v9 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K == %@", @"home", v5];
-    [v6 setPredicate:v9];
+    home = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K == %@", @"home", v5];
+    [v6 setPredicate:home];
   }
 
   else
   {
-    v9 = [a1 home];
-    v10 = [v9 uuid];
-    v11 = [v8 predicateWithFormat:@"%K.%K == %@", @"home", @"modelID", v10];
+    home = [self home];
+    uuid = [home uuid];
+    v11 = [v8 predicateWithFormat:@"%K.%K == %@", @"home", @"modelID", uuid];
     [v6 setPredicate:v11];
   }
 
-  if (a3 >= 0x33)
+  if (home >= 0x33)
   {
     [v6 setFetchBatchSize:50];
   }
@@ -270,14 +270,14 @@ void __60__HMDCHIPControllerPrivateStorage_removeAllSDKKeyValuePairs__block_invo
   return v6;
 }
 
-- (BOOL)setSDKKeyValuePairs:(id)a3
+- (BOOL)setSDKKeyValuePairs:(id)pairs
 {
-  v4 = a3;
-  v5 = [(HMDCHIPControllerPrivateStorage *)self home];
-  v6 = [v5 backingStore];
-  v7 = [v6 context];
+  pairsCopy = pairs;
+  home = [(HMDCHIPControllerPrivateStorage *)self home];
+  backingStore = [home backingStore];
+  context = [backingStore context];
 
-  v8 = [v7 managedObjectContext];
+  managedObjectContext = [context managedObjectContext];
   v18 = 0;
   v19 = &v18;
   v20 = 0x2020000000;
@@ -287,18 +287,18 @@ void __60__HMDCHIPControllerPrivateStorage_removeAllSDKKeyValuePairs__block_invo
   v13[2] = __55__HMDCHIPControllerPrivateStorage_setSDKKeyValuePairs___block_invoke;
   v13[3] = &unk_278689D98;
   v13[4] = self;
-  v9 = v8;
+  v9 = managedObjectContext;
   v14 = v9;
-  v10 = v4;
+  v10 = pairsCopy;
   v15 = v10;
-  v11 = v7;
+  v11 = context;
   v16 = v11;
   v17 = &v18;
   [v11 unsafeSynchronousBlock:v13];
-  LOBYTE(v5) = *(v19 + 24);
+  LOBYTE(home) = *(v19 + 24);
 
   _Block_object_dispose(&v18, 8);
-  return v5;
+  return home;
 }
 
 void __55__HMDCHIPControllerPrivateStorage_setSDKKeyValuePairs___block_invoke(uint64_t a1)
@@ -567,9 +567,9 @@ void __55__HMDCHIPControllerPrivateStorage_setSDKKeyValuePairs___block_invoke_2(
 
 - (id)allSDKKeyValuePairs
 {
-  v3 = [(HMDCHIPControllerPrivateStorage *)self home];
-  v4 = [v3 backingStore];
-  v5 = [v4 context];
+  home = [(HMDCHIPControllerPrivateStorage *)self home];
+  backingStore = [home backingStore];
+  context = [backingStore context];
 
   v12 = 0;
   v13 = &v12;
@@ -582,7 +582,7 @@ void __55__HMDCHIPControllerPrivateStorage_setSDKKeyValuePairs___block_invoke_2(
   v9[2] = __54__HMDCHIPControllerPrivateStorage_allSDKKeyValuePairs__block_invoke;
   v9[3] = &unk_27868A4D8;
   v9[4] = self;
-  v6 = v5;
+  v6 = context;
   v10 = v6;
   v11 = &v12;
   [v6 unsafeSynchronousBlock:v9];
@@ -741,14 +741,14 @@ void __54__HMDCHIPControllerPrivateStorage_allSDKKeyValuePairs__block_invoke(id 
   v40 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)removeValueForSDKKey:(id)a3
+- (BOOL)removeValueForSDKKey:(id)key
 {
-  v4 = a3;
-  v5 = [(HMDCHIPControllerPrivateStorage *)self home];
-  v6 = [v5 backingStore];
-  v7 = [v6 context];
+  keyCopy = key;
+  home = [(HMDCHIPControllerPrivateStorage *)self home];
+  backingStore = [home backingStore];
+  context = [backingStore context];
 
-  v8 = [v7 managedObjectContext];
+  managedObjectContext = [context managedObjectContext];
   v18 = 0;
   v19 = &v18;
   v20 = 0x2020000000;
@@ -758,18 +758,18 @@ void __54__HMDCHIPControllerPrivateStorage_allSDKKeyValuePairs__block_invoke(id 
   v13[2] = __56__HMDCHIPControllerPrivateStorage_removeValueForSDKKey___block_invoke;
   v13[3] = &unk_278689D98;
   v13[4] = self;
-  v9 = v4;
+  v9 = keyCopy;
   v14 = v9;
-  v10 = v8;
+  v10 = managedObjectContext;
   v15 = v10;
   v17 = &v18;
-  v11 = v7;
+  v11 = context;
   v16 = v11;
   [v11 unsafeSynchronousBlock:v13];
-  LOBYTE(v8) = *(v19 + 24);
+  LOBYTE(managedObjectContext) = *(v19 + 24);
 
   _Block_object_dispose(&v18, 8);
-  return v8;
+  return managedObjectContext;
 }
 
 void __56__HMDCHIPControllerPrivateStorage_removeValueForSDKKey___block_invoke(uint64_t a1)
@@ -864,21 +864,21 @@ void __56__HMDCHIPControllerPrivateStorage_removeValueForSDKKey___block_invoke(u
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (id)fetchKeyValuePairForKey:(void *)a3 home:(void *)a4 context:
+- (id)fetchKeyValuePairForKey:(void *)key home:(void *)home context:
 {
   v38[2] = *MEMORY[0x277D85DE8];
   v7 = a2;
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (a1)
+  keyCopy = key;
+  homeCopy = home;
+  v10 = homeCopy;
+  if (self)
   {
-    [v9 assertIsExecuting];
+    [homeCopy assertIsExecuting];
     v11 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K == %@", @"key", v7];
-    v12 = [(HMDCHIPControllerPrivateStorage *)a1 fetchRequestForHome:v8 maxExpectedCount:1uLL];
+    v12 = [(HMDCHIPControllerPrivateStorage *)self fetchRequestForHome:keyCopy maxExpectedCount:1uLL];
     v13 = MEMORY[0x277CCA920];
-    v14 = [v12 predicate];
-    v38[0] = v14;
+    predicate = [v12 predicate];
+    v38[0] = predicate;
     v38[1] = v11;
     v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v38 count:2];
     v16 = [v13 andPredicateWithSubpredicates:v15];
@@ -889,13 +889,13 @@ void __56__HMDCHIPControllerPrivateStorage_removeValueForSDKKey___block_invoke(u
     v18 = v33;
     if (v17)
     {
-      a1 = [v17 firstObject];
+      self = [v17 firstObject];
     }
 
     else
     {
       v19 = objc_autoreleasePoolPush();
-      v20 = a1;
+      selfCopy = self;
       v21 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
       {
@@ -912,7 +912,7 @@ void __56__HMDCHIPControllerPrivateStorage_removeValueForSDKKey___block_invoke(u
 
       objc_autoreleasePoolPop(v19);
       v23 = objc_autoreleasePoolPush();
-      v24 = v20;
+      v24 = selfCopy;
       v25 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
       {
@@ -931,24 +931,24 @@ void __56__HMDCHIPControllerPrivateStorage_removeValueForSDKKey___block_invoke(u
       }
 
       objc_autoreleasePoolPop(v23);
-      a1 = 0;
+      self = 0;
     }
   }
 
   v28 = *MEMORY[0x277D85DE8];
 
-  return a1;
+  return self;
 }
 
-- (BOOL)setValue:(id)a3 forSDKKey:(id)a4
+- (BOOL)setValue:(id)value forSDKKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDCHIPControllerPrivateStorage *)self home];
-  v9 = [v8 backingStore];
-  v10 = [v9 context];
+  valueCopy = value;
+  keyCopy = key;
+  home = [(HMDCHIPControllerPrivateStorage *)self home];
+  backingStore = [home backingStore];
+  context = [backingStore context];
 
-  v11 = [v10 managedObjectContext];
+  managedObjectContext = [context managedObjectContext];
   v23 = 0;
   v24 = &v23;
   v25 = 0x2020000000;
@@ -958,20 +958,20 @@ void __56__HMDCHIPControllerPrivateStorage_removeValueForSDKKey___block_invoke(u
   v17[2] = __54__HMDCHIPControllerPrivateStorage_setValue_forSDKKey___block_invoke;
   v17[3] = &unk_278689D48;
   v17[4] = self;
-  v12 = v11;
+  v12 = managedObjectContext;
   v18 = v12;
-  v13 = v7;
+  v13 = keyCopy;
   v19 = v13;
-  v14 = v6;
+  v14 = valueCopy;
   v20 = v14;
-  v15 = v10;
+  v15 = context;
   v21 = v15;
   v22 = &v23;
   [v15 unsafeSynchronousBlock:v17];
-  LOBYTE(v10) = *(v24 + 24);
+  LOBYTE(context) = *(v24 + 24);
 
   _Block_object_dispose(&v23, 8);
-  return v10;
+  return context;
 }
 
 void __54__HMDCHIPControllerPrivateStorage_setValue_forSDKKey___block_invoke(uint64_t a1)
@@ -1148,12 +1148,12 @@ LABEL_30:
   v42 = *MEMORY[0x277D85DE8];
 }
 
-- (id)valueForSDKKey:(id)a3
+- (id)valueForSDKKey:(id)key
 {
-  v4 = a3;
-  v5 = [(HMDCHIPControllerPrivateStorage *)self home];
-  v6 = [v5 backingStore];
-  v7 = [v6 context];
+  keyCopy = key;
+  home = [(HMDCHIPControllerPrivateStorage *)self home];
+  backingStore = [home backingStore];
+  context = [backingStore context];
 
   v16 = 0;
   v17 = &v16;
@@ -1166,9 +1166,9 @@ LABEL_30:
   v12[2] = __50__HMDCHIPControllerPrivateStorage_valueForSDKKey___block_invoke;
   v12[3] = &unk_278689D20;
   v12[4] = self;
-  v8 = v4;
+  v8 = keyCopy;
   v13 = v8;
-  v9 = v7;
+  v9 = context;
   v14 = v9;
   v15 = &v16;
   [v9 unsafeSynchronousBlock:v12];
@@ -1244,9 +1244,9 @@ LABEL_6:
 
 - (NSNumber)cachedLocalControllerNodeID
 {
-  v3 = [(HMDCHIPControllerPrivateStorage *)self controllerNodeID];
+  controllerNodeID = [(HMDCHIPControllerPrivateStorage *)self controllerNodeID];
 
-  if (!v3)
+  if (!controllerNodeID)
   {
     if (self)
     {
@@ -1256,9 +1256,9 @@ LABEL_6:
       v13 = __Block_byref_object_copy__279785;
       v14 = __Block_byref_object_dispose__279786;
       v15 = 0;
-      v4 = [(HMDCHIPControllerPrivateStorage *)self home];
-      v5 = [v4 backingStore];
-      v6 = [v5 context];
+      home = [(HMDCHIPControllerPrivateStorage *)self home];
+      backingStore = [home backingStore];
+      context = [backingStore context];
 
       v9[0] = MEMORY[0x277D85DD0];
       v9[1] = 3221225472;
@@ -1266,7 +1266,7 @@ LABEL_6:
       v9[3] = &unk_27868A688;
       v9[4] = self;
       v9[5] = &v10;
-      [v6 unsafeSynchronousBlock:v9];
+      [context unsafeSynchronousBlock:v9];
       v7 = v11[5];
 
       _Block_object_dispose(&v10, 8);
@@ -1322,15 +1322,15 @@ void __52__HMDCHIPControllerPrivateStorage__fetchLocalNodeID__block_invoke(uint6
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (id)privateDataSourceForControllerNodeID:(id)a3
+- (id)privateDataSourceForControllerNodeID:(id)d
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (!v4 || [v4 isEqualToNumber:&unk_283E753E0])
+  dCopy = d;
+  v5 = dCopy;
+  if (!dCopy || [dCopy isEqualToNumber:&unk_283E753E0])
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = self;
+    selfCopy = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
@@ -1350,11 +1350,11 @@ void __52__HMDCHIPControllerPrivateStorage__fetchLocalNodeID__block_invoke(uint6
   v13 = v12;
   if (self)
   {
-    v14 = [(HMDCHIPControllerPrivateStorage *)self home];
-    v15 = [v14 backingStore];
-    v16 = [v15 context];
+    home = [(HMDCHIPControllerPrivateStorage *)self home];
+    backingStore = [home backingStore];
+    context = [backingStore context];
 
-    v17 = [v16 managedObjectContext];
+    managedObjectContext = [context managedObjectContext];
     v23 = 0;
     v24 = &v23;
     v25 = 0x2020000000;
@@ -1363,19 +1363,19 @@ void __52__HMDCHIPControllerPrivateStorage__fetchLocalNodeID__block_invoke(uint6
     *&buf[8] = 3221225472;
     *&buf[16] = __56__HMDCHIPControllerPrivateStorage__setControllerNodeID___block_invoke;
     v28 = &unk_278689D98;
-    v29 = self;
-    v18 = v17;
+    selfCopy2 = self;
+    v18 = managedObjectContext;
     v30 = v18;
     v19 = v13;
     v31 = v19;
     v33 = &v23;
-    v20 = v16;
+    v20 = context;
     v32 = v20;
     [v20 unsafeSynchronousBlock:buf];
-    LOBYTE(v15) = *(v24 + 24);
+    LOBYTE(backingStore) = *(v24 + 24);
 
     _Block_object_dispose(&v23, 8);
-    if ((v15 & 1) == 0)
+    if ((backingStore & 1) == 0)
     {
 LABEL_6:
       self = 0;
@@ -1384,8 +1384,8 @@ LABEL_6:
 
     [(HMDCHIPControllerPrivateStorage *)self setControllerNodeID:v19];
     v21 = [HMDCHIPControllerPrivateDataSource alloc];
-    v22 = [(HMDCHIPControllerPrivateStorage *)self home];
-    self = [(HMDCHIPControllerPrivateDataSource *)v21 initWithHome:v22 nodeID:v19];
+    home2 = [(HMDCHIPControllerPrivateStorage *)self home];
+    self = [(HMDCHIPControllerPrivateDataSource *)v21 initWithHome:home2 nodeID:v19];
   }
 
   else
@@ -1490,20 +1490,20 @@ void __56__HMDCHIPControllerPrivateStorage__setControllerNodeID___block_invoke(u
 {
   v11[2] = *MEMORY[0x277D85DE8];
   v10[0] = @"Home UUID";
-  v3 = [(HMDCHIPControllerPrivateStorage *)self home];
-  v4 = [v3 uuid];
+  home = [(HMDCHIPControllerPrivateStorage *)self home];
+  uuid = [home uuid];
   v10[1] = @"Controller Node ID";
-  v11[0] = v4;
-  v5 = [(HMDCHIPControllerPrivateStorage *)self controllerNodeID];
-  v6 = v5;
-  if (!v5)
+  v11[0] = uuid;
+  controllerNodeID = [(HMDCHIPControllerPrivateStorage *)self controllerNodeID];
+  null = controllerNodeID;
+  if (!controllerNodeID)
   {
-    v6 = [MEMORY[0x277CBEB68] null];
+    null = [MEMORY[0x277CBEB68] null];
   }
 
-  v11[1] = v6;
+  v11[1] = null;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:v10 count:2];
-  if (!v5)
+  if (!controllerNodeID)
   {
   }
 
@@ -1512,12 +1512,12 @@ void __56__HMDCHIPControllerPrivateStorage__setControllerNodeID___block_invoke(u
   return v7;
 }
 
-- (HMDCHIPControllerPrivateStorage)initWithHome:(id)a3
+- (HMDCHIPControllerPrivateStorage)initWithHome:(id)home
 {
-  v4 = a3;
-  if (v4)
+  homeCopy = home;
+  if (homeCopy)
   {
-    v5 = v4;
+    v5 = homeCopy;
     v11.receiver = self;
     v11.super_class = HMDCHIPControllerPrivateStorage;
     v6 = [(HMDCHIPControllerPrivateStorage *)&v11 init];

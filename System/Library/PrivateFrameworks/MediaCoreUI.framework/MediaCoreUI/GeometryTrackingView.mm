@@ -1,5 +1,5 @@
 @interface GeometryTrackingView
-- (_TtC11MediaCoreUIP33_5C0FCAEC7E121FD01840555B36210BDC20GeometryTrackingView)initWithFrame:(CGRect)a3;
+- (_TtC11MediaCoreUIP33_5C0FCAEC7E121FD01840555B36210BDC20GeometryTrackingView)initWithFrame:(CGRect)frame;
 - (void)didMoveToWindow;
 @end
 
@@ -7,11 +7,11 @@
 
 - (void)didMoveToWindow
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C5A01CD4();
 }
 
-- (_TtC11MediaCoreUIP33_5C0FCAEC7E121FD01840555B36210BDC20GeometryTrackingView)initWithFrame:(CGRect)a3
+- (_TtC11MediaCoreUIP33_5C0FCAEC7E121FD01840555B36210BDC20GeometryTrackingView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,11 +1,11 @@
 @interface BKHIDAccessibilitySender
 + (id)accessibilityHIDServices;
-- (BKHIDAccessibilitySender)initWithSenderID:(unint64_t)a3;
+- (BKHIDAccessibilitySender)initWithSenderID:(unint64_t)d;
 @end
 
 @implementation BKHIDAccessibilitySender
 
-- (BKHIDAccessibilitySender)initWithSenderID:(unint64_t)a3
+- (BKHIDAccessibilitySender)initWithSenderID:(unint64_t)d
 {
   v9.receiver = self;
   v9.super_class = BKHIDAccessibilitySender;
@@ -13,10 +13,10 @@
   v5 = v4;
   if (v4)
   {
-    v4->_senderID = a3;
-    v6 = [MEMORY[0x277CF06D0] wildcard];
+    v4->_senderID = d;
+    wildcard = [MEMORY[0x277CF06D0] wildcard];
     senderDescriptor = v5->_senderDescriptor;
-    v5->_senderDescriptor = v6;
+    v5->_senderDescriptor = wildcard;
   }
 
   return v5;

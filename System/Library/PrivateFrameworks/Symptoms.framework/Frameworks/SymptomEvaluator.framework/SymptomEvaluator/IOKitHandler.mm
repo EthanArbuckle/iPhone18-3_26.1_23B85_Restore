@@ -1,8 +1,8 @@
 @interface IOKitHandler
-+ (id)configureClass:(id)a3;
++ (id)configureClass:(id)class;
 + (id)sharedInstance;
 - (IOKitHandler)init;
-- (int)read:(id)a3 returnedValues:(id)a4;
+- (int)read:(id)read returnedValues:(id)values;
 - (unint64_t)mostRecentAPSleepMachTime;
 - (unint64_t)mostRecentAPWakeMachTime;
 - (void)dealloc;
@@ -10,7 +10,7 @@
 - (void)disableIOKitPowerNotifications;
 - (void)enableIOKitAssertionNotifications;
 - (void)enableIOKitPowerNotifications;
-- (void)reportIOPMAssertionException:(int)a3 pid:(int)a4;
+- (void)reportIOPMAssertionException:(int)exception pid:(int)pid;
 - (void)updateMostRecentAPSleepTime;
 - (void)updateMostRecentAPWakeTime;
 @end
@@ -23,7 +23,7 @@
   block[1] = 3221225472;
   block[2] = __30__IOKitHandler_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_pred_20 != -1)
   {
     dispatch_once(&sharedInstance_pred_20, block);
@@ -36,10 +36,10 @@
 
 - (unint64_t)mostRecentAPWakeMachTime
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  mostRecentAPWakeMachTime = v2->_mostRecentAPWakeMachTime;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  mostRecentAPWakeMachTime = selfCopy->_mostRecentAPWakeMachTime;
+  objc_sync_exit(selfCopy);
 
   return mostRecentAPWakeMachTime;
 }
@@ -96,9 +96,9 @@ void __30__IOKitHandler_sharedInstance__block_invoke(uint64_t a1)
 - (void)enableIOKitAssertionNotifications
 {
   v3 = +[SystemProperties sharedInstance];
-  v4 = [v3 internalBuild];
+  internalBuild = [v3 internalBuild];
 
-  if (v4 && !self->_ioHdl)
+  if (internalBuild && !self->_ioHdl)
   {
     v5 = debuggabilityLogHandle;
     if (os_log_type_enabled(debuggabilityLogHandle, OS_LOG_TYPE_DEFAULT))
@@ -157,13 +157,13 @@ void __49__IOKitHandler_enableIOKitAssertionNotifications__block_invoke(uint64_t
   }
 }
 
-- (void)reportIOPMAssertionException:(int)a3 pid:(int)a4
+- (void)reportIOPMAssertionException:(int)exception pid:(int)pid
 {
-  v5 = a3;
+  exceptionCopy = exception;
   v56 = *MEMORY[0x277D85DE8];
-  valuePtr = a4;
+  valuePtr = pid;
   v6 = debuggabilityLogHandle;
-  switch(a3)
+  switch(exception)
   {
     case 4:
       if (!os_log_type_enabled(debuggabilityLogHandle, OS_LOG_TYPE_DEFAULT))
@@ -174,7 +174,7 @@ void __49__IOKitHandler_enableIOKitAssertionNotifications__block_invoke(uint64_t
       *buf = 136315394;
       *&buf[4] = "kIOPMAssertionSystemTimeoutException";
       *&buf[12] = 1024;
-      v55 = a4;
+      pidCopy3 = pid;
       v7 = "Received IOPMAssertion of type %s for pid %d received.";
       goto LABEL_10;
     case 2:
@@ -186,7 +186,7 @@ void __49__IOKitHandler_enableIOKitAssertionNotifications__block_invoke(uint64_t
       *buf = 136315394;
       *&buf[4] = "kIOPMAssertionAggregateException";
       *&buf[12] = 1024;
-      v55 = a4;
+      pidCopy3 = pid;
       v7 = "Received IOPMAssertion of type %s for pid %d received.";
       goto LABEL_10;
     case 1:
@@ -198,7 +198,7 @@ void __49__IOKitHandler_enableIOKitAssertionNotifications__block_invoke(uint64_t
       *buf = 136315394;
       *&buf[4] = "kIOPMAssertionDurationException";
       *&buf[12] = 1024;
-      v55 = a4;
+      pidCopy3 = pid;
       v7 = "Received IOPMAssertion of type %s for pid %d received.";
 LABEL_10:
       v8 = v6;
@@ -213,9 +213,9 @@ LABEL_10:
   }
 
   *buf = 67109376;
-  *&buf[4] = v5;
+  *&buf[4] = exceptionCopy;
   *&buf[8] = 1024;
-  *&buf[10] = a4;
+  *&buf[10] = pid;
   v7 = "Received an IOPMAssertionException that we don't handle: %d for pid %d.";
   v8 = v6;
   v9 = OS_LOG_TYPE_INFO;
@@ -224,9 +224,9 @@ LABEL_13:
   _os_log_impl(&dword_23255B000, v8, v9, v7, buf, v10);
 LABEL_14:
   v11 = +[PowerStateRelay defaultRelay];
-  v12 = [v11 pluggedIn];
+  pluggedIn = [v11 pluggedIn];
 
-  if (!v12)
+  if (!pluggedIn)
   {
     *buf = 0;
     v14 = *MEMORY[0x277CBECE8];
@@ -253,12 +253,12 @@ LABEL_14:
       if (Value)
       {
         Count = CFArrayGetCount(Value);
-        v20 = [MEMORY[0x277CBEB18] array];
-        v15 = v20;
+        array = [MEMORY[0x277CBEB18] array];
+        v15 = array;
         if (Count >= 1)
         {
-          v46 = v20;
-          v45 = v5;
+          v46 = array;
+          v45 = exceptionCopy;
           v21 = 0;
           v22 = *MEMORY[0x277CBECD0];
           v47 = Value;
@@ -278,11 +278,11 @@ LABEL_14:
               v48 = CFDictionaryGetValue(v24, @"Process Name");
               v49 = CFDictionaryGetValue(v24, @"HumanReadableReason");
               v50 = CFDictionaryGetValue(v24, @"AssertionOnBehalfOfBundleID");
-              v32 = [MEMORY[0x277CBEB38] dictionary];
-              v33 = v32;
+              dictionary = [MEMORY[0x277CBEB38] dictionary];
+              v33 = dictionary;
               if (v25)
               {
-                [v32 setObject:v25 forKeyedSubscript:@"AssertLevel"];
+                [dictionary setObject:v25 forKeyedSubscript:@"AssertLevel"];
               }
 
               if (v26)
@@ -343,7 +343,7 @@ LABEL_14:
           }
 
           while (Count != v21);
-          v5 = v45;
+          exceptionCopy = v45;
           v15 = v46;
         }
       }
@@ -366,17 +366,17 @@ LABEL_14:
     v39 = -[EventDescription initWithType:length:data:fromPid:named:bundleId:](v38, "initWithType:length:data:fromPid:named:bundleId:", 1, 0, 0, valuePtr, [v36 UTF8String], 0);
     if ([v37 length])
     {
-      v40 = [(EventDescription *)v39 eventQualifiers];
-      [v40 setObject:v37 forKeyedSubscript:@"UUID"];
+      eventQualifiers = [(EventDescription *)v39 eventQualifiers];
+      [eventQualifiers setObject:v37 forKeyedSubscript:@"UUID"];
     }
 
     if ([v15 count])
     {
-      v41 = [(EventDescription *)v39 eventQualifiers];
-      [v41 setObject:v15 forKeyedSubscript:@"events"];
+      eventQualifiers2 = [(EventDescription *)v39 eventQualifiers];
+      [eventQualifiers2 setObject:v15 forKeyedSubscript:@"events"];
     }
 
-    switch(v5)
+    switch(exceptionCopy)
     {
       case 1:
         v42 = @"com.apple.symptoms.IOPMAssertion.duration";
@@ -470,10 +470,10 @@ LABEL_67:
 
 - (unint64_t)mostRecentAPSleepMachTime
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  mostRecentAPSleepMachTime = v2->_mostRecentAPSleepMachTime;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  mostRecentAPSleepMachTime = selfCopy->_mostRecentAPSleepMachTime;
+  objc_sync_exit(selfCopy);
 
   return mostRecentAPSleepMachTime;
 }
@@ -488,21 +488,21 @@ LABEL_67:
   objc_sync_exit(obj);
 }
 
-+ (id)configureClass:(id)a3
++ (id)configureClass:(id)class
 {
-  v3 = a3;
+  classCopy = class;
   v4 = +[IOKitHandler sharedInstance];
-  [v4 configureInstance:v3];
+  [v4 configureInstance:classCopy];
 
   return v4;
 }
 
-- (int)read:(id)a3 returnedValues:(id)a4
+- (int)read:(id)read returnedValues:(id)values
 {
-  v4 = a4;
+  valuesCopy = values;
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  [v4 setObject:v6 forKey:@"GENERIC_CONFIG_TARGET"];
+  [valuesCopy setObject:v6 forKey:@"GENERIC_CONFIG_TARGET"];
 
   return 0;
 }

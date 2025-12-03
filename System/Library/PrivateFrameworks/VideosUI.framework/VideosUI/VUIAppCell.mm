@@ -1,9 +1,9 @@
 @interface VUIAppCell
 + (UIEdgeInsets)contentInsets;
 - (void)layoutSubviews;
-- (void)setIconSize:(CGSize)a3;
-- (void)setImage:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)setIconSize:(CGSize)size;
+- (void)setImage:(id)image;
+- (void)setTitle:(id)title;
 - (void)updateConstraints;
 @end
 
@@ -22,10 +22,10 @@
   return result;
 }
 
-- (void)setIconSize:(CGSize)a3
+- (void)setIconSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   if (!self->_didLayout)
   {
     [(VUIAppCell *)self layoutSubviews];
@@ -35,37 +35,37 @@
   self->_iconSize.height = height;
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   if (!self->_didLayout)
   {
     [(VUIAppCell *)self layoutSubviews];
   }
 
   image = self->_image;
-  self->_image = v4;
-  v6 = v4;
+  self->_image = imageCopy;
+  v6 = imageCopy;
 
   [(UIImageView *)self->_imageView setImage:self->_image];
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   if (!self->_didLayout)
   {
     [(VUIAppCell *)self layoutSubviews];
   }
 
-  if (!-[NSString length](self->_title, "length") && [v4 length])
+  if (!-[NSString length](self->_title, "length") && [titleCopy length])
   {
     [(VUIAppCell *)self setNeedsUpdateConstraints];
   }
 
   title = self->_title;
-  self->_title = v4;
-  v6 = v4;
+  self->_title = titleCopy;
+  v6 = titleCopy;
 
   [(UILabel *)self->_titleLabel setText:self->_title];
 }
@@ -78,20 +78,20 @@
     v4 = [v3 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
     v5 = objc_alloc_init(MEMORY[0x1E69DCAE0]);
     v16 = [MEMORY[0x1E69DB878] _preferredFontForTextStyle:*MEMORY[0x1E69DDD08] maximumContentSizeCategory:*MEMORY[0x1E69DDC40]];
-    v6 = [MEMORY[0x1E69DC888] vui_primaryTextColor];
-    v7 = [MEMORY[0x1E69DC938] currentDevice];
-    v8 = [v7 userInterfaceIdiom];
+    vui_primaryTextColor = [MEMORY[0x1E69DC888] vui_primaryTextColor];
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (v8 == 2)
+    if (userInterfaceIdiom == 2)
     {
       v9 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDCF8]];
 
-      v10 = [MEMORY[0x1E69DC888] whiteColor];
-      [(UILabel *)v4 setTextColor:v10];
+      whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+      [(UILabel *)v4 setTextColor:whiteColor];
 
-      v11 = [MEMORY[0x1E69DC888] whiteColor];
+      whiteColor2 = [MEMORY[0x1E69DC888] whiteColor];
 
-      v6 = v11;
+      vui_primaryTextColor = whiteColor2;
       v16 = v9;
     }
 
@@ -101,11 +101,11 @@
     [(UILabel *)v4 setNumberOfLines:2];
     [(UILabel *)v4 setTextAlignment:1];
     [(UILabel *)v4 setMinimumScaleFactor:0.7];
-    [(UILabel *)v4 setTextColor:v6];
+    [(UILabel *)v4 setTextColor:vui_primaryTextColor];
     [(UIImageView *)v5 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v12 = [(VUIAppCell *)self contentView];
-    [v12 addSubview:v5];
-    [v12 addSubview:v4];
+    contentView = [(VUIAppCell *)self contentView];
+    [contentView addSubview:v5];
+    [contentView addSubview:v4];
     imageView = self->_imageView;
     self->_imageView = v5;
     v14 = v5;
@@ -127,91 +127,91 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(VUIAppCell *)self contentView];
+  contentView = [(VUIAppCell *)self contentView];
   if ([(NSString *)self->_title length])
   {
-    v12 = [MEMORY[0x1E69DC938] currentDevice];
-    v13 = [v12 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
     v14 = 20.0;
-    if (v13 <= 6)
+    if (userInterfaceIdiom <= 6)
     {
-      v14 = dbl_1E4296A98[v13];
+      v14 = dbl_1E4296A98[userInterfaceIdiom];
     }
 
-    v15 = [(UIImageView *)self->_imageView topAnchor];
-    v16 = [v11 topAnchor];
-    v17 = [v15 constraintEqualToAnchor:v16 constant:v4];
+    topAnchor = [(UIImageView *)self->_imageView topAnchor];
+    topAnchor2 = [contentView topAnchor];
+    v17 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:v4];
     [v17 setActive:1];
 
-    v18 = [(UIImageView *)self->_imageView centerXAnchor];
-    v19 = [v11 centerXAnchor];
-    v20 = [v18 constraintEqualToAnchor:v19];
+    centerXAnchor = [(UIImageView *)self->_imageView centerXAnchor];
+    centerXAnchor2 = [contentView centerXAnchor];
+    v20 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     [v20 setActive:1];
 
-    v21 = [(UIImageView *)self->_imageView leadingAnchor];
-    v22 = [v11 leadingAnchor];
-    v23 = [v21 constraintGreaterThanOrEqualToAnchor:v22 constant:v6];
+    leadingAnchor = [(UIImageView *)self->_imageView leadingAnchor];
+    leadingAnchor2 = [contentView leadingAnchor];
+    v23 = [leadingAnchor constraintGreaterThanOrEqualToAnchor:leadingAnchor2 constant:v6];
     [v23 setActive:1];
 
-    v24 = [(UIImageView *)self->_imageView trailingAnchor];
-    v25 = [v11 trailingAnchor];
+    trailingAnchor = [(UIImageView *)self->_imageView trailingAnchor];
+    trailingAnchor2 = [contentView trailingAnchor];
     v26 = -v10;
-    v27 = [v24 constraintLessThanOrEqualToAnchor:v25 constant:v26];
+    v27 = [trailingAnchor constraintLessThanOrEqualToAnchor:trailingAnchor2 constant:v26];
     [v27 setActive:1];
 
-    v28 = [(UIImageView *)self->_imageView heightAnchor];
-    v29 = [v28 constraintEqualToConstant:self->_iconSize.height];
+    heightAnchor = [(UIImageView *)self->_imageView heightAnchor];
+    v29 = [heightAnchor constraintEqualToConstant:self->_iconSize.height];
     [v29 setActive:1];
 
-    v30 = [(UIImageView *)self->_imageView widthAnchor];
-    v31 = [v30 constraintEqualToConstant:self->_iconSize.width];
+    widthAnchor = [(UIImageView *)self->_imageView widthAnchor];
+    v31 = [widthAnchor constraintEqualToConstant:self->_iconSize.width];
     [v31 setActive:1];
 
-    v32 = [(UILabel *)self->_titleLabel firstBaselineAnchor];
-    v33 = [(UIImageView *)self->_imageView bottomAnchor];
-    v34 = [v32 constraintEqualToAnchor:v33 constant:v14];
+    firstBaselineAnchor = [(UILabel *)self->_titleLabel firstBaselineAnchor];
+    bottomAnchor = [(UIImageView *)self->_imageView bottomAnchor];
+    v34 = [firstBaselineAnchor constraintEqualToAnchor:bottomAnchor constant:v14];
     [v34 setActive:1];
 
-    v35 = [(UILabel *)self->_titleLabel lastBaselineAnchor];
-    v36 = [v11 bottomAnchor];
-    v37 = [v35 constraintEqualToAnchor:v36 constant:-v8];
+    lastBaselineAnchor = [(UILabel *)self->_titleLabel lastBaselineAnchor];
+    bottomAnchor2 = [contentView bottomAnchor];
+    v37 = [lastBaselineAnchor constraintEqualToAnchor:bottomAnchor2 constant:-v8];
     [v37 setActive:1];
 
-    v38 = [(UILabel *)self->_titleLabel leadingAnchor];
-    v39 = [v11 leadingAnchor];
-    v40 = [v38 constraintEqualToAnchor:v39 constant:v6];
+    leadingAnchor3 = [(UILabel *)self->_titleLabel leadingAnchor];
+    leadingAnchor4 = [contentView leadingAnchor];
+    v40 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:v6];
     [v40 setActive:1];
 
-    v41 = [(UILabel *)self->_titleLabel trailingAnchor];
-    v42 = [v11 trailingAnchor];
-    v43 = v41;
-    v44 = v42;
+    trailingAnchor3 = [(UILabel *)self->_titleLabel trailingAnchor];
+    trailingAnchor4 = [contentView trailingAnchor];
+    v43 = trailingAnchor3;
+    v44 = trailingAnchor4;
     v45 = v26;
   }
 
   else
   {
-    v46 = [(UIImageView *)self->_imageView leadingAnchor];
-    v47 = [v11 leadingAnchor];
-    v48 = [v46 constraintEqualToAnchor:v47 constant:v6];
+    leadingAnchor5 = [(UIImageView *)self->_imageView leadingAnchor];
+    leadingAnchor6 = [contentView leadingAnchor];
+    v48 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6 constant:v6];
     [v48 setActive:1];
 
-    v49 = [(UIImageView *)self->_imageView trailingAnchor];
-    v50 = [v11 trailingAnchor];
-    v51 = [v49 constraintEqualToAnchor:v50 constant:-v10];
+    trailingAnchor5 = [(UIImageView *)self->_imageView trailingAnchor];
+    trailingAnchor6 = [contentView trailingAnchor];
+    v51 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6 constant:-v10];
     [v51 setActive:1];
 
-    v52 = [(UIImageView *)self->_imageView topAnchor];
-    v53 = [v11 topAnchor];
-    v54 = [v52 constraintEqualToAnchor:v53 constant:v4];
+    topAnchor3 = [(UIImageView *)self->_imageView topAnchor];
+    topAnchor4 = [contentView topAnchor];
+    v54 = [topAnchor3 constraintEqualToAnchor:topAnchor4 constant:v4];
     [v54 setActive:1];
 
-    v41 = [(UIImageView *)self->_imageView bottomAnchor];
-    v42 = [v11 bottomAnchor];
+    trailingAnchor3 = [(UIImageView *)self->_imageView bottomAnchor];
+    trailingAnchor4 = [contentView bottomAnchor];
     v45 = -v8;
-    v43 = v41;
-    v44 = v42;
+    v43 = trailingAnchor3;
+    v44 = trailingAnchor4;
   }
 
   v55 = [v43 constraintEqualToAnchor:v44 constant:v45];

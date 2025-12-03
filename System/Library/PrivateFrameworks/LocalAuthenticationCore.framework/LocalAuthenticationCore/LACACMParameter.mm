@@ -1,37 +1,37 @@
 @interface LACACMParameter
 + (id)acmParameterDoNotStartDTOTimers;
 + (id)acmParameterSecureIntentSupport;
-- (LACACMParameter)initWithACMParamType:(unsigned int)a3 bytes:(void *)a4 length:(unint64_t)a5 description:(id)a6;
-- (id)copyWithZone:(_NSZone *)a3;
+- (LACACMParameter)initWithACMParamType:(unsigned int)type bytes:(void *)bytes length:(unint64_t)length description:(id)description;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation LACACMParameter
 
-- (LACACMParameter)initWithACMParamType:(unsigned int)a3 bytes:(void *)a4 length:(unint64_t)a5 description:(id)a6
+- (LACACMParameter)initWithACMParamType:(unsigned int)type bytes:(void *)bytes length:(unint64_t)length description:(id)description
 {
-  v11 = a6;
+  descriptionCopy = description;
   v17.receiver = self;
   v17.super_class = LACACMParameter;
   v12 = [(LACACMParameter *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    v12->_type = a3;
-    v14 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytes:a4 length:a5];
+    v12->_type = type;
+    v14 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytes:bytes length:length];
     data = v13->_data;
     v13->_data = v14;
 
-    objc_storeStrong(&v13->_description, a6);
+    objc_storeStrong(&v13->_description, description);
   }
 
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_new();
-  v5 = [(LACACMParameter *)self data];
-  v6 = [v5 mutableCopy];
+  data = [(LACACMParameter *)self data];
+  v6 = [data mutableCopy];
   v7 = *(v4 + 24);
   *(v4 + 24) = v6;
 

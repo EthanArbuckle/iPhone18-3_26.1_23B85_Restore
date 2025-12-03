@@ -1,9 +1,9 @@
 @interface TUIElementNavigationBarItem
-+ (id)builderWithNode:(id)a3 object:(id)a4 attributes:(id)a5 context:(id)a6;
++ (id)builderWithNode:(id)node object:(id)object attributes:(id)attributes context:(id)context;
 + (id)supportedAttributes;
-+ (unint64_t)itemTypeFromString:(id)a3;
-+ (void)configureBox:(id)a3 withNode:(id)a4 attributes:(id)a5 context:(id)a6;
-+ (void)configureObject:(id)a3 withBuilder:(id)a4 context:(id)a5;
++ (unint64_t)itemTypeFromString:(id)string;
++ (void)configureBox:(id)box withNode:(id)node attributes:(id)attributes context:(id)context;
++ (void)configureObject:(id)object withBuilder:(id)builder context:(id)context;
 @end
 
 @implementation TUIElementNavigationBarItem
@@ -20,10 +20,10 @@
   return v3;
 }
 
-+ (unint64_t)itemTypeFromString:(id)a3
++ (unint64_t)itemTypeFromString:(id)string
 {
-  v3 = a3;
-  v4 = v3;
+  stringCopy = string;
+  v4 = stringCopy;
   if (qword_2E6350 != -1)
   {
     sub_19A4EC();
@@ -33,114 +33,114 @@
     }
 
 LABEL_5:
-    v6 = 0;
+    unsignedIntegerValue = 0;
     goto LABEL_6;
   }
 
-  if (!v3)
+  if (!stringCopy)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
   v5 = [qword_2E6348 objectForKeyedSubscript:v4];
-  v6 = [v5 unsignedIntegerValue];
+  unsignedIntegerValue = [v5 unsignedIntegerValue];
 
 LABEL_6:
-  return v6;
+  return unsignedIntegerValue;
 }
 
-+ (id)builderWithNode:(id)a3 object:(id)a4 attributes:(id)a5 context:(id)a6
++ (id)builderWithNode:(id)node object:(id)object attributes:(id)attributes context:(id)context
 {
-  v7 = a5;
+  attributesCopy = attributes;
   v8 = objc_alloc_init(_TUIElementNavigationBarItemBuilder);
-  v9 = [v7 BOOLForAttribute:139 node:a3.var0];
+  v9 = [attributesCopy BOOLForAttribute:139 node:node.var0];
 
   [(_TUIElementNavigationBarItemBuilder *)v8 setMenuIsPrimary:v9];
   return v8;
 }
 
-+ (void)configureBox:(id)a3 withNode:(id)a4 attributes:(id)a5 context:(id)a6
++ (void)configureBox:(id)box withNode:(id)node attributes:(id)attributes context:(id)context
 {
-  v20 = a3;
-  v8 = a5;
-  v9 = [v8 stringForAttribute:206 node:a4.var0];
-  [v20 setTitle:v9];
+  boxCopy = box;
+  attributesCopy = attributes;
+  v9 = [attributesCopy stringForAttribute:206 node:node.var0];
+  [boxCopy setTitle:v9];
 
-  [v20 setEnabled:{objc_msgSend(v8, "BOOLForAttribute:withDefault:node:", 74, 1, a4.var0)}];
-  v10 = [v8 stringForAttribute:116 node:a4.var0];
-  [v20 setButtonType:{+[TUIButtonBox buttonTypeFromString:](TUIButtonBox, "buttonTypeFromString:", v10)}];
+  [boxCopy setEnabled:{objc_msgSend(attributesCopy, "BOOLForAttribute:withDefault:node:", 74, 1, node.var0)}];
+  v10 = [attributesCopy stringForAttribute:116 node:node.var0];
+  [boxCopy setButtonType:{+[TUIButtonBox buttonTypeFromString:](TUIButtonBox, "buttonTypeFromString:", v10)}];
 
-  v11 = [v8 stringForAttribute:44 node:a4.var0];
-  [v20 setButtonRole:{+[TUIButtonBox buttonRoleFromString:](TUIButtonBox, "buttonRoleFromString:", v11)}];
+  v11 = [attributesCopy stringForAttribute:44 node:node.var0];
+  [boxCopy setButtonRole:{+[TUIButtonBox buttonRoleFromString:](TUIButtonBox, "buttonRoleFromString:", v11)}];
 
-  v12 = [v8 stringForAttribute:142 node:a4.var0];
-  [v20 setObserveTrigger:v12];
+  v12 = [attributesCopy stringForAttribute:142 node:node.var0];
+  [boxCopy setObserveTrigger:v12];
 
-  v13 = [v8 stringForAttribute:144 node:a4.var0];
-  [v20 setObserveTriggerValue:{+[TUIBox triggerStateFromString:](TUIBox, "triggerStateFromString:", v13)}];
+  v13 = [attributesCopy stringForAttribute:144 node:node.var0];
+  [boxCopy setObserveTriggerValue:{+[TUIBox triggerStateFromString:](TUIBox, "triggerStateFromString:", v13)}];
 
-  [v20 setIgnoreInsetsForOpacityTrigger:{objc_msgSend(v8, "BOOLForAttribute:node:", 105, a4.var0)}];
-  v14 = [v8 stringForAttribute:140 node:a4.var0];
-  [v20 setItemType:{+[TUIElementNavigationBarItem itemTypeFromString:](TUIElementNavigationBarItem, "itemTypeFromString:", v14)}];
+  [boxCopy setIgnoreInsetsForOpacityTrigger:{objc_msgSend(attributesCopy, "BOOLForAttribute:node:", 105, node.var0)}];
+  v14 = [attributesCopy stringForAttribute:140 node:node.var0];
+  [boxCopy setItemType:{+[TUIElementNavigationBarItem itemTypeFromString:](TUIElementNavigationBarItem, "itemTypeFromString:", v14)}];
 
-  [v20 setPrefersNoPlatter:{objc_msgSend(v8, "BOOLForAttribute:withDefault:node:", 155, 0, a4.var0)}];
-  [v20 setSearchTextMaxLength:{objc_msgSend(v8, "integerForAttribute:withDefault:node:", 184, 0x7FFFFFFFFFFFFFFFLL, a4.var0)}];
-  v15 = [v8 stringForAttribute:202 node:a4.var0];
-  [v20 setText:v15];
+  [boxCopy setPrefersNoPlatter:{objc_msgSend(attributesCopy, "BOOLForAttribute:withDefault:node:", 155, 0, node.var0)}];
+  [boxCopy setSearchTextMaxLength:{objc_msgSend(attributesCopy, "integerForAttribute:withDefault:node:", 184, 0x7FFFFFFFFFFFFFFFLL, node.var0)}];
+  v15 = [attributesCopy stringForAttribute:202 node:node.var0];
+  [boxCopy setText:v15];
 
-  v16 = [v20 itemType];
+  itemType = [boxCopy itemType];
   v17 = NAN;
-  if (v16 == &dword_4 + 3)
+  if (itemType == &dword_4 + 3)
   {
-    [v8 floatForAttribute:146 withDefault:a4.var0 node:NAN];
+    [attributesCopy floatForAttribute:146 withDefault:node.var0 node:NAN];
   }
 
-  [v20 setNavigationBarBackgroundOpacity:v17];
-  v18 = [v8 stringForAttribute:165 node:a4.var0];
-  [v20 setRefId:v18];
+  [boxCopy setNavigationBarBackgroundOpacity:v17];
+  v18 = [attributesCopy stringForAttribute:165 node:node.var0];
+  [boxCopy setRefId:v18];
 
-  v19 = [v8 stringForAttribute:166 node:a4.var0];
-  [v20 setRefInstance:v19];
+  v19 = [attributesCopy stringForAttribute:166 node:node.var0];
+  [boxCopy setRefInstance:v19];
 }
 
-+ (void)configureObject:(id)a3 withBuilder:(id)a4 context:(id)a5
++ (void)configureObject:(id)object withBuilder:(id)builder context:(id)context
 {
-  v22 = a3;
-  v7 = a4;
-  v8 = a5;
+  objectCopy = object;
+  builderCopy = builder;
+  contextCopy = context;
   v9 = [TUIElementActionTriggerHandler alloc];
-  v10 = [v7 finalizeTriggers];
-  v11 = [v8 actionObject];
-  v12 = [v8 actionDelegate];
-  v13 = [(TUIElementActionTriggerHandler *)v9 initWithActionsData:v10 actionObject:v11 actionDelegate:v12];
-  [v22 setActionHandler:v13];
+  finalizeTriggers = [builderCopy finalizeTriggers];
+  actionObject = [contextCopy actionObject];
+  actionDelegate = [contextCopy actionDelegate];
+  v13 = [(TUIElementActionTriggerHandler *)v9 initWithActionsData:finalizeTriggers actionObject:actionObject actionDelegate:actionDelegate];
+  [objectCopy setActionHandler:v13];
 
-  v14 = [v7 finalizeModelsWithParent:v22 box:v22 context:v8];
-  v15 = [v7 attributedTitle];
-  if ([v22 itemType] == &dword_0 + 3 || objc_msgSend(v22, "itemType") == &dword_4)
+  v14 = [builderCopy finalizeModelsWithParent:objectCopy box:objectCopy context:contextCopy];
+  attributedTitle = [builderCopy attributedTitle];
+  if ([objectCopy itemType] == &dword_0 + 3 || objc_msgSend(objectCopy, "itemType") == &dword_4)
   {
-    v16 = [v15 tui_attributedTitleForButtonType:{objc_msgSend(v22, "buttonType")}];
+    v16 = [attributedTitle tui_attributedTitleForButtonType:{objc_msgSend(objectCopy, "buttonType")}];
 
-    v15 = v16;
+    attributedTitle = v16;
   }
 
-  [v22 setAttributedTitle:v15];
-  v17 = [v7 image];
-  [v22 setImage:v17];
+  [objectCopy setAttributedTitle:attributedTitle];
+  image = [builderCopy image];
+  [objectCopy setImage:image];
 
-  v18 = [v7 placeholderText];
-  [v22 setPlaceholderText:v18];
+  placeholderText = [builderCopy placeholderText];
+  [objectCopy setPlaceholderText:placeholderText];
 
-  v19 = [v7 menuContainer];
-  [v22 setMenuContainer:v19];
+  menuContainer = [builderCopy menuContainer];
+  [objectCopy setMenuContainer:menuContainer];
 
-  [v22 setMenuIsPrimary:{objc_msgSend(v7, "menuIsPrimary")}];
-  v20 = [v7 hostingIdentifiers];
-  [v22 setHostingIdentifiers:v20];
+  [objectCopy setMenuIsPrimary:{objc_msgSend(builderCopy, "menuIsPrimary")}];
+  hostingIdentifiers = [builderCopy hostingIdentifiers];
+  [objectCopy setHostingIdentifiers:hostingIdentifiers];
 
-  v21 = [v7 hostingProperities];
-  [v22 setHostingProperties:v21];
+  hostingProperities = [builderCopy hostingProperities];
+  [objectCopy setHostingProperties:hostingProperities];
 }
 
 @end

@@ -3,7 +3,7 @@
 - (NPHCarrierInfoCompanionReplication)init;
 - (void)_updateHasCarrierVoicemailAccountsKey;
 - (void)_updateIsVisualVoicemailServiceSubscribed;
-- (void)_visualVMSubscriptionStateStatusChanged:(id)a3;
+- (void)_visualVMSubscriptionStateStatusChanged:(id)changed;
 - (void)dealloc;
 @end
 
@@ -47,10 +47,10 @@ uint64_t __52__NPHCarrierInfoCompanionReplication_sharedInstance__block_invoke()
     nanoPhoneUserDefaults = v2->_nanoPhoneUserDefaults;
     v2->_nanoPhoneUserDefaults = v7;
 
-    v9 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v10 = *MEMORY[0x277D79790];
-    v11 = [MEMORY[0x277D79778] shared];
-    [v9 addObserver:v2 selector:sel__visualVMSubscriptionStateStatusChanged_ name:v10 object:v11];
+    mEMORY[0x277D79778] = [MEMORY[0x277D79778] shared];
+    [defaultCenter addObserver:v2 selector:sel__visualVMSubscriptionStateStatusChanged_ name:v10 object:mEMORY[0x277D79778]];
 
     [(NPHCarrierInfoCompanionReplication *)v2 _updateIsVisualVoicemailServiceSubscribed];
     [(NPHCarrierInfoCompanionReplication *)v2 _updateHasCarrierVoicemailAccountsKey];
@@ -61,17 +61,17 @@ uint64_t __52__NPHCarrierInfoCompanionReplication_sharedInstance__block_invoke()
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v4 = *MEMORY[0x277D79790];
-  v5 = [MEMORY[0x277D79778] shared];
-  [v3 removeObserver:self name:v4 object:v5];
+  mEMORY[0x277D79778] = [MEMORY[0x277D79778] shared];
+  [defaultCenter removeObserver:self name:v4 object:mEMORY[0x277D79778]];
 
   v6.receiver = self;
   v6.super_class = NPHCarrierInfoCompanionReplication;
   [(NPHCarrierInfoCompanionReplication *)&v6 dealloc];
 }
 
-- (void)_visualVMSubscriptionStateStatusChanged:(id)a3
+- (void)_visualVMSubscriptionStateStatusChanged:(id)changed
 {
   [(NPHCarrierInfoCompanionReplication *)self _updateIsVisualVoicemailServiceSubscribed];
 
@@ -81,8 +81,8 @@ uint64_t __52__NPHCarrierInfoCompanionReplication_sharedInstance__block_invoke()
 - (void)_updateIsVisualVoicemailServiceSubscribed
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277D79778] shared];
-  v4 = [v3 isSubscribed];
+  mEMORY[0x277D79778] = [MEMORY[0x277D79778] shared];
+  isSubscribed = [mEMORY[0x277D79778] isSubscribed];
 
   v5 = nph_general_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -90,11 +90,11 @@ uint64_t __52__NPHCarrierInfoCompanionReplication_sharedInstance__block_invoke()
     v9 = 136315394;
     v10 = "[NPHCarrierInfoCompanionReplication _updateIsVisualVoicemailServiceSubscribed]";
     v11 = 1024;
-    v12 = v4;
+    v12 = isSubscribed;
     _os_log_impl(&dword_26D269000, v5, OS_LOG_TYPE_DEFAULT, "%s: %d", &v9, 0x12u);
   }
 
-  [(NSUserDefaults *)self->_mobilePhoneUserDefaults setBool:v4 forKey:@"NPHIsVisualVoicemailServiceSubscribedKey"];
+  [(NSUserDefaults *)self->_mobilePhoneUserDefaults setBool:isSubscribed forKey:@"NPHIsVisualVoicemailServiceSubscribedKey"];
   npsManager = self->_npsManager;
   v7 = [MEMORY[0x277CBEB98] setWithObject:@"NPHIsVisualVoicemailServiceSubscribedKey"];
   [(NPSManager *)npsManager synchronizeUserDefaultsDomain:@"com.apple.mobilephone" keys:v7];
@@ -105,9 +105,9 @@ uint64_t __52__NPHCarrierInfoCompanionReplication_sharedInstance__block_invoke()
 - (void)_updateHasCarrierVoicemailAccountsKey
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277D79778] shared];
-  v4 = [v3 accounts];
-  v5 = [v4 count];
+  mEMORY[0x277D79778] = [MEMORY[0x277D79778] shared];
+  accounts = [mEMORY[0x277D79778] accounts];
+  v5 = [accounts count];
 
   v6 = nph_general_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))

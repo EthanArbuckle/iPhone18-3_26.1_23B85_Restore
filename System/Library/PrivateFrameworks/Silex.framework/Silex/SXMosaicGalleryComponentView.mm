@@ -1,83 +1,83 @@
 @interface SXMosaicGalleryComponentView
 - (BOOL)allowHierarchyRemoval;
-- (BOOL)fullScreenCanvasController:(id)a3 showable:(id)a4 gestureRecognizerShouldBegin:(id)a5;
-- (BOOL)fullScreenCanvasController:(id)a3 willShowShowable:(id)a4 viewIndex:(unint64_t)a5;
-- (BOOL)galleryLayouter:(id)a3 viewIsCurrentlyFullscreenForItemAtIndex:(unint64_t)a4;
-- (BOOL)requestInteractivityFocusForFullScreenCanvasController:(id)a3;
-- (BOOL)shouldSubmitMediaExposureEventForExposedBounds:(CGRect)a3;
-- (CGRect)fullScreenCanvasController:(id)a3 fullScreenFrameForShowable:(id)a4 viewIndex:(unint64_t)a5 withinRect:(CGRect)a6;
-- (CGRect)fullScreenCanvasController:(id)a3 originalFrameForShowable:(id)a4 onCanvasView:(id)a5 viewIndex:(unint64_t)a6;
-- (CGSize)galleryLayouter:(id)a3 dimensionsForItemAtIndex:(unint64_t)a4;
-- (SXMosaicGalleryComponentView)initWithDOMObjectProvider:(id)a3 viewport:(id)a4 presentationDelegate:(id)a5 componentStyleRendererFactory:(id)a6 analyticsReporting:(id)a7 appStateMonitor:(id)a8 mediaSharingPolicyProvider:(id)a9 imageViewFactory:(id)a10 canvasControllerFactory:(id)a11;
-- (id)componentTextStyleForIdentifier:(id)a3 inheritingFromComponentTextStyle:(id)a4;
-- (id)contentSizeCategoryForCaption:(id)a3;
-- (id)fullScreenCanvasController:(id)a3 canvasViewControllerForShowable:(id)a4 completionBlock:(id)a5;
-- (id)fullScreenCanvasController:(id)a3 captionForShowable:(id)a4 viewIndex:(unint64_t)a5;
-- (id)fullScreenCanvasController:(id)a3 originalViewForShowable:(id)a4 viewIndex:(unint64_t)a5;
-- (id)galleryLayouter:(id)a3 viewForItemAtIndex:(unint64_t)a4;
-- (id)imageViewForItemAtIndex:(unint64_t)a3;
-- (id)imageViewForLocation:(CGPoint)a3;
-- (id)textResizerForCaption:(id)a3;
-- (id)textRulesForCaption:(id)a3;
-- (id)textStyleForIdentifier:(id)a3;
-- (unint64_t)fullScreenCanvasController:(id)a3 numberOfViewsForShowable:(id)a4;
-- (unint64_t)fullScreenCanvasController:(id)a3 viewIndexForPoint:(CGPoint)a4 inShowable:(id)a5;
-- (unint64_t)numberOfItemsForGalleryLayouter:(id)a3;
-- (void)createMediaViewEventForGalleryItem:(id)a3;
+- (BOOL)fullScreenCanvasController:(id)controller showable:(id)showable gestureRecognizerShouldBegin:(id)begin;
+- (BOOL)fullScreenCanvasController:(id)controller willShowShowable:(id)showable viewIndex:(unint64_t)index;
+- (BOOL)galleryLayouter:(id)layouter viewIsCurrentlyFullscreenForItemAtIndex:(unint64_t)index;
+- (BOOL)requestInteractivityFocusForFullScreenCanvasController:(id)controller;
+- (BOOL)shouldSubmitMediaExposureEventForExposedBounds:(CGRect)bounds;
+- (CGRect)fullScreenCanvasController:(id)controller fullScreenFrameForShowable:(id)showable viewIndex:(unint64_t)index withinRect:(CGRect)rect;
+- (CGRect)fullScreenCanvasController:(id)controller originalFrameForShowable:(id)showable onCanvasView:(id)view viewIndex:(unint64_t)index;
+- (CGSize)galleryLayouter:(id)layouter dimensionsForItemAtIndex:(unint64_t)index;
+- (SXMosaicGalleryComponentView)initWithDOMObjectProvider:(id)provider viewport:(id)viewport presentationDelegate:(id)delegate componentStyleRendererFactory:(id)factory analyticsReporting:(id)reporting appStateMonitor:(id)monitor mediaSharingPolicyProvider:(id)policyProvider imageViewFactory:(id)self0 canvasControllerFactory:(id)self1;
+- (id)componentTextStyleForIdentifier:(id)identifier inheritingFromComponentTextStyle:(id)style;
+- (id)contentSizeCategoryForCaption:(id)caption;
+- (id)fullScreenCanvasController:(id)controller canvasViewControllerForShowable:(id)showable completionBlock:(id)block;
+- (id)fullScreenCanvasController:(id)controller captionForShowable:(id)showable viewIndex:(unint64_t)index;
+- (id)fullScreenCanvasController:(id)controller originalViewForShowable:(id)showable viewIndex:(unint64_t)index;
+- (id)galleryLayouter:(id)layouter viewForItemAtIndex:(unint64_t)index;
+- (id)imageViewForItemAtIndex:(unint64_t)index;
+- (id)imageViewForLocation:(CGPoint)location;
+- (id)textResizerForCaption:(id)caption;
+- (id)textRulesForCaption:(id)caption;
+- (id)textStyleForIdentifier:(id)identifier;
+- (unint64_t)fullScreenCanvasController:(id)controller numberOfViewsForShowable:(id)showable;
+- (unint64_t)fullScreenCanvasController:(id)controller viewIndexForPoint:(CGPoint)point inShowable:(id)showable;
+- (unint64_t)numberOfItemsForGalleryLayouter:(id)layouter;
+- (void)createMediaViewEventForGalleryItem:(id)item;
 - (void)discardContents;
 - (void)finishMediaViewEvent;
-- (void)forceImageViewFullscreen:(id)a3;
-- (void)fullScreenCanvasController:(id)a3 didHideShowable:(id)a4 viewIndex:(unint64_t)a5;
-- (void)fullScreenCanvasController:(id)a3 didShowShowable:(id)a4 viewIndex:(unint64_t)a5;
-- (void)fullScreenCanvasController:(id)a3 shouldAddGestureView:(id)a4 forShowable:(id)a5;
-- (void)fullScreenCanvasController:(id)a3 showable:(id)a4 didHideViewWithIndex:(unint64_t)a5;
-- (void)fullScreenCanvasController:(id)a3 showable:(id)a4 didShowViewWithIndex:(unint64_t)a5;
-- (void)fullScreenCanvasController:(id)a3 showable:(id)a4 shouldTransferToOriginalViewWithIndex:(unint64_t)a5;
-- (void)fullScreenCanvasController:(id)a3 showable:(id)a4 willShowViewWithIndex:(unint64_t)a5;
-- (void)fullScreenCanvasController:(id)a3 willHideShowable:(id)a4 viewIndex:(unint64_t)a5;
-- (void)presentComponentWithChanges:(id)a3;
-- (void)receivedInfo:(id)a3 fromLayoutingPhaseWithIdentifier:(id)a4;
+- (void)forceImageViewFullscreen:(id)fullscreen;
+- (void)fullScreenCanvasController:(id)controller didHideShowable:(id)showable viewIndex:(unint64_t)index;
+- (void)fullScreenCanvasController:(id)controller didShowShowable:(id)showable viewIndex:(unint64_t)index;
+- (void)fullScreenCanvasController:(id)controller shouldAddGestureView:(id)view forShowable:(id)showable;
+- (void)fullScreenCanvasController:(id)controller showable:(id)showable didHideViewWithIndex:(unint64_t)index;
+- (void)fullScreenCanvasController:(id)controller showable:(id)showable didShowViewWithIndex:(unint64_t)index;
+- (void)fullScreenCanvasController:(id)controller showable:(id)showable shouldTransferToOriginalViewWithIndex:(unint64_t)index;
+- (void)fullScreenCanvasController:(id)controller showable:(id)showable willShowViewWithIndex:(unint64_t)index;
+- (void)fullScreenCanvasController:(id)controller willHideShowable:(id)showable viewIndex:(unint64_t)index;
+- (void)presentComponentWithChanges:(id)changes;
+- (void)receivedInfo:(id)info fromLayoutingPhaseWithIdentifier:(id)identifier;
 - (void)renderContents;
 - (void)renderContentsInDrawableRect;
 - (void)submitEvents;
 - (void)visibleBoundsChanged;
-- (void)willSubmitMediaExposureEvent:(id)a3;
+- (void)willSubmitMediaExposureEvent:(id)event;
 @end
 
 @implementation SXMosaicGalleryComponentView
 
-- (SXMosaicGalleryComponentView)initWithDOMObjectProvider:(id)a3 viewport:(id)a4 presentationDelegate:(id)a5 componentStyleRendererFactory:(id)a6 analyticsReporting:(id)a7 appStateMonitor:(id)a8 mediaSharingPolicyProvider:(id)a9 imageViewFactory:(id)a10 canvasControllerFactory:(id)a11
+- (SXMosaicGalleryComponentView)initWithDOMObjectProvider:(id)provider viewport:(id)viewport presentationDelegate:(id)delegate componentStyleRendererFactory:(id)factory analyticsReporting:(id)reporting appStateMonitor:(id)monitor mediaSharingPolicyProvider:(id)policyProvider imageViewFactory:(id)self0 canvasControllerFactory:(id)self1
 {
-  v33 = a10;
-  v18 = a11;
+  viewFactoryCopy = viewFactory;
+  controllerFactoryCopy = controllerFactory;
   v34.receiver = self;
   v34.super_class = SXMosaicGalleryComponentView;
-  v19 = [(SXGalleryComponentView *)&v34 initWithDOMObjectProvider:a3 viewport:a4 presentationDelegate:a5 componentStyleRendererFactory:a6 analyticsReporting:a7 appStateMonitor:a8 mediaSharingPolicyProvider:a9];
+  v19 = [(SXGalleryComponentView *)&v34 initWithDOMObjectProvider:provider viewport:viewport presentationDelegate:delegate componentStyleRendererFactory:factory analyticsReporting:reporting appStateMonitor:monitor mediaSharingPolicyProvider:policyProvider];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_imageViewFactory, a10);
+    objc_storeStrong(&v19->_imageViewFactory, viewFactory);
     v21 = objc_alloc_init(MEMORY[0x1E69DD250]);
     galleryView = v20->_galleryView;
     v20->_galleryView = v21;
 
-    v23 = [(SXComponentView *)v20 contentView];
-    [v23 addSubview:v20->_galleryView];
+    contentView = [(SXComponentView *)v20 contentView];
+    [contentView addSubview:v20->_galleryView];
 
-    v24 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     imageViews = v20->_imageViews;
-    v20->_imageViews = v24;
+    v20->_imageViews = array;
 
-    v26 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     visibleImageViews = v20->_visibleImageViews;
-    v20->_visibleImageViews = v26;
+    v20->_visibleImageViews = array2;
 
     v28 = [MEMORY[0x1E695DFA8] set];
     exposedGalleryItems = v20->_exposedGalleryItems;
     v20->_exposedGalleryItems = v28;
 
     v20->_layoutRequired = 1;
-    v30 = [v18 fullscreenCanvasControllerForShowable:v20];
+    v30 = [controllerFactoryCopy fullscreenCanvasControllerForShowable:v20];
     fullScreenCanvasController = v20->_fullScreenCanvasController;
     v20->_fullScreenCanvasController = v30;
   }
@@ -85,28 +85,28 @@
   return v20;
 }
 
-- (void)presentComponentWithChanges:(id)a3
+- (void)presentComponentWithChanges:(id)changes
 {
   v10.receiver = self;
   v10.super_class = SXMosaicGalleryComponentView;
-  [(SXComponentView *)&v10 presentComponentWithChanges:*&a3.var0 & 0xFFFFFFLL];
+  [(SXComponentView *)&v10 presentComponentWithChanges:*&changes.var0 & 0xFFFFFFLL];
   if ([(SXMosaicGalleryComponentView *)self isLayoutRequired])
   {
-    v4 = [(SXMosaicGalleryComponentView *)self galleryView];
+    galleryView = [(SXMosaicGalleryComponentView *)self galleryView];
     [(SXComponentView *)self contentFrame];
-    [v4 setFrame:?];
+    [galleryView setFrame:?];
 
-    v5 = [(SXComponentView *)self component];
-    v6 = [v5 items];
+    component = [(SXComponentView *)self component];
+    items = [component items];
 
-    if (v6)
+    if (items)
     {
-      v7 = [(SXMosaicGalleryComponentView *)self galleryLayouter];
-      [v7 setDataSource:self];
+      galleryLayouter = [(SXMosaicGalleryComponentView *)self galleryLayouter];
+      [galleryLayouter setDataSource:self];
 
-      v8 = [(SXMosaicGalleryComponentView *)self galleryLayouter];
-      v9 = [(SXMosaicGalleryComponentView *)self galleryView];
-      [v8 layoutGalleryOnView:v9];
+      galleryLayouter2 = [(SXMosaicGalleryComponentView *)self galleryLayouter];
+      galleryView2 = [(SXMosaicGalleryComponentView *)self galleryView];
+      [galleryLayouter2 layoutGalleryOnView:galleryView2];
 
       [(SXMosaicGalleryComponentView *)self setLayoutRequired:0];
     }
@@ -131,8 +131,8 @@
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [(SXMosaicGalleryComponentView *)self visibleImageViews];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v15 count:16];
+  visibleImageViews = [(SXMosaicGalleryComponentView *)self visibleImageViews];
+  v4 = [visibleImageViews countByEnumeratingWithState:&v10 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -143,7 +143,7 @@
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(visibleImageViews);
         }
 
         v8 = *(*(&v10 + 1) + 8 * i);
@@ -155,14 +155,14 @@
         [v8 setImage:0];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v15 count:16];
+      v5 = [visibleImageViews countByEnumeratingWithState:&v10 objects:v15 count:16];
     }
 
     while (v5);
   }
 
-  v9 = [(SXMosaicGalleryComponentView *)self visibleImageViews];
-  [v9 removeAllObjects];
+  visibleImageViews2 = [(SXMosaicGalleryComponentView *)self visibleImageViews];
+  [visibleImageViews2 removeAllObjects];
 }
 
 - (void)visibleBoundsChanged
@@ -176,8 +176,8 @@
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v3 = [(SXMosaicGalleryComponentView *)self visibleImageViews];
-  v4 = [v3 countByEnumeratingWithState:&v28 objects:v33 count:16];
+  visibleImageViews = [(SXMosaicGalleryComponentView *)self visibleImageViews];
+  v4 = [visibleImageViews countByEnumeratingWithState:&v28 objects:v33 count:16];
   if (v4)
   {
     v5 = v4;
@@ -188,7 +188,7 @@
       {
         if (*v29 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(visibleImageViews);
         }
 
         v8 = *(*(&v28 + 1) + 8 * i);
@@ -221,14 +221,14 @@
           [v8 frame];
           if (v25 >= CGRectGetHeight(v38) * 0.5)
           {
-            v26 = [(SXMosaicGalleryComponentView *)self exposedGalleryItems];
-            v27 = [v8 galleryItem];
-            [v26 addObject:v27];
+            exposedGalleryItems = [(SXMosaicGalleryComponentView *)self exposedGalleryItems];
+            galleryItem = [v8 galleryItem];
+            [exposedGalleryItems addObject:galleryItem];
           }
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v28 objects:v33 count:16];
+      v5 = [visibleImageViews countByEnumeratingWithState:&v28 objects:v33 count:16];
     }
 
     while (v5);
@@ -238,8 +238,8 @@
 - (void)renderContentsInDrawableRect
 {
   v26 = *MEMORY[0x1E69E9840];
-  v3 = [(SXComponentView *)self viewport];
-  [v3 bounds];
+  viewport = [(SXComponentView *)self viewport];
+  [viewport bounds];
   v5 = v4;
 
   [(SXMediaComponentView *)self visibleBounds];
@@ -252,8 +252,8 @@
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v10 = [(SXMosaicGalleryComponentView *)self imageViews];
-  v11 = [v10 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  imageViews = [(SXMosaicGalleryComponentView *)self imageViews];
+  v11 = [imageViews countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v11)
   {
     v12 = v11;
@@ -264,7 +264,7 @@
       {
         if (*v22 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(imageViews);
         }
 
         v15 = *(*(&v21 + 1) + 8 * i);
@@ -274,15 +274,15 @@
         v30.size.width = width;
         v30.size.height = height;
         v16 = CGRectIntersectsRect(v29, v30);
-        v17 = [(SXMosaicGalleryComponentView *)self visibleImageViews];
-        v18 = [v17 containsObject:v15];
+        visibleImageViews = [(SXMosaicGalleryComponentView *)self visibleImageViews];
+        v18 = [visibleImageViews containsObject:v15];
 
         if (v16)
         {
           if ((v18 & 1) == 0)
           {
-            v19 = [(SXMosaicGalleryComponentView *)self visibleImageViews];
-            [v19 addObject:v15];
+            visibleImageViews2 = [(SXMosaicGalleryComponentView *)self visibleImageViews];
+            [visibleImageViews2 addObject:v15];
 
             [v15 addInterestInImageQuality:0 forObject:self];
           }
@@ -290,8 +290,8 @@
 
         else if (v18)
         {
-          v20 = [(SXMosaicGalleryComponentView *)self visibleImageViews];
-          [v20 removeObject:v15];
+          visibleImageViews3 = [(SXMosaicGalleryComponentView *)self visibleImageViews];
+          [visibleImageViews3 removeObject:v15];
 
           if ([v15 objectHasQualityInterest:self quality:0])
           {
@@ -300,92 +300,92 @@
         }
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v12 = [imageViews countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v12);
   }
 }
 
-- (void)receivedInfo:(id)a3 fromLayoutingPhaseWithIdentifier:(id)a4
+- (void)receivedInfo:(id)info fromLayoutingPhaseWithIdentifier:(id)identifier
 {
-  v6 = a3;
+  infoCopy = info;
   v11.receiver = self;
   v11.super_class = SXMosaicGalleryComponentView;
-  v7 = a4;
-  [(SXComponentView *)&v11 receivedInfo:v6 fromLayoutingPhaseWithIdentifier:v7];
-  v8 = [v7 isEqualToString:{@"Layouter", v11.receiver, v11.super_class}];
+  identifierCopy = identifier;
+  [(SXComponentView *)&v11 receivedInfo:infoCopy fromLayoutingPhaseWithIdentifier:identifierCopy];
+  v8 = [identifierCopy isEqualToString:{@"Layouter", v11.receiver, v11.super_class}];
 
   if (v8)
   {
-    v9 = [(SXMosaicGalleryComponentView *)self galleryLayouter];
+    galleryLayouter = [(SXMosaicGalleryComponentView *)self galleryLayouter];
 
-    if (v9 != v6)
+    if (galleryLayouter != infoCopy)
     {
-      v10 = [(SXMosaicGalleryComponentView *)self galleryLayouter];
-      [v10 reset];
+      galleryLayouter2 = [(SXMosaicGalleryComponentView *)self galleryLayouter];
+      [galleryLayouter2 reset];
 
-      [(SXMosaicGalleryComponentView *)self setGalleryLayouter:v6];
+      [(SXMosaicGalleryComponentView *)self setGalleryLayouter:infoCopy];
       [(SXMosaicGalleryComponentView *)self setLayoutRequired:1];
     }
   }
 }
 
-- (id)imageViewForItemAtIndex:(unint64_t)a3
+- (id)imageViewForItemAtIndex:(unint64_t)index
 {
-  v5 = [(SXMosaicGalleryComponentView *)self imageViews];
-  v6 = [v5 count];
+  imageViews = [(SXMosaicGalleryComponentView *)self imageViews];
+  v6 = [imageViews count];
 
-  if (v6 <= a3)
+  if (v6 <= index)
   {
-    v9 = [(SXComponentView *)self component];
-    v10 = [v9 items];
-    v7 = [v10 objectAtIndex:a3];
+    component = [(SXComponentView *)self component];
+    items = [component items];
+    imageViews3 = [items objectAtIndex:index];
 
-    v11 = [(SXComponentView *)self DOMObjectProvider];
-    v12 = [v7 imageIdentifier];
-    v13 = [v11 imageResourceForIdentifier:v12];
+    dOMObjectProvider = [(SXComponentView *)self DOMObjectProvider];
+    imageIdentifier = [imageViews3 imageIdentifier];
+    v13 = [dOMObjectProvider imageResourceForIdentifier:imageIdentifier];
 
-    v14 = [(SXMosaicGalleryComponentView *)self imageViewFactory];
-    v8 = [v14 imageViewForGalleryItem:v7 imageResource:v13];
+    imageViewFactory = [(SXMosaicGalleryComponentView *)self imageViewFactory];
+    v8 = [imageViewFactory imageViewForGalleryItem:imageViews3 imageResource:v13];
 
     [v8 setContentMode:2];
     [v8 setClipsToBounds:1];
     [v8 setDelegate:self];
-    v15 = [(SXGalleryComponentView *)self dragManager];
-    [v15 updateAccessibilityDragSourceDescriptorsForDraggableElement:v8];
+    dragManager = [(SXGalleryComponentView *)self dragManager];
+    [dragManager updateAccessibilityDragSourceDescriptorsForDraggableElement:v8];
 
-    v16 = [(SXMosaicGalleryComponentView *)self imageViews];
-    [v16 addObject:v8];
+    imageViews2 = [(SXMosaicGalleryComponentView *)self imageViews];
+    [imageViews2 addObject:v8];
   }
 
   else
   {
-    v7 = [(SXMosaicGalleryComponentView *)self imageViews];
-    v8 = [v7 objectAtIndex:a3];
+    imageViews3 = [(SXMosaicGalleryComponentView *)self imageViews];
+    v8 = [imageViews3 objectAtIndex:index];
   }
 
   return v8;
 }
 
-- (unint64_t)numberOfItemsForGalleryLayouter:(id)a3
+- (unint64_t)numberOfItemsForGalleryLayouter:(id)layouter
 {
-  v3 = [(SXComponentView *)self component];
-  v4 = [v3 items];
-  v5 = [v4 count];
+  component = [(SXComponentView *)self component];
+  items = [component items];
+  v5 = [items count];
 
   return v5;
 }
 
-- (CGSize)galleryLayouter:(id)a3 dimensionsForItemAtIndex:(unint64_t)a4
+- (CGSize)galleryLayouter:(id)layouter dimensionsForItemAtIndex:(unint64_t)index
 {
-  v6 = [(SXComponentView *)self component];
-  v7 = [v6 items];
-  v8 = [v7 objectAtIndex:a4];
+  component = [(SXComponentView *)self component];
+  items = [component items];
+  v8 = [items objectAtIndex:index];
 
-  v9 = [(SXComponentView *)self DOMObjectProvider];
-  v10 = [v8 imageIdentifier];
-  v11 = [v9 imageResourceForIdentifier:v10];
+  dOMObjectProvider = [(SXComponentView *)self DOMObjectProvider];
+  imageIdentifier = [v8 imageIdentifier];
+  v11 = [dOMObjectProvider imageResourceForIdentifier:imageIdentifier];
 
   [v11 dimensions];
   v13 = v12;
@@ -398,16 +398,16 @@
   return result;
 }
 
-- (id)galleryLayouter:(id)a3 viewForItemAtIndex:(unint64_t)a4
+- (id)galleryLayouter:(id)layouter viewForItemAtIndex:(unint64_t)index
 {
-  v6 = a3;
-  v7 = [(SXMosaicGalleryComponentView *)self imageViewForItemAtIndex:a4];
-  [v6 frameForItemAtIndex:a4];
+  layouterCopy = layouter;
+  v7 = [(SXMosaicGalleryComponentView *)self imageViewForItemAtIndex:index];
+  [layouterCopy frameForItemAtIndex:index];
   v9 = v8;
   v11 = v10;
 
-  v12 = [v7 imageResource];
-  [v12 dimensions];
+  imageResource = [v7 imageResource];
+  [imageResource dimensions];
   v14 = v13;
   v16 = v15;
 
@@ -416,66 +416,66 @@
   return v7;
 }
 
-- (BOOL)galleryLayouter:(id)a3 viewIsCurrentlyFullscreenForItemAtIndex:(unint64_t)a4
+- (BOOL)galleryLayouter:(id)layouter viewIsCurrentlyFullscreenForItemAtIndex:(unint64_t)index
 {
-  v6 = [(SXMosaicGalleryComponentView *)self fullScreenCanvasController];
+  fullScreenCanvasController = [(SXMosaicGalleryComponentView *)self fullScreenCanvasController];
 
-  if (!v6)
+  if (!fullScreenCanvasController)
   {
     return 0;
   }
 
-  v7 = [(SXMosaicGalleryComponentView *)self fullScreenCanvasController];
-  v8 = [v7 activeViewIndex] == a4;
+  fullScreenCanvasController2 = [(SXMosaicGalleryComponentView *)self fullScreenCanvasController];
+  v8 = [fullScreenCanvasController2 activeViewIndex] == index;
 
   return v8;
 }
 
-- (BOOL)requestInteractivityFocusForFullScreenCanvasController:(id)a3
+- (BOOL)requestInteractivityFocusForFullScreenCanvasController:(id)controller
 {
-  v3 = self;
-  v4 = [(SXComponentView *)self presentationDelegate];
-  LOBYTE(v3) = [v4 allowInteractivityFocusForComponent:v3];
+  selfCopy = self;
+  presentationDelegate = [(SXComponentView *)self presentationDelegate];
+  LOBYTE(selfCopy) = [presentationDelegate allowInteractivityFocusForComponent:selfCopy];
 
-  return v3;
+  return selfCopy;
 }
 
-- (id)fullScreenCanvasController:(id)a3 canvasViewControllerForShowable:(id)a4 completionBlock:(id)a5
+- (id)fullScreenCanvasController:(id)controller canvasViewControllerForShowable:(id)showable completionBlock:(id)block
 {
-  v7 = a5;
-  v8 = a3;
-  v9 = [(SXComponentView *)self presentationDelegate];
-  v10 = [v9 requestFullScreenCanvasViewControllerForComponent:self canvasController:v8 withCompletionBlock:v7];
+  blockCopy = block;
+  controllerCopy = controller;
+  presentationDelegate = [(SXComponentView *)self presentationDelegate];
+  v10 = [presentationDelegate requestFullScreenCanvasViewControllerForComponent:self canvasController:controllerCopy withCompletionBlock:blockCopy];
 
   return v10;
 }
 
-- (id)fullScreenCanvasController:(id)a3 captionForShowable:(id)a4 viewIndex:(unint64_t)a5
+- (id)fullScreenCanvasController:(id)controller captionForShowable:(id)showable viewIndex:(unint64_t)index
 {
-  v7 = [(SXComponentView *)self component:a3];
-  v8 = [v7 items];
-  v9 = [v8 objectAtIndex:a5];
+  v7 = [(SXComponentView *)self component:controller];
+  items = [v7 items];
+  v9 = [items objectAtIndex:index];
 
-  v10 = [v9 captionComponent];
+  captionComponent = [v9 captionComponent];
 
-  if (v10)
+  if (captionComponent)
   {
     v11 = [SXFullscreenCaption alloc];
-    v12 = [v9 captionComponent];
-    v13 = [(SXFullscreenCaption *)&v11->super.isa initWithCaption:v12 dataSource:self];
+    captionComponent2 = [v9 captionComponent];
+    v13 = [(SXFullscreenCaption *)&v11->super.isa initWithCaption:captionComponent2 dataSource:self];
 LABEL_5:
     v16 = v13;
 
     goto LABEL_6;
   }
 
-  v14 = [v9 caption];
+  caption = [v9 caption];
 
-  if (v14)
+  if (caption)
   {
     v15 = [SXFullscreenCaption alloc];
-    v12 = [v9 caption];
-    v13 = [(SXFullscreenCaption *)&v15->super.isa initWithText:v12 dataSource:self];
+    captionComponent2 = [v9 caption];
+    v13 = [(SXFullscreenCaption *)&v15->super.isa initWithText:captionComponent2 dataSource:self];
     goto LABEL_5;
   }
 
@@ -485,45 +485,45 @@ LABEL_6:
   return v16;
 }
 
-- (void)fullScreenCanvasController:(id)a3 didHideShowable:(id)a4 viewIndex:(unint64_t)a5
+- (void)fullScreenCanvasController:(id)controller didHideShowable:(id)showable viewIndex:(unint64_t)index
 {
-  v6 = [(SXComponentView *)self presentationDelegate:a3];
+  v6 = [(SXComponentView *)self presentationDelegate:controller];
   [v6 removeInteractivityFocusForComponent:self];
 
-  v7 = [(SXComponentView *)self presentationDelegate];
-  [v7 dismissFullscreenCanvasForComponent:self];
+  presentationDelegate = [(SXComponentView *)self presentationDelegate];
+  [presentationDelegate dismissFullscreenCanvasForComponent:self];
 
   [(SXMosaicGalleryComponentView *)self finishMediaViewEvent];
 }
 
-- (void)fullScreenCanvasController:(id)a3 didShowShowable:(id)a4 viewIndex:(unint64_t)a5
+- (void)fullScreenCanvasController:(id)controller didShowShowable:(id)showable viewIndex:(unint64_t)index
 {
-  v7 = [(SXComponentView *)self component:a3];
-  v8 = [v7 items];
-  v9 = [v8 objectAtIndex:a5];
+  v7 = [(SXComponentView *)self component:controller];
+  items = [v7 items];
+  v9 = [items objectAtIndex:index];
 
   [(SXMosaicGalleryComponentView *)self createMediaViewEventForGalleryItem:v9];
 }
 
-- (CGRect)fullScreenCanvasController:(id)a3 fullScreenFrameForShowable:(id)a4 viewIndex:(unint64_t)a5 withinRect:(CGRect)a6
+- (CGRect)fullScreenCanvasController:(id)controller fullScreenFrameForShowable:(id)showable viewIndex:(unint64_t)index withinRect:(CGRect)rect
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v12 = a3;
-  v13 = [(SXComponentView *)self component];
-  v14 = [v13 items];
-  v15 = [v14 objectAtIndex:a5];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  controllerCopy = controller;
+  component = [(SXComponentView *)self component];
+  items = [component items];
+  v15 = [items objectAtIndex:index];
 
-  v16 = [(SXComponentView *)self DOMObjectProvider];
-  v17 = [v15 imageIdentifier];
-  v18 = [v16 imageResourceForIdentifier:v17];
+  dOMObjectProvider = [(SXComponentView *)self DOMObjectProvider];
+  imageIdentifier = [v15 imageIdentifier];
+  v18 = [dOMObjectProvider imageResourceForIdentifier:imageIdentifier];
 
   [v18 dimensions];
   v20 = v19;
   [v18 dimensions];
-  [v12 fitSizeForRect:{0.0, 0.0, v20, v21}];
+  [controllerCopy fitSizeForRect:{0.0, 0.0, v20, v21}];
   v23 = v22;
   v25 = v24;
 
@@ -559,26 +559,26 @@ LABEL_6:
   return result;
 }
 
-- (unint64_t)fullScreenCanvasController:(id)a3 numberOfViewsForShowable:(id)a4
+- (unint64_t)fullScreenCanvasController:(id)controller numberOfViewsForShowable:(id)showable
 {
-  v5 = [(SXMosaicGalleryComponentView *)self galleryLayouter:a3];
+  v5 = [(SXMosaicGalleryComponentView *)self galleryLayouter:controller];
   v6 = [(SXMosaicGalleryComponentView *)self numberOfItemsForGalleryLayouter:v5];
 
   return v6;
 }
 
-- (CGRect)fullScreenCanvasController:(id)a3 originalFrameForShowable:(id)a4 onCanvasView:(id)a5 viewIndex:(unint64_t)a6
+- (CGRect)fullScreenCanvasController:(id)controller originalFrameForShowable:(id)showable onCanvasView:(id)view viewIndex:(unint64_t)index
 {
-  v8 = a5;
-  v9 = [(SXMosaicGalleryComponentView *)self galleryLayouter];
-  [v9 frameForItemAtIndex:a6];
+  viewCopy = view;
+  galleryLayouter = [(SXMosaicGalleryComponentView *)self galleryLayouter];
+  [galleryLayouter frameForItemAtIndex:index];
   v11 = v10;
   v13 = v12;
   v15 = v14;
   v17 = v16;
 
-  v18 = [(SXMosaicGalleryComponentView *)self galleryView];
-  [v18 convertRect:v8 toView:{v11, v13, v15, v17}];
+  galleryView = [(SXMosaicGalleryComponentView *)self galleryView];
+  [galleryView convertRect:viewCopy toView:{v11, v13, v15, v17}];
   v20 = v19;
   v22 = v21;
   v24 = v23;
@@ -595,33 +595,33 @@ LABEL_6:
   return result;
 }
 
-- (id)fullScreenCanvasController:(id)a3 originalViewForShowable:(id)a4 viewIndex:(unint64_t)a5
+- (id)fullScreenCanvasController:(id)controller originalViewForShowable:(id)showable viewIndex:(unint64_t)index
 {
-  v6 = [(SXMosaicGalleryComponentView *)self galleryLayouter:a3];
-  v7 = [v6 viewForItemAtIndex:a5];
+  v6 = [(SXMosaicGalleryComponentView *)self galleryLayouter:controller];
+  v7 = [v6 viewForItemAtIndex:index];
 
   return v7;
 }
 
-- (void)fullScreenCanvasController:(id)a3 shouldAddGestureView:(id)a4 forShowable:(id)a5
+- (void)fullScreenCanvasController:(id)controller shouldAddGestureView:(id)view forShowable:(id)showable
 {
-  v6 = a4;
+  viewCopy = view;
   [(SXComponentView *)self contentFrame];
-  [v6 setFrame:?];
-  v7 = [(SXComponentView *)self contentView];
-  [v7 addSubview:v6];
+  [viewCopy setFrame:?];
+  contentView = [(SXComponentView *)self contentView];
+  [contentView addSubview:viewCopy];
 }
 
-- (void)fullScreenCanvasController:(id)a3 showable:(id)a4 didShowViewWithIndex:(unint64_t)a5
+- (void)fullScreenCanvasController:(id)controller showable:(id)showable didShowViewWithIndex:(unint64_t)index
 {
-  v7 = [(SXComponentView *)self component:a3];
-  v8 = [v7 items];
-  v36 = [v8 objectAtIndex:a5];
+  v7 = [(SXComponentView *)self component:controller];
+  items = [v7 items];
+  v36 = [items objectAtIndex:index];
 
   [(SXMosaicGalleryComponentView *)self finishMediaViewEvent];
   [(SXMosaicGalleryComponentView *)self createMediaViewEventForGalleryItem:v36];
-  v9 = [(SXMosaicGalleryComponentView *)self galleryLayouter];
-  [v9 frameForItemAtIndex:a5];
+  galleryLayouter = [(SXMosaicGalleryComponentView *)self galleryLayouter];
+  [galleryLayouter frameForItemAtIndex:index];
   v11 = v10;
   v13 = v12;
   v15 = v14;
@@ -640,8 +640,8 @@ LABEL_6:
   y = v39.origin.y;
   width = v39.size.width;
   height = v39.size.height;
-  v26 = [(SXComponentView *)self viewport];
-  [v26 dynamicBounds];
+  viewport = [(SXComponentView *)self viewport];
+  [viewport dynamicBounds];
   v28 = v27;
   v30 = v29;
   v32 = v31;
@@ -657,29 +657,29 @@ LABEL_6:
   v41.size.height = height;
   if (!CGRectContainsRect(v40, v41))
   {
-    v35 = [(SXComponentView *)self presentationDelegate];
-    [v35 scrollToRect:0 animated:{x, y, width, height}];
+    presentationDelegate = [(SXComponentView *)self presentationDelegate];
+    [presentationDelegate scrollToRect:0 animated:{x, y, width, height}];
   }
 }
 
-- (void)fullScreenCanvasController:(id)a3 showable:(id)a4 shouldTransferToOriginalViewWithIndex:(unint64_t)a5
+- (void)fullScreenCanvasController:(id)controller showable:(id)showable shouldTransferToOriginalViewWithIndex:(unint64_t)index
 {
-  v7 = [(SXMosaicGalleryComponentView *)self galleryLayouter:a3];
-  v10 = [v7 viewForItemAtIndex:a5];
+  v7 = [(SXMosaicGalleryComponentView *)self galleryLayouter:controller];
+  v10 = [v7 viewForItemAtIndex:index];
 
-  v8 = [(SXMosaicGalleryComponentView *)self galleryLayouter];
-  [v8 frameForItemAtIndex:a5];
+  galleryLayouter = [(SXMosaicGalleryComponentView *)self galleryLayouter];
+  [galleryLayouter frameForItemAtIndex:index];
   [v10 setFrame:?];
 
-  v9 = [(SXMosaicGalleryComponentView *)self galleryView];
-  [v9 addSubview:v10];
+  galleryView = [(SXMosaicGalleryComponentView *)self galleryView];
+  [galleryView addSubview:v10];
 }
 
-- (unint64_t)fullScreenCanvasController:(id)a3 viewIndexForPoint:(CGPoint)a4 inShowable:(id)a5
+- (unint64_t)fullScreenCanvasController:(id)controller viewIndexForPoint:(CGPoint)point inShowable:(id)showable
 {
-  y = a4.y;
-  x = a4.x;
-  v8 = [(SXMosaicGalleryComponentView *)self galleryLayouter:a3];
+  y = point.y;
+  x = point.x;
+  v8 = [(SXMosaicGalleryComponentView *)self galleryLayouter:controller];
   v9 = [(SXMosaicGalleryComponentView *)self numberOfItemsForGalleryLayouter:v8];
 
   if (!v9)
@@ -690,8 +690,8 @@ LABEL_6:
   v10 = 0;
   while (1)
   {
-    v11 = [(SXMosaicGalleryComponentView *)self galleryLayouter];
-    v12 = [v11 viewForItemAtIndex:v10];
+    galleryLayouter = [(SXMosaicGalleryComponentView *)self galleryLayouter];
+    v12 = [galleryLayouter viewForItemAtIndex:v10];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -706,8 +706,8 @@ LABEL_6:
     }
 
     ++v10;
-    v13 = [(SXMosaicGalleryComponentView *)self galleryLayouter];
-    v14 = [(SXMosaicGalleryComponentView *)self numberOfItemsForGalleryLayouter:v13];
+    galleryLayouter2 = [(SXMosaicGalleryComponentView *)self galleryLayouter];
+    v14 = [(SXMosaicGalleryComponentView *)self numberOfItemsForGalleryLayouter:galleryLayouter2];
 
     if (v10 >= v14)
     {
@@ -718,10 +718,10 @@ LABEL_6:
   return v10;
 }
 
-- (void)fullScreenCanvasController:(id)a3 willHideShowable:(id)a4 viewIndex:(unint64_t)a5
+- (void)fullScreenCanvasController:(id)controller willHideShowable:(id)showable viewIndex:(unint64_t)index
 {
-  v7 = [(SXMosaicGalleryComponentView *)self galleryLayouter:a3];
-  [v7 frameForItemAtIndex:a5];
+  v7 = [(SXMosaicGalleryComponentView *)self galleryLayouter:controller];
+  [v7 frameForItemAtIndex:index];
   v9 = v8;
   v11 = v10;
   v13 = v12;
@@ -740,8 +740,8 @@ LABEL_6:
   y = v36.origin.y;
   width = v36.size.width;
   height = v36.size.height;
-  v24 = [(SXComponentView *)self viewport];
-  [v24 dynamicBounds];
+  viewport = [(SXComponentView *)self viewport];
+  [viewport dynamicBounds];
   v26 = v25;
   v28 = v27;
   v30 = v29;
@@ -757,29 +757,29 @@ LABEL_6:
   v38.size.height = height;
   if (!CGRectContainsRect(v37, v38))
   {
-    v33 = [(SXComponentView *)self presentationDelegate];
-    [v33 scrollToRect:0 animated:{x, y, width, height}];
+    presentationDelegate = [(SXComponentView *)self presentationDelegate];
+    [presentationDelegate scrollToRect:0 animated:{x, y, width, height}];
   }
 }
 
-- (BOOL)fullScreenCanvasController:(id)a3 willShowShowable:(id)a4 viewIndex:(unint64_t)a5
+- (BOOL)fullScreenCanvasController:(id)controller willShowShowable:(id)showable viewIndex:(unint64_t)index
 {
-  v7 = [(SXMosaicGalleryComponentView *)self imageViews:a3];
-  v8 = [v7 objectAtIndex:a5];
+  v7 = [(SXMosaicGalleryComponentView *)self imageViews:controller];
+  v8 = [v7 objectAtIndex:index];
 
   if ([v8 hasLoadedImage])
   {
-    v9 = [(SXComponentView *)self presentationDelegate];
-    v10 = [v9 addInteractivityFocusForComponent:self];
+    presentationDelegate = [(SXComponentView *)self presentationDelegate];
+    v10 = [presentationDelegate addInteractivityFocusForComponent:self];
 
     if (v10)
     {
       [v8 addInterestInImageQuality:1 forObject:self];
     }
 
-    v11 = [(SXComponentView *)self presentationDelegate];
-    v12 = [v11 animationController];
-    [v12 stopUpdatingAnimationForComponentView:self finishAnimation:1];
+    presentationDelegate2 = [(SXComponentView *)self presentationDelegate];
+    animationController = [presentationDelegate2 animationController];
+    [animationController stopUpdatingAnimationForComponentView:self finishAnimation:1];
   }
 
   else
@@ -790,15 +790,15 @@ LABEL_6:
   return v10;
 }
 
-- (void)fullScreenCanvasController:(id)a3 showable:(id)a4 willShowViewWithIndex:(unint64_t)a5
+- (void)fullScreenCanvasController:(id)controller showable:(id)showable willShowViewWithIndex:(unint64_t)index
 {
-  v7 = [(SXMosaicGalleryComponentView *)self imageViews:a3];
-  v8 = [v7 objectAtIndex:a5];
+  v7 = [(SXMosaicGalleryComponentView *)self imageViews:controller];
+  v8 = [v7 objectAtIndex:index];
 
   [v8 setShouldShowLoadingIndicator:1];
   v12 = 0.0;
-  v9 = [(SXMosaicGalleryComponentView *)self backgroundColor];
-  [v9 getHue:0 saturation:0 brightness:&v12 alpha:0];
+  backgroundColor = [(SXMosaicGalleryComponentView *)self backgroundColor];
+  [backgroundColor getHue:0 saturation:0 brightness:&v12 alpha:0];
 
   v10 = v12;
   if (v12 < 0.5)
@@ -813,35 +813,35 @@ LABEL_6:
   }
 }
 
-- (void)fullScreenCanvasController:(id)a3 showable:(id)a4 didHideViewWithIndex:(unint64_t)a5
+- (void)fullScreenCanvasController:(id)controller showable:(id)showable didHideViewWithIndex:(unint64_t)index
 {
-  v7 = [(SXMosaicGalleryComponentView *)self imageViews:a3];
-  v8 = [v7 objectAtIndex:a5];
+  v7 = [(SXMosaicGalleryComponentView *)self imageViews:controller];
+  v8 = [v7 objectAtIndex:index];
 
   [v8 setShouldShowLoadingIndicator:0];
   [v8 giveUpInterestForObject:self];
   [v8 addInterestInImageQuality:0 forObject:self];
 }
 
-- (BOOL)fullScreenCanvasController:(id)a3 showable:(id)a4 gestureRecognizerShouldBegin:(id)a5
+- (BOOL)fullScreenCanvasController:(id)controller showable:(id)showable gestureRecognizerShouldBegin:(id)begin
 {
-  v5 = [(SXComponentView *)self presentationDelegate:a3];
-  v6 = [v5 isScrolling];
+  v5 = [(SXComponentView *)self presentationDelegate:controller];
+  isScrolling = [v5 isScrolling];
 
-  return v6 ^ 1;
+  return isScrolling ^ 1;
 }
 
-- (id)imageViewForLocation:(CGPoint)a3
+- (id)imageViewForLocation:(CGPoint)location
 {
-  y = a3.y;
-  x = a3.x;
+  y = location.y;
+  x = location.x;
   v16 = *MEMORY[0x1E69E9840];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(SXMosaicGalleryComponentView *)self imageViews];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  imageViews = [(SXMosaicGalleryComponentView *)self imageViews];
+  v6 = [imageViews countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = *v12;
@@ -851,7 +851,7 @@ LABEL_6:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(imageViews);
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
@@ -865,7 +865,7 @@ LABEL_6:
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [imageViews countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v6)
       {
         continue;
@@ -880,99 +880,99 @@ LABEL_11:
   return v6;
 }
 
-- (void)forceImageViewFullscreen:(id)a3
+- (void)forceImageViewFullscreen:(id)fullscreen
 {
-  v4 = a3;
-  v5 = [(SXMosaicGalleryComponentView *)self imageViews];
-  v6 = [v5 indexOfObject:v4];
+  fullscreenCopy = fullscreen;
+  imageViews = [(SXMosaicGalleryComponentView *)self imageViews];
+  v6 = [imageViews indexOfObject:fullscreenCopy];
 
-  v7 = [(SXMosaicGalleryComponentView *)self fullScreenCanvasController];
-  [v7 presentFullscreenWithIndex:v6];
+  fullScreenCanvasController = [(SXMosaicGalleryComponentView *)self fullScreenCanvasController];
+  [fullScreenCanvasController presentFullscreenWithIndex:v6];
 }
 
-- (id)textResizerForCaption:(id)a3
+- (id)textResizerForCaption:(id)caption
 {
   v26[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(SXComponentView *)self DOMObjectProvider];
+  captionCopy = caption;
+  dOMObjectProvider = [(SXComponentView *)self DOMObjectProvider];
   v6 = SXDefaultTextStyleIdentifierForRole(@"body");
   v26[0] = v6;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:1];
-  v8 = [(SXComponentView *)self component];
-  v9 = [v5 componentTextStyleForIdentifiers:v7 component:v8];
+  component = [(SXComponentView *)self component];
+  v9 = [dOMObjectProvider componentTextStyleForIdentifiers:v7 component:component];
 
   if (!v9)
   {
-    v10 = [(SXComponentView *)self DOMObjectProvider];
+    dOMObjectProvider2 = [(SXComponentView *)self DOMObjectProvider];
     v25 = @"default";
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v25 count:1];
-    v12 = [(SXComponentView *)self component];
-    v9 = [v10 componentTextStyleForIdentifiers:v11 component:v12];
+    component2 = [(SXComponentView *)self component];
+    v9 = [dOMObjectProvider2 componentTextStyleForIdentifiers:v11 component:component2];
   }
 
-  v13 = [(SXComponentView *)self DOMObjectProvider];
-  v14 = [(SXFullscreenCaption *)v4 caption];
+  dOMObjectProvider3 = [(SXComponentView *)self DOMObjectProvider];
+  caption = [(SXFullscreenCaption *)captionCopy caption];
 
-  v15 = [v14 textStyle];
-  v16 = [(SXComponentView *)self component];
-  v17 = [v16 classification];
-  v18 = [(SXComponentView *)self component];
-  v19 = [v13 componentTextStyleForIdentifier:v15 classification:v17 component:v18];
+  textStyle = [caption textStyle];
+  component3 = [(SXComponentView *)self component];
+  classification = [component3 classification];
+  component4 = [(SXComponentView *)self component];
+  v19 = [dOMObjectProvider3 componentTextStyleForIdentifier:textStyle classification:classification component:component4];
 
   if (v19)
   {
-    v20 = [v19 fontScaling];
+    fontScaling = [v19 fontScaling];
   }
 
   else
   {
-    v20 = 1;
+    fontScaling = 1;
   }
 
   v21 = [SXTextResizer alloc];
-  v22 = [(SXComponentView *)self documentColumnLayout];
-  v23 = [(SXTextResizer *)&v21->super.isa initWithColumnLayout:v22 defaultTextStyle:v9 fontScalingEnabled:v20];
+  documentColumnLayout = [(SXComponentView *)self documentColumnLayout];
+  v23 = [(SXTextResizer *)&v21->super.isa initWithColumnLayout:documentColumnLayout defaultTextStyle:v9 fontScalingEnabled:fontScaling];
 
   return v23;
 }
 
-- (id)textRulesForCaption:(id)a3
+- (id)textRulesForCaption:(id)caption
 {
-  v3 = [(SXComponentView *)self component];
-  v4 = [v3 classification];
-  v5 = [v4 textRules];
+  component = [(SXComponentView *)self component];
+  classification = [component classification];
+  textRules = [classification textRules];
 
-  return v5;
+  return textRules;
 }
 
-- (id)textStyleForIdentifier:(id)a3
+- (id)textStyleForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(SXComponentView *)self DOMObjectProvider];
-  v6 = [(SXComponentView *)self component];
-  v7 = [v5 textStyleForIdentifier:v4 component:v6];
+  identifierCopy = identifier;
+  dOMObjectProvider = [(SXComponentView *)self DOMObjectProvider];
+  component = [(SXComponentView *)self component];
+  v7 = [dOMObjectProvider textStyleForIdentifier:identifierCopy component:component];
 
   return v7;
 }
 
-- (id)componentTextStyleForIdentifier:(id)a3 inheritingFromComponentTextStyle:(id)a4
+- (id)componentTextStyleForIdentifier:(id)identifier inheritingFromComponentTextStyle:(id)style
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SXComponentView *)self DOMObjectProvider];
-  v9 = [(SXComponentView *)self component];
-  v10 = [v8 componentTextStyleForIdentifier:v7 inheritingFromComponentTextStyle:v6 component:v9];
+  styleCopy = style;
+  identifierCopy = identifier;
+  dOMObjectProvider = [(SXComponentView *)self DOMObjectProvider];
+  component = [(SXComponentView *)self component];
+  v10 = [dOMObjectProvider componentTextStyleForIdentifier:identifierCopy inheritingFromComponentTextStyle:styleCopy component:component];
 
   return v10;
 }
 
-- (id)contentSizeCategoryForCaption:(id)a3
+- (id)contentSizeCategoryForCaption:(id)caption
 {
-  v3 = [(SXComponentView *)self presentationDelegate];
-  v4 = [v3 presentationAttributes];
-  v5 = [v4 contentSizeCategory];
+  presentationDelegate = [(SXComponentView *)self presentationDelegate];
+  presentationAttributes = [presentationDelegate presentationAttributes];
+  contentSizeCategory = [presentationAttributes contentSizeCategory];
 
-  return v5;
+  return contentSizeCategory;
 }
 
 - (void)submitEvents
@@ -983,21 +983,21 @@ LABEL_11:
   [(SXMosaicGalleryComponentView *)self finishMediaViewEvent];
 }
 
-- (void)createMediaViewEventForGalleryItem:(id)a3
+- (void)createMediaViewEventForGalleryItem:(id)item
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(SXMosaicGalleryComponentView *)self mediaViewEvent];
+  itemCopy = item;
+  mediaViewEvent = [(SXMosaicGalleryComponentView *)self mediaViewEvent];
 
-  if (v4 && !v5)
+  if (itemCopy && !mediaViewEvent)
   {
     v6 = [(SXMediaComponentView *)self mediaEventForClass:objc_opt_class()];
-    v7 = [(SXComponentView *)self component];
-    v8 = [v7 items];
-    [v6 setGalleryImageCount:{objc_msgSend(v8, "count")}];
+    component = [(SXComponentView *)self component];
+    items = [component items];
+    [v6 setGalleryImageCount:{objc_msgSend(items, "count")}];
 
-    v9 = [v4 imageIdentifier];
-    v11[0] = v9;
+    imageIdentifier = [itemCopy imageIdentifier];
+    v11[0] = imageIdentifier;
     v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
     [v6 setGalleryImageIds:v10];
 
@@ -1008,9 +1008,9 @@ LABEL_11:
 
 - (void)finishMediaViewEvent
 {
-  v3 = [(SXMosaicGalleryComponentView *)self mediaViewEvent];
-  v4 = [v3 startDate];
-  [v4 timeIntervalSinceNow];
+  mediaViewEvent = [(SXMosaicGalleryComponentView *)self mediaViewEvent];
+  startDate = [mediaViewEvent startDate];
+  [startDate timeIntervalSinceNow];
   v6 = v5;
 
   if (v6 < 0.0)
@@ -1018,55 +1018,55 @@ LABEL_11:
     v6 = -v6;
   }
 
-  v7 = [(SXMosaicGalleryComponentView *)self mediaViewEvent];
+  mediaViewEvent2 = [(SXMosaicGalleryComponentView *)self mediaViewEvent];
 
-  if (v7 && v6 >= 1.0)
+  if (mediaViewEvent2 && v6 >= 1.0)
   {
-    v8 = [(SXMosaicGalleryComponentView *)self mediaViewEvent];
-    [v8 determineEndDate];
+    mediaViewEvent3 = [(SXMosaicGalleryComponentView *)self mediaViewEvent];
+    [mediaViewEvent3 determineEndDate];
 
-    v9 = [(SXMediaComponentView *)self analyticsReporting];
-    v10 = [(SXMosaicGalleryComponentView *)self mediaViewEvent];
-    [v9 reportEvent:v10];
+    analyticsReporting = [(SXMediaComponentView *)self analyticsReporting];
+    mediaViewEvent4 = [(SXMosaicGalleryComponentView *)self mediaViewEvent];
+    [analyticsReporting reportEvent:mediaViewEvent4];
   }
 
   [(SXMosaicGalleryComponentView *)self setMediaViewEvent:0];
 }
 
-- (BOOL)shouldSubmitMediaExposureEventForExposedBounds:(CGRect)a3
+- (BOOL)shouldSubmitMediaExposureEventForExposedBounds:(CGRect)bounds
 {
-  v3 = [(SXMosaicGalleryComponentView *)self exposedGalleryItems:a3.origin.x];
+  v3 = [(SXMosaicGalleryComponentView *)self exposedGalleryItems:bounds.origin.x];
   v4 = [v3 count] != 0;
 
   return v4;
 }
 
-- (void)willSubmitMediaExposureEvent:(id)a3
+- (void)willSubmitMediaExposureEvent:(id)event
 {
   v9.receiver = self;
   v9.super_class = SXMosaicGalleryComponentView;
-  v4 = a3;
-  [(SXMediaComponentView *)&v9 willSubmitMediaExposureEvent:v4];
+  eventCopy = event;
+  [(SXMediaComponentView *)&v9 willSubmitMediaExposureEvent:eventCopy];
   v5 = [(SXComponentView *)self component:v9.receiver];
-  v6 = [v5 items];
-  [v4 setNumberOfImages:{objc_msgSend(v6, "count")}];
+  items = [v5 items];
+  [eventCopy setNumberOfImages:{objc_msgSend(items, "count")}];
 
-  v7 = [(SXMosaicGalleryComponentView *)self exposedGalleryItems];
-  [v4 setNumberOfImagesExposed:{objc_msgSend(v7, "count")}];
+  exposedGalleryItems = [(SXMosaicGalleryComponentView *)self exposedGalleryItems];
+  [eventCopy setNumberOfImagesExposed:{objc_msgSend(exposedGalleryItems, "count")}];
 
-  v8 = [(SXMosaicGalleryComponentView *)self exposedGalleryItems];
-  [v8 removeAllObjects];
+  exposedGalleryItems2 = [(SXMosaicGalleryComponentView *)self exposedGalleryItems];
+  [exposedGalleryItems2 removeAllObjects];
 }
 
 - (BOOL)allowHierarchyRemoval
 {
   v7.receiver = self;
   v7.super_class = SXMosaicGalleryComponentView;
-  v3 = [(SXComponentView *)&v7 allowHierarchyRemoval];
-  v4 = [(SXMosaicGalleryComponentView *)self fullScreenCanvasController];
-  v5 = [v4 isFullscreen];
+  allowHierarchyRemoval = [(SXComponentView *)&v7 allowHierarchyRemoval];
+  fullScreenCanvasController = [(SXMosaicGalleryComponentView *)self fullScreenCanvasController];
+  isFullscreen = [fullScreenCanvasController isFullscreen];
 
-  return (v5 ^ 1) & v3;
+  return (isFullscreen ^ 1) & allowHierarchyRemoval;
 }
 
 @end

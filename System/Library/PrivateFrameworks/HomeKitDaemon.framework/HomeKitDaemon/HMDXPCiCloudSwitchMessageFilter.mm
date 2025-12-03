@@ -1,7 +1,7 @@
 @interface HMDXPCiCloudSwitchMessageFilter
 + (BOOL)isHomeiCloudSwitchEnabled;
 + (id)logCategory;
-+ (int64_t)filterMessage:(id)a3 withPolicies:(id)a4 error:(id *)a5;
++ (int64_t)filterMessage:(id)message withPolicies:(id)policies error:(id *)error;
 + (void)stopOverridingHomeiCloudSwitchEnabled;
 @end
 
@@ -10,9 +10,9 @@
 + (BOOL)isHomeiCloudSwitchEnabled
 {
   v2 = +[HMDDemoModeManagerDataSource defaultDataSource];
-  v3 = [v2 isDemoModeV2WithoutCKEnabled];
+  isDemoModeV2WithoutCKEnabled = [v2 isDemoModeV2WithoutCKEnabled];
 
-  if (v3)
+  if (isDemoModeV2WithoutCKEnabled)
   {
     return 1;
   }
@@ -27,9 +27,9 @@
   else
   {
     v6 = +[HMDAppleAccountSettings sharedSettings];
-    v7 = [v6 isHomeEnabled];
+    isHomeEnabled = [v6 isHomeEnabled];
 
-    return v7;
+    return isHomeEnabled;
   }
 }
 
@@ -59,33 +59,33 @@ void __46__HMDXPCiCloudSwitchMessageFilter_logCategory__block_invoke()
   homeiCloudSwitchEnabledOverrideNumber = 0;
 }
 
-+ (int64_t)filterMessage:(id)a3 withPolicies:(id)a4 error:(id *)a5
++ (int64_t)filterMessage:(id)message withPolicies:(id)policies error:(id *)error
 {
   v47[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  messageCopy = message;
+  policiesCopy = policies;
+  if (!messageCopy)
   {
     _HMFPreconditionFailure();
 LABEL_28:
     _HMFPreconditionFailure();
   }
 
-  v10 = v9;
-  if (!v9)
+  v10 = policiesCopy;
+  if (!policiesCopy)
   {
     goto LABEL_28;
   }
 
-  v11 = [v8 proxyConnection];
+  proxyConnection = [messageCopy proxyConnection];
 
-  if (!v11)
+  if (!proxyConnection)
   {
     v12 = 0;
     goto LABEL_26;
   }
 
-  if (([a1 isHomeiCloudSwitchEnabled] & 1) == 0)
+  if (([self isHomeiCloudSwitchEnabled] & 1) == 0)
   {
     v13 = MEMORY[0x277CCA9B8];
     v46 = *MEMORY[0x277CD00D8];
@@ -93,42 +93,42 @@ LABEL_28:
     v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v47 forKeys:&v46 count:1];
     v15 = [v13 hmPrivateErrorWithCode:2013 userInfo:v14];
 
-    v16 = [a1 requiredPolicyOfClass:objc_opt_class() fromPolicies:v10 error:0];
+    v16 = [self requiredPolicyOfClass:objc_opt_class() fromPolicies:v10 error:0];
     if (!v16)
     {
       v22 = objc_autoreleasePoolPush();
-      v23 = a1;
+      selfCopy = self;
       v24 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
       {
         v25 = HMFGetLogIdentifier();
-        v26 = [v8 shortDescription];
+        shortDescription = [messageCopy shortDescription];
         *buf = 138543618;
         v41 = v25;
         v42 = 2112;
-        v43 = v26;
+        v43 = shortDescription;
         _os_log_impl(&dword_229538000, v24, OS_LOG_TYPE_INFO, "%{public}@Rejecting message because iCloud switch is disabled and no explicit policy exists: %@", buf, 0x16u);
       }
 
       objc_autoreleasePoolPop(v22);
-      if (a5)
+      if (error)
       {
         v27 = v15;
-        *a5 = v15;
+        *error = v15;
       }
 
       v12 = -1;
       goto LABEL_25;
     }
 
-    v17 = [v8 proxyConnection];
-    v18 = [v17 processInfo];
-    v19 = [v18 bundleIdentifier];
+    proxyConnection2 = [messageCopy proxyConnection];
+    processInfo = [proxyConnection2 processInfo];
+    bundleIdentifier = [processInfo bundleIdentifier];
 
-    if (v19)
+    if (bundleIdentifier)
     {
-      v20 = [v16 bundleIdentifiers];
-      v21 = [v20 containsObject:v19];
+      bundleIdentifiers = [v16 bundleIdentifiers];
+      v21 = [bundleIdentifiers containsObject:bundleIdentifier];
 
       if (v21)
       {
@@ -140,19 +140,19 @@ LABEL_25:
       }
 
       v28 = objc_autoreleasePoolPush();
-      v29 = a1;
+      selfCopy3 = self;
       v30 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v30, OS_LOG_TYPE_INFO))
       {
         v31 = HMFGetLogIdentifier();
-        [v8 shortDescription];
+        [messageCopy shortDescription];
         v32 = v39 = v28;
         *buf = 138543874;
         v41 = v31;
         v42 = 2112;
         v43 = v32;
         v44 = 2112;
-        v45 = v19;
+        v45 = bundleIdentifier;
         v33 = "%{public}@Rejecting message because iCloud switch is disabled and bundle identifier is not allowed: %@ / %@";
         v34 = v30;
         v35 = 32;
@@ -163,12 +163,12 @@ LABEL_25:
     else
     {
       v28 = objc_autoreleasePoolPush();
-      v29 = a1;
+      selfCopy3 = self;
       v30 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v30, OS_LOG_TYPE_INFO))
       {
         v31 = HMFGetLogIdentifier();
-        [v8 shortDescription];
+        [messageCopy shortDescription];
         v32 = v39 = v28;
         *buf = 138543618;
         v41 = v31;
@@ -185,10 +185,10 @@ LABEL_20:
     }
 
     objc_autoreleasePoolPop(v28);
-    if (a5)
+    if (error)
     {
       v36 = v15;
-      *a5 = v15;
+      *error = v15;
     }
 
     v12 = -1;

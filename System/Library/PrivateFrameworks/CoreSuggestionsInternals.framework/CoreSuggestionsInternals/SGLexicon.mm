@@ -1,13 +1,13 @@
 @interface SGLexicon
-+ (BOOL)profanityInTokens:(id)a3 forLocaleIdentifier:(id)a4;
-+ (unsigned)_lexiconTokenForToken:(id)a3 inLexicon:(_LXLexicon *)a4;
++ (BOOL)profanityInTokens:(id)tokens forLocaleIdentifier:(id)identifier;
++ (unsigned)_lexiconTokenForToken:(id)token inLexicon:(_LXLexicon *)lexicon;
 @end
 
 @implementation SGLexicon
 
-+ (unsigned)_lexiconTokenForToken:(id)a3 inLexicon:(_LXLexicon *)a4
++ (unsigned)_lexiconTokenForToken:(id)token inLexicon:(_LXLexicon *)lexicon
 {
-  v4 = a3;
+  tokenCopy = token;
   v7 = 0;
   v8 = &v7;
   v9 = 0x2020000000;
@@ -31,13 +31,13 @@ void __45__SGLexicon__lexiconTokenForToken_inLexicon___block_invoke(uint64_t a1,
   CFRelease(v5);
 }
 
-+ (BOOL)profanityInTokens:(id)a3 forLocaleIdentifier:(id)a4
++ (BOOL)profanityInTokens:(id)tokens forLocaleIdentifier:(id)identifier
 {
   v32 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  tokensCopy = tokens;
+  identifierCopy = identifier;
   Mutable = CFDictionaryCreateMutable(0, 0, MEMORY[0x277CBF138], MEMORY[0x277CBF150]);
-  CFDictionaryAddValue(Mutable, *MEMORY[0x277D23168], v7);
+  CFDictionaryAddValue(Mutable, *MEMORY[0x277D23168], identifierCopy);
   err = 0;
   v9 = LXLexiconCreate();
   CFRelease(Mutable);
@@ -47,7 +47,7 @@ void __45__SGLexicon__lexiconTokenForToken_inLexicon___block_invoke(uint64_t a1,
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v10 = v6;
+    v10 = tokensCopy;
     v11 = [v10 countByEnumeratingWithState:&v24 objects:v29 count:16];
     if (v11)
     {
@@ -68,7 +68,7 @@ LABEL_4:
           break;
         }
 
-        if ([a1 _lexiconTokenForToken:v15 inLexicon:{v9, v24}])
+        if ([self _lexiconTokenForToken:v15 inLexicon:{v9, v24}])
         {
           v16 = LXLexiconCopyEntryForTokenID();
           MetaFlags = LXEntryGetMetaFlags();

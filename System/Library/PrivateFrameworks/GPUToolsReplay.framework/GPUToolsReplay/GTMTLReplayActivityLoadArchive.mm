@@ -1,16 +1,16 @@
 @interface GTMTLReplayActivityLoadArchive
-- (GTMTLReplayActivityLoadArchive)initWithPath:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (GTMTLReplayActivityLoadArchive)initWithPath:(id)path;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)jsonObject;
-- (void)outputToLog:(id)a3;
+- (void)outputToLog:(id)log;
 @end
 
 @implementation GTMTLReplayActivityLoadArchive
 
-- (void)outputToLog:(id)a3
+- (void)outputToLog:(id)log
 {
   v12 = *MEMORY[0x277D85DE8];
-  if (os_log_type_enabled(a3, OS_LOG_TYPE_INFO))
+  if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
   {
     activityType = self->super._activityType;
     path = self->_path;
@@ -18,7 +18,7 @@
     v9 = activityType;
     v10 = 2114;
     v11 = path;
-    _os_log_impl(&dword_24D764000, a3, OS_LOG_TYPE_INFO, "%{public}@:\t%{public}@", &v8, 0x16u);
+    _os_log_impl(&dword_24D764000, log, OS_LOG_TYPE_INFO, "%{public}@:\t%{public}@", &v8, 0x16u);
   }
 
   v7 = *MEMORY[0x277D85DE8];
@@ -46,11 +46,11 @@
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = GTMTLReplayActivityLoadArchive;
-  v4 = [(GTMTLReplayActivity *)&v7 copyWithZone:a3];
+  v4 = [(GTMTLReplayActivity *)&v7 copyWithZone:zone];
   v5 = v4;
   if (v4)
   {
@@ -60,16 +60,16 @@
   return v5;
 }
 
-- (GTMTLReplayActivityLoadArchive)initWithPath:(id)a3
+- (GTMTLReplayActivityLoadArchive)initWithPath:(id)path
 {
-  v5 = a3;
+  pathCopy = path;
   v9.receiver = self;
   v9.super_class = GTMTLReplayActivityLoadArchive;
   v6 = [(GTMTLReplayActivity *)&v9 initWithType:@"loadArchive"];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_path, a3);
+    objc_storeStrong(&v6->_path, path);
   }
 
   return v7;

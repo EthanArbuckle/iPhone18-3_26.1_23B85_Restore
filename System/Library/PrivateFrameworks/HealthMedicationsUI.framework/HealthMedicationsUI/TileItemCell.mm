@@ -1,10 +1,10 @@
 @interface TileItemCell
-- (_TtC19HealthMedicationsUI12TileItemCell)initWithCoder:(id)a3;
+- (_TtC19HealthMedicationsUI12TileItemCell)initWithCoder:(id)coder;
 @end
 
 @implementation TileItemCell
 
-- (_TtC19HealthMedicationsUI12TileItemCell)initWithCoder:(id)a3
+- (_TtC19HealthMedicationsUI12TileItemCell)initWithCoder:(id)coder
 {
   v3 = self + OBJC_IVAR____TtC19HealthMedicationsUI12TileItemCell_item;
   *v3 = 0u;

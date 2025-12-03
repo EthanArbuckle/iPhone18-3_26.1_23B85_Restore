@@ -1,34 +1,34 @@
 @interface ASRSchemaASRFinalResultGenerated
-- (ASRSchemaASRFinalResultGenerated)initWithDictionary:(id)a3;
-- (ASRSchemaASRFinalResultGenerated)initWithJSON:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (ASRSchemaASRFinalResultGenerated)initWithDictionary:(id)dictionary;
+- (ASRSchemaASRFinalResultGenerated)initWithJSON:(id)n;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (int)correctAlignedPartialResultIndexListAtIndex:(unint64_t)a3;
-- (int)correctAlignedUnfilteredPartialResultIndexListAtIndex:(unint64_t)a3;
-- (int)correctPartialResultIndexListAtIndex:(unint64_t)a3;
+- (int)correctAlignedPartialResultIndexListAtIndex:(unint64_t)index;
+- (int)correctAlignedUnfilteredPartialResultIndexListAtIndex:(unint64_t)index;
+- (int)correctPartialResultIndexListAtIndex:(unint64_t)index;
 - (unint64_t)hash;
-- (unint64_t)tokenSilenceStartTimeInNsListAtIndex:(unint64_t)a3;
-- (void)addCorrectAlignedPartialResultIndexList:(int)a3;
-- (void)addCorrectAlignedUnfilteredPartialResultIndexList:(int)a3;
-- (void)addCorrectPartialResultIndexList:(int)a3;
-- (void)addTokenSilenceStartTimeInNsList:(unint64_t)a3;
-- (void)writeTo:(id)a3;
+- (unint64_t)tokenSilenceStartTimeInNsListAtIndex:(unint64_t)index;
+- (void)addCorrectAlignedPartialResultIndexList:(int)list;
+- (void)addCorrectAlignedUnfilteredPartialResultIndexList:(int)list;
+- (void)addCorrectPartialResultIndexList:(int)list;
+- (void)addTokenSilenceStartTimeInNsList:(unint64_t)list;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ASRSchemaASRFinalResultGenerated
 
-- (ASRSchemaASRFinalResultGenerated)initWithDictionary:(id)a3
+- (ASRSchemaASRFinalResultGenerated)initWithDictionary:(id)dictionary
 {
   v62 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v57.receiver = self;
   v57.super_class = ASRSchemaASRFinalResultGenerated;
   v5 = [(ASRSchemaASRFinalResultGenerated *)&v57 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"tokenSilenceStartTimeInNsList"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"tokenSilenceStartTimeInNsList"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -70,7 +70,7 @@
       }
     }
 
-    v13 = [v4 objectForKeyedSubscript:@"correctPartialResultIndexList"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"correctPartialResultIndexList"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -112,14 +112,14 @@
       }
     }
 
-    v20 = [v4 objectForKeyedSubscript:@"isAfterResume"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"isAfterResume"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ASRSchemaASRFinalResultGenerated setIsAfterResume:](v5, "setIsAfterResume:", [v20 BOOLValue]);
     }
 
-    v21 = [v4 objectForKeyedSubscript:@"correctAlignedPartialResultIndexList"];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"correctAlignedPartialResultIndexList"];
     objc_opt_class();
     v39 = v20;
     v40 = v13;
@@ -168,7 +168,7 @@
       v13 = v40;
     }
 
-    v29 = [v4 objectForKeyedSubscript:@"correctAlignedUnfilteredPartialResultIndexList"];
+    v29 = [dictionaryCopy objectForKeyedSubscript:@"correctAlignedUnfilteredPartialResultIndexList"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -221,30 +221,30 @@
   return v5;
 }
 
-- (ASRSchemaASRFinalResultGenerated)initWithJSON:(id)a3
+- (ASRSchemaASRFinalResultGenerated)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(ASRSchemaASRFinalResultGenerated *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(ASRSchemaASRFinalResultGenerated *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(ASRSchemaASRFinalResultGenerated *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -257,44 +257,44 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_correctAlignedPartialResultIndexLists count])
   {
-    v4 = [(ASRSchemaASRFinalResultGenerated *)self correctAlignedPartialResultIndexLists];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"correctAlignedPartialResultIndexList"];
+    correctAlignedPartialResultIndexLists = [(ASRSchemaASRFinalResultGenerated *)self correctAlignedPartialResultIndexLists];
+    v5 = [correctAlignedPartialResultIndexLists copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"correctAlignedPartialResultIndexList"];
   }
 
   if ([(NSArray *)self->_correctAlignedUnfilteredPartialResultIndexLists count])
   {
-    v6 = [(ASRSchemaASRFinalResultGenerated *)self correctAlignedUnfilteredPartialResultIndexLists];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"correctAlignedUnfilteredPartialResultIndexList"];
+    correctAlignedUnfilteredPartialResultIndexLists = [(ASRSchemaASRFinalResultGenerated *)self correctAlignedUnfilteredPartialResultIndexLists];
+    v7 = [correctAlignedUnfilteredPartialResultIndexLists copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"correctAlignedUnfilteredPartialResultIndexList"];
   }
 
   if ([(NSArray *)self->_correctPartialResultIndexLists count])
   {
-    v8 = [(ASRSchemaASRFinalResultGenerated *)self correctPartialResultIndexLists];
-    v9 = [v8 copy];
-    [v3 setObject:v9 forKeyedSubscript:@"correctPartialResultIndexList"];
+    correctPartialResultIndexLists = [(ASRSchemaASRFinalResultGenerated *)self correctPartialResultIndexLists];
+    v9 = [correctPartialResultIndexLists copy];
+    [dictionary setObject:v9 forKeyedSubscript:@"correctPartialResultIndexList"];
   }
 
   if (*&self->_has)
   {
     v10 = [MEMORY[0x1E696AD98] numberWithBool:{-[ASRSchemaASRFinalResultGenerated isAfterResume](self, "isAfterResume")}];
-    [v3 setObject:v10 forKeyedSubscript:@"isAfterResume"];
+    [dictionary setObject:v10 forKeyedSubscript:@"isAfterResume"];
   }
 
   if ([(NSArray *)self->_tokenSilenceStartTimeInNsLists count])
   {
-    v11 = [(ASRSchemaASRFinalResultGenerated *)self tokenSilenceStartTimeInNsLists];
-    v12 = [v11 copy];
-    [v3 setObject:v12 forKeyedSubscript:@"tokenSilenceStartTimeInNsList"];
+    tokenSilenceStartTimeInNsLists = [(ASRSchemaASRFinalResultGenerated *)self tokenSilenceStartTimeInNsLists];
+    v12 = [tokenSilenceStartTimeInNsLists copy];
+    [dictionary setObject:v12 forKeyedSubscript:@"tokenSilenceStartTimeInNsList"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -315,28 +315,28 @@
   return v6 ^ [(NSArray *)self->_correctAlignedUnfilteredPartialResultIndexLists hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_25;
   }
 
-  v5 = [(ASRSchemaASRFinalResultGenerated *)self tokenSilenceStartTimeInNsLists];
-  v6 = [v4 tokenSilenceStartTimeInNsLists];
-  if ((v5 != 0) == (v6 == 0))
+  tokenSilenceStartTimeInNsLists = [(ASRSchemaASRFinalResultGenerated *)self tokenSilenceStartTimeInNsLists];
+  tokenSilenceStartTimeInNsLists2 = [equalCopy tokenSilenceStartTimeInNsLists];
+  if ((tokenSilenceStartTimeInNsLists != 0) == (tokenSilenceStartTimeInNsLists2 == 0))
   {
     goto LABEL_24;
   }
 
-  v7 = [(ASRSchemaASRFinalResultGenerated *)self tokenSilenceStartTimeInNsLists];
-  if (v7)
+  tokenSilenceStartTimeInNsLists3 = [(ASRSchemaASRFinalResultGenerated *)self tokenSilenceStartTimeInNsLists];
+  if (tokenSilenceStartTimeInNsLists3)
   {
-    v8 = v7;
-    v9 = [(ASRSchemaASRFinalResultGenerated *)self tokenSilenceStartTimeInNsLists];
-    v10 = [v4 tokenSilenceStartTimeInNsLists];
-    v11 = [v9 isEqual:v10];
+    v8 = tokenSilenceStartTimeInNsLists3;
+    tokenSilenceStartTimeInNsLists4 = [(ASRSchemaASRFinalResultGenerated *)self tokenSilenceStartTimeInNsLists];
+    tokenSilenceStartTimeInNsLists5 = [equalCopy tokenSilenceStartTimeInNsLists];
+    v11 = [tokenSilenceStartTimeInNsLists4 isEqual:tokenSilenceStartTimeInNsLists5];
 
     if (!v11)
     {
@@ -348,20 +348,20 @@
   {
   }
 
-  v5 = [(ASRSchemaASRFinalResultGenerated *)self correctPartialResultIndexLists];
-  v6 = [v4 correctPartialResultIndexLists];
-  if ((v5 != 0) == (v6 == 0))
+  tokenSilenceStartTimeInNsLists = [(ASRSchemaASRFinalResultGenerated *)self correctPartialResultIndexLists];
+  tokenSilenceStartTimeInNsLists2 = [equalCopy correctPartialResultIndexLists];
+  if ((tokenSilenceStartTimeInNsLists != 0) == (tokenSilenceStartTimeInNsLists2 == 0))
   {
     goto LABEL_24;
   }
 
-  v12 = [(ASRSchemaASRFinalResultGenerated *)self correctPartialResultIndexLists];
-  if (v12)
+  correctPartialResultIndexLists = [(ASRSchemaASRFinalResultGenerated *)self correctPartialResultIndexLists];
+  if (correctPartialResultIndexLists)
   {
-    v13 = v12;
-    v14 = [(ASRSchemaASRFinalResultGenerated *)self correctPartialResultIndexLists];
-    v15 = [v4 correctPartialResultIndexLists];
-    v16 = [v14 isEqual:v15];
+    v13 = correctPartialResultIndexLists;
+    correctPartialResultIndexLists2 = [(ASRSchemaASRFinalResultGenerated *)self correctPartialResultIndexLists];
+    correctPartialResultIndexLists3 = [equalCopy correctPartialResultIndexLists];
+    v16 = [correctPartialResultIndexLists2 isEqual:correctPartialResultIndexLists3];
 
     if (!v16)
     {
@@ -373,7 +373,7 @@
   {
   }
 
-  if ((*&self->_has & 1) != (v4[48] & 1))
+  if ((*&self->_has & 1) != (equalCopy[48] & 1))
   {
     goto LABEL_25;
   }
@@ -381,26 +381,26 @@
   if (*&self->_has)
   {
     isAfterResume = self->_isAfterResume;
-    if (isAfterResume != [v4 isAfterResume])
+    if (isAfterResume != [equalCopy isAfterResume])
     {
       goto LABEL_25;
     }
   }
 
-  v5 = [(ASRSchemaASRFinalResultGenerated *)self correctAlignedPartialResultIndexLists];
-  v6 = [v4 correctAlignedPartialResultIndexLists];
-  if ((v5 != 0) == (v6 == 0))
+  tokenSilenceStartTimeInNsLists = [(ASRSchemaASRFinalResultGenerated *)self correctAlignedPartialResultIndexLists];
+  tokenSilenceStartTimeInNsLists2 = [equalCopy correctAlignedPartialResultIndexLists];
+  if ((tokenSilenceStartTimeInNsLists != 0) == (tokenSilenceStartTimeInNsLists2 == 0))
   {
     goto LABEL_24;
   }
 
-  v18 = [(ASRSchemaASRFinalResultGenerated *)self correctAlignedPartialResultIndexLists];
-  if (v18)
+  correctAlignedPartialResultIndexLists = [(ASRSchemaASRFinalResultGenerated *)self correctAlignedPartialResultIndexLists];
+  if (correctAlignedPartialResultIndexLists)
   {
-    v19 = v18;
-    v20 = [(ASRSchemaASRFinalResultGenerated *)self correctAlignedPartialResultIndexLists];
-    v21 = [v4 correctAlignedPartialResultIndexLists];
-    v22 = [v20 isEqual:v21];
+    v19 = correctAlignedPartialResultIndexLists;
+    correctAlignedPartialResultIndexLists2 = [(ASRSchemaASRFinalResultGenerated *)self correctAlignedPartialResultIndexLists];
+    correctAlignedPartialResultIndexLists3 = [equalCopy correctAlignedPartialResultIndexLists];
+    v22 = [correctAlignedPartialResultIndexLists2 isEqual:correctAlignedPartialResultIndexLists3];
 
     if (!v22)
     {
@@ -412,12 +412,12 @@
   {
   }
 
-  v5 = [(ASRSchemaASRFinalResultGenerated *)self correctAlignedUnfilteredPartialResultIndexLists];
-  v6 = [v4 correctAlignedUnfilteredPartialResultIndexLists];
-  if ((v5 != 0) != (v6 == 0))
+  tokenSilenceStartTimeInNsLists = [(ASRSchemaASRFinalResultGenerated *)self correctAlignedUnfilteredPartialResultIndexLists];
+  tokenSilenceStartTimeInNsLists2 = [equalCopy correctAlignedUnfilteredPartialResultIndexLists];
+  if ((tokenSilenceStartTimeInNsLists != 0) != (tokenSilenceStartTimeInNsLists2 == 0))
   {
-    v23 = [(ASRSchemaASRFinalResultGenerated *)self correctAlignedUnfilteredPartialResultIndexLists];
-    if (!v23)
+    correctAlignedUnfilteredPartialResultIndexLists = [(ASRSchemaASRFinalResultGenerated *)self correctAlignedUnfilteredPartialResultIndexLists];
+    if (!correctAlignedUnfilteredPartialResultIndexLists)
     {
 
 LABEL_28:
@@ -425,10 +425,10 @@ LABEL_28:
       goto LABEL_26;
     }
 
-    v24 = v23;
-    v25 = [(ASRSchemaASRFinalResultGenerated *)self correctAlignedUnfilteredPartialResultIndexLists];
-    v26 = [v4 correctAlignedUnfilteredPartialResultIndexLists];
-    v27 = [v25 isEqual:v26];
+    v24 = correctAlignedUnfilteredPartialResultIndexLists;
+    correctAlignedUnfilteredPartialResultIndexLists2 = [(ASRSchemaASRFinalResultGenerated *)self correctAlignedUnfilteredPartialResultIndexLists];
+    correctAlignedUnfilteredPartialResultIndexLists3 = [equalCopy correctAlignedUnfilteredPartialResultIndexLists];
+    v27 = [correctAlignedUnfilteredPartialResultIndexLists2 isEqual:correctAlignedUnfilteredPartialResultIndexLists3];
 
     if (v27)
     {
@@ -448,10 +448,10 @@ LABEL_26:
   return v28;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v45 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
@@ -586,23 +586,23 @@ LABEL_26:
   }
 }
 
-- (int)correctAlignedUnfilteredPartialResultIndexListAtIndex:(unint64_t)a3
+- (int)correctAlignedUnfilteredPartialResultIndexListAtIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_correctAlignedUnfilteredPartialResultIndexLists objectAtIndexedSubscript:a3];
-  v4 = [v3 intValue];
+  v3 = [(NSArray *)self->_correctAlignedUnfilteredPartialResultIndexLists objectAtIndexedSubscript:index];
+  intValue = [v3 intValue];
 
-  return v4;
+  return intValue;
 }
 
-- (void)addCorrectAlignedUnfilteredPartialResultIndexList:(int)a3
+- (void)addCorrectAlignedUnfilteredPartialResultIndexList:(int)list
 {
-  v3 = *&a3;
+  v3 = *&list;
   correctAlignedUnfilteredPartialResultIndexLists = self->_correctAlignedUnfilteredPartialResultIndexLists;
   if (!correctAlignedUnfilteredPartialResultIndexLists)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_correctAlignedUnfilteredPartialResultIndexLists;
-    self->_correctAlignedUnfilteredPartialResultIndexLists = v6;
+    self->_correctAlignedUnfilteredPartialResultIndexLists = array;
 
     correctAlignedUnfilteredPartialResultIndexLists = self->_correctAlignedUnfilteredPartialResultIndexLists;
   }
@@ -611,23 +611,23 @@ LABEL_26:
   [(NSArray *)correctAlignedUnfilteredPartialResultIndexLists addObject:v8];
 }
 
-- (int)correctAlignedPartialResultIndexListAtIndex:(unint64_t)a3
+- (int)correctAlignedPartialResultIndexListAtIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_correctAlignedPartialResultIndexLists objectAtIndexedSubscript:a3];
-  v4 = [v3 intValue];
+  v3 = [(NSArray *)self->_correctAlignedPartialResultIndexLists objectAtIndexedSubscript:index];
+  intValue = [v3 intValue];
 
-  return v4;
+  return intValue;
 }
 
-- (void)addCorrectAlignedPartialResultIndexList:(int)a3
+- (void)addCorrectAlignedPartialResultIndexList:(int)list
 {
-  v3 = *&a3;
+  v3 = *&list;
   correctAlignedPartialResultIndexLists = self->_correctAlignedPartialResultIndexLists;
   if (!correctAlignedPartialResultIndexLists)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_correctAlignedPartialResultIndexLists;
-    self->_correctAlignedPartialResultIndexLists = v6;
+    self->_correctAlignedPartialResultIndexLists = array;
 
     correctAlignedPartialResultIndexLists = self->_correctAlignedPartialResultIndexLists;
   }
@@ -636,23 +636,23 @@ LABEL_26:
   [(NSArray *)correctAlignedPartialResultIndexLists addObject:v8];
 }
 
-- (int)correctPartialResultIndexListAtIndex:(unint64_t)a3
+- (int)correctPartialResultIndexListAtIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_correctPartialResultIndexLists objectAtIndexedSubscript:a3];
-  v4 = [v3 intValue];
+  v3 = [(NSArray *)self->_correctPartialResultIndexLists objectAtIndexedSubscript:index];
+  intValue = [v3 intValue];
 
-  return v4;
+  return intValue;
 }
 
-- (void)addCorrectPartialResultIndexList:(int)a3
+- (void)addCorrectPartialResultIndexList:(int)list
 {
-  v3 = *&a3;
+  v3 = *&list;
   correctPartialResultIndexLists = self->_correctPartialResultIndexLists;
   if (!correctPartialResultIndexLists)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_correctPartialResultIndexLists;
-    self->_correctPartialResultIndexLists = v6;
+    self->_correctPartialResultIndexLists = array;
 
     correctPartialResultIndexLists = self->_correctPartialResultIndexLists;
   }
@@ -661,27 +661,27 @@ LABEL_26:
   [(NSArray *)correctPartialResultIndexLists addObject:v8];
 }
 
-- (unint64_t)tokenSilenceStartTimeInNsListAtIndex:(unint64_t)a3
+- (unint64_t)tokenSilenceStartTimeInNsListAtIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_tokenSilenceStartTimeInNsLists objectAtIndexedSubscript:a3];
-  v4 = [v3 unsignedLongLongValue];
+  v3 = [(NSArray *)self->_tokenSilenceStartTimeInNsLists objectAtIndexedSubscript:index];
+  unsignedLongLongValue = [v3 unsignedLongLongValue];
 
-  return v4;
+  return unsignedLongLongValue;
 }
 
-- (void)addTokenSilenceStartTimeInNsList:(unint64_t)a3
+- (void)addTokenSilenceStartTimeInNsList:(unint64_t)list
 {
   tokenSilenceStartTimeInNsLists = self->_tokenSilenceStartTimeInNsLists;
   if (!tokenSilenceStartTimeInNsLists)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_tokenSilenceStartTimeInNsLists;
-    self->_tokenSilenceStartTimeInNsLists = v6;
+    self->_tokenSilenceStartTimeInNsLists = array;
 
     tokenSilenceStartTimeInNsLists = self->_tokenSilenceStartTimeInNsLists;
   }
 
-  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a3];
+  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:list];
   [(NSArray *)tokenSilenceStartTimeInNsLists addObject:v8];
 }
 

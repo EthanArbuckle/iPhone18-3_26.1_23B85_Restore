@@ -1,10 +1,10 @@
 @interface MPMediaItemCollection
-- (BOOL)_hasBeenPlayed:(id)a3;
+- (BOOL)_hasBeenPlayed:(id)played;
 - (BOOL)bk_cloudHasBeenPlayed;
 - (BOOL)bk_localHasBeenPlayed;
-- (double)_bookmarkTime:(id)a3 timestamp:(id *)a4;
-- (double)_duration:(id)a3;
-- (double)_timeRemaining:(id)a3;
+- (double)_bookmarkTime:(id)time timestamp:(id *)timestamp;
+- (double)_duration:(id)_duration;
+- (double)_timeRemaining:(id)remaining;
 - (double)bk_cloudBookmarkTime;
 - (double)bk_cloudDuration;
 - (double)bk_cloudTimeRemaining;
@@ -30,8 +30,8 @@
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v2 = [(MPMediaItemCollection *)self items];
-  v3 = [v2 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  items = [(MPMediaItemCollection *)self items];
+  v3 = [items countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v3)
   {
     v4 = v3;
@@ -43,7 +43,7 @@
       {
         if (*v13 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(items);
         }
 
         v8 = *(*(&v12 + 1) + 8 * i);
@@ -56,7 +56,7 @@
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v4 = [items countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v4)
       {
         continue;
@@ -78,8 +78,8 @@ LABEL_12:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v2 = [(MPMediaItemCollection *)self items];
-  v3 = [v2 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  items = [(MPMediaItemCollection *)self items];
+  v3 = [items countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v3)
   {
     v4 = v3;
@@ -91,7 +91,7 @@ LABEL_12:
       {
         if (*v13 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(items);
         }
 
         v8 = *(*(&v12 + 1) + 8 * i);
@@ -104,7 +104,7 @@ LABEL_12:
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v4 = [items countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v4)
       {
         continue;
@@ -126,8 +126,8 @@ LABEL_12:
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(MPMediaItemCollection *)self items];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  items = [(MPMediaItemCollection *)self items];
+  v3 = [items countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = *v9;
@@ -137,7 +137,7 @@ LABEL_12:
       {
         if (*v9 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(items);
         }
 
         v6 = *(*(&v8 + 1) + 8 * i);
@@ -148,7 +148,7 @@ LABEL_12:
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v3 = [items countByEnumeratingWithState:&v8 objects:v12 count:16];
       if (v3)
       {
         continue;
@@ -170,8 +170,8 @@ LABEL_11:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(MPMediaItemCollection *)self items];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  items = [(MPMediaItemCollection *)self items];
+  v5 = [items countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -182,7 +182,7 @@ LABEL_11:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(items);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
@@ -192,7 +192,7 @@ LABEL_11:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [items countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -210,8 +210,8 @@ LABEL_11:
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [(MPMediaItemCollection *)self items];
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  items = [(MPMediaItemCollection *)self items];
+  v5 = [items countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -223,7 +223,7 @@ LABEL_11:
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(items);
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
@@ -234,7 +234,7 @@ LABEL_11:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [items countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v6);
@@ -252,8 +252,8 @@ LABEL_11:
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v4 = [(MPMediaItemCollection *)self items];
-  v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  items = [(MPMediaItemCollection *)self items];
+  v5 = [items countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v5)
   {
     v6 = v5;
@@ -265,7 +265,7 @@ LABEL_11:
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(items);
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
@@ -276,7 +276,7 @@ LABEL_11:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v6 = [items countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v6);
@@ -298,14 +298,14 @@ LABEL_11:
 
 - (id)bk_mostRecentListeningProgress
 {
-  v3 = [(MPMediaItemCollection *)self bk_localItems];
-  v4 = [(MPMediaItemCollection *)self bk_cloudItems];
+  bk_localItems = [(MPMediaItemCollection *)self bk_localItems];
+  bk_cloudItems = [(MPMediaItemCollection *)self bk_cloudItems];
   v22 = 0;
-  [(MPMediaItemCollection *)self _bookmarkTime:v3 timestamp:&v22];
+  [(MPMediaItemCollection *)self _bookmarkTime:bk_localItems timestamp:&v22];
   v6 = v5;
   v7 = v22;
   v21 = 0;
-  [(MPMediaItemCollection *)self _bookmarkTime:v4 timestamp:&v21];
+  [(MPMediaItemCollection *)self _bookmarkTime:bk_cloudItems timestamp:&v21];
   v9 = v8;
   v10 = v21;
   v11 = v10;
@@ -332,7 +332,7 @@ LABEL_11:
   if (!v7 && v10)
   {
 LABEL_12:
-    [(MPMediaItemCollection *)self _duration:v4];
+    [(MPMediaItemCollection *)self _duration:bk_cloudItems];
     if (v15 > 0.0)
     {
       v14 = v9 / v15;
@@ -349,7 +349,7 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  [(MPMediaItemCollection *)self _duration:v3];
+  [(MPMediaItemCollection *)self _duration:bk_localItems];
   if (v13 <= 0.0)
   {
     goto LABEL_18;
@@ -377,24 +377,24 @@ LABEL_19:
   return v19;
 }
 
-- (double)_bookmarkTime:(id)a3 timestamp:(id *)a4
+- (double)_bookmarkTime:(id)time timestamp:(id *)timestamp
 {
-  v5 = a3;
-  if ([v5 count] == &dword_0 + 1)
+  timeCopy = time;
+  if ([timeCopy count] == &dword_0 + 1)
   {
-    v6 = [v5 firstObject];
-    v7 = [v6 valueForProperty:MPMediaItemPropertyBookmarkTime];
+    firstObject = [timeCopy firstObject];
+    v7 = [firstObject valueForProperty:MPMediaItemPropertyBookmarkTime];
     [v7 doubleValue];
     v9 = v8;
 
-    if (![v6 hasBeenPlayed] || (objc_msgSend(v6, "dateAccessed"), (v10 = objc_claimAutoreleasedReturnValue()) == 0))
+    if (![firstObject hasBeenPlayed] || (objc_msgSend(firstObject, "dateAccessed"), (v10 = objc_claimAutoreleasedReturnValue()) == 0))
     {
       objc_opt_class();
-      v11 = [v6 valueForProperty:MPMediaItemPropertyLastPlayedDate];
+      v11 = [firstObject valueForProperty:MPMediaItemPropertyLastPlayedDate];
       v10 = BUDynamicCast();
     }
 
-    if (!a4)
+    if (!timestamp)
     {
       goto LABEL_31;
     }
@@ -402,11 +402,11 @@ LABEL_19:
     goto LABEL_30;
   }
 
-  if ([v5 count] < 2)
+  if ([timeCopy count] < 2)
   {
     v10 = 0;
     v9 = 0.0;
-    if (!a4)
+    if (!timestamp)
     {
       goto LABEL_31;
     }
@@ -414,13 +414,13 @@ LABEL_19:
     goto LABEL_30;
   }
 
-  v30 = v5;
-  v31 = a4;
+  v30 = timeCopy;
+  timestampCopy = timestamp;
   v36 = 0u;
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  obj = v5;
+  obj = timeCopy;
   v12 = [obj countByEnumeratingWithState:&v34 objects:v38 count:16];
   if (v12)
   {
@@ -440,8 +440,8 @@ LABEL_19:
         }
 
         v18 = *(*(&v34 + 1) + 8 * i);
-        v19 = [v18 dateAccessed];
-        v20 = [v18 hasBeenPlayed];
+        dateAccessed = [v18 dateAccessed];
+        hasBeenPlayed = [v18 hasBeenPlayed];
         v21 = [v18 valueForProperty:MPMediaItemPropertyPlaybackDuration];
         [v21 doubleValue];
         v23 = v22;
@@ -455,11 +455,11 @@ LABEL_19:
           v26 = 0.0;
         }
 
-        if (v20)
+        if (hasBeenPlayed)
         {
-          if (!v10 || [v19 compare:v10] == &dword_0 + 1)
+          if (!v10 || [dateAccessed compare:v10] == &dword_0 + 1)
           {
-            v27 = v19;
+            v27 = dateAccessed;
 
             v10 = v27;
           }
@@ -467,7 +467,7 @@ LABEL_19:
           v15 = v16 + v26;
         }
 
-        v14 |= v20;
+        v14 |= hasBeenPlayed;
         v16 = v16 + v23;
       }
 
@@ -495,13 +495,13 @@ LABEL_19:
     v9 = 0.0;
   }
 
-  v5 = v30;
-  a4 = v31;
-  if (v31)
+  timeCopy = v30;
+  timestamp = timestampCopy;
+  if (timestampCopy)
   {
 LABEL_30:
     v28 = v10;
-    *a4 = v10;
+    *timestamp = v10;
   }
 
 LABEL_31:
@@ -511,8 +511,8 @@ LABEL_31:
 
 - (double)bk_localBookmarkTime
 {
-  v3 = [(MPMediaItemCollection *)self bk_localItems];
-  [(MPMediaItemCollection *)self _bookmarkTime:v3 timestamp:0];
+  bk_localItems = [(MPMediaItemCollection *)self bk_localItems];
+  [(MPMediaItemCollection *)self _bookmarkTime:bk_localItems timestamp:0];
   v5 = v4;
 
   return v5;
@@ -520,8 +520,8 @@ LABEL_31:
 
 - (double)bk_cloudBookmarkTime
 {
-  v3 = [(MPMediaItemCollection *)self bk_cloudItems];
-  [(MPMediaItemCollection *)self _bookmarkTime:v3 timestamp:0];
+  bk_cloudItems = [(MPMediaItemCollection *)self bk_cloudItems];
+  [(MPMediaItemCollection *)self _bookmarkTime:bk_cloudItems timestamp:0];
   v5 = v4;
 
   return v5;
@@ -529,9 +529,9 @@ LABEL_31:
 
 - (id)bk_localBookmarkTimestamp
 {
-  v3 = [(MPMediaItemCollection *)self bk_localItems];
+  bk_localItems = [(MPMediaItemCollection *)self bk_localItems];
   v7 = 0;
-  [(MPMediaItemCollection *)self _bookmarkTime:v3 timestamp:&v7];
+  [(MPMediaItemCollection *)self _bookmarkTime:bk_localItems timestamp:&v7];
   v4 = v7;
   v5 = v7;
 
@@ -540,23 +540,23 @@ LABEL_31:
 
 - (id)bk_cloudBookmarkTimestamp
 {
-  v3 = [(MPMediaItemCollection *)self bk_cloudItems];
+  bk_cloudItems = [(MPMediaItemCollection *)self bk_cloudItems];
   v7 = 0;
-  [(MPMediaItemCollection *)self _bookmarkTime:v3 timestamp:&v7];
+  [(MPMediaItemCollection *)self _bookmarkTime:bk_cloudItems timestamp:&v7];
   v4 = v7;
   v5 = v7;
 
   return v4;
 }
 
-- (double)_duration:(id)a3
+- (double)_duration:(id)_duration
 {
-  v3 = a3;
+  _durationCopy = _duration;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v4 = [_durationCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
     v5 = v4;
@@ -568,7 +568,7 @@ LABEL_31:
       {
         if (*v14 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(_durationCopy);
         }
 
         v9 = [*(*(&v13 + 1) + 8 * i) valueForProperty:MPMediaItemPropertyPlaybackDuration];
@@ -578,7 +578,7 @@ LABEL_31:
         v7 = v7 + v11;
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v5 = [_durationCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v5);
@@ -594,8 +594,8 @@ LABEL_31:
 
 - (double)bk_localDuration
 {
-  v3 = [(MPMediaItemCollection *)self bk_localItems];
-  [(MPMediaItemCollection *)self _duration:v3];
+  bk_localItems = [(MPMediaItemCollection *)self bk_localItems];
+  [(MPMediaItemCollection *)self _duration:bk_localItems];
   v5 = v4;
 
   return v5;
@@ -603,19 +603,19 @@ LABEL_31:
 
 - (double)bk_cloudDuration
 {
-  v3 = [(MPMediaItemCollection *)self bk_cloudItems];
-  [(MPMediaItemCollection *)self _duration:v3];
+  bk_cloudItems = [(MPMediaItemCollection *)self bk_cloudItems];
+  [(MPMediaItemCollection *)self _duration:bk_cloudItems];
   v5 = v4;
 
   return v5;
 }
 
-- (double)_timeRemaining:(id)a3
+- (double)_timeRemaining:(id)remaining
 {
-  v4 = a3;
-  [(MPMediaItemCollection *)self _duration:v4];
+  remainingCopy = remaining;
+  [(MPMediaItemCollection *)self _duration:remainingCopy];
   v6 = v5;
-  [(MPMediaItemCollection *)self _bookmarkTime:v4 timestamp:0];
+  [(MPMediaItemCollection *)self _bookmarkTime:remainingCopy timestamp:0];
   v8 = v7;
 
   return v6 - v8;
@@ -623,8 +623,8 @@ LABEL_31:
 
 - (double)bk_localTimeRemaining
 {
-  v3 = [(MPMediaItemCollection *)self bk_localItems];
-  [(MPMediaItemCollection *)self _timeRemaining:v3];
+  bk_localItems = [(MPMediaItemCollection *)self bk_localItems];
+  [(MPMediaItemCollection *)self _timeRemaining:bk_localItems];
   v5 = v4;
 
   return v5;
@@ -632,21 +632,21 @@ LABEL_31:
 
 - (double)bk_cloudTimeRemaining
 {
-  v3 = [(MPMediaItemCollection *)self bk_cloudItems];
-  [(MPMediaItemCollection *)self _timeRemaining:v3];
+  bk_cloudItems = [(MPMediaItemCollection *)self bk_cloudItems];
+  [(MPMediaItemCollection *)self _timeRemaining:bk_cloudItems];
   v5 = v4;
 
   return v5;
 }
 
-- (BOOL)_hasBeenPlayed:(id)a3
+- (BOOL)_hasBeenPlayed:(id)played
 {
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  playedCopy = played;
+  v4 = [playedCopy countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = *v9;
@@ -656,7 +656,7 @@ LABEL_31:
       {
         if (*v9 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(playedCopy);
         }
 
         if ([*(*(&v8 + 1) + 8 * i) hasBeenPlayed])
@@ -666,7 +666,7 @@ LABEL_31:
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v4 = [playedCopy countByEnumeratingWithState:&v8 objects:v12 count:16];
       if (v4)
       {
         continue;
@@ -683,20 +683,20 @@ LABEL_11:
 
 - (BOOL)bk_localHasBeenPlayed
 {
-  v2 = self;
-  v3 = [(MPMediaItemCollection *)self bk_localItems];
-  LOBYTE(v2) = [(MPMediaItemCollection *)v2 _hasBeenPlayed:v3];
+  selfCopy = self;
+  bk_localItems = [(MPMediaItemCollection *)self bk_localItems];
+  LOBYTE(selfCopy) = [(MPMediaItemCollection *)selfCopy _hasBeenPlayed:bk_localItems];
 
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)bk_cloudHasBeenPlayed
 {
-  v2 = self;
-  v3 = [(MPMediaItemCollection *)self bk_cloudItems];
-  LOBYTE(v2) = [(MPMediaItemCollection *)v2 _hasBeenPlayed:v3];
+  selfCopy = self;
+  bk_cloudItems = [(MPMediaItemCollection *)self bk_cloudItems];
+  LOBYTE(selfCopy) = [(MPMediaItemCollection *)selfCopy _hasBeenPlayed:bk_cloudItems];
 
-  return v2;
+  return selfCopy;
 }
 
 @end

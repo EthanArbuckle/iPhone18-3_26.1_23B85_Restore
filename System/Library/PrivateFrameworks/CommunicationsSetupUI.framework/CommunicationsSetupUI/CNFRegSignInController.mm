@@ -1,18 +1,18 @@
 @interface CNFRegSignInController
 - (BOOL)passwordIsEmpty;
 - (BOOL)usernameIsEmpty;
-- (id)getPasswordForSpecifier:(id)a3;
-- (id)getUserNameForSpecifier:(id)a3;
+- (id)getPasswordForSpecifier:(id)specifier;
+- (id)getUserNameForSpecifier:(id)specifier;
 - (id)passwordTextField;
 - (id)specifierList;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (id)usernameTextField;
 - (id)validationString;
 - (void)__userTappedTextField;
-- (void)_buildCreateAccountButtonSpecifierCache:(id)a3;
-- (void)_buildCredentialSpecifierCache:(id)a3;
-- (void)_buildSignInGroupSpecifierCache:(id)a3;
-- (void)_buildSpecifierCache:(id)a3;
+- (void)_buildCreateAccountButtonSpecifierCache:(id)cache;
+- (void)_buildCredentialSpecifierCache:(id)cache;
+- (void)_buildSignInGroupSpecifierCache:(id)cache;
+- (void)_buildSpecifierCache:(id)cache;
 - (void)_handleTimeout;
 - (void)_incrementSigninFailureCount;
 - (void)_launchForgotPasswordUrl;
@@ -20,33 +20,33 @@
 - (void)_loadRegionsIfNecessary;
 - (void)_resignFirstResponders;
 - (void)_returnKeyPressed;
-- (void)_setupAppearBlockForAccountAuthorizeWithAuthID:(id)a3 token:(id)a4;
-- (void)_setupAppearBlockForNewPasswordWithAppleID:(id)a3;
+- (void)_setupAppearBlockForAccountAuthorizeWithAuthID:(id)d token:(id)token;
+- (void)_setupAppearBlockForNewPasswordWithAppleID:(id)d;
 - (void)_setupEventHandlers;
-- (void)_showAccountNotAuthorizedSheetWithAuthID:(id)a3 token:(id)a4;
-- (void)_showNewPasswordNeededSheetWithAppleID:(id)a3;
-- (void)_showRegistrationFailureWithError:(id)a3;
+- (void)_showAccountNotAuthorizedSheetWithAuthID:(id)d token:(id)token;
+- (void)_showNewPasswordNeededSheetWithAppleID:(id)d;
+- (void)_showRegistrationFailureWithError:(id)error;
 - (void)_showSigninFailureAlert;
 - (void)_updateControllerState;
 - (void)_updateUI;
 - (void)applicationDidResume;
 - (void)cancelButtonTapped;
-- (void)createAccountControllerDidFinish:(id)a3 withAppleId:(id)a4 authID:(id)a5 authToken:(id)a6;
+- (void)createAccountControllerDidFinish:(id)finish withAppleId:(id)id authID:(id)d authToken:(id)token;
 - (void)dealloc;
 - (void)forgotIDButtonTapped;
-- (void)learnMorePressed:(id)a3;
+- (void)learnMorePressed:(id)pressed;
 - (void)loadView;
-- (void)passwordFieldEmptyStateChanged:(id)a3 forSpecifier:(id)a4;
-- (void)setHideLearnMoreButton:(BOOL)a3;
-- (void)setPasswordText:(id)a3;
-- (void)setSpecifier:(id)a3;
-- (void)setUsernameText:(id)a3;
+- (void)passwordFieldEmptyStateChanged:(id)changed forSpecifier:(id)specifier;
+- (void)setHideLearnMoreButton:(BOOL)button;
+- (void)setPasswordText:(id)text;
+- (void)setSpecifier:(id)specifier;
+- (void)setUsernameText:(id)text;
 - (void)showCreateAccountController;
-- (void)signInTapped:(id)a3;
-- (void)signInWithUsername:(id)a3 password:(id)a4;
+- (void)signInTapped:(id)tapped;
+- (void)signInWithUsername:(id)username password:(id)password;
 - (void)systemApplicationDidEnterBackground;
 - (void)systemApplicationWillEnterForeground;
-- (void)usernameFieldEmptyStateChanged:(id)a3 forSpecifier:(id)a4;
+- (void)usernameFieldEmptyStateChanged:(id)changed forSpecifier:(id)specifier;
 - (void)viewDidLoad;
 @end
 
@@ -54,8 +54,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = CNFRegSignInController;
@@ -69,13 +69,13 @@
   if (!v3)
   {
     v4 = _os_feature_enabled_impl();
-    v5 = [(CNFRegListController *)self regController];
-    [v5 refreshSystemAccount];
+    regController = [(CNFRegListController *)self regController];
+    [regController refreshSystemAccount];
 
-    v6 = [(CNFRegListController *)self regController];
-    v7 = [v6 hasSystemAccount];
+    regController2 = [(CNFRegListController *)self regController];
+    hasSystemAccount = [regController2 hasSystemAccount];
 
-    if (v7)
+    if (hasSystemAccount)
     {
       v8 = OSLogHandleForIDSCategory();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -152,17 +152,17 @@
     v62 = *MEMORY[0x277D3FF68];
     [v20 setProperty:v28 forKey:?];
 
-    v29 = [(CNFRegListController *)self regController];
-    if ([v29 hasSystemAccount])
+    regController3 = [(CNFRegListController *)self regController];
+    if ([regController3 hasSystemAccount])
     {
       v30 = 1;
     }
 
     else
     {
-      v31 = [(CNFRegListController *)self regController];
-      v32 = [v31 guessedAccountName];
-      v30 = v32 != 0;
+      regController4 = [(CNFRegListController *)self regController];
+      guessedAccountName = [regController4 guessedAccountName];
+      v30 = guessedAccountName != 0;
     }
 
     v33 = [v9 specifierForID:@"FACETIME_SIGNIN_CREATE_ACCOUNT_ID"];
@@ -233,8 +233,8 @@
     }
 
     [(CNFRegSignInController *)self _buildSpecifierCache:v9];
-    v57 = [(CNFRegSignInController *)self presentingViewController];
-    if (v57)
+    presentingViewController = [(CNFRegSignInController *)self presentingViewController];
+    if (presentingViewController)
     {
       createAccountButtonSpecifier = self->_createAccountButtonSpecifier;
 
@@ -267,15 +267,15 @@
   v4.receiver = self;
   v4.super_class = CNFRegSignInController;
   [(CNFRegSignInController *)&v4 viewDidLoad];
-  v3 = [(CNFRegSignInController *)self table];
-  [v3 setShowsVerticalScrollIndicator:0];
+  table = [(CNFRegSignInController *)self table];
+  [table setShowsVerticalScrollIndicator:0];
 }
 
-- (void)setHideLearnMoreButton:(BOOL)a3
+- (void)setHideLearnMoreButton:(BOOL)button
 {
-  if (self->_hideLearnMoreButton != a3)
+  if (self->_hideLearnMoreButton != button)
   {
-    self->_hideLearnMoreButton = a3;
+    self->_hideLearnMoreButton = button;
     if ([(CNFRegSignInController *)self isViewLoaded])
     {
 
@@ -293,7 +293,7 @@
     {
       [(CNFRegLearnMoreButton *)learnMoreButton removeTarget:self forEvents:64];
       [(CNFRegLearnMoreButton *)self->_learnMoreButton removeFromSuperview];
-      v4 = self->_learnMoreButton;
+      view = self->_learnMoreButton;
       self->_learnMoreButton = 0;
 LABEL_6:
     }
@@ -308,15 +308,15 @@ LABEL_6:
 
     [(CNFRegLearnMoreButton *)self->_learnMoreButton setAutoresizingMask:13];
     [(CNFRegLearnMoreButton *)self->_learnMoreButton addTarget:self action:sel_learnMorePressed_ forEvents:64];
-    v4 = [(CNFRegSignInController *)self view];
-    [v4 addSubview:self->_learnMoreButton];
+    view = [(CNFRegSignInController *)self view];
+    [view addSubview:self->_learnMoreButton];
     goto LABEL_6;
   }
 
   if (!self->_hideLearnMoreButton && self->_learnMoreButton)
   {
-    v8 = [(CNFRegSignInController *)self view];
-    [v8 bounds];
+    view2 = [(CNFRegSignInController *)self view];
+    [view2 bounds];
     v10 = v9;
     v12 = v11;
     v14 = v13;
@@ -341,14 +341,14 @@ LABEL_6:
   }
 }
 
-- (void)setSpecifier:(id)a3
+- (void)setSpecifier:(id)specifier
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  specifierCopy = specifier;
   v9.receiver = self;
   v9.super_class = CNFRegSignInController;
-  [(CNFRegFirstRunController *)&v9 setSpecifier:v4];
-  v5 = [v4 propertyForKey:@"cnf-hideLearnMoreButton"];
+  [(CNFRegFirstRunController *)&v9 setSpecifier:specifierCopy];
+  v5 = [specifierCopy propertyForKey:@"cnf-hideLearnMoreButton"];
   if (v5)
   {
     v6 = OSLogHandleForIDSCategory();
@@ -388,14 +388,14 @@ LABEL_6:
 
 - (void)applicationDidResume
 {
-  v3 = [(CNFRegFirstRunController *)self account];
+  account = [(CNFRegFirstRunController *)self account];
 
-  if (!v3)
+  if (!account)
   {
-    v4 = [(CNFRegListController *)self regController];
-    v5 = [v4 accounts];
-    v6 = [v5 firstObject];
-    [(CNFRegFirstRunController *)self setAccount:v6];
+    regController = [(CNFRegListController *)self regController];
+    accounts = [regController accounts];
+    firstObject = [accounts firstObject];
+    [(CNFRegFirstRunController *)self setAccount:firstObject];
   }
 
   [(CNFRegSignInController *)self _updateControllerState];
@@ -412,52 +412,52 @@ LABEL_6:
 
 - (void)_resignFirstResponders
 {
-  v4 = [(CNFRegSignInController *)self usernameTextField];
-  v3 = [(CNFRegSignInController *)self passwordTextField];
-  if ([v4 isFirstResponder])
+  usernameTextField = [(CNFRegSignInController *)self usernameTextField];
+  passwordTextField = [(CNFRegSignInController *)self passwordTextField];
+  if ([usernameTextField isFirstResponder])
   {
-    [v4 resignFirstResponder];
+    [usernameTextField resignFirstResponder];
   }
 
-  if ([v3 isFirstResponder])
+  if ([passwordTextField isFirstResponder])
   {
-    [v3 resignFirstResponder];
+    [passwordTextField resignFirstResponder];
   }
 }
 
-- (id)getUserNameForSpecifier:(id)a3
+- (id)getUserNameForSpecifier:(id)specifier
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  specifierCopy = specifier;
   if (self->_useSystemAccount)
   {
-    v5 = [(CNFRegListController *)self regController];
-    v6 = [v5 systemAccount];
+    regController = [(CNFRegListController *)self regController];
+    systemAccount = [regController systemAccount];
 
     v7 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v16 = v6;
+      v16 = systemAccount;
       _os_log_impl(&dword_243BE5000, v7, OS_LOG_TYPE_DEFAULT, "Using system account for username field: %@", buf, 0xCu);
     }
 
     if (os_log_shim_legacy_logging_enabled() && IMShouldLog())
     {
-      v14 = v6;
+      v14 = systemAccount;
       IMLogString();
     }
 
-    v8 = [(CNFRegListController *)self regController];
-    v9 = [v8 loginForAccount:v6];
+    regController2 = [(CNFRegListController *)self regController];
+    pendingUsername = [regController2 loginForAccount:systemAccount];
 
-    if (!v9 || ![v9 length])
+    if (!pendingUsername || ![pendingUsername length])
     {
       v10 = OSLogHandleForIDSCategory();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v16 = v6;
+        v16 = systemAccount;
         _os_log_impl(&dword_243BE5000, v10, OS_LOG_TYPE_DEFAULT, "** WARNING ** We are using a system account but it has no login: %@", buf, 0xCu);
       }
 
@@ -470,40 +470,40 @@ LABEL_6:
 
   else
   {
-    v9 = [(CNFRegSignInController *)self pendingUsername];
-    if (!v9)
+    pendingUsername = [(CNFRegSignInController *)self pendingUsername];
+    if (!pendingUsername)
     {
-      v11 = [(CNFRegListController *)self regController];
-      v9 = [v11 guessedAccountName];
+      regController3 = [(CNFRegListController *)self regController];
+      pendingUsername = [regController3 guessedAccountName];
     }
   }
 
   v12 = *MEMORY[0x277D85DE8];
 
-  return v9;
+  return pendingUsername;
 }
 
-- (id)getPasswordForSpecifier:(id)a3
+- (id)getPasswordForSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   if (self->_useSystemAccount)
   {
-    v5 = [(CNFRegListController *)self regController];
-    v6 = [v5 systemAccount];
+    regController = [(CNFRegListController *)self regController];
+    systemAccount = [regController systemAccount];
 
-    v7 = [(CNFRegListController *)self regController];
-    v8 = [v7 loginForAccount:v6];
+    regController2 = [(CNFRegListController *)self regController];
+    v8 = [regController2 loginForAccount:systemAccount];
 
     if (v8)
     {
       if ([v8 length])
       {
-        v9 = @"•••••••";
+        pendingPassword = @"•••••••";
       }
 
       else
       {
-        v9 = 0;
+        pendingPassword = 0;
       }
 
       goto LABEL_10;
@@ -512,46 +512,46 @@ LABEL_6:
     goto LABEL_9;
   }
 
-  v9 = [(CNFRegSignInController *)self pendingPassword];
-  if (v9)
+  pendingPassword = [(CNFRegSignInController *)self pendingPassword];
+  if (pendingPassword)
   {
     goto LABEL_11;
   }
 
-  v6 = [(CNFRegSignInController *)self getUserNameForSpecifier:v4];
-  v10 = [(CNFRegListController *)self regController];
-  v8 = [v10 accountWithLogin:v6];
+  systemAccount = [(CNFRegSignInController *)self getUserNameForSpecifier:specifierCopy];
+  regController3 = [(CNFRegListController *)self regController];
+  v8 = [regController3 accountWithLogin:systemAccount];
 
   if (!v8)
   {
 LABEL_9:
-    v9 = 0;
+    pendingPassword = 0;
     goto LABEL_10;
   }
 
-  v9 = [v8 password];
+  pendingPassword = [v8 password];
 LABEL_10:
 
 LABEL_11:
 
-  return v9;
+  return pendingPassword;
 }
 
 - (id)usernameTextField
 {
   v2 = [(CNFRegSignInController *)self cachedCellForSpecifier:self->_usernameSpecifier];
-  v3 = [v2 editableTextField];
+  editableTextField = [v2 editableTextField];
 
-  return v3;
+  return editableTextField;
 }
 
-- (void)setUsernameText:(id)a3
+- (void)setUsernameText:(id)text
 {
   usernameSpecifier = self->_usernameSpecifier;
-  v5 = a3;
+  textCopy = text;
   v7 = [(CNFRegSignInController *)self cachedCellForSpecifier:usernameSpecifier];
-  v6 = [v7 editableTextField];
-  [v6 setText:v5];
+  editableTextField = [v7 editableTextField];
+  [editableTextField setText:textCopy];
 
   if (objc_opt_respondsToSelector())
   {
@@ -561,12 +561,12 @@ LABEL_11:
 
 - (BOOL)usernameIsEmpty
 {
-  v3 = [(CNFRegSignInController *)self usernameTextField];
+  usernameTextField = [(CNFRegSignInController *)self usernameTextField];
 
-  if (!v3)
+  if (!usernameTextField)
   {
-    v5 = [(CNFRegSignInController *)self getUserNameForSpecifier:self->_usernameSpecifier];
-    if (v5)
+    text = [(CNFRegSignInController *)self getUserNameForSpecifier:self->_usernameSpecifier];
+    if (text)
     {
       goto LABEL_3;
     }
@@ -576,16 +576,16 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v4 = [(CNFRegSignInController *)self usernameTextField];
-  v5 = [v4 text];
+  usernameTextField2 = [(CNFRegSignInController *)self usernameTextField];
+  text = [usernameTextField2 text];
 
-  if (!v5)
+  if (!text)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
-  v6 = [v5 length] == 0;
+  v6 = [text length] == 0;
 LABEL_6:
 
   return v6;
@@ -594,18 +594,18 @@ LABEL_6:
 - (id)passwordTextField
 {
   v2 = [(CNFRegSignInController *)self cachedCellForSpecifier:self->_passwordSpecifier];
-  v3 = [v2 editableTextField];
+  editableTextField = [v2 editableTextField];
 
-  return v3;
+  return editableTextField;
 }
 
-- (void)setPasswordText:(id)a3
+- (void)setPasswordText:(id)text
 {
   passwordSpecifier = self->_passwordSpecifier;
-  v5 = a3;
+  textCopy = text;
   v7 = [(CNFRegSignInController *)self cachedCellForSpecifier:passwordSpecifier];
-  v6 = [v7 editableTextField];
-  [v6 setText:v5];
+  editableTextField = [v7 editableTextField];
+  [editableTextField setText:textCopy];
 
   if (objc_opt_respondsToSelector())
   {
@@ -615,12 +615,12 @@ LABEL_6:
 
 - (BOOL)passwordIsEmpty
 {
-  v3 = [(CNFRegSignInController *)self passwordTextField];
+  passwordTextField = [(CNFRegSignInController *)self passwordTextField];
 
-  if (!v3)
+  if (!passwordTextField)
   {
-    v5 = [(CNFRegSignInController *)self getPasswordForSpecifier:self->_passwordSpecifier];
-    if (v5)
+    text = [(CNFRegSignInController *)self getPasswordForSpecifier:self->_passwordSpecifier];
+    if (text)
     {
       goto LABEL_3;
     }
@@ -630,31 +630,31 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v4 = [(CNFRegSignInController *)self passwordTextField];
-  v5 = [v4 text];
+  passwordTextField2 = [(CNFRegSignInController *)self passwordTextField];
+  text = [passwordTextField2 text];
 
-  if (!v5)
+  if (!text)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
-  v6 = [v5 length] == 0;
+  v6 = [text length] == 0;
 LABEL_6:
 
   return v6;
 }
 
-- (void)usernameFieldEmptyStateChanged:(id)a3 forSpecifier:(id)a4
+- (void)usernameFieldEmptyStateChanged:(id)changed forSpecifier:(id)specifier
 {
-  v5 = ([a3 BOOLValue] & 1) == 0 && !-[CNFRegSignInController passwordIsEmpty](self, "passwordIsEmpty");
+  v5 = ([changed BOOLValue] & 1) == 0 && !-[CNFRegSignInController passwordIsEmpty](self, "passwordIsEmpty");
 
   [(CNFRegSignInController *)self setSignInButtonEnabled:v5 animated:1];
 }
 
-- (void)passwordFieldEmptyStateChanged:(id)a3 forSpecifier:(id)a4
+- (void)passwordFieldEmptyStateChanged:(id)changed forSpecifier:(id)specifier
 {
-  v5 = ([a3 BOOLValue] & 1) == 0 && !-[CNFRegSignInController usernameIsEmpty](self, "usernameIsEmpty");
+  v5 = ([changed BOOLValue] & 1) == 0 && !-[CNFRegSignInController usernameIsEmpty](self, "usernameIsEmpty");
 
   [(CNFRegSignInController *)self setSignInButtonEnabled:v5 animated:1];
 }
@@ -679,8 +679,8 @@ LABEL_6:
     }
 
     self->_useSystemAccount = 0;
-    v4 = [(CNFRegSignInController *)self passwordTextField];
-    [v4 setClearsOnBeginEditing:0];
+    passwordTextField = [(CNFRegSignInController *)self passwordTextField];
+    [passwordTextField setClearsOnBeginEditing:0];
 
     [(CNFRegSignInController *)self setPasswordText:0];
   }
@@ -708,24 +708,24 @@ LABEL_6:
     [(CNFRegListController *)self setShowingChildController:1];
     [(CNFRegSignInController *)self _resignFirstResponders];
     v4 = [CNFRegCreateAccountController alloc];
-    v5 = [(CNFRegListController *)self regController];
-    v6 = [(CNFRegAccountWebViewController *)v4 initWithRegController:v5];
+    regController = [(CNFRegListController *)self regController];
+    v6 = [(CNFRegAccountWebViewController *)v4 initWithRegController:regController];
 
     [(CNFRegCreateAccountController *)v6 setDelegate:self];
     [(CNFRegCreateAccountController *)v6 setEdgesForExtendedLayout:0];
     v7 = [objc_alloc(MEMORY[0x277D757A0]) initWithRootViewController:v6];
     v8 = +[CNFRegAppearanceController globalAppearanceController];
     [v7 setModalPresentationStyle:{objc_msgSend(v8, "modalPresentationStyle")}];
-    v9 = [v8 navigationBarStyle];
-    v10 = [v7 navigationBar];
-    [v10 setBarStyle:v9];
+    navigationBarStyle = [v8 navigationBarStyle];
+    navigationBar = [v7 navigationBar];
+    [navigationBar setBarStyle:navigationBarStyle];
 
-    v11 = [v8 navigationBarIsTranslucent];
-    v12 = [v7 navigationBar];
-    [v12 setTranslucent:v11];
+    navigationBarIsTranslucent = [v8 navigationBarIsTranslucent];
+    navigationBar2 = [v7 navigationBar];
+    [navigationBar2 setTranslucent:navigationBarIsTranslucent];
 
-    v13 = [(CNFRegSignInController *)self navigationController];
-    [v13 presentViewController:v7 animated:1 completion:0];
+    navigationController = [(CNFRegSignInController *)self navigationController];
+    [navigationController presentViewController:v7 animated:1 completion:0];
   }
 }
 
@@ -738,18 +738,18 @@ LABEL_6:
   }
 }
 
-- (void)createAccountControllerDidFinish:(id)a3 withAppleId:(id)a4 authID:(id)a5 authToken:(id)a6
+- (void)createAccountControllerDidFinish:(id)finish withAppleId:(id)id authID:(id)d authToken:(id)token
 {
   v35 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (v11)
+  finishCopy = finish;
+  idCopy = id;
+  dCopy = d;
+  tokenCopy = token;
+  if (idCopy)
   {
-    [(CNFRegSignInController *)self setUsernameText:v11];
+    [(CNFRegSignInController *)self setUsernameText:idCopy];
     v14 = 0;
-    if (v12 && v13)
+    if (dCopy && tokenCopy)
     {
       [(CNFRegSignInController *)self setPasswordText:0];
       v14 = 1;
@@ -765,9 +765,9 @@ LABEL_6:
   v26[1] = 3221225472;
   v26[2] = __88__CNFRegSignInController_createAccountControllerDidFinish_withAppleId_authID_authToken___block_invoke;
   v26[3] = &unk_278DE81E0;
-  v15 = v10;
+  v15 = finishCopy;
   v27 = v15;
-  v28 = self;
+  selfCopy = self;
   [(CNFRegFirstRunController *)self _executeDismissBlock:v26];
   if (v14)
   {
@@ -775,32 +775,32 @@ LABEL_6:
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412802;
-      v30 = v11;
+      v30 = idCopy;
       v31 = 2112;
-      v32 = v12;
+      v32 = dCopy;
       v33 = 2112;
-      v34 = v13;
+      v34 = tokenCopy;
       _os_log_impl(&dword_243BE5000, v16, OS_LOG_TYPE_DEFAULT, "Signing in with username (new account): %@  profileID: %@ token: %@", buf, 0x20u);
     }
 
     if (os_log_shim_legacy_logging_enabled() && IMShouldLog())
     {
-      v20 = v12;
-      v21 = v13;
-      v19 = v11;
+      v20 = dCopy;
+      v21 = tokenCopy;
+      v19 = idCopy;
       IMLogString();
     }
 
-    [(CNFRegSignInController *)self setPendingUsername:v11, v19, v20, v21];
+    [(CNFRegSignInController *)self setPendingUsername:idCopy, v19, v20, v21];
     [(CNFRegSignInController *)self setPendingPassword:0];
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
     v22[2] = __88__CNFRegSignInController_createAccountControllerDidFinish_withAppleId_authID_authToken___block_invoke_167;
     v22[3] = &unk_278DE8668;
     v22[4] = self;
-    v23 = v11;
-    v24 = v12;
-    v25 = v13;
+    v23 = idCopy;
+    v24 = dCopy;
+    v25 = tokenCopy;
     v17 = MEMORY[0x245D4D850](v22);
     if ([(CNFRegListController *)self appeared])
     {
@@ -857,14 +857,14 @@ uint64_t __88__CNFRegSignInController_createAccountControllerDidFinish_withApple
   v14.receiver = self;
   v14.super_class = CNFRegSignInController;
   [(CNFRegFirstRunController *)&v14 _updateControllerState];
-  v3 = [(CNFRegListController *)self regController];
-  v4 = [(CNFRegFirstRunController *)self account];
-  v5 = [v3 accountStateForAccount:v4];
+  regController = [(CNFRegListController *)self regController];
+  account = [(CNFRegFirstRunController *)self account];
+  v5 = [regController accountStateForAccount:account];
 
   if (v5)
   {
-    v6 = [(CNFRegSignInController *)self navigationController];
-    v7 = [v6 visibleViewController];
+    navigationController = [(CNFRegSignInController *)self navigationController];
+    visibleViewController = [navigationController visibleViewController];
 
     if ((v5 & 2) != 0)
     {
@@ -900,12 +900,12 @@ uint64_t __88__CNFRegSignInController_createAccountControllerDidFinish_withApple
         v8 = CNFRegLocaleController;
 LABEL_8:
         v9 = [v8 alloc];
-        v10 = [(CNFRegFirstRunController *)self account];
-        v11 = [v9 initWithParentController:self account:v10];
+        account2 = [(CNFRegFirstRunController *)self account];
+        v11 = [v9 initWithParentController:self account:account2];
 
         [v11 setCompletionControllerClass:{-[CNFRegFirstRunController completionControllerClass](self, "completionControllerClass")}];
-        v12 = [(CNFRegFirstRunController *)self delegate];
-        [v11 setDelegate:v12];
+        delegate = [(CNFRegFirstRunController *)self delegate];
+        [v11 setDelegate:delegate];
 
         [(CNFRegSignInController *)self showController:v11 animate:1];
       }
@@ -921,13 +921,13 @@ LABEL_13:
   {
     if ([(CNFRegSignInController *)self passwordIsEmpty])
     {
-      v3 = [(CNFRegSignInController *)self usernameTextField];
-      v4 = [v3 isFirstResponder];
+      usernameTextField = [(CNFRegSignInController *)self usernameTextField];
+      isFirstResponder = [usernameTextField isFirstResponder];
 
-      if (v4)
+      if (isFirstResponder)
       {
-        v6 = [(CNFRegSignInController *)self passwordTextField];
-        [v6 becomeFirstResponder];
+        passwordTextField = [(CNFRegSignInController *)self passwordTextField];
+        [passwordTextField becomeFirstResponder];
       }
     }
 
@@ -940,31 +940,31 @@ LABEL_13:
   }
 }
 
-- (void)signInWithUsername:(id)a3 password:(id)a4
+- (void)signInWithUsername:(id)username password:(id)password
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  usernameCopy = username;
+  passwordCopy = password;
   v8 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v14 = v6;
+    v14 = usernameCopy;
     _os_log_impl(&dword_243BE5000, v8, OS_LOG_TYPE_DEFAULT, "Signing in with username (password entered): %@", buf, 0xCu);
   }
 
   if (os_log_shim_legacy_logging_enabled() && IMShouldLog())
   {
-    v12 = v6;
+    v12 = usernameCopy;
     IMLogString();
   }
 
-  [(CNFRegSignInController *)self setPendingUsername:v6, v12];
-  [(CNFRegSignInController *)self setPendingPassword:v7];
+  [(CNFRegSignInController *)self setPendingUsername:usernameCopy, v12];
+  [(CNFRegSignInController *)self setPendingPassword:passwordCopy];
   [(CNFRegFirstRunController *)self _startValidationModeAnimated:0];
   buf[0] = 0;
-  v9 = [(CNFRegListController *)self regController];
-  v10 = [v9 beginAccountSetupWithLogin:v6 password:v7 foundExisting:buf];
+  regController = [(CNFRegListController *)self regController];
+  v10 = [regController beginAccountSetupWithLogin:usernameCopy password:passwordCopy foundExisting:buf];
   [(CNFRegFirstRunController *)self setAccount:v10];
 
   if ((buf[0] & 1) == 0)
@@ -978,10 +978,10 @@ LABEL_13:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)signInTapped:(id)a3
+- (void)signInTapped:(id)tapped
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  tappedCopy = tapped;
   v5 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -998,14 +998,14 @@ LABEL_13:
   {
     if (!self->_useSystemAccount)
     {
-      v7 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-      v10 = [(CNFRegSignInController *)self usernameTextField];
-      v11 = [v10 text];
+      whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+      usernameTextField = [(CNFRegSignInController *)self usernameTextField];
+      text = [usernameTextField text];
 
-      v8 = [v11 stringByTrimmingCharactersInSet:v7];
+      regController3 = [text stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
-      v12 = [(CNFRegSignInController *)self passwordTextField];
-      v9 = [v12 text];
+      passwordTextField = [(CNFRegSignInController *)self passwordTextField];
+      text2 = [passwordTextField text];
 
       v24[0] = MEMORY[0x277D85DD0];
       v24[1] = 3221225472;
@@ -1013,30 +1013,30 @@ LABEL_13:
       v24[3] = &unk_278DE8A98;
       v24[4] = self;
       v13 = MEMORY[0x245D4D850](v24);
-      if (v8 && [v8 length])
+      if (regController3 && [regController3 length])
       {
-        if (v9 && [v9 length])
+        if (text2 && [text2 length])
         {
           v14 = OSLogHandleForIDSCategory();
           if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412290;
-            v26 = v8;
+            v26 = regController3;
             _os_log_impl(&dword_243BE5000, v14, OS_LOG_TYPE_DEFAULT, "Signing in with username (password entered): %@", buf, 0xCu);
           }
 
           if (os_log_shim_legacy_logging_enabled() && IMShouldLog())
           {
-            v23 = v8;
+            v23 = regController3;
             IMLogString();
           }
 
-          [(CNFRegSignInController *)self setPendingUsername:v8, v23];
-          [(CNFRegSignInController *)self setPendingPassword:v9];
+          [(CNFRegSignInController *)self setPendingUsername:regController3, v23];
+          [(CNFRegSignInController *)self setPendingPassword:text2];
           [(CNFRegFirstRunController *)self _startValidationModeAnimated:0];
           buf[0] = 0;
-          v15 = [(CNFRegListController *)self regController];
-          v16 = [v15 beginAccountSetupWithLogin:v8 password:v9 foundExisting:buf];
+          regController = [(CNFRegListController *)self regController];
+          v16 = [regController beginAccountSetupWithLogin:regController3 password:text2 foundExisting:buf];
           [(CNFRegFirstRunController *)self setAccount:v16];
 
           if ((buf[0] & 1) == 0)
@@ -1051,7 +1051,7 @@ LABEL_13:
         v17 = CommunicationsSetupUIBundle();
         v18 = CNFRegStringTableName();
         v19 = [v17 localizedStringForKey:@"FACETIME_SIGNIN_ERROR_INVALID_CREDENTIALS_FOR_%@" value:&stru_2856D3978 table:v18];
-        v21 = [v20 stringWithFormat:v19, v8];
+        v21 = [v20 stringWithFormat:v19, regController3];
         (v13)[2](v13, v21);
       }
 
@@ -1066,15 +1066,15 @@ LABEL_13:
       goto LABEL_26;
     }
 
-    v6 = [(CNFRegListController *)self regController];
-    v7 = [v6 systemAccount];
+    regController2 = [(CNFRegListController *)self regController];
+    whitespaceCharacterSet = [regController2 systemAccount];
 
-    if (v7)
+    if (whitespaceCharacterSet)
     {
       [(CNFRegFirstRunController *)self _startValidationModeAnimated:0];
-      v8 = [(CNFRegListController *)self regController];
-      v9 = [v8 beginAccountSetupWithAccount:v7];
-      [(CNFRegFirstRunController *)self setAccount:v9];
+      regController3 = [(CNFRegListController *)self regController];
+      text2 = [regController3 beginAccountSetupWithAccount:whitespaceCharacterSet];
+      [(CNFRegFirstRunController *)self setAccount:text2];
 LABEL_10:
 
       [(CNFRegSignInController *)self _startTimeout];
@@ -1106,7 +1106,7 @@ void __39__CNFRegSignInController_signInTapped___block_invoke(uint64_t a1, void 
   [*(a1 + 32) presentViewController:v9 animated:1 completion:0];
 }
 
-- (void)learnMorePressed:(id)a3
+- (void)learnMorePressed:(id)pressed
 {
   v3 = *MEMORY[0x277D76620];
   v4 = CNFRegLocalizedSplashScreenURL();
@@ -1115,10 +1115,10 @@ void __39__CNFRegSignInController_signInTapped___block_invoke(uint64_t a1, void 
 
 - (void)_loadRegionsIfNecessary
 {
-  v2 = [MEMORY[0x277D07DE8] sharedInstance];
-  if (([v2 isLoaded] & 1) == 0)
+  mEMORY[0x277D07DE8] = [MEMORY[0x277D07DE8] sharedInstance];
+  if (([mEMORY[0x277D07DE8] isLoaded] & 1) == 0)
   {
-    [v2 startLoading];
+    [mEMORY[0x277D07DE8] startLoading];
   }
 }
 
@@ -1158,115 +1158,115 @@ void __39__CNFRegSignInController_signInTapped___block_invoke(uint64_t a1, void 
     IMLogString();
   }
 
-  v4 = [(CNFRegListController *)self regController];
-  v5 = [v4 accountState];
+  regController = [(CNFRegListController *)self regController];
+  accountState = [regController accountState];
 
   WeakRetained = objc_loadWeakRetained((&self->super.super.super.super.super.super.super.isa + *MEMORY[0x277D3FD08]));
-  [WeakRetained dismissFinished:(v5 >> 30) & 1];
+  [WeakRetained dismissFinished:(accountState >> 30) & 1];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v9.receiver = self;
   v9.super_class = CNFRegSignInController;
-  v5 = [(CNFRegSignInController *)&v9 tableView:a3 cellForRowAtIndexPath:a4];
+  v5 = [(CNFRegSignInController *)&v9 tableView:view cellForRowAtIndexPath:path];
   v6 = [(CNFRegSignInController *)self cachedCellForSpecifierID:@"FACETIME_SIGNIN_PASSWORD_ID"];
 
   if (v5 == v6 && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v7 = [v5 textField];
-    if ([v7 conformsToProtocol:&unk_285730F48])
+    textField = [v5 textField];
+    if ([textField conformsToProtocol:&unk_285730F48])
     {
-      [v7 setReturnKeyType:1];
+      [textField setReturnKeyType:1];
     }
 
     if (self->_useSystemAccount)
     {
-      [v7 setClearsOnBeginEditing:1];
+      [textField setClearsOnBeginEditing:1];
     }
   }
 
   return v5;
 }
 
-- (void)_buildCreateAccountButtonSpecifierCache:(id)a3
+- (void)_buildCreateAccountButtonSpecifierCache:(id)cache
 {
-  v4 = [a3 specifierForID:@"FACETIME_SIGNIN_CREATE_ACCOUNT_ID"];
+  v4 = [cache specifierForID:@"FACETIME_SIGNIN_CREATE_ACCOUNT_ID"];
   createAccountButtonSpecifier = self->_createAccountButtonSpecifier;
   self->_createAccountButtonSpecifier = v4;
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)_buildSignInGroupSpecifierCache:(id)a3
+- (void)_buildSignInGroupSpecifierCache:(id)cache
 {
-  v4 = a3;
-  v5 = [v4 specifierForID:@"FACETIME_SIGNIN_BUTTON_GROUP_ID"];
+  cacheCopy = cache;
+  v5 = [cacheCopy specifierForID:@"FACETIME_SIGNIN_BUTTON_GROUP_ID"];
   actionGroupSpecifier = self->_actionGroupSpecifier;
   self->_actionGroupSpecifier = v5;
 
-  v7 = [v4 specifierForID:@"FACETIME_SIGNIN_BUTTON_ID"];
+  v7 = [cacheCopy specifierForID:@"FACETIME_SIGNIN_BUTTON_ID"];
 
   signInButtonSpecifier = self->_signInButtonSpecifier;
   self->_signInButtonSpecifier = v7;
 }
 
-- (void)_buildCredentialSpecifierCache:(id)a3
+- (void)_buildCredentialSpecifierCache:(id)cache
 {
-  v4 = a3;
-  v5 = [v4 specifierForID:@"FACETIME_SIGNIN_USERNAME_ID"];
+  cacheCopy = cache;
+  v5 = [cacheCopy specifierForID:@"FACETIME_SIGNIN_USERNAME_ID"];
   usernameSpecifier = self->_usernameSpecifier;
   self->_usernameSpecifier = v5;
 
-  v7 = [v4 specifierForID:@"FACETIME_SIGNIN_PASSWORD_ID"];
+  v7 = [cacheCopy specifierForID:@"FACETIME_SIGNIN_PASSWORD_ID"];
 
   passwordSpecifier = self->_passwordSpecifier;
   self->_passwordSpecifier = v7;
 }
 
-- (void)_buildSpecifierCache:(id)a3
+- (void)_buildSpecifierCache:(id)cache
 {
-  v4 = a3;
-  [(CNFRegSignInController *)self _buildCreateAccountButtonSpecifierCache:v4];
-  [(CNFRegSignInController *)self _buildSignInGroupSpecifierCache:v4];
-  [(CNFRegSignInController *)self _buildCredentialSpecifierCache:v4];
+  cacheCopy = cache;
+  [(CNFRegSignInController *)self _buildCreateAccountButtonSpecifierCache:cacheCopy];
+  [(CNFRegSignInController *)self _buildSignInGroupSpecifierCache:cacheCopy];
+  [(CNFRegSignInController *)self _buildCredentialSpecifierCache:cacheCopy];
 }
 
-- (void)_showRegistrationFailureWithError:(id)a3
+- (void)_showRegistrationFailureWithError:(id)error
 {
   v42 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  errorCopy = error;
+  if (errorCopy)
   {
     v5 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v41 = v4;
+      v41 = errorCopy;
       _os_log_impl(&dword_243BE5000, v5, OS_LOG_TYPE_DEFAULT, "Received sign in error : %@", buf, 0xCu);
     }
 
     if (os_log_shim_legacy_logging_enabled() && IMShouldLog())
     {
-      v35 = v4;
+      v35 = errorCopy;
       IMLogString();
     }
 
-    v6 = [v4 code];
+    code = [errorCopy code];
   }
 
   else
   {
-    v6 = -1;
+    code = -1;
   }
 
-  v7 = [(CNFRegListController *)self regController];
-  v8 = [v7 shouldShowAlertForError:v4];
+  regController = [(CNFRegListController *)self regController];
+  v8 = [regController shouldShowAlertForError:errorCopy];
 
-  if (v8 && (v6 > 0x1A || ((1 << v6) & 0x4100C00) == 0))
+  if (v8 && (code > 0x1A || ((1 << code) & 0x4100C00) == 0))
   {
-    v10 = [v4 userInfo];
-    v11 = [v10 objectForKey:@"cnf-customTitle"];
+    userInfo = [errorCopy userInfo];
+    v11 = [userInfo objectForKey:@"cnf-customTitle"];
     v12 = v11;
     if (v11)
     {
@@ -1280,11 +1280,11 @@ void __39__CNFRegSignInController_signInTapped___block_invoke(uint64_t a1, void 
       v13 = [v14 localizedStringForKey:@"FACETIME_ACTIVATION_ERROR_TITLE" value:&stru_2856D3978 table:v15];
     }
 
-    v16 = [v4 localizedDescription];
-    v17 = v16;
-    if (v16)
+    localizedDescription = [errorCopy localizedDescription];
+    v17 = localizedDescription;
+    if (localizedDescription)
     {
-      v18 = v16;
+      v18 = localizedDescription;
     }
 
     else
@@ -1294,8 +1294,8 @@ void __39__CNFRegSignInController_signInTapped___block_invoke(uint64_t a1, void 
       v18 = [v19 localizedStringForKey:@"FACETIME_SIGNIN_ERROR_GENERIC" value:&stru_2856D3978 table:v20];
     }
 
-    v21 = [v4 userInfo];
-    v22 = [v21 objectForKey:@"cnf-customButton"];
+    userInfo2 = [errorCopy userInfo];
+    v22 = [userInfo2 objectForKey:@"cnf-customButton"];
     v23 = v22;
     if (v22)
     {
@@ -1315,24 +1315,24 @@ void __39__CNFRegSignInController_signInTapped___block_invoke(uint64_t a1, void 
     v39[2] = __60__CNFRegSignInController__showRegistrationFailureWithError___block_invoke;
     v39[3] = &unk_278DE8AC0;
     v39[4] = self;
-    v39[5] = v6;
+    v39[5] = code;
     v28 = [MEMORY[0x277D750F8] actionWithTitle:v24 style:0 handler:v39];
     [v27 addAction:v28];
 
-    v29 = [v4 userInfo];
-    v30 = [v29 objectForKey:@"cnf-customActionTitle"];
+    userInfo3 = [errorCopy userInfo];
+    v30 = [userInfo3 objectForKey:@"cnf-customActionTitle"];
 
     if (v30)
     {
       v31 = MEMORY[0x277D750F8];
-      v32 = [v4 userInfo];
-      v33 = [v32 objectForKey:@"cnf-customActionTitle"];
+      userInfo4 = [errorCopy userInfo];
+      v33 = [userInfo4 objectForKey:@"cnf-customActionTitle"];
       v36[0] = MEMORY[0x277D85DD0];
       v36[1] = 3221225472;
       v36[2] = __60__CNFRegSignInController__showRegistrationFailureWithError___block_invoke_2;
       v36[3] = &unk_278DE8420;
-      v37 = v4;
-      v38 = self;
+      v37 = errorCopy;
+      selfCopy = self;
       v34 = [v31 actionWithTitle:v33 style:0 handler:v36];
       [v27 addAction:v34];
     }
@@ -1451,44 +1451,44 @@ void __60__CNFRegSignInController__showRegistrationFailureWithError___block_invo
 
 - (void)_launchForgotPasswordUrl
 {
-  v3 = [MEMORY[0x277D75128] sharedApplication];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
   v2 = CNFRegiForgotURL();
-  [v3 openURL:v2 withCompletionHandler:0];
+  [mEMORY[0x277D75128] openURL:v2 withCompletionHandler:0];
 }
 
-- (void)_showNewPasswordNeededSheetWithAppleID:(id)a3
+- (void)_showNewPasswordNeededSheetWithAppleID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = [CNFRegChangeAccountPasswordController alloc];
-  v6 = [(CNFRegListController *)self regController];
-  v14 = [(CNFRegChangeAccountPasswordController *)v5 initWithRegController:v6 appleID:v4];
+  regController = [(CNFRegListController *)self regController];
+  v14 = [(CNFRegChangeAccountPasswordController *)v5 initWithRegController:regController appleID:dCopy];
 
   [(CNFRegChangeAccountPasswordController *)v14 setDelegate:self];
   v7 = [objc_alloc(MEMORY[0x277D757A0]) initWithRootViewController:v14];
   v8 = +[CNFRegAppearanceController globalAppearanceController];
   [v7 setModalPresentationStyle:{objc_msgSend(v8, "modalPresentationStyle")}];
-  v9 = [v8 navigationBarStyle];
-  v10 = [v7 navigationBar];
-  [v10 setBarStyle:v9];
+  navigationBarStyle = [v8 navigationBarStyle];
+  navigationBar = [v7 navigationBar];
+  [navigationBar setBarStyle:navigationBarStyle];
 
-  v11 = [v8 navigationBarIsTranslucent];
-  v12 = [v7 navigationBar];
-  [v12 setTranslucent:v11];
+  navigationBarIsTranslucent = [v8 navigationBarIsTranslucent];
+  navigationBar2 = [v7 navigationBar];
+  [navigationBar2 setTranslucent:navigationBarIsTranslucent];
 
-  v13 = [(CNFRegSignInController *)self navigationController];
-  [v13 presentViewController:v7 animated:1 completion:0];
+  navigationController = [(CNFRegSignInController *)self navigationController];
+  [navigationController presentViewController:v7 animated:1 completion:0];
 }
 
-- (void)_setupAppearBlockForNewPasswordWithAppleID:(id)a3
+- (void)_setupAppearBlockForNewPasswordWithAppleID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   objc_initWeak(&location, self);
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __69__CNFRegSignInController__setupAppearBlockForNewPasswordWithAppleID___block_invoke;
   v6[3] = &unk_278DE8AE8;
   objc_copyWeak(&v8, &location);
-  v5 = v4;
+  v5 = dCopy;
   v7 = v5;
   [(CNFRegListController *)self setAppearBlock:v6];
 
@@ -1502,43 +1502,43 @@ void __69__CNFRegSignInController__setupAppearBlockForNewPasswordWithAppleID___b
   [WeakRetained _showNewPasswordNeededSheetWithAppleID:*(a1 + 32)];
 }
 
-- (void)_showAccountNotAuthorizedSheetWithAuthID:(id)a3 token:(id)a4
+- (void)_showAccountNotAuthorizedSheetWithAuthID:(id)d token:(id)token
 {
-  v6 = a4;
-  v7 = a3;
+  tokenCopy = token;
+  dCopy = d;
   v8 = [CNFRegAccountAuthorizationController alloc];
-  v9 = [(CNFRegListController *)self regController];
-  v17 = [(CNFRegAccountAuthorizationController *)v8 initWithRegController:v9 authID:v7 token:v6];
+  regController = [(CNFRegListController *)self regController];
+  v17 = [(CNFRegAccountAuthorizationController *)v8 initWithRegController:regController authID:dCopy token:tokenCopy];
 
   [(CNFRegAccountAuthorizationController *)v17 setDelegate:self];
   v10 = [objc_alloc(MEMORY[0x277D757A0]) initWithRootViewController:v17];
   v11 = +[CNFRegAppearanceController globalAppearanceController];
   [v10 setModalPresentationStyle:{objc_msgSend(v11, "modalPresentationStyle")}];
-  v12 = [v11 navigationBarStyle];
-  v13 = [v10 navigationBar];
-  [v13 setBarStyle:v12];
+  navigationBarStyle = [v11 navigationBarStyle];
+  navigationBar = [v10 navigationBar];
+  [navigationBar setBarStyle:navigationBarStyle];
 
-  v14 = [v11 navigationBarIsTranslucent];
-  v15 = [v10 navigationBar];
-  [v15 setTranslucent:v14];
+  navigationBarIsTranslucent = [v11 navigationBarIsTranslucent];
+  navigationBar2 = [v10 navigationBar];
+  [navigationBar2 setTranslucent:navigationBarIsTranslucent];
 
-  v16 = [(CNFRegSignInController *)self navigationController];
-  [v16 presentViewController:v10 animated:1 completion:0];
+  navigationController = [(CNFRegSignInController *)self navigationController];
+  [navigationController presentViewController:v10 animated:1 completion:0];
 }
 
-- (void)_setupAppearBlockForAccountAuthorizeWithAuthID:(id)a3 token:(id)a4
+- (void)_setupAppearBlockForAccountAuthorizeWithAuthID:(id)d token:(id)token
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  tokenCopy = token;
   objc_initWeak(&location, self);
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __79__CNFRegSignInController__setupAppearBlockForAccountAuthorizeWithAuthID_token___block_invoke;
   v10[3] = &unk_278DE8B10;
   objc_copyWeak(&v13, &location);
-  v8 = v6;
+  v8 = dCopy;
   v11 = v8;
-  v9 = v7;
+  v9 = tokenCopy;
   v12 = v9;
   [(CNFRegListController *)self setAppearBlock:v10];
 
@@ -1557,13 +1557,13 @@ void __79__CNFRegSignInController__setupAppearBlockForAccountAuthorizeWithAuthID
   v5.receiver = self;
   v5.super_class = CNFRegSignInController;
   [(CNFRegFirstRunController *)&v5 _setupEventHandlers];
-  v3 = [(CNFRegListController *)self regController];
+  regController = [(CNFRegListController *)self regController];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __45__CNFRegSignInController__setupEventHandlers__block_invoke;
   v4[3] = &unk_278DE85A8;
   v4[4] = self;
-  [v3 setAccountRegistrationBlock:v4];
+  [regController setAccountRegistrationBlock:v4];
 }
 
 void __45__CNFRegSignInController__setupEventHandlers__block_invoke(uint64_t a1, void *a2, void *a3)

@@ -17,13 +17,13 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1002C4F7C();
 }
 
 - (void)_updateParticles
 {
-  v2 = self;
+  selfCopy = self;
   sub_1002C59D4();
 }
 

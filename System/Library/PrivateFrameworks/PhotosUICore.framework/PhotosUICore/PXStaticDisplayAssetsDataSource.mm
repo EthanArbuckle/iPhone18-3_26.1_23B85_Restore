@@ -1,43 +1,43 @@
 @interface PXStaticDisplayAssetsDataSource
 - (PXPhotosDataSource)photosDataSource;
-- (PXSimpleIndexPath)indexPathForObjectReference:(SEL)a3;
-- (PXStaticDisplayAssetsDataSource)initWithAssetCollectionBySection:(id)a3 assetsBySection:(id)a4 curatedAssetsBySection:(id)a5 keyAssetsBySection:(id)a6 sectionContent:(int64_t)a7;
-- (id)curatedAssetsInSectionIndexPath:(PXSimpleIndexPath *)a3;
-- (id)keyAssetsForAssetCollection:(id)a3;
-- (id)keyAssetsInSectionIndexPath:(PXSimpleIndexPath *)a3;
-- (id)objectAtIndexPath:(PXSimpleIndexPath *)a3;
-- (id)objectsInIndexPath:(PXSimpleIndexPath *)a3;
-- (id)uncuratedAssetsInSectionIndexPath:(PXSimpleIndexPath *)a3;
-- (int64_t)numberOfCuratedItemsInAssetCollection:(id)a3;
-- (int64_t)numberOfCuratedItemsInSectionIndexPath:(PXSimpleIndexPath *)a3;
-- (int64_t)numberOfItemsInSection:(int64_t)a3;
+- (PXSimpleIndexPath)indexPathForObjectReference:(SEL)reference;
+- (PXStaticDisplayAssetsDataSource)initWithAssetCollectionBySection:(id)section assetsBySection:(id)bySection curatedAssetsBySection:(id)assetsBySection keyAssetsBySection:(id)keyAssetsBySection sectionContent:(int64_t)content;
+- (id)curatedAssetsInSectionIndexPath:(PXSimpleIndexPath *)path;
+- (id)keyAssetsForAssetCollection:(id)collection;
+- (id)keyAssetsInSectionIndexPath:(PXSimpleIndexPath *)path;
+- (id)objectAtIndexPath:(PXSimpleIndexPath *)path;
+- (id)objectsInIndexPath:(PXSimpleIndexPath *)path;
+- (id)uncuratedAssetsInSectionIndexPath:(PXSimpleIndexPath *)path;
+- (int64_t)numberOfCuratedItemsInAssetCollection:(id)collection;
+- (int64_t)numberOfCuratedItemsInSectionIndexPath:(PXSimpleIndexPath *)path;
+- (int64_t)numberOfItemsInSection:(int64_t)section;
 - (int64_t)numberOfSections;
-- (int64_t)numberOfUncuratedItemsInAssetCollection:(id)a3;
-- (int64_t)numberOfUncuratedItemsInSectionIndexPath:(PXSimpleIndexPath *)a3;
+- (int64_t)numberOfUncuratedItemsInAssetCollection:(id)collection;
+- (int64_t)numberOfUncuratedItemsInSectionIndexPath:(PXSimpleIndexPath *)path;
 @end
 
 @implementation PXStaticDisplayAssetsDataSource
 
-- (PXSimpleIndexPath)indexPathForObjectReference:(SEL)a3
+- (PXSimpleIndexPath)indexPathForObjectReference:(SEL)reference
 {
   v14 = a4;
   v6 = *(off_1E7722228 + 1);
   *&retstr->dataSourceIdentifier = *off_1E7722228;
   *&retstr->item = v6;
-  v7 = [(PXStaticDisplayAssetsDataSource *)self identifier];
-  v8 = [v14 leafObject];
+  identifier = [(PXStaticDisplayAssetsDataSource *)self identifier];
+  leafObject = [v14 leafObject];
   if ([(PXStaticDisplayAssetsDataSource *)self numberOfSections]>= 1)
   {
-    v9 = [(PXStaticDisplayAssetsDataSource *)self assetCollectionBySection];
-    v10 = [v9 objectAtIndexedSubscript:0];
+    assetCollectionBySection = [(PXStaticDisplayAssetsDataSource *)self assetCollectionBySection];
+    v10 = [assetCollectionBySection objectAtIndexedSubscript:0];
     v11 = v10;
-    if (v8 == v10)
+    if (leafObject == v10)
     {
     }
 
     else
     {
-      v12 = [v8 isEqual:v10];
+      v12 = [leafObject isEqual:v10];
 
       if ((v12 & 1) == 0)
       {
@@ -48,7 +48,7 @@
       }
     }
 
-    retstr->dataSourceIdentifier = v7;
+    retstr->dataSourceIdentifier = identifier;
     retstr->section = 0;
     retstr->item = 0x7FFFFFFFFFFFFFFFLL;
     retstr->subitem = 0x7FFFFFFFFFFFFFFFLL;
@@ -57,11 +57,11 @@
   return result;
 }
 
-- (id)keyAssetsForAssetCollection:(id)a3
+- (id)keyAssetsForAssetCollection:(id)collection
 {
-  v4 = a3;
-  v5 = [(PXStaticDisplayAssetsDataSource *)self assetCollectionBySection];
-  v6 = [v5 indexOfObject:v4];
+  collectionCopy = collection;
+  assetCollectionBySection = [(PXStaticDisplayAssetsDataSource *)self assetCollectionBySection];
+  v6 = [assetCollectionBySection indexOfObject:collectionCopy];
 
   if (v6 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -70,71 +70,71 @@
 
   else
   {
-    v8 = [(PXStaticDisplayAssetsDataSource *)self keyAssetsBySection];
-    v7 = [v8 objectAtIndexedSubscript:v6];
+    keyAssetsBySection = [(PXStaticDisplayAssetsDataSource *)self keyAssetsBySection];
+    v7 = [keyAssetsBySection objectAtIndexedSubscript:v6];
   }
 
   return v7;
 }
 
-- (id)keyAssetsInSectionIndexPath:(PXSimpleIndexPath *)a3
+- (id)keyAssetsInSectionIndexPath:(PXSimpleIndexPath *)path
 {
-  dataSourceIdentifier = a3->dataSourceIdentifier;
+  dataSourceIdentifier = path->dataSourceIdentifier;
   if (dataSourceIdentifier != [(PXStaticDisplayAssetsDataSource *)self identifier])
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PXStaticDisplayAssetsDataSource.m" lineNumber:143 description:{@"Invalid parameter not satisfying: %@", @"indexPath.dataSourceIdentifier == self.identifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXStaticDisplayAssetsDataSource.m" lineNumber:143 description:{@"Invalid parameter not satisfying: %@", @"indexPath.dataSourceIdentifier == self.identifier"}];
   }
 
-  v7 = [(PXStaticDisplayAssetsDataSource *)self keyAssetsBySection];
-  v8 = [v7 objectAtIndexedSubscript:a3->section];
+  keyAssetsBySection = [(PXStaticDisplayAssetsDataSource *)self keyAssetsBySection];
+  v8 = [keyAssetsBySection objectAtIndexedSubscript:path->section];
 
   return v8;
 }
 
-- (id)objectsInIndexPath:(PXSimpleIndexPath *)a3
+- (id)objectsInIndexPath:(PXSimpleIndexPath *)path
 {
-  dataSourceIdentifier = a3->dataSourceIdentifier;
+  dataSourceIdentifier = path->dataSourceIdentifier;
   if (dataSourceIdentifier != [(PXStaticDisplayAssetsDataSource *)self identifier])
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"PXStaticDisplayAssetsDataSource.m" lineNumber:128 description:{@"Invalid parameter not satisfying: %@", @"indexPath.dataSourceIdentifier == self.identifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXStaticDisplayAssetsDataSource.m" lineNumber:128 description:{@"Invalid parameter not satisfying: %@", @"indexPath.dataSourceIdentifier == self.identifier"}];
   }
 
-  if (a3->dataSourceIdentifier == *off_1E7721F68 || a3->section == 0x7FFFFFFFFFFFFFFFLL || a3->item != 0x7FFFFFFFFFFFFFFFLL)
+  if (path->dataSourceIdentifier == *off_1E7721F68 || path->section == 0x7FFFFFFFFFFFFFFFLL || path->item != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"PXStaticDisplayAssetsDataSource.m" lineNumber:133 description:@"Index path has to be for a section."];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXStaticDisplayAssetsDataSource.m" lineNumber:133 description:@"Index path has to be for a section."];
 
     abort();
   }
 
-  v9 = [(PXStaticDisplayAssetsDataSource *)self exposedAssetsBySection];
-  v10 = [v9 objectAtIndexedSubscript:a3->section];
+  exposedAssetsBySection = [(PXStaticDisplayAssetsDataSource *)self exposedAssetsBySection];
+  v10 = [exposedAssetsBySection objectAtIndexedSubscript:path->section];
 
   return v10;
 }
 
-- (id)objectAtIndexPath:(PXSimpleIndexPath *)a3
+- (id)objectAtIndexPath:(PXSimpleIndexPath *)path
 {
-  dataSourceIdentifier = a3->dataSourceIdentifier;
+  dataSourceIdentifier = path->dataSourceIdentifier;
   if (dataSourceIdentifier != [(PXStaticDisplayAssetsDataSource *)self identifier])
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"PXStaticDisplayAssetsDataSource.m" lineNumber:115 description:{@"Invalid parameter not satisfying: %@", @"indexPath.dataSourceIdentifier == self.identifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXStaticDisplayAssetsDataSource.m" lineNumber:115 description:{@"Invalid parameter not satisfying: %@", @"indexPath.dataSourceIdentifier == self.identifier"}];
   }
 
-  if (a3->dataSourceIdentifier == *off_1E7721F68)
+  if (path->dataSourceIdentifier == *off_1E7721F68)
   {
 LABEL_14:
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"PXStaticDisplayAssetsDataSource.m" lineNumber:122 description:@"Index path has to be for a section or item."];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXStaticDisplayAssetsDataSource.m" lineNumber:122 description:@"Index path has to be for a section or item."];
 
     abort();
   }
 
-  item = a3->item;
-  if (a3->section == 0x7FFFFFFFFFFFFFFFLL)
+  item = path->item;
+  if (path->section == 0x7FFFFFFFFFFFFFFFLL)
   {
     if (item == 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -144,44 +144,44 @@ LABEL_14:
 
   else if (item == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v8 = [(PXStaticDisplayAssetsDataSource *)self assetCollectionBySection];
-    v9 = [v8 objectAtIndexedSubscript:a3->section];
+    assetCollectionBySection = [(PXStaticDisplayAssetsDataSource *)self assetCollectionBySection];
+    v9 = [assetCollectionBySection objectAtIndexedSubscript:path->section];
     goto LABEL_11;
   }
 
-  if (a3->subitem != 0x7FFFFFFFFFFFFFFFLL)
+  if (path->subitem != 0x7FFFFFFFFFFFFFFFLL)
   {
     goto LABEL_14;
   }
 
-  v8 = [(PXStaticDisplayAssetsDataSource *)self exposedAssetsBySection];
-  v10 = [v8 objectAtIndexedSubscript:a3->section];
-  v9 = [v10 objectAtIndexedSubscript:a3->item];
+  assetCollectionBySection = [(PXStaticDisplayAssetsDataSource *)self exposedAssetsBySection];
+  v10 = [assetCollectionBySection objectAtIndexedSubscript:path->section];
+  v9 = [v10 objectAtIndexedSubscript:path->item];
 
 LABEL_11:
 
   return v9;
 }
 
-- (id)uncuratedAssetsInSectionIndexPath:(PXSimpleIndexPath *)a3
+- (id)uncuratedAssetsInSectionIndexPath:(PXSimpleIndexPath *)path
 {
-  dataSourceIdentifier = a3->dataSourceIdentifier;
+  dataSourceIdentifier = path->dataSourceIdentifier;
   if (dataSourceIdentifier != [(PXStaticDisplayAssetsDataSource *)self identifier])
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PXStaticDisplayAssetsDataSource.m" lineNumber:110 description:{@"Invalid parameter not satisfying: %@", @"indexPath.dataSourceIdentifier == self.identifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXStaticDisplayAssetsDataSource.m" lineNumber:110 description:{@"Invalid parameter not satisfying: %@", @"indexPath.dataSourceIdentifier == self.identifier"}];
   }
 
-  v7 = [(PXStaticDisplayAssetsDataSource *)self assetsBySection];
-  v8 = [v7 objectAtIndexedSubscript:a3->section];
+  assetsBySection = [(PXStaticDisplayAssetsDataSource *)self assetsBySection];
+  v8 = [assetsBySection objectAtIndexedSubscript:path->section];
 
   return v8;
 }
 
-- (int64_t)numberOfUncuratedItemsInSectionIndexPath:(PXSimpleIndexPath *)a3
+- (int64_t)numberOfUncuratedItemsInSectionIndexPath:(PXSimpleIndexPath *)path
 {
-  v3 = *&a3->item;
-  v7[0] = *&a3->dataSourceIdentifier;
+  v3 = *&path->item;
+  v7[0] = *&path->dataSourceIdentifier;
   v7[1] = v3;
   v4 = [(PXStaticDisplayAssetsDataSource *)self uncuratedAssetsInSectionIndexPath:v7];
   v5 = [v4 count];
@@ -189,25 +189,25 @@ LABEL_11:
   return v5;
 }
 
-- (id)curatedAssetsInSectionIndexPath:(PXSimpleIndexPath *)a3
+- (id)curatedAssetsInSectionIndexPath:(PXSimpleIndexPath *)path
 {
-  dataSourceIdentifier = a3->dataSourceIdentifier;
+  dataSourceIdentifier = path->dataSourceIdentifier;
   if (dataSourceIdentifier != [(PXStaticDisplayAssetsDataSource *)self identifier])
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PXStaticDisplayAssetsDataSource.m" lineNumber:101 description:{@"Invalid parameter not satisfying: %@", @"indexPath.dataSourceIdentifier == self.identifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXStaticDisplayAssetsDataSource.m" lineNumber:101 description:{@"Invalid parameter not satisfying: %@", @"indexPath.dataSourceIdentifier == self.identifier"}];
   }
 
-  v7 = [(PXStaticDisplayAssetsDataSource *)self curatedAssetsBySection];
-  v8 = [v7 objectAtIndexedSubscript:a3->section];
+  curatedAssetsBySection = [(PXStaticDisplayAssetsDataSource *)self curatedAssetsBySection];
+  v8 = [curatedAssetsBySection objectAtIndexedSubscript:path->section];
 
   return v8;
 }
 
-- (int64_t)numberOfCuratedItemsInSectionIndexPath:(PXSimpleIndexPath *)a3
+- (int64_t)numberOfCuratedItemsInSectionIndexPath:(PXSimpleIndexPath *)path
 {
-  v3 = *&a3->item;
-  v7[0] = *&a3->dataSourceIdentifier;
+  v3 = *&path->item;
+  v7[0] = *&path->dataSourceIdentifier;
   v7[1] = v3;
   v4 = [(PXStaticDisplayAssetsDataSource *)self curatedAssetsInSectionIndexPath:v7];
   v5 = [v4 count];
@@ -215,46 +215,46 @@ LABEL_11:
   return v5;
 }
 
-- (int64_t)numberOfUncuratedItemsInAssetCollection:(id)a3
+- (int64_t)numberOfUncuratedItemsInAssetCollection:(id)collection
 {
-  v4 = a3;
-  v5 = [(PXStaticDisplayAssetsDataSource *)self assetCollectionBySection];
-  v6 = [v5 indexOfObject:v4];
+  collectionCopy = collection;
+  assetCollectionBySection = [(PXStaticDisplayAssetsDataSource *)self assetCollectionBySection];
+  v6 = [assetCollectionBySection indexOfObject:collectionCopy];
 
   if (v6 == 0x7FFFFFFFFFFFFFFFLL)
   {
     return 0;
   }
 
-  v8 = [(PXStaticDisplayAssetsDataSource *)self assetsBySection];
-  v9 = [v8 objectAtIndexedSubscript:v6];
+  assetsBySection = [(PXStaticDisplayAssetsDataSource *)self assetsBySection];
+  v9 = [assetsBySection objectAtIndexedSubscript:v6];
   v10 = [v9 count];
 
   return v10;
 }
 
-- (int64_t)numberOfCuratedItemsInAssetCollection:(id)a3
+- (int64_t)numberOfCuratedItemsInAssetCollection:(id)collection
 {
-  v4 = a3;
-  v5 = [(PXStaticDisplayAssetsDataSource *)self assetCollectionBySection];
-  v6 = [v5 indexOfObject:v4];
+  collectionCopy = collection;
+  assetCollectionBySection = [(PXStaticDisplayAssetsDataSource *)self assetCollectionBySection];
+  v6 = [assetCollectionBySection indexOfObject:collectionCopy];
 
   if (v6 == 0x7FFFFFFFFFFFFFFFLL)
   {
     return 0;
   }
 
-  v8 = [(PXStaticDisplayAssetsDataSource *)self curatedAssetsBySection];
-  v9 = [v8 objectAtIndexedSubscript:v6];
+  curatedAssetsBySection = [(PXStaticDisplayAssetsDataSource *)self curatedAssetsBySection];
+  v9 = [curatedAssetsBySection objectAtIndexedSubscript:v6];
   v10 = [v9 count];
 
   return v10;
 }
 
-- (int64_t)numberOfItemsInSection:(int64_t)a3
+- (int64_t)numberOfItemsInSection:(int64_t)section
 {
-  v4 = [(PXStaticDisplayAssetsDataSource *)self exposedAssetsBySection];
-  v5 = [v4 objectAtIndexedSubscript:a3];
+  exposedAssetsBySection = [(PXStaticDisplayAssetsDataSource *)self exposedAssetsBySection];
+  v5 = [exposedAssetsBySection objectAtIndexedSubscript:section];
   v6 = [v5 count];
 
   return v6;
@@ -262,18 +262,18 @@ LABEL_11:
 
 - (int64_t)numberOfSections
 {
-  v2 = [(PXStaticDisplayAssetsDataSource *)self assetCollectionBySection];
-  v3 = [v2 count];
+  assetCollectionBySection = [(PXStaticDisplayAssetsDataSource *)self assetCollectionBySection];
+  v3 = [assetCollectionBySection count];
 
   return v3;
 }
 
-- (PXStaticDisplayAssetsDataSource)initWithAssetCollectionBySection:(id)a3 assetsBySection:(id)a4 curatedAssetsBySection:(id)a5 keyAssetsBySection:(id)a6 sectionContent:(int64_t)a7
+- (PXStaticDisplayAssetsDataSource)initWithAssetCollectionBySection:(id)section assetsBySection:(id)bySection curatedAssetsBySection:(id)assetsBySection keyAssetsBySection:(id)keyAssetsBySection sectionContent:(int64_t)content
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
+  sectionCopy = section;
+  bySectionCopy = bySection;
+  assetsBySectionCopy = assetsBySection;
+  keyAssetsBySectionCopy = keyAssetsBySection;
   v33.receiver = self;
   v33.super_class = PXStaticDisplayAssetsDataSource;
   v17 = [(PXStaticDisplayAssetsDataSource *)&v33 init];
@@ -283,9 +283,9 @@ LABEL_11:
   }
 
   v31 = a2;
-  obj = a6;
-  v18 = [v13 count];
-  v19 = [v14 count];
+  obj = keyAssetsBySection;
+  v18 = [sectionCopy count];
+  v19 = [bySectionCopy count];
   if (v18 <= v19)
   {
     v20 = v19;
@@ -296,8 +296,8 @@ LABEL_11:
     v20 = v18;
   }
 
-  v21 = [v15 count];
-  v22 = [v16 count];
+  v21 = [assetsBySectionCopy count];
+  v22 = [keyAssetsBySectionCopy count];
   if (v21 <= v22)
   {
     v23 = v22;
@@ -313,59 +313,59 @@ LABEL_11:
     v20 = v23;
   }
 
-  if (v13 && [v13 count] != v20)
+  if (sectionCopy && [sectionCopy count] != v20)
   {
-    v27 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v27 handleFailureInMethod:v31 object:v17 file:@"PXStaticDisplayAssetsDataSource.m" lineNumber:32 description:{@"Invalid parameter not satisfying: %@", @"!assetCollectionBySection || assetCollectionBySection.count == maxCount"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:v31 object:v17 file:@"PXStaticDisplayAssetsDataSource.m" lineNumber:32 description:{@"Invalid parameter not satisfying: %@", @"!assetCollectionBySection || assetCollectionBySection.count == maxCount"}];
 
-    if (!v14)
+    if (!bySectionCopy)
     {
       goto LABEL_15;
     }
   }
 
-  else if (!v14)
+  else if (!bySectionCopy)
   {
     goto LABEL_15;
   }
 
-  if ([v14 count] != v20)
+  if ([bySectionCopy count] != v20)
   {
-    v28 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v28 handleFailureInMethod:v31 object:v17 file:@"PXStaticDisplayAssetsDataSource.m" lineNumber:33 description:{@"Invalid parameter not satisfying: %@", @"!assetsBySection || assetsBySection.count == maxCount"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:v31 object:v17 file:@"PXStaticDisplayAssetsDataSource.m" lineNumber:33 description:{@"Invalid parameter not satisfying: %@", @"!assetsBySection || assetsBySection.count == maxCount"}];
   }
 
 LABEL_15:
-  if (v15 && [v15 count] != v20)
+  if (assetsBySectionCopy && [assetsBySectionCopy count] != v20)
   {
-    v29 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v29 handleFailureInMethod:v31 object:v17 file:@"PXStaticDisplayAssetsDataSource.m" lineNumber:34 description:{@"Invalid parameter not satisfying: %@", @"!curatedAssetsBySection || curatedAssetsBySection.count == maxCount"}];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler3 handleFailureInMethod:v31 object:v17 file:@"PXStaticDisplayAssetsDataSource.m" lineNumber:34 description:{@"Invalid parameter not satisfying: %@", @"!curatedAssetsBySection || curatedAssetsBySection.count == maxCount"}];
 
-    if (v16)
+    if (keyAssetsBySectionCopy)
     {
 LABEL_18:
-      if ([v16 count] != v20)
+      if ([keyAssetsBySectionCopy count] != v20)
       {
-        v30 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v30 handleFailureInMethod:v31 object:v17 file:@"PXStaticDisplayAssetsDataSource.m" lineNumber:35 description:{@"Invalid parameter not satisfying: %@", @"!keyAssetsBySection || keyAssetsBySection.count == maxCount"}];
+        currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler4 handleFailureInMethod:v31 object:v17 file:@"PXStaticDisplayAssetsDataSource.m" lineNumber:35 description:{@"Invalid parameter not satisfying: %@", @"!keyAssetsBySection || keyAssetsBySection.count == maxCount"}];
       }
     }
   }
 
-  else if (v16)
+  else if (keyAssetsBySectionCopy)
   {
     goto LABEL_18;
   }
 
-  if (!v13)
+  if (!sectionCopy)
   {
-    v13 = objc_alloc_init(MEMORY[0x1E695DF70]);
+    sectionCopy = objc_alloc_init(MEMORY[0x1E695DF70]);
     if (v20 >= 1)
     {
       do
       {
         v24 = [[PXMockDisplayAssetCollection alloc] initWithTitle:0 subtitle:0 type:1 subtype:2];
-        [v13 addObject:v24];
+        [sectionCopy addObject:v24];
 
         --v20;
       }
@@ -374,20 +374,20 @@ LABEL_18:
     }
   }
 
-  objc_storeStrong(&v17->_assetCollectionBySection, v13);
-  objc_storeStrong(&v17->_assetsBySection, a4);
-  objc_storeStrong(&v17->_curatedAssetsBySection, a5);
+  objc_storeStrong(&v17->_assetCollectionBySection, sectionCopy);
+  objc_storeStrong(&v17->_assetsBySection, bySection);
+  objc_storeStrong(&v17->_curatedAssetsBySection, assetsBySection);
   objc_storeStrong(&v17->_keyAssetsBySection, obj);
-  v17->_sectionContent = a7;
-  v25 = v14;
-  if (!a7)
+  v17->_sectionContent = content;
+  v25 = bySectionCopy;
+  if (!content)
   {
     goto LABEL_26;
   }
 
-  if (a7 == 1)
+  if (content == 1)
   {
-    v25 = v15;
+    v25 = assetsBySectionCopy;
 LABEL_26:
     objc_storeStrong(&v17->_exposedAssetsBySection, v25);
   }
@@ -400,11 +400,11 @@ LABEL_27:
 - (PXPhotosDataSource)photosDataSource
 {
   v19 = *MEMORY[0x1E69E9840];
-  v2 = [(PXStaticDisplayAssetsDataSource *)self fetchAllItemObjects];
+  fetchAllItemObjects = [(PXStaticDisplayAssetsDataSource *)self fetchAllItemObjects];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [MEMORY[0x1E6978650] transientAssetCollectionWithAssetFetchResult:v2 title:0];
+    v3 = [MEMORY[0x1E6978650] transientAssetCollectionWithAssetFetchResult:fetchAllItemObjects title:0];
 LABEL_5:
     v4 = v3;
     goto LABEL_14;
@@ -413,16 +413,16 @@ LABEL_5:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [MEMORY[0x1E6978650] transientAssetCollectionWithAssets:v2 title:0];
+    v3 = [MEMORY[0x1E6978650] transientAssetCollectionWithAssets:fetchAllItemObjects title:0];
     goto LABEL_5;
   }
 
-  v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v2, "count")}];
+  v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(fetchAllItemObjects, "count")}];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v2;
+  v6 = fetchAllItemObjects;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {

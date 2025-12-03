@@ -1,8 +1,8 @@
 @interface CSNDEObjectFactory
 + (id)sharedInstance;
 - (CSNDEObjectFactory)init;
-- (void)createNDEObject:(id)a3;
-- (void)destoryNDEObject:(void *)a3;
+- (void)createNDEObject:(id)object;
+- (void)destoryNDEObject:(void *)object;
 @end
 
 @implementation CSNDEObjectFactory
@@ -19,14 +19,14 @@
   return v3;
 }
 
-- (void)destoryNDEObject:(void *)a3
+- (void)destoryNDEObject:(void *)object
 {
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __39__CSNDEObjectFactory_destoryNDEObject___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a3;
+  block[4] = object;
   dispatch_async_and_wait(queue, block);
 }
 
@@ -41,9 +41,9 @@ uint64_t __39__CSNDEObjectFactory_destoryNDEObject___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)createNDEObject:(id)a3
+- (void)createNDEObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -53,9 +53,9 @@ uint64_t __39__CSNDEObjectFactory_destoryNDEObject___block_invoke(uint64_t a1)
   v9[1] = 3221225472;
   v9[2] = __38__CSNDEObjectFactory_createNDEObject___block_invoke;
   v9[3] = &unk_1E865C880;
-  v10 = v4;
+  v10 = objectCopy;
   v11 = &v12;
-  v6 = v4;
+  v6 = objectCopy;
   dispatch_async_and_wait(queue, v9);
   v7 = v13[3];
 

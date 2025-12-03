@@ -1,15 +1,15 @@
 @interface MTLabelStackViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation MTLabelStackViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MTLabelStackView" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MTLabelStackView" hasInstanceMethod:@"subtitleLabel" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MTLabelStackView" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MTLabelStackView" hasInstanceMethod:@"subtitleLabel" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel
@@ -18,12 +18,12 @@
   v3 = [(MTLabelStackViewAccessibility *)self safeValueForKey:@"titleLabel"];
   v4 = __UIAccessibilityCastAsClass();
 
-  v5 = [v4 accessibilityLabel];
+  accessibilityLabel = [v4 accessibilityLabel];
   objc_opt_class();
   v6 = [(MTLabelStackViewAccessibility *)self safeValueForKey:@"subtitleLabel"];
   v7 = __UIAccessibilityCastAsClass();
 
-  v10 = [v7 accessibilityLabel];
+  accessibilityLabel2 = [v7 accessibilityLabel];
   v8 = __UIAXStringForVariables();
 
   return v8;

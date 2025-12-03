@@ -1,12 +1,12 @@
 @interface SleepResultsNotificationManagerHealthDelegate
-- (void)didUpdateKeyValueDomain:(id)a3;
+- (void)didUpdateKeyValueDomain:(id)domain;
 @end
 
 @implementation SleepResultsNotificationManagerHealthDelegate
 
-- (void)didUpdateKeyValueDomain:(id)a3
+- (void)didUpdateKeyValueDomain:(id)domain
 {
-  v3 = a3;
+  domainCopy = domain;
 
   sub_228926734();
 }

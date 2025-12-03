@@ -1,22 +1,22 @@
 @interface SARecipe
-- (uint64_t)addState:(_BYTE *)a3 hasConcurrentExecution:;
-- (uint64_t)addStates:(_BYTE *)a3 hasConcurrentExecution:;
-- (uint64_t)indexOfFirstStateOnOrAfterTime:(unint64_t)a3 sampleIndex:;
-- (uint64_t)indexOfLastStateOnOrBeforeTime:(unint64_t)a3 sampleIndex:;
-- (void)enumerateStatesBetweenStartTime:(unint64_t)a3 startSampleIndex:(uint64_t)a4 endTime:(unint64_t)a5 endSampleIndex:(char)a6 reverseOrder:(uint64_t)a7 block:;
-- (void)initWithId:(void *)a1;
+- (uint64_t)addState:(_BYTE *)state hasConcurrentExecution:;
+- (uint64_t)addStates:(_BYTE *)states hasConcurrentExecution:;
+- (uint64_t)indexOfFirstStateOnOrAfterTime:(unint64_t)time sampleIndex:;
+- (uint64_t)indexOfLastStateOnOrBeforeTime:(unint64_t)time sampleIndex:;
+- (void)enumerateStatesBetweenStartTime:(unint64_t)time startSampleIndex:(uint64_t)index endTime:(unint64_t)endTime endSampleIndex:(char)sampleIndex reverseOrder:(uint64_t)order block:;
+- (void)initWithId:(void *)id;
 @end
 
 @implementation SARecipe
 
-- (void)initWithId:(void *)a1
+- (void)initWithId:(void *)id
 {
-  if (!a1)
+  if (!id)
   {
     return 0;
   }
 
-  v8.receiver = a1;
+  v8.receiver = id;
   v8.super_class = SARecipe;
   v3 = objc_msgSendSuper2(&v8, sel_init);
   v4 = v3;
@@ -31,31 +31,31 @@
   return v4;
 }
 
-- (uint64_t)addState:(_BYTE *)a3 hasConcurrentExecution:
+- (uint64_t)addState:(_BYTE *)state hasConcurrentExecution:
 {
   if (result)
   {
     v5 = result;
-    if (a3)
+    if (state)
     {
-      v6 = [*(result + 8) lastObject];
-      v7 = v6;
-      if (v6)
+      lastObject = [*(result + 8) lastObject];
+      v7 = lastObject;
+      if (lastObject)
       {
-        v8 = [v6 thread];
-        v9 = [a2 thread];
-        if (v8 == v9)
+        thread = [lastObject thread];
+        thread2 = [a2 thread];
+        if (thread == thread2)
         {
           v13 = 0;
         }
 
         else
         {
-          v14 = [v7 threadState];
-          v10 = [v14 endTimestamp];
-          v11 = [a2 threadState];
-          v12 = [v11 startTimestamp];
-          v13 = [v10 ge:v12];
+          threadState = [v7 threadState];
+          endTimestamp = [threadState endTimestamp];
+          threadState2 = [a2 threadState];
+          startTimestamp = [threadState2 startTimestamp];
+          v13 = [endTimestamp ge:startTimestamp];
         }
       }
 
@@ -64,7 +64,7 @@
         v13 = 0;
       }
 
-      *a3 = v13;
+      *state = v13;
     }
 
     [*(v5 + 8) addObject:a2];
@@ -85,38 +85,38 @@ uint64_t __47__SARecipe_insertState_hasConcurrentExecution___block_invoke(uint64
   return v8;
 }
 
-- (uint64_t)addStates:(_BYTE *)a3 hasConcurrentExecution:
+- (uint64_t)addStates:(_BYTE *)states hasConcurrentExecution:
 {
   if (result)
   {
     v5 = result;
     if ([a2 count])
     {
-      if (a3)
+      if (states)
       {
-        v6 = [*(v5 + 8) lastObject];
-        v7 = v6;
-        if (v6)
+        lastObject = [*(v5 + 8) lastObject];
+        v7 = lastObject;
+        if (lastObject)
         {
-          v8 = [v6 thread];
-          v9 = [a2 firstObject];
-          v10 = [v9 thread];
-          if (v8 == v10)
+          thread = [lastObject thread];
+          firstObject = [a2 firstObject];
+          thread2 = [firstObject thread];
+          if (thread == thread2)
           {
             v14 = 0;
           }
 
           else
           {
-            v25 = [v7 threadState];
-            v24 = [v25 endTimestamp];
-            v11 = [a2 firstObject];
-            [v11 threadState];
-            v12 = v26 = v8;
-            v13 = [v12 startTimestamp];
-            v14 = [v24 ge:v13];
+            threadState = [v7 threadState];
+            endTimestamp = [threadState endTimestamp];
+            firstObject2 = [a2 firstObject];
+            [firstObject2 threadState];
+            v12 = v26 = thread;
+            startTimestamp = [v12 startTimestamp];
+            v14 = [endTimestamp ge:startTimestamp];
 
-            v8 = v26;
+            thread = v26;
           }
         }
 
@@ -125,7 +125,7 @@ uint64_t __47__SARecipe_insertState_hasConcurrentExecution___block_invoke(uint64
           v14 = 0;
         }
 
-        *a3 = v14;
+        *states = v14;
       }
 
       [*(v5 + 8) addObjectsFromArray:a2];
@@ -152,15 +152,15 @@ uint64_t __47__SARecipe_insertState_hasConcurrentExecution___block_invoke(uint64
   return result;
 }
 
-- (void)enumerateStatesBetweenStartTime:(unint64_t)a3 startSampleIndex:(uint64_t)a4 endTime:(unint64_t)a5 endSampleIndex:(char)a6 reverseOrder:(uint64_t)a7 block:
+- (void)enumerateStatesBetweenStartTime:(unint64_t)time startSampleIndex:(uint64_t)index endTime:(unint64_t)endTime endSampleIndex:(char)sampleIndex reverseOrder:(uint64_t)order block:
 {
-  if (a1)
+  if (self)
   {
-    v12 = [(SARecipe *)a1 indexOfFirstStateOnOrAfterTime:a2 sampleIndex:a3];
+    v12 = [(SARecipe *)self indexOfFirstStateOnOrAfterTime:a2 sampleIndex:time];
     if (v12 != 0x7FFFFFFFFFFFFFFFLL)
     {
       v13 = v12;
-      v14 = [(SARecipe *)a1 indexOfLastStateOnOrBeforeTime:a4 sampleIndex:a5];
+      v14 = [(SARecipe *)self indexOfLastStateOnOrBeforeTime:index sampleIndex:endTime];
       if (v14 != 0x7FFFFFFFFFFFFFFFLL)
       {
         v15 = v14;
@@ -170,10 +170,10 @@ uint64_t __47__SARecipe_insertState_hasConcurrentExecution___block_invoke(uint64
           v18[1] = 3221225472;
           v18[2] = __103__SARecipe_enumerateStatesBetweenStartTime_startSampleIndex_endTime_endSampleIndex_reverseOrder_block___block_invoke;
           v18[3] = &unk_1E86F7068;
-          v18[4] = a1;
-          v18[5] = a7;
+          v18[4] = self;
+          v18[5] = order;
           v16 = MEMORY[0x1E12EBE50](v18);
-          if (a6)
+          if (sampleIndex)
           {
             do
             {
@@ -208,7 +208,7 @@ uint64_t __47__SARecipe_insertState_hasConcurrentExecution___block_invoke(uint64
   }
 }
 
-- (uint64_t)indexOfFirstStateOnOrAfterTime:(unint64_t)a3 sampleIndex:
+- (uint64_t)indexOfFirstStateOnOrAfterTime:(unint64_t)time sampleIndex:
 {
   if (result)
   {
@@ -229,23 +229,23 @@ uint64_t __47__SARecipe_insertState_hasConcurrentExecution___block_invoke(uint64
       v6 = 0;
     }
 
-    if (a3 != 0x7FFFFFFFFFFFFFFFLL && v6 < [*(v4 + 8) count])
+    if (time != 0x7FFFFFFFFFFFFFFFLL && v6 < [*(v4 + 8) count])
     {
       do
       {
         v7 = [*(v4 + 8) objectAtIndexedSubscript:v6];
-        v8 = [v7 threadState];
-        if ([v8 startSampleIndex] == 0x7FFFFFFFFFFFFFFFLL)
+        threadState = [v7 threadState];
+        if ([threadState startSampleIndex] == 0x7FFFFFFFFFFFFFFFLL)
         {
         }
 
         else
         {
           v9 = [*(v4 + 8) objectAtIndexedSubscript:v6];
-          v10 = [v9 threadState];
-          v11 = [v10 endSampleIndex];
+          threadState2 = [v9 threadState];
+          endSampleIndex = [threadState2 endSampleIndex];
 
-          if (v11 >= a3)
+          if (endSampleIndex >= time)
           {
             break;
           }
@@ -271,19 +271,19 @@ uint64_t __47__SARecipe_insertState_hasConcurrentExecution___block_invoke(uint64
   return result;
 }
 
-- (uint64_t)indexOfLastStateOnOrBeforeTime:(unint64_t)a3 sampleIndex:
+- (uint64_t)indexOfLastStateOnOrBeforeTime:(unint64_t)time sampleIndex:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  if (![*(a1 + 8) count])
+  if (![*(self + 8) count])
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v6 = *(a1 + 8);
+  v6 = *(self + 8);
   if (a2)
   {
     v15[0] = MEMORY[0x1E69E9820];
@@ -304,26 +304,26 @@ uint64_t __47__SARecipe_insertState_hasConcurrentExecution___block_invoke(uint64
   }
 
   v8 = v7 - 1;
-  if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+  if (time == 0x7FFFFFFFFFFFFFFFLL)
   {
     return v8;
   }
 
   while (1)
   {
-    v10 = [*(a1 + 8) objectAtIndexedSubscript:v8];
-    v11 = [v10 threadState];
-    if ([v11 startSampleIndex] == 0x7FFFFFFFFFFFFFFFLL)
+    v10 = [*(self + 8) objectAtIndexedSubscript:v8];
+    threadState = [v10 threadState];
+    if ([threadState startSampleIndex] == 0x7FFFFFFFFFFFFFFFLL)
     {
     }
 
     else
     {
-      v12 = [*(a1 + 8) objectAtIndexedSubscript:v8];
-      v13 = [v12 threadState];
-      v14 = [v13 startSampleIndex];
+      v12 = [*(self + 8) objectAtIndexedSubscript:v8];
+      threadState2 = [v12 threadState];
+      startSampleIndex = [threadState2 startSampleIndex];
 
-      if (v14 <= a3)
+      if (startSampleIndex <= time)
       {
         return v8;
       }

@@ -1,17 +1,17 @@
 @interface APPBAdFrequencyCapData
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)relevantIdentifierAsString:(int)a3;
-- (int)StringAsRelevantIdentifier:(id)a3;
+- (id)relevantIdentifierAsString:(int)string;
+- (int)StringAsRelevantIdentifier:(id)identifier;
 - (int)relevantIdentifier;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasAdFrequencyValue:(BOOL)a3;
-- (void)setHasRelevantIdentifier:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasAdFrequencyValue:(BOOL)value;
+- (void)setHasRelevantIdentifier:(BOOL)identifier;
+- (void)writeTo:(id)to;
 @end
 
 @implementation APPBAdFrequencyCapData
@@ -29,9 +29,9 @@
   }
 }
 
-- (void)setHasRelevantIdentifier:(BOOL)a3
+- (void)setHasRelevantIdentifier:(BOOL)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v3 = 4;
   }
@@ -44,45 +44,45 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (id)relevantIdentifierAsString:(int)a3
+- (id)relevantIdentifierAsString:(int)string
 {
-  if ((a3 - 15001) >= 5)
+  if ((string - 15001) >= 5)
   {
-    v4 = [NSString stringWithFormat:@"(unknown: %i)", *&a3];
+    v4 = [NSString stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   else
   {
-    v4 = *(&off_10047DAA0 + (a3 - 15001));
+    v4 = *(&off_10047DAA0 + (string - 15001));
   }
 
   return v4;
 }
 
-- (int)StringAsRelevantIdentifier:(id)a3
+- (int)StringAsRelevantIdentifier:(id)identifier
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UniqueAd"])
+  identifierCopy = identifier;
+  if ([identifierCopy isEqualToString:@"UniqueAd"])
   {
     v4 = 15001;
   }
 
-  else if ([v3 isEqualToString:@"Line"])
+  else if ([identifierCopy isEqualToString:@"Line"])
   {
     v4 = 15002;
   }
 
-  else if ([v3 isEqualToString:@"Campaign"])
+  else if ([identifierCopy isEqualToString:@"Campaign"])
   {
     v4 = 15003;
   }
 
-  else if ([v3 isEqualToString:@"Creative"])
+  else if ([identifierCopy isEqualToString:@"Creative"])
   {
     v4 = 15004;
   }
 
-  else if ([v3 isEqualToString:@"AdamId"])
+  else if ([identifierCopy isEqualToString:@"AdamId"])
   {
     v4 = 15005;
   }
@@ -95,9 +95,9 @@
   return v4;
 }
 
-- (void)setHasAdFrequencyValue:(BOOL)a3
+- (void)setHasAdFrequencyValue:(BOOL)value
 {
-  if (a3)
+  if (value)
   {
     v3 = 2;
   }
@@ -115,8 +115,8 @@
   v7.receiver = self;
   v7.super_class = APPBAdFrequencyCapData;
   v3 = [(APPBAdFrequencyCapData *)&v7 description];
-  v4 = [(APPBAdFrequencyCapData *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(APPBAdFrequencyCapData *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -160,15 +160,15 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v6 = v4;
+  v6 = toCopy;
   if ((has & 4) != 0)
   {
     PBDataWriterWriteInt32Field();
-    v4 = v6;
+    toCopy = v6;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -188,25 +188,25 @@ LABEL_3:
   }
 
   PBDataWriterWriteInt32Field();
-  v4 = v6;
+  toCopy = v6;
   if (*&self->_has)
   {
 LABEL_4:
     PBDataWriterWriteUint64Field();
-    v4 = v6;
+    toCopy = v6;
   }
 
 LABEL_5:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 4) != 0)
   {
-    v4[5] = self->_relevantIdentifier;
-    *(v4 + 24) |= 4u;
+    toCopy[5] = self->_relevantIdentifier;
+    *(toCopy + 24) |= 4u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -225,21 +225,21 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[4] = self->_adFrequencyValue;
-  *(v4 + 24) |= 2u;
+  toCopy[4] = self->_adFrequencyValue;
+  *(toCopy + 24) |= 2u;
   if (*&self->_has)
   {
 LABEL_4:
-    *(v4 + 1) = self->_adFrequencyDuration;
-    *(v4 + 24) |= 1u;
+    *(toCopy + 1) = self->_adFrequencyDuration;
+    *(toCopy + 24) |= 1u;
   }
 
 LABEL_5:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if ((has & 4) != 0)
   {
@@ -276,23 +276,23 @@ LABEL_4:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_16;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 24) & 4) == 0 || self->_relevantIdentifier != *(v4 + 5))
+    if ((*(equalCopy + 24) & 4) == 0 || self->_relevantIdentifier != *(equalCopy + 5))
     {
       goto LABEL_16;
     }
   }
 
-  else if ((*(v4 + 24) & 4) != 0)
+  else if ((*(equalCopy + 24) & 4) != 0)
   {
 LABEL_16:
     v5 = 0;
@@ -301,21 +301,21 @@ LABEL_16:
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 24) & 2) == 0 || self->_adFrequencyValue != *(v4 + 4))
+    if ((*(equalCopy + 24) & 2) == 0 || self->_adFrequencyValue != *(equalCopy + 4))
     {
       goto LABEL_16;
     }
   }
 
-  else if ((*(v4 + 24) & 2) != 0)
+  else if ((*(equalCopy + 24) & 2) != 0)
   {
     goto LABEL_16;
   }
 
-  v5 = (*(v4 + 24) & 1) == 0;
+  v5 = (*(equalCopy + 24) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 24) & 1) == 0 || self->_adFrequencyDuration != *(v4 + 1))
+    if ((*(equalCopy + 24) & 1) == 0 || self->_adFrequencyDuration != *(equalCopy + 1))
     {
       goto LABEL_16;
     }
@@ -368,15 +368,15 @@ LABEL_4:
   return v3 ^ v2 ^ v4;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 24);
+  fromCopy = from;
+  v5 = *(fromCopy + 24);
   if ((v5 & 4) != 0)
   {
-    self->_relevantIdentifier = *(v4 + 5);
+    self->_relevantIdentifier = *(fromCopy + 5);
     *&self->_has |= 4u;
-    v5 = *(v4 + 24);
+    v5 = *(fromCopy + 24);
     if ((v5 & 2) == 0)
     {
 LABEL_3:
@@ -389,17 +389,17 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 24) & 2) == 0)
+  else if ((*(fromCopy + 24) & 2) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_adFrequencyValue = *(v4 + 4);
+  self->_adFrequencyValue = *(fromCopy + 4);
   *&self->_has |= 2u;
-  if (*(v4 + 24))
+  if (*(fromCopy + 24))
   {
 LABEL_4:
-    self->_adFrequencyDuration = *(v4 + 1);
+    self->_adFrequencyDuration = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 

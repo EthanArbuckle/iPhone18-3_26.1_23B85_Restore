@@ -1,6 +1,6 @@
 @interface MRDeviceInfoMessage
 - (MRDeviceInfo)deviceInfo;
-- (MRDeviceInfoMessage)initWithDeviceInfo:(id)a3;
+- (MRDeviceInfoMessage)initWithDeviceInfo:(id)info;
 - (MRSupportedProtocolMessages)supportedProtocolMessages;
 - (uint64_t)_lastSupportedMessageType;
 - (void)supportedProtocolMessages;
@@ -8,33 +8,33 @@
 
 @implementation MRDeviceInfoMessage
 
-- (MRDeviceInfoMessage)initWithDeviceInfo:(id)a3
+- (MRDeviceInfoMessage)initWithDeviceInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v14.receiver = self;
   v14.super_class = MRDeviceInfoMessage;
   v5 = [(MRProtocolMessage *)&v14 init];
   if (v5)
   {
-    v6 = [MEMORY[0x1E696AAE8] mainBundle];
-    v7 = [v6 bundleIdentifier];
-    [v4 setBundleIdentifier:v7];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
+    [infoCopy setBundleIdentifier:bundleIdentifier];
 
-    v8 = [v6 infoDictionary];
-    v9 = [v8 objectForKeyedSubscript:*MEMORY[0x1E695E500]];
-    [v4 setBundleVersion:v9];
+    infoDictionary = [mainBundle infoDictionary];
+    v9 = [infoDictionary objectForKeyedSubscript:*MEMORY[0x1E695E500]];
+    [infoCopy setBundleVersion:v9];
 
-    v10 = [MEMORY[0x1E696AE30] processInfo];
-    v11 = [v10 processName];
+    processInfo = [MEMORY[0x1E696AE30] processInfo];
+    processName = [processInfo processName];
 
-    if ([v11 isEqualToString:@"tvremoted"])
+    if ([processName isEqualToString:@"tvremoted"])
     {
-      [v4 setBundleIdentifier:@"com.apple.tvremotecore.xpc"];
+      [infoCopy setBundleIdentifier:@"com.apple.tvremotecore.xpc"];
     }
 
-    v12 = [v4 protobuf];
-    [v12 setLastSupportedMessageType:139];
-    [(MRProtocolMessage *)v5 setUnderlyingCodableMessage:v12];
+    protobuf = [infoCopy protobuf];
+    [protobuf setLastSupportedMessageType:139];
+    [(MRProtocolMessage *)v5 setUnderlyingCodableMessage:protobuf];
   }
 
   return v5;
@@ -43,8 +43,8 @@
 - (MRDeviceInfo)deviceInfo
 {
   v3 = [MRDeviceInfo alloc];
-  v4 = [(MRProtocolMessage *)self underlyingCodableMessage];
-  v5 = [(MRDeviceInfo *)v3 initWithProtobuf:v4];
+  underlyingCodableMessage = [(MRProtocolMessage *)self underlyingCodableMessage];
+  v5 = [(MRDeviceInfo *)v3 initWithProtobuf:underlyingCodableMessage];
 
   [(MRDeviceInfo *)v5 setLastSupportedProtocolMessageType:[(MRDeviceInfoMessage *)self _lastSupportedMessageType]];
 
@@ -68,28 +68,28 @@
 
 - (uint64_t)_lastSupportedMessageType
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v2 = [a1 underlyingCodableMessage];
-    if ([v2 hasLastSupportedMessageType])
+    underlyingCodableMessage = [self underlyingCodableMessage];
+    if ([underlyingCodableMessage hasLastSupportedMessageType])
     {
-      v3 = [v1 underlyingCodableMessage];
-      v1 = [v3 lastSupportedMessageType];
+      underlyingCodableMessage2 = [selfCopy underlyingCodableMessage];
+      selfCopy = [underlyingCodableMessage2 lastSupportedMessageType];
     }
 
     else
     {
-      v1 = 36;
+      selfCopy = 36;
     }
   }
 
-  return v1;
+  return selfCopy;
 }
 
 - (void)supportedProtocolMessages
 {
-  v5 = [[MRSupportedProtocolMessages alloc] initWithLastSupportedMessageType:[(MRDeviceInfoMessage *)a1 _lastSupportedMessageType]];
+  v5 = [[MRSupportedProtocolMessages alloc] initWithLastSupportedMessageType:[(MRDeviceInfoMessage *)self _lastSupportedMessageType]];
   v6 = *a2;
   *a2 = v5;
 

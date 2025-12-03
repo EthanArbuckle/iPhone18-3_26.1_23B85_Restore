@@ -1,24 +1,24 @@
 @interface CSUCLIPTextEncoderV3Configuration
-+ (id)CLIPTextEncoderV3ConfigurationForRevision:(int64_t)a3 error:(id *)a4;
++ (id)CLIPTextEncoderV3ConfigurationForRevision:(int64_t)revision error:(id *)error;
 + (id)availableRevisions;
-+ (int64_t)_resolvedRevision:(int64_t)a3;
++ (int64_t)_resolvedRevision:(int64_t)revision;
 - (BOOL)isCLIPTextEncoderPresent;
-- (id)initCLIPTextEncoderV3ConfigurationForRevision:(int64_t)a3 vocabularyModelPath:(id)a4 tokenEmbeddingNetworkPath:(id)a5 textEncoderNetworkPath:(id)a6;
+- (id)initCLIPTextEncoderV3ConfigurationForRevision:(int64_t)revision vocabularyModelPath:(id)path tokenEmbeddingNetworkPath:(id)networkPath textEncoderNetworkPath:(id)encoderNetworkPath;
 - (int)espressoExecutionEngine;
 @end
 
 @implementation CSUCLIPTextEncoderV3Configuration
 
-+ (int64_t)_resolvedRevision:(int64_t)a3
++ (int64_t)_resolvedRevision:(int64_t)revision
 {
-  if (a3 == -1)
+  if (revision == -1)
   {
     return 1;
   }
 
   else
   {
-    return a3;
+    return revision;
   }
 }
 
@@ -42,12 +42,12 @@
   return v18;
 }
 
-+ (id)CLIPTextEncoderV3ConfigurationForRevision:(int64_t)a3 error:(id *)a4
++ (id)CLIPTextEncoderV3ConfigurationForRevision:(int64_t)revision error:(id *)error
 {
   v7 = MEMORY[0x1E696AAE8];
   v8 = objc_opt_class();
   v12 = objc_msgSend_bundleForClass_(v7, v9, v8, v10, v11);
-  if (objc_msgSend__resolvedRevision_(a1, v13, a3, v14, v15) == 1)
+  if (objc_msgSend__resolvedRevision_(self, v13, revision, v14, v15) == 1)
   {
     v20 = objc_msgSend_pathForResource_ofType_inDirectory_(v12, v16, @"vocab", @"model", @"clip/v3.1/");
     if (v20)
@@ -58,7 +58,7 @@
         v23 = objc_msgSend_pathForResource_ofType_inDirectory_(v12, v21, @"text_encoder_main", @"espresso.net", @"clip/v3.1/");
         if (v23)
         {
-          v24 = [a1 alloc];
+          v24 = [self alloc];
           inited = objc_msgSend_initCLIPTextEncoderV3ConfigurationForRevision_vocabularyModelPath_tokenEmbeddingNetworkPath_textEncoderNetworkPath_(v24, v25, 1, v20, v22, v23);
 LABEL_24:
 
@@ -70,7 +70,7 @@ LABEL_24:
         {
           sub_1AC122130(v56, v57, v58, v59, v60, v61, v62, v63);
 
-          if (a4)
+          if (error)
           {
             goto LABEL_17;
           }
@@ -79,11 +79,11 @@ LABEL_24:
         else
         {
 
-          if (a4)
+          if (error)
           {
 LABEL_17:
             objc_msgSend_errorForInternalErrorWithLocalizedDescription_underlyingError_(CSUError, v64, @"text encoder main file not found in bundle!", 0, v65);
-            *a4 = inited = 0;
+            *error = inited = 0;
             goto LABEL_24;
           }
         }
@@ -97,7 +97,7 @@ LABEL_17:
       {
         sub_1AC122168(v46, v47, v48, v49, v50, v51, v52, v53);
 
-        if (a4)
+        if (error)
         {
           goto LABEL_14;
         }
@@ -106,11 +106,11 @@ LABEL_17:
       else
       {
 
-        if (a4)
+        if (error)
         {
 LABEL_14:
           objc_msgSend_errorForInternalErrorWithLocalizedDescription_underlyingError_(CSUError, v54, @"text encoder lookup file not found in bundle!", 0, v55);
-          *a4 = inited = 0;
+          *error = inited = 0;
 LABEL_25:
 
           goto LABEL_26;
@@ -126,7 +126,7 @@ LABEL_25:
     {
       sub_1AC1221A0(v36, v37, v38, v39, v40, v41, v42, v43);
 
-      if (a4)
+      if (error)
       {
         goto LABEL_11;
       }
@@ -135,11 +135,11 @@ LABEL_25:
     else
     {
 
-      if (a4)
+      if (error)
       {
 LABEL_11:
         objc_msgSend_errorForInternalErrorWithLocalizedDescription_underlyingError_(CSUError, v44, @"vocab file not found in bundle!", 0, v45);
-        *a4 = inited = 0;
+        *error = inited = 0;
 LABEL_26:
 
         goto LABEL_27;
@@ -150,12 +150,12 @@ LABEL_26:
     goto LABEL_26;
   }
 
-  if (a4)
+  if (error)
   {
     v27 = MEMORY[0x1E696AEC0];
-    v28 = objc_msgSend_numberWithInteger_(MEMORY[0x1E696AD98], v16, a3, v17, v18);
+    v28 = objc_msgSend_numberWithInteger_(MEMORY[0x1E696AD98], v16, revision, v17, v18);
     v32 = objc_msgSend_stringWithFormat_(v27, v29, @"Unsupported CLIPTextEncoderV3 revision %@", v30, v31, v28);
-    *a4 = objc_msgSend_errorForUnsupportedRevision_(CSUError, v33, v32, v34, v35);
+    *error = objc_msgSend_errorForUnsupportedRevision_(CSUError, v33, v32, v34, v35);
   }
 
   inited = 0;
@@ -164,25 +164,25 @@ LABEL_27:
   return inited;
 }
 
-- (id)initCLIPTextEncoderV3ConfigurationForRevision:(int64_t)a3 vocabularyModelPath:(id)a4 tokenEmbeddingNetworkPath:(id)a5 textEncoderNetworkPath:(id)a6
+- (id)initCLIPTextEncoderV3ConfigurationForRevision:(int64_t)revision vocabularyModelPath:(id)path tokenEmbeddingNetworkPath:(id)networkPath textEncoderNetworkPath:(id)encoderNetworkPath
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  pathCopy = path;
+  networkPathCopy = networkPath;
+  encoderNetworkPathCopy = encoderNetworkPath;
   v42.receiver = self;
   v42.super_class = CSUCLIPTextEncoderV3Configuration;
   v13 = [(CSUCLIPTextEncoderV3Configuration *)&v42 init];
   v18 = v13;
   if (v13)
   {
-    v13->_revision = a3;
-    v19 = objc_msgSend_copy(v10, v14, v15, v16, v17);
+    v13->_revision = revision;
+    v19 = objc_msgSend_copy(pathCopy, v14, v15, v16, v17);
     vocabularyModelPath = v18->_vocabularyModelPath;
     v18->_vocabularyModelPath = v19;
 
     v18->_maximumSequenceLength = 60;
     v18->_inputIsLowerCase = 1;
-    v25 = objc_msgSend_copy(v11, v21, v22, v23, v24);
+    v25 = objc_msgSend_copy(networkPathCopy, v21, v22, v23, v24);
     tokenEmbeddingNetworkPath = v18->_tokenEmbeddingNetworkPath;
     v18->_tokenEmbeddingNetworkPath = v25;
 
@@ -198,7 +198,7 @@ LABEL_27:
     outputTokenEmbeddingMaskTensorName = v18->_outputTokenEmbeddingMaskTensorName;
     v18->_outputTokenEmbeddingMaskTensorName = @"k_mask_1_cast";
 
-    v35 = objc_msgSend_copy(v12, v31, v32, v33, v34);
+    v35 = objc_msgSend_copy(encoderNetworkPathCopy, v31, v32, v33, v34);
     textEncoderNetworkPath = v18->_textEncoderNetworkPath;
     v18->_textEncoderNetworkPath = v35;
 

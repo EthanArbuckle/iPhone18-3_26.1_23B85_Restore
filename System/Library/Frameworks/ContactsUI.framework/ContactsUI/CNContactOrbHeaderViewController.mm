@@ -1,20 +1,20 @@
 @interface CNContactOrbHeaderViewController
-- (CNContactOrbHeaderViewController)initWithContacts:(id)a3;
+- (CNContactOrbHeaderViewController)initWithContacts:(id)contacts;
 - (double)suggestedHeaderWidth;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation CNContactOrbHeaderViewController
 
 - (double)suggestedHeaderWidth
 {
-  v3 = [(CNContactOrbHeaderViewController *)self view];
-  [v3 bounds];
+  view = [(CNContactOrbHeaderViewController *)self view];
+  [view bounds];
   v5 = v4;
 
-  v6 = [(CNContactOrbHeaderViewController *)self view];
-  [v6 bounds];
+  view2 = [(CNContactOrbHeaderViewController *)self view];
+  [view2 bounds];
   v8 = v7;
 
   if (v5 >= v8)
@@ -22,23 +22,23 @@
     v5 = v8;
   }
 
-  v9 = [(CNContactOrbHeaderViewController *)self traitCollection];
-  v10 = [v9 horizontalSizeClass];
+  traitCollection = [(CNContactOrbHeaderViewController *)self traitCollection];
+  horizontalSizeClass = [traitCollection horizontalSizeClass];
 
-  if (v10 != 1)
+  if (horizontalSizeClass != 1)
   {
-    v11 = [(CNContactOrbHeaderViewController *)self view];
-    [v11 bounds];
+    view3 = [(CNContactOrbHeaderViewController *)self view];
+    [view3 bounds];
     if (v12 >= 320.0)
     {
-      v13 = [(CNContactOrbHeaderViewController *)self view];
-      [v13 bounds];
+      view4 = [(CNContactOrbHeaderViewController *)self view];
+      [view4 bounds];
       v15 = v14;
 
       if (v15 < 414.0)
       {
-        v16 = [(CNContactOrbHeaderViewController *)self view];
-        [v16 bounds];
+        view5 = [(CNContactOrbHeaderViewController *)self view];
+        [view5 bounds];
         v5 = v17;
 
         return v5;
@@ -58,13 +58,13 @@
   return v5;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v17.receiver = self;
   v17.super_class = CNContactOrbHeaderViewController;
-  [(CNContactOrbHeaderViewController *)&v17 viewWillAppear:a3];
-  v4 = [(CNContactOrbHeaderViewController *)self view];
-  [v4 frame];
+  [(CNContactOrbHeaderViewController *)&v17 viewWillAppear:appear];
+  view = [(CNContactOrbHeaderViewController *)self view];
+  [view frame];
   if (v5 == 0.0)
   {
     [(CNContactOrbHeaderViewController *)self suggestedHeaderWidth];
@@ -73,19 +73,19 @@
 
   else
   {
-    v6 = [(CNContactOrbHeaderViewController *)self view];
-    [v6 frame];
+    view2 = [(CNContactOrbHeaderViewController *)self view];
+    [view2 frame];
     v8 = v7;
   }
 
-  v10 = [(CNContactOrbHeaderViewController *)self headerView];
+  headerView = [(CNContactOrbHeaderViewController *)self headerView];
   LODWORD(v11) = 1148846080;
   LODWORD(v12) = 1112014848;
-  [v10 systemLayoutSizeFittingSize:v8 withHorizontalFittingPriority:0.0 verticalFittingPriority:{v11, v12}];
+  [headerView systemLayoutSizeFittingSize:v8 withHorizontalFittingPriority:0.0 verticalFittingPriority:{v11, v12}];
   v14 = v13;
 
-  v15 = [(CNContactOrbHeaderViewController *)self headerView];
-  [v15 frame];
+  headerView2 = [(CNContactOrbHeaderViewController *)self headerView];
+  [headerView2 frame];
   [(CNContactOrbHeaderViewController *)self setPreferredContentSize:v16, v14];
 }
 
@@ -97,75 +97,75 @@
   [(CNContactOrbHeaderViewController *)&v39 viewDidLoad];
   [(CNContactOrbHeaderViewController *)self suggestedHeaderWidth];
   v4 = v3;
-  v5 = [(CNContactOrbHeaderViewController *)self headerView];
-  [v5 setFrame:{0.0, 0.0, v4, 55.0}];
+  headerView = [(CNContactOrbHeaderViewController *)self headerView];
+  [headerView setFrame:{0.0, 0.0, v4, 55.0}];
 
-  v6 = [MEMORY[0x1E695CD80] sharedFullNameFormatterWithFallBacks];
-  v7 = [(CNContactOrbHeaderViewController *)self headerView];
-  [v7 setContactFormatter:v6];
+  mEMORY[0x1E695CD80] = [MEMORY[0x1E695CD80] sharedFullNameFormatterWithFallBacks];
+  headerView2 = [(CNContactOrbHeaderViewController *)self headerView];
+  [headerView2 setContactFormatter:mEMORY[0x1E695CD80]];
 
-  v8 = [(CNContactOrbHeaderViewController *)self headerView];
-  [v8 setAlwaysShowsMonogram:1];
+  headerView3 = [(CNContactOrbHeaderViewController *)self headerView];
+  [headerView3 setAlwaysShowsMonogram:1];
 
-  v9 = [(CNContactOrbHeaderViewController *)self headerView];
-  [v9 setCentersPhotoAndLabels:1];
+  headerView4 = [(CNContactOrbHeaderViewController *)self headerView];
+  [headerView4 setCentersPhotoAndLabels:1];
 
-  v10 = [(CNContactOrbHeaderViewController *)self headerView];
-  [v10 setContentMargins:{10.0, 10.0, 10.0, 10.0}];
+  headerView5 = [(CNContactOrbHeaderViewController *)self headerView];
+  [headerView5 setContentMargins:{10.0, 10.0, 10.0, 10.0}];
 
-  v11 = [(CNContactOrbHeaderViewController *)self headerView];
-  [v11 setTranslatesAutoresizingMaskIntoConstraints:0];
+  headerView6 = [(CNContactOrbHeaderViewController *)self headerView];
+  [headerView6 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v12 = [(CNContactOrbHeaderViewController *)self view];
-  v13 = [(CNContactOrbHeaderViewController *)self headerView];
-  [v12 addSubview:v13];
+  view = [(CNContactOrbHeaderViewController *)self view];
+  headerView7 = [(CNContactOrbHeaderViewController *)self headerView];
+  [view addSubview:headerView7];
 
-  v14 = [(CNContactOrbHeaderViewController *)self headerView];
-  v15 = [(CNContactOrbHeaderViewController *)self contacts];
-  [v14 updateWithContacts:v15];
+  headerView8 = [(CNContactOrbHeaderViewController *)self headerView];
+  contacts = [(CNContactOrbHeaderViewController *)self contacts];
+  [headerView8 updateWithContacts:contacts];
 
-  v38 = [(CNContactOrbHeaderViewController *)self headerView];
-  v36 = [v38 topAnchor];
-  v37 = [(CNContactOrbHeaderViewController *)self view];
-  v35 = [v37 topAnchor];
-  v34 = [v36 constraintEqualToAnchor:v35];
+  headerView9 = [(CNContactOrbHeaderViewController *)self headerView];
+  topAnchor = [headerView9 topAnchor];
+  view2 = [(CNContactOrbHeaderViewController *)self view];
+  topAnchor2 = [view2 topAnchor];
+  v34 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v40[0] = v34;
-  v33 = [(CNContactOrbHeaderViewController *)self headerView];
-  v31 = [v33 bottomAnchor];
-  v32 = [(CNContactOrbHeaderViewController *)self view];
-  v30 = [v32 bottomAnchor];
-  v29 = [v31 constraintEqualToAnchor:v30];
+  headerView10 = [(CNContactOrbHeaderViewController *)self headerView];
+  bottomAnchor = [headerView10 bottomAnchor];
+  view3 = [(CNContactOrbHeaderViewController *)self view];
+  bottomAnchor2 = [view3 bottomAnchor];
+  v29 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v40[1] = v29;
-  v28 = [(CNContactOrbHeaderViewController *)self headerView];
-  v16 = [v28 leadingAnchor];
-  v17 = [(CNContactOrbHeaderViewController *)self view];
-  v18 = [v17 leadingAnchor];
-  v19 = [v16 constraintEqualToAnchor:v18];
+  headerView11 = [(CNContactOrbHeaderViewController *)self headerView];
+  leadingAnchor = [headerView11 leadingAnchor];
+  view4 = [(CNContactOrbHeaderViewController *)self view];
+  leadingAnchor2 = [view4 leadingAnchor];
+  v19 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v40[2] = v19;
-  v20 = [(CNContactOrbHeaderViewController *)self headerView];
-  v21 = [v20 trailingAnchor];
-  v22 = [(CNContactOrbHeaderViewController *)self view];
-  v23 = [v22 trailingAnchor];
-  v24 = [v21 constraintEqualToAnchor:v23];
+  headerView12 = [(CNContactOrbHeaderViewController *)self headerView];
+  trailingAnchor = [headerView12 trailingAnchor];
+  view5 = [(CNContactOrbHeaderViewController *)self view];
+  trailingAnchor2 = [view5 trailingAnchor];
+  v24 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v40[3] = v24;
   v27 = [MEMORY[0x1E695DEC8] arrayWithObjects:v40 count:4];
 
   [MEMORY[0x1E696ACD8] activateConstraints:v27];
-  v25 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  v26 = [(CNContactOrbHeaderViewController *)self view];
-  [v26 setBackgroundColor:v25];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  view6 = [(CNContactOrbHeaderViewController *)self view];
+  [view6 setBackgroundColor:systemBackgroundColor];
 }
 
-- (CNContactOrbHeaderViewController)initWithContacts:(id)a3
+- (CNContactOrbHeaderViewController)initWithContacts:(id)contacts
 {
-  v5 = a3;
+  contactsCopy = contacts;
   v12.receiver = self;
   v12.super_class = CNContactOrbHeaderViewController;
   v6 = [(CNContactOrbHeaderViewController *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_contacts, a3);
+    objc_storeStrong(&v6->_contacts, contacts);
     v8 = [(CNContactOrbHeaderView *)[CNAvatarCardHeaderView alloc] initWithContact:0 frame:0.0, 0.0, 55.0, 55.0];
     headerView = v7->_headerView;
     v7->_headerView = &v8->super;

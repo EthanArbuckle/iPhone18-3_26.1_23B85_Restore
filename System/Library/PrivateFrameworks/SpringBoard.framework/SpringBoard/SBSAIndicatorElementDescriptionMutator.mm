@@ -1,44 +1,44 @@
 @interface SBSAIndicatorElementDescriptionMutator
 - (CGAffineTransform)fixedIndicatorViewTransform;
 - (CGAffineTransform)indicatorViewTransform;
-- (SBSAIndicatorElementDescriptionMutator)initWithIndicatorElementDescription:(id)a3;
-- (void)setAssociatedSystemApertureElementIdentity:(id)a3;
-- (void)setFixedIndicatorViewTransform:(CGAffineTransform *)a3;
-- (void)setIndicatorViewTransform:(CGAffineTransform *)a3;
+- (SBSAIndicatorElementDescriptionMutator)initWithIndicatorElementDescription:(id)description;
+- (void)setAssociatedSystemApertureElementIdentity:(id)identity;
+- (void)setFixedIndicatorViewTransform:(CGAffineTransform *)transform;
+- (void)setIndicatorViewTransform:(CGAffineTransform *)transform;
 @end
 
 @implementation SBSAIndicatorElementDescriptionMutator
 
-- (SBSAIndicatorElementDescriptionMutator)initWithIndicatorElementDescription:(id)a3
+- (SBSAIndicatorElementDescriptionMutator)initWithIndicatorElementDescription:(id)description
 {
-  v5 = a3;
+  descriptionCopy = description;
   v9.receiver = self;
   v9.super_class = SBSAIndicatorElementDescriptionMutator;
   v6 = [(SBSAIndicatorElementDescriptionMutator *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_indicatorElementDescription, a3);
+    objc_storeStrong(&v6->_indicatorElementDescription, description);
   }
 
   return v7;
 }
 
-- (void)setAssociatedSystemApertureElementIdentity:(id)a3
+- (void)setAssociatedSystemApertureElementIdentity:(id)identity
 {
-  v11 = a3;
-  v4 = [(SBSAIndicatorElementDescriptionMutator *)self associatedSystemApertureElementIdentity];
+  identityCopy = identity;
+  associatedSystemApertureElementIdentity = [(SBSAIndicatorElementDescriptionMutator *)self associatedSystemApertureElementIdentity];
   v5 = BSEqualObjects();
 
   if ((v5 & 1) == 0)
   {
     indicatorElementDescription = self->_indicatorElementDescription;
-    if (v11)
+    if (identityCopy)
     {
       v7 = [SBSAElementIdentification alloc];
-      v8 = [v11 clientIdentifier];
-      v9 = [v11 elementIdentifier];
-      v10 = [(SBSAElementIdentification *)v7 initWithClientIdentifier:v8 elementIdentifier:v9];
+      clientIdentifier = [identityCopy clientIdentifier];
+      elementIdentifier = [identityCopy elementIdentifier];
+      v10 = [(SBSAElementIdentification *)v7 initWithClientIdentifier:clientIdentifier elementIdentifier:elementIdentifier];
       [(SBSAIndicatorElementDescription *)indicatorElementDescription _setAssociatedSystemApertureElementIdentity:v10];
     }
 
@@ -63,13 +63,13 @@
   return result;
 }
 
-- (void)setIndicatorViewTransform:(CGAffineTransform *)a3
+- (void)setIndicatorViewTransform:(CGAffineTransform *)transform
 {
   indicatorElementDescription = self->_indicatorElementDescription;
-  v4 = *&a3->c;
-  v5[0] = *&a3->a;
+  v4 = *&transform->c;
+  v5[0] = *&transform->a;
   v5[1] = v4;
-  v5[2] = *&a3->tx;
+  v5[2] = *&transform->tx;
   [(SBSAIndicatorElementDescription *)indicatorElementDescription _setIndicatorViewTransform:v5];
 }
 
@@ -87,13 +87,13 @@
   return result;
 }
 
-- (void)setFixedIndicatorViewTransform:(CGAffineTransform *)a3
+- (void)setFixedIndicatorViewTransform:(CGAffineTransform *)transform
 {
   indicatorElementDescription = self->_indicatorElementDescription;
-  v4 = *&a3->c;
-  v5[0] = *&a3->a;
+  v4 = *&transform->c;
+  v5[0] = *&transform->a;
   v5[1] = v4;
-  v5[2] = *&a3->tx;
+  v5[2] = *&transform->tx;
   [(SBSAIndicatorElementDescription *)indicatorElementDescription _setFixedIndicatorViewTransform:v5];
 }
 

@@ -1,14 +1,14 @@
 @interface LinkShareActivityViewController
-- (_TtC15ConversationKit31LinkShareActivityViewController)initWithActivityItems:(id)a3 applicationActivities:(id)a4;
-- (void)_prepareActivity:(id)a3;
+- (_TtC15ConversationKit31LinkShareActivityViewController)initWithActivityItems:(id)items applicationActivities:(id)activities;
+- (void)_prepareActivity:(id)activity;
 @end
 
 @implementation LinkShareActivityViewController
 
-- (_TtC15ConversationKit31LinkShareActivityViewController)initWithActivityItems:(id)a3 applicationActivities:(id)a4
+- (_TtC15ConversationKit31LinkShareActivityViewController)initWithActivityItems:(id)items applicationActivities:(id)activities
 {
   v5 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  if (a4)
+  if (activities)
   {
     type metadata accessor for NSObject(0, &lazy cache variable for type metadata for UIActivity);
     v6 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
@@ -22,11 +22,11 @@
   return LinkShareActivityViewController.init(activityItems:applicationActivities:)(v5, v6);
 }
 
-- (void)_prepareActivity:(id)a3
+- (void)_prepareActivity:(id)activity
 {
-  v4 = a3;
-  v5 = self;
-  LinkShareActivityViewController._prepare(_:)(v4);
+  activityCopy = activity;
+  selfCopy = self;
+  LinkShareActivityViewController._prepare(_:)(activityCopy);
 }
 
 @end

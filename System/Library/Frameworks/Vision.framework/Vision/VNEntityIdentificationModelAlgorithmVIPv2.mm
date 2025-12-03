@@ -1,19 +1,19 @@
 @interface VNEntityIdentificationModelAlgorithmVIPv2
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 @end
 
 @implementation VNEntityIdentificationModelAlgorithmVIPv2
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     isKindOfClass = 1;
   }
 
   else
   {
-    v3 = a3;
+    equalCopy = equal;
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
   }

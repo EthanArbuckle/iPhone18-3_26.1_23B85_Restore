@@ -1,14 +1,14 @@
 @interface SBAlertItemsObjectQueue
-- (BOOL)hasObjectOfClass:(Class)a3;
+- (BOOL)hasObjectOfClass:(Class)class;
 - (SBAlertItemsObjectQueue)init;
 - (id)dequeueAllObjects;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)objectsOfClass:(Class)a3;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)objectsOfClass:(Class)class;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
-- (void)appendObject:(id)a3;
-- (void)prependObject:(id)a3;
-- (void)removeObject:(id)a3;
+- (void)appendObject:(id)object;
+- (void)prependObject:(id)object;
+- (void)removeObject:(id)object;
 @end
 
 @implementation SBAlertItemsObjectQueue
@@ -28,64 +28,64 @@
   return v2;
 }
 
-- (void)appendObject:(id)a3
+- (void)appendObject:(id)object
 {
-  v5 = a3;
-  v6 = v5;
-  if (!v5)
+  objectCopy = object;
+  v6 = objectCopy;
+  if (!objectCopy)
   {
     [(SBAlertItemsObjectQueue *)a2 appendObject:?];
-    v5 = 0;
+    objectCopy = 0;
   }
 
-  [(NSMutableOrderedSet *)self->_objects addObject:v5];
+  [(NSMutableOrderedSet *)self->_objects addObject:objectCopy];
 }
 
-- (void)prependObject:(id)a3
+- (void)prependObject:(id)object
 {
-  v5 = a3;
-  v6 = v5;
-  if (!v5)
+  objectCopy = object;
+  v6 = objectCopy;
+  if (!objectCopy)
   {
     [(SBAlertItemsObjectQueue *)a2 prependObject:?];
-    v5 = 0;
+    objectCopy = 0;
   }
 
-  [(NSMutableOrderedSet *)self->_objects insertObject:v5 atIndex:0];
+  [(NSMutableOrderedSet *)self->_objects insertObject:objectCopy atIndex:0];
 }
 
 - (id)dequeueAllObjects
 {
   v3 = [(NSMutableOrderedSet *)self->_objects copy];
   [(NSMutableOrderedSet *)self->_objects removeAllObjects];
-  v4 = [v3 array];
+  array = [v3 array];
 
-  return v4;
+  return array;
 }
 
-- (void)removeObject:(id)a3
+- (void)removeObject:(id)object
 {
-  v5 = a3;
+  objectCopy = object;
   if (![(SBAlertItemsObjectQueue *)self containsObject:?])
   {
     [(SBAlertItemsObjectQueue *)a2 removeObject:?];
   }
 
-  [(NSMutableOrderedSet *)self->_objects removeObject:v5];
+  [(NSMutableOrderedSet *)self->_objects removeObject:objectCopy];
 }
 
-- (BOOL)hasObjectOfClass:(Class)a3
+- (BOOL)hasObjectOfClass:(Class)class
 {
   objects = self->_objects;
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __44__SBAlertItemsObjectQueue_hasObjectOfClass___block_invoke;
   v5[3] = &__block_descriptor_40_e15_B32__0_8Q16_B24lu32l8;
-  v5[4] = a3;
+  v5[4] = class;
   return [(NSMutableOrderedSet *)objects indexOfObjectPassingTest:v5]!= 0x7FFFFFFFFFFFFFFFLL;
 }
 
-- (id)objectsOfClass:(Class)a3
+- (id)objectsOfClass:(Class)class
 {
   v17 = *MEMORY[0x277D85DE8];
   v4 = objc_alloc_init(MEMORY[0x277CBEB58]);
@@ -126,10 +126,10 @@
 
 - (id)succinctDescription
 {
-  v2 = [(SBAlertItemsObjectQueue *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBAlertItemsObjectQueue *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -140,12 +140,12 @@
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBAlertItemsObjectQueue *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBAlertItemsObjectQueue *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 - (void)appendObject:(uint64_t)a1 .cold.1(uint64_t a1, uint64_t a2)

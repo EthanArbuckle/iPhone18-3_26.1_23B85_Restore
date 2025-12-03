@@ -1,7 +1,7 @@
 @interface VoiceOverBrailleUIBrailleNotesViewController
 - (id)specifiers;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
 @end
 
 @implementation VoiceOverBrailleUIBrailleNotesViewController
@@ -59,17 +59,17 @@
   return v3;
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v14 = a4;
-  v7 = [(VoiceOverBrailleUIBrailleNotesViewController *)self specifierForIndexPath:a5];
+  cellCopy = cell;
+  v7 = [(VoiceOverBrailleUIBrailleNotesViewController *)self specifierForIndexPath:path];
   v8 = [v7 propertyForKey:@"sortType"];
   if (v8)
   {
     v9 = +[AXSettings sharedInstance];
-    v10 = [v9 voiceOverTouchBrailleUIBrailleNotesSortType];
+    voiceOverTouchBrailleUIBrailleNotesSortType = [v9 voiceOverTouchBrailleUIBrailleNotesSortType];
 
-    [v14 setChecked:{objc_msgSend(v8, "integerValue") == v10}];
+    [cellCopy setChecked:{objc_msgSend(v8, "integerValue") == voiceOverTouchBrailleUIBrailleNotesSortType}];
   }
 
   else
@@ -78,26 +78,26 @@
     if (v11)
     {
       v12 = +[AXSettings sharedInstance];
-      v13 = [v12 voiceOverTouchBrailleUIBrailleNotesSortDirection];
+      voiceOverTouchBrailleUIBrailleNotesSortDirection = [v12 voiceOverTouchBrailleUIBrailleNotesSortDirection];
 
-      [v14 setChecked:{objc_msgSend(v11, "integerValue") == v13}];
+      [cellCopy setChecked:{objc_msgSend(v11, "integerValue") == voiceOverTouchBrailleUIBrailleNotesSortDirection}];
     }
   }
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v29.receiver = self;
   v29.super_class = VoiceOverBrailleUIBrailleNotesViewController;
-  [(VoiceOverBrailleUIBrailleNotesViewController *)&v29 tableView:v6 didSelectRowAtIndexPath:v7];
+  [(VoiceOverBrailleUIBrailleNotesViewController *)&v29 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
   v27 = 0u;
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v8 = [v6 visibleCells];
-  v9 = [v8 countByEnumeratingWithState:&v25 objects:v30 count:16];
+  visibleCells = [viewCopy visibleCells];
+  v9 = [visibleCells countByEnumeratingWithState:&v25 objects:v30 count:16];
   if (v9)
   {
     v10 = v9;
@@ -108,31 +108,31 @@
       {
         if (*v26 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(visibleCells);
         }
 
         v13 = __UIAccessibilitySafeClass();
         [v13 setChecked:0];
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v25 objects:v30 count:16];
+      v10 = [visibleCells countByEnumeratingWithState:&v25 objects:v30 count:16];
     }
 
     while (v10);
   }
 
-  v14 = [v6 cellForRowAtIndexPath:v7];
+  v14 = [viewCopy cellForRowAtIndexPath:pathCopy];
   v15 = __UIAccessibilitySafeClass();
 
   [v15 setChecked:1];
-  v16 = [(VoiceOverBrailleUIBrailleNotesViewController *)self specifierForIndexPath:v7];
+  v16 = [(VoiceOverBrailleUIBrailleNotesViewController *)self specifierForIndexPath:pathCopy];
   v17 = [v16 propertyForKey:@"sortType"];
   v18 = v17;
   if (v17)
   {
-    v19 = [v17 integerValue];
+    integerValue = [v17 integerValue];
     v20 = +[AXSettings sharedInstance];
-    [v20 setVoiceOverTouchBrailleUIBrailleNotesSortType:v19];
+    [v20 setVoiceOverTouchBrailleUIBrailleNotesSortType:integerValue];
 
     [(VoiceOverBrailleUIBrailleNotesViewController *)self reload];
   }
@@ -143,9 +143,9 @@
     v22 = v21;
     if (v21)
     {
-      v23 = [v21 integerValue];
+      integerValue2 = [v21 integerValue];
       v24 = +[AXSettings sharedInstance];
-      [v24 setVoiceOverTouchBrailleUIBrailleNotesSortDirection:v23];
+      [v24 setVoiceOverTouchBrailleUIBrailleNotesSortDirection:integerValue2];
     }
 
     [(VoiceOverBrailleUIBrailleNotesViewController *)self reload];

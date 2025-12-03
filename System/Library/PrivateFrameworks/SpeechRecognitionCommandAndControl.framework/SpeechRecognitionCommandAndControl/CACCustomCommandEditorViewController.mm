@@ -1,7 +1,7 @@
 @interface CACCustomCommandEditorViewController
-- (BOOL)_commandStringIsValid:(id)a3 checkForLength:(BOOL)a4;
-- (BOOL)_hasValidActionWithErrorText:(id *)a3;
-- (BOOL)_hasValidSpokenStringWithErrorText:(id *)a3;
+- (BOOL)_commandStringIsValid:(id)valid checkForLength:(BOOL)length;
+- (BOOL)_hasValidActionWithErrorText:(id *)text;
+- (BOOL)_hasValidSpokenStringWithErrorText:(id *)text;
 - (BOOL)_shouldShowDeleteButton;
 - (BOOL)_showAlertIfNeededForAction;
 - (BOOL)hasEmptySpokenString;
@@ -11,31 +11,31 @@
 - (BOOL)isValidCommandItem;
 - (BOOL)showAlertIfNeededForAnyError;
 - (BOOL)showAlertIfNeededForErrorInSpokenString;
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5;
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string;
 - (CACCustomCommandEditorViewController)init;
 - (CACCustomCommandEditorViewControllerDelegate)delegate;
 - (NSDictionary)applicationIdentifiersToNames;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)_showErrorAlertWithText:(id)a3;
-- (void)_updateCommandItemWithText:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)_showErrorAlertWithText:(id)text;
+- (void)_updateCommandItemWithText:(id)text;
 - (void)cancelAction;
 - (void)configureNavItems;
-- (void)didUpdateCommandItemForApplicationViewController:(id)a3;
-- (void)doneButtonTapped:(id)a3;
-- (void)editButtonTapped:(id)a3;
+- (void)didUpdateCommandItemForApplicationViewController:(id)controller;
+- (void)doneButtonTapped:(id)tapped;
+- (void)editButtonTapped:(id)tapped;
 - (void)saveButtonTapped;
-- (void)setIsInEditingMode:(BOOL)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)textFieldDidBeginEditing:(id)a3;
-- (void)textFieldDidChange:(id)a3;
-- (void)textFieldDidEndEditing:(id)a3;
+- (void)setIsInEditingMode:(BOOL)mode;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)textFieldDidBeginEditing:(id)editing;
+- (void)textFieldDidChange:(id)change;
+- (void)textFieldDidEndEditing:(id)editing;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation CACCustomCommandEditorViewController
@@ -70,17 +70,17 @@
   v13.receiver = self;
   v13.super_class = CACCustomCommandEditorViewController;
   [(CACCustomCommandEditorViewController *)&v13 viewDidLoad];
-  v3 = [(CACCustomCommandEditorViewController *)self isNewCommand];
-  v4 = [(CACCustomCommandEditorViewController *)self commandItem];
-  v5 = v4;
-  if (v3)
+  isNewCommand = [(CACCustomCommandEditorViewController *)self isNewCommand];
+  commandItem = [(CACCustomCommandEditorViewController *)self commandItem];
+  v5 = commandItem;
+  if (isNewCommand)
   {
-    [(CACCustomCommandEditorViewController *)self setMutableCommandItem:v4];
+    [(CACCustomCommandEditorViewController *)self setMutableCommandItem:commandItem];
   }
 
   else
   {
-    v6 = [v4 copy];
+    v6 = [commandItem copy];
     [(CACCustomCommandEditorViewController *)self setMutableCommandItem:v6];
   }
 
@@ -90,91 +90,91 @@
   [(CACCustomCommandEditorViewController *)self setTitle:v7];
 
   v8 = objc_alloc(MEMORY[0x277D75B80]);
-  v9 = [(CACCustomCommandEditorViewController *)self view];
-  v10 = [v8 initWithTarget:v9 action:sel_endEditing_];
+  view = [(CACCustomCommandEditorViewController *)self view];
+  v10 = [v8 initWithTarget:view action:sel_endEditing_];
 
   [v10 setCancelsTouchesInView:0];
-  v11 = [(CACCustomCommandEditorViewController *)self view];
-  [v11 addGestureRecognizer:v10];
+  view2 = [(CACCustomCommandEditorViewController *)self view];
+  [view2 addGestureRecognizer:v10];
 
-  v12 = [MEMORY[0x277CE7E38] sharedManager];
-  [(CACCustomCommandEditorViewController *)self setShortcutsManager:v12];
+  mEMORY[0x277CE7E38] = [MEMORY[0x277CE7E38] sharedManager];
+  [(CACCustomCommandEditorViewController *)self setShortcutsManager:mEMORY[0x277CE7E38]];
 }
 
 - (BOOL)isModalInPresentation
 {
-  v3 = [(CACCustomCommandEditorViewController *)self mutableCommandItem];
-  v4 = [v3 customType];
+  mutableCommandItem = [(CACCustomCommandEditorViewController *)self mutableCommandItem];
+  customType = [mutableCommandItem customType];
 
-  if ([v4 isEqualToString:@"RunGesture"] & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"PasteText") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"RunUserActionFlow") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"RunShortcutsWorkflow"))
+  if ([customType isEqualToString:@"RunGesture"] & 1) != 0 || (objc_msgSend(customType, "isEqualToString:", @"PasteText") & 1) != 0 || (objc_msgSend(customType, "isEqualToString:", @"RunUserActionFlow") & 1) != 0 || (objc_msgSend(customType, "isEqualToString:", @"RunShortcutsWorkflow"))
   {
     v5 = 1;
   }
 
   else
   {
-    v5 = [v4 isEqualToString:@"PasteBoard"];
+    v5 = [customType isEqualToString:@"PasteBoard"];
   }
 
-  v6 = [(CACCustomCommandEditorViewController *)self hasEmptySpokenString];
-  v7 = (v5 | ~v6) & [(CACCustomCommandEditorViewController *)self isInEditingMode];
+  hasEmptySpokenString = [(CACCustomCommandEditorViewController *)self hasEmptySpokenString];
+  v7 = (v5 | ~hasEmptySpokenString) & [(CACCustomCommandEditorViewController *)self isInEditingMode];
 
   return v7 & 1;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v10.receiver = self;
   v10.super_class = CACCustomCommandEditorViewController;
-  [(CACCustomCommandEditorViewController *)&v10 viewWillAppear:a3];
-  v4 = [(CACCustomCommandEditorViewController *)self tableView];
-  [v4 reloadData];
+  [(CACCustomCommandEditorViewController *)&v10 viewWillAppear:appear];
+  tableView = [(CACCustomCommandEditorViewController *)self tableView];
+  [tableView reloadData];
 
-  v5 = [(CACCustomCommandEditorViewController *)self mutableCommandItem];
-  v6 = [v5 displayString];
-  if (![v6 length])
+  mutableCommandItem = [(CACCustomCommandEditorViewController *)self mutableCommandItem];
+  displayString = [mutableCommandItem displayString];
+  if (![displayString length])
   {
-    v7 = [(CACCustomCommandEditorViewController *)self isNewCommand];
+    isNewCommand = [(CACCustomCommandEditorViewController *)self isNewCommand];
 
-    if (!v7)
+    if (!isNewCommand)
     {
       return;
     }
 
-    v8 = [(CACCustomCommandEditorViewController *)self tableView];
+    tableView2 = [(CACCustomCommandEditorViewController *)self tableView];
     v9 = [MEMORY[0x277CCAA70] indexPathForRow:0 inSection:0];
-    v5 = [v8 cellForRowAtIndexPath:v9];
+    mutableCommandItem = [tableView2 cellForRowAtIndexPath:v9];
 
-    v6 = [v5 textField];
-    [v6 becomeFirstResponder];
+    displayString = [mutableCommandItem textField];
+    [displayString becomeFirstResponder];
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v3.receiver = self;
   v3.super_class = CACCustomCommandEditorViewController;
-  [(CACCustomCommandEditorViewController *)&v3 viewWillDisappear:a3];
+  [(CACCustomCommandEditorViewController *)&v3 viewWillDisappear:disappear];
 }
 
 - (void)saveButtonTapped
 {
   if ([(CACCustomCommandEditorViewController *)self isValidCommandItem])
   {
-    v3 = [(CACCustomCommandEditorViewController *)self mutableCommandItem];
-    [(CACCustomCommandEditorViewController *)self setCommandItem:v3];
+    mutableCommandItem = [(CACCustomCommandEditorViewController *)self mutableCommandItem];
+    [(CACCustomCommandEditorViewController *)self setCommandItem:mutableCommandItem];
 
-    v4 = [(CACCustomCommandEditorViewController *)self delegate];
-    if (v4 && (v5 = v4, [(CACCustomCommandEditorViewController *)self delegate], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_opt_respondsToSelector(), v6, v5, (v7 & 1) != 0))
+    delegate = [(CACCustomCommandEditorViewController *)self delegate];
+    if (delegate && (v5 = delegate, [(CACCustomCommandEditorViewController *)self delegate], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_opt_respondsToSelector(), v6, v5, (v7 & 1) != 0))
     {
-      v9 = [(CACCustomCommandEditorViewController *)self delegate];
-      [v9 didFinishEditingCustomCommandForEditor:self];
+      delegate2 = [(CACCustomCommandEditorViewController *)self delegate];
+      [delegate2 didFinishEditingCustomCommandForEditor:self];
     }
 
     else
     {
-      v8 = [(CACCustomCommandEditorViewController *)self commandItem];
-      [v8 saveToPreferences];
+      commandItem = [(CACCustomCommandEditorViewController *)self commandItem];
+      [commandItem saveToPreferences];
 
       v10[0] = MEMORY[0x277D85DD0];
       v10[1] = 3221225472;
@@ -200,11 +200,11 @@ void __56__CACCustomCommandEditorViewController_saveButtonTapped__block_invoke(u
 
 - (void)cancelAction
 {
-  v3 = [(CACCustomCommandEditorViewController *)self delegate];
-  if (v3 && (v4 = v3, [(CACCustomCommandEditorViewController *)self delegate], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_opt_respondsToSelector(), v5, v4, (v6 & 1) != 0))
+  delegate = [(CACCustomCommandEditorViewController *)self delegate];
+  if (delegate && (v4 = delegate, [(CACCustomCommandEditorViewController *)self delegate], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_opt_respondsToSelector(), v5, v4, (v6 & 1) != 0))
   {
-    v7 = [(CACCustomCommandEditorViewController *)self delegate];
-    [v7 didCancelEditingCustomCommandForEditor:self];
+    delegate2 = [(CACCustomCommandEditorViewController *)self delegate];
+    [delegate2 didCancelEditingCustomCommandForEditor:self];
   }
 
   else
@@ -224,14 +224,14 @@ void __52__CACCustomCommandEditorViewController_cancelAction__block_invoke(uint6
   [v2 didUpdatePropertiesForEditor:*(a1 + 32)];
 }
 
-- (void)editButtonTapped:(id)a3
+- (void)editButtonTapped:(id)tapped
 {
   [(CACCustomCommandEditorViewController *)self setIsInEditingMode:1];
 
   [(CACCustomCommandEditorViewController *)self configureNavItems];
 }
 
-- (void)doneButtonTapped:(id)a3
+- (void)doneButtonTapped:(id)tapped
 {
   [(CACCustomCommandEditorViewController *)self setIsInEditingMode:0];
   [(CACCustomCommandEditorViewController *)self configureNavItems];
@@ -261,8 +261,8 @@ void __57__CACCustomCommandEditorViewController_doneButtonTapped___block_invoke(
     [(CACCustomCommandEditorViewController *)self editButton];
   }
   v3 = ;
-  v4 = [(CACCustomCommandEditorViewController *)self navigationItem];
-  [v4 setRightBarButtonItem:v3];
+  navigationItem = [(CACCustomCommandEditorViewController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:v3];
 
   if ([(CACCustomCommandEditorViewController *)self isInEditingMode])
   {
@@ -274,33 +274,33 @@ void __57__CACCustomCommandEditorViewController_doneButtonTapped___block_invoke(
     [(CACCustomCommandEditorViewController *)self doneButton];
   }
   v6 = ;
-  v5 = [(CACCustomCommandEditorViewController *)self navigationItem];
-  [v5 setLeftBarButtonItem:v6];
+  navigationItem2 = [(CACCustomCommandEditorViewController *)self navigationItem];
+  [navigationItem2 setLeftBarButtonItem:v6];
 }
 
 - (BOOL)isNewCommand
 {
   v3 = +[CACPreferences sharedPreferences];
-  v4 = [(CACCustomCommandEditorViewController *)self commandItem];
-  v5 = [v4 identifier];
-  v6 = [v3 propertiesForCommandIdentifier:v5];
+  commandItem = [(CACCustomCommandEditorViewController *)self commandItem];
+  identifier = [commandItem identifier];
+  v6 = [v3 propertiesForCommandIdentifier:identifier];
   v7 = v6 == 0;
 
   return v7;
 }
 
-- (void)setIsInEditingMode:(BOOL)a3
+- (void)setIsInEditingMode:(BOOL)mode
 {
-  v3 = a3;
+  modeCopy = mode;
   obj = self;
   objc_sync_enter(obj);
-  obj->_isInEditingMode = v3;
-  [(CACCustomCommandEditorViewController *)obj setShowsDeleteButton:v3];
-  v4 = [(CACCustomCommandEditorViewController *)obj tableView];
+  obj->_isInEditingMode = modeCopy;
+  [(CACCustomCommandEditorViewController *)obj setShowsDeleteButton:modeCopy];
+  tableView = [(CACCustomCommandEditorViewController *)obj tableView];
   v5 = MEMORY[0x277CCAA78];
-  v6 = [(CACCustomCommandEditorViewController *)obj tableView];
-  v7 = [v5 indexSetWithIndexesInRange:{0, objc_msgSend(v6, "numberOfSections")}];
-  [v4 reloadSections:v7 withRowAnimation:100];
+  tableView2 = [(CACCustomCommandEditorViewController *)obj tableView];
+  v7 = [v5 indexSetWithIndexesInRange:{0, objc_msgSend(tableView2, "numberOfSections")}];
+  [tableView reloadSections:v7 withRowAnimation:100];
 
   objc_sync_exit(obj);
 }
@@ -319,19 +319,19 @@ void __57__CACCustomCommandEditorViewController_doneButtonTapped___block_invoke(
 
 - (BOOL)isEmptyCommandItem
 {
-  v3 = [(CACCustomCommandEditorViewController *)self mutableCommandItem];
+  mutableCommandItem = [(CACCustomCommandEditorViewController *)self mutableCommandItem];
   if ([(CACCustomCommandEditorViewController *)self hasEmptySpokenString])
   {
-    v4 = [v3 customType];
-    if (v4)
+    customType = [mutableCommandItem customType];
+    if (customType)
     {
       v5 = 0;
     }
 
     else
     {
-      v6 = [v3 customScope];
-      v5 = [v6 isEqualToString:@"com.apple.speech.SystemWideScope"];
+      customScope = [mutableCommandItem customScope];
+      v5 = [customScope isEqualToString:@"com.apple.speech.SystemWideScope"];
     }
   }
 
@@ -345,9 +345,9 @@ void __57__CACCustomCommandEditorViewController_doneButtonTapped___block_invoke(
 
 - (BOOL)hasEmptySpokenString
 {
-  v2 = [(CACCustomCommandEditorViewController *)self mutableCommandItem];
-  v3 = [v2 displayString];
-  v4 = [v3 length] == 0;
+  mutableCommandItem = [(CACCustomCommandEditorViewController *)self mutableCommandItem];
+  displayString = [mutableCommandItem displayString];
+  v4 = [displayString length] == 0;
 
   return v4;
 }
@@ -388,12 +388,12 @@ void __57__CACCustomCommandEditorViewController_doneButtonTapped___block_invoke(
   return [(CACCustomCommandEditorViewController *)self _showAlertIfNeededForAction];
 }
 
-- (void)_showErrorAlertWithText:(id)a3
+- (void)_showErrorAlertWithText:(id)text
 {
   v4 = MEMORY[0x277D75110];
-  v5 = a3;
+  textCopy = text;
   v6 = [CACLocaleUtilities localizedUIStringForKey:@"CustomCommand.Error.Title"];
-  v10 = [v4 alertControllerWithTitle:v6 message:v5 preferredStyle:1];
+  v10 = [v4 alertControllerWithTitle:v6 message:textCopy preferredStyle:1];
 
   v7 = MEMORY[0x277D750F8];
   v8 = [CACLocaleUtilities localizedUIStringForKey:@"CommonStrings.OK"];
@@ -403,18 +403,18 @@ void __57__CACCustomCommandEditorViewController_doneButtonTapped___block_invoke(
   [(CACCustomCommandEditorViewController *)self presentViewController:v10 animated:1 completion:0];
 }
 
-- (BOOL)_hasValidSpokenStringWithErrorText:(id *)a3
+- (BOOL)_hasValidSpokenStringWithErrorText:(id *)text
 {
-  v4 = self;
+  selfCopy = self;
   v27 = *MEMORY[0x277D85DE8];
-  v5 = [(CACCustomCommandEditorViewController *)self mutableCommandItem];
-  v6 = [v5 displayString];
-  LODWORD(v4) = [(CACCustomCommandEditorViewController *)v4 _commandStringIsValid:v6 checkForLength:1];
+  mutableCommandItem = [(CACCustomCommandEditorViewController *)self mutableCommandItem];
+  displayString = [mutableCommandItem displayString];
+  LODWORD(selfCopy) = [(CACCustomCommandEditorViewController *)selfCopy _commandStringIsValid:displayString checkForLength:1];
 
-  if (!v4)
+  if (!selfCopy)
   {
     v18 = [CACLocaleUtilities localizedUIStringForKey:@"CustomCommand.Error.EmptyName"];
-    if (!a3)
+    if (!text)
     {
       goto LABEL_22;
     }
@@ -427,8 +427,8 @@ void __57__CACCustomCommandEditorViewController_doneButtonTapped___block_invoke(
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v8 = [(CACSpokenCommandPresentation *)v7 flattenedCommandGroupsAndItems];
-  v9 = [v8 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  flattenedCommandGroupsAndItems = [(CACSpokenCommandPresentation *)v7 flattenedCommandGroupsAndItems];
+  v9 = [flattenedCommandGroupsAndItems countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v9)
   {
     v10 = v9;
@@ -440,22 +440,22 @@ void __57__CACCustomCommandEditorViewController_doneButtonTapped___block_invoke(
       {
         if (*v23 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(flattenedCommandGroupsAndItems);
         }
 
         v13 = *(*(&v22 + 1) + 8 * i);
         if (([v13 isGroup] & 1) == 0)
         {
           v14 = v13;
-          v15 = [v5 identifier];
-          v16 = [v14 identifier];
-          if ([v15 isEqualToString:v16])
+          identifier = [mutableCommandItem identifier];
+          identifier2 = [v14 identifier];
+          if ([identifier isEqualToString:identifier2])
           {
           }
 
           else
           {
-            v17 = [v5 conflictsWithItem:v14];
+            v17 = [mutableCommandItem conflictsWithItem:v14];
 
             if (v17)
             {
@@ -467,7 +467,7 @@ void __57__CACCustomCommandEditorViewController_doneButtonTapped___block_invoke(
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v10 = [flattenedCommandGroupsAndItems countByEnumeratingWithState:&v22 objects:v26 count:16];
       if (v10)
       {
         continue;
@@ -487,11 +487,11 @@ LABEL_18:
     v18 = 0;
   }
 
-  if (a3)
+  if (text)
   {
 LABEL_21:
     v19 = v18;
-    *a3 = v18;
+    *text = v18;
   }
 
 LABEL_22:
@@ -499,21 +499,21 @@ LABEL_22:
   return v18 == 0;
 }
 
-- (BOOL)_hasValidActionWithErrorText:(id *)a3
+- (BOOL)_hasValidActionWithErrorText:(id *)text
 {
-  v4 = [(CACCustomCommandEditorViewController *)self mutableCommandItem];
-  v5 = [v4 customType];
-  v6 = [v5 isEqualToString:@"RunGesture"];
+  mutableCommandItem = [(CACCustomCommandEditorViewController *)self mutableCommandItem];
+  customType = [mutableCommandItem customType];
+  v6 = [customType isEqualToString:@"RunGesture"];
 
   if (!v6)
   {
-    v9 = [v4 customType];
-    v10 = [v9 isEqualToString:@"PasteText"];
+    customType2 = [mutableCommandItem customType];
+    v10 = [customType2 isEqualToString:@"PasteText"];
 
     if (v10)
     {
-      v11 = [v4 customTextToInsert];
-      v12 = [v11 length];
+      customTextToInsert = [mutableCommandItem customTextToInsert];
+      v12 = [customTextToInsert length];
 
       if (v12)
       {
@@ -525,14 +525,14 @@ LABEL_22:
 
     else
     {
-      v13 = [v4 customType];
-      v14 = [v13 isEqualToString:@"RunUserActionFlow"];
+      customType3 = [mutableCommandItem customType];
+      v14 = [customType3 isEqualToString:@"RunUserActionFlow"];
 
       if (v14)
       {
-        v15 = [v4 customUserActionFlow];
-        v16 = [v15 userActions];
-        v17 = [v16 count];
+        customUserActionFlow = [mutableCommandItem customUserActionFlow];
+        userActions = [customUserActionFlow userActions];
+        v17 = [userActions count];
 
         if (v17)
         {
@@ -544,13 +544,13 @@ LABEL_22:
 
       else
       {
-        v18 = [v4 customType];
-        v19 = [v18 isEqualToString:@"RunShortcutsWorkflow"];
+        customType4 = [mutableCommandItem customType];
+        v19 = [customType4 isEqualToString:@"RunShortcutsWorkflow"];
 
         if (v19)
         {
-          v20 = [v4 customShortcutsWorkflowIdentifier];
-          v21 = [v20 length];
+          customShortcutsWorkflowIdentifier = [mutableCommandItem customShortcutsWorkflowIdentifier];
+          v21 = [customShortcutsWorkflowIdentifier length];
 
           if (v21)
           {
@@ -562,13 +562,13 @@ LABEL_22:
 
         else
         {
-          v22 = [v4 customType];
-          v23 = [v22 isEqualToString:@"PasteBoard"];
+          customType5 = [mutableCommandItem customType];
+          v23 = [customType5 isEqualToString:@"PasteBoard"];
 
           if (v23)
           {
-            v24 = [v4 customPasteBoard];
-            v25 = [v24 count];
+            customPasteBoard = [mutableCommandItem customPasteBoard];
+            v25 = [customPasteBoard count];
 
             if (v25)
             {
@@ -588,7 +588,7 @@ LABEL_22:
 
 LABEL_20:
     v26 = [CACLocaleUtilities localizedUIStringForKey:v8];
-    if (!a3)
+    if (!text)
     {
       goto LABEL_17;
     }
@@ -596,9 +596,9 @@ LABEL_20:
     goto LABEL_16;
   }
 
-  v7 = [v4 customGesture];
+  customGesture = [mutableCommandItem customGesture];
 
-  if (!v7)
+  if (!customGesture)
   {
     v8 = @"CustomCommand.Error.EmptyGesture";
     goto LABEL_20;
@@ -606,11 +606,11 @@ LABEL_20:
 
 LABEL_15:
   v26 = 0;
-  if (a3)
+  if (text)
   {
 LABEL_16:
     v27 = v26;
-    *a3 = v26;
+    *text = v26;
   }
 
 LABEL_17:
@@ -618,14 +618,14 @@ LABEL_17:
   return v26 == 0;
 }
 
-- (BOOL)_commandStringIsValid:(id)a3 checkForLength:(BOOL)a4
+- (BOOL)_commandStringIsValid:(id)valid checkForLength:(BOOL)length
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = [MEMORY[0x277CCA900] illegalCharacterSet];
-  if (v4)
+  lengthCopy = length;
+  validCopy = valid;
+  illegalCharacterSet = [MEMORY[0x277CCA900] illegalCharacterSet];
+  if (lengthCopy)
   {
-    v7 = [v5 stringByTrimmingCharactersInSet:v6];
+    v7 = [validCopy stringByTrimmingCharactersInSet:illegalCharacterSet];
     v8 = [v7 length] > 3;
   }
 
@@ -642,10 +642,10 @@ LABEL_17:
   applicationIdentifiersToNames = self->_applicationIdentifiersToNames;
   if (!applicationIdentifiersToNames)
   {
-    v4 = [MEMORY[0x277CE7E40] server];
-    v5 = [v4 installedApps];
+    server = [MEMORY[0x277CE7E40] server];
+    installedApps = [server installedApps];
     v6 = self->_applicationIdentifiersToNames;
-    self->_applicationIdentifiersToNames = v5;
+    self->_applicationIdentifiersToNames = installedApps;
 
     applicationIdentifiersToNames = self->_applicationIdentifiersToNames;
   }
@@ -661,30 +661,30 @@ LABEL_17:
   }
 
   v3 = +[CACPreferences sharedPreferences];
-  v4 = [(CACCustomCommandEditorViewController *)self commandItem];
-  v5 = [v4 identifier];
-  v6 = [v3 propertiesForCommandIdentifier:v5];
+  commandItem = [(CACCustomCommandEditorViewController *)self commandItem];
+  identifier = [commandItem identifier];
+  v6 = [v3 propertiesForCommandIdentifier:identifier];
   v7 = v6 != 0;
 
   return v7;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  if (a4 > 2)
+  if (section > 2)
   {
     return 0;
   }
 
   else
   {
-    return qword_26B404D88[a4];
+    return qword_26B404D88[section];
   }
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  if (a4)
+  if (section)
   {
     v6 = 0;
   }
@@ -697,20 +697,20 @@ LABEL_17:
   return v6;
 }
 
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section
 {
   if (![(CACCustomCommandEditorViewController *)self isInEditingMode])
   {
     goto LABEL_5;
   }
 
-  if (!a4)
+  if (!section)
   {
     v5 = @"CustomCommand.SpokenStringFooterText";
     goto LABEL_7;
   }
 
-  if (a4 != 1)
+  if (section != 1)
   {
 LABEL_5:
     v6 = 0;
@@ -725,55 +725,55 @@ LABEL_8:
   return v6;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 section])
+  viewCopy = view;
+  pathCopy = path;
+  if ([pathCopy section])
   {
-    if ([v7 section] == 2)
+    if ([pathCopy section] == 2)
     {
-      v8 = [v6 dequeueReusableCellWithIdentifier:@"Delete"];
+      v8 = [viewCopy dequeueReusableCellWithIdentifier:@"Delete"];
       if (!v8)
       {
         v8 = [objc_alloc(MEMORY[0x277D75B48]) initWithStyle:0 reuseIdentifier:@"Delete"];
-        v9 = [(CACCustomCommandEditorTextFieldCell *)v8 textLabel];
-        [v9 setTextAlignment:1];
+        textLabel = [(CACCustomCommandEditorTextFieldCell *)v8 textLabel];
+        [textLabel setTextAlignment:1];
 
         v10 = [CACLocaleUtilities localizedUIStringForKey:@"CustomCommand.Delete"];
-        v11 = [(CACCustomCommandEditorTextFieldCell *)v8 textLabel];
-        [v11 setText:v10];
+        textLabel2 = [(CACCustomCommandEditorTextFieldCell *)v8 textLabel];
+        [textLabel2 setText:v10];
 
-        v12 = [MEMORY[0x277D75348] _systemDestructiveTintColor];
-        v13 = [(CACCustomCommandEditorTextFieldCell *)v8 textLabel];
-        [v13 setTextColor:v12];
+        _systemDestructiveTintColor = [MEMORY[0x277D75348] _systemDestructiveTintColor];
+        textLabel3 = [(CACCustomCommandEditorTextFieldCell *)v8 textLabel];
+        [textLabel3 setTextColor:_systemDestructiveTintColor];
       }
 
       [(CACCustomCommandEditorTextFieldCell *)v8 setHidden:[(CACCustomCommandEditorViewController *)self _shouldShowDeleteButton]^ 1];
       goto LABEL_32;
     }
 
-    v8 = [v6 dequeueReusableCellWithIdentifier:@"Property"];
+    v8 = [viewCopy dequeueReusableCellWithIdentifier:@"Property"];
     if (!v8)
     {
       v8 = [objc_alloc(MEMORY[0x277D75B48]) initWithStyle:1 reuseIdentifier:@"Property"];
     }
 
-    v19 = [v7 row];
+    v19 = [pathCopy row];
     if (v19 == 1)
     {
       v20 = [CACLocaleUtilities localizedUIStringForKey:@"CustomCommand.Application"];
-      v24 = [(CACCustomCommandEditorViewController *)self mutableCommandItem];
-      v22 = [v24 customScope];
+      mutableCommandItem = [(CACCustomCommandEditorViewController *)self mutableCommandItem];
+      customScope = [mutableCommandItem customScope];
 
-      if ([v22 isEqualToString:@"com.apple.speech.SystemWideScope"])
+      if ([customScope isEqualToString:@"com.apple.speech.SystemWideScope"])
       {
         v23 = @"CustomCommand.AnyApplication";
         goto LABEL_17;
       }
 
-      v27 = [(CACCustomCommandEditorViewController *)self applicationIdentifiersToNames];
-      v30 = [v27 objectForKeyedSubscript:v22];
+      applicationIdentifiersToNames = [(CACCustomCommandEditorViewController *)self applicationIdentifiersToNames];
+      v30 = [applicationIdentifiersToNames objectForKeyedSubscript:customScope];
     }
 
     else
@@ -786,10 +786,10 @@ LABEL_8:
       }
 
       v20 = [CACLocaleUtilities localizedUIStringForKey:@"CustomCommand.Action"];
-      v21 = [(CACCustomCommandEditorViewController *)self mutableCommandItem];
-      v22 = [v21 customType];
+      mutableCommandItem2 = [(CACCustomCommandEditorViewController *)self mutableCommandItem];
+      customScope = [mutableCommandItem2 customType];
 
-      if ([v22 isEqualToString:@"RunGesture"])
+      if ([customScope isEqualToString:@"RunGesture"])
       {
         v23 = @"CustomCommand.RunGesture";
 LABEL_17:
@@ -797,20 +797,20 @@ LABEL_17:
 LABEL_25:
 
 LABEL_26:
-        v31 = [(CACCustomCommandEditorTextFieldCell *)v8 textLabel];
-        [v31 setText:v20];
+        textLabel4 = [(CACCustomCommandEditorTextFieldCell *)v8 textLabel];
+        [textLabel4 setText:v20];
 
-        v32 = [(CACCustomCommandEditorTextFieldCell *)v8 detailTextLabel];
-        [v32 setText:v25];
+        detailTextLabel = [(CACCustomCommandEditorTextFieldCell *)v8 detailTextLabel];
+        [detailTextLabel setText:v25];
 
         if ([(CACCustomCommandEditorViewController *)self isInEditingMode])
         {
           [(CACCustomCommandEditorTextFieldCell *)v8 setUserInteractionEnabled:1];
-          if (![v7 row])
+          if (![pathCopy row])
           {
-            v36 = [(CACCustomCommandEditorViewController *)self mutableCommandItem];
-            v37 = [v36 customType];
-            -[CACCustomCommandEditorTextFieldCell setAccessoryType:](v8, "setAccessoryType:", [v37 isEqualToString:@"RunUserActionFlow"] ^ 1);
+            mutableCommandItem3 = [(CACCustomCommandEditorViewController *)self mutableCommandItem];
+            customType = [mutableCommandItem3 customType];
+            -[CACCustomCommandEditorTextFieldCell setAccessoryType:](v8, "setAccessoryType:", [customType isEqualToString:@"RunUserActionFlow"] ^ 1);
 
             goto LABEL_31;
           }
@@ -832,38 +832,38 @@ LABEL_31:
         goto LABEL_32;
       }
 
-      if (![v22 isEqualToString:@"PasteText"])
+      if (![customScope isEqualToString:@"PasteText"])
       {
-        if ([v22 isEqualToString:@"RunUserActionFlow"])
+        if ([customScope isEqualToString:@"RunUserActionFlow"])
         {
           v47 = MEMORY[0x277CCACA8];
           v46 = [CACLocaleUtilities localizedUIStringForKey:@"CustomCommand.RunUserActionFlowWithNumber"];
-          v49 = [(CACCustomCommandEditorViewController *)self commandItem];
-          v38 = [v49 customUserActionFlow];
-          v39 = [v38 userActions];
-          [v39 count];
+          commandItem = [(CACCustomCommandEditorViewController *)self commandItem];
+          customUserActionFlow = [commandItem customUserActionFlow];
+          userActions = [customUserActionFlow userActions];
+          [userActions count];
           v40 = AXFormatInteger();
           v25 = [v47 localizedStringWithValidatedFormat:v46 validFormatSpecifiers:@"%@" error:0, v40];
 
           goto LABEL_25;
         }
 
-        if ([v22 isEqualToString:@"RunShortcutsWorkflow"])
+        if ([customScope isEqualToString:@"RunShortcutsWorkflow"])
         {
-          v48 = [MEMORY[0x277CE7E38] sharedManager];
-          v41 = [(CACCustomCommandEditorViewController *)self mutableCommandItem];
-          v42 = [v41 customShortcutsWorkflowIdentifier];
-          v43 = [v48 shortcutForIdentifier:v42];
-          v50 = [v43 shortcutName];
+          mEMORY[0x277CE7E38] = [MEMORY[0x277CE7E38] sharedManager];
+          mutableCommandItem4 = [(CACCustomCommandEditorViewController *)self mutableCommandItem];
+          customShortcutsWorkflowIdentifier = [mutableCommandItem4 customShortcutsWorkflowIdentifier];
+          v43 = [mEMORY[0x277CE7E38] shortcutForIdentifier:customShortcutsWorkflowIdentifier];
+          shortcutName = [v43 shortcutName];
 
           v44 = MEMORY[0x277CCACA8];
           v45 = [CACLocaleUtilities localizedUIStringForKey:@"CustomCommand.RunShortcutsWorkflowFormatted"];
-          v25 = [v44 localizedStringWithValidatedFormat:v45 validFormatSpecifiers:@"%@" error:0, v50];
+          v25 = [v44 localizedStringWithValidatedFormat:v45 validFormatSpecifiers:@"%@" error:0, shortcutName];
 
           goto LABEL_25;
         }
 
-        if ([v22 isEqualToString:@"PasteBoard"])
+        if ([customScope isEqualToString:@"PasteBoard"])
         {
           v23 = @"CustomCommand.PasteBoard";
         }
@@ -876,14 +876,14 @@ LABEL_31:
         goto LABEL_17;
       }
 
-      v26 = [(CACCustomCommandEditorViewController *)self mutableCommandItem];
-      v27 = [v26 customTextToInsert];
+      mutableCommandItem5 = [(CACCustomCommandEditorViewController *)self mutableCommandItem];
+      applicationIdentifiersToNames = [mutableCommandItem5 customTextToInsert];
 
-      if ([v27 length])
+      if ([applicationIdentifiersToNames length])
       {
         v28 = MEMORY[0x277CCACA8];
         v29 = [CACLocaleUtilities localizedUIStringForKey:@"CustomCommand.PasteTextFormat"];
-        v25 = [v28 localizedStringWithValidatedFormat:v29 validFormatSpecifiers:@"%@" error:0, v27];
+        v25 = [v28 localizedStringWithValidatedFormat:v29 validFormatSpecifiers:@"%@" error:0, applicationIdentifiersToNames];
 
 LABEL_24:
         goto LABEL_25;
@@ -896,26 +896,26 @@ LABEL_24:
     goto LABEL_24;
   }
 
-  v8 = [v6 dequeueReusableCellWithIdentifier:@"SpokenString"];
+  v8 = [viewCopy dequeueReusableCellWithIdentifier:@"SpokenString"];
   if (!v8)
   {
     v8 = [[CACCustomCommandEditorTextFieldCell alloc] initWithStyle:0 reuseIdentifier:@"SpokenString"];
     [(CACCustomCommandEditorTextFieldCell *)v8 setSelectionStyle:0];
-    v14 = [(CACCustomCommandEditorTextFieldCell *)v8 textField];
+    textField = [(CACCustomCommandEditorTextFieldCell *)v8 textField];
     v15 = [CACLocaleUtilities localizedUIStringForKey:@"CustomCommand.SpokenStringPlaceholder"];
-    [v14 setPlaceholder:v15];
+    [textField setPlaceholder:v15];
 
-    [v14 setTextAlignment:4];
-    [v14 setAutocapitalizationType:2];
-    [v14 setReturnKeyType:9];
-    [v14 addTarget:self action:sel_textFieldDidChange_ forControlEvents:0x20000];
-    [v14 setDelegate:self];
+    [textField setTextAlignment:4];
+    [textField setAutocapitalizationType:2];
+    [textField setReturnKeyType:9];
+    [textField addTarget:self action:sel_textFieldDidChange_ forControlEvents:0x20000];
+    [textField setDelegate:self];
   }
 
-  v16 = [(CACCustomCommandEditorViewController *)self mutableCommandItem];
-  v17 = [v16 displayString];
-  v18 = [(CACCustomCommandEditorTextFieldCell *)v8 textField];
-  [v18 setText:v17];
+  mutableCommandItem6 = [(CACCustomCommandEditorViewController *)self mutableCommandItem];
+  displayString = [mutableCommandItem6 displayString];
+  textField2 = [(CACCustomCommandEditorTextFieldCell *)v8 textField];
+  [textField2 setText:displayString];
 
   [(CACCustomCommandEditorTextFieldCell *)v8 setUserInteractionEnabled:[(CACCustomCommandEditorViewController *)self isInEditingMode]];
 LABEL_32:
@@ -923,20 +923,20 @@ LABEL_32:
   return v8;
 }
 
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = v5;
-  if ([v5 section] == 1)
+  pathCopy = path;
+  v6 = pathCopy;
+  if ([pathCopy section] == 1)
   {
-    v6 = v5;
-    if (![v5 row])
+    v6 = pathCopy;
+    if (![pathCopy row])
     {
-      v7 = [(CACCustomCommandEditorViewController *)self mutableCommandItem];
-      v8 = [v7 customType];
-      v9 = [v8 isEqualToString:@"RunUserActionFlow"];
+      mutableCommandItem = [(CACCustomCommandEditorViewController *)self mutableCommandItem];
+      customType = [mutableCommandItem customType];
+      v9 = [customType isEqualToString:@"RunUserActionFlow"];
 
-      v6 = v5;
+      v6 = pathCopy;
       if (v9)
       {
 
@@ -948,21 +948,21 @@ LABEL_32:
   return v6;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  if ([v5 section] == 1)
+  pathCopy = path;
+  if ([pathCopy section] == 1)
   {
-    v6 = [v5 row];
+    v6 = [pathCopy row];
     if (v6 == 1)
     {
       v7 = objc_alloc_init(CACCustomCommandApplicationViewController);
       [(CACCustomCommandApplicationViewController *)v7 setDelegate:self];
-      v19 = [(CACCustomCommandEditorViewController *)self mutableCommandItem];
-      [(CACCustomCommandApplicationViewController *)v7 setCommandItem:v19];
+      mutableCommandItem = [(CACCustomCommandEditorViewController *)self mutableCommandItem];
+      [(CACCustomCommandApplicationViewController *)v7 setCommandItem:mutableCommandItem];
 
-      v8 = [(CACCustomCommandEditorViewController *)self applicationIdentifiersToNames];
-      [(CACCustomCommandApplicationViewController *)v7 setApplicationIdentifiersToNames:v8];
+      applicationIdentifiersToNames = [(CACCustomCommandEditorViewController *)self applicationIdentifiersToNames];
+      [(CACCustomCommandApplicationViewController *)v7 setApplicationIdentifiersToNames:applicationIdentifiersToNames];
     }
 
     else
@@ -974,27 +974,27 @@ LABEL_32:
 
       v7 = objc_alloc_init(CACCustomCommandActionViewController);
       [(CACCustomCommandApplicationViewController *)v7 setDelegate:self];
-      v8 = [(CACCustomCommandEditorViewController *)self mutableCommandItem];
-      [(CACCustomCommandApplicationViewController *)v7 setCommandItem:v8];
+      applicationIdentifiersToNames = [(CACCustomCommandEditorViewController *)self mutableCommandItem];
+      [(CACCustomCommandApplicationViewController *)v7 setCommandItem:applicationIdentifiersToNames];
     }
 
     if (v7)
     {
-      v20 = [(CACCustomCommandEditorViewController *)self navigationController];
-      [v20 pushViewController:v7 animated:1];
+      navigationController = [(CACCustomCommandEditorViewController *)self navigationController];
+      [navigationController pushViewController:v7 animated:1];
 
       goto LABEL_10;
     }
   }
 
-  else if ([v5 section] == 2)
+  else if ([pathCopy section] == 2)
   {
-    v9 = [(CACCustomCommandEditorViewController *)self tableView];
+    tableView = [(CACCustomCommandEditorViewController *)self tableView];
     v10 = [MEMORY[0x277CCAA70] indexPathForRow:0 inSection:0];
-    v7 = [v9 cellForRowAtIndexPath:v10];
+    v7 = [tableView cellForRowAtIndexPath:v10];
 
-    v11 = [(CACCustomCommandApplicationViewController *)v7 textField];
-    [v11 resignFirstResponder];
+    textField = [(CACCustomCommandApplicationViewController *)v7 textField];
+    [textField resignFirstResponder];
 
     v12 = [MEMORY[0x277D75110] alertControllerWithTitle:0 message:0 preferredStyle:0];
     v13 = MEMORY[0x277D750F8];
@@ -1014,7 +1014,7 @@ LABEL_32:
     v21[2] = __74__CACCustomCommandEditorViewController_tableView_didSelectRowAtIndexPath___block_invoke_3;
     v21[3] = &unk_279CEB320;
     v21[4] = self;
-    v22 = v5;
+    v22 = pathCopy;
     v18 = [v16 actionWithTitle:v17 style:1 handler:v21];
     [v12 addAction:v18];
 
@@ -1051,71 +1051,71 @@ void __74__CACCustomCommandEditorViewController_tableView_didSelectRowAtIndexPat
   [v2 deselectRowAtIndexPath:*(a1 + 40) animated:1];
 }
 
-- (void)_updateCommandItemWithText:(id)a3
+- (void)_updateCommandItemWithText:(id)text
 {
   v9[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(CACCustomCommandEditorViewController *)self mutableCommandItem];
-  v9[0] = v4;
+  textCopy = text;
+  mutableCommandItem = [(CACCustomCommandEditorViewController *)self mutableCommandItem];
+  v9[0] = textCopy;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:1];
   v7 = +[CACPreferences sharedPreferences];
 
-  v8 = [v7 bestLocaleIdentifier];
-  [v5 setValue:v6 forKey:@"CustomCommands" locale:v8];
+  bestLocaleIdentifier = [v7 bestLocaleIdentifier];
+  [mutableCommandItem setValue:v6 forKey:@"CustomCommands" locale:bestLocaleIdentifier];
 }
 
-- (void)textFieldDidBeginEditing:(id)a3
+- (void)textFieldDidBeginEditing:(id)editing
 {
-  v4 = [a3 text];
-  v5 = [(CACCustomCommandEditorViewController *)self _commandStringIsValid:v4 checkForLength:1];
+  text = [editing text];
+  v5 = [(CACCustomCommandEditorViewController *)self _commandStringIsValid:text checkForLength:1];
 
-  v7 = [(CACCustomCommandEditorViewController *)self navigationItem];
-  v6 = [v7 rightBarButtonItem];
-  [v6 setEnabled:v5];
+  navigationItem = [(CACCustomCommandEditorViewController *)self navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
+  [rightBarButtonItem setEnabled:v5];
 }
 
-- (void)textFieldDidChange:(id)a3
+- (void)textFieldDidChange:(id)change
 {
-  v4 = [a3 text];
-  v5 = [(CACCustomCommandEditorViewController *)self _commandStringIsValid:v4 checkForLength:1];
+  text = [change text];
+  v5 = [(CACCustomCommandEditorViewController *)self _commandStringIsValid:text checkForLength:1];
 
-  v7 = [(CACCustomCommandEditorViewController *)self navigationItem];
-  v6 = [v7 rightBarButtonItem];
-  [v6 setEnabled:v5];
+  navigationItem = [(CACCustomCommandEditorViewController *)self navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
+  [rightBarButtonItem setEnabled:v5];
 }
 
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string
 {
-  length = a4.length;
-  location = a4.location;
-  v9 = a3;
-  v10 = a5;
-  if (![(CACCustomCommandEditorViewController *)self _commandStringIsValid:v10 checkForLength:0])
+  length = range.length;
+  location = range.location;
+  fieldCopy = field;
+  stringCopy = string;
+  if (![(CACCustomCommandEditorViewController *)self _commandStringIsValid:stringCopy checkForLength:0])
   {
     goto LABEL_6;
   }
 
-  if (!location || ![v10 length])
+  if (!location || ![stringCopy length])
   {
     goto LABEL_8;
   }
 
-  v11 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-  if (([v11 characterIsMember:{objc_msgSend(v10, "characterAtIndex:", 0)}] & 1) == 0)
+  whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+  if (([whitespaceCharacterSet characterIsMember:{objc_msgSend(stringCopy, "characterAtIndex:", 0)}] & 1) == 0)
   {
 
     goto LABEL_8;
   }
 
-  v12 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-  v13 = [v9 text];
-  v14 = [v12 characterIsMember:{objc_msgSend(v13, "characterAtIndex:", location - 1)}];
+  whitespaceCharacterSet2 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+  text = [fieldCopy text];
+  v14 = [whitespaceCharacterSet2 characterIsMember:{objc_msgSend(text, "characterAtIndex:", location - 1)}];
 
   if ((v14 & 1) == 0)
   {
 LABEL_8:
-    v16 = [v9 text];
-    v17 = [v16 stringByReplacingCharactersInRange:location withString:{length, v10}];
+    text2 = [fieldCopy text];
+    v17 = [text2 stringByReplacingCharactersInRange:location withString:{length, stringCopy}];
     [(CACCustomCommandEditorViewController *)self _updateCommandItemWithText:v17];
 
     v15 = 1;
@@ -1129,29 +1129,29 @@ LABEL_9:
   return v15;
 }
 
-- (void)textFieldDidEndEditing:(id)a3
+- (void)textFieldDidEndEditing:(id)editing
 {
-  v4 = a3;
-  v5 = [(CACCustomCommandEditorViewController *)self _shouldShowDeleteButton];
-  v6 = [v4 text];
+  editingCopy = editing;
+  _shouldShowDeleteButton = [(CACCustomCommandEditorViewController *)self _shouldShowDeleteButton];
+  text = [editingCopy text];
 
-  v7 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-  v8 = [v6 stringByTrimmingCharactersInSet:v7];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+  v8 = [text stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
   [(CACCustomCommandEditorViewController *)self _updateCommandItemWithText:v8];
 
-  v9 = [(CACCustomCommandEditorViewController *)self _shouldShowDeleteButton];
-  if (!v5 && v9)
+  _shouldShowDeleteButton2 = [(CACCustomCommandEditorViewController *)self _shouldShowDeleteButton];
+  if (!_shouldShowDeleteButton && _shouldShowDeleteButton2)
   {
-    v11 = [(CACCustomCommandEditorViewController *)self tableView];
+    tableView = [(CACCustomCommandEditorViewController *)self tableView];
     v10 = [MEMORY[0x277CCAA78] indexSetWithIndex:2];
-    [v11 insertSections:v10 withRowAnimation:0];
+    [tableView insertSections:v10 withRowAnimation:0];
   }
 }
 
-- (void)didUpdateCommandItemForApplicationViewController:(id)a3
+- (void)didUpdateCommandItemForApplicationViewController:(id)controller
 {
-  v4 = [(CACCustomCommandEditorViewController *)self delegate];
-  [v4 didUpdatePropertiesForEditor:self];
+  delegate = [(CACCustomCommandEditorViewController *)self delegate];
+  [delegate didUpdatePropertiesForEditor:self];
 }
 
 - (CACCustomCommandEditorViewControllerDelegate)delegate

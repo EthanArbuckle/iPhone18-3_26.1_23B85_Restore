@@ -1,27 +1,27 @@
 @interface SiriUIActivityIndicatorTemplateView
-- (SiriUIActivityIndicatorTemplateView)initWithDataSource:(id)a3;
+- (SiriUIActivityIndicatorTemplateView)initWithDataSource:(id)source;
 - (void)layoutSubviews;
 - (void)reloadData;
 @end
 
 @implementation SiriUIActivityIndicatorTemplateView
 
-- (SiriUIActivityIndicatorTemplateView)initWithDataSource:(id)a3
+- (SiriUIActivityIndicatorTemplateView)initWithDataSource:(id)source
 {
   v12.receiver = self;
   v12.super_class = SiriUIActivityIndicatorTemplateView;
-  v3 = [(SiriUIBaseTemplateView *)&v12 initWithDataSource:a3];
+  v3 = [(SiriUIBaseTemplateView *)&v12 initWithDataSource:source];
   if (v3)
   {
-    v4 = [MEMORY[0x277D756B8] siriui_configuredBodyLabel];
+    siriui_configuredBodyLabel = [MEMORY[0x277D756B8] siriui_configuredBodyLabel];
     detailTextLabel = v3->_detailTextLabel;
-    v3->_detailTextLabel = v4;
+    v3->_detailTextLabel = siriui_configuredBodyLabel;
 
     [(UILabel *)v3->_detailTextLabel setUseSecondaryTextColor];
     v6 = v3->_detailTextLabel;
-    v7 = [(SiriUIBaseTemplateView *)v3 dataSource];
-    v8 = [v7 detailText];
-    [(UILabel *)v6 setText:v8];
+    dataSource = [(SiriUIBaseTemplateView *)v3 dataSource];
+    detailText = [dataSource detailText];
+    [(UILabel *)v6 setText:detailText];
 
     [(SiriUIActivityIndicatorTemplateView *)v3 addSubview:v3->_detailTextLabel];
     v9 = [objc_alloc(MEMORY[0x277D750E8]) initWithActivityIndicatorStyle:100];
@@ -50,8 +50,8 @@
   [(UIActivityIndicatorView *)self->_spinnerView frame];
   v9 = v8;
   v11 = v10;
-  v12 = [(UILabel *)self->_detailTextLabel text];
-  v13 = [v12 length];
+  text = [(UILabel *)self->_detailTextLabel text];
+  v13 = [text length];
 
   if (v13)
   {
@@ -76,9 +76,9 @@
   v6.super_class = SiriUIActivityIndicatorTemplateView;
   [(SiriUIBaseTemplateView *)&v6 reloadData];
   detailTextLabel = self->_detailTextLabel;
-  v4 = [(SiriUIBaseTemplateView *)self dataSource];
-  v5 = [v4 detailText];
-  [(UILabel *)detailTextLabel setText:v5];
+  dataSource = [(SiriUIBaseTemplateView *)self dataSource];
+  detailText = [dataSource detailText];
+  [(UILabel *)detailTextLabel setText:detailText];
 }
 
 @end

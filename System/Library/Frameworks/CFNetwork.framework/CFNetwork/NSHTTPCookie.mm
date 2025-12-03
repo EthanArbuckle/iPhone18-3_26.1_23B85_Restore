@@ -27,18 +27,18 @@
 
 - (id)ensureCookieValid
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v2 = *(a1 + 8);
-    if (!v2 || ![v2 _inner] || (v3 = objc_msgSend(v1[1], "_inner"), !(*(*v3 + 16))(v3)))
+    v2 = *(self + 8);
+    if (!v2 || ![v2 _inner] || (v3 = objc_msgSend(selfCopy[1], "_inner"), !(*(*v3 + 16))(v3)))
     {
 
       return 0;
     }
   }
 
-  return v1;
+  return selfCopy;
 }
 
 - (NSString)name
@@ -55,8 +55,8 @@
     return 0;
   }
 
-  v4 = [(NSHTTPCookie *)self _inner];
-  v5 = (*(v4->var0 + 2))(v4);
+  _inner = [(NSHTTPCookie *)self _inner];
+  v5 = (*(_inner->var0 + 2))(_inner);
   if (*v5 >= 0xCu && (*(v5 + 8) & 2) != 0)
   {
     return 0;
@@ -76,8 +76,8 @@
 
 - (BOOL)isSessionOnly
 {
-  v2 = [(NSHTTPCookie *)self _inner];
-  v3 = (*(v2->var0 + 2))(v2);
+  _inner = [(NSHTTPCookie *)self _inner];
+  v3 = (*(_inner->var0 + 2))(_inner);
   if (*v3 >= 0xCu)
   {
     return (v3[2] >> 1) & 1;

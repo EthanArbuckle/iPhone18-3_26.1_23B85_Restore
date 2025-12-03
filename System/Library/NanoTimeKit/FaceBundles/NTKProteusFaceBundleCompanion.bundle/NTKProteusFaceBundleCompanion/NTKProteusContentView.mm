@@ -1,49 +1,49 @@
 @interface NTKProteusContentView
-+ (double)_backgroundFraction:(id)a3;
-+ (double)_rainbowFraction:(id)a3;
-- (CGPoint)_scaleForBackgroundFraction:(double)a3;
-- (NTKProteusContentView)initWithFrame:(CGRect)a3 style:(unint64_t)a4 backgroundStyle:(unint64_t)a5 colorPalette:(id)a6 device:(id)a7;
++ (double)_backgroundFraction:(id)fraction;
++ (double)_rainbowFraction:(id)fraction;
+- (CGPoint)_scaleForBackgroundFraction:(double)fraction;
+- (NTKProteusContentView)initWithFrame:(CGRect)frame style:(unint64_t)style backgroundStyle:(unint64_t)backgroundStyle colorPalette:(id)palette device:(id)device;
 - (double)_backgroundFraction;
 - (double)_rainbowFraction;
-- (id)_digitLayersForStyle:(unint64_t)a3;
+- (id)_digitLayersForStyle:(unint64_t)style;
 - (id)_fontLoader;
-- (id)_fontWithWeight:(double)a3 style:(unint64_t)a4 usesNotch:(BOOL)a5;
-- (id)createProteusDigitAtIndex:(unint64_t)a3 style:(unint64_t)a4;
-- (void)_activate:(BOOL)a3 digitLayersForStyle:(unint64_t)a4;
-- (void)_applyRainbowFraction:(double)a3 backgroundFraction:(double)a4;
-- (void)_setLabelAlpha:(double)a3 forLabels:(id)a4;
+- (id)_fontWithWeight:(double)weight style:(unint64_t)style usesNotch:(BOOL)notch;
+- (id)createProteusDigitAtIndex:(unint64_t)index style:(unint64_t)style;
+- (void)_activate:(BOOL)_activate digitLayersForStyle:(unint64_t)style;
+- (void)_applyRainbowFraction:(double)fraction backgroundFraction:(double)backgroundFraction;
+- (void)_setLabelAlpha:(double)alpha forLabels:(id)labels;
 - (void)_updateColorPalette;
-- (void)_updateScale:(CGPoint)a3 forLabels:(id)a4;
-- (void)_updateScaleBackgroundFraction:(double)a3;
-- (void)_updateScaleTransitionFraction:(double)a3 forLabels:(id)a4;
-- (void)_updateScaleTritiumFraction:(double)a3;
-- (void)applyTransitionFraction:(double)a3 fromStyle:(unint64_t)a4 toStyle:(unint64_t)a5;
-- (void)applyTransitionTritiumOnWithFraction:(double)a3;
+- (void)_updateScale:(CGPoint)scale forLabels:(id)labels;
+- (void)_updateScaleBackgroundFraction:(double)fraction;
+- (void)_updateScaleTransitionFraction:(double)fraction forLabels:(id)labels;
+- (void)_updateScaleTritiumFraction:(double)fraction;
+- (void)applyTransitionFraction:(double)fraction fromStyle:(unint64_t)style toStyle:(unint64_t)toStyle;
+- (void)applyTransitionTritiumOnWithFraction:(double)fraction;
 - (void)layoutSubviews;
 - (void)motionCompleted;
-- (void)setColorPalette:(id)a3;
-- (void)setDigitWeight:(double)a3 forDigit:(unint64_t)a4;
-- (void)setGradientMaskRotation:(double)a3;
-- (void)setStyle:(unint64_t)a3;
+- (void)setColorPalette:(id)palette;
+- (void)setDigitWeight:(double)weight forDigit:(unint64_t)digit;
+- (void)setGradientMaskRotation:(double)rotation;
+- (void)setStyle:(unint64_t)style;
 @end
 
 @implementation NTKProteusContentView
 
-- (NTKProteusContentView)initWithFrame:(CGRect)a3 style:(unint64_t)a4 backgroundStyle:(unint64_t)a5 colorPalette:(id)a6 device:(id)a7
+- (NTKProteusContentView)initWithFrame:(CGRect)frame style:(unint64_t)style backgroundStyle:(unint64_t)backgroundStyle colorPalette:(id)palette device:(id)device
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v15 = a6;
-  v16 = a7;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  paletteCopy = palette;
+  deviceCopy = device;
   v47.receiver = self;
   v47.super_class = NTKProteusContentView;
-  v17 = [(NTKProteusContentView *)&v47 initWithFrame:x, y, width, height];
-  v18 = v17;
-  if (v17)
+  height = [(NTKProteusContentView *)&v47 initWithFrame:x, y, width, height];
+  v18 = height;
+  if (height)
   {
-    objc_storeStrong(&v17->_device, a7);
+    objc_storeStrong(&height->_device, device);
     v19 = [NSMutableArray arrayWithObjects:&off_10E70, &off_10E70, &off_10E70, &off_10E70, &off_10E70, &off_10E70, &off_10E70, &off_10E70, &off_10E70, &off_10E70, &off_10E70, 0];
     digitWeights = v18->_digitWeights;
     v18->_digitWeights = v19;
@@ -105,15 +105,15 @@
     [(NTKProteusContentView *)v18 addSubview:v18->_colorBackgroundView];
     [(NTKProteusContentView *)v18 addSubview:v18->_digitsView];
     v44 = 1.0;
-    if (a5 != 1)
+    if (backgroundStyle != 1)
     {
       v44 = 0.0;
     }
 
     [(NTKProteusContentView *)v18 _applyRainbowFraction:0.0 backgroundFraction:v44];
-    [(NTKProteusContentView *)v18 setColorPalette:v15];
+    [(NTKProteusContentView *)v18 setColorPalette:paletteCopy];
     v18->_style = 2;
-    [(NTKProteusContentView *)v18 setStyle:a4];
+    [(NTKProteusContentView *)v18 setStyle:style];
     v45 = +[UIColor clearColor];
     [(NTKProteusContentView *)v18 setBackgroundColor:v45];
   }
@@ -144,14 +144,14 @@
   [(UIView *)self->_colorMaskView setCenter:?];
 }
 
-- (void)_activate:(BOOL)a3 digitLayersForStyle:(unint64_t)a4
+- (void)_activate:(BOOL)_activate digitLayersForStyle:(unint64_t)style
 {
-  v5 = a3;
+  _activateCopy = _activate;
   v7 = &OBJC_IVAR___NTKProteusContentView__roundedHourDigits;
-  if (a4 != 1)
+  if (style != 1)
   {
-    v8 = a3;
-    if (a4)
+    _activateCopy2 = _activate;
+    if (style)
     {
       goto LABEL_5;
     }
@@ -159,31 +159,31 @@
     v7 = &OBJC_IVAR___NTKProteusContentView__regularHourDigits;
   }
 
-  v8 = *(&self->super.super.super.isa + *v7) != 0;
+  _activateCopy2 = *(&self->super.super.super.isa + *v7) != 0;
 LABEL_5:
-  if (v8 != a3)
+  if (_activateCopy2 != _activate)
   {
     v9 = _NTKLoggingObjectForDomain();
     v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
-    if (v5)
+    if (_activateCopy)
     {
       if (v10)
       {
         *buf = 134218240;
-        v25 = a4;
+        styleCopy2 = style;
         v26 = 2048;
-        v27 = self;
+        selfCopy2 = self;
         _os_log_impl(&dword_0, v9, OS_LOG_TYPE_DEFAULT, "Proteus content-Activating font style %lu [%p]", buf, 0x16u);
       }
 
-      v11 = [(NTKProteusContentView *)self _fontLoader];
-      [v11 cacheFonts:1 ofType:a4 != 0 forClient:self];
+      _fontLoader = [(NTKProteusContentView *)self _fontLoader];
+      [_fontLoader cacheFonts:1 ofType:style != 0 forClient:self];
 
-      v12 = [(NTKProteusContentView *)self _digitLayersForStyle:a4];
-      v13 = a4 == 1;
-      if (a4 <= 1)
+      v12 = [(NTKProteusContentView *)self _digitLayersForStyle:style];
+      v13 = style == 1;
+      if (style <= 1)
       {
-        if (a4 == 1)
+        if (style == 1)
         {
           v20 = &OBJC_IVAR___NTKProteusContentView__digitsSoftMaskView;
         }
@@ -213,7 +213,7 @@ LABEL_5:
       v22[2] = sub_7104;
       v22[3] = &unk_10570;
       v23 = v14;
-      v19 = v14;
+      _fontLoader2 = v14;
       [v12 enumerateObjectsUsingBlock:v22];
     }
 
@@ -222,15 +222,15 @@ LABEL_5:
       if (v10)
       {
         *buf = 134218240;
-        v25 = a4;
+        styleCopy2 = style;
         v26 = 2048;
-        v27 = self;
+        selfCopy2 = self;
         _os_log_impl(&dword_0, v9, OS_LOG_TYPE_DEFAULT, "Proteus content-Deactivating font style %lu [%p]", buf, 0x16u);
       }
 
       v15 = &OBJC_IVAR___NTKProteusContentView__regularHourDigits;
-      v16 = a4 != 0;
-      if (a4 == 1)
+      v16 = style != 0;
+      if (style == 1)
       {
         v15 = &OBJC_IVAR___NTKProteusContentView__roundedHourDigits;
       }
@@ -241,13 +241,13 @@ LABEL_5:
       *(&self->super.super.super.isa + v17) = 0;
 
       [v12 enumerateObjectsUsingBlock:&stru_105B0];
-      v19 = [(NTKProteusContentView *)self _fontLoader];
-      [v19 cacheFonts:0 ofType:v16 forClient:self];
+      _fontLoader2 = [(NTKProteusContentView *)self _fontLoader];
+      [_fontLoader2 cacheFonts:0 ofType:v16 forClient:self];
     }
   }
 }
 
-- (id)_digitLayersForStyle:(unint64_t)a3
+- (id)_digitLayersForStyle:(unint64_t)style
 {
   v5 = [NSMutableArray arrayWithCapacity:12];
   [(NTKProteusContentView *)self bounds];
@@ -257,7 +257,7 @@ LABEL_5:
   v13 = v12;
   for (i = 1; i != 13; ++i)
   {
-    v15 = [(NTKProteusContentView *)self createProteusDigitAtIndex:i style:a3];
+    v15 = [(NTKProteusContentView *)self createProteusDigitAtIndex:i style:style];
     [v15 setFrame:{v7, v9, v11, v13}];
     [v5 addObject:v15];
   }
@@ -265,18 +265,18 @@ LABEL_5:
   return v5;
 }
 
-- (id)createProteusDigitAtIndex:(unint64_t)a3 style:(unint64_t)a4
+- (id)createProteusDigitAtIndex:(unint64_t)index style:(unint64_t)style
 {
   v7 = objc_alloc_init(UILabel);
-  v8 = a3 - 1;
-  v10 = a3 == 1 || a3 == 12;
-  v11 = [NSNumber numberWithUnsignedInteger:a3];
-  v12 = [v11 stringValue];
-  [v7 setText:v12];
+  v8 = index - 1;
+  v10 = index == 1 || index == 12;
+  v11 = [NSNumber numberWithUnsignedInteger:index];
+  stringValue = [v11 stringValue];
+  [v7 setText:stringValue];
 
   v13 = [(NSMutableArray *)self->_digitWeights objectAtIndexedSubscript:v8];
   [v13 floatValue];
-  v15 = [(NTKProteusContentView *)self _fontWithWeight:a4 style:v10 usesNotch:v14];
+  v15 = [(NTKProteusContentView *)self _fontWithWeight:style style:v10 usesNotch:v14];
   [v7 setFont:v15];
 
   v16 = +[UIColor whiteColor];
@@ -285,15 +285,15 @@ LABEL_5:
   return v7;
 }
 
-- (void)setDigitWeight:(double)a3 forDigit:(unint64_t)a4
+- (void)setDigitWeight:(double)weight forDigit:(unint64_t)digit
 {
-  v6 = a4 - 1;
-  v8 = a4 == 1 || a4 == 12;
+  v6 = digit - 1;
+  v8 = digit == 1 || digit == 12;
   regularHourDigits = self->_regularHourDigits;
   if (regularHourDigits)
   {
-    v10 = [(NSArray *)regularHourDigits objectAtIndex:a4 - 1];
-    v11 = [(NTKProteusContentView *)self _fontWithWeight:0 style:v8 usesNotch:a3];
+    v10 = [(NSArray *)regularHourDigits objectAtIndex:digit - 1];
+    v11 = [(NTKProteusContentView *)self _fontWithWeight:0 style:v8 usesNotch:weight];
     [v10 setFont:v11];
   }
 
@@ -301,34 +301,34 @@ LABEL_5:
   if (roundedHourDigits)
   {
     v13 = [(NSArray *)roundedHourDigits objectAtIndex:v6];
-    v14 = [(NTKProteusContentView *)self _fontWithWeight:1 style:v8 usesNotch:a3];
+    v14 = [(NTKProteusContentView *)self _fontWithWeight:1 style:v8 usesNotch:weight];
     [v13 setFont:v14];
   }
 
-  v15 = [NSNumber numberWithDouble:a3];
+  v15 = [NSNumber numberWithDouble:weight];
   [(NSMutableArray *)self->_digitWeights setObject:v15 atIndexedSubscript:v6];
 }
 
-- (id)_fontWithWeight:(double)a3 style:(unint64_t)a4 usesNotch:(BOOL)a5
+- (id)_fontWithWeight:(double)weight style:(unint64_t)style usesNotch:(BOOL)notch
 {
-  v5 = a5;
-  v9 = [(NTKProteusContentView *)self _fontLoader];
-  v10 = v9;
+  notchCopy = notch;
+  _fontLoader = [(NTKProteusContentView *)self _fontLoader];
+  v10 = _fontLoader;
   notchFraction = 0.0;
-  if (v5)
+  if (notchCopy)
   {
     notchFraction = self->_notchFraction;
   }
 
-  v12 = [v9 neptuneFont:a4 != 0 weight:a3 notch:notchFraction];
+  v12 = [_fontLoader neptuneFont:style != 0 weight:weight notch:notchFraction];
 
   return v12;
 }
 
-- (void)setGradientMaskRotation:(double)a3
+- (void)setGradientMaskRotation:(double)rotation
 {
   gradientMaskView = self->_gradientMaskView;
-  CGAffineTransformMakeRotation(&v4, a3);
+  CGAffineTransformMakeRotation(&v4, rotation);
   [(UIView *)gradientMaskView setTransform:&v4];
 }
 
@@ -341,7 +341,7 @@ LABEL_5:
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       v7 = 134217984;
-      v8 = self;
+      selfCopy = self;
       _os_log_impl(&dword_0, v4, OS_LOG_TYPE_DEFAULT, "Proteus content-getting shared font loader [%p]", &v7, 0xCu);
     }
 
@@ -353,18 +353,18 @@ LABEL_5:
   return v3;
 }
 
-- (void)_updateScaleTransitionFraction:(double)a3 forLabels:(id)a4
+- (void)_updateScaleTransitionFraction:(double)fraction forLabels:(id)labels
 {
-  v5 = a4;
+  labelsCopy = labels;
   [(NTKProteusContentView *)self _backgroundFraction];
   [(NTKProteusContentView *)self _scaleForBackgroundFraction:?];
   CLKInterpolateBetweenPoints();
-  [(NTKProteusContentView *)self _updateScale:v5 forLabels:?];
+  [(NTKProteusContentView *)self _updateScale:labelsCopy forLabels:?];
 }
 
-- (void)_updateScaleBackgroundFraction:(double)a3
+- (void)_updateScaleBackgroundFraction:(double)fraction
 {
-  [(NTKProteusContentView *)self _scaleForBackgroundFraction:a3];
+  [(NTKProteusContentView *)self _scaleForBackgroundFraction:fraction];
   v5 = v4;
   v7 = v6;
   [(NTKProteusContentView *)self _updateScale:self->_regularHourDigits forLabels:?];
@@ -373,11 +373,11 @@ LABEL_5:
   [(NTKProteusContentView *)self _updateScale:roundedHourDigits forLabels:v5, v7];
 }
 
-- (void)_updateScaleTritiumFraction:(double)a3
+- (void)_updateScaleTritiumFraction:(double)fraction
 {
   [(NTKProteusContentView *)self _backgroundFraction];
   [(NTKProteusContentView *)self _scaleForBackgroundFraction:?];
-  v4 = [(NTKProteusContentView *)self device];
+  device = [(NTKProteusContentView *)self device];
   NTKEnableAODVibrancy();
 
   CLKInterpolateBetweenPoints();
@@ -389,11 +389,11 @@ LABEL_5:
   [(NTKProteusContentView *)self _updateScale:roundedHourDigits forLabels:v6, v8];
 }
 
-- (CGPoint)_scaleForBackgroundFraction:(double)a3
+- (CGPoint)_scaleForBackgroundFraction:(double)fraction
 {
   v3 = 1.0;
   v4 = 1.0;
-  if (a3 > 0.0)
+  if (fraction > 0.0)
   {
     sub_857C([(NTKProteusContentView *)self bounds], self->_device);
     CLKInterpolateBetweenFloatsClipped();
@@ -408,12 +408,12 @@ LABEL_5:
   return result;
 }
 
-- (void)_updateScale:(CGPoint)a3 forLabels:(id)a4
+- (void)_updateScale:(CGPoint)scale forLabels:(id)labels
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = a4;
-  if (v6)
+  y = scale.y;
+  x = scale.x;
+  labelsCopy = labels;
+  if (labelsCopy)
   {
     memset(&v10, 0, sizeof(v10));
     if (x == 0.0 && y == 0.0)
@@ -434,27 +434,27 @@ LABEL_5:
     v8[2] = sub_7974;
     v8[3] = &unk_105D0;
     v9 = v10;
-    [v6 enumerateObjectsUsingBlock:v8];
+    [labelsCopy enumerateObjectsUsingBlock:v8];
   }
 }
 
-- (void)setStyle:(unint64_t)a3
+- (void)setStyle:(unint64_t)style
 {
   v5 = _NTKLoggingObjectForDomain();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 134218240;
-    v8 = a3;
+    styleCopy = style;
     v9 = 2048;
-    v10 = self;
+    selfCopy = self;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "Proteus content-Setting style %lu [%p]", &v7, 0x16u);
   }
 
-  if (self->_style != a3)
+  if (self->_style != style)
   {
-    self->_style = a3;
-    [(NTKProteusContentView *)self _activate:1 digitLayersForStyle:a3];
-    if (a3)
+    self->_style = style;
+    [(NTKProteusContentView *)self _activate:1 digitLayersForStyle:style];
+    if (style)
     {
       v6 = 0.0;
     }
@@ -464,7 +464,7 @@ LABEL_5:
       v6 = 1.0;
     }
 
-    [(NTKProteusContentView *)self _activate:0 digitLayersForStyle:a3 == 0];
+    [(NTKProteusContentView *)self _activate:0 digitLayersForStyle:style == 0];
     [(NTKProteusContentView *)self _setLabelAlpha:self->_regularHourDigits forLabels:v6];
     [(NTKProteusContentView *)self _setLabelAlpha:self->_roundedHourDigits forLabels:1.0 - v6];
     [(NTKProteusContentView *)self _backgroundFraction];
@@ -472,14 +472,14 @@ LABEL_5:
   }
 }
 
-- (void)_setLabelAlpha:(double)a3 forLabels:(id)a4
+- (void)_setLabelAlpha:(double)alpha forLabels:(id)labels
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_7B74;
   v4[3] = &unk_105F0;
-  *&v4[4] = a3;
-  [a4 enumerateObjectsUsingBlock:v4];
+  *&v4[4] = alpha;
+  [labels enumerateObjectsUsingBlock:v4];
 }
 
 - (double)_rainbowFraction
@@ -491,15 +491,15 @@ LABEL_5:
   return result;
 }
 
-+ (double)_rainbowFraction:(id)a3
++ (double)_rainbowFraction:(id)fraction
 {
-  v3 = a3;
+  fractionCopy = fraction;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 configuration];
-    v5 = [v4 pigmentEditOption];
-    if ([v5 isRainbowColor])
+    configuration = [fractionCopy configuration];
+    pigmentEditOption = [configuration pigmentEditOption];
+    if ([pigmentEditOption isRainbowColor])
     {
       v6 = 1.0;
     }
@@ -516,11 +516,11 @@ LABEL_5:
   v6 = 0.0;
   if (objc_opt_isKindOfClass())
   {
-    v7 = v3;
-    v4 = [v7 fromPalette];
-    v5 = [v7 toPalette];
-    [v4 isRainbowColor];
-    [v5 isRainbowColor];
+    v7 = fractionCopy;
+    configuration = [v7 fromPalette];
+    pigmentEditOption = [v7 toPalette];
+    [configuration isRainbowColor];
+    [pigmentEditOption isRainbowColor];
     [v7 transitionFraction];
 
     CLKInterpolateBetweenFloatsClipped();
@@ -540,13 +540,13 @@ LABEL_7:
   return result;
 }
 
-+ (double)_backgroundFraction:(id)a3
++ (double)_backgroundFraction:(id)fraction
 {
-  v3 = a3;
+  fractionCopy = fraction;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if ([v3 backgroundStyle] == &dword_0 + 1)
+    if ([fractionCopy backgroundStyle] == &dword_0 + 1)
     {
       v4 = 1.0;
     }
@@ -563,11 +563,11 @@ LABEL_7:
     v4 = 0.0;
     if (objc_opt_isKindOfClass())
     {
-      v5 = v3;
-      v6 = [v5 fromPalette];
-      v7 = [v5 toPalette];
-      [v6 backgroundStyle];
-      [v7 backgroundStyle];
+      v5 = fractionCopy;
+      fromPalette = [v5 fromPalette];
+      toPalette = [v5 toPalette];
+      [fromPalette backgroundStyle];
+      [toPalette backgroundStyle];
       [v5 transitionFraction];
 
       CLKInterpolateBetweenFloatsClipped();
@@ -578,9 +578,9 @@ LABEL_7:
   return v4;
 }
 
-- (void)setColorPalette:(id)a3
+- (void)setColorPalette:(id)palette
 {
-  objc_storeStrong(&self->_colorPalette, a3);
+  objc_storeStrong(&self->_colorPalette, palette);
   [(NTKProteusContentView *)self _rainbowFraction];
   v5 = v4;
   [(NTKProteusContentView *)self _backgroundFraction];
@@ -593,35 +593,35 @@ LABEL_7:
 
 - (void)_updateColorPalette
 {
-  v4 = [(NTKProteusColorPalette *)self->_colorPalette digitColor];
-  v3 = [(NTKProteusColorPalette *)self->_colorPalette background];
-  [(UIView *)self->_colorBackgroundView setBackgroundColor:v3];
+  digitColor = [(NTKProteusColorPalette *)self->_colorPalette digitColor];
+  background = [(NTKProteusColorPalette *)self->_colorPalette background];
+  [(UIView *)self->_colorBackgroundView setBackgroundColor:background];
 
-  [(UIView *)self->_colorMaskView setBackgroundColor:v4];
+  [(UIView *)self->_colorMaskView setBackgroundColor:digitColor];
 }
 
-- (void)applyTransitionFraction:(double)a3 fromStyle:(unint64_t)a4 toStyle:(unint64_t)a5
+- (void)applyTransitionFraction:(double)fraction fromStyle:(unint64_t)style toStyle:(unint64_t)toStyle
 {
-  if (a5)
+  if (toStyle)
   {
     v19 = self->_regularHourDigits;
     v9 = self->_roundedHourDigits;
-    v10 = a3 < 1.0;
-    v11 = a3 > 0.0;
+    v10 = fraction < 1.0;
+    v11 = fraction > 0.0;
   }
 
   else
   {
     v19 = self->_roundedHourDigits;
     v9 = self->_regularHourDigits;
-    v10 = a3 > 0.0;
-    v11 = a3 < 1.0;
+    v10 = fraction > 0.0;
+    v11 = fraction < 1.0;
   }
 
-  v12 = a4 == a5;
-  if (a4 == a5)
+  v12 = style == toStyle;
+  if (style == toStyle)
   {
-    v13 = a4 == 1;
+    v13 = style == 1;
   }
 
   else
@@ -631,7 +631,7 @@ LABEL_7:
 
   if (v12)
   {
-    v14 = a4 == 0;
+    v14 = style == 0;
   }
 
   else
@@ -651,44 +651,44 @@ LABEL_7:
   [(NTKProteusContentView *)self _updateScaleTransitionFraction:v19 forLabels:1.0 - v16];
 }
 
-- (void)_applyRainbowFraction:(double)a3 backgroundFraction:(double)a4
+- (void)_applyRainbowFraction:(double)fraction backgroundFraction:(double)backgroundFraction
 {
-  v7 = a3 == 0.0;
-  v8 = a4 == 1.0 && a3 == 0.0;
-  v9 = a4 == 0.0 || a3 == 0.0;
-  v10 = a4 == 0.0 || a3 == 1.0;
-  v11 = a4 == 0.0 && a3 == 1.0;
+  v7 = fraction == 0.0;
+  v8 = backgroundFraction == 1.0 && fraction == 0.0;
+  v9 = backgroundFraction == 0.0 || fraction == 0.0;
+  v10 = backgroundFraction == 0.0 || fraction == 1.0;
+  v11 = backgroundFraction == 0.0 && fraction == 1.0;
   gradientBackgroundView = self->_gradientBackgroundView;
-  v13 = a4 == 1.0 && a3 == 1.0;
-  v14 = a4 == 1.0 || a3 == 0.0;
+  v13 = backgroundFraction == 1.0 && fraction == 1.0;
+  v14 = backgroundFraction == 1.0 || fraction == 0.0;
   [(UIView *)gradientBackgroundView setHidden:v9];
   [(UIView *)self->_gradientBackgroundView setOpaque:v13];
-  [(UIView *)self->_gradientBackgroundView setAlpha:a3 * a4];
+  [(UIView *)self->_gradientBackgroundView setAlpha:fraction * backgroundFraction];
   [(UIView *)self->_colorBackgroundView setHidden:v10];
   [(UIView *)self->_colorBackgroundView setOpaque:v8];
-  [(UIView *)self->_colorBackgroundView setAlpha:(1.0 - a3) * a4];
+  [(UIView *)self->_colorBackgroundView setAlpha:(1.0 - fraction) * backgroundFraction];
   [(UIView *)self->_gradientMaskView setHidden:v14];
   [(UIView *)self->_gradientMaskView setOpaque:v11];
-  v15 = 1.0 - a4;
-  [(UIView *)self->_gradientMaskView setAlpha:v15 * a3];
+  v15 = 1.0 - backgroundFraction;
+  [(UIView *)self->_gradientMaskView setAlpha:v15 * fraction];
   [(UIView *)self->_colorMaskView setHidden:v11];
   [(UIView *)self->_colorMaskView setOpaque:v7];
   colorMaskView = self->_colorMaskView;
 
-  [(UIView *)colorMaskView setAlpha:1.0 - a3 * v15];
+  [(UIView *)colorMaskView setAlpha:1.0 - fraction * v15];
 }
 
-- (void)applyTransitionTritiumOnWithFraction:(double)a3
+- (void)applyTransitionTritiumOnWithFraction:(double)fraction
 {
   [(NTKProteusContentView *)self _backgroundFraction];
   [(NTKProteusContentView *)self _rainbowFraction];
   v6 = v5;
   CLKInterpolateBetweenFloatsClipped();
   v8 = v7;
-  [(NTKProteusContentView *)self _updateScaleTritiumFraction:a3];
+  [(NTKProteusContentView *)self _updateScaleTritiumFraction:fraction];
   [(NTKProteusContentView *)self _updateColorPalette];
   [(NTKProteusContentView *)self _applyRainbowFraction:v6 backgroundFraction:v8];
-  if (a3 == 1.0)
+  if (fraction == 1.0)
   {
 
     [(NTKProteusContentView *)self motionCompleted];
@@ -701,13 +701,13 @@ LABEL_7:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 134217984;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&dword_0, v3, OS_LOG_TYPE_DEFAULT, "Proteus content-passivating [%p]", &v5, 0xCu);
   }
 
-  v4 = [(NTKProteusContentView *)self _fontLoader];
-  [v4 clearStatusCache];
-  [v4 clearMotionCache];
+  _fontLoader = [(NTKProteusContentView *)self _fontLoader];
+  [_fontLoader clearStatusCache];
+  [_fontLoader clearMotionCache];
 }
 
 @end

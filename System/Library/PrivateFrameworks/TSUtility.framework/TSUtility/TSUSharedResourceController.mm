@@ -1,14 +1,14 @@
 @interface TSUSharedResourceController
-- (BOOL)performSynchronousAccessIfResourceIsAvailable:(BOOL)a3 usingBlock:(id)a4;
+- (BOOL)performSynchronousAccessIfResourceIsAvailable:(BOOL)available usingBlock:(id)block;
 - (TSUSharedResourceController)init;
-- (TSUSharedResourceController)initWithName:(id)a3 delegate:(id)a4;
+- (TSUSharedResourceController)initWithName:(id)name delegate:(id)delegate;
 - (id)description;
-- (void)acquireResourceWithLockAndPerformSynchronousAccessUsingBlock:(id)a3;
+- (void)acquireResourceWithLockAndPerformSynchronousAccessUsingBlock:(id)block;
 - (void)dealloc;
-- (void)didBeginAccessToResource:(id)a3 isFromThreadWaitingToAcquireResource:(BOOL)a4;
-- (void)waitForResourceWithLockAndPerformSynchronousAccessUsingBlock:(id)a3;
+- (void)didBeginAccessToResource:(id)resource isFromThreadWaitingToAcquireResource:(BOOL)acquireResource;
+- (void)waitForResourceWithLockAndPerformSynchronousAccessUsingBlock:(id)block;
 - (void)wakeUpAllThreadsWaitingForResourceWithLock;
-- (void)willEndAccessToResourceForcingToWaitForPendingAccesses:(BOOL)a3;
+- (void)willEndAccessToResourceForcingToWaitForPendingAccesses:(BOOL)accesses;
 @end
 
 @implementation TSUSharedResourceController
@@ -29,11 +29,11 @@
   objc_exception_throw(v8);
 }
 
-- (TSUSharedResourceController)initWithName:(id)a3 delegate:(id)a4
+- (TSUSharedResourceController)initWithName:(id)name delegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  nameCopy = name;
+  delegateCopy = delegate;
+  if (!delegateCopy)
   {
     v8 = +[TSUAssertionHandler currentHandler];
     v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSUSharedResourceController initWithName:delegate:]"];
@@ -47,11 +47,11 @@
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_delegate, v7);
-    v13 = [MEMORY[0x277CCAD78] UUID];
-    v14 = [v13 UUIDString];
+    objc_storeWeak(&v11->_delegate, delegateCopy);
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
     UUID = v12->_UUID;
-    v12->_UUID = v14;
+    v12->_UUID = uUIDString;
 
     v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"TSUSharedResourceController.Resource.%@", v12->_UUID];
     resourceForThreadKey = v12->_resourceForThreadKey;
@@ -65,10 +65,10 @@
     resourceLock = v12->_resourceLock;
     v12->_resourceLock = v20;
 
-    [(NSCondition *)v12->_resourceLock setName:v6];
+    [(NSCondition *)v12->_resourceLock setName:nameCopy];
     if (objc_opt_respondsToSelector())
     {
-      if ([v7 acquiresResourceAsynchronouslyForSharedResourceController:v12])
+      if ([delegateCopy acquiresResourceAsynchronouslyForSharedResourceController:v12])
       {
         v22 = 2;
       }
@@ -124,28 +124,28 @@
   [(TSUSharedResourceController *)&v9 dealloc];
 }
 
-- (void)didBeginAccessToResource:(id)a3 isFromThreadWaitingToAcquireResource:(BOOL)a4
+- (void)didBeginAccessToResource:(id)resource isFromThreadWaitingToAcquireResource:(BOOL)acquireResource
 {
-  v4 = a4;
-  v17 = a3;
+  acquireResourceCopy = acquireResource;
+  resourceCopy = resource;
   [(NSCondition *)self->_resourceLock lock];
   if (atomic_fetch_add(&self->_acquirerCount, 1u))
   {
     resource = self->_resource;
-    v8 = resource == v17 || resource == 0;
-    if (!v8 && ([resource isEqual:v17] & 1) == 0)
+    v8 = resource == resourceCopy || resource == 0;
+    if (!v8 && ([resource isEqual:resourceCopy] & 1) == 0)
     {
       v9 = +[TSUAssertionHandler currentHandler];
       v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSUSharedResourceController didBeginAccessToResource:isFromThreadWaitingToAcquireResource:]"];
       v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/utility/TSUSharedResourceController.m"];
-      v12 = [(NSCondition *)self->_resourceLock name];
-      [v9 handleFailureInFunction:v10 file:v11 lineNumber:108 description:{@"%@ changed during coordinated access: current (%@), new (%@)", v12, self->_resource, v17}];
+      name = [(NSCondition *)self->_resourceLock name];
+      [v9 handleFailureInFunction:v10 file:v11 lineNumber:108 description:{@"%@ changed during coordinated access: current (%@), new (%@)", name, self->_resource, resourceCopy}];
     }
   }
 
-  objc_storeStrong(&self->_resource, a3);
+  objc_storeStrong(&self->_resource, resource);
   *&self->_flags |= 4u;
-  if (v4)
+  if (acquireResourceCopy)
   {
     threadsAcquiringResourceCount = self->_threadsAcquiringResourceCount;
     self->_threadsAcquiringResourceCount = threadsAcquiringResourceCount - 1;
@@ -198,10 +198,10 @@ LABEL_4:
   }
 }
 
-- (void)willEndAccessToResourceForcingToWaitForPendingAccesses:(BOOL)a3
+- (void)willEndAccessToResourceForcingToWaitForPendingAccesses:(BOOL)accesses
 {
   add = atomic_fetch_add(&self->_acquirerCount, 0xFFFFFFFF);
-  if (add != 1 && !a3)
+  if (add != 1 && !accesses)
   {
     if (add <= 0)
     {
@@ -234,32 +234,32 @@ LABEL_4:
   }
 }
 
-- (BOOL)performSynchronousAccessIfResourceIsAvailable:(BOOL)a3 usingBlock:(id)a4
+- (BOOL)performSynchronousAccessIfResourceIsAvailable:(BOOL)available usingBlock:(id)block
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CCACC8] currentThread];
-  v8 = [v7 threadDictionary];
+  availableCopy = available;
+  blockCopy = block;
+  currentThread = [MEMORY[0x277CCACC8] currentThread];
+  threadDictionary = [currentThread threadDictionary];
 
-  v9 = [v8 objectForKeyedSubscript:self->_hasResourceForThreadKey];
-  v10 = [v9 BOOLValue];
+  v9 = [threadDictionary objectForKeyedSubscript:self->_hasResourceForThreadKey];
+  bOOLValue = [v9 BOOLValue];
 
-  if (!v10)
+  if (!bOOLValue)
   {
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __88__TSUSharedResourceController_performSynchronousAccessIfResourceIsAvailable_usingBlock___block_invoke;
     aBlock[3] = &unk_279D66878;
-    v19 = v8;
-    v20 = self;
-    v21 = v6;
+    v19 = threadDictionary;
+    selfCopy = self;
+    v21 = blockCopy;
     v13 = _Block_copy(aBlock);
     dispatch_group_wait(self->_willEndAccessGroup, 0xFFFFFFFFFFFFFFFFLL);
     [(NSCondition *)self->_resourceLock lock];
     dispatch_group_enter(self->_accessInProgressGroup);
     v14 = self->_resource;
     flags = self->_flags;
-    if ((*&flags & 4) != 0 || v4)
+    if ((*&flags & 4) != 0 || availableCopy)
     {
       v12 = (*&flags >> 2) & 1;
       [(NSCondition *)self->_resourceLock unlock];
@@ -302,8 +302,8 @@ LABEL_16:
     goto LABEL_15;
   }
 
-  v11 = [v8 objectForKeyedSubscript:self->_resourceForThreadKey];
-  (*(v6 + 2))(v6, v11);
+  v11 = [threadDictionary objectForKeyedSubscript:self->_resourceForThreadKey];
+  (*(blockCopy + 2))(blockCopy, v11);
 
   LOBYTE(v12) = 1;
 LABEL_17:
@@ -338,9 +338,9 @@ uint64_t __88__TSUSharedResourceController_performSynchronousAccessIfResourceIsA
   return [v8 removeObjectForKey:v9];
 }
 
-- (void)acquireResourceWithLockAndPerformSynchronousAccessUsingBlock:(id)a3
+- (void)acquireResourceWithLockAndPerformSynchronousAccessUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (!WeakRetained)
   {
@@ -356,7 +356,7 @@ uint64_t __88__TSUSharedResourceController_performSynchronousAccessIfResourceIsA
   aBlock[3] = &unk_279D668C8;
   v9 = WeakRetained;
   v17 = v9;
-  v18 = self;
+  selfCopy = self;
   v10 = _Block_copy(aBlock);
   if ((*&self->_flags & 2) != 0)
   {
@@ -373,7 +373,7 @@ uint64_t __88__TSUSharedResourceController_performSynchronousAccessIfResourceIsA
     v12 = v10[2];
     v13 = v11;
     v12(v10, v14);
-    [(TSUSharedResourceController *)self waitForResourceWithLockAndPerformSynchronousAccessUsingBlock:v4];
+    [(TSUSharedResourceController *)self waitForResourceWithLockAndPerformSynchronousAccessUsingBlock:blockCopy];
     dispatch_semaphore_signal(v13);
   }
 
@@ -381,7 +381,7 @@ uint64_t __88__TSUSharedResourceController_performSynchronousAccessIfResourceIsA
   {
     [(NSCondition *)self->_resourceLock unlock];
     dispatch_group_leave(self->_accessInProgressGroup);
-    (v10[2])(v10, v4);
+    (v10[2])(v10, blockCopy);
   }
 }
 
@@ -412,9 +412,9 @@ uint64_t __92__TSUSharedResourceController_acquireResourceWithLockAndPerformSync
   return [v5 willEndAccessToResource];
 }
 
-- (void)waitForResourceWithLockAndPerformSynchronousAccessUsingBlock:(id)a3
+- (void)waitForResourceWithLockAndPerformSynchronousAccessUsingBlock:(id)block
 {
-  v7 = a3;
+  blockCopy = block;
   v4 = 0;
   do
   {
@@ -437,7 +437,7 @@ uint64_t __92__TSUSharedResourceController_acquireResourceWithLockAndPerformSync
 
   [(NSCondition *)self->_waitLock unlock];
   [(NSCondition *)self->_resourceLock unlock];
-  v7[2](v7, v4);
+  blockCopy[2](blockCopy, v4);
   dispatch_group_leave(self->_accessInProgressGroup);
 }
 
@@ -447,8 +447,8 @@ uint64_t __92__TSUSharedResourceController_acquireResourceWithLockAndPerformSync
   v8.receiver = self;
   v8.super_class = TSUSharedResourceController;
   v4 = [(TSUSharedResourceController *)&v8 description];
-  v5 = [(NSCondition *)self->_resourceLock name];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  name = [(NSCondition *)self->_resourceLock name];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, name];
 
   return v6;
 }

@@ -1,14 +1,14 @@
 @interface TraceBookmarkSelector
 - (MNTraceBookmarkSelectorDelegate)delegate;
-- (TraceBookmarkSelector)initWithStyle:(int64_t)a3;
+- (TraceBookmarkSelector)initWithStyle:(int64_t)style;
 - (UITableViewCell)_noBookmarksCell;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (void)_done;
 - (void)dealloc;
 - (void)reloadBookmarks;
-- (void)setTracePlayer:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)setTracePlayer:(id)player;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation TraceBookmarkSelector
@@ -20,18 +20,18 @@
   return WeakRetained;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v10 = -[NSArray objectAtIndexedSubscript:](self->_bookmarks, "objectAtIndexedSubscript:", [a4 row]);
+  v10 = -[NSArray objectAtIndexedSubscript:](self->_bookmarks, "objectAtIndexedSubscript:", [path row]);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v5 = v10;
     v6 = +[MNNavigationService sharedService];
-    v7 = [v6 traceBookmarks];
-    v8 = [v5 bookmarkIndex];
+    traceBookmarks = [v6 traceBookmarks];
+    bookmarkIndex = [v5 bookmarkIndex];
 
-    v9 = [v7 objectAtIndexedSubscript:v8];
+    v9 = [traceBookmarks objectAtIndexedSubscript:bookmarkIndex];
 
     [v9 timestamp];
     [v6 setTracePosition:?];
@@ -42,8 +42,8 @@
 
 - (void)_done
 {
-  v2 = [(TraceBookmarkSelector *)self presentingViewController];
-  [v2 dismissViewControllerAnimated:1 completion:0];
+  presentingViewController = [(TraceBookmarkSelector *)self presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:1 completion:0];
 }
 
 - (UITableViewCell)_noBookmarksCell
@@ -61,11 +61,11 @@
   return noBookmarksCell;
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = -[NSArray objectAtIndexedSubscript:](self->_bookmarks, "objectAtIndexedSubscript:", [v7 row]);
+  viewCopy = view;
+  pathCopy = path;
+  v8 = -[NSArray objectAtIndexedSubscript:](self->_bookmarks, "objectAtIndexedSubscript:", [pathCopy row]);
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
@@ -76,24 +76,24 @@
   {
     v12.receiver = self;
     v12.super_class = TraceBookmarkSelector;
-    [(TraceBookmarkSelector *)&v12 tableView:v6 heightForRowAtIndexPath:v7];
+    [(TraceBookmarkSelector *)&v12 tableView:viewCopy heightForRowAtIndexPath:pathCopy];
     v9 = v10;
   }
 
   return v9;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = -[NSArray objectAtIndexedSubscript:](self->_bookmarks, "objectAtIndexedSubscript:", [a4 row]);
+  viewCopy = view;
+  v7 = -[NSArray objectAtIndexedSubscript:](self->_bookmarks, "objectAtIndexedSubscript:", [path row]);
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = [v6 dequeueReusableCellWithIdentifier:@"TraceGuideMeBookmarkCell"];
+      v8 = [viewCopy dequeueReusableCellWithIdentifier:@"TraceGuideMeBookmarkCell"];
       if (v8)
       {
 LABEL_12:
@@ -101,7 +101,7 @@ LABEL_12:
         goto LABEL_17;
       }
 
-      v13 = [[UITableViewCell alloc] initWithStyle:3 reuseIdentifier:@"TraceGuideMeBookmarkCell"];
+      _noBookmarksCell = [[UITableViewCell alloc] initWithStyle:3 reuseIdentifier:@"TraceGuideMeBookmarkCell"];
     }
 
     else
@@ -113,43 +113,43 @@ LABEL_12:
         goto LABEL_17;
       }
 
-      v13 = [(TraceBookmarkSelector *)self _noBookmarksCell];
+      _noBookmarksCell = [(TraceBookmarkSelector *)self _noBookmarksCell];
     }
 
-    v8 = v13;
+    v8 = _noBookmarksCell;
     goto LABEL_12;
   }
 
-  v8 = [v6 dequeueReusableCellWithIdentifier:@"TraceNavBookmarkCell"];
+  v8 = [viewCopy dequeueReusableCellWithIdentifier:@"TraceNavBookmarkCell"];
   if (!v8)
   {
     v8 = [[UITableViewCell alloc] initWithStyle:3 reuseIdentifier:@"TraceNavBookmarkCell"];
   }
 
-  v9 = [v7 bookmarkIndex];
+  bookmarkIndex = [v7 bookmarkIndex];
   [v7 configureCell:v8];
   v10 = [(NSCache *)self->_bookmarkImageCache objectForKey:v7];
 
   if (v10)
   {
     v11 = [(NSCache *)self->_bookmarkImageCache objectForKey:v7];
-    v12 = [v8 imageView];
-    [v12 setImage:v11];
+    imageView = [v8 imageView];
+    [imageView setImage:v11];
   }
 
   else
   {
     v14 = +[MNNavigationService sharedService];
-    v15 = [v14 traceBookmarks];
-    v16 = [v15 objectAtIndexedSubscript:v9];
+    traceBookmarks = [v14 traceBookmarks];
+    v16 = [traceBookmarks objectAtIndexedSubscript:bookmarkIndex];
 
-    v17 = [v16 imageData];
-    if ([v17 length])
+    imageData = [v16 imageData];
+    if ([imageData length])
     {
-      v18 = [UIImage imageWithData:v17];
+      v18 = [UIImage imageWithData:imageData];
       [(NSCache *)self->_bookmarkImageCache setObject:v18 forKey:v7];
-      v19 = [v8 imageView];
-      [v19 setImage:v18];
+      imageView2 = [v8 imageView];
+      [imageView2 setImage:v18];
     }
   }
 
@@ -158,16 +158,16 @@ LABEL_17:
   return v8;
 }
 
-- (void)setTracePlayer:(id)a3
+- (void)setTracePlayer:(id)player
 {
-  v5 = a3;
-  if (self->_tracePlayer != v5)
+  playerCopy = player;
+  if (self->_tracePlayer != playerCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_tracePlayer, a3);
+    v6 = playerCopy;
+    objc_storeStrong(&self->_tracePlayer, player);
     [(NSCache *)self->_bookmarkImageCache removeAllObjects];
     [(TraceBookmarkSelector *)self reloadBookmarks];
-    v5 = v6;
+    playerCopy = v6;
   }
 }
 
@@ -179,8 +179,8 @@ LABEL_17:
   v19 = 0u;
   v20 = 0u;
   v16 = v21 = 0u;
-  v3 = [v16 traceBookmarks];
-  v4 = [v3 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  traceBookmarks = [v16 traceBookmarks];
+  v4 = [traceBookmarks countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v4)
   {
     v5 = v4;
@@ -194,7 +194,7 @@ LABEL_17:
       {
         if (*v19 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(traceBookmarks);
         }
 
         v10 = *(*(&v18 + 1) + 8 * v8);
@@ -209,7 +209,7 @@ LABEL_17:
       }
 
       while (v5 != v8);
-      v5 = [v3 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v5 = [traceBookmarks countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v5);
@@ -224,8 +224,8 @@ LABEL_17:
   bookmarks = self->_bookmarks;
   self->_bookmarks = v2;
 
-  v15 = [(TraceBookmarkSelector *)self tableView];
-  [v15 reloadData];
+  tableView = [(TraceBookmarkSelector *)self tableView];
+  [tableView reloadData];
 }
 
 - (void)dealloc
@@ -239,16 +239,16 @@ LABEL_17:
   [(TraceBookmarkSelector *)&v4 dealloc];
 }
 
-- (TraceBookmarkSelector)initWithStyle:(int64_t)a3
+- (TraceBookmarkSelector)initWithStyle:(int64_t)style
 {
   v11.receiver = self;
   v11.super_class = TraceBookmarkSelector;
-  v3 = [(TraceBookmarkSelector *)&v11 initWithStyle:a3];
+  v3 = [(TraceBookmarkSelector *)&v11 initWithStyle:style];
   v4 = v3;
   if (v3)
   {
-    v5 = [(TraceBookmarkSelector *)v3 navigationItem];
-    [v5 setTitle:@"Bookmarks"];
+    navigationItem = [(TraceBookmarkSelector *)v3 navigationItem];
+    [navigationItem setTitle:@"Bookmarks"];
 
     v6 = objc_alloc_init(NSCache);
     bookmarkImageCache = v4->_bookmarkImageCache;
@@ -256,8 +256,8 @@ LABEL_17:
 
     [(NSCache *)v4->_bookmarkImageCache setCountLimit:10];
     v8 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:0 target:v4 action:"_done"];
-    v9 = [(TraceBookmarkSelector *)v4 navigationItem];
-    [v9 setRightBarButtonItem:v8];
+    navigationItem2 = [(TraceBookmarkSelector *)v4 navigationItem];
+    [navigationItem2 setRightBarButtonItem:v8];
   }
 
   return v4;

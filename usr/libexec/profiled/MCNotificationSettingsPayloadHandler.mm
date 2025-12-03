@@ -1,5 +1,5 @@
 @interface MCNotificationSettingsPayloadHandler
-- (BOOL)installWithInstaller:(id)a3 options:(id)a4 interactionClient:(id)a5 outError:(id *)a6;
+- (BOOL)installWithInstaller:(id)installer options:(id)options interactionClient:(id)client outError:(id *)error;
 - (id)notificationSettingsFilePath;
 - (void)remove;
 - (void)setAside;
@@ -8,14 +8,14 @@
 
 @implementation MCNotificationSettingsPayloadHandler
 
-- (BOOL)installWithInstaller:(id)a3 options:(id)a4 interactionClient:(id)a5 outError:(id *)a6
+- (BOOL)installWithInstaller:(id)installer options:(id)options interactionClient:(id)client outError:(id *)error
 {
-  v8 = a4;
-  v9 = [(MCNewPayloadHandler *)self payload];
-  v10 = [v8 objectForKeyedSubscript:kMCInstallProfileOptionInstallationType];
+  optionsCopy = options;
+  payload = [(MCNewPayloadHandler *)self payload];
+  v10 = [optionsCopy objectForKeyedSubscript:kMCInstallProfileOptionInstallationType];
 
-  LODWORD(v8) = [v10 intValue];
-  if (v8 == 2)
+  LODWORD(optionsCopy) = [v10 intValue];
+  if (optionsCopy == 2)
   {
     MCUserNotificationSettingsFilePath();
   }
@@ -28,11 +28,11 @@
   v12 = +[NSFileManager defaultManager];
   if (([v12 fileExistsAtPath:v11] & 1) == 0)
   {
-    v30 = [v9 notificationSettings];
-    v31 = v30;
-    if (v30)
+    notificationSettings = [payload notificationSettings];
+    v31 = notificationSettings;
+    if (notificationSettings)
     {
-      [v30 writeToFile:v11 atomically:1];
+      [notificationSettings writeToFile:v11 atomically:1];
     }
 
     goto LABEL_14;
@@ -42,9 +42,9 @@
   v14 = MCErrorArray();
   v15 = MCErrorTypeFatal;
   v16 = [NSError MCErrorWithDomain:v13 code:44000 descriptionArray:v14 errorType:MCErrorTypeFatal, 0];
-  v17 = [v16 MCCopyAsPrimaryError];
+  mCCopyAsPrimaryError = [v16 MCCopyAsPrimaryError];
 
-  if (!v17)
+  if (!mCCopyAsPrimaryError)
   {
 LABEL_14:
     MCSendUserNotificationsSettingsChangedNotification();
@@ -52,13 +52,13 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  v33 = v9;
+  v33 = payload;
   v18 = MCInstallationErrorDomain;
-  v19 = [(MCNewPayloadHandler *)self payload];
-  [v19 friendlyName];
-  v21 = v20 = a6;
+  payload2 = [(MCNewPayloadHandler *)self payload];
+  [payload2 friendlyName];
+  v21 = v20 = error;
   v22 = MCErrorArray();
-  v23 = [NSError MCErrorWithDomain:v18 code:4001 descriptionArray:v22 underlyingError:v17 errorType:v15, v21, 0];
+  v23 = [NSError MCErrorWithDomain:v18 code:4001 descriptionArray:v22 underlyingError:mCCopyAsPrimaryError errorType:v15, v21, 0];
 
   if (v20)
   {
@@ -67,16 +67,16 @@ LABEL_14:
   }
 
   v25 = _MCLogObjects[0];
-  v9 = v33;
+  payload = v33;
   if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_ERROR))
   {
     v26 = v25;
-    v27 = [v33 friendlyName];
-    v28 = [v23 MCVerboseDescription];
+    friendlyName = [v33 friendlyName];
+    mCVerboseDescription = [v23 MCVerboseDescription];
     *buf = 138543618;
-    v35 = v27;
+    v35 = friendlyName;
     v36 = 2114;
-    v37 = v28;
+    v37 = mCVerboseDescription;
     _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_ERROR, "Cannot install notification settings “%{public}@”. Error: %{public}@", buf, 0x16u);
   }
 
@@ -88,14 +88,14 @@ LABEL_15:
 
 - (void)remove
 {
-  v3 = [(MCNewPayloadHandler *)self profileHandler];
-  v4 = [v3 isSetAside];
+  profileHandler = [(MCNewPayloadHandler *)self profileHandler];
+  isSetAside = [profileHandler isSetAside];
 
-  if ((v4 & 1) == 0)
+  if ((isSetAside & 1) == 0)
   {
     v5 = +[NSFileManager defaultManager];
-    v6 = [(MCNotificationSettingsPayloadHandler *)self notificationSettingsFilePath];
-    [v5 removeItemAtPath:v6 error:0];
+    notificationSettingsFilePath = [(MCNotificationSettingsPayloadHandler *)self notificationSettingsFilePath];
+    [v5 removeItemAtPath:notificationSettingsFilePath error:0];
 
     MCSendUserNotificationsSettingsChangedNotification();
   }
@@ -104,28 +104,28 @@ LABEL_15:
 - (void)setAside
 {
   v4 = +[NSFileManager defaultManager];
-  v3 = [(MCNotificationSettingsPayloadHandler *)self notificationSettingsFilePath];
-  [v4 removeItemAtPath:v3 error:0];
+  notificationSettingsFilePath = [(MCNotificationSettingsPayloadHandler *)self notificationSettingsFilePath];
+  [v4 removeItemAtPath:notificationSettingsFilePath error:0];
 }
 
 - (void)unsetAside
 {
-  v5 = [(MCNewPayloadHandler *)self payload];
-  v3 = [v5 notificationSettings];
-  if (v3)
+  payload = [(MCNewPayloadHandler *)self payload];
+  notificationSettings = [payload notificationSettings];
+  if (notificationSettings)
   {
-    v4 = [(MCNotificationSettingsPayloadHandler *)self notificationSettingsFilePath];
-    [v3 writeToFile:v4 atomically:1];
+    notificationSettingsFilePath = [(MCNotificationSettingsPayloadHandler *)self notificationSettingsFilePath];
+    [notificationSettings writeToFile:notificationSettingsFilePath atomically:1];
   }
 }
 
 - (id)notificationSettingsFilePath
 {
-  v2 = [(MCNewPayloadHandler *)self profileHandler];
-  v3 = [v2 profile];
-  v4 = [v3 installType];
+  profileHandler = [(MCNewPayloadHandler *)self profileHandler];
+  profile = [profileHandler profile];
+  installType = [profile installType];
 
-  if (v4 == 2)
+  if (installType == 2)
   {
     MCUserNotificationSettingsFilePath();
   }

@@ -1,30 +1,30 @@
 @interface HDSPAppPredictionClient
-- (HDSPAppPredictionClient)initWithSleepFocusModeBridge:(id)a3;
-- (void)createSuggestedHomeScreenPageWithCompletion:(id)a3;
+- (HDSPAppPredictionClient)initWithSleepFocusModeBridge:(id)bridge;
+- (void)createSuggestedHomeScreenPageWithCompletion:(id)completion;
 @end
 
 @implementation HDSPAppPredictionClient
 
-- (HDSPAppPredictionClient)initWithSleepFocusModeBridge:(id)a3
+- (HDSPAppPredictionClient)initWithSleepFocusModeBridge:(id)bridge
 {
-  v5 = a3;
+  bridgeCopy = bridge;
   v10.receiver = self;
   v10.super_class = HDSPAppPredictionClient;
   v6 = [(HDSPAppPredictionClient *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_sleepFocusModeBridge, a3);
+    objc_storeStrong(&v6->_sleepFocusModeBridge, bridge);
     v8 = v7;
   }
 
   return v7;
 }
 
-- (void)createSuggestedHomeScreenPageWithCompletion:(id)a3
+- (void)createSuggestedHomeScreenPageWithCompletion:(id)completion
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = HKSPLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -43,8 +43,8 @@
   v12[2] = __71__HDSPAppPredictionClient_createSuggestedHomeScreenPageWithCompletion___block_invoke;
   v12[3] = &unk_279C7CEA0;
   v12[4] = self;
-  v13 = v4;
-  v10 = v4;
+  v13 = completionCopy;
+  v10 = completionCopy;
   [v9 suggestedPagesWithFilter:v7 layoutOptions:v8 completionHandler:v12];
 
   v11 = *MEMORY[0x277D85DE8];

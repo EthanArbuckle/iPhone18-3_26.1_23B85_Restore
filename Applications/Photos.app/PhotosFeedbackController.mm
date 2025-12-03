@@ -1,17 +1,17 @@
 @interface PhotosFeedbackController
-- (_TtC9PhotosApp24PhotosFeedbackController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC9PhotosApp24PhotosFeedbackController)initWithNibName:(id)name bundle:(id)bundle;
 @end
 
 @implementation PhotosFeedbackController
 
-- (_TtC9PhotosApp24PhotosFeedbackController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC9PhotosApp24PhotosFeedbackController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   sub_100010AA4();
 }
 

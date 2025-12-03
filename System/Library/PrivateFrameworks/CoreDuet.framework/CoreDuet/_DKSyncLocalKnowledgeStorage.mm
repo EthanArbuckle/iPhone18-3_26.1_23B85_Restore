@@ -1,60 +1,60 @@
 @interface _DKSyncLocalKnowledgeStorage
-+ (void)_updateEventStatsWithFetchEventsTotal:(void *)a3 streamNameCounts:;
-+ (void)_updateEventStatsWithFetchTombstonesTotal:(void *)a3 streamNameCounts:;
-- (BOOL)deleteEventsWithEventIDs:(id)a3 error:(id *)a4;
-- (BOOL)saveEvents:(id)a3 error:(id *)a4;
-- (BOOL)saveSyncedDownWindows:(id)a3 peer:(id)a4 transportName:(id)a5 error:(id *)a6;
-- (_DKSyncHistory)syncHistoryForPeer:(void *)a3 streamName:(void *)a4 transportName:(void *)a5 type:(unint64_t *)a6 error:;
-- (id)additionsSyncHistoryForPeer:(id)a3 transportName:(id)a4 error:(id *)a5;
-- (id)deletionsSyncHistoryForPeer:(id)a3 transportName:(id)a4 error:(id *)a5;
-- (id)initWithKnowledgeStorage:(id *)a1;
-- (id)lastSyncDownDeletionDateForPeer:(id)a3 transportName:(id)a4 error:(id *)a5;
-- (id)sortedEventsFromSyncWindows:(id)a3 streamNames:(id)a4 compatibility:(id)a5 limit:(unint64_t)a6 fetchOrder:(int64_t)a7 error:(id *)a8;
-- (id)sortedEventsFromSyncWindows:(id)a3 streamNames:(id)a4 limit:(unint64_t)a5 fetchOrder:(int64_t)a6 error:(id *)a7;
-- (id)sortedSyncDownWindowsOverlappingBetweenDate:(id)a3 andDate:(id)a4 peer:(id)a5 error:(id *)a6;
-- (id)tombstonesSinceDate:(id)a3 streamNames:(id)a4 limit:(unint64_t)a5 endDate:(id *)a6 error:(id *)a7;
-- (void)setLastSyncDownDeletionDate:(id)a3 previousDate:(id)a4 forPeer:(id)a5 transportName:(id)a6 error:(id *)a7;
++ (void)_updateEventStatsWithFetchEventsTotal:(void *)total streamNameCounts:;
++ (void)_updateEventStatsWithFetchTombstonesTotal:(void *)total streamNameCounts:;
+- (BOOL)deleteEventsWithEventIDs:(id)ds error:(id *)error;
+- (BOOL)saveEvents:(id)events error:(id *)error;
+- (BOOL)saveSyncedDownWindows:(id)windows peer:(id)peer transportName:(id)name error:(id *)error;
+- (_DKSyncHistory)syncHistoryForPeer:(void *)peer streamName:(void *)name transportName:(void *)transportName type:(unint64_t *)type error:;
+- (id)additionsSyncHistoryForPeer:(id)peer transportName:(id)name error:(id *)error;
+- (id)deletionsSyncHistoryForPeer:(id)peer transportName:(id)name error:(id *)error;
+- (id)initWithKnowledgeStorage:(id *)storage;
+- (id)lastSyncDownDeletionDateForPeer:(id)peer transportName:(id)name error:(id *)error;
+- (id)sortedEventsFromSyncWindows:(id)windows streamNames:(id)names compatibility:(id)compatibility limit:(unint64_t)limit fetchOrder:(int64_t)order error:(id *)error;
+- (id)sortedEventsFromSyncWindows:(id)windows streamNames:(id)names limit:(unint64_t)limit fetchOrder:(int64_t)order error:(id *)error;
+- (id)sortedSyncDownWindowsOverlappingBetweenDate:(id)date andDate:(id)andDate peer:(id)peer error:(id *)error;
+- (id)tombstonesSinceDate:(id)date streamNames:(id)names limit:(unint64_t)limit endDate:(id *)endDate error:(id *)error;
+- (void)setLastSyncDownDeletionDate:(id)date previousDate:(id)previousDate forPeer:(id)peer transportName:(id)name error:(id *)error;
 @end
 
 @implementation _DKSyncLocalKnowledgeStorage
 
-- (id)sortedEventsFromSyncWindows:(id)a3 streamNames:(id)a4 limit:(unint64_t)a5 fetchOrder:(int64_t)a6 error:(id *)a7
+- (id)sortedEventsFromSyncWindows:(id)windows streamNames:(id)names limit:(unint64_t)limit fetchOrder:(int64_t)order error:(id *)error
 {
-  v12 = a4;
-  v13 = a3;
+  namesCopy = names;
+  windowsCopy = windows;
   v14 = +[_DKCompatibility currentCompatibility];
-  v15 = [(_DKSyncLocalKnowledgeStorage *)self sortedEventsFromSyncWindows:v13 streamNames:v12 compatibility:v14 limit:a5 fetchOrder:a6 error:a7];
+  v15 = [(_DKSyncLocalKnowledgeStorage *)self sortedEventsFromSyncWindows:windowsCopy streamNames:namesCopy compatibility:v14 limit:limit fetchOrder:order error:error];
 
   return v15;
 }
 
-- (id)sortedEventsFromSyncWindows:(id)a3 streamNames:(id)a4 compatibility:(id)a5 limit:(unint64_t)a6 fetchOrder:(int64_t)a7 error:(id *)a8
+- (id)sortedEventsFromSyncWindows:(id)windows streamNames:(id)names compatibility:(id)compatibility limit:(unint64_t)limit fetchOrder:(int64_t)order error:(id *)error
 {
   v165 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v130 = a4;
-  v15 = a5;
-  if (a8)
+  windowsCopy = windows;
+  namesCopy = names;
+  compatibilityCopy = compatibility;
+  if (error)
   {
-    *a8 = 0;
+    *error = 0;
   }
 
-  if (![v14 count] || !objc_msgSend(v130, "count"))
+  if (![windowsCopy count] || !objc_msgSend(namesCopy, "count"))
   {
     v29 = 0;
     goto LABEL_49;
   }
 
-  v127 = self;
-  v128 = a6;
-  v125 = a8;
-  v126 = v14;
-  v129 = v15;
+  selfCopy = self;
+  limitCopy = limit;
+  errorCopy = error;
+  v126 = windowsCopy;
+  v129 = compatibilityCopy;
   v138 = 0u;
   v139 = 0u;
   v136 = 0u;
   v137 = 0u;
-  v16 = v14;
+  v16 = windowsCopy;
   v17 = [v16 countByEnumeratingWithState:&v136 objects:v164 count:16];
   if (v17)
   {
@@ -71,16 +71,16 @@
         }
 
         v22 = *(*(&v136 + 1) + 8 * i);
-        v23 = [(_DKSyncWindow *)v22 startDate];
-        v24 = [(_DKSyncType *)v22 urgency];
-        if (a7 == 2)
+        startDate = [(_DKSyncWindow *)v22 startDate];
+        urgency = [(_DKSyncType *)v22 urgency];
+        if (order == 2)
         {
-          [_DKQuery predicateForEventsWithCreationInDateRangeFrom:v23 toBefore:v24];
+          [_DKQuery predicateForEventsWithCreationInDateRangeFrom:startDate toBefore:urgency];
         }
 
         else
         {
-          [_DKQuery predicateForEventsWithCreationInDateRangeFromAfter:v23 to:v24];
+          [_DKQuery predicateForEventsWithCreationInDateRangeFromAfter:startDate to:urgency];
         }
         v25 = ;
 
@@ -112,7 +112,7 @@
     v19 = 0;
   }
 
-  v30 = [_DKQuery predicateForEventsWithStreamNames:v130];
+  v30 = [_DKQuery predicateForEventsWithStreamNames:namesCopy];
   v31 = MEMORY[0x1E696AB28];
   v162[0] = v19;
   v124 = v30;
@@ -128,13 +128,13 @@
   v37 = [v35 andPredicateWithSubpredicates:v36];
 
   v38 = +[_DKSystemEventStreams displayIsBacklit];
-  v39 = [v38 name];
+  name = [v38 name];
 
-  v122 = v39;
+  v122 = name;
   v123 = v34;
-  if ([v130 containsObject:v39])
+  if ([namesCopy containsObject:name])
   {
-    v120 = [_DKQuery predicateForEventsWithStreamName:v39];
+    v120 = [_DKQuery predicateForEventsWithStreamName:name];
     v112 = [MEMORY[0x1E696AB28] notPredicateWithSubpredicate:v120];
     v40 = +[_DKAnyIntegerCategory type];
     v41 = [_DKCategory categoryWithInteger:1 type:v40];
@@ -163,12 +163,12 @@
   }
 
   v51 = +[_DKSystemEventStreams nowPlayingStream];
-  v52 = [v51 name];
+  name2 = [v51 name];
 
-  v121 = v52;
-  if ([v130 containsObject:v52])
+  v121 = name2;
+  if ([namesCopy containsObject:name2])
   {
-    v118 = [_DKQuery predicateForEventsWithStreamName:v52];
+    v118 = [_DKQuery predicateForEventsWithStreamName:name2];
     v53 = [MEMORY[0x1E696AB28] notPredicateWithSubpredicate:v118];
     v115 = [_DKQuery predicateForEventsWithStringValue:@"com.apple.quicklook.UIExtension"];
     v54 = +[_DKNowPlayingMetadataKey mediaType];
@@ -201,12 +201,12 @@
   }
 
   v67 = +[_DKSystemEventStreams appActivityStream];
-  v68 = [v67 name];
+  name3 = [v67 name];
 
-  v119 = v68;
-  if ([v130 containsObject:v68])
+  v119 = name3;
+  if ([namesCopy containsObject:name3])
   {
-    v69 = [_DKQuery predicateForEventsWithStreamName:v68];
+    v69 = [_DKQuery predicateForEventsWithStreamName:name3];
     v70 = [MEMORY[0x1E696AB28] notPredicateWithSubpredicate:v69];
     v71 = +[_DKApplicationActivityMetadataKey isEligibleForPrediction];
     v72 = [_DKQuery predicateForObjectsWithMetadataKey:v71 andIntegerValue:1];
@@ -237,10 +237,10 @@
 
   else
   {
-    v83 = [v129 eventPredicate];
+    eventPredicate = [v129 eventPredicate];
     v84 = MEMORY[0x1E696AB28];
     v152[0] = v37;
-    v152[1] = v83;
+    v152[1] = eventPredicate;
     v82 = 0x1E695D000uLL;
     v85 = [MEMORY[0x1E695DEC8] arrayWithObjects:v152 count:2];
     v86 = [v84 andPredicateWithSubpredicates:v85];
@@ -248,30 +248,30 @@
     v37 = v86;
   }
 
-  v116 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"creationDate" ascending:a7 != 2];
+  v116 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"creationDate" ascending:order != 2];
   v151 = v116;
   v87 = [*(v82 + 3784) arrayWithObjects:&v151 count:1];
-  v88 = [_DKEventQuery eventQueryWithPredicate:v37 eventStreams:0 offset:0 limit:v128 sortDescriptors:v87];
+  v88 = [_DKEventQuery eventQueryWithPredicate:v37 eventStreams:0 offset:0 limit:limitCopy sortDescriptors:v87];
   v89 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"_DKSyncLocalKnowledgeStorage.m"];
   v90 = [v89 stringByAppendingFormat:@":%d", 198];
   [v88 setClientName:v90];
 
   [v88 setTracker:&__block_literal_global_41];
-  storage = v127->_storage;
+  storage = selfCopy->_storage;
   v135 = 0;
   v29 = [(_DKKnowledgeStorage *)storage executeQuery:v88 error:&v135];
   v92 = v135;
-  if (a7 == 2 && v29)
+  if (order == 2 && v29)
   {
     if (![v29 count])
     {
       goto LABEL_35;
     }
 
-    v93 = [v29 reverseObjectEnumerator];
-    v94 = [v93 allObjects];
+    reverseObjectEnumerator = [v29 reverseObjectEnumerator];
+    allObjects = [reverseObjectEnumerator allObjects];
 
-    v29 = v94;
+    v29 = allObjects;
   }
 
   if (v29)
@@ -286,8 +286,8 @@ LABEL_35:
         v106 = [objc_opt_class() description];
         v107 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v29, "count")}];
         v108 = _DKSyncLoggingWindowsDescription(v16);
-        v109 = _CDPrettyPrintCollection(v130, 0, 0, 0);
-        v110 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v128];
+        v109 = _CDPrettyPrintCollection(namesCopy, 0, 0, 0);
+        v110 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:limitCopy];
         *buf = 138544386;
         v142 = v106;
         v143 = 2112;
@@ -321,9 +321,9 @@ LABEL_35:
               objc_enumerationMutation(v29);
             }
 
-            v101 = [*(*(&v131 + 1) + 8 * j) stream];
-            v102 = [v101 name];
-            [v96 addObject:v102];
+            stream = [*(*(&v131 + 1) + 8 * j) stream];
+            name4 = [stream name];
+            [v96 addObject:name4];
           }
 
           v98 = [v29 countByEnumeratingWithState:&v131 objects:v140 count:16];
@@ -337,14 +337,14 @@ LABEL_35:
     }
   }
 
-  if (v125)
+  if (errorCopy)
   {
     v103 = v92;
-    *v125 = v92;
+    *errorCopy = v92;
   }
 
-  v14 = v126;
-  v15 = v129;
+  windowsCopy = v126;
+  compatibilityCopy = v129;
 LABEL_49:
 
   v104 = *MEMORY[0x1E69E9840];
@@ -352,10 +352,10 @@ LABEL_49:
   return v29;
 }
 
-+ (void)_updateEventStatsWithFetchEventsTotal:(void *)a3 streamNameCounts:
++ (void)_updateEventStatsWithFetchEventsTotal:(void *)total streamNameCounts:
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  totalCopy = total;
   objc_opt_self();
   if (_updateEventStatsWithFetchEventsTotal_streamNameCounts__fetchEventsCounterInitialized != -1)
   {
@@ -367,7 +367,7 @@ LABEL_49:
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v4;
+  v5 = totalCopy;
   v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
@@ -406,23 +406,23 @@ LABEL_49:
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (id)tombstonesSinceDate:(id)a3 streamNames:(id)a4 limit:(unint64_t)a5 endDate:(id *)a6 error:(id *)a7
+- (id)tombstonesSinceDate:(id)date streamNames:(id)names limit:(unint64_t)limit endDate:(id *)endDate error:(id *)error
 {
   v98 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = v12;
-  if (a7)
+  dateCopy = date;
+  namesCopy = names;
+  v13 = namesCopy;
+  if (error)
   {
-    *a7 = 0;
+    *error = 0;
   }
 
-  if ([v12 count])
+  if ([namesCopy count])
   {
-    v67 = self;
-    v65 = a6;
-    v71 = a7;
-    v73 = v11;
+    selfCopy = self;
+    endDateCopy = endDate;
+    errorCopy = error;
+    v73 = dateCopy;
     v14 = objc_opt_new();
     v81 = 0u;
     v82 = 0u;
@@ -457,9 +457,9 @@ LABEL_49:
     }
 
     v23 = [MEMORY[0x1E696AB28] orPredicateWithSubpredicates:v14];
-    v24 = [MEMORY[0x1E695DF00] date];
-    v11 = v73;
-    v25 = [_DKQuery predicateForEventsWithCreationInDateRangeFromAfter:v73 to:v24];
+    date = [MEMORY[0x1E695DF00] date];
+    dateCopy = v73;
+    v25 = [_DKQuery predicateForEventsWithCreationInDateRangeFromAfter:v73 to:date];
     v26 = MEMORY[0x1E696AB28];
     v69 = v25;
     v70 = v23;
@@ -468,7 +468,7 @@ LABEL_49:
     v27 = [MEMORY[0x1E695DEC8] arrayWithObjects:v96 count:2];
     v28 = [v26 andPredicateWithSubpredicates:v27];
 
-    if (a5 < 1)
+    if (limit < 1)
     {
       v31 = 0;
     }
@@ -485,9 +485,9 @@ LABEL_49:
     v33 = +[_DKSystemEventStreams tombstoneStream];
     v94 = v33;
     v34 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v94 count:1];
-    v35 = a5;
+    limitCopy = limit;
     v75 = v31;
-    v36 = [_DKEventQuery eventQueryWithPredicate:v28 eventStreams:v34 offset:0 limit:v35 sortDescriptors:v31];
+    v36 = [_DKEventQuery eventQueryWithPredicate:v28 eventStreams:v34 offset:0 limit:limitCopy sortDescriptors:v31];
 
     v37 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"_DKSyncLocalKnowledgeStorage.m"];
     v38 = [v37 stringByAppendingFormat:@":%d", 272];
@@ -496,39 +496,39 @@ LABEL_49:
     v39 = v36;
     [v36 setTracker:&__block_literal_global_34];
     [v36 setReadMetadata:1];
-    storage = v67->_storage;
+    storage = selfCopy->_storage;
     v80 = 0;
     v32 = [(_DKKnowledgeStorage *)storage executeQuery:v36 error:&v80];
     v66 = v80;
     if (v66)
     {
       v41 = +[_CDLogging syncChannel];
-      v42 = v71;
+      v42 = errorCopy;
       v43 = v66;
       if (os_log_type_enabled(v41, OS_LOG_TYPE_DEBUG))
       {
-        [_DKSyncLocalKnowledgeStorage tombstonesSinceDate:v67 streamNames:v66 limit:? endDate:? error:?];
+        [_DKSyncLocalKnowledgeStorage tombstonesSinceDate:selfCopy streamNames:v66 limit:? endDate:? error:?];
       }
     }
 
     else if ([v32 count])
     {
       v63 = v36;
-      v64 = v24;
+      v64 = date;
       v44 = objc_opt_new();
       v45 = +[_CDLogging syncChannel];
       if (os_log_type_enabled(v45, OS_LOG_TYPE_DEBUG))
       {
         v59 = [objc_opt_class() description];
         v60 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v32, "count")}];
-        v61 = [(NSDate *)v73 dk_localtimeString];
+        dk_localtimeString = [(NSDate *)v73 dk_localtimeString];
         v62 = _CDPrettyPrintCollection(v15, 0, 0, 0);
         *buf = 138544130;
         v87 = v59;
         v88 = 2112;
         v89 = v60;
         v90 = 2114;
-        v91 = v61;
+        v91 = dk_localtimeString;
         v92 = 2114;
         v93 = v62;
         _os_log_debug_impl(&dword_191750000, v45, OS_LOG_TYPE_DEBUG, "%{public}@: Found %@ tombstones since %{public}@ on streams %{public}@", buf, 0x2Au);
@@ -555,9 +555,9 @@ LABEL_49:
               objc_enumerationMutation(v46);
             }
 
-            v51 = [*(*(&v76 + 1) + 8 * j) metadata];
+            metadata = [*(*(&v76 + 1) + 8 * j) metadata];
             v52 = +[_DKTombstoneMetadataKey eventStreamName];
-            v53 = [v51 objectForKeyedSubscript:v52];
+            v53 = [metadata objectForKeyedSubscript:v52];
 
             if (v53)
             {
@@ -571,31 +571,31 @@ LABEL_49:
         while (v48);
       }
 
-      if (v65)
+      if (endDateCopy)
       {
-        v54 = [v46 lastObject];
-        *v65 = [v54 creationDate];
+        lastObject = [v46 lastObject];
+        *endDateCopy = [lastObject creationDate];
       }
 
       +[_DKSyncLocalKnowledgeStorage _updateEventStatsWithFetchTombstonesTotal:streamNameCounts:](_DKSyncLocalKnowledgeStorage, [v46 count], v44);
 
-      v11 = v73;
+      dateCopy = v73;
       v31 = v75;
-      v42 = v71;
+      v42 = errorCopy;
       v39 = v63;
-      v24 = v64;
+      date = v64;
       v43 = 0;
       v28 = v68;
     }
 
     else
     {
-      v42 = v71;
+      v42 = errorCopy;
       v43 = 0;
-      if (v65)
+      if (endDateCopy)
       {
-        v55 = v24;
-        *v65 = v24;
+        v55 = date;
+        *endDateCopy = date;
       }
     }
 
@@ -617,10 +617,10 @@ LABEL_49:
   return v32;
 }
 
-+ (void)_updateEventStatsWithFetchTombstonesTotal:(void *)a3 streamNameCounts:
++ (void)_updateEventStatsWithFetchTombstonesTotal:(void *)total streamNameCounts:
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  totalCopy = total;
   objc_opt_self();
   if (_updateEventStatsWithFetchTombstonesTotal_streamNameCounts__fetchTombstonesCounterInitialized != -1)
   {
@@ -632,7 +632,7 @@ LABEL_49:
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v4;
+  v5 = totalCopy;
   v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
@@ -671,19 +671,19 @@ LABEL_49:
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (id)sortedSyncDownWindowsOverlappingBetweenDate:(id)a3 andDate:(id)a4 peer:(id)a5 error:(id *)a6
+- (id)sortedSyncDownWindowsOverlappingBetweenDate:(id)date andDate:(id)andDate peer:(id)peer error:(id *)error
 {
   v96[1] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  if (a6)
+  dateCopy = date;
+  andDateCopy = andDate;
+  if (error)
   {
-    *a6 = 0;
+    *error = 0;
   }
 
-  v60 = a6;
-  v11 = [a5 sourceDeviceID];
-  v12 = [_DKSyncMetadataStorage windowStreamNameWithSourceDeviceID:v11];
+  errorCopy = error;
+  sourceDeviceID = [peer sourceDeviceID];
+  v12 = [_DKSyncMetadataStorage windowStreamNameWithSourceDeviceID:sourceDeviceID];
 
   v13 = +[_DKAnyStringIdentifier type];
   v70 = v12;
@@ -692,15 +692,15 @@ LABEL_49:
   v75 = [MEMORY[0x1E695DEC8] arrayWithObjects:v96 count:1];
 
   v15 = [MEMORY[0x1E696AE18] predicateWithFormat:@"TRUEPREDICATE"];
-  v16 = [_DKQuery predicateForEventsWithStartInDateRangeFrom:v9 to:v10];
-  v17 = [_DKQuery predicateForEventsWithEndInDateRangeFrom:v9 to:v10];
-  v18 = [MEMORY[0x1E695DF00] distantPast];
-  v71 = v9;
-  v19 = [_DKQuery predicateForEventsWithStartInDateRangeFrom:v18 to:v9];
+  v16 = [_DKQuery predicateForEventsWithStartInDateRangeFrom:dateCopy to:andDateCopy];
+  v17 = [_DKQuery predicateForEventsWithEndInDateRangeFrom:dateCopy to:andDateCopy];
+  distantPast = [MEMORY[0x1E695DF00] distantPast];
+  v71 = dateCopy;
+  v19 = [_DKQuery predicateForEventsWithStartInDateRangeFrom:distantPast to:dateCopy];
 
   v20 = v15;
-  v21 = [MEMORY[0x1E695DF00] distantFuture];
-  v22 = [_DKQuery predicateForEventsWithEndInDateRangeFrom:v10 to:v21];
+  distantFuture = [MEMORY[0x1E695DF00] distantFuture];
+  v22 = [_DKQuery predicateForEventsWithEndInDateRangeFrom:andDateCopy to:distantFuture];
 
   v23 = MEMORY[0x1E696AB28];
   v67 = v22;
@@ -756,7 +756,7 @@ LABEL_49:
       v56 = [objc_opt_class() description];
       [v42 domain];
       v57 = v74 = v20;
-      v58 = [v42 code];
+      code = [v42 code];
       *buf = 138544386;
       v82 = v56;
       v83 = 2114;
@@ -764,7 +764,7 @@ LABEL_49:
       v85 = 2114;
       v86 = v57;
       v87 = 2048;
-      v88 = v58;
+      v88 = code;
       v89 = 2112;
       v90 = v42;
       _os_log_error_impl(&dword_191750000, v43, OS_LOG_TYPE_ERROR, "%{public}@: Failed to fetch missing additions window for stream %{public}@: %{public}@:%lld (%@)", buf, 0x34u);
@@ -774,12 +774,12 @@ LABEL_49:
     }
 
     v45 = v71;
-    v46 = v60;
-    if (v60)
+    v46 = errorCopy;
+    if (errorCopy)
     {
       v47 = v42;
       v46 = 0;
-      *v60 = v42;
+      *errorCopy = v42;
     }
   }
 
@@ -789,7 +789,7 @@ LABEL_49:
     if ([v41 count])
     {
       v59 = v27;
-      v61 = v10;
+      v61 = andDateCopy;
       v73 = v20;
       v78 = 0u;
       v79 = 0u;
@@ -823,7 +823,7 @@ LABEL_49:
       v44 = v70;
       v45 = v71;
       v27 = v59;
-      v10 = v61;
+      andDateCopy = v61;
       v20 = v73;
       v35 = v75;
     }
@@ -840,22 +840,22 @@ LABEL_49:
   return v46;
 }
 
-- (BOOL)saveSyncedDownWindows:(id)a3 peer:(id)a4 transportName:(id)a5 error:(id *)a6
+- (BOOL)saveSyncedDownWindows:(id)windows peer:(id)peer transportName:(id)name error:(id *)error
 {
   v71 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v9;
-  v12 = [v9 sourceDeviceID];
-  v13 = [_DKSyncMetadataStorage windowStreamNameWithSourceDeviceID:v12];
+  windowsCopy = windows;
+  peerCopy = peer;
+  nameCopy = name;
+  v11 = peerCopy;
+  sourceDeviceID = [peerCopy sourceDeviceID];
+  v13 = [_DKSyncMetadataStorage windowStreamNameWithSourceDeviceID:sourceDeviceID];
 
-  v14 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v8, "count")}];
+  v14 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(windowsCopy, "count")}];
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
-  v15 = v8;
+  v15 = windowsCopy;
   v16 = [v15 countByEnumeratingWithState:&v52 objects:v70 count:16];
   if (v16)
   {
@@ -870,7 +870,7 @@ LABEL_49:
           objc_enumerationMutation(v15);
         }
 
-        v20 = [_DKSyncMetadataStorage eventFromFetchedWindow:v13 windowStreamName:v10 transportName:?];
+        v20 = [_DKSyncMetadataStorage eventFromFetchedWindow:v13 windowStreamName:nameCopy transportName:?];
         if (v20)
         {
           [v14 addObject:v20];
@@ -906,34 +906,34 @@ LABEL_49:
         }
 
         v43 = v32;
-        v33 = [v11 identifier];
-        v45 = [v11 model];
-        if (v45)
+        identifier = [v11 identifier];
+        model = [v11 model];
+        if (model)
         {
           v37 = MEMORY[0x1E696AEC0];
-          v42 = [v11 model];
-          v31 = [v37 stringWithFormat:@" (%@)", v42];
+          model2 = [v11 model];
+          v31 = [v37 stringWithFormat:@" (%@)", model2];
         }
 
-        v38 = [v23 domain];
-        v39 = [v23 code];
+        domain = [v23 domain];
+        code = [v23 code];
         *buf = 138544898;
         v57 = v48;
         v58 = 2114;
         v59 = v43;
         v60 = 2114;
-        v61 = v33;
+        v61 = identifier;
         v62 = 2114;
         v63 = v31;
         v64 = 2114;
-        v65 = v38;
+        v65 = domain;
         v66 = 2048;
-        v67 = v39;
+        v67 = code;
         v68 = 2112;
         v69 = v23;
         _os_log_debug_impl(&dword_191750000, v24, OS_LOG_TYPE_DEBUG, "%{public}@: Failed to save additions windows for %{public}@peer %{public}@%{public}@: %{public}@:%lld (%@)", buf, 0x48u);
 
-        if (v45)
+        if (model)
         {
         }
       }
@@ -957,13 +957,13 @@ LABEL_49:
           v35 = &stru_1F05B9908;
         }
 
-        v44 = [v11 identifier];
-        v36 = [v11 model];
-        if (v36)
+        identifier2 = [v11 identifier];
+        model3 = [v11 model];
+        if (model3)
         {
           v40 = MEMORY[0x1E696AEC0];
-          v42 = [v26 model];
-          v34 = [v40 stringWithFormat:@" (%@)", v42];
+          model2 = [v26 model];
+          v34 = [v40 stringWithFormat:@" (%@)", model2];
         }
 
         v41 = _DKSyncLoggingWindowsDescription(v15);
@@ -974,13 +974,13 @@ LABEL_49:
         v60 = 2114;
         v61 = v35;
         v62 = 2114;
-        v63 = v44;
+        v63 = identifier2;
         v64 = 2114;
         v65 = v34;
         v66 = 2114;
         v67 = v41;
         _os_log_debug_impl(&dword_191750000, v24, OS_LOG_TYPE_DEBUG, "%{public}@: Saved %@ additions windows for %{public}@peer %{public}@%{public}@: windows %{public}@", buf, 0x3Eu);
-        if (v36)
+        if (model3)
         {
         }
       }
@@ -995,35 +995,35 @@ LABEL_49:
     v26 = v11;
   }
 
-  if (a6)
+  if (error)
   {
     v27 = v23;
-    *a6 = v23;
+    *error = v23;
   }
 
   v28 = *MEMORY[0x1E69E9840];
   return v23 == 0;
 }
 
-- (id)lastSyncDownDeletionDateForPeer:(id)a3 transportName:(id)a4 error:(id *)a5
+- (id)lastSyncDownDeletionDateForPeer:(id)peer transportName:(id)name error:(id *)error
 {
   v85[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v68 = a4;
-  if (a5)
+  peerCopy = peer;
+  nameCopy = name;
+  if (error)
   {
-    *a5 = 0;
+    *error = 0;
   }
 
-  v64 = v8;
-  v9 = [v8 sourceDeviceID];
-  v67 = [_DKSyncMetadataStorage bookmarkStreamNameWithSourceDeviceID:v9];
+  v64 = peerCopy;
+  sourceDeviceID = [peerCopy sourceDeviceID];
+  v67 = [_DKSyncMetadataStorage bookmarkStreamNameWithSourceDeviceID:sourceDeviceID];
 
-  v10 = self;
-  objc_sync_enter(v10);
-  if (v68)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (nameCopy)
   {
-    [MEMORY[0x1E696AE18] predicateWithFormat:@"valueString == %@", v68];
+    [MEMORY[0x1E696AE18] predicateWithFormat:@"valueString == %@", nameCopy];
   }
 
   else
@@ -1048,7 +1048,7 @@ LABEL_49:
   [v16 setClientName:v18];
 
   [v16 setTracker:&__block_literal_global_85];
-  storage = v10->_storage;
+  storage = selfCopy->_storage;
   v69 = 0;
   v20 = [(_DKKnowledgeStorage *)storage executeQuery:v16 error:&v69];
   v21 = v69;
@@ -1066,13 +1066,13 @@ LABEL_49:
       }
 
       v46 = v32;
-      v54 = [v64 identifier];
-      v60 = [v64 model];
-      if (v60)
+      identifier = [v64 identifier];
+      model = [v64 model];
+      if (model)
       {
         v50 = MEMORY[0x1E696AEC0];
-        v44 = [v64 model];
-        v49 = [v50 stringWithFormat:@" (%@)", v44];
+        model2 = [v64 model];
+        v49 = [v50 stringWithFormat:@" (%@)", model2];
       }
 
       else
@@ -1080,39 +1080,39 @@ LABEL_49:
         v49 = &stru_1F05B9908;
       }
 
-      v33 = [v21 domain];
-      v34 = [v21 code];
+      domain = [v21 domain];
+      code = [v21 code];
       *buf = 138544898;
       v71 = v57;
       v72 = 2114;
       v73 = v46;
       v74 = 2114;
-      v75 = v54;
+      v75 = identifier;
       v76 = 2114;
       v77 = v49;
       v78 = 2114;
-      v79 = v33;
+      v79 = domain;
       v80 = 2048;
-      v81 = v34;
+      v81 = code;
       v82 = 2112;
       v83 = v21;
       _os_log_debug_impl(&dword_191750000, v22, OS_LOG_TYPE_DEBUG, "%{public}@: Failed to find deletions bookmark for %{public}@peer %{public}@%{public}@: %{public}@:%lld (%@)", buf, 0x48u);
 
-      if (v60)
+      if (model)
       {
       }
     }
 
-    if (a5)
+    if (error)
     {
       v23 = v21;
-      v24 = 0;
-      *a5 = v21;
+      endDate = 0;
+      *error = v21;
       goto LABEL_17;
     }
 
 LABEL_16:
-    v24 = 0;
+    endDate = 0;
     goto LABEL_17;
   }
 
@@ -1130,14 +1130,14 @@ LABEL_16:
       }
 
       v51 = v36;
-      v58 = [v64 identifier];
-      v61 = [v64 model];
-      if (v61)
+      identifier2 = [v64 identifier];
+      model3 = [v64 model];
+      if (model3)
       {
         v41 = MEMORY[0x1E696AEC0];
-        v42 = [v64 model];
-        v37 = [v41 stringWithFormat:@" (%@)", v42];
-        v45 = v42;
+        model4 = [v64 model];
+        v37 = [v41 stringWithFormat:@" (%@)", model4];
+        v45 = model4;
       }
 
       else
@@ -1150,11 +1150,11 @@ LABEL_16:
       v72 = 2114;
       v73 = v51;
       v74 = 2114;
-      v75 = v58;
+      v75 = identifier2;
       v76 = 2114;
       v77 = v37;
       _os_log_debug_impl(&dword_191750000, v27, OS_LOG_TYPE_DEBUG, "%{public}@: No deletions bookmark found for %{public}@peer %{public}@%{public}@", buf, 0x2Au);
-      if (v61)
+      if (model3)
       {
       }
     }
@@ -1162,13 +1162,13 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  v25 = [v20 firstObject];
-  v24 = [v25 endDate];
+  firstObject = [v20 firstObject];
+  endDate = [firstObject endDate];
 
   v26 = +[_CDLogging syncChannel];
   if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
   {
-    v38 = v64;
+    model6 = v64;
     v59 = [objc_opt_class() description];
     v39 = [v64 me];
     v40 = &stru_1F05B9908;
@@ -1178,13 +1178,13 @@ LABEL_16:
     }
 
     v52 = v40;
-    v56 = [v64 identifier];
-    v62 = [v64 model];
-    if (v62)
+    identifier3 = [v64 identifier];
+    model5 = [v64 model];
+    if (model5)
     {
       v48 = MEMORY[0x1E696AEC0];
-      v38 = [v64 model];
-      v47 = [v48 stringWithFormat:@" (%@)", v38];
+      model6 = [v64 model];
+      v47 = [v48 stringWithFormat:@" (%@)", model6];
     }
 
     else
@@ -1192,48 +1192,48 @@ LABEL_16:
       v47 = &stru_1F05B9908;
     }
 
-    v43 = [(NSDate *)v24 dk_localtimeString];
+    dk_localtimeString = [(NSDate *)endDate dk_localtimeString];
     *buf = 138544642;
     v71 = v59;
     v72 = 2114;
     v73 = v52;
     v74 = 2114;
-    v75 = v56;
+    v75 = identifier3;
     v76 = 2114;
     v77 = v47;
     v78 = 2114;
-    v79 = v68;
+    v79 = nameCopy;
     v80 = 2112;
-    v53 = v43;
-    v81 = v43;
+    v53 = dk_localtimeString;
+    v81 = dk_localtimeString;
     _os_log_debug_impl(&dword_191750000, v26, OS_LOG_TYPE_DEBUG, "%{public}@: Found saved deletions bookmark for %{public}@peer %{public}@%{public}@ on  %{public}@: %@", buf, 0x3Eu);
-    if (v62)
+    if (model5)
     {
     }
   }
 
 LABEL_17:
-  objc_sync_exit(v10);
+  objc_sync_exit(selfCopy);
 
-  v28 = v24;
+  v28 = endDate;
   v29 = *MEMORY[0x1E69E9840];
-  return v24;
+  return endDate;
 }
 
-- (void)setLastSyncDownDeletionDate:(id)a3 previousDate:(id)a4 forPeer:(id)a5 transportName:(id)a6 error:(id *)a7
+- (void)setLastSyncDownDeletionDate:(id)date previousDate:(id)previousDate forPeer:(id)peer transportName:(id)name error:(id *)error
 {
   v78 = *MEMORY[0x1E69E9840];
-  v61 = a3;
-  v60 = a4;
-  v12 = a5;
-  v13 = a6;
+  dateCopy = date;
+  previousDateCopy = previousDate;
+  peerCopy = peer;
+  nameCopy = name;
   v14 = +[_CDLogging syncChannel];
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
     v58 = [objc_opt_class() description];
-    v55 = [(NSDate *)v60 dk_localtimeString];
-    v52 = [(NSDate *)v61 dk_localtimeString];
-    if ([v12 me])
+    dk_localtimeString = [(NSDate *)previousDateCopy dk_localtimeString];
+    dk_localtimeString2 = [(NSDate *)dateCopy dk_localtimeString];
+    if ([peerCopy me])
     {
       v32 = @"pseudo ";
     }
@@ -1243,13 +1243,13 @@ LABEL_17:
       v32 = &stru_1F05B9908;
     }
 
-    v33 = [v12 identifier];
-    v34 = [v12 model];
-    if (v34)
+    identifier = [peerCopy identifier];
+    model = [peerCopy model];
+    if (model)
     {
       v36 = MEMORY[0x1E696AEC0];
-      v47 = [v12 model];
-      v35 = [v36 stringWithFormat:@" (%@)", v47];
+      model2 = [peerCopy model];
+      v35 = [v36 stringWithFormat:@" (%@)", model2];
     }
 
     else
@@ -1260,41 +1260,41 @@ LABEL_17:
     *buf = 138544898;
     v65 = v58;
     v66 = 2114;
-    v67 = v55;
+    v67 = dk_localtimeString;
     v68 = 2114;
-    v69 = v52;
+    v69 = dk_localtimeString2;
     v70 = 2114;
     v71 = v32;
     v72 = 2114;
-    v73 = v33;
+    v73 = identifier;
     v74 = 2114;
     v75 = v35;
     v76 = 2114;
-    v77 = v13;
+    v77 = nameCopy;
     _os_log_debug_impl(&dword_191750000, v14, OS_LOG_TYPE_DEBUG, "%{public}@: Setting last sync down deletion bookmark [%{public}@ ending %{public}@] for %{public}@peer %{public}@%{public}@ on %{public}@", buf, 0x48u);
-    if (v34)
+    if (model)
     {
     }
   }
 
-  if (a7)
+  if (error)
   {
-    *a7 = 0;
+    *error = 0;
   }
 
-  v15 = [v12 sourceDeviceID];
-  v16 = [_DKSyncMetadataStorage bookmarkStreamNameWithSourceDeviceID:v15];
+  sourceDeviceID = [peerCopy sourceDeviceID];
+  v16 = [_DKSyncMetadataStorage bookmarkStreamNameWithSourceDeviceID:sourceDeviceID];
 
-  v17 = self;
-  objc_sync_enter(v17);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v18 = +[_DKAnyStringIdentifier type];
   v19 = [_DKEventStream eventStreamWithName:v16 valueType:v18];
 
-  v20 = [_DKEvent eventWithStream:v19 startDate:v60 endDate:v61 identifierStringValue:v13 metadata:0];
+  v20 = [_DKEvent eventWithStream:v19 startDate:previousDateCopy endDate:dateCopy identifierStringValue:nameCopy metadata:0];
   v21 = v20;
   if (v20)
   {
-    storage = v17->_storage;
+    storage = selfCopy->_storage;
     v63 = v20;
     v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v63 count:1];
     v62 = 0;
@@ -1307,7 +1307,7 @@ LABEL_17:
       if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
       {
         v54 = [objc_opt_class() description];
-        v27 = [v12 me];
+        v27 = [peerCopy me];
         v28 = &stru_1F05B9908;
         if (v27)
         {
@@ -1315,13 +1315,13 @@ LABEL_17:
         }
 
         v48 = v28;
-        v51 = [v12 identifier];
-        v57 = [v12 model];
-        if (v57)
+        identifier2 = [peerCopy identifier];
+        model3 = [peerCopy model];
+        if (model3)
         {
           v39 = MEMORY[0x1E696AEC0];
-          v45 = [v12 model];
-          v29 = [v39 stringWithFormat:@" (%@)", v45];
+          model4 = [peerCopy model];
+          v29 = [v39 stringWithFormat:@" (%@)", model4];
         }
 
         else
@@ -1329,20 +1329,20 @@ LABEL_17:
           v29 = &stru_1F05B9908;
         }
 
-        v40 = [(NSDate *)v61 dk_localtimeString];
+        dk_localtimeString3 = [(NSDate *)dateCopy dk_localtimeString];
         *buf = 138544386;
         v65 = v54;
         v66 = 2114;
         v67 = v48;
         v68 = 2114;
-        v69 = v51;
+        v69 = identifier2;
         v70 = 2114;
         v71 = v29;
         v72 = 2112;
-        v50 = v40;
-        v73 = v40;
+        v50 = dk_localtimeString3;
+        v73 = dk_localtimeString3;
         _os_log_debug_impl(&dword_191750000, v26, OS_LOG_TYPE_DEBUG, "%{public}@: Saved deletions bookmark for %{public}@peer %{public}@%{public}@: %@", buf, 0x34u);
-        if (v57)
+        if (model3)
         {
         }
       }
@@ -1354,7 +1354,7 @@ LABEL_17:
       if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
       {
         v56 = [objc_opt_class() description];
-        v37 = [v12 me];
+        v37 = [peerCopy me];
         v38 = &stru_1F05B9908;
         if (v37)
         {
@@ -1362,13 +1362,13 @@ LABEL_17:
         }
 
         v46 = v38;
-        v53 = [v12 identifier];
-        v59 = [v12 model];
-        if (v59)
+        identifier3 = [peerCopy identifier];
+        model5 = [peerCopy model];
+        if (model5)
         {
           v41 = MEMORY[0x1E696AEC0];
-          v44 = [v12 model];
-          v49 = [v41 stringWithFormat:@" (%@)", v44];
+          model6 = [peerCopy model];
+          v49 = [v41 stringWithFormat:@" (%@)", model6];
         }
 
         else
@@ -1376,25 +1376,25 @@ LABEL_17:
           v49 = &stru_1F05B9908;
         }
 
-        v42 = [v25 domain];
-        v43 = [v25 code];
+        domain = [v25 domain];
+        code = [v25 code];
         *buf = 138544898;
         v65 = v56;
         v66 = 2114;
         v67 = v46;
         v68 = 2114;
-        v69 = v53;
+        v69 = identifier3;
         v70 = 2114;
         v71 = v49;
         v72 = 2114;
-        v73 = v42;
+        v73 = domain;
         v74 = 2048;
-        v75 = v43;
+        v75 = code;
         v76 = 2112;
         v77 = v25;
         _os_log_debug_impl(&dword_191750000, v26, OS_LOG_TYPE_DEBUG, "%{public}@: Failed to save deletions bookmark for %{public}@peer %{public}@%{public}@: %{public}@:%lld (%@)", buf, 0x48u);
 
-        if (v59)
+        if (model5)
         {
         }
       }
@@ -1406,29 +1406,29 @@ LABEL_17:
     v25 = +[_DKSyncErrors internalFailure];
   }
 
-  objc_sync_exit(v17);
-  if (a7)
+  objc_sync_exit(selfCopy);
+  if (error)
   {
     v30 = v25;
-    *a7 = v25;
+    *error = v25;
   }
 
   v31 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)saveEvents:(id)a3 error:(id *)a4
+- (BOOL)saveEvents:(id)events error:(id *)error
 {
   v31 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  eventsCopy = events;
   storage = self->_storage;
   v20 = 0;
-  v8 = [(_DKKnowledgeStorage *)storage saveObjects:v6 error:&v20];
+  v8 = [(_DKKnowledgeStorage *)storage saveObjects:eventsCopy error:&v20];
   v9 = v20;
   v10 = v9;
-  if (a4 && v9)
+  if (error && v9)
   {
     v11 = v9;
-    *a4 = v10;
+    *error = v10;
   }
 
   v12 = +[_CDLogging syncChannel];
@@ -1437,24 +1437,24 @@ LABEL_17:
   {
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
-      [_DKSyncLocalKnowledgeStorage saveEvents:v6 error:?];
+      [_DKSyncLocalKnowledgeStorage saveEvents:eventsCopy error:?];
     }
   }
 
   else if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
   {
     v16 = [objc_opt_class() description];
-    v17 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v6, "count")}];
-    v18 = [v10 domain];
-    v19 = [v10 code];
+    v17 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(eventsCopy, "count")}];
+    domain = [v10 domain];
+    code = [v10 code];
     *buf = 138544386;
     v22 = v16;
     v23 = 2112;
     v24 = v17;
     v25 = 2114;
-    v26 = v18;
+    v26 = domain;
     v27 = 2048;
-    v28 = v19;
+    v28 = code;
     v29 = 2112;
     v30 = v10;
     _os_log_error_impl(&dword_191750000, v13, OS_LOG_TYPE_ERROR, "%{public}@: Failed to save %@ events: %{public}@:%lld (%@)", buf, 0x34u);
@@ -1464,15 +1464,15 @@ LABEL_17:
   return v8;
 }
 
-- (BOOL)deleteEventsWithEventIDs:(id)a3 error:(id *)a4
+- (BOOL)deleteEventsWithEventIDs:(id)ds error:(id *)error
 {
   v19 = *MEMORY[0x1E69E9840];
-  if (a4)
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
-  v5 = [MEMORY[0x1E695DFD8] setWithArray:a3];
+  v5 = [MEMORY[0x1E695DFD8] setWithArray:ds];
   if ([v5 count])
   {
     v6 = [MEMORY[0x1E696AE18] predicateWithFormat:@"(uuid IN %@)", v5];
@@ -1501,47 +1501,47 @@ LABEL_17:
   return 1;
 }
 
-- (id)initWithKnowledgeStorage:(id *)a1
+- (id)initWithKnowledgeStorage:(id *)storage
 {
   v4 = a2;
-  if (a1)
+  if (storage)
   {
-    v7.receiver = a1;
+    v7.receiver = storage;
     v7.super_class = _DKSyncLocalKnowledgeStorage;
     v5 = objc_msgSendSuper2(&v7, sel_init);
-    a1 = v5;
+    storage = v5;
     if (v5)
     {
       objc_storeStrong(v5 + 1, a2);
     }
   }
 
-  return a1;
+  return storage;
 }
 
-- (_DKSyncHistory)syncHistoryForPeer:(void *)a3 streamName:(void *)a4 transportName:(void *)a5 type:(unint64_t *)a6 error:
+- (_DKSyncHistory)syncHistoryForPeer:(void *)peer streamName:(void *)name transportName:(void *)transportName type:(unint64_t *)type error:
 {
-  v175 = a6;
+  typeCopy = type;
   v205[1] = *MEMORY[0x1E69E9840];
-  v11 = a2;
-  v12 = a4;
-  v179 = v11;
-  v181 = a5;
-  v177 = v12;
-  if (!a1)
+  model2 = a2;
+  nameCopy = name;
+  v179 = model2;
+  transportNameCopy = transportName;
+  v177 = nameCopy;
+  if (!self)
   {
     v63 = 0;
     goto LABEL_36;
   }
 
-  v13 = a3;
+  peerCopy = peer;
   v14 = +[_CDLogging syncChannel];
   v15 = &stru_1F05B9908;
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
-    v66 = v12;
+    v66 = nameCopy;
     v67 = [objc_opt_class() description];
-    if ([v11 me])
+    if ([model2 me])
     {
       v68 = @"pseudo ";
     }
@@ -1551,52 +1551,52 @@ LABEL_17:
       v68 = &stru_1F05B9908;
     }
 
-    v69 = [v11 identifier];
-    v6 = [v11 model];
-    if (v6)
+    identifier = [model2 identifier];
+    model = [model2 model];
+    if (model)
     {
       v76 = MEMORY[0x1E696AEC0];
-      v11 = [v11 model];
-      v15 = [v76 stringWithFormat:@" (%@)", v11];
+      model2 = [model2 model];
+      v15 = [v76 stringWithFormat:@" (%@)", model2];
     }
 
     *buf = 138544642;
     v186 = v67;
     v187 = 2114;
-    v188 = v181;
+    v188 = transportNameCopy;
     v189 = 2114;
     v190 = v68;
     v191 = 2114;
-    v192 = v69;
+    v192 = identifier;
     v193 = 2114;
     v194 = v15;
     v195 = 2114;
-    v12 = v66;
+    nameCopy = v66;
     v196 = v66;
     _os_log_debug_impl(&dword_191750000, v14, OS_LOG_TYPE_DEBUG, "%{public}@: Fetching %{public}@ sync history for %{public}@peer %{public}@%{public}@ on %{public}@", buf, 0x3Eu);
-    if (v6)
+    if (model)
     {
     }
   }
 
   v16 = +[_DKAnyStringIdentifier type];
-  v17 = [_DKEventStream eventStreamWithName:v13 valueType:v16];
+  v17 = [_DKEventStream eventStreamWithName:peerCopy valueType:v16];
 
   v173 = v17;
   v205[0] = v17;
   v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v205 count:1];
   v19 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:-86400.0];
-  v169 = [MEMORY[0x1E695DF00] date];
+  date = [MEMORY[0x1E695DF00] date];
   v171 = v19;
   v20 = [_DKQuery predicateForEventsWithCreationInDateRangeFromAfter:v19 to:?];
   v21 = v20;
   v167 = v20;
-  if (v12)
+  if (nameCopy)
   {
-    v12 = [MEMORY[0x1E696AE18] predicateWithFormat:@"valueString == %@", v12];
+    nameCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"valueString == %@", nameCopy];
     v22 = MEMORY[0x1E696AB28];
     v204[0] = v21;
-    v204[1] = v12;
+    v204[1] = nameCopy;
     v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:v204 count:2];
     v24 = [v22 andPredicateWithSubpredicates:v23];
   }
@@ -1615,7 +1615,7 @@ LABEL_17:
 
   [v25 setTracker:&__block_literal_global_88];
   [v25 setResultType:1];
-  v28 = *(a1 + 8);
+  v28 = *(self + 8);
   v184 = 0;
   v29 = [v28 executeQuery:v25 error:&v184];
   v30 = v184;
@@ -1623,8 +1623,8 @@ LABEL_17:
   if (v30)
   {
     v31 = v30;
-    v32 = +[_CDLogging syncChannel];
-    if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
+    distantPast = +[_CDLogging syncChannel];
+    if (os_log_type_enabled(distantPast, OS_LOG_TYPE_ERROR))
     {
       v70 = [objc_opt_class() description];
       v71 = [v179 me];
@@ -1635,13 +1635,13 @@ LABEL_17:
       }
 
       v163 = v72;
-      v73 = [v179 identifier];
-      v74 = [v179 model];
-      if (v74)
+      identifier2 = [v179 identifier];
+      model3 = [v179 model];
+      if (model3)
       {
         v77 = MEMORY[0x1E696AEC0];
-        v156 = [v179 model];
-        v130 = v156;
+        model4 = [v179 model];
+        v130 = model4;
         v75 = [v77 stringWithFormat:@" (%@)"];
       }
 
@@ -1650,20 +1650,20 @@ LABEL_17:
         v75 = &stru_1F05B9908;
       }
 
-      v78 = [v31 domain];
+      domain = [v31 domain];
       [v31 code];
       OUTLINED_FUNCTION_0_13();
       v190 = v163;
       v191 = v79;
-      v192 = v73;
+      v192 = identifier2;
       v193 = v79;
       v194 = v75;
       v195 = v79;
-      v196 = v78;
+      v196 = domain;
       OUTLINED_FUNCTION_1_12();
-      OUTLINED_FUNCTION_6_8(&dword_191750000, v80, v81, "%{public}@: Failed to fetch %{public}@ sync count for %{public}@peer %{public}@%{public}@: %{public}@:%lld (%@)", v82, v83, v84, v85, v130, v132, v134, v137, v141, v144, v149, log, v156, v163, v165, v167, v169, v171, v173, v175, v177, v179, v181, v182, v183, v184, buf[0]);
+      OUTLINED_FUNCTION_6_8(&dword_191750000, v80, v81, "%{public}@: Failed to fetch %{public}@ sync count for %{public}@peer %{public}@%{public}@: %{public}@:%lld (%@)", v82, v83, v84, v85, v130, model8, v134, v137, v141, v144, v149, log, model4, v163, v165, v167, date, v171, v173, typeCopy, v177, v179, transportNameCopy, v182, v183, v184, buf[0]);
 
-      if (v74)
+      if (model3)
       {
       }
     }
@@ -1686,17 +1686,17 @@ LABEL_32:
     }
 
     v36 = [objc_opt_class() description];
-    v44 = OUTLINED_FUNCTION_5_4(v36, v37, v38, v39, v40, v41, v42, v43, 615, v132, v134, v137, v141, v144, v149, log, v156, v162, v165, v167, v169, v171, v173, v175, v177, v179);
+    v44 = OUTLINED_FUNCTION_5_4(v36, v37, v38, v39, v40, v41, v42, v43, 615, model8, v134, v137, v141, v144, v149, log, model4, identifier3, v165, v167, date, v171, v173, typeCopy, v177, v179);
     v45 = @"pseudo ";
     if (!v44)
     {
       v45 = &stru_1F05B9908;
     }
 
-    v156 = v45;
-    v162 = [v27 identifier];
-    v46 = [v27 model];
-    if (v46)
+    model4 = v45;
+    identifier3 = [v27 identifier];
+    model5 = [v27 model];
+    if (model5)
     {
       v149 = MEMORY[0x1E696AEC0];
       log = [v27 model];
@@ -1713,7 +1713,7 @@ LABEL_32:
     v109 = "%{public}@: Failed to fetch %{public}@ sync count for %{public}@peer %{public}@%{public}@ due to invalid type";
 LABEL_90:
     _os_log_error_impl(&dword_191750000, v34, OS_LOG_TYPE_ERROR, v109, buf, 0x34u);
-    if (v46)
+    if (model5)
     {
     }
 
@@ -1723,7 +1723,7 @@ LABEL_90:
   if ([v29 count])
   {
     v34 = [v29 objectAtIndexedSubscript:0];
-    v35 = [v34 integerValue];
+    integerValue = [v34 integerValue];
     goto LABEL_19;
   }
 
@@ -1731,17 +1731,17 @@ LABEL_90:
   if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
   {
     v116 = [objc_opt_class() description];
-    v124 = OUTLINED_FUNCTION_5_4(v116, v117, v118, v119, v120, v121, v122, v123, 615, v132, v134, v137, v141, v144, v149, log, v156, v162, v165, v167, v169, v171, v173, v175, v177, v179);
+    v124 = OUTLINED_FUNCTION_5_4(v116, v117, v118, v119, v120, v121, v122, v123, 615, model8, v134, v137, v141, v144, v149, log, model4, identifier3, v165, v167, date, v171, v173, typeCopy, v177, v179);
     v125 = @"pseudo ";
     if (!v124)
     {
       v125 = &stru_1F05B9908;
     }
 
-    v156 = v125;
-    v162 = [v27 identifier];
-    v46 = [v27 model];
-    if (v46)
+    model4 = v125;
+    identifier3 = [v27 identifier];
+    model5 = [v27 model];
+    if (model5)
     {
       v149 = MEMORY[0x1E696AEC0];
       log = [v27 model];
@@ -1760,12 +1760,12 @@ LABEL_90:
   }
 
 LABEL_18:
-  v35 = 0;
+  integerValue = 0;
 LABEL_19:
 
-  if (v12)
+  if (nameCopy)
   {
-    v48 = v12;
+    v48 = nameCopy;
   }
 
   else
@@ -1785,17 +1785,17 @@ LABEL_19:
   [v52 setClientName:v54];
 
   [v52 setTracker:&__block_literal_global_91];
-  v55 = *(a1 + 8);
+  v55 = *(self + 8);
   v183 = 0;
   v56 = [v55 executeQuery:v52 error:&v183];
   v31 = v183;
   if (v31)
   {
-    v57 = +[_CDLogging syncChannel];
-    if (os_log_type_enabled(v57, OS_LOG_TYPE_ERROR))
+    lastObject = +[_CDLogging syncChannel];
+    if (os_log_type_enabled(lastObject, OS_LOG_TYPE_ERROR))
     {
       v86 = [objc_opt_class() description];
-      v94 = OUTLINED_FUNCTION_5_4(v86, v87, v88, v89, v90, v91, v92, v93, 645, v132, v134, v137, v141, v144, v149, log, v156, v162, v165, v167, v169, v171, v173, v175, v177, v179);
+      v94 = OUTLINED_FUNCTION_5_4(v86, v87, v88, v89, v90, v91, v92, v93, 645, model8, v134, v137, v141, v144, v149, log, model4, identifier3, v165, v167, date, v171, v173, typeCopy, v177, v179);
       v95 = @"pseudo ";
       if (!v94)
       {
@@ -1803,13 +1803,13 @@ LABEL_19:
       }
 
       v150 = v95;
-      v164 = [0x1E7366000 identifier];
+      identifier4 = [0x1E7366000 identifier];
       loga = [0x1E7366000 model];
       if (loga)
       {
         v160 = MEMORY[0x1E696AEC0];
-        v145 = [0x1E7366000 model];
-        v131 = v145;
+        model6 = [0x1E7366000 model];
+        v131 = model6;
         v159 = [v160 stringWithFormat:@" (%@)"];
       }
 
@@ -1818,18 +1818,18 @@ LABEL_19:
         v159 = &stru_1F05B9908;
       }
 
-      v101 = [v31 domain];
+      domain2 = [v31 domain];
       [v31 code];
       OUTLINED_FUNCTION_0_13();
       v190 = v150;
       v191 = v102;
-      v192 = v164;
+      v192 = identifier4;
       v193 = v102;
       v194 = v159;
       v195 = v102;
-      v196 = v101;
+      v196 = domain2;
       OUTLINED_FUNCTION_1_12();
-      OUTLINED_FUNCTION_6_8(&dword_191750000, v103, v104, "%{public}@: Failed to fetch last %{public}@ sync date for %{public}@peer %{public}@%{public}@: %{public}@:%lld (%@)", v105, v106, v107, v108, v131, v133, v135, v138, v142, v145, v150, loga, v159, v164, v166, v168, v170, v172, v174, v176, v178, v180, v181, v182, v183, v184, buf[0]);
+      OUTLINED_FUNCTION_6_8(&dword_191750000, v103, v104, "%{public}@: Failed to fetch last %{public}@ sync date for %{public}@peer %{public}@%{public}@: %{public}@:%lld (%@)", v105, v106, v107, v108, v131, v133, v135, v138, v142, model6, v150, loga, v159, identifier4, v166, v168, v170, v172, v174, v176, v178, v180, transportNameCopy, v182, v183, v184, buf[0]);
 
       if (logb)
       {
@@ -1845,16 +1845,16 @@ LABEL_28:
   if ([v56 count])
   {
     v157 = v56;
-    v162 = v50;
-    v57 = [v56 lastObject];
-    v58 = [v57 creationDate];
-    v33 = [[_DKSyncHistory alloc] initWithLastSyncDate:v58 lastDaySyncCount:v35];
+    identifier3 = v50;
+    lastObject = [v56 lastObject];
+    creationDate = [lastObject creationDate];
+    v33 = [[_DKSyncHistory alloc] initWithLastSyncDate:creationDate lastDaySyncCount:integerValue];
     v59 = +[_CDLogging syncChannel];
     if (os_log_type_enabled(v59, OS_LOG_TYPE_DEBUG))
     {
-      v151 = v58;
+      v151 = creationDate;
       logc = v59;
-      v139 = v35;
+      v139 = integerValue;
       v112 = [objc_opt_class() description];
       v113 = [v179 me];
       v114 = @"pseudo ";
@@ -1864,34 +1864,34 @@ LABEL_28:
       }
 
       v136 = v114;
-      v115 = [v179 identifier];
-      v143 = [v179 model];
-      if (v143)
+      identifier5 = [v179 identifier];
+      model7 = [v179 model];
+      if (model7)
       {
         v148 = MEMORY[0x1E696AEC0];
-        v132 = [v179 model];
-        v147 = [v148 stringWithFormat:@" (%@)", v132];
+        model8 = [v179 model];
+        v132 = [v148 stringWithFormat:@" (%@)", model8];
       }
 
       else
       {
-        v147 = &stru_1F05B9908;
+        v132 = &stru_1F05B9908;
       }
 
-      v126 = [(NSDate *)v58 dk_localtimeString];
+      dk_localtimeString = [(NSDate *)creationDate dk_localtimeString];
       [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v139];
       objc_claimAutoreleasedReturnValue();
       OUTLINED_FUNCTION_0_13();
       v190 = v136;
       v191 = v127;
-      v192 = v115;
+      v192 = identifier5;
       v193 = v127;
-      v194 = v147;
+      v194 = v132;
       v195 = v127;
       v196 = v177;
       v197 = v127;
-      v140 = v126;
-      v198 = v126;
+      v140 = dk_localtimeString;
+      v198 = dk_localtimeString;
       v199 = 2112;
       v200 = v128;
       v129 = v128;
@@ -1899,16 +1899,16 @@ LABEL_28:
       v202 = v33;
       _os_log_debug_impl(&dword_191750000, logc, OS_LOG_TYPE_DEBUG, "%{public}@: Found %{public}@ sync history for %{public}@peer %{public}@%{public}@ on %{public}@ with last sync date of %{public}@ and with %@ syncs in the previous day: %@", buf, 0x5Cu);
 
-      if (v143)
+      if (model7)
       {
       }
 
-      v58 = v151;
+      creationDate = v151;
       v59 = logc;
     }
 
     v56 = v157;
-    v50 = v162;
+    v50 = identifier3;
     goto LABEL_28;
   }
 
@@ -1931,35 +1931,35 @@ LABEL_29:
         v97 = &stru_1F05B9908;
       }
 
-      v98 = [v179 identifier];
-      v99 = [v179 model];
-      if (v99)
+      identifier6 = [v179 identifier];
+      model9 = [v179 model];
+      if (model9)
       {
         v110 = MEMORY[0x1E696AEC0];
-        v162 = [v179 model];
-        v100 = [v110 stringWithFormat:@" (%@)", v162];
+        identifier3 = [v179 model];
+        v162 = [v110 stringWithFormat:@" (%@)", identifier3];
       }
 
       else
       {
-        v100 = &stru_1F05B9908;
+        v162 = &stru_1F05B9908;
       }
 
       OUTLINED_FUNCTION_0_13();
       v190 = v97;
       v191 = v111;
-      v192 = v98;
+      v192 = identifier6;
       v193 = v111;
-      v194 = v100;
+      v194 = v162;
       _os_log_debug_impl(&dword_191750000, v60, OS_LOG_TYPE_DEBUG, "%{public}@: No %{public}@ sync history for %{public}@peer %{public}@%{public}@", buf, 0x34u);
-      if (v99)
+      if (model9)
       {
       }
     }
 
     v61 = [_DKSyncHistory alloc];
-    v32 = [MEMORY[0x1E695DF00] distantPast];
-    v33 = [(_DKSyncHistory *)v61 initWithLastSyncDate:v32 lastDaySyncCount:0];
+    distantPast = [MEMORY[0x1E695DF00] distantPast];
+    v33 = [(_DKSyncHistory *)v61 initWithLastSyncDate:distantPast lastDaySyncCount:0];
     v31 = 0;
     v24 = v49;
     v25 = v52;
@@ -1967,10 +1967,10 @@ LABEL_29:
   }
 
 LABEL_33:
-  if (v175)
+  if (typeCopy)
   {
     v62 = v31;
-    *v175 = v31;
+    *typeCopy = v31;
   }
 
   v63 = v33;
@@ -1981,12 +1981,12 @@ LABEL_36:
   return v63;
 }
 
-- (id)additionsSyncHistoryForPeer:(id)a3 transportName:(id)a4 error:(id *)a5
+- (id)additionsSyncHistoryForPeer:(id)peer transportName:(id)name error:(id *)error
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 sourceDeviceID];
-  v9 = [_DKSyncMetadataStorage windowStreamNameWithSourceDeviceID:v8];
+  nameCopy = name;
+  peerCopy = peer;
+  sourceDeviceID = [peerCopy sourceDeviceID];
+  v9 = [_DKSyncMetadataStorage windowStreamNameWithSourceDeviceID:sourceDeviceID];
 
   v10 = OUTLINED_FUNCTION_4_8();
   v16 = [(_DKSyncLocalKnowledgeStorage *)v10 syncHistoryForPeer:v11 streamName:v12 transportName:v13 type:v14 error:v15];
@@ -1994,12 +1994,12 @@ LABEL_36:
   return v16;
 }
 
-- (id)deletionsSyncHistoryForPeer:(id)a3 transportName:(id)a4 error:(id *)a5
+- (id)deletionsSyncHistoryForPeer:(id)peer transportName:(id)name error:(id *)error
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 sourceDeviceID];
-  v9 = [_DKSyncMetadataStorage bookmarkStreamNameWithSourceDeviceID:v8];
+  nameCopy = name;
+  peerCopy = peer;
+  sourceDeviceID = [peerCopy sourceDeviceID];
+  v9 = [_DKSyncMetadataStorage bookmarkStreamNameWithSourceDeviceID:sourceDeviceID];
 
   v10 = OUTLINED_FUNCTION_4_8();
   v16 = [(_DKSyncLocalKnowledgeStorage *)v10 syncHistoryForPeer:v11 streamName:v12 transportName:v13 type:v14 error:v15];

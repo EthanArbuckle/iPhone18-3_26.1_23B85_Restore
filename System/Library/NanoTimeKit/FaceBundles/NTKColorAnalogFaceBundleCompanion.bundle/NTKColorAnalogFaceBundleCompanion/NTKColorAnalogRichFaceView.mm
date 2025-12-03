@@ -1,25 +1,25 @@
 @interface NTKColorAnalogRichFaceView
-- (NTKColorAnalogRichFaceView)initWithFaceStyle:(int64_t)a3 forDevice:(id)a4 clientIdentifier:(id)a5;
-- (id)_newLegacyViewForComplication:(id)a3 family:(int64_t)a4 slot:(id)a5;
-- (void)_applyOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (void)_configureComplicationView:(id)a3 forSlot:(id)a4;
-- (void)_fadeComplicationFraction:(double)a3 entry:(double)a4 exit:(double)a5 slot:(id)a6;
+- (NTKColorAnalogRichFaceView)initWithFaceStyle:(int64_t)style forDevice:(id)device clientIdentifier:(id)identifier;
+- (id)_newLegacyViewForComplication:(id)complication family:(int64_t)family slot:(id)slot;
+- (void)_applyOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_configureComplicationView:(id)view forSlot:(id)slot;
+- (void)_fadeComplicationFraction:(double)fraction entry:(double)entry exit:(double)exit slot:(id)slot;
 - (void)_loadLayoutRules;
 @end
 
 @implementation NTKColorAnalogRichFaceView
 
-- (NTKColorAnalogRichFaceView)initWithFaceStyle:(int64_t)a3 forDevice:(id)a4 clientIdentifier:(id)a5
+- (NTKColorAnalogRichFaceView)initWithFaceStyle:(int64_t)style forDevice:(id)device clientIdentifier:(id)identifier
 {
-  v8 = a4;
+  deviceCopy = device;
   v14.receiver = self;
   v14.super_class = NTKColorAnalogRichFaceView;
-  v9 = [(NTKColorAnalogFaceView *)&v14 initWithFaceStyle:a3 forDevice:v8 clientIdentifier:a5];
+  v9 = [(NTKColorAnalogFaceView *)&v14 initWithFaceStyle:style forDevice:deviceCopy clientIdentifier:identifier];
   if (v9)
   {
     v10 = [NTKWhistlerAnalogFaceViewComplicationFactory alloc];
-    [NTKAnalogUtilities dialSizeForDevice:v8];
-    v11 = [v10 initWithFaceView:v9 dialDiameter:v8 device:?];
+    [NTKAnalogUtilities dialSizeForDevice:deviceCopy];
+    v11 = [v10 initWithFaceView:v9 dialDiameter:deviceCopy device:?];
     cornerComplicationFactory = v9->_cornerComplicationFactory;
     v9->_cornerComplicationFactory = v11;
 
@@ -30,48 +30,48 @@
   return v9;
 }
 
-- (id)_newLegacyViewForComplication:(id)a3 family:(int64_t)a4 slot:(id)a5
+- (id)_newLegacyViewForComplication:(id)complication family:(int64_t)family slot:(id)slot
 {
-  v8 = a3;
-  v9 = a5;
-  if ([v9 isEqualToString:NTKComplicationSlotMonogram])
+  complicationCopy = complication;
+  slotCopy = slot;
+  if ([slotCopy isEqualToString:NTKComplicationSlotMonogram])
   {
     v13.receiver = self;
     v13.super_class = NTKColorAnalogRichFaceView;
-    v10 = [(NTKColorAnalogFaceView *)&v13 _newLegacyViewForComplication:v8 family:a4 slot:v9];
+    v10 = [(NTKColorAnalogFaceView *)&v13 _newLegacyViewForComplication:complicationCopy family:family slot:slotCopy];
   }
 
   else
   {
-    v11 = [(NTKColorAnalogRichFaceView *)self complicationFactory];
-    v10 = [v11 newLegacyViewForComplication:v8 family:a4 slot:v9];
+    complicationFactory = [(NTKColorAnalogRichFaceView *)self complicationFactory];
+    v10 = [complicationFactory newLegacyViewForComplication:complicationCopy family:family slot:slotCopy];
   }
 
   return v10;
 }
 
-- (void)_configureComplicationView:(id)a3 forSlot:(id)a4
+- (void)_configureComplicationView:(id)view forSlot:(id)slot
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  slotCopy = slot;
   v12.receiver = self;
   v12.super_class = NTKColorAnalogRichFaceView;
-  [(NTKColorAnalogFaceView *)&v12 _configureComplicationView:v6 forSlot:v7];
-  if (([v7 isEqualToString:NTKComplicationSlotMonogram] & 1) == 0)
+  [(NTKColorAnalogFaceView *)&v12 _configureComplicationView:viewCopy forSlot:slotCopy];
+  if (([slotCopy isEqualToString:NTKComplicationSlotMonogram] & 1) == 0)
   {
-    v8 = [(NTKColorAnalogRichFaceView *)self complicationFactory];
-    [v8 configureComplicationView:v6 forSlot:v7];
+    complicationFactory = [(NTKColorAnalogRichFaceView *)self complicationFactory];
+    [complicationFactory configureComplicationView:viewCopy forSlot:slotCopy];
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = v6;
-    v10 = [(NTKColorAnalogFaceView *)self complicationForegroundColor];
-    [(NTKColorAnalogRichFaceView *)self setComplicationColor:v10];
+    v9 = viewCopy;
+    complicationForegroundColor = [(NTKColorAnalogFaceView *)self complicationForegroundColor];
+    [(NTKColorAnalogRichFaceView *)self setComplicationColor:complicationForegroundColor];
 
-    v11 = [(NTKColorAnalogFaceView *)self complicationForegroundColor];
-    [(NTKColorAnalogRichFaceView *)self setInterpolatedComplicationColor:v11];
+    complicationForegroundColor2 = [(NTKColorAnalogFaceView *)self complicationForegroundColor];
+    [(NTKColorAnalogRichFaceView *)self setInterpolatedComplicationColor:complicationForegroundColor2];
 
     [v9 transitionToMonochromeWithFraction:1.0];
     [v9 updateMonochromeColor];
@@ -80,18 +80,18 @@
 
 - (void)_loadLayoutRules
 {
-  v2 = [(NTKColorAnalogRichFaceView *)self complicationFactory];
-  [v2 loadLayoutRules];
+  complicationFactory = [(NTKColorAnalogRichFaceView *)self complicationFactory];
+  [complicationFactory loadLayoutRules];
 
   NTKEnumerateComplicationStates();
 }
 
-- (void)_applyOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot
 {
   v8.receiver = self;
   v8.super_class = NTKColorAnalogRichFaceView;
-  [(NTKColorAnalogFaceView *)&v8 _applyOption:a3 forCustomEditMode:a4 slot:a5];
-  if (a4 == 10)
+  [(NTKColorAnalogFaceView *)&v8 _applyOption:option forCustomEditMode:mode slot:slot];
+  if (mode == 10)
   {
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
@@ -102,35 +102,35 @@
   }
 }
 
-- (void)_fadeComplicationFraction:(double)a3 entry:(double)a4 exit:(double)a5 slot:(id)a6
+- (void)_fadeComplicationFraction:(double)fraction entry:(double)entry exit:(double)exit slot:(id)slot
 {
-  v7 = a6;
+  slotCopy = slot;
   CLKCompressFraction();
   v9 = v8;
-  v10 = [(NTKColorAnalogRichFaceView *)self interpolatedColorPalette];
-  [v10 setTransitionFraction:v9];
+  interpolatedColorPalette = [(NTKColorAnalogRichFaceView *)self interpolatedColorPalette];
+  [interpolatedColorPalette setTransitionFraction:v9];
 
-  v11 = [(NTKColorAnalogRichFaceView *)self normalComplicationDisplayWrapperForSlot:v7];
+  v11 = [(NTKColorAnalogRichFaceView *)self normalComplicationDisplayWrapperForSlot:slotCopy];
 
-  v19 = [v11 display];
+  display = [v11 display];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v12 = v19;
-    v13 = [(NTKColorAnalogRichFaceView *)self complicationColor];
-    v14 = [(NTKColorAnalogRichFaceView *)self interpolatedComplicationColor];
-    v15 = [(NTKColorAnalogRichFaceView *)self interpolatedColorPalette];
-    v16 = [v15 primaryShiftedColor];
-    [(NTKColorAnalogRichFaceView *)self setComplicationColor:v16];
+    v12 = display;
+    complicationColor = [(NTKColorAnalogRichFaceView *)self complicationColor];
+    interpolatedComplicationColor = [(NTKColorAnalogRichFaceView *)self interpolatedComplicationColor];
+    interpolatedColorPalette2 = [(NTKColorAnalogRichFaceView *)self interpolatedColorPalette];
+    primaryShiftedColor = [interpolatedColorPalette2 primaryShiftedColor];
+    [(NTKColorAnalogRichFaceView *)self setComplicationColor:primaryShiftedColor];
 
-    v17 = [(NTKColorAnalogRichFaceView *)self interpolatedColorPalette];
-    v18 = [v17 primaryShiftedColor];
-    [(NTKColorAnalogRichFaceView *)self setInterpolatedComplicationColor:v18];
+    interpolatedColorPalette3 = [(NTKColorAnalogRichFaceView *)self interpolatedColorPalette];
+    primaryShiftedColor2 = [interpolatedColorPalette3 primaryShiftedColor];
+    [(NTKColorAnalogRichFaceView *)self setInterpolatedComplicationColor:primaryShiftedColor2];
 
     [v12 updateMonochromeColor];
-    [(NTKColorAnalogRichFaceView *)self setComplicationColor:v13];
-    [(NTKColorAnalogRichFaceView *)self setInterpolatedComplicationColor:v14];
+    [(NTKColorAnalogRichFaceView *)self setComplicationColor:complicationColor];
+    [(NTKColorAnalogRichFaceView *)self setInterpolatedComplicationColor:interpolatedComplicationColor];
   }
 }
 

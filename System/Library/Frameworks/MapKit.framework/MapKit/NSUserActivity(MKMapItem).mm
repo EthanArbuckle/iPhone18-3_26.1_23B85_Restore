@@ -8,34 +8,34 @@
 - (void)setMapItem:()MKMapItem
 {
   v7 = a3;
-  v4 = [a1 _internalUserActivity];
-  v5 = [v4 objectForIdentifier:@"UAMKMapItemPayload"];
+  _internalUserActivity = [self _internalUserActivity];
+  v5 = [_internalUserActivity objectForIdentifier:@"UAMKMapItemPayload"];
   v6 = v5;
   if (v7)
   {
-    [v4 setPayloadIdentifier:@"UAMKMapItemPayload" object:v7 withBlock:&__block_literal_global_45196];
-    [a1 _mapkit_populateFieldsForDonationOfMapItem:v7];
+    [_internalUserActivity setPayloadIdentifier:@"UAMKMapItemPayload" object:v7 withBlock:&__block_literal_global_45196];
+    [self _mapkit_populateFieldsForDonationOfMapItem:v7];
   }
 
   else
   {
     if (v5)
     {
-      [v4 setPayloadIdentifier:@"UAMKMapItemPayload" object:0 withBlock:0];
+      [_internalUserActivity setPayloadIdentifier:@"UAMKMapItemPayload" object:0 withBlock:0];
     }
 
-    [a1 _mapkit_clearMapItemDonationFields];
+    [self _mapkit_clearMapItemDonationFields];
   }
 }
 
 - (id)mapItem
 {
   v12 = *MEMORY[0x1E69E9840];
-  v1 = [a1 _internalUserActivity];
-  v2 = [v1 objectForIdentifier:@"UAMKMapItemPayload"];
+  _internalUserActivity = [self _internalUserActivity];
+  v2 = [_internalUserActivity objectForIdentifier:@"UAMKMapItemPayload"];
   if (!v2)
   {
-    v3 = [v1 payloadForIdentifier:@"UAMKMapItemPayload"];
+    v3 = [_internalUserActivity payloadForIdentifier:@"UAMKMapItemPayload"];
     if (v3)
     {
       v9 = 0;
@@ -54,7 +54,7 @@
           }
         }
 
-        [v1 setPayload:v3 object:v2 identifier:@"UAMKMapItemPayload"];
+        [_internalUserActivity setPayload:v3 object:v2 identifier:@"UAMKMapItemPayload"];
       }
 
       else

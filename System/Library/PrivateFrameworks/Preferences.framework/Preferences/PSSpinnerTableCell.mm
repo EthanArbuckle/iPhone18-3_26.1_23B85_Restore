@@ -1,17 +1,17 @@
 @interface PSSpinnerTableCell
 + (Class)alternativeCellClass;
-- (PSSpinnerTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (PSSpinnerTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)layoutSubviews;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 @end
 
 @implementation PSSpinnerTableCell
 
-- (PSSpinnerTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (PSSpinnerTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v10.receiver = self;
   v10.super_class = PSSpinnerTableCell;
-  v4 = [(PSTableCell *)&v10 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(PSTableCell *)&v10 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4 && ![(PSTableCell *)v4 skipsPreferencesTableCellLayoutSubviews])
   {
@@ -19,8 +19,8 @@
     spinner = v5->_spinner;
     v5->_spinner = v6;
 
-    v8 = [(PSSpinnerTableCell *)v5 contentView];
-    [v8 addSubview:v5->_spinner];
+    contentView = [(PSSpinnerTableCell *)v5 contentView];
+    [contentView addSubview:v5->_spinner];
   }
 
   return v5;
@@ -40,8 +40,8 @@
     v12.receiver = self;
     v12.super_class = PSSpinnerTableCell;
     [(PSTableCell *)&v12 layoutSubviews];
-    v3 = [(PSSpinnerTableCell *)self contentView];
-    [v3 bounds];
+    contentView = [(PSSpinnerTableCell *)self contentView];
+    [contentView bounds];
     v5 = v4;
     v7 = v6;
 
@@ -52,17 +52,17 @@
   }
 }
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
   v4.receiver = self;
   v4.super_class = PSSpinnerTableCell;
-  [(PSTableCell *)&v4 refreshCellContentsWithSpecifier:a3];
+  [(PSTableCell *)&v4 refreshCellContentsWithSpecifier:specifier];
   [(UIActivityIndicatorView *)self->_spinner startAnimating];
 }
 
 + (Class)alternativeCellClass
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = objc_opt_class();
   }

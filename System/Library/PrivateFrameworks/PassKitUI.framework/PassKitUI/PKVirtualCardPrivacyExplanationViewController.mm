@@ -1,28 +1,28 @@
 @interface PKVirtualCardPrivacyExplanationViewController
-- (PKVirtualCardPrivacyExplanationViewController)initWithContext:(int64_t)a3 referralSource:(unint64_t)a4 resultCallback:(id)a5;
+- (PKVirtualCardPrivacyExplanationViewController)initWithContext:(int64_t)context referralSource:(unint64_t)source resultCallback:(id)callback;
 - (void)_beginReportingIfNecessary;
 - (void)_endReportingIfNecessary;
-- (void)explanationViewDidSelectContinue:(id)a3;
-- (void)explanationViewDidSelectSetupLater:(id)a3;
+- (void)explanationViewDidSelectContinue:(id)continue;
+- (void)explanationViewDidSelectSetupLater:(id)later;
 - (void)loadView;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation PKVirtualCardPrivacyExplanationViewController
 
-- (PKVirtualCardPrivacyExplanationViewController)initWithContext:(int64_t)a3 referralSource:(unint64_t)a4 resultCallback:(id)a5
+- (PKVirtualCardPrivacyExplanationViewController)initWithContext:(int64_t)context referralSource:(unint64_t)source resultCallback:(id)callback
 {
-  v8 = a5;
+  callbackCopy = callback;
   v14.receiver = self;
   v14.super_class = PKVirtualCardPrivacyExplanationViewController;
-  v9 = [(PKExplanationViewController *)&v14 initWithContext:a3];
+  v9 = [(PKExplanationViewController *)&v14 initWithContext:context];
   v10 = v9;
   if (v9)
   {
-    v9->_referralSource = a4;
-    v11 = _Block_copy(v8);
+    v9->_referralSource = source;
+    v11 = _Block_copy(callbackCopy);
     resultCallback = v10->_resultCallback;
     v10->_resultCallback = v11;
   }
@@ -35,36 +35,36 @@
   v15.receiver = self;
   v15.super_class = PKVirtualCardPrivacyExplanationViewController;
   [(PKExplanationViewController *)&v15 loadView];
-  v3 = [(PKExplanationViewController *)self explanationView];
-  [v3 setShowPrivacyView:1];
-  [v3 setForceShowSetupLaterButton:1];
-  [v3 setDelegate:self];
+  explanationView = [(PKExplanationViewController *)self explanationView];
+  [explanationView setShowPrivacyView:1];
+  [explanationView setForceShowSetupLaterButton:1];
+  [explanationView setDelegate:self];
   [(PKExplanationViewController *)self setShowCancelButton:0];
-  v4 = [v3 dockView];
+  dockView = [explanationView dockView];
   v5 = PKLocalizedVirtualCardString(&cfstr_FpanCardWallet.isa);
-  [v3 setTitleText:v5];
+  [explanationView setTitleText:v5];
 
   v6 = PKLocalizedVirtualCardString(&cfstr_FpanCardWallet_0.isa);
-  [v3 setBodyText:v6];
+  [explanationView setBodyText:v6];
 
-  v7 = [(PKVirtualCardPrivacyExplanationViewController *)self navigationController];
-  [v7 setNavigationBarHidden:1 animated:0];
+  navigationController = [(PKVirtualCardPrivacyExplanationViewController *)self navigationController];
+  [navigationController setNavigationBarHidden:1 animated:0];
 
   v8 = objc_alloc_init(PKAutoFillHeroAnimationView);
   animationView = self->_animationView;
   self->_animationView = v8;
 
   [(PKMicaView *)self->_animationView resetAndPauseAnimations];
-  [v3 setTopMargin:0.0];
-  [v3 setHeroView:self->_animationView];
-  v10 = [v4 primaryButton];
+  [explanationView setTopMargin:0.0];
+  [explanationView setHeroView:self->_animationView];
+  primaryButton = [dockView primaryButton];
   v11 = PKLocalizedPaymentString(&cfstr_Continue.isa);
-  [v10 setTitle:v11 forState:0];
+  [primaryButton setTitle:v11 forState:0];
 
-  v12 = [v4 footerView];
-  v13 = [v12 setUpLaterButton];
+  footerView = [dockView footerView];
+  setUpLaterButton = [footerView setUpLaterButton];
   v14 = PKLocalizedVirtualCardString(&cfstr_VirtualCardSet_3.isa);
-  [v13 setTitle:v14 forState:0];
+  [setUpLaterButton setTitle:v14 forState:0];
 }
 
 - (void)viewDidLoad
@@ -92,11 +92,11 @@
   [v3 subjects:v4 sendEvent:v9];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = PKVirtualCardPrivacyExplanationViewController;
-  [(PKVirtualCardPrivacyExplanationViewController *)&v6 viewDidAppear:a3];
+  [(PKVirtualCardPrivacyExplanationViewController *)&v6 viewDidAppear:appear];
   v4 = dispatch_time(0, 350000000);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -106,13 +106,13 @@
   dispatch_after(v4, MEMORY[0x1E69E96A0], block);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = PKVirtualCardPrivacyExplanationViewController;
-  [(PKVirtualCardPrivacyExplanationViewController *)&v5 viewWillDisappear:a3];
-  v4 = [(PKVirtualCardPrivacyExplanationViewController *)self navigationController];
-  [v4 setNavigationBarHidden:0 animated:0];
+  [(PKVirtualCardPrivacyExplanationViewController *)&v5 viewWillDisappear:disappear];
+  navigationController = [(PKVirtualCardPrivacyExplanationViewController *)self navigationController];
+  [navigationController setNavigationBarHidden:0 animated:0];
 
   [(PKVirtualCardPrivacyExplanationViewController *)self _endReportingIfNecessary];
 }
@@ -140,7 +140,7 @@
   }
 }
 
-- (void)explanationViewDidSelectContinue:(id)a3
+- (void)explanationViewDidSelectContinue:(id)continue
 {
   v13[1] = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E69B8540];
@@ -166,7 +166,7 @@
   }
 }
 
-- (void)explanationViewDidSelectSetupLater:(id)a3
+- (void)explanationViewDidSelectSetupLater:(id)later
 {
   v13[1] = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E69B8540];

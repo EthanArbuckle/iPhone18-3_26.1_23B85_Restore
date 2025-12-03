@@ -1,10 +1,10 @@
 @interface RTSettingsViewController
-- (_TtC19CoreRoutineSettings24RTSettingsViewController)initWithCoder:(id)a3;
-- (_TtC19CoreRoutineSettings24RTSettingsViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)setupSettingsMainView:(id)a3;
+- (_TtC19CoreRoutineSettings24RTSettingsViewController)initWithCoder:(id)coder;
+- (_TtC19CoreRoutineSettings24RTSettingsViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)setupSettingsMainView:(id)view;
 - (void)dealloc;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
 - (void)viewWasBackgrounded;
 @end
@@ -14,24 +14,24 @@
 - (void)dealloc
 {
   v3 = objc_opt_self();
-  v4 = self;
-  v5 = [v3 defaultCenter];
-  [v5 removeObserver:v4];
+  selfCopy = self;
+  defaultCenter = [v3 defaultCenter];
+  [defaultCenter removeObserver:selfCopy];
 
-  v6.receiver = v4;
+  v6.receiver = selfCopy;
   v6.super_class = type metadata accessor for RTSettingsViewController();
   [(RTSettingsViewController *)&v6 dealloc];
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E3C();
 }
 
-- (id)setupSettingsMainView:(id)a3
+- (id)setupSettingsMainView:(id)view
 {
-  v3 = a3;
+  viewCopy = view;
   sub_7548(&v7);
   v4 = objc_allocWithZone(sub_1DF4(&qword_21408));
   v5 = sub_126F0();
@@ -39,34 +39,34 @@
   return v5;
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v3 = *(&stru_68.reloff + (swift_isaMask & self->super.super.super.isa));
-  v4 = self;
+  selfCopy = self;
   v3();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v3 = *(&stru_68.offset + (swift_isaMask & self->super.super.super.isa));
-  v4 = self;
+  selfCopy = self;
   v3();
 }
 
 - (void)viewWasBackgrounded
 {
-  v5 = self;
-  v2 = [(RTSettingsViewController *)v5 navigationController];
-  if (v2)
+  selfCopy = self;
+  navigationController = [(RTSettingsViewController *)selfCopy navigationController];
+  if (navigationController)
   {
-    v3 = v2;
-    v4 = [v2 popViewControllerAnimated:0];
+    v3 = navigationController;
+    v4 = [navigationController popViewControllerAnimated:0];
   }
 }
 
-- (_TtC19CoreRoutineSettings24RTSettingsViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC19CoreRoutineSettings24RTSettingsViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_12A50();
     v6 = OBJC_IVAR____TtC19CoreRoutineSettings24RTSettingsViewController_sessionStartDate;
@@ -75,7 +75,7 @@
     v8 = (self + OBJC_IVAR____TtC19CoreRoutineSettings24RTSettingsViewController_canBeShownFromSuspendedState);
     *v8 = sub_1AC8;
     v8[1] = 0;
-    v9 = a4;
+    bundleCopy = bundle;
     v10 = sub_12A30();
   }
 
@@ -87,18 +87,18 @@
     v13 = (self + OBJC_IVAR____TtC19CoreRoutineSettings24RTSettingsViewController_canBeShownFromSuspendedState);
     *v13 = sub_1AC8;
     v13[1] = 0;
-    v14 = a4;
+    bundleCopy2 = bundle;
     v10 = 0;
   }
 
   v17.receiver = self;
   v17.super_class = type metadata accessor for RTSettingsViewController();
-  v15 = [(RTSettingsViewController *)&v17 initWithNibName:v10 bundle:a4];
+  v15 = [(RTSettingsViewController *)&v17 initWithNibName:v10 bundle:bundle];
 
   return v15;
 }
 
-- (_TtC19CoreRoutineSettings24RTSettingsViewController)initWithCoder:(id)a3
+- (_TtC19CoreRoutineSettings24RTSettingsViewController)initWithCoder:(id)coder
 {
   v5 = OBJC_IVAR____TtC19CoreRoutineSettings24RTSettingsViewController_sessionStartDate;
   v6 = sub_12520();
@@ -108,8 +108,8 @@
   v7[1] = 0;
   v11.receiver = self;
   v11.super_class = type metadata accessor for RTSettingsViewController();
-  v8 = a3;
-  v9 = [(RTSettingsViewController *)&v11 initWithCoder:v8];
+  coderCopy = coder;
+  v9 = [(RTSettingsViewController *)&v11 initWithCoder:coderCopy];
 
   if (v9)
   {

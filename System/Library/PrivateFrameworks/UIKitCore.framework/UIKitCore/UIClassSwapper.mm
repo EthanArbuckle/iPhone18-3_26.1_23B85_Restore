@@ -1,25 +1,25 @@
 @interface UIClassSwapper
-+ (id)swapperForObject:(id)a3 withClassName:(id)a4;
-- (UIClassSwapper)initWithCoder:(id)a3;
-- (UIClassSwapper)initWithObject:(id)a3 andClassName:(id)a4;
-- (id)performSelectorForObject:(id)a3 selector:(SEL)a4 withObject:(id)a5 withObject:(id)a6 withObject:(id)a7;
-- (void)encodeWithCoder:(id)a3;
++ (id)swapperForObject:(id)object withClassName:(id)name;
+- (UIClassSwapper)initWithCoder:(id)coder;
+- (UIClassSwapper)initWithObject:(id)object andClassName:(id)name;
+- (id)performSelectorForObject:(id)object selector:(SEL)selector withObject:(id)withObject withObject:(id)a6 withObject:(id)a7;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation UIClassSwapper
 
-- (UIClassSwapper)initWithObject:(id)a3 andClassName:(id)a4
+- (UIClassSwapper)initWithObject:(id)object andClassName:(id)name
 {
-  v7 = a3;
-  v8 = a4;
+  objectCopy = object;
+  nameCopy = name;
   v14.receiver = self;
   v14.super_class = UIClassSwapper;
   v9 = [(UIClassSwapper *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->object, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->object, object);
+    v11 = [nameCopy copy];
     className = v10->className;
     v10->className = v11;
   }
@@ -27,29 +27,29 @@
   return v10;
 }
 
-- (id)performSelectorForObject:(id)a3 selector:(SEL)a4 withObject:(id)a5 withObject:(id)a6 withObject:(id)a7
+- (id)performSelectorForObject:(id)object selector:(SEL)selector withObject:(id)withObject withObject:(id)a6 withObject:(id)a7
 {
-  v12 = a3;
-  v13 = a5;
+  objectCopy = object;
+  withObjectCopy = withObject;
   v14 = a6;
   v15 = a7;
-  if (!a4)
+  if (!selector)
   {
     [(UIClassSwapper *)self doesNotRecognizeSelector:0];
   }
 
-  v16 = [v12 a4];
+  selector = [objectCopy selector];
 
-  return v16;
+  return selector;
 }
 
-- (UIClassSwapper)initWithCoder:(id)a3
+- (UIClassSwapper)initWithCoder:(id)coder
 {
   v66 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 decodeObjectForKey:@"UIClassName"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectForKey:@"UIClassName"];
   v6 = NSClassFromString(v5);
-  v7 = [v4 decodeObjectForKey:@"UIOriginalClassName"];
+  v7 = [coderCopy decodeObjectForKey:@"UIOriginalClassName"];
   v8 = NSClassFromString(v7);
 
   if (!v6)
@@ -63,53 +63,53 @@
     }
   }
 
-  v10 = [v4 _storyboardDecodingContext];
-  v11 = [v10 sourceSegueTemplate];
+  _storyboardDecodingContext = [coderCopy _storyboardDecodingContext];
+  sourceSegueTemplate = [_storyboardDecodingContext sourceSegueTemplate];
 
-  v12 = [v11 prepareForChildViewControllerSelector];
-  v13 = [v4 _storyboardDecodingContext];
-  v14 = [v13 parentViewController];
+  prepareForChildViewControllerSelector = [sourceSegueTemplate prepareForChildViewControllerSelector];
+  _storyboardDecodingContext2 = [coderCopy _storyboardDecodingContext];
+  parentViewController = [_storyboardDecodingContext2 parentViewController];
 
-  if (v14)
+  if (parentViewController)
   {
-    v15 = [v4 _storyboardDecodingContext];
-    v16 = [v15 parentViewController];
-    v17 = [v4 _storyboardDecodingContext];
-    v12 = [v16 _customSelectorToCreateChildViewControllerAtIndex:{objc_msgSend(v17, "childViewControllerIndex")}];
+    _storyboardDecodingContext3 = [coderCopy _storyboardDecodingContext];
+    parentViewController2 = [_storyboardDecodingContext3 parentViewController];
+    _storyboardDecodingContext4 = [coderCopy _storyboardDecodingContext];
+    prepareForChildViewControllerSelector = [parentViewController2 _customSelectorToCreateChildViewControllerAtIndex:{objc_msgSend(_storyboardDecodingContext4, "childViewControllerIndex")}];
   }
 
-  v18 = [v11 viewController];
-  v19 = [v4 _storyboardDecodingContext];
-  v20 = [v19 creator];
+  viewController = [sourceSegueTemplate viewController];
+  _storyboardDecodingContext5 = [coderCopy _storyboardDecodingContext];
+  creator = [_storyboardDecodingContext5 creator];
 
-  if (v20)
+  if (creator)
   {
-    v21 = [v4 _storyboardDecodingContext];
-    v22 = [v21 creator];
+    _storyboardDecodingContext6 = [coderCopy _storyboardDecodingContext];
+    creator2 = [_storyboardDecodingContext6 creator];
 
-    v23 = [v4 _storyboardDecodingContext];
-    [v23 setCreator:0];
+    _storyboardDecodingContext7 = [coderCopy _storyboardDecodingContext];
+    [_storyboardDecodingContext7 setCreator:0];
 
-    v24 = [v4 _storyboardDecodingContext];
-    [v24 setClassSwapperTemplate:self];
+    _storyboardDecodingContext8 = [coderCopy _storyboardDecodingContext];
+    [_storyboardDecodingContext8 setClassSwapperTemplate:self];
 
-    v25 = (v22)[2](v22, v4);
-    v26 = [v4 _storyboardDecodingContext];
-    v27 = v26;
+    v25 = (creator2)[2](creator2, coderCopy);
+    _storyboardDecodingContext9 = [coderCopy _storyboardDecodingContext];
+    v27 = _storyboardDecodingContext9;
     if (v25)
     {
       v57 = v8;
       v58 = v5;
-      v28 = [v26 classSwapperTemplate];
+      classSwapperTemplate = [_storyboardDecodingContext9 classSwapperTemplate];
 
-      if (v28)
+      if (classSwapperTemplate)
       {
-        v29 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v29 handleFailureInMethod:a2 object:self file:@"UIClassSwapper.m" lineNumber:134 description:@"Custom instantiated view controller must call -[super initWithCoder:]"];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"UIClassSwapper.m" lineNumber:134 description:@"Custom instantiated view controller must call -[super initWithCoder:]"];
       }
 
-      v30 = [v4 _storyboardDecodingContext];
-      [v30 setClassSwapperTemplate:0];
+      _storyboardDecodingContext10 = [coderCopy _storyboardDecodingContext];
+      [_storyboardDecodingContext10 setClassSwapperTemplate:0];
 
 LABEL_16:
       if (v6)
@@ -125,9 +125,9 @@ LABEL_16:
       v5 = v58;
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v41 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
         v42 = NSStringFromClass(v40);
-        [v41 handleFailureInMethod:a2 object:self file:@"UIClassSwapper.m" lineNumber:150 description:{@"Custom instantiated %@ must be kind of class %@", v25, v42}];
+        [currentHandler2 handleFailureInMethod:a2 object:self file:@"UIClassSwapper.m" lineNumber:150 description:{@"Custom instantiated %@ must be kind of class %@", v25, v42}];
 
         v5 = v58;
       }
@@ -135,40 +135,40 @@ LABEL_16:
       goto LABEL_34;
     }
 
-    [v26 setClassSwapperTemplate:0];
+    [_storyboardDecodingContext9 setClassSwapperTemplate:0];
   }
 
   else if (objc_opt_respondsToSelector())
   {
     v57 = v8;
     v58 = v5;
-    v31 = [v4 _storyboardDecodingContext];
-    [v31 setClassSwapperTemplate:self];
+    _storyboardDecodingContext11 = [coderCopy _storyboardDecodingContext];
+    [_storyboardDecodingContext11 setClassSwapperTemplate:self];
 
-    v32 = [v4 _storyboardDecodingContext];
-    v33 = [v32 sender];
-    v34 = [v11 identifier];
-    v25 = [(UIClassSwapper *)self performSelectorForObject:v18 selector:v12 withObject:v4 withObject:v33 withObject:v34];
+    _storyboardDecodingContext12 = [coderCopy _storyboardDecodingContext];
+    sender = [_storyboardDecodingContext12 sender];
+    identifier = [sourceSegueTemplate identifier];
+    v25 = [(UIClassSwapper *)self performSelectorForObject:viewController selector:prepareForChildViewControllerSelector withObject:coderCopy withObject:sender withObject:identifier];
 
-    v35 = [v4 _storyboardDecodingContext];
-    v36 = v35;
+    _storyboardDecodingContext13 = [coderCopy _storyboardDecodingContext];
+    v36 = _storyboardDecodingContext13;
     if (v25)
     {
-      v37 = [v35 classSwapperTemplate];
+      classSwapperTemplate2 = [_storyboardDecodingContext13 classSwapperTemplate];
 
-      if (v37)
+      if (classSwapperTemplate2)
       {
-        v38 = [MEMORY[0x1E696AAA8] currentHandler];
-        v39 = NSStringFromSelector(v12);
-        [v38 handleFailureInMethod:a2 object:self file:@"UIClassSwapper.m" lineNumber:139 description:{@"Custom instantiated view controller must call -[super initWithCoder:] when created from -[%@ %@]", v18, v39}];
+        currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+        v39 = NSStringFromSelector(prepareForChildViewControllerSelector);
+        [currentHandler3 handleFailureInMethod:a2 object:self file:@"UIClassSwapper.m" lineNumber:139 description:{@"Custom instantiated view controller must call -[super initWithCoder:] when created from -[%@ %@]", viewController, v39}];
       }
 
-      v22 = [v4 _storyboardDecodingContext];
-      [v22 setClassSwapperTemplate:0];
+      creator2 = [coderCopy _storyboardDecodingContext];
+      [creator2 setClassSwapperTemplate:0];
       goto LABEL_16;
     }
 
-    [v35 setClassSwapperTemplate:0];
+    [_storyboardDecodingContext13 setClassSwapperTemplate:0];
 
     v49 = *(__UILogGetCategoryCachedImpl("Storyboard", &qword_1ED49ED68) + 8);
     v8 = v57;
@@ -176,9 +176,9 @@ LABEL_16:
     if (os_log_type_enabled(v49, OS_LOG_TYPE_ERROR))
     {
       v50 = v49;
-      v51 = NSStringFromSelector(v12);
+      v51 = NSStringFromSelector(prepareForChildViewControllerSelector);
       *buf = 138412802;
-      v61 = v18;
+      v61 = viewController;
       v62 = 2112;
       v63 = v51;
       v64 = 2112;
@@ -190,7 +190,7 @@ LABEL_16:
     }
   }
 
-  else if (v12)
+  else if (prepareForChildViewControllerSelector)
   {
     v43 = *(__UILogGetCategoryCachedImpl("Storyboard", &qword_1ED49ED70) + 8);
     if (os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
@@ -198,10 +198,10 @@ LABEL_16:
       v44 = v43;
       v45 = v5;
       v46 = v44;
-      NSStringFromSelector(v12);
+      NSStringFromSelector(prepareForChildViewControllerSelector);
       v48 = v47 = v8;
       *buf = 138412546;
-      v61 = v18;
+      v61 = viewController;
       v62 = 2112;
       v63 = v48;
       _os_log_impl(&dword_188A29000, v46, OS_LOG_TYPE_ERROR, "Unable to find method [%@ %@]", buf, 0x16u);
@@ -222,7 +222,7 @@ LABEL_16:
   }
 
   v53 = [v52 alloc];
-  [v4 replaceObject:self withObject:v53];
+  [coderCopy replaceObject:self withObject:v53];
   if (v8 == objc_opt_class())
   {
     v54 = [v53 init];
@@ -230,7 +230,7 @@ LABEL_16:
 
   else
   {
-    v54 = [v53 initWithCoder:v4];
+    v54 = [v53 initWithCoder:coderCopy];
   }
 
   v25 = v54;
@@ -240,22 +240,22 @@ LABEL_34:
   return v55;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   object = self->object;
-  v5 = a3;
-  [object encodeWithCoder:v5];
-  [v5 encodeObject:self->className forKey:@"UIClassName"];
+  coderCopy = coder;
+  [object encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->className forKey:@"UIClassName"];
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
-  [v5 encodeObject:v7 forKey:@"UIOriginalClassName"];
+  [coderCopy encodeObject:v7 forKey:@"UIOriginalClassName"];
 }
 
-+ (id)swapperForObject:(id)a3 withClassName:(id)a4
++ (id)swapperForObject:(id)object withClassName:(id)name
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithObject:v7 andClassName:v6];
+  nameCopy = name;
+  objectCopy = object;
+  v8 = [[self alloc] initWithObject:objectCopy andClassName:nameCopy];
 
   return v8;
 }

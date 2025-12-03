@@ -1,35 +1,35 @@
 @interface ErrorActionHandler
-+ (void)performAction:(id)a3 inContext:(id)a4;
++ (void)performAction:(id)action inContext:(id)context;
 @end
 
 @implementation ErrorActionHandler
 
-+ (void)performAction:(id)a3 inContext:(id)a4
++ (void)performAction:(id)action inContext:(id)context
 {
-  v4 = a3;
+  actionCopy = action;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = actionCopy;
     v6 = objc_alloc_init(NSMutableDictionary);
-    v7 = [v5 title];
+    title = [v5 title];
 
-    if (v7)
+    if (title)
     {
-      v8 = [v5 title];
-      [v6 setObject:v8 forKeyedSubscript:@"kMapsInterruptionTitle"];
+      title2 = [v5 title];
+      [v6 setObject:title2 forKeyedSubscript:@"kMapsInterruptionTitle"];
     }
 
-    v9 = [v5 message];
+    message = [v5 message];
 
-    if (v9)
+    if (message)
     {
-      v10 = [v5 message];
-      [v6 setObject:v10 forKeyedSubscript:@"kMapsInterruptionMessage"];
+      message2 = [v5 message];
+      [v6 setObject:message2 forKeyedSubscript:@"kMapsInterruptionMessage"];
     }
 
-    v11 = [v5 options];
-    v12 = [v11 count];
+    options = [v5 options];
+    v12 = [options count];
 
     if (v12)
     {
@@ -40,8 +40,8 @@
       v31 = 0u;
       v32 = 0u;
       v28 = v5;
-      v14 = [v5 options];
-      v15 = [v14 countByEnumeratingWithState:&v29 objects:v33 count:16];
+      options2 = [v5 options];
+      v15 = [options2 countByEnumeratingWithState:&v29 objects:v33 count:16];
       if (v15)
       {
         v16 = v15;
@@ -52,19 +52,19 @@
           {
             if (*v30 != v17)
             {
-              objc_enumerationMutation(v14);
+              objc_enumerationMutation(options2);
             }
 
             v19 = *(*(&v29 + 1) + 8 * i);
-            v20 = [v19 title];
-            v21 = [v19 cancels];
-            v22 = [v19 handler];
-            v23 = [MapsInterruptionAction actionWithTitle:v20 cancels:v21 handler:v22];
+            title3 = [v19 title];
+            cancels = [v19 cancels];
+            handler = [v19 handler];
+            v23 = [MapsInterruptionAction actionWithTitle:title3 cancels:cancels handler:handler];
 
             [v13 addObject:v23];
           }
 
-          v16 = [v14 countByEnumeratingWithState:&v29 objects:v33 count:16];
+          v16 = [options2 countByEnumeratingWithState:&v29 objects:v33 count:16];
         }
 
         while (v16);

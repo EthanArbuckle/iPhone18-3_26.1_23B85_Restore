@@ -1,16 +1,16 @@
 @interface CKMultiDict
 - (CKMultiDict)init;
 - (id)allKeys;
-- (id)dequeueObjectForKey:(id)a3;
+- (id)dequeueObjectForKey:(id)key;
 - (id)description;
-- (id)headObjectForKey:(id)a3;
-- (id)objectsForKey:(id)a3;
-- (id)peekObjectForKey:(id)a3;
-- (id)popObjectForKey:(id)a3;
+- (id)headObjectForKey:(id)key;
+- (id)objectsForKey:(id)key;
+- (id)peekObjectForKey:(id)key;
+- (id)popObjectForKey:(id)key;
 - (unint64_t)count;
-- (void)pushObject:(id)a3 forKey:(id)a4;
+- (void)pushObject:(id)object forKey:(id)key;
 - (void)removeAllObjects;
-- (void)removeObjectsForKey:(id)a3;
+- (void)removeObjectsForKey:(id)key;
 @end
 
 @implementation CKMultiDict
@@ -63,20 +63,20 @@ void __26__CKMultiDict_description__block_invoke(uint64_t a1)
   *(v3 + 40) = v2;
 }
 
-- (void)pushObject:(id)a3 forKey:(id)a4
+- (void)pushObject:(id)object forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  objectCopy = object;
+  keyCopy = key;
   lockQueue = self->_lockQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __33__CKMultiDict_pushObject_forKey___block_invoke;
   block[3] = &unk_1E72EB880;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = keyCopy;
+  v13 = objectCopy;
+  v9 = objectCopy;
+  v10 = keyCopy;
   dispatch_async(lockQueue, block);
 }
 
@@ -94,9 +94,9 @@ void __33__CKMultiDict_pushObject_forKey___block_invoke(uint64_t a1)
   [v2 addObject:*(a1 + 48)];
 }
 
-- (id)peekObjectForKey:(id)a3
+- (id)peekObjectForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -108,10 +108,10 @@ void __33__CKMultiDict_pushObject_forKey___block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __32__CKMultiDict_peekObjectForKey___block_invoke;
   block[3] = &unk_1E72EB858;
-  v10 = v4;
+  v10 = keyCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = keyCopy;
   dispatch_sync(lockQueue, block);
   v7 = v13[5];
 
@@ -130,9 +130,9 @@ void __32__CKMultiDict_peekObjectForKey___block_invoke(uint64_t a1)
   *(v4 + 40) = v3;
 }
 
-- (id)popObjectForKey:(id)a3
+- (id)popObjectForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -145,9 +145,9 @@ void __32__CKMultiDict_peekObjectForKey___block_invoke(uint64_t a1)
   block[2] = __31__CKMultiDict_popObjectForKey___block_invoke;
   block[3] = &unk_1E72EC828;
   block[4] = self;
-  v10 = v4;
+  v10 = keyCopy;
   v11 = &v12;
-  v6 = v4;
+  v6 = keyCopy;
   dispatch_sync(lockQueue, block);
   v7 = v13[5];
 
@@ -180,9 +180,9 @@ void __31__CKMultiDict_popObjectForKey___block_invoke(void *a1)
   }
 }
 
-- (id)headObjectForKey:(id)a3
+- (id)headObjectForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -195,9 +195,9 @@ void __31__CKMultiDict_popObjectForKey___block_invoke(void *a1)
   block[2] = __32__CKMultiDict_headObjectForKey___block_invoke;
   block[3] = &unk_1E72EC828;
   block[4] = self;
-  v10 = v4;
+  v10 = keyCopy;
   v11 = &v12;
-  v6 = v4;
+  v6 = keyCopy;
   dispatch_sync(lockQueue, block);
   v7 = v13[5];
 
@@ -220,9 +220,9 @@ void __32__CKMultiDict_headObjectForKey___block_invoke(uint64_t a1)
   }
 }
 
-- (id)dequeueObjectForKey:(id)a3
+- (id)dequeueObjectForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -235,9 +235,9 @@ void __32__CKMultiDict_headObjectForKey___block_invoke(uint64_t a1)
   block[2] = __35__CKMultiDict_dequeueObjectForKey___block_invoke;
   block[3] = &unk_1E72EC828;
   block[4] = self;
-  v10 = v4;
+  v10 = keyCopy;
   v11 = &v12;
-  v6 = v4;
+  v6 = keyCopy;
   dispatch_sync(lockQueue, block);
   v7 = v13[5];
 
@@ -263,9 +263,9 @@ void __35__CKMultiDict_dequeueObjectForKey___block_invoke(uint64_t a1)
   }
 }
 
-- (id)objectsForKey:(id)a3
+- (id)objectsForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -279,7 +279,7 @@ void __35__CKMultiDict_dequeueObjectForKey___block_invoke(uint64_t a1)
   block[3] = &unk_1E72EB858;
   v12 = &v13;
   block[4] = self;
-  v6 = v4;
+  v6 = keyCopy;
   v11 = v6;
   dispatch_sync(lockQueue, block);
   if ([v14[5] count])
@@ -313,17 +313,17 @@ void __29__CKMultiDict_objectsForKey___block_invoke(uint64_t a1)
   *(v7 + 40) = v6;
 }
 
-- (void)removeObjectsForKey:(id)a3
+- (void)removeObjectsForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   lockQueue = self->_lockQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __35__CKMultiDict_removeObjectsForKey___block_invoke;
   v7[3] = &unk_1E72EB8D0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = keyCopy;
+  v6 = keyCopy;
   dispatch_async(lockQueue, v7);
 }
 
@@ -380,7 +380,7 @@ void __31__CKMultiDict_removeAllObjects__block_invoke(uint64_t a1)
   v10 = 0x3032000000;
   v11 = __Block_byref_object_copy__66;
   v12 = __Block_byref_object_dispose__66;
-  v13 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   lockQueue = self->_lockQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;

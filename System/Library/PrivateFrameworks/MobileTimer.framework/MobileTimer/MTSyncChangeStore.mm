@@ -1,14 +1,14 @@
 @interface MTSyncChangeStore
 + (id)inMemoryStore;
-+ (id)persistentStoreForDataModel:(id)a3;
++ (id)persistentStoreForDataModel:(id)model;
 @end
 
 @implementation MTSyncChangeStore
 
-+ (id)persistentStoreForDataModel:(id)a3
++ (id)persistentStoreForDataModel:(id)model
 {
-  v3 = a3;
-  v4 = [[MTPersistentSyncChangeStore alloc] initWithDataModel:v3];
+  modelCopy = model;
+  v4 = [[MTPersistentSyncChangeStore alloc] initWithDataModel:modelCopy];
 
   return v4;
 }

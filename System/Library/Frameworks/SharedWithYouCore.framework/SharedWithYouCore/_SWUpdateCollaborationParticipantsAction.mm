@@ -8,9 +8,9 @@
 {
   v4.receiver = self;
   v4.super_class = _SWUpdateCollaborationParticipantsAction;
-  v2 = [(SWUpdateCollaborationParticipantsAction *)&v4 collaborationMetadata];
+  collaborationMetadata = [(SWUpdateCollaborationParticipantsAction *)&v4 collaborationMetadata];
 
-  return v2;
+  return collaborationMetadata;
 }
 
 @end

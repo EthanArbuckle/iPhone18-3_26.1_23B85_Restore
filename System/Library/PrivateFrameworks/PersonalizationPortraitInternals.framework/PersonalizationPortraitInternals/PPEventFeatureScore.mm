@@ -1,11 +1,11 @@
 @interface PPEventFeatureScore
-+ (id)eventFeatureScoreWithFeatureValues:(id)a3 weightedScore:(double)a4 prominentFeature:(unint64_t)a5;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToEventFeatureScore:(id)a3;
-- (PPEventFeatureScore)initWithFeatureValues:(id)a3 weightedScore:(double)a4 prominentFeature:(unint64_t)a5;
-- (id)copyWithReplacementFeatureValues:(id)a3;
-- (id)copyWithReplacementProminentFeature:(unint64_t)a3;
-- (id)copyWithReplacementWeightedScore:(double)a3;
++ (id)eventFeatureScoreWithFeatureValues:(id)values weightedScore:(double)score prominentFeature:(unint64_t)feature;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToEventFeatureScore:(id)score;
+- (PPEventFeatureScore)initWithFeatureValues:(id)values weightedScore:(double)score prominentFeature:(unint64_t)feature;
+- (id)copyWithReplacementFeatureValues:(id)values;
+- (id)copyWithReplacementProminentFeature:(unint64_t)feature;
+- (id)copyWithReplacementWeightedScore:(double)score;
 - (id)description;
 - (unint64_t)_hash;
 @end
@@ -54,35 +54,35 @@
   return self->_prominentFeature - (v9 - v3 + 32 * v3) + 32 * (v9 - v3 + 32 * v3);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PPEventFeatureScore *)self isEqualToEventFeatureScore:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PPEventFeatureScore *)self isEqualToEventFeatureScore:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToEventFeatureScore:(id)a3
+- (BOOL)isEqualToEventFeatureScore:(id)score
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  scoreCopy = score;
+  v5 = scoreCopy;
+  if (!scoreCopy)
   {
     goto LABEL_7;
   }
 
   v6 = self->_featureValues == 0;
-  v7 = [v4 featureValues];
-  v8 = v7 != 0;
+  featureValues = [scoreCopy featureValues];
+  v8 = featureValues != 0;
 
   if (v6 == v8)
   {
@@ -92,8 +92,8 @@
   featureValues = self->_featureValues;
   if (featureValues)
   {
-    v10 = [v5 featureValues];
-    v11 = [(NSArray *)featureValues isEqual:v10];
+    featureValues2 = [v5 featureValues];
+    v11 = [(NSArray *)featureValues isEqual:featureValues2];
 
     if (!v11)
     {
@@ -119,39 +119,39 @@ LABEL_7:
   return v14;
 }
 
-- (id)copyWithReplacementProminentFeature:(unint64_t)a3
+- (id)copyWithReplacementProminentFeature:(unint64_t)feature
 {
   v5 = objc_alloc(objc_opt_class());
   featureValues = self->_featureValues;
   weightedScore = self->_weightedScore;
 
-  return [v5 initWithFeatureValues:featureValues weightedScore:a3 prominentFeature:weightedScore];
+  return [v5 initWithFeatureValues:featureValues weightedScore:feature prominentFeature:weightedScore];
 }
 
-- (id)copyWithReplacementWeightedScore:(double)a3
+- (id)copyWithReplacementWeightedScore:(double)score
 {
   v5 = objc_alloc(objc_opt_class());
   featureValues = self->_featureValues;
   prominentFeature = self->_prominentFeature;
 
-  return [v5 initWithFeatureValues:featureValues weightedScore:prominentFeature prominentFeature:a3];
+  return [v5 initWithFeatureValues:featureValues weightedScore:prominentFeature prominentFeature:score];
 }
 
-- (id)copyWithReplacementFeatureValues:(id)a3
+- (id)copyWithReplacementFeatureValues:(id)values
 {
-  v4 = a3;
-  v5 = [objc_alloc(objc_opt_class()) initWithFeatureValues:v4 weightedScore:self->_prominentFeature prominentFeature:self->_weightedScore];
+  valuesCopy = values;
+  v5 = [objc_alloc(objc_opt_class()) initWithFeatureValues:valuesCopy weightedScore:self->_prominentFeature prominentFeature:self->_weightedScore];
 
   return v5;
 }
 
-- (PPEventFeatureScore)initWithFeatureValues:(id)a3 weightedScore:(double)a4 prominentFeature:(unint64_t)a5
+- (PPEventFeatureScore)initWithFeatureValues:(id)values weightedScore:(double)score prominentFeature:(unint64_t)feature
 {
-  v10 = a3;
-  if (!v10)
+  valuesCopy = values;
+  if (!valuesCopy)
   {
-    v14 = [MEMORY[0x277CCA890] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"PPEventTuples.m" lineNumber:146 description:{@"Invalid parameter not satisfying: %@", @"featureValues != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PPEventTuples.m" lineNumber:146 description:{@"Invalid parameter not satisfying: %@", @"featureValues != nil"}];
   }
 
   v15.receiver = self;
@@ -160,19 +160,19 @@ LABEL_7:
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_featureValues, a3);
-    v12->_weightedScore = a4;
-    v12->_prominentFeature = a5;
+    objc_storeStrong(&v11->_featureValues, values);
+    v12->_weightedScore = score;
+    v12->_prominentFeature = feature;
     v12->_ocnt_precomputedHash = [(PPEventFeatureScore *)v12 _hash];
   }
 
   return v12;
 }
 
-+ (id)eventFeatureScoreWithFeatureValues:(id)a3 weightedScore:(double)a4 prominentFeature:(unint64_t)a5
++ (id)eventFeatureScoreWithFeatureValues:(id)values weightedScore:(double)score prominentFeature:(unint64_t)feature
 {
-  v8 = a3;
-  v9 = [[a1 alloc] initWithFeatureValues:v8 weightedScore:a5 prominentFeature:a4];
+  valuesCopy = values;
+  v9 = [[self alloc] initWithFeatureValues:valuesCopy weightedScore:feature prominentFeature:score];
 
   return v9;
 }

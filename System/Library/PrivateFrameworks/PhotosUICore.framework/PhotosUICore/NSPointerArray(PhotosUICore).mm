@@ -17,8 +17,8 @@
 
   else
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:a1 file:@"NSPointerArray+PhotosUICore.m" lineNumber:15 description:{@"Invalid parameter not satisfying: %@", @"block"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"NSPointerArray+PhotosUICore.m" lineNumber:15 description:{@"Invalid parameter not satisfying: %@", @"block"}];
 
     if ((a3 & 1) == 0)
     {
@@ -26,8 +26,8 @@
     }
   }
 
-  v17 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v17 handleFailureInMethod:a2 object:a1 file:@"NSPointerArray+PhotosUICore.m" lineNumber:16 description:{@"Invalid parameter not satisfying: %@", @"((options & NSEnumerationConcurrent) == 0)"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"NSPointerArray+PhotosUICore.m" lineNumber:16 description:{@"Invalid parameter not satisfying: %@", @"((options & NSEnumerationConcurrent) == 0)"}];
 
 LABEL_3:
   v21 = 0;
@@ -38,12 +38,12 @@ LABEL_3:
   aBlock[1] = 3221225472;
   aBlock[2] = __75__NSPointerArray_PhotosUICore__px_enumeratePointersWithOptions_usingBlock___block_invoke;
   aBlock[3] = &unk_1E773F260;
-  aBlock[4] = a1;
+  aBlock[4] = self;
   v8 = v7;
   v19 = v8;
   v20 = &v21;
   v9 = _Block_copy(aBlock);
-  v10 = [a1 count];
+  v10 = [self count];
   v11 = v10;
   if ((a3 & 2) != 0)
   {

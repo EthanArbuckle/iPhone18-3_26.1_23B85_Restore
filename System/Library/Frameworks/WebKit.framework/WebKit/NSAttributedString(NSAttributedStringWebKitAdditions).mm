@@ -14,7 +14,7 @@
   v5[2] = __107__NSAttributedString_NSAttributedStringWebKitAdditions__loadFromHTMLWithRequest_options_completionHandler___block_invoke;
   v5[3] = &unk_1E76311E0;
   v5[4] = a3;
-  return [a1 _loadFromHTMLWithOptions:a4 contentLoader:v5 completionHandler:?];
+  return [self _loadFromHTMLWithOptions:a4 contentLoader:v5 completionHandler:?];
 }
 
 + (uint64_t)loadFromHTMLWithFileURL:()NSAttributedStringWebKitAdditions options:completionHandler:
@@ -25,7 +25,7 @@
   v5[3] = &unk_1E7631208;
   v5[4] = a4;
   v5[5] = a3;
-  return [a1 _loadFromHTMLWithOptions:a4 contentLoader:v5 completionHandler:?];
+  return [self _loadFromHTMLWithOptions:a4 contentLoader:v5 completionHandler:?];
 }
 
 + (uint64_t)loadFromHTMLWithString:()NSAttributedStringWebKitAdditions options:completionHandler:
@@ -36,7 +36,7 @@
   v5[3] = &unk_1E7631208;
   v5[4] = a4;
   v5[5] = a3;
-  return [a1 _loadFromHTMLWithOptions:a4 contentLoader:v5 completionHandler:?];
+  return [self _loadFromHTMLWithOptions:a4 contentLoader:v5 completionHandler:?];
 }
 
 + (uint64_t)loadFromHTMLWithData:()NSAttributedStringWebKitAdditions options:completionHandler:
@@ -47,7 +47,7 @@
   v5[3] = &unk_1E7631208;
   v5[4] = a4;
   v5[5] = a3;
-  return [a1 _loadFromHTMLWithOptions:a4 contentLoader:v5 completionHandler:?];
+  return [self _loadFromHTMLWithOptions:a4 contentLoader:v5 completionHandler:?];
 }
 
 @end

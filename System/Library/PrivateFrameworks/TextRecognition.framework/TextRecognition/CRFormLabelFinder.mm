@@ -1,17 +1,17 @@
 @interface CRFormLabelFinder
-+ (double)_labelMatchingCostForRegion:(id)a3 field:(id)a4 position:(unint64_t *)a5;
-+ (id)labelRegionForField:(id)a3 inRegions:(id)a4;
-+ (id)parseAndAssignLabelForField:(id)a3 regions:(id)a4 associatedLabels:(id)a5 labelRegions:(void *)a6;
-+ (vector<std::tuple<double,)labelRegionsForField:(CROutputRegion *)> inRegions:()std:()CRFormFieldLabelPosition :(CROutputRegion *>>> *__return_ptr)retstr allocator<std:(id)a2 :(SEL)a3 tuple<double;
++ (double)_labelMatchingCostForRegion:(id)region field:(id)field position:(unint64_t *)position;
++ (id)labelRegionForField:(id)field inRegions:(id)regions;
++ (id)parseAndAssignLabelForField:(id)field regions:(id)regions associatedLabels:(id)labels labelRegions:(void *)labelRegions;
++ (vector<std::tuple<double,)labelRegionsForField:(CROutputRegion *)> inRegions:()std:()CRFormFieldLabelPosition :(CROutputRegion *>>> *__return_ptr)retstr allocator<std:(id)std :(SEL)a3 tuple<double;
 @end
 
 @implementation CRFormLabelFinder
 
-+ (double)_labelMatchingCostForRegion:(id)a3 field:(id)a4 position:(unint64_t *)a5
++ (double)_labelMatchingCostForRegion:(id)region field:(id)field position:(unint64_t *)position
 {
-  v7 = a3;
-  v8 = a4;
-  if (v7 != v8)
+  regionCopy = region;
+  fieldCopy = field;
+  if (regionCopy != fieldCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -19,16 +19,16 @@
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v14 = 0;
+        _crStringEndsWithColon = 0;
         goto LABEL_12;
       }
 
-      v9 = v7;
-      v10 = [v9 text];
-      v11 = v10;
+      boundingQuad = regionCopy;
+      text = [boundingQuad text];
+      boundingQuad2 = text;
       if (qword_1ED95FFE0 == -1)
       {
-        if (!v10)
+        if (!text)
         {
           goto LABEL_54;
         }
@@ -37,33 +37,33 @@
       else
       {
         dispatch_once(&qword_1ED95FFE0, &__block_literal_global_11);
-        if (!v11)
+        if (!boundingQuad2)
         {
           goto LABEL_54;
         }
       }
 
-      if ([v11 length])
+      if ([boundingQuad2 length])
       {
-        v12 = [v11 characterAtIndex:0];
+        v12 = [boundingQuad2 characterAtIndex:0];
         if (([_MergedGlobals_18 characterIsMember:v12] & 1) != 0 || (vmaxv_u16(vmovn_s32(vcgtq_u32(xmmword_1B42AF490, vaddq_s32(vdupq_n_s32(v12), xmmword_1B42AF480)))) & 1) != 0 || (v12 - 44032) >> 2 < 0xAE9 || ublock_getCode(v12) == UBLOCK_CURRENCY_SYMBOLS)
         {
           goto LABEL_8;
         }
 
-        if ([v11 length] == 1)
+        if ([boundingQuad2 length] == 1)
         {
           goto LABEL_54;
         }
 
-        if ([v11 length] > 3)
+        if ([boundingQuad2 length] > 3)
         {
 LABEL_8:
         }
 
         else
         {
-          v52 = [v11 _crStringByReplacingCharactersInSet:qword_1ED95FFD8 withString:&stru_1F2BB4348];
+          v52 = [boundingQuad2 _crStringByReplacingCharactersInSet:qword_1ED95FFD8 withString:&stru_1F2BB4348];
           v53 = [v52 length];
 
           if (!v53)
@@ -73,28 +73,28 @@ LABEL_8:
           }
         }
 
-        v13 = [v9 text];
-        v14 = [v13 _crStringEndsWithColon];
+        text2 = [boundingQuad text];
+        _crStringEndsWithColon = [text2 _crStringEndsWithColon];
 
 LABEL_12:
-        v9 = [v7 boundingQuad];
-        v11 = [v8 boundingQuad];
-        [v9 midPoint];
+        boundingQuad = [regionCopy boundingQuad];
+        boundingQuad2 = [fieldCopy boundingQuad];
+        [boundingQuad midPoint];
         v55 = v16;
         v18 = v17;
-        [v11 midPoint];
+        [boundingQuad2 midPoint];
         v54 = v19;
         v21 = v20;
-        [v11 size];
+        [boundingQuad2 size];
         v23 = v22;
-        [v11 topLeft];
+        [boundingQuad2 topLeft];
         v25 = v24;
-        [v9 topRight];
+        [boundingQuad topRight];
         if (v18 < v21)
         {
           v27 = v25 - v26;
           v28 = 9.6386522;
-          if (!v14)
+          if (!_crStringEndsWithColon)
           {
             v28 = 8.0;
           }
@@ -102,14 +102,14 @@ LABEL_12:
           if (v27 < v28 * v23 && v27 > v23 * -3.1956241 && vabdd_f64(v55, v54) < v23 * 0.637716056)
           {
             v29 = 1.03271618;
-            if (v14)
+            if (_crStringEndsWithColon)
             {
               v29 = 1.18845813;
             }
 
-            if (a5)
+            if (position)
             {
-              *a5 = 3;
+              *position = 3;
             }
 
             v30 = fmax(v27, 0.0);
@@ -122,21 +122,21 @@ LABEL_57:
           }
         }
 
-        [v9 topRight];
+        [boundingQuad topRight];
         v32 = v31;
-        [v11 topRight];
+        [boundingQuad2 topRight];
         v34 = v33;
-        [v9 topLeft];
+        [boundingQuad topLeft];
         v36 = v35;
-        [v11 topLeft];
+        [boundingQuad2 topLeft];
         v38 = v37;
-        [v11 size];
+        [boundingQuad2 size];
         v40 = v39;
-        [v11 size];
+        [boundingQuad2 size];
         v41 = fmax(fmin(v32, v34) - fmax(v36, v38), 0.0);
         if (v41 <= fmin(v40 * 0.2, v42 * 2.5))
         {
-          [v9 size];
+          [boundingQuad size];
           if (v41 <= v43 * 0.8)
           {
             goto LABEL_40;
@@ -147,7 +147,7 @@ LABEL_57:
         if (v54 - v55 > v23 * 0.403263008)
         {
           v44 = 2.2217905;
-          if (v14)
+          if (_crStringEndsWithColon)
           {
             v44 = 3.22780074;
           }
@@ -155,14 +155,14 @@ LABEL_57:
           if (v30 < v44 * v23)
           {
             v29 = 3.66674774;
-            if (v14)
+            if (_crStringEndsWithColon)
             {
               v29 = 2.6;
             }
 
-            if (a5)
+            if (position)
             {
-              *a5 = 1;
+              *position = 1;
             }
 
             goto LABEL_33;
@@ -172,22 +172,22 @@ LABEL_57:
         if (v23 * -0.134254297 >= -v30 || v23 * 3.69995893 <= -v30)
         {
 LABEL_40:
-          [v9 topLeft];
+          [boundingQuad topLeft];
           v47 = v46;
-          [v11 topRight];
-          if (v18 <= v21 || (v49 = v48, [v8 fieldType] != 2) || (v50 = v47 - v49, v47 - v49 >= v23 * 4.94467888) || v50 <= v23 * -1.42588897 || vabdd_f64(v55, v54) >= v23 * 0.933868987)
+          [boundingQuad2 topRight];
+          if (v18 <= v21 || (v49 = v48, [fieldCopy fieldType] != 2) || (v50 = v47 - v49, v47 - v49 >= v23 * 4.94467888) || v50 <= v23 * -1.42588897 || vabdd_f64(v55, v54) >= v23 * 0.933868987)
           {
-            if (a5)
+            if (position)
             {
-              *a5 = 0;
+              *position = 0;
             }
 
             goto LABEL_55;
           }
 
-          if (a5)
+          if (position)
           {
-            *a5 = 4;
+            *position = 4;
           }
 
           v30 = fmax(v50, 0.0);
@@ -196,9 +196,9 @@ LABEL_40:
 
         else
         {
-          if (a5)
+          if (position)
           {
-            *a5 = 2;
+            *position = 2;
           }
 
           v45 = -4.86195604;
@@ -222,9 +222,9 @@ LABEL_58:
   return v15;
 }
 
-+ (id)labelRegionForField:(id)a3 inRegions:(id)a4
++ (id)labelRegionForField:(id)field inRegions:(id)regions
 {
-  [a1 labelRegionsForField:a3 inRegions:a4];
+  [self labelRegionsForField:field inRegions:regions];
   if (v6[0] == v6[1])
   {
     v4 = 0;
@@ -241,7 +241,7 @@ LABEL_58:
   return v4;
 }
 
-+ (vector<std::tuple<double,)labelRegionsForField:(CROutputRegion *)> inRegions:()std:()CRFormFieldLabelPosition :(CROutputRegion *>>> *__return_ptr)retstr allocator<std:(id)a2 :(SEL)a3 tuple<double
++ (vector<std::tuple<double,)labelRegionsForField:(CROutputRegion *)> inRegions:()std:()CRFormFieldLabelPosition :(CROutputRegion *>>> *__return_ptr)retstr allocator<std:(id)std :(SEL)a3 tuple<double
 {
   v43 = *MEMORY[0x1E69E9840];
   v36 = a4;
@@ -277,7 +277,7 @@ LABEL_58:
 
       v12 = *(*(&v37 + 1) + 8 * i);
       v41 = 0;
-      [a2 _labelMatchingCostForRegion:v12 field:v36 position:&v41];
+      [std _labelMatchingCostForRegion:v12 field:v36 position:&v41];
       v14 = v13;
       if (v13 != 1.79769313e308)
       {
@@ -416,18 +416,18 @@ LABEL_37:
   return result;
 }
 
-+ (id)parseAndAssignLabelForField:(id)a3 regions:(id)a4 associatedLabels:(id)a5 labelRegions:(void *)a6
++ (id)parseAndAssignLabelForField:(id)field regions:(id)regions associatedLabels:(id)labels labelRegions:(void *)labelRegions
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [CRFormLabelFinder labelRegionForField:v9 inRegions:v10];
-  if (v12 && [v9 fieldSource] == 1)
+  fieldCopy = field;
+  regionsCopy = regions;
+  labelsCopy = labels;
+  v12 = [CRFormLabelFinder labelRegionForField:fieldCopy inRegions:regionsCopy];
+  if (v12 && [fieldCopy fieldSource] == 1)
   {
-    v13 = [v11 objectForKeyedSubscript:v12];
+    v13 = [labelsCopy objectForKeyedSubscript:v12];
     if (v13)
     {
-      if (![CRFormUtilities isRegion:v12 verticallyAlignedWithRegionBelow:v9 maxRelativeDistance:10.0]|| ![CRFormUtilities isRegion:v13 verticallyAlignedWithRegionBelow:v9 maxRelativeDistance:10.0])
+      if (![CRFormUtilities isRegion:v12 verticallyAlignedWithRegionBelow:fieldCopy maxRelativeDistance:10.0]|| ![CRFormUtilities isRegion:v13 verticallyAlignedWithRegionBelow:fieldCopy maxRelativeDistance:10.0])
       {
 
         v12 = 0;
@@ -436,16 +436,16 @@ LABEL_37:
 
     else
     {
-      [v11 setObject:v9 forKeyedSubscript:v12];
+      [labelsCopy setObject:fieldCopy forKeyedSubscript:v12];
     }
   }
 
-  [CRFormLabelFinder labelRegionsForField:v9 inRegions:v10];
-  v14 = *a6;
-  if (*a6)
+  [CRFormLabelFinder labelRegionsForField:fieldCopy inRegions:regionsCopy];
+  v14 = *labelRegions;
+  if (*labelRegions)
   {
-    v15 = *(a6 + 1);
-    v16 = *a6;
+    v15 = *(labelRegions + 1);
+    v16 = *labelRegions;
     if (v15 != v14)
     {
       do
@@ -456,23 +456,23 @@ LABEL_37:
       }
 
       while (v17 != v14);
-      v16 = *a6;
+      v16 = *labelRegions;
     }
 
-    *(a6 + 1) = v14;
+    *(labelRegions + 1) = v14;
     operator delete(v16);
-    *a6 = 0;
-    *(a6 + 1) = 0;
-    *(a6 + 2) = 0;
+    *labelRegions = 0;
+    *(labelRegions + 1) = 0;
+    *(labelRegions + 2) = 0;
   }
 
-  *a6 = v21;
-  *(a6 + 2) = v22;
+  *labelRegions = v21;
+  *(labelRegions + 2) = v22;
   v22 = 0;
   v21 = 0uLL;
   v23 = &v21;
   std::vector<std::tuple<double,CRFormFieldLabelPosition,CROutputRegion * {__strong}>>::__destroy_vector::operator()[abi:ne200100](&v23);
-  v18 = CRCastAsClass<CRFormFieldOutputRegion>(v9);
+  v18 = CRCastAsClass<CRFormFieldOutputRegion>(fieldCopy);
   v19 = v18;
   if (v18)
   {

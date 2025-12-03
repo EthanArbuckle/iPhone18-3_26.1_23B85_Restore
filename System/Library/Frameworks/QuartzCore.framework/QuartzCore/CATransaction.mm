@@ -1,8 +1,8 @@
 @interface CATransaction
-+ (BOOL)BOOLValueForKey:(unsigned int)a3;
-+ (BOOL)addCommitHandler:(id)a3 forPhase:(int)a4;
++ (BOOL)BOOLValueForKey:(unsigned int)key;
++ (BOOL)addCommitHandler:(id)handler forPhase:(int)phase;
 + (BOOL)animatesFromModelValues;
-+ (BOOL)batchWithDefaultServerObserver:(id)a3;
++ (BOOL)batchWithDefaultServerObserver:(id)observer;
 + (BOOL)defaultDisableRunLoopObserverCommits;
 + (BOOL)disableActions;
 + (BOOL)disableImplicitTransactionMainThreadAssert;
@@ -18,7 +18,7 @@
 + (double)earliestAutomaticCommitTime;
 + (double)inputTime;
 + (double)updateDeadline;
-+ (id)_implicitAnimationForLayer:(id)a3 keyPath:(id)a4;
++ (id)_implicitAnimationForLayer:(id)layer keyPath:(id)path;
 + (id)animator;
 + (id)committingContexts;
 + (id)valueForKey:(NSString *)key;
@@ -27,41 +27,41 @@
 + (unsigned)currentState;
 + (unsigned)generateSeed;
 + (unsigned)registerBoolKey;
-+ (unsigned)startFrameWithReason:(int)a3 beginTime:(double)a4 commitDeadline:(double)a5;
++ (unsigned)startFrameWithReason:(int)reason beginTime:(double)time commitDeadline:(double)deadline;
 + (void)activate;
-+ (void)activateBackground:(BOOL)a3;
++ (void)activateBackground:(BOOL)background;
 + (void)assertInactive;
 + (void)commit;
 + (void)completionBlock;
-+ (void)finishFrameWithToken:(unsigned int)a3;
++ (void)finishFrameWithToken:(unsigned int)token;
 + (void)flush;
 + (void)flushAsRunLoopObserver;
 + (void)lock;
 + (void)popAnimator;
-+ (void)pushAnimator:(id)a3;
-+ (void)setAnimatesFromModelValues:(BOOL)a3;
++ (void)pushAnimator:(id)animator;
++ (void)setAnimatesFromModelValues:(BOOL)values;
 + (void)setAnimationDuration:(CFTimeInterval)dur;
 + (void)setAnimationTimingFunction:(CAMediaTimingFunction *)function;
-+ (void)setBeginTime:(double)a3;
-+ (void)setBoolValue:(BOOL)a3 forKey:(unsigned int)a4;
-+ (void)setCommitTime:(double)a3;
-+ (void)setCommittingContexts:(id)a3;
++ (void)setBeginTime:(double)time;
++ (void)setBoolValue:(BOOL)value forKey:(unsigned int)key;
++ (void)setCommitTime:(double)time;
++ (void)setCommittingContexts:(id)contexts;
 + (void)setCompletionBlock:(void *)block;
-+ (void)setDefaultDisableRunLoopObserverCommits:(BOOL)a3;
++ (void)setDefaultDisableRunLoopObserverCommits:(BOOL)commits;
 + (void)setDisableActions:(BOOL)flag;
-+ (void)setDisableImplicitTransactionMainThreadAssert:(BOOL)a3;
-+ (void)setDisableRunLoopObserverCommits:(BOOL)a3;
-+ (void)setDisableSignPosts:(BOOL)a3;
-+ (void)setEarliestAutomaticCommitTime:(double)a3;
-+ (void)setEmptyLowLatency:(BOOL)a3;
-+ (void)setFrameInputTime:(double)a3 withToken:(unsigned int)a4;
-+ (void)setFrameStallSkipRequest:(BOOL)a3;
-+ (void)setImplicitTransactionDidBeginHandler:(id)a3;
-+ (void)setInputTime:(double)a3;
-+ (void)setLowLatency:(BOOL)a3;
-+ (void)setPresentationHandler:(id)a3 queue:(id)a4;
-+ (void)setRemoteInputMachTime:(unint64_t)a3;
-+ (void)setUpdateDeadline:(double)a3;
++ (void)setDisableImplicitTransactionMainThreadAssert:(BOOL)assert;
++ (void)setDisableRunLoopObserverCommits:(BOOL)commits;
++ (void)setDisableSignPosts:(BOOL)posts;
++ (void)setEarliestAutomaticCommitTime:(double)time;
++ (void)setEmptyLowLatency:(BOOL)latency;
++ (void)setFrameInputTime:(double)time withToken:(unsigned int)token;
++ (void)setFrameStallSkipRequest:(BOOL)request;
++ (void)setImplicitTransactionDidBeginHandler:(id)handler;
++ (void)setInputTime:(double)time;
++ (void)setLowLatency:(BOOL)latency;
++ (void)setPresentationHandler:(id)handler queue:(id)queue;
++ (void)setRemoteInputMachTime:(unint64_t)time;
++ (void)setUpdateDeadline:(double)deadline;
 + (void)setValue:(id)anObject forKey:(NSString *)key;
 + (void)synchronize;
 + (void)unlock;
@@ -169,7 +169,7 @@
 
 + (void)lock
 {
-  v2 = CA::Transaction::ensure_compat(a1);
+  v2 = CA::Transaction::ensure_compat(self);
   v3 = *(v2 + 29);
   *(v2 + 29) = v3 + 1;
   if (!v3)
@@ -181,7 +181,7 @@
 
 + (void)unlock
 {
-  v2 = CA::Transaction::ensure_compat(a1);
+  v2 = CA::Transaction::ensure_compat(self);
 
   CA::Transaction::unlock(v2);
 }
@@ -213,7 +213,7 @@
   v3 = *(_ReadStatusReg(ARM64_SYSREG(3, 3, 13, 0, 3)) + 576);
   if (!v3)
   {
-    v3 = CA::Transaction::create(a1);
+    v3 = CA::Transaction::create(self);
   }
 
   v4 = *(v3 + 15);
@@ -396,9 +396,9 @@ LABEL_32:
               v47 = x_log_get_api::log;
               if (os_log_type_enabled(x_log_get_api::log, OS_LOG_TYPE_ERROR))
               {
-                v53 = [v32 UTF8String];
+                uTF8String = [v32 UTF8String];
                 *buf = 136315138;
-                *v72 = v53;
+                *v72 = uTF8String;
                 _os_log_error_impl(&dword_183AA6000, v47, OS_LOG_TYPE_ERROR, "excessive commit sync wait : %s", buf, 0xCu);
               }
 
@@ -415,11 +415,11 @@ LABEL_32:
               v36 = x_log_get_api::log;
               if (os_log_type_enabled(x_log_get_api::log, OS_LOG_TYPE_ERROR))
               {
-                v37 = [v32 UTF8String];
+                uTF8String2 = [v32 UTF8String];
                 *buf = 67109378;
                 *v72 = v26 + 1;
                 *&v72[4] = 2080;
-                *&v72[6] = v37;
+                *&v72[6] = uTF8String2;
                 _os_log_error_impl(&dword_183AA6000, v36, OS_LOG_TYPE_ERROR, "long commit sync wait %i : %s", buf, 0x12u);
               }
             }
@@ -556,11 +556,11 @@ LABEL_84:
         }
 
         v54 = v65;
-        v55 = [v48 UTF8String];
+        uTF8String3 = [v48 UTF8String];
         *buf = 67109378;
         *v72 = v54;
         *&v72[4] = 2080;
-        *&v72[6] = v55;
+        *&v72[6] = uTF8String3;
         v30 = v52;
         v31 = "bad index in commit sync reply : %u not in %s";
         v46 = 18;
@@ -648,7 +648,7 @@ LABEL_92:
   v2 = *(_ReadStatusReg(ARM64_SYSREG(3, 3, 13, 0, 3)) + 576);
   if (!v2)
   {
-    v2 = CA::Transaction::create(a1);
+    v2 = CA::Transaction::create(self);
   }
 
   v3 = *(v2 + 1);
@@ -692,7 +692,7 @@ LABEL_92:
 
   v12 = v8[10];
 
-  CA_setValueForKey(a1, v11, v12, anObject);
+  CA_setValueForKey(self, v11, v12, anObject);
 }
 
 + (id)valueForKey:(NSString *)key
@@ -740,13 +740,13 @@ LABEL_92:
 
   v11 = v6[10];
 
-  return CA_valueForKey(a1, v10, v11);
+  return CA_valueForKey(self, v10, v11);
 }
 
 + (void)setCompletionBlock:(void *)block
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v4 = CA::Transaction::ensure_compat(a1);
+  v4 = CA::Transaction::ensure_compat(self);
   v12 = 0;
   if (CA::Transaction::get_value(v4[13], 123, 5, &v12))
   {
@@ -831,7 +831,7 @@ LABEL_92:
 + (void)setDisableActions:(BOOL)flag
 {
   v3 = flag;
-  v4 = CA::Transaction::ensure_compat(a1);
+  v4 = CA::Transaction::ensure_compat(self);
 
   CA::Transaction::set_BOOL_value(v4, v3, 0);
 }
@@ -840,7 +840,7 @@ LABEL_92:
 {
   v4[1] = *MEMORY[0x1E69E9840];
   v4[0] = function;
-  v3 = CA::Transaction::ensure_compat(a1);
+  v3 = CA::Transaction::ensure_compat(self);
   CA::Transaction::set_value(v3, 0x28, 2, v4);
 }
 
@@ -869,7 +869,7 @@ LABEL_92:
 {
   v4[1] = *MEMORY[0x1E69E9840];
   *v4 = dur;
-  v3 = CA::Transaction::ensure_compat(a1);
+  v3 = CA::Transaction::ensure_compat(self);
   CA::Transaction::set_value(v3, 0x27, 18, v4);
 }
 
@@ -893,9 +893,9 @@ LABEL_92:
   return result;
 }
 
-+ (BOOL)batchWithDefaultServerObserver:(id)a3
++ (BOOL)batchWithDefaultServerObserver:(id)observer
 {
-  v4 = CA::Transaction::ensure_compat(a1);
+  v4 = CA::Transaction::ensure_compat(self);
   *(*(v4 + 15) + 204) |= 0x40u;
   v5 = *(v4 + 132);
   if ((v5 & 2) == 0)
@@ -916,7 +916,7 @@ LABEL_92:
     }
 
     v9 = *(v7 + 48);
-    v10 = _Block_copy(a3);
+    v10 = _Block_copy(observer);
     *(v7 + 48) = x_list_prepend(v9, v10);
     CA::Transaction::unlock(v6);
   }
@@ -924,12 +924,12 @@ LABEL_92:
   return (v5 & 2) == 0;
 }
 
-+ (void)setImplicitTransactionDidBeginHandler:(id)a3
++ (void)setImplicitTransactionDidBeginHandler:(id)handler
 {
   v4 = *(_ReadStatusReg(ARM64_SYSREG(3, 3, 13, 0, 3)) + 576);
   if (!v4)
   {
-    v4 = CA::Transaction::create(a1);
+    v4 = CA::Transaction::create(self);
   }
 
   v5 = *(*(v4 + 15) + 112);
@@ -939,17 +939,17 @@ LABEL_92:
     *(*(v4 + 15) + 112) = 0;
   }
 
-  if (a3)
+  if (handler)
   {
-    *(*(v4 + 15) + 112) = _Block_copy(a3);
+    *(*(v4 + 15) + 112) = _Block_copy(handler);
   }
 }
 
-+ (void)setCommittingContexts:(id)a3
++ (void)setCommittingContexts:(id)contexts
 {
-  v4 = (*(CA::Transaction::ensure_compat(a1) + 15) + 120);
+  v4 = (*(CA::Transaction::ensure_compat(self) + 15) + 120);
 
-  X::CFRef<CGColorSpace *>::operator=(v4, a3);
+  X::CFRef<CGColorSpace *>::operator=(v4, contexts);
 }
 
 + (id)committingContexts
@@ -966,25 +966,25 @@ LABEL_92:
   }
 }
 
-+ (void)setBoolValue:(BOOL)a3 forKey:(unsigned int)a4
++ (void)setBoolValue:(BOOL)value forKey:(unsigned int)key
 {
-  v5 = a3;
-  v6 = CA::Transaction::ensure_compat(a1);
+  valueCopy = value;
+  v6 = CA::Transaction::ensure_compat(self);
 
-  CA::Transaction::set_BOOL_value(v6, v5, a4);
+  CA::Transaction::set_BOOL_value(v6, valueCopy, key);
 }
 
-+ (BOOL)BOOLValueForKey:(unsigned int)a3
++ (BOOL)BOOLValueForKey:(unsigned int)key
 {
   v3 = *(_ReadStatusReg(ARM64_SYSREG(3, 3, 13, 0, 3)) + 576);
   if (v3)
   {
-    if (a3 >= 0x20)
+    if (key >= 0x20)
     {
       __assert_rtn("BOOL_value", "CATransactionInternal.mm", 1346, "key < (CHAR_BIT * sizeof (Level::_BOOL_values))");
     }
 
-    v4 = 1 << a3;
+    v4 = 1 << key;
     v5 = (v3 + 104);
     while (1)
     {
@@ -1116,7 +1116,7 @@ LABEL_9:
   v2 = *(_ReadStatusReg(ARM64_SYSREG(3, 3, 13, 0, 3)) + 576);
   if (!v2)
   {
-    v2 = CA::Transaction::create(a1);
+    v2 = CA::Transaction::create(self);
   }
 
   v3 = v2[15];
@@ -1136,17 +1136,17 @@ LABEL_9:
   return v6;
 }
 
-+ (void)setEmptyLowLatency:(BOOL)a3
++ (void)setEmptyLowLatency:(BOOL)latency
 {
   v5 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  latencyCopy = latency;
   v3 = *(_ReadStatusReg(ARM64_SYSREG(3, 3, 13, 0, 3)) + 576);
   if (!v3)
   {
     v3 = CA::Transaction::create(0);
   }
 
-  CA::Transaction::set_value(v3, 0xE9, 7, &v4);
+  CA::Transaction::set_value(v3, 0xE9, 7, &latencyCopy);
 }
 
 + (BOOL)emptyLowLatency
@@ -1166,17 +1166,17 @@ LABEL_9:
   return v3 & 1;
 }
 
-+ (void)setLowLatency:(BOOL)a3
++ (void)setLowLatency:(BOOL)latency
 {
   v5 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  latencyCopy = latency;
   v3 = *(_ReadStatusReg(ARM64_SYSREG(3, 3, 13, 0, 3)) + 576);
   if (!v3)
   {
     v3 = CA::Transaction::create(0);
   }
 
-  CA::Transaction::set_value(v3, 0x1EB, 7, &v4);
+  CA::Transaction::set_value(v3, 0x1EB, 7, &latencyCopy);
 }
 
 + (BOOL)lowLatency
@@ -1196,9 +1196,9 @@ LABEL_9:
   return v3 & 1;
 }
 
-+ (void)setFrameInputTime:(double)a3 withToken:(unsigned int)a4
++ (void)setFrameInputTime:(double)time withToken:(unsigned int)token
 {
-  if (a4)
+  if (token)
   {
     v5 = *(_ReadStatusReg(ARM64_SYSREG(3, 3, 13, 0, 3)) + 576);
     if (!v5)
@@ -1208,13 +1208,13 @@ LABEL_9:
 
     v6 = *(v5 + 15);
 
-    CA::Transaction::set_frame_input_time(v6, a3);
+    CA::Transaction::set_frame_input_time(v6, time);
   }
 }
 
-+ (void)finishFrameWithToken:(unsigned int)a3
++ (void)finishFrameWithToken:(unsigned int)token
 {
-  if (a3)
+  if (token)
   {
     v3 = *(_ReadStatusReg(ARM64_SYSREG(3, 3, 13, 0, 3)) + 576);
     if (!v3)
@@ -1226,9 +1226,9 @@ LABEL_9:
   }
 }
 
-+ (unsigned)startFrameWithReason:(int)a3 beginTime:(double)a4 commitDeadline:(double)a5
++ (unsigned)startFrameWithReason:(int)reason beginTime:(double)time commitDeadline:(double)deadline
 {
-  if (a4 == 0.0 || a5 == 0.0)
+  if (time == 0.0 || deadline == 0.0)
   {
     return 0;
   }
@@ -1236,17 +1236,17 @@ LABEL_9:
   v8 = *(_ReadStatusReg(ARM64_SYSREG(3, 3, 13, 0, 3)) + 576);
   if (!v8)
   {
-    v8 = CA::Transaction::create(a1);
+    v8 = CA::Transaction::create(self);
   }
 
   v9 = mach_absolute_time();
   v10 = CATimeWithHostTime(v9);
   v11 = *(v8 + 15);
 
-  return CA::Transaction::start_frame(v11, a3, a4, v10, a5);
+  return CA::Transaction::start_frame(v11, reason, time, v10, deadline);
 }
 
-+ (void)setBeginTime:(double)a3
++ (void)setBeginTime:(double)time
 {
   v4 = *(_ReadStatusReg(ARM64_SYSREG(3, 3, 13, 0, 3)) + 576);
   if (!v4)
@@ -1256,7 +1256,7 @@ LABEL_9:
 
   v5 = *(v4 + 15);
 
-  CA::Transaction::set_frame_begin_time(v5, a3);
+  CA::Transaction::set_frame_begin_time(v5, time);
 }
 
 + (double)beginTime
@@ -1276,22 +1276,22 @@ LABEL_9:
   return result;
 }
 
-+ (void)setRemoteInputMachTime:(unint64_t)a3
++ (void)setRemoteInputMachTime:(unint64_t)time
 {
   v7[1] = *MEMORY[0x1E69E9840];
-  v7[0] = a3;
-  if (a3)
+  v7[0] = time;
+  if (time)
   {
     v4 = *(_ReadStatusReg(ARM64_SYSREG(3, 3, 13, 0, 3)) + 576);
     if (!v4)
     {
-      v4 = CA::Transaction::create(a1);
+      v4 = CA::Transaction::create(self);
     }
 
     v6 = -1;
     if (CA::Transaction::get_value(v4[13], 600, 0x10, &v6))
     {
-      v5 = v6 > a3;
+      v5 = v6 > time;
     }
 
     else
@@ -1321,21 +1321,21 @@ LABEL_9:
   }
 }
 
-+ (void)setFrameStallSkipRequest:(BOOL)a3
++ (void)setFrameStallSkipRequest:(BOOL)request
 {
-  v3 = a3;
+  requestCopy = request;
   v8 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  requestCopy2 = request;
   v4 = *(_ReadStatusReg(ARM64_SYSREG(3, 3, 13, 0, 3)) + 576);
   if (!v4)
   {
-    v4 = CA::Transaction::create(a1);
+    v4 = CA::Transaction::create(self);
   }
 
   v6 = 0;
   if (CA::Transaction::get_value(v4[13], 268, 7, &v6))
   {
-    v5 = v6 == v3;
+    v5 = v6 == requestCopy;
   }
 
   else
@@ -1345,7 +1345,7 @@ LABEL_9:
 
   if (!v5)
   {
-    CA::Transaction::set_value(v4, 0x10C, 7, &v7);
+    CA::Transaction::set_value(v4, 0x10C, 7, &requestCopy2);
   }
 
   kdebug_trace();
@@ -1368,9 +1368,9 @@ LABEL_9:
   return v3 & 1;
 }
 
-+ (void)setInputTime:(double)a3
++ (void)setInputTime:(double)time
 {
-  if (a3 != 0.0)
+  if (time != 0.0)
   {
     v5 = *(_ReadStatusReg(ARM64_SYSREG(3, 3, 13, 0, 3)) + 576);
     if (!v5)
@@ -1380,7 +1380,7 @@ LABEL_9:
 
     v6 = *(v5 + 15);
 
-    CA::Transaction::set_frame_input_time(v6, a3);
+    CA::Transaction::set_frame_input_time(v6, time);
   }
 }
 
@@ -1398,16 +1398,16 @@ LABEL_9:
   }
 }
 
-+ (void)setDefaultDisableRunLoopObserverCommits:(BOOL)a3
++ (void)setDefaultDisableRunLoopObserverCommits:(BOOL)commits
 {
-  v3 = a3;
+  commitsCopy = commits;
   v4 = *(_ReadStatusReg(ARM64_SYSREG(3, 3, 13, 0, 3)) + 576);
   if (!v4)
   {
     v4 = CA::Transaction::create(0);
   }
 
-  if (v3)
+  if (commitsCopy)
   {
     v5 = 16;
   }
@@ -1431,16 +1431,16 @@ LABEL_9:
   return (*(*(v2 + 15) + 204) >> 4) & 1;
 }
 
-+ (void)setDisableRunLoopObserverCommits:(BOOL)a3
++ (void)setDisableRunLoopObserverCommits:(BOOL)commits
 {
-  v3 = a3;
+  commitsCopy = commits;
   v4 = *(_ReadStatusReg(ARM64_SYSREG(3, 3, 13, 0, 3)) + 576);
   if (!v4)
   {
     v4 = CA::Transaction::create(0);
   }
 
-  if (v3)
+  if (commitsCopy)
   {
     v5 = 8;
   }
@@ -1464,11 +1464,11 @@ LABEL_9:
   return (*(*(v2 + 15) + 204) >> 3) & 1;
 }
 
-+ (void)setEarliestAutomaticCommitTime:(double)a3
++ (void)setEarliestAutomaticCommitTime:(double)time
 {
   v4[1] = *MEMORY[0x1E69E9840];
-  *v4 = a3;
-  v3 = CA::Transaction::ensure_compat(a1);
+  *v4 = time;
+  v3 = CA::Transaction::ensure_compat(self);
   CA::Transaction::set_value(v3, 0xD4, 18, v4);
 }
 
@@ -1492,21 +1492,21 @@ LABEL_9:
   return result;
 }
 
-+ (void)setUpdateDeadline:(double)a3
++ (void)setUpdateDeadline:(double)deadline
 {
   v7[1] = *MEMORY[0x1E69E9840];
-  *v7 = a3;
-  v4 = CA::Transaction::ensure_compat(a1);
+  *v7 = deadline;
+  v4 = CA::Transaction::ensure_compat(self);
   v6 = 0.0;
   if (CA::Transaction::get_value(v4[13], 727, 0x12, &v6))
   {
-    v5 = v6;
-    if (v6 > a3)
+    deadlineCopy = v6;
+    if (v6 > deadline)
     {
-      v5 = a3;
+      deadlineCopy = deadline;
     }
 
-    *v7 = v5;
+    *v7 = deadlineCopy;
   }
 
   CA::Transaction::set_value(v4, 0x2D7, 18, v7);
@@ -1532,19 +1532,19 @@ LABEL_9:
   return result;
 }
 
-+ (void)setCommitTime:(double)a3
++ (void)setCommitTime:(double)time
 {
   v4[1] = *MEMORY[0x1E69E9840];
-  *v4 = a3;
-  v3 = CA::Transaction::ensure_compat(a1);
+  *v4 = time;
+  v3 = CA::Transaction::ensure_compat(self);
   CA::Transaction::set_value(v3, 0x7A, 18, v4);
 }
 
-+ (void)setDisableSignPosts:(BOOL)a3
++ (void)setDisableSignPosts:(BOOL)posts
 {
-  v3 = a3;
-  v4 = *(CA::Transaction::ensure_compat(a1) + 15);
-  if (v3)
+  postsCopy = posts;
+  v4 = *(CA::Transaction::ensure_compat(self) + 15);
+  if (postsCopy)
   {
     v5 = 32;
   }
@@ -1568,12 +1568,12 @@ LABEL_9:
   return (*(*(v2 + 15) + 204) >> 5) & 1;
 }
 
-+ (void)setAnimatesFromModelValues:(BOOL)a3
++ (void)setAnimatesFromModelValues:(BOOL)values
 {
   v5 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v3 = CA::Transaction::ensure_compat(a1);
-  CA::Transaction::set_value(v3, 0x25, 7, &v4);
+  valuesCopy = values;
+  v3 = CA::Transaction::ensure_compat(self);
+  CA::Transaction::set_value(v3, 0x25, 7, &valuesCopy);
 }
 
 + (BOOL)animatesFromModelValues
@@ -1590,13 +1590,13 @@ LABEL_9:
   return value & v5;
 }
 
-+ (void)setDisableImplicitTransactionMainThreadAssert:(BOOL)a3
++ (void)setDisableImplicitTransactionMainThreadAssert:(BOOL)assert
 {
-  v3 = a3;
+  assertCopy = assert;
   v4 = *(_ReadStatusReg(ARM64_SYSREG(3, 3, 13, 0, 3)) + 576);
   if (v4 || (v4 = CA::Transaction::create(0)) != 0)
   {
-    if (v3)
+    if (assertCopy)
     {
       v5 = 8;
     }
@@ -1621,18 +1621,18 @@ LABEL_9:
   return (*(v2 + 132) >> 3) & 1;
 }
 
-+ (void)activateBackground:(BOOL)a3
++ (void)activateBackground:(BOOL)background
 {
-  v3 = a3;
+  backgroundCopy = background;
   v4 = *(_ReadStatusReg(ARM64_SYSREG(3, 3, 13, 0, 3)) + 576);
   if (!v4)
   {
-    v4 = CA::Transaction::create(a1);
+    v4 = CA::Transaction::create(self);
   }
 
   if (**(v4 + 15))
   {
-    if (!v3)
+    if (!backgroundCopy)
     {
       return;
     }
@@ -1641,7 +1641,7 @@ LABEL_9:
   else
   {
     CA::Transaction::ensure_implicit(v4, 0);
-    if (!v3)
+    if (!backgroundCopy)
     {
       return;
     }
@@ -1655,17 +1655,17 @@ LABEL_9:
   *(v4 + 132) |= 4u;
 }
 
-+ (void)setPresentationHandler:(id)a3 queue:(id)a4
++ (void)setPresentationHandler:(id)handler queue:(id)queue
 {
   os_unfair_lock_lock(&CA::Transaction::presentation_handler_lock);
-  if (a4)
+  if (queue)
   {
-    dispatch_retain(a4);
+    dispatch_retain(queue);
   }
 
-  if (a3)
+  if (handler)
   {
-    a3 = _Block_copy(a3);
+    handler = _Block_copy(handler);
   }
 
   if (CA::Transaction::presentation_handler)
@@ -1678,22 +1678,22 @@ LABEL_9:
     dispatch_release(CA::Transaction::presentation_handler_queue);
   }
 
-  CA::Transaction::presentation_handler = a3;
-  CA::Transaction::presentation_handler_queue = a4;
+  CA::Transaction::presentation_handler = handler;
+  CA::Transaction::presentation_handler_queue = queue;
 
   os_unfair_lock_unlock(&CA::Transaction::presentation_handler_lock);
 }
 
-+ (BOOL)addCommitHandler:(id)a3 forPhase:(int)a4
++ (BOOL)addCommitHandler:(id)handler forPhase:(int)phase
 {
-  v4 = *&a4;
+  v4 = *&phase;
   v6 = *(_ReadStatusReg(ARM64_SYSREG(3, 3, 13, 0, 3)) + 576);
   if (!v6)
   {
     v6 = CA::Transaction::create(0);
   }
 
-  return CA::Transaction::add_commit_handler(v6, a3, v4);
+  return CA::Transaction::add_commit_handler(v6, handler, v4);
 }
 
 + (id)animator
@@ -1716,13 +1716,13 @@ LABEL_9:
   }
 }
 
-+ (void)pushAnimator:(id)a3
++ (void)pushAnimator:(id)animator
 {
   v4 = *(_ReadStatusReg(ARM64_SYSREG(3, 3, 13, 0, 3)) + 576);
   if (!v4)
   {
-    v4 = CA::Transaction::create(a1);
-    if (a3)
+    v4 = CA::Transaction::create(self);
+    if (animator)
     {
       goto LABEL_3;
     }
@@ -1732,18 +1732,18 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  if (!a3)
+  if (!animator)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
-  v5 = _Block_copy(a3);
+  v5 = _Block_copy(animator);
 LABEL_6:
   *(v4 + 1) = x_list_prepend(*(v4 + 1), v5);
 }
 
-+ (id)_implicitAnimationForLayer:(id)a3 keyPath:(id)a4
++ (id)_implicitAnimationForLayer:(id)layer keyPath:(id)path
 {
   v6 = *(_ReadStatusReg(ARM64_SYSREG(3, 3, 13, 0, 3)) + 576);
   if (!v6)
@@ -1766,7 +1766,7 @@ LABEL_6:
   else
   {
 
-    return [a3 implicitAnimationForKeyPath:a4];
+    return [layer implicitAnimationForKeyPath:path];
   }
 
   return result;

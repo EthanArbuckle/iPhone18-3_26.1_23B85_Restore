@@ -1,6 +1,6 @@
 @interface RBAnyEntitlementPredicate
-- (BOOL)matchesEntitlements:(id)a3;
-- (RBAnyEntitlementPredicate)initWithArray:(id)a3 forDomain:(id)a4 attribute:(id)a5 errors:(id)a6;
+- (BOOL)matchesEntitlements:(id)entitlements;
+- (RBAnyEntitlementPredicate)initWithArray:(id)array forDomain:(id)domain attribute:(id)attribute errors:(id)errors;
 - (id)allEntitlements;
 - (id)description;
 - (unint64_t)count;
@@ -8,27 +8,27 @@
 
 @implementation RBAnyEntitlementPredicate
 
-- (RBAnyEntitlementPredicate)initWithArray:(id)a3 forDomain:(id)a4 attribute:(id)a5 errors:(id)a6
+- (RBAnyEntitlementPredicate)initWithArray:(id)array forDomain:(id)domain attribute:(id)attribute errors:(id)errors
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  domainCopy = domain;
+  attributeCopy = attribute;
+  errorsCopy = errors;
   v13 = MEMORY[0x277CBEB18];
-  v14 = a3;
-  v15 = [v13 array];
+  arrayCopy = array;
+  array = [v13 array];
   v23 = MEMORY[0x277D85DD0];
   v24 = 3221225472;
   v25 = __70__RBAnyEntitlementPredicate_initWithArray_forDomain_attribute_errors___block_invoke;
   v26 = &unk_279B337E8;
-  v27 = v15;
-  v28 = v10;
-  v29 = v11;
-  v30 = v12;
-  v16 = v12;
-  v17 = v11;
-  v18 = v10;
-  v19 = v15;
-  [v14 enumerateObjectsUsingBlock:&v23];
+  v27 = array;
+  v28 = domainCopy;
+  v29 = attributeCopy;
+  v30 = errorsCopy;
+  v16 = errorsCopy;
+  v17 = attributeCopy;
+  v18 = domainCopy;
+  v19 = array;
+  [arrayCopy enumerateObjectsUsingBlock:&v23];
 
   v20 = [MEMORY[0x277CBEA60] arrayWithArray:{v19, v23, v24, v25, v26}];
   predicate = self->_predicate;
@@ -91,9 +91,9 @@ LABEL_6:
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)matchesEntitlements:(id)a3
+- (BOOL)matchesEntitlements:(id)entitlements
 {
-  v4 = a3;
+  entitlementsCopy = entitlements;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -103,7 +103,7 @@ LABEL_6:
   v8[1] = 3221225472;
   v8[2] = __49__RBAnyEntitlementPredicate_matchesEntitlements___block_invoke;
   v8[3] = &unk_279B33810;
-  v6 = v4;
+  v6 = entitlementsCopy;
   v9 = v6;
   v10 = &v11;
   [(NSArray *)predicate enumerateObjectsUsingBlock:v8];

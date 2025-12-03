@@ -1,5 +1,5 @@
 @interface CFXExportClipDataSource
-- (CFXExportClipDataSource)initWithClip:(id)a3;
+- (CFXExportClipDataSource)initWithClip:(id)clip;
 - (CGSize)frameSize;
 - (CGSize)renderSize;
 - (id)colorSpace;
@@ -10,16 +10,16 @@
 
 @implementation CFXExportClipDataSource
 
-- (CFXExportClipDataSource)initWithClip:(id)a3
+- (CFXExportClipDataSource)initWithClip:(id)clip
 {
-  v5 = a3;
+  clipCopy = clip;
   v9.receiver = self;
   v9.super_class = CFXExportClipDataSource;
   v6 = [(CFXExportClipDataSource *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_clip, a3);
+    objc_storeStrong(&v6->_clip, clip);
   }
 
   return v7;
@@ -55,35 +55,35 @@
 
 - (int)duration
 {
-  v2 = [(CFXExportClipDataSource *)self clip];
-  v3 = [v2 duration];
+  clip = [(CFXExportClipDataSource *)self clip];
+  duration = [clip duration];
 
-  return v3;
+  return duration;
 }
 
 - (int)frameRate
 {
   v2 = +[CFXMediaSettings sharedInstance];
-  v3 = [v2 frameRate];
+  frameRate = [v2 frameRate];
 
-  return v3;
+  return frameRate;
 }
 
 - (int)timeScale
 {
   v2 = +[CFXMediaSettings sharedInstance];
-  v3 = [v2 timeScale];
+  timeScale = [v2 timeScale];
 
-  return v3;
+  return timeScale;
 }
 
 - (id)colorSpace
 {
-  v2 = [(CFXExportClipDataSource *)self clip];
-  v3 = [v2 mediaItem];
-  v4 = [v3 colorSpace];
+  clip = [(CFXExportClipDataSource *)self clip];
+  mediaItem = [clip mediaItem];
+  colorSpace = [mediaItem colorSpace];
 
-  return v4;
+  return colorSpace;
 }
 
 @end

@@ -29,7 +29,7 @@
   v21 = v4 + v20 * 2.0;
   v22 = [CIVector vectorWithX:v21 Y:(v4 + v20) Z:?];
   v23 = v21 + v6;
-  v24 = [(CILenticularHaloGenerator *)self _CILenticularHalo];
+  _CILenticularHalo = [(CILenticularHaloGenerator *)self _CILenticularHalo];
   [(CIVector *)self->inputCenter X];
   v25 = v23;
   v27 = v26 - v23;
@@ -45,7 +45,7 @@
   v34[6] = [MEMORY[0x1E696AD98] numberWithFloat:v32];
   v34[7] = v22;
   v34[8] = self->inputColor;
-  return [v24 applyWithExtent:&__block_literal_global_45 roiCallback:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v34, 9), v27, v29, v25 + v25, v25 + v25}];
+  return [_CILenticularHalo applyWithExtent:&__block_literal_global_45 roiCallback:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v34, 9), v27, v29, v25 + v25, v25 + v25}];
 }
 
 double __40__CILenticularHaloGenerator_outputImage__block_invoke(uint64_t a1, int a2)

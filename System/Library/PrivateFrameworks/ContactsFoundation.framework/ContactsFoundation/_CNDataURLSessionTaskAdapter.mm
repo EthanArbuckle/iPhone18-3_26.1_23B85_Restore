@@ -1,22 +1,22 @@
 @interface _CNDataURLSessionTaskAdapter
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveData:(id)a5;
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5;
+- (void)URLSession:(id)session dataTask:(id)task didReceiveData:(id)data;
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error;
 @end
 
 @implementation _CNDataURLSessionTaskAdapter
 
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveData:(id)a5
+- (void)URLSession:(id)session dataTask:(id)task didReceiveData:(id)data
 {
-  v6 = a5;
-  v7 = [(_CNDataURLSessionTaskAdapter *)self onDataReceived];
-  v7[2](v7, v6);
+  dataCopy = data;
+  onDataReceived = [(_CNDataURLSessionTaskAdapter *)self onDataReceived];
+  onDataReceived[2](onDataReceived, dataCopy);
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error
 {
-  v6 = a5;
-  v7 = [(_CNDataURLSessionTaskAdapter *)self onCompletion];
-  v7[2](v7, v6);
+  errorCopy = error;
+  onCompletion = [(_CNDataURLSessionTaskAdapter *)self onCompletion];
+  onCompletion[2](onCompletion, errorCopy);
 }
 
 @end

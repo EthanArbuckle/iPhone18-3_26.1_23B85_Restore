@@ -1,113 +1,113 @@
 @interface OAXGraphicalObject
-+ (id)readFromParentXmlNode:(_xmlNode *)a3 inNamespace:(id)a4 drawingState:(id)a5;
++ (id)readFromParentXmlNode:(_xmlNode *)node inNamespace:(id)namespace drawingState:(id)state;
 @end
 
 @implementation OAXGraphicalObject
 
-+ (id)readFromParentXmlNode:(_xmlNode *)a3 inNamespace:(id)a4 drawingState:(id)a5
++ (id)readFromParentXmlNode:(_xmlNode *)node inNamespace:(id)namespace drawingState:(id)state
 {
-  v6 = a5;
-  v7 = [v6 OAXMainNamespace];
-  v8 = OCXFindChild(a3, v7, "graphic");
+  stateCopy = state;
+  oAXMainNamespace = [stateCopy OAXMainNamespace];
+  v8 = OCXFindChild(node, oAXMainNamespace, "graphic");
 
-  if (!v8 || ([v6 OAXMainNamespace], v9 = objc_claimAutoreleasedReturnValue(), v10 = OCXFindChild(v8, v9, "graphicData"), v9, !v10))
+  if (!v8 || ([stateCopy OAXMainNamespace], v9 = objc_claimAutoreleasedReturnValue(), v10 = OCXFindChild(v8, v9, "graphicData"), v9, !v10))
   {
     v16 = 0;
     goto LABEL_10;
   }
 
   v11 = CXRequiredStringAttribute(v10, CXNoNamespace, "uri");
-  v12 = [[ODXState alloc] initWithOfficeArtState:v6];
-  v13 = [v11 tc_xmlString];
-  v14 = [(ODXState *)v12 ODXDiagramNamespace];
-  LODWORD(v13) = CXXmlStrEqualToNsUriOrFallbackNsUri(v13, v14);
+  v12 = [[ODXState alloc] initWithOfficeArtState:stateCopy];
+  tc_xmlString = [v11 tc_xmlString];
+  oDXDiagramNamespace = [(ODXState *)v12 ODXDiagramNamespace];
+  LODWORD(tc_xmlString) = CXXmlStrEqualToNsUriOrFallbackNsUri(tc_xmlString, oDXDiagramNamespace);
 
-  if (!v13)
+  if (!tc_xmlString)
   {
-    v17 = [v11 tc_xmlString];
-    v18 = [v6 OAXChartNamespace];
-    LODWORD(v17) = CXXmlStrEqualToNsUriOrFallbackNsUri(v17, v18);
+    tc_xmlString2 = [v11 tc_xmlString];
+    oAXChartNamespace = [stateCopy OAXChartNamespace];
+    LODWORD(tc_xmlString2) = CXXmlStrEqualToNsUriOrFallbackNsUri(tc_xmlString2, oAXChartNamespace);
 
-    if (v17)
+    if (tc_xmlString2)
     {
-      v15 = [CHXReader readFromParentNode:v10 drawingState:v6];
+      v15 = [CHXReader readFromParentNode:v10 drawingState:stateCopy];
       goto LABEL_8;
     }
 
     if ([v11 hasSuffix:@"/picture"])
     {
-      v20 = [v6 OAXPictureNamespace];
-      v21 = OCXFindChild(v10, v20, "pic");
+      oAXPictureNamespace = [stateCopy OAXPictureNamespace];
+      v21 = OCXFindChild(v10, oAXPictureNamespace, "pic");
 
       if (!v21)
       {
         [TCMessageException raise:OABadFormat];
       }
 
-      v22 = [v6 OAXPictureNamespace];
-      v23 = [OAXPicture readFromXmlNode:v21 inNamespace:v22 drawingState:v6];
+      oAXPictureNamespace2 = [stateCopy OAXPictureNamespace];
+      v23 = [OAXPicture readFromXmlNode:v21 inNamespace:oAXPictureNamespace2 drawingState:stateCopy];
     }
 
     else
     {
       if ([v11 hasSuffix:@"/table"])
       {
-        v24 = [v6 OAXMainNamespace];
-        v25 = OCXFindChild(v10, v24, "tbl");
+        oAXMainNamespace2 = [stateCopy OAXMainNamespace];
+        v25 = OCXFindChild(v10, oAXMainNamespace2, "tbl");
 
         if (!v25)
         {
           [TCMessageException raise:OABadFormat];
         }
 
-        v15 = [OAXTable readFromXmlNode:v25 drawingState:v6];
+        v15 = [OAXTable readFromXmlNode:v25 drawingState:stateCopy];
         goto LABEL_8;
       }
 
       if (([v11 hasSuffix:@"/ole"] & 1) != 0 || objc_msgSend(v11, "hasSuffix:", @"/oleObject"))
       {
-        v22 = [v6 client];
-        v23 = [v22 readOle:v10 state:v6];
+        oAXPictureNamespace2 = [stateCopy client];
+        v23 = [oAXPictureNamespace2 readOle:v10 state:stateCopy];
       }
 
       else if ([v11 hasSuffix:@"/lockedCanvas"])
       {
-        v26 = [v6 OAXLockedCanvasNamespace];
-        v27 = OCXFindChild(v10, v26, "lockedCanvas");
+        oAXLockedCanvasNamespace = [stateCopy OAXLockedCanvasNamespace];
+        v27 = OCXFindChild(v10, oAXLockedCanvasNamespace, "lockedCanvas");
 
         if (!v27)
         {
           [TCMessageException raise:OABadFormat];
         }
 
-        v22 = [v6 OAXMainNamespace];
-        v23 = [OAXGroup readFromXmlNode:v27 inNamespace:v22 drawingState:v6];
+        oAXPictureNamespace2 = [stateCopy OAXMainNamespace];
+        v23 = [OAXGroup readFromXmlNode:v27 inNamespace:oAXPictureNamespace2 drawingState:stateCopy];
       }
 
       else
       {
         if ([v11 hasSuffix:@"/compatibility"])
         {
-          v28 = [v6 OAXCompatNamespace];
-          v29 = OCXFindChild(v10, v28, "legacyDrawing");
+          oAXCompatNamespace = [stateCopy OAXCompatNamespace];
+          v29 = OCXFindChild(v10, oAXCompatNamespace, "legacyDrawing");
 
           if (!v29)
           {
             [TCMessageException raise:OABadFormat];
           }
 
-          v22 = CXRequiredStringAttribute(v29, CXNoNamespace, "spid");
-          v30 = [v6 oavState];
-          v16 = [v30 drawableForVmlShapeId:v22];
+          oAXPictureNamespace2 = CXRequiredStringAttribute(v29, CXNoNamespace, "spid");
+          oavState = [stateCopy oavState];
+          v16 = [oavState drawableForVmlShapeId:oAXPictureNamespace2];
 
-          v31 = [v6 oavState];
-          [v31 addDualDrawable:v16];
+          oavState2 = [stateCopy oavState];
+          [oavState2 addDualDrawable:v16];
 
           goto LABEL_25;
         }
 
-        v22 = [v6 client];
-        v23 = [v22 readGraphicData:v10 state:v6];
+        oAXPictureNamespace2 = [stateCopy client];
+        v23 = [oAXPictureNamespace2 readGraphicData:v10 state:stateCopy];
       }
     }
 

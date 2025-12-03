@@ -1,9 +1,9 @@
 @interface MTRUnitTestingClusterTestListInt8UReverseResponseParams
-- (ChipError)_setFieldsFromDecodableStruct:(const void *)a3;
+- (ChipError)_setFieldsFromDecodableStruct:(const void *)struct;
 - (MTRUnitTestingClusterTestListInt8UReverseResponseParams)init;
-- (MTRUnitTestingClusterTestListInt8UReverseResponseParams)initWithDecodableStruct:(const void *)a3;
+- (MTRUnitTestingClusterTestListInt8UReverseResponseParams)initWithDecodableStruct:(const void *)struct;
 - (MTRUnitTestingClusterTestListInt8UReverseResponseParams)initWithResponseValue:(NSDictionary *)responseValue error:(NSError *)error;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -16,9 +16,9 @@
   v2 = [(MTRUnitTestingClusterTestListInt8UReverseResponseParams *)&v7 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEA60] array];
+    array = [MEMORY[0x277CBEA60] array];
     arg1 = v2->_arg1;
-    v2->_arg1 = v3;
+    v2->_arg1 = array;
 
     timedInvokeTimeoutMs = v2->_timedInvokeTimeoutMs;
     v2->_timedInvokeTimeoutMs = 0;
@@ -27,14 +27,14 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRUnitTestingClusterTestListInt8UReverseResponseParams);
-  v5 = [(MTRUnitTestingClusterTestListInt8UReverseResponseParams *)self arg1];
-  [(MTRUnitTestingClusterTestListInt8UReverseResponseParams *)v4 setArg1:v5];
+  arg1 = [(MTRUnitTestingClusterTestListInt8UReverseResponseParams *)self arg1];
+  [(MTRUnitTestingClusterTestListInt8UReverseResponseParams *)v4 setArg1:arg1];
 
-  v6 = [(MTRUnitTestingClusterTestListInt8UReverseResponseParams *)self timedInvokeTimeoutMs];
-  [(MTRUnitTestingClusterTestListInt8UReverseResponseParams *)v4 setTimedInvokeTimeoutMs:v6];
+  timedInvokeTimeoutMs = [(MTRUnitTestingClusterTestListInt8UReverseResponseParams *)self timedInvokeTimeoutMs];
+  [(MTRUnitTestingClusterTestListInt8UReverseResponseParams *)v4 setTimedInvokeTimeoutMs:timedInvokeTimeoutMs];
 
   return v4;
 }
@@ -94,7 +94,7 @@ LABEL_10:
   return v10;
 }
 
-- (MTRUnitTestingClusterTestListInt8UReverseResponseParams)initWithDecodableStruct:(const void *)a3
+- (MTRUnitTestingClusterTestListInt8UReverseResponseParams)initWithDecodableStruct:(const void *)struct
 {
   v10.receiver = self;
   v10.super_class = MTRUnitTestingClusterTestListInt8UReverseResponseParams;
@@ -102,7 +102,7 @@ LABEL_10:
   v5 = v4;
   if (v4)
   {
-    v6 = [(MTRUnitTestingClusterTestListInt8UReverseResponseParams *)v4 _setFieldsFromDecodableStruct:a3];
+    v6 = [(MTRUnitTestingClusterTestListInt8UReverseResponseParams *)v4 _setFieldsFromDecodableStruct:struct];
     if (!v6)
     {
       v8 = v5;
@@ -118,13 +118,13 @@ LABEL_6:
   return v8;
 }
 
-- (ChipError)_setFieldsFromDecodableStruct:(const void *)a3
+- (ChipError)_setFieldsFromDecodableStruct:(const void *)struct
 {
   v5 = objc_opt_new();
   sub_2393C5AAC(v13);
   v11 = 0;
   v12 = 0;
-  sub_2393C5BDC(v13, a3);
+  sub_2393C5BDC(v13, struct);
   while (sub_238E0D91C(&v11))
   {
     v6 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:v13[72]];

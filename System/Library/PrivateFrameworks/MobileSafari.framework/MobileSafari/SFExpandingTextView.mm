@@ -1,12 +1,12 @@
 @interface SFExpandingTextView
 - (CGSize)intrinsicContentSize;
-- (SFExpandingTextView)initWithMaxHeight:(double)a3;
-- (void)setText:(id)a3;
+- (SFExpandingTextView)initWithMaxHeight:(double)height;
+- (void)setText:(id)text;
 @end
 
 @implementation SFExpandingTextView
 
-- (SFExpandingTextView)initWithMaxHeight:(double)a3
+- (SFExpandingTextView)initWithMaxHeight:(double)height
 {
   v8.receiver = self;
   v8.super_class = SFExpandingTextView;
@@ -14,7 +14,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_maxHeight = a3;
+    v4->_maxHeight = height;
     [(SFExpandingTextView *)v4 setScrollEnabled:0];
     v6 = v5;
   }
@@ -46,11 +46,11 @@
   return result;
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
   v4.receiver = self;
   v4.super_class = SFExpandingTextView;
-  [(SFExpandingTextView *)&v4 setText:a3];
+  [(SFExpandingTextView *)&v4 setText:text];
   [(SFExpandingTextView *)self invalidateIntrinsicContentSize];
 }
 

@@ -1,19 +1,19 @@
 @interface SSSPendingScreenshotRecord
-- (SSSPendingScreenshotRecord)initWithScreenshot:(id)a3 deliveryCompletionBlock:(id)a4;
+- (SSSPendingScreenshotRecord)initWithScreenshot:(id)screenshot deliveryCompletionBlock:(id)block;
 @end
 
 @implementation SSSPendingScreenshotRecord
 
-- (SSSPendingScreenshotRecord)initWithScreenshot:(id)a3 deliveryCompletionBlock:(id)a4
+- (SSSPendingScreenshotRecord)initWithScreenshot:(id)screenshot deliveryCompletionBlock:(id)block
 {
   v9.receiver = self;
   v9.super_class = SSSPendingScreenshotRecord;
-  v5 = a4;
-  v6 = a3;
+  blockCopy = block;
+  screenshotCopy = screenshot;
   v7 = [(SSSPendingScreenshotRecord *)&v9 init];
-  [(SSSPendingScreenshotRecord *)v7 setScreenshot:v6, v9.receiver, v9.super_class];
+  [(SSSPendingScreenshotRecord *)v7 setScreenshot:screenshotCopy, v9.receiver, v9.super_class];
 
-  [(SSSPendingScreenshotRecord *)v7 setDeliveryCompletionBlock:v5];
+  [(SSSPendingScreenshotRecord *)v7 setDeliveryCompletionBlock:blockCopy];
   return v7;
 }
 

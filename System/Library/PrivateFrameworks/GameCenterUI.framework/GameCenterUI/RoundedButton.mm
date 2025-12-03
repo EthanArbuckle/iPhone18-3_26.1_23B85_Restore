@@ -1,16 +1,16 @@
 @interface RoundedButton
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (void)layoutSubviews;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation RoundedButton
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = fits.height;
+  width = fits.width;
+  selfCopy = self;
   sub_24E2C24F4(width, height);
   v7 = v6;
   v9 = v8;
@@ -24,15 +24,15 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_24E2C25BC();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_24E2C26D0(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_24E2C26D0(change);
 }
 
 @end

@@ -40,11 +40,11 @@
     v8 = 0;
   }
 
-  v9 = [MEMORY[0x277CCAC38] processInfo];
-  v10 = v9;
-  if (v9)
+  processInfo = [MEMORY[0x277CCAC38] processInfo];
+  v10 = processInfo;
+  if (processInfo)
   {
-    [v9 operatingSystemVersion];
+    [processInfo operatingSystemVersion];
   }
 
   v11 = [[HMFSoftwareVersion alloc] initWithMajorVersion:0 minorVersion:0 updateVersion:0 buildVersion:v8];

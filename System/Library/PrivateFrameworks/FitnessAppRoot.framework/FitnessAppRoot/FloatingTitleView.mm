@@ -1,24 +1,24 @@
 @interface FloatingTitleView
-- (BOOL)scrollViewShouldScrollToTop:(id)a3;
+- (BOOL)scrollViewShouldScrollToTop:(id)top;
 - (void)layoutSubviews;
-- (void)scrollViewDidEndDecelerating:(id)a3;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)scrollViewDidEndScrollingAnimation:(id)a3;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewDidScrollToTop:(id)a3;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
+- (void)scrollViewDidEndDecelerating:(id)decelerating;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)scrollViewDidEndScrollingAnimation:(id)animation;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewDidScrollToTop:(id)top;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
 @end
 
 @implementation FloatingTitleView
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E5AABA94();
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
   Strong = swift_unknownObjectWeakLoadStrong();
   if (Strong)
@@ -33,54 +33,54 @@
   }
 }
 
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
-  y = a4.y;
-  x = a4.x;
+  y = velocity.y;
+  x = velocity.x;
   Strong = swift_unknownObjectWeakLoadStrong();
   if (Strong)
   {
     v10 = Strong;
     if ([Strong respondsToSelector_])
     {
-      [v10 scrollViewWillEndDragging:a3 withVelocity:a5 targetContentOffset:{x, y}];
+      [v10 scrollViewWillEndDragging:dragging withVelocity:offset targetContentOffset:{x, y}];
     }
 
     swift_unknownObjectRelease();
   }
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  v6 = a3;
-  v7 = self;
-  sub_1E5AACFE4(v6, a4);
+  draggingCopy = dragging;
+  selfCopy = self;
+  sub_1E5AACFE4(draggingCopy, decelerate);
 }
 
-- (void)scrollViewDidEndDecelerating:(id)a3
+- (void)scrollViewDidEndDecelerating:(id)decelerating
 {
-  v4 = a3;
-  v5 = self;
-  sub_1E5AAD3A0(v4, &selRef_scrollViewDidEndDecelerating_);
+  deceleratingCopy = decelerating;
+  selfCopy = self;
+  sub_1E5AAD3A0(deceleratingCopy, &selRef_scrollViewDidEndDecelerating_);
 }
 
-- (void)scrollViewDidEndScrollingAnimation:(id)a3
+- (void)scrollViewDidEndScrollingAnimation:(id)animation
 {
-  v4 = a3;
-  v5 = self;
-  sub_1E5AAD3A0(v4, &selRef_scrollViewDidEndScrollingAnimation_);
+  animationCopy = animation;
+  selfCopy = self;
+  sub_1E5AAD3A0(animationCopy, &selRef_scrollViewDidEndScrollingAnimation_);
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
   Strong = swift_unknownObjectWeakLoadStrong();
   if (Strong)
   {
     v5 = Strong;
-    v6 = [Strong respondsToSelector_];
-    v7 = a3;
-    v8 = self;
-    if (v6)
+    respondsToSelector_ = [Strong respondsToSelector_];
+    scrollCopy = scroll;
+    selfCopy = self;
+    if (respondsToSelector_)
     {
       [v5 scrollViewDidScroll_];
     }
@@ -90,14 +90,14 @@
 
   else
   {
-    v9 = a3;
-    v10 = self;
+    scrollCopy2 = scroll;
+    selfCopy2 = self;
   }
 
-  sub_1E5AAC1A4(a3);
+  sub_1E5AAC1A4(scroll);
 }
 
-- (BOOL)scrollViewShouldScrollToTop:(id)a3
+- (BOOL)scrollViewShouldScrollToTop:(id)top
 {
   Strong = swift_unknownObjectWeakLoadStrong();
   if (!Strong)
@@ -108,23 +108,23 @@
   v5 = Strong;
   if ([Strong respondsToSelector_])
   {
-    v6 = [v5 scrollViewShouldScrollToTop_];
+    scrollViewShouldScrollToTop_ = [v5 scrollViewShouldScrollToTop_];
   }
 
   else
   {
-    v6 = 1;
+    scrollViewShouldScrollToTop_ = 1;
   }
 
   swift_unknownObjectRelease();
-  return v6;
+  return scrollViewShouldScrollToTop_;
 }
 
-- (void)scrollViewDidScrollToTop:(id)a3
+- (void)scrollViewDidScrollToTop:(id)top
 {
-  v4 = a3;
-  v5 = self;
-  sub_1E5AAD3A0(v4, &selRef_scrollViewDidScrollToTop_);
+  topCopy = top;
+  selfCopy = self;
+  sub_1E5AAD3A0(topCopy, &selRef_scrollViewDidScrollToTop_);
 }
 
 @end

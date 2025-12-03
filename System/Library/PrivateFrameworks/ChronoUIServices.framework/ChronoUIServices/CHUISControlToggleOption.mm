@@ -1,23 +1,23 @@
 @interface CHUISControlToggleOption
 - (CHUISControlToggleOption)init;
-- (void)setIcon:(id)a3;
-- (void)setTint:(id)a3;
+- (void)setIcon:(id)icon;
+- (void)setTint:(id)tint;
 @end
 
 @implementation CHUISControlToggleOption
 
-- (void)setIcon:(id)a3
+- (void)setIcon:(id)icon
 {
   v4 = *(self + OBJC_IVAR___CHUISControlToggleOption_icon);
-  *(self + OBJC_IVAR___CHUISControlToggleOption_icon) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___CHUISControlToggleOption_icon) = icon;
+  iconCopy = icon;
 }
 
-- (void)setTint:(id)a3
+- (void)setTint:(id)tint
 {
   v4 = *(self + OBJC_IVAR___CHUISControlToggleOption_tint);
-  *(self + OBJC_IVAR___CHUISControlToggleOption_tint) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___CHUISControlToggleOption_tint) = tint;
+  tintCopy = tint;
 }
 
 - (CHUISControlToggleOption)init

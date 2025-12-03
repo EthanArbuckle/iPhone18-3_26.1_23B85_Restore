@@ -22,7 +22,7 @@
   v82 = v11;
   [(NSNumber *)self->inputSharpness floatValue];
   v83 = fmin(1.0 / (1.0 - v12), 10000.0);
-  v13 = [(CICMYKHalftone *)self _CICMYK_convert];
+  _CICMYK_convert = [(CICMYKHalftone *)self _CICMYK_convert];
   [(CIImage *)self->inputImage extent];
   v15 = v14;
   v17 = v16;
@@ -33,13 +33,13 @@
   v23 = v22;
   [(NSNumber *)self->inputGCR floatValue];
   v89[1] = [CIVector vectorWithX:v23 Y:v24];
-  v25 = [v13 applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v89, 2), v15, v17, v19, v21}];
-  v26 = [(CICMYKHalftone *)self _CIWhite];
+  v25 = [_CICMYK_convert applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v89, 2), v15, v17, v19, v21}];
+  _CIWhite = [(CICMYKHalftone *)self _CIWhite];
   [(CIImage *)self->inputImage extent];
   inputImage = self->inputImage;
-  v31 = [v26 applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", &inputImage, 1), v27, v28, v29, v30}];
+  v31 = [_CIWhite applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", &inputImage, 1), v27, v28, v29, v30}];
   v32 = __sincosf_stret(v6);
-  v33 = [(CICMYKHalftone *)self _CICMYK_cyan];
+  _CICMYK_cyan = [(CICMYKHalftone *)self _CICMYK_cyan];
   [v31 extent];
   v78 = v34;
   v36 = v35;
@@ -51,9 +51,9 @@
   v87[2] = inputCenter;
   v87[3] = [CIVector vectorWithX:(v4 * v32.__cosval) Y:(v4 * v32.__sinval) Z:-(v32.__sinval * v4) W:(v4 * v32.__cosval)];
   v87[4] = [MEMORY[0x1E696AD98] numberWithDouble:v83];
-  v42 = [v33 applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v87, 5), v78, v36, v38, v40}];
+  v42 = [_CICMYK_cyan applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v87, 5), v78, v36, v38, v40}];
   v43 = __sincosf_stret(v79);
-  v44 = [(CICMYKHalftone *)self _CICMYK_magenta];
+  _CICMYK_magenta = [(CICMYKHalftone *)self _CICMYK_magenta];
   [v42 extent];
   v80 = v45;
   v47 = v46;
@@ -65,9 +65,9 @@
   v86[2] = v52;
   v86[3] = [CIVector vectorWithX:(v4 * v43.__cosval) Y:(v4 * v43.__sinval) Z:-(v43.__sinval * v4) W:(v4 * v43.__cosval)];
   v86[4] = [MEMORY[0x1E696AD98] numberWithDouble:v83];
-  v53 = [v44 applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v86, 5), v80, v47, v49, v51}];
+  v53 = [_CICMYK_magenta applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v86, 5), v80, v47, v49, v51}];
   v54 = __sincosf_stret(v81);
-  v55 = [(CICMYKHalftone *)self _CICMYK_yellow];
+  _CICMYK_yellow = [(CICMYKHalftone *)self _CICMYK_yellow];
   [v53 extent];
   v57 = v56;
   v59 = v58;
@@ -79,9 +79,9 @@
   v85[2] = v64;
   v85[3] = [CIVector vectorWithX:(v4 * v54.__cosval) Y:(v4 * v54.__sinval) Z:-(v54.__sinval * v4) W:(v4 * v54.__cosval)];
   v85[4] = [MEMORY[0x1E696AD98] numberWithDouble:v83];
-  v65 = [v55 applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v85, 5), v57, v59, v61, v63}];
+  v65 = [_CICMYK_yellow applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v85, 5), v57, v59, v61, v63}];
   v66 = __sincosf_stret(v82);
-  v67 = [(CICMYKHalftone *)self _CICMYK_black];
+  _CICMYK_black = [(CICMYKHalftone *)self _CICMYK_black];
   [v65 extent];
   v69 = v68;
   v71 = v70;
@@ -93,7 +93,7 @@
   v84[2] = v76;
   v84[3] = [CIVector vectorWithX:(v4 * v66.__cosval) Y:(v4 * v66.__sinval) Z:-(v66.__sinval * v4) W:(v4 * v66.__cosval)];
   v84[4] = [MEMORY[0x1E696AD98] numberWithDouble:v83];
-  return [v67 applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v84, 5), v69, v71, v73, v75}];
+  return [_CICMYK_black applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v84, 5), v69, v71, v73, v75}];
 }
 
 + (id)customAttributes

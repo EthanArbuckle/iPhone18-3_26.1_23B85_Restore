@@ -1,27 +1,27 @@
 @interface BCUI2x4AvocadoViewController
 - (id)_newBatteryDeviceView;
 - (unint64_t)_maximumNumberOfBatteryDeviceViews;
-- (void)_contentSizeCategoryDidChange:(id)a3;
+- (void)_contentSizeCategoryDidChange:(id)change;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation BCUI2x4AvocadoViewController
 
-- (void)_contentSizeCategoryDidChange:(id)a3
+- (void)_contentSizeCategoryDidChange:(id)change
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  changeCopy = change;
   v22.receiver = self;
   v22.super_class = BCUI2x4AvocadoViewController;
-  [(BCUIAvocadoViewController *)&v22 _contentSizeCategoryDidChange:v4];
-  v17 = v4;
-  v5 = [BCUIRingItemView isAX3PlusLayoutRequiredForContentSizeCategory:v4];
+  [(BCUIAvocadoViewController *)&v22 _contentSizeCategoryDidChange:changeCopy];
+  v17 = changeCopy;
+  v5 = [BCUIRingItemView isAX3PlusLayoutRequiredForContentSizeCategory:changeCopy];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v6 = [(BCUIAvocadoViewController *)self _batteryDeviceViews];
-  v7 = [v6 countByEnumeratingWithState:&v18 objects:v23 count:16];
+  _batteryDeviceViews = [(BCUIAvocadoViewController *)self _batteryDeviceViews];
+  v7 = [_batteryDeviceViews countByEnumeratingWithState:&v18 objects:v23 count:16];
   if (v7)
   {
     v8 = v7;
@@ -33,14 +33,14 @@
       {
         if (*v19 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(_batteryDeviceViews);
         }
 
         v11 = *(*(&v18 + 1) + 8 * v10);
         if (objc_opt_respondsToSelector())
         {
-          v12 = [(BCUI2x4AvocadoViewController *)self view];
-          [v12 bounds];
+          view = [(BCUI2x4AvocadoViewController *)self view];
+          [view bounds];
           [BCUI2x4AvocadoViewController _columnWidthForBounds:"_columnWidthForBounds:andMaxNumViews:" andMaxNumViews:?];
           v14 = v13;
 
@@ -57,14 +57,14 @@
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v18 objects:v23 count:16];
+      v8 = [_batteryDeviceViews countByEnumeratingWithState:&v18 objects:v23 count:16];
     }
 
     while (v8);
   }
 
-  v16 = [(BCUI2x4AvocadoViewController *)self view];
-  [v16 setNeedsLayout];
+  view2 = [(BCUI2x4AvocadoViewController *)self view];
+  [view2 setNeedsLayout];
 }
 
 - (void)viewWillLayoutSubviews
@@ -74,8 +74,8 @@
   v48.super_class = BCUI2x4AvocadoViewController;
   [(BCUIAvocadoViewController *)&v48 viewWillLayoutSubviews];
   [(BCUI2x4AvocadoViewController *)self _maximumNumberOfBatteryDeviceViews];
-  v3 = [(BCUI2x4AvocadoViewController *)self view];
-  [v3 bounds];
+  view = [(BCUI2x4AvocadoViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -87,8 +87,8 @@
   v51.size.width = v9;
   v51.size.height = v11;
   CGRectGetHeight(v51);
-  v14 = [v3 _shouldReverseLayoutDirection];
-  if (v14)
+  _shouldReverseLayoutDirection = [view _shouldReverseLayoutDirection];
+  if (_shouldReverseLayoutDirection)
   {
     v52.origin.y = v7;
     v52.origin.x = v5;
@@ -97,19 +97,19 @@
     v15 = CGRectGetMaxX(v52) + -19.0;
   }
 
-  v16 = [v3 window];
-  if (v16)
+  window = [view window];
+  if (window)
   {
-    v17 = [v3 window];
-    v18 = [v17 screen];
-    [v18 scale];
+    window2 = [view window];
+    screen = [window2 screen];
+    [screen scale];
     v20 = v19;
   }
 
   else
   {
-    v17 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v17 scale];
+    window2 = [MEMORY[0x1E69DCEB0] mainScreen];
+    [window2 scale];
     v20 = v21;
   }
 
@@ -117,8 +117,8 @@
   v47 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v22 = [(BCUIAvocadoViewController *)self _batteryDeviceViews];
-  v23 = [v22 countByEnumeratingWithState:&v44 objects:v49 count:16];
+  _batteryDeviceViews = [(BCUIAvocadoViewController *)self _batteryDeviceViews];
+  v23 = [_batteryDeviceViews countByEnumeratingWithState:&v44 objects:v49 count:16];
   if (v23)
   {
     v24 = v23;
@@ -129,7 +129,7 @@
       {
         if (*v45 != v25)
         {
-          objc_enumerationMutation(v22);
+          objc_enumerationMutation(_batteryDeviceViews);
         }
 
         v27 = *(*(&v44 + 1) + 8 * i);
@@ -154,7 +154,7 @@
         v38 = v34;
         v39 = v35;
         v40 = v36;
-        if (v14)
+        if (_shouldReverseLayoutDirection)
         {
           MaxX = CGRectGetMinX(*&v37) - v13;
           v42 = -17.0;
@@ -167,7 +167,7 @@
         }
       }
 
-      v24 = [v22 countByEnumeratingWithState:&v44 objects:v49 count:{16, MaxX, v42}];
+      v24 = [_batteryDeviceViews countByEnumeratingWithState:&v44 objects:v49 count:{16, MaxX, v42}];
     }
 
     while (v24);
@@ -176,10 +176,10 @@
 
 - (unint64_t)_maximumNumberOfBatteryDeviceViews
 {
-  v2 = [(BCUI2x4AvocadoViewController *)self traitCollection];
-  v3 = [v2 preferredContentSizeCategory];
+  traitCollection = [(BCUI2x4AvocadoViewController *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
 
-  if ([BCUIRingItemView isAX3PlusLayoutRequiredForContentSizeCategory:v3])
+  if ([BCUIRingItemView isAX3PlusLayoutRequiredForContentSizeCategory:preferredContentSizeCategory])
   {
     v4 = 3;
   }
@@ -194,12 +194,12 @@
 
 - (id)_newBatteryDeviceView
 {
-  v3 = [(BCUI2x4AvocadoViewController *)self traitCollection];
-  v4 = [v3 preferredContentSizeCategory];
+  traitCollection = [(BCUI2x4AvocadoViewController *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
 
-  LODWORD(v3) = [BCUIRingItemView isAX3PlusLayoutRequiredForContentSizeCategory:v4];
-  v5 = [(BCUI2x4AvocadoViewController *)self view];
-  [v5 bounds];
+  LODWORD(traitCollection) = [BCUIRingItemView isAX3PlusLayoutRequiredForContentSizeCategory:preferredContentSizeCategory];
+  view = [(BCUI2x4AvocadoViewController *)self view];
+  [view bounds];
   [BCUI2x4AvocadoViewController _columnWidthForBounds:"_columnWidthForBounds:andMaxNumViews:" andMaxNumViews:?];
   v7 = v6;
 
@@ -207,7 +207,7 @@
   [(BCUIRingItemView *)v8 setRingItemViewStyle:1];
   [(BCUIRingItemView *)v8 setRingLineWidth:6.0];
   v9 = 1.0;
-  if (v3)
+  if (traitCollection)
   {
     v9 = 74 / v7;
   }

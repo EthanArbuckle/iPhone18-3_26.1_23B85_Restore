@@ -1,5 +1,5 @@
 @interface HearingDevicesComplicationBundleDataSource
-+ (BOOL)acceptsComplicationFamily:(int64_t)a3 forDevice:(id)a4;
++ (BOOL)acceptsComplicationFamily:(int64_t)family forDevice:(id)device;
 + (BOOL)shouldShowHearingComplicationsUI;
 + (id)_querySettingsQueue;
 + (id)bundleIdentifier;
@@ -8,12 +8,12 @@
 + (void)_queryHANanoSettingsForPairedHearingAids;
 + (void)_queryHUHearingAidSettingsForPairedHearingAids;
 + (void)initialize;
-- (HearingDevicesComplicationBundleDataSource)initWithComplication:(id)a3 family:(int64_t)a4 forDevice:(id)a5;
+- (HearingDevicesComplicationBundleDataSource)initWithComplication:(id)complication family:(int64_t)family forDevice:(id)device;
 - (id)currentSwitcherTemplate;
 - (id)currentTimelineEntry;
-- (void)getCurrentTimelineEntryWithHandler:(id)a3;
-- (void)hearingDevicePropertiesDidUpdate:(id)a3;
-- (void)hearingDevicesDidChange:(id)a3;
+- (void)getCurrentTimelineEntryWithHandler:(id)handler;
+- (void)hearingDevicePropertiesDidUpdate:(id)update;
+- (void)hearingDevicesDidChange:(id)change;
 - (void)listenForUpdates;
 @end
 
@@ -21,51 +21,51 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v3 = +[HUHearingAidSettings sharedInstance];
-    [v3 registerUpdateBlock:&stru_82A8 forRetrieveSelector:"pairedHearingAids" withListener:a1];
+    [v3 registerUpdateBlock:&stru_82A8 forRetrieveSelector:"pairedHearingAids" withListener:self];
 
-    v4 = [a1 _querySettingsQueue];
+    _querySettingsQueue = [self _querySettingsQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_3854;
     block[3] = &unk_82C8;
-    block[4] = a1;
-    dispatch_async(v4, block);
+    block[4] = self;
+    dispatch_async(_querySettingsQueue, block);
 
     v5 = +[HANanoSettings sharedInstance];
-    [v5 registerUpdateBlock:&stru_82E8 forRetrieveSelector:"pairedHearingAids" withListener:a1];
+    [v5 registerUpdateBlock:&stru_82E8 forRetrieveSelector:"pairedHearingAids" withListener:self];
 
-    v6 = [a1 _querySettingsQueue];
+    _querySettingsQueue2 = [self _querySettingsQueue];
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_3868;
     v13[3] = &unk_82C8;
-    v13[4] = a1;
-    dispatch_async(v6, v13);
+    v13[4] = self;
+    dispatch_async(_querySettingsQueue2, v13);
 
     v7 = +[HANanoSettings sharedInstance];
-    [v7 registerUpdateBlock:&stru_8308 forRetrieveSelector:"independentHearingAidSettings" withListener:a1];
+    [v7 registerUpdateBlock:&stru_8308 forRetrieveSelector:"independentHearingAidSettings" withListener:self];
 
-    v8 = [a1 _querySettingsQueue];
+    _querySettingsQueue3 = [self _querySettingsQueue];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_387C;
     v12[3] = &unk_82C8;
-    v12[4] = a1;
-    dispatch_async(v8, v12);
+    v12[4] = self;
+    dispatch_async(_querySettingsQueue3, v12);
 
     v9 = +[HANanoSettings sharedInstance];
-    [v9 registerUpdateBlock:&stru_8328 forRetrieveSelector:"complicationPreferredDisplayMode" withListener:a1];
+    [v9 registerUpdateBlock:&stru_8328 forRetrieveSelector:"complicationPreferredDisplayMode" withListener:self];
 
-    v10 = [a1 _querySettingsQueue];
+    _querySettingsQueue4 = [self _querySettingsQueue];
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_3890;
     v11[3] = &unk_82C8;
-    v11[4] = a1;
-    dispatch_async(v10, v11);
+    v11[4] = self;
+    dispatch_async(_querySettingsQueue4, v11);
   }
 }
 
@@ -87,10 +87,10 @@
   block[1] = 3221225472;
   block[2] = sub_39C4;
   block[3] = &unk_82C8;
-  block[4] = a1;
+  block[4] = self;
   v3 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, QOS_CLASS_DEFAULT, 0, block);
-  v4 = [a1 _querySettingsQueue];
-  dispatch_async(v4, v3);
+  _querySettingsQueue = [self _querySettingsQueue];
+  dispatch_async(_querySettingsQueue, v3);
 }
 
 + (void)_queryHANanoSettingsForPairedHearingAids
@@ -99,10 +99,10 @@
   block[1] = 3221225472;
   block[2] = sub_3AFC;
   block[3] = &unk_82C8;
-  block[4] = a1;
+  block[4] = self;
   v3 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, QOS_CLASS_DEFAULT, 0, block);
-  v4 = [a1 _querySettingsQueue];
-  dispatch_async(v4, v3);
+  _querySettingsQueue = [self _querySettingsQueue];
+  dispatch_async(_querySettingsQueue, v3);
 }
 
 + (void)_queryHANanoSettingsForIndependentHearingAidSettings
@@ -111,10 +111,10 @@
   block[1] = 3221225472;
   block[2] = sub_3C34;
   block[3] = &unk_82C8;
-  block[4] = a1;
+  block[4] = self;
   v3 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, QOS_CLASS_DEFAULT, 0, block);
-  v4 = [a1 _querySettingsQueue];
-  dispatch_async(v4, v3);
+  _querySettingsQueue = [self _querySettingsQueue];
+  dispatch_async(_querySettingsQueue, v3);
 }
 
 + (void)_queryHANanoSettingsForComplicationPreferredDisplayMode
@@ -123,32 +123,32 @@
   block[1] = 3221225472;
   block[2] = sub_3D60;
   block[3] = &unk_82C8;
-  block[4] = a1;
+  block[4] = self;
   v3 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, QOS_CLASS_DEFAULT, 0, block);
-  v4 = [a1 _querySettingsQueue];
-  dispatch_async(v4, v3);
+  _querySettingsQueue = [self _querySettingsQueue];
+  dispatch_async(_querySettingsQueue, v3);
 }
 
-- (HearingDevicesComplicationBundleDataSource)initWithComplication:(id)a3 family:(int64_t)a4 forDevice:(id)a5
+- (HearingDevicesComplicationBundleDataSource)initWithComplication:(id)complication family:(int64_t)family forDevice:(id)device
 {
   v6.receiver = self;
   v6.super_class = HearingDevicesComplicationBundleDataSource;
-  return [(HearingDevicesComplicationBundleDataSource *)&v6 initWithComplication:a3 family:a4 forDevice:a5];
+  return [(HearingDevicesComplicationBundleDataSource *)&v6 initWithComplication:complication family:family forDevice:device];
 }
 
 - (void)listenForUpdates
 {
   v3 = +[HUHearingAidSettings sharedInstance];
-  v4 = [v3 pairedHearingAids];
+  pairedHearingAids = [v3 pairedHearingAids];
 
-  if (v4)
+  if (pairedHearingAids)
   {
     objc_initWeak(&location, self);
     v5 = +[HUHearingAidSettings sharedInstance];
-    v6 = [v5 isiCloudPaired];
+    isiCloudPaired = [v5 isiCloudPaired];
 
     v7 = +[AXHAServer sharedInstance];
-    if (v6)
+    if (isiCloudPaired)
     {
       v14[0] = _NSConcreteStackBlock;
       v14[1] = 3221225472;
@@ -184,40 +184,40 @@
   }
 }
 
-- (void)hearingDevicesDidChange:(id)a3
+- (void)hearingDevicesDidChange:(id)change
 {
-  v4 = a3;
-  [(HearingDevicesComplicationBundleDataSource *)self setCurrentHearingDevices:v4];
+  changeCopy = change;
+  [(HearingDevicesComplicationBundleDataSource *)self setCurrentHearingDevices:changeCopy];
   v5 = HCLogHearingAids();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = v4;
+    v9 = changeCopy;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "devices did change %@", &v8, 0xCu);
   }
 
-  v6 = [v4 firstObject];
-  [v6 loadRequiredProperties];
-  v7 = [(HearingDevicesComplicationBundleDataSource *)self delegate];
-  [v7 invalidateEntries];
+  firstObject = [changeCopy firstObject];
+  [firstObject loadRequiredProperties];
+  delegate = [(HearingDevicesComplicationBundleDataSource *)self delegate];
+  [delegate invalidateEntries];
 }
 
-- (void)hearingDevicePropertiesDidUpdate:(id)a3
+- (void)hearingDevicePropertiesDidUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = [(HearingDevicesComplicationBundleDataSource *)self currentHearingDevices];
-  v6 = [v5 countByEnumeratingWithState:&v17 objects:v23 count:16];
+  currentHearingDevices = [(HearingDevicesComplicationBundleDataSource *)self currentHearingDevices];
+  v6 = [currentHearingDevices countByEnumeratingWithState:&v17 objects:v23 count:16];
   if (!v6)
   {
     goto LABEL_14;
   }
 
   v7 = v6;
-  v15 = self;
+  selfCopy = self;
   v8 = 0;
   v9 = *v18;
   do
@@ -226,12 +226,12 @@
     {
       if (*v18 != v9)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(currentHearingDevices);
       }
 
       v11 = *(*(&v17 + 1) + 8 * i);
-      v12 = [v11 deviceUUID];
-      v13 = [v4 objectForKey:v12];
+      deviceUUID = [v11 deviceUUID];
+      v13 = [updateCopy objectForKey:deviceUUID];
 
       if ([v13 count])
       {
@@ -253,15 +253,15 @@
       }
     }
 
-    v7 = [v5 countByEnumeratingWithState:&v17 objects:v23 count:16];
+    v7 = [currentHearingDevices countByEnumeratingWithState:&v17 objects:v23 count:16];
   }
 
   while (v7);
 
   if (v8)
   {
-    v5 = [(HearingDevicesComplicationBundleDataSource *)v15 delegate];
-    [v5 invalidateEntries];
+    currentHearingDevices = [(HearingDevicesComplicationBundleDataSource *)selfCopy delegate];
+    [currentHearingDevices invalidateEntries];
 LABEL_14:
   }
 }
@@ -278,65 +278,65 @@ LABEL_14:
 
 + (id)bundleIdentifier
 {
-  v3 = [NSBundle bundleForClass:a1];
-  v4 = [v3 bundleIdentifier];
-  v5 = [v4 stringByAppendingString:@"."];
-  v6 = NSStringFromClass(a1);
+  v3 = [NSBundle bundleForClass:self];
+  bundleIdentifier = [v3 bundleIdentifier];
+  v5 = [bundleIdentifier stringByAppendingString:@"."];
+  v6 = NSStringFromClass(self);
   v7 = [v5 stringByAppendingString:v6];
 
   return v7;
 }
 
-+ (BOOL)acceptsComplicationFamily:(int64_t)a3 forDevice:(id)a4
++ (BOOL)acceptsComplicationFamily:(int64_t)family forDevice:(id)device
 {
-  v6 = [a1 shouldShowHearingComplicationsUI];
-  if (v6)
+  shouldShowHearingComplicationsUI = [self shouldShowHearingComplicationsUI];
+  if (shouldShowHearingComplicationsUI)
   {
-    if (CLKComplicationFamilyCircularMedium == a3)
+    if (CLKComplicationFamilyCircularMedium == family)
     {
 LABEL_5:
-      LOBYTE(v6) = 1;
-      return v6;
+      LOBYTE(shouldShowHearingComplicationsUI) = 1;
+      return shouldShowHearingComplicationsUI;
     }
 
-    if (a3 > 0xB)
+    if (family > 0xB)
     {
       goto LABEL_9;
     }
 
-    if (((1 << a3) & 0xF93) != 0)
+    if (((1 << family) & 0xF93) != 0)
     {
       goto LABEL_5;
     }
 
-    if (((1 << a3) & 0x4C) != 0)
+    if (((1 << family) & 0x4C) != 0)
     {
-      LOBYTE(v6) = [a1 adjustsIndependentlyEnabled] ^ 1;
+      LOBYTE(shouldShowHearingComplicationsUI) = [self adjustsIndependentlyEnabled] ^ 1;
     }
 
     else
     {
 LABEL_9:
-      LOBYTE(v6) = 0;
+      LOBYTE(shouldShowHearingComplicationsUI) = 0;
     }
   }
 
-  return v6;
+  return shouldShowHearingComplicationsUI;
 }
 
 - (id)currentSwitcherTemplate
 {
-  v2 = [(HearingDevicesComplicationBundleDataSource *)self currentTimelineEntry];
-  v3 = [v2 complicationTemplate];
+  currentTimelineEntry = [(HearingDevicesComplicationBundleDataSource *)self currentTimelineEntry];
+  complicationTemplate = [currentTimelineEntry complicationTemplate];
 
-  return v3;
+  return complicationTemplate;
 }
 
-- (void)getCurrentTimelineEntryWithHandler:(id)a3
+- (void)getCurrentTimelineEntryWithHandler:(id)handler
 {
-  v5 = a3;
-  v6 = [(HearingDevicesComplicationBundleDataSource *)self currentTimelineEntry];
-  (*(a3 + 2))(v5, v6);
+  handlerCopy = handler;
+  currentTimelineEntry = [(HearingDevicesComplicationBundleDataSource *)self currentTimelineEntry];
+  (*(handler + 2))(handlerCopy, currentTimelineEntry);
 }
 
 - (id)currentTimelineEntry
@@ -348,9 +348,9 @@ LABEL_9:
   v6 = [[AXFakeHearingAidDevice alloc] initWithDeviceType:64];
   if (v6)
   {
-    v7 = [(HearingDevicesComplicationBundleDataSource *)self family];
-    v8 = [objc_opt_class() adjustsIndependentlyEnabled];
-    v9 = -[HearingDevicesComplicationTimelineEntryModel entryForComplicationFamily:hearingDevice:adjustsIndependently:preferredDisplayMode:](v5, "entryForComplicationFamily:hearingDevice:adjustsIndependently:preferredDisplayMode:", v7, v6, v8, [objc_opt_class() complicationPreferredDisplayMode]);
+    family = [(HearingDevicesComplicationBundleDataSource *)self family];
+    adjustsIndependentlyEnabled = [objc_opt_class() adjustsIndependentlyEnabled];
+    v9 = -[HearingDevicesComplicationTimelineEntryModel entryForComplicationFamily:hearingDevice:adjustsIndependently:preferredDisplayMode:](v5, "entryForComplicationFamily:hearingDevice:adjustsIndependently:preferredDisplayMode:", family, v6, adjustsIndependentlyEnabled, [objc_opt_class() complicationPreferredDisplayMode]);
   }
 
   else

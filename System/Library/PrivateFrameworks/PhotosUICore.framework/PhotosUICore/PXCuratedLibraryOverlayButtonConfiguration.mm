@@ -1,13 +1,13 @@
 @interface PXCuratedLibraryOverlayButtonConfiguration
 + (NSCache)tintedImageCache;
-+ (id)configurationWithButtonType:(int64_t)a3 spec:(id)a4;
-+ (id)configurationWithButtonType:(int64_t)a3 title:(id)a4 spec:(id)a5;
-+ (id)configurationWithSystemImageName:(id)a3 spec:(id)a4;
-+ (id)configurationWithSystemImageName:(id)a3 title:(id)a4 spec:(id)a5;
-+ (id)configurationWithTitle:(id)a3 spec:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)configurationWithButtonType:(int64_t)type spec:(id)spec;
++ (id)configurationWithButtonType:(int64_t)type title:(id)title spec:(id)spec;
++ (id)configurationWithSystemImageName:(id)name spec:(id)spec;
++ (id)configurationWithSystemImageName:(id)name title:(id)title spec:(id)spec;
++ (id)configurationWithTitle:(id)title spec:(id)spec;
+- (BOOL)isEqual:(id)equal;
 - (PXCuratedLibraryOverlayButtonConfiguration)init;
-- (PXCuratedLibraryOverlayButtonConfiguration)initWithSystemImageName:(id)a3 title:(id)a4 spec:(id)a5 buttonType:(int64_t)a6;
+- (PXCuratedLibraryOverlayButtonConfiguration)initWithSystemImageName:(id)name title:(id)title spec:(id)spec buttonType:(int64_t)type;
 - (UIColor)contentColor;
 - (UIColor)highlightedContentColor;
 - (UIEdgeInsets)hitTestOutsets;
@@ -16,11 +16,11 @@
 - (UIImage)iconImage;
 - (UIImage)iconImageWithoutConfiguration;
 - (UIImage)tintedIconImage;
-- (id)_contentColorWhenHighlighted:(BOOL)a3;
-- (id)_tintedImage:(id)a3 name:(id)a4 withColor:(id)a5;
+- (id)_contentColorWhenHighlighted:(BOOL)highlighted;
+- (id)_tintedImage:(id)image name:(id)name withColor:(id)color;
 - (unint64_t)hash;
 - (void)prepareForRender;
-- (void)setTintColor:(id)a3;
+- (void)setTintColor:(id)color;
 @end
 
 @implementation PXCuratedLibraryOverlayButtonConfiguration
@@ -55,14 +55,14 @@
 {
   if (!self->_highlightedIconImage)
   {
-    v3 = [(PXCuratedLibraryOverlayButtonConfiguration *)self iconImage];
+    iconImage = [(PXCuratedLibraryOverlayButtonConfiguration *)self iconImage];
 
-    if (v3)
+    if (iconImage)
     {
-      v4 = [(PXCuratedLibraryOverlayButtonConfiguration *)self iconImage];
-      v5 = [(PXCuratedLibraryOverlayButtonConfiguration *)self systemImageName];
-      v6 = [(PXCuratedLibraryOverlayButtonConfiguration *)self highlightedContentColor];
-      v7 = [(PXCuratedLibraryOverlayButtonConfiguration *)self _tintedImage:v4 name:v5 withColor:v6];
+      iconImage2 = [(PXCuratedLibraryOverlayButtonConfiguration *)self iconImage];
+      systemImageName = [(PXCuratedLibraryOverlayButtonConfiguration *)self systemImageName];
+      highlightedContentColor = [(PXCuratedLibraryOverlayButtonConfiguration *)self highlightedContentColor];
+      v7 = [(PXCuratedLibraryOverlayButtonConfiguration *)self _tintedImage:iconImage2 name:systemImageName withColor:highlightedContentColor];
       highlightedIconImage = self->_highlightedIconImage;
       self->_highlightedIconImage = v7;
     }
@@ -77,14 +77,14 @@
 {
   if (!self->_tintedIconImage)
   {
-    v3 = [(PXCuratedLibraryOverlayButtonConfiguration *)self iconImage];
+    iconImage = [(PXCuratedLibraryOverlayButtonConfiguration *)self iconImage];
 
-    if (v3)
+    if (iconImage)
     {
-      v4 = [(PXCuratedLibraryOverlayButtonConfiguration *)self iconImage];
-      v5 = [(PXCuratedLibraryOverlayButtonConfiguration *)self systemImageName];
-      v6 = [(PXCuratedLibraryOverlayButtonConfiguration *)self contentColor];
-      v7 = [(PXCuratedLibraryOverlayButtonConfiguration *)self _tintedImage:v4 name:v5 withColor:v6];
+      iconImage2 = [(PXCuratedLibraryOverlayButtonConfiguration *)self iconImage];
+      systemImageName = [(PXCuratedLibraryOverlayButtonConfiguration *)self systemImageName];
+      contentColor = [(PXCuratedLibraryOverlayButtonConfiguration *)self contentColor];
+      v7 = [(PXCuratedLibraryOverlayButtonConfiguration *)self _tintedImage:iconImage2 name:systemImageName withColor:contentColor];
       tintedIconImage = self->_tintedIconImage;
       self->_tintedIconImage = v7;
     }
@@ -95,32 +95,32 @@
   return v9;
 }
 
-- (id)_tintedImage:(id)a3 name:(id)a4 withColor:(id)a5
+- (id)_tintedImage:(id)image name:(id)name withColor:(id)color
 {
   v23[4] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  v11 = [objc_opt_class() tintedImageCache];
+  imageCopy = image;
+  colorCopy = color;
+  nameCopy = name;
+  tintedImageCache = [objc_opt_class() tintedImageCache];
   v12 = [off_1E7721928 alloc];
-  v23[0] = v10;
-  v23[1] = v9;
+  v23[0] = nameCopy;
+  v23[1] = colorCopy;
   v13 = MEMORY[0x1E696AD98];
-  v14 = [(PXCuratedLibraryOverlayButtonConfiguration *)self spec];
-  v15 = [v13 numberWithInteger:{objc_msgSend(v14, "userInterfaceStyle")}];
+  spec = [(PXCuratedLibraryOverlayButtonConfiguration *)self spec];
+  v15 = [v13 numberWithInteger:{objc_msgSend(spec, "userInterfaceStyle")}];
   v23[2] = v15;
   v16 = MEMORY[0x1E696AD98];
-  v17 = [(PXCuratedLibraryOverlayButtonConfiguration *)self spec];
-  v18 = [v16 numberWithInteger:{objc_msgSend(v17, "userInterfaceLevel")}];
+  spec2 = [(PXCuratedLibraryOverlayButtonConfiguration *)self spec];
+  v18 = [v16 numberWithInteger:{objc_msgSend(spec2, "userInterfaceLevel")}];
   v23[3] = v18;
   v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:4];
 
   v20 = [v12 initWithObjects:v19];
-  v21 = [v11 objectForKey:v20];
+  v21 = [tintedImageCache objectForKey:v20];
   if (!v21)
   {
-    v21 = [v8 px_tintedImageWithColor:v9];
-    [v11 setObject:v21 forKey:v20];
+    v21 = [imageCopy px_tintedImageWithColor:colorCopy];
+    [tintedImageCache setObject:v21 forKey:v20];
   }
 
   return v21;
@@ -131,10 +131,10 @@
   iconImageWithoutConfiguration = self->_iconImageWithoutConfiguration;
   if (!iconImageWithoutConfiguration)
   {
-    v4 = [(PXCuratedLibraryOverlayButtonConfiguration *)self systemImageName];
-    if (v4)
+    systemImageName = [(PXCuratedLibraryOverlayButtonConfiguration *)self systemImageName];
+    if (systemImageName)
     {
-      v5 = [MEMORY[0x1E69DCAB8] px_systemImageNamed:v4];
+      v5 = [MEMORY[0x1E69DCAB8] px_systemImageNamed:systemImageName];
       v6 = self->_iconImageWithoutConfiguration;
       self->_iconImageWithoutConfiguration = v5;
     }
@@ -151,36 +151,36 @@
   iconImage = self->_iconImage;
   if (!iconImage)
   {
-    v4 = [(PXCuratedLibraryOverlayButtonConfiguration *)self iconImageWithoutConfiguration];
-    v5 = self;
+    iconImageWithoutConfiguration = [(PXCuratedLibraryOverlayButtonConfiguration *)self iconImageWithoutConfiguration];
+    selfCopy = self;
     if (_PXIconImageSymbolConfiguration_onceToken != -1)
     {
       dispatch_once(&_PXIconImageSymbolConfiguration_onceToken, &__block_literal_global_863_140948);
     }
 
-    v6 = [MEMORY[0x1E69DC668] sharedApplication];
-    v7 = [v6 preferredContentSizeCategory];
-    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v7);
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+    preferredContentSizeCategory = [mEMORY[0x1E69DC668] preferredContentSizeCategory];
+    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
-    v9 = [(PXCuratedLibraryOverlayButtonConfiguration *)v5 systemImageName];
+    systemImageName = [(PXCuratedLibraryOverlayButtonConfiguration *)selfCopy systemImageName];
     v10 = [off_1E7721928 alloc];
-    v11 = [MEMORY[0x1E696AD98] numberWithInteger:{-[PXCuratedLibraryOverlayButtonConfiguration style](v5, "style")}];
+    v11 = [MEMORY[0x1E696AD98] numberWithInteger:{-[PXCuratedLibraryOverlayButtonConfiguration style](selfCopy, "style")}];
     v12 = v11;
-    if (v9)
+    if (systemImageName)
     {
-      v13 = [MEMORY[0x1E69DC668] sharedApplication];
-      v14 = [v13 preferredContentSizeCategory];
-      v42 = v14;
-      v43 = v9;
+      mEMORY[0x1E69DC668]2 = [MEMORY[0x1E69DC668] sharedApplication];
+      preferredContentSizeCategory2 = [mEMORY[0x1E69DC668]2 preferredContentSizeCategory];
+      v42 = preferredContentSizeCategory2;
+      v43 = systemImageName;
       v15 = MEMORY[0x1E695DEC8];
       v16 = 3;
     }
 
     else
     {
-      v13 = [MEMORY[0x1E69DC668] sharedApplication];
-      v14 = [v13 preferredContentSizeCategory];
-      v42 = v14;
+      mEMORY[0x1E69DC668]2 = [MEMORY[0x1E69DC668] sharedApplication];
+      preferredContentSizeCategory2 = [mEMORY[0x1E69DC668]2 preferredContentSizeCategory];
+      v42 = preferredContentSizeCategory2;
       v15 = MEMORY[0x1E695DEC8];
       v16 = 2;
     }
@@ -195,10 +195,10 @@
       goto LABEL_32;
     }
 
-    v21 = [(PXCuratedLibraryOverlayButtonConfiguration *)v5 style];
-    if (v21 <= 0xE)
+    style = [(PXCuratedLibraryOverlayButtonConfiguration *)selfCopy style];
+    if (style <= 0xE)
     {
-      if (((1 << v21) & 0x6FC0) != 0)
+      if (((1 << style) & 0x6FC0) != 0)
       {
 LABEL_10:
         v22 = MEMORY[0x1E69DDC50];
@@ -208,18 +208,18 @@ LABEL_10:
         }
 
         v23 = *v22;
-        v24 = [(PXCuratedLibraryOverlayButtonConfiguration *)v5 spec];
-        v25 = [v24 options];
+        spec = [(PXCuratedLibraryOverlayButtonConfiguration *)selfCopy spec];
+        options = [spec options];
 
         v26 = MEMORY[0x1E69DDCF8];
-        if ((v25 & 4) == 0)
+        if ((options & 4) == 0)
         {
           v26 = MEMORY[0x1E69DDD78];
         }
 
         v27 = *v26;
         v28 = [MEMORY[0x1E69DB878] px_preferredFontForTextStyle:v27 maxContentSizeCategory:v23 withSymbolicTraits:32770];
-        if ((v25 & 4) != 0 || ([v9 isEqualToString:@"person.fill"] & 1) != 0 || objc_msgSend(v9, "isEqualToString:", @"person.2.fill"))
+        if ((options & 4) != 0 || ([systemImageName isEqualToString:@"person.fill"] & 1) != 0 || objc_msgSend(systemImageName, "isEqualToString:", @"person.2.fill"))
         {
           v29 = 1;
         }
@@ -237,7 +237,7 @@ LABEL_10:
         goto LABEL_30;
       }
 
-      if (((1 << v21) & 0x30) != 0)
+      if (((1 << style) & 0x30) != 0)
       {
         v23 = [MEMORY[0x1E69DB878] px_preferredFontForTextStyle:*MEMORY[0x1E69DDCF8] maxContentSizeCategory:*MEMORY[0x1E69DDC58] withSymbolicTraits:4096];
         v31 = MEMORY[0x1E69DCAD8];
@@ -249,7 +249,7 @@ LABEL_25:
         goto LABEL_29;
       }
 
-      if (v21 == 12)
+      if (style == 12)
       {
         v34 = MEMORY[0x1E69DDC50];
         if (!IsAccessibilityCategory)
@@ -264,12 +264,12 @@ LABEL_25:
       }
     }
 
-    if (v21 < 2)
+    if (style < 2)
     {
       goto LABEL_10;
     }
 
-    if (v21 - 2 > 1)
+    if (style - 2 > 1)
     {
       v20 = 0;
       goto LABEL_31;
@@ -288,7 +288,7 @@ LABEL_31:
     [v19[118] setObject:v20 forKey:v18];
 LABEL_32:
 
-    v38 = [v4 imageWithSymbolConfiguration:v20];
+    v38 = [iconImageWithoutConfiguration imageWithSymbolConfiguration:v20];
     v39 = self->_iconImage;
     self->_iconImage = v38;
 
@@ -328,22 +328,22 @@ LABEL_32:
   return contentColor;
 }
 
-- (id)_contentColorWhenHighlighted:(BOOL)a3
+- (id)_contentColorWhenHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
-  v5 = [(PXCuratedLibraryOverlayButtonConfiguration *)self actionPerformer];
-  if (v5 || ([(PXCuratedLibraryOverlayButtonConfiguration *)self actionHandler], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
+  highlightedCopy = highlighted;
+  actionPerformer = [(PXCuratedLibraryOverlayButtonConfiguration *)self actionPerformer];
+  if (actionPerformer || ([(PXCuratedLibraryOverlayButtonConfiguration *)self actionHandler], (actionPerformer = objc_claimAutoreleasedReturnValue()) != 0))
   {
   }
 
   else
   {
-    v11 = [(PXCuratedLibraryOverlayButtonConfiguration *)self menuActionHandler];
+    menuActionHandler = [(PXCuratedLibraryOverlayButtonConfiguration *)self menuActionHandler];
 
-    if (!v11)
+    if (!menuActionHandler)
     {
-      v12 = [MEMORY[0x1E69DC888] labelColor];
-      v7 = [v12 colorWithAlphaComponent:0.3];
+      labelColor = [MEMORY[0x1E69DC888] labelColor];
+      v7 = [labelColor colorWithAlphaComponent:0.3];
 
       goto LABEL_12;
     }
@@ -351,11 +351,11 @@ LABEL_32:
 
   if ([(PXCuratedLibraryOverlayButtonConfiguration *)self style]== 8)
   {
-    v6 = [MEMORY[0x1E69DC888] labelColor];
-    v7 = v6;
-    if (!v3)
+    labelColor2 = [MEMORY[0x1E69DC888] labelColor];
+    v7 = labelColor2;
+    if (!highlightedCopy)
     {
-      v8 = [v6 colorWithAlphaComponent:0.5];
+      v8 = [labelColor2 colorWithAlphaComponent:0.5];
 
       v7 = v8;
     }
@@ -363,17 +363,17 @@ LABEL_32:
 
   else
   {
-    if ([(PXCuratedLibraryOverlayButtonConfiguration *)self style]== 10 || !v3)
+    if ([(PXCuratedLibraryOverlayButtonConfiguration *)self style]== 10 || !highlightedCopy)
     {
-      v9 = [(PXCuratedLibraryOverlayButtonConfiguration *)self tintColor];
+      tintColor = [(PXCuratedLibraryOverlayButtonConfiguration *)self tintColor];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E69DC888] _vibrantLightFillBurnColor];
+      tintColor = [MEMORY[0x1E69DC888] _vibrantLightFillBurnColor];
     }
 
-    v7 = v9;
+    v7 = tintColor;
   }
 
 LABEL_12:
@@ -381,15 +381,15 @@ LABEL_12:
   return v7;
 }
 
-- (void)setTintColor:(id)a3
+- (void)setTintColor:(id)color
 {
-  v4 = a3;
-  if (self->_tintColor != v4)
+  colorCopy = color;
+  if (self->_tintColor != colorCopy)
   {
-    v7 = v4;
-    if (v4)
+    v7 = colorCopy;
+    if (colorCopy)
     {
-      v5 = v4;
+      v5 = colorCopy;
     }
 
     else
@@ -400,7 +400,7 @@ LABEL_12:
     tintColor = self->_tintColor;
     self->_tintColor = v5;
 
-    v4 = v7;
+    colorCopy = v7;
   }
 }
 
@@ -414,7 +414,7 @@ LABEL_12:
   [(PXCuratedLibraryOverlayButtonConfiguration *)self iconImageWithoutConfiguration];
   [(PXCuratedLibraryOverlayButtonConfiguration *)self tintedIconImage];
 
-  v3 = [(PXCuratedLibraryOverlayButtonConfiguration *)self highlightedIconImage];
+  highlightedIconImage = [(PXCuratedLibraryOverlayButtonConfiguration *)self highlightedIconImage];
 }
 
 - (unint64_t)hash
@@ -424,10 +424,10 @@ LABEL_12:
   v32 = v4;
   v27 = v6;
   v29 = v5;
-  v37 = [(PXCuratedLibraryOverlayButtonConfiguration *)self style];
-  v34 = [(PXCuratedLibraryOverlayButtonConfiguration *)self segment];
-  v38 = [(PXCuratedLibraryOverlayButtonConfiguration *)self systemImageName];
-  v31 = [v38 hash];
+  style = [(PXCuratedLibraryOverlayButtonConfiguration *)self style];
+  segment = [(PXCuratedLibraryOverlayButtonConfiguration *)self segment];
+  systemImageName = [(PXCuratedLibraryOverlayButtonConfiguration *)self systemImageName];
+  v31 = [systemImageName hash];
   v7.f64[0] = v29;
   v7.f64[1] = v27;
   v8.f64[0] = v35;
@@ -435,32 +435,32 @@ LABEL_12:
   v9 = vdupq_n_s64(0x4059000000000000uLL);
   v26 = vcvtq_u64_f64(vmulq_f64(v8, v9));
   v28 = vcvtq_u64_f64(vmulq_f64(v7, v9));
-  v36 = [(PXCuratedLibraryOverlayButtonConfiguration *)self title];
-  v25 = [v36 hash];
-  v33 = [(PXCuratedLibraryOverlayButtonConfiguration *)self possibleTitles];
-  v24 = [v33 hash];
-  v30 = [(PXCuratedLibraryOverlayButtonConfiguration *)self caption];
-  v23 = [v30 hash];
-  v10 = [(PXCuratedLibraryOverlayButtonConfiguration *)self actionPerformer];
-  v11 = [v10 hash];
-  v12 = [(PXCuratedLibraryOverlayButtonConfiguration *)self actionHandler];
-  v13 = [(PXCuratedLibraryOverlayButtonConfiguration *)self spec];
-  v14 = [v13 hash];
-  v15 = [(PXCuratedLibraryOverlayButtonConfiguration *)self tintColor];
-  v16 = [v15 hash];
-  v17 = [(PXCuratedLibraryOverlayButtonConfiguration *)self backgroundColor];
-  v18 = [v17 hash];
-  v19 = [(PXCuratedLibraryOverlayButtonConfiguration *)self forcePointerInteractionEnabled];
+  title = [(PXCuratedLibraryOverlayButtonConfiguration *)self title];
+  v25 = [title hash];
+  possibleTitles = [(PXCuratedLibraryOverlayButtonConfiguration *)self possibleTitles];
+  v24 = [possibleTitles hash];
+  caption = [(PXCuratedLibraryOverlayButtonConfiguration *)self caption];
+  v23 = [caption hash];
+  actionPerformer = [(PXCuratedLibraryOverlayButtonConfiguration *)self actionPerformer];
+  v11 = [actionPerformer hash];
+  actionHandler = [(PXCuratedLibraryOverlayButtonConfiguration *)self actionHandler];
+  spec = [(PXCuratedLibraryOverlayButtonConfiguration *)self spec];
+  v14 = [spec hash];
+  tintColor = [(PXCuratedLibraryOverlayButtonConfiguration *)self tintColor];
+  v16 = [tintColor hash];
+  backgroundColor = [(PXCuratedLibraryOverlayButtonConfiguration *)self backgroundColor];
+  v18 = [backgroundColor hash];
+  forcePointerInteractionEnabled = [(PXCuratedLibraryOverlayButtonConfiguration *)self forcePointerInteractionEnabled];
   v20 = veorq_s8(v26, v28);
-  v21 = *&veor_s8(*v20.i8, *&vextq_s8(v20, v20, 8uLL)) ^ v19;
+  v21 = *&veor_s8(*v20.i8, *&vextq_s8(v20, v20, 8uLL)) ^ forcePointerInteractionEnabled;
 
-  return v21 ^ v18 ^ v16 ^ v14 ^ v12 ^ v11 ^ v23 ^ v24 ^ v25 ^ v31 ^ v37 ^ v34;
+  return v21 ^ v18 ^ v16 ^ v14 ^ actionHandler ^ v11 ^ v23 ^ v24 ^ v25 ^ v31 ^ style ^ segment;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -470,12 +470,12 @@ LABEL_12:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(PXCuratedLibraryOverlayButtonConfiguration *)v5 style];
-      if (v6 == [(PXCuratedLibraryOverlayButtonConfiguration *)self style])
+      v5 = equalCopy;
+      style = [(PXCuratedLibraryOverlayButtonConfiguration *)v5 style];
+      if (style == [(PXCuratedLibraryOverlayButtonConfiguration *)self style])
       {
-        v7 = [(PXCuratedLibraryOverlayButtonConfiguration *)self segment];
-        if (v7 == [(PXCuratedLibraryOverlayButtonConfiguration *)v5 segment])
+        segment = [(PXCuratedLibraryOverlayButtonConfiguration *)self segment];
+        if (segment == [(PXCuratedLibraryOverlayButtonConfiguration *)v5 segment])
         {
           [(PXCuratedLibraryOverlayButtonConfiguration *)self imageEdgeInsets];
           [(PXCuratedLibraryOverlayButtonConfiguration *)v5 imageEdgeInsets];
@@ -495,11 +495,11 @@ LABEL_12:
   return v8;
 }
 
-- (PXCuratedLibraryOverlayButtonConfiguration)initWithSystemImageName:(id)a3 title:(id)a4 spec:(id)a5 buttonType:(int64_t)a6
+- (PXCuratedLibraryOverlayButtonConfiguration)initWithSystemImageName:(id)name title:(id)title spec:(id)spec buttonType:(int64_t)type
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  nameCopy = name;
+  titleCopy = title;
+  specCopy = spec;
   v29.receiver = self;
   v29.super_class = PXCuratedLibraryOverlayButtonConfiguration;
   v13 = [(PXCuratedLibraryOverlayButtonConfiguration *)&v29 init];
@@ -509,8 +509,8 @@ LABEL_12:
     goto LABEL_34;
   }
 
-  objc_storeStrong(&v13->_spec, a5);
-  v15 = [v11 copy];
+  objc_storeStrong(&v13->_spec, spec);
+  v15 = [titleCopy copy];
   title = v14->_title;
   v14->_title = v15;
 
@@ -520,8 +520,8 @@ LABEL_12:
   tintColor = v14->_tintColor;
   v14->_tintColor = v17;
 
-  v14->_buttonType = a6;
-  switch(a6)
+  v14->_buttonType = type;
+  switch(type)
   {
     case 1:
       v19 = @"PXCuratedLibraryEllipsisButtonAXLabel";
@@ -542,14 +542,14 @@ LABEL_10:
   accessibilityTitle = v14->_accessibilityTitle;
   v14->_accessibilityTitle = v20;
 
-  if (a6)
+  if (type)
   {
-    v22 = v12;
+    v22 = specCopy;
     v23 = v22;
     v24 = 0;
-    if (a6 > 3)
+    if (type > 3)
     {
-      switch(a6)
+      switch(type)
       {
         case 4:
           v24 = @"chevron.down";
@@ -565,19 +565,19 @@ LABEL_10:
 
     else
     {
-      switch(a6)
+      switch(type)
       {
         case 1:
           if ([v22 ellipsisButtonSpecialTreatment] && objc_msgSend(v23, "isFloating"))
           {
-            v25 = [v23 variant];
+            variant = [v23 variant];
             v26 = @"ellipsis";
-            if (v25 == 2)
+            if (variant == 2)
             {
               v26 = @"person.fill";
             }
 
-            if (v25 == 3)
+            if (variant == 3)
             {
               v26 = @"person.2.fill";
             }
@@ -603,7 +603,7 @@ LABEL_10:
 
   else
   {
-    v24 = [v10 copy];
+    v24 = [nameCopy copy];
   }
 
   systemImageName = v14->_systemImageName;
@@ -615,8 +615,8 @@ LABEL_34:
 
 - (PXCuratedLibraryOverlayButtonConfiguration)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryOverlayButton.m" lineNumber:367 description:{@"%s is not available as initializer", "-[PXCuratedLibraryOverlayButtonConfiguration init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryOverlayButton.m" lineNumber:367 description:{@"%s is not available as initializer", "-[PXCuratedLibraryOverlayButtonConfiguration init]"}];
 
   abort();
 }
@@ -640,47 +640,47 @@ void __62__PXCuratedLibraryOverlayButtonConfiguration_tintedImageCache__block_in
   tintedImageCache_cache = v0;
 }
 
-+ (id)configurationWithButtonType:(int64_t)a3 title:(id)a4 spec:(id)a5
++ (id)configurationWithButtonType:(int64_t)type title:(id)title spec:(id)spec
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [[PXCuratedLibraryOverlayButtonConfiguration alloc] initWithSystemImageName:0 title:v8 spec:v7 buttonType:a3];
+  specCopy = spec;
+  titleCopy = title;
+  v9 = [[PXCuratedLibraryOverlayButtonConfiguration alloc] initWithSystemImageName:0 title:titleCopy spec:specCopy buttonType:type];
 
   return v9;
 }
 
-+ (id)configurationWithButtonType:(int64_t)a3 spec:(id)a4
++ (id)configurationWithButtonType:(int64_t)type spec:(id)spec
 {
-  v5 = a4;
-  v6 = [[PXCuratedLibraryOverlayButtonConfiguration alloc] initWithSystemImageName:0 title:0 spec:v5 buttonType:a3];
+  specCopy = spec;
+  v6 = [[PXCuratedLibraryOverlayButtonConfiguration alloc] initWithSystemImageName:0 title:0 spec:specCopy buttonType:type];
 
   return v6;
 }
 
-+ (id)configurationWithSystemImageName:(id)a3 title:(id)a4 spec:(id)a5
++ (id)configurationWithSystemImageName:(id)name title:(id)title spec:(id)spec
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[PXCuratedLibraryOverlayButtonConfiguration alloc] initWithSystemImageName:v9 title:v8 spec:v7 buttonType:0];
+  specCopy = spec;
+  titleCopy = title;
+  nameCopy = name;
+  v10 = [[PXCuratedLibraryOverlayButtonConfiguration alloc] initWithSystemImageName:nameCopy title:titleCopy spec:specCopy buttonType:0];
 
   return v10;
 }
 
-+ (id)configurationWithTitle:(id)a3 spec:(id)a4
++ (id)configurationWithTitle:(id)title spec:(id)spec
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[PXCuratedLibraryOverlayButtonConfiguration alloc] initWithSystemImageName:0 title:v6 spec:v5 buttonType:0];
+  specCopy = spec;
+  titleCopy = title;
+  v7 = [[PXCuratedLibraryOverlayButtonConfiguration alloc] initWithSystemImageName:0 title:titleCopy spec:specCopy buttonType:0];
 
   return v7;
 }
 
-+ (id)configurationWithSystemImageName:(id)a3 spec:(id)a4
++ (id)configurationWithSystemImageName:(id)name spec:(id)spec
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[PXCuratedLibraryOverlayButtonConfiguration alloc] initWithSystemImageName:v6 title:0 spec:v5 buttonType:0];
+  specCopy = spec;
+  nameCopy = name;
+  v7 = [[PXCuratedLibraryOverlayButtonConfiguration alloc] initWithSystemImageName:nameCopy title:0 spec:specCopy buttonType:0];
 
   return v7;
 }

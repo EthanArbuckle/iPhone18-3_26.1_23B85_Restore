@@ -9,29 +9,29 @@
 - (id)acs_formattedRangeString
 {
   v2 = objc_opt_class();
-  v3 = [a1 currencyCode];
-  v4 = [v2 _currencySymbolForCode:v3];
+  currencyCode = [self currencyCode];
+  v4 = [v2 _currencySymbolForCode:currencyCode];
 
   if (acs_formattedRangeString_once != -1)
   {
     [INPriceRange(AssistantCardService) acs_formattedRangeString];
   }
 
-  v5 = [a1 currencyCode];
-  [acs_formattedRangeString_minimumPriceRangeCurrencyFormatter setCurrencyCode:v5];
+  currencyCode2 = [self currencyCode];
+  [acs_formattedRangeString_minimumPriceRangeCurrencyFormatter setCurrencyCode:currencyCode2];
 
   [acs_formattedRangeString_minimumPriceRangeCurrencyFormatter setCurrencySymbol:v4];
-  v6 = [a1 currencyCode];
-  [acs_formattedRangeString_maximumPriceRangeCurrencyFormatter setCurrencyCode:v6];
+  currencyCode3 = [self currencyCode];
+  [acs_formattedRangeString_maximumPriceRangeCurrencyFormatter setCurrencyCode:currencyCode3];
 
   [acs_formattedRangeString_maximumPriceRangeCurrencyFormatter setCurrencySymbol:0];
   v7 = acs_formattedRangeString_minimumPriceRangeCurrencyFormatter;
-  v8 = [a1 minimumPrice];
-  v9 = [v7 stringFromNumber:v8];
+  minimumPrice = [self minimumPrice];
+  v9 = [v7 stringFromNumber:minimumPrice];
 
   v10 = acs_formattedRangeString_maximumPriceRangeCurrencyFormatter;
-  v11 = [a1 maximumPrice];
-  v12 = [v10 stringFromNumber:v11];
+  maximumPrice = [self maximumPrice];
+  v12 = [v10 stringFromNumber:maximumPrice];
 
   v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%@", v9, v12];
 
@@ -96,27 +96,27 @@ LABEL_11:
   v4 = MEMORY[0x277CCABB8];
   v5 = a3;
   v6 = objc_alloc_init(v4);
-  v7 = [a1 _localeForCode:v5];
+  v7 = [self _localeForCode:v5];
 
   if (v7)
   {
     [v6 setLocale:v7];
     [v6 setNumberStyle:2];
-    v8 = [v6 currencySymbol];
-    if ([v8 length] >= 2)
+    currencySymbol = [v6 currencySymbol];
+    if ([currencySymbol length] >= 2)
     {
-      v9 = [v8 substringToIndex:1];
+      v9 = [currencySymbol substringToIndex:1];
 
-      v8 = v9;
+      currencySymbol = v9;
     }
   }
 
   else
   {
-    v8 = 0;
+    currencySymbol = 0;
   }
 
-  return v8;
+  return currencySymbol;
 }
 
 @end

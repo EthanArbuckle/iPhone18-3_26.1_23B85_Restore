@@ -1,20 +1,20 @@
 @interface CSLUIJiggleView
 + (id)makePositionAnimation;
 + (id)makeTransformAnimation;
-- (CSLUIJiggleView)initWithFrame:(CGRect)a3;
+- (CSLUIJiggleView)initWithFrame:(CGRect)frame;
 - (void)endJiggling;
-- (void)setFrame:(CGRect)a3;
-- (void)setJiggling:(BOOL)a3;
+- (void)setFrame:(CGRect)frame;
+- (void)setJiggling:(BOOL)jiggling;
 - (void)startJiggling;
 @end
 
 @implementation CSLUIJiggleView
 
-- (CSLUIJiggleView)initWithFrame:(CGRect)a3
+- (CSLUIJiggleView)initWithFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = CSLUIJiggleView;
-  result = [(CSLUIJiggleView *)&v4 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  result = [(CSLUIJiggleView *)&v4 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (result)
   {
     result->_isJiggling = 0;
@@ -23,11 +23,11 @@
   return result;
 }
 
-- (void)setJiggling:(BOOL)a3
+- (void)setJiggling:(BOOL)jiggling
 {
-  if (self->_isJiggling != a3)
+  if (self->_isJiggling != jiggling)
   {
-    if (a3)
+    if (jiggling)
     {
       [(CSLUIJiggleView *)self startJiggling];
     }
@@ -38,33 +38,33 @@
     }
   }
 
-  self->_isJiggling = a3;
+  self->_isJiggling = jiggling;
 }
 
 - (void)startJiggling
 {
-  v4 = [(CSLUIJiggleView *)self layer];
+  layer = [(CSLUIJiggleView *)self layer];
   v2 = +[CSLUIJiggleView makePositionAnimation];
-  [v4 addAnimation:v2 forKey:@"CSLUIJigglePosition"];
+  [layer addAnimation:v2 forKey:@"CSLUIJigglePosition"];
 
   v3 = +[CSLUIJiggleView makeTransformAnimation];
-  [v4 addAnimation:v3 forKey:@"CSLUIJiggleTransform"];
+  [layer addAnimation:v3 forKey:@"CSLUIJiggleTransform"];
 }
 
 - (void)endJiggling
 {
-  v3 = [(CSLUIJiggleView *)self layer];
-  [v3 removeAnimationForKey:@"CSLUIJigglePosition"];
-  [v3 removeAnimationForKey:@"CSLUIJiggleTransform"];
-  [v3 setPosition:{self->_unjitterPoint.x, self->_unjitterPoint.y}];
+  layer = [(CSLUIJiggleView *)self layer];
+  [layer removeAnimationForKey:@"CSLUIJigglePosition"];
+  [layer removeAnimationForKey:@"CSLUIJiggleTransform"];
+  [layer setPosition:{self->_unjitterPoint.x, self->_unjitterPoint.y}];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v18 = 0u;
   v19 = 0u;
   v17 = 0u;
@@ -78,8 +78,8 @@
   v15.receiver = self;
   v15.super_class = CSLUIJiggleView;
   [(CSLUIJiggleView *)&v15 setFrame:x, y, width, height];
-  v8 = [(CSLUIJiggleView *)self layer];
-  [v8 position];
+  layer = [(CSLUIJiggleView *)self layer];
+  [layer position];
   self->_unjitterPoint.x = v9;
   self->_unjitterPoint.y = v10;
 

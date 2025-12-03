@@ -1,11 +1,11 @@
 @interface DewConfiguration
 - (_TtC13transparencyd16DewConfiguration)init;
-- (_TtC13transparencyd16DewConfiguration)initWithSettings:(id)a3;
+- (_TtC13transparencyd16DewConfiguration)initWithSettings:(id)settings;
 @end
 
 @implementation DewConfiguration
 
-- (_TtC13transparencyd16DewConfiguration)initWithSettings:(id)a3
+- (_TtC13transparencyd16DewConfiguration)initWithSettings:(id)settings
 {
   ObjectType = swift_getObjectType();
   type metadata accessor for DewGlobalOverrides();
@@ -13,7 +13,7 @@
   swift_unknownObjectRetain();
   *(v6 + 16) = sub_1000031DC(&_swiftEmptyArrayStorage);
   *(v6 + 24) = 0;
-  v7 = (*(ObjectType + 104))(v6, a3);
+  v7 = (*(ObjectType + 104))(v6, settings);
   v8 = *((swift_isaMask & self->super.isa) + 0x30);
   v9 = *((swift_isaMask & self->super.isa) + 0x34);
   swift_deallocPartialClassInstance();

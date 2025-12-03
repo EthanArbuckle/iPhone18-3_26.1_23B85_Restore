@@ -1,15 +1,15 @@
 @interface BRCUploadSyncUpRequestsManager
 + (id)_fetchManagersDictionary;
-+ (id)defaultManagerWithPersonaIdentifier:(id)a3;
-- (BOOL)cancelRequestForIdentifier:(id)a3 error:(id *)a4;
-- (BOOL)finishRequestForIdentifer:(id)a3 finishError:(id)a4 error:(id *)a5;
-- (id)_initWithPersonaIdentifier:(id)a3;
-- (id)getProgressForIdentifier:(id)a3;
-- (void)_callFinishBlockOnDataRequest:(id)a3 finishError:(id)a4;
-- (void)_invalidateRequestsTableWithNewSource:(id)a3;
-- (void)dumpToContext:(id)a3;
-- (void)finishRequestForItemsInZoneRowID:(id)a3 finishError:(id)a4;
-- (void)invalidateRequestsOfClient:(id)a3;
++ (id)defaultManagerWithPersonaIdentifier:(id)identifier;
+- (BOOL)cancelRequestForIdentifier:(id)identifier error:(id *)error;
+- (BOOL)finishRequestForIdentifer:(id)identifer finishError:(id)error error:(id *)a5;
+- (id)_initWithPersonaIdentifier:(id)identifier;
+- (id)getProgressForIdentifier:(id)identifier;
+- (void)_callFinishBlockOnDataRequest:(id)request finishError:(id)error;
+- (void)_invalidateRequestsTableWithNewSource:(id)source;
+- (void)dumpToContext:(id)context;
+- (void)finishRequestForItemsInZoneRowID:(id)d finishError:(id)error;
+- (void)invalidateRequestsOfClient:(id)client;
 @end
 
 @implementation BRCUploadSyncUpRequestsManager
@@ -33,16 +33,16 @@ uint64_t __58__BRCUploadSyncUpRequestsManager__fetchManagersDictionary__block_in
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)_initWithPersonaIdentifier:(id)a3
+- (id)_initWithPersonaIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v14.receiver = self;
   v14.super_class = BRCUploadSyncUpRequestsManager;
   v6 = [(BRCUploadSyncUpRequestsManager *)&v14 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_personaIdentifer, a3);
+    objc_storeStrong(&v6->_personaIdentifer, identifier);
     v8 = objc_opt_new();
     requestsByItemGlobalID = v7->_requestsByItemGlobalID;
     v7->_requestsByItemGlobalID = v8;
@@ -58,60 +58,60 @@ uint64_t __58__BRCUploadSyncUpRequestsManager__fetchManagersDictionary__block_in
   return v7;
 }
 
-+ (id)defaultManagerWithPersonaIdentifier:(id)a3
++ (id)defaultManagerWithPersonaIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = [objc_opt_class() _fetchManagersDictionary];
-  objc_sync_enter(v4);
-  v5 = [v4 objectForKeyedSubscript:v3];
+  identifierCopy = identifier;
+  _fetchManagersDictionary = [objc_opt_class() _fetchManagersDictionary];
+  objc_sync_enter(_fetchManagersDictionary);
+  v5 = [_fetchManagersDictionary objectForKeyedSubscript:identifierCopy];
   if (!v5)
   {
-    v5 = [[BRCUploadSyncUpRequestsManager alloc] _initWithPersonaIdentifier:v3];
-    [v4 setObject:v5 forKeyedSubscript:v3];
+    v5 = [[BRCUploadSyncUpRequestsManager alloc] _initWithPersonaIdentifier:identifierCopy];
+    [_fetchManagersDictionary setObject:v5 forKeyedSubscript:identifierCopy];
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(_fetchManagersDictionary);
 
   return v5;
 }
 
-- (void)_callFinishBlockOnDataRequest:(id)a3 finishError:(id)a4
+- (void)_callFinishBlockOnDataRequest:(id)request finishError:(id)error
 {
-  if (a3)
+  if (request)
   {
-    v5 = a4;
-    v6 = [a3 finishBlock];
-    v6[2](v6, v5);
+    errorCopy = error;
+    finishBlock = [request finishBlock];
+    finishBlock[2](finishBlock, errorCopy);
   }
 }
 
-- (BOOL)finishRequestForIdentifer:(id)a3 finishError:(id)a4 error:(id *)a5
+- (BOOL)finishRequestForIdentifer:(id)identifer finishError:(id)error error:(id *)a5
 {
   v35 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = self;
-  objc_sync_enter(v10);
-  v11 = [(NSMutableDictionary *)v10->_requestsByItemGlobalID objectForKey:v8];
+  identiferCopy = identifer;
+  errorCopy = error;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v11 = [(NSMutableDictionary *)selfCopy->_requestsByItemGlobalID objectForKey:identiferCopy];
   v12 = [v11 copy];
 
-  [(NSMutableDictionary *)v10->_requestsByItemGlobalID removeObjectForKey:v8];
-  zoneIDToItemIDs = v10->_zoneIDToItemIDs;
-  v14 = [v8 zoneRowID];
-  v15 = [(NSMutableDictionary *)zoneIDToItemIDs objectForKey:v14];
+  [(NSMutableDictionary *)selfCopy->_requestsByItemGlobalID removeObjectForKey:identiferCopy];
+  zoneIDToItemIDs = selfCopy->_zoneIDToItemIDs;
+  zoneRowID = [identiferCopy zoneRowID];
+  v15 = [(NSMutableDictionary *)zoneIDToItemIDs objectForKey:zoneRowID];
 
   if (v15)
   {
-    [v15 removeObject:v8];
+    [v15 removeObject:identiferCopy];
     if (![v15 count])
     {
-      v16 = v10->_zoneIDToItemIDs;
-      v17 = [v8 zoneRowID];
-      [(NSMutableDictionary *)v16 removeObjectForKey:v17];
+      v16 = selfCopy->_zoneIDToItemIDs;
+      zoneRowID2 = [identiferCopy zoneRowID];
+      [(NSMutableDictionary *)v16 removeObjectForKey:zoneRowID2];
     }
   }
 
-  objc_sync_exit(v10);
+  objc_sync_exit(selfCopy);
   if (v12)
   {
     v18 = brc_bread_crumbs();
@@ -119,20 +119,20 @@ uint64_t __58__BRCUploadSyncUpRequestsManager__fetchManagersDictionary__block_in
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412802;
-      v28 = v8;
+      v28 = identiferCopy;
       v29 = 2112;
-      v30 = v9;
+      v30 = errorCopy;
       v31 = 2112;
       v32 = v18;
       _os_log_debug_impl(&dword_223E7A000, v19, OS_LOG_TYPE_DEBUG, "[DEBUG] Calling finish block for %@ with %@%@", buf, 0x20u);
     }
 
-    [(BRCUploadSyncUpRequestsManager *)v10 _callFinishBlockOnDataRequest:v12 finishError:v9];
+    [(BRCUploadSyncUpRequestsManager *)selfCopy _callFinishBlockOnDataRequest:v12 finishError:errorCopy];
   }
 
   else
   {
-    v20 = [MEMORY[0x277CCA9B8] br_errorWithDomain:*MEMORY[0x277CFACB0] code:1007 description:{@"there is no request for %@", v8}];
+    v20 = [MEMORY[0x277CCA9B8] br_errorWithDomain:*MEMORY[0x277CFACB0] code:1007 description:{@"there is no request for %@", identiferCopy}];
     if (v20)
     {
       v21 = brc_bread_crumbs();
@@ -168,23 +168,23 @@ uint64_t __58__BRCUploadSyncUpRequestsManager__fetchManagersDictionary__block_in
   return v12 != 0;
 }
 
-- (BOOL)cancelRequestForIdentifier:(id)a3 error:(id *)a4
+- (BOOL)cancelRequestForIdentifier:(id)identifier error:(id *)error
 {
   v6 = MEMORY[0x277CCA9B8];
-  v7 = a3;
-  v8 = [v6 brc_errorOperationCancelled];
-  LOBYTE(a4) = [(BRCUploadSyncUpRequestsManager *)self finishRequestForIdentifer:v7 finishError:v8 error:a4];
+  identifierCopy = identifier;
+  brc_errorOperationCancelled = [v6 brc_errorOperationCancelled];
+  LOBYTE(error) = [(BRCUploadSyncUpRequestsManager *)self finishRequestForIdentifer:identifierCopy finishError:brc_errorOperationCancelled error:error];
 
-  return a4;
+  return error;
 }
 
-- (void)finishRequestForItemsInZoneRowID:(id)a3 finishError:(id)a4
+- (void)finishRequestForItemsInZoneRowID:(id)d finishError:(id)error
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  objc_sync_enter(v8);
+  dCopy = d;
+  errorCopy = error;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v9 = brc_bread_crumbs();
   v10 = brc_default_log();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -192,7 +192,7 @@ uint64_t __58__BRCUploadSyncUpRequestsManager__fetchManagersDictionary__block_in
     [BRCUploadSyncUpRequestsManager finishRequestForItemsInZoneRowID:finishError:];
   }
 
-  v11 = [(NSMutableDictionary *)v8->_zoneIDToItemIDs objectForKey:v6];
+  v11 = [(NSMutableDictionary *)selfCopy->_zoneIDToItemIDs objectForKey:dCopy];
   v12 = v11;
   if (v11)
   {
@@ -215,8 +215,8 @@ uint64_t __58__BRCUploadSyncUpRequestsManager__fetchManagersDictionary__block_in
             objc_enumerationMutation(v13);
           }
 
-          v17 = [(NSMutableDictionary *)v8->_requestsByItemGlobalID objectForKey:*(*(&v19 + 1) + 8 * v16), v19];
-          [(BRCUploadSyncUpRequestsManager *)v8 _callFinishBlockOnDataRequest:v17 finishError:v7];
+          v17 = [(NSMutableDictionary *)selfCopy->_requestsByItemGlobalID objectForKey:*(*(&v19 + 1) + 8 * v16), v19];
+          [(BRCUploadSyncUpRequestsManager *)selfCopy _callFinishBlockOnDataRequest:v17 finishError:errorCopy];
 
           ++v16;
         }
@@ -228,29 +228,29 @@ uint64_t __58__BRCUploadSyncUpRequestsManager__fetchManagersDictionary__block_in
       while (v14);
     }
 
-    [(NSMutableDictionary *)v8->_requestsByItemGlobalID removeObjectsForKeys:v13];
+    [(NSMutableDictionary *)selfCopy->_requestsByItemGlobalID removeObjectsForKeys:v13];
   }
 
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (id)getProgressForIdentifier:(id)a3
+- (id)getProgressForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(NSMutableDictionary *)v5->_requestsByItemGlobalID objectForKey:v4];
-  v7 = [v6 progress];
+  identifierCopy = identifier;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [(NSMutableDictionary *)selfCopy->_requestsByItemGlobalID objectForKey:identifierCopy];
+  progress = [v6 progress];
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
-  return v7;
+  return progress;
 }
 
-- (void)_invalidateRequestsTableWithNewSource:(id)a3
+- (void)_invalidateRequestsTableWithNewSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   v5 = objc_opt_new();
   requestsByItemGlobalID = self->_requestsByItemGlobalID;
   self->_requestsByItemGlobalID = v5;
@@ -260,15 +260,15 @@ uint64_t __58__BRCUploadSyncUpRequestsManager__fetchManagersDictionary__block_in
   self->_zoneIDToItemIDs = v7;
 
   latestSourceIdentifier = self->_latestSourceIdentifier;
-  self->_latestSourceIdentifier = v4;
+  self->_latestSourceIdentifier = sourceCopy;
 }
 
-- (void)invalidateRequestsOfClient:(id)a3
+- (void)invalidateRequestsOfClient:(id)client
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if ([v4 br_isEqualToNumber:v5->_latestSourceIdentifier])
+  clientCopy = client;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([clientCopy br_isEqualToNumber:selfCopy->_latestSourceIdentifier])
   {
     v6 = brc_bread_crumbs();
     v7 = brc_default_log();
@@ -277,35 +277,35 @@ uint64_t __58__BRCUploadSyncUpRequestsManager__fetchManagersDictionary__block_in
       [BRCUploadSyncUpRequestsManager invalidateRequestsOfClient:];
     }
 
-    [(BRCUploadSyncUpRequestsManager *)v5 _invalidateRequestsTableWithNewSource:0];
+    [(BRCUploadSyncUpRequestsManager *)selfCopy _invalidateRequestsTableWithNewSource:0];
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)dumpToContext:(id)a3
+- (void)dumpToContext:(id)context
 {
-  v4 = a3;
-  [v4 writeLineWithFormat:@"fpfs modifications tracked requests"];
-  [v4 writeLineWithFormat:@"-----------------------------------------------------"];
-  v5 = self;
-  objc_sync_enter(v5);
-  [v4 writeLineWithFormat:@"tracked requests of client (%lu) : (%lu):", -[NSNumber unsignedLongValue](v5->_latestSourceIdentifier, "unsignedLongValue"), -[NSMutableDictionary count](v5->_requestsByItemGlobalID, "count")];
-  if ([(NSMutableDictionary *)v5->_requestsByItemGlobalID count])
+  contextCopy = context;
+  [contextCopy writeLineWithFormat:@"fpfs modifications tracked requests"];
+  [contextCopy writeLineWithFormat:@"-----------------------------------------------------"];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [contextCopy writeLineWithFormat:@"tracked requests of client (%lu) : (%lu):", -[NSNumber unsignedLongValue](selfCopy->_latestSourceIdentifier, "unsignedLongValue"), -[NSMutableDictionary count](selfCopy->_requestsByItemGlobalID, "count")];
+  if ([(NSMutableDictionary *)selfCopy->_requestsByItemGlobalID count])
   {
-    [v4 writeLineWithFormat:@"{"];
-    [v4 pushIndentation];
+    [contextCopy writeLineWithFormat:@"{"];
+    [contextCopy pushIndentation];
   }
 
-  requestsByItemGlobalID = v5->_requestsByItemGlobalID;
+  requestsByItemGlobalID = selfCopy->_requestsByItemGlobalID;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __48__BRCUploadSyncUpRequestsManager_dumpToContext___block_invoke;
   v8[3] = &unk_278507A18;
-  v7 = v4;
+  v7 = contextCopy;
   v9 = v7;
   [(NSMutableDictionary *)requestsByItemGlobalID enumerateKeysAndObjectsUsingBlock:v8];
-  if ([(NSMutableDictionary *)v5->_requestsByItemGlobalID count])
+  if ([(NSMutableDictionary *)selfCopy->_requestsByItemGlobalID count])
   {
     [v7 popIndentation];
     [v7 writeLineWithFormat:@"}"];
@@ -313,7 +313,7 @@ uint64_t __58__BRCUploadSyncUpRequestsManager__fetchManagersDictionary__block_in
 
   [v7 writeEmptyLine];
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 @end

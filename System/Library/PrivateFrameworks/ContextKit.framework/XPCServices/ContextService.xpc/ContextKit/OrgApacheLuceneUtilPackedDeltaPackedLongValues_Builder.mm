@@ -2,7 +2,7 @@
 + (void)initialize;
 - (id)build;
 - (void)dealloc;
-- (void)growWithInt:(int)a3;
+- (void)growWithInt:(int)int;
 @end
 
 @implementation OrgApacheLuceneUtilPackedDeltaPackedLongValues_Builder
@@ -26,13 +26,13 @@
   return v8;
 }
 
-- (void)growWithInt:(int)a3
+- (void)growWithInt:(int)int
 {
   v6.receiver = self;
   v6.super_class = OrgApacheLuceneUtilPackedDeltaPackedLongValues_Builder;
   [(OrgApacheLuceneUtilPackedPackedLongValues_Builder *)&v6 growWithInt:?];
   self->super.ramBytesUsed_ -= OrgApacheLuceneUtilRamUsageEstimator_sizeOfWithLongArray_(self->mins_);
-  v5 = JavaUtilArrays_copyOfWithLongArray_withInt_(self->mins_, a3);
+  v5 = JavaUtilArrays_copyOfWithLongArray_withInt_(self->mins_, int);
   JreStrongAssign(&self->mins_, v5);
   self->super.ramBytesUsed_ += OrgApacheLuceneUtilRamUsageEstimator_sizeOfWithLongArray_(self->mins_);
 }
@@ -46,7 +46,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = OrgApacheLuceneUtilPackedDeltaPackedLongValues_Builder_class_();
     qword_1005545B8 = OrgApacheLuceneUtilRamUsageEstimator_shallowSizeOfInstanceWithIOSClass_(v2);

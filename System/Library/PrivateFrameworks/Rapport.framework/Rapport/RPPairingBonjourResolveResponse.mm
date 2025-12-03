@@ -2,7 +2,7 @@
 - (NSData)serverPublicKey;
 - (NSUUID)bonjourServiceID;
 - (_TtC7Rapport31RPPairingBonjourResolveResponse)init;
-- (_TtC7Rapport31RPPairingBonjourResolveResponse)initWithServerPublicKey:(id)a3 bonjourServiceID:(id)a4;
+- (_TtC7Rapport31RPPairingBonjourResolveResponse)initWithServerPublicKey:(id)key bonjourServiceID:(id)d;
 @end
 
 @implementation RPPairingBonjourResolveResponse
@@ -32,7 +32,7 @@
   return v8;
 }
 
-- (_TtC7Rapport31RPPairingBonjourResolveResponse)initWithServerPublicKey:(id)a3 bonjourServiceID:(id)a4
+- (_TtC7Rapport31RPPairingBonjourResolveResponse)initWithServerPublicKey:(id)key bonjourServiceID:(id)d
 {
   ObjectType = swift_getObjectType();
   v8 = sub_1B6F22878();
@@ -40,8 +40,8 @@
   v10 = *(v9 + 64);
   MEMORY[0x1EEE9AC00]();
   v12 = &v21 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v13 = a3;
-  v14 = a4;
+  keyCopy = key;
+  dCopy = d;
   v15 = sub_1B6F227E8();
   v17 = v16;
 

@@ -1,59 +1,59 @@
 @interface NTKLeghornPOIFilterEditOption
-+ (id)optionAtIndex:(unint64_t)a3 forDevice:(id)a4;
-+ (id)optionForEverythingForDevice:(id)a3;
-+ (id)optionWithPOIFilter:(id)a3 forDevice:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (NTKLeghornPOIFilterEditOption)initWithCoder:(id)a3;
-- (NTKLeghornPOIFilterEditOption)initWithJSONObjectRepresentation:(id)a3 forDevice:(id)a4;
-- (NTKLeghornPOIFilterEditOption)initWithPOIFilter:(id)a3 forDevice:(id)a4;
++ (id)optionAtIndex:(unint64_t)index forDevice:(id)device;
++ (id)optionForEverythingForDevice:(id)device;
++ (id)optionWithPOIFilter:(id)filter forDevice:(id)device;
+- (BOOL)isEqual:(id)equal;
+- (NTKLeghornPOIFilterEditOption)initWithCoder:(id)coder;
+- (NTKLeghornPOIFilterEditOption)initWithJSONObjectRepresentation:(id)representation forDevice:(id)device;
+- (NTKLeghornPOIFilterEditOption)initWithPOIFilter:(id)filter forDevice:(id)device;
 - (id)JSONObjectRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NTKLeghornPOIFilterEditOption
 
-- (NTKLeghornPOIFilterEditOption)initWithPOIFilter:(id)a3 forDevice:(id)a4
+- (NTKLeghornPOIFilterEditOption)initWithPOIFilter:(id)filter forDevice:(id)device
 {
-  v7 = a3;
+  filterCopy = filter;
   v11.receiver = self;
   v11.super_class = NTKLeghornPOIFilterEditOption;
-  v8 = [(NTKEditOption *)&v11 initWithDevice:a4];
+  v8 = [(NTKEditOption *)&v11 initWithDevice:device];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_filter, a3);
+    objc_storeStrong(&v8->_filter, filter);
   }
 
   return v9;
 }
 
-+ (id)optionWithPOIFilter:(id)a3 forDevice:(id)a4
++ (id)optionWithPOIFilter:(id)filter forDevice:(id)device
 {
-  v5 = a4;
-  v6 = a3;
+  deviceCopy = device;
+  filterCopy = filter;
   v7 = [NTKLeghornPOIFilterEditOption alloc];
-  v10 = objc_msgSend_initWithPOIFilter_forDevice_(v7, v8, v9, v6, v5);
+  v10 = objc_msgSend_initWithPOIFilter_forDevice_(v7, v8, v9, filterCopy, deviceCopy);
 
   return v10;
 }
 
-+ (id)optionForEverythingForDevice:(id)a3
++ (id)optionForEverythingForDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v7 = objc_msgSend_all(NTKLeghornPOIFilter, v5, v6);
-  v10 = objc_msgSend_optionWithPOIFilter_forDevice_(a1, v8, v9, v7, v4);
+  v10 = objc_msgSend_optionWithPOIFilter_forDevice_(self, v8, v9, v7, deviceCopy);
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    isEqual = objc_msgSend_isEqual_(self->_filter, v5, v6, v4[2]);
+    isEqual = objc_msgSend_isEqual_(self->_filter, v5, v6, equalCopy[2]);
   }
 
   else
@@ -71,25 +71,25 @@
   return [(NTKLeghornPOIFilterEditOption *)&v3 hash];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v10.receiver = self;
   v10.super_class = NTKLeghornPOIFilterEditOption;
-  v4 = a3;
-  [(NTKEditOption *)&v10 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(NTKEditOption *)&v10 encodeWithCoder:coderCopy];
   v7 = objc_msgSend_dictionaryValue(self->_filter, v5, v6, v10.receiver, v10.super_class);
-  objc_msgSend_encodeObject_forKey_(v4, v8, v9, v7, @"filter");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v8, v9, v7, @"filter");
 }
 
-- (NTKLeghornPOIFilterEditOption)initWithCoder:(id)a3
+- (NTKLeghornPOIFilterEditOption)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = NTKLeghornPOIFilterEditOption;
-  v6 = [(NTKEditOption *)&v14 initWithCoder:v4];
+  v6 = [(NTKEditOption *)&v14 initWithCoder:coderCopy];
   if (v6)
   {
-    v8 = objc_msgSend_decodeObjectForKey_(v4, v5, v7, @"filter");
+    v8 = objc_msgSend_decodeObjectForKey_(coderCopy, v5, v7, @"filter");
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -149,19 +149,19 @@
   return v13;
 }
 
-- (NTKLeghornPOIFilterEditOption)initWithJSONObjectRepresentation:(id)a3 forDevice:(id)a4
+- (NTKLeghornPOIFilterEditOption)initWithJSONObjectRepresentation:(id)representation forDevice:(id)device
 {
-  v6 = a3;
-  v9 = objc_msgSend_initWithDevice_(self, v7, v8, a4);
+  representationCopy = representation;
+  v9 = objc_msgSend_initWithDevice_(self, v7, v8, device);
   if (v9)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      objc_msgSend_raise_format_(MEMORY[0x277CBEAD8], v10, v11, *MEMORY[0x277CBE660], @"object must be a string - invalid value: %@", v6);
+      objc_msgSend_raise_format_(MEMORY[0x277CBEAD8], v10, v11, *MEMORY[0x277CBE660], @"object must be a string - invalid value: %@", representationCopy);
     }
 
-    v12 = objc_msgSend_dataUsingEncoding_(v6, v10, v11, 4);
+    v12 = objc_msgSend_dataUsingEncoding_(representationCopy, v10, v11, 4);
     v15 = objc_msgSend_JSONObjectWithData_options_error_(MEMORY[0x277CCAAA0], v13, v14, v12, 1, 0);
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -181,11 +181,11 @@
   return v9;
 }
 
-+ (id)optionAtIndex:(unint64_t)a3 forDevice:(id)a4
++ (id)optionAtIndex:(unint64_t)index forDevice:(id)device
 {
-  v4 = a4;
+  deviceCopy = device;
   v5 = objc_opt_class();
-  v8 = objc_msgSend_optionForEverythingForDevice_(v5, v6, v7, v4);
+  v8 = objc_msgSend_optionForEverythingForDevice_(v5, v6, v7, deviceCopy);
 
   return v8;
 }

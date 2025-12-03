@@ -14,97 +14,97 @@
 
 - (id)atxUserNotification
 {
-  v2 = [a1 uuid];
+  uuid = [self uuid];
 
-  if (v2)
+  if (uuid)
   {
     v3 = objc_alloc(MEMORY[0x277CEB958]);
-    v4 = [a1 uuid];
-    v5 = [a1 content];
-    v6 = [v5 date];
-    [v6 timeIntervalSinceReferenceDate];
-    v2 = [v3 initWithUUID:v4 timestamp:?];
+    uuid2 = [self uuid];
+    content = [self content];
+    date = [content date];
+    [date timeIntervalSinceReferenceDate];
+    uuid = [v3 initWithUUID:uuid2 timestamp:?];
 
-    v7 = [a1 notificationIdentifier];
-    [v2 setNotificationID:v7];
+    notificationIdentifier = [self notificationIdentifier];
+    [uuid setNotificationID:notificationIdentifier];
 
-    v8 = [a1 context];
-    v9 = [v8 objectForKey:@"recordDate"];
-    [v2 setRecordDate:v9];
+    context = [self context];
+    v9 = [context objectForKey:@"recordDate"];
+    [uuid setRecordDate:v9];
 
-    v10 = [a1 content];
-    v11 = [v10 title];
-    [v2 setTitle:v11];
+    content2 = [self content];
+    title = [content2 title];
+    [uuid setTitle:title];
 
-    v12 = [a1 content];
-    v13 = [v12 subtitle];
-    [v2 setSubtitle:v13];
+    content3 = [self content];
+    subtitle = [content3 subtitle];
+    [uuid setSubtitle:subtitle];
 
-    v14 = [a1 content];
-    v15 = [v14 message];
-    [v2 setBody:v15];
+    content4 = [self content];
+    message = [content4 message];
+    [uuid setBody:message];
 
-    v16 = [a1 sectionIdentifier];
-    [v2 setBundleID:v16];
+    sectionIdentifier = [self sectionIdentifier];
+    [uuid setBundleID:sectionIdentifier];
 
-    v17 = [a1 sectionIdentifier];
-    [v2 setSectionID:v17];
+    sectionIdentifier2 = [self sectionIdentifier];
+    [uuid setSectionID:sectionIdentifier2];
 
-    v18 = [a1 uniqueThreadIdentifier];
-    [v2 setThreadID:v18];
+    uniqueThreadIdentifier = [self uniqueThreadIdentifier];
+    [uuid setThreadID:uniqueThreadIdentifier];
 
-    v19 = [a1 _communicationContactIdentifiers];
-    [v2 setContactIDs:v19];
+    _communicationContactIdentifiers = [self _communicationContactIdentifiers];
+    [uuid setContactIDs:_communicationContactIdentifiers];
 
-    v20 = [a1 content];
-    v21 = [v20 contentType];
+    content5 = [self content];
+    contentType = [content5 contentType];
     v22 = *MEMORY[0x277CE2160];
-    if ([v21 isEqualToString:*MEMORY[0x277CE2160]])
+    if ([contentType isEqualToString:*MEMORY[0x277CE2160]])
     {
-      [v2 setIsMessage:1];
+      [uuid setIsMessage:1];
     }
 
     else
     {
-      v23 = [a1 content];
-      v24 = [v23 contentType];
-      [v2 setIsMessage:{objc_msgSend(v24, "isEqualToString:", *MEMORY[0x277CE2158])}];
+      content6 = [self content];
+      contentType2 = [content6 contentType];
+      [uuid setIsMessage:{objc_msgSend(contentType2, "isEqualToString:", *MEMORY[0x277CE2158])}];
     }
 
-    v25 = [a1 content];
-    v26 = [v25 contentType];
-    [v2 setIsGroupMessage:{objc_msgSend(v26, "isEqualToString:", v22)}];
+    content7 = [self content];
+    contentType3 = [content7 contentType];
+    [uuid setIsGroupMessage:{objc_msgSend(contentType3, "isEqualToString:", v22)}];
 
-    [v2 setUrgency:{objc_msgSend(a1, "_atxUrgencyFromInterruptionLevel:", objc_msgSend(a1, "interruptionLevel"))}];
-    [v2 setAttachmentType:{objc_msgSend(a1, "_atxAttachmentType")}];
-    [a1 relevanceScore];
-    [v2 setAppSpecifiedScore:v27];
-    [v2 setIsPartOfStack:0];
-    [v2 setIsStackSummary:0];
-    v28 = [a1 summary];
-    [v2 setSummary:v28];
+    [uuid setUrgency:{objc_msgSend(self, "_atxUrgencyFromInterruptionLevel:", objc_msgSend(self, "interruptionLevel"))}];
+    [uuid setAttachmentType:{objc_msgSend(self, "_atxAttachmentType")}];
+    [self relevanceScore];
+    [uuid setAppSpecifiedScore:v27];
+    [uuid setIsPartOfStack:0];
+    [uuid setIsStackSummary:0];
+    summary = [self summary];
+    [uuid setSummary:summary];
 
-    [v2 setIsSummarized:{objc_msgSend(a1, "isSummarized")}];
-    [v2 setPriorityStatus:{objc_msgSend(a1, "_atxPriorityStatusFromNCNotificationRequestPriorityStatus:", objc_msgSend(a1, "priorityStatus"))}];
-    [v2 setSummaryStatus:{objc_msgSend(a1, "_atxSummaryStatusFromNCNotificationRequestSummaryStatus:", objc_msgSend(a1, "summaryStatus"))}];
-    [v2 setIsNotificationSummaryEnabled:{objc_msgSend(a1, "isSummaryEnabled")}];
-    [v2 setIsPriorityNotificationEnabled:{objc_msgSend(a1, "isPriorityNotificationsEnabled")}];
+    [uuid setIsSummarized:{objc_msgSend(self, "isSummarized")}];
+    [uuid setPriorityStatus:{objc_msgSend(self, "_atxPriorityStatusFromNCNotificationRequestPriorityStatus:", objc_msgSend(self, "priorityStatus"))}];
+    [uuid setSummaryStatus:{objc_msgSend(self, "_atxSummaryStatusFromNCNotificationRequestSummaryStatus:", objc_msgSend(self, "summaryStatus"))}];
+    [uuid setIsNotificationSummaryEnabled:{objc_msgSend(self, "isSummaryEnabled")}];
+    [uuid setIsPriorityNotificationEnabled:{objc_msgSend(self, "isPriorityNotificationsEnabled")}];
   }
 
-  return v2;
+  return uuid;
 }
 
 - (id)_communicationContactIdentifiers
 {
-  v1 = [a1 content];
-  v2 = [v1 communicationContext];
-  v3 = [v2 sender];
-  v4 = [v3 cnContactIdentifier];
+  content = [self content];
+  communicationContext = [content communicationContext];
+  sender = [communicationContext sender];
+  cnContactIdentifier = [sender cnContactIdentifier];
 
-  if (v4)
+  if (cnContactIdentifier)
   {
     v5 = objc_opt_new();
-    [v5 addObject:v4];
+    [v5 addObject:cnContactIdentifier];
   }
 
   else
@@ -117,15 +117,15 @@
 
 - (uint64_t)_atxAttachmentType
 {
-  v1 = [a1 userNotification];
-  v2 = [v1 request];
-  v3 = [v2 content];
-  v4 = [v3 attachments];
-  v5 = [v4 firstObject];
+  userNotification = [self userNotification];
+  request = [userNotification request];
+  content = [request content];
+  attachments = [content attachments];
+  firstObject = [attachments firstObject];
 
-  if (v5)
+  if (firstObject)
   {
-    v6 = [v5 type];
+    type = [firstObject type];
     v7 = UNNotificationAttachmentFamilyFromTypeIdentifier();
 
     if ((v7 - 1) > 2)
@@ -149,20 +149,20 @@
 
 - (id)summary
 {
-  v1 = [a1 content];
-  v2 = [v1 summary];
-  v3 = [v2 string];
+  content = [self content];
+  summary = [content summary];
+  string = [summary string];
 
-  return v3;
+  return string;
 }
 
 - (BOOL)isSummarized
 {
-  v1 = [a1 summary];
-  v2 = v1;
-  if (v1)
+  summary = [self summary];
+  v2 = summary;
+  if (summary)
   {
-    v3 = [v1 length] != 0;
+    v3 = [summary length] != 0;
   }
 
   else
@@ -175,10 +175,10 @@
 
 - (uint64_t)isSummaryEnabled
 {
-  v1 = [a1 options];
-  v2 = [v1 canShowSummary];
+  options = [self options];
+  canShowSummary = [options canShowSummary];
 
-  return v2;
+  return canShowSummary;
 }
 
 - (uint64_t)_atxUrgencyFromInterruptionLevel:()ATXUserNotificationAdditions

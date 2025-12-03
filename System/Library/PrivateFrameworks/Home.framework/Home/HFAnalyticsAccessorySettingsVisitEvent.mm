@@ -1,19 +1,19 @@
 @interface HFAnalyticsAccessorySettingsVisitEvent
-- (HFAnalyticsAccessorySettingsVisitEvent)initWithData:(id)a3;
+- (HFAnalyticsAccessorySettingsVisitEvent)initWithData:(id)data;
 - (id)payload;
 @end
 
 @implementation HFAnalyticsAccessorySettingsVisitEvent
 
-- (HFAnalyticsAccessorySettingsVisitEvent)initWithData:(id)a3
+- (HFAnalyticsAccessorySettingsVisitEvent)initWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v12.receiver = self;
   v12.super_class = HFAnalyticsAccessorySettingsVisitEvent;
   v5 = [(HFAnalyticsEvent *)&v12 initWithEventType:33];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"accessorySettingsSourceItem"];
+    v6 = [dataCopy objectForKeyedSubscript:@"accessorySettingsSourceItem"];
 
     if (!v6)
     {
@@ -21,7 +21,7 @@
     }
 
     objc_opt_class();
-    v7 = [v4 objectForKeyedSubscript:@"accessorySettingsSourceItem"];
+    v7 = [dataCopy objectForKeyedSubscript:@"accessorySettingsSourceItem"];
     if (objc_opt_isKindOfClass())
     {
       v8 = v7;
@@ -38,21 +38,21 @@
     {
       if ([v9 isHomePod])
       {
-        v10 = 1;
+        isHomePodMediaSystem = 1;
       }
 
       else
       {
-        v10 = [v9 isHomePodMediaSystem];
+        isHomePodMediaSystem = [v9 isHomePodMediaSystem];
       }
     }
 
     else
     {
-      v10 = 0;
+      isHomePodMediaSystem = 0;
     }
 
-    [(HFAnalyticsAccessorySettingsVisitEvent *)v5 setIsHomePod:v10];
+    [(HFAnalyticsAccessorySettingsVisitEvent *)v5 setIsHomePod:isHomePodMediaSystem];
     [(HFAnalyticsAccessorySettingsVisitEvent *)v5 setIsMediaAccessory:v9 != 0];
   }
 

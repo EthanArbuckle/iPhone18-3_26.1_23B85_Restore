@@ -1,48 +1,48 @@
 @interface HKHeartbeatSequenceListMetadataSection
-- (HKHeartbeatSequenceListMetadataSection)initWithEvent:(id)a3 healthStore:(id)a4 displayTypeController:(id)a5 unitController:(id)a6 delegate:(id)a7;
+- (HKHeartbeatSequenceListMetadataSection)initWithEvent:(id)event healthStore:(id)store displayTypeController:(id)controller unitController:(id)unitController delegate:(id)delegate;
 - (HKHeartbeatSequenceListMetadataSectionDelegate)delegate;
-- (id)cellForIndex:(unint64_t)a3 tableView:(id)a4;
+- (id)cellForIndex:(unint64_t)index tableView:(id)view;
 - (id)sectionTitle;
 - (unint64_t)numberOfRowsInSection;
-- (void)_startAssociatedSequenceQueryForEvent:(id)a3;
-- (void)selectCellForIndex:(unint64_t)a3 navigationController:(id)a4 animated:(BOOL)a5;
+- (void)_startAssociatedSequenceQueryForEvent:(id)event;
+- (void)selectCellForIndex:(unint64_t)index navigationController:(id)controller animated:(BOOL)animated;
 @end
 
 @implementation HKHeartbeatSequenceListMetadataSection
 
-- (HKHeartbeatSequenceListMetadataSection)initWithEvent:(id)a3 healthStore:(id)a4 displayTypeController:(id)a5 unitController:(id)a6 delegate:(id)a7
+- (HKHeartbeatSequenceListMetadataSection)initWithEvent:(id)event healthStore:(id)store displayTypeController:(id)controller unitController:(id)unitController delegate:(id)delegate
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  eventCopy = event;
+  storeCopy = store;
+  controllerCopy = controller;
+  unitControllerCopy = unitController;
+  delegateCopy = delegate;
   v20.receiver = self;
   v20.super_class = HKHeartbeatSequenceListMetadataSection;
   v17 = [(HKHeartbeatSequenceListMetadataSection *)&v20 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeWeak(&v17->_delegate, v16);
-    objc_storeStrong(&v18->_displayTypeController, a5);
-    objc_storeStrong(&v18->_unitController, a6);
-    objc_storeStrong(&v18->_healthStore, a4);
-    [(HKHeartbeatSequenceListMetadataSection *)v18 _startAssociatedSequenceQueryForEvent:v12];
+    objc_storeWeak(&v17->_delegate, delegateCopy);
+    objc_storeStrong(&v18->_displayTypeController, controller);
+    objc_storeStrong(&v18->_unitController, unitController);
+    objc_storeStrong(&v18->_healthStore, store);
+    [(HKHeartbeatSequenceListMetadataSection *)v18 _startAssociatedSequenceQueryForEvent:eventCopy];
   }
 
   return v18;
 }
 
-- (void)_startAssociatedSequenceQueryForEvent:(id)a3
+- (void)_startAssociatedSequenceQueryForEvent:(id)event
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E696C378] predicateForSamplesAssociatedWithSample:v4];
+  eventCopy = event;
+  v5 = [MEMORY[0x1E696C378] predicateForSamplesAssociatedWithSample:eventCopy];
   v6 = objc_alloc(MEMORY[0x1E696AEB0]);
   v7 = [v6 initWithKey:*MEMORY[0x1E696BE30] ascending:1];
   objc_initWeak(&location, self);
   v8 = objc_alloc(MEMORY[0x1E696C3C8]);
-  v9 = [MEMORY[0x1E696C3F8] heartbeatSeriesType];
+  heartbeatSeriesType = [MEMORY[0x1E696C3F8] heartbeatSeriesType];
   v16[0] = v7;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:1];
   v13[0] = MEMORY[0x1E69E9820];
@@ -51,10 +51,10 @@
   v13[3] = &unk_1E81B6F50;
   v13[4] = self;
   objc_copyWeak(&v14, &location);
-  v11 = [v8 initWithSampleType:v9 predicate:v5 limit:0 sortDescriptors:v10 resultsHandler:v13];
+  v11 = [v8 initWithSampleType:heartbeatSeriesType predicate:v5 limit:0 sortDescriptors:v10 resultsHandler:v13];
 
-  v12 = [(HKHeartbeatSequenceListMetadataSection *)self healthStore];
-  [v12 executeQuery:v11];
+  healthStore = [(HKHeartbeatSequenceListMetadataSection *)self healthStore];
+  [healthStore executeQuery:v11];
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
@@ -112,58 +112,58 @@ void __80__HKHeartbeatSequenceListMetadataSection__startAssociatedSequenceQueryF
 
 - (unint64_t)numberOfRowsInSection
 {
-  v2 = [(HKHeartbeatSequenceListMetadataSection *)self sequencesSamples];
-  v3 = [v2 count];
+  sequencesSamples = [(HKHeartbeatSequenceListMetadataSection *)self sequencesSamples];
+  v3 = [sequencesSamples count];
 
   return v3;
 }
 
-- (id)cellForIndex:(unint64_t)a3 tableView:(id)a4
+- (id)cellForIndex:(unint64_t)index tableView:(id)view
 {
-  v6 = a4;
-  v7 = [(HKHeartbeatSequenceListMetadataSection *)self sequencesSamples];
-  v8 = [v7 objectAtIndexedSubscript:a3];
-  v9 = [v8 endDate];
+  viewCopy = view;
+  sequencesSamples = [(HKHeartbeatSequenceListMetadataSection *)self sequencesSamples];
+  v8 = [sequencesSamples objectAtIndexedSubscript:index];
+  endDate = [v8 endDate];
 
-  v10 = HKLocalizedStringForDateAndTemplate(v9, 9);
-  v11 = HKLocalizedStringForDateAndTemplate(v9, 27);
+  v10 = HKLocalizedStringForDateAndTemplate(endDate, 9);
+  v11 = HKLocalizedStringForDateAndTemplate(endDate, 27);
   v12 = [MEMORY[0x1E696AEC0] healthAccessibilityIdentifier:2 suffix:@"Details.AtrialFibrillation.EntireView"];
-  [v6 setAccessibilityIdentifier:v12];
+  [viewCopy setAccessibilityIdentifier:v12];
 
   v13 = [objc_alloc(MEMORY[0x1E69DD028]) initWithStyle:1 reuseIdentifier:@"_CellReuseIdentifier"];
-  v14 = [v13 textLabel];
-  [v14 setText:v10];
+  textLabel = [v13 textLabel];
+  [textLabel setText:v10];
 
-  v15 = [v13 detailTextLabel];
-  [v15 setText:v11];
+  detailTextLabel = [v13 detailTextLabel];
+  [detailTextLabel setText:v11];
 
   [v13 setAccessoryType:1];
-  v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Details.AtrialFibrillationMeasurements.%ld", a3];
-  v17 = [MEMORY[0x1E696AEC0] healthAccessibilityIdentifier:2 suffix:v16];
+  index = [MEMORY[0x1E696AEC0] stringWithFormat:@"Details.AtrialFibrillationMeasurements.%ld", index];
+  v17 = [MEMORY[0x1E696AEC0] healthAccessibilityIdentifier:2 suffix:index];
   [v13 setAccessibilityIdentifier:v17];
 
-  v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Details.AtrialFibrillationMeasurements.%ld.Date", a3];
-  v19 = [MEMORY[0x1E696AEC0] healthAccessibilityIdentifier:2 suffix:v18];
-  v20 = [v13 textLabel];
-  [v20 setAccessibilityIdentifier:v19];
+  index2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Details.AtrialFibrillationMeasurements.%ld.Date", index];
+  v19 = [MEMORY[0x1E696AEC0] healthAccessibilityIdentifier:2 suffix:index2];
+  textLabel2 = [v13 textLabel];
+  [textLabel2 setAccessibilityIdentifier:v19];
 
-  v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Details.AtrialFibrillationMeasurements.%ld.Time", a3];
-  v22 = [MEMORY[0x1E696AEC0] healthAccessibilityIdentifier:2 suffix:v21];
-  v23 = [v13 detailTextLabel];
-  [v23 setAccessibilityIdentifier:v22];
+  index3 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Details.AtrialFibrillationMeasurements.%ld.Time", index];
+  v22 = [MEMORY[0x1E696AEC0] healthAccessibilityIdentifier:2 suffix:index3];
+  detailTextLabel2 = [v13 detailTextLabel];
+  [detailTextLabel2 setAccessibilityIdentifier:v22];
 
   return v13;
 }
 
-- (void)selectCellForIndex:(unint64_t)a3 navigationController:(id)a4 animated:(BOOL)a5
+- (void)selectCellForIndex:(unint64_t)index navigationController:(id)controller animated:(BOOL)animated
 {
-  v5 = a5;
-  v8 = a4;
-  v9 = [(HKHeartbeatSequenceListMetadataSection *)self sequencesSamples];
-  v11 = [v9 objectAtIndexedSubscript:a3];
+  animatedCopy = animated;
+  controllerCopy = controller;
+  sequencesSamples = [(HKHeartbeatSequenceListMetadataSection *)self sequencesSamples];
+  v11 = [sequencesSamples objectAtIndexedSubscript:index];
 
   v10 = [[HKBeatToBeatViewController alloc] initWithHeartbeatSeriesSample:v11 healthStore:self->_healthStore displayTypeController:self->_displayTypeController unitController:self->_unitController];
-  [v8 pushViewController:v10 animated:v5];
+  [controllerCopy pushViewController:v10 animated:animatedCopy];
 }
 
 - (HKHeartbeatSequenceListMetadataSectionDelegate)delegate

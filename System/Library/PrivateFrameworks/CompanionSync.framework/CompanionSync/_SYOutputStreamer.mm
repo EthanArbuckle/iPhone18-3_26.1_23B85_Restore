@@ -1,35 +1,35 @@
 @interface _SYOutputStreamer
-- (_SYOutputStreamer)initWithCompressedFileURL:(id)a3 callbackQueue:(id)a4;
+- (_SYOutputStreamer)initWithCompressedFileURL:(id)l callbackQueue:(id)queue;
 - (id)_getCompletionBlock;
-- (void)_completeAllItemsWithError:(id)a3;
+- (void)_completeAllItemsWithError:(id)error;
 - (void)_tryToSendData;
-- (void)stream:(id)a3 handleEvent:(unint64_t)a4;
-- (void)whenComplete:(id)a3;
-- (void)writeData:(id)a3 completion:(id)a4;
+- (void)stream:(id)stream handleEvent:(unint64_t)event;
+- (void)whenComplete:(id)complete;
+- (void)writeData:(id)data completion:(id)completion;
 @end
 
 @implementation _SYOutputStreamer
 
-- (_SYOutputStreamer)initWithCompressedFileURL:(id)a3 callbackQueue:(id)a4
+- (_SYOutputStreamer)initWithCompressedFileURL:(id)l callbackQueue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  queueCopy = queue;
   v32.receiver = self;
   v32.super_class = _SYOutputStreamer;
   v8 = [(_SYOutputStreamer *)&v32 init];
-  if (v8 && (v9 = [[SYCompressedFileOutputStream alloc] initToCompressedFileAtURL:v6 shouldAppend:0], v10 = *(v8 + 1), *(v8 + 1) = v9, v10, *(v8 + 1)))
+  if (v8 && (v9 = [[SYCompressedFileOutputStream alloc] initToCompressedFileAtURL:lCopy shouldAppend:0], v10 = *(v8 + 1), *(v8 + 1) = v9, v10, *(v8 + 1)))
   {
     v11 = objc_alloc(MEMORY[0x1E696AEC0]);
-    v12 = [v6 lastPathComponent];
-    v13 = [v11 initWithFormat:@"_SYOutputStreamer: %@", v12];
+    lastPathComponent = [lCopy lastPathComponent];
+    v13 = [v11 initWithFormat:@"_SYOutputStreamer: %@", lastPathComponent];
 
-    v14 = [v13 UTF8String];
+    uTF8String = [v13 UTF8String];
     v15 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v16 = dispatch_queue_create(v14, v15);
+    v16 = dispatch_queue_create(uTF8String, v15);
     v17 = *(v8 + 4);
     *(v8 + 4) = v16;
 
-    objc_storeStrong(v8 + 6, a4);
+    objc_storeStrong(v8 + 6, queue);
     [*(v8 + 1) setDelegate:v8];
     objc_initWeak(&location, v8);
     v18 = *(v8 + 1);
@@ -73,24 +73,24 @@
 
 - (id)_getCompletionBlock
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = MEMORY[0x1E12E11B0](v2->_onComplete);
-  onComplete = v2->_onComplete;
-  v2->_onComplete = 0;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = MEMORY[0x1E12E11B0](selfCopy->_onComplete);
+  onComplete = selfCopy->_onComplete;
+  selfCopy->_onComplete = 0;
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
   v5 = MEMORY[0x1E12E11B0](v3);
 
   return v5;
 }
 
-- (void)writeData:(id)a3 completion:(id)a4
+- (void)writeData:(id)data completion:(id)completion
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  completionCopy = completion;
   stream = self->_stream;
-  v8 = a3;
+  dataCopy = data;
   if ([(SYCompressedFileOutputStream *)stream streamStatus]== 6)
   {
     if (_sync_log_facilities_pred != -1)
@@ -102,7 +102,7 @@
     if (os_log_type_enabled(qword_1EDE73448, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v27 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1DF835000, v9, OS_LOG_TYPE_DEFAULT, "Streamer %{public}@ writing to a closed stream", buf, 0xCu);
     }
 
@@ -111,7 +111,7 @@
     block[1] = 3221225472;
     block[2] = __42___SYOutputStreamer_writeData_completion___block_invoke;
     block[3] = &unk_1E86CAA90;
-    v25 = v6;
+    v25 = completionCopy;
     dispatch_async(callbackQueue, block);
     v11 = v25;
 LABEL_13:
@@ -131,24 +131,24 @@ LABEL_13:
     {
       v13 = self->_stream;
       v14 = v12;
-      v15 = [(SYCompressedFileOutputStream *)v13 streamError];
-      v16 = _SYObfuscate(v15);
+      streamError = [(SYCompressedFileOutputStream *)v13 streamError];
+      v16 = _SYObfuscate(streamError);
       *buf = 138543618;
-      v27 = self;
+      selfCopy2 = self;
       v28 = 2114;
       v29 = v16;
       _os_log_impl(&dword_1DF835000, v14, OS_LOG_TYPE_DEFAULT, "Streamer %{public}@ writing to a stream in error state. Error = %{public}@", buf, 0x16u);
     }
 
-    v17 = [(SYCompressedFileOutputStream *)self->_stream streamError];
+    streamError2 = [(SYCompressedFileOutputStream *)self->_stream streamError];
     v18 = self->_callbackQueue;
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __42___SYOutputStreamer_writeData_completion___block_invoke_59;
     v21[3] = &unk_1E86CAAB8;
-    v22 = v17;
-    v23 = v6;
-    v11 = v17;
+    v22 = streamError2;
+    v23 = completionCopy;
+    v11 = streamError2;
     dispatch_async(v18, v21);
 
     goto LABEL_13;
@@ -156,9 +156,9 @@ LABEL_13:
 
 LABEL_14:
   v19 = objc_opt_new();
-  [v19 setData:v8];
+  [v19 setData:dataCopy];
 
-  [v19 setCallback:v6];
+  [v19 setCallback:completionCopy];
   [(NSMutableArray *)self->_items addObject:v19];
   dispatch_source_merge_data(self->_source, 1uLL);
 
@@ -168,19 +168,19 @@ LABEL_14:
 - (void)_tryToSendData
 {
   v13 = *MEMORY[0x1E69E9840];
-  v2 = *a1;
+  v2 = *self;
   v3 = a2;
-  v4 = [v2 streamError];
-  v5 = _SYObfuscate(v4);
+  streamError = [v2 streamError];
+  v5 = _SYObfuscate(streamError);
   OUTLINED_FUNCTION_4_2(&dword_1DF835000, v6, v7, "Write to output stream failed, stream error=%{public}@.", v8, v9, v10, v11, 2u);
 
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_completeAllItemsWithError:(id)a3
+- (void)_completeAllItemsWithError:(id)error
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -207,7 +207,7 @@ LABEL_14:
         v14[2] = __48___SYOutputStreamer__completeAllItemsWithError___block_invoke;
         v14[3] = &unk_1E86C9E90;
         v14[4] = v10;
-        v15 = v4;
+        v15 = errorCopy;
         dispatch_async(callbackQueue, v14);
       }
 
@@ -218,8 +218,8 @@ LABEL_14:
   }
 
   [(NSMutableArray *)self->_items removeAllObjects];
-  v12 = [(_SYOutputStreamer *)self _getCompletionBlock];
-  if (v12)
+  _getCompletionBlock = [(_SYOutputStreamer *)self _getCompletionBlock];
+  if (_getCompletionBlock)
   {
     if (_sync_log_facilities_pred != -1)
     {
@@ -231,16 +231,16 @@ LABEL_14:
       [_SYOutputStreamer _tryToSendData];
     }
 
-    dispatch_async(self->_callbackQueue, v12);
+    dispatch_async(self->_callbackQueue, _getCompletionBlock);
   }
 
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)whenComplete:(id)a3
+- (void)whenComplete:(id)complete
 {
   items = self->_items;
-  block = a3;
+  block = complete;
   if ([(NSMutableArray *)items count])
   {
     v5 = [block copy];
@@ -256,11 +256,11 @@ LABEL_14:
   }
 }
 
-- (void)stream:(id)a3 handleEvent:(unint64_t)a4
+- (void)stream:(id)stream handleEvent:(unint64_t)event
 {
-  v6 = a3;
-  v7 = v6;
-  if (a4 == 8)
+  streamCopy = stream;
+  v7 = streamCopy;
+  if (event == 8)
   {
     queue = self->_queue;
     v9[0] = MEMORY[0x1E69E9820];
@@ -268,11 +268,11 @@ LABEL_14:
     v9[2] = __40___SYOutputStreamer_stream_handleEvent___block_invoke;
     v9[3] = &unk_1E86C9E90;
     v9[4] = self;
-    v10 = v6;
+    v10 = streamCopy;
     dispatch_async(queue, v9);
   }
 
-  else if (a4 == 4)
+  else if (event == 4)
   {
     dispatch_source_merge_data(self->_source, 1uLL);
   }

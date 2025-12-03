@@ -1,51 +1,51 @@
 @interface AuthorizationAuthenticator
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (void)didCompleteAuthenticationRequestWithStatus:(id)a3 error:(id)a4;
-- (void)remoteAlertHandle:(id)a3 didInvalidateWithError:(id)a4;
-- (void)remoteAlertHandleDidActivate:(id)a3;
-- (void)remoteAlertHandleDidDeactivate:(id)a3;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (void)didCompleteAuthenticationRequestWithStatus:(id)status error:(id)error;
+- (void)remoteAlertHandle:(id)handle didInvalidateWithError:(id)error;
+- (void)remoteAlertHandleDidActivate:(id)activate;
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate;
 @end
 
 @implementation AuthorizationAuthenticator
 
-- (void)remoteAlertHandleDidActivate:(id)a3
+- (void)remoteAlertHandleDidActivate:(id)activate
 {
-  v4 = a3;
-  v5 = self;
-  sub_100010D34(v4);
+  activateCopy = activate;
+  selfCopy = self;
+  sub_100010D34(activateCopy);
 }
 
-- (void)remoteAlertHandleDidDeactivate:(id)a3
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate
 {
-  v4 = a3;
-  v5 = self;
-  sub_10000F7BC(v4);
+  deactivateCopy = deactivate;
+  selfCopy = self;
+  sub_10000F7BC(deactivateCopy);
 }
 
-- (void)remoteAlertHandle:(id)a3 didInvalidateWithError:(id)a4
+- (void)remoteAlertHandle:(id)handle didInvalidateWithError:(id)error
 {
-  v6 = a3;
-  v7 = self;
-  v8 = a4;
-  sub_100010ECC(v6, a4);
+  handleCopy = handle;
+  selfCopy = self;
+  errorCopy = error;
+  sub_100010ECC(handleCopy, error);
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_100010184(v6, v7);
+  listenerCopy = listener;
+  connectionCopy = connection;
+  selfCopy = self;
+  v9 = sub_100010184(listenerCopy, connectionCopy);
 
   return v9 & 1;
 }
 
-- (void)didCompleteAuthenticationRequestWithStatus:(id)a3 error:(id)a4
+- (void)didCompleteAuthenticationRequestWithStatus:(id)status error:(id)error
 {
-  v7 = a3;
-  v8 = self;
-  v9 = a4;
-  sub_1000104B0(a3, a4);
+  statusCopy = status;
+  selfCopy = self;
+  errorCopy = error;
+  sub_1000104B0(status, error);
 }
 
 @end

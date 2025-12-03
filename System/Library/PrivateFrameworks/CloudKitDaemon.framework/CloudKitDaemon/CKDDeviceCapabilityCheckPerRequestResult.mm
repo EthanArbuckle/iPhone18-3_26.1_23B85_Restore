@@ -1,25 +1,25 @@
 @interface CKDDeviceCapabilityCheckPerRequestResult
-- (CKDDeviceCapabilityCheckPerRequestResult)initWithZoneID:(id)a3 capabilitySet:(id)a4 result:(id)a5 error:(id)a6;
+- (CKDDeviceCapabilityCheckPerRequestResult)initWithZoneID:(id)d capabilitySet:(id)set result:(id)result error:(id)error;
 @end
 
 @implementation CKDDeviceCapabilityCheckPerRequestResult
 
-- (CKDDeviceCapabilityCheckPerRequestResult)initWithZoneID:(id)a3 capabilitySet:(id)a4 result:(id)a5 error:(id)a6
+- (CKDDeviceCapabilityCheckPerRequestResult)initWithZoneID:(id)d capabilitySet:(id)set result:(id)result error:(id)error
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  dCopy = d;
+  setCopy = set;
+  resultCopy = result;
+  errorCopy = error;
   v18.receiver = self;
   v18.super_class = CKDDeviceCapabilityCheckPerRequestResult;
   v15 = [(CKDDeviceCapabilityCheckPerRequestResult *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_zoneID, a3);
-    objc_storeStrong(&v16->_capabilitySet, a4);
-    objc_storeStrong(&v16->_result, a5);
-    objc_storeStrong(&v16->_error, a6);
+    objc_storeStrong(&v15->_zoneID, d);
+    objc_storeStrong(&v16->_capabilitySet, set);
+    objc_storeStrong(&v16->_result, result);
+    objc_storeStrong(&v16->_error, error);
   }
 
   return v16;

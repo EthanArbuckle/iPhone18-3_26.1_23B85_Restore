@@ -1,19 +1,19 @@
 @interface DOCTagRenderer
 + (DOCTagRenderer)shared;
 - (BOOL)differentiateWithShapes;
-- (CGSize)sizeOfTagContentForRenderingRequest:(id)a3;
-- (double)_customRenderingBaselineOffsetFromBottomForRequest:(id)a3;
+- (CGSize)sizeOfTagContentForRenderingRequest:(id)request;
+- (double)_customRenderingBaselineOffsetFromBottomForRequest:(id)request;
 - (double)_defaultBorderWidth;
-- (double)_tagChainSpacingForSpacingType:(unint64_t)a3 tagDimension:(double)a4;
-- (id)_spacerImageWithWidth:(double)a3;
-- (id)_symbolImageIfPosssibleForRequest:(id)a3;
-- (id)renderAttributedStringWithRequest:(id)a3 titleHighlighter:(id)a4;
-- (id)renderImageWithRequest:(id)a3;
-- (id)tintedSystemImageForTag:(id)a3 variant:(unint64_t)a4;
-- (void)__drawInContext:(CGContext *)a3 tag:(id)a4 contextSize:(CGSize)a5 tagRect:(CGRect)a6 blendMode:(int)a7 fillColor:(id)a8 strokeColor:(id)a9 traitCollection:(id)a10;
-- (void)_insertPrefixTextAttachment:(id)a3 spacerAttributedString:(id)a4 ensuringLayoutDirection:(int64_t)a5 into:(id)a6;
-- (void)_renderInContext:(CGContext *)a3 request:(id)a4;
-- (void)renderInUncacheableContext:(CGContext *)a3 request:(id)a4;
+- (double)_tagChainSpacingForSpacingType:(unint64_t)type tagDimension:(double)dimension;
+- (id)_spacerImageWithWidth:(double)width;
+- (id)_symbolImageIfPosssibleForRequest:(id)request;
+- (id)renderAttributedStringWithRequest:(id)request titleHighlighter:(id)highlighter;
+- (id)renderImageWithRequest:(id)request;
+- (id)tintedSystemImageForTag:(id)tag variant:(unint64_t)variant;
+- (void)__drawInContext:(CGContext *)context tag:(id)tag contextSize:(CGSize)size tagRect:(CGRect)rect blendMode:(int)mode fillColor:(id)color strokeColor:(id)strokeColor traitCollection:(id)self0;
+- (void)_insertPrefixTextAttachment:(id)attachment spacerAttributedString:(id)string ensuringLayoutDirection:(int64_t)direction into:(id)into;
+- (void)_renderInContext:(CGContext *)context request:(id)request;
+- (void)renderInUncacheableContext:(CGContext *)context request:(id)request;
 @end
 
 @implementation DOCTagRenderer
@@ -67,26 +67,26 @@ void __41__DOCTagRenderer_differentiateWithShapes__block_invoke()
   return v4;
 }
 
-- (id)tintedSystemImageForTag:(id)a3 variant:(unint64_t)a4
+- (id)tintedSystemImageForTag:(id)tag variant:(unint64_t)variant
 {
-  v6 = a3;
-  v7 = [(DOCTagRenderer *)self differentiateWithShapes];
-  v8 = [v6 labelIndex];
+  tagCopy = tag;
+  differentiateWithShapes = [(DOCTagRenderer *)self differentiateWithShapes];
+  labelIndex = [tagCopy labelIndex];
 
   v9 = MEMORY[0x277D755B8];
 
-  return [v9 _doc_tagImageForRenderingVariant:a4 differentiateWithShapes:v7 tagColorType:v8];
+  return [v9 _doc_tagImageForRenderingVariant:variant differentiateWithShapes:differentiateWithShapes tagColorType:labelIndex];
 }
 
-- (id)renderImageWithRequest:(id)a3
+- (id)renderImageWithRequest:(id)request
 {
   v23[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  requestCopy = request;
+  v5 = requestCopy;
+  if (requestCopy)
   {
-    v6 = [v4 traitCollection];
-    [v6 displayScale];
+    traitCollection = [requestCopy traitCollection];
+    [traitCollection displayScale];
     v8 = v7;
     v9 = [MEMORY[0x277CCABB0] numberWithBool:UIAccessibilityIsInvertColorsEnabled()];
     v23[0] = v9;
@@ -157,16 +157,16 @@ id __41__DOCTagRenderer_renderImageWithRequest___block_invoke(uint64_t a1)
   return v6;
 }
 
-- (double)_customRenderingBaselineOffsetFromBottomForRequest:(id)a3
+- (double)_customRenderingBaselineOffsetFromBottomForRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   if ([(DOCTagRenderer *)self differentiateWithShapes])
   {
-    [(DOCTagRenderer *)self sizeOfTagContentForRenderingRequest:v4];
+    [(DOCTagRenderer *)self sizeOfTagContentForRenderingRequest:requestCopy];
     v6 = v5;
     v8 = v7;
     v9 = +[DOCTagShapeRenderer shared];
-    [v9 baselineOffsetForRequest:v4 tagRectSize:{v6, v8}];
+    [v9 baselineOffsetForRequest:requestCopy tagRectSize:{v6, v8}];
     v11 = v10;
   }
 
@@ -178,77 +178,77 @@ id __41__DOCTagRenderer_renderImageWithRequest___block_invoke(uint64_t a1)
   return v11;
 }
 
-- (id)_symbolImageIfPosssibleForRequest:(id)a3
+- (id)_symbolImageIfPosssibleForRequest:(id)request
 {
-  v4 = a3;
-  if (+[DOCTagRenderer allowUnsizedSymbolImages](DOCTagRenderer, "allowUnsizedSymbolImages") && [v4 allowUnsizedSymbolImages] && ((objc_msgSend(v4, "selectionOutlineColor"), (v5 = objc_claimAutoreleasedReturnValue()) == 0) || (v6 = v5, objc_msgSend(v4, "selectionOutlineColor"), v7 = objc_claimAutoreleasedReturnValue(), Alpha = CGColorGetAlpha(objc_msgSend(v7, "CGColor")), v7, v6, Alpha == 0.0)) && (objc_msgSend(v4, "tags"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "count"), v9, v10 == 1) && (objc_msgSend(v4, "tags"), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "count"), objc_msgSend(v4, "fillColors"), v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "count"), v13, v11, v12 == v14))
+  requestCopy = request;
+  if (+[DOCTagRenderer allowUnsizedSymbolImages](DOCTagRenderer, "allowUnsizedSymbolImages") && [requestCopy allowUnsizedSymbolImages] && ((objc_msgSend(requestCopy, "selectionOutlineColor"), (v5 = objc_claimAutoreleasedReturnValue()) == 0) || (v6 = v5, objc_msgSend(requestCopy, "selectionOutlineColor"), v7 = objc_claimAutoreleasedReturnValue(), Alpha = CGColorGetAlpha(objc_msgSend(v7, "CGColor")), v7, v6, Alpha == 0.0)) && (objc_msgSend(requestCopy, "tags"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "count"), v9, v10 == 1) && (objc_msgSend(requestCopy, "tags"), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "count"), objc_msgSend(requestCopy, "fillColors"), v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "count"), v13, v11, v12 == v14))
   {
-    v15 = [v4 tags];
-    v16 = [v15 objectAtIndexedSubscript:0];
+    tags = [requestCopy tags];
+    v16 = [tags objectAtIndexedSubscript:0];
 
-    v17 = [v4 fillColors];
-    v18 = [v17 objectAtIndexedSubscript:0];
+    fillColors = [requestCopy fillColors];
+    v18 = [fillColors objectAtIndexedSubscript:0];
 
-    v19 = [v4 ringColor];
-    v20 = [(DOCTagRenderer *)self differentiateWithShapes];
+    ringColor = [requestCopy ringColor];
+    differentiateWithShapes = [(DOCTagRenderer *)self differentiateWithShapes];
     if (CGColorGetAlpha([v18 CGColor]) == 0.0)
     {
-      v21 = 1;
-      v22 = v19;
+      variant = 1;
+      v22 = ringColor;
     }
 
     else
     {
-      v21 = [v4 variant];
+      variant = [requestCopy variant];
       v22 = v18;
     }
 
     v25 = v22;
-    v26 = [[DOCTagSymbolImageConfiguration alloc] initWithTag:v16 color:v25 variant:v21 differentiateWithShapes:v20];
+    v26 = [[DOCTagSymbolImageConfiguration alloc] initWithTag:v16 color:v25 variant:variant differentiateWithShapes:differentiateWithShapes];
 
-    v23 = [(DOCTagSymbolImageConfiguration *)v26 loadedImageForSettings];
+    loadedImageForSettings = [(DOCTagSymbolImageConfiguration *)v26 loadedImageForSettings];
   }
 
   else
   {
-    v23 = 0;
+    loadedImageForSettings = 0;
   }
 
-  return v23;
+  return loadedImageForSettings;
 }
 
-- (void)_renderInContext:(CGContext *)a3 request:(id)a4
+- (void)_renderInContext:(CGContext *)context request:(id)request
 {
-  v5 = a4;
-  v6 = [v5 tags];
-  v7 = [v6 count];
-  v8 = [v5 fillColors];
-  v9 = [v8 count];
+  requestCopy = request;
+  tags = [requestCopy tags];
+  v7 = [tags count];
+  fillColors = [requestCopy fillColors];
+  v9 = [fillColors count];
 
   if (v7 == v9)
   {
-    [(DOCTagRenderer *)self sizeOfTagContentForRenderingRequest:v5];
+    [(DOCTagRenderer *)self sizeOfTagContentForRenderingRequest:requestCopy];
     v11 = v10;
-    v12 = [v5 traitCollection];
-    v13 = [v5 spacingType];
-    v50 = [v5 tags];
-    v14 = [v5 fillColors];
-    v48 = [v5 ringColor];
-    v15 = [v5 selectionOutlineColor];
-    v45 = v5;
-    [v5 knockOutBorderWidth];
+    traitCollection = [requestCopy traitCollection];
+    spacingType = [requestCopy spacingType];
+    tags2 = [requestCopy tags];
+    fillColors2 = [requestCopy fillColors];
+    ringColor = [requestCopy ringColor];
+    selectionOutlineColor = [requestCopy selectionOutlineColor];
+    v45 = requestCopy;
+    [requestCopy knockOutBorderWidth];
     v47 = v16;
-    v49 = v14;
-    v17 = [v14 count];
+    v49 = fillColors2;
+    v17 = [fillColors2 count];
     if (v17)
     {
       v18 = v17;
-      [v5 tagDimension];
-      [(DOCTagRenderer *)self _tagChainSpacingForSpacingType:v13 tagDimension:?];
+      [requestCopy tagDimension];
+      [(DOCTagRenderer *)self _tagChainSpacingForSpacingType:spacingType tagDimension:?];
       v20 = v19;
-      if ([v5 layoutDirection] == 1)
+      if ([requestCopy layoutDirection] == 1)
       {
-        [(DOCTagRenderer *)self sizeOfTagContentForRenderingRequest:v5];
+        [(DOCTagRenderer *)self sizeOfTagContentForRenderingRequest:requestCopy];
         v22 = v21;
         memset(&v54, 0, sizeof(v54));
         CGAffineTransformMakeScale(&v54, -1.0, 1.0);
@@ -256,7 +256,7 @@ id __41__DOCTagRenderer_renderImageWithRequest___block_invoke(uint64_t a1)
         memset(&v53, 0, sizeof(v53));
         CGAffineTransformTranslate(&v53, &transform, -v22, 0.0);
         transform = v53;
-        CGContextConcatCTM(a3, &transform);
+        CGContextConcatCTM(context, &transform);
       }
 
       v23 = v18 - 1;
@@ -267,7 +267,7 @@ id __41__DOCTagRenderer_renderImageWithRequest___block_invoke(uint64_t a1)
         v25 = v11;
         do
         {
-          v26 = [v50 objectAtIndexedSubscript:--v18];
+          v26 = [tags2 objectAtIndexedSubscript:--v18];
           v27 = [v49 objectAtIndexedSubscript:v18];
           x = v20 * v18;
           if (v18 < v23)
@@ -280,10 +280,10 @@ id __41__DOCTagRenderer_renderImageWithRequest___block_invoke(uint64_t a1)
             y = v56.origin.y;
             width = v56.size.width;
             height = v56.size.height;
-            v32 = [MEMORY[0x277D75348] whiteColor];
+            whiteColor = [MEMORY[0x277D75348] whiteColor];
             v33 = height;
             v20 = v46;
-            [(DOCTagRenderer *)self __drawInContext:a3 tag:v26 contextSize:16 tagRect:v32 blendMode:0 fillColor:v12 strokeColor:v11 traitCollection:v25, x - v47, y, width, v33];
+            [(DOCTagRenderer *)self __drawInContext:context tag:v26 contextSize:16 tagRect:whiteColor blendMode:0 fillColor:traitCollection strokeColor:v11 traitCollection:v25, x - v47, y, width, v33];
           }
 
           Alpha = CGColorGetAlpha([v27 CGColor]);
@@ -300,24 +300,24 @@ id __41__DOCTagRenderer_renderImageWithRequest___block_invoke(uint64_t a1)
 
           if (Alpha == 0.0)
           {
-            v37 = v48;
+            v37 = ringColor;
           }
 
           else
           {
-            v37 = v15;
+            v37 = selectionOutlineColor;
           }
 
           v38 = v36;
           v39 = v37;
-          if (v35 == 0.0 && v15 != 0)
+          if (v35 == 0.0 && selectionOutlineColor != 0)
           {
             [(DOCTagRenderer *)self _defaultBorderWidth];
             v42 = v41;
             if ([(DOCTagRenderer *)self differentiateWithShapes])
             {
-              v43 = [MEMORY[0x277D75520] defaultMetrics];
-              [v43 scaledValueForValue:v12 compatibleWithTraitCollection:1.0];
+              defaultMetrics = [MEMORY[0x277D75520] defaultMetrics];
+              [defaultMetrics scaledValueForValue:traitCollection compatibleWithTraitCollection:1.0];
               v42 = v42 + v44;
             }
 
@@ -332,51 +332,51 @@ id __41__DOCTagRenderer_renderImageWithRequest___block_invoke(uint64_t a1)
             v25 = v58.size.height;
           }
 
-          [(DOCTagRenderer *)self __drawInContext:a3 tag:v26 contextSize:17 tagRect:v38 blendMode:v39 fillColor:v12 strokeColor:v11 traitCollection:v25, x, v24, v11, v25];
+          [(DOCTagRenderer *)self __drawInContext:context tag:v26 contextSize:17 tagRect:v38 blendMode:v39 fillColor:traitCollection strokeColor:v11 traitCollection:v25, x, v24, v11, v25];
         }
 
         while (v18 > 0);
       }
     }
 
-    v5 = v45;
+    requestCopy = v45;
   }
 
   else
   {
-    v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unexpected input: tag/color count mismatch"];
-    v50 = DOCLogHandle();
-    if (os_log_type_enabled(v50, OS_LOG_TYPE_FAULT))
+    traitCollection = [MEMORY[0x277CCACA8] stringWithFormat:@"Unexpected input: tag/color count mismatch"];
+    tags2 = DOCLogHandle();
+    if (os_log_type_enabled(tags2, OS_LOG_TYPE_FAULT))
     {
-      [DOCTagRenderer _renderInContext:v12 request:v50];
+      [DOCTagRenderer _renderInContext:traitCollection request:tags2];
     }
   }
 }
 
-- (void)__drawInContext:(CGContext *)a3 tag:(id)a4 contextSize:(CGSize)a5 tagRect:(CGRect)a6 blendMode:(int)a7 fillColor:(id)a8 strokeColor:(id)a9 traitCollection:(id)a10
+- (void)__drawInContext:(CGContext *)context tag:(id)tag contextSize:(CGSize)size tagRect:(CGRect)rect blendMode:(int)mode fillColor:(id)color strokeColor:(id)strokeColor traitCollection:(id)self0
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v18 = a5.height;
-  v19 = a5.width;
-  v29 = a4;
-  v22 = a8;
-  v23 = a9;
-  v24 = a10;
-  CGContextSetBlendMode(a3, a7);
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v18 = size.height;
+  v19 = size.width;
+  tagCopy = tag;
+  colorCopy = color;
+  strokeColorCopy = strokeColor;
+  collectionCopy = collection;
+  CGContextSetBlendMode(context, mode);
   if ([(DOCTagRenderer *)self differentiateWithShapes])
   {
     v25 = +[DOCTagShapeRenderer shared];
-    [v25 renderInContext:a3 contextSize:v29 tagRect:v23 tag:v22 outlineColor:v24 fillColor:v19 traitCollection:{v18, x, y, width, height}];
+    [v25 renderInContext:context contextSize:tagCopy tagRect:strokeColorCopy tag:colorCopy outlineColor:collectionCopy fillColor:v19 traitCollection:{v18, x, y, width, height}];
   }
 
   else
   {
     [(DOCTagRenderer *)self _defaultBorderWidth];
     v27 = v26;
-    if (v23)
+    if (strokeColorCopy)
     {
       v28 = v26 * 0.5;
       v31.origin.x = x;
@@ -391,54 +391,54 @@ id __41__DOCTagRenderer_renderImageWithRequest___block_invoke(uint64_t a1)
     }
 
     v25 = [MEMORY[0x277D75208] bezierPathWithOvalInRect:{x, y, width, height}];
-    if (v22)
+    if (colorCopy)
     {
-      CGContextSetFillColorWithColor(a3, [v22 CGColor]);
-      CGContextAddPath(a3, [v25 CGPath]);
-      CGContextFillPath(a3);
+      CGContextSetFillColorWithColor(context, [colorCopy CGColor]);
+      CGContextAddPath(context, [v25 CGPath]);
+      CGContextFillPath(context);
     }
 
-    if (v23)
+    if (strokeColorCopy)
     {
-      CGContextSetLineWidth(a3, v27);
-      CGContextSetStrokeColorWithColor(a3, [v23 CGColor]);
-      CGContextAddPath(a3, [v25 CGPath]);
-      CGContextStrokePath(a3);
+      CGContextSetLineWidth(context, v27);
+      CGContextSetStrokeColorWithColor(context, [strokeColorCopy CGColor]);
+      CGContextAddPath(context, [v25 CGPath]);
+      CGContextStrokePath(context);
     }
   }
 }
 
-- (void)renderInUncacheableContext:(CGContext *)a3 request:(id)a4
+- (void)renderInUncacheableContext:(CGContext *)context request:(id)request
 {
-  v7 = a4;
+  requestCopy = request;
   if (UIGraphicsGetCurrentContext())
   {
-    [(DOCTagRenderer *)self _renderInContext:a3 request:v7];
+    [(DOCTagRenderer *)self _renderInContext:context request:requestCopy];
   }
 
   else
   {
-    UIGraphicsPushContext(a3);
-    [v7 tagDimension];
-    CGContextTranslateCTM(a3, 0.0, v6);
-    CGContextScaleCTM(a3, 1.0, -1.0);
-    [(DOCTagRenderer *)self _renderInContext:a3 request:v7];
+    UIGraphicsPushContext(context);
+    [requestCopy tagDimension];
+    CGContextTranslateCTM(context, 0.0, v6);
+    CGContextScaleCTM(context, 1.0, -1.0);
+    [(DOCTagRenderer *)self _renderInContext:context request:requestCopy];
     UIGraphicsPopContext();
   }
 }
 
-- (id)renderAttributedStringWithRequest:(id)a3 titleHighlighter:(id)a4
+- (id)renderAttributedStringWithRequest:(id)request titleHighlighter:(id)highlighter
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  requestCopy = request;
+  highlighterCopy = highlighter;
+  if (requestCopy)
   {
-    v8 = [v6 text];
-    v9 = [v6 textAttributes];
+    text = [requestCopy text];
+    textAttributes = [requestCopy textAttributes];
     v10 = +[DOCTagRenderer shared];
-    v11 = [v10 renderImageWithRequest:v6];
+    v11 = [v10 renderImageWithRequest:requestCopy];
 
-    [v6 tagBaselineAdjustment];
+    [requestCopy tagBaselineAdjustment];
     v13 = v12;
     if ([(DOCTagRenderer *)self differentiateWithShapes])
     {
@@ -446,10 +446,10 @@ id __41__DOCTagRenderer_renderImageWithRequest___block_invoke(uint64_t a1)
       v13 = v13 - v14;
     }
 
-    v15 = [v11 isSymbolImage];
+    isSymbolImage = [v11 isSymbolImage];
     [v11 size];
     v18 = v17;
-    if (v15)
+    if (isSymbolImage)
     {
       [v11 size];
       v20 = v18 / v19;
@@ -475,9 +475,9 @@ id __41__DOCTagRenderer_renderImageWithRequest___block_invoke(uint64_t a1)
         v24 = v23;
       }
 
-      [v6 tagDimension];
+      [requestCopy tagDimension];
       v18 = v25 * v22;
-      [v6 tagDimension];
+      [requestCopy tagDimension];
       v27 = v26 * v24;
     }
 
@@ -490,15 +490,15 @@ id __41__DOCTagRenderer_renderImageWithRequest___block_invoke(uint64_t a1)
     [v28 setImage:v11];
     [v28 setBounds:{0.0, v13, v18, v27}];
     v29 = objc_opt_new();
-    [v6 tagToTitleSpacing];
+    [requestCopy tagToTitleSpacing];
     v30 = [(DOCTagRenderer *)self _spacerImageWithWidth:?];
     [v29 setImage:v30];
 
-    v31 = [objc_alloc(MEMORY[0x277CCAB48]) initWithString:v8 attributes:v9];
-    v32 = v7[2](v7, v31);
+    v31 = [objc_alloc(MEMORY[0x277CCAB48]) initWithString:text attributes:textAttributes];
+    v32 = highlighterCopy[2](highlighterCopy, v31);
 
     v33 = [MEMORY[0x277CCA898] attributedStringWithAttachment:v29];
-    -[DOCTagRenderer _insertPrefixTextAttachment:spacerAttributedString:ensuringLayoutDirection:into:](self, "_insertPrefixTextAttachment:spacerAttributedString:ensuringLayoutDirection:into:", v28, v33, [v6 layoutDirection], v32);
+    -[DOCTagRenderer _insertPrefixTextAttachment:spacerAttributedString:ensuringLayoutDirection:into:](self, "_insertPrefixTextAttachment:spacerAttributedString:ensuringLayoutDirection:into:", v28, v33, [requestCopy layoutDirection], v32);
   }
 
   else
@@ -510,9 +510,9 @@ id __41__DOCTagRenderer_renderImageWithRequest___block_invoke(uint64_t a1)
   return v32;
 }
 
-- (id)_spacerImageWithWidth:(double)a3
+- (id)_spacerImageWithWidth:(double)width
 {
-  if (a3 <= 0.0)
+  if (width <= 0.0)
   {
     [(DOCTagRenderer *)a2 _spacerImageWithWidth:?];
   }
@@ -523,18 +523,18 @@ id __41__DOCTagRenderer_renderImageWithRequest___block_invoke(uint64_t a1)
   }
 
   v4 = _spacerImageWithWidth___spacerImageCache;
-  v5 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+  v5 = [MEMORY[0x277CCABB0] numberWithDouble:width];
   v6 = [v4 objectForKey:v5];
 
   if (!v6)
   {
     v11.height = 1.0;
-    v11.width = a3;
+    v11.width = width;
     UIGraphicsBeginImageContextWithOptions(v11, 0, 1.0);
     v6 = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     v7 = _spacerImageWithWidth___spacerImageCache;
-    v8 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+    v8 = [MEMORY[0x277CCABB0] numberWithDouble:width];
     [v7 setObject:v6 forKey:v8];
   }
 
@@ -548,12 +548,12 @@ void __40__DOCTagRenderer__spacerImageWithWidth___block_invoke()
   _spacerImageWithWidth___spacerImageCache = v0;
 }
 
-- (void)_insertPrefixTextAttachment:(id)a3 spacerAttributedString:(id)a4 ensuringLayoutDirection:(int64_t)a5 into:(id)a6
+- (void)_insertPrefixTextAttachment:(id)attachment spacerAttributedString:(id)string ensuringLayoutDirection:(int64_t)direction into:(id)into
 {
   v9 = MEMORY[0x277CCA898];
-  v10 = a6;
-  v11 = a4;
-  v16 = [v9 attributedStringWithAttachment:a3];
+  intoCopy = into;
+  stringCopy = string;
+  v16 = [v9 attributedStringWithAttachment:attachment];
   v12 = objc_alloc_init(MEMORY[0x277CCAB48]);
   v13 = +[_TtC26DocumentManagerExecutables10DOCUnicode nonBreakingSpace_zeroWidth];
   [v12 appendUnicode:v13];
@@ -562,50 +562,50 @@ void __40__DOCTagRenderer__spacerImageWithWidth___block_invoke()
   v14 = +[_TtC26DocumentManagerExecutables10DOCUnicode nonBreakingSpace_zeroWidth];
   [v12 appendUnicode:v14];
 
-  [v12 appendAttributedString:v11];
+  [v12 appendAttributedString:stringCopy];
   v15 = +[_TtC26DocumentManagerExecutables10DOCUnicode nonBreakingSpace_zeroWidth];
   [v12 appendUnicode:v15];
 
-  [v10 wrapInDirectionalIsolation:0];
-  [v10 insertAttributedString:v12 atIndex:0];
-  [v10 wrapInDirectionalIsolation:{+[DOCUnicode layoutDirectionForUIDirection:](_TtC26DocumentManagerExecutables10DOCUnicode, "layoutDirectionForUIDirection:", a5)}];
+  [intoCopy wrapInDirectionalIsolation:0];
+  [intoCopy insertAttributedString:v12 atIndex:0];
+  [intoCopy wrapInDirectionalIsolation:{+[DOCUnicode layoutDirectionForUIDirection:](_TtC26DocumentManagerExecutables10DOCUnicode, "layoutDirectionForUIDirection:", direction)}];
 }
 
-- (double)_tagChainSpacingForSpacingType:(unint64_t)a3 tagDimension:(double)a4
+- (double)_tagChainSpacingForSpacingType:(unint64_t)type tagDimension:(double)dimension
 {
   v4 = 0.4;
-  if (a3 != 1)
+  if (type != 1)
   {
     v4 = 0.5625;
   }
 
-  v5 = v4 * a4;
+  v5 = v4 * dimension;
   return ceilf(v5);
 }
 
-- (CGSize)sizeOfTagContentForRenderingRequest:(id)a3
+- (CGSize)sizeOfTagContentForRenderingRequest:(id)request
 {
-  v4 = a3;
-  v5 = [v4 tags];
-  v6 = [v5 count];
+  requestCopy = request;
+  tags = [requestCopy tags];
+  v6 = [tags count];
 
   if (v6)
   {
     v7 = v6;
-    [v4 tagDimension];
+    [requestCopy tagDimension];
     [(DOCTagRenderer *)self differentiateWithShapes];
-    v8 = [v4 traitCollection];
-    [v8 displayScale];
+    traitCollection = [requestCopy traitCollection];
+    [traitCollection displayScale];
     UIRoundToScale();
     v10 = v9;
 
-    v11 = [v4 spacingType];
-    [v4 tagDimension];
-    [(DOCTagRenderer *)self _tagChainSpacingForSpacingType:v11 tagDimension:?];
+    spacingType = [requestCopy spacingType];
+    [requestCopy tagDimension];
+    [(DOCTagRenderer *)self _tagChainSpacingForSpacingType:spacingType tagDimension:?];
     v13 = v10 + (v7 + -1.0) * v12;
-    v14 = [v4 selectionOutlineColor];
+    selectionOutlineColor = [requestCopy selectionOutlineColor];
 
-    if (v14)
+    if (selectionOutlineColor)
     {
       [(DOCTagRenderer *)self _defaultBorderWidth];
       v13 = v13 + v15;

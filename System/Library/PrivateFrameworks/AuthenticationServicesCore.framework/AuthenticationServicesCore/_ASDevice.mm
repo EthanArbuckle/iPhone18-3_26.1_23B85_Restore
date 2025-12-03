@@ -19,7 +19,7 @@
   block[1] = 3221225472;
   block[2] = __18___ASDevice_isPad__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (isPad_onceToken != -1)
   {
     dispatch_once(&isPad_onceToken, block);
@@ -123,7 +123,7 @@ LABEL_7:
   v4 = v8;
   if (v3)
   {
-    v5 = [v2 biometryType];
+    biometryType = [v2 biometryType];
   }
 
   else
@@ -134,10 +134,10 @@ LABEL_7:
       +[(_ASDevice *)v6];
     }
 
-    v5 = 0;
+    biometryType = 0;
   }
 
-  return v5;
+  return biometryType;
 }
 
 + (int)deviceClass
@@ -153,8 +153,8 @@ LABEL_7:
 + (void)isBiometricAuthenticationAvailable
 {
   v12 = *MEMORY[0x1E69E9840];
-  v2 = a1;
-  v3 = [OUTLINED_FUNCTION_1() safari_privacyPreservingDescription];
+  selfCopy = self;
+  safari_privacyPreservingDescription = [OUTLINED_FUNCTION_1() safari_privacyPreservingDescription];
   OUTLINED_FUNCTION_2();
   OUTLINED_FUNCTION_0(&dword_1C20AD000, v4, v5, "Local Auth returned error when checking biometric auth availability: %{public}@", v6, v7, v8, v9, v11);
 
@@ -164,8 +164,8 @@ LABEL_7:
 + (void)isCompanionAuthenticationAvailable
 {
   v12 = *MEMORY[0x1E69E9840];
-  v2 = a1;
-  v3 = [OUTLINED_FUNCTION_1() safari_privacyPreservingDescription];
+  selfCopy = self;
+  safari_privacyPreservingDescription = [OUTLINED_FUNCTION_1() safari_privacyPreservingDescription];
   OUTLINED_FUNCTION_2();
   OUTLINED_FUNCTION_0(&dword_1C20AD000, v4, v5, "Local Auth returned error when checking companion auth availability: %{public}@", v6, v7, v8, v9, v11);
 
@@ -175,8 +175,8 @@ LABEL_7:
 + (void)shouldRequireLocalAuthenticationForPasswords
 {
   v12 = *MEMORY[0x1E69E9840];
-  v2 = a1;
-  v3 = [OUTLINED_FUNCTION_1() safari_privacyPreservingDescription];
+  selfCopy = self;
+  safari_privacyPreservingDescription = [OUTLINED_FUNCTION_1() safari_privacyPreservingDescription];
   OUTLINED_FUNCTION_2();
   OUTLINED_FUNCTION_0(&dword_1C20AD000, v4, v5, "Local Auth returned error when checking password auth availability: %{public}@", v6, v7, v8, v9, v11);
 
@@ -186,8 +186,8 @@ LABEL_7:
 + (void)biometryType
 {
   v12 = *MEMORY[0x1E69E9840];
-  v2 = a1;
-  v3 = [OUTLINED_FUNCTION_1() safari_privacyPreservingDescription];
+  selfCopy = self;
+  safari_privacyPreservingDescription = [OUTLINED_FUNCTION_1() safari_privacyPreservingDescription];
   OUTLINED_FUNCTION_2();
   OUTLINED_FUNCTION_0(&dword_1C20AD000, v4, v5, "Cannot evaluate biometrics: %{public}@", v6, v7, v8, v9, v11);
 

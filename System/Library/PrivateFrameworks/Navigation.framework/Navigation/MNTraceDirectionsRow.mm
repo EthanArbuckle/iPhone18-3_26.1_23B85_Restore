@@ -6,7 +6,7 @@
 
 - (NSArray)routes
 {
-  v2 = self;
+  selfCopy = self;
   MNTraceDirectionsRow.routes.getter();
   v4 = v3;
 

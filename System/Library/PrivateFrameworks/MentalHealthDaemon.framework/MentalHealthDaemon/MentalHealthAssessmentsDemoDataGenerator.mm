@@ -1,10 +1,10 @@
 @interface MentalHealthAssessmentsDemoDataGenerator
 - (_TtC18MentalHealthDaemon40MentalHealthAssessmentsDemoDataGenerator)init;
-- (_TtC18MentalHealthDaemon40MentalHealthAssessmentsDemoDataGenerator)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)generateFirstRunObjectsForDemoPerson:(id)a3 firstDate:(id)a4 objectCollection:(id)a5;
-- (void)generateObjectsForDemoPerson:(id)a3 fromTime:(double)a4 toTime:(double)a5 currentDate:(id)a6 objectCollection:(id)a7;
-- (void)setDemoDataGenerationContextWithProfile:(id)a3 generatorState:(id)a4;
+- (_TtC18MentalHealthDaemon40MentalHealthAssessmentsDemoDataGenerator)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
+- (void)generateFirstRunObjectsForDemoPerson:(id)person firstDate:(id)date objectCollection:(id)collection;
+- (void)generateObjectsForDemoPerson:(id)person fromTime:(double)time toTime:(double)toTime currentDate:(id)date objectCollection:(id)collection;
+- (void)setDemoDataGenerationContextWithProfile:(id)profile generatorState:(id)state;
 @end
 
 @implementation MentalHealthAssessmentsDemoDataGenerator
@@ -30,15 +30,15 @@
   return [(MentalHealthAssessmentsDemoDataGenerator *)&v11 init];
 }
 
-- (void)setDemoDataGenerationContextWithProfile:(id)a3 generatorState:(id)a4
+- (void)setDemoDataGenerationContextWithProfile:(id)profile generatorState:(id)state
 {
   swift_unknownObjectWeakAssign();
   v7 = *(&self->super.isa + OBJC_IVAR____TtC18MentalHealthDaemon40MentalHealthAssessmentsDemoDataGenerator_generatorState);
-  *(&self->super.isa + OBJC_IVAR____TtC18MentalHealthDaemon40MentalHealthAssessmentsDemoDataGenerator_generatorState) = a4;
-  v6 = a4;
+  *(&self->super.isa + OBJC_IVAR____TtC18MentalHealthDaemon40MentalHealthAssessmentsDemoDataGenerator_generatorState) = state;
+  stateCopy = state;
 }
 
-- (void)generateFirstRunObjectsForDemoPerson:(id)a3 firstDate:(id)a4 objectCollection:(id)a5
+- (void)generateFirstRunObjectsForDemoPerson:(id)person firstDate:(id)date objectCollection:(id)collection
 {
   v8 = sub_2589921C4();
   v9 = *(v8 - 8);
@@ -46,15 +46,15 @@
   MEMORY[0x28223BE20](v8);
   v12 = &v16 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_2589921B4();
-  v13 = a3;
-  v14 = a5;
-  v15 = self;
+  personCopy = person;
+  collectionCopy = collection;
+  selfCopy = self;
   sub_25898FE88();
 
   (*(v9 + 8))(v12, v8);
 }
 
-- (void)generateObjectsForDemoPerson:(id)a3 fromTime:(double)a4 toTime:(double)a5 currentDate:(id)a6 objectCollection:(id)a7
+- (void)generateObjectsForDemoPerson:(id)person fromTime:(double)time toTime:(double)toTime currentDate:(id)date objectCollection:(id)collection
 {
   v11 = sub_2589921C4();
   v12 = *(v11 - 8);
@@ -62,40 +62,40 @@
   MEMORY[0x28223BE20](v11);
   v15 = &v19 - ((v14 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_2589921B4();
-  v16 = a3;
-  v17 = a7;
-  v18 = self;
-  sub_2589906E8(v15, v17, a5);
+  personCopy = person;
+  collectionCopy = collection;
+  selfCopy = self;
+  sub_2589906E8(v15, collectionCopy, toTime);
 
   (*(v12 + 8))(v15, v11);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   if (self->_anon_0[OBJC_IVAR____TtC18MentalHealthDaemon40MentalHealthAssessmentsDemoDataGenerator_nextSampleTime])
   {
-    v4 = a3;
-    v5 = self;
+    coderCopy = coder;
+    selfCopy = self;
     v6 = 0;
   }
 
   else
   {
     v7 = *(&self->super.isa + OBJC_IVAR____TtC18MentalHealthDaemon40MentalHealthAssessmentsDemoDataGenerator_nextSampleTime);
-    v8 = a3;
-    v9 = self;
+    coderCopy2 = coder;
+    selfCopy2 = self;
     v6 = sub_2589922D4();
   }
 
   v10 = sub_258992294();
-  [a3 encodeObject:v6 forKey:v10];
+  [coder encodeObject:v6 forKey:v10];
   swift_unknownObjectRelease();
 }
 
-- (_TtC18MentalHealthDaemon40MentalHealthAssessmentsDemoDataGenerator)initWithCoder:(id)a3
+- (_TtC18MentalHealthDaemon40MentalHealthAssessmentsDemoDataGenerator)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = sub_2589909C4(v3);
+  coderCopy = coder;
+  v4 = sub_2589909C4(coderCopy);
 
   return v4;
 }

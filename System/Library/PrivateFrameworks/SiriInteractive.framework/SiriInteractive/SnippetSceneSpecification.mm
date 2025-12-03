@@ -23,7 +23,7 @@
 
 - (NSString)uiSceneSessionRole
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_267523B14();
 
   return v3;

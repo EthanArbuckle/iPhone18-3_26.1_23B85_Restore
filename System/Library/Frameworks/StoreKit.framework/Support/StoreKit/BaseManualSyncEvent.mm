@@ -1,13 +1,13 @@
 @interface BaseManualSyncEvent
-- (void)configureWithClient:(id)a3;
+- (void)configureWithClient:(id)client;
 @end
 
 @implementation BaseManualSyncEvent
 
-- (void)configureWithClient:(id)a3
+- (void)configureWithClient:(id)client
 {
-  v4 = a3;
-  v5 = self;
+  clientCopy = client;
+  selfCopy = self;
   sub_100174A00();
 }
 

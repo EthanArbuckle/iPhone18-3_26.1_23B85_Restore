@@ -1,33 +1,33 @@
 @interface UIResponder
-+ (BOOL)_callBecomeFirstResponder:(id)a3 withIntent:(unint64_t)a4;
-+ (BOOL)_callResignFirstResponder:(id)a3 withIntent:(unint64_t)a4;
++ (BOOL)_callBecomeFirstResponder:(id)responder withIntent:(unint64_t)intent;
++ (BOOL)_callResignFirstResponder:(id)responder withIntent:(unint64_t)intent;
 + (BOOL)_isWritingToolsAvailable;
 + (id)_globalFirstResponder;
-+ (id)objectWithRestorationIdentifierPath:(id)a3;
++ (id)objectWithRestorationIdentifierPath:(id)path;
 + (unint64_t)_currentChangeIntent;
 + (void)_cleanupAllStateRestorationTables;
 + (void)_cleanupStateRestorationObjectIdentifierTrackingTables;
-+ (void)_setRestoredIdentifierPathForObject:(id)a3 identifierPath:(id)a4;
++ (void)_setRestoredIdentifierPathForObject:(id)object identifierPath:(id)path;
 + (void)_updateStateRestorationIdentifierMap;
 + (void)clearTextInputContextIdentifier:(NSString *)identifier;
 - (BOOL)_alwaysRequireInlineCandidateView;
 - (BOOL)_canBecomeFirstResponder;
-- (BOOL)_canChangeFirstResponder:(id)a3 toResponder:(id)a4;
+- (BOOL)_canChangeFirstResponder:(id)responder toResponder:(id)toResponder;
 - (BOOL)_commonUIInvocationAnimationNeeded;
 - (BOOL)_conformsToProtocolBETextInput;
 - (BOOL)_conformsToProtocolUIAsyncTextInputClient;
 - (BOOL)_conformsToProtocolUIKeyInput;
 - (BOOL)_containedInAbsoluteResponderChain;
-- (BOOL)_containsResponder:(id)a3;
+- (BOOL)_containsResponder:(id)responder;
 - (BOOL)_disableAutomaticKeyboardBehavior;
 - (BOOL)_disableAutomaticKeyboardUI;
 - (BOOL)_disallowsPresentationOfKeyboardShortcutHUD;
 - (BOOL)_enableAutomaticKeyboardPressDone;
-- (BOOL)_finishResignFirstResponderFromBecomeFirstResponder:(BOOL)a3;
-- (BOOL)_handleActivityItemsConfigurationCanPerformAction:(SEL)a3 sender:(id)a4;
-- (BOOL)_handleActivityItemsConfigurationDoesNotHandleSelector:(SEL)a3;
-- (BOOL)_handleActivityItemsConfigurationShare:(id)a3;
-- (BOOL)_handleActivityItemsConfigurationShare:(id)a3 activityItemsConfiguration:(id)a4;
+- (BOOL)_finishResignFirstResponderFromBecomeFirstResponder:(BOOL)responder;
+- (BOOL)_handleActivityItemsConfigurationCanPerformAction:(SEL)action sender:(id)sender;
+- (BOOL)_handleActivityItemsConfigurationDoesNotHandleSelector:(SEL)selector;
+- (BOOL)_handleActivityItemsConfigurationShare:(id)share;
+- (BOOL)_handleActivityItemsConfigurationShare:(id)share activityItemsConfiguration:(id)configuration;
 - (BOOL)_hasMarkedText;
 - (BOOL)_hasMarkedTextOrRangedSelection;
 - (BOOL)_isDisplayingWritingToolsSessionInUCB;
@@ -35,13 +35,13 @@
 - (BOOL)_isEmptySelection;
 - (BOOL)_isHardwareKeyboardBehaviorEnabled;
 - (BOOL)_isPinningInputViews;
-- (BOOL)_isTransitioningFromView:(id)a3;
+- (BOOL)_isTransitioningFromView:(id)view;
 - (BOOL)_isWritingToolsActive;
-- (BOOL)_nextResponderChainContainsResponder:(id)a3;
+- (BOOL)_nextResponderChainContainsResponder:(id)responder;
 - (BOOL)_ownsInputAccessoryView;
-- (BOOL)_range:(id)a3 containsRange:(id)a4;
-- (BOOL)_range:(id)a3 intersectsRange:(id)a4;
-- (BOOL)_range:(id)a3 isEqualToRange:(id)a4;
+- (BOOL)_range:(id)_range containsRange:(id)range;
+- (BOOL)_range:(id)_range intersectsRange:(id)range;
+- (BOOL)_range:(id)_range isEqualToRange:(id)range;
 - (BOOL)_requiresKeyboardResetOnReload;
 - (BOOL)_requiresKeyboardWhenFirstResponder;
 - (BOOL)_resignIfContainsFirstResponder;
@@ -52,27 +52,27 @@
 - (BOOL)_shouldDisplayWritingToolsCandidateOptions;
 - (BOOL)_shouldEndWritingToolsOnResign;
 - (BOOL)_shouldEvaluateForWritingToolsInCandidateBarAsynchronously;
-- (BOOL)_shouldForwardMovementToFocusEngine:(int64_t)a3;
-- (BOOL)_shouldPerformUICalloutBarButtonReplaceAction:(SEL)a3 forText:(id)a4 checkAutocorrection:(BOOL)a5;
+- (BOOL)_shouldForwardMovementToFocusEngine:(int64_t)engine;
+- (BOOL)_shouldPerformUICalloutBarButtonReplaceAction:(SEL)action forText:(id)text checkAutocorrection:(BOOL)autocorrection;
 - (BOOL)_shouldShowWritingToolsInCandidateBar;
-- (BOOL)_shouldSkipKeyboardShortcutLeaf:(id)a3 forMovement:(int64_t)a4;
-- (BOOL)_stringContainsMinimumNumberOfWords:(unint64_t)a3 minimumNumberOfWords:;
+- (BOOL)_shouldSkipKeyboardShortcutLeaf:(id)leaf forMovement:(int64_t)movement;
+- (BOOL)_stringContainsMinimumNumberOfWords:(unint64_t)words minimumNumberOfWords:;
 - (BOOL)_supportsImagePaste;
 - (BOOL)_supportsWritingTools;
 - (BOOL)_usesAsynchronousProtocol;
 - (BOOL)_writingToolsWantsKeyboardSuppression;
 - (BOOL)becomeFirstResponder;
-- (BOOL)canPasteItemProviders:(id)a3;
+- (BOOL)canPasteItemProviders:(id)providers;
 - (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
 - (BOOL)isEditable;
 - (BOOL)isFirstResponder;
 - (BOOL)resignFirstResponder;
 - (BOOL)shouldReloadInputViews;
 - (CGRect)_caretRect;
-- (CGRect)_lastRectForRange:(id)a3;
-- (CGRect)_rectToScrollToVisibleInCellInWindow:(id)a3;
-- (CGRect)_responderExternalTouchRectForWindow:(id)a3;
-- (CGRect)_responderSelectionRectForWindow:(id)a3;
+- (CGRect)_lastRectForRange:(id)range;
+- (CGRect)_rectToScrollToVisibleInCellInWindow:(id)window;
+- (CGRect)_responderExternalTouchRectForWindow:(id)window;
+- (CGRect)_responderSelectionRectForWindow:(id)window;
 - (CGRect)_selectionClipRect;
 - (CGRect)_selectionRectForWritingTools;
 - (NSString)textInputContextIdentifier;
@@ -84,80 +84,80 @@
 - (UITextInputMode)textInputMode;
 - (UIView)inputAccessoryView;
 - (UIView)inputView;
-- (_NSRange)_nsrangeForTextRange:(id)a3;
+- (_NSRange)_nsrangeForTextRange:(id)range;
 - (_NSRange)_selectedNSRange;
 - (_NSRange)_selectedRangeWithinMarkedText;
 - (_WORD)_storedActivityItemsConfiguration;
 - (id)__textInteractionFromAssistant;
 - (id)__wt_writingToolsCoordinator;
 - (id)_additionalTextInputLocales;
-- (id)_assistantBarButtonItemForWritingToolsWithStyle:(int64_t)a3;
+- (id)_assistantBarButtonItemForWritingToolsWithStyle:(int64_t)style;
 - (id)_captureOverrideState;
-- (id)_clampedpositionFromPosition:(id)a3 offset:(int)a4;
+- (id)_clampedpositionFromPosition:(id)position offset:(int)offset;
 - (id)_currentOverrideClient;
 - (id)_currentOverrideHost;
-- (id)_effectiveActivityItemsConfigurationAtLocation:(CGPoint)a3 inCoordinateSpace:(id)a4 sender:(id)a5;
-- (id)_effectiveActivityItemsConfigurationForSender:(id)a3;
-- (id)_findBoundaryPositionClosestToPosition:(id)a3 withGranularity:(int64_t)a4;
-- (id)_findDocumentBoundaryFromPosition:(id)a3;
-- (id)_findPleasingWordBoundaryFromPosition:(id)a3;
-- (id)_firstNonnullActivityItemsConfigurationInResponderChainForLocation:(CGPoint)a3 inCoordinateSpace:(id)a4 skipPresentingViewControllers:(BOOL)a5 sender:(id)a6 target:(id *)a7;
+- (id)_effectiveActivityItemsConfigurationAtLocation:(CGPoint)location inCoordinateSpace:(id)space sender:(id)sender;
+- (id)_effectiveActivityItemsConfigurationForSender:(id)sender;
+- (id)_findBoundaryPositionClosestToPosition:(id)position withGranularity:(int64_t)granularity;
+- (id)_findDocumentBoundaryFromPosition:(id)position;
+- (id)_findPleasingWordBoundaryFromPosition:(id)position;
+- (id)_firstNonnullActivityItemsConfigurationInResponderChainForLocation:(CGPoint)location inCoordinateSpace:(id)space skipPresentingViewControllers:(BOOL)controllers sender:(id)sender target:(id *)target;
 - (id)_firstResponder;
 - (id)_fontForCaretSelection;
 - (id)_fullRange;
 - (id)_fullText;
-- (id)_intersectionOfRange:(id)a3 andRange:(id)a4;
+- (id)_intersectionOfRange:(id)range andRange:(id)andRange;
 - (id)_keyboardResponder;
-- (id)_keyboardShortcutInvocationForKeyboardEvent:(id)a3;
-- (id)_moveDown:(BOOL)a3 withHistory:(id)a4;
-- (id)_moveLeft:(BOOL)a3 withHistory:(id)a4;
-- (id)_moveRight:(BOOL)a3 withHistory:(id)a4;
-- (id)_moveToEndOfDocument:(BOOL)a3 withHistory:(id)a4;
-- (id)_moveToEndOfLine:(BOOL)a3 withHistory:(id)a4;
-- (id)_moveToEndOfParagraph:(BOOL)a3 withHistory:(id)a4;
-- (id)_moveToEndOfWord:(BOOL)a3 withHistory:(id)a4;
-- (id)_moveToStartOfDocument:(BOOL)a3 withHistory:(id)a4;
-- (id)_moveToStartOfLine:(BOOL)a3 withHistory:(id)a4;
-- (id)_moveToStartOfParagraph:(BOOL)a3 withHistory:(id)a4;
-- (id)_moveToStartOfWord:(BOOL)a3 withHistory:(id)a4;
-- (id)_moveUp:(BOOL)a3 withHistory:(id)a4;
+- (id)_keyboardShortcutInvocationForKeyboardEvent:(id)event;
+- (id)_moveDown:(BOOL)down withHistory:(id)history;
+- (id)_moveLeft:(BOOL)left withHistory:(id)history;
+- (id)_moveRight:(BOOL)right withHistory:(id)history;
+- (id)_moveToEndOfDocument:(BOOL)document withHistory:(id)history;
+- (id)_moveToEndOfLine:(BOOL)line withHistory:(id)history;
+- (id)_moveToEndOfParagraph:(BOOL)paragraph withHistory:(id)history;
+- (id)_moveToEndOfWord:(BOOL)word withHistory:(id)history;
+- (id)_moveToStartOfDocument:(BOOL)document withHistory:(id)history;
+- (id)_moveToStartOfLine:(BOOL)line withHistory:(id)history;
+- (id)_moveToStartOfParagraph:(BOOL)paragraph withHistory:(id)history;
+- (id)_moveToStartOfWord:(BOOL)word withHistory:(id)history;
+- (id)_moveUp:(BOOL)up withHistory:(id)history;
 - (id)_nextResponderOverride;
 - (id)_nextResponderThatCanBecomeFirstResponder;
-- (id)_normalizedStringForRangeComparison:(id)a3;
+- (id)_normalizedStringForRangeComparison:(id)comparison;
 - (id)_overrideHost;
-- (id)_positionAtStartOfWords:(unint64_t)a3 beforePosition:(id)a4;
-- (id)_positionFromPosition:(id)a3 inDirection:(int64_t)a4 offset:(int64_t)a5 withAffinityDownstream:(BOOL)a6;
-- (id)_positionFromPosition:(id)a3 pastTextUnit:(int64_t)a4 inDirection:(int64_t)a5;
-- (id)_positionWithinRange:(id)a3 farthestInDirection:(int64_t)a4;
+- (id)_positionAtStartOfWords:(unint64_t)words beforePosition:(id)position;
+- (id)_positionFromPosition:(id)position inDirection:(int64_t)direction offset:(int64_t)offset withAffinityDownstream:(BOOL)downstream;
+- (id)_positionFromPosition:(id)position pastTextUnit:(int64_t)unit inDirection:(int64_t)direction;
+- (id)_positionWithinRange:(id)range farthestInDirection:(int64_t)direction;
 - (id)_primaryContentResponder;
-- (id)_rangeFromCurrentRangeWithDelta:(_NSRange)a3;
-- (id)_rangeOfSmartSelectionIncludingRange:(id)a3;
-- (id)_rangeOfText:(id)a3 endingAtPosition:(id)a4;
-- (id)_rangeOfTextUnit:(int64_t)a3 enclosingPosition:(id)a4;
-- (id)_rangeSpanningTextUnit:(int64_t)a3 andPosition:(id)a4;
+- (id)_rangeFromCurrentRangeWithDelta:(_NSRange)delta;
+- (id)_rangeOfSmartSelectionIncludingRange:(id)range;
+- (id)_rangeOfText:(id)text endingAtPosition:(id)position;
+- (id)_rangeOfTextUnit:(int64_t)unit enclosingPosition:(id)position;
+- (id)_rangeSpanningTextUnit:(int64_t)unit andPosition:(id)position;
 - (id)_responderForEditing;
-- (id)_responderSelectionContainerViewForResponder:(id)a3;
+- (id)_responderSelectionContainerViewForResponder:(id)responder;
 - (id)_responderSelectionImage;
 - (id)_responderThatRequestedWritingTools;
 - (id)_responderWindow;
 - (id)_restorationIdentifierPath;
 - (id)_selectableText;
 - (id)_selectionDisplayInteraction;
-- (id)_setHistory:(id)a3 withExtending:(BOOL)a4 withAnchor:(int)a5 withAffinityDownstream:(BOOL)a6;
-- (id)_setSelectionRangeWithHistory:(id)a3;
-- (id)_showServiceForText:(id)a3 selectedTextRange:(_NSRange)a4 type:(int64_t)a5 fromRect:(CGRect)a6 inView:(id)a7;
-- (id)_showServiceForText:(id)a3 type:(int64_t)a4 fromRect:(CGRect)a5 inView:(id)a6;
-- (id)_showServiceForType:(int64_t)a3 withContext:(id)a4;
-- (id)_targetCanPerformBlock:(id)a3;
+- (id)_setHistory:(id)history withExtending:(BOOL)extending withAnchor:(int)anchor withAffinityDownstream:(BOOL)downstream;
+- (id)_setSelectionRangeWithHistory:(id)history;
+- (id)_showServiceForText:(id)text selectedTextRange:(_NSRange)range type:(int64_t)type fromRect:(CGRect)rect inView:(id)view;
+- (id)_showServiceForText:(id)text type:(int64_t)type fromRect:(CGRect)rect inView:(id)view;
+- (id)_showServiceForType:(int64_t)type withContext:(id)context;
+- (id)_targetCanPerformBlock:(id)block;
 - (id)_textColorForCaretSelection;
 - (id)_textInputForWritingTools;
-- (id)_textRangeFromDirectionalRange:(id)a3;
-- (id)_textRangeFromNSRange:(_NSRange)a3;
+- (id)_textRangeFromDirectionalRange:(id)range;
+- (id)_textRangeFromNSRange:(_NSRange)range;
 - (id)_textServicesResponderProxy;
 - (id)_textSuggestionsForWritingTools;
 - (id)_trailingPredictiveCandidateForWritingTools;
 - (id)_ui_findNavigatorResponder;
-- (id)_underlineRectsByDocumentLineForSelectionRange:(id)a3;
+- (id)_underlineRectsByDocumentLineForSelectionRange:(id)range;
 - (id)_userActivity;
 - (id)_viewControllerForWritingToolsSource;
 - (id)_window;
@@ -171,110 +171,110 @@
 - (id)recentsAccessoryView;
 - (id)textInputSuggestionDelegate;
 - (id)textInputView;
-- (int)_indexForTextPosition:(id)a3;
+- (int)_indexForTextPosition:(id)position;
 - (int64_t)__wt_writingToolsBehavior;
 - (int64_t)_availableTextServices;
 - (int64_t)_dataOwnerForCopy;
 - (int64_t)_dataOwnerForPaste;
 - (int64_t)_dragDataOwner;
 - (int64_t)_dropDataOwner;
-- (int64_t)_opposingDirectionFromDirection:(int64_t)a3;
+- (int64_t)_opposingDirectionFromDirection:(int64_t)direction;
 - (int64_t)_selectionAffinity;
 - (int64_t)_textInputSource;
-- (uint64_t)_shouldDisplayWritingToolsForAttributedString:(uint64_t)a1;
-- (unsigned)_characterInRelationToCaretSelection:(int)a3;
-- (unsigned)_characterInRelationToPosition:(id)a3 amount:(int)a4;
-- (unsigned)_characterInRelationToRangedSelection:(int)a3;
-- (void)__createInteractionAssistantIfNecessaryWithMode:(int64_t)a3;
+- (uint64_t)_shouldDisplayWritingToolsForAttributedString:(uint64_t)string;
+- (unsigned)_characterInRelationToCaretSelection:(int)selection;
+- (unsigned)_characterInRelationToPosition:(id)position amount:(int)amount;
+- (unsigned)_characterInRelationToRangedSelection:(int)selection;
+- (void)__createInteractionAssistantIfNecessaryWithMode:(int64_t)mode;
 - (void)__prepareInteractionAssistantIfNecessary;
 - (void)__tearDownInteractionAssistantIfNecessary;
-- (void)_addShortcut:(id)a3;
-- (void)_asyncShouldDisplayWritingToolsCandidateOptionsWithCompletionHandler:(id)a3;
+- (void)_addShortcut:(id)shortcut;
+- (void)_asyncShouldDisplayWritingToolsCandidateOptionsWithCompletionHandler:(id)handler;
 - (void)_beginPinningInputViews;
-- (void)_checkIsText:(BOOL *)a3 isSecure:(BOOL *)a4 isEditable:(BOOL *)a5 isFormatted:(BOOL *)a6;
+- (void)_checkIsText:(BOOL *)text isSecure:(BOOL *)secure isEditable:(BOOL *)editable isFormatted:(BOOL *)formatted;
 - (void)_clearOverrideHost;
 - (void)_clearOverrideNextResponder;
 - (void)_clearRestorableResponderStatus;
-- (void)_completeForwardingTouches:(id)a3 phase:(int64_t)a4 event:(id)a5 index:(unint64_t)a6;
-- (void)_define:(id)a3;
-- (void)_deleteBackwardAndNotify:(BOOL)a3;
+- (void)_completeForwardingTouches:(id)touches phase:(int64_t)phase event:(id)event index:(unint64_t)index;
+- (void)_define:(id)_define;
+- (void)_deleteBackwardAndNotify:(BOOL)notify;
 - (void)_deleteByWord;
-- (void)_deleteForwardAndNotify:(BOOL)a3;
+- (void)_deleteForwardAndNotify:(BOOL)notify;
 - (void)_deleteForwardByWord;
-- (void)_deleteTextRange:(id)a3;
+- (void)_deleteTextRange:(id)range;
 - (void)_deleteToEndOfLine;
 - (void)_deleteToEndOfParagraph;
 - (void)_deleteToStartOfLine;
 - (void)_endPinningInputViews;
 - (void)_endWritingTools;
 - (void)_endWritingToolsIfNecessaryForResignFirstResponder;
-- (void)_enumerateKeyboardShortcutsInChainWithOptions:(unint64_t)a3 usingBlock:(id)a4;
-- (void)_expandSelectionToBackwardDeletionClusterWithReinsertionOut:(id *)a3;
-- (void)_expandSelectionToStartOfWordsBeforeCaretSelection:(int)a3;
-- (void)_extendCurrentSelection:(int)a3;
-- (void)_handleGameControllerEvent:(id)a3;
-- (void)_handleKeyEvent:(__GSEvent *)a3;
-- (void)_handleKeyUIEvent:(id)a3;
-- (void)_insertItemFromProvider:(id)a3 completionHandler:(id)a4;
-- (void)_lookup:(id)a3;
-- (void)_moveCurrentSelection:(int)a3;
+- (void)_enumerateKeyboardShortcutsInChainWithOptions:(unint64_t)options usingBlock:(id)block;
+- (void)_expandSelectionToBackwardDeletionClusterWithReinsertionOut:(id *)out;
+- (void)_expandSelectionToStartOfWordsBeforeCaretSelection:(int)selection;
+- (void)_extendCurrentSelection:(int)selection;
+- (void)_handleGameControllerEvent:(id)event;
+- (void)_handleKeyEvent:(__GSEvent *)event;
+- (void)_handleKeyUIEvent:(id)event;
+- (void)_insertItemFromProvider:(id)provider completionHandler:(id)handler;
+- (void)_lookup:(id)_lookup;
+- (void)_moveCurrentSelection:(int)selection;
 - (void)_notifyFocusEngine;
-- (void)_overrideNextResponderWithResponder:(id)a3 forType:(int64_t)a4;
+- (void)_overrideNextResponderWithResponder:(id)responder forType:(int64_t)type;
 - (void)_playInvocationAnimation;
-- (void)_preserveResponderOverridesWhilePerforming:(id)a3;
+- (void)_preserveResponderOverridesWhilePerforming:(id)performing;
 - (void)_rebuildStateRestorationIdentifierPath;
-- (void)_reloadInputViewsFromFirstResponder:(BOOL)a3;
-- (void)_replaceCurrentWordWithText:(id)a3;
-- (void)_replaceDocumentWithText:(id)a3;
-- (void)_restoreOverrideState:(id)a3;
-- (void)_scrollRectToVisible:(CGRect)a3 animated:(BOOL)a4;
+- (void)_reloadInputViewsFromFirstResponder:(BOOL)responder;
+- (void)_replaceCurrentWordWithText:(id)text;
+- (void)_replaceDocumentWithText:(id)text;
+- (void)_restoreOverrideState:(id)state;
+- (void)_scrollRectToVisible:(CGRect)visible animated:(BOOL)animated;
 - (void)_selectAll;
 - (void)_selectionDidUpdate;
-- (void)_setAttributedMarkedText:(id)a3 selectedRange:(_NSRange)a4;
+- (void)_setAttributedMarkedText:(id)text selectedRange:(_NSRange)range;
 - (void)_setCaretSelectionAtEndOfSelection;
-- (void)_setCommonUIInvocationAnimationNeeded:(BOOL)a3;
-- (void)_setDataOwnerForCopy:(int64_t)a3;
-- (void)_setDataOwnerForPaste:(int64_t)a3;
-- (void)_setDragDataOwner:(int64_t)a3;
-- (void)_setDropDataOwner:(int64_t)a3;
-- (void)_setFirstResponder:(id)a3;
+- (void)_setCommonUIInvocationAnimationNeeded:(BOOL)needed;
+- (void)_setDataOwnerForCopy:(int64_t)copy;
+- (void)_setDataOwnerForPaste:(int64_t)paste;
+- (void)_setDragDataOwner:(int64_t)owner;
+- (void)_setDropDataOwner:(int64_t)owner;
+- (void)_setFirstResponder:(id)responder;
 - (void)_setGestureRecognizers;
-- (void)_setMarkedText:(id)a3 selectedRange:(_NSRange)a4;
-- (void)_setSelectedTextRange:(id)a3 withAffinityDownstream:(BOOL)a4;
-- (void)_setSelectionDisplayInteraction:(id)a3;
-- (void)_setSelectionToPosition:(id)a3;
-- (void)_setShouldEndWritingToolsOnResign:(BOOL)a3;
-- (void)_setSmartReplyFeedbackInputDashboardViewController:(id)a3;
-- (void)_setStoredActivityItemsConfiguration:(_WORD *)a1;
-- (void)_setSuppressSoftwareKeyboard:(BOOL)a3;
-- (void)_setSuppressWritingToolsForRemoteKeyboard:(BOOL)a3;
-- (void)_setWritingToolsInputDashboardViewController:(id)a3;
-- (void)_setWritingToolsViewController:(id)a3;
-- (void)_setWritingToolsWantsKeyboardSuppression:(BOOL)a3 suppressAssistant:(BOOL)a4;
-- (void)_share:(id)a3;
+- (void)_setMarkedText:(id)text selectedRange:(_NSRange)range;
+- (void)_setSelectedTextRange:(id)range withAffinityDownstream:(BOOL)downstream;
+- (void)_setSelectionDisplayInteraction:(id)interaction;
+- (void)_setSelectionToPosition:(id)position;
+- (void)_setShouldEndWritingToolsOnResign:(BOOL)resign;
+- (void)_setSmartReplyFeedbackInputDashboardViewController:(id)controller;
+- (void)_setStoredActivityItemsConfiguration:(_WORD *)configuration;
+- (void)_setSuppressSoftwareKeyboard:(BOOL)keyboard;
+- (void)_setSuppressWritingToolsForRemoteKeyboard:(BOOL)keyboard;
+- (void)_setWritingToolsInputDashboardViewController:(id)controller;
+- (void)_setWritingToolsViewController:(id)controller;
+- (void)_setWritingToolsWantsKeyboardSuppression:(BOOL)suppression suppressAssistant:(BOOL)assistant;
+- (void)_share:(id)_share;
 - (void)_startProofreadingFromCandidateBar;
 - (void)_startRewritingFromCandidateBar;
-- (void)_startWritingToolsWithTool:(id)a3 prompt:(id)a4 entryPoint:(id)a5 inputContextHistory:(id)a6 sender:(id)a7;
-- (void)_translate:(id)a3;
+- (void)_startWritingToolsWithTool:(id)tool prompt:(id)prompt entryPoint:(id)point inputContextHistory:(id)history sender:(id)sender;
+- (void)_translate:(id)_translate;
 - (void)_transpose;
 - (void)_unmarkText;
-- (void)_updateSelectedRects:(id)a3 byTrimmingWhitespaceInRange:(id)a4 inDocument:(id)a5;
-- (void)_updateSelectionWithTextRange:(id)a3 withAffinityDownstream:(BOOL)a4;
-- (void)_webkitShouldShowWritingToolsInCandidateBarWithCompletionHandler:(id)a3;
+- (void)_updateSelectedRects:(id)rects byTrimmingWhitespaceInRange:(id)range inDocument:(id)document;
+- (void)_updateSelectionWithTextRange:(id)range withAffinityDownstream:(BOOL)downstream;
+- (void)_webkitShouldShowWritingToolsInCandidateBarWithCompletionHandler:(id)handler;
 - (void)_windowBecameKey;
 - (void)_writingToolsDidEnd;
 - (void)captureTextFromCamera:(id)sender;
 - (void)dealloc;
-- (void)doesNotRecognizeSelector:(SEL)a3;
-- (void)pasteItemProviders:(id)a3;
-- (void)promptBackgroundViewDidUpdateConfiguration:(id)a3;
+- (void)doesNotRecognizeSelector:(SEL)selector;
+- (void)pasteItemProviders:(id)providers;
+- (void)promptBackgroundViewDidUpdateConfiguration:(id)configuration;
 - (void)reloadInputViews;
 - (void)reloadInputViewsWithoutReset;
-- (void)setPasteConfiguration:(id)a3;
-- (void)setRestorationIdentifier:(id)a3;
+- (void)setPasteConfiguration:(id)configuration;
+- (void)setRestorationIdentifier:(id)identifier;
 - (void)setUserActivity:(NSUserActivity *)userActivity;
-- (void)set_textInputSource:(int64_t)a3;
-- (void)showWritingTools:(id)a3;
+- (void)set_textInputSource:(int64_t)source;
+- (void)showWritingTools:(id)tools;
 - (void)validateCommand:(UICommand *)command;
 @end
 
@@ -283,54 +283,54 @@
 - (BOOL)resignFirstResponder
 {
   [(UIResponder *)self _clearBecomeFirstResponderWhenCapable];
-  v3 = [(UIResponder *)self _firstResponder];
-  if (v3 == self && [(UIResponder *)self canResignFirstResponder])
+  _firstResponder = [(UIResponder *)self _firstResponder];
+  if (_firstResponder == self && [(UIResponder *)self canResignFirstResponder])
   {
     [(UIResponder *)self _endWritingToolsIfNecessaryForResignFirstResponder];
-    v4 = [(UIResponder *)self _responderWindow];
-    if ([v4 _isSettingFirstResponder])
+    _responderWindow = [(UIResponder *)self _responderWindow];
+    if ([_responderWindow _isSettingFirstResponder])
     {
       v5 = [(UIResponder *)self _finishResignFirstResponderFromBecomeFirstResponder:1];
     }
 
     else
     {
-      [v4 _setIsSettingFirstResponder:1];
-      v7 = [(UIResponder *)self nextFirstResponder];
-      if ([v4 _wantsResponderWithoutKeyboard] && -[UIResponder _requiresKeyboardWhenFirstResponder](v7, "_requiresKeyboardWhenFirstResponder"))
+      [_responderWindow _setIsSettingFirstResponder:1];
+      nextFirstResponder = [(UIResponder *)self nextFirstResponder];
+      if ([_responderWindow _wantsResponderWithoutKeyboard] && -[UIResponder _requiresKeyboardWhenFirstResponder](nextFirstResponder, "_requiresKeyboardWhenFirstResponder"))
       {
         do
         {
-          v8 = [(UIResponder *)v7 nextFirstResponder];
+          v7NextFirstResponder = [(UIResponder *)nextFirstResponder nextFirstResponder];
 
-          v7 = v8;
+          nextFirstResponder = v7NextFirstResponder;
         }
 
-        while ([(UIResponder *)v8 _requiresKeyboardWhenFirstResponder]);
+        while ([(UIResponder *)v7NextFirstResponder _requiresKeyboardWhenFirstResponder]);
       }
 
       else
       {
-        v8 = v7;
+        v7NextFirstResponder = nextFirstResponder;
       }
 
-      v9 = [(UIResponder *)self _responderWindow];
-      v10 = [v9 windowScene];
-      v11 = [v10 keyboardSceneDelegate];
+      _responderWindow2 = [(UIResponder *)self _responderWindow];
+      windowScene = [_responderWindow2 windowScene];
+      keyboardSceneDelegate = [windowScene keyboardSceneDelegate];
 
-      if (v11)
+      if (keyboardSceneDelegate)
       {
-        [v11 setKeyWindowCandidate:0];
+        [keyboardSceneDelegate setKeyWindowCandidate:0];
       }
 
-      if (v8 == self || ![(UIResponder *)v8 becomeFirstResponder]|| [(UIResponder *)self isFirstResponder])
+      if (v7NextFirstResponder == self || ![(UIResponder *)v7NextFirstResponder becomeFirstResponder]|| [(UIResponder *)self isFirstResponder])
       {
         [(UIResponder *)self _finishResignFirstResponder];
         [UIApp _updateSerializableKeyCommandsForResponder:0];
       }
 
       [(UIResponder *)self _notifyFocusEngine];
-      [v4 _setIsSettingFirstResponder:0];
+      [_responderWindow _setIsSettingFirstResponder:0];
 
       v5 = 1;
     }
@@ -346,10 +346,10 @@
 
 - (id)_responderWindow
 {
-  v2 = [(UIResponder *)self nextResponder];
-  v3 = [v2 _responderWindow];
+  nextResponder = [(UIResponder *)self nextResponder];
+  _responderWindow = [nextResponder _responderWindow];
 
-  return v3;
+  return _responderWindow;
 }
 
 - (id)_nextResponderOverride
@@ -357,15 +357,15 @@
   if (*&self->_responderFlags)
   {
     v3 = objc_getAssociatedObject(self, &_MergedGlobals_1256);
-    v2 = [v3 target];
+    target = [v3 target];
   }
 
   else
   {
-    v2 = 0;
+    target = 0;
   }
 
-  return v2;
+  return target;
 }
 
 - (void)_clearOverrideNextResponder
@@ -405,11 +405,11 @@
 
 - (void)dealloc
 {
-  v3 = [(UIResponder *)self _userActivity];
-  if (v3)
+  _userActivity = [(UIResponder *)self _userActivity];
+  if (_userActivity)
   {
     v4 = objc_autoreleasePoolPush();
-    [UIApp _removeResponder:self forUserActivity:v3];
+    [UIApp _removeResponder:self forUserActivity:_userActivity];
     objc_autoreleasePoolPop(v4);
   }
 
@@ -452,55 +452,55 @@
     _os_signpost_emit_with_name_impl(&dword_188A29000, v4, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "keyboard.becomeFirstResponder", "", &v31, 2u);
   }
 
-  v5 = [(UIResponder *)self _responderWindow];
-  v6 = [v5 windowScene];
-  v7 = [v6 keyboardSceneDelegate];
+  _responderWindow = [(UIResponder *)self _responderWindow];
+  windowScene = [_responderWindow windowScene];
+  keyboardSceneDelegate = [windowScene keyboardSceneDelegate];
 
-  v8 = [v5 _isSettingFirstResponder];
-  if ([v5 _suppressFirstResponderWhenUserInteractionDisabled] && (objc_msgSend(v5, "isUserInteractionEnabled") & 1) == 0)
+  _isSettingFirstResponder = [_responderWindow _isSettingFirstResponder];
+  if ([_responderWindow _suppressFirstResponderWhenUserInteractionDisabled] && (objc_msgSend(_responderWindow, "isUserInteractionEnabled") & 1) == 0)
   {
-    [v5 _setLastFirstResponder:self];
+    [_responderWindow _setLastFirstResponder:self];
     v13 = 0;
     goto LABEL_51;
   }
 
-  v9 = self;
-  v10 = [(UIResponder *)v9 _firstResponder];
-  v11 = [(UIResponder *)v9 firstResponder];
-  v12 = v11;
+  selfCopy = self;
+  _firstResponder = [(UIResponder *)selfCopy _firstResponder];
+  firstResponder = [(UIResponder *)selfCopy firstResponder];
+  v12 = firstResponder;
   v13 = 1;
-  if (v10 != v9 && v11 != v9)
+  if (_firstResponder != selfCopy && firstResponder != selfCopy)
   {
-    if (v11)
+    if (firstResponder)
     {
-      v14 = v11;
+      v14 = firstResponder;
     }
 
     else
     {
-      v14 = v10;
+      v14 = _firstResponder;
     }
 
     v15 = v14;
-    if ((v8 & 1) == 0)
+    if ((_isSettingFirstResponder & 1) == 0)
     {
-      [v5 _setIsSettingFirstResponder:1];
+      [_responderWindow _setIsSettingFirstResponder:1];
     }
 
-    v16 = [v7 localAuthenticationObserver];
-    [v16 willTryToBecomeFirstResponder:v9];
-    if (v15 && ![v15 _canChangeFirstResponder:v15 toResponder:v9] || !-[UIResponder _canBecomeFirstResponder](v9, "_canBecomeFirstResponder"))
+    localAuthenticationObserver = [keyboardSceneDelegate localAuthenticationObserver];
+    [localAuthenticationObserver willTryToBecomeFirstResponder:selfCopy];
+    if (v15 && ![v15 _canChangeFirstResponder:v15 toResponder:selfCopy] || !-[UIResponder _canBecomeFirstResponder](selfCopy, "_canBecomeFirstResponder"))
     {
       goto LABEL_44;
     }
 
-    [v7 _beginIgnoringReloadInputViews];
-    if (v8)
+    [keyboardSceneDelegate _beginIgnoringReloadInputViews];
+    if (_isSettingFirstResponder)
     {
       [v15 _finishResignFirstResponder];
     }
 
-    if (v5 && v15 && ([v15 _window], v17 = objc_claimAutoreleasedReturnValue(), v17, v17 != v5) && (objc_msgSend(v15, "_window"), v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v18, "_isTextEffectsWindow"), v18, (v19 & 1) == 0))
+    if (_responderWindow && v15 && ([v15 _window], v17 = objc_claimAutoreleasedReturnValue(), v17, v17 != _responderWindow) && (objc_msgSend(v15, "_window"), v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v18, "_isTextEffectsWindow"), v18, (v19 & 1) == 0))
     {
       v23 = *(__UILogGetCategoryCachedImpl("View", &becomeFirstResponder___s_category) + 8);
       if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -513,20 +513,20 @@
         _os_log_impl(&dword_188A29000, v24, OS_LOG_TYPE_ERROR, "First responder warning: '<%@>' rejected resignFirstResponder when being removed from hierarchy", &v31, 0xCu);
       }
 
-      [(UIResponder *)v9 _setFirstResponder:0];
+      [(UIResponder *)selfCopy _setFirstResponder:0];
 
-      [(UIResponder *)v9 _writingToolsResponderBecomingFirstResponder:v9];
+      [(UIResponder *)selfCopy _writingToolsResponderBecomingFirstResponder:selfCopy];
       v15 = 0;
       v20 = 1;
     }
 
     else
     {
-      [(UIResponder *)v9 _writingToolsResponderBecomingFirstResponder:v9];
+      [(UIResponder *)selfCopy _writingToolsResponderBecomingFirstResponder:selfCopy];
       v20 = v15 == 0;
       if (v15)
       {
-        v21 = v8;
+        v21 = _isSettingFirstResponder;
       }
 
       else
@@ -541,26 +541,26 @@
         if (![v15 resignFirstResponder])
         {
 LABEL_40:
-          v28 = [v7 _endIgnoringReloadInputViews];
-          [(UIResponder *)v9 _setSuppressWritingToolsForRemoteKeyboard:0];
+          _endIgnoringReloadInputViews = [keyboardSceneDelegate _endIgnoringReloadInputViews];
+          [(UIResponder *)selfCopy _setSuppressWritingToolsForRemoteKeyboard:0];
           if (v22)
           {
             v13 = 1;
-            [(UIResponder *)v9 _reloadInputViewsFromFirstResponder:1];
-            [UIApp _updateSerializableKeyCommandsForResponder:v9];
+            [(UIResponder *)selfCopy _reloadInputViewsFromFirstResponder:1];
+            [UIApp _updateSerializableKeyCommandsForResponder:selfCopy];
 LABEL_45:
-            [v16 didTryToBecomeFirstResponder:v9];
-            if ((v8 & 1) == 0)
+            [localAuthenticationObserver didTryToBecomeFirstResponder:selfCopy];
+            if ((_isSettingFirstResponder & 1) == 0)
             {
-              [v5 _setIsSettingFirstResponder:0];
+              [_responderWindow _setIsSettingFirstResponder:0];
             }
 
             goto LABEL_48;
           }
 
-          if (v28)
+          if (_endIgnoringReloadInputViews)
           {
-            [v7 forceReloadInputViews];
+            [keyboardSceneDelegate forceReloadInputViews];
           }
 
 LABEL_44:
@@ -570,26 +570,26 @@ LABEL_44:
       }
     }
 
-    if ([(UIResponder *)v9 _containedInAbsoluteResponderChain])
+    if ([(UIResponder *)selfCopy _containedInAbsoluteResponderChain])
     {
-      [(UIResponder *)v9 _becomeFirstResponder];
-      [(UIResponder *)v9 _notifyFocusEngine];
+      [(UIResponder *)selfCopy _becomeFirstResponder];
+      [(UIResponder *)selfCopy _notifyFocusEngine];
       v22 = 1;
     }
 
     else
     {
-      v27 = [(UIResponder *)v9 _becomeFirstResponderWhenPossible];
-      if ((v27 | v20))
+      _becomeFirstResponderWhenPossible = [(UIResponder *)selfCopy _becomeFirstResponderWhenPossible];
+      if ((_becomeFirstResponderWhenPossible | v20))
       {
-        v22 = v27;
+        v22 = _becomeFirstResponderWhenPossible;
       }
 
       else
       {
-        if (![(UIResponder *)v9 _disableAutomaticKeyboardBehavior])
+        if (![(UIResponder *)selfCopy _disableAutomaticKeyboardBehavior])
         {
-          [v7 _reloadInputViewsForResponder:0];
+          [keyboardSceneDelegate _reloadInputViewsForResponder:0];
         }
 
         v22 = 0;
@@ -613,7 +613,7 @@ LABEL_51:
 
 + (void)_cleanupAllStateRestorationTables
 {
-  [a1 _cleanupStateRestorationObjectIdentifierTrackingTables];
+  [self _cleanupStateRestorationObjectIdentifierTrackingTables];
 
   qword_1ED4A07D0 = 0;
   qword_1ED4A07B0 = 0;
@@ -623,122 +623,122 @@ LABEL_51:
 {
   qword_1ED4A07C8 = 0;
 
-  [a1 _stopDeferredTrackingObjectsWithIdentifiers];
+  [self _stopDeferredTrackingObjectsWithIdentifiers];
 }
 
 - (id)firstResponder
 {
-  v2 = [(UIResponder *)self nextResponder];
-  v3 = [v2 firstResponder];
+  nextResponder = [(UIResponder *)self nextResponder];
+  firstResponder = [nextResponder firstResponder];
 
-  return v3;
+  return firstResponder;
 }
 
 - (BOOL)_canBecomeFirstResponder
 {
-  v2 = [(UIResponder *)self canBecomeFirstResponder];
-  if (v2)
+  canBecomeFirstResponder = [(UIResponder *)self canBecomeFirstResponder];
+  if (canBecomeFirstResponder)
   {
-    LOBYTE(v2) = [UIApp _disableBecomeFirstResponder] ^ 1;
+    LOBYTE(canBecomeFirstResponder) = [UIApp _disableBecomeFirstResponder] ^ 1;
   }
 
-  return v2;
+  return canBecomeFirstResponder;
 }
 
 - (id)_firstResponder
 {
-  v2 = [(UIResponder *)self nextResponder];
-  v3 = [v2 _firstResponder];
+  nextResponder = [(UIResponder *)self nextResponder];
+  _firstResponder = [nextResponder _firstResponder];
 
-  return v3;
+  return _firstResponder;
 }
 
 - (BOOL)isFirstResponder
 {
-  v2 = self;
-  v3 = [(UIResponder *)self _firstResponder];
-  LOBYTE(v2) = v3 == v2;
+  selfCopy = self;
+  _firstResponder = [(UIResponder *)self _firstResponder];
+  LOBYTE(selfCopy) = _firstResponder == selfCopy;
 
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)_disableAutomaticKeyboardBehavior
 {
-  v2 = [(UIResponder *)self nextResponder];
-  v3 = [v2 _disableAutomaticKeyboardBehavior];
+  nextResponder = [(UIResponder *)self nextResponder];
+  _disableAutomaticKeyboardBehavior = [nextResponder _disableAutomaticKeyboardBehavior];
 
-  return v3;
+  return _disableAutomaticKeyboardBehavior;
 }
 
 - (BOOL)_containedInAbsoluteResponderChain
 {
-  v2 = [(UIResponder *)self nextResponder];
-  v3 = [v2 _containedInAbsoluteResponderChain];
+  nextResponder = [(UIResponder *)self nextResponder];
+  _containedInAbsoluteResponderChain = [nextResponder _containedInAbsoluteResponderChain];
 
-  return v3;
+  return _containedInAbsoluteResponderChain;
 }
 
 - (id)_selectableText
 {
-  v2 = self;
-  v3 = [(UIResponder *)self _textSelectingContainer];
-  v4 = v3;
-  if (v3)
+  selfCopy = self;
+  _textSelectingContainer = [(UIResponder *)self _textSelectingContainer];
+  v4 = _textSelectingContainer;
+  if (_textSelectingContainer)
   {
-    v2 = v3;
+    selfCopy = _textSelectingContainer;
   }
 
-  v5 = v2;
+  v5 = selfCopy;
 
-  return v2;
+  return selfCopy;
 }
 
 - (id)_writingToolsViewController
 {
-  v2 = [(UIResponder *)self _firstResponder];
-  v3 = objc_getAssociatedObject(v2, &kWritingToolsViewControllerForFirstResponderKey);
+  _firstResponder = [(UIResponder *)self _firstResponder];
+  v3 = objc_getAssociatedObject(_firstResponder, &kWritingToolsViewControllerForFirstResponderKey);
 
   return v3;
 }
 
 - (NSUndoManager)undoManager
 {
-  v3 = [(UIResponder *)self nextResponder];
-  v4 = v3;
-  v5 = 0;
-  if (v3 && v3 != self)
+  nextResponder = [(UIResponder *)self nextResponder];
+  v4 = nextResponder;
+  undoManager = 0;
+  if (nextResponder && nextResponder != self)
   {
-    v5 = [(UIResponder *)v3 undoManager];
+    undoManager = [(UIResponder *)nextResponder undoManager];
   }
 
-  return v5;
+  return undoManager;
 }
 
 - (BOOL)_hasMarkedText
 {
-  v2 = [(UIResponder *)self _selectableText];
-  if ([v2 _usesAsynchronousProtocol] && (!+[UIKBInputDelegateManager isAsyncTextInputEnabled](UIKBInputDelegateManager, "isAsyncTextInputEnabled") || (objc_opt_respondsToSelector() & 1) != 0 || (objc_opt_respondsToSelector() & 1) != 0))
+  _selectableText = [(UIResponder *)self _selectableText];
+  if ([_selectableText _usesAsynchronousProtocol] && (!+[UIKBInputDelegateManager isAsyncTextInputEnabled](UIKBInputDelegateManager, "isAsyncTextInputEnabled") || (objc_opt_respondsToSelector() & 1) != 0 || (objc_opt_respondsToSelector() & 1) != 0))
   {
-    v3 = [v2 hasMarkedText];
+    hasMarkedText = [_selectableText hasMarkedText];
   }
 
   else
   {
-    v4 = [v2 markedTextRange];
-    v3 = v4 != 0;
+    markedTextRange = [_selectableText markedTextRange];
+    hasMarkedText = markedTextRange != 0;
   }
 
-  return v3;
+  return hasMarkedText;
 }
 
 - (BOOL)_usesAsynchronousProtocol
 {
-  v2 = [(UIResponder *)self _selectableText];
+  _selectableText = [(UIResponder *)self _selectableText];
   if (!+[UIKBInputDelegateManager isAsyncTextInputEnabled])
   {
     if (objc_opt_respondsToSelector())
     {
-      v4 = [v2 conformsToProtocol:&unk_1F016CC30];
+      v4 = [_selectableText conformsToProtocol:&unk_1F016CC30];
 LABEL_9:
       v3 = v4;
       goto LABEL_11;
@@ -749,11 +749,11 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if ((objc_opt_respondsToSelector() & 1) == 0 || ([v2 conformsToProtocolCached:&unk_1F016C7B0] & 1) == 0)
+  if ((objc_opt_respondsToSelector() & 1) == 0 || ([_selectableText conformsToProtocolCached:&unk_1F016C7B0] & 1) == 0)
   {
     if (objc_opt_respondsToSelector())
     {
-      v4 = [v2 conformsToProtocolCached:&unk_1F016C810];
+      v4 = [_selectableText conformsToProtocolCached:&unk_1F016C810];
       goto LABEL_9;
     }
 
@@ -773,11 +773,11 @@ LABEL_11:
     goto LABEL_13;
   }
 
-  v3 = [(UIResponder *)self textInputContextIdentifier];
-  if (v3)
+  textInputContextIdentifier = [(UIResponder *)self textInputContextIdentifier];
+  if (textInputContextIdentifier)
   {
     v4 = [objc_alloc(MEMORY[0x1E695E000]) initWithSuiteName:@"UITextInputContextIdentifiers"];
-    v5 = [@"ID_" stringByAppendingString:v3];
+    v5 = [@"ID_" stringByAppendingString:textInputContextIdentifier];
     v6 = [v5 stringByAppendingString:@"_SETTIME"];
     v7 = [v4 objectForKey:v5];
     if (!v7)
@@ -790,10 +790,10 @@ LABEL_11:
     {
       v8 = v7;
       v9 = +[UIKeyboardInputModeController sharedInputModeController];
-      v10 = [v9 inputModeLastUsedForLanguage:v8];
+      textInputMode = [v9 inputModeLastUsedForLanguage:v8];
 
       v11 = 0;
-      if (!v10)
+      if (!textInputMode)
       {
         goto LABEL_11;
       }
@@ -807,9 +807,9 @@ LABEL_9:
     if (objc_opt_isKindOfClass())
     {
       v11 = v7;
-      v10 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:v11 error:0];
+      textInputMode = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:v11 error:0];
       v8 = 0;
-      if (v10)
+      if (textInputMode)
       {
         goto LABEL_9;
       }
@@ -826,33 +826,33 @@ LABEL_11:
   }
 
 LABEL_13:
-  v3 = [(UIResponder *)self nextResponder];
-  v10 = [v3 textInputMode];
+  textInputContextIdentifier = [(UIResponder *)self nextResponder];
+  textInputMode = [textInputContextIdentifier textInputMode];
 LABEL_14:
 
-  return v10;
+  return textInputMode;
 }
 
 - (NSString)textInputContextIdentifier
 {
-  v2 = [(UIResponder *)self nextResponder];
-  v3 = [v2 textInputContextIdentifier];
+  nextResponder = [(UIResponder *)self nextResponder];
+  textInputContextIdentifier = [nextResponder textInputContextIdentifier];
 
-  return v3;
+  return textInputContextIdentifier;
 }
 
 - (BOOL)_resignIfContainsFirstResponder
 {
-  v3 = [(UIResponder *)self _responderWindow];
-  v4 = [v3 _firstResponder];
+  _responderWindow = [(UIResponder *)self _responderWindow];
+  _firstResponder = [_responderWindow _firstResponder];
 
-  if (!v4 || v4 == self)
+  if (!_firstResponder || _firstResponder == self)
   {
-    v5 = v4;
-    if (v4 != self)
+    nextResponder = _firstResponder;
+    if (_firstResponder != self)
     {
 LABEL_12:
-      LOBYTE(v8) = 0;
+      LOBYTE(resignFirstResponder) = 0;
       goto LABEL_14;
     }
   }
@@ -861,44 +861,44 @@ LABEL_12:
   {
     do
     {
-      if (![(UIResponder *)v4 _canResignIfContainsFirstResponder])
+      if (![(UIResponder *)_firstResponder _canResignIfContainsFirstResponder])
       {
-        LOBYTE(v8) = 0;
-        v5 = v4;
+        LOBYTE(resignFirstResponder) = 0;
+        nextResponder = _firstResponder;
         goto LABEL_14;
       }
 
-      v5 = [(UIResponder *)v4 nextResponder];
+      nextResponder = [(UIResponder *)_firstResponder nextResponder];
 
-      if (!v5)
+      if (!nextResponder)
       {
         break;
       }
 
-      v4 = v5;
+      _firstResponder = nextResponder;
     }
 
-    while (v5 != self);
-    if (v5 != self)
+    while (nextResponder != self);
+    if (nextResponder != self)
     {
       goto LABEL_12;
     }
   }
 
-  v6 = [(UIResponder *)self _responderWindow];
-  v7 = [v6 _firstResponder];
+  _responderWindow2 = [(UIResponder *)self _responderWindow];
+  _firstResponder2 = [_responderWindow2 _firstResponder];
 
-  [v7 _setShouldEndWritingToolsOnResign:0];
-  v8 = [v7 resignFirstResponder];
-  if (v8 && [v7 _canBecomeFirstResponderWhenPossible])
+  [_firstResponder2 _setShouldEndWritingToolsOnResign:0];
+  resignFirstResponder = [_firstResponder2 resignFirstResponder];
+  if (resignFirstResponder && [_firstResponder2 _canBecomeFirstResponderWhenPossible])
   {
-    [v7 _becomeFirstResponderWhenPossible];
+    [_firstResponder2 _becomeFirstResponderWhenPossible];
   }
 
-  [v7 _setShouldEndWritingToolsOnResign:1];
+  [_firstResponder2 _setShouldEndWritingToolsOnResign:1];
 
 LABEL_14:
-  return v8;
+  return resignFirstResponder;
 }
 
 + (BOOL)_isWritingToolsAvailable
@@ -928,8 +928,8 @@ LABEL_14:
 
 - (void)_notifyFocusEngine
 {
-  v4 = [(UIResponder *)self _responderWindow];
-  v3 = [_UIFocusSystemSceneComponent sceneComponentForEnvironment:v4];
+  _responderWindow = [(UIResponder *)self _responderWindow];
+  v3 = [_UIFocusSystemSceneComponent sceneComponentForEnvironment:_responderWindow];
   [v3 _firstResponderDidUpdateFromResponder:self];
 }
 
@@ -937,8 +937,8 @@ LABEL_14:
 {
   if (pthread_main_np() != 1)
   {
-    v5 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v5 handleFailureInMethod:a2 object:a1 file:@"UIResponder.m" lineNumber:887 description:@"Call must be made on main thread"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIResponder.m" lineNumber:887 description:@"Call must be made on main thread"];
   }
 
   return __changeIntent;
@@ -949,28 +949,28 @@ LABEL_14:
   v41 = *MEMORY[0x1E69E9840];
   if (![(UIResponder *)self _disableAutomaticKeyboardBehavior]&& [(UIResponder *)self isFirstResponder])
   {
-    v3 = [(UIResponder *)self _responderWindow];
-    if ([v3 _isApplicationKeyWindow])
+    _responderWindow = [(UIResponder *)self _responderWindow];
+    if ([_responderWindow _isApplicationKeyWindow])
     {
       goto LABEL_18;
     }
 
     v4 = +[UIWindow _applicationKeyWindow];
 
-    if (v3 == v4)
+    if (_responderWindow == v4)
     {
       goto LABEL_18;
     }
 
-    if ([v3 isKeyWindow])
+    if ([_responderWindow isKeyWindow])
     {
-      v5 = [(UIResponder *)self inputAccessoryView];
-      if (v5)
+      inputAccessoryView = [(UIResponder *)self inputAccessoryView];
+      if (inputAccessoryView)
       {
-        v6 = v5;
-        v7 = [(UIResponder *)self _requiresKeyboardWhenFirstResponder];
+        v6 = inputAccessoryView;
+        _requiresKeyboardWhenFirstResponder = [(UIResponder *)self _requiresKeyboardWhenFirstResponder];
 
-        if (!v7)
+        if (!_requiresKeyboardWhenFirstResponder)
         {
           goto LABEL_18;
         }
@@ -978,13 +978,13 @@ LABEL_14:
 
       else
       {
-        v9 = [(UIResponder *)self inputAccessoryViewController];
-        if (v9)
+        inputAccessoryViewController = [(UIResponder *)self inputAccessoryViewController];
+        if (inputAccessoryViewController)
         {
-          v10 = v9;
-          v11 = [(UIResponder *)self _requiresKeyboardWhenFirstResponder];
+          v10 = inputAccessoryViewController;
+          _requiresKeyboardWhenFirstResponder2 = [(UIResponder *)self _requiresKeyboardWhenFirstResponder];
 
-          if (!v11)
+          if (!_requiresKeyboardWhenFirstResponder2)
           {
             goto LABEL_18;
           }
@@ -992,24 +992,24 @@ LABEL_14:
       }
     }
 
-    v12 = [(UIResponder *)self _responderWindow];
-    v13 = [v12 windowScene];
-    v14 = [v13 keyboardSceneDelegate];
-    v15 = [v14 keyWindowCandidate];
+    _responderWindow2 = [(UIResponder *)self _responderWindow];
+    windowScene = [_responderWindow2 windowScene];
+    keyboardSceneDelegate = [windowScene keyboardSceneDelegate];
+    keyWindowCandidate = [keyboardSceneDelegate keyWindowCandidate];
 
-    if (v3 != v15)
+    if (_responderWindow != keyWindowCandidate)
     {
-      v16 = [(UIResponder *)self _window];
-      v17 = [v16 windowScene];
-      v18 = [v17 keyboardSceneDelegate];
-      v19 = [v18 responder];
+      _window = [(UIResponder *)self _window];
+      windowScene2 = [_window windowScene];
+      keyboardSceneDelegate2 = [windowScene2 keyboardSceneDelegate];
+      responder = [keyboardSceneDelegate2 responder];
 
-      if ((!v19 || ([v19 _responderWindow], v20 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v20, "screen"), v21 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v3, "screen"), v22 = objc_claimAutoreleasedReturnValue(), v22, v21, v20, v21 == v22)) && ((-[UIResponder _window](self, "_window"), v23 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v23, "screen"), v24 = objc_claimAutoreleasedReturnValue(), v25 = objc_msgSend(v24, "_userInterfaceIdiom"), v24, v23, v19) || v25 != 3))
+      if ((!responder || ([responder _responderWindow], v20 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v20, "screen"), v21 = objc_claimAutoreleasedReturnValue(), objc_msgSend(_responderWindow, "screen"), v22 = objc_claimAutoreleasedReturnValue(), v22, v21, v20, v21 == v22)) && ((-[UIResponder _window](self, "_window"), v23 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v23, "screen"), v24 = objc_claimAutoreleasedReturnValue(), v25 = objc_msgSend(v24, "_userInterfaceIdiom"), v24, v23, responder) || v25 != 3))
       {
         v27 = +[UIKeyboardImpl activeInstance];
-        v28 = [v27 _window];
+        _window2 = [v27 _window];
 
-        if (!v28 || [v28 _isTextEffectsWindow]) && (-[UIResponder _window](self, "_window"), v29 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v29, "windowScene"), v30 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v30, "keyboardSceneDelegate"), v31 = objc_claimAutoreleasedReturnValue(), v32 = objc_msgSend(v31, "automaticAppearanceEnabled"), v31, v30, v29, (v32))
+        if (!_window2 || [_window2 _isTextEffectsWindow]) && (-[UIResponder _window](self, "_window"), v29 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v29, "windowScene"), v30 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v30, "keyboardSceneDelegate"), v31 = objc_claimAutoreleasedReturnValue(), v32 = objc_msgSend(v31, "automaticAppearanceEnabled"), v31, v30, v29, (v32))
         {
           v8 = 0;
         }
@@ -1020,12 +1020,12 @@ LABEL_14:
           if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
           {
             v34 = v33;
-            v35 = [(UIResponder *)self _window];
-            v36 = [UIApp keyWindow];
+            _window3 = [(UIResponder *)self _window];
+            keyWindow = [UIApp keyWindow];
             v37 = 138412546;
-            v38 = v35;
+            v38 = _window3;
             v39 = 2112;
-            v40 = v36;
+            v40 = keyWindow;
             _os_log_impl(&dword_188A29000, v34, OS_LOG_TYPE_ERROR, "First responder issue detected: non-key window attempting reload - allowing due to manual keyboard (first responder window is %@, key window is %@)", &v37, 0x16u);
           }
 
@@ -1053,26 +1053,26 @@ LABEL_19:
 
 - (BOOL)_requiresKeyboardWhenFirstResponder
 {
-  v3 = [(UIResponder *)self _keyboardResponder];
-  v4 = [v3 _conformsToProtocolUIKeyInput] && ((-[UIResponder _conformsToProtocolUIAsyncTextInputClient](self, "_conformsToProtocolUIAsyncTextInputClient") || -[UIResponder _conformsToProtocolBETextInput](self, "_conformsToProtocolBETextInput")) && +[UIKeyboard isInHardwareKeyboardMode](UIKeyboard, "isInHardwareKeyboardMode") || (objc_opt_respondsToSelector() & 1) == 0 || -[UIResponder isEditable](self, "isEditable"));
+  _keyboardResponder = [(UIResponder *)self _keyboardResponder];
+  v4 = [_keyboardResponder _conformsToProtocolUIKeyInput] && ((-[UIResponder _conformsToProtocolUIAsyncTextInputClient](self, "_conformsToProtocolUIAsyncTextInputClient") || -[UIResponder _conformsToProtocolBETextInput](self, "_conformsToProtocolBETextInput")) && +[UIKeyboard isInHardwareKeyboardMode](UIKeyboard, "isInHardwareKeyboardMode") || (objc_opt_respondsToSelector() & 1) == 0 || -[UIResponder isEditable](self, "isEditable"));
 
   return v4;
 }
 
 - (id)_keyboardResponder
 {
-  v3 = [(UIResponder *)self _window];
-  v4 = [v3 windowScene];
-  v5 = [v4 _keyboardOverridingSceneComponent];
+  _window = [(UIResponder *)self _window];
+  windowScene = [_window windowScene];
+  _keyboardOverridingSceneComponent = [windowScene _keyboardOverridingSceneComponent];
 
-  v6 = [v5 preferredKeyboardResponderOverride];
-  v7 = v6;
-  if (!v6)
+  preferredKeyboardResponderOverride = [_keyboardOverridingSceneComponent preferredKeyboardResponderOverride];
+  v7 = preferredKeyboardResponderOverride;
+  if (!preferredKeyboardResponderOverride)
   {
     goto LABEL_11;
   }
 
-  WeakRetained = objc_loadWeakRetained((v6 + 8));
+  WeakRetained = objc_loadWeakRetained((preferredKeyboardResponderOverride + 8));
   if (!WeakRetained)
   {
     goto LABEL_11;
@@ -1087,30 +1087,30 @@ LABEL_19:
   }
 
   v11 = objc_loadWeakRetained(v7 + 3);
-  v12 = [v11 _window];
-  v13 = [(UIResponder *)self _window];
+  _window2 = [v11 _window];
+  _window3 = [(UIResponder *)self _window];
 
-  if (v12 != v13)
+  if (_window2 != _window3)
   {
     goto LABEL_11;
   }
 
-  v14 = [(UIResponder *)self _window];
-  v15 = [v14 firstResponder];
+  _window4 = [(UIResponder *)self _window];
+  firstResponder = [_window4 firstResponder];
   v16 = objc_loadWeakRetained(v7 + 3);
-  v17 = v15;
+  v17 = firstResponder;
   v18 = v16;
   if ((([v17 _isView] & 1) != 0 || objc_msgSend(v18, "_containsResponder:", v17)) && (!objc_msgSend(v17, "_isView") || (objc_msgSend(v17, "isEqual:", v18) & 1) == 0 && objc_msgSend(v17, "isDescendantOfView:", v18)))
   {
 
 LABEL_11:
-    v19 = self;
+    selfCopy = self;
     goto LABEL_12;
   }
 
-  v19 = objc_loadWeakRetained(v7 + 1);
+  selfCopy = objc_loadWeakRetained(v7 + 1);
 LABEL_12:
-  v20 = v19;
+  v20 = selfCopy;
 
   return v20;
 }
@@ -1143,18 +1143,18 @@ LABEL_12:
 
 - (UIView)inputAccessoryView
 {
-  v3 = [(UIResponder *)self nextResponder];
-  v4 = [v3 inputAccessoryView];
+  nextResponder = [(UIResponder *)self nextResponder];
+  inputAccessoryView = [nextResponder inputAccessoryView];
 
-  v5 = [v4 _nextResponderOverride];
+  _nextResponderOverride = [inputAccessoryView _nextResponderOverride];
 
-  if (!v5)
+  if (!_nextResponderOverride)
   {
-    v6 = [(UIResponder *)self nextResponder];
-    [v4 _overrideInputAccessoryViewNextResponderWithResponder:v6];
+    nextResponder2 = [(UIResponder *)self nextResponder];
+    [inputAccessoryView _overrideInputAccessoryViewNextResponderWithResponder:nextResponder2];
   }
 
-  return v4;
+  return inputAccessoryView;
 }
 
 - (BOOL)_requiresKeyboardResetOnReload
@@ -1237,58 +1237,58 @@ LABEL_12:
 
 - (BOOL)_disableAutomaticKeyboardUI
 {
-  v2 = [(UIResponder *)self nextResponder];
-  v3 = [v2 _disableAutomaticKeyboardUI];
+  nextResponder = [(UIResponder *)self nextResponder];
+  _disableAutomaticKeyboardUI = [nextResponder _disableAutomaticKeyboardUI];
 
-  return v3;
+  return _disableAutomaticKeyboardUI;
 }
 
 - (UIInputViewController)inputViewController
 {
-  v3 = [(UIResponder *)self nextResponder];
-  v4 = [v3 inputViewController];
+  nextResponder = [(UIResponder *)self nextResponder];
+  inputViewController = [nextResponder inputViewController];
 
-  v5 = [v4 _nextResponderOverride];
+  _nextResponderOverride = [inputViewController _nextResponderOverride];
 
-  if (!v5)
+  if (!_nextResponderOverride)
   {
-    v6 = [(UIResponder *)self nextResponder];
-    [v4 _overrideInputViewNextResponderWithResponder:v6];
+    nextResponder2 = [(UIResponder *)self nextResponder];
+    [inputViewController _overrideInputViewNextResponderWithResponder:nextResponder2];
   }
 
-  return v4;
+  return inputViewController;
 }
 
 - (UIView)inputView
 {
-  v3 = [(UIResponder *)self nextResponder];
-  v4 = [v3 inputView];
+  nextResponder = [(UIResponder *)self nextResponder];
+  inputView = [nextResponder inputView];
 
-  v5 = [v4 _nextResponderOverride];
+  _nextResponderOverride = [inputView _nextResponderOverride];
 
-  if (!v5)
+  if (!_nextResponderOverride)
   {
-    v6 = [(UIResponder *)self nextResponder];
-    [v4 _overrideInputViewNextResponderWithResponder:v6];
+    nextResponder2 = [(UIResponder *)self nextResponder];
+    [inputView _overrideInputViewNextResponderWithResponder:nextResponder2];
   }
 
-  return v4;
+  return inputView;
 }
 
 - (UIInputViewController)inputAccessoryViewController
 {
-  v3 = [(UIResponder *)self nextResponder];
-  v4 = [v3 inputAccessoryViewController];
+  nextResponder = [(UIResponder *)self nextResponder];
+  inputAccessoryViewController = [nextResponder inputAccessoryViewController];
 
-  v5 = [v4 _nextResponderOverride];
+  _nextResponderOverride = [inputAccessoryViewController _nextResponderOverride];
 
-  if (!v5)
+  if (!_nextResponderOverride)
   {
-    v6 = [(UIResponder *)self nextResponder];
-    [v4 _overrideInputAccessoryViewNextResponderWithResponder:v6];
+    nextResponder2 = [(UIResponder *)self nextResponder];
+    [inputAccessoryViewController _overrideInputAccessoryViewNextResponderWithResponder:nextResponder2];
   }
 
-  return v4;
+  return inputAccessoryViewController;
 }
 
 - (BOOL)_ownsInputAccessoryView
@@ -1316,13 +1316,13 @@ LABEL_12:
   if ([(UIResponder *)self _shouldEndWritingToolsOnResign])
   {
     v3 = +[UIKeyboardSceneDelegate automaticKeyboardArbiterClient];
-    v4 = [v3 isWritingToolsHostingViewService];
+    isWritingToolsHostingViewService = [v3 isWritingToolsHostingViewService];
 
-    if ((v4 & 1) == 0)
+    if ((isWritingToolsHostingViewService & 1) == 0)
     {
-      v5 = [(UIResponder *)self _writingToolsViewController];
+      _writingToolsViewController = [(UIResponder *)self _writingToolsViewController];
 
-      if (v5)
+      if (_writingToolsViewController)
       {
         if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
         {
@@ -1342,48 +1342,48 @@ LABEL_12:
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v4 = 1;
+    bOOLValue = 1;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (id)nextFirstResponder
 {
-  v2 = [(UIResponder *)self nextResponder];
-  if (v2)
+  nextResponder = [(UIResponder *)self nextResponder];
+  if (nextResponder)
   {
     do
     {
-      if ([v2 isFirstResponder] & 1) == 0 && (objc_msgSend(v2, "_canBecomeFirstResponder"))
+      if ([nextResponder isFirstResponder] & 1) == 0 && (objc_msgSend(nextResponder, "_canBecomeFirstResponder"))
       {
         break;
       }
 
-      v3 = [v2 nextResponder];
+      v2NextResponder = [nextResponder nextResponder];
 
-      v2 = v3;
+      nextResponder = v2NextResponder;
     }
 
-    while (v3);
+    while (v2NextResponder);
   }
 
-  return v2;
+  return nextResponder;
 }
 
 - (void)_beginPinningInputViews
 {
-  v3 = [(UIResponder *)self _window];
-  v4 = [v3 windowScene];
-  v6 = [v4 keyboardSceneDelegate];
+  _window = [(UIResponder *)self _window];
+  windowScene = [_window windowScene];
+  keyboardSceneDelegate = [windowScene keyboardSceneDelegate];
 
-  v5 = v6;
-  if (!v6)
+  v5 = keyboardSceneDelegate;
+  if (!keyboardSceneDelegate)
   {
     v5 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
   }
@@ -1394,41 +1394,41 @@ LABEL_12:
 
 - (void)_selectionDidUpdate
 {
-  v3 = [(UIResponder *)self _writingToolsViewController];
+  _writingToolsViewController = [(UIResponder *)self _writingToolsViewController];
 
-  if (v3)
+  if (_writingToolsViewController)
   {
-    v4 = [(UIResponder *)self _writingToolsViewController];
+    _writingToolsViewController2 = [(UIResponder *)self _writingToolsViewController];
     v5 = objc_opt_respondsToSelector();
 
     if (v5)
     {
-      v6 = [(UIResponder *)self _writingToolsViewController];
-      [v6 performSelector:sel_selectionDidUpdate];
+      _writingToolsViewController3 = [(UIResponder *)self _writingToolsViewController];
+      [_writingToolsViewController3 performSelector:sel_selectionDidUpdate];
     }
   }
 }
 
 - (id)_window
 {
-  v2 = [(UIResponder *)self nextResponder];
-  v3 = [v2 _window];
+  nextResponder = [(UIResponder *)self nextResponder];
+  _window = [nextResponder _window];
 
-  return v3;
+  return _window;
 }
 
 - (void)_windowBecameKey
 {
-  v3 = [(UIResponder *)self _window];
-  v4 = [v3 _isSettingFirstResponder];
+  _window = [(UIResponder *)self _window];
+  _isSettingFirstResponder = [_window _isSettingFirstResponder];
 
-  if ((v4 & 1) == 0)
+  if ((_isSettingFirstResponder & 1) == 0)
   {
-    v5 = [(UIResponder *)self _window];
-    v6 = [v5 windowScene];
-    v7 = [v6 keyboardSceneDelegate];
+    _window2 = [(UIResponder *)self _window];
+    windowScene = [_window2 windowScene];
+    keyboardSceneDelegate = [windowScene keyboardSceneDelegate];
 
-    if (!-[UIResponder _isTransitioningFromView:](self, "_isTransitioningFromView:", self) || [v7 ignoresPinning])
+    if (!-[UIResponder _isTransitioningFromView:](self, "_isTransitioningFromView:", self) || [keyboardSceneDelegate ignoresPinning])
     {
       [(UIResponder *)self reloadInputViews];
     }
@@ -1439,10 +1439,10 @@ LABEL_12:
 {
   if ([(UIResponder *)self shouldReloadInputViews])
   {
-    v5 = [(UIResponder *)self _responderWindow];
-    v3 = [v5 windowScene];
-    v4 = [v3 keyboardSceneDelegate];
-    [v4 _reloadInputViewsForResponder:self];
+    _responderWindow = [(UIResponder *)self _responderWindow];
+    windowScene = [_responderWindow windowScene];
+    keyboardSceneDelegate = [windowScene keyboardSceneDelegate];
+    [keyboardSceneDelegate _reloadInputViewsForResponder:self];
   }
 }
 
@@ -1459,12 +1459,12 @@ LABEL_12:
 + (id)_globalFirstResponder
 {
   v2 = +[UIKeyboardImpl activeInstance];
-  v3 = [v2 delegateAsResponder];
-  v4 = [v3 _editingDelegate];
+  delegateAsResponder = [v2 delegateAsResponder];
+  _editingDelegate = [delegateAsResponder _editingDelegate];
 
-  if (v4)
+  if (_editingDelegate)
   {
-    v5 = [v2 delegateAsResponder];
+    delegateAsResponder2 = [v2 delegateAsResponder];
   }
 
   else
@@ -1483,40 +1483,40 @@ LABEL_12:
 
     v9 = v8;
 
-    v5 = [v9 _responderForKeyEvents];
+    delegateAsResponder2 = [v9 _responderForKeyEvents];
   }
 
-  return v5;
+  return delegateAsResponder2;
 }
 
 - (id)_responderForEditing
 {
-  v2 = self;
-  v3 = [(UIResponder *)self _editingDelegate];
-  v4 = v3;
-  if (v3)
+  selfCopy = self;
+  _editingDelegate = [(UIResponder *)self _editingDelegate];
+  v4 = _editingDelegate;
+  if (_editingDelegate)
   {
-    v2 = v3;
+    selfCopy = _editingDelegate;
   }
 
-  v5 = v2;
+  v5 = selfCopy;
 
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)_supportsImagePaste
 {
   v28 = *MEMORY[0x1E69E9840];
-  v3 = [(UIResponder *)self pasteConfiguration];
-  v4 = v3;
-  if (v3)
+  pasteConfiguration = [(UIResponder *)self pasteConfiguration];
+  v4 = pasteConfiguration;
+  if (pasteConfiguration)
   {
     v24 = 0u;
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v5 = [v3 acceptableTypeIdentifiers];
-    v6 = [v5 countByEnumeratingWithState:&v22 objects:v27 count:16];
+    acceptableTypeIdentifiers = [pasteConfiguration acceptableTypeIdentifiers];
+    v6 = [acceptableTypeIdentifiers countByEnumeratingWithState:&v22 objects:v27 count:16];
     if (v6)
     {
       v7 = v6;
@@ -1530,7 +1530,7 @@ LABEL_12:
         {
           if (*v23 != v9)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(acceptableTypeIdentifiers);
           }
 
           v12 = [MEMORY[0x1E6982C40] typeWithIdentifier:*(*(&v22 + 1) + 8 * i)];
@@ -1539,7 +1539,7 @@ LABEL_12:
           v8 |= v13;
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v22 objects:v27 count:16];
+        v7 = [acceptableTypeIdentifiers countByEnumeratingWithState:&v22 objects:v27 count:16];
       }
 
       while (v7);
@@ -1547,7 +1547,7 @@ LABEL_12:
       v4 = v21;
       if (v8)
       {
-        v14 = 1;
+        supportsImagePaste = 1;
         goto LABEL_17;
       }
     }
@@ -1559,7 +1559,7 @@ LABEL_12:
 
   if (objc_opt_respondsToSelector())
   {
-    v14 = [(UIResponder *)self supportsImagePaste];
+    supportsImagePaste = [(UIResponder *)self supportsImagePaste];
   }
 
   else
@@ -1570,8 +1570,8 @@ LABEL_12:
     }
 
     v15 = objc_alloc_init(MEMORY[0x1E696ACA0]);
-    v16 = [*MEMORY[0x1E6982F28] identifier];
-    [v15 registerDataRepresentationForTypeIdentifier:v16 visibility:0 loadHandler:&__block_literal_global_100_1];
+    identifier = [*MEMORY[0x1E6982F28] identifier];
+    [v15 registerDataRepresentationForTypeIdentifier:identifier visibility:0 loadHandler:&__block_literal_global_100_1];
 
     v26 = v15;
     v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v26 count:1];
@@ -1581,12 +1581,12 @@ LABEL_12:
     v19 = [(UIResponder *)self targetForAction:sel_paste_ withSender:0];
 
     [UIPasteboard _clearPinnedItemProvidersForPasteboardNamed:@"com.apple.UIKit.pboard.general"];
-    v14 = v19 == self;
+    supportsImagePaste = v19 == self;
   }
 
 LABEL_17:
 
-  return v14;
+  return supportsImagePaste;
 }
 
 - (id)pasteConfiguration
@@ -1606,19 +1606,19 @@ LABEL_17:
 
 - (BOOL)_isDisplayingWritingToolsSessionInUCB
 {
-  v3 = [(UIResponder *)self _writingToolsInputDashboardViewController];
-  if (v3 && [(UIResponder *)self _writingToolsWantsKeyboardSuppression])
+  _writingToolsInputDashboardViewController = [(UIResponder *)self _writingToolsInputDashboardViewController];
+  if (_writingToolsInputDashboardViewController && [(UIResponder *)self _writingToolsWantsKeyboardSuppression])
   {
     v4 = +[_UIRemoteKeyboards sharedRemoteKeyboards];
-    v5 = [v4 wantsAssistantWhileSuppressingKeyboard];
+    wantsAssistantWhileSuppressingKeyboard = [v4 wantsAssistantWhileSuppressingKeyboard];
   }
 
   else
   {
-    v5 = 0;
+    wantsAssistantWhileSuppressingKeyboard = 0;
   }
 
-  return v5;
+  return wantsAssistantWhileSuppressingKeyboard;
 }
 
 - (int64_t)_textInputSource
@@ -1631,15 +1631,15 @@ LABEL_17:
   }
 
   v3 = +[UIKeyboardSceneDelegate automaticTextInputSourceCache];
-  v4 = [v3 lastEventSource];
+  lastEventSource = [v3 lastEventSource];
 
-  return v4;
+  return lastEventSource;
 }
 
 - (BOOL)_isWritingToolsActive
 {
-  v2 = [(UIResponder *)self _writingToolsViewController];
-  v3 = v2 != 0;
+  _writingToolsViewController = [(UIResponder *)self _writingToolsViewController];
+  v3 = _writingToolsViewController != 0;
 
   return v3;
 }
@@ -1652,98 +1652,98 @@ LABEL_17:
     return 0;
   }
 
-  v3 = [(UIResponder *)self _writingToolsViewController];
-  v4 = v3 == 0;
+  _writingToolsViewController = [(UIResponder *)self _writingToolsViewController];
+  v4 = _writingToolsViewController == 0;
 
   return v4;
 }
 
 - (id)_textInputForWritingTools
 {
-  v2 = [(UIResponder *)self _firstResponder];
-  if ([v2 conformsToProtocolCached:&unk_1EFE8B2D0])
+  _firstResponder = [(UIResponder *)self _firstResponder];
+  if ([_firstResponder conformsToProtocolCached:&unk_1EFE8B2D0])
   {
-    v3 = v2;
+    _selectionDisplayInteraction = _firstResponder;
     goto LABEL_8;
   }
 
-  v4 = [v2 _textInteraction];
+  _textInteraction = [_firstResponder _textInteraction];
 
-  if (v4)
+  if (_textInteraction)
   {
-    v5 = [v2 _textInteraction];
+    _textInteraction2 = [_firstResponder _textInteraction];
   }
 
   else
   {
-    v3 = [v2 _selectionDisplayInteraction];
+    _selectionDisplayInteraction = [_firstResponder _selectionDisplayInteraction];
 
-    if (!v3)
+    if (!_selectionDisplayInteraction)
     {
       goto LABEL_8;
     }
 
-    v5 = [v2 _selectionDisplayInteraction];
+    _textInteraction2 = [_firstResponder _selectionDisplayInteraction];
   }
 
-  v6 = v5;
-  v3 = [v5 textInput];
+  v6 = _textInteraction2;
+  _selectionDisplayInteraction = [_textInteraction2 textInput];
 
 LABEL_8:
 
-  return v3;
+  return _selectionDisplayInteraction;
 }
 
 - (int64_t)__wt_writingToolsBehavior
 {
-  v3 = [(UIResponder *)self __wt_writingToolsCoordinator];
-  v4 = v3;
-  if (v3)
+  __wt_writingToolsCoordinator = [(UIResponder *)self __wt_writingToolsCoordinator];
+  v4 = __wt_writingToolsCoordinator;
+  if (__wt_writingToolsCoordinator)
   {
-    v5 = [v3 behavior];
+    behavior = [__wt_writingToolsCoordinator behavior];
   }
 
   else
   {
-    v6 = [(UIResponder *)self _textInputForWritingTools];
+    _textInputForWritingTools = [(UIResponder *)self _textInputForWritingTools];
     if (objc_opt_respondsToSelector())
     {
-      v5 = [v6 writingToolsBehavior];
+      behavior = [_textInputForWritingTools writingToolsBehavior];
     }
 
     else
     {
-      v5 = 0;
+      behavior = 0;
     }
   }
 
-  return v5;
+  return behavior;
 }
 
 - (id)__wt_writingToolsCoordinator
 {
-  v2 = [(UIResponder *)self _firstResponder];
+  _firstResponder = [(UIResponder *)self _firstResponder];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [v2 _writingToolsCoordinator];
+    _writingToolsCoordinator = [_firstResponder _writingToolsCoordinator];
   }
 
   else
   {
-    v4 = [v2 textInputView];
-    v3 = [v4 _writingToolsCoordinator];
+    textInputView = [_firstResponder textInputView];
+    _writingToolsCoordinator = [textInputView _writingToolsCoordinator];
   }
 
-  return v3;
+  return _writingToolsCoordinator;
 }
 
 - (id)_additionalTextInputLocales
 {
-  v2 = [(UIResponder *)self nextResponder];
-  v3 = [v2 _additionalTextInputLocales];
+  nextResponder = [(UIResponder *)self nextResponder];
+  _additionalTextInputLocales = [nextResponder _additionalTextInputLocales];
 
-  return v3;
+  return _additionalTextInputLocales;
 }
 
 - (UITextInputAssistantItem)inputAssistantItem
@@ -1765,16 +1765,16 @@ LABEL_8:
     return 0;
   }
 
-  v3 = [(UIResponder *)self _textInputForWritingTools];
-  if (!v3 || -[UIResponder __wt_writingToolsBehavior](self, "__wt_writingToolsBehavior") == -1 || (v4 = MKBGetDeviceLockState(), v4 != 3) && v4 || (objc_opt_respondsToSelector() & 1) != 0 && ([v3 isSecureTextEntry] & 1) != 0 || (objc_opt_respondsToSelector() & 1) != 0 && (objc_msgSend(v3, "keyboardType") == 2 || objc_msgSend(v3, "keyboardType") == 4 || objc_msgSend(v3, "keyboardType") == 5 || objc_msgSend(v3, "keyboardType") == 8 || objc_msgSend(v3, "keyboardType") == 11))
+  _textInputForWritingTools = [(UIResponder *)self _textInputForWritingTools];
+  if (!_textInputForWritingTools || -[UIResponder __wt_writingToolsBehavior](self, "__wt_writingToolsBehavior") == -1 || (v4 = MKBGetDeviceLockState(), v4 != 3) && v4 || (objc_opt_respondsToSelector() & 1) != 0 && ([_textInputForWritingTools isSecureTextEntry] & 1) != 0 || (objc_opt_respondsToSelector() & 1) != 0 && (objc_msgSend(_textInputForWritingTools, "keyboardType") == 2 || objc_msgSend(_textInputForWritingTools, "keyboardType") == 4 || objc_msgSend(_textInputForWritingTools, "keyboardType") == 5 || objc_msgSend(_textInputForWritingTools, "keyboardType") == 8 || objc_msgSend(_textInputForWritingTools, "keyboardType") == 11))
   {
     v5 = 0;
   }
 
   else if (objc_opt_respondsToSelector())
   {
-    v7 = [v3 textContentType];
-    v5 = [v7 length] == 0;
+    textContentType = [_textInputForWritingTools textContentType];
+    v5 = [textContentType length] == 0;
   }
 
   else
@@ -1789,28 +1789,28 @@ LABEL_8:
 {
   if (objc_opt_respondsToSelector())
   {
-    v3 = [(UIResponder *)self fontForCaretSelection];
+    fontForCaretSelection = [(UIResponder *)self fontForCaretSelection];
   }
 
   else
   {
-    v4 = [(UIResponder *)self _selectableText];
+    _selectableText = [(UIResponder *)self _selectableText];
     if (objc_opt_respondsToSelector())
     {
-      v5 = [v4 selectedTextRange];
-      v6 = [v5 end];
+      selectedTextRange = [_selectableText selectedTextRange];
+      v6 = [selectedTextRange end];
 
       if (v6)
       {
-        v7 = [v4 endOfDocument];
-        if (v7 && [v4 comparePosition:v7 toPosition:v6] == -1)
+        endOfDocument = [_selectableText endOfDocument];
+        if (endOfDocument && [_selectableText comparePosition:endOfDocument toPosition:v6] == -1)
         {
-          v8 = v7;
+          v8 = endOfDocument;
 
           v6 = v8;
         }
 
-        v9 = [v4 textStylingAtPosition:v6 inDirection:0];
+        v9 = [_selectableText textStylingAtPosition:v6 inDirection:0];
       }
 
       else
@@ -1828,44 +1828,44 @@ LABEL_8:
         v10 = @"UITextInputTextFontKey";
       }
 
-      v3 = [v9 objectForKey:v10];
+      fontForCaretSelection = [v9 objectForKey:v10];
     }
 
     else
     {
-      v3 = 0;
+      fontForCaretSelection = 0;
     }
   }
 
-  return v3;
+  return fontForCaretSelection;
 }
 
 - (id)_textColorForCaretSelection
 {
   if (objc_opt_respondsToSelector())
   {
-    v3 = [(UIResponder *)self textColorForCaretSelection];
+    textColorForCaretSelection = [(UIResponder *)self textColorForCaretSelection];
   }
 
   else
   {
-    v4 = [(UIResponder *)self _selectableText];
+    _selectableText = [(UIResponder *)self _selectableText];
     if (objc_opt_respondsToSelector())
     {
-      v5 = [v4 selectedTextRange];
-      v6 = [v5 end];
+      selectedTextRange = [_selectableText selectedTextRange];
+      v6 = [selectedTextRange end];
 
       if (v6)
       {
-        v7 = [v4 endOfDocument];
-        if (v7 && [v4 comparePosition:v7 toPosition:v6] == -1)
+        endOfDocument = [_selectableText endOfDocument];
+        if (endOfDocument && [_selectableText comparePosition:endOfDocument toPosition:v6] == -1)
         {
-          v8 = v7;
+          v8 = endOfDocument;
 
           v6 = v8;
         }
 
-        v9 = [v4 textStylingAtPosition:v6 inDirection:0];
+        v9 = [_selectableText textStylingAtPosition:v6 inDirection:0];
       }
 
       else
@@ -1883,64 +1883,64 @@ LABEL_8:
         v10 = @"UITextInputTextColorKey";
       }
 
-      v3 = [v9 objectForKey:v10];
+      textColorForCaretSelection = [v9 objectForKey:v10];
     }
 
     else
     {
-      v3 = 0;
+      textColorForCaretSelection = 0;
     }
   }
 
-  return v3;
+  return textColorForCaretSelection;
 }
 
 - (id)inputDashboardViewController
 {
   v3 = +[UIKeyboardImpl activeInstance];
-  v4 = [v3 shouldShowSmartReplyFeedbackInputDashboardViewController];
+  shouldShowSmartReplyFeedbackInputDashboardViewController = [v3 shouldShowSmartReplyFeedbackInputDashboardViewController];
 
-  if (!v4 || ([(UIResponder *)self _smartReplyFeedbackInputDashboardViewController], (v5 = objc_claimAutoreleasedReturnValue()) == 0))
+  if (!shouldShowSmartReplyFeedbackInputDashboardViewController || ([(UIResponder *)self _smartReplyFeedbackInputDashboardViewController], (inputDashboardViewController = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v6 = [(UIResponder *)self _writingToolsInputDashboardViewController];
-    v7 = v6;
-    if (v6)
+    _writingToolsInputDashboardViewController = [(UIResponder *)self _writingToolsInputDashboardViewController];
+    v7 = _writingToolsInputDashboardViewController;
+    if (_writingToolsInputDashboardViewController)
     {
-      v5 = v6;
+      inputDashboardViewController = _writingToolsInputDashboardViewController;
     }
 
     else
     {
-      v8 = [(UIResponder *)self nextResponder];
-      v5 = [v8 inputDashboardViewController];
+      nextResponder = [(UIResponder *)self nextResponder];
+      inputDashboardViewController = [nextResponder inputDashboardViewController];
 
-      v9 = [v5 _nextResponderOverride];
+      _nextResponderOverride = [inputDashboardViewController _nextResponderOverride];
 
-      if (!v9)
+      if (!_nextResponderOverride)
       {
-        v10 = [(UIResponder *)self nextResponder];
-        [v5 _overrideInputAccessoryViewNextResponderWithResponder:v10];
+        nextResponder2 = [(UIResponder *)self nextResponder];
+        [inputDashboardViewController _overrideInputAccessoryViewNextResponderWithResponder:nextResponder2];
       }
     }
   }
 
-  return v5;
+  return inputDashboardViewController;
 }
 
 - (id)_trailingPredictiveCandidateForWritingTools
 {
   if ((UIKeyboardGetSafeDeviceIdiom() & 0xFFFFFFFFFFFFFFFBLL) != 1 || +[UIKeyboardImpl isFloating]) && ([(UIResponder *)self _writingToolsViewController], v3 = objc_claimAutoreleasedReturnValue(), v4 = objc_opt_respondsToSelector(), v3, (v4))
   {
-    v5 = [(UIResponder *)self _writingToolsViewController];
-    v6 = [v5 trailingPredictiveCandidate];
+    _writingToolsViewController = [(UIResponder *)self _writingToolsViewController];
+    trailingPredictiveCandidate = [_writingToolsViewController trailingPredictiveCandidate];
   }
 
   else
   {
-    v6 = 0;
+    trailingPredictiveCandidate = 0;
   }
 
-  return v6;
+  return trailingPredictiveCandidate;
 }
 
 - (BOOL)_writingToolsWantsKeyboardSuppression
@@ -1968,63 +1968,63 @@ LABEL_8:
 
 - (_WORD)_storedActivityItemsConfiguration
 {
-  if (a1)
+  if (self)
   {
-    if ((a1[4] & 0x20) == 0)
+    if ((self[4] & 0x20) == 0)
     {
-      a1 = 0;
+      self = 0;
 
-      return a1;
+      return self;
     }
 
-    a1 = objc_getAssociatedObject(a1, &_UIActivityItemsConfigurationKey);
+    self = objc_getAssociatedObject(self, &_UIActivityItemsConfigurationKey);
   }
 
-  return a1;
+  return self;
 }
 
 - (id)_selectionDisplayInteraction
 {
   v2 = objc_getAssociatedObject(self, &_UITextInputImplicitSelectionDisplayInteractionKey);
-  v3 = [v2 weakObject];
+  weakObject = [v2 weakObject];
 
-  return v3;
+  return weakObject;
 }
 
-- (void)promptBackgroundViewDidUpdateConfiguration:(id)a3
+- (void)promptBackgroundViewDidUpdateConfiguration:(id)configuration
 {
-  v4 = a3;
-  v6 = self;
-  v5 = [(UIResponder *)v6 nextResponder];
-  [(UIResponder *)v5 promptBackgroundViewDidUpdateConfiguration:v4];
+  configurationCopy = configuration;
+  selfCopy = self;
+  nextResponder = [(UIResponder *)selfCopy nextResponder];
+  [(UIResponder *)nextResponder promptBackgroundViewDidUpdateConfiguration:configurationCopy];
 }
 
-- (BOOL)_shouldSkipKeyboardShortcutLeaf:(id)a3 forMovement:(int64_t)a4
+- (BOOL)_shouldSkipKeyboardShortcutLeaf:(id)leaf forMovement:(int64_t)movement
 {
-  if ((a4 - 6) > 0xFFFFFFFFFFFFFFFDLL)
+  if ((movement - 6) > 0xFFFFFFFFFFFFFFFDLL)
   {
     return 0;
   }
 
   else
   {
-    return [a3 _wantsPriorityOverSystemBehavior:{2, v4, v5}] ^ 1;
+    return [leaf _wantsPriorityOverSystemBehavior:{2, v4, v5}] ^ 1;
   }
 }
 
-- (BOOL)_shouldForwardMovementToFocusEngine:(int64_t)a3
+- (BOOL)_shouldForwardMovementToFocusEngine:(int64_t)engine
 {
   if (![(UIResponder *)self conformsToProtocol:&unk_1EFE8A940])
   {
     return 1;
   }
 
-  if ((a3 - 4) < 2)
+  if ((engine - 4) < 2)
   {
     return ![(UIResponder *)self isFirstResponder];
   }
 
-  if (a3 != 3 || (objc_opt_respondsToSelector() & 1) == 0)
+  if (engine != 3 || (objc_opt_respondsToSelector() & 1) == 0)
   {
     return 0;
   }
@@ -2034,26 +2034,26 @@ LABEL_8:
 
 - (id)_ui_findNavigatorResponder
 {
-  v2 = [(UIResponder *)self nextResponder];
-  v3 = [v2 _ui_findNavigatorResponder];
+  nextResponder = [(UIResponder *)self nextResponder];
+  _ui_findNavigatorResponder = [nextResponder _ui_findNavigatorResponder];
 
-  return v3;
+  return _ui_findNavigatorResponder;
 }
 
-- (id)_effectiveActivityItemsConfigurationForSender:(id)a3
+- (id)_effectiveActivityItemsConfigurationForSender:(id)sender
 {
-  v3 = _UIResponderTargetForAction(self, sel_copy_, a3);
+  v3 = _UIResponderTargetForAction(self, sel_copy_, sender);
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 _effectiveActivityItemsConfiguration];
+    _effectiveActivityItemsConfiguration = [v3 _effectiveActivityItemsConfiguration];
 LABEL_5:
-    v5 = v4;
+    v5 = _effectiveActivityItemsConfiguration;
     goto LABEL_7;
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 activityItemsConfiguration];
+    _effectiveActivityItemsConfiguration = [v3 activityItemsConfiguration];
     goto LABEL_5;
   }
 
@@ -2063,34 +2063,34 @@ LABEL_7:
   return v5;
 }
 
-- (id)_effectiveActivityItemsConfigurationAtLocation:(CGPoint)a3 inCoordinateSpace:(id)a4 sender:(id)a5
+- (id)_effectiveActivityItemsConfigurationAtLocation:(CGPoint)location inCoordinateSpace:(id)space sender:(id)sender
 {
-  y = a3.y;
-  x = a3.x;
-  v9 = a4;
-  v10 = a5;
-  v11 = _UIResponderTargetForAction(self, sel_copy_, v10);
+  y = location.y;
+  x = location.x;
+  spaceCopy = space;
+  senderCopy = sender;
+  v11 = _UIResponderTargetForAction(self, sel_copy_, senderCopy);
   if (objc_opt_respondsToSelector())
   {
-    [v11 convertPoint:v9 fromCoordinateSpace:{x, y}];
+    [v11 convertPoint:spaceCopy fromCoordinateSpace:{x, y}];
     [v11 _activityItemsConfigurationAtLocation:?];
   }
 
   else
   {
-    _activityItemsConfigurationForTarget(v11, v10);
+    _activityItemsConfigurationForTarget(v11, senderCopy);
   }
   v12 = ;
 
   return v12;
 }
 
-- (id)_firstNonnullActivityItemsConfigurationInResponderChainForLocation:(CGPoint)a3 inCoordinateSpace:(id)a4 skipPresentingViewControllers:(BOOL)a5 sender:(id)a6 target:(id *)a7
+- (id)_firstNonnullActivityItemsConfigurationInResponderChainForLocation:(CGPoint)location inCoordinateSpace:(id)space skipPresentingViewControllers:(BOOL)controllers sender:(id)sender target:(id *)target
 {
-  y = a3.y;
-  x = a3.x;
-  v12 = a4;
-  v13 = a6;
+  y = location.y;
+  x = location.x;
+  spaceCopy = space;
+  senderCopy = sender;
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
@@ -2103,16 +2103,16 @@ LABEL_7:
   v21[3] = &unk_1E7108178;
   v24 = x;
   v25 = y;
-  v14 = v12;
+  v14 = spaceCopy;
   v22 = v14;
   v23 = &v26;
   v15 = _Block_copy(v21);
   v16 = _UIResponderTargetForActionWithTestBlock(self, sel_copy_, self, v15);
   v17 = v16;
-  if (a7)
+  if (target)
   {
     v18 = v16;
-    *a7 = v17;
+    *target = v17;
   }
 
   v19 = v27[5];
@@ -2145,29 +2145,29 @@ BOOL __174__UIResponder_UIActivityItemsConfiguration___firstNonnullActivityItems
   return v8 != 0;
 }
 
-- (BOOL)_handleActivityItemsConfigurationCanPerformAction:(SEL)a3 sender:(id)a4
+- (BOOL)_handleActivityItemsConfigurationCanPerformAction:(SEL)action sender:(id)sender
 {
-  v6 = a4;
-  if (sel__share_ == a3 || sel_copy_ == a3)
+  senderCopy = sender;
+  if (sel__share_ == action || sel_copy_ == action)
   {
-    v8 = [(UIResponder *)self _effectiveActivityItemsConfiguration];
+    _effectiveActivityItemsConfiguration = [(UIResponder *)self _effectiveActivityItemsConfiguration];
   }
 
   else
   {
-    v8 = 0;
+    _effectiveActivityItemsConfiguration = 0;
   }
 
-  if (!dyld_program_sdk_at_least() || !_UIActivityItemsConfigurationHasItems(v8))
+  if (!dyld_program_sdk_at_least() || !_UIActivityItemsConfigurationHasItems(_effectiveActivityItemsConfiguration))
   {
     v9 = 0;
     goto LABEL_13;
   }
 
-  if (sel__share_ == a3)
+  if (sel__share_ == action)
   {
-    v11 = v8;
-    v12 = v6;
+    v11 = _effectiveActivityItemsConfiguration;
+    v12 = senderCopy;
     if ((+[_UITextServiceSession availableTextServices]& 8) == 0)
     {
       goto LABEL_24;
@@ -2187,8 +2187,8 @@ LABEL_20:
       if ((objc_opt_respondsToSelector() & 1) != 0 && ([v14 sender], v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "__isKindOfUIResponder"), v15, v16) && (objc_msgSend(v14, "sender"), (v17 = objc_claimAutoreleasedReturnValue()) != 0))
       {
         v18 = v17;
-        v19 = [v17 activityItemsConfiguration];
-        v9 = v19 != 0;
+        activityItemsConfiguration = [v17 activityItemsConfiguration];
+        v9 = activityItemsConfiguration != 0;
       }
 
       else
@@ -2206,10 +2206,10 @@ LABEL_27:
     goto LABEL_13;
   }
 
-  if (sel_copy_ == a3)
+  if (sel_copy_ == action)
   {
-    v11 = v8;
-    v12 = v6;
+    v11 = _effectiveActivityItemsConfiguration;
+    v12 = senderCopy;
     if ((objc_opt_respondsToSelector() & 1) == 0)
     {
       goto LABEL_20;
@@ -2225,23 +2225,23 @@ LABEL_13:
   return v9;
 }
 
-- (BOOL)_handleActivityItemsConfigurationDoesNotHandleSelector:(SEL)a3
+- (BOOL)_handleActivityItemsConfigurationDoesNotHandleSelector:(SEL)selector
 {
   v5 = dyld_program_sdk_at_least();
   result = 0;
-  if (v5 && sel_copy_ == a3)
+  if (v5 && sel_copy_ == selector)
   {
     v7 = [(UIResponder *)self _effectiveActivityItemsConfigurationForSender:self];
 
     if (v7)
     {
-      v8 = [(UIResponder *)self _dataOwnerForCopy];
+      _dataOwnerForCopy = [(UIResponder *)self _dataOwnerForCopy];
       v9[0] = MEMORY[0x1E69E9820];
       v9[1] = 3221225472;
       v9[2] = __100__UIResponder_UIActivityItemsConfiguration___handleActivityItemsConfigurationDoesNotHandleSelector___block_invoke;
       v9[3] = &unk_1E70F3590;
       v9[4] = self;
-      [UIPasteboard _performAsDataOwner:v8 block:v9];
+      [UIPasteboard _performAsDataOwner:_dataOwnerForCopy block:v9];
       return 1;
     }
 
@@ -2262,13 +2262,13 @@ void __100__UIResponder_UIActivityItemsConfiguration___handleActivityItemsConfig
   [v2 setItemProviders:v1];
 }
 
-- (BOOL)_handleActivityItemsConfigurationShare:(id)a3
+- (BOOL)_handleActivityItemsConfigurationShare:(id)share
 {
-  v4 = a3;
+  shareCopy = share;
   if (dyld_program_sdk_at_least())
   {
-    v5 = [(UIResponder *)self _effectiveActivityItemsConfigurationForSender:v4];
-    v6 = [(UIResponder *)self _handleActivityItemsConfigurationShare:v4 activityItemsConfiguration:v5];
+    v5 = [(UIResponder *)self _effectiveActivityItemsConfigurationForSender:shareCopy];
+    v6 = [(UIResponder *)self _handleActivityItemsConfigurationShare:shareCopy activityItemsConfiguration:v5];
   }
 
   else
@@ -2279,28 +2279,28 @@ void __100__UIResponder_UIActivityItemsConfiguration___handleActivityItemsConfig
   return v6;
 }
 
-- (BOOL)_handleActivityItemsConfigurationShare:(id)a3 activityItemsConfiguration:(id)a4
+- (BOOL)_handleActivityItemsConfigurationShare:(id)share activityItemsConfiguration:(id)configuration
 {
   v72 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v7)
+  shareCopy = share;
+  configurationCopy = configuration;
+  v8 = configurationCopy;
+  if (!configurationCopy)
   {
     goto LABEL_4;
   }
 
-  v9 = v7;
-  v10 = v6;
+  v9 = configurationCopy;
+  v10 = shareCopy;
   if ((+[_UITextServiceSession availableTextServices](_UITextServiceSession, "availableTextServices") & 8) != 0 && ((objc_opt_respondsToSelector() & 1) == 0 || [v9 activityItemsConfigurationSupportsInteraction:@"share"]))
   {
     v12 = v10;
     if ((objc_opt_respondsToSelector() & 1) != 0 && ([v12 sender], v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "__isKindOfUIResponder"), v13, v14) && (objc_msgSend(v12, "sender"), (v15 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v16 = v15;
-      v17 = [v15 activityItemsConfiguration];
+      activityItemsConfiguration = [v15 activityItemsConfiguration];
 
-      if (!v17)
+      if (!activityItemsConfiguration)
       {
         goto LABEL_4;
       }
@@ -2313,8 +2313,8 @@ void __100__UIResponder_UIActivityItemsConfiguration___handleActivityItemsConfig
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v18 = [v12 _targetView];
-      v19 = _viewControllerToPresentFromBasedOnResponder(v18);
+      _targetView = [v12 _targetView];
+      v19 = _viewControllerToPresentFromBasedOnResponder(_targetView);
     }
 
     else
@@ -2322,31 +2322,31 @@ void __100__UIResponder_UIActivityItemsConfiguration___handleActivityItemsConfig
       v19 = 0;
     }
 
-    v20 = [v19 viewIfLoaded];
-    v21 = [v20 _window];
+    viewIfLoaded = [v19 viewIfLoaded];
+    _window = [viewIfLoaded _window];
 
-    if (!v21)
+    if (!_window)
     {
       v22 = _viewControllerToPresentFromBasedOnResponder(self);
 
       v19 = v22;
     }
 
-    v23 = [v19 viewIfLoaded];
-    v24 = [v23 _window];
+    viewIfLoaded2 = [v19 viewIfLoaded];
+    _window2 = [viewIfLoaded2 _window];
 
-    if (!v24)
+    if (!_window2)
     {
-      v25 = [(UIResponder *)self _window];
-      v26 = [v25 rootViewController];
+      _window3 = [(UIResponder *)self _window];
+      rootViewController = [_window3 rootViewController];
 
-      v19 = v26;
+      v19 = rootViewController;
     }
 
-    v27 = [v19 viewIfLoaded];
-    v28 = [v27 _window];
+    viewIfLoaded3 = [v19 viewIfLoaded];
+    _window4 = [viewIfLoaded3 _window];
 
-    if (!v28)
+    if (!_window4)
     {
       v29 = _UIActivityItemsConfigurationLog();
       if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
@@ -2373,7 +2373,7 @@ void __100__UIResponder_UIActivityItemsConfiguration___handleActivityItemsConfig
         v31 = [v32 countByEnumeratingWithState:&v66 objects:v71 count:16];
         if (v31)
         {
-          v63 = self;
+          selfCopy = self;
           v64 = v9;
           v33 = *v67;
           while (2)
@@ -2404,7 +2404,7 @@ void __100__UIResponder_UIActivityItemsConfiguration___handleActivityItemsConfig
           }
 
 LABEL_35:
-          self = v63;
+          self = selfCopy;
           v9 = v64;
         }
       }
@@ -2412,16 +2412,16 @@ LABEL_35:
       if (v31)
       {
         v36 = _preferredUIWindowInWindowScene(v31);
-        v37 = [v36 rootViewController];
+        rootViewController2 = [v36 rootViewController];
 
-        v19 = v37;
+        v19 = rootViewController2;
       }
     }
 
-    v38 = [v19 viewIfLoaded];
-    v39 = [v38 _window];
+    viewIfLoaded4 = [v19 viewIfLoaded];
+    _window5 = [viewIfLoaded4 _window];
 
-    if (!v39)
+    if (!_window5)
     {
       p_super = _UIActivityItemsConfigurationLog();
       if (os_log_type_enabled(p_super, OS_LOG_TYPE_ERROR))
@@ -2437,10 +2437,10 @@ LABEL_35:
     if (objc_opt_isKindOfClass())
     {
       v40 = v12;
-      v41 = [v40 _targetView];
-      if (v41)
+      _targetView2 = [v40 _targetView];
+      if (_targetView2)
       {
-        p_super = v41;
+        p_super = _targetView2;
         [v40 _targetRect];
         [p_super convertRect:0 fromView:?];
         v44 = v43;
@@ -2450,9 +2450,9 @@ LABEL_35:
 
 LABEL_55:
         v60 = [objc_alloc(MEMORY[0x1E69CD9F8]) initWithActivityItemsConfiguration:v9];
-        v61 = [v60 popoverPresentationController];
-        [v61 setSourceView:p_super];
-        [v61 setSourceRect:{v44, v46, v48, v50}];
+        popoverPresentationController = [v60 popoverPresentationController];
+        [popoverPresentationController setSourceView:p_super];
+        [popoverPresentationController setSourceRect:{v44, v46, v48, v50}];
         [v19 presentViewController:v60 animated:1 completion:&__block_literal_global_218];
 
 LABEL_56:
@@ -2464,16 +2464,16 @@ LABEL_56:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v51 = self;
-      if (!v51)
+      selfCopy2 = self;
+      if (!selfCopy2)
       {
 LABEL_53:
         p_super = [v19 view];
-        v52 = [v19 view];
-        [(UIResponder *)v52 bounds];
+        view = [v19 view];
+        [(UIResponder *)view bounds];
         v54 = v57;
-        v58 = [v19 view];
-        [v58 bounds];
+        view2 = [v19 view];
+        [view2 bounds];
         v56 = v59;
 
         goto LABEL_54;
@@ -2488,19 +2488,19 @@ LABEL_53:
         goto LABEL_53;
       }
 
-      v51 = [(UIResponder *)self view];
-      if (!v51)
+      selfCopy2 = [(UIResponder *)self view];
+      if (!selfCopy2)
       {
         goto LABEL_53;
       }
     }
 
-    v52 = v51;
-    [(UIResponder *)v52 bounds];
+    view = selfCopy2;
+    [(UIResponder *)view bounds];
     v54 = v53;
-    [(UIResponder *)v52 bounds];
+    [(UIResponder *)view bounds];
     v56 = v55;
-    p_super = &v52->super;
+    p_super = &view->super;
 LABEL_54:
 
     v46 = v56 * 0.5;
@@ -2519,11 +2519,11 @@ LABEL_57:
 
 - (id)textInputSuggestionDelegate
 {
-  v2 = [(UIResponder *)self _selectableText];
-  v3 = [v2 inputDelegate];
+  _selectableText = [(UIResponder *)self _selectableText];
+  inputDelegate = [_selectableText inputDelegate];
   if (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector())
   {
-    v4 = v3;
+    v4 = inputDelegate;
   }
 
   else
@@ -2534,14 +2534,14 @@ LABEL_57:
   return v4;
 }
 
-- (void)set_textInputSource:(int64_t)a3
+- (void)set_textInputSource:(int64_t)source
 {
   v5 = +[UIKeyboardSceneDelegate automaticTextInputSourceCache];
 
   if (v5)
   {
     v6 = (objc_opt_respondsToSelector() & 1) != 0 && [(UIResponder *)self keyboardType]== 122;
-    if (a3 == 3 && v6)
+    if (source == 3 && v6)
     {
       v7 = 2;
     }
@@ -2554,35 +2554,35 @@ LABEL_57:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v8 = 0;
+      selfCopy = 0;
     }
 
-    v9 = v8;
+    v9 = selfCopy;
     v10 = +[UIKeyboardSceneDelegate automaticTextInputSourceCache];
-    [v10 updateEventSource:a3 options:v7 responder:v9];
+    [v10 updateEventSource:source options:v7 responder:v9];
   }
 
   else
   {
-    __UIPlatformFallbackInputSource = a3;
+    __UIPlatformFallbackInputSource = source;
   }
 }
 
 - (_NSRange)_selectedNSRange
 {
-  v3 = [(UIResponder *)self _selectableText];
-  v4 = v3;
-  if (v3)
+  _selectableText = [(UIResponder *)self _selectableText];
+  v4 = _selectableText;
+  if (_selectableText)
   {
-    v5 = [v3 selectedTextRange];
-    if (v5)
+    selectedTextRange = [_selectableText selectedTextRange];
+    if (selectedTextRange)
     {
-      v6 = [(UIResponder *)self _nsrangeForTextRange:v5];
+      v6 = [(UIResponder *)self _nsrangeForTextRange:selectedTextRange];
       v8 = v7;
     }
 
@@ -2608,16 +2608,16 @@ LABEL_57:
 
 - (_NSRange)_selectedRangeWithinMarkedText
 {
-  v2 = [(UIResponder *)self _selectableText];
-  v3 = v2;
-  if (v2)
+  _selectableText = [(UIResponder *)self _selectableText];
+  v3 = _selectableText;
+  if (_selectableText)
   {
-    v4 = [v2 selectedTextRange];
-    if (v4)
+    selectedTextRange = [_selectableText selectedTextRange];
+    if (selectedTextRange)
     {
-      v5 = [v3 markedTextRange];
-      v6 = v5;
-      if (!v5 || ([v5 start], v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "start"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v3, "offsetFromPosition:toPosition:", v7, v8), v8, v7, v9 < 0))
+      markedTextRange = [v3 markedTextRange];
+      v6 = markedTextRange;
+      if (!markedTextRange || ([markedTextRange start], v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(selectedTextRange, "start"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v3, "offsetFromPosition:toPosition:", v7, v8), v8, v7, v9 < 0))
       {
         v12 = 0;
         v9 = 0x7FFFFFFFFFFFFFFFLL;
@@ -2625,9 +2625,9 @@ LABEL_57:
 
       else
       {
-        v10 = [v4 start];
-        v11 = [v4 end];
-        v12 = [v3 offsetFromPosition:v10 toPosition:v11];
+        start = [selectedTextRange start];
+        v11 = [selectedTextRange end];
+        v12 = [v3 offsetFromPosition:start toPosition:v11];
       }
     }
 
@@ -2653,32 +2653,32 @@ LABEL_57:
 
 - (void)_selectAll
 {
-  v3 = [(UIResponder *)self _selectableText];
-  v2 = [v3 _fullRange];
-  [v3 setSelectedTextRange:v2];
+  _selectableText = [(UIResponder *)self _selectableText];
+  _fullRange = [_selectableText _fullRange];
+  [_selectableText setSelectedTextRange:_fullRange];
 }
 
-- (int)_indexForTextPosition:(id)a3
+- (int)_indexForTextPosition:(id)position
 {
-  v4 = a3;
-  v5 = [(UIResponder *)self _selectableText];
-  v6 = [v5 beginningOfDocument];
-  v7 = [v5 offsetFromPosition:v6 toPosition:v4];
+  positionCopy = position;
+  _selectableText = [(UIResponder *)self _selectableText];
+  beginningOfDocument = [_selectableText beginningOfDocument];
+  v7 = [_selectableText offsetFromPosition:beginningOfDocument toPosition:positionCopy];
 
   return v7;
 }
 
-- (_NSRange)_nsrangeForTextRange:(id)a3
+- (_NSRange)_nsrangeForTextRange:(id)range
 {
-  v4 = a3;
-  v5 = [(UIResponder *)self _selectableText];
-  v6 = [v4 start];
-  v7 = [(UIResponder *)self _indexForTextPosition:v6];
+  rangeCopy = range;
+  _selectableText = [(UIResponder *)self _selectableText];
+  start = [rangeCopy start];
+  v7 = [(UIResponder *)self _indexForTextPosition:start];
 
-  v8 = [v4 start];
-  v9 = [v4 end];
+  start2 = [rangeCopy start];
+  v9 = [rangeCopy end];
 
-  v10 = [v5 offsetFromPosition:v8 toPosition:v9];
+  v10 = [_selectableText offsetFromPosition:start2 toPosition:v9];
   v11 = v7;
   v12 = v10;
   result.length = v12;
@@ -2686,66 +2686,66 @@ LABEL_57:
   return result;
 }
 
-- (id)_textRangeFromNSRange:(_NSRange)a3
+- (id)_textRangeFromNSRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v5 = [(UIResponder *)self _selectableText];
-  v6 = [v5 beginningOfDocument];
-  v7 = [v5 positionFromPosition:v6 offset:location];
+  length = range.length;
+  location = range.location;
+  _selectableText = [(UIResponder *)self _selectableText];
+  beginningOfDocument = [_selectableText beginningOfDocument];
+  v7 = [_selectableText positionFromPosition:beginningOfDocument offset:location];
   v8 = v7;
   if (v7)
   {
-    v9 = v7;
+    endOfDocument = v7;
   }
 
   else
   {
-    v9 = [v5 endOfDocument];
+    endOfDocument = [_selectableText endOfDocument];
   }
 
-  v10 = v9;
+  v10 = endOfDocument;
 
-  v11 = [v5 positionFromPosition:v10 offset:length];
+  v11 = [_selectableText positionFromPosition:v10 offset:length];
   v12 = v11;
   if (v11)
   {
-    v13 = v11;
+    endOfDocument2 = v11;
   }
 
   else
   {
-    v13 = [v5 endOfDocument];
+    endOfDocument2 = [_selectableText endOfDocument];
   }
 
-  v14 = v13;
+  v14 = endOfDocument2;
 
-  v15 = [v5 textRangeFromPosition:v10 toPosition:v14];
+  v15 = [_selectableText textRangeFromPosition:v10 toPosition:v14];
 
   return v15;
 }
 
-- (id)_textRangeFromDirectionalRange:(id)a3
+- (id)_textRangeFromDirectionalRange:(id)range
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
-  v5 = [(UIResponder *)self _selectableText];
-  v6 = [v5 selectedTextRange];
-  v7 = [v6 start];
-  v8 = [v5 positionFromPosition:v7 offset:var0];
+  var1 = range.var1;
+  var0 = range.var0;
+  _selectableText = [(UIResponder *)self _selectableText];
+  selectedTextRange = [_selectableText selectedTextRange];
+  start = [selectedTextRange start];
+  v8 = [_selectableText positionFromPosition:start offset:var0];
 
-  v9 = [v5 positionFromPosition:v8 offset:var1];
-  v10 = [v5 textRangeFromPosition:v8 toPosition:v9];
+  v9 = [_selectableText positionFromPosition:v8 offset:var1];
+  v10 = [_selectableText textRangeFromPosition:v8 toPosition:v9];
 
   return v10;
 }
 
-- (unsigned)_characterInRelationToCaretSelection:(int)a3
+- (unsigned)_characterInRelationToCaretSelection:(int)selection
 {
-  v3 = *&a3;
-  v5 = [(UIResponder *)self _selectableText];
-  v6 = [v5 selectedTextRange];
-  if (v6 && (v7 = v6, [v5 selectedTextRange], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "isEmpty"), v8, v7, v9))
+  v3 = *&selection;
+  _selectableText = [(UIResponder *)self _selectableText];
+  selectedTextRange = [_selectableText selectedTextRange];
+  if (selectedTextRange && (v7 = selectedTextRange, [_selectableText selectedTextRange], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "isEmpty"), v8, v7, v9))
   {
     v10 = [(UIResponder *)self _characterInRelationToRangedSelection:v3];
   }
@@ -2758,26 +2758,26 @@ LABEL_57:
   return v10;
 }
 
-- (unsigned)_characterInRelationToRangedSelection:(int)a3
+- (unsigned)_characterInRelationToRangedSelection:(int)selection
 {
-  v4 = [(UIResponder *)self _selectableText];
-  v5 = [v4 selectedTextRange];
+  _selectableText = [(UIResponder *)self _selectableText];
+  selectedTextRange = [_selectableText selectedTextRange];
 
-  if (!v5)
+  if (!selectedTextRange)
   {
     goto LABEL_4;
   }
 
-  if (a3 > -101)
+  if (selection > -101)
   {
-    if ((a3 & 0x80000000) == 0)
+    if ((selection & 0x80000000) == 0)
     {
-      v7 = [v4 selectedTextRange];
-      v8 = [v7 end];
+      selectedTextRange2 = [_selectableText selectedTextRange];
+      v8 = [selectedTextRange2 end];
 
-      if (a3)
+      if (selection)
       {
-        v9 = [v4 positionFromPosition:v8 offset:a3];
+        v9 = [_selectableText positionFromPosition:v8 offset:selection];
 
         v8 = v9;
       }
@@ -2788,12 +2788,12 @@ LABEL_57:
       }
 
 LABEL_11:
-      v12 = [v4 positionFromPosition:v8 offset:1];
+      v12 = [_selectableText positionFromPosition:v8 offset:1];
       if (v12)
       {
         v13 = v12;
-        v14 = [v4 textRangeFromPosition:v8 toPosition:v12];
-        v15 = [v4 textInRange:v14];
+        v14 = [_selectableText textRangeFromPosition:v8 toPosition:v12];
+        v15 = [_selectableText textInRange:v14];
         if ([v15 length])
         {
           if ([v15 length] == 2 && (v16 = objc_msgSend(v15, "characterAtIndex:", 0), v17 = objc_msgSend(v15, "characterAtIndex:", 1), (v16 & 0xFC00) == 0xD800) && (v17 & 0xFC00) == 0xDC00)
@@ -2823,9 +2823,9 @@ LABEL_21:
     }
 
 LABEL_10:
-    v10 = [v4 selectedTextRange];
-    v11 = [v10 start];
-    v8 = [v4 positionFromPosition:v11 offset:a3];
+    selectedTextRange3 = [_selectableText selectedTextRange];
+    start = [selectedTextRange3 start];
+    v8 = [_selectableText positionFromPosition:start offset:selection];
 
     if (!v8)
     {
@@ -2848,20 +2848,20 @@ LABEL_22:
   return v6;
 }
 
-- (unsigned)_characterInRelationToPosition:(id)a3 amount:(int)a4
+- (unsigned)_characterInRelationToPosition:(id)position amount:(int)amount
 {
-  if (!a3)
+  if (!position)
   {
     return 0;
   }
 
-  v6 = a3;
-  v7 = [(UIResponder *)self _selectableText];
-  v8 = [v7 positionFromPosition:v6 offset:a4];
+  positionCopy = position;
+  _selectableText = [(UIResponder *)self _selectableText];
+  v8 = [_selectableText positionFromPosition:positionCopy offset:amount];
 
-  v9 = [v7 positionFromPosition:v8 offset:1];
-  v10 = [v7 textRangeFromPosition:v8 toPosition:v9];
-  v11 = [v7 textInRange:v10];
+  v9 = [_selectableText positionFromPosition:v8 offset:1];
+  v10 = [_selectableText textRangeFromPosition:v8 toPosition:v9];
+  v11 = [_selectableText textInRange:v10];
   if ([v11 length])
   {
     if ([v11 length] == 2 && (v12 = objc_msgSend(v11, "characterAtIndex:", 0), v13 = objc_msgSend(v11, "characterAtIndex:", 1), (v12 & 0xFC00) == 0xD800) && (v13 & 0xFC00) == 0xDC00)
@@ -2885,79 +2885,79 @@ LABEL_22:
 
 - (id)_wordContainingCaretSelection
 {
-  v3 = [(UIResponder *)self _selectableText];
-  v4 = [v3 selectedTextRange];
-  if (v4)
+  _selectableText = [(UIResponder *)self _selectableText];
+  selectedTextRange = [_selectableText selectedTextRange];
+  if (selectedTextRange)
   {
-    v5 = [v3 selectedTextRange];
-    v6 = [v5 isEmpty];
+    selectedTextRange2 = [_selectableText selectedTextRange];
+    isEmpty = [selectedTextRange2 isEmpty];
 
-    if (v6)
+    if (isEmpty)
     {
-      v7 = [v3 selectedTextRange];
-      v8 = [v7 start];
-      v9 = [(UIResponder *)self _rangeOfEnclosingWord:v8];
+      selectedTextRange3 = [_selectableText selectedTextRange];
+      start = [selectedTextRange3 start];
+      v9 = [(UIResponder *)self _rangeOfEnclosingWord:start];
 
       if (v9)
       {
-        v4 = [v3 textInRange:v9];
+        selectedTextRange = [_selectableText textInRange:v9];
       }
 
       else
       {
-        v4 = 0;
+        selectedTextRange = 0;
       }
     }
 
     else
     {
-      v4 = 0;
+      selectedTextRange = 0;
     }
   }
 
-  return v4;
+  return selectedTextRange;
 }
 
 - (id)_fullText
 {
-  v2 = [(UIResponder *)self _selectableText];
-  v3 = [v2 beginningOfDocument];
-  v4 = [v2 endOfDocument];
-  v5 = [v2 textRangeFromPosition:v3 toPosition:v4];
+  _selectableText = [(UIResponder *)self _selectableText];
+  beginningOfDocument = [_selectableText beginningOfDocument];
+  endOfDocument = [_selectableText endOfDocument];
+  v5 = [_selectableText textRangeFromPosition:beginningOfDocument toPosition:endOfDocument];
 
-  v6 = [v2 textInRange:v5];
+  v6 = [_selectableText textInRange:v5];
 
   return v6;
 }
 
-- (void)_setSelectionToPosition:(id)a3
+- (void)_setSelectionToPosition:(id)position
 {
-  if (a3)
+  if (position)
   {
-    v4 = a3;
-    v6 = [(UIResponder *)self _selectableText];
-    v5 = [v6 textRangeFromPosition:v4 toPosition:v4];
+    positionCopy = position;
+    _selectableText = [(UIResponder *)self _selectableText];
+    v5 = [_selectableText textRangeFromPosition:positionCopy toPosition:positionCopy];
 
     if (v5)
     {
-      [v6 setSelectedTextRange:v5];
+      [_selectableText setSelectedTextRange:v5];
     }
   }
 }
 
 - (BOOL)_selectionAtWordStart
 {
-  v3 = [(UIResponder *)self _selectableText];
-  v4 = [v3 selectedTextRange];
-  v5 = [v4 start];
-  v6 = [(UIResponder *)self _rangeOfEnclosingWord:v5];
+  _selectableText = [(UIResponder *)self _selectableText];
+  selectedTextRange = [_selectableText selectedTextRange];
+  start = [selectedTextRange start];
+  v6 = [(UIResponder *)self _rangeOfEnclosingWord:start];
 
   if (v6)
   {
-    v7 = [v6 start];
-    v8 = [v3 selectedTextRange];
-    v9 = [v8 start];
-    v10 = [v3 comparePosition:v7 toPosition:v9];
+    start2 = [v6 start];
+    selectedTextRange2 = [_selectableText selectedTextRange];
+    start3 = [selectedTextRange2 start];
+    v10 = [_selectableText comparePosition:start2 toPosition:start3];
 
     v11 = v10 == 0;
   }
@@ -2972,14 +2972,14 @@ LABEL_22:
 
 - (BOOL)_selectionAtDocumentStart
 {
-  v2 = [(UIResponder *)self _selectableText];
-  v3 = [v2 selectedTextRange];
-  v4 = [v3 start];
+  _selectableText = [(UIResponder *)self _selectableText];
+  selectedTextRange = [_selectableText selectedTextRange];
+  start = [selectedTextRange start];
 
-  if (v4)
+  if (start)
   {
-    v5 = [v2 beginningOfDocument];
-    v6 = [v2 comparePosition:v5 toPosition:v4] == 0;
+    beginningOfDocument = [_selectableText beginningOfDocument];
+    v6 = [_selectableText comparePosition:beginningOfDocument toPosition:start] == 0;
   }
 
   else
@@ -2992,14 +2992,14 @@ LABEL_22:
 
 - (BOOL)_selectionAtDocumentEnd
 {
-  v2 = [(UIResponder *)self _selectableText];
-  v3 = [v2 selectedTextRange];
-  v4 = [v3 end];
+  _selectableText = [(UIResponder *)self _selectableText];
+  selectedTextRange = [_selectableText selectedTextRange];
+  v4 = [selectedTextRange end];
 
   if (v4)
   {
-    v5 = [v2 endOfDocument];
-    v6 = [v2 comparePosition:v5 toPosition:v4] == 0;
+    endOfDocument = [_selectableText endOfDocument];
+    v6 = [_selectableText comparePosition:endOfDocument toPosition:v4] == 0;
   }
 
   else
@@ -3012,31 +3012,31 @@ LABEL_22:
 
 - (BOOL)_isEmptySelection
 {
-  v2 = [(UIResponder *)self _selectableText];
-  v3 = [v2 selectedTextRange];
-  v4 = [v3 start];
-  v5 = [v3 end];
-  v6 = [v2 comparePosition:v4 toPosition:v5] == 0;
+  _selectableText = [(UIResponder *)self _selectableText];
+  selectedTextRange = [_selectableText selectedTextRange];
+  start = [selectedTextRange start];
+  v5 = [selectedTextRange end];
+  v6 = [_selectableText comparePosition:start toPosition:v5] == 0;
 
   return v6;
 }
 
 - (BOOL)_hasMarkedTextOrRangedSelection
 {
-  v2 = [(UIResponder *)self _selectableText];
-  v3 = [v2 markedTextRange];
-  if (v3)
+  _selectableText = [(UIResponder *)self _selectableText];
+  markedTextRange = [_selectableText markedTextRange];
+  if (markedTextRange)
   {
     LOBYTE(v4) = 1;
   }
 
   else
   {
-    v5 = [v2 selectedTextRange];
-    if (v5)
+    selectedTextRange = [_selectableText selectedTextRange];
+    if (selectedTextRange)
     {
-      v6 = [v2 selectedTextRange];
-      v4 = [v6 isEmpty] ^ 1;
+      selectedTextRange2 = [_selectableText selectedTextRange];
+      v4 = [selectedTextRange2 isEmpty] ^ 1;
     }
 
     else
@@ -3048,29 +3048,29 @@ LABEL_22:
   return v4;
 }
 
-- (void)_extendCurrentSelection:(int)a3
+- (void)_extendCurrentSelection:(int)selection
 {
-  v3 = *&a3;
-  v5 = [(UIResponder *)self _selectableText];
+  v3 = *&selection;
+  _selectableText = [(UIResponder *)self _selectableText];
   if (v3)
   {
-    v15 = v5;
-    v6 = [v5 selectedTextRange];
+    v15 = _selectableText;
+    selectedTextRange = [_selectableText selectedTextRange];
 
-    v5 = v15;
-    if (v6)
+    _selectableText = v15;
+    if (selectedTextRange)
     {
-      v7 = [v15 selectedTextRange];
-      v8 = [v7 start];
+      selectedTextRange2 = [v15 selectedTextRange];
+      start = [selectedTextRange2 start];
 
-      v9 = [v15 selectedTextRange];
-      v10 = [v9 end];
+      selectedTextRange3 = [v15 selectedTextRange];
+      v10 = [selectedTextRange3 end];
 
       if (v3 < 1)
       {
-        v13 = [(UIResponder *)self _clampedpositionFromPosition:v8 offset:v3];
-        v12 = v8;
-        v8 = v13;
+        v13 = [(UIResponder *)self _clampedpositionFromPosition:start offset:v3];
+        v12 = start;
+        start = v13;
       }
 
       else
@@ -3080,39 +3080,39 @@ LABEL_22:
         v10 = v11;
       }
 
-      v14 = [v15 textRangeFromPosition:v8 toPosition:v10];
+      v14 = [v15 textRangeFromPosition:start toPosition:v10];
       [v15 setSelectedTextRange:v14];
 
-      v5 = v15;
+      _selectableText = v15;
     }
   }
 }
 
-- (void)_moveCurrentSelection:(int)a3
+- (void)_moveCurrentSelection:(int)selection
 {
-  v3 = *&a3;
-  v5 = [(UIResponder *)self _selectableText];
+  v3 = *&selection;
+  _selectableText = [(UIResponder *)self _selectableText];
   if (v3)
   {
-    v14 = v5;
-    v6 = [v5 selectedTextRange];
+    v14 = _selectableText;
+    selectedTextRange = [_selectableText selectedTextRange];
 
-    v5 = v14;
-    if (v6)
+    _selectableText = v14;
+    if (selectedTextRange)
     {
-      v7 = [v14 selectedTextRange];
-      v8 = [v7 isEmpty];
+      selectedTextRange2 = [v14 selectedTextRange];
+      isEmpty = [selectedTextRange2 isEmpty];
 
-      if (v8)
+      if (isEmpty)
       {
-        v9 = [v14 selectedTextRange];
-        v10 = [v9 start];
+        selectedTextRange3 = [v14 selectedTextRange];
+        start = [selectedTextRange3 start];
       }
 
       else
       {
-        v11 = [v14 selectedTextRange];
-        v10 = [v11 end];
+        selectedTextRange4 = [v14 selectedTextRange];
+        start = [selectedTextRange4 end];
 
         if (v3 < 1)
         {
@@ -3125,7 +3125,7 @@ LABEL_22:
         }
       }
 
-      v12 = [(UIResponder *)self _clampedpositionFromPosition:v10 offset:v3];
+      v12 = [(UIResponder *)self _clampedpositionFromPosition:start offset:v3];
 
       v13 = [v14 textRangeFromPosition:v12 toPosition:v12];
       if (v13)
@@ -3133,19 +3133,19 @@ LABEL_22:
         [v14 setSelectedTextRange:v13];
       }
 
-      v5 = v14;
+      _selectableText = v14;
     }
   }
 }
 
-- (void)_expandSelectionToBackwardDeletionClusterWithReinsertionOut:(id *)a3
+- (void)_expandSelectionToBackwardDeletionClusterWithReinsertionOut:(id *)out
 {
-  v24 = [(UIResponder *)self _selectableText];
-  v4 = [v24 selectedTextRange];
-  v5 = [v4 start];
-  v6 = [v4 end];
-  v7 = v5;
-  if (!v4 || ([v4 isEmpty] & 1) != 0)
+  _selectableText = [(UIResponder *)self _selectableText];
+  selectedTextRange = [_selectableText selectedTextRange];
+  start = [selectedTextRange start];
+  v6 = [selectedTextRange end];
+  v7 = start;
+  if (!selectedTextRange || ([selectedTextRange isEmpty] & 1) != 0)
   {
     v8 = &stru_1EFB14550;
     if (v7)
@@ -3159,14 +3159,14 @@ LABEL_18:
     goto LABEL_29;
   }
 
-  v8 = [v24 textInRange:v4];
+  v8 = [_selectableText textInRange:selectedTextRange];
   if (!v7)
   {
     goto LABEL_18;
   }
 
 LABEL_4:
-  v23 = a3;
+  outCopy = out;
   v9 = v7;
   v10 = v7;
   while (1)
@@ -3196,14 +3196,14 @@ LABEL_4:
 
     v19 = v10;
 
-    v10 = [v24 positionFromPosition:v19 offset:-1];
+    v10 = [_selectableText positionFromPosition:v19 offset:-1];
 
     if (v10)
     {
-      v17 = [v24 textRangeFromPosition:v10 toPosition:v19];
+      v17 = [_selectableText textRangeFromPosition:v10 toPosition:v19];
       if (v17)
       {
-        v18 = [v24 textInRange:v17];
+        v18 = [_selectableText textInRange:v17];
       }
 
       else
@@ -3235,13 +3235,13 @@ LABEL_4:
   v10 = 0;
   v8 = v11;
 LABEL_20:
-  v20 = v24;
-  if (v23 && v16 >= 1)
+  v20 = _selectableText;
+  if (outCopy && v16 >= 1)
   {
     v21 = v10;
 
-    *v23 = [(__CFString *)v8 substringToIndex:v16];
-    v20 = v24;
+    *outCopy = [(__CFString *)v8 substringToIndex:v16];
+    v20 = _selectableText;
     v19 = v21;
   }
 
@@ -3250,54 +3250,54 @@ LABEL_20:
     v22 = [v20 textRangeFromPosition:v19 toPosition:v6];
     if (v22)
     {
-      [v24 setSelectedTextRange:v22];
+      [_selectableText setSelectedTextRange:v22];
     }
   }
 
 LABEL_29:
 }
 
-- (void)_expandSelectionToStartOfWordsBeforeCaretSelection:(int)a3
+- (void)_expandSelectionToStartOfWordsBeforeCaretSelection:(int)selection
 {
-  v10 = [(UIResponder *)self _selectableText];
-  v4 = [v10 selectedTextRange];
-  v5 = v4;
-  if (a3 && v4)
+  _selectableText = [(UIResponder *)self _selectableText];
+  selectedTextRange = [_selectableText selectedTextRange];
+  v5 = selectedTextRange;
+  if (selection && selectedTextRange)
   {
-    v6 = [v4 start];
-    v7 = [v10 _positionAtStartOfWords:a3 beforePosition:v6];
+    start = [selectedTextRange start];
+    v7 = [_selectableText _positionAtStartOfWords:selection beforePosition:start];
 
     if (v7)
     {
       v8 = [v5 end];
-      v9 = [v10 textRangeFromPosition:v7 toPosition:v8];
-      [v10 setSelectedTextRange:v9];
+      v9 = [_selectableText textRangeFromPosition:v7 toPosition:v8];
+      [_selectableText setSelectedTextRange:v9];
     }
   }
 }
 
-- (id)_positionWithinRange:(id)a3 farthestInDirection:(int64_t)a4
+- (id)_positionWithinRange:(id)range farthestInDirection:(int64_t)direction
 {
-  v6 = a3;
-  v7 = [(UIResponder *)self _selectableText];
-  v8 = v7;
-  if (a4 == 1)
+  rangeCopy = range;
+  _selectableText = [(UIResponder *)self _selectableText];
+  v8 = _selectableText;
+  if (direction == 1)
   {
-    v9 = [v6 start];
+    start = [rangeCopy start];
     goto LABEL_7;
   }
 
-  if (!a4)
+  if (!direction)
   {
-    v9 = [v6 end];
+    start = [rangeCopy end];
 LABEL_7:
-    v10 = v9;
+    v10 = start;
     goto LABEL_8;
   }
 
-  if (v6)
+  if (rangeCopy)
   {
-    v9 = [v7 positionWithinRange:v6 farthestInDirection:a4];
+    start = [_selectableText positionWithinRange:rangeCopy farthestInDirection:direction];
     goto LABEL_7;
   }
 
@@ -3307,50 +3307,50 @@ LABEL_8:
   return v10;
 }
 
-- (int64_t)_opposingDirectionFromDirection:(int64_t)a3
+- (int64_t)_opposingDirectionFromDirection:(int64_t)direction
 {
-  result = a3;
-  if (a3 <= 5)
+  result = direction;
+  if (direction <= 5)
   {
-    return qword_18A680700[a3];
+    return qword_18A680700[direction];
   }
 
   return result;
 }
 
-- (id)_positionFromPosition:(id)a3 pastTextUnit:(int64_t)a4 inDirection:(int64_t)a5
+- (id)_positionFromPosition:(id)position pastTextUnit:(int64_t)unit inDirection:(int64_t)direction
 {
-  v8 = a3;
-  v9 = [(UIResponder *)self _selectableText];
-  if (v8)
+  positionCopy = position;
+  _selectableText = [(UIResponder *)self _selectableText];
+  if (positionCopy)
   {
     v10 = -3;
     while (!__CFADD__(v10++, 1))
     {
-      v12 = [v9 tokenizer];
-      v13 = [v12 positionFromPosition:v8 toBoundary:a4 inDirection:a5];
+      tokenizer = [_selectableText tokenizer];
+      v13 = [tokenizer positionFromPosition:positionCopy toBoundary:unit inDirection:direction];
 
       if (!v13)
       {
         v17 = 0;
-        v8 = 0;
+        positionCopy = 0;
         goto LABEL_12;
       }
 
-      v14 = [v9 tokenizer];
-      if ([v14 isPosition:v13 atBoundary:a4 inDirection:a5])
+      tokenizer2 = [_selectableText tokenizer];
+      if ([tokenizer2 isPosition:v13 atBoundary:unit inDirection:direction])
       {
 
 LABEL_11:
         v17 = v13;
-        v8 = v17;
+        positionCopy = v17;
         goto LABEL_12;
       }
 
-      v15 = [v9 tokenizer];
-      v16 = [v15 isPosition:v13 atBoundary:a4 inDirection:{-[UIResponder _opposingDirectionFromDirection:](self, "_opposingDirectionFromDirection:", a5)}];
+      tokenizer3 = [_selectableText tokenizer];
+      v16 = [tokenizer3 isPosition:v13 atBoundary:unit inDirection:{-[UIResponder _opposingDirectionFromDirection:](self, "_opposingDirectionFromDirection:", direction)}];
 
-      v8 = v13;
+      positionCopy = v13;
       if (v16)
       {
         goto LABEL_11;
@@ -3364,28 +3364,28 @@ LABEL_12:
   return v17;
 }
 
-- (id)_positionAtStartOfWords:(unint64_t)a3 beforePosition:(id)a4
+- (id)_positionAtStartOfWords:(unint64_t)words beforePosition:(id)position
 {
-  v6 = a4;
-  v7 = [(UIResponder *)self _selectableText];
-  v8 = v7;
-  if (!a3 || !v6)
+  positionCopy = position;
+  _selectableText = [(UIResponder *)self _selectableText];
+  v8 = _selectableText;
+  if (!words || !positionCopy)
   {
-    v6 = v6;
-    v10 = v6;
+    positionCopy = positionCopy;
+    v10 = positionCopy;
     goto LABEL_13;
   }
 
-  v9 = [v7 tokenizer];
-  v10 = [v9 rangeEnclosingPosition:v6 withGranularity:1 inDirection:1];
+  tokenizer = [_selectableText tokenizer];
+  v10 = [tokenizer rangeEnclosingPosition:positionCopy withGranularity:1 inDirection:1];
 
   if (v10)
   {
     goto LABEL_4;
   }
 
-  v18 = [v8 tokenizer];
-  v19 = [v18 positionFromPosition:v6 toBoundary:1 inDirection:1];
+  tokenizer2 = [v8 tokenizer];
+  v19 = [tokenizer2 positionFromPosition:positionCopy toBoundary:1 inDirection:1];
 
   if (!v19)
   {
@@ -3393,36 +3393,36 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v20 = [v8 tokenizer];
-  v10 = [v20 rangeEnclosingPosition:v19 withGranularity:1 inDirection:1];
+  tokenizer3 = [v8 tokenizer];
+  v10 = [tokenizer3 rangeEnclosingPosition:v19 withGranularity:1 inDirection:1];
 
   if (v10)
   {
 LABEL_4:
-    v11 = [v10 start];
+    start = [v10 start];
 
-    if (a3 >= 2)
+    if (words >= 2)
     {
-      v12 = a3 - 1;
+      v12 = words - 1;
       while (1)
       {
-        v13 = [v8 tokenizer];
-        v14 = [v13 positionFromPosition:v11 toBoundary:1 inDirection:1];
+        tokenizer4 = [v8 tokenizer];
+        v14 = [tokenizer4 positionFromPosition:start toBoundary:1 inDirection:1];
 
         if (!v14)
         {
           break;
         }
 
-        v15 = [v8 tokenizer];
-        v16 = [v15 positionFromPosition:v14 toBoundary:1 inDirection:1];
+        tokenizer5 = [v8 tokenizer];
+        v16 = [tokenizer5 positionFromPosition:v14 toBoundary:1 inDirection:1];
 
         if (!v16)
         {
           break;
         }
 
-        v11 = v16;
+        start = v16;
         if (!--v12)
         {
           goto LABEL_12;
@@ -3430,11 +3430,11 @@ LABEL_4:
       }
     }
 
-    v16 = v11;
+    v16 = start;
 LABEL_12:
-    v6 = v16;
+    positionCopy = v16;
 
-    v10 = v6;
+    v10 = positionCopy;
   }
 
 LABEL_13:
@@ -3444,191 +3444,191 @@ LABEL_13:
 
 - (void)_setCaretSelectionAtEndOfSelection
 {
-  v7 = [(UIResponder *)self _selectableText];
-  v2 = [v7 selectedTextRange];
-  v3 = v2;
-  if (v2)
+  _selectableText = [(UIResponder *)self _selectableText];
+  selectedTextRange = [_selectableText selectedTextRange];
+  v3 = selectedTextRange;
+  if (selectedTextRange)
   {
-    v4 = [v2 end];
+    v4 = [selectedTextRange end];
     v5 = [v3 end];
-    v6 = [v7 textRangeFromPosition:v4 toPosition:v5];
-    [v7 setSelectedTextRange:v6];
+    v6 = [_selectableText textRangeFromPosition:v4 toPosition:v5];
+    [_selectableText setSelectedTextRange:v6];
   }
 }
 
 - (void)_deleteByWord
 {
-  v10 = [(UIResponder *)self _selectableText];
-  v3 = [v10 selectedTextRange];
-  v4 = [v10 inputDelegate];
-  [v4 textWillChange:v10];
+  _selectableText = [(UIResponder *)self _selectableText];
+  selectedTextRange = [_selectableText selectedTextRange];
+  inputDelegate = [_selectableText inputDelegate];
+  [inputDelegate textWillChange:_selectableText];
 
-  if ([v3 isEmpty])
+  if ([selectedTextRange isEmpty])
   {
-    v5 = [v3 start];
-    v6 = [v10 _positionAtStartOfWords:1 beforePosition:v5];
+    start = [selectedTextRange start];
+    v6 = [_selectableText _positionAtStartOfWords:1 beforePosition:start];
 
     if (v6)
     {
-      v7 = [v3 end];
-      v8 = [v10 textRangeFromPosition:v6 toPosition:v7];
+      v7 = [selectedTextRange end];
+      v8 = [_selectableText textRangeFromPosition:v6 toPosition:v7];
 
-      v3 = v8;
+      selectedTextRange = v8;
     }
   }
 
-  [(UIResponder *)self _deleteTextRange:v3];
-  v9 = [v10 inputDelegate];
-  [v9 textDidChange:v10];
+  [(UIResponder *)self _deleteTextRange:selectedTextRange];
+  inputDelegate2 = [_selectableText inputDelegate];
+  [inputDelegate2 textDidChange:_selectableText];
 }
 
 - (void)_deleteForwardByWord
 {
-  v18 = [(UIResponder *)self _selectableText];
-  v3 = [v18 selectedTextRange];
-  v4 = [v18 inputDelegate];
-  [v4 textWillChange:v18];
+  _selectableText = [(UIResponder *)self _selectableText];
+  selectedTextRange = [_selectableText selectedTextRange];
+  inputDelegate = [_selectableText inputDelegate];
+  [inputDelegate textWillChange:_selectableText];
 
-  if ([v3 isEmpty])
+  if ([selectedTextRange isEmpty])
   {
-    v5 = [(UIResponder *)self _selectableText];
-    v6 = v5;
-    if (v3)
+    _selectableText2 = [(UIResponder *)self _selectableText];
+    v6 = _selectableText2;
+    if (selectedTextRange)
     {
-      v7 = [v5 tokenizer];
-      v8 = [v3 end];
-      v9 = [v7 rangeEnclosingPosition:v8 withGranularity:1 inDirection:0];
+      tokenizer = [_selectableText2 tokenizer];
+      v8 = [selectedTextRange end];
+      v9 = [tokenizer rangeEnclosingPosition:v8 withGranularity:1 inDirection:0];
 
-      if (v9 || ([v6 tokenizer], v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v3, "end"), v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v14, "positionFromPosition:toBoundary:inDirection:", v15, 1, 0), v16 = objc_claimAutoreleasedReturnValue(), v15, v14, v16) && (objc_msgSend(v6, "tokenizer"), v17 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v17, "rangeEnclosingPosition:withGranularity:inDirection:", v16, 1, 0), v9 = objc_claimAutoreleasedReturnValue(), v17, v16, v9))
+      if (v9 || ([v6 tokenizer], v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(selectedTextRange, "end"), v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v14, "positionFromPosition:toBoundary:inDirection:", v15, 1, 0), v16 = objc_claimAutoreleasedReturnValue(), v15, v14, v16) && (objc_msgSend(v6, "tokenizer"), v17 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v17, "rangeEnclosingPosition:withGranularity:inDirection:", v16, 1, 0), v9 = objc_claimAutoreleasedReturnValue(), v17, v16, v9))
       {
-        v10 = [v3 start];
+        start = [selectedTextRange start];
         v11 = [v9 end];
-        v12 = [v6 textRangeFromPosition:v10 toPosition:v11];
+        v12 = [v6 textRangeFromPosition:start toPosition:v11];
 
-        v3 = v12;
+        selectedTextRange = v12;
       }
     }
   }
 
-  [(UIResponder *)self _deleteTextRange:v3];
-  v13 = [v18 inputDelegate];
-  [v13 textDidChange:v18];
+  [(UIResponder *)self _deleteTextRange:selectedTextRange];
+  inputDelegate2 = [_selectableText inputDelegate];
+  [inputDelegate2 textDidChange:_selectableText];
 }
 
 - (void)_deleteToStartOfLine
 {
-  v13 = [(UIResponder *)self _selectableText];
-  v3 = [v13 selectedTextRange];
-  v4 = [v13 inputDelegate];
-  [v4 textWillChange:v13];
+  _selectableText = [(UIResponder *)self _selectableText];
+  selectedTextRange = [_selectableText selectedTextRange];
+  inputDelegate = [_selectableText inputDelegate];
+  [inputDelegate textWillChange:_selectableText];
 
-  if ([v3 isEmpty])
+  if ([selectedTextRange isEmpty])
   {
-    v5 = [v13 tokenizer];
-    v6 = [v3 start];
-    v7 = [v5 positionFromPosition:v6 toBoundary:4 inDirection:1];
+    tokenizer = [_selectableText tokenizer];
+    start = [selectedTextRange start];
+    v7 = [tokenizer positionFromPosition:start toBoundary:4 inDirection:1];
 
     if (v7)
     {
-      v8 = [v3 start];
-      v9 = [v13 comparePosition:v8 toPosition:v7];
+      start2 = [selectedTextRange start];
+      v9 = [_selectableText comparePosition:start2 toPosition:v7];
 
       if (v9 == 1)
       {
-        v10 = [v3 start];
-        v11 = [v13 textRangeFromPosition:v7 toPosition:v10];
+        start3 = [selectedTextRange start];
+        v11 = [_selectableText textRangeFromPosition:v7 toPosition:start3];
 
-        v3 = v11;
+        selectedTextRange = v11;
       }
     }
   }
 
-  [(UIResponder *)self _deleteTextRange:v3];
-  v12 = [v13 inputDelegate];
-  [v12 textDidChange:v13];
+  [(UIResponder *)self _deleteTextRange:selectedTextRange];
+  inputDelegate2 = [_selectableText inputDelegate];
+  [inputDelegate2 textDidChange:_selectableText];
 }
 
 - (void)_deleteToEndOfLine
 {
-  v13 = [(UIResponder *)self _selectableText];
-  v3 = [v13 selectedTextRange];
-  v4 = [v13 inputDelegate];
-  [v4 textWillChange:v13];
+  _selectableText = [(UIResponder *)self _selectableText];
+  selectedTextRange = [_selectableText selectedTextRange];
+  inputDelegate = [_selectableText inputDelegate];
+  [inputDelegate textWillChange:_selectableText];
 
-  if ([v3 isEmpty])
+  if ([selectedTextRange isEmpty])
   {
-    v5 = [v13 tokenizer];
-    v6 = [v3 end];
-    v7 = [v5 positionFromPosition:v6 toBoundary:4 inDirection:0];
+    tokenizer = [_selectableText tokenizer];
+    v6 = [selectedTextRange end];
+    v7 = [tokenizer positionFromPosition:v6 toBoundary:4 inDirection:0];
 
     if (v7)
     {
-      v8 = [v3 end];
-      v9 = [v13 comparePosition:v7 toPosition:v8];
+      v8 = [selectedTextRange end];
+      v9 = [_selectableText comparePosition:v7 toPosition:v8];
 
       if (v9 == 1)
       {
-        v10 = [v3 end];
-        v11 = [v13 textRangeFromPosition:v10 toPosition:v7];
+        v10 = [selectedTextRange end];
+        v11 = [_selectableText textRangeFromPosition:v10 toPosition:v7];
 
-        v3 = v11;
+        selectedTextRange = v11;
       }
     }
   }
 
-  [(UIResponder *)self _deleteTextRange:v3];
-  v12 = [v13 inputDelegate];
-  [v12 textDidChange:v13];
+  [(UIResponder *)self _deleteTextRange:selectedTextRange];
+  inputDelegate2 = [_selectableText inputDelegate];
+  [inputDelegate2 textDidChange:_selectableText];
 }
 
 - (void)_deleteToEndOfParagraph
 {
-  v13 = [(UIResponder *)self _selectableText];
-  v3 = [v13 selectedTextRange];
-  v4 = [v13 inputDelegate];
-  [v4 textWillChange:v13];
+  _selectableText = [(UIResponder *)self _selectableText];
+  selectedTextRange = [_selectableText selectedTextRange];
+  inputDelegate = [_selectableText inputDelegate];
+  [inputDelegate textWillChange:_selectableText];
 
-  if ([v3 isEmpty])
+  if ([selectedTextRange isEmpty])
   {
-    v5 = [v13 tokenizer];
-    v6 = [v3 end];
-    v7 = [v5 positionFromPosition:v6 toBoundary:3 inDirection:0];
+    tokenizer = [_selectableText tokenizer];
+    v6 = [selectedTextRange end];
+    v7 = [tokenizer positionFromPosition:v6 toBoundary:3 inDirection:0];
 
     if (v7)
     {
-      v8 = [v3 end];
-      v9 = [v13 comparePosition:v7 toPosition:v8];
+      v8 = [selectedTextRange end];
+      v9 = [_selectableText comparePosition:v7 toPosition:v8];
 
       if (v9 == 1)
       {
-        v10 = [v3 end];
-        v11 = [v13 textRangeFromPosition:v10 toPosition:v7];
+        v10 = [selectedTextRange end];
+        v11 = [_selectableText textRangeFromPosition:v10 toPosition:v7];
 
-        v3 = v11;
+        selectedTextRange = v11;
       }
     }
   }
 
-  [(UIResponder *)self _deleteTextRange:v3];
-  v12 = [v13 inputDelegate];
-  [v12 textDidChange:v13];
+  [(UIResponder *)self _deleteTextRange:selectedTextRange];
+  inputDelegate2 = [_selectableText inputDelegate];
+  [inputDelegate2 textDidChange:_selectableText];
 }
 
-- (void)_deleteTextRange:(id)a3
+- (void)_deleteTextRange:(id)range
 {
-  v4 = a3;
-  v9 = [(UIResponder *)self _selectableText];
-  v5 = [v9 selectedTextRange];
-  [v9 setSelectedTextRange:v4];
+  rangeCopy = range;
+  _selectableText = [(UIResponder *)self _selectableText];
+  selectedTextRange = [_selectableText selectedTextRange];
+  [_selectableText setSelectedTextRange:rangeCopy];
 
-  v6 = [v9 selectedTextRange];
-  v7 = [v6 isEmpty];
+  selectedTextRange2 = [_selectableText selectedTextRange];
+  isEmpty = [selectedTextRange2 isEmpty];
 
-  if ((v7 & 1) == 0)
+  if ((isEmpty & 1) == 0)
   {
     if (objc_opt_respondsToSelector())
     {
-      v8 = v9;
+      v8 = _selectableText;
       if ([v8 keyboardInputShouldDelete:v8])
       {
         [v8 deleteBackward];
@@ -3636,150 +3636,150 @@ LABEL_13:
 
       else
       {
-        [v8 setSelectedTextRange:v5];
+        [v8 setSelectedTextRange:selectedTextRange];
       }
     }
 
     else
     {
-      [v9 deleteBackward];
+      [_selectableText deleteBackward];
     }
   }
 }
 
-- (void)_deleteBackwardAndNotify:(BOOL)a3
+- (void)_deleteBackwardAndNotify:(BOOL)notify
 {
-  v3 = [(UIResponder *)self _keyInput];
-  [v3 deleteBackward];
+  _keyInput = [(UIResponder *)self _keyInput];
+  [_keyInput deleteBackward];
 }
 
-- (void)_deleteForwardAndNotify:(BOOL)a3
+- (void)_deleteForwardAndNotify:(BOOL)notify
 {
-  v14 = [(UIResponder *)self _selectableText];
-  v4 = [v14 selectedTextRange];
-  v5 = [v14 inputDelegate];
-  [v5 textWillChange:v14];
+  _selectableText = [(UIResponder *)self _selectableText];
+  selectedTextRange = [_selectableText selectedTextRange];
+  inputDelegate = [_selectableText inputDelegate];
+  [inputDelegate textWillChange:_selectableText];
 
-  if ([v4 isEmpty])
+  if ([selectedTextRange isEmpty])
   {
-    v6 = [v14 tokenizer];
-    v7 = [v4 end];
-    v8 = [v6 positionFromPosition:v7 toBoundary:0 inDirection:0];
+    tokenizer = [_selectableText tokenizer];
+    v7 = [selectedTextRange end];
+    v8 = [tokenizer positionFromPosition:v7 toBoundary:0 inDirection:0];
 
     if (v8)
     {
-      v9 = [v4 end];
-      v10 = [v14 comparePosition:v8 toPosition:v9];
+      v9 = [selectedTextRange end];
+      v10 = [_selectableText comparePosition:v8 toPosition:v9];
 
       if (v10 == 1)
       {
-        v11 = [v4 end];
-        v12 = [v14 textRangeFromPosition:v11 toPosition:v8];
+        v11 = [selectedTextRange end];
+        v12 = [_selectableText textRangeFromPosition:v11 toPosition:v8];
 
-        v4 = v12;
+        selectedTextRange = v12;
       }
     }
   }
 
-  [(UIResponder *)self _deleteTextRange:v4];
-  v13 = [v14 inputDelegate];
-  [v13 textDidChange:v14];
+  [(UIResponder *)self _deleteTextRange:selectedTextRange];
+  inputDelegate2 = [_selectableText inputDelegate];
+  [inputDelegate2 textDidChange:_selectableText];
 }
 
 - (void)_transpose
 {
-  v19 = [(UIResponder *)self _selectableText];
-  v2 = [v19 selectedTextRange];
-  if ([v2 isEmpty])
+  _selectableText = [(UIResponder *)self _selectableText];
+  selectedTextRange = [_selectableText selectedTextRange];
+  if ([selectedTextRange isEmpty])
   {
-    v3 = [v19 inputDelegate];
-    [v3 textWillChange:v19];
+    inputDelegate = [_selectableText inputDelegate];
+    [inputDelegate textWillChange:_selectableText];
 
-    v4 = [v19 tokenizer];
-    v5 = [v2 start];
-    v6 = [v4 positionFromPosition:v5 toBoundary:0 inDirection:1];
+    tokenizer = [_selectableText tokenizer];
+    start = [selectedTextRange start];
+    v6 = [tokenizer positionFromPosition:start toBoundary:0 inDirection:1];
 
-    v7 = [v19 tokenizer];
-    v8 = [v2 end];
-    v9 = [v7 positionFromPosition:v8 toBoundary:0 inDirection:0];
+    tokenizer2 = [_selectableText tokenizer];
+    v8 = [selectedTextRange end];
+    v9 = [tokenizer2 positionFromPosition:v8 toBoundary:0 inDirection:0];
 
     if (v6 && v9)
     {
-      v10 = [v2 start];
-      v11 = [v19 textRangeFromPosition:v6 toPosition:v10];
+      start2 = [selectedTextRange start];
+      v11 = [_selectableText textRangeFromPosition:v6 toPosition:start2];
 
-      v12 = [v2 end];
-      v13 = [v19 textRangeFromPosition:v12 toPosition:v9];
+      v12 = [selectedTextRange end];
+      v13 = [_selectableText textRangeFromPosition:v12 toPosition:v9];
 
       if (v11 && v13)
       {
-        v14 = [v19 textInRange:v11];
-        v15 = [v19 textInRange:v13];
+        v14 = [_selectableText textInRange:v11];
+        v15 = [_selectableText textInRange:v13];
         v16 = [v15 stringByAppendingString:v14];
-        v17 = [v19 textRangeFromPosition:v6 toPosition:v9];
+        v17 = [_selectableText textRangeFromPosition:v6 toPosition:v9];
         if (v17)
         {
-          [v19 replaceRange:v17 withText:v16];
+          [_selectableText replaceRange:v17 withText:v16];
         }
       }
     }
 
-    v18 = [v19 inputDelegate];
-    [v18 textDidChange:v19];
+    inputDelegate2 = [_selectableText inputDelegate];
+    [inputDelegate2 textDidChange:_selectableText];
   }
 }
 
-- (void)_replaceCurrentWordWithText:(id)a3
+- (void)_replaceCurrentWordWithText:(id)text
 {
-  v8 = a3;
-  v4 = [(UIResponder *)self _selectableText];
-  v5 = [v4 selectedTextRange];
-  v6 = [v5 start];
-  v7 = [(UIResponder *)self _rangeOfEnclosingWord:v6];
+  textCopy = text;
+  _selectableText = [(UIResponder *)self _selectableText];
+  selectedTextRange = [_selectableText selectedTextRange];
+  start = [selectedTextRange start];
+  v7 = [(UIResponder *)self _rangeOfEnclosingWord:start];
 
   if (v7)
   {
-    [v4 replaceRange:v7 withText:v8];
+    [_selectableText replaceRange:v7 withText:textCopy];
   }
 }
 
-- (void)_replaceDocumentWithText:(id)a3
+- (void)_replaceDocumentWithText:(id)text
 {
-  v7 = a3;
-  v4 = [(UIResponder *)self _selectableText];
-  v5 = [(UIResponder *)self _fullRange];
-  v6 = v5;
-  if (v5)
+  textCopy = text;
+  _selectableText = [(UIResponder *)self _selectableText];
+  _fullRange = [(UIResponder *)self _fullRange];
+  v6 = _fullRange;
+  if (_fullRange)
   {
-    if (([v5 isEmpty] & 1) == 0)
+    if (([_fullRange isEmpty] & 1) == 0)
     {
-      [v4 replaceRange:v6 withText:&stru_1EFB14550];
+      [_selectableText replaceRange:v6 withText:&stru_1EFB14550];
     }
 
-    [v4 insertText:v7];
+    [_selectableText insertText:textCopy];
   }
 }
 
-- (void)_scrollRectToVisible:(CGRect)a3 animated:(BOOL)a4
+- (void)_scrollRectToVisible:(CGRect)visible animated:(BOOL)animated
 {
-  v4 = a4;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v11 = [(UIResponder *)self _selectableText];
-  v9 = [v11 textInputView];
+  animatedCopy = animated;
+  height = visible.size.height;
+  width = visible.size.width;
+  y = visible.origin.y;
+  x = visible.origin.x;
+  _selectableText = [(UIResponder *)self _selectableText];
+  textInputView = [_selectableText textInputView];
   if (objc_opt_respondsToSelector())
   {
-    v10 = [v9 performSelector:sel__enclosingScrollerIncludingSelf];
-    [v10 convertRect:v9 fromView:{x, y, width, height}];
-    [v10 scrollRectToVisible:v4 animated:?];
+    v10 = [textInputView performSelector:sel__enclosingScrollerIncludingSelf];
+    [v10 convertRect:textInputView fromView:{x, y, width, height}];
+    [v10 scrollRectToVisible:animatedCopy animated:?];
   }
 }
 
-- (id)_normalizedStringForRangeComparison:(id)a3
+- (id)_normalizedStringForRangeComparison:(id)comparison
 {
-  v3 = [a3 _stringByReplacingCharacter:160 withCharacter:32];
+  v3 = [comparison _stringByReplacingCharacter:160 withCharacter:32];
   v4 = [v3 _stringByReplacingCharacter:8217 withCharacter:39];
 
   v5 = [v4 _stringByReplacingCharacter:8216 withCharacter:39];
@@ -3787,21 +3787,21 @@ LABEL_13:
   return v5;
 }
 
-- (id)_rangeOfText:(id)a3 endingAtPosition:(id)a4
+- (id)_rangeOfText:(id)text endingAtPosition:(id)position
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(UIResponder *)self _selectableText];
-  if (![v6 length])
+  textCopy = text;
+  positionCopy = position;
+  _selectableText = [(UIResponder *)self _selectableText];
+  if (![textCopy length])
   {
-    v11 = [v8 textRangeFromPosition:v7 toPosition:v7];
+    v11 = [_selectableText textRangeFromPosition:positionCopy toPosition:positionCopy];
     goto LABEL_30;
   }
 
-  v9 = [v8 _rangeOfEnclosingWord:v7];
+  v9 = [_selectableText _rangeOfEnclosingWord:positionCopy];
   if (v9)
   {
-    v10 = [v8 textInRange:v9];
+    v10 = [_selectableText textInRange:v9];
   }
 
   else
@@ -3809,28 +3809,28 @@ LABEL_13:
     v10 = 0;
   }
 
-  if (![v10 isEqualToString:v6])
+  if (![v10 isEqualToString:textCopy])
   {
-    v13 = [v8 positionFromPosition:v7 offset:{-objc_msgSend(v6, "length")}];
-    if (!v13)
+    beginningOfDocument = [_selectableText positionFromPosition:positionCopy offset:{-objc_msgSend(textCopy, "length")}];
+    if (!beginningOfDocument)
     {
-      v13 = [v8 beginningOfDocument];
+      beginningOfDocument = [_selectableText beginningOfDocument];
     }
 
-    v14 = [v8 textRangeFromPosition:v13 toPosition:v7];
+    v14 = [_selectableText textRangeFromPosition:beginningOfDocument toPosition:positionCopy];
 
     if (v14)
     {
-      v15 = [v8 textInRange:v14];
+      v15 = [_selectableText textInRange:v14];
 
       v16 = [v15 length];
-      if (v16 <= [v6 length])
+      if (v16 <= [textCopy length])
       {
         v12 = v14;
         v10 = v15;
 LABEL_25:
         v21 = [(UIResponder *)self _normalizedStringForRangeComparison:v10];
-        v22 = [(UIResponder *)self _normalizedStringForRangeComparison:v6];
+        v22 = [(UIResponder *)self _normalizedStringForRangeComparison:textCopy];
         if ([v21 isEqualToString:v22])
         {
           v11 = v12;
@@ -3847,31 +3847,31 @@ LABEL_25:
       v17 = 0;
       while (1)
       {
-        v18 = v13;
-        v13 = [v8 positionFromPosition:v13 offset:1];
+        v18 = beginningOfDocument;
+        beginningOfDocument = [_selectableText positionFromPosition:beginningOfDocument offset:1];
 
-        if (!v13)
+        if (!beginningOfDocument)
         {
           break;
         }
 
-        if ([v8 comparePosition:v13 toPosition:v7] != -1)
+        if ([_selectableText comparePosition:beginningOfDocument toPosition:positionCopy] != -1)
         {
 
           break;
         }
 
-        v12 = [v8 textRangeFromPosition:v13 toPosition:v7];
+        v12 = [_selectableText textRangeFromPosition:beginningOfDocument toPosition:positionCopy];
 
         if (!v12)
         {
           goto LABEL_24;
         }
 
-        v10 = [v8 textInRange:v12];
+        v10 = [_selectableText textInRange:v12];
 
         v19 = [v10 length];
-        if (v19 > [v6 length])
+        if (v19 > [textCopy length])
         {
           v14 = v12;
           v15 = v10;
@@ -3884,7 +3884,7 @@ LABEL_25:
         goto LABEL_25;
       }
 
-      v13 = 0;
+      beginningOfDocument = 0;
     }
 
     else
@@ -3908,19 +3908,19 @@ LABEL_30:
   return v11;
 }
 
-- (id)_rangeOfTextUnit:(int64_t)a3 enclosingPosition:(id)a4
+- (id)_rangeOfTextUnit:(int64_t)unit enclosingPosition:(id)position
 {
-  v6 = a4;
-  if (v6)
+  positionCopy = position;
+  if (positionCopy)
   {
-    v7 = [(UIResponder *)self _selectableText];
-    v8 = [v7 tokenizer];
-    v9 = [v8 rangeEnclosingPosition:v6 withGranularity:a3 inDirection:0];
+    _selectableText = [(UIResponder *)self _selectableText];
+    tokenizer = [_selectableText tokenizer];
+    v9 = [tokenizer rangeEnclosingPosition:positionCopy withGranularity:unit inDirection:0];
 
     if (!v9)
     {
-      v10 = [v7 tokenizer];
-      v9 = [v10 rangeEnclosingPosition:v6 withGranularity:a3 inDirection:1];
+      tokenizer2 = [_selectableText tokenizer];
+      v9 = [tokenizer2 rangeEnclosingPosition:positionCopy withGranularity:unit inDirection:1];
     }
   }
 
@@ -3934,36 +3934,36 @@ LABEL_30:
 
 - (id)_fullRange
 {
-  v2 = [(UIResponder *)self _selectableText];
-  v3 = [v2 beginningOfDocument];
-  v4 = [v2 endOfDocument];
-  v5 = [v2 textRangeFromPosition:v3 toPosition:v4];
+  _selectableText = [(UIResponder *)self _selectableText];
+  beginningOfDocument = [_selectableText beginningOfDocument];
+  endOfDocument = [_selectableText endOfDocument];
+  v5 = [_selectableText textRangeFromPosition:beginningOfDocument toPosition:endOfDocument];
 
   return v5;
 }
 
-- (id)_rangeSpanningTextUnit:(int64_t)a3 andPosition:(id)a4
+- (id)_rangeSpanningTextUnit:(int64_t)unit andPosition:(id)position
 {
-  v6 = a4;
-  if (!v6)
+  positionCopy = position;
+  if (!positionCopy)
   {
     v8 = 0;
     goto LABEL_17;
   }
 
-  v7 = [(UIResponder *)self _selectableText];
-  v8 = [(UIResponder *)self _rangeOfTextUnit:a3 enclosingPosition:v6];
+  _selectableText = [(UIResponder *)self _selectableText];
+  v8 = [(UIResponder *)self _rangeOfTextUnit:unit enclosingPosition:positionCopy];
   if (!v8)
   {
-    v9 = [v7 tokenizer];
+    tokenizer = [_selectableText tokenizer];
     v10 = 1;
-    v11 = [v9 positionFromPosition:v6 toBoundary:a3 inDirection:1];
+    v11 = [tokenizer positionFromPosition:positionCopy toBoundary:unit inDirection:1];
 
     v12 = v11;
     if (!v11)
     {
-      v13 = [v7 tokenizer];
-      v12 = [v13 positionFromPosition:v6 toBoundary:a3 inDirection:0];
+      tokenizer2 = [_selectableText tokenizer];
+      v12 = [tokenizer2 positionFromPosition:positionCopy toBoundary:unit inDirection:0];
 
       if (!v12)
       {
@@ -3974,17 +3974,17 @@ LABEL_30:
       v10 = 0;
     }
 
-    v14 = [v7 tokenizer];
-    v15 = [v14 rangeEnclosingPosition:v12 withGranularity:a3 inDirection:v10];
+    tokenizer3 = [_selectableText tokenizer];
+    v15 = [tokenizer3 rangeEnclosingPosition:v12 withGranularity:unit inDirection:v10];
 
     if (v11)
     {
-      v16 = [v15 start];
-      if (v16)
+      start = [v15 start];
+      if (start)
       {
-        v17 = v7;
-        v18 = v16;
-        v19 = v6;
+        v17 = _selectableText;
+        v18 = start;
+        v19 = positionCopy;
 LABEL_13:
         v8 = [v17 textRangeFromPosition:v18 toPosition:v19];
 LABEL_15:
@@ -3996,12 +3996,12 @@ LABEL_15:
     }
 
 LABEL_11:
-    v16 = [v15 end];
-    if (v16)
+    start = [v15 end];
+    if (start)
     {
-      v17 = v7;
-      v18 = v6;
-      v19 = v16;
+      v17 = _selectableText;
+      v18 = positionCopy;
+      v19 = start;
       goto LABEL_13;
     }
 
@@ -4017,12 +4017,12 @@ LABEL_17:
   return v8;
 }
 
-- (BOOL)_range:(id)a3 containsRange:(id)a4
+- (BOOL)_range:(id)_range containsRange:(id)range
 {
-  v6 = a4;
-  v7 = [(UIResponder *)self _nsrangeForTextRange:a3];
+  rangeCopy = range;
+  v7 = [(UIResponder *)self _nsrangeForTextRange:_range];
   v9 = v8;
-  v10 = [(UIResponder *)self _nsrangeForTextRange:v6];
+  v10 = [(UIResponder *)self _nsrangeForTextRange:rangeCopy];
   v12 = v11;
 
   if (!v12)
@@ -4038,12 +4038,12 @@ LABEL_17:
   return v10 == v13.location && v12 == v13.length;
 }
 
-- (BOOL)_range:(id)a3 intersectsRange:(id)a4
+- (BOOL)_range:(id)_range intersectsRange:(id)range
 {
-  v6 = a4;
-  v7 = [(UIResponder *)self _nsrangeForTextRange:a3];
+  rangeCopy = range;
+  v7 = [(UIResponder *)self _nsrangeForTextRange:_range];
   v9 = v8;
-  v10 = [(UIResponder *)self _nsrangeForTextRange:v6];
+  v10 = [(UIResponder *)self _nsrangeForTextRange:rangeCopy];
   v12 = v11;
 
   v14.location = v7;
@@ -4053,50 +4053,50 @@ LABEL_17:
   return NSIntersectionRange(v14, v15).length != 0;
 }
 
-- (id)_intersectionOfRange:(id)a3 andRange:(id)a4
+- (id)_intersectionOfRange:(id)range andRange:(id)andRange
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = [v6 start];
-  v10 = [v7 start];
-  if ([(UIResponder *)v8 comparePosition:v9 toPosition:v10]== 1)
+  rangeCopy = range;
+  andRangeCopy = andRange;
+  selfCopy = self;
+  start = [rangeCopy start];
+  start2 = [andRangeCopy start];
+  if ([(UIResponder *)selfCopy comparePosition:start toPosition:start2]== 1)
   {
-    v11 = v6;
+    v11 = rangeCopy;
   }
 
   else
   {
-    v11 = v7;
+    v11 = andRangeCopy;
   }
 
-  v12 = [v11 start];
+  start3 = [v11 start];
 
-  v13 = [v6 end];
-  v14 = [v7 end];
-  if ([(UIResponder *)v8 comparePosition:v13 toPosition:v14]== -1)
+  v13 = [rangeCopy end];
+  v14 = [andRangeCopy end];
+  if ([(UIResponder *)selfCopy comparePosition:v13 toPosition:v14]== -1)
   {
-    v15 = v6;
+    v15 = rangeCopy;
   }
 
   else
   {
-    v15 = v7;
+    v15 = andRangeCopy;
   }
 
   v16 = [v15 end];
 
-  v17 = [(UIResponder *)v8 textRangeFromPosition:v12 toPosition:v16];
+  v17 = [(UIResponder *)selfCopy textRangeFromPosition:start3 toPosition:v16];
 
   return v17;
 }
 
-- (BOOL)_range:(id)a3 isEqualToRange:(id)a4
+- (BOOL)_range:(id)_range isEqualToRange:(id)range
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6 == v7)
+  _rangeCopy = _range;
+  rangeCopy = range;
+  v8 = rangeCopy;
+  if (_rangeCopy == rangeCopy)
   {
     v9 = 1;
   }
@@ -4104,16 +4104,16 @@ LABEL_17:
   else
   {
     v9 = 0;
-    if (v6 && v7)
+    if (_rangeCopy && rangeCopy)
     {
-      v10 = self;
-      v11 = [v6 start];
-      v12 = [v8 start];
-      v13 = [(UIResponder *)v10 comparePosition:v11 toPosition:v12];
+      selfCopy = self;
+      start = [_rangeCopy start];
+      start2 = [v8 start];
+      v13 = [(UIResponder *)selfCopy comparePosition:start toPosition:start2];
 
-      v14 = [v6 end];
+      v14 = [_rangeCopy end];
       v15 = [v8 end];
-      v16 = v13 | [(UIResponder *)v10 comparePosition:v14 toPosition:v15];
+      v16 = v13 | [(UIResponder *)selfCopy comparePosition:v14 toPosition:v15];
 
       v9 = v16 == 0;
     }
@@ -4122,23 +4122,23 @@ LABEL_17:
   return v9;
 }
 
-- (id)_findBoundaryPositionClosestToPosition:(id)a3 withGranularity:(int64_t)a4
+- (id)_findBoundaryPositionClosestToPosition:(id)position withGranularity:(int64_t)granularity
 {
-  v6 = a3;
-  v7 = v6;
-  if (a4 == 5)
+  positionCopy = position;
+  v7 = positionCopy;
+  if (granularity == 5)
   {
-    v8 = [(UIResponder *)self _findDocumentBoundaryFromPosition:v6];
+    v8 = [(UIResponder *)self _findDocumentBoundaryFromPosition:positionCopy];
   }
 
-  else if (a4 == 1)
+  else if (granularity == 1)
   {
-    v8 = [(UIResponder *)self _findPleasingWordBoundaryFromPosition:v6];
+    v8 = [(UIResponder *)self _findPleasingWordBoundaryFromPosition:positionCopy];
   }
 
   else
   {
-    v8 = v6;
+    v8 = positionCopy;
   }
 
   v9 = v8;
@@ -4146,25 +4146,25 @@ LABEL_17:
   return v9;
 }
 
-- (id)_findPleasingWordBoundaryFromPosition:(id)a3
+- (id)_findPleasingWordBoundaryFromPosition:(id)position
 {
-  v4 = a3;
-  v5 = [(UIResponder *)self _selectableText];
-  v6 = [v5 tokenizer];
-  if ([v6 isPosition:v4 atBoundary:4 inDirection:0])
+  positionCopy = position;
+  _selectableText = [(UIResponder *)self _selectableText];
+  tokenizer = [_selectableText tokenizer];
+  if ([tokenizer isPosition:positionCopy atBoundary:4 inDirection:0])
   {
     goto LABEL_2;
   }
 
-  v9 = [v6 isPosition:v4 withinTextUnit:1 inDirection:0];
-  v10 = [v5 tokenizer];
-  v11 = v10;
+  v9 = [tokenizer isPosition:positionCopy withinTextUnit:1 inDirection:0];
+  tokenizer2 = [_selectableText tokenizer];
+  v11 = tokenizer2;
   if (v9)
   {
-    v12 = [v10 rangeEnclosingPosition:v4 withGranularity:1 inDirection:0];
+    v12 = [tokenizer2 rangeEnclosingPosition:positionCopy withGranularity:1 inDirection:0];
 
-    v13 = [v12 start];
-    v14 = [v5 offsetFromPosition:v13 toPosition:v4];
+    start = [v12 start];
+    v14 = [_selectableText offsetFromPosition:start toPosition:positionCopy];
 
     if (v14 > 1)
     {
@@ -4180,23 +4180,23 @@ LABEL_17:
     goto LABEL_12;
   }
 
-  v15 = [v10 isPosition:v4 atBoundary:1 inDirection:1];
+  v15 = [tokenizer2 isPosition:positionCopy atBoundary:1 inDirection:1];
 
   if (v15)
   {
 LABEL_2:
-    v7 = v4;
+    endOfDocument = positionCopy;
 LABEL_3:
-    v8 = v7;
+    v8 = endOfDocument;
     goto LABEL_12;
   }
 
-  v16 = [v5 tokenizer];
-  v8 = [v16 positionFromPosition:v4 toBoundary:1 inDirection:0];
+  tokenizer3 = [_selectableText tokenizer];
+  v8 = [tokenizer3 positionFromPosition:positionCopy toBoundary:1 inDirection:0];
 
   if (!v8)
   {
-    v7 = [v5 endOfDocument];
+    endOfDocument = [_selectableText endOfDocument];
     goto LABEL_3;
   }
 
@@ -4205,23 +4205,23 @@ LABEL_12:
   return v8;
 }
 
-- (id)_findDocumentBoundaryFromPosition:(id)a3
+- (id)_findDocumentBoundaryFromPosition:(id)position
 {
-  v4 = a3;
-  v5 = [(UIResponder *)self _selectableText];
-  v6 = [v5 beginningOfDocument];
-  v7 = [v5 endOfDocument];
-  v8 = [v5 offsetFromPosition:v6 toPosition:v4];
-  v9 = [v5 offsetFromPosition:v4 toPosition:v7];
+  positionCopy = position;
+  _selectableText = [(UIResponder *)self _selectableText];
+  beginningOfDocument = [_selectableText beginningOfDocument];
+  endOfDocument = [_selectableText endOfDocument];
+  v8 = [_selectableText offsetFromPosition:beginningOfDocument toPosition:positionCopy];
+  v9 = [_selectableText offsetFromPosition:positionCopy toPosition:endOfDocument];
 
   if (v8 <= v9)
   {
-    v10 = v6;
+    v10 = beginningOfDocument;
   }
 
   else
   {
-    v10 = v7;
+    v10 = endOfDocument;
   }
 
   v11 = v10;
@@ -4230,29 +4230,29 @@ LABEL_12:
   return v11;
 }
 
-- (id)_underlineRectsByDocumentLineForSelectionRange:(id)a3
+- (id)_underlineRectsByDocumentLineForSelectionRange:(id)range
 {
-  v4 = a3;
-  v5 = [(UIResponder *)self _selectableText];
-  v6 = [v5 tokenizer];
-  v7 = [v4 start];
-  v8 = [v6 rangeEnclosingPosition:v7 withGranularity:4 inDirection:0];
+  rangeCopy = range;
+  _selectableText = [(UIResponder *)self _selectableText];
+  tokenizer = [_selectableText tokenizer];
+  start = [rangeCopy start];
+  v8 = [tokenizer rangeEnclosingPosition:start withGranularity:4 inDirection:0];
 
-  v9 = [v4 end];
-  v10 = [v6 rangeEnclosingPosition:v9 withGranularity:4 inDirection:0];
+  v9 = [rangeCopy end];
+  v10 = [tokenizer rangeEnclosingPosition:v9 withGranularity:4 inDirection:0];
 
   if (!v8 || !v10 || ([v8 isEmpty] & 1) != 0 || (objc_msgSend(v10, "isEmpty") & 1) != 0 || (objc_msgSend(v8, "isEqual:", v10) & 1) != 0)
   {
     goto LABEL_9;
   }
 
-  v11 = [v8 start];
-  v12 = [v10 start];
-  if ([v11 isEqual:v12])
+  start2 = [v8 start];
+  start3 = [v10 start];
+  if ([start2 isEqual:start3])
   {
 
 LABEL_9:
-    v15 = [v5 selectionRectsForRange:v4];
+    v15 = [_selectableText selectionRectsForRange:rangeCopy];
     goto LABEL_10;
   }
 
@@ -4266,21 +4266,21 @@ LABEL_9:
   }
 
   v15 = objc_opt_new();
-  v17 = [v4 start];
+  start4 = [rangeCopy start];
   v18 = [v8 end];
-  v19 = [v5 textRangeFromPosition:v17 toPosition:v18];
+  v19 = [_selectableText textRangeFromPosition:start4 toPosition:v18];
 
   v29 = v19;
-  [(UIResponder *)self _updateSelectedRects:v15 byTrimmingWhitespaceInRange:v19 inDocument:v5];
+  [(UIResponder *)self _updateSelectedRects:v15 byTrimmingWhitespaceInRange:v19 inDocument:_selectableText];
   v20 = [v8 end];
-  v21 = [v6 rangeEnclosingPosition:v20 withGranularity:4 inDirection:0];
+  v21 = [tokenizer rangeEnclosingPosition:v20 withGranularity:4 inDirection:0];
 
   if (v21)
   {
     while (([v21 isEqual:v10] & 1) == 0)
     {
       v22 = [v21 end];
-      v23 = [v6 rangeEnclosingPosition:v22 withGranularity:4 inDirection:0];
+      v23 = [tokenizer rangeEnclosingPosition:v22 withGranularity:4 inDirection:0];
 
       if ([v23 isEqual:v21])
       {
@@ -4288,7 +4288,7 @@ LABEL_9:
         break;
       }
 
-      v24 = [v5 selectionRectsForRange:v21];
+      v24 = [_selectableText selectionRectsForRange:v21];
       [v15 addObjectsFromArray:v24];
 
       v21 = v23;
@@ -4299,13 +4299,13 @@ LABEL_9:
     }
   }
 
-  v25 = [v10 start];
-  v26 = [v4 end];
-  v27 = [v5 textRangeFromPosition:v25 toPosition:v26];
+  start5 = [v10 start];
+  v26 = [rangeCopy end];
+  v27 = [_selectableText textRangeFromPosition:start5 toPosition:v26];
 
   if (v27)
   {
-    [(UIResponder *)self _updateSelectedRects:v15 byTrimmingWhitespaceInRange:v27 inDocument:v5];
+    [(UIResponder *)self _updateSelectedRects:v15 byTrimmingWhitespaceInRange:v27 inDocument:_selectableText];
   }
 
 LABEL_10:
@@ -4313,141 +4313,141 @@ LABEL_10:
   return v15;
 }
 
-- (void)_updateSelectedRects:(id)a3 byTrimmingWhitespaceInRange:(id)a4 inDocument:(id)a5
+- (void)_updateSelectedRects:(id)rects byTrimmingWhitespaceInRange:(id)range inDocument:(id)document
 {
-  v18 = a3;
-  v7 = a4;
-  v8 = a5;
-  v9 = v8;
-  if (v7)
+  rectsCopy = rects;
+  rangeCopy = range;
+  documentCopy = document;
+  v9 = documentCopy;
+  if (rangeCopy)
   {
-    v10 = [v8 textInRange:v7];
-    v11 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-    v12 = [v10 stringByTrimmingCharactersInSet:v11];
+    v10 = [documentCopy textInRange:rangeCopy];
+    whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+    v12 = [v10 stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
     if ([v12 length])
     {
-      v13 = [v7 start];
-      v14 = [v9 positionFromPosition:v13 offset:{objc_msgSend(v12, "length")}];
+      start = [rangeCopy start];
+      v14 = [v9 positionFromPosition:start offset:{objc_msgSend(v12, "length")}];
 
-      v15 = [v7 start];
-      v16 = [v9 textRangeFromPosition:v15 toPosition:v14];
+      start2 = [rangeCopy start];
+      v16 = [v9 textRangeFromPosition:start2 toPosition:v14];
 
       if (v16)
       {
         v17 = [v9 selectionRectsForRange:v16];
-        [v18 addObjectsFromArray:v17];
+        [rectsCopy addObjectsFromArray:v17];
       }
     }
   }
 }
 
-- (id)_rangeOfSmartSelectionIncludingRange:(id)a3
+- (id)_rangeOfSmartSelectionIncludingRange:(id)range
 {
-  v4 = a3;
-  if (v4)
+  rangeCopy = range;
+  if (rangeCopy)
   {
-    v5 = [(UIResponder *)self _selectableText];
-    v58 = v4;
-    v6 = v4;
-    v7 = [v5 tokenizer];
-    v8 = [v6 start];
-    v9 = [v7 positionFromPosition:v8 toBoundary:2 inDirection:1];
+    _selectableText = [(UIResponder *)self _selectableText];
+    v58 = rangeCopy;
+    v6 = rangeCopy;
+    tokenizer = [_selectableText tokenizer];
+    start = [v6 start];
+    v9 = [tokenizer positionFromPosition:start toBoundary:2 inDirection:1];
     v10 = v9;
     if (v9)
     {
-      v11 = v9;
+      beginningOfDocument = v9;
     }
 
     else
     {
-      v11 = [v5 beginningOfDocument];
+      beginningOfDocument = [_selectableText beginningOfDocument];
     }
 
-    v12 = v11;
+    v12 = beginningOfDocument;
 
-    v13 = [v6 start];
-    v14 = [v5 offsetFromPosition:v12 toPosition:v13];
+    start2 = [v6 start];
+    v14 = [_selectableText offsetFromPosition:v12 toPosition:start2];
 
     if (v14 >= 65)
     {
-      v15 = [v6 start];
-      v16 = [v5 positionFromPosition:v15 offset:-64];
+      start3 = [v6 start];
+      v16 = [_selectableText positionFromPosition:start3 offset:-64];
 
-      v12 = [v7 positionFromPosition:v16 toBoundary:1 inDirection:0];
+      v12 = [tokenizer positionFromPosition:v16 toBoundary:1 inDirection:0];
 
       if (!v12)
       {
-        v17 = [v6 start];
-        v18 = [v5 positionFromPosition:v17 offset:-64];
+        start4 = [v6 start];
+        v18 = [_selectableText positionFromPosition:start4 offset:-64];
 
-        v12 = [v7 positionFromPosition:v18 toBoundary:0 inDirection:0];
+        v12 = [tokenizer positionFromPosition:v18 toBoundary:0 inDirection:0];
       }
 
-      v19 = [v6 start];
-      v20 = [v5 comparePosition:v12 toPosition:v19];
+      start5 = [v6 start];
+      v20 = [_selectableText comparePosition:v12 toPosition:start5];
 
       if (v20 == 1)
       {
-        v21 = [v6 start];
-        v22 = [v7 positionFromPosition:v21 toBoundary:0 inDirection:1];
+        start6 = [v6 start];
+        v22 = [tokenizer positionFromPosition:start6 toBoundary:0 inDirection:1];
         v23 = v22;
         if (v22)
         {
-          v24 = v22;
+          start7 = v22;
         }
 
         else
         {
-          v24 = [v6 start];
+          start7 = [v6 start];
         }
 
-        v25 = v24;
+        v25 = start7;
 
         v12 = v25;
       }
     }
 
     v26 = [v6 end];
-    v27 = [v7 positionFromPosition:v26 toBoundary:2 inDirection:0];
+    v27 = [tokenizer positionFromPosition:v26 toBoundary:2 inDirection:0];
     v28 = v27;
     if (v27)
     {
-      v29 = v27;
+      endOfDocument = v27;
     }
 
     else
     {
-      v29 = [v5 endOfDocument];
+      endOfDocument = [_selectableText endOfDocument];
     }
 
-    v30 = v29;
+    v30 = endOfDocument;
 
     v31 = [v6 end];
-    v32 = [v5 offsetFromPosition:v31 toPosition:v30];
+    v32 = [_selectableText offsetFromPosition:v31 toPosition:v30];
 
     if (v32 >= 65)
     {
       v33 = [v6 end];
-      v34 = [v5 positionFromPosition:v33 offset:64];
+      v34 = [_selectableText positionFromPosition:v33 offset:64];
 
-      v30 = [v7 positionFromPosition:v34 toBoundary:1 inDirection:1];
+      v30 = [tokenizer positionFromPosition:v34 toBoundary:1 inDirection:1];
 
       if (!v30)
       {
         v35 = [v6 end];
-        v36 = [v5 positionFromPosition:v35 offset:64];
+        v36 = [_selectableText positionFromPosition:v35 offset:64];
 
-        v30 = [v7 positionFromPosition:v36 toBoundary:0 inDirection:1];
+        v30 = [tokenizer positionFromPosition:v36 toBoundary:0 inDirection:1];
       }
 
       v37 = [v6 end];
-      v38 = [v5 comparePosition:v37 toPosition:v30];
+      v38 = [_selectableText comparePosition:v37 toPosition:v30];
 
       if (v38 == 1)
       {
         v39 = [v6 end];
-        v40 = [v7 positionFromPosition:v39 toBoundary:0 inDirection:0];
+        v40 = [tokenizer positionFromPosition:v39 toBoundary:0 inDirection:0];
         v41 = v40;
         if (v40)
         {
@@ -4465,20 +4465,20 @@ LABEL_10:
       }
     }
 
-    v57 = v7;
-    v59 = [v5 textRangeFromPosition:v12 toPosition:v30];
-    if ((objc_opt_respondsToSelector() & 1) == 0 || (v44 = [v5 keyboardType], v45 = 420, v44 != 3) && v44 != 10 && v44 != 120)
+    v57 = tokenizer;
+    v59 = [_selectableText textRangeFromPosition:v12 toPosition:v30];
+    if ((objc_opt_respondsToSelector() & 1) == 0 || (v44 = [_selectableText keyboardType], v45 = 420, v44 != 3) && v44 != 10 && v44 != 120)
     {
       v45 = 428;
     }
 
-    v46 = [v5 beginningOfDocument];
+    beginningOfDocument2 = [_selectableText beginningOfDocument];
     v56 = v12;
-    v47 = [v5 offsetFromPosition:v46 toPosition:v12];
+    v47 = [_selectableText offsetFromPosition:beginningOfDocument2 toPosition:v12];
 
     v48 = [(UIResponder *)self _nsrangeForTextRange:v6];
     v50 = v49;
-    v51 = [v5 textInRange:v59];
+    v51 = [_selectableText textInRange:v59];
     v61 = 0;
     v62 = &v61;
     v63 = 0x3010000000;
@@ -4503,7 +4503,7 @@ LABEL_10:
 
     _Block_object_dispose(&v61, 8);
 
-    v4 = v58;
+    rangeCopy = v58;
   }
 
   else
@@ -4522,97 +4522,97 @@ uint64_t __74__UIResponder_UITextInput_Internal___rangeOfSmartSelectionIncluding
   return result;
 }
 
-- (id)_clampedpositionFromPosition:(id)a3 offset:(int)a4
+- (id)_clampedpositionFromPosition:(id)position offset:(int)offset
 {
-  v6 = a3;
-  v7 = v6;
-  if (a4)
+  positionCopy = position;
+  v7 = positionCopy;
+  if (offset)
   {
-    v8 = [(UIResponder *)self _selectableText];
-    v9 = v8;
-    if (a4 < 1)
+    _selectableText = [(UIResponder *)self _selectableText];
+    v9 = _selectableText;
+    if (offset < 1)
     {
-      v10 = [v8 positionFromPosition:v7 offset:a4];
-      if (!v10)
+      beginningOfDocument = [_selectableText positionFromPosition:v7 offset:offset];
+      if (!beginningOfDocument)
       {
-        v10 = [v9 beginningOfDocument];
+        beginningOfDocument = [v9 beginningOfDocument];
       }
     }
 
     else
     {
-      v10 = [v8 positionFromPosition:v7 offset:a4];
-      if (!v10)
+      beginningOfDocument = [_selectableText positionFromPosition:v7 offset:offset];
+      if (!beginningOfDocument)
       {
-        v10 = [v9 endOfDocument];
+        beginningOfDocument = [v9 endOfDocument];
       }
     }
 
-    v11 = v10;
+    v11 = beginningOfDocument;
   }
 
   else
   {
-    v11 = v6;
+    v11 = positionCopy;
   }
 
   return v11;
 }
 
-- (id)_rangeFromCurrentRangeWithDelta:(_NSRange)a3
+- (id)_rangeFromCurrentRangeWithDelta:(_NSRange)delta
 {
-  length = a3.length;
-  location = a3.location;
-  v5 = [(UIResponder *)self _selectableText];
-  v6 = [v5 selectedTextRange];
-  v7 = v6;
+  length = delta.length;
+  location = delta.location;
+  _selectableText = [(UIResponder *)self _selectableText];
+  selectedTextRange = [_selectableText selectedTextRange];
+  v7 = selectedTextRange;
   if (location | length)
   {
     v9 = length + location;
-    v10 = [v6 start];
+    start = [selectedTextRange start];
     v11 = [v7 end];
     if (location)
     {
-      v12 = [v5 positionFromPosition:v10 offset:location];
+      v12 = [_selectableText positionFromPosition:start offset:location];
 
-      v10 = v12;
+      start = v12;
       if (!v12)
       {
         if ((location & 0x8000000000000000) != 0)
         {
-          [v5 beginningOfDocument];
+          [_selectableText beginningOfDocument];
         }
 
         else
         {
-          [v5 endOfDocument];
+          [_selectableText endOfDocument];
         }
-        v10 = ;
+        start = ;
       }
     }
 
     if (v9)
     {
-      v13 = [v5 positionFromPosition:v11 offset:v9];
+      v13 = [_selectableText positionFromPosition:v11 offset:v9];
 
       v11 = v13;
       if (!v13)
       {
         if ((v9 & 0x8000000000000000) != 0)
         {
-          v14 = v10;
+          endOfDocument = start;
         }
 
         else
         {
-          v14 = [v5 endOfDocument];
+          endOfDocument = [_selectableText endOfDocument];
         }
 
-        v11 = v14;
+        v11 = endOfDocument;
       }
     }
 
-    v15 = [v5 textRangeFromPosition:v10 toPosition:v11];
+    v15 = [_selectableText textRangeFromPosition:start toPosition:v11];
     v16 = v15;
     if (v15)
     {
@@ -4629,56 +4629,56 @@ uint64_t __74__UIResponder_UITextInput_Internal___rangeOfSmartSelectionIncluding
 
   else
   {
-    v8 = v6;
+    v8 = selectedTextRange;
   }
 
   return v8;
 }
 
-- (void)_updateSelectionWithTextRange:(id)a3 withAffinityDownstream:(BOOL)a4
+- (void)_updateSelectionWithTextRange:(id)range withAffinityDownstream:(BOOL)downstream
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(UIResponder *)self _selectableText];
-  [v7 _setSelectedTextRange:v6 withAffinityDownstream:v4];
+  downstreamCopy = downstream;
+  rangeCopy = range;
+  _selectableText = [(UIResponder *)self _selectableText];
+  [_selectableText _setSelectedTextRange:rangeCopy withAffinityDownstream:downstreamCopy];
 }
 
-- (id)_setSelectionRangeWithHistory:(id)a3
+- (id)_setSelectionRangeWithHistory:(id)history
 {
-  v4 = a3;
-  v5 = [(UIResponder *)self _selectableText];
-  v6 = [v4 cursor];
+  historyCopy = history;
+  _selectableText = [(UIResponder *)self _selectableText];
+  cursor = [historyCopy cursor];
 
-  if (!v6)
+  if (!cursor)
   {
     goto LABEL_19;
   }
 
-  if ([v4 anchor] == 1)
+  if ([historyCopy anchor] == 1)
   {
-    v7 = [v4 cursor];
+    cursor2 = [historyCopy cursor];
 LABEL_5:
-    [v4 setEnd:v7];
+    [historyCopy setEnd:cursor2];
     goto LABEL_6;
   }
 
-  v8 = [v4 anchor];
-  v7 = [v4 cursor];
-  [v4 setStart:v7];
-  if (v8 != 2)
+  anchor = [historyCopy anchor];
+  cursor2 = [historyCopy cursor];
+  [historyCopy setStart:cursor2];
+  if (anchor != 2)
   {
     goto LABEL_5;
   }
 
 LABEL_6:
 
-  v9 = [v4 start];
-  v10 = [v4 end];
-  v11 = [v5 comparePosition:v9 toPosition:v10];
+  start = [historyCopy start];
+  v10 = [historyCopy end];
+  v11 = [_selectableText comparePosition:start toPosition:v10];
 
   if (v11 >= 1)
   {
-    if ([v4 anchor] == 1)
+    if ([historyCopy anchor] == 1)
     {
       v12 = 2;
     }
@@ -4688,54 +4688,54 @@ LABEL_6:
       v12 = 1;
     }
 
-    [v4 setAnchor:v12];
+    [historyCopy setAnchor:v12];
   }
 
-  v13 = [v4 start];
-  v14 = [v4 end];
-  v15 = [v5 textRangeFromPosition:v13 toPosition:v14];
+  start2 = [historyCopy start];
+  v14 = [historyCopy end];
+  v15 = [_selectableText textRangeFromPosition:start2 toPosition:v14];
 
-  -[UIResponder _updateSelectionWithTextRange:withAffinityDownstream:](self, "_updateSelectionWithTextRange:withAffinityDownstream:", v15, [v4 affinityDownstream]);
-  if ([v4 anchor])
+  -[UIResponder _updateSelectionWithTextRange:withAffinityDownstream:](self, "_updateSelectionWithTextRange:withAffinityDownstream:", v15, [historyCopy affinityDownstream]);
+  if ([historyCopy anchor])
   {
-    if ([v4 anchor] == 1)
+    if ([historyCopy anchor] == 1)
     {
-      [v5 _lastRectForRange:v15];
+      [_selectableText _lastRectForRange:v15];
     }
 
     else
     {
-      [v5 firstRectForRange:v15];
+      [_selectableText firstRectForRange:v15];
     }
 
-    [v5 _scrollRectToVisible:0 animated:?];
+    [_selectableText _scrollRectToVisible:0 animated:?];
   }
 
   else if (objc_opt_respondsToSelector())
   {
-    v16 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v17 = *MEMORY[0x1E69E3030];
-    v18 = [(UIResponder *)self webView];
-    [v16 postNotificationName:v17 object:v18];
+    webView = [(UIResponder *)self webView];
+    [defaultCenter postNotificationName:v17 object:webView];
   }
 
 LABEL_19:
 
-  return v4;
+  return historyCopy;
 }
 
-- (id)_setHistory:(id)a3 withExtending:(BOOL)a4 withAnchor:(int)a5 withAffinityDownstream:(BOOL)a6
+- (id)_setHistory:(id)history withExtending:(BOOL)extending withAnchor:(int)anchor withAffinityDownstream:(BOOL)downstream
 {
-  v6 = a6;
-  v7 = *&a5;
-  v8 = a4;
-  v10 = a3;
-  if (v10)
+  downstreamCopy = downstream;
+  v7 = *&anchor;
+  extendingCopy = extending;
+  historyCopy = history;
+  if (historyCopy)
   {
-    v11 = v10;
-    if (!v8)
+    v11 = historyCopy;
+    if (!extendingCopy)
     {
-      [(UITextInputArrowKeyHistory *)v10 setAnchor:0];
+      [(UITextInputArrowKeyHistory *)historyCopy setAnchor:0];
     }
   }
 
@@ -4744,46 +4744,46 @@ LABEL_19:
     v11 = objc_alloc_init(UITextInputArrowKeyHistory);
   }
 
-  v12 = [(UIResponder *)self _selectableText];
-  v13 = [v12 selectedTextRange];
-  v14 = [v13 start];
-  [(UITextInputArrowKeyHistory *)v11 setStart:v14];
+  _selectableText = [(UIResponder *)self _selectableText];
+  selectedTextRange = [_selectableText selectedTextRange];
+  start = [selectedTextRange start];
+  [(UITextInputArrowKeyHistory *)v11 setStart:start];
 
-  v15 = [v12 selectedTextRange];
-  v16 = [v15 end];
+  selectedTextRange2 = [_selectableText selectedTextRange];
+  v16 = [selectedTextRange2 end];
   [(UITextInputArrowKeyHistory *)v11 setEnd:v16];
 
-  v17 = [(UITextInputArrowKeyHistory *)v11 anchor];
-  v18 = [v12 selectedTextRange];
-  v19 = v18;
+  anchor = [(UITextInputArrowKeyHistory *)v11 anchor];
+  selectedTextRange3 = [_selectableText selectedTextRange];
+  v19 = selectedTextRange3;
   if (v7 == 2)
   {
-    if (v17 == 1)
+    if (anchor == 1)
     {
 LABEL_7:
-      v20 = [v18 end];
+      start2 = [selectedTextRange3 end];
       goto LABEL_10;
     }
   }
 
-  else if (v17 != 2)
+  else if (anchor != 2)
   {
     goto LABEL_7;
   }
 
-  v20 = [v18 start];
+  start2 = [selectedTextRange3 start];
 LABEL_10:
-  v21 = v20;
-  [(UITextInputArrowKeyHistory *)v11 setCursor:v20];
+  v21 = start2;
+  [(UITextInputArrowKeyHistory *)v11 setCursor:start2];
 
-  v22 = [(UITextInputArrowKeyHistory *)v11 startPosition];
+  startPosition = [(UITextInputArrowKeyHistory *)v11 startPosition];
 
-  if (!v22)
+  if (!startPosition)
   {
-    v23 = [(UITextInputArrowKeyHistory *)v11 cursor];
-    [(UITextInputArrowKeyHistory *)v11 setStartPosition:v23];
+    cursor = [(UITextInputArrowKeyHistory *)v11 cursor];
+    [(UITextInputArrowKeyHistory *)v11 setStartPosition:cursor];
 
-    if (v8)
+    if (extendingCopy)
     {
       goto LABEL_12;
     }
@@ -4795,7 +4795,7 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  if (!v8)
+  if (!extendingCopy)
   {
     goto LABEL_16;
   }
@@ -4807,99 +4807,99 @@ LABEL_12:
   }
 
 LABEL_18:
-  [(UITextInputArrowKeyHistory *)v11 setAffinityDownstream:v6];
+  [(UITextInputArrowKeyHistory *)v11 setAffinityDownstream:downstreamCopy];
 
   return v11;
 }
 
-- (id)_moveToStartOfWord:(BOOL)a3 withHistory:(id)a4
+- (id)_moveToStartOfWord:(BOOL)word withHistory:(id)history
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(UIResponder *)self _selectableText];
-  v8 = [v7 selectedTextRange];
+  wordCopy = word;
+  historyCopy = history;
+  _selectableText = [(UIResponder *)self _selectableText];
+  selectedTextRange = [_selectableText selectedTextRange];
 
-  if (v8)
+  if (selectedTextRange)
   {
-    v9 = [(UIResponder *)self _setHistory:v6 withExtending:v4 withAnchor:2 withAffinityDownstream:1];
+    v9 = [(UIResponder *)self _setHistory:historyCopy withExtending:wordCopy withAnchor:2 withAffinityDownstream:1];
 
     [v9 setAmount:0];
-    v10 = [v7 tokenizer];
-    v11 = [v9 cursor];
-    v12 = [v10 isPosition:v11 withinTextUnit:1 inDirection:1];
+    tokenizer = [_selectableText tokenizer];
+    cursor = [v9 cursor];
+    v12 = [tokenizer isPosition:cursor withinTextUnit:1 inDirection:1];
 
     if (v12)
     {
 LABEL_7:
-      v22 = [v7 tokenizer];
-      v23 = [v9 cursor];
-      v24 = [v22 positionFromPosition:v23 toBoundary:1 inDirection:1];
+      tokenizer2 = [_selectableText tokenizer];
+      cursor2 = [v9 cursor];
+      v24 = [tokenizer2 positionFromPosition:cursor2 toBoundary:1 inDirection:1];
       [v9 setCursor:v24];
 
-      v25 = [v9 cursor];
-      [v9 setStartPosition:v25];
+      cursor3 = [v9 cursor];
+      [v9 setStartPosition:cursor3];
 
       v26 = [(UIResponder *)self _setSelectionRangeWithHistory:v9];
       goto LABEL_9;
     }
 
-    v13 = [v7 tokenizer];
-    v14 = [v9 cursor];
-    v15 = [v13 positionFromPosition:v14 toBoundary:1 inDirection:1];
+    tokenizer3 = [_selectableText tokenizer];
+    cursor4 = [v9 cursor];
+    cursor7 = [tokenizer3 positionFromPosition:cursor4 toBoundary:1 inDirection:1];
 
-    if (v15)
+    if (cursor7)
     {
 LABEL_4:
-      v16 = [v7 tokenizer];
-      v17 = [v9 cursor];
-      v18 = [v16 isPosition:v17 withinTextUnit:1 inDirection:1];
+      tokenizer4 = [_selectableText tokenizer];
+      cursor5 = [v9 cursor];
+      v18 = [tokenizer4 isPosition:cursor5 withinTextUnit:1 inDirection:1];
 
       if ((v18 & 1) == 0)
       {
-        v19 = [v7 tokenizer];
-        v20 = [v9 cursor];
-        v21 = [v19 positionFromPosition:v20 toBoundary:1 inDirection:1];
+        tokenizer5 = [_selectableText tokenizer];
+        cursor6 = [v9 cursor];
+        v21 = [tokenizer5 positionFromPosition:cursor6 toBoundary:1 inDirection:1];
         [v9 setCursor:v21];
       }
 
       goto LABEL_7;
     }
 
-    v15 = [v9 cursor];
+    cursor7 = [v9 cursor];
     v28 = 0;
     while (1)
     {
-      v29 = [v7 beginningOfDocument];
-      v30 = [v7 comparePosition:v29 toPosition:v15];
+      beginningOfDocument = [_selectableText beginningOfDocument];
+      v30 = [_selectableText comparePosition:beginningOfDocument toPosition:cursor7];
 
       if (!v30)
       {
         break;
       }
 
-      if (v28 && ![v7 comparePosition:v28 toPosition:v15])
+      if (v28 && ![_selectableText comparePosition:v28 toPosition:cursor7])
       {
-        v35 = [v7 beginningOfDocument];
-        [v9 setCursor:v35];
+        beginningOfDocument2 = [_selectableText beginningOfDocument];
+        [v9 setCursor:beginningOfDocument2];
 
-        v36 = [v9 cursor];
-        [v9 setStartPosition:v36];
+        cursor8 = [v9 cursor];
+        [v9 setStartPosition:cursor8];
 
         break;
       }
 
-      v31 = v15;
+      v31 = cursor7;
 
-      v32 = [v7 tokenizer];
-      v15 = [v32 positionFromPosition:v31 toBoundary:3 inDirection:1];
+      tokenizer6 = [_selectableText tokenizer];
+      cursor7 = [tokenizer6 positionFromPosition:v31 toBoundary:3 inDirection:1];
 
-      v33 = [v7 tokenizer];
-      v34 = [v33 isPosition:v15 atBoundary:3 inDirection:1];
+      tokenizer7 = [_selectableText tokenizer];
+      v34 = [tokenizer7 isPosition:cursor7 atBoundary:3 inDirection:1];
 
       v28 = v31;
       if ((v34 & 1) == 0)
       {
-        [v9 setCursor:v15];
+        [v9 setCursor:cursor7];
 
         goto LABEL_4;
       }
@@ -4911,7 +4911,7 @@ LABEL_4:
   else
   {
     v26 = 0;
-    v9 = v6;
+    v9 = historyCopy;
   }
 
 LABEL_9:
@@ -4919,27 +4919,27 @@ LABEL_9:
   return v26;
 }
 
-- (id)_moveToEndOfWord:(BOOL)a3 withHistory:(id)a4
+- (id)_moveToEndOfWord:(BOOL)word withHistory:(id)history
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(UIResponder *)self _selectableText];
-  v8 = [v7 selectedTextRange];
+  wordCopy = word;
+  historyCopy = history;
+  _selectableText = [(UIResponder *)self _selectableText];
+  selectedTextRange = [_selectableText selectedTextRange];
 
-  if (v8)
+  if (selectedTextRange)
   {
-    v9 = [(UIResponder *)self _setHistory:v6 withExtending:v4 withAnchor:1 withAffinityDownstream:1];
+    v9 = [(UIResponder *)self _setHistory:historyCopy withExtending:wordCopy withAnchor:1 withAffinityDownstream:1];
 
     [v9 setAmount:0];
-    v10 = [v7 tokenizer];
-    v11 = [v9 cursor];
-    v12 = [v10 isPosition:v11 withinTextUnit:1 inDirection:0];
+    tokenizer = [_selectableText tokenizer];
+    cursor = [v9 cursor];
+    v12 = [tokenizer isPosition:cursor withinTextUnit:1 inDirection:0];
 
     if ((v12 & 1) == 0)
     {
-      v13 = [v7 tokenizer];
-      v14 = [v9 cursor];
-      v15 = [v13 positionFromPosition:v14 toBoundary:1 inDirection:0];
+      tokenizer2 = [_selectableText tokenizer];
+      cursor2 = [v9 cursor];
+      v15 = [tokenizer2 positionFromPosition:cursor2 toBoundary:1 inDirection:0];
 
       if (v15)
       {
@@ -4947,21 +4947,21 @@ LABEL_9:
       }
     }
 
-    v16 = [v7 tokenizer];
-    v17 = [v9 cursor];
-    v18 = [v16 positionFromPosition:v17 toBoundary:1 inDirection:0];
+    tokenizer3 = [_selectableText tokenizer];
+    cursor3 = [v9 cursor];
+    v18 = [tokenizer3 positionFromPosition:cursor3 toBoundary:1 inDirection:0];
     [v9 setCursor:v18];
 
-    v19 = [v9 cursor];
+    cursor4 = [v9 cursor];
 
-    if (!v19)
+    if (!cursor4)
     {
-      v20 = [v7 endOfDocument];
-      [v9 setCursor:v20];
+      endOfDocument = [_selectableText endOfDocument];
+      [v9 setCursor:endOfDocument];
     }
 
-    v21 = [v9 cursor];
-    [v9 setStartPosition:v21];
+    cursor5 = [v9 cursor];
+    [v9 setStartPosition:cursor5];
 
     v22 = [(UIResponder *)self _setSelectionRangeWithHistory:v9];
   }
@@ -4969,40 +4969,40 @@ LABEL_9:
   else
   {
     v22 = 0;
-    v9 = v6;
+    v9 = historyCopy;
   }
 
   return v22;
 }
 
-- (id)_moveToStartOfLine:(BOOL)a3 withHistory:(id)a4
+- (id)_moveToStartOfLine:(BOOL)line withHistory:(id)history
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(UIResponder *)self _selectableText];
-  v8 = [v7 selectedTextRange];
+  lineCopy = line;
+  historyCopy = history;
+  _selectableText = [(UIResponder *)self _selectableText];
+  selectedTextRange = [_selectableText selectedTextRange];
 
-  if (!v8)
+  if (!selectedTextRange)
   {
     v17 = 0;
-    v10 = v6;
+    v10 = historyCopy;
     goto LABEL_11;
   }
 
-  v9 = [v6 affinityDownstream];
-  v10 = [(UIResponder *)self _setHistory:v6 withExtending:v4 withAnchor:2 withAffinityDownstream:1];
+  affinityDownstream = [historyCopy affinityDownstream];
+  v10 = [(UIResponder *)self _setHistory:historyCopy withExtending:lineCopy withAnchor:2 withAffinityDownstream:1];
 
   [v10 setAmount:0];
-  v11 = [v7 tokenizer];
-  v12 = [v7 selectedTextRange];
-  v13 = [v12 end];
-  if (([v11 isPosition:v13 atBoundary:3 inDirection:1] & 1) == 0)
+  tokenizer = [_selectableText tokenizer];
+  selectedTextRange2 = [_selectableText selectedTextRange];
+  v13 = [selectedTextRange2 end];
+  if (([tokenizer isPosition:v13 atBoundary:3 inDirection:1] & 1) == 0)
   {
-    if (v9)
+    if (affinityDownstream)
     {
-      v14 = [v7 tokenizer];
-      v15 = [v10 cursor];
-      v16 = [v14 isPosition:v15 atBoundary:4 inDirection:1];
+      tokenizer2 = [_selectableText tokenizer];
+      cursor = [v10 cursor];
+      v16 = [tokenizer2 isPosition:cursor atBoundary:4 inDirection:1];
 
       if (v16)
       {
@@ -5014,15 +5014,15 @@ LABEL_9:
     {
     }
 
-    v11 = [v7 tokenizer];
-    v12 = [v10 cursor];
-    v13 = [v11 positionFromPosition:v12 toBoundary:4 inDirection:1];
+    tokenizer = [_selectableText tokenizer];
+    selectedTextRange2 = [v10 cursor];
+    v13 = [tokenizer positionFromPosition:selectedTextRange2 toBoundary:4 inDirection:1];
     [v10 setCursor:v13];
   }
 
 LABEL_10:
-  v18 = [v10 cursor];
-  [v10 setStartPosition:v18];
+  cursor2 = [v10 cursor];
+  [v10 setStartPosition:cursor2];
 
   v17 = [(UIResponder *)self _setSelectionRangeWithHistory:v10];
 LABEL_11:
@@ -5030,48 +5030,48 @@ LABEL_11:
   return v17;
 }
 
-- (id)_moveToEndOfLine:(BOOL)a3 withHistory:(id)a4
+- (id)_moveToEndOfLine:(BOOL)line withHistory:(id)history
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(UIResponder *)self _selectableText];
-  v8 = [v7 selectedTextRange];
+  lineCopy = line;
+  historyCopy = history;
+  _selectableText = [(UIResponder *)self _selectableText];
+  selectedTextRange = [_selectableText selectedTextRange];
 
-  if (!v8)
+  if (!selectedTextRange)
   {
     v14 = 0;
-    v10 = v6;
+    v10 = historyCopy;
     goto LABEL_10;
   }
 
-  v9 = [v6 affinityDownstream];
-  v10 = [(UIResponder *)self _setHistory:v6 withExtending:v4 withAnchor:1 withAffinityDownstream:0];
+  affinityDownstream = [historyCopy affinityDownstream];
+  v10 = [(UIResponder *)self _setHistory:historyCopy withExtending:lineCopy withAnchor:1 withAffinityDownstream:0];
 
   [v10 setAmount:0];
-  v11 = [v7 tokenizer];
-  v12 = [v7 selectedTextRange];
-  v13 = [v12 end];
-  if ([v11 isPosition:v13 atBoundary:3 inDirection:0])
+  tokenizer = [_selectableText tokenizer];
+  selectedTextRange2 = [_selectableText selectedTextRange];
+  v13 = [selectedTextRange2 end];
+  if ([tokenizer isPosition:v13 atBoundary:3 inDirection:0])
   {
     goto LABEL_8;
   }
 
-  if (v9)
+  if (affinityDownstream)
   {
 
 LABEL_7:
-    v11 = [v7 tokenizer];
-    v12 = [v10 cursor];
-    v13 = [v11 positionFromPosition:v12 toBoundary:4 inDirection:0];
+    tokenizer = [_selectableText tokenizer];
+    selectedTextRange2 = [v10 cursor];
+    v13 = [tokenizer positionFromPosition:selectedTextRange2 toBoundary:4 inDirection:0];
     [v10 setCursor:v13];
 LABEL_8:
 
     goto LABEL_9;
   }
 
-  v15 = [v7 tokenizer];
-  v16 = [v10 cursor];
-  v17 = [v15 isPosition:v16 atBoundary:4 inDirection:0];
+  tokenizer2 = [_selectableText tokenizer];
+  cursor = [v10 cursor];
+  v17 = [tokenizer2 isPosition:cursor atBoundary:4 inDirection:0];
 
   if ((v17 & 1) == 0)
   {
@@ -5079,8 +5079,8 @@ LABEL_8:
   }
 
 LABEL_9:
-  v18 = [v10 cursor];
-  [v10 setStartPosition:v18];
+  cursor2 = [v10 cursor];
+  [v10 setStartPosition:cursor2];
 
   v14 = [(UIResponder *)self _setSelectionRangeWithHistory:v10];
 LABEL_10:
@@ -5088,26 +5088,26 @@ LABEL_10:
   return v14;
 }
 
-- (id)_moveToStartOfParagraph:(BOOL)a3 withHistory:(id)a4
+- (id)_moveToStartOfParagraph:(BOOL)paragraph withHistory:(id)history
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(UIResponder *)self _selectableText];
-  v8 = [v7 selectedTextRange];
+  paragraphCopy = paragraph;
+  historyCopy = history;
+  _selectableText = [(UIResponder *)self _selectableText];
+  selectedTextRange = [_selectableText selectedTextRange];
 
-  if (v8)
+  if (selectedTextRange)
   {
-    v9 = [(UIResponder *)self _setHistory:v6 withExtending:v4 withAnchor:2 withAffinityDownstream:1];
+    v9 = [(UIResponder *)self _setHistory:historyCopy withExtending:paragraphCopy withAnchor:2 withAffinityDownstream:1];
 
     [v9 setAmount:0];
-    v10 = [v7 tokenizer];
-    v11 = [v9 cursor];
-    v12 = [v10 isPosition:v11 atBoundary:3 inDirection:1];
+    tokenizer = [_selectableText tokenizer];
+    cursor = [v9 cursor];
+    v12 = [tokenizer isPosition:cursor atBoundary:3 inDirection:1];
 
     if (v12)
     {
-      v13 = [v9 cursor];
-      v14 = [v10 positionFromPosition:v13 toBoundary:0 inDirection:1];
+      cursor2 = [v9 cursor];
+      v14 = [tokenizer positionFromPosition:cursor2 toBoundary:0 inDirection:1];
 
       if (v14)
       {
@@ -5115,12 +5115,12 @@ LABEL_10:
       }
     }
 
-    v15 = [v9 cursor];
-    v16 = [v10 positionFromPosition:v15 toBoundary:3 inDirection:1];
+    cursor3 = [v9 cursor];
+    v16 = [tokenizer positionFromPosition:cursor3 toBoundary:3 inDirection:1];
     [v9 setCursor:v16];
 
-    v17 = [v9 cursor];
-    [v9 setStartPosition:v17];
+    cursor4 = [v9 cursor];
+    [v9 setStartPosition:cursor4];
 
     v18 = [(UIResponder *)self _setSelectionRangeWithHistory:v9];
   }
@@ -5128,32 +5128,32 @@ LABEL_10:
   else
   {
     v18 = 0;
-    v9 = v6;
+    v9 = historyCopy;
   }
 
   return v18;
 }
 
-- (id)_moveToEndOfParagraph:(BOOL)a3 withHistory:(id)a4
+- (id)_moveToEndOfParagraph:(BOOL)paragraph withHistory:(id)history
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(UIResponder *)self _selectableText];
-  v8 = [v7 selectedTextRange];
+  paragraphCopy = paragraph;
+  historyCopy = history;
+  _selectableText = [(UIResponder *)self _selectableText];
+  selectedTextRange = [_selectableText selectedTextRange];
 
-  if (v8)
+  if (selectedTextRange)
   {
-    v9 = [(UIResponder *)self _setHistory:v6 withExtending:v4 withAnchor:1 withAffinityDownstream:0];
+    v9 = [(UIResponder *)self _setHistory:historyCopy withExtending:paragraphCopy withAnchor:1 withAffinityDownstream:0];
 
     [v9 setAmount:0];
-    v10 = [v7 tokenizer];
-    v11 = [v9 cursor];
-    v12 = [v10 isPosition:v11 atBoundary:3 inDirection:0];
+    tokenizer = [_selectableText tokenizer];
+    cursor = [v9 cursor];
+    v12 = [tokenizer isPosition:cursor atBoundary:3 inDirection:0];
 
     if (v12)
     {
-      v13 = [v9 cursor];
-      v14 = [v10 positionFromPosition:v13 toBoundary:0 inDirection:0];
+      cursor2 = [v9 cursor];
+      v14 = [tokenizer positionFromPosition:cursor2 toBoundary:0 inDirection:0];
 
       if (v14)
       {
@@ -5161,12 +5161,12 @@ LABEL_10:
       }
     }
 
-    v15 = [v9 cursor];
-    v16 = [v10 positionFromPosition:v15 toBoundary:3 inDirection:0];
+    cursor3 = [v9 cursor];
+    v16 = [tokenizer positionFromPosition:cursor3 toBoundary:3 inDirection:0];
     [v9 setCursor:v16];
 
-    v17 = [v9 cursor];
-    [v9 setStartPosition:v17];
+    cursor4 = [v9 cursor];
+    [v9 setStartPosition:cursor4];
 
     v18 = [(UIResponder *)self _setSelectionRangeWithHistory:v9];
   }
@@ -5174,32 +5174,32 @@ LABEL_10:
   else
   {
     v18 = 0;
-    v9 = v6;
+    v9 = historyCopy;
   }
 
   return v18;
 }
 
-- (id)_moveToStartOfDocument:(BOOL)a3 withHistory:(id)a4
+- (id)_moveToStartOfDocument:(BOOL)document withHistory:(id)history
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(UIResponder *)self _selectableText];
-  v8 = [v7 selectedTextRange];
+  documentCopy = document;
+  historyCopy = history;
+  _selectableText = [(UIResponder *)self _selectableText];
+  selectedTextRange = [_selectableText selectedTextRange];
 
-  if (v8)
+  if (selectedTextRange)
   {
-    v9 = [(UIResponder *)self _setHistory:v6 withExtending:v4 withAnchor:2 withAffinityDownstream:1];
+    v9 = [(UIResponder *)self _setHistory:historyCopy withExtending:documentCopy withAnchor:2 withAffinityDownstream:1];
 
     [v9 setAmount:0];
-    v10 = [v7 beginningOfDocument];
-    [v9 setCursor:v10];
+    beginningOfDocument = [_selectableText beginningOfDocument];
+    [v9 setCursor:beginningOfDocument];
 
-    v11 = [v9 cursor];
-    [v9 setStartPosition:v11];
+    cursor = [v9 cursor];
+    [v9 setStartPosition:cursor];
 
     v12 = [(UIResponder *)self _setSelectionRangeWithHistory:v9];
-    v6 = v9;
+    historyCopy = v9;
   }
 
   else
@@ -5210,27 +5210,27 @@ LABEL_10:
   return v12;
 }
 
-- (id)_moveToEndOfDocument:(BOOL)a3 withHistory:(id)a4
+- (id)_moveToEndOfDocument:(BOOL)document withHistory:(id)history
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(UIResponder *)self _selectableText];
-  v8 = [v7 selectedTextRange];
+  documentCopy = document;
+  historyCopy = history;
+  _selectableText = [(UIResponder *)self _selectableText];
+  selectedTextRange = [_selectableText selectedTextRange];
 
-  if (v8)
+  if (selectedTextRange)
   {
-    v9 = [(UIResponder *)self _setHistory:v6 withExtending:v4 withAnchor:1 withAffinityDownstream:0];
+    v9 = [(UIResponder *)self _setHistory:historyCopy withExtending:documentCopy withAnchor:1 withAffinityDownstream:0];
 
     [v9 setAmount:0];
-    v10 = [v7 endOfDocument];
-    [v9 setCursor:v10];
+    endOfDocument = [_selectableText endOfDocument];
+    [v9 setCursor:endOfDocument];
 
-    v11 = [v9 cursor];
-    [v9 setStartPosition:v11];
+    cursor = [v9 cursor];
+    [v9 setStartPosition:cursor];
 
-    v12 = [v7 tokenizer];
-    v13 = [v9 cursor];
-    v14 = [v12 isPosition:v13 atBoundary:4 inDirection:3];
+    tokenizer = [_selectableText tokenizer];
+    cursor2 = [v9 cursor];
+    v14 = [tokenizer isPosition:cursor2 atBoundary:4 inDirection:3];
 
     if (v14)
     {
@@ -5243,41 +5243,41 @@ LABEL_10:
   else
   {
     v15 = 0;
-    v9 = v6;
+    v9 = historyCopy;
   }
 
   return v15;
 }
 
-- (id)_moveUp:(BOOL)a3 withHistory:(id)a4
+- (id)_moveUp:(BOOL)up withHistory:(id)history
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(UIResponder *)self _selectableText];
-  v8 = [v7 selectedTextRange];
+  upCopy = up;
+  historyCopy = history;
+  _selectableText = [(UIResponder *)self _selectableText];
+  selectedTextRange = [_selectableText selectedTextRange];
 
-  if (v8)
+  if (selectedTextRange)
   {
-    if (v6)
+    if (historyCopy)
     {
-      v9 = [v6 affinityDownstream];
+      affinityDownstream = [historyCopy affinityDownstream];
     }
 
     else
     {
-      v9 = [(UIResponder *)self _selectionAffinity]== 0;
+      affinityDownstream = [(UIResponder *)self _selectionAffinity]== 0;
     }
 
-    v11 = [(UIResponder *)self _setHistory:v6 withExtending:v4 withAnchor:2 withAffinityDownstream:v9];
+    v11 = [(UIResponder *)self _setHistory:historyCopy withExtending:upCopy withAnchor:2 withAffinityDownstream:affinityDownstream];
 
     [v11 setAmount:{objc_msgSend(v11, "amount") + 1}];
-    v12 = [v11 cursor];
-    v13 = [v7 beginningOfDocument];
-    v14 = [v7 comparePosition:v12 toPosition:v13];
+    cursor = [v11 cursor];
+    beginningOfDocument = [_selectableText beginningOfDocument];
+    v14 = [_selectableText comparePosition:cursor toPosition:beginningOfDocument];
 
     if (v14)
     {
-      v15 = [v11 startPosition];
+      startPosition = [v11 startPosition];
       if ([v11 amount] > 0)
       {
         v16 = 4;
@@ -5288,21 +5288,21 @@ LABEL_10:
         v16 = 5;
       }
 
-      v17 = [v11 amount];
-      if (v17 >= 0)
+      amount = [v11 amount];
+      if (amount >= 0)
       {
-        v18 = v17;
+        v18 = amount;
       }
 
       else
       {
-        v18 = -v17;
+        v18 = -amount;
       }
 
-      v19 = [v7 _positionFromPosition:v15 inDirection:v16 offset:v18 withAffinityDownstream:{objc_msgSend(v11, "affinityDownstream")}];
+      v19 = [_selectableText _positionFromPosition:startPosition inDirection:v16 offset:v18 withAffinityDownstream:{objc_msgSend(v11, "affinityDownstream")}];
 
-      v20 = [v11 cursor];
-      v21 = [v7 comparePosition:v20 toPosition:v19];
+      cursor2 = [v11 cursor];
+      v21 = [_selectableText comparePosition:cursor2 toPosition:v19];
 
       if (v21)
       {
@@ -5311,8 +5311,8 @@ LABEL_10:
 
       else
       {
-        v22 = [v7 beginningOfDocument];
-        [v11 setCursor:v22];
+        beginningOfDocument2 = [_selectableText beginningOfDocument];
+        [v11 setCursor:beginningOfDocument2];
 
         [v11 setAmount:{objc_msgSend(v11, "amount") - 1}];
       }
@@ -5329,41 +5329,41 @@ LABEL_10:
   else
   {
     v10 = 0;
-    v11 = v6;
+    v11 = historyCopy;
   }
 
   return v10;
 }
 
-- (id)_moveDown:(BOOL)a3 withHistory:(id)a4
+- (id)_moveDown:(BOOL)down withHistory:(id)history
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(UIResponder *)self _selectableText];
-  v8 = [v7 selectedTextRange];
+  downCopy = down;
+  historyCopy = history;
+  _selectableText = [(UIResponder *)self _selectableText];
+  selectedTextRange = [_selectableText selectedTextRange];
 
-  if (v8)
+  if (selectedTextRange)
   {
-    if (v6)
+    if (historyCopy)
     {
-      v9 = [v6 affinityDownstream];
+      affinityDownstream = [historyCopy affinityDownstream];
     }
 
     else
     {
-      v9 = [(UIResponder *)self _selectionAffinity]== 0;
+      affinityDownstream = [(UIResponder *)self _selectionAffinity]== 0;
     }
 
-    v11 = [(UIResponder *)self _setHistory:v6 withExtending:v4 withAnchor:1 withAffinityDownstream:v9];
+    v11 = [(UIResponder *)self _setHistory:historyCopy withExtending:downCopy withAnchor:1 withAffinityDownstream:affinityDownstream];
 
     [v11 setAmount:{objc_msgSend(v11, "amount") - 1}];
-    v12 = [v11 cursor];
-    v13 = [v7 endOfDocument];
-    v14 = [v7 comparePosition:v12 toPosition:v13];
+    cursor = [v11 cursor];
+    endOfDocument = [_selectableText endOfDocument];
+    v14 = [_selectableText comparePosition:cursor toPosition:endOfDocument];
 
     if (v14)
     {
-      v15 = [v11 startPosition];
+      startPosition = [v11 startPosition];
       if ([v11 amount] > 0)
       {
         v16 = 4;
@@ -5374,21 +5374,21 @@ LABEL_10:
         v16 = 5;
       }
 
-      v17 = [v11 amount];
-      if (v17 >= 0)
+      amount = [v11 amount];
+      if (amount >= 0)
       {
-        v18 = v17;
+        v18 = amount;
       }
 
       else
       {
-        v18 = -v17;
+        v18 = -amount;
       }
 
-      v19 = [v7 _positionFromPosition:v15 inDirection:v16 offset:v18 withAffinityDownstream:{objc_msgSend(v11, "affinityDownstream")}];
+      v19 = [_selectableText _positionFromPosition:startPosition inDirection:v16 offset:v18 withAffinityDownstream:{objc_msgSend(v11, "affinityDownstream")}];
 
-      v20 = [v11 cursor];
-      v21 = [v7 comparePosition:v20 toPosition:v19];
+      cursor2 = [v11 cursor];
+      v21 = [_selectableText comparePosition:cursor2 toPosition:v19];
 
       if (v21)
       {
@@ -5397,8 +5397,8 @@ LABEL_10:
 
       else
       {
-        v22 = [v7 endOfDocument];
-        [v11 setCursor:v22];
+        endOfDocument2 = [_selectableText endOfDocument];
+        [v11 setCursor:endOfDocument2];
 
         [v11 setAmount:{objc_msgSend(v11, "amount") + 1}];
       }
@@ -5415,36 +5415,36 @@ LABEL_10:
   else
   {
     v10 = 0;
-    v11 = v6;
+    v11 = historyCopy;
   }
 
   return v10;
 }
 
-- (id)_moveLeft:(BOOL)a3 withHistory:(id)a4
+- (id)_moveLeft:(BOOL)left withHistory:(id)history
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(UIResponder *)self _selectableText];
-  v8 = [v7 selectedTextRange];
+  leftCopy = left;
+  historyCopy = history;
+  _selectableText = [(UIResponder *)self _selectableText];
+  selectedTextRange = [_selectableText selectedTextRange];
 
-  if (v8)
+  if (selectedTextRange)
   {
-    v9 = [(UIResponder *)self _setHistory:v6 withExtending:v4 withAnchor:2 withAffinityDownstream:1];
+    v9 = [(UIResponder *)self _setHistory:historyCopy withExtending:leftCopy withAnchor:2 withAffinityDownstream:1];
 
     [v9 setAmount:0];
-    v10 = [v7 selectedTextRange];
-    v11 = [v10 isEmpty];
+    selectedTextRange2 = [_selectableText selectedTextRange];
+    isEmpty = [selectedTextRange2 isEmpty];
 
-    if ((v11 & 1) != 0 || v4)
+    if ((isEmpty & 1) != 0 || leftCopy)
     {
-      v12 = [v9 cursor];
-      v13 = [v7 positionFromPosition:v12 inDirection:3 offset:1];
+      cursor = [v9 cursor];
+      v13 = [_selectableText positionFromPosition:cursor inDirection:3 offset:1];
       [v9 setCursor:v13];
     }
 
-    v14 = [v9 cursor];
-    [v9 setStartPosition:v14];
+    cursor2 = [v9 cursor];
+    [v9 setStartPosition:cursor2];
 
     v15 = [(UIResponder *)self _setSelectionRangeWithHistory:v9];
   }
@@ -5452,36 +5452,36 @@ LABEL_10:
   else
   {
     v15 = 0;
-    v9 = v6;
+    v9 = historyCopy;
   }
 
   return v15;
 }
 
-- (id)_moveRight:(BOOL)a3 withHistory:(id)a4
+- (id)_moveRight:(BOOL)right withHistory:(id)history
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(UIResponder *)self _selectableText];
-  v8 = [v7 selectedTextRange];
+  rightCopy = right;
+  historyCopy = history;
+  _selectableText = [(UIResponder *)self _selectableText];
+  selectedTextRange = [_selectableText selectedTextRange];
 
-  if (v8)
+  if (selectedTextRange)
   {
-    v9 = [(UIResponder *)self _setHistory:v6 withExtending:v4 withAnchor:1 withAffinityDownstream:1];
+    v9 = [(UIResponder *)self _setHistory:historyCopy withExtending:rightCopy withAnchor:1 withAffinityDownstream:1];
 
     [v9 setAmount:0];
-    v10 = [v7 selectedTextRange];
-    v11 = [v10 isEmpty];
+    selectedTextRange2 = [_selectableText selectedTextRange];
+    isEmpty = [selectedTextRange2 isEmpty];
 
-    if ((v11 & 1) != 0 || v4)
+    if ((isEmpty & 1) != 0 || rightCopy)
     {
-      v12 = [v9 cursor];
-      v13 = [v7 positionFromPosition:v12 inDirection:2 offset:1];
+      cursor = [v9 cursor];
+      v13 = [_selectableText positionFromPosition:cursor inDirection:2 offset:1];
       [v9 setCursor:v13];
     }
 
-    v14 = [v9 cursor];
-    [v9 setStartPosition:v14];
+    cursor2 = [v9 cursor];
+    [v9 setStartPosition:cursor2];
 
     v15 = [(UIResponder *)self _setSelectionRangeWithHistory:v9];
   }
@@ -5489,71 +5489,71 @@ LABEL_10:
   else
   {
     v15 = 0;
-    v9 = v6;
+    v9 = historyCopy;
   }
 
   return v15;
 }
 
-- (id)_positionFromPosition:(id)a3 inDirection:(int64_t)a4 offset:(int64_t)a5 withAffinityDownstream:(BOOL)a6
+- (id)_positionFromPosition:(id)position inDirection:(int64_t)direction offset:(int64_t)offset withAffinityDownstream:(BOOL)downstream
 {
-  v9 = a3;
-  v10 = [(UIResponder *)self _selectableText];
-  v11 = [v10 positionFromPosition:v9 inDirection:a4 offset:a5];
+  positionCopy = position;
+  _selectableText = [(UIResponder *)self _selectableText];
+  v11 = [_selectableText positionFromPosition:positionCopy inDirection:direction offset:offset];
 
   return v11;
 }
 
-- (void)_setSelectedTextRange:(id)a3 withAffinityDownstream:(BOOL)a4
+- (void)_setSelectedTextRange:(id)range withAffinityDownstream:(BOOL)downstream
 {
-  v4 = a4;
-  v7 = a3;
+  downstreamCopy = downstream;
+  rangeCopy = range;
   if (objc_opt_respondsToSelector())
   {
-    [(UIResponder *)self setSelectedTextRange:v7 withAffinityDownstream:v4];
+    [(UIResponder *)self setSelectedTextRange:rangeCopy withAffinityDownstream:downstreamCopy];
   }
 
   else
   {
-    v6 = [(UIResponder *)self _selectableText];
-    [v6 setSelectedTextRange:v7];
+    _selectableText = [(UIResponder *)self _selectableText];
+    [_selectableText setSelectedTextRange:rangeCopy];
   }
 }
 
 - (int64_t)_selectionAffinity
 {
-  v2 = [(UIResponder *)self _selectableText];
+  _selectableText = [(UIResponder *)self _selectableText];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
-    v4 = [v2 tokenizer];
-    v5 = [v2 selectedTextRange];
-    v6 = [v5 start];
-    if ([v4 isPosition:v6 atBoundary:3 inDirection:1])
+    tokenizer = [_selectableText tokenizer];
+    selectedTextRange = [_selectableText selectedTextRange];
+    start = [selectedTextRange start];
+    if ([tokenizer isPosition:start atBoundary:3 inDirection:1])
     {
     }
 
     else
     {
-      v7 = [v2 tokenizer];
-      v8 = [v2 selectedTextRange];
-      v9 = [v8 end];
-      v10 = [v7 isPosition:v9 atBoundary:4 inDirection:2];
+      tokenizer2 = [_selectableText tokenizer];
+      selectedTextRange2 = [_selectableText selectedTextRange];
+      v9 = [selectedTextRange2 end];
+      v10 = [tokenizer2 isPosition:v9 atBoundary:4 inDirection:2];
 
       if (v10)
       {
-        v3 = 1;
+        selectionAffinity = 1;
         goto LABEL_8;
       }
     }
 
-    v3 = 0;
+    selectionAffinity = 0;
     goto LABEL_8;
   }
 
-  v3 = [v2 selectionAffinity];
+  selectionAffinity = [_selectableText selectionAffinity];
 LABEL_8:
 
-  return v3;
+  return selectionAffinity;
 }
 
 - (void)_setGestureRecognizers
@@ -5568,14 +5568,14 @@ LABEL_8:
   else
   {
     v3 = +[UIKeyboardImpl activeInstance];
-    v4 = [v3 markedTextOverlay];
-    [v4 removeFromSuperview];
+    markedTextOverlay = [v3 markedTextOverlay];
+    [markedTextOverlay removeFromSuperview];
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v5 = [v4 interactions];
-    v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    interactions = [markedTextOverlay interactions];
+    v6 = [interactions countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v6)
     {
       v7 = v6;
@@ -5586,105 +5586,105 @@ LABEL_8:
         {
           if (*v17 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(interactions);
           }
 
-          [v4 removeInteraction:*(*(&v16 + 1) + 8 * i)];
+          [markedTextOverlay removeInteraction:*(*(&v16 + 1) + 8 * i)];
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v7 = [interactions countByEnumeratingWithState:&v16 objects:v20 count:16];
       }
 
       while (v7);
     }
 
-    v10 = [(UIResponder *)self _selectableText];
-    v11 = [v10 interactionAssistant];
-    v12 = v11;
-    if (v11)
+    _selectableText = [(UIResponder *)self _selectableText];
+    interactionAssistant = [_selectableText interactionAssistant];
+    v12 = interactionAssistant;
+    if (interactionAssistant)
     {
-      [v11 setGestureRecognizers];
+      [interactionAssistant setGestureRecognizers];
     }
 
-    else if ([v10 _hasMarkedText] && objc_msgSend(v3, "hasEditableMarkedText"))
+    else if ([_selectableText _hasMarkedText] && objc_msgSend(v3, "hasEditableMarkedText"))
     {
-      v13 = [v10 markedTextRange];
-      [v10 firstRectForRange:v13];
-      [v4 setFrame:?];
+      markedTextRange = [_selectableText markedTextRange];
+      [_selectableText firstRectForRange:markedTextRange];
+      [markedTextOverlay setFrame:?];
 
-      v14 = [v10 textInputView];
-      [v14 addSubview:v4];
+      textInputView = [_selectableText textInputView];
+      [textInputView addSubview:markedTextOverlay];
 
-      v15 = [[UITextPhraseBoundaryInteraction alloc] initWithTextInput:v10];
-      [v4 addInteraction:v15];
+      v15 = [[UITextPhraseBoundaryInteraction alloc] initWithTextInput:_selectableText];
+      [markedTextOverlay addInteraction:v15];
     }
   }
 }
 
-- (void)_setMarkedText:(id)a3 selectedRange:(_NSRange)a4
+- (void)_setMarkedText:(id)text selectedRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v7 = MEMORY[0x1E696AAB0];
-  v8 = a3;
-  v9 = [[v7 alloc] initWithString:v8];
+  textCopy = text;
+  v9 = [[v7 alloc] initWithString:textCopy];
 
   [(UIResponder *)self _setAttributedMarkedText:v9 selectedRange:location, length];
 }
 
-- (void)_setAttributedMarkedText:(id)a3 selectedRange:(_NSRange)a4
+- (void)_setAttributedMarkedText:(id)text selectedRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v7 = a3;
-  v26 = [(UIResponder *)self _selectableText];
-  v8 = [(UIResponder *)self _hasMarkedText];
+  length = range.length;
+  location = range.location;
+  textCopy = text;
+  _selectableText = [(UIResponder *)self _selectableText];
+  _hasMarkedText = [(UIResponder *)self _hasMarkedText];
   if (objc_opt_respondsToSelector())
   {
-    [v26 setAttributedMarkedText:v7 selectedRange:{location, length}];
+    [_selectableText setAttributedMarkedText:textCopy selectedRange:{location, length}];
   }
 
   else
   {
-    v9 = [v7 string];
+    string = [textCopy string];
 
-    [v26 setMarkedText:v9 selectedRange:{location, length}];
-    v7 = v9;
+    [_selectableText setMarkedText:string selectedRange:{location, length}];
+    textCopy = string;
   }
 
-  v10 = [(UIResponder *)self _hasMarkedText];
-  if (v8 != v10)
+  _hasMarkedText2 = [(UIResponder *)self _hasMarkedText];
+  if (_hasMarkedText != _hasMarkedText2)
   {
     if (+[UITextSelectionDisplayInteraction isModernSelectionViewEnabled])
     {
-      v11 = [v26 _selectionDisplayInteraction];
-      v12 = v26;
-      v13 = v11;
+      _selectionDisplayInteraction = [_selectableText _selectionDisplayInteraction];
+      v12 = _selectableText;
+      markedTextOverlay = _selectionDisplayInteraction;
     }
 
     else
     {
-      v13 = 0;
-      v12 = v26;
+      markedTextOverlay = 0;
+      v12 = _selectableText;
     }
 
     [v12 _setGestureRecognizers];
-    v18 = [(UIResponder *)self _textSelectingContainer];
-    v19 = [v18 interactionAssistant];
-    if (v19)
+    _textSelectingContainer = [(UIResponder *)self _textSelectingContainer];
+    interactionAssistant = [_textSelectingContainer interactionAssistant];
+    if (interactionAssistant)
     {
-      v20 = v19;
-      v21 = [(UIResponder *)self _textSelectingContainer];
-      v22 = [v21 interactionAssistant];
-      v23 = [v22 externalInteractions];
+      v20 = interactionAssistant;
+      _textSelectingContainer2 = [(UIResponder *)self _textSelectingContainer];
+      interactionAssistant2 = [_textSelectingContainer2 interactionAssistant];
+      externalInteractions = [interactionAssistant2 externalInteractions];
 
-      if (v23)
+      if (externalInteractions)
       {
-        v24 = [(UIResponder *)self _textSelectingContainer];
-        v25 = [v24 interactionAssistant];
-        [v25 deactivateSelection];
+        _textSelectingContainer3 = [(UIResponder *)self _textSelectingContainer];
+        interactionAssistant3 = [_textSelectingContainer3 interactionAssistant];
+        [interactionAssistant3 deactivateSelection];
 
-        [v26 _setSelectionDisplayInteraction:v13];
+        [_selectableText _setSelectionDisplayInteraction:markedTextOverlay];
       }
     }
 
@@ -5695,19 +5695,19 @@ LABEL_8:
     goto LABEL_15;
   }
 
-  if (v10)
+  if (_hasMarkedText2)
   {
-    v14 = [(UIResponder *)self _textSelectingContainer];
-    v15 = [v14 interactionAssistant];
+    _textSelectingContainer4 = [(UIResponder *)self _textSelectingContainer];
+    interactionAssistant4 = [_textSelectingContainer4 interactionAssistant];
 
-    if (!v15)
+    if (!interactionAssistant4)
     {
       v16 = +[UIKeyboardImpl activeInstance];
-      v13 = [v16 markedTextOverlay];
+      markedTextOverlay = [v16 markedTextOverlay];
 
-      v17 = [v26 markedTextRange];
-      [v26 firstRectForRange:v17];
-      [v13 setFrame:?];
+      markedTextRange = [_selectableText markedTextRange];
+      [_selectableText firstRectForRange:markedTextRange];
+      [markedTextOverlay setFrame:?];
 
 LABEL_15:
     }
@@ -5716,41 +5716,41 @@ LABEL_15:
 
 - (void)_unmarkText
 {
-  v15 = [(UIResponder *)self _selectableText];
-  v3 = [(UIResponder *)self _hasMarkedText];
-  [v15 unmarkText];
-  if (v3)
+  _selectableText = [(UIResponder *)self _selectableText];
+  _hasMarkedText = [(UIResponder *)self _hasMarkedText];
+  [_selectableText unmarkText];
+  if (_hasMarkedText)
   {
     if (+[UITextSelectionDisplayInteraction isModernSelectionViewEnabled])
     {
-      v4 = [v15 _selectionDisplayInteraction];
-      v5 = v15;
-      v6 = v4;
+      _selectionDisplayInteraction = [_selectableText _selectionDisplayInteraction];
+      v5 = _selectableText;
+      v6 = _selectionDisplayInteraction;
     }
 
     else
     {
       v6 = 0;
-      v5 = v15;
+      v5 = _selectableText;
     }
 
     [v5 _setGestureRecognizers];
-    v7 = [(UIResponder *)self _textSelectingContainer];
-    v8 = [v7 interactionAssistant];
-    if (v8)
+    _textSelectingContainer = [(UIResponder *)self _textSelectingContainer];
+    interactionAssistant = [_textSelectingContainer interactionAssistant];
+    if (interactionAssistant)
     {
-      v9 = v8;
-      v10 = [(UIResponder *)self _textSelectingContainer];
-      v11 = [v10 interactionAssistant];
-      v12 = [v11 externalInteractions];
+      v9 = interactionAssistant;
+      _textSelectingContainer2 = [(UIResponder *)self _textSelectingContainer];
+      interactionAssistant2 = [_textSelectingContainer2 interactionAssistant];
+      externalInteractions = [interactionAssistant2 externalInteractions];
 
-      if (v12)
+      if (externalInteractions)
       {
-        v13 = [(UIResponder *)self _textSelectingContainer];
-        v14 = [v13 interactionAssistant];
-        [v14 deactivateSelection];
+        _textSelectingContainer3 = [(UIResponder *)self _textSelectingContainer];
+        interactionAssistant3 = [_textSelectingContainer3 interactionAssistant];
+        [interactionAssistant3 deactivateSelection];
 
-        [v15 _setSelectionDisplayInteraction:v6];
+        [_selectableText _setSelectionDisplayInteraction:v6];
       }
     }
 
@@ -5760,31 +5760,31 @@ LABEL_15:
   }
 }
 
-- (BOOL)_shouldPerformUICalloutBarButtonReplaceAction:(SEL)a3 forText:(id)a4 checkAutocorrection:(BOOL)a5
+- (BOOL)_shouldPerformUICalloutBarButtonReplaceAction:(SEL)action forText:(id)text checkAutocorrection:(BOOL)autocorrection
 {
-  v5 = a5;
-  v7 = a4;
-  v8 = v7;
-  if (sel_promptForReplace_ != a3 && sel__promptForReplace_ != a3)
+  autocorrectionCopy = autocorrection;
+  textCopy = text;
+  v8 = textCopy;
+  if (sel_promptForReplace_ != action && sel__promptForReplace_ != action)
   {
-    if (sel__transliterateChinese_ == a3)
+    if (sel__transliterateChinese_ == action)
     {
-      v14 = UIKeyboardEnabledInputModesAllowChineseTransliterationForText(v7);
+      v14 = UIKeyboardEnabledInputModesAllowChineseTransliterationForText(textCopy);
       goto LABEL_13;
     }
 
     goto LABEL_11;
   }
 
-  if (v5 && (+[UIKeyboardImpl activeInstance](UIKeyboardImpl, "activeInstance"), v10 = objc_claimAutoreleasedReturnValue(), v11 = [v10 autocorrectSpellingEnabled], v10, !v11) || (objc_msgSend(v8, "_containsCJScriptsOnly") & 1) != 0)
+  if (autocorrectionCopy && (+[UIKeyboardImpl activeInstance](UIKeyboardImpl, "activeInstance"), v10 = objc_claimAutoreleasedReturnValue(), v11 = [v10 autocorrectSpellingEnabled], v10, !v11) || (objc_msgSend(v8, "_containsCJScriptsOnly") & 1) != 0)
   {
 LABEL_11:
     v14 = 0;
     goto LABEL_13;
   }
 
-  v12 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-  v13 = [v8 componentsSeparatedByCharactersInSet:v12];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+  v13 = [v8 componentsSeparatedByCharactersInSet:whitespaceAndNewlineCharacterSet];
 
   v14 = [v13 count] < 8;
 LABEL_13:
@@ -5792,27 +5792,27 @@ LABEL_13:
   return v14;
 }
 
-- (CGRect)_lastRectForRange:(id)a3
+- (CGRect)_lastRectForRange:(id)range
 {
-  v4 = a3;
-  v5 = [(UIResponder *)self _selectableText];
-  v6 = [v5 tokenizer];
-  v7 = [v4 end];
-  v8 = [v6 positionFromPosition:v7 toBoundary:4 inDirection:1];
+  rangeCopy = range;
+  _selectableText = [(UIResponder *)self _selectableText];
+  tokenizer = [_selectableText tokenizer];
+  v7 = [rangeCopy end];
+  v8 = [tokenizer positionFromPosition:v7 toBoundary:4 inDirection:1];
 
   if (v8)
   {
-    v9 = [v4 start];
-    if ([v5 comparePosition:v9 toPosition:v8] < 0)
+    start = [rangeCopy start];
+    if ([_selectableText comparePosition:start toPosition:v8] < 0)
     {
-      v10 = [v4 end];
-      v11 = [v5 comparePosition:v8 toPosition:v10];
+      v10 = [rangeCopy end];
+      v11 = [_selectableText comparePosition:v8 toPosition:v10];
 
       if (v11 < 0)
       {
-        v24 = [v4 end];
-        v25 = [v5 textRangeFromPosition:v8 toPosition:v24];
-        [v5 firstRectForRange:v25];
+        v24 = [rangeCopy end];
+        v25 = [_selectableText textRangeFromPosition:v8 toPosition:v24];
+        [_selectableText firstRectForRange:v25];
         v13 = v26;
         v15 = v27;
         v17 = v28;
@@ -5827,7 +5827,7 @@ LABEL_13:
     }
   }
 
-  [v5 firstRectForRange:v4];
+  [_selectableText firstRectForRange:rangeCopy];
   v13 = v12;
   v15 = v14;
   v17 = v16;
@@ -5847,26 +5847,26 @@ LABEL_6:
 
 - (id)textInputView
 {
-  v2 = [(UIResponder *)self nextResponder];
-  v3 = [v2 textInputView];
+  nextResponder = [(UIResponder *)self nextResponder];
+  textInputView = [nextResponder textInputView];
 
-  return v3;
+  return textInputView;
 }
 
-- (void)_setSelectionDisplayInteraction:(id)a3
+- (void)_setSelectionDisplayInteraction:(id)interaction
 {
-  v4 = [_UITextInputImplicitObjectWrapper wrapperForObject:a3];
+  v4 = [_UITextInputImplicitObjectWrapper wrapperForObject:interaction];
   objc_setAssociatedObject(self, &_UITextInputImplicitSelectionDisplayInteractionKey, v4, 1);
 }
 
-- (void)__createInteractionAssistantIfNecessaryWithMode:(int64_t)a3
+- (void)__createInteractionAssistantIfNecessaryWithMode:(int64_t)mode
 {
   v5 = objc_getAssociatedObject(self, &_UITextInputImplicitInteractionAssistantKey);
   if (!v5)
   {
     if ([(UIResponder *)self conformsToProtocol:&unk_1EFE8B2D0])
     {
-      v6 = [[UITextInteractionAssistant alloc] initWithView:self textInteractionMode:a3];
+      v6 = [[UITextInteractionAssistant alloc] initWithView:self textInteractionMode:mode];
       objc_setAssociatedObject(self, &_UITextInputImplicitInteractionAssistantKey, v6, 1);
       v5 = v6;
     }
@@ -5891,9 +5891,9 @@ LABEL_6:
   if (v2)
   {
     v5 = v2;
-    v4 = [v2 isValid];
+    isValid = [v2 isValid];
     v3 = v5;
-    if ((v4 & 1) == 0)
+    if ((isValid & 1) == 0)
     {
       [v5 activate];
       v3 = v5;
@@ -5909,19 +5909,19 @@ LABEL_6:
 
 - (id)__textInteractionFromAssistant
 {
-  v2 = [(UIResponder *)self interactionAssistant];
-  v3 = [v2 interactions];
+  interactionAssistant = [(UIResponder *)self interactionAssistant];
+  interactions = [interactionAssistant interactions];
 
-  return v3;
+  return interactions;
 }
 
 - (BOOL)isEditable
 {
-  v2 = [(UIResponder *)self __textInteractionFromAssistant];
-  v3 = v2;
-  if (v2)
+  __textInteractionFromAssistant = [(UIResponder *)self __textInteractionFromAssistant];
+  v3 = __textInteractionFromAssistant;
+  if (__textInteractionFromAssistant)
   {
-    v4 = [v2 textInteractionMode] != 1;
+    v4 = [__textInteractionFromAssistant textInteractionMode] != 1;
   }
 
   else
@@ -5934,13 +5934,13 @@ LABEL_6:
 
 - (CGRect)_caretRect
 {
-  v2 = [(UIResponder *)self _asTextSelection];
-  v3 = [v2 selectedTextRange];
-  v4 = [v3 start];
+  _asTextSelection = [(UIResponder *)self _asTextSelection];
+  selectedTextRange = [_asTextSelection selectedTextRange];
+  start = [selectedTextRange start];
 
-  if (v4)
+  if (start)
   {
-    [v2 caretRectForPosition:v4];
+    [_asTextSelection caretRectForPosition:start];
     v6 = v5;
     v8 = v7;
     v10 = v9;
@@ -5966,73 +5966,73 @@ LABEL_6:
   return result;
 }
 
-- (BOOL)_containsResponder:(id)a3
+- (BOOL)_containsResponder:(id)responder
 {
-  v4 = a3;
-  while (v4)
+  responderCopy = responder;
+  while (responderCopy)
   {
-    if (v4 == self)
+    if (responderCopy == self)
     {
       break;
     }
 
-    v5 = v4;
-    v4 = [(UIResponder *)v4 nextResponder];
+    v5 = responderCopy;
+    responderCopy = [(UIResponder *)responderCopy nextResponder];
   }
 
-  return v4 == self;
+  return responderCopy == self;
 }
 
-- (BOOL)_finishResignFirstResponderFromBecomeFirstResponder:(BOOL)a3
+- (BOOL)_finishResignFirstResponderFromBecomeFirstResponder:(BOOL)responder
 {
-  v3 = a3;
-  v5 = [(UIResponder *)self _responderWindow];
-  if (!v5)
+  responderCopy = responder;
+  _responderWindow = [(UIResponder *)self _responderWindow];
+  if (!_responderWindow)
   {
     v6 = +[UIWindow _applicationKeyWindow];
-    v7 = [v6 windowScene];
-    v8 = [v7 keyboardSceneDelegate];
-    v9 = [v8 responder];
+    windowScene = [v6 windowScene];
+    keyboardSceneDelegate = [windowScene keyboardSceneDelegate];
+    responder = [keyboardSceneDelegate responder];
 
-    if (v9 == self)
+    if (responder == self)
     {
-      v5 = v6;
+      _responderWindow = v6;
     }
 
     else
     {
-      v5 = 0;
+      _responderWindow = 0;
     }
   }
 
-  v10 = [v5 windowScene];
-  v11 = [v10 keyboardSceneDelegate];
+  windowScene2 = [_responderWindow windowScene];
+  keyboardSceneDelegate2 = [windowScene2 keyboardSceneDelegate];
 
-  v12 = [v11 responder];
-  if (!v12 || ![v11 _isTrackingResponder:self])
+  responder2 = [keyboardSceneDelegate2 responder];
+  if (!responder2 || ![keyboardSceneDelegate2 _isTrackingResponder:self])
   {
     goto LABEL_14;
   }
 
-  if ([v11 _isTrackingResponder:self])
+  if ([keyboardSceneDelegate2 _isTrackingResponder:self])
   {
-    v13 = [(UIResponder *)self _window];
-    v14 = [v12 _window];
-    v15 = v14;
-    if (v13 != v14)
+    _window = [(UIResponder *)self _window];
+    _window2 = [responder2 _window];
+    v15 = _window2;
+    if (_window != _window2)
     {
 
       goto LABEL_12;
     }
 
-    v16 = [(UIResponder *)self _disableAutomaticKeyboardBehavior];
+    _disableAutomaticKeyboardBehavior = [(UIResponder *)self _disableAutomaticKeyboardBehavior];
 
-    if (v16)
+    if (_disableAutomaticKeyboardBehavior)
     {
       goto LABEL_12;
     }
 
-    [v11 _reloadInputViewsForResponder:0 fromBecomeFirstResponder:v3];
+    [keyboardSceneDelegate2 _reloadInputViewsForResponder:0 fromBecomeFirstResponder:responderCopy];
 LABEL_14:
     v17 = 1;
     goto LABEL_15;
@@ -6049,28 +6049,28 @@ LABEL_15:
 
 - (id)_textServicesResponderProxy
 {
-  v2 = [(UIResponder *)self __textInteractionFromAssistant];
-  v3 = [v2 interactionWithClass:objc_opt_class()];
+  __textInteractionFromAssistant = [(UIResponder *)self __textInteractionFromAssistant];
+  v3 = [__textInteractionFromAssistant interactionWithClass:objc_opt_class()];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 responder];
+    responder = [v3 responder];
   }
 
   else
   {
-    v5 = 0;
+    responder = 0;
   }
 
-  return v5;
+  return responder;
 }
 
-- (void)_setStoredActivityItemsConfiguration:(_WORD *)a1
+- (void)_setStoredActivityItemsConfiguration:(_WORD *)configuration
 {
-  if (a1)
+  if (configuration)
   {
-    a1[4] = a1[4] & 0xFFDF | (32 * (value != 0));
-    objc_setAssociatedObject(a1, &_UIActivityItemsConfigurationKey, value, 1);
+    configuration[4] = configuration[4] & 0xFFDF | (32 * (value != 0));
+    objc_setAssociatedObject(configuration, &_UIActivityItemsConfigurationKey, value, 1);
   }
 }
 
@@ -6082,13 +6082,13 @@ LABEL_15:
     v18 = [UIResponder instanceMethodForSelector:sel_canPasteItemProviders_];
     if (v18 == [(UIResponder *)self methodForSelector:sel_canPasteItemProviders_])
     {
-      v23 = [(UIResponder *)self _effectivePasteConfiguration];
-      if (v23)
+      _effectivePasteConfiguration = [(UIResponder *)self _effectivePasteConfiguration];
+      if (_effectivePasteConfiguration)
       {
-        v24 = v23;
+        v24 = _effectivePasteConfiguration;
         v25 = +[UIPasteboard generalPasteboard];
-        v26 = [v25 itemProviders];
-        v27 = _UICanPasteItemProviders(v24, v26);
+        itemProviders = [v25 itemProviders];
+        v27 = _UICanPasteItemProviders(v24, itemProviders);
 
         if (v27)
         {
@@ -6100,8 +6100,8 @@ LABEL_15:
     else
     {
       v19 = +[UIPasteboard generalPasteboard];
-      v20 = [v19 itemProviders];
-      v21 = [(UIResponder *)self canPasteItemProviders:v20];
+      itemProviders2 = [v19 itemProviders];
+      v21 = [(UIResponder *)self canPasteItemProviders:itemProviders2];
 
       if (v21)
       {
@@ -6119,9 +6119,9 @@ LABEL_42:
 
   if (sel__define_ == action || sel_define_ == action || sel__lookup_ == action || sel_lookup_ == action || sel__translate_ == action || sel__share_ == action || sel_share_ == action || sel__addShortcut_ == action || sel_addShortcut_ == action)
   {
-    v15 = [(UIResponder *)self _textServicesResponderProxy];
-    v16 = v15;
-    v17 = v15 && ([v15 canPerformAction:action withSender:v6] & 1) != 0;
+    _textServicesResponderProxy = [(UIResponder *)self _textServicesResponderProxy];
+    v16 = _textServicesResponderProxy;
+    v17 = _textServicesResponderProxy && ([_textServicesResponderProxy canPerformAction:action withSender:v6] & 1) != 0;
   }
 
   else
@@ -6134,20 +6134,20 @@ LABEL_42:
         goto LABEL_47;
       }
 
-      v22 = [(UIResponder *)self _requiresKeyboardWhenFirstResponder];
+      _requiresKeyboardWhenFirstResponder = [(UIResponder *)self _requiresKeyboardWhenFirstResponder];
     }
 
     else if (sel_showWritingTools_ == action)
     {
-      v22 = [(UIResponder *)self _shouldDisplayWritingToolsCalloutBarItem];
+      _requiresKeyboardWhenFirstResponder = [(UIResponder *)self _shouldDisplayWritingToolsCalloutBarItem];
     }
 
     else
     {
-      v22 = objc_opt_respondsToSelector();
+      _requiresKeyboardWhenFirstResponder = objc_opt_respondsToSelector();
     }
 
-    v17 = v22;
+    v17 = _requiresKeyboardWhenFirstResponder;
   }
 
 LABEL_47:
@@ -6155,34 +6155,34 @@ LABEL_47:
   return v17;
 }
 
-- (id)_targetCanPerformBlock:(id)a3
+- (id)_targetCanPerformBlock:(id)block
 {
-  v4 = a3;
-  if (v4[2](v4, self))
+  blockCopy = block;
+  if (blockCopy[2](blockCopy, self))
   {
-    v5 = self;
+    selfCopy = self;
   }
 
   else if ([(UIResponder *)self __isKindOfUIResponder])
   {
-    v6 = [(UIResponder *)self nextResponder];
+    nextResponder = [(UIResponder *)self nextResponder];
     if (objc_opt_respondsToSelector())
     {
-      v5 = [v6 _targetCanPerformBlock:v4];
+      selfCopy = [nextResponder _targetCanPerformBlock:blockCopy];
     }
 
     else
     {
-      v5 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (void)validateCommand:(UICommand *)command
@@ -6190,12 +6190,12 @@ LABEL_47:
   v8 = command;
   if ([(UICommand *)v8 action]== sel_undo_)
   {
-    v4 = [(UIResponder *)self _undoManagerForValidatingUndoRedoCommands];
-    v5 = [v4 undoMenuItemTitle];
-    if (v5)
+    _undoManagerForValidatingUndoRedoCommands = [(UIResponder *)self _undoManagerForValidatingUndoRedoCommands];
+    undoMenuItemTitle = [_undoManagerForValidatingUndoRedoCommands undoMenuItemTitle];
+    if (undoMenuItemTitle)
     {
 LABEL_9:
-      [(UICommand *)v8 setTitle:v5];
+      [(UICommand *)v8 setTitle:undoMenuItemTitle];
 LABEL_12:
 
       goto LABEL_13;
@@ -6211,9 +6211,9 @@ LABEL_11:
 
   if ([(UICommand *)v8 action]== sel_redo_)
   {
-    v4 = [(UIResponder *)self _undoManagerForValidatingUndoRedoCommands];
-    v5 = [v4 redoMenuItemTitle];
-    if (v5)
+    _undoManagerForValidatingUndoRedoCommands = [(UIResponder *)self _undoManagerForValidatingUndoRedoCommands];
+    undoMenuItemTitle = [_undoManagerForValidatingUndoRedoCommands redoMenuItemTitle];
+    if (undoMenuItemTitle)
     {
       goto LABEL_9;
     }
@@ -6224,71 +6224,71 @@ LABEL_11:
 
   if ([(UICommand *)v8 action]== sel_captureTextFromCamera_ && [(UIResponder *)self _conformsToProtocolUIKeyInput])
   {
-    v4 = [UIAction _textFromCameraTitleForResponder:self];
-    [(UICommand *)v8 setTitle:v4];
+    _undoManagerForValidatingUndoRedoCommands = [UIAction _textFromCameraTitleForResponder:self];
+    [(UICommand *)v8 setTitle:_undoManagerForValidatingUndoRedoCommands];
 LABEL_13:
   }
 }
 
-- (void)_define:(id)a3
+- (void)_define:(id)_define
 {
-  v4 = a3;
-  v5 = [(UIResponder *)self _textServicesResponderProxy];
-  [v5 _define:v4];
+  _defineCopy = _define;
+  _textServicesResponderProxy = [(UIResponder *)self _textServicesResponderProxy];
+  [_textServicesResponderProxy _define:_defineCopy];
 }
 
-- (void)_lookup:(id)a3
+- (void)_lookup:(id)_lookup
 {
-  v4 = a3;
-  v5 = [(UIResponder *)self _textServicesResponderProxy];
-  [v5 _lookup:v4];
+  _lookupCopy = _lookup;
+  _textServicesResponderProxy = [(UIResponder *)self _textServicesResponderProxy];
+  [_textServicesResponderProxy _lookup:_lookupCopy];
 }
 
-- (void)_translate:(id)a3
+- (void)_translate:(id)_translate
 {
-  v4 = a3;
-  v5 = [(UIResponder *)self _textServicesResponderProxy];
-  [v5 _translate:v4];
+  _translateCopy = _translate;
+  _textServicesResponderProxy = [(UIResponder *)self _textServicesResponderProxy];
+  [_textServicesResponderProxy _translate:_translateCopy];
 }
 
-- (void)_share:(id)a3
+- (void)_share:(id)_share
 {
-  v5 = a3;
+  _shareCopy = _share;
   if (![(UIResponder *)self _handleActivityItemsConfigurationShare:?])
   {
-    v4 = [(UIResponder *)self _textServicesResponderProxy];
-    [v4 _share:v5];
+    _textServicesResponderProxy = [(UIResponder *)self _textServicesResponderProxy];
+    [_textServicesResponderProxy _share:_shareCopy];
   }
 }
 
-- (void)_addShortcut:(id)a3
+- (void)_addShortcut:(id)shortcut
 {
-  v4 = a3;
-  v5 = [(UIResponder *)self _textServicesResponderProxy];
-  [v5 _addShortcut:v4];
+  shortcutCopy = shortcut;
+  _textServicesResponderProxy = [(UIResponder *)self _textServicesResponderProxy];
+  [_textServicesResponderProxy _addShortcut:shortcutCopy];
 }
 
-- (void)doesNotRecognizeSelector:(SEL)a3
+- (void)doesNotRecognizeSelector:(SEL)selector
 {
-  if (dyld_program_sdk_at_least() && sel_paste_ == a3 && ([(UIResponder *)self _effectivePasteConfiguration], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
+  if (dyld_program_sdk_at_least() && sel_paste_ == selector && ([(UIResponder *)self _effectivePasteConfiguration], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
   {
     if (objc_opt_respondsToSelector())
     {
-      v6 = [(UIResponder *)self _dataOwnerForPaste];
+      _dataOwnerForPaste = [(UIResponder *)self _dataOwnerForPaste];
       v8[0] = MEMORY[0x1E69E9820];
       v8[1] = 3221225472;
       v8[2] = __40__UIResponder_doesNotRecognizeSelector___block_invoke;
       v8[3] = &unk_1E70F3590;
       v8[4] = self;
-      [UIPasteboard _performAsDataOwner:v6 block:v8];
+      [UIPasteboard _performAsDataOwner:_dataOwnerForPaste block:v8];
     }
   }
 
-  else if (![(UIResponder *)self _handleActivityItemsConfigurationDoesNotHandleSelector:a3])
+  else if (![(UIResponder *)self _handleActivityItemsConfigurationDoesNotHandleSelector:selector])
   {
     v7.receiver = self;
     v7.super_class = UIResponder;
-    [(UIResponder *)&v7 doesNotRecognizeSelector:a3];
+    [(UIResponder *)&v7 doesNotRecognizeSelector:selector];
   }
 }
 
@@ -6300,38 +6300,38 @@ void __40__UIResponder_doesNotRecognizeSelector___block_invoke(uint64_t a1)
   [v1 pasteItemProviders:v2];
 }
 
-+ (BOOL)_callBecomeFirstResponder:(id)a3 withIntent:(unint64_t)a4
++ (BOOL)_callBecomeFirstResponder:(id)responder withIntent:(unint64_t)intent
 {
-  v7 = a3;
+  responderCopy = responder;
   if (pthread_main_np() != 1)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:a1 file:@"UIResponder.m" lineNumber:895 description:@"Call must be made on main thread"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIResponder.m" lineNumber:895 description:@"Call must be made on main thread"];
   }
 
   v8 = __changeIntent;
-  __changeIntent = a4;
-  v9 = [v7 becomeFirstResponder];
+  __changeIntent = intent;
+  becomeFirstResponder = [responderCopy becomeFirstResponder];
   __changeIntent = v8;
 
-  return v9;
+  return becomeFirstResponder;
 }
 
-+ (BOOL)_callResignFirstResponder:(id)a3 withIntent:(unint64_t)a4
++ (BOOL)_callResignFirstResponder:(id)responder withIntent:(unint64_t)intent
 {
-  v7 = a3;
+  responderCopy = responder;
   if (pthread_main_np() != 1)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:a1 file:@"UIResponder.m" lineNumber:908 description:@"Call must be made on main thread"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIResponder.m" lineNumber:908 description:@"Call must be made on main thread"];
   }
 
   v8 = __changeIntent;
-  __changeIntent = a4;
-  v9 = [v7 resignFirstResponder];
+  __changeIntent = intent;
+  resignFirstResponder = [responderCopy resignFirstResponder];
   __changeIntent = v8;
 
-  return v9;
+  return resignFirstResponder;
 }
 
 - (id)_currentOverrideHost
@@ -6381,13 +6381,13 @@ void __40__UIResponder_doesNotRecognizeSelector___block_invoke(uint64_t a1)
 - (id)_captureOverrideState
 {
   v8[2] = *MEMORY[0x1E69E9840];
-  v2 = [(UIResponder *)self _currentOverrideClient];
-  v3 = [v2 target];
-  v4 = [v2 types];
-  if (v3)
+  _currentOverrideClient = [(UIResponder *)self _currentOverrideClient];
+  target = [_currentOverrideClient target];
+  types = [_currentOverrideClient types];
+  if (target)
   {
-    v8[0] = v3;
-    v5 = [MEMORY[0x1E696AD98] numberWithInteger:v4];
+    v8[0] = target;
+    v5 = [MEMORY[0x1E696AD98] numberWithInteger:types];
     v8[1] = v5;
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:2];
   }
@@ -6400,13 +6400,13 @@ void __40__UIResponder_doesNotRecognizeSelector___block_invoke(uint64_t a1)
   return v6;
 }
 
-- (void)_restoreOverrideState:(id)a3
+- (void)_restoreOverrideState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   if ((*&self->_responderFlags & 1) == 0)
   {
-    v9 = v4;
-    v5 = v4;
+    v9 = stateCopy;
+    v5 = stateCopy;
     if (v5)
     {
       objc_opt_class();
@@ -6421,22 +6421,22 @@ void __40__UIResponder_doesNotRecognizeSelector___block_invoke(uint64_t a1)
       }
     }
 
-    v4 = v9;
+    stateCopy = v9;
   }
 }
 
-- (void)_preserveResponderOverridesWhilePerforming:(id)a3
+- (void)_preserveResponderOverridesWhilePerforming:(id)performing
 {
-  v9 = a3;
+  performingCopy = performing;
   v4 = objc_autoreleasePoolPush();
-  v5 = [(UIResponder *)self _currentOverrideClient];
-  v6 = [v5 target];
-  v7 = [v5 types];
+  _currentOverrideClient = [(UIResponder *)self _currentOverrideClient];
+  target = [_currentOverrideClient target];
+  types = [_currentOverrideClient types];
 
-  v9[2]();
-  if (v6 && (*&self->_responderFlags & 1) == 0)
+  performingCopy[2]();
+  if (target && (*&self->_responderFlags & 1) == 0)
   {
-    v8 = [_UIResponder_Override overrideForResponder:self withTarget:v6 forType:v7];
+    v8 = [_UIResponder_Override overrideForResponder:self withTarget:target forType:types];
     objc_setAssociatedObject(self, &_MergedGlobals_1256, v8, 1);
     *&self->_responderFlags |= 1u;
   }
@@ -6444,15 +6444,15 @@ void __40__UIResponder_doesNotRecognizeSelector___block_invoke(uint64_t a1)
   objc_autoreleasePoolPop(v4);
 }
 
-- (void)_overrideNextResponderWithResponder:(id)a3 forType:(int64_t)a4
+- (void)_overrideNextResponderWithResponder:(id)responder forType:(int64_t)type
 {
-  v9 = a3;
+  responderCopy = responder;
   v6 = objc_autoreleasePoolPush();
-  if (![(UIResponder *)self _containsResponder:v9])
+  if (![(UIResponder *)self _containsResponder:responderCopy])
   {
-    if (v9)
+    if (responderCopy)
     {
-      v7 = [_UIResponder_Override overrideForResponder:self withTarget:v9 forType:a4];
+      v7 = [_UIResponder_Override overrideForResponder:self withTarget:responderCopy forType:type];
     }
 
     else
@@ -6475,16 +6475,16 @@ void __40__UIResponder_doesNotRecognizeSelector___block_invoke(uint64_t a1)
 
 - (id)recentsAccessoryView
 {
-  v2 = [(UIResponder *)self nextResponder];
-  v3 = [v2 recentsAccessoryView];
+  nextResponder = [(UIResponder *)self nextResponder];
+  recentsAccessoryView = [nextResponder recentsAccessoryView];
 
-  return v3;
+  return recentsAccessoryView;
 }
 
-- (id)_keyboardShortcutInvocationForKeyboardEvent:(id)a3
+- (id)_keyboardShortcutInvocationForKeyboardEvent:(id)event
 {
-  v4 = a3;
-  if ([v4 type] == 4)
+  eventCopy = event;
+  if ([eventCopy type] == 4)
   {
     v58 = 0;
     v59 = &v58;
@@ -6533,7 +6533,7 @@ void __40__UIResponder_doesNotRecognizeSelector___block_invoke(uint64_t a1)
     v22[1] = 3221225472;
     v22[2] = __59__UIResponder__keyboardShortcutInvocationForKeyboardEvent___block_invoke_2;
     v22[3] = &unk_1E711E1A8;
-    v8 = v4;
+    v8 = eventCopy;
     v23 = v8;
     v25 = &v33;
     v9 = v7;
@@ -6696,17 +6696,17 @@ void __59__UIResponder__keyboardShortcutInvocationForKeyboardEvent___block_invok
   }
 }
 
-- (void)_enumerateKeyboardShortcutsInChainWithOptions:(unint64_t)a3 usingBlock:(id)a4
+- (void)_enumerateKeyboardShortcutsInChainWithOptions:(unint64_t)options usingBlock:(id)block
 {
-  v4 = a3;
+  optionsCopy = options;
   v75 = *MEMORY[0x1E69E9840];
-  v54 = a4;
+  blockCopy = block;
   if (qword_1ED4A0038 != -1)
   {
     dispatch_once(&qword_1ED4A0038, &__block_literal_global_487);
   }
 
-  v6 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (([UIApp _disableLayoutAwareShortcuts] & 1) == 0 && dyld_program_sdk_at_least() && (+[UIDevice currentDevice](UIDevice, "currentDevice"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "_isHardwareKeyboardAvailable"), v7, v8))
   {
     v9 = [UIApp _hardwareKeyboard:0];
@@ -6722,8 +6722,8 @@ void __59__UIResponder__keyboardShortcutInvocationForKeyboardEvent___block_invok
   aBlock[2] = __72__UIResponder__enumerateKeyboardShortcutsInChainWithOptions_usingBlock___block_invoke_2;
   aBlock[3] = &unk_1E711E1F8;
   v68 = v9;
-  v69 = (v4 & 8) != 0;
-  v10 = v6;
+  v69 = (optionsCopy & 8) != 0;
+  v10 = dictionary;
   v67 = v10;
   v11 = _Block_copy(aBlock);
   v63[0] = MEMORY[0x1E69E9820];
@@ -6732,18 +6732,18 @@ void __59__UIResponder__keyboardShortcutInvocationForKeyboardEvent___block_invok
   v63[3] = &unk_1E711E220;
   v52 = v11;
   v64 = v52;
-  v65 = (v4 & 2) != 0;
+  v65 = (optionsCopy & 2) != 0;
   v12 = _Block_copy(v63);
   v13 = [MEMORY[0x1E696AC70] hashTableWithOptions:517];
-  v14 = self;
-  if (v14)
+  selfCopy = self;
+  if (selfCopy)
   {
-    v15 = v14;
+    v15 = selfCopy;
     while (![v13 containsObject:v15])
     {
       [v13 addObject:v15];
-      v16 = [v15 _keyboardShortcutMenuLeaves];
-      v12[2](v12, v16, v15);
+      _keyboardShortcutMenuLeaves = [v15 _keyboardShortcutMenuLeaves];
+      v12[2](v12, _keyboardShortcutMenuLeaves, v15);
 
       if (byte_1ED4A0030)
       {
@@ -6775,21 +6775,21 @@ void __59__UIResponder__keyboardShortcutInvocationForKeyboardEvent___block_invok
 
 LABEL_19:
   v51 = v13;
-  if ((v4 & 1) == 0)
+  if ((optionsCopy & 1) == 0)
   {
     v20 = +[UIMainMenuSystem sharedSystem];
-    v21 = [v20 _keyCommands];
+    _keyCommands = [v20 _keyCommands];
 
-    v12[2](v12, v21, UIApp);
+    v12[2](v12, _keyCommands, UIApp);
   }
 
-  if ((v4 & 0x20) != 0)
+  if ((optionsCopy & 0x20) != 0)
   {
     v22 = +[UIKeyboardImpl activeInstance];
-    v23 = [v22 inputDelegateManager];
-    v24 = [v23 keyInputDelegate];
+    inputDelegateManager = [v22 inputDelegateManager];
+    keyInputDelegate = [inputDelegateManager keyInputDelegate];
 
-    if (v24)
+    if (keyInputDelegate)
     {
       if (qword_1ED4A0050 != -1)
       {
@@ -6809,11 +6809,11 @@ LABEL_19:
 
   buf[0] = 0;
   v53 = [MEMORY[0x1E695DFA8] set];
-  v25 = [v10 allKeys];
+  allKeys = [v10 allKeys];
   v26 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"self" ascending:0];
   v72 = v26;
   v27 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v72 count:1];
-  v28 = [v25 sortedArrayUsingDescriptors:v27];
+  v28 = [allKeys sortedArrayUsingDescriptors:v27];
 
   v61 = 0u;
   v62 = 0u;
@@ -6824,9 +6824,9 @@ LABEL_19:
   if (v47)
   {
     v30 = *v60;
-    v31 = v4 & 0x14;
+    v31 = optionsCopy & 0x14;
     v45 = *v60;
-    v46 = v4;
+    v46 = optionsCopy;
     v49 = v29;
     v50 = v10;
     do
@@ -6864,23 +6864,23 @@ LABEL_19:
             }
 
             v39 = *(*(&v55 + 1) + 8 * i);
-            v40 = [v39 keyboardShortcutLeaf];
-            v41 = v40;
+            keyboardShortcutLeaf = [v39 keyboardShortcutLeaf];
+            v41 = keyboardShortcutLeaf;
             if (v31 != 16)
             {
-              v42 = [v40 _keyboardShortcut];
-              v43 = [v53 containsObject:v42];
+              _keyboardShortcut = [keyboardShortcutLeaf _keyboardShortcut];
+              v43 = [v53 containsObject:_keyboardShortcut];
 
               if (v43)
               {
                 goto LABEL_43;
               }
 
-              v44 = [v41 _keyboardShortcut];
-              [v53 addObject:v44];
+              _keyboardShortcut2 = [v41 _keyboardShortcut];
+              [v53 addObject:_keyboardShortcut2];
             }
 
-            v54[2](v54, v39, buf);
+            blockCopy[2](blockCopy, v39, buf);
             if (buf[0])
             {
 
@@ -7231,59 +7231,59 @@ void __72__UIResponder__enumerateKeyboardShortcutsInChainWithOptions_usingBlock_
 
 - (BOOL)_enableAutomaticKeyboardPressDone
 {
-  v2 = [(UIResponder *)self nextResponder];
-  v3 = [v2 _enableAutomaticKeyboardPressDone];
+  nextResponder = [(UIResponder *)self nextResponder];
+  _enableAutomaticKeyboardPressDone = [nextResponder _enableAutomaticKeyboardPressDone];
 
-  return v3;
+  return _enableAutomaticKeyboardPressDone;
 }
 
 - (id)_nextResponderThatCanBecomeFirstResponder
 {
-  v2 = self;
-  if (v2)
+  selfCopy = self;
+  if (selfCopy)
   {
     do
     {
-      if ([(UIResponder *)v2 isFirstResponder])
+      if ([(UIResponder *)selfCopy isFirstResponder])
       {
         break;
       }
 
-      if ([(UIResponder *)v2 canBecomeFirstResponder])
+      if ([(UIResponder *)selfCopy canBecomeFirstResponder])
       {
         break;
       }
 
-      v3 = [(UIResponder *)v2 nextResponder];
+      nextResponder = [(UIResponder *)selfCopy nextResponder];
 
-      v2 = v3;
+      selfCopy = nextResponder;
     }
 
-    while (v3);
+    while (nextResponder);
   }
 
-  return v2;
+  return selfCopy;
 }
 
-- (BOOL)_nextResponderChainContainsResponder:(id)a3
+- (BOOL)_nextResponderChainContainsResponder:(id)responder
 {
-  v5 = a3;
-  if (!v5)
+  responderCopy = responder;
+  if (!responderCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"UIResponder.m" lineNumber:1663 description:{@"Invalid parameter not satisfying: %@", @"nextResponder"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIResponder.m" lineNumber:1663 description:{@"Invalid parameter not satisfying: %@", @"nextResponder"}];
   }
 
-  v6 = self;
-  for (i = v6 != 0; v6; i = v6 != 0)
+  selfCopy = self;
+  for (i = selfCopy != 0; selfCopy; i = selfCopy != 0)
   {
-    if (v6 == v5)
+    if (selfCopy == responderCopy)
     {
       break;
     }
 
-    v8 = v6;
-    v6 = [(UIResponder *)v6 nextResponder];
+    v8 = selfCopy;
+    selfCopy = [(UIResponder *)selfCopy nextResponder];
   }
 
   return i;
@@ -7314,43 +7314,43 @@ uint64_t __35__UIResponder__isPinningInputViews__block_invoke(uint64_t a1, void 
   return result;
 }
 
-- (void)_handleKeyEvent:(__GSEvent *)a3
+- (void)_handleKeyEvent:(__GSEvent *)event
 {
-  v4 = [(UIResponder *)self nextResponder];
-  [v4 _handleKeyEvent:a3];
+  nextResponder = [(UIResponder *)self nextResponder];
+  [nextResponder _handleKeyEvent:event];
 }
 
-- (void)_handleKeyUIEvent:(id)a3
+- (void)_handleKeyUIEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(UIResponder *)self nextResponder];
-  [v5 _handleKeyUIEvent:v4];
+  eventCopy = event;
+  nextResponder = [(UIResponder *)self nextResponder];
+  [nextResponder _handleKeyUIEvent:eventCopy];
 }
 
-- (void)_handleGameControllerEvent:(id)a3
+- (void)_handleGameControllerEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(UIResponder *)self nextResponder];
-  [v5 _handleGameControllerEvent:v4];
+  eventCopy = event;
+  nextResponder = [(UIResponder *)self nextResponder];
+  [nextResponder _handleGameControllerEvent:eventCopy];
 }
 
-- (BOOL)_isTransitioningFromView:(id)a3
+- (BOOL)_isTransitioningFromView:(id)view
 {
-  v3 = self;
-  v4 = [(UIResponder *)self nextResponder];
-  LOBYTE(v3) = [v4 _isTransitioningFromView:v3];
+  selfCopy = self;
+  nextResponder = [(UIResponder *)self nextResponder];
+  LOBYTE(selfCopy) = [nextResponder _isTransitioningFromView:selfCopy];
 
-  return v3;
+  return selfCopy;
 }
 
-- (void)_completeForwardingTouches:(id)a3 phase:(int64_t)a4 event:(id)a5 index:(unint64_t)a6
+- (void)_completeForwardingTouches:(id)touches phase:(int64_t)phase event:(id)event index:(unint64_t)index
 {
   v30 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a5;
+  touchesCopy = touches;
+  eventCopy = event;
   if (os_variant_has_internal_diagnostics())
   {
-    if (a4 > 4 || ((1 << a4) & 0x1A) == 0)
+    if (phase > 4 || ((1 << phase) & 0x1A) == 0)
     {
       v25 = __UIFaultDebugAssertLog();
       if (os_log_type_enabled(v25, OS_LOG_TYPE_FAULT))
@@ -7362,7 +7362,7 @@ uint64_t __35__UIResponder__isPinningInputViews__block_invoke(uint64_t a1, void 
     }
   }
 
-  else if (a4 > 4 || ((1 << a4) & 0x1A) == 0)
+  else if (phase > 4 || ((1 << phase) & 0x1A) == 0)
   {
     v21 = *(__UILogGetCategoryCachedImpl("Assert", &qword_1ED4A0068) + 8);
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -7373,11 +7373,11 @@ uint64_t __35__UIResponder__isPinningInputViews__block_invoke(uint64_t a1, void 
     }
   }
 
-  v12 = [(UIResponder *)self nextResponder];
-  v13 = [v10 anyObject];
-  v14 = [v13 _forwardingRecord];
-  v15 = [v14 count];
-  if (v15 <= a6)
+  nextResponder = [(UIResponder *)self nextResponder];
+  anyObject = [touchesCopy anyObject];
+  _forwardingRecord = [anyObject _forwardingRecord];
+  v15 = [_forwardingRecord count];
+  if (v15 <= index)
   {
     goto LABEL_25;
   }
@@ -7385,25 +7385,25 @@ uint64_t __35__UIResponder__isPinningInputViews__block_invoke(uint64_t a1, void 
   v16 = v15;
   while (1)
   {
-    v17 = [v14 objectAtIndex:a6];
+    v17 = [_forwardingRecord objectAtIndex:index];
     v18 = v17;
-    if (v12)
+    if (nextResponder)
     {
-      v19 = [v17 responder];
+      responder = [v17 responder];
 
-      if (v12 == v19)
+      if (nextResponder == responder)
       {
         break;
       }
     }
 
     [v18 setResponder:0];
-    v20 = 0;
+    v12NextResponder = 0;
 LABEL_14:
 
-    ++a6;
-    v12 = v20;
-    if (v16 == a6)
+    ++index;
+    nextResponder = v12NextResponder;
+    if (v16 == index)
     {
       goto LABEL_26;
     }
@@ -7411,7 +7411,7 @@ LABEL_14:
 
   if (!v18)
   {
-    if (a4 > 0)
+    if (phase > 0)
     {
       goto LABEL_21;
     }
@@ -7419,22 +7419,22 @@ LABEL_14:
     goto LABEL_13;
   }
 
-  if (v18[3] >= a4 && (a4 != 1 || v18[4] != 1))
+  if (v18[3] >= phase && (phase != 1 || v18[4] != 1))
   {
 LABEL_13:
-    v20 = [v12 nextResponder];
+    v12NextResponder = [nextResponder nextResponder];
     goto LABEL_14;
   }
 
-  v18[3] = a4;
-  v18[4] = a4;
+  v18[3] = phase;
+  v18[4] = phase;
 LABEL_21:
-  v22 = [v18 responder];
+  responder2 = [v18 responder];
 
-  if (v22)
+  if (responder2)
   {
-    v23 = [v13 _eventComponentPhase];
-    v24 = [v13 _responderSelectorForPhase:{objc_msgSend(v23, "value")}];
+    _eventComponentPhase = [anyObject _eventComponentPhase];
+    v24 = [anyObject _responderSelectorForPhase:{objc_msgSend(_eventComponentPhase, "value")}];
 
     if (os_variant_has_internal_diagnostics())
     {
@@ -7461,71 +7461,71 @@ LABEL_21:
       }
     }
 
-    ([v12 methodForSelector:v24])(v22, v24, v10, v11);
-    [v22 _completeForwardingTouches:v10 phase:a4 event:v11 index:a6 + 1];
+    ([nextResponder methodForSelector:v24])(responder2, v24, touchesCopy, eventCopy);
+    [responder2 _completeForwardingTouches:touchesCopy phase:phase event:eventCopy index:index + 1];
   }
 
 LABEL_25:
-  v20 = v12;
+  v12NextResponder = nextResponder;
 LABEL_26:
 }
 
 - (int64_t)_availableTextServices
 {
-  v2 = [(UIResponder *)self nextResponder];
-  v3 = [v2 _availableTextServices];
+  nextResponder = [(UIResponder *)self nextResponder];
+  _availableTextServices = [nextResponder _availableTextServices];
 
-  return v3;
+  return _availableTextServices;
 }
 
-- (id)_showServiceForType:(int64_t)a3 withContext:(id)a4
+- (id)_showServiceForType:(int64_t)type withContext:(id)context
 {
-  v6 = a4;
-  v7 = [(UIResponder *)self nextResponder];
-  v8 = [v7 _showServiceForType:a3 withContext:v6];
+  contextCopy = context;
+  nextResponder = [(UIResponder *)self nextResponder];
+  v8 = [nextResponder _showServiceForType:type withContext:contextCopy];
 
   return v8;
 }
 
-- (id)_showServiceForText:(id)a3 type:(int64_t)a4 fromRect:(CGRect)a5 inView:(id)a6
+- (id)_showServiceForText:(id)text type:(int64_t)type fromRect:(CGRect)rect inView:(id)view
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v13 = a6;
-  v14 = a3;
-  v15 = [(UIResponder *)self nextResponder];
-  v16 = [v15 _showServiceForText:v14 type:a4 fromRect:v13 inView:{x, y, width, height}];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  viewCopy = view;
+  textCopy = text;
+  nextResponder = [(UIResponder *)self nextResponder];
+  v16 = [nextResponder _showServiceForText:textCopy type:type fromRect:viewCopy inView:{x, y, width, height}];
 
   return v16;
 }
 
-- (id)_showServiceForText:(id)a3 selectedTextRange:(_NSRange)a4 type:(int64_t)a5 fromRect:(CGRect)a6 inView:(id)a7
+- (id)_showServiceForText:(id)text selectedTextRange:(_NSRange)range type:(int64_t)type fromRect:(CGRect)rect inView:(id)view
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  length = a4.length;
-  location = a4.location;
-  v16 = a7;
-  v17 = a3;
-  v18 = [(UIResponder *)self nextResponder];
-  v19 = [v18 _showServiceForText:v17 selectedTextRange:location type:length fromRect:a5 inView:{v16, x, y, width, height}];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  length = range.length;
+  location = range.location;
+  viewCopy = view;
+  textCopy = text;
+  nextResponder = [(UIResponder *)self nextResponder];
+  v19 = [nextResponder _showServiceForText:textCopy selectedTextRange:location type:length fromRect:type inView:{viewCopy, x, y, width, height}];
 
   return v19;
 }
 
 - (id)_primaryContentResponder
 {
-  v2 = [(UIResponder *)self nextResponder];
-  v3 = [v2 _primaryContentResponder];
+  nextResponder = [(UIResponder *)self nextResponder];
+  _primaryContentResponder = [nextResponder _primaryContentResponder];
 
-  return v3;
+  return _primaryContentResponder;
 }
 
-- (CGRect)_responderSelectionRectForWindow:(id)a3
+- (CGRect)_responderSelectionRectForWindow:(id)window
 {
   v3 = *MEMORY[0x1E695F058];
   v4 = *(MEMORY[0x1E695F058] + 8);
@@ -7538,11 +7538,11 @@ LABEL_26:
   return result;
 }
 
-- (CGRect)_responderExternalTouchRectForWindow:(id)a3
+- (CGRect)_responderExternalTouchRectForWindow:(id)window
 {
-  if (a3)
+  if (window)
   {
-    [a3 frame];
+    [window frame];
   }
 
   else
@@ -7560,11 +7560,11 @@ LABEL_26:
   return result;
 }
 
-- (id)_responderSelectionContainerViewForResponder:(id)a3
+- (id)_responderSelectionContainerViewForResponder:(id)responder
 {
-  v4 = a3;
-  v5 = [(UIResponder *)self nextResponder];
-  v6 = [v5 _responderSelectionContainerViewForResponder:v4];
+  responderCopy = responder;
+  nextResponder = [(UIResponder *)self nextResponder];
+  v6 = [nextResponder _responderSelectionContainerViewForResponder:responderCopy];
 
   return v6;
 }
@@ -7605,15 +7605,15 @@ void __39__UIResponder__responderSelectionImage__block_invoke()
   qword_1ED4A0078 = v3;
 }
 
-- (BOOL)_canChangeFirstResponder:(id)a3 toResponder:(id)a4
+- (BOOL)_canChangeFirstResponder:(id)responder toResponder:(id)toResponder
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(UIResponder *)self nextResponder];
-  v9 = v8;
-  if (v8)
+  responderCopy = responder;
+  toResponderCopy = toResponder;
+  nextResponder = [(UIResponder *)self nextResponder];
+  v9 = nextResponder;
+  if (nextResponder)
   {
-    v10 = [v8 _canChangeFirstResponder:v6 toResponder:v7];
+    v10 = [nextResponder _canChangeFirstResponder:responderCopy toResponder:toResponderCopy];
   }
 
   else
@@ -7624,17 +7624,17 @@ void __39__UIResponder__responderSelectionImage__block_invoke()
   return v10;
 }
 
-- (void)_setFirstResponder:(id)a3
+- (void)_setFirstResponder:(id)responder
 {
-  v5 = a3;
-  [(UIResponder *)self _willChangeToFirstResponder:v5];
-  v4 = [(UIResponder *)self nextResponder];
-  [v4 _setFirstResponder:v5];
+  responderCopy = responder;
+  [(UIResponder *)self _willChangeToFirstResponder:responderCopy];
+  nextResponder = [(UIResponder *)self nextResponder];
+  [nextResponder _setFirstResponder:responderCopy];
 
-  [(UIResponder *)self _didChangeToFirstResponder:v5];
+  [(UIResponder *)self _didChangeToFirstResponder:responderCopy];
 }
 
-- (CGRect)_rectToScrollToVisibleInCellInWindow:(id)a3
+- (CGRect)_rectToScrollToVisibleInCellInWindow:(id)window
 {
   v3 = *MEMORY[0x1E695F050];
   v4 = *(MEMORY[0x1E695F050] + 8);
@@ -7647,27 +7647,27 @@ void __39__UIResponder__responderSelectionImage__block_invoke()
   return result;
 }
 
-- (void)_checkIsText:(BOOL *)a3 isSecure:(BOOL *)a4 isEditable:(BOOL *)a5 isFormatted:(BOOL *)a6
+- (void)_checkIsText:(BOOL *)text isSecure:(BOOL *)secure isEditable:(BOOL *)editable isFormatted:(BOOL *)formatted
 {
   v11 = [(UIResponder *)self conformsToProtocol:&unk_1EFE8A8A0];
   v12 = v11;
   if (!v11)
   {
     v14 = 0;
-    v13 = 0;
-    if (!a3)
+    isSecureTextEntry = 0;
+    if (!text)
     {
       goto LABEL_17;
     }
 
 LABEL_16:
-    *a3 = v12;
+    *text = v12;
     goto LABEL_17;
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v13 = [(UIResponder *)self isSecureTextEntry];
+    isSecureTextEntry = [(UIResponder *)self isSecureTextEntry];
   }
 
   else
@@ -7676,12 +7676,12 @@ LABEL_16:
     v16 = v15;
     if (v15)
     {
-      v13 = [v15 isSecureTextEntry];
+      isSecureTextEntry = [v15 isSecureTextEntry];
     }
 
     else
     {
-      v13 = 0;
+      isSecureTextEntry = 0;
     }
   }
 
@@ -7689,7 +7689,7 @@ LABEL_16:
   if ([(UIResponder *)self canPerformAction:sel_toggleBoldface_ withSender:0]|| [(UIResponder *)self canPerformAction:sel_toggleItalics_ withSender:0])
   {
     LOBYTE(v11) = 1;
-    if (!a3)
+    if (!text)
     {
       goto LABEL_17;
     }
@@ -7698,84 +7698,84 @@ LABEL_16:
   }
 
   LOBYTE(v11) = [(UIResponder *)self canPerformAction:sel_toggleUnderline_ withSender:0];
-  if (a3)
+  if (text)
   {
     goto LABEL_16;
   }
 
 LABEL_17:
-  if (a4)
+  if (secure)
   {
-    *a4 = v13;
+    *secure = isSecureTextEntry;
   }
 
-  if (a5)
+  if (editable)
   {
-    *a5 = v14;
+    *editable = v14;
   }
 
-  if (a6)
+  if (formatted)
   {
-    *a6 = v11;
+    *formatted = v11;
   }
 }
 
 - (BOOL)_disallowsPresentationOfKeyboardShortcutHUD
 {
-  v2 = [(UIResponder *)self nextResponder];
-  v3 = [v2 _disallowsPresentationOfKeyboardShortcutHUD];
+  nextResponder = [(UIResponder *)self nextResponder];
+  _disallowsPresentationOfKeyboardShortcutHUD = [nextResponder _disallowsPresentationOfKeyboardShortcutHUD];
 
-  return v3;
+  return _disallowsPresentationOfKeyboardShortcutHUD;
 }
 
 - (BOOL)_alwaysRequireInlineCandidateView
 {
-  v2 = [(UIResponder *)self nextResponder];
-  v3 = [v2 _alwaysRequireInlineCandidateView];
+  nextResponder = [(UIResponder *)self nextResponder];
+  _alwaysRequireInlineCandidateView = [nextResponder _alwaysRequireInlineCandidateView];
 
-  return v3;
+  return _alwaysRequireInlineCandidateView;
 }
 
 - (BOOL)_isHardwareKeyboardBehaviorEnabled
 {
   v2 = +[UIKeyboardImpl activeInstance];
-  v3 = [v2 isInHardwareKeyboardMode];
+  isInHardwareKeyboardMode = [v2 isInHardwareKeyboardMode];
 
-  return v3;
+  return isInHardwareKeyboardMode;
 }
 
-- (void)setPasteConfiguration:(id)a3
+- (void)setPasteConfiguration:(id)configuration
 {
-  *&self->_responderFlags = *&self->_responderFlags & 0xFFEF | (16 * (a3 != 0));
-  v4 = [a3 copy];
+  *&self->_responderFlags = *&self->_responderFlags & 0xFFEF | (16 * (configuration != 0));
+  v4 = [configuration copy];
   objc_setAssociatedObject(self, &_pasteConfigurationKey, v4, 1);
 }
 
-- (void)pasteItemProviders:(id)a3
+- (void)pasteItemProviders:(id)providers
 {
-  v8 = a3;
+  providersCopy = providers;
   if ((dyld_program_sdk_at_least() & 1) == 0)
   {
     v5 = [(UIResponder *)self _nextResponderUsingTraversalStrategy:2];
     v6 = v5;
     if (v5)
     {
-      [v5 pasteItemProviders:v8];
+      [v5 pasteItemProviders:providersCopy];
     }
   }
 
-  v7 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v7 handleFailureInMethod:a2 object:self file:@"UIResponder.m" lineNumber:2049 description:@"pasteItemProviders: must be overridden if pasteConfiguration is not nil."];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"UIResponder.m" lineNumber:2049 description:@"pasteItemProviders: must be overridden if pasteConfiguration is not nil."];
 }
 
-- (BOOL)canPasteItemProviders:(id)a3
+- (BOOL)canPasteItemProviders:(id)providers
 {
-  v4 = a3;
-  v5 = [(UIResponder *)self _effectivePasteConfiguration];
-  v6 = v5;
-  if (v5)
+  providersCopy = providers;
+  _effectivePasteConfiguration = [(UIResponder *)self _effectivePasteConfiguration];
+  v6 = _effectivePasteConfiguration;
+  if (_effectivePasteConfiguration)
   {
-    v7 = _UICanPasteItemProviders(v5, v4);
+    v7 = _UICanPasteItemProviders(_effectivePasteConfiguration, providersCopy);
   }
 
   else
@@ -7789,100 +7789,100 @@ LABEL_17:
 - (int64_t)_dragDataOwner
 {
   v3 = objc_getAssociatedObject(self, &_dragDataOwnerKey);
-  v4 = [v3 integerValue];
+  integerValue = [v3 integerValue];
 
-  if (!v4)
+  if (!integerValue)
   {
-    v4 = [(UIResponder *)self nextResponder];
+    integerValue = [(UIResponder *)self nextResponder];
 
-    if (v4)
+    if (integerValue)
     {
-      v5 = [(UIResponder *)self nextResponder];
-      v4 = [v5 _dragDataOwner];
+      nextResponder = [(UIResponder *)self nextResponder];
+      integerValue = [nextResponder _dragDataOwner];
     }
   }
 
-  return v4;
+  return integerValue;
 }
 
-- (void)_setDragDataOwner:(int64_t)a3
+- (void)_setDragDataOwner:(int64_t)owner
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:owner];
   objc_setAssociatedObject(self, &_dragDataOwnerKey, v4, 1);
 }
 
 - (int64_t)_dropDataOwner
 {
   v3 = objc_getAssociatedObject(self, &_dropDataOwnerKey);
-  v4 = [v3 integerValue];
+  integerValue = [v3 integerValue];
 
-  if (!v4)
+  if (!integerValue)
   {
-    v4 = [(UIResponder *)self nextResponder];
+    integerValue = [(UIResponder *)self nextResponder];
 
-    if (v4)
+    if (integerValue)
     {
-      v5 = [(UIResponder *)self nextResponder];
-      v4 = [v5 _dropDataOwner];
+      nextResponder = [(UIResponder *)self nextResponder];
+      integerValue = [nextResponder _dropDataOwner];
     }
   }
 
-  return v4;
+  return integerValue;
 }
 
-- (void)_setDropDataOwner:(int64_t)a3
+- (void)_setDropDataOwner:(int64_t)owner
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:owner];
   objc_setAssociatedObject(self, &_dropDataOwnerKey, v4, 1);
 }
 
 - (int64_t)_dataOwnerForCopy
 {
   v3 = objc_getAssociatedObject(self, &_dataOwnerForCopyKey);
-  v4 = [v3 integerValue];
+  integerValue = [v3 integerValue];
 
-  if (!v4)
+  if (!integerValue)
   {
-    v4 = [(UIResponder *)self nextResponder];
+    integerValue = [(UIResponder *)self nextResponder];
 
-    if (v4)
+    if (integerValue)
     {
-      v5 = [(UIResponder *)self nextResponder];
-      v4 = [v5 _dataOwnerForCopy];
+      nextResponder = [(UIResponder *)self nextResponder];
+      integerValue = [nextResponder _dataOwnerForCopy];
     }
   }
 
-  return v4;
+  return integerValue;
 }
 
-- (void)_setDataOwnerForCopy:(int64_t)a3
+- (void)_setDataOwnerForCopy:(int64_t)copy
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:copy];
   objc_setAssociatedObject(self, &_dataOwnerForCopyKey, v4, 1);
 }
 
 - (int64_t)_dataOwnerForPaste
 {
   v3 = objc_getAssociatedObject(self, &_dataOwnerForPasteKey);
-  v4 = [v3 integerValue];
+  integerValue = [v3 integerValue];
 
-  if (!v4)
+  if (!integerValue)
   {
-    v4 = [(UIResponder *)self nextResponder];
+    integerValue = [(UIResponder *)self nextResponder];
 
-    if (v4)
+    if (integerValue)
     {
-      v5 = [(UIResponder *)self nextResponder];
-      v4 = [v5 _dataOwnerForPaste];
+      nextResponder = [(UIResponder *)self nextResponder];
+      integerValue = [nextResponder _dataOwnerForPaste];
     }
   }
 
-  return v4;
+  return integerValue;
 }
 
-- (void)_setDataOwnerForPaste:(int64_t)a3
+- (void)_setDataOwnerForPaste:(int64_t)paste
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:paste];
   objc_setAssociatedObject(self, &_dataOwnerForPasteKey, v4, 1);
 }
 
@@ -7902,33 +7902,33 @@ LABEL_17:
 {
   if ([(UIResponder *)self shouldReloadInputViews])
   {
-    v3 = [(UIResponder *)self _window];
-    v4 = [v3 windowScene];
-    v5 = [v4 keyboardSceneDelegate];
+    _window = [(UIResponder *)self _window];
+    windowScene = [_window windowScene];
+    keyboardSceneDelegate = [windowScene keyboardSceneDelegate];
 
-    [v5 _setReloadInputViewsForcedIsAllowed:0];
-    [v5 _reloadInputViewsForResponder:self];
-    [v5 _setReloadInputViewsForcedIsAllowed:1];
+    [keyboardSceneDelegate _setReloadInputViewsForcedIsAllowed:0];
+    [keyboardSceneDelegate _reloadInputViewsForResponder:self];
+    [keyboardSceneDelegate _setReloadInputViewsForcedIsAllowed:1];
   }
 }
 
-- (void)_reloadInputViewsFromFirstResponder:(BOOL)a3
+- (void)_reloadInputViewsFromFirstResponder:(BOOL)responder
 {
   if ([(UIResponder *)self shouldReloadInputViews])
   {
-    v6 = [(UIResponder *)self _responderWindow];
-    v4 = [v6 windowScene];
-    v5 = [v4 keyboardSceneDelegate];
-    [v5 _reloadInputViewsForResponder:self fromBecomeFirstResponder:1];
+    _responderWindow = [(UIResponder *)self _responderWindow];
+    windowScene = [_responderWindow windowScene];
+    keyboardSceneDelegate = [windowScene keyboardSceneDelegate];
+    [keyboardSceneDelegate _reloadInputViewsForResponder:self fromBecomeFirstResponder:1];
   }
 }
 
-- (void)_setSuppressSoftwareKeyboard:(BOOL)a3
+- (void)_setSuppressSoftwareKeyboard:(BOOL)keyboard
 {
   responderFlags = self->_responderFlags;
-  if (((((responderFlags & 0x40) == 0) ^ a3) & 1) == 0)
+  if (((((responderFlags & 0x40) == 0) ^ keyboard) & 1) == 0)
   {
-    if (a3)
+    if (keyboard)
     {
       v5 = 64;
     }
@@ -7947,25 +7947,25 @@ LABEL_17:
 - (void)captureTextFromCamera:(id)sender
 {
   v6 = sender;
-  v4 = [(UIResponder *)self _keyboardResponder];
-  if (v4)
+  _keyboardResponder = [(UIResponder *)self _keyboardResponder];
+  if (_keyboardResponder)
   {
     v5 = +[UIKeyboardCameraSession sharedSession];
-    [v5 showForResponder:v4 sender:v6 rtiConfiguration:0];
+    [v5 showForResponder:_keyboardResponder sender:v6 rtiConfiguration:0];
   }
 }
 
 - (void)setUserActivity:(NSUserActivity *)userActivity
 {
   value = userActivity;
-  v4 = [(UIResponder *)self _userActivity];
-  if (v4 != value)
+  _userActivity = [(UIResponder *)self _userActivity];
+  if (_userActivity != value)
   {
     *&self->_responderFlags = *&self->_responderFlags & 0xFFF7 | (8 * (value != 0));
     objc_setAssociatedObject(self, &kResponderUserActivityKey, value, 1);
-    if (v4)
+    if (_userActivity)
     {
-      [UIApp _removeResponder:self forUserActivity:v4];
+      [UIApp _removeResponder:self forUserActivity:_userActivity];
     }
 
     if (value)
@@ -8017,20 +8017,20 @@ void __55___UIResponder_Override_Host_attachOverrider_forTypes___block_invoke(ui
   }
 }
 
-- (void)setRestorationIdentifier:(id)a3
+- (void)setRestorationIdentifier:(id)identifier
 {
-  objc_setAssociatedObject(self, &kRestorationIdentifierAssociatedObjectKey, a3, 1);
+  objc_setAssociatedObject(self, &kRestorationIdentifierAssociatedObjectKey, identifier, 1);
 
   _trackObjectWithIdentifier(self);
 }
 
-+ (id)objectWithRestorationIdentifierPath:(id)a3
++ (id)objectWithRestorationIdentifierPath:(id)path
 {
-  if (!qword_1ED4A07D0 || (result = [qword_1ED4A07D0 objectForKey:a3]) == 0)
+  if (!qword_1ED4A07D0 || (result = [qword_1ED4A07D0 objectForKey:path]) == 0)
   {
     v5 = qword_1ED4A07D8;
 
-    return [v5 objectForKey:a3];
+    return [v5 objectForKey:path];
   }
 
   return result;
@@ -8079,9 +8079,9 @@ void __69__UIResponder_StateRestoration___updateStateRestorationIdentifierMap__b
   }
 }
 
-+ (void)_setRestoredIdentifierPathForObject:(id)a3 identifierPath:(id)a4
++ (void)_setRestoredIdentifierPathForObject:(id)object identifierPath:(id)path
 {
-  v6 = [a4 componentsSeparatedByString:@"/"];
+  v6 = [path componentsSeparatedByString:@"/"];
   if ([v6 count])
   {
     v7 = qword_1ED4A07B0;
@@ -8091,15 +8091,15 @@ void __69__UIResponder_StateRestoration___updateStateRestorationIdentifierMap__b
       qword_1ED4A07B0 = v7;
     }
 
-    [v7 setObject:v6 forKey:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"%p", a3)}];
+    [v7 setObject:v6 forKey:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"%p", object)}];
     [v6 lastObject];
 
-    _trackObjectWithIdentifier(a3);
+    _trackObjectWithIdentifier(object);
   }
 
   else if (_UIStateRestorationDebugLogEnabled())
   {
-    NSLog(&cfstr_SWarningIdenti.isa, "+[UIResponder(StateRestoration) _setRestoredIdentifierPathForObject:identifierPath:]", a4, a3);
+    NSLog(&cfstr_SWarningIdenti.isa, "+[UIResponder(StateRestoration) _setRestoredIdentifierPathForObject:identifierPath:]", path, object);
   }
 }
 
@@ -8110,15 +8110,15 @@ void __55__UIResponder__UIStickerExtension___supportsImagePaste__block_invoke()
   _supportsImagePaste_imgData = v0;
 }
 
-- (void)_insertItemFromProvider:(id)a3 completionHandler:(id)a4
+- (void)_insertItemFromProvider:(id)provider completionHandler:(id)handler
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v16 = a3;
+  handlerCopy = handler;
+  providerCopy = provider;
   v7 = MEMORY[0x1E695DEC8];
-  v8 = a3;
-  v9 = [v7 arrayWithObjects:&v16 count:1];
-  v10 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:{0.5, v16, v17}];
+  providerCopy2 = provider;
+  v9 = [v7 arrayWithObjects:&providerCopy count:1];
+  v10 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:{0.5, providerCopy, v17}];
   [UIPasteboard _pinItemProviders:v9 forPasteboardNamed:@"com.apple.UIKit.pboard.general" withExpirationDate:v10];
 
   v11 = [(UIResponder *)self targetForAction:sel_paste_ withSender:0];
@@ -8130,7 +8130,7 @@ void __55__UIResponder__UIStickerExtension___supportsImagePaste__block_invoke()
     if (v13)
     {
       [v12 pasteWithCompletionHandler:&__block_literal_global_215_3];
-      if (!v6)
+      if (!handlerCopy)
       {
         goto LABEL_7;
       }
@@ -8141,7 +8141,7 @@ void __55__UIResponder__UIStickerExtension___supportsImagePaste__block_invoke()
       [v12 paste:0];
       v15 = dispatch_time(0, 500000000);
       dispatch_after(v15, MEMORY[0x1E69E96A0], &__block_literal_global_217_2);
-      if (!v6)
+      if (!handlerCopy)
       {
         goto LABEL_7;
       }
@@ -8153,10 +8153,10 @@ void __55__UIResponder__UIStickerExtension___supportsImagePaste__block_invoke()
   v14 = +[UIPasteboard generalPasteboard];
 
   [v14 _clearPinnedItemProviders];
-  if (v6)
+  if (handlerCopy)
   {
 LABEL_6:
-    v6[2](v6, v12 != 0);
+    handlerCopy[2](handlerCopy, v12 != 0);
   }
 
 LABEL_7:
@@ -8176,49 +8176,49 @@ void __78__UIResponder__UIStickerExtension___insertItemFromProvider_completionHa
 
 - (BOOL)_isEditableForWritingTools
 {
-  v3 = [(UIResponder *)self _textInputForWritingTools];
+  _textInputForWritingTools = [(UIResponder *)self _textInputForWritingTools];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 isEditable];
+    isEditable = [_textInputForWritingTools isEditable];
   }
 
   else
   {
-    v5 = [(UIResponder *)self _textInteraction];
+    _textInteraction = [(UIResponder *)self _textInteraction];
 
-    if (v5)
+    if (_textInteraction)
     {
-      v6 = [(UIResponder *)self _textInteraction];
-      v4 = [v6 textInteractionMode] == 0;
+      _textInteraction2 = [(UIResponder *)self _textInteraction];
+      isEditable = [_textInteraction2 textInteractionMode] == 0;
     }
 
     else
     {
-      v4 = 1;
+      isEditable = 1;
     }
   }
 
-  return v4;
+  return isEditable;
 }
 
 - (id)_writingToolsDelegate
 {
-  v3 = [(UIResponder *)self __wt_writingToolsCoordinator];
-  v4 = v3;
-  if (v3)
+  __wt_writingToolsCoordinator = [(UIResponder *)self __wt_writingToolsCoordinator];
+  v4 = __wt_writingToolsCoordinator;
+  if (__wt_writingToolsCoordinator)
   {
-    v5 = v3;
+    v5 = __wt_writingToolsCoordinator;
   }
 
   else
   {
-    v6 = [(UIResponder *)self _textInputForWritingTools];
+    _textInputForWritingTools = [(UIResponder *)self _textInputForWritingTools];
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) == 0 || ([v6 textLayoutManager], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
+    if ((objc_opt_isKindOfClass() & 1) == 0 || ([_textInputForWritingTools textLayoutManager], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
     {
       if (objc_opt_respondsToSelector())
       {
-        v5 = v6;
+        v5 = _textInputForWritingTools;
       }
 
       else
@@ -8233,23 +8233,23 @@ void __78__UIResponder__UIStickerExtension___insertItemFromProvider_completionHa
 
 - (BOOL)_shouldEvaluateForWritingToolsInCandidateBarAsynchronously
 {
-  v2 = [(UIResponder *)self _textInputForWritingTools];
+  _textInputForWritingTools = [(UIResponder *)self _textInputForWritingTools];
   v3 = +[UIKeyboardImpl activeInstance];
-  v4 = [v2 conformsToProtocolCached:&unk_1F016C810];
-  v5 = [v3 inputDelegateManager];
-  v6 = [v5 hasAsyncCapableInputDelegate];
+  v4 = [_textInputForWritingTools conformsToProtocolCached:&unk_1F016C810];
+  inputDelegateManager = [v3 inputDelegateManager];
+  hasAsyncCapableInputDelegate = [inputDelegateManager hasAsyncCapableInputDelegate];
 
   v7 = v4 & [v3 nextInputWouldStartSentence];
-  return v7 & v6;
+  return v7 & hasAsyncCapableInputDelegate;
 }
 
-- (void)_asyncShouldDisplayWritingToolsCandidateOptionsWithCompletionHandler:(id)a3
+- (void)_asyncShouldDisplayWritingToolsCandidateOptionsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4[2](v4, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 
   else
@@ -8259,7 +8259,7 @@ void __78__UIResponder__UIStickerExtension___insertItemFromProvider_completionHa
     v5[2] = __105__UIResponder_WritingToolsSupport___asyncShouldDisplayWritingToolsCandidateOptionsWithCompletionHandler___block_invoke;
     v5[3] = &unk_1E7107E48;
     v5[4] = self;
-    v6 = v4;
+    v6 = handlerCopy;
     [(UIResponder *)self _webkitShouldShowWritingToolsInCandidateBarWithCompletionHandler:v5];
   }
 }
@@ -8295,30 +8295,30 @@ void __105__UIResponder_WritingToolsSupport___asyncShouldDisplayWritingToolsCand
 
 - (BOOL)_shouldDisplayWritingToolsCalloutBarItem
 {
-  v3 = [(UIResponder *)self _writingToolsDelegate];
+  _writingToolsDelegate = [(UIResponder *)self _writingToolsDelegate];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    selfCopy = _writingToolsDelegate;
   }
 
   else
   {
-    v4 = self;
+    selfCopy = self;
   }
 
-  v5 = [(UIResponder *)v4 _supportsWritingTools];
+  _supportsWritingTools = [(UIResponder *)selfCopy _supportsWritingTools];
 
-  return v5;
+  return _supportsWritingTools;
 }
 
-- (void)showWritingTools:(id)a3
+- (void)showWritingTools:(id)tools
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(UIResponder *)self _textInputForWritingTools];
-  v6 = v5;
-  if (!v5 || v5 == self)
+  toolsCopy = tools;
+  _textInputForWritingTools = [(UIResponder *)self _textInputForWritingTools];
+  v6 = _textInputForWritingTools;
+  if (!_textInputForWritingTools || _textInputForWritingTools == self)
   {
     v7 = +[_UISignalAnalytics getIAPayloadValueWritingToolsUIUnspecified];
     objc_opt_class();
@@ -8340,7 +8340,7 @@ LABEL_9:
         v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:&v13 count:1];
         [_UISignalAnalytics sendWritingToolsSignal:v10 payload:v12];
 
-        [(UIResponder *)self _startWritingToolsWithTool:@"WTUIRequestedToolNone" prompt:0 sender:v4];
+        [(UIResponder *)self _startWritingToolsWithTool:@"WTUIRequestedToolNone" prompt:0 sender:toolsCopy];
         goto LABEL_10;
       }
 
@@ -8353,81 +8353,81 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  [(UIResponder *)v5 showWritingTools:v4];
+  [(UIResponder *)_textInputForWritingTools showWritingTools:toolsCopy];
 LABEL_10:
 }
 
-- (void)_startWritingToolsWithTool:(id)a3 prompt:(id)a4 entryPoint:(id)a5 inputContextHistory:(id)a6 sender:(id)a7
+- (void)_startWritingToolsWithTool:(id)tool prompt:(id)prompt entryPoint:(id)point inputContextHistory:(id)history sender:(id)sender
 {
   v27 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  toolCopy = tool;
+  promptCopy = prompt;
+  pointCopy = point;
+  historyCopy = history;
   if ([(UIResponder *)self _supportsWritingTools])
   {
-    v15 = [(UIResponder *)self _writingToolsViewController];
+    _writingToolsViewController = [(UIResponder *)self _writingToolsViewController];
 
-    if (v15)
+    if (_writingToolsViewController)
     {
       [(UIResponder *)self _endWritingTools];
     }
 
     v16 = objc_alloc(getWTWritingToolsViewControllerClass());
-    if (v14)
+    if (historyCopy)
     {
-      v17 = [v16 _initWithRequestedTool:v11 baseResponse:v12 entryPoint:v13 inputContextHistory:v14];
+      v17 = [v16 _initWithRequestedTool:toolCopy baseResponse:promptCopy entryPoint:pointCopy inputContextHistory:historyCopy];
     }
 
     else
     {
-      v17 = [v16 initWithRequestedTool:v11 prompt:v12];
+      v17 = [v16 initWithRequestedTool:toolCopy prompt:promptCopy];
     }
 
     v18 = v17;
     [(UIResponder *)self _setWritingToolsViewController:v17];
-    v19 = [(UIResponder *)self _textInputForWritingTools];
+    _textInputForWritingTools = [(UIResponder *)self _textInputForWritingTools];
     if (os_variant_has_internal_diagnostics())
     {
-      if (!v19)
+      if (!_textInputForWritingTools)
       {
         v21 = __UIFaultDebugAssertLog();
         if (os_log_type_enabled(v21, OS_LOG_TYPE_FAULT))
         {
           v23 = 138412546;
-          v24 = self;
+          selfCopy3 = self;
           v25 = 2048;
-          v26 = self;
+          selfCopy4 = self;
           _os_log_fault_impl(&dword_188A29000, v21, OS_LOG_TYPE_FAULT, "<%@:%p> can not find UITextInput", &v23, 0x16u);
         }
       }
     }
 
-    else if (!v19)
+    else if (!_textInputForWritingTools)
     {
       v22 = *(__UILogGetCategoryCachedImpl("Assert", &_startWritingToolsWithTool_prompt_entryPoint_inputContextHistory_sender____s_category) + 8);
       if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
       {
         v23 = 138412546;
-        v24 = self;
+        selfCopy3 = self;
         v25 = 2048;
-        v26 = self;
+        selfCopy4 = self;
         _os_log_impl(&dword_188A29000, v22, OS_LOG_TYPE_ERROR, "<%@:%p> can not find UITextInput", &v23, 0x16u);
       }
     }
 
-    [v18 setSourceResponder:self sourceTextInput:v19];
-    v20 = [(UIResponder *)self _writingToolsDelegate];
-    [v18 setWritingToolsDelegate:v20];
+    [v18 setSourceResponder:self sourceTextInput:_textInputForWritingTools];
+    _writingToolsDelegate = [(UIResponder *)self _writingToolsDelegate];
+    [v18 setWritingToolsDelegate:_writingToolsDelegate];
 
     [(UIResponder *)self _setWritingToolsWantsKeyboardSuppression:1];
     if (objc_opt_respondsToSelector())
     {
-      [v19 willPresentWritingTools];
+      [_textInputForWritingTools willPresentWritingTools];
     }
 
     [v18 startWritingTools];
-    if (v11 != @"WTUIRequestedToolNone")
+    if (toolCopy != @"WTUIRequestedToolNone")
     {
       [(UIResponder *)self _playInvocationAnimation];
     }
@@ -8436,62 +8436,62 @@ LABEL_10:
 
 - (void)_endWritingTools
 {
-  v2 = [(UIResponder *)self _writingToolsViewController];
-  [v2 endWritingTools];
+  _writingToolsViewController = [(UIResponder *)self _writingToolsViewController];
+  [_writingToolsViewController endWritingTools];
 }
 
 - (void)_writingToolsDidEnd
 {
-  v8 = [(UIResponder *)self _textInputForWritingTools];
-  v3 = [(UIResponder *)self _writingToolsViewController];
+  _textInputForWritingTools = [(UIResponder *)self _textInputForWritingTools];
+  _writingToolsViewController = [(UIResponder *)self _writingToolsViewController];
 
   [(UIResponder *)self _setWritingToolsViewController:0];
   v4 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-  v5 = [v4 systemInputAssistantViewController];
-  [v5 setInputAssistantButtonItemsForResponder:self];
+  systemInputAssistantViewController = [v4 systemInputAssistantViewController];
+  [systemInputAssistantViewController setInputAssistantButtonItemsForResponder:self];
 
   v6 = +[UIKeyboardImpl activeInstance];
   [v6 writingToolsDidEnd];
 
-  if (v3 && (objc_opt_respondsToSelector() & 1) != 0)
+  if (_writingToolsViewController && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v8 didDismissWritingTools];
+    [_textInputForWritingTools didDismissWritingTools];
   }
 
-  v7 = [(UIResponder *)self __wt_writingToolsCoordinator];
-  [v7 _didDismissWritingTools];
+  __wt_writingToolsCoordinator = [(UIResponder *)self __wt_writingToolsCoordinator];
+  [__wt_writingToolsCoordinator _didDismissWritingTools];
 }
 
-- (void)_setWritingToolsWantsKeyboardSuppression:(BOOL)a3 suppressAssistant:(BOOL)a4
+- (void)_setWritingToolsWantsKeyboardSuppression:(BOOL)suppression suppressAssistant:(BOOL)assistant
 {
-  v4 = a4;
-  v5 = a3;
+  assistantCopy = assistant;
+  suppressionCopy = suppression;
   v7 = +[_UIRemoteKeyboards sharedRemoteKeyboards];
   v8 = v7;
-  if (v5)
+  if (suppressionCopy)
   {
-    v9 = [v7 wantsAssistantWhileSuppressingKeyboard];
+    wantsAssistantWhileSuppressingKeyboard = [v7 wantsAssistantWhileSuppressingKeyboard];
 
     v10 = +[_UIRemoteKeyboards sharedRemoteKeyboards];
-    [v10 setWantsAssistantWhileSuppressingKeyboard:!v4];
+    [v10 setWantsAssistantWhileSuppressingKeyboard:!assistantCopy];
 
     v11 = +[UIKeyboardSceneDelegate automaticKeyboardArbiterClient];
     value = [v11 vendKeyboardSuppressionAssertionForReason:@"WritingTools" type:0];
 
     objc_setAssociatedObject(self, &_MergedGlobals_1399, value, 1);
     v12 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-    v13 = [v12 useVisualModeWindowedUI];
+    useVisualModeWindowedUI = [v12 useVisualModeWindowedUI];
 
-    if (v13 && (v9 & 1) == 0 && !v4)
+    if (useVisualModeWindowedUI && (wantsAssistantWhileSuppressingKeyboard & 1) == 0 && !assistantCopy)
     {
       v14 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
       [v14 forceReloadInputViews];
     }
 
-    v15 = [(UIResponder *)self _selectionDisplayInteraction];
-    v16 = [v15 obtainGhostCursorAssertionForReason:@"WritingTools"];
+    _selectionDisplayInteraction = [(UIResponder *)self _selectionDisplayInteraction];
+    containerRootController = [_selectionDisplayInteraction obtainGhostCursorAssertionForReason:@"WritingTools"];
 
-    objc_setAssociatedObject(self, &unk_1ED4A2F99, v16, 1);
+    objc_setAssociatedObject(self, &unk_1ED4A2F99, containerRootController, 1);
   }
 
   else
@@ -8507,8 +8507,8 @@ LABEL_10:
     [v18 restoreKeyboardIfNeeded];
 
     value = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-    v16 = [value containerRootController];
-    [v16 clearExternalTrackingInfo];
+    containerRootController = [value containerRootController];
+    [containerRootController clearExternalTrackingInfo];
   }
 }
 
@@ -8517,28 +8517,28 @@ LABEL_10:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = self;
+    selfCopy = self;
 LABEL_5:
-    v4 = v3;
+    _viewControllerForAncestor = selfCopy;
     goto LABEL_7;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [(UIResponder *)self _viewControllerForAncestor];
+    selfCopy = [(UIResponder *)self _viewControllerForAncestor];
     goto LABEL_5;
   }
 
-  v5 = [(UIResponder *)self textInputView];
-  v4 = [v5 _viewControllerForAncestor];
+  textInputView = [(UIResponder *)self textInputView];
+  _viewControllerForAncestor = [textInputView _viewControllerForAncestor];
 
 LABEL_7:
-  v6 = [v4 view];
-  v7 = [v6 window];
-  v8 = [v7 rootViewController];
+  view = [_viewControllerForAncestor view];
+  window = [view window];
+  rootViewController = [window rootViewController];
 
-  v9 = v4;
+  v9 = _viewControllerForAncestor;
   v10 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v11 = v9;
   v12 = v11;
@@ -8556,36 +8556,36 @@ LABEL_7:
       }
 
       [v10 addObject:v14];
-      v15 = [v14 _rootAncestorViewController];
-      if (v15 == v8)
+      _rootAncestorViewController = [v14 _rootAncestorViewController];
+      if (_rootAncestorViewController == rootViewController)
       {
         break;
       }
 
-      v16 = [v14 _ancestorViewControllerIsInPopover];
+      _ancestorViewControllerIsInPopover = [v14 _ancestorViewControllerIsInPopover];
 
-      if (v16)
+      if (_ancestorViewControllerIsInPopover)
       {
         goto LABEL_19;
       }
 
-      v17 = [v14 view];
-      v18 = [v17 superview];
+      view2 = [v14 view];
+      superview = [view2 superview];
 
-      if (!v18)
+      if (!superview)
       {
-        v15 = v14;
+        _rootAncestorViewController = v14;
         v14 = v13;
         v13 = 0;
         break;
       }
 
-      v19 = [v18 _viewControllerForAncestor];
+      _viewControllerForAncestor2 = [superview _viewControllerForAncestor];
 
       v13 = 0;
       v20 = 0;
-      v14 = v19;
-      if (!v19)
+      v14 = _viewControllerForAncestor2;
+      if (!_viewControllerForAncestor2)
       {
         goto LABEL_20;
       }
@@ -8608,7 +8608,7 @@ LABEL_20:
 
   else
   {
-    v21 = v8;
+    v21 = rootViewController;
   }
 
   v22 = v21;
@@ -8616,12 +8616,12 @@ LABEL_20:
   return v21;
 }
 
-- (void)_setWritingToolsInputDashboardViewController:(id)a3
+- (void)_setWritingToolsInputDashboardViewController:(id)controller
 {
-  objc_setAssociatedObject(self, &kWritingToolsInputDashboardViewControllerKey, a3, 1);
+  objc_setAssociatedObject(self, &kWritingToolsInputDashboardViewControllerKey, controller, 1);
   v4 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-  v5 = [v4 systemInputAssistantViewController];
-  [v5 setInputAssistantButtonItemsForResponder:self];
+  systemInputAssistantViewController = [v4 systemInputAssistantViewController];
+  [systemInputAssistantViewController setInputAssistantButtonItemsForResponder:self];
 
   v6 = +[UIKeyboardImpl activeInstance];
   [v6 updateAssistantView];
@@ -8639,12 +8639,12 @@ LABEL_20:
   return v3;
 }
 
-- (void)_setSmartReplyFeedbackInputDashboardViewController:(id)a3
+- (void)_setSmartReplyFeedbackInputDashboardViewController:(id)controller
 {
-  objc_setAssociatedObject(self, &kSmartReplyFeedbackInputDashboardViewControllerKey, a3, 1);
+  objc_setAssociatedObject(self, &kSmartReplyFeedbackInputDashboardViewControllerKey, controller, 1);
   v4 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-  v5 = [v4 systemInputAssistantViewController];
-  [v5 setInputAssistantButtonItemsForResponder:self];
+  systemInputAssistantViewController = [v4 systemInputAssistantViewController];
+  [systemInputAssistantViewController setInputAssistantButtonItemsForResponder:self];
 
   v6 = +[UIKeyboardImpl activeInstance];
   [v6 updateAssistantView];
@@ -8682,15 +8682,15 @@ LABEL_20:
   return v12;
 }
 
-- (id)_assistantBarButtonItemForWritingToolsWithStyle:(int64_t)a3
+- (id)_assistantBarButtonItemForWritingToolsWithStyle:(int64_t)style
 {
-  v5 = [(UIResponder *)self _writingToolsViewController];
+  _writingToolsViewController = [(UIResponder *)self _writingToolsViewController];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(UIResponder *)self _writingToolsViewController];
-    v8 = [v7 assistantBarButtonItemWithStyle:a3];
+    _writingToolsViewController2 = [(UIResponder *)self _writingToolsViewController];
+    v8 = [_writingToolsViewController2 assistantBarButtonItemWithStyle:style];
   }
 
   else
@@ -8701,11 +8701,11 @@ LABEL_20:
   return v8;
 }
 
-- (void)_setWritingToolsViewController:(id)a3
+- (void)_setWritingToolsViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [(UIResponder *)self _firstResponder];
-  objc_setAssociatedObject(v5, &kWritingToolsViewControllerForFirstResponderKey, v4, 1);
+  controllerCopy = controller;
+  _firstResponder = [(UIResponder *)self _firstResponder];
+  objc_setAssociatedObject(_firstResponder, &kWritingToolsViewControllerForFirstResponderKey, controllerCopy, 1);
 
   v6 = +[UIKeyboardImpl activeInstance];
   [v6 generateCandidates];
@@ -8713,22 +8713,22 @@ LABEL_20:
 
 - (id)_responderThatRequestedWritingTools
 {
-  v2 = [(UIResponder *)self _viewControllerForWritingToolsSource];
-  v3 = objc_getAssociatedObject(v2, &kResponderThatRequestedWritingTools);
+  _viewControllerForWritingToolsSource = [(UIResponder *)self _viewControllerForWritingToolsSource];
+  v3 = objc_getAssociatedObject(_viewControllerForWritingToolsSource, &kResponderThatRequestedWritingTools);
 
   return v3;
 }
 
-- (void)_setSuppressWritingToolsForRemoteKeyboard:(BOOL)a3
+- (void)_setSuppressWritingToolsForRemoteKeyboard:(BOOL)keyboard
 {
-  v3 = a3;
-  v4 = [(UIResponder *)self _writingToolsViewController];
-  [v4 setSuppressWritingToolsForRemoteKeyboard:v3];
+  keyboardCopy = keyboard;
+  _writingToolsViewController = [(UIResponder *)self _writingToolsViewController];
+  [_writingToolsViewController setSuppressWritingToolsForRemoteKeyboard:keyboardCopy];
 }
 
-- (void)_setShouldEndWritingToolsOnResign:(BOOL)a3
+- (void)_setShouldEndWritingToolsOnResign:(BOOL)resign
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:resign];
   objc_setAssociatedObject(self, &kShouldEndWritingToolsOnResign, v4, 1);
 }
 
@@ -8763,12 +8763,12 @@ LABEL_20:
 - (CGRect)_selectionRectForWritingTools
 {
   v74 = *MEMORY[0x1E69E9840];
-  v2 = [(UIResponder *)self _textInputForWritingTools];
-  if ([v2 conformsToProtocolCached:&unk_1F016C810])
+  _textInputForWritingTools = [(UIResponder *)self _textInputForWritingTools];
+  if ([_textInputForWritingTools conformsToProtocolCached:&unk_1F016C810])
   {
-    v3 = v2;
-    v4 = [v3 selectedTextRange];
-    v5 = [v3 selectionRectsForRange:v4];
+    selectedTextRange2 = _textInputForWritingTools;
+    selectedTextRange = [selectedTextRange2 selectedTextRange];
+    v5 = [selectedTextRange2 selectionRectsForRange:selectedTextRange];
     x = *MEMORY[0x1E695F050];
     y = *(MEMORY[0x1E695F050] + 8);
     width = *(MEMORY[0x1E695F050] + 16);
@@ -8817,8 +8817,8 @@ LABEL_20:
       while (v12);
     }
 
-    v19 = [v3 textInputView];
-    [v19 bounds];
+    textInputView = [selectedTextRange2 textInputView];
+    [textInputView bounds];
     v89.origin.x = v20;
     v89.origin.y = v21;
     v89.size.width = v22;
@@ -8836,10 +8836,10 @@ LABEL_20:
 
   else
   {
-    if ([v2 conformsToProtocolCached:&unk_1F016CC30])
+    if ([_textInputForWritingTools conformsToProtocolCached:&unk_1F016CC30])
     {
-      v3 = v2;
-      v28 = [v3 webSelectionRects];
+      selectedTextRange2 = _textInputForWritingTools;
+      webSelectionRects = [selectedTextRange2 webSelectionRects];
       v30 = *MEMORY[0x1E695F050];
       v29 = *(MEMORY[0x1E695F050] + 8);
       v32 = *(MEMORY[0x1E695F050] + 16);
@@ -8848,7 +8848,7 @@ LABEL_20:
       v64 = 0u;
       v65 = 0u;
       v66 = 0u;
-      v10 = v28;
+      v10 = webSelectionRects;
       v33 = [v10 countByEnumeratingWithState:&v63 objects:v72 count:16];
       if (v33)
       {
@@ -8888,13 +8888,13 @@ LABEL_20:
         while (v34);
       }
 
-      v41 = v3;
+      v41 = selectedTextRange2;
     }
 
     else
     {
-      v3 = [v2 selectedTextRange];
-      v42 = [v2 selectionRectsForRange:v3];
+      selectedTextRange2 = [_textInputForWritingTools selectedTextRange];
+      v42 = [_textInputForWritingTools selectionRectsForRange:selectedTextRange2];
       v30 = *MEMORY[0x1E695F050];
       v29 = *(MEMORY[0x1E695F050] + 8);
       v32 = *(MEMORY[0x1E695F050] + 16);
@@ -8958,11 +8958,11 @@ LABEL_20:
         while (v44);
       }
 
-      v41 = v2;
+      v41 = _textInputForWritingTools;
     }
 
-    v4 = [v41 textInputView];
-    [v4 bounds];
+    selectedTextRange = [v41 textInputView];
+    [selectedTextRange bounds];
     v92.origin.x = v51;
     v92.origin.y = v52;
     v92.size.width = v53;
@@ -8991,7 +8991,7 @@ LABEL_20:
 
 - (BOOL)_shouldShowWritingToolsInCandidateBar
 {
-  v3 = [(UIResponder *)self _textInputForWritingTools];
+  _textInputForWritingTools = [(UIResponder *)self _textInputForWritingTools];
   if (objc_opt_respondsToSelector())
   {
     aBlock[0] = MEMORY[0x1E69E9820];
@@ -9000,61 +9000,61 @@ LABEL_20:
     aBlock[3] = &unk_1E712BD38;
     aBlock[4] = self;
     v4 = _Block_copy(aBlock);
-    v5 = [v3 selectedTextRange];
-    if ([v5 _isRanged])
+    selectedTextRange = [_textInputForWritingTools selectedTextRange];
+    if ([selectedTextRange _isRanged])
     {
-      v6 = v4[2](v4, v3, v5);
+      v6 = v4[2](v4, _textInputForWritingTools, selectedTextRange);
     }
 
     else if (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector())
     {
-      v7 = [v5 end];
-      v8 = [v3 positionFromPosition:v7 offset:-1];
+      v7 = [selectedTextRange end];
+      v8 = [_textInputForWritingTools positionFromPosition:v7 offset:-1];
       if (v8)
       {
-        v9 = [v3 textRangeFromPosition:v8 toPosition:v7];
+        v9 = [_textInputForWritingTools textRangeFromPosition:v8 toPosition:v7];
         if (v9)
         {
-          v10 = [v3 textInRange:v9];
-          v11 = [MEMORY[0x1E696AB08] newlineCharacterSet];
+          v10 = [_textInputForWritingTools textInRange:v9];
+          newlineCharacterSet = [MEMORY[0x1E696AB08] newlineCharacterSet];
           v29 = v10;
-          v12 = [v10 rangeOfCharacterFromSet:v11];
+          v12 = [v10 rangeOfCharacterFromSet:newlineCharacterSet];
           v14 = v13;
 
           v6 = 0;
           if (v12 != 0x7FFFFFFFFFFFFFFFLL && v14)
           {
-            v15 = [v3 tokenizer];
-            v16 = [v5 end];
-            v17 = [v15 positionFromPosition:v16 toBoundary:4 inDirection:0];
+            tokenizer = [_textInputForWritingTools tokenizer];
+            v16 = [selectedTextRange end];
+            v17 = [tokenizer positionFromPosition:v16 toBoundary:4 inDirection:0];
 
             if (v17)
             {
-              v18 = [v5 end];
+              v18 = [selectedTextRange end];
               v28 = v17;
-              v19 = [v3 textRangeFromPosition:v18 toPosition:v17];
+              v19 = [_textInputForWritingTools textRangeFromPosition:v18 toPosition:v17];
 
               if (v19)
               {
                 v27 = v19;
-                v20 = [v3 textInRange:v19];
+                v20 = [_textInputForWritingTools textInRange:v19];
                 if ([v20 length] && -[UIResponder _stringContainsMinimumNumberOfWords:minimumNumberOfWords:](self, v20, 1uLL))
                 {
-                  v21 = v15;
+                  v21 = tokenizer;
                   v6 = 0;
                 }
 
                 else
                 {
-                  v23 = [v15 positionFromPosition:v8 toBoundary:4 inDirection:1];
-                  v21 = v15;
+                  v23 = [tokenizer positionFromPosition:v8 toBoundary:4 inDirection:1];
+                  v21 = tokenizer;
                   if (v23)
                   {
-                    v24 = [v3 textRangeFromPosition:v23 toPosition:v8];
+                    v24 = [_textInputForWritingTools textRangeFromPosition:v23 toPosition:v8];
                     if (v24)
                     {
                       v25 = v24;
-                      v26 = v4[2](v4, v3, v24);
+                      v26 = v4[2](v4, _textInputForWritingTools, v24);
                       v24 = v25;
                       v6 = v26;
                     }
@@ -9076,7 +9076,7 @@ LABEL_20:
 
               else
               {
-                v21 = v15;
+                v21 = tokenizer;
                 v6 = 0;
               }
 
@@ -9085,7 +9085,7 @@ LABEL_20:
 
             else
             {
-              v21 = v15;
+              v21 = tokenizer;
               v6 = 0;
             }
           }
@@ -9143,18 +9143,18 @@ LABEL_5:
   return 0;
 }
 
-- (uint64_t)_shouldDisplayWritingToolsForAttributedString:(uint64_t)a1
+- (uint64_t)_shouldDisplayWritingToolsForAttributedString:(uint64_t)string
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (string)
   {
     if ([v3 length])
     {
-      v5 = [v4 string];
-      a1 = [(UIResponder *)a1 _stringContainsMinimumNumberOfWords:v5 minimumNumberOfWords:5uLL];
+      string = [v4 string];
+      string = [(UIResponder *)string _stringContainsMinimumNumberOfWords:string minimumNumberOfWords:5uLL];
 
-      if (a1)
+      if (string)
       {
         v11 = 0;
         v12 = &v11;
@@ -9174,25 +9174,25 @@ LABEL_5:
 
         v7 = v6;
         _Block_object_dispose(&v11, 8);
-        v8 = [v6 sharedAssistant];
-        a1 = [v8 fastCanLikelyHandleAttributedString:v4 range:{0, objc_msgSend(v4, "length")}];
+        sharedAssistant = [v6 sharedAssistant];
+        string = [sharedAssistant fastCanLikelyHandleAttributedString:v4 range:{0, objc_msgSend(v4, "length")}];
       }
     }
 
     else
     {
-      a1 = 0;
+      string = 0;
     }
   }
 
-  return a1;
+  return string;
 }
 
-- (BOOL)_stringContainsMinimumNumberOfWords:(unint64_t)a3 minimumNumberOfWords:
+- (BOOL)_stringContainsMinimumNumberOfWords:(unint64_t)words minimumNumberOfWords:
 {
   v5 = a2;
   v6 = v5;
-  if (a1)
+  if (self)
   {
     v11 = 0;
     v12 = &v11;
@@ -9204,9 +9204,9 @@ LABEL_5:
     v10[2] = __93__UIResponder_WritingToolsSupport___stringContainsMinimumNumberOfWords_minimumNumberOfWords___block_invoke;
     v10[3] = &unk_1E712BD88;
     v10[4] = &v11;
-    v10[5] = a3;
+    v10[5] = words;
     [v6 enumerateSubstringsInRange:0 options:v7 usingBlock:{3, v10}];
-    v8 = v12[3] >= a3;
+    v8 = v12[3] >= words;
     _Block_object_dispose(&v11, 8);
   }
 
@@ -9218,25 +9218,25 @@ LABEL_5:
   return v8;
 }
 
-- (void)_webkitShouldShowWritingToolsInCandidateBarWithCompletionHandler:(id)a3
+- (void)_webkitShouldShowWritingToolsInCandidateBarWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(UIResponder *)self _textInputForWritingTools];
-  if ([v5 conformsToProtocolCached:&unk_1F016C810])
+  handlerCopy = handler;
+  _textInputForWritingTools = [(UIResponder *)self _textInputForWritingTools];
+  if ([_textInputForWritingTools conformsToProtocolCached:&unk_1F016C810])
   {
     v6 = objc_opt_new();
     [v6 setGranularityCount:1];
     [v6 setSurroundingGranularity:4];
     [v6 setFlags:1];
     v7 = +[UIKeyboardImpl activeInstance];
-    v8 = [v7 inputDelegateManager];
+    inputDelegateManager = [v7 inputDelegateManager];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __101__UIResponder_WritingToolsSupport___webkitShouldShowWritingToolsInCandidateBarWithCompletionHandler___block_invoke;
     v9[3] = &unk_1E712BD60;
     v9[4] = self;
-    v10 = v4;
-    [v8 requestDocumentContext:v6 completionHandler:v9];
+    v10 = handlerCopy;
+    [inputDelegateManager requestDocumentContext:v6 completionHandler:v9];
   }
 }
 
@@ -9312,14 +9312,14 @@ void __60__UIResponder_WritingToolsSupport___playInvocationAnimation__block_invo
 - (BOOL)_commonUIInvocationAnimationNeeded
 {
   v2 = objc_getAssociatedObject(self, &kCommonUIInvocationAnimationNeededKey);
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-- (void)_setCommonUIInvocationAnimationNeeded:(BOOL)a3
+- (void)_setCommonUIInvocationAnimationNeeded:(BOOL)needed
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:needed];
   objc_setAssociatedObject(self, &kCommonUIInvocationAnimationNeededKey, v4, 1);
 }
 

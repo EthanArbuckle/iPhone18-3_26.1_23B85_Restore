@@ -1,5 +1,5 @@
 @interface AEAccessibilityServerBackedAssessmentStateReader
-- (AEAccessibilityServerBackedAssessmentStateReader)initWithAccessibilityServerPrimitives:(id)a3 queue:(id)a4;
+- (AEAccessibilityServerBackedAssessmentStateReader)initWithAccessibilityServerPrimitives:(id)primitives queue:(id)queue;
 - (id)updateForLatestAssessmentState;
 - (void)beginObserving;
 - (void)dealloc;
@@ -16,18 +16,18 @@
   [(AEAccessibilityServerBackedAssessmentStateReader *)&v3 dealloc];
 }
 
-- (AEAccessibilityServerBackedAssessmentStateReader)initWithAccessibilityServerPrimitives:(id)a3 queue:(id)a4
+- (AEAccessibilityServerBackedAssessmentStateReader)initWithAccessibilityServerPrimitives:(id)primitives queue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
+  primitivesCopy = primitives;
+  queueCopy = queue;
   v12.receiver = self;
   v12.super_class = AEAccessibilityServerBackedAssessmentStateReader;
   v9 = [(AEAccessibilityServerBackedAssessmentStateReader *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_accessibilityServerPrimitives, a3);
-    objc_storeStrong(&v10->_queue, a4);
+    objc_storeStrong(&v9->_accessibilityServerPrimitives, primitives);
+    objc_storeStrong(&v10->_queue, queue);
   }
 
   [(AEAccessibilityServerBackedAssessmentStateReader *)&v10->super.isa beginObserving];
@@ -59,11 +59,11 @@
 
 - (void)endObserving
 {
-  if (a1)
+  if (self)
   {
-    [*(a1 + 32) invalidate];
-    v2 = *(a1 + 32);
-    *(a1 + 32) = 0;
+    [*(self + 32) invalidate];
+    v2 = *(self + 32);
+    *(self + 32) = 0;
   }
 }
 
@@ -72,9 +72,9 @@
   if (result)
   {
     v1 = result;
-    v2 = [result isActive];
+    isActive = [result isActive];
     result = [v1[2] isRestrictedForAAC];
-    if (v2 != result)
+    if (isActive != result)
     {
 
       return [v1 setActive:result];

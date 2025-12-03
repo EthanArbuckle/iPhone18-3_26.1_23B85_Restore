@@ -1,13 +1,13 @@
 @interface PARUsageEvent
-- (PARUsageEvent)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4;
+- (PARUsageEvent)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context;
 @end
 
 @implementation PARUsageEvent
 
-- (PARUsageEvent)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4
+- (PARUsageEvent)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context
 {
-  v5 = a3;
-  v6 = a4;
+  entityCopy = entity;
+  contextCopy = context;
   return PARUsageEvent.init(entity:insertInto:)();
 }
 

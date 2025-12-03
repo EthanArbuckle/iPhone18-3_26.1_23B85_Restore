@@ -1,9 +1,9 @@
 @interface HFCameraAnalyticsEvent
-+ (id)errorCodeForError:(id)a3;
++ (id)errorCodeForError:(id)error;
 - (HFCameraAnalyticsEvent)init;
-- (HFCameraAnalyticsEvent)initWithCameraClip:(id)a3;
+- (HFCameraAnalyticsEvent)initWithCameraClip:(id)clip;
 - (HMCameraClip)cameraClip;
-- (id)sendEventForState:(unint64_t)a3;
+- (id)sendEventForState:(unint64_t)state;
 @end
 
 @implementation HFCameraAnalyticsEvent
@@ -15,40 +15,40 @@
   v2 = [(HFCameraAnalyticsEvent *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     startDate = v2->_startDate;
-    v2->_startDate = v3;
+    v2->_startDate = date;
   }
 
   return v2;
 }
 
-- (HFCameraAnalyticsEvent)initWithCameraClip:(id)a3
+- (HFCameraAnalyticsEvent)initWithCameraClip:(id)clip
 {
-  v4 = a3;
+  clipCopy = clip;
   v5 = [(HFCameraAnalyticsEvent *)self init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_cameraClip, v4);
+    objc_storeWeak(&v5->_cameraClip, clipCopy);
   }
 
   return v6;
 }
 
-- (id)sendEventForState:(unint64_t)a3
+- (id)sendEventForState:(unint64_t)state
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = [(HFCameraAnalyticsEvent *)self cameraClip];
+  cameraClip = [(HFCameraAnalyticsEvent *)self cameraClip];
 
   v5 = HFLogForCategory(6uLL);
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_ERROR);
-  if (v4)
+  if (cameraClip)
   {
     if (v6)
     {
       v10 = 138412290;
-      v11 = self;
+      selfCopy2 = self;
 LABEL_7:
       _os_log_error_impl(&dword_20D9BF000, v5, OS_LOG_TYPE_ERROR, v7, &v10, 0xCu);
     }
@@ -57,7 +57,7 @@ LABEL_7:
   else if (v6)
   {
     v10 = 138412290;
-    v11 = self;
+    selfCopy2 = self;
     v7 = "Unable to send event for %@";
     goto LABEL_7;
   }
@@ -66,15 +66,15 @@ LABEL_7:
   return MEMORY[0x277CBEC10];
 }
 
-+ (id)errorCodeForError:(id)a3
++ (id)errorCodeForError:(id)error
 {
   v3 = MEMORY[0x277CCABB0];
-  if (a3)
+  if (error)
   {
-    a3 = [a3 code];
+    error = [error code];
   }
 
-  v4 = [v3 numberWithInteger:a3];
+  v4 = [v3 numberWithInteger:error];
 
   return v4;
 }

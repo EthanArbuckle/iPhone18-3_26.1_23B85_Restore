@@ -4,16 +4,16 @@
 - (CGPath)topStrokeLongPath;
 - (CGPath)topStrokePath;
 - (SHShazamButtonViewDelegate)buttonDelegate;
-- (id)strokeLayerWithPath:(CGPath *)a3 color:(CGColor *)a4;
+- (id)strokeLayerWithPath:(CGPath *)path color:(CGColor *)color;
 - (void)drawSolidShape;
-- (void)drawSolidShapeWithDuration:(double)a3 delay:(double)a4 completion:(id)a5;
+- (void)drawSolidShapeWithDuration:(double)duration delay:(double)delay completion:(id)completion;
 - (void)drawTransparentShape;
 - (void)layoutSublayers;
-- (void)performFadeInIntroAnimation:(double)a3 delay:(double)a4;
-- (void)performSDrawingAnimationWithDuration:(double)a3 delay:(double)a4;
+- (void)performFadeInIntroAnimation:(double)animation delay:(double)delay;
+- (void)performSDrawingAnimationWithDuration:(double)duration delay:(double)delay;
 - (void)performSDrawingIntroAnimation;
 - (void)removeTransparentShape;
-- (void)removeTransparentShapeWithDuration:(double)a3 delay:(double)a4 completion:(id)a5;
+- (void)removeTransparentShapeWithDuration:(double)duration delay:(double)delay completion:(id)completion;
 - (void)setup;
 - (void)skipIntroAnimation;
 @end
@@ -30,49 +30,49 @@
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(SHShazamButtonLayer *)self backgroundLayer];
-  [v12 setFrame:{v5, v7, v9, v11}];
+  backgroundLayer = [(SHShazamButtonLayer *)self backgroundLayer];
+  [backgroundLayer setFrame:{v5, v7, v9, v11}];
 
-  v13 = [(SHShazamButtonLayer *)self backgroundLayer];
-  [v13 setMasksToBounds:1];
+  backgroundLayer2 = [(SHShazamButtonLayer *)self backgroundLayer];
+  [backgroundLayer2 setMasksToBounds:1];
 
-  v14 = [(SHPaletteLayer *)self palette];
-  v15 = [v14 listeningButtonBackgroundColor];
-  v16 = [(SHShazamButtonLayer *)self backgroundLayer];
-  [v16 setBackgroundColor:v15];
+  palette = [(SHPaletteLayer *)self palette];
+  listeningButtonBackgroundColor = [palette listeningButtonBackgroundColor];
+  backgroundLayer3 = [(SHShazamButtonLayer *)self backgroundLayer];
+  [backgroundLayer3 setBackgroundColor:listeningButtonBackgroundColor];
 
-  v17 = [(SHShazamButtonLayer *)self backgroundLayer];
-  [(SHShazamButtonLayer *)self addSublayer:v17];
+  backgroundLayer4 = [(SHShazamButtonLayer *)self backgroundLayer];
+  [(SHShazamButtonLayer *)self addSublayer:backgroundLayer4];
 
   v18 = objc_alloc_init(MEMORY[0x277CD9F90]);
   [(SHShazamButtonLayer *)self setTopBorder:v18];
 
-  v19 = [(SHPaletteLayer *)self palette];
-  v20 = [v19 listeningButtonTopBorderColor];
-  v21 = [(SHShazamButtonLayer *)self topBorder];
-  [v21 setStrokeColor:v20];
+  palette2 = [(SHPaletteLayer *)self palette];
+  listeningButtonTopBorderColor = [palette2 listeningButtonTopBorderColor];
+  topBorder = [(SHShazamButtonLayer *)self topBorder];
+  [topBorder setStrokeColor:listeningButtonTopBorderColor];
 
-  v22 = [(SHShazamButtonLayer *)self topBorder];
-  [v22 setLineWidth:1.0];
+  topBorder2 = [(SHShazamButtonLayer *)self topBorder];
+  [topBorder2 setLineWidth:1.0];
 
-  v23 = [(SHPaletteLayer *)self palette];
-  v24 = [v23 clearColor];
-  v25 = [(SHShazamButtonLayer *)self topBorder];
-  [v25 setFillColor:v24];
+  palette3 = [(SHPaletteLayer *)self palette];
+  clearColor = [palette3 clearColor];
+  topBorder3 = [(SHShazamButtonLayer *)self topBorder];
+  [topBorder3 setFillColor:clearColor];
 
-  v26 = [(SHShazamButtonLayer *)self backgroundLayer];
-  v27 = [(SHShazamButtonLayer *)self topBorder];
-  [v26 addSublayer:v27];
+  backgroundLayer5 = [(SHShazamButtonLayer *)self backgroundLayer];
+  topBorder4 = [(SHShazamButtonLayer *)self topBorder];
+  [backgroundLayer5 addSublayer:topBorder4];
 
   v28 = objc_alloc_init(MEMORY[0x277CD9ED0]);
   [(SHShazamButtonLayer *)self setShapeLayer:v28];
 
-  v29 = [(SHShazamButtonLayer *)self shapeLayer];
-  [v29 setFrame:{0.0, 0.0, 210.0, 210.0}];
+  shapeLayer = [(SHShazamButtonLayer *)self shapeLayer];
+  [shapeLayer setFrame:{0.0, 0.0, 210.0, 210.0}];
 
-  v30 = [(SHShazamButtonLayer *)self backgroundLayer];
-  v31 = [(SHShazamButtonLayer *)self shapeLayer];
-  [v30 addSublayer:v31];
+  backgroundLayer6 = [(SHShazamButtonLayer *)self backgroundLayer];
+  shapeLayer2 = [(SHShazamButtonLayer *)self shapeLayer];
+  [backgroundLayer6 addSublayer:shapeLayer2];
 
   [(SHShazamButtonLayer *)self drawTransparentShape];
 }
@@ -89,8 +89,8 @@
   v7 = v6 * 0.5 + 2.0;
   [(SHShazamButtonLayer *)self bounds];
   CGPathAddArc(Mutable, 0, v5, v7, v8 * 0.5 + 1.0, 0.0, 3.14159265, 1);
-  v9 = [(SHShazamButtonLayer *)self topBorder];
-  [v9 setPath:Mutable];
+  topBorder = [(SHShazamButtonLayer *)self topBorder];
+  [topBorder setPath:Mutable];
 
   CGPathRelease(Mutable);
   [(SHShazamButtonLayer *)self bounds];
@@ -98,33 +98,33 @@
   v13 = v12;
   v15 = v14;
   v17 = v16;
-  v18 = [(SHShazamButtonLayer *)self backgroundLayer];
-  [v18 setFrame:{v11, v13, v15, v17}];
+  backgroundLayer = [(SHShazamButtonLayer *)self backgroundLayer];
+  [backgroundLayer setFrame:{v11, v13, v15, v17}];
 
   [(SHShazamButtonLayer *)self bounds];
   v20 = v19 * 0.5;
-  v21 = [(SHShazamButtonLayer *)self backgroundLayer];
-  [v21 setCornerRadius:v20];
+  backgroundLayer2 = [(SHShazamButtonLayer *)self backgroundLayer];
+  [backgroundLayer2 setCornerRadius:v20];
 
-  v22 = [(SHShazamButtonLayer *)self backgroundLayer];
-  [v22 position];
+  backgroundLayer3 = [(SHShazamButtonLayer *)self backgroundLayer];
+  [backgroundLayer3 position];
   v24 = v23;
   v26 = v25;
-  v27 = [(SHShazamButtonLayer *)self shapeLayer];
-  [v27 setPosition:{v24, v26}];
+  shapeLayer = [(SHShazamButtonLayer *)self shapeLayer];
+  [shapeLayer setPosition:{v24, v26}];
 
   [(SHShazamButtonLayer *)self frame];
   v29 = v28 / 367.5;
   [(SHShazamButtonLayer *)self frame];
   CATransform3DMakeScale(&v36, v29, v30 / 367.5, 1.0);
-  v31 = [(SHShazamButtonLayer *)self shapeLayer];
+  shapeLayer2 = [(SHShazamButtonLayer *)self shapeLayer];
   v35 = v36;
-  [v31 setTransform:&v35];
+  [shapeLayer2 setTransform:&v35];
 
-  v32 = [(SHPaletteLayer *)self palette];
-  v33 = [v32 listeningButtonBackgroundColor];
-  v34 = [(SHShazamButtonLayer *)self backgroundLayer];
-  [v34 setBackgroundColor:v33];
+  palette = [(SHPaletteLayer *)self palette];
+  listeningButtonBackgroundColor = [palette listeningButtonBackgroundColor];
+  backgroundLayer4 = [(SHShazamButtonLayer *)self backgroundLayer];
+  [backgroundLayer4 setBackgroundColor:listeningButtonBackgroundColor];
 }
 
 - (void)skipIntroAnimation
@@ -144,16 +144,16 @@
   }
 }
 
-- (void)performSDrawingAnimationWithDuration:(double)a3 delay:(double)a4
+- (void)performSDrawingAnimationWithDuration:(double)duration delay:(double)delay
 {
-  v5 = a4 + a3 * 0.357142895;
-  v6 = a3 * 0.642857194;
+  v5 = delay + duration * 0.357142895;
+  v6 = duration * 0.642857194;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __66__SHShazamButtonLayer_performSDrawingAnimationWithDuration_delay___block_invoke;
   v8[3] = &unk_279BBFBE8;
   v8[4] = self;
-  [(SHShazamButtonLayer *)self removeTransparentShapeWithDuration:v8 delay:a3 * 0.357142895 completion:?];
+  [(SHShazamButtonLayer *)self removeTransparentShapeWithDuration:v8 delay:duration * 0.357142895 completion:?];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __66__SHShazamButtonLayer_performSDrawingAnimationWithDuration_delay___block_invoke_2;
@@ -174,12 +174,12 @@ void __66__SHShazamButtonLayer_performSDrawingAnimationWithDuration_delay___bloc
   [v1 buttonDidFinishDrawingShazamShape];
 }
 
-- (void)performFadeInIntroAnimation:(double)a3 delay:(double)a4
+- (void)performFadeInIntroAnimation:(double)animation delay:(double)delay
 {
   [(SHShazamButtonLayer *)self drawSolidShape];
   v7 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"opacity"];
-  [v7 setDuration:a3];
-  [v7 setBeginTime:CACurrentMediaTime() + a4];
+  [v7 setDuration:animation];
+  [v7 setBeginTime:CACurrentMediaTime() + delay];
   [v7 setFromValue:&unk_2877ACCB8];
   [v7 setToValue:&unk_2877ACCC8];
   v8 = *MEMORY[0x277CDA7B8];
@@ -190,8 +190,8 @@ void __66__SHShazamButtonLayer_performSDrawingAnimationWithDuration_delay___bloc
   v10 = *MEMORY[0x277CDA230];
   [v7 setFillMode:*MEMORY[0x277CDA230]];
   v11 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"opacity"];
-  [v11 setDuration:a3];
-  [v11 setBeginTime:CACurrentMediaTime() + a4];
+  [v11 setDuration:animation];
+  [v11 setBeginTime:CACurrentMediaTime() + delay];
   [v11 setFromValue:&unk_2877ACCC8];
   [v11 setToValue:&unk_2877ACCB8];
   v12 = [MEMORY[0x277CD9EF8] functionWithName:v8];
@@ -206,28 +206,28 @@ void __66__SHShazamButtonLayer_performSDrawingAnimationWithDuration_delay___bloc
   v17[3] = &unk_279BBFBE8;
   v17[4] = self;
   [MEMORY[0x277CD9FF0] setCompletionBlock:v17];
-  v13 = [(SHShazamButtonLayer *)self topSolidLayer];
-  [v13 addAnimation:v7 forKey:0];
+  topSolidLayer = [(SHShazamButtonLayer *)self topSolidLayer];
+  [topSolidLayer addAnimation:v7 forKey:0];
 
-  v14 = [(SHShazamButtonLayer *)self bottomSolidLayer];
-  [v14 addAnimation:v7 forKey:0];
+  bottomSolidLayer = [(SHShazamButtonLayer *)self bottomSolidLayer];
+  [bottomSolidLayer addAnimation:v7 forKey:0];
 
-  v15 = [(SHShazamButtonLayer *)self topTransparentLayer];
-  [v15 addAnimation:v11 forKey:0];
+  topTransparentLayer = [(SHShazamButtonLayer *)self topTransparentLayer];
+  [topTransparentLayer addAnimation:v11 forKey:0];
 
-  v16 = [(SHShazamButtonLayer *)self bottomTransparentLayer];
-  [v16 addAnimation:v11 forKey:0];
+  bottomTransparentLayer = [(SHShazamButtonLayer *)self bottomTransparentLayer];
+  [bottomTransparentLayer addAnimation:v11 forKey:0];
 
   [MEMORY[0x277CD9FF0] commit];
 }
 
 - (void)removeTransparentShape
 {
-  v3 = [(SHShazamButtonLayer *)self topTransparentLayer];
-  [v3 removeFromSuperlayer];
+  topTransparentLayer = [(SHShazamButtonLayer *)self topTransparentLayer];
+  [topTransparentLayer removeFromSuperlayer];
 
-  v4 = [(SHShazamButtonLayer *)self bottomTransparentLayer];
-  [v4 removeFromSuperlayer];
+  bottomTransparentLayer = [(SHShazamButtonLayer *)self bottomTransparentLayer];
+  [bottomTransparentLayer removeFromSuperlayer];
 
   [(SHShazamButtonLayer *)self setTopTransparentLayer:0];
 
@@ -236,62 +236,62 @@ void __66__SHShazamButtonLayer_performSDrawingAnimationWithDuration_delay___bloc
 
 - (void)drawTransparentShape
 {
-  v3 = [(SHShazamButtonLayer *)self topStrokePath];
-  v4 = [(SHPaletteLayer *)self palette];
-  v5 = -[SHShazamButtonLayer strokeLayerWithPath:color:](self, "strokeLayerWithPath:color:", v3, [v4 listeningButtonBackgroundTransparentColor]);
+  topStrokePath = [(SHShazamButtonLayer *)self topStrokePath];
+  palette = [(SHPaletteLayer *)self palette];
+  v5 = -[SHShazamButtonLayer strokeLayerWithPath:color:](self, "strokeLayerWithPath:color:", topStrokePath, [palette listeningButtonBackgroundTransparentColor]);
   [(SHShazamButtonLayer *)self setTopTransparentLayer:v5];
 
-  v6 = [(SHShazamButtonLayer *)self bottomStrokePath];
-  v7 = [(SHPaletteLayer *)self palette];
-  v8 = -[SHShazamButtonLayer strokeLayerWithPath:color:](self, "strokeLayerWithPath:color:", v6, [v7 listeningButtonBackgroundTransparentColor]);
+  bottomStrokePath = [(SHShazamButtonLayer *)self bottomStrokePath];
+  palette2 = [(SHPaletteLayer *)self palette];
+  v8 = -[SHShazamButtonLayer strokeLayerWithPath:color:](self, "strokeLayerWithPath:color:", bottomStrokePath, [palette2 listeningButtonBackgroundTransparentColor]);
   [(SHShazamButtonLayer *)self setBottomTransparentLayer:v8];
 
-  v9 = [(SHPaletteLayer *)self palette];
-  v10 = [v9 listeningButtonTopBorderColor];
-  v11 = [(SHShazamButtonLayer *)self topTransparentLayer];
-  [v11 setShadowColor:v10];
+  palette3 = [(SHPaletteLayer *)self palette];
+  listeningButtonTopBorderColor = [palette3 listeningButtonTopBorderColor];
+  topTransparentLayer = [(SHShazamButtonLayer *)self topTransparentLayer];
+  [topTransparentLayer setShadowColor:listeningButtonTopBorderColor];
 
-  v12 = [(SHShazamButtonLayer *)self topTransparentLayer];
+  topTransparentLayer2 = [(SHShazamButtonLayer *)self topTransparentLayer];
   LODWORD(v13) = 1.0;
-  [v12 setShadowOpacity:v13];
+  [topTransparentLayer2 setShadowOpacity:v13];
 
-  v14 = [(SHShazamButtonLayer *)self topTransparentLayer];
-  [v14 setShadowRadius:1.0];
+  topTransparentLayer3 = [(SHShazamButtonLayer *)self topTransparentLayer];
+  [topTransparentLayer3 setShadowRadius:1.0];
 
-  v15 = [(SHShazamButtonLayer *)self topTransparentLayer];
-  [v15 setShadowOffset:{0.5, 1.0}];
+  topTransparentLayer4 = [(SHShazamButtonLayer *)self topTransparentLayer];
+  [topTransparentLayer4 setShadowOffset:{0.5, 1.0}];
 
-  v16 = [(SHPaletteLayer *)self palette];
-  v17 = [v16 listeningButtonTopBorderColor];
-  v18 = [(SHShazamButtonLayer *)self bottomTransparentLayer];
-  [v18 setShadowColor:v17];
+  palette4 = [(SHPaletteLayer *)self palette];
+  listeningButtonTopBorderColor2 = [palette4 listeningButtonTopBorderColor];
+  bottomTransparentLayer = [(SHShazamButtonLayer *)self bottomTransparentLayer];
+  [bottomTransparentLayer setShadowColor:listeningButtonTopBorderColor2];
 
-  v19 = [(SHShazamButtonLayer *)self bottomTransparentLayer];
+  bottomTransparentLayer2 = [(SHShazamButtonLayer *)self bottomTransparentLayer];
   LODWORD(v20) = 1.0;
-  [v19 setShadowOpacity:v20];
+  [bottomTransparentLayer2 setShadowOpacity:v20];
 
-  v21 = [(SHShazamButtonLayer *)self bottomTransparentLayer];
-  [v21 setShadowRadius:1.0];
+  bottomTransparentLayer3 = [(SHShazamButtonLayer *)self bottomTransparentLayer];
+  [bottomTransparentLayer3 setShadowRadius:1.0];
 
-  v22 = [(SHShazamButtonLayer *)self bottomTransparentLayer];
-  [v22 setShadowOffset:{0.5, 1.0}];
+  bottomTransparentLayer4 = [(SHShazamButtonLayer *)self bottomTransparentLayer];
+  [bottomTransparentLayer4 setShadowOffset:{0.5, 1.0}];
 
-  v23 = [(SHShazamButtonLayer *)self shapeLayer];
-  v24 = [(SHShazamButtonLayer *)self topTransparentLayer];
-  [v23 addSublayer:v24];
+  shapeLayer = [(SHShazamButtonLayer *)self shapeLayer];
+  topTransparentLayer5 = [(SHShazamButtonLayer *)self topTransparentLayer];
+  [shapeLayer addSublayer:topTransparentLayer5];
 
-  v26 = [(SHShazamButtonLayer *)self shapeLayer];
-  v25 = [(SHShazamButtonLayer *)self bottomTransparentLayer];
-  [v26 addSublayer:v25];
+  shapeLayer2 = [(SHShazamButtonLayer *)self shapeLayer];
+  bottomTransparentLayer5 = [(SHShazamButtonLayer *)self bottomTransparentLayer];
+  [shapeLayer2 addSublayer:bottomTransparentLayer5];
 }
 
-- (void)removeTransparentShapeWithDuration:(double)a3 delay:(double)a4 completion:(id)a5
+- (void)removeTransparentShapeWithDuration:(double)duration delay:(double)delay completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   [MEMORY[0x277CD9FF0] begin];
   v9 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"strokeStart"];
-  [v9 setDuration:a3];
-  [v9 setBeginTime:CACurrentMediaTime() + a4];
+  [v9 setDuration:duration];
+  [v9 setBeginTime:CACurrentMediaTime() + delay];
   [v9 setFromValue:&unk_2877ACCB8];
   [v9 setToValue:&unk_2877ACCC8];
   LODWORD(v10) = 1.0;
@@ -303,26 +303,26 @@ void __66__SHShazamButtonLayer_performSDrawingAnimationWithDuration_delay___bloc
   [v9 setRemovedOnCompletion:1];
   [v9 setFillMode:*MEMORY[0x277CDA230]];
   [MEMORY[0x277CD9FF0] setValue:*MEMORY[0x277CBED28] forKey:*MEMORY[0x277CDA918]];
-  v14 = [(SHShazamButtonLayer *)self topTransparentLayer];
-  [v14 setStrokeStart:1.0];
+  topTransparentLayer = [(SHShazamButtonLayer *)self topTransparentLayer];
+  [topTransparentLayer setStrokeStart:1.0];
 
-  v15 = [(SHShazamButtonLayer *)self bottomTransparentLayer];
-  [v15 setStrokeStart:1.0];
+  bottomTransparentLayer = [(SHShazamButtonLayer *)self bottomTransparentLayer];
+  [bottomTransparentLayer setStrokeStart:1.0];
 
   v16 = MEMORY[0x277CD9FF0];
   v20 = MEMORY[0x277D85DD0];
   v21 = 3221225472;
   v22 = __75__SHShazamButtonLayer_removeTransparentShapeWithDuration_delay_completion___block_invoke;
   v23 = &unk_279BBFC10;
-  v24 = self;
-  v25 = v8;
-  v17 = v8;
+  selfCopy = self;
+  v25 = completionCopy;
+  v17 = completionCopy;
   [v16 setCompletionBlock:&v20];
   v18 = [(SHShazamButtonLayer *)self topTransparentLayer:v20];
   [v18 addAnimation:v9 forKey:@"strokeEnd"];
 
-  v19 = [(SHShazamButtonLayer *)self bottomTransparentLayer];
-  [v19 addAnimation:v9 forKey:@"strokeEnd"];
+  bottomTransparentLayer2 = [(SHShazamButtonLayer *)self bottomTransparentLayer];
+  [bottomTransparentLayer2 addAnimation:v9 forKey:@"strokeEnd"];
 
   [MEMORY[0x277CD9FF0] commit];
 }
@@ -350,47 +350,47 @@ uint64_t __75__SHShazamButtonLayer_removeTransparentShapeWithDuration_delay_comp
 
 - (void)drawSolidShape
 {
-  v3 = [(SHShazamButtonLayer *)self topStrokePath];
-  v4 = [(SHPaletteLayer *)self palette];
-  v5 = -[SHShazamButtonLayer strokeLayerWithPath:color:](self, "strokeLayerWithPath:color:", v3, [v4 listeningButtonShazamShapeColor]);
+  topStrokePath = [(SHShazamButtonLayer *)self topStrokePath];
+  palette = [(SHPaletteLayer *)self palette];
+  v5 = -[SHShazamButtonLayer strokeLayerWithPath:color:](self, "strokeLayerWithPath:color:", topStrokePath, [palette listeningButtonShazamShapeColor]);
   [(SHShazamButtonLayer *)self setTopSolidLayer:v5];
 
-  v6 = [(SHShazamButtonLayer *)self bottomStrokePath];
-  v7 = [(SHPaletteLayer *)self palette];
-  v8 = -[SHShazamButtonLayer strokeLayerWithPath:color:](self, "strokeLayerWithPath:color:", v6, [v7 listeningButtonShazamShapeColor]);
+  bottomStrokePath = [(SHShazamButtonLayer *)self bottomStrokePath];
+  palette2 = [(SHPaletteLayer *)self palette];
+  v8 = -[SHShazamButtonLayer strokeLayerWithPath:color:](self, "strokeLayerWithPath:color:", bottomStrokePath, [palette2 listeningButtonShazamShapeColor]);
   [(SHShazamButtonLayer *)self setBottomSolidLayer:v8];
 
-  v9 = [(SHShazamButtonLayer *)self shapeLayer];
-  v10 = [(SHShazamButtonLayer *)self topSolidLayer];
-  [v9 addSublayer:v10];
+  shapeLayer = [(SHShazamButtonLayer *)self shapeLayer];
+  topSolidLayer = [(SHShazamButtonLayer *)self topSolidLayer];
+  [shapeLayer addSublayer:topSolidLayer];
 
-  v12 = [(SHShazamButtonLayer *)self shapeLayer];
-  v11 = [(SHShazamButtonLayer *)self bottomSolidLayer];
-  [v12 addSublayer:v11];
+  shapeLayer2 = [(SHShazamButtonLayer *)self shapeLayer];
+  bottomSolidLayer = [(SHShazamButtonLayer *)self bottomSolidLayer];
+  [shapeLayer2 addSublayer:bottomSolidLayer];
 }
 
-- (void)drawSolidShapeWithDuration:(double)a3 delay:(double)a4 completion:(id)a5
+- (void)drawSolidShapeWithDuration:(double)duration delay:(double)delay completion:(id)completion
 {
   v36[2] = *MEMORY[0x277D85DE8];
-  v8 = a5;
+  completionCopy = completion;
   [MEMORY[0x277CD9FF0] begin];
-  v9 = [(SHShazamButtonLayer *)self topStrokeLongPath];
-  v10 = [(SHPaletteLayer *)self palette];
-  v11 = -[SHShazamButtonLayer strokeLayerWithPath:color:](self, "strokeLayerWithPath:color:", v9, [v10 listeningButtonShazamShapeColor]);
+  topStrokeLongPath = [(SHShazamButtonLayer *)self topStrokeLongPath];
+  palette = [(SHPaletteLayer *)self palette];
+  v11 = -[SHShazamButtonLayer strokeLayerWithPath:color:](self, "strokeLayerWithPath:color:", topStrokeLongPath, [palette listeningButtonShazamShapeColor]);
   [(SHShazamButtonLayer *)self setTopSolidLayer:v11];
 
-  v12 = [(SHShazamButtonLayer *)self bottomStrokeLongPath];
-  v13 = [(SHPaletteLayer *)self palette];
-  v14 = -[SHShazamButtonLayer strokeLayerWithPath:color:](self, "strokeLayerWithPath:color:", v12, [v13 listeningButtonShazamShapeColor]);
+  bottomStrokeLongPath = [(SHShazamButtonLayer *)self bottomStrokeLongPath];
+  palette2 = [(SHPaletteLayer *)self palette];
+  v14 = -[SHShazamButtonLayer strokeLayerWithPath:color:](self, "strokeLayerWithPath:color:", bottomStrokeLongPath, [palette2 listeningButtonShazamShapeColor]);
   [(SHShazamButtonLayer *)self setBottomSolidLayer:v14];
 
-  v15 = [(SHShazamButtonLayer *)self shapeLayer];
-  v16 = [(SHShazamButtonLayer *)self topSolidLayer];
-  [v15 addSublayer:v16];
+  shapeLayer = [(SHShazamButtonLayer *)self shapeLayer];
+  topSolidLayer = [(SHShazamButtonLayer *)self topSolidLayer];
+  [shapeLayer addSublayer:topSolidLayer];
 
-  v17 = [(SHShazamButtonLayer *)self shapeLayer];
-  v18 = [(SHShazamButtonLayer *)self bottomSolidLayer];
-  [v17 addSublayer:v18];
+  shapeLayer2 = [(SHShazamButtonLayer *)self shapeLayer];
+  bottomSolidLayer = [(SHShazamButtonLayer *)self bottomSolidLayer];
+  [shapeLayer2 addSublayer:bottomSolidLayer];
 
   LODWORD(v19) = 1053609165;
   LODWORD(v20) = 1053944709;
@@ -398,45 +398,45 @@ uint64_t __75__SHShazamButtonLayer_removeTransparentShapeWithDuration_delay_comp
   LODWORD(v22) = 1.0;
   v23 = [MEMORY[0x277CD9EF8] functionWithControlPoints:v19 :v21 :v20 :v22];
   v24 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"strokeEnd"];
-  [v24 setDuration:a3];
+  [v24 setDuration:duration];
   [v24 setFromValue:&unk_2877ACE48];
   [v24 setToValue:&unk_2877ACE60];
   [v24 setTimingFunction:v23];
   [v24 setRemovedOnCompletion:0];
   v25 = *MEMORY[0x277CDA230];
   [v24 setFillMode:*MEMORY[0x277CDA230]];
-  [v24 setBeginTime:a4];
+  [v24 setBeginTime:delay];
   v26 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"strokeStart"];
-  [v26 setDuration:a3];
+  [v26 setDuration:duration];
   [v26 setFromValue:&unk_2877ACE48];
   [v26 setToValue:&unk_2877ACCD8];
   [v26 setTimingFunction:v23];
   [v26 setRemovedOnCompletion:0];
   [v26 setFillMode:v25];
-  [v26 setBeginTime:a4];
+  [v26 setBeginTime:delay];
   v27 = MEMORY[0x277CD9FF0];
   v34[0] = MEMORY[0x277D85DD0];
   v34[1] = 3221225472;
   v34[2] = __67__SHShazamButtonLayer_drawSolidShapeWithDuration_delay_completion___block_invoke;
   v34[3] = &unk_279BBFC10;
   v34[4] = self;
-  v35 = v8;
-  v28 = v8;
+  v35 = completionCopy;
+  v28 = completionCopy;
   [v27 setCompletionBlock:v34];
-  v29 = [MEMORY[0x277CD9E00] animation];
+  animation = [MEMORY[0x277CD9E00] animation];
   v36[0] = v26;
   v36[1] = v24;
   v30 = [MEMORY[0x277CBEA60] arrayWithObjects:v36 count:2];
-  [v29 setAnimations:v30];
+  [animation setAnimations:v30];
 
-  [v29 setDuration:a3 + a4];
-  [v29 setRemovedOnCompletion:0];
-  [v29 setFillMode:v25];
-  v31 = [(SHShazamButtonLayer *)self topSolidLayer];
-  [v31 addAnimation:v29 forKey:0];
+  [animation setDuration:duration + delay];
+  [animation setRemovedOnCompletion:0];
+  [animation setFillMode:v25];
+  topSolidLayer2 = [(SHShazamButtonLayer *)self topSolidLayer];
+  [topSolidLayer2 addAnimation:animation forKey:0];
 
-  v32 = [(SHShazamButtonLayer *)self bottomSolidLayer];
-  [v32 addAnimation:v29 forKey:0];
+  bottomSolidLayer2 = [(SHShazamButtonLayer *)self bottomSolidLayer];
+  [bottomSolidLayer2 addAnimation:animation forKey:0];
 
   [MEMORY[0x277CD9FF0] commit];
   v33 = *MEMORY[0x277D85DE8];
@@ -481,15 +481,15 @@ uint64_t __67__SHShazamButtonLayer_drawSolidShapeWithDuration_delay_completion__
   return result;
 }
 
-- (id)strokeLayerWithPath:(CGPath *)a3 color:(CGColor *)a4
+- (id)strokeLayerWithPath:(CGPath *)path color:(CGColor *)color
 {
   v7 = objc_alloc_init(MEMORY[0x277CD9F90]);
-  [v7 setPath:a3];
-  [v7 setStrokeColor:a4];
+  [v7 setPath:path];
+  [v7 setStrokeColor:color];
   [v7 setLineWidth:38.0];
   [v7 setLineCap:*MEMORY[0x277CDA780]];
-  v8 = [(SHPaletteLayer *)self palette];
-  [v7 setFillColor:{objc_msgSend(v8, "clearColor")}];
+  palette = [(SHPaletteLayer *)self palette];
+  [v7 setFillColor:{objc_msgSend(palette, "clearColor")}];
 
   return v7;
 }

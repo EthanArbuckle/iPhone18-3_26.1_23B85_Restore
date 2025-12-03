@@ -21,11 +21,11 @@
   v13 = v12;
   [(CIVector *)self->inputCenter Y];
   v15 = [CIVector vectorWithX:v13 Y:v14 Z:v6 W:1.0 / v4];
-  v16 = [(CICircleGenerator *)self _CICircle];
+  _CICircle = [(CICircleGenerator *)self _CICircle];
   inputColor = self->inputColor;
   v19[0] = v15;
   v19[1] = inputColor;
-  return [v16 applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v19, 2), v9, v11, (v4 + (v6 * 2.0)), (v4 + (v6 * 2.0))}];
+  return [_CICircle applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v19, 2), v9, v11, (v4 + (v6 * 2.0)), (v4 + (v6 * 2.0))}];
 }
 
 + (id)customAttributes

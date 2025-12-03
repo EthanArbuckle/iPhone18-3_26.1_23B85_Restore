@@ -1,11 +1,11 @@
 @interface ScheduleOccurrenceAlarmEnabledTableViewCell
-- (_TtC13SleepHealthUI43ScheduleOccurrenceAlarmEnabledTableViewCell)initWithCoder:(id)a3;
-- (_TtC13SleepHealthUI43ScheduleOccurrenceAlarmEnabledTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (_TtC13SleepHealthUI43ScheduleOccurrenceAlarmEnabledTableViewCell)initWithCoder:(id)coder;
+- (_TtC13SleepHealthUI43ScheduleOccurrenceAlarmEnabledTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 @end
 
 @implementation ScheduleOccurrenceAlarmEnabledTableViewCell
 
-- (_TtC13SleepHealthUI43ScheduleOccurrenceAlarmEnabledTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC13SleepHealthUI43ScheduleOccurrenceAlarmEnabledTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   sub_269D9A8E0();
   sub_269D9A8D0();
@@ -15,7 +15,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  if (a4)
+  if (identifier)
   {
     sub_269D9A630();
     v6 = sub_269D9A5F0();
@@ -36,7 +36,7 @@
   return v8;
 }
 
-- (_TtC13SleepHealthUI43ScheduleOccurrenceAlarmEnabledTableViewCell)initWithCoder:(id)a3
+- (_TtC13SleepHealthUI43ScheduleOccurrenceAlarmEnabledTableViewCell)initWithCoder:(id)coder
 {
   sub_269D9A8E0();
   sub_269D9A8D0();

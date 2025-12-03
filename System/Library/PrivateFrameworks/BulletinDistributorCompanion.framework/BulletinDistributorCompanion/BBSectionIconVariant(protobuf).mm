@@ -9,18 +9,18 @@
 {
   v3 = MEMORY[0x277CF3560];
   v4 = a3;
-  v5 = [v4 format];
-  v6 = [v4 imageData];
-  v7 = [v3 variantWithFormat:v5 imageData:v6];
+  format = [v4 format];
+  imageData = [v4 imageData];
+  v7 = [v3 variantWithFormat:format imageData:imageData];
 
-  v8 = [v4 systemImageName];
-  [v7 setSystemImageName:v8];
+  systemImageName = [v4 systemImageName];
+  [v7 setSystemImageName:systemImageName];
 
   v9 = [v4 uti];
   [v7 setUti:v9];
 
-  v10 = [v4 precomposed];
-  [v7 setPrecomposed:v10];
+  precomposed = [v4 precomposed];
+  [v7 setPrecomposed:precomposed];
 
   return v7;
 }
@@ -28,59 +28,59 @@
 - (id)blt_ProtobufWithScale:()protobuf
 {
   v4 = objc_opt_new();
-  [v4 setPrecomposed:{objc_msgSend(a1, "isPrecomposed")}];
-  [v4 setFormat:objc_msgSend(a1, "format")];
-  v5 = [a1 uti];
+  [v4 setPrecomposed:{objc_msgSend(self, "isPrecomposed")}];
+  [v4 setFormat:objc_msgSend(self, "format")];
+  v5 = [self uti];
 
   if (v5)
   {
-    v6 = [a1 uti];
-    [v4 setUti:v6];
+    systemImageName2 = [self uti];
+    [v4 setUti:systemImageName2];
 LABEL_8:
 
     goto LABEL_9;
   }
 
-  v7 = [a1 imageData];
+  imageData = [self imageData];
 
-  if (v7)
+  if (imageData)
   {
-    v8 = [a1 imageData];
+    imageData2 = [self imageData];
 LABEL_5:
-    v6 = v8;
-    [v4 setImageData:v8];
+    systemImageName2 = imageData2;
+    [v4 setImageData:imageData2];
     goto LABEL_8;
   }
 
-  v9 = [a1 systemImageName];
+  systemImageName = [self systemImageName];
 
-  if (v9)
+  if (systemImageName)
   {
-    v6 = [a1 systemImageName];
-    [v4 setSystemImageName:v6];
+    systemImageName2 = [self systemImageName];
+    [v4 setSystemImageName:systemImageName2];
     goto LABEL_8;
   }
 
-  v11 = [a1 bundlePath];
-  if (v11)
+  bundlePath = [self bundlePath];
+  if (bundlePath)
   {
-    v12 = v11;
-    v13 = [a1 imageName];
+    v12 = bundlePath;
+    imageName = [self imageName];
 
-    if (v13)
+    if (imageName)
     {
-      v8 = BLTPBDataForSectionIconVariant(a1, a2);
+      imageData2 = BLTPBDataForSectionIconVariant(self, a2);
       goto LABEL_5;
     }
   }
 
-  v14 = [a1 imagePath];
+  imagePath = [self imagePath];
 
-  if (v14)
+  if (imagePath)
   {
     v15 = MEMORY[0x277CBEA90];
-    v6 = [a1 imagePath];
-    v16 = [v15 dataWithContentsOfFile:v6];
+    systemImageName2 = [self imagePath];
+    v16 = [v15 dataWithContentsOfFile:systemImageName2];
     [v4 setImageData:v16];
 
     goto LABEL_8;

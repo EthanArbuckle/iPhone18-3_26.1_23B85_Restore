@@ -2,20 +2,20 @@
 - (SFDeviceSetupTVColorCalibratorSession)init;
 - (int)_runFinish;
 - (int)_runPairSetup;
-- (int)_runPairVerify:(BOOL)a3;
+- (int)_runPairVerify:(BOOL)verify;
 - (int)_runSFSessionStart;
 - (int)_runTVLatencySetup;
 - (void)_cleanup;
-- (void)_handleSetupActionRequest:(id)a3 responseHandler:(id)a4;
-- (void)_reportError:(id)a3;
+- (void)_handleSetupActionRequest:(id)request responseHandler:(id)handler;
+- (void)_reportError:(id)error;
 - (void)_run;
 - (void)_runSFSessionActivated;
-- (void)_runTVColorCalibratorProgressEvent:(unint64_t)a3 info:(id)a4;
+- (void)_runTVColorCalibratorProgressEvent:(unint64_t)event info:(id)info;
 - (void)_runTVColorCalibratorSetup;
 - (void)_runTVLatencySetupRequest;
 - (void)activate;
 - (void)invalidate;
-- (void)pairSetupTryPIN:(id)a3;
+- (void)pairSetupTryPIN:(id)n;
 - (void)tryAgain;
 @end
 
@@ -122,10 +122,10 @@ uint64_t __51__SFDeviceSetupTVColorCalibratorSession_invalidate__block_invoke(ui
   return [v2 _cleanup];
 }
 
-- (void)_reportError:(id)a3
+- (void)_reportError:(id)error
 {
   v29[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  errorCopy = error;
   if (gLogCategory_SFDeviceSetupTVColorCalibratorSession <= 60 && (gLogCategory_SFDeviceSetupTVColorCalibratorSession != -1 || _LogCategory_Initialize()))
   {
     [SFDeviceSetupTVColorCalibratorSession _reportError:];
@@ -135,8 +135,8 @@ uint64_t __51__SFDeviceSetupTVColorCalibratorSession_invalidate__block_invoke(ui
   if (progressHandler)
   {
     v28 = @"eo";
-    v8 = v6;
-    if (!v6)
+    v8 = errorCopy;
+    if (!errorCopy)
     {
       v9 = MEMORY[0x1E696ABC0];
       v10 = *MEMORY[0x1E696A768];
@@ -162,20 +162,20 @@ uint64_t __51__SFDeviceSetupTVColorCalibratorSession_invalidate__block_invoke(ui
     v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v29 forKeys:&v28 count:1];
     progressHandler[2](progressHandler, 30, v13);
 
-    if (!v6)
+    if (!errorCopy)
     {
     }
   }
 
   v24[0] = @"errCode";
-  v14 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v6, "code")}];
+  v14 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(errorCopy, "code")}];
   v25[0] = v14;
   v24[1] = @"errDomain";
-  v15 = [v6 domain];
-  v16 = v15;
-  if (v15)
+  domain = [errorCopy domain];
+  v16 = domain;
+  if (domain)
   {
-    v17 = v15;
+    v17 = domain;
   }
 
   else
@@ -201,17 +201,17 @@ uint64_t __51__SFDeviceSetupTVColorCalibratorSession_invalidate__block_invoke(ui
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (void)pairSetupTryPIN:(id)a3
+- (void)pairSetupTryPIN:(id)n
 {
-  v4 = a3;
+  nCopy = n;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __57__SFDeviceSetupTVColorCalibratorSession_pairSetupTryPIN___block_invoke;
   v7[3] = &unk_1E788A658;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = nCopy;
+  v6 = nCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -415,9 +415,9 @@ void __59__SFDeviceSetupTVColorCalibratorSession__runSFSessionStart__block_invok
   [(SFDeviceSetupTVColorCalibratorSession *)self _run];
 }
 
-- (int)_runPairVerify:(BOOL)a3
+- (int)_runPairVerify:(BOOL)verify
 {
-  if (a3 && ([(SFSession *)self->_sfSession sessionFlags]& 0x400) == 0)
+  if (verify && ([(SFSession *)self->_sfSession sessionFlags]& 0x400) == 0)
   {
     [(SFSession *)self->_sfSession setSessionFlags:[(SFSession *)self->_sfSession sessionFlags]| 0x400];
     self->_pairVerifyState = 0;
@@ -446,9 +446,9 @@ void __59__SFDeviceSetupTVColorCalibratorSession__runSFSessionStart__block_invok
 
     else
     {
-      v6 = [(SFSession *)self->_sfSession sessionFlags];
+      sessionFlags = [(SFSession *)self->_sfSession sessionFlags];
       v7 = @"CUPairing";
-      if ((v6 & 0x400) == 0)
+      if ((sessionFlags & 0x400) == 0)
       {
         v7 = @"HomeKit";
       }
@@ -707,16 +707,16 @@ void __66__SFDeviceSetupTVColorCalibratorSession__runTVLatencySetupRequest__bloc
   }
 
   self->_tvLatencySetupState = 12;
-  v3 = [(SFSession *)self->_sfSession messageSessionTemplate];
-  if (v3)
+  messageSessionTemplate = [(SFSession *)self->_sfSession messageSessionTemplate];
+  if (messageSessionTemplate)
   {
-    v4 = [objc_alloc(getTVLDisplayColorCalibratorClass()) initWithMessageSession:v3];
+    v4 = [objc_alloc(getTVLDisplayColorCalibratorClass()) initWithMessageSession:messageSessionTemplate];
     objc_storeStrong(&self->_tvColorCalibrator, v4);
     v7 = MEMORY[0x1E69E9820];
     v8 = 3221225472;
     v9 = __67__SFDeviceSetupTVColorCalibratorSession__runTVColorCalibratorSetup__block_invoke;
     v10 = &unk_1E788B598;
-    v11 = self;
+    selfCopy = self;
     v12 = v4;
     v5 = v4;
     [v5 setProgressEventHandler:&v7];
@@ -761,19 +761,19 @@ uint64_t __67__SFDeviceSetupTVColorCalibratorSession__runTVColorCalibratorSetup_
   return result;
 }
 
-- (void)_runTVColorCalibratorProgressEvent:(unint64_t)a3 info:(id)a4
+- (void)_runTVColorCalibratorProgressEvent:(unint64_t)event info:(id)info
 {
-  v14 = a4;
+  infoCopy = info;
   if (gLogCategory_SFDeviceSetupTVColorCalibratorSession <= 30 && (gLogCategory_SFDeviceSetupTVColorCalibratorSession != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
   }
 
-  if (a3 <= 1)
+  if (event <= 1)
   {
-    if (a3)
+    if (event)
     {
-      if (a3 != 1)
+      if (event != 1)
       {
         goto LABEL_25;
       }
@@ -804,7 +804,7 @@ LABEL_24:
     goto LABEL_25;
   }
 
-  if (a3 == 2)
+  if (event == 2)
   {
     v6 = _Block_copy(self->_progressHandler);
     v7 = v6;
@@ -820,9 +820,9 @@ LABEL_23:
     goto LABEL_24;
   }
 
-  if (a3 != 3)
+  if (event != 3)
   {
-    if (a3 != 4)
+    if (event != 4)
     {
       goto LABEL_25;
     }
@@ -843,7 +843,7 @@ LABEL_23:
   v11 = v10;
   if (v10)
   {
-    (*(v10 + 2))(v10, 282, v14);
+    (*(v10 + 2))(v10, 282, infoCopy);
   }
 
   tvColorCalibrator = self->_tvColorCalibrator;
@@ -920,10 +920,10 @@ void __51__SFDeviceSetupTVColorCalibratorSession__runFinish__block_invoke(uint64
   [*(a1 + 32) _run];
 }
 
-- (void)_handleSetupActionRequest:(id)a3 responseHandler:(id)a4
+- (void)_handleSetupActionRequest:(id)request responseHandler:(id)handler
 {
-  v12 = a3;
-  v6 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
   Int64Ranged = CFDictionaryGetInt64Ranged();
   if (gLogCategory_SFDeviceSetupTVColorCalibratorSession <= 30 && (gLogCategory_SFDeviceSetupTVColorCalibratorSession != -1 || _LogCategory_Initialize()))
@@ -964,7 +964,7 @@ LABEL_10:
 
   [v7 setObject:&unk_1F1D7CC10 forKeyedSubscript:@"er"];
 LABEL_15:
-  (*(v6 + 2))(v6, 0, 0, v7);
+  (*(handlerCopy + 2))(handlerCopy, 0, 0, v7);
 }
 
 - (void)_run
@@ -972,8 +972,8 @@ LABEL_15:
   dispatch_assert_queue_V2(self->_dispatchQueue);
   if (!self->_invalidateCalled)
   {
-    v3 = [(SFDeviceSetupTVColorCalibratorSession *)self _runSFSessionStart];
-    if (v3 == 4 || v3 == 2)
+    _runSFSessionStart = [(SFDeviceSetupTVColorCalibratorSession *)self _runSFSessionStart];
+    if (_runSFSessionStart == 4 || _runSFSessionStart == 2)
     {
       v5 = [(SFDeviceSetupTVColorCalibratorSession *)self _runPairVerify:0];
       if (v5 == 4 || v5 == 2)
@@ -982,11 +982,11 @@ LABEL_15:
         {
           if (self->_sessionSecured || ((v9 = [(SFDeviceSetupTVColorCalibratorSession *)self _runPairSetup], v9 != 4) ? (v10 = v9 == 2) : (v10 = 1), v10))
           {
-            v11 = [(SFDeviceSetupTVColorCalibratorSession *)self _runTVLatencySetup];
-            if (v11 == 4 || v11 == 2)
+            _runTVLatencySetup = [(SFDeviceSetupTVColorCalibratorSession *)self _runTVLatencySetup];
+            if (_runTVLatencySetup == 4 || _runTVLatencySetup == 2)
             {
-              v13 = [(SFDeviceSetupTVColorCalibratorSession *)self _runFinish];
-              if (v13 == 4 || v13 == 2)
+              _runFinish = [(SFDeviceSetupTVColorCalibratorSession *)self _runFinish];
+              if (_runFinish == 4 || _runFinish == 2)
               {
                 v15 = _Block_copy(self->_progressHandler);
                 if (v15)

@@ -1,24 +1,24 @@
 @interface CAMModeDialAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (CGRect)accessibilityFrame;
 - (id)_axCurrentCameraMode;
 - (id)accessibilityCustomActions;
-- (void)_axAdjustValue:(BOOL)a3;
-- (void)setSelectedMode:(int64_t)a3 animated:(BOOL)a4;
+- (void)_axAdjustValue:(BOOL)value;
+- (void)setSelectedMode:(int64_t)mode animated:(BOOL)animated;
 @end
 
 @implementation CAMModeDialAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CAMModeDial" hasInstanceMethod:@"setSelectedMode: animated:" withFullSignature:{"v", "q", "B", 0}];
-  [v3 validateClass:@"CAMModeDial" hasInstanceMethod:@"selectedMode" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"CAMModeDial" hasInstanceMethod:@"dataSource" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CAMModeDial" hasInstanceMethod:@"_items" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CAMModeDialItem" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CAMFullscreenViewfinder"];
-  [v3 validateClass:@"CAMFullscreenViewfinder" hasInstanceMethod:@"setControlDrawerExpanded:forReason:animated:" withFullSignature:{"v", "B", "q", "B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CAMModeDial" hasInstanceMethod:@"setSelectedMode: animated:" withFullSignature:{"v", "q", "B", 0}];
+  [validationsCopy validateClass:@"CAMModeDial" hasInstanceMethod:@"selectedMode" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"CAMModeDial" hasInstanceMethod:@"dataSource" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CAMModeDial" hasInstanceMethod:@"_items" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CAMModeDialItem" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CAMFullscreenViewfinder"];
+  [validationsCopy validateClass:@"CAMFullscreenViewfinder" hasInstanceMethod:@"setControlDrawerExpanded:forReason:animated:" withFullSignature:{"v", "B", "q", "B", 0}];
 }
 
 - (CGRect)accessibilityFrame
@@ -41,11 +41,11 @@
   return result;
 }
 
-- (void)setSelectedMode:(int64_t)a3 animated:(BOOL)a4
+- (void)setSelectedMode:(int64_t)mode animated:(BOOL)animated
 {
   v4.receiver = self;
   v4.super_class = CAMModeDialAccessibility;
-  [(CAMModeDialAccessibility *)&v4 setSelectedMode:a3 animated:a4];
+  [(CAMModeDialAccessibility *)&v4 setSelectedMode:mode animated:animated];
   UIAccessibilityPostNotification(*MEMORY[0x29EDC7ED8], 0);
 }
 
@@ -70,8 +70,8 @@
   _Block_object_dispose(&v12, 8);
   v7 = [v6 safeValueForKey:@"title"];
 
-  v8 = [v7 lowercaseString];
-  v9 = [v8 stringByReplacingOccurrencesOfString:@"\n" withString:&stru_2A213F7C0];
+  lowercaseString = [v7 lowercaseString];
+  v9 = [lowercaseString stringByReplacingOccurrencesOfString:@"\n" withString:&stru_2A213F7C0];
 
   return v9;
 }
@@ -86,9 +86,9 @@ void __48__CAMModeDialAccessibility__axCurrentCameraMode__block_invoke(void *a1)
   *(v4 + 40) = v3;
 }
 
-- (void)_axAdjustValue:(BOOL)a3
+- (void)_axAdjustValue:(BOOL)value
 {
-  v3 = a3;
+  valueCopy = value;
   v5 = [(CAMModeDialAccessibility *)self safeValueForKey:@"selectedMode"];
   [v5 unsignedIntegerValue];
 
@@ -105,7 +105,7 @@ void __48__CAMModeDialAccessibility__axCurrentCameraMode__block_invoke(void *a1)
   v9 = v17[3];
 
   _Block_object_dispose(&v16, 8);
-  if (v3)
+  if (valueCopy)
   {
     LOBYTE(v16) = 0;
     v10 = [(CAMModeDialAccessibility *)self safeValueForKey:@"_modes"];
@@ -182,7 +182,7 @@ void __43__CAMModeDialAccessibility__axAdjustValue___block_invoke_2(uint64_t a1)
     v6 = [v4 initWithName:v5 actionHandler:v10];
 
     v13[0] = v6;
-    v7 = [MEMORY[0x29EDB8D80] arrayWithObjects:v13 count:1];
+    accessibilityCustomActions = [MEMORY[0x29EDB8D80] arrayWithObjects:v13 count:1];
 
     objc_destroyWeak(&v11);
     objc_destroyWeak(&location);
@@ -192,10 +192,10 @@ void __43__CAMModeDialAccessibility__axAdjustValue___block_invoke_2(uint64_t a1)
   {
     v9.receiver = self;
     v9.super_class = CAMModeDialAccessibility;
-    v7 = [(CAMModeDialAccessibility *)&v9 accessibilityCustomActions];
+    accessibilityCustomActions = [(CAMModeDialAccessibility *)&v9 accessibilityCustomActions];
   }
 
-  return v7;
+  return accessibilityCustomActions;
 }
 
 uint64_t __54__CAMModeDialAccessibility_accessibilityCustomActions__block_invoke(uint64_t a1, void *a2)

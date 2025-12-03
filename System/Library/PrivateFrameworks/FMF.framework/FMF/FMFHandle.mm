@@ -1,30 +1,30 @@
 @interface FMFHandle
-+ (id)familyHandleWithId:(id)a3 dsid:(id)a4;
-+ (id)handleWithId:(id)a3;
-+ (id)handleWithId:(id)a3 serverId:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)familyHandleWithId:(id)id dsid:(id)dsid;
++ (id)handleWithId:(id)id;
++ (id)handleWithId:(id)id serverId:(id)serverId;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isPhoneNumber;
-- (BOOL)isSharingThroughGroupId:(id)a3;
-- (FMFHandle)initWithCoder:(id)a3;
-- (id)IDSRecipientFromHandle:(id)a3;
+- (BOOL)isSharingThroughGroupId:(id)id;
+- (FMFHandle)initWithCoder:(id)coder;
+- (id)IDSRecipientFromHandle:(id)handle;
 - (id)cachedPrettyName;
 - (id)comparisonIdentifier;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
 - (id)description;
 - (id)prettyName;
 - (id)recordId;
-- (id)sanitizePhoneNumber:(id)a3;
-- (int64_t)prettyNameCompare:(id)a3;
+- (id)sanitizePhoneNumber:(id)number;
+- (int64_t)prettyNameCompare:(id)compare;
 - (unint64_t)hash;
 - (void)abPreferencesDidChange;
 - (void)addressBookDidChange;
 - (void)cachedPrettyName;
-- (void)correlationIdentifierForHandle:(id)a3 withCompletion:(id)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)idsCorrelationIdentifierWithCompletion:(id)a3;
-- (void)prettyNameWithCompletion:(id)a3;
-- (void)setICloudId:(id)a3;
+- (void)correlationIdentifierForHandle:(id)handle withCompletion:(id)completion;
+- (void)encodeWithCoder:(id)coder;
+- (void)idsCorrelationIdentifierWithCompletion:(id)completion;
+- (void)prettyNameWithCompletion:(id)completion;
+- (void)setICloudId:(id)id;
 @end
 
 @implementation FMFHandle
@@ -53,180 +53,180 @@
   [(FMFHandle *)self set_prettyNameInternal:0];
 }
 
-+ (id)handleWithId:(id)a3
++ (id)handleWithId:(id)id
 {
-  v3 = a3;
-  v4 = [objc_opt_class() handleWithId:v3 serverId:0];
+  idCopy = id;
+  v4 = [objc_opt_class() handleWithId:idCopy serverId:0];
 
   return v4;
 }
 
-+ (id)handleWithId:(id)a3 serverId:(id)a4
++ (id)handleWithId:(id)id serverId:(id)serverId
 {
-  v5 = a4;
-  v6 = a3;
+  serverIdCopy = serverId;
+  idCopy = id;
   v7 = objc_alloc_init(objc_opt_class());
-  [v7 setIdentifier:v6];
-  [v7 setQualifiedIdentifier:v6];
+  [v7 setIdentifier:idCopy];
+  [v7 setQualifiedIdentifier:idCopy];
 
-  [v7 setServerId:v5];
+  [v7 setServerId:serverIdCopy];
   [v7 setIdsStatus:-1];
   [v7 setReachable:0];
   v8 = MEMORY[0x277CCABB0];
-  v9 = [MEMORY[0x277CBEAA8] date];
-  [v9 timeIntervalSince1970];
+  date = [MEMORY[0x277CBEAA8] date];
+  [date timeIntervalSince1970];
   v11 = [v8 numberWithDouble:floor(v10 * 1000.0)];
 
   [v7 setTrackingTimestamp:v11];
   if ([v7 isPhoneNumber])
   {
-    v12 = [v7 identifier];
-    v13 = [v7 sanitizePhoneNumber:v12];
+    identifier = [v7 identifier];
+    v13 = [v7 sanitizePhoneNumber:identifier];
     [v7 setIdentifier:v13];
   }
 
   return v7;
 }
 
-+ (id)familyHandleWithId:(id)a3 dsid:(id)a4
++ (id)familyHandleWithId:(id)id dsid:(id)dsid
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [objc_opt_class() handleWithId:v6];
+  dsidCopy = dsid;
+  idCopy = id;
+  v7 = [objc_opt_class() handleWithId:idCopy];
 
-  [v7 setDsid:v5];
+  [v7 setDsid:dsidCopy];
   [v7 setIsFamilyMember:1];
 
   return v7;
 }
 
-- (void)setICloudId:(id)a3
+- (void)setICloudId:(id)id
 {
   v4 = MEMORY[0x277CCA900];
-  v5 = a3;
-  v6 = [v4 whitespaceAndNewlineCharacterSet];
-  v9 = [v5 stringByTrimmingCharactersInSet:v6];
+  idCopy = id;
+  whitespaceAndNewlineCharacterSet = [v4 whitespaceAndNewlineCharacterSet];
+  v9 = [idCopy stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
-  v7 = [v9 lowercaseString];
+  lowercaseString = [v9 lowercaseString];
   identifier = self->_identifier;
-  self->_identifier = v7;
+  self->_identifier = lowercaseString;
 }
 
-- (BOOL)isSharingThroughGroupId:(id)a3
+- (BOOL)isSharingThroughGroupId:(id)id
 {
   v4 = MEMORY[0x277CBEB98];
-  v5 = a3;
-  v6 = [(FMFHandle *)self expiresByGroupId];
-  v7 = [v6 allKeys];
-  v8 = [v4 setWithArray:v7];
+  idCopy = id;
+  expiresByGroupId = [(FMFHandle *)self expiresByGroupId];
+  allKeys = [expiresByGroupId allKeys];
+  v8 = [v4 setWithArray:allKeys];
 
-  LOBYTE(v6) = [v8 containsObject:v5];
-  return v6;
+  LOBYTE(expiresByGroupId) = [v8 containsObject:idCopy];
+  return expiresByGroupId;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
-  v5 = [(FMFHandle *)self identifier];
-  [v4 setIdentifier:v5];
+  identifier = [(FMFHandle *)self identifier];
+  [v4 setIdentifier:identifier];
 
-  v6 = [(FMFHandle *)self serverId];
-  [v4 setServerId:v6];
+  serverId = [(FMFHandle *)self serverId];
+  [v4 setServerId:serverId];
 
-  v7 = [(FMFHandle *)self expiresByGroupId];
-  [v4 setExpiresByGroupId:v7];
+  expiresByGroupId = [(FMFHandle *)self expiresByGroupId];
+  [v4 setExpiresByGroupId:expiresByGroupId];
 
-  v8 = [(FMFHandle *)self trackingTimestamp];
-  [v4 setTrackingTimestamp:v8];
+  trackingTimestamp = [(FMFHandle *)self trackingTimestamp];
+  [v4 setTrackingTimestamp:trackingTimestamp];
 
-  v9 = [(FMFHandle *)self hashedDSID];
-  [v4 setHashedDSID:v9];
+  hashedDSID = [(FMFHandle *)self hashedDSID];
+  [v4 setHashedDSID:hashedDSID];
 
-  v10 = [(FMFHandle *)self favoriteOrder];
-  [v4 setFavoriteOrder:v10];
+  favoriteOrder = [(FMFHandle *)self favoriteOrder];
+  [v4 setFavoriteOrder:favoriteOrder];
 
   [v4 setIdsStatus:{-[FMFHandle idsStatus](self, "idsStatus")}];
   [v4 setReachable:{-[FMFHandle reachable](self, "reachable")}];
-  v11 = [(FMFHandle *)self qualifiedIdentifier];
-  [v4 setQualifiedIdentifier:v11];
+  qualifiedIdentifier = [(FMFHandle *)self qualifiedIdentifier];
+  [v4 setQualifiedIdentifier:qualifiedIdentifier];
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(FMFHandle *)self identifier];
-  [v4 encodeObject:v5 forKey:@"identifier"];
+  coderCopy = coder;
+  identifier = [(FMFHandle *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 
-  v6 = [(FMFHandle *)self serverId];
-  [v4 encodeObject:v6 forKey:@"serverId"];
+  serverId = [(FMFHandle *)self serverId];
+  [coderCopy encodeObject:serverId forKey:@"serverId"];
 
-  v7 = [(FMFHandle *)self dsid];
-  [v4 encodeObject:v7 forKey:@"dsid"];
+  dsid = [(FMFHandle *)self dsid];
+  [coderCopy encodeObject:dsid forKey:@"dsid"];
 
-  v8 = [(FMFHandle *)self expiresByGroupId];
-  [v4 encodeObject:v8 forKey:@"expiresByGroupId"];
+  expiresByGroupId = [(FMFHandle *)self expiresByGroupId];
+  [coderCopy encodeObject:expiresByGroupId forKey:@"expiresByGroupId"];
 
-  v9 = [(FMFHandle *)self trackingTimestamp];
-  [v4 encodeObject:v9 forKey:@"trackingTimestamp"];
+  trackingTimestamp = [(FMFHandle *)self trackingTimestamp];
+  [coderCopy encodeObject:trackingTimestamp forKey:@"trackingTimestamp"];
 
-  v10 = [(FMFHandle *)self hashedDSID];
-  [v4 encodeObject:v10 forKey:@"hashedDSID"];
+  hashedDSID = [(FMFHandle *)self hashedDSID];
+  [coderCopy encodeObject:hashedDSID forKey:@"hashedDSID"];
 
-  v11 = [(FMFHandle *)self favoriteOrder];
-  [v4 encodeObject:v11 forKey:@"favoriteOrder"];
+  favoriteOrder = [(FMFHandle *)self favoriteOrder];
+  [coderCopy encodeObject:favoriteOrder forKey:@"favoriteOrder"];
 
-  [v4 encodeInteger:-[FMFHandle idsStatus](self forKey:{"idsStatus"), @"idsStatus"}];
-  [v4 encodeBool:-[FMFHandle reachable](self forKey:{"reachable"), @"reachable"}];
-  v12 = [(FMFHandle *)self qualifiedIdentifier];
-  [v4 encodeObject:v12 forKey:@"qualifiedIdentifier"];
+  [coderCopy encodeInteger:-[FMFHandle idsStatus](self forKey:{"idsStatus"), @"idsStatus"}];
+  [coderCopy encodeBool:-[FMFHandle reachable](self forKey:{"reachable"), @"reachable"}];
+  qualifiedIdentifier = [(FMFHandle *)self qualifiedIdentifier];
+  [coderCopy encodeObject:qualifiedIdentifier forKey:@"qualifiedIdentifier"];
 }
 
-- (FMFHandle)initWithCoder:(id)a3
+- (FMFHandle)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_alloc_init(objc_opt_class());
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
   [(FMFHandle *)v5 setIdentifier:v6];
 
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"serverId"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"serverId"];
   [(FMFHandle *)v5 setServerId:v7];
 
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dsid"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dsid"];
   [(FMFHandle *)v5 setDsid:v8];
 
-  v9 = [v4 decodePropertyListForKey:@"expiresByGroupId"];
+  v9 = [coderCopy decodePropertyListForKey:@"expiresByGroupId"];
   [(FMFHandle *)v5 setExpiresByGroupId:v9];
 
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"trackingTimestamp"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"trackingTimestamp"];
   [(FMFHandle *)v5 setTrackingTimestamp:v10];
 
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"hashedDSID"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"hashedDSID"];
   [(FMFHandle *)v5 setHashedDSID:v11];
 
-  v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"favoriteOrder"];
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"favoriteOrder"];
   [(FMFHandle *)v5 setFavoriteOrder:v12];
 
-  -[FMFHandle setIdsStatus:](v5, "setIdsStatus:", [v4 decodeIntegerForKey:@"idsStatus"]);
-  -[FMFHandle setReachable:](v5, "setReachable:", [v4 decodeBoolForKey:@"reachable"]);
-  v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"qualifiedIdentifier"];
+  -[FMFHandle setIdsStatus:](v5, "setIdsStatus:", [coderCopy decodeIntegerForKey:@"idsStatus"]);
+  -[FMFHandle setReachable:](v5, "setReachable:", [coderCopy decodeBoolForKey:@"reachable"]);
+  v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"qualifiedIdentifier"];
 
   [(FMFHandle *)v5 setQualifiedIdentifier:v13];
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(FMFHandle *)self comparisonIdentifier];
-    v7 = [v5 comparisonIdentifier];
+    v5 = equalCopy;
+    comparisonIdentifier = [(FMFHandle *)self comparisonIdentifier];
+    comparisonIdentifier2 = [v5 comparisonIdentifier];
 
-    v8 = [v6 isEqualToString:v7];
+    v8 = [comparisonIdentifier isEqualToString:comparisonIdentifier2];
   }
 
   else
@@ -239,16 +239,16 @@
 
 - (id)comparisonIdentifier
 {
-  v2 = [(FMFHandle *)self identifier];
-  v3 = [v2 lowercaseString];
+  identifier = [(FMFHandle *)self identifier];
+  lowercaseString = [identifier lowercaseString];
 
-  return v3;
+  return lowercaseString;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(FMFHandle *)self comparisonIdentifier];
-  v3 = [v2 hash];
+  comparisonIdentifier = [(FMFHandle *)self comparisonIdentifier];
+  v3 = [comparisonIdentifier hash];
 
   return v3;
 }
@@ -256,8 +256,8 @@
 - (id)description
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(FMFHandle *)self identifier];
-  v4 = [v2 stringWithFormat:@"%@", v3];
+  identifier = [(FMFHandle *)self identifier];
+  v4 = [v2 stringWithFormat:@"%@", identifier];
 
   return v4;
 }
@@ -266,29 +266,29 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(FMFHandle *)self identifier];
-  v6 = [v3 stringWithFormat:@"<%@ %p [%@]>", v4, self, v5];
+  identifier = [(FMFHandle *)self identifier];
+  v6 = [v3 stringWithFormat:@"<%@ %p [%@]>", v4, self, identifier];
 
   return v6;
 }
 
-- (int64_t)prettyNameCompare:(id)a3
+- (int64_t)prettyNameCompare:(id)compare
 {
-  v4 = a3;
-  v5 = [(FMFHandle *)self prettyName];
-  v6 = [v4 prettyName];
+  compareCopy = compare;
+  prettyName = [(FMFHandle *)self prettyName];
+  prettyName2 = [compareCopy prettyName];
 
-  v7 = [v5 caseInsensitiveCompare:v6];
+  v7 = [prettyName caseInsensitiveCompare:prettyName2];
   return v7;
 }
 
 - (id)prettyName
 {
-  v3 = [(FMFHandle *)self _prettyNameInternal];
+  _prettyNameInternal = [(FMFHandle *)self _prettyNameInternal];
 
-  if (v3)
+  if (_prettyNameInternal)
   {
-    v4 = [(FMFHandle *)self _prettyNameInternal];
+    _prettyNameInternal2 = [(FMFHandle *)self _prettyNameInternal];
   }
 
   else
@@ -324,18 +324,18 @@
     v10 = v19[5];
     if (!v10 || ![v10 length])
     {
-      v11 = [(FMFHandle *)self identifier];
+      identifier = [(FMFHandle *)self identifier];
       v12 = v19[5];
-      v19[5] = v11;
+      v19[5] = identifier;
     }
 
     [(FMFHandle *)self set_prettyNameInternal:v19[5]];
-    v4 = v19[5];
+    _prettyNameInternal2 = v19[5];
 
     _Block_object_dispose(&v18, 8);
   }
 
-  return v4;
+  return _prettyNameInternal2;
 }
 
 void __23__FMFHandle_prettyName__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -364,20 +364,20 @@ void __23__FMFHandle_prettyName__block_invoke(uint64_t a1, void *a2, void *a3)
   return [(FMFHandle *)self _prettyNameInternal];
 }
 
-- (void)prettyNameWithCompletion:(id)a3
+- (void)prettyNameWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
     [(FMFHandle *)a2 prettyNameWithCompletion:?];
   }
 
-  v6 = [(FMFHandle *)self _prettyNameInternal];
+  _prettyNameInternal = [(FMFHandle *)self _prettyNameInternal];
 
-  if (v6)
+  if (_prettyNameInternal)
   {
-    v7 = [(FMFHandle *)self _prettyNameInternal];
-    v5[2](v5, v7);
+    _prettyNameInternal2 = [(FMFHandle *)self _prettyNameInternal];
+    completionCopy[2](completionCopy, _prettyNameInternal2);
   }
 
   else
@@ -388,7 +388,7 @@ void __23__FMFHandle_prettyName__block_invoke(uint64_t a1, void *a2, void *a3)
     v9[2] = __38__FMFHandle_prettyNameWithCompletion___block_invoke;
     v9[3] = &unk_278FDE2C0;
     v9[4] = self;
-    v10 = v5;
+    v10 = completionCopy;
     [v8 getPrettyNameForHandle:self completion:v9];
   }
 }
@@ -429,15 +429,15 @@ uint64_t __38__FMFHandle_prettyNameWithCompletion___block_invoke_2(uint64_t a1)
   return v3();
 }
 
-- (void)idsCorrelationIdentifierWithCompletion:(id)a3
+- (void)idsCorrelationIdentifierWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(FMFHandle *)self _idsCorrelationIdentifierInternal];
+  completionCopy = completion;
+  _idsCorrelationIdentifierInternal = [(FMFHandle *)self _idsCorrelationIdentifierInternal];
 
-  if (v5)
+  if (_idsCorrelationIdentifierInternal)
   {
-    v6 = [(FMFHandle *)self _idsCorrelationIdentifierInternal];
-    v4[2](v4, v6);
+    _idsCorrelationIdentifierInternal2 = [(FMFHandle *)self _idsCorrelationIdentifierInternal];
+    completionCopy[2](completionCopy, _idsCorrelationIdentifierInternal2);
   }
 
   else
@@ -447,7 +447,7 @@ uint64_t __38__FMFHandle_prettyNameWithCompletion___block_invoke_2(uint64_t a1)
     v7[2] = __52__FMFHandle_idsCorrelationIdentifierWithCompletion___block_invoke;
     v7[3] = &unk_278FDE2E8;
     v7[4] = self;
-    v8 = v4;
+    v8 = completionCopy;
     [(FMFHandle *)self correlationIdentifierForHandle:self withCompletion:v7];
   }
 }
@@ -510,43 +510,43 @@ void __21__FMFHandle_recordId__block_invoke(uint64_t a1, void *a2)
 
 - (BOOL)isPhoneNumber
 {
-  v3 = [MEMORY[0x277CCAB50] decimalDigitCharacterSet];
-  [v3 addCharactersInString:@"+()-"];
-  v4 = [MEMORY[0x277CCA900] controlCharacterSet];
-  [v3 formUnionWithCharacterSet:v4];
+  decimalDigitCharacterSet = [MEMORY[0x277CCAB50] decimalDigitCharacterSet];
+  [decimalDigitCharacterSet addCharactersInString:@"+()-"];
+  controlCharacterSet = [MEMORY[0x277CCA900] controlCharacterSet];
+  [decimalDigitCharacterSet formUnionWithCharacterSet:controlCharacterSet];
 
-  v5 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-  [v3 formUnionWithCharacterSet:v5];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+  [decimalDigitCharacterSet formUnionWithCharacterSet:whitespaceAndNewlineCharacterSet];
 
-  v6 = [(FMFHandle *)self identifier];
-  v7 = [v6 componentsSeparatedByCharactersInSet:v3];
+  identifier = [(FMFHandle *)self identifier];
+  v7 = [identifier componentsSeparatedByCharactersInSet:decimalDigitCharacterSet];
   v8 = [v7 componentsJoinedByString:&stru_285D7AA10];
 
-  LOBYTE(v6) = [v8 length] == 0;
-  return v6;
+  LOBYTE(identifier) = [v8 length] == 0;
+  return identifier;
 }
 
-- (id)sanitizePhoneNumber:(id)a3
+- (id)sanitizePhoneNumber:(id)number
 {
-  v4 = [MEMORY[0x277CCAB50] decimalDigitCharacterSet];
-  [v4 addCharactersInString:@"+"];
-  v5 = [MEMORY[0x277CCA900] controlCharacterSet];
-  [v4 formUnionWithCharacterSet:v5];
+  decimalDigitCharacterSet = [MEMORY[0x277CCAB50] decimalDigitCharacterSet];
+  [decimalDigitCharacterSet addCharactersInString:@"+"];
+  controlCharacterSet = [MEMORY[0x277CCA900] controlCharacterSet];
+  [decimalDigitCharacterSet formUnionWithCharacterSet:controlCharacterSet];
 
-  v6 = [v4 invertedSet];
-  v7 = [(FMFHandle *)self identifier];
-  v8 = [v7 componentsSeparatedByCharactersInSet:v6];
+  invertedSet = [decimalDigitCharacterSet invertedSet];
+  identifier = [(FMFHandle *)self identifier];
+  v8 = [identifier componentsSeparatedByCharactersInSet:invertedSet];
   v9 = [v8 componentsJoinedByString:&stru_285D7AA10];
 
   return v9;
 }
 
-- (void)correlationIdentifierForHandle:(id)a3 withCompletion:(id)a4
+- (void)correlationIdentifierForHandle:(id)handle withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(FMFHandle *)self IDSRecipientFromHandle:v6];
-  v9 = [MEMORY[0x277D18728] sharedInstance];
+  handleCopy = handle;
+  completionCopy = completion;
+  v8 = [(FMFHandle *)self IDSRecipientFromHandle:handleCopy];
+  mEMORY[0x277D18728] = [MEMORY[0x277D18728] sharedInstance];
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:{v8, 0}];
   v19[0] = 0;
   v19[1] = v19;
@@ -563,9 +563,9 @@ void __21__FMFHandle_recordId__block_invoke(uint64_t a1, void *a2)
   v13 = v8;
   v16 = v13;
   v18 = v19;
-  v14 = v7;
+  v14 = completionCopy;
   v17 = v14;
-  [v9 currentRemoteDevicesForDestinations:v10 service:@"com.apple.private.alloy.fmf" listenerID:@"com.apple.private.alloy.fmf" queue:v11 completionBlock:v15];
+  [mEMORY[0x277D18728] currentRemoteDevicesForDestinations:v10 service:@"com.apple.private.alloy.fmf" listenerID:@"com.apple.private.alloy.fmf" queue:v11 completionBlock:v15];
 
   _Block_object_dispose(v19, 8);
 }
@@ -614,20 +614,20 @@ void __59__FMFHandle_correlationIdentifierForHandle_withCompletion___block_invok
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (id)IDSRecipientFromHandle:(id)a3
+- (id)IDSRecipientFromHandle:(id)handle
 {
-  v4 = a3;
-  v5 = [(FMFHandle *)self isPhoneNumber];
-  v6 = [v4 identifier];
+  handleCopy = handle;
+  isPhoneNumber = [(FMFHandle *)self isPhoneNumber];
+  identifier = [handleCopy identifier];
 
-  if (v5)
+  if (isPhoneNumber)
   {
     v7 = IDSCopyIDForPhoneNumber();
   }
 
   else
   {
-    v7 = MEMORY[0x24C216530](v6);
+    v7 = MEMORY[0x24C216530](identifier);
   }
 
   v8 = v7;
@@ -637,8 +637,8 @@ void __59__FMFHandle_correlationIdentifierForHandle_withCompletion___block_invok
 
 - (void)cachedPrettyName
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"FMFHandle.m" lineNumber:223 description:@"This method should run on Main thread"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"FMFHandle.m" lineNumber:223 description:@"This method should run on Main thread"];
 }
 
 - (void)prettyNameWithCompletion:(uint64_t)a1 .cold.1(uint64_t a1, uint64_t a2)

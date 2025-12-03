@@ -1,23 +1,23 @@
 @interface FCAssetKeyContentArchive
-- (BOOL)isEqual:(id)a3;
-- (FCAssetKeyContentArchive)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (FCAssetKeyContentArchive)initWithCoder:(id)coder;
 - (id)description;
 - (id)manifest;
-- (id)unarchiveIntoContentContext:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)unarchiveIntoContentContext:(id)context;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FCAssetKeyContentArchive
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if (v4)
+  if (equalCopy)
   {
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -51,24 +51,24 @@
   v3 = [[FCDescription alloc] initWithObject:self];
   [(FCDescription *)v3 addField:@"wrappingKeyID" object:self->_wrappingKeyID];
   [(FCDescription *)v3 addField:@"wrappingKey" object:self->_wrappingKey];
-  v4 = [(FCDescription *)v3 descriptionString];
+  descriptionString = [(FCDescription *)v3 descriptionString];
 
-  return v4;
+  return descriptionString;
 }
 
-- (FCAssetKeyContentArchive)initWithCoder:(id)a3
+- (FCAssetKeyContentArchive)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = FCAssetKeyContentArchive;
   v5 = [(FCAssetKeyContentArchive *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"wrappingKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"wrappingKey"];
     wrappingKey = v5->_wrappingKey;
     v5->_wrappingKey = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"wrappingKeyID"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"wrappingKeyID"];
     wrappingKeyID = v5->_wrappingKeyID;
     v5->_wrappingKeyID = v8;
   }
@@ -76,23 +76,23 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   wrappingKey = self->_wrappingKey;
-  v5 = a3;
-  [v5 encodeObject:wrappingKey forKey:@"wrappingKey"];
-  [v5 encodeObject:self->_wrappingKeyID forKey:@"wrappingKeyID"];
+  coderCopy = coder;
+  [coderCopy encodeObject:wrappingKey forKey:@"wrappingKey"];
+  [coderCopy encodeObject:self->_wrappingKeyID forKey:@"wrappingKeyID"];
 }
 
-- (id)unarchiveIntoContentContext:(id)a3
+- (id)unarchiveIntoContentContext:(id)context
 {
-  v4 = [a3 internalContentContext];
-  v5 = [v4 assetKeyCache];
-  [v5 setWrappingKey:self->_wrappingKey forWrappingKeyID:self->_wrappingKeyID];
+  internalContentContext = [context internalContentContext];
+  assetKeyCache = [internalContentContext assetKeyCache];
+  [assetKeyCache setWrappingKey:self->_wrappingKey forWrappingKeyID:self->_wrappingKeyID];
 
   v6 = [FCContentUnarchiveResult alloc];
-  v7 = [(FCAssetKeyContentArchive *)self storageSize];
-  v8 = [(FCContentUnarchiveResult *)v6 initWithInterestToken:MEMORY[0x1E695E0F0] storageSize:v7];
+  storageSize = [(FCAssetKeyContentArchive *)self storageSize];
+  v8 = [(FCContentUnarchiveResult *)v6 initWithInterestToken:MEMORY[0x1E695E0F0] storageSize:storageSize];
 
   return v8;
 }

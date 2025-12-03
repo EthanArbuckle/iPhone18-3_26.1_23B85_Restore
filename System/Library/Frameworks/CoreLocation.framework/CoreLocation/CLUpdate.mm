@@ -1,21 +1,21 @@
 @interface CLUpdate
 - (BOOL)authorizationDenied;
-- (CLUpdate)initWithLocation:(id)a3 diagnostics:(unint64_t)a4;
+- (CLUpdate)initWithLocation:(id)location diagnostics:(unint64_t)diagnostics;
 - (void)dealloc;
 @end
 
 @implementation CLUpdate
 
-- (CLUpdate)initWithLocation:(id)a3 diagnostics:(unint64_t)a4
+- (CLUpdate)initWithLocation:(id)location diagnostics:(unint64_t)diagnostics
 {
   v9.receiver = self;
   v9.super_class = CLUpdate;
   v6 = [(CLUpdate *)&v9 init];
   if (v6)
   {
-    v7 = a3;
-    v6->_diagnostics = a4;
-    v6->_location = v7;
+    locationCopy = location;
+    v6->_diagnostics = diagnostics;
+    v6->_location = locationCopy;
   }
 
   return v6;

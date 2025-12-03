@@ -1,28 +1,28 @@
 @interface JSAWindowManager
 - (CGSize)keyWindowSize;
-- (JSAWindowManager)initWithWindowProvider:(id)a3;
+- (JSAWindowManager)initWithWindowProvider:(id)provider;
 - (UIWindow)keyWindow;
-- (id)downloadQueue:(id)a3 viewControllerToPresentAuthenticateUIForRequest:(id)a4;
-- (id)downloadQueue:(id)a3 viewControllerToPresentDialogUIForRequest:(id)a4;
-- (id)downloadQueue:(id)a3 viewControllerToPresentEngagementUIForRequest:(id)a4;
-- (id)windowFromOptions:(id)a3;
-- (void)_keyWindowDidChange:(uint64_t)a1;
+- (id)downloadQueue:(id)queue viewControllerToPresentAuthenticateUIForRequest:(id)request;
+- (id)downloadQueue:(id)queue viewControllerToPresentDialogUIForRequest:(id)request;
+- (id)downloadQueue:(id)queue viewControllerToPresentEngagementUIForRequest:(id)request;
+- (id)windowFromOptions:(id)options;
+- (void)_keyWindowDidChange:(uint64_t)change;
 - (void)dealloc;
-- (void)updateWindowSizeIfNeeded:(id)a3;
+- (void)updateWindowSizeIfNeeded:(id)needed;
 @end
 
 @implementation JSAWindowManager
 
-- (JSAWindowManager)initWithWindowProvider:(id)a3
+- (JSAWindowManager)initWithWindowProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v10.receiver = self;
   v10.super_class = JSAWindowManager;
   v6 = [(JSAWindowManager *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_windowProvider, a3);
+    objc_storeStrong(&v6->_windowProvider, provider);
     v9 = +[NSNotificationCenter defaultCenter];
     [v9 addObserver:v7 selector:"_keyWindowDidChange:" name:UIWindowDidBecomeKeyNotification object:0];
 
@@ -42,29 +42,29 @@
   [(JSAWindowManager *)&v4 dealloc];
 }
 
-- (id)windowFromOptions:(id)a3
+- (id)windowFromOptions:(id)options
 {
-  v4 = a3;
-  v5 = [(JSAWindowManager *)self windowProvider];
-  v6 = [v5 windowFromOptions:v4];
+  optionsCopy = options;
+  windowProvider = [(JSAWindowManager *)self windowProvider];
+  keyWindow = [windowProvider windowFromOptions:optionsCopy];
 
-  if (!v6)
+  if (!keyWindow)
   {
-    v6 = [(JSAWindowManager *)self keyWindow];
+    keyWindow = [(JSAWindowManager *)self keyWindow];
   }
 
-  return v6;
+  return keyWindow;
 }
 
-- (void)updateWindowSizeIfNeeded:(id)a3
+- (void)updateWindowSizeIfNeeded:(id)needed
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_2858;
   v8[3] = &unk_B2128;
-  v4 = a3;
-  v9 = v4;
-  v10 = self;
+  neededCopy = needed;
+  v9 = neededCopy;
+  selfCopy = self;
   v5 = objc_retainBlock(v8);
   if (v5)
   {
@@ -85,25 +85,25 @@
   }
 }
 
-- (id)downloadQueue:(id)a3 viewControllerToPresentAuthenticateUIForRequest:(id)a4
+- (id)downloadQueue:(id)queue viewControllerToPresentAuthenticateUIForRequest:(id)request
 {
-  v4 = [(JSAWindowManager *)self keyWindow:a3];
+  v4 = [(JSAWindowManager *)self keyWindow:queue];
   v5 = [UIViewController jsa_topMostViewControllerForWindow:v4];
 
   return v5;
 }
 
-- (id)downloadQueue:(id)a3 viewControllerToPresentDialogUIForRequest:(id)a4
+- (id)downloadQueue:(id)queue viewControllerToPresentDialogUIForRequest:(id)request
 {
-  v4 = [(JSAWindowManager *)self keyWindow:a3];
+  v4 = [(JSAWindowManager *)self keyWindow:queue];
   v5 = [UIViewController jsa_topMostViewControllerForWindow:v4];
 
   return v5;
 }
 
-- (id)downloadQueue:(id)a3 viewControllerToPresentEngagementUIForRequest:(id)a4
+- (id)downloadQueue:(id)queue viewControllerToPresentEngagementUIForRequest:(id)request
 {
-  v4 = [(JSAWindowManager *)self keyWindow:a3];
+  v4 = [(JSAWindowManager *)self keyWindow:queue];
   v5 = [UIViewController jsa_topMostViewControllerForWindow:v4];
 
   return v5;
@@ -126,15 +126,15 @@
   return result;
 }
 
-- (void)_keyWindowDidChange:(uint64_t)a1
+- (void)_keyWindowDidChange:(uint64_t)change
 {
-  if (a1)
+  if (change)
   {
     v4[0] = _NSConcreteStackBlock;
     v4[1] = 3221225472;
     v4[2] = sub_25D4;
     v4[3] = &unk_B20D8;
-    v4[4] = a1;
+    v4[4] = change;
     v1 = objc_retainBlock(v4);
     if (v1)
     {

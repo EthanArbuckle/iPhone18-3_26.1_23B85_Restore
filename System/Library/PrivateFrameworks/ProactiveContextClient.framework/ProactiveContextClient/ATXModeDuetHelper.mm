@@ -1,43 +1,43 @@
 @interface ATXModeDuetHelper
 - (id)_duetStreamShim;
-- (id)_updateModeStreamEndDates:(id)a3 to:(id)a4;
-- (id)modeStreamFrom:(id)a3 to:(id)a4 ascending:(BOOL)a5 limit:(unint64_t)a6;
+- (id)_updateModeStreamEndDates:(id)dates to:(id)to;
+- (id)modeStreamFrom:(id)from to:(id)to ascending:(BOOL)ascending limit:(unint64_t)limit;
 @end
 
 @implementation ATXModeDuetHelper
 
-- (id)modeStreamFrom:(id)a3 to:(id)a4 ascending:(BOOL)a5 limit:(unint64_t)a6
+- (id)modeStreamFrom:(id)from to:(id)to ascending:(BOOL)ascending limit:(unint64_t)limit
 {
-  v6 = a5;
-  v9 = a4;
-  v10 = a3;
+  ascendingCopy = ascending;
+  toCopy = to;
+  fromCopy = from;
   v11 = objc_opt_new();
-  v12 = [(ATXModeDuetHelper *)self _duetStreamShim];
+  _duetStreamShim = [(ATXModeDuetHelper *)self _duetStreamShim];
   v13 = BiomeLibrary();
-  v14 = [v13 UserFocus];
-  v15 = [v14 InferredMode];
-  v16 = [v15 atx_publisherWithStartDate:v10 endDate:v9 maxEvents:0 lastN:0 reversed:0];
+  userFocus = [v13 UserFocus];
+  inferredMode = [userFocus InferredMode];
+  v16 = [inferredMode atx_publisherWithStartDate:fromCopy endDate:toCopy maxEvents:0 lastN:0 reversed:0];
 
   v17 = [v16 filterWithIsIncluded:&__block_literal_global_14];
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __55__ATXModeDuetHelper_modeStreamFrom_to_ascending_limit___block_invoke_3;
   v26[3] = &unk_279AB8A10;
-  v27 = v12;
+  v27 = _duetStreamShim;
   v18 = v11;
   v28 = v18;
-  v19 = v12;
+  v19 = _duetStreamShim;
   v20 = [v17 sinkWithCompletion:&__block_literal_global_13_0 receiveInput:v26];
 
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __55__ATXModeDuetHelper_modeStreamFrom_to_ascending_limit___block_invoke_4;
   v24[3] = &__block_descriptor_33_e31_q24__0___DKEvent_8___DKEvent_16l;
-  v25 = v6;
+  v25 = ascendingCopy;
   [v18 sortUsingComparator:v24];
-  if (v6)
+  if (ascendingCopy)
   {
-    v21 = [(ATXModeDuetHelper *)self _updateModeStreamEndDates:v18 to:v9];
+    v21 = [(ATXModeDuetHelper *)self _updateModeStreamEndDates:v18 to:toCopy];
   }
 
   else
@@ -136,27 +136,27 @@ uint64_t __55__ATXModeDuetHelper_modeStreamFrom_to_ascending_limit___block_invok
   }
 }
 
-- (id)_updateModeStreamEndDates:(id)a3 to:(id)a4
+- (id)_updateModeStreamEndDates:(id)dates to:(id)to
 {
-  v6 = a3;
-  v27 = a4;
+  datesCopy = dates;
+  toCopy = to;
   v7 = objc_opt_new();
-  v30 = [(ATXModeDuetHelper *)self _duetStreamShim];
-  if ([v6 count])
+  _duetStreamShim = [(ATXModeDuetHelper *)self _duetStreamShim];
+  if ([datesCopy count])
   {
     v8 = 0;
     v9 = 0x277CFE000uLL;
     do
     {
       v10 = objc_autoreleasePoolPush();
-      v11 = [v6 objectAtIndexedSubscript:v8];
-      if (v8 == [v6 count] - 1)
+      v11 = [datesCopy objectAtIndexedSubscript:v8];
+      if (v8 == [datesCopy count] - 1)
       {
         v12 = *(v9 + 472);
-        v13 = [v11 startDate];
-        v14 = [v11 value];
-        v15 = [v11 metadata];
-        v16 = [v12 eventWithStream:v30 startDate:v13 endDate:v27 value:v14 metadata:v15];
+        startDate = [v11 startDate];
+        value = [v11 value];
+        metadata = [v11 metadata];
+        v16 = [v12 eventWithStream:_duetStreamShim startDate:startDate endDate:toCopy value:value metadata:metadata];
 
         [v7 addObject:v16];
         ++v8;
@@ -164,20 +164,20 @@ uint64_t __55__ATXModeDuetHelper_modeStreamFrom_to_ascending_limit___block_invok
 
       else
       {
-        v28 = [v6 objectAtIndexedSubscript:++v8];
+        v28 = [datesCopy objectAtIndexedSubscript:++v8];
         v17 = *(v9 + 472);
-        v18 = [v11 startDate];
-        v19 = [v28 startDate];
+        startDate2 = [v11 startDate];
+        startDate3 = [v28 startDate];
         [v11 value];
         v29 = v10;
         v21 = v20 = v7;
         [v11 metadata];
-        v22 = v6;
+        v22 = datesCopy;
         v24 = v23 = v9;
-        v25 = [v17 eventWithStream:v30 startDate:v18 endDate:v19 value:v21 metadata:v24];
+        v25 = [v17 eventWithStream:_duetStreamShim startDate:startDate2 endDate:startDate3 value:v21 metadata:v24];
 
         v9 = v23;
-        v6 = v22;
+        datesCopy = v22;
 
         v7 = v20;
         v10 = v29;
@@ -188,7 +188,7 @@ uint64_t __55__ATXModeDuetHelper_modeStreamFrom_to_ascending_limit___block_invok
       objc_autoreleasePoolPop(v10);
     }
 
-    while (v8 < [v6 count]);
+    while (v8 < [datesCopy count]);
   }
 
   return v7;
@@ -197,8 +197,8 @@ uint64_t __55__ATXModeDuetHelper_modeStreamFrom_to_ascending_limit___block_invok
 - (id)_duetStreamShim
 {
   v2 = MEMORY[0x277CFE1E8];
-  v3 = [MEMORY[0x277CFE150] type];
-  v4 = [v2 eventStreamWithName:@"pap/internal" valueType:v3];
+  type = [MEMORY[0x277CFE150] type];
+  v4 = [v2 eventStreamWithName:@"pap/internal" valueType:type];
 
   return v4;
 }

@@ -1,15 +1,15 @@
 @interface TKCloudKitWSRecord
-+ (id)downloadURLFromCloudKitRecordResponse:(id)a3;
++ (id)downloadURLFromCloudKitRecordResponse:(id)response;
 @end
 
 @implementation TKCloudKitWSRecord
 
-+ (id)downloadURLFromCloudKitRecordResponse:(id)a3
++ (id)downloadURLFromCloudKitRecordResponse:(id)response
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, response);
   v13 = [location[0] objectForKeyedSubscript:@"records"];
   if (!v13 || ![v13 count])
   {
@@ -45,9 +45,9 @@
   v8 = [v9 objectForKeyedSubscript:@"downloadURL"];
   if (v8 && [v8 length])
   {
-    v5 = [MEMORY[0x277CCA900] URLQueryAllowedCharacterSet];
+    uRLQueryAllowedCharacterSet = [MEMORY[0x277CCA900] URLQueryAllowedCharacterSet];
     v7 = [v8 stringByAddingPercentEncodingWithAllowedCharacters:?];
-    MEMORY[0x277D82BD8](v5);
+    MEMORY[0x277D82BD8](uRLQueryAllowedCharacterSet);
     v15 = [MEMORY[0x277CBEBC0] URLWithString:v7];
     v6 = 1;
     objc_storeStrong(&v7, 0);

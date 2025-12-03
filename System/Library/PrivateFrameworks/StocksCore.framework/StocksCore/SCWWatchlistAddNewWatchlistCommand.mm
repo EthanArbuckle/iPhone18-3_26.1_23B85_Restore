@@ -1,46 +1,46 @@
 @interface SCWWatchlistAddNewWatchlistCommand
-- (SCWWatchlistAddNewWatchlistCommand)initWithCoder:(id)a3;
-- (SCWWatchlistAddNewWatchlistCommand)initWithName:(id)a3 identifier:(id)a4 symbols:(id)a5 sortState:(id)a6 sortOrderState:(id)a7 displayState:(id)a8;
-- (void)encodeWithCoder:(id)a3;
-- (void)executeWithZone:(id)a3;
+- (SCWWatchlistAddNewWatchlistCommand)initWithCoder:(id)coder;
+- (SCWWatchlistAddNewWatchlistCommand)initWithName:(id)name identifier:(id)identifier symbols:(id)symbols sortState:(id)state sortOrderState:(id)orderState displayState:(id)displayState;
+- (void)encodeWithCoder:(id)coder;
+- (void)executeWithZone:(id)zone;
 @end
 
 @implementation SCWWatchlistAddNewWatchlistCommand
 
-- (SCWWatchlistAddNewWatchlistCommand)initWithName:(id)a3 identifier:(id)a4 symbols:(id)a5 sortState:(id)a6 sortOrderState:(id)a7 displayState:(id)a8
+- (SCWWatchlistAddNewWatchlistCommand)initWithName:(id)name identifier:(id)identifier symbols:(id)symbols sortState:(id)state sortOrderState:(id)orderState displayState:(id)displayState
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  nameCopy = name;
+  identifierCopy = identifier;
+  symbolsCopy = symbols;
+  stateCopy = state;
+  orderStateCopy = orderState;
+  displayStateCopy = displayState;
   v34.receiver = self;
   v34.super_class = SCWWatchlistAddNewWatchlistCommand;
   v20 = [(SCWWatchlistAddNewWatchlistCommand *)&v34 init];
   if (v20)
   {
-    v21 = [v14 copy];
+    v21 = [nameCopy copy];
     name = v20->_name;
     v20->_name = v21;
 
-    v23 = [v16 copy];
+    v23 = [symbolsCopy copy];
     symbols = v20->_symbols;
     v20->_symbols = v23;
 
-    v25 = [v15 copy];
+    v25 = [identifierCopy copy];
     watchlistIdentifier = v20->_watchlistIdentifier;
     v20->_watchlistIdentifier = v25;
 
-    v27 = [v17 copy];
+    v27 = [stateCopy copy];
     sortState = v20->_sortState;
     v20->_sortState = v27;
 
-    v29 = [v18 copy];
+    v29 = [orderStateCopy copy];
     sortOrderState = v20->_sortOrderState;
     v20->_sortOrderState = v29;
 
-    v31 = [v19 copy];
+    v31 = [displayStateCopy copy];
     displayState = v20->_displayState;
     v20->_displayState = v31;
   }
@@ -48,17 +48,17 @@
   return v20;
 }
 
-- (void)executeWithZone:(id)a3
+- (void)executeWithZone:(id)zone
 {
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __54__SCWWatchlistAddNewWatchlistCommand_executeWithZone___block_invoke;
   aBlock[3] = &unk_1E85E3320;
   aBlock[4] = self;
-  v4 = a3;
+  zoneCopy = zone;
   v5 = _Block_copy(aBlock);
-  v6 = [(SCWWatchlistAddNewWatchlistCommand *)self watchlistIdentifier];
-  [v4 createOrUpdateRecordWithName:v6 recordType:@"Watchlist" modifyBlock:v5];
+  watchlistIdentifier = [(SCWWatchlistAddNewWatchlistCommand *)self watchlistIdentifier];
+  [zoneCopy createOrUpdateRecordWithName:watchlistIdentifier recordType:@"Watchlist" modifyBlock:v5];
 }
 
 void __54__SCWWatchlistAddNewWatchlistCommand_executeWithZone___block_invoke(uint64_t a1, void *a2)
@@ -90,56 +90,56 @@ void __54__SCWWatchlistAddNewWatchlistCommand_executeWithZone___block_invoke(uin
   [v4 setObject:v14 forKeyedSubscript:@"displayState"];
 }
 
-- (SCWWatchlistAddNewWatchlistCommand)initWithCoder:(id)a3
+- (SCWWatchlistAddNewWatchlistCommand)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
   v6 = MEMORY[0x1E695DFD8];
   v7 = objc_opt_class();
   v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-  v9 = [v4 decodeObjectOfClasses:v8 forKey:@"symbols"];
+  v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"symbols"];
 
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"watchlistIdentifier"];
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sortState"];
-  v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sortOrderState"];
-  v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"displayState"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"watchlistIdentifier"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sortState"];
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sortOrderState"];
+  v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"displayState"];
 
   if (v5)
   {
     self = [(SCWWatchlistAddNewWatchlistCommand *)self initWithName:v5 identifier:v10 symbols:v9 sortState:v11 sortOrderState:v12 displayState:v13];
-    v14 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v14 = 0;
+    selfCopy = 0;
   }
 
-  v15 = v14;
+  v15 = selfCopy;
 
   return v15;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(SCWWatchlistAddNewWatchlistCommand *)self name];
-  [v4 encodeObject:v5 forKey:@"name"];
+  coderCopy = coder;
+  name = [(SCWWatchlistAddNewWatchlistCommand *)self name];
+  [coderCopy encodeObject:name forKey:@"name"];
 
-  v6 = [(SCWWatchlistAddNewWatchlistCommand *)self watchlistIdentifier];
-  [v4 encodeObject:v6 forKey:@"watchlistIdentifier"];
+  watchlistIdentifier = [(SCWWatchlistAddNewWatchlistCommand *)self watchlistIdentifier];
+  [coderCopy encodeObject:watchlistIdentifier forKey:@"watchlistIdentifier"];
 
-  v7 = [(SCWWatchlistAddNewWatchlistCommand *)self sortState];
-  [v4 encodeObject:v7 forKey:@"sortState"];
+  sortState = [(SCWWatchlistAddNewWatchlistCommand *)self sortState];
+  [coderCopy encodeObject:sortState forKey:@"sortState"];
 
-  v8 = [(SCWWatchlistAddNewWatchlistCommand *)self sortOrderState];
-  [v4 encodeObject:v8 forKey:@"sortOrderState"];
+  sortOrderState = [(SCWWatchlistAddNewWatchlistCommand *)self sortOrderState];
+  [coderCopy encodeObject:sortOrderState forKey:@"sortOrderState"];
 
-  v9 = [(SCWWatchlistAddNewWatchlistCommand *)self displayState];
-  [v4 encodeObject:v9 forKey:@"displayState"];
+  displayState = [(SCWWatchlistAddNewWatchlistCommand *)self displayState];
+  [coderCopy encodeObject:displayState forKey:@"displayState"];
 
-  v10 = [(SCWWatchlistAddNewWatchlistCommand *)self symbols];
-  [v4 encodeObject:v10 forKey:@"symbols"];
+  symbols = [(SCWWatchlistAddNewWatchlistCommand *)self symbols];
+  [coderCopy encodeObject:symbols forKey:@"symbols"];
 }
 
 @end

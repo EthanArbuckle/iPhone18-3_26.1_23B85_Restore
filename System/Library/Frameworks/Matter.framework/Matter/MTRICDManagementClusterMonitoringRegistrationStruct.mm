@@ -1,6 +1,6 @@
 @interface MTRICDManagementClusterMonitoringRegistrationStruct
 - (MTRICDManagementClusterMonitoringRegistrationStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -30,20 +30,20 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRICDManagementClusterMonitoringRegistrationStruct);
-  v5 = [(MTRICDManagementClusterMonitoringRegistrationStruct *)self checkInNodeID];
-  [(MTRICDManagementClusterMonitoringRegistrationStruct *)v4 setCheckInNodeID:v5];
+  checkInNodeID = [(MTRICDManagementClusterMonitoringRegistrationStruct *)self checkInNodeID];
+  [(MTRICDManagementClusterMonitoringRegistrationStruct *)v4 setCheckInNodeID:checkInNodeID];
 
-  v6 = [(MTRICDManagementClusterMonitoringRegistrationStruct *)self monitoredSubject];
-  [(MTRICDManagementClusterMonitoringRegistrationStruct *)v4 setMonitoredSubject:v6];
+  monitoredSubject = [(MTRICDManagementClusterMonitoringRegistrationStruct *)self monitoredSubject];
+  [(MTRICDManagementClusterMonitoringRegistrationStruct *)v4 setMonitoredSubject:monitoredSubject];
 
-  v7 = [(MTRICDManagementClusterMonitoringRegistrationStruct *)self clientType];
-  [(MTRICDManagementClusterMonitoringRegistrationStruct *)v4 setClientType:v7];
+  clientType = [(MTRICDManagementClusterMonitoringRegistrationStruct *)self clientType];
+  [(MTRICDManagementClusterMonitoringRegistrationStruct *)v4 setClientType:clientType];
 
-  v8 = [(MTRICDManagementClusterMonitoringRegistrationStruct *)self fabricIndex];
-  [(MTRICDManagementClusterMonitoringRegistrationStruct *)v4 setFabricIndex:v8];
+  fabricIndex = [(MTRICDManagementClusterMonitoringRegistrationStruct *)self fabricIndex];
+  [(MTRICDManagementClusterMonitoringRegistrationStruct *)v4 setFabricIndex:fabricIndex];
 
   return v4;
 }

@@ -1,11 +1,11 @@
 @interface TransparencyGPBAutocreatedDictionary
-- (TransparencyGPBAutocreatedDictionary)initWithObjects:(const void *)a3 forKeys:(const void *)a4 count:(unint64_t)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (TransparencyGPBAutocreatedDictionary)initWithObjects:(const void *)objects forKeys:(const void *)keys count:(unint64_t)count;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)keyEnumerator;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (void)dealloc;
-- (void)setObject:(id)a3 forKey:(id)a4;
-- (void)setObject:(id)a3 forKeyedSubscript:(id)a4;
+- (void)setObject:(id)object forKey:(id)key;
+- (void)setObject:(id)object forKeyedSubscript:(id)subscript;
 @end
 
 @implementation TransparencyGPBAutocreatedDictionary
@@ -17,14 +17,14 @@
   [(TransparencyGPBAutocreatedDictionary *)&v3 dealloc];
 }
 
-- (TransparencyGPBAutocreatedDictionary)initWithObjects:(const void *)a3 forKeys:(const void *)a4 count:(unint64_t)a5
+- (TransparencyGPBAutocreatedDictionary)initWithObjects:(const void *)objects forKeys:(const void *)keys count:(unint64_t)count
 {
   v10.receiver = self;
   v10.super_class = TransparencyGPBAutocreatedDictionary;
   v8 = [(TransparencyGPBAutocreatedDictionary *)&v10 init];
   if (v8)
   {
-    v8->_dictionary = [[NSMutableDictionary alloc] initWithObjects:a3 forKeys:a4 count:a5];
+    v8->_dictionary = [[NSMutableDictionary alloc] initWithObjects:objects forKeys:keys count:count];
   }
 
   return v8;
@@ -42,7 +42,7 @@
   return [(NSMutableDictionary *)dictionary keyEnumerator];
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
   dictionary = self->_dictionary;
   if (!dictionary)
@@ -51,7 +51,7 @@
     self->_dictionary = dictionary;
   }
 
-  [(NSMutableDictionary *)dictionary setObject:a3 forKey:a4];
+  [(NSMutableDictionary *)dictionary setObject:object forKey:key];
   autocreator = self->_autocreator;
   if (autocreator)
   {
@@ -60,41 +60,41 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   dictionary = self->_dictionary;
   if (dictionary)
   {
 
-    return [(NSMutableDictionary *)dictionary copyWithZone:a3];
+    return [(NSMutableDictionary *)dictionary copyWithZone:zone];
   }
 
   else
   {
-    v7 = [NSMutableDictionary allocWithZone:a3, v3];
+    v7 = [NSMutableDictionary allocWithZone:zone, v3];
 
     return [(NSMutableDictionary *)v7 init];
   }
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   dictionary = self->_dictionary;
   if (dictionary)
   {
 
-    return [(NSMutableDictionary *)dictionary mutableCopyWithZone:a3];
+    return [(NSMutableDictionary *)dictionary mutableCopyWithZone:zone];
   }
 
   else
   {
-    v7 = [NSMutableDictionary allocWithZone:a3, v3];
+    v7 = [NSMutableDictionary allocWithZone:zone, v3];
 
     return [(NSMutableDictionary *)v7 init];
   }
 }
 
-- (void)setObject:(id)a3 forKeyedSubscript:(id)a4
+- (void)setObject:(id)object forKeyedSubscript:(id)subscript
 {
   dictionary = self->_dictionary;
   if (!dictionary)
@@ -103,7 +103,7 @@
     self->_dictionary = dictionary;
   }
 
-  [(NSMutableDictionary *)dictionary setObject:a3 forKeyedSubscript:a4];
+  [(NSMutableDictionary *)dictionary setObject:object forKeyedSubscript:subscript];
   autocreator = self->_autocreator;
   if (autocreator)
   {

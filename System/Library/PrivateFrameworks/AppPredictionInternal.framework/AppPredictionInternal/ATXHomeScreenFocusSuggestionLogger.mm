@@ -3,7 +3,7 @@
 - (id)generateSuggestedHomePageStreamBookmark;
 - (id)generateSuggestedHomePageStreamBookmarkURLPath;
 - (void)logHomeScreenFocusSuggestionMetrics;
-- (void)writeBookmarkToFile:(id)a3;
+- (void)writeBookmarkToFile:(id)file;
 @end
 
 @implementation ATXHomeScreenFocusSuggestionLogger
@@ -35,9 +35,9 @@
   {
     v4 = objc_opt_class();
     v5 = NSStringFromClass(v4);
-    v6 = [MEMORY[0x277CEBCB0] metricsRootDirectory];
+    metricsRootDirectory = [MEMORY[0x277CEBCB0] metricsRootDirectory];
     v7 = objc_alloc(MEMORY[0x277CBEBC0]);
-    v8 = [v6 stringByAppendingPathComponent:v5];
+    v8 = [metricsRootDirectory stringByAppendingPathComponent:v5];
     v3 = [v7 initFileURLWithPath:v8];
   }
 
@@ -47,23 +47,23 @@
 - (id)generateSuggestedHomePageStreamBookmark
 {
   v3 = MEMORY[0x277CEBBF8];
-  v4 = [(ATXHomeScreenFocusSuggestionLogger *)self generateSuggestedHomePageStreamBookmarkURLPath];
-  v5 = [v3 bookmarkFromURLPath:v4 maxFileSize:3000000 versionNumber:&unk_283A57680];
+  generateSuggestedHomePageStreamBookmarkURLPath = [(ATXHomeScreenFocusSuggestionLogger *)self generateSuggestedHomePageStreamBookmarkURLPath];
+  v5 = [v3 bookmarkFromURLPath:generateSuggestedHomePageStreamBookmarkURLPath maxFileSize:3000000 versionNumber:&unk_283A57680];
 
   if (!v5)
   {
     v6 = objc_alloc(MEMORY[0x277CEBBF8]);
-    v7 = [(ATXHomeScreenFocusSuggestionLogger *)self generateSuggestedHomePageStreamBookmarkURLPath];
-    v5 = [v6 initWithURLPath:v7 versionNumber:&unk_283A57680 bookmark:0 metadata:0];
+    generateSuggestedHomePageStreamBookmarkURLPath2 = [(ATXHomeScreenFocusSuggestionLogger *)self generateSuggestedHomePageStreamBookmarkURLPath];
+    v5 = [v6 initWithURLPath:generateSuggestedHomePageStreamBookmarkURLPath2 versionNumber:&unk_283A57680 bookmark:0 metadata:0];
   }
 
   return v5;
 }
 
-- (void)writeBookmarkToFile:(id)a3
+- (void)writeBookmarkToFile:(id)file
 {
   v6 = 0;
-  [a3 saveBookmarkWithError:&v6];
+  [file saveBookmarkWithError:&v6];
   v4 = v6;
   if (v4)
   {
@@ -79,24 +79,24 @@
 {
   v55 = *MEMORY[0x277D85DE8];
   v3 = objc_opt_new();
-  v4 = [(ATXHomeScreenFocusSuggestionLogger *)self generateSuggestedHomePageStreamBookmark];
-  v5 = [(ATXHomeScreenFocusSuggestionLogger *)self stream];
-  v6 = [v5 publisherFromStartTime:0.0];
-  v7 = [v4 bookmark];
+  generateSuggestedHomePageStreamBookmark = [(ATXHomeScreenFocusSuggestionLogger *)self generateSuggestedHomePageStreamBookmark];
+  stream = [(ATXHomeScreenFocusSuggestionLogger *)self stream];
+  v6 = [stream publisherFromStartTime:0.0];
+  bookmark = [generateSuggestedHomePageStreamBookmark bookmark];
   v51[0] = MEMORY[0x277D85DD0];
   v51[1] = 3221225472;
   v51[2] = __73__ATXHomeScreenFocusSuggestionLogger_logHomeScreenFocusSuggestionMetrics__block_invoke;
   v51[3] = &unk_27859EB48;
-  v38 = v4;
+  v38 = generateSuggestedHomePageStreamBookmark;
   v52 = v38;
-  v53 = self;
+  selfCopy = self;
   v49[0] = MEMORY[0x277D85DD0];
   v49[1] = 3221225472;
   v49[2] = __73__ATXHomeScreenFocusSuggestionLogger_logHomeScreenFocusSuggestionMetrics__block_invoke_16;
   v49[3] = &unk_278596F60;
   v8 = v3;
   v50 = v8;
-  v9 = [v6 sinkWithBookmark:v7 completion:v51 receiveInput:v49];
+  v9 = [v6 sinkWithBookmark:bookmark completion:v51 receiveInput:v49];
 
   v47 = 0u;
   v48 = 0u;
@@ -133,11 +133,11 @@
           do
           {
             v17 = [v14 objectAtIndexedSubscript:--v15];
-            v18 = [v17 eventBody];
-            v19 = [v18 action];
+            eventBody = [v17 eventBody];
+            action = [eventBody action];
 
-            v20 = v19 != 2;
-            if (v19 != 2)
+            v20 = action != 2;
+            if (action != 2)
             {
               v16 = v15;
               goto LABEL_12;
@@ -164,12 +164,12 @@ LABEL_12:
           v27 = v26;
           v44 = v27;
           v28 = [v14 _pas_filteredArrayWithTest:v43];
-          v29 = [v28 firstObject];
+          firstObject = [v28 firstObject];
 
           v33 = 0;
-          if (v29)
+          if (firstObject)
           {
-            [v29 timestamp];
+            [firstObject timestamp];
             v31 = v30;
             [v27 timestamp];
             if (v31 - v32 < 86400.0)

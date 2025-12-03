@@ -28,16 +28,16 @@
 - (BOOL)showSmartBlackAndWhiteAdjustment;
 - (BOOL)tapTimelineToSeek;
 - (BOOL)useAsynchronousRenderingPhotos;
-- (void)setAllowSpillMatteOnOlderPortraitV2Captures:(BOOL)a3;
+- (void)setAllowSpillMatteOnOlderPortraitV2Captures:(BOOL)captures;
 - (void)setDefaultValues;
-- (void)setDisableTimelineAnimations:(BOOL)a3;
-- (void)setEnableFuzzball:(BOOL)a3;
-- (void)setEnableNURenderJobDebug:(BOOL)a3;
-- (void)setForceGlassesMatteOff:(BOOL)a3;
-- (void)setForceSpillMatteOff:(BOOL)a3;
-- (void)setRenderBackfillBlue:(BOOL)a3;
-- (void)setRenderZoomPurple:(BOOL)a3;
-- (void)setRetouchDumpsCoreImageInputs:(BOOL)a3;
+- (void)setDisableTimelineAnimations:(BOOL)animations;
+- (void)setEnableFuzzball:(BOOL)fuzzball;
+- (void)setEnableNURenderJobDebug:(BOOL)debug;
+- (void)setForceGlassesMatteOff:(BOOL)off;
+- (void)setForceSpillMatteOff:(BOOL)off;
+- (void)setRenderBackfillBlue:(BOOL)blue;
+- (void)setRenderZoomPurple:(BOOL)purple;
+- (void)setRetouchDumpsCoreImageInputs:(BOOL)inputs;
 - (void)updateCoreImageDebug;
 @end
 
@@ -158,8 +158,8 @@
   [(PUPhotoEditProtoSettings *)self setEnableEnterEditDepthEffectAutoCalc:1];
   [(PUPhotoEditProtoSettings *)self setEnableEnterEditPortraitAutoCalc:1];
   [(PUPhotoEditProtoSettings *)self setEnableEnterEditFilterThumbnailGeneration:1];
-  v3 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v3 registerDefaults:&unk_1F2B7F170];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults registerDefaults:&unk_1F2B7F170];
 
   [MEMORY[0x1E69C4290] injectSettings:self];
 }
@@ -170,25 +170,25 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 valueForKey:@"CAMFeatureDevelopmentAllowSmartStyles"];
-    v5 = [v4 BOOLValue];
+    standardUserDefaults = [v2 valueForKey:@"CAMFeatureDevelopmentAllowSmartStyles"];
+    bOOLValue = [standardUserDefaults BOOLValue];
   }
 
   else
   {
-    v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v6 = [v4 valueForKey:@"CAMFeatureDevelopmentAllowSmartStyles"];
-    v5 = [v6 BOOLValue];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    v6 = [standardUserDefaults valueForKey:@"CAMFeatureDevelopmentAllowSmartStyles"];
+    bOOLValue = [v6 BOOLValue];
   }
 
-  return v5;
+  return bOOLValue;
 }
 
-- (void)setRetouchDumpsCoreImageInputs:(BOOL)a3
+- (void)setRetouchDumpsCoreImageInputs:(BOOL)inputs
 {
-  v3 = a3;
+  inputsCopy = inputs;
   v4 = [objc_alloc(MEMORY[0x1E695E000]) initWithSuiteName:@"com.apple.coreimage"];
-  [v4 setBool:v3 forKey:@"dumpInpaintImages"];
+  [v4 setBool:inputsCopy forKey:@"dumpInpaintImages"];
   CFPreferencesAppSynchronize(*MEMORY[0x1E695E8A8]);
   CFPreferencesAppSynchronize(@"com.apple.coreimage");
 }
@@ -208,8 +208,8 @@
     return 1;
   }
 
-  v3 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v4 = [v3 BOOLForKey:@"tapTimelineToSeek"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v4 = [standardUserDefaults BOOLForKey:@"tapTimelineToSeek"];
 
   return v4;
 }
@@ -221,8 +221,8 @@
     return 1;
   }
 
-  v3 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v4 = [v3 BOOLForKey:@"showFrameNumberOnVideoScrubber"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v4 = [standardUserDefaults BOOLForKey:@"showFrameNumberOnVideoScrubber"];
 
   return v4;
 }
@@ -234,42 +234,42 @@
     return 1;
   }
 
-  v3 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v4 = [v3 BOOLForKey:@"disableVideoFilmstrip"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v4 = [standardUserDefaults BOOLForKey:@"disableVideoFilmstrip"];
 
   return v4;
 }
 
-- (void)setDisableTimelineAnimations:(BOOL)a3
+- (void)setDisableTimelineAnimations:(BOOL)animations
 {
-  v3 = a3;
-  self->_disableTimelineAnimations = a3;
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v4 setBool:v3 forKey:@"disableTimelineAnimations"];
+  animationsCopy = animations;
+  self->_disableTimelineAnimations = animations;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults setBool:animationsCopy forKey:@"disableTimelineAnimations"];
 }
 
-- (void)setAllowSpillMatteOnOlderPortraitV2Captures:(BOOL)a3
+- (void)setAllowSpillMatteOnOlderPortraitV2Captures:(BOOL)captures
 {
-  v3 = a3;
-  self->_allowSpillMatteOnOlderPortraitV2Captures = a3;
-  v4 = [MEMORY[0x1E69BDE40] globalSettings];
-  [v4 setAllowSpillMatteOnOlderPortraitV2Captures:v3];
+  capturesCopy = captures;
+  self->_allowSpillMatteOnOlderPortraitV2Captures = captures;
+  globalSettings = [MEMORY[0x1E69BDE40] globalSettings];
+  [globalSettings setAllowSpillMatteOnOlderPortraitV2Captures:capturesCopy];
 }
 
-- (void)setForceSpillMatteOff:(BOOL)a3
+- (void)setForceSpillMatteOff:(BOOL)off
 {
-  v3 = a3;
-  self->_forceSpillMatteOff = a3;
-  v4 = [MEMORY[0x1E69BDE40] globalSettings];
-  [v4 setForceSpillMatteOff:v3];
+  offCopy = off;
+  self->_forceSpillMatteOff = off;
+  globalSettings = [MEMORY[0x1E69BDE40] globalSettings];
+  [globalSettings setForceSpillMatteOff:offCopy];
 }
 
-- (void)setForceGlassesMatteOff:(BOOL)a3
+- (void)setForceGlassesMatteOff:(BOOL)off
 {
-  v3 = a3;
-  self->_forceGlassesMatteOff = a3;
-  v4 = [MEMORY[0x1E69BDE40] globalSettings];
-  [v4 setForceGlassesMatteOff:v3];
+  offCopy = off;
+  self->_forceGlassesMatteOff = off;
+  globalSettings = [MEMORY[0x1E69BDE40] globalSettings];
+  [globalSettings setForceGlassesMatteOff:offCopy];
 }
 
 - (BOOL)showHDRHeadroomControl
@@ -279,8 +279,8 @@
     return 1;
   }
 
-  v3 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v4 = [v3 BOOLForKey:@"showHDRHeadroomControl"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v4 = [standardUserDefaults BOOLForKey:@"showHDRHeadroomControl"];
 
   return v4;
 }
@@ -292,8 +292,8 @@
     return 1;
   }
 
-  v3 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v4 = [v3 BOOLForKey:@"showHDRDebugAdjustment"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v4 = [standardUserDefaults BOOLForKey:@"showHDRDebugAdjustment"];
 
   return v4;
 }
@@ -305,8 +305,8 @@
     return 1;
   }
 
-  v3 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v4 = [v3 BOOLForKey:@"showSmartBlackAndWhiteAdjustment"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v4 = [standardUserDefaults BOOLForKey:@"showSmartBlackAndWhiteAdjustment"];
 
   return v4;
 }
@@ -318,53 +318,53 @@
     return 1;
   }
 
-  v3 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v4 = [v3 BOOLForKey:@"lightModeEditor"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v4 = [standardUserDefaults BOOLForKey:@"lightModeEditor"];
 
   return v4;
 }
 
 - (void)updateCoreImageDebug
 {
-  v3 = [(PUPhotoEditProtoSettings *)self enableCoreImageDebugMode];
-  v4 = [(PUPhotoEditProtoSettings *)self enableCoreImageDebugInputs];
-  v5 = [(PUPhotoEditProtoSettings *)self enableCoreImageDebugOutputs];
-  v6 = [(PUPhotoEditProtoSettings *)self enableCoreImageDebugIntermediates];
-  v7 = [(PUPhotoEditProtoSettings *)self enableCoreImageDebugTiming];
+  enableCoreImageDebugMode = [(PUPhotoEditProtoSettings *)self enableCoreImageDebugMode];
+  enableCoreImageDebugInputs = [(PUPhotoEditProtoSettings *)self enableCoreImageDebugInputs];
+  enableCoreImageDebugOutputs = [(PUPhotoEditProtoSettings *)self enableCoreImageDebugOutputs];
+  enableCoreImageDebugIntermediates = [(PUPhotoEditProtoSettings *)self enableCoreImageDebugIntermediates];
+  enableCoreImageDebugTiming = [(PUPhotoEditProtoSettings *)self enableCoreImageDebugTiming];
 
-  [PURenderDebugController setCoreImageDebugMode:v3 dumpInputs:v4 dumpOutputs:v5 dumpIntermediates:v6 dumpTiming:v7];
+  [PURenderDebugController setCoreImageDebugMode:enableCoreImageDebugMode dumpInputs:enableCoreImageDebugInputs dumpOutputs:enableCoreImageDebugOutputs dumpIntermediates:enableCoreImageDebugIntermediates dumpTiming:enableCoreImageDebugTiming];
 }
 
-- (void)setRenderZoomPurple:(BOOL)a3
+- (void)setRenderZoomPurple:(BOOL)purple
 {
-  self->_renderZoomPurple = a3;
-  if (a3)
+  self->_renderZoomPurple = purple;
+  if (purple)
   {
     [MEMORY[0x1E69B3AB0] setDebugRenderPurple:@"roi"];
   }
 }
 
-- (void)setRenderBackfillBlue:(BOOL)a3
+- (void)setRenderBackfillBlue:(BOOL)blue
 {
-  self->_renderBackfillBlue = a3;
-  if (a3)
+  self->_renderBackfillBlue = blue;
+  if (blue)
   {
     [MEMORY[0x1E69B3AB0] setDebugRenderBlue:@"zoomedToFit"];
   }
 }
 
-- (void)setEnableNURenderJobDebug:(BOOL)a3
+- (void)setEnableNURenderJobDebug:(BOOL)debug
 {
-  v3 = a3;
-  self->_enableNURenderJobDebug = a3;
+  debugCopy = debug;
+  self->_enableNURenderJobDebug = debug;
   [MEMORY[0x1E69B3AB0] setRenderJobDebug:?];
-  if (v3)
+  if (debugCopy)
   {
     v4 = NSTemporaryDirectory();
     v6 = [v4 stringByAppendingString:@"NURenderDebug/"];
 
-    v5 = [MEMORY[0x1E696AC08] defaultManager];
-    [v5 createDirectoryAtPath:v6 withIntermediateDirectories:1 attributes:0 error:0];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    [defaultManager createDirectoryAtPath:v6 withIntermediateDirectories:1 attributes:0 error:0];
 
     [MEMORY[0x1E69B3AB0] setTempDir:v6];
   }
@@ -377,8 +377,8 @@
     return 0;
   }
 
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"enableEnterEditFilterThumbnailGeneration"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"enableEnterEditFilterThumbnailGeneration"];
 
   return v3;
 }
@@ -390,8 +390,8 @@
     return 0;
   }
 
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"enableEnterEditPortraitAutoCalc"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"enableEnterEditPortraitAutoCalc"];
 
   return v3;
 }
@@ -403,8 +403,8 @@
     return 0;
   }
 
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"enableEnterEditDepthEffectAutoCalc"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"enableEnterEditDepthEffectAutoCalc"];
 
   return v3;
 }
@@ -416,8 +416,8 @@
     return 0;
   }
 
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"enableEnterEditPerspectiveAutoCalc"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"enableEnterEditPerspectiveAutoCalc"];
 
   return v3;
 }
@@ -429,8 +429,8 @@
     return 0;
   }
 
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"enableEnterEditCropAutoCalc"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"enableEnterEditCropAutoCalc"];
 
   return v3;
 }
@@ -442,8 +442,8 @@
     return 0;
   }
 
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"enableEnterEditSemanticStyleAutoCalc"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"enableEnterEditSemanticStyleAutoCalc"];
 
   return v3;
 }
@@ -455,8 +455,8 @@
     return 0;
   }
 
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"enableEnterEditSmartColorAutoCalc"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"enableEnterEditSmartColorAutoCalc"];
 
   return v3;
 }
@@ -468,8 +468,8 @@
     return 0;
   }
 
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"enableEnterEditSmartToneAutoCalc"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"enableEnterEditSmartToneAutoCalc"];
 
   return v3;
 }
@@ -481,8 +481,8 @@
     return 1;
   }
 
-  v3 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v4 = [v3 BOOLForKey:@"disableTimelineAnimations"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v4 = [standardUserDefaults BOOLForKey:@"disableTimelineAnimations"];
 
   return v4;
 }
@@ -494,8 +494,8 @@
     return 1;
   }
 
-  v3 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v4 = [v3 BOOLForKey:@"enablePerfDebugHUD"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v4 = [standardUserDefaults BOOLForKey:@"enablePerfDebugHUD"];
 
   return v4;
 }
@@ -507,25 +507,25 @@
     return 1;
   }
 
-  v3 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v4 = [v3 BOOLForKey:@"perspectiveViewDebugCropEnabled"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v4 = [standardUserDefaults BOOLForKey:@"perspectiveViewDebugCropEnabled"];
 
   return v4;
 }
 
-- (void)setEnableFuzzball:(BOOL)a3
+- (void)setEnableFuzzball:(BOOL)fuzzball
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E69BDE40] globalSettings];
-  [v4 setPortraitDisableFuzzball:!v3];
+  fuzzballCopy = fuzzball;
+  globalSettings = [MEMORY[0x1E69BDE40] globalSettings];
+  [globalSettings setPortraitDisableFuzzball:!fuzzballCopy];
 }
 
 - (BOOL)enableFuzzball
 {
-  v2 = [MEMORY[0x1E69BDE40] globalSettings];
-  v3 = [v2 portraitDisableFuzzball];
+  globalSettings = [MEMORY[0x1E69BDE40] globalSettings];
+  portraitDisableFuzzball = [globalSettings portraitDisableFuzzball];
 
-  return v3 ^ 1;
+  return portraitDisableFuzzball ^ 1;
 }
 
 - (BOOL)enableDynamicVideoScaling
@@ -535,8 +535,8 @@
     return 1;
   }
 
-  v3 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v4 = [v3 BOOLForKey:@"enableDynamicVideoScaling"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v4 = [standardUserDefaults BOOLForKey:@"enableDynamicVideoScaling"];
 
   return v4;
 }
@@ -548,8 +548,8 @@
     return 1;
   }
 
-  v3 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v4 = [v3 BOOLForKey:@"enableLiveVideoRenderAtSetSize"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v4 = [standardUserDefaults BOOLForKey:@"enableLiveVideoRenderAtSetSize"];
 
   return v4;
 }
@@ -561,8 +561,8 @@
     return 1;
   }
 
-  v3 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v4 = [v3 BOOLForKey:@"enableLiveVideoRender"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v4 = [standardUserDefaults BOOLForKey:@"enableLiveVideoRender"];
 
   return v4;
 }
@@ -574,8 +574,8 @@
     return 1;
   }
 
-  v3 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v4 = [v3 BOOLForKey:@"disableAsynchronousRenderingVideos"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v4 = [standardUserDefaults BOOLForKey:@"disableAsynchronousRenderingVideos"];
 
   return v4;
 }
@@ -587,8 +587,8 @@
     return 1;
   }
 
-  v3 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v4 = [v3 BOOLForKey:@"useAsynchronousRenderingPhotos"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v4 = [standardUserDefaults BOOLForKey:@"useAsynchronousRenderingPhotos"];
 
   return v4;
 }
@@ -600,8 +600,8 @@
     return 1;
   }
 
-  v3 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v4 = [v3 BOOLForKey:@"enableFinalizerGesture"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v4 = [standardUserDefaults BOOLForKey:@"enableFinalizerGesture"];
 
   return v4;
 }

@@ -1,14 +1,14 @@
 @interface BMSageTranscript
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMSageTranscript)initWithAbsoluteTimestamp:(id)a3 _machAbsoluteTime:(id)a4 _sessionID:(id)a5 _bootSessionID:(id)a6 _clientSessionID:(id)a7 eventLabel:(id)a8 eventType:(id)a9 serializationFormat:(int)a10 eventPayload:(id)a11 _sageMetadata:(id)a12 monotonicTimestamp:(id)a13 identifiers:(id)a14;
-- (BMSageTranscript)initWithAbsoluteTimestamp:(id)a3 eventLabel:(id)a4 eventType:(id)a5 serializationFormat:(int)a6 eventPayload:(id)a7 monotonicTimestamp:(id)a8 identifiers:(id)a9;
-- (BMSageTranscript)initWithAbsoluteTimestamp:(id)a3 eventLabel:(id)a4 eventType:(id)a5 serializationFormat:(int)a6 eventPayload:(id)a7 sageMetadata:(id)a8 monotonicTimestamp:(id)a9;
-- (BMSageTranscript)initWithAbsoluteTimestamp:(id)a3 machAbsoluteTime:(id)a4 sessionID:(id)a5 bootSessionID:(id)a6 clientSessionID:(id)a7 eventLabel:(id)a8 eventType:(id)a9 serializationFormat:(int)a10 eventPayload:(id)a11;
-- (BMSageTranscript)initWithJSONDictionary:(id)a3 error:(id *)a4;
+- (BMSageTranscript)initWithAbsoluteTimestamp:(id)timestamp _machAbsoluteTime:(id)time _sessionID:(id)d _bootSessionID:(id)iD _clientSessionID:(id)sessionID eventLabel:(id)label eventType:(id)type serializationFormat:(int)self0 eventPayload:(id)self1 _sageMetadata:(id)self2 monotonicTimestamp:(id)self3 identifiers:(id)self4;
+- (BMSageTranscript)initWithAbsoluteTimestamp:(id)timestamp eventLabel:(id)label eventType:(id)type serializationFormat:(int)format eventPayload:(id)payload monotonicTimestamp:(id)monotonicTimestamp identifiers:(id)identifiers;
+- (BMSageTranscript)initWithAbsoluteTimestamp:(id)timestamp eventLabel:(id)label eventType:(id)type serializationFormat:(int)format eventPayload:(id)payload sageMetadata:(id)metadata monotonicTimestamp:(id)monotonicTimestamp;
+- (BMSageTranscript)initWithAbsoluteTimestamp:(id)timestamp machAbsoluteTime:(id)time sessionID:(id)d bootSessionID:(id)iD clientSessionID:(id)sessionID eventLabel:(id)label eventType:(id)type serializationFormat:(int)self0 eventPayload:(id)self1;
+- (BMSageTranscript)initWithJSONDictionary:(id)dictionary error:(id *)error;
 - (BOOL)hasMachAbsoluteTime;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSDate)absoluteTimestamp;
 - (NSNumber)spanId;
 - (NSString)clientRequestId;
@@ -18,12 +18,12 @@
 - (double)machAbsoluteTime;
 - (id)bootSessionID;
 - (id)clientSessionID;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)sageMetadata;
 - (id)serialize;
 - (id)sessionID;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMSageTranscript
@@ -62,25 +62,25 @@
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMSageTranscript *)self absoluteTimestamp];
-    v7 = [v5 absoluteTimestamp];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    absoluteTimestamp = [(BMSageTranscript *)self absoluteTimestamp];
+    absoluteTimestamp2 = [v5 absoluteTimestamp];
+    v8 = absoluteTimestamp2;
+    if (absoluteTimestamp == absoluteTimestamp2)
     {
     }
 
     else
     {
-      v9 = [(BMSageTranscript *)self absoluteTimestamp];
-      v10 = [v5 absoluteTimestamp];
-      v11 = [v9 isEqual:v10];
+      absoluteTimestamp3 = [(BMSageTranscript *)self absoluteTimestamp];
+      absoluteTimestamp4 = [v5 absoluteTimestamp];
+      v11 = [absoluteTimestamp3 isEqual:absoluteTimestamp4];
 
       if (!v11)
       {
@@ -109,18 +109,18 @@
       }
     }
 
-    v16 = [(BMSageTranscript *)self _sessionID];
-    v17 = [v5 _sessionID];
-    v18 = v17;
-    if (v16 == v17)
+    _sessionID = [(BMSageTranscript *)self _sessionID];
+    _sessionID2 = [v5 _sessionID];
+    v18 = _sessionID2;
+    if (_sessionID == _sessionID2)
     {
     }
 
     else
     {
-      v19 = [(BMSageTranscript *)self _sessionID];
-      v20 = [v5 _sessionID];
-      v21 = [v19 isEqual:v20];
+      _sessionID3 = [(BMSageTranscript *)self _sessionID];
+      _sessionID4 = [v5 _sessionID];
+      v21 = [_sessionID3 isEqual:_sessionID4];
 
       if (!v21)
       {
@@ -128,18 +128,18 @@
       }
     }
 
-    v22 = [(BMSageTranscript *)self _bootSessionID];
-    v23 = [v5 _bootSessionID];
-    v24 = v23;
-    if (v22 == v23)
+    _bootSessionID = [(BMSageTranscript *)self _bootSessionID];
+    _bootSessionID2 = [v5 _bootSessionID];
+    v24 = _bootSessionID2;
+    if (_bootSessionID == _bootSessionID2)
     {
     }
 
     else
     {
-      v25 = [(BMSageTranscript *)self _bootSessionID];
-      v26 = [v5 _bootSessionID];
-      v27 = [v25 isEqual:v26];
+      _bootSessionID3 = [(BMSageTranscript *)self _bootSessionID];
+      _bootSessionID4 = [v5 _bootSessionID];
+      v27 = [_bootSessionID3 isEqual:_bootSessionID4];
 
       if (!v27)
       {
@@ -147,18 +147,18 @@
       }
     }
 
-    v28 = [(BMSageTranscript *)self _clientSessionID];
-    v29 = [v5 _clientSessionID];
-    v30 = v29;
-    if (v28 == v29)
+    _clientSessionID = [(BMSageTranscript *)self _clientSessionID];
+    _clientSessionID2 = [v5 _clientSessionID];
+    v30 = _clientSessionID2;
+    if (_clientSessionID == _clientSessionID2)
     {
     }
 
     else
     {
-      v31 = [(BMSageTranscript *)self _clientSessionID];
-      v32 = [v5 _clientSessionID];
-      v33 = [v31 isEqual:v32];
+      _clientSessionID3 = [(BMSageTranscript *)self _clientSessionID];
+      _clientSessionID4 = [v5 _clientSessionID];
+      v33 = [_clientSessionID3 isEqual:_clientSessionID4];
 
       if (!v33)
       {
@@ -166,18 +166,18 @@
       }
     }
 
-    v34 = [(BMSageTranscript *)self eventLabel];
-    v35 = [v5 eventLabel];
-    v36 = v35;
-    if (v34 == v35)
+    eventLabel = [(BMSageTranscript *)self eventLabel];
+    eventLabel2 = [v5 eventLabel];
+    v36 = eventLabel2;
+    if (eventLabel == eventLabel2)
     {
     }
 
     else
     {
-      v37 = [(BMSageTranscript *)self eventLabel];
-      v38 = [v5 eventLabel];
-      v39 = [v37 isEqual:v38];
+      eventLabel3 = [(BMSageTranscript *)self eventLabel];
+      eventLabel4 = [v5 eventLabel];
+      v39 = [eventLabel3 isEqual:eventLabel4];
 
       if (!v39)
       {
@@ -185,18 +185,18 @@
       }
     }
 
-    v40 = [(BMSageTranscript *)self eventType];
-    v41 = [v5 eventType];
-    v42 = v41;
-    if (v40 == v41)
+    eventType = [(BMSageTranscript *)self eventType];
+    eventType2 = [v5 eventType];
+    v42 = eventType2;
+    if (eventType == eventType2)
     {
     }
 
     else
     {
-      v43 = [(BMSageTranscript *)self eventType];
-      v44 = [v5 eventType];
-      v45 = [v43 isEqual:v44];
+      eventType3 = [(BMSageTranscript *)self eventType];
+      eventType4 = [v5 eventType];
+      v45 = [eventType3 isEqual:eventType4];
 
       if (!v45)
       {
@@ -204,21 +204,21 @@
       }
     }
 
-    v46 = [(BMSageTranscript *)self serializationFormat];
-    if (v46 == [v5 serializationFormat])
+    serializationFormat = [(BMSageTranscript *)self serializationFormat];
+    if (serializationFormat == [v5 serializationFormat])
     {
-      v47 = [(BMSageTranscript *)self eventPayload];
-      v48 = [v5 eventPayload];
-      v49 = v48;
-      if (v47 == v48)
+      eventPayload = [(BMSageTranscript *)self eventPayload];
+      eventPayload2 = [v5 eventPayload];
+      v49 = eventPayload2;
+      if (eventPayload == eventPayload2)
       {
       }
 
       else
       {
-        v50 = [(BMSageTranscript *)self eventPayload];
-        v51 = [v5 eventPayload];
-        v52 = [v50 isEqual:v51];
+        eventPayload3 = [(BMSageTranscript *)self eventPayload];
+        eventPayload4 = [v5 eventPayload];
+        v52 = [eventPayload3 isEqual:eventPayload4];
 
         if (!v52)
         {
@@ -226,18 +226,18 @@
         }
       }
 
-      v53 = [(BMSageTranscript *)self _sageMetadata];
-      v54 = [v5 _sageMetadata];
-      v55 = v54;
-      if (v53 == v54)
+      _sageMetadata = [(BMSageTranscript *)self _sageMetadata];
+      _sageMetadata2 = [v5 _sageMetadata];
+      v55 = _sageMetadata2;
+      if (_sageMetadata == _sageMetadata2)
       {
       }
 
       else
       {
-        v56 = [(BMSageTranscript *)self _sageMetadata];
-        v57 = [v5 _sageMetadata];
-        v58 = [v56 isEqual:v57];
+        _sageMetadata3 = [(BMSageTranscript *)self _sageMetadata];
+        _sageMetadata4 = [v5 _sageMetadata];
+        v58 = [_sageMetadata3 isEqual:_sageMetadata4];
 
         if (!v58)
         {
@@ -245,18 +245,18 @@
         }
       }
 
-      v59 = [(BMSageTranscript *)self monotonicTimestamp];
-      v60 = [v5 monotonicTimestamp];
-      v61 = v60;
-      if (v59 == v60)
+      monotonicTimestamp = [(BMSageTranscript *)self monotonicTimestamp];
+      monotonicTimestamp2 = [v5 monotonicTimestamp];
+      v61 = monotonicTimestamp2;
+      if (monotonicTimestamp == monotonicTimestamp2)
       {
       }
 
       else
       {
-        v62 = [(BMSageTranscript *)self monotonicTimestamp];
-        v63 = [v5 monotonicTimestamp];
-        v64 = [v62 isEqual:v63];
+        monotonicTimestamp3 = [(BMSageTranscript *)self monotonicTimestamp];
+        monotonicTimestamp4 = [v5 monotonicTimestamp];
+        v64 = [monotonicTimestamp3 isEqual:monotonicTimestamp4];
 
         if (!v64)
         {
@@ -264,18 +264,18 @@
         }
       }
 
-      v66 = [(BMSageTranscript *)self identifiers];
-      v67 = [v5 identifiers];
-      if (v66 == v67)
+      identifiers = [(BMSageTranscript *)self identifiers];
+      identifiers2 = [v5 identifiers];
+      if (identifiers == identifiers2)
       {
         v12 = 1;
       }
 
       else
       {
-        v68 = [(BMSageTranscript *)self identifiers];
-        v69 = [v5 identifiers];
-        v12 = [v68 isEqual:v69];
+        identifiers3 = [(BMSageTranscript *)self identifiers];
+        identifiers4 = [v5 identifiers];
+        v12 = [identifiers3 isEqual:identifiers4];
       }
 
       goto LABEL_44;
@@ -314,12 +314,12 @@ LABEL_45:
 - (id)jsonDictionary
 {
   v90 = *MEMORY[0x1E69E9840];
-  v3 = [(BMSageTranscript *)self absoluteTimestamp];
-  if (v3)
+  absoluteTimestamp = [(BMSageTranscript *)self absoluteTimestamp];
+  if (absoluteTimestamp)
   {
     v4 = MEMORY[0x1E696AD98];
-    v5 = [(BMSageTranscript *)self absoluteTimestamp];
-    [v5 timeIntervalSinceReferenceDate];
+    absoluteTimestamp2 = [(BMSageTranscript *)self absoluteTimestamp];
+    [absoluteTimestamp2 timeIntervalSinceReferenceDate];
     v6 = [v4 numberWithDouble:?];
   }
 
@@ -341,191 +341,191 @@ LABEL_45:
     v9 = [v8 numberWithDouble:?];
   }
 
-  v10 = [(BMSageTranscript *)self _sessionID];
-  v11 = [v10 UUIDString];
+  _sessionID = [(BMSageTranscript *)self _sessionID];
+  uUIDString = [_sessionID UUIDString];
 
-  v12 = [(BMSageTranscript *)self _bootSessionID];
-  v13 = [v12 UUIDString];
+  _bootSessionID = [(BMSageTranscript *)self _bootSessionID];
+  uUIDString2 = [_bootSessionID UUIDString];
 
-  v14 = [(BMSageTranscript *)self _clientSessionID];
-  v15 = [v14 UUIDString];
+  _clientSessionID = [(BMSageTranscript *)self _clientSessionID];
+  uUIDString3 = [_clientSessionID UUIDString];
 
-  v16 = [(BMSageTranscript *)self eventLabel];
-  v56 = [(BMSageTranscript *)self eventType];
+  eventLabel = [(BMSageTranscript *)self eventLabel];
+  eventType = [(BMSageTranscript *)self eventType];
   v55 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMSageTranscript serializationFormat](self, "serializationFormat")}];
-  v17 = [(BMSageTranscript *)self eventPayload];
-  v54 = [v17 base64EncodedStringWithOptions:0];
+  eventPayload = [(BMSageTranscript *)self eventPayload];
+  v54 = [eventPayload base64EncodedStringWithOptions:0];
 
-  v18 = [(BMSageTranscript *)self _sageMetadata];
-  v53 = [v18 jsonDictionary];
+  _sageMetadata = [(BMSageTranscript *)self _sageMetadata];
+  jsonDictionary = [_sageMetadata jsonDictionary];
 
-  v19 = [(BMSageTranscript *)self monotonicTimestamp];
-  v52 = [v19 jsonDictionary];
+  monotonicTimestamp = [(BMSageTranscript *)self monotonicTimestamp];
+  jsonDictionary2 = [monotonicTimestamp jsonDictionary];
 
-  v20 = [(BMSageTranscript *)self identifiers];
-  v21 = [v20 jsonDictionary];
+  identifiers = [(BMSageTranscript *)self identifiers];
+  jsonDictionary3 = [identifiers jsonDictionary];
 
   v57[0] = @"absoluteTimestamp";
-  v22 = v6;
+  null = v6;
   if (!v6)
   {
-    v22 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v46 = v22;
-  v73 = v22;
+  v46 = null;
+  v73 = null;
   v57[1] = @"_machAbsoluteTime";
   if (v9)
   {
     v74 = v9;
     v58 = @"machAbsoluteTime";
-    v23 = v9;
+    null3 = v9;
   }
 
   else
   {
-    v41 = [MEMORY[0x1E695DFB0] null];
-    v74 = v41;
+    null2 = [MEMORY[0x1E695DFB0] null];
+    v74 = null2;
     v58 = @"machAbsoluteTime";
-    v23 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v45 = v23;
-  v75 = v23;
+  v45 = null3;
+  v75 = null3;
   v59 = @"_sessionID";
-  if (v11)
+  if (uUIDString)
   {
-    v76 = v11;
+    v76 = uUIDString;
     v60 = @"sessionID";
-    v24 = v11;
+    null5 = uUIDString;
   }
 
   else
   {
-    v40 = [MEMORY[0x1E695DFB0] null];
-    v76 = v40;
+    null4 = [MEMORY[0x1E695DFB0] null];
+    v76 = null4;
     v60 = @"sessionID";
-    v24 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v44 = v24;
-  v77 = v24;
+  v44 = null5;
+  v77 = null5;
   v61 = @"_bootSessionID";
-  if (v13)
+  if (uUIDString2)
   {
-    v78 = v13;
+    v78 = uUIDString2;
     v62 = @"bootSessionID";
-    v25 = v13;
+    null7 = uUIDString2;
   }
 
   else
   {
-    v39 = [MEMORY[0x1E695DFB0] null];
-    v78 = v39;
+    null6 = [MEMORY[0x1E695DFB0] null];
+    v78 = null6;
     v62 = @"bootSessionID";
-    v25 = [MEMORY[0x1E695DFB0] null];
+    null7 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v43 = v25;
-  v79 = v25;
+  v43 = null7;
+  v79 = null7;
   v63 = @"_clientSessionID";
   v51 = v6;
-  if (v15)
+  if (uUIDString3)
   {
-    v80 = v15;
+    v80 = uUIDString3;
     v64 = @"clientSessionID";
-    v26 = v15;
+    null9 = uUIDString3;
   }
 
   else
   {
-    v38 = [MEMORY[0x1E695DFB0] null];
-    v80 = v38;
+    null8 = [MEMORY[0x1E695DFB0] null];
+    v80 = null8;
     v64 = @"clientSessionID";
-    v26 = [MEMORY[0x1E695DFB0] null];
+    null9 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v49 = v11;
+  v49 = uUIDString;
   v50 = v9;
-  v42 = v26;
-  v81 = v26;
+  v42 = null9;
+  v81 = null9;
   v65 = @"eventLabel";
-  v27 = v16;
-  if (!v16)
+  null10 = eventLabel;
+  if (!eventLabel)
   {
-    v27 = [MEMORY[0x1E695DFB0] null];
+    null10 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v48 = v13;
-  v82 = v27;
+  v48 = uUIDString2;
+  v82 = null10;
   v66 = @"eventType";
-  v28 = v56;
-  if (!v56)
+  null11 = eventType;
+  if (!eventType)
   {
-    v28 = [MEMORY[0x1E695DFB0] null];
+    null11 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v47 = v15;
-  v83 = v28;
+  v47 = uUIDString3;
+  v83 = null11;
   v67 = @"serializationFormat";
-  v29 = v55;
+  null12 = v55;
   if (!v55)
   {
-    v29 = [MEMORY[0x1E695DFB0] null];
+    null12 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v84 = v29;
+  v84 = null12;
   v68 = @"eventPayload";
-  v30 = v54;
+  null13 = v54;
   if (!v54)
   {
-    v30 = [MEMORY[0x1E695DFB0] null];
+    null13 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v85 = v30;
+  v85 = null13;
   v69 = @"_sageMetadata";
-  v31 = v53;
-  if (v53)
+  null15 = jsonDictionary;
+  if (jsonDictionary)
   {
-    v86 = v53;
+    v86 = jsonDictionary;
     v70 = @"sageMetadata";
   }
 
   else
   {
-    v37 = [MEMORY[0x1E695DFB0] null];
-    v86 = v37;
+    null14 = [MEMORY[0x1E695DFB0] null];
+    v86 = null14;
     v70 = @"sageMetadata";
-    v31 = [MEMORY[0x1E695DFB0] null];
+    null15 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v87 = v31;
+  v87 = null15;
   v71 = @"monotonicTimestamp";
-  v32 = v52;
-  if (!v52)
+  null16 = jsonDictionary2;
+  if (!jsonDictionary2)
   {
-    v32 = [MEMORY[0x1E695DFB0] null];
+    null16 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v88 = v32;
+  v88 = null16;
   v72 = @"identifiers";
-  v33 = v21;
-  if (!v21)
+  null17 = jsonDictionary3;
+  if (!jsonDictionary3)
   {
-    v33 = [MEMORY[0x1E695DFB0] null];
+    null17 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v89 = v33;
+  v89 = null17;
   v34 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v73 forKeys:v57 count:17];
-  if (!v21)
+  if (!jsonDictionary3)
   {
   }
 
-  if (!v52)
+  if (!jsonDictionary2)
   {
   }
 
-  if (!v53)
+  if (!jsonDictionary)
   {
   }
 
@@ -537,11 +537,11 @@ LABEL_45:
   {
   }
 
-  if (!v56)
+  if (!eventType)
   {
   }
 
-  if (!v16)
+  if (!eventLabel)
   {
   }
 
@@ -598,16 +598,16 @@ LABEL_57:
   return v34;
 }
 
-- (BMSageTranscript)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMSageTranscript)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v185[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:@"absoluteTimestamp"];
+  dictionaryCopy = dictionary;
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"absoluteTimestamp"];
   if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v7 = 0;
 LABEL_9:
-    v15 = [v5 objectForKeyedSubscript:@"_machAbsoluteTime"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"_machAbsoluteTime"];
     if (v15)
     {
       v16 = v15;
@@ -615,13 +615,13 @@ LABEL_9:
 
     else
     {
-      v16 = [v5 objectForKeyedSubscript:@"machAbsoluteTime"];
+      v16 = [dictionaryCopy objectForKeyedSubscript:@"machAbsoluteTime"];
       if (!v16)
       {
 LABEL_13:
         v148 = 0;
 LABEL_16:
-        v17 = [v5 objectForKeyedSubscript:@"_sessionID"];
+        v17 = [dictionaryCopy objectForKeyedSubscript:@"_sessionID"];
         v149 = v6;
         if (v17)
         {
@@ -630,11 +630,11 @@ LABEL_16:
 
         else
         {
-          v18 = [v5 objectForKeyedSubscript:@"sessionID"];
+          v18 = [dictionaryCopy objectForKeyedSubscript:@"sessionID"];
           if (!v18)
           {
 LABEL_20:
-            v147 = self;
+            selfCopy4 = self;
             v19 = 0;
             goto LABEL_21;
           }
@@ -655,9 +655,9 @@ LABEL_20:
 
           if (v19)
           {
-            v147 = self;
+            selfCopy4 = self;
 LABEL_21:
-            v20 = [v5 objectForKeyedSubscript:@"_bootSessionID"];
+            v20 = [dictionaryCopy objectForKeyedSubscript:@"_bootSessionID"];
             v146 = v19;
             if (v20)
             {
@@ -666,7 +666,7 @@ LABEL_21:
 
             else
             {
-              v21 = [v5 objectForKeyedSubscript:@"bootSessionID"];
+              v21 = [dictionaryCopy objectForKeyedSubscript:@"bootSessionID"];
               if (!v21)
               {
 LABEL_30:
@@ -692,11 +692,11 @@ LABEL_30:
               if (v40)
               {
 LABEL_31:
-                v35 = [v5 objectForKeyedSubscript:@"_clientSessionID"];
+                v35 = [dictionaryCopy objectForKeyedSubscript:@"_clientSessionID"];
                 v144 = v7;
                 if (!v35)
                 {
-                  v35 = [v5 objectForKeyedSubscript:@"clientSessionID"];
+                  v35 = [dictionaryCopy objectForKeyedSubscript:@"clientSessionID"];
                   if (!v35)
                   {
                     v136 = v16;
@@ -718,13 +718,13 @@ LABEL_31:
 LABEL_58:
                   v145 = 0;
 LABEL_59:
-                  v64 = [v5 objectForKeyedSubscript:@"eventLabel"];
+                  v64 = [dictionaryCopy objectForKeyedSubscript:@"eventLabel"];
                   v141 = v64;
                   if (!v64 || (v65 = v64, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                   {
                     v142 = 0;
 LABEL_62:
-                    v66 = [v5 objectForKeyedSubscript:@"eventType"];
+                    v66 = [dictionaryCopy objectForKeyedSubscript:@"eventType"];
                     v135 = v66;
                     if (!v66)
                     {
@@ -742,7 +742,7 @@ LABEL_62:
 LABEL_66:
                       v21 = v37;
 LABEL_67:
-                      v68 = [v5 objectForKeyedSubscript:@"serializationFormat"];
+                      v68 = [dictionaryCopy objectForKeyedSubscript:@"serializationFormat"];
                       v133 = v68;
                       if (v68 && (v69 = v68, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
                       {
@@ -758,7 +758,7 @@ LABEL_67:
                           objc_opt_class();
                           if ((objc_opt_isKindOfClass() & 1) == 0)
                           {
-                            if (!a4)
+                            if (!error)
                             {
                               v134 = 0;
                               v34 = 0;
@@ -776,7 +776,7 @@ LABEL_67:
                             v131 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v165 forKeys:&v164 count:1];
                             v134 = 0;
                             v34 = 0;
-                            *a4 = [v115 initWithDomain:v116 code:2 userInfo:?];
+                            *error = [v115 initWithDomain:v116 code:2 userInfo:?];
                             v33 = v148;
                             v59 = v143;
                             v16 = v136;
@@ -793,14 +793,14 @@ LABEL_67:
                         v18 = v137;
                       }
 
-                      v70 = [v5 objectForKeyedSubscript:@"eventPayload"];
+                      v70 = [dictionaryCopy objectForKeyedSubscript:@"eventPayload"];
                       v16 = v136;
                       v131 = v70;
                       if (!v70 || (v71 = v70, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                       {
                         v132 = 0;
 LABEL_73:
-                        v72 = [v5 objectForKeyedSubscript:@"_sageMetadata"];
+                        v72 = [dictionaryCopy objectForKeyedSubscript:@"_sageMetadata"];
                         if (v72)
                         {
                           v73 = v72;
@@ -808,13 +808,13 @@ LABEL_73:
 
                         else
                         {
-                          v73 = [v5 objectForKeyedSubscript:@"sageMetadata"];
+                          v73 = [dictionaryCopy objectForKeyedSubscript:@"sageMetadata"];
                           if (!v73)
                           {
 LABEL_83:
                             v138 = 0;
 LABEL_84:
-                            v74 = [v5 objectForKeyedSubscript:@"monotonicTimestamp"];
+                            v74 = [dictionaryCopy objectForKeyedSubscript:@"monotonicTimestamp"];
                             v129 = v74;
                             if (!v74 || (v75 = v74, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                             {
@@ -833,7 +833,7 @@ LABEL_84:
                               {
 
 LABEL_87:
-                                v76 = [v5 objectForKeyedSubscript:@"identifiers"];
+                                v76 = [dictionaryCopy objectForKeyedSubscript:@"identifiers"];
                                 v127 = v76;
                                 if (!v76 || (v77 = v76, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                 {
@@ -842,8 +842,8 @@ LABEL_90:
                                   v33 = v148;
                                   LODWORD(v125) = [v134 intValue];
                                   v59 = v143;
-                                  v34 = [(BMSageTranscript *)v147 initWithAbsoluteTimestamp:v144 _machAbsoluteTime:v148 _sessionID:v146 _bootSessionID:v143 _clientSessionID:v145 eventLabel:v142 eventType:v140 serializationFormat:v125 eventPayload:v132 _sageMetadata:v138 monotonicTimestamp:v130 identifiers:v78];
-                                  v147 = v34;
+                                  v34 = [(BMSageTranscript *)selfCopy4 initWithAbsoluteTimestamp:v144 _machAbsoluteTime:v148 _sessionID:v146 _bootSessionID:v143 _clientSessionID:v145 eventLabel:v142 eventType:v140 serializationFormat:v125 eventPayload:v132 _sageMetadata:v138 monotonicTimestamp:v130 identifiers:v78];
+                                  selfCopy4 = v34;
 LABEL_144:
 
                                   v6 = v149;
@@ -864,10 +864,10 @@ LABEL_144:
                                   }
 
                                   v33 = v148;
-                                  if (a4)
+                                  if (error)
                                   {
                                     v111 = v111;
-                                    *a4 = v111;
+                                    *error = v111;
                                   }
 
                                   v34 = 0;
@@ -876,7 +876,7 @@ LABEL_143:
                                   goto LABEL_144;
                                 }
 
-                                if (a4)
+                                if (error)
                                 {
                                   v126 = objc_alloc(MEMORY[0x1E696ABC0]);
                                   v118 = *MEMORY[0x1E698F240];
@@ -884,7 +884,7 @@ LABEL_143:
                                   v78 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSDictionary", objc_opt_class(), @"identifiers"];
                                   v155 = v78;
                                   v119 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v155 forKeys:&v154 count:1];
-                                  *a4 = [v126 initWithDomain:v118 code:2 userInfo:v119];
+                                  *error = [v126 initWithDomain:v118 code:2 userInfo:v119];
 
                                   v34 = 0;
                                   v33 = v148;
@@ -902,10 +902,10 @@ LABEL_146:
                               }
 
                               v127 = v100;
-                              if (a4)
+                              if (error)
                               {
                                 v101 = v101;
-                                *a4 = v101;
+                                *error = v101;
                               }
 
                               v34 = 0;
@@ -913,7 +913,7 @@ LABEL_146:
 
                             else
                             {
-                              if (!a4)
+                              if (!error)
                               {
                                 v34 = 0;
                                 v33 = v148;
@@ -930,7 +930,7 @@ LABEL_146:
                               v114 = v128;
                               v127 = v113;
                               v34 = 0;
-                              *a4 = [v114 initWithDomain:v112 code:2 userInfo:?];
+                              *error = [v114 initWithDomain:v112 code:2 userInfo:?];
                             }
 
                             v6 = v149;
@@ -957,16 +957,16 @@ LABEL_146:
                             goto LABEL_84;
                           }
 
-                          if (a4)
+                          if (error)
                           {
                             v79 = v79;
-                            *a4 = v79;
+                            *error = v79;
                           }
                         }
 
                         else
                         {
-                          if (a4)
+                          if (error)
                           {
                             v139 = objc_alloc(MEMORY[0x1E696ABC0]);
                             v96 = *MEMORY[0x1E698F240];
@@ -976,7 +976,7 @@ LABEL_146:
                             v98 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v159 forKeys:&v158 count:1];
                             v99 = v96;
                             v6 = v149;
-                            *a4 = [v139 initWithDomain:v99 code:2 userInfo:v98];
+                            *error = [v139 initWithDomain:v99 code:2 userInfo:v98];
                           }
 
                           v138 = 0;
@@ -1009,9 +1009,9 @@ LABEL_148:
                           goto LABEL_73;
                         }
 
-                        if (a4)
+                        if (error)
                         {
-                          v104 = a4;
+                          errorCopy2 = error;
                           v105 = objc_alloc(MEMORY[0x1E696ABC0]);
                           v106 = *MEMORY[0x1E698F240];
                           v162 = *MEMORY[0x1E696A578];
@@ -1026,14 +1026,14 @@ LABEL_139:
                           v6 = v149;
                           v132 = 0;
                           v34 = 0;
-                          *v104 = [v105 initWithDomain:v117 code:2 userInfo:v73];
+                          *errorCopy2 = [v105 initWithDomain:v117 code:2 userInfo:v73];
                           goto LABEL_108;
                         }
                       }
 
-                      else if (a4)
+                      else if (error)
                       {
-                        v104 = a4;
+                        errorCopy2 = error;
                         v105 = objc_alloc(MEMORY[0x1E696ABC0]);
                         v106 = *MEMORY[0x1E698F240];
                         v160 = *MEMORY[0x1E696A578];
@@ -1062,7 +1062,7 @@ LABEL_139:
 
                     v16 = v136;
                     v18 = v137;
-                    if (a4)
+                    if (error)
                     {
                       v90 = objc_alloc(MEMORY[0x1E696ABC0]);
                       v91 = *MEMORY[0x1E698F240];
@@ -1079,7 +1079,7 @@ LABEL_139:
                       v133 = v94;
                       v140 = 0;
                       v34 = 0;
-                      *a4 = [v95 initWithDomain:v91 code:2 userInfo:?];
+                      *error = [v95 initWithDomain:v91 code:2 userInfo:?];
                       v33 = v148;
                       v59 = v143;
 LABEL_149:
@@ -1103,7 +1103,7 @@ LABEL_150:
                     goto LABEL_62;
                   }
 
-                  if (a4)
+                  if (error)
                   {
                     v80 = objc_alloc(MEMORY[0x1E696ABC0]);
                     v81 = *MEMORY[0x1E698F240];
@@ -1120,7 +1120,7 @@ LABEL_150:
                     v135 = v84;
                     v142 = 0;
                     v34 = 0;
-                    *a4 = [v85 initWithDomain:v81 code:2 userInfo:?];
+                    *error = [v85 initWithDomain:v81 code:2 userInfo:?];
                     v33 = v148;
                     v59 = v143;
                     v36 = v38;
@@ -1161,7 +1161,7 @@ LABEL_151:
                     goto LABEL_59;
                   }
 
-                  if (a4)
+                  if (error)
                   {
                     v102 = objc_alloc(MEMORY[0x1E696ABC0]);
                     v103 = *MEMORY[0x1E698F240];
@@ -1171,12 +1171,12 @@ LABEL_151:
                     v141 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v173 forKeys:&v172 count:1];
                     v145 = 0;
                     v34 = 0;
-                    *a4 = [v102 initWithDomain:v103 code:2 userInfo:?];
+                    *error = [v102 initWithDomain:v103 code:2 userInfo:?];
                     goto LABEL_116;
                   }
                 }
 
-                else if (a4)
+                else if (error)
                 {
                   v60 = objc_alloc(MEMORY[0x1E696ABC0]);
                   v61 = *MEMORY[0x1E698F240];
@@ -1186,7 +1186,7 @@ LABEL_151:
                   v141 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v171 forKeys:&v170 count:1];
                   v145 = 0;
                   v34 = 0;
-                  *a4 = [v60 initWithDomain:v61 code:2 userInfo:?];
+                  *error = [v60 initWithDomain:v61 code:2 userInfo:?];
 LABEL_116:
                   v33 = v148;
                   v6 = v149;
@@ -1205,7 +1205,7 @@ LABEL_152:
                 goto LABEL_153;
               }
 
-              if (a4)
+              if (error)
               {
                 v41 = v7;
                 v42 = objc_alloc(MEMORY[0x1E696ABC0]);
@@ -1224,13 +1224,13 @@ LABEL_46:
                 v6 = v149;
                 v59 = 0;
                 v34 = 0;
-                *a4 = [v57 initWithDomain:v58 code:2 userInfo:v36];
+                *error = [v57 initWithDomain:v58 code:2 userInfo:v36];
                 v33 = v148;
                 goto LABEL_152;
               }
             }
 
-            else if (a4)
+            else if (error)
             {
               v41 = v7;
               v42 = objc_alloc(MEMORY[0x1E696ABC0]);
@@ -1252,10 +1252,10 @@ LABEL_153:
             goto LABEL_154;
           }
 
-          v47 = a4;
-          if (a4)
+          errorCopy4 = error;
+          if (error)
           {
-            v147 = self;
+            selfCopy4 = self;
             v48 = objc_alloc(MEMORY[0x1E696ABC0]);
             v49 = v7;
             v50 = *MEMORY[0x1E698F240];
@@ -1271,10 +1271,10 @@ LABEL_153:
 
         else
         {
-          v47 = a4;
-          if (a4)
+          errorCopy4 = error;
+          if (error)
           {
-            v147 = self;
+            selfCopy4 = self;
             v48 = objc_alloc(MEMORY[0x1E696ABC0]);
             v49 = v7;
             v50 = *MEMORY[0x1E698F240];
@@ -1291,13 +1291,13 @@ LABEL_54:
             v63 = [v48 initWithDomain:v62 code:2 userInfo:v21];
             v31 = 0;
             v34 = 0;
-            *v47 = v63;
+            *errorCopy4 = v63;
             v59 = v51;
             v33 = v148;
             v6 = v149;
 LABEL_154:
 
-            self = v147;
+            self = selfCopy4;
             goto LABEL_155;
           }
         }
@@ -1325,7 +1325,7 @@ LABEL_155:
       goto LABEL_16;
     }
 
-    if (a4)
+    if (error)
     {
       v23 = objc_alloc(MEMORY[0x1E696ABC0]);
       v24 = v7;
@@ -1345,7 +1345,7 @@ LABEL_155:
       v7 = v24;
       v33 = 0;
       v34 = 0;
-      *a4 = [v30 initWithDomain:v32 code:2 userInfo:v18];
+      *error = [v30 initWithDomain:v32 code:2 userInfo:v18];
       goto LABEL_155;
     }
 
@@ -1387,7 +1387,7 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  if (a4)
+  if (error)
   {
     v86 = objc_alloc(MEMORY[0x1E696ABC0]);
     v87 = *MEMORY[0x1E698F240];
@@ -1398,7 +1398,7 @@ LABEL_6:
     v89 = [v86 initWithDomain:v87 code:2 userInfo:v88];
     v7 = 0;
     v34 = 0;
-    *a4 = v89;
+    *error = v89;
     v16 = v88;
     goto LABEL_156;
   }
@@ -1415,14 +1415,14 @@ LABEL_157:
 {
   v3 = objc_opt_new();
   [(BMSageTranscript *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_hasRaw_absoluteTimestamp)
   {
     raw_absoluteTimestamp = self->_raw_absoluteTimestamp;
@@ -1470,28 +1470,28 @@ LABEL_157:
   if (self->__sageMetadata)
   {
     PBDataWriterPlaceMark();
-    [(BMSageMetadata *)self->__sageMetadata writeTo:v4];
+    [(BMSageMetadata *)self->__sageMetadata writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
   if (self->_monotonicTimestamp)
   {
     PBDataWriterPlaceMark();
-    [(BMMonotonicTimestamp *)self->_monotonicTimestamp writeTo:v4];
+    [(BMMonotonicTimestamp *)self->_monotonicTimestamp writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
   if (self->_identifiers)
   {
     PBDataWriterPlaceMark();
-    [(BMIntelligenceFlowIdentifiers *)self->_identifiers writeTo:v4];
+    [(BMIntelligenceFlowIdentifiers *)self->_identifiers writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v42.receiver = self;
   v42.super_class = BMSageTranscript;
   v5 = [(BMEventBase *)&v42 init];
@@ -1500,12 +1500,12 @@ LABEL_157:
     goto LABEL_84;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     while (1)
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         goto LABEL_82;
       }
@@ -1516,18 +1516,18 @@ LABEL_157:
       while (1)
       {
         LOBYTE(v43) = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v43 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v43 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v43 & 0x7F) << v7;
@@ -1544,9 +1544,9 @@ LABEL_157:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         goto LABEL_82;
       }
@@ -1584,18 +1584,18 @@ LABEL_86:
           case 9:
             v5->_has_machAbsoluteTime = 1;
             v43 = 0;
-            v18 = [v4 position] + 8;
-            if (v18 >= [v4 position] && (v19 = objc_msgSend(v4, "position") + 8, v19 <= objc_msgSend(v4, "length")))
+            v18 = [fromCopy position] + 8;
+            if (v18 >= [fromCopy position] && (v19 = objc_msgSend(fromCopy, "position") + 8, v19 <= objc_msgSend(fromCopy, "length")))
             {
-              v35 = [v4 data];
-              [v35 getBytes:&v43 range:{objc_msgSend(v4, "position"), 8}];
+              data2 = [fromCopy data];
+              [data2 getBytes:&v43 range:{objc_msgSend(fromCopy, "position"), 8}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 8}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 8}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v36 = v43;
@@ -1621,7 +1621,7 @@ LABEL_55:
             goto LABEL_83;
           }
 
-          v20 = [[BMSageMetadata alloc] initByReadFrom:v4];
+          v20 = [[BMSageMetadata alloc] initByReadFrom:fromCopy];
           if (!v20)
           {
             goto LABEL_83;
@@ -1637,7 +1637,7 @@ LABEL_55:
             goto LABEL_83;
           }
 
-          v20 = [[BMMonotonicTimestamp alloc] initByReadFrom:v4];
+          v20 = [[BMMonotonicTimestamp alloc] initByReadFrom:fromCopy];
           if (!v20)
           {
             goto LABEL_83;
@@ -1653,7 +1653,7 @@ LABEL_55:
             goto LABEL_83;
           }
 
-          v20 = [[BMIntelligenceFlowIdentifiers alloc] initByReadFrom:v4];
+          v20 = [[BMIntelligenceFlowIdentifiers alloc] initByReadFrom:fromCopy];
           if (!v20)
           {
             goto LABEL_83;
@@ -1676,8 +1676,8 @@ LABEL_70:
 
       PBReaderRecallMark();
 LABEL_81:
-      v39 = [v4 position];
-      if (v39 >= [v4 length])
+      position2 = [fromCopy position];
+      if (position2 >= [fromCopy length])
       {
         goto LABEL_82;
       }
@@ -1698,18 +1698,18 @@ LABEL_81:
           while (1)
           {
             LOBYTE(v43) = 0;
-            v30 = [v4 position] + 1;
-            if (v30 >= [v4 position] && (v31 = objc_msgSend(v4, "position") + 1, v31 <= objc_msgSend(v4, "length")))
+            v30 = [fromCopy position] + 1;
+            if (v30 >= [fromCopy position] && (v31 = objc_msgSend(fromCopy, "position") + 1, v31 <= objc_msgSend(fromCopy, "length")))
             {
-              v32 = [v4 data];
-              [v32 getBytes:&v43 range:{objc_msgSend(v4, "position"), 1}];
+              data3 = [fromCopy data];
+              [data3 getBytes:&v43 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v29 |= (v43 & 0x7F) << v27;
@@ -1725,7 +1725,7 @@ LABEL_81:
             }
           }
 
-          if (([v4 hasError] & 1) != 0 || v29 > 2)
+          if (([fromCopy hasError] & 1) != 0 || v29 > 2)
           {
 LABEL_74:
             LODWORD(v29) = 0;
@@ -1748,18 +1748,18 @@ LABEL_74:
       {
         v5->_hasRaw_absoluteTimestamp = 1;
         v43 = 0;
-        v22 = [v4 position] + 8;
-        if (v22 >= [v4 position] && (v23 = objc_msgSend(v4, "position") + 8, v23 <= objc_msgSend(v4, "length")))
+        v22 = [fromCopy position] + 8;
+        if (v22 >= [fromCopy position] && (v23 = objc_msgSend(fromCopy, "position") + 8, v23 <= objc_msgSend(fromCopy, "length")))
         {
-          v38 = [v4 data];
-          [v38 getBytes:&v43 range:{objc_msgSend(v4, "position"), 8}];
+          data4 = [fromCopy data];
+          [data4 getBytes:&v43 range:{objc_msgSend(fromCopy, "position"), 8}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 8}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 8}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v36 = v43;
@@ -1798,7 +1798,7 @@ LABEL_56:
   }
 
 LABEL_82:
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_83:
     v40 = 0;
@@ -1816,43 +1816,43 @@ LABEL_84:
 - (NSString)description
 {
   v15 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v18 = [(BMSageTranscript *)self absoluteTimestamp];
+  absoluteTimestamp = [(BMSageTranscript *)self absoluteTimestamp];
   v3 = MEMORY[0x1E696AD98];
   [(BMSageTranscript *)self _machAbsoluteTime];
   v17 = [v3 numberWithDouble:?];
-  v4 = [(BMSageTranscript *)self _sessionID];
-  v5 = [(BMSageTranscript *)self _bootSessionID];
-  v6 = [(BMSageTranscript *)self _clientSessionID];
-  v7 = [(BMSageTranscript *)self eventLabel];
-  v8 = [(BMSageTranscript *)self eventType];
+  _sessionID = [(BMSageTranscript *)self _sessionID];
+  _bootSessionID = [(BMSageTranscript *)self _bootSessionID];
+  _clientSessionID = [(BMSageTranscript *)self _clientSessionID];
+  eventLabel = [(BMSageTranscript *)self eventLabel];
+  eventType = [(BMSageTranscript *)self eventType];
   v9 = BMSageTranscriptSerializationFormatAsString([(BMSageTranscript *)self serializationFormat]);
-  v10 = [(BMSageTranscript *)self eventPayload];
-  v11 = [(BMSageTranscript *)self _sageMetadata];
-  v12 = [(BMSageTranscript *)self monotonicTimestamp];
-  v13 = [(BMSageTranscript *)self identifiers];
-  v16 = [v15 initWithFormat:@"BMSageTranscript with absoluteTimestamp: %@, _machAbsoluteTime: %@, _sessionID: %@, _bootSessionID: %@, _clientSessionID: %@, eventLabel: %@, eventType: %@, serializationFormat: %@, eventPayload: %@, _sageMetadata: %@, monotonicTimestamp: %@, identifiers: %@", v18, v17, v4, v5, v6, v7, v8, v9, v10, v11, v12, v13];
+  eventPayload = [(BMSageTranscript *)self eventPayload];
+  _sageMetadata = [(BMSageTranscript *)self _sageMetadata];
+  monotonicTimestamp = [(BMSageTranscript *)self monotonicTimestamp];
+  identifiers = [(BMSageTranscript *)self identifiers];
+  v16 = [v15 initWithFormat:@"BMSageTranscript with absoluteTimestamp: %@, _machAbsoluteTime: %@, _sessionID: %@, _bootSessionID: %@, _clientSessionID: %@, eventLabel: %@, eventType: %@, serializationFormat: %@, eventPayload: %@, _sageMetadata: %@, monotonicTimestamp: %@, identifiers: %@", absoluteTimestamp, v17, _sessionID, _bootSessionID, _clientSessionID, eventLabel, eventType, v9, eventPayload, _sageMetadata, monotonicTimestamp, identifiers];
 
   return v16;
 }
 
-- (BMSageTranscript)initWithAbsoluteTimestamp:(id)a3 eventLabel:(id)a4 eventType:(id)a5 serializationFormat:(int)a6 eventPayload:(id)a7 monotonicTimestamp:(id)a8 identifiers:(id)a9
+- (BMSageTranscript)initWithAbsoluteTimestamp:(id)timestamp eventLabel:(id)label eventType:(id)type serializationFormat:(int)format eventPayload:(id)payload monotonicTimestamp:(id)monotonicTimestamp identifiers:(id)identifiers
 {
-  v14 = a3;
-  v23 = a4;
-  v22 = a5;
-  v15 = a7;
-  v16 = a8;
-  v17 = a9;
+  timestampCopy = timestamp;
+  labelCopy = label;
+  typeCopy = type;
+  payloadCopy = payload;
+  monotonicTimestampCopy = monotonicTimestamp;
+  identifiersCopy = identifiers;
   v24.receiver = self;
   v24.super_class = BMSageTranscript;
   v18 = [(BMEventBase *)&v24 init];
   if (v18)
   {
     v18->_dataVersion = [objc_opt_class() latestDataVersion];
-    if (v14)
+    if (timestampCopy)
     {
       v18->_hasRaw_absoluteTimestamp = 1;
-      [v14 timeIntervalSinceReferenceDate];
+      [timestampCopy timeIntervalSinceReferenceDate];
     }
 
     else
@@ -1862,12 +1862,12 @@ LABEL_84:
     }
 
     v18->_raw_absoluteTimestamp = v19;
-    objc_storeStrong(&v18->_eventLabel, a4);
-    objc_storeStrong(&v18->_eventType, a5);
-    v18->_serializationFormat = a6;
-    objc_storeStrong(&v18->_eventPayload, a7);
-    objc_storeStrong(&v18->_monotonicTimestamp, a8);
-    objc_storeStrong(&v18->_identifiers, a9);
+    objc_storeStrong(&v18->_eventLabel, label);
+    objc_storeStrong(&v18->_eventType, type);
+    v18->_serializationFormat = format;
+    objc_storeStrong(&v18->_eventPayload, payload);
+    objc_storeStrong(&v18->_monotonicTimestamp, monotonicTimestamp);
+    objc_storeStrong(&v18->_identifiers, identifiers);
   }
 
   return v18;
@@ -1937,9 +1937,9 @@ id __27__BMSageTranscript_columns__block_invoke(uint64_t a1, void *a2)
   return v5;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -1947,8 +1947,8 @@ id __27__BMSageTranscript_columns__block_invoke(uint64_t a1, void *a2)
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMSageTranscript alloc] initByReadFrom:v7];
     v4 = v8;
@@ -1964,97 +1964,97 @@ id __27__BMSageTranscript_columns__block_invoke(uint64_t a1, void *a2)
 - (id)sageMetadata
 {
   v3 = [BMSageMetadata alloc];
-  v4 = [(BMSageTranscript *)self identifiers];
-  v5 = [v4 sessionId];
-  v6 = [(BMSageTranscript *)self identifiers];
-  v7 = [v6 clientGroupIdentifier];
-  v8 = [(BMSageTranscript *)self identifiers];
-  v9 = [v8 clientRequestId];
-  v10 = [(BMSageTranscript *)self identifiers];
-  v11 = [v10 clientSessionId];
-  v12 = [(BMSageMetadata *)v3 initWithRawSessionId:v5 clientId:v7 clientRequestId:v9 clientSessionId:v11];
+  identifiers = [(BMSageTranscript *)self identifiers];
+  sessionId = [identifiers sessionId];
+  identifiers2 = [(BMSageTranscript *)self identifiers];
+  clientGroupIdentifier = [identifiers2 clientGroupIdentifier];
+  identifiers3 = [(BMSageTranscript *)self identifiers];
+  clientRequestId = [identifiers3 clientRequestId];
+  identifiers4 = [(BMSageTranscript *)self identifiers];
+  clientSessionId = [identifiers4 clientSessionId];
+  v12 = [(BMSageMetadata *)v3 initWithRawSessionId:sessionId clientId:clientGroupIdentifier clientRequestId:clientRequestId clientSessionId:clientSessionId];
 
   return v12;
 }
 
 - (id)clientSessionID
 {
-  v3 = [(BMSageTranscript *)self identifiers];
+  identifiers = [(BMSageTranscript *)self identifiers];
 
-  if (v3)
+  if (identifiers)
   {
-    v4 = [(BMSageTranscript *)self identifiers];
-    v5 = [v4 clientSessionId];
+    identifiers2 = [(BMSageTranscript *)self identifiers];
+    clientSessionId = [identifiers2 clientSessionId];
 
-    if (v5)
+    if (clientSessionId)
     {
       v6 = objc_alloc(MEMORY[0x1E696AFB0]);
-      v7 = [(BMSageTranscript *)self identifiers];
-      v8 = [v7 clientSessionId];
-      v9 = [v6 initWithUUIDString:v8];
+      identifiers3 = [(BMSageTranscript *)self identifiers];
+      clientSessionId2 = [identifiers3 clientSessionId];
+      _clientSessionID = [v6 initWithUUIDString:clientSessionId2];
     }
 
     else
     {
-      v9 = 0;
+      _clientSessionID = 0;
     }
   }
 
   else
   {
-    v9 = [(BMSageTranscript *)self _clientSessionID];
+    _clientSessionID = [(BMSageTranscript *)self _clientSessionID];
   }
 
-  return v9;
+  return _clientSessionID;
 }
 
 - (id)sessionID
 {
-  v3 = [(BMSageTranscript *)self identifiers];
+  identifiers = [(BMSageTranscript *)self identifiers];
 
-  if (v3)
+  if (identifiers)
   {
-    v4 = [(BMSageTranscript *)self identifiers];
-    v5 = [v4 sessionId];
+    identifiers2 = [(BMSageTranscript *)self identifiers];
+    sessionId = [identifiers2 sessionId];
   }
 
   else
   {
-    v5 = [(BMSageTranscript *)self _sessionID];
+    sessionId = [(BMSageTranscript *)self _sessionID];
   }
 
-  return v5;
+  return sessionId;
 }
 
 - (id)bootSessionID
 {
-  v3 = [(BMSageTranscript *)self monotonicTimestamp];
+  monotonicTimestamp = [(BMSageTranscript *)self monotonicTimestamp];
 
-  if (v3)
+  if (monotonicTimestamp)
   {
-    v4 = [(BMSageTranscript *)self monotonicTimestamp];
-    v5 = [v4 bootSessionUUID];
+    monotonicTimestamp2 = [(BMSageTranscript *)self monotonicTimestamp];
+    bootSessionUUID = [monotonicTimestamp2 bootSessionUUID];
   }
 
   else
   {
-    v5 = [(BMSageTranscript *)self _bootSessionID];
+    bootSessionUUID = [(BMSageTranscript *)self _bootSessionID];
   }
 
-  return v5;
+  return bootSessionUUID;
 }
 
 - (double)machAbsoluteTime
 {
-  v3 = [(BMSageTranscript *)self monotonicTimestamp];
+  monotonicTimestamp = [(BMSageTranscript *)self monotonicTimestamp];
 
-  if (v3)
+  if (monotonicTimestamp)
   {
-    v4 = [(BMSageTranscript *)self monotonicTimestamp];
-    v5 = [v4 value];
-    v6 = [v5 suspendingNanosecondsSinceBoot];
+    monotonicTimestamp2 = [(BMSageTranscript *)self monotonicTimestamp];
+    value = [monotonicTimestamp2 value];
+    suspendingNanosecondsSinceBoot = [value suspendingNanosecondsSinceBoot];
 
-    return v6;
+    return suspendingNanosecondsSinceBoot;
   }
 
   else
@@ -2068,15 +2068,15 @@ id __27__BMSageTranscript_columns__block_invoke(uint64_t a1, void *a2)
 
 - (BOOL)hasMachAbsoluteTime
 {
-  v3 = [(BMSageTranscript *)self monotonicTimestamp];
+  monotonicTimestamp = [(BMSageTranscript *)self monotonicTimestamp];
 
-  if (v3)
+  if (monotonicTimestamp)
   {
-    v4 = [(BMSageTranscript *)self monotonicTimestamp];
-    v5 = [v4 value];
-    v6 = [v5 hasSuspendingNanosecondsSinceBoot];
+    monotonicTimestamp2 = [(BMSageTranscript *)self monotonicTimestamp];
+    value = [monotonicTimestamp2 value];
+    hasSuspendingNanosecondsSinceBoot = [value hasSuspendingNanosecondsSinceBoot];
 
-    return v6;
+    return hasSuspendingNanosecondsSinceBoot;
   }
 
   else
@@ -2086,20 +2086,20 @@ id __27__BMSageTranscript_columns__block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (BMSageTranscript)initWithAbsoluteTimestamp:(id)a3 machAbsoluteTime:(id)a4 sessionID:(id)a5 bootSessionID:(id)a6 clientSessionID:(id)a7 eventLabel:(id)a8 eventType:(id)a9 serializationFormat:(int)a10 eventPayload:(id)a11
+- (BMSageTranscript)initWithAbsoluteTimestamp:(id)timestamp machAbsoluteTime:(id)time sessionID:(id)d bootSessionID:(id)iD clientSessionID:(id)sessionID eventLabel:(id)label eventType:(id)type serializationFormat:(int)self0 eventPayload:(id)self1
 {
-  v16 = a4;
-  v17 = a6;
-  v18 = a11;
-  v19 = a9;
-  v20 = a8;
-  v21 = a7;
-  v22 = a5;
-  v23 = a3;
-  v32 = v16;
-  if (v16 && v17)
+  timeCopy = time;
+  iDCopy = iD;
+  payloadCopy = payload;
+  typeCopy = type;
+  labelCopy = label;
+  sessionIDCopy = sessionID;
+  dCopy = d;
+  timestampCopy = timestamp;
+  v32 = timeCopy;
+  if (timeCopy && iDCopy)
   {
-    v24 = [[BMMonotonicTimestamp alloc] initWithBootSessionUUID:v17 machAbsoluteTime:v16 machContinuousTime:0];
+    v24 = [[BMMonotonicTimestamp alloc] initWithBootSessionUUID:iDCopy machAbsoluteTime:timeCopy machContinuousTime:0];
   }
 
   else
@@ -2108,126 +2108,126 @@ id __27__BMSageTranscript_columns__block_invoke(uint64_t a1, void *a2)
   }
 
   v25 = v24;
-  v26 = v17;
+  v26 = iDCopy;
   v27 = [BMIntelligenceFlowIdentifiers alloc];
-  v28 = [v21 UUIDString];
+  uUIDString = [sessionIDCopy UUIDString];
 
-  v29 = [(BMIntelligenceFlowIdentifiers *)v27 initWithSessionId:v22 spanId:0 clientRequestId:0 clientSessionId:v28 clientApplicationId:0 clientGroupIdentifier:0];
-  v30 = [(BMSageTranscript *)self initWithAbsoluteTimestamp:v23 eventLabel:v20 eventType:v19 serializationFormat:a10 eventPayload:v18 monotonicTimestamp:v25 identifiers:v29];
+  v29 = [(BMIntelligenceFlowIdentifiers *)v27 initWithSessionId:dCopy spanId:0 clientRequestId:0 clientSessionId:uUIDString clientApplicationId:0 clientGroupIdentifier:0];
+  v30 = [(BMSageTranscript *)self initWithAbsoluteTimestamp:timestampCopy eventLabel:labelCopy eventType:typeCopy serializationFormat:format eventPayload:payloadCopy monotonicTimestamp:v25 identifiers:v29];
 
   return v30;
 }
 
-- (BMSageTranscript)initWithAbsoluteTimestamp:(id)a3 _machAbsoluteTime:(id)a4 _sessionID:(id)a5 _bootSessionID:(id)a6 _clientSessionID:(id)a7 eventLabel:(id)a8 eventType:(id)a9 serializationFormat:(int)a10 eventPayload:(id)a11 _sageMetadata:(id)a12 monotonicTimestamp:(id)a13 identifiers:(id)a14
+- (BMSageTranscript)initWithAbsoluteTimestamp:(id)timestamp _machAbsoluteTime:(id)time _sessionID:(id)d _bootSessionID:(id)iD _clientSessionID:(id)sessionID eventLabel:(id)label eventType:(id)type serializationFormat:(int)self0 eventPayload:(id)self1 _sageMetadata:(id)self2 monotonicTimestamp:(id)self3 identifiers:(id)self4
 {
-  v48 = a3;
-  v47 = a4;
-  v49 = a5;
-  v46 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
-  v22 = a11;
-  v23 = a12;
-  v24 = a13;
-  v25 = a14;
-  v44 = v25;
-  if (v23 || v24 || v25)
+  timestampCopy = timestamp;
+  timeCopy = time;
+  dCopy = d;
+  iDCopy = iD;
+  sessionIDCopy = sessionID;
+  labelCopy = label;
+  typeCopy = type;
+  payloadCopy = payload;
+  metadataCopy = metadata;
+  monotonicTimestampCopy = monotonicTimestamp;
+  identifiersCopy = identifiers;
+  v44 = identifiersCopy;
+  if (metadataCopy || monotonicTimestampCopy || identifiersCopy)
   {
-    v43 = v19;
-    v31 = v25;
+    v43 = sessionIDCopy;
+    v31 = identifiersCopy;
     v32 = v31;
-    if (v23)
+    if (metadataCopy)
     {
-      v33 = a10;
+      formatCopy2 = format;
       if (!v31)
       {
         v34 = [BMIntelligenceFlowIdentifiers alloc];
-        v35 = [v23 rawSessionId];
-        [v23 clientRequestId];
-        v36 = v42 = v24;
-        v37 = [v23 clientSessionId];
-        v38 = [v23 clientId];
-        v32 = [(BMIntelligenceFlowIdentifiers *)v34 initWithSessionId:v35 spanId:0 clientRequestId:v36 clientSessionId:v37 clientApplicationId:0 clientGroupIdentifier:v38];
+        rawSessionId = [metadataCopy rawSessionId];
+        [metadataCopy clientRequestId];
+        v36 = v42 = monotonicTimestampCopy;
+        clientSessionId = [metadataCopy clientSessionId];
+        clientId = [metadataCopy clientId];
+        v32 = [(BMIntelligenceFlowIdentifiers *)v34 initWithSessionId:rawSessionId spanId:0 clientRequestId:v36 clientSessionId:clientSessionId clientApplicationId:0 clientGroupIdentifier:clientId];
 
-        v24 = v42;
+        monotonicTimestampCopy = v42;
       }
     }
 
     else
     {
-      v33 = a10;
+      formatCopy2 = format;
     }
 
-    v26 = v48;
-    v30 = [(BMSageTranscript *)self initWithAbsoluteTimestamp:v48 eventLabel:v20 eventType:v21 serializationFormat:v33 eventPayload:v22 monotonicTimestamp:v24 identifiers:v32];
+    v26 = timestampCopy;
+    v30 = [(BMSageTranscript *)self initWithAbsoluteTimestamp:timestampCopy eventLabel:labelCopy eventType:typeCopy serializationFormat:formatCopy2 eventPayload:payloadCopy monotonicTimestamp:monotonicTimestampCopy identifiers:v32];
 
-    v28 = v21;
-    v29 = v46;
-    v27 = v47;
-    v19 = v43;
+    v28 = typeCopy;
+    v29 = iDCopy;
+    v27 = timeCopy;
+    sessionIDCopy = v43;
   }
 
   else
   {
-    LODWORD(v41) = a10;
-    v40 = v21;
-    v27 = v47;
-    v26 = v48;
-    v28 = v21;
-    v29 = v46;
-    v30 = [(BMSageTranscript *)self initWithAbsoluteTimestamp:v48 machAbsoluteTime:v47 sessionID:v49 bootSessionID:v46 clientSessionID:v19 eventLabel:v20 eventType:v40 serializationFormat:v41 eventPayload:v22];
+    LODWORD(v41) = format;
+    v40 = typeCopy;
+    v27 = timeCopy;
+    v26 = timestampCopy;
+    v28 = typeCopy;
+    v29 = iDCopy;
+    v30 = [(BMSageTranscript *)self initWithAbsoluteTimestamp:timestampCopy machAbsoluteTime:timeCopy sessionID:dCopy bootSessionID:iDCopy clientSessionID:sessionIDCopy eventLabel:labelCopy eventType:v40 serializationFormat:v41 eventPayload:payloadCopy];
   }
 
   return v30;
 }
 
-- (BMSageTranscript)initWithAbsoluteTimestamp:(id)a3 eventLabel:(id)a4 eventType:(id)a5 serializationFormat:(int)a6 eventPayload:(id)a7 sageMetadata:(id)a8 monotonicTimestamp:(id)a9
+- (BMSageTranscript)initWithAbsoluteTimestamp:(id)timestamp eventLabel:(id)label eventType:(id)type serializationFormat:(int)format eventPayload:(id)payload sageMetadata:(id)metadata monotonicTimestamp:(id)monotonicTimestamp
 {
-  v27 = a9;
-  v14 = a8;
-  v15 = a7;
-  v16 = a5;
-  v17 = a4;
-  v18 = a3;
+  monotonicTimestampCopy = monotonicTimestamp;
+  metadataCopy = metadata;
+  payloadCopy = payload;
+  typeCopy = type;
+  labelCopy = label;
+  timestampCopy = timestamp;
   v19 = [BMIntelligenceFlowIdentifiers alloc];
-  v20 = [v14 rawSessionId];
-  v21 = [v14 clientRequestId];
-  v22 = [v14 clientSessionId];
-  v23 = [v14 clientId];
+  rawSessionId = [metadataCopy rawSessionId];
+  clientRequestId = [metadataCopy clientRequestId];
+  clientSessionId = [metadataCopy clientSessionId];
+  clientId = [metadataCopy clientId];
 
-  v24 = [(BMIntelligenceFlowIdentifiers *)v19 initWithSessionId:v20 spanId:0 clientRequestId:v21 clientSessionId:v22 clientApplicationId:0 clientGroupIdentifier:v23];
-  v25 = [(BMSageTranscript *)self initWithAbsoluteTimestamp:v18 eventLabel:v17 eventType:v16 serializationFormat:a6 eventPayload:v15 monotonicTimestamp:v27 identifiers:v24];
+  v24 = [(BMIntelligenceFlowIdentifiers *)v19 initWithSessionId:rawSessionId spanId:0 clientRequestId:clientRequestId clientSessionId:clientSessionId clientApplicationId:0 clientGroupIdentifier:clientId];
+  v25 = [(BMSageTranscript *)self initWithAbsoluteTimestamp:timestampCopy eventLabel:labelCopy eventType:typeCopy serializationFormat:format eventPayload:payloadCopy monotonicTimestamp:monotonicTimestampCopy identifiers:v24];
 
   return v25;
 }
 
 - (NSString)clientRequestId
 {
-  v2 = [(BMSageTranscript *)self identifiers];
-  v3 = [v2 clientRequestId];
+  identifiers = [(BMSageTranscript *)self identifiers];
+  clientRequestId = [identifiers clientRequestId];
 
-  return v3;
+  return clientRequestId;
 }
 
 - (NSString)clientSessionId
 {
-  v2 = [(BMSageTranscript *)self identifiers];
-  v3 = [v2 clientSessionId];
+  identifiers = [(BMSageTranscript *)self identifiers];
+  clientSessionId = [identifiers clientSessionId];
 
-  return v3;
+  return clientSessionId;
 }
 
 - (NSNumber)spanId
 {
-  v3 = [(BMSageTranscript *)self identifiers];
-  v4 = [v3 hasSpanId];
+  identifiers = [(BMSageTranscript *)self identifiers];
+  hasSpanId = [identifiers hasSpanId];
 
-  if (v4)
+  if (hasSpanId)
   {
     v5 = MEMORY[0x1E696AD98];
-    v6 = [(BMSageTranscript *)self identifiers];
-    v7 = [v5 numberWithUnsignedLongLong:{objc_msgSend(v6, "spanId")}];
+    identifiers2 = [(BMSageTranscript *)self identifiers];
+    v7 = [v5 numberWithUnsignedLongLong:{objc_msgSend(identifiers2, "spanId")}];
   }
 
   else
@@ -2240,10 +2240,10 @@ id __27__BMSageTranscript_columns__block_invoke(uint64_t a1, void *a2)
 
 - (NSUUID)sessionId
 {
-  v2 = [(BMSageTranscript *)self identifiers];
-  v3 = [v2 sessionId];
+  identifiers = [(BMSageTranscript *)self identifiers];
+  sessionId = [identifiers sessionId];
 
-  return v3;
+  return sessionId;
 }
 
 @end

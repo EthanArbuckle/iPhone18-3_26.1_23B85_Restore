@@ -1,18 +1,18 @@
 @interface POAnalytics
-+ (void)analyticsForLoginConfiguration:(id)a3;
-+ (void)analyticsForLoginManager:(id)a3;
-+ (void)analyticsForLoginType:(id)a3 result:(id)a4;
-+ (void)analyticsForRegistrationType:(id)a3 options:(int64_t)a4 result:(int64_t)a5;
-+ (void)analyticsForSetupAssistantLoginType:(id)a3 result:(id)a4;
-+ (void)analyticsForTempSessionLoginType:(id)a3 result:(id)a4;
++ (void)analyticsForLoginConfiguration:(id)configuration;
++ (void)analyticsForLoginManager:(id)manager;
++ (void)analyticsForLoginType:(id)type result:(id)result;
++ (void)analyticsForRegistrationType:(id)type options:(int64_t)options result:(int64_t)result;
++ (void)analyticsForSetupAssistantLoginType:(id)type result:(id)result;
++ (void)analyticsForTempSessionLoginType:(id)type result:(id)result;
 @end
 
 @implementation POAnalytics
 
-+ (void)analyticsForLoginConfiguration:(id)a3
++ (void)analyticsForLoginConfiguration:(id)configuration
 {
-  v4 = a3;
-  v3 = v4;
+  configurationCopy = configuration;
+  v3 = configurationCopy;
   AnalyticsSendEventLazy();
 }
 
@@ -77,12 +77,12 @@ id __46__POAnalytics_analyticsForLoginConfiguration___block_invoke(uint64_t a1)
   return v19;
 }
 
-+ (void)analyticsForLoginType:(id)a3 result:(id)a4
++ (void)analyticsForLoginType:(id)type result:(id)result
 {
-  v7 = a3;
-  v8 = a4;
-  v5 = v8;
-  v6 = v7;
+  typeCopy = type;
+  resultCopy = result;
+  v5 = resultCopy;
+  v6 = typeCopy;
   AnalyticsSendEventLazy();
 }
 
@@ -100,12 +100,12 @@ id __44__POAnalytics_analyticsForLoginType_result___block_invoke(uint64_t a1)
   return v2;
 }
 
-+ (void)analyticsForTempSessionLoginType:(id)a3 result:(id)a4
++ (void)analyticsForTempSessionLoginType:(id)type result:(id)result
 {
-  v7 = a3;
-  v8 = a4;
-  v5 = v8;
-  v6 = v7;
+  typeCopy = type;
+  resultCopy = result;
+  v5 = resultCopy;
+  v6 = typeCopy;
   AnalyticsSendEventLazy();
 }
 
@@ -123,12 +123,12 @@ id __55__POAnalytics_analyticsForTempSessionLoginType_result___block_invoke(uint
   return v2;
 }
 
-+ (void)analyticsForSetupAssistantLoginType:(id)a3 result:(id)a4
++ (void)analyticsForSetupAssistantLoginType:(id)type result:(id)result
 {
-  v7 = a3;
-  v8 = a4;
-  v5 = v8;
-  v6 = v7;
+  typeCopy = type;
+  resultCopy = result;
+  v5 = resultCopy;
+  v6 = typeCopy;
   AnalyticsSendEventLazy();
 }
 
@@ -165,10 +165,10 @@ id __66__POAnalytics_analyticsForPasswordChange_credentialNeeded_result___block_
   return v5;
 }
 
-+ (void)analyticsForRegistrationType:(id)a3 options:(int64_t)a4 result:(int64_t)a5
++ (void)analyticsForRegistrationType:(id)type options:(int64_t)options result:(int64_t)result
 {
-  v6 = a3;
-  v5 = v6;
+  typeCopy = type;
+  v5 = typeCopy;
   AnalyticsSendEventLazy();
 }
 
@@ -191,10 +191,10 @@ id __59__POAnalytics_analyticsForRegistrationType_options_result___block_invoke(
   return v5;
 }
 
-+ (void)analyticsForLoginManager:(id)a3
++ (void)analyticsForLoginManager:(id)manager
 {
-  v4 = a3;
-  v3 = v4;
+  managerCopy = manager;
+  v3 = managerCopy;
   AnalyticsSendEventLazy();
 }
 

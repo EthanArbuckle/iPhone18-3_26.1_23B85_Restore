@@ -2,13 +2,13 @@
 + (id)interface;
 + (id)setUpAssertionStorageDirectory;
 + (id)sharedInstance;
-+ (id)sharedInstanceWithConfiguration:(id)a3;
++ (id)sharedInstanceWithConfiguration:(id)configuration;
 + (void)setUpAssertionStorageDirectory;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (DDSServer)initWithXPCServiceName:(id)a3 assertionStorageFileURL:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (DDSServer)initWithXPCServiceName:(id)name assertionStorageFileURL:(id)l;
 - (void)dealloc;
-- (void)handleEndedConnection:(id)a3;
-- (void)setCompatabilityVersion:(int64_t)a3 forAssetType:(id)a4;
+- (void)handleEndedConnection:(id)connection;
+- (void)setCompatabilityVersion:(int64_t)version forAssetType:(id)type;
 - (void)start;
 @end
 
@@ -21,9 +21,9 @@
   v3 = [v2 stringByAppendingPathComponent:@"/Library/DataDeliveryServices"];
 
   v4 = [MEMORY[0x1E695DFF8] fileURLWithPath:v3 isDirectory:1];
-  v5 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v12 = 0;
-  v6 = [v5 createDirectoryAtURL:v4 withIntermediateDirectories:1 attributes:0 error:&v12];
+  v6 = [defaultManager createDirectoryAtURL:v4 withIntermediateDirectories:1 attributes:0 error:&v12];
   v7 = v12;
 
   v8 = DefaultLog();
@@ -59,16 +59,16 @@
   return v5;
 }
 
-+ (id)sharedInstanceWithConfiguration:(id)a3
++ (id)sharedInstanceWithConfiguration:(id)configuration
 {
-  v3 = a3;
+  configurationCopy = configuration;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __45__DDSServer_sharedInstanceWithConfiguration___block_invoke;
   block[3] = &unk_1E86C5AF0;
-  v10 = v3;
+  v10 = configurationCopy;
   v4 = sharedInstanceWithConfiguration__onceToken;
-  v5 = v3;
+  v5 = configurationCopy;
   if (v4 != -1)
   {
     dispatch_once(&sharedInstanceWithConfiguration__onceToken, block);
@@ -106,10 +106,10 @@ void __45__DDSServer_sharedInstanceWithConfiguration___block_invoke(uint64_t a1)
   [sharedInstanceWithConfiguration__sharedInstance start];
 }
 
-- (DDSServer)initWithXPCServiceName:(id)a3 assertionStorageFileURL:(id)a4
+- (DDSServer)initWithXPCServiceName:(id)name assertionStorageFileURL:(id)l
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  lCopy = l;
   v23.receiver = self;
   v23.super_class = DDSServer;
   v8 = [(DDSServer *)&v23 init];
@@ -119,7 +119,7 @@ void __45__DDSServer_sharedInstanceWithConfiguration___block_invoke(uint64_t a1)
     provider = v8->_provider;
     v8->_provider = v9;
 
-    v11 = [[DDSAssertionDataHandler alloc] initWithAssertionStorageFileURL:v7];
+    v11 = [[DDSAssertionDataHandler alloc] initWithAssertionStorageFileURL:lCopy];
     v12 = [[DDSAssertionTracker alloc] initWithDataHandler:v11];
     v13 = [[DDSManager alloc] initWithProvider:v8->_provider tracker:v12];
     manager = v8->_manager;
@@ -134,7 +134,7 @@ void __45__DDSServer_sharedInstanceWithConfiguration___block_invoke(uint64_t a1)
     queue = v8->_queue;
     v8->_queue = v18;
 
-    v20 = [objc_alloc(MEMORY[0x1E696B0D8]) initWithMachServiceName:v6];
+    v20 = [objc_alloc(MEMORY[0x1E696B0D8]) initWithMachServiceName:nameCopy];
     listener = v8->_listener;
     v8->_listener = v20;
 
@@ -144,11 +144,11 @@ void __45__DDSServer_sharedInstanceWithConfiguration___block_invoke(uint64_t a1)
   return v8;
 }
 
-- (void)setCompatabilityVersion:(int64_t)a3 forAssetType:(id)a4
+- (void)setCompatabilityVersion:(int64_t)version forAssetType:(id)type
 {
-  v6 = a4;
-  v7 = [(DDSServer *)self provider];
-  [v7 setCompatabilityVersion:a3 forAssetType:v6];
+  typeCopy = type;
+  provider = [(DDSServer *)self provider];
+  [provider setCompatabilityVersion:version forAssetType:typeCopy];
 }
 
 - (void)start
@@ -160,50 +160,50 @@ void __45__DDSServer_sharedInstanceWithConfiguration___block_invoke(uint64_t a1)
   [(NSXPCListener *)listener resume];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   v8 = DefaultLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v25 = v7;
+    v25 = connectionCopy;
     _os_log_impl(&dword_1DF7C6000, v8, OS_LOG_TYPE_DEFAULT, "Server shouldAcceptNewConnection: (%{public}@)", buf, 0xCu);
   }
 
-  v9 = [(DDSServer *)self manager];
-  [v7 setExportedObject:v9];
+  manager = [(DDSServer *)self manager];
+  [connectionCopy setExportedObject:manager];
 
-  v10 = [objc_opt_class() interface];
-  [v7 setExportedInterface:v10];
+  interface = [objc_opt_class() interface];
+  [connectionCopy setExportedInterface:interface];
 
   v11 = +[DDSInterface interface];
-  [v7 setRemoteObjectInterface:v11];
+  [connectionCopy setRemoteObjectInterface:v11];
 
-  v12 = [(DDSServer *)self queue];
-  [v7 _setQueue:v12];
+  queue = [(DDSServer *)self queue];
+  [connectionCopy _setQueue:queue];
 
-  objc_initWeak(buf, v7);
+  objc_initWeak(buf, connectionCopy);
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __48__DDSServer_listener_shouldAcceptNewConnection___block_invoke;
   v22[3] = &unk_1E86C5B18;
   objc_copyWeak(&v23, buf);
   v22[4] = self;
-  [v7 setInvalidationHandler:v22];
+  [connectionCopy setInvalidationHandler:v22];
   v16 = MEMORY[0x1E69E9820];
   v17 = 3221225472;
   v18 = __48__DDSServer_listener_shouldAcceptNewConnection___block_invoke_309;
   v19 = &unk_1E86C5B18;
   objc_copyWeak(&v21, buf);
-  v20 = self;
-  [v7 setInterruptionHandler:&v16];
+  selfCopy = self;
+  [connectionCopy setInterruptionHandler:&v16];
   v13 = [(DDSServer *)self clientConnections:v16];
-  [v13 addObject:v7];
+  [v13 addObject:connectionCopy];
 
-  [v7 resume];
+  [connectionCopy resume];
   objc_destroyWeak(&v21);
   objc_destroyWeak(&v23);
   objc_destroyWeak(buf);
@@ -247,11 +247,11 @@ void __48__DDSServer_listener_shouldAcceptNewConnection___block_invoke_309(uint6
   }
 }
 
-- (void)handleEndedConnection:(id)a3
+- (void)handleEndedConnection:(id)connection
 {
-  v4 = a3;
-  v5 = [(DDSServer *)self clientConnections];
-  [v5 removeObject:v4];
+  connectionCopy = connection;
+  clientConnections = [(DDSServer *)self clientConnections];
+  [clientConnections removeObject:connectionCopy];
 }
 
 + (id)interface
@@ -311,7 +311,7 @@ uint64_t __22__DDSServer_interface__block_invoke()
 {
   v8 = *MEMORY[0x1E69E9840];
   v4 = 138543618;
-  v5 = a1;
+  selfCopy = self;
   v6 = 2114;
   v7 = a2;
   _os_log_error_impl(&dword_1DF7C6000, log, OS_LOG_TYPE_ERROR, "Failed to create directory at url %{public}@:(%{public}@)", &v4, 0x16u);

@@ -1,24 +1,24 @@
 @interface JavaUtilConcurrentLocksAbstractQueuedSynchronizer_Node
 + (void)initialize;
-- (JavaUtilConcurrentLocksAbstractQueuedSynchronizer_Node)initWithJavaLangThread:(id)a3 withInt:(int)a4;
-- (JavaUtilConcurrentLocksAbstractQueuedSynchronizer_Node)initWithJavaLangThread:(id)a3 withJavaUtilConcurrentLocksAbstractQueuedSynchronizer_Node:(id)a4;
+- (JavaUtilConcurrentLocksAbstractQueuedSynchronizer_Node)initWithJavaLangThread:(id)thread withInt:(int)int;
+- (JavaUtilConcurrentLocksAbstractQueuedSynchronizer_Node)initWithJavaLangThread:(id)thread withJavaUtilConcurrentLocksAbstractQueuedSynchronizer_Node:(id)node;
 - (void)__javaClone;
 - (void)dealloc;
 @end
 
 @implementation JavaUtilConcurrentLocksAbstractQueuedSynchronizer_Node
 
-- (JavaUtilConcurrentLocksAbstractQueuedSynchronizer_Node)initWithJavaLangThread:(id)a3 withJavaUtilConcurrentLocksAbstractQueuedSynchronizer_Node:(id)a4
+- (JavaUtilConcurrentLocksAbstractQueuedSynchronizer_Node)initWithJavaLangThread:(id)thread withJavaUtilConcurrentLocksAbstractQueuedSynchronizer_Node:(id)node
 {
-  JreStrongAssign(&self->nextWaiter_, a4);
-  JreVolatileStrongAssign(&self->thread_, a3);
+  JreStrongAssign(&self->nextWaiter_, node);
+  JreVolatileStrongAssign(&self->thread_, thread);
   return self;
 }
 
-- (JavaUtilConcurrentLocksAbstractQueuedSynchronizer_Node)initWithJavaLangThread:(id)a3 withInt:(int)a4
+- (JavaUtilConcurrentLocksAbstractQueuedSynchronizer_Node)initWithJavaLangThread:(id)thread withInt:(int)int
 {
-  atomic_store(a4, &self->waitStatus_);
-  JreVolatileStrongAssign(&self->thread_, a3);
+  atomic_store(int, &self->waitStatus_);
+  JreVolatileStrongAssign(&self->thread_, thread);
   return self;
 }
 
@@ -45,7 +45,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     JreStrongAssignAndConsume(&JavaUtilConcurrentLocksAbstractQueuedSynchronizer_Node_SHARED_, [JavaUtilConcurrentLocksAbstractQueuedSynchronizer_Node alloc]);
     JreStrongAssign(&JavaUtilConcurrentLocksAbstractQueuedSynchronizer_Node_EXCLUSIVE_, 0);

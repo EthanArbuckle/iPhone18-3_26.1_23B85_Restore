@@ -28,8 +28,8 @@
 {
   if (os_variant_has_internal_diagnostics())
   {
-    v3 = [(CHDataMigrator *)self userDefaults];
-    v4 = [v3 BOOLForKey:@"resetCallTimersEnabled"];
+    userDefaults = [(CHDataMigrator *)self userDefaults];
+    v4 = [userDefaults BOOLForKey:@"resetCallTimersEnabled"];
 
     if (v4)
     {
@@ -120,8 +120,8 @@
   v30 = getMobileUserLibraryDirectoryPath();
   v2 = [v30 URLByAppendingPathComponent:kCallDBDirName];
   v3 = +[NSFileManager defaultManager];
-  v4 = [v2 path];
-  v5 = [v3 contentsOfDirectoryAtPath:v4 error:0];
+  path = [v2 path];
+  v5 = [v3 contentsOfDirectoryAtPath:path error:0];
 
   v31 = objc_opt_new();
   v6 = [@"." stringByAppendingString:kCallHistoryDataStoreExtension];
@@ -148,28 +148,28 @@
         }
 
         v12 = *(*(&v38 + 1) + 8 * i);
-        v13 = [v12 pathExtension];
-        v14 = [v13 isEqualToString:@"plist"];
+        pathExtension = [v12 pathExtension];
+        v14 = [pathExtension isEqualToString:@"plist"];
 
         if ((v14 & 1) == 0)
         {
-          v15 = [v12 pathExtension];
-          v16 = [v15 hasSuffix:@"shm"];
+          pathExtension2 = [v12 pathExtension];
+          v16 = [pathExtension2 hasSuffix:@"shm"];
 
           if ((v16 & 1) == 0)
           {
-            v17 = [v12 pathExtension];
-            v18 = [v17 hasSuffix:@"wal"];
+            pathExtension3 = [v12 pathExtension];
+            v18 = [pathExtension3 hasSuffix:@"wal"];
 
             if ((v18 & 1) == 0)
             {
-              v19 = [v12 lastPathComponent];
-              v20 = [v19 isEqualToString:v33];
+              lastPathComponent = [v12 lastPathComponent];
+              v20 = [lastPathComponent isEqualToString:v33];
 
               if ((v20 & 1) == 0)
               {
-                v21 = [v12 lastPathComponent];
-                v22 = [v21 isEqualToString:v32];
+                lastPathComponent2 = [v12 lastPathComponent];
+                v22 = [lastPathComponent2 isEqualToString:v32];
 
                 if ((v22 & 1) == 0)
                 {
@@ -219,7 +219,7 @@
 
 - (void)resetCallHistorySyncHelperUserDefaults
 {
-  v2 = [(CHDataMigrator *)self userDefaults];
+  userDefaults = [(CHDataMigrator *)self userDefaults];
   v3 = +[CHLogServer sharedInstance];
   v4 = [v3 logHandleForDomain:"CallHistoryDataMigrator"];
 
@@ -230,7 +230,7 @@
     _os_log_impl(&dword_0, v4, OS_LOG_TYPE_DEFAULT, "Removing user defaults related to the legacy iCloud container %{public}@", &v7, 0xCu);
   }
 
-  [v2 removeObjectForKey:@"com.apple.callhistory.cloud-storage"];
+  [userDefaults removeObjectForKey:@"com.apple.callhistory.cloud-storage"];
   v5 = +[CHLogServer sharedInstance];
   v6 = [v5 logHandleForDomain:"CallHistoryDataMigrator"];
 
@@ -241,7 +241,7 @@
     _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "Removing user defaults related to the current iCloud container %{public}@", &v7, 0xCu);
   }
 
-  [v2 removeObjectForKey:@"com.apple.callhistory.cloud-storage2"];
+  [userDefaults removeObjectForKey:@"com.apple.callhistory.cloud-storage2"];
 }
 
 @end

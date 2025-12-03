@@ -2,7 +2,7 @@
 + (id)sharedInstance;
 - (BOOL)loadModel;
 - (CalendarEventClassificationModelManager)init;
-- (id)predictForReferenceItemId:(id)a3 withEmbedding:(id)a4;
+- (id)predictForReferenceItemId:(id)id withEmbedding:(id)embedding;
 - (void)loadModel;
 @end
 
@@ -65,13 +65,13 @@ void __57__CalendarEventClassificationModelManager_sharedInstance__block_invoke(
   v2 = [(CalendarEventClassificationModelManager *)&v14 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277D657E8] sharedResourcesManager];
-    v4 = [MEMORY[0x277CBEAF8] currentLocale];
-    [v3 loadAllParametersForClient:@"SpotlightKnowledge" locale:v4];
+    mEMORY[0x277D657E8] = [MEMORY[0x277D657E8] sharedResourcesManager];
+    currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+    [mEMORY[0x277D657E8] loadAllParametersForClient:@"SpotlightKnowledge" locale:currentLocale];
 
-    v5 = [MEMORY[0x277D657E8] sharedResourcesManager];
+    mEMORY[0x277D657E8]2 = [MEMORY[0x277D657E8] sharedResourcesManager];
     v6 = [MEMORY[0x277CBEAF8] localeWithLocaleIdentifier:@"root"];
-    v7 = [v5 resourcesForClient:@"SpotlightKnowledge" locale:v6 options:&unk_2846E85B0];
+    v7 = [mEMORY[0x277D657E8]2 resourcesForClient:@"SpotlightKnowledge" locale:v6 options:&unk_2846E85B0];
     [(CalendarEventClassificationModelManager *)v2 setResources:v7];
 
     [(CalendarEventClassificationModelManager *)v2 setIsLoaded:0];
@@ -96,19 +96,19 @@ void __57__CalendarEventClassificationModelManager_sharedInstance__block_invoke(
   if (![(CalendarEventClassificationModelManager *)self isLoaded])
   {
     [(CalendarEventClassificationModelManager *)self setIsLoaded:0];
-    v4 = [(CalendarEventClassificationModelManager *)self resources];
+    resources = [(CalendarEventClassificationModelManager *)self resources];
     v20 = 0;
-    v5 = [v4 filePathArrayForKey:@"DocumentUnderstanding" didFailWithError:&v20];
+    v5 = [resources filePathArrayForKey:@"DocumentUnderstanding" didFailWithError:&v20];
     v6 = v20;
 
     if ([v5 count])
     {
       v7 = [MEMORY[0x277CCAC30] predicateWithFormat:@"SELF CONTAINS[c] %@", @"ios"];
       v8 = [v5 filteredArrayUsingPredicate:v7];
-      v9 = [v8 firstObject];
+      firstObject = [v8 firstObject];
 
       CurrentLoggingLevel = SKGLogGetCurrentLoggingLevel();
-      if (v9)
+      if (firstObject)
       {
         if (CurrentLoggingLevel >= 6)
         {
@@ -119,7 +119,7 @@ void __57__CalendarEventClassificationModelManager_sharedInstance__block_invoke(
           }
         }
 
-        v12 = [MEMORY[0x277CBEBC0] fileURLWithPath:v9];
+        v12 = [MEMORY[0x277CBEBC0] fileURLWithPath:firstObject];
         v19 = v6;
         v13 = [[CalendarEventClassificationModel alloc] initWithContentsOfURL:v12 error:&v19];
         v14 = v19;
@@ -185,8 +185,8 @@ LABEL_31:
         return v3;
       }
 
-      v9 = SKGLogDocUnderstandingInit();
-      if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+      firstObject = SKGLogDocUnderstandingInit();
+      if (os_log_type_enabled(firstObject, OS_LOG_TYPE_ERROR))
       {
         [CalendarEventClassificationModelManager loadModel];
       }
@@ -201,37 +201,37 @@ LABEL_30:
   return 1;
 }
 
-- (id)predictForReferenceItemId:(id)a3 withEmbedding:(id)a4
+- (id)predictForReferenceItemId:(id)id withEmbedding:(id)embedding
 {
   v76[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  idCopy = id;
+  embeddingCopy = embedding;
   if (self->_isLoaded || (queue = self->_queue, block[0] = MEMORY[0x277D85DD0], block[1] = 3221225472, block[2] = __83__CalendarEventClassificationModelManager_predictForReferenceItemId_withEmbedding___block_invoke, block[3] = &unk_27893CE68, block[4] = self, dispatch_sync(queue, block), self->_isLoaded))
   {
-    v9 = v7;
+    v9 = embeddingCopy;
     v10 = v9;
     if (v9 && ([v9 format] == 1 || !objc_msgSend(v10, "format")) && (objc_msgSend(v10, "primaryEmbeddings"), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "count"), v11, v12))
     {
-      v13 = [v10 primaryEmbeddings];
-      v14 = [v13 firstObject];
+      primaryEmbeddings = [v10 primaryEmbeddings];
+      firstObject = [primaryEmbeddings firstObject];
 
       if ([v10 format] == 1)
       {
-        v15 = v14;
+        v15 = firstObject;
         v16 = [v15 length];
         v17 = v16 >> 1;
-        v14 = [objc_alloc(MEMORY[0x277CBEB28]) initWithLength:4 * (v16 >> 1)];
-        v18 = [v15 bytes];
-        v19 = [v14 mutableBytes];
+        firstObject = [objc_alloc(MEMORY[0x277CBEB28]) initWithLength:4 * (v16 >> 1)];
+        bytes = [v15 bytes];
+        mutableBytes = [firstObject mutableBytes];
         if (v16 >= 2)
         {
           do
           {
-            v20 = *v18++;
+            v20 = *bytes++;
             _H0 = v20;
             __asm { FCVT            S0, H0 }
 
-            *v19++ = _S0;
+            *mutableBytes++ = _S0;
             --v17;
           }
 
@@ -239,15 +239,15 @@ LABEL_30:
         }
       }
 
-      v27 = [v14 length];
+      v27 = [firstObject length];
       v28 = v27 >> 2;
-      v29 = [v14 bytes];
+      bytes2 = [firstObject bytes];
       v30 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:v27 >> 2];
       if (v27 >= 4)
       {
         do
         {
-          v32 = *v29++;
+          v32 = *bytes2++;
           LODWORD(v31) = v32;
           v33 = [MEMORY[0x277CCABB0] numberWithFloat:v31];
           [v30 addObject:v33];
@@ -338,7 +338,7 @@ LABEL_54:
               v48 = SKGLogDocUnderstandingInit();
               if (os_log_type_enabled(v48, OS_LOG_TYPE_DEBUG))
               {
-                [(CalendarEventClassificationModelManager *)v6 predictForReferenceItemId:v42 withEmbedding:v48];
+                [(CalendarEventClassificationModelManager *)idCopy predictForReferenceItemId:v42 withEmbedding:v48];
               }
             }
 

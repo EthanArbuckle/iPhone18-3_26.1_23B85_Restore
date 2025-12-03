@@ -1,14 +1,14 @@
 @interface CRLBoardItemSelection
-- (BOOL)containsKindOfClass:(Class)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)containsKindOfClass:(Class)class;
+- (BOOL)isEqual:(id)equal;
 - (NSSet)boardItems;
 - (NSString)description;
 - (_TtC8Freeform21CRLBoardItemSelection)init;
-- (_TtC8Freeform21CRLBoardItemSelection)initWithBoardItems:(id)a3;
-- (id)infosOfClass:(Class)a3;
+- (_TtC8Freeform21CRLBoardItemSelection)initWithBoardItems:(id)items;
+- (id)infosOfClass:(Class)class;
 - (int64_t)hash;
 - (int64_t)itemCount;
-- (void)setBoardItems:(id)a3;
+- (void)setBoardItems:(id)items;
 @end
 
 @implementation CRLBoardItemSelection
@@ -23,14 +23,14 @@
   return v2.super.isa;
 }
 
-- (void)setBoardItems:(id)a3
+- (void)setBoardItems:(id)items
 {
   type metadata accessor for CRLBoardItem(0);
   sub_100618384(&qword_1019FCB80, 255, type metadata accessor for CRLBoardItem);
   *(self + OBJC_IVAR____TtC8Freeform21CRLBoardItemSelection_boardItems) = static Set._unconditionallyBridgeFromObjectiveC(_:)();
 }
 
-- (_TtC8Freeform21CRLBoardItemSelection)initWithBoardItems:(id)a3
+- (_TtC8Freeform21CRLBoardItemSelection)initWithBoardItems:(id)items
 {
   type metadata accessor for CRLBoardItem(0);
   sub_100618384(&qword_1019FCB80, 255, type metadata accessor for CRLBoardItem);
@@ -38,11 +38,11 @@
   return sub_100616DB8(v3);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -51,7 +51,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = sub_100617424(v8);
@@ -62,7 +62,7 @@
 
 - (int64_t)hash
 {
-  v2 = self;
+  selfCopy = self;
 
   sub_100616848(v3);
 
@@ -81,14 +81,14 @@
     return *(v2 + 16);
   }
 
-  v3 = self;
+  selfCopy = self;
 
   v4 = __CocoaSet.count.getter();
 
   return v4;
 }
 
-- (id)infosOfClass:(Class)a3
+- (id)infosOfClass:(Class)class
 {
   swift_getObjCClassMetadata();
 
@@ -100,10 +100,10 @@
   return v4.super.isa;
 }
 
-- (BOOL)containsKindOfClass:(Class)a3
+- (BOOL)containsKindOfClass:(Class)class
 {
   swift_getObjCClassMetadata();
-  v4 = self;
+  selfCopy = self;
   sub_1006177D8();
   v6 = v5;
 
@@ -112,7 +112,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_100617AC4();
 
   v3 = String._bridgeToObjectiveC()();

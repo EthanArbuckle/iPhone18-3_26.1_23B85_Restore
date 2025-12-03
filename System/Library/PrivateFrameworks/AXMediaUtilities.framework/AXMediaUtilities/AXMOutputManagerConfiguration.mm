@@ -6,12 +6,12 @@
 
 - (id)description
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = v3;
+  array = [MEMORY[0x1E695DF70] array];
+  v4 = array;
   components = self->_components;
   if (components)
   {
-    [v3 addObject:@"Speech"];
+    [array addObject:@"Speech"];
     components = self->_components;
     if ((components & 2) == 0)
     {

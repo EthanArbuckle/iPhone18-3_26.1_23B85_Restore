@@ -1,25 +1,25 @@
 @interface JFXDepthAsMatte
 + (CGSize)mattingDepthInputSize;
-- (id)initForFrameSet:(id)a3;
-- (void)alphaMatteForFrameSet:(id)a3 mattingPerfState:(id)a4 completionHandler:(id)a5;
+- (id)initForFrameSet:(id)set;
+- (void)alphaMatteForFrameSet:(id)set mattingPerfState:(id)state completionHandler:(id)handler;
 - (void)dealloc;
 @end
 
 @implementation JFXDepthAsMatte
 
-- (id)initForFrameSet:(id)a3
+- (id)initForFrameSet:(id)set
 {
-  v4 = a3;
+  setCopy = set;
   v12.receiver = self;
   v12.super_class = JFXDepthAsMatte;
-  v5 = [(JFXMatting *)&v12 initForFrameSet:v4];
+  v5 = [(JFXMatting *)&v12 initForFrameSet:setCopy];
   if (v5)
   {
-    v6 = [v4 depthData];
-    v7 = [v6 depthDataMap];
+    depthData = [setCopy depthData];
+    depthDataMap = [depthData depthDataMap];
 
-    Width = CVPixelBufferGetWidth(v7);
-    Height = CVPixelBufferGetHeight(v7);
+    Width = CVPixelBufferGetWidth(depthDataMap);
+    Height = CVPixelBufferGetHeight(depthDataMap);
     JFXCreatePixelBufferPool(Height, Width, 1278226534, v5 + 5);
     JFXCreatePixelBufferPool(*(v5 + 1), *(v5 + 2), 1278226534, v5 + 6);
     JFXCreatePixelBufferPool(*(v5 + 1), *(v5 + 2), 1278226488, v5 + 7);
@@ -44,13 +44,13 @@
   [(JFXDepthAsMatte *)&v3 dealloc];
 }
 
-- (void)alphaMatteForFrameSet:(id)a3 mattingPerfState:(id)a4 completionHandler:(id)a5
+- (void)alphaMatteForFrameSet:(id)set mattingPerfState:(id)state completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 signpostToken];
-  [v11 tokenId];
+  setCopy = set;
+  stateCopy = state;
+  handlerCopy = handler;
+  signpostToken = [stateCopy signpostToken];
+  [signpostToken tokenId];
   kdebug_trace();
 
   v12 = objc_alloc_init(JFXPerfTimer);
@@ -68,22 +68,22 @@
 
   CVPixelBufferPoolCreatePixelBuffer(0, self->_alphaPool, &v45);
   CVPixelBufferPoolCreatePixelBuffer(0, self->_alphaPool, &v46);
-  v13 = [v8 depthData];
-  v14 = [v13 depthDataType];
-  v15 = [v8 depthData];
-  v16 = v15;
-  if (v14 == 1717856627)
+  depthData = [setCopy depthData];
+  depthDataType = [depthData depthDataType];
+  depthData2 = [setCopy depthData];
+  v16 = depthData2;
+  if (depthDataType == 1717856627)
   {
-    v17 = [v15 depthDataMap];
+    depthDataMap = [depthData2 depthDataMap];
   }
 
   else
   {
-    v18 = [v15 depthDataByConvertingToDepthDataType:1717855600];
-    v17 = [v18 depthDataMap];
+    v18 = [depthData2 depthDataByConvertingToDepthDataType:1717855600];
+    depthDataMap = [v18 depthDataMap];
   }
 
-  CVPixelBufferLockBaseAddress(v17, 1uLL);
+  CVPixelBufferLockBaseAddress(depthDataMap, 1uLL);
   CVPixelBufferLockBaseAddress(pixelBufferOut, 0);
   CVPixelBufferLockBaseAddress(v48, 0);
   if (v47)
@@ -94,7 +94,7 @@
   CVPixelBufferLockBaseAddress(v46, 0);
   CVPixelBufferLockBaseAddress(v45, 0);
   memset(&src, 0, sizeof(src));
-  JFXToVImage(v17, &src.data);
+  JFXToVImage(depthDataMap, &src.data);
   memset(&dest, 0, sizeof(dest));
   JFXToVImage(pixelBufferOut, &dest.data);
   memset(&v42, 0, sizeof(v42));
@@ -184,7 +184,7 @@
   }
 
 LABEL_17:
-  CVPixelBufferUnlockBaseAddress(v17, 1uLL);
+  CVPixelBufferUnlockBaseAddress(depthDataMap, 1uLL);
   CVPixelBufferUnlockBaseAddress(pixelBufferOut, 0);
   CVPixelBufferUnlockBaseAddress(v48, 0);
   if (v47)
@@ -204,19 +204,19 @@ LABEL_17:
   CVPixelBufferRelease(v45);
   v24 = [MEMORY[0x277D41618] imageWithCVPixelBuffer:v46];
   CVPixelBufferRelease(v46);
-  if (v9)
+  if (stateCopy)
   {
     [(JFXPerfTimer *)v12 end];
     v26 = v25;
-    v27 = [v9 captureFrameStats];
-    *([v27 times] + 16) = v26;
+    captureFrameStats = [stateCopy captureFrameStats];
+    *([captureFrameStats times] + 16) = v26;
   }
 
-  v28 = [v9 signpostToken];
-  [v28 tokenId];
+  signpostToken2 = [stateCopy signpostToken];
+  [signpostToken2 tokenId];
   kdebug_trace();
 
-  v10[2](v10, v24);
+  handlerCopy[2](handlerCopy, v24);
 }
 
 + (CGSize)mattingDepthInputSize

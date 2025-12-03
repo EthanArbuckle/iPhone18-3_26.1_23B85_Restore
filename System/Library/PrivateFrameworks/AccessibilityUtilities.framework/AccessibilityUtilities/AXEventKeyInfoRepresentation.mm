@@ -1,125 +1,125 @@
 @interface AXEventKeyInfoRepresentation
 + (__GSKeyboard)_getUIKitKeyboardRef;
 + (__GSKeyboard)_getUSUIKitKeyboardRef;
-+ (unsigned)_getIOHIDKeyboardTypeForGSKeyboardType:(unsigned __int8)a3;
++ (unsigned)_getIOHIDKeyboardTypeForGSKeyboardType:(unsigned __int8)type;
 + (void)prepareForKeycodeTranslation;
-- (AXEventKeyInfoRepresentation)initWithCoder:(id)a3;
+- (AXEventKeyInfoRepresentation)initWithCoder:(id)coder;
 - (__GSKeyboard)_getUIKitKeyboardRef;
 - (__GSKeyboard)_getUSUIKitKeyboardRef;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 - (void)translateKeycode;
 - (void)translateStringToKeycode;
 @end
 
 @implementation AXEventKeyInfoRepresentation
 
-- (AXEventKeyInfoRepresentation)initWithCoder:(id)a3
+- (AXEventKeyInfoRepresentation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = AXEventKeyInfoRepresentation;
   v5 = [(AXEventKeyInfoRepresentation *)&v13 init];
   if (v5)
   {
-    -[AXEventKeyInfoRepresentation setKeyCode:](v5, "setKeyCode:", [v4 decodeInt32ForKey:@"keyCode"]);
-    -[AXEventKeyInfoRepresentation setUsagePage:](v5, "setUsagePage:", [v4 decodeInt32ForKey:@"usagePage"]);
-    -[AXEventKeyInfoRepresentation setKeyDown:](v5, "setKeyDown:", [v4 decodeBoolForKey:@"keyDown"]);
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"unmodifiedInput"];
+    -[AXEventKeyInfoRepresentation setKeyCode:](v5, "setKeyCode:", [coderCopy decodeInt32ForKey:@"keyCode"]);
+    -[AXEventKeyInfoRepresentation setUsagePage:](v5, "setUsagePage:", [coderCopy decodeInt32ForKey:@"usagePage"]);
+    -[AXEventKeyInfoRepresentation setKeyDown:](v5, "setKeyDown:", [coderCopy decodeBoolForKey:@"keyDown"]);
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"unmodifiedInput"];
     [(AXEventKeyInfoRepresentation *)v5 setUnmodifiedInput:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"modifiedInput"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"modifiedInput"];
     [(AXEventKeyInfoRepresentation *)v5 setModifiedInput:v7];
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"shiftModifiedInput"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"shiftModifiedInput"];
     [(AXEventKeyInfoRepresentation *)v5 setShiftModifiedInput:v8];
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"backupUnmodifiedInput"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"backupUnmodifiedInput"];
     [(AXEventKeyInfoRepresentation *)v5 setBackupUnmodifiedInput:v9];
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"backupModifiedInput"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"backupModifiedInput"];
     [(AXEventKeyInfoRepresentation *)v5 setBackupModifiedInput:v10];
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"backupShiftModifiedInput"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"backupShiftModifiedInput"];
     [(AXEventKeyInfoRepresentation *)v5 setBackupShiftModifiedInput:v11];
 
-    -[AXEventKeyInfoRepresentation setModifierState:](v5, "setModifierState:", [v4 decodeIntegerForKey:@"modifierState"]);
-    -[AXEventKeyInfoRepresentation setGsModifierState:](v5, "setGsModifierState:", [v4 decodeInt32ForKey:@"gsModifierState"]);
-    -[AXEventKeyInfoRepresentation setAlternativeKeyCode:](v5, "setAlternativeKeyCode:", [v4 decodeInt32ForKey:@"alternativeKeyCode"]);
+    -[AXEventKeyInfoRepresentation setModifierState:](v5, "setModifierState:", [coderCopy decodeIntegerForKey:@"modifierState"]);
+    -[AXEventKeyInfoRepresentation setGsModifierState:](v5, "setGsModifierState:", [coderCopy decodeInt32ForKey:@"gsModifierState"]);
+    -[AXEventKeyInfoRepresentation setAlternativeKeyCode:](v5, "setAlternativeKeyCode:", [coderCopy decodeInt32ForKey:@"alternativeKeyCode"]);
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(AXEventKeyInfoRepresentation);
-  v5 = [(AXEventKeyInfoRepresentation *)self unmodifiedInput];
-  v6 = [v5 copy];
+  unmodifiedInput = [(AXEventKeyInfoRepresentation *)self unmodifiedInput];
+  v6 = [unmodifiedInput copy];
   [(AXEventKeyInfoRepresentation *)v4 setUnmodifiedInput:v6];
 
-  v7 = [(AXEventKeyInfoRepresentation *)self shiftModifiedInput];
-  v8 = [v7 copy];
+  shiftModifiedInput = [(AXEventKeyInfoRepresentation *)self shiftModifiedInput];
+  v8 = [shiftModifiedInput copy];
   [(AXEventKeyInfoRepresentation *)v4 setShiftModifiedInput:v8];
 
   [(AXEventKeyInfoRepresentation *)v4 setModifierState:[(AXEventKeyInfoRepresentation *)self modifierState]];
   [(AXEventKeyInfoRepresentation *)v4 setGsModifierState:[(AXEventKeyInfoRepresentation *)self gsModifierState]];
-  v9 = [(AXEventKeyInfoRepresentation *)self modifiedInput];
-  v10 = [v9 copy];
+  modifiedInput = [(AXEventKeyInfoRepresentation *)self modifiedInput];
+  v10 = [modifiedInput copy];
   [(AXEventKeyInfoRepresentation *)v4 setModifiedInput:v10];
 
   [(AXEventKeyInfoRepresentation *)v4 setKeyCode:[(AXEventKeyInfoRepresentation *)self keyCode]];
   [(AXEventKeyInfoRepresentation *)v4 setUsagePage:[(AXEventKeyInfoRepresentation *)self usagePage]];
   [(AXEventKeyInfoRepresentation *)v4 setAlternativeKeyCode:[(AXEventKeyInfoRepresentation *)self alternativeKeyCode]];
   [(AXEventKeyInfoRepresentation *)v4 setKeyDown:[(AXEventKeyInfoRepresentation *)self keyDown]];
-  v11 = [(AXEventKeyInfoRepresentation *)self backupUnmodifiedInput];
-  v12 = [v11 copy];
+  backupUnmodifiedInput = [(AXEventKeyInfoRepresentation *)self backupUnmodifiedInput];
+  v12 = [backupUnmodifiedInput copy];
   [(AXEventKeyInfoRepresentation *)v4 setBackupUnmodifiedInput:v12];
 
-  v13 = [(AXEventKeyInfoRepresentation *)self backupShiftModifiedInput];
-  v14 = [v13 copy];
+  backupShiftModifiedInput = [(AXEventKeyInfoRepresentation *)self backupShiftModifiedInput];
+  v14 = [backupShiftModifiedInput copy];
   [(AXEventKeyInfoRepresentation *)v4 setBackupShiftModifiedInput:v14];
 
-  v15 = [(AXEventKeyInfoRepresentation *)self backupModifiedInput];
-  v16 = [v15 copy];
+  backupModifiedInput = [(AXEventKeyInfoRepresentation *)self backupModifiedInput];
+  v16 = [backupModifiedInput copy];
   [(AXEventKeyInfoRepresentation *)v4 setBackupModifiedInput:v16];
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInt32:-[AXEventKeyInfoRepresentation keyCode](self forKey:{"keyCode"), @"keyCode"}];
-  [v4 encodeInt32:-[AXEventKeyInfoRepresentation alternativeKeyCode](self forKey:{"alternativeKeyCode"), @"alternativeKeyCode"}];
-  [v4 encodeInt32:-[AXEventKeyInfoRepresentation usagePage](self forKey:{"usagePage"), @"usagePage"}];
-  [v4 encodeBool:-[AXEventKeyInfoRepresentation keyDown](self forKey:{"keyDown"), @"keyDown"}];
-  v5 = [(AXEventKeyInfoRepresentation *)self unmodifiedInput];
-  [v4 encodeObject:v5 forKey:@"unmodifiedInput"];
+  coderCopy = coder;
+  [coderCopy encodeInt32:-[AXEventKeyInfoRepresentation keyCode](self forKey:{"keyCode"), @"keyCode"}];
+  [coderCopy encodeInt32:-[AXEventKeyInfoRepresentation alternativeKeyCode](self forKey:{"alternativeKeyCode"), @"alternativeKeyCode"}];
+  [coderCopy encodeInt32:-[AXEventKeyInfoRepresentation usagePage](self forKey:{"usagePage"), @"usagePage"}];
+  [coderCopy encodeBool:-[AXEventKeyInfoRepresentation keyDown](self forKey:{"keyDown"), @"keyDown"}];
+  unmodifiedInput = [(AXEventKeyInfoRepresentation *)self unmodifiedInput];
+  [coderCopy encodeObject:unmodifiedInput forKey:@"unmodifiedInput"];
 
-  v6 = [(AXEventKeyInfoRepresentation *)self modifiedInput];
-  [v4 encodeObject:v6 forKey:@"modifiedInput"];
+  modifiedInput = [(AXEventKeyInfoRepresentation *)self modifiedInput];
+  [coderCopy encodeObject:modifiedInput forKey:@"modifiedInput"];
 
-  v7 = [(AXEventKeyInfoRepresentation *)self shiftModifiedInput];
-  [v4 encodeObject:v7 forKey:@"shiftModifiedInput"];
+  shiftModifiedInput = [(AXEventKeyInfoRepresentation *)self shiftModifiedInput];
+  [coderCopy encodeObject:shiftModifiedInput forKey:@"shiftModifiedInput"];
 
-  [v4 encodeInt32:-[AXEventKeyInfoRepresentation modifierState](self forKey:{"modifierState"), @"modifierState"}];
-  [v4 encodeInt32:-[AXEventKeyInfoRepresentation gsModifierState](self forKey:{"gsModifierState"), @"gsModifierState"}];
-  v8 = [(AXEventKeyInfoRepresentation *)self backupModifiedInput];
-  [v4 encodeObject:v8 forKey:@"backupModifiedInput"];
+  [coderCopy encodeInt32:-[AXEventKeyInfoRepresentation modifierState](self forKey:{"modifierState"), @"modifierState"}];
+  [coderCopy encodeInt32:-[AXEventKeyInfoRepresentation gsModifierState](self forKey:{"gsModifierState"), @"gsModifierState"}];
+  backupModifiedInput = [(AXEventKeyInfoRepresentation *)self backupModifiedInput];
+  [coderCopy encodeObject:backupModifiedInput forKey:@"backupModifiedInput"];
 
-  v9 = [(AXEventKeyInfoRepresentation *)self backupUnmodifiedInput];
-  [v4 encodeObject:v9 forKey:@"backupUnmodifiedInput"];
+  backupUnmodifiedInput = [(AXEventKeyInfoRepresentation *)self backupUnmodifiedInput];
+  [coderCopy encodeObject:backupUnmodifiedInput forKey:@"backupUnmodifiedInput"];
 
-  v10 = [(AXEventKeyInfoRepresentation *)self backupShiftModifiedInput];
-  [v4 encodeObject:v10 forKey:@"backupShiftModifiedInput"];
+  backupShiftModifiedInput = [(AXEventKeyInfoRepresentation *)self backupShiftModifiedInput];
+  [coderCopy encodeObject:backupShiftModifiedInput forKey:@"backupShiftModifiedInput"];
 }
 
 + (void)prepareForKeycodeTranslation
 {
-  [a1 _getUIKitKeyboardRef];
+  [self _getUIKitKeyboardRef];
 
-  [a1 _getUSUIKitKeyboardRef];
+  [self _getUSUIKitKeyboardRef];
 }
 
 - (__GSKeyboard)_getUIKitKeyboardRef
@@ -185,29 +185,29 @@ uint64_t __54__AXEventKeyInfoRepresentation__getUSUIKitKeyboardRef__block_invoke
   return result;
 }
 
-+ (unsigned)_getIOHIDKeyboardTypeForGSKeyboardType:(unsigned __int8)a3
++ (unsigned)_getIOHIDKeyboardTypeForGSKeyboardType:(unsigned __int8)type
 {
-  if (a3 == 202)
+  if (type == 202)
   {
-    v3 = 0;
+    typeCopy = 0;
   }
 
   else
   {
-    v3 = a3;
+    typeCopy = type;
   }
 
-  if (a3 == 203)
+  if (type == 203)
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = v3;
+    v4 = typeCopy;
   }
 
-  if (a3 == 207)
+  if (type == 207)
   {
     return 2;
   }
@@ -284,16 +284,16 @@ void __52__AXEventKeyInfoRepresentation__getUIKitKeyboardRef__block_invoke_4(uin
 
 - (void)translateStringToKeycode
 {
-  v3 = [(AXEventKeyInfoRepresentation *)self modifiedInput];
-  v4 = [v3 length];
+  modifiedInput = [(AXEventKeyInfoRepresentation *)self modifiedInput];
+  v4 = [modifiedInput length];
 
   if (!v4)
   {
     return;
   }
 
-  v5 = [(AXEventKeyInfoRepresentation *)self modifiedInput];
-  v6 = [v5 characterAtIndex:0];
+  modifiedInput2 = [(AXEventKeyInfoRepresentation *)self modifiedInput];
+  v6 = [modifiedInput2 characterAtIndex:0];
 
   if ((v6 - 97) <= 0x19)
   {
@@ -341,15 +341,15 @@ LABEL_14:
     [(AXEventKeyInfoRepresentation *)self keyDown];
     if ([(AXEventKeyInfoRepresentation *)self alternativeKeyCode])
     {
-      v5 = [(AXEventKeyInfoRepresentation *)self alternativeKeyCode];
+      alternativeKeyCode = [(AXEventKeyInfoRepresentation *)self alternativeKeyCode];
     }
 
     else
     {
-      v5 = [(AXEventKeyInfoRepresentation *)self keyCode];
+      alternativeKeyCode = [(AXEventKeyInfoRepresentation *)self keyCode];
     }
 
-    v6 = v5;
+    v6 = alternativeKeyCode;
     v52[0] = 0;
     v52[1] = v52;
     v52[2] = 0x2020000000;
@@ -358,7 +358,7 @@ LABEL_14:
     v50[1] = v50;
     v50[2] = 0x2020000000;
     v51 = 0;
-    if (v5)
+    if (alternativeKeyCode)
     {
       v46 = 0;
       v47 = &v46;

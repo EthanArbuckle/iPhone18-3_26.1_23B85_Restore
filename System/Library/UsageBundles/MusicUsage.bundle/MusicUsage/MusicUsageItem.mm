@@ -1,6 +1,6 @@
 @interface MusicUsageItem
-+ (MusicUsageItem)usageItemWithItemCollection:(id)a3 displayNameBlock:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (MusicUsageItem)usageItemWithItemCollection:(id)collection displayNameBlock:(id)block;
+- (BOOL)isEqual:(id)equal;
 - (MusicUsageGroup)usageGroup;
 - (id)artworkCatalog;
 - (id)subtitles;
@@ -10,27 +10,27 @@
 
 @implementation MusicUsageItem
 
-+ (MusicUsageItem)usageItemWithItemCollection:(id)a3 displayNameBlock:(id)a4
++ (MusicUsageItem)usageItemWithItemCollection:(id)collection displayNameBlock:(id)block
 {
-  v5 = a4;
-  v6 = a3;
+  blockCopy = block;
+  collectionCopy = collection;
   v7 = objc_alloc_init(MusicUsageItem);
-  [(MusicUsageItem *)v7 setItemCollection:v6];
+  [(MusicUsageItem *)v7 setItemCollection:collectionCopy];
 
-  [(MusicUsageItem *)v7 setTitleBlock:v5];
+  [(MusicUsageItem *)v7 setTitleBlock:blockCopy];
 
   return v7;
 }
 
 - (id)title
 {
-  v3 = [(MusicUsageItem *)self titleBlock];
+  titleBlock = [(MusicUsageItem *)self titleBlock];
 
-  if (v3)
+  if (titleBlock)
   {
-    v4 = [(MusicUsageItem *)self titleBlock];
-    v5 = [(MusicUsageItem *)self itemCollection];
-    v6 = (v4)[2](v4, v5);
+    titleBlock2 = [(MusicUsageItem *)self titleBlock];
+    itemCollection = [(MusicUsageItem *)self itemCollection];
+    v6 = (titleBlock2)[2](titleBlock2, itemCollection);
   }
 
   else
@@ -43,13 +43,13 @@
 
 - (id)subtitles
 {
-  v3 = [(MusicUsageItem *)self subtitlesBlock];
+  subtitlesBlock = [(MusicUsageItem *)self subtitlesBlock];
 
-  if (v3)
+  if (subtitlesBlock)
   {
-    v4 = [(MusicUsageItem *)self subtitlesBlock];
-    v5 = [(MusicUsageItem *)self itemCollection];
-    v6 = (v4)[2](v4, v5);
+    subtitlesBlock2 = [(MusicUsageItem *)self subtitlesBlock];
+    itemCollection = [(MusicUsageItem *)self itemCollection];
+    v6 = (subtitlesBlock2)[2](subtitlesBlock2, itemCollection);
   }
 
   else
@@ -62,13 +62,13 @@
 
 - (id)artworkCatalog
 {
-  v3 = [(MusicUsageItem *)self artworkCatalogBlock];
+  artworkCatalogBlock = [(MusicUsageItem *)self artworkCatalogBlock];
 
-  if (v3)
+  if (artworkCatalogBlock)
   {
-    v4 = [(MusicUsageItem *)self artworkCatalogBlock];
-    v5 = [(MusicUsageItem *)self itemCollection];
-    v6 = (v4)[2](v4, v5);
+    artworkCatalogBlock2 = [(MusicUsageItem *)self artworkCatalogBlock];
+    itemCollection = [(MusicUsageItem *)self itemCollection];
+    v6 = (artworkCatalogBlock2)[2](artworkCatalogBlock2, itemCollection);
   }
 
   else
@@ -79,17 +79,17 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(MusicUsageItem *)self itemCollection];
-    v7 = [v5 itemCollection];
+    v5 = equalCopy;
+    itemCollection = [(MusicUsageItem *)self itemCollection];
+    itemCollection2 = [v5 itemCollection];
 
-    v8 = [v6 isEqual:v7];
+    v8 = [itemCollection isEqual:itemCollection2];
   }
 
   else
@@ -102,8 +102,8 @@
 
 - (unint64_t)hash
 {
-  v2 = [(MusicUsageItem *)self itemCollection];
-  v3 = [v2 hash];
+  itemCollection = [(MusicUsageItem *)self itemCollection];
+  v3 = [itemCollection hash];
 
   return v3;
 }

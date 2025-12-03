@@ -1,37 +1,37 @@
 @interface HUSiriEndpointUtilities
-+ (id)presentShareSiriAndDictationAlert:(id)a3 alertTitle:(id)a4 alertMessage:(id)a5;
-+ (id)presentShareSiriAndDictationAlertForMultipleAccessories:(id)a3;
-+ (id)presentShareSiriAndDictationAlertForSingleAccessory:(id)a3 accessoryName:(id)a4;
++ (id)presentShareSiriAndDictationAlert:(id)alert alertTitle:(id)title alertMessage:(id)message;
++ (id)presentShareSiriAndDictationAlertForMultipleAccessories:(id)accessories;
++ (id)presentShareSiriAndDictationAlertForSingleAccessory:(id)accessory accessoryName:(id)name;
 @end
 
 @implementation HUSiriEndpointUtilities
 
-+ (id)presentShareSiriAndDictationAlertForMultipleAccessories:(id)a3
++ (id)presentShareSiriAndDictationAlertForMultipleAccessories:(id)accessories
 {
-  v3 = a3;
+  accessoriesCopy = accessories;
   v4 = _HULocalizedStringWithDefaultValue(@"HUSiriEndpointSetup_ShareSiriDictation_AlertTitle_Multiple", @"HUSiriEndpointSetup_ShareSiriDictation_AlertTitle_Multiple", 1);
   v5 = _HULocalizedStringWithDefaultValue(@"HUSiriEndpointSetup_ShareSiriDictation_AlertMessage_Multiple", @"HUSiriEndpointSetup_ShareSiriDictation_AlertMessage_Multiple", 1);
-  v6 = [HUSiriEndpointUtilities presentShareSiriAndDictationAlert:v3 alertTitle:v4 alertMessage:v5];
+  v6 = [HUSiriEndpointUtilities presentShareSiriAndDictationAlert:accessoriesCopy alertTitle:v4 alertMessage:v5];
 
   return v6;
 }
 
-+ (id)presentShareSiriAndDictationAlertForSingleAccessory:(id)a3 accessoryName:(id)a4
++ (id)presentShareSiriAndDictationAlertForSingleAccessory:(id)accessory accessoryName:(id)name
 {
-  v5 = a3;
-  v12 = HULocalizedStringWithFormat(@"HUSiriEndpointSetup_ShareSiriDictation_AlertTitle_Single", @"%@", v6, v7, v8, v9, v10, v11, a4);
+  accessoryCopy = accessory;
+  v12 = HULocalizedStringWithFormat(@"HUSiriEndpointSetup_ShareSiriDictation_AlertTitle_Single", @"%@", v6, v7, v8, v9, v10, v11, name);
   v13 = _HULocalizedStringWithDefaultValue(@"HUSiriEndpointSetup_ShareSiriDictation_AlertMessage_Single", @"HUSiriEndpointSetup_ShareSiriDictation_AlertMessage_Single", 1);
-  v14 = [HUSiriEndpointUtilities presentShareSiriAndDictationAlert:v5 alertTitle:v12 alertMessage:v13];
+  v14 = [HUSiriEndpointUtilities presentShareSiriAndDictationAlert:accessoryCopy alertTitle:v12 alertMessage:v13];
 
   return v14;
 }
 
-+ (id)presentShareSiriAndDictationAlert:(id)a3 alertTitle:(id)a4 alertMessage:(id)a5
++ (id)presentShareSiriAndDictationAlert:(id)alert alertTitle:(id)title alertMessage:(id)message
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8)
+  alertCopy = alert;
+  titleCopy = title;
+  messageCopy = message;
+  if (!alertCopy)
   {
     NSLog(&cfstr_NoVcFoundCanno.isa);
   }
@@ -41,13 +41,13 @@
   v17[1] = 3221225472;
   v17[2] = __85__HUSiriEndpointUtilities_presentShareSiriAndDictationAlert_alertTitle_alertMessage___block_invoke;
   v17[3] = &unk_277DC0468;
-  v18 = v9;
-  v19 = v10;
-  v20 = v8;
+  v18 = titleCopy;
+  v19 = messageCopy;
+  v20 = alertCopy;
   v21 = a2;
-  v12 = v8;
-  v13 = v10;
-  v14 = v9;
+  v12 = alertCopy;
+  v13 = messageCopy;
+  v14 = titleCopy;
   v15 = [v11 futureWithBlock:v17];
 
   return v15;

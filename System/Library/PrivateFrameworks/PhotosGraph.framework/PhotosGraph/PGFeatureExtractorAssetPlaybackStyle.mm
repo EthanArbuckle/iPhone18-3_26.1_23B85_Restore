@@ -1,21 +1,21 @@
 @interface PGFeatureExtractorAssetPlaybackStyle
 - (id)featureNames;
-- (id)floatVectorWithEntity:(id)a3 error:(id *)a4;
+- (id)floatVectorWithEntity:(id)entity error:(id *)error;
 @end
 
 @implementation PGFeatureExtractorAssetPlaybackStyle
 
-- (id)floatVectorWithEntity:(id)a3 error:(id *)a4
+- (id)floatVectorWithEntity:(id)entity error:(id *)error
 {
   v5 = MEMORY[0x277D22C68];
-  v6 = a3;
+  entityCopy = entity;
   v7 = [v5 zerosOfCount:{-[PGFeatureExtractorAssetPlaybackStyle featureLength](self, "featureLength")}];
-  v8 = [v6 playbackStyle];
+  playbackStyle = [entityCopy playbackStyle];
 
-  if (v8 <= 5)
+  if (playbackStyle <= 5)
   {
     LODWORD(v9) = 1.0;
-    [v7 setFloat:v8 atIndex:v9];
+    [v7 setFloat:playbackStyle atIndex:v9];
   }
 
   return v7;

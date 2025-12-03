@@ -7,21 +7,21 @@
 
 - (void)encodeWithCoder:()ArchivingSupport
 {
-  v4 = *(a1 + *MEMORY[0x277D25020]);
+  v4 = *(self + *MEMORY[0x277D25020]);
   v5 = a3;
   [v5 encodeObject:v4 forKey:@"path"];
-  [v5 encodeObject:*(a1 + *MEMORY[0x277D25010]) forKey:@"filename"];
-  [v5 encodeObject:*(a1 + *MEMORY[0x277D25028]) forKey:@"preferredFilename"];
-  [v5 encodeObject:*(a1 + *MEMORY[0x277D25008]) forKey:@"data"];
-  [v5 encodeObject:*(a1 + *MEMORY[0x277D25000]) forKey:@"attributes"];
-  [v5 encodeObject:*(a1 + *MEMORY[0x277D25018]) forKey:@"linkDestination"];
-  [v5 encodeObject:*(a1 + *MEMORY[0x277D25030]) forKey:@"url"];
+  [v5 encodeObject:*(self + *MEMORY[0x277D25010]) forKey:@"filename"];
+  [v5 encodeObject:*(self + *MEMORY[0x277D25028]) forKey:@"preferredFilename"];
+  [v5 encodeObject:*(self + *MEMORY[0x277D25008]) forKey:@"data"];
+  [v5 encodeObject:*(self + *MEMORY[0x277D25000]) forKey:@"attributes"];
+  [v5 encodeObject:*(self + *MEMORY[0x277D25018]) forKey:@"linkDestination"];
+  [v5 encodeObject:*(self + *MEMORY[0x277D25030]) forKey:@"url"];
 }
 
 - (char)initWithCoder:()ArchivingSupport
 {
   v4 = a3;
-  v29.receiver = a1;
+  v29.receiver = self;
   v29.super_class = &off_286E39B68;
   v5 = objc_msgSendSuper2(&v29, sel_init);
   if (v5)

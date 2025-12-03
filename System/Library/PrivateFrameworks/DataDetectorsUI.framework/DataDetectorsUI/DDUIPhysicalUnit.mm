@@ -1,53 +1,53 @@
 @interface DDUIPhysicalUnit
-+ (id)unitWithIdentifier:(id)a3;
-- (BOOL)inputValueIsValid:(double)a3 fromUnit:(id)a4;
++ (id)unitWithIdentifier:(id)identifier;
+- (BOOL)inputValueIsValid:(double)valid fromUnit:(id)unit;
 - (BOOL)isUKMeasurement;
 - (BOOL)keepZeroValue;
-- (DDUIPhysicalUnit)initWithName:(id)a3 abbreviation:(id)a4 restrictionLocales:(id)a5 groupType:(unint64_t)a6 a:(double)a7 b:(double)a8;
+- (DDUIPhysicalUnit)initWithName:(id)name abbreviation:(id)abbreviation restrictionLocales:(id)locales groupType:(unint64_t)type a:(double)a b:(double)b;
 - (DDUIPhysicalUnitGroup)group;
-- (double)baseToUnit:(double)a3;
-- (double)unitToBase:(double)a3;
-- (double)valueFrom:(double)result unit:(id)a4;
-- (id)floatFormatString:(id)a3 precision:(int64_t)a4 exp:(BOOL)a5;
-- (id)localizedConvertedValueFrom:(double)a3 unit:(id)a4;
-- (id)localizedMenuTitleFormat:(id)a3;
-- (id)localizedUnitNameWithValue:(double)a3 unit:(id)a4;
+- (double)baseToUnit:(double)unit;
+- (double)unitToBase:(double)base;
+- (double)valueFrom:(double)result unit:(id)unit;
+- (id)floatFormatString:(id)string precision:(int64_t)precision exp:(BOOL)exp;
+- (id)localizedConvertedValueFrom:(double)from unit:(id)unit;
+- (id)localizedMenuTitleFormat:(id)format;
+- (id)localizedUnitNameWithValue:(double)value unit:(id)unit;
 - (id)patchedVariantName;
-- (id)valueAsString:(double)a3;
+- (id)valueAsString:(double)string;
 @end
 
 @implementation DDUIPhysicalUnit
 
-- (DDUIPhysicalUnit)initWithName:(id)a3 abbreviation:(id)a4 restrictionLocales:(id)a5 groupType:(unint64_t)a6 a:(double)a7 b:(double)a8
+- (DDUIPhysicalUnit)initWithName:(id)name abbreviation:(id)abbreviation restrictionLocales:(id)locales groupType:(unint64_t)type a:(double)a b:(double)b
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
+  nameCopy = name;
+  abbreviationCopy = abbreviation;
+  localesCopy = locales;
   v23.receiver = self;
   v23.super_class = DDUIPhysicalUnit;
   v18 = [(DDUIPhysicalUnit *)&v23 init];
   if (v18)
   {
-    v19 = [v15 lowercaseString];
+    lowercaseString = [nameCopy lowercaseString];
     identifier = v18->_identifier;
-    v18->_identifier = v19;
+    v18->_identifier = lowercaseString;
 
-    objc_storeStrong(&v18->_name, a3);
-    v18->_a = a7;
-    v18->_b = a8;
-    objc_storeStrong(&v18->_restrictionLocales, a5);
-    if (v16)
+    objc_storeStrong(&v18->_name, name);
+    v18->_a = a;
+    v18->_b = b;
+    objc_storeStrong(&v18->_restrictionLocales, locales);
+    if (abbreviationCopy)
     {
-      v21 = v16;
+      v21 = abbreviationCopy;
     }
 
     else
     {
-      v21 = v15;
+      v21 = nameCopy;
     }
 
     objc_storeStrong(&v18->_abbreviation, v21);
-    v18->_groupType = a6;
+    v18->_groupType = type;
   }
 
   return v18;
@@ -68,18 +68,18 @@
   return v4;
 }
 
-- (id)localizedUnitNameWithValue:(double)a3 unit:(id)a4
+- (id)localizedUnitNameWithValue:(double)value unit:(id)unit
 {
   v5 = MEMORY[0x277CCACA8];
-  v6 = [(DDUIPhysicalUnit *)self localizedTitleFormat:@"x", a3];
-  v7 = [(DDUIPhysicalUnit *)self patchedVariantName];
-  v8 = DDLocalizedStringFromTable(v6, &stru_282C1E0A8, v7, @"Conversion");
+  value = [(DDUIPhysicalUnit *)self localizedTitleFormat:@"x", value];
+  patchedVariantName = [(DDUIPhysicalUnit *)self patchedVariantName];
+  v8 = DDLocalizedStringFromTable(value, &stru_282C1E0A8, patchedVariantName, @"Conversion");
   v9 = [v5 stringWithFormat:v8];
 
   return v9;
 }
 
-- (id)localizedMenuTitleFormat:(id)a3
+- (id)localizedMenuTitleFormat:(id)format
 {
   v4 = [(NSString *)self->_identifier isEqualToString:@"degree"];
   v5 = MEMORY[0x277CCACA8];
@@ -90,8 +90,8 @@
 
   else
   {
-    v8 = [(DDUIPhysicalUnit *)self patchedVariantName];
-    v9 = [v5 stringWithFormat:@"Convert %@", v8];
+    patchedVariantName = [(DDUIPhysicalUnit *)self patchedVariantName];
+    v9 = [v5 stringWithFormat:@"Convert %@", patchedVariantName];
 
     v6 = v9;
   }
@@ -99,9 +99,9 @@
   return v6;
 }
 
-- (id)floatFormatString:(id)a3 precision:(int64_t)a4 exp:(BOOL)a5
+- (id)floatFormatString:(id)string precision:(int64_t)precision exp:(BOOL)exp
 {
-  if (a5)
+  if (exp)
   {
     v5 = @"%%.%lde";
   }
@@ -111,14 +111,14 @@
     v5 = @"%%.%ldf";
   }
 
-  v6 = [MEMORY[0x277CCACA8] stringWithFormat:v5, a4];
+  precision = [MEMORY[0x277CCACA8] stringWithFormat:v5, precision];
 
-  return v6;
+  return precision;
 }
 
-- (id)valueAsString:(double)a3
+- (id)valueAsString:(double)string
 {
-  v4 = fabs(a3);
+  v4 = fabs(string);
   if (v4 < 1.0e-15 || v4 >= 0.1)
   {
     v12 = vmulq_f64(vrndaq_f64(vmulq_n_f64(xmmword_21ABCD8E0, v4)), xmmword_21ABCD8F0);
@@ -129,7 +129,7 @@
       v14 = 1;
     }
 
-    if (a3 == 0.0 || v13 > 9999.0 || v13 == v12.f64[1])
+    if (string == 0.0 || v13 > 9999.0 || v13 == v12.f64[1])
     {
       v11 = 0;
     }
@@ -142,9 +142,9 @@
     goto LABEL_15;
   }
 
-  v5 = self;
+  selfCopy = self;
   v20 = v4;
-  v6 = fabs(floor(log10(a3)));
+  v6 = fabs(floor(log10(string)));
   v7 = __exp10(v6) * v20;
   v8 = vmulq_f64(vrndaq_f64(vmulq_n_f64(xmmword_21ABCD8E0, v7)), xmmword_21ABCD8F0);
   v9 = round(v7);
@@ -167,7 +167,7 @@
   if (v6 <= 6.0)
   {
     v11 += v6;
-    self = v5;
+    self = selfCopy;
 LABEL_15:
     v15 = MEMORY[0x277CCACA8];
     v16 = 0;
@@ -175,18 +175,18 @@ LABEL_15:
   }
 
   v15 = MEMORY[0x277CCACA8];
-  self = v5;
+  self = selfCopy;
   v16 = 1;
 LABEL_17:
   v17 = [(DDUIPhysicalUnit *)self floatFormatString:@"%f" precision:v11 exp:v16];
-  v18 = [v15 localizedStringWithFormat:v17, *&a3];
+  v18 = [v15 localizedStringWithFormat:v17, *&string];
 
   return v18;
 }
 
-- (id)localizedConvertedValueFrom:(double)a3 unit:(id)a4
+- (id)localizedConvertedValueFrom:(double)from unit:(id)unit
 {
-  [(DDUIPhysicalUnit *)self valueFrom:a4 unit:a3];
+  [(DDUIPhysicalUnit *)self valueFrom:unit unit:from];
   v6 = v5;
   if (__isnand() || __isinfd())
   {
@@ -221,10 +221,10 @@ LABEL_17:
   return v7;
 }
 
-- (BOOL)inputValueIsValid:(double)a3 fromUnit:(id)a4
+- (BOOL)inputValueIsValid:(double)valid fromUnit:(id)unit
 {
-  v6 = a4;
-  if (__isnand() || __isinfd() || ([v6 unitToBase:a3], v8 = v7, __isnand()) || __isinfd())
+  unitCopy = unit;
+  if (__isnand() || __isinfd() || ([unitCopy unitToBase:valid], v8 = v7, __isnand()) || __isinfd())
   {
 
     return 0;
@@ -245,39 +245,39 @@ LABEL_17:
 
 - (BOOL)isUKMeasurement
 {
-  v2 = [MEMORY[0x277CBEAF8] currentLocale];
-  v3 = [v2 objectForKey:*MEMORY[0x277CBE6D0]];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  v3 = [currentLocale objectForKey:*MEMORY[0x277CBE6D0]];
   v4 = [v3 isEqual:@"U.K."];
 
   return v4;
 }
 
-- (double)unitToBase:(double)a3
+- (double)unitToBase:(double)base
 {
   if ([(NSString *)self->_name isEqualToString:@"Mile per gallon"])
   {
-    return 235.214583 / a3;
+    return 235.214583 / base;
   }
 
   if ([(NSString *)self->_name isEqualToString:@"Percent grade"])
   {
-    return atan(a3 * 0.01);
+    return atan(base * 0.01);
   }
 
   if (![(DDUIPhysicalUnit *)self isUKMeasurement])
   {
-    return self->_b + self->_a * a3;
+    return self->_b + self->_a * base;
   }
 
   v6 = [&unk_282C2CED0 objectForKeyedSubscript:self->_name];
   if (!v6)
   {
-    return self->_b + self->_a * a3;
+    return self->_b + self->_a * base;
   }
 
   v7 = v6;
   [v6 doubleValue];
-  v9 = v8 * a3;
+  v9 = v8 * base;
 
   return v9;
 }
@@ -285,47 +285,47 @@ LABEL_17:
 - (BOOL)keepZeroValue
 {
   WeakRetained = objc_loadWeakRetained(&self->_group);
-  v4 = [WeakRetained name];
-  v5 = [v4 isEqualToString:@"Angle"];
+  name = [WeakRetained name];
+  v5 = [name isEqualToString:@"Angle"];
 
   return (v5 & 1) != 0 || self->_b != 0.0;
 }
 
-- (double)baseToUnit:(double)a3
+- (double)baseToUnit:(double)unit
 {
   if ([(NSString *)self->_name isEqualToString:@"Mile per gallon"])
   {
-    return 235.214583 / a3;
+    return 235.214583 / unit;
   }
 
   if ([(NSString *)self->_name isEqualToString:@"Percent grade"])
   {
-    return fabs(tan(fabs(a3))) * 100.0;
+    return fabs(tan(fabs(unit))) * 100.0;
   }
 
   if (![(DDUIPhysicalUnit *)self isUKMeasurement])
   {
-    return (a3 - self->_b) / self->_a;
+    return (unit - self->_b) / self->_a;
   }
 
   v6 = [&unk_282C2CED0 objectForKeyedSubscript:self->_name];
   if (!v6)
   {
-    return (a3 - self->_b) / self->_a;
+    return (unit - self->_b) / self->_a;
   }
 
   v7 = v6;
   [v6 doubleValue];
-  v9 = a3 / v8;
+  v9 = unit / v8;
 
   return v9;
 }
 
-- (double)valueFrom:(double)result unit:(id)a4
+- (double)valueFrom:(double)result unit:(id)unit
 {
-  if (a4 != self)
+  if (unit != self)
   {
-    [a4 unitToBase:result];
+    [unit unitToBase:result];
 
     [(DDUIPhysicalUnit *)self baseToUnit:?];
   }
@@ -333,10 +333,10 @@ LABEL_17:
   return result;
 }
 
-+ (id)unitWithIdentifier:(id)a3
++ (id)unitWithIdentifier:(id)identifier
 {
-  v3 = a3;
-  if ([v3 length])
+  identifierCopy = identifier;
+  if ([identifierCopy length])
   {
     if (qword_280B122B8 != -1)
     {
@@ -344,8 +344,8 @@ LABEL_17:
     }
 
     v4 = qword_280B122B0;
-    v5 = [v3 lowercaseString];
-    v6 = [v4 objectForKeyedSubscript:v5];
+    lowercaseString = [identifierCopy lowercaseString];
+    v6 = [v4 objectForKeyedSubscript:lowercaseString];
   }
 
   else

@@ -1,36 +1,36 @@
 @interface INIntentDeliverer
 + (void)initialize;
 - ($115C4C562B26FF47E01F9F4EA65B5887)auditToken;
-- (BOOL)_updateIntent:(id)a3 intentSlotDescription:(id)a4 resolutionResultDataProvider:(id)a5;
-- (INIntentDeliverer)initWithQueue:(id)a3 auditToken:(id *)a4;
+- (BOOL)_updateIntent:(id)intent intentSlotDescription:(id)description resolutionResultDataProvider:(id)provider;
+- (INIntentDeliverer)initWithQueue:(id)queue auditToken:(id *)token;
 - (INIntentDeliveringDelegate)delegate;
-- (id)_processIntentResponseCompletionHandlerWithIntent:(id)a3 completion:(id)a4;
-- (id)_processOptionsForIntent:(id)a3 parameterNamed:(id)a4 completionHandler:(id)a5;
-- (id)_processResolutionDataProviderForIntent:(id)a3 intentSlotDescription:(id)a4 updateIntent:(BOOL)a5 completion:(id)a6;
-- (void)_deliverIntent:(id)a3 withBlock:(id)a4;
-- (void)_invokeIntentHandlerMethodForIntent:(id)a3 intentHandler:(id)a4 parameterNamed:(id)a5 keyForSelectors:(id)a6 executionHandler:(id)a7 unimplementedHandler:(id)a8;
-- (void)_processDefaultValue:(id)a3 forIntent:(id)a4 parameterNamed:(id)a5 completionHandler:(id)a6;
-- (void)_processIntent:(id)a3 intentResponse:(id)a4 completion:(id)a5;
-- (void)_resolveIntentParameter:(id)a3 forIntent:(id)a4 intentHandler:(id)a5 updateIntent:(BOOL)a6 withCompletion:(id)a7;
-- (void)_startSendingUpdatesForIntent:(id)a3 toObserver:(id)a4 fromConnection:(id)a5 completionHandler:(id)a6;
-- (void)_stopSendingUpdatesForIntent:(id)a3 fromConnection:(id)a4 completionHandler:(id)a5;
-- (void)confirmIntent:(id)a3 withCompletion:(id)a4;
-- (void)getIntentParameterDefaultValue:(id)a3 forIntent:(id)a4 completionBlock:(id)a5;
-- (void)getIntentParameterOptions:(id)a3 forIntent:(id)a4 searchTerm:(id)a5 completionBlock:(id)a6;
-- (void)getParameterOptionsForParameterNamed:(id)a3 intent:(id)a4 searchTerm:(id)a5 completionBlock:(id)a6;
-- (void)getSupportsParameterOptionsForParameterNamed:(id)a3 intent:(id)a4 completionHandler:(id)a5;
-- (void)handleIntent:(id)a3 withCompletion:(id)a4;
-- (void)resolveIntentParameter:(id)a3 forIntent:(id)a4 completionBlock:(id)a5;
-- (void)resolveIntentParameters:(id)a3 forIntent:(id)a4 completionBlock:(id)a5;
-- (void)startSendingUpdatesForIntent:(id)a3 toObserver:(id)a4 completionHandler:(id)a5;
-- (void)stopSendingUpdatesForIntent:(id)a3 completionHandler:(id)a4;
+- (id)_processIntentResponseCompletionHandlerWithIntent:(id)intent completion:(id)completion;
+- (id)_processOptionsForIntent:(id)intent parameterNamed:(id)named completionHandler:(id)handler;
+- (id)_processResolutionDataProviderForIntent:(id)intent intentSlotDescription:(id)description updateIntent:(BOOL)updateIntent completion:(id)completion;
+- (void)_deliverIntent:(id)intent withBlock:(id)block;
+- (void)_invokeIntentHandlerMethodForIntent:(id)intent intentHandler:(id)handler parameterNamed:(id)named keyForSelectors:(id)selectors executionHandler:(id)executionHandler unimplementedHandler:(id)unimplementedHandler;
+- (void)_processDefaultValue:(id)value forIntent:(id)intent parameterNamed:(id)named completionHandler:(id)handler;
+- (void)_processIntent:(id)intent intentResponse:(id)response completion:(id)completion;
+- (void)_resolveIntentParameter:(id)parameter forIntent:(id)intent intentHandler:(id)handler updateIntent:(BOOL)updateIntent withCompletion:(id)completion;
+- (void)_startSendingUpdatesForIntent:(id)intent toObserver:(id)observer fromConnection:(id)connection completionHandler:(id)handler;
+- (void)_stopSendingUpdatesForIntent:(id)intent fromConnection:(id)connection completionHandler:(id)handler;
+- (void)confirmIntent:(id)intent withCompletion:(id)completion;
+- (void)getIntentParameterDefaultValue:(id)value forIntent:(id)intent completionBlock:(id)block;
+- (void)getIntentParameterOptions:(id)options forIntent:(id)intent searchTerm:(id)term completionBlock:(id)block;
+- (void)getParameterOptionsForParameterNamed:(id)named intent:(id)intent searchTerm:(id)term completionBlock:(id)block;
+- (void)getSupportsParameterOptionsForParameterNamed:(id)named intent:(id)intent completionHandler:(id)handler;
+- (void)handleIntent:(id)intent withCompletion:(id)completion;
+- (void)resolveIntentParameter:(id)parameter forIntent:(id)intent completionBlock:(id)block;
+- (void)resolveIntentParameters:(id)parameters forIntent:(id)intent completionBlock:(id)block;
+- (void)startSendingUpdatesForIntent:(id)intent toObserver:(id)observer completionHandler:(id)handler;
+- (void)stopSendingUpdatesForIntent:(id)intent completionHandler:(id)handler;
 @end
 
 @implementation INIntentDeliverer
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1 && INLogInitIfNeeded_once != -1)
+  if (objc_opt_class() == self && INLogInitIfNeeded_once != -1)
   {
 
     dispatch_once(&INLogInitIfNeeded_once, &__block_literal_global_72043);
@@ -52,22 +52,22 @@
   return self;
 }
 
-- (void)_stopSendingUpdatesForIntent:(id)a3 fromConnection:(id)a4 completionHandler:(id)a5
+- (void)_stopSendingUpdatesForIntent:(id)intent fromConnection:(id)connection completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  intentCopy = intent;
+  connectionCopy = connection;
+  handlerCopy = handler;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __83__INIntentDeliverer__stopSendingUpdatesForIntent_fromConnection_completionHandler___block_invoke;
   v14[3] = &unk_1E7285940;
-  v15 = v8;
-  v16 = self;
-  v17 = v9;
-  v18 = v10;
-  v11 = v10;
-  v12 = v9;
-  v13 = v8;
+  v15 = intentCopy;
+  selfCopy = self;
+  v17 = connectionCopy;
+  v18 = handlerCopy;
+  v11 = handlerCopy;
+  v12 = connectionCopy;
+  v13 = intentCopy;
   [(INIntentDeliverer *)self _deliverIntent:v13 withBlock:v14];
 }
 
@@ -125,30 +125,30 @@ void __83__INIntentDeliverer__stopSendingUpdatesForIntent_fromConnection_complet
   }
 }
 
-- (void)_startSendingUpdatesForIntent:(id)a3 toObserver:(id)a4 fromConnection:(id)a5 completionHandler:(id)a6
+- (void)_startSendingUpdatesForIntent:(id)intent toObserver:(id)observer fromConnection:(id)connection completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = v13;
-  if (v11)
+  intentCopy = intent;
+  observerCopy = observer;
+  connectionCopy = connection;
+  handlerCopy = handler;
+  v14 = handlerCopy;
+  if (observerCopy)
   {
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __95__INIntentDeliverer__startSendingUpdatesForIntent_toObserver_fromConnection_completionHandler___block_invoke;
     v15[3] = &unk_1E7285918;
-    v16 = v10;
-    v17 = v12;
-    v18 = self;
-    v19 = v11;
+    v16 = intentCopy;
+    v17 = connectionCopy;
+    selfCopy = self;
+    v19 = observerCopy;
     v20 = v14;
     [(INIntentDeliverer *)self _deliverIntent:v16 withBlock:v15];
   }
 
-  else if (v13)
+  else if (handlerCopy)
   {
-    (*(v13 + 2))(v13);
+    (*(handlerCopy + 2))(handlerCopy);
   }
 }
 
@@ -257,11 +257,11 @@ LABEL_22:
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_deliverIntent:(id)a3 withBlock:(id)a4
+- (void)_deliverIntent:(id)intent withBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  intentCopy = intent;
+  blockCopy = block;
+  if (blockCopy)
   {
     queue = self->_queue;
     block[0] = MEMORY[0x1E69E9820];
@@ -269,8 +269,8 @@ LABEL_22:
     block[2] = __46__INIntentDeliverer__deliverIntent_withBlock___block_invoke;
     block[3] = &unk_1E72858F0;
     block[4] = self;
-    v10 = v6;
-    v11 = v7;
+    v10 = intentCopy;
+    v11 = blockCopy;
     dispatch_async(queue, block);
   }
 }
@@ -281,22 +281,22 @@ void __46__INIntentDeliverer__deliverIntent_withBlock___block_invoke(uint64_t a1
   [v2 intentDeliverer:*(a1 + 32) deliverIntent:*(a1 + 40) withBlock:*(a1 + 48)];
 }
 
-- (void)_processIntent:(id)a3 intentResponse:(id)a4 completion:(id)a5
+- (void)_processIntent:(id)intent intentResponse:(id)response completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  intentCopy = intent;
+  responseCopy = response;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    [v9 _intents_prepareResponse];
+    [responseCopy _intents_prepareResponse];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __62__INIntentDeliverer__processIntent_intentResponse_completion___block_invoke_2;
     v11[3] = &unk_1E72858C8;
-    v12 = v9;
-    v13 = v8;
-    v14 = self;
-    v15 = v10;
+    v12 = responseCopy;
+    v13 = intentCopy;
+    selfCopy = self;
+    v15 = completionCopy;
     INImageProxyInjectionUtilitiesInjectProxiesIntoObjectWithContinuationHandler(v12, 0x21u, 1, 0, &__block_literal_global_100458, v11, 180.0, 180.0);
   }
 }
@@ -486,15 +486,15 @@ void __62__INIntentDeliverer__processIntent_intentResponse_completion___block_in
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_updateIntent:(id)a3 intentSlotDescription:(id)a4 resolutionResultDataProvider:(id)a5
+- (BOOL)_updateIntent:(id)intent intentSlotDescription:(id)description resolutionResultDataProvider:(id)provider
 {
   v52 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
+  intentCopy = intent;
+  descriptionCopy = description;
+  providerCopy = provider;
+  v10 = providerCopy;
   v11 = 0;
-  if (v7 && v8 && v9)
+  if (intentCopy && descriptionCopy && providerCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -503,37 +503,37 @@ void __62__INIntentDeliverer__processIntent_intentResponse_completion___block_in
       if (objc_opt_isKindOfClass())
       {
         v24 = v10;
-        v25 = [v24 resolutionResultCode];
-        if ((v25 - 1) >= 4 && v25 != 6)
+        resolutionResultCode = [v24 resolutionResultCode];
+        if ((resolutionResultCode - 1) >= 4 && resolutionResultCode != 6)
         {
-          if (v25)
+          if (resolutionResultCode)
           {
-            v26 = 0;
+            resolvedValue = 0;
           }
 
           else
           {
-            v26 = [v24 resolvedValue];
+            resolvedValue = [v24 resolvedValue];
           }
 
 LABEL_47:
-          v34 = [v8 facadePropertyName];
-          v35 = [v7 _intents_setterForPropertyWithName:v34];
+          facadePropertyName = [descriptionCopy facadePropertyName];
+          v35 = [intentCopy _intents_setterForPropertyWithName:facadePropertyName];
 
           if (v35)
           {
-            if (v26 || ![v8 isEnum])
+            if (resolvedValue || ![descriptionCopy isEnum])
             {
-              v37 = [v8 facadePropertyName];
-              [v7 setValue:v26 forKey:v37];
+              facadePropertyName2 = [descriptionCopy facadePropertyName];
+              [intentCopy setValue:resolvedValue forKey:facadePropertyName2];
             }
 
             else
             {
-              v36 = [v8 facadePropertyName];
-              [v7 setValue:&unk_1F02D8410 forKey:v36];
+              facadePropertyName3 = [descriptionCopy facadePropertyName];
+              [intentCopy setValue:&unk_1F02D8410 forKey:facadePropertyName3];
 
-              v26 = 0;
+              resolvedValue = 0;
             }
 
             v11 = 1;
@@ -544,11 +544,11 @@ LABEL_47:
           if (os_log_type_enabled(INSiriLogContextIntents, OS_LOG_TYPE_ERROR))
           {
             v41 = v38;
-            v42 = [v8 facadePropertyName];
+            facadePropertyName4 = [descriptionCopy facadePropertyName];
             *buf = 136315394;
             v48 = "[INIntentDeliverer _updateIntent:intentSlotDescription:resolutionResultDataProvider:]";
             v49 = 2114;
-            v50 = v42;
+            v50 = facadePropertyName4;
             _os_log_error_impl(&dword_18E991000, v41, OS_LOG_TYPE_ERROR, "%s Setter for property %{public}@ is not defined or invalid", buf, 0x16u);
           }
 
@@ -560,7 +560,7 @@ LABEL_56:
         }
       }
 
-      v26 = 0;
+      resolvedValue = 0;
       goto LABEL_55;
     }
 
@@ -586,10 +586,10 @@ LABEL_56:
           }
 
           v19 = *(*(&v43 + 1) + 8 * i);
-          v20 = [v19 resolutionResultCode];
-          if (v20)
+          resolutionResultCode2 = [v19 resolutionResultCode];
+          if (resolutionResultCode2)
           {
-            if ((v20 - 1) < 4 || v20 == 6)
+            if ((resolutionResultCode2 - 1) < 4 || resolutionResultCode2 == 6)
             {
               v27 = 0;
               goto LABEL_27;
@@ -598,12 +598,12 @@ LABEL_56:
 
           else
           {
-            v22 = [v19 resolvedValue];
+            resolvedValue2 = [v19 resolvedValue];
 
-            if (v22)
+            if (resolvedValue2)
             {
-              v23 = [v19 resolvedValue];
-              [v13 addObject:v23];
+              resolvedValue3 = [v19 resolvedValue];
+              [v13 addObject:resolvedValue3];
             }
           }
         }
@@ -622,11 +622,11 @@ LABEL_56:
 
 LABEL_27:
 
-    v28 = [v8 facadePropertyName];
-    if ([v7 _isValidKey:v28])
+    facadePropertyName5 = [descriptionCopy facadePropertyName];
+    if ([intentCopy _isValidKey:facadePropertyName5])
     {
-      v29 = [v8 facadePropertyName];
-      v30 = [v7 valueForKey:v29];
+      facadePropertyName6 = [descriptionCopy facadePropertyName];
+      v30 = [intentCopy valueForKey:facadePropertyName6];
 
       v31 = v30;
       if (v31)
@@ -663,19 +663,19 @@ LABEL_34:
 
     if ([v13 count])
     {
-      v26 = [v13 copy];
+      resolvedValue = [v13 copy];
       goto LABEL_43;
     }
 
     if (v33 && ![v33 count])
     {
-      v26 = MEMORY[0x1E695E0F0];
+      resolvedValue = MEMORY[0x1E695E0F0];
     }
 
     else
     {
 LABEL_42:
-      v26 = 0;
+      resolvedValue = 0;
     }
 
 LABEL_43:
@@ -694,30 +694,30 @@ LABEL_57:
   return v11;
 }
 
-- (void)_processDefaultValue:(id)a3 forIntent:(id)a4 parameterNamed:(id)a5 completionHandler:(id)a6
+- (void)_processDefaultValue:(id)value forIntent:(id)intent parameterNamed:(id)named completionHandler:(id)handler
 {
   v77 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = v12;
-  if (v9)
+  valueCopy = value;
+  intentCopy = intent;
+  namedCopy = named;
+  handlerCopy = handler;
+  v13 = handlerCopy;
+  if (valueCopy)
   {
-    v14 = [v10 _intentInstanceDescription];
-    v15 = [v14 slotByName:v11];
+    _intentInstanceDescription = [intentCopy _intentInstanceDescription];
+    v15 = [_intentInstanceDescription slotByName:namedCopy];
 
     v69 = v15;
-    v16 = [v15 codableAttribute];
-    if (!v16)
+    codableAttribute = [v15 codableAttribute];
+    if (!codableAttribute)
     {
-      v17 = [v10 _codableDescription];
-      v16 = [v17 attributeByName:v11];
+      _codableDescription = [intentCopy _codableDescription];
+      codableAttribute = [_codableDescription attributeByName:namedCopy];
     }
 
-    v70 = v11;
-    v18 = [v16 objectClass];
-    v19 = v16;
+    v70 = namedCopy;
+    objectClass = [codableAttribute objectClass];
+    v19 = codableAttribute;
     if (v19)
     {
       objc_opt_class();
@@ -739,13 +739,13 @@ LABEL_57:
 
     v21 = v20;
 
-    if (v18 == objc_opt_class() && v21)
+    if (objectClass == objc_opt_class() && v21)
     {
       v22 = v21;
-      v23 = [v21 codableDescription];
-      v24 = [v23 className];
+      codableDescription = [v21 codableDescription];
+      className = [codableDescription className];
       v25 = objc_opt_class();
-      v26 = NSClassFromString(v24);
+      v26 = NSClassFromString(className);
       if (v26)
       {
         v27 = v26;
@@ -762,12 +762,12 @@ LABEL_57:
         v26 = v28;
       }
 
-      v18 = v26;
+      objectClass = v26;
 
       v21 = v22;
     }
 
-    if (!v18)
+    if (!objectClass)
     {
       v54 = [MEMORY[0x1E696ABC0] errorWithDomain:@"_INExtensionContextErrorDomain" code:1000 userInfo:0];
       (v13)[2](v13, 0, v54);
@@ -781,15 +781,15 @@ LABEL_57:
     v68 = v21;
     if (objc_opt_isKindOfClass())
     {
-      v65 = v10;
+      v65 = intentCopy;
       v67 = v13;
       v30 = objc_alloc_init(MEMORY[0x1E695DF70]);
       v72 = 0u;
       v73 = 0u;
       v74 = 0u;
       v75 = 0u;
-      v66 = v9;
-      v31 = v9;
+      v66 = valueCopy;
+      v31 = valueCopy;
       v32 = [v31 countByEnumeratingWithState:&v72 objects:v76 count:16];
       if (v32)
       {
@@ -805,7 +805,7 @@ LABEL_57:
             }
 
             v36 = *(*(&v72 + 1) + 8 * i);
-            if (([v36 isMemberOfClass:v18] & 1) == 0)
+            if (([v36 isMemberOfClass:objectClass] & 1) == 0)
             {
               v45 = [MEMORY[0x1E696ABC0] errorWithDomain:@"_INExtensionContextErrorDomain" code:1001 userInfo:0];
               (v67)[2](v67, 0, v45);
@@ -848,10 +848,10 @@ LABEL_57:
 
       v13 = v67;
       v41 = v69;
-      v11 = v70;
+      namedCopy = v70;
 
-      v10 = v65;
-      v9 = v66;
+      intentCopy = v65;
+      valueCopy = v66;
       if (!v39)
       {
 LABEL_37:
@@ -879,11 +879,11 @@ LABEL_37:
         objc_exception_throw(v63);
       }
 
-      v40 = INObjectWithTypedObject(v9, v19);
+      v40 = INObjectWithTypedObject(valueCopy, v19);
       v39 = [(INJSONEncoder *)v29 encodeObject:v40 withCodableAttribute:v19];
 
       v41 = v69;
-      v11 = v70;
+      namedCopy = v70;
       if (!v39)
       {
         goto LABEL_37;
@@ -899,17 +899,17 @@ LABEL_38:
     goto LABEL_39;
   }
 
-  (*(v12 + 2))(v12, 0, 0);
+  (*(handlerCopy + 2))(handlerCopy, 0, 0);
 LABEL_39:
 
   v44 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_processOptionsForIntent:(id)a3 parameterNamed:(id)a4 completionHandler:(id)a5
+- (id)_processOptionsForIntent:(id)intent parameterNamed:(id)named completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  intentCopy = intent;
+  namedCopy = named;
+  handlerCopy = handler;
   v20[0] = 0;
   v20[1] = v20;
   v20[2] = 0x2020000000;
@@ -918,13 +918,13 @@ LABEL_39:
   v15[1] = 3221225472;
   v15[2] = __79__INIntentDeliverer__processOptionsForIntent_parameterNamed_completionHandler___block_invoke;
   v15[3] = &unk_1E7285860;
-  v18 = v9;
+  v18 = handlerCopy;
   v19 = v20;
-  v16 = v7;
-  v17 = v8;
-  v10 = v8;
-  v11 = v7;
-  v12 = v9;
+  v16 = intentCopy;
+  v17 = namedCopy;
+  v10 = namedCopy;
+  v11 = intentCopy;
+  v12 = handlerCopy;
   v13 = MEMORY[0x193AD7780](v15);
 
   _Block_object_dispose(v20, 8);
@@ -1088,11 +1088,11 @@ LABEL_29:
   v32 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_processResolutionDataProviderForIntent:(id)a3 intentSlotDescription:(id)a4 updateIntent:(BOOL)a5 completion:(id)a6
+- (id)_processResolutionDataProviderForIntent:(id)intent intentSlotDescription:(id)description updateIntent:(BOOL)updateIntent completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  intentCopy = intent;
+  descriptionCopy = description;
+  completionCopy = completion;
   v25[0] = 0;
   v25[1] = v25;
   v25[2] = 0x2020000000;
@@ -1101,15 +1101,15 @@ LABEL_29:
   v18[1] = 3221225472;
   v18[2] = __107__INIntentDeliverer__processResolutionDataProviderForIntent_intentSlotDescription_updateIntent_completion___block_invoke;
   v18[3] = &unk_1E7285838;
-  v22 = v12;
+  v22 = completionCopy;
   v23 = v25;
-  v19 = v10;
-  v20 = v11;
-  v24 = a5;
-  v21 = self;
-  v13 = v12;
-  v14 = v11;
-  v15 = v10;
+  v19 = intentCopy;
+  v20 = descriptionCopy;
+  updateIntentCopy = updateIntent;
+  selfCopy = self;
+  v13 = completionCopy;
+  v14 = descriptionCopy;
+  v15 = intentCopy;
   v16 = MEMORY[0x193AD7780](v18);
 
   _Block_object_dispose(v25, 8);
@@ -1208,10 +1208,10 @@ LABEL_9:
   *(*(*(a1 + 64) + 8) + 24) = 1;
 }
 
-- (id)_processIntentResponseCompletionHandlerWithIntent:(id)a3 completion:(id)a4
+- (id)_processIntentResponseCompletionHandlerWithIntent:(id)intent completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  intentCopy = intent;
+  completionCopy = completion;
   v16[0] = 0;
   v16[1] = v16;
   v16[2] = 0x2020000000;
@@ -1221,11 +1221,11 @@ LABEL_9:
   v12[2] = __82__INIntentDeliverer__processIntentResponseCompletionHandlerWithIntent_completion___block_invoke;
   v12[3] = &unk_1E7285810;
   v12[4] = self;
-  v13 = v6;
-  v14 = v7;
+  v13 = intentCopy;
+  v14 = completionCopy;
   v15 = v16;
-  v8 = v7;
-  v9 = v6;
+  v8 = completionCopy;
+  v9 = intentCopy;
   v10 = MEMORY[0x193AD7780](v12);
 
   _Block_object_dispose(v16, 8);
@@ -1262,24 +1262,24 @@ void __82__INIntentDeliverer__processIntentResponseCompletionHandlerWithIntent_c
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_invokeIntentHandlerMethodForIntent:(id)a3 intentHandler:(id)a4 parameterNamed:(id)a5 keyForSelectors:(id)a6 executionHandler:(id)a7 unimplementedHandler:(id)a8
+- (void)_invokeIntentHandlerMethodForIntent:(id)intent intentHandler:(id)handler parameterNamed:(id)named keyForSelectors:(id)selectors executionHandler:(id)executionHandler unimplementedHandler:(id)unimplementedHandler
 {
   v41 = *MEMORY[0x1E69E9840];
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  v19 = INTypedIntentWithIntent(a3);
+  handlerCopy = handler;
+  namedCopy = named;
+  selectorsCopy = selectors;
+  executionHandlerCopy = executionHandler;
+  unimplementedHandlerCopy = unimplementedHandler;
+  v19 = INTypedIntentWithIntent(intent);
   v20 = INSiriLogContextIntents;
   if (os_log_type_enabled(INSiriLogContextIntents, OS_LOG_TYPE_INFO))
   {
     v21 = v20;
-    v22 = [v19 typeName];
+    typeName = [v19 typeName];
     *buf = 136315394;
     v38 = "[INIntentDeliverer _invokeIntentHandlerMethodForIntent:intentHandler:parameterNamed:keyForSelectors:executionHandler:unimplementedHandler:]";
     v39 = 2112;
-    v40 = v22;
+    v40 = typeName;
     _os_log_impl(&dword_18E991000, v21, OS_LOG_TYPE_INFO, "%s _invokeIntentHandlerMethodForIntent %@", buf, 0x16u);
   }
 
@@ -1287,21 +1287,21 @@ void __82__INIntentDeliverer__processIntentResponseCompletionHandlerWithIntent_c
   v31[1] = 3221225472;
   v31[2] = __140__INIntentDeliverer__invokeIntentHandlerMethodForIntent_intentHandler_parameterNamed_keyForSelectors_executionHandler_unimplementedHandler___block_invoke;
   v31[3] = &unk_1E72857E8;
-  v35 = v17;
+  v35 = executionHandlerCopy;
   v23 = v19;
   v32 = v23;
-  v33 = v15;
-  v34 = v16;
-  v36 = v18;
-  v24 = v18;
-  v25 = v16;
-  v26 = v15;
-  v27 = v17;
+  v33 = namedCopy;
+  v34 = selectorsCopy;
+  v36 = unimplementedHandlerCopy;
+  v24 = unimplementedHandlerCopy;
+  v25 = selectorsCopy;
+  v26 = namedCopy;
+  v27 = executionHandlerCopy;
   v28 = MEMORY[0x193AD7780](v31);
   v29 = v28;
-  if (v14)
+  if (handlerCopy)
   {
-    (*(v28 + 16))(v28, v14);
+    (*(v28 + 16))(v28, handlerCopy);
   }
 
   else
@@ -1404,42 +1404,42 @@ uint64_t __140__INIntentDeliverer__invokeIntentHandlerMethodForIntent_intentHand
   return result;
 }
 
-- (void)_resolveIntentParameter:(id)a3 forIntent:(id)a4 intentHandler:(id)a5 updateIntent:(BOOL)a6 withCompletion:(id)a7
+- (void)_resolveIntentParameter:(id)parameter forIntent:(id)intent intentHandler:(id)handler updateIntent:(BOOL)updateIntent withCompletion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
-  if (v15)
+  parameterCopy = parameter;
+  intentCopy = intent;
+  handlerCopy = handler;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if ([v13 _type] != 2)
+    if ([intentCopy _type] != 2)
     {
 LABEL_22:
       v46[0] = MEMORY[0x1E69E9820];
       v46[1] = 3221225472;
       v46[2] = __97__INIntentDeliverer__resolveIntentParameter_forIntent_intentHandler_updateIntent_withCompletion___block_invoke;
       v46[3] = &unk_1E7285748;
-      v49 = v15;
-      v47 = v13;
-      v48 = self;
-      v50 = a6;
+      v49 = completionCopy;
+      v47 = intentCopy;
+      selfCopy = self;
+      updateIntentCopy = updateIntent;
       v40[0] = MEMORY[0x1E69E9820];
       v40[1] = 3221225472;
       v40[2] = __97__INIntentDeliverer__resolveIntentParameter_forIntent_intentHandler_updateIntent_withCompletion___block_invoke_2;
       v40[3] = &unk_1E7285798;
-      v41 = v12;
+      v41 = parameterCopy;
       v42 = v47;
-      v43 = self;
+      selfCopy2 = self;
       v44 = v49;
-      v45 = a6;
-      [(INIntentDeliverer *)self _invokeIntentHandlerMethodForIntent:v42 intentHandler:v14 parameterNamed:v41 keyForSelectors:@"resolveSelectorStrings" executionHandler:v46 unimplementedHandler:v40];
+      updateIntentCopy2 = updateIntent;
+      [(INIntentDeliverer *)self _invokeIntentHandlerMethodForIntent:v42 intentHandler:handlerCopy parameterNamed:v41 keyForSelectors:@"resolveSelectorStrings" executionHandler:v46 unimplementedHandler:v40];
 
       v17 = v49;
       goto LABEL_23;
     }
 
-    v16 = [v13 _codableDescription];
-    v17 = [v16 attributeByName:v12];
+    _codableDescription = [intentCopy _codableDescription];
+    v17 = [_codableDescription attributeByName:parameterCopy];
 
     if (![v17 supportsResolution])
     {
@@ -1448,29 +1448,29 @@ LABEL_21:
       goto LABEL_22;
     }
 
-    v18 = [v17 relationship];
-    v19 = [v18 parentCodableAttribute];
+    relationship = [v17 relationship];
+    parentCodableAttribute = [relationship parentCodableAttribute];
 
-    if (v17 && v19)
+    if (v17 && parentCodableAttribute)
     {
-      v20 = [v17 relationship];
-      v21 = [v20 relation];
+      relationship2 = [v17 relationship];
+      relation = [relationship2 relation];
 
-      if (v21)
+      if (relation)
       {
-        v22 = [v19 propertyName];
-        v23 = [v13 valueForKey:v22];
+        propertyName = [parentCodableAttribute propertyName];
+        v23 = [intentCopy valueForKey:propertyName];
 
-        v24 = [v17 relationship];
+        relationship3 = [v17 relationship];
         v38 = v23;
-        LOBYTE(v23) = [v24 compareValue:v23];
+        LOBYTE(v23) = [relationship3 compareValue:v23];
 
         if ((v23 & 1) == 0)
         {
           v33 = [INExtensionContextSlotResolutionResult alloc];
           v34 = +[INIntentResolutionResult _dataForResolutionMethodUnimplemented];
           v35 = [(INExtensionContextSlotResolutionResult *)v33 initWithResult:2 data:v34];
-          (*(v15 + 2))(v15, v35, 0);
+          (*(completionCopy + 2))(completionCopy, v35, 0);
 
           goto LABEL_17;
         }
@@ -1487,22 +1487,22 @@ LABEL_20:
     if (([v17 supportsDynamicEnumeration] & 1) == 0 && objc_msgSend(v17, "modifier"))
     {
       v51[0] = 0;
-      v25 = [v13 _isValueValidForKey:v12 unsupportedReason:v51];
+      v25 = [intentCopy _isValueValidForKey:parameterCopy unsupportedReason:v51];
       v26 = v51[0];
       v27 = v26;
       if ((v25 & 1) == 0 && v26)
       {
-        v28 = [v13 _intentInstanceDescription];
-        if (v12)
+        _intentInstanceDescription = [intentCopy _intentInstanceDescription];
+        if (parameterCopy)
         {
-          v39 = v28;
-          v36 = [v28 slotByName:v12];
-          v37 = [v17 unsupportedReasons];
-          v29 = +[INIntentResolutionResult unsupportedWithReason:](INIntentResolutionResult, "unsupportedWithReason:", [v37 indexOfObject:v27] + 1);
+          v39 = _intentInstanceDescription;
+          v36 = [_intentInstanceDescription slotByName:parameterCopy];
+          unsupportedReasons = [v17 unsupportedReasons];
+          v29 = +[INIntentResolutionResult unsupportedWithReason:](INIntentResolutionResult, "unsupportedWithReason:", [unsupportedReasons indexOfObject:v27] + 1);
           v30 = [INExtensionContextSlotResolutionResult alloc];
           v31 = [v29 _dataForIntentSlotDescription:v36];
           v32 = [(INExtensionContextSlotResolutionResult *)v30 initWithResult:1 data:v31];
-          (*(v15 + 2))(v15, v32, 0);
+          (*(completionCopy + 2))(completionCopy, v32, 0);
 
 LABEL_17:
 LABEL_23:
@@ -1628,21 +1628,21 @@ void __97__INIntentDeliverer__resolveIntentParameter_forIntent_intentHandler_upd
   }
 }
 
-- (void)getSupportsParameterOptionsForParameterNamed:(id)a3 intent:(id)a4 completionHandler:(id)a5
+- (void)getSupportsParameterOptionsForParameterNamed:(id)named intent:(id)intent completionHandler:(id)handler
 {
-  v8 = a5;
+  handlerCopy = handler;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __91__INIntentDeliverer_getSupportsParameterOptionsForParameterNamed_intent_completionHandler___block_invoke;
   v12[3] = &unk_1E72856F8;
-  v13 = v8;
+  v13 = handlerCopy;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __91__INIntentDeliverer_getSupportsParameterOptionsForParameterNamed_intent_completionHandler___block_invoke_2;
   v10[3] = &unk_1E7285560;
   v11 = v13;
   v9 = v13;
-  [(INIntentDeliverer *)self _invokeIntentHandlerMethodForIntent:a4 intentHandler:0 parameterNamed:a3 keyForSelectors:@"provideOptionsSelectorStrings" executionHandler:v12 unimplementedHandler:v10];
+  [(INIntentDeliverer *)self _invokeIntentHandlerMethodForIntent:intent intentHandler:0 parameterNamed:named keyForSelectors:@"provideOptionsSelectorStrings" executionHandler:v12 unimplementedHandler:v10];
 }
 
 BOOL __91__INIntentDeliverer_getSupportsParameterOptionsForParameterNamed_intent_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -1652,24 +1652,24 @@ BOOL __91__INIntentDeliverer_getSupportsParameterOptionsForParameterNamed_intent
   return v3;
 }
 
-- (void)getParameterOptionsForParameterNamed:(id)a3 intent:(id)a4 searchTerm:(id)a5 completionBlock:(id)a6
+- (void)getParameterOptionsForParameterNamed:(id)named intent:(id)intent searchTerm:(id)term completionBlock:(id)block
 {
-  v10 = a5;
-  v11 = a6;
-  if (v11)
+  termCopy = term;
+  blockCopy = block;
+  if (blockCopy)
   {
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __92__INIntentDeliverer_getParameterOptionsForParameterNamed_intent_searchTerm_completionBlock___block_invoke;
     v14[3] = &unk_1E72856D0;
-    v15 = v10;
-    v16 = v11;
+    v15 = termCopy;
+    v16 = blockCopy;
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __92__INIntentDeliverer_getParameterOptionsForParameterNamed_intent_searchTerm_completionBlock___block_invoke_2;
     v12[3] = &unk_1E7285560;
     v13 = v16;
-    [(INIntentDeliverer *)self _invokeIntentHandlerMethodForIntent:a4 intentHandler:0 parameterNamed:a3 keyForSelectors:@"provideOptionsSelectorStrings" executionHandler:v14 unimplementedHandler:v12];
+    [(INIntentDeliverer *)self _invokeIntentHandlerMethodForIntent:intent intentHandler:0 parameterNamed:named keyForSelectors:@"provideOptionsSelectorStrings" executionHandler:v14 unimplementedHandler:v12];
   }
 }
 
@@ -1788,74 +1788,74 @@ void __92__INIntentDeliverer_getParameterOptionsForParameterNamed_intent_searchT
   }
 }
 
-- (void)stopSendingUpdatesForIntent:(id)a3 completionHandler:(id)a4
+- (void)stopSendingUpdatesForIntent:(id)intent completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E696B0B8] currentConnection];
+  intentCopy = intent;
+  handlerCopy = handler;
+  currentConnection = [MEMORY[0x1E696B0B8] currentConnection];
   queue = self->_queue;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __67__INIntentDeliverer_stopSendingUpdatesForIntent_completionHandler___block_invoke;
   v13[3] = &unk_1E7285680;
   v13[4] = self;
-  v14 = v6;
-  v15 = v8;
-  v16 = v7;
-  v10 = v7;
-  v11 = v8;
-  v12 = v6;
+  v14 = intentCopy;
+  v15 = currentConnection;
+  v16 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = currentConnection;
+  v12 = intentCopy;
   dispatch_async(queue, v13);
 }
 
-- (void)startSendingUpdatesForIntent:(id)a3 toObserver:(id)a4 completionHandler:(id)a5
+- (void)startSendingUpdatesForIntent:(id)intent toObserver:(id)observer completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [MEMORY[0x1E696B0B8] currentConnection];
+  intentCopy = intent;
+  observerCopy = observer;
+  handlerCopy = handler;
+  currentConnection = [MEMORY[0x1E696B0B8] currentConnection];
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __79__INIntentDeliverer_startSendingUpdatesForIntent_toObserver_completionHandler___block_invoke;
   block[3] = &unk_1E7285658;
   block[4] = self;
-  v18 = v8;
-  v19 = v9;
-  v20 = v11;
-  v21 = v10;
-  v13 = v10;
-  v14 = v11;
-  v15 = v9;
-  v16 = v8;
+  v18 = intentCopy;
+  v19 = observerCopy;
+  v20 = currentConnection;
+  v21 = handlerCopy;
+  v13 = handlerCopy;
+  v14 = currentConnection;
+  v15 = observerCopy;
+  v16 = intentCopy;
   dispatch_async(queue, block);
 }
 
-- (void)handleIntent:(id)a3 withCompletion:(id)a4
+- (void)handleIntent:(id)intent withCompletion:(id)completion
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  intentCopy = intent;
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (completionCopy)
   {
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __49__INIntentDeliverer_handleIntent_withCompletion___block_invoke;
     v20[3] = &unk_1E72871D0;
-    v21 = v7;
+    v21 = completionCopy;
     v9 = MEMORY[0x193AD7780](v20);
-    v10 = INTypedIntentWithIntent(v6);
+    v10 = INTypedIntentWithIntent(intentCopy);
 
     v11 = INSiriLogContextIntents;
     if (os_log_type_enabled(INSiriLogContextIntents, OS_LOG_TYPE_INFO))
     {
       v12 = v11;
-      v13 = [v10 typeName];
+      typeName = [v10 typeName];
       *buf = 136315394;
       v23 = "[INIntentDeliverer handleIntent:withCompletion:]";
       v24 = 2112;
-      v25 = v13;
+      v25 = typeName;
       _os_log_impl(&dword_18E991000, v12, OS_LOG_TYPE_INFO, "%s handleIntent %@", buf, 0x16u);
     }
 
@@ -1863,12 +1863,12 @@ void __92__INIntentDeliverer_getParameterOptionsForParameterNamed_intent_searchT
     v16[1] = 3221225472;
     v16[2] = __49__INIntentDeliverer_handleIntent_withCompletion___block_invoke_87;
     v16[3] = &unk_1E7285630;
-    v6 = v10;
-    v18 = self;
+    intentCopy = v10;
+    selfCopy = self;
     v19 = v9;
-    v17 = v6;
+    v17 = intentCopy;
     v14 = v9;
-    [(INIntentDeliverer *)self _deliverIntent:v6 withBlock:v16];
+    [(INIntentDeliverer *)self _deliverIntent:intentCopy withBlock:v16];
   }
 
   v15 = *MEMORY[0x1E69E9840];
@@ -2004,31 +2004,31 @@ LABEL_20:
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (void)confirmIntent:(id)a3 withCompletion:(id)a4
+- (void)confirmIntent:(id)intent withCompletion:(id)completion
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  intentCopy = intent;
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (completionCopy)
   {
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __50__INIntentDeliverer_confirmIntent_withCompletion___block_invoke;
     v20[3] = &unk_1E72871D0;
-    v21 = v7;
+    v21 = completionCopy;
     v9 = MEMORY[0x193AD7780](v20);
-    v10 = INTypedIntentWithIntent(v6);
+    v10 = INTypedIntentWithIntent(intentCopy);
 
     v11 = INSiriLogContextIntents;
     if (os_log_type_enabled(INSiriLogContextIntents, OS_LOG_TYPE_INFO))
     {
       v12 = v11;
-      v13 = [v10 typeName];
+      typeName = [v10 typeName];
       *buf = 136315394;
       v23 = "[INIntentDeliverer confirmIntent:withCompletion:]";
       v24 = 2112;
-      v25 = v13;
+      v25 = typeName;
       _os_log_impl(&dword_18E991000, v12, OS_LOG_TYPE_INFO, "%s confirmIntent %@", buf, 0x16u);
     }
 
@@ -2036,12 +2036,12 @@ LABEL_20:
     v16[1] = 3221225472;
     v16[2] = __50__INIntentDeliverer_confirmIntent_withCompletion___block_invoke_84;
     v16[3] = &unk_1E7285630;
-    v6 = v10;
-    v18 = self;
+    intentCopy = v10;
+    selfCopy = self;
     v19 = v9;
-    v17 = v6;
+    v17 = intentCopy;
     v14 = v9;
-    [(INIntentDeliverer *)self _deliverIntent:v6 withBlock:v16];
+    [(INIntentDeliverer *)self _deliverIntent:intentCopy withBlock:v16];
   }
 
   v15 = *MEMORY[0x1E69E9840];
@@ -2156,23 +2156,23 @@ LABEL_15:
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)resolveIntentParameter:(id)a3 forIntent:(id)a4 completionBlock:(id)a5
+- (void)resolveIntentParameter:(id)parameter forIntent:(id)intent completionBlock:(id)block
 {
-  v8 = a4;
-  v9 = a5;
-  if (v9)
+  intentCopy = intent;
+  blockCopy = block;
+  if (blockCopy)
   {
-    v10 = a3;
-    v11 = INTypedIntentWithIntent(v8);
+    parameterCopy = parameter;
+    v11 = INTypedIntentWithIntent(intentCopy);
 
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __70__INIntentDeliverer_resolveIntentParameter_forIntent_completionBlock___block_invoke;
     v12[3] = &unk_1E7285600;
-    v13 = v9;
-    [(INIntentDeliverer *)self _resolveIntentParameter:v10 forIntent:v11 intentHandler:0 updateIntent:0 withCompletion:v12];
+    v13 = blockCopy;
+    [(INIntentDeliverer *)self _resolveIntentParameter:parameterCopy forIntent:v11 intentHandler:0 updateIntent:0 withCompletion:v12];
 
-    v8 = v11;
+    intentCopy = v11;
   }
 }
 
@@ -2197,19 +2197,19 @@ void __70__INIntentDeliverer_resolveIntentParameter_forIntent_completionBlock___
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)resolveIntentParameters:(id)a3 forIntent:(id)a4 completionBlock:(id)a5
+- (void)resolveIntentParameters:(id)parameters forIntent:(id)intent completionBlock:(id)block
 {
   v44 = *MEMORY[0x1E69E9840];
-  v21 = a3;
-  v20 = a4;
-  v7 = a5;
-  if (v7)
+  parametersCopy = parameters;
+  intentCopy = intent;
+  blockCopy = block;
+  if (blockCopy)
   {
-    v19 = v7;
-    v8 = INTypedIntentWithIntent(v20);
+    v19 = blockCopy;
+    v8 = INTypedIntentWithIntent(intentCopy);
     v18 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_USER_INITIATED, -1);
     queue = dispatch_queue_create("INCExtensionContextBatchSlotResolutionQueue", v18);
-    v9 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v21, "count")}];
+    v9 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(parametersCopy, "count")}];
     v41[0] = 0;
     v41[1] = v41;
     v41[2] = 0x2020000000;
@@ -2224,7 +2224,7 @@ void __70__INIntentDeliverer_resolveIntentParameter_forIntent_completionBlock___
     v36 = 0u;
     v37 = 0u;
     v38 = 0u;
-    obj = v21;
+    obj = parametersCopy;
     v10 = [obj countByEnumeratingWithState:&v35 objects:v43 count:16];
     if (v10)
     {
@@ -2278,7 +2278,7 @@ void __70__INIntentDeliverer_resolveIntentParameter_forIntent_completionBlock___
     _Block_object_dispose(v39, 8);
     _Block_object_dispose(v41, 8);
 
-    v7 = v19;
+    blockCopy = v19;
   }
 
   v17 = *MEMORY[0x1E69E9840];
@@ -2363,25 +2363,25 @@ void __71__INIntentDeliverer_resolveIntentParameters_forIntent_completionBlock__
   dispatch_semaphore_signal(*(a1 + 48));
 }
 
-- (void)getIntentParameterDefaultValue:(id)a3 forIntent:(id)a4 completionBlock:(id)a5
+- (void)getIntentParameterDefaultValue:(id)value forIntent:(id)intent completionBlock:(id)block
 {
-  v8 = a3;
-  v9 = a5;
-  if (v9)
+  valueCopy = value;
+  blockCopy = block;
+  if (blockCopy)
   {
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __78__INIntentDeliverer_getIntentParameterDefaultValue_forIntent_completionBlock___block_invoke;
     v12[3] = &unk_1E7285538;
     v12[4] = self;
-    v13 = v8;
-    v14 = v9;
+    v13 = valueCopy;
+    v14 = blockCopy;
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __78__INIntentDeliverer_getIntentParameterDefaultValue_forIntent_completionBlock___block_invoke_76;
     v10[3] = &unk_1E7285560;
     v11 = v14;
-    [(INIntentDeliverer *)self _invokeIntentHandlerMethodForIntent:a4 intentHandler:0 parameterNamed:v13 keyForSelectors:@"defaultValueSelectorStrings" executionHandler:v12 unimplementedHandler:v10];
+    [(INIntentDeliverer *)self _invokeIntentHandlerMethodForIntent:intent intentHandler:0 parameterNamed:v13 keyForSelectors:@"defaultValueSelectorStrings" executionHandler:v12 unimplementedHandler:v10];
   }
 }
 
@@ -2426,30 +2426,30 @@ void __78__INIntentDeliverer_getIntentParameterDefaultValue_forIntent_completion
   (*(v1 + 16))(v1, 0, v2);
 }
 
-- (void)getIntentParameterOptions:(id)a3 forIntent:(id)a4 searchTerm:(id)a5 completionBlock:(id)a6
+- (void)getIntentParameterOptions:(id)options forIntent:(id)intent searchTerm:(id)term completionBlock:(id)block
 {
-  if (a6)
+  if (block)
   {
-    v10 = a5;
-    v11 = a4;
-    v12 = a3;
-    v13 = [(INIntentDeliverer *)self _processOptionsForIntent:v11 parameterNamed:v12 completionHandler:a6];
-    [(INIntentDeliverer *)self getParameterOptionsForParameterNamed:v12 intent:v11 searchTerm:v10 completionBlock:v13];
+    termCopy = term;
+    intentCopy = intent;
+    optionsCopy = options;
+    v13 = [(INIntentDeliverer *)self _processOptionsForIntent:intentCopy parameterNamed:optionsCopy completionHandler:block];
+    [(INIntentDeliverer *)self getParameterOptionsForParameterNamed:optionsCopy intent:intentCopy searchTerm:termCopy completionBlock:v13];
   }
 }
 
-- (INIntentDeliverer)initWithQueue:(id)a3 auditToken:(id *)a4
+- (INIntentDeliverer)initWithQueue:(id)queue auditToken:(id *)token
 {
-  v7 = a3;
+  queueCopy = queue;
   v12.receiver = self;
   v12.super_class = INIntentDeliverer;
   v8 = [(INIntentDeliverer *)&v12 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_queue, a3);
-    v10 = *a4->var0;
-    *&v9->_auditToken.val[4] = *&a4->var0[4];
+    objc_storeStrong(&v8->_queue, queue);
+    v10 = *token->var0;
+    *&v9->_auditToken.val[4] = *&token->var0[4];
     *v9->_auditToken.val = v10;
   }
 

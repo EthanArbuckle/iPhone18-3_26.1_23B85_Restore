@@ -1,9 +1,9 @@
 @interface DEDFBKFeedbackUpload
 + (void)cleanUpIfNeeded;
-+ (void)cleanUpIfNeededWithDefaults:(id)a3;
-+ (void)compactMapOnFeedbackUploadsWithUserDefaults:(id)a3 block:(id)a4;
-+ (void)didFinishUploadOnBugSessionIdentifier:(id)a3;
-+ (void)didFinishUploadOnBugSessionIdentifier:(id)a3 withDefaults:(id)a4;
++ (void)cleanUpIfNeededWithDefaults:(id)defaults;
++ (void)compactMapOnFeedbackUploadsWithUserDefaults:(id)defaults block:(id)block;
++ (void)didFinishUploadOnBugSessionIdentifier:(id)identifier;
++ (void)didFinishUploadOnBugSessionIdentifier:(id)identifier withDefaults:(id)defaults;
 @end
 
 @implementation DEDFBKFeedbackUpload
@@ -14,7 +14,7 @@
   block[1] = 3221225472;
   block[2] = __39__DEDFBKFeedbackUpload_cleanUpIfNeeded__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (cleanUpIfNeeded_onceToken != -1)
   {
     dispatch_once(&cleanUpIfNeeded_onceToken, block);
@@ -40,15 +40,15 @@ void __39__DEDFBKFeedbackUpload_cleanUpIfNeeded__block_invoke_2(uint64_t a1)
   [v1 cleanUpIfNeededWithDefaults:v2];
 }
 
-+ (void)cleanUpIfNeededWithDefaults:(id)a3
++ (void)cleanUpIfNeededWithDefaults:(id)defaults
 {
   v4 = MEMORY[0x277CBEAB8];
-  v5 = a3;
+  defaultsCopy = defaults;
   v6 = objc_alloc_init(v4);
   [v6 setDay:-1];
-  v7 = [MEMORY[0x277CBEA80] currentCalendar];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
   v8 = objc_alloc_init(MEMORY[0x277CBEAA8]);
-  v9 = [v7 dateByAddingComponents:v6 toDate:v8 options:0];
+  v9 = [currentCalendar dateByAddingComponents:v6 toDate:v8 options:0];
 
   v10 = Log_1();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
@@ -63,7 +63,7 @@ void __39__DEDFBKFeedbackUpload_cleanUpIfNeeded__block_invoke_2(uint64_t a1)
   v12[3] = &unk_278F66278;
   v13 = v9;
   v11 = v9;
-  [a1 compactMapOnFeedbackUploadsWithUserDefaults:v5 block:v12];
+  [self compactMapOnFeedbackUploadsWithUserDefaults:defaultsCopy block:v12];
 }
 
 id __52__DEDFBKFeedbackUpload_cleanUpIfNeededWithDefaults___block_invoke(uint64_t a1, void *a2)
@@ -105,24 +105,24 @@ LABEL_9:
   return v8;
 }
 
-+ (void)didFinishUploadOnBugSessionIdentifier:(id)a3
++ (void)didFinishUploadOnBugSessionIdentifier:(id)identifier
 {
   v4 = MEMORY[0x277CBEBD0];
-  v5 = a3;
+  identifierCopy = identifier;
   v6 = [[v4 alloc] initWithSuiteName:@"group.com.apple.feedback"];
-  [a1 didFinishUploadOnBugSessionIdentifier:v5 withDefaults:v6];
+  [self didFinishUploadOnBugSessionIdentifier:identifierCopy withDefaults:v6];
 }
 
-+ (void)didFinishUploadOnBugSessionIdentifier:(id)a3 withDefaults:(id)a4
++ (void)didFinishUploadOnBugSessionIdentifier:(id)identifier withDefaults:(id)defaults
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  defaultsCopy = defaults;
   v8 = Log_1();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v14 = v6;
+    v14 = identifierCopy;
     _os_log_impl(&dword_248AD7000, v8, OS_LOG_TYPE_DEFAULT, "didFinishUploadOnBugSessionIdentifier: [%{public}@] ", buf, 0xCu);
   }
 
@@ -130,9 +130,9 @@ LABEL_9:
   v11[1] = 3221225472;
   v11[2] = __75__DEDFBKFeedbackUpload_didFinishUploadOnBugSessionIdentifier_withDefaults___block_invoke;
   v11[3] = &unk_278F66278;
-  v12 = v6;
-  v9 = v6;
-  [a1 compactMapOnFeedbackUploadsWithUserDefaults:v7 block:v11];
+  v12 = identifierCopy;
+  v9 = identifierCopy;
+  [self compactMapOnFeedbackUploadsWithUserDefaults:defaultsCopy block:v11];
 
   v10 = *MEMORY[0x277D85DE8];
 }
@@ -207,13 +207,13 @@ id __75__DEDFBKFeedbackUpload_didFinishUploadOnBugSessionIdentifier_withDefaults
   return v15;
 }
 
-+ (void)compactMapOnFeedbackUploadsWithUserDefaults:(id)a3 block:(id)a4
++ (void)compactMapOnFeedbackUploadsWithUserDefaults:(id)defaults block:(id)block
 {
   v62 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v38 = a4;
-  v32 = v5;
-  v6 = [v5 objectForKey:@"FeedbackUploads"];
+  defaultsCopy = defaults;
+  blockCopy = block;
+  v32 = defaultsCopy;
+  v6 = [defaultsCopy objectForKey:@"FeedbackUploads"];
   v34 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v6, "count")}];
   v41 = objc_opt_new();
   v53 = 0u;
@@ -277,7 +277,7 @@ id __75__DEDFBKFeedbackUpload_didFinishUploadOnBugSessionIdentifier_withDefaults
                 _os_log_debug_impl(&dword_248AD7000, v21, OS_LOG_TYPE_DEBUG, "Loaded Feedback upload [%{public}@]", buf, 0xCu);
               }
 
-              v22 = v38[2](v38, v16);
+              v22 = blockCopy[2](blockCopy, v16);
               if (v22)
               {
                 v23 = [v16 objectForKeyedSubscript:@"dateCreated"];

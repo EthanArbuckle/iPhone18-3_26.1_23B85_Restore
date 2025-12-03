@@ -1,12 +1,12 @@
 @interface MapsExternalState
-- (BOOL)_isValue:(id)a3 equalTo:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToState:(id)a3 changedKeys:(id *)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)_isValue:(id)value equalTo:(id)to;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToState:(id)state changedKeys:(id *)keys;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)descriptionForKey:(id)a3;
+- (id)descriptionForKey:(id)key;
 - (unint64_t)hash;
-- (unint64_t)hashForKey:(id)a3;
+- (unint64_t)hashForKey:(id)key;
 @end
 
 @implementation MapsExternalState
@@ -24,8 +24,8 @@
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [objc_opt_class() allKeys];
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v19 count:16];
+  allKeys = [objc_opt_class() allKeys];
+  v7 = [allKeys countByEnumeratingWithState:&v14 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -36,7 +36,7 @@
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allKeys);
         }
 
         v11 = *(*(&v14 + 1) + 8 * i);
@@ -44,7 +44,7 @@
         [v5 appendFormat:@"\n    %@ = %@", v11, v12, v14];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v14 objects:v19 count:16];
+      v8 = [allKeys countByEnumeratingWithState:&v14 objects:v19 count:16];
     }
 
     while (v8);
@@ -61,8 +61,8 @@
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [objc_opt_class() allKeys];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  allKeys = [objc_opt_class() allKeys];
+  v4 = [allKeys countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -74,13 +74,13 @@
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allKeys);
         }
 
         v6 ^= [(MapsExternalState *)self hashForKey:*(*(&v10 + 1) + 8 * i)];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [allKeys countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
@@ -94,24 +94,24 @@
   return v6;
 }
 
-- (unint64_t)hashForKey:(id)a3
+- (unint64_t)hashForKey:(id)key
 {
-  v3 = [(MapsExternalState *)self valueForKey:a3];
+  v3 = [(MapsExternalState *)self valueForKey:key];
   v4 = [v3 hash];
 
   return v4;
 }
 
-- (id)descriptionForKey:(id)a3
+- (id)descriptionForKey:(id)key
 {
-  v3 = [(MapsExternalState *)self valueForKey:a3];
+  v3 = [(MapsExternalState *)self valueForKey:key];
   v4 = [v3 description];
   v5 = [NSString stringWithFormat:@"%@", v4];
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   objc_opt_class();
   v4 = objc_opt_new();
@@ -165,13 +165,13 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(MapsExternalState *)self isEqualToState:v4];
+    v5 = [(MapsExternalState *)self isEqualToState:equalCopy];
   }
 
   else
@@ -182,14 +182,14 @@
   return v5;
 }
 
-- (BOOL)isEqualToState:(id)a3 changedKeys:(id *)a4
+- (BOOL)isEqualToState:(id)state changedKeys:(id *)keys
 {
-  v6 = a3;
+  stateCopy = state;
   v7 = objc_opt_class();
   if (v7 == objc_opt_class())
   {
-    v19 = a4;
-    if (a4)
+    keysCopy = keys;
+    if (keys)
     {
       v9 = objc_alloc_init(NSMutableSet);
     }
@@ -203,8 +203,8 @@
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v10 = [objc_opt_class() allKeys];
-    v11 = [v10 countByEnumeratingWithState:&v20 objects:v24 count:16];
+    allKeys = [objc_opt_class() allKeys];
+    v11 = [allKeys countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v11)
     {
       v12 = v11;
@@ -215,12 +215,12 @@
         {
           if (*v21 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(allKeys);
           }
 
           v15 = *(*(&v20 + 1) + 8 * i);
           v16 = [(MapsExternalState *)self valueForKey:v15];
-          v17 = [v6 valueForKey:v15];
+          v17 = [stateCopy valueForKey:v15];
           if (![(MapsExternalState *)self _isValue:v16 equalTo:v17])
           {
             if (!v9)
@@ -234,7 +234,7 @@
           }
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v20 objects:v24 count:16];
+        v12 = [allKeys countByEnumeratingWithState:&v20 objects:v24 count:16];
         if (v12)
         {
           continue;
@@ -244,9 +244,9 @@
       }
     }
 
-    if (v19)
+    if (keysCopy)
     {
-      *v19 = [v9 copy];
+      *keysCopy = [v9 copy];
     }
 
     if (v9)
@@ -270,15 +270,15 @@ LABEL_22:
   return v8;
 }
 
-- (BOOL)_isValue:(id)a3 equalTo:(id)a4
+- (BOOL)_isValue:(id)value equalTo:(id)to
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5 | v6)
+  valueCopy = value;
+  toCopy = to;
+  v7 = toCopy;
+  if (valueCopy | toCopy)
   {
     v8 = 0;
-    if (v5 && v6)
+    if (valueCopy && toCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -286,7 +286,7 @@ LABEL_22:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v10 = [NSCountedSet setWithArray:v5];
+          v10 = [NSCountedSet setWithArray:valueCopy];
           v11 = [NSCountedSet setWithArray:v7];
           v8 = [v10 isEqualToSet:v11];
         }
@@ -296,12 +296,12 @@ LABEL_22:
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v12 = [v5 isEqualToDictionary:v7];
+            v12 = [valueCopy isEqualToDictionary:v7];
           }
 
           else
           {
-            v12 = [v5 isEqual:v7];
+            v12 = [valueCopy isEqual:v7];
           }
 
           v8 = v12;

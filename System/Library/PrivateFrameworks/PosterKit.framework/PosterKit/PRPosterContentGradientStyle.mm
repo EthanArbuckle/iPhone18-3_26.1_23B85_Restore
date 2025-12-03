@@ -1,39 +1,39 @@
 @interface PRPosterContentGradientStyle
-+ (void)performClassReplacementForKeyedUnarchiver:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (void)performClassReplacementForKeyedUnarchiver:(id)unarchiver;
+- (BOOL)isEqual:(id)equal;
 - (CGPoint)endPoint;
 - (CGPoint)startPoint;
 - (NSArray)colors;
 - (NSString)nonVariatedIdentifier;
-- (PRPosterContentGradientStyle)initWithCoder:(id)a3;
-- (PRPosterContentGradientStyle)initWithColors:(id)a3 gradientType:(unint64_t)a4 locations:(id)a5 startPoint:(CGPoint)a6 endPoint:(CGPoint)a7;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PRPosterContentGradientStyle)initWithCoder:(id)coder;
+- (PRPosterContentGradientStyle)initWithColors:(id)colors gradientType:(unint64_t)type locations:(id)locations startPoint:(CGPoint)point endPoint:(CGPoint)endPoint;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)applyStyleWithRenderer:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)applyStyleWithRenderer:(id)renderer;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PRPosterContentGradientStyle
 
-- (PRPosterContentGradientStyle)initWithColors:(id)a3 gradientType:(unint64_t)a4 locations:(id)a5 startPoint:(CGPoint)a6 endPoint:(CGPoint)a7
+- (PRPosterContentGradientStyle)initWithColors:(id)colors gradientType:(unint64_t)type locations:(id)locations startPoint:(CGPoint)point endPoint:(CGPoint)endPoint
 {
-  y = a7.y;
-  x = a7.x;
-  v9 = a6.y;
-  v10 = a6.x;
-  v14 = a3;
-  v15 = a5;
+  y = endPoint.y;
+  x = endPoint.x;
+  v9 = point.y;
+  v10 = point.x;
+  colorsCopy = colors;
+  locationsCopy = locations;
   v22.receiver = self;
   v22.super_class = PRPosterContentGradientStyle;
   v16 = [(PRPosterContentGradientStyle *)&v22 init];
   if (v16)
   {
-    v17 = [v14 copy];
+    v17 = [colorsCopy copy];
     colors = v16->_colors;
     v16->_colors = v17;
 
-    v16->_gradientType = a4;
-    v19 = [v15 copy];
+    v16->_gradientType = type;
+    v19 = [locationsCopy copy];
     locations = v16->_locations;
     v16->_locations = v19;
 
@@ -46,10 +46,10 @@
   return v16;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v12 = 1;
   }
@@ -59,10 +59,10 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(PRPosterContentGradientStyle *)self colors];
-      v7 = [(PRPosterContentGradientStyle *)v5 colors];
-      v8 = [v6 isEqualToArray:v7];
+      v5 = equalCopy;
+      colors = [(PRPosterContentGradientStyle *)self colors];
+      colors2 = [(PRPosterContentGradientStyle *)v5 colors];
+      v8 = [colors isEqualToArray:colors2];
 
       if (v8 && self->_gradientType == v5->_gradientType && (-[PRPosterContentGradientStyle locations](self, "locations"), v9 = objc_claimAutoreleasedReturnValue(), -[PRPosterContentGradientStyle locations](v5, "locations"), v10 = objc_claimAutoreleasedReturnValue(), v11 = [v9 isEqualToArray:v10], v10, v9, v11) && BSPointEqualToPoint())
       {
@@ -119,18 +119,18 @@
   }
 
   v7 = v6;
-  v8 = [(PRPosterContentGradientStyle *)self colors];
-  v9 = [v8 bs_map:&__block_literal_global_212];
+  colors = [(PRPosterContentGradientStyle *)self colors];
+  v9 = [colors bs_map:&__block_literal_global_212];
   v10 = [v9 componentsJoinedByString:@"_"];
   v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[NSArray hash](self->_locations, "hash")}];
-  v12 = [v11 stringValue];
+  stringValue = [v11 stringValue];
 
   v13 = NSStringFromCGPoint(self->_startPoint);
   v14 = NSStringFromCGPoint(self->_endPoint);
   v18[0] = v3;
   v18[1] = v7;
   v18[2] = v10;
-  v18[3] = v12;
+  v18[3] = stringValue;
   v18[4] = v13;
   v18[5] = v14;
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:6];
@@ -155,26 +155,26 @@ uint64_t __53__PRPosterContentGradientStyle_nonVariatedIdentifier__block_invoke(
   return v2;
 }
 
-- (void)applyStyleWithRenderer:(id)a3
+- (void)applyStyleWithRenderer:(id)renderer
 {
-  v4 = a3;
+  rendererCopy = renderer;
   if (objc_opt_respondsToSelector())
   {
-    [v4 renderGradientStyle:self];
+    [rendererCopy renderGradientStyle:self];
   }
 }
 
-- (PRPosterContentGradientStyle)initWithCoder:(id)a3
+- (PRPosterContentGradientStyle)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:*MEMORY[0x1E69C5490]];
-  v6 = [v4 decodeIntegerForKey:*MEMORY[0x1E69C54A0]];
-  v7 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:*MEMORY[0x1E69C54A8]];
+  coderCopy = coder;
+  v5 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:*MEMORY[0x1E69C5490]];
+  v6 = [coderCopy decodeIntegerForKey:*MEMORY[0x1E69C54A0]];
+  v7 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:*MEMORY[0x1E69C54A8]];
   v8 = *MEMORY[0x1E69C54B0];
-  [v4 decodeCGPointForKey:*MEMORY[0x1E69C54B0]];
+  [coderCopy decodeCGPointForKey:*MEMORY[0x1E69C54B0]];
   v10 = v9;
   v12 = v11;
-  v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:v8];
+  v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:v8];
   v16 = CGPointFromString(v13);
   y = v16.y;
   x = v16.x;
@@ -198,10 +198,10 @@ uint64_t __53__PRPosterContentGradientStyle_nonVariatedIdentifier__block_invoke(
   }
 
   v20 = *MEMORY[0x1E69C5498];
-  [v4 decodeCGPointForKey:{*MEMORY[0x1E69C5498], x, y}];
+  [coderCopy decodeCGPointForKey:{*MEMORY[0x1E69C5498], x, y}];
   v22 = v21;
   v24 = v23;
-  v25 = [v4 decodeObjectOfClass:objc_opt_class() forKey:v20];
+  v25 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:v20];
   v28 = CGPointFromString(v25);
   v27 = v28.y;
   v26 = v28.x;
@@ -237,22 +237,22 @@ uint64_t __53__PRPosterContentGradientStyle_nonVariatedIdentifier__block_invoke(
   return v32;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   colors = self->_colors;
   v5 = *MEMORY[0x1E69C5490];
-  v6 = a3;
-  [v6 encodeObject:colors forKey:v5];
-  [v6 encodeInteger:self->_gradientType forKey:*MEMORY[0x1E69C54A0]];
-  [v6 encodeObject:self->_locations forKey:*MEMORY[0x1E69C54A8]];
+  coderCopy = coder;
+  [coderCopy encodeObject:colors forKey:v5];
+  [coderCopy encodeInteger:self->_gradientType forKey:*MEMORY[0x1E69C54A0]];
+  [coderCopy encodeObject:self->_locations forKey:*MEMORY[0x1E69C54A8]];
   v7 = NSStringFromCGPoint(self->_startPoint);
-  [v6 encodeObject:v7 forKey:*MEMORY[0x1E69C54B0]];
+  [coderCopy encodeObject:v7 forKey:*MEMORY[0x1E69C54B0]];
 
   v8 = NSStringFromCGPoint(self->_endPoint);
-  [v6 encodeObject:v8 forKey:*MEMORY[0x1E69C5498]];
+  [coderCopy encodeObject:v8 forKey:*MEMORY[0x1E69C5498]];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [PRPosterContentGradientStyle alloc];
   locations = self->_locations;
@@ -284,10 +284,10 @@ uint64_t __53__PRPosterContentGradientStyle_nonVariatedIdentifier__block_invoke(
   return result;
 }
 
-+ (void)performClassReplacementForKeyedUnarchiver:(id)a3
++ (void)performClassReplacementForKeyedUnarchiver:(id)unarchiver
 {
   sub_1A8BDDB04();
-  v4 = a3;
+  unarchiverCopy = unarchiver;
   sub_1A8BDDAF4();
 }
 

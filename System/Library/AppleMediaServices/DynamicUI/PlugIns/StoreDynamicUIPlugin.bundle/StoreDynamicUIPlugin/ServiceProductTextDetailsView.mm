@@ -1,22 +1,22 @@
 @interface ServiceProductTextDetailsView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in;
 - (void)layoutSubviews;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation ServiceProductTextDetailsView
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_1156F8(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_1156F8(change);
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v3 = self;
+  selfCopy = self;
   v4 = sub_115840();
   v6 = v5;
 
@@ -29,15 +29,15 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_115974();
 }
 
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in
 {
   swift_getObjectType();
   swift_unknownObjectRetain();
-  v5 = self;
+  selfCopy = self;
   v6 = sub_116910();
   v8 = v7;
   v10 = v9;

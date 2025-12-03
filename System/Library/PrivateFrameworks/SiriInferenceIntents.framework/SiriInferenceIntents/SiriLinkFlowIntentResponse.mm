@@ -1,9 +1,9 @@
 @interface SiriLinkFlowIntentResponse
 - (SiriLinkFlowIntentResponse)init;
-- (SiriLinkFlowIntentResponse)initWithCode:(int64_t)a3 userActivity:(id)a4;
-- (SiriLinkFlowIntentResponse)initWithCoder:(id)a3;
+- (SiriLinkFlowIntentResponse)initWithCode:(int64_t)code userActivity:(id)activity;
+- (SiriLinkFlowIntentResponse)initWithCoder:(id)coder;
 - (int64_t)code;
-- (void)setCode:(int64_t)a3;
+- (void)setCode:(int64_t)code;
 @end
 
 @implementation SiriLinkFlowIntentResponse
@@ -15,22 +15,22 @@
   return *(&self->super.super.isa + v3);
 }
 
-- (void)setCode:(int64_t)a3
+- (void)setCode:(int64_t)code
 {
   v5 = OBJC_IVAR___SiriLinkFlowIntentResponse_code;
   swift_beginAccess();
-  *(&self->super.super.isa + v5) = a3;
+  *(&self->super.super.isa + v5) = code;
 }
 
-- (SiriLinkFlowIntentResponse)initWithCode:(int64_t)a3 userActivity:(id)a4
+- (SiriLinkFlowIntentResponse)initWithCode:(int64_t)code userActivity:(id)activity
 {
-  v6 = a4;
+  activityCopy = activity;
   v7 = [(SiriLinkFlowIntentResponse *)self init];
   v8 = OBJC_IVAR___SiriLinkFlowIntentResponse_code;
   swift_beginAccess();
-  *(&v7->super.super.isa + v8) = a3;
+  *(&v7->super.super.isa + v8) = code;
   v9 = v7;
-  [(SiriLinkFlowIntentResponse *)v9 setUserActivity:v6];
+  [(SiriLinkFlowIntentResponse *)v9 setUserActivity:activityCopy];
 
   return v9;
 }
@@ -43,13 +43,13 @@
   return [(SiriLinkFlowIntentResponse *)&v3 init];
 }
 
-- (SiriLinkFlowIntentResponse)initWithCoder:(id)a3
+- (SiriLinkFlowIntentResponse)initWithCoder:(id)coder
 {
   *(&self->super.super.isa + OBJC_IVAR___SiriLinkFlowIntentResponse_code) = 0;
   v7.receiver = self;
   v7.super_class = type metadata accessor for SiriLinkFlowIntentResponse();
-  v4 = a3;
-  v5 = [(SiriLinkFlowIntentResponse *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(SiriLinkFlowIntentResponse *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

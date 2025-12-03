@@ -1,9 +1,9 @@
 @interface ViewController
 - (BOOL)accessibilityPerformEscape;
-- (_TtC28AccessibilitySharedUISupportP33_DEAF73D7C474C94E24616C25DC2EB0AC14ViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC28AccessibilitySharedUISupportP33_DEAF73D7C474C94E24616C25DC2EB0AC14ViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)doneHandler;
 - (void)homeHandler;
-- (void)presentationControllerDidDismiss:(id)a3;
+- (void)presentationControllerDidDismiss:(id)dismiss;
 - (void)previousHandler;
 - (void)viewDidLoad;
 @end
@@ -13,13 +13,13 @@
 - (void)homeHandler
 {
   v2 = *(&self->super.super.super.isa + OBJC_IVAR____TtC28AccessibilitySharedUISupportP33_DEAF73D7C474C94E24616C25DC2EB0AC14ViewController_navigationModel);
-  v3 = self;
+  selfCopy = self;
   NavigationModel.goHome()();
 }
 
 - (void)doneHandler
 {
-  v2 = self;
+  selfCopy = self;
   sub_23DAB6EF8();
 }
 
@@ -27,31 +27,31 @@
 {
   v2 = *(&self->super.super.super.isa + OBJC_IVAR____TtC28AccessibilitySharedUISupportP33_DEAF73D7C474C94E24616C25DC2EB0AC14ViewController_navigationModel);
   v4 = 1;
-  v3 = self;
+  selfCopy = self;
   sub_23DABB0B8(&v4);
 }
 
-- (void)presentationControllerDidDismiss:(id)a3
+- (void)presentationControllerDidDismiss:(id)dismiss
 {
-  v3 = self;
+  selfCopy = self;
   sub_23DAB6EF8();
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_23DAB7F80();
 }
 
 - (BOOL)accessibilityPerformEscape
 {
-  v2 = self;
+  selfCopy = self;
   sub_23DAB6EF8();
 
   return 1;
 }
 
-- (_TtC28AccessibilitySharedUISupportP33_DEAF73D7C474C94E24616C25DC2EB0AC14ViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC28AccessibilitySharedUISupportP33_DEAF73D7C474C94E24616C25DC2EB0AC14ViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

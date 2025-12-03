@@ -1,15 +1,15 @@
 @interface CRLanguageModelConfiguration
-+ (id)configurationForLanguageIdentifier:(id)a3 rev:(unint64_t)a4;
-- (CRLanguageModelConfiguration)initWithDictionary:(id)a3;
-- (float)lmThresholdForLength:(int64_t)a3;
++ (id)configurationForLanguageIdentifier:(id)identifier rev:(unint64_t)rev;
+- (CRLanguageModelConfiguration)initWithDictionary:(id)dictionary;
+- (float)lmThresholdForLength:(int64_t)length;
 @end
 
 @implementation CRLanguageModelConfiguration
 
-+ (id)configurationForLanguageIdentifier:(id)a3 rev:(unint64_t)a4
++ (id)configurationForLanguageIdentifier:(id)identifier rev:(unint64_t)rev
 {
-  v5 = a3;
-  if (a4 < 2)
+  identifierCopy = identifier;
+  if (rev < 2)
   {
     v12 = [CRLanguageModelConfiguration alloc];
     v11 = [(CRLanguageModelConfiguration *)v12 initWithDictionary:MEMORY[0x1E695E0F8]];
@@ -18,10 +18,10 @@
   else
   {
     v6 = lmConfig();
-    v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
-    v8 = [v7 stringValue];
-    v9 = [v6 objectForKeyedSubscript:v8];
-    v10 = [v9 objectForKeyedSubscript:v5];
+    v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:rev];
+    stringValue = [v7 stringValue];
+    v9 = [v6 objectForKeyedSubscript:stringValue];
+    v10 = [v9 objectForKeyedSubscript:identifierCopy];
 
     v11 = [[CRLanguageModelConfiguration alloc] initWithDictionary:v10];
   }
@@ -29,63 +29,63 @@
   return v11;
 }
 
-- (CRLanguageModelConfiguration)initWithDictionary:(id)a3
+- (CRLanguageModelConfiguration)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v23.receiver = self;
   v23.super_class = CRLanguageModelConfiguration;
   v5 = [(CRLanguageModelConfiguration *)&v23 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"lexicon"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"lexicon"];
     lexiconWeight = v5->_lexiconWeight;
     v5->_lexiconWeight = v6;
 
-    v8 = [v4 objectForKeyedSubscript:@"charlm"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"charlm"];
     characterLMWeight = v5->_characterLMWeight;
     v5->_characterLMWeight = v8;
 
-    v10 = [v4 objectForKeyedSubscript:@"wordlm"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"wordlm"];
     wordLMWeight = v5->_wordLMWeight;
     v5->_wordLMWeight = v10;
 
-    v12 = [v4 objectForKeyedSubscript:@"lmFiltering"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"lmFiltering"];
     v13 = [v12 objectForKeyedSubscript:@"activationThreshold"];
     [v13 floatValue];
     v5->_filteringActivationThreshold = v14;
 
-    v15 = [v4 objectForKeyedSubscript:@"lmFiltering"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"lmFiltering"];
     v16 = [v15 objectForKeyedSubscript:@"charLengths"];
     filteringCharLengths = v5->_filteringCharLengths;
     v5->_filteringCharLengths = v16;
 
-    v18 = [v4 objectForKeyedSubscript:@"lmFiltering"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"lmFiltering"];
     v19 = [v18 objectForKeyedSubscript:@"lmThresholds"];
     lmFilteringThresholds = v5->_lmFilteringThresholds;
     v5->_lmFilteringThresholds = v19;
 
-    v21 = [(NSArray *)v5->_filteringCharLengths lastObject];
-    v5->_filteringMinimumLength = [v21 integerValue];
+    lastObject = [(NSArray *)v5->_filteringCharLengths lastObject];
+    v5->_filteringMinimumLength = [lastObject integerValue];
   }
 
   return v5;
 }
 
-- (float)lmThresholdForLength:(int64_t)a3
+- (float)lmThresholdForLength:(int64_t)length
 {
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
   v12 = 2139095039;
-  v5 = [(CRLanguageModelConfiguration *)self filteringCharLengths];
+  filteringCharLengths = [(CRLanguageModelConfiguration *)self filteringCharLengths];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __53__CRLanguageModelConfiguration_lmThresholdForLength___block_invoke;
   v8[3] = &unk_1E7BC36F8;
   v8[5] = &v9;
-  v8[6] = a3;
+  v8[6] = length;
   v8[4] = self;
-  [v5 enumerateObjectsUsingBlock:v8];
+  [filteringCharLengths enumerateObjectsUsingBlock:v8];
 
   v6 = v10[6];
   _Block_object_dispose(&v9, 8);

@@ -1,56 +1,56 @@
 @interface _SBContinuitySessionStateMachineStateFlushing
 - (_SBContinuitySessionStateMachineClientExternallyBlockedReasonsProvider)clientExternallyBlockedReasonsProvider;
-- (_SBContinuitySessionStateMachineStateFlushing)initWithSystemEventMonitor:(id)a3 continuityDisplayAuthenticationCoordinator:(id)a4;
+- (_SBContinuitySessionStateMachineStateFlushing)initWithSystemEventMonitor:(id)monitor continuityDisplayAuthenticationCoordinator:(id)coordinator;
 - (void)_evaluateClientExternallyBlockedReasons;
 - (void)_evaluateLockState;
 - (void)_evaluateSystemEvents;
-- (void)_reevaluateStateForReason:(id)a3;
-- (void)appendDescriptionToStream:(id)a3;
-- (void)continuityDisplayAuthenticationCoordinatorDidUpdateLockState:(id)a3;
-- (void)enteredStateFrom:(unint64_t)a3;
+- (void)_reevaluateStateForReason:(id)reason;
+- (void)appendDescriptionToStream:(id)stream;
+- (void)continuityDisplayAuthenticationCoordinatorDidUpdateLockState:(id)state;
+- (void)enteredStateFrom:(unint64_t)from;
 - (void)invalidate;
 @end
 
 @implementation _SBContinuitySessionStateMachineStateFlushing
 
-- (_SBContinuitySessionStateMachineStateFlushing)initWithSystemEventMonitor:(id)a3 continuityDisplayAuthenticationCoordinator:(id)a4
+- (_SBContinuitySessionStateMachineStateFlushing)initWithSystemEventMonitor:(id)monitor continuityDisplayAuthenticationCoordinator:(id)coordinator
 {
-  v7 = a3;
-  v8 = a4;
+  monitorCopy = monitor;
+  coordinatorCopy = coordinator;
   v12.receiver = self;
   v12.super_class = _SBContinuitySessionStateMachineStateFlushing;
   v9 = [(_SBContinuitySessionStateMachineStateFlushing *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_systemEventMonitor, a3);
-    [v7 addObserver:v10];
-    objc_storeStrong(&v10->_authenticationCoordinator, a4);
+    objc_storeStrong(&v9->_systemEventMonitor, monitor);
+    [monitorCopy addObserver:v10];
+    objc_storeStrong(&v10->_authenticationCoordinator, coordinator);
     [(SBContinuityDisplayAuthenticationCoordinator *)v10->_authenticationCoordinator addObserver:v10];
   }
 
   return v10;
 }
 
-- (void)enteredStateFrom:(unint64_t)a3
+- (void)enteredStateFrom:(unint64_t)from
 {
   self->_isCurrentState = 1;
   [(_SBContinuitySessionStateMachineStateFlushing *)self _evaluateClientExternallyBlockedReasons];
   [(_SBContinuitySessionStateMachineStateFlushing *)self _evaluateLockState];
   [(_SBContinuitySessionStateMachineStateFlushing *)self _evaluateSystemEvents];
   v5 = MEMORY[0x277CCACA8];
-  v7 = NSStringFromSBContinuitySessionState(a3);
+  v7 = NSStringFromSBContinuitySessionState(from);
   v6 = [v5 stringWithFormat:@"entered state from: %@", v7];
   [(_SBContinuitySessionStateMachineStateFlushing *)self _reevaluateStateForReason:v6];
 }
 
-- (void)continuityDisplayAuthenticationCoordinatorDidUpdateLockState:(id)a3
+- (void)continuityDisplayAuthenticationCoordinatorDidUpdateLockState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v5 = SBLogContinuitySession();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    [(_SBContinuitySessionStateMachineStateFlushing *)v4 continuityDisplayAuthenticationCoordinatorDidUpdateLockState:v5];
+    [(_SBContinuitySessionStateMachineStateFlushing *)stateCopy continuityDisplayAuthenticationCoordinatorDidUpdateLockState:v5];
   }
 
   [(_SBContinuitySessionStateMachineStateFlushing *)self _evaluateLockState];
@@ -69,24 +69,24 @@
   self->_invalidStateHandler = 0;
 }
 
-- (void)appendDescriptionToStream:(id)a3
+- (void)appendDescriptionToStream:(id)stream
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CF0C10] collectionLineBreakNoneStyle];
+  streamCopy = stream;
+  collectionLineBreakNoneStyle = [MEMORY[0x277CF0C10] collectionLineBreakNoneStyle];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __75___SBContinuitySessionStateMachineStateFlushing_appendDescriptionToStream___block_invoke;
   v7[3] = &unk_2783A92D8;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  [v6 overlayStyle:v5 block:v7];
+  v8 = streamCopy;
+  selfCopy = self;
+  v6 = streamCopy;
+  [v6 overlayStyle:collectionLineBreakNoneStyle block:v7];
 }
 
 - (void)_evaluateClientExternallyBlockedReasons
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"_SBContinuitySessionStateMachineStateFlushing.m" lineNumber:114 description:@"Must have _SBContinuitySessionStateMachineExternallyBlockedReasonsProvider"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"_SBContinuitySessionStateMachineStateFlushing.m" lineNumber:114 description:@"Must have _SBContinuitySessionStateMachineExternallyBlockedReasonsProvider"];
 }
 
 - (void)_evaluateSystemEvents
@@ -213,8 +213,8 @@ LABEL_14:
   {
     v12 = v2;
     v13 = v3;
-    v5 = [(SBContinuityDisplayAuthenticationCoordinator *)self->_authenticationCoordinator lockState];
-    if (v5 == 2)
+    lockState = [(SBContinuityDisplayAuthenticationCoordinator *)self->_authenticationCoordinator lockState];
+    if (lockState == 2)
     {
       v6 = SBLogContinuitySession();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -228,7 +228,7 @@ LABEL_14:
 
     else
     {
-      if (v5)
+      if (lockState)
       {
         return;
       }
@@ -249,17 +249,17 @@ LABEL_14:
   }
 }
 
-- (void)_reevaluateStateForReason:(id)a3
+- (void)_reevaluateStateForReason:(id)reason
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  reasonCopy = reason;
   if (self->_isCurrentState)
   {
     v5 = SBLogContinuitySession();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 138543362;
-      v14 = v4;
+      v14 = reasonCopy;
       _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "[State.Flushing] Re-evaluating state for reason: %{public}@", &v13, 0xCu);
     }
 
@@ -277,9 +277,9 @@ LABEL_14:
     {
       if (v10)
       {
-        v11 = [v7 bs_array];
+        bs_array = [v7 bs_array];
         v13 = 138543362;
-        v14 = v11;
+        v14 = bs_array;
         _os_log_impl(&dword_21ED4E000, v9, OS_LOG_TYPE_DEFAULT, "[State.Flushing] still blocked by %{public}@", &v13, 0xCu);
       }
 

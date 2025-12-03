@@ -1,7 +1,7 @@
 @interface HMDHomeManagerHH2SharedUserLastSync
 + (id)shortDescription;
-- (BOOL)isEqual:(id)a3;
-- (HMDHomeManagerHH2SharedUserLastSync)initWithArchivePath:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (HMDHomeManagerHH2SharedUserLastSync)initWithArchivePath:(id)path;
 - (NSData)archive;
 - (id)attributeDescriptions;
 - (id)shortDescription;
@@ -13,30 +13,30 @@
 
 - (id)attributeDescriptions
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v4 = objc_alloc(MEMORY[0x277D0F778]);
-  v5 = [(HMDHomeManagerHH2SharedUserLastSync *)self homeUUID];
-  v6 = [v4 initWithName:@"HomeUUID" value:v5];
-  [v3 addObject:v6];
+  homeUUID = [(HMDHomeManagerHH2SharedUserLastSync *)self homeUUID];
+  v6 = [v4 initWithName:@"HomeUUID" value:homeUUID];
+  [array addObject:v6];
 
   v7 = objc_alloc(MEMORY[0x277D0F778]);
-  v8 = [(HMDHomeManagerHH2SharedUserLastSync *)self user];
-  v9 = [v8 uuid];
-  v10 = [v7 initWithName:@"UserUUID" value:v9];
-  [v3 addObject:v10];
+  user = [(HMDHomeManagerHH2SharedUserLastSync *)self user];
+  uuid = [user uuid];
+  v10 = [v7 initWithName:@"UserUUID" value:uuid];
+  [array addObject:v10];
 
   v11 = objc_alloc(MEMORY[0x277D0F778]);
-  v12 = [(HMDHomeManagerHH2SharedUserLastSync *)self user];
-  v13 = [v12 userID];
-  v14 = [v11 initWithName:@"UserID" value:v13];
-  [v3 addObject:v14];
+  user2 = [(HMDHomeManagerHH2SharedUserLastSync *)self user];
+  userID = [user2 userID];
+  v14 = [v11 initWithName:@"UserID" value:userID];
+  [array addObject:v14];
 
   v15 = objc_alloc(MEMORY[0x277D0F778]);
-  v16 = [(HMDHomeManagerHH2SharedUserLastSync *)self creationDate];
-  v17 = [v15 initWithName:@"Created Date" value:v16];
-  [v3 addObject:v17];
+  creationDate = [(HMDHomeManagerHH2SharedUserLastSync *)self creationDate];
+  v17 = [v15 initWithName:@"Created Date" value:creationDate];
+  [array addObject:v17];
 
-  v18 = [v3 copy];
+  v18 = [array copy];
 
   return v18;
 }
@@ -63,22 +63,22 @@
   }
 
   v6 = [v4 initFileURLWithPath:Property];
-  v7 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v16 = 0;
-  [v7 removeItemAtURL:v6 error:&v16];
+  [defaultManager removeItemAtURL:v6 error:&v16];
   v8 = v16;
 
   if (v8)
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       v13 = HMFGetLogIdentifier();
       if (self)
       {
-        v14 = objc_getProperty(v10, v12, 40, 1);
+        v14 = objc_getProperty(selfCopy, v12, 40, 1);
       }
 
       else
@@ -122,10 +122,10 @@
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v14 = 1;
   }
@@ -135,7 +135,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -146,11 +146,11 @@
     v6 = v5;
     if (v6 && (-[HMDHomeManagerHH2SharedUserLastSync homeUUID](self, "homeUUID"), v7 = objc_claimAutoreleasedReturnValue(), -[HMDHomeManagerHH2SharedUserLastSync homeUUID](v6, "homeUUID"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v7 isEqual:v8], v8, v7, v9))
     {
-      v10 = [(HMDHomeManagerHH2SharedUserLastSync *)self user];
-      v11 = [v10 uuid];
-      v12 = [(HMDHomeManagerHH2SharedUserLastSync *)v6 user];
-      v13 = [v12 uuid];
-      v14 = [v11 isEqual:v13];
+      user = [(HMDHomeManagerHH2SharedUserLastSync *)self user];
+      uuid = [user uuid];
+      user2 = [(HMDHomeManagerHH2SharedUserLastSync *)v6 user];
+      uuid2 = [user2 uuid];
+      v14 = [uuid isEqual:uuid2];
     }
 
     else
@@ -202,16 +202,16 @@
   objc_autoreleasePoolPop(v4);
 }
 
-- (HMDHomeManagerHH2SharedUserLastSync)initWithArchivePath:(id)a3
+- (HMDHomeManagerHH2SharedUserLastSync)initWithArchivePath:(id)path
 {
-  v5 = a3;
+  pathCopy = path;
   v9.receiver = self;
   v9.super_class = HMDHomeManagerHH2SharedUserLastSync;
   v6 = [(HMDHomeManagerHH2SharedUserLastSync *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_archivePath, a3);
+    objc_storeStrong(&v6->_archivePath, path);
   }
 
   return v7;

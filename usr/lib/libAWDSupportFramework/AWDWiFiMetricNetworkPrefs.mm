@@ -1,28 +1,28 @@
 @interface AWDWiFiMetricNetworkPrefs
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addMostUsedNetworks:(id)a3;
-- (void)copyTo:(id)a3;
+- (void)addMostUsedNetworks:(id)networks;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasAdhocNetsCount:(BOOL)a3;
-- (void)setHasApplePersHotspotNetsCount:(BOOL)a3;
-- (void)setHasAtjCanceledCount:(BOOL)a3;
-- (void)setHasAtjEnabled:(BOOL)a3;
-- (void)setHasAtjUsedCount:(BOOL)a3;
-- (void)setHasCaptiveNetsCount:(BOOL)a3;
-- (void)setHasEapNetsCount:(BOOL)a3;
-- (void)setHasHiddenNetsCount:(BOOL)a3;
-- (void)setHasMostUsedCount:(BOOL)a3;
-- (void)setHasOpenNonCaptiveNetsCount:(BOOL)a3;
-- (void)setHasPrefNetsCount:(BOOL)a3;
-- (void)setHasWapiNetsCount:(BOOL)a3;
-- (void)setHasWepNetsCount:(BOOL)a3;
-- (void)setHasWpaNetsCount:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasAdhocNetsCount:(BOOL)count;
+- (void)setHasApplePersHotspotNetsCount:(BOOL)count;
+- (void)setHasAtjCanceledCount:(BOOL)count;
+- (void)setHasAtjEnabled:(BOOL)enabled;
+- (void)setHasAtjUsedCount:(BOOL)count;
+- (void)setHasCaptiveNetsCount:(BOOL)count;
+- (void)setHasEapNetsCount:(BOOL)count;
+- (void)setHasHiddenNetsCount:(BOOL)count;
+- (void)setHasMostUsedCount:(BOOL)count;
+- (void)setHasOpenNonCaptiveNetsCount:(BOOL)count;
+- (void)setHasPrefNetsCount:(BOOL)count;
+- (void)setHasWapiNetsCount:(BOOL)count;
+- (void)setHasWepNetsCount:(BOOL)count;
+- (void)setHasWpaNetsCount:(BOOL)count;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDWiFiMetricNetworkPrefs
@@ -35,9 +35,9 @@
   [(AWDWiFiMetricNetworkPrefs *)&v3 dealloc];
 }
 
-- (void)setHasAtjEnabled:(BOOL)a3
+- (void)setHasAtjEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 0x4000;
   }
@@ -50,9 +50,9 @@
   *&self->_has = *&self->_has & 0xBFFF | v3;
 }
 
-- (void)setHasAtjCanceledCount:(BOOL)a3
+- (void)setHasAtjCanceledCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 8;
   }
@@ -65,9 +65,9 @@
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasAtjUsedCount:(BOOL)a3
+- (void)setHasAtjUsedCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 16;
   }
@@ -80,9 +80,9 @@
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasAdhocNetsCount:(BOOL)a3
+- (void)setHasAdhocNetsCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 2;
   }
@@ -95,9 +95,9 @@
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (void)setHasPrefNetsCount:(BOOL)a3
+- (void)setHasPrefNetsCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 1024;
   }
@@ -110,9 +110,9 @@
   *&self->_has = *&self->_has & 0xFBFF | v3;
 }
 
-- (void)setHasCaptiveNetsCount:(BOOL)a3
+- (void)setHasCaptiveNetsCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 32;
   }
@@ -125,9 +125,9 @@
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasApplePersHotspotNetsCount:(BOOL)a3
+- (void)setHasApplePersHotspotNetsCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 4;
   }
@@ -140,9 +140,9 @@
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasWapiNetsCount:(BOOL)a3
+- (void)setHasWapiNetsCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 2048;
   }
@@ -155,9 +155,9 @@
   *&self->_has = *&self->_has & 0xF7FF | v3;
 }
 
-- (void)setHasMostUsedCount:(BOOL)a3
+- (void)setHasMostUsedCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 256;
   }
@@ -170,7 +170,7 @@
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)addMostUsedNetworks:(id)a3
+- (void)addMostUsedNetworks:(id)networks
 {
   mostUsedNetworks = self->_mostUsedNetworks;
   if (!mostUsedNetworks)
@@ -179,12 +179,12 @@
     self->_mostUsedNetworks = mostUsedNetworks;
   }
 
-  [(NSMutableArray *)mostUsedNetworks addObject:a3];
+  [(NSMutableArray *)mostUsedNetworks addObject:networks];
 }
 
-- (void)setHasHiddenNetsCount:(BOOL)a3
+- (void)setHasHiddenNetsCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 128;
   }
@@ -197,9 +197,9 @@
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasWepNetsCount:(BOOL)a3
+- (void)setHasWepNetsCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 4096;
   }
@@ -212,9 +212,9 @@
   *&self->_has = *&self->_has & 0xEFFF | v3;
 }
 
-- (void)setHasWpaNetsCount:(BOOL)a3
+- (void)setHasWpaNetsCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 0x2000;
   }
@@ -227,9 +227,9 @@
   *&self->_has = *&self->_has & 0xDFFF | v3;
 }
 
-- (void)setHasEapNetsCount:(BOOL)a3
+- (void)setHasEapNetsCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 64;
   }
@@ -242,9 +242,9 @@
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasOpenNonCaptiveNetsCount:(BOOL)a3
+- (void)setHasOpenNonCaptiveNetsCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 512;
   }
@@ -267,11 +267,11 @@
 - (id)dictionaryRepresentation
 {
   v19 = *MEMORY[0x29EDCA608];
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if ((has & 0x4000) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_atjEnabled), @"atjEnabled"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_atjEnabled), @"atjEnabled"}];
     has = self->_has;
     if ((has & 8) == 0)
     {
@@ -290,7 +290,7 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_atjCanceledCount), @"atjCanceledCount"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_atjCanceledCount), @"atjCanceledCount"}];
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -304,7 +304,7 @@ LABEL_4:
   }
 
 LABEL_30:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_atjUsedCount), @"atjUsedCount"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_atjUsedCount), @"atjUsedCount"}];
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -318,7 +318,7 @@ LABEL_5:
   }
 
 LABEL_31:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_adhocNetsCount), @"adhocNetsCount"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_adhocNetsCount), @"adhocNetsCount"}];
   has = self->_has;
   if ((has & 0x400) == 0)
   {
@@ -332,7 +332,7 @@ LABEL_6:
   }
 
 LABEL_32:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_prefNetsCount), @"prefNetsCount"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_prefNetsCount), @"prefNetsCount"}];
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -346,7 +346,7 @@ LABEL_7:
   }
 
 LABEL_33:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_captiveNetsCount), @"captiveNetsCount"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_captiveNetsCount), @"captiveNetsCount"}];
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -360,7 +360,7 @@ LABEL_8:
   }
 
 LABEL_34:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_applePersHotspotNetsCount), @"applePersHotspotNetsCount"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_applePersHotspotNetsCount), @"applePersHotspotNetsCount"}];
   has = self->_has;
   if ((has & 0x800) == 0)
   {
@@ -374,11 +374,11 @@ LABEL_9:
   }
 
 LABEL_35:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_wapiNetsCount), @"wapiNetsCount"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_wapiNetsCount), @"wapiNetsCount"}];
   if ((*&self->_has & 0x100) != 0)
   {
 LABEL_10:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_mostUsedCount), @"mostUsedCount"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_mostUsedCount), @"mostUsedCount"}];
   }
 
 LABEL_11:
@@ -413,13 +413,13 @@ LABEL_11:
       while (v8);
     }
 
-    [v3 setObject:v5 forKey:@"mostUsedNetworks"];
+    [dictionary setObject:v5 forKey:@"mostUsedNetworks"];
   }
 
   v11 = self->_has;
   if (v11)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
     v11 = self->_has;
     if ((v11 & 0x80) == 0)
     {
@@ -438,7 +438,7 @@ LABEL_22:
     goto LABEL_22;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_hiddenNetsCount), @"hiddenNetsCount"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_hiddenNetsCount), @"hiddenNetsCount"}];
   v11 = self->_has;
   if ((v11 & 0x1000) == 0)
   {
@@ -452,7 +452,7 @@ LABEL_23:
   }
 
 LABEL_39:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_wepNetsCount), @"wepNetsCount"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_wepNetsCount), @"wepNetsCount"}];
   v11 = self->_has;
   if ((v11 & 0x2000) == 0)
   {
@@ -463,7 +463,7 @@ LABEL_24:
     }
 
 LABEL_41:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_eapNetsCount), @"eapNetsCount"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_eapNetsCount), @"eapNetsCount"}];
     if ((*&self->_has & 0x200) == 0)
     {
       goto LABEL_27;
@@ -473,7 +473,7 @@ LABEL_41:
   }
 
 LABEL_40:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_wpaNetsCount), @"wpaNetsCount"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_wpaNetsCount), @"wpaNetsCount"}];
   v11 = self->_has;
   if ((v11 & 0x40) != 0)
   {
@@ -484,15 +484,15 @@ LABEL_25:
   if ((v11 & 0x200) != 0)
   {
 LABEL_26:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_openNonCaptiveNetsCount), @"openNonCaptiveNetsCount"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_openNonCaptiveNetsCount), @"openNonCaptiveNetsCount"}];
   }
 
 LABEL_27:
   v12 = *MEMORY[0x29EDCA608];
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v33 = *MEMORY[0x29EDCA608];
   has = self->_has;
@@ -728,13 +728,13 @@ LABEL_25:
   v14 = *MEMORY[0x29EDCA608];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if ((has & 0x4000) != 0)
   {
-    *(a3 + 76) = self->_atjEnabled;
-    *(a3 + 40) |= 0x4000u;
+    *(to + 76) = self->_atjEnabled;
+    *(to + 40) |= 0x4000u;
     has = self->_has;
     if ((has & 8) == 0)
     {
@@ -753,8 +753,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(a3 + 6) = self->_atjCanceledCount;
-  *(a3 + 40) |= 8u;
+  *(to + 6) = self->_atjCanceledCount;
+  *(to + 40) |= 8u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -768,8 +768,8 @@ LABEL_4:
   }
 
 LABEL_25:
-  *(a3 + 7) = self->_atjUsedCount;
-  *(a3 + 40) |= 0x10u;
+  *(to + 7) = self->_atjUsedCount;
+  *(to + 40) |= 0x10u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -783,8 +783,8 @@ LABEL_5:
   }
 
 LABEL_26:
-  *(a3 + 4) = self->_adhocNetsCount;
-  *(a3 + 40) |= 2u;
+  *(to + 4) = self->_adhocNetsCount;
+  *(to + 40) |= 2u;
   has = self->_has;
   if ((has & 0x400) == 0)
   {
@@ -798,8 +798,8 @@ LABEL_6:
   }
 
 LABEL_27:
-  *(a3 + 15) = self->_prefNetsCount;
-  *(a3 + 40) |= 0x400u;
+  *(to + 15) = self->_prefNetsCount;
+  *(to + 40) |= 0x400u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -813,8 +813,8 @@ LABEL_7:
   }
 
 LABEL_28:
-  *(a3 + 8) = self->_captiveNetsCount;
-  *(a3 + 40) |= 0x20u;
+  *(to + 8) = self->_captiveNetsCount;
+  *(to + 40) |= 0x20u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -825,8 +825,8 @@ LABEL_8:
     }
 
 LABEL_30:
-    *(a3 + 16) = self->_wapiNetsCount;
-    *(a3 + 40) |= 0x800u;
+    *(to + 16) = self->_wapiNetsCount;
+    *(to + 40) |= 0x800u;
     if ((*&self->_has & 0x100) == 0)
     {
       goto LABEL_11;
@@ -836,8 +836,8 @@ LABEL_30:
   }
 
 LABEL_29:
-  *(a3 + 5) = self->_applePersHotspotNetsCount;
-  *(a3 + 40) |= 4u;
+  *(to + 5) = self->_applePersHotspotNetsCount;
+  *(to + 40) |= 4u;
   has = self->_has;
   if ((has & 0x800) != 0)
   {
@@ -848,21 +848,21 @@ LABEL_9:
   if ((has & 0x100) != 0)
   {
 LABEL_10:
-    *(a3 + 11) = self->_mostUsedCount;
-    *(a3 + 40) |= 0x100u;
+    *(to + 11) = self->_mostUsedCount;
+    *(to + 40) |= 0x100u;
   }
 
 LABEL_11:
   if ([(AWDWiFiMetricNetworkPrefs *)self mostUsedNetworksCount])
   {
-    [a3 clearMostUsedNetworks];
-    v6 = [(AWDWiFiMetricNetworkPrefs *)self mostUsedNetworksCount];
-    if (v6)
+    [to clearMostUsedNetworks];
+    mostUsedNetworksCount = [(AWDWiFiMetricNetworkPrefs *)self mostUsedNetworksCount];
+    if (mostUsedNetworksCount)
     {
-      v7 = v6;
+      v7 = mostUsedNetworksCount;
       for (i = 0; i != v7; ++i)
       {
-        [a3 addMostUsedNetworks:{-[AWDWiFiMetricNetworkPrefs mostUsedNetworksAtIndex:](self, "mostUsedNetworksAtIndex:", i)}];
+        [to addMostUsedNetworks:{-[AWDWiFiMetricNetworkPrefs mostUsedNetworksAtIndex:](self, "mostUsedNetworksAtIndex:", i)}];
       }
     }
   }
@@ -870,8 +870,8 @@ LABEL_11:
   v9 = self->_has;
   if (v9)
   {
-    *(a3 + 1) = self->_timestamp;
-    *(a3 + 40) |= 1u;
+    *(to + 1) = self->_timestamp;
+    *(to + 40) |= 1u;
     v9 = self->_has;
     if ((v9 & 0x80) == 0)
     {
@@ -890,8 +890,8 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  *(a3 + 10) = self->_hiddenNetsCount;
-  *(a3 + 40) |= 0x80u;
+  *(to + 10) = self->_hiddenNetsCount;
+  *(to + 40) |= 0x80u;
   v9 = self->_has;
   if ((v9 & 0x1000) == 0)
   {
@@ -905,8 +905,8 @@ LABEL_18:
   }
 
 LABEL_34:
-  *(a3 + 17) = self->_wepNetsCount;
-  *(a3 + 40) |= 0x1000u;
+  *(to + 17) = self->_wepNetsCount;
+  *(to + 40) |= 0x1000u;
   v9 = self->_has;
   if ((v9 & 0x2000) == 0)
   {
@@ -920,8 +920,8 @@ LABEL_19:
   }
 
 LABEL_35:
-  *(a3 + 18) = self->_wpaNetsCount;
-  *(a3 + 40) |= 0x2000u;
+  *(to + 18) = self->_wpaNetsCount;
+  *(to + 40) |= 0x2000u;
   v9 = self->_has;
   if ((v9 & 0x40) == 0)
   {
@@ -935,22 +935,22 @@ LABEL_20:
   }
 
 LABEL_36:
-  *(a3 + 9) = self->_eapNetsCount;
-  *(a3 + 40) |= 0x40u;
+  *(to + 9) = self->_eapNetsCount;
+  *(to + 40) |= 0x40u;
   if ((*&self->_has & 0x200) == 0)
   {
     return;
   }
 
 LABEL_21:
-  *(a3 + 14) = self->_openNonCaptiveNetsCount;
-  *(a3 + 40) |= 0x200u;
+  *(to + 14) = self->_openNonCaptiveNetsCount;
+  *(to + 40) |= 0x200u;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v22 = *MEMORY[0x29EDCA608];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 0x4000) != 0)
@@ -1094,7 +1094,7 @@ LABEL_11:
           objc_enumerationMutation(mostUsedNetworks);
         }
 
-        v13 = [*(*(&v17 + 1) + 8 * i) copyWithZone:a3];
+        v13 = [*(*(&v17 + 1) + 8 * i) copyWithZone:zone];
         [v6 addMostUsedNetworks:v13];
       }
 
@@ -1186,30 +1186,30 @@ LABEL_25:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (!v5)
   {
     return v5;
   }
 
   has = self->_has;
-  v7 = *(a3 + 40);
+  v7 = *(equal + 40);
   if ((has & 0x4000) != 0)
   {
-    if ((*(a3 + 40) & 0x4000) != 0)
+    if ((*(equal + 40) & 0x4000) != 0)
     {
-      v8 = *(a3 + 76);
+      v8 = *(equal + 76);
       if (self->_atjEnabled)
       {
-        if ((*(a3 + 76) & 1) == 0)
+        if ((*(equal + 76) & 1) == 0)
         {
           goto LABEL_82;
         }
       }
 
-      else if (*(a3 + 76))
+      else if (*(equal + 76))
       {
         goto LABEL_82;
       }
@@ -1222,7 +1222,7 @@ LABEL_82:
     return v5;
   }
 
-  if ((*(a3 + 40) & 0x4000) != 0)
+  if ((*(equal + 40) & 0x4000) != 0)
   {
     goto LABEL_82;
   }
@@ -1230,7 +1230,7 @@ LABEL_82:
 LABEL_4:
   if ((has & 8) != 0)
   {
-    if ((v7 & 8) == 0 || self->_atjCanceledCount != *(a3 + 6))
+    if ((v7 & 8) == 0 || self->_atjCanceledCount != *(equal + 6))
     {
       goto LABEL_82;
     }
@@ -1243,7 +1243,7 @@ LABEL_4:
 
   if ((has & 0x10) != 0)
   {
-    if ((v7 & 0x10) == 0 || self->_atjUsedCount != *(a3 + 7))
+    if ((v7 & 0x10) == 0 || self->_atjUsedCount != *(equal + 7))
     {
       goto LABEL_82;
     }
@@ -1256,7 +1256,7 @@ LABEL_4:
 
   if ((has & 2) != 0)
   {
-    if ((v7 & 2) == 0 || self->_adhocNetsCount != *(a3 + 4))
+    if ((v7 & 2) == 0 || self->_adhocNetsCount != *(equal + 4))
     {
       goto LABEL_82;
     }
@@ -1269,20 +1269,20 @@ LABEL_4:
 
   if ((*&self->_has & 0x400) != 0)
   {
-    if ((*(a3 + 40) & 0x400) == 0 || self->_prefNetsCount != *(a3 + 15))
+    if ((*(equal + 40) & 0x400) == 0 || self->_prefNetsCount != *(equal + 15))
     {
       goto LABEL_82;
     }
   }
 
-  else if ((*(a3 + 40) & 0x400) != 0)
+  else if ((*(equal + 40) & 0x400) != 0)
   {
     goto LABEL_82;
   }
 
   if ((has & 0x20) != 0)
   {
-    if ((v7 & 0x20) == 0 || self->_captiveNetsCount != *(a3 + 8))
+    if ((v7 & 0x20) == 0 || self->_captiveNetsCount != *(equal + 8))
     {
       goto LABEL_82;
     }
@@ -1295,7 +1295,7 @@ LABEL_4:
 
   if ((has & 4) != 0)
   {
-    if ((v7 & 4) == 0 || self->_applePersHotspotNetsCount != *(a3 + 5))
+    if ((v7 & 4) == 0 || self->_applePersHotspotNetsCount != *(equal + 5))
     {
       goto LABEL_82;
     }
@@ -1308,32 +1308,32 @@ LABEL_4:
 
   if ((*&self->_has & 0x800) != 0)
   {
-    if ((*(a3 + 40) & 0x800) == 0 || self->_wapiNetsCount != *(a3 + 16))
+    if ((*(equal + 40) & 0x800) == 0 || self->_wapiNetsCount != *(equal + 16))
     {
       goto LABEL_82;
     }
   }
 
-  else if ((*(a3 + 40) & 0x800) != 0)
+  else if ((*(equal + 40) & 0x800) != 0)
   {
     goto LABEL_82;
   }
 
   if ((*&self->_has & 0x100) != 0)
   {
-    if ((*(a3 + 40) & 0x100) == 0 || self->_mostUsedCount != *(a3 + 11))
+    if ((*(equal + 40) & 0x100) == 0 || self->_mostUsedCount != *(equal + 11))
     {
       goto LABEL_82;
     }
   }
 
-  else if ((*(a3 + 40) & 0x100) != 0)
+  else if ((*(equal + 40) & 0x100) != 0)
   {
     goto LABEL_82;
   }
 
   mostUsedNetworks = self->_mostUsedNetworks;
-  if (mostUsedNetworks | *(a3 + 6))
+  if (mostUsedNetworks | *(equal + 6))
   {
     v5 = [(NSMutableArray *)mostUsedNetworks isEqual:?];
     if (!v5)
@@ -1344,10 +1344,10 @@ LABEL_4:
     has = self->_has;
   }
 
-  v10 = *(a3 + 40);
+  v10 = *(equal + 40);
   if (has)
   {
-    if ((v10 & 1) == 0 || self->_timestamp != *(a3 + 1))
+    if ((v10 & 1) == 0 || self->_timestamp != *(equal + 1))
     {
       goto LABEL_82;
     }
@@ -1360,7 +1360,7 @@ LABEL_4:
 
   if ((has & 0x80) != 0)
   {
-    if ((v10 & 0x80) == 0 || self->_hiddenNetsCount != *(a3 + 10))
+    if ((v10 & 0x80) == 0 || self->_hiddenNetsCount != *(equal + 10))
     {
       goto LABEL_82;
     }
@@ -1373,33 +1373,33 @@ LABEL_4:
 
   if ((has & 0x1000) != 0)
   {
-    if ((*(a3 + 40) & 0x1000) == 0 || self->_wepNetsCount != *(a3 + 17))
+    if ((*(equal + 40) & 0x1000) == 0 || self->_wepNetsCount != *(equal + 17))
     {
       goto LABEL_82;
     }
   }
 
-  else if ((*(a3 + 40) & 0x1000) != 0)
+  else if ((*(equal + 40) & 0x1000) != 0)
   {
     goto LABEL_82;
   }
 
   if ((has & 0x2000) != 0)
   {
-    if ((*(a3 + 40) & 0x2000) == 0 || self->_wpaNetsCount != *(a3 + 18))
+    if ((*(equal + 40) & 0x2000) == 0 || self->_wpaNetsCount != *(equal + 18))
     {
       goto LABEL_82;
     }
   }
 
-  else if ((*(a3 + 40) & 0x2000) != 0)
+  else if ((*(equal + 40) & 0x2000) != 0)
   {
     goto LABEL_82;
   }
 
   if ((has & 0x40) != 0)
   {
-    if ((v10 & 0x40) == 0 || self->_eapNetsCount != *(a3 + 9))
+    if ((v10 & 0x40) == 0 || self->_eapNetsCount != *(equal + 9))
     {
       goto LABEL_82;
     }
@@ -1413,7 +1413,7 @@ LABEL_4:
   LOBYTE(v5) = (v10 & 0x200) == 0;
   if ((has & 0x200) != 0)
   {
-    if ((*(a3 + 40) & 0x200) == 0 || self->_openNonCaptiveNetsCount != *(a3 + 14))
+    if ((*(equal + 40) & 0x200) == 0 || self->_openNonCaptiveNetsCount != *(equal + 14))
     {
       goto LABEL_82;
     }
@@ -1629,15 +1629,15 @@ LABEL_26:
   return v21 ^ v22 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v13 ^ v14 ^ v15 ^ v16 ^ v17 ^ v18 ^ v11;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v18 = *MEMORY[0x29EDCA608];
-  v5 = *(a3 + 40);
+  v5 = *(from + 40);
   if ((v5 & 0x4000) != 0)
   {
-    self->_atjEnabled = *(a3 + 76);
+    self->_atjEnabled = *(from + 76);
     *&self->_has |= 0x4000u;
-    v5 = *(a3 + 40);
+    v5 = *(from + 40);
     if ((v5 & 8) == 0)
     {
 LABEL_3:
@@ -1655,9 +1655,9 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  self->_atjCanceledCount = *(a3 + 6);
+  self->_atjCanceledCount = *(from + 6);
   *&self->_has |= 8u;
-  v5 = *(a3 + 40);
+  v5 = *(from + 40);
   if ((v5 & 0x10) == 0)
   {
 LABEL_4:
@@ -1670,9 +1670,9 @@ LABEL_4:
   }
 
 LABEL_28:
-  self->_atjUsedCount = *(a3 + 7);
+  self->_atjUsedCount = *(from + 7);
   *&self->_has |= 0x10u;
-  v5 = *(a3 + 40);
+  v5 = *(from + 40);
   if ((v5 & 2) == 0)
   {
 LABEL_5:
@@ -1685,9 +1685,9 @@ LABEL_5:
   }
 
 LABEL_29:
-  self->_adhocNetsCount = *(a3 + 4);
+  self->_adhocNetsCount = *(from + 4);
   *&self->_has |= 2u;
-  v5 = *(a3 + 40);
+  v5 = *(from + 40);
   if ((v5 & 0x400) == 0)
   {
 LABEL_6:
@@ -1700,9 +1700,9 @@ LABEL_6:
   }
 
 LABEL_30:
-  self->_prefNetsCount = *(a3 + 15);
+  self->_prefNetsCount = *(from + 15);
   *&self->_has |= 0x400u;
-  v5 = *(a3 + 40);
+  v5 = *(from + 40);
   if ((v5 & 0x20) == 0)
   {
 LABEL_7:
@@ -1715,9 +1715,9 @@ LABEL_7:
   }
 
 LABEL_31:
-  self->_captiveNetsCount = *(a3 + 8);
+  self->_captiveNetsCount = *(from + 8);
   *&self->_has |= 0x20u;
-  v5 = *(a3 + 40);
+  v5 = *(from + 40);
   if ((v5 & 4) == 0)
   {
 LABEL_8:
@@ -1730,9 +1730,9 @@ LABEL_8:
   }
 
 LABEL_32:
-  self->_applePersHotspotNetsCount = *(a3 + 5);
+  self->_applePersHotspotNetsCount = *(from + 5);
   *&self->_has |= 4u;
-  v5 = *(a3 + 40);
+  v5 = *(from + 40);
   if ((v5 & 0x800) == 0)
   {
 LABEL_9:
@@ -1745,12 +1745,12 @@ LABEL_9:
   }
 
 LABEL_33:
-  self->_wapiNetsCount = *(a3 + 16);
+  self->_wapiNetsCount = *(from + 16);
   *&self->_has |= 0x800u;
-  if ((*(a3 + 40) & 0x100) != 0)
+  if ((*(from + 40) & 0x100) != 0)
   {
 LABEL_10:
-    self->_mostUsedCount = *(a3 + 11);
+    self->_mostUsedCount = *(from + 11);
     *&self->_has |= 0x100u;
   }
 
@@ -1759,7 +1759,7 @@ LABEL_11:
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = *(a3 + 6);
+  v6 = *(from + 6);
   v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
@@ -1783,12 +1783,12 @@ LABEL_11:
     while (v8);
   }
 
-  v11 = *(a3 + 40);
+  v11 = *(from + 40);
   if (v11)
   {
-    self->_timestamp = *(a3 + 1);
+    self->_timestamp = *(from + 1);
     *&self->_has |= 1u;
-    v11 = *(a3 + 40);
+    v11 = *(from + 40);
     if ((v11 & 0x80) == 0)
     {
 LABEL_20:
@@ -1806,9 +1806,9 @@ LABEL_20:
     goto LABEL_20;
   }
 
-  self->_hiddenNetsCount = *(a3 + 10);
+  self->_hiddenNetsCount = *(from + 10);
   *&self->_has |= 0x80u;
-  v11 = *(a3 + 40);
+  v11 = *(from + 40);
   if ((v11 & 0x1000) == 0)
   {
 LABEL_21:
@@ -1821,9 +1821,9 @@ LABEL_21:
   }
 
 LABEL_37:
-  self->_wepNetsCount = *(a3 + 17);
+  self->_wepNetsCount = *(from + 17);
   *&self->_has |= 0x1000u;
-  v11 = *(a3 + 40);
+  v11 = *(from + 40);
   if ((v11 & 0x2000) == 0)
   {
 LABEL_22:
@@ -1833,9 +1833,9 @@ LABEL_22:
     }
 
 LABEL_39:
-    self->_eapNetsCount = *(a3 + 9);
+    self->_eapNetsCount = *(from + 9);
     *&self->_has |= 0x40u;
-    if ((*(a3 + 40) & 0x200) == 0)
+    if ((*(from + 40) & 0x200) == 0)
     {
       goto LABEL_25;
     }
@@ -1844,9 +1844,9 @@ LABEL_39:
   }
 
 LABEL_38:
-  self->_wpaNetsCount = *(a3 + 18);
+  self->_wpaNetsCount = *(from + 18);
   *&self->_has |= 0x2000u;
-  v11 = *(a3 + 40);
+  v11 = *(from + 40);
   if ((v11 & 0x40) != 0)
   {
     goto LABEL_39;
@@ -1856,7 +1856,7 @@ LABEL_23:
   if ((v11 & 0x200) != 0)
   {
 LABEL_24:
-    self->_openNonCaptiveNetsCount = *(a3 + 14);
+    self->_openNonCaptiveNetsCount = *(from + 14);
     *&self->_has |= 0x200u;
   }
 

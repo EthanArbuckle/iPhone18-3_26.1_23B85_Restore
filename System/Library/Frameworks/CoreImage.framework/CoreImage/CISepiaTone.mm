@@ -42,12 +42,12 @@
 
   else
   {
-    v5 = [(CISepiaTone *)self _kernel];
+    _kernel = [(CISepiaTone *)self _kernel];
     [(CIImage *)self->inputImage extent];
     inputIntensity = self->inputIntensity;
     v11[0] = self->inputImage;
     v11[1] = inputIntensity;
-    return [v5 applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v11, 2), v7, v8, v9, v10}];
+    return [_kernel applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v11, 2), v7, v8, v9, v10}];
   }
 }
 

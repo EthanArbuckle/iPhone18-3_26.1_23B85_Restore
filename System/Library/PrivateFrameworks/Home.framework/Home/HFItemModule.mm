@@ -1,16 +1,16 @@
 @interface HFItemModule
-- (BOOL)containsItem:(id)a3;
+- (BOOL)containsItem:(id)item;
 - (BOOL)supportsReordering;
 - (HFItemModule)init;
-- (HFItemModule)initWithItemUpdater:(id)a3;
+- (HFItemModule)initWithItemUpdater:(id)updater;
 - (HFItemUpdating)itemUpdater;
 - (HFReorderableHomeKitItemList)reorderableHomeKitItemList;
 - (NSSet)allItems;
 - (NSSet)itemProviders;
 - (id)_itemComparator;
-- (id)buildSectionsWithDisplayedItems:(id)a3;
-- (id)matchingItemForHomeKitObject:(id)a3;
-- (void)setReorderableHomeKitItemList:(id)a3;
+- (id)buildSectionsWithDisplayedItems:(id)items;
+- (id)matchingItemForHomeKitObject:(id)object;
+- (void)setReorderableHomeKitItemList:(id)list;
 - (void)updateModuleIdentifierInItems;
 @end
 
@@ -18,23 +18,23 @@
 
 - (HFItemModule)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithItemUpdater_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HFItemModule.m" lineNumber:26 description:{@"%s is unavailable; use %@ instead", "-[HFItemModule init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFItemModule.m" lineNumber:26 description:{@"%s is unavailable; use %@ instead", "-[HFItemModule init]", v5}];
 
   return 0;
 }
 
-- (HFItemModule)initWithItemUpdater:(id)a3
+- (HFItemModule)initWithItemUpdater:(id)updater
 {
-  v4 = a3;
+  updaterCopy = updater;
   v13.receiver = self;
   v13.super_class = HFItemModule;
   v5 = [(HFItemModule *)&v13 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_itemUpdater, v4);
+    objc_storeWeak(&v5->_itemUpdater, updaterCopy);
     v7 = MEMORY[0x277CCACA8];
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
@@ -56,10 +56,10 @@
 
   else
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v10 = objc_opt_class();
     v11 = NSStringFromClass(v10);
-    [v9 handleFailureInMethod:a2 object:self file:@"HFItemModule.m" lineNumber:47 description:{@"%@ must either override itemProviders or buildItemProviders, but does not", v11}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HFItemModule.m" lineNumber:47 description:{@"%@ must either override itemProviders or buildItemProviders, but does not", v11}];
 
     v7 = [MEMORY[0x277CBEB98] set];
   }
@@ -67,23 +67,23 @@
   return v7;
 }
 
-- (id)buildSectionsWithDisplayedItems:(id)a3
+- (id)buildSectionsWithDisplayedItems:(id)items
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"HFItemModule.m" lineNumber:58 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HFItemModule buildSectionsWithDisplayedItems:]", objc_opt_class()}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFItemModule.m" lineNumber:58 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HFItemModule buildSectionsWithDisplayedItems:]", objc_opt_class()}];
 
   return MEMORY[0x277CBEBF8];
 }
 
 - (void)updateModuleIdentifierInItems
 {
-  v3 = [(HFItemModule *)self allItems];
+  allItems = [(HFItemModule *)self allItems];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __45__HFItemModule_updateModuleIdentifierInItems__block_invoke;
   v4[3] = &unk_277DF94B8;
   v4[4] = self;
-  [v3 na_each:v4];
+  [allItems na_each:v4];
 }
 
 void __45__HFItemModule_updateModuleIdentifierInItems__block_invoke(uint64_t a1, void *a2)
@@ -96,23 +96,23 @@ void __45__HFItemModule_updateModuleIdentifierInItems__block_invoke(uint64_t a1,
 
 - (NSSet)allItems
 {
-  v2 = [(HFItemModule *)self itemProviders];
-  v3 = [v2 na_flatMap:&__block_literal_global_162];
+  itemProviders = [(HFItemModule *)self itemProviders];
+  v3 = [itemProviders na_flatMap:&__block_literal_global_162];
 
   return v3;
 }
 
-- (BOOL)containsItem:(id)a3
+- (BOOL)containsItem:(id)item
 {
-  v4 = a3;
-  v5 = [(HFItemModule *)self itemProviders];
+  itemCopy = item;
+  itemProviders = [(HFItemModule *)self itemProviders];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __29__HFItemModule_containsItem___block_invoke;
   v9[3] = &unk_277DF6898;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 na_any:v9];
+  v10 = itemCopy;
+  v6 = itemCopy;
+  v7 = [itemProviders na_any:v9];
 
   return v7;
 }
@@ -127,8 +127,8 @@ uint64_t __29__HFItemModule_containsItem___block_invoke(uint64_t a1, void *a2)
 
 - (BOOL)supportsReordering
 {
-  v2 = [(HFItemModule *)self _reorderableHomeKitItemListKey];
-  v3 = v2 != 0;
+  _reorderableHomeKitItemListKey = [(HFItemModule *)self _reorderableHomeKitItemListKey];
+  v3 = _reorderableHomeKitItemListKey != 0;
 
   return v3;
 }
@@ -137,48 +137,48 @@ uint64_t __29__HFItemModule_containsItem___block_invoke(uint64_t a1, void *a2)
 {
   if ([(HFItemModule *)self supportsReordering])
   {
-    v3 = [(HFItemModule *)self clientReorderableHomeKitItemList];
+    clientReorderableHomeKitItemList = [(HFItemModule *)self clientReorderableHomeKitItemList];
 
-    if (v3)
+    if (clientReorderableHomeKitItemList)
     {
-      v4 = [(HFItemModule *)self clientReorderableHomeKitItemList];
+      clientReorderableHomeKitItemList2 = [(HFItemModule *)self clientReorderableHomeKitItemList];
     }
 
     else
     {
-      v5 = [(HFItemModule *)self itemUpdater];
-      v6 = [v5 sourceItem];
-      v7 = [v6 latestResults];
-      v8 = [(HFItemModule *)self _reorderableHomeKitItemListKey];
-      v4 = [v7 objectForKeyedSubscript:v8];
+      itemUpdater = [(HFItemModule *)self itemUpdater];
+      sourceItem = [itemUpdater sourceItem];
+      latestResults = [sourceItem latestResults];
+      _reorderableHomeKitItemListKey = [(HFItemModule *)self _reorderableHomeKitItemListKey];
+      clientReorderableHomeKitItemList2 = [latestResults objectForKeyedSubscript:_reorderableHomeKitItemListKey];
     }
   }
 
   else
   {
-    v4 = 0;
+    clientReorderableHomeKitItemList2 = 0;
   }
 
-  return v4;
+  return clientReorderableHomeKitItemList2;
 }
 
-- (void)setReorderableHomeKitItemList:(id)a3
+- (void)setReorderableHomeKitItemList:(id)list
 {
-  v4 = a3;
+  listCopy = list;
   if ([(HFItemModule *)self supportsReordering])
   {
-    [(HFItemModule *)self setClientReorderableHomeKitItemList:v4];
+    [(HFItemModule *)self setClientReorderableHomeKitItemList:listCopy];
   }
 }
 
 - (id)_itemComparator
 {
-  v2 = [(HFItemModule *)self reorderableHomeKitItemList];
-  v3 = [v2 sortedHomeKitItemComparator];
-  v4 = v3;
-  if (v3)
+  reorderableHomeKitItemList = [(HFItemModule *)self reorderableHomeKitItemList];
+  sortedHomeKitItemComparator = [reorderableHomeKitItemList sortedHomeKitItemComparator];
+  v4 = sortedHomeKitItemComparator;
+  if (sortedHomeKitItemComparator)
   {
-    v5 = _Block_copy(v3);
+    v5 = _Block_copy(sortedHomeKitItemComparator);
   }
 
   else
@@ -190,17 +190,17 @@ uint64_t __29__HFItemModule_containsItem___block_invoke(uint64_t a1, void *a2)
   return v5;
 }
 
-- (id)matchingItemForHomeKitObject:(id)a3
+- (id)matchingItemForHomeKitObject:(id)object
 {
-  v4 = a3;
-  v5 = [(HFItemModule *)self allItems];
+  objectCopy = object;
+  allItems = [(HFItemModule *)self allItems];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __45__HFItemModule_matchingItemForHomeKitObject___block_invoke;
   v9[3] = &unk_277DF4B70;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 na_firstObjectPassingTest:v9];
+  v10 = objectCopy;
+  v6 = objectCopy;
+  v7 = [allItems na_firstObjectPassingTest:v9];
 
   return v7;
 }

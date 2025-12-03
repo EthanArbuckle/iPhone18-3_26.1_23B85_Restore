@@ -1,19 +1,19 @@
 @interface MediaConversionServiceCommandLineDriver
-+ (BOOL)outputJSONDataForConversionOutputInformation:(id)a3;
-+ (id)replacementObjectForObject:(id)a3 valueConversionHandler:(id)a4;
++ (BOOL)outputJSONDataForConversionOutputInformation:(id)information;
++ (id)replacementObjectForObject:(id)object valueConversionHandler:(id)handler;
 + (id)usage;
 + (id)usagesummary;
-+ (void)_output:(uint64_t)a3 arguments:(FILE *)a4 file:;
-+ (void)outputConversionError:(id)a3 status:(int64_t)a4;
-- (BOOL)hasConversionOfType:(id)a3;
-- (BOOL)processOption:(int)a3 arg:(id)a4;
++ (void)_output:(uint64_t)_output arguments:(FILE *)arguments file:;
++ (void)outputConversionError:(id)error status:(int64_t)status;
+- (BOOL)hasConversionOfType:(id)type;
+- (BOOL)processOption:(int)option arg:(id)arg;
 - (MediaConversionServiceCommandLineDriver)init;
 - (int)run;
-- (int)runImageConversionWithConversionOptionSet:(id)a3;
-- (int)runVideoConversionWithConversionOptionSet:(id)a3;
-- (int)runVideoStillExtractionConversionWithConversionOptionSet:(id)a3;
+- (int)runImageConversionWithConversionOptionSet:(id)set;
+- (int)runVideoConversionWithConversionOptionSet:(id)set;
+- (int)runVideoStillExtractionConversionWithConversionOptionSet:(id)set;
 - (int)validateAndProcessArgumentValues;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)sendMessageToLaunchService;
 - (void)waitForSigInt;
 @end
@@ -25,9 +25,9 @@
   v4 = signal(2, 1);
   if (v4 == -1)
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v10 = __error();
-    [v9 handleFailureInMethod:a2 object:self file:@"MediaConversionServiceCommandLineDriver.m" lineNumber:986 description:{@"Unable to wait for SIGINT: %s\n", strerror(*v10)}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MediaConversionServiceCommandLineDriver.m" lineNumber:986 description:{@"Unable to wait for SIGINT: %s\n", strerror(*v10)}];
   }
 
   v5 = dispatch_semaphore_create(0);
@@ -72,10 +72,10 @@
         v8 = *(*(&v13 + 1) + 8 * i);
         [v8 setReplaceExistingOutput:{self->_replaceExistingOutput, v13}];
         [v8 setVerbose:self->_verbose];
-        v9 = [v8 validateAndProcess];
-        if (v9)
+        validateAndProcess = [v8 validateAndProcess];
+        if (validateAndProcess)
         {
-          v10 = v9;
+          v10 = validateAndProcess;
           goto LABEL_11;
         }
       }
@@ -97,12 +97,12 @@ LABEL_11:
   return v10;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v13 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (self->_showProgress && self->_conversionProgress == v9)
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (self->_showProgress && self->_conversionProgress == objectCopy)
   {
     v11 = objc_opt_class();
     [(NSProgress *)self->_conversionProgress fractionCompleted];
@@ -110,21 +110,21 @@ LABEL_11:
   }
 }
 
-- (int)runVideoStillExtractionConversionWithConversionOptionSet:(id)a3
+- (int)runVideoStillExtractionConversionWithConversionOptionSet:(id)set
 {
-  v4 = a3;
+  setCopy = set;
   v5 = objc_opt_new();
   v6 = MEMORY[0x277CBEBC0];
-  v7 = [v4 sourcePath];
-  v8 = [v6 fileURLWithPath:v7];
+  sourcePath = [setCopy sourcePath];
+  v8 = [v6 fileURLWithPath:sourcePath];
 
   v9 = MEMORY[0x277CBEBC0];
-  v10 = [v4 destinationPath];
-  v11 = [v9 fileURLWithPath:v10];
+  destinationPath = [setCopy destinationPath];
+  v11 = [v9 fileURLWithPath:destinationPath];
 
-  v12 = [MEMORY[0x277CBEA90] data];
+  data = [MEMORY[0x277CBEA90] data];
   v29 = 0;
-  v13 = [v12 writeToURL:v11 options:1 error:&v29];
+  v13 = [data writeToURL:v11 options:1 error:&v29];
   v14 = v29;
 
   if (v13)
@@ -134,7 +134,7 @@ LABEL_11:
     v27 = 0x2020000000;
     v28 = 70;
     v15 = dispatch_semaphore_create(0);
-    v16 = [v4 conversionOptions];
+    conversionOptions = [setCopy conversionOptions];
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
     v22[2] = __100__MediaConversionServiceCommandLineDriver_runVideoStillExtractionConversionWithConversionOptionSet___block_invoke;
@@ -143,7 +143,7 @@ LABEL_11:
     v24 = &v25;
     v17 = v15;
     v23 = v17;
-    [v5 extractStillImageFromVideoAtSourceURL:v8 toDestinationURL:v11 options:v16 completionHandler:v22];
+    [v5 extractStillImageFromVideoAtSourceURL:v8 toDestinationURL:v11 options:conversionOptions completionHandler:v22];
 
     dispatch_semaphore_wait(v17, 0xFFFFFFFFFFFFFFFFLL);
     v18 = *(v26 + 6);
@@ -154,8 +154,8 @@ LABEL_11:
   else
   {
     v19 = objc_opt_class();
-    v20 = [v4 destinationPath];
-    [v19 outputError:{@"Unable to create output file '%@': %@\n", v20, v14}];
+    destinationPath2 = [setCopy destinationPath];
+    [v19 outputError:{@"Unable to create output file '%@': %@\n", destinationPath2, v14}];
 
     v18 = 73;
   }
@@ -194,20 +194,20 @@ void __100__MediaConversionServiceCommandLineDriver_runVideoStillExtractionConve
   dispatch_semaphore_signal(*(a1 + 40));
 }
 
-- (int)runVideoConversionWithConversionOptionSet:(id)a3
+- (int)runVideoConversionWithConversionOptionSet:(id)set
 {
-  v4 = a3;
+  setCopy = set;
   v5 = MEMORY[0x277CBEBC0];
-  v6 = [v4 sourcePath];
-  v7 = [v5 fileURLWithPath:v6];
+  sourcePath = [setCopy sourcePath];
+  v7 = [v5 fileURLWithPath:sourcePath];
 
   v8 = MEMORY[0x277CBEBC0];
-  v9 = [v4 destinationPath];
-  v10 = [v8 fileURLWithPath:v9];
+  destinationPath = [setCopy destinationPath];
+  v10 = [v8 fileURLWithPath:destinationPath];
 
-  v11 = [MEMORY[0x277CBEA90] data];
+  data = [MEMORY[0x277CBEA90] data];
   v35 = 0;
-  v12 = [v11 writeToURL:v10 options:1 error:&v35];
+  v12 = [data writeToURL:v10 options:1 error:&v35];
   v13 = v35;
 
   if (v12)
@@ -218,7 +218,7 @@ void __100__MediaConversionServiceCommandLineDriver_runVideoStillExtractionConve
     v34 = 70;
     v14 = dispatch_semaphore_create(0);
     videoConversionServiceClient = self->_videoConversionServiceClient;
-    v16 = [v4 conversionOptions];
+    conversionOptions = [setCopy conversionOptions];
     v28[0] = MEMORY[0x277D85DD0];
     v28[1] = 3221225472;
     v28[2] = __85__MediaConversionServiceCommandLineDriver_runVideoConversionWithConversionOptionSet___block_invoke;
@@ -227,7 +227,7 @@ void __100__MediaConversionServiceCommandLineDriver_runVideoStillExtractionConve
     v30 = &v31;
     v17 = v14;
     v29 = v17;
-    v18 = [(PAVideoConversionServiceClient *)videoConversionServiceClient convertVideoAtSourceURL:v7 toDestinationURL:v10 options:v16 completionHandler:v28];
+    v18 = [(PAVideoConversionServiceClient *)videoConversionServiceClient convertVideoAtSourceURL:v7 toDestinationURL:v10 options:conversionOptions completionHandler:v28];
     conversionProgress = self->_conversionProgress;
     self->_conversionProgress = v18;
 
@@ -267,8 +267,8 @@ void __100__MediaConversionServiceCommandLineDriver_runVideoStillExtractionConve
   else
   {
     v23 = objc_opt_class();
-    v24 = [v4 destinationPath];
-    [v23 outputError:{@"Unable to create output file '%@': %@\n", v24, v13}];
+    destinationPath2 = [setCopy destinationPath];
+    [v23 outputError:{@"Unable to create output file '%@': %@\n", destinationPath2, v13}];
 
     v25 = 73;
   }
@@ -316,37 +316,37 @@ uint64_t __85__MediaConversionServiceCommandLineDriver_runVideoConversionWithCon
   return [v3 cancel];
 }
 
-- (int)runImageConversionWithConversionOptionSet:(id)a3
+- (int)runImageConversionWithConversionOptionSet:(id)set
 {
-  v4 = a3;
+  setCopy = set;
   v5 = MEMORY[0x277CBEBC0];
-  v6 = [v4 sourcePath];
-  v7 = [v5 fileURLWithPath:v6];
+  sourcePath = [setCopy sourcePath];
+  v7 = [v5 fileURLWithPath:sourcePath];
 
   v8 = [PAMediaConversionServiceResourceURLCollection collectionWithMainResourceURL:v7];
-  v9 = [v4 sourcePathVideoComplement];
+  sourcePathVideoComplement = [setCopy sourcePathVideoComplement];
 
-  if (v9)
+  if (sourcePathVideoComplement)
   {
     v10 = MEMORY[0x277CBEBC0];
-    v11 = [v4 sourcePathVideoComplement];
-    v12 = [v10 fileURLWithPath:v11];
+    sourcePathVideoComplement2 = [setCopy sourcePathVideoComplement];
+    v12 = [v10 fileURLWithPath:sourcePathVideoComplement2];
 
     [v8 setResourceURL:v12 forRole:@"PAMediaConversionResourceRoleVideoComplement"];
   }
 
   v13 = MEMORY[0x277CBEBC0];
-  v14 = [v4 destinationPath];
-  v15 = [v13 fileURLWithPath:v14];
+  destinationPath = [setCopy destinationPath];
+  v15 = [v13 fileURLWithPath:destinationPath];
 
   v16 = [PAMediaConversionServiceResourceURLCollection collectionWithMainResourceURL:v15];
-  v17 = [v4 destinationPathVideoComplement];
+  destinationPathVideoComplement = [setCopy destinationPathVideoComplement];
 
-  if (v17)
+  if (destinationPathVideoComplement)
   {
     v18 = MEMORY[0x277CBEBC0];
-    v19 = [v4 destinationPathVideoComplement];
-    v20 = [v18 fileURLWithPath:v19];
+    destinationPathVideoComplement2 = [setCopy destinationPathVideoComplement];
+    v20 = [v18 fileURLWithPath:destinationPathVideoComplement2];
 
     [v16 setResourceURL:v20 forRole:@"PAMediaConversionResourceRoleVideoComplement"];
   }
@@ -357,7 +357,7 @@ uint64_t __85__MediaConversionServiceCommandLineDriver_runVideoConversionWithCon
   v32 = 0;
   v21 = dispatch_semaphore_create(0);
   imageConversionServiceClient = self->_imageConversionServiceClient;
-  v23 = [v4 conversionOptions];
+  conversionOptions = [setCopy conversionOptions];
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __85__MediaConversionServiceCommandLineDriver_runImageConversionWithConversionOptionSet___block_invoke;
@@ -366,13 +366,13 @@ uint64_t __85__MediaConversionServiceCommandLineDriver_runVideoConversionWithCon
   v28 = &v29;
   v24 = v21;
   v27 = v24;
-  [(PAImageConversionServiceClient *)imageConversionServiceClient convertImageAtSourceURLCollection:v8 toDestinationURLCollection:v16 options:v23 completionHandler:v26];
+  [(PAImageConversionServiceClient *)imageConversionServiceClient convertImageAtSourceURLCollection:v8 toDestinationURLCollection:v16 options:conversionOptions completionHandler:v26];
 
   dispatch_semaphore_wait(v24, 0xFFFFFFFFFFFFFFFFLL);
-  LODWORD(v23) = *(v30 + 6);
+  LODWORD(conversionOptions) = *(v30 + 6);
 
   _Block_object_dispose(&v29, 8);
-  return v23;
+  return conversionOptions;
 }
 
 void __85__MediaConversionServiceCommandLineDriver_runImageConversionWithConversionOptionSet___block_invoke(uint64_t a1, uint64_t a2, void *a3, void *a4)
@@ -507,8 +507,8 @@ void __69__MediaConversionServiceCommandLineDriver_sendMessageToLaunchService__b
 - (int)run
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = [(MediaConversionServiceCommandLineDriver *)self validateAndProcessArgumentValues];
-  if (!v3)
+  validateAndProcessArgumentValues = [(MediaConversionServiceCommandLineDriver *)self validateAndProcessArgumentValues];
+  if (!validateAndProcessArgumentValues)
   {
     if (self->_pauseAtStart)
     {
@@ -531,7 +531,7 @@ void __69__MediaConversionServiceCommandLineDriver_sendMessageToLaunchService__b
     if (v14)
     {
       v15 = *v17;
-      v3 = 70;
+      validateAndProcessArgumentValues = 70;
       do
       {
         for (i = 0; i != v14; ++i)
@@ -547,32 +547,32 @@ void __69__MediaConversionServiceCommandLineDriver_sendMessageToLaunchService__b
             for (j = 0; j < [v6 repeatCount]; ++j)
             {
               v8 = objc_autoreleasePoolPush();
-              v9 = [v6 conversionType];
-              if ([v9 isEqualToString:@"image"])
+              conversionType = [v6 conversionType];
+              if ([conversionType isEqualToString:@"image"])
               {
                 v10 = [(MediaConversionServiceCommandLineDriver *)self runImageConversionWithConversionOptionSet:v6];
               }
 
-              else if ([v9 isEqualToString:@"video"])
+              else if ([conversionType isEqualToString:@"video"])
               {
                 v10 = [(MediaConversionServiceCommandLineDriver *)self runVideoConversionWithConversionOptionSet:v6];
               }
 
               else
               {
-                if (![v9 isEqualToString:@"still"])
+                if (![conversionType isEqualToString:@"still"])
                 {
-                  [objc_opt_class() outputError:{@"Conversion type %@ is unsupported\n", v9}];
+                  [objc_opt_class() outputError:{@"Conversion type %@ is unsupported\n", conversionType}];
 
                   objc_autoreleasePoolPop(v8);
-                  v3 = 70;
+                  validateAndProcessArgumentValues = 70;
                   goto LABEL_28;
                 }
 
                 v10 = [(MediaConversionServiceCommandLineDriver *)self runVideoStillExtractionConversionWithConversionOptionSet:v6];
               }
 
-              v3 = v10;
+              validateAndProcessArgumentValues = v10;
 
               objc_autoreleasePoolPop(v8);
             }
@@ -587,7 +587,7 @@ void __69__MediaConversionServiceCommandLineDriver_sendMessageToLaunchService__b
 
     else
     {
-      v3 = 70;
+      validateAndProcessArgumentValues = 70;
     }
 
     if (self->_waitForSignalAfterCompletion)
@@ -600,13 +600,13 @@ void __69__MediaConversionServiceCommandLineDriver_sendMessageToLaunchService__b
 
 LABEL_28:
   v11 = *MEMORY[0x277D85DE8];
-  return v3;
+  return validateAndProcessArgumentValues;
 }
 
-- (BOOL)hasConversionOfType:(id)a3
+- (BOOL)hasConversionOfType:(id)type
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  typeCopy = type;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -625,8 +625,8 @@ LABEL_28:
           objc_enumerationMutation(v5);
         }
 
-        v9 = [*(*(&v13 + 1) + 8 * i) conversionType];
-        v10 = [v9 isEqualToString:v4];
+        conversionType = [*(*(&v13 + 1) + 8 * i) conversionType];
+        v10 = [conversionType isEqualToString:typeCopy];
 
         if (v10)
         {
@@ -651,38 +651,38 @@ LABEL_11:
   return v6;
 }
 
-- (BOOL)processOption:(int)a3 arg:(id)a4
+- (BOOL)processOption:(int)option arg:(id)arg
 {
-  v6 = a4;
-  v7 = [(NSMutableArray *)self->_conversionOptionSets lastObject];
-  v8 = v7;
+  argCopy = arg;
+  lastObject = [(NSMutableArray *)self->_conversionOptionSets lastObject];
+  v8 = lastObject;
   v9 = 0;
-  if (a3 <= 999)
+  if (option <= 999)
   {
-    if (a3 > 113)
+    if (option > 113)
     {
-      if (a3 <= 115)
+      if (option <= 115)
       {
-        if (a3 == 114)
+        if (option == 114)
         {
-          [v7 setPresetName:v6];
+          [lastObject setPresetName:argCopy];
         }
 
         else
         {
-          [v7 setSourcePath:v6];
+          [lastObject setSourcePath:argCopy];
         }
 
         goto LABEL_40;
       }
 
-      if (a3 == 116)
+      if (option == 116)
       {
-        [v7 setConversionType:v6];
+        [lastObject setConversionType:argCopy];
         goto LABEL_40;
       }
 
-      if (a3 == 118)
+      if (option == 118)
       {
         v9 = 1;
         self->_verbose = 1;
@@ -691,14 +691,14 @@ LABEL_11:
       goto LABEL_41;
     }
 
-    if (a3 > 110)
+    if (option > 110)
     {
-      if (a3 == 111)
+      if (option == 111)
       {
-        if (v6)
+        if (argCopy)
         {
-          v12 = [v7 conversionOptionInputKeyValuePairs];
-          [v12 addObject:v6];
+          conversionOptionInputKeyValuePairs = [lastObject conversionOptionInputKeyValuePairs];
+          [conversionOptionInputKeyValuePairs addObject:argCopy];
         }
 
         else
@@ -709,7 +709,7 @@ LABEL_11:
         goto LABEL_40;
       }
 
-      if (a3 == 112)
+      if (option == 112)
       {
         v9 = 1;
         self->_showProgress = 1;
@@ -718,11 +718,11 @@ LABEL_11:
       goto LABEL_41;
     }
 
-    if (a3 != 99)
+    if (option != 99)
     {
-      if (a3 == 100)
+      if (option == 100)
       {
-        [v7 setDestinationPath:v6];
+        [lastObject setDestinationPath:argCopy];
 LABEL_40:
         v9 = 1;
         goto LABEL_41;
@@ -731,10 +731,10 @@ LABEL_40:
       goto LABEL_41;
     }
 
-    [v7 setRepeatCount:{objc_msgSend(v6, "integerValue")}];
+    [lastObject setRepeatCount:{objc_msgSend(argCopy, "integerValue")}];
     if ([v8 repeatCount] <= 1)
     {
-      [objc_opt_class() outputError:{@"Repeat count '%@' is invalid, must be 2 or higher\n", v6}];
+      [objc_opt_class() outputError:{@"Repeat count '%@' is invalid, must be 2 or higher\n", argCopy}];
       v9 = 0;
       goto LABEL_41;
     }
@@ -745,24 +745,24 @@ LABEL_30:
     goto LABEL_41;
   }
 
-  if (a3 <= 1003)
+  if (option <= 1003)
   {
-    if (a3 > 1001)
+    if (option > 1001)
     {
-      if (a3 == 1002)
+      if (option == 1002)
       {
-        [v7 setSourcePathVideoComplement:v6];
+        [lastObject setSourcePathVideoComplement:argCopy];
       }
 
       else
       {
-        [v7 setDestinationPathVideoComplement:v6];
+        [lastObject setDestinationPathVideoComplement:argCopy];
       }
 
       goto LABEL_40;
     }
 
-    if (a3 == 1000)
+    if (option == 1000)
     {
       v9 = 1;
       self->_waitForSignalAfterCompletion = 1;
@@ -772,15 +772,15 @@ LABEL_30:
     goto LABEL_30;
   }
 
-  if (a3 > 1005)
+  if (option > 1005)
   {
-    if (a3 == 1006)
+    if (option == 1006)
     {
       *&self->_launchServiceAtStart = 257;
       goto LABEL_40;
     }
 
-    if (a3 == 1007)
+    if (option == 1007)
     {
       conversionOptionSets = self->_conversionOptionSets;
       v11 = objc_opt_new();
@@ -793,7 +793,7 @@ LABEL_30:
   else
   {
     v9 = 1;
-    if (a3 == 1004)
+    if (option == 1004)
     {
       self->_pauseAtStart = 1;
     }
@@ -834,34 +834,34 @@ LABEL_41:
   return v2;
 }
 
-+ (void)_output:(uint64_t)a3 arguments:(FILE *)a4 file:
++ (void)_output:(uint64_t)_output arguments:(FILE *)arguments file:
 {
   v6 = a2;
   objc_opt_self();
-  v8 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:v6 arguments:a3];
+  v8 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:v6 arguments:_output];
 
   v7 = v8;
-  fputs([v8 UTF8String], a4);
+  fputs([v8 UTF8String], arguments);
 }
 
-+ (void)outputConversionError:(id)a3 status:(int64_t)a4
++ (void)outputConversionError:(id)error status:(int64_t)status
 {
-  v15 = a3;
-  v6 = [v15 domain];
-  v7 = [v6 isEqualToString:@"PAMediaConversionServiceErrorDomain"];
+  errorCopy = error;
+  domain = [errorCopy domain];
+  v7 = [domain isEqualToString:@"PAMediaConversionServiceErrorDomain"];
 
   if (v7)
   {
     v8 = MEMORY[0x277CCACA8];
-    v9 = [v15 code];
-    if (v9 > 0xC)
+    code = [errorCopy code];
+    if (code > 0xC)
     {
       v10 = 0;
     }
 
     else
     {
-      v10 = off_27989B318[v9];
+      v10 = off_27989B318[code];
     }
 
     v12 = v10;
@@ -873,29 +873,29 @@ LABEL_41:
     v11 = &stru_28699D8A8;
   }
 
-  if (a4 > 6)
+  if (status > 6)
   {
     v13 = 0;
   }
 
   else
   {
-    v13 = off_27989B380[a4];
+    v13 = off_27989B380[status];
   }
 
   v14 = v13;
-  [a1 outputError:{@"Conversion unsuccessful (status %ld - %@): %@%@\n", a4, v14, v15, v11}];
+  [self outputError:{@"Conversion unsuccessful (status %ld - %@): %@%@\n", status, v14, errorCopy, v11}];
 }
 
-+ (id)replacementObjectForObject:(id)a3 valueConversionHandler:(id)a4
++ (id)replacementObjectForObject:(id)object valueConversionHandler:(id)handler
 {
   v36 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  objectCopy = object;
+  handlerCopy = handler;
+  v9 = handlerCopy;
+  if (objectCopy)
   {
-    if (v8)
+    if (handlerCopy)
     {
       goto LABEL_3;
     }
@@ -903,8 +903,8 @@ LABEL_41:
 
   else
   {
-    v25 = [MEMORY[0x277CCA890] currentHandler];
-    [v25 handleFailureInMethod:a2 object:a1 file:@"MediaConversionServiceCommandLineDriver.m" lineNumber:937 description:{@"Invalid parameter not satisfying: %@", @"object"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MediaConversionServiceCommandLineDriver.m" lineNumber:937 description:{@"Invalid parameter not satisfying: %@", @"object"}];
 
     if (v9)
     {
@@ -912,15 +912,15 @@ LABEL_41:
     }
   }
 
-  v26 = [MEMORY[0x277CCA890] currentHandler];
-  [v26 handleFailureInMethod:a2 object:a1 file:@"MediaConversionServiceCommandLineDriver.m" lineNumber:938 description:{@"Invalid parameter not satisfying: %@", @"valueConversionHandler"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"MediaConversionServiceCommandLineDriver.m" lineNumber:938 description:{@"Invalid parameter not satisfying: %@", @"valueConversionHandler"}];
 
 LABEL_3:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = v7;
-    v11 = [MEMORY[0x277CBEB18] array];
+    v10 = objectCopy;
+    array = [MEMORY[0x277CBEB18] array];
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
@@ -940,8 +940,8 @@ LABEL_3:
             objc_enumerationMutation(v12);
           }
 
-          v17 = [a1 replacementObjectForObject:*(*(&v31 + 1) + 8 * i) valueConversionHandler:v9];
-          [v11 addObject:v17];
+          v17 = [self replacementObjectForObject:*(*(&v31 + 1) + 8 * i) valueConversionHandler:v9];
+          [array addObject:v17];
         }
 
         v14 = [v12 countByEnumeratingWithState:&v31 objects:v35 count:16];
@@ -957,31 +957,31 @@ LABEL_3:
     if (objc_opt_isKindOfClass())
     {
       v18 = MEMORY[0x277CBEB38];
-      v19 = v7;
-      v20 = [v18 dictionary];
+      v19 = objectCopy;
+      dictionary = [v18 dictionary];
       v27[0] = MEMORY[0x277D85DD0];
       v27[1] = 3221225472;
       v27[2] = __93__MediaConversionServiceCommandLineDriver_replacementObjectForObject_valueConversionHandler___block_invoke;
       v27[3] = &unk_27989BA90;
-      v21 = v20;
+      v21 = dictionary;
       v28 = v21;
-      v30 = a1;
+      selfCopy = self;
       v29 = v9;
       [v19 enumerateKeysAndObjectsUsingBlock:v27];
 
       v22 = v29;
-      v11 = v21;
+      array = v21;
     }
 
     else
     {
-      v11 = (v9)[2](v9, v7);
+      array = (v9)[2](v9, objectCopy);
     }
   }
 
   v23 = *MEMORY[0x277D85DE8];
 
-  return v11;
+  return array;
 }
 
 void __93__MediaConversionServiceCommandLineDriver_replacementObjectForObject_valueConversionHandler___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -993,26 +993,26 @@ void __93__MediaConversionServiceCommandLineDriver_replacementObjectForObject_va
   [*(a1 + 32) setObject:v8 forKeyedSubscript:v7];
 }
 
-+ (BOOL)outputJSONDataForConversionOutputInformation:(id)a3
++ (BOOL)outputJSONDataForConversionOutputInformation:(id)information
 {
-  v4 = [a1 replacementObjectForObject:a3 valueConversionHandler:&__block_literal_global_430];
+  v4 = [self replacementObjectForObject:information valueConversionHandler:&__block_literal_global_430];
   v12 = 0;
   v5 = [MEMORY[0x277CCAAA0] dataWithJSONObject:v4 options:0 error:&v12];
   v6 = v12;
   v7 = v6;
   if (v5)
   {
-    v8 = [MEMORY[0x277CCA9F8] fileHandleWithStandardOutput];
-    [v8 writeData:v5];
+    fileHandleWithStandardOutput = [MEMORY[0x277CCA9F8] fileHandleWithStandardOutput];
+    [fileHandleWithStandardOutput writeData:v5];
     v9 = [@"\n" dataUsingEncoding:4];
-    [v8 writeData:v9];
+    [fileHandleWithStandardOutput writeData:v9];
 
     v10 = 1;
   }
 
   else
   {
-    [a1 outputError:{@"Conversion successful but unable to convert output information to JSON: %@\n", v6}];
+    [self outputError:{@"Conversion successful but unable to convert output information to JSON: %@\n", v6}];
     v10 = 0;
   }
 
@@ -1048,8 +1048,8 @@ id __88__MediaConversionServiceCommandLineDriver_outputJSONDataForConversionOutp
 + (id)usage
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [objc_opt_class() usagesummary];
-  v4 = [v2 stringWithFormat:@"%@\n%@", v3, @"\n\timage:       Convert an image\n\tvideo:       Convert a video\n\tstill:       Extract a still image from a video\n\n\t--replace:             Overwrite existing output file\n\t--wait:                On completion, suspend the process until a SIGINT signal is received instead of exiting right away. This lets you inspect the state of the client and service processes after completion, especially for memory investigations.\n\t--option:              Pass a conversion option key/value pair. Key and value are separated by a = character. The keys are as defined in PAMediaConversionServiceCommonDefinitions.h, with the 'PAMediaConversion' prefix and the 'Key' suffix omitted. You can pass this option multiple times.\n\t--preset:              Apply a pre-defined set of conversion options for common cases. Pass '?' to get a list of preset names.\n\t--count:               Repeat the conversion n times, for memory or other performance investigations. Implies --replace.\n\t--progress:            Print progress for video conversion to stderr\n\t--pause:               Print the client PID and wait for keyboard input before sending any requests to the service. On macOS this lets you manipulate the launch environment of the service process with 'launchctl debug pid/<client PID>/com.apple.photos.ImageConversionService' (or VideoConversionService).\n\t--launch:              Send an initial XPC message to the service to ensure it is launched when the main conversion request is sent. This lets you measure request performance without process launch time.\n\t--launch-and-pause:    Like --launch, but additionally waits for keyboard input before sending any requests to the service. This lets you attach to the service process with perf tools or the debugger before the main conversion request is processed.\n\t--next:                Capture all options given so far as a conversion request and start a new request. All following options apply to the next request. This lets you execute multiple independent requests back-to-back."];
+  usagesummary = [objc_opt_class() usagesummary];
+  v4 = [v2 stringWithFormat:@"%@\n%@", usagesummary, @"\n\timage:       Convert an image\n\tvideo:       Convert a video\n\tstill:       Extract a still image from a video\n\n\t--replace:             Overwrite existing output file\n\t--wait:                On completion, suspend the process until a SIGINT signal is received instead of exiting right away. This lets you inspect the state of the client and service processes after completion, especially for memory investigations.\n\t--option:              Pass a conversion option key/value pair. Key and value are separated by a = character. The keys are as defined in PAMediaConversionServiceCommonDefinitions.h, with the 'PAMediaConversion' prefix and the 'Key' suffix omitted. You can pass this option multiple times.\n\t--preset:              Apply a pre-defined set of conversion options for common cases. Pass '?' to get a list of preset names.\n\t--count:               Repeat the conversion n times, for memory or other performance investigations. Implies --replace.\n\t--progress:            Print progress for video conversion to stderr\n\t--pause:               Print the client PID and wait for keyboard input before sending any requests to the service. On macOS this lets you manipulate the launch environment of the service process with 'launchctl debug pid/<client PID>/com.apple.photos.ImageConversionService' (or VideoConversionService).\n\t--launch:              Send an initial XPC message to the service to ensure it is launched when the main conversion request is sent. This lets you measure request performance without process launch time.\n\t--launch-and-pause:    Like --launch, but additionally waits for keyboard input before sending any requests to the service. This lets you attach to the service process with perf tools or the debugger before the main conversion request is processed.\n\t--next:                Capture all options given so far as a conversion request and start a new request. All following options apply to the next request. This lets you execute multiple independent requests back-to-back."];
 
   return v4;
 }

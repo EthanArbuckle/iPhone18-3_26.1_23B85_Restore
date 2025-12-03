@@ -2,40 +2,40 @@
 - (BOOL)areRemindersAvailable;
 - (BOOL)isMeCardAvailable;
 - (BRKRemindersSettingsDelegate)delegate;
-- (BRKRemindersSettingsHelper)initWithDelegate:(id)a3 settings:(id)a4;
+- (BRKRemindersSettingsHelper)initWithDelegate:(id)delegate settings:(id)settings;
 - (id)_handwashingAppBundleLocationManager;
 - (id)_handwashingLocationManager;
-- (id)meContactWithKeysToFetch:(id)a3;
+- (id)meContactWithKeysToFetch:(id)fetch;
 - (id)remindersFooterTextAndLinkString;
 - (void)_fetchLocationAuthorizationStatus;
 - (void)_fetchLocationAvailableStatus;
 - (void)_handwashingAppBundleLocationManager;
 - (void)_handwashingLocationManager;
-- (void)_isCoreRoutineHomeAvailableWithCompletion:(id)a3;
-- (void)_updateWithLocationAuthorizationStatus:(int)a3 manager:(id)a4;
+- (void)_isCoreRoutineHomeAvailableWithCompletion:(id)completion;
+- (void)_updateWithLocationAuthorizationStatus:(int)status manager:(id)manager;
 - (void)dealloc;
-- (void)locationManagerDidChangeAuthorization:(id)a3;
+- (void)locationManagerDidChangeAuthorization:(id)authorization;
 - (void)requestLocationAuthorizationIfNeeded;
-- (void)setCoreRoutineAvailable:(BOOL)a3;
-- (void)setLocationAuthorizationValid:(BOOL)a3;
-- (void)setLocationAvailable:(BOOL)a3;
+- (void)setCoreRoutineAvailable:(BOOL)available;
+- (void)setLocationAuthorizationValid:(BOOL)valid;
+- (void)setLocationAvailable:(BOOL)available;
 - (void)update;
 @end
 
 @implementation BRKRemindersSettingsHelper
 
-- (BRKRemindersSettingsHelper)initWithDelegate:(id)a3 settings:(id)a4
+- (BRKRemindersSettingsHelper)initWithDelegate:(id)delegate settings:(id)settings
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  settingsCopy = settings;
   v20.receiver = self;
   v20.super_class = BRKRemindersSettingsHelper;
   v8 = [(BRKRemindersSettingsHelper *)&v20 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_delegate, v6);
-    objc_storeStrong(&v9->_brookSettings, a4);
+    objc_storeWeak(&v8->_delegate, delegateCopy);
+    objc_storeStrong(&v9->_brookSettings, settings);
     v10 = [MEMORY[0x277CBDAB8] authorizationStatusForEntityType:0];
     v9->_contactStoreAuthorizationStatus = v10;
     if (v10 == 3)
@@ -45,9 +45,9 @@
       v9->_contactStore = v11;
     }
 
-    v13 = [MEMORY[0x277D01280] defaultManager];
+    defaultManager = [MEMORY[0x277D01280] defaultManager];
     routineManager = v9->_routineManager;
-    v9->_routineManager = v13;
+    v9->_routineManager = defaultManager;
 
     objc_initWeak(&location, v9);
     brookSettings = v9->_brookSettings;
@@ -111,12 +111,12 @@ void __56__BRKRemindersSettingsHelper_initWithDelegate_settings___block_invoke(u
   v12 = *MEMORY[0x277D85DE8];
   if ([(BRKRemindersSettingsHelper *)self isLocationAvailable])
   {
-    v3 = [(BRKRemindersSettingsHelper *)self isLocationAuthorizationValid];
+    isLocationAuthorizationValid = [(BRKRemindersSettingsHelper *)self isLocationAuthorizationValid];
   }
 
   else
   {
-    v3 = 0;
+    isLocationAuthorizationValid = 0;
   }
 
   v4 = BRKLoggingObjectForDomain(13);
@@ -131,7 +131,7 @@ void __56__BRKRemindersSettingsHelper_initWithDelegate_settings___block_invoke(u
   }
 
   v6 = *MEMORY[0x277D85DE8];
-  return v3;
+  return isLocationAuthorizationValid;
 }
 
 - (BOOL)isMeCardAvailable
@@ -156,12 +156,12 @@ void __56__BRKRemindersSettingsHelper_initWithDelegate_settings___block_invoke(u
   return v4 != 0;
 }
 
-- (void)setCoreRoutineAvailable:(BOOL)a3
+- (void)setCoreRoutineAvailable:(BOOL)available
 {
   v13 = *MEMORY[0x277D85DE8];
-  if (self->_coreRoutineAvailable != a3)
+  if (self->_coreRoutineAvailable != available)
   {
-    self->_coreRoutineAvailable = a3;
+    self->_coreRoutineAvailable = available;
     v4 = BRKLoggingObjectForDomain(13);
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
@@ -174,19 +174,19 @@ void __56__BRKRemindersSettingsHelper_initWithDelegate_settings___block_invoke(u
       _os_log_impl(&dword_241EE4000, v4, OS_LOG_TYPE_DEFAULT, "%s -> %@", &v9, 0x16u);
     }
 
-    v7 = [(BRKRemindersSettingsHelper *)self delegate];
-    [v7 remindersSettingsDidUpdate:self];
+    delegate = [(BRKRemindersSettingsHelper *)self delegate];
+    [delegate remindersSettingsDidUpdate:self];
   }
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setLocationAvailable:(BOOL)a3
+- (void)setLocationAvailable:(BOOL)available
 {
   v13 = *MEMORY[0x277D85DE8];
-  if (self->_locationAvailable != a3)
+  if (self->_locationAvailable != available)
   {
-    self->_locationAvailable = a3;
+    self->_locationAvailable = available;
     v4 = BRKLoggingObjectForDomain(13);
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
@@ -199,19 +199,19 @@ void __56__BRKRemindersSettingsHelper_initWithDelegate_settings___block_invoke(u
       _os_log_impl(&dword_241EE4000, v4, OS_LOG_TYPE_DEFAULT, "%s -> %@", &v9, 0x16u);
     }
 
-    v7 = [(BRKRemindersSettingsHelper *)self delegate];
-    [v7 remindersSettingsDidUpdate:self];
+    delegate = [(BRKRemindersSettingsHelper *)self delegate];
+    [delegate remindersSettingsDidUpdate:self];
   }
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setLocationAuthorizationValid:(BOOL)a3
+- (void)setLocationAuthorizationValid:(BOOL)valid
 {
   v13 = *MEMORY[0x277D85DE8];
-  if (self->_locationAuthorizationValid != a3)
+  if (self->_locationAuthorizationValid != valid)
   {
-    self->_locationAuthorizationValid = a3;
+    self->_locationAuthorizationValid = valid;
     v4 = BRKLoggingObjectForDomain(13);
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
@@ -224,8 +224,8 @@ void __56__BRKRemindersSettingsHelper_initWithDelegate_settings___block_invoke(u
       _os_log_impl(&dword_241EE4000, v4, OS_LOG_TYPE_DEFAULT, "%s -> %@", &v9, 0x16u);
     }
 
-    v7 = [(BRKRemindersSettingsHelper *)self delegate];
-    [v7 remindersSettingsDidUpdate:self];
+    delegate = [(BRKRemindersSettingsHelper *)self delegate];
+    [delegate remindersSettingsDidUpdate:self];
   }
 
   v8 = *MEMORY[0x277D85DE8];
@@ -388,23 +388,23 @@ LABEL_15:
   return v9;
 }
 
-- (id)meContactWithKeysToFetch:(id)a3
+- (id)meContactWithKeysToFetch:(id)fetch
 {
-  v4 = a3;
-  v5 = [(BRKRemindersSettingsHelper *)self contactStore];
-  v6 = [v5 _ios_meContactWithKeysToFetch:v4 error:0];
+  fetchCopy = fetch;
+  contactStore = [(BRKRemindersSettingsHelper *)self contactStore];
+  v6 = [contactStore _ios_meContactWithKeysToFetch:fetchCopy error:0];
 
   return v6;
 }
 
-- (void)locationManagerDidChangeAuthorization:(id)a3
+- (void)locationManagerDidChangeAuthorization:(id)authorization
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  authorizationCopy = authorization;
   v5 = BRKLoggingObjectForDomain(13);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v4, "authorizationStatus")}];
+    v6 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(authorizationCopy, "authorizationStatus")}];
     v8 = 136315394;
     v9 = "[BRKRemindersSettingsHelper locationManagerDidChangeAuthorization:]";
     v10 = 2112;
@@ -412,7 +412,7 @@ LABEL_15:
     _os_log_impl(&dword_241EE4000, v5, OS_LOG_TYPE_DEFAULT, "%s: %@", &v8, 0x16u);
   }
 
-  -[BRKRemindersSettingsHelper _updateWithLocationAuthorizationStatus:manager:](self, "_updateWithLocationAuthorizationStatus:manager:", [v4 authorizationStatus], v4);
+  -[BRKRemindersSettingsHelper _updateWithLocationAuthorizationStatus:manager:](self, "_updateWithLocationAuthorizationStatus:manager:", [authorizationCopy authorizationStatus], authorizationCopy);
   v7 = *MEMORY[0x277D85DE8];
 }
 
@@ -504,10 +504,10 @@ LABEL_15:
     _os_log_impl(&dword_241EE4000, v3, OS_LOG_TYPE_DEFAULT, "%s", &v8, 0xCu);
   }
 
-  v4 = [(BRKRemindersSettingsHelper *)self locationManager];
-  v5 = [v4 authorizationStatus];
-  v6 = [(BRKRemindersSettingsHelper *)self locationManager];
-  [(BRKRemindersSettingsHelper *)self _updateWithLocationAuthorizationStatus:v5 manager:v6];
+  locationManager = [(BRKRemindersSettingsHelper *)self locationManager];
+  authorizationStatus = [locationManager authorizationStatus];
+  locationManager2 = [(BRKRemindersSettingsHelper *)self locationManager];
+  [(BRKRemindersSettingsHelper *)self _updateWithLocationAuthorizationStatus:authorizationStatus manager:locationManager2];
 
   v7 = *MEMORY[0x277D85DE8];
 }
@@ -545,17 +545,17 @@ void __59__BRKRemindersSettingsHelper__fetchLocationAvailableStatus__block_invok
   [WeakRetained setCoreRoutineAvailable:*(a1 + 41)];
 }
 
-- (void)_isCoreRoutineHomeAvailableWithCompletion:(id)a3
+- (void)_isCoreRoutineHomeAvailableWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(BRKRemindersSettingsHelper *)self routineManager];
+  completionCopy = completion;
+  routineManager = [(BRKRemindersSettingsHelper *)self routineManager];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __72__BRKRemindersSettingsHelper__isCoreRoutineHomeAvailableWithCompletion___block_invoke;
   v7[3] = &unk_278D28BC8;
-  v8 = v4;
-  v6 = v4;
-  [BRKRoutineManager fetchLocationsOfInterestWithSingleRetryOfType:0 routineManager:v5 withHandler:v7];
+  v8 = completionCopy;
+  v6 = completionCopy;
+  [BRKRoutineManager fetchLocationsOfInterestWithSingleRetryOfType:0 routineManager:routineManager withHandler:v7];
 }
 
 void __72__BRKRemindersSettingsHelper__isCoreRoutineHomeAvailableWithCompletion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -610,18 +610,18 @@ void __72__BRKRemindersSettingsHelper__isCoreRoutineHomeAvailableWithCompletion_
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateWithLocationAuthorizationStatus:(int)a3 manager:(id)a4
+- (void)_updateWithLocationAuthorizationStatus:(int)status manager:(id)manager
 {
-  v6 = a4;
+  managerCopy = manager;
   objc_initWeak(&location, self);
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __77__BRKRemindersSettingsHelper__updateWithLocationAuthorizationStatus_manager___block_invoke;
   v8[3] = &unk_278D28BF0;
   objc_copyWeak(&v10, &location);
-  v11 = a3;
-  v9 = v6;
-  v7 = v6;
+  statusCopy = status;
+  v9 = managerCopy;
+  v7 = managerCopy;
   dispatch_async(MEMORY[0x277D85CD0], v8);
 
   objc_destroyWeak(&v10);

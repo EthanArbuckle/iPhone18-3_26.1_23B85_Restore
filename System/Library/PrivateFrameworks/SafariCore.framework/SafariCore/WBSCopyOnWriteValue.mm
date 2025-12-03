@@ -1,8 +1,8 @@
 @interface WBSCopyOnWriteValue
 - (NSCopying)value;
-- (WBSCopyOnWriteValue)initWithValue:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)initAsCopy:(id)a3;
+- (WBSCopyOnWriteValue)initWithValue:(id)value;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)initAsCopy:(id)copy;
 - (void)dealloc;
 - (void)willModify;
 @end
@@ -52,9 +52,9 @@ void __33__WBSCopyOnWriteValue_willModify__block_invoke(uint64_t a1)
   [(WBSCopyOnWriteValue *)&v3 dealloc];
 }
 
-- (WBSCopyOnWriteValue)initWithValue:(id)a3
+- (WBSCopyOnWriteValue)initWithValue:(id)value
 {
-  v5 = a3;
+  valueCopy = value;
   v12.receiver = self;
   v12.super_class = WBSCopyOnWriteValue;
   v6 = [(WBSCopyOnWriteValue *)&v12 init];
@@ -66,16 +66,16 @@ void __33__WBSCopyOnWriteValue_willModify__block_invoke(uint64_t a1)
     state = v7->_state;
     v7->_state = v8;
 
-    objc_storeStrong(&v7->_value, a3);
+    objc_storeStrong(&v7->_value, value);
     v10 = v7;
   }
 
   return v7;
 }
 
-- (id)initAsCopy:(id)a3
+- (id)initAsCopy:(id)copy
 {
-  v4 = a3;
+  copyCopy = copy;
   v9.receiver = self;
   v9.super_class = WBSCopyOnWriteValue;
   v5 = [(WBSCopyOnWriteValue *)&v9 init];
@@ -83,8 +83,8 @@ void __33__WBSCopyOnWriteValue_willModify__block_invoke(uint64_t a1)
   if (v5)
   {
     v5->_lock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v5->_state, v4[2]);
-    objc_storeStrong(p_isa + 3, v4[3]);
+    objc_storeStrong(&v5->_state, copyCopy[2]);
+    objc_storeStrong(p_isa + 3, copyCopy[3]);
     [p_isa[2] incrementCount];
     v7 = p_isa;
   }
@@ -92,10 +92,10 @@ void __33__WBSCopyOnWriteValue_willModify__block_invoke(uint64_t a1)
   return p_isa;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   os_unfair_lock_lock(&self->_lock);
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "initAsCopy:", self}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "initAsCopy:", self}];
   os_unfair_lock_unlock(&self->_lock);
   return v5;
 }

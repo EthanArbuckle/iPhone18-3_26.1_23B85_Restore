@@ -1,37 +1,37 @@
 @interface CLTripSegmentInertialData
-- (CLTripSegmentInertialData)initWithCoder:(id)a3;
-- (CLTripSegmentInertialData)initWithTime:(id)a3 dataPeriodSec:(double)a4 deltaCourseRad:(double)a5 deltaSpeedMps:(double)a6 deltaCourseVarRad2:(double)a7 deltaSpeedVarMps2:(double)a8 deltaCourseSpeedCovarRadMps:(double)a9;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CLTripSegmentInertialData)initWithCoder:(id)coder;
+- (CLTripSegmentInertialData)initWithTime:(id)time dataPeriodSec:(double)sec deltaCourseRad:(double)rad deltaSpeedMps:(double)mps deltaCourseVarRad2:(double)rad2 deltaSpeedVarMps2:(double)mps2 deltaCourseSpeedCovarRadMps:(double)radMps;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CLTripSegmentInertialData
 
-- (CLTripSegmentInertialData)initWithTime:(id)a3 dataPeriodSec:(double)a4 deltaCourseRad:(double)a5 deltaSpeedMps:(double)a6 deltaCourseVarRad2:(double)a7 deltaSpeedVarMps2:(double)a8 deltaCourseSpeedCovarRadMps:(double)a9
+- (CLTripSegmentInertialData)initWithTime:(id)time dataPeriodSec:(double)sec deltaCourseRad:(double)rad deltaSpeedMps:(double)mps deltaCourseVarRad2:(double)rad2 deltaSpeedVarMps2:(double)mps2 deltaCourseSpeedCovarRadMps:(double)radMps
 {
   v18.receiver = self;
   v18.super_class = CLTripSegmentInertialData;
   v16 = [(CLTripSegmentInertialData *)&v18 init];
   if (v16)
   {
-    v16->_timestamp = a3;
-    v16->_dataPeriod_s = a4;
-    v16->_deltaCourse_rad = a5;
-    v16->_deltaSpeed_mps = a6;
-    v16->_deltaCourseVar_rad2 = a7;
-    v16->_deltaSpeedVar_mps2 = a8;
-    v16->_deltaCourseSpeedCovar_radmps = a9;
+    v16->_timestamp = time;
+    v16->_dataPeriod_s = sec;
+    v16->_deltaCourse_rad = rad;
+    v16->_deltaSpeed_mps = mps;
+    v16->_deltaCourseVar_rad2 = rad2;
+    v16->_deltaSpeedVar_mps2 = mps2;
+    v16->_deltaCourseSpeedCovar_radmps = radMps;
   }
 
   return v16;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(CLTripSegmentInertialData *)self timestamp];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  timestamp = [(CLTripSegmentInertialData *)self timestamp];
   [(CLTripSegmentInertialData *)self dataPeriod_s];
   v7 = v6;
   [(CLTripSegmentInertialData *)self deltaCourse_rad];
@@ -44,7 +44,7 @@
   v15 = v14;
   [(CLTripSegmentInertialData *)self deltaCourseSpeedCovar_radmps];
 
-  return [v4 initWithTime:v5 dataPeriodSec:v7 deltaCourseRad:v9 deltaSpeedMps:v11 deltaCourseVarRad2:v13 deltaSpeedVarMps2:v15 deltaCourseSpeedCovarRadMps:v16];
+  return [v4 initWithTime:timestamp dataPeriodSec:v7 deltaCourseRad:v9 deltaSpeedMps:v11 deltaCourseVarRad2:v13 deltaSpeedVarMps2:v15 deltaCourseSpeedCovarRadMps:v16];
 }
 
 - (void)dealloc
@@ -75,39 +75,39 @@
   return [v3 stringWithFormat:@"%@, timestamp, %.2f, dataperiod, %.2f, deltaCourse, %.6f, deltaSpeed, %.4f, courseVar, %.6f, speedVar, %.6lf, courseSpeedCovar, %.6lf", v5, v7, v9, v11, v13, v15, v17, v18];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeObject:-[CLTripSegmentInertialData timestamp](self forKey:{"timestamp"), @"timestamp"}];
+  [coder encodeObject:-[CLTripSegmentInertialData timestamp](self forKey:{"timestamp"), @"timestamp"}];
   [(CLTripSegmentInertialData *)self dataPeriod_s];
-  [a3 encodeDouble:@"dataPeriod" forKey:?];
+  [coder encodeDouble:@"dataPeriod" forKey:?];
   [(CLTripSegmentInertialData *)self deltaCourse_rad];
-  [a3 encodeDouble:@"deltaCourse" forKey:?];
+  [coder encodeDouble:@"deltaCourse" forKey:?];
   [(CLTripSegmentInertialData *)self deltaSpeed_mps];
-  [a3 encodeDouble:@"deltaSpeed" forKey:?];
+  [coder encodeDouble:@"deltaSpeed" forKey:?];
   [(CLTripSegmentInertialData *)self deltaCourseVar_rad2];
-  [a3 encodeDouble:@"deltaCourseVar" forKey:?];
+  [coder encodeDouble:@"deltaCourseVar" forKey:?];
   [(CLTripSegmentInertialData *)self deltaSpeedVar_mps2];
-  [a3 encodeDouble:@"deltaSpeedVar" forKey:?];
+  [coder encodeDouble:@"deltaSpeedVar" forKey:?];
   [(CLTripSegmentInertialData *)self deltaCourseSpeedCovar_radmps];
 
-  [a3 encodeDouble:@"deltaCourseSpeedCovar" forKey:?];
+  [coder encodeDouble:@"deltaCourseSpeedCovar" forKey:?];
 }
 
-- (CLTripSegmentInertialData)initWithCoder:(id)a3
+- (CLTripSegmentInertialData)initWithCoder:(id)coder
 {
   v4 = [CLTripSegmentInertialData alloc];
-  v5 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"timestamp"];
-  [a3 decodeDoubleForKey:@"dataPeriod"];
+  v5 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"timestamp"];
+  [coder decodeDoubleForKey:@"dataPeriod"];
   v7 = v6;
-  [a3 decodeDoubleForKey:@"deltaCourse"];
+  [coder decodeDoubleForKey:@"deltaCourse"];
   v9 = v8;
-  [a3 decodeDoubleForKey:@"deltaSpeed"];
+  [coder decodeDoubleForKey:@"deltaSpeed"];
   v11 = v10;
-  [a3 decodeDoubleForKey:@"deltaCourseVar"];
+  [coder decodeDoubleForKey:@"deltaCourseVar"];
   v13 = v12;
-  [a3 decodeDoubleForKey:@"deltaSpeedVar"];
+  [coder decodeDoubleForKey:@"deltaSpeedVar"];
   v15 = v14;
-  [a3 decodeDoubleForKey:@"deltaCourseSpeedCovar"];
+  [coder decodeDoubleForKey:@"deltaCourseSpeedCovar"];
 
   return [(CLTripSegmentInertialData *)v4 initWithTime:v5 dataPeriodSec:v7 deltaCourseRad:v9 deltaSpeedMps:v11 deltaCourseVarRad2:v13 deltaSpeedVarMps2:v15 deltaCourseSpeedCovarRadMps:v16];
 }

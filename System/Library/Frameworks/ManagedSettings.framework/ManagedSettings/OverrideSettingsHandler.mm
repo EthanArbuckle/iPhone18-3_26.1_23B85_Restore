@@ -1,15 +1,15 @@
 @interface OverrideSettingsHandler
 - (_TtC15ManagedSettings23OverrideSettingsHandler)init;
-- (void)beginRequestWithExtensionContext:(id)a3;
+- (void)beginRequestWithExtensionContext:(id)context;
 @end
 
 @implementation OverrideSettingsHandler
 
-- (void)beginRequestWithExtensionContext:(id)a3
+- (void)beginRequestWithExtensionContext:(id)context
 {
-  v4 = a3;
-  v5 = self;
-  sub_20E433EAC(v4);
+  contextCopy = context;
+  selfCopy = self;
+  sub_20E433EAC(contextCopy);
 }
 
 - (_TtC15ManagedSettings23OverrideSettingsHandler)init

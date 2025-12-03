@@ -1,22 +1,22 @@
 @interface WFEKCalendarDescriptor
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (WFEKCalendarDescriptor)initWithAllCalendars;
-- (WFEKCalendarDescriptor)initWithCalendarTitle:(id)a3 identifier:(id)a4 RGBAValue:(id)a5;
-- (WFEKCalendarDescriptor)initWithCoder:(id)a3;
-- (id)matchingCalendarsFromArray:(id)a3;
-- (id)matchingRemindersListsFromArray:(id)a3;
+- (WFEKCalendarDescriptor)initWithCalendarTitle:(id)title identifier:(id)identifier RGBAValue:(id)value;
+- (WFEKCalendarDescriptor)initWithCoder:(id)coder;
+- (id)matchingCalendarsFromArray:(id)array;
+- (id)matchingRemindersListsFromArray:(id)array;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFEKCalendarDescriptor
 
-- (id)matchingCalendarsFromArray:(id)a3
+- (id)matchingCalendarsFromArray:(id)array
 {
-  v4 = a3;
+  arrayCopy = array;
   if ([(WFEKCalendarDescriptor *)self allCalendars])
   {
-    v5 = v4;
+    v5 = arrayCopy;
   }
 
   else
@@ -26,7 +26,7 @@
     v11[2] = __53__WFEKCalendarDescriptor_matchingCalendarsFromArray___block_invoke;
     v11[3] = &unk_1E837BC10;
     v11[4] = self;
-    v5 = [v4 if_objectsPassingTest:v11];
+    v5 = [arrayCopy if_objectsPassingTest:v11];
     if (![v5 count])
     {
       v10[0] = MEMORY[0x1E69E9820];
@@ -34,7 +34,7 @@
       v10[2] = __53__WFEKCalendarDescriptor_matchingCalendarsFromArray___block_invoke_2;
       v10[3] = &unk_1E837BC10;
       v10[4] = self;
-      v6 = [v4 if_objectsPassingTest:v10];
+      v6 = [arrayCopy if_objectsPassingTest:v10];
 
       v5 = v6;
     }
@@ -46,7 +46,7 @@
       v9[2] = __53__WFEKCalendarDescriptor_matchingCalendarsFromArray___block_invoke_3;
       v9[3] = &unk_1E837BC10;
       v9[4] = self;
-      v7 = [v4 if_objectsPassingTest:v9];
+      v7 = [arrayCopy if_objectsPassingTest:v9];
 
       v5 = v7;
     }
@@ -118,12 +118,12 @@ uint64_t __53__WFEKCalendarDescriptor_matchingCalendarsFromArray___block_invoke_
   return v5;
 }
 
-- (id)matchingRemindersListsFromArray:(id)a3
+- (id)matchingRemindersListsFromArray:(id)array
 {
-  v4 = a3;
+  arrayCopy = array;
   if ([(WFEKCalendarDescriptor *)self allCalendars])
   {
-    v5 = v4;
+    v5 = arrayCopy;
   }
 
   else
@@ -133,7 +133,7 @@ uint64_t __53__WFEKCalendarDescriptor_matchingCalendarsFromArray___block_invoke_
     v9[2] = __58__WFEKCalendarDescriptor_matchingRemindersListsFromArray___block_invoke;
     v9[3] = &unk_1E837BBE8;
     v9[4] = self;
-    v5 = [v4 if_objectsPassingTest:v9];
+    v5 = [arrayCopy if_objectsPassingTest:v9];
     if (![v5 count])
     {
       v8[0] = MEMORY[0x1E69E9820];
@@ -141,7 +141,7 @@ uint64_t __53__WFEKCalendarDescriptor_matchingCalendarsFromArray___block_invoke_
       v8[2] = __58__WFEKCalendarDescriptor_matchingRemindersListsFromArray___block_invoke_2;
       v8[3] = &unk_1E837BBE8;
       v8[4] = self;
-      v6 = [v4 if_objectsPassingTest:v8];
+      v6 = [arrayCopy if_objectsPassingTest:v8];
 
       v5 = v6;
     }
@@ -191,20 +191,20 @@ uint64_t __58__WFEKCalendarDescriptor_matchingRemindersListsFromArray___block_in
     v3 = 3133065982;
   }
 
-  v4 = [(WFEKCalendarDescriptor *)self calendarTitle];
-  v5 = [v4 hash];
-  v6 = [(WFEKCalendarDescriptor *)self calendarIdentifier];
-  v7 = v5 ^ [v6 hash] ^ v3;
-  v8 = [(WFEKCalendarDescriptor *)self calendarRGBAValue];
-  v9 = [v8 hash];
+  calendarTitle = [(WFEKCalendarDescriptor *)self calendarTitle];
+  v5 = [calendarTitle hash];
+  calendarIdentifier = [(WFEKCalendarDescriptor *)self calendarIdentifier];
+  v7 = v5 ^ [calendarIdentifier hash] ^ v3;
+  calendarRGBAValue = [(WFEKCalendarDescriptor *)self calendarRGBAValue];
+  v9 = [calendarRGBAValue hash];
 
   return v7 ^ v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -214,7 +214,7 @@ uint64_t __58__WFEKCalendarDescriptor_matchingRemindersListsFromArray___block_in
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       if ([(WFEKCalendarDescriptor *)v5 allCalendars]&& [(WFEKCalendarDescriptor *)self allCalendars])
       {
         v6 = 1;
@@ -223,10 +223,10 @@ LABEL_26:
         goto LABEL_27;
       }
 
-      v7 = [(WFEKCalendarDescriptor *)v5 calendarIdentifier];
-      v8 = [(WFEKCalendarDescriptor *)self calendarIdentifier];
-      v9 = v7;
-      v10 = v8;
+      calendarIdentifier = [(WFEKCalendarDescriptor *)v5 calendarIdentifier];
+      calendarIdentifier2 = [(WFEKCalendarDescriptor *)self calendarIdentifier];
+      v9 = calendarIdentifier;
+      v10 = calendarIdentifier2;
       v11 = v10;
       if (v9 == v10)
       {
@@ -248,19 +248,19 @@ LABEL_26:
         }
       }
 
-      v13 = [(WFEKCalendarDescriptor *)v5 calendarTitle];
-      v14 = [(WFEKCalendarDescriptor *)self calendarTitle];
-      v9 = v13;
-      v15 = v14;
+      calendarTitle = [(WFEKCalendarDescriptor *)v5 calendarTitle];
+      calendarTitle2 = [(WFEKCalendarDescriptor *)self calendarTitle];
+      v9 = calendarTitle;
+      v15 = calendarTitle2;
       v11 = v15;
       if (v9 == v15)
       {
 
 LABEL_20:
-        v17 = [(WFEKCalendarDescriptor *)v5 calendarRGBAValue];
-        v18 = [(WFEKCalendarDescriptor *)self calendarRGBAValue];
-        v9 = v17;
-        v19 = v18;
+        calendarRGBAValue = [(WFEKCalendarDescriptor *)v5 calendarRGBAValue];
+        calendarRGBAValue2 = [(WFEKCalendarDescriptor *)self calendarRGBAValue];
+        v9 = calendarRGBAValue;
+        v19 = calendarRGBAValue2;
         v11 = v19;
         if (v9 == v19)
         {
@@ -307,64 +307,64 @@ LABEL_27:
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(WFEKCalendarDescriptor *)self calendarTitle];
-  [v4 encodeObject:v5 forKey:@"calendarTitle"];
+  coderCopy = coder;
+  calendarTitle = [(WFEKCalendarDescriptor *)self calendarTitle];
+  [coderCopy encodeObject:calendarTitle forKey:@"calendarTitle"];
 
-  v6 = [(WFEKCalendarDescriptor *)self calendarIdentifier];
-  [v4 encodeObject:v6 forKey:@"calendarIdentifier"];
+  calendarIdentifier = [(WFEKCalendarDescriptor *)self calendarIdentifier];
+  [coderCopy encodeObject:calendarIdentifier forKey:@"calendarIdentifier"];
 
-  v7 = [(WFEKCalendarDescriptor *)self calendarRGBAValue];
-  [v4 encodeObject:v7 forKey:@"calendarRGBAValue"];
+  calendarRGBAValue = [(WFEKCalendarDescriptor *)self calendarRGBAValue];
+  [coderCopy encodeObject:calendarRGBAValue forKey:@"calendarRGBAValue"];
 
   v8 = [MEMORY[0x1E696AD98] numberWithBool:{-[WFEKCalendarDescriptor allCalendars](self, "allCalendars")}];
-  [v4 encodeObject:v8 forKey:@"allCalendars"];
+  [coderCopy encodeObject:v8 forKey:@"allCalendars"];
 }
 
-- (WFEKCalendarDescriptor)initWithCoder:(id)a3
+- (WFEKCalendarDescriptor)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"calendarTitle"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"calendarIdentifier"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"calendarRGBAValue"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"allCalendars"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"calendarTitle"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"calendarIdentifier"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"calendarRGBAValue"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"allCalendars"];
 
   if ([v8 BOOLValue])
   {
-    v9 = [(WFEKCalendarDescriptor *)self initWithAllCalendars];
+    initWithAllCalendars = [(WFEKCalendarDescriptor *)self initWithAllCalendars];
   }
 
   else
   {
-    v9 = [(WFEKCalendarDescriptor *)self initWithCalendarTitle:v5 identifier:v6 RGBAValue:v7];
+    initWithAllCalendars = [(WFEKCalendarDescriptor *)self initWithCalendarTitle:v5 identifier:v6 RGBAValue:v7];
   }
 
-  v10 = v9;
+  v10 = initWithAllCalendars;
 
   return v10;
 }
 
-- (WFEKCalendarDescriptor)initWithCalendarTitle:(id)a3 identifier:(id)a4 RGBAValue:(id)a5
+- (WFEKCalendarDescriptor)initWithCalendarTitle:(id)title identifier:(id)identifier RGBAValue:(id)value
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  titleCopy = title;
+  identifierCopy = identifier;
+  valueCopy = value;
   v18.receiver = self;
   v18.super_class = WFEKCalendarDescriptor;
   v11 = [(WFEKCalendarDescriptor *)&v18 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [titleCopy copy];
     calendarTitle = v11->_calendarTitle;
     v11->_calendarTitle = v12;
 
-    v14 = [v9 copy];
+    v14 = [identifierCopy copy];
     calendarIdentifier = v11->_calendarIdentifier;
     v11->_calendarIdentifier = v14;
 
-    objc_storeStrong(&v11->_calendarRGBAValue, a5);
+    objc_storeStrong(&v11->_calendarRGBAValue, value);
     v16 = v11;
   }
 

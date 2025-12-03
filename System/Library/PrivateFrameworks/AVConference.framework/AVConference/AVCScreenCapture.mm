@@ -1,8 +1,8 @@
 @interface AVCScreenCapture
 + (unsigned)capabilities;
-- (AVCScreenCapture)initWithDelegate:(id)a3 withConfig:(id)a4;
-- (id)newNSErrorWithErrorDictionary:(id)a3;
-- (id)updateScreenCaptureWithConfig:(id)a3;
+- (AVCScreenCapture)initWithDelegate:(id)delegate withConfig:(id)config;
+- (id)newNSErrorWithErrorDictionary:(id)dictionary;
+- (id)updateScreenCaptureWithConfig:(id)config;
 - (void)dealloc;
 - (void)deregisterBlocksForNotifications;
 - (void)registerBlocksForNotifications;
@@ -45,7 +45,7 @@
   }
 }
 
-- (AVCScreenCapture)initWithDelegate:(id)a3 withConfig:(id)a4
+- (AVCScreenCapture)initWithDelegate:(id)delegate withConfig:(id)config
 {
   v46 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() < 6)
@@ -54,13 +54,13 @@
   }
 
   *&v35[0] = 0;
-  if (a3)
+  if (delegate)
   {
-    v7 = [objc_msgSend(a3 "description")];
-    if (a4)
+    v7 = [objc_msgSend(delegate "description")];
+    if (config)
     {
 LABEL_4:
-      v8 = [objc_msgSend(a4 "description")];
+      v8 = [objc_msgSend(config "description")];
       goto LABEL_7;
     }
   }
@@ -68,7 +68,7 @@ LABEL_4:
   else
   {
     v7 = "<nil>";
-    if (a4)
+    if (config)
     {
       goto LABEL_4;
     }
@@ -79,7 +79,7 @@ LABEL_7:
   asprintf(v35, "inDelegate=%s config=%s", v7, v8);
   if (*&v35[0])
   {
-    v30 = a3;
+    delegateCopy = delegate;
     __lasts = 0;
     v9 = strtok_r(*&v35[0], "\n", &__lasts);
     v10 = MEMORY[0x1E6986650];
@@ -110,7 +110,7 @@ LABEL_7:
 
     while (v9);
     free(*&v35[0]);
-    a3 = v30;
+    delegate = delegateCopy;
   }
 
 LABEL_14:
@@ -131,62 +131,62 @@ LABEL_14:
     v34[0] = v15;
     v34[1] = v16;
     v33[2] = @"vcScreenCaptureHeight";
-    v34[2] = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(a4, "height")}];
+    v34[2] = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(config, "height")}];
     v33[3] = @"vcScreenCaptureWidth";
-    v34[3] = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(a4, "width")}];
+    v34[3] = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(config, "width")}];
     v33[4] = @"vcScreenCaptureFramerate";
-    v34[4] = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(a4, "frameRate")}];
+    v34[4] = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(config, "frameRate")}];
     v33[5] = @"vcScreenCaptureScreenDisplayID";
-    v34[5] = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(a4, "screenCaptureDisplayID")}];
+    v34[5] = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(config, "screenCaptureDisplayID")}];
     v33[6] = @"vcScreenCaptureScreenDisplayMode";
-    v34[6] = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(a4, "displayMode")}];
+    v34[6] = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(config, "displayMode")}];
     v33[7] = @"vcScreenCaptureScreenIsWindowed";
-    v34[7] = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(a4, "isWindowed")}];
+    v34[7] = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(config, "isWindowed")}];
     v33[8] = @"vcScreenCaptureScreenMachPort";
-    v34[8] = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(a4, "selectiveSharingPort")}];
+    v34[8] = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(config, "selectiveSharingPort")}];
     v33[9] = @"vcScreenCaptureScreenUUID";
-    if ([a4 selectiveScreenUUID])
+    if ([config selectiveScreenUUID])
     {
-      v17 = [a4 selectiveScreenUUID];
+      selectiveScreenUUID = [config selectiveScreenUUID];
     }
 
     else
     {
-      v17 = [MEMORY[0x1E695DFB0] null];
+      selectiveScreenUUID = [MEMORY[0x1E695DFB0] null];
     }
 
-    v34[9] = v17;
+    v34[9] = selectiveScreenUUID;
     v33[10] = @"vcScreenCaptureIsCursorCaptured";
-    v34[10] = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(a4, "isCursorCaptured")}];
+    v34[10] = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(config, "isCursorCaptured")}];
     v33[11] = @"vcScreenCaptureCaptureExcludedBundleIDs";
-    if ([a4 excludedApplicationBundleIDs] && objc_msgSend(objc_msgSend(a4, "excludedApplicationBundleIDs"), "count"))
+    if ([config excludedApplicationBundleIDs] && objc_msgSend(objc_msgSend(config, "excludedApplicationBundleIDs"), "count"))
     {
-      v18 = [a4 excludedApplicationBundleIDs];
+      excludedApplicationBundleIDs = [config excludedApplicationBundleIDs];
     }
 
     else
     {
-      v18 = [MEMORY[0x1E695DFB0] null];
+      excludedApplicationBundleIDs = [MEMORY[0x1E695DFB0] null];
     }
 
-    v34[11] = v18;
+    v34[11] = excludedApplicationBundleIDs;
     v33[12] = @"vcScreenCaptureCaptureExcludedAudioPids";
-    if ([objc_msgSend(a4 "excludedAudioAuditTokens")])
+    if ([objc_msgSend(config "excludedAudioAuditTokens")])
     {
-      v19 = +[AVCAuditToken processIdentifiersFromAuditTokens:](AVCAuditToken, "processIdentifiersFromAuditTokens:", [a4 excludedAudioAuditTokens]);
+      null = +[AVCAuditToken processIdentifiersFromAuditTokens:](AVCAuditToken, "processIdentifiersFromAuditTokens:", [config excludedAudioAuditTokens]);
     }
 
     else
     {
-      v19 = [MEMORY[0x1E695DFB0] null];
+      null = [MEMORY[0x1E695DFB0] null];
     }
 
-    v34[12] = v19;
+    v34[12] = null;
     v33[13] = @"vcScreenCaptureCapturePdProtectionFlags";
-    v34[13] = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(a4, "pdProtectionOptions")}];
+    v34[13] = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(config, "pdProtectionOptions")}];
     v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v34 forKeys:v33 count:14];
-    v13->_isInProcess = [a4 shouldRunInProcess];
-    objc_storeWeak(&v13->_delegate, a3);
+    v13->_isInProcess = [config shouldRunInProcess];
+    objc_storeWeak(&v13->_delegate, delegate);
     CustomRootQueue = VCDispatchQueue_GetCustomRootQueue(47);
     v22 = dispatch_queue_create_with_target_V2("com.apple.AVConference.screenCapture", 0, CustomRootQueue);
     v13->_avConferenceScreenCaptureQueue = v22;
@@ -346,17 +346,17 @@ LABEL_37:
   }
 }
 
-- (id)newNSErrorWithErrorDictionary:(id)a3
+- (id)newNSErrorWithErrorDictionary:(id)dictionary
 {
-  if (!a3)
+  if (!dictionary)
   {
     return 0;
   }
 
   v4 = objc_alloc(MEMORY[0x1E696ABC0]);
-  v5 = [a3 objectForKeyedSubscript:@"ERROR_DOMAIN"];
-  v6 = [objc_msgSend(a3 objectForKeyedSubscript:{@"ERROR_CODE", "intValue"}];
-  v7 = [a3 objectForKeyedSubscript:@"ERROR_USERINFO"];
+  v5 = [dictionary objectForKeyedSubscript:@"ERROR_DOMAIN"];
+  v6 = [objc_msgSend(dictionary objectForKeyedSubscript:{@"ERROR_CODE", "intValue"}];
+  v7 = [dictionary objectForKeyedSubscript:@"ERROR_USERINFO"];
 
   return [v4 initWithDomain:v5 code:v6 userInfo:v7];
 }
@@ -934,7 +934,7 @@ LABEL_15:
       v15 = 1024;
       v16 = 280;
       v17 = 2048;
-      v18 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1DB56E000, v9, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d @:@ AVScreenCapture started (%p)", buf, 0x26u);
     }
   }
@@ -1007,7 +1007,7 @@ uint64_t __32__AVCScreenCapture_startCapture__block_invoke(uint64_t a1)
       v15 = 1024;
       v16 = 303;
       v17 = 2048;
-      v18 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1DB56E000, v9, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d @:@ AVScreenCapture stopped (%p)", buf, 0x26u);
     }
   }
@@ -1038,7 +1038,7 @@ uint64_t __31__AVCScreenCapture_stopCapture__block_invoke(uint64_t a1)
   return result;
 }
 
-- (id)updateScreenCaptureWithConfig:(id)a3
+- (id)updateScreenCaptureWithConfig:(id)config
 {
   v33 = *MEMORY[0x1E69E9840];
   v17 = 0;
@@ -1050,11 +1050,11 @@ uint64_t __31__AVCScreenCapture_stopCapture__block_invoke(uint64_t a1)
   if (VRTraceGetErrorLogLevelForModule() >= 6)
   {
     __str = 0;
-    v5 = a3 ? [objc_msgSend(a3 "description")] : "<nil>";
+    v5 = config ? [objc_msgSend(config "description")] : "<nil>";
     asprintf(&__str, "config=%s", v5);
     if (__str)
     {
-      v13 = a3;
+      configCopy = config;
       __lasts = 0;
       v6 = strtok_r(__str, "\n", &__lasts);
       v7 = MEMORY[0x1E6986650];
@@ -1085,7 +1085,7 @@ uint64_t __31__AVCScreenCapture_stopCapture__block_invoke(uint64_t a1)
 
       while (v6);
       free(__str);
-      a3 = v13;
+      config = configCopy;
     }
   }
 
@@ -1094,7 +1094,7 @@ uint64_t __31__AVCScreenCapture_stopCapture__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __50__AVCScreenCapture_updateScreenCaptureWithConfig___block_invoke;
   block[3] = &unk_1E85F6638;
-  block[4] = a3;
+  block[4] = config;
   block[5] = self;
   block[6] = &v17;
   dispatch_sync(avConferenceScreenCaptureQueue, block);

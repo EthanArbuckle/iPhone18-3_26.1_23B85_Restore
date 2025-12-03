@@ -1,9 +1,9 @@
 @interface AXCaptionTextEdgeController
-- (id)_videoOverridesStyle:(id)a3;
+- (id)_videoOverridesStyle:(id)style;
 - (id)specifiers;
-- (void)_setVideoOverridesStyle:(id)a3 specifier:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
+- (void)_setVideoOverridesStyle:(id)style specifier:(id)specifier;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -14,10 +14,10 @@
   v6.receiver = self;
   v6.super_class = AXCaptionTextEdgeController;
   [(AXCaptionStyleChooserController *)&v6 viewDidLoad];
-  v3 = [(AXCaptionTextEdgeController *)self table];
+  table = [(AXCaptionTextEdgeController *)self table];
   v4 = objc_opt_class();
   v5 = +[AXCaptionColorCell cellReuseIdentifier];
-  [v3 registerClass:v4 forCellReuseIdentifier:v5];
+  [table registerClass:v4 forCellReuseIdentifier:v5];
 }
 
 - (id)specifiers
@@ -27,10 +27,10 @@
   {
     v20 = OBJC_IVAR___PSListController__specifiers;
     v4 = objc_alloc_init(NSMutableArray);
-    v24 = self;
-    v5 = [(AXCaptionStyleChooserController *)self captionPreviewSpecifiers];
+    selfCopy = self;
+    captionPreviewSpecifiers = [(AXCaptionStyleChooserController *)self captionPreviewSpecifiers];
     v23 = v4;
-    [v4 addObjectsFromArray:v5];
+    [v4 addObjectsFromArray:captionPreviewSpecifiers];
 
     v22 = AXCaptionTextEdgeStyleDefault();
     v25 = 0u;
@@ -56,7 +56,7 @@
           v11 = *(*(&v25 + 1) + 8 * i);
           v12 = [v11 objectForKeyedSubscript:@"name"];
           v13 = settingsLocString(v12, @"CaptioningStyle");
-          v14 = [PSSpecifier preferenceSpecifierNamed:v13 target:v24 set:0 get:0 detail:0 cell:3 edit:0];
+          v14 = [PSSpecifier preferenceSpecifierNamed:v13 target:selfCopy set:0 get:0 detail:0 cell:3 edit:0];
 
           [v14 setProperty:objc_opt_class() forKey:v9];
           v15 = [v11 objectForKeyedSubscript:@"name"];
@@ -80,24 +80,24 @@
       while (v7);
     }
 
-    v17 = [(AXCaptionStyleChooserController *)v24 videoOverrideSpecifiers];
-    [v23 addObjectsFromArray:v17];
+    videoOverrideSpecifiers = [(AXCaptionStyleChooserController *)selfCopy videoOverrideSpecifiers];
+    [v23 addObjectsFromArray:videoOverrideSpecifiers];
 
-    v18 = *&v24->super.AXUISettingsBaseListController_opaque[v20];
-    *&v24->super.AXUISettingsBaseListController_opaque[v20] = v23;
+    v18 = *&selfCopy->super.AXUISettingsBaseListController_opaque[v20];
+    *&selfCopy->super.AXUISettingsBaseListController_opaque[v20] = v23;
 
-    v3 = *&v24->super.AXUISettingsBaseListController_opaque[v20];
+    v3 = *&selfCopy->super.AXUISettingsBaseListController_opaque[v20];
   }
 
   return v3;
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v8 = a4;
+  cellCopy = cell;
   v14.receiver = self;
   v14.super_class = AXCaptionTextEdgeController;
-  [(AXCaptionStyleChooserController *)&v14 tableView:a3 willDisplayCell:v8 forRowAtIndexPath:a5];
+  [(AXCaptionStyleChooserController *)&v14 tableView:view willDisplayCell:cellCopy forRowAtIndexPath:path];
   [(AXCaptionStyleChooserController *)self profileId];
   v9 = MACaptionAppearancePrefCopyTextEdgeStyle();
   if (!v9)
@@ -106,28 +106,28 @@
     v9 = [v10 objectForKey:@"edgeKey"];
   }
 
-  v11 = v8;
-  v12 = [v11 specifier];
-  v13 = [v12 propertyForKey:@"edgeKey"];
+  v11 = cellCopy;
+  specifier = [v11 specifier];
+  v13 = [specifier propertyForKey:@"edgeKey"];
 
   [v11 setChecked:{objc_msgSend(v13, "isEqual:", v9)}];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v12.receiver = self;
   v12.super_class = AXCaptionTextEdgeController;
-  v6 = a4;
-  v7 = a3;
-  [(AXCaptionTextEdgeController *)&v12 tableView:v7 didSelectRowAtIndexPath:v6];
-  v8 = [v7 cellForRowAtIndexPath:v6];
+  pathCopy = path;
+  viewCopy = view;
+  [(AXCaptionTextEdgeController *)&v12 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
+  v8 = [viewCopy cellForRowAtIndexPath:pathCopy];
 
-  v9 = [v8 specifier];
+  specifier = [v8 specifier];
 
-  v11 = [v9 propertyForKey:@"edgeKey"];
+  v11 = [specifier propertyForKey:@"edgeKey"];
   v10 = v11;
   AXPerformBlockOnMainThreadAfterDelay();
-  [(AXCaptionStyleChooserController *)self updateTableCheckedSelection:v6, _NSConcreteStackBlock, 3221225472, __65__AXCaptionTextEdgeController_tableView_didSelectRowAtIndexPath___block_invoke, &unk_255538, self];
+  [(AXCaptionStyleChooserController *)self updateTableCheckedSelection:pathCopy, _NSConcreteStackBlock, 3221225472, __65__AXCaptionTextEdgeController_tableView_didSelectRowAtIndexPath___block_invoke, &unk_255538, self];
 }
 
 uint64_t __65__AXCaptionTextEdgeController_tableView_didSelectRowAtIndexPath___block_invoke(uint64_t a1)
@@ -138,7 +138,7 @@ uint64_t __65__AXCaptionTextEdgeController_tableView_didSelectRowAtIndexPath___b
   return _MACaptionAppearancePrefSetTextEdgeStyle(v2, v3);
 }
 
-- (id)_videoOverridesStyle:(id)a3
+- (id)_videoOverridesStyle:(id)style
 {
   [(AXCaptionStyleChooserController *)self profileId];
   v3 = MACaptionAppearancePrefCopyVideoOverrideTextEdgeStyle();
@@ -146,11 +146,11 @@ uint64_t __65__AXCaptionTextEdgeController_tableView_didSelectRowAtIndexPath___b
   return v3;
 }
 
-- (void)_setVideoOverridesStyle:(id)a3 specifier:(id)a4
+- (void)_setVideoOverridesStyle:(id)style specifier:(id)specifier
 {
-  v5 = a3;
+  styleCopy = style;
   [(AXCaptionStyleChooserController *)self profileId];
-  [v5 BOOLValue];
+  [styleCopy BOOLValue];
 
   MACaptionAppearancePrefSetVideoOverrideTextEdgeStyle();
 }

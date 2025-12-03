@@ -2,7 +2,7 @@
 - (NSData)requestData;
 - (NSString)requestProtocol;
 - (WKIdentityDocumentPresentmentRawRequest)init;
-- (WKIdentityDocumentPresentmentRawRequest)initWithRequestProtocol:(id)a3 requestData:(id)a4;
+- (WKIdentityDocumentPresentmentRawRequest)initWithRequestProtocol:(id)protocol requestData:(id)data;
 @end
 
 @implementation WKIdentityDocumentPresentmentRawRequest
@@ -28,11 +28,11 @@
   return v4;
 }
 
-- (WKIdentityDocumentPresentmentRawRequest)initWithRequestProtocol:(id)a3 requestData:(id)a4
+- (WKIdentityDocumentPresentmentRawRequest)initWithRequestProtocol:(id)protocol requestData:(id)data
 {
   v6 = sub_23B59D820();
   v8 = v7;
-  v9 = a4;
+  dataCopy = data;
   v10 = sub_23B59D2F0();
   v12 = v11;
 

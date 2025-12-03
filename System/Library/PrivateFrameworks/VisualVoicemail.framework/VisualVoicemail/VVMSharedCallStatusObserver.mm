@@ -1,11 +1,11 @@
 @interface VVMSharedCallStatusObserver
 + (id)sharedCallStatusObserver;
 - (VVMSharedCallStatusObserver)init;
-- (void)addDelegate:(id)a3 queue:(id)a4;
+- (void)addDelegate:(id)delegate queue:(id)queue;
 - (void)dealloc;
-- (void)handleCallStatusChangedNotification:(id)a3;
-- (void)notifyCallStatusDisconnected:(id)a3;
-- (void)removeDelegate:(id)a3;
+- (void)handleCallStatusChangedNotification:(id)notification;
+- (void)notifyCallStatusDisconnected:(id)disconnected;
+- (void)removeDelegate:(id)delegate;
 @end
 
 @implementation VVMSharedCallStatusObserver
@@ -34,7 +34,7 @@
     v31 = 2112;
     v32 = objc_opt_class();
     v33 = 2048;
-    v34 = self;
+    selfCopy = self;
     v4 = v32;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "#I %s%s%@ %p Creating", buf, 0x2Au);
   }
@@ -47,10 +47,10 @@
   {
     v5->lock._os_unfair_lock_opaque = 0;
     v7 = [NSBundle bundleForClass:objc_opt_class()];
-    v8 = [v7 bundleIdentifier];
+    bundleIdentifier = [v7 bundleIdentifier];
     v9 = objc_opt_class();
     v10 = NSStringFromClass(v9);
-    v11 = [NSString stringWithFormat:@"%@.%@", v8, v10];
+    v11 = [NSString stringWithFormat:@"%@.%@", bundleIdentifier, v10];
     v12 = v11;
     v13 = dispatch_queue_create([v11 UTF8String], 0);
     queue = v6->queue;
@@ -108,7 +108,7 @@
     v11 = 2112;
     v12 = objc_opt_class();
     v13 = 2048;
-    v14 = self;
+    selfCopy = self;
     v4 = v12;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "#I %s%s%@ %p Deleting", buf, 0x2Au);
   }
@@ -121,14 +121,14 @@
   [(VVMSharedCallStatusObserver *)&v6 dealloc];
 }
 
-- (void)handleCallStatusChangedNotification:(id)a3
+- (void)handleCallStatusChangedNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = sub_1000430EC();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = objc_opt_class();
-    v7 = [v4 name];
+    name = [notificationCopy name];
     v21 = 136315906;
     v22 = "";
     v23 = 2080;
@@ -136,30 +136,30 @@
     v25 = 2112;
     v26 = v6;
     v27 = 2112;
-    v28 = v7;
+    v28 = name;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "#I %s%s%@ is handling <%@>", &v21, 0x2Au);
   }
 
-  v8 = [v4 name];
-  v9 = [v8 isEqualToString:TUCallCenterCallStatusChangedNotification];
+  name2 = [notificationCopy name];
+  v9 = [name2 isEqualToString:TUCallCenterCallStatusChangedNotification];
 
   if (v9)
   {
-    v10 = [v4 object];
+    object = [notificationCopy object];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v11 = [v4 object];
-      v12 = [v11 provider];
-      v13 = [v12 isTelephonyProvider];
+      object2 = [notificationCopy object];
+      provider = [object2 provider];
+      isTelephonyProvider = [provider isTelephonyProvider];
 
-      if (v13)
+      if (isTelephonyProvider)
       {
         v14 = sub_1000430EC();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
         {
           v15 = objc_opt_class();
-          v16 = [v11 status];
+          status = [object2 status];
           v21 = 136315906;
           v22 = "";
           v23 = 2080;
@@ -167,13 +167,13 @@
           v25 = 2112;
           v26 = v15;
           v27 = 1024;
-          LODWORD(v28) = v16;
+          LODWORD(v28) = status;
           _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "#I %s%s%@ is handling CallStatus changed to %d", &v21, 0x26u);
         }
 
-        if ([v11 status] == 6)
+        if ([object2 status] == 6)
         {
-          v17 = [v11 localSenderIdentityUUID];
+          localSenderIdentityUUID = [object2 localSenderIdentityUUID];
           v18 = sub_1000430EC();
           if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
           {
@@ -185,21 +185,21 @@
             v25 = 2112;
             v26 = v19;
             v27 = 2112;
-            v28 = v17;
+            v28 = localSenderIdentityUUID;
             v20 = v19;
             _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "#I %s%s%@ is notifying delegate CallStatus Disconnected for uuid %@", &v21, 0x2Au);
           }
 
-          [(VVMSharedCallStatusObserver *)self notifyCallStatusDisconnected:v17];
+          [(VVMSharedCallStatusObserver *)self notifyCallStatusDisconnected:localSenderIdentityUUID];
         }
       }
     }
   }
 }
 
-- (void)notifyCallStatusDisconnected:(id)a3
+- (void)notifyCallStatusDisconnected:(id)disconnected
 {
-  v4 = a3;
+  disconnectedCopy = disconnected;
   os_unfair_lock_lock(&self->lock);
   v15 = 0u;
   v16 = 0u;
@@ -226,7 +226,7 @@
         block[2] = sub_100043818;
         block[3] = &unk_1000EE260;
         block[4] = v8;
-        v12 = v4;
+        v12 = disconnectedCopy;
         dispatch_async(v9, block);
       }
 
@@ -239,21 +239,21 @@
   os_unfair_lock_unlock(&self->lock);
 }
 
-- (void)addDelegate:(id)a3 queue:(id)a4
+- (void)addDelegate:(id)delegate queue:(id)queue
 {
-  v6 = a4;
-  v7 = a3;
+  queueCopy = queue;
+  delegateCopy = delegate;
   os_unfair_lock_lock(&self->lock);
-  [(NSMapTable *)self->delegates setObject:v6 forKey:v7];
+  [(NSMapTable *)self->delegates setObject:queueCopy forKey:delegateCopy];
 
   os_unfair_lock_unlock(&self->lock);
 }
 
-- (void)removeDelegate:(id)a3
+- (void)removeDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   os_unfair_lock_lock(&self->lock);
-  [(NSMapTable *)self->delegates removeObjectForKey:v4];
+  [(NSMapTable *)self->delegates removeObjectForKey:delegateCopy];
 
   os_unfair_lock_unlock(&self->lock);
 }

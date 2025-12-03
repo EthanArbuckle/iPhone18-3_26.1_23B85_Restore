@@ -1,7 +1,7 @@
 @interface ISAppNotificationBadgeRecipe
 - (id)hintedBadgeRect;
 - (id)hintedMaskRect;
-- (id)layerTreeForSize:(CGSize)a3 scale:(double)a4;
+- (id)layerTreeForSize:(CGSize)size scale:(double)scale;
 @end
 
 @implementation ISAppNotificationBadgeRecipe
@@ -52,12 +52,12 @@ uint64_t __46__ISAppNotificationBadgeRecipe_hintedMaskRect__block_invoke()
   return [v2 addHintedRect:12.0 forSize:{12.0, 104.0, 104.0, 128.0, 128.0}];
 }
 
-- (id)layerTreeForSize:(CGSize)a3 scale:(double)a4
+- (id)layerTreeForSize:(CGSize)size scale:(double)scale
 {
-  height = a3.height;
-  width = a3.width;
-  v8 = [(ISAppNotificationBadgeRecipe *)self hintedBadgeRect];
-  [v8 hintedRectForSize:{width, height}];
+  height = size.height;
+  width = size.width;
+  hintedBadgeRect = [(ISAppNotificationBadgeRecipe *)self hintedBadgeRect];
+  [hintedBadgeRect hintedRectForSize:{width, height}];
   v10 = v9;
   v12 = v11;
   v14 = v13;
@@ -76,7 +76,7 @@ uint64_t __46__ISAppNotificationBadgeRecipe_hintedMaskRect__block_invoke()
   [v20 setOffset:{0.0, -3.0}];
   [v20 setBlur:8.0];
   [v20 setSpread:9.0];
-  [v20 setScale:a4];
+  [v20 setScale:scale];
   v21 = [objc_alloc(MEMORY[0x1E69A8968]) initWithRed:0.0 green:0.0 blue:0.0 alpha:0.2];
   [v20 setColor:v21];
 
@@ -89,8 +89,8 @@ uint64_t __46__ISAppNotificationBadgeRecipe_hintedMaskRect__block_invoke()
 
   [(ISLayer *)v18 addSublayer:v19];
   v23 = objc_alloc_init(ISContentLayer);
-  v24 = [(ISAppNotificationBadgeRecipe *)self hintedMaskRect];
-  [v24 hintedRectForSize:{width, height}];
+  hintedMaskRect = [(ISAppNotificationBadgeRecipe *)self hintedMaskRect];
+  [hintedMaskRect hintedRectForSize:{width, height}];
   [(ISLayer *)v23 setFrame:?];
 
   [(ISLayer *)v23 setName:@"mask layer"];

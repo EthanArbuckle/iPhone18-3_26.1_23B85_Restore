@@ -1,97 +1,97 @@
 @interface AKGeometryHelper
-+ (BOOL)annotationHasRotation:(id)a3 outAngle:(double *)a4;
-+ (BOOL)isPoint:(CGPoint)a3 onEllipse:(CGRect)a4;
-+ (BOOL)isUnpresentablePoint:(CGPoint)a3;
-+ (BOOL)isUnpresentableRect:(CGRect)a3;
-+ (BOOL)isUnpresentableSize:(CGSize)a3;
-+ (CGAffineTransform)_rawAffineTransformForExifOrientation:(SEL)a3;
-+ (CGAffineTransform)affineTransformFlatteningOriginalModelExif:(SEL)a3 withOriginalModelSize:(int64_t)a4;
-+ (CGAffineTransform)affineTransformForExifOrientation:(SEL)a3 aboutCenter:(int64_t)a4;
-+ (CGAffineTransform)affineTransformRecenteringAboutOriginForExifOrientation:(SEL)a3 withOriginalSize:(int64_t)a4;
-+ (CGAffineTransform)centeredCircleToEllipseTransform:(SEL)a3;
-+ (CGAffineTransform)ellipseToCenteredCircleTransform:(SEL)a3;
-+ (CGAffineTransform)horizontalFlipTransformForRect:(SEL)a3;
-+ (CGAffineTransform)rotationTransformAroundPoint:(SEL)a3 withAngle:(CGPoint)a4;
-+ (CGAffineTransform)rotationTransformForRect:(SEL)a3 withAngle:(CGRect)a4;
-+ (CGAffineTransform)rotationTransformForRectangularAnnotation:(SEL)a3 hasRotation:(id)a4;
-+ (CGAffineTransform)verticalFlipTransformForRect:(SEL)a3;
-+ (CGPoint)_alignedPointForPoint:(CGPoint)a3 alignToContent:(BOOL)a4 alignToScreenUsingPageController:(id)a5 orAlignToBitmapContext:(CGContext *)a6 usingAnnotation:(id)a7;
-+ (CGPoint)_farthestPointFrom:(CGPoint)a3 inArray:(id)a4;
-+ (CGPoint)adjustPoint:(CGPoint)a3 forExifOrientation:(int64_t)a4 aboutCenter:(CGPoint)a5;
-+ (CGPoint)centerOfRect:(CGRect)a3;
-+ (CGPoint)compareVectorDirectionsFirstVector:(CGPoint)a3 secondVector:(CGPoint)a4;
-+ (CGPoint)convertModelToScreenOrientationForPoint:(CGPoint)a3 relativeToRect:(CGRect)a4 withPageController:(id)a5;
-+ (CGPoint)convertScreenToModelOrientationForPoint:(CGPoint)a3 relativeToRect:(CGRect)a4 withPageController:(id)a5;
-+ (CGPoint)flipPointVertically:(CGPoint)a3 inRect:(CGRect)a4;
-+ (CGPoint)intersectLineSegmentStartingAt:(CGPoint)a3 ending:(CGPoint)a4 withAnotherSegmentStartingAt:(CGPoint)a5 ending:(CGPoint)a6;
-+ (CGPoint)intersectLineSegmentStartingAt:(CGPoint)a3 ending:(CGPoint)a4 withCircleWithCenter:(CGPoint)a5 andRadius:(double)a6 farthestResult:(BOOL)a7;
-+ (CGPoint)intersectLineSegmentStartingAt:(CGPoint)a3 ending:(CGPoint)a4 withEllipseOfRect:(CGRect)a5 farthestResult:(BOOL)a6;
-+ (CGPoint)intersectLineSegmentStartingAt:(CGPoint)a3 ending:(CGPoint)a4 withRect:(CGRect)a5 andRoundedCornerRadius:(double)a6;
-+ (CGPoint)intersectRayStartingAt:(CGPoint)a3 ending:(CGPoint)a4 withCircleWithCenter:(CGPoint)a5 andRadius:(double)a6 farthestResult:(BOOL)a7;
-+ (CGPoint)intersectRayStartingAt:(CGPoint)a3 ending:(CGPoint)a4 withEllipseOfRect:(CGRect)a5 farthestResult:(BOOL)a6;
-+ (CGPoint)pointAtAngle:(double)a3 inCircleWithCenter:(CGPoint)a4 andRadius:(double)a5;
-+ (CGPoint)projectPoint:(CGPoint)a3 ontoRayWithFirstPoint:(CGPoint)a4 andSecondPoint:(CGPoint)a5;
-+ (CGPoint)projectVector:(CGPoint)a3 ontoAspectVector:(CGPoint)a4;
-+ (CGPoint)snapVector:(CGPoint)a3 toDiagonalForAspectRatio:(double)a4 ignoreWidth:(BOOL)a5 ignoreHeight:(BOOL)a6;
-+ (CGPoint)snapVectorTo45Degrees:(CGPoint)a3;
-+ (CGPoint)tangentOfEllipse:(CGRect)a3 throughRayWithFirstPoint:(CGPoint)a4 goingThrough:(CGPoint)a5;
-+ (CGRect)_alignedStableRectForRect:(CGRect)a3 alignToContent:(BOOL)a4 alignToScreenUsingPageController:(id)a5 orAlignToBitmapContext:(CGContext *)a6 usingAnnotation:(id)a7;
-+ (CGRect)_rectForRect:(CGRect)a3 alignToContent:(BOOL)a4 alignToScreenUsingPageController:(id)a5 orAlignToBitmapContext:(CGContext *)a6 usingAnnotation:(id)a7 withAlignmentBlock:(id)a8;
-+ (CGRect)_strokeAlignedRectForRect:(CGRect)a3 withStrokeWidth:(double)a4 shouldAlignStrictlyToScreen:(BOOL)a5 alignToScreenUsingPageController:(id)a6 orAlignToBitmapContext:(CGContext *)a7 usingAnnotation:(id)a8;
-+ (CGRect)adjustRect:(CGRect)a3 forExifOrientation:(int64_t)a4 aboutCenter:(CGPoint)a5;
-+ (CGRect)boundsOfRotatedRectangle:(CGRect)a3 angle:(double)a4;
-+ (CGRect)constrainRect:(CGRect)a3 withinRect:(CGRect)a4;
-+ (CGRect)convertModelToScreenOrientationForRect:(CGRect)a3 withPageController:(id)a4;
-+ (CGRect)convertRect:(CGRect)a3 fromScreenPointsToView:(id)a4;
-+ (CGRect)convertRect:(CGRect)a3 fromViewToScreenPixels:(id)a4 useNativeScale:(BOOL)a5;
-+ (CGRect)convertScreenToModelOrientationForRect:(CGRect)a3 withPageController:(id)a4;
-+ (CGRect)effectiveDrawingBoundsForAnnotation:(id)a3 forDisplay:(BOOL)a4 pageControllerOrNil:(id)a5 outScaleFactor:(double *)a6;
-+ (CGRect)expandCGRect:(CGRect)a3 toContainPoint:(CGPoint)a4;
-+ (CGRect)rectForSize:(CGSize)a3 inRect:(CGRect)a4;
-+ (CGRect)rectWithSize:(CGSize)a3 centeredAtPoint:(CGPoint)a4;
-+ (CGRect)renderingAlignedTextRectForRect:(CGRect)a3 alignToScreenUsingPageController:(id)a4 orAlignToContext:(CGContext *)a5 usingAnnotation:(id)a6;
-+ (CGRect)renderingStrokeAlignedRectForRect:(CGRect)a3 withStrokeWidth:(double)a4 alignToScreenUsingPageController:(id)a5 orAlignToContext:(CGContext *)a6 usingAnnotation:(id)a7;
-+ (CGRect)stableIntegralRectForRect:(CGRect)a3;
-+ (CGVector)normalizeVector:(CGVector)a3;
-+ (double)angleBetweenPoint:(CGPoint)a3 andPoint:(CGPoint)a4;
-+ (double)angleOfVector:(CGVector)a3;
-+ (id)_cornersOfRotatedRectangle:(CGRect)a3 angle:(double)a4;
-+ (id)verticesOfPolygonWithPointCount:(unint64_t)a3 inRect:(CGRect)a4 rotation:(double)a5 flippedVertically:(BOOL)a6;
-+ (int64_t)exifOrientationWithConversionBlock:(id)a3;
-+ (int64_t)inverseExifOrientation:(int64_t)a3;
-+ (unint64_t)draggableArea:(unint64_t)a3 convertedForExif:(int64_t)a4;
-+ (void)_checkIntersectionOfLineSegmentStartingAt:(CGPoint)a3 endingAt:(CGPoint)a4 withCircleAt:(CGPoint)a5 andRadius:(double)a6 results:(id)a7;
-+ (void)_collectIntersectionsOfLineSegmentStartingAt:(CGPoint)a3 endingAt:(CGPoint)a4 withCornerCirclesOfRoundedRect:(CGRect)a5 withRadius:(double)a6 results:(id)a7;
-+ (void)adjustOriginalExifOrientationOnAnnotation:(id)a3 flatteningOriginalModelExif:(int64_t)a4;
-+ (void)intersectCircleAtPoint:(CGPoint)a3 withRadius:(double)a4 withCircleAtPoint:(CGPoint)a5 withRadius:(double)a6 firstOutPoint:(CGPoint *)a7 secondOutPoint:(CGPoint *)a8;
-+ (void)tangentPointsToEllipse:(CGRect)a3 fromPoint:(CGPoint)a4 firstOutPoint:(CGPoint *)a5 secondOutPoint:(CGPoint *)a6;
-- (AKGeometryHelper)initWithPageController:(id)a3;
++ (BOOL)annotationHasRotation:(id)rotation outAngle:(double *)angle;
++ (BOOL)isPoint:(CGPoint)point onEllipse:(CGRect)ellipse;
++ (BOOL)isUnpresentablePoint:(CGPoint)point;
++ (BOOL)isUnpresentableRect:(CGRect)rect;
++ (BOOL)isUnpresentableSize:(CGSize)size;
++ (CGAffineTransform)_rawAffineTransformForExifOrientation:(SEL)orientation;
++ (CGAffineTransform)affineTransformFlatteningOriginalModelExif:(SEL)exif withOriginalModelSize:(int64_t)size;
++ (CGAffineTransform)affineTransformForExifOrientation:(SEL)orientation aboutCenter:(int64_t)center;
++ (CGAffineTransform)affineTransformRecenteringAboutOriginForExifOrientation:(SEL)orientation withOriginalSize:(int64_t)size;
++ (CGAffineTransform)centeredCircleToEllipseTransform:(SEL)transform;
++ (CGAffineTransform)ellipseToCenteredCircleTransform:(SEL)transform;
++ (CGAffineTransform)horizontalFlipTransformForRect:(SEL)rect;
++ (CGAffineTransform)rotationTransformAroundPoint:(SEL)point withAngle:(CGPoint)angle;
++ (CGAffineTransform)rotationTransformForRect:(SEL)rect withAngle:(CGRect)angle;
++ (CGAffineTransform)rotationTransformForRectangularAnnotation:(SEL)annotation hasRotation:(id)rotation;
++ (CGAffineTransform)verticalFlipTransformForRect:(SEL)rect;
++ (CGPoint)_alignedPointForPoint:(CGPoint)point alignToContent:(BOOL)content alignToScreenUsingPageController:(id)controller orAlignToBitmapContext:(CGContext *)context usingAnnotation:(id)annotation;
++ (CGPoint)_farthestPointFrom:(CGPoint)from inArray:(id)array;
++ (CGPoint)adjustPoint:(CGPoint)point forExifOrientation:(int64_t)orientation aboutCenter:(CGPoint)center;
++ (CGPoint)centerOfRect:(CGRect)rect;
++ (CGPoint)compareVectorDirectionsFirstVector:(CGPoint)vector secondVector:(CGPoint)secondVector;
++ (CGPoint)convertModelToScreenOrientationForPoint:(CGPoint)point relativeToRect:(CGRect)rect withPageController:(id)controller;
++ (CGPoint)convertScreenToModelOrientationForPoint:(CGPoint)point relativeToRect:(CGRect)rect withPageController:(id)controller;
++ (CGPoint)flipPointVertically:(CGPoint)vertically inRect:(CGRect)rect;
++ (CGPoint)intersectLineSegmentStartingAt:(CGPoint)at ending:(CGPoint)ending withAnotherSegmentStartingAt:(CGPoint)startingAt ending:(CGPoint)a6;
++ (CGPoint)intersectLineSegmentStartingAt:(CGPoint)at ending:(CGPoint)ending withCircleWithCenter:(CGPoint)center andRadius:(double)radius farthestResult:(BOOL)result;
++ (CGPoint)intersectLineSegmentStartingAt:(CGPoint)at ending:(CGPoint)ending withEllipseOfRect:(CGRect)rect farthestResult:(BOOL)result;
++ (CGPoint)intersectLineSegmentStartingAt:(CGPoint)at ending:(CGPoint)ending withRect:(CGRect)rect andRoundedCornerRadius:(double)radius;
++ (CGPoint)intersectRayStartingAt:(CGPoint)at ending:(CGPoint)ending withCircleWithCenter:(CGPoint)center andRadius:(double)radius farthestResult:(BOOL)result;
++ (CGPoint)intersectRayStartingAt:(CGPoint)at ending:(CGPoint)ending withEllipseOfRect:(CGRect)rect farthestResult:(BOOL)result;
++ (CGPoint)pointAtAngle:(double)angle inCircleWithCenter:(CGPoint)center andRadius:(double)radius;
++ (CGPoint)projectPoint:(CGPoint)point ontoRayWithFirstPoint:(CGPoint)firstPoint andSecondPoint:(CGPoint)secondPoint;
++ (CGPoint)projectVector:(CGPoint)vector ontoAspectVector:(CGPoint)aspectVector;
++ (CGPoint)snapVector:(CGPoint)vector toDiagonalForAspectRatio:(double)ratio ignoreWidth:(BOOL)width ignoreHeight:(BOOL)height;
++ (CGPoint)snapVectorTo45Degrees:(CGPoint)degrees;
++ (CGPoint)tangentOfEllipse:(CGRect)ellipse throughRayWithFirstPoint:(CGPoint)point goingThrough:(CGPoint)through;
++ (CGRect)_alignedStableRectForRect:(CGRect)rect alignToContent:(BOOL)content alignToScreenUsingPageController:(id)controller orAlignToBitmapContext:(CGContext *)context usingAnnotation:(id)annotation;
++ (CGRect)_rectForRect:(CGRect)rect alignToContent:(BOOL)content alignToScreenUsingPageController:(id)controller orAlignToBitmapContext:(CGContext *)context usingAnnotation:(id)annotation withAlignmentBlock:(id)block;
++ (CGRect)_strokeAlignedRectForRect:(CGRect)rect withStrokeWidth:(double)width shouldAlignStrictlyToScreen:(BOOL)screen alignToScreenUsingPageController:(id)controller orAlignToBitmapContext:(CGContext *)context usingAnnotation:(id)annotation;
++ (CGRect)adjustRect:(CGRect)rect forExifOrientation:(int64_t)orientation aboutCenter:(CGPoint)center;
++ (CGRect)boundsOfRotatedRectangle:(CGRect)rectangle angle:(double)angle;
++ (CGRect)constrainRect:(CGRect)rect withinRect:(CGRect)withinRect;
++ (CGRect)convertModelToScreenOrientationForRect:(CGRect)rect withPageController:(id)controller;
++ (CGRect)convertRect:(CGRect)rect fromScreenPointsToView:(id)view;
++ (CGRect)convertRect:(CGRect)rect fromViewToScreenPixels:(id)pixels useNativeScale:(BOOL)scale;
++ (CGRect)convertScreenToModelOrientationForRect:(CGRect)rect withPageController:(id)controller;
++ (CGRect)effectiveDrawingBoundsForAnnotation:(id)annotation forDisplay:(BOOL)display pageControllerOrNil:(id)nil outScaleFactor:(double *)factor;
++ (CGRect)expandCGRect:(CGRect)rect toContainPoint:(CGPoint)point;
++ (CGRect)rectForSize:(CGSize)size inRect:(CGRect)rect;
++ (CGRect)rectWithSize:(CGSize)size centeredAtPoint:(CGPoint)point;
++ (CGRect)renderingAlignedTextRectForRect:(CGRect)rect alignToScreenUsingPageController:(id)controller orAlignToContext:(CGContext *)context usingAnnotation:(id)annotation;
++ (CGRect)renderingStrokeAlignedRectForRect:(CGRect)rect withStrokeWidth:(double)width alignToScreenUsingPageController:(id)controller orAlignToContext:(CGContext *)context usingAnnotation:(id)annotation;
++ (CGRect)stableIntegralRectForRect:(CGRect)rect;
++ (CGVector)normalizeVector:(CGVector)vector;
++ (double)angleBetweenPoint:(CGPoint)point andPoint:(CGPoint)andPoint;
++ (double)angleOfVector:(CGVector)vector;
++ (id)_cornersOfRotatedRectangle:(CGRect)rectangle angle:(double)angle;
++ (id)verticesOfPolygonWithPointCount:(unint64_t)count inRect:(CGRect)rect rotation:(double)rotation flippedVertically:(BOOL)vertically;
++ (int64_t)exifOrientationWithConversionBlock:(id)block;
++ (int64_t)inverseExifOrientation:(int64_t)orientation;
++ (unint64_t)draggableArea:(unint64_t)area convertedForExif:(int64_t)exif;
++ (void)_checkIntersectionOfLineSegmentStartingAt:(CGPoint)at endingAt:(CGPoint)endingAt withCircleAt:(CGPoint)circleAt andRadius:(double)radius results:(id)results;
++ (void)_collectIntersectionsOfLineSegmentStartingAt:(CGPoint)at endingAt:(CGPoint)endingAt withCornerCirclesOfRoundedRect:(CGRect)rect withRadius:(double)radius results:(id)results;
++ (void)adjustOriginalExifOrientationOnAnnotation:(id)annotation flatteningOriginalModelExif:(int64_t)exif;
++ (void)intersectCircleAtPoint:(CGPoint)point withRadius:(double)radius withCircleAtPoint:(CGPoint)atPoint withRadius:(double)withRadius firstOutPoint:(CGPoint *)outPoint secondOutPoint:(CGPoint *)secondOutPoint;
++ (void)tangentPointsToEllipse:(CGRect)ellipse fromPoint:(CGPoint)point firstOutPoint:(CGPoint *)outPoint secondOutPoint:(CGPoint *)secondOutPoint;
+- (AKGeometryHelper)initWithPageController:(id)controller;
 - (AKPageController)pageController;
 - (BOOL)_shouldAlignToContent;
 - (BOOL)_shouldAlignToScreen;
-- (CGPoint)contentAlignedPointForPoint:(CGPoint)a3;
-- (CGPoint)convertPoint:(CGPoint)a3 fromModelToLayer:(id)a4;
-- (CGPoint)screenPixelAlignedPointForPoint:(CGPoint)a3;
-- (CGRect)_clippingFrameForView:(id)a3;
-- (CGRect)_smartAlignedRectForRect:(CGRect)a3;
-- (CGRect)adornmentLayerFrameForAnnotation:(id)a3;
-- (CGRect)annotationLayerFrameForAnnotation:(id)a3 layerIsClipped:(BOOL *)a4;
-- (CGRect)contentAlignedRectForRect:(CGRect)a3;
-- (CGRect)convertRect:(CGRect)a3 fromModelToLayer:(id)a4;
-- (CGRect)screenPixelAlignedRectForRect:(CGRect)a3;
-- (CGRect)screenStrokeAlignedRectForRect:(CGRect)a3 withStrokeWidth:(double)a4;
+- (CGPoint)contentAlignedPointForPoint:(CGPoint)point;
+- (CGPoint)convertPoint:(CGPoint)point fromModelToLayer:(id)layer;
+- (CGPoint)screenPixelAlignedPointForPoint:(CGPoint)point;
+- (CGRect)_clippingFrameForView:(id)view;
+- (CGRect)_smartAlignedRectForRect:(CGRect)rect;
+- (CGRect)adornmentLayerFrameForAnnotation:(id)annotation;
+- (CGRect)annotationLayerFrameForAnnotation:(id)annotation layerIsClipped:(BOOL *)clipped;
+- (CGRect)contentAlignedRectForRect:(CGRect)rect;
+- (CGRect)convertRect:(CGRect)rect fromModelToLayer:(id)layer;
+- (CGRect)screenPixelAlignedRectForRect:(CGRect)rect;
+- (CGRect)screenStrokeAlignedRectForRect:(CGRect)rect withStrokeWidth:(double)width;
 - (id)_rootLayer;
 @end
 
 @implementation AKGeometryHelper
 
-+ (BOOL)isUnpresentableRect:(CGRect)a3
++ (BOOL)isUnpresentableRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (CGRectIsNull(a3) || ([a1 rectHasZeroSize:{x, y, width, height}] & 1) != 0)
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  if (CGRectIsNull(rect) || ([self rectHasZeroSize:{x, y, width, height}] & 1) != 0)
   {
     v8 = 1;
   }
@@ -123,11 +123,11 @@
   return v8 & 1;
 }
 
-+ (BOOL)isUnpresentableSize:(CGSize)a3
++ (BOOL)isUnpresentableSize:(CGSize)size
 {
-  v3 = fmin(a3.width, a3.height);
-  v4 = fabs(a3.width) == INFINITY;
-  if (fabs(a3.height) == INFINITY)
+  v3 = fmin(size.width, size.height);
+  v4 = fabs(size.width) == INFINITY;
+  if (fabs(size.height) == INFINITY)
   {
     v4 = 1;
   }
@@ -140,10 +140,10 @@
   return v4;
 }
 
-+ (BOOL)isUnpresentablePoint:(CGPoint)a3
++ (BOOL)isUnpresentablePoint:(CGPoint)point
 {
-  v3 = fabs(a3.x) == INFINITY;
-  if (fabs(a3.y) == INFINITY)
+  v3 = fabs(point.x) == INFINITY;
+  if (fabs(point.y) == INFINITY)
   {
     return 1;
   }
@@ -151,9 +151,9 @@
   return v3;
 }
 
-+ (CGRect)stableIntegralRectForRect:(CGRect)a3
++ (CGRect)stableIntegralRectForRect:(CGRect)rect
 {
-  [a1 integralRect:3840 withOptions:{a3.origin.x, a3.origin.y, a3.size.width, a3.size.height}];
+  [self integralRect:3840 withOptions:{rect.origin.x, rect.origin.y, rect.size.width, rect.size.height}];
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -161,12 +161,12 @@
   return result;
 }
 
-+ (CGRect)rectWithSize:(CGSize)a3 centeredAtPoint:(CGPoint)a4
++ (CGRect)rectWithSize:(CGSize)size centeredAtPoint:(CGPoint)point
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = a4.x - a3.width * 0.5;
-  v7 = a4.y - a3.height * 0.5;
+  height = size.height;
+  width = size.width;
+  v6 = point.x - size.width * 0.5;
+  v7 = point.y - size.height * 0.5;
   v8 = width;
   v9 = height;
   result.size.height = v9;
@@ -176,18 +176,18 @@
   return result;
 }
 
-+ (CGRect)rectForSize:(CGSize)a3 inRect:(CGRect)a4
++ (CGRect)rectForSize:(CGSize)size inRect:(CGRect)rect
 {
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v6 = a4.size.height / a3.height;
-  if (a4.size.width / a3.width < a4.size.height / a3.height)
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v6 = rect.size.height / size.height;
+  if (rect.size.width / size.width < rect.size.height / size.height)
   {
-    v6 = a4.size.width / a3.width;
+    v6 = rect.size.width / size.width;
   }
 
-  v7 = a3.width * v6;
-  v8 = a3.height * v6;
+  v7 = size.width * v6;
+  v8 = size.height * v6;
   v9 = x;
   v10 = y;
   result.size.height = v8;
@@ -197,13 +197,13 @@
   return result;
 }
 
-+ (CGPoint)centerOfRect:(CGRect)a3
++ (CGPoint)centerOfRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  MidX = CGRectGetMidX(a3);
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  MidX = CGRectGetMidX(rect);
   v11.origin.x = x;
   v11.origin.y = y;
   v11.size.width = width;
@@ -215,17 +215,17 @@
   return result;
 }
 
-+ (CGRect)constrainRect:(CGRect)a3 withinRect:(CGRect)a4
++ (CGRect)constrainRect:(CGRect)rect withinRect:(CGRect)withinRect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = a3.size.width;
-  v9 = a3.origin.y;
-  v10 = a3.origin.x;
-  rect = a3.size.height;
-  v11 = CGRectGetWidth(a3);
+  height = withinRect.size.height;
+  width = withinRect.size.width;
+  y = withinRect.origin.y;
+  x = withinRect.origin.x;
+  v8 = rect.size.width;
+  v9 = rect.origin.y;
+  v10 = rect.origin.x;
+  rect = rect.size.height;
+  v11 = CGRectGetWidth(rect);
   v27.origin.x = x;
   v27.origin.y = y;
   v27.size.width = width;
@@ -335,19 +335,19 @@
 
   v23 = v13;
   v24 = v8;
-  v25 = rect;
-  result.size.height = v25;
+  rectCopy = rect;
+  result.size.height = rectCopy;
   result.size.width = v24;
   result.origin.y = v19;
   result.origin.x = v23;
   return result;
 }
 
-+ (CGPoint)snapVectorTo45Degrees:(CGPoint)a3
++ (CGPoint)snapVectorTo45Degrees:(CGPoint)degrees
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = hypot(a3.x, a3.y);
+  y = degrees.y;
+  x = degrees.x;
+  v5 = hypot(degrees.x, degrees.y);
   v6 = atan2(y, x);
   v7 = __sincos_stret(round(v6 / 0.785398163) * 0.785398163);
   v8 = v5 * v7.__sinval;
@@ -357,27 +357,27 @@
   return result;
 }
 
-+ (CGPoint)snapVector:(CGPoint)a3 toDiagonalForAspectRatio:(double)a4 ignoreWidth:(BOOL)a5 ignoreHeight:(BOOL)a6
++ (CGPoint)snapVector:(CGPoint)vector toDiagonalForAspectRatio:(double)ratio ignoreWidth:(BOOL)width ignoreHeight:(BOOL)height
 {
-  y = a3.y;
-  x = a3.x;
-  if (a6)
+  y = vector.y;
+  x = vector.x;
+  if (height)
   {
-    a3.y = a3.x / a4;
+    vector.y = vector.x / ratio;
   }
 
   else
   {
-    a3.x = a3.y * a4;
-    if (!a5)
+    vector.x = vector.y * ratio;
+    if (!width)
     {
-      a3.x = x;
+      vector.x = x;
     }
   }
 
-  v9 = hypot(a3.x, a3.y);
-  [AKGeometryHelper compareVectorDirectionsFirstVector:x secondVector:y, a4, 1.0];
-  [AKGeometryHelper normalizeVectorPoint:v10 * a4];
+  v9 = hypot(vector.x, vector.y);
+  [AKGeometryHelper compareVectorDirectionsFirstVector:x secondVector:y, ratio, 1.0];
+  [AKGeometryHelper normalizeVectorPoint:v10 * ratio];
   v12 = v9 * v11;
   v14 = v9 * v13;
   result.y = v14;
@@ -385,25 +385,25 @@
   return result;
 }
 
-+ (CGPoint)projectVector:(CGPoint)a3 ontoAspectVector:(CGPoint)a4
++ (CGPoint)projectVector:(CGPoint)vector ontoAspectVector:(CGPoint)aspectVector
 {
-  v4 = (a3.y * a4.y + a3.x * a4.x) / (a4.y * a4.y + a4.x * a4.x);
-  v5 = a4.x * v4;
-  v6 = a4.y * v4;
+  v4 = (vector.y * aspectVector.y + vector.x * aspectVector.x) / (aspectVector.y * aspectVector.y + aspectVector.x * aspectVector.x);
+  v5 = aspectVector.x * v4;
+  v6 = aspectVector.y * v4;
   result.y = v6;
   result.x = v5;
   return result;
 }
 
-+ (CGPoint)intersectRayStartingAt:(CGPoint)a3 ending:(CGPoint)a4 withCircleWithCenter:(CGPoint)a5 andRadius:(double)a6 farthestResult:(BOOL)a7
++ (CGPoint)intersectRayStartingAt:(CGPoint)at ending:(CGPoint)ending withCircleWithCenter:(CGPoint)center andRadius:(double)radius farthestResult:(BOOL)result
 {
-  v7 = a4.x - a3.x;
-  v8 = a4.y - a3.y;
-  v9 = a5.x - a3.x;
-  v10 = a5.y - a3.y;
-  v11 = v7 * (a5.y - a3.y) - v8 * v9;
+  v7 = ending.x - at.x;
+  v8 = ending.y - at.y;
+  v9 = center.x - at.x;
+  v10 = center.y - at.y;
+  v11 = v7 * (center.y - at.y) - v8 * v9;
   v12 = v8 * v8 + v7 * v7;
-  v13 = a6 * a6 * v12 - v11 * v11;
+  v13 = radius * radius * v12 - v11 * v11;
   if (v13 >= 0.0)
   {
     v16 = v8 * v10 + v7 * v9;
@@ -425,7 +425,7 @@
       v19 = v18;
     }
 
-    if (a7)
+    if (result)
     {
       v19 = v20;
     }
@@ -435,8 +435,8 @@
       v19 = v20;
     }
 
-    v14 = a3.x + v19 * v7;
-    v15 = a3.y + v19 * v8;
+    v14 = at.x + v19 * v7;
+    v15 = at.y + v19 * v8;
   }
 
   else
@@ -450,13 +450,13 @@
   return result;
 }
 
-+ (CGPoint)intersectLineSegmentStartingAt:(CGPoint)a3 ending:(CGPoint)a4 withCircleWithCenter:(CGPoint)a5 andRadius:(double)a6 farthestResult:(BOOL)a7
++ (CGPoint)intersectLineSegmentStartingAt:(CGPoint)at ending:(CGPoint)ending withCircleWithCenter:(CGPoint)center andRadius:(double)radius farthestResult:(BOOL)result
 {
-  y = a4.y;
-  x = a4.x;
-  v9 = a3.y;
-  v10 = a3.x;
-  [AKGeometryHelper intersectRayStartingAt:a7 ending:a3.x withCircleWithCenter:a3.y andRadius:a4.x farthestResult:a4.y, a5.x, a5.y, a6];
+  y = ending.y;
+  x = ending.x;
+  v9 = at.y;
+  v10 = at.x;
+  [AKGeometryHelper intersectRayStartingAt:result ending:at.x withCircleWithCenter:at.y andRadius:ending.x farthestResult:ending.y, center.x, center.y, radius];
   if (v10 >= x)
   {
     v13 = x;
@@ -478,21 +478,21 @@
   return result;
 }
 
-+ (CGPoint)intersectRayStartingAt:(CGPoint)a3 ending:(CGPoint)a4 withEllipseOfRect:(CGRect)a5 farthestResult:(BOOL)a6
++ (CGPoint)intersectRayStartingAt:(CGPoint)at ending:(CGPoint)ending withEllipseOfRect:(CGRect)rect farthestResult:(BOOL)result
 {
-  v6 = a6;
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v11 = a4.y;
-  v12 = a4.x;
-  v13 = a3.y;
-  v14 = a3.x;
-  [AKGeometryHelper radiusOfCenteredCircleFor:a5.origin.x, a5.origin.y, a5.size.width, a5.size.height];
+  resultCopy = result;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v11 = ending.y;
+  v12 = ending.x;
+  v13 = at.y;
+  v14 = at.x;
+  [AKGeometryHelper radiusOfCenteredCircleFor:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   v21 = v15;
   [AKGeometryHelper ellipseToCenteredCircleTransform:x, y, width, height];
-  [AKGeometryHelper intersectRayStartingAt:v6 ending:v13 * 0.0 + 0.0 * v14 + 0.0 withCircleWithCenter:v13 * 0.0 + 0.0 * v14 + 0.0 andRadius:v11 * 0.0 + 0.0 * v12 + 0.0 farthestResult:v11 * 0.0 + 0.0 * v12 + 0.0, *MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8), v21];
+  [AKGeometryHelper intersectRayStartingAt:resultCopy ending:v13 * 0.0 + 0.0 * v14 + 0.0 withCircleWithCenter:v13 * 0.0 + 0.0 * v14 + 0.0 andRadius:v11 * 0.0 + 0.0 * v12 + 0.0 farthestResult:v11 * 0.0 + 0.0 * v12 + 0.0, *MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8), v21];
   v20 = v17;
   v22 = v16;
   [AKGeometryHelper centeredCircleToEllipseTransform:x, y, width, height];
@@ -503,13 +503,13 @@
   return result;
 }
 
-+ (CGPoint)intersectLineSegmentStartingAt:(CGPoint)a3 ending:(CGPoint)a4 withEllipseOfRect:(CGRect)a5 farthestResult:(BOOL)a6
++ (CGPoint)intersectLineSegmentStartingAt:(CGPoint)at ending:(CGPoint)ending withEllipseOfRect:(CGRect)rect farthestResult:(BOOL)result
 {
-  y = a4.y;
-  x = a4.x;
-  v8 = a3.y;
-  v9 = a3.x;
-  [AKGeometryHelper intersectRayStartingAt:a6 ending:a3.x withEllipseOfRect:a3.y farthestResult:a4.x, a4.y, a5.origin.x, a5.origin.y, a5.size.width, a5.size.height];
+  y = ending.y;
+  x = ending.x;
+  v8 = at.y;
+  v9 = at.x;
+  [AKGeometryHelper intersectRayStartingAt:result ending:at.x withEllipseOfRect:at.y farthestResult:ending.x, ending.y, rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   if (v9 >= x)
   {
     v12 = x;
@@ -531,34 +531,34 @@
   return result;
 }
 
-+ (CGPoint)intersectLineSegmentStartingAt:(CGPoint)a3 ending:(CGPoint)a4 withAnotherSegmentStartingAt:(CGPoint)a5 ending:(CGPoint)a6
++ (CGPoint)intersectLineSegmentStartingAt:(CGPoint)at ending:(CGPoint)ending withAnotherSegmentStartingAt:(CGPoint)startingAt ending:(CGPoint)a6
 {
-  y = a3.y;
-  x = a3.x;
-  v8 = a4.y - y;
-  v9 = a3.x - a4.x;
-  v10 = a6.y - a5.y;
-  v11 = a5.x - a6.x;
-  v12 = (a4.y - y) * (a5.x - a6.x) - (a6.y - a5.y) * v9;
+  y = at.y;
+  x = at.x;
+  v8 = ending.y - y;
+  v9 = at.x - ending.x;
+  v10 = a6.y - startingAt.y;
+  v11 = startingAt.x - a6.x;
+  v12 = (ending.y - y) * (startingAt.x - a6.x) - (a6.y - startingAt.y) * v9;
   if (v12 == 0.0)
   {
     goto LABEL_36;
   }
 
-  v13 = a5.y * v11 + v10 * a5.x;
+  v13 = startingAt.y * v11 + v10 * startingAt.x;
   v14 = y * v9 + v8 * x;
   v15 = (v11 * v14 - v9 * v13) / v12;
   v16 = v15 + 0.0005;
-  v17 = x >= a4.x ? a4.x : x;
+  v17 = x >= ending.x ? ending.x : x;
   if (v16 < v17)
   {
     goto LABEL_36;
   }
 
   v18 = v15 + -0.0005;
-  if (x < a4.x)
+  if (x < ending.x)
   {
-    x = a4.x;
+    x = ending.x;
   }
 
   if (v18 > x)
@@ -568,40 +568,40 @@
 
   v19 = (v14 * -v10 + v8 * v13) / v12;
   v20 = v19 + 0.0005;
-  v21 = y >= a4.y ? a4.y : y;
+  v21 = y >= ending.y ? ending.y : y;
   if (v20 < v21)
   {
     goto LABEL_36;
   }
 
   v22 = v19 + -0.0005;
-  if (y >= a4.y)
+  if (y >= ending.y)
   {
-    a4.y = y;
+    ending.y = y;
   }
 
-  if (v22 > a4.y)
+  if (v22 > ending.y)
   {
     goto LABEL_36;
   }
 
-  if (a5.x >= a6.x)
+  if (startingAt.x >= a6.x)
   {
     v23 = a6.x;
   }
 
   else
   {
-    v23 = a5.x;
+    v23 = startingAt.x;
   }
 
-  if (a5.x < a6.x)
+  if (startingAt.x < a6.x)
   {
-    a5.x = a6.x;
+    startingAt.x = a6.x;
   }
 
-  v24 = v16 < v23 || v18 > a5.x;
-  if (v24 || (a5.y >= a6.y ? (v25 = a6.y) : (v25 = a5.y), a5.y >= a6.y ? (v26 = a5.y) : (v26 = a6.y), v20 >= v25 ? (v27 = v22 > v26) : (v27 = 1), v27))
+  v24 = v16 < v23 || v18 > startingAt.x;
+  if (v24 || (startingAt.y >= a6.y ? (v25 = a6.y) : (v25 = startingAt.y), startingAt.y >= a6.y ? (v26 = startingAt.y) : (v26 = a6.y), v20 >= v25 ? (v27 = v22 > v26) : (v27 = 1), v27))
   {
 LABEL_36:
     v15 = 9.22337204e18;
@@ -613,34 +613,34 @@ LABEL_36:
   return result;
 }
 
-+ (void)_checkIntersectionOfLineSegmentStartingAt:(CGPoint)a3 endingAt:(CGPoint)a4 withCircleAt:(CGPoint)a5 andRadius:(double)a6 results:(id)a7
++ (void)_checkIntersectionOfLineSegmentStartingAt:(CGPoint)at endingAt:(CGPoint)endingAt withCircleAt:(CGPoint)circleAt andRadius:(double)radius results:(id)results
 {
-  y = a5.y;
-  x = a5.x;
-  v10 = a4.y;
-  v11 = a4.x;
-  v12 = a3.y;
-  v13 = a3.x;
-  v18 = a7;
-  [AKGeometryHelper intersectLineSegmentStartingAt:1 ending:v13 withCircleWithCenter:v12 andRadius:v11 farthestResult:v10, x, y, a6];
+  y = circleAt.y;
+  x = circleAt.x;
+  v10 = endingAt.y;
+  v11 = endingAt.x;
+  v12 = at.y;
+  v13 = at.x;
+  resultsCopy = results;
+  [AKGeometryHelper intersectLineSegmentStartingAt:1 ending:v13 withCircleWithCenter:v12 andRadius:v11 farthestResult:v10, x, y, radius];
   if (v15 != 9.22337204e18 && v14 != 9.22337204e18)
   {
     v17 = [MEMORY[0x277CCAE60] akValueWithPoint:?];
-    [v18 addObject:v17];
+    [resultsCopy addObject:v17];
   }
 }
 
-+ (void)_collectIntersectionsOfLineSegmentStartingAt:(CGPoint)a3 endingAt:(CGPoint)a4 withCornerCirclesOfRoundedRect:(CGRect)a5 withRadius:(double)a6 results:(id)a7
++ (void)_collectIntersectionsOfLineSegmentStartingAt:(CGPoint)at endingAt:(CGPoint)endingAt withCornerCirclesOfRoundedRect:(CGRect)rect withRadius:(double)radius results:(id)results
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v24 = a4.y;
-  v11 = a4.x;
-  v12 = a3.y;
-  v13 = a3.x;
-  v25 = a7;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v24 = endingAt.y;
+  v11 = endingAt.x;
+  v12 = at.y;
+  v13 = at.x;
+  resultsCopy = results;
   v27.origin.x = x;
   v27.origin.y = y;
   v27.size.width = width;
@@ -681,23 +681,23 @@ LABEL_36:
   v34.size.width = width;
   v34.size.height = height;
   v16 = CGRectGetMaxY(v34);
-  [a1 _checkIntersectionOfLineSegmentStartingAt:v25 endingAt:v13 withCircleAt:v12 andRadius:v11 results:{v24, MinX + a6, MinY + a6, a6}];
-  [a1 _checkIntersectionOfLineSegmentStartingAt:v25 endingAt:v13 withCircleAt:v12 andRadius:v11 results:{v24, MaxX - a6, v18 + a6, a6}];
-  [a1 _checkIntersectionOfLineSegmentStartingAt:v25 endingAt:v13 withCircleAt:v12 andRadius:v11 results:{v24, v21 - a6, MaxY - a6, a6}];
-  [a1 _checkIntersectionOfLineSegmentStartingAt:v25 endingAt:v13 withCircleAt:v12 andRadius:v11 results:{v24, v20 + a6, v16 - a6, a6}];
+  [self _checkIntersectionOfLineSegmentStartingAt:resultsCopy endingAt:v13 withCircleAt:v12 andRadius:v11 results:{v24, MinX + radius, MinY + radius, radius}];
+  [self _checkIntersectionOfLineSegmentStartingAt:resultsCopy endingAt:v13 withCircleAt:v12 andRadius:v11 results:{v24, MaxX - radius, v18 + radius, radius}];
+  [self _checkIntersectionOfLineSegmentStartingAt:resultsCopy endingAt:v13 withCircleAt:v12 andRadius:v11 results:{v24, v21 - radius, MaxY - radius, radius}];
+  [self _checkIntersectionOfLineSegmentStartingAt:resultsCopy endingAt:v13 withCircleAt:v12 andRadius:v11 results:{v24, v20 + radius, v16 - radius, radius}];
 }
 
-+ (CGPoint)_farthestPointFrom:(CGPoint)a3 inArray:(id)a4
++ (CGPoint)_farthestPointFrom:(CGPoint)from inArray:(id)array
 {
-  y = a3.y;
-  x = a3.x;
+  y = from.y;
+  x = from.x;
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  arrayCopy = array;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  v7 = [arrayCopy countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v7)
   {
     v8 = v7;
@@ -711,7 +711,7 @@ LABEL_36:
       {
         if (*v22 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(arrayCopy);
         }
 
         [*(*(&v21 + 1) + 8 * i) akPointValue];
@@ -726,7 +726,7 @@ LABEL_36:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v8 = [arrayCopy countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v8);
@@ -745,17 +745,17 @@ LABEL_36:
   return result;
 }
 
-+ (CGPoint)intersectLineSegmentStartingAt:(CGPoint)a3 ending:(CGPoint)a4 withRect:(CGRect)a5 andRoundedCornerRadius:(double)a6
++ (CGPoint)intersectLineSegmentStartingAt:(CGPoint)at ending:(CGPoint)ending withRect:(CGRect)rect andRoundedCornerRadius:(double)radius
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v10 = a4.y;
-  v11 = a4.x;
-  v12 = a3.y;
-  v40 = a3.x;
-  MinX = CGRectGetMinX(a5);
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v10 = ending.y;
+  v11 = ending.x;
+  v12 = at.y;
+  v40 = at.x;
+  MinX = CGRectGetMinX(rect);
   v42.origin.x = x;
   v42.origin.y = y;
   v42.size.width = width;
@@ -792,10 +792,10 @@ LABEL_36:
   v48.size.height = height;
   v32 = CGRectGetMaxY(v48);
   v13 = [MEMORY[0x277CBEB18] arrayWithCapacity:5];
-  [AKGeometryHelper _collectIntersectionsOfLineSegmentStartingAt:"_collectIntersectionsOfLineSegmentStartingAt:endingAt:withCornerCirclesOfRoundedRect:withRadius:results:" endingAt:v13 withCornerCirclesOfRoundedRect:*&a6 withRadius:? results:?];
-  [AKGeometryHelper intersectLineSegmentStartingAt:v40 ending:v12 withAnotherSegmentStartingAt:v11 ending:v10, MinX + a6, MinY, MaxX - a6, v36];
+  [AKGeometryHelper _collectIntersectionsOfLineSegmentStartingAt:"_collectIntersectionsOfLineSegmentStartingAt:endingAt:withCornerCirclesOfRoundedRect:withRadius:results:" endingAt:v13 withCornerCirclesOfRoundedRect:*&radius withRadius:? results:?];
+  [AKGeometryHelper intersectLineSegmentStartingAt:v40 ending:v12 withAnotherSegmentStartingAt:v11 ending:v10, MinX + radius, MinY, MaxX - radius, v36];
   v16 = v15 == 9.22337204e18 || v14 == 9.22337204e18;
-  if (v16 && (([AKGeometryHelper intersectLineSegmentStartingAt:v40 ending:v12 withAnotherSegmentStartingAt:v11 ending:v10, MaxX, v36 + a6, v35, MaxY - a6], v18 != 9.22337204e18) ? (v19 = v17 == 9.22337204e18) : (v19 = 1), v19 && (([AKGeometryHelper intersectLineSegmentStartingAt:v40 ending:v12 withAnotherSegmentStartingAt:v11 ending:v10, v35 - a6, MaxY, v33 + a6, v32], v21 != 9.22337204e18) ? (v22 = v20 == 9.22337204e18) : (v22 = 1), v22 && (([AKGeometryHelper intersectLineSegmentStartingAt:v40 ending:v12 withAnotherSegmentStartingAt:v11 ending:v10, v33, v32 - a6, MinX, MinY + a6], v24 == 9.22337204e18) || v23 == 9.22337204e18))))
+  if (v16 && (([AKGeometryHelper intersectLineSegmentStartingAt:v40 ending:v12 withAnotherSegmentStartingAt:v11 ending:v10, MaxX, v36 + radius, v35, MaxY - radius], v18 != 9.22337204e18) ? (v19 = v17 == 9.22337204e18) : (v19 = 1), v19 && (([AKGeometryHelper intersectLineSegmentStartingAt:v40 ending:v12 withAnotherSegmentStartingAt:v11 ending:v10, v35 - radius, MaxY, v33 + radius, v32], v21 != 9.22337204e18) ? (v22 = v20 == 9.22337204e18) : (v22 = 1), v22 && (([AKGeometryHelper intersectLineSegmentStartingAt:v40 ending:v12 withAnotherSegmentStartingAt:v11 ending:v10, v33, v32 - radius, MinX, MinY + radius], v24 == 9.22337204e18) || v23 == 9.22337204e18))))
   {
     if (![v13 count])
     {
@@ -823,21 +823,21 @@ LABEL_20:
   return result;
 }
 
-+ (CGPoint)projectPoint:(CGPoint)a3 ontoRayWithFirstPoint:(CGPoint)a4 andSecondPoint:(CGPoint)a5
++ (CGPoint)projectPoint:(CGPoint)point ontoRayWithFirstPoint:(CGPoint)firstPoint andSecondPoint:(CGPoint)secondPoint
 {
-  v5 = a5.x - a4.x;
-  v6 = a5.y - a4.y;
-  v7 = ((a3.y - a4.y) * v6 + (a3.x - a4.x) * v5) / (v6 * v6 + v5 * v5);
+  v5 = secondPoint.x - firstPoint.x;
+  v6 = secondPoint.y - firstPoint.y;
+  v7 = ((point.y - firstPoint.y) * v6 + (point.x - firstPoint.x) * v5) / (v6 * v6 + v5 * v5);
   v8 = v5 * v7;
   v9 = v6 * v7;
-  v10 = a4.x + v8;
-  v11 = a4.y + v9;
+  v10 = firstPoint.x + v8;
+  v11 = firstPoint.y + v9;
   result.y = v11;
   result.x = v10;
   return result;
 }
 
-+ (CGAffineTransform)ellipseToCenteredCircleTransform:(SEL)a3
++ (CGAffineTransform)ellipseToCenteredCircleTransform:(SEL)transform
 {
   height = a4.size.height;
   width = a4.size.width;
@@ -877,7 +877,7 @@ LABEL_20:
   return result;
 }
 
-+ (CGAffineTransform)centeredCircleToEllipseTransform:(SEL)a3
++ (CGAffineTransform)centeredCircleToEllipseTransform:(SEL)transform
 {
   height = a4.size.height;
   width = a4.size.width;
@@ -928,49 +928,49 @@ LABEL_20:
   return result;
 }
 
-+ (BOOL)isPoint:(CGPoint)a3 onEllipse:(CGRect)a4
++ (BOOL)isPoint:(CGPoint)point onEllipse:(CGRect)ellipse
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = a3.y;
-  v9 = a3.x;
-  [AKGeometryHelper ellipseToCenteredCircleTransform:a4.origin.x, a4.origin.y, a4.size.width, a4.size.height];
+  height = ellipse.size.height;
+  width = ellipse.size.width;
+  y = ellipse.origin.y;
+  x = ellipse.origin.x;
+  v8 = point.y;
+  v9 = point.x;
+  [AKGeometryHelper ellipseToCenteredCircleTransform:ellipse.origin.x, ellipse.origin.y, ellipse.size.width, ellipse.size.height];
   [AKGeometryHelper radiusOfCenteredCircleFor:x, y, width, height];
   return vabdd_f64(hypot(v8 * 0.0 + 0.0 * v9 + 0.0, v8 * 0.0 + 0.0 * v9 + 0.0), v10) < 0.0005;
 }
 
-+ (void)intersectCircleAtPoint:(CGPoint)a3 withRadius:(double)a4 withCircleAtPoint:(CGPoint)a5 withRadius:(double)a6 firstOutPoint:(CGPoint *)a7 secondOutPoint:(CGPoint *)a8
++ (void)intersectCircleAtPoint:(CGPoint)point withRadius:(double)radius withCircleAtPoint:(CGPoint)atPoint withRadius:(double)withRadius firstOutPoint:(CGPoint *)outPoint secondOutPoint:(CGPoint *)secondOutPoint
 {
-  y = a3.y;
-  x = a3.x;
-  v14 = a5.x - a3.x;
-  v15 = a5.y - a3.y;
-  v16 = hypot(a5.x - a3.x, a5.y - a3.y);
-  v17 = (a4 * a4 - a6 * a6 + v16 * v16) / (v16 + v16);
+  y = point.y;
+  x = point.x;
+  v14 = atPoint.x - point.x;
+  v15 = atPoint.y - point.y;
+  v16 = hypot(atPoint.x - point.x, atPoint.y - point.y);
+  v17 = (radius * radius - withRadius * withRadius + v16 * v16) / (v16 + v16);
   [AKGeometryHelper normalizeVectorPoint:v14, v15];
   v19 = x + v17 * v18;
   v21 = y + v17 * v20;
-  v22 = sqrt(a4 * a4 - v17 * v17);
-  a7->x = v19 - v22 * v20;
-  a7->y = v21 + v22 * v18;
-  a8->x = v19 + v22 * v20;
-  a8->y = v21 - v22 * v18;
+  v22 = sqrt(radius * radius - v17 * v17);
+  outPoint->x = v19 - v22 * v20;
+  outPoint->y = v21 + v22 * v18;
+  secondOutPoint->x = v19 + v22 * v20;
+  secondOutPoint->y = v21 - v22 * v18;
 }
 
-+ (void)tangentPointsToEllipse:(CGRect)a3 fromPoint:(CGPoint)a4 firstOutPoint:(CGPoint *)a5 secondOutPoint:(CGPoint *)a6
++ (void)tangentPointsToEllipse:(CGRect)ellipse fromPoint:(CGPoint)point firstOutPoint:(CGPoint *)outPoint secondOutPoint:(CGPoint *)secondOutPoint
 {
-  y = a4.y;
-  x = a4.x;
-  height = a3.size.height;
-  width = a3.size.width;
-  v12 = a3.origin.y;
-  v13 = a3.origin.x;
+  y = point.y;
+  x = point.x;
+  height = ellipse.size.height;
+  width = ellipse.size.width;
+  v12 = ellipse.origin.y;
+  v13 = ellipse.origin.x;
   v33 = 0u;
   v34 = 0u;
   v32 = 0u;
-  [AKGeometryHelper ellipseToCenteredCircleTransform:a3.origin.x];
+  [AKGeometryHelper ellipseToCenteredCircleTransform:ellipse.origin.x];
   v30 = 0u;
   v31 = 0u;
   v29 = 0u;
@@ -990,22 +990,22 @@ LABEL_20:
   v22 = *(&v31 + 1) + v28 * *(&v30 + 1) + *(&v29 + 1) * v27;
   v23 = *&v31 + *&v30 * v26 + *&v29 * v25;
   v24 = *(&v31 + 1) + *(&v30 + 1) * v26 + *(&v29 + 1) * v25;
-  a5->x = *&v31 + v28 * *&v30 + *&v29 * v27;
-  a5->y = v22;
-  a6->x = v23;
-  a6->y = v24;
+  outPoint->x = *&v31 + v28 * *&v30 + *&v29 * v27;
+  outPoint->y = v22;
+  secondOutPoint->x = v23;
+  secondOutPoint->y = v24;
 }
 
-+ (CGPoint)tangentOfEllipse:(CGRect)a3 throughRayWithFirstPoint:(CGPoint)a4 goingThrough:(CGPoint)a5
++ (CGPoint)tangentOfEllipse:(CGRect)ellipse throughRayWithFirstPoint:(CGPoint)point goingThrough:(CGPoint)through
 {
-  y = a5.y;
-  x = a5.x;
-  v7 = a4.y;
-  v8 = a4.x;
-  height = a3.size.height;
-  width = a3.size.width;
-  v11 = a3.origin.y;
-  v12 = a3.origin.x;
+  y = through.y;
+  x = through.x;
+  v7 = point.y;
+  v8 = point.x;
+  height = ellipse.size.height;
+  width = ellipse.size.width;
+  v11 = ellipse.origin.y;
+  v12 = ellipse.origin.x;
   [AKGeometryHelper radiusOfCenteredCircleFor:?];
   v21 = v13;
   v24 = 0u;
@@ -1027,40 +1027,40 @@ LABEL_20:
   return result;
 }
 
-+ (id)verticesOfPolygonWithPointCount:(unint64_t)a3 inRect:(CGRect)a4 rotation:(double)a5 flippedVertically:(BOOL)a6
++ (id)verticesOfPolygonWithPointCount:(unint64_t)count inRect:(CGRect)rect rotation:(double)rotation flippedVertically:(BOOL)vertically
 {
-  v6 = a6;
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  verticallyCopy = vertically;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v40 = *MEMORY[0x277D85DE8];
-  v13 = [MEMORY[0x277CBEB18] array];
-  v14 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   v31 = height;
   [AKGeometryHelper radiusOfCenteredCircleFor:x, y, width, height];
-  if (a3)
+  if (count)
   {
     v16 = v15;
-    v17 = 360.0 / a3;
+    v17 = 360.0 / count;
     do
     {
-      v18 = __sincos_stret(a5 * 3.14159265 / 180.0 + 1.57079633);
+      v18 = __sincos_stret(rotation * 3.14159265 / 180.0 + 1.57079633);
       v19 = v16 * v18.__cosval;
       v20 = v16 * v18.__sinval;
-      if (v6)
+      if (verticallyCopy)
       {
         [AKGeometryHelper flipPointVertically:v19 inRect:v20, -v16, -v16, v16 + v16, v16 + v16];
       }
 
       v21 = [MEMORY[0x277CCAE60] akValueWithPoint:{v19, v20}];
-      [v13 addObject:v21];
+      [array addObject:v21];
 
-      a5 = v17 + a5;
-      --a3;
+      rotation = v17 + rotation;
+      --count;
     }
 
-    while (a3);
+    while (count);
   }
 
   v37 = 0u;
@@ -1071,7 +1071,7 @@ LABEL_20:
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v22 = v13;
+  v22 = array;
   v23 = [v22 countByEnumeratingWithState:&v32 objects:v39 count:16];
   if (v23)
   {
@@ -1088,7 +1088,7 @@ LABEL_20:
 
         [*(*(&v32 + 1) + 8 * i) akPointValue];
         v29 = [MEMORY[0x277CCAE60] akValueWithPoint:{vaddq_f64(v38, vmlaq_n_f64(vmulq_n_f64(v37, v27), v36, v28))}];
-        [v14 addObject:v29];
+        [array2 addObject:v29];
       }
 
       v24 = [v22 countByEnumeratingWithState:&v32 objects:v39 count:16];
@@ -1097,18 +1097,18 @@ LABEL_20:
     while (v24);
   }
 
-  return v14;
+  return array2;
 }
 
-+ (CGPoint)flipPointVertically:(CGPoint)a3 inRect:(CGRect)a4
++ (CGPoint)flipPointVertically:(CGPoint)vertically inRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v12 = a3.y;
-  v13 = a3.x;
-  MidX = CGRectGetMidX(a4);
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v12 = vertically.y;
+  v13 = vertically.x;
+  MidX = CGRectGetMidX(rect);
   v19.origin.x = x;
   v19.origin.y = y;
   v19.size.width = width;
@@ -1130,16 +1130,16 @@ LABEL_20:
   return result;
 }
 
-+ (int64_t)exifOrientationWithConversionBlock:(id)a3
++ (int64_t)exifOrientationWithConversionBlock:(id)block
 {
-  v3 = (a3 + 16);
-  v4 = *(a3 + 2);
-  v5 = a3;
+  v3 = (block + 16);
+  v4 = *(block + 2);
+  blockCopy = block;
   v6 = v4(0.0, 0.0);
   v8 = v7;
-  v9 = (*v3)(v5, 1.0, 0.0);
+  v9 = (*v3)(blockCopy, 1.0, 0.0);
   v11 = v10;
-  v12 = (*v3)(v5, 0.0, 1.0);
+  v12 = (*v3)(blockCopy, 0.0, 1.0);
   v14 = v13;
 
   v15 = v9 - v6 + -0.0005;
@@ -1317,26 +1317,26 @@ LABEL_20:
   return result;
 }
 
-+ (int64_t)inverseExifOrientation:(int64_t)a3
++ (int64_t)inverseExifOrientation:(int64_t)orientation
 {
-  v3 = 6;
-  if (a3 != 8)
+  orientationCopy = 6;
+  if (orientation != 8)
   {
-    v3 = a3;
+    orientationCopy = orientation;
   }
 
-  if (a3 == 6)
+  if (orientation == 6)
   {
     return 8;
   }
 
   else
   {
-    return v3;
+    return orientationCopy;
   }
 }
 
-+ (CGAffineTransform)_rawAffineTransformForExifOrientation:(SEL)a3
++ (CGAffineTransform)_rawAffineTransformForExifOrientation:(SEL)orientation
 {
   v5 = MEMORY[0x277CBF2C0];
   v6 = *MEMORY[0x277CBF2C0];
@@ -1425,7 +1425,7 @@ LABEL_21:
   return CGAffineTransformMakeScale(retstr, v10, v11);
 }
 
-+ (CGAffineTransform)affineTransformRecenteringAboutOriginForExifOrientation:(SEL)a3 withOriginalSize:(int64_t)a4
++ (CGAffineTransform)affineTransformRecenteringAboutOriginForExifOrientation:(SEL)orientation withOriginalSize:(int64_t)size
 {
   height = a5.height;
   width = a5.width;
@@ -1435,13 +1435,13 @@ LABEL_21:
   *&v15.a = *MEMORY[0x277CBF2C0];
   *&v15.c = v9;
   *&v15.tx = *(MEMORY[0x277CBF2C0] + 32);
-  if (a4 <= 4)
+  if (size <= 4)
   {
-    if (a4 != 2)
+    if (size != 2)
     {
-      if (a4 != 3)
+      if (size != 3)
       {
-        if (a4 != 4)
+        if (size != 4)
         {
           goto LABEL_14;
         }
@@ -1459,7 +1459,7 @@ LABEL_12:
     goto LABEL_9;
   }
 
-  switch(a4)
+  switch(size)
   {
     case 5:
       goto LABEL_10;
@@ -1485,7 +1485,7 @@ LABEL_14:
   return CGAffineTransformConcat(retstr, &t1, &v13);
 }
 
-+ (CGAffineTransform)affineTransformFlatteningOriginalModelExif:(SEL)a3 withOriginalModelSize:(int64_t)a4
++ (CGAffineTransform)affineTransformFlatteningOriginalModelExif:(SEL)exif withOriginalModelSize:(int64_t)size
 {
   height = a5.height;
   width = a5.width;
@@ -1514,15 +1514,15 @@ LABEL_14:
   *&retstr->c = 0u;
   *&retstr->tx = 0u;
 
-  return [AKGeometryHelper affineTransformRecenteringAboutOriginForExifOrientation:a4 withOriginalSize:v10, v11];
+  return [AKGeometryHelper affineTransformRecenteringAboutOriginForExifOrientation:size withOriginalSize:v10, v11];
 }
 
-+ (CGAffineTransform)affineTransformForExifOrientation:(SEL)a3 aboutCenter:(int64_t)a4
++ (CGAffineTransform)affineTransformForExifOrientation:(SEL)orientation aboutCenter:(int64_t)center
 {
   y = a5.y;
   x = a5.x;
   memset(&v20, 0, sizeof(v20));
-  [a2 _rawAffineTransformForExifOrientation:a4];
+  [a2 _rawAffineTransformForExifOrientation:center];
   v8 = MEMORY[0x277CBF2C0];
   v15 = *(MEMORY[0x277CBF2C0] + 16);
   v16 = *MEMORY[0x277CBF2C0];
@@ -1558,19 +1558,19 @@ LABEL_14:
   return result;
 }
 
-+ (void)adjustOriginalExifOrientationOnAnnotation:(id)a3 flatteningOriginalModelExif:(int64_t)a4
++ (void)adjustOriginalExifOrientationOnAnnotation:(id)annotation flatteningOriginalModelExif:(int64_t)exif
 {
-  v6 = a3;
-  v5 = +[AKGeometryHelper concatExifOrientation:withExifOrientation:](AKGeometryHelper, "concatExifOrientation:withExifOrientation:", [v6 originalExifOrientation], +[AKGeometryHelper inverseExifOrientation:](AKGeometryHelper, "inverseExifOrientation:", a4));
-  [v6 setOriginalExifOrientation:0];
-  [v6 setOriginalExifOrientation:v5];
+  annotationCopy = annotation;
+  v5 = +[AKGeometryHelper concatExifOrientation:withExifOrientation:](AKGeometryHelper, "concatExifOrientation:withExifOrientation:", [annotationCopy originalExifOrientation], +[AKGeometryHelper inverseExifOrientation:](AKGeometryHelper, "inverseExifOrientation:", exif));
+  [annotationCopy setOriginalExifOrientation:0];
+  [annotationCopy setOriginalExifOrientation:v5];
 }
 
-+ (CGPoint)adjustPoint:(CGPoint)a3 forExifOrientation:(int64_t)a4 aboutCenter:(CGPoint)a5
++ (CGPoint)adjustPoint:(CGPoint)point forExifOrientation:(int64_t)orientation aboutCenter:(CGPoint)center
 {
-  y = a3.y;
-  x = a3.x;
-  [a1 affineTransformForExifOrientation:a4 aboutCenter:{a5.x, a5.y}];
+  y = point.y;
+  x = point.x;
+  [self affineTransformForExifOrientation:orientation aboutCenter:{center.x, center.y}];
   v5 = vaddq_f64(0, vmlaq_n_f64(vmulq_n_f64(0, y), 0, x));
   v6 = v5.f64[1];
   result.x = v5.f64[0];
@@ -1578,13 +1578,13 @@ LABEL_14:
   return result;
 }
 
-+ (CGRect)adjustRect:(CGRect)a3 forExifOrientation:(int64_t)a4 aboutCenter:(CGPoint)a5
++ (CGRect)adjustRect:(CGRect)rect forExifOrientation:(int64_t)orientation aboutCenter:(CGPoint)center
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  [a1 affineTransformForExifOrientation:a4 aboutCenter:{a5.x, a5.y}];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  [self affineTransformForExifOrientation:orientation aboutCenter:{center.x, center.y}];
   v13.origin.x = x;
   v13.origin.y = y;
   v13.size.width = width;
@@ -1612,15 +1612,15 @@ LABEL_14:
   return CGRectStandardize(v17);
 }
 
-+ (CGPoint)convertModelToScreenOrientationForPoint:(CGPoint)a3 relativeToRect:(CGRect)a4 withPageController:(id)a5
++ (CGPoint)convertModelToScreenOrientationForPoint:(CGPoint)point relativeToRect:(CGRect)rect withPageController:(id)controller
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3.y;
-  v10 = a3.x;
-  v11 = a5;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v9 = point.y;
+  v10 = point.x;
+  controllerCopy = controller;
   v19.origin.x = x;
   v19.origin.y = y;
   v19.size.width = width;
@@ -1631,21 +1631,21 @@ LABEL_14:
   v20.size.width = width;
   v20.size.height = height;
   MidY = CGRectGetMidY(v20);
-  v14 = [v11 currentModelToScreenExifOrientation];
+  currentModelToScreenExifOrientation = [controllerCopy currentModelToScreenExifOrientation];
 
-  [AKGeometryHelper adjustPoint:v14 forExifOrientation:v10 aboutCenter:v9, MidX, MidY];
+  [AKGeometryHelper adjustPoint:currentModelToScreenExifOrientation forExifOrientation:v10 aboutCenter:v9, MidX, MidY];
   result.y = v16;
   result.x = v15;
   return result;
 }
 
-+ (CGRect)convertModelToScreenOrientationForRect:(CGRect)a3 withPageController:(id)a4
++ (CGRect)convertModelToScreenOrientationForRect:(CGRect)rect withPageController:(id)controller
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = a4;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  controllerCopy = controller;
   v17.origin.x = x;
   v17.origin.y = y;
   v17.size.width = width;
@@ -1656,9 +1656,9 @@ LABEL_14:
   v18.size.width = width;
   v18.size.height = height;
   MidY = CGRectGetMidY(v18);
-  v11 = [v8 currentModelToScreenExifOrientation];
+  currentModelToScreenExifOrientation = [controllerCopy currentModelToScreenExifOrientation];
 
-  [AKGeometryHelper adjustRect:v11 forExifOrientation:x aboutCenter:y, width, height, MidX, MidY];
+  [AKGeometryHelper adjustRect:currentModelToScreenExifOrientation forExifOrientation:x aboutCenter:y, width, height, MidX, MidY];
   result.size.height = v15;
   result.size.width = v14;
   result.origin.y = v13;
@@ -1666,15 +1666,15 @@ LABEL_14:
   return result;
 }
 
-+ (CGPoint)convertScreenToModelOrientationForPoint:(CGPoint)a3 relativeToRect:(CGRect)a4 withPageController:(id)a5
++ (CGPoint)convertScreenToModelOrientationForPoint:(CGPoint)point relativeToRect:(CGRect)rect withPageController:(id)controller
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3.y;
-  v10 = a3.x;
-  v11 = a5;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v9 = point.y;
+  v10 = point.x;
+  controllerCopy = controller;
   v20.origin.x = x;
   v20.origin.y = y;
   v20.size.width = width;
@@ -1685,9 +1685,9 @@ LABEL_14:
   v21.size.width = width;
   v21.size.height = height;
   MidY = CGRectGetMidY(v21);
-  v14 = [v11 currentModelToScreenExifOrientation];
+  currentModelToScreenExifOrientation = [controllerCopy currentModelToScreenExifOrientation];
 
-  v15 = [AKGeometryHelper inverseExifOrientation:v14];
+  v15 = [AKGeometryHelper inverseExifOrientation:currentModelToScreenExifOrientation];
 
   [AKGeometryHelper adjustPoint:v15 forExifOrientation:v10 aboutCenter:v9, MidX, MidY];
   result.y = v17;
@@ -1695,13 +1695,13 @@ LABEL_14:
   return result;
 }
 
-+ (CGRect)convertScreenToModelOrientationForRect:(CGRect)a3 withPageController:(id)a4
++ (CGRect)convertScreenToModelOrientationForRect:(CGRect)rect withPageController:(id)controller
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = a4;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  controllerCopy = controller;
   v18.origin.x = x;
   v18.origin.y = y;
   v18.size.width = width;
@@ -1712,9 +1712,9 @@ LABEL_14:
   v19.size.width = width;
   v19.size.height = height;
   MidY = CGRectGetMidY(v19);
-  v11 = [v8 currentModelToScreenExifOrientation];
+  currentModelToScreenExifOrientation = [controllerCopy currentModelToScreenExifOrientation];
 
-  v12 = [AKGeometryHelper inverseExifOrientation:v11];
+  v12 = [AKGeometryHelper inverseExifOrientation:currentModelToScreenExifOrientation];
 
   [AKGeometryHelper adjustRect:v12 forExifOrientation:x aboutCenter:y, width, height, MidX, MidY];
   result.size.height = v16;
@@ -1724,17 +1724,17 @@ LABEL_14:
   return result;
 }
 
-+ (unint64_t)draggableArea:(unint64_t)a3 convertedForExif:(int64_t)a4
++ (unint64_t)draggableArea:(unint64_t)area convertedForExif:(int64_t)exif
 {
-  result = a3;
-  if (a3 > 4)
+  result = area;
+  if (area > 4)
   {
-    if (a3 > 6)
+    if (area > 6)
     {
-      if (a3 == 7)
+      if (area == 7)
       {
-        v5 = a4 - 2;
-        if ((a4 - 2) < 7)
+        v5 = exif - 2;
+        if ((exif - 2) < 7)
         {
           v6 = &unk_23F4D9340;
           return v6[v5];
@@ -1743,10 +1743,10 @@ LABEL_14:
         return 7;
       }
 
-      else if (a3 == 8)
+      else if (area == 8)
       {
-        v5 = a4 - 2;
-        if ((a4 - 2) < 7)
+        v5 = exif - 2;
+        if ((exif - 2) < 7)
         {
           v6 = &unk_23F4D92D0;
           return v6[v5];
@@ -1756,10 +1756,10 @@ LABEL_14:
       }
     }
 
-    else if (a3 == 5)
+    else if (area == 5)
     {
-      v5 = a4 - 2;
-      if ((a4 - 2) < 7)
+      v5 = exif - 2;
+      if ((exif - 2) < 7)
       {
         v6 = &unk_23F4D93A8;
         return v6[v5];
@@ -1770,8 +1770,8 @@ LABEL_14:
 
     else
     {
-      v5 = a4 - 3;
-      if ((a4 - 3) < 6)
+      v5 = exif - 3;
+      if ((exif - 3) < 6)
       {
         v6 = &unk_23F4D9378;
         return v6[v5];
@@ -1781,12 +1781,12 @@ LABEL_14:
     }
   }
 
-  else if (a3 > 2)
+  else if (area > 2)
   {
-    if (a3 == 3)
+    if (area == 3)
     {
-      v5 = a4 - 2;
-      if ((a4 - 2) < 7)
+      v5 = exif - 2;
+      if ((exif - 2) < 7)
       {
         v6 = &unk_23F4D9298;
         return v6[v5];
@@ -1797,8 +1797,8 @@ LABEL_14:
 
     else
     {
-      v5 = a4 - 2;
-      if ((a4 - 2) < 7)
+      v5 = exif - 2;
+      if ((exif - 2) < 7)
       {
         v6 = &unk_23F4D9308;
         return v6[v5];
@@ -1808,10 +1808,10 @@ LABEL_14:
     }
   }
 
-  else if (a3 == 1)
+  else if (area == 1)
   {
-    v5 = a4 - 2;
-    if ((a4 - 2) < 7)
+    v5 = exif - 2;
+    if ((exif - 2) < 7)
     {
       v6 = &unk_23F4D9230;
       return v6[v5];
@@ -1820,10 +1820,10 @@ LABEL_14:
     return 1;
   }
 
-  else if (a3 == 2)
+  else if (area == 2)
   {
-    v5 = a4 - 3;
-    if ((a4 - 3) < 6)
+    v5 = exif - 3;
+    if ((exif - 3) < 6)
     {
       v6 = &unk_23F4D9268;
       return v6[v5];
@@ -1835,11 +1835,11 @@ LABEL_14:
   return result;
 }
 
-+ (CGVector)normalizeVector:(CGVector)a3
++ (CGVector)normalizeVector:(CGVector)vector
 {
-  dy = a3.dy;
-  dx = a3.dx;
-  [a1 lengthOfVector:?];
+  dy = vector.dy;
+  dx = vector.dx;
+  [self lengthOfVector:?];
   v6 = dy / v5;
   v7 = dx / v5;
   result.dy = v6;
@@ -1847,9 +1847,9 @@ LABEL_14:
   return result;
 }
 
-+ (double)angleOfVector:(CGVector)a3
++ (double)angleOfVector:(CGVector)vector
 {
-  result = atan2(a3.dy, a3.dx);
+  result = atan2(vector.dy, vector.dx);
   if (result < 0.0)
   {
     return result + 6.28318531;
@@ -1858,44 +1858,44 @@ LABEL_14:
   return result;
 }
 
-+ (double)angleBetweenPoint:(CGPoint)a3 andPoint:(CGPoint)a4
++ (double)angleBetweenPoint:(CGPoint)point andPoint:(CGPoint)andPoint
 {
-  y = a4.y;
-  x = a4.x;
-  [a1 angleOfVector:{a3.x, a3.y}];
+  y = andPoint.y;
+  x = andPoint.x;
+  [self angleOfVector:{point.x, point.y}];
   memset(&v9, 0, sizeof(v9));
   CGAffineTransformMakeRotation(&v9, -v5);
-  [a1 angleOfVector:{vaddq_f64(*&v9.tx, vmlaq_n_f64(vmulq_n_f64(*&v9.c, y), *&v9.a, x))}];
+  [self angleOfVector:{vaddq_f64(*&v9.tx, vmlaq_n_f64(vmulq_n_f64(*&v9.c, y), *&v9.a, x))}];
   return result;
 }
 
-+ (CGPoint)pointAtAngle:(double)a3 inCircleWithCenter:(CGPoint)a4 andRadius:(double)a5
++ (CGPoint)pointAtAngle:(double)angle inCircleWithCenter:(CGPoint)center andRadius:(double)radius
 {
-  y = a4.y;
-  x = a4.x;
-  v8 = __sincos_stret(a3);
-  v9 = x + v8.__cosval * a5;
-  v10 = y + v8.__sinval * a5;
+  y = center.y;
+  x = center.x;
+  v8 = __sincos_stret(angle);
+  v9 = x + v8.__cosval * radius;
+  v10 = y + v8.__sinval * radius;
   result.y = v10;
   result.x = v9;
   return result;
 }
 
-+ (CGPoint)compareVectorDirectionsFirstVector:(CGPoint)a3 secondVector:(CGPoint)a4
++ (CGPoint)compareVectorDirectionsFirstVector:(CGPoint)vector secondVector:(CGPoint)secondVector
 {
-  y = a3.y;
+  y = vector.y;
   v5 = -1.0;
-  if ((y <= 0.0 || a4.y >= 0.0) && (y >= 0.0 || a4.y <= 0.0))
+  if ((y <= 0.0 || secondVector.y >= 0.0) && (y >= 0.0 || secondVector.y <= 0.0))
   {
     v5 = *(MEMORY[0x277CBF348] + 8);
     v6 = y < 0.0;
     v7 = y > 0.0;
-    if (a4.y <= 0.0)
+    if (secondVector.y <= 0.0)
     {
       v7 = 0;
     }
 
-    if (a4.y >= 0.0)
+    if (secondVector.y >= 0.0)
     {
       v6 = 0;
     }
@@ -1907,17 +1907,17 @@ LABEL_14:
   }
 
   v8 = -1.0;
-  if ((a3.x <= 0.0 || a4.x >= 0.0) && (a3.x >= 0.0 || a4.x <= 0.0))
+  if ((vector.x <= 0.0 || secondVector.x >= 0.0) && (vector.x >= 0.0 || secondVector.x <= 0.0))
   {
     v8 = *MEMORY[0x277CBF348];
-    v9 = a3.x < 0.0;
-    v10 = a3.x > 0.0;
-    if (a4.x <= 0.0)
+    v9 = vector.x < 0.0;
+    v10 = vector.x > 0.0;
+    if (secondVector.x <= 0.0)
     {
       v10 = 0;
     }
 
-    if (a4.x >= 0.0)
+    if (secondVector.x >= 0.0)
     {
       v9 = 0;
     }
@@ -1934,15 +1934,15 @@ LABEL_14:
   return result;
 }
 
-+ (CGRect)expandCGRect:(CGRect)a3 toContainPoint:(CGPoint)a4
++ (CGRect)expandCGRect:(CGRect)rect toContainPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  height = a3.size.height;
-  width = a3.size.width;
-  v8 = a3.origin.y;
-  v9 = a3.origin.x;
-  MinX = CGRectGetMinX(a3);
+  y = point.y;
+  x = point.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  v8 = rect.origin.y;
+  v9 = rect.origin.x;
+  MinX = CGRectGetMinX(rect);
   if (MinX >= x)
   {
     v11 = x;
@@ -2004,21 +2004,21 @@ LABEL_14:
   return result;
 }
 
-+ (CGRect)effectiveDrawingBoundsForAnnotation:(id)a3 forDisplay:(BOOL)a4 pageControllerOrNil:(id)a5 outScaleFactor:(double *)a6
++ (CGRect)effectiveDrawingBoundsForAnnotation:(id)annotation forDisplay:(BOOL)display pageControllerOrNil:(id)nil outScaleFactor:(double *)factor
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = a5;
-  v11 = v10;
-  if (!v8)
+  displayCopy = display;
+  annotationCopy = annotation;
+  nilCopy = nil;
+  v11 = nilCopy;
+  if (!displayCopy)
   {
-    [v9 integralDrawingBounds];
+    [annotationCopy integralDrawingBounds];
     v30 = v37;
     v24 = v38;
     v26 = v39;
     v28 = v40;
     v32 = 1.0;
-    if (!a6)
+    if (!factor)
     {
       goto LABEL_6;
     }
@@ -2026,8 +2026,8 @@ LABEL_14:
     goto LABEL_5;
   }
 
-  v12 = [v10 geometryHelper];
-  [v12 annotationLayerFrameForAnnotation:v9 layerIsClipped:0];
+  geometryHelper = [nilCopy geometryHelper];
+  [geometryHelper annotationLayerFrameForAnnotation:annotationCopy layerIsClipped:0];
   v14 = v13;
   v16 = v15;
   v18 = v17;
@@ -2065,10 +2065,10 @@ LABEL_14:
     v32 = v29;
   }
 
-  if (a6)
+  if (factor)
   {
 LABEL_5:
-    *a6 = v32;
+    *factor = v32;
   }
 
 LABEL_6:
@@ -2084,7 +2084,7 @@ LABEL_6:
   return result;
 }
 
-+ (CGAffineTransform)verticalFlipTransformForRect:(SEL)a3
++ (CGAffineTransform)verticalFlipTransformForRect:(SEL)rect
 {
   height = a4.size.height;
   width = a4.size.width;
@@ -2131,7 +2131,7 @@ LABEL_6:
   return result;
 }
 
-+ (CGAffineTransform)horizontalFlipTransformForRect:(SEL)a3
++ (CGAffineTransform)horizontalFlipTransformForRect:(SEL)rect
 {
   height = a4.size.height;
   width = a4.size.width;
@@ -2178,14 +2178,14 @@ LABEL_6:
   return result;
 }
 
-+ (BOOL)annotationHasRotation:(id)a3 outAngle:(double *)a4
++ (BOOL)annotationHasRotation:(id)rotation outAngle:(double *)angle
 {
-  v5 = a3;
-  if ([v5 conformsToAKRotatableAnnotationProtocol])
+  rotationCopy = rotation;
+  if ([rotationCopy conformsToAKRotatableAnnotationProtocol])
   {
-    [v5 rotationAngle];
+    [rotationCopy rotationAngle];
     v7 = fabs(v6) >= 0.0005;
-    if (!a4)
+    if (!angle)
     {
       goto LABEL_6;
     }
@@ -2195,10 +2195,10 @@ LABEL_6:
 
   v7 = 0;
   v6 = 0.0;
-  if (a4)
+  if (angle)
   {
 LABEL_5:
-    *a4 = v6;
+    *angle = v6;
   }
 
 LABEL_6:
@@ -2206,20 +2206,20 @@ LABEL_6:
   return v7;
 }
 
-+ (CGAffineTransform)rotationTransformForRectangularAnnotation:(SEL)a3 hasRotation:(id)a4
++ (CGAffineTransform)rotationTransformForRectangularAnnotation:(SEL)annotation hasRotation:(id)rotation
 {
-  v7 = a4;
+  rotationCopy = rotation;
   v8 = MEMORY[0x277CBF2C0];
   v9 = *(MEMORY[0x277CBF2C0] + 16);
   *&retstr->a = *MEMORY[0x277CBF2C0];
   *&retstr->c = v9;
   *&retstr->tx = *(v8 + 32);
   v13 = 0;
-  v10 = [AKGeometryHelper annotationHasRotation:v7 outAngle:&v13];
+  v10 = [AKGeometryHelper annotationHasRotation:rotationCopy outAngle:&v13];
   v11 = v10;
   if (v10)
   {
-    [v7 rectangle];
+    [rotationCopy rectangle];
     [AKGeometryHelper rotationTransformForRect:"rotationTransformForRect:withAngle:" withAngle:?];
   }
 
@@ -2231,13 +2231,13 @@ LABEL_6:
   return result;
 }
 
-+ (CGAffineTransform)rotationTransformForRect:(SEL)a3 withAngle:(CGRect)a4
++ (CGAffineTransform)rotationTransformForRect:(SEL)rect withAngle:(CGRect)angle
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  MidX = CGRectGetMidX(a4);
+  height = angle.size.height;
+  width = angle.size.width;
+  y = angle.origin.y;
+  x = angle.origin.x;
+  MidX = CGRectGetMidX(angle);
   v15.origin.x = x;
   v15.origin.y = y;
   v15.size.width = width;
@@ -2247,14 +2247,14 @@ LABEL_6:
   return [a2 rotationTransformAroundPoint:MidX withAngle:{MidY, a5}];
 }
 
-+ (CGAffineTransform)rotationTransformAroundPoint:(SEL)a3 withAngle:(CGPoint)a4
++ (CGAffineTransform)rotationTransformAroundPoint:(SEL)point withAngle:(CGPoint)angle
 {
-  y = a4.y;
-  x = a4.x;
+  y = angle.y;
+  x = angle.x;
   *&retstr->c = 0u;
   *&retstr->tx = 0u;
   *&retstr->a = 0u;
-  CGAffineTransformMakeTranslation(retstr, -a4.x, -a4.y);
+  CGAffineTransformMakeTranslation(retstr, -angle.x, -angle.y);
   CGAffineTransformMakeRotation(&t2, a5);
   v9 = *&retstr->c;
   *&v14.a = *&retstr->a;
@@ -2278,14 +2278,14 @@ LABEL_6:
   return result;
 }
 
-+ (id)_cornersOfRotatedRectangle:(CGRect)a3 angle:(double)a4
++ (id)_cornersOfRotatedRectangle:(CGRect)rectangle angle:(double)angle
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rectangle.size.height;
+  width = rectangle.size.width;
+  y = rectangle.origin.y;
+  x = rectangle.origin.x;
   v10 = [MEMORY[0x277CBEB18] arrayWithCapacity:4];
-  [a1 rotationTransformForRect:x withAngle:{y, width, height, a4}];
+  [self rotationTransformForRect:x withAngle:{y, width, height, angle}];
   v21.origin.x = x;
   v21.origin.y = y;
   v21.size.width = width;
@@ -2337,10 +2337,10 @@ LABEL_6:
   return v10;
 }
 
-+ (CGRect)boundsOfRotatedRectangle:(CGRect)a3 angle:(double)a4
++ (CGRect)boundsOfRotatedRectangle:(CGRect)rectangle angle:(double)angle
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = [a1 _cornersOfRotatedRectangle:a3.origin.x angle:{a3.origin.y, a3.size.width, a3.size.height, a4}];
+  v4 = [self _cornersOfRotatedRectangle:rectangle.origin.x angle:{rectangle.origin.y, rectangle.size.width, rectangle.size.height, angle}];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -2410,38 +2410,38 @@ LABEL_6:
   return result;
 }
 
-+ (CGRect)convertRect:(CGRect)a3 fromViewToScreenPixels:(id)a4 useNativeScale:(BOOL)a5
++ (CGRect)convertRect:(CGRect)rect fromViewToScreenPixels:(id)pixels useNativeScale:(BOOL)scale
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = a4;
-  v11 = [v10 window];
-  [v10 convertRect:v11 toView:{x, y, width, height}];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  pixelsCopy = pixels;
+  window = [pixelsCopy window];
+  [pixelsCopy convertRect:window toView:{x, y, width, height}];
   v13 = v12;
   v15 = v14;
   v17 = v16;
   v19 = v18;
 
-  v20 = [v11 screen];
-  v21 = [v20 coordinateSpace];
+  screen = [window screen];
+  coordinateSpace = [screen coordinateSpace];
 
-  [v11 convertRect:v21 toCoordinateSpace:{v13, v15, v17, v19}];
+  [window convertRect:coordinateSpace toCoordinateSpace:{v13, v15, v17, v19}];
   v23 = v22;
   v25 = v24;
   v27 = v26;
   v29 = v28;
-  v30 = [v11 screen];
-  v31 = v30;
-  if (a5)
+  screen2 = [window screen];
+  v31 = screen2;
+  if (scale)
   {
-    [v30 nativeScale];
+    [screen2 nativeScale];
   }
 
   else
   {
-    [v30 scale];
+    [screen2 scale];
   }
 
   v33 = v32;
@@ -2469,19 +2469,19 @@ LABEL_6:
   return result;
 }
 
-+ (CGRect)convertRect:(CGRect)a3 fromScreenPointsToView:(id)a4
++ (CGRect)convertRect:(CGRect)rect fromScreenPointsToView:(id)view
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = a4;
-  v9 = [v8 window];
-  v10 = [v9 screen];
-  v11 = [v10 coordinateSpace];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  viewCopy = view;
+  window = [viewCopy window];
+  screen = [window screen];
+  coordinateSpace = [screen coordinateSpace];
 
-  [v9 convertRect:v11 fromCoordinateSpace:{x, y, width, height}];
-  [v8 convertRect:v9 fromView:?];
+  [window convertRect:coordinateSpace fromCoordinateSpace:{x, y, width, height}];
+  [viewCopy convertRect:window fromView:?];
   v13 = v12;
   v15 = v14;
   v17 = v16;
@@ -2498,40 +2498,40 @@ LABEL_6:
   return result;
 }
 
-- (AKGeometryHelper)initWithPageController:(id)a3
+- (AKGeometryHelper)initWithPageController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v8.receiver = self;
   v8.super_class = AKGeometryHelper;
   v5 = [(AKGeometryHelper *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(AKGeometryHelper *)v5 setPageController:v4];
+    [(AKGeometryHelper *)v5 setPageController:controllerCopy];
   }
 
   return v6;
 }
 
-- (CGRect)annotationLayerFrameForAnnotation:(id)a3 layerIsClipped:(BOOL *)a4
+- (CGRect)annotationLayerFrameForAnnotation:(id)annotation layerIsClipped:(BOOL *)clipped
 {
-  v6 = a3;
-  v7 = [(AKGeometryHelper *)self pageController];
-  [v6 drawingBounds];
+  annotationCopy = annotation;
+  pageController = [(AKGeometryHelper *)self pageController];
+  [annotationCopy drawingBounds];
   x = v40.origin.x;
   y = v40.origin.y;
   width = v40.size.width;
   height = v40.size.height;
   if (CGRectIsInfinite(v40))
   {
-    v12 = [v7 overlayView];
-    [v12 bounds];
+    overlayView = [pageController overlayView];
+    [overlayView bounds];
     v14 = v13;
     v16 = v15;
     v18 = v17;
     v20 = v19;
 
-    [v7 convertRectFromOverlayToModel:{v14, v16, v18, v20}];
+    [pageController convertRectFromOverlayToModel:{v14, v16, v18, v20}];
     x = v21;
     y = v22;
     width = v23;
@@ -2570,14 +2570,14 @@ LABEL_6:
     [(AKGeometryHelper *)self _smartAlignedRectForRect:x, y, width, height];
   }
 
-  [v7 convertRectFromModelToOverlay:?];
+  [pageController convertRectFromModelToOverlay:?];
   v29 = v28;
   v31 = v30;
   v33 = v32;
   v35 = v34;
-  if (a4)
+  if (clipped)
   {
-    *a4 = 0;
+    *clipped = 0;
   }
 
   v36 = v29;
@@ -2591,11 +2591,11 @@ LABEL_6:
   return result;
 }
 
-- (CGRect)_clippingFrameForView:(id)a3
+- (CGRect)_clippingFrameForView:(id)view
 {
-  v3 = a3;
-  v4 = [v3 window];
-  [v4 bounds];
+  viewCopy = view;
+  window = [viewCopy window];
+  [window bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -2603,12 +2603,12 @@ LABEL_6:
 
   if ([AKGeometryHelper isUnpresentableRect:v6, v8, v10, v12])
   {
-    [v3 frame];
+    [viewCopy frame];
   }
 
   else
   {
-    [v3 convertRect:0 fromView:{v6, v8, v10, v12}];
+    [viewCopy convertRect:0 fromView:{v6, v8, v10, v12}];
   }
 
   v17 = v13;
@@ -2624,19 +2624,19 @@ LABEL_6:
   return CGRectInset(*&v21, -v19, -v20);
 }
 
-- (CGRect)adornmentLayerFrameForAnnotation:(id)a3
+- (CGRect)adornmentLayerFrameForAnnotation:(id)annotation
 {
-  v4 = a3;
-  v5 = [(AKGeometryHelper *)self pageController];
-  [v4 drawingBounds];
+  annotationCopy = annotation;
+  pageController = [(AKGeometryHelper *)self pageController];
+  [annotationCopy drawingBounds];
   x = v30.origin.x;
   y = v30.origin.y;
   width = v30.size.width;
   height = v30.size.height;
   if (CGRectIsInfinite(v30))
   {
-    v10 = [v5 overlayView];
-    [v10 bounds];
+    overlayView = [pageController overlayView];
+    [overlayView bounds];
     v12 = v11;
     v14 = v13;
     v16 = v15;
@@ -2666,7 +2666,7 @@ LABEL_6:
       width = 1.0;
     }
 
-    [v5 convertRectFromModelToOverlay:{x, y, width, height}];
+    [pageController convertRectFromModelToOverlay:{x, y, width, height}];
     v12 = v22;
     v14 = v23;
     v16 = v24;
@@ -2684,16 +2684,16 @@ LABEL_6:
   return result;
 }
 
-- (CGPoint)convertPoint:(CGPoint)a3 fromModelToLayer:(id)a4
+- (CGPoint)convertPoint:(CGPoint)point fromModelToLayer:(id)layer
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [(AKGeometryHelper *)self pageController];
-  v9 = [v8 overlayView];
-  v10 = [v9 layer];
-  [v8 convertPointFromModelToOverlay:{x, y}];
-  [v10 convertPoint:v7 toLayer:?];
+  y = point.y;
+  x = point.x;
+  layerCopy = layer;
+  pageController = [(AKGeometryHelper *)self pageController];
+  overlayView = [pageController overlayView];
+  layer = [overlayView layer];
+  [pageController convertPointFromModelToOverlay:{x, y}];
+  [layer convertPoint:layerCopy toLayer:?];
   v12 = v11;
   v14 = v13;
 
@@ -2704,18 +2704,18 @@ LABEL_6:
   return result;
 }
 
-- (CGRect)convertRect:(CGRect)a3 fromModelToLayer:(id)a4
+- (CGRect)convertRect:(CGRect)rect fromModelToLayer:(id)layer
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
-  v10 = [(AKGeometryHelper *)self pageController];
-  v11 = [v10 overlayView];
-  v12 = [v11 layer];
-  [v10 convertRectFromModelToOverlay:{x, y, width, height}];
-  [v12 convertRect:v9 toLayer:?];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  layerCopy = layer;
+  pageController = [(AKGeometryHelper *)self pageController];
+  overlayView = [pageController overlayView];
+  layer = [overlayView layer];
+  [pageController convertRectFromModelToOverlay:{x, y, width, height}];
+  [layer convertRect:layerCopy toLayer:?];
   v14 = v13;
   v16 = v15;
   v18 = v17;
@@ -2732,10 +2732,10 @@ LABEL_6:
   return result;
 }
 
-- (CGPoint)contentAlignedPointForPoint:(CGPoint)a3
+- (CGPoint)contentAlignedPointForPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   if ([(AKGeometryHelper *)self _shouldAlignToContent])
   {
     [objc_opt_class() _alignedPointForPoint:1 alignToContent:0 alignToScreenUsingPageController:0 orAlignToBitmapContext:0 usingAnnotation:{x, y}];
@@ -2750,12 +2750,12 @@ LABEL_6:
   return result;
 }
 
-- (CGRect)contentAlignedRectForRect:(CGRect)a3
+- (CGRect)contentAlignedRectForRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   if ([(AKGeometryHelper *)self _shouldAlignToContent])
   {
     [objc_opt_class() _alignedStableRectForRect:1 alignToContent:0 alignToScreenUsingPageController:0 orAlignToBitmapContext:0 usingAnnotation:{x, y, width, height}];
@@ -2776,13 +2776,13 @@ LABEL_6:
   return result;
 }
 
-- (CGPoint)screenPixelAlignedPointForPoint:(CGPoint)a3
+- (CGPoint)screenPixelAlignedPointForPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v6 = objc_opt_class();
-  v7 = [(AKGeometryHelper *)self pageController];
-  [v6 _alignedPointForPoint:0 alignToContent:v7 alignToScreenUsingPageController:0 orAlignToBitmapContext:0 usingAnnotation:{x, y}];
+  pageController = [(AKGeometryHelper *)self pageController];
+  [v6 _alignedPointForPoint:0 alignToContent:pageController alignToScreenUsingPageController:0 orAlignToBitmapContext:0 usingAnnotation:{x, y}];
   v9 = v8;
   v11 = v10;
 
@@ -2793,15 +2793,15 @@ LABEL_6:
   return result;
 }
 
-- (CGRect)screenPixelAlignedRectForRect:(CGRect)a3
+- (CGRect)screenPixelAlignedRectForRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v8 = objc_opt_class();
-  v9 = [(AKGeometryHelper *)self pageController];
-  [v8 _alignedStableRectForRect:0 alignToContent:v9 alignToScreenUsingPageController:0 orAlignToBitmapContext:0 usingAnnotation:{x, y, width, height}];
+  pageController = [(AKGeometryHelper *)self pageController];
+  [v8 _alignedStableRectForRect:0 alignToContent:pageController alignToScreenUsingPageController:0 orAlignToBitmapContext:0 usingAnnotation:{x, y, width, height}];
   v11 = v10;
   v13 = v12;
   v15 = v14;
@@ -2818,18 +2818,18 @@ LABEL_6:
   return result;
 }
 
-- (CGRect)_smartAlignedRectForRect:(CGRect)a3
+- (CGRect)_smartAlignedRectForRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v8 = objc_opt_class();
-  v9 = [(AKGeometryHelper *)self _shouldAlignToContent];
+  _shouldAlignToContent = [(AKGeometryHelper *)self _shouldAlignToContent];
   if ([(AKGeometryHelper *)self _shouldAlignToScreen])
   {
-    v10 = [(AKGeometryHelper *)self pageController];
-    [v8 _alignedStableRectForRect:v9 alignToContent:v10 alignToScreenUsingPageController:0 orAlignToBitmapContext:0 usingAnnotation:{x, y, width, height}];
+    pageController = [(AKGeometryHelper *)self pageController];
+    [v8 _alignedStableRectForRect:_shouldAlignToContent alignToContent:pageController alignToScreenUsingPageController:0 orAlignToBitmapContext:0 usingAnnotation:{x, y, width, height}];
     v12 = v11;
     v14 = v13;
     v16 = v15;
@@ -2838,7 +2838,7 @@ LABEL_6:
 
   else
   {
-    [v8 _alignedStableRectForRect:v9 alignToContent:0 alignToScreenUsingPageController:0 orAlignToBitmapContext:0 usingAnnotation:{x, y, width, height}];
+    [v8 _alignedStableRectForRect:_shouldAlignToContent alignToContent:0 alignToScreenUsingPageController:0 orAlignToBitmapContext:0 usingAnnotation:{x, y, width, height}];
     v12 = v19;
     v14 = v20;
     v16 = v21;
@@ -2856,15 +2856,15 @@ LABEL_6:
   return result;
 }
 
-- (CGRect)screenStrokeAlignedRectForRect:(CGRect)a3 withStrokeWidth:(double)a4
+- (CGRect)screenStrokeAlignedRectForRect:(CGRect)rect withStrokeWidth:(double)width
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v10 = objc_opt_class();
-  v11 = [(AKGeometryHelper *)self pageController];
-  [v10 _strokeAlignedRectForRect:1 withStrokeWidth:v11 shouldAlignStrictlyToScreen:0 alignToScreenUsingPageController:0 orAlignToBitmapContext:x usingAnnotation:{y, width, height, a4}];
+  pageController = [(AKGeometryHelper *)self pageController];
+  [v10 _strokeAlignedRectForRect:1 withStrokeWidth:pageController shouldAlignStrictlyToScreen:0 alignToScreenUsingPageController:0 orAlignToBitmapContext:x usingAnnotation:{y, width, height, width}];
   v13 = v12;
   v15 = v14;
   v17 = v16;
@@ -2881,9 +2881,9 @@ LABEL_6:
   return result;
 }
 
-+ (CGRect)renderingStrokeAlignedRectForRect:(CGRect)a3 withStrokeWidth:(double)a4 alignToScreenUsingPageController:(id)a5 orAlignToContext:(CGContext *)a6 usingAnnotation:(id)a7
++ (CGRect)renderingStrokeAlignedRectForRect:(CGRect)rect withStrokeWidth:(double)width alignToScreenUsingPageController:(id)controller orAlignToContext:(CGContext *)context usingAnnotation:(id)annotation
 {
-  [a1 _strokeAlignedRectForRect:0 withStrokeWidth:a5 shouldAlignStrictlyToScreen:a6 alignToScreenUsingPageController:a7 orAlignToBitmapContext:a3.origin.x usingAnnotation:{a3.origin.y, a3.size.width, a3.size.height, a4}];
+  [self _strokeAlignedRectForRect:0 withStrokeWidth:controller shouldAlignStrictlyToScreen:context alignToScreenUsingPageController:annotation orAlignToBitmapContext:rect.origin.x usingAnnotation:{rect.origin.y, rect.size.width, rect.size.height, width}];
   result.size.height = v10;
   result.size.width = v9;
   result.origin.y = v8;
@@ -2891,17 +2891,17 @@ LABEL_6:
   return result;
 }
 
-+ (CGRect)renderingAlignedTextRectForRect:(CGRect)a3 alignToScreenUsingPageController:(id)a4 orAlignToContext:(CGContext *)a5 usingAnnotation:(id)a6
++ (CGRect)renderingAlignedTextRectForRect:(CGRect)rect alignToScreenUsingPageController:(id)controller orAlignToContext:(CGContext *)context usingAnnotation:(id)annotation
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v13 = a4;
-  v14 = a6;
-  if (!v14 || ![AKGeometryHelper annotationHasRotation:v14 outAngle:0])
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  controllerCopy = controller;
+  annotationCopy = annotation;
+  if (!annotationCopy || ![AKGeometryHelper annotationHasRotation:annotationCopy outAngle:0])
   {
-    [a1 _alignedStableRectForRect:0 alignToContent:v13 alignToScreenUsingPageController:a5 orAlignToBitmapContext:v14 usingAnnotation:{x, y, width, height}];
+    [self _alignedStableRectForRect:0 alignToContent:controllerCopy alignToScreenUsingPageController:context orAlignToBitmapContext:annotationCopy usingAnnotation:{x, y, width, height}];
     x = v15;
     y = v16;
     width = v17;
@@ -2921,38 +2921,38 @@ LABEL_6:
 
 - (id)_rootLayer
 {
-  v2 = [(AKGeometryHelper *)self pageController];
-  v3 = [v2 layerPresentationManager];
-  v4 = [v3 rootLayer];
+  pageController = [(AKGeometryHelper *)self pageController];
+  layerPresentationManager = [pageController layerPresentationManager];
+  rootLayer = [layerPresentationManager rootLayer];
 
-  return v4;
+  return rootLayer;
 }
 
 - (BOOL)_shouldAlignToContent
 {
-  v2 = [(AKGeometryHelper *)self pageController];
-  v3 = v2;
-  if (v2)
+  pageController = [(AKGeometryHelper *)self pageController];
+  v3 = pageController;
+  if (pageController)
   {
-    v4 = [v2 shouldPixelate];
+    shouldPixelate = [pageController shouldPixelate];
   }
 
   else
   {
-    v4 = 0;
+    shouldPixelate = 0;
   }
 
-  return v4;
+  return shouldPixelate;
 }
 
 - (BOOL)_shouldAlignToScreen
 {
-  v3 = [(AKGeometryHelper *)self pageController];
-  if (v3)
+  pageController = [(AKGeometryHelper *)self pageController];
+  if (pageController)
   {
     if ([(AKGeometryHelper *)self _shouldAlignToContent])
     {
-      [v3 currentModelToScreenScaleFactor];
+      [pageController currentModelToScreenScaleFactor];
       v5 = v4 <= 1.0;
     }
 
@@ -2970,22 +2970,22 @@ LABEL_6:
   return v5;
 }
 
-+ (CGRect)_alignedStableRectForRect:(CGRect)a3 alignToContent:(BOOL)a4 alignToScreenUsingPageController:(id)a5 orAlignToBitmapContext:(CGContext *)a6 usingAnnotation:(id)a7
++ (CGRect)_alignedStableRectForRect:(CGRect)rect alignToContent:(BOOL)content alignToScreenUsingPageController:(id)controller orAlignToBitmapContext:(CGContext *)context usingAnnotation:(id)annotation
 {
-  v9 = a4;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v15 = a7;
-  v16 = a5;
+  contentCopy = content;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  annotationCopy = annotation;
+  controllerCopy = controller;
   v17 = objc_opt_class();
   v30[0] = MEMORY[0x277D85DD0];
   v30[1] = 3221225472;
   v30[2] = sub_23F47749C;
   v30[3] = &unk_278C7C0B0;
-  v30[4] = a1;
-  [v17 _rectForRect:v9 alignToContent:v16 alignToScreenUsingPageController:a6 orAlignToBitmapContext:v15 usingAnnotation:v30 withAlignmentBlock:{x, y, width, height}];
+  v30[4] = self;
+  [v17 _rectForRect:contentCopy alignToContent:controllerCopy alignToScreenUsingPageController:context orAlignToBitmapContext:annotationCopy usingAnnotation:v30 withAlignmentBlock:{x, y, width, height}];
   v19 = v18;
   v21 = v20;
   v23 = v22;
@@ -3002,26 +3002,26 @@ LABEL_6:
   return result;
 }
 
-+ (CGRect)_strokeAlignedRectForRect:(CGRect)a3 withStrokeWidth:(double)a4 shouldAlignStrictlyToScreen:(BOOL)a5 alignToScreenUsingPageController:(id)a6 orAlignToBitmapContext:(CGContext *)a7 usingAnnotation:(id)a8
++ (CGRect)_strokeAlignedRectForRect:(CGRect)rect withStrokeWidth:(double)width shouldAlignStrictlyToScreen:(BOOL)screen alignToScreenUsingPageController:(id)controller orAlignToBitmapContext:(CGContext *)context usingAnnotation:(id)annotation
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v17 = a6;
-  v18 = a8;
-  v19 = 0;
-  if (v17 && !a5)
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  controllerCopy = controller;
+  annotationCopy = annotation;
+  _shouldAlignToContent = 0;
+  if (controllerCopy && !screen)
   {
-    v20 = [v17 geometryHelper];
-    if ([v20 _shouldAlignToScreen])
+    geometryHelper = [controllerCopy geometryHelper];
+    if ([geometryHelper _shouldAlignToScreen])
     {
-      v19 = 0;
+      _shouldAlignToContent = 0;
     }
 
     else
     {
-      v19 = [v20 _shouldAlignToContent];
+      _shouldAlignToContent = [geometryHelper _shouldAlignToContent];
     }
   }
 
@@ -3029,8 +3029,8 @@ LABEL_6:
   v33[1] = 3221225472;
   v33[2] = sub_23F477650;
   v33[3] = &unk_278C7C0B0;
-  *&v33[4] = a4;
-  [a1 _rectForRect:v19 alignToContent:v17 alignToScreenUsingPageController:a7 orAlignToBitmapContext:v18 usingAnnotation:v33 withAlignmentBlock:{x, y, width, height}];
+  *&v33[4] = width;
+  [self _rectForRect:_shouldAlignToContent alignToContent:controllerCopy alignToScreenUsingPageController:context orAlignToBitmapContext:annotationCopy usingAnnotation:v33 withAlignmentBlock:{x, y, width, height}];
   v22 = v21;
   v24 = v23;
   v26 = v25;
@@ -3047,20 +3047,20 @@ LABEL_6:
   return result;
 }
 
-+ (CGPoint)_alignedPointForPoint:(CGPoint)a3 alignToContent:(BOOL)a4 alignToScreenUsingPageController:(id)a5 orAlignToBitmapContext:(CGContext *)a6 usingAnnotation:(id)a7
++ (CGPoint)_alignedPointForPoint:(CGPoint)point alignToContent:(BOOL)content alignToScreenUsingPageController:(id)controller orAlignToBitmapContext:(CGContext *)context usingAnnotation:(id)annotation
 {
-  v9 = a4;
-  y = a3.y;
-  x = a3.x;
-  v13 = a7;
-  v14 = a5;
+  contentCopy = content;
+  y = point.y;
+  x = point.x;
+  annotationCopy = annotation;
+  controllerCopy = controller;
   v15 = objc_opt_class();
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = sub_23F4777BC;
   v22[3] = &unk_278C7C0B0;
-  v22[4] = a1;
-  [v15 _rectForRect:v9 alignToContent:v14 alignToScreenUsingPageController:a6 orAlignToBitmapContext:v13 usingAnnotation:v22 withAlignmentBlock:{x, y, 0.0, 0.0}];
+  v22[4] = self;
+  [v15 _rectForRect:contentCopy alignToContent:controllerCopy alignToScreenUsingPageController:context orAlignToBitmapContext:annotationCopy usingAnnotation:v22 withAlignmentBlock:{x, y, 0.0, 0.0}];
   v17 = v16;
   v19 = v18;
 
@@ -3071,20 +3071,20 @@ LABEL_6:
   return result;
 }
 
-+ (CGRect)_rectForRect:(CGRect)a3 alignToContent:(BOOL)a4 alignToScreenUsingPageController:(id)a5 orAlignToBitmapContext:(CGContext *)a6 usingAnnotation:(id)a7 withAlignmentBlock:(id)a8
++ (CGRect)_rectForRect:(CGRect)rect alignToContent:(BOOL)content alignToScreenUsingPageController:(id)controller orAlignToBitmapContext:(CGContext *)context usingAnnotation:(id)annotation withAlignmentBlock:(id)block
 {
-  v11 = a4;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v17 = a5;
-  v18 = a7;
-  v19 = a8;
-  v20 = v19;
-  if (v11)
+  contentCopy = content;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  controllerCopy = controller;
+  annotationCopy = annotation;
+  blockCopy = block;
+  v20 = blockCopy;
+  if (contentCopy)
   {
-    v98.origin.x = (v19[2])(v19, x, y, width, height, 1.0);
+    v98.origin.x = (blockCopy[2])(blockCopy, x, y, width, height, 1.0);
     v99 = CGRectStandardize(v98);
     x = v99.origin.x;
     y = v99.origin.y;
@@ -3092,54 +3092,54 @@ LABEL_6:
     height = v99.size.height;
   }
 
-  if (v17)
+  if (controllerCopy)
   {
-    v21 = [v17 overlayView];
-    if (!v21)
+    overlayView = [controllerCopy overlayView];
+    if (!overlayView)
     {
       NSLog(&cfstr_SAttemptingToA.isa, "+[AKGeometryHelper _rectForRect:alignToContent:alignToScreenUsingPageController:orAlignToBitmapContext:usingAnnotation:withAlignmentBlock:]");
       goto LABEL_18;
     }
 
-    v22 = v21;
+    v22 = overlayView;
     v23 = *MEMORY[0x277CBF348];
     v24 = *(MEMORY[0x277CBF348] + 8);
-    [v17 convertRectFromModelToOverlay:{x, y, width, height}];
+    [controllerCopy convertRectFromModelToOverlay:{x, y, width, height}];
     v26 = v25;
     v28 = v27;
     v30 = v29;
     v32 = v31;
-    [v17 convertPointFromModelToOverlay:{v23, v24}];
+    [controllerCopy convertPointFromModelToOverlay:{v23, v24}];
     v34 = v33;
     v36 = v35;
-    [v17 convertPointFromModelToOverlay:{1.0, 1.0}];
+    [controllerCopy convertPointFromModelToOverlay:{1.0, 1.0}];
     v38 = v37;
     v40 = v39;
-    v41 = [v22 superview];
-    [v22 convertRect:v41 toView:{v26, v28, v30, v32}];
+    superview = [v22 superview];
+    [v22 convertRect:superview toView:{v26, v28, v30, v32}];
     v43 = v42;
     v45 = v44;
     v47 = v46;
     v49 = v48;
-    [v22 convertPoint:v41 toView:{v34, v36}];
+    [v22 convertPoint:superview toView:{v34, v36}];
     v51 = v50;
     v53 = v52;
-    [v22 convertPoint:v41 toView:{v38, v40}];
+    [v22 convertPoint:superview toView:{v38, v40}];
     v55 = v54;
     v57 = v56;
-    v58 = [v41 window];
-    v59 = [v58 screen];
-    v60 = [v59 coordinateSpace];
+    window = [superview window];
+    screen = [window screen];
+    coordinateSpace = [screen coordinateSpace];
 
-    [v41 convertRect:v60 toCoordinateSpace:{v43, v45, v47, v49}];
+    [superview convertRect:coordinateSpace toCoordinateSpace:{v43, v45, v47, v49}];
     v62 = v61;
     v64 = v63;
     v66 = v65;
     v68 = v67;
-    [v41 convertPoint:v60 toCoordinateSpace:{v51, v53}];
+    [superview convertPoint:coordinateSpace toCoordinateSpace:{v51, v53}];
     v70 = v69;
     v72 = v71;
-    [v41 convertPoint:v60 toCoordinateSpace:{v55, v57}];
+    [superview convertPoint:coordinateSpace toCoordinateSpace:{v55, v57}];
     v75 = vabdd_f64(v74, v70);
     v77 = vabdd_f64(v76, v72);
     if (v75 >= v77)
@@ -3153,8 +3153,8 @@ LABEL_6:
     }
 
     v20[2](v20, v62, v64, v66, v68, v73);
-    [v22 convertRect:v60 fromCoordinateSpace:?];
-    [v17 convertRectFromOverlayToModel:?];
+    [v22 convertRect:coordinateSpace fromCoordinateSpace:?];
+    [controllerCopy convertRectFromOverlayToModel:?];
     x = v78;
     y = v79;
     width = v80;
@@ -3163,7 +3163,7 @@ LABEL_6:
     goto LABEL_16;
   }
 
-  if (!a6)
+  if (!context)
   {
 LABEL_16:
     v104.origin.x = x;
@@ -3178,23 +3178,23 @@ LABEL_16:
     goto LABEL_18;
   }
 
-  if (CGContextGetType() == 4 && CGBitmapContextGetBitsPerPixel(a6))
+  if (CGContextGetType() == 4 && CGBitmapContextGetBitsPerPixel(context))
   {
-    [a1 effectiveDrawingBoundsForAnnotation:v18 forDisplay:0 pageControllerOrNil:0 outScaleFactor:0];
+    [self effectiveDrawingBoundsForAnnotation:annotationCopy forDisplay:0 pageControllerOrNil:0 outScaleFactor:0];
     v83 = v82;
     v85 = v84;
     v100.origin.x = x - v82;
     v100.origin.y = y - v84;
     v100.size.width = width;
     v100.size.height = height;
-    v101 = CGContextConvertRectToDeviceSpace(a6, v100);
+    v101 = CGContextConvertRectToDeviceSpace(context, v100);
     v86 = v101.origin.x;
     v87 = v101.origin.y;
     v88 = v101.size.width;
     v89 = v101.size.height;
     v101.origin.x = 1.0;
     v101.origin.y = 1.0;
-    v91 = CGContextConvertSizeToDeviceSpace(a6, v101.origin);
+    v91 = CGContextConvertSizeToDeviceSpace(context, v101.origin);
     v92 = fabs(v91.width);
     v93 = fabs(v91.height);
     if (v92 >= v93)
@@ -3208,7 +3208,7 @@ LABEL_16:
     }
 
     v102.origin.x = (v20[2])(v20, v86, v87, v88, v89, v90);
-    v103 = CGContextConvertRectToUserSpace(a6, v102);
+    v103 = CGContextConvertRectToUserSpace(context, v102);
     width = v103.size.width;
     height = v103.size.height;
     x = v83 + v103.origin.x;

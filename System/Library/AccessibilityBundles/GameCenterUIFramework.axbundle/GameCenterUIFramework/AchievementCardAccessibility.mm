@@ -1,21 +1,21 @@
 @interface AchievementCardAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation AchievementCardAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"GameCenterUI.AchievementCard" hasInstanceMethod:@"accessibilityBadge" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"GameCenterUI.AchievementBadge" hasInstanceMethod:@"accessibilityIsAchievementLocked" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"GameCenterUI.AchievementBadge" hasInstanceMethod:@"accessibilityIsAchievementCompleted" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"GameCenterUI.AchievementBadge" hasInstanceMethod:@"accessibilityIsAchievementInProgress" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"GameCenterUI.AchievementCard" hasInstanceMethod:@"accessibilityTitleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"GameCenterUI.AchievementCard" hasInstanceMethod:@"accessibilitySubtitleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"GameCenterUI.AchievementCard" hasInstanceMethod:@"accessibilityAchievementCompletedDate" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"GameCenterUI.AchievementBadge" hasInstanceMethod:@"accessibilityProgress" withFullSignature:{"d", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"GameCenterUI.AchievementCard" hasInstanceMethod:@"accessibilityBadge" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"GameCenterUI.AchievementBadge" hasInstanceMethod:@"accessibilityIsAchievementLocked" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"GameCenterUI.AchievementBadge" hasInstanceMethod:@"accessibilityIsAchievementCompleted" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"GameCenterUI.AchievementBadge" hasInstanceMethod:@"accessibilityIsAchievementInProgress" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"GameCenterUI.AchievementCard" hasInstanceMethod:@"accessibilityTitleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"GameCenterUI.AchievementCard" hasInstanceMethod:@"accessibilitySubtitleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"GameCenterUI.AchievementCard" hasInstanceMethod:@"accessibilityAchievementCompletedDate" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"GameCenterUI.AchievementBadge" hasInstanceMethod:@"accessibilityProgress" withFullSignature:{"d", 0}];
 }
 
 - (id)accessibilityLabel
@@ -33,9 +33,9 @@
   [v3 safeCGFloatForKey:@"accessibilityProgress"];
   if (v4)
   {
-    v12 = AXGameCenterUIFrameworkLocString(@"LOCKED");
-    v13 = [v7 accessibilityLabel];
-    v14 = [v8 accessibilityLabel];
+    accessibilityLabel4 = AXGameCenterUIFrameworkLocString(@"LOCKED");
+    accessibilityLabel = [v7 accessibilityLabel];
+    accessibilityLabel2 = [v8 accessibilityLabel];
     v15 = __UIAXStringForVariables();
 LABEL_8:
 
@@ -44,12 +44,12 @@ LABEL_8:
 
   if (v5)
   {
-    v12 = AXGameCenterUIFrameworkLocString(@"COMPLETED");
+    accessibilityLabel4 = AXGameCenterUIFrameworkLocString(@"COMPLETED");
     v16 = AXDateStringForFormat();
 LABEL_7:
-    v13 = v16;
-    v14 = [v7 accessibilityLabel];
-    v20 = [v8 accessibilityLabel];
+    accessibilityLabel = v16;
+    accessibilityLabel2 = [v7 accessibilityLabel];
+    accessibilityLabel3 = [v8 accessibilityLabel];
     v15 = __UIAXStringForVariables();
 
     goto LABEL_8;
@@ -58,14 +58,14 @@ LABEL_7:
   if (v6)
   {
     v17 = v11;
-    v12 = AXGameCenterUIFrameworkLocString(@"IN_PROGRESS");
+    accessibilityLabel4 = AXGameCenterUIFrameworkLocString(@"IN_PROGRESS");
     v18 = v17 / 100.0;
     v16 = MEMORY[0x29C2D70B0](0, v18);
     goto LABEL_7;
   }
 
-  v12 = [v7 accessibilityLabel];
-  v13 = [v8 accessibilityLabel];
+  accessibilityLabel4 = [v7 accessibilityLabel];
+  accessibilityLabel = [v8 accessibilityLabel];
   v15 = __UIAXStringForVariables();
 LABEL_9:
 

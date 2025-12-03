@@ -1,19 +1,19 @@
 @interface BorderDbStat
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (unsigned)boundDurationSecsAtIndex:(unint64_t)a3;
-- (unsigned)fetchStateDurationSecsAtIndex:(unint64_t)a3;
-- (void)copyTo:(id)a3;
+- (unsigned)boundDurationSecsAtIndex:(unint64_t)index;
+- (unsigned)fetchStateDurationSecsAtIndex:(unint64_t)index;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasFetchCntApWakes:(BOOL)a3;
-- (void)setHasMaxLifeSecs:(BOOL)a3;
-- (void)setHasMinLifeSecs:(BOOL)a3;
-- (void)setHasTotalDbLifeSecs:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasFetchCntApWakes:(BOOL)wakes;
+- (void)setHasMaxLifeSecs:(BOOL)secs;
+- (void)setHasMinLifeSecs:(BOOL)secs;
+- (void)setHasTotalDbLifeSecs:(BOOL)secs;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BorderDbStat
@@ -27,9 +27,9 @@
   [(BorderDbStat *)&v3 dealloc];
 }
 
-- (void)setHasTotalDbLifeSecs:(BOOL)a3
+- (void)setHasTotalDbLifeSecs:(BOOL)secs
 {
-  if (a3)
+  if (secs)
   {
     v3 = 16;
   }
@@ -42,9 +42,9 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasMinLifeSecs:(BOOL)a3
+- (void)setHasMinLifeSecs:(BOOL)secs
 {
-  if (a3)
+  if (secs)
   {
     v3 = 8;
   }
@@ -57,9 +57,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasMaxLifeSecs:(BOOL)a3
+- (void)setHasMaxLifeSecs:(BOOL)secs
 {
-  if (a3)
+  if (secs)
   {
     v3 = 4;
   }
@@ -72,9 +72,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasFetchCntApWakes:(BOOL)a3
+- (void)setHasFetchCntApWakes:(BOOL)wakes
 {
-  if (a3)
+  if (wakes)
   {
     v3 = 2;
   }
@@ -87,32 +87,32 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (unsigned)fetchStateDurationSecsAtIndex:(unint64_t)a3
+- (unsigned)fetchStateDurationSecsAtIndex:(unint64_t)index
 {
   p_fetchStateDurationSecs = &self->_fetchStateDurationSecs;
   count = self->_fetchStateDurationSecs.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%tu) is out of range (%tu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%tu) is out of range (%tu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_fetchStateDurationSecs->list[a3];
+  return p_fetchStateDurationSecs->list[index];
 }
 
-- (unsigned)boundDurationSecsAtIndex:(unint64_t)a3
+- (unsigned)boundDurationSecsAtIndex:(unint64_t)index
 {
   p_boundDurationSecs = &self->_boundDurationSecs;
   count = self->_boundDurationSecs.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%tu) is out of range (%tu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%tu) is out of range (%tu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_boundDurationSecs->list[a3];
+  return p_boundDurationSecs->list[index];
 }
 
 - (id)description
@@ -120,8 +120,8 @@
   v7.receiver = self;
   v7.super_class = BorderDbStat;
   v3 = [(BorderDbStat *)&v7 description];
-  v4 = [(BorderDbStat *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(BorderDbStat *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -205,16 +205,16 @@ LABEL_7:
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v16 = v4;
+  v16 = toCopy;
   if ((has & 0x10) != 0)
   {
     totalDbLifeSecs = self->_totalDbLifeSecs;
     PBDataWriterWriteUint32Field();
-    v4 = v16;
+    toCopy = v16;
     has = self->_has;
     if ((has & 8) == 0)
     {
@@ -235,7 +235,7 @@ LABEL_3:
 
   minLifeSecs = self->_minLifeSecs;
   PBDataWriterWriteUint32Field();
-  v4 = v16;
+  toCopy = v16;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -251,7 +251,7 @@ LABEL_4:
 LABEL_18:
   maxLifeSecs = self->_maxLifeSecs;
   PBDataWriterWriteUint32Field();
-  v4 = v16;
+  toCopy = v16;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -267,13 +267,13 @@ LABEL_5:
 LABEL_19:
   fetchCnt = self->_fetchCnt;
   PBDataWriterWriteUint32Field();
-  v4 = v16;
+  toCopy = v16;
   if ((*&self->_has & 2) != 0)
   {
 LABEL_6:
     fetchCntApWakes = self->_fetchCntApWakes;
     PBDataWriterWriteUint32Field();
-    v4 = v16;
+    toCopy = v16;
   }
 
 LABEL_7:
@@ -284,7 +284,7 @@ LABEL_7:
     {
       v8 = self->_fetchStateDurationSecs.list[v7];
       PBDataWriterWriteUint32Field();
-      v4 = v16;
+      toCopy = v16;
       ++v7;
     }
 
@@ -299,7 +299,7 @@ LABEL_7:
     {
       v11 = p_boundDurationSecs->list[v10];
       PBDataWriterWriteUint32Field();
-      v4 = v16;
+      toCopy = v16;
       ++v10;
     }
 
@@ -307,14 +307,14 @@ LABEL_7:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 0x10) != 0)
   {
-    v4[18] = self->_totalDbLifeSecs;
-    *(v4 + 76) |= 0x10u;
+    toCopy[18] = self->_totalDbLifeSecs;
+    *(toCopy + 76) |= 0x10u;
     has = self->_has;
     if ((has & 8) == 0)
     {
@@ -333,8 +333,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[17] = self->_minLifeSecs;
-  *(v4 + 76) |= 8u;
+  toCopy[17] = self->_minLifeSecs;
+  *(toCopy + 76) |= 8u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -345,8 +345,8 @@ LABEL_4:
     }
 
 LABEL_21:
-    v4[14] = self->_fetchCnt;
-    *(v4 + 76) |= 1u;
+    toCopy[14] = self->_fetchCnt;
+    *(toCopy + 76) |= 1u;
     if ((*&self->_has & 2) == 0)
     {
       goto LABEL_7;
@@ -356,8 +356,8 @@ LABEL_21:
   }
 
 LABEL_20:
-  v4[16] = self->_maxLifeSecs;
-  *(v4 + 76) |= 4u;
+  toCopy[16] = self->_maxLifeSecs;
+  *(toCopy + 76) |= 4u;
   has = self->_has;
   if (has)
   {
@@ -368,19 +368,19 @@ LABEL_5:
   if ((has & 2) != 0)
   {
 LABEL_6:
-    v4[15] = self->_fetchCntApWakes;
-    *(v4 + 76) |= 2u;
+    toCopy[15] = self->_fetchCntApWakes;
+    *(toCopy + 76) |= 2u;
   }
 
 LABEL_7:
-  v12 = v4;
+  v12 = toCopy;
   if ([(BorderDbStat *)self fetchStateDurationSecsCount])
   {
     [v12 clearFetchStateDurationSecs];
-    v6 = [(BorderDbStat *)self fetchStateDurationSecsCount];
-    if (v6)
+    fetchStateDurationSecsCount = [(BorderDbStat *)self fetchStateDurationSecsCount];
+    if (fetchStateDurationSecsCount)
     {
-      v7 = v6;
+      v7 = fetchStateDurationSecsCount;
       for (i = 0; i != v7; ++i)
       {
         [v12 addFetchStateDurationSecs:{-[BorderDbStat fetchStateDurationSecsAtIndex:](self, "fetchStateDurationSecsAtIndex:", i)}];
@@ -391,10 +391,10 @@ LABEL_7:
   if ([(BorderDbStat *)self boundDurationSecsCount])
   {
     [v12 clearBoundDurationSecs];
-    v9 = [(BorderDbStat *)self boundDurationSecsCount];
-    if (v9)
+    boundDurationSecsCount = [(BorderDbStat *)self boundDurationSecsCount];
+    if (boundDurationSecsCount)
     {
-      v10 = v9;
+      v10 = boundDurationSecsCount;
       for (j = 0; j != v10; ++j)
       {
         [v12 addBoundDurationSecs:{-[BorderDbStat boundDurationSecsAtIndex:](self, "boundDurationSecsAtIndex:", j)}];
@@ -403,9 +403,9 @@ LABEL_7:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = v4;
   has = self->_has;
   if ((has & 0x10) != 0)
@@ -475,76 +475,76 @@ LABEL_7:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_29;
   }
 
-  v5 = *(v4 + 76);
+  v5 = *(equalCopy + 76);
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(v4 + 76) & 0x10) == 0 || self->_totalDbLifeSecs != *(v4 + 18))
+    if ((*(equalCopy + 76) & 0x10) == 0 || self->_totalDbLifeSecs != *(equalCopy + 18))
     {
       goto LABEL_29;
     }
   }
 
-  else if ((*(v4 + 76) & 0x10) != 0)
+  else if ((*(equalCopy + 76) & 0x10) != 0)
   {
     goto LABEL_29;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 76) & 8) == 0 || self->_minLifeSecs != *(v4 + 17))
+    if ((*(equalCopy + 76) & 8) == 0 || self->_minLifeSecs != *(equalCopy + 17))
     {
       goto LABEL_29;
     }
   }
 
-  else if ((*(v4 + 76) & 8) != 0)
+  else if ((*(equalCopy + 76) & 8) != 0)
   {
     goto LABEL_29;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 76) & 4) == 0 || self->_maxLifeSecs != *(v4 + 16))
+    if ((*(equalCopy + 76) & 4) == 0 || self->_maxLifeSecs != *(equalCopy + 16))
     {
       goto LABEL_29;
     }
   }
 
-  else if ((*(v4 + 76) & 4) != 0)
+  else if ((*(equalCopy + 76) & 4) != 0)
   {
     goto LABEL_29;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 76) & 1) == 0 || self->_fetchCnt != *(v4 + 14))
+    if ((*(equalCopy + 76) & 1) == 0 || self->_fetchCnt != *(equalCopy + 14))
     {
       goto LABEL_29;
     }
   }
 
-  else if (*(v4 + 76))
+  else if (*(equalCopy + 76))
   {
     goto LABEL_29;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 76) & 2) == 0 || self->_fetchCntApWakes != *(v4 + 15))
+    if ((*(equalCopy + 76) & 2) == 0 || self->_fetchCntApWakes != *(equalCopy + 15))
     {
       goto LABEL_29;
     }
   }
 
-  else if ((*(v4 + 76) & 2) != 0)
+  else if ((*(equalCopy + 76) & 2) != 0)
   {
     goto LABEL_29;
   }
@@ -632,15 +632,15 @@ LABEL_12:
   return v7 ^ PBRepeatedUInt32Hash();
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 76);
+  fromCopy = from;
+  v5 = *(fromCopy + 76);
   if ((v5 & 0x10) != 0)
   {
-    self->_totalDbLifeSecs = *(v4 + 18);
+    self->_totalDbLifeSecs = *(fromCopy + 18);
     *&self->_has |= 0x10u;
-    v5 = *(v4 + 76);
+    v5 = *(fromCopy + 76);
     if ((v5 & 8) == 0)
     {
 LABEL_3:
@@ -653,14 +653,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 76) & 8) == 0)
+  else if ((*(fromCopy + 76) & 8) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_minLifeSecs = *(v4 + 17);
+  self->_minLifeSecs = *(fromCopy + 17);
   *&self->_has |= 8u;
-  v5 = *(v4 + 76);
+  v5 = *(fromCopy + 76);
   if ((v5 & 4) == 0)
   {
 LABEL_4:
@@ -673,9 +673,9 @@ LABEL_4:
   }
 
 LABEL_18:
-  self->_maxLifeSecs = *(v4 + 16);
+  self->_maxLifeSecs = *(fromCopy + 16);
   *&self->_has |= 4u;
-  v5 = *(v4 + 76);
+  v5 = *(fromCopy + 76);
   if ((v5 & 1) == 0)
   {
 LABEL_5:
@@ -688,31 +688,31 @@ LABEL_5:
   }
 
 LABEL_19:
-  self->_fetchCnt = *(v4 + 14);
+  self->_fetchCnt = *(fromCopy + 14);
   *&self->_has |= 1u;
-  if ((*(v4 + 76) & 2) != 0)
+  if ((*(fromCopy + 76) & 2) != 0)
   {
 LABEL_6:
-    self->_fetchCntApWakes = *(v4 + 15);
+    self->_fetchCntApWakes = *(fromCopy + 15);
     *&self->_has |= 2u;
   }
 
 LABEL_7:
-  v12 = v4;
-  v6 = [v4 fetchStateDurationSecsCount];
-  if (v6)
+  v12 = fromCopy;
+  fetchStateDurationSecsCount = [fromCopy fetchStateDurationSecsCount];
+  if (fetchStateDurationSecsCount)
   {
-    v7 = v6;
+    v7 = fetchStateDurationSecsCount;
     for (i = 0; i != v7; ++i)
     {
       -[BorderDbStat addFetchStateDurationSecs:](self, "addFetchStateDurationSecs:", [v12 fetchStateDurationSecsAtIndex:i]);
     }
   }
 
-  v9 = [v12 boundDurationSecsCount];
-  if (v9)
+  boundDurationSecsCount = [v12 boundDurationSecsCount];
+  if (boundDurationSecsCount)
   {
-    v10 = v9;
+    v10 = boundDurationSecsCount;
     for (j = 0; j != v10; ++j)
     {
       -[BorderDbStat addBoundDurationSecs:](self, "addBoundDurationSecs:", [v12 boundDurationSecsAtIndex:j]);

@@ -1,36 +1,36 @@
 @interface _INPBRetrieveParkingLocationIntent
-- (BOOL)isEqual:(id)a3;
-- (_INPBRetrieveParkingLocationIntent)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBRetrieveParkingLocationIntent)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (void)encodeWithCoder:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBRetrieveParkingLocationIntent
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(_INPBRetrieveParkingLocationIntent *)self intentMetadata];
-  v5 = [v4 dictionaryRepresentation];
-  [v3 setObject:v5 forKeyedSubscript:@"intentMetadata"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  intentMetadata = [(_INPBRetrieveParkingLocationIntent *)self intentMetadata];
+  dictionaryRepresentation = [intentMetadata dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"intentMetadata"];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(_INPBRetrieveParkingLocationIntent *)self intentMetadata];
-    v6 = [v4 intentMetadata];
-    v7 = v6;
-    if ((v5 != 0) != (v6 == 0))
+    intentMetadata = [(_INPBRetrieveParkingLocationIntent *)self intentMetadata];
+    intentMetadata2 = [equalCopy intentMetadata];
+    v7 = intentMetadata2;
+    if ((intentMetadata != 0) != (intentMetadata2 == 0))
     {
-      v8 = [(_INPBRetrieveParkingLocationIntent *)self intentMetadata];
-      if (!v8)
+      intentMetadata3 = [(_INPBRetrieveParkingLocationIntent *)self intentMetadata];
+      if (!intentMetadata3)
       {
 
 LABEL_10:
@@ -38,10 +38,10 @@ LABEL_10:
         goto LABEL_8;
       }
 
-      v9 = v8;
-      v10 = [(_INPBRetrieveParkingLocationIntent *)self intentMetadata];
-      v11 = [v4 intentMetadata];
-      v12 = [v10 isEqual:v11];
+      v9 = intentMetadata3;
+      intentMetadata4 = [(_INPBRetrieveParkingLocationIntent *)self intentMetadata];
+      intentMetadata5 = [equalCopy intentMetadata];
+      v12 = [intentMetadata4 isEqual:intentMetadata5];
 
       if (v12)
       {
@@ -60,47 +60,47 @@ LABEL_8:
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBRetrieveParkingLocationIntent allocWithZone:](_INPBRetrieveParkingLocationIntent init];
-  v6 = [(_INPBIntentMetadata *)self->_intentMetadata copyWithZone:a3];
+  v6 = [(_INPBIntentMetadata *)self->_intentMetadata copyWithZone:zone];
   [(_INPBRetrieveParkingLocationIntent *)v5 setIntentMetadata:v6];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBRetrieveParkingLocationIntent *)self data];
+  coderCopy = coder;
+  data = [(_INPBRetrieveParkingLocationIntent *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBRetrieveParkingLocationIntent)initWithCoder:(id)a3
+- (_INPBRetrieveParkingLocationIntent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBRetrieveParkingLocationIntent *)self initWithData:v6];
+    self = [(_INPBRetrieveParkingLocationIntent *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
-  v4 = [(_INPBRetrieveParkingLocationIntent *)self intentMetadata];
+  toCopy = to;
+  intentMetadata = [(_INPBRetrieveParkingLocationIntent *)self intentMetadata];
 
-  if (v4)
+  if (intentMetadata)
   {
-    v5 = [(_INPBRetrieveParkingLocationIntent *)self intentMetadata];
+    intentMetadata2 = [(_INPBRetrieveParkingLocationIntent *)self intentMetadata];
     PBDataWriterWriteSubmessage();
   }
 }

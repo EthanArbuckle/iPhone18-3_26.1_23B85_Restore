@@ -1,25 +1,25 @@
 @interface SCWWatchlistDefaults
-+ (SCWWatchlistDefaults)defaultsWithDefaultSymbols:(id)a3;
++ (SCWWatchlistDefaults)defaultsWithDefaultSymbols:(id)symbols;
 + (id)_iOS10DefaultsForCurrentCountry;
 + (id)_iOS7DefaultsForCurrentCountry;
 + (id)defaultsForCurrentCountry;
 + (id)defaultsHistoryForCurrentCountry;
 + (id)emptyDefaults;
-- (SCWWatchlistDefaults)initWithDefaultSymbols:(id)a3;
-- (id)defaultsByAppendingDefaults:(id)a3;
+- (SCWWatchlistDefaults)initWithDefaultSymbols:(id)symbols;
+- (id)defaultsByAppendingDefaults:(id)defaults;
 @end
 
 @implementation SCWWatchlistDefaults
 
-- (SCWWatchlistDefaults)initWithDefaultSymbols:(id)a3
+- (SCWWatchlistDefaults)initWithDefaultSymbols:(id)symbols
 {
-  v4 = a3;
+  symbolsCopy = symbols;
   v9.receiver = self;
   v9.super_class = SCWWatchlistDefaults;
   v5 = [(SCWWatchlistDefaults *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [symbolsCopy copy];
     defaultSymbols = v5->_defaultSymbols;
     v5->_defaultSymbols = v6;
   }
@@ -30,13 +30,13 @@
 + (id)defaultsForCurrentCountry
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF58] currentLocale];
-  v4 = [v3 objectForKey:*MEMORY[0x1E695D978]];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  v4 = [currentLocale objectForKey:*MEMORY[0x1E695D978]];
 
   if (v4)
   {
-    v5 = [a1 _defaultSymbolsByCountryCode];
-    v6 = [v5 objectForKeyedSubscript:v4];
+    _defaultSymbolsByCountryCode = [self _defaultSymbolsByCountryCode];
+    v6 = [_defaultSymbolsByCountryCode objectForKeyedSubscript:v4];
   }
 
   else
@@ -46,8 +46,8 @@
 
   if (![v6 count])
   {
-    v7 = [a1 _defaultSymbolsByCountryCode];
-    v8 = [v7 objectForKeyedSubscript:@"US"];
+    _defaultSymbolsByCountryCode2 = [self _defaultSymbolsByCountryCode];
+    v8 = [_defaultSymbolsByCountryCode2 objectForKeyedSubscript:@"US"];
 
     v6 = v8;
   }
@@ -80,10 +80,10 @@
   return v12;
 }
 
-+ (SCWWatchlistDefaults)defaultsWithDefaultSymbols:(id)a3
++ (SCWWatchlistDefaults)defaultsWithDefaultSymbols:(id)symbols
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithDefaultSymbols:v3];
+  symbolsCopy = symbols;
+  v4 = [objc_alloc(objc_opt_class()) initWithDefaultSymbols:symbolsCopy];
 
   return v4;
 }
@@ -98,17 +98,17 @@
 + (id)defaultsHistoryForCurrentCountry
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [a1 defaultsForCurrentCountry];
-  v5 = [a1 _iOS10DefaultsForCurrentCountry];
-  v6 = [a1 _iOS7DefaultsForCurrentCountry];
+  array = [MEMORY[0x1E695DF70] array];
+  defaultsForCurrentCountry = [self defaultsForCurrentCountry];
+  _iOS10DefaultsForCurrentCountry = [self _iOS10DefaultsForCurrentCountry];
+  _iOS7DefaultsForCurrentCountry = [self _iOS7DefaultsForCurrentCountry];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v18[0] = v4;
-  v18[1] = v5;
-  v18[2] = v6;
+  v18[0] = defaultsForCurrentCountry;
+  v18[1] = _iOS10DefaultsForCurrentCountry;
+  v18[2] = _iOS7DefaultsForCurrentCountry;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:{3, 0}];
   v8 = [v7 countByEnumeratingWithState:&v14 objects:v19 count:16];
   if (v8)
@@ -124,7 +124,7 @@
           objc_enumerationMutation(v7);
         }
 
-        [v3 addObject:*(*(&v14 + 1) + 8 * i)];
+        [array addObject:*(*(&v14 + 1) + 8 * i)];
       }
 
       v9 = [v7 countByEnumeratingWithState:&v14 objects:v19 count:16];
@@ -135,63 +135,63 @@
 
   v12 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return array;
 }
 
-- (id)defaultsByAppendingDefaults:(id)a3
+- (id)defaultsByAppendingDefaults:(id)defaults
 {
   v4 = MEMORY[0x1E695DFA0];
-  v5 = a3;
-  v6 = [v4 orderedSet];
-  v7 = [(SCWWatchlistDefaults *)self defaultSymbols];
-  [v6 addObjectsFromArray:v7];
+  defaultsCopy = defaults;
+  orderedSet = [v4 orderedSet];
+  defaultSymbols = [(SCWWatchlistDefaults *)self defaultSymbols];
+  [orderedSet addObjectsFromArray:defaultSymbols];
 
-  v8 = [v5 defaultSymbols];
+  defaultSymbols2 = [defaultsCopy defaultSymbols];
 
-  [v6 addObjectsFromArray:v8];
+  [orderedSet addObjectsFromArray:defaultSymbols2];
   v9 = objc_alloc(objc_opt_class());
-  v10 = [v6 array];
-  v11 = [v9 initWithDefaultSymbols:v10];
+  array = [orderedSet array];
+  v11 = [v9 initWithDefaultSymbols:array];
 
   return v11;
 }
 
 + (id)_iOS10DefaultsForCurrentCountry
 {
-  v3 = [MEMORY[0x1E695DFA0] orderedSet];
-  v4 = [MEMORY[0x1E695DF58] currentLocale];
-  v5 = [v4 objectForKey:*MEMORY[0x1E695D978]];
+  orderedSet = [MEMORY[0x1E695DFA0] orderedSet];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  v5 = [currentLocale objectForKey:*MEMORY[0x1E695D978]];
 
   if (v5)
   {
-    v6 = [a1 _legacyDefaultSymbolsByCountryCode];
-    v7 = [v6 objectForKeyedSubscript:v5];
+    _legacyDefaultSymbolsByCountryCode = [self _legacyDefaultSymbolsByCountryCode];
+    v7 = [_legacyDefaultSymbolsByCountryCode objectForKeyedSubscript:v5];
 
-    [v3 addObjectsFromArray:v7];
+    [orderedSet addObjectsFromArray:v7];
   }
 
-  [v3 addObject:@"^DJI"];
-  [v3 addObject:@"AAPL"];
-  [v3 addObject:@"SBUX"];
-  [v3 addObject:@"NKE"];
-  [v3 addObject:@"YHOO"];
+  [orderedSet addObject:@"^DJI"];
+  [orderedSet addObject:@"AAPL"];
+  [orderedSet addObject:@"SBUX"];
+  [orderedSet addObject:@"NKE"];
+  [orderedSet addObject:@"YHOO"];
   v8 = objc_alloc(objc_opt_class());
-  v9 = [v3 array];
-  v10 = [v8 initWithDefaultSymbols:v9];
+  array = [orderedSet array];
+  v10 = [v8 initWithDefaultSymbols:array];
 
   return v10;
 }
 
 + (id)_iOS7DefaultsForCurrentCountry
 {
-  v3 = [MEMORY[0x1E695DFA0] orderedSet];
-  v4 = [MEMORY[0x1E695DF58] currentLocale];
-  v5 = [v4 objectForKey:*MEMORY[0x1E695D978]];
+  orderedSet = [MEMORY[0x1E695DFA0] orderedSet];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  v5 = [currentLocale objectForKey:*MEMORY[0x1E695D978]];
 
   if (v5)
   {
-    v6 = [a1 _legacyDefaultSymbolsByCountryCode];
-    v7 = [v6 objectForKeyedSubscript:v5];
+    _legacyDefaultSymbolsByCountryCode = [self _legacyDefaultSymbolsByCountryCode];
+    v7 = [_legacyDefaultSymbolsByCountryCode objectForKeyedSubscript:v5];
 
     if ([v5 isEqualToString:@"US"])
     {
@@ -199,20 +199,20 @@
       v7 = &unk_1F56A8FA0;
     }
 
-    [v3 addObjectsFromArray:v7];
+    [orderedSet addObjectsFromArray:v7];
   }
 
-  [v3 addObject:@"AAPL"];
-  [v3 addObject:@"GOOG"];
-  [v3 addObject:@"YHOO"];
-  [v3 addObject:@"^DJI"];
-  [v3 addObject:@"^FTSE"];
-  [v3 addObject:@"^GDAXI"];
-  [v3 addObject:@"^HSI"];
-  [v3 addObject:@"^N225"];
+  [orderedSet addObject:@"AAPL"];
+  [orderedSet addObject:@"GOOG"];
+  [orderedSet addObject:@"YHOO"];
+  [orderedSet addObject:@"^DJI"];
+  [orderedSet addObject:@"^FTSE"];
+  [orderedSet addObject:@"^GDAXI"];
+  [orderedSet addObject:@"^HSI"];
+  [orderedSet addObject:@"^N225"];
   v8 = objc_alloc(objc_opt_class());
-  v9 = [v3 array];
-  v10 = [v8 initWithDefaultSymbols:v9];
+  array = [orderedSet array];
+  v10 = [v8 initWithDefaultSymbols:array];
 
   return v10;
 }

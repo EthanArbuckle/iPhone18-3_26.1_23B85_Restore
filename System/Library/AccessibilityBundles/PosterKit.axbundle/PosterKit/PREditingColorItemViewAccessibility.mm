@@ -1,17 +1,17 @@
 @interface PREditingColorItemViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityValue;
 @end
 
 @implementation PREditingColorItemViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PREditingColorItemView" hasInstanceMethod:@"colorItem" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PREditingColorItemView" hasInstanceMethod:@"localizedName" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PREditingColorItem" hasInstanceMethod:@"displayColor" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PRPosterColor" hasInstanceMethod:@"color" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PREditingColorItemView" hasInstanceMethod:@"colorItem" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PREditingColorItemView" hasInstanceMethod:@"localizedName" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PREditingColorItem" hasInstanceMethod:@"displayColor" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PRPosterColor" hasInstanceMethod:@"color" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityValue
@@ -28,17 +28,17 @@
     v6 = [(PREditingColorItemViewAccessibility *)self safeValueForKeyPath:@"colorItem.displayColor.color"];
     if (v6)
     {
-      v7 = AXColorStringForColor();
+      accessibilityValue = AXColorStringForColor();
     }
 
     else
     {
       v9.receiver = self;
       v9.super_class = PREditingColorItemViewAccessibility;
-      v7 = [(PREditingColorItemViewAccessibility *)&v9 accessibilityValue];
+      accessibilityValue = [(PREditingColorItemViewAccessibility *)&v9 accessibilityValue];
     }
 
-    v5 = v7;
+    v5 = accessibilityValue;
   }
 
   return v5;

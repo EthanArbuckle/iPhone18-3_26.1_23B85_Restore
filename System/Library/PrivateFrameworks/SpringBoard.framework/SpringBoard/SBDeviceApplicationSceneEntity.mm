@@ -1,25 +1,25 @@
 @interface SBDeviceApplicationSceneEntity
-+ (SBDeviceApplicationSceneEntity)entityWithApplication:(id)a3 scenePersistenceIdentifier:(id)a4 sceneHandleProvider:(id)a5 displayIdentity:(id)a6;
-+ (SBDeviceApplicationSceneEntity)entityWithApplicationForMainDisplay:(id)a3 withScenePersistenceIdentifier:(id)a4;
-+ (id)defaultEntityWithApplication:(id)a3 targetContentIdentifier:(id)a4 sceneHandleProvider:(id)a5 displayIdentity:(id)a6;
-+ (id)defaultEntityWithApplicationForMainDisplay:(id)a3;
-+ (id)defaultEntityWithApplicationForMainDisplay:(id)a3 targetContentIdentifier:(id)a4;
-+ (id)newEntityWithApplication:(id)a3 sceneHandleProvider:(id)a4 displayIdentity:(id)a5;
-+ (id)newEntityWithApplicationForMainDisplay:(id)a3;
++ (SBDeviceApplicationSceneEntity)entityWithApplication:(id)application scenePersistenceIdentifier:(id)identifier sceneHandleProvider:(id)provider displayIdentity:(id)identity;
++ (SBDeviceApplicationSceneEntity)entityWithApplicationForMainDisplay:(id)display withScenePersistenceIdentifier:(id)identifier;
++ (id)defaultEntityWithApplication:(id)application targetContentIdentifier:(id)identifier sceneHandleProvider:(id)provider displayIdentity:(id)identity;
++ (id)defaultEntityWithApplicationForMainDisplay:(id)display;
++ (id)defaultEntityWithApplicationForMainDisplay:(id)display targetContentIdentifier:(id)identifier;
++ (id)newEntityWithApplication:(id)application sceneHandleProvider:(id)provider displayIdentity:(id)identity;
++ (id)newEntityWithApplicationForMainDisplay:(id)display;
 - (BOOL)supportsPresentationAtAnySize;
 - (BOOL)supportsSplitView;
 - (BOOL)wantsExclusiveForeground;
-- (SBDeviceApplicationSceneEntity)initWithApplication:(id)a3 generatingNewPrimarySceneIfRequired:(BOOL)a4 sceneHandleProvider:(id)a5 displayIdentity:(id)a6;
-- (SBDeviceApplicationSceneEntity)initWithApplication:(id)a3 generatingNewSceneIfRequiredWithSpecification:(id)a4 sceneHandleProvider:(id)a5 displayIdentity:(id)a6;
-- (SBDeviceApplicationSceneEntity)initWithApplication:(id)a3 uniqueIdentifier:(id)a4 sceneHandleProvider:(id)a5 displayIdentity:(id)a6;
-- (SBDeviceApplicationSceneEntity)initWithApplication:(id)a3 uniqueIdentifier:(id)a4 targetContentIdentifier:(id)a5 sceneHandleProvider:(id)a6 displayIdentity:(id)a7;
-- (SBDeviceApplicationSceneEntity)initWithApplicationForMainDisplay:(id)a3;
-- (SBDeviceApplicationSceneEntity)initWithApplicationForMainDisplay:(id)a3 generatingNewPrimarySceneIfRequired:(BOOL)a4;
-- (SBDeviceApplicationSceneEntity)initWithApplicationForMainDisplay:(id)a3 generatingNewSceneIfRequiredWithSpecification:(id)a4;
-- (SBDeviceApplicationSceneEntity)initWithApplicationForMainDisplay:(id)a3 targetContentIdentifier:(id)a4;
-- (SBDeviceApplicationSceneEntity)initWithApplicationForMainDisplay:(id)a3 uniqueIdentifier:(id)a4;
-- (SBDeviceApplicationSceneEntity)initWithApplicationForMainSecureDisplay:(id)a3;
-- (SBDeviceApplicationSceneEntity)initWithApplicationSceneHandle:(id)a3;
+- (SBDeviceApplicationSceneEntity)initWithApplication:(id)application generatingNewPrimarySceneIfRequired:(BOOL)required sceneHandleProvider:(id)provider displayIdentity:(id)identity;
+- (SBDeviceApplicationSceneEntity)initWithApplication:(id)application generatingNewSceneIfRequiredWithSpecification:(id)specification sceneHandleProvider:(id)provider displayIdentity:(id)identity;
+- (SBDeviceApplicationSceneEntity)initWithApplication:(id)application uniqueIdentifier:(id)identifier sceneHandleProvider:(id)provider displayIdentity:(id)identity;
+- (SBDeviceApplicationSceneEntity)initWithApplication:(id)application uniqueIdentifier:(id)identifier targetContentIdentifier:(id)contentIdentifier sceneHandleProvider:(id)provider displayIdentity:(id)identity;
+- (SBDeviceApplicationSceneEntity)initWithApplicationForMainDisplay:(id)display;
+- (SBDeviceApplicationSceneEntity)initWithApplicationForMainDisplay:(id)display generatingNewPrimarySceneIfRequired:(BOOL)required;
+- (SBDeviceApplicationSceneEntity)initWithApplicationForMainDisplay:(id)display generatingNewSceneIfRequiredWithSpecification:(id)specification;
+- (SBDeviceApplicationSceneEntity)initWithApplicationForMainDisplay:(id)display targetContentIdentifier:(id)identifier;
+- (SBDeviceApplicationSceneEntity)initWithApplicationForMainDisplay:(id)display uniqueIdentifier:(id)identifier;
+- (SBDeviceApplicationSceneEntity)initWithApplicationForMainSecureDisplay:(id)display;
+- (SBDeviceApplicationSceneEntity)initWithApplicationSceneHandle:(id)handle;
 - (id)supportedLayoutRoles;
 @end
 
@@ -27,14 +27,14 @@
 
 - (BOOL)supportsSplitView
 {
-  v3 = [(SBApplicationSceneEntity *)self sceneHandle];
-  v4 = [v3 _windowScene];
-  v5 = [v4 switcherController];
+  sceneHandle = [(SBApplicationSceneEntity *)self sceneHandle];
+  _windowScene = [sceneHandle _windowScene];
+  switcherController = [_windowScene switcherController];
 
-  v6 = [(SBApplicationSceneEntity *)self application];
-  v7 = [v5 windowManagementContext];
-  v8 = [v5 displayIdentity];
-  v9 = [v6 supportsMultiWindowLayoutsForSwitcherWindowManagementContext:v7 displayIdentity:v8];
+  application = [(SBApplicationSceneEntity *)self application];
+  windowManagementContext = [switcherController windowManagementContext];
+  displayIdentity = [switcherController displayIdentity];
+  v9 = [application supportsMultiWindowLayoutsForSwitcherWindowManagementContext:windowManagementContext displayIdentity:displayIdentity];
 
   return v9;
 }
@@ -43,62 +43,62 @@
 {
   if ([(SBDeviceApplicationSceneEntity *)self supportsPresentationAtAnySize])
   {
-    v3 = SBLayoutRoleSetAppAndFloatingLayout();
+    supportedLayoutRoles = SBLayoutRoleSetAppAndFloatingLayout();
   }
 
   else if ([(SBDeviceApplicationSceneEntity *)self supportsSplitView])
   {
-    v3 = SBLayoutRoleSetForRole2(1, 2);
+    supportedLayoutRoles = SBLayoutRoleSetForRole2(1, 2);
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = SBDeviceApplicationSceneEntity;
-    v3 = [(SBApplicationSceneEntity *)&v5 supportedLayoutRoles];
+    supportedLayoutRoles = [(SBApplicationSceneEntity *)&v5 supportedLayoutRoles];
   }
 
-  return v3;
+  return supportedLayoutRoles;
 }
 
 - (BOOL)supportsPresentationAtAnySize
 {
-  v2 = [(SBApplicationSceneEntity *)self application];
-  v3 = [v2 isMedusaCapable];
+  application = [(SBApplicationSceneEntity *)self application];
+  isMedusaCapable = [application isMedusaCapable];
 
-  return v3;
+  return isMedusaCapable;
 }
 
 - (BOOL)wantsExclusiveForeground
 {
-  v2 = [(SBApplicationSceneEntity *)self application];
-  v3 = [v2 info];
-  v4 = [v3 wantsExclusiveForeground];
+  application = [(SBApplicationSceneEntity *)self application];
+  info = [application info];
+  wantsExclusiveForeground = [info wantsExclusiveForeground];
 
-  return v4;
+  return wantsExclusiveForeground;
 }
 
-+ (id)defaultEntityWithApplication:(id)a3 targetContentIdentifier:(id)a4 sceneHandleProvider:(id)a5 displayIdentity:(id)a6
++ (id)defaultEntityWithApplication:(id)application targetContentIdentifier:(id)identifier sceneHandleProvider:(id)provider displayIdentity:(id)identity
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [[a1 alloc] initWithApplication:v13 targetContentIdentifier:v12 sceneHandleProvider:v11 displayIdentity:v10];
+  identityCopy = identity;
+  providerCopy = provider;
+  identifierCopy = identifier;
+  applicationCopy = application;
+  v14 = [[self alloc] initWithApplication:applicationCopy targetContentIdentifier:identifierCopy sceneHandleProvider:providerCopy displayIdentity:identityCopy];
 
   return v14;
 }
 
-+ (SBDeviceApplicationSceneEntity)entityWithApplication:(id)a3 scenePersistenceIdentifier:(id)a4 sceneHandleProvider:(id)a5 displayIdentity:(id)a6
++ (SBDeviceApplicationSceneEntity)entityWithApplication:(id)application scenePersistenceIdentifier:(id)identifier sceneHandleProvider:(id)provider displayIdentity:(id)identity
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  if (a4)
+  applicationCopy = application;
+  providerCopy = provider;
+  identityCopy = identity;
+  if (identifier)
   {
-    v13 = a4;
+    identifierCopy = identifier;
     v14 = objc_opt_class();
-    v15 = v11;
+    v15 = providerCopy;
     if (v14)
     {
       if (objc_opt_isKindOfClass())
@@ -119,120 +119,120 @@
 
     v17 = v16;
 
-    v18 = [v17 existingSceneHandleForPersistenceIdentifier:v13];
+    v18 = [v17 existingSceneHandleForPersistenceIdentifier:identifierCopy];
 
-    a4 = [v18 sceneIdentifier];
+    identifier = [v18 sceneIdentifier];
   }
 
-  v19 = [[a1 alloc] initWithApplication:v10 uniqueIdentifier:a4 sceneHandleProvider:v11 displayIdentity:v12];
+  v19 = [[self alloc] initWithApplication:applicationCopy uniqueIdentifier:identifier sceneHandleProvider:providerCopy displayIdentity:identityCopy];
 
   return v19;
 }
 
-+ (id)newEntityWithApplication:(id)a3 sceneHandleProvider:(id)a4 displayIdentity:(id)a5
++ (id)newEntityWithApplication:(id)application sceneHandleProvider:(id)provider displayIdentity:(id)identity
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v9 newSceneIdentityForApplication:v10];
-  v12 = [a1 alloc];
-  v13 = [v11 identifier];
-  v14 = [v12 initWithApplication:v10 uniqueIdentifier:v13 targetContentIdentifier:0 sceneHandleProvider:v9 displayIdentity:v8];
+  identityCopy = identity;
+  providerCopy = provider;
+  applicationCopy = application;
+  v11 = [providerCopy newSceneIdentityForApplication:applicationCopy];
+  v12 = [self alloc];
+  identifier = [v11 identifier];
+  v14 = [v12 initWithApplication:applicationCopy uniqueIdentifier:identifier targetContentIdentifier:0 sceneHandleProvider:providerCopy displayIdentity:identityCopy];
 
   return v14;
 }
 
-- (SBDeviceApplicationSceneEntity)initWithApplication:(id)a3 generatingNewPrimarySceneIfRequired:(BOOL)a4 sceneHandleProvider:(id)a5 displayIdentity:(id)a6
+- (SBDeviceApplicationSceneEntity)initWithApplication:(id)application generatingNewPrimarySceneIfRequired:(BOOL)required sceneHandleProvider:(id)provider displayIdentity:(id)identity
 {
-  v7 = a4;
-  v10 = a6;
-  v11 = a5;
-  v12 = a3;
-  v13 = [SBApplicationSceneHandleRequest defaultSceneSpecificationForDisplayIdentity:v10];
-  v14 = [v13 uiSceneSessionRole];
-  v15 = [v11 sceneIdentityForApplication:v12 createPrimaryIfRequired:v7 sceneSessionRole:v14];
+  requiredCopy = required;
+  identityCopy = identity;
+  providerCopy = provider;
+  applicationCopy = application;
+  v13 = [SBApplicationSceneHandleRequest defaultSceneSpecificationForDisplayIdentity:identityCopy];
+  uiSceneSessionRole = [v13 uiSceneSessionRole];
+  v15 = [providerCopy sceneIdentityForApplication:applicationCopy createPrimaryIfRequired:requiredCopy sceneSessionRole:uiSceneSessionRole];
 
   v16 = objc_alloc_init(MEMORY[0x277D0AD48]);
   [v16 setIdentity:v15];
   v17 = MEMORY[0x277D0ADA8];
-  v18 = [v12 info];
-  v19 = [v18 processIdentity];
-  v20 = [v17 identityForProcessIdentity:v19];
+  info = [applicationCopy info];
+  processIdentity = [info processIdentity];
+  v20 = [v17 identityForProcessIdentity:processIdentity];
   [v16 setClientIdentity:v20];
 
   [v16 setSpecification:v13];
-  v21 = [[SBApplicationSceneHandleRequest alloc] initWithApplication:v12 sceneDefinition:v16 displayIdentity:v10];
+  v21 = [[SBApplicationSceneHandleRequest alloc] initWithApplication:applicationCopy sceneDefinition:v16 displayIdentity:identityCopy];
 
-  v22 = [v11 fetchOrCreateApplicationSceneHandleForRequest:v21];
+  v22 = [providerCopy fetchOrCreateApplicationSceneHandleForRequest:v21];
 
   v23 = [(SBDeviceApplicationSceneEntity *)self initWithApplicationSceneHandle:v22];
   return v23;
 }
 
-- (SBDeviceApplicationSceneEntity)initWithApplication:(id)a3 generatingNewSceneIfRequiredWithSpecification:(id)a4 sceneHandleProvider:(id)a5 displayIdentity:(id)a6
+- (SBDeviceApplicationSceneEntity)initWithApplication:(id)application generatingNewSceneIfRequiredWithSpecification:(id)specification sceneHandleProvider:(id)provider displayIdentity:(id)identity
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [v12 uiSceneSessionRole];
-  v15 = [v11 sceneIdentityForApplication:v13 createPrimaryIfRequired:1 sceneSessionRole:v14];
+  identityCopy = identity;
+  providerCopy = provider;
+  specificationCopy = specification;
+  applicationCopy = application;
+  uiSceneSessionRole = [specificationCopy uiSceneSessionRole];
+  v15 = [providerCopy sceneIdentityForApplication:applicationCopy createPrimaryIfRequired:1 sceneSessionRole:uiSceneSessionRole];
 
   v16 = objc_alloc_init(MEMORY[0x277D0AD48]);
   [v16 setIdentity:v15];
   v17 = MEMORY[0x277D0ADA8];
-  v18 = [v13 info];
-  v19 = [v18 processIdentity];
-  v20 = [v17 identityForProcessIdentity:v19];
+  info = [applicationCopy info];
+  processIdentity = [info processIdentity];
+  v20 = [v17 identityForProcessIdentity:processIdentity];
   [v16 setClientIdentity:v20];
 
-  [v16 setSpecification:v12];
-  v21 = [[SBApplicationSceneHandleRequest alloc] initWithApplication:v13 sceneDefinition:v16 displayIdentity:v10];
+  [v16 setSpecification:specificationCopy];
+  v21 = [[SBApplicationSceneHandleRequest alloc] initWithApplication:applicationCopy sceneDefinition:v16 displayIdentity:identityCopy];
 
-  v22 = [v11 fetchOrCreateApplicationSceneHandleForRequest:v21];
+  v22 = [providerCopy fetchOrCreateApplicationSceneHandleForRequest:v21];
 
   v23 = [(SBDeviceApplicationSceneEntity *)self initWithApplicationSceneHandle:v22];
   return v23;
 }
 
-- (SBDeviceApplicationSceneEntity)initWithApplication:(id)a3 uniqueIdentifier:(id)a4 sceneHandleProvider:(id)a5 displayIdentity:(id)a6
+- (SBDeviceApplicationSceneEntity)initWithApplication:(id)application uniqueIdentifier:(id)identifier sceneHandleProvider:(id)provider displayIdentity:(id)identity
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [v10 info];
-  v15 = [v14 supportsMultiwindow];
+  applicationCopy = application;
+  identifierCopy = identifier;
+  providerCopy = provider;
+  identityCopy = identity;
+  info = [applicationCopy info];
+  supportsMultiwindow = [info supportsMultiwindow];
 
-  if ((v15 & 1) == 0)
+  if ((supportsMultiwindow & 1) == 0)
   {
 
-    v11 = 0;
+    identifierCopy = 0;
   }
 
-  v16 = [(SBDeviceApplicationSceneEntity *)self initWithApplication:v10 uniqueIdentifier:v11 targetContentIdentifier:0 sceneHandleProvider:v12 displayIdentity:v13];
+  v16 = [(SBDeviceApplicationSceneEntity *)self initWithApplication:applicationCopy uniqueIdentifier:identifierCopy targetContentIdentifier:0 sceneHandleProvider:providerCopy displayIdentity:identityCopy];
 
   return v16;
 }
 
-- (SBDeviceApplicationSceneEntity)initWithApplication:(id)a3 uniqueIdentifier:(id)a4 targetContentIdentifier:(id)a5 sceneHandleProvider:(id)a6 displayIdentity:(id)a7
+- (SBDeviceApplicationSceneEntity)initWithApplication:(id)application uniqueIdentifier:(id)identifier targetContentIdentifier:(id)contentIdentifier sceneHandleProvider:(id)provider displayIdentity:(id)identity
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  if (v13)
+  applicationCopy = application;
+  identifierCopy = identifier;
+  contentIdentifierCopy = contentIdentifier;
+  providerCopy = provider;
+  identityCopy = identity;
+  if (applicationCopy)
   {
-    if (!v16)
+    if (!providerCopy)
     {
       [SBDeviceApplicationSceneEntity initWithApplication:a2 uniqueIdentifier:self targetContentIdentifier:? sceneHandleProvider:? displayIdentity:?];
     }
 
-    v18 = [v13 info];
-    if ([v18 supportsMultiwindow])
+    info = [applicationCopy info];
+    if ([info supportsMultiwindow])
     {
-      v19 = v14;
+      v19 = identifierCopy;
     }
 
     else
@@ -242,149 +242,149 @@
 
     v20 = v19;
 
-    v21 = [v16 sceneIdentityForApplication:v13 uniqueIdentifier:v20 targetContentIdentifier:v15];
-    v22 = [SBApplicationSceneHandleRequest defaultRequestForApplication:v13 sceneIdentity:v21 displayIdentity:v17];
+    v21 = [providerCopy sceneIdentityForApplication:applicationCopy uniqueIdentifier:v20 targetContentIdentifier:contentIdentifierCopy];
+    v22 = [SBApplicationSceneHandleRequest defaultRequestForApplication:applicationCopy sceneIdentity:v21 displayIdentity:identityCopy];
 
-    v23 = [v16 fetchOrCreateApplicationSceneHandleForRequest:v22];
+    v23 = [providerCopy fetchOrCreateApplicationSceneHandleForRequest:v22];
     self = [(SBDeviceApplicationSceneEntity *)self initWithApplicationSceneHandle:v23];
 
-    v14 = v20;
-    v24 = self;
+    identifierCopy = v20;
+    selfCopy = self;
   }
 
   else
   {
-    v24 = 0;
+    selfCopy = 0;
   }
 
-  return v24;
+  return selfCopy;
 }
 
-- (SBDeviceApplicationSceneEntity)initWithApplicationSceneHandle:(id)a3
+- (SBDeviceApplicationSceneEntity)initWithApplicationSceneHandle:(id)handle
 {
-  v5 = a3;
-  if (v5)
+  handleCopy = handle;
+  if (handleCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      [(SBDeviceApplicationSceneEntity *)v5 initWithApplicationSceneHandle:a2, self];
+      [(SBDeviceApplicationSceneEntity *)handleCopy initWithApplicationSceneHandle:a2, self];
     }
 
-    self = [(SBApplicationSceneEntity *)self _initWithSceneHandle:v5];
-    v6 = self;
+    self = [(SBApplicationSceneEntity *)self _initWithSceneHandle:handleCopy];
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-+ (id)defaultEntityWithApplicationForMainDisplay:(id)a3
++ (id)defaultEntityWithApplicationForMainDisplay:(id)display
 {
-  v4 = a3;
+  displayCopy = display;
   v5 = +[SBSceneManagerCoordinator mainDisplaySceneManager];
-  v6 = [v5 displayIdentity];
-  v7 = [a1 defaultEntityWithApplication:v4 sceneHandleProvider:v5 displayIdentity:v6];
+  displayIdentity = [v5 displayIdentity];
+  v7 = [self defaultEntityWithApplication:displayCopy sceneHandleProvider:v5 displayIdentity:displayIdentity];
 
   return v7;
 }
 
-+ (id)defaultEntityWithApplicationForMainDisplay:(id)a3 targetContentIdentifier:(id)a4
++ (id)defaultEntityWithApplicationForMainDisplay:(id)display targetContentIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = a3;
+  identifierCopy = identifier;
+  displayCopy = display;
   v8 = +[SBSceneManagerCoordinator mainDisplaySceneManager];
-  v9 = [v8 displayIdentity];
-  v10 = [a1 defaultEntityWithApplication:v7 targetContentIdentifier:v6 sceneHandleProvider:v8 displayIdentity:v9];
+  displayIdentity = [v8 displayIdentity];
+  v10 = [self defaultEntityWithApplication:displayCopy targetContentIdentifier:identifierCopy sceneHandleProvider:v8 displayIdentity:displayIdentity];
 
   return v10;
 }
 
-+ (SBDeviceApplicationSceneEntity)entityWithApplicationForMainDisplay:(id)a3 withScenePersistenceIdentifier:(id)a4
++ (SBDeviceApplicationSceneEntity)entityWithApplicationForMainDisplay:(id)display withScenePersistenceIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = a3;
+  identifierCopy = identifier;
+  displayCopy = display;
   v8 = +[SBSceneManagerCoordinator mainDisplaySceneManager];
-  v9 = [v8 displayIdentity];
-  v10 = [a1 entityWithApplication:v7 scenePersistenceIdentifier:v6 sceneHandleProvider:v8 displayIdentity:v9];
+  displayIdentity = [v8 displayIdentity];
+  v10 = [self entityWithApplication:displayCopy scenePersistenceIdentifier:identifierCopy sceneHandleProvider:v8 displayIdentity:displayIdentity];
 
   return v10;
 }
 
-+ (id)newEntityWithApplicationForMainDisplay:(id)a3
++ (id)newEntityWithApplicationForMainDisplay:(id)display
 {
-  v4 = a3;
+  displayCopy = display;
   v5 = +[SBSceneManagerCoordinator mainDisplaySceneManager];
-  v6 = [v5 displayIdentity];
-  v7 = [a1 newEntityWithApplication:v4 sceneHandleProvider:v5 displayIdentity:v6];
+  displayIdentity = [v5 displayIdentity];
+  v7 = [self newEntityWithApplication:displayCopy sceneHandleProvider:v5 displayIdentity:displayIdentity];
 
   return v7;
 }
 
-- (SBDeviceApplicationSceneEntity)initWithApplicationForMainDisplay:(id)a3
+- (SBDeviceApplicationSceneEntity)initWithApplicationForMainDisplay:(id)display
 {
-  v4 = a3;
+  displayCopy = display;
   v5 = +[SBSceneManagerCoordinator mainDisplaySceneManager];
-  v6 = [v5 displayIdentity];
-  v7 = [(SBDeviceApplicationSceneEntity *)self initWithApplication:v4 sceneHandleProvider:v5 displayIdentity:v6];
+  displayIdentity = [v5 displayIdentity];
+  v7 = [(SBDeviceApplicationSceneEntity *)self initWithApplication:displayCopy sceneHandleProvider:v5 displayIdentity:displayIdentity];
 
   return v7;
 }
 
-- (SBDeviceApplicationSceneEntity)initWithApplicationForMainDisplay:(id)a3 generatingNewPrimarySceneIfRequired:(BOOL)a4
+- (SBDeviceApplicationSceneEntity)initWithApplicationForMainDisplay:(id)display generatingNewPrimarySceneIfRequired:(BOOL)required
 {
-  v4 = a4;
-  v6 = a3;
+  requiredCopy = required;
+  displayCopy = display;
   v7 = +[SBSceneManagerCoordinator mainDisplaySceneManager];
-  v8 = [v7 displayIdentity];
-  v9 = [(SBDeviceApplicationSceneEntity *)self initWithApplication:v6 generatingNewPrimarySceneIfRequired:v4 sceneHandleProvider:v7 displayIdentity:v8];
+  displayIdentity = [v7 displayIdentity];
+  v9 = [(SBDeviceApplicationSceneEntity *)self initWithApplication:displayCopy generatingNewPrimarySceneIfRequired:requiredCopy sceneHandleProvider:v7 displayIdentity:displayIdentity];
 
   return v9;
 }
 
-- (SBDeviceApplicationSceneEntity)initWithApplicationForMainDisplay:(id)a3 generatingNewSceneIfRequiredWithSpecification:(id)a4
+- (SBDeviceApplicationSceneEntity)initWithApplicationForMainDisplay:(id)display generatingNewSceneIfRequiredWithSpecification:(id)specification
 {
-  v6 = a4;
-  v7 = a3;
+  specificationCopy = specification;
+  displayCopy = display;
   v8 = +[SBSceneManagerCoordinator mainDisplaySceneManager];
-  v9 = [v8 displayIdentity];
-  v10 = [(SBDeviceApplicationSceneEntity *)self initWithApplication:v7 generatingNewSceneIfRequiredWithSpecification:v6 sceneHandleProvider:v8 displayIdentity:v9];
+  displayIdentity = [v8 displayIdentity];
+  v10 = [(SBDeviceApplicationSceneEntity *)self initWithApplication:displayCopy generatingNewSceneIfRequiredWithSpecification:specificationCopy sceneHandleProvider:v8 displayIdentity:displayIdentity];
 
   return v10;
 }
 
-- (SBDeviceApplicationSceneEntity)initWithApplicationForMainDisplay:(id)a3 targetContentIdentifier:(id)a4
+- (SBDeviceApplicationSceneEntity)initWithApplicationForMainDisplay:(id)display targetContentIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = a3;
+  identifierCopy = identifier;
+  displayCopy = display;
   v8 = +[SBSceneManagerCoordinator mainDisplaySceneManager];
-  v9 = [v8 displayIdentity];
-  v10 = [(SBDeviceApplicationSceneEntity *)self initWithApplication:v7 targetContentIdentifier:v6 sceneHandleProvider:v8 displayIdentity:v9];
+  displayIdentity = [v8 displayIdentity];
+  v10 = [(SBDeviceApplicationSceneEntity *)self initWithApplication:displayCopy targetContentIdentifier:identifierCopy sceneHandleProvider:v8 displayIdentity:displayIdentity];
 
   return v10;
 }
 
-- (SBDeviceApplicationSceneEntity)initWithApplicationForMainDisplay:(id)a3 uniqueIdentifier:(id)a4
+- (SBDeviceApplicationSceneEntity)initWithApplicationForMainDisplay:(id)display uniqueIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = a3;
+  identifierCopy = identifier;
+  displayCopy = display;
   v8 = +[SBSceneManagerCoordinator mainDisplaySceneManager];
-  v9 = [v8 displayIdentity];
-  v10 = [(SBDeviceApplicationSceneEntity *)self initWithApplication:v7 uniqueIdentifier:v6 sceneHandleProvider:v8 displayIdentity:v9];
+  displayIdentity = [v8 displayIdentity];
+  v10 = [(SBDeviceApplicationSceneEntity *)self initWithApplication:displayCopy uniqueIdentifier:identifierCopy sceneHandleProvider:v8 displayIdentity:displayIdentity];
 
   return v10;
 }
 
-- (SBDeviceApplicationSceneEntity)initWithApplicationForMainSecureDisplay:(id)a3
+- (SBDeviceApplicationSceneEntity)initWithApplicationForMainSecureDisplay:(id)display
 {
-  v4 = a3;
+  displayCopy = display;
   v5 = +[SBSceneManagerCoordinator secureMainDisplaySceneManager];
-  v6 = [v5 displayIdentity];
-  v7 = [(SBDeviceApplicationSceneEntity *)self initWithApplication:v4 uniqueIdentifier:0 targetContentIdentifier:0 sceneHandleProvider:v5 displayIdentity:v6];
+  displayIdentity = [v5 displayIdentity];
+  v7 = [(SBDeviceApplicationSceneEntity *)self initWithApplication:displayCopy uniqueIdentifier:0 targetContentIdentifier:0 sceneHandleProvider:v5 displayIdentity:displayIdentity];
 
   return v7;
 }

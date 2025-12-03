@@ -1,5 +1,5 @@
 @interface WFLocationParameter
-- (WFLocationParameter)initWithDefinition:(id)a3;
+- (WFLocationParameter)initWithDefinition:(id)definition;
 - (double)currentLocationAccuracy;
 - (id)defaultSerializedRepresentation;
 @end
@@ -10,22 +10,22 @@
 {
   if (self->_defaultToCurrentLocation)
   {
-    v2 = [[WFLocationValue alloc] initWithCurrentLocation];
-    v3 = [(WFLocationValue *)v2 serializedRepresentation];
+    initWithCurrentLocation = [[WFLocationValue alloc] initWithCurrentLocation];
+    serializedRepresentation = [(WFLocationValue *)initWithCurrentLocation serializedRepresentation];
   }
 
   else
   {
-    v3 = 0;
+    serializedRepresentation = 0;
   }
 
-  return v3;
+  return serializedRepresentation;
 }
 
 - (double)currentLocationAccuracy
 {
-  v2 = [(WFParameter *)self definition];
-  v3 = [v2 objectForKey:@"CurrentLocationAccuracy"];
+  definition = [(WFParameter *)self definition];
+  v3 = [definition objectForKey:@"CurrentLocationAccuracy"];
   v4 = objc_opt_class();
   v5 = WFEnforceClass_1501(v3, v4);
 
@@ -44,30 +44,30 @@
   return v7;
 }
 
-- (WFLocationParameter)initWithDefinition:(id)a3
+- (WFLocationParameter)initWithDefinition:(id)definition
 {
-  v4 = a3;
+  definitionCopy = definition;
   v24.receiver = self;
   v24.super_class = WFLocationParameter;
-  v5 = [(WFParameter *)&v24 initWithDefinition:v4];
+  v5 = [(WFParameter *)&v24 initWithDefinition:definitionCopy];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"AllowTextOnly"];
+    v6 = [definitionCopy objectForKey:@"AllowTextOnly"];
     v7 = objc_opt_class();
     v8 = WFEnforceClass_1501(v6, v7);
     v5->_allowsTextOnlyLocations = [v8 BOOLValue];
 
-    v9 = [v4 objectForKey:@"SkipProcessingCurrentLocation"];
+    v9 = [definitionCopy objectForKey:@"SkipProcessingCurrentLocation"];
     v10 = objc_opt_class();
     v11 = WFEnforceClass_1501(v9, v10);
     v5->_skipsProcessingCurrentLocation = [v11 BOOLValue];
 
-    v12 = [v4 objectForKey:@"DefaultToCurrentLocation"];
+    v12 = [definitionCopy objectForKey:@"DefaultToCurrentLocation"];
     v13 = objc_opt_class();
     v14 = WFEnforceClass_1501(v12, v13);
     v5->_defaultToCurrentLocation = [v14 BOOLValue];
 
-    v15 = [v4 objectForKey:@"AllowCurrentLocation"];
+    v15 = [definitionCopy objectForKey:@"AllowCurrentLocation"];
     v16 = objc_opt_class();
     v17 = WFEnforceClass_1501(v15, v16);
     v18 = v17;
@@ -79,8 +79,8 @@
 
     v20 = v19;
 
-    v21 = [v20 BOOLValue];
-    v5->_allowsCurrentLocation = v21;
+    bOOLValue = [v20 BOOLValue];
+    v5->_allowsCurrentLocation = bOOLValue;
     v22 = v5;
   }
 

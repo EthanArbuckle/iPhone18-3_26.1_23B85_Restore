@@ -9,201 +9,201 @@
   v107[36] = *MEMORY[0x277D85DE8];
   v106[0] = @"FocusMode";
   [(ATXFocusModeContactsMetric *)self focusMode];
-  v3 = ATXModeToString();
-  v95 = v3;
-  if (!v3)
+  null = ATXModeToString();
+  v95 = null;
+  if (!null)
   {
-    v3 = [MEMORY[0x277CBEB68] null];
+    null = [MEMORY[0x277CBEB68] null];
   }
 
-  v75 = v3;
-  v107[0] = v3;
+  v75 = null;
+  v107[0] = null;
   v106[1] = @"ActiveConfigurationType";
-  v4 = [(ATXFocusModeContactsMetric *)self activeConfigurationType];
-  v5 = v4;
-  if (!v4)
+  activeConfigurationType = [(ATXFocusModeContactsMetric *)self activeConfigurationType];
+  v5 = activeConfigurationType;
+  if (!activeConfigurationType)
   {
-    v4 = [MEMORY[0x277CBEB68] null];
+    activeConfigurationType = [MEMORY[0x277CBEB68] null];
   }
 
-  v74 = v4;
-  v107[1] = v4;
+  v74 = activeConfigurationType;
+  v107[1] = activeConfigurationType;
   v106[2] = @"EntityModeEntityScore";
-  v6 = [(ATXFocusModeContactsMetric *)self entityModeEntityScore];
-  v7 = v6;
-  if (!v6)
+  entityModeEntityScore = [(ATXFocusModeContactsMetric *)self entityModeEntityScore];
+  v7 = entityModeEntityScore;
+  if (!entityModeEntityScore)
   {
-    v6 = [MEMORY[0x277CBEB68] null];
+    entityModeEntityScore = [MEMORY[0x277CBEB68] null];
   }
 
-  v73 = v6;
-  v107[2] = v6;
+  v73 = entityModeEntityScore;
+  v107[2] = entityModeEntityScore;
   v106[3] = @"ClassConditionalProbability";
-  v8 = [(ATXFocusModeContactsMetric *)self classConditionalProbability];
-  v9 = v8;
-  if (!v8)
+  classConditionalProbability = [(ATXFocusModeContactsMetric *)self classConditionalProbability];
+  v9 = classConditionalProbability;
+  if (!classConditionalProbability)
   {
-    v8 = [MEMORY[0x277CBEB68] null];
+    classConditionalProbability = [MEMORY[0x277CBEB68] null];
   }
 
-  v72 = v8;
-  v107[3] = v8;
+  v72 = classConditionalProbability;
+  v107[3] = classConditionalProbability;
   v106[4] = @"ContactMuted";
-  v10 = [(ATXFocusModeContactsMetric *)self contactMuted];
-  v11 = v10;
-  if (!v10)
+  contactMuted = [(ATXFocusModeContactsMetric *)self contactMuted];
+  v11 = contactMuted;
+  if (!contactMuted)
   {
-    v10 = [MEMORY[0x277CBEB68] null];
+    contactMuted = [MEMORY[0x277CBEB68] null];
   }
 
-  v71 = v10;
-  v107[4] = v10;
+  v71 = contactMuted;
+  v107[4] = contactMuted;
   v106[5] = @"GlobalPopularity";
-  v12 = [(ATXFocusModeContactsMetric *)self globalPopularity];
-  v13 = v12;
-  if (!v12)
+  globalPopularity = [(ATXFocusModeContactsMetric *)self globalPopularity];
+  v13 = globalPopularity;
+  if (!globalPopularity)
   {
-    v12 = [MEMORY[0x277CBEB68] null];
+    globalPopularity = [MEMORY[0x277CBEB68] null];
   }
 
-  v70 = v12;
-  v107[5] = v12;
+  v70 = globalPopularity;
+  v107[5] = globalPopularity;
   v106[6] = @"ModePopularity";
-  v14 = [(ATXFocusModeContactsMetric *)self modePopularity];
-  v15 = v14;
-  if (!v14)
+  modePopularity = [(ATXFocusModeContactsMetric *)self modePopularity];
+  v15 = modePopularity;
+  if (!modePopularity)
   {
-    v14 = [MEMORY[0x277CBEB68] null];
+    modePopularity = [MEMORY[0x277CBEB68] null];
   }
 
-  v69 = v14;
-  v107[6] = v14;
+  v69 = modePopularity;
+  v107[6] = modePopularity;
   v106[7] = @"RatioOfModePopularityToGlobalPopularityOfEntity";
-  v16 = [(ATXFocusModeContactsMetric *)self ratioOfModePopularityToGlobalPopularityOfEntity];
-  v17 = v16;
-  if (!v16)
+  ratioOfModePopularityToGlobalPopularityOfEntity = [(ATXFocusModeContactsMetric *)self ratioOfModePopularityToGlobalPopularityOfEntity];
+  v17 = ratioOfModePopularityToGlobalPopularityOfEntity;
+  if (!ratioOfModePopularityToGlobalPopularityOfEntity)
   {
-    v16 = [MEMORY[0x277CBEB68] null];
+    ratioOfModePopularityToGlobalPopularityOfEntity = [MEMORY[0x277CBEB68] null];
   }
 
-  v68 = v16;
-  v107[7] = v16;
+  v68 = ratioOfModePopularityToGlobalPopularityOfEntity;
+  v107[7] = ratioOfModePopularityToGlobalPopularityOfEntity;
   v106[8] = @"LocalNotificationsClearanceRateForEntity";
-  v18 = [(ATXFocusModeContactsMetric *)self localNotificationsClearedRateForEntity];
-  v19 = v18;
-  if (!v18)
+  localNotificationsClearedRateForEntity = [(ATXFocusModeContactsMetric *)self localNotificationsClearedRateForEntity];
+  v19 = localNotificationsClearedRateForEntity;
+  if (!localNotificationsClearedRateForEntity)
   {
-    v18 = [MEMORY[0x277CBEB68] null];
+    localNotificationsClearedRateForEntity = [MEMORY[0x277CBEB68] null];
   }
 
-  v67 = v18;
-  v107[8] = v18;
+  v67 = localNotificationsClearedRateForEntity;
+  v107[8] = localNotificationsClearedRateForEntity;
   v106[9] = @"GlobalNotificationsClearanceRateForEntity";
-  v20 = [(ATXFocusModeContactsMetric *)self globalNotificationsClearedRateForEntity];
-  v21 = v20;
-  if (!v20)
+  globalNotificationsClearedRateForEntity = [(ATXFocusModeContactsMetric *)self globalNotificationsClearedRateForEntity];
+  v21 = globalNotificationsClearedRateForEntity;
+  if (!globalNotificationsClearedRateForEntity)
   {
-    v20 = [MEMORY[0x277CBEB68] null];
+    globalNotificationsClearedRateForEntity = [MEMORY[0x277CBEB68] null];
   }
 
-  v66 = v20;
-  v107[9] = v20;
+  v66 = globalNotificationsClearedRateForEntity;
+  v107[9] = globalNotificationsClearedRateForEntity;
   v106[10] = @"NotificationsClearedInMode";
-  v22 = [(ATXFocusModeContactsMetric *)self notificationsClearedInMode];
-  v105 = v22;
-  if (!v22)
+  notificationsClearedInMode = [(ATXFocusModeContactsMetric *)self notificationsClearedInMode];
+  v105 = notificationsClearedInMode;
+  if (!notificationsClearedInMode)
   {
-    v22 = [MEMORY[0x277CBEB68] null];
+    notificationsClearedInMode = [MEMORY[0x277CBEB68] null];
   }
 
-  v65 = v22;
-  v107[10] = v22;
+  v65 = notificationsClearedInMode;
+  v107[10] = notificationsClearedInMode;
   v106[11] = @"NotificationsClearedGlobally";
-  v23 = [(ATXFocusModeContactsMetric *)self notificationsClearedGlobally];
-  v104 = v23;
-  if (!v23)
+  notificationsClearedGlobally = [(ATXFocusModeContactsMetric *)self notificationsClearedGlobally];
+  v104 = notificationsClearedGlobally;
+  if (!notificationsClearedGlobally)
   {
-    v23 = [MEMORY[0x277CBEB68] null];
+    notificationsClearedGlobally = [MEMORY[0x277CBEB68] null];
   }
 
-  v64 = v23;
-  v107[11] = v23;
+  v64 = notificationsClearedGlobally;
+  v107[11] = notificationsClearedGlobally;
   v106[12] = @"PosteriorProbability";
-  v24 = [(ATXFocusModeContactsMetric *)self posteriorProbability];
-  v103 = v24;
-  if (!v24)
+  posteriorProbability = [(ATXFocusModeContactsMetric *)self posteriorProbability];
+  v103 = posteriorProbability;
+  if (!posteriorProbability)
   {
-    v24 = [MEMORY[0x277CBEB68] null];
+    posteriorProbability = [MEMORY[0x277CBEB68] null];
   }
 
-  v63 = v24;
-  v107[12] = v24;
+  v63 = posteriorProbability;
+  v107[12] = posteriorProbability;
   v106[13] = @"RatioOfLocalToGlobalNotificationsClearedRateForEntity";
-  v25 = [(ATXFocusModeContactsMetric *)self ratioOfLocalToGlobalNotificationsClearedRateForEntity];
-  v102 = v25;
-  if (!v25)
+  ratioOfLocalToGlobalNotificationsClearedRateForEntity = [(ATXFocusModeContactsMetric *)self ratioOfLocalToGlobalNotificationsClearedRateForEntity];
+  v102 = ratioOfLocalToGlobalNotificationsClearedRateForEntity;
+  if (!ratioOfLocalToGlobalNotificationsClearedRateForEntity)
   {
-    v25 = [MEMORY[0x277CBEB68] null];
+    ratioOfLocalToGlobalNotificationsClearedRateForEntity = [MEMORY[0x277CBEB68] null];
   }
 
-  v62 = v25;
-  v107[13] = v25;
+  v62 = ratioOfLocalToGlobalNotificationsClearedRateForEntity;
+  v107[13] = ratioOfLocalToGlobalNotificationsClearedRateForEntity;
   v106[14] = @"ClassConditionalOfNotificationsClearedForEntity";
-  v26 = [(ATXFocusModeContactsMetric *)self classConditionalOfNotificationsClearedForEntity];
-  v101 = v26;
-  if (!v26)
+  classConditionalOfNotificationsClearedForEntity = [(ATXFocusModeContactsMetric *)self classConditionalOfNotificationsClearedForEntity];
+  v101 = classConditionalOfNotificationsClearedForEntity;
+  if (!classConditionalOfNotificationsClearedForEntity)
   {
-    v26 = [MEMORY[0x277CBEB68] null];
+    classConditionalOfNotificationsClearedForEntity = [MEMORY[0x277CBEB68] null];
   }
 
-  v61 = v26;
-  v107[14] = v26;
+  v61 = classConditionalOfNotificationsClearedForEntity;
+  v107[14] = classConditionalOfNotificationsClearedForEntity;
   v106[15] = @"NotificationsReceivedGlobally";
-  v27 = [(ATXFocusModeContactsMetric *)self notificationsReceivedGlobally];
-  v100 = v27;
-  if (!v27)
+  notificationsReceivedGlobally = [(ATXFocusModeContactsMetric *)self notificationsReceivedGlobally];
+  v100 = notificationsReceivedGlobally;
+  if (!notificationsReceivedGlobally)
   {
-    v27 = [MEMORY[0x277CBEB68] null];
+    notificationsReceivedGlobally = [MEMORY[0x277CBEB68] null];
   }
 
-  v60 = v27;
-  v107[15] = v27;
+  v60 = notificationsReceivedGlobally;
+  v107[15] = notificationsReceivedGlobally;
   v106[16] = @"NotificationsReceivedInMode";
-  v28 = [(ATXFocusModeContactsMetric *)self notificationsReceivedInMode];
-  v99 = v28;
-  if (!v28)
+  notificationsReceivedInMode = [(ATXFocusModeContactsMetric *)self notificationsReceivedInMode];
+  v99 = notificationsReceivedInMode;
+  if (!notificationsReceivedInMode)
   {
-    v28 = [MEMORY[0x277CBEB68] null];
+    notificationsReceivedInMode = [MEMORY[0x277CBEB68] null];
   }
 
-  v59 = v28;
-  v107[16] = v28;
+  v59 = notificationsReceivedInMode;
+  v107[16] = notificationsReceivedInMode;
   v106[17] = @"LocalPopularityOfNotificationsReceivedForEntity";
-  v29 = [(ATXFocusModeContactsMetric *)self localPopularityOfNotificationsReceivedForEntity];
-  v98 = v29;
-  if (!v29)
+  localPopularityOfNotificationsReceivedForEntity = [(ATXFocusModeContactsMetric *)self localPopularityOfNotificationsReceivedForEntity];
+  v98 = localPopularityOfNotificationsReceivedForEntity;
+  if (!localPopularityOfNotificationsReceivedForEntity)
   {
-    v29 = [MEMORY[0x277CBEB68] null];
+    localPopularityOfNotificationsReceivedForEntity = [MEMORY[0x277CBEB68] null];
   }
 
-  v58 = v29;
-  v107[17] = v29;
+  v58 = localPopularityOfNotificationsReceivedForEntity;
+  v107[17] = localPopularityOfNotificationsReceivedForEntity;
   v106[18] = @"GlobalPopularityOfNotificationsReceivedForEntity";
-  v30 = [(ATXFocusModeContactsMetric *)self globalPopularityOfNotificationsReceivedForEntity];
-  v97 = v30;
-  if (!v30)
+  globalPopularityOfNotificationsReceivedForEntity = [(ATXFocusModeContactsMetric *)self globalPopularityOfNotificationsReceivedForEntity];
+  v97 = globalPopularityOfNotificationsReceivedForEntity;
+  if (!globalPopularityOfNotificationsReceivedForEntity)
   {
-    v30 = [MEMORY[0x277CBEB68] null];
+    globalPopularityOfNotificationsReceivedForEntity = [MEMORY[0x277CBEB68] null];
   }
 
-  v57 = v30;
-  v107[18] = v30;
+  v57 = globalPopularityOfNotificationsReceivedForEntity;
+  v107[18] = globalPopularityOfNotificationsReceivedForEntity;
   v106[19] = @"RatioOfLocalToGlobalPopularityOfNotificationsReceivedForEntity";
-  v31 = [(ATXFocusModeContactsMetric *)self ratioOfLocalToGlobalPopularityOfNotificationsReceivedForEntity];
-  v96 = v31;
-  if (!v31)
+  ratioOfLocalToGlobalPopularityOfNotificationsReceivedForEntity = [(ATXFocusModeContactsMetric *)self ratioOfLocalToGlobalPopularityOfNotificationsReceivedForEntity];
+  v96 = ratioOfLocalToGlobalPopularityOfNotificationsReceivedForEntity;
+  if (!ratioOfLocalToGlobalPopularityOfNotificationsReceivedForEntity)
   {
-    v31 = [MEMORY[0x277CBEB68] null];
+    ratioOfLocalToGlobalPopularityOfNotificationsReceivedForEntity = [MEMORY[0x277CBEB68] null];
   }
 
   v87 = v19;
@@ -213,20 +213,20 @@
   v92 = v9;
   v93 = v7;
   v94 = v5;
-  v56 = v31;
-  v107[19] = v31;
+  v56 = ratioOfLocalToGlobalPopularityOfNotificationsReceivedForEntity;
+  v107[19] = ratioOfLocalToGlobalPopularityOfNotificationsReceivedForEntity;
   v106[20] = @"ClassConditionalOfNotificationsReceivedForEntity";
-  v32 = [(ATXFocusModeContactsMetric *)self classConditionalOfNotificationsReceivedForEntity];
-  v85 = v32;
-  if (!v32)
+  classConditionalOfNotificationsReceivedForEntity = [(ATXFocusModeContactsMetric *)self classConditionalOfNotificationsReceivedForEntity];
+  v85 = classConditionalOfNotificationsReceivedForEntity;
+  if (!classConditionalOfNotificationsReceivedForEntity)
   {
-    v32 = [MEMORY[0x277CBEB68] null];
+    classConditionalOfNotificationsReceivedForEntity = [MEMORY[0x277CBEB68] null];
   }
 
   v86 = v21;
   v91 = v11;
-  v55 = v32;
-  v107[20] = v32;
+  v55 = classConditionalOfNotificationsReceivedForEntity;
+  v107[20] = classConditionalOfNotificationsReceivedForEntity;
   v106[21] = @"ContactEngagedGloballyOverLastNDays";
   v84 = [MEMORY[0x277CCABB0] numberWithBool:{-[ATXFocusModeContactsMetric contactEngagedGloballyOverLastNDays](self, "contactEngagedGloballyOverLastNDays")}];
   v107[21] = v84;
@@ -264,42 +264,42 @@
   v36 = [MEMORY[0x277CCABB0] numberWithBool:{-[ATXFocusModeContactsMetric wasContactSuggestionDuringModeSetupAccepted](self, "wasContactSuggestionDuringModeSetupAccepted")}];
   v107[32] = v36;
   v106[33] = @"TreatmentId";
-  v37 = [(ATXFocusModeContactsMetric *)self treatmentId];
-  v38 = v37;
-  if (!v37)
+  treatmentId = [(ATXFocusModeContactsMetric *)self treatmentId];
+  null2 = treatmentId;
+  if (!treatmentId)
   {
-    v38 = [MEMORY[0x277CBEB68] null];
+    null2 = [MEMORY[0x277CBEB68] null];
   }
 
-  v107[33] = v38;
+  v107[33] = null2;
   v106[34] = @"ExperimentId";
-  v39 = [(ATXFocusModeContactsMetric *)self experimentId];
-  v40 = v39;
-  if (!v39)
+  experimentId = [(ATXFocusModeContactsMetric *)self experimentId];
+  null3 = experimentId;
+  if (!experimentId)
   {
-    v40 = [MEMORY[0x277CBEB68] null];
+    null3 = [MEMORY[0x277CBEB68] null];
   }
 
-  v107[34] = v40;
+  v107[34] = null3;
   v106[35] = @"DeploymentId";
-  v41 = [(ATXFocusModeContactsMetric *)self deploymentId];
-  v42 = v41;
-  if (!v41)
+  deploymentId = [(ATXFocusModeContactsMetric *)self deploymentId];
+  null4 = deploymentId;
+  if (!deploymentId)
   {
-    v42 = [MEMORY[0x277CBEB68] null];
+    null4 = [MEMORY[0x277CBEB68] null];
   }
 
-  v107[35] = v42;
+  v107[35] = null4;
   v76 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v107 forKeys:v106 count:36];
-  if (!v41)
+  if (!deploymentId)
   {
   }
 
-  if (!v39)
+  if (!experimentId)
   {
   }
 
-  if (!v37)
+  if (!treatmentId)
   {
   }
 

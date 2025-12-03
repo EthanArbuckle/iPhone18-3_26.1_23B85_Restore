@@ -1,12 +1,12 @@
 @interface GAXInterestAreaFingerPathView
-- (GAXInterestAreaFingerPathView)initWithCoder:(id)a3;
-- (GAXInterestAreaFingerPathView)initWithFrame:(CGRect)a3;
+- (GAXInterestAreaFingerPathView)initWithCoder:(id)coder;
+- (GAXInterestAreaFingerPathView)initWithFrame:(CGRect)frame;
 - (GAXInterestAreaFingerPathViewDataSource)dataSource;
 - (void)_commonInit;
-- (void)_enumerateInterestAreaPathsUsingBlock:(id)a3;
-- (void)drawRect:(CGRect)a3;
-- (void)setDataSource:(id)a3;
-- (void)setStyleProvider:(id)a3;
+- (void)_enumerateInterestAreaPathsUsingBlock:(id)block;
+- (void)drawRect:(CGRect)rect;
+- (void)setDataSource:(id)source;
+- (void)setStyleProvider:(id)provider;
 @end
 
 @implementation GAXInterestAreaFingerPathView
@@ -19,11 +19,11 @@
   [(GAXInterestAreaFingerPathView *)self setUserInteractionEnabled:0];
 }
 
-- (GAXInterestAreaFingerPathView)initWithFrame:(CGRect)a3
+- (GAXInterestAreaFingerPathView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = GAXInterestAreaFingerPathView;
-  v3 = [(GAXInterestAreaFingerPathView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(GAXInterestAreaFingerPathView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -33,11 +33,11 @@
   return v4;
 }
 
-- (GAXInterestAreaFingerPathView)initWithCoder:(id)a3
+- (GAXInterestAreaFingerPathView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = GAXInterestAreaFingerPathView;
-  v3 = [(GAXInterestAreaFingerPathView *)&v6 initWithCoder:a3];
+  v3 = [(GAXInterestAreaFingerPathView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -47,9 +47,9 @@
   return v4;
 }
 
-- (void)setDataSource:(id)a3
+- (void)setDataSource:(id)source
 {
-  obj = a3;
+  obj = source;
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
 
   v5 = obj;
@@ -61,34 +61,34 @@
   }
 }
 
-- (void)setStyleProvider:(id)a3
+- (void)setStyleProvider:(id)provider
 {
-  v5 = a3;
-  if (self->_styleProvider != v5)
+  providerCopy = provider;
+  if (self->_styleProvider != providerCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_styleProvider, a3);
+    v6 = providerCopy;
+    objc_storeStrong(&self->_styleProvider, provider);
     [(GAXInterestAreaFingerPathView *)self setNeedsDisplay];
-    v5 = v6;
+    providerCopy = v6;
   }
 }
 
-- (void)_enumerateInterestAreaPathsUsingBlock:(id)a3
+- (void)_enumerateInterestAreaPathsUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(GAXInterestAreaFingerPathView *)self dataSource];
+  blockCopy = block;
+  dataSource = [(GAXInterestAreaFingerPathView *)self dataSource];
   if (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector())
   {
     v10 = 0;
-    v6 = [v5 numberOfInterestAreaPathsForInterestAreaFingerPathView:self];
+    v6 = [dataSource numberOfInterestAreaPathsForInterestAreaFingerPathView:self];
     if (v6)
     {
       v7 = v6;
       v8 = 1;
       do
       {
-        v9 = [v5 interestAreaFingerPathView:self interestAreaPathAtIndex:v8 - 1];
-        v4[2](v4, v9, v8 - 1, &v10);
+        v9 = [dataSource interestAreaFingerPathView:self interestAreaPathAtIndex:v8 - 1];
+        blockCopy[2](blockCopy, v9, v8 - 1, &v10);
 
         if (v8 >= v7)
         {
@@ -103,17 +103,17 @@
   }
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   CurrentContext = UIGraphicsGetCurrentContext();
   CGContextSaveGState(CurrentContext);
-  v5 = [(GAXInterestAreaFingerPathView *)self styleProvider];
-  [v5 interestAreaViewFingerPathLineWidth];
+  styleProvider = [(GAXInterestAreaFingerPathView *)self styleProvider];
+  [styleProvider interestAreaViewFingerPathLineWidth];
   CGContextSetLineWidth(CurrentContext, v6);
   CGContextSetLineCap(CurrentContext, kCGLineCapRound);
   CGContextSetLineJoin(CurrentContext, kCGLineJoinRound);
-  v7 = [v5 interestAreaViewFingerPathStrokeColor];
-  CGContextSetStrokeColorWithColor(CurrentContext, [v7 CGColor]);
+  interestAreaViewFingerPathStrokeColor = [styleProvider interestAreaViewFingerPathStrokeColor];
+  CGContextSetStrokeColorWithColor(CurrentContext, [interestAreaViewFingerPathStrokeColor CGColor]);
 
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;

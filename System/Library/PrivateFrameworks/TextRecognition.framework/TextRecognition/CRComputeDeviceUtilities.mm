@@ -1,8 +1,8 @@
 @interface CRComputeDeviceUtilities
 + (id)allComputeDevices;
-+ (id)computeDevices:(id)a3 ofTypes:(unint64_t)a4;
-+ (int64_t)mlComputeUnitFromComputeDeviceType:(unint64_t)a3;
-+ (unint64_t)computeDeviceTypeForOptions:(id)a3 mtlDevice:(id *)a4;
++ (id)computeDevices:(id)devices ofTypes:(unint64_t)types;
++ (int64_t)mlComputeUnitFromComputeDeviceType:(unint64_t)type;
++ (unint64_t)computeDeviceTypeForOptions:(id)options mtlDevice:(id *)device;
 @end
 
 @implementation CRComputeDeviceUtilities
@@ -26,47 +26,47 @@ void __45__CRComputeDeviceUtilities_allComputeDevices__block_invoke()
   _MergedGlobals_29 = v0;
 }
 
-+ (id)computeDevices:(id)a3 ofTypes:(unint64_t)a4
++ (id)computeDevices:(id)devices ofTypes:(unint64_t)types
 {
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __51__CRComputeDeviceUtilities_computeDevices_ofTypes___block_invoke;
   v8[3] = &__block_descriptor_40_e42_B32__0___MLComputeDeviceProtocol__8Q16_B24l;
-  v8[4] = a4;
-  v4 = a3;
-  v5 = [v4 indexesOfObjectsPassingTest:v8];
-  v6 = [v4 objectsAtIndexes:v5];
+  v8[4] = types;
+  devicesCopy = devices;
+  v5 = [devicesCopy indexesOfObjectsPassingTest:v8];
+  v6 = [devicesCopy objectsAtIndexes:v5];
 
   return v6;
 }
 
-+ (unint64_t)computeDeviceTypeForOptions:(id)a3 mtlDevice:(id *)a4
++ (unint64_t)computeDeviceTypeForOptions:(id)options mtlDevice:(id *)device
 {
   v28 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:@"CRImageReaderRestrictToCPUKey"];
-  v7 = [v6 BOOLValue];
+  optionsCopy = options;
+  v6 = [optionsCopy objectForKeyedSubscript:@"CRImageReaderRestrictToCPUKey"];
+  bOOLValue = [v6 BOOLValue];
 
-  v8 = [v5 objectForKeyedSubscript:@"CRImageReaderMTLDeviceKey"];
+  v8 = [optionsCopy objectForKeyedSubscript:@"CRImageReaderMTLDeviceKey"];
 
   if (v8)
   {
-    v9 = [v5 objectForKeyedSubscript:@"CRImageReaderMTLDeviceKey"];
+    v9 = [optionsCopy objectForKeyedSubscript:@"CRImageReaderMTLDeviceKey"];
     v10 = 2;
   }
 
   else
   {
     v9 = 0;
-    v10 = v7;
+    v10 = bOOLValue;
   }
 
-  v11 = [v5 objectForKeyedSubscript:@"CRImageReaderComputeDeviceKey"];
+  v11 = [optionsCopy objectForKeyedSubscript:@"CRImageReaderComputeDeviceKey"];
 
   if (!v11)
   {
     v14 = v10;
-    if (!a4)
+    if (!device)
     {
       goto LABEL_24;
     }
@@ -74,12 +74,12 @@ void __45__CRComputeDeviceUtilities_allComputeDevices__block_invoke()
     goto LABEL_22;
   }
 
-  v12 = [v5 objectForKeyedSubscript:@"CRImageReaderComputeDeviceKey"];
-  v13 = [v12 _crComputeDeviceType];
-  v14 = v13;
+  v12 = [optionsCopy objectForKeyedSubscript:@"CRImageReaderComputeDeviceKey"];
+  _crComputeDeviceType = [v12 _crComputeDeviceType];
+  v14 = _crComputeDeviceType;
   if (v10)
   {
-    v15 = v10 == v13;
+    v15 = v10 == _crComputeDeviceType;
   }
 
   else
@@ -104,9 +104,9 @@ void __45__CRComputeDeviceUtilities_allComputeDevices__block_invoke()
 
   if (v14 == 2)
   {
-    v17 = [v12 metalDevice];
-    v18 = v17;
-    if (v9 && v17 != v9)
+    metalDevice = [v12 metalDevice];
+    v18 = metalDevice;
+    if (v9 && metalDevice != v9)
     {
       v19 = CROSLogForCategory(0);
       if (os_log_type_enabled(v19, OS_LOG_TYPE_FAULT))
@@ -124,13 +124,13 @@ void __45__CRComputeDeviceUtilities_allComputeDevices__block_invoke()
     v9 = v18;
   }
 
-  if (a4)
+  if (device)
   {
 LABEL_22:
     if (v9)
     {
       v20 = v9;
-      *a4 = v9;
+      *device = v9;
     }
   }
 
@@ -139,16 +139,16 @@ LABEL_24:
   return v14;
 }
 
-+ (int64_t)mlComputeUnitFromComputeDeviceType:(unint64_t)a3
++ (int64_t)mlComputeUnitFromComputeDeviceType:(unint64_t)type
 {
-  if (a3 - 1 >= 4)
+  if (type - 1 >= 4)
   {
     return 2;
   }
 
   else
   {
-    return a3 - 1;
+    return type - 1;
   }
 }
 

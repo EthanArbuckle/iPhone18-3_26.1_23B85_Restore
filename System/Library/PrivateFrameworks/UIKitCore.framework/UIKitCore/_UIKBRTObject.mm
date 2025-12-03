@@ -1,21 +1,21 @@
 @interface _UIKBRTObject
 - (id)nextEntry;
 - (id)previousEntry;
-- (void)setOwner:(id)a3;
+- (void)setOwner:(id)owner;
 @end
 
 @implementation _UIKBRTObject
 
-- (void)setOwner:(id)a3
+- (void)setOwner:(id)owner
 {
-  v5 = a3;
-  if (v5)
+  ownerCopy = owner;
+  if (ownerCopy)
   {
     v6 = dispatch_queue_create("_UIKBRTObjectQueue", 0);
     syncQueue = self->_syncQueue;
     self->_syncQueue = v6;
 
-    objc_storeStrong(&self->_owner, a3);
+    objc_storeStrong(&self->_owner, owner);
   }
 
   else if (self->_owner)

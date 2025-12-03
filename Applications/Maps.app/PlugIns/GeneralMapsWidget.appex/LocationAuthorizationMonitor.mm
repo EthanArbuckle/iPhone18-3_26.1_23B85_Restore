@@ -1,15 +1,15 @@
 @interface LocationAuthorizationMonitor
 - (_TtC17GeneralMapsWidget28LocationAuthorizationMonitor)init;
-- (void)locationManagerDidChangeAuthorization:(id)a3;
+- (void)locationManagerDidChangeAuthorization:(id)authorization;
 @end
 
 @implementation LocationAuthorizationMonitor
 
-- (void)locationManagerDidChangeAuthorization:(id)a3
+- (void)locationManagerDidChangeAuthorization:(id)authorization
 {
-  v4 = a3;
-  v5 = self;
-  sub_10005628C(v4);
+  authorizationCopy = authorization;
+  selfCopy = self;
+  sub_10005628C(authorizationCopy);
 }
 
 - (_TtC17GeneralMapsWidget28LocationAuthorizationMonitor)init

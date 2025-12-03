@@ -1,8 +1,8 @@
 @interface AppleAOPAudioDevice
-- (AppleAOPAudioDevice)initWithDeviceUID:(id)a3 withDeviceName:(id)a4 withModelName:(id)a5 withPlugin:(id)a6 withIOObject:(unsigned int)a7;
-- (BOOL)getCustomPropertyInfoByIndex:(unsigned int)a3 forCustPropInfo:(AudioServerPlugInCustomPropertyInfo *)a4;
-- (BOOL)isPropertySettable:(const AudioObjectPropertyAddress *)a3;
-- (BOOL)tryHasProperty:(const AudioObjectPropertyAddress *)a3;
+- (AppleAOPAudioDevice)initWithDeviceUID:(id)d withDeviceName:(id)name withModelName:(id)modelName withPlugin:(id)plugin withIOObject:(unsigned int)object;
+- (BOOL)getCustomPropertyInfoByIndex:(unsigned int)index forCustPropInfo:(AudioServerPlugInCustomPropertyInfo *)info;
+- (BOOL)isPropertySettable:(const AudioObjectPropertyAddress *)settable;
+- (BOOL)tryHasProperty:(const AudioObjectPropertyAddress *)property;
 - (__CFDictionary)voiceTriggerGetConfigureDataId;
 - (__CFDictionary)voiceTriggerGetData;
 - (basic_string<char,)getDiagonsticData;
@@ -10,7 +10,7 @@
 - (int)tryPerformStartIO;
 - (int)tryPerformStopIO;
 - (unsigned)readAvailablePastData;
-- (void)enableListening:(BOOL)a3;
+- (void)enableListening:(BOOL)listening;
 - (void)notifyDevicePropertiesChanged;
 - (void)updateStreamDescription;
 @end
@@ -43,7 +43,7 @@
     v6 = self->mAOPAudioHWManagerPtr.__ptr_;
     v25 = *(v6 + 56);
     v26 = *(v6 + 9);
-    v7 = [(AppleAOPAudioStream *)self->_halInputAudioStream getBytesPerPacket];
+    getBytesPerPacket = [(AppleAOPAudioStream *)self->_halInputAudioStream getBytesPerPacket];
     v20[0] = _NSConcreteStackBlock;
     v20[1] = 3221225472;
     v20[2] = sub_2440;
@@ -51,7 +51,7 @@
     v20[4] = &self->mIOMutexPtr;
     v20[5] = &self->mAOPAudioHWManagerPtr;
     v21 = v25;
-    v24 = v7;
+    v24 = getBytesPerPacket;
     v22 = v26;
     p_mIOStatus = &self->mIOStatus;
     [(AppleAOPAudioDevice *)self setGetZeroTimestampBlock:v20];
@@ -59,16 +59,16 @@
     v18[1] = 3221225472;
     v18[2] = sub_2BB8;
     v18[3] = &unk_249D0;
-    v19 = [(AppleAOPAudioDevice *)self hasInput];
+    hasInput = [(AppleAOPAudioDevice *)self hasInput];
     [(AppleAOPAudioDevice *)self setWillDoReadInputBlock:v18];
-    v8 = [(AppleAOPAudioStream *)self->_halInputAudioStream getBytesPerPacket];
-    v9 = [(AppleAOPAudioStream *)self->_halInputAudioStream getBytesPerSample];
+    getBytesPerPacket2 = [(AppleAOPAudioStream *)self->_halInputAudioStream getBytesPerPacket];
+    getBytesPerSample = [(AppleAOPAudioStream *)self->_halInputAudioStream getBytesPerSample];
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = sub_2FEC;
     v14[3] = &unk_249F0;
-    v15 = v8;
-    v16 = v9;
+    v15 = getBytesPerPacket2;
+    v16 = getBytesPerSample;
     v14[4] = self;
     v14[5] = &self->mAOPAudioHWManagerPtr;
     v14[6] = &self->mIOMutexPtr;
@@ -79,7 +79,7 @@
   [(AppleAOPAudioDevice *)self startInput:1];
   v13.receiver = self;
   v13.super_class = AppleAOPAudioDevice;
-  v10 = [(AppleAOPAudioDevice *)&v13 performStartIO];
+  performStartIO = [(AppleAOPAudioDevice *)&v13 performStartIO];
   v11 = self->mStartCount;
   kdebug_trace();
   if (v5)
@@ -87,7 +87,7 @@
     (*(*ptr + 24))(ptr);
   }
 
-  return v10;
+  return performStartIO;
 }
 
 - (int)tryPerformStopIO
@@ -100,7 +100,7 @@
   v24 = v5;
   v22.receiver = self;
   v22.super_class = AppleAOPAudioDevice;
-  v6 = [(AppleAOPAudioDevice *)&v22 performStopIO];
+  performStopIO = [(AppleAOPAudioDevice *)&v22 performStopIO];
   [(AppleAOPAudioDevice *)self startInput:0];
   if (!self->mStartCount)
   {
@@ -138,7 +138,7 @@
     (*(*ptr + 24))(ptr);
   }
 
-  return v6;
+  return performStopIO;
 }
 
 - (void)updateStreamDescription
@@ -174,23 +174,23 @@
   [v3 changedProperty:&v4 forObject:self];
 }
 
-- (AppleAOPAudioDevice)initWithDeviceUID:(id)a3 withDeviceName:(id)a4 withModelName:(id)a5 withPlugin:(id)a6 withIOObject:(unsigned int)a7
+- (AppleAOPAudioDevice)initWithDeviceUID:(id)d withDeviceName:(id)name withModelName:(id)modelName withPlugin:(id)plugin withIOObject:(unsigned int)object
 {
-  v12 = a3;
-  v25 = a4;
-  v13 = a5;
-  v14 = a6;
-  v27 = a7;
+  dCopy = d;
+  nameCopy = name;
+  modelNameCopy = modelName;
+  pluginCopy = plugin;
+  objectCopy = object;
   v26.receiver = self;
   v26.super_class = AppleAOPAudioDevice;
-  v15 = [(AppleAOPAudioDevice *)&v26 initWithDeviceUID:v12 withPlugin:v14];
+  v15 = [(AppleAOPAudioDevice *)&v26 initWithDeviceUID:dCopy withPlugin:pluginCopy];
   v16 = v15;
   if (v15)
   {
-    [(AppleAOPAudioDevice *)v15 setDeviceName:v25];
-    [v16 setModelUID:v13];
+    [(AppleAOPAudioDevice *)v15 setDeviceName:nameCopy];
+    [v16 setModelUID:modelNameCopy];
     [v16 setManufacturerName:@"Apple Inc."];
-    [v16 setModelName:v13];
+    [v16 setModelName:modelNameCopy];
     [v16 setCanBeDefaultDevice:1];
     [v16 setCanBeDefaultSystemDevice:1];
     [v16 setCanChangeDeviceName:0];
@@ -210,12 +210,12 @@
     [v18 setMaximumSampleRate:?];
     v19 = +[NSMutableArray array];
     [v19 addObject:v18];
-    v20 = [[AppleAOPAudioStream alloc] initWithDirection:1768845428 owningDevice:v16 plugin:v14 formats:v19];
+    v20 = [[AppleAOPAudioStream alloc] initWithDirection:1768845428 owningDevice:v16 plugin:pluginCopy formats:v19];
     v21 = v16[1];
     v16[1] = v20;
 
     [v16[1] setStreamName:@"InputStream"];
-    v22 = [[AppleAOPAudioStream alloc] initWithDirection:1768845428 owningDevice:v16 plugin:v14 formats:v19];
+    v22 = [[AppleAOPAudioStream alloc] initWithDirection:1768845428 owningDevice:v16 plugin:pluginCopy formats:v19];
     v23 = v16[2];
     v16[2] = v22;
 
@@ -226,37 +226,37 @@
   return 0;
 }
 
-- (BOOL)getCustomPropertyInfoByIndex:(unsigned int)a3 forCustPropInfo:(AudioServerPlugInCustomPropertyInfo *)a4
+- (BOOL)getCustomPropertyInfoByIndex:(unsigned int)index forCustPropInfo:(AudioServerPlugInCustomPropertyInfo *)info
 {
-  v5 = &aDpsdtslp[12 * a3];
+  v5 = &aDpsdtslp[12 * index];
   if (!*v5 && !self->mChannelEnableMaskAvailable)
   {
     return 0;
   }
 
-  if ([(AppleAOPAudioDevice *)self getNumCustomProperties]> a3)
+  if ([(AppleAOPAudioDevice *)self getNumCustomProperties]> index)
   {
-    *&a4->mSelector = *v5;
-    a4->mQualifierDataType = *(v5 + 2);
+    *&info->mSelector = *v5;
+    info->mQualifierDataType = *(v5 + 2);
   }
 
   return 1;
 }
 
-- (BOOL)tryHasProperty:(const AudioObjectPropertyAddress *)a3
+- (BOOL)tryHasProperty:(const AudioObjectPropertyAddress *)property
 {
   ptr = self->mStateMutexPtr.__ptr_;
   v21 = ptr;
   v6 = (*(*ptr + 16))(ptr, a2);
   v22 = v6;
-  if (!a3)
+  if (!property)
   {
     goto LABEL_11;
   }
 
-  mSelector = a3->mSelector;
+  mSelector = property->mSelector;
   mChannelEnableMaskAvailable = 1;
-  if (a3->mSelector <= 1635152996)
+  if (property->mSelector <= 1635152996)
   {
     if (mSelector <= 1634692198)
     {
@@ -291,7 +291,7 @@ LABEL_21:
 LABEL_28:
       v20.receiver = self;
       v20.super_class = AppleAOPAudioDevice;
-      IsVoiceTriggerSupported = [(AppleAOPAudioDevice *)&v20 hasProperty:a3];
+      IsVoiceTriggerSupported = [(AppleAOPAudioDevice *)&v20 hasProperty:property];
       goto LABEL_29;
     }
 
@@ -374,7 +374,7 @@ LABEL_30:
   return mChannelEnableMaskAvailable & 1;
 }
 
-- (BOOL)isPropertySettable:(const AudioObjectPropertyAddress *)a3
+- (BOOL)isPropertySettable:(const AudioObjectPropertyAddress *)settable
 {
   ptr = self->mStateMutexPtr.__ptr_;
   v31 = 0;
@@ -382,13 +382,13 @@ LABEL_30:
   v13 = (*(*ptr + 16))(ptr, a2);
   v30 = v13;
   HasPropertyEnableListeningOnGesture = 0;
-  if (!a3)
+  if (!settable)
   {
     goto LABEL_36;
   }
 
-  mSelector = a3->mSelector;
-  if (a3->mSelector > 1635153006)
+  mSelector = settable->mSelector;
+  if (settable->mSelector > 1635153006)
   {
     if (mSelector > 1684107363)
     {
@@ -430,7 +430,7 @@ LABEL_29:
 LABEL_30:
     v28.receiver = self;
     v28.super_class = AppleAOPAudioDevice;
-    IsVoiceTriggerSupported = [(AppleAOPAudioDevice *)&v28 isPropertySettable:a3];
+    IsVoiceTriggerSupported = [(AppleAOPAudioDevice *)&v28 isPropertySettable:settable];
     goto LABEL_31;
   }
 
@@ -481,14 +481,14 @@ LABEL_36:
   return HasPropertyEnableListeningOnGesture;
 }
 
-- (void)enableListening:(BOOL)a3
+- (void)enableListening:(BOOL)listening
 {
-  v3 = a3;
+  listeningCopy = listening;
   mPastDataListeningEnabled = self->mPastDataListeningEnabled;
   kdebug_trace();
-  if (self->mPastDataListeningEnabled || !v3)
+  if (self->mPastDataListeningEnabled || !listeningCopy)
   {
-    if (self->mPastDataListeningEnabled && !v3)
+    if (self->mPastDataListeningEnabled && !listeningCopy)
     {
       AOPAudioDeviceHWManager::HW_DisableListening(self->mAOPAudioHWManagerPtr.__ptr_);
       sub_1FF8("Device::enableListening, inEanble=%d, HW_DisableListening()", v7, v8, v9, v10, v11, v12, v13, 0);
@@ -501,7 +501,7 @@ LABEL_36:
     sub_1FF8("Device::enableListening, inEanble=%d, HW_EnableListening()", v14, v15, v16, v17, v18, v19, v20, 1);
   }
 
-  self->mPastDataListeningEnabled = v3;
+  self->mPastDataListeningEnabled = listeningCopy;
 
   kdebug_trace();
 }
@@ -560,16 +560,16 @@ LABEL_36:
 
   v6 = self->mAOPAudioHWManagerPtr.__ptr_;
   v7 = *(v6 + 16);
-  v8 = [(AppleAOPAudioStream *)self->_halInputAudioStream getBytesPerPacket];
+  getBytesPerPacket = [(AppleAOPAudioStream *)self->_halInputAudioStream getBytesPerPacket];
   v9 = *(v6 + 17);
   v14 = 0;
   v15[0] = 0;
   v12 = 0;
   v13 = 0;
   AOPAudioDeviceHWManager::HW_ReadIOTimeStampStatusBuffer(self->mAOPAudioHWManagerPtr.__ptr_, v15, &v14, &v13, &v12);
-  if (v13 - v15[0] >= v7 / v8 - v9)
+  if (v13 - v15[0] >= v7 / getBytesPerPacket - v9)
   {
-    v10 = v7 / v8 - v9;
+    v10 = v7 / getBytesPerPacket - v9;
   }
 
   else
@@ -594,38 +594,38 @@ LABEL_7:
   v3 = std::ostream::operator<<();
   sub_C0F4(v3, "] = \n", 5);
   v4 = sub_C0F4(&v57, "DeviceName:                             ", 40);
-  v5 = [v2 deviceName];
-  v6 = [v5 UTF8String];
-  v7 = strlen(v6);
-  v8 = sub_C0F4(v4, v6, v7);
+  deviceName = [v2 deviceName];
+  uTF8String = [deviceName UTF8String];
+  v7 = strlen(uTF8String);
+  v8 = sub_C0F4(v4, uTF8String, v7);
   sub_C0F4(v8, "\n", 1);
 
   v9 = sub_C0F4(&v57, "DeviceUID:                              ", 40);
-  v10 = [v2 deviceUID];
-  v11 = [v10 UTF8String];
-  v12 = strlen(v11);
-  v13 = sub_C0F4(v9, v11, v12);
+  deviceUID = [v2 deviceUID];
+  uTF8String2 = [deviceUID UTF8String];
+  v12 = strlen(uTF8String2);
+  v13 = sub_C0F4(v9, uTF8String2, v12);
   sub_C0F4(v13, "\n", 1);
 
   v14 = sub_C0F4(&v57, "ModelUID:                               ", 40);
-  v15 = [v2 modelUID];
-  v16 = [v15 UTF8String];
-  v17 = strlen(v16);
-  v18 = sub_C0F4(v14, v16, v17);
+  modelUID = [v2 modelUID];
+  uTF8String3 = [modelUID UTF8String];
+  v17 = strlen(uTF8String3);
+  v18 = sub_C0F4(v14, uTF8String3, v17);
   sub_C0F4(v18, "\n", 1);
 
   v19 = sub_C0F4(&v57, "ManufacturerName:                       ", 40);
-  v20 = [v2 manufacturerName];
-  v21 = [v20 UTF8String];
-  v22 = strlen(v21);
-  v23 = sub_C0F4(v19, v21, v22);
+  manufacturerName = [v2 manufacturerName];
+  uTF8String4 = [manufacturerName UTF8String];
+  v22 = strlen(uTF8String4);
+  v23 = sub_C0F4(v19, uTF8String4, v22);
   sub_C0F4(v23, "\n", 1);
 
   v24 = sub_C0F4(&v57, "ModelName:                              ", 40);
-  v25 = [v2 modelName];
-  v26 = [v25 UTF8String];
-  v27 = strlen(v26);
-  v28 = sub_C0F4(v24, v26, v27);
+  modelName = [v2 modelName];
+  uTF8String5 = [modelName UTF8String];
+  v27 = strlen(uTF8String5);
+  v28 = sub_C0F4(v24, uTF8String5, v27);
   sub_C0F4(v28, "\n", 1);
 
   sub_C0F4(&v57, "StartCount:                             ", 40);

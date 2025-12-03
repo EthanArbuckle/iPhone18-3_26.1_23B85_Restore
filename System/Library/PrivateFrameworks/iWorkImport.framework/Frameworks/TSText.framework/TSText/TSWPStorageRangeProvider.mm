@@ -1,34 +1,34 @@
 @interface TSWPStorageRangeProvider
-- (TSWPStorageRangeProvider)initWithIdentifier:(id)a3;
+- (TSWPStorageRangeProvider)initWithIdentifier:(id)identifier;
 - (_NSRange)range;
 - (unint64_t)rangeEnd;
 - (void)nextRange;
-- (void)setRangeStart:(unint64_t)a3;
+- (void)setRangeStart:(unint64_t)start;
 @end
 
 @implementation TSWPStorageRangeProvider
 
-- (TSWPStorageRangeProvider)initWithIdentifier:(id)a3
+- (TSWPStorageRangeProvider)initWithIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = TSWPStorageRangeProvider;
   v6 = [(TSWPStorageRangeProvider *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_identifier, a3);
+    objc_storeStrong(&v6->_identifier, identifier);
   }
 
   return v7;
 }
 
-- (void)setRangeStart:(unint64_t)a3
+- (void)setRangeStart:(unint64_t)start
 {
-  objc_msgSend_range(self, a2, a3);
-  v8 = &v6[objc_msgSend_range(self, v6, v5) - a3];
+  objc_msgSend_range(self, a2, start);
+  v8 = &v6[objc_msgSend_range(self, v6, v5) - start];
 
-  objc_msgSend_setRange_(self, v7, a3, v8);
+  objc_msgSend_setRange_(self, v7, start, v8);
 }
 
 - (unint64_t)rangeEnd

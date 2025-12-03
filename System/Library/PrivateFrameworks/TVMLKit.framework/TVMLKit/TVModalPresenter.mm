@@ -1,17 +1,17 @@
 @interface TVModalPresenter
-+ (id)_viewControllerForResponder:(id)a3;
++ (id)_viewControllerForResponder:(id)responder;
 + (id)sharedInstance;
 - (NSArray)presentedViewControllers;
 - (NSHashTable)_presentationControllers;
 - (TVModalPresenter)init;
-- (id)animationControllerForDismissedController:(id)a3;
-- (id)animationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5;
-- (id)presentationControllerForPresentedViewController:(id)a3 presentingViewController:(id)a4 sourceViewController:(id)a5;
-- (void)dismissAllViewControllersWithAnimation:(BOOL)a3 completion:(id)a4;
-- (void)dismissViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)dismissViewControllerWithResponder:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)presentViewController:(id)a3 forResponder:(id)a4 options:(id)a5 completion:(id)a6;
-- (void)presentViewController:(id)a3 fromViewController:(id)a4 options:(id)a5 completion:(id)a6;
+- (id)animationControllerForDismissedController:(id)controller;
+- (id)animationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController;
+- (id)presentationControllerForPresentedViewController:(id)controller presentingViewController:(id)viewController sourceViewController:(id)sourceViewController;
+- (void)dismissAllViewControllersWithAnimation:(BOOL)animation completion:(id)completion;
+- (void)dismissViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
+- (void)dismissViewControllerWithResponder:(id)responder animated:(BOOL)animated completion:(id)completion;
+- (void)presentViewController:(id)controller forResponder:(id)responder options:(id)options completion:(id)completion;
+- (void)presentViewController:(id)controller fromViewController:(id)viewController options:(id)options completion:(id)completion;
 @end
 
 @implementation TVModalPresenter
@@ -337,9 +337,9 @@ uint64_t __34__TVModalPresenter_sharedInstance__block_invoke()
   presentationControllers = self->__presentationControllers;
   if (!presentationControllers)
   {
-    v4 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     v5 = self->__presentationControllers;
-    self->__presentationControllers = v4;
+    self->__presentationControllers = weakObjectsHashTable;
 
     presentationControllers = self->__presentationControllers;
   }
@@ -351,15 +351,15 @@ uint64_t __34__TVModalPresenter_sharedInstance__block_invoke()
 {
   v30 = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CBEB18];
-  v4 = [(TVModalPresenter *)self _presentationControllers];
-  v5 = [v3 arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  _presentationControllers = [(TVModalPresenter *)self _presentationControllers];
+  v5 = [v3 arrayWithCapacity:{objc_msgSend(_presentationControllers, "count")}];
 
   v26 = 0u;
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v6 = [(TVModalPresenter *)self _presentationControllers];
-  v7 = [v6 countByEnumeratingWithState:&v24 objects:v29 count:16];
+  _presentationControllers2 = [(TVModalPresenter *)self _presentationControllers];
+  v7 = [_presentationControllers2 countByEnumeratingWithState:&v24 objects:v29 count:16];
   if (v7)
   {
     v8 = v7;
@@ -370,7 +370,7 @@ uint64_t __34__TVModalPresenter_sharedInstance__block_invoke()
       {
         if (*v25 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(_presentationControllers2);
         }
 
         v11 = *(*(&v24 + 1) + 8 * i);
@@ -378,8 +378,8 @@ uint64_t __34__TVModalPresenter_sharedInstance__block_invoke()
         v21 = 0u;
         v22 = 0u;
         v23 = 0u;
-        v12 = [v11 viewControllers];
-        v13 = [v12 countByEnumeratingWithState:&v20 objects:v28 count:16];
+        viewControllers = [v11 viewControllers];
+        v13 = [viewControllers countByEnumeratingWithState:&v20 objects:v28 count:16];
         if (v13)
         {
           v14 = v13;
@@ -390,7 +390,7 @@ uint64_t __34__TVModalPresenter_sharedInstance__block_invoke()
             {
               if (*v21 != v15)
               {
-                objc_enumerationMutation(v12);
+                objc_enumerationMutation(viewControllers);
               }
 
               v17 = *(*(&v20 + 1) + 8 * j);
@@ -400,14 +400,14 @@ uint64_t __34__TVModalPresenter_sharedInstance__block_invoke()
               }
             }
 
-            v14 = [v12 countByEnumeratingWithState:&v20 objects:v28 count:16];
+            v14 = [viewControllers countByEnumeratingWithState:&v20 objects:v28 count:16];
           }
 
           while (v14);
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v24 objects:v29 count:16];
+      v8 = [_presentationControllers2 countByEnumeratingWithState:&v24 objects:v29 count:16];
     }
 
     while (v8);
@@ -418,18 +418,18 @@ uint64_t __34__TVModalPresenter_sharedInstance__block_invoke()
   return v18;
 }
 
-- (void)presentViewController:(id)a3 forResponder:(id)a4 options:(id)a5 completion:(id)a6
+- (void)presentViewController:(id)controller forResponder:(id)responder options:(id)options completion:(id)completion
 {
-  v21 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [objc_opt_class() _viewControllerForResponder:v10];
-  v14 = [v13 navigationController];
-  v15 = v14;
-  if (v14)
+  controllerCopy = controller;
+  responderCopy = responder;
+  optionsCopy = options;
+  completionCopy = completion;
+  v13 = [objc_opt_class() _viewControllerForResponder:responderCopy];
+  navigationController = [v13 navigationController];
+  v15 = navigationController;
+  if (navigationController)
   {
-    v16 = v14;
+    v16 = navigationController;
   }
 
   else
@@ -439,21 +439,21 @@ uint64_t __34__TVModalPresenter_sharedInstance__block_invoke()
 
   v17 = v16;
 
-  if ([v11 type] == 7)
+  if ([optionsCopy type] == 7)
   {
-    [v11 popOverSourceRect];
+    [optionsCopy popOverSourceRect];
     if (CGRectIsEmpty(v23))
     {
-      v18 = [v11 popOverSourceView];
-      if (v18)
+      popOverSourceView = [optionsCopy popOverSourceView];
+      if (popOverSourceView)
       {
         v19 = 1;
       }
 
       else
       {
-        v20 = [v11 popOverSourceBarButtonItem];
-        v19 = v20 != 0;
+        popOverSourceBarButtonItem = [optionsCopy popOverSourceBarButtonItem];
+        v19 = popOverSourceBarButtonItem != 0;
       }
     }
 
@@ -465,65 +465,65 @@ uint64_t __34__TVModalPresenter_sharedInstance__block_invoke()
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) != 0 && !v19)
     {
-      [v11 setPopOverSourceView:v10];
+      [optionsCopy setPopOverSourceView:responderCopy];
     }
   }
 
-  [(TVModalPresenter *)self presentViewController:v21 fromViewController:v17 options:v11 completion:v12];
+  [(TVModalPresenter *)self presentViewController:controllerCopy fromViewController:v17 options:optionsCopy completion:completionCopy];
 }
 
-- (void)presentViewController:(id)a3 fromViewController:(id)a4 options:(id)a5 completion:(id)a6
+- (void)presentViewController:(id)controller fromViewController:(id)viewController options:(id)options completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  optionsCopy = options;
+  completionCopy = completion;
   objc_initWeak(location, self);
-  if (v10)
+  if (controllerCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v14 = v10;
+      v14 = controllerCopy;
       [v14 setPresentedModal:1];
     }
 
-    v15 = [v11 presentedViewController];
+    presentedViewController = [viewControllerCopy presentedViewController];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v16 = [v11 presentedViewController];
+      presentedViewController2 = [viewControllerCopy presentedViewController];
     }
 
     else
     {
-      v16 = 0;
+      presentedViewController2 = 0;
     }
 
-    v17 = [v16 configuration];
-    v18 = [v17 type];
-    v19 = [(TVModalPresenter *)v12 type];
+    configuration = [presentedViewController2 configuration];
+    type = [configuration type];
+    type2 = [(TVModalPresenter *)optionsCopy type];
 
-    if (v18 == v19)
+    if (type == type2)
     {
-      if (v16)
+      if (presentedViewController2)
       {
 LABEL_11:
-        v20 = v16;
+        v20 = presentedViewController2;
         v21 = 1;
 LABEL_17:
-        [(TVModalPresentationNavigationController *)v20 setConfiguration:v12];
-        if ([(TVModalPresenter *)v12 conformsToProtocol:&unk_287E8F540])
+        [(TVModalPresentationNavigationController *)v20 setConfiguration:optionsCopy];
+        if ([(TVModalPresenter *)optionsCopy conformsToProtocol:&unk_287E8F540])
         {
-          v24 = v12;
+          selfCopy = optionsCopy;
         }
 
         else
         {
-          v24 = self;
+          selfCopy = self;
         }
 
-        v25 = v24;
+        v25 = selfCopy;
         [(TVModalPresentationNavigationController *)v20 setTransitioningDelegate:v25];
         v32[0] = MEMORY[0x277D85DD0];
         v32[1] = 3221225472;
@@ -533,23 +533,23 @@ LABEL_17:
         v26 = v20;
         v33 = v26;
         v40 = v21;
-        v34 = v12;
-        v35 = self;
-        v36 = v10;
-        v38 = v13;
-        v37 = v11;
+        v34 = optionsCopy;
+        selfCopy2 = self;
+        v36 = controllerCopy;
+        v38 = completionCopy;
+        v37 = viewControllerCopy;
         v27 = MEMORY[0x26D6AFBB0](v32);
-        v28 = [(TVModalPresentationNavigationController *)v26 transitionCoordinator];
+        transitionCoordinator = [(TVModalPresentationNavigationController *)v26 transitionCoordinator];
 
-        if (v28)
+        if (transitionCoordinator)
         {
-          v29 = [(TVModalPresentationNavigationController *)v26 transitionCoordinator];
+          transitionCoordinator2 = [(TVModalPresentationNavigationController *)v26 transitionCoordinator];
           v30[0] = MEMORY[0x277D85DD0];
           v30[1] = 3221225472;
           v30[2] = __80__TVModalPresenter_presentViewController_fromViewController_options_completion___block_invoke_4;
           v30[3] = &unk_279D6FAD8;
           v31 = v27;
-          [v29 animateAlongsideTransition:0 completion:v30];
+          [transitionCoordinator2 animateAlongsideTransition:0 completion:v30];
         }
 
         else
@@ -564,10 +564,10 @@ LABEL_17:
 
     else
     {
-      v22 = [(TVModalPresenter *)v12 allowsModalOverModal];
-      if (v16)
+      allowsModalOverModal = [(TVModalPresenter *)optionsCopy allowsModalOverModal];
+      if (presentedViewController2)
       {
-        v23 = v22;
+        v23 = allowsModalOverModal;
       }
 
       else
@@ -581,15 +581,15 @@ LABEL_17:
       }
     }
 
-    v20 = [[TVModalPresentationNavigationController alloc] initWithConfiguration:v12];
+    v20 = [[TVModalPresentationNavigationController alloc] initWithConfiguration:optionsCopy];
     v21 = 0;
     goto LABEL_17;
   }
 
-  if (v13)
+  if (completionCopy)
   {
-    v16 = [MEMORY[0x277CCA9B8] errorWithDomain:@"TVModalPresentationErrorDomain" code:0 userInfo:0];
-    (*(v13 + 2))(v13, 0, v16);
+    presentedViewController2 = [MEMORY[0x277CCA9B8] errorWithDomain:@"TVModalPresentationErrorDomain" code:0 userInfo:0];
+    (*(completionCopy + 2))(completionCopy, 0, presentedViewController2);
 LABEL_24:
   }
 
@@ -716,24 +716,24 @@ uint64_t __80__TVModalPresenter_presentViewController_fromViewController_options
   return result;
 }
 
-- (void)dismissViewControllerWithResponder:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)dismissViewControllerWithResponder:(id)responder animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a4;
-  v19 = a3;
-  v8 = a5;
-  v9 = [objc_opt_class() _viewControllerForResponder:v19];
-  v10 = [(TVModalPresenter *)self presentedViewControllers];
-  v11 = [v10 containsObject:v9];
+  animatedCopy = animated;
+  responderCopy = responder;
+  completionCopy = completion;
+  v9 = [objc_opt_class() _viewControllerForResponder:responderCopy];
+  presentedViewControllers = [(TVModalPresenter *)self presentedViewControllers];
+  v11 = [presentedViewControllers containsObject:v9];
 
-  v12 = [(TVModalPresenter *)self presentedViewControllers];
-  v13 = [v9 presentingViewController];
-  v14 = [v12 containsObject:v13];
+  presentedViewControllers2 = [(TVModalPresenter *)self presentedViewControllers];
+  presentingViewController = [v9 presentingViewController];
+  v14 = [presentedViewControllers2 containsObject:presentingViewController];
 
   if (!v9 || (v11 & 1) != 0 || (v14 & 1) != 0)
   {
     if (v9)
     {
-      [(TVModalPresenter *)self dismissViewController:v9 animated:v6 completion:v8];
+      [(TVModalPresenter *)self dismissViewController:v9 animated:animatedCopy completion:completionCopy];
       goto LABEL_13;
     }
   }
@@ -742,19 +742,19 @@ uint64_t __80__TVModalPresenter_presentViewController_fromViewController_options
   {
     do
     {
-      v15 = [v9 parentViewController];
-      v16 = v15;
-      if (v15)
+      parentViewController = [v9 parentViewController];
+      v16 = parentViewController;
+      if (parentViewController)
       {
-        v17 = v15;
+        presentingViewController2 = parentViewController;
       }
 
       else
       {
-        v17 = [v9 presentingViewController];
+        presentingViewController2 = [v9 presentingViewController];
       }
 
-      v18 = v17;
+      v18 = presentingViewController2;
 
       v9 = v18;
     }
@@ -762,37 +762,37 @@ uint64_t __80__TVModalPresenter_presentViewController_fromViewController_options
     while (v18);
   }
 
-  if (!v8)
+  if (!completionCopy)
   {
     goto LABEL_14;
   }
 
   v9 = [MEMORY[0x277CCA9B8] errorWithDomain:@"TVModalPresentationErrorDomain" code:1 userInfo:0];
-  v8[2](v8, 0, v9);
+  completionCopy[2](completionCopy, 0, v9);
 LABEL_13:
 
 LABEL_14:
 }
 
-- (void)dismissViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)dismissViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = a5;
-  v9 = [v7 presentingViewController];
+  animatedCopy = animated;
+  controllerCopy = controller;
+  completionCopy = completion;
+  presentingViewController = [controllerCopy presentingViewController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = [v7 presentingViewController];
+    presentingViewController2 = [controllerCopy presentingViewController];
 
-    if (v10)
+    if (presentingViewController2)
     {
       v18[0] = MEMORY[0x277D85DD0];
       v18[1] = 3221225472;
       v18[2] = __62__TVModalPresenter_dismissViewController_animated_completion___block_invoke;
       v18[3] = &unk_279D6E6F8;
-      v19 = v8;
-      [v10 dismissViewControllerAnimated:v6 completion:v18];
+      v19 = completionCopy;
+      [presentingViewController2 dismissViewControllerAnimated:animatedCopy completion:v18];
 
       goto LABEL_13;
     }
@@ -802,39 +802,39 @@ LABEL_14:
   {
   }
 
-  v11 = [v7 navigationController];
+  navigationController = [controllerCopy navigationController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = [v7 navigationController];
+    presentingViewController2 = [controllerCopy navigationController];
   }
 
   else
   {
-    v10 = 0;
+    presentingViewController2 = 0;
   }
 
-  v12 = [v10 topViewController];
+  topViewController = [presentingViewController2 topViewController];
 
-  if (v12 == v7)
+  if (topViewController == controllerCopy)
   {
-    v15 = [v10 popViewControllerAnimated:v6 completion:v8];
+    v15 = [presentingViewController2 popViewControllerAnimated:animatedCopy completion:completionCopy];
   }
 
   else
   {
-    v13 = [v10 viewControllers];
-    v14 = [v13 mutableCopy];
+    viewControllers = [presentingViewController2 viewControllers];
+    v14 = [viewControllers mutableCopy];
 
-    [v14 removeObject:v7];
-    [v10 setViewControllers:v14 animated:v6];
-    if (v8)
+    [v14 removeObject:controllerCopy];
+    [presentingViewController2 setViewControllers:v14 animated:animatedCopy];
+    if (completionCopy)
     {
       v16[0] = MEMORY[0x277D85DD0];
       v16[1] = 3221225472;
       v16[2] = __62__TVModalPresenter_dismissViewController_animated_completion___block_invoke_2;
       v16[3] = &unk_279D6E6F8;
-      v17 = v8;
+      v17 = completionCopy;
       dispatch_async(MEMORY[0x277D85CD0], v16);
     }
   }
@@ -853,17 +853,17 @@ uint64_t __62__TVModalPresenter_dismissViewController_animated_completion___bloc
   return result;
 }
 
-- (void)dismissAllViewControllersWithAnimation:(BOOL)a3 completion:(id)a4
+- (void)dismissAllViewControllersWithAnimation:(BOOL)animation completion:(id)completion
 {
   v24 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  completionCopy = completion;
   v6 = dispatch_group_create();
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v7 = [(TVModalPresenter *)self _presentationControllers];
-  v8 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  _presentationControllers = [(TVModalPresenter *)self _presentationControllers];
+  v8 = [_presentationControllers countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v8)
   {
     v9 = v8;
@@ -875,24 +875,24 @@ uint64_t __62__TVModalPresenter_dismissViewController_animated_completion___bloc
       {
         if (*v20 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(_presentationControllers);
         }
 
         v12 = *(*(&v19 + 1) + 8 * v11);
         dispatch_group_enter(v6);
-        v13 = [v12 presentingViewController];
+        presentingViewController = [v12 presentingViewController];
         v17[0] = MEMORY[0x277D85DD0];
         v17[1] = 3221225472;
         v17[2] = __70__TVModalPresenter_dismissAllViewControllersWithAnimation_completion___block_invoke;
         v17[3] = &unk_279D6E7F8;
         v18 = v6;
-        [v13 dismissViewControllerAnimated:1 completion:v17];
+        [presentingViewController dismissViewControllerAnimated:1 completion:v17];
 
         ++v11;
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v9 = [_presentationControllers countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v9);
@@ -902,8 +902,8 @@ uint64_t __62__TVModalPresenter_dismissViewController_animated_completion___bloc
   v15[1] = 3221225472;
   v15[2] = __70__TVModalPresenter_dismissAllViewControllersWithAnimation_completion___block_invoke_2;
   v15[3] = &unk_279D6E6F8;
-  v16 = v5;
-  v14 = v5;
+  v16 = completionCopy;
+  v14 = completionCopy;
   dispatch_group_notify(v6, MEMORY[0x277D85CD0], v15);
 }
 
@@ -918,13 +918,13 @@ uint64_t __70__TVModalPresenter_dismissAllViewControllersWithAnimation_completio
   return result;
 }
 
-+ (id)_viewControllerForResponder:(id)a3
++ (id)_viewControllerForResponder:(id)responder
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  responderCopy = responder;
+  v4 = responderCopy;
+  if (responderCopy)
   {
-    v5 = v3;
+    v5 = responderCopy;
     do
     {
       objc_opt_class();
@@ -933,12 +933,12 @@ uint64_t __70__TVModalPresenter_dismissAllViewControllersWithAnimation_completio
         break;
       }
 
-      v6 = [v5 nextResponder];
+      nextResponder = [v5 nextResponder];
 
-      v5 = v6;
+      v5 = nextResponder;
     }
 
-    while (v6);
+    while (nextResponder);
   }
 
   else
@@ -949,13 +949,13 @@ uint64_t __70__TVModalPresenter_dismissAllViewControllersWithAnimation_completio
   return v5;
 }
 
-- (id)animationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5
+- (id)animationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController
 {
-  v6 = a3;
+  controllerCopy = controller;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
+    v7 = controllerCopy;
   }
 
   else
@@ -967,10 +967,10 @@ uint64_t __70__TVModalPresenter_dismissAllViewControllersWithAnimation_completio
   v9 = v8;
   if (v8)
   {
-    v10 = [v8 configuration];
-    v11 = [v10 type];
+    configuration = [v8 configuration];
+    type = [configuration type];
 
-    if (v11 == 1000)
+    if (type == 1000)
     {
       v12 = 32;
 LABEL_9:
@@ -978,10 +978,10 @@ LABEL_9:
       goto LABEL_11;
     }
 
-    v13 = [v9 configuration];
-    v14 = [v13 type];
+    configuration2 = [v9 configuration];
+    type2 = [configuration2 type];
 
-    if (v14 == 4)
+    if (type2 == 4)
     {
       v12 = 16;
       goto LABEL_9;
@@ -994,13 +994,13 @@ LABEL_11:
   return v15;
 }
 
-- (id)animationControllerForDismissedController:(id)a3
+- (id)animationControllerForDismissedController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = controllerCopy;
   }
 
   else
@@ -1012,10 +1012,10 @@ LABEL_11:
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 configuration];
-    v9 = [v8 type];
+    configuration = [v6 configuration];
+    type = [configuration type];
 
-    if (v9 == 1000)
+    if (type == 1000)
     {
       v10 = 32;
 LABEL_9:
@@ -1023,10 +1023,10 @@ LABEL_9:
       goto LABEL_11;
     }
 
-    v11 = [v7 configuration];
-    v12 = [v11 type];
+    configuration2 = [v7 configuration];
+    type2 = [configuration2 type];
 
-    if (v12 == 4)
+    if (type2 == 4)
     {
       v10 = 24;
       goto LABEL_9;
@@ -1039,12 +1039,12 @@ LABEL_11:
   return v13;
 }
 
-- (id)presentationControllerForPresentedViewController:(id)a3 presentingViewController:(id)a4 sourceViewController:(id)a5
+- (id)presentationControllerForPresentedViewController:(id)controller presentingViewController:(id)viewController sourceViewController:(id)sourceViewController
 {
   v6 = MEMORY[0x277D76198];
-  v7 = a4;
-  v8 = a3;
-  v9 = [[v6 alloc] initWithPresentedViewController:v8 presentingViewController:v7];
+  viewControllerCopy = viewController;
+  controllerCopy = controller;
+  v9 = [[v6 alloc] initWithPresentedViewController:controllerCopy presentingViewController:viewControllerCopy];
 
   [v9 setBlurStyle:4005];
 

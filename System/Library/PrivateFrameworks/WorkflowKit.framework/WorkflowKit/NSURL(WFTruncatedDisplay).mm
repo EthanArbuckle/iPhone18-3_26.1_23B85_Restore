@@ -6,13 +6,13 @@
 
 - (id)wf_displayStringWithCharacterLimit:()WFTruncatedDisplay
 {
-  v5 = [MEMORY[0x1E696AF20] componentsWithURL:a1 resolvingAgainstBaseURL:0];
-  v6 = [v5 host];
-  v7 = [v5 scheme];
-  v8 = v7;
+  v5 = [MEMORY[0x1E696AF20] componentsWithURL:self resolvingAgainstBaseURL:0];
+  host = [v5 host];
+  scheme = [v5 scheme];
+  v8 = scheme;
   if (v5)
   {
-    v9 = v6 == 0;
+    v9 = host == 0;
   }
 
   else
@@ -20,21 +20,21 @@
     v9 = 1;
   }
 
-  if (v9 || v7 == 0)
+  if (v9 || scheme == 0)
   {
-    v11 = [a1 absoluteString];
+    absoluteString = [self absoluteString];
   }
 
   else
   {
-    if ([v6 hasPrefix:@"www."])
+    if ([host hasPrefix:@"www."])
     {
-      v12 = [v6 substringFromIndex:{objc_msgSend(@"www.", "length")}];
+      v12 = [host substringFromIndex:{objc_msgSend(@"www.", "length")}];
       [v5 setHost:v12];
     }
 
-    v13 = [v5 string];
-    v14 = [v13 substringFromIndex:{objc_msgSend(v8, "length") + 1}];
+    string = [v5 string];
+    v14 = [string substringFromIndex:{objc_msgSend(v8, "length") + 1}];
 
     if ([v14 hasPrefix:@"//"])
     {
@@ -53,18 +53,18 @@
 
     if (v14)
     {
-      v18 = v14;
+      absoluteString2 = v14;
     }
 
     else
     {
-      v18 = [a1 absoluteString];
+      absoluteString2 = [self absoluteString];
     }
 
-    v11 = v18;
+    absoluteString = absoluteString2;
   }
 
-  return v11;
+  return absoluteString;
 }
 
 @end

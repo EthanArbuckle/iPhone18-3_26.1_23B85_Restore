@@ -1,14 +1,14 @@
 @interface TSCH3DLabelsRayPickMeshRenderer
-- (void)renderWithMeshRenderLabelInfo:(id)a3;
+- (void)renderWithMeshRenderLabelInfo:(id)info;
 @end
 
 @implementation TSCH3DLabelsRayPickMeshRenderer
 
-- (void)renderWithMeshRenderLabelInfo:(id)a3
+- (void)renderWithMeshRenderLabelInfo:(id)info
 {
   v191 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v8 = objc_msgSend_renderer(v3, v4, v5, v6, v7);
+  infoCopy = info;
+  v8 = objc_msgSend_renderer(infoCopy, v4, v5, v6, v7);
   v13 = objc_msgSend_pipeline(v8, v9, v10, v11, v12);
   v18 = objc_msgSend_processor(v13, v14, v15, v16, v17);
   v23 = objc_msgSend_mesh(v8, v19, v20, v21, v22);
@@ -27,9 +27,9 @@
   v189 = 0u;
   *v190 = 0u;
   v188 = 0u;
-  if (v3)
+  if (infoCopy)
   {
-    objc_msgSend_translation(v3, v40, 0.0, v41, v42);
+    objc_msgSend_translation(infoCopy, v40, 0.0, v41, v42);
     v44 = v155;
     LODWORD(v45) = v156;
   }
@@ -59,9 +59,9 @@
   v164 = v49;
   v165 = LODWORD(v45);
   v166 = (v47.f32[0] + *v43.i32) + 1.0;
-  if (v3)
+  if (infoCopy)
   {
-    objc_msgSend_offset(v3, v40, 0.0, v49, v45);
+    objc_msgSend_offset(infoCopy, v40, 0.0, v49, v45);
     v46 = v144;
   }
 
@@ -82,7 +82,7 @@
   v153 = vaddv_f32(v50) + 0.0;
   v154 = v153 + 1.0;
   *&v51 = sub_2761558A0(&v157, &v145, v167).u64[0];
-  objc_msgSend_rotation(v3, v52, v51, v53, v54);
+  objc_msgSend_rotation(infoCopy, v52, v51, v53, v54);
   v56 = __sincosf_stret(v55 * 0.017453);
   v57 = (1.0 - v56.__cosval) * 0.0;
   v58 = v56.__cosval + (v57 * 0.0);
@@ -113,9 +113,9 @@
   v142[11] = (v68 * 0.0) + v71;
   v143 = xmmword_2764D5F20;
   *&v73 = sub_2761558A0(v167, v142, &v185).u64[0];
-  if (v3)
+  if (infoCopy)
   {
-    objc_msgSend_alignmentOffset(v3, v72, v73, v74, v75);
+    objc_msgSend_alignmentOffset(infoCopy, v72, v73, v74, v75);
     v76 = v131;
   }
 
@@ -137,9 +137,9 @@
   v140 = vaddv_f32(v77) + 0.0;
   v141 = v140 + 1.0;
   *&v79 = sub_2761558A0(&v185, &v132, &v168).u64[0];
-  if (v3)
+  if (infoCopy)
   {
-    objc_msgSend_scale(v3, v78, v79, *v80.i64, v81);
+    objc_msgSend_scale(infoCopy, v78, v79, *v80.i64, v81);
     v80.i32[0] = v124;
     v82 = v125;
   }

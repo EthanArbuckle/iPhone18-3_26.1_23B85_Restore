@@ -64,9 +64,9 @@
 
 - (void)startedMirroring
 {
-  v3 = [(HKPersistentTimer *)self->_startMirroringTimer timerValue];
+  timerValue = [(HKPersistentTimer *)self->_startMirroringTimer timerValue];
 
-  if (v3)
+  if (timerValue)
   {
     [(HDMirroredWorkoutAnalyticEvent *)self->_mirroredWorkoutEvent setTimeTakenToStartMirroring:[(HKPersistentTimer *)self->_startMirroringTimer elapsedMilliSeconds]];
     startMirroringTimer = self->_startMirroringTimer;
@@ -88,9 +88,9 @@
 
 - (void)stoppedMirroring
 {
-  v3 = [(HKPersistentTimer *)self->_stopMirroringTimer timerValue];
+  timerValue = [(HKPersistentTimer *)self->_stopMirroringTimer timerValue];
 
-  if (v3)
+  if (timerValue)
   {
     [(HDMirroredWorkoutAnalyticEvent *)self->_mirroredWorkoutEvent setMirroringDuration:(CFAbsoluteTimeGetCurrent() - self->_startTime)];
     [(HDMirroredWorkoutAnalyticEvent *)self->_mirroredWorkoutEvent setTimeTakenToStopMirroring:[(HKPersistentTimer *)self->_stopMirroringTimer elapsedMilliSeconds]];
@@ -113,25 +113,25 @@
 
 - (void)sentData
 {
-  v3 = [(HKPersistentTimer *)self->_sendDataTimer timerValue];
+  timerValue = [(HKPersistentTimer *)self->_sendDataTimer timerValue];
 
-  if (v3)
+  if (timerValue)
   {
-    v4 = [(HKPersistentTimer *)self->_sendDataTimer elapsedMilliSeconds];
-    if (v4 <= [(HDMirroredWorkoutAnalyticEvent *)self->_mirroredWorkoutEvent maxTimeTakenToSendData])
+    elapsedMilliSeconds = [(HKPersistentTimer *)self->_sendDataTimer elapsedMilliSeconds];
+    if (elapsedMilliSeconds <= [(HDMirroredWorkoutAnalyticEvent *)self->_mirroredWorkoutEvent maxTimeTakenToSendData])
     {
-      if (v4 < [(HDMirroredWorkoutAnalyticEvent *)self->_mirroredWorkoutEvent minTimeTakenToSendData])
+      if (elapsedMilliSeconds < [(HDMirroredWorkoutAnalyticEvent *)self->_mirroredWorkoutEvent minTimeTakenToSendData])
       {
-        [(HDMirroredWorkoutAnalyticEvent *)self->_mirroredWorkoutEvent setMinTimeTakenToSendData:v4];
+        [(HDMirroredWorkoutAnalyticEvent *)self->_mirroredWorkoutEvent setMinTimeTakenToSendData:elapsedMilliSeconds];
       }
     }
 
     else
     {
-      [(HDMirroredWorkoutAnalyticEvent *)self->_mirroredWorkoutEvent setMaxTimeTakenToSendData:v4];
+      [(HDMirroredWorkoutAnalyticEvent *)self->_mirroredWorkoutEvent setMaxTimeTakenToSendData:elapsedMilliSeconds];
     }
 
-    [(HDMirroredWorkoutAnalyticEvent *)self->_mirroredWorkoutEvent setTimeTakenToSendData:(v4 + [(HDMirroredWorkoutAnalyticEvent *)self->_mirroredWorkoutEvent timeTakenToSendData])];
+    [(HDMirroredWorkoutAnalyticEvent *)self->_mirroredWorkoutEvent setTimeTakenToSendData:(elapsedMilliSeconds + [(HDMirroredWorkoutAnalyticEvent *)self->_mirroredWorkoutEvent timeTakenToSendData])];
     [(HDMirroredWorkoutAnalyticEvent *)self->_mirroredWorkoutEvent setNumberOfSendRequests:[(HDMirroredWorkoutAnalyticEvent *)self->_mirroredWorkoutEvent numberOfSendRequests]+ 1];
     sendDataTimer = self->_sendDataTimer;
 

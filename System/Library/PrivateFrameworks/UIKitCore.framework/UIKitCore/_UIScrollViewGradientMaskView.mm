@@ -2,17 +2,17 @@
 - (UIEdgeInsets)gradientEndInsets;
 - (UIEdgeInsets)gradientIntensities;
 - (UIEdgeInsets)gradientStartInsets;
-- (_UIScrollViewGradientMaskView)initWithFrame:(CGRect)a3;
-- (void)updateWithFrame:(double)a3 gradientStartInsets:(double)a4 gradientEndInsets:(double)a5 gradientIntensities:(double)a6;
+- (_UIScrollViewGradientMaskView)initWithFrame:(CGRect)frame;
+- (void)updateWithFrame:(double)frame gradientStartInsets:(double)insets gradientEndInsets:(double)endInsets gradientIntensities:(double)intensities;
 @end
 
 @implementation _UIScrollViewGradientMaskView
 
-- (_UIScrollViewGradientMaskView)initWithFrame:(CGRect)a3
+- (_UIScrollViewGradientMaskView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = _UIScrollViewGradientMaskView;
-  v3 = [(UIView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -22,17 +22,17 @@
   return v4;
 }
 
-- (void)updateWithFrame:(double)a3 gradientStartInsets:(double)a4 gradientEndInsets:(double)a5 gradientIntensities:(double)a6
+- (void)updateWithFrame:(double)frame gradientStartInsets:(double)insets gradientEndInsets:(double)endInsets gradientIntensities:(double)intensities
 {
-  v31 = a1[51];
-  [a1 frame];
-  v108 = a6;
-  v41 = v33 == a6;
-  v34 = a5;
+  v31 = self[51];
+  [self frame];
+  intensitiesCopy = intensities;
+  v41 = v33 == intensities;
+  endInsetsCopy = endInsets;
   v35 = !v41;
   if (v31)
   {
-    v36 = v32 != a5;
+    v36 = v32 != endInsets;
   }
 
   else
@@ -40,7 +40,7 @@
     v36 = v35;
   }
 
-  [a1 gradientStartInsets];
+  [self gradientStartInsets];
   v107 = a10;
   v41 = a8 == v40 && a7 == v37;
   v42 = v41 && a10 == v39;
@@ -57,7 +57,7 @@ LABEL_29:
     goto LABEL_37;
   }
 
-  [a1 gradientEndInsets];
+  [self gradientEndInsets];
   v46 = a12;
   v44 = a11;
   v53 = a12 == v52 && a11 == v49;
@@ -70,7 +70,7 @@ LABEL_29:
     goto LABEL_29;
   }
 
-  [a1 gradientIntensities];
+  [self gradientIntensities];
   v60 = a17 != v59;
   v56 = a18;
   if (a18 != v61)
@@ -85,16 +85,16 @@ LABEL_29:
 
   v47 = a16 != v58 || v60;
 LABEL_37:
-  [a1 setFrame:{a3, a4, v34, v108}];
-  [a1 setGradientStartInsets:{a7, a8, v104, v107}];
+  [self setFrame:{frame, insets, endInsetsCopy, intensitiesCopy}];
+  [self setGradientStartInsets:{a7, a8, v104, v107}];
   v62 = v45;
-  [a1 setGradientEndInsets:{v44, v46, v45, v48}];
-  [a1 setGradientIntensities:{a15, a16, a17, v56}];
+  [self setGradientEndInsets:{v44, v46, v45, v48}];
+  [self setGradientIntensities:{a15, a16, a17, v56}];
   if ((v36 | v47))
   {
-    v63 = v34;
+    v63 = endInsetsCopy;
     v64 = fmax(v44, v62);
-    a1[51] = v64 <= 0.0;
+    self[51] = v64 <= 0.0;
     if (v64 > 0.0 && (v46 > 0.0 || v48 > 0.0))
     {
       NSLog(&cfstr_Uiscrollviewgr.isa);
@@ -102,31 +102,31 @@ LABEL_37:
 
     v65 = objc_opt_new();
     v66 = objc_opt_new();
-    [a1 gradientIntensities];
+    [self gradientIntensities];
     v68 = v67;
-    [a1 gradientIntensities];
+    [self gradientIntensities];
     v70 = v69;
-    [a1 gradientStartInsets];
+    [self gradientStartInsets];
     v72 = v71;
-    [a1 gradientEndInsets];
+    [self gradientEndInsets];
     v74 = v73;
-    [a1 gradientStartInsets];
+    [self gradientStartInsets];
     v76 = v75;
-    [a1 gradientEndInsets];
-    v78 = v108;
-    if (a1[51])
+    [self gradientEndInsets];
+    v78 = intensitiesCopy;
+    if (self[51])
     {
-      [a1 gradientIntensities];
+      [self gradientIntensities];
       v68 = v79;
-      [a1 gradientIntensities];
+      [self gradientIntensities];
       v70 = v80;
-      [a1 gradientStartInsets];
+      [self gradientStartInsets];
       v72 = v81;
-      [a1 gradientEndInsets];
+      [self gradientEndInsets];
       v74 = v82;
-      [a1 gradientStartInsets];
+      [self gradientStartInsets];
       v76 = v83;
-      [a1 gradientEndInsets];
+      [self gradientEndInsets];
       v85 = v84;
       v78 = v63;
     }
@@ -137,16 +137,16 @@ LABEL_37:
     }
 
     v86 = +[UIColor blackColor];
-    v87 = [v86 CGColor];
+    cGColor = [v86 CGColor];
 
     v88 = [UIColor colorWithWhite:0.0 alpha:0.0];
-    v89 = [v88 CGColor];
+    cGColor2 = [v88 CGColor];
 
     v90 = [UIColor colorWithWhite:0.0 alpha:1.0 - v68];
-    v91 = [v90 CGColor];
+    cGColor3 = [v90 CGColor];
 
     v92 = [UIColor colorWithWhite:0.0 alpha:1.0 - v70];
-    v93 = [v92 CGColor];
+    cGColor4 = [v92 CGColor];
 
     if (v78 > 0.0)
     {
@@ -160,32 +160,32 @@ LABEL_37:
         [v65 addObject:&unk_1EFE33EF8];
         if (v72 > 0.0)
         {
-          [v66 addObject:v89];
+          [v66 addObject:cGColor2];
           v94 = [MEMORY[0x1E696AD98] numberWithDouble:v72 / v78];
           [v65 addObject:v94];
         }
 
-        [v66 addObject:v91];
+        [v66 addObject:cGColor3];
         v95 = [MEMORY[0x1E696AD98] numberWithDouble:v74 / v78];
         [v65 addObject:v95];
       }
 
-      [v66 addObject:v87];
-      v96 = v87;
+      [v66 addObject:cGColor];
+      v96 = cGColor;
       if (v85 > 0.0)
       {
         v97 = [MEMORY[0x1E696AD98] numberWithDouble:(v78 - v85) / v78];
         [v65 addObject:v97];
 
-        [v66 addObject:v87];
-        v96 = v93;
+        [v66 addObject:cGColor];
+        v96 = cGColor4;
         if (v76 > 0.0)
         {
           v98 = [MEMORY[0x1E696AD98] numberWithDouble:(v78 - v76) / v78];
           [v65 addObject:v98];
 
-          [v66 addObject:v93];
-          v96 = v89;
+          [v66 addObject:cGColor4];
+          v96 = cGColor2;
         }
       }
 
@@ -196,15 +196,15 @@ LABEL_37:
     v99 = [v65 count];
     if (v99 != [v66 count])
     {
-      v102 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v102 handleFailureInMethod:a2 object:a1 file:@"_UIScrollViewGradientMaskView.m" lineNumber:147 description:@"Bug in _UIScrollViewGradientMaskView: different number of gradient stops and colors"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"_UIScrollViewGradientMaskView.m" lineNumber:147 description:@"Bug in _UIScrollViewGradientMaskView: different number of gradient stops and colors"];
     }
 
     v109[0] = MEMORY[0x1E69E9820];
     v109[1] = 3221225472;
     v109[2] = __107___UIScrollViewGradientMaskView_updateWithFrame_gradientStartInsets_gradientEndInsets_gradientIntensities___block_invoke;
     v109[3] = &unk_1E70F6228;
-    v109[4] = a1;
+    v109[4] = self;
     v110 = v66;
     v111 = v65;
     v100 = v65;

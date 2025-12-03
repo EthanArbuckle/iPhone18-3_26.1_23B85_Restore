@@ -1,47 +1,47 @@
 @interface ACHEarnedInstanceStore
-- (ACHEarnedInstanceStore)initWithClient:(id)a3 assertionClient:(id)a4 earnedInstanceDuplicateUtility:(id)a5 device:(unsigned __int8)a6;
-- (BOOL)_queue_addEarnedInstances:(id)a3 triggerSync:(BOOL)a4 error:(id *)a5;
-- (BOOL)_queue_removeEarnedInstances:(id)a3 error:(id *)a4;
-- (BOOL)addEarnedInstances:(id)a3 error:(id *)a4;
-- (BOOL)removeAllEarnedInstancesWithError:(id *)a3;
-- (BOOL)removeEarnedInstances:(id)a3 error:(id *)a4;
-- (BOOL)removeEarnedInstancesForTemplateUniqueName:(id)a3 error:(id *)a4;
+- (ACHEarnedInstanceStore)initWithClient:(id)client assertionClient:(id)assertionClient earnedInstanceDuplicateUtility:(id)utility device:(unsigned __int8)device;
+- (BOOL)_queue_addEarnedInstances:(id)instances triggerSync:(BOOL)sync error:(id *)error;
+- (BOOL)_queue_removeEarnedInstances:(id)instances error:(id *)error;
+- (BOOL)addEarnedInstances:(id)instances error:(id *)error;
+- (BOOL)removeAllEarnedInstancesWithError:(id *)error;
+- (BOOL)removeEarnedInstances:(id)instances error:(id *)error;
+- (BOOL)removeEarnedInstancesForTemplateUniqueName:(id)name error:(id *)error;
 - (NSArray)earnedInstances;
-- (id)_queue_addEarnedInstancesWithSingleTemplate:(id)a3 error:(id *)a4;
-- (id)countOfEarnedInstancesForTemplateUniqueNames:(id)a3 error:(id *)a4;
-- (id)earnedInstancesForAnniversaryWithDateComponents:(id)a3 templateUnqiueNames:(id)a4 error:(id *)a5;
-- (id)earnedInstancesForDateInterval:(id)a3 error:(id *)a4;
-- (id)earnedInstancesForEarnedDateComponents:(id)a3 error:(id *)a4;
-- (id)earnedInstancesForTemplateUniqueName:(id)a3 error:(id *)a4;
-- (id)mostRecentEarnedInstanceForTemplateUniqueName:(id)a3 error:(id *)a4;
-- (id)mostRecentEarnedInstancesForTemplateUniqueNames:(id)a3 error:(id *)a4;
-- (unint64_t)countOfEarnedInstancesForTemplateUniqueName:(id)a3 error:(id *)a4;
-- (unint64_t)countOfEarnedInstancesForTemplateUniqueName:(id)a3 inDateComponentInterval:(id)a4 withCalendar:(id)a5 error:(id *)a6;
-- (void)_notifyObserversOfAddedEarnedInstances:(id)a3;
-- (void)_notifyObserversOfRemovedEarnedInstances:(id)a3;
+- (id)_queue_addEarnedInstancesWithSingleTemplate:(id)template error:(id *)error;
+- (id)countOfEarnedInstancesForTemplateUniqueNames:(id)names error:(id *)error;
+- (id)earnedInstancesForAnniversaryWithDateComponents:(id)components templateUnqiueNames:(id)names error:(id *)error;
+- (id)earnedInstancesForDateInterval:(id)interval error:(id *)error;
+- (id)earnedInstancesForEarnedDateComponents:(id)components error:(id *)error;
+- (id)earnedInstancesForTemplateUniqueName:(id)name error:(id *)error;
+- (id)mostRecentEarnedInstanceForTemplateUniqueName:(id)name error:(id *)error;
+- (id)mostRecentEarnedInstancesForTemplateUniqueNames:(id)names error:(id *)error;
+- (unint64_t)countOfEarnedInstancesForTemplateUniqueName:(id)name error:(id *)error;
+- (unint64_t)countOfEarnedInstancesForTemplateUniqueName:(id)name inDateComponentInterval:(id)interval withCalendar:(id)calendar error:(id *)error;
+- (void)_notifyObserversOfAddedEarnedInstances:(id)instances;
+- (void)_notifyObserversOfRemovedEarnedInstances:(id)instances;
 - (void)_notifyObserversOfSync;
 - (void)_queue_purgeCaches;
-- (void)addObserver:(id)a3;
+- (void)addObserver:(id)observer;
 - (void)earnedInstances;
-- (void)removeObserver:(id)a3;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation ACHEarnedInstanceStore
 
-- (ACHEarnedInstanceStore)initWithClient:(id)a3 assertionClient:(id)a4 earnedInstanceDuplicateUtility:(id)a5 device:(unsigned __int8)a6
+- (ACHEarnedInstanceStore)initWithClient:(id)client assertionClient:(id)assertionClient earnedInstanceDuplicateUtility:(id)utility device:(unsigned __int8)device
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  clientCopy = client;
+  assertionClientCopy = assertionClient;
+  utilityCopy = utility;
   v32.receiver = self;
   v32.super_class = ACHEarnedInstanceStore;
   v14 = [(ACHEarnedInstanceStore *)&v32 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_client, a3);
-    objc_storeStrong(&v15->_assertionClient, a4);
-    objc_storeStrong(&v15->_duplicateUtility, a5);
+    objc_storeStrong(&v14->_client, client);
+    objc_storeStrong(&v15->_assertionClient, assertionClient);
+    objc_storeStrong(&v15->_duplicateUtility, utility);
     v16 = HKCreateSerialDispatchQueue();
     earnedInstanceQueue = v15->_earnedInstanceQueue;
     v15->_earnedInstanceQueue = v16;
@@ -50,9 +50,9 @@
     observerQueue = v15->_observerQueue;
     v15->_observerQueue = v18;
 
-    v20 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     observers = v15->_observers;
-    v15->_observers = v20;
+    v15->_observers = weakObjectsHashTable;
 
     v22 = objc_alloc_init(MEMORY[0x277CBEA78]);
     earnedInstancesForTemplateUniqueNameCache = v15->_earnedInstancesForTemplateUniqueNameCache;
@@ -62,16 +62,16 @@
     earnedInstancesForEarnedDateComponentsCache = v15->_earnedInstancesForEarnedDateComponentsCache;
     v15->_earnedInstancesForEarnedDateComponentsCache = v24;
 
-    v15->_device = a6;
+    v15->_device = device;
     objc_initWeak(&location, v15);
-    v26 = [*MEMORY[0x277CE8AF0] UTF8String];
+    uTF8String = [*MEMORY[0x277CE8AF0] UTF8String];
     v27 = v15->_earnedInstanceQueue;
     v29[0] = MEMORY[0x277D85DD0];
     v29[1] = 3221225472;
     v29[2] = __95__ACHEarnedInstanceStore_initWithClient_assertionClient_earnedInstanceDuplicateUtility_device___block_invoke;
     v29[3] = &unk_2784907F8;
     objc_copyWeak(&v30, &location);
-    notify_register_dispatch(v26, &v15->_syncedEarnedInstancesToken, v27, v29);
+    notify_register_dispatch(uTF8String, &v15->_syncedEarnedInstancesToken, v27, v29);
     objc_destroyWeak(&v30);
     objc_destroyWeak(&location);
   }
@@ -99,10 +99,10 @@ void __95__ACHEarnedInstanceStore_initWithClient_assertionClient_earnedInstanceD
   v16[2] = __Block_byref_object_copy__13;
   v16[3] = __Block_byref_object_dispose__13;
   v17 = 0;
-  v3 = [(ACHEarnedInstanceStore *)self earnedInstanceQueue];
-  dispatch_assert_queue_not_V2(v3);
+  earnedInstanceQueue = [(ACHEarnedInstanceStore *)self earnedInstanceQueue];
+  dispatch_assert_queue_not_V2(earnedInstanceQueue);
 
-  v4 = [(ACHEarnedInstanceStore *)self earnedInstanceQueue];
+  earnedInstanceQueue2 = [(ACHEarnedInstanceStore *)self earnedInstanceQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __41__ACHEarnedInstanceStore_earnedInstances__block_invoke;
@@ -110,7 +110,7 @@ void __95__ACHEarnedInstanceStore_initWithClient_assertionClient_earnedInstanceD
   block[4] = self;
   block[5] = &v18;
   block[6] = &v15;
-  dispatch_sync(v4, block);
+  dispatch_sync(earnedInstanceQueue2, block);
 
   if (*(v16[0] + 40))
   {
@@ -141,9 +141,9 @@ void __41__ACHEarnedInstanceStore_earnedInstances__block_invoke(uint64_t a1)
   *(v5 + 40) = v4;
 }
 
-- (id)earnedInstancesForTemplateUniqueName:(id)a3 error:(id *)a4
+- (id)earnedInstancesForTemplateUniqueName:(id)name error:(id *)error
 {
-  v6 = a3;
+  nameCopy = name;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -156,20 +156,20 @@ void __41__ACHEarnedInstanceStore_earnedInstances__block_invoke(uint64_t a1)
   v18[2] = __Block_byref_object_copy__13;
   v18[3] = __Block_byref_object_dispose__13;
   v19 = 0;
-  v7 = [(ACHEarnedInstanceStore *)self earnedInstanceQueue];
-  dispatch_assert_queue_not_V2(v7);
+  earnedInstanceQueue = [(ACHEarnedInstanceStore *)self earnedInstanceQueue];
+  dispatch_assert_queue_not_V2(earnedInstanceQueue);
 
-  v8 = [(ACHEarnedInstanceStore *)self earnedInstanceQueue];
+  earnedInstanceQueue2 = [(ACHEarnedInstanceStore *)self earnedInstanceQueue];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __69__ACHEarnedInstanceStore_earnedInstancesForTemplateUniqueName_error___block_invoke;
   v13[3] = &unk_278491580;
   v13[4] = self;
-  v9 = v6;
+  v9 = nameCopy;
   v14 = v9;
   v15 = &v20;
   v16 = &v17;
-  dispatch_sync(v8, v13);
+  dispatch_sync(earnedInstanceQueue2, v13);
 
   if (*(v18[0] + 40))
   {
@@ -179,9 +179,9 @@ void __41__ACHEarnedInstanceStore_earnedInstances__block_invoke(uint64_t a1)
       [ACHEarnedInstanceStore earnedInstancesForTemplateUniqueName:v9 error:v18];
     }
 
-    if (a4)
+    if (error)
     {
-      *a4 = *(v18[0] + 40);
+      *error = *(v18[0] + 40);
     }
   }
 
@@ -223,9 +223,9 @@ void __69__ACHEarnedInstanceStore_earnedInstancesForTemplateUniqueName_error___b
   }
 }
 
-- (id)earnedInstancesForEarnedDateComponents:(id)a3 error:(id *)a4
+- (id)earnedInstancesForEarnedDateComponents:(id)components error:(id *)error
 {
-  v6 = a3;
+  componentsCopy = components;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -238,20 +238,20 @@ void __69__ACHEarnedInstanceStore_earnedInstancesForTemplateUniqueName_error___b
   v19[2] = __Block_byref_object_copy__13;
   v19[3] = __Block_byref_object_dispose__13;
   v20 = 0;
-  v7 = [(ACHEarnedInstanceStore *)self earnedInstanceQueue];
-  dispatch_assert_queue_not_V2(v7);
+  earnedInstanceQueue = [(ACHEarnedInstanceStore *)self earnedInstanceQueue];
+  dispatch_assert_queue_not_V2(earnedInstanceQueue);
 
-  v8 = [(ACHEarnedInstanceStore *)self earnedInstanceQueue];
+  earnedInstanceQueue2 = [(ACHEarnedInstanceStore *)self earnedInstanceQueue];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __71__ACHEarnedInstanceStore_earnedInstancesForEarnedDateComponents_error___block_invoke;
   v13[3] = &unk_278491580;
-  v9 = v6;
+  v9 = componentsCopy;
   v14 = v9;
-  v15 = self;
+  selfCopy = self;
   v16 = &v21;
   v17 = &v18;
-  dispatch_sync(v8, v13);
+  dispatch_sync(earnedInstanceQueue2, v13);
 
   if (*(v19[0] + 40))
   {
@@ -261,9 +261,9 @@ void __69__ACHEarnedInstanceStore_earnedInstancesForTemplateUniqueName_error___b
       [ACHEarnedInstanceStore earnedInstancesForEarnedDateComponents:v9 error:v19];
     }
 
-    if (a4)
+    if (error)
     {
-      *a4 = *(v19[0] + 40);
+      *error = *(v19[0] + 40);
     }
   }
 
@@ -307,11 +307,11 @@ void __71__ACHEarnedInstanceStore_earnedInstancesForEarnedDateComponents_error__
   }
 }
 
-- (id)earnedInstancesForAnniversaryWithDateComponents:(id)a3 templateUnqiueNames:(id)a4 error:(id *)a5
+- (id)earnedInstancesForAnniversaryWithDateComponents:(id)components templateUnqiueNames:(id)names error:(id *)error
 {
   v42 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  componentsCopy = components;
+  namesCopy = names;
   v30 = 0;
   v31 = &v30;
   v32 = 0x3032000000;
@@ -324,22 +324,22 @@ void __71__ACHEarnedInstanceStore_earnedInstancesForEarnedDateComponents_error__
   v27 = __Block_byref_object_copy__13;
   v28 = __Block_byref_object_dispose__13;
   v29 = 0;
-  v10 = [(ACHEarnedInstanceStore *)self earnedInstanceQueue];
-  dispatch_assert_queue_not_V2(v10);
+  earnedInstanceQueue = [(ACHEarnedInstanceStore *)self earnedInstanceQueue];
+  dispatch_assert_queue_not_V2(earnedInstanceQueue);
 
-  v11 = [(ACHEarnedInstanceStore *)self earnedInstanceQueue];
+  earnedInstanceQueue2 = [(ACHEarnedInstanceStore *)self earnedInstanceQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __100__ACHEarnedInstanceStore_earnedInstancesForAnniversaryWithDateComponents_templateUnqiueNames_error___block_invoke;
   block[3] = &unk_278491A60;
   v22 = &v30;
   block[4] = self;
-  v12 = v8;
+  v12 = componentsCopy;
   v20 = v12;
-  v13 = v9;
+  v13 = namesCopy;
   v21 = v13;
   v23 = &v24;
-  dispatch_sync(v11, block);
+  dispatch_sync(earnedInstanceQueue2, block);
 
   if (v25[5])
   {
@@ -356,9 +356,9 @@ void __71__ACHEarnedInstanceStore_earnedInstancesForEarnedDateComponents_error__
       _os_log_error_impl(&dword_221DDC000, v14, OS_LOG_TYPE_ERROR, "Error fetching anniversary earned instances for date components %{public}@ and templateNames %{public}@: %{public}@", buf, 0x20u);
     }
 
-    if (a5)
+    if (error)
     {
-      *a5 = v25[5];
+      *error = v25[5];
     }
   }
 
@@ -386,9 +386,9 @@ void __100__ACHEarnedInstanceStore_earnedInstancesForAnniversaryWithDateComponen
   *(v7 + 40) = v6;
 }
 
-- (id)earnedInstancesForDateInterval:(id)a3 error:(id *)a4
+- (id)earnedInstancesForDateInterval:(id)interval error:(id *)error
 {
-  v6 = a3;
+  intervalCopy = interval;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -401,20 +401,20 @@ void __100__ACHEarnedInstanceStore_earnedInstancesForAnniversaryWithDateComponen
   v18[2] = __Block_byref_object_copy__13;
   v18[3] = __Block_byref_object_dispose__13;
   v19 = 0;
-  v7 = [(ACHEarnedInstanceStore *)self earnedInstanceQueue];
-  dispatch_assert_queue_not_V2(v7);
+  earnedInstanceQueue = [(ACHEarnedInstanceStore *)self earnedInstanceQueue];
+  dispatch_assert_queue_not_V2(earnedInstanceQueue);
 
-  v8 = [(ACHEarnedInstanceStore *)self earnedInstanceQueue];
+  earnedInstanceQueue2 = [(ACHEarnedInstanceStore *)self earnedInstanceQueue];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __63__ACHEarnedInstanceStore_earnedInstancesForDateInterval_error___block_invoke;
   v13[3] = &unk_2784910B0;
   v15 = &v20;
   v13[4] = self;
-  v9 = v6;
+  v9 = intervalCopy;
   v14 = v9;
   v16 = &v17;
-  dispatch_sync(v8, v13);
+  dispatch_sync(earnedInstanceQueue2, v13);
 
   if (*(v18[0] + 40))
   {
@@ -424,9 +424,9 @@ void __100__ACHEarnedInstanceStore_earnedInstancesForAnniversaryWithDateComponen
       [ACHEarnedInstanceStore earnedInstancesForDateInterval:v9 error:v18];
     }
 
-    if (a4)
+    if (error)
     {
-      *a4 = *(v18[0] + 40);
+      *error = *(v18[0] + 40);
     }
   }
 
@@ -451,9 +451,9 @@ void __63__ACHEarnedInstanceStore_earnedInstancesForDateInterval_error___block_i
   *(v6 + 40) = v5;
 }
 
-- (id)mostRecentEarnedInstanceForTemplateUniqueName:(id)a3 error:(id *)a4
+- (id)mostRecentEarnedInstanceForTemplateUniqueName:(id)name error:(id *)error
 {
-  v6 = a3;
+  nameCopy = name;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -466,20 +466,20 @@ void __63__ACHEarnedInstanceStore_earnedInstancesForDateInterval_error___block_i
   v18[2] = __Block_byref_object_copy__13;
   v18[3] = __Block_byref_object_dispose__13;
   v19 = 0;
-  v7 = [(ACHEarnedInstanceStore *)self earnedInstanceQueue];
-  dispatch_assert_queue_not_V2(v7);
+  earnedInstanceQueue = [(ACHEarnedInstanceStore *)self earnedInstanceQueue];
+  dispatch_assert_queue_not_V2(earnedInstanceQueue);
 
-  v8 = [(ACHEarnedInstanceStore *)self earnedInstanceQueue];
+  earnedInstanceQueue2 = [(ACHEarnedInstanceStore *)self earnedInstanceQueue];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __78__ACHEarnedInstanceStore_mostRecentEarnedInstanceForTemplateUniqueName_error___block_invoke;
   v13[3] = &unk_2784910B0;
   v15 = &v20;
   v13[4] = self;
-  v9 = v6;
+  v9 = nameCopy;
   v14 = v9;
   v16 = &v17;
-  dispatch_sync(v8, v13);
+  dispatch_sync(earnedInstanceQueue2, v13);
 
   if (*(v18[0] + 40))
   {
@@ -489,9 +489,9 @@ void __63__ACHEarnedInstanceStore_earnedInstancesForDateInterval_error___block_i
       [ACHEarnedInstanceStore mostRecentEarnedInstanceForTemplateUniqueName:v9 error:v18];
     }
 
-    if (a4)
+    if (error)
     {
-      *a4 = *(v18[0] + 40);
+      *error = *(v18[0] + 40);
     }
   }
 
@@ -516,9 +516,9 @@ void __78__ACHEarnedInstanceStore_mostRecentEarnedInstanceForTemplateUniqueName_
   *(v6 + 40) = v5;
 }
 
-- (id)mostRecentEarnedInstancesForTemplateUniqueNames:(id)a3 error:(id *)a4
+- (id)mostRecentEarnedInstancesForTemplateUniqueNames:(id)names error:(id *)error
 {
-  v6 = a3;
+  namesCopy = names;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -531,20 +531,20 @@ void __78__ACHEarnedInstanceStore_mostRecentEarnedInstanceForTemplateUniqueName_
   v18[2] = __Block_byref_object_copy__13;
   v18[3] = __Block_byref_object_dispose__13;
   v19 = 0;
-  v7 = [(ACHEarnedInstanceStore *)self earnedInstanceQueue];
-  dispatch_assert_queue_not_V2(v7);
+  earnedInstanceQueue = [(ACHEarnedInstanceStore *)self earnedInstanceQueue];
+  dispatch_assert_queue_not_V2(earnedInstanceQueue);
 
-  v8 = [(ACHEarnedInstanceStore *)self earnedInstanceQueue];
+  earnedInstanceQueue2 = [(ACHEarnedInstanceStore *)self earnedInstanceQueue];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __80__ACHEarnedInstanceStore_mostRecentEarnedInstancesForTemplateUniqueNames_error___block_invoke;
   v13[3] = &unk_2784910B0;
   v15 = &v20;
   v13[4] = self;
-  v9 = v6;
+  v9 = namesCopy;
   v14 = v9;
   v16 = &v17;
-  dispatch_sync(v8, v13);
+  dispatch_sync(earnedInstanceQueue2, v13);
 
   if (*(v18[0] + 40))
   {
@@ -554,9 +554,9 @@ void __78__ACHEarnedInstanceStore_mostRecentEarnedInstanceForTemplateUniqueName_
       [ACHEarnedInstanceStore mostRecentEarnedInstancesForTemplateUniqueNames:v9 error:v18];
     }
 
-    if (a4)
+    if (error)
     {
-      *a4 = *(v18[0] + 40);
+      *error = *(v18[0] + 40);
     }
   }
 
@@ -581,9 +581,9 @@ void __80__ACHEarnedInstanceStore_mostRecentEarnedInstancesForTemplateUniqueName
   *(v6 + 40) = v5;
 }
 
-- (unint64_t)countOfEarnedInstancesForTemplateUniqueName:(id)a3 error:(id *)a4
+- (unint64_t)countOfEarnedInstancesForTemplateUniqueName:(id)name error:(id *)error
 {
-  v6 = a3;
+  nameCopy = name;
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
@@ -594,20 +594,20 @@ void __80__ACHEarnedInstanceStore_mostRecentEarnedInstancesForTemplateUniqueName
   v18[2] = __Block_byref_object_copy__13;
   v18[3] = __Block_byref_object_dispose__13;
   v19 = 0;
-  v7 = [(ACHEarnedInstanceStore *)self earnedInstanceQueue];
-  dispatch_assert_queue_not_V2(v7);
+  earnedInstanceQueue = [(ACHEarnedInstanceStore *)self earnedInstanceQueue];
+  dispatch_assert_queue_not_V2(earnedInstanceQueue);
 
-  v8 = [(ACHEarnedInstanceStore *)self earnedInstanceQueue];
+  earnedInstanceQueue2 = [(ACHEarnedInstanceStore *)self earnedInstanceQueue];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __76__ACHEarnedInstanceStore_countOfEarnedInstancesForTemplateUniqueName_error___block_invoke;
   v13[3] = &unk_2784910B0;
   v15 = &v20;
   v13[4] = self;
-  v9 = v6;
+  v9 = nameCopy;
   v14 = v9;
   v16 = &v17;
-  dispatch_sync(v8, v13);
+  dispatch_sync(earnedInstanceQueue2, v13);
 
   if (*(v18[0] + 40))
   {
@@ -617,9 +617,9 @@ void __80__ACHEarnedInstanceStore_mostRecentEarnedInstancesForTemplateUniqueName
       [ACHEarnedInstanceStore countOfEarnedInstancesForTemplateUniqueName:v9 error:v18];
     }
 
-    if (a4)
+    if (error)
     {
-      *a4 = *(v18[0] + 40);
+      *error = *(v18[0] + 40);
     }
   }
 
@@ -642,9 +642,9 @@ void __76__ACHEarnedInstanceStore_countOfEarnedInstancesForTemplateUniqueName_er
   *(*(*(a1 + 48) + 8) + 24) = [v5 unsignedIntegerValue];
 }
 
-- (id)countOfEarnedInstancesForTemplateUniqueNames:(id)a3 error:(id *)a4
+- (id)countOfEarnedInstancesForTemplateUniqueNames:(id)names error:(id *)error
 {
-  v6 = a3;
+  namesCopy = names;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -657,20 +657,20 @@ void __76__ACHEarnedInstanceStore_countOfEarnedInstancesForTemplateUniqueName_er
   v18[2] = __Block_byref_object_copy__13;
   v18[3] = __Block_byref_object_dispose__13;
   v19 = 0;
-  v7 = [(ACHEarnedInstanceStore *)self earnedInstanceQueue];
-  dispatch_assert_queue_not_V2(v7);
+  earnedInstanceQueue = [(ACHEarnedInstanceStore *)self earnedInstanceQueue];
+  dispatch_assert_queue_not_V2(earnedInstanceQueue);
 
-  v8 = [(ACHEarnedInstanceStore *)self earnedInstanceQueue];
+  earnedInstanceQueue2 = [(ACHEarnedInstanceStore *)self earnedInstanceQueue];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __77__ACHEarnedInstanceStore_countOfEarnedInstancesForTemplateUniqueNames_error___block_invoke;
   v13[3] = &unk_2784910B0;
   v15 = &v20;
   v13[4] = self;
-  v9 = v6;
+  v9 = namesCopy;
   v14 = v9;
   v16 = &v17;
-  dispatch_sync(v8, v13);
+  dispatch_sync(earnedInstanceQueue2, v13);
 
   if (*(v18[0] + 40))
   {
@@ -680,9 +680,9 @@ void __76__ACHEarnedInstanceStore_countOfEarnedInstancesForTemplateUniqueName_er
       [ACHEarnedInstanceStore countOfEarnedInstancesForTemplateUniqueNames:v9 error:v18];
     }
 
-    if (a4)
+    if (error)
     {
-      *a4 = *(v18[0] + 40);
+      *error = *(v18[0] + 40);
     }
   }
 
@@ -707,19 +707,19 @@ void __77__ACHEarnedInstanceStore_countOfEarnedInstancesForTemplateUniqueNames_e
   *(v6 + 40) = v5;
 }
 
-- (unint64_t)countOfEarnedInstancesForTemplateUniqueName:(id)a3 inDateComponentInterval:(id)a4 withCalendar:(id)a5 error:(id *)a6
+- (unint64_t)countOfEarnedInstancesForTemplateUniqueName:(id)name inDateComponentInterval:(id)interval withCalendar:(id)calendar error:(id *)error
 {
   v39 = *MEMORY[0x277D85DE8];
-  v10 = a4;
-  v11 = a5;
-  v12 = [(ACHEarnedInstanceStore *)self earnedInstancesForTemplateUniqueName:a3 error:a6];
-  v13 = [v10 startDateComponents];
-  v14 = [v11 dateFromComponents:v13];
+  intervalCopy = interval;
+  calendarCopy = calendar;
+  v12 = [(ACHEarnedInstanceStore *)self earnedInstancesForTemplateUniqueName:name error:error];
+  startDateComponents = [intervalCopy startDateComponents];
+  v14 = [calendarCopy dateFromComponents:startDateComponents];
   [v14 timeIntervalSinceReferenceDate];
   v16 = v15;
 
-  v17 = [v10 endDateComponents];
-  v18 = [v11 dateFromComponents:v17];
+  endDateComponents = [intervalCopy endDateComponents];
+  v18 = [calendarCopy dateFromComponents:endDateComponents];
   [v18 timeIntervalSinceReferenceDate];
   v20 = v19;
 
@@ -743,8 +743,8 @@ void __77__ACHEarnedInstanceStore_countOfEarnedInstancesForTemplateUniqueNames_e
           objc_enumerationMutation(v21);
         }
 
-        v27 = [*(*(&v34 + 1) + 8 * i) earnedDateComponents];
-        v28 = [v11 dateFromComponents:v27];
+        earnedDateComponents = [*(*(&v34 + 1) + 8 * i) earnedDateComponents];
+        v28 = [calendarCopy dateFromComponents:earnedDateComponents];
         [v28 timeIntervalSinceReferenceDate];
         v30 = v29;
 
@@ -767,31 +767,31 @@ void __77__ACHEarnedInstanceStore_countOfEarnedInstancesForTemplateUniqueNames_e
   return v24;
 }
 
-- (BOOL)addEarnedInstances:(id)a3 error:(id *)a4
+- (BOOL)addEarnedInstances:(id)instances error:(id *)error
 {
-  v6 = a3;
+  instancesCopy = instances;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
   v18 = 0;
-  v7 = [(ACHEarnedInstanceStore *)self earnedInstanceQueue];
-  dispatch_assert_queue_not_V2(v7);
+  earnedInstanceQueue = [(ACHEarnedInstanceStore *)self earnedInstanceQueue];
+  dispatch_assert_queue_not_V2(earnedInstanceQueue);
 
-  v8 = [(ACHEarnedInstanceStore *)self earnedInstanceQueue];
+  earnedInstanceQueue2 = [(ACHEarnedInstanceStore *)self earnedInstanceQueue];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __51__ACHEarnedInstanceStore_addEarnedInstances_error___block_invoke;
   v11[3] = &unk_278491A88;
   v11[4] = self;
-  v12 = v6;
+  v12 = instancesCopy;
   v13 = &v15;
-  v14 = a4;
-  v9 = v6;
-  dispatch_sync(v8, v11);
+  errorCopy = error;
+  v9 = instancesCopy;
+  dispatch_sync(earnedInstanceQueue2, v11);
 
-  LOBYTE(v6) = *(v16 + 24);
+  LOBYTE(instancesCopy) = *(v16 + 24);
   _Block_object_dispose(&v15, 8);
-  return v6;
+  return instancesCopy;
 }
 
 uint64_t __51__ACHEarnedInstanceStore_addEarnedInstances_error___block_invoke(uint64_t a1)
@@ -803,31 +803,31 @@ uint64_t __51__ACHEarnedInstanceStore_addEarnedInstances_error___block_invoke(ui
 
 - (void)_queue_purgeCaches
 {
-  v3 = [(ACHEarnedInstanceStore *)self earnedInstanceQueue];
-  dispatch_assert_queue_V2(v3);
+  earnedInstanceQueue = [(ACHEarnedInstanceStore *)self earnedInstanceQueue];
+  dispatch_assert_queue_V2(earnedInstanceQueue);
 
-  v4 = [(ACHEarnedInstanceStore *)self earnedInstancesForTemplateUniqueNameCache];
-  [v4 removeAllObjects];
+  earnedInstancesForTemplateUniqueNameCache = [(ACHEarnedInstanceStore *)self earnedInstancesForTemplateUniqueNameCache];
+  [earnedInstancesForTemplateUniqueNameCache removeAllObjects];
 
-  v5 = [(ACHEarnedInstanceStore *)self earnedInstancesForEarnedDateComponentsCache];
-  [v5 removeAllObjects];
+  earnedInstancesForEarnedDateComponentsCache = [(ACHEarnedInstanceStore *)self earnedInstancesForEarnedDateComponentsCache];
+  [earnedInstancesForEarnedDateComponentsCache removeAllObjects];
 }
 
-- (BOOL)_queue_addEarnedInstances:(id)a3 triggerSync:(BOOL)a4 error:(id *)a5
+- (BOOL)_queue_addEarnedInstances:(id)instances triggerSync:(BOOL)sync error:(id *)error
 {
-  v42 = a4;
+  syncCopy = sync;
   v67 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(ACHEarnedInstanceStore *)self earnedInstanceQueue];
-  dispatch_assert_queue_V2(v7);
+  instancesCopy = instances;
+  earnedInstanceQueue = [(ACHEarnedInstanceStore *)self earnedInstanceQueue];
+  dispatch_assert_queue_V2(earnedInstanceQueue);
 
   [(ACHEarnedInstanceStore *)self _queue_purgeCaches];
-  v8 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   v59 = 0u;
   v60 = 0u;
   v61 = 0u;
   v62 = 0u;
-  obj = v6;
+  obj = instancesCopy;
   v9 = [obj countByEnumeratingWithState:&v59 objects:v66 count:16];
   if (v9)
   {
@@ -843,7 +843,7 @@ uint64_t __51__ACHEarnedInstanceStore_addEarnedInstances_error___block_invoke(ui
         }
 
         v13 = *(*(&v59 + 1) + 8 * i);
-        [v13 setCreatedDate:v8];
+        [v13 setCreatedDate:date];
         [v13 setCreatorDevice:self->_device];
       }
 
@@ -854,9 +854,9 @@ uint64_t __51__ACHEarnedInstanceStore_addEarnedInstances_error___block_invoke(ui
   }
 
   v14 = [obj hk_map:&__block_literal_global_15];
-  v15 = [(ACHEarnedInstanceStore *)self assertionClient];
+  assertionClient = [(ACHEarnedInstanceStore *)self assertionClient];
   v58 = 0;
-  v44 = [v15 acquireDatabaseAssertionWithIdentifier:@"AddEarnedInstances" error:&v58];
+  v44 = [assertionClient acquireDatabaseAssertionWithIdentifier:@"AddEarnedInstances" error:&v58];
   v16 = v58;
 
   if (v16)
@@ -869,7 +869,7 @@ uint64_t __51__ACHEarnedInstanceStore_addEarnedInstances_error___block_invoke(ui
   }
 
   v43 = v16;
-  v45 = v8;
+  v45 = date;
   v56 = 0u;
   v57 = 0u;
   v54 = 0u;
@@ -881,7 +881,7 @@ uint64_t __51__ACHEarnedInstanceStore_addEarnedInstances_error___block_invoke(ui
     v18 = *v55;
     v19 = 1;
     v48 = MEMORY[0x277CBEBF8];
-    v20 = a5;
+    errorCopy2 = error;
     do
     {
       for (j = 0; j != v49; ++j)
@@ -916,7 +916,7 @@ uint64_t __51__ACHEarnedInstanceStore_addEarnedInstances_error___block_invoke(ui
           v48 = v29;
           self = v28;
           v19 = v27;
-          v20 = a5;
+          errorCopy2 = error;
         }
 
         objc_autoreleasePoolPop(v23);
@@ -925,10 +925,10 @@ uint64_t __51__ACHEarnedInstanceStore_addEarnedInstances_error___block_invoke(ui
           v30 = v26;
           if (v26)
           {
-            if (v20)
+            if (errorCopy2)
             {
               v31 = v30;
-              *v20 = v30;
+              *errorCopy2 = v30;
             }
 
             else
@@ -963,9 +963,9 @@ uint64_t __51__ACHEarnedInstanceStore_addEarnedInstances_error___block_invoke(ui
     goto LABEL_38;
   }
 
-  v32 = [(ACHEarnedInstanceStore *)self assertionClient];
+  assertionClient2 = [(ACHEarnedInstanceStore *)self assertionClient];
   v51 = 0;
-  [v32 invalidateAssertionWithToken:v44 error:&v51];
+  [assertionClient2 invalidateAssertionWithToken:v44 error:&v51];
   v33 = v51;
 
   v34 = v48;
@@ -998,10 +998,10 @@ LABEL_38:
     }
 
     [(ACHEarnedInstanceStore *)self _notifyObserversOfAddedEarnedInstances:v34];
-    if (v42 && [v34 count])
+    if (syncCopy && [v34 count])
     {
-      v39 = [(ACHEarnedInstanceStore *)self client];
-      [v39 triggerSyncWithCompletion:&__block_literal_global_312_0];
+      client = [(ACHEarnedInstanceStore *)self client];
+      [client triggerSyncWithCompletion:&__block_literal_global_312_0];
     }
   }
 
@@ -1038,18 +1038,18 @@ void __70__ACHEarnedInstanceStore__queue_addEarnedInstances_triggerSync_error___
   }
 }
 
-- (id)_queue_addEarnedInstancesWithSingleTemplate:(id)a3 error:(id *)a4
+- (id)_queue_addEarnedInstancesWithSingleTemplate:(id)template error:(id *)error
 {
-  v6 = a3;
-  v7 = [(ACHEarnedInstanceStore *)self earnedInstanceQueue];
-  dispatch_assert_queue_V2(v7);
+  templateCopy = template;
+  earnedInstanceQueue = [(ACHEarnedInstanceStore *)self earnedInstanceQueue];
+  dispatch_assert_queue_V2(earnedInstanceQueue);
 
-  v8 = [v6 anyObject];
-  v9 = [v8 templateUniqueName];
+  anyObject = [templateCopy anyObject];
+  templateUniqueName = [anyObject templateUniqueName];
 
-  v10 = [(ACHEarnedInstanceStore *)self client];
+  client = [(ACHEarnedInstanceStore *)self client];
   v34 = 0;
-  v11 = [v10 fetchEarnedInstancesForTemplateUniqueName:v9 error:&v34];
+  v11 = [client fetchEarnedInstancesForTemplateUniqueName:templateUniqueName error:&v34];
   v12 = v34;
 
   if (v12)
@@ -1060,11 +1060,11 @@ void __70__ACHEarnedInstanceStore__queue_addEarnedInstances_triggerSync_error___
       [ACHEarnedInstanceStore _queue_addEarnedInstancesWithSingleTemplate:error:];
     }
 
-    if (a4)
+    if (error)
     {
       v14 = v12;
       v15 = 0;
-      *a4 = v12;
+      *error = v12;
     }
 
     else
@@ -1076,39 +1076,39 @@ void __70__ACHEarnedInstanceStore__queue_addEarnedInstances_triggerSync_error___
   else
   {
     v16 = [MEMORY[0x277CBEB98] setWithArray:v11];
-    v17 = [(ACHEarnedInstanceStore *)self duplicateUtility];
+    duplicateUtility = [(ACHEarnedInstanceStore *)self duplicateUtility];
     v32 = v16;
-    v18 = [v16 setByAddingObjectsFromSet:v6];
-    v33 = [v17 earnedInstancesWithoutDuplicates:v18];
+    v18 = [v16 setByAddingObjectsFromSet:templateCopy];
+    v33 = [duplicateUtility earnedInstancesWithoutDuplicates:v18];
 
-    v19 = [(ACHEarnedInstanceStore *)self duplicateUtility];
-    v20 = [v19 earnedInstancesLimitedByEarnLimit:v33];
+    duplicateUtility2 = [(ACHEarnedInstanceStore *)self duplicateUtility];
+    v20 = [duplicateUtility2 earnedInstancesLimitedByEarnLimit:v33];
 
-    v31 = [v6 intersectSet:v20];
+    v31 = [templateCopy intersectSet:v20];
     v21 = [v16 hk_minus:v20];
-    v22 = [(ACHEarnedInstanceStore *)self client];
+    client2 = [(ACHEarnedInstanceStore *)self client];
     [v31 allObjects];
-    v23 = v6;
-    v24 = v9;
+    v23 = templateCopy;
+    v24 = templateUniqueName;
     v26 = v25 = v11;
-    v27 = [v21 allObjects];
-    v28 = a4;
-    v29 = v27;
-    v15 = [v22 addEarnedInstances:v26 removingEarnedInstances:v27 error:v28];
+    allObjects = [v21 allObjects];
+    errorCopy = error;
+    v29 = allObjects;
+    v15 = [client2 addEarnedInstances:v26 removingEarnedInstances:allObjects error:errorCopy];
 
     v11 = v25;
-    v9 = v24;
-    v6 = v23;
+    templateUniqueName = v24;
+    templateCopy = v23;
   }
 
   return v15;
 }
 
-- (BOOL)removeEarnedInstances:(id)a3 error:(id *)a4
+- (BOOL)removeEarnedInstances:(id)instances error:(id *)error
 {
-  v6 = a3;
-  v7 = [(ACHEarnedInstanceStore *)self earnedInstanceQueue];
-  dispatch_assert_queue_not_V2(v7);
+  instancesCopy = instances;
+  earnedInstanceQueue = [(ACHEarnedInstanceStore *)self earnedInstanceQueue];
+  dispatch_assert_queue_not_V2(earnedInstanceQueue);
 
   v24 = 0;
   v25 = &v24;
@@ -1120,27 +1120,27 @@ void __70__ACHEarnedInstanceStore__queue_addEarnedInstances_triggerSync_error___
   v21 = &v20;
   v22 = 0x2020000000;
   v23 = 0;
-  v8 = [(ACHEarnedInstanceStore *)self earnedInstanceQueue];
+  earnedInstanceQueue2 = [(ACHEarnedInstanceStore *)self earnedInstanceQueue];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __54__ACHEarnedInstanceStore_removeEarnedInstances_error___block_invoke;
   v16[3] = &unk_278491668;
   v16[4] = self;
   v18 = &v20;
-  v9 = v6;
+  v9 = instancesCopy;
   v17 = v9;
   v19 = &v24;
-  dispatch_sync(v8, v16);
+  dispatch_sync(earnedInstanceQueue2, v16);
 
   v10 = v25[5];
   if (v10)
   {
     v11 = v10;
     v12 = v11;
-    if (a4)
+    if (error)
     {
       v13 = v11;
-      *a4 = v12;
+      *error = v12;
     }
 
     else
@@ -1169,18 +1169,18 @@ void __54__ACHEarnedInstanceStore_removeEarnedInstances_error___block_invoke(uin
   *(*(*(a1 + 48) + 8) + 24) = v5;
 }
 
-- (BOOL)_queue_removeEarnedInstances:(id)a3 error:(id *)a4
+- (BOOL)_queue_removeEarnedInstances:(id)instances error:(id *)error
 {
-  v6 = a3;
-  v7 = [(ACHEarnedInstanceStore *)self earnedInstanceQueue];
-  dispatch_assert_queue_V2(v7);
+  instancesCopy = instances;
+  earnedInstanceQueue = [(ACHEarnedInstanceStore *)self earnedInstanceQueue];
+  dispatch_assert_queue_V2(earnedInstanceQueue);
 
-  v8 = [(ACHEarnedInstanceStore *)self client];
-  v9 = [v8 removeEarnedInstances:v6 error:a4];
+  client = [(ACHEarnedInstanceStore *)self client];
+  v9 = [client removeEarnedInstances:instancesCopy error:error];
 
   if (v9)
   {
-    [(ACHEarnedInstanceStore *)self _notifyObserversOfRemovedEarnedInstances:v6];
+    [(ACHEarnedInstanceStore *)self _notifyObserversOfRemovedEarnedInstances:instancesCopy];
   }
 
   else
@@ -1188,18 +1188,18 @@ void __54__ACHEarnedInstanceStore_removeEarnedInstances_error___block_invoke(uin
     v10 = ACHLogDatabase();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      [(ACHEarnedInstanceStore *)a4 _queue_removeEarnedInstances:v6 error:v10];
+      [(ACHEarnedInstanceStore *)error _queue_removeEarnedInstances:instancesCopy error:v10];
     }
   }
 
   return v9;
 }
 
-- (BOOL)removeEarnedInstancesForTemplateUniqueName:(id)a3 error:(id *)a4
+- (BOOL)removeEarnedInstancesForTemplateUniqueName:(id)name error:(id *)error
 {
-  v6 = a3;
-  v7 = [(ACHEarnedInstanceStore *)self earnedInstanceQueue];
-  dispatch_assert_queue_not_V2(v7);
+  nameCopy = name;
+  earnedInstanceQueue = [(ACHEarnedInstanceStore *)self earnedInstanceQueue];
+  dispatch_assert_queue_not_V2(earnedInstanceQueue);
 
   v25 = 0;
   v26 = &v25;
@@ -1211,26 +1211,26 @@ void __54__ACHEarnedInstanceStore_removeEarnedInstances_error___block_invoke(uin
   v22 = __Block_byref_object_copy__13;
   v23 = __Block_byref_object_dispose__13;
   v24 = 0;
-  v8 = [(ACHEarnedInstanceStore *)self earnedInstanceQueue];
+  earnedInstanceQueue2 = [(ACHEarnedInstanceStore *)self earnedInstanceQueue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __75__ACHEarnedInstanceStore_removeEarnedInstancesForTemplateUniqueName_error___block_invoke;
   v15[3] = &unk_278491668;
   v15[4] = self;
   v17 = &v25;
-  v9 = v6;
+  v9 = nameCopy;
   v16 = v9;
   v18 = &v19;
-  dispatch_sync(v8, v15);
+  dispatch_sync(earnedInstanceQueue2, v15);
 
   v10 = v20[5];
   v11 = v10;
   if (v10)
   {
-    if (a4)
+    if (error)
     {
       v12 = v10;
-      *a4 = v11;
+      *error = v11;
     }
 
     else
@@ -1258,10 +1258,10 @@ void __75__ACHEarnedInstanceStore_removeEarnedInstancesForTemplateUniqueName_err
   *(*(*(a1 + 48) + 8) + 24) = v5;
 }
 
-- (BOOL)removeAllEarnedInstancesWithError:(id *)a3
+- (BOOL)removeAllEarnedInstancesWithError:(id *)error
 {
-  v5 = [(ACHEarnedInstanceStore *)self earnedInstanceQueue];
-  dispatch_assert_queue_not_V2(v5);
+  earnedInstanceQueue = [(ACHEarnedInstanceStore *)self earnedInstanceQueue];
+  dispatch_assert_queue_not_V2(earnedInstanceQueue);
 
   v19 = 0;
   v20 = &v19;
@@ -1273,7 +1273,7 @@ void __75__ACHEarnedInstanceStore_removeEarnedInstancesForTemplateUniqueName_err
   v16 = __Block_byref_object_copy__13;
   v17 = __Block_byref_object_dispose__13;
   v18 = 0;
-  v6 = [(ACHEarnedInstanceStore *)self earnedInstanceQueue];
+  earnedInstanceQueue2 = [(ACHEarnedInstanceStore *)self earnedInstanceQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __60__ACHEarnedInstanceStore_removeAllEarnedInstancesWithError___block_invoke;
@@ -1281,16 +1281,16 @@ void __75__ACHEarnedInstanceStore_removeEarnedInstancesForTemplateUniqueName_err
   block[4] = self;
   block[5] = &v19;
   block[6] = &v13;
-  dispatch_sync(v6, block);
+  dispatch_sync(earnedInstanceQueue2, block);
 
   v7 = v14[5];
   v8 = v7;
   if (v7)
   {
-    if (a3)
+    if (error)
     {
       v9 = v7;
-      *a3 = v8;
+      *error = v8;
     }
 
     else
@@ -1317,18 +1317,18 @@ void __60__ACHEarnedInstanceStore_removeAllEarnedInstancesWithError___block_invo
   *(*(*(a1 + 40) + 8) + 24) = v4;
 }
 
-- (void)_notifyObserversOfAddedEarnedInstances:(id)a3
+- (void)_notifyObserversOfAddedEarnedInstances:(id)instances
 {
-  v4 = a3;
-  v5 = [(ACHEarnedInstanceStore *)self observerQueue];
+  instancesCopy = instances;
+  observerQueue = [(ACHEarnedInstanceStore *)self observerQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __65__ACHEarnedInstanceStore__notifyObserversOfAddedEarnedInstances___block_invoke;
   v7[3] = &unk_278490898;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = instancesCopy;
+  v6 = instancesCopy;
+  dispatch_async(observerQueue, v7);
 }
 
 void __65__ACHEarnedInstanceStore__notifyObserversOfAddedEarnedInstances___block_invoke(uint64_t a1)
@@ -1369,13 +1369,13 @@ void __65__ACHEarnedInstanceStore__notifyObserversOfAddedEarnedInstances___block
 
 - (void)_notifyObserversOfSync
 {
-  v3 = [(ACHEarnedInstanceStore *)self observerQueue];
+  observerQueue = [(ACHEarnedInstanceStore *)self observerQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __48__ACHEarnedInstanceStore__notifyObserversOfSync__block_invoke;
   block[3] = &unk_278490870;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(observerQueue, block);
 }
 
 void __48__ACHEarnedInstanceStore__notifyObserversOfSync__block_invoke(uint64_t a1)
@@ -1414,18 +1414,18 @@ void __48__ACHEarnedInstanceStore__notifyObserversOfSync__block_invoke(uint64_t 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_notifyObserversOfRemovedEarnedInstances:(id)a3
+- (void)_notifyObserversOfRemovedEarnedInstances:(id)instances
 {
-  v4 = a3;
-  v5 = [(ACHEarnedInstanceStore *)self observerQueue];
+  instancesCopy = instances;
+  observerQueue = [(ACHEarnedInstanceStore *)self observerQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __67__ACHEarnedInstanceStore__notifyObserversOfRemovedEarnedInstances___block_invoke;
   v7[3] = &unk_278490898;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = instancesCopy;
+  v6 = instancesCopy;
+  dispatch_async(observerQueue, v7);
 }
 
 void __67__ACHEarnedInstanceStore__notifyObserversOfRemovedEarnedInstances___block_invoke(uint64_t a1)
@@ -1464,21 +1464,21 @@ void __67__ACHEarnedInstanceStore__notifyObserversOfRemovedEarnedInstances___blo
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(ACHEarnedInstanceStore *)self observerQueue];
-  dispatch_assert_queue_not_V2(v5);
+  observerCopy = observer;
+  observerQueue = [(ACHEarnedInstanceStore *)self observerQueue];
+  dispatch_assert_queue_not_V2(observerQueue);
 
-  v6 = [(ACHEarnedInstanceStore *)self observerQueue];
+  observerQueue2 = [(ACHEarnedInstanceStore *)self observerQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __38__ACHEarnedInstanceStore_addObserver___block_invoke;
   v8[3] = &unk_278490898;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  dispatch_sync(v6, v8);
+  v9 = observerCopy;
+  v7 = observerCopy;
+  dispatch_sync(observerQueue2, v8);
 }
 
 void __38__ACHEarnedInstanceStore_addObserver___block_invoke(uint64_t a1)
@@ -1487,21 +1487,21 @@ void __38__ACHEarnedInstanceStore_addObserver___block_invoke(uint64_t a1)
   [v2 addObject:*(a1 + 40)];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(ACHEarnedInstanceStore *)self observerQueue];
-  dispatch_assert_queue_not_V2(v5);
+  observerCopy = observer;
+  observerQueue = [(ACHEarnedInstanceStore *)self observerQueue];
+  dispatch_assert_queue_not_V2(observerQueue);
 
-  v6 = [(ACHEarnedInstanceStore *)self observerQueue];
+  observerQueue2 = [(ACHEarnedInstanceStore *)self observerQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __41__ACHEarnedInstanceStore_removeObserver___block_invoke;
   v8[3] = &unk_278490898;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  dispatch_sync(v6, v8);
+  v9 = observerCopy;
+  v7 = observerCopy;
+  dispatch_sync(observerQueue2, v8);
 }
 
 void __41__ACHEarnedInstanceStore_removeObserver___block_invoke(uint64_t a1)
@@ -1513,7 +1513,7 @@ void __41__ACHEarnedInstanceStore_removeObserver___block_invoke(uint64_t a1)
 - (void)earnedInstances
 {
   v10 = *MEMORY[0x277D85DE8];
-  v9 = HIDWORD(*(*a1 + 40));
+  v9 = HIDWORD(*(*self + 40));
   OUTLINED_FUNCTION_0(&dword_221DDC000, a2, a3, "Error fetching earned instances: %@", a5, a6, a7, a8, 2u);
   v8 = *MEMORY[0x277D85DE8];
 }

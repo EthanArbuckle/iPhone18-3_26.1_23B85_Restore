@@ -1,27 +1,27 @@
 @interface TUISnap
-- (BOOL)isEqual:(id)a3;
-- (TUISnap)initWithValue:(double)a3;
-- (TUISnap)initWithValues:(id)a3;
-- (TUISnap)snapWithIdentifier:(id)a3;
-- (TUISnap)snapWithMax:(double)a3;
-- (TUISnap)snapWithStep:(double)a3;
-- (double)valueForValue:(double)a3;
-- (id)_valueForValue:(double)a3;
+- (BOOL)isEqual:(id)equal;
+- (TUISnap)initWithValue:(double)value;
+- (TUISnap)initWithValues:(id)values;
+- (TUISnap)snapWithIdentifier:(id)identifier;
+- (TUISnap)snapWithMax:(double)max;
+- (TUISnap)snapWithStep:(double)step;
+- (double)valueForValue:(double)value;
+- (id)_valueForValue:(double)value;
 - (id)description;
-- (id)identifierForValue:(double)a3;
-- (id)snapByAddingValue:(double)a3;
-- (unint64_t)stepForValue:(double)a3;
+- (id)identifierForValue:(double)value;
+- (id)snapByAddingValue:(double)value;
+- (unint64_t)stepForValue:(double)value;
 @end
 
 @implementation TUISnap
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
   if (v5 == objc_opt_class())
   {
-    v6 = v4;
+    v6 = equalCopy;
   }
 
   else
@@ -48,14 +48,14 @@
   return v7;
 }
 
-- (TUISnap)initWithValue:(double)a3
+- (TUISnap)initWithValue:(double)value
 {
   v9.receiver = self;
   v9.super_class = TUISnap;
   v4 = [(TUISnap *)&v9 init];
   if (v4)
   {
-    v5 = [[_TUISnapValue alloc] initWithValue:a3];
+    v5 = [[_TUISnapValue alloc] initWithValue:value];
     v10 = v5;
     v6 = [NSArray arrayWithObjects:&v10 count:1];
     values = v4->_values;
@@ -65,16 +65,16 @@
   return v4;
 }
 
-- (TUISnap)initWithValues:(id)a3
+- (TUISnap)initWithValues:(id)values
 {
-  v5 = a3;
+  valuesCopy = values;
   v9.receiver = self;
   v9.super_class = TUISnap;
   v6 = [(TUISnap *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_values, a3);
+    objc_storeStrong(&v6->_values, values);
   }
 
   return v7;
@@ -97,10 +97,10 @@
   return v5;
 }
 
-- (id)snapByAddingValue:(double)a3
+- (id)snapByAddingValue:(double)value
 {
   values = self->_values;
-  v4 = [[_TUISnapValue alloc] initWithValue:a3];
+  v4 = [[_TUISnapValue alloc] initWithValue:value];
   v5 = [(NSArray *)values arrayByAddingObject:v4];
 
   v6 = [[TUISnap alloc] initWithValues:v5];
@@ -108,12 +108,12 @@
   return v6;
 }
 
-- (TUISnap)snapWithIdentifier:(id)a3
+- (TUISnap)snapWithIdentifier:(id)identifier
 {
   values = self->_values;
-  v5 = a3;
-  v6 = [(NSArray *)values lastObject];
-  v7 = [v6 valueWithIdentifier:v5];
+  identifierCopy = identifier;
+  lastObject = [(NSArray *)values lastObject];
+  v7 = [lastObject valueWithIdentifier:identifierCopy];
 
   v8 = [(NSArray *)self->_values mutableCopy];
   [v8 removeLastObject];
@@ -123,10 +123,10 @@
   return v9;
 }
 
-- (TUISnap)snapWithStep:(double)a3
+- (TUISnap)snapWithStep:(double)step
 {
-  v5 = [(NSArray *)self->_values lastObject];
-  v6 = [v5 valueWithStep:a3];
+  lastObject = [(NSArray *)self->_values lastObject];
+  v6 = [lastObject valueWithStep:step];
 
   v7 = [(NSArray *)self->_values mutableCopy];
   [v7 removeLastObject];
@@ -136,10 +136,10 @@
   return v8;
 }
 
-- (TUISnap)snapWithMax:(double)a3
+- (TUISnap)snapWithMax:(double)max
 {
-  v5 = [(NSArray *)self->_values lastObject];
-  v6 = [v5 valueWithMax:a3];
+  lastObject = [(NSArray *)self->_values lastObject];
+  v6 = [lastObject valueWithMax:max];
 
   v7 = [(NSArray *)self->_values mutableCopy];
   [v7 removeLastObject];
@@ -149,7 +149,7 @@
   return v8;
 }
 
-- (id)_valueForValue:(double)a3
+- (id)_valueForValue:(double)value
 {
   v15 = 0u;
   v16 = 0u;
@@ -161,17 +161,17 @@
   {
 
 LABEL_14:
-    v8 = [(NSArray *)self->_values firstObject];
+    firstObject = [(NSArray *)self->_values firstObject];
     goto LABEL_15;
   }
 
   v7 = v6;
-  v8 = 0;
+  firstObject = 0;
   v9 = *v16;
   while (2)
   {
     v10 = 0;
-    v11 = v8;
+    v11 = firstObject;
     do
     {
       if (*v16 != v9)
@@ -181,16 +181,16 @@ LABEL_14:
 
       v12 = *(*(&v15 + 1) + 8 * v10);
       [v12 value];
-      if (v13 > a3)
+      if (v13 > value)
       {
-        v8 = v11;
+        firstObject = v11;
         goto LABEL_11;
       }
 
-      v8 = v12;
+      firstObject = v12;
 
       v10 = v10 + 1;
-      v11 = v8;
+      v11 = firstObject;
     }
 
     while (v7 != v10);
@@ -205,37 +205,37 @@ LABEL_14:
 
 LABEL_11:
 
-  if (!v8)
+  if (!firstObject)
   {
     goto LABEL_14;
   }
 
 LABEL_15:
 
-  return v8;
+  return firstObject;
 }
 
-- (double)valueForValue:(double)a3
+- (double)valueForValue:(double)value
 {
   v4 = [(TUISnap *)self _valueForValue:?];
-  [v4 valueForStep:{objc_msgSend(v4, "stepForValue:", a3)}];
+  [v4 valueForStep:{objc_msgSend(v4, "stepForValue:", value)}];
   v6 = v5;
 
   return v6;
 }
 
-- (id)identifierForValue:(double)a3
+- (id)identifierForValue:(double)value
 {
-  v3 = [(TUISnap *)self _valueForValue:a3];
-  v4 = [v3 identifier];
+  v3 = [(TUISnap *)self _valueForValue:value];
+  identifier = [v3 identifier];
 
-  return v4;
+  return identifier;
 }
 
-- (unint64_t)stepForValue:(double)a3
+- (unint64_t)stepForValue:(double)value
 {
   v4 = [(TUISnap *)self _valueForValue:?];
-  v5 = [v4 stepForValue:a3];
+  v5 = [v4 stepForValue:value];
 
   return v5;
 }

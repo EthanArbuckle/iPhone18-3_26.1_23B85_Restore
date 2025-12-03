@@ -1,20 +1,20 @@
 @interface WFRegexFieldParameter
-- (WFRegexFieldParameter)initWithDefinition:(id)a3;
-- (id)hintForState:(id)a3;
+- (WFRegexFieldParameter)initWithDefinition:(id)definition;
+- (id)hintForState:(id)state;
 @end
 
 @implementation WFRegexFieldParameter
 
-- (id)hintForState:(id)a3
+- (id)hintForState:(id)state
 {
-  v3 = a3;
-  v4 = [v3 variableString];
-  v5 = [v4 stringByRemovingVariables];
+  stateCopy = state;
+  variableString = [stateCopy variableString];
+  stringByRemovingVariables = [variableString stringByRemovingVariables];
 
-  v6 = [v3 variableString];
+  variableString2 = [stateCopy variableString];
 
-  v7 = [v6 variables];
-  if ([v7 count])
+  variables = [variableString2 variables];
+  if ([variables count])
   {
 
 LABEL_3:
@@ -22,7 +22,7 @@ LABEL_3:
     goto LABEL_8;
   }
 
-  v9 = [v5 length];
+  v9 = [stringByRemovingVariables length];
 
   if (!v9)
   {
@@ -30,7 +30,7 @@ LABEL_3:
   }
 
   v12 = 0;
-  v10 = [MEMORY[0x1E696AE70] regularExpressionWithPattern:v5 options:0 error:&v12];
+  v10 = [MEMORY[0x1E696AE70] regularExpressionWithPattern:stringByRemovingVariables options:0 error:&v12];
   v8 = 0;
   if (!v10)
   {
@@ -42,11 +42,11 @@ LABEL_8:
   return v8;
 }
 
-- (WFRegexFieldParameter)initWithDefinition:(id)a3
+- (WFRegexFieldParameter)initWithDefinition:(id)definition
 {
   v7.receiver = self;
   v7.super_class = WFRegexFieldParameter;
-  v3 = [(WFTextInputParameter *)&v7 initWithDefinition:a3];
+  v3 = [(WFTextInputParameter *)&v7 initWithDefinition:definition];
   v4 = v3;
   if (v3)
   {

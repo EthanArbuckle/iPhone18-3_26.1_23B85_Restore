@@ -1,39 +1,39 @@
 @interface BMSpanEventSubEvent
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMSpanEventSubEvent)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BMSpanEventSubEvent)initWithName:(id)a3 privatizedTimeStamp:(id)a4 details:(id)a5 attributes:(id)a6;
-- (BOOL)isEqual:(id)a3;
+- (BMSpanEventSubEvent)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BMSpanEventSubEvent)initWithName:(id)name privatizedTimeStamp:(id)stamp details:(id)details attributes:(id)attributes;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (id)_attributesJSONArray;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMSpanEventSubEvent
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMSpanEventSubEvent *)self name];
-    v7 = [v5 name];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    name = [(BMSpanEventSubEvent *)self name];
+    name2 = [v5 name];
+    v8 = name2;
+    if (name == name2)
     {
     }
 
     else
     {
-      v9 = [(BMSpanEventSubEvent *)self name];
-      v10 = [v5 name];
-      v11 = [v9 isEqual:v10];
+      name3 = [(BMSpanEventSubEvent *)self name];
+      name4 = [v5 name];
+      v11 = [name3 isEqual:name4];
 
       if (!v11)
       {
@@ -53,25 +53,25 @@
         goto LABEL_14;
       }
 
-      v13 = [(BMSpanEventSubEvent *)self privatizedTimeStamp];
-      if (v13 != [v5 privatizedTimeStamp])
+      privatizedTimeStamp = [(BMSpanEventSubEvent *)self privatizedTimeStamp];
+      if (privatizedTimeStamp != [v5 privatizedTimeStamp])
       {
         goto LABEL_14;
       }
     }
 
-    v14 = [(BMSpanEventSubEvent *)self details];
-    v15 = [v5 details];
-    v16 = v15;
-    if (v14 == v15)
+    details = [(BMSpanEventSubEvent *)self details];
+    details2 = [v5 details];
+    v16 = details2;
+    if (details == details2)
     {
     }
 
     else
     {
-      v17 = [(BMSpanEventSubEvent *)self details];
-      v18 = [v5 details];
-      v19 = [v17 isEqual:v18];
+      details3 = [(BMSpanEventSubEvent *)self details];
+      details4 = [v5 details];
+      v19 = [details3 isEqual:details4];
 
       if (!v19)
       {
@@ -83,18 +83,18 @@ LABEL_15:
       }
     }
 
-    v21 = [(BMSpanEventSubEvent *)self attributes];
-    v22 = [v5 attributes];
-    if (v21 == v22)
+    attributes = [(BMSpanEventSubEvent *)self attributes];
+    attributes2 = [v5 attributes];
+    if (attributes == attributes2)
     {
       v12 = 1;
     }
 
     else
     {
-      v23 = [(BMSpanEventSubEvent *)self attributes];
-      v24 = [v5 attributes];
-      v12 = [v23 isEqual:v24];
+      attributes3 = [(BMSpanEventSubEvent *)self attributes];
+      attributes4 = [v5 attributes];
+      v12 = [attributes3 isEqual:attributes4];
     }
 
     goto LABEL_15;
@@ -109,7 +109,7 @@ LABEL_16:
 - (id)jsonDictionary
 {
   v15[4] = *MEMORY[0x1E69E9840];
-  v3 = [(BMSpanEventSubEvent *)self name];
+  name = [(BMSpanEventSubEvent *)self name];
   if ([(BMSpanEventSubEvent *)self hasPrivatizedTimeStamp])
   {
     v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[BMSpanEventSubEvent privatizedTimeStamp](self, "privatizedTimeStamp")}];
@@ -120,44 +120,44 @@ LABEL_16:
     v4 = 0;
   }
 
-  v5 = [(BMSpanEventSubEvent *)self details];
-  v6 = [(BMSpanEventSubEvent *)self _attributesJSONArray];
+  details = [(BMSpanEventSubEvent *)self details];
+  _attributesJSONArray = [(BMSpanEventSubEvent *)self _attributesJSONArray];
   v14[0] = @"name";
-  v7 = v3;
-  if (!v3)
+  null = name;
+  if (!name)
   {
-    v7 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v15[0] = v7;
+  v15[0] = null;
   v14[1] = @"privatizedTimeStamp";
-  v8 = v4;
+  null2 = v4;
   if (!v4)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v15[1] = v8;
+  v15[1] = null2;
   v14[2] = @"details";
-  v9 = v5;
-  if (!v5)
+  null3 = details;
+  if (!details)
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v15[2] = v9;
+  v15[2] = null3;
   v14[3] = @"attributes";
-  v10 = v6;
-  if (!v6)
+  null4 = _attributesJSONArray;
+  if (!_attributesJSONArray)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v15[3] = v10;
+  v15[3] = null4;
   v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:v14 count:4];
-  if (v6)
+  if (_attributesJSONArray)
   {
-    if (v5)
+    if (details)
     {
       goto LABEL_14;
     }
@@ -166,7 +166,7 @@ LABEL_16:
   else
   {
 
-    if (v5)
+    if (details)
     {
 LABEL_14:
       if (v4)
@@ -176,7 +176,7 @@ LABEL_14:
 
 LABEL_21:
 
-      if (v3)
+      if (name)
       {
         goto LABEL_16;
       }
@@ -191,7 +191,7 @@ LABEL_21:
   }
 
 LABEL_15:
-  if (v3)
+  if (name)
   {
     goto LABEL_16;
   }
@@ -212,8 +212,8 @@ LABEL_16:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(BMSpanEventSubEvent *)self attributes];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  attributes = [(BMSpanEventSubEvent *)self attributes];
+  v5 = [attributes countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -224,14 +224,14 @@ LABEL_16:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(attributes);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) jsonDictionary];
-        [v3 addObject:v9];
+        jsonDictionary = [*(*(&v12 + 1) + 8 * i) jsonDictionary];
+        [v3 addObject:jsonDictionary];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [attributes countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -242,17 +242,17 @@ LABEL_16:
   return v3;
 }
 
-- (BMSpanEventSubEvent)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMSpanEventSubEvent)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v79[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"name"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"name"];
   if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (a4)
+      if (error)
       {
         v27 = objc_alloc(MEMORY[0x1E696ABC0]);
         v28 = *MEMORY[0x1E698F240];
@@ -261,13 +261,13 @@ LABEL_16:
         v79[0] = v10;
         v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v79 forKeys:&v78 count:1];
         v8 = 0;
-        v26 = 0;
-        *a4 = [v27 initWithDomain:v28 code:2 userInfo:v9];
+        selfCopy3 = 0;
+        *error = [v27 initWithDomain:v28 code:2 userInfo:v9];
         goto LABEL_52;
       }
 
       v8 = 0;
-      v26 = 0;
+      selfCopy3 = 0;
       goto LABEL_53;
     }
 
@@ -279,31 +279,31 @@ LABEL_16:
     v8 = 0;
   }
 
-  v9 = [v6 objectForKeyedSubscript:@"privatizedTimeStamp"];
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"privatizedTimeStamp"];
   if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (a4)
+      if (error)
       {
         v29 = objc_alloc(MEMORY[0x1E696ABC0]);
         v30 = *MEMORY[0x1E698F240];
         v76 = *MEMORY[0x1E696A578];
-        v31 = a4;
-        a4 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"privatizedTimeStamp"];
-        v77 = a4;
-        v32 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v77 forKeys:&v76 count:1];
+        errorCopy = error;
+        error = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"privatizedTimeStamp"];
+        errorCopy2 = error;
+        v32 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&errorCopy2 forKeys:&v76 count:1];
         v33 = v29;
         v12 = v32;
-        v26 = 0;
-        *v31 = [v33 initWithDomain:v30 code:2 userInfo:v32];
+        selfCopy3 = 0;
+        *errorCopy = [v33 initWithDomain:v30 code:2 userInfo:v32];
         v10 = 0;
         goto LABEL_51;
       }
 
       v10 = 0;
-      v26 = 0;
+      selfCopy3 = 0;
       goto LABEL_52;
     }
 
@@ -315,7 +315,7 @@ LABEL_16:
     v10 = 0;
   }
 
-  v11 = [v6 objectForKeyedSubscript:@"details"];
+  v11 = [dictionaryCopy objectForKeyedSubscript:@"details"];
   v60 = v7;
   v61 = v10;
   v58 = v11;
@@ -325,25 +325,25 @@ LABEL_16:
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (a4)
+      if (error)
       {
         v34 = objc_alloc(MEMORY[0x1E696ABC0]);
-        v35 = a4;
+        errorCopy3 = error;
         v36 = *MEMORY[0x1E698F240];
         v74 = *MEMORY[0x1E696A578];
         v13 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"details"];
         v75 = v13;
         v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v75 forKeys:&v74 count:1];
         v37 = [v34 initWithDomain:v36 code:2 userInfo:v16];
-        a4 = 0;
-        v26 = 0;
-        *v35 = v37;
+        error = 0;
+        selfCopy3 = 0;
+        *errorCopy3 = v37;
 LABEL_48:
         v10 = v61;
         goto LABEL_49;
       }
 
-      v26 = 0;
+      selfCopy3 = 0;
       goto LABEL_51;
     }
 
@@ -355,15 +355,15 @@ LABEL_48:
     v57 = 0;
   }
 
-  v13 = [v6 objectForKeyedSubscript:@"attributes"];
-  v14 = [MEMORY[0x1E695DFB0] null];
-  v15 = [v13 isEqual:v14];
+  v13 = [dictionaryCopy objectForKeyedSubscript:@"attributes"];
+  null = [MEMORY[0x1E695DFB0] null];
+  v15 = [v13 isEqual:null];
 
   if (v15)
   {
-    v54 = a4;
+    errorCopy5 = error;
     v55 = v8;
-    v56 = self;
+    selfCopy2 = self;
 
     v13 = 0;
   }
@@ -375,7 +375,7 @@ LABEL_48:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (a4)
+        if (error)
         {
           v49 = objc_alloc(MEMORY[0x1E696ABC0]);
           v50 = *MEMORY[0x1E698F240];
@@ -383,24 +383,24 @@ LABEL_48:
           v16 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Expecting %@ as an array", @"attributes"];
           v73 = v16;
           [MEMORY[0x1E695DF20] dictionaryWithObjects:&v73 forKeys:&v72 count:1];
-          v52 = v51 = a4;
+          v52 = v51 = error;
           *v51 = [v49 initWithDomain:v50 code:2 userInfo:v52];
           v10 = v61;
 
-          v26 = 0;
-          a4 = v57;
+          selfCopy3 = 0;
+          error = v57;
           goto LABEL_49;
         }
 
-        v26 = 0;
-        a4 = v57;
+        selfCopy3 = 0;
+        error = v57;
         goto LABEL_50;
       }
     }
 
-    v54 = a4;
+    errorCopy5 = error;
     v55 = v8;
-    v56 = self;
+    selfCopy2 = self;
   }
 
   v16 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v13, "count")}];
@@ -417,7 +417,7 @@ LABEL_48:
 
   v18 = v17;
   v19 = *v64;
-  v53 = v6;
+  v53 = dictionaryCopy;
   while (2)
   {
     for (i = 0; i != v18; ++i)
@@ -431,11 +431,11 @@ LABEL_48:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v6 = v53;
-        v38 = v54;
-        self = v56;
-        a4 = v57;
-        if (v54)
+        dictionaryCopy = v53;
+        v38 = errorCopy5;
+        self = selfCopy2;
+        error = v57;
+        if (errorCopy5)
         {
           v39 = objc_alloc(MEMORY[0x1E696ABC0]);
           v40 = *MEMORY[0x1E698F240];
@@ -448,14 +448,14 @@ LABEL_48:
 LABEL_42:
           v44 = [v41 dictionaryWithObjects:v42 forKeys:v43 count:1];
           v45 = v39;
-          a4 = v57;
+          error = v57;
           *v38 = [v45 initWithDomain:v40 code:2 userInfo:v44];
 LABEL_46:
         }
 
 LABEL_47:
 
-        v26 = 0;
+        selfCopy3 = 0;
         v8 = v55;
         goto LABEL_48;
       }
@@ -463,11 +463,11 @@ LABEL_47:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v6 = v53;
-        v38 = v54;
-        self = v56;
-        a4 = v57;
-        if (v54)
+        dictionaryCopy = v53;
+        v38 = errorCopy5;
+        self = selfCopy2;
+        error = v57;
+        if (errorCopy5)
         {
           v39 = objc_alloc(MEMORY[0x1E696ABC0]);
           v40 = *MEMORY[0x1E698F240];
@@ -491,15 +491,15 @@ LABEL_47:
       if (v25)
       {
         v44 = v25;
-        if (v54)
+        if (errorCopy5)
         {
           v46 = v25;
-          *v54 = v44;
+          *errorCopy5 = v44;
         }
 
-        v6 = v53;
-        self = v56;
-        a4 = v57;
+        dictionaryCopy = v53;
+        self = selfCopy2;
+        error = v57;
         goto LABEL_46;
       }
 
@@ -507,7 +507,7 @@ LABEL_47:
     }
 
     v18 = [v13 countByEnumeratingWithState:&v63 objects:v71 count:16];
-    v6 = v53;
+    dictionaryCopy = v53;
     if (v18)
     {
       continue;
@@ -519,9 +519,9 @@ LABEL_47:
 LABEL_27:
 
   v8 = v55;
-  a4 = v57;
-  self = [(BMSpanEventSubEvent *)v56 initWithName:v55 privatizedTimeStamp:v10 details:v57 attributes:v16];
-  v26 = self;
+  error = v57;
+  self = [(BMSpanEventSubEvent *)selfCopy2 initWithName:v55 privatizedTimeStamp:v10 details:v57 attributes:v16];
+  selfCopy3 = self;
 LABEL_49:
 
 LABEL_50:
@@ -534,22 +534,22 @@ LABEL_52:
 LABEL_53:
 
   v47 = *MEMORY[0x1E69E9840];
-  return v26;
+  return selfCopy3;
 }
 
 - (id)serialize
 {
   v3 = objc_opt_new();
   [(BMSpanEventSubEvent *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_name)
   {
     PBDataWriterWriteStringField();
@@ -587,7 +587,7 @@ LABEL_53:
 
         v11 = *(*(&v13 + 1) + 8 * i);
         PBDataWriterPlaceMark();
-        [v11 writeTo:v4];
+        [v11 writeTo:toCopy];
         PBDataWriterRecallMark();
       }
 
@@ -600,9 +600,9 @@ LABEL_53:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v35.receiver = self;
   v35.super_class = BMSpanEventSubEvent;
   v5 = [(BMEventBase *)&v35 init];
@@ -612,12 +612,12 @@ LABEL_53:
   }
 
   v6 = objc_opt_new();
-  v7 = [v4 position];
-  if (v7 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     while (1)
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         goto LABEL_45;
       }
@@ -628,18 +628,18 @@ LABEL_53:
       while (1)
       {
         LOBYTE(v36[0]) = 0;
-        v11 = [v4 position] + 1;
-        if (v11 >= [v4 position] && (v12 = objc_msgSend(v4, "position") + 1, v12 <= objc_msgSend(v4, "length")))
+        v11 = [fromCopy position] + 1;
+        if (v11 >= [fromCopy position] && (v12 = objc_msgSend(fromCopy, "position") + 1, v12 <= objc_msgSend(fromCopy, "length")))
         {
-          v13 = [v4 data];
-          [v13 getBytes:v36 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:v36 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v10 |= (v36[0] & 0x7F) << v8;
@@ -657,9 +657,9 @@ LABEL_53:
         }
       }
 
-      v15 = [v4 hasError] ? 0 : v10;
+      v15 = [fromCopy hasError] ? 0 : v10;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v15 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v15 & 7) == 4)
       {
         goto LABEL_45;
       }
@@ -684,7 +684,7 @@ LABEL_16:
 
       v36[0] = 0;
       v36[1] = 0;
-      if (!PBReaderPlaceMark() || (v24 = [[BMSpanEventAttribute alloc] initByReadFrom:v4]) == 0)
+      if (!PBReaderPlaceMark() || (v24 = [[BMSpanEventAttribute alloc] initByReadFrom:fromCopy]) == 0)
       {
 LABEL_49:
 
@@ -696,8 +696,8 @@ LABEL_49:
       PBReaderRecallMark();
 
 LABEL_44:
-      v29 = [v4 position];
-      if (v29 >= [v4 length])
+      position2 = [fromCopy position];
+      if (position2 >= [fromCopy length])
       {
         goto LABEL_45;
       }
@@ -723,18 +723,18 @@ LABEL_39:
       while (1)
       {
         LOBYTE(v36[0]) = 0;
-        v20 = [v4 position] + 1;
-        if (v20 >= [v4 position] && (v21 = objc_msgSend(v4, "position") + 1, v21 <= objc_msgSend(v4, "length")))
+        v20 = [fromCopy position] + 1;
+        if (v20 >= [fromCopy position] && (v21 = objc_msgSend(fromCopy, "position") + 1, v21 <= objc_msgSend(fromCopy, "length")))
         {
-          v22 = [v4 data];
-          [v22 getBytes:v36 range:{objc_msgSend(v4, "position"), 1}];
+          data2 = [fromCopy data];
+          [data2 getBytes:v36 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v19 |= (v36[0] & 0x7F) << v17;
@@ -752,7 +752,7 @@ LABEL_39:
         }
       }
 
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         v23 = 0;
       }
@@ -781,8 +781,8 @@ LABEL_45:
   attributes = v5->_attributes;
   v5->_attributes = v30;
 
-  v32 = [v4 hasError];
-  if (v32)
+  hasError = [fromCopy hasError];
+  if (hasError)
   {
 LABEL_46:
     v33 = 0;
@@ -800,43 +800,43 @@ LABEL_47:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMSpanEventSubEvent *)self name];
+  name = [(BMSpanEventSubEvent *)self name];
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[BMSpanEventSubEvent privatizedTimeStamp](self, "privatizedTimeStamp")}];
-  v6 = [(BMSpanEventSubEvent *)self details];
-  v7 = [(BMSpanEventSubEvent *)self attributes];
-  v8 = [v3 initWithFormat:@"BMSpanEventSubEvent with name: %@, privatizedTimeStamp: %@, details: %@, attributes: %@", v4, v5, v6, v7];
+  details = [(BMSpanEventSubEvent *)self details];
+  attributes = [(BMSpanEventSubEvent *)self attributes];
+  v8 = [v3 initWithFormat:@"BMSpanEventSubEvent with name: %@, privatizedTimeStamp: %@, details: %@, attributes: %@", name, v5, details, attributes];
 
   return v8;
 }
 
-- (BMSpanEventSubEvent)initWithName:(id)a3 privatizedTimeStamp:(id)a4 details:(id)a5 attributes:(id)a6
+- (BMSpanEventSubEvent)initWithName:(id)name privatizedTimeStamp:(id)stamp details:(id)details attributes:(id)attributes
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  nameCopy = name;
+  stampCopy = stamp;
+  detailsCopy = details;
+  attributesCopy = attributes;
   v18.receiver = self;
   v18.super_class = BMSpanEventSubEvent;
   v15 = [(BMEventBase *)&v18 init];
   if (v15)
   {
     v15->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v15->_name, a3);
-    if (v12)
+    objc_storeStrong(&v15->_name, name);
+    if (stampCopy)
     {
       v15->_hasPrivatizedTimeStamp = 1;
-      v16 = [v12 unsignedIntValue];
+      unsignedIntValue = [stampCopy unsignedIntValue];
     }
 
     else
     {
-      v16 = 0;
+      unsignedIntValue = 0;
       v15->_hasPrivatizedTimeStamp = 0;
     }
 
-    v15->_privatizedTimeStamp = v16;
-    objc_storeStrong(&v15->_details, a5);
-    objc_storeStrong(&v15->_attributes, a6);
+    v15->_privatizedTimeStamp = unsignedIntValue;
+    objc_storeStrong(&v15->_details, details);
+    objc_storeStrong(&v15->_attributes, attributes);
   }
 
   return v15;
@@ -887,9 +887,9 @@ id __30__BMSpanEventSubEvent_columns__block_invoke(uint64_t a1, void *a2)
   return v4;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -897,8 +897,8 @@ id __30__BMSpanEventSubEvent_columns__block_invoke(uint64_t a1, void *a2)
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMSpanEventSubEvent alloc] initByReadFrom:v7];
     v4 = v8;

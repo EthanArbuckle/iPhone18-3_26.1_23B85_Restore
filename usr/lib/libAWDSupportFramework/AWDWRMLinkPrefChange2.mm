@@ -1,43 +1,43 @@
 @interface AWDWRMLinkPrefChange2
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasCount:(BOOL)a3;
-- (void)setHasNCallActive:(BOOL)a3;
-- (void)setHasNCallIdle:(BOOL)a3;
-- (void)setHasNCelluarBadEcio:(BOOL)a3;
-- (void)setHasNCelluarBadLQM:(BOOL)a3;
-- (void)setHasNCelluarBadRSRP:(BOOL)a3;
-- (void)setHasNCelluarBadSignal:(BOOL)a3;
-- (void)setHasNCellularNotReady:(BOOL)a3;
-- (void)setHasNData:(BOOL)a3;
-- (void)setHasNHandoverNotPerformed:(BOOL)a3;
-- (void)setHasNHandoverPerformed:(BOOL)a3;
-- (void)setHasNHandoverUnknown:(BOOL)a3;
-- (void)setHasNRunning:(BOOL)a3;
-- (void)setHasNStationary:(BOOL)a3;
-- (void)setHasNStatusUpdateDelayBin1:(BOOL)a3;
-- (void)setHasNStatusUpdateDelayBin2:(BOOL)a3;
-- (void)setHasNStatusUpdateDelayBin3:(BOOL)a3;
-- (void)setHasNStatusUpdateDelayBin4:(BOOL)a3;
-- (void)setHasNStatusUpdateDelayBin5:(BOOL)a3;
-- (void)setHasNStatusUpdateDelayBin6:(BOOL)a3;
-- (void)setHasNVehicular:(BOOL)a3;
-- (void)setHasNVoice:(BOOL)a3;
-- (void)setHasNWalking:(BOOL)a3;
-- (void)setHasNWifiGood:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasCount:(BOOL)count;
+- (void)setHasNCallActive:(BOOL)active;
+- (void)setHasNCallIdle:(BOOL)idle;
+- (void)setHasNCelluarBadEcio:(BOOL)ecio;
+- (void)setHasNCelluarBadLQM:(BOOL)m;
+- (void)setHasNCelluarBadRSRP:(BOOL)p;
+- (void)setHasNCelluarBadSignal:(BOOL)signal;
+- (void)setHasNCellularNotReady:(BOOL)ready;
+- (void)setHasNData:(BOOL)data;
+- (void)setHasNHandoverNotPerformed:(BOOL)performed;
+- (void)setHasNHandoverPerformed:(BOOL)performed;
+- (void)setHasNHandoverUnknown:(BOOL)unknown;
+- (void)setHasNRunning:(BOOL)running;
+- (void)setHasNStationary:(BOOL)stationary;
+- (void)setHasNStatusUpdateDelayBin1:(BOOL)bin1;
+- (void)setHasNStatusUpdateDelayBin2:(BOOL)bin2;
+- (void)setHasNStatusUpdateDelayBin3:(BOOL)bin3;
+- (void)setHasNStatusUpdateDelayBin4:(BOOL)bin4;
+- (void)setHasNStatusUpdateDelayBin5:(BOOL)bin5;
+- (void)setHasNStatusUpdateDelayBin6:(BOOL)bin6;
+- (void)setHasNVehicular:(BOOL)vehicular;
+- (void)setHasNVoice:(BOOL)voice;
+- (void)setHasNWalking:(BOOL)walking;
+- (void)setHasNWifiGood:(BOOL)good;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDWRMLinkPrefChange2
 
-- (void)setHasCount:(BOOL)a3
+- (void)setHasCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 2;
   }
@@ -50,9 +50,9 @@
   self->_has = (*&self->_has & 0xFFFFFFFD | v3);
 }
 
-- (void)setHasNCallIdle:(BOOL)a3
+- (void)setHasNCallIdle:(BOOL)idle
 {
-  if (a3)
+  if (idle)
   {
     v3 = 8;
   }
@@ -65,9 +65,9 @@
   self->_has = (*&self->_has & 0xFFFFFFF7 | v3);
 }
 
-- (void)setHasNCallActive:(BOOL)a3
+- (void)setHasNCallActive:(BOOL)active
 {
-  if (a3)
+  if (active)
   {
     v3 = 4;
   }
@@ -80,9 +80,9 @@
   self->_has = (*&self->_has & 0xFFFFFFFB | v3);
 }
 
-- (void)setHasNData:(BOOL)a3
+- (void)setHasNData:(BOOL)data
 {
-  if (a3)
+  if (data)
   {
     v3 = 512;
   }
@@ -95,9 +95,9 @@
   self->_has = (*&self->_has & 0xFFFFFDFF | v3);
 }
 
-- (void)setHasNVoice:(BOOL)a3
+- (void)setHasNVoice:(BOOL)voice
 {
-  if (a3)
+  if (voice)
   {
     v3 = 0x400000;
   }
@@ -110,9 +110,9 @@
   self->_has = (*&self->_has & 0xFFBFFFFF | v3);
 }
 
-- (void)setHasNStationary:(BOOL)a3
+- (void)setHasNStationary:(BOOL)stationary
 {
-  if (a3)
+  if (stationary)
   {
     v3 = 0x4000;
   }
@@ -125,9 +125,9 @@
   self->_has = (*&self->_has & 0xFFFFBFFF | v3);
 }
 
-- (void)setHasNWalking:(BOOL)a3
+- (void)setHasNWalking:(BOOL)walking
 {
-  if (a3)
+  if (walking)
   {
     v3 = 0x800000;
   }
@@ -140,9 +140,9 @@
   self->_has = (*&self->_has & 0xFF7FFFFF | v3);
 }
 
-- (void)setHasNRunning:(BOOL)a3
+- (void)setHasNRunning:(BOOL)running
 {
-  if (a3)
+  if (running)
   {
     v3 = 0x2000;
   }
@@ -155,9 +155,9 @@
   self->_has = (*&self->_has & 0xFFFFDFFF | v3);
 }
 
-- (void)setHasNVehicular:(BOOL)a3
+- (void)setHasNVehicular:(BOOL)vehicular
 {
-  if (a3)
+  if (vehicular)
   {
     v3 = 0x200000;
   }
@@ -170,9 +170,9 @@
   self->_has = (*&self->_has & 0xFFDFFFFF | v3);
 }
 
-- (void)setHasNWifiGood:(BOOL)a3
+- (void)setHasNWifiGood:(BOOL)good
 {
-  if (a3)
+  if (good)
   {
     v3 = 0x1000000;
   }
@@ -185,9 +185,9 @@
   self->_has = (*&self->_has & 0xFEFFFFFF | v3);
 }
 
-- (void)setHasNCellularNotReady:(BOOL)a3
+- (void)setHasNCellularNotReady:(BOOL)ready
 {
-  if (a3)
+  if (ready)
   {
     v3 = 256;
   }
@@ -200,9 +200,9 @@
   self->_has = (*&self->_has & 0xFFFFFEFF | v3);
 }
 
-- (void)setHasNCelluarBadSignal:(BOOL)a3
+- (void)setHasNCelluarBadSignal:(BOOL)signal
 {
-  if (a3)
+  if (signal)
   {
     v3 = 128;
   }
@@ -215,9 +215,9 @@
   self->_has = (*&self->_has & 0xFFFFFF7F | v3);
 }
 
-- (void)setHasNCelluarBadRSRP:(BOOL)a3
+- (void)setHasNCelluarBadRSRP:(BOOL)p
 {
-  if (a3)
+  if (p)
   {
     v3 = 64;
   }
@@ -230,9 +230,9 @@
   self->_has = (*&self->_has & 0xFFFFFFBF | v3);
 }
 
-- (void)setHasNCelluarBadLQM:(BOOL)a3
+- (void)setHasNCelluarBadLQM:(BOOL)m
 {
-  if (a3)
+  if (m)
   {
     v3 = 32;
   }
@@ -245,9 +245,9 @@
   self->_has = (*&self->_has & 0xFFFFFFDF | v3);
 }
 
-- (void)setHasNCelluarBadEcio:(BOOL)a3
+- (void)setHasNCelluarBadEcio:(BOOL)ecio
 {
-  if (a3)
+  if (ecio)
   {
     v3 = 16;
   }
@@ -260,9 +260,9 @@
   self->_has = (*&self->_has & 0xFFFFFFEF | v3);
 }
 
-- (void)setHasNHandoverPerformed:(BOOL)a3
+- (void)setHasNHandoverPerformed:(BOOL)performed
 {
-  if (a3)
+  if (performed)
   {
     v3 = 2048;
   }
@@ -275,9 +275,9 @@
   self->_has = (*&self->_has & 0xFFFFF7FF | v3);
 }
 
-- (void)setHasNHandoverNotPerformed:(BOOL)a3
+- (void)setHasNHandoverNotPerformed:(BOOL)performed
 {
-  if (a3)
+  if (performed)
   {
     v3 = 1024;
   }
@@ -290,9 +290,9 @@
   self->_has = (*&self->_has & 0xFFFFFBFF | v3);
 }
 
-- (void)setHasNHandoverUnknown:(BOOL)a3
+- (void)setHasNHandoverUnknown:(BOOL)unknown
 {
-  if (a3)
+  if (unknown)
   {
     v3 = 4096;
   }
@@ -305,9 +305,9 @@
   self->_has = (*&self->_has & 0xFFFFEFFF | v3);
 }
 
-- (void)setHasNStatusUpdateDelayBin1:(BOOL)a3
+- (void)setHasNStatusUpdateDelayBin1:(BOOL)bin1
 {
-  if (a3)
+  if (bin1)
   {
     v3 = 0x8000;
   }
@@ -320,9 +320,9 @@
   self->_has = (*&self->_has & 0xFFFF7FFF | v3);
 }
 
-- (void)setHasNStatusUpdateDelayBin2:(BOOL)a3
+- (void)setHasNStatusUpdateDelayBin2:(BOOL)bin2
 {
-  if (a3)
+  if (bin2)
   {
     v3 = 0x10000;
   }
@@ -335,9 +335,9 @@
   self->_has = (*&self->_has & 0xFFFEFFFF | v3);
 }
 
-- (void)setHasNStatusUpdateDelayBin3:(BOOL)a3
+- (void)setHasNStatusUpdateDelayBin3:(BOOL)bin3
 {
-  if (a3)
+  if (bin3)
   {
     v3 = 0x20000;
   }
@@ -350,9 +350,9 @@
   self->_has = (*&self->_has & 0xFFFDFFFF | v3);
 }
 
-- (void)setHasNStatusUpdateDelayBin4:(BOOL)a3
+- (void)setHasNStatusUpdateDelayBin4:(BOOL)bin4
 {
-  if (a3)
+  if (bin4)
   {
     v3 = 0x40000;
   }
@@ -365,9 +365,9 @@
   self->_has = (*&self->_has & 0xFFFBFFFF | v3);
 }
 
-- (void)setHasNStatusUpdateDelayBin5:(BOOL)a3
+- (void)setHasNStatusUpdateDelayBin5:(BOOL)bin5
 {
-  if (a3)
+  if (bin5)
   {
     v3 = 0x80000;
   }
@@ -380,9 +380,9 @@
   self->_has = (*&self->_has & 0xFFF7FFFF | v3);
 }
 
-- (void)setHasNStatusUpdateDelayBin6:(BOOL)a3
+- (void)setHasNStatusUpdateDelayBin6:(BOOL)bin6
 {
-  if (a3)
+  if (bin6)
   {
     v3 = 0x100000;
   }
@@ -404,11 +404,11 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if (*&has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
     has = self->_has;
     if ((*&has & 2) == 0)
     {
@@ -427,7 +427,7 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_count), @"count"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_count), @"count"}];
   has = self->_has;
   if ((*&has & 8) == 0)
   {
@@ -441,7 +441,7 @@ LABEL_4:
   }
 
 LABEL_30:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_nCallIdle), @"nCallIdle"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_nCallIdle), @"nCallIdle"}];
   has = self->_has;
   if ((*&has & 4) == 0)
   {
@@ -455,7 +455,7 @@ LABEL_5:
   }
 
 LABEL_31:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_nCallActive), @"nCallActive"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_nCallActive), @"nCallActive"}];
   has = self->_has;
   if ((*&has & 0x200) == 0)
   {
@@ -469,7 +469,7 @@ LABEL_6:
   }
 
 LABEL_32:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_nData), @"nData"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_nData), @"nData"}];
   has = self->_has;
   if ((*&has & 0x400000) == 0)
   {
@@ -483,7 +483,7 @@ LABEL_7:
   }
 
 LABEL_33:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_nVoice), @"nVoice"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_nVoice), @"nVoice"}];
   has = self->_has;
   if ((*&has & 0x4000) == 0)
   {
@@ -497,7 +497,7 @@ LABEL_8:
   }
 
 LABEL_34:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_nStationary), @"nStationary"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_nStationary), @"nStationary"}];
   has = self->_has;
   if ((*&has & 0x800000) == 0)
   {
@@ -511,7 +511,7 @@ LABEL_9:
   }
 
 LABEL_35:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_nWalking), @"nWalking"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_nWalking), @"nWalking"}];
   has = self->_has;
   if ((*&has & 0x2000) == 0)
   {
@@ -525,7 +525,7 @@ LABEL_10:
   }
 
 LABEL_36:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_nRunning), @"nRunning"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_nRunning), @"nRunning"}];
   has = self->_has;
   if ((*&has & 0x200000) == 0)
   {
@@ -539,7 +539,7 @@ LABEL_11:
   }
 
 LABEL_37:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_nVehicular), @"nVehicular"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_nVehicular), @"nVehicular"}];
   has = self->_has;
   if ((*&has & 0x1000000) == 0)
   {
@@ -553,7 +553,7 @@ LABEL_12:
   }
 
 LABEL_38:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_nWifiGood), @"nWifiGood"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_nWifiGood), @"nWifiGood"}];
   has = self->_has;
   if ((*&has & 0x100) == 0)
   {
@@ -567,7 +567,7 @@ LABEL_13:
   }
 
 LABEL_39:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_nCellularNotReady), @"nCellularNotReady"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_nCellularNotReady), @"nCellularNotReady"}];
   has = self->_has;
   if ((*&has & 0x80) == 0)
   {
@@ -581,7 +581,7 @@ LABEL_14:
   }
 
 LABEL_40:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_nCelluarBadSignal), @"nCelluarBadSignal"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_nCelluarBadSignal), @"nCelluarBadSignal"}];
   has = self->_has;
   if ((*&has & 0x40) == 0)
   {
@@ -595,7 +595,7 @@ LABEL_15:
   }
 
 LABEL_41:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_nCelluarBadRSRP), @"nCelluarBadRSRP"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_nCelluarBadRSRP), @"nCelluarBadRSRP"}];
   has = self->_has;
   if ((*&has & 0x20) == 0)
   {
@@ -609,7 +609,7 @@ LABEL_16:
   }
 
 LABEL_42:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_nCelluarBadLQM), @"nCelluarBadLQM"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_nCelluarBadLQM), @"nCelluarBadLQM"}];
   has = self->_has;
   if ((*&has & 0x10) == 0)
   {
@@ -623,7 +623,7 @@ LABEL_17:
   }
 
 LABEL_43:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_nCelluarBadEcio), @"nCelluarBadEcio"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_nCelluarBadEcio), @"nCelluarBadEcio"}];
   has = self->_has;
   if ((*&has & 0x800) == 0)
   {
@@ -637,7 +637,7 @@ LABEL_18:
   }
 
 LABEL_44:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_nHandoverPerformed), @"nHandoverPerformed"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_nHandoverPerformed), @"nHandoverPerformed"}];
   has = self->_has;
   if ((*&has & 0x400) == 0)
   {
@@ -651,7 +651,7 @@ LABEL_19:
   }
 
 LABEL_45:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_nHandoverNotPerformed), @"nHandoverNotPerformed"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_nHandoverNotPerformed), @"nHandoverNotPerformed"}];
   has = self->_has;
   if ((*&has & 0x1000) == 0)
   {
@@ -665,7 +665,7 @@ LABEL_20:
   }
 
 LABEL_46:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_nHandoverUnknown), @"nHandoverUnknown"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_nHandoverUnknown), @"nHandoverUnknown"}];
   has = self->_has;
   if ((*&has & 0x8000) == 0)
   {
@@ -679,7 +679,7 @@ LABEL_21:
   }
 
 LABEL_47:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_nStatusUpdateDelayBin1), @"nStatusUpdateDelayBin1"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_nStatusUpdateDelayBin1), @"nStatusUpdateDelayBin1"}];
   has = self->_has;
   if ((*&has & 0x10000) == 0)
   {
@@ -693,7 +693,7 @@ LABEL_22:
   }
 
 LABEL_48:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_nStatusUpdateDelayBin2), @"nStatusUpdateDelayBin2"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_nStatusUpdateDelayBin2), @"nStatusUpdateDelayBin2"}];
   has = self->_has;
   if ((*&has & 0x20000) == 0)
   {
@@ -707,7 +707,7 @@ LABEL_23:
   }
 
 LABEL_49:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_nStatusUpdateDelayBin3), @"nStatusUpdateDelayBin3"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_nStatusUpdateDelayBin3), @"nStatusUpdateDelayBin3"}];
   has = self->_has;
   if ((*&has & 0x40000) == 0)
   {
@@ -718,17 +718,17 @@ LABEL_24:
     }
 
 LABEL_51:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_nStatusUpdateDelayBin5), @"nStatusUpdateDelayBin5"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_nStatusUpdateDelayBin5), @"nStatusUpdateDelayBin5"}];
     if ((*&self->_has & 0x100000) == 0)
     {
-      return v3;
+      return dictionary;
     }
 
     goto LABEL_26;
   }
 
 LABEL_50:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_nStatusUpdateDelayBin4), @"nStatusUpdateDelayBin4"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_nStatusUpdateDelayBin4), @"nStatusUpdateDelayBin4"}];
   has = self->_has;
   if ((*&has & 0x80000) != 0)
   {
@@ -739,13 +739,13 @@ LABEL_25:
   if ((*&has & 0x100000) != 0)
   {
 LABEL_26:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_nStatusUpdateDelayBin6), @"nStatusUpdateDelayBin6"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_nStatusUpdateDelayBin6), @"nStatusUpdateDelayBin6"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if (*&has)
@@ -1113,13 +1113,13 @@ LABEL_51:
   PBDataWriterWriteUint32Field();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if (*&has)
   {
-    *(a3 + 1) = self->_timestamp;
-    *(a3 + 28) |= 1u;
+    *(to + 1) = self->_timestamp;
+    *(to + 28) |= 1u;
     has = self->_has;
     if ((*&has & 2) == 0)
     {
@@ -1138,8 +1138,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(a3 + 4) = self->_count;
-  *(a3 + 28) |= 2u;
+  *(to + 4) = self->_count;
+  *(to + 28) |= 2u;
   has = self->_has;
   if ((*&has & 8) == 0)
   {
@@ -1153,8 +1153,8 @@ LABEL_4:
   }
 
 LABEL_29:
-  *(a3 + 6) = self->_nCallIdle;
-  *(a3 + 28) |= 8u;
+  *(to + 6) = self->_nCallIdle;
+  *(to + 28) |= 8u;
   has = self->_has;
   if ((*&has & 4) == 0)
   {
@@ -1168,8 +1168,8 @@ LABEL_5:
   }
 
 LABEL_30:
-  *(a3 + 5) = self->_nCallActive;
-  *(a3 + 28) |= 4u;
+  *(to + 5) = self->_nCallActive;
+  *(to + 28) |= 4u;
   has = self->_has;
   if ((*&has & 0x200) == 0)
   {
@@ -1183,8 +1183,8 @@ LABEL_6:
   }
 
 LABEL_31:
-  *(a3 + 12) = self->_nData;
-  *(a3 + 28) |= 0x200u;
+  *(to + 12) = self->_nData;
+  *(to + 28) |= 0x200u;
   has = self->_has;
   if ((*&has & 0x400000) == 0)
   {
@@ -1198,8 +1198,8 @@ LABEL_7:
   }
 
 LABEL_32:
-  *(a3 + 25) = self->_nVoice;
-  *(a3 + 28) |= 0x400000u;
+  *(to + 25) = self->_nVoice;
+  *(to + 28) |= 0x400000u;
   has = self->_has;
   if ((*&has & 0x4000) == 0)
   {
@@ -1213,8 +1213,8 @@ LABEL_8:
   }
 
 LABEL_33:
-  *(a3 + 17) = self->_nStationary;
-  *(a3 + 28) |= 0x4000u;
+  *(to + 17) = self->_nStationary;
+  *(to + 28) |= 0x4000u;
   has = self->_has;
   if ((*&has & 0x800000) == 0)
   {
@@ -1228,8 +1228,8 @@ LABEL_9:
   }
 
 LABEL_34:
-  *(a3 + 26) = self->_nWalking;
-  *(a3 + 28) |= 0x800000u;
+  *(to + 26) = self->_nWalking;
+  *(to + 28) |= 0x800000u;
   has = self->_has;
   if ((*&has & 0x2000) == 0)
   {
@@ -1243,8 +1243,8 @@ LABEL_10:
   }
 
 LABEL_35:
-  *(a3 + 16) = self->_nRunning;
-  *(a3 + 28) |= 0x2000u;
+  *(to + 16) = self->_nRunning;
+  *(to + 28) |= 0x2000u;
   has = self->_has;
   if ((*&has & 0x200000) == 0)
   {
@@ -1258,8 +1258,8 @@ LABEL_11:
   }
 
 LABEL_36:
-  *(a3 + 24) = self->_nVehicular;
-  *(a3 + 28) |= 0x200000u;
+  *(to + 24) = self->_nVehicular;
+  *(to + 28) |= 0x200000u;
   has = self->_has;
   if ((*&has & 0x1000000) == 0)
   {
@@ -1273,8 +1273,8 @@ LABEL_12:
   }
 
 LABEL_37:
-  *(a3 + 27) = self->_nWifiGood;
-  *(a3 + 28) |= 0x1000000u;
+  *(to + 27) = self->_nWifiGood;
+  *(to + 28) |= 0x1000000u;
   has = self->_has;
   if ((*&has & 0x100) == 0)
   {
@@ -1288,8 +1288,8 @@ LABEL_13:
   }
 
 LABEL_38:
-  *(a3 + 11) = self->_nCellularNotReady;
-  *(a3 + 28) |= 0x100u;
+  *(to + 11) = self->_nCellularNotReady;
+  *(to + 28) |= 0x100u;
   has = self->_has;
   if ((*&has & 0x80) == 0)
   {
@@ -1303,8 +1303,8 @@ LABEL_14:
   }
 
 LABEL_39:
-  *(a3 + 10) = self->_nCelluarBadSignal;
-  *(a3 + 28) |= 0x80u;
+  *(to + 10) = self->_nCelluarBadSignal;
+  *(to + 28) |= 0x80u;
   has = self->_has;
   if ((*&has & 0x40) == 0)
   {
@@ -1318,8 +1318,8 @@ LABEL_15:
   }
 
 LABEL_40:
-  *(a3 + 9) = self->_nCelluarBadRSRP;
-  *(a3 + 28) |= 0x40u;
+  *(to + 9) = self->_nCelluarBadRSRP;
+  *(to + 28) |= 0x40u;
   has = self->_has;
   if ((*&has & 0x20) == 0)
   {
@@ -1333,8 +1333,8 @@ LABEL_16:
   }
 
 LABEL_41:
-  *(a3 + 8) = self->_nCelluarBadLQM;
-  *(a3 + 28) |= 0x20u;
+  *(to + 8) = self->_nCelluarBadLQM;
+  *(to + 28) |= 0x20u;
   has = self->_has;
   if ((*&has & 0x10) == 0)
   {
@@ -1348,8 +1348,8 @@ LABEL_17:
   }
 
 LABEL_42:
-  *(a3 + 7) = self->_nCelluarBadEcio;
-  *(a3 + 28) |= 0x10u;
+  *(to + 7) = self->_nCelluarBadEcio;
+  *(to + 28) |= 0x10u;
   has = self->_has;
   if ((*&has & 0x800) == 0)
   {
@@ -1363,8 +1363,8 @@ LABEL_18:
   }
 
 LABEL_43:
-  *(a3 + 14) = self->_nHandoverPerformed;
-  *(a3 + 28) |= 0x800u;
+  *(to + 14) = self->_nHandoverPerformed;
+  *(to + 28) |= 0x800u;
   has = self->_has;
   if ((*&has & 0x400) == 0)
   {
@@ -1378,8 +1378,8 @@ LABEL_19:
   }
 
 LABEL_44:
-  *(a3 + 13) = self->_nHandoverNotPerformed;
-  *(a3 + 28) |= 0x400u;
+  *(to + 13) = self->_nHandoverNotPerformed;
+  *(to + 28) |= 0x400u;
   has = self->_has;
   if ((*&has & 0x1000) == 0)
   {
@@ -1393,8 +1393,8 @@ LABEL_20:
   }
 
 LABEL_45:
-  *(a3 + 15) = self->_nHandoverUnknown;
-  *(a3 + 28) |= 0x1000u;
+  *(to + 15) = self->_nHandoverUnknown;
+  *(to + 28) |= 0x1000u;
   has = self->_has;
   if ((*&has & 0x8000) == 0)
   {
@@ -1408,8 +1408,8 @@ LABEL_21:
   }
 
 LABEL_46:
-  *(a3 + 18) = self->_nStatusUpdateDelayBin1;
-  *(a3 + 28) |= 0x8000u;
+  *(to + 18) = self->_nStatusUpdateDelayBin1;
+  *(to + 28) |= 0x8000u;
   has = self->_has;
   if ((*&has & 0x10000) == 0)
   {
@@ -1423,8 +1423,8 @@ LABEL_22:
   }
 
 LABEL_47:
-  *(a3 + 19) = self->_nStatusUpdateDelayBin2;
-  *(a3 + 28) |= 0x10000u;
+  *(to + 19) = self->_nStatusUpdateDelayBin2;
+  *(to + 28) |= 0x10000u;
   has = self->_has;
   if ((*&has & 0x20000) == 0)
   {
@@ -1438,8 +1438,8 @@ LABEL_23:
   }
 
 LABEL_48:
-  *(a3 + 20) = self->_nStatusUpdateDelayBin3;
-  *(a3 + 28) |= 0x20000u;
+  *(to + 20) = self->_nStatusUpdateDelayBin3;
+  *(to + 28) |= 0x20000u;
   has = self->_has;
   if ((*&has & 0x40000) == 0)
   {
@@ -1453,8 +1453,8 @@ LABEL_24:
   }
 
 LABEL_49:
-  *(a3 + 21) = self->_nStatusUpdateDelayBin4;
-  *(a3 + 28) |= 0x40000u;
+  *(to + 21) = self->_nStatusUpdateDelayBin4;
+  *(to + 28) |= 0x40000u;
   has = self->_has;
   if ((*&has & 0x80000) == 0)
   {
@@ -1465,23 +1465,23 @@ LABEL_25:
     }
 
 LABEL_51:
-    *(a3 + 23) = self->_nStatusUpdateDelayBin6;
-    *(a3 + 28) |= 0x100000u;
+    *(to + 23) = self->_nStatusUpdateDelayBin6;
+    *(to + 28) |= 0x100000u;
     return;
   }
 
 LABEL_50:
-  *(a3 + 22) = self->_nStatusUpdateDelayBin5;
-  *(a3 + 28) |= 0x80000u;
+  *(to + 22) = self->_nStatusUpdateDelayBin5;
+  *(to + 28) |= 0x80000u;
   if ((*&self->_has & 0x100000) != 0)
   {
     goto LABEL_51;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if (*&has)
   {
@@ -1848,16 +1848,16 @@ LABEL_26:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     has = self->_has;
-    v7 = *(a3 + 28);
+    v7 = *(equal + 28);
     if (*&has)
     {
-      if ((v7 & 1) == 0 || self->_timestamp != *(a3 + 1))
+      if ((v7 & 1) == 0 || self->_timestamp != *(equal + 1))
       {
         goto LABEL_126;
       }
@@ -1872,7 +1872,7 @@ LABEL_126:
 
     if ((*&has & 2) != 0)
     {
-      if ((v7 & 2) == 0 || self->_count != *(a3 + 4))
+      if ((v7 & 2) == 0 || self->_count != *(equal + 4))
       {
         goto LABEL_126;
       }
@@ -1885,7 +1885,7 @@ LABEL_126:
 
     if ((*&has & 8) != 0)
     {
-      if ((v7 & 8) == 0 || self->_nCallIdle != *(a3 + 6))
+      if ((v7 & 8) == 0 || self->_nCallIdle != *(equal + 6))
       {
         goto LABEL_126;
       }
@@ -1898,7 +1898,7 @@ LABEL_126:
 
     if ((*&has & 4) != 0)
     {
-      if ((v7 & 4) == 0 || self->_nCallActive != *(a3 + 5))
+      if ((v7 & 4) == 0 || self->_nCallActive != *(equal + 5))
       {
         goto LABEL_126;
       }
@@ -1911,7 +1911,7 @@ LABEL_126:
 
     if ((*&has & 0x200) != 0)
     {
-      if ((v7 & 0x200) == 0 || self->_nData != *(a3 + 12))
+      if ((v7 & 0x200) == 0 || self->_nData != *(equal + 12))
       {
         goto LABEL_126;
       }
@@ -1924,7 +1924,7 @@ LABEL_126:
 
     if ((*&has & 0x400000) != 0)
     {
-      if ((v7 & 0x400000) == 0 || self->_nVoice != *(a3 + 25))
+      if ((v7 & 0x400000) == 0 || self->_nVoice != *(equal + 25))
       {
         goto LABEL_126;
       }
@@ -1937,7 +1937,7 @@ LABEL_126:
 
     if ((*&has & 0x4000) != 0)
     {
-      if ((v7 & 0x4000) == 0 || self->_nStationary != *(a3 + 17))
+      if ((v7 & 0x4000) == 0 || self->_nStationary != *(equal + 17))
       {
         goto LABEL_126;
       }
@@ -1950,7 +1950,7 @@ LABEL_126:
 
     if ((*&has & 0x800000) != 0)
     {
-      if ((v7 & 0x800000) == 0 || self->_nWalking != *(a3 + 26))
+      if ((v7 & 0x800000) == 0 || self->_nWalking != *(equal + 26))
       {
         goto LABEL_126;
       }
@@ -1963,7 +1963,7 @@ LABEL_126:
 
     if ((*&has & 0x2000) != 0)
     {
-      if ((v7 & 0x2000) == 0 || self->_nRunning != *(a3 + 16))
+      if ((v7 & 0x2000) == 0 || self->_nRunning != *(equal + 16))
       {
         goto LABEL_126;
       }
@@ -1976,7 +1976,7 @@ LABEL_126:
 
     if ((*&has & 0x200000) != 0)
     {
-      if ((v7 & 0x200000) == 0 || self->_nVehicular != *(a3 + 24))
+      if ((v7 & 0x200000) == 0 || self->_nVehicular != *(equal + 24))
       {
         goto LABEL_126;
       }
@@ -1989,7 +1989,7 @@ LABEL_126:
 
     if ((*&has & 0x1000000) != 0)
     {
-      if ((v7 & 0x1000000) == 0 || self->_nWifiGood != *(a3 + 27))
+      if ((v7 & 0x1000000) == 0 || self->_nWifiGood != *(equal + 27))
       {
         goto LABEL_126;
       }
@@ -2002,7 +2002,7 @@ LABEL_126:
 
     if ((*&has & 0x100) != 0)
     {
-      if ((v7 & 0x100) == 0 || self->_nCellularNotReady != *(a3 + 11))
+      if ((v7 & 0x100) == 0 || self->_nCellularNotReady != *(equal + 11))
       {
         goto LABEL_126;
       }
@@ -2015,7 +2015,7 @@ LABEL_126:
 
     if ((*&has & 0x80) != 0)
     {
-      if ((v7 & 0x80) == 0 || self->_nCelluarBadSignal != *(a3 + 10))
+      if ((v7 & 0x80) == 0 || self->_nCelluarBadSignal != *(equal + 10))
       {
         goto LABEL_126;
       }
@@ -2028,7 +2028,7 @@ LABEL_126:
 
     if ((*&has & 0x40) != 0)
     {
-      if ((v7 & 0x40) == 0 || self->_nCelluarBadRSRP != *(a3 + 9))
+      if ((v7 & 0x40) == 0 || self->_nCelluarBadRSRP != *(equal + 9))
       {
         goto LABEL_126;
       }
@@ -2041,7 +2041,7 @@ LABEL_126:
 
     if ((*&has & 0x20) != 0)
     {
-      if ((v7 & 0x20) == 0 || self->_nCelluarBadLQM != *(a3 + 8))
+      if ((v7 & 0x20) == 0 || self->_nCelluarBadLQM != *(equal + 8))
       {
         goto LABEL_126;
       }
@@ -2054,7 +2054,7 @@ LABEL_126:
 
     if ((*&has & 0x10) != 0)
     {
-      if ((v7 & 0x10) == 0 || self->_nCelluarBadEcio != *(a3 + 7))
+      if ((v7 & 0x10) == 0 || self->_nCelluarBadEcio != *(equal + 7))
       {
         goto LABEL_126;
       }
@@ -2067,7 +2067,7 @@ LABEL_126:
 
     if ((*&has & 0x800) != 0)
     {
-      if ((v7 & 0x800) == 0 || self->_nHandoverPerformed != *(a3 + 14))
+      if ((v7 & 0x800) == 0 || self->_nHandoverPerformed != *(equal + 14))
       {
         goto LABEL_126;
       }
@@ -2080,7 +2080,7 @@ LABEL_126:
 
     if ((*&has & 0x400) != 0)
     {
-      if ((v7 & 0x400) == 0 || self->_nHandoverNotPerformed != *(a3 + 13))
+      if ((v7 & 0x400) == 0 || self->_nHandoverNotPerformed != *(equal + 13))
       {
         goto LABEL_126;
       }
@@ -2093,7 +2093,7 @@ LABEL_126:
 
     if ((*&has & 0x1000) != 0)
     {
-      if ((v7 & 0x1000) == 0 || self->_nHandoverUnknown != *(a3 + 15))
+      if ((v7 & 0x1000) == 0 || self->_nHandoverUnknown != *(equal + 15))
       {
         goto LABEL_126;
       }
@@ -2106,7 +2106,7 @@ LABEL_126:
 
     if ((*&has & 0x8000) != 0)
     {
-      if ((v7 & 0x8000) == 0 || self->_nStatusUpdateDelayBin1 != *(a3 + 18))
+      if ((v7 & 0x8000) == 0 || self->_nStatusUpdateDelayBin1 != *(equal + 18))
       {
         goto LABEL_126;
       }
@@ -2119,7 +2119,7 @@ LABEL_126:
 
     if ((*&has & 0x10000) != 0)
     {
-      if ((v7 & 0x10000) == 0 || self->_nStatusUpdateDelayBin2 != *(a3 + 19))
+      if ((v7 & 0x10000) == 0 || self->_nStatusUpdateDelayBin2 != *(equal + 19))
       {
         goto LABEL_126;
       }
@@ -2132,7 +2132,7 @@ LABEL_126:
 
     if ((*&has & 0x20000) != 0)
     {
-      if ((v7 & 0x20000) == 0 || self->_nStatusUpdateDelayBin3 != *(a3 + 20))
+      if ((v7 & 0x20000) == 0 || self->_nStatusUpdateDelayBin3 != *(equal + 20))
       {
         goto LABEL_126;
       }
@@ -2145,7 +2145,7 @@ LABEL_126:
 
     if ((*&has & 0x40000) != 0)
     {
-      if ((v7 & 0x40000) == 0 || self->_nStatusUpdateDelayBin4 != *(a3 + 21))
+      if ((v7 & 0x40000) == 0 || self->_nStatusUpdateDelayBin4 != *(equal + 21))
       {
         goto LABEL_126;
       }
@@ -2158,7 +2158,7 @@ LABEL_126:
 
     if ((*&has & 0x80000) != 0)
     {
-      if ((v7 & 0x80000) == 0 || self->_nStatusUpdateDelayBin5 != *(a3 + 22))
+      if ((v7 & 0x80000) == 0 || self->_nStatusUpdateDelayBin5 != *(equal + 22))
       {
         goto LABEL_126;
       }
@@ -2172,7 +2172,7 @@ LABEL_126:
     LOBYTE(v5) = (v7 & 0x100000) == 0;
     if ((*&has & 0x100000) != 0)
     {
-      if ((v7 & 0x100000) == 0 || self->_nStatusUpdateDelayBin6 != *(a3 + 23))
+      if ((v7 & 0x100000) == 0 || self->_nStatusUpdateDelayBin6 != *(equal + 23))
       {
         goto LABEL_126;
       }
@@ -2527,14 +2527,14 @@ LABEL_42:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13 ^ v14 ^ v15 ^ v16 ^ v17 ^ v18 ^ v19 ^ v20 ^ v21 ^ v22 ^ v23 ^ v24 ^ v25 ^ v26 ^ v27;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v3 = *(a3 + 28);
+  v3 = *(from + 28);
   if (v3)
   {
-    self->_timestamp = *(a3 + 1);
+    self->_timestamp = *(from + 1);
     *&self->_has |= 1u;
-    v3 = *(a3 + 28);
+    v3 = *(from + 28);
     if ((v3 & 2) == 0)
     {
 LABEL_3:
@@ -2552,9 +2552,9 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  self->_count = *(a3 + 4);
+  self->_count = *(from + 4);
   *&self->_has |= 2u;
-  v3 = *(a3 + 28);
+  v3 = *(from + 28);
   if ((v3 & 8) == 0)
   {
 LABEL_4:
@@ -2567,9 +2567,9 @@ LABEL_4:
   }
 
 LABEL_29:
-  self->_nCallIdle = *(a3 + 6);
+  self->_nCallIdle = *(from + 6);
   *&self->_has |= 8u;
-  v3 = *(a3 + 28);
+  v3 = *(from + 28);
   if ((v3 & 4) == 0)
   {
 LABEL_5:
@@ -2582,9 +2582,9 @@ LABEL_5:
   }
 
 LABEL_30:
-  self->_nCallActive = *(a3 + 5);
+  self->_nCallActive = *(from + 5);
   *&self->_has |= 4u;
-  v3 = *(a3 + 28);
+  v3 = *(from + 28);
   if ((v3 & 0x200) == 0)
   {
 LABEL_6:
@@ -2597,9 +2597,9 @@ LABEL_6:
   }
 
 LABEL_31:
-  self->_nData = *(a3 + 12);
+  self->_nData = *(from + 12);
   *&self->_has |= 0x200u;
-  v3 = *(a3 + 28);
+  v3 = *(from + 28);
   if ((v3 & 0x400000) == 0)
   {
 LABEL_7:
@@ -2612,9 +2612,9 @@ LABEL_7:
   }
 
 LABEL_32:
-  self->_nVoice = *(a3 + 25);
+  self->_nVoice = *(from + 25);
   *&self->_has |= 0x400000u;
-  v3 = *(a3 + 28);
+  v3 = *(from + 28);
   if ((v3 & 0x4000) == 0)
   {
 LABEL_8:
@@ -2627,9 +2627,9 @@ LABEL_8:
   }
 
 LABEL_33:
-  self->_nStationary = *(a3 + 17);
+  self->_nStationary = *(from + 17);
   *&self->_has |= 0x4000u;
-  v3 = *(a3 + 28);
+  v3 = *(from + 28);
   if ((v3 & 0x800000) == 0)
   {
 LABEL_9:
@@ -2642,9 +2642,9 @@ LABEL_9:
   }
 
 LABEL_34:
-  self->_nWalking = *(a3 + 26);
+  self->_nWalking = *(from + 26);
   *&self->_has |= 0x800000u;
-  v3 = *(a3 + 28);
+  v3 = *(from + 28);
   if ((v3 & 0x2000) == 0)
   {
 LABEL_10:
@@ -2657,9 +2657,9 @@ LABEL_10:
   }
 
 LABEL_35:
-  self->_nRunning = *(a3 + 16);
+  self->_nRunning = *(from + 16);
   *&self->_has |= 0x2000u;
-  v3 = *(a3 + 28);
+  v3 = *(from + 28);
   if ((v3 & 0x200000) == 0)
   {
 LABEL_11:
@@ -2672,9 +2672,9 @@ LABEL_11:
   }
 
 LABEL_36:
-  self->_nVehicular = *(a3 + 24);
+  self->_nVehicular = *(from + 24);
   *&self->_has |= 0x200000u;
-  v3 = *(a3 + 28);
+  v3 = *(from + 28);
   if ((v3 & 0x1000000) == 0)
   {
 LABEL_12:
@@ -2687,9 +2687,9 @@ LABEL_12:
   }
 
 LABEL_37:
-  self->_nWifiGood = *(a3 + 27);
+  self->_nWifiGood = *(from + 27);
   *&self->_has |= 0x1000000u;
-  v3 = *(a3 + 28);
+  v3 = *(from + 28);
   if ((v3 & 0x100) == 0)
   {
 LABEL_13:
@@ -2702,9 +2702,9 @@ LABEL_13:
   }
 
 LABEL_38:
-  self->_nCellularNotReady = *(a3 + 11);
+  self->_nCellularNotReady = *(from + 11);
   *&self->_has |= 0x100u;
-  v3 = *(a3 + 28);
+  v3 = *(from + 28);
   if ((v3 & 0x80) == 0)
   {
 LABEL_14:
@@ -2717,9 +2717,9 @@ LABEL_14:
   }
 
 LABEL_39:
-  self->_nCelluarBadSignal = *(a3 + 10);
+  self->_nCelluarBadSignal = *(from + 10);
   *&self->_has |= 0x80u;
-  v3 = *(a3 + 28);
+  v3 = *(from + 28);
   if ((v3 & 0x40) == 0)
   {
 LABEL_15:
@@ -2732,9 +2732,9 @@ LABEL_15:
   }
 
 LABEL_40:
-  self->_nCelluarBadRSRP = *(a3 + 9);
+  self->_nCelluarBadRSRP = *(from + 9);
   *&self->_has |= 0x40u;
-  v3 = *(a3 + 28);
+  v3 = *(from + 28);
   if ((v3 & 0x20) == 0)
   {
 LABEL_16:
@@ -2747,9 +2747,9 @@ LABEL_16:
   }
 
 LABEL_41:
-  self->_nCelluarBadLQM = *(a3 + 8);
+  self->_nCelluarBadLQM = *(from + 8);
   *&self->_has |= 0x20u;
-  v3 = *(a3 + 28);
+  v3 = *(from + 28);
   if ((v3 & 0x10) == 0)
   {
 LABEL_17:
@@ -2762,9 +2762,9 @@ LABEL_17:
   }
 
 LABEL_42:
-  self->_nCelluarBadEcio = *(a3 + 7);
+  self->_nCelluarBadEcio = *(from + 7);
   *&self->_has |= 0x10u;
-  v3 = *(a3 + 28);
+  v3 = *(from + 28);
   if ((v3 & 0x800) == 0)
   {
 LABEL_18:
@@ -2777,9 +2777,9 @@ LABEL_18:
   }
 
 LABEL_43:
-  self->_nHandoverPerformed = *(a3 + 14);
+  self->_nHandoverPerformed = *(from + 14);
   *&self->_has |= 0x800u;
-  v3 = *(a3 + 28);
+  v3 = *(from + 28);
   if ((v3 & 0x400) == 0)
   {
 LABEL_19:
@@ -2792,9 +2792,9 @@ LABEL_19:
   }
 
 LABEL_44:
-  self->_nHandoverNotPerformed = *(a3 + 13);
+  self->_nHandoverNotPerformed = *(from + 13);
   *&self->_has |= 0x400u;
-  v3 = *(a3 + 28);
+  v3 = *(from + 28);
   if ((v3 & 0x1000) == 0)
   {
 LABEL_20:
@@ -2807,9 +2807,9 @@ LABEL_20:
   }
 
 LABEL_45:
-  self->_nHandoverUnknown = *(a3 + 15);
+  self->_nHandoverUnknown = *(from + 15);
   *&self->_has |= 0x1000u;
-  v3 = *(a3 + 28);
+  v3 = *(from + 28);
   if ((v3 & 0x8000) == 0)
   {
 LABEL_21:
@@ -2822,9 +2822,9 @@ LABEL_21:
   }
 
 LABEL_46:
-  self->_nStatusUpdateDelayBin1 = *(a3 + 18);
+  self->_nStatusUpdateDelayBin1 = *(from + 18);
   *&self->_has |= 0x8000u;
-  v3 = *(a3 + 28);
+  v3 = *(from + 28);
   if ((v3 & 0x10000) == 0)
   {
 LABEL_22:
@@ -2837,9 +2837,9 @@ LABEL_22:
   }
 
 LABEL_47:
-  self->_nStatusUpdateDelayBin2 = *(a3 + 19);
+  self->_nStatusUpdateDelayBin2 = *(from + 19);
   *&self->_has |= 0x10000u;
-  v3 = *(a3 + 28);
+  v3 = *(from + 28);
   if ((v3 & 0x20000) == 0)
   {
 LABEL_23:
@@ -2852,9 +2852,9 @@ LABEL_23:
   }
 
 LABEL_48:
-  self->_nStatusUpdateDelayBin3 = *(a3 + 20);
+  self->_nStatusUpdateDelayBin3 = *(from + 20);
   *&self->_has |= 0x20000u;
-  v3 = *(a3 + 28);
+  v3 = *(from + 28);
   if ((v3 & 0x40000) == 0)
   {
 LABEL_24:
@@ -2867,9 +2867,9 @@ LABEL_24:
   }
 
 LABEL_49:
-  self->_nStatusUpdateDelayBin4 = *(a3 + 21);
+  self->_nStatusUpdateDelayBin4 = *(from + 21);
   *&self->_has |= 0x40000u;
-  v3 = *(a3 + 28);
+  v3 = *(from + 28);
   if ((v3 & 0x80000) == 0)
   {
 LABEL_25:
@@ -2879,15 +2879,15 @@ LABEL_25:
     }
 
 LABEL_51:
-    self->_nStatusUpdateDelayBin6 = *(a3 + 23);
+    self->_nStatusUpdateDelayBin6 = *(from + 23);
     *&self->_has |= 0x100000u;
     return;
   }
 
 LABEL_50:
-  self->_nStatusUpdateDelayBin5 = *(a3 + 22);
+  self->_nStatusUpdateDelayBin5 = *(from + 22);
   *&self->_has |= 0x80000u;
-  if ((*(a3 + 28) & 0x100000) != 0)
+  if ((*(from + 28) & 0x100000) != 0)
   {
     goto LABEL_51;
   }

@@ -1,6 +1,6 @@
 @interface CIPerspectiveAutoCalcV1
 - (BOOL)compute;
-- (CIPerspectiveAutoCalcV1)initWithContext:(id)a3 image:(id)a4 config:(id *)a5;
+- (CIPerspectiveAutoCalcV1)initWithContext:(id)context image:(id)image config:(id *)config;
 - (double)confidence;
 - (id).cxx_construct;
 - (void)clusterLineSegments;
@@ -17,11 +17,11 @@
 
 @implementation CIPerspectiveAutoCalcV1
 
-- (CIPerspectiveAutoCalcV1)initWithContext:(id)a3 image:(id)a4 config:(id *)a5
+- (CIPerspectiveAutoCalcV1)initWithContext:(id)context image:(id)image config:(id *)config
 {
   v26.receiver = self;
   v26.super_class = CIPerspectiveAutoCalcV1;
-  v5 = [(CIPerspectiveAutoCalc *)&v26 initWithContext:a3 image:a4 config:a5];
+  v5 = [(CIPerspectiveAutoCalc *)&v26 initWithContext:context image:image config:config];
   [(CIImage *)v5->super.img extent];
   *&v7 = v6;
   v9.f64[1] = v8;

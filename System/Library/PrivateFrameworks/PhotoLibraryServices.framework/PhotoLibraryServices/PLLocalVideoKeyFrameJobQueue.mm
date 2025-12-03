@@ -1,25 +1,25 @@
 @interface PLLocalVideoKeyFrameJobQueue
-- (BOOL)addJobWithAssetObjectID:(id)a3 networkAccessAllowed:(BOOL)a4 clientBundleID:(id)a5 libraryID:(id)a6 error:(id *)a7 completionHandler:(id)a8;
-- (BOOL)removeJob:(id)a3;
+- (BOOL)addJobWithAssetObjectID:(id)d networkAccessAllowed:(BOOL)allowed clientBundleID:(id)iD libraryID:(id)libraryID error:(id *)error completionHandler:(id)handler;
+- (BOOL)removeJob:(id)job;
 - (PLLocalVideoKeyFrameJobQueue)init;
 - (id)popNextJobToRun;
 @end
 
 @implementation PLLocalVideoKeyFrameJobQueue
 
-- (BOOL)removeJob:(id)a3
+- (BOOL)removeJob:(id)job
 {
-  v4 = a3;
+  jobCopy = job;
   os_unfair_lock_lock(&self->_lock);
   jobsByAssetObjectID = self->_jobsByAssetObjectID;
-  v6 = [v4 assetObjectID];
-  v7 = [(NSMutableDictionary *)jobsByAssetObjectID objectForKeyedSubscript:v6];
+  assetObjectID = [jobCopy assetObjectID];
+  v7 = [(NSMutableDictionary *)jobsByAssetObjectID objectForKeyedSubscript:assetObjectID];
 
   if (v7)
   {
-    if (([(NSMutableOrderedSet *)self->_queuedJobs containsObject:v4]& 1) != 0)
+    if (([(NSMutableOrderedSet *)self->_queuedJobs containsObject:jobCopy]& 1) != 0)
     {
-      [(NSMutableOrderedSet *)self->_queuedJobs removeObject:v4];
+      [(NSMutableOrderedSet *)self->_queuedJobs removeObject:jobCopy];
     }
 
     else
@@ -28,8 +28,8 @@
     }
 
     v8 = self->_jobsByAssetObjectID;
-    v9 = [v4 assetObjectID];
-    [(NSMutableDictionary *)v8 setObject:0 forKeyedSubscript:v9];
+    assetObjectID2 = [jobCopy assetObjectID];
+    [(NSMutableDictionary *)v8 setObject:0 forKeyedSubscript:assetObjectID2];
   }
 
   os_unfair_lock_unlock(&self->_lock);
@@ -42,13 +42,13 @@
   os_unfair_lock_lock(&self->_lock);
   if (self->_inflightCount > 1)
   {
-    v3 = 0;
+    firstObject = 0;
   }
 
   else
   {
-    v3 = [(NSMutableOrderedSet *)self->_queuedJobs firstObject];
-    if (v3)
+    firstObject = [(NSMutableOrderedSet *)self->_queuedJobs firstObject];
+    if (firstObject)
     {
       [(NSMutableOrderedSet *)self->_queuedJobs removeObjectAtIndex:0];
       ++self->_inflightCount;
@@ -57,45 +57,45 @@
 
   os_unfair_lock_unlock(&self->_lock);
 
-  return v3;
+  return firstObject;
 }
 
-- (BOOL)addJobWithAssetObjectID:(id)a3 networkAccessAllowed:(BOOL)a4 clientBundleID:(id)a5 libraryID:(id)a6 error:(id *)a7 completionHandler:(id)a8
+- (BOOL)addJobWithAssetObjectID:(id)d networkAccessAllowed:(BOOL)allowed clientBundleID:(id)iD libraryID:(id)libraryID error:(id *)error completionHandler:(id)handler
 {
-  v12 = a4;
+  allowedCopy = allowed;
   v36 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a5;
-  v16 = a6;
-  v17 = a8;
+  dCopy = d;
+  iDCopy = iD;
+  libraryIDCopy = libraryID;
+  handlerCopy = handler;
   os_unfair_lock_lock(&self->_lock);
-  v18 = [(NSMutableDictionary *)self->_jobsByAssetObjectID objectForKeyedSubscript:v14];
+  v18 = [(NSMutableDictionary *)self->_jobsByAssetObjectID objectForKeyedSubscript:dCopy];
   if (v18)
   {
     v19 = PLImageManagerGetLog();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      v35 = v14;
+      v35 = dCopy;
       _os_log_impl(&dword_19BF1F000, v19, OS_LOG_TYPE_DEBUG, "[key frame] existing job found adding new completion handler for asset: %@", buf, 0xCu);
     }
 
-    [v18 addCompletionHandler:v17];
+    [v18 addCompletionHandler:handlerCopy];
     goto LABEL_10;
   }
 
   if ([(NSMutableOrderedSet *)self->_queuedJobs count]< 0xC8)
   {
     v26 = objc_alloc_init(PLLocalVideoKeyFrameGenerationJob);
-    [(PLLocalVideoKeyFrameGenerationJob *)v26 setAssetObjectID:v14];
-    [(PLLocalVideoKeyFrameGenerationJob *)v26 setNetworkAccessAllowed:v12];
-    [(PLLocalVideoKeyFrameGenerationJob *)v26 setClientBundleID:v15];
-    [(PLLocalVideoKeyFrameGenerationJob *)v26 setLibraryID:v16];
-    [(PLLocalVideoKeyFrameGenerationJob *)v26 addCompletionHandler:v17];
+    [(PLLocalVideoKeyFrameGenerationJob *)v26 setAssetObjectID:dCopy];
+    [(PLLocalVideoKeyFrameGenerationJob *)v26 setNetworkAccessAllowed:allowedCopy];
+    [(PLLocalVideoKeyFrameGenerationJob *)v26 setClientBundleID:iDCopy];
+    [(PLLocalVideoKeyFrameGenerationJob *)v26 setLibraryID:libraryIDCopy];
+    [(PLLocalVideoKeyFrameGenerationJob *)v26 addCompletionHandler:handlerCopy];
     [(NSMutableOrderedSet *)self->_queuedJobs addObject:v26];
     jobsByAssetObjectID = self->_jobsByAssetObjectID;
-    v28 = [(PLLocalVideoKeyFrameGenerationJob *)v26 assetObjectID];
-    [(NSMutableDictionary *)jobsByAssetObjectID setObject:v26 forKeyedSubscript:v28];
+    assetObjectID = [(PLLocalVideoKeyFrameGenerationJob *)v26 assetObjectID];
+    [(NSMutableDictionary *)jobsByAssetObjectID setObject:v26 forKeyedSubscript:assetObjectID];
 
 LABEL_10:
     v24 = 0;
@@ -107,7 +107,7 @@ LABEL_10:
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v35 = v14;
+    v35 = dCopy;
     _os_log_impl(&dword_19BF1F000, v20, OS_LOG_TYPE_DEFAULT, "[key frame] max queued jobs reached, failing request for asset: %@", buf, 0xCu);
   }
 
@@ -122,10 +122,10 @@ LABEL_10:
   v25 = 0;
 LABEL_11:
   os_unfair_lock_unlock(&self->_lock);
-  if (a7)
+  if (error)
   {
     v29 = v24;
-    *a7 = v24;
+    *error = v24;
   }
 
   return v25;

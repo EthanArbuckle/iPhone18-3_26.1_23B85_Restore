@@ -1,12 +1,12 @@
 @interface NTKSalmonFace
-+ (BOOL)isRestrictedForDevice:(id)a3;
++ (BOOL)isRestrictedForDevice:(id)device;
 + (id)complicationConfiguration;
-- (Class)_optionClassForCustomEditMode:(int64_t)a3;
-- (id)_defaultOptionForCustomEditMode:(int64_t)a3 slot:(id)a4;
-- (id)_optionAtIndex:(unint64_t)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
+- (Class)_optionClassForCustomEditMode:(int64_t)mode;
+- (id)_defaultOptionForCustomEditMode:(int64_t)mode slot:(id)slot;
+- (id)_optionAtIndex:(unint64_t)index forCustomEditMode:(int64_t)mode slot:(id)slot;
 - (id)unsafeDailySnapshotKey;
-- (unint64_t)_indexOfOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)a3 slot:(id)a4;
+- (unint64_t)_indexOfOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)mode slot:(id)slot;
 @end
 
 @implementation NTKSalmonFace
@@ -15,15 +15,15 @@
 {
   v6.receiver = self;
   v6.super_class = NTKSalmonFace;
-  v2 = [(NTKSalmonFace *)&v6 unsafeDailySnapshotKey];
-  if ([v2 isEqualToString:NTKSensitiveSnapshotKey])
+  unsafeDailySnapshotKey = [(NTKSalmonFace *)&v6 unsafeDailySnapshotKey];
+  if ([unsafeDailySnapshotKey isEqualToString:NTKSensitiveSnapshotKey])
   {
-    v3 = v2;
+    v3 = unsafeDailySnapshotKey;
   }
 
   else
   {
-    v3 = [v2 stringByAppendingString:@".salmon"];
+    v3 = [unsafeDailySnapshotKey stringByAppendingString:@".salmon"];
   }
 
   v4 = v3;
@@ -31,17 +31,17 @@
   return v4;
 }
 
-+ (BOOL)isRestrictedForDevice:(id)a3
++ (BOOL)isRestrictedForDevice:(id)device
 {
-  v3 = a3;
-  if ([v3 deviceCategory] == &dword_0 + 1)
+  deviceCopy = device;
+  if ([deviceCopy deviceCategory] == &dword_0 + 1)
   {
     LOBYTE(v4) = 1;
   }
 
   else
   {
-    v4 = [v3 supportsPDRCapability:3588072423] ^ 1;
+    v4 = [deviceCopy supportsPDRCapability:3588072423] ^ 1;
   }
 
   return v4;
@@ -59,9 +59,9 @@
   return v3;
 }
 
-- (id)_defaultOptionForCustomEditMode:(int64_t)a3 slot:(id)a4
+- (id)_defaultOptionForCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  if (a3 == 10)
+  if (mode == 10)
   {
     v4 = [(NTKSalmonFace *)self device:10];
     v5 = [NTKSalmonColorEditOption optionWithColor:3000 forDevice:v4];
@@ -75,9 +75,9 @@
   return v5;
 }
 
-- (Class)_optionClassForCustomEditMode:(int64_t)a3
+- (Class)_optionClassForCustomEditMode:(int64_t)mode
 {
-  if (a3 == 10)
+  if (mode == 10)
   {
     v4 = objc_opt_class();
   }
@@ -90,30 +90,30 @@
   return v4;
 }
 
-- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)a3 slot:(id)a4
+- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v5 = [(NTKSalmonFace *)self _optionClassForCustomEditMode:a3, a4];
-  v6 = [(NTKSalmonFace *)self device];
-  v7 = [(objc_class *)v5 numberOfOptionsForDevice:v6];
+  slot = [(NTKSalmonFace *)self _optionClassForCustomEditMode:mode, slot];
+  device = [(NTKSalmonFace *)self device];
+  v7 = [(objc_class *)slot numberOfOptionsForDevice:device];
 
   return v7;
 }
 
-- (unint64_t)_indexOfOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (unint64_t)_indexOfOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v7 = a3;
-  v8 = [(NTKSalmonFace *)self _optionClassForCustomEditMode:a4];
-  v9 = [(NTKSalmonFace *)self device];
-  v10 = [(objc_class *)v8 indexOfOption:v7 forDevice:v9];
+  optionCopy = option;
+  v8 = [(NTKSalmonFace *)self _optionClassForCustomEditMode:mode];
+  device = [(NTKSalmonFace *)self device];
+  v10 = [(objc_class *)v8 indexOfOption:optionCopy forDevice:device];
 
   return v10;
 }
 
-- (id)_optionAtIndex:(unint64_t)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (id)_optionAtIndex:(unint64_t)index forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v7 = [(NTKSalmonFace *)self _optionClassForCustomEditMode:a4];
-  v8 = [(NTKSalmonFace *)self device];
-  v9 = [(objc_class *)v7 optionAtIndex:a3 forDevice:v8];
+  v7 = [(NTKSalmonFace *)self _optionClassForCustomEditMode:mode];
+  device = [(NTKSalmonFace *)self device];
+  v9 = [(objc_class *)v7 optionAtIndex:index forDevice:device];
 
   return v9;
 }

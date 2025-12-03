@@ -1,64 +1,64 @@
 @interface EARAudioAnalytics
-- (EARAudioAnalytics)initWithAnalytics:(id)a3;
-- (EARAudioAnalytics)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (EARAudioAnalytics)initWithAnalytics:(id)analytics;
+- (EARAudioAnalytics)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation EARAudioAnalytics
 
-- (EARAudioAnalytics)initWithCoder:(id)a3
+- (EARAudioAnalytics)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = EARAudioAnalytics;
   v5 = [(EARAudioAnalytics *)&v14 init];
   if (v5)
   {
     v6 = objc_opt_class();
-    v7 = [v4 decodeDictionaryWithKeysOfClass:v6 objectsOfClass:objc_opt_class() forKey:@"speechRecognitionFeatures"];
+    v7 = [coderCopy decodeDictionaryWithKeysOfClass:v6 objectsOfClass:objc_opt_class() forKey:@"speechRecognitionFeatures"];
     speechRecognitionFeatures = v5->_speechRecognitionFeatures;
     v5->_speechRecognitionFeatures = v7;
 
     v9 = objc_opt_class();
-    v10 = [v4 decodeDictionaryWithKeysOfClass:v9 objectsOfClass:objc_opt_class() forKey:@"acousticFeatures"];
+    v10 = [coderCopy decodeDictionaryWithKeysOfClass:v9 objectsOfClass:objc_opt_class() forKey:@"acousticFeatures"];
     acousticFeatures = v5->_acousticFeatures;
     v5->_acousticFeatures = v10;
 
-    [v4 decodeDoubleForKey:@"snr"];
+    [coderCopy decodeDoubleForKey:@"snr"];
     v5->_snr = v12;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   speechRecognitionFeatures = self->_speechRecognitionFeatures;
-  v5 = a3;
-  [v5 encodeObject:speechRecognitionFeatures forKey:@"speechRecognitionFeatures"];
-  [v5 encodeObject:self->_acousticFeatures forKey:@"acousticFeatures"];
-  [v5 encodeDouble:@"snr" forKey:self->_snr];
+  coderCopy = coder;
+  [coderCopy encodeObject:speechRecognitionFeatures forKey:@"speechRecognitionFeatures"];
+  [coderCopy encodeObject:self->_acousticFeatures forKey:@"acousticFeatures"];
+  [coderCopy encodeDouble:@"snr" forKey:self->_snr];
 }
 
-- (EARAudioAnalytics)initWithAnalytics:(id)a3
+- (EARAudioAnalytics)initWithAnalytics:(id)analytics
 {
-  v4 = a3;
+  analyticsCopy = analytics;
   v18.receiver = self;
   v18.super_class = EARAudioAnalytics;
   v5 = [(EARAudioAnalytics *)&v18 init];
   if (v5)
   {
-    v6 = [v4 acousticFeatures];
-    v7 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v6, "count")}];
+    acousticFeatures = [analyticsCopy acousticFeatures];
+    v7 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(acousticFeatures, "count")}];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __39__EARAudioAnalytics_initWithAnalytics___block_invoke;
     v16[3] = &unk_1E797C0D8;
     v17 = v7;
     v8 = v7;
-    [v6 enumerateKeysAndObjectsUsingBlock:v16];
-    v9 = [v4 speechRecognitionFeatures];
-    v10 = [v9 copy];
+    [acousticFeatures enumerateKeysAndObjectsUsingBlock:v16];
+    speechRecognitionFeatures = [analyticsCopy speechRecognitionFeatures];
+    v10 = [speechRecognitionFeatures copy];
     speechRecognitionFeatures = v5->_speechRecognitionFeatures;
     v5->_speechRecognitionFeatures = v10;
 
@@ -66,7 +66,7 @@
     acousticFeatures = v5->_acousticFeatures;
     v5->_acousticFeatures = v12;
 
-    [v4 snr];
+    [analyticsCopy snr];
     v5->_snr = v14;
   }
 

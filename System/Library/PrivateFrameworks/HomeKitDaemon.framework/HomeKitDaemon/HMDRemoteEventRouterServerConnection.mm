@@ -1,5 +1,5 @@
 @interface HMDRemoteEventRouterServerConnection
-- (HMDRemoteEventRouterServerConnection)initWithDeviceIdentifier:(id)a3 device:(id)a4 connectionMode:(int64_t)a5 supportsFragmentMessage:(BOOL)a6 userAccessControlProviderUUID:(id)a7;
+- (HMDRemoteEventRouterServerConnection)initWithDeviceIdentifier:(id)identifier device:(id)device connectionMode:(int64_t)mode supportsFragmentMessage:(BOOL)message userAccessControlProviderUUID:(id)d;
 - (NSString)description;
 @end
 
@@ -44,27 +44,27 @@
     v8 = @"ConnectionModePrimary";
   }
 
-  v11 = [v3 stringWithFormat:@"<%@ mode: %@, deviceIdentifier: %@, userACLProvider: %@>", v5, v8, v9, userAccessControlProviderUUID];
+  userAccessControlProviderUUID = [v3 stringWithFormat:@"<%@ mode: %@, deviceIdentifier: %@, userACLProvider: %@>", v5, v8, v9, userAccessControlProviderUUID];
 
-  return v11;
+  return userAccessControlProviderUUID;
 }
 
-- (HMDRemoteEventRouterServerConnection)initWithDeviceIdentifier:(id)a3 device:(id)a4 connectionMode:(int64_t)a5 supportsFragmentMessage:(BOOL)a6 userAccessControlProviderUUID:(id)a7
+- (HMDRemoteEventRouterServerConnection)initWithDeviceIdentifier:(id)identifier device:(id)device connectionMode:(int64_t)mode supportsFragmentMessage:(BOOL)message userAccessControlProviderUUID:(id)d
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a7;
+  identifierCopy = identifier;
+  deviceCopy = device;
+  dCopy = d;
   v19.receiver = self;
   v19.super_class = HMDRemoteEventRouterServerConnection;
   v16 = [(HMDRemoteEventRouterServerConnection *)&v19 init];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_deviceIdentifier, a3);
-    v17->_connectionMode = a5;
-    v17->_supportsFragmentMessage = a6;
-    objc_storeStrong(&v17->_device, a4);
-    objc_storeStrong(&v17->_userAccessControlProviderUUID, a7);
+    objc_storeStrong(&v16->_deviceIdentifier, identifier);
+    v17->_connectionMode = mode;
+    v17->_supportsFragmentMessage = message;
+    objc_storeStrong(&v17->_device, device);
+    objc_storeStrong(&v17->_userAccessControlProviderUUID, d);
   }
 
   return v17;

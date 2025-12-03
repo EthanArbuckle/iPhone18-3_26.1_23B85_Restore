@@ -1,5 +1,5 @@
 @interface _DPPreambleShim
-+ (id)shard:(id)a3 metaData:(id)a4 dimension:(int64_t)a5 error:(id *)a6;
++ (id)shard:(id)shard metaData:(id)data dimension:(int64_t)dimension error:(id *)error;
 - (_DPPreambleShim)init;
 @end
 
@@ -12,11 +12,11 @@
   return [(_DPPreambleShim *)&v3 init];
 }
 
-+ (id)shard:(id)a3 metaData:(id)a4 dimension:(int64_t)a5 error:(id *)a6
++ (id)shard:(id)shard metaData:(id)data dimension:(int64_t)dimension error:(id *)error
 {
   v8 = sub_22628EACC();
-  v9 = a3;
-  v10 = sub_22627F988(v9, v8, a5);
+  shardCopy = shard;
+  v10 = sub_22627F988(shardCopy, v8, dimension);
 
   return v10;
 }

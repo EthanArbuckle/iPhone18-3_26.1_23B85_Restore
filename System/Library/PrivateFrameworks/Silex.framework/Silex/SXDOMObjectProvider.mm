@@ -1,46 +1,46 @@
 @interface SXDOMObjectProvider
-- (SXDOMObjectProvider)initWithDocumentControllerProvider:(id)a3 componentStyleMerger:(id)a4 componentTextStyleMerger:(id)a5;
-- (id)componentLayoutForIdentifier:(id)a3;
-- (id)componentStyleForComponent:(id)a3;
-- (id)componentStyleForIdentifiers:(id)a3;
-- (id)componentTextStyleForIdentifier:(id)a3 classification:(id)a4 component:(id)a5;
-- (id)componentTextStyleForIdentifier:(id)a3 component:(id)a4;
-- (id)componentTextStyleForIdentifier:(id)a3 inheritingFromComponentTextStyle:(id)a4 component:(id)a5;
-- (id)componentTextStyleForIdentifiers:(id)a3 component:(id)a4;
-- (id)imageResourceForIdentifier:(id)a3;
-- (id)resourceForIdentifier:(id)a3;
-- (id)textStyleForIdentifier:(id)a3 component:(id)a4;
+- (SXDOMObjectProvider)initWithDocumentControllerProvider:(id)provider componentStyleMerger:(id)merger componentTextStyleMerger:(id)styleMerger;
+- (id)componentLayoutForIdentifier:(id)identifier;
+- (id)componentStyleForComponent:(id)component;
+- (id)componentStyleForIdentifiers:(id)identifiers;
+- (id)componentTextStyleForIdentifier:(id)identifier classification:(id)classification component:(id)component;
+- (id)componentTextStyleForIdentifier:(id)identifier component:(id)component;
+- (id)componentTextStyleForIdentifier:(id)identifier inheritingFromComponentTextStyle:(id)style component:(id)component;
+- (id)componentTextStyleForIdentifiers:(id)identifiers component:(id)component;
+- (id)imageResourceForIdentifier:(id)identifier;
+- (id)resourceForIdentifier:(id)identifier;
+- (id)textStyleForIdentifier:(id)identifier component:(id)component;
 @end
 
 @implementation SXDOMObjectProvider
 
-- (SXDOMObjectProvider)initWithDocumentControllerProvider:(id)a3 componentStyleMerger:(id)a4 componentTextStyleMerger:(id)a5
+- (SXDOMObjectProvider)initWithDocumentControllerProvider:(id)provider componentStyleMerger:(id)merger componentTextStyleMerger:(id)styleMerger
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  providerCopy = provider;
+  mergerCopy = merger;
+  styleMergerCopy = styleMerger;
   v15.receiver = self;
   v15.super_class = SXDOMObjectProvider;
   v12 = [(SXDOMObjectProvider *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_documentControllerProvider, a3);
-    objc_storeStrong(&v13->_componentStyleMerger, a4);
-    objc_storeStrong(&v13->_componentTextStyleMerger, a5);
+    objc_storeStrong(&v12->_documentControllerProvider, provider);
+    objc_storeStrong(&v13->_componentStyleMerger, merger);
+    objc_storeStrong(&v13->_componentTextStyleMerger, styleMerger);
   }
 
   return v13;
 }
 
-- (id)componentLayoutForIdentifier:(id)a3
+- (id)componentLayoutForIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     DOM = self->_DOM;
-    v4 = a3;
-    v5 = [(SXDOM *)DOM componentLayouts];
-    v6 = [v5 objectForKey:v4];
+    identifierCopy = identifier;
+    componentLayouts = [(SXDOM *)DOM componentLayouts];
+    v6 = [componentLayouts objectForKey:identifierCopy];
   }
 
   else
@@ -51,43 +51,43 @@
   return v6;
 }
 
-- (id)componentStyleForComponent:(id)a3
+- (id)componentStyleForComponent:(id)component
 {
-  v4 = a3;
+  componentCopy = component;
   v5 = MEMORY[0x1E695DF70];
-  v6 = [v4 classification];
-  v7 = [v6 defaultComponentStyleIdentifiers];
-  v8 = [v5 arrayWithArray:v7];
+  classification = [componentCopy classification];
+  defaultComponentStyleIdentifiers = [classification defaultComponentStyleIdentifiers];
+  v8 = [v5 arrayWithArray:defaultComponentStyleIdentifiers];
 
-  v9 = [v4 style];
+  style = [componentCopy style];
 
-  if (v9)
+  if (style)
   {
-    v10 = [v4 style];
-    [v8 addObject:v10];
+    style2 = [componentCopy style];
+    [v8 addObject:style2];
   }
 
-  v11 = [(SXDOM *)self->_DOM analysis];
-  v12 = [v11 namespacedObjectReferences];
-  v13 = [v4 identifier];
-  v14 = [v12 namespacedComponentStyleIdentifiersForIdentifiers:v8 component:v13];
+  analysis = [(SXDOM *)self->_DOM analysis];
+  namespacedObjectReferences = [analysis namespacedObjectReferences];
+  identifier = [componentCopy identifier];
+  v14 = [namespacedObjectReferences namespacedComponentStyleIdentifiersForIdentifiers:v8 component:identifier];
 
   v15 = [(SXDOMObjectProvider *)self componentStyleForIdentifiers:v14];
 
   return v15;
 }
 
-- (id)componentStyleForIdentifiers:(id)a3
+- (id)componentStyleForIdentifiers:(id)identifiers
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
-  v6 = [(SXDOM *)self->_DOM componentStyles];
+  identifiersCopy = identifiers;
+  array = [MEMORY[0x1E695DF70] array];
+  componentStyles = [(SXDOM *)self->_DOM componentStyles];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = v4;
+  v7 = identifiersCopy;
   v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
@@ -102,10 +102,10 @@
           objc_enumerationMutation(v7);
         }
 
-        v12 = [v6 objectForKey:{*(*(&v15 + 1) + 8 * i), v15}];
+        v12 = [componentStyles objectForKey:{*(*(&v15 + 1) + 8 * i), v15}];
         if (v12)
         {
-          [v5 addObject:v12];
+          [array addObject:v12];
         }
       }
 
@@ -115,9 +115,9 @@
     while (v9);
   }
 
-  if ([v5 count])
+  if ([array count])
   {
-    v13 = [(SXJSONObjectMerger *)self->_componentStyleMerger mergeObjects:v5];
+    v13 = [(SXJSONObjectMerger *)self->_componentStyleMerger mergeObjects:array];
   }
 
   else
@@ -128,21 +128,21 @@
   return v13;
 }
 
-- (id)textStyleForIdentifier:(id)a3 component:(id)a4
+- (id)textStyleForIdentifier:(id)identifier component:(id)component
 {
-  if (a3)
+  if (identifier)
   {
     DOM = self->_DOM;
-    v7 = a4;
-    v8 = a3;
-    v9 = [(SXDOM *)DOM analysis];
-    v10 = [v9 namespacedObjectReferences];
-    v11 = [v7 identifier];
+    componentCopy = component;
+    identifierCopy = identifier;
+    analysis = [(SXDOM *)DOM analysis];
+    namespacedObjectReferences = [analysis namespacedObjectReferences];
+    identifier = [componentCopy identifier];
 
-    v12 = [v10 namespacedTextStyleIdentifierForIdentifier:v8 component:v11];
+    v12 = [namespacedObjectReferences namespacedTextStyleIdentifierForIdentifier:identifierCopy component:identifier];
 
-    v13 = [(SXDOM *)self->_DOM textStyles];
-    v14 = [v13 objectForKey:v12];
+    textStyles = [(SXDOM *)self->_DOM textStyles];
+    v14 = [textStyles objectForKey:v12];
   }
 
   else
@@ -153,18 +153,18 @@
   return v14;
 }
 
-- (id)componentTextStyleForIdentifier:(id)a3 component:(id)a4
+- (id)componentTextStyleForIdentifier:(id)identifier component:(id)component
 {
   v13 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (identifier)
   {
-    v12 = a3;
+    identifierCopy = identifier;
     v6 = MEMORY[0x1E695DEC8];
-    v7 = a4;
-    v8 = a3;
-    v9 = [v6 arrayWithObjects:&v12 count:1];
+    componentCopy = component;
+    identifierCopy2 = identifier;
+    v9 = [v6 arrayWithObjects:&identifierCopy count:1];
 
-    v10 = [(SXDOMObjectProvider *)self componentTextStyleForIdentifiers:v9 component:v7, v12, v13];
+    v10 = [(SXDOMObjectProvider *)self componentTextStyleForIdentifiers:v9 component:componentCopy, identifierCopy, v13];
   }
 
   else
@@ -175,18 +175,18 @@
   return v10;
 }
 
-- (id)componentTextStyleForIdentifiers:(id)a3 component:(id)a4
+- (id)componentTextStyleForIdentifiers:(id)identifiers component:(id)component
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v22 = [MEMORY[0x1E695DF70] array];
-  v8 = [(SXDOM *)self->_DOM componentTextStyles];
+  identifiersCopy = identifiers;
+  componentCopy = component;
+  array = [MEMORY[0x1E695DF70] array];
+  componentTextStyles = [(SXDOM *)self->_DOM componentTextStyles];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  obj = v6;
+  obj = identifiersCopy;
   v9 = [obj countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v9)
   {
@@ -202,15 +202,15 @@
         }
 
         v13 = *(*(&v23 + 1) + 8 * i);
-        v14 = [(SXDOM *)self->_DOM analysis];
-        v15 = [v14 namespacedObjectReferences];
-        v16 = [v7 identifier];
-        v17 = [v15 namespacedComponentTextStyleIdentifierForIdentifier:v13 component:v16];
+        analysis = [(SXDOM *)self->_DOM analysis];
+        namespacedObjectReferences = [analysis namespacedObjectReferences];
+        identifier = [componentCopy identifier];
+        v17 = [namespacedObjectReferences namespacedComponentTextStyleIdentifierForIdentifier:v13 component:identifier];
 
-        v18 = [v8 objectForKey:v17];
+        v18 = [componentTextStyles objectForKey:v17];
         if (v18)
         {
-          [v22 addObject:v18];
+          [array addObject:v18];
         }
       }
 
@@ -220,9 +220,9 @@
     while (v10);
   }
 
-  if ([v22 count])
+  if ([array count])
   {
-    v19 = [(SXJSONObjectMerger *)self->_componentTextStyleMerger mergeObjects:v22];
+    v19 = [(SXJSONObjectMerger *)self->_componentTextStyleMerger mergeObjects:array];
   }
 
   else
@@ -233,34 +233,34 @@
   return v19;
 }
 
-- (id)componentTextStyleForIdentifier:(id)a3 classification:(id)a4 component:(id)a5
+- (id)componentTextStyleForIdentifier:(id)identifier classification:(id)classification component:(id)component
 {
-  v8 = a3;
-  v9 = a5;
+  identifierCopy = identifier;
+  componentCopy = component;
   v10 = MEMORY[0x1E695DF70];
-  v11 = [a4 defaultTextStyleIdentifiers];
-  v12 = [v10 arrayWithArray:v11];
+  defaultTextStyleIdentifiers = [classification defaultTextStyleIdentifiers];
+  v12 = [v10 arrayWithArray:defaultTextStyleIdentifiers];
 
-  if (v8)
+  if (identifierCopy)
   {
-    [v12 addObject:v8];
+    [v12 addObject:identifierCopy];
   }
 
-  v13 = [(SXDOMObjectProvider *)self componentTextStyleForIdentifiers:v12 component:v9];
+  v13 = [(SXDOMObjectProvider *)self componentTextStyleForIdentifiers:v12 component:componentCopy];
 
   return v13;
 }
 
-- (id)componentTextStyleForIdentifier:(id)a3 inheritingFromComponentTextStyle:(id)a4 component:(id)a5
+- (id)componentTextStyleForIdentifier:(id)identifier inheritingFromComponentTextStyle:(id)style component:(id)component
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [MEMORY[0x1E695DF70] array];
-  if (v8)
+  identifierCopy = identifier;
+  styleCopy = style;
+  componentCopy = component;
+  array = [MEMORY[0x1E695DF70] array];
+  if (identifierCopy)
   {
-    v12 = [(SXDOMObjectProvider *)self componentTextStyleForIdentifier:v8 component:v10];
-    if (!v9)
+    v12 = [(SXDOMObjectProvider *)self componentTextStyleForIdentifier:identifierCopy component:componentCopy];
+    if (!styleCopy)
     {
       goto LABEL_4;
     }
@@ -269,21 +269,21 @@
   }
 
   v12 = 0;
-  if (v9)
+  if (styleCopy)
   {
 LABEL_3:
-    [v11 addObject:v9];
+    [array addObject:styleCopy];
   }
 
 LABEL_4:
   if (v12)
   {
-    [v11 addObject:v12];
+    [array addObject:v12];
   }
 
-  if ([v11 count])
+  if ([array count])
   {
-    v13 = [(SXJSONObjectMerger *)self->_componentTextStyleMerger mergeObjects:v11];
+    v13 = [(SXJSONObjectMerger *)self->_componentTextStyleMerger mergeObjects:array];
   }
 
   else
@@ -294,14 +294,14 @@ LABEL_4:
   return v13;
 }
 
-- (id)resourceForIdentifier:(id)a3
+- (id)resourceForIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     DOM = self->_DOM;
-    v4 = a3;
-    v5 = [(SXDOM *)DOM resources];
-    v6 = [v5 objectForKey:v4];
+    identifierCopy = identifier;
+    resources = [(SXDOM *)DOM resources];
+    v6 = [resources objectForKey:identifierCopy];
   }
 
   else
@@ -312,12 +312,12 @@ LABEL_4:
   return v6;
 }
 
-- (id)imageResourceForIdentifier:(id)a3
+- (id)imageResourceForIdentifier:(id)identifier
 {
   documentControllerProvider = self->_documentControllerProvider;
-  v4 = a3;
-  v5 = [(SXDocumentControllerProvider *)documentControllerProvider documentController];
-  v6 = [v5 imageResourceForIdentifier:v4];
+  identifierCopy = identifier;
+  documentController = [(SXDocumentControllerProvider *)documentControllerProvider documentController];
+  v6 = [documentController imageResourceForIdentifier:identifierCopy];
 
   return v6;
 }

@@ -1,7 +1,7 @@
 @interface HomeScreenConfigurationControlAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (BOOL)_axPreviewContentIsPosterOrBlur:(id)a3;
-- (id)_axGradientColorValue:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (BOOL)_axPreviewContentIsPosterOrBlur:(id)blur;
+- (id)_axGradientColorValue:(id)value;
 - (id)accessibilityHint;
 - (id)accessibilityValue;
 - (unint64_t)accessibilityTraits;
@@ -9,15 +9,15 @@
 
 @implementation HomeScreenConfigurationControlAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PUIGradientView"];
-  [v3 validateClass:@"PosterBoard.HomeScreenConfigurationControl" hasSwiftField:@"previewContentView" withSwiftType:"UIView"];
-  [v3 validateClass:@"PUIGradientView" hasProperty:@"colors" withType:"@"];
-  [v3 validateClass:@"PosterBoard.HomeScreenConfigurationControl" isKindOfClass:@"title"];
-  [v3 validateClass:@"PosterBoard.HomeScreenConfigurationBlurControlContentView"];
-  [v3 validateClass:@"PosterBoard.HomeScreenConfigurationPosterControlContentView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PUIGradientView"];
+  [validationsCopy validateClass:@"PosterBoard.HomeScreenConfigurationControl" hasSwiftField:@"previewContentView" withSwiftType:"UIView"];
+  [validationsCopy validateClass:@"PUIGradientView" hasProperty:@"colors" withType:"@"];
+  [validationsCopy validateClass:@"PosterBoard.HomeScreenConfigurationControl" isKindOfClass:@"title"];
+  [validationsCopy validateClass:@"PosterBoard.HomeScreenConfigurationBlurControlContentView"];
+  [validationsCopy validateClass:@"PosterBoard.HomeScreenConfigurationPosterControlContentView"];
 }
 
 - (id)accessibilityValue
@@ -28,30 +28,30 @@
 
   if ([(HomeScreenConfigurationControlAccessibility *)self _axPreviewContentIsPosterOrBlur:v4])
   {
-    v5 = [v4 accessibilityValue];
+    accessibilityValue = [v4 accessibilityValue];
 LABEL_5:
-    v6 = v5;
+    backgroundColor = accessibilityValue;
     goto LABEL_6;
   }
 
   MEMORY[0x29C2E7EC0](@"PUIGradientView");
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(HomeScreenConfigurationControlAccessibility *)self _axGradientColorValue:v4];
+    accessibilityValue = [(HomeScreenConfigurationControlAccessibility *)self _axGradientColorValue:v4];
     goto LABEL_5;
   }
 
-  v6 = [v4 backgroundColor];
+  backgroundColor = [v4 backgroundColor];
 
-  if (v6)
+  if (backgroundColor)
   {
-    v8 = [v4 backgroundColor];
-    v6 = AXColorStringForColor();
+    backgroundColor2 = [v4 backgroundColor];
+    backgroundColor = AXColorStringForColor();
   }
 
 LABEL_6:
 
-  return v6;
+  return backgroundColor;
 }
 
 - (unint64_t)accessibilityTraits
@@ -70,7 +70,7 @@ LABEL_6:
 
   if ([(HomeScreenConfigurationControlAccessibility *)self _axPreviewContentIsPosterOrBlur:v4]&& [(HomeScreenConfigurationControlAccessibility *)self _accessibilityIsUserInteractionEnabled])
   {
-    v5 = [v4 accessibilityHint];
+    accessibilityHint = [v4 accessibilityHint];
   }
 
   else
@@ -80,32 +80,32 @@ LABEL_6:
     v6 = __UIAccessibilityCastAsClass();
     if ([v6 isSelected])
     {
-      v7 = accessibilityLocalizedString(@"home.configuration.select.color.hint");
+      accessibilityHint2 = accessibilityLocalizedString(@"home.configuration.select.color.hint");
     }
 
     else
     {
       v9.receiver = self;
       v9.super_class = HomeScreenConfigurationControlAccessibility;
-      v7 = [(HomeScreenConfigurationControlAccessibility *)&v9 accessibilityHint];
+      accessibilityHint2 = [(HomeScreenConfigurationControlAccessibility *)&v9 accessibilityHint];
     }
 
-    v5 = v7;
+    accessibilityHint = accessibilityHint2;
   }
 
-  return v5;
+  return accessibilityHint;
 }
 
-- (id)_axGradientColorValue:(id)a3
+- (id)_axGradientColorValue:(id)value
 {
-  v3 = a3;
-  v4 = [v3 safeArrayForKey:@"colors"];
+  valueCopy = value;
+  v4 = [valueCopy safeArrayForKey:@"colors"];
   objc_opt_class();
-  v5 = [v4 firstObject];
+  firstObject = [v4 firstObject];
   v6 = __UIAccessibilityCastAsClass();
 
   objc_opt_class();
-  v7 = [v4 lastObject];
+  lastObject = [v4 lastObject];
   v8 = __UIAccessibilityCastAsClass();
 
   v9 = AXColorStringForColor();
@@ -128,9 +128,9 @@ LABEL_6:
   return v14;
 }
 
-- (BOOL)_axPreviewContentIsPosterOrBlur:(id)a3
+- (BOOL)_axPreviewContentIsPosterOrBlur:(id)blur
 {
-  v3 = a3;
+  blurCopy = blur;
   MEMORY[0x29C2E7EC0](@"PosterBoard.HomeScreenConfigurationBlurControlContentView");
   if (objc_opt_isKindOfClass())
   {

@@ -1,17 +1,17 @@
 @interface MPSCNNSoftMax
-- (MPSCNNSoftMax)initWithCoder:(id)a3 device:(id)a4;
-- (MPSCNNSoftMax)initWithDevice:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (MPSCNNSoftMax)initWithCoder:(id)coder device:(id)device;
+- (MPSCNNSoftMax)initWithDevice:(id)device;
+- (id)copyWithZone:(_NSZone *)zone device:(id)device;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MPSCNNSoftMax
 
-- (MPSCNNSoftMax)initWithDevice:(id)a3
+- (MPSCNNSoftMax)initWithDevice:(id)device
 {
   v4.receiver = self;
   v4.super_class = MPSCNNSoftMax;
-  result = [(MPSCNNKernel *)&v4 initWithDevice:a3];
+  result = [(MPSCNNKernel *)&v4 initWithDevice:device];
   if (result)
   {
     result->super._encode = sub_239D6A9FC;
@@ -23,11 +23,11 @@
   return result;
 }
 
-- (MPSCNNSoftMax)initWithCoder:(id)a3 device:(id)a4
+- (MPSCNNSoftMax)initWithCoder:(id)coder device:(id)device
 {
   v7.receiver = self;
   v7.super_class = MPSCNNSoftMax;
-  result = [(MPSCNNKernel *)&v7 initWithCoder:a3 device:a4];
+  result = [(MPSCNNKernel *)&v7 initWithCoder:coder device:device];
   if (result)
   {
     if (*(&result->super.super.super.isa + *MEMORY[0x277CD7358] + 2) << 16 == 0x10000)
@@ -55,19 +55,19 @@
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + *MEMORY[0x277CD7358] + 2) = 1;
   v3.receiver = self;
   v3.super_class = MPSCNNSoftMax;
-  [(MPSCNNKernel *)&v3 encodeWithCoder:a3];
+  [(MPSCNNKernel *)&v3 encodeWithCoder:coder];
 }
 
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4
+- (id)copyWithZone:(_NSZone *)zone device:(id)device
 {
   v13.receiver = self;
   v13.super_class = MPSCNNSoftMax;
-  result = [(MPSCNNKernel *)&v13 copyWithZone:a3 device:a4];
+  result = [(MPSCNNKernel *)&v13 copyWithZone:zone device:device];
   if (result)
   {
     *(result + 36) = sub_239D6A9FC;

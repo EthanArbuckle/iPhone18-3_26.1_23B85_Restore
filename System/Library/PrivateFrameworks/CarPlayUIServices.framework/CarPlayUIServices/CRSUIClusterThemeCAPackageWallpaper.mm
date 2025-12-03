@@ -1,46 +1,46 @@
 @interface CRSUIClusterThemeCAPackageWallpaper
-- (CRSUIClusterThemeCAPackageWallpaper)initWithAsset:(id)a3 type:(id)a4 lightModeState:(id)a5 darkModeState:(id)a6 supportsDynamicAppearance:(BOOL)a7;
-- (CRSUIClusterThemeCAPackageWallpaper)initWithBSXPCCoder:(id)a3;
-- (id)stateForInterfaceStyle:(int64_t)a3;
-- (void)encodeWithBSXPCCoder:(id)a3;
+- (CRSUIClusterThemeCAPackageWallpaper)initWithAsset:(id)asset type:(id)type lightModeState:(id)state darkModeState:(id)modeState supportsDynamicAppearance:(BOOL)appearance;
+- (CRSUIClusterThemeCAPackageWallpaper)initWithBSXPCCoder:(id)coder;
+- (id)stateForInterfaceStyle:(int64_t)style;
+- (void)encodeWithBSXPCCoder:(id)coder;
 @end
 
 @implementation CRSUIClusterThemeCAPackageWallpaper
 
-- (CRSUIClusterThemeCAPackageWallpaper)initWithAsset:(id)a3 type:(id)a4 lightModeState:(id)a5 darkModeState:(id)a6 supportsDynamicAppearance:(BOOL)a7
+- (CRSUIClusterThemeCAPackageWallpaper)initWithAsset:(id)asset type:(id)type lightModeState:(id)state darkModeState:(id)modeState supportsDynamicAppearance:(BOOL)appearance
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
+  assetCopy = asset;
+  typeCopy = type;
+  stateCopy = state;
+  modeStateCopy = modeState;
   v26.receiver = self;
   v26.super_class = CRSUIClusterThemeCAPackageWallpaper;
   v17 = [(CRSUIClusterThemeCAPackageWallpaper *)&v26 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_asset, a3);
-    v19 = [v14 copy];
+    objc_storeStrong(&v17->_asset, asset);
+    v19 = [typeCopy copy];
     type = v18->_type;
     v18->_type = v19;
 
-    v21 = [v15 copy];
+    v21 = [stateCopy copy];
     lightModeState = v18->_lightModeState;
     v18->_lightModeState = v21;
 
-    v23 = [v16 copy];
+    v23 = [modeStateCopy copy];
     darkModeState = v18->_darkModeState;
     v18->_darkModeState = v23;
 
-    v18->_supportsDynamicAppearance = a7;
+    v18->_supportsDynamicAppearance = appearance;
   }
 
   return v18;
 }
 
-- (id)stateForInterfaceStyle:(int64_t)a3
+- (id)stateForInterfaceStyle:(int64_t)style
 {
-  if (a3 == 2 && [(CRSUIClusterThemeCAPackageWallpaper *)self supportsDynamicAppearance])
+  if (style == 2 && [(CRSUIClusterThemeCAPackageWallpaper *)self supportsDynamicAppearance])
   {
     v4 = 16;
   }
@@ -55,37 +55,37 @@
   return v5;
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
-  v6 = a3;
-  v4 = [(CRSUIClusterThemeCAPackageWallpaper *)self asset];
-  [v6 encodeObject:v4 forKey:@"asset"];
+  coderCopy = coder;
+  asset = [(CRSUIClusterThemeCAPackageWallpaper *)self asset];
+  [coderCopy encodeObject:asset forKey:@"asset"];
 
-  v5 = [(CRSUIClusterThemeCAPackageWallpaper *)self type];
-  [v6 encodeObject:v5 forKey:@"type"];
+  type = [(CRSUIClusterThemeCAPackageWallpaper *)self type];
+  [coderCopy encodeObject:type forKey:@"type"];
 
-  [v6 encodeObject:self->_lightModeState forKey:@"lightModeState"];
-  [v6 encodeObject:self->_darkModeState forKey:@"darkModeState"];
-  [v6 encodeBool:-[CRSUIClusterThemeCAPackageWallpaper supportsDynamicAppearance](self forKey:{"supportsDynamicAppearance"), @"supportsDynamicAppearance"}];
+  [coderCopy encodeObject:self->_lightModeState forKey:@"lightModeState"];
+  [coderCopy encodeObject:self->_darkModeState forKey:@"darkModeState"];
+  [coderCopy encodeBool:-[CRSUIClusterThemeCAPackageWallpaper supportsDynamicAppearance](self forKey:{"supportsDynamicAppearance"), @"supportsDynamicAppearance"}];
 }
 
-- (CRSUIClusterThemeCAPackageWallpaper)initWithBSXPCCoder:(id)a3
+- (CRSUIClusterThemeCAPackageWallpaper)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"asset"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"type"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lightModeState"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"darkModeState"];
-  v9 = [v4 decodeBoolForKey:@"supportsDynamicAppearance"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"asset"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"type"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lightModeState"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"darkModeState"];
+  v9 = [coderCopy decodeBoolForKey:@"supportsDynamicAppearance"];
 
-  v10 = 0;
+  selfCopy = 0;
   if (v5 && v6)
   {
     self = [(CRSUIClusterThemeCAPackageWallpaper *)self initWithAsset:v5 type:v6 lightModeState:v7 darkModeState:v8 supportsDynamicAppearance:v9];
-    v10 = self;
+    selfCopy = self;
   }
 
-  return v10;
+  return selfCopy;
 }
 
 @end

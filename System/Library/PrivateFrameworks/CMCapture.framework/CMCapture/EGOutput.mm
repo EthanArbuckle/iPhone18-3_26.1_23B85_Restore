@@ -1,22 +1,22 @@
 @interface EGOutput
-- (EGOutput)initWithName:(id)a3;
+- (EGOutput)initWithName:(id)name;
 - (NSString)description;
 - (void)dealloc;
-- (void)emit:(id)a3;
-- (void)registerDestination:(id)a3;
-- (void)setParentNode:(id)a3;
+- (void)emit:(id)emit;
+- (void)registerDestination:(id)destination;
+- (void)setParentNode:(id)node;
 @end
 
 @implementation EGOutput
 
-- (EGOutput)initWithName:(id)a3
+- (EGOutput)initWithName:(id)name
 {
   v6.receiver = self;
   v6.super_class = EGOutput;
   v4 = [(EGOutput *)&v6 init];
   if (v4)
   {
-    v4->_name = [a3 copy];
+    v4->_name = [name copy];
     v4->_destinations = objc_alloc_init(MEMORY[0x1E695DF70]);
     v4->_downstreamNodeInputPorts = objc_alloc_init(MEMORY[0x1E695DF70]);
   }
@@ -45,9 +45,9 @@
   return v3;
 }
 
-- (void)registerDestination:(id)a3
+- (void)registerDestination:(id)destination
 {
-  if (!a3)
+  if (!destination)
   {
     v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ tried to register a nil destination! Forbidden", self];
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:v5 userInfo:0]);
@@ -58,7 +58,7 @@
   [(NSMutableArray *)destinations addObject:?];
 }
 
-- (void)emit:(id)a3
+- (void)emit:(id)emit
 {
   ++self->_emittedCount;
   v10 = 0u;
@@ -80,7 +80,7 @@
           objc_enumerationMutation(downstreamNodeInputPorts);
         }
 
-        [*(*(&v10 + 1) + 8 * i) receiveData:a3];
+        [*(*(&v10 + 1) + 8 * i) receiveData:emit];
       }
 
       v6 = [(NSMutableArray *)downstreamNodeInputPorts countByEnumeratingWithState:&v10 objects:v9 count:16];
@@ -90,15 +90,15 @@
   }
 }
 
-- (void)setParentNode:(id)a3
+- (void)setParentNode:(id)node
 {
   if (objc_loadWeak(&self->_parentNode))
   {
-    v5 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:objc_msgSend(MEMORY[0x1E696AEC0] userInfo:{"stringWithFormat:", @"%@ tried to install parent graph %@ when it was already had parent %@! Forbidden", self, a3, objc_loadWeak(&self->_parentNode)), 0}];
+    v5 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:objc_msgSend(MEMORY[0x1E696AEC0] userInfo:{"stringWithFormat:", @"%@ tried to install parent graph %@ when it was already had parent %@! Forbidden", self, node, objc_loadWeak(&self->_parentNode)), 0}];
     objc_exception_throw(v5);
   }
 
-  objc_storeWeak(&self->_parentNode, a3);
+  objc_storeWeak(&self->_parentNode, node);
 }
 
 @end

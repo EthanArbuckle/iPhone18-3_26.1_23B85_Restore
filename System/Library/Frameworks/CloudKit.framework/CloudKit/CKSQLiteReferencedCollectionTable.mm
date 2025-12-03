@@ -1,26 +1,26 @@
 @interface CKSQLiteReferencedCollectionTable
 - (Class)elementTableClass;
-- (id)addElement:(id)a3 toCollection:(id)a4;
-- (id)collectionWithElementsFromEntryEnumerator:(id)a3;
+- (id)addElement:(id)element toCollection:(id)collection;
+- (id)collectionWithElementsFromEntryEnumerator:(id)enumerator;
 - (id)elementTable;
-- (id)entryForReferent:(id)a3;
-- (id)referenceWasDeleted:(id)a3;
-- (id)referentForEntry:(id)a3 error:(id *)a4;
-- (id)tableForReferenceProperty:(id)a3;
-- (id)willStoreReferenceToUnsavedEntry:(id)a3;
-- (unint64_t)collectionCount:(id *)a3;
-- (void)defaultSearchOrder:(id)a3;
-- (void)enumerateCollection:(id)a3 block:(id)a4;
-- (void)willAddToGroup:(id)a3;
+- (id)entryForReferent:(id)referent;
+- (id)referenceWasDeleted:(id)deleted;
+- (id)referentForEntry:(id)entry error:(id *)error;
+- (id)tableForReferenceProperty:(id)property;
+- (id)willStoreReferenceToUnsavedEntry:(id)entry;
+- (unint64_t)collectionCount:(id *)count;
+- (void)defaultSearchOrder:(id)order;
+- (void)enumerateCollection:(id)collection block:(id)block;
+- (void)willAddToGroup:(id)group;
 @end
 
 @implementation CKSQLiteReferencedCollectionTable
 
-- (void)defaultSearchOrder:(id)a3
+- (void)defaultSearchOrder:(id)order
 {
-  v5 = a3;
-  objc_msgSend_orderAscendingByProperty_(v5, v3, @"collectionID");
-  objc_msgSend_orderAscendingByProperty_(v5, v4, @"elementIndex");
+  orderCopy = order;
+  objc_msgSend_orderAscendingByProperty_(orderCopy, v3, @"collectionID");
+  objc_msgSend_orderAscendingByProperty_(orderCopy, v4, @"elementIndex");
 }
 
 - (Class)elementTableClass
@@ -31,11 +31,11 @@
   return 0;
 }
 
-- (void)willAddToGroup:(id)a3
+- (void)willAddToGroup:(id)group
 {
-  v8 = a3;
+  groupCopy = group;
   v6 = objc_msgSend_elementTableClass(self, v4, v5);
-  objc_msgSend_addSingletonInstanceToGroup_(v6, v7, v8);
+  objc_msgSend_addSingletonInstanceToGroup_(v6, v7, groupCopy);
 }
 
 - (id)elementTable
@@ -47,10 +47,10 @@
   return v9;
 }
 
-- (id)tableForReferenceProperty:(id)a3
+- (id)tableForReferenceProperty:(id)property
 {
-  v4 = a3;
-  if (objc_msgSend_isEqualToString_(v4, v5, @"element"))
+  propertyCopy = property;
+  if (objc_msgSend_isEqualToString_(propertyCopy, v5, @"element"))
   {
     v8 = objc_msgSend_elementTable(self, v6, v7);
   }
@@ -59,7 +59,7 @@
   {
     v11.receiver = self;
     v11.super_class = CKSQLiteReferencedCollectionTable;
-    v8 = [(CKSQLiteTable *)&v11 tableForReferenceProperty:v4];
+    v8 = [(CKSQLiteTable *)&v11 tableForReferenceProperty:propertyCopy];
   }
 
   v9 = v8;
@@ -67,30 +67,30 @@
   return v9;
 }
 
-- (id)entryForReferent:(id)a3
+- (id)entryForReferent:(id)referent
 {
-  v3 = a3;
+  referentCopy = referent;
   v4 = objc_alloc_init(CKSQLiteReferencedCollectionTableEntry);
   objc_msgSend_setElementIndex_(v4, v5, &unk_1EFA85458);
-  objc_msgSend_setCollection_(v4, v6, v3);
+  objc_msgSend_setCollection_(v4, v6, referentCopy);
 
   return v4;
 }
 
-- (id)collectionWithElementsFromEntryEnumerator:(id)a3
+- (id)collectionWithElementsFromEntryEnumerator:(id)enumerator
 {
-  v5 = a3;
+  enumeratorCopy = enumerator;
   v8 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], v6, v7);
   objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v8, v9, a2, self, @"CKSQLiteReferencedObjectTable.m", 291, @"subclasses must implement");
 
   exit(1);
 }
 
-- (id)referentForEntry:(id)a3 error:(id *)a4
+- (id)referentForEntry:(id)entry error:(id *)error
 {
   v22[1] = *MEMORY[0x1E69E9840];
   v21 = @"COLLECTION_ID";
-  v6 = objc_msgSend_collectionID(a3, a2, a3);
+  v6 = objc_msgSend_collectionID(entry, a2, entry);
   v22[0] = v6;
   v8 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x1E695DF20], v7, v22, &v21, 1);
 
@@ -101,10 +101,10 @@
   v17 = v16;
   if (v16)
   {
-    if (a4)
+    if (error)
     {
       v18 = v16;
-      *a4 = v17;
+      *error = v17;
     }
 
     v13 = 0;
@@ -115,19 +115,19 @@
   return v13;
 }
 
-- (void)enumerateCollection:(id)a3 block:(id)a4
+- (void)enumerateCollection:(id)collection block:(id)block
 {
-  v7 = a3;
-  v8 = a4;
+  collectionCopy = collection;
+  blockCopy = block;
   v11 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], v9, v10);
   objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v11, v12, a2, self, @"CKSQLiteReferencedObjectTable.m", 320, @"subclasses must implement");
 
   exit(1);
 }
 
-- (id)willStoreReferenceToUnsavedEntry:(id)a3
+- (id)willStoreReferenceToUnsavedEntry:(id)entry
 {
-  v4 = a3;
+  entryCopy = entry;
   v31 = 0;
   v32 = &v31;
   v33 = 0x3032000000;
@@ -140,14 +140,14 @@
   v7 = MEMORY[0x1E696AD98];
   v10 = objc_msgSend_unsignedLongLongValue(v6, v8, v9);
   v12 = objc_msgSend_numberWithUnsignedLongLong_(v7, v11, v10 + 1);
-  objc_msgSend_setCollectionID_(v4, v13, v12);
-  v16 = objc_msgSend_collection(v4, v14, v15);
+  objc_msgSend_setCollectionID_(entryCopy, v13, v12);
+  v16 = objc_msgSend_collection(entryCopy, v14, v15);
   v23 = MEMORY[0x1E69E9820];
   v24 = 3221225472;
   v25 = sub_18867ECB8;
   v26 = &unk_1E70C0D40;
-  v17 = v4;
-  v28 = self;
+  v17 = entryCopy;
+  selfCopy = self;
   v29 = &v31;
   v27 = v17;
   objc_msgSend_enumerateCollection_block_(self, v18, v16, &v23);
@@ -161,30 +161,30 @@
   return v21;
 }
 
-- (id)addElement:(id)a3 toCollection:(id)a4
+- (id)addElement:(id)element toCollection:(id)collection
 {
-  v6 = a3;
-  v7 = a4;
+  elementCopy = element;
+  collectionCopy = collection;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = sub_18867EE60;
   v13[3] = &unk_1E70C09E0;
-  v14 = v7;
-  v15 = self;
-  v16 = v6;
+  v14 = collectionCopy;
+  selfCopy = self;
+  v16 = elementCopy;
   v17 = off_1EA910E78;
-  v8 = v6;
-  v9 = v7;
+  v8 = elementCopy;
+  v9 = collectionCopy;
   v11 = objc_msgSend_performInTransaction_(self, v10, v13);
 
   return v11;
 }
 
-- (id)referenceWasDeleted:(id)a3
+- (id)referenceWasDeleted:(id)deleted
 {
   v18[1] = *MEMORY[0x1E69E9840];
   v16 = 0;
-  v4 = objc_msgSend_entryWithPrimaryKey_fetchProperties_label_error_(self, a2, a3, &unk_1EFA85D70, off_1ED4B5EE8, &v16);
+  v4 = objc_msgSend_entryWithPrimaryKey_fetchProperties_label_error_(self, a2, deleted, &unk_1EFA85D70, off_1ED4B5EE8, &v16);
   v7 = v16;
   if (v4)
   {
@@ -205,9 +205,9 @@
   return v7;
 }
 
-- (unint64_t)collectionCount:(id *)a3
+- (unint64_t)collectionCount:(id *)count
 {
-  v3 = objc_msgSend_fetchDistinctProperties_label_error_(self, a2, &unk_1EFA85D88, off_1EA910E90, a3);
+  v3 = objc_msgSend_fetchDistinctProperties_label_error_(self, a2, &unk_1EFA85D88, off_1EA910E90, count);
   v6 = objc_msgSend_count(v3, v4, v5);
 
   return v6;

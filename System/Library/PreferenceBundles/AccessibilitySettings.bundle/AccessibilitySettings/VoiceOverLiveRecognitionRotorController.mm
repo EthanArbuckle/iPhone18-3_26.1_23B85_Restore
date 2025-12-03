@@ -1,12 +1,12 @@
 @interface VoiceOverLiveRecognitionRotorController
-- (BOOL)isItemEnabled:(id)a3;
+- (BOOL)isItemEnabled:(id)enabled;
 - (VoiceOverLiveRecognitionRotorController)init;
-- (id)identifierForItem:(id)a3;
-- (id)itemAfterTogglingEnabledState:(id)a3;
+- (id)identifierForItem:(id)item;
+- (id)itemAfterTogglingEnabledState:(id)state;
 - (id)itemsFromPreferences;
 - (id)specifiers;
-- (id)titleForItem:(id)a3;
-- (void)updateItemsInPreferences:(id)a3;
+- (id)titleForItem:(id)item;
+- (void)updateItemsInPreferences:(id)preferences;
 @end
 
 @implementation VoiceOverLiveRecognitionRotorController
@@ -19,8 +19,8 @@
   if (v2)
   {
     v3 = settingsLocString(@"VO_LIVE_RECOGNITION_ROTOR", @"VoiceOverSettings");
-    v4 = [(VoiceOverLiveRecognitionRotorController *)v2 navigationItem];
-    [v4 setTitle:v3];
+    navigationItem = [(VoiceOverLiveRecognitionRotorController *)v2 navigationItem];
+    [navigationItem setTitle:v3];
 
     v5 = v2;
   }
@@ -44,8 +44,8 @@
     [v5 addObject:v6];
     v13.receiver = self;
     v13.super_class = VoiceOverLiveRecognitionRotorController;
-    v9 = [(AXReorderableCheckmarkListController *)&v13 specifiers];
-    v10 = [v9 copy];
+    specifiers = [(AXReorderableCheckmarkListController *)&v13 specifiers];
+    v10 = [specifiers copy];
     [v5 axSafelyAddObjectsFromArray:v10];
 
     v11 = *&self->super.AXUISettingsSetupCapableListController_opaque[v3];
@@ -60,37 +60,37 @@
 - (id)itemsFromPreferences
 {
   v2 = +[AXSettings sharedInstance];
-  v3 = [v2 voiceOverDetectionModeItems];
+  voiceOverDetectionModeItems = [v2 voiceOverDetectionModeItems];
 
-  return v3;
+  return voiceOverDetectionModeItems;
 }
 
-- (void)updateItemsInPreferences:(id)a3
+- (void)updateItemsInPreferences:(id)preferences
 {
-  v3 = a3;
+  preferencesCopy = preferences;
   v4 = +[AXSettings sharedInstance];
-  [v4 setVoiceOverDetectionModeItems:v3];
+  [v4 setVoiceOverDetectionModeItems:preferencesCopy];
 }
 
-- (BOOL)isItemEnabled:(id)a3
+- (BOOL)isItemEnabled:(id)enabled
 {
-  v3 = [a3 objectForKey:@"Enabled"];
-  v4 = [v3 BOOLValue];
+  v3 = [enabled objectForKey:@"Enabled"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
-- (id)itemAfterTogglingEnabledState:(id)a3
+- (id)itemAfterTogglingEnabledState:(id)state
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"Enabled"];
-  v5 = [v4 BOOLValue];
+  stateCopy = state;
+  v4 = [stateCopy objectForKeyedSubscript:@"Enabled"];
+  bOOLValue = [v4 BOOLValue];
 
   v10[0] = @"Enabled";
-  v6 = [NSNumber numberWithInt:v5 ^ 1];
+  v6 = [NSNumber numberWithInt:bOOLValue ^ 1];
   v10[1] = @"Detector";
   v11[0] = v6;
-  v7 = [v3 objectForKeyedSubscript:?];
+  v7 = [stateCopy objectForKeyedSubscript:?];
 
   v11[1] = v7;
   v8 = [NSDictionary dictionaryWithObjects:v11 forKeys:v10 count:2];
@@ -98,19 +98,19 @@
   return v8;
 }
 
-- (id)titleForItem:(id)a3
+- (id)titleForItem:(id)item
 {
-  v3 = [a3 valueForKey:@"Detector"];
-  v4 = [v3 stringValue];
+  v3 = [item valueForKey:@"Detector"];
+  stringValue = [v3 stringValue];
   v5 = AXParameterizedLocalizedString();
 
   return v5;
 }
 
-- (id)identifierForItem:(id)a3
+- (id)identifierForItem:(id)item
 {
-  v3 = [a3 valueForKey:@"Detector"];
-  v4 = [v3 stringValue];
+  v3 = [item valueForKey:@"Detector"];
+  stringValue = [v3 stringValue];
   v5 = AXParameterizedLocalizedString();
 
   return v5;

@@ -1,6 +1,6 @@
 @interface TLKContentsContainerView
 - (TLKContentsContainerView)init;
-- (void)updateWithContents:(id)a3;
+- (void)updateWithContents:(id)contents;
 @end
 
 @implementation TLKContentsContainerView
@@ -22,55 +22,55 @@
   return v2;
 }
 
-- (void)updateWithContents:(id)a3
+- (void)updateWithContents:(id)contents
 {
-  v30 = a3;
-  v4 = [v30 count];
-  v5 = [(TLKContentsContainerView *)self contentsViews];
-  v6 = [v5 count];
+  contentsCopy = contents;
+  v4 = [contentsCopy count];
+  contentsViews = [(TLKContentsContainerView *)self contentsViews];
+  v6 = [contentsViews count];
 
   if (v4 != v6)
   {
-    v14 = [v30 count];
-    v15 = [(TLKContentsContainerView *)self contentsViews];
-    v16 = [v15 count];
+    v14 = [contentsCopy count];
+    contentsViews2 = [(TLKContentsContainerView *)self contentsViews];
+    v16 = [contentsViews2 count];
 
     if (v14 <= v16)
     {
-      for (i = [v30 count]; ; ++i)
+      for (i = [contentsCopy count]; ; ++i)
       {
-        v26 = [(TLKContentsContainerView *)self contentsViews];
-        v27 = [v26 count];
+        contentsViews3 = [(TLKContentsContainerView *)self contentsViews];
+        v27 = [contentsViews3 count];
 
         if (i >= v27)
         {
           break;
         }
 
-        v28 = [(TLKContentsContainerView *)self contentsViews];
-        v29 = [v28 objectAtIndexedSubscript:i];
+        contentsViews4 = [(TLKContentsContainerView *)self contentsViews];
+        v29 = [contentsViews4 objectAtIndexedSubscript:i];
         [v29 setHidden:1];
       }
     }
 
     else
     {
-      v17 = [(TLKContentsContainerView *)self contentsViews];
-      v18 = [v17 count];
-      v19 = [v30 count];
+      contentsViews5 = [(TLKContentsContainerView *)self contentsViews];
+      v18 = [contentsViews5 count];
+      v19 = [contentsCopy count];
 
       if (v18 < v19)
       {
         do
         {
           v20 = objc_opt_new();
-          v21 = [(TLKContentsContainerView *)self contentsViews];
-          [v21 addObject:v20];
+          contentsViews6 = [(TLKContentsContainerView *)self contentsViews];
+          [contentsViews6 addObject:v20];
 
           [(TLKStackView *)self addArrangedSubview:v20];
-          v22 = [(TLKContentsContainerView *)self contentsViews];
-          v23 = [v22 count];
-          v24 = [v30 count];
+          contentsViews7 = [(TLKContentsContainerView *)self contentsViews];
+          v23 = [contentsViews7 count];
+          v24 = [contentsCopy count];
         }
 
         while (v23 < v24);
@@ -78,23 +78,23 @@
     }
   }
 
-  if ([v30 count])
+  if ([contentsCopy count])
   {
     v7 = 0;
     do
     {
-      v8 = [(TLKContentsContainerView *)self contentsViews];
-      v9 = [v8 objectAtIndexedSubscript:v7];
-      v10 = [v30 objectAtIndexedSubscript:v7];
-      v11 = [v10 title];
-      v12 = [v30 objectAtIndexedSubscript:v7];
-      v13 = [v12 details];
-      [v9 updateWithTitle:v11 contents:v13];
+      contentsViews8 = [(TLKContentsContainerView *)self contentsViews];
+      v9 = [contentsViews8 objectAtIndexedSubscript:v7];
+      v10 = [contentsCopy objectAtIndexedSubscript:v7];
+      title = [v10 title];
+      v12 = [contentsCopy objectAtIndexedSubscript:v7];
+      details = [v12 details];
+      [v9 updateWithTitle:title contents:details];
 
       ++v7;
     }
 
-    while (v7 < [v30 count]);
+    while (v7 < [contentsCopy count]);
   }
 }
 

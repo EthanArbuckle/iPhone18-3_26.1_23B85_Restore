@@ -1,36 +1,36 @@
 @interface SKUIPINInputControl
-+ (BOOL)prefetchResourcesForViewElement:(id)a3 reason:(int64_t)a4 context:(id)a5;
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4;
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5;
-+ (void)requestLayoutForViewElement:(id)a3 width:(double)a4 context:(id)a5;
++ (BOOL)prefetchResourcesForViewElement:(id)element reason:(int64_t)reason context:(id)context;
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context;
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context;
++ (void)requestLayoutForViewElement:(id)element width:(double)width context:(id)context;
 - (BOOL)becomeFirstResponder;
 - (BOOL)resignFirstResponder;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SKUIPINInputControl)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SKUIPINInputControl)initWithFrame:(CGRect)frame;
 - (void)_reloadLabelSubviews;
 - (void)_sendValueChangeEvents;
 - (void)deleteBackward;
-- (void)insertText:(id)a3;
+- (void)insertText:(id)text;
 - (void)layoutSubviews;
-- (void)reloadWithViewElement:(id)a3 width:(double)a4 context:(id)a5;
-- (void)setBoxBackgroundColor:(id)a3;
-- (void)setBoxBorderColor:(id)a3;
-- (void)setFont:(id)a3;
-- (void)setNumberOfCharacters:(int64_t)a3;
-- (void)setSecureTextEntry:(BOOL)a3;
-- (void)setText:(id)a3;
-- (void)setTextColor:(id)a3;
+- (void)reloadWithViewElement:(id)element width:(double)width context:(id)context;
+- (void)setBoxBackgroundColor:(id)color;
+- (void)setBoxBorderColor:(id)color;
+- (void)setFont:(id)font;
+- (void)setNumberOfCharacters:(int64_t)characters;
+- (void)setSecureTextEntry:(BOOL)entry;
+- (void)setText:(id)text;
+- (void)setTextColor:(id)color;
 - (void)tintColorDidChange;
 @end
 
 @implementation SKUIPINInputControl
 
-- (SKUIPINInputControl)initWithFrame:(CGRect)a3
+- (SKUIPINInputControl)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -45,37 +45,37 @@
 
   v26.receiver = self;
   v26.super_class = SKUIPINInputControl;
-  v16 = [(SKUIPINInputControl *)&v26 initWithFrame:x, y, width, height];
-  if (v16)
+  height = [(SKUIPINInputControl *)&v26 initWithFrame:x, y, width, height];
+  if (height)
   {
-    v17 = [MEMORY[0x277D75348] whiteColor];
-    boxBackgroundColor = v16->_boxBackgroundColor;
-    v16->_boxBackgroundColor = v17;
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    boxBackgroundColor = height->_boxBackgroundColor;
+    height->_boxBackgroundColor = whiteColor;
 
     v19 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.5];
-    boxBorderColor = v16->_boxBorderColor;
-    v16->_boxBorderColor = v19;
+    boxBorderColor = height->_boxBorderColor;
+    height->_boxBorderColor = v19;
 
     v21 = [MEMORY[0x277D74300] _lightSystemFontOfSize:28.0];
-    font = v16->_font;
-    v16->_font = v21;
+    font = height->_font;
+    height->_font = v21;
 
-    v23 = [MEMORY[0x277D75348] blackColor];
-    textColor = v16->_textColor;
-    v16->_textColor = v23;
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    textColor = height->_textColor;
+    height->_textColor = blackColor;
 
-    v16->_numberOfCharacters = 4;
-    [(SKUIPINInputControl *)v16 _reloadLabelSubviews];
+    height->_numberOfCharacters = 4;
+    [(SKUIPINInputControl *)height _reloadLabelSubviews];
   }
 
-  return v16;
+  return height;
 }
 
-- (void)setBoxBackgroundColor:(id)a3
+- (void)setBoxBackgroundColor:(id)color
 {
-  if (self->_boxBackgroundColor != a3)
+  if (self->_boxBackgroundColor != color)
   {
-    v4 = [a3 copy];
+    v4 = [color copy];
     boxBackgroundColor = self->_boxBackgroundColor;
     self->_boxBackgroundColor = v4;
 
@@ -83,11 +83,11 @@
   }
 }
 
-- (void)setBoxBorderColor:(id)a3
+- (void)setBoxBorderColor:(id)color
 {
-  if (self->_boxBorderColor != a3)
+  if (self->_boxBorderColor != color)
   {
-    v4 = [a3 copy];
+    v4 = [color copy];
     boxBorderColor = self->_boxBorderColor;
     self->_boxBorderColor = v4;
 
@@ -95,11 +95,11 @@
   }
 }
 
-- (void)setFont:(id)a3
+- (void)setFont:(id)font
 {
-  if (self->_font != a3)
+  if (self->_font != font)
   {
-    v4 = [a3 copy];
+    v4 = [font copy];
     font = self->_font;
     self->_font = v4;
 
@@ -107,20 +107,20 @@
   }
 }
 
-- (void)setNumberOfCharacters:(int64_t)a3
+- (void)setNumberOfCharacters:(int64_t)characters
 {
-  if (self->_numberOfCharacters != a3)
+  if (self->_numberOfCharacters != characters)
   {
-    self->_numberOfCharacters = a3;
+    self->_numberOfCharacters = characters;
     [(SKUIPINInputControl *)self _setNeedsReloadLayout];
   }
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  if (self->_text != a3)
+  if (self->_text != text)
   {
-    v4 = [a3 mutableCopy];
+    v4 = [text mutableCopy];
     text = self->_text;
     self->_text = v4;
 
@@ -128,11 +128,11 @@
   }
 }
 
-- (void)setTextColor:(id)a3
+- (void)setTextColor:(id)color
 {
-  if (self->_textColor != a3)
+  if (self->_textColor != color)
   {
-    v4 = [a3 copy];
+    v4 = [color copy];
     textColor = self->_textColor;
     self->_textColor = v4;
 
@@ -140,7 +140,7 @@
   }
 }
 
-+ (BOOL)prefetchResourcesForViewElement:(id)a3 reason:(int64_t)a4 context:(id)a5
++ (BOOL)prefetchResourcesForViewElement:(id)element reason:(int64_t)reason context:(id)context
 {
   if (os_variant_has_internal_content())
   {
@@ -157,7 +157,7 @@
   return 0;
 }
 
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context
 {
   if (os_variant_has_internal_content())
   {
@@ -178,7 +178,7 @@
   return result;
 }
 
-+ (void)requestLayoutForViewElement:(id)a3 width:(double)a4 context:(id)a5
++ (void)requestLayoutForViewElement:(id)element width:(double)width context:(id)context
 {
   if (os_variant_has_internal_content() && _os_feature_enabled_impl())
   {
@@ -190,9 +190,9 @@
   }
 }
 
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context
 {
-  v7 = a4;
+  elementCopy = element;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -205,67 +205,67 @@
     }
   }
 
-  v16 = [v7 style];
-  v17 = SKUIViewElementFontWithStyle(v16);
+  style = [elementCopy style];
+  v17 = SKUIViewElementFontWithStyle(style);
 
   if (!v17)
   {
     v17 = [MEMORY[0x277D74300] _lightSystemFontOfSize:28.0];
   }
 
-  [a1 _defaultBoxSizeForFont:v17];
+  [self _defaultBoxSizeForFont:v17];
   v19 = v18;
 
-  v20 = a3;
+  widthCopy = width;
   v21 = v19;
   result.height = v21;
-  result.width = v20;
+  result.width = widthCopy;
   return result;
 }
 
-- (void)reloadWithViewElement:(id)a3 width:(double)a4 context:(id)a5
+- (void)reloadWithViewElement:(id)element width:(double)width context:(id)context
 {
-  v6 = a3;
-  v15 = [(SKUIViewElement *)v6 style];
-  v7 = [v15 ikBackgroundColor];
-  v8 = [v7 color];
+  elementCopy = element;
+  style = [(SKUIViewElement *)elementCopy style];
+  ikBackgroundColor = [style ikBackgroundColor];
+  color = [ikBackgroundColor color];
 
-  if (!v8)
+  if (!color)
   {
-    v8 = [MEMORY[0x277D75348] whiteColor];
+    color = [MEMORY[0x277D75348] whiteColor];
   }
 
-  [(SKUIPINInputControl *)self setBoxBackgroundColor:v8];
-  v9 = [v15 ikBorderColor];
-  v10 = [v9 color];
+  [(SKUIPINInputControl *)self setBoxBackgroundColor:color];
+  ikBorderColor = [style ikBorderColor];
+  color2 = [ikBorderColor color];
 
-  if (!v10)
+  if (!color2)
   {
-    v10 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.5];
+    color2 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.5];
   }
 
-  [(SKUIPINInputControl *)self setBoxBorderColor:v10];
-  v11 = [v15 ikColor];
-  v12 = [v11 color];
+  [(SKUIPINInputControl *)self setBoxBorderColor:color2];
+  ikColor = [style ikColor];
+  color3 = [ikColor color];
 
-  if (!v12)
+  if (!color3)
   {
-    v12 = [MEMORY[0x277D75348] blackColor];
+    color3 = [MEMORY[0x277D75348] blackColor];
   }
 
-  [(SKUIPINInputControl *)self setTextColor:v12];
-  v13 = SKUIViewElementFontWithStyle(v15);
+  [(SKUIPINInputControl *)self setTextColor:color3];
+  v13 = SKUIViewElementFontWithStyle(style);
   if (!v13)
   {
     v13 = [MEMORY[0x277D74300] _lightSystemFontOfSize:28.0];
   }
 
   [(SKUIPINInputControl *)self setFont:v13];
-  [(SKUIPINInputControl *)self setKeyboardType:[(SKUIViewElement *)v6 keyboardType]];
-  [(SKUIPINInputControl *)self setNumberOfCharacters:[(SKUIViewElement *)v6 maximumLength]];
-  [(SKUIPINInputControl *)self setSecureTextEntry:[(SKUIViewElement *)v6 isSecure]];
+  [(SKUIPINInputControl *)self setKeyboardType:[(SKUIViewElement *)elementCopy keyboardType]];
+  [(SKUIPINInputControl *)self setNumberOfCharacters:[(SKUIViewElement *)elementCopy maximumLength]];
+  [(SKUIPINInputControl *)self setSecureTextEntry:[(SKUIViewElement *)elementCopy isSecure]];
   viewElement = self->_viewElement;
-  self->_viewElement = v6;
+  self->_viewElement = elementCopy;
 }
 
 - (void)deleteBackward
@@ -280,10 +280,10 @@
   }
 }
 
-- (void)insertText:(id)a3
+- (void)insertText:(id)text
 {
-  v7 = a3;
-  if (-[NSMutableString length](self->_text, "length") < self->_numberOfCharacters && ([v7 isEqualToString:@"\n"] & 1) == 0)
+  textCopy = text;
+  if (-[NSMutableString length](self->_text, "length") < self->_numberOfCharacters && ([textCopy isEqualToString:@"\n"] & 1) == 0)
   {
     text = self->_text;
     if (!text)
@@ -295,7 +295,7 @@
       text = self->_text;
     }
 
-    [(NSMutableString *)text appendString:v7];
+    [(NSMutableString *)text appendString:textCopy];
     [(SKUIPINInputControl *)self _setNeedsReloadLayout];
     [(SKUIPINInputControl *)self _sendValueChangeEvents];
   }
@@ -305,33 +305,33 @@
 {
   v5.receiver = self;
   v5.super_class = SKUIPINInputControl;
-  v3 = [(SKUIPINInputControl *)&v5 becomeFirstResponder];
-  if (v3)
+  becomeFirstResponder = [(SKUIPINInputControl *)&v5 becomeFirstResponder];
+  if (becomeFirstResponder)
   {
     [(SKUIPINInputControl *)self _reloadLabelSubviews];
   }
 
-  return v3;
+  return becomeFirstResponder;
 }
 
 - (BOOL)resignFirstResponder
 {
   v5.receiver = self;
   v5.super_class = SKUIPINInputControl;
-  v3 = [(SKUIPINInputControl *)&v5 resignFirstResponder];
-  if (v3)
+  resignFirstResponder = [(SKUIPINInputControl *)&v5 resignFirstResponder];
+  if (resignFirstResponder)
   {
     [(SKUIPINInputControl *)self _reloadLabelSubviews];
   }
 
-  return v3;
+  return resignFirstResponder;
 }
 
-- (void)setSecureTextEntry:(BOOL)a3
+- (void)setSecureTextEntry:(BOOL)entry
 {
-  if (self->_secureTextEntry != a3)
+  if (self->_secureTextEntry != entry)
   {
-    self->_secureTextEntry = a3;
+    self->_secureTextEntry = entry;
     [(SKUIPINInputControl *)self _setNeedsReloadLayout];
   }
 }
@@ -446,10 +446,10 @@
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   v24 = *MEMORY[0x277D85DE8];
   if (self->_needsLabelReload)
   {
@@ -527,13 +527,13 @@
     self->_labels = v3;
   }
 
-  v26 = [(UIColor *)self->_boxBorderColor CGColor];
-  v5 = [MEMORY[0x277D759A0] mainScreen];
-  [v5 scale];
+  cGColor = [(UIColor *)self->_boxBorderColor CGColor];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v7 = v6;
 
-  v8 = [(SKUIPINInputControl *)self isFirstResponder];
-  v25 = [(SKUIPINInputControl *)self isSecureTextEntry];
+  isFirstResponder = [(SKUIPINInputControl *)self isFirstResponder];
+  isSecureTextEntry = [(SKUIPINInputControl *)self isSecureTextEntry];
   v9 = [(NSMutableString *)self->_text length];
   if (self->_numberOfCharacters >= 1)
   {
@@ -556,11 +556,11 @@
         v13 = [(NSMutableArray *)self->_labels objectAtIndex:v11];
       }
 
-      v14 = [v13 layer];
-      v15 = v14;
+      layer = [v13 layer];
+      v15 = layer;
       if (v10 == v11)
       {
-        v16 = v8;
+        v16 = isFirstResponder;
       }
 
       else
@@ -570,15 +570,15 @@
 
       if (v16 == 1)
       {
-        v17 = [(SKUIPINInputControl *)self tintColor];
-        [v15 setBorderColor:{objc_msgSend(v17, "CGColor")}];
+        tintColor = [(SKUIPINInputControl *)self tintColor];
+        [v15 setBorderColor:{objc_msgSend(tintColor, "CGColor")}];
 
         v18 = 1.0;
       }
 
       else
       {
-        [v14 setBorderColor:v26];
+        [layer setBorderColor:cGColor];
         v18 = v12;
       }
 
@@ -594,7 +594,7 @@
 
       else
       {
-        if (!v25)
+        if (!isSecureTextEntry)
         {
           v21 = [(NSMutableString *)self->_text substringWithRange:v11, 1];
           [v13 setText:v21];

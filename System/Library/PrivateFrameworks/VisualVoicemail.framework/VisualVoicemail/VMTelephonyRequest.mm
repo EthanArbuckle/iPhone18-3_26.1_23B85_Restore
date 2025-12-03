@@ -1,15 +1,15 @@
 @interface VMTelephonyRequest
 + (id)unarchivedObjectClasses;
-+ (id)unarchivedObjectFromData:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToRequest:(id)a3;
++ (id)unarchivedObjectFromData:(id)data error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToRequest:(id)request;
 - (NSString)debugDescription;
 - (VMTelephonyRequest)init;
-- (VMTelephonyRequest)initWithCoder:(id)a3;
-- (VMTelephonyRequest)initWithSubscription:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (VMTelephonyRequest)initWithCoder:(id)coder;
+- (VMTelephonyRequest)initWithSubscription:(id)subscription;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation VMTelephonyRequest
@@ -21,48 +21,48 @@
   return 0;
 }
 
-- (VMTelephonyRequest)initWithSubscription:(id)a3
+- (VMTelephonyRequest)initWithSubscription:(id)subscription
 {
-  v5 = a3;
+  subscriptionCopy = subscription;
   v9.receiver = self;
   v9.super_class = VMTelephonyRequest;
   v6 = [(VMTelephonyRequest *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_subscription, a3);
+    objc_storeStrong(&v6->_subscription, subscription);
   }
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   subscription = self->_subscription;
 
   return [v4 initWithSubscription:subscription];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   subscription = self->_subscription;
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector("subscription");
-  [v4 encodeObject:subscription forKey:v5];
+  [coderCopy encodeObject:subscription forKey:v5];
 }
 
-- (VMTelephonyRequest)initWithCoder:(id)a3
+- (VMTelephonyRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = VMTelephonyRequest;
   v5 = [(VMTelephonyRequest *)&v11 init];
   if (v5)
   {
-    v6 = [objc_opt_class() unarchivedObjectClasses];
+    unarchivedObjectClasses = [objc_opt_class() unarchivedObjectClasses];
     v7 = NSStringFromSelector("subscription");
-    v8 = [v4 decodeObjectOfClasses:v6 forKey:v7];
+    v8 = [coderCopy decodeObjectOfClasses:unarchivedObjectClasses forKey:v7];
     subscription = v5->_subscription;
     v5->_subscription = v8;
   }
@@ -75,8 +75,8 @@
   v3 = objc_alloc_init(NSMutableString);
   [v3 appendFormat:@"<%@ %p ", objc_opt_class(), self];
   v4 = NSStringFromSelector("subscription");
-  v5 = [(VMTelephonyRequest *)self subscription];
-  [v3 appendFormat:@"%@=%@", v4, v5];
+  subscription = [(VMTelephonyRequest *)self subscription];
+  [v3 appendFormat:@"%@=%@", v4, subscription];
 
   [v3 appendFormat:@">"];
   v6 = [v3 copy];
@@ -86,16 +86,16 @@
 
 - (unint64_t)hash
 {
-  v2 = [(VMTelephonyRequest *)self subscription];
-  v3 = [v2 hash];
+  subscription = [(VMTelephonyRequest *)self subscription];
+  v3 = [subscription hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -105,7 +105,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(VMTelephonyRequest *)self isEqualToRequest:v4];
+      v5 = [(VMTelephonyRequest *)self isEqualToRequest:equalCopy];
     }
 
     else
@@ -117,16 +117,16 @@
   return v5;
 }
 
-- (BOOL)isEqualToRequest:(id)a3
+- (BOOL)isEqualToRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(VMTelephonyRequest *)self subscription];
-  v6 = [v4 subscription];
+  requestCopy = request;
+  subscription = [(VMTelephonyRequest *)self subscription];
+  subscription2 = [requestCopy subscription];
 
-  v7 = (v5 | v6) == 0;
-  if (v6)
+  v7 = (subscription | subscription2) == 0;
+  if (subscription2)
   {
-    v7 = [v5 isEqual:v6];
+    v7 = [subscription isEqual:subscription2];
   }
 
   return v7;
@@ -147,11 +147,11 @@
   return v3;
 }
 
-+ (id)unarchivedObjectFromData:(id)a3 error:(id *)a4
++ (id)unarchivedObjectFromData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = [a1 unarchivedObjectClasses];
-  v8 = [NSKeyedUnarchiver unarchivedObjectOfClasses:v7 fromData:v6 error:a4];
+  dataCopy = data;
+  unarchivedObjectClasses = [self unarchivedObjectClasses];
+  v8 = [NSKeyedUnarchiver unarchivedObjectOfClasses:unarchivedObjectClasses fromData:dataCopy error:error];
 
   return v8;
 }

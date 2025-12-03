@@ -1,17 +1,17 @@
 @interface SKUIProductPageTableSection
-- (double)heightForTextLayout:(id)a3 isExpanded:(BOOL)a4;
-- (id)selectionActionForTableView:(id)a3 indexPath:(id)a4;
-- (id)textBoxTableViewCellForTableView:(id)a3 indexPath:(id)a4;
+- (double)heightForTextLayout:(id)layout isExpanded:(BOOL)expanded;
+- (id)selectionActionForTableView:(id)view indexPath:(id)path;
+- (id)textBoxTableViewCellForTableView:(id)view indexPath:(id)path;
 @end
 
 @implementation SKUIProductPageTableSection
 
-- (double)heightForTextLayout:(id)a3 isExpanded:(BOOL)a4
+- (double)heightForTextLayout:(id)layout isExpanded:(BOOL)expanded
 {
-  v5 = a3;
+  layoutCopy = layout;
   if (!os_variant_has_internal_content() || !_os_feature_enabled_impl() || !(v6 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT)))
   {
-    if (v5)
+    if (layoutCopy)
     {
       goto LABEL_5;
     }
@@ -22,20 +22,20 @@ LABEL_11:
   }
 
   [(SKUIProductPageTableSection *)v6 heightForTextLayout:v7 isExpanded:v8, v9, v10, v11, v12, v13];
-  if (!v5)
+  if (!layoutCopy)
   {
     goto LABEL_11;
   }
 
 LABEL_5:
-  if (a4 || ![v5 requiresTruncation])
+  if (expanded || ![layoutCopy requiresTruncation])
   {
-    [v5 textSize];
+    [layoutCopy textSize];
   }
 
   else
   {
-    [v5 truncatedSize];
+    [layoutCopy truncatedSize];
   }
 
   v15 = v14 + 10.0 + 22.0 + 2.0 + 12.0;
@@ -44,7 +44,7 @@ LABEL_12:
   return v15;
 }
 
-- (id)selectionActionForTableView:(id)a3 indexPath:(id)a4
+- (id)selectionActionForTableView:(id)view indexPath:(id)path
 {
   if (os_variant_has_internal_content())
   {
@@ -61,9 +61,9 @@ LABEL_12:
   return 0;
 }
 
-- (id)textBoxTableViewCellForTableView:(id)a3 indexPath:(id)a4
+- (id)textBoxTableViewCellForTableView:(id)view indexPath:(id)path
 {
-  v4 = a3;
+  viewCopy = view;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -76,7 +76,7 @@ LABEL_12:
     }
   }
 
-  v13 = [v4 dequeueReusableCellWithIdentifier:@"TB"];
+  v13 = [viewCopy dequeueReusableCellWithIdentifier:@"TB"];
   if (!v13)
   {
     v13 = [[SKUITextBoxTableViewCell alloc] initWithStyle:0 reuseIdentifier:@"TB"];

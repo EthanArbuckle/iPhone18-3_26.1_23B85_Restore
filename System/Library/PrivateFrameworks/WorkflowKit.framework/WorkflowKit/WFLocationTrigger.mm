@@ -1,20 +1,20 @@
 @interface WFLocationTrigger
 + (id)timestampDateFormatter;
 - (BOOL)hasValidConfiguration;
-- (BOOL)isDateWithinTimeRange:(id)a3;
-- (WFLocationTrigger)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isDateWithinTimeRange:(id)range;
+- (WFLocationTrigger)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFLocationTrigger
 
-- (WFLocationTrigger)initWithCoder:(id)a3
+- (WFLocationTrigger)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = WFLocationTrigger;
-  v5 = [(WFTrigger *)&v16 initWithCoder:v4];
+  v5 = [(WFTrigger *)&v16 initWithCoder:coderCopy];
   if (v5)
   {
     v18 = 0;
@@ -35,20 +35,20 @@
 
     v7 = v6;
     _Block_object_dispose(&v18, 8);
-    v8 = [v4 decodeObjectOfClass:v6 forKey:@"region"];
+    v8 = [coderCopy decodeObjectOfClass:v6 forKey:@"region"];
     [(WFLocationTrigger *)v5 setRegion:v8];
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"startTime"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"startTime"];
     [(WFLocationTrigger *)v5 setStartTime:v9];
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"endTime"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"endTime"];
     [(WFLocationTrigger *)v5 setEndTime:v10];
 
     v11 = objc_opt_class();
     if ([v11 isSubclassOfClass:objc_opt_class()])
     {
-      v12 = [(WFLocationTrigger *)v5 region];
-      [v12 setNotifyOnEntry:1];
+      region = [(WFLocationTrigger *)v5 region];
+      [region setNotifyOnEntry:1];
     }
 
     else
@@ -61,8 +61,8 @@ LABEL_9:
         goto LABEL_10;
       }
 
-      v12 = [(WFLocationTrigger *)v5 region];
-      [v12 setNotifyOnExit:1];
+      region = [(WFLocationTrigger *)v5 region];
+      [region setNotifyOnExit:1];
     }
 
     goto LABEL_9;
@@ -73,55 +73,55 @@ LABEL_10:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v8.receiver = self;
   v8.super_class = WFLocationTrigger;
-  v4 = a3;
-  [(WFTrigger *)&v8 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(WFTrigger *)&v8 encodeWithCoder:coderCopy];
   v5 = [(WFLocationTrigger *)self region:v8.receiver];
-  [v4 encodeObject:v5 forKey:@"region"];
+  [coderCopy encodeObject:v5 forKey:@"region"];
 
-  v6 = [(WFLocationTrigger *)self startTime];
-  [v4 encodeObject:v6 forKey:@"startTime"];
+  startTime = [(WFLocationTrigger *)self startTime];
+  [coderCopy encodeObject:startTime forKey:@"startTime"];
 
-  v7 = [(WFLocationTrigger *)self endTime];
-  [v4 encodeObject:v7 forKey:@"endTime"];
+  endTime = [(WFLocationTrigger *)self endTime];
+  [coderCopy encodeObject:endTime forKey:@"endTime"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v12.receiver = self;
   v12.super_class = WFLocationTrigger;
-  v4 = [(WFTrigger *)&v12 copyWithZone:a3];
-  v5 = [(WFLocationTrigger *)self region];
-  v6 = [v5 copy];
+  v4 = [(WFTrigger *)&v12 copyWithZone:zone];
+  region = [(WFLocationTrigger *)self region];
+  v6 = [region copy];
   [v4 setRegion:v6];
 
-  v7 = [(WFLocationTrigger *)self startTime];
-  v8 = [v7 copy];
+  startTime = [(WFLocationTrigger *)self startTime];
+  v8 = [startTime copy];
   [v4 setStartTime:v8];
 
-  v9 = [(WFLocationTrigger *)self endTime];
-  v10 = [v9 copy];
+  endTime = [(WFLocationTrigger *)self endTime];
+  v10 = [endTime copy];
   [v4 setEndTime:v10];
 
   return v4;
 }
 
-- (BOOL)isDateWithinTimeRange:(id)a3
+- (BOOL)isDateWithinTimeRange:(id)range
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v6 = [(WFLocationTrigger *)self startTime];
-  v7 = [v5 components:96 fromDate:v6];
+  rangeCopy = range;
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  startTime = [(WFLocationTrigger *)self startTime];
+  v7 = [currentCalendar components:96 fromDate:startTime];
 
-  v8 = [v5 dateBySettingHour:objc_msgSend(v7 minute:"hour") second:objc_msgSend(v7 ofDate:"minute") options:{0, v4, 0}];
-  v9 = [(WFLocationTrigger *)self endTime];
-  v10 = [v5 components:96 fromDate:v9];
+  v8 = [currentCalendar dateBySettingHour:objc_msgSend(v7 minute:"hour") second:objc_msgSend(v7 ofDate:"minute") options:{0, rangeCopy, 0}];
+  endTime = [(WFLocationTrigger *)self endTime];
+  v10 = [currentCalendar components:96 fromDate:endTime];
 
-  v11 = [v5 dateBySettingHour:objc_msgSend(v10 minute:"hour") second:objc_msgSend(v10 ofDate:"minute") options:{0, v4, 0}];
+  v11 = [currentCalendar dateBySettingHour:objc_msgSend(v10 minute:"hour") second:objc_msgSend(v10 ofDate:"minute") options:{0, rangeCopy, 0}];
   v12 = v11;
   if (v8)
   {
@@ -156,12 +156,12 @@ LABEL_8:
   {
     if ([v8 isEqualToDate:v11])
     {
-      v24 = [v5 components:96 fromDate:v4];
-      v25 = [(WFLocationTrigger *)self startTime];
-      v26 = [v5 components:96 fromDate:v25];
+      v24 = [currentCalendar components:96 fromDate:rangeCopy];
+      startTime2 = [(WFLocationTrigger *)self startTime];
+      v26 = [currentCalendar components:96 fromDate:startTime2];
 
-      LOBYTE(v25) = [v24 isEqual:v26];
-      if (v25)
+      LOBYTE(startTime2) = [v24 isEqual:v26];
+      if (startTime2)
       {
         v20 = 1;
         goto LABEL_12;
@@ -186,7 +186,7 @@ LABEL_8:
     }
 
     v14 = [objc_alloc(MEMORY[0x1E696AB80]) initWithStartDate:v8 endDate:v12];
-    if (([v14 containsDate:v4]& 1) != 0)
+    if (([v14 containsDate:rangeCopy]& 1) != 0)
     {
       v20 = 1;
       goto LABEL_11;
@@ -216,15 +216,15 @@ LABEL_12:
 
 - (BOOL)hasValidConfiguration
 {
-  v3 = [(WFLocationTrigger *)self region];
-  if (v3)
+  region = [(WFLocationTrigger *)self region];
+  if (region)
   {
-    v4 = [(WFLocationTrigger *)self startTime];
-    if (v4)
+    startTime = [(WFLocationTrigger *)self startTime];
+    if (startTime)
     {
-      v5 = [(WFLocationTrigger *)self startTime];
-      v6 = [(WFLocationTrigger *)self endTime];
-      v7 = [v5 compare:v6] != 1;
+      startTime2 = [(WFLocationTrigger *)self startTime];
+      endTime = [(WFLocationTrigger *)self endTime];
+      v7 = [startTime2 compare:endTime] != 1;
     }
 
     else

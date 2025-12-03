@@ -1,23 +1,23 @@
 @interface HMDLegacyCloudZone
-- (HMDLegacyCloudZone)initWithCloudDatabase:(id)a3 configuration:(id)a4 state:(id)a5;
-- (id)decodeModelFromRecord:(id)a3 externalRecordFields:(id)a4 source:(unint64_t)a5 error:(id *)a6;
-- (id)encodeRecordFromModel:(id)a3 existingRecord:(id)a4 encodingContext:(id)a5 error:(id *)a6;
-- (void)startUpWithLocalZone:(id)a3;
+- (HMDLegacyCloudZone)initWithCloudDatabase:(id)database configuration:(id)configuration state:(id)state;
+- (id)decodeModelFromRecord:(id)record externalRecordFields:(id)fields source:(unint64_t)source error:(id *)error;
+- (id)encodeRecordFromModel:(id)model existingRecord:(id)record encodingContext:(id)context error:(id *)error;
+- (void)startUpWithLocalZone:(id)zone;
 @end
 
 @implementation HMDLegacyCloudZone
 
-- (id)encodeRecordFromModel:(id)a3 existingRecord:(id)a4 encodingContext:(id)a5 error:(id *)a6
+- (id)encodeRecordFromModel:(id)model existingRecord:(id)record encodingContext:(id)context error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  modelCopy = model;
+  recordCopy = record;
+  contextCopy = context;
   v28 = 0;
-  v13 = [(HMBCloudZone *)self modelContainer];
+  modelContainer = [(HMBCloudZone *)self modelContainer];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v14 = v13;
+    v14 = modelContainer;
   }
 
   else
@@ -35,8 +35,8 @@ LABEL_16:
     return [(HMDLegacyCloudZone *)v22 decodeModelFromRecord:v23 externalRecordFields:v24 source:v25 error:v26, v27];
   }
 
-  [v10 hmbAssociateWithContainer:v15];
-  v16 = v10;
+  [modelCopy hmbAssociateWithContainer:v15];
+  v16 = modelCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -55,31 +55,31 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  if (a6)
+  if (error)
   {
-    v19 = a6;
+    errorCopy = error;
   }
 
   else
   {
-    v19 = &v28;
+    errorCopy = &v28;
   }
 
-  v20 = [v18 encodeWithExistingRecord:v11 cloudZone:self modelContainer:v15 error:v19];
+  v20 = [v18 encodeWithExistingRecord:recordCopy cloudZone:self modelContainer:v15 error:errorCopy];
 
   return v20;
 }
 
-- (id)decodeModelFromRecord:(id)a3 externalRecordFields:(id)a4 source:(unint64_t)a5 error:(id *)a6
+- (id)decodeModelFromRecord:(id)record externalRecordFields:(id)fields source:(unint64_t)source error:(id *)error
 {
   v35 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = [(HMBCloudZone *)self modelContainer];
+  recordCopy = record;
+  fieldsCopy = fields;
+  modelContainer = [(HMBCloudZone *)self modelContainer];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v12 = v11;
+    v12 = modelContainer;
   }
 
   else
@@ -94,8 +94,8 @@ LABEL_16:
     _HMFPreconditionFailure();
   }
 
-  v14 = [v9 recordType];
-  v15 = [v14 isEqualToString:@"HomeDataBlob"];
+  recordType = [recordCopy recordType];
+  v15 = [recordType isEqualToString:@"HomeDataBlob"];
 
   if (v15)
   {
@@ -104,8 +104,8 @@ LABEL_16:
 
   else
   {
-    v17 = [v9 recordType];
-    v18 = [v17 isEqualToString:@"MetadataBlob"];
+    recordType2 = [recordCopy recordType];
+    v18 = [recordType2 isEqualToString:@"MetadataBlob"];
 
     if (v18)
     {
@@ -114,8 +114,8 @@ LABEL_16:
 
     else
     {
-      v19 = [v9 recordType];
-      v20 = [v19 isEqualToString:@"HomeDataBlobV3"];
+      recordType3 = [recordCopy recordType];
+      v20 = [recordType3 isEqualToString:@"HomeDataBlobV3"];
 
       if (!v20)
       {
@@ -126,36 +126,36 @@ LABEL_16:
     }
   }
 
-  v21 = [(__objc2_class *)*v16 createWithLegacyRecord:v9 modelContainer:v13 error:a6];
+  v21 = [(__objc2_class *)*v16 createWithLegacyRecord:recordCopy modelContainer:v13 error:error];
   if (v21)
   {
     v22 = v21;
-    v23 = [(HMBCloudZone *)self modelContainer];
-    [v22 hmbAssociateWithContainer:v23];
+    modelContainer2 = [(HMBCloudZone *)self modelContainer];
+    [v22 hmbAssociateWithContainer:modelContainer2];
 
     goto LABEL_19;
   }
 
 LABEL_13:
   v24 = objc_autoreleasePoolPush();
-  v25 = self;
+  selfCopy = self;
   v26 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
   {
     v27 = HMFGetLogIdentifier();
-    v28 = [v9 hmbDescription];
+    hmbDescription = [recordCopy hmbDescription];
     v31 = 138543618;
     v32 = v27;
     v33 = 2112;
-    v34 = v28;
+    v34 = hmbDescription;
     _os_log_impl(&dword_229538000, v26, OS_LOG_TYPE_ERROR, "%{public}@Unable to decode record %@ from legacy cloud zone.", &v31, 0x16u);
   }
 
   objc_autoreleasePoolPop(v24);
-  if (a6 && !*a6)
+  if (error && !*error)
   {
     [MEMORY[0x277CCA9B8] hmfErrorWithCode:15];
-    *a6 = v22 = 0;
+    *error = v22 = 0;
   }
 
   else
@@ -170,18 +170,18 @@ LABEL_19:
   return v22;
 }
 
-- (void)startUpWithLocalZone:(id)a3
+- (void)startUpWithLocalZone:(id)zone
 {
   v3.receiver = self;
   v3.super_class = HMDLegacyCloudZone;
-  [(HMBCloudZone *)&v3 startUpWithLocalZone:a3];
+  [(HMBCloudZone *)&v3 startUpWithLocalZone:zone];
 }
 
-- (HMDLegacyCloudZone)initWithCloudDatabase:(id)a3 configuration:(id)a4 state:(id)a5
+- (HMDLegacyCloudZone)initWithCloudDatabase:(id)database configuration:(id)configuration state:(id)state
 {
   v8.receiver = self;
   v8.super_class = HMDLegacyCloudZone;
-  v5 = [(HMBCloudZone *)&v8 initWithCloudDatabase:a3 configuration:a4 state:a5];
+  v5 = [(HMBCloudZone *)&v8 initWithCloudDatabase:database configuration:configuration state:state];
   v6 = v5;
   if (v5)
   {

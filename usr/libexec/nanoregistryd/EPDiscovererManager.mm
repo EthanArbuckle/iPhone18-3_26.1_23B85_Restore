@@ -1,23 +1,23 @@
 @interface EPDiscovererManager
 - (EPDiscovererManager)init;
-- (id)newDiscovererWithDelegate:(id)a3;
-- (void)_setTimerDuration:(double)a3 withBlock:(id)a4;
+- (id)newDiscovererWithDelegate:(id)delegate;
+- (void)_setTimerDuration:(double)duration withBlock:(id)block;
 - (void)cancelDiscoveryCounter;
-- (void)centralManager:(id)a3 didDiscoverPeripheral:(id)a4 advertisementData:(id)a5 RSSI:(id)a6;
+- (void)centralManager:(id)manager didDiscoverPeripheral:(id)peripheral advertisementData:(id)data RSSI:(id)i;
 - (void)clearAndStartDiscoveryCounter;
-- (void)collection:(id)a3 deviceDidAppear:(id)a4;
-- (void)collection:(id)a3 deviceDidBecomeDisplayable:(id)a4;
-- (void)collection:(id)a3 deviceDidBecomeProximate:(id)a4;
-- (void)collection:(id)a3 deviceDidBecomeUndisplayable:(id)a4;
-- (void)collection:(id)a3 deviceDidBecomeUnproximate:(id)a4;
-- (void)collection:(id)a3 deviceDidDisappear:(id)a4;
-- (void)collection:(id)a3 deviceDidUpdate:(id)a4;
-- (void)collection:(id)a3 deviceInfoDidDealloc:(id)a4;
-- (void)collectionPairingFailure:(id)a3;
+- (void)collection:(id)collection deviceDidAppear:(id)appear;
+- (void)collection:(id)collection deviceDidBecomeDisplayable:(id)displayable;
+- (void)collection:(id)collection deviceDidBecomeProximate:(id)proximate;
+- (void)collection:(id)collection deviceDidBecomeUndisplayable:(id)undisplayable;
+- (void)collection:(id)collection deviceDidBecomeUnproximate:(id)unproximate;
+- (void)collection:(id)collection deviceDidDisappear:(id)disappear;
+- (void)collection:(id)collection deviceDidUpdate:(id)update;
+- (void)collection:(id)collection deviceInfoDidDealloc:(id)dealloc;
+- (void)collectionPairingFailure:(id)failure;
 - (void)notifyDelegateOfBluetoothSuccess;
 - (void)notifyDelegateOfPossibleBluetoothFailure;
-- (void)setDiscoverDeviceUUIDs:(id)a3;
-- (void)setScanForProximity:(BOOL)a3;
+- (void)setDiscoverDeviceUUIDs:(id)ds;
+- (void)setScanForProximity:(BOOL)proximity;
 - (void)update;
 @end
 
@@ -69,14 +69,14 @@
       goto LABEL_19;
     }
 
-    v13 = sub_1000A98C0();
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+    manager = sub_1000A98C0();
+    if (os_log_type_enabled(manager, OS_LOG_TYPE_DEFAULT))
     {
       v14 = 134218240;
-      v15 = self;
+      selfCopy2 = self;
       v16 = 2048;
       v17 = v8;
-      _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "EPDiscovererManager[%p]: Not enough time discovering. %1.2f", &v14, 0x16u);
+      _os_log_impl(&_mh_execute_header, manager, OS_LOG_TYPE_DEFAULT, "EPDiscovererManager[%p]: Not enough time discovering. %1.2f", &v14, 0x16u);
     }
 
 LABEL_18:
@@ -91,7 +91,7 @@ LABEL_18:
     {
       discoveryCounter = self->_discoveryCounter;
       v14 = 134218496;
-      v15 = self;
+      selfCopy2 = self;
       v16 = 2048;
       v17 = *&discoveryCounter;
       v18 = 2048;
@@ -102,8 +102,8 @@ LABEL_18:
 
   if (!self->_discoveryCounter && ![(NSArray *)self->_discoverDeviceUUIDs count])
   {
-    v13 = [(EPCentralManager *)self->_central manager];
-    [v13 triggerBTErrorReport:1];
+    manager = [(EPCentralManager *)self->_central manager];
+    [manager triggerBTErrorReport:1];
     goto LABEL_18;
   }
 
@@ -111,9 +111,9 @@ LABEL_19:
   [(EPDiscovererManager *)self _setTimerDuration:0 withBlock:0.0];
 }
 
-- (void)_setTimerDuration:(double)a3 withBlock:(id)a4
+- (void)_setTimerDuration:(double)duration withBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   currentTimer = self->_currentTimer;
   if (currentTimer)
   {
@@ -122,19 +122,19 @@ LABEL_19:
     self->_currentTimer = 0;
   }
 
-  if (v6)
+  if (blockCopy)
   {
     v9 = +[EPFactory queue];
     v10 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, v9);
 
-    v11 = dispatch_time(0, (a3 * 1000000000.0));
+    v11 = dispatch_time(0, (duration * 1000000000.0));
     dispatch_source_set_timer(v10, v11, 0xFFFFFFFFFFFFFFFFLL, 0);
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = sub_1000550B4;
     v14[3] = &unk_100175FA0;
     v14[4] = self;
-    v15 = v6;
+    v15 = blockCopy;
     dispatch_source_set_event_handler(v10, v14);
     dispatch_resume(v10);
     v12 = self->_currentTimer;
@@ -173,10 +173,10 @@ LABEL_19:
   return v2;
 }
 
-- (id)newDiscovererWithDelegate:(id)a3
+- (id)newDiscovererWithDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [[EPDiscoverer alloc] initWithManager:self withDelegate:v4];
+  delegateCopy = delegate;
+  v5 = [[EPDiscoverer alloc] initWithManager:self withDelegate:delegateCopy];
 
   [(NSPointerArray *)self->_discoverers addPointer:v5];
   v6 = +[EPFactory queue];
@@ -192,8 +192,8 @@ LABEL_19:
 
 - (void)update
 {
-  v3 = [(NSPointerArray *)self->_discoverers allObjects];
-  v4 = [v3 count];
+  allObjects = [(NSPointerArray *)self->_discoverers allObjects];
+  v4 = [allObjects count];
 
   if (v4)
   {
@@ -207,8 +207,8 @@ LABEL_19:
     if (!central)
     {
       v6 = +[EPFactory sharedFactory];
-      v7 = [v6 agentManager];
-      v8 = [v7 newCentralManagerWithDelegate:self];
+      agentManager = [v6 agentManager];
+      v8 = [agentManager newCentralManagerWithDelegate:self];
       v9 = self->_central;
       self->_central = v8;
 
@@ -227,13 +227,13 @@ LABEL_19:
         v10 = [NSDictionary dictionaryWithObjects:v39 forKeys:v38 count:2];
         v11 = [v10 mutableCopy];
 
-        v12 = [(EPDiscovererManager *)self discoverDeviceUUIDs];
-        v13 = [v12 count];
+        discoverDeviceUUIDs = [(EPDiscovererManager *)self discoverDeviceUUIDs];
+        v13 = [discoverDeviceUUIDs count];
 
         if (v13)
         {
-          v14 = [(EPDiscovererManager *)self discoverDeviceUUIDs];
-          [v11 setObject:v14 forKeyedSubscript:CBCentralManagerScanOptionPeersKey];
+          discoverDeviceUUIDs2 = [(EPDiscovererManager *)self discoverDeviceUUIDs];
+          [v11 setObject:discoverDeviceUUIDs2 forKeyedSubscript:CBCentralManagerScanOptionPeersKey];
 
           [v11 setObject:&__kCFBooleanTrue forKeyedSubscript:CBCentralManagerScanOptionReloadMigratableItems];
         }
@@ -257,11 +257,11 @@ LABEL_19:
         powerAssertion = self->_powerAssertion;
         self->_powerAssertion = v18;
 
-        v20 = [(EPCentralManager *)self->_central manager];
-        v21 = [(EPDiscovererManager *)self discoverDeviceUUIDs];
-        if ([v21 count])
+        manager = [(EPCentralManager *)self->_central manager];
+        discoverDeviceUUIDs3 = [(EPDiscovererManager *)self discoverDeviceUUIDs];
+        if ([discoverDeviceUUIDs3 count])
         {
-          [v20 scanForPeripheralsWithServices:0 options:v11];
+          [manager scanForPeripheralsWithServices:0 options:v11];
         }
 
         else
@@ -269,11 +269,11 @@ LABEL_19:
           v30 = [CBUUID UUIDWithString:@"9AA4730F-B25C-4CC3-B821-C931559FC196"];
           v35 = v30;
           v31 = [NSArray arrayWithObjects:&v35 count:1];
-          [v20 scanForPeripheralsWithServices:v31 options:v11];
+          [manager scanForPeripheralsWithServices:v31 options:v11];
         }
 
-        v32 = [(EPDiscovererManager *)self discoverDeviceUUIDs];
-        v33 = [v32 count];
+        discoverDeviceUUIDs4 = [(EPDiscovererManager *)self discoverDeviceUUIDs];
+        v33 = [discoverDeviceUUIDs4 count];
 
         if (v33)
         {
@@ -318,16 +318,16 @@ LABEL_19:
           }
         }
 
-        v25 = [(EPCentralManager *)self->_central manager];
-        [v25 stopScan];
+        manager2 = [(EPCentralManager *)self->_central manager];
+        [manager2 stopScan];
 
         v26 = self->_powerAssertion;
         self->_powerAssertion = 0;
       }
     }
 
-    v27 = [(EPDeviceCollection *)self->_deviceCollection devicesDictionary];
-    v28 = [v27 count];
+    devicesDictionary = [(EPDeviceCollection *)self->_deviceCollection devicesDictionary];
+    v28 = [devicesDictionary count];
 
     if (!v28)
     {
@@ -352,13 +352,13 @@ LABEL_19:
   }
 }
 
-- (void)setDiscoverDeviceUUIDs:(id)a3
+- (void)setDiscoverDeviceUUIDs:(id)ds
 {
-  v5 = a3;
+  dsCopy = ds;
   discoverDeviceUUIDs = self->_discoverDeviceUUIDs;
-  if (v5 && !discoverDeviceUUIDs || discoverDeviceUUIDs && ([(NSArray *)discoverDeviceUUIDs isEqual:v5]& 1) == 0)
+  if (dsCopy && !discoverDeviceUUIDs || discoverDeviceUUIDs && ([(NSArray *)discoverDeviceUUIDs isEqual:dsCopy]& 1) == 0)
   {
-    objc_storeStrong(&self->_discoverDeviceUUIDs, a3);
+    objc_storeStrong(&self->_discoverDeviceUUIDs, ds);
     if (self->_isScanning)
     {
       self->_isScanning = 0;
@@ -377,8 +377,8 @@ LABEL_19:
           }
         }
 
-        v10 = [(EPCentralManager *)self->_central manager];
-        [v10 stopScan];
+        manager = [(EPCentralManager *)self->_central manager];
+        [manager stopScan];
       }
 
       v11 = +[EPFactory queue];
@@ -392,9 +392,9 @@ LABEL_19:
   }
 }
 
-- (void)setScanForProximity:(BOOL)a3
+- (void)setScanForProximity:(BOOL)proximity
 {
-  if (self->_scanForProximity != a3)
+  if (self->_scanForProximity != proximity)
   {
     v13 = v3;
     v14 = v4;
@@ -416,8 +416,8 @@ LABEL_19:
           }
         }
 
-        v9 = [(EPCentralManager *)self->_central manager];
-        [v9 stopScan];
+        manager = [(EPCentralManager *)self->_central manager];
+        [manager stopScan];
       }
 
       v10 = +[EPFactory queue];
@@ -437,8 +437,8 @@ LABEL_19:
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(NSPointerArray *)self->_discoverers allObjects];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  allObjects = [(NSPointerArray *)self->_discoverers allObjects];
+  v3 = [allObjects countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = v3;
@@ -450,7 +450,7 @@ LABEL_19:
       {
         if (*v9 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(allObjects);
         }
 
         v7 = *(*(&v8 + 1) + 8 * v6);
@@ -463,7 +463,7 @@ LABEL_19:
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v4 = [allObjects countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v4);
@@ -476,8 +476,8 @@ LABEL_19:
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(NSPointerArray *)self->_discoverers allObjects];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  allObjects = [(NSPointerArray *)self->_discoverers allObjects];
+  v3 = [allObjects countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = v3;
@@ -489,7 +489,7 @@ LABEL_19:
       {
         if (*v9 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(allObjects);
         }
 
         v7 = *(*(&v8 + 1) + 8 * v6);
@@ -502,49 +502,49 @@ LABEL_19:
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v4 = [allObjects countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v4);
   }
 }
 
-- (void)centralManager:(id)a3 didDiscoverPeripheral:(id)a4 advertisementData:(id)a5 RSSI:(id)a6
+- (void)centralManager:(id)manager didDiscoverPeripheral:(id)peripheral advertisementData:(id)data RSSI:(id)i
 {
   ++self->_discoveryCounter;
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
+  iCopy = i;
+  dataCopy = data;
+  peripheralCopy = peripheral;
   [(EPDiscovererManager *)self _setTimerDuration:0 withBlock:0.0];
-  v15 = [v11 identifier];
-  v12 = [(EPDeviceCollection *)self->_deviceCollection devicesDictionary];
-  v13 = [v12 objectForKeyedSubscript:v15];
+  identifier = [peripheralCopy identifier];
+  devicesDictionary = [(EPDeviceCollection *)self->_deviceCollection devicesDictionary];
+  v13 = [devicesDictionary objectForKeyedSubscript:identifier];
 
   if (v13)
   {
-    [v13 updateWithPeripheral:v11 withAdvertisementData:v10 withRSSI:v9];
+    [v13 updateWithPeripheral:peripheralCopy withAdvertisementData:dataCopy withRSSI:iCopy];
   }
 
   else
   {
-    v14 = [(EPDeviceCollection *)self->_deviceCollection newDeviceWithPeripheral:v11 withAdvertisementData:v10 withRSSI:v9];
+    v14 = [(EPDeviceCollection *)self->_deviceCollection newDeviceWithPeripheral:peripheralCopy withAdvertisementData:dataCopy withRSSI:iCopy];
 
-    v9 = v10;
-    v10 = v11;
-    v11 = v14;
+    iCopy = dataCopy;
+    dataCopy = peripheralCopy;
+    peripheralCopy = v14;
   }
 }
 
-- (void)collection:(id)a3 deviceDidAppear:(id)a4
+- (void)collection:(id)collection deviceDidAppear:(id)appear
 {
-  v6 = a3;
-  v7 = a4;
+  collectionCopy = collection;
+  appearCopy = appear;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v8 = [(NSPointerArray *)self->_discoverers allObjects];
-  v9 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  allObjects = [(NSPointerArray *)self->_discoverers allObjects];
+  v9 = [allObjects countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v9)
   {
     v10 = v9;
@@ -556,31 +556,31 @@ LABEL_19:
       {
         if (*v14 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(allObjects);
         }
 
-        [*(*(&v13 + 1) + 8 * v12) collection:v6 deviceDidAppear:v7];
+        [*(*(&v13 + 1) + 8 * v12) collection:collectionCopy deviceDidAppear:appearCopy];
         v12 = v12 + 1;
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v10 = [allObjects countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v10);
   }
 }
 
-- (void)collection:(id)a3 deviceDidBecomeDisplayable:(id)a4
+- (void)collection:(id)collection deviceDidBecomeDisplayable:(id)displayable
 {
-  v6 = a3;
-  v7 = a4;
+  collectionCopy = collection;
+  displayableCopy = displayable;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v8 = [(NSPointerArray *)self->_discoverers allObjects];
-  v9 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  allObjects = [(NSPointerArray *)self->_discoverers allObjects];
+  v9 = [allObjects countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v9)
   {
     v10 = v9;
@@ -592,31 +592,31 @@ LABEL_19:
       {
         if (*v14 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(allObjects);
         }
 
-        [*(*(&v13 + 1) + 8 * v12) collection:v6 deviceDidBecomeDisplayable:v7];
+        [*(*(&v13 + 1) + 8 * v12) collection:collectionCopy deviceDidBecomeDisplayable:displayableCopy];
         v12 = v12 + 1;
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v10 = [allObjects countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v10);
   }
 }
 
-- (void)collection:(id)a3 deviceDidBecomeProximate:(id)a4
+- (void)collection:(id)collection deviceDidBecomeProximate:(id)proximate
 {
-  v6 = a3;
-  v7 = a4;
+  collectionCopy = collection;
+  proximateCopy = proximate;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v8 = [(NSPointerArray *)self->_discoverers allObjects];
-  v9 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  allObjects = [(NSPointerArray *)self->_discoverers allObjects];
+  v9 = [allObjects countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v9)
   {
     v10 = v9;
@@ -628,31 +628,31 @@ LABEL_19:
       {
         if (*v14 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(allObjects);
         }
 
-        [*(*(&v13 + 1) + 8 * v12) collection:v6 deviceDidBecomeProximate:v7];
+        [*(*(&v13 + 1) + 8 * v12) collection:collectionCopy deviceDidBecomeProximate:proximateCopy];
         v12 = v12 + 1;
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v10 = [allObjects countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v10);
   }
 }
 
-- (void)collection:(id)a3 deviceDidUpdate:(id)a4
+- (void)collection:(id)collection deviceDidUpdate:(id)update
 {
-  v6 = a3;
-  v7 = a4;
+  collectionCopy = collection;
+  updateCopy = update;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v8 = [(NSPointerArray *)self->_discoverers allObjects];
-  v9 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  allObjects = [(NSPointerArray *)self->_discoverers allObjects];
+  v9 = [allObjects countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v9)
   {
     v10 = v9;
@@ -664,31 +664,31 @@ LABEL_19:
       {
         if (*v14 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(allObjects);
         }
 
-        [*(*(&v13 + 1) + 8 * v12) collection:v6 deviceDidUpdate:v7];
+        [*(*(&v13 + 1) + 8 * v12) collection:collectionCopy deviceDidUpdate:updateCopy];
         v12 = v12 + 1;
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v10 = [allObjects countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v10);
   }
 }
 
-- (void)collection:(id)a3 deviceDidDisappear:(id)a4
+- (void)collection:(id)collection deviceDidDisappear:(id)disappear
 {
-  v6 = a3;
-  v7 = a4;
+  collectionCopy = collection;
+  disappearCopy = disappear;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v8 = [(NSPointerArray *)self->_discoverers allObjects];
-  v9 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  allObjects = [(NSPointerArray *)self->_discoverers allObjects];
+  v9 = [allObjects countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v9)
   {
     v10 = v9;
@@ -700,15 +700,15 @@ LABEL_19:
       {
         if (*v14 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(allObjects);
         }
 
-        [*(*(&v13 + 1) + 8 * v12) collection:v6 deviceDidDisappear:v7];
+        [*(*(&v13 + 1) + 8 * v12) collection:collectionCopy deviceDidDisappear:disappearCopy];
         v12 = v12 + 1;
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v10 = [allObjects countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v10);
@@ -717,16 +717,16 @@ LABEL_19:
   [(EPDiscovererManager *)self update];
 }
 
-- (void)collection:(id)a3 deviceDidBecomeUndisplayable:(id)a4
+- (void)collection:(id)collection deviceDidBecomeUndisplayable:(id)undisplayable
 {
-  v6 = a3;
-  v7 = a4;
+  collectionCopy = collection;
+  undisplayableCopy = undisplayable;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v8 = [(NSPointerArray *)self->_discoverers allObjects];
-  v9 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  allObjects = [(NSPointerArray *)self->_discoverers allObjects];
+  v9 = [allObjects countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v9)
   {
     v10 = v9;
@@ -738,31 +738,31 @@ LABEL_19:
       {
         if (*v14 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(allObjects);
         }
 
-        [*(*(&v13 + 1) + 8 * v12) collection:v6 deviceDidBecomeUndisplayable:v7];
+        [*(*(&v13 + 1) + 8 * v12) collection:collectionCopy deviceDidBecomeUndisplayable:undisplayableCopy];
         v12 = v12 + 1;
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v10 = [allObjects countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v10);
   }
 }
 
-- (void)collection:(id)a3 deviceDidBecomeUnproximate:(id)a4
+- (void)collection:(id)collection deviceDidBecomeUnproximate:(id)unproximate
 {
-  v6 = a3;
-  v7 = a4;
+  collectionCopy = collection;
+  unproximateCopy = unproximate;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v8 = [(NSPointerArray *)self->_discoverers allObjects];
-  v9 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  allObjects = [(NSPointerArray *)self->_discoverers allObjects];
+  v9 = [allObjects countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v9)
   {
     v10 = v9;
@@ -774,31 +774,31 @@ LABEL_19:
       {
         if (*v14 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(allObjects);
         }
 
-        [*(*(&v13 + 1) + 8 * v12) collection:v6 deviceDidBecomeUnproximate:v7];
+        [*(*(&v13 + 1) + 8 * v12) collection:collectionCopy deviceDidBecomeUnproximate:unproximateCopy];
         v12 = v12 + 1;
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v10 = [allObjects countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v10);
   }
 }
 
-- (void)collection:(id)a3 deviceInfoDidDealloc:(id)a4
+- (void)collection:(id)collection deviceInfoDidDealloc:(id)dealloc
 {
-  v6 = a3;
-  v7 = a4;
+  collectionCopy = collection;
+  deallocCopy = dealloc;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v8 = [(NSPointerArray *)self->_discoverers allObjects];
-  v9 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  allObjects = [(NSPointerArray *)self->_discoverers allObjects];
+  v9 = [allObjects countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v9)
   {
     v10 = v9;
@@ -810,22 +810,22 @@ LABEL_19:
       {
         if (*v14 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(allObjects);
         }
 
-        [*(*(&v13 + 1) + 8 * v12) collection:v6 deviceInfoDidDealloc:v7];
+        [*(*(&v13 + 1) + 8 * v12) collection:collectionCopy deviceInfoDidDealloc:deallocCopy];
         v12 = v12 + 1;
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v10 = [allObjects countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v10);
   }
 }
 
-- (void)collectionPairingFailure:(id)a3
+- (void)collectionPairingFailure:(id)failure
 {
   pairingFailures = self->_pairingFailures;
   self->_pairingFailures = pairingFailures + 1;

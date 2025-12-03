@@ -1,24 +1,24 @@
 @interface MTATimerPresetItem
-+ (id)itemWithNumber:(int)a3 unit:(id)a4 duration:(double)a5 identifier:(id)a6;
++ (id)itemWithNumber:(int)number unit:(id)unit duration:(double)duration identifier:(id)identifier;
 + (id)mockItems;
 @end
 
 @implementation MTATimerPresetItem
 
-+ (id)itemWithNumber:(int)a3 unit:(id)a4 duration:(double)a5 identifier:(id)a6
++ (id)itemWithNumber:(int)number unit:(id)unit duration:(double)duration identifier:(id)identifier
 {
-  v8 = *&a3;
-  v9 = a6;
-  v10 = a4;
+  v8 = *&number;
+  identifierCopy = identifier;
+  unitCopy = unit;
   v11 = objc_opt_new();
   v12 = +[NSNumberFormatter mtDecimalStyleNumberFormatter];
   v13 = [NSNumber numberWithInt:v8];
   v14 = [v12 stringFromNumber:v13];
   [v11 setNumber:v14];
 
-  [v11 setUnit:v10];
-  [v11 setDuration:a5];
-  [v11 setAccessibilityIdentifier:v9];
+  [v11 setUnit:unitCopy];
+  [v11 setDuration:duration];
+  [v11 setAccessibilityIdentifier:identifierCopy];
 
   return v11;
 }

@@ -6,10 +6,10 @@
 
 - (id)axm_featureWithHighestConfidence
 {
-  v1 = [a1 axm_featuresSortedByConfidence];
-  v2 = [v1 lastObject];
+  axm_featuresSortedByConfidence = [self axm_featuresSortedByConfidence];
+  lastObject = [axm_featuresSortedByConfidence lastObject];
 
-  return v2;
+  return lastObject;
 }
 
 @end

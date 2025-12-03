@@ -1,24 +1,24 @@
 @interface VUIVisualEffectLabel
-+ (id)labelWithType:(unint64_t)a3 label:(id)a4 traitCollection:(id)a5 existingVisualEffectLabel:(id)a6;
-+ (int64_t)_backdropStyleForVisualEffectType:(unint64_t)a3 traitCollection:(id)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (VUIVisualEffectLabel)initWithFrame:(CGRect)a3;
++ (id)labelWithType:(unint64_t)type label:(id)label traitCollection:(id)collection existingVisualEffectLabel:(id)effectLabel;
++ (int64_t)_backdropStyleForVisualEffectType:(unint64_t)type traitCollection:(id)collection;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (VUIVisualEffectLabel)initWithFrame:(CGRect)frame;
 - (void)_configureVisualEffectForTraitCollection;
-- (void)_updateContentWithNewLabel:(id)a3 oldLabel:(id)a4;
+- (void)_updateContentWithNewLabel:(id)label oldLabel:(id)oldLabel;
 - (void)layoutSubviews;
-- (void)setDisableClippingOnTallScripts:(BOOL)a3;
-- (void)setLabel:(id)a3;
-- (void)setVisualEffectView:(id)a3;
+- (void)setDisableClippingOnTallScripts:(BOOL)scripts;
+- (void)setLabel:(id)label;
+- (void)setVisualEffectView:(id)view;
 @end
 
 @implementation VUIVisualEffectLabel
 
-- (VUIVisualEffectLabel)initWithFrame:(CGRect)a3
+- (VUIVisualEffectLabel)initWithFrame:(CGRect)frame
 {
   v11[1] = *MEMORY[0x1E69E9840];
   v10.receiver = self;
   v10.super_class = VUIVisualEffectLabel;
-  v3 = [(VUIVisualEffectLabel *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(VUIVisualEffectLabel *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     objc_initWeak(&location, v3);
@@ -45,14 +45,14 @@ void __38__VUIVisualEffectLabel_initWithFrame___block_invoke(uint64_t a1)
   [WeakRetained setNeedsLayout];
 }
 
-+ (id)labelWithType:(unint64_t)a3 label:(id)a4 traitCollection:(id)a5 existingVisualEffectLabel:(id)a6
++ (id)labelWithType:(unint64_t)type label:(id)label traitCollection:(id)collection existingVisualEffectLabel:(id)effectLabel
 {
-  v8 = a6;
-  v9 = a4;
+  effectLabelCopy = effectLabel;
+  labelCopy = label;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = v8;
+    v10 = effectLabelCopy;
   }
 
   else
@@ -61,11 +61,11 @@ void __38__VUIVisualEffectLabel_initWithFrame___block_invoke(uint64_t a1)
   }
 
   v11 = v10;
-  v12 = [(VUIVisualEffectLabel *)v10 visualEffectView];
-  v13 = v12;
-  if (v12)
+  visualEffectView = [(VUIVisualEffectLabel *)v10 visualEffectView];
+  v13 = visualEffectView;
+  if (visualEffectView)
   {
-    v14 = v12;
+    v14 = visualEffectView;
   }
 
   else
@@ -75,52 +75,52 @@ void __38__VUIVisualEffectLabel_initWithFrame___block_invoke(uint64_t a1)
 
   v15 = v14;
 
-  [(VUIVisualEffectLabel *)v11 setVisualEffectLabelType:a3];
+  [(VUIVisualEffectLabel *)v11 setVisualEffectLabelType:type];
   [(VUIVisualEffectLabel *)v11 setVisualEffectView:v15];
-  [(VUIVisualEffectLabel *)v11 setLabel:v9];
+  [(VUIVisualEffectLabel *)v11 setLabel:labelCopy];
 
   return v11;
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
-  v4 = a3;
+  labelCopy = label;
   label = self->_label;
-  if (label != v4)
+  if (label != labelCopy)
   {
-    v9 = v4;
-    v6 = v4;
+    v9 = labelCopy;
+    v6 = labelCopy;
     v7 = self->_label;
     self->_label = v6;
-    v8 = label;
+    labelCopy2 = label;
 
-    [(VUIVisualEffectLabel *)self _updateContentWithNewLabel:self->_label oldLabel:v8];
-    v4 = v9;
+    [(VUIVisualEffectLabel *)self _updateContentWithNewLabel:self->_label oldLabel:labelCopy2];
+    labelCopy = v9;
   }
 }
 
-- (void)setVisualEffectView:(id)a3
+- (void)setVisualEffectView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   visualEffectView = self->_visualEffectView;
-  if (visualEffectView != v5)
+  if (visualEffectView != viewCopy)
   {
-    v7 = v5;
+    v7 = viewCopy;
     [(UIVisualEffectView *)visualEffectView removeFromSuperview];
-    objc_storeStrong(&self->_visualEffectView, a3);
+    objc_storeStrong(&self->_visualEffectView, view);
     if (v7)
     {
       [(VUIVisualEffectLabel *)self addSubview:v7];
     }
 
     [(VUIVisualEffectLabel *)self setNeedsLayout];
-    v5 = v7;
+    viewCopy = v7;
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(VUILabel *)self->_label sizeThatFits:a3.width, a3.height];
+  [(VUILabel *)self->_label sizeThatFits:fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
@@ -140,37 +140,37 @@ void __38__VUIVisualEffectLabel_initWithFrame___block_invoke(uint64_t a1)
   [(VUILabel *)label setFrame:?];
 }
 
-- (void)setDisableClippingOnTallScripts:(BOOL)a3
+- (void)setDisableClippingOnTallScripts:(BOOL)scripts
 {
-  if (a3 && CTFontHasExuberatedLineHeight())
+  if (scripts && CTFontHasExuberatedLineHeight())
   {
-    v5 = [(UIVisualEffectView *)self->_visualEffectView contentView];
-    [v5 setClipsToBounds:0];
+    contentView = [(UIVisualEffectView *)self->_visualEffectView contentView];
+    [contentView setClipsToBounds:0];
   }
 
-  self->_disableClippingOnTallScripts = a3;
+  self->_disableClippingOnTallScripts = scripts;
 }
 
-- (void)_updateContentWithNewLabel:(id)a3 oldLabel:(id)a4
+- (void)_updateContentWithNewLabel:(id)label oldLabel:(id)oldLabel
 {
-  v7 = a3;
-  [a4 removeFromSuperview];
-  if (v7)
+  labelCopy = label;
+  [oldLabel removeFromSuperview];
+  if (labelCopy)
   {
-    v6 = [(UIVisualEffectView *)self->_visualEffectView contentView];
-    [v6 addSubview:v7];
+    contentView = [(UIVisualEffectView *)self->_visualEffectView contentView];
+    [contentView addSubview:labelCopy];
   }
 
   [(VUIVisualEffectLabel *)self setNeedsLayout];
 }
 
-+ (int64_t)_backdropStyleForVisualEffectType:(unint64_t)a3 traitCollection:(id)a4
++ (int64_t)_backdropStyleForVisualEffectType:(unint64_t)type traitCollection:(id)collection
 {
-  v5 = a4;
-  v6 = v5;
-  if (a3 == 2)
+  collectionCopy = collection;
+  v6 = collectionCopy;
+  if (type == 2)
   {
-    if ([v5 userInterfaceStyle] == 1)
+    if ([collectionCopy userInterfaceStyle] == 1)
     {
       v7 = 4015;
     }
@@ -181,9 +181,9 @@ void __38__VUIVisualEffectLabel_initWithFrame___block_invoke(uint64_t a1)
     }
   }
 
-  else if (a3 == 1)
+  else if (type == 1)
   {
-    if ([v5 userInterfaceStyle] == 1)
+    if ([collectionCopy userInterfaceStyle] == 1)
     {
       v7 = 4002;
     }
@@ -204,14 +204,14 @@ void __38__VUIVisualEffectLabel_initWithFrame___block_invoke(uint64_t a1)
 
 - (void)_configureVisualEffectForTraitCollection
 {
-  v3 = [(VUIVisualEffectLabel *)self visualEffectView];
+  visualEffectView = [(VUIVisualEffectLabel *)self visualEffectView];
 
-  if (v3)
+  if (visualEffectView)
   {
     v4 = objc_opt_class();
-    v5 = [(VUIVisualEffectLabel *)self visualEffectLabelType];
-    v6 = [(VUIVisualEffectLabel *)self traitCollection];
-    v7 = [v4 _backdropStyleForVisualEffectType:v5 traitCollection:v6];
+    visualEffectLabelType = [(VUIVisualEffectLabel *)self visualEffectLabelType];
+    traitCollection = [(VUIVisualEffectLabel *)self traitCollection];
+    v7 = [v4 _backdropStyleForVisualEffectType:visualEffectLabelType traitCollection:traitCollection];
 
     if (v7 != [(VUIVisualEffectLabel *)self blurEffectStyle])
     {
@@ -228,8 +228,8 @@ void __38__VUIVisualEffectLabel_initWithFrame___block_invoke(uint64_t a1)
       }
 
       v9 = v8;
-      v10 = [(VUIVisualEffectLabel *)self visualEffectView];
-      [v10 setEffect:v9];
+      visualEffectView2 = [(VUIVisualEffectLabel *)self visualEffectView];
+      [visualEffectView2 setEffect:v9];
     }
   }
 }

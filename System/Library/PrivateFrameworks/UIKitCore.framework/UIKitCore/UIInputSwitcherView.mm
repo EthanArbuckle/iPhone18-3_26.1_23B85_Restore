@@ -3,58 +3,58 @@
 + (UIInputSwitcherView)sharedInstance;
 - (BOOL)_isHandBiasSwitchVisible;
 - (BOOL)didHitDockItemWithinTypingWindow;
-- (BOOL)shouldSelectItemAtIndex:(unint64_t)a3;
+- (BOOL)shouldSelectItemAtIndex:(unint64_t)index;
 - (BOOL)shouldShow;
-- (BOOL)shouldShowSelectionExtraViewForIndexPath:(id)a3;
-- (BOOL)usesDeviceLanguageForItemAtIndex:(unint64_t)a3;
+- (BOOL)shouldShowSelectionExtraViewForIndexPath:(id)path;
+- (BOOL)usesDeviceLanguageForItemAtIndex:(unint64_t)index;
 - (CGSize)preferredSize;
-- (UIInputSwitcherView)initWithFrame:(CGRect)a3;
-- (id)_itemWithIdentifier:(id)a3;
-- (id)buttonPressed:(id)a3 withEvent:(id)a4 location:(CGPoint)a5 isLocationInsideViewHitArea:(BOOL)a6 isForDictation:(BOOL)a7 tapAction:(id)a8;
+- (UIInputSwitcherView)initWithFrame:(CGRect)frame;
+- (id)_itemWithIdentifier:(id)identifier;
+- (id)buttonPressed:(id)pressed withEvent:(id)event location:(CGPoint)location isLocationInsideViewHitArea:(BOOL)area isForDictation:(BOOL)dictation tapAction:(id)action;
 - (id)defaultInputMode;
-- (id)fontForItemAtIndex:(unint64_t)a3;
-- (id)localizedTitleForItemAtIndex:(unint64_t)a3;
+- (id)fontForItemAtIndex:(unint64_t)index;
+- (id)localizedTitleForItemAtIndex:(unint64_t)index;
 - (id)nextInputMode;
 - (id)previousInputMode;
 - (id)selectedInputMode;
-- (id)subtitleFontForItemAtIndex:(unint64_t)a3;
-- (id)subtitleForItemAtIndex:(unint64_t)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)titleForItemAtIndex:(unint64_t)a3;
-- (int64_t)_indexOfFastSwitchToggleModeForIdentifier:(id)a3;
-- (int64_t)_indexOfInputSwitcherItemWithIdentifier:(id)a3;
+- (id)subtitleFontForItemAtIndex:(unint64_t)index;
+- (id)subtitleForItemAtIndex:(unint64_t)index;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)titleForItemAtIndex:(unint64_t)index;
+- (int64_t)_indexOfFastSwitchToggleModeForIdentifier:(id)identifier;
+- (int64_t)_indexOfInputSwitcherItemWithIdentifier:(id)identifier;
 - (unint64_t)defaultSelectedIndex;
 - (unint64_t)numberOfItems;
 - (void)_reloadInputSwitcherItems;
-- (void)_segmentControlValueDidChange:(id)a3;
-- (void)customizeCell:(id)a3 forItemAtIndex:(unint64_t)a4;
+- (void)_segmentControlValueDidChange:(id)change;
+- (void)customizeCell:(id)cell forItemAtIndex:(unint64_t)index;
 - (void)didFinishSplitTransition;
-- (void)didSelectItemAtIndex:(unint64_t)a3;
+- (void)didSelectItemAtIndex:(unint64_t)index;
 - (void)didShow;
-- (void)fadeWithDelay:(double)a3;
+- (void)fadeWithDelay:(double)delay;
 - (void)reloadInputModes;
 - (void)removeFromSuperview;
-- (void)reportHandBiasToAnalytics:(int64_t)a3;
+- (void)reportHandBiasToAnalytics:(int64_t)analytics;
 - (void)returnToKeyboardIfNeeded;
-- (void)selectInputMode:(id)a3;
+- (void)selectInputMode:(id)mode;
 - (void)selectNextInputMode;
 - (void)selectPreviousInputMode;
-- (void)selectRowForInputMode:(id)a3;
-- (void)setInputMode:(id)a3;
-- (void)setIsForDictation:(BOOL)a3;
-- (void)showAsPopupForKey:(id)a3 inLayout:(id)a4;
+- (void)selectRowForInputMode:(id)mode;
+- (void)setInputMode:(id)mode;
+- (void)setIsForDictation:(BOOL)dictation;
+- (void)showAsPopupForKey:(id)key inLayout:(id)layout;
 - (void)toggleKeyboardFloatingPreference;
-- (void)updateSelectionWithPoint:(CGPoint)a3;
-- (void)willFadeForSelectionAtIndex:(unint64_t)a3;
+- (void)updateSelectionWithPoint:(CGPoint)point;
+- (void)willFadeForSelectionAtIndex:(unint64_t)index;
 @end
 
 @implementation UIInputSwitcherView
 
-- (UIInputSwitcherView)initWithFrame:(CGRect)a3
+- (UIInputSwitcherView)initWithFrame:(CGRect)frame
 {
   v11.receiver = self;
   v11.super_class = UIInputSwitcherView;
-  v3 = [(UIKeyboardMenuView *)&v11 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIKeyboardMenuView *)&v11 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -89,10 +89,10 @@
   return v2;
 }
 
-- (void)setIsForDictation:(BOOL)a3
+- (void)setIsForDictation:(BOOL)dictation
 {
-  self->_isForDictation = a3;
-  if (a3)
+  self->_isForDictation = dictation;
+  if (dictation)
   {
 
     [(UIKeyboardMenuView *)self setGlomojiAnalyticsInstance:0];
@@ -100,9 +100,9 @@
 
   else
   {
-    v4 = [(UIKeyboardMenuView *)self glomojiAnalyticsInstance];
+    glomojiAnalyticsInstance = [(UIKeyboardMenuView *)self glomojiAnalyticsInstance];
 
-    if (!v4)
+    if (!glomojiAnalyticsInstance)
     {
       v5 = objc_alloc_init(UIGlomojiAnalyticsDispatcher);
       [(UIKeyboardMenuView *)self setGlomojiAnalyticsInstance:v5];
@@ -112,12 +112,12 @@
 
 - (void)didFinishSplitTransition
 {
-  v3 = [(UIInputSwitcherView *)self finishSplitTransitionBlock];
+  finishSplitTransitionBlock = [(UIInputSwitcherView *)self finishSplitTransitionBlock];
 
-  if (v3)
+  if (finishSplitTransitionBlock)
   {
-    v4 = [(UIInputSwitcherView *)self finishSplitTransitionBlock];
-    v4[2]();
+    finishSplitTransitionBlock2 = [(UIInputSwitcherView *)self finishSplitTransitionBlock];
+    finishSplitTransitionBlock2[2]();
 
     [(UIInputSwitcherView *)self setFinishSplitTransitionBlock:0];
   }
@@ -125,7 +125,7 @@
 
 - (void)reloadInputModes
 {
-  v2 = self;
+  selfCopy = self;
   v33 = *MEMORY[0x1E69E9840];
   [(NSMutableArray *)self->m_inputModes removeAllObjects];
   v3 = off_1E70EA000;
@@ -133,32 +133,32 @@
   [v4 _clearAllExtensionsIfNeeded];
 
   v5 = +[UIKeyboardImpl activeInstance];
-  v6 = [v5 isMinimized];
+  isMinimized = [v5 isMinimized];
 
-  if ([(UIInputSwitcherView *)v2 isForDictation])
+  if ([(UIInputSwitcherView *)selfCopy isForDictation])
   {
-    m_inputModes = v2->m_inputModes;
+    m_inputModes = selfCopy->m_inputModes;
     v8 = +[UIKeyboardInputModeController sharedInputModeController];
-    v9 = [v8 enabledDictationLanguages];
-    [(NSMutableArray *)m_inputModes addObjectsFromArray:v9];
+    enabledDictationLanguages = [v8 enabledDictationLanguages];
+    [(NSMutableArray *)m_inputModes addObjectsFromArray:enabledDictationLanguages];
 
 LABEL_19:
     goto LABEL_20;
   }
 
-  if (!v6)
+  if (!isMinimized)
   {
-    v25 = v2->m_inputModes;
+    v25 = selfCopy->m_inputModes;
     v8 = UIKeyboardActiveInputModes;
     [(NSMutableArray *)v25 addObjectsFromArray:v8];
     goto LABEL_19;
   }
 
-  v26 = v2;
+  v26 = selfCopy;
   v10 = UIKeyboardGetActiveUniqueInputModesForHardwareKeyboard();
   v11 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-  v12 = [v11 inputViews];
-  v13 = [v12 isCustomInputView];
+  inputViews = [v11 inputViews];
+  isCustomInputView = [inputViews isCustomInputView];
 
   v30 = 0u;
   v31 = 0u;
@@ -181,10 +181,10 @@ LABEL_19:
 
         v18 = *(*(&v28 + 1) + 8 * i);
         v19 = v3;
-        v20 = [(__objc2_class *)v3[13] sharedInputModeController];
-        v21 = [v20 inputModeWithIdentifier:v18];
+        sharedInputModeController = [(__objc2_class *)v3[13] sharedInputModeController];
+        v21 = [sharedInputModeController inputModeWithIdentifier:v18];
 
-        if (!v13 || ([v21 hardwareLayout], v22 = objc_claimAutoreleasedReturnValue(), v22, v22))
+        if (!isCustomInputView || ([v21 hardwareLayout], v22 = objc_claimAutoreleasedReturnValue(), v22, v22))
         {
           if (([v18 hasPrefix:@"emoji"] & 1) == 0 && !objc_msgSend(v18, "containsString:", @"HWR") || (+[UIKeyboardImpl activeInstance](UIKeyboardImpl, "activeInstance"), v23 = objc_claimAutoreleasedReturnValue(), v24 = objc_msgSend(v23, "isEmojiPopoverPresented"), v23, (v24 & 1) == 0))
           {
@@ -201,9 +201,9 @@ LABEL_19:
     while (v15);
   }
 
-  v2 = v26;
+  selfCopy = v26;
 LABEL_20:
-  [(NSMutableArray *)v2->m_inputModes removeObject:@"autofillsignup"];
+  [(NSMutableArray *)selfCopy->m_inputModes removeObject:@"autofillsignup"];
 }
 
 + (BOOL)canShowKeyboardSettings
@@ -220,9 +220,9 @@ LABEL_20:
   }
 
   v4 = +[UIKeyboardInputModeController sharedInputModeController];
-  v5 = [v4 deviceStateIsLocked];
+  deviceStateIsLocked = [v4 deviceStateIsLocked];
 
-  return v3 & (v5 ^ 1);
+  return v3 & (deviceStateIsLocked ^ 1);
 }
 
 - (void)_reloadInputSwitcherItems
@@ -235,17 +235,17 @@ LABEL_20:
 
   else
   {
-    v4 = [(UIKeyboardMenuView *)self inputView];
-    v3 = v4 == 0;
+    inputView = [(UIKeyboardMenuView *)self inputView];
+    v3 = inputView == 0;
   }
 
-  v66 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v5 = +[UIKeyboardInputModeController sharedInputModeController];
-  v6 = [v5 deviceStateIsLocked];
+  deviceStateIsLocked = [v5 deviceStateIsLocked];
 
   v7 = +[UIKeyboardInputModeController sharedInputModeController];
-  v8 = [v7 currentInputMode];
-  v9 = [v8 isExtensionInputMode];
+  currentInputMode = [v7 currentInputMode];
+  isExtensionInputMode = [currentInputMode isExtensionInputMode];
 
   if ([objc_opt_class() canShowKeyboardSettings] && !v3 && -[UIInputSwitcherView _canAddLaunchItem](self, "_canAddLaunchItem"))
   {
@@ -265,21 +265,21 @@ LABEL_20:
     [v10 setLocalizedTitle:v12];
 
     [v10 setUsesDeviceLanguage:1];
-    [(NSArray *)v66 addObject:v10];
+    [(NSArray *)array addObject:v10];
   }
 
   [(UIInputSwitcherView *)self reloadInputModes];
   v60 = v3;
-  v61 = v9;
-  v59 = v6;
+  v61 = isExtensionInputMode;
+  v59 = deviceStateIsLocked;
   if (_os_feature_enabled_impl())
   {
-    v62 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
   }
 
   else
   {
-    v62 = 0;
+    array2 = 0;
   }
 
   v64 = UICurrentKeyboardSupportsMultilingual();
@@ -308,13 +308,13 @@ LABEL_20:
         {
           v15 = 0;
 LABEL_25:
-          v16 = v14;
+          firstObject = v14;
 LABEL_26:
-          v17 = [UIInputSwitcherItem switcherItemWithIdentifier:v16];
-          v18 = [(UIInputSwitcherView *)self isForDictation];
+          v17 = [UIInputSwitcherItem switcherItemWithIdentifier:firstObject];
+          isForDictation = [(UIInputSwitcherView *)self isForDictation];
           v19 = +[UIKeyboardInputModeController sharedInputModeController];
           v20 = v19;
-          if (v18)
+          if (isForDictation)
           {
             v21 = [v19 keyboardLanguageForDictationLanguage:v14];
             v22 = v21;
@@ -338,7 +338,7 @@ LABEL_26:
 
           else
           {
-            v26 = [v19 inputModeWithIdentifier:v16];
+            v26 = [v19 inputModeWithIdentifier:firstObject];
 
             if (_os_feature_enabled_impl() && [v15 count] >= 2)
             {
@@ -351,42 +351,42 @@ LABEL_26:
               {
                 [v26 monolingualDisplayName];
               }
-              v28 = ;
+              extendedDisplayName = ;
             }
 
             else
             {
-              v28 = [v26 extendedDisplayName];
+              extendedDisplayName = [v26 extendedDisplayName];
             }
 
-            v27 = v28;
+            v27 = extendedDisplayName;
           }
 
           [v17 setLocalizedTitle:v27];
 
           if (UIKeyboardRequiresFontFallbacksForInputMode())
           {
-            v29 = [(UIKeyboardMenuView *)self font];
-            v30 = [(UIKeyboardMenuView *)self font];
-            [v30 pointSize];
-            [v17 setTitleFont:{UIKBCTFontForInputMode(v16, v29, v31)}];
+            font = [(UIKeyboardMenuView *)self font];
+            font2 = [(UIKeyboardMenuView *)self font];
+            [font2 pointSize];
+            [v17 setTitleFont:{UIKBCTFontForInputMode(firstObject, font, v31)}];
 
-            v32 = [(UIKeyboardMenuView *)self subtitleFont];
-            v33 = [(UIKeyboardMenuView *)self subtitleFont];
-            [v33 pointSize];
-            [v17 setSubtitleFont:{UIKBCTFontForInputMode(v16, v32, v34)}];
+            subtitleFont = [(UIKeyboardMenuView *)self subtitleFont];
+            subtitleFont2 = [(UIKeyboardMenuView *)self subtitleFont];
+            [subtitleFont2 pointSize];
+            [v17 setSubtitleFont:{UIKBCTFontForInputMode(firstObject, subtitleFont, v34)}];
           }
 
           if ([v26 isExtensionInputMode])
           {
-            v35 = [v26 primaryLanguage];
-            v36 = [v35 length];
+            primaryLanguage = [v26 primaryLanguage];
+            v36 = [primaryLanguage length];
 
             if (v36)
             {
-              v37 = [MEMORY[0x1E695DF58] preferredLocale];
-              v38 = [v26 primaryLanguage];
-              v39 = [v37 displayNameForKey:v63 value:v38];
+              preferredLocale = [MEMORY[0x1E695DF58] preferredLocale];
+              primaryLanguage2 = [v26 primaryLanguage];
+              v39 = [preferredLocale displayNameForKey:v63 value:primaryLanguage2];
               [v17 setLocalizedSubtitle:v39];
 
               goto LABEL_45;
@@ -395,19 +395,19 @@ LABEL_26:
 
           else
           {
-            v40 = [(UIInputSwitcherView *)self inputModes];
-            v41 = UIKeyboardInputModesMatchingMode(v16, v40);
+            inputModes = [(UIInputSwitcherView *)self inputModes];
+            v41 = UIKeyboardInputModesMatchingMode(firstObject, inputModes);
             v42 = [v41 count];
 
             if (v42 >= 2)
             {
-              v37 = UIKeyboardLocalizedSWLayoutName(v16);
-              [v17 setLocalizedSubtitle:v37];
+              preferredLocale = UIKeyboardLocalizedSWLayoutName(firstObject);
+              [v17 setLocalizedSubtitle:preferredLocale];
 LABEL_45:
             }
           }
 
-          [(NSArray *)v66 addObject:v17];
+          [(NSArray *)array addObject:v17];
 
           goto LABEL_47;
         }
@@ -423,19 +423,19 @@ LABEL_45:
           goto LABEL_25;
         }
 
-        v16 = [v15 firstObject];
+        firstObject = [v15 firstObject];
 
         v17 = TIInputModeGetMultilingualID();
-        if (([v62 containsObject:v17] & 1) == 0)
+        if (([array2 containsObject:v17] & 1) == 0)
         {
-          [v62 addObject:v17];
+          [array2 addObject:v17];
 
           goto LABEL_26;
         }
 
 LABEL_47:
 
-        v14 = v16;
+        v14 = firstObject;
 LABEL_48:
 
         ++v13;
@@ -456,7 +456,7 @@ LABEL_48:
     [v53 setLocalizedTitle:v54];
 
     [v53 setUsesDeviceLanguage:1];
-    [(NSArray *)v66 addObject:v53];
+    [(NSArray *)array addObject:v53];
   }
 
   if ((([(UIInputSwitcherView *)self isForDictation]| v59 | v60) & 1) == 0)
@@ -464,16 +464,16 @@ LABEL_48:
     if (os_variant_has_internal_diagnostics())
     {
       v55 = TIGetTypoTrackerButtonValue();
-      v56 = [v55 BOOLValue];
+      bOOLValue = [v55 BOOLValue];
 
-      if (v56)
+      if (bOOLValue)
       {
         v57 = [UIInputSwitcherItem switcherItemWithIdentifier:@"reporttotypotracker"];
         v58 = _UILocalizedStringInSystemLanguage(@"Keyboard Feedback…", @"Keyboard Feedback…");
         [v57 setLocalizedTitle:v58];
 
         [v57 setUsesDeviceLanguage:1];
-        [(NSArray *)v66 addObject:v57];
+        [(NSArray *)array addObject:v57];
       }
     }
   }
@@ -483,9 +483,9 @@ LABEL_48:
     if ([(UIInputSwitcherView *)self _isHandBiasSwitchVisible])
     {
       v44 = +[UIKeyboardImpl activeInstance];
-      v45 = [v44 isTrackpadMode];
+      isTrackpadMode = [v44 isTrackpadMode];
 
-      if ((v45 & 1) == 0)
+      if ((isTrackpadMode & 1) == 0)
       {
         v46 = [UIInputSwitcherItem switcherItemWithIdentifier:@"handbiasswitch"];
         [v46 setLocalizedTitle:&stru_1EFB14550];
@@ -500,13 +500,13 @@ LABEL_48:
         [v46 setSegmentImages:v51];
 
         [v46 setPersistentSelectedIndex:&__block_literal_global_342];
-        [(NSArray *)v66 addObject:v46];
+        [(NSArray *)array addObject:v46];
       }
     }
   }
 
   m_inputSwitcherItems = self->m_inputSwitcherItems;
-  self->m_inputSwitcherItems = v66;
+  self->m_inputSwitcherItems = array;
 }
 
 uint64_t __48__UIInputSwitcherView__reloadInputSwitcherItems__block_invoke()
@@ -535,20 +535,20 @@ uint64_t __48__UIInputSwitcherView__reloadInputSwitcherItems__block_invoke()
 - (id)selectedInputMode
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [(UIInputSwitcherView *)self defaultSelectedIndex];
-  v4 = [(UITableView *)self->super.m_table indexPathForSelectedRow];
-  v5 = v4;
-  if (v4)
+  defaultSelectedIndex = [(UIInputSwitcherView *)self defaultSelectedIndex];
+  indexPathForSelectedRow = [(UITableView *)self->super.m_table indexPathForSelectedRow];
+  v5 = indexPathForSelectedRow;
+  if (indexPathForSelectedRow)
   {
-    v3 = [v4 row];
+    defaultSelectedIndex = [indexPathForSelectedRow row];
   }
 
   if ([(UIKeyboardMenuView *)self showingCapsLockSwitcher])
   {
-    v3 = [(UIKeyboardMenuView *)self indexForSelectedFastSwitchMode];
+    defaultSelectedIndex = [(UIKeyboardMenuView *)self indexForSelectedFastSwitchMode];
   }
 
-  if (v3 >= [(NSArray *)self->m_inputSwitcherItems count])
+  if (defaultSelectedIndex >= [(NSArray *)self->m_inputSwitcherItems count])
   {
     if (os_variant_has_internal_diagnostics())
     {
@@ -557,7 +557,7 @@ uint64_t __48__UIInputSwitcherView__reloadInputSwitcherItems__block_invoke()
       {
         m_inputSwitcherItems = self->m_inputSwitcherItems;
         v13 = 134218242;
-        v14 = v3;
+        v14 = defaultSelectedIndex;
         v15 = 2112;
         v16 = m_inputSwitcherItems;
         _os_log_fault_impl(&dword_188A29000, v11, OS_LOG_TYPE_FAULT, "Attempted to select an out-of-bounds index path (%lu) in %@", &v13, 0x16u);
@@ -571,33 +571,33 @@ uint64_t __48__UIInputSwitcherView__reloadInputSwitcherItems__block_invoke()
       {
         v9 = self->m_inputSwitcherItems;
         v13 = 134218242;
-        v14 = v3;
+        v14 = defaultSelectedIndex;
         v15 = 2112;
         v16 = v9;
         _os_log_impl(&dword_188A29000, v8, OS_LOG_TYPE_ERROR, "Attempted to select an out-of-bounds index path (%lu) in %@", &v13, 0x16u);
       }
     }
 
-    v7 = [(UIInputSwitcherView *)self defaultInputMode];
+    defaultInputMode = [(UIInputSwitcherView *)self defaultInputMode];
   }
 
   else
   {
-    v6 = [(NSArray *)self->m_inputSwitcherItems objectAtIndex:v3];
-    v7 = [v6 identifier];
+    v6 = [(NSArray *)self->m_inputSwitcherItems objectAtIndex:defaultSelectedIndex];
+    defaultInputMode = [v6 identifier];
   }
 
-  return v7;
+  return defaultInputMode;
 }
 
-- (BOOL)shouldShowSelectionExtraViewForIndexPath:(id)a3
+- (BOOL)shouldShowSelectionExtraViewForIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v8.receiver = self;
   v8.super_class = UIInputSwitcherView;
-  if ([(UIKeyboardMenuView *)&v8 shouldShowSelectionExtraViewForIndexPath:v4])
+  if ([(UIKeyboardMenuView *)&v8 shouldShowSelectionExtraViewForIndexPath:pathCopy])
   {
-    v5 = -[NSArray objectAtIndex:](self->m_inputSwitcherItems, "objectAtIndex:", [v4 row]);
+    v5 = -[NSArray objectAtIndex:](self->m_inputSwitcherItems, "objectAtIndex:", [pathCopy row]);
     v6 = [v5 isSegmentedItem] ^ 1;
   }
 
@@ -609,9 +609,9 @@ uint64_t __48__UIInputSwitcherView__reloadInputSwitcherItems__block_invoke()
   return v6;
 }
 
-- (int64_t)_indexOfInputSwitcherItemWithIdentifier:(id)a3
+- (int64_t)_indexOfInputSwitcherItemWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = UICurrentKeyboardSupportsMultilingual();
   v6 = 0;
   if (_os_feature_enabled_impl())
@@ -621,9 +621,9 @@ uint64_t __48__UIInputSwitcherView__reloadInputSwitcherItems__block_invoke()
       v6 = TIInputModeGetMultilingualSet();
       if ([v6 count] >= 2)
       {
-        v7 = [v6 firstObject];
+        firstObject = [v6 firstObject];
 
-        v4 = v7;
+        identifierCopy = firstObject;
       }
     }
   }
@@ -631,8 +631,8 @@ uint64_t __48__UIInputSwitcherView__reloadInputSwitcherItems__block_invoke()
   for (i = 0; i < [(NSArray *)self->m_inputSwitcherItems count]; ++i)
   {
     v9 = [(NSArray *)self->m_inputSwitcherItems objectAtIndex:i];
-    v10 = [v9 identifier];
-    v11 = [v10 isEqualToString:v4];
+    identifier = [v9 identifier];
+    v11 = [identifier isEqualToString:identifierCopy];
 
     if (v11)
     {
@@ -643,32 +643,32 @@ uint64_t __48__UIInputSwitcherView__reloadInputSwitcherItems__block_invoke()
   return i;
 }
 
-- (int64_t)_indexOfFastSwitchToggleModeForIdentifier:(id)a3
+- (int64_t)_indexOfFastSwitchToggleModeForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = +[UIKeyboardInputModeController sharedInputModeController];
-  v6 = [v5 currentLinguisticInputMode];
+  currentLinguisticInputMode = [v5 currentLinguisticInputMode];
 
-  v7 = [v6 identifier];
-  v8 = [v7 isEqualToString:v4];
+  identifier = [currentLinguisticInputMode identifier];
+  v8 = [identifier isEqualToString:identifierCopy];
 
   if (v8)
   {
     v9 = +[UIKeyboardInputModeController sharedInputModeController];
     v10 = [v9 inputModeForASCIIToggleWithTraits:0];
 
-    v6 = v10;
+    currentLinguisticInputMode = v10;
   }
 
-  v11 = [v6 identifier];
-  v12 = [(UIInputSwitcherView *)self _indexOfInputSwitcherItemWithIdentifier:v11];
+  identifier2 = [currentLinguisticInputMode identifier];
+  v12 = [(UIInputSwitcherView *)self _indexOfInputSwitcherItemWithIdentifier:identifier2];
 
   return v12;
 }
 
-- (void)selectRowForInputMode:(id)a3
+- (void)selectRowForInputMode:(id)mode
 {
-  v5 = a3;
+  modeCopy = mode;
   v4 = [(UIInputSwitcherView *)self _indexOfInputSwitcherItemWithIdentifier:?];
   if (![(UIKeyboardMenuView *)self mode])
   {
@@ -677,7 +677,7 @@ uint64_t __48__UIInputSwitcherView__reloadInputSwitcherItems__block_invoke()
 
   if ([(UIKeyboardMenuView *)self showingCapsLockSwitcher])
   {
-    [(UIKeyboardMenuView *)self setIndexForUnselectedFastSwitchMode:[(UIInputSwitcherView *)self _indexOfFastSwitchToggleModeForIdentifier:v5]];
+    [(UIKeyboardMenuView *)self setIndexForUnselectedFastSwitchMode:[(UIInputSwitcherView *)self _indexOfFastSwitchToggleModeForIdentifier:modeCopy]];
   }
 
   [(UIKeyboardMenuView *)self highlightRow:v4];
@@ -691,11 +691,11 @@ uint64_t __48__UIInputSwitcherView__reloadInputSwitcherItems__block_invoke()
   [(UIKeyboardMenuView *)&v3 removeFromSuperview];
 }
 
-- (void)fadeWithDelay:(double)a3
+- (void)fadeWithDelay:(double)delay
 {
   v4.receiver = self;
   v4.super_class = UIInputSwitcherView;
-  [(UIKeyboardMenuView *)&v4 fadeWithDelay:a3];
+  [(UIKeyboardMenuView *)&v4 fadeWithDelay:delay];
   [(UIInputSwitcherView *)self returnToKeyboardIfNeeded];
 }
 
@@ -711,9 +711,9 @@ uint64_t __48__UIInputSwitcherView__reloadInputSwitcherItems__block_invoke()
   }
 }
 
-- (void)setInputMode:(id)a3
+- (void)setInputMode:(id)mode
 {
-  v18 = a3;
+  modeCopy = mode;
   if ([(UIInputSwitcherView *)self isForDictation])
   {
     v4 = +[UIKeyboardImpl activeInstance];
@@ -730,30 +730,30 @@ uint64_t __48__UIInputSwitcherView__reloadInputSwitcherItems__block_invoke()
     v6 = [UIDictationInputModeOptions dictationInputModeOptionsWithInvocationSource:v5];
 
     v7 = +[UIDictationController sharedInstance];
-    [v7 switchToDictationLanguage:v18 inputOptions:v6];
+    [v7 switchToDictationLanguage:modeCopy inputOptions:v6];
 
-    v8 = +[UIDictationView sharedInstance];
-    [v8 setSwitchingLanguage:0];
+    inputModeSelectionSequence = +[UIDictationView sharedInstance];
+    [inputModeSelectionSequence setSwitchingLanguage:0];
   }
 
   else
   {
-    v9 = [(UIKeyboardMenuView *)self layout];
-    v10 = [(UIKeyboardMenuView *)self referenceKey];
-    [v9 setState:2 forKey:v10];
+    layout = [(UIKeyboardMenuView *)self layout];
+    referenceKey = [(UIKeyboardMenuView *)self referenceKey];
+    [layout setState:2 forKey:referenceKey];
 
     v6 = +[UIKeyboardImpl activeInstance];
-    [v6 setInputMode:v18 userInitiated:1];
+    [v6 setInputMode:modeCopy userInitiated:1];
     v11 = +[UIKeyboardPreferencesController sharedPreferencesController];
-    v12 = [v11 preferencesActions];
-    v8 = [v12 inputModeSelectionSequence];
+    preferencesActions = [v11 preferencesActions];
+    inputModeSelectionSequence = [preferencesActions inputModeSelectionSequence];
 
-    if ([v8 count] && (TIInputModeGetNormalizedIdentifier(), v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(@"emoji", "isEqualToString:", v13), v13, v14))
+    if ([inputModeSelectionSequence count] && (TIInputModeGetNormalizedIdentifier(), v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(@"emoji", "isEqualToString:", v13), v13, v14))
     {
       v15 = +[UIKeyboardInputModeController sharedInputModeController];
       v16 = +[UIKeyboardInputModeController sharedInputModeController];
-      v17 = [v16 currentInputMode];
-      [v15 updateLastUsedInputMode:v17];
+      currentInputMode = [v16 currentInputMode];
+      [v15 updateLastUsedInputMode:currentInputMode];
     }
 
     else
@@ -764,32 +764,32 @@ uint64_t __48__UIInputSwitcherView__reloadInputSwitcherItems__block_invoke()
   }
 }
 
-- (void)selectInputMode:(id)a3
+- (void)selectInputMode:(id)mode
 {
-  v4 = a3;
+  modeCopy = mode;
   if ([(UIKeyboardMenuView *)self isVisible])
   {
-    [(UIInputSwitcherView *)self selectRowForInputMode:v4];
+    [(UIInputSwitcherView *)self selectRowForInputMode:modeCopy];
   }
 }
 
-- (void)_segmentControlValueDidChange:(id)a3
+- (void)_segmentControlValueDidChange:(id)change
 {
-  v8 = a3;
-  v4 = [v8 superview];
-  v5 = [(UITableView *)self->super.m_table indexPathForCell:v4];
+  changeCopy = change;
+  superview = [changeCopy superview];
+  v5 = [(UITableView *)self->super.m_table indexPathForCell:superview];
   v6 = v5;
   if (v5)
   {
     v7 = -[NSArray objectAtIndex:](self->m_inputSwitcherItems, "objectAtIndex:", [v5 row]);
-    [v7 setSelectedSegmentIndex:{objc_msgSend(v8, "selectedSegmentIndex")}];
+    [v7 setSelectedSegmentIndex:{objc_msgSend(changeCopy, "selectedSegmentIndex")}];
   }
 }
 
-- (void)updateSelectionWithPoint:(CGPoint)a3
+- (void)updateSelectionWithPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v15.receiver = self;
   v15.super_class = UIInputSwitcherView;
   [(UIKeyboardMenuView *)&v15 updateSelectionWithPoint:?];
@@ -818,7 +818,7 @@ uint64_t __48__UIInputSwitcherView__reloadInputSwitcherItems__block_invoke()
   v12[2] = __48__UIInputSwitcherView_updateSelectionWithPoint___block_invoke;
   v12[3] = &unk_1E710E440;
   v13 = v8;
-  v14 = self;
+  selfCopy = self;
   v11 = v8;
   [(NSArray *)m_inputSwitcherItems enumerateObjectsUsingBlock:v12];
 }
@@ -851,11 +851,11 @@ void __48__UIInputSwitcherView_updateSelectionWithPoint___block_invoke(uint64_t 
   }
 }
 
-- (BOOL)shouldSelectItemAtIndex:(unint64_t)a3
+- (BOOL)shouldSelectItemAtIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->m_inputSwitcherItems objectAtIndex:a3];
-  v4 = [v3 switchControl];
-  if (v4)
+  v3 = [(NSArray *)self->m_inputSwitcherItems objectAtIndex:index];
+  switchControl = [v3 switchControl];
+  if (switchControl)
   {
     LOBYTE(v5) = 0;
   }
@@ -868,56 +868,56 @@ void __48__UIInputSwitcherView_updateSelectionWithPoint___block_invoke(uint64_t 
   return v5;
 }
 
-- (void)didSelectItemAtIndex:(unint64_t)a3
+- (void)didSelectItemAtIndex:(unint64_t)index
 {
   v11 = [(NSArray *)self->m_inputSwitcherItems objectAtIndex:?];
-  if ([(UIInputSwitcherView *)self defaultSelectedIndex]== a3 && ![(UIInputSwitcherView *)self isForDictation])
+  if ([(UIInputSwitcherView *)self defaultSelectedIndex]== index && ![(UIInputSwitcherView *)self isForDictation])
   {
     goto LABEL_17;
   }
 
-  v5 = [v11 identifier];
-  if ([(NSMutableArray *)self->m_inputModes containsObject:v5])
+  identifier = [v11 identifier];
+  if ([(NSMutableArray *)self->m_inputModes containsObject:identifier])
   {
-    [(UIInputSwitcherView *)self setInputMode:v5];
-    v6 = [(UIKeyboardMenuView *)self glomojiAnalyticsInstance];
-    [v6 setUpdatedInputMode:v5];
+    [(UIInputSwitcherView *)self setInputMode:identifier];
+    glomojiAnalyticsInstance = [(UIKeyboardMenuView *)self glomojiAnalyticsInstance];
+    [glomojiAnalyticsInstance setUpdatedInputMode:identifier];
 
-    v7 = [(UIKeyboardMenuView *)self glomojiAnalyticsInstance];
-    v8 = v7;
+    glomojiAnalyticsInstance2 = [(UIKeyboardMenuView *)self glomojiAnalyticsInstance];
+    v8 = glomojiAnalyticsInstance2;
     v9 = 2;
 LABEL_14:
-    [v7 setKBMenuSelectedAction:v9];
+    [glomojiAnalyticsInstance2 setKBMenuSelectedAction:v9];
     goto LABEL_15;
   }
 
-  if (v5 == @"reporttotypotracker")
+  if (identifier == @"reporttotypotracker")
   {
     v10 = +[UIKeyboardImpl activeInstance];
     [v10 createTypoTrackerReport];
 
-    v7 = [(UIKeyboardMenuView *)self glomojiAnalyticsInstance];
-    v8 = v7;
+    glomojiAnalyticsInstance2 = [(UIKeyboardMenuView *)self glomojiAnalyticsInstance];
+    v8 = glomojiAnalyticsInstance2;
     v9 = 3;
     goto LABEL_14;
   }
 
-  if (v5 == @"launchkeyboardsettings")
+  if (identifier == @"launchkeyboardsettings")
   {
     [MEMORY[0x1E69D9560] launchKeyboardSettings];
-    v7 = [(UIKeyboardMenuView *)self glomojiAnalyticsInstance];
-    v8 = v7;
+    glomojiAnalyticsInstance2 = [(UIKeyboardMenuView *)self glomojiAnalyticsInstance];
+    v8 = glomojiAnalyticsInstance2;
     v9 = 1;
     goto LABEL_14;
   }
 
-  if (v5 == @"launchdictationsettings")
+  if (identifier == @"launchdictationsettings")
   {
     [MEMORY[0x1E69D9560] launchDictationSettings];
     goto LABEL_16;
   }
 
-  if (v5 == @"dismiss")
+  if (identifier == @"dismiss")
   {
     v8 = +[UIKeyboardImpl activeInstance];
     [v8 dismissKeyboard];
@@ -925,7 +925,7 @@ LABEL_14:
 
   else
   {
-    if (v5 != @"launchdictationfeedback" || !os_variant_has_internal_diagnostics())
+    if (identifier != @"launchdictationfeedback" || !os_variant_has_internal_diagnostics())
     {
       goto LABEL_16;
     }
@@ -940,13 +940,13 @@ LABEL_16:
 LABEL_17:
   if ([(UIKeyboardMenuView *)self launchedFromKeyboard])
   {
-    [(UIInputSwitcherView *)self willFadeForSelectionAtIndex:a3];
+    [(UIInputSwitcherView *)self willFadeForSelectionAtIndex:index];
     [(UIKeyboardMenuView *)self hide];
   }
 
   else
   {
-    [(UIKeyboardMenuView *)self fadeWithDelay:a3 forSelectionAtIndex:0.1];
+    [(UIKeyboardMenuView *)self fadeWithDelay:index forSelectionAtIndex:0.1];
   }
 
   [(UIInputSwitcherView *)self setIsForDictation:0];
@@ -975,9 +975,9 @@ LABEL_17:
 
 - (void)selectNextInputMode
 {
-  v3 = [(UIInputSwitcherView *)self nextInputMode];
-  [(UIInputSwitcherView *)self setInputMode:v3];
-  [(UIInputSwitcherView *)self selectRowForInputMode:v3];
+  nextInputMode = [(UIInputSwitcherView *)self nextInputMode];
+  [(UIInputSwitcherView *)self setInputMode:nextInputMode];
+  [(UIInputSwitcherView *)self selectRowForInputMode:nextInputMode];
 }
 
 - (id)previousInputMode
@@ -997,33 +997,33 @@ LABEL_17:
 
   if (v5 <= 0)
   {
-    v6 = [(UIInputSwitcherView *)self inputModes];
-    v5 = [v6 count];
+    inputModes = [(UIInputSwitcherView *)self inputModes];
+    v5 = [inputModes count];
   }
 
-  v7 = [(UIInputSwitcherView *)self inputModes];
-  v8 = [v7 objectAtIndex:v5 - 1];
+  inputModes2 = [(UIInputSwitcherView *)self inputModes];
+  v8 = [inputModes2 objectAtIndex:v5 - 1];
 
   return v8;
 }
 
 - (void)selectPreviousInputMode
 {
-  v3 = [(UIInputSwitcherView *)self previousInputMode];
-  [(UIInputSwitcherView *)self setInputMode:v3];
-  [(UIInputSwitcherView *)self selectRowForInputMode:v3];
+  previousInputMode = [(UIInputSwitcherView *)self previousInputMode];
+  [(UIInputSwitcherView *)self setInputMode:previousInputMode];
+  [(UIInputSwitcherView *)self selectRowForInputMode:previousInputMode];
 }
 
-- (void)showAsPopupForKey:(id)a3 inLayout:(id)a4
+- (void)showAsPopupForKey:(id)key inLayout:(id)layout
 {
-  v6 = a4;
-  v7 = a3;
+  layoutCopy = layout;
+  keyCopy = key;
   [(UIInputSwitcherView *)self setShowsSwitches:1];
-  -[UIInputSwitcherView setIsForDictation:](self, "setIsForDictation:", [v7 interactionType] == 5);
+  -[UIInputSwitcherView setIsForDictation:](self, "setIsForDictation:", [keyCopy interactionType] == 5);
   [(UIKeyboardMenuView *)self setShowingCapsLockSwitcher:0];
   v8.receiver = self;
   v8.super_class = UIInputSwitcherView;
-  [(UIKeyboardMenuView *)&v8 showAsPopupForKey:v7 inLayout:v6];
+  [(UIKeyboardMenuView *)&v8 showAsPopupForKey:keyCopy inLayout:layoutCopy];
 }
 
 - (BOOL)shouldShow
@@ -1034,8 +1034,8 @@ LABEL_17:
     return 1;
   }
 
-  v4 = [(UIInputSwitcherView *)self inputModes];
-  v3 = [v4 count] > 1;
+  inputModes = [(UIInputSwitcherView *)self inputModes];
+  v3 = [inputModes count] > 1;
 
   return v3;
 }
@@ -1045,9 +1045,9 @@ LABEL_17:
   if ([(UIInputSwitcherView *)self isForDictation])
   {
     v3 = +[UIKeyboardImpl activeInstance];
-    v8 = [v3 activeDictationLanguage];
+    activeDictationLanguage = [v3 activeDictationLanguage];
 
-    v4 = v8;
+    v4 = activeDictationLanguage;
   }
 
   else
@@ -1058,9 +1058,9 @@ LABEL_17:
   v9 = v4;
   if (([(NSMutableArray *)self->m_inputModes containsObject:v4]& 1) == 0)
   {
-    v5 = [(NSMutableArray *)self->m_inputModes firstObject];
+    firstObject = [(NSMutableArray *)self->m_inputModes firstObject];
 
-    v9 = v5;
+    v9 = firstObject;
   }
 
   if (!-[UIInputSwitcherView isForDictation](self, "isForDictation") || (+[UIDictationController sharedInstance](UIDictationController, "sharedInstance"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 smartLanguageSelectionOverridden], v6, v7))
@@ -1069,7 +1069,7 @@ LABEL_17:
   }
 }
 
-- (void)willFadeForSelectionAtIndex:(unint64_t)a3
+- (void)willFadeForSelectionAtIndex:(unint64_t)index
 {
   v40 = *MEMORY[0x1E69E9840];
   v35 = 0u;
@@ -1093,20 +1093,20 @@ LABEL_17:
         }
 
         v9 = *(*(&v35 + 1) + 8 * i);
-        v10 = [v9 switchControl];
+        switchControl = [v9 switchControl];
 
-        if (v10)
+        if (switchControl)
         {
-          v11 = [v9 switchIsOnBlock];
-          v12 = v11[2]();
-          v13 = [v9 switchControl];
-          v14 = [v13 isOn];
+          switchIsOnBlock = [v9 switchIsOnBlock];
+          v12 = switchIsOnBlock[2]();
+          switchControl2 = [v9 switchControl];
+          isOn = [switchControl2 isOn];
 
-          if (v12 != v14)
+          if (v12 != isOn)
           {
-            v15 = [v9 switchToggleBlock];
-            v16 = [v9 switchControl];
-            v15[2](v15, [v16 isOn]);
+            switchToggleBlock = [v9 switchToggleBlock];
+            switchControl3 = [v9 switchControl];
+            switchToggleBlock[2](switchToggleBlock, [switchControl3 isOn]);
           }
         }
       }
@@ -1117,7 +1117,7 @@ LABEL_17:
     while (v6);
   }
 
-  if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+  if (index == 0x7FFFFFFFFFFFFFFFLL)
   {
     v17 = 0;
   }
@@ -1131,10 +1131,10 @@ LABEL_17:
   v19 = v18;
   if (v18 && v17 == v18)
   {
-    v20 = [v18 selectedSegmentIndex];
-    if (v20 <= 3)
+    selectedSegmentIndex = [v18 selectedSegmentIndex];
+    if (selectedSegmentIndex <= 3)
     {
-      v21 = __handBiasOrdering[v20];
+      v21 = __handBiasOrdering[selectedSegmentIndex];
     }
 
     else
@@ -1144,22 +1144,22 @@ LABEL_17:
 
     [(UIInputSwitcherView *)self reportHandBiasToAnalytics:v21];
     v22 = +[UIKeyboardImpl activeInstance];
-    v23 = [v22 _layout];
-    v24 = [v23 currentHandBias];
+    _layout = [v22 _layout];
+    currentHandBias = [_layout currentHandBias];
 
-    if (v21 != v24)
+    if (v21 != currentHandBias)
     {
       v25 = +[UIKeyboardPreferencesController sharedPreferencesController];
-      v26 = [v25 preferencesActions];
-      [v26 setHandBias:v21];
+      preferencesActions = [v25 preferencesActions];
+      [preferencesActions setHandBias:v21];
 
       v27 = +[UIKeyboardPreferencesController sharedPreferencesController];
-      v28 = [v27 preferencesActions];
-      [v28 performedFirstReachableKeyboardInteraction];
+      preferencesActions2 = [v27 preferencesActions];
+      [preferencesActions2 performedFirstReachableKeyboardInteraction];
 
       v29 = +[UIKeyboardImpl activeInstance];
-      v30 = [v29 _layout];
-      [v30 setKeyboardBias:v21];
+      _layout2 = [v29 _layout];
+      [_layout2 setKeyboardBias:v21];
 
       v31 = +[UIKeyboardImpl activeInstance];
       [v31 updateForHandBiasChange];
@@ -1170,13 +1170,13 @@ LABEL_17:
   self->m_gestureState = 0;
 }
 
-- (void)reportHandBiasToAnalytics:(int64_t)a3
+- (void)reportHandBiasToAnalytics:(int64_t)analytics
 {
-  if (a3 <= 2)
+  if (analytics <= 2)
   {
-    v4 = qword_18A67E858[a3];
-    v5 = [(UIKeyboardMenuView *)self glomojiAnalyticsInstance];
-    [v5 setKBMenuSelectedAction:v4];
+    v4 = qword_18A67E858[analytics];
+    glomojiAnalyticsInstance = [(UIKeyboardMenuView *)self glomojiAnalyticsInstance];
+    [glomojiAnalyticsInstance setKBMenuSelectedAction:v4];
   }
 }
 
@@ -1201,8 +1201,8 @@ LABEL_17:
   v22[0] = 0;
   v22[1] = v22;
   v22[2] = 0x2020000000;
-  v3 = [(UIView *)self _inheritedRenderConfig];
-  if ([v3 colorAdaptiveBackground])
+  _inheritedRenderConfig = [(UIView *)self _inheritedRenderConfig];
+  if ([_inheritedRenderConfig colorAdaptiveBackground])
   {
     v4 = 26.0;
   }
@@ -1214,7 +1214,7 @@ LABEL_17:
 
   *&v22[3] = v4;
   v5 = +[UIKeyboardImpl activeInstance];
-  v6 = [v5 isMinimized];
+  isMinimized = [v5 isMinimized];
 
   m_inputSwitcherItems = self->m_inputSwitcherItems;
   v20[0] = MEMORY[0x1E69E9820];
@@ -1224,7 +1224,7 @@ LABEL_17:
   v20[4] = self;
   v20[5] = v22;
   v20[6] = &v23;
-  v21 = v6;
+  v21 = isMinimized;
   [(NSArray *)m_inputSwitcherItems enumerateObjectsUsingBlock:v20];
   if (self->super.m_mode)
   {
@@ -1261,8 +1261,8 @@ LABEL_17:
   v14 = v13;
   if (v13)
   {
-    v15 = [v13 segmentImages];
-    +[UIInputSwitcherSegmentedTableCell preferredSizeWithSegmentCount:](UIInputSwitcherSegmentedTableCell, "preferredSizeWithSegmentCount:", [v15 count]);
+    segmentImages = [v13 segmentImages];
+    +[UIInputSwitcherSegmentedTableCell preferredSizeWithSegmentCount:](UIInputSwitcherSegmentedTableCell, "preferredSizeWithSegmentCount:", [segmentImages count]);
     v17 = v16;
 
     if (v17 < v24[3])
@@ -1370,10 +1370,10 @@ void __36__UIInputSwitcherView_preferredSize__block_invoke(uint64_t a1, void *a2
   }
 }
 
-- (id)_itemWithIdentifier:(id)a3
+- (id)_itemWithIdentifier:(id)identifier
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -1393,9 +1393,9 @@ void __36__UIInputSwitcherView_preferredSize__block_invoke(uint64_t a1, void *a2
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
-        v10 = [v9 identifier];
+        identifier = [v9 identifier];
 
-        if (v10 == v4)
+        if (identifier == identifierCopy)
         {
           v6 = v9;
           goto LABEL_11;
@@ -1434,22 +1434,22 @@ LABEL_11:
       [v4 currentInputMode];
     }
     v6 = ;
-    v5 = [v6 dictationLanguage];
+    dictationLanguage = [v6 dictationLanguage];
   }
 
   else
   {
-    v5 = UIKeyboardGetCurrentInputMode();
+    dictationLanguage = UIKeyboardGetCurrentInputMode();
   }
 
-  if (([(NSMutableArray *)self->m_inputModes containsObject:v5]& 1) == 0)
+  if (([(NSMutableArray *)self->m_inputModes containsObject:dictationLanguage]& 1) == 0)
   {
-    v7 = [(NSMutableArray *)self->m_inputModes firstObject];
+    firstObject = [(NSMutableArray *)self->m_inputModes firstObject];
 
-    v5 = v7;
+    dictationLanguage = firstObject;
   }
 
-  return v5;
+  return dictationLanguage;
 }
 
 - (unint64_t)defaultSelectedIndex
@@ -1459,87 +1459,87 @@ LABEL_11:
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v4 = [(UIInputSwitcherView *)self defaultInputMode];
-  v5 = [(UIInputSwitcherView *)self _indexOfInputSwitcherItemWithIdentifier:v4];
+  defaultInputMode = [(UIInputSwitcherView *)self defaultInputMode];
+  v5 = [(UIInputSwitcherView *)self _indexOfInputSwitcherItemWithIdentifier:defaultInputMode];
 
   return v5;
 }
 
-- (id)titleForItemAtIndex:(unint64_t)a3
+- (id)titleForItemAtIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->m_inputSwitcherItems objectAtIndexedSubscript:a3];
-  v4 = [v3 localizedTitle];
+  v3 = [(NSArray *)self->m_inputSwitcherItems objectAtIndexedSubscript:index];
+  localizedTitle = [v3 localizedTitle];
 
-  return v4;
+  return localizedTitle;
 }
 
-- (id)localizedTitleForItemAtIndex:(unint64_t)a3
+- (id)localizedTitleForItemAtIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->m_inputSwitcherItems objectAtIndexedSubscript:a3];
-  v4 = [v3 localizedTitle];
+  v3 = [(NSArray *)self->m_inputSwitcherItems objectAtIndexedSubscript:index];
+  localizedTitle = [v3 localizedTitle];
 
-  return v4;
+  return localizedTitle;
 }
 
-- (id)fontForItemAtIndex:(unint64_t)a3
+- (id)fontForItemAtIndex:(unint64_t)index
 {
-  v4 = [(NSArray *)self->m_inputSwitcherItems objectAtIndexedSubscript:a3];
-  v5 = [v4 titleFont];
+  v4 = [(NSArray *)self->m_inputSwitcherItems objectAtIndexedSubscript:index];
+  titleFont = [v4 titleFont];
 
-  if (!v5)
+  if (!titleFont)
   {
-    v5 = [(UIKeyboardMenuView *)self font];
+    titleFont = [(UIKeyboardMenuView *)self font];
   }
 
-  return v5;
+  return titleFont;
 }
 
-- (id)subtitleForItemAtIndex:(unint64_t)a3
+- (id)subtitleForItemAtIndex:(unint64_t)index
 {
   v5 = +[UIKeyboardImpl activeInstance];
-  v6 = [v5 isMinimized];
+  isMinimized = [v5 isMinimized];
 
-  if (v6)
+  if (isMinimized)
   {
-    v7 = &stru_1EFB14550;
+    localizedSubtitle = &stru_1EFB14550;
   }
 
   else
   {
-    v8 = [(NSArray *)self->m_inputSwitcherItems objectAtIndexedSubscript:a3];
-    v7 = [v8 localizedSubtitle];
+    v8 = [(NSArray *)self->m_inputSwitcherItems objectAtIndexedSubscript:index];
+    localizedSubtitle = [v8 localizedSubtitle];
   }
 
-  return v7;
+  return localizedSubtitle;
 }
 
-- (id)subtitleFontForItemAtIndex:(unint64_t)a3
+- (id)subtitleFontForItemAtIndex:(unint64_t)index
 {
-  v4 = [(NSArray *)self->m_inputSwitcherItems objectAtIndexedSubscript:a3];
-  v5 = [v4 subtitleFont];
+  v4 = [(NSArray *)self->m_inputSwitcherItems objectAtIndexedSubscript:index];
+  subtitleFont = [v4 subtitleFont];
 
-  if (!v5)
+  if (!subtitleFont)
   {
-    v5 = [(UIKeyboardMenuView *)self subtitleFont];
+    subtitleFont = [(UIKeyboardMenuView *)self subtitleFont];
   }
 
-  return v5;
+  return subtitleFont;
 }
 
-- (BOOL)usesDeviceLanguageForItemAtIndex:(unint64_t)a3
+- (BOOL)usesDeviceLanguageForItemAtIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->m_inputSwitcherItems objectAtIndexedSubscript:a3];
-  v4 = [v3 usesDeviceLanguage];
+  v3 = [(NSArray *)self->m_inputSwitcherItems objectAtIndexedSubscript:index];
+  usesDeviceLanguage = [v3 usesDeviceLanguage];
 
-  return v4;
+  return usesDeviceLanguage;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v8 = +[UIInputSwitcherTableCell reuseIdentifier];
-  v9 = -[NSArray objectAtIndex:](self->m_inputSwitcherItems, "objectAtIndex:", [v7 row]);
+  v9 = -[NSArray objectAtIndex:](self->m_inputSwitcherItems, "objectAtIndex:", [pathCopy row]);
   if ([v9 isSegmentedItem])
   {
     v10 = +[(UIInputSwitcherTableCell *)UIInputSwitcherSegmentedTableCell];
@@ -1547,144 +1547,144 @@ LABEL_11:
     v8 = v10;
   }
 
-  v11 = [v6 dequeueReusableCellWithIdentifier:v8 forIndexPath:v7];
-  -[UIInputSwitcherView customizeCell:forItemAtIndex:](self, "customizeCell:forItemAtIndex:", v11, [v7 row]);
+  v11 = [viewCopy dequeueReusableCellWithIdentifier:v8 forIndexPath:pathCopy];
+  -[UIInputSwitcherView customizeCell:forItemAtIndex:](self, "customizeCell:forItemAtIndex:", v11, [pathCopy row]);
 
   return v11;
 }
 
-- (void)customizeCell:(id)a3 forItemAtIndex:(unint64_t)a4
+- (void)customizeCell:(id)cell forItemAtIndex:(unint64_t)index
 {
-  v6 = a3;
+  cellCopy = cell;
   v36.receiver = self;
   v36.super_class = UIInputSwitcherView;
-  [(UIKeyboardMenuView *)&v36 customizeCell:v6 forItemAtIndex:a4];
-  v7 = a4;
+  [(UIKeyboardMenuView *)&v36 customizeCell:cellCopy forItemAtIndex:index];
+  indexCopy2 = index;
   if ([(UIKeyboardMenuView *)self showingCapsLockSwitcher])
   {
-    v8 = [(UIKeyboardMenuView *)self indexForSelectedFastSwitchMode];
-    v9 = [(UIKeyboardMenuView *)self indexForUnselectedFastSwitchMode];
-    if (a4 == 1)
+    indexForSelectedFastSwitchMode = [(UIKeyboardMenuView *)self indexForSelectedFastSwitchMode];
+    indexForUnselectedFastSwitchMode = [(UIKeyboardMenuView *)self indexForUnselectedFastSwitchMode];
+    if (index == 1)
     {
-      if (v8 >= v9)
+      if (indexForSelectedFastSwitchMode >= indexForUnselectedFastSwitchMode)
       {
 LABEL_5:
-        v10 = [(UIKeyboardMenuView *)self indexForSelectedFastSwitchMode];
+        indexForSelectedFastSwitchMode2 = [(UIKeyboardMenuView *)self indexForSelectedFastSwitchMode];
 LABEL_8:
-        v7 = v10;
+        indexCopy2 = indexForSelectedFastSwitchMode2;
         goto LABEL_9;
       }
     }
 
     else
     {
-      v7 = a4;
-      if (a4)
+      indexCopy2 = index;
+      if (index)
       {
         goto LABEL_9;
       }
 
-      if (v8 < v9)
+      if (indexForSelectedFastSwitchMode < indexForUnselectedFastSwitchMode)
       {
         goto LABEL_5;
       }
     }
 
-    v10 = [(UIKeyboardMenuView *)self indexForUnselectedFastSwitchMode];
+    indexForSelectedFastSwitchMode2 = [(UIKeyboardMenuView *)self indexForUnselectedFastSwitchMode];
     goto LABEL_8;
   }
 
 LABEL_9:
-  [v6 setInteractiveInsets:{0.0, 0.0, 0.0, 0.0}];
-  v11 = [(NSArray *)self->m_inputSwitcherItems objectAtIndex:v7];
-  v12 = [v11 switchControl];
+  [cellCopy setInteractiveInsets:{0.0, 0.0, 0.0, 0.0}];
+  v11 = [(NSArray *)self->m_inputSwitcherItems objectAtIndex:indexCopy2];
+  switchControl = [v11 switchControl];
 
-  if (v12)
+  if (switchControl)
   {
-    v12 = [v11 switchControl];
-    v13 = [v11 switchIsOnBlock];
-    v14 = v13[2]();
-    v15 = [v11 switchControl];
-    [v15 setOn:v14];
+    switchControl = [v11 switchControl];
+    switchIsOnBlock = [v11 switchIsOnBlock];
+    v14 = switchIsOnBlock[2]();
+    switchControl2 = [v11 switchControl];
+    [switchControl2 setOn:v14];
 
-    v16 = [v6 textLabel];
-    [v16 setTextAlignment:0];
+    textLabel = [cellCopy textLabel];
+    [textLabel setTextAlignment:0];
   }
 
   if ([v11 isSegmentedItem])
   {
-    v17 = v6;
-    v18 = [v11 segmentImages];
-    v19 = [v18 count];
+    v17 = cellCopy;
+    segmentImages = [v11 segmentImages];
+    v19 = [segmentImages count];
 
     if (v19)
     {
-      v20 = [v11 segmentImages];
-      v21 = [v17 segmentControl];
-      [v21 setSegmentImages:v20];
+      segmentImages2 = [v11 segmentImages];
+      segmentControl = [v17 segmentControl];
+      [segmentControl setSegmentImages:segmentImages2];
     }
 
-    v22 = [v11 segmentTitles];
-    v23 = [v22 count];
+    segmentTitles = [v11 segmentTitles];
+    v23 = [segmentTitles count];
 
     if (v23)
     {
-      v24 = [v11 segmentTitles];
-      v25 = [v17 segmentControl];
-      [v25 setSegmentTitles:v24];
+      segmentTitles2 = [v11 segmentTitles];
+      segmentControl2 = [v17 segmentControl];
+      [segmentControl2 setSegmentTitles:segmentTitles2];
     }
 
     v26 = +[UIKeyboardImpl activeInstance];
-    v27 = [v26 _layout];
-    v28 = [v27 currentHandBias];
+    _layout = [v26 _layout];
+    currentHandBias = [_layout currentHandBias];
 
     for (i = 0; i != 3; ++i)
     {
-      if (__handBiasOrdering[i] == v28)
+      if (__handBiasOrdering[i] == currentHandBias)
       {
         break;
       }
     }
 
-    v30 = [v17 segmentControl];
-    [v30 setSelectedSegmentIndex:i];
+    segmentControl3 = [v17 segmentControl];
+    [segmentControl3 setSelectedSegmentIndex:i];
 
-    v31 = [v17 segmentControl];
-    [v31 addTarget:self action:sel__segmentControlValueDidChange_ forControlEvents:4096];
+    segmentControl4 = [v17 segmentControl];
+    [segmentControl4 addTarget:self action:sel__segmentControlValueDidChange_ forControlEvents:4096];
 
     v32 = +[UIKeyboardPreferencesController sharedPreferencesController];
-    v33 = [v32 preferencesActions];
-    v34 = [v33 isFirstReachableKeyboardInteraction];
+    preferencesActions = [v32 preferencesActions];
+    isFirstReachableKeyboardInteraction = [preferencesActions isFirstReachableKeyboardInteraction];
 
-    if ((v34 & 1) == 0 && [(NSArray *)self->m_inputSwitcherItems count]- 1 == a4)
+    if ((isFirstReachableKeyboardInteraction & 1) == 0 && [(NSArray *)self->m_inputSwitcherItems count]- 1 == index)
     {
       [v17 setInteractiveInsets:{0.0, 0.0, -50.0, 0.0}];
     }
   }
 
-  [v6 setAccessoryView:v12];
-  v35 = [v6 textLabel];
-  [v35 setAlpha:1.0];
+  [cellCopy setAccessoryView:switchControl];
+  textLabel2 = [cellCopy textLabel];
+  [textLabel2 setAlpha:1.0];
 }
 
 - (BOOL)_isHandBiasSwitchVisible
 {
-  v2 = [(UIInputSwitcherView *)self showsSwitches];
-  if (v2)
+  showsSwitches = [(UIInputSwitcherView *)self showsSwitches];
+  if (showsSwitches)
   {
     v3 = +[UIKeyboardImpl activeInstance];
-    v4 = [v3 allowsReachableKeyboard];
+    allowsReachableKeyboard = [v3 allowsReachableKeyboard];
 
-    LOBYTE(v2) = v4;
+    LOBYTE(showsSwitches) = allowsReachableKeyboard;
   }
 
-  return v2;
+  return showsSwitches;
 }
 
 - (BOOL)didHitDockItemWithinTypingWindow
 {
   v2 = +[UIKeyboardImpl activeInstance];
-  v3 = [v2 _layout];
+  _layout = [v2 _layout];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -1692,8 +1692,8 @@ LABEL_9:
   if (isKindOfClass)
   {
     v5 = +[UIKeyboardImpl activeInstance];
-    v6 = [v5 _layout];
-    [v6 lastTouchUpTimestamp];
+    _layout2 = [v5 _layout];
+    [_layout2 lastTouchUpTimestamp];
     v8 = v7;
 
     if (CFAbsoluteTimeGetCurrent() - v8 < 0.325)
@@ -1705,28 +1705,28 @@ LABEL_9:
   return result;
 }
 
-- (id)buttonPressed:(id)a3 withEvent:(id)a4 location:(CGPoint)a5 isLocationInsideViewHitArea:(BOOL)a6 isForDictation:(BOOL)a7 tapAction:(id)a8
+- (id)buttonPressed:(id)pressed withEvent:(id)event location:(CGPoint)location isLocationInsideViewHitArea:(BOOL)area isForDictation:(BOOL)dictation tapAction:(id)action
 {
-  v9 = a7;
-  y = a5.y;
-  x = a5.x;
-  v15 = a3;
-  v16 = a8;
-  v17 = [a4 touchesForView:v15];
-  v18 = [v17 anyObject];
+  dictationCopy = dictation;
+  y = location.y;
+  x = location.x;
+  pressedCopy = pressed;
+  actionCopy = action;
+  v17 = [event touchesForView:pressedCopy];
+  anyObject = [v17 anyObject];
 
-  [v18 locationInView:self];
+  [anyObject locationInView:self];
   v20 = v19;
   v22 = v21;
-  v23 = [v15 window];
-  [v18 locationInView:v23];
+  window = [pressedCopy window];
+  [anyObject locationInView:window];
   v25 = v24;
   v27 = v26;
 
-  v28 = [v18 phase];
-  if (v28 > 2)
+  phase = [anyObject phase];
+  if (phase > 2)
   {
-    if (v28 == 3)
+    if (phase == 3)
     {
       [(UIInputSwitcherGestureState *)self->m_gestureState touchDown];
       if (v43 == 0.0)
@@ -1735,35 +1735,35 @@ LABEL_9:
       }
 
       [(UIInputSwitcherGestureState *)self->m_gestureState setTouchDown:0.0];
-      v44 = [(UIInputSwitcherGestureState *)self->m_gestureState gestureConflictsWithTypingWindow];
+      gestureConflictsWithTypingWindow = [(UIInputSwitcherGestureState *)self->m_gestureState gestureConflictsWithTypingWindow];
       if (![(UIKeyboardMenuView *)self isVisible])
       {
-        [v15 bounds];
+        [pressedCopy bounds];
         v46 = v45;
         v48 = v47;
         v50 = v49;
         v52 = v51;
-        [v18 locationInView:v15];
+        [anyObject locationInView:pressedCopy];
         v77.x = v53;
         v77.y = v54;
         v79.origin.x = v46;
         v79.origin.y = v48;
         v79.size.width = v50;
         v79.size.height = v52;
-        if (!(v44 | !CGRectContainsPoint(v79, v77)))
+        if (!(gestureConflictsWithTypingWindow | !CGRectContainsPoint(v79, v77)))
         {
-          if (v16)
+          if (actionCopy)
           {
-            v16[2](v16);
+            actionCopy[2](actionCopy);
           }
 
           else
           {
-            v68 = [(UIInputSwitcherView *)self nextInputMode];
+            nextInputMode = [(UIInputSwitcherView *)self nextInputMode];
           }
 
-          v69 = [(UIKeyboardMenuView *)self glomojiAnalyticsInstance];
-          [v69 didGlomojiTap];
+          glomojiAnalyticsInstance = [(UIKeyboardMenuView *)self glomojiAnalyticsInstance];
+          [glomojiAnalyticsInstance didGlomojiTap];
 
           goto LABEL_32;
         }
@@ -1781,24 +1781,24 @@ LABEL_9:
         v78.y = v22;
         if (CGRectContainsPoint(v80, v78))
         {
-          v55 = [(UIKeyboardMenuView *)self glomojiAnalyticsInstance];
-          [v55 setKBMenuInteractionSource:2];
+          glomojiAnalyticsInstance2 = [(UIKeyboardMenuView *)self glomojiAnalyticsInstance];
+          [glomojiAnalyticsInstance2 setKBMenuInteractionSource:2];
 
           [(UIKeyboardMenuView *)self selectItemAtPoint:v20, v22];
           goto LABEL_32;
         }
       }
 
-      if (v9)
+      if (dictationCopy)
       {
         v63 = +[UIKeyboardInputMode dictationInputMode];
         v64 = +[UIKeyboardInputModeController sharedInputModeController];
-        v65 = [v64 currentInputMode];
-        v66 = [v63 isEqual:v65];
+        currentInputMode = [v64 currentInputMode];
+        v66 = [v63 isEqual:currentInputMode];
 
         if ((v66 & 1) == 0)
         {
-          v16[2](v16);
+          actionCopy[2](actionCopy);
           goto LABEL_32;
         }
       }
@@ -1810,13 +1810,13 @@ LABEL_32:
         goto LABEL_33;
       }
 
-      v67 = [(UIKeyboardMenuView *)self glomojiAnalyticsInstance];
-      [v67 setKBMenuDismissSource:2];
+      glomojiAnalyticsInstance3 = [(UIKeyboardMenuView *)self glomojiAnalyticsInstance];
+      [glomojiAnalyticsInstance3 setKBMenuDismissSource:2];
     }
 
     else
     {
-      if (v28 != 4)
+      if (phase != 4)
       {
         goto LABEL_32;
       }
@@ -1832,14 +1832,14 @@ LABEL_32:
     goto LABEL_32;
   }
 
-  if (!v28)
+  if (!phase)
   {
     if ([(UIKeyboardMenuView *)self isVisible])
     {
       [(UIKeyboardMenuView *)self hide];
     }
 
-    [(UIInputSwitcherView *)self setIsForDictation:v9];
+    [(UIInputSwitcherView *)self setIsForDictation:dictationCopy];
     v32 = objc_alloc_init(UIInputSwitcherGestureState);
     m_gestureState = self->m_gestureState;
     self->m_gestureState = v32;
@@ -1850,18 +1850,18 @@ LABEL_32:
     [v34 lastTouchDownTimestamp];
     [(UIInputSwitcherGestureState *)self->m_gestureState setLastSeenKeyboardTouchDown:?];
 
-    v35 = [(UIKeyboardMenuView *)self glomojiAnalyticsInstance];
-    v36 = [v35 getInputMode];
-    v37 = [(UIKeyboardMenuView *)self glomojiAnalyticsInstance];
-    [v37 setOriginalInputMode:v36];
+    glomojiAnalyticsInstance4 = [(UIKeyboardMenuView *)self glomojiAnalyticsInstance];
+    getInputMode = [glomojiAnalyticsInstance4 getInputMode];
+    glomojiAnalyticsInstance5 = [(UIKeyboardMenuView *)self glomojiAnalyticsInstance];
+    [glomojiAnalyticsInstance5 setOriginalInputMode:getInputMode];
 
     if (TIGetGlobeButtonDelayValue_onceToken != -1)
     {
       dispatch_once(&TIGetGlobeButtonDelayValue_onceToken, &__block_literal_global_515);
     }
 
-    v38 = [MEMORY[0x1E69D9680] sharedPreferencesController];
-    v39 = [v38 valueForPreferenceKey:@"GlobeButtonDelay"];
+    mEMORY[0x1E69D9680] = [MEMORY[0x1E69D9680] sharedPreferencesController];
+    v39 = [mEMORY[0x1E69D9680] valueForPreferenceKey:@"GlobeButtonDelay"];
 
     [v39 doubleValue];
     v41 = v40;
@@ -1878,17 +1878,17 @@ LABEL_32:
     block[3] = &unk_1E710E490;
     block[4] = self;
     v73 = v41;
-    v76 = a6;
-    v71 = v18;
+    areaCopy = area;
+    v71 = anyObject;
     v74 = x;
     v75 = y;
-    v72 = v15;
+    v72 = pressedCopy;
     dispatch_after(v42, MEMORY[0x1E69E96A0], block);
 
     goto LABEL_32;
   }
 
-  if (v28 != 1)
+  if (phase != 1)
   {
     goto LABEL_32;
   }
@@ -1920,10 +1920,10 @@ LABEL_32:
       }
 
       [(UIInputSwitcherView *)self setShowsSwitches:1];
-      [v18 timestamp];
-      [(UIKeyboardMenuView *)self showAsHUDFromLocation:v15 withInputView:x touchBegan:y, v58];
+      [anyObject timestamp];
+      [(UIKeyboardMenuView *)self showAsHUDFromLocation:pressedCopy withInputView:x touchBegan:y, v58];
       v59 = +[UIKeyboardImpl activeInstance];
-      [v59 _tagTouchForTypingMenu:{objc_msgSend(v18, "_touchIdentifier")}];
+      [v59 _tagTouchForTypingMenu:{objc_msgSend(anyObject, "_touchIdentifier")}];
     }
 
     [(UIInputSwitcherGestureState *)*p_m_gestureState setHideSwitcher:1];

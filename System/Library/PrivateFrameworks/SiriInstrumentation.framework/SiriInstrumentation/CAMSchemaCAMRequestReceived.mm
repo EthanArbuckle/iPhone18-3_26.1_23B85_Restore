@@ -1,26 +1,26 @@
 @interface CAMSchemaCAMRequestReceived
-- (BOOL)isEqual:(id)a3;
-- (CAMSchemaCAMRequestReceived)initWithDictionary:(id)a3;
-- (CAMSchemaCAMRequestReceived)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CAMSchemaCAMRequestReceived)initWithDictionary:(id)dictionary;
+- (CAMSchemaCAMRequestReceived)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (void)addFeature:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addFeature:(id)feature;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CAMSchemaCAMRequestReceived
 
-- (CAMSchemaCAMRequestReceived)initWithDictionary:(id)a3
+- (CAMSchemaCAMRequestReceived)initWithDictionary:(id)dictionary
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v20.receiver = self;
   v20.super_class = CAMSchemaCAMRequestReceived;
   v5 = [(CAMSchemaCAMRequestReceived *)&v20 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"feature"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"feature"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -69,30 +69,30 @@
   return v5;
 }
 
-- (CAMSchemaCAMRequestReceived)initWithJSON:(id)a3
+- (CAMSchemaCAMRequestReceived)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(CAMSchemaCAMRequestReceived *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(CAMSchemaCAMRequestReceived *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(CAMSchemaCAMRequestReceived *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -105,31 +105,31 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_features)
   {
-    v4 = [(CAMSchemaCAMRequestReceived *)self features];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"feature"];
+    features = [(CAMSchemaCAMRequestReceived *)self features];
+    v5 = [features copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"feature"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(CAMSchemaCAMRequestReceived *)self features];
-    v6 = [v4 features];
-    v7 = v6;
-    if ((v5 != 0) != (v6 == 0))
+    features = [(CAMSchemaCAMRequestReceived *)self features];
+    features2 = [equalCopy features];
+    v7 = features2;
+    if ((features != 0) != (features2 == 0))
     {
-      v8 = [(CAMSchemaCAMRequestReceived *)self features];
-      if (!v8)
+      features3 = [(CAMSchemaCAMRequestReceived *)self features];
+      if (!features3)
       {
 
 LABEL_10:
@@ -137,10 +137,10 @@ LABEL_10:
         goto LABEL_8;
       }
 
-      v9 = v8;
-      v10 = [(CAMSchemaCAMRequestReceived *)self features];
-      v11 = [v4 features];
-      v12 = [v10 isEqual:v11];
+      v9 = features3;
+      features4 = [(CAMSchemaCAMRequestReceived *)self features];
+      features5 = [equalCopy features];
+      v12 = [features4 isEqual:features5];
 
       if (v12)
       {
@@ -159,10 +159,10 @@ LABEL_8:
   return v13;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -195,22 +195,22 @@ LABEL_8:
   }
 }
 
-- (void)addFeature:(id)a3
+- (void)addFeature:(id)feature
 {
-  v4 = a3;
+  featureCopy = feature;
   features = self->_features;
-  v8 = v4;
+  v8 = featureCopy;
   if (!features)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_features;
-    self->_features = v6;
+    self->_features = array;
 
-    v4 = v8;
+    featureCopy = v8;
     features = self->_features;
   }
 
-  [(NSArray *)features addObject:v4];
+  [(NSArray *)features addObject:featureCopy];
 }
 
 - (id)suppressMessageUnderConditions

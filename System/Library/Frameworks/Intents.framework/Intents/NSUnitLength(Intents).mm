@@ -6,8 +6,8 @@
 
 - (id)_intents_stringRepresentation
 {
-  v2 = [MEMORY[0x1E696B058] megameters];
-  v3 = [a1 isEqual:v2];
+  megameters = [MEMORY[0x1E696B058] megameters];
+  v3 = [self isEqual:megameters];
 
   if (v3)
   {
@@ -16,8 +16,8 @@
 
   else
   {
-    v5 = [MEMORY[0x1E696B058] kilometers];
-    v6 = [a1 isEqual:v5];
+    kilometers = [MEMORY[0x1E696B058] kilometers];
+    v6 = [self isEqual:kilometers];
 
     if (v6)
     {
@@ -26,8 +26,8 @@
 
     else
     {
-      v7 = [MEMORY[0x1E696B058] hectometers];
-      v8 = [a1 isEqual:v7];
+      hectometers = [MEMORY[0x1E696B058] hectometers];
+      v8 = [self isEqual:hectometers];
 
       if (v8)
       {
@@ -36,8 +36,8 @@
 
       else
       {
-        v9 = [MEMORY[0x1E696B058] decameters];
-        v10 = [a1 isEqual:v9];
+        decameters = [MEMORY[0x1E696B058] decameters];
+        v10 = [self isEqual:decameters];
 
         if (v10)
         {
@@ -46,8 +46,8 @@
 
         else
         {
-          v11 = [MEMORY[0x1E696B058] meters];
-          v12 = [a1 isEqual:v11];
+          meters = [MEMORY[0x1E696B058] meters];
+          v12 = [self isEqual:meters];
 
           if (v12)
           {
@@ -56,8 +56,8 @@
 
           else
           {
-            v13 = [MEMORY[0x1E696B058] decimeters];
-            v14 = [a1 isEqual:v13];
+            decimeters = [MEMORY[0x1E696B058] decimeters];
+            v14 = [self isEqual:decimeters];
 
             if (v14)
             {
@@ -66,8 +66,8 @@
 
             else
             {
-              v15 = [MEMORY[0x1E696B058] centimeters];
-              v16 = [a1 isEqual:v15];
+              centimeters = [MEMORY[0x1E696B058] centimeters];
+              v16 = [self isEqual:centimeters];
 
               if (v16)
               {
@@ -76,8 +76,8 @@
 
               else
               {
-                v17 = [MEMORY[0x1E696B058] millimeters];
-                v18 = [a1 isEqual:v17];
+                millimeters = [MEMORY[0x1E696B058] millimeters];
+                v18 = [self isEqual:millimeters];
 
                 if (v18)
                 {
@@ -86,8 +86,8 @@
 
                 else
                 {
-                  v19 = [MEMORY[0x1E696B058] micrometers];
-                  v20 = [a1 isEqual:v19];
+                  micrometers = [MEMORY[0x1E696B058] micrometers];
+                  v20 = [self isEqual:micrometers];
 
                   if (v20)
                   {
@@ -96,8 +96,8 @@
 
                   else
                   {
-                    v21 = [MEMORY[0x1E696B058] nanometers];
-                    v22 = [a1 isEqual:v21];
+                    nanometers = [MEMORY[0x1E696B058] nanometers];
+                    v22 = [self isEqual:nanometers];
 
                     if (v22)
                     {
@@ -106,8 +106,8 @@
 
                     else
                     {
-                      v23 = [MEMORY[0x1E696B058] picometers];
-                      v24 = [a1 isEqual:v23];
+                      picometers = [MEMORY[0x1E696B058] picometers];
+                      v24 = [self isEqual:picometers];
 
                       if (v24)
                       {
@@ -116,8 +116,8 @@
 
                       else
                       {
-                        v25 = [MEMORY[0x1E696B058] inches];
-                        v26 = [a1 isEqual:v25];
+                        inches = [MEMORY[0x1E696B058] inches];
+                        v26 = [self isEqual:inches];
 
                         if (v26)
                         {
@@ -126,8 +126,8 @@
 
                         else
                         {
-                          v27 = [MEMORY[0x1E696B058] feet];
-                          v28 = [a1 isEqual:v27];
+                          feet = [MEMORY[0x1E696B058] feet];
+                          v28 = [self isEqual:feet];
 
                           if (v28)
                           {
@@ -136,8 +136,8 @@
 
                           else
                           {
-                            v29 = [MEMORY[0x1E696B058] yards];
-                            v30 = [a1 isEqual:v29];
+                            yards = [MEMORY[0x1E696B058] yards];
+                            v30 = [self isEqual:yards];
 
                             if (v30)
                             {
@@ -146,8 +146,8 @@
 
                             else
                             {
-                              v31 = [MEMORY[0x1E696B058] miles];
-                              v32 = [a1 isEqual:v31];
+                              miles = [MEMORY[0x1E696B058] miles];
+                              v32 = [self isEqual:miles];
 
                               if (v32)
                               {
@@ -156,8 +156,8 @@
 
                               else
                               {
-                                v33 = [MEMORY[0x1E696B058] scandinavianMiles];
-                                v34 = [a1 isEqual:v33];
+                                scandinavianMiles = [MEMORY[0x1E696B058] scandinavianMiles];
+                                v34 = [self isEqual:scandinavianMiles];
 
                                 if (v34)
                                 {
@@ -166,8 +166,8 @@
 
                                 else
                                 {
-                                  v35 = [MEMORY[0x1E696B058] lightyears];
-                                  v36 = [a1 isEqual:v35];
+                                  lightyears = [MEMORY[0x1E696B058] lightyears];
+                                  v36 = [self isEqual:lightyears];
 
                                   if (v36)
                                   {
@@ -176,8 +176,8 @@
 
                                   else
                                   {
-                                    v37 = [MEMORY[0x1E696B058] nauticalMiles];
-                                    v38 = [a1 isEqual:v37];
+                                    nauticalMiles = [MEMORY[0x1E696B058] nauticalMiles];
+                                    v38 = [self isEqual:nauticalMiles];
 
                                     if (v38)
                                     {
@@ -186,8 +186,8 @@
 
                                     else
                                     {
-                                      v39 = [MEMORY[0x1E696B058] fathoms];
-                                      v40 = [a1 isEqual:v39];
+                                      fathoms = [MEMORY[0x1E696B058] fathoms];
+                                      v40 = [self isEqual:fathoms];
 
                                       if (v40)
                                       {
@@ -196,8 +196,8 @@
 
                                       else
                                       {
-                                        v41 = [MEMORY[0x1E696B058] furlongs];
-                                        v42 = [a1 isEqual:v41];
+                                        furlongs = [MEMORY[0x1E696B058] furlongs];
+                                        v42 = [self isEqual:furlongs];
 
                                         if (v42)
                                         {
@@ -206,8 +206,8 @@
 
                                         else
                                         {
-                                          v43 = [MEMORY[0x1E696B058] astronomicalUnits];
-                                          v44 = [a1 isEqual:v43];
+                                          astronomicalUnits = [MEMORY[0x1E696B058] astronomicalUnits];
+                                          v44 = [self isEqual:astronomicalUnits];
 
                                           if (v44)
                                           {
@@ -216,14 +216,14 @@
 
                                           else
                                           {
-                                            v45 = [MEMORY[0x1E696B058] parsecs];
-                                            v46 = [a1 isEqual:v45];
+                                            parsecs = [MEMORY[0x1E696B058] parsecs];
+                                            v46 = [self isEqual:parsecs];
 
                                             if ((v46 & 1) == 0)
                                             {
                                               v49 = MEMORY[0x1E695DF30];
                                               v50 = *MEMORY[0x1E695D930];
-                                              v51 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unknown unit %@", a1];
+                                              v51 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unknown unit %@", self];
                                               v52 = [v49 exceptionWithName:v50 reason:v51 userInfo:0];
                                               v53 = v52;
 
@@ -253,9 +253,9 @@
     }
   }
 
-  v47 = [(__CFString *)v4 if_ASCIIStringByUppercasingFirstCharacter];
+  if_ASCIIStringByUppercasingFirstCharacter = [(__CFString *)v4 if_ASCIIStringByUppercasingFirstCharacter];
 
-  return v47;
+  return if_ASCIIStringByUppercasingFirstCharacter;
 }
 
 @end

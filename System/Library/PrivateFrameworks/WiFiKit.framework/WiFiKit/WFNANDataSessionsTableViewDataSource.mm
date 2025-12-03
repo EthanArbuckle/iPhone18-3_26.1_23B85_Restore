@@ -1,36 +1,36 @@
 @interface WFNANDataSessionsTableViewDataSource
-- (WFNANDataSessionsTableViewDataSource)initWithTableView:(id)a3 context:(id)a4 publisher:(id)a5 sections:(id)a6 cellProvider:(id)a7;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
+- (WFNANDataSessionsTableViewDataSource)initWithTableView:(id)view context:(id)context publisher:(id)publisher sections:(id)sections cellProvider:(id)provider;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
 @end
 
 @implementation WFNANDataSessionsTableViewDataSource
 
-- (WFNANDataSessionsTableViewDataSource)initWithTableView:(id)a3 context:(id)a4 publisher:(id)a5 sections:(id)a6 cellProvider:(id)a7
+- (WFNANDataSessionsTableViewDataSource)initWithTableView:(id)view context:(id)context publisher:(id)publisher sections:(id)sections cellProvider:(id)provider
 {
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  contextCopy = context;
+  publisherCopy = publisher;
+  sectionsCopy = sections;
   v19.receiver = self;
   v19.super_class = WFNANDataSessionsTableViewDataSource;
-  v16 = [(UITableViewDiffableDataSource *)&v19 initWithTableView:a3 cellProvider:a7];
+  v16 = [(UITableViewDiffableDataSource *)&v19 initWithTableView:view cellProvider:provider];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_sections, a6);
-    objc_storeStrong(&v17->_context, a4);
-    objc_storeStrong(&v17->_publisher, a5);
+    objc_storeStrong(&v16->_sections, sections);
+    objc_storeStrong(&v17->_context, context);
+    objc_storeStrong(&v17->_publisher, publisher);
   }
 
   return v17;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v5 = [(WFNANDataSessionsTableViewDataSource *)self sections];
-  v6 = [v5 objectAtIndexedSubscript:a4];
-  v7 = [v6 unsignedIntegerValue];
+  sections = [(WFNANDataSessionsTableViewDataSource *)self sections];
+  v6 = [sections objectAtIndexedSubscript:section];
+  unsignedIntegerValue = [v6 unsignedIntegerValue];
 
-  if (v7)
+  if (unsignedIntegerValue)
   {
     v8 = 0;
   }

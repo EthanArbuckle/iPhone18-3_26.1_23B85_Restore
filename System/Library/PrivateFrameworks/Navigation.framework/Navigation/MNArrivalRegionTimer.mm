@@ -1,9 +1,9 @@
 @interface MNArrivalRegionTimer
 - (MNArrivalRegionTimer)init;
-- (MNArrivalRegionTimer)initWithArrivalRegion:(id)a3;
+- (MNArrivalRegionTimer)initWithArrivalRegion:(id)region;
 - (MNArrivalRegionTimerDelegate)delegate;
 - (void)dealloc;
-- (void)updateForLocation:(id)a3;
+- (void)updateForLocation:(id)location;
 @end
 
 @implementation MNArrivalRegionTimer
@@ -15,19 +15,19 @@
   return WeakRetained;
 }
 
-- (void)updateForLocation:(id)a3
+- (void)updateForLocation:(id)location
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [v4 coordinate];
+  locationCopy = location;
+  [locationCopy coordinate];
   v6 = v5;
   v8 = v7;
   v9 = self->_timer == 0;
-  v10 = [(GEOArrivalRegion *)self->_arrivalRegion arrivalRegion];
-  v11 = v10;
+  arrivalRegion = [(GEOArrivalRegion *)self->_arrivalRegion arrivalRegion];
+  v11 = arrivalRegion;
   if (!v9)
   {
-    [v4 horizontalAccuracy];
+    [locationCopy horizontalAccuracy];
     v13 = [v11 containsCoordinate:v6 radius:{v8, v12}];
 
     if (v13)
@@ -38,7 +38,7 @@
     goto LABEL_3;
   }
 
-  v18 = [v10 containsCoordinate:{v6, v8}];
+  v18 = [arrivalRegion containsCoordinate:{v6, v8}];
 
   if ((v18 & 1) == 0)
   {
@@ -67,13 +67,13 @@ LABEL_3:
   v19 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
   {
-    v20 = [(GEOArrivalRegion *)self->_arrivalRegion endNavigationTimeoutThreshold];
+    endNavigationTimeoutThreshold = [(GEOArrivalRegion *)self->_arrivalRegion endNavigationTimeoutThreshold];
     LODWORD(buf) = 67109120;
-    HIDWORD(buf) = v20;
+    HIDWORD(buf) = endNavigationTimeoutThreshold;
     _os_log_impl(&dword_1D311E000, v19, OS_LOG_TYPE_INFO, "Arrival timeout region entered. Setting timer for %u seconds", &buf, 8u);
   }
 
-  v21 = [(GEOArrivalRegion *)self->_arrivalRegion endNavigationTimeoutThreshold];
+  endNavigationTimeoutThreshold2 = [(GEOArrivalRegion *)self->_arrivalRegion endNavigationTimeoutThreshold];
   objc_initWeak(&buf, self);
   v22 = [MNDispatchTimer alloc];
   v23 = MNNavigationQueue();
@@ -82,7 +82,7 @@ LABEL_3:
   v28[2] = __42__MNArrivalRegionTimer_updateForLocation___block_invoke;
   v28[3] = &unk_1E8430EA0;
   objc_copyWeak(&v29, &buf);
-  v24 = [(MNDispatchTimer *)v22 initWithTime:v23 queue:v28 handler:v21];
+  v24 = [(MNDispatchTimer *)v22 initWithTime:v23 queue:v28 handler:endNavigationTimeoutThreshold2];
   v26 = self->_timer;
   v25 = &self->_timer;
   *v25 = v24;
@@ -119,22 +119,22 @@ void __42__MNArrivalRegionTimer_updateForLocation___block_invoke(uint64_t a1)
   [(MNArrivalRegionTimer *)&v3 dealloc];
 }
 
-- (MNArrivalRegionTimer)initWithArrivalRegion:(id)a3
+- (MNArrivalRegionTimer)initWithArrivalRegion:(id)region
 {
-  v5 = a3;
-  if ([v5 arrivalRegionAction] == 4 && objc_msgSend(v5, "endNavigationTimeoutThreshold") && (v9.receiver = self, v9.super_class = MNArrivalRegionTimer, v6 = -[MNArrivalRegionTimer init](&v9, sel_init), (self = v6) != 0))
+  regionCopy = region;
+  if ([regionCopy arrivalRegionAction] == 4 && objc_msgSend(regionCopy, "endNavigationTimeoutThreshold") && (v9.receiver = self, v9.super_class = MNArrivalRegionTimer, v6 = -[MNArrivalRegionTimer init](&v9, sel_init), (self = v6) != 0))
   {
-    objc_storeStrong(&v6->_arrivalRegion, a3);
+    objc_storeStrong(&v6->_arrivalRegion, region);
     self = self;
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
 - (MNArrivalRegionTimer)init

@@ -1,23 +1,23 @@
 @interface CADChangeTrackingClientId
 - (BOOL)hasCustomClientId;
 - (BOOL)hasSuffix;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToChangeTrackingClientId:(id)a3;
-- (CADChangeTrackingClientId)clientIdWithBundleId:(id)a3;
-- (CADChangeTrackingClientId)initWithCoder:(id)a3;
-- (CADChangeTrackingClientId)initWithCustomClientId:(id)a3;
-- (CADChangeTrackingClientId)initWithSuffix:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToChangeTrackingClientId:(id)id;
+- (CADChangeTrackingClientId)clientIdWithBundleId:(id)id;
+- (CADChangeTrackingClientId)initWithCoder:(id)coder;
+- (CADChangeTrackingClientId)initWithCustomClientId:(id)id;
+- (CADChangeTrackingClientId)initWithSuffix:(id)suffix;
 - (id)clientId;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CADChangeTrackingClientId
 
 - (BOOL)hasCustomClientId
 {
-  v2 = [(CADChangeTrackingClientId *)self customClientId];
-  v3 = [v2 length] != 0;
+  customClientId = [(CADChangeTrackingClientId *)self customClientId];
+  v3 = [customClientId length] != 0;
 
   return v3;
 }
@@ -27,8 +27,8 @@
   if ([(CADChangeTrackingClientId *)self hasCustomClientId])
   {
     v3 = MEMORY[0x277CCACA8];
-    v4 = [(CADChangeTrackingClientId *)self clientId];
-    [v3 stringWithFormat:@"ClientId: {%@}", v4];
+    clientId = [(CADChangeTrackingClientId *)self clientId];
+    [v3 stringWithFormat:@"ClientId: {%@}", clientId];
     v6 = LABEL_5:;
 
     goto LABEL_7;
@@ -37,8 +37,8 @@
   if ([(CADChangeTrackingClientId *)self hasSuffix])
   {
     v5 = MEMORY[0x277CCACA8];
-    v4 = [(CADChangeTrackingClientId *)self suffix];
-    [v5 stringWithFormat:@"Suffix: {%@}", v4];
+    clientId = [(CADChangeTrackingClientId *)self suffix];
+    [v5 stringWithFormat:@"Suffix: {%@}", clientId];
     goto LABEL_5;
   }
 
@@ -50,55 +50,55 @@ LABEL_7:
 
 - (BOOL)hasSuffix
 {
-  v2 = [(CADChangeTrackingClientId *)self suffix];
-  v3 = [v2 length] != 0;
+  suffix = [(CADChangeTrackingClientId *)self suffix];
+  v3 = [suffix length] != 0;
 
   return v3;
 }
 
-- (CADChangeTrackingClientId)initWithCustomClientId:(id)a3
+- (CADChangeTrackingClientId)initWithCustomClientId:(id)id
 {
-  v5 = a3;
+  idCopy = id;
   v9.receiver = self;
   v9.super_class = CADChangeTrackingClientId;
   v6 = [(CADChangeTrackingClientId *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_customClientId, a3);
+    objc_storeStrong(&v6->_customClientId, id);
   }
 
   return v7;
 }
 
-- (CADChangeTrackingClientId)initWithSuffix:(id)a3
+- (CADChangeTrackingClientId)initWithSuffix:(id)suffix
 {
-  v5 = a3;
+  suffixCopy = suffix;
   v9.receiver = self;
   v9.super_class = CADChangeTrackingClientId;
   v6 = [(CADChangeTrackingClientId *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_suffix, a3);
+    objc_storeStrong(&v6->_suffix, suffix);
   }
 
   return v7;
 }
 
-- (CADChangeTrackingClientId)initWithCoder:(id)a3
+- (CADChangeTrackingClientId)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = CADChangeTrackingClientId;
   v5 = [(CADChangeTrackingClientId *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ClientId"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ClientId"];
     customClientId = v5->_customClientId;
     v5->_customClientId = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Suffix"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Suffix"];
     suffix = v5->_suffix;
     v5->_suffix = v8;
   }
@@ -106,78 +106,78 @@ LABEL_7:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(CADChangeTrackingClientId *)self customClientId];
-  [v4 encodeObject:v5 forKey:@"ClientId"];
+  coderCopy = coder;
+  customClientId = [(CADChangeTrackingClientId *)self customClientId];
+  [coderCopy encodeObject:customClientId forKey:@"ClientId"];
 
-  v6 = [(CADChangeTrackingClientId *)self suffix];
-  [v4 encodeObject:v6 forKey:@"Suffix"];
+  suffix = [(CADChangeTrackingClientId *)self suffix];
+  [coderCopy encodeObject:suffix forKey:@"Suffix"];
 }
 
 - (id)clientId
 {
   if ([(CADChangeTrackingClientId *)self hasCustomClientId])
   {
-    v3 = [(CADChangeTrackingClientId *)self customClientId];
+    customClientId = [(CADChangeTrackingClientId *)self customClientId];
   }
 
   else if ([(CADChangeTrackingClientId *)self hasSuffix])
   {
-    v4 = [(CADChangeTrackingClientId *)self suffix];
-    v3 = [@"~" stringByAppendingString:v4];
+    suffix = [(CADChangeTrackingClientId *)self suffix];
+    customClientId = [@"~" stringByAppendingString:suffix];
   }
 
   else
   {
-    v3 = 0;
+    customClientId = 0;
   }
 
-  return v3;
+  return customClientId;
 }
 
-- (CADChangeTrackingClientId)clientIdWithBundleId:(id)a3
+- (CADChangeTrackingClientId)clientIdWithBundleId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   if ([(CADChangeTrackingClientId *)self hasCustomClientId])
   {
-    v5 = [(CADChangeTrackingClientId *)self customClientId];
+    customClientId = [(CADChangeTrackingClientId *)self customClientId];
   }
 
   else
   {
     if ([(CADChangeTrackingClientId *)self hasSuffix])
     {
-      v6 = [(CADChangeTrackingClientId *)self suffix];
-      v7 = [v4 stringByAppendingFormat:@"~%@", v6];
+      suffix = [(CADChangeTrackingClientId *)self suffix];
+      v7 = [idCopy stringByAppendingFormat:@"~%@", suffix];
 
       goto LABEL_7;
     }
 
-    v5 = v4;
+    customClientId = idCopy;
   }
 
-  v7 = v5;
+  v7 = customClientId;
 LABEL_7:
 
   return v7;
 }
 
-- (BOOL)isEqualToChangeTrackingClientId:(id)a3
+- (BOOL)isEqualToChangeTrackingClientId:(id)id
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  idCopy = id;
+  v5 = idCopy;
+  if (idCopy == self)
   {
     v8 = 1;
   }
 
-  else if (v4 && ([(CADChangeTrackingClientId *)self suffix], v6 = objc_claimAutoreleasedReturnValue(), [(CADChangeTrackingClientId *)v5 suffix], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, v6 == v7))
+  else if (idCopy && ([(CADChangeTrackingClientId *)self suffix], v6 = objc_claimAutoreleasedReturnValue(), [(CADChangeTrackingClientId *)v5 suffix], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, v6 == v7))
   {
-    v9 = [(CADChangeTrackingClientId *)self customClientId];
-    v10 = [(CADChangeTrackingClientId *)v5 customClientId];
-    v8 = v9 == v10;
+    customClientId = [(CADChangeTrackingClientId *)self customClientId];
+    customClientId2 = [(CADChangeTrackingClientId *)v5 customClientId];
+    v8 = customClientId == customClientId2;
   }
 
   else
@@ -188,10 +188,10 @@ LABEL_7:
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -199,7 +199,7 @@ LABEL_7:
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(CADChangeTrackingClientId *)self isEqualToChangeTrackingClientId:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(CADChangeTrackingClientId *)self isEqualToChangeTrackingClientId:equalCopy];
   }
 
   return v5;

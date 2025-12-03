@@ -1,30 +1,30 @@
 @interface CACImportExportResult
-- (CACImportExportResult)initWithError:(id)a3 title:(id)a4 message:(id)a5;
-- (void)displayAlertForViewController:(id)a3;
+- (CACImportExportResult)initWithError:(id)error title:(id)title message:(id)message;
+- (void)displayAlertForViewController:(id)controller;
 @end
 
 @implementation CACImportExportResult
 
-- (CACImportExportResult)initWithError:(id)a3 title:(id)a4 message:(id)a5
+- (CACImportExportResult)initWithError:(id)error title:(id)title message:(id)message
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  errorCopy = error;
+  titleCopy = title;
+  messageCopy = message;
   v11 = [(CACImportExportResult *)self init];
   v12 = v11;
   if (v11)
   {
-    [(CACImportExportResult *)v11 setError:v8];
-    [(CACImportExportResult *)v12 setTitle:v9];
-    [(CACImportExportResult *)v12 setMessage:v10];
+    [(CACImportExportResult *)v11 setError:errorCopy];
+    [(CACImportExportResult *)v12 setTitle:titleCopy];
+    [(CACImportExportResult *)v12 setMessage:messageCopy];
   }
 
   return v12;
 }
 
-- (void)displayAlertForViewController:(id)a3
+- (void)displayAlertForViewController:(id)controller
 {
-  v11 = a3;
+  controllerCopy = controller;
   v4 = MEMORY[0x277D75110];
   error = self->_error;
   if (error)
@@ -47,7 +47,7 @@
   v10 = [v8 actionWithTitle:v9 style:1 handler:&__block_literal_global_44];
   [v7 addAction:v10];
 
-  [v11 presentViewController:v7 animated:1 completion:0];
+  [controllerCopy presentViewController:v7 animated:1 completion:0];
 }
 
 @end

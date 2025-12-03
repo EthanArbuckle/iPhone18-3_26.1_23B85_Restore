@@ -1,12 +1,12 @@
 @interface IdentityTypePicker.Coordinator
-- (void)valueChanged:(id)a3;
+- (void)valueChanged:(id)changed;
 @end
 
 @implementation IdentityTypePicker.Coordinator
 
-- (void)valueChanged:(id)a3
+- (void)valueChanged:(id)changed
 {
-  v3 = a3;
+  changedCopy = changed;
   sub_1A34C9010();
   sub_1A34CCCB0();
   sub_1A34CA900();

@@ -1,6 +1,6 @@
 @interface SeymourUI_MarketingHeaderBannerCellAccessibility
 - (id)accessibilityLabel;
-- (void)accessibilityConfigureForPlayback:(BOOL)a3;
+- (void)accessibilityConfigureForPlayback:(BOOL)playback;
 @end
 
 @implementation SeymourUI_MarketingHeaderBannerCellAccessibility
@@ -13,19 +13,19 @@
   return v4;
 }
 
-- (void)accessibilityConfigureForPlayback:(BOOL)a3
+- (void)accessibilityConfigureForPlayback:(BOOL)playback
 {
-  v3 = a3;
+  playbackCopy = playback;
   v7.receiver = self;
   v7.super_class = SeymourUI_MarketingHeaderBannerCellAccessibility;
-  v5 = [(SeymourUI_MarketingHeaderBannerCellAccessibility *)&v7 accessibilityTraits];
+  accessibilityTraits = [(SeymourUI_MarketingHeaderBannerCellAccessibility *)&v7 accessibilityTraits];
   v6 = MEMORY[0x29EDC7FC8];
-  if (!v3)
+  if (!playbackCopy)
   {
     v6 = MEMORY[0x29EDC7F98];
   }
 
-  [(SeymourUI_MarketingHeaderBannerCellAccessibility *)self setAccessibilityTraits:*v6 | *MEMORY[0x29EDC7F70] | v5];
+  [(SeymourUI_MarketingHeaderBannerCellAccessibility *)self setAccessibilityTraits:*v6 | *MEMORY[0x29EDC7F70] | accessibilityTraits];
 }
 
 @end

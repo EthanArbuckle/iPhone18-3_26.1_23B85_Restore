@@ -1,5 +1,5 @@
 @interface MPSubscriptionStatusPlaybackInformation
-- (MPSubscriptionStatusPlaybackInformation)initWithICSubscriptionStatus:(id)a3;
+- (MPSubscriptionStatusPlaybackInformation)initWithICSubscriptionStatus:(id)status;
 - (id)description;
 @end
 
@@ -15,23 +15,23 @@
   return v6;
 }
 
-- (MPSubscriptionStatusPlaybackInformation)initWithICSubscriptionStatus:(id)a3
+- (MPSubscriptionStatusPlaybackInformation)initWithICSubscriptionStatus:(id)status
 {
-  v5 = a3;
+  statusCopy = status;
   v6 = [(MPSubscriptionStatusPlaybackInformation *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_subscriptionStatusObject, a3);
-    v8 = [v5 statusType];
-    v9 = [v5 carrierBundlingStatusType];
-    v10 = [v5 reasonType];
-    if (v8 == 1)
+    objc_storeStrong(&v6->_subscriptionStatusObject, status);
+    statusType = [statusCopy statusType];
+    carrierBundlingStatusType = [statusCopy carrierBundlingStatusType];
+    reasonType = [statusCopy reasonType];
+    if (statusType == 1)
     {
       v11 = 17;
       v12 = 16;
       v13 = 19;
-      if (v9 != 2 || v10)
+      if (carrierBundlingStatusType != 2 || reasonType)
       {
         goto LABEL_9;
       }
@@ -39,14 +39,14 @@
       goto LABEL_8;
     }
 
-    if (v9 == 4)
+    if (carrierBundlingStatusType == 4)
     {
       v11 = 16;
       v12 = 18;
       goto LABEL_10;
     }
 
-    if (v9 == 2)
+    if (carrierBundlingStatusType == 2)
     {
 LABEL_8:
       v11 = 16;

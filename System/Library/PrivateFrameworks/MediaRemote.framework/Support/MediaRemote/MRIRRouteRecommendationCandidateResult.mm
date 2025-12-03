@@ -4,15 +4,15 @@
 - (BOOL)isLockScreenControl;
 - (MRIRRouteRecommendationCandidate)candidate;
 - (MRIRRouteRecommendationCandidateResult)init;
-- (MRIRRouteRecommendationCandidateResult)initWithClassification:(int64_t)a3 classificationDescription:(id)a4 candidate:(id)a5 sortingHint:(id)a6 isCallToAction:(BOOL)a7 isLockScreenControl:(BOOL)a8 isConservativeFiltered:(BOOL)a9;
+- (MRIRRouteRecommendationCandidateResult)initWithClassification:(int64_t)classification classificationDescription:(id)description candidate:(id)candidate sortingHint:(id)hint isCallToAction:(BOOL)action isLockScreenControl:(BOOL)control isConservativeFiltered:(BOOL)filtered;
 - (NSNumber)sortingHint;
 - (int64_t)classification;
-- (void)setCandidate:(id)a3;
-- (void)setClassification:(int64_t)a3;
-- (void)setIsCallToAction:(BOOL)a3;
-- (void)setIsConservativeFiltered:(BOOL)a3;
-- (void)setIsLockScreenControl:(BOOL)a3;
-- (void)setSortingHint:(id)a3;
+- (void)setCandidate:(id)candidate;
+- (void)setClassification:(int64_t)classification;
+- (void)setIsCallToAction:(BOOL)action;
+- (void)setIsConservativeFiltered:(BOOL)filtered;
+- (void)setIsLockScreenControl:(BOOL)control;
+- (void)setSortingHint:(id)hint;
 @end
 
 @implementation MRIRRouteRecommendationCandidateResult
@@ -24,11 +24,11 @@
   return *(self + v3);
 }
 
-- (void)setClassification:(int64_t)a3
+- (void)setClassification:(int64_t)classification
 {
   v5 = OBJC_IVAR___MRIRRouteRecommendationCandidateResult_classification;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = classification;
 }
 
 - (MRIRRouteRecommendationCandidate)candidate
@@ -38,13 +38,13 @@
   return *(self + v3);
 }
 
-- (void)setCandidate:(id)a3
+- (void)setCandidate:(id)candidate
 {
   v5 = OBJC_IVAR___MRIRRouteRecommendationCandidateResult_candidate;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = a3;
-  v7 = a3;
+  *(self + v5) = candidate;
+  candidateCopy = candidate;
 }
 
 - (NSNumber)sortingHint
@@ -54,13 +54,13 @@
   return *(self + v3);
 }
 
-- (void)setSortingHint:(id)a3
+- (void)setSortingHint:(id)hint
 {
   v5 = OBJC_IVAR___MRIRRouteRecommendationCandidateResult_sortingHint;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = a3;
-  v7 = a3;
+  *(self + v5) = hint;
+  hintCopy = hint;
 }
 
 - (BOOL)isCallToAction
@@ -70,11 +70,11 @@
   return *(self + v3);
 }
 
-- (void)setIsCallToAction:(BOOL)a3
+- (void)setIsCallToAction:(BOOL)action
 {
   v5 = OBJC_IVAR___MRIRRouteRecommendationCandidateResult_isCallToAction;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = action;
 }
 
 - (BOOL)isLockScreenControl
@@ -84,11 +84,11 @@
   return *(self + v3);
 }
 
-- (void)setIsLockScreenControl:(BOOL)a3
+- (void)setIsLockScreenControl:(BOOL)control
 {
   v5 = OBJC_IVAR___MRIRRouteRecommendationCandidateResult_isLockScreenControl;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = control;
 }
 
 - (BOOL)isConservativeFiltered
@@ -98,16 +98,16 @@
   return *(self + v3);
 }
 
-- (void)setIsConservativeFiltered:(BOOL)a3
+- (void)setIsConservativeFiltered:(BOOL)filtered
 {
   v5 = OBJC_IVAR___MRIRRouteRecommendationCandidateResult_isConservativeFiltered;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = filtered;
 }
 
-- (MRIRRouteRecommendationCandidateResult)initWithClassification:(int64_t)a3 classificationDescription:(id)a4 candidate:(id)a5 sortingHint:(id)a6 isCallToAction:(BOOL)a7 isLockScreenControl:(BOOL)a8 isConservativeFiltered:(BOOL)a9
+- (MRIRRouteRecommendationCandidateResult)initWithClassification:(int64_t)classification classificationDescription:(id)description candidate:(id)candidate sortingHint:(id)hint isCallToAction:(BOOL)action isLockScreenControl:(BOOL)control isConservativeFiltered:(BOOL)filtered
 {
-  if (a4)
+  if (description)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
     v15 = v14;
@@ -118,9 +118,9 @@
     v15 = 0;
   }
 
-  v16 = a5;
-  v17 = a6;
-  return sub_10038D4B4(a3, v18, v15, v16, a6, a7, a8, a9);
+  candidateCopy = candidate;
+  hintCopy = hint;
+  return sub_10038D4B4(classification, v18, v15, candidateCopy, hint, action, control, filtered);
 }
 
 - (MRIRRouteRecommendationCandidateResult)init

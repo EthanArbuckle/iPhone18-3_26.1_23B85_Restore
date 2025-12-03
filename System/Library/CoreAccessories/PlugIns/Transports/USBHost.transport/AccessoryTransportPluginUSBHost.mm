@@ -1,28 +1,28 @@
 @interface AccessoryTransportPluginUSBHost
 + (__CFDictionary)_createVIDPIDMatchingDictionary;
-- (BOOL)clearUSBHostHIDInterfacesForConnectionUUID:(id)a3;
-- (BOOL)configureUSBHostNCMInterface:(unsigned __int8)a3 asCarPlay:(BOOL)a4 forConnectionUUID:(id)a5;
-- (BOOL)lockUSBHostInterfacesForConnectionUUID:(id)a3;
-- (BOOL)sendOutgoingData:(id)a3 forEndpointWithUUID:(id)a4 connectionUUID:(id)a5;
-- (BOOL)setNeedOutZLP:(BOOL)a3 maxOutLength:(unsigned int)a4 forConnectionUUID:(id)a5;
-- (BOOL)setUSBHostHIDInterface:(unsigned __int8)a3 withHIDFunction:(unsigned int)a4 forConnectionUUID:(id)a5;
-- (void)VIDPIDServiceAdded:(unsigned int)a3;
-- (void)VIDPIDServiceRemoved:(unsigned int)a3;
-- (void)_handleCloseEASessionNotificationForEndpoint:(id)a3 connection:(id)a4;
-- (void)_handleOpenEASessionNotificationForEndpoint:(id)a3 connection:(id)a4;
-- (void)_handleOpenSocketFromAccessoryToAppNotification:(id)a3;
-- (void)_handleOpenSocketFromAppToAccessoryNotification:(id)a3;
+- (BOOL)clearUSBHostHIDInterfacesForConnectionUUID:(id)d;
+- (BOOL)configureUSBHostNCMInterface:(unsigned __int8)interface asCarPlay:(BOOL)play forConnectionUUID:(id)d;
+- (BOOL)lockUSBHostInterfacesForConnectionUUID:(id)d;
+- (BOOL)sendOutgoingData:(id)data forEndpointWithUUID:(id)d connectionUUID:(id)iD;
+- (BOOL)setNeedOutZLP:(BOOL)p maxOutLength:(unsigned int)length forConnectionUUID:(id)d;
+- (BOOL)setUSBHostHIDInterface:(unsigned __int8)interface withHIDFunction:(unsigned int)function forConnectionUUID:(id)d;
+- (void)VIDPIDServiceAdded:(unsigned int)added;
+- (void)VIDPIDServiceRemoved:(unsigned int)removed;
+- (void)_handleCloseEASessionNotificationForEndpoint:(id)endpoint connection:(id)connection;
+- (void)_handleOpenEASessionNotificationForEndpoint:(id)endpoint connection:(id)connection;
+- (void)_handleOpenSocketFromAccessoryToAppNotification:(id)notification;
+- (void)_handleOpenSocketFromAppToAccessoryNotification:(id)notification;
 - (void)configureIOKit;
 - (void)configureIOKitVIDPID;
 - (void)initPlugin;
-- (void)serviceAdded:(unsigned int)a3;
-- (void)serviceRemoved:(unsigned int)a3;
+- (void)serviceAdded:(unsigned int)added;
+- (void)serviceRemoved:(unsigned int)removed;
 - (void)startConfiguringIOKit;
 - (void)startPlugin;
 - (void)stopPlugin;
 - (void)tearDownIOKit;
 - (void)tearDownIOKitVIDPID;
-- (void)unlockUSBHostInterfacesForConnectionUUID:(id)a3;
+- (void)unlockUSBHostInterfacesForConnectionUUID:(id)d;
 @end
 
 @implementation AccessoryTransportPluginUSBHost
@@ -117,34 +117,34 @@
   v15 = objc_alloc_init(MEMORY[0x277CBEB38]);
   [(AccessoryTransportPluginUSBHost *)self setAccessoryiAPIntefaceTrafficWaitList:v15];
 
-  v16 = [(AccessoryTransportPluginUSBHost *)self accessoryConnectionsLock];
-  v17 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, v16);
+  accessoryConnectionsLock = [(AccessoryTransportPluginUSBHost *)self accessoryConnectionsLock];
+  v17 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, accessoryConnectionsLock);
   [(AccessoryTransportPluginUSBHost *)self setAccessoryiAPIntefaceTrafficTimer:v17];
 
-  v18 = [(AccessoryTransportPluginUSBHost *)self accessoryiAPIntefaceTrafficTimer];
-  dispatch_source_set_timer(v18, 0xFFFFFFFFFFFFFFFFLL, 0xFFFFFFFFFFFFFFFFLL, 0);
+  accessoryiAPIntefaceTrafficTimer = [(AccessoryTransportPluginUSBHost *)self accessoryiAPIntefaceTrafficTimer];
+  dispatch_source_set_timer(accessoryiAPIntefaceTrafficTimer, 0xFFFFFFFFFFFFFFFFLL, 0xFFFFFFFFFFFFFFFFLL, 0);
 
   objc_initWeak(buf, self);
-  v19 = [(AccessoryTransportPluginUSBHost *)self accessoryiAPIntefaceTrafficTimer];
+  accessoryiAPIntefaceTrafficTimer2 = [(AccessoryTransportPluginUSBHost *)self accessoryiAPIntefaceTrafficTimer];
   handler[0] = MEMORY[0x277D85DD0];
   handler[1] = 3221225472;
   handler[2] = __46__AccessoryTransportPluginUSBHost_startPlugin__block_invoke;
   handler[3] = &unk_2789ECE38;
   handler[4] = self;
   objc_copyWeak(&v31, buf);
-  dispatch_source_set_event_handler(v19, handler);
+  dispatch_source_set_event_handler(accessoryiAPIntefaceTrafficTimer2, handler);
 
-  v20 = [(AccessoryTransportPluginUSBHost *)self accessoryiAPIntefaceTrafficTimer];
-  dispatch_activate(v20);
+  accessoryiAPIntefaceTrafficTimer3 = [(AccessoryTransportPluginUSBHost *)self accessoryiAPIntefaceTrafficTimer];
+  dispatch_activate(accessoryiAPIntefaceTrafficTimer3);
 
-  v21 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v21 addObserver:self selector:sel__handleOpenSocketFromAccessoryToAppNotification_ name:*MEMORY[0x277CFD200] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__handleOpenSocketFromAccessoryToAppNotification_ name:*MEMORY[0x277CFD200] object:0];
 
-  v22 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v22 addObserver:self selector:sel__handleOpenSocketFromAppToAccessoryNotification_ name:*MEMORY[0x277CFD208] object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel__handleOpenSocketFromAppToAccessoryNotification_ name:*MEMORY[0x277CFD208] object:0];
 
-  v23 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v23 addObserver:self selector:sel_startConfiguringIOKit name:@"ACCTransportIOAccessory_IOAccessoryManagerArrivedNotification" object:0];
+  defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter3 addObserver:self selector:sel_startConfiguringIOKit name:@"ACCTransportIOAccessory_IOAccessoryManagerArrivedNotification" object:0];
 
   if (gLogObjects && gNumLogObjects >= 1)
   {
@@ -169,8 +169,8 @@
   }
 
   [(AccessoryTransportPluginUSBHost *)self setIsRunning:1];
-  v26 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v26 postNotificationName:@"ACCTransportIOAccessory_USBHostPluginArrivedNotification" object:0];
+  defaultCenter4 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter4 postNotificationName:@"ACCTransportIOAccessory_USBHostPluginArrivedNotification" object:0];
 
   v27[0] = MEMORY[0x277D85DD0];
   v27[1] = 3221225472;
@@ -469,11 +469,11 @@ void __46__AccessoryTransportPluginUSBHost_startPlugin__block_invoke_24(uint64_t
 
 - (void)stopPlugin
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277CFD200] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277CFD200] object:0];
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 removeObserver:self name:*MEMORY[0x277CFD208] object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 removeObserver:self name:*MEMORY[0x277CFD208] object:0];
 
   [(AccessoryTransportPluginUSBHost *)self tearDownIOKit];
   v8.receiver = self;
@@ -588,7 +588,7 @@ uint64_t __56__AccessoryTransportPluginUSBHost_startConfiguringIOKit__block_invo
   IOObjectRelease(iokitRemovedIterator);
 }
 
-- (void)serviceAdded:(unsigned int)a3
+- (void)serviceAdded:(unsigned int)added
 {
   v189 = *MEMORY[0x277D85DE8];
   v3 = 0x2812FF000uLL;
@@ -624,7 +624,7 @@ uint64_t __56__AccessoryTransportPluginUSBHost_startConfiguringIOKit__block_invo
     [AccessoryTransportPluginUSBHost serviceAdded:];
   }
 
-  v8 = IOIteratorNext(a3);
+  v8 = IOIteratorNext(added);
   if (v8)
   {
     v9 = v8;
@@ -1324,12 +1324,12 @@ uint64_t __56__AccessoryTransportPluginUSBHost_startConfiguringIOKit__block_invo
               _os_log_impl(&dword_2336F5000, v136, OS_LOG_TYPE_DEFAULT, "%s:%d service %d, name '%s', vid / pid = 0x%x / 0x%x, override transportType %{coreacc:ACCEndpoint_TransportType_t}d -> %{coreacc:ACCEndpoint_TransportType_t}d", buf, 0x3Au);
             }
 
-            v61 = [MEMORY[0x277CCACA8] stringWithFormat:@"0x%x, 0x%x", HIWORD(valuePtr), valuePtr];
+            valuePtr = [MEMORY[0x277CCACA8] stringWithFormat:@"0x%x, 0x%x", HIWORD(valuePtr), valuePtr];
           }
 
           else
           {
-            v61 = 0;
+            valuePtr = 0;
             v62 = 8;
             LODWORD(v9) = v150;
           }
@@ -1337,7 +1337,7 @@ uint64_t __56__AccessoryTransportPluginUSBHost_startConfiguringIOKit__block_invo
 
         else
         {
-          v61 = 0;
+          valuePtr = 0;
           v62 = 8;
           if (HIWORD(valuePtr) == 1452 && valuePtr == 5905)
           {
@@ -1384,7 +1384,7 @@ uint64_t __56__AccessoryTransportPluginUSBHost_startConfiguringIOKit__block_invo
               _os_log_impl(&dword_2336F5000, v82, OS_LOG_TYPE_DEFAULT, "%s:%d service %d, name '%s', vid / pid = 0x%x / 0x%x, override transportType %{coreacc:ACCEndpoint_TransportType_t}d -> %{coreacc:ACCEndpoint_TransportType_t}d", buf, 0x3Au);
             }
 
-            v61 = [MEMORY[0x277CCACA8] stringWithFormat:@"0x%x, 0x%x", HIWORD(valuePtr), valuePtr];
+            valuePtr = [MEMORY[0x277CCACA8] stringWithFormat:@"0x%x, 0x%x", HIWORD(valuePtr), valuePtr];
             v62 = 7;
           }
         }
@@ -1395,7 +1395,7 @@ uint64_t __56__AccessoryTransportPluginUSBHost_startConfiguringIOKit__block_invo
       else
       {
         cf = 0;
-        v61 = 0;
+        valuePtr = 0;
         v62 = 8;
       }
 
@@ -1403,7 +1403,7 @@ uint64_t __56__AccessoryTransportPluginUSBHost_startConfiguringIOKit__block_invo
       if (v57 == 95164176)
       {
         v144 = v62;
-        v85 = v61;
+        v85 = valuePtr;
         v86 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:HIWORD(valuePtr)];
         v87 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:valuePtr];
         v180[0] = v141;
@@ -1457,12 +1457,12 @@ uint64_t __56__AccessoryTransportPluginUSBHost_startConfiguringIOKit__block_invo
         [(ACCTransportPlugin *)self setProperties:v93 forConnectionWithUUID:v84];
 
         LODWORD(v9) = v150;
-        v61 = v85;
+        valuePtr = v85;
         v62 = v144;
       }
 
       ParentOfClass = usbUtil_findParentOfClass(v9, "IOUSBHostDevice", "IOService");
-      v148 = v61;
+      v148 = valuePtr;
       if (ParentOfClass)
       {
         v95 = ParentOfClass;
@@ -1527,7 +1527,7 @@ uint64_t __56__AccessoryTransportPluginUSBHost_startConfiguringIOKit__block_invo
           }
 
           IOObjectRelease(v95);
-          v61 = v148;
+          valuePtr = v148;
         }
 
         else
@@ -1538,7 +1538,7 @@ uint64_t __56__AccessoryTransportPluginUSBHost_startConfiguringIOKit__block_invo
         IOObjectRelease(v97);
       }
 
-      v106 = [(ACCTransportPlugin *)self createEndpointWithTransportType:v62 andProtocol:0 andIdentifier:v61 forConnectionWithUUID:v84 publishConnection:0];
+      v106 = [(ACCTransportPlugin *)self createEndpointWithTransportType:v62 andProtocol:0 andIdentifier:valuePtr forConnectionWithUUID:v84 publishConnection:0];
       if (v106)
       {
         v107 = v3;
@@ -1570,7 +1570,7 @@ uint64_t __56__AccessoryTransportPluginUSBHost_startConfiguringIOKit__block_invo
         v160[3] = &unk_2789ECED8;
         v117 = v106;
         v161 = v117;
-        v162 = self;
+        selfCopy = self;
         v118 = v84;
         v163 = v118;
         v164 = HIWORD(valuePtr);
@@ -1578,7 +1578,7 @@ uint64_t __56__AccessoryTransportPluginUSBHost_startConfiguringIOKit__block_invo
         v119 = [(AccessoryIAPInterface *)v114 initWithInterface:v150 vid:v115 pid:v116 aidInfo:cf andDataInHandler:v160];
         if (v119)
         {
-          v120 = [(AccessoryTransportPluginUSBHost *)self accessoryConnectionsLock];
+          accessoryConnectionsLock = [(AccessoryTransportPluginUSBHost *)self accessoryConnectionsLock];
           block[0] = MEMORY[0x277D85DD0];
           block[1] = 3221225472;
           block[2] = __48__AccessoryTransportPluginUSBHost_serviceAdded___block_invoke_84;
@@ -1589,7 +1589,7 @@ uint64_t __56__AccessoryTransportPluginUSBHost_startConfiguringIOKit__block_invo
           v158 = HIWORD(valuePtr);
           v159 = valuePtr;
           v157 = v117;
-          dispatch_sync(v120, block);
+          dispatch_sync(accessoryConnectionsLock, block);
 
           v4 = 0x2812FF000;
         }
@@ -1630,7 +1630,7 @@ uint64_t __56__AccessoryTransportPluginUSBHost_startConfiguringIOKit__block_invo
         }
 
         LODWORD(v9) = v150;
-        v61 = v148;
+        valuePtr = v148;
       }
 
       IOObjectRelease(v9);
@@ -1639,7 +1639,7 @@ uint64_t __56__AccessoryTransportPluginUSBHost_startConfiguringIOKit__block_invo
         CFRelease(cf);
       }
 
-      v9 = IOIteratorNext(a3);
+      v9 = IOIteratorNext(added);
       v10 = MEMORY[0x277D86220];
       v11 = allocator;
     }
@@ -1979,7 +1979,7 @@ void __48__AccessoryTransportPluginUSBHost_serviceAdded___block_invoke_84(uint64
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)serviceRemoved:(unsigned int)a3
+- (void)serviceRemoved:(unsigned int)removed
 {
   v39 = *MEMORY[0x277D85DE8];
   if (gLogObjects)
@@ -2013,7 +2013,7 @@ void __48__AccessoryTransportPluginUSBHost_serviceAdded___block_invoke_84(uint64
     [AccessoryTransportPluginUSBHost serviceRemoved:];
   }
 
-  for (i = IOIteratorNext(a3); i; i = IOIteratorNext(a3))
+  for (i = IOIteratorNext(removed); i; i = IOIteratorNext(removed))
   {
     memset(v38, 0, sizeof(v38));
     v32 = 0;
@@ -2091,7 +2091,7 @@ void __48__AccessoryTransportPluginUSBHost_serviceAdded___block_invoke_84(uint64
       }
     }
 
-    v19 = [(AccessoryTransportPluginUSBHost *)self accessoryConnectionsLock];
+    accessoryConnectionsLock = [(AccessoryTransportPluginUSBHost *)self accessoryConnectionsLock];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __50__AccessoryTransportPluginUSBHost_serviceRemoved___block_invoke;
@@ -2099,26 +2099,26 @@ void __48__AccessoryTransportPluginUSBHost_serviceAdded___block_invoke_84(uint64
     block[4] = self;
     block[5] = &v27;
     block[6] = entryID;
-    dispatch_sync(v19, block);
+    dispatch_sync(accessoryConnectionsLock, block);
 
     if (v28[5])
     {
       [(ACCTransportPlugin *)self destroyConnectionWithUUID:?];
-      v20 = [(AccessoryTransportPluginUSBHost *)self accessoryNativeUSBEndpointsLock];
+      accessoryNativeUSBEndpointsLock = [(AccessoryTransportPluginUSBHost *)self accessoryNativeUSBEndpointsLock];
       v25[0] = MEMORY[0x277D85DD0];
       v25[1] = 3221225472;
       v25[2] = __50__AccessoryTransportPluginUSBHost_serviceRemoved___block_invoke_2;
       v25[3] = &unk_2789ECE88;
       v25[4] = self;
-      dispatch_sync(v20, v25);
+      dispatch_sync(accessoryNativeUSBEndpointsLock, v25);
 
-      v21 = [(AccessoryTransportPluginUSBHost *)self activeEAInterfacesLock];
+      activeEAInterfacesLock = [(AccessoryTransportPluginUSBHost *)self activeEAInterfacesLock];
       v24[0] = MEMORY[0x277D85DD0];
       v24[1] = 3221225472;
       v24[2] = __50__AccessoryTransportPluginUSBHost_serviceRemoved___block_invoke_3;
       v24[3] = &unk_2789ECE88;
       v24[4] = self;
-      dispatch_sync(v21, v24);
+      dispatch_sync(activeEAInterfacesLock, v24);
     }
 
     v22 = IOObjectRelease(i);
@@ -2252,11 +2252,11 @@ void __50__AccessoryTransportPluginUSBHost_serviceRemoved___block_invoke_3(uint6
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleOpenEASessionNotificationForEndpoint:(id)a3 connection:(id)a4
+- (void)_handleOpenEASessionNotificationForEndpoint:(id)endpoint connection:(id)connection
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  endpointCopy = endpoint;
+  connectionCopy = connection;
   if (gLogObjects)
   {
     v8 = gNumLogObjects < 1;
@@ -2286,12 +2286,12 @@ void __50__AccessoryTransportPluginUSBHost_serviceRemoved___block_invoke_3(uint6
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v28 = v6;
+    v28 = endpointCopy;
     _os_log_impl(&dword_2336F5000, v10, OS_LOG_TYPE_DEFAULT, "Opening EA USB Session Notification for endpoint %@", buf, 0xCu);
   }
 
-  v11 = [(ACCTransportPlugin *)self identifierForEndpointWithUUID:v6];
-  v12 = [(ACCTransportPlugin *)self propertiesForEndpointWithUUID:v6];
+  v11 = [(ACCTransportPlugin *)self identifierForEndpointWithUUID:endpointCopy];
+  v12 = [(ACCTransportPlugin *)self propertiesForEndpointWithUUID:endpointCopy];
   v13 = [v12 objectForKey:*MEMORY[0x277CFD2D0]];
   if (gLogObjects && gNumLogObjects >= 1)
   {
@@ -2316,21 +2316,21 @@ void __50__AccessoryTransportPluginUSBHost_serviceRemoved___block_invoke_3(uint6
     _os_log_impl(&dword_2336F5000, v14, OS_LOG_TYPE_DEFAULT, "EA sessionUUID is %@", buf, 0xCu);
   }
 
-  v16 = [(AccessoryTransportPluginUSBHost *)self accessoryConnectionsLock];
+  accessoryConnectionsLock = [(AccessoryTransportPluginUSBHost *)self accessoryConnectionsLock];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __90__AccessoryTransportPluginUSBHost__handleOpenEASessionNotificationForEndpoint_connection___block_invoke;
   block[3] = &unk_2789ECF50;
   block[4] = self;
-  v23 = v7;
+  v23 = connectionCopy;
   v24 = v11;
-  v25 = v6;
+  v25 = endpointCopy;
   v26 = v13;
   v17 = v13;
-  v18 = v6;
+  v18 = endpointCopy;
   v19 = v11;
-  v20 = v7;
-  dispatch_sync(v16, block);
+  v20 = connectionCopy;
+  dispatch_sync(accessoryConnectionsLock, block);
 
   v21 = *MEMORY[0x277D85DE8];
 }
@@ -2497,11 +2497,11 @@ uint64_t __90__AccessoryTransportPluginUSBHost__handleOpenEASessionNotificationF
   return v11;
 }
 
-- (void)_handleCloseEASessionNotificationForEndpoint:(id)a3 connection:(id)a4
+- (void)_handleCloseEASessionNotificationForEndpoint:(id)endpoint connection:(id)connection
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  endpointCopy = endpoint;
+  connectionCopy = connection;
   if (gLogObjects)
   {
     v8 = gNumLogObjects < 1;
@@ -2531,21 +2531,21 @@ uint64_t __90__AccessoryTransportPluginUSBHost__handleOpenEASessionNotificationF
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v19 = v6;
+    v19 = endpointCopy;
     _os_log_impl(&dword_2336F5000, v10, OS_LOG_TYPE_DEFAULT, "Closing EA USB Session Notification for endpoint %@", buf, 0xCu);
   }
 
-  v11 = [(AccessoryTransportPluginUSBHost *)self activeEAInterfacesLock];
+  activeEAInterfacesLock = [(AccessoryTransportPluginUSBHost *)self activeEAInterfacesLock];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __91__AccessoryTransportPluginUSBHost__handleCloseEASessionNotificationForEndpoint_connection___block_invoke;
   block[3] = &unk_2789ECF78;
   block[4] = self;
-  v16 = v6;
-  v17 = v7;
-  v12 = v7;
-  v13 = v6;
-  dispatch_sync(v11, block);
+  v16 = endpointCopy;
+  v17 = connectionCopy;
+  v12 = connectionCopy;
+  v13 = endpointCopy;
+  dispatch_sync(activeEAInterfacesLock, block);
 
   v14 = *MEMORY[0x277D85DE8];
 }
@@ -2596,10 +2596,10 @@ void __91__AccessoryTransportPluginUSBHost__handleCloseEASessionNotificationForE
   }
 }
 
-- (void)_handleOpenSocketFromAccessoryToAppNotification:(id)a3
+- (void)_handleOpenSocketFromAccessoryToAppNotification:(id)notification
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = [a3 userInfo];
+  userInfo = [notification userInfo];
   if (gLogObjects)
   {
     v5 = gNumLogObjects < 1;
@@ -2629,12 +2629,12 @@ void __91__AccessoryTransportPluginUSBHost__handleCloseEASessionNotificationForE
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v15 = v4;
+    v15 = userInfo;
     _os_log_impl(&dword_2336F5000, v7, OS_LOG_TYPE_DEFAULT, "OpenSocket From Accessory To App Native EA USB Session Notification, userInfo %@", buf, 0xCu);
   }
 
-  v8 = [v4 objectForKey:*MEMORY[0x277CFD1F8]];
-  v9 = [(AccessoryTransportPluginUSBHost *)self activeEAInterfacesLock];
+  v8 = [userInfo objectForKey:*MEMORY[0x277CFD1F8]];
+  activeEAInterfacesLock = [(AccessoryTransportPluginUSBHost *)self activeEAInterfacesLock];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __83__AccessoryTransportPluginUSBHost__handleOpenSocketFromAccessoryToAppNotification___block_invoke;
@@ -2642,7 +2642,7 @@ void __91__AccessoryTransportPluginUSBHost__handleCloseEASessionNotificationForE
   v12[4] = self;
   v13 = v8;
   v10 = v8;
-  dispatch_sync(v9, v12);
+  dispatch_sync(activeEAInterfacesLock, v12);
 
   v11 = *MEMORY[0x277D85DE8];
 }
@@ -2660,10 +2660,10 @@ void __83__AccessoryTransportPluginUSBHost__handleOpenSocketFromAccessoryToAppNo
   }
 }
 
-- (void)_handleOpenSocketFromAppToAccessoryNotification:(id)a3
+- (void)_handleOpenSocketFromAppToAccessoryNotification:(id)notification
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = [a3 userInfo];
+  userInfo = [notification userInfo];
   if (gLogObjects)
   {
     v5 = gNumLogObjects < 1;
@@ -2693,12 +2693,12 @@ void __83__AccessoryTransportPluginUSBHost__handleOpenSocketFromAccessoryToAppNo
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v15 = v4;
+    v15 = userInfo;
     _os_log_impl(&dword_2336F5000, v7, OS_LOG_TYPE_DEFAULT, "OpenSocket From App To Accessory Native EA USB Session Notification, userInfo %@", buf, 0xCu);
   }
 
-  v8 = [v4 objectForKey:*MEMORY[0x277CFD1F8]];
-  v9 = [(AccessoryTransportPluginUSBHost *)self activeEAInterfacesLock];
+  v8 = [userInfo objectForKey:*MEMORY[0x277CFD1F8]];
+  activeEAInterfacesLock = [(AccessoryTransportPluginUSBHost *)self activeEAInterfacesLock];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __83__AccessoryTransportPluginUSBHost__handleOpenSocketFromAppToAccessoryNotification___block_invoke;
@@ -2706,7 +2706,7 @@ void __83__AccessoryTransportPluginUSBHost__handleOpenSocketFromAccessoryToAppNo
   v12[4] = self;
   v13 = v8;
   v10 = v8;
-  dispatch_sync(v9, v12);
+  dispatch_sync(activeEAInterfacesLock, v12);
 
   v11 = *MEMORY[0x277D85DE8];
 }
@@ -2724,10 +2724,10 @@ void __83__AccessoryTransportPluginUSBHost__handleOpenSocketFromAppToAccessoryNo
   }
 }
 
-- (void)unlockUSBHostInterfacesForConnectionUUID:(id)a3
+- (void)unlockUSBHostInterfacesForConnectionUUID:(id)d
 {
   v78 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v61[0] = 0;
   v61[1] = v61;
   v61[2] = 0x2020000000;
@@ -2763,23 +2763,23 @@ void __83__AccessoryTransportPluginUSBHost__handleOpenSocketFromAppToAccessoryNo
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v66 = v4;
+    v66 = dCopy;
     _os_log_impl(&dword_2336F5000, v5, OS_LOG_TYPE_INFO, "Unlocking USB interfaces for connection %@...", buf, 0xCu);
   }
 
-  v7 = [(AccessoryTransportPluginUSBHost *)self accessoryConnectionsLock];
+  accessoryConnectionsLock = [(AccessoryTransportPluginUSBHost *)self accessoryConnectionsLock];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __76__AccessoryTransportPluginUSBHost_unlockUSBHostInterfacesForConnectionUUID___block_invoke;
   block[3] = &unk_2789ECFC8;
   block[4] = self;
-  v35 = v4;
+  v35 = dCopy;
   v44 = v35;
   v45 = v61;
   v46 = &v57;
   v47 = &v53;
   v48 = &v49;
-  dispatch_sync(v7, block);
+  dispatch_sync(accessoryConnectionsLock, block);
 
   v8 = [AccessoryEAInterface findNativeEAInterfacesForRegistryID:v58[3]];
   v9 = v8;
@@ -2852,7 +2852,7 @@ void __83__AccessoryTransportPluginUSBHost__handleOpenSocketFromAppToAccessoryNo
 
           if (v19)
           {
-            v20 = self;
+            selfCopy = self;
             v21 = MEMORY[0x277D86220];
             if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
             {
@@ -2865,7 +2865,7 @@ void __83__AccessoryTransportPluginUSBHost__handleOpenSocketFromAppToAccessoryNo
 
             v22 = v21;
             v23 = v21;
-            self = v20;
+            self = selfCopy;
           }
 
           else
@@ -2895,7 +2895,7 @@ void __83__AccessoryTransportPluginUSBHost__handleOpenSocketFromAppToAccessoryNo
           v9 = v33;
           v26 = [(ACCTransportPlugin *)self createEndpointWithTransportType:v15 andProtocol:v14 andIdentifier:v16 forConnectionWithUUID:v35 publishConnection:0];
 
-          v27 = [(AccessoryTransportPluginUSBHost *)self accessoryNativeUSBEndpointsLock];
+          accessoryNativeUSBEndpointsLock = [(AccessoryTransportPluginUSBHost *)self accessoryNativeUSBEndpointsLock];
           v37[0] = MEMORY[0x277D85DD0];
           v37[1] = 3221225472;
           v37[2] = __76__AccessoryTransportPluginUSBHost_unlockUSBHostInterfacesForConnectionUUID___block_invoke_94;
@@ -2904,7 +2904,7 @@ void __83__AccessoryTransportPluginUSBHost__handleOpenSocketFromAppToAccessoryNo
           v37[5] = v16;
           v11 = v26;
           v38 = v11;
-          dispatch_sync(v27, v37);
+          dispatch_sync(accessoryNativeUSBEndpointsLock, v37);
         }
 
         v10 = [obj countByEnumeratingWithState:&v39 objects:v77 count:16];
@@ -2996,27 +2996,27 @@ void __76__AccessoryTransportPluginUSBHost_unlockUSBHostInterfacesForConnectionU
   [v2 setObject:*(a1 + 40) forKey:*(a1 + 48)];
 }
 
-- (BOOL)lockUSBHostInterfacesForConnectionUUID:(id)a3
+- (BOOL)lockUSBHostInterfacesForConnectionUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  v5 = [(AccessoryTransportPluginUSBHost *)self accessoryConnectionsLock];
+  accessoryConnectionsLock = [(AccessoryTransportPluginUSBHost *)self accessoryConnectionsLock];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __74__AccessoryTransportPluginUSBHost_lockUSBHostInterfacesForConnectionUUID___block_invoke;
   block[3] = &unk_2789ECFF0;
   block[4] = self;
-  v9 = v4;
+  v9 = dCopy;
   v10 = &v11;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = dCopy;
+  dispatch_sync(accessoryConnectionsLock, block);
 
-  LOBYTE(v4) = *(v12 + 24);
+  LOBYTE(dCopy) = *(v12 + 24);
   _Block_object_dispose(&v11, 8);
-  return v4;
+  return dCopy;
 }
 
 void __74__AccessoryTransportPluginUSBHost_lockUSBHostInterfacesForConnectionUUID___block_invoke(uint64_t a1)
@@ -3049,7 +3049,7 @@ void __74__AccessoryTransportPluginUSBHost_lockUSBHostInterfacesForConnectionUUI
   IOObjectRelease(iokitVIDPIDRemovedIterator);
 }
 
-- (void)VIDPIDServiceAdded:(unsigned int)a3
+- (void)VIDPIDServiceAdded:(unsigned int)added
 {
   v93 = *MEMORY[0x277D85DE8];
   if (gLogObjects)
@@ -3083,7 +3083,7 @@ void __74__AccessoryTransportPluginUSBHost_lockUSBHostInterfacesForConnectionUUI
     [AccessoryTransportPluginUSBHost VIDPIDServiceAdded:];
   }
 
-  v8 = IOIteratorNext(a3);
+  v8 = IOIteratorNext(added);
   if (v8)
   {
     v10 = v8;
@@ -3097,8 +3097,8 @@ void __74__AccessoryTransportPluginUSBHost_lockUSBHostInterfacesForConnectionUUI
     v64 = *MEMORY[0x277CFD238];
     *&v9 = 136315138;
     v63 = v9;
-    v71 = a3;
-    v70 = self;
+    addedCopy = added;
+    selfCopy = self;
     do
     {
       memset(v92, 0, sizeof(v92));
@@ -3346,12 +3346,12 @@ void __74__AccessoryTransportPluginUSBHost_lockUSBHostInterfacesForConnectionUUI
         v81[3] = &unk_2789ED018;
         v41 = v39;
         v82 = v41;
-        v83 = self;
+        selfCopy2 = self;
         v42 = [(AccessoryUSBCDCInterface *)v40 initWithInterface:v10 protocol:@"com.medtronic.cdc.protocol" endpointUUID:v41 andDataInHandler:v81];
         if (v42)
         {
           v74 = v10;
-          v43 = [(AccessoryTransportPluginUSBHost *)self accessoryConnectionsLock];
+          accessoryConnectionsLock = [(AccessoryTransportPluginUSBHost *)self accessoryConnectionsLock];
           block[0] = MEMORY[0x277D85DD0];
           block[1] = 3221225472;
           block[2] = __54__AccessoryTransportPluginUSBHost_VIDPIDServiceAdded___block_invoke_101;
@@ -3362,19 +3362,19 @@ void __74__AccessoryTransportPluginUSBHost_lockUSBHostInterfacesForConnectionUUI
           v79 = v44;
           v72 = v38;
           v80 = v72;
-          dispatch_sync(v43, block);
+          dispatch_sync(accessoryConnectionsLock, block);
 
           v86[0] = v69;
-          v45 = [(AccessoryUSBCDCInterface *)v44 ioregProperties];
-          v46 = [v45 objectForKey:@"USB Product Name"];
+          ioregProperties = [(AccessoryUSBCDCInterface *)v44 ioregProperties];
+          v46 = [ioregProperties objectForKey:@"USB Product Name"];
           v87[0] = v46;
           v86[1] = v68;
-          v47 = [(AccessoryUSBCDCInterface *)v44 ioregProperties];
-          v48 = [v47 objectForKey:@"USB Vendor Name"];
+          ioregProperties2 = [(AccessoryUSBCDCInterface *)v44 ioregProperties];
+          v48 = [ioregProperties2 objectForKey:@"USB Vendor Name"];
           v87[1] = v48;
           v86[2] = v67;
-          v49 = [(AccessoryUSBCDCInterface *)v44 ioregProperties];
-          v50 = [v49 objectForKey:@"USB Serial Number"];
+          ioregProperties3 = [(AccessoryUSBCDCInterface *)v44 ioregProperties];
+          v50 = [ioregProperties3 objectForKey:@"USB Serial Number"];
           v87[2] = v50;
           v87[3] = @"Unknown";
           v86[3] = v66;
@@ -3407,9 +3407,9 @@ void __74__AccessoryTransportPluginUSBHost_lockUSBHostInterfacesForConnectionUUI
             v54 = v59;
           }
 
-          self = v70;
+          self = selfCopy;
           LODWORD(v10) = v74;
-          a3 = v71;
+          added = addedCopy;
           if (os_log_type_enabled(v54, OS_LOG_TYPE_INFO))
           {
             *buf = 138412290;
@@ -3417,8 +3417,8 @@ void __74__AccessoryTransportPluginUSBHost_lockUSBHostInterfacesForConnectionUUI
             _os_log_impl(&dword_2336F5000, v54, OS_LOG_TYPE_INFO, "accInfoDictionary = %@", buf, 0xCu);
           }
 
-          [(ACCTransportPlugin *)v70 setAccessoryInfo:v51 forEndpointWithUUID:v41];
-          [(ACCTransportPlugin *)v70 publishConnectionWithUUID:v72];
+          [(ACCTransportPlugin *)selfCopy setAccessoryInfo:v51 forEndpointWithUUID:v41];
+          [(ACCTransportPlugin *)selfCopy publishConnectionWithUUID:v72];
 
           v55 = v73;
         }
@@ -3459,7 +3459,7 @@ void __74__AccessoryTransportPluginUSBHost_lockUSBHostInterfacesForConnectionUUI
 
       IOObjectRelease(v10);
 
-      v10 = IOIteratorNext(a3);
+      v10 = IOIteratorNext(added);
       v11 = MEMORY[0x277D86220];
     }
 
@@ -3605,7 +3605,7 @@ void __54__AccessoryTransportPluginUSBHost_VIDPIDServiceAdded___block_invoke_101
   [v2 setObject:*(a1 + 40) forKey:*(a1 + 48)];
 }
 
-- (void)VIDPIDServiceRemoved:(unsigned int)a3
+- (void)VIDPIDServiceRemoved:(unsigned int)removed
 {
   v36 = *MEMORY[0x277D85DE8];
   if (gLogObjects)
@@ -3639,10 +3639,10 @@ void __54__AccessoryTransportPluginUSBHost_VIDPIDServiceAdded___block_invoke_101
     [AccessoryTransportPluginUSBHost VIDPIDServiceRemoved:];
   }
 
-  v8 = IOIteratorNext(a3);
+  v8 = IOIteratorNext(removed);
   if (v8)
   {
-    v22 = a3;
+    removedCopy = removed;
     do
     {
       memset(v35, 0, 128);
@@ -3676,7 +3676,7 @@ void __54__AccessoryTransportPluginUSBHost_VIDPIDServiceAdded___block_invoke_101
 
           v13 = v12;
           v11 = v12;
-          a3 = v22;
+          removed = removedCopy;
         }
 
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -3710,7 +3710,7 @@ void __54__AccessoryTransportPluginUSBHost_VIDPIDServiceAdded___block_invoke_101
 
           v18 = v17;
           v16 = v17;
-          a3 = v22;
+          removed = removedCopy;
         }
 
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
@@ -3723,14 +3723,14 @@ void __54__AccessoryTransportPluginUSBHost_VIDPIDServiceAdded___block_invoke_101
         }
       }
 
-      v19 = [(AccessoryTransportPluginUSBHost *)self accessoryConnectionsLock];
+      accessoryConnectionsLock = [(AccessoryTransportPluginUSBHost *)self accessoryConnectionsLock];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __56__AccessoryTransportPluginUSBHost_VIDPIDServiceRemoved___block_invoke;
       block[3] = &unk_2789ED040;
       block[4] = self;
       block[5] = &v24;
-      dispatch_sync(v19, block);
+      dispatch_sync(accessoryConnectionsLock, block);
 
       if (v25[5])
       {
@@ -3745,7 +3745,7 @@ void __54__AccessoryTransportPluginUSBHost_VIDPIDServiceAdded___block_invoke_101
 
       _Block_object_dispose(&v24, 8);
 
-      v8 = IOIteratorNext(a3);
+      v8 = IOIteratorNext(removed);
     }
 
     while (v8);
@@ -3818,25 +3818,25 @@ LABEL_9:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)setUSBHostHIDInterface:(unsigned __int8)a3 withHIDFunction:(unsigned int)a4 forConnectionUUID:(id)a5
+- (BOOL)setUSBHostHIDInterface:(unsigned __int8)interface withHIDFunction:(unsigned int)function forConnectionUUID:(id)d
 {
-  v8 = a5;
+  dCopy = d;
   v18 = 0;
   v19 = &v18;
   v20 = 0x2020000000;
   v21 = 0;
-  v9 = [(AccessoryTransportPluginUSBHost *)self accessoryConnectionsLock];
+  accessoryConnectionsLock = [(AccessoryTransportPluginUSBHost *)self accessoryConnectionsLock];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __92__AccessoryTransportPluginUSBHost_setUSBHostHIDInterface_withHIDFunction_forConnectionUUID___block_invoke;
   v13[3] = &unk_2789ED068;
   v13[4] = self;
-  v14 = v8;
+  v14 = dCopy;
   v15 = &v18;
-  v17 = a3;
-  v16 = a4;
-  v10 = v8;
-  dispatch_sync(v9, v13);
+  interfaceCopy = interface;
+  functionCopy = function;
+  v10 = dCopy;
+  dispatch_sync(accessoryConnectionsLock, v13);
 
   v11 = *(v19 + 24);
   _Block_object_dispose(&v18, 8);
@@ -3851,27 +3851,27 @@ void __92__AccessoryTransportPluginUSBHost_setUSBHostHIDInterface_withHIDFunctio
   *(*(*(a1 + 48) + 8) + 24) = [v3 setUSBHostHIDInterface:*(a1 + 60) withHIDFunction:*(a1 + 56)];
 }
 
-- (BOOL)clearUSBHostHIDInterfacesForConnectionUUID:(id)a3
+- (BOOL)clearUSBHostHIDInterfacesForConnectionUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  v5 = [(AccessoryTransportPluginUSBHost *)self accessoryConnectionsLock];
+  accessoryConnectionsLock = [(AccessoryTransportPluginUSBHost *)self accessoryConnectionsLock];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __78__AccessoryTransportPluginUSBHost_clearUSBHostHIDInterfacesForConnectionUUID___block_invoke;
   block[3] = &unk_2789ECFF0;
   block[4] = self;
-  v9 = v4;
+  v9 = dCopy;
   v10 = &v11;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = dCopy;
+  dispatch_sync(accessoryConnectionsLock, block);
 
-  LOBYTE(v4) = *(v12 + 24);
+  LOBYTE(dCopy) = *(v12 + 24);
   _Block_object_dispose(&v11, 8);
-  return v4;
+  return dCopy;
 }
 
 void __78__AccessoryTransportPluginUSBHost_clearUSBHostHIDInterfacesForConnectionUUID___block_invoke(uint64_t a1)
@@ -3882,25 +3882,25 @@ void __78__AccessoryTransportPluginUSBHost_clearUSBHostHIDInterfacesForConnectio
   *(*(*(a1 + 48) + 8) + 24) = [v3 clearUSBHostHIDInterfaces];
 }
 
-- (BOOL)configureUSBHostNCMInterface:(unsigned __int8)a3 asCarPlay:(BOOL)a4 forConnectionUUID:(id)a5
+- (BOOL)configureUSBHostNCMInterface:(unsigned __int8)interface asCarPlay:(BOOL)play forConnectionUUID:(id)d
 {
-  v8 = a5;
+  dCopy = d;
   v18 = 0;
   v19 = &v18;
   v20 = 0x2020000000;
   v21 = 0;
-  v9 = [(AccessoryTransportPluginUSBHost *)self accessoryConnectionsLock];
+  accessoryConnectionsLock = [(AccessoryTransportPluginUSBHost *)self accessoryConnectionsLock];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __92__AccessoryTransportPluginUSBHost_configureUSBHostNCMInterface_asCarPlay_forConnectionUUID___block_invoke;
   v13[3] = &unk_2789ED090;
   v13[4] = self;
-  v14 = v8;
+  v14 = dCopy;
   v15 = &v18;
-  v16 = a3;
-  v17 = a4;
-  v10 = v8;
-  dispatch_sync(v9, v13);
+  interfaceCopy = interface;
+  playCopy = play;
+  v10 = dCopy;
+  dispatch_sync(accessoryConnectionsLock, v13);
 
   v11 = *(v19 + 24);
   _Block_object_dispose(&v18, 8);
@@ -3915,25 +3915,25 @@ void __92__AccessoryTransportPluginUSBHost_configureUSBHostNCMInterface_asCarPla
   *(*(*(a1 + 48) + 8) + 24) = [v3 configureNCMInterface:*(a1 + 56) asCarPlay:*(a1 + 57)];
 }
 
-- (BOOL)setNeedOutZLP:(BOOL)a3 maxOutLength:(unsigned int)a4 forConnectionUUID:(id)a5
+- (BOOL)setNeedOutZLP:(BOOL)p maxOutLength:(unsigned int)length forConnectionUUID:(id)d
 {
-  v8 = a5;
+  dCopy = d;
   v18 = 0;
   v19 = &v18;
   v20 = 0x2020000000;
   v21 = 0;
-  v9 = [(AccessoryTransportPluginUSBHost *)self accessoryConnectionsLock];
+  accessoryConnectionsLock = [(AccessoryTransportPluginUSBHost *)self accessoryConnectionsLock];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __80__AccessoryTransportPluginUSBHost_setNeedOutZLP_maxOutLength_forConnectionUUID___block_invoke;
   v13[3] = &unk_2789ED068;
   v13[4] = self;
-  v14 = v8;
-  v17 = a3;
-  v16 = a4;
+  v14 = dCopy;
+  pCopy = p;
+  lengthCopy = length;
   v15 = &v18;
-  v10 = v8;
-  dispatch_sync(v9, v13);
+  v10 = dCopy;
+  dispatch_sync(accessoryConnectionsLock, v13);
 
   v11 = *(v19 + 24);
   _Block_object_dispose(&v18, 8);
@@ -3953,12 +3953,12 @@ void __80__AccessoryTransportPluginUSBHost_setNeedOutZLP_maxOutLength_forConnect
   }
 }
 
-- (BOOL)sendOutgoingData:(id)a3 forEndpointWithUUID:(id)a4 connectionUUID:(id)a5
+- (BOOL)sendOutgoingData:(id)data forEndpointWithUUID:(id)d connectionUUID:(id)iD
 {
   v37 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dataCopy = data;
+  dCopy = d;
+  iDCopy = iD;
   v31 = 0;
   v32 = &v31;
   v33 = 0x2020000000;
@@ -3981,12 +3981,12 @@ void __80__AccessoryTransportPluginUSBHost_setNeedOutZLP_maxOutLength_forConnect
       v12 = MEMORY[0x277D86220];
     }
 
-    v13 = [v9 hash];
+    v13 = [dCopy hash];
     if (v13 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v11))
     {
-      v14 = [v8 length];
+      v14 = [dataCopy length];
       *buf = 138412546;
-      *&buf[4] = v9;
+      *&buf[4] = dCopy;
       *&buf[12] = 2048;
       *&buf[14] = v14;
       _os_signpost_emit_with_name_impl(&dword_2336F5000, v11, OS_SIGNPOST_EVENT, v13, "Endpoint SEND", "Send outgoing data! %@, %lu bytes", buf, 0x16u);
@@ -3997,32 +3997,32 @@ void __80__AccessoryTransportPluginUSBHost_setNeedOutZLP_maxOutLength_forConnect
   *&buf[8] = buf;
   *&buf[16] = 0x2020000000;
   v36 = 0;
-  v15 = [(AccessoryTransportPluginUSBHost *)self activeEAInterfacesLock];
+  activeEAInterfacesLock = [(AccessoryTransportPluginUSBHost *)self activeEAInterfacesLock];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __87__AccessoryTransportPluginUSBHost_sendOutgoingData_forEndpointWithUUID_connectionUUID___block_invoke;
   block[3] = &unk_2789ED0B8;
   block[4] = self;
-  v16 = v9;
+  v16 = dCopy;
   v27 = v16;
   v29 = &v31;
-  v17 = v8;
+  v17 = dataCopy;
   v28 = v17;
   v30 = buf;
-  dispatch_sync(v15, block);
+  dispatch_sync(activeEAInterfacesLock, block);
 
   if ((*(*&buf[8] + 24) & 1) == 0)
   {
-    v18 = [(AccessoryTransportPluginUSBHost *)self accessoryConnectionsLock];
+    accessoryConnectionsLock = [(AccessoryTransportPluginUSBHost *)self accessoryConnectionsLock];
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
     v22[2] = __87__AccessoryTransportPluginUSBHost_sendOutgoingData_forEndpointWithUUID_connectionUUID___block_invoke_2;
     v22[3] = &unk_2789ED0E0;
     v22[4] = self;
-    v23 = v10;
+    v23 = iDCopy;
     v25 = &v31;
     v24 = v17;
-    dispatch_sync(v18, v22);
+    dispatch_sync(accessoryConnectionsLock, v22);
   }
 
   v19 = *(v32 + 24);

@@ -1,12 +1,12 @@
 @interface PHSOSDisconnectionConfirmation
 + (id)sharedInstance;
 - (PHSOSDisconnectionConfirmation)init;
-- (void)addDelegate:(id)a3;
+- (void)addDelegate:(id)delegate;
 - (void)clearAllDelegates;
 - (void)dealloc;
 - (void)dismissAlertControllers;
-- (void)removeDelegate:(id)a3;
-- (void)showSOSDisconnectConfirmation:(id)a3;
+- (void)removeDelegate:(id)delegate;
+- (void)showSOSDisconnectConfirmation:(id)confirmation;
 @end
 
 @implementation PHSOSDisconnectionConfirmation
@@ -17,7 +17,7 @@
   block[1] = 3221225472;
   block[2] = sub_1000A36B0;
   block[3] = &unk_1003567B0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1003B0DE0 != -1)
   {
     dispatch_once(&qword_1003B0DE0, block);
@@ -58,19 +58,19 @@
   [(PHSOSDisconnectionConfirmation *)&v4 dealloc];
 }
 
-- (void)addDelegate:(id)a3
+- (void)addDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(PHSOSDisconnectionConfirmation *)self delegates];
-  [v5 addObject:v4];
+  delegateCopy = delegate;
+  delegates = [(PHSOSDisconnectionConfirmation *)self delegates];
+  [delegates addObject:delegateCopy];
 
-  v6 = [(PHSOSDisconnectionConfirmation *)self delegates];
-  v7 = [v6 count];
+  delegates2 = [(PHSOSDisconnectionConfirmation *)self delegates];
+  v7 = [delegates2 count];
 
   if (v7 == 1)
   {
     objc_initWeak(&location, self);
-    objc_initWeak(&from, v4);
+    objc_initWeak(&from, delegateCopy);
     v8 = +[TUCallCenter sharedInstance];
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
@@ -87,14 +87,14 @@
   }
 }
 
-- (void)removeDelegate:(id)a3
+- (void)removeDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(PHSOSDisconnectionConfirmation *)self delegates];
-  [v5 removeObject:v4];
+  delegateCopy = delegate;
+  delegates = [(PHSOSDisconnectionConfirmation *)self delegates];
+  [delegates removeObject:delegateCopy];
 
-  v6 = [(PHSOSDisconnectionConfirmation *)self delegates];
-  v7 = [v6 count];
+  delegates2 = [(PHSOSDisconnectionConfirmation *)self delegates];
+  v7 = [delegates2 count];
 
   if (!v7)
   {
@@ -106,9 +106,9 @@
 - (void)clearAllDelegates
 {
   v3 = +[CNKFeatures sharedInstance];
-  v4 = [v3 isEnhancedEmergencyEnabled];
+  isEnhancedEmergencyEnabled = [v3 isEnhancedEmergencyEnabled];
 
-  if (v4)
+  if (isEnhancedEmergencyEnabled)
   {
     v5 = +[NSHashTable weakObjectsHashTable];
     [(PHSOSDisconnectionConfirmation *)self setDelegates:v5];
@@ -118,9 +118,9 @@
   }
 }
 
-- (void)showSOSDisconnectConfirmation:(id)a3
+- (void)showSOSDisconnectConfirmation:(id)confirmation
 {
-  v19 = a3;
+  confirmationCopy = confirmation;
   [(PHSOSDisconnectionConfirmation *)self dismissAlertControllers];
   v32 = 0u;
   v33 = 0u;
@@ -150,7 +150,7 @@
         v25[1] = 3221225472;
         v25[2] = sub_1000A4054;
         v25[3] = &unk_1003585C0;
-        v9 = v19;
+        v9 = confirmationCopy;
         v27 = v9;
         objc_copyWeak(&v28, &location);
         v10 = v6;
@@ -172,8 +172,8 @@
         v15 = [UIAlertAction actionWithTitle:v13 style:2 handler:v21];
         [v14 addAction:v15];
 
-        v16 = [(PHSOSDisconnectionConfirmation *)self alertControllers];
-        [v16 addObject:v14];
+        alertControllers = [(PHSOSDisconnectionConfirmation *)self alertControllers];
+        [alertControllers addObject:v14];
 
         [v5 presentDisconnectionAlert:v14];
         objc_destroyWeak(&v24);
@@ -197,8 +197,8 @@
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(PHSOSDisconnectionConfirmation *)self alertControllers];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  alertControllers = [(PHSOSDisconnectionConfirmation *)self alertControllers];
+  v4 = [alertControllers countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -210,7 +210,7 @@
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(alertControllers);
         }
 
         [*(*(&v9 + 1) + 8 * v7) dismissViewControllerAnimated:1 completion:0];
@@ -218,14 +218,14 @@
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [alertControllers countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
   }
 
-  v8 = [(PHSOSDisconnectionConfirmation *)self alertControllers];
-  [v8 removeAllObjects];
+  alertControllers2 = [(PHSOSDisconnectionConfirmation *)self alertControllers];
+  [alertControllers2 removeAllObjects];
 }
 
 @end

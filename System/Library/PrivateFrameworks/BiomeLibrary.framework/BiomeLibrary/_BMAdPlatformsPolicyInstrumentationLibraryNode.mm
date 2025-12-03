@@ -5,26 +5,26 @@
 + (id)configurationForOpportunity;
 + (id)storeConfigurationForCandidate;
 + (id)storeConfigurationForOpportunity;
-+ (id)streamWithName:(id)a3;
++ (id)streamWithName:(id)name;
 + (id)validKeyPaths;
 @end
 
 @implementation _BMAdPlatformsPolicyInstrumentationLibraryNode
 
-+ (id)streamWithName:(id)a3
++ (id)streamWithName:(id)name
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"Candidate"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"Candidate"])
   {
-    v5 = [a1 Candidate];
+    candidate = [self Candidate];
 LABEL_5:
-    v6 = v5;
+    v6 = candidate;
     goto LABEL_7;
   }
 
-  if ([v4 isEqualToString:@"Opportunity"])
+  if ([nameCopy isEqualToString:@"Opportunity"])
   {
-    v5 = [a1 Opportunity];
+    candidate = [self Opportunity];
     goto LABEL_5;
   }
 
@@ -50,13 +50,13 @@ LABEL_7:
 
 + (id)configurationForOpportunity
 {
-  v3 = [a1 storeConfigurationForOpportunity];
-  v4 = [a1 syncPolicyForOpportunity];
+  storeConfigurationForOpportunity = [self storeConfigurationForOpportunity];
+  syncPolicyForOpportunity = [self syncPolicyForOpportunity];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"8F7524D9-3860-40CC-A2B9-BC3B93E78396"];
   BYTE2(v9) = 0;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"AdPlatforms.PolicyInstrumentation.Opportunity" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"AdPlatforms.PolicyInstrumentation.Opportunity" eventClass:objc_opt_class() storeConfig:storeConfigurationForOpportunity syncPolicy:syncPolicyForOpportunity legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -72,13 +72,13 @@ LABEL_7:
 
 + (id)configurationForCandidate
 {
-  v3 = [a1 storeConfigurationForCandidate];
-  v4 = [a1 syncPolicyForCandidate];
+  storeConfigurationForCandidate = [self storeConfigurationForCandidate];
+  syncPolicyForCandidate = [self syncPolicyForCandidate];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"7C0E415E-FFA3-4AB9-83D6-B72757EA0140"];
   BYTE2(v9) = 0;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"AdPlatforms.PolicyInstrumentation.Candidate" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"AdPlatforms.PolicyInstrumentation.Candidate" eventClass:objc_opt_class() storeConfig:storeConfigurationForCandidate syncPolicy:syncPolicyForCandidate legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -95,7 +95,7 @@ LABEL_7:
 + (id)Opportunity
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForOpportunity];
+  configurationForOpportunity = [self configurationForOpportunity];
   v3 = +[BMAdPlatformsOpportunity columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -107,7 +107,7 @@ LABEL_7:
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"AdPlatforms.PolicyInstrumentation.Opportunity" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"AdPlatforms.PolicyInstrumentation.Opportunity" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"AdPlatforms.PolicyInstrumentation.Opportunity" schema:v9 configuration:configurationForOpportunity];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -117,7 +117,7 @@ LABEL_7:
 + (id)Candidate
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForCandidate];
+  configurationForCandidate = [self configurationForCandidate];
   v3 = +[BMAdPlatformsCandidate columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -129,7 +129,7 @@ LABEL_7:
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"AdPlatforms.PolicyInstrumentation.Candidate" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"AdPlatforms.PolicyInstrumentation.Candidate" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"AdPlatforms.PolicyInstrumentation.Candidate" schema:v9 configuration:configurationForCandidate];
 
   v11 = *MEMORY[0x1E69E9840];
 

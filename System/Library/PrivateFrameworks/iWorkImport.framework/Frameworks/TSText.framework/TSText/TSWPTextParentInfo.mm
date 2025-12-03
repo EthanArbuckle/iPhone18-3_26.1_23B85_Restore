@@ -11,19 +11,19 @@
 - (TSDInfoGeometry)geometry;
 - (TSDOwningAttachment)owningAttachment;
 - (TSDOwningAttachment)owningAttachmentNoRecurse;
-- (id)copyWithContext:(id)a3;
-- (void)clearBackPointerToParentInfoIfNeeded:(id)a3;
-- (void)setGeometry:(id)a3;
-- (void)setOwningAttachment:(id)a3;
-- (void)setParentInfo:(id)a3;
-- (void)setPrimitiveGeometry:(id)a3;
+- (id)copyWithContext:(id)context;
+- (void)clearBackPointerToParentInfoIfNeeded:(id)needed;
+- (void)setGeometry:(id)geometry;
+- (void)setOwningAttachment:(id)attachment;
+- (void)setParentInfo:(id)info;
+- (void)setPrimitiveGeometry:(id)geometry;
 @end
 
 @implementation TSWPTextParentInfo
 
-- (id)copyWithContext:(id)a3
+- (id)copyWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = MEMORY[0x277D81150];
   v6 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v5, "[TSWPTextParentInfo copyWithContext:]");
   v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/text/TSWPText.mm");
@@ -55,9 +55,9 @@
   objc_exception_throw(v14);
 }
 
-- (void)setGeometry:(id)a3
+- (void)setGeometry:(id)geometry
 {
-  v3 = a3;
+  geometryCopy = geometry;
   v4 = MEMORY[0x277D81150];
   v6 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v5, "[TSWPTextParentInfo setGeometry:]");
   v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/text/TSWPText.mm");
@@ -72,9 +72,9 @@
   objc_exception_throw(v16);
 }
 
-- (void)setPrimitiveGeometry:(id)a3
+- (void)setPrimitiveGeometry:(id)geometry
 {
-  v3 = a3;
+  geometryCopy = geometry;
   v4 = MEMORY[0x277D81150];
   v6 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v5, "[TSWPTextParentInfo setPrimitiveGeometry:]");
   v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/text/TSWPText.mm");
@@ -106,9 +106,9 @@
   objc_exception_throw(v14);
 }
 
-- (void)setParentInfo:(id)a3
+- (void)setParentInfo:(id)info
 {
-  v3 = a3;
+  infoCopy = info;
   v4 = MEMORY[0x277D81150];
   v6 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v5, "[TSWPTextParentInfo setParentInfo:]");
   v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/text/TSWPText.mm");
@@ -140,9 +140,9 @@
   objc_exception_throw(v14);
 }
 
-- (void)setOwningAttachment:(id)a3
+- (void)setOwningAttachment:(id)attachment
 {
-  v3 = a3;
+  attachmentCopy = attachment;
   v4 = MEMORY[0x277D81150];
   v6 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v5, "[TSWPTextParentInfo setOwningAttachment:]");
   v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/text/TSWPText.mm");
@@ -276,9 +276,9 @@
   objc_exception_throw(v14);
 }
 
-- (void)clearBackPointerToParentInfoIfNeeded:(id)a3
+- (void)clearBackPointerToParentInfoIfNeeded:(id)needed
 {
-  v3 = a3;
+  neededCopy = needed;
   v4 = MEMORY[0x277D81150];
   v6 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v5, "[TSWPTextParentInfo clearBackPointerToParentInfoIfNeeded:]");
   v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/text/TSWPText.mm");

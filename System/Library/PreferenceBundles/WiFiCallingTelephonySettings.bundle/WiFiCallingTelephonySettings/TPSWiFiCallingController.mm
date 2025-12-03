@@ -12,11 +12,11 @@
 - (TPSCarrierBundleController)carrierBundleController;
 - (TPSEncryptedIdentityClient)encryptedIdentityClient;
 - (TPSWiFiCallingController)init;
-- (TPSWiFiCallingController)initWithSubscriptionContext:(id)a3;
+- (TPSWiFiCallingController)initWithSubscriptionContext:(id)context;
 - (TUSenderIdentityCapabilities)subscriptionCapabilities;
-- (id)subscriptionCapabilitiesForSubscriptionContextUUID:(id)a3;
-- (void)didChangeThumperCallingCapabilitiesForSenderIdentityWithUUID:(id)a3;
-- (void)didChangeWiFiCallingCapabilitiesForSenderIdentityWithUUID:(id)a3;
+- (id)subscriptionCapabilitiesForSubscriptionContextUUID:(id)d;
+- (void)didChangeThumperCallingCapabilitiesForSenderIdentityWithUUID:(id)d;
+- (void)didChangeWiFiCallingCapabilitiesForSenderIdentityWithUUID:(id)d;
 @end
 
 @implementation TPSWiFiCallingController
@@ -28,18 +28,18 @@
   return 0;
 }
 
-- (TPSWiFiCallingController)initWithSubscriptionContext:(id)a3
+- (TPSWiFiCallingController)initWithSubscriptionContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v12.receiver = self;
   v12.super_class = TPSWiFiCallingController;
   v6 = [(TPSWiFiCallingController *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_subscriptionContext, a3);
-    v8 = [v5 uuid];
-    v9 = [(TPSWiFiCallingController *)v7 subscriptionCapabilitiesForSubscriptionContextUUID:v8];
+    objc_storeStrong(&v6->_subscriptionContext, context);
+    uuid = [contextCopy uuid];
+    v9 = [(TPSWiFiCallingController *)v7 subscriptionCapabilitiesForSubscriptionContextUUID:uuid];
     subscriptionCapabilities = v7->_subscriptionCapabilities;
     v7->_subscriptionCapabilities = v9;
 
@@ -49,9 +49,9 @@
   return v7;
 }
 
-- (id)subscriptionCapabilitiesForSubscriptionContextUUID:(id)a3
+- (id)subscriptionCapabilitiesForSubscriptionContextUUID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = +[TUCallCapabilities senderIdentityCapabilities];
   v15 = 0u;
   v16 = 0u;
@@ -73,8 +73,8 @@
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        v11 = [v10 senderIdentityUUID];
-        v12 = [v11 isEqual:v3];
+        senderIdentityUUID = [v10 senderIdentityUUID];
+        v12 = [senderIdentityUUID isEqual:dCopy];
 
         if (v12)
         {
@@ -100,17 +100,17 @@
 
 - (TUSenderIdentityCapabilities)subscriptionCapabilities
 {
-  v3 = [(TPSWiFiCallingController *)self subscriptionContext];
-  v4 = [v3 uuid];
-  v5 = [(TPSWiFiCallingController *)self subscriptionCapabilitiesForSubscriptionContextUUID:v4];
+  subscriptionContext = [(TPSWiFiCallingController *)self subscriptionContext];
+  uuid = [subscriptionContext uuid];
+  v5 = [(TPSWiFiCallingController *)self subscriptionCapabilitiesForSubscriptionContextUUID:uuid];
 
   return v5;
 }
 
 - (BOOL)isThumperCallingEnabled
 {
-  v2 = [(TPSWiFiCallingController *)self subscriptionCapabilities];
-  if (([v2 isThumperCallingEnabled] & 1) != 0 || objc_msgSend(v2, "thumperCallingProvisioningStatus") == 1)
+  subscriptionCapabilities = [(TPSWiFiCallingController *)self subscriptionCapabilities];
+  if (([subscriptionCapabilities isThumperCallingEnabled] & 1) != 0 || objc_msgSend(subscriptionCapabilities, "thumperCallingProvisioningStatus") == 1)
   {
     v3 = +[TUCallCapabilities isRelayCallingEnabled];
   }
@@ -125,49 +125,49 @@
 
 - (BOOL)isWiFiCallingEnabled
 {
-  v2 = [(TPSWiFiCallingController *)self subscriptionCapabilities];
-  v3 = ([v2 isWiFiCallingEnabled] & 1) != 0 || objc_msgSend(v2, "wiFiCallingProvisioningStatus") == 1;
+  subscriptionCapabilities = [(TPSWiFiCallingController *)self subscriptionCapabilities];
+  v3 = ([subscriptionCapabilities isWiFiCallingEnabled] & 1) != 0 || objc_msgSend(subscriptionCapabilities, "wiFiCallingProvisioningStatus") == 1;
 
   return v3;
 }
 
 - (BOOL)isWiFiCallingRoamingEnabled
 {
-  v2 = [(TPSWiFiCallingController *)self subscriptionCapabilities];
-  v3 = [v2 isWiFiCallingRoamingEnabled];
+  subscriptionCapabilities = [(TPSWiFiCallingController *)self subscriptionCapabilities];
+  isWiFiCallingRoamingEnabled = [subscriptionCapabilities isWiFiCallingRoamingEnabled];
 
-  return v3;
+  return isWiFiCallingRoamingEnabled;
 }
 
 - (BOOL)supportsThumperCalling
 {
-  v2 = [(TPSWiFiCallingController *)self subscriptionCapabilities];
-  v3 = [v2 supportsThumperCalling];
+  subscriptionCapabilities = [(TPSWiFiCallingController *)self subscriptionCapabilities];
+  supportsThumperCalling = [subscriptionCapabilities supportsThumperCalling];
 
-  return v3;
+  return supportsThumperCalling;
 }
 
 - (BOOL)supportsWiFiCalling
 {
-  v2 = [(TPSWiFiCallingController *)self subscriptionCapabilities];
-  v3 = [v2 supportsWiFiCalling];
+  subscriptionCapabilities = [(TPSWiFiCallingController *)self subscriptionCapabilities];
+  supportsWiFiCalling = [subscriptionCapabilities supportsWiFiCalling];
 
-  return v3;
+  return supportsWiFiCalling;
 }
 
 - (BOOL)supportsWiFiEmergencyCalling
 {
-  v2 = [(TPSWiFiCallingController *)self subscriptionCapabilities];
-  v3 = [v2 supportsEmergencyWiFiCalling];
+  subscriptionCapabilities = [(TPSWiFiCallingController *)self subscriptionCapabilities];
+  supportsEmergencyWiFiCalling = [subscriptionCapabilities supportsEmergencyWiFiCalling];
 
-  return v3;
+  return supportsEmergencyWiFiCalling;
 }
 
 - (BOOL)isWiFiCallingCertified
 {
-  v3 = [(TPSWiFiCallingController *)self carrierBundleController];
-  v4 = [(TPSWiFiCallingController *)self subscriptionContext];
-  v5 = [v3 objectForKeyHierarchy:&off_8728 subscriptionContext:v4];
+  carrierBundleController = [(TPSWiFiCallingController *)self carrierBundleController];
+  subscriptionContext = [(TPSWiFiCallingController *)self subscriptionContext];
+  v5 = [carrierBundleController objectForKeyHierarchy:&off_8728 subscriptionContext:subscriptionContext];
 
   if (v5 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
@@ -217,9 +217,9 @@
   encryptedIdentityInfo = self->_encryptedIdentityInfo;
   if (!encryptedIdentityInfo)
   {
-    v4 = [(TPSWiFiCallingController *)self encryptedIdentityClient];
-    v5 = [(TPSWiFiCallingController *)self subscriptionContext];
-    v6 = [v4 encryptedIdentityInfoForSubscriptionContext:v5 type:1];
+    encryptedIdentityClient = [(TPSWiFiCallingController *)self encryptedIdentityClient];
+    subscriptionContext = [(TPSWiFiCallingController *)self subscriptionContext];
+    v6 = [encryptedIdentityClient encryptedIdentityInfoForSubscriptionContext:subscriptionContext type:1];
     v7 = self->_encryptedIdentityInfo;
     self->_encryptedIdentityInfo = v6;
 
@@ -231,36 +231,36 @@
 
 - (BOOL)supportsEncryptedIdentity
 {
-  v2 = [(TPSWiFiCallingController *)self encryptedIdentityInfo];
-  v3 = v2 != 0;
+  encryptedIdentityInfo = [(TPSWiFiCallingController *)self encryptedIdentityInfo];
+  v3 = encryptedIdentityInfo != 0;
 
   return v3;
 }
 
 - (NSString)localizedCarrierName
 {
-  v3 = [(TPSWiFiCallingController *)self carrierBundleController];
-  v4 = [(TPSWiFiCallingController *)self subscriptionContext];
-  v5 = [v3 localizedCarrierNameForSubscriptionContext:v4];
+  carrierBundleController = [(TPSWiFiCallingController *)self carrierBundleController];
+  subscriptionContext = [(TPSWiFiCallingController *)self subscriptionContext];
+  v5 = [carrierBundleController localizedCarrierNameForSubscriptionContext:subscriptionContext];
 
   return v5;
 }
 
-- (void)didChangeThumperCallingCapabilitiesForSenderIdentityWithUUID:(id)a3
+- (void)didChangeThumperCallingCapabilitiesForSenderIdentityWithUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(TPSWiFiCallingController *)self subscriptionContext];
-  v6 = [v5 uuid];
-  v7 = [v4 isEqual:v6];
+  dCopy = d;
+  subscriptionContext = [(TPSWiFiCallingController *)self subscriptionContext];
+  uuid = [subscriptionContext uuid];
+  v7 = [dCopy isEqual:uuid];
 
   if (v7)
   {
     v8 = TPSWiFiCallingLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [(TPSWiFiCallingController *)self subscriptionContext];
+      subscriptionContext2 = [(TPSWiFiCallingController *)self subscriptionContext];
       v11 = 138412290;
-      v12 = v9;
+      v12 = subscriptionContext2;
       _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "Thumper calling capabilities changed for subscription context %@.", &v11, 0xCu);
     }
 
@@ -269,21 +269,21 @@
   }
 }
 
-- (void)didChangeWiFiCallingCapabilitiesForSenderIdentityWithUUID:(id)a3
+- (void)didChangeWiFiCallingCapabilitiesForSenderIdentityWithUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(TPSWiFiCallingController *)self subscriptionContext];
-  v6 = [v5 uuid];
-  v7 = [v4 isEqual:v6];
+  dCopy = d;
+  subscriptionContext = [(TPSWiFiCallingController *)self subscriptionContext];
+  uuid = [subscriptionContext uuid];
+  v7 = [dCopy isEqual:uuid];
 
   if (v7)
   {
     v8 = TPSWiFiCallingLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [(TPSWiFiCallingController *)self subscriptionContext];
+      subscriptionContext2 = [(TPSWiFiCallingController *)self subscriptionContext];
       v11 = 138412290;
-      v12 = v9;
+      v12 = subscriptionContext2;
       _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "WiFi calling capabilities changed for subscription context %@.", &v11, 0xCu);
     }
 

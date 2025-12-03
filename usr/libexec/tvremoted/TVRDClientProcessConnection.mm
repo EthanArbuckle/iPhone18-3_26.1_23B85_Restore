@@ -1,59 +1,59 @@
 @interface TVRDClientProcessConnection
 - (NSString)description;
-- (TVRDClientProcessConnection)initWithXPCConnection:(id)a3 delegate:(id)a4;
+- (TVRDClientProcessConnection)initWithXPCConnection:(id)connection delegate:(id)delegate;
 - (TVRDClientProcessConnectionDelegate)delegate;
 - (void)_invalidateRemoteAlertHandle;
 - (void)_removeAllIdentifiers;
-- (void)_removeIdentifier:(id)a3;
-- (void)addItemForDeviceWithIdentifier:(id)a3 mediaIdentifier:(id)a4 completion:(id)a5;
-- (void)beginDeviceQueryWithResponse:(id)a3;
-- (void)cancelAuthChallengeForDeviceWithIdentifier:(id)a3;
-- (void)closeConnectionToDeviceWithIdentifier:(id)a3 withType:(unint64_t)a4;
+- (void)_removeIdentifier:(id)identifier;
+- (void)addItemForDeviceWithIdentifier:(id)identifier mediaIdentifier:(id)mediaIdentifier completion:(id)completion;
+- (void)beginDeviceQueryWithResponse:(id)response;
+- (void)cancelAuthChallengeForDeviceWithIdentifier:(id)identifier;
+- (void)closeConnectionToDeviceWithIdentifier:(id)identifier withType:(unint64_t)type;
 - (void)dealloc;
 - (void)endDeviceQuery;
-- (void)fetchActiveMREndpointUIDWithCompletion:(id)a3;
-- (void)fetchLaunchableAppsForDeviceWithIdentifier:(id)a3 completion:(id)a4;
-- (void)fetchUpNextInfoForDeviceWithIdentifier:(id)a3 paginationToken:(id)a4 completion:(id)a5;
-- (void)fulfillAuthChallengeForDeviceWithIdentifier:(id)a3 withLocallyEnteredCode:(id)a4;
-- (void)getConnectionStatusToDeviceWithIdentifier:(id)a3 response:(id)a4;
-- (void)getSuggestedDevicesWithResponse:(id)a3;
-- (void)launchAppForDeviceWithIdentifier:(id)a3 bundleID:(id)a4 completion:(id)a5;
-- (void)launchViewServiceForDeviceWithIdentifier:(id)a3;
-- (void)markAsWatchedForDeviceWithIdentifier:(id)a3 mediaIdentifier:(id)a4 completion:(id)a5;
-- (void)openConnectionToDeviceWithIdentifier:(id)a3 connectionContext:(int64_t)a4;
-- (void)playItem:(id)a3 deviceIdentifier:(id)a4 completion:(id)a5;
-- (void)remoteAlertHandle:(id)a3 didInvalidateWithError:(id)a4;
-- (void)remoteAlertHandleDidDeactivate:(id)a3;
-- (void)removeInterestForDeviceWithIdentifier:(id)a3;
-- (void)removeItemForDeviceWithIdentifier:(id)a3 mediaIdentifier:(id)a4 completion:(id)a5;
-- (void)sendButtonEvent:(id)a3 toDeviceWithIdentifier:(id)a4;
-- (void)sendEvent:(id)a3 toDeviceWithIdentifier:(id)a4 options:(id)a5 response:(id)a6;
-- (void)sendGameControllerEvent:(id)a3 toDeviceWithIdentifier:(id)a4;
-- (void)sendInputReturnKeyToDeviceWithIdentifier:(id)a3;
-- (void)sendInputText:(id)a3 toDeviceWithIdentifier:(id)a4;
-- (void)sendInputTextPayload:(id)a3 toDeviceWithIdentifier:(id)a4;
-- (void)sendTouchEvent:(id)a3 toDeviceWithIdentifier:(id)a4;
-- (void)updateDeviceIdentifier:(id)a3 to:(id)a4;
+- (void)fetchActiveMREndpointUIDWithCompletion:(id)completion;
+- (void)fetchLaunchableAppsForDeviceWithIdentifier:(id)identifier completion:(id)completion;
+- (void)fetchUpNextInfoForDeviceWithIdentifier:(id)identifier paginationToken:(id)token completion:(id)completion;
+- (void)fulfillAuthChallengeForDeviceWithIdentifier:(id)identifier withLocallyEnteredCode:(id)code;
+- (void)getConnectionStatusToDeviceWithIdentifier:(id)identifier response:(id)response;
+- (void)getSuggestedDevicesWithResponse:(id)response;
+- (void)launchAppForDeviceWithIdentifier:(id)identifier bundleID:(id)d completion:(id)completion;
+- (void)launchViewServiceForDeviceWithIdentifier:(id)identifier;
+- (void)markAsWatchedForDeviceWithIdentifier:(id)identifier mediaIdentifier:(id)mediaIdentifier completion:(id)completion;
+- (void)openConnectionToDeviceWithIdentifier:(id)identifier connectionContext:(int64_t)context;
+- (void)playItem:(id)item deviceIdentifier:(id)identifier completion:(id)completion;
+- (void)remoteAlertHandle:(id)handle didInvalidateWithError:(id)error;
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate;
+- (void)removeInterestForDeviceWithIdentifier:(id)identifier;
+- (void)removeItemForDeviceWithIdentifier:(id)identifier mediaIdentifier:(id)mediaIdentifier completion:(id)completion;
+- (void)sendButtonEvent:(id)event toDeviceWithIdentifier:(id)identifier;
+- (void)sendEvent:(id)event toDeviceWithIdentifier:(id)identifier options:(id)options response:(id)response;
+- (void)sendGameControllerEvent:(id)event toDeviceWithIdentifier:(id)identifier;
+- (void)sendInputReturnKeyToDeviceWithIdentifier:(id)identifier;
+- (void)sendInputText:(id)text toDeviceWithIdentifier:(id)identifier;
+- (void)sendInputTextPayload:(id)payload toDeviceWithIdentifier:(id)identifier;
+- (void)sendTouchEvent:(id)event toDeviceWithIdentifier:(id)identifier;
+- (void)updateDeviceIdentifier:(id)identifier to:(id)to;
 @end
 
 @implementation TVRDClientProcessConnection
 
-- (TVRDClientProcessConnection)initWithXPCConnection:(id)a3 delegate:(id)a4
+- (TVRDClientProcessConnection)initWithXPCConnection:(id)connection delegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
+  connectionCopy = connection;
+  delegateCopy = delegate;
   v30.receiver = self;
   v30.super_class = TVRDClientProcessConnection;
   v9 = [(TVRDClientProcessConnection *)&v30 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeWeak(&v9->_delegate, v8);
+    objc_storeWeak(&v9->_delegate, delegateCopy);
     v11 = objc_alloc_init(NSMutableSet);
     mutableIdentifiers = v10->_mutableIdentifiers;
     v10->_mutableIdentifiers = v11;
 
-    objc_storeStrong(&v10->_xpcConnection, a3);
+    objc_storeStrong(&v10->_xpcConnection, connection);
     xpcConnection = v10->_xpcConnection;
     v14 = +[TVRCXPCProtocolManager requestInterface];
     [(NSXPCConnection *)xpcConnection setExportedInterface:v14];
@@ -157,79 +157,79 @@ void __62__TVRDClientProcessConnection_initWithXPCConnection_delegate___block_in
 - (NSString)description
 {
   v3 = [BSDescriptionBuilder builderWithObject:self];
-  v4 = [(TVRDClientProcessConnection *)self xpcConnection];
-  v5 = -[TVRDClientProcessConnection _processNameForPid:](self, "_processNameForPid:", [v4 processIdentifier]);
-  v6 = [(TVRDClientProcessConnection *)self xpcConnection];
-  v7 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@:%d", v5, [v6 processIdentifier]);
+  xpcConnection = [(TVRDClientProcessConnection *)self xpcConnection];
+  v5 = -[TVRDClientProcessConnection _processNameForPid:](self, "_processNameForPid:", [xpcConnection processIdentifier]);
+  xpcConnection2 = [(TVRDClientProcessConnection *)self xpcConnection];
+  v7 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@:%d", v5, [xpcConnection2 processIdentifier]);
 
   [v3 appendString:v7 withName:@"process"];
-  v8 = [v3 build];
+  build = [v3 build];
 
-  return v8;
+  return build;
 }
 
-- (void)openConnectionToDeviceWithIdentifier:(id)a3 connectionContext:(int64_t)a4
+- (void)openConnectionToDeviceWithIdentifier:(id)identifier connectionContext:(int64_t)context
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v7 = _TVRDXPCLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138543362;
-    v13 = v6;
+    selfCopy = identifierCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Open connection to device %{public}@", &v12, 0xCu);
   }
 
-  if (([(NSMutableSet *)self->_mutableIdentifiers containsObject:v6]& 1) != 0)
+  if (([(NSMutableSet *)self->_mutableIdentifiers containsObject:identifierCopy]& 1) != 0)
   {
     v8 = _TVRDXPCLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [(TVRDClientProcessConnection *)self deviceIdentifiers];
+      deviceIdentifiers = [(TVRDClientProcessConnection *)self deviceIdentifiers];
       v12 = 138412802;
-      v13 = self;
+      selfCopy = self;
       v14 = 2114;
-      v15 = v6;
+      v15 = identifierCopy;
       v16 = 2112;
-      v17 = v9;
+      v17 = deviceIdentifiers;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%@ is already interested in identifier %{public}@. All interested IDs - %@", &v12, 0x20u);
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained clientConnection:self reiteratedInterestInDeviceIdentifier:v6 connectionContext:a4];
+    [WeakRetained clientConnection:self reiteratedInterestInDeviceIdentifier:identifierCopy connectionContext:context];
   }
 
   else
   {
-    [(NSMutableSet *)self->_mutableIdentifiers addObject:v6];
+    [(NSMutableSet *)self->_mutableIdentifiers addObject:identifierCopy];
     v11 = objc_loadWeakRetained(&self->_delegate);
-    [v11 clientConnection:self addedInterestedDeviceIdentifier:v6 connectionContext:a4];
+    [v11 clientConnection:self addedInterestedDeviceIdentifier:identifierCopy connectionContext:context];
 
     notify_post("com.apple.TVRemoteCore.connectionRequested");
   }
 }
 
-- (void)closeConnectionToDeviceWithIdentifier:(id)a3 withType:(unint64_t)a4
+- (void)closeConnectionToDeviceWithIdentifier:(id)identifier withType:(unint64_t)type
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v7 = _TVRDXPCLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v19 = v6;
+    v19 = identifierCopy;
     v20 = 2048;
-    v21 = a4;
+    typeCopy = type;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Close connection to device %{public}@ with type %ld", buf, 0x16u);
   }
 
-  if ([(NSMutableSet *)self->_mutableIdentifiers containsObject:v6])
+  if ([(NSMutableSet *)self->_mutableIdentifiers containsObject:identifierCopy])
   {
-    if (a4 == 1 && (+[TVRCFeatures isWakeToRemoteOnLockScreenDisabled]& 1) == 0)
+    if (type == 1 && (+[TVRCFeatures isWakeToRemoteOnLockScreenDisabled]& 1) == 0)
     {
       v14 = _TVRDXPCLog();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v19 = v6;
+        v19 = identifierCopy;
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Disconnect type for device %@ is unknown. Acquiring lock screen assertion.", buf, 0xCu);
       }
 
@@ -253,11 +253,11 @@ LABEL_18:
     else
     {
       v10 = +[TVRDAssertionManager sharedInstance];
-      v11 = [v10 isLockScreenAssertionActive];
+      isLockScreenAssertionActive = [v10 isLockScreenAssertionActive];
 
       v8 = _TVRDXPCLog();
       v12 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
-      if (v11)
+      if (isLockScreenAssertionActive)
       {
         if (v12)
         {
@@ -289,11 +289,11 @@ LABEL_18:
 LABEL_19:
 
 LABEL_20:
-    [(NSMutableSet *)self->_mutableIdentifiers removeObject:v6];
+    [(NSMutableSet *)self->_mutableIdentifiers removeObject:identifierCopy];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained clientConnection:self removedInterestedDeviceIdentifier:v6];
+  [WeakRetained clientConnection:self removedInterestedDeviceIdentifier:identifierCopy];
 }
 
 uint64_t __78__TVRDClientProcessConnection_closeConnectionToDeviceWithIdentifier_withType___block_invoke(uint64_t a1)
@@ -308,137 +308,137 @@ uint64_t __78__TVRDClientProcessConnection_closeConnectionToDeviceWithIdentifier
   return _objc_release_x1();
 }
 
-- (void)fulfillAuthChallengeForDeviceWithIdentifier:(id)a3 withLocallyEnteredCode:(id)a4
+- (void)fulfillAuthChallengeForDeviceWithIdentifier:(id)identifier withLocallyEnteredCode:(id)code
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  codeCopy = code;
   v8 = _TVRDXPCLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412546;
-    v11 = v6;
+    v11 = identifierCopy;
     v12 = 2114;
-    v13 = v7;
+    v13 = codeCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Fulfill auth challenge for device %@ with locally-entered code %{public}@", &v10, 0x16u);
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained clientConnection:self receivedAuthChallengeLocallyEnteredCode:v7 forDeviceIdentifier:v6];
+  [WeakRetained clientConnection:self receivedAuthChallengeLocallyEnteredCode:codeCopy forDeviceIdentifier:identifierCopy];
 }
 
-- (void)cancelAuthChallengeForDeviceWithIdentifier:(id)a3
+- (void)cancelAuthChallengeForDeviceWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = _TVRDXPCLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Cancel auth challenge for device %@", &v7, 0xCu);
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained clientConnection:self cancelledAuthChallengeForDeviceIdentifier:v4];
+  [WeakRetained clientConnection:self cancelledAuthChallengeForDeviceIdentifier:identifierCopy];
 }
 
-- (void)sendButtonEvent:(id)a3 toDeviceWithIdentifier:(id)a4
+- (void)sendButtonEvent:(id)event toDeviceWithIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  eventCopy = event;
+  identifierCopy = identifier;
   v8 = _TVRDXPCLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138543618;
-    v11 = v6;
+    v11 = eventCopy;
     v12 = 2112;
-    v13 = v7;
+    v13 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Send button event %{public}@ to device %@", &v10, 0x16u);
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained clientConnection:self requestsSendingButtonEvent:v6 toDeviceIdentifier:v7];
+  [WeakRetained clientConnection:self requestsSendingButtonEvent:eventCopy toDeviceIdentifier:identifierCopy];
 }
 
-- (void)sendTouchEvent:(id)a3 toDeviceWithIdentifier:(id)a4
+- (void)sendTouchEvent:(id)event toDeviceWithIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = a3;
+  identifierCopy = identifier;
+  eventCopy = event;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained clientConnection:self requestsSendingTouchEvent:v7 toDeviceIdentifier:v6];
+  [WeakRetained clientConnection:self requestsSendingTouchEvent:eventCopy toDeviceIdentifier:identifierCopy];
 }
 
-- (void)sendGameControllerEvent:(id)a3 toDeviceWithIdentifier:(id)a4
+- (void)sendGameControllerEvent:(id)event toDeviceWithIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  eventCopy = event;
+  identifierCopy = identifier;
   v8 = _TVRDXPCLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138543618;
-    v11 = v6;
+    v11 = eventCopy;
     v12 = 2114;
-    v13 = v7;
+    v13 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Send game controller event %{public}@ device %{public}@", &v10, 0x16u);
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained clientConnection:self requestsSendingGameControllerEvent:v6 toDeviceIdentifier:v7];
+  [WeakRetained clientConnection:self requestsSendingGameControllerEvent:eventCopy toDeviceIdentifier:identifierCopy];
 }
 
-- (void)sendInputText:(id)a3 toDeviceWithIdentifier:(id)a4
+- (void)sendInputText:(id)text toDeviceWithIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  textCopy = text;
+  identifierCopy = identifier;
   v8 = _TVRDXPCLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412546;
-    v11 = v6;
+    v11 = textCopy;
     v12 = 2112;
-    v13 = v7;
+    v13 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Send input text '%@' to device %@", &v10, 0x16u);
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained clientConnection:self requestsSendingInputText:v6 toDeviceIdentifier:v7];
+  [WeakRetained clientConnection:self requestsSendingInputText:textCopy toDeviceIdentifier:identifierCopy];
 }
 
-- (void)sendInputReturnKeyToDeviceWithIdentifier:(id)a3
+- (void)sendInputReturnKeyToDeviceWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = _TVRDXPCLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Send return key to device %@", &v7, 0xCu);
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained clientConnection:self requestsSendingInputReturnKeyToDeviceIdentifier:v4];
+  [WeakRetained clientConnection:self requestsSendingInputReturnKeyToDeviceIdentifier:identifierCopy];
 }
 
-- (void)sendInputTextPayload:(id)a3 toDeviceWithIdentifier:(id)a4
+- (void)sendInputTextPayload:(id)payload toDeviceWithIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  payloadCopy = payload;
+  identifierCopy = identifier;
   v8 = _TVRDXPCLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412546;
-    v11 = v6;
+    v11 = payloadCopy;
     v12 = 2112;
-    v13 = v7;
+    v13 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Send data payload %@ to device %@", &v10, 0x16u);
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained clientConnection:self requestsSendingInputDataPayload:v6 toDeviceIdentifier:v7];
+  [WeakRetained clientConnection:self requestsSendingInputDataPayload:payloadCopy toDeviceIdentifier:identifierCopy];
 }
 
-- (void)beginDeviceQueryWithResponse:(id)a3
+- (void)beginDeviceQueryWithResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   v5 = _TVRDXPCLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -451,7 +451,7 @@ uint64_t __78__TVRDClientProcessConnection_closeConnectionToDeviceWithIdentifier
   }
 
   v7 = objc_loadWeakRetained(&self->_delegate);
-  [v7 clientConnectionRequestsStartingDeviceQuery:self withResponse:v4];
+  [v7 clientConnectionRequestsStartingDeviceQuery:self withResponse:responseCopy];
 }
 
 - (void)endDeviceQuery
@@ -471,9 +471,9 @@ uint64_t __78__TVRDClientProcessConnection_closeConnectionToDeviceWithIdentifier
   [v5 clientConnectionRequestsEndingDeviceQuery:self];
 }
 
-- (void)getSuggestedDevicesWithResponse:(id)a3
+- (void)getSuggestedDevicesWithResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   v5 = _TVRDXPCLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -482,40 +482,40 @@ uint64_t __78__TVRDClientProcessConnection_closeConnectionToDeviceWithIdentifier
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained clientConnection:self requestsSuggestedDeviceWithResponse:v4];
+  [WeakRetained clientConnection:self requestsSuggestedDeviceWithResponse:responseCopy];
 }
 
-- (void)removeInterestForDeviceWithIdentifier:(id)a3
+- (void)removeInterestForDeviceWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = _TVRDXPCLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138543362;
-    v13 = v4;
+    v13 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Removing device identifier: %{public}@", &v12, 0xCu);
   }
 
-  [(TVRDClientProcessConnection *)self _removeIdentifier:v4];
+  [(TVRDClientProcessConnection *)self _removeIdentifier:identifierCopy];
   v6 = _TVRDXPCLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(TVRDClientProcessConnection *)self mutableIdentifiers];
+    mutableIdentifiers = [(TVRDClientProcessConnection *)self mutableIdentifiers];
     v12 = 138543362;
-    v13 = v7;
+    v13 = mutableIdentifiers;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Device identifiers interested to connect: %{public}@", &v12, 0xCu);
   }
 
-  v8 = [(TVRDClientProcessConnection *)self mutableIdentifiers];
-  if ([v8 count])
+  mutableIdentifiers2 = [(TVRDClientProcessConnection *)self mutableIdentifiers];
+  if ([mutableIdentifiers2 count])
   {
     goto LABEL_10;
   }
 
   v9 = +[TVRDAssertionManager sharedInstance];
-  v10 = [v9 isLockScreenAssertionActive];
+  isLockScreenAssertionActive = [v9 isLockScreenAssertionActive];
 
-  if (v10)
+  if (isLockScreenAssertionActive)
   {
     v11 = _TVRDXPCLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -524,22 +524,22 @@ uint64_t __78__TVRDClientProcessConnection_closeConnectionToDeviceWithIdentifier
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Releasing lock screen assertion", &v12, 2u);
     }
 
-    v8 = +[TVRDAssertionManager sharedInstance];
-    [v8 releaseLockScreenAssertion];
+    mutableIdentifiers2 = +[TVRDAssertionManager sharedInstance];
+    [mutableIdentifiers2 releaseLockScreenAssertion];
 LABEL_10:
   }
 }
 
-- (void)fetchActiveMREndpointUIDWithCompletion:(id)a3
+- (void)fetchActiveMREndpointUIDWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = +[TVRCMediaRemoteEndpointManager sharedInstance];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = __70__TVRDClientProcessConnection_fetchActiveMREndpointUIDWithCompletion___block_invoke;
   v6[3] = &unk_100020658;
-  v7 = v3;
-  v5 = v3;
+  v7 = completionCopy;
+  v5 = completionCopy;
   [v4 fetchActiveEndpointWithCompletion:v6];
 }
 
@@ -554,26 +554,26 @@ uint64_t __70__TVRDClientProcessConnection_fetchActiveMREndpointUIDWithCompletio
   return result;
 }
 
-- (void)sendEvent:(id)a3 toDeviceWithIdentifier:(id)a4 options:(id)a5 response:(id)a6
+- (void)sendEvent:(id)event toDeviceWithIdentifier:(id)identifier options:(id)options response:(id)response
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  responseCopy = response;
+  optionsCopy = options;
+  identifierCopy = identifier;
+  eventCopy = event;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained clientConnection:self requestsSendingEvent:v13 toDeviceWithIdentifier:v12 options:v11 response:v10];
+  [WeakRetained clientConnection:self requestsSendingEvent:eventCopy toDeviceWithIdentifier:identifierCopy options:optionsCopy response:responseCopy];
 }
 
-- (void)launchViewServiceForDeviceWithIdentifier:(id)a3
+- (void)launchViewServiceForDeviceWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = _TVRDXPCLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 136315394;
     v14 = "[TVRDClientProcessConnection launchViewServiceForDeviceWithIdentifier:]";
     v15 = 2112;
-    v16 = v4;
+    v16 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s, deviceIdentifier=%@", &v13, 0x16u);
   }
 
@@ -583,9 +583,9 @@ uint64_t __70__TVRDClientProcessConnection_fetchActiveMREndpointUIDWithCompletio
   [v8 setObject:&off_100021248 forKeyedSubscript:@"deviceType"];
   [v8 setObject:&off_100021260 forKeyedSubscript:@"launchContext"];
   [v8 setObject:&off_100021248 forKeyedSubscript:@"deviceIdentifierType"];
-  if ([v4 length])
+  if ([identifierCopy length])
   {
-    [v8 setObject:v4 forKeyedSubscript:@"deviceIdentifier"];
+    [v8 setObject:identifierCopy forKeyedSubscript:@"deviceIdentifier"];
   }
 
   v9 = [NSDictionary dictionaryWithDictionary:v8];
@@ -605,21 +605,21 @@ uint64_t __70__TVRDClientProcessConnection_fetchActiveMREndpointUIDWithCompletio
   [(TVRDClientProcessConnection *)self setAlertHandle:v10];
 }
 
-- (void)getConnectionStatusToDeviceWithIdentifier:(id)a3 response:(id)a4
+- (void)getConnectionStatusToDeviceWithIdentifier:(id)identifier response:(id)response
 {
-  v9 = a4;
-  v6 = a3;
+  responseCopy = response;
+  identifierCopy = identifier;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v8 = [WeakRetained clientConnection:self isConnectedToDeviceWithIdentifier:v6];
+  v8 = [WeakRetained clientConnection:self isConnectedToDeviceWithIdentifier:identifierCopy];
 
-  v9[2](v9, v8);
+  responseCopy[2](responseCopy, v8);
 }
 
-- (void)fetchUpNextInfoForDeviceWithIdentifier:(id)a3 paginationToken:(id)a4 completion:(id)a5
+- (void)fetchUpNextInfoForDeviceWithIdentifier:(id)identifier paginationToken:(id)token completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  completionCopy = completion;
+  tokenCopy = token;
+  identifierCopy = identifier;
   v11 = _TVRDXPCLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -628,121 +628,121 @@ uint64_t __70__TVRDClientProcessConnection_fetchActiveMREndpointUIDWithCompletio
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained clientConnection:self fetchUpNextInfoForDeviceWithIdentifier:v10 paginationToken:v9 completion:v8];
+  [WeakRetained clientConnection:self fetchUpNextInfoForDeviceWithIdentifier:identifierCopy paginationToken:tokenCopy completion:completionCopy];
 }
 
-- (void)markAsWatchedForDeviceWithIdentifier:(id)a3 mediaIdentifier:(id)a4 completion:(id)a5
+- (void)markAsWatchedForDeviceWithIdentifier:(id)identifier mediaIdentifier:(id)mediaIdentifier completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  mediaIdentifierCopy = mediaIdentifier;
+  completionCopy = completion;
   v11 = _TVRDXPCLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138412546;
-    v14 = v9;
+    v14 = mediaIdentifierCopy;
     v15 = 2114;
-    v16 = v8;
+    v16 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Marking %@ as watched on %{public}@", &v13, 0x16u);
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained clientConnection:self markAsWatchedForDeviceWithIdentifier:v8 mediaIdentifier:v9 completion:v10];
+  [WeakRetained clientConnection:self markAsWatchedForDeviceWithIdentifier:identifierCopy mediaIdentifier:mediaIdentifierCopy completion:completionCopy];
 }
 
-- (void)addItemForDeviceWithIdentifier:(id)a3 mediaIdentifier:(id)a4 completion:(id)a5
+- (void)addItemForDeviceWithIdentifier:(id)identifier mediaIdentifier:(id)mediaIdentifier completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  mediaIdentifierCopy = mediaIdentifier;
+  completionCopy = completion;
   v11 = _TVRDXPCLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138412546;
-    v14 = v9;
+    v14 = mediaIdentifierCopy;
     v15 = 2114;
-    v16 = v8;
+    v16 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Adding %@ to UpNext %{public}@", &v13, 0x16u);
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained clientConnection:self addItemForDeviceWithIdentifier:v8 mediaIdentifier:v9 completion:v10];
+  [WeakRetained clientConnection:self addItemForDeviceWithIdentifier:identifierCopy mediaIdentifier:mediaIdentifierCopy completion:completionCopy];
 }
 
-- (void)removeItemForDeviceWithIdentifier:(id)a3 mediaIdentifier:(id)a4 completion:(id)a5
+- (void)removeItemForDeviceWithIdentifier:(id)identifier mediaIdentifier:(id)mediaIdentifier completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  mediaIdentifierCopy = mediaIdentifier;
+  completionCopy = completion;
   v11 = _TVRDXPCLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138412546;
-    v14 = v9;
+    v14 = mediaIdentifierCopy;
     v15 = 2114;
-    v16 = v8;
+    v16 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Removing %@ from UpNext %{public}@", &v13, 0x16u);
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained clientConnection:self removeItemForDeviceWithIdentifier:v8 mediaIdentifier:v9 completion:v10];
+  [WeakRetained clientConnection:self removeItemForDeviceWithIdentifier:identifierCopy mediaIdentifier:mediaIdentifierCopy completion:completionCopy];
 }
 
-- (void)playItem:(id)a3 deviceIdentifier:(id)a4 completion:(id)a5
+- (void)playItem:(id)item deviceIdentifier:(id)identifier completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  itemCopy = item;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v11 = _TVRDXPCLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138412546;
-    v14 = v8;
+    v14 = itemCopy;
     v15 = 2114;
-    v16 = v9;
+    v16 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Playing %@ on %{public}@", &v13, 0x16u);
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained clientConnection:self playItem:v8 deviceIdentifier:v9 completion:v10];
+  [WeakRetained clientConnection:self playItem:itemCopy deviceIdentifier:identifierCopy completion:completionCopy];
 }
 
-- (void)fetchLaunchableAppsForDeviceWithIdentifier:(id)a3 completion:(id)a4
+- (void)fetchLaunchableAppsForDeviceWithIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v8 = _TVRDXPCLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138543362;
-    v11 = v6;
+    v11 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Fetching launchable apps on %{public}@", &v10, 0xCu);
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained clientConnection:self fetchLaunchableAppsForDeviceWithIdentifier:v6 completion:v7];
+  [WeakRetained clientConnection:self fetchLaunchableAppsForDeviceWithIdentifier:identifierCopy completion:completionCopy];
 }
 
-- (void)launchAppForDeviceWithIdentifier:(id)a3 bundleID:(id)a4 completion:(id)a5
+- (void)launchAppForDeviceWithIdentifier:(id)identifier bundleID:(id)d completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  dCopy = d;
+  completionCopy = completion;
   v11 = _TVRDXPCLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138543618;
-    v14 = v8;
+    v14 = identifierCopy;
     v15 = 2114;
-    v16 = v9;
+    v16 = dCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Launching app on %{public}@ bundleID=%{public}@", &v13, 0x16u);
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained clientConnection:self launchAppForDeviceWithIdentifier:v8 bundleID:v9 completion:v10];
+  [WeakRetained clientConnection:self launchAppForDeviceWithIdentifier:identifierCopy bundleID:dCopy completion:completionCopy];
 }
 
-- (void)remoteAlertHandleDidDeactivate:(id)a3
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate
 {
   v4 = _TVRDXPCLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -755,13 +755,13 @@ uint64_t __70__TVRDClientProcessConnection_fetchActiveMREndpointUIDWithCompletio
   [(TVRDClientProcessConnection *)self _invalidateRemoteAlertHandle];
 }
 
-- (void)remoteAlertHandle:(id)a3 didInvalidateWithError:(id)a4
+- (void)remoteAlertHandle:(id)handle didInvalidateWithError:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   v6 = _TVRDXPCLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
-    [TVRDClientProcessConnection remoteAlertHandle:v5 didInvalidateWithError:v6];
+    [TVRDClientProcessConnection remoteAlertHandle:errorCopy didInvalidateWithError:v6];
   }
 
   [(TVRDClientProcessConnection *)self _invalidateRemoteAlertHandle];
@@ -777,23 +777,23 @@ uint64_t __70__TVRDClientProcessConnection_fetchActiveMREndpointUIDWithCompletio
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%s", &v6, 0xCu);
   }
 
-  v4 = [(TVRDClientProcessConnection *)self alertHandle];
-  [v4 unregisterObserver:self];
+  alertHandle = [(TVRDClientProcessConnection *)self alertHandle];
+  [alertHandle unregisterObserver:self];
 
-  v5 = [(TVRDClientProcessConnection *)self alertHandle];
-  [v5 invalidate];
+  alertHandle2 = [(TVRDClientProcessConnection *)self alertHandle];
+  [alertHandle2 invalidate];
 
   [(TVRDClientProcessConnection *)self setAlertHandle:0];
 }
 
 - (void)_removeAllIdentifiers
 {
-  v3 = [(TVRDClientProcessConnection *)self deviceIdentifiers];
+  deviceIdentifiers = [(TVRDClientProcessConnection *)self deviceIdentifiers];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v17 count:16];
+  v4 = [deviceIdentifiers countByEnumeratingWithState:&v11 objects:v17 count:16];
   if (v4)
   {
     v5 = v4;
@@ -805,7 +805,7 @@ uint64_t __70__TVRDClientProcessConnection_fetchActiveMREndpointUIDWithCompletio
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(deviceIdentifiers);
         }
 
         [(TVRDClientProcessConnection *)self _removeIdentifier:*(*(&v11 + 1) + 8 * v7)];
@@ -813,7 +813,7 @@ uint64_t __70__TVRDClientProcessConnection_fetchActiveMREndpointUIDWithCompletio
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v17 count:16];
+      v5 = [deviceIdentifiers countByEnumeratingWithState:&v11 objects:v17 count:16];
     }
 
     while (v5);
@@ -832,35 +832,35 @@ uint64_t __70__TVRDClientProcessConnection_fetchActiveMREndpointUIDWithCompletio
   }
 }
 
-- (void)_removeIdentifier:(id)a3
+- (void)_removeIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   if ([(NSMutableSet *)self->_mutableIdentifiers containsObject:?])
   {
-    [(NSMutableSet *)self->_mutableIdentifiers removeObject:v5];
+    [(NSMutableSet *)self->_mutableIdentifiers removeObject:identifierCopy];
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained clientConnection:self removedInterestedDeviceIdentifier:v5];
+    [WeakRetained clientConnection:self removedInterestedDeviceIdentifier:identifierCopy];
   }
 }
 
-- (void)updateDeviceIdentifier:(id)a3 to:(id)a4
+- (void)updateDeviceIdentifier:(id)identifier to:(id)to
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  toCopy = to;
   v8 = _TVRDXPCLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412546;
-    v10 = v6;
+    v10 = identifierCopy;
     v11 = 2112;
-    v12 = v7;
+    v12 = toCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Updating identifier from: %@ to: %@", &v9, 0x16u);
   }
 
-  if (([(NSMutableSet *)self->_mutableIdentifiers containsObject:v7]& 1) == 0 && [(NSMutableSet *)self->_mutableIdentifiers containsObject:v6])
+  if (([(NSMutableSet *)self->_mutableIdentifiers containsObject:toCopy]& 1) == 0 && [(NSMutableSet *)self->_mutableIdentifiers containsObject:identifierCopy])
   {
-    [(NSMutableSet *)self->_mutableIdentifiers removeObject:v6];
-    [(NSMutableSet *)self->_mutableIdentifiers addObject:v7];
+    [(NSMutableSet *)self->_mutableIdentifiers removeObject:identifierCopy];
+    [(NSMutableSet *)self->_mutableIdentifiers addObject:toCopy];
   }
 }
 

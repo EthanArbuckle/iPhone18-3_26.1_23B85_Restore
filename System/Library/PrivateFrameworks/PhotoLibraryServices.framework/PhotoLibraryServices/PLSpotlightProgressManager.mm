@@ -1,10 +1,10 @@
 @interface PLSpotlightProgressManager
-+ (BOOL)deleteSpotlightProgressForPhotoLibraryPathManager:(id)a3;
++ (BOOL)deleteSpotlightProgressForPhotoLibraryPathManager:(id)manager;
 @end
 
 @implementation PLSpotlightProgressManager
 
-+ (BOOL)deleteSpotlightProgressForPhotoLibraryPathManager:(id)a3
++ (BOOL)deleteSpotlightProgressForPhotoLibraryPathManager:(id)manager
 {
   v3 = PLSearchBackendDonationsGetLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_FAULT))

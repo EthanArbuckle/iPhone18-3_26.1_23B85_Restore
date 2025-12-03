@@ -1,6 +1,6 @@
 @interface UIPresentationController
 - (BOOL)crl_willOnlyEverBePresentedAsAPopover;
-- (void)crl_setWillOnlyEverBePresentedAsAPopover:(BOOL)a3;
+- (void)crl_setWillOnlyEverBePresentedAsAPopover:(BOOL)popover;
 @end
 
 @implementation UIPresentationController
@@ -13,21 +13,21 @@
 
   if (v5)
   {
-    v6 = [v5 BOOLValue];
+    bOOLValue = [v5 BOOLValue];
   }
 
   else
   {
-    v6 = 0;
+    bOOLValue = 0;
   }
 
-  return v6;
+  return bOOLValue;
 }
 
-- (void)crl_setWillOnlyEverBePresentedAsAPopover:(BOOL)a3
+- (void)crl_setWillOnlyEverBePresentedAsAPopover:(BOOL)popover
 {
   v4 = off_1019EFCE8;
-  v5 = [NSNumber numberWithBool:a3];
+  v5 = [NSNumber numberWithBool:popover];
   objc_setAssociatedObject(self, v4, v5, 0x301);
 }
 

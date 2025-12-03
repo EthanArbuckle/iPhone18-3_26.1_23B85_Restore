@@ -1,40 +1,40 @@
 @interface WLCompletedViewController
-- (WLCompletedViewController)initWithWelcomeController:(id)a3 context:(id)a4 imported:(BOOL)a5;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)_continueTapped:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (WLCompletedViewController)initWithWelcomeController:(id)controller context:(id)context imported:(BOOL)imported;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)_continueTapped:(id)tapped;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
 @implementation WLCompletedViewController
 
-- (WLCompletedViewController)initWithWelcomeController:(id)a3 context:(id)a4 imported:(BOOL)a5
+- (WLCompletedViewController)initWithWelcomeController:(id)controller context:(id)context imported:(BOOL)imported
 {
-  v38 = a3;
-  v8 = a4;
+  controllerCopy = controller;
+  contextCopy = context;
   v9 = WLLocalizedString();
-  v10 = [v8 album];
-  v11 = [v10 importErrorCount];
+  album = [contextCopy album];
+  importErrorCount = [album importErrorCount];
 
-  v12 = [v8 image];
-  if ([v12 importErrorCount])
+  image = [contextCopy image];
+  if ([image importErrorCount])
   {
     v13 = 1;
   }
 
   else
   {
-    v14 = [v8 video];
-    v13 = [v14 importErrorCount] != 0;
+    video = [contextCopy video];
+    v13 = [video importErrorCount] != 0;
   }
 
-  v15 = [v8 voiceMemo];
-  v16 = [v15 importErrorCount];
+  voiceMemo = [contextCopy voiceMemo];
+  importErrorCount2 = [voiceMemo importErrorCount];
 
   v17 = [MEMORY[0x277D75418] modelSpecificLocalizedStringKeyForKey:@"COMPLETED_DESCRIPTION"];
   v18 = WLLocalizedString();
 
-  if (v11)
+  if (importErrorCount)
   {
     v19 = WLLocalizedString();
     v20 = [v18 stringByAppendingFormat:@"\n\n%@", v19];
@@ -56,7 +56,7 @@
     }
   }
 
-  if (v16)
+  if (importErrorCount2)
   {
 LABEL_17:
     v24 = WLLocalizedString();
@@ -67,7 +67,7 @@ LABEL_17:
   }
 
 LABEL_9:
-  if (v16)
+  if (importErrorCount2)
   {
     v22 = 0;
   }
@@ -82,7 +82,7 @@ LABEL_9:
     goto LABEL_17;
   }
 
-  if (v16 && !v13)
+  if (importErrorCount2 && !v13)
   {
     goto LABEL_17;
   }
@@ -97,27 +97,27 @@ LABEL_18:
 
   if (v29)
   {
-    objc_storeStrong(&v29->_welcomeController, a3);
-    if ([v8 isEnabled])
+    objc_storeStrong(&v29->_welcomeController, controller);
+    if ([contextCopy isEnabled])
     {
-      v30 = [WLDetailItem items:v8];
+      v30 = [WLDetailItem items:contextCopy];
       items = v29->_items;
       v29->_items = v30;
     }
 
-    v32 = [MEMORY[0x277D37618] boldButton];
+    boldButton = [MEMORY[0x277D37618] boldButton];
     v33 = WLLocalizedString();
-    [v32 setTitle:v33 forState:0];
+    [boldButton setTitle:v33 forState:0];
 
-    [v32 addTarget:v29 action:sel__continueTapped_ forControlEvents:64];
-    v34 = [(WLCompletedViewController *)v29 buttonTray];
-    [v34 addButton:v32];
+    [boldButton addTarget:v29 action:sel__continueTapped_ forControlEvents:64];
+    buttonTray = [(WLCompletedViewController *)v29 buttonTray];
+    [buttonTray addButton:boldButton];
 
-    v35 = [(OBBaseWelcomeController *)v29 navigationItem];
-    [v35 setTitle:&stru_2882D7420];
+    navigationItem = [(OBBaseWelcomeController *)v29 navigationItem];
+    [navigationItem setTitle:&stru_2882D7420];
 
-    v36 = [(OBBaseWelcomeController *)v29 navigationItem];
-    [v36 setHidesBackButton:1 animated:0];
+    navigationItem2 = [(OBBaseWelcomeController *)v29 navigationItem];
+    [navigationItem2 setHidesBackButton:1 animated:0];
   }
 
   return v29;
@@ -132,24 +132,24 @@ LABEL_18:
   v4 = [v3 initWithFrame:2 style:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
   [(OBTableWelcomeController *)self setTableView:v4];
 
-  v5 = [(OBTableWelcomeController *)self tableView];
-  [v5 registerClass:objc_opt_class() forCellReuseIdentifier:@"WLCompletedViewCell"];
+  tableView = [(OBTableWelcomeController *)self tableView];
+  [tableView registerClass:objc_opt_class() forCellReuseIdentifier:@"WLCompletedViewCell"];
 
-  v6 = [(OBTableWelcomeController *)self tableView];
-  v7 = [MEMORY[0x277D75348] clearColor];
-  [v6 setBackgroundColor:v7];
+  tableView2 = [(OBTableWelcomeController *)self tableView];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [tableView2 setBackgroundColor:clearColor];
 
-  v8 = [(OBTableWelcomeController *)self tableView];
-  [v8 setDataSource:self];
+  tableView3 = [(OBTableWelcomeController *)self tableView];
+  [tableView3 setDataSource:self];
 
-  v9 = [(OBTableWelcomeController *)self tableView];
-  [v9 setDelegate:self];
+  tableView4 = [(OBTableWelcomeController *)self tableView];
+  [tableView4 setDelegate:self];
 
-  v10 = [(OBTableWelcomeController *)self tableView];
-  [v10 setTranslatesAutoresizingMaskIntoConstraints:0];
+  tableView5 = [(OBTableWelcomeController *)self tableView];
+  [tableView5 setTranslatesAutoresizingMaskIntoConstraints:0];
 }
 
-- (void)_continueTapped:(id)a3
+- (void)_continueTapped:(id)tapped
 {
   continueHandler = self->_continueHandler;
   if (continueHandler)
@@ -158,12 +158,12 @@ LABEL_18:
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"WLCompletedViewCell" forIndexPath:v6];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"WLCompletedViewCell" forIndexPath:pathCopy];
   items = self->_items;
-  v9 = [v6 row];
+  v9 = [pathCopy row];
 
   v10 = [(NSArray *)items objectAtIndexedSubscript:v9];
   [v7 setItem:v10];
@@ -171,19 +171,19 @@ LABEL_18:
   return v7;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  [a3 deselectRowAtIndexPath:v6 animated:1];
+  pathCopy = path;
+  [view deselectRowAtIndexPath:pathCopy animated:1];
   items = self->_items;
-  v8 = [v6 row];
+  v8 = [pathCopy row];
 
   v11 = [(NSArray *)items objectAtIndexedSubscript:v8];
   if ([v11 showDetailDisclosureButton])
   {
     v9 = [[WLDetailWarningViewController alloc] initWithWLDetailItem:v11];
-    v10 = [(WLCompletedViewController *)self navigationController];
-    [v10 pushViewController:v9 animated:1];
+    navigationController = [(WLCompletedViewController *)self navigationController];
+    [navigationController pushViewController:v9 animated:1];
   }
 }
 

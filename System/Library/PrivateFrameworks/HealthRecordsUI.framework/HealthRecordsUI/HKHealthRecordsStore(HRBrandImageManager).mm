@@ -6,16 +6,16 @@
 
 - (id)hk_brandImageManager
 {
-  v1 = a1;
-  objc_sync_enter(v1);
-  v2 = objc_getAssociatedObject(v1, sel_hk_brandImageManager);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v2 = objc_getAssociatedObject(selfCopy, sel_hk_brandImageManager);
   if (!v2)
   {
-    v2 = [HRBrandImageManager imageManagerWithHealthRecordsStore:v1];
-    objc_setAssociatedObject(v1, sel_hk_brandImageManager, v2, 1);
+    v2 = [HRBrandImageManager imageManagerWithHealthRecordsStore:selfCopy];
+    objc_setAssociatedObject(selfCopy, sel_hk_brandImageManager, v2, 1);
   }
 
-  objc_sync_exit(v1);
+  objc_sync_exit(selfCopy);
 
   return v2;
 }

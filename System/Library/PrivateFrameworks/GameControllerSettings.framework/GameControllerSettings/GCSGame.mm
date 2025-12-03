@@ -1,14 +1,14 @@
 @interface GCSGame
 + (GCSGame)defaultGame;
 + (id)archivalClasses;
-- (GCSGame)initWithBundleIdentifier:(id)a3 title:(id)a4 controllerToProfileMappings:(id)a5 controllerToCompatibilityModeMappings:(id)a6;
-- (GCSGame)initWithCoder:(id)a3;
-- (GCSGame)initWithJSONObject:(id)a3;
+- (GCSGame)initWithBundleIdentifier:(id)identifier title:(id)title controllerToProfileMappings:(id)mappings controllerToCompatibilityModeMappings:(id)modeMappings;
+- (GCSGame)initWithCoder:(id)coder;
+- (GCSGame)initWithJSONObject:(id)object;
 - (GCSJSONObject)jsonObject;
 - (NSString)title;
-- (id)profileForController:(id)a3 profiles:(id)a4;
-- (id)profileUUIDForPersistentControllerIdentifier:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)profileForController:(id)controller profiles:(id)profiles;
+- (id)profileUUIDForPersistentControllerIdentifier:(id)identifier;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation GCSGame
@@ -24,34 +24,34 @@
   return v6;
 }
 
-- (GCSGame)initWithBundleIdentifier:(id)a3 title:(id)a4 controllerToProfileMappings:(id)a5 controllerToCompatibilityModeMappings:(id)a6
+- (GCSGame)initWithBundleIdentifier:(id)identifier title:(id)title controllerToProfileMappings:(id)mappings controllerToCompatibilityModeMappings:(id)modeMappings
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  identifierCopy = identifier;
+  titleCopy = title;
+  mappingsCopy = mappings;
+  modeMappingsCopy = modeMappings;
   v26.receiver = self;
   v26.super_class = GCSGame;
   v14 = [(GCSGame *)&v26 init];
   if (v14)
   {
-    v15 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     modifiedDate = v14->_modifiedDate;
-    v14->_modifiedDate = v15;
+    v14->_modifiedDate = date;
 
-    v17 = [v10 copy];
+    v17 = [identifierCopy copy];
     bundleIdentifier = v14->_bundleIdentifier;
     v14->_bundleIdentifier = v17;
 
-    v19 = [v11 copy];
+    v19 = [titleCopy copy];
     title = v14->_title;
     v14->_title = v19;
 
-    v21 = [v12 copy];
+    v21 = [mappingsCopy copy];
     controllerToProfileMappings = v14->_controllerToProfileMappings;
     v14->_controllerToProfileMappings = v21;
 
-    v23 = [v13 copy];
+    v23 = [modeMappingsCopy copy];
     controllerToCompatibilityModeMappings = v14->_controllerToCompatibilityModeMappings;
     v14->_controllerToCompatibilityModeMappings = v23;
   }
@@ -59,13 +59,13 @@
   return v14;
 }
 
-- (id)profileForController:(id)a3 profiles:(id)a4
+- (id)profileForController:(id)controller profiles:(id)profiles
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  profilesCopy = profiles;
   controllerToProfileMappings = self->_controllerToProfileMappings;
-  v8 = [a3 persistentIdentifier];
-  v9 = [(NSDictionary *)controllerToProfileMappings objectForKeyedSubscript:v8];
+  persistentIdentifier = [controller persistentIdentifier];
+  v9 = [(NSDictionary *)controllerToProfileMappings objectForKeyedSubscript:persistentIdentifier];
 
   if (v9)
   {
@@ -73,7 +73,7 @@
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v10 = v6;
+    v10 = profilesCopy;
     v11 = [v10 countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v11)
     {
@@ -88,8 +88,8 @@
           }
 
           v14 = *(*(&v19 + 1) + 8 * i);
-          v15 = [v14 uuid];
-          v16 = [v15 isEqual:v9];
+          uuid = [v14 uuid];
+          v16 = [uuid isEqual:v9];
 
           if (v16)
           {
@@ -121,22 +121,22 @@ LABEL_12:
   return v11;
 }
 
-- (id)profileUUIDForPersistentControllerIdentifier:(id)a3
+- (id)profileUUIDForPersistentControllerIdentifier:(id)identifier
 {
-  v3 = [(NSDictionary *)self->_controllerToProfileMappings objectForKeyedSubscript:a3];
+  v3 = [(NSDictionary *)self->_controllerToProfileMappings objectForKeyedSubscript:identifier];
   v4 = v3;
   if (v3)
   {
-    v5 = v3;
+    uuid = v3;
   }
 
   else
   {
     v6 = +[GCSProfile defaultProfile];
-    v5 = [v6 uuid];
+    uuid = [v6 uuid];
   }
 
-  return v5;
+  return uuid;
 }
 
 - (NSString)title
@@ -163,23 +163,23 @@ LABEL_12:
   return [v2 setWithObjects:{v3, v4, v5, objc_opt_class(), 0}];
 }
 
-- (GCSGame)initWithCoder:(id)a3
+- (GCSGame)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v24.receiver = self;
   v24.super_class = GCSGame;
   v5 = [(GCSGame *)&v24 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_modifiedDate"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_modifiedDate"];
     modifiedDate = v5->_modifiedDate;
     v5->_modifiedDate = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_bundleIdentifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_bundleIdentifier"];
     bundleIdentifier = v5->_bundleIdentifier;
     v5->_bundleIdentifier = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_title"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_title"];
     title = v5->_title;
     v5->_title = v10;
 
@@ -187,12 +187,12 @@ LABEL_12:
     v13 = objc_opt_class();
     v14 = objc_opt_class();
     v15 = [v12 initWithObjects:{v13, v14, objc_opt_class(), 0}];
-    v16 = [v4 decodeObjectOfClasses:v15 forKey:@"_controllerToProfileMappings"];
+    v16 = [coderCopy decodeObjectOfClasses:v15 forKey:@"_controllerToProfileMappings"];
     controllerToProfileMappings = v5->_controllerToProfileMappings;
     v5->_controllerToProfileMappings = v16;
 
     v18 = objc_opt_class();
-    v19 = [v4 decodeDictionaryWithKeysOfClass:v18 objectsOfClass:objc_opt_class() forKey:@"_controllerToCompatibilityModeMappings"];
+    v19 = [coderCopy decodeDictionaryWithKeysOfClass:v18 objectsOfClass:objc_opt_class() forKey:@"_controllerToCompatibilityModeMappings"];
     v20 = v19;
     if (v19)
     {
@@ -211,24 +211,24 @@ LABEL_12:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   modifiedDate = self->_modifiedDate;
-  v5 = a3;
-  [v5 encodeObject:modifiedDate forKey:@"_modifiedDate"];
-  [v5 encodeObject:self->_bundleIdentifier forKey:@"_bundleIdentifier"];
-  [v5 encodeObject:self->_title forKey:@"_title"];
-  [v5 encodeObject:self->_controllerToProfileMappings forKey:@"_controllerToProfileMappings"];
-  [v5 encodeObject:self->_controllerToCompatibilityModeMappings forKey:@"_controllerToCompatibilityModeMappings"];
+  coderCopy = coder;
+  [coderCopy encodeObject:modifiedDate forKey:@"_modifiedDate"];
+  [coderCopy encodeObject:self->_bundleIdentifier forKey:@"_bundleIdentifier"];
+  [coderCopy encodeObject:self->_title forKey:@"_title"];
+  [coderCopy encodeObject:self->_controllerToProfileMappings forKey:@"_controllerToProfileMappings"];
+  [coderCopy encodeObject:self->_controllerToCompatibilityModeMappings forKey:@"_controllerToCompatibilityModeMappings"];
 }
 
-- (GCSGame)initWithJSONObject:(id)a3
+- (GCSGame)initWithJSONObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = objectCopy;
     v25.receiver = self;
     v25.super_class = GCSGame;
     v6 = [(GCSGame *)&v25 init];
@@ -238,16 +238,16 @@ LABEL_12:
       v8 = v7;
       if (v7)
       {
-        v9 = v7;
+        date = v7;
       }
 
       else
       {
-        v9 = [MEMORY[0x277CBEAA8] date];
+        date = [MEMORY[0x277CBEAA8] date];
       }
 
       modifiedDate = v6->_modifiedDate;
-      v6->_modifiedDate = v9;
+      v6->_modifiedDate = date;
 
       v12 = [v5 _gcs_stringForJSONKey:@"bundleIdentifier"];
       bundleIdentifier = v6->_bundleIdentifier;
@@ -272,24 +272,24 @@ LABEL_12:
 
     self = v6;
 
-    v10 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
 - (GCSJSONObject)jsonObject
 {
   v11[5] = *MEMORY[0x277D85DE8];
   v10[0] = @"modifiedDate";
-  v3 = [(NSDate *)self->_modifiedDate jsonObject];
+  jsonObject = [(NSDate *)self->_modifiedDate jsonObject];
   bundleIdentifier = self->_bundleIdentifier;
-  v11[0] = v3;
+  v11[0] = jsonObject;
   v11[1] = bundleIdentifier;
   v10[1] = @"bundleIdentifier";
   v10[2] = @"title";

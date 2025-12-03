@@ -1,7 +1,7 @@
 @interface HMDAudioStreamInterfaceDataSource
 + (id)logCategory;
 - (BOOL)isMuted;
-- (void)createPHASEEngineAndControllerForStreamToken:(int64_t)a3 completion:(id)a4;
+- (void)createPHASEEngineAndControllerForStreamToken:(int64_t)token completion:(id)completion;
 @end
 
 @implementation HMDAudioStreamInterfaceDataSource
@@ -26,12 +26,12 @@ uint64_t __48__HMDAudioStreamInterfaceDataSource_logCategory__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)createPHASEEngineAndControllerForStreamToken:(int64_t)a3 completion:(id)a4
+- (void)createPHASEEngineAndControllerForStreamToken:(int64_t)token completion:(id)completion
 {
   v14 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  completionCopy = completion;
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
   {
@@ -43,7 +43,7 @@ uint64_t __48__HMDAudioStreamInterfaceDataSource_logCategory__block_invoke()
 
   objc_autoreleasePoolPop(v6);
   v10 = [MEMORY[0x277CCA9B8] hmErrorWithCode:48];
-  (*(v5 + 2))(v5, 0, 0, v10);
+  (*(completionCopy + 2))(completionCopy, 0, 0, v10);
 
   v11 = *MEMORY[0x277D85DE8];
 }
@@ -59,11 +59,11 @@ uint64_t __48__HMDAudioStreamInterfaceDataSource_logCategory__block_invoke()
 
   else
   {
-    v4 = [MEMORY[0x277D26E58] sharedAVSystemController];
-    v5 = [v4 attributeForKey:*MEMORY[0x277D26DF0]];
-    v6 = [v5 BOOLValue];
+    mEMORY[0x277D26E58] = [MEMORY[0x277D26E58] sharedAVSystemController];
+    v5 = [mEMORY[0x277D26E58] attributeForKey:*MEMORY[0x277D26DF0]];
+    bOOLValue = [v5 BOOLValue];
 
-    return v6;
+    return bOOLValue;
   }
 }
 

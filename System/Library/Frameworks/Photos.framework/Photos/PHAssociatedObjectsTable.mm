@@ -1,13 +1,13 @@
 @interface PHAssociatedObjectsTable
 - (PHAssociatedObjectsTable)init;
-- (id)_entryForObject:(id)a1;
-- (id)_entryForObjectCreatingIfNecessary:(id)a1;
-- (id)associatedObjectOnObject:(id)a3 forKey:(id)a4;
-- (id)setAssociatedObjectIfNotSet:(id)a3 onObject:(id)a4 forKey:(id)a5;
-- (void)_runWithLockedBucketForObject:(void *)a3 block:;
-- (void)removeAllAssociatedObjectsOnObject:(id)a3;
-- (void)removeAssociatedObjectOnObject:(id)a3 forKey:(id)a4;
-- (void)setAssociatedObject:(id)a3 onObject:(id)a4 forKey:(id)a5;
+- (id)_entryForObject:(id)object;
+- (id)_entryForObjectCreatingIfNecessary:(id)necessary;
+- (id)associatedObjectOnObject:(id)object forKey:(id)key;
+- (id)setAssociatedObjectIfNotSet:(id)set onObject:(id)object forKey:(id)key;
+- (void)_runWithLockedBucketForObject:(void *)object block:;
+- (void)removeAllAssociatedObjectsOnObject:(id)object;
+- (void)removeAssociatedObjectOnObject:(id)object forKey:(id)key;
+- (void)setAssociatedObject:(id)object onObject:(id)onObject forKey:(id)key;
 @end
 
 @implementation PHAssociatedObjectsTable
@@ -34,50 +34,50 @@
   return v2;
 }
 
-- (void)removeAllAssociatedObjectsOnObject:(id)a3
+- (void)removeAllAssociatedObjectsOnObject:(id)object
 {
-  v5 = a3;
-  if (!v5)
+  objectCopy = object;
+  if (!objectCopy)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"PHAssociatedObjectsTable.m" lineNumber:131 description:{@"Invalid parameter not satisfying: %@", @"object != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHAssociatedObjectsTable.m" lineNumber:131 description:{@"Invalid parameter not satisfying: %@", @"object != nil"}];
   }
 
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __63__PHAssociatedObjectsTable_removeAllAssociatedObjectsOnObject___block_invoke;
   v8[3] = &unk_1E75A8468;
-  v9 = v5;
-  v6 = v5;
+  v9 = objectCopy;
+  v6 = objectCopy;
   [(PHAssociatedObjectsTable *)self _runWithLockedBucketForObject:v6 block:v8];
 }
 
-- (void)_runWithLockedBucketForObject:(void *)a3 block:
+- (void)_runWithLockedBucketForObject:(void *)object block:
 {
   v5 = a2;
-  if (a1)
+  if (self)
   {
     v6 = v5 >> 4;
     v9 = v5;
-    v7 = a3;
-    v8 = (a1 + 4 * v6);
+    objectCopy = object;
+    v8 = (self + 4 * v6);
     os_unfair_lock_lock(v8 + 2);
-    v7[2](v7, *(a1 + 8 * v6 + 72));
+    objectCopy[2](objectCopy, *(self + 8 * v6 + 72));
 
     os_unfair_lock_unlock(v8 + 2);
     v5 = v9;
   }
 }
 
-- (void)removeAssociatedObjectOnObject:(id)a3 forKey:(id)a4
+- (void)removeAssociatedObjectOnObject:(id)object forKey:(id)key
 {
-  v15 = a3;
-  v7 = a4;
-  v8 = v15;
-  v9 = v7;
-  if (v15)
+  objectCopy = object;
+  keyCopy = key;
+  v8 = objectCopy;
+  v9 = keyCopy;
+  if (objectCopy)
   {
-    if (v7)
+    if (keyCopy)
     {
 LABEL_3:
       v10 = [(PHAssociatedObjectsTable *)self _entryForObject:v8];
@@ -89,8 +89,8 @@ LABEL_3:
 
   else
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"PHAssociatedObjectsTable.m" lineNumber:123 description:{@"Invalid parameter not satisfying: %@", @"object != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHAssociatedObjectsTable.m" lineNumber:123 description:{@"Invalid parameter not satisfying: %@", @"object != nil"}];
 
     v8 = 0;
     if (v9)
@@ -99,21 +99,21 @@ LABEL_3:
     }
   }
 
-  v14 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v14 handleFailureInMethod:a2 object:self file:@"PHAssociatedObjectsTable.m" lineNumber:124 description:{@"Invalid parameter not satisfying: %@", @"key != nil"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PHAssociatedObjectsTable.m" lineNumber:124 description:{@"Invalid parameter not satisfying: %@", @"key != nil"}];
 
-  v10 = [(PHAssociatedObjectsTable *)self _entryForObject:v15];
+  v10 = [(PHAssociatedObjectsTable *)self _entryForObject:objectCopy];
   v11 = v10;
   v12 = 0;
 LABEL_4:
   [(PHAssociatedObjectsEntry *)v10 setAssociatedObject:v12 forKey:?];
 }
 
-- (id)_entryForObject:(id)a1
+- (id)_entryForObject:(id)object
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (object)
   {
     v9 = 0;
     v10 = &v9;
@@ -127,13 +127,13 @@ LABEL_4:
     v6[3] = &unk_1E75A8440;
     v8 = &v9;
     v7 = v3;
-    [(PHAssociatedObjectsTable *)a1 _runWithLockedBucketForObject:v7 block:v6];
-    a1 = v10[5];
+    [(PHAssociatedObjectsTable *)object _runWithLockedBucketForObject:v7 block:v6];
+    object = v10[5];
 
     _Block_object_dispose(&v9, 8);
   }
 
-  return a1;
+  return object;
 }
 
 uint64_t __44__PHAssociatedObjectsTable__entryForObject___block_invoke(uint64_t a1, void *a2)
@@ -143,20 +143,20 @@ uint64_t __44__PHAssociatedObjectsTable__entryForObject___block_invoke(uint64_t 
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)setAssociatedObjectIfNotSet:(id)a3 onObject:(id)a4 forKey:(id)a5
+- (id)setAssociatedObjectIfNotSet:(id)set onObject:(id)object forKey:(id)key
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
-  if (v10)
+  setCopy = set;
+  objectCopy = object;
+  keyCopy = key;
+  v12 = keyCopy;
+  if (objectCopy)
   {
-    if (v11)
+    if (keyCopy)
     {
 LABEL_3:
-      v13 = [(PHAssociatedObjectsTable *)self _entryForObjectCreatingIfNecessary:v10];
+      v13 = [(PHAssociatedObjectsTable *)self _entryForObjectCreatingIfNecessary:objectCopy];
       v14 = v13;
-      v15 = v9;
+      v15 = setCopy;
       v16 = v12;
       goto LABEL_4;
     }
@@ -164,8 +164,8 @@ LABEL_3:
 
   else
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"PHAssociatedObjectsTable.m" lineNumber:114 description:{@"Invalid parameter not satisfying: %@", @"object != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHAssociatedObjectsTable.m" lineNumber:114 description:{@"Invalid parameter not satisfying: %@", @"object != nil"}];
 
     if (v12)
     {
@@ -173,12 +173,12 @@ LABEL_3:
     }
   }
 
-  v20 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v20 handleFailureInMethod:a2 object:self file:@"PHAssociatedObjectsTable.m" lineNumber:115 description:{@"Invalid parameter not satisfying: %@", @"key != nil"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PHAssociatedObjectsTable.m" lineNumber:115 description:{@"Invalid parameter not satisfying: %@", @"key != nil"}];
 
-  v13 = [(PHAssociatedObjectsTable *)self _entryForObjectCreatingIfNecessary:v10];
+  v13 = [(PHAssociatedObjectsTable *)self _entryForObjectCreatingIfNecessary:objectCopy];
   v14 = v13;
-  v15 = v9;
+  v15 = setCopy;
   v16 = 0;
 LABEL_4:
   v17 = [(PHAssociatedObjectsEntry *)v13 setAssociatedObjectIfNotSet:v15 forKey:v16];
@@ -186,11 +186,11 @@ LABEL_4:
   return v17;
 }
 
-- (id)_entryForObjectCreatingIfNecessary:(id)a1
+- (id)_entryForObjectCreatingIfNecessary:(id)necessary
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (necessary)
   {
     v9 = 0;
     v10 = &v9;
@@ -204,13 +204,13 @@ LABEL_4:
     v6[3] = &unk_1E75A8440;
     v8 = &v9;
     v7 = v3;
-    [(PHAssociatedObjectsTable *)a1 _runWithLockedBucketForObject:v7 block:v6];
-    a1 = v10[5];
+    [(PHAssociatedObjectsTable *)necessary _runWithLockedBucketForObject:v7 block:v6];
+    necessary = v10[5];
 
     _Block_object_dispose(&v9, 8);
   }
 
-  return a1;
+  return necessary;
 }
 
 void __63__PHAssociatedObjectsTable__entryForObjectCreatingIfNecessary___block_invoke(uint64_t a1, void *a2)
@@ -232,20 +232,20 @@ void __63__PHAssociatedObjectsTable__entryForObjectCreatingIfNecessary___block_i
   }
 }
 
-- (void)setAssociatedObject:(id)a3 onObject:(id)a4 forKey:(id)a5
+- (void)setAssociatedObject:(id)object onObject:(id)onObject forKey:(id)key
 {
-  v18 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v9)
+  objectCopy = object;
+  onObjectCopy = onObject;
+  keyCopy = key;
+  v11 = keyCopy;
+  if (onObjectCopy)
   {
-    if (v10)
+    if (keyCopy)
     {
 LABEL_3:
-      v12 = [(PHAssociatedObjectsTable *)self _entryForObjectCreatingIfNecessary:v9];
+      v12 = [(PHAssociatedObjectsTable *)self _entryForObjectCreatingIfNecessary:onObjectCopy];
       v13 = v12;
-      v14 = v18;
+      v14 = objectCopy;
       v15 = v11;
       goto LABEL_4;
     }
@@ -253,8 +253,8 @@ LABEL_3:
 
   else
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"PHAssociatedObjectsTable.m" lineNumber:106 description:{@"Invalid parameter not satisfying: %@", @"object != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHAssociatedObjectsTable.m" lineNumber:106 description:{@"Invalid parameter not satisfying: %@", @"object != nil"}];
 
     if (v11)
     {
@@ -262,28 +262,28 @@ LABEL_3:
     }
   }
 
-  v17 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v17 handleFailureInMethod:a2 object:self file:@"PHAssociatedObjectsTable.m" lineNumber:107 description:{@"Invalid parameter not satisfying: %@", @"key != nil"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PHAssociatedObjectsTable.m" lineNumber:107 description:{@"Invalid parameter not satisfying: %@", @"key != nil"}];
 
-  v12 = [(PHAssociatedObjectsTable *)self _entryForObjectCreatingIfNecessary:v9];
+  v12 = [(PHAssociatedObjectsTable *)self _entryForObjectCreatingIfNecessary:onObjectCopy];
   v13 = v12;
-  v14 = v18;
+  v14 = objectCopy;
   v15 = 0;
 LABEL_4:
   [(PHAssociatedObjectsEntry *)v12 setAssociatedObject:v14 forKey:v15];
 }
 
-- (id)associatedObjectOnObject:(id)a3 forKey:(id)a4
+- (id)associatedObjectOnObject:(id)object forKey:(id)key
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  objectCopy = object;
+  keyCopy = key;
+  v9 = keyCopy;
+  if (objectCopy)
   {
-    if (v8)
+    if (keyCopy)
     {
 LABEL_3:
-      v10 = [(PHAssociatedObjectsTable *)self _entryForObject:v7];
+      v10 = [(PHAssociatedObjectsTable *)self _entryForObject:objectCopy];
       v11 = v10;
       v12 = v9;
       goto LABEL_4;
@@ -292,8 +292,8 @@ LABEL_3:
 
   else
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"PHAssociatedObjectsTable.m" lineNumber:97 description:{@"Invalid parameter not satisfying: %@", @"object != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHAssociatedObjectsTable.m" lineNumber:97 description:{@"Invalid parameter not satisfying: %@", @"object != nil"}];
 
     if (v9)
     {
@@ -301,10 +301,10 @@ LABEL_3:
     }
   }
 
-  v16 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v16 handleFailureInMethod:a2 object:self file:@"PHAssociatedObjectsTable.m" lineNumber:98 description:{@"Invalid parameter not satisfying: %@", @"key != nil"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PHAssociatedObjectsTable.m" lineNumber:98 description:{@"Invalid parameter not satisfying: %@", @"key != nil"}];
 
-  v10 = [(PHAssociatedObjectsTable *)self _entryForObject:v7];
+  v10 = [(PHAssociatedObjectsTable *)self _entryForObject:objectCopy];
   v11 = v10;
   v12 = 0;
 LABEL_4:

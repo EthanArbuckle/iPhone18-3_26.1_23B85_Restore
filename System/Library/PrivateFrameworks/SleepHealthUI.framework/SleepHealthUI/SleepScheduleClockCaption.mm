@@ -1,12 +1,12 @@
 @interface SleepScheduleClockCaption
-- (_TtC13SleepHealthUI25SleepScheduleClockCaption)initWithCoder:(id)a3;
-- (_TtC13SleepHealthUI25SleepScheduleClockCaption)initWithFrame:(CGRect)a3;
+- (_TtC13SleepHealthUI25SleepScheduleClockCaption)initWithCoder:(id)coder;
+- (_TtC13SleepHealthUI25SleepScheduleClockCaption)initWithFrame:(CGRect)frame;
 - (id)accessibilityClockCaptionMessage;
 @end
 
 @implementation SleepScheduleClockCaption
 
-- (_TtC13SleepHealthUI25SleepScheduleClockCaption)initWithCoder:(id)a3
+- (_TtC13SleepHealthUI25SleepScheduleClockCaption)initWithCoder:(id)coder
 {
   sub_269D9A8E0();
   sub_269D9A8D0();
@@ -50,7 +50,7 @@
   return v4;
 }
 
-- (_TtC13SleepHealthUI25SleepScheduleClockCaption)initWithFrame:(CGRect)a3
+- (_TtC13SleepHealthUI25SleepScheduleClockCaption)initWithFrame:(CGRect)frame
 {
   sub_269D9A8E0();
   sub_269D9A8D0();

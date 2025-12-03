@@ -1,32 +1,32 @@
 @interface PSYProgressObserver
 - (NSString)activityLabel;
-- (PSYProgressObserver)initWithQueue:(id)a3;
+- (PSYProgressObserver)initWithQueue:(id)queue;
 - (PSYProgressObserverDelegate)delegate;
 - (double)activityProgress;
 - (double)totalProgress;
 - (int64_t)progressObserverState;
 - (void)_updateState;
-- (void)syncSessionObserver:(id)a3 didReceiveUpdate:(id)a4;
-- (void)syncSessionObserver:(id)a3 receivedSyncSession:(id)a4;
+- (void)syncSessionObserver:(id)observer didReceiveUpdate:(id)update;
+- (void)syncSessionObserver:(id)observer receivedSyncSession:(id)session;
 @end
 
 @implementation PSYProgressObserver
 
-- (PSYProgressObserver)initWithQueue:(id)a3
+- (PSYProgressObserver)initWithQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v16.receiver = self;
   v16.super_class = PSYProgressObserver;
   v5 = [(PSYProgressObserver *)&v16 init];
   if (v5)
   {
-    if (!v4)
+    if (!queueCopy)
     {
-      v4 = MEMORY[0x277D85CD0];
+      queueCopy = MEMORY[0x277D85CD0];
       v6 = MEMORY[0x277D85CD0];
     }
 
-    objc_storeStrong(&v5->_delegateQueue, v4);
+    objc_storeStrong(&v5->_delegateQueue, queueCopy);
     v7 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v8 = dispatch_queue_create("com.apple.pairedsync.progressobserver", v7);
     internalQueue = v5->_internalQueue;
@@ -249,11 +249,11 @@ LABEL_8:
   return MEMORY[0x2821F96F8](v4, v3);
 }
 
-- (void)syncSessionObserver:(id)a3 didReceiveUpdate:(id)a4
+- (void)syncSessionObserver:(id)observer didReceiveUpdate:(id)update
 {
-  v5 = a4;
-  v6 = [v5 updatedSession];
-  v7 = [(PSYProgressObserver *)self _shouldHandleSyncSession:v6];
+  updateCopy = update;
+  updatedSession = [updateCopy updatedSession];
+  v7 = [(PSYProgressObserver *)self _shouldHandleSyncSession:updatedSession];
 
   if (v7)
   {
@@ -263,7 +263,7 @@ LABEL_8:
     v9[2] = __60__PSYProgressObserver_syncSessionObserver_didReceiveUpdate___block_invoke;
     v9[3] = &unk_2799FB588;
     v9[4] = self;
-    v10 = v5;
+    v10 = updateCopy;
     dispatch_async(internalQueue, v9);
   }
 }
@@ -368,10 +368,10 @@ void __60__PSYProgressObserver_syncSessionObserver_didReceiveUpdate___block_invo
   [v2 progressObserverDidChangeState:*(a1 + 32)];
 }
 
-- (void)syncSessionObserver:(id)a3 receivedSyncSession:(id)a4
+- (void)syncSessionObserver:(id)observer receivedSyncSession:(id)session
 {
-  v5 = a4;
-  if ([(PSYProgressObserver *)self _shouldHandleSyncSession:v5])
+  sessionCopy = session;
+  if ([(PSYProgressObserver *)self _shouldHandleSyncSession:sessionCopy])
   {
     internalQueue = self->_internalQueue;
     v7[0] = MEMORY[0x277D85DD0];
@@ -379,7 +379,7 @@ void __60__PSYProgressObserver_syncSessionObserver_didReceiveUpdate___block_invo
     v7[2] = __63__PSYProgressObserver_syncSessionObserver_receivedSyncSession___block_invoke;
     v7[3] = &unk_2799FB588;
     v7[4] = self;
-    v8 = v5;
+    v8 = sessionCopy;
     dispatch_async(internalQueue, v7);
   }
 }

@@ -1,7 +1,7 @@
 @interface SBKResponseStatus
-+ (id)responseStatusForStatusCodeNumber:(id)a3;
++ (id)responseStatusForStatusCodeNumber:(id)number;
 - (NSError)requestError;
-- (SBKResponseStatus)initWithStatus:(int64_t)a3 isRecoverable:(BOOL)a4 isError:(BOOL)a5 consoleDescription:(id)a6 shouldFileRadar:(BOOL)a7;
+- (SBKResponseStatus)initWithStatus:(int64_t)status isRecoverable:(BOOL)recoverable isError:(BOOL)error consoleDescription:(id)description shouldFileRadar:(BOOL)radar;
 @end
 
 @implementation SBKResponseStatus
@@ -38,35 +38,35 @@
   return v3;
 }
 
-- (SBKResponseStatus)initWithStatus:(int64_t)a3 isRecoverable:(BOOL)a4 isError:(BOOL)a5 consoleDescription:(id)a6 shouldFileRadar:(BOOL)a7
+- (SBKResponseStatus)initWithStatus:(int64_t)status isRecoverable:(BOOL)recoverable isError:(BOOL)error consoleDescription:(id)description shouldFileRadar:(BOOL)radar
 {
-  v13 = a6;
+  descriptionCopy = description;
   v17.receiver = self;
   v17.super_class = SBKResponseStatus;
   v14 = [(SBKResponseStatus *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    v14->_statusCode = a3;
-    v14->_isRecoverable = a4;
-    v14->_isError = a5;
-    objc_storeStrong(&v14->_consoleDescription, a6);
-    v15->_shouldFileRadar = a7;
+    v14->_statusCode = status;
+    v14->_isRecoverable = recoverable;
+    v14->_isError = error;
+    objc_storeStrong(&v14->_consoleDescription, description);
+    v15->_shouldFileRadar = radar;
   }
 
   return v15;
 }
 
-+ (id)responseStatusForStatusCodeNumber:(id)a3
++ (id)responseStatusForStatusCodeNumber:(id)number
 {
-  v3 = a3;
-  v4 = v3;
+  numberCopy = number;
+  v4 = numberCopy;
   if (responseStatusForStatusCodeNumber__onceToken == -1)
   {
-    if (v3)
+    if (numberCopy)
     {
 LABEL_3:
-      v5 = [v4 integerValue];
+      integerValue = [v4 integerValue];
       goto LABEL_6;
     }
   }
@@ -80,10 +80,10 @@ LABEL_3:
     }
   }
 
-  v5 = -1;
+  integerValue = -1;
 LABEL_6:
   v6 = responseStatusForStatusCodeNumber____statusInfo;
-  v7 = [MEMORY[0x277CCABB0] numberWithInteger:v5];
+  v7 = [MEMORY[0x277CCABB0] numberWithInteger:integerValue];
   v8 = [v6 objectForKey:v7];
 
   if (!v8)

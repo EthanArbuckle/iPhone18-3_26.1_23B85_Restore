@@ -1,21 +1,21 @@
 @interface TSUIndexSetObj
-- (BOOL)containsIndexes:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)containsIndexes:(id)indexes;
+- (BOOL)isEqual:(id)equal;
 - (TSUIndexSetObj)init;
-- (TSUIndexSetObj)initWithIndexSet:(id)a3;
-- (TSUIndexSetObj)initWithIndexSetCpp:(const TSUIndexSet *)a3;
-- (TSUIndexSetObj)initWithNSIndexSet:(id)a3;
+- (TSUIndexSetObj)initWithIndexSet:(id)set;
+- (TSUIndexSetObj)initWithIndexSetCpp:(const TSUIndexSet *)cpp;
+- (TSUIndexSetObj)initWithNSIndexSet:(id)set;
 - (id).cxx_construct;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (int64_t)firstIndex;
 - (int64_t)lastIndex;
 - (unint64_t)count;
-- (void)addIndex:(int64_t)a3;
-- (void)addIndexes:(id)a3;
-- (void)enumerateRangesUsingBlock:(id)a3;
+- (void)addIndex:(int64_t)index;
+- (void)addIndexes:(id)indexes;
+- (void)enumerateRangesUsingBlock:(id)block;
 - (void)removeAllIndexes;
-- (void)removeIndex:(int64_t)a3;
-- (void)removeIndexes:(id)a3;
+- (void)removeIndex:(int64_t)index;
+- (void)removeIndexes:(id)indexes;
 @end
 
 @implementation TSUIndexSetObj
@@ -27,33 +27,33 @@
   return [(TSUIndexSetObj *)&v3 init];
 }
 
-- (TSUIndexSetObj)initWithIndexSetCpp:(const TSUIndexSet *)a3
+- (TSUIndexSetObj)initWithIndexSetCpp:(const TSUIndexSet *)cpp
 {
   v4 = [(TSUIndexSetObj *)self init];
   v5 = v4;
   if (v4)
   {
-    TSUIndexSet::operator=(&v4->_indexSet, a3);
+    TSUIndexSet::operator=(&v4->_indexSet, cpp);
   }
 
   return v5;
 }
 
-- (TSUIndexSetObj)initWithIndexSet:(id)a3
+- (TSUIndexSetObj)initWithIndexSet:(id)set
 {
-  v4 = a3;
-  v5 = -[TSUIndexSetObj initWithIndexSetCpp:](self, "initWithIndexSetCpp:", [v4 indexSet]);
+  setCopy = set;
+  v5 = -[TSUIndexSetObj initWithIndexSetCpp:](self, "initWithIndexSetCpp:", [setCopy indexSet]);
 
   return v5;
 }
 
-- (TSUIndexSetObj)initWithNSIndexSet:(id)a3
+- (TSUIndexSetObj)initWithNSIndexSet:(id)set
 {
-  v4 = a3;
+  setCopy = set;
   v5 = [(TSUIndexSetObj *)self init];
   if (v5)
   {
-    TSUIndexSet::TSUIndexSet(&v7, v4);
+    TSUIndexSet::TSUIndexSet(&v7, setCopy);
     TSUIndexSet::operator=(&v5->_indexSet, &v7);
     free(v7._multipleRanges);
   }
@@ -61,20 +61,20 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [TSUIndexSetObj alloc];
 
   return [(TSUIndexSetObj *)v4 initWithIndexSetCpp:&self->_indexSet];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = TSUIndexSet::operator==(&self->_indexSet, [v4 indexSet]);
+    v5 = TSUIndexSet::operator==(&self->_indexSet, [equalCopy indexSet]);
   }
 
   else
@@ -170,36 +170,36 @@
   return p_singleRange[v4 - 1]._end;
 }
 
-- (BOOL)containsIndexes:(id)a3
+- (BOOL)containsIndexes:(id)indexes
 {
-  v4 = a3;
-  LOBYTE(self) = TSUIndexSet::containsIndexes(&self->_indexSet, [v4 indexSet]);
+  indexesCopy = indexes;
+  LOBYTE(self) = TSUIndexSet::containsIndexes(&self->_indexSet, [indexesCopy indexSet]);
 
   return self;
 }
 
-- (void)enumerateRangesUsingBlock:(id)a3
+- (void)enumerateRangesUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = sub_277054344;
   v6[3] = &unk_27A701D28;
-  v7 = v4;
-  v5 = v4;
+  v7 = blockCopy;
+  v5 = blockCopy;
   TSUIndexSet::enumerateRangesUsingBlock(&self->_indexSet, v6);
 }
 
-- (void)addIndexes:(id)a3
+- (void)addIndexes:(id)indexes
 {
-  v4 = a3;
-  TSUIndexSet::addIndexes(&self->_indexSet, [v4 indexSet]);
+  indexesCopy = indexes;
+  TSUIndexSet::addIndexes(&self->_indexSet, [indexesCopy indexSet]);
 }
 
-- (void)removeIndexes:(id)a3
+- (void)removeIndexes:(id)indexes
 {
-  v4 = a3;
-  TSUIndexSet::removeIndexes(&self->_indexSet, [v4 indexSet]);
+  indexesCopy = indexes;
+  TSUIndexSet::removeIndexes(&self->_indexSet, [indexesCopy indexSet]);
 }
 
 - (void)removeAllIndexes
@@ -215,17 +215,17 @@
   *&self->_indexSet = indexSet | 3;
 }
 
-- (void)addIndex:(int64_t)a3
+- (void)addIndex:(int64_t)index
 {
-  v3._begin = a3;
-  v3._end = a3;
+  v3._begin = index;
+  v3._end = index;
   TSUIndexSet::addIndexesInRange(&self->_indexSet, &v3);
 }
 
-- (void)removeIndex:(int64_t)a3
+- (void)removeIndex:(int64_t)index
 {
-  v3._begin = a3;
-  v3._end = a3;
+  v3._begin = index;
+  v3._end = index;
   TSUIndexSet::removeIndexesInRange(&self->_indexSet, &v3);
 }
 

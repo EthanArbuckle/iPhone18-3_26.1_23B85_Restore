@@ -1,38 +1,38 @@
 @interface MBCKStatusRequest
-+ (void)sendStatusRequestForBackgroundRestoreCompletionWithAccount:(id)a3 databaseManager:(id)a4 sourceDeviceID:(id)a5 snapshotUUID:(id)a6 snapshotIndex:(unint64_t)a7 snapshotFormat:(int64_t)a8 isRestoringUsingFileLists:(BOOL)a9 fatalErrors:(id)a10 plan:(id)a11 duration:(double)a12 error:(id)a13;
-+ (void)sendStatusRequestWithEngine:(id)a3 duration:(double)a4 error:(id)a5;
++ (void)sendStatusRequestForBackgroundRestoreCompletionWithAccount:(id)account databaseManager:(id)manager sourceDeviceID:(id)d snapshotUUID:(id)iD snapshotIndex:(unint64_t)index snapshotFormat:(int64_t)format isRestoringUsingFileLists:(BOOL)lists fatalErrors:(id)self0 plan:(id)self1 duration:(double)self2 error:(id)self3;
++ (void)sendStatusRequestWithEngine:(id)engine duration:(double)duration error:(id)error;
 - ($1C6001547D93A6C6CE4901F2C331F3E5)networkConnectivityAtFinish;
 - ($1C6001547D93A6C6CE4901F2C331F3E5)networkConnectivityAtStart;
-- (MBCKStatusRequest)initWithRequestType:(unint64_t)a3 device:(id)a4 duration:(double)a5 error:(id)a6;
+- (MBCKStatusRequest)initWithRequestType:(unint64_t)type device:(id)device duration:(double)duration error:(id)error;
 - (id)recordRepresentation;
 - (id)stringForRestorePhase;
-- (void)_addMetricsWithTracker:(id)a3;
-- (void)_sendWithAccount:(id)a3 databaseManager:(id)a4;
+- (void)_addMetricsWithTracker:(id)tracker;
+- (void)_sendWithAccount:(id)account databaseManager:(id)manager;
 @end
 
 @implementation MBCKStatusRequest
 
-- (void)_addMetricsWithTracker:(id)a3
+- (void)_addMetricsWithTracker:(id)tracker
 {
-  v22 = a3;
+  trackerCopy = tracker;
   v4 = +[NSDate date];
   [(MBCKStatusRequest *)self duration];
   v6 = [v4 dateByAddingTimeInterval:-v5];
-  v7 = [(MBCKStatusRequest *)self errorToReport];
+  errorToReport = [(MBCKStatusRequest *)self errorToReport];
   v8 = @"1";
-  if (v7)
+  if (errorToReport)
   {
-    v9 = [(MBCKStatusRequest *)self errorToReport];
-    if (![MBError isError:v9 withCode:0])
+    errorToReport2 = [(MBCKStatusRequest *)self errorToReport];
+    if (![MBError isError:errorToReport2 withCode:0])
     {
       v8 = @"0";
     }
   }
 
-  v10 = [(MBCKStatusRequest *)self eventType];
-  if (v10 != 1)
+  eventType = [(MBCKStatusRequest *)self eventType];
+  if (eventType != 1)
   {
-    if (v10)
+    if (eventType)
     {
       goto LABEL_23;
     }
@@ -60,15 +60,15 @@ LABEL_18:
     [v12 setMetricValue:v20 forKey:@"backupType"];
 
     [v12 setMetricValue:v8 forKey:@"succeeded"];
-    v21 = [(MBCKStatusRequest *)self backupTotalSize];
+    backupTotalSize = [(MBCKStatusRequest *)self backupTotalSize];
 
-    if (!v21)
+    if (!backupTotalSize)
     {
       goto LABEL_21;
     }
 
-    v17 = [(MBCKStatusRequest *)self backupTotalSize];
-    v18 = [v17 stringValue];
+    backupTotalSize2 = [(MBCKStatusRequest *)self backupTotalSize];
+    stringValue = [backupTotalSize2 stringValue];
     v19 = @"backupSize";
     goto LABEL_20;
   }
@@ -80,24 +80,24 @@ LABEL_18:
 
   v12 = [[CKEventMetric alloc] initWithEventName:@"ForegroundRestore"];
   [v12 setMetricValue:v8 forKey:@"succeeded"];
-  v13 = [(MBCKStatusRequest *)self foregroundRestorableSize];
+  foregroundRestorableSize = [(MBCKStatusRequest *)self foregroundRestorableSize];
 
-  if (v13)
+  if (foregroundRestorableSize)
   {
-    v14 = [(MBCKStatusRequest *)self foregroundRestorableSize];
-    v15 = [v14 stringValue];
-    [v12 setMetricValue:v15 forKey:@"foregroundRestorableSize"];
+    foregroundRestorableSize2 = [(MBCKStatusRequest *)self foregroundRestorableSize];
+    stringValue2 = [foregroundRestorableSize2 stringValue];
+    [v12 setMetricValue:stringValue2 forKey:@"foregroundRestorableSize"];
   }
 
-  v16 = [(MBCKStatusRequest *)self backgroundRestorableSize];
+  backgroundRestorableSize = [(MBCKStatusRequest *)self backgroundRestorableSize];
 
-  if (v16)
+  if (backgroundRestorableSize)
   {
-    v17 = [(MBCKStatusRequest *)self backgroundRestorableSize];
-    v18 = [v17 stringValue];
+    backupTotalSize2 = [(MBCKStatusRequest *)self backgroundRestorableSize];
+    stringValue = [backupTotalSize2 stringValue];
     v19 = @"backgroundRestorableSize";
 LABEL_20:
-    [v12 setMetricValue:v18 forKey:v19];
+    [v12 setMetricValue:stringValue forKey:v19];
   }
 
 LABEL_21:
@@ -105,32 +105,32 @@ LABEL_21:
   {
     [v12 setStartTime:v6];
     [v12 setEndTime:v4];
-    [v22 addCKMetric:v12];
+    [trackerCopy addCKMetric:v12];
   }
 
 LABEL_23:
 }
 
-- (void)_sendWithAccount:(id)a3 databaseManager:(id)a4
+- (void)_sendWithAccount:(id)account databaseManager:(id)manager
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  accountCopy = account;
+  managerCopy = manager;
+  if (!accountCopy)
   {
     __assert_rtn("[MBCKStatusRequest _sendWithAccount:databaseManager:]", "MBCKStatusRequest.m", 182, "account");
   }
 
-  v8 = v7;
-  if (!v7)
+  v8 = managerCopy;
+  if (!managerCopy)
   {
     __assert_rtn("[MBCKStatusRequest _sendWithAccount:databaseManager:]", "MBCKStatusRequest.m", 183, "databaseManager");
   }
 
-  v9 = [(MBCKStatusRequest *)self ckOperationPolicy];
-  v10 = v9;
-  if (v9)
+  ckOperationPolicy = [(MBCKStatusRequest *)self ckOperationPolicy];
+  v10 = ckOperationPolicy;
+  if (ckOperationPolicy)
   {
-    v11 = v9;
+    v11 = ckOperationPolicy;
   }
 
   else
@@ -141,55 +141,55 @@ LABEL_23:
   v12 = v11;
 
   v18 = 0;
-  v13 = [MBCKOperationTracker operationTrackerWithAccount:v6 databaseManager:v8 policy:v12 error:&v18];
+  v13 = [MBCKOperationTracker operationTrackerWithAccount:accountCopy databaseManager:v8 policy:v12 error:&v18];
   v14 = v18;
   if (v13)
   {
-    v15 = [(MBCKStatusRequest *)self ckOperationGroup];
-    [v13 setCkOperationGroup:v15];
+    ckOperationGroup = [(MBCKStatusRequest *)self ckOperationGroup];
+    [v13 setCkOperationGroup:ckOperationGroup];
 
     [(MBCKStatusRequest *)self _addMetricsWithTracker:v13];
-    v16 = [(MBCKStatusRequest *)self recordRepresentation];
+    recordRepresentation = [(MBCKStatusRequest *)self recordRepresentation];
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
     v17[2] = sub_10017EBDC;
     v17[3] = &unk_1003C02F8;
     v17[4] = self;
-    [v13 saveRecord:v16 delegate:0 completion:v17];
+    [v13 saveRecord:recordRepresentation delegate:0 completion:v17];
 
     [v13 drain];
   }
 }
 
-+ (void)sendStatusRequestWithEngine:(id)a3 duration:(double)a4 error:(id)a5
++ (void)sendStatusRequestWithEngine:(id)engine duration:(double)duration error:(id)error
 {
-  v8 = a3;
-  v9 = a5;
-  if (!v8)
+  engineCopy = engine;
+  errorCopy = error;
+  if (!engineCopy)
   {
     __assert_rtn("+[MBCKStatusRequest sendStatusRequestWithEngine:duration:error:]", "MBCKStatusRequest.m", 207, "engine");
   }
 
-  v10 = v9;
-  v11 = [v8 serviceAccount];
-  if (v11)
+  v10 = errorCopy;
+  serviceAccount = [engineCopy serviceAccount];
+  if (serviceAccount)
   {
-    v12 = v8;
-    v13 = [v12 engineMode];
-    v14 = v13 - 1;
+    v12 = engineCopy;
+    engineMode = [v12 engineMode];
+    v14 = engineMode - 1;
     if (v14 >= 3)
     {
       __assert_rtn("typeForEngine", "MBCKStatusRequest.m", 133, "0");
     }
 
-    v15 = v13;
+    v15 = engineMode;
 
-    v16 = [a1 alloc];
-    v17 = [v12 device];
-    v18 = [v16 initWithRequestType:v14 device:v17 duration:v10 error:a4];
+    v16 = [self alloc];
+    device = [v12 device];
+    v18 = [v16 initWithRequestType:v14 device:device duration:v10 error:duration];
 
-    v19 = [v12 ckOperationPolicy];
-    v20 = [v19 copy];
+    ckOperationPolicy = [v12 ckOperationPolicy];
+    v20 = [ckOperationPolicy copy];
     if (v20)
     {
       [v18 setCkOperationPolicy:v20];
@@ -210,76 +210,76 @@ LABEL_23:
       }
 
       v76 = v12;
-      v77 = [v76 isForegroundRestore];
-      if (v77)
+      isForegroundRestore = [v76 isForegroundRestore];
+      if (isForegroundRestore)
       {
-        v78 = +[MBCellularAccess expensiveCellularAccess];
-        v79 = [v18 ckOperationPolicy];
-        [v79 setCellularAccess:v78];
+        deviceBuildVersion = +[MBCellularAccess expensiveCellularAccess];
+        ckOperationPolicy2 = [v18 ckOperationPolicy];
+        [ckOperationPolicy2 setCellularAccess:deviceBuildVersion];
       }
 
       else
       {
-        v80 = [v76 serviceAccount];
-        v81 = [MBCKManager restoreInfoForAccount:v80];
-        v78 = [v81 deviceBuildVersion];
+        serviceAccount2 = [v76 serviceAccount];
+        v81 = [MBCKManager restoreInfoForAccount:serviceAccount2];
+        deviceBuildVersion = [v81 deviceBuildVersion];
 
-        v79 = MBBuildVersion();
-        if ([v78 isEqualToString:v79])
+        ckOperationPolicy2 = MBBuildVersion();
+        if ([deviceBuildVersion isEqualToString:ckOperationPolicy2])
         {
           v82 = 0;
         }
 
         else
         {
-          v82 = v78;
+          v82 = deviceBuildVersion;
         }
 
         [v18 setRestoreBuildVersion:v82];
       }
 
-      [v18 setIsForegroundRestore:v77];
-      v83 = [v76 context];
-      v84 = [v83 backupUDID];
-      [v18 setSourceDeviceID:v84];
+      [v18 setIsForegroundRestore:isForegroundRestore];
+      context = [v76 context];
+      backupUDID = [context backupUDID];
+      [v18 setSourceDeviceID:backupUDID];
 
-      v85 = [v76 context];
-      v86 = [v85 snapshotUUID];
-      [v18 setSnapshotUUID:v86];
+      context2 = [v76 context];
+      snapshotUUID = [context2 snapshotUUID];
+      [v18 setSnapshotUUID:snapshotUUID];
 
-      v87 = [v76 foregroundRestorableSize];
-      [v18 setForegroundRestorableSize:v87];
+      foregroundRestorableSize = [v76 foregroundRestorableSize];
+      [v18 setForegroundRestorableSize:foregroundRestorableSize];
 
-      v88 = [v76 backgroundRestorableSize];
-      [v18 setBackgroundRestorableSize:v88];
+      backgroundRestorableSize = [v76 backgroundRestorableSize];
+      [v18 setBackgroundRestorableSize:backgroundRestorableSize];
 
-      v89 = [v76 foregroundRestorableFileCount];
-      [v18 setForegroundRestorableFileCount:v89];
+      foregroundRestorableFileCount = [v76 foregroundRestorableFileCount];
+      [v18 setForegroundRestorableFileCount:foregroundRestorableFileCount];
 
-      v90 = [v76 backgroundRestorableFileCount];
-      [v18 setBackgroundRestorableFileCount:v90];
+      backgroundRestorableFileCount = [v76 backgroundRestorableFileCount];
+      [v18 setBackgroundRestorableFileCount:backgroundRestorableFileCount];
 
       [v18 setChargingType:{objc_msgSend(v76, "chargingType")}];
-      v91 = [v76 minutesRemaining];
-      [v18 setMinutesRemaining:v91];
+      minutesRemaining = [v76 minutesRemaining];
+      [v18 setMinutesRemaining:minutesRemaining];
 
-      v92 = [v76 restoreStateDescription];
-      [v18 setStateDescription:v92];
+      restoreStateDescription = [v76 restoreStateDescription];
+      [v18 setStateDescription:restoreStateDescription];
 
-      v93 = [v76 freeDiskSpace];
-      [v18 setFreeDiskSpace:v93];
+      freeDiskSpace = [v76 freeDiskSpace];
+      [v18 setFreeDiskSpace:freeDiskSpace];
 
       [v18 setAllowedCellularCost:{objc_msgSend(v76, "allowedCellularCost")}];
-      v94 = [v76 networkConnectivityAtStart];
-      [v18 setNetworkConnectivityAtStart:{v94, v95}];
-      v96 = [v76 networkConnectivityAtFinish];
-      [v18 setNetworkConnectivityAtFinish:{v96, v97}];
-      v98 = [v76 foregroundRestoreVerificationStatus];
-      [v18 setForegroundRestoreVerificationStatus:v98];
+      networkConnectivityAtStart = [v76 networkConnectivityAtStart];
+      [v18 setNetworkConnectivityAtStart:{networkConnectivityAtStart, v95}];
+      networkConnectivityAtFinish = [v76 networkConnectivityAtFinish];
+      [v18 setNetworkConnectivityAtFinish:{networkConnectivityAtFinish, v97}];
+      foregroundRestoreVerificationStatus = [v76 foregroundRestoreVerificationStatus];
+      [v18 setForegroundRestoreVerificationStatus:foregroundRestoreVerificationStatus];
 
       [v18 setForegroundRestoreVerificationEnabled:{objc_msgSend(v76, "foregroundRestoreVerificationEnabled")}];
-      v99 = [v76 targetSnapshot];
-      [v18 setSnapshotFormat:objc_msgSend(v99, "snapshotFormat")];
+      targetSnapshot = [v76 targetSnapshot];
+      [v18 setSnapshotFormat:objc_msgSend(targetSnapshot, "snapshotFormat")];
 
       [v18 setIsRestoringWithFileLists:{objc_msgSend(v76, "useFileLists")}];
     }
@@ -290,14 +290,14 @@ LABEL_23:
       {
 LABEL_24:
         [v18 setHasNetworkConnectivityInfo:1];
-        v100 = [v12 ckOperationTracker];
-        v101 = [v100 ckOperationGroup];
-        [v18 setCkOperationGroup:v101];
+        ckOperationTracker = [v12 ckOperationTracker];
+        ckOperationGroup = [ckOperationTracker ckOperationGroup];
+        [v18 setCkOperationGroup:ckOperationGroup];
 
         [v18 setBackupPolicy:{objc_msgSend(v12, "backupPolicy")}];
-        v102 = [v12 serviceManager];
-        v103 = [v102 databaseManager];
-        [v18 _sendWithAccount:v11 databaseManager:v103];
+        serviceManager = [v12 serviceManager];
+        databaseManager = [serviceManager databaseManager];
+        [v18 _sendWithAccount:serviceAccount databaseManager:databaseManager];
 
         goto LABEL_25;
       }
@@ -309,8 +309,8 @@ LABEL_24:
       }
 
       v23 = +[MBCellularAccess expensiveCellularAccess];
-      v24 = [v18 ckOperationPolicy];
-      [v24 setCellularAccess:v23];
+      ckOperationPolicy3 = [v18 ckOperationPolicy];
+      [ckOperationPolicy3 setCellularAccess:v23];
 
       v25 = v12;
       if (![v25 backupReason])
@@ -318,140 +318,140 @@ LABEL_24:
         __assert_rtn("+[MBCKStatusRequest sendStatusRequestWithEngine:duration:error:]", "MBCKStatusRequest.m", 221, "backupEngine.backupReason != kMBBackupReasonUnspecified");
       }
 
-      v26 = [v25 pendingSnapshotID];
-      [v18 setPendingSnapshotID:v26];
+      pendingSnapshotID = [v25 pendingSnapshotID];
+      [v18 setPendingSnapshotID:pendingSnapshotID];
 
-      v27 = [v25 device];
-      [v18 setPendingSnapshotQuotaReserved:{objc_msgSend(v27, "pendingSnapshotQuotaReserved")}];
+      device2 = [v25 device];
+      [v18 setPendingSnapshotQuotaReserved:{objc_msgSend(device2, "pendingSnapshotQuotaReserved")}];
 
       [v18 setBackupReason:{objc_msgSend(v25, "backupReason")}];
-      v28 = [v25 backupStateDescription];
-      [v18 setStateDescription:v28];
+      backupStateDescription = [v25 backupStateDescription];
+      [v18 setStateDescription:backupStateDescription];
 
       [v18 setUsedAPFSSnapshots:1];
-      v29 = [v25 telemetry];
-      [v18 setSnapshotType:{objc_msgSend(v29, "snapshotType")}];
-      v30 = [v29 backupTotalSize];
-      [v18 setBackupTotalSize:v30];
+      telemetry = [v25 telemetry];
+      [v18 setSnapshotType:{objc_msgSend(telemetry, "snapshotType")}];
+      backupTotalSize = [telemetry backupTotalSize];
+      [v18 setBackupTotalSize:backupTotalSize];
 
-      v31 = [v29 topDomainsWithMissingEncryptionKeys];
-      [v18 setTopDomainsWithMissingEncryptionKeys:v31];
+      topDomainsWithMissingEncryptionKeys = [telemetry topDomainsWithMissingEncryptionKeys];
+      [v18 setTopDomainsWithMissingEncryptionKeys:topDomainsWithMissingEncryptionKeys];
 
-      v32 = [v29 backupFileCount];
-      [v18 setBackupFileCount:v32];
+      backupFileCount = [telemetry backupFileCount];
+      [v18 setBackupFileCount:backupFileCount];
 
-      v33 = [v29 backupDirectoryCount];
-      [v18 setBackupDirectoryCount:v33];
+      backupDirectoryCount = [telemetry backupDirectoryCount];
+      [v18 setBackupDirectoryCount:backupDirectoryCount];
 
-      v34 = [v29 queuedSize];
-      [v18 setQueuedSize:v34];
+      queuedSize = [telemetry queuedSize];
+      [v18 setQueuedSize:queuedSize];
 
-      v35 = [v29 queuedFileCount];
-      [v18 setQueuedFileCount:v35];
+      queuedFileCount = [telemetry queuedFileCount];
+      [v18 setQueuedFileCount:queuedFileCount];
 
-      v36 = [v29 uploadedSize];
-      [v18 setUploadedSize:v36];
+      uploadedSize = [telemetry uploadedSize];
+      [v18 setUploadedSize:uploadedSize];
 
-      v37 = [v29 uploadedFileCount];
-      [v18 setUploadedFileCount:v37];
+      uploadedFileCount = [telemetry uploadedFileCount];
+      [v18 setUploadedFileCount:uploadedFileCount];
 
-      [v18 setChargingType:{objc_msgSend(v29, "chargingType")}];
-      v38 = [MBBackupScheduler lastOnConditionEventsForAccount:v11];
+      [v18 setChargingType:{objc_msgSend(telemetry, "chargingType")}];
+      v38 = [MBBackupScheduler lastOnConditionEventsForAccount:serviceAccount];
       [v18 setLastOnConditionEvents:v38];
 
-      v39 = [v29 minutesRemaining];
-      [v18 setMinutesRemaining:v39];
+      minutesRemaining2 = [telemetry minutesRemaining];
+      [v18 setMinutesRemaining:minutesRemaining2];
 
-      v40 = [v29 freeDiskSpace];
-      [v18 setFreeDiskSpace:v40];
+      freeDiskSpace2 = [telemetry freeDiskSpace];
+      [v18 setFreeDiskSpace:freeDiskSpace2];
 
-      [v18 setHasNewOTAKeyBag:{objc_msgSend(v29, "createdNewOTAKeybag")}];
-      v41 = [v29 throughputs];
-      [v18 setThroughputs:v41];
+      [v18 setHasNewOTAKeyBag:{objc_msgSend(telemetry, "createdNewOTAKeybag")}];
+      throughputs = [telemetry throughputs];
+      [v18 setThroughputs:throughputs];
 
-      v42 = [v29 wifiQuality];
-      [v18 setWifiQuality:v42];
+      wifiQuality = [telemetry wifiQuality];
+      [v18 setWifiQuality:wifiQuality];
 
-      v43 = [v29 cacheSize];
-      [v18 setCacheSize:v43];
+      cacheSize = [telemetry cacheSize];
+      [v18 setCacheSize:cacheSize];
 
-      v44 = [v29 remainingCellularBalance];
-      [v18 setRemainingCellularBalance:v44];
+      remainingCellularBalance = [telemetry remainingCellularBalance];
+      [v18 setRemainingCellularBalance:remainingCellularBalance];
 
-      v45 = [v29 classAFilesMissingEncryptionKeys];
-      [v18 setClassAFilesMissingEncryptionKeys:v45];
+      classAFilesMissingEncryptionKeys = [telemetry classAFilesMissingEncryptionKeys];
+      [v18 setClassAFilesMissingEncryptionKeys:classAFilesMissingEncryptionKeys];
 
-      v46 = [v29 classBFilesMissingEncryptionKeys];
-      [v18 setClassBFilesMissingEncryptionKeys:v46];
+      classBFilesMissingEncryptionKeys = [telemetry classBFilesMissingEncryptionKeys];
+      [v18 setClassBFilesMissingEncryptionKeys:classBFilesMissingEncryptionKeys];
 
-      [v29 fseventDuration];
+      [telemetry fseventDuration];
       [v18 setFseventDuration:?];
-      v47 = [v29 enabledDomainsCount];
-      [v18 setEnabledDomainsCount:v47];
+      enabledDomainsCount = [telemetry enabledDomainsCount];
+      [v18 setEnabledDomainsCount:enabledDomainsCount];
 
-      v48 = [v29 scannedDomainsCount];
-      [v18 setScannedDomainsCount:v48];
+      scannedDomainsCount = [telemetry scannedDomainsCount];
+      [v18 setScannedDomainsCount:scannedDomainsCount];
 
-      v49 = [v29 skippedFilesCount];
-      [v18 setSkippedFilesCount:v49];
+      skippedFilesCount = [telemetry skippedFilesCount];
+      [v18 setSkippedFilesCount:skippedFilesCount];
 
-      [v18 setAllowedCellularCost:{objc_msgSend(v29, "allowedCellularCost")}];
-      v50 = [v29 networkConnectivityAtStart];
-      [v18 setNetworkConnectivityAtStart:{v50, v51}];
-      v52 = [v29 networkConnectivityAtFinish];
-      [v18 setNetworkConnectivityAtFinish:{v52, v53}];
-      v54 = [v25 cacheRefreshSummary];
-      [v18 setCacheRefreshSummary:v54];
+      [v18 setAllowedCellularCost:{objc_msgSend(telemetry, "allowedCellularCost")}];
+      networkConnectivityAtStart2 = [telemetry networkConnectivityAtStart];
+      [v18 setNetworkConnectivityAtStart:{networkConnectivityAtStart2, v51}];
+      networkConnectivityAtFinish2 = [telemetry networkConnectivityAtFinish];
+      [v18 setNetworkConnectivityAtFinish:{networkConnectivityAtFinish2, v53}];
+      cacheRefreshSummary = [v25 cacheRefreshSummary];
+      [v18 setCacheRefreshSummary:cacheRefreshSummary];
 
       [v18 setBackupOnWiFiWithDAS:{+[MBBackupScheduler backupOnWiFiWithDAS](MBBackupScheduler, "backupOnWiFiWithDAS")}];
-      v55 = [v29 snapshotVerificationStatus];
-      [v18 setSnapshotVerificationStatus:v55];
+      snapshotVerificationStatus = [telemetry snapshotVerificationStatus];
+      [v18 setSnapshotVerificationStatus:snapshotVerificationStatus];
 
-      [v29 snapshotVerificationDuration];
+      [telemetry snapshotVerificationDuration];
       [v18 setSnapshotVerificationDuration:?];
-      [v18 setSnapshotFormat:objc_msgSend(v29, "snapshotFormat")];
-      [v18 setSnapshotVerificationEnabled:{objc_msgSend(v29, "snapshotVerificationEnabled")}];
-      v56 = [v25 attemptSummary];
-      v57 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v56 emptyDomainCount]);
+      [v18 setSnapshotFormat:objc_msgSend(telemetry, "snapshotFormat")];
+      [v18 setSnapshotVerificationEnabled:{objc_msgSend(telemetry, "snapshotVerificationEnabled")}];
+      attemptSummary = [v25 attemptSummary];
+      v57 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [attemptSummary emptyDomainCount]);
       [v18 setEmptyDomainCount:v57];
 
-      v58 = [v25 attemptSummary];
-      v59 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v58 deletedFileCount]);
+      attemptSummary2 = [v25 attemptSummary];
+      v59 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [attemptSummary2 deletedFileCount]);
       [v18 setDeletedFileCount:v59];
 
-      v60 = [v25 attemptSummary];
-      v61 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v60 unmodifiedDirectoryCount]);
+      attemptSummary3 = [v25 attemptSummary];
+      v61 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [attemptSummary3 unmodifiedDirectoryCount]);
       [v18 setUnmodifiedDirectoryCount:v61];
 
-      v62 = [v25 attemptSummary];
-      v63 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v62 modifiedDirectoryCount]);
+      attemptSummary4 = [v25 attemptSummary];
+      v63 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [attemptSummary4 modifiedDirectoryCount]);
       [v18 setModifiedDirectoryCount:v63];
 
-      v64 = [v25 attemptSummary];
-      v65 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v64 uploadedAssetCount]);
+      attemptSummary5 = [v25 attemptSummary];
+      v65 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [attemptSummary5 uploadedAssetCount]);
       [v18 setUploadedAssetCount:v65];
 
-      v66 = [v25 attemptSummary];
-      v67 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [v66 uploadedAssetSize]);
+      attemptSummary6 = [v25 attemptSummary];
+      v67 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [attemptSummary6 uploadedAssetSize]);
       [v18 setUploadedAssetSize:v67];
 
-      v68 = [v25 attemptSummary];
-      v69 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v68 unmodifiedRegularFileCount]);
+      attemptSummary7 = [v25 attemptSummary];
+      v69 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [attemptSummary7 unmodifiedRegularFileCount]);
       [v18 setUnmodifiedRegularFileCount:v69];
 
-      v70 = [v25 attemptSummary];
-      v71 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v70 modifiedRegularFileCount]);
+      attemptSummary8 = [v25 attemptSummary];
+      v71 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [attemptSummary8 modifiedRegularFileCount]);
       [v18 setModifiedRegularFileCount:v71];
 
-      v72 = [v25 attemptSummary];
-      v73 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v72 peakMemoryUsage]);
+      attemptSummary9 = [v25 attemptSummary];
+      v73 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [attemptSummary9 peakMemoryUsage]);
       [v18 setPeakMemoryUsage:v73];
 
-      v74 = [v25 attemptSummary];
-      [v18 setUploadedFileListSize:{objc_msgSend(v74, "uploadedFileListSize")}];
+      attemptSummary10 = [v25 attemptSummary];
+      [v18 setUploadedFileListSize:{objc_msgSend(attemptSummary10, "uploadedFileListSize")}];
 
-      v75 = [v29 snapshotVerificationCancellationError];
-      [v18 setSnapshotVerificationCancellationError:v75];
+      snapshotVerificationCancellationError = [telemetry snapshotVerificationCancellationError];
+      [v18 setSnapshotVerificationCancellationError:snapshotVerificationCancellationError];
     }
 
     goto LABEL_24;
@@ -468,24 +468,24 @@ LABEL_24:
 LABEL_25:
 }
 
-+ (void)sendStatusRequestForBackgroundRestoreCompletionWithAccount:(id)a3 databaseManager:(id)a4 sourceDeviceID:(id)a5 snapshotUUID:(id)a6 snapshotIndex:(unint64_t)a7 snapshotFormat:(int64_t)a8 isRestoringUsingFileLists:(BOOL)a9 fatalErrors:(id)a10 plan:(id)a11 duration:(double)a12 error:(id)a13
++ (void)sendStatusRequestForBackgroundRestoreCompletionWithAccount:(id)account databaseManager:(id)manager sourceDeviceID:(id)d snapshotUUID:(id)iD snapshotIndex:(unint64_t)index snapshotFormat:(int64_t)format isRestoringUsingFileLists:(BOOL)lists fatalErrors:(id)self0 plan:(id)self1 duration:(double)self2 error:(id)self3
 {
-  v47 = a3;
-  v46 = a4;
-  v19 = a5;
-  v20 = a6;
-  v21 = a10;
-  v22 = a11;
-  v23 = a13;
-  v48 = v23;
-  if (v22)
+  accountCopy = account;
+  managerCopy = manager;
+  dCopy = d;
+  iDCopy = iD;
+  errorsCopy = errors;
+  planCopy = plan;
+  errorCopy = error;
+  v48 = errorCopy;
+  if (planCopy)
   {
     v53 = 0;
-    v24 = [v22 restoreVerificationSummary:&v53];
+    v24 = [planCopy restoreVerificationSummary:&v53];
     v25 = v53;
     if (!v24)
     {
-      v26 = v20;
+      v26 = iDCopy;
       v27 = MBGetDefaultLog();
       if (os_log_type_enabled(v27, OS_LOG_TYPE_FAULT))
       {
@@ -496,8 +496,8 @@ LABEL_25:
         _MBLog();
       }
 
-      v20 = v26;
-      v23 = v48;
+      iDCopy = v26;
+      errorCopy = v48;
     }
   }
 
@@ -506,22 +506,22 @@ LABEL_25:
     v24 = 0;
   }
 
-  v28 = [[MBCKStatusRequest alloc] initWithRequestType:1 device:0 duration:v23 error:a12];
+  v28 = [[MBCKStatusRequest alloc] initWithRequestType:1 device:0 duration:errorCopy error:duration];
   [(MBCKStatusRequest *)v28 setIsForegroundRestore:0];
-  [(MBCKStatusRequest *)v28 setSourceDeviceID:v19];
-  [(MBCKStatusRequest *)v28 setSnapshotUUID:v20];
-  v29 = [NSNumber numberWithUnsignedInteger:a7];
+  [(MBCKStatusRequest *)v28 setSourceDeviceID:dCopy];
+  [(MBCKStatusRequest *)v28 setSnapshotUUID:iDCopy];
+  v29 = [NSNumber numberWithUnsignedInteger:index];
   [(MBCKStatusRequest *)v28 setSnapshotIndex:v29];
 
-  [(MBCKStatusRequest *)v28 setSnapshotFormat:a8];
-  [(MBCKStatusRequest *)v28 setIsRestoringWithFileLists:a9];
-  v44 = v20;
-  v45 = v19;
+  [(MBCKStatusRequest *)v28 setSnapshotFormat:format];
+  [(MBCKStatusRequest *)v28 setIsRestoringWithFileLists:lists];
+  v44 = iDCopy;
+  v45 = dCopy;
   if (v24)
   {
     -[MBCKStatusRequest setBackgroundVerificationEnabled:](v28, "setBackgroundVerificationEnabled:", [v24 verifierWasRun]);
-    v30 = [v24 statusToReport];
-    [(MBCKStatusRequest *)v28 setBackgroundRestoreVerificationStatus:v30];
+    statusToReport = [v24 statusToReport];
+    [(MBCKStatusRequest *)v28 setBackgroundRestoreVerificationStatus:statusToReport];
   }
 
   else
@@ -535,7 +535,7 @@ LABEL_25:
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
-  v32 = v21;
+  v32 = errorsCopy;
   v33 = [v32 countByEnumeratingWithState:&v49 objects:v54 count:16];
   if (v33)
   {
@@ -567,46 +567,46 @@ LABEL_25:
 
   v38 = +[MBCKOperationPolicy expensiveCellularPolicy];
   [(MBCKStatusRequest *)v28 setCkOperationPolicy:v38];
-  v39 = [(MBCKStatusRequest *)v28 stringForRestorePhase];
-  v40 = [v39 capitalizedString];
+  stringForRestorePhase = [(MBCKStatusRequest *)v28 stringForRestorePhase];
+  capitalizedString = [stringForRestorePhase capitalizedString];
 
-  v41 = [[NSString alloc] initWithFormat:@"%@ Restore", v40];
+  v41 = [[NSString alloc] initWithFormat:@"%@ Restore", capitalizedString];
   v42 = [v38 operationGroupWithName:v41];
   [(MBCKStatusRequest *)v28 setCkOperationGroup:v42];
 
-  [(MBCKStatusRequest *)v28 _sendWithAccount:v47 databaseManager:v46];
+  [(MBCKStatusRequest *)v28 _sendWithAccount:accountCopy databaseManager:managerCopy];
 }
 
-- (MBCKStatusRequest)initWithRequestType:(unint64_t)a3 device:(id)a4 duration:(double)a5 error:(id)a6
+- (MBCKStatusRequest)initWithRequestType:(unint64_t)type device:(id)device duration:(double)duration error:(id)error
 {
-  v10 = a4;
-  v11 = a6;
+  deviceCopy = device;
+  errorCopy = error;
   v19.receiver = self;
   v19.super_class = MBCKStatusRequest;
   v12 = [(MBCKModel *)&v19 initWithRecord:0 cache:0];
   if (v12)
   {
-    if (!v11)
+    if (!errorCopy)
     {
       v13 = @"Backup";
-      if (a3 == 1)
+      if (type == 1)
       {
         v13 = @"Restore";
       }
 
-      if (a3 == 2)
+      if (type == 2)
       {
         v13 = @"Usage";
       }
 
-      v11 = [MBError errorWithCode:0 format:@"%@ completed successfully", v13];
+      errorCopy = [MBError errorWithCode:0 format:@"%@ completed successfully", v13];
     }
 
-    [(MBCKStatusRequest *)v12 setDevice:v10];
-    [(MBCKStatusRequest *)v12 setEventType:a3];
-    [(MBCKStatusRequest *)v12 setDuration:a5];
+    [(MBCKStatusRequest *)v12 setDevice:deviceCopy];
+    [(MBCKStatusRequest *)v12 setEventType:type];
+    [(MBCKStatusRequest *)v12 setDuration:duration];
     v18 = 0;
-    v14 = MBSerializeErrors(v11, &v18);
+    v14 = MBSerializeErrors(errorCopy, &v18);
     v15 = v18;
     [(MBCKStatusRequest *)v12 setSerializedUnderlyingErrors:v14];
 
@@ -639,9 +639,9 @@ LABEL_25:
 {
   v206.receiver = self;
   v206.super_class = MBCKStatusRequest;
-  v3 = [(MBCKModel *)&v206 recordRepresentation];
-  v4 = [(MBCKStatusRequest *)self device];
-  v5 = [v3 objectForKeyedSubscript:@"device"];
+  recordRepresentation = [(MBCKModel *)&v206 recordRepresentation];
+  device = [(MBCKStatusRequest *)self device];
+  v5 = [recordRepresentation objectForKeyedSubscript:@"device"];
 
   if (v5)
   {
@@ -650,54 +650,54 @@ LABEL_25:
 
   else
   {
-    v6 = v4 == 0;
+    v6 = device == 0;
   }
 
   if (!v6)
   {
     v7 = [CKReference alloc];
-    v8 = [v4 recordID];
-    v9 = [v7 initWithRecordID:v8 action:0];
-    [v3 setObject:v9 forKeyedSubscript:@"device"];
+    recordID = [device recordID];
+    v9 = [v7 initWithRecordID:recordID action:0];
+    [recordRepresentation setObject:v9 forKeyedSubscript:@"device"];
   }
 
-  v10 = [v3 objectForKeyedSubscript:@"eventType"];
+  v10 = [recordRepresentation objectForKeyedSubscript:@"eventType"];
 
   if (!v10)
   {
     v11 = [NSNumber numberWithLongLong:[(MBCKStatusRequest *)self eventType]];
-    [v3 setObject:v11 forKeyedSubscript:@"eventType"];
+    [recordRepresentation setObject:v11 forKeyedSubscript:@"eventType"];
   }
 
-  v12 = [v3 objectForKeyedSubscript:@"errorCode"];
+  v12 = [recordRepresentation objectForKeyedSubscript:@"errorCode"];
 
   if (!v12)
   {
-    v13 = [(MBCKStatusRequest *)self errorToReport];
-    v14 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [v13 code]);
-    [v3 setObject:v14 forKeyedSubscript:@"errorCode"];
+    errorToReport = [(MBCKStatusRequest *)self errorToReport];
+    v14 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [errorToReport code]);
+    [recordRepresentation setObject:v14 forKeyedSubscript:@"errorCode"];
   }
 
-  v15 = [v3 objectForKeyedSubscript:@"errorDescription"];
+  v15 = [recordRepresentation objectForKeyedSubscript:@"errorDescription"];
 
   if (!v15)
   {
-    v16 = [(MBCKStatusRequest *)self errorToReport];
-    v17 = [v16 localizedDescription];
-    [v3 setObject:v17 forKeyedSubscript:@"errorDescription"];
+    errorToReport2 = [(MBCKStatusRequest *)self errorToReport];
+    localizedDescription = [errorToReport2 localizedDescription];
+    [recordRepresentation setObject:localizedDescription forKeyedSubscript:@"errorDescription"];
   }
 
-  v18 = [v3 objectForKeyedSubscript:@"errorDomain"];
+  v18 = [recordRepresentation objectForKeyedSubscript:@"errorDomain"];
 
   if (!v18)
   {
-    v19 = [(MBCKStatusRequest *)self errorToReport];
-    v20 = [v19 domain];
-    [v3 setObject:v20 forKeyedSubscript:@"errorDomain"];
+    errorToReport3 = [(MBCKStatusRequest *)self errorToReport];
+    domain = [errorToReport3 domain];
+    [recordRepresentation setObject:domain forKeyedSubscript:@"errorDomain"];
   }
 
   v21 = +[NSMutableDictionary dictionary];
-  v22 = [v3 objectForKeyedSubscript:@"duration"];
+  v22 = [recordRepresentation objectForKeyedSubscript:@"duration"];
   if (!v22)
   {
     [(MBCKStatusRequest *)self duration];
@@ -706,30 +706,30 @@ LABEL_25:
     [v21 setObject:v22 forKeyedSubscript:@"duration"];
   }
 
-  v24 = [(MBCKStatusRequest *)self errorToReport];
+  errorToReport4 = [(MBCKStatusRequest *)self errorToReport];
 
-  if (v24)
+  if (errorToReport4)
   {
-    v25 = [(MBCKStatusRequest *)self errorToReport];
-    v26 = [v25 localizedDescription];
-    [v21 setObject:v26 forKeyedSubscript:@"shortErrorDescription"];
+    errorToReport5 = [(MBCKStatusRequest *)self errorToReport];
+    localizedDescription2 = [errorToReport5 localizedDescription];
+    [v21 setObject:localizedDescription2 forKeyedSubscript:@"shortErrorDescription"];
   }
 
-  v27 = [(MBCKStatusRequest *)self serializedUnderlyingErrors];
-  v28 = [v27 count];
+  serializedUnderlyingErrors = [(MBCKStatusRequest *)self serializedUnderlyingErrors];
+  v28 = [serializedUnderlyingErrors count];
 
   if (v28)
   {
-    v29 = [(MBCKStatusRequest *)self serializedUnderlyingErrors];
-    [v21 setObject:v29 forKeyedSubscript:@"underlyingErrors"];
+    serializedUnderlyingErrors2 = [(MBCKStatusRequest *)self serializedUnderlyingErrors];
+    [v21 setObject:serializedUnderlyingErrors2 forKeyedSubscript:@"underlyingErrors"];
   }
 
-  v30 = [(MBCKStatusRequest *)self errorToReport];
-  if (v30)
+  errorToReport6 = [(MBCKStatusRequest *)self errorToReport];
+  if (errorToReport6)
   {
-    v31 = v30;
-    v32 = [(MBCKStatusRequest *)self errorToReport];
-    v33 = [MBError isError:v32 withCode:0];
+    v31 = errorToReport6;
+    errorToReport7 = [(MBCKStatusRequest *)self errorToReport];
+    v33 = [MBError isError:errorToReport7 withCode:0];
 
     if (v33)
     {
@@ -738,12 +738,12 @@ LABEL_25:
 
     else
     {
-      v35 = [(MBCKStatusRequest *)self minutesRemaining];
+      minutesRemaining = [(MBCKStatusRequest *)self minutesRemaining];
 
-      if (v35)
+      if (minutesRemaining)
       {
-        v36 = [(MBCKStatusRequest *)self minutesRemaining];
-        [v21 setObject:v36 forKeyedSubscript:@"minutesRemaining"];
+        minutesRemaining2 = [(MBCKStatusRequest *)self minutesRemaining];
+        [v21 setObject:minutesRemaining2 forKeyedSubscript:@"minutesRemaining"];
       }
 
       v34 = @"NO";
@@ -758,20 +758,20 @@ LABEL_25:
   v37 = [NSNumber numberWithLongLong:[(MBCKStatusRequest *)self chargingType]];
   [v21 setObject:v37 forKeyedSubscript:@"chargingType"];
 
-  v38 = [(MBCKStatusRequest *)self stateDescription];
+  stateDescription = [(MBCKStatusRequest *)self stateDescription];
 
-  if (v38)
+  if (stateDescription)
   {
-    v39 = [(MBCKStatusRequest *)self stateDescription];
-    [v21 setObject:v39 forKeyedSubscript:@"state"];
+    stateDescription2 = [(MBCKStatusRequest *)self stateDescription];
+    [v21 setObject:stateDescription2 forKeyedSubscript:@"state"];
   }
 
-  v40 = [(MBCKStatusRequest *)self freeDiskSpace];
+  freeDiskSpace = [(MBCKStatusRequest *)self freeDiskSpace];
 
-  if (v40)
+  if (freeDiskSpace)
   {
-    v41 = [(MBCKStatusRequest *)self freeDiskSpace];
-    [v21 setObject:v41 forKeyedSubscript:@"freeDiskSpace"];
+    freeDiskSpace2 = [(MBCKStatusRequest *)self freeDiskSpace];
+    [v21 setObject:freeDiskSpace2 forKeyedSubscript:@"freeDiskSpace"];
   }
 
   v42 = [NSNumber numberWithInteger:[(MBCKStatusRequest *)self backupPolicy]];
@@ -788,16 +788,16 @@ LABEL_25:
 
   if ([(MBCKStatusRequest *)self hasNetworkConnectivityInfo])
   {
-    v45 = [(MBCKStatusRequest *)self networkConnectivityAtStart];
-    v46 = [NSNumber numberWithBool:v45 & 1];
+    networkConnectivityAtStart = [(MBCKStatusRequest *)self networkConnectivityAtStart];
+    v46 = [NSNumber numberWithBool:networkConnectivityAtStart & 1];
     [v21 setObject:v46 forKeyedSubscript:@"onWiFiAtStart"];
 
-    v47 = [NSNumber numberWithBool:(v45 >> 8) & 1];
+    v47 = [NSNumber numberWithBool:(networkConnectivityAtStart >> 8) & 1];
     [v21 setObject:v47 forKeyedSubscript:@"onCellularAtStart"];
 
-    if ((v45 & 0x100) != 0)
+    if ((networkConnectivityAtStart & 0x100) != 0)
     {
-      if ((v45 & 0x10000) != 0)
+      if ((networkConnectivityAtStart & 0x10000) != 0)
       {
         v48 = &off_1003E0EA0;
       }
@@ -808,20 +808,20 @@ LABEL_25:
       }
 
       [v21 setObject:v48 forKeyedSubscript:@"cellularCostAtStart"];
-      v49 = [NSNumber numberWithInt:HIDWORD(v45)];
+      v49 = [NSNumber numberWithInt:HIDWORD(networkConnectivityAtStart)];
       [v21 setObject:v49 forKeyedSubscript:@"cellularRadioTypeAtStart"];
     }
 
-    v50 = [(MBCKStatusRequest *)self networkConnectivityAtFinish];
-    v51 = [NSNumber numberWithBool:v50 & 1];
+    networkConnectivityAtFinish = [(MBCKStatusRequest *)self networkConnectivityAtFinish];
+    v51 = [NSNumber numberWithBool:networkConnectivityAtFinish & 1];
     [v21 setObject:v51 forKeyedSubscript:@"onWiFiAtFinish"];
 
-    v52 = [NSNumber numberWithBool:(v50 >> 8) & 1];
+    v52 = [NSNumber numberWithBool:(networkConnectivityAtFinish >> 8) & 1];
     [v21 setObject:v52 forKeyedSubscript:@"onCellularAtFinish"];
 
-    if ((v50 & 0x100) != 0)
+    if ((networkConnectivityAtFinish & 0x100) != 0)
     {
-      if ((v50 & 0x10000) != 0)
+      if ((networkConnectivityAtFinish & 0x10000) != 0)
       {
         v53 = &off_1003E0EA0;
       }
@@ -832,7 +832,7 @@ LABEL_25:
       }
 
       [v21 setObject:v53 forKeyedSubscript:@"cellularCostAtFinish"];
-      v54 = [NSNumber numberWithInt:HIDWORD(v50)];
+      v54 = [NSNumber numberWithInt:HIDWORD(networkConnectivityAtFinish)];
       [v21 setObject:v54 forKeyedSubscript:@"cellularRadioTypeAtFinish"];
     }
   }
@@ -844,38 +844,38 @@ LABEL_25:
       goto LABEL_163;
     }
 
-    v55 = [(MBCKStatusRequest *)self sourceDeviceID];
-    v56 = [v3 objectForKeyedSubscript:@"device"];
+    sourceDeviceID = [(MBCKStatusRequest *)self sourceDeviceID];
+    v56 = [recordRepresentation objectForKeyedSubscript:@"device"];
 
-    if (!v56 && v55)
+    if (!v56 && sourceDeviceID)
     {
-      v57 = [v55 mb_backupIDByAddingCKPrefix];
+      mb_backupIDByAddingCKPrefix = [sourceDeviceID mb_backupIDByAddingCKPrefix];
       v58 = [CKRecordID alloc];
       v59 = [MBCKDatabaseManager zoneIDOfType:2];
-      v60 = [v58 initWithRecordName:v57 zoneID:v59];
+      v60 = [v58 initWithRecordName:mb_backupIDByAddingCKPrefix zoneID:v59];
 
       v61 = [[CKReference alloc] initWithRecordID:v60 action:0];
-      [v3 setObject:v61 forKeyedSubscript:@"device"];
+      [recordRepresentation setObject:v61 forKeyedSubscript:@"device"];
     }
 
-    v62 = [(MBCKStatusRequest *)self snapshotUUID];
-    v63 = [(MBCKStatusRequest *)self snapshotIndex];
-    v64 = v63;
-    if (v63)
+    snapshotUUID = [(MBCKStatusRequest *)self snapshotUUID];
+    snapshotIndex = [(MBCKStatusRequest *)self snapshotIndex];
+    v64 = snapshotIndex;
+    if (snapshotIndex)
     {
-      v65 = v63;
+      v65 = snapshotIndex;
     }
 
     else
     {
-      v167 = [v4 snapshots];
-      v168 = v62;
+      snapshots = [device snapshots];
+      v168 = snapshotUUID;
       *buf = _NSConcreteStackBlock;
       *&buf[8] = 3221225472;
       *&buf[16] = sub_100182980;
       v208 = &unk_1003C0320;
       v209[0] = v168;
-      v169 = [v167 indexOfObjectPassingTest:buf];
+      v169 = [snapshots indexOfObjectPassingTest:buf];
       if (v169 == 0x7FFFFFFFFFFFFFFFLL)
       {
         v65 = 0;
@@ -887,11 +887,11 @@ LABEL_25:
       }
     }
 
-    v170 = [(MBCKStatusRequest *)self stringForRestorePhase];
-    [v21 setObject:v170 forKeyedSubscript:@"restoreType"];
+    stringForRestorePhase = [(MBCKStatusRequest *)self stringForRestorePhase];
+    [v21 setObject:stringForRestorePhase forKeyedSubscript:@"restoreType"];
 
-    [v21 setObject:v62 forKeyedSubscript:@"snapshot"];
-    [v21 setObject:v55 forKeyedSubscript:@"sourceDeviceID"];
+    [v21 setObject:snapshotUUID forKeyedSubscript:@"snapshot"];
+    [v21 setObject:sourceDeviceID forKeyedSubscript:@"sourceDeviceID"];
     v171 = MBDeviceUUID();
     [v21 setObject:v171 forKeyedSubscript:@"targetDeviceID"];
 
@@ -901,44 +901,44 @@ LABEL_25:
       [v21 setObject:v65 forKeyedSubscript:@"snapshotIndex"];
     }
 
-    v172 = [(MBCKStatusRequest *)self foregroundRestorableSize];
+    foregroundRestorableSize = [(MBCKStatusRequest *)self foregroundRestorableSize];
 
-    if (v172)
+    if (foregroundRestorableSize)
     {
-      v173 = [(MBCKStatusRequest *)self foregroundRestorableSize];
-      [v21 setObject:v173 forKeyedSubscript:@"foregroundRestorableSize"];
+      foregroundRestorableSize2 = [(MBCKStatusRequest *)self foregroundRestorableSize];
+      [v21 setObject:foregroundRestorableSize2 forKeyedSubscript:@"foregroundRestorableSize"];
     }
 
-    v174 = [(MBCKStatusRequest *)self backgroundRestorableSize];
+    backgroundRestorableSize = [(MBCKStatusRequest *)self backgroundRestorableSize];
 
-    if (v174)
+    if (backgroundRestorableSize)
     {
-      v175 = [(MBCKStatusRequest *)self backgroundRestorableSize];
-      [v21 setObject:v175 forKeyedSubscript:@"backgroundRestorableSize"];
+      backgroundRestorableSize2 = [(MBCKStatusRequest *)self backgroundRestorableSize];
+      [v21 setObject:backgroundRestorableSize2 forKeyedSubscript:@"backgroundRestorableSize"];
     }
 
-    v176 = [(MBCKStatusRequest *)self foregroundRestorableFileCount];
+    foregroundRestorableFileCount = [(MBCKStatusRequest *)self foregroundRestorableFileCount];
 
-    if (v176)
+    if (foregroundRestorableFileCount)
     {
-      v177 = [(MBCKStatusRequest *)self foregroundRestorableFileCount];
-      [v21 setObject:v177 forKeyedSubscript:@"foregroundRestorableFileCount"];
+      foregroundRestorableFileCount2 = [(MBCKStatusRequest *)self foregroundRestorableFileCount];
+      [v21 setObject:foregroundRestorableFileCount2 forKeyedSubscript:@"foregroundRestorableFileCount"];
     }
 
-    v178 = [(MBCKStatusRequest *)self backgroundRestorableFileCount];
+    backgroundRestorableFileCount = [(MBCKStatusRequest *)self backgroundRestorableFileCount];
 
-    if (v178)
+    if (backgroundRestorableFileCount)
     {
-      v179 = [(MBCKStatusRequest *)self backgroundRestorableFileCount];
-      [v21 setObject:v179 forKeyedSubscript:@"backgroundRestorableFileCount"];
+      backgroundRestorableFileCount2 = [(MBCKStatusRequest *)self backgroundRestorableFileCount];
+      [v21 setObject:backgroundRestorableFileCount2 forKeyedSubscript:@"backgroundRestorableFileCount"];
     }
 
-    v180 = [(MBCKStatusRequest *)self restoreBuildVersion];
+    restoreBuildVersion = [(MBCKStatusRequest *)self restoreBuildVersion];
 
-    if (v180)
+    if (restoreBuildVersion)
     {
-      v181 = [(MBCKStatusRequest *)self restoreBuildVersion];
-      [v21 setObject:v181 forKeyedSubscript:@"restoreBuildVersion"];
+      restoreBuildVersion2 = [(MBCKStatusRequest *)self restoreBuildVersion];
+      [v21 setObject:restoreBuildVersion2 forKeyedSubscript:@"restoreBuildVersion"];
     }
 
     if ([(MBCKStatusRequest *)self isForegroundRestore])
@@ -946,17 +946,17 @@ LABEL_25:
       v182 = [NSNumber numberWithBool:[(MBCKStatusRequest *)self foregroundRestoreVerificationEnabled]];
       [v21 setObject:v182 forKeyedSubscript:@"foregroundRestoreVerificationEnabled"];
 
-      v183 = [(MBCKStatusRequest *)self foregroundRestoreVerificationStatus];
+      foregroundRestoreVerificationStatus = [(MBCKStatusRequest *)self foregroundRestoreVerificationStatus];
 
-      if (!v183)
+      if (!foregroundRestoreVerificationStatus)
       {
 LABEL_158:
-        v191 = [(MBCKStatusRequest *)self errorToReport];
+        errorToReport8 = [(MBCKStatusRequest *)self errorToReport];
 
-        if (v191)
+        if (errorToReport8)
         {
-          v192 = [(MBCKStatusRequest *)self errorToReport];
-          v193 = [NSNumber numberWithBool:[MBError isRetryableRestoreError:v192]];
+          errorToReport9 = [(MBCKStatusRequest *)self errorToReport];
+          v193 = [NSNumber numberWithBool:[MBError isRetryableRestoreError:errorToReport9]];
           [v21 setObject:v193 forKeyedSubscript:@"isRetryableRestoreError"];
         }
 
@@ -966,7 +966,7 @@ LABEL_158:
         goto LABEL_161;
       }
 
-      v184 = [(MBCKStatusRequest *)self foregroundRestoreVerificationStatus];
+      foregroundRestoreVerificationStatus2 = [(MBCKStatusRequest *)self foregroundRestoreVerificationStatus];
       v185 = @"foregroundRestoreVerificationStatus";
     }
 
@@ -975,27 +975,27 @@ LABEL_158:
       v186 = [NSNumber numberWithBool:[(MBCKStatusRequest *)self backgroundVerificationEnabled]];
       [v21 setObject:v186 forKeyedSubscript:@"backgroundRestoreVerificationEnabled"];
 
-      v187 = [(MBCKStatusRequest *)self backgroundRestoreVerificationStatus];
+      backgroundRestoreVerificationStatus = [(MBCKStatusRequest *)self backgroundRestoreVerificationStatus];
 
-      if (v187)
+      if (backgroundRestoreVerificationStatus)
       {
-        v188 = [(MBCKStatusRequest *)self backgroundRestoreVerificationStatus];
-        [v21 setObject:v188 forKeyedSubscript:@"backgroundRestoreVerificationStatus"];
+        backgroundRestoreVerificationStatus2 = [(MBCKStatusRequest *)self backgroundRestoreVerificationStatus];
+        [v21 setObject:backgroundRestoreVerificationStatus2 forKeyedSubscript:@"backgroundRestoreVerificationStatus"];
       }
 
-      v189 = [(MBCKStatusRequest *)self errorSignatures];
-      v190 = [v189 count];
+      errorSignatures = [(MBCKStatusRequest *)self errorSignatures];
+      v190 = [errorSignatures count];
 
       if (!v190)
       {
         goto LABEL_158;
       }
 
-      v184 = [(MBCKStatusRequest *)self errorSignatures];
+      foregroundRestoreVerificationStatus2 = [(MBCKStatusRequest *)self errorSignatures];
       v185 = @"errorSignatures";
     }
 
-    [v21 setObject:v184 forKeyedSubscript:v185];
+    [v21 setObject:foregroundRestoreVerificationStatus2 forKeyedSubscript:v185];
 
     goto LABEL_158;
   }
@@ -1009,18 +1009,18 @@ LABEL_158:
     [v21 setObject:v67 forKeyedSubscript:@"backupType"];
   }
 
-  v68 = [v4 pendingSnapshot];
-  v62 = v68;
-  if (v68)
+  pendingSnapshot = [device pendingSnapshot];
+  snapshotUUID = pendingSnapshot;
+  if (pendingSnapshot)
   {
-    v55 = [v68 snapshotID];
-    v69 = [v4 dateOfLastBackup];
-    if (v69)
+    sourceDeviceID = [pendingSnapshot snapshotID];
+    dateOfLastBackup = [device dateOfLastBackup];
+    if (dateOfLastBackup)
     {
-      [v21 setObject:v69 forKeyedSubscript:@"lastBackupDate"];
+      [v21 setObject:dateOfLastBackup forKeyedSubscript:@"lastBackupDate"];
     }
 
-    if (!v55)
+    if (!sourceDeviceID)
     {
       goto LABEL_58;
     }
@@ -1028,17 +1028,17 @@ LABEL_158:
 
   else
   {
-    v55 = [(MBCKStatusRequest *)self pendingSnapshotID];
-    if (!v55)
+    sourceDeviceID = [(MBCKStatusRequest *)self pendingSnapshotID];
+    if (!sourceDeviceID)
     {
       goto LABEL_58;
     }
   }
 
-  [v21 setObject:v55 forKeyedSubscript:@"snapshot"];
+  [v21 setObject:sourceDeviceID forKeyedSubscript:@"snapshot"];
 LABEL_58:
-  v70 = [(MBCKStatusRequest *)self errorToReport];
-  v71 = [MBError isCKError:v70 withCode:25];
+  errorToReport10 = [(MBCKStatusRequest *)self errorToReport];
+  v71 = [MBError isCKError:errorToReport10 withCode:25];
 
   if (v71)
   {
@@ -1057,77 +1057,77 @@ LABEL_58:
   }
 
   [v21 setObject:v73 forKeyedSubscript:@"usedAPFSSnapshots"];
-  v74 = [(MBCKStatusRequest *)self topDomainsWithMissingEncryptionKeys];
-  v75 = [v74 count];
+  topDomainsWithMissingEncryptionKeys = [(MBCKStatusRequest *)self topDomainsWithMissingEncryptionKeys];
+  v75 = [topDomainsWithMissingEncryptionKeys count];
 
   if (v75)
   {
-    v76 = [(MBCKStatusRequest *)self topDomainsWithMissingEncryptionKeys];
-    [v21 setObject:v76 forKeyedSubscript:@"topDomainsWithMissingEncryptionKeys"];
+    topDomainsWithMissingEncryptionKeys2 = [(MBCKStatusRequest *)self topDomainsWithMissingEncryptionKeys];
+    [v21 setObject:topDomainsWithMissingEncryptionKeys2 forKeyedSubscript:@"topDomainsWithMissingEncryptionKeys"];
   }
 
-  v77 = [(MBCKStatusRequest *)self backupTotalSize];
+  backupTotalSize = [(MBCKStatusRequest *)self backupTotalSize];
 
-  if (v77)
+  if (backupTotalSize)
   {
-    v78 = [(MBCKStatusRequest *)self backupTotalSize];
-    [v21 setObject:v78 forKeyedSubscript:@"backupSize"];
+    backupTotalSize2 = [(MBCKStatusRequest *)self backupTotalSize];
+    [v21 setObject:backupTotalSize2 forKeyedSubscript:@"backupSize"];
   }
 
-  v79 = [(MBCKStatusRequest *)self backupFileCount];
+  backupFileCount = [(MBCKStatusRequest *)self backupFileCount];
 
-  if (v79)
+  if (backupFileCount)
   {
-    v80 = [(MBCKStatusRequest *)self backupFileCount];
-    [v21 setObject:v80 forKeyedSubscript:@"backupFileCount"];
+    backupFileCount2 = [(MBCKStatusRequest *)self backupFileCount];
+    [v21 setObject:backupFileCount2 forKeyedSubscript:@"backupFileCount"];
   }
 
-  v81 = [(MBCKStatusRequest *)self backupDirectoryCount];
+  backupDirectoryCount = [(MBCKStatusRequest *)self backupDirectoryCount];
 
-  if (v81)
+  if (backupDirectoryCount)
   {
-    v82 = [(MBCKStatusRequest *)self backupDirectoryCount];
-    [v21 setObject:v82 forKeyedSubscript:@"backupDirectoryCount"];
+    backupDirectoryCount2 = [(MBCKStatusRequest *)self backupDirectoryCount];
+    [v21 setObject:backupDirectoryCount2 forKeyedSubscript:@"backupDirectoryCount"];
   }
 
-  v83 = [(MBCKStatusRequest *)self queuedSize];
+  queuedSize = [(MBCKStatusRequest *)self queuedSize];
 
-  if (v83)
+  if (queuedSize)
   {
-    v84 = [(MBCKStatusRequest *)self queuedSize];
-    [v21 setObject:v84 forKeyedSubscript:@"queuedSize"];
+    queuedSize2 = [(MBCKStatusRequest *)self queuedSize];
+    [v21 setObject:queuedSize2 forKeyedSubscript:@"queuedSize"];
   }
 
-  v85 = [(MBCKStatusRequest *)self queuedFileCount];
+  queuedFileCount = [(MBCKStatusRequest *)self queuedFileCount];
 
-  if (v85)
+  if (queuedFileCount)
   {
-    v86 = [(MBCKStatusRequest *)self queuedFileCount];
-    [v21 setObject:v86 forKeyedSubscript:@"queuedFileCount"];
+    queuedFileCount2 = [(MBCKStatusRequest *)self queuedFileCount];
+    [v21 setObject:queuedFileCount2 forKeyedSubscript:@"queuedFileCount"];
   }
 
-  v87 = [(MBCKStatusRequest *)self uploadedSize];
+  uploadedSize = [(MBCKStatusRequest *)self uploadedSize];
 
-  if (v87)
+  if (uploadedSize)
   {
-    v88 = [(MBCKStatusRequest *)self uploadedSize];
-    [v21 setObject:v88 forKeyedSubscript:@"uploadedSize"];
+    uploadedSize2 = [(MBCKStatusRequest *)self uploadedSize];
+    [v21 setObject:uploadedSize2 forKeyedSubscript:@"uploadedSize"];
   }
 
-  v89 = [(MBCKStatusRequest *)self uploadedFileCount];
+  uploadedFileCount = [(MBCKStatusRequest *)self uploadedFileCount];
 
-  if (v89)
+  if (uploadedFileCount)
   {
-    v90 = [(MBCKStatusRequest *)self uploadedFileCount];
-    [v21 setObject:v90 forKeyedSubscript:@"uploadedFileCount"];
+    uploadedFileCount2 = [(MBCKStatusRequest *)self uploadedFileCount];
+    [v21 setObject:uploadedFileCount2 forKeyedSubscript:@"uploadedFileCount"];
   }
 
-  v91 = [(MBCKStatusRequest *)self lastOnConditionEvents];
+  lastOnConditionEvents = [(MBCKStatusRequest *)self lastOnConditionEvents];
 
-  if (v91)
+  if (lastOnConditionEvents)
   {
-    v92 = [(MBCKStatusRequest *)self lastOnConditionEvents];
-    [v21 setObject:v92 forKeyedSubscript:@"lastOnConditionEvents"];
+    lastOnConditionEvents2 = [(MBCKStatusRequest *)self lastOnConditionEvents];
+    [v21 setObject:lastOnConditionEvents2 forKeyedSubscript:@"lastOnConditionEvents"];
   }
 
   if ([(MBCKStatusRequest *)self hasNewOTAKeyBag])
@@ -1141,54 +1141,54 @@ LABEL_58:
   }
 
   [v21 setObject:v93 forKeyedSubscript:@"newOTAKeyBag"];
-  v94 = [(MBCKStatusRequest *)self throughputs];
-  v95 = [v94 count];
+  throughputs = [(MBCKStatusRequest *)self throughputs];
+  v95 = [throughputs count];
 
   if (v95)
   {
-    v96 = [(MBCKStatusRequest *)self throughputs];
-    [v21 setObject:v96 forKeyedSubscript:@"throughputs"];
+    throughputs2 = [(MBCKStatusRequest *)self throughputs];
+    [v21 setObject:throughputs2 forKeyedSubscript:@"throughputs"];
   }
 
-  v97 = [(MBCKStatusRequest *)self wifiQuality];
-  v98 = [v97 count];
+  wifiQuality = [(MBCKStatusRequest *)self wifiQuality];
+  v98 = [wifiQuality count];
 
   if (v98)
   {
-    v99 = [(MBCKStatusRequest *)self wifiQuality];
-    [v21 setObject:v99 forKeyedSubscript:@"wifiQuality"];
+    wifiQuality2 = [(MBCKStatusRequest *)self wifiQuality];
+    [v21 setObject:wifiQuality2 forKeyedSubscript:@"wifiQuality"];
   }
 
-  v100 = [(MBCKStatusRequest *)self cacheSize];
+  cacheSize = [(MBCKStatusRequest *)self cacheSize];
 
-  if (v100)
+  if (cacheSize)
   {
-    v101 = [(MBCKStatusRequest *)self cacheSize];
-    [v21 setObject:v101 forKeyedSubscript:@"cacheSize"];
+    cacheSize2 = [(MBCKStatusRequest *)self cacheSize];
+    [v21 setObject:cacheSize2 forKeyedSubscript:@"cacheSize"];
   }
 
-  v102 = [(MBCKStatusRequest *)self remainingCellularBalance];
+  remainingCellularBalance = [(MBCKStatusRequest *)self remainingCellularBalance];
 
-  if (v102)
+  if (remainingCellularBalance)
   {
-    v103 = [(MBCKStatusRequest *)self remainingCellularBalance];
-    [v21 setObject:v103 forKeyedSubscript:@"remainingCellularBalance"];
+    remainingCellularBalance2 = [(MBCKStatusRequest *)self remainingCellularBalance];
+    [v21 setObject:remainingCellularBalance2 forKeyedSubscript:@"remainingCellularBalance"];
   }
 
-  v104 = [(MBCKStatusRequest *)self classAFilesMissingEncryptionKeys];
+  classAFilesMissingEncryptionKeys = [(MBCKStatusRequest *)self classAFilesMissingEncryptionKeys];
 
-  if (v104)
+  if (classAFilesMissingEncryptionKeys)
   {
-    v105 = [(MBCKStatusRequest *)self classAFilesMissingEncryptionKeys];
-    [v21 setObject:v105 forKeyedSubscript:@"classAFilesMissingEncryptionKeys"];
+    classAFilesMissingEncryptionKeys2 = [(MBCKStatusRequest *)self classAFilesMissingEncryptionKeys];
+    [v21 setObject:classAFilesMissingEncryptionKeys2 forKeyedSubscript:@"classAFilesMissingEncryptionKeys"];
   }
 
-  v106 = [(MBCKStatusRequest *)self classBFilesMissingEncryptionKeys];
+  classBFilesMissingEncryptionKeys = [(MBCKStatusRequest *)self classBFilesMissingEncryptionKeys];
 
-  if (v106)
+  if (classBFilesMissingEncryptionKeys)
   {
-    v107 = [(MBCKStatusRequest *)self classBFilesMissingEncryptionKeys];
-    [v21 setObject:v107 forKeyedSubscript:@"classBFilesMissingEncryptionKeys"];
+    classBFilesMissingEncryptionKeys2 = [(MBCKStatusRequest *)self classBFilesMissingEncryptionKeys];
+    [v21 setObject:classBFilesMissingEncryptionKeys2 forKeyedSubscript:@"classBFilesMissingEncryptionKeys"];
   }
 
   [(MBCKStatusRequest *)self fseventDuration];
@@ -1199,73 +1199,73 @@ LABEL_58:
     [v21 setObject:v109 forKeyedSubscript:@"fseventDuration"];
   }
 
-  v110 = [(MBCKStatusRequest *)self enabledDomainsCount];
+  enabledDomainsCount = [(MBCKStatusRequest *)self enabledDomainsCount];
 
-  if (v110)
+  if (enabledDomainsCount)
   {
-    v111 = [(MBCKStatusRequest *)self enabledDomainsCount];
-    [v21 setObject:v111 forKeyedSubscript:@"enabledDomainsCount"];
+    enabledDomainsCount2 = [(MBCKStatusRequest *)self enabledDomainsCount];
+    [v21 setObject:enabledDomainsCount2 forKeyedSubscript:@"enabledDomainsCount"];
   }
 
-  v112 = [(MBCKStatusRequest *)self scannedDomainsCount];
+  scannedDomainsCount = [(MBCKStatusRequest *)self scannedDomainsCount];
 
-  if (v112)
+  if (scannedDomainsCount)
   {
-    v113 = [(MBCKStatusRequest *)self scannedDomainsCount];
-    [v21 setObject:v113 forKeyedSubscript:@"scannedDomainsCount"];
+    scannedDomainsCount2 = [(MBCKStatusRequest *)self scannedDomainsCount];
+    [v21 setObject:scannedDomainsCount2 forKeyedSubscript:@"scannedDomainsCount"];
   }
 
-  v114 = [(MBCKStatusRequest *)self skippedFilesCount];
+  skippedFilesCount = [(MBCKStatusRequest *)self skippedFilesCount];
 
-  if (v114)
+  if (skippedFilesCount)
   {
-    v115 = [(MBCKStatusRequest *)self skippedFilesCount];
-    [v21 setObject:v115 forKeyedSubscript:@"skippedFilesCount"];
+    skippedFilesCount2 = [(MBCKStatusRequest *)self skippedFilesCount];
+    [v21 setObject:skippedFilesCount2 forKeyedSubscript:@"skippedFilesCount"];
   }
 
-  v116 = [(MBCKStatusRequest *)self cacheRefreshSummary];
-  if (v116)
+  cacheRefreshSummary = [(MBCKStatusRequest *)self cacheRefreshSummary];
+  if (cacheRefreshSummary)
   {
-    v117 = v116;
-    v118 = [(MBCKStatusRequest *)self cacheRefreshSummary];
-    v119 = [v118 downloadedSnapshotCount];
+    v117 = cacheRefreshSummary;
+    cacheRefreshSummary2 = [(MBCKStatusRequest *)self cacheRefreshSummary];
+    downloadedSnapshotCount = [cacheRefreshSummary2 downloadedSnapshotCount];
 
-    if (v119)
+    if (downloadedSnapshotCount)
     {
-      v120 = [(MBCKStatusRequest *)self cacheRefreshSummary];
-      v121 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v120 cachedSnapshotCount]);
+      cacheRefreshSummary3 = [(MBCKStatusRequest *)self cacheRefreshSummary];
+      v121 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [cacheRefreshSummary3 cachedSnapshotCount]);
       [v21 setObject:v121 forKeyedSubscript:@"cachedSnapshotCount"];
 
-      v122 = [(MBCKStatusRequest *)self cacheRefreshSummary];
-      v123 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v122 serverSnapshotCount]);
+      cacheRefreshSummary4 = [(MBCKStatusRequest *)self cacheRefreshSummary];
+      v123 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [cacheRefreshSummary4 serverSnapshotCount]);
       [v21 setObject:v123 forKeyedSubscript:@"serverSnapshotCount"];
 
-      v124 = [(MBCKStatusRequest *)self cacheRefreshSummary];
-      v125 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v124 journalActionCount]);
+      cacheRefreshSummary5 = [(MBCKStatusRequest *)self cacheRefreshSummary];
+      v125 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [cacheRefreshSummary5 journalActionCount]);
       [v21 setObject:v125 forKeyedSubscript:@"journalActionCount"];
 
-      v126 = [(MBCKStatusRequest *)self cacheRefreshSummary];
-      v127 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v126 journalReplaySucceeded]);
+      cacheRefreshSummary6 = [(MBCKStatusRequest *)self cacheRefreshSummary];
+      v127 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [cacheRefreshSummary6 journalReplaySucceeded]);
       [v21 setObject:v127 forKeyedSubscript:@"journalReplaySucceeded"];
 
-      v128 = [(MBCKStatusRequest *)self cacheRefreshSummary];
-      v129 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v128 journalVerificationErrorCount]);
+      cacheRefreshSummary7 = [(MBCKStatusRequest *)self cacheRefreshSummary];
+      v129 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [cacheRefreshSummary7 journalVerificationErrorCount]);
       [v21 setObject:v129 forKeyedSubscript:@"journalVerificationErrorCount"];
 
-      v130 = [(MBCKStatusRequest *)self cacheRefreshSummary];
-      v131 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v130 downloadedSnapshotCount]);
+      cacheRefreshSummary8 = [(MBCKStatusRequest *)self cacheRefreshSummary];
+      v131 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [cacheRefreshSummary8 downloadedSnapshotCount]);
       [v21 setObject:v131 forKeyedSubscript:@"downloadedSnapshotCount"];
 
-      v132 = [(MBCKStatusRequest *)self cacheRefreshSummary];
-      v133 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v132 downloadedSnapshotVerificationFailureCount]);
+      cacheRefreshSummary9 = [(MBCKStatusRequest *)self cacheRefreshSummary];
+      v133 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [cacheRefreshSummary9 downloadedSnapshotVerificationFailureCount]);
       [v21 setObject:v133 forKeyedSubscript:@"downloadedSnapshotVerificationFailureCount"];
 
-      v134 = [(MBCKStatusRequest *)self cacheRefreshSummary];
-      v135 = [v134 verificationFailureStrings];
+      cacheRefreshSummary10 = [(MBCKStatusRequest *)self cacheRefreshSummary];
+      verificationFailureStrings = [cacheRefreshSummary10 verificationFailureStrings];
 
-      if ([v135 count])
+      if ([verificationFailureStrings count])
       {
-        [v21 setObject:v135 forKeyedSubscript:@"verificationFailures"];
+        [v21 setObject:verificationFailureStrings forKeyedSubscript:@"verificationFailures"];
       }
     }
   }
@@ -1273,109 +1273,109 @@ LABEL_58:
   v136 = [NSNumber numberWithBool:[(MBCKStatusRequest *)self backupOnWiFiWithDAS]];
   [v21 setObject:v136 forKeyedSubscript:@"backupOnWiFiWithDAS"];
 
-  v137 = [(MBCKStatusRequest *)self snapshotVerificationStatus];
+  snapshotVerificationStatus = [(MBCKStatusRequest *)self snapshotVerificationStatus];
 
-  if (v137)
+  if (snapshotVerificationStatus)
   {
-    v138 = [(MBCKStatusRequest *)self snapshotVerificationStatus];
-    [v21 setObject:v138 forKeyedSubscript:@"snapshotVerificationStatus"];
+    snapshotVerificationStatus2 = [(MBCKStatusRequest *)self snapshotVerificationStatus];
+    [v21 setObject:snapshotVerificationStatus2 forKeyedSubscript:@"snapshotVerificationStatus"];
 
     [(MBCKStatusRequest *)self snapshotVerificationDuration];
     [(MBCKStatusRequest *)self snapshotVerificationDuration];
     v140 = [NSNumber numberWithLongLong:(v139 * 1000.0)];
     [v21 setObject:v140 forKeyedSubscript:@"snapshotVerificationDuration"];
 
-    v141 = [(MBCKStatusRequest *)self snapshotVerificationCancellationError];
+    snapshotVerificationCancellationError = [(MBCKStatusRequest *)self snapshotVerificationCancellationError];
 
-    if (v141)
+    if (snapshotVerificationCancellationError)
     {
-      v142 = [(MBCKStatusRequest *)self snapshotVerificationCancellationError];
-      v143 = [v142 domain];
-      [v21 setObject:v143 forKeyedSubscript:@"verificationCancellationErrorDomain"];
+      snapshotVerificationCancellationError2 = [(MBCKStatusRequest *)self snapshotVerificationCancellationError];
+      domain2 = [snapshotVerificationCancellationError2 domain];
+      [v21 setObject:domain2 forKeyedSubscript:@"verificationCancellationErrorDomain"];
 
-      v144 = [(MBCKStatusRequest *)self snapshotVerificationCancellationError];
-      v145 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v144 code]);
+      snapshotVerificationCancellationError3 = [(MBCKStatusRequest *)self snapshotVerificationCancellationError];
+      v145 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [snapshotVerificationCancellationError3 code]);
       [v21 setObject:v145 forKeyedSubscript:@"verificationCancellationErrorCode"];
 
-      v146 = [(MBCKStatusRequest *)self snapshotVerificationCancellationError];
-      v147 = [v146 localizedDescription];
-      [v21 setObject:v147 forKeyedSubscript:@"verificationCancellationErrorDescription"];
+      snapshotVerificationCancellationError4 = [(MBCKStatusRequest *)self snapshotVerificationCancellationError];
+      localizedDescription3 = [snapshotVerificationCancellationError4 localizedDescription];
+      [v21 setObject:localizedDescription3 forKeyedSubscript:@"verificationCancellationErrorDescription"];
     }
   }
 
   v148 = [NSNumber numberWithBool:[(MBCKStatusRequest *)self snapshotVerificationEnabled]];
   [v21 setObject:v148 forKeyedSubscript:@"snapshotVerificationEnabled"];
 
-  v149 = [(MBCKStatusRequest *)self emptyDomainCount];
+  emptyDomainCount = [(MBCKStatusRequest *)self emptyDomainCount];
 
-  if (v149)
+  if (emptyDomainCount)
   {
-    v150 = [(MBCKStatusRequest *)self emptyDomainCount];
-    [v21 setObject:v150 forKeyedSubscript:@"emptyDomainCount"];
+    emptyDomainCount2 = [(MBCKStatusRequest *)self emptyDomainCount];
+    [v21 setObject:emptyDomainCount2 forKeyedSubscript:@"emptyDomainCount"];
   }
 
-  v151 = [(MBCKStatusRequest *)self deletedFileCount];
+  deletedFileCount = [(MBCKStatusRequest *)self deletedFileCount];
 
-  if (v151)
+  if (deletedFileCount)
   {
-    v152 = [(MBCKStatusRequest *)self deletedFileCount];
-    [v21 setObject:v152 forKeyedSubscript:@"deletedFileCount"];
+    deletedFileCount2 = [(MBCKStatusRequest *)self deletedFileCount];
+    [v21 setObject:deletedFileCount2 forKeyedSubscript:@"deletedFileCount"];
   }
 
-  v153 = [(MBCKStatusRequest *)self unmodifiedDirectoryCount];
+  unmodifiedDirectoryCount = [(MBCKStatusRequest *)self unmodifiedDirectoryCount];
 
-  if (v153)
+  if (unmodifiedDirectoryCount)
   {
-    v154 = [(MBCKStatusRequest *)self unmodifiedDirectoryCount];
-    [v21 setObject:v154 forKeyedSubscript:@"unmodifiedDirectoryCount"];
+    unmodifiedDirectoryCount2 = [(MBCKStatusRequest *)self unmodifiedDirectoryCount];
+    [v21 setObject:unmodifiedDirectoryCount2 forKeyedSubscript:@"unmodifiedDirectoryCount"];
   }
 
-  v155 = [(MBCKStatusRequest *)self modifiedDirectoryCount];
+  modifiedDirectoryCount = [(MBCKStatusRequest *)self modifiedDirectoryCount];
 
-  if (v155)
+  if (modifiedDirectoryCount)
   {
-    v156 = [(MBCKStatusRequest *)self modifiedDirectoryCount];
-    [v21 setObject:v156 forKeyedSubscript:@"modifiedDirectoryCount"];
+    modifiedDirectoryCount2 = [(MBCKStatusRequest *)self modifiedDirectoryCount];
+    [v21 setObject:modifiedDirectoryCount2 forKeyedSubscript:@"modifiedDirectoryCount"];
   }
 
-  v157 = [(MBCKStatusRequest *)self uploadedAssetSize];
+  uploadedAssetSize = [(MBCKStatusRequest *)self uploadedAssetSize];
 
-  if (v157)
+  if (uploadedAssetSize)
   {
-    v158 = [(MBCKStatusRequest *)self uploadedAssetSize];
-    [v21 setObject:v158 forKeyedSubscript:@"uploadedAssetSize"];
+    uploadedAssetSize2 = [(MBCKStatusRequest *)self uploadedAssetSize];
+    [v21 setObject:uploadedAssetSize2 forKeyedSubscript:@"uploadedAssetSize"];
   }
 
-  v159 = [(MBCKStatusRequest *)self uploadedAssetCount];
+  uploadedAssetCount = [(MBCKStatusRequest *)self uploadedAssetCount];
 
-  if (v159)
+  if (uploadedAssetCount)
   {
-    v160 = [(MBCKStatusRequest *)self uploadedAssetCount];
-    [v21 setObject:v160 forKeyedSubscript:@"uploadedAssetCount"];
+    uploadedAssetCount2 = [(MBCKStatusRequest *)self uploadedAssetCount];
+    [v21 setObject:uploadedAssetCount2 forKeyedSubscript:@"uploadedAssetCount"];
   }
 
-  v161 = [(MBCKStatusRequest *)self unmodifiedRegularFileCount];
+  unmodifiedRegularFileCount = [(MBCKStatusRequest *)self unmodifiedRegularFileCount];
 
-  if (v161)
+  if (unmodifiedRegularFileCount)
   {
-    v162 = [(MBCKStatusRequest *)self unmodifiedRegularFileCount];
-    [v21 setObject:v162 forKeyedSubscript:@"unmodifiedRegularFileCount"];
+    unmodifiedRegularFileCount2 = [(MBCKStatusRequest *)self unmodifiedRegularFileCount];
+    [v21 setObject:unmodifiedRegularFileCount2 forKeyedSubscript:@"unmodifiedRegularFileCount"];
   }
 
-  v163 = [(MBCKStatusRequest *)self modifiedRegularFileCount];
+  modifiedRegularFileCount = [(MBCKStatusRequest *)self modifiedRegularFileCount];
 
-  if (v163)
+  if (modifiedRegularFileCount)
   {
-    v164 = [(MBCKStatusRequest *)self modifiedRegularFileCount];
-    [v21 setObject:v164 forKeyedSubscript:@"modifiedRegularFileCount"];
+    modifiedRegularFileCount2 = [(MBCKStatusRequest *)self modifiedRegularFileCount];
+    [v21 setObject:modifiedRegularFileCount2 forKeyedSubscript:@"modifiedRegularFileCount"];
   }
 
-  v165 = [(MBCKStatusRequest *)self peakMemoryUsage];
+  peakMemoryUsage = [(MBCKStatusRequest *)self peakMemoryUsage];
 
-  if (v165)
+  if (peakMemoryUsage)
   {
-    v166 = [(MBCKStatusRequest *)self peakMemoryUsage];
-    [v21 setObject:v166 forKeyedSubscript:@"peakMemoryUsage"];
+    peakMemoryUsage2 = [(MBCKStatusRequest *)self peakMemoryUsage];
+    [v21 setObject:peakMemoryUsage2 forKeyedSubscript:@"peakMemoryUsage"];
   }
 
   if (![(MBCKStatusRequest *)self uploadedFileListSize])
@@ -1391,7 +1391,7 @@ LABEL_162:
 LABEL_163:
   if ([v21 count])
   {
-    [v3 setPluginFields:v21];
+    [recordRepresentation setPluginFields:v21];
   }
 
   v195 = MBGetDefaultLog();
@@ -1401,29 +1401,29 @@ LABEL_163:
     if (os_log_type_enabled(v196, OS_LOG_TYPE_DEFAULT))
     {
       v197 = objc_opt_class();
-      v198 = [v3 recordID];
-      v199 = [v198 recordName];
-      v200 = [v3 pluginFields];
+      recordID2 = [recordRepresentation recordID];
+      recordName = [recordID2 recordName];
+      pluginFields = [recordRepresentation pluginFields];
       *buf = 138544130;
       *&buf[4] = v197;
       *&buf[12] = 2114;
-      *&buf[14] = v199;
+      *&buf[14] = recordName;
       *&buf[22] = 2112;
-      v208 = v3;
+      v208 = recordRepresentation;
       LOWORD(v209[0]) = 2112;
-      *(v209 + 2) = v200;
+      *(v209 + 2) = pluginFields;
       _os_log_impl(&_mh_execute_header, v196, OS_LOG_TYPE_DEFAULT, "Saving %{public}@(%{public}@) record:%@, pluginFields:%@", buf, 0x2Au);
     }
 
     objc_opt_class();
-    v201 = [v3 recordID];
-    v202 = [v201 recordName];
-    v205 = [v3 pluginFields];
+    recordID3 = [recordRepresentation recordID];
+    recordName2 = [recordID3 recordName];
+    pluginFields2 = [recordRepresentation pluginFields];
     _MBLog();
   }
 
-  v203 = v3;
-  return v3;
+  v203 = recordRepresentation;
+  return recordRepresentation;
 }
 
 - ($1C6001547D93A6C6CE4901F2C331F3E5)networkConnectivityAtStart

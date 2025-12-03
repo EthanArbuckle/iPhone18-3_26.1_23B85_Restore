@@ -1,18 +1,18 @@
 @interface CSComponent
-+ (id)componentWithType:(int64_t)a3;
++ (id)componentWithType:(int64_t)type;
 - ($45422F01B4F6AABA24092EA30F0A70AE)transitionInputs;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGPoint)offset;
 - (CSComponent)init;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)identifier:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)identifier:(id)identifier;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
-- (id)transitionInputs:(id *)a3;
+- (id)transitionInputs:(id *)inputs;
 - (void)resetAllProperties;
-- (void)resetProperties:(unint64_t)a3;
-- (void)setTransitionInputs:(id *)a3;
+- (void)resetProperties:(unint64_t)properties;
+- (void)setTransitionInputs:(id *)inputs;
 @end
 
 @implementation CSComponent
@@ -49,9 +49,9 @@
   return self;
 }
 
-+ (id)componentWithType:(int64_t)a3
++ (id)componentWithType:(int64_t)type
 {
-  switch(a3)
+  switch(type)
   {
     case 0:
       v3 = objc_alloc_init(CSComponent);
@@ -94,34 +94,34 @@
   return v3;
 }
 
-- (id)identifier:(id)a3
+- (id)identifier:(id)identifier
 {
-  v5 = a3;
-  if (!v5)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
     [(CSComponent *)a2 identifier:?];
   }
 
-  [(CSComponent *)self setIdentifier:v5];
+  [(CSComponent *)self setIdentifier:identifierCopy];
 
   return self;
 }
 
-- (id)transitionInputs:(id *)a3
+- (id)transitionInputs:(id *)inputs
 {
-  v4 = *&a3->var1.y;
-  v6[0] = *&a3->var0;
+  v4 = *&inputs->var1.y;
+  v6[0] = *&inputs->var0;
   v6[1] = v4;
-  v6[2] = *&a3->var3;
+  v6[2] = *&inputs->var3;
   [(CSComponent *)self setTransitionInputs:v6];
   return self;
 }
 
-- (void)setTransitionInputs:(id *)a3
+- (void)setTransitionInputs:(id *)inputs
 {
-  v3 = *&a3->var0;
-  v4 = *&a3->var3;
-  *&self->_transitionInputs.targetOffset.y = *&a3->var1.y;
+  v3 = *&inputs->var0;
+  v4 = *&inputs->var3;
+  *&self->_transitionInputs.targetOffset.y = *&inputs->var1.y;
   *&self->_transitionInputs.blurRadius = v4;
   *&self->_transitionInputs.duration = v3;
   self->_properties |= 0x100uLL;
@@ -134,24 +134,24 @@
   [(CSComponent *)self resetProperties:-1];
 }
 
-- (void)resetProperties:(unint64_t)a3
+- (void)resetProperties:(unint64_t)properties
 {
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v10 = __31__CSComponent_resetProperties___block_invoke;
   v11 = &unk_27838CB38;
-  v12 = self;
+  selfCopy = self;
   v5 = v9;
-  if (a3)
+  if (properties)
   {
     v6 = 0;
     v13 = 0;
-    v7 = vcnt_s8(a3);
+    v7 = vcnt_s8(properties);
     v7.i16[0] = vaddlv_u8(v7);
     v8 = v7.i32[0];
     do
     {
-      if (((1 << v6) & a3) != 0)
+      if (((1 << v6) & properties) != 0)
       {
         (v10)(v5);
         if (v13)
@@ -173,7 +173,7 @@
     while (v8 > 0);
   }
 
-  self->_properties &= ~a3;
+  self->_properties &= ~properties;
 }
 
 uint64_t __31__CSComponent_resetProperties___block_invoke(uint64_t result, uint64_t a2)
@@ -280,96 +280,96 @@ uint64_t __31__CSComponent_resetProperties___block_invoke(uint64_t result, uint6
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
 
   else
   {
-    if (![(CSComponent *)v4 isMemberOfClass:objc_opt_class()])
+    if (![(CSComponent *)equalCopy isMemberOfClass:objc_opt_class()])
     {
       goto LABEL_36;
     }
 
     type = self->_type;
-    if (type != [(CSComponent *)v4 type])
+    if (type != [(CSComponent *)equalCopy type])
     {
       goto LABEL_36;
     }
 
     properties = self->_properties;
-    if (properties != [(CSComponent *)v4 properties])
+    if (properties != [(CSComponent *)equalCopy properties])
     {
       goto LABEL_36;
     }
 
     priority = self->_priority;
-    if (priority != [(CSComponent *)v4 priority])
+    if (priority != [(CSComponent *)equalCopy priority])
     {
       goto LABEL_36;
     }
 
     transitionModifiers = self->_transitionModifiers;
-    if (transitionModifiers != [(CSComponent *)v4 transitionModifiers])
+    if (transitionModifiers != [(CSComponent *)equalCopy transitionModifiers])
     {
       goto LABEL_36;
     }
 
     hidden = self->_hidden;
-    if (hidden != [(CSComponent *)v4 isHidden])
+    if (hidden != [(CSComponent *)equalCopy isHidden])
     {
       goto LABEL_36;
     }
 
     flag = self->_flag;
-    if (flag != [(CSComponent *)v4 flag])
+    if (flag != [(CSComponent *)equalCopy flag])
     {
       goto LABEL_36;
     }
 
-    [(CSComponent *)v4 alpha];
+    [(CSComponent *)equalCopy alpha];
     if (!BSFloatEqualToFloat())
     {
       goto LABEL_36;
     }
 
-    [(CSComponent *)v4 scale];
+    [(CSComponent *)equalCopy scale];
     if (!BSFloatEqualToFloat())
     {
       goto LABEL_36;
     }
 
-    [(CSComponent *)v4 animationDuration];
+    [(CSComponent *)equalCopy animationDuration];
     if (!BSFloatEqualToFloat())
     {
       goto LABEL_36;
     }
 
-    [(CSComponent *)v4 blurRadius];
+    [(CSComponent *)equalCopy blurRadius];
     if (!BSFloatEqualToFloat())
     {
       goto LABEL_36;
     }
 
     level = self->_level;
-    if (level != [(CSComponent *)v4 level])
+    if (level != [(CSComponent *)equalCopy level])
     {
       goto LABEL_36;
     }
 
-    [(CSComponent *)v4 offset];
+    [(CSComponent *)equalCopy offset];
     if (!BSPointEqualToPoint())
     {
       goto LABEL_36;
     }
 
-    if (v4)
+    if (equalCopy)
     {
-      [(CSComponent *)v4 transitionInputs];
+      [(CSComponent *)equalCopy transitionInputs];
     }
 
     else
@@ -381,12 +381,12 @@ uint64_t __31__CSComponent_resetProperties___block_invoke(uint64_t result, uint6
     v30[0] = *&self->_transitionInputs.duration;
     v30[1] = v13;
     v30[2] = *&self->_transitionInputs.blurRadius;
-    if (ComponentTransitionInputsEqualToComponentTransitionInputs(v30, v31) && ([(CSComponent *)v4 identifier], v14 = objc_claimAutoreleasedReturnValue(), v15 = BSEqualStrings(), v14, v15) && ([(CSComponent *)v4 string], v16 = objc_claimAutoreleasedReturnValue(), v17 = BSEqualStrings(), v16, v17) && ([(CSComponent *)v4 color], v18 = objc_claimAutoreleasedReturnValue(), v19 = BSEqualObjects(), v18, v19) && ([(CSComponent *)v4 value], v20 = objc_claimAutoreleasedReturnValue(), v21 = BSEqualObjects(), v20, v21) && ([(CSComponent *)v4 view], v22 = objc_claimAutoreleasedReturnValue(), v23 = BSEqualObjects(), v22, v23))
+    if (ComponentTransitionInputsEqualToComponentTransitionInputs(v30, v31) && ([(CSComponent *)equalCopy identifier], v14 = objc_claimAutoreleasedReturnValue(), v15 = BSEqualStrings(), v14, v15) && ([(CSComponent *)equalCopy string], v16 = objc_claimAutoreleasedReturnValue(), v17 = BSEqualStrings(), v16, v17) && ([(CSComponent *)equalCopy color], v18 = objc_claimAutoreleasedReturnValue(), v19 = BSEqualObjects(), v18, v19) && ([(CSComponent *)equalCopy value], v20 = objc_claimAutoreleasedReturnValue(), v21 = BSEqualObjects(), v20, v21) && ([(CSComponent *)equalCopy view], v22 = objc_claimAutoreleasedReturnValue(), v23 = BSEqualObjects(), v22, v23))
     {
-      v24 = [(CSComponent *)v4 legibilitySettings];
+      legibilitySettings = [(CSComponent *)equalCopy legibilitySettings];
       v25 = 0;
       legibilitySettings = self->_legibilitySettings;
-      if (v24)
+      if (legibilitySettings)
       {
         v27 = 1;
       }
@@ -403,12 +403,12 @@ uint64_t __31__CSComponent_resetProperties___block_invoke(uint64_t result, uint6
 
       else
       {
-        v28 = v24 != 0;
+        v28 = legibilitySettings != 0;
       }
 
       if (v27 && !v28)
       {
-        v25 = !legibilitySettings || [(_UILegibilitySettings *)legibilitySettings sb_isEqualToLegibilitySettings:v24];
+        v25 = !legibilitySettings || [(_UILegibilitySettings *)legibilitySettings sb_isEqualToLegibilitySettings:legibilitySettings];
       }
 
       v12 = v25;
@@ -424,33 +424,33 @@ LABEL_36:
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [CSComponent componentWithType:[(CSComponent *)self type]];
-  v5 = [(CSComponent *)self identifier];
-  [v4 setIdentifier:v5];
+  identifier = [(CSComponent *)self identifier];
+  [v4 setIdentifier:identifier];
 
   [v4 setHidden:{-[CSComponent isHidden](self, "isHidden")}];
   [v4 setFlag:{-[CSComponent flag](self, "flag")}];
   [(CSComponent *)self alpha];
   [v4 setAlpha:?];
-  v6 = [(CSComponent *)self string];
-  [v4 setString:v6];
+  string = [(CSComponent *)self string];
+  [v4 setString:string];
 
-  v7 = [(CSComponent *)self color];
-  [v4 setColor:v7];
+  color = [(CSComponent *)self color];
+  [v4 setColor:color];
 
   [(CSComponent *)self offset];
   [v4 setOffset:?];
   [v4 setPriority:{-[CSComponent priority](self, "priority")}];
-  v8 = [(CSComponent *)self value];
-  [v4 setValue:v8];
+  value = [(CSComponent *)self value];
+  [v4 setValue:value];
 
-  v9 = [(CSComponent *)self view];
-  [v4 setView:v9];
+  view = [(CSComponent *)self view];
+  [v4 setView:view];
 
-  v10 = [(CSComponent *)self legibilitySettings];
-  [v4 setLegibilitySettings:v10];
+  legibilitySettings = [(CSComponent *)self legibilitySettings];
+  [v4 setLegibilitySettings:legibilitySettings];
 
   [v4 setTransitionModifiers:{-[CSComponent transitionModifiers](self, "transitionModifiers")}];
   [(CSComponent *)self transitionInputs];
@@ -468,10 +468,10 @@ LABEL_36:
 
 - (id)succinctDescription
 {
-  v2 = [(CSComponent *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(CSComponent *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -489,7 +489,7 @@ LABEL_36:
   v18 = &unk_27838CFE8;
   v9 = v3;
   v19 = v9;
-  v20 = self;
+  selfCopy = self;
   v10 = v16;
   if (properties)
   {
@@ -666,12 +666,12 @@ LABEL_23:
   }
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(CSComponent *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(CSComponent *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 - (void)identifier:(uint64_t)a1 .cold.1(uint64_t a1, uint64_t a2)

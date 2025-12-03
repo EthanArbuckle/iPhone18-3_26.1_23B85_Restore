@@ -4,15 +4,15 @@
 - (id)next;
 - (id)previous;
 - (void)__javaClone;
-- (void)addWithId:(id)a3;
+- (void)addWithId:(id)id;
 - (void)dealloc;
 - (void)remove;
-- (void)setWithId:(id)a3;
+- (void)setWithId:(id)id;
 @end
 
 @implementation JavaUtilLinkedList_LinkIterator
 
-- (void)addWithId:(id)a3
+- (void)addWithId:(id)id
 {
   list = self->list_;
   if (!list)
@@ -27,7 +27,7 @@
   }
 
   Weak = objc_loadWeak(&self->link_);
-  if (!Weak || (v7 = *(Weak + 3), v8 = objc_loadWeak(&self->link_), v9 = new_JavaUtilLinkedList_Link_initWithId_withJavaUtilLinkedList_Link_withJavaUtilLinkedList_Link_(a3, v8, v7), v10 = objc_loadWeak(&self->link_), JreStrongAssign(v10 + 3, v9), !v7))
+  if (!Weak || (v7 = *(Weak + 3), v8 = objc_loadWeak(&self->link_), v9 = new_JavaUtilLinkedList_Link_initWithId_withJavaUtilLinkedList_Link_withJavaUtilLinkedList_Link_(id, v8, v7), v10 = objc_loadWeak(&self->link_), JreStrongAssign(v10 + 3, v9), !v7))
   {
 LABEL_6:
     JreThrowNullPointerException();
@@ -196,7 +196,7 @@ LABEL_12:
   ++self->list_->super.super.modCount_;
 }
 
-- (void)setWithId:(id)a3
+- (void)setWithId:(id)id
 {
   list = self->list_;
   if (!list)
@@ -218,7 +218,7 @@ LABEL_10:
     objc_exception_throw(v5);
   }
 
-  JreStrongAssign(&lastLink->data_, a3);
+  JreStrongAssign(&lastLink->data_, id);
 }
 
 - (void)dealloc

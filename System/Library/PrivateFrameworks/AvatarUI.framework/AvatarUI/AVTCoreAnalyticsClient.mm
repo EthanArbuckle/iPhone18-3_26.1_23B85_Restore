@@ -1,13 +1,13 @@
 @interface AVTCoreAnalyticsClient
-- (void)sendEventForKey:(id)a3 payload:(id)a4;
+- (void)sendEventForKey:(id)key payload:(id)payload;
 @end
 
 @implementation AVTCoreAnalyticsClient
 
-- (void)sendEventForKey:(id)a3 payload:(id)a4
+- (void)sendEventForKey:(id)key payload:(id)payload
 {
-  v5 = a4;
-  v4 = v5;
+  payloadCopy = payload;
+  v4 = payloadCopy;
   AnalyticsSendEventLazy();
 }
 

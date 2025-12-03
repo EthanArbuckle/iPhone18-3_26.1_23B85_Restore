@@ -1,44 +1,44 @@
 @interface BCSRootViewController
 - (BCSRootViewController)init;
 - (BOOL)_isCapturingSteady;
-- (BOOL)liveViewControllerTorchModeSupported:(id)a3;
+- (BOOL)liveViewControllerTorchModeSupported:(id)supported;
 - (BOOL)prefersStatusBarHidden;
-- (id)_bestCandidateVisualCode:(id)a3;
+- (id)_bestCandidateVisualCode:(id)code;
 - (id)_bestCaptureDevice;
-- (id)_bestCaptureFormatForDevice:(id)a3;
-- (id)_imageFromLastVideoSample:(opaqueCMSampleBuffer *)a3 rect:(CGRect)a4;
+- (id)_bestCaptureFormatForDevice:(id)device;
+- (id)_imageFromLastVideoSample:(opaqueCMSampleBuffer *)sample rect:(CGRect)rect;
 - (id)_preferredInternalCamera;
 - (unsigned)_desiredImageOrientation;
 - (void)_clearResumeCapturingTimer;
 - (void)_endSession;
-- (void)_executeBlockWithLockedCameraDevice:(id)a3;
+- (void)_executeBlockWithLockedCameraDevice:(id)device;
 - (void)_pauseSessionIfNeeded;
-- (void)_resetSessionWithCompletionHandler:(id)a3;
+- (void)_resetSessionWithCompletionHandler:(id)handler;
 - (void)_restartSessionIfNeeded;
 - (void)_startSession;
-- (void)_startSessionConnectingPreviewLayer:(id)a3;
+- (void)_startSessionConnectingPreviewLayer:(id)layer;
 - (void)_updateCameraDevice;
 - (void)_updateUserPreferredCameraIfNeeded;
 - (void)_updateVideoRotationAngleIfNeeded;
 - (void)applicationDidEnterBackground;
 - (void)applicationWillEnterForeground;
-- (void)captureOutput:(id)a3 didOutputSampleBuffer:(opaqueCMSampleBuffer *)a4 fromConnection:(id)a5;
-- (void)continueUserActivity:(id)a3;
-- (void)createSessionIfNeededConnectingPreviewLayer:(id)a3 completion:(id)a4;
+- (void)captureOutput:(id)output didOutputSampleBuffer:(opaqueCMSampleBuffer *)buffer fromConnection:(id)connection;
+- (void)continueUserActivity:(id)activity;
+- (void)createSessionIfNeededConnectingPreviewLayer:(id)layer completion:(id)completion;
 - (void)endSession;
-- (void)executeBlockAsynchronouslyWithLockedCameraDevice:(id)a3;
-- (void)executeBlockSynchronouslyWithLockedCameraDevice:(id)a3;
-- (void)focusWithMode:(int64_t)a3 exposeWithMode:(int64_t)a4 atDevicePoint:(CGPoint)a5 monitorSubjectAreaChange:(BOOL)a6;
-- (void)liveViewController:(id)a3 torchModeChangedTo:(BOOL)a4;
-- (void)liveViewControllerDidResetCapture:(id)a3;
-- (void)liveViewControllerWillPerformAction:(id)a3;
+- (void)executeBlockAsynchronouslyWithLockedCameraDevice:(id)device;
+- (void)executeBlockSynchronouslyWithLockedCameraDevice:(id)device;
+- (void)focusWithMode:(int64_t)mode exposeWithMode:(int64_t)withMode atDevicePoint:(CGPoint)point monitorSubjectAreaChange:(BOOL)change;
+- (void)liveViewController:(id)controller torchModeChangedTo:(BOOL)to;
+- (void)liveViewControllerDidResetCapture:(id)capture;
+- (void)liveViewControllerWillPerformAction:(id)action;
 - (void)loadView;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)resumeCapturing;
-- (void)setLiveZoomFactor:(double)a3;
+- (void)setLiveZoomFactor:(double)factor;
 - (void)suspendCapturing;
 - (void)viewDidLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation BCSRootViewController
@@ -101,9 +101,9 @@ uint64_t __29__BCSRootViewController_init__block_invoke(uint64_t a1)
   [v3 setAutoresizingMask:18];
   v27 = v3;
   [(BCSRootViewController *)self setView:v3];
-  v4 = [MEMORY[0x277D75348] systemYellowColor];
-  v5 = [(BCSRootViewController *)self view];
-  [v5 setTintColor:v4];
+  systemYellowColor = [MEMORY[0x277D75348] systemYellowColor];
+  view = [(BCSRootViewController *)self view];
+  [view setTintColor:systemYellowColor];
 
   v6 = objc_alloc_init(MEMORY[0x277CE5B68]);
   previewLayer = self->_previewLayer;
@@ -115,55 +115,55 @@ uint64_t __29__BCSRootViewController_init__block_invoke(uint64_t a1)
 
   [(BCSLiveViewController *)self->_liveViewController setDelegate:self];
   [(BCSRootViewController *)self addChildViewController:self->_liveViewController];
-  v49 = [(BCSLiveViewController *)self->_liveViewController view];
-  [v49 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v10 = [(BCSRootViewController *)self view];
-  [v10 addSubview:v49];
+  view2 = [(BCSLiveViewController *)self->_liveViewController view];
+  [view2 setTranslatesAutoresizingMaskIntoConstraints:0];
+  view3 = [(BCSRootViewController *)self view];
+  [view3 addSubview:view2];
 
   v11 = objc_alloc_init(MEMORY[0x277D75D18]);
   popoverAnchorView = self->_popoverAnchorView;
   self->_popoverAnchorView = v11;
 
   [(UIView *)self->_popoverAnchorView setTranslatesAutoresizingMaskIntoConstraints:0];
-  v13 = [(BCSRootViewController *)self view];
-  [v13 addSubview:self->_popoverAnchorView];
+  view4 = [(BCSRootViewController *)self view];
+  [view4 addSubview:self->_popoverAnchorView];
 
   v28 = MEMORY[0x277CCAAD0];
-  v47 = [v49 topAnchor];
-  v48 = [(BCSRootViewController *)self view];
-  v46 = [v48 topAnchor];
-  v45 = [v47 constraintEqualToAnchor:v46];
+  topAnchor = [view2 topAnchor];
+  view5 = [(BCSRootViewController *)self view];
+  topAnchor2 = [view5 topAnchor];
+  v45 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v53[0] = v45;
-  v43 = [v49 bottomAnchor];
-  v44 = [(BCSRootViewController *)self view];
-  v42 = [v44 bottomAnchor];
-  v41 = [v43 constraintEqualToAnchor:v42];
+  bottomAnchor = [view2 bottomAnchor];
+  view6 = [(BCSRootViewController *)self view];
+  bottomAnchor2 = [view6 bottomAnchor];
+  v41 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v53[1] = v41;
-  v39 = [v49 leftAnchor];
-  v40 = [(BCSRootViewController *)self view];
-  v38 = [v40 leftAnchor];
-  v37 = [v39 constraintEqualToAnchor:v38];
+  leftAnchor = [view2 leftAnchor];
+  view7 = [(BCSRootViewController *)self view];
+  leftAnchor2 = [view7 leftAnchor];
+  v37 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
   v53[2] = v37;
-  v35 = [v49 rightAnchor];
-  v36 = [(BCSRootViewController *)self view];
-  v34 = [v36 rightAnchor];
-  v33 = [v35 constraintEqualToAnchor:v34];
+  rightAnchor = [view2 rightAnchor];
+  view8 = [(BCSRootViewController *)self view];
+  rightAnchor2 = [view8 rightAnchor];
+  v33 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
   v53[3] = v33;
-  v31 = [(UIView *)self->_popoverAnchorView centerXAnchor];
-  v32 = [(BCSRootViewController *)self view];
-  v30 = [v32 centerXAnchor];
-  v29 = [v31 constraintEqualToAnchor:v30];
+  centerXAnchor = [(UIView *)self->_popoverAnchorView centerXAnchor];
+  view9 = [(BCSRootViewController *)self view];
+  centerXAnchor2 = [view9 centerXAnchor];
+  v29 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v53[4] = v29;
-  v14 = [(UIView *)self->_popoverAnchorView bottomAnchor];
-  v15 = [(BCSRootViewController *)self view];
-  v16 = [v15 bottomAnchor];
-  v17 = [v14 constraintEqualToAnchor:v16];
+  bottomAnchor3 = [(UIView *)self->_popoverAnchorView bottomAnchor];
+  view10 = [(BCSRootViewController *)self view];
+  bottomAnchor4 = [view10 bottomAnchor];
+  v17 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   v53[5] = v17;
-  v18 = [(UIView *)self->_popoverAnchorView widthAnchor];
-  v19 = [v18 constraintEqualToConstant:1.0];
+  widthAnchor = [(UIView *)self->_popoverAnchorView widthAnchor];
+  v19 = [widthAnchor constraintEqualToConstant:1.0];
   v53[6] = v19;
-  v20 = [(UIView *)self->_popoverAnchorView heightAnchor];
-  v21 = [v20 constraintEqualToConstant:1.0];
+  heightAnchor = [(UIView *)self->_popoverAnchorView heightAnchor];
+  v21 = [heightAnchor constraintEqualToConstant:1.0];
   v53[7] = v21;
   v22 = [MEMORY[0x277CBEA60] arrayWithObjects:v53 count:8];
   [v28 activateConstraints:v22];
@@ -179,8 +179,8 @@ uint64_t __29__BCSRootViewController_init__block_invoke(uint64_t a1)
   v50[3] = &unk_278D01D80;
   objc_copyWeak(&v51, &location);
   v24 = [v23 initWithEventHandler:v50];
-  v25 = [(BCSRootViewController *)self view];
-  [v25 addInteraction:v24];
+  view11 = [(BCSRootViewController *)self view];
+  [view11 addInteraction:v24];
 
   objc_destroyWeak(&v51);
   objc_destroyWeak(&location);
@@ -200,36 +200,36 @@ void __33__BCSRootViewController_loadView__block_invoke(uint64_t a1, void *a2)
 
 - (void)viewDidLayoutSubviews
 {
-  v3 = [MEMORY[0x277D75128] sharedApplication];
-  self->_statusBarOrientation = [v3 statusBarOrientation];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  self->_statusBarOrientation = [mEMORY[0x277D75128] statusBarOrientation];
 
-  v4 = [(BCSRootViewController *)self _desiredImageOrientation];
+  _desiredImageOrientation = [(BCSRootViewController *)self _desiredImageOrientation];
   codeDetector = self->_codeDetector;
 
-  [(BCSVisualCodeDetector *)codeDetector setImageOrientation:v4];
+  [(BCSVisualCodeDetector *)codeDetector setImageOrientation:_desiredImageOrientation];
 }
 
 - (id)_bestCaptureDevice
 {
   if (!shouldUseSystemPreferredCamera())
   {
-    v9 = [(BCSRootViewController *)self _preferredInternalCamera];
+    _preferredInternalCamera = [(BCSRootViewController *)self _preferredInternalCamera];
     goto LABEL_11;
   }
 
-  v3 = [MEMORY[0x277CE5AC8] systemPreferredCamera];
-  v4 = [v3 deviceType];
-  v5 = v4;
-  if (v4 == *MEMORY[0x277CE5860])
+  systemPreferredCamera = [MEMORY[0x277CE5AC8] systemPreferredCamera];
+  deviceType = [systemPreferredCamera deviceType];
+  v5 = deviceType;
+  if (deviceType == *MEMORY[0x277CE5860])
   {
 
     goto LABEL_7;
   }
 
-  v6 = [v3 deviceType];
+  deviceType2 = [systemPreferredCamera deviceType];
   v7 = *MEMORY[0x277CE5870];
 
-  if (v6 == v7)
+  if (deviceType2 == v7)
   {
 LABEL_7:
     v10 = BCS_LOG_CHANNEL_PREFIXBarcodeScanner();
@@ -239,17 +239,17 @@ LABEL_7:
       _os_log_impl(&dword_2419E7000, v10, OS_LOG_TYPE_INFO, "Found ultra wide camera or triple camera from systemPreferredCamera, use preferred internal camera.", v12, 2u);
     }
 
-    v8 = [(BCSRootViewController *)self _preferredInternalCamera];
+    _preferredInternalCamera2 = [(BCSRootViewController *)self _preferredInternalCamera];
     goto LABEL_10;
   }
 
-  v8 = v3;
+  _preferredInternalCamera2 = systemPreferredCamera;
 LABEL_10:
-  v9 = v8;
+  _preferredInternalCamera = _preferredInternalCamera2;
 
 LABEL_11:
 
-  return v9;
+  return _preferredInternalCamera;
 }
 
 - (id)_preferredInternalCamera
@@ -292,39 +292,39 @@ LABEL_11:
 
       v12 = *(*(&v29 + 1) + 8 * i);
       v13 = [(BCSRootViewController *)self _bestCaptureFormatForDevice:v12];
-      v14 = [v13 highResolutionStillImageDimensions];
+      highResolutionStillImageDimensions = [v13 highResolutionStillImageDimensions];
 
       if (!v10)
       {
         v10 = v12;
-        v26 = HIDWORD(v14);
-        v9 = v14;
+        v26 = HIDWORD(highResolutionStillImageDimensions);
+        v9 = highResolutionStillImageDimensions;
         continue;
       }
 
-      v15 = [v12 deviceType];
-      v16 = v15;
-      if (v15 == v3)
+      deviceType = [v12 deviceType];
+      v16 = deviceType;
+      if (deviceType == v3)
       {
       }
 
       else
       {
-        v17 = [v10 deviceType];
+        deviceType2 = [v10 deviceType];
 
-        if (v17 == v3)
+        if (deviceType2 == v3)
         {
           continue;
         }
       }
 
-      v18 = [v12 deviceType];
-      v19 = v18;
-      if (v18 == v3)
+      deviceType3 = [v12 deviceType];
+      v19 = deviceType3;
+      if (deviceType3 == v3)
       {
-        v20 = [v10 deviceType];
+        deviceType4 = [v10 deviceType];
 
-        if (v20 != v3)
+        if (deviceType4 != v3)
         {
           goto LABEL_19;
         }
@@ -334,13 +334,13 @@ LABEL_11:
       {
       }
 
-      if (([v10 hasTorch] & 1) == 0 && objc_msgSend(v12, "hasTorch") || v14 * HIDWORD(v14) > (v9 * v26))
+      if (([v10 hasTorch] & 1) == 0 && objc_msgSend(v12, "hasTorch") || highResolutionStillImageDimensions * HIDWORD(highResolutionStillImageDimensions) > (v9 * v26))
       {
 LABEL_19:
         v21 = v12;
 
-        v26 = HIDWORD(v14);
-        v9 = v14;
+        v26 = HIDWORD(highResolutionStillImageDimensions);
+        v9 = highResolutionStillImageDimensions;
         v10 = v21;
         continue;
       }
@@ -360,14 +360,14 @@ LABEL_24:
 - (void)_updateCameraDevice
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [(BCSRootViewController *)self _bestCaptureDevice];
-  v4 = v3;
-  if (self->_cameraDevice != v3)
+  _bestCaptureDevice = [(BCSRootViewController *)self _bestCaptureDevice];
+  v4 = _bestCaptureDevice;
+  if (self->_cameraDevice != _bestCaptureDevice)
   {
-    v5 = [(AVCaptureDevice *)v3 position];
+    position = [(AVCaptureDevice *)_bestCaptureDevice position];
     v6 = BCS_LOG_CHANNEL_PREFIXBarcodeScannerLifeCycle();
     v7 = os_log_type_enabled(v6, OS_LOG_TYPE_INFO);
-    if (v5 == 2)
+    if (position == 2)
     {
       if (v7)
       {
@@ -389,10 +389,10 @@ LABEL_24:
       [(AVCaptureDeviceRotationCoordinator *)self->_videoRotationCoordinator removeObserver:self forKeyPath:@"videoRotationAngleForHorizonLevelPreview"];
       [(AVCaptureDevice *)self->_cameraDevice removeObserver:self forKeyPath:@"torchAvailable"];
       [(AVCaptureDevice *)self->_cameraDevice removeObserver:self forKeyPath:@"torchActive"];
-      v8 = [(AVCaptureDevice *)v4 deviceType];
+      deviceType = [(AVCaptureDevice *)v4 deviceType];
       v9 = *MEMORY[0x277CE5890];
 
-      if (v8 == v9)
+      if (deviceType == v9)
       {
         [(BCSRootViewController *)self _endSession];
       }
@@ -421,20 +421,20 @@ LABEL_24:
 - (void)_updateUserPreferredCameraIfNeeded
 {
   v10 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CE5AC8] userPreferredCamera];
-  v4 = v3;
-  if (v3 && [v3 position] != 1)
+  userPreferredCamera = [MEMORY[0x277CE5AC8] userPreferredCamera];
+  v4 = userPreferredCamera;
+  if (userPreferredCamera && [userPreferredCamera position] != 1)
   {
-    v5 = [(BCSRootViewController *)self _preferredInternalCamera];
+    _preferredInternalCamera = [(BCSRootViewController *)self _preferredInternalCamera];
     v6 = BCS_LOG_CHANNEL_PREFIXBarcodeScannerLifeCycle();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       v8 = 138543362;
-      v9 = v5;
+      v9 = _preferredInternalCamera;
       _os_log_impl(&dword_2419E7000, v6, OS_LOG_TYPE_INFO, "Updating userPreferredCamera to %{public}@", &v8, 0xCu);
     }
 
-    [MEMORY[0x277CE5AC8] setUserPreferredCamera:v5];
+    [MEMORY[0x277CE5AC8] setUserPreferredCamera:_preferredInternalCamera];
   }
 
   v7 = *MEMORY[0x277D85DE8];
@@ -450,21 +450,21 @@ LABEL_24:
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = v11;
-  if (observerContext == a6)
+  pathCopy = path;
+  objectCopy = object;
+  v12 = objectCopy;
+  if (observerContext == context)
   {
     captureQueue = self->_captureQueue;
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __72__BCSRootViewController_observeValueForKeyPath_ofObject_change_context___block_invoke;
     block[3] = &unk_278D01D30;
-    v15 = v11;
-    v16 = self;
-    v17 = v10;
+    v15 = objectCopy;
+    selfCopy = self;
+    v17 = pathCopy;
     dispatch_async(captureQueue, block);
   }
 
@@ -472,7 +472,7 @@ LABEL_24:
   {
     v18.receiver = self;
     v18.super_class = BCSRootViewController;
-    [(BCSRootViewController *)&v18 observeValueForKeyPath:v10 ofObject:v11 change:a5 context:a6];
+    [(BCSRootViewController *)&v18 observeValueForKeyPath:pathCopy ofObject:objectCopy change:change context:context];
   }
 }
 
@@ -548,16 +548,16 @@ uint64_t __72__BCSRootViewController_observeValueForKeyPath_ofObject_change_cont
   return result;
 }
 
-- (id)_bestCaptureFormatForDevice:(id)a3
+- (id)_bestCaptureFormatForDevice:(id)device
 {
   v25 = *MEMORY[0x277D85DE8];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v19 = a3;
-  v3 = [v19 formats];
-  v4 = [v3 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  deviceCopy = device;
+  formats = [deviceCopy formats];
+  v4 = [formats countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v4)
   {
     v5 = v4;
@@ -570,14 +570,14 @@ uint64_t __72__BCSRootViewController_observeValueForKeyPath_ofObject_change_cont
       {
         if (*v21 != v8)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(formats);
         }
 
         v10 = *(*(&v20 + 1) + 8 * i);
-        v11 = [v10 formatDescription];
-        if (CMFormatDescriptionGetMediaSubType(v11) == 875704422)
+        formatDescription = [v10 formatDescription];
+        if (CMFormatDescriptionGetMediaSubType(formatDescription) == 875704422)
         {
-          Dimensions = CMVideoFormatDescriptionGetDimensions(v11);
+          Dimensions = CMVideoFormatDescriptionGetDimensions(formatDescription);
           v13 = Dimensions;
           v14 = HIDWORD(Dimensions);
           if (v6)
@@ -600,7 +600,7 @@ uint64_t __72__BCSRootViewController_observeValueForKeyPath_ofObject_change_cont
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v5 = [formats countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v5);
@@ -618,12 +618,12 @@ uint64_t __72__BCSRootViewController_observeValueForKeyPath_ofObject_change_cont
 
 - (BOOL)prefersStatusBarHidden
 {
-  v2 = [(BCSRootViewController *)self presentedViewController];
-  v3 = v2;
+  presentedViewController = [(BCSRootViewController *)self presentedViewController];
+  v3 = presentedViewController;
   v4 = 1;
-  if (v2)
+  if (presentedViewController)
   {
-    if (([v2 isBeingDismissed] & 1) == 0)
+    if (([presentedViewController isBeingDismissed] & 1) == 0)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -661,8 +661,8 @@ uint64_t __72__BCSRootViewController_observeValueForKeyPath_ofObject_change_cont
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v3 = [(AVCaptureSession *)self->_currentSession inputs];
-  v4 = [v3 countByEnumeratingWithState:&v21 objects:v26 count:16];
+  inputs = [(AVCaptureSession *)self->_currentSession inputs];
+  v4 = [inputs countByEnumeratingWithState:&v21 objects:v26 count:16];
   if (v4)
   {
     v5 = v4;
@@ -674,14 +674,14 @@ uint64_t __72__BCSRootViewController_observeValueForKeyPath_ofObject_change_cont
       {
         if (*v22 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(inputs);
         }
 
         [(AVCaptureSession *)self->_currentSession removeInput:*(*(&v21 + 1) + 8 * v7++)];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v21 objects:v26 count:16];
+      v5 = [inputs countByEnumeratingWithState:&v21 objects:v26 count:16];
     }
 
     while (v5);
@@ -691,8 +691,8 @@ uint64_t __72__BCSRootViewController_observeValueForKeyPath_ofObject_change_cont
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v8 = [(AVCaptureSession *)self->_currentSession outputs];
-  v9 = [v8 countByEnumeratingWithState:&v17 objects:v25 count:16];
+  outputs = [(AVCaptureSession *)self->_currentSession outputs];
+  v9 = [outputs countByEnumeratingWithState:&v17 objects:v25 count:16];
   if (v9)
   {
     v10 = v9;
@@ -704,14 +704,14 @@ uint64_t __72__BCSRootViewController_observeValueForKeyPath_ofObject_change_cont
       {
         if (*v18 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(outputs);
         }
 
         [(AVCaptureSession *)self->_currentSession removeOutput:*(*(&v17 + 1) + 8 * v12++)];
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v17 objects:v25 count:16];
+      v10 = [outputs countByEnumeratingWithState:&v17 objects:v25 count:16];
     }
 
     while (v10);
@@ -723,15 +723,15 @@ uint64_t __72__BCSRootViewController_observeValueForKeyPath_ofObject_change_cont
   videoRotationCoordinator = self->_videoRotationCoordinator;
   self->_videoRotationCoordinator = 0;
 
-  v15 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v15 removeObserver:self name:*MEMORY[0x277CE5838] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277CE5838] object:0];
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_startSessionConnectingPreviewLayer:(id)a3
+- (void)_startSessionConnectingPreviewLayer:(id)layer
 {
-  v4 = a3;
+  layerCopy = layer;
   v5 = BCS_LOG_CHANNEL_PREFIXBarcodeScanner();
   if (os_signpost_enabled(v5))
   {
@@ -744,8 +744,8 @@ uint64_t __72__BCSRootViewController_observeValueForKeyPath_ofObject_change_cont
   v7[2] = __61__BCSRootViewController__startSessionConnectingPreviewLayer___block_invoke;
   v7[3] = &unk_278D01C40;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = layerCopy;
+  v6 = layerCopy;
   [(BCSRootViewController *)self executeBlockSynchronouslyWithLockedCameraDevice:v7];
 }
 
@@ -954,54 +954,54 @@ void __61__BCSRootViewController__startSessionConnectingPreviewLayer___block_inv
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_executeBlockWithLockedCameraDevice:(id)a3
+- (void)_executeBlockWithLockedCameraDevice:(id)device
 {
   cameraDevice = self->_cameraDevice;
   v7 = 0;
-  v5 = a3;
+  deviceCopy = device;
   [(AVCaptureDevice *)cameraDevice lockForConfiguration:&v7];
   v6 = v7;
-  v5[2](v5, v6 == 0);
+  deviceCopy[2](deviceCopy, v6 == 0);
 
   [(AVCaptureDevice *)self->_cameraDevice unlockForConfiguration];
 }
 
-- (void)executeBlockAsynchronouslyWithLockedCameraDevice:(id)a3
+- (void)executeBlockAsynchronouslyWithLockedCameraDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   captureQueue = self->_captureQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __74__BCSRootViewController_executeBlockAsynchronouslyWithLockedCameraDevice___block_invoke;
   v7[3] = &unk_278D01DD0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = deviceCopy;
+  v6 = deviceCopy;
   dispatch_async(captureQueue, v7);
 }
 
-- (void)executeBlockSynchronouslyWithLockedCameraDevice:(id)a3
+- (void)executeBlockSynchronouslyWithLockedCameraDevice:(id)device
 {
   captureQueue = self->_captureQueue;
-  v5 = a3;
+  deviceCopy = device;
   dispatch_assert_queue_V2(captureQueue);
-  [(BCSRootViewController *)self _executeBlockWithLockedCameraDevice:v5];
+  [(BCSRootViewController *)self _executeBlockWithLockedCameraDevice:deviceCopy];
 }
 
-- (void)createSessionIfNeededConnectingPreviewLayer:(id)a3 completion:(id)a4
+- (void)createSessionIfNeededConnectingPreviewLayer:(id)layer completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  layerCopy = layer;
+  completionCopy = completion;
   captureQueue = self->_captureQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __80__BCSRootViewController_createSessionIfNeededConnectingPreviewLayer_completion___block_invoke;
   block[3] = &unk_278D01DF8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = layerCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = layerCopy;
   dispatch_async(captureQueue, block);
 }
 
@@ -1040,7 +1040,7 @@ uint64_t __80__BCSRootViewController_createSessionIfNeededConnectingPreviewLayer
   return result;
 }
 
-- (void)setLiveZoomFactor:(double)a3
+- (void)setLiveZoomFactor:(double)factor
 {
   captureQueue = self->_captureQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -1048,7 +1048,7 @@ uint64_t __80__BCSRootViewController_createSessionIfNeededConnectingPreviewLayer
   v4[2] = __43__BCSRootViewController_setLiveZoomFactor___block_invoke;
   v4[3] = &unk_278D01E48;
   v4[4] = self;
-  *&v4[5] = a3;
+  *&v4[5] = factor;
   dispatch_async(captureQueue, v4);
 }
 
@@ -1098,14 +1098,14 @@ uint64_t __43__BCSRootViewController_setLiveZoomFactor___block_invoke_2(uint64_t
   return result;
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v10.receiver = self;
   v10.super_class = BCSRootViewController;
-  v7 = a4;
-  [(BCSRootViewController *)&v10 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  coordinatorCopy = coordinator;
+  [(BCSRootViewController *)&v10 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   [(BCSLiveViewController *)self->_liveViewController rotationAnimationWillStart];
   v8[4] = self;
   v9[0] = MEMORY[0x277D85DD0];
@@ -1117,7 +1117,7 @@ uint64_t __43__BCSRootViewController_setLiveZoomFactor___block_invoke_2(uint64_t
   v8[1] = 3221225472;
   v8[2] = __76__BCSRootViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke_2;
   v8[3] = &unk_278D01E70;
-  [v7 animateAlongsideTransition:v9 completion:v8];
+  [coordinatorCopy animateAlongsideTransition:v9 completion:v8];
 }
 
 void __76__BCSRootViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke(uint64_t a1)
@@ -1198,16 +1198,16 @@ void __46__BCSRootViewController__pauseSessionIfNeeded__block_invoke(uint64_t a1
   }
 }
 
-- (void)_resetSessionWithCompletionHandler:(id)a3
+- (void)_resetSessionWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v8 = MEMORY[0x277D85DD0];
   v9 = 3221225472;
   v10 = __60__BCSRootViewController__resetSessionWithCompletionHandler___block_invoke;
   v11 = &unk_278D01DD0;
-  v12 = self;
-  v13 = v4;
-  v5 = v4;
+  selfCopy = self;
+  v13 = handlerCopy;
+  v5 = handlerCopy;
   v6 = _Block_copy(&v8);
   v7 = [(BCSRootViewController *)self presentedViewController:v8];
 
@@ -1292,8 +1292,8 @@ void __48__BCSRootViewController__restartSessionIfNeeded__block_invoke(uint64_t 
 
 - (void)suspendCapturing
 {
-  v4 = [(BCSLiveViewController *)self->_liveViewController actionCoordinator];
-  if ([v4 deviceIsBeingUnlocked])
+  actionCoordinator = [(BCSLiveViewController *)self->_liveViewController actionCoordinator];
+  if ([actionCoordinator deviceIsBeingUnlocked])
   {
   }
 
@@ -1312,8 +1312,8 @@ void __48__BCSRootViewController__restartSessionIfNeeded__block_invoke(uint64_t 
 
 - (void)resumeCapturing
 {
-  v3 = [(BCSLiveViewController *)self->_liveViewController actionCoordinator];
-  if ([v3 deviceIsBeingUnlocked])
+  actionCoordinator = [(BCSLiveViewController *)self->_liveViewController actionCoordinator];
+  if ([actionCoordinator deviceIsBeingUnlocked])
   {
 
 LABEL_4:
@@ -1336,11 +1336,11 @@ LABEL_4:
 
   else
   {
-    v5 = [(BCSRootViewController *)self presentedViewController];
+    presentedViewController = [(BCSRootViewController *)self presentedViewController];
 
-    if (v5)
+    if (presentedViewController)
     {
-      v6 = [(BCSRootViewController *)self presentedViewController];
+      presentedViewController2 = [(BCSRootViewController *)self presentedViewController];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
@@ -1367,8 +1367,8 @@ LABEL_4:
 
 - (void)applicationWillEnterForeground
 {
-  v4 = [(BCSLiveViewController *)self->_liveViewController actionCoordinator];
-  if ([v4 deviceIsBeingUnlocked])
+  actionCoordinator = [(BCSLiveViewController *)self->_liveViewController actionCoordinator];
+  if ([actionCoordinator deviceIsBeingUnlocked])
   {
   }
 
@@ -1386,8 +1386,8 @@ LABEL_4:
 
 - (void)applicationDidEnterBackground
 {
-  v10 = [(BCSLiveViewController *)self->_liveViewController actionCoordinator];
-  if ([v10 deviceIsBeingUnlocked])
+  actionCoordinator = [(BCSLiveViewController *)self->_liveViewController actionCoordinator];
+  if ([actionCoordinator deviceIsBeingUnlocked])
   {
   }
 
@@ -1397,13 +1397,13 @@ LABEL_4:
 
     if (!deviceIsBeingUnlocked)
     {
-      v4 = [(BCSRootViewController *)self presentedViewController];
+      presentedViewController = [(BCSRootViewController *)self presentedViewController];
 
-      if (!v4)
+      if (!presentedViewController)
       {
         [(BCSRootViewController *)self _clearResumeCapturingTimer];
         [(BCSLiveViewController *)self->_liveViewController resetUIAndStartCapturing:0];
-        v5 = [MEMORY[0x277D75128] sharedApplication];
+        mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
         v17 = 0;
         v18 = &v17;
         v19 = 0x2020000000;
@@ -1412,7 +1412,7 @@ LABEL_4:
         v14[1] = 3221225472;
         v14[2] = __54__BCSRootViewController_applicationDidEnterBackground__block_invoke;
         v14[3] = &unk_278D01EE8;
-        v6 = v5;
+        v6 = mEMORY[0x277D75128];
         v15 = v6;
         v16 = &v17;
         v7 = [v6 beginBackgroundTaskWithName:@"com.apple.BarcodeScanner.BackgroundTask" expirationHandler:v14];
@@ -1451,11 +1451,11 @@ uint64_t __54__BCSRootViewController_applicationDidEnterBackground__block_invoke
   return [*(a1 + 40) endBackgroundTask:*(*(*(a1 + 48) + 8) + 24)];
 }
 
-- (void)continueUserActivity:(id)a3
+- (void)continueUserActivity:(id)activity
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:@"detectedCode"];
+  activityCopy = activity;
+  userInfo = [activityCopy userInfo];
+  v6 = [userInfo objectForKeyedSubscript:@"detectedCode"];
 
   if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
@@ -1473,8 +1473,8 @@ uint64_t __54__BCSRootViewController_applicationDidEnterBackground__block_invoke
 
     else
     {
-      v10 = [v4 userInfo];
-      v11 = [v10 objectForKeyedSubscript:@"detectedImage"];
+      userInfo2 = [activityCopy userInfo];
+      v11 = [userInfo2 objectForKeyedSubscript:@"detectedImage"];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -1536,10 +1536,10 @@ uint64_t __46__BCSRootViewController_continueUserActivity___block_invoke(void *a
 {
   if (shouldUseSystemPreferredCamera())
   {
-    v3 = [(AVCaptureDevice *)self->_cameraDevice deviceType];
+    deviceType = [(AVCaptureDevice *)self->_cameraDevice deviceType];
     v4 = *MEMORY[0x277CE5890];
 
-    if (v3 == v4)
+    if (deviceType == v4)
     {
       return 1;
     }
@@ -1557,17 +1557,17 @@ uint64_t __46__BCSRootViewController_continueUserActivity___block_invoke(void *a
   }
 }
 
-- (void)focusWithMode:(int64_t)a3 exposeWithMode:(int64_t)a4 atDevicePoint:(CGPoint)a5 monitorSubjectAreaChange:(BOOL)a6
+- (void)focusWithMode:(int64_t)mode exposeWithMode:(int64_t)withMode atDevicePoint:(CGPoint)point monitorSubjectAreaChange:(BOOL)change
 {
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __93__BCSRootViewController_focusWithMode_exposeWithMode_atDevicePoint_monitorSubjectAreaChange___block_invoke;
   v6[3] = &unk_278D01F38;
   v6[4] = self;
-  v6[5] = a3;
-  v7 = a5;
-  v8 = a4;
-  v9 = a6;
+  v6[5] = mode;
+  pointCopy = point;
+  withModeCopy = withMode;
+  changeCopy = change;
   [(BCSRootViewController *)self executeBlockAsynchronouslyWithLockedCameraDevice:v6];
 }
 
@@ -1610,16 +1610,16 @@ uint64_t __93__BCSRootViewController_focusWithMode_exposeWithMode_atDevicePoint_
   }
 }
 
-- (id)_bestCandidateVisualCode:(id)a3
+- (id)_bestCandidateVisualCode:(id)code
 {
-  v4 = a3;
-  if ([v4 count] == 1)
+  codeCopy = code;
+  if ([codeCopy count] == 1)
   {
-    v5 = [v4 firstObject];
+    firstObject = [codeCopy firstObject];
     v6 = 1;
   }
 
-  else if ([v4 count] == 2)
+  else if ([codeCopy count] == 2)
   {
     v14[0] = 0;
     v14[1] = v14;
@@ -1635,9 +1635,9 @@ uint64_t __93__BCSRootViewController_focusWithMode_exposeWithMode_atDevicePoint_
     v9[3] = &unk_278D01F60;
     v9[4] = v14;
     v9[5] = &v10;
-    [v4 enumerateObjectsUsingBlock:v9];
-    v5 = [v4 objectAtIndex:v11[3]];
-    [v5 boundingBox];
+    [codeCopy enumerateObjectsUsingBlock:v9];
+    firstObject = [codeCopy objectAtIndex:v11[3]];
+    [firstObject boundingBox];
     if (CGRectGetWidth(v16) >= 0.05)
     {
       v6 = 1;
@@ -1646,7 +1646,7 @@ uint64_t __93__BCSRootViewController_focusWithMode_exposeWithMode_atDevicePoint_
     else
     {
 
-      v5 = 0;
+      firstObject = 0;
       v6 = 2;
     }
 
@@ -1656,8 +1656,8 @@ uint64_t __93__BCSRootViewController_focusWithMode_exposeWithMode_atDevicePoint_
 
   else
   {
-    v5 = 0;
-    v6 = 2 * ([v4 count] > 2);
+    firstObject = 0;
+    v6 = 2 * ([codeCopy count] > 2);
   }
 
   if (self->_lastAvailability != v6)
@@ -1672,7 +1672,7 @@ uint64_t __93__BCSRootViewController_focusWithMode_exposeWithMode_atDevicePoint_
     dispatch_async(MEMORY[0x277D85CD0], v8);
   }
 
-  return v5;
+  return firstObject;
 }
 
 uint64_t __50__BCSRootViewController__bestCandidateVisualCode___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -1689,11 +1689,11 @@ uint64_t __50__BCSRootViewController__bestCandidateVisualCode___block_invoke(uin
   return result;
 }
 
-- (void)captureOutput:(id)a3 didOutputSampleBuffer:(opaqueCMSampleBuffer *)a4 fromConnection:(id)a5
+- (void)captureOutput:(id)output didOutputSampleBuffer:(opaqueCMSampleBuffer *)buffer fromConnection:(id)connection
 {
-  v8 = a3;
-  v9 = a5;
-  if (!self->_hasCapturedCode && (self->_shouldScanFaster || [(BCSRootViewController *)self _isCapturingSteady]) && CMSampleBufferGetNumSamples(a4) == 1 && CMSampleBufferIsValid(a4) && CMSampleBufferDataIsReady(a4))
+  outputCopy = output;
+  connectionCopy = connection;
+  if (!self->_hasCapturedCode && (self->_shouldScanFaster || [(BCSRootViewController *)self _isCapturingSteady]) && CMSampleBufferGetNumSamples(buffer) == 1 && CMSampleBufferIsValid(buffer) && CMSampleBufferDataIsReady(buffer))
   {
     v12 = 0;
     v13 = &v12;
@@ -1706,8 +1706,8 @@ uint64_t __50__BCSRootViewController__bestCandidateVisualCode___block_invoke(uin
     v11[3] = &unk_278D01F88;
     v11[4] = self;
     v11[5] = &v12;
-    v11[6] = a4;
-    [(BCSVisualCodeDetector *)codeDetector detectCodeFromBuffer:a4 completion:v11];
+    v11[6] = buffer;
+    [(BCSVisualCodeDetector *)codeDetector detectCodeFromBuffer:buffer completion:v11];
     if (*(v13 + 24) == 1)
     {
       [(BCSVisualCodeDetector *)self->_codeDetector resetCache];
@@ -1739,7 +1739,7 @@ void __76__BCSRootViewController_captureOutput_didOutputSampleBuffer_fromConnect
   }
 }
 
-- (void)liveViewControllerWillPerformAction:(id)a3
+- (void)liveViewControllerWillPerformAction:(id)action
 {
   v4 = BCS_LOG_CHANNEL_PREFIXBarcodeScanner();
   if (os_signpost_enabled(v4))
@@ -1769,7 +1769,7 @@ void __61__BCSRootViewController_liveViewControllerWillPerformAction___block_inv
   }
 }
 
-- (void)liveViewControllerDidResetCapture:(id)a3
+- (void)liveViewControllerDidResetCapture:(id)capture
 {
   self->_hasCapturedCode = 0;
   self->_shouldScanFaster = 0;
@@ -1777,26 +1777,26 @@ void __61__BCSRootViewController_liveViewControllerWillPerformAction___block_inv
   [(BCSRootViewController *)self _startSession];
 }
 
-- (BOOL)liveViewControllerTorchModeSupported:(id)a3
+- (BOOL)liveViewControllerTorchModeSupported:(id)supported
 {
-  v4 = [(AVCaptureDevice *)self->_cameraDevice hasTorch];
-  if (v4)
+  hasTorch = [(AVCaptureDevice *)self->_cameraDevice hasTorch];
+  if (hasTorch)
   {
     cameraDevice = self->_cameraDevice;
 
-    LOBYTE(v4) = [(AVCaptureDevice *)cameraDevice isTorchModeSupported:1];
+    LOBYTE(hasTorch) = [(AVCaptureDevice *)cameraDevice isTorchModeSupported:1];
   }
 
-  return v4;
+  return hasTorch;
 }
 
-- (void)liveViewController:(id)a3 torchModeChangedTo:(BOOL)a4
+- (void)liveViewController:(id)controller torchModeChangedTo:(BOOL)to
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __63__BCSRootViewController_liveViewController_torchModeChangedTo___block_invoke;
   v4[3] = &unk_278D01FB0;
-  v5 = a4;
+  toCopy = to;
   v4[4] = self;
   [(BCSRootViewController *)self _executeBlockWithLockedCameraDevice:v4];
 }
@@ -1836,12 +1836,12 @@ void __63__BCSRootViewController_liveViewController_torchModeChangedTo___block_i
   }
 }
 
-- (id)_imageFromLastVideoSample:(opaqueCMSampleBuffer *)a3 rect:(CGRect)a4
+- (id)_imageFromLastVideoSample:(opaqueCMSampleBuffer *)sample rect:(CGRect)rect
 {
   v18[2] = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (sample)
   {
-    ImageBuffer = CMSampleBufferGetImageBuffer(a3);
+    ImageBuffer = CMSampleBufferGetImageBuffer(sample);
     v6 = MEMORY[0x277CBF758];
     v7 = *MEMORY[0x277CBFA08];
     v18[0] = MEMORY[0x277CBEC38];

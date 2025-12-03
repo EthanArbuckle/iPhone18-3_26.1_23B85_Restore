@@ -1,39 +1,39 @@
 @interface SearchUIAuxiliaryTextViewController
-+ (BOOL)supportsRowModel:(id)a3;
++ (BOOL)supportsRowModel:(id)model;
 - (id)setupView;
-- (void)updateWithRowModel:(id)a3;
+- (void)updateWithRowModel:(id)model;
 @end
 
 @implementation SearchUIAuxiliaryTextViewController
 
-+ (BOOL)supportsRowModel:(id)a3
++ (BOOL)supportsRowModel:(id)model
 {
-  v3 = a3;
-  v4 = [v3 trailingTopText];
-  v5 = [SearchUITLKMultilineTextConverter richTextForSearchUIText:v4];
+  modelCopy = model;
+  trailingTopText = [modelCopy trailingTopText];
+  v5 = [SearchUITLKMultilineTextConverter richTextForSearchUIText:trailingTopText];
   if ([v5 hasContent])
   {
-    v6 = 1;
+    hasContent = 1;
   }
 
   else
   {
-    v7 = [v3 trailingMiddleText];
-    v8 = [SearchUITLKMultilineTextConverter richTextForSearchUIText:v7];
+    trailingMiddleText = [modelCopy trailingMiddleText];
+    v8 = [SearchUITLKMultilineTextConverter richTextForSearchUIText:trailingMiddleText];
     if ([v8 hasContent])
     {
-      v6 = 1;
+      hasContent = 1;
     }
 
     else
     {
-      v9 = [v3 trailingBottomText];
-      v10 = [SearchUITLKMultilineTextConverter richTextForSearchUIText:v9];
-      v6 = [v10 hasContent];
+      trailingBottomText = [modelCopy trailingBottomText];
+      v10 = [SearchUITLKMultilineTextConverter richTextForSearchUIText:trailingBottomText];
+      hasContent = [v10 hasContent];
     }
   }
 
-  return v6;
+  return hasContent;
 }
 
 - (id)setupView
@@ -43,21 +43,21 @@
   return v2;
 }
 
-- (void)updateWithRowModel:(id)a3
+- (void)updateWithRowModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   v9.receiver = self;
   v9.super_class = SearchUIAuxiliaryTextViewController;
-  [(SearchUIAccessoryViewController *)&v9 updateWithRowModel:v4];
-  v5 = [(SearchUIAccessoryViewController *)self view];
+  [(SearchUIAccessoryViewController *)&v9 updateWithRowModel:modelCopy];
+  view = [(SearchUIAccessoryViewController *)self view];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __58__SearchUIAuxiliaryTextViewController_updateWithRowModel___block_invoke;
   v7[3] = &unk_1E85B2540;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 performBatchUpdates:v7];
+  v8 = modelCopy;
+  v6 = modelCopy;
+  [view performBatchUpdates:v7];
 }
 
 void __58__SearchUIAuxiliaryTextViewController_updateWithRowModel___block_invoke(uint64_t a1)

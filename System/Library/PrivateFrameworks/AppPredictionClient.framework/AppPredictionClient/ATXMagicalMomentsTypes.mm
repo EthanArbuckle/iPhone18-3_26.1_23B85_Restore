@@ -3,28 +3,28 @@
 + (id)mmConsumerMapping;
 + (id)mmEventTypeMapping;
 + (id)predictionReasonMapping;
-+ (id)stringForConsumerType:(unint64_t)a3;
-+ (id)stringForMMConsumerType:(unint64_t)a3;
-+ (id)stringForMMEventType:(unint64_t)a3;
-+ (id)stringForPredictionReason:(int64_t)a3;
-+ (int64_t)selectSingleReason:(int64_t)a3;
-+ (unint64_t)mmConsumerTypeOfConsumerType:(unint64_t)a3 consumerSubType:(unsigned __int8)a4;
++ (id)stringForConsumerType:(unint64_t)type;
++ (id)stringForMMConsumerType:(unint64_t)type;
++ (id)stringForMMEventType:(unint64_t)type;
++ (id)stringForPredictionReason:(int64_t)reason;
++ (int64_t)selectSingleReason:(int64_t)reason;
++ (unint64_t)mmConsumerTypeOfConsumerType:(unint64_t)type consumerSubType:(unsigned __int8)subType;
 @end
 
 @implementation ATXMagicalMomentsTypes
 
-+ (id)stringForConsumerType:(unint64_t)a3
++ (id)stringForConsumerType:(unint64_t)type
 {
-  if (a3 <= 7)
+  if (type <= 7)
   {
-    if (a3 > 1)
+    if (type > 1)
     {
-      if (a3 == 2)
+      if (type == 2)
       {
         return @"Spotlight";
       }
 
-      if (a3 == 4)
+      if (type == 4)
       {
         return @"CarPlay";
       }
@@ -32,26 +32,26 @@
 
     else
     {
-      if (!a3)
+      if (!type)
       {
         return @"Unknown";
       }
 
-      if (a3 == 1)
+      if (type == 1)
       {
         return @"SpringBoard";
       }
     }
   }
 
-  else if (a3 <= 31)
+  else if (type <= 31)
   {
-    if (a3 == 8)
+    if (type == 8)
     {
       return @"Phone";
     }
 
-    if (a3 == 16)
+    if (type == 16)
     {
       return @"Maps";
     }
@@ -59,7 +59,7 @@
 
   else
   {
-    switch(a3)
+    switch(type)
     {
       case ' ':
         return @"Widget";
@@ -70,8 +70,8 @@
     }
   }
 
-  v7 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v7 handleFailureInMethod:a2 object:a1 file:@"ATXMagicalMomentsTypes.m" lineNumber:41 description:{@"stringForConsumerType called with invalid ATXMagicalMomentsConsumerType value of %lu", a3}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"ATXMagicalMomentsTypes.m" lineNumber:41 description:{@"stringForConsumerType called with invalid ATXMagicalMomentsConsumerType value of %lu", type}];
 
   return @"Error";
 }
@@ -79,12 +79,12 @@
 + (id)predictionReasonMapping
 {
   v3 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:12];
-  v4 = [a1 stringForPredictionReason:0];
+  v4 = [self stringForPredictionReason:0];
   [v3 setObject:v4 forKeyedSubscript:&unk_1F3E5FDD8];
 
   for (i = 0; i != 12; ++i)
   {
-    v6 = [a1 stringForPredictionReason:(1 << i)];
+    v6 = [self stringForPredictionReason:(1 << i)];
     v7 = [MEMORY[0x1E696AD98] numberWithInteger:(1 << i)];
     [v3 setObject:v6 forKeyedSubscript:v7];
   }
@@ -97,7 +97,7 @@
   v3 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:6];
   for (i = 0; i != 6; ++i)
   {
-    v5 = [a1 stringForMMEventType:i];
+    v5 = [self stringForMMEventType:i];
     v6 = [MEMORY[0x1E696AD98] numberWithInt:i];
     [v3 setObject:v5 forKeyedSubscript:v6];
   }
@@ -108,12 +108,12 @@
 + (id)consumerMapping
 {
   v3 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:7];
-  v4 = [a1 stringForConsumerType:0];
+  v4 = [self stringForConsumerType:0];
   [v3 setObject:v4 forKeyedSubscript:&unk_1F3E5FDF0];
 
   for (i = 0; i != 7; ++i)
   {
-    v6 = [a1 stringForConsumerType:(1 << i)];
+    v6 = [self stringForConsumerType:(1 << i)];
     v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:(1 << i)];
     [v3 setObject:v6 forKeyedSubscript:v7];
   }
@@ -121,27 +121,27 @@
   return v3;
 }
 
-+ (int64_t)selectSingleReason:(int64_t)a3
++ (int64_t)selectSingleReason:(int64_t)reason
 {
   v3 = 1;
   v4 = 32;
-  v5 = a3 & 0x400;
-  if ((a3 & 0x10) != 0)
+  v5 = reason & 0x400;
+  if ((reason & 0x10) != 0)
   {
     v5 = 16;
   }
 
-  if ((a3 & 0x20) == 0)
+  if ((reason & 0x20) == 0)
   {
     v4 = v5;
   }
 
-  if ((a3 & 1) == 0)
+  if ((reason & 1) == 0)
   {
     v3 = v4;
   }
 
-  if ((a3 & 2) != 0)
+  if ((reason & 2) != 0)
   {
     return 2;
   }
@@ -152,20 +152,20 @@
   }
 }
 
-+ (id)stringForPredictionReason:(int64_t)a3
++ (id)stringForPredictionReason:(int64_t)reason
 {
-  if (a3)
+  if (reason)
   {
-    v3 = a3;
+    reasonCopy = reason;
     v4 = objc_opt_new();
     v5 = v4;
-    if ((v3 & 0x40) != 0)
+    if ((reasonCopy & 0x40) != 0)
     {
       [v4 appendString:@"Application_"];
-      if ((v3 & 0x10) == 0)
+      if ((reasonCopy & 0x10) == 0)
       {
 LABEL_4:
-        if ((v3 & 8) == 0)
+        if ((reasonCopy & 8) == 0)
         {
           goto LABEL_5;
         }
@@ -174,16 +174,16 @@ LABEL_4:
       }
     }
 
-    else if ((v3 & 0x10) == 0)
+    else if ((reasonCopy & 0x10) == 0)
     {
       goto LABEL_4;
     }
 
     [v5 appendString:@"Location_"];
-    if ((v3 & 8) == 0)
+    if ((reasonCopy & 8) == 0)
     {
 LABEL_5:
-      if ((v3 & 0x200) == 0)
+      if ((reasonCopy & 0x200) == 0)
       {
         goto LABEL_6;
       }
@@ -193,10 +193,10 @@ LABEL_5:
 
 LABEL_18:
     [v5 appendString:@"Motion_"];
-    if ((v3 & 0x200) == 0)
+    if ((reasonCopy & 0x200) == 0)
     {
 LABEL_6:
-      if ((v3 & 1) == 0)
+      if ((reasonCopy & 1) == 0)
       {
         goto LABEL_7;
       }
@@ -206,10 +206,10 @@ LABEL_6:
 
 LABEL_19:
     [v5 appendString:@"Other_"];
-    if ((v3 & 1) == 0)
+    if ((reasonCopy & 1) == 0)
     {
 LABEL_7:
-      if ((v3 & 2) == 0)
+      if ((reasonCopy & 2) == 0)
       {
         goto LABEL_8;
       }
@@ -219,10 +219,10 @@ LABEL_7:
 
 LABEL_20:
     [v5 appendString:@"Headphones_"];
-    if ((v3 & 2) == 0)
+    if ((reasonCopy & 2) == 0)
     {
 LABEL_8:
-      if ((v3 & 4) == 0)
+      if ((reasonCopy & 4) == 0)
       {
         goto LABEL_9;
       }
@@ -232,10 +232,10 @@ LABEL_8:
 
 LABEL_21:
     [v5 appendString:@"Bluetooth_"];
-    if ((v3 & 4) == 0)
+    if ((reasonCopy & 4) == 0)
     {
 LABEL_9:
-      if ((v3 & 0x20) == 0)
+      if ((reasonCopy & 0x20) == 0)
       {
         goto LABEL_10;
       }
@@ -245,10 +245,10 @@ LABEL_9:
 
 LABEL_22:
     [v5 appendString:@"CarPlay_"];
-    if ((v3 & 0x20) == 0)
+    if ((reasonCopy & 0x20) == 0)
     {
 LABEL_10:
-      if ((v3 & 0x400) == 0)
+      if ((reasonCopy & 0x400) == 0)
       {
         goto LABEL_11;
       }
@@ -258,10 +258,10 @@ LABEL_10:
 
 LABEL_23:
     [v5 appendString:@"FirstWakeup_"];
-    if ((v3 & 0x400) == 0)
+    if ((reasonCopy & 0x400) == 0)
     {
 LABEL_11:
-      if ((v3 & 0x800) == 0)
+      if ((reasonCopy & 0x800) == 0)
       {
 LABEL_13:
         if ([v5 length])
@@ -284,7 +284,7 @@ LABEL_12:
 
 LABEL_24:
     [v5 appendString:@"MicroLocation_"];
-    if ((v3 & 0x800) == 0)
+    if ((reasonCopy & 0x800) == 0)
     {
       goto LABEL_13;
     }
@@ -298,23 +298,23 @@ LABEL_28:
   return v6;
 }
 
-+ (id)stringForMMEventType:(unint64_t)a3
++ (id)stringForMMEventType:(unint64_t)type
 {
   v3 = @"suggested";
-  if (a3 <= 3)
+  if (type <= 3)
   {
     v4 = @"suppressed";
-    if (a3 == 3)
+    if (type == 3)
     {
       v3 = @"shown";
     }
 
-    if (a3 == 2)
+    if (type == 2)
     {
       v3 = @"served";
     }
 
-    v5 = a3 == 1;
+    v5 = type == 1;
 LABEL_11:
     if (v5)
     {
@@ -327,15 +327,15 @@ LABEL_11:
     }
   }
 
-  if (a3 != 6)
+  if (type != 6)
   {
     v4 = @"abandoned";
-    if (a3 == 4)
+    if (type == 4)
     {
       v3 = @"converted";
     }
 
-    v5 = a3 == 5;
+    v5 = type == 5;
     goto LABEL_11;
   }
 
@@ -351,30 +351,30 @@ LABEL_11:
 + (id)mmConsumerMapping
 {
   v3 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:7];
-  v4 = [a1 stringForMMConsumerType:0];
+  v4 = [self stringForMMConsumerType:0];
   [v3 setObject:v4 forKeyedSubscript:&unk_1F3E5FDF0];
 
   for (i = 0; i != 7; ++i)
   {
-    v6 = [a1 stringForMMConsumerType:(1 << i)];
+    v6 = [self stringForMMConsumerType:(1 << i)];
     v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:(1 << i)];
     [v3 setObject:v6 forKeyedSubscript:v7];
   }
 
   v8 = [objc_opt_class() mmConsumerTypeOfConsumerType:1 consumerSubType:2];
-  v9 = [a1 stringForMMConsumerType:v8];
+  v9 = [self stringForMMConsumerType:v8];
   v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v8];
   [v3 setObject:v9 forKeyedSubscript:v10];
 
   return v3;
 }
 
-+ (id)stringForMMConsumerType:(unint64_t)a3
++ (id)stringForMMConsumerType:(unint64_t)type
 {
-  v5 = a3 & 0x7F;
+  v5 = type & 0x7F;
   if (v5 > 7)
   {
-    if ((a3 & 0x7F) <= 0x1F)
+    if ((type & 0x7F) <= 0x1F)
     {
       if (v5 == 8)
       {
@@ -403,7 +403,7 @@ LABEL_11:
     goto LABEL_24;
   }
 
-  if ((a3 & 0x7F) > 1)
+  if ((type & 0x7F) > 1)
   {
     if (v5 == 2)
     {
@@ -418,7 +418,7 @@ LABEL_11:
     goto LABEL_24;
   }
 
-  if ((a3 & 0x7F) == 0)
+  if ((type & 0x7F) == 0)
   {
     return @"Unknown";
   }
@@ -426,13 +426,13 @@ LABEL_11:
   if (v5 != 1)
   {
 LABEL_24:
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:a1 file:@"ATXMagicalMomentsTypes.m" lineNumber:206 description:{@"stringForMMConsumerType called with invalid ATXMagicalMomentsConsumerType value of %lu", v5}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ATXMagicalMomentsTypes.m" lineNumber:206 description:{@"stringForMMConsumerType called with invalid ATXMagicalMomentsConsumerType value of %lu", v5}];
 
     return @"Error";
   }
 
-  if ((a3 & 0x80) != 0)
+  if ((type & 0x80) != 0)
   {
     return @"SpringBoardAppSwitcher";
   }
@@ -443,16 +443,16 @@ LABEL_24:
   }
 }
 
-+ (unint64_t)mmConsumerTypeOfConsumerType:(unint64_t)a3 consumerSubType:(unsigned __int8)a4
++ (unint64_t)mmConsumerTypeOfConsumerType:(unint64_t)type consumerSubType:(unsigned __int8)subType
 {
-  if (a4 == 2 && a3 == 1)
+  if (subType == 2 && type == 1)
   {
     return 129;
   }
 
   else
   {
-    return a3;
+    return type;
   }
 }
 

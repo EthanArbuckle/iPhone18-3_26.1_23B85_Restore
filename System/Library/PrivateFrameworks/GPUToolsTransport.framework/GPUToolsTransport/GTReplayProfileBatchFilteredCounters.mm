@@ -1,15 +1,15 @@
 @interface GTReplayProfileBatchFilteredCounters
-- (GTReplayProfileBatchFilteredCounters)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (GTReplayProfileBatchFilteredCounters)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation GTReplayProfileBatchFilteredCounters
 
-- (GTReplayProfileBatchFilteredCounters)initWithCoder:(id)a3
+- (GTReplayProfileBatchFilteredCounters)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = GTReplayProfileBatchFilteredCounters;
-  v3 = [(GTReplayProfileRequest *)&v7 initWithCoder:a3];
+  v3 = [(GTReplayProfileRequest *)&v7 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -19,11 +19,11 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = GTReplayProfileBatchFilteredCounters;
-  [(GTReplayProfileRequest *)&v3 encodeWithCoder:a3];
+  [(GTReplayProfileRequest *)&v3 encodeWithCoder:coder];
 }
 
 @end

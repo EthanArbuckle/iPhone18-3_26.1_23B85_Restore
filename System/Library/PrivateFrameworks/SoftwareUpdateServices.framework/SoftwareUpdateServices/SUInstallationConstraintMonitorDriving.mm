@@ -1,28 +1,28 @@
 @interface SUInstallationConstraintMonitorDriving
-- (id)initOnQueue:(id)a3 withDownload:(id)a4;
+- (id)initOnQueue:(id)queue withDownload:(id)download;
 - (unint64_t)unsatisfiedConstraints;
-- (void)_handleVehicularStateChangeNotification:(id)a3;
+- (void)_handleVehicularStateChangeNotification:(id)notification;
 - (void)_queue_pollSatisfied;
 @end
 
 @implementation SUInstallationConstraintMonitorDriving
 
-- (id)initOnQueue:(id)a3 withDownload:(id)a4
+- (id)initOnQueue:(id)queue withDownload:(id)download
 {
-  v6 = a4;
-  v7 = a3;
+  downloadCopy = download;
+  queueCopy = queue;
   BSDispatchQueueAssert();
   v11.receiver = self;
   v11.super_class = SUInstallationConstraintMonitorDriving;
-  v8 = [(SUInstallationConstraintMonitorBase *)&v11 initOnQueue:v7 withRepresentedInstallationConstraints:2048 andDownload:v6];
+  v8 = [(SUInstallationConstraintMonitorBase *)&v11 initOnQueue:queueCopy withRepresentedInstallationConstraints:2048 andDownload:downloadCopy];
 
   if (v8)
   {
     v8[48] = 0;
     if ([MEMORY[0x277CC1D70] isAvailable])
     {
-      v9 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v9 addObserver:v8 selector:sel__handleVehicularStateChangeNotification_ name:*MEMORY[0x277CC1DD8] object:0];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter addObserver:v8 selector:sel__handleVehicularStateChangeNotification_ name:*MEMORY[0x277CC1DD8] object:0];
 
       [v8 _queue_pollSatisfied];
     }
@@ -43,12 +43,12 @@
     self->_queue_isDriving;
     SULogInfoForSubsystem(v5, @"%@ - is driving constraint changed (satisfied? %@)", v6, v7, v8, v9, v10, v11, self);
 
-    v12 = [(SUInstallationConstraintMonitorBase *)self delegate];
-    [v12 installationConstraintMonitor:self constraintsDidChange:{-[SUInstallationConstraintMonitorBase representedConstraints](self, "representedConstraints")}];
+    delegate = [(SUInstallationConstraintMonitorBase *)self delegate];
+    [delegate installationConstraintMonitor:self constraintsDidChange:{-[SUInstallationConstraintMonitorBase representedConstraints](self, "representedConstraints")}];
   }
 }
 
-- (void)_handleVehicularStateChangeNotification:(id)a3
+- (void)_handleVehicularStateChangeNotification:(id)notification
 {
   queue = self->super._queue;
   block[0] = MEMORY[0x277D85DD0];

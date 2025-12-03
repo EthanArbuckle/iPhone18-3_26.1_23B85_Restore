@@ -1,9 +1,9 @@
 @interface CNAutocompleteSourceInclusionPolicy
 + (CNAutocompleteSourceInclusionPolicy)policyWithCurrentProcessEntitlements;
-+ (CNAutocompleteSourceInclusionPolicy)policyWithFetchRequest:(id)a3;
-+ (CNAutocompleteSourceInclusionPolicy)policyWithPolicies:(id)a3;
-+ (CNAutocompleteSourceInclusionPolicy)policyWithUserDefaults:(id)a3;
-+ (id)defaultPolicyWithFetchRequest:(id)a3;
++ (CNAutocompleteSourceInclusionPolicy)policyWithFetchRequest:(id)request;
++ (CNAutocompleteSourceInclusionPolicy)policyWithPolicies:(id)policies;
++ (CNAutocompleteSourceInclusionPolicy)policyWithUserDefaults:(id)defaults;
++ (id)defaultPolicyWithFetchRequest:(id)request;
 + (id)policyForNoContactsAccess;
 @end
 
@@ -16,55 +16,55 @@
   return v2;
 }
 
-+ (id)defaultPolicyWithFetchRequest:(id)a3
++ (id)defaultPolicyWithFetchRequest:(id)request
 {
   v15[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CFBDB8] sharedInstance];
-  v6 = [v5 isAccessGranted];
+  requestCopy = request;
+  mEMORY[0x277CFBDB8] = [MEMORY[0x277CFBDB8] sharedInstance];
+  isAccessGranted = [mEMORY[0x277CFBDB8] isAccessGranted];
 
-  if (v6)
+  if (isAccessGranted)
   {
-    v7 = [a1 policyWithFetchRequest:v4];
-    v8 = [MEMORY[0x277CFBEE8] standardPreferences];
-    v9 = [a1 policyWithUserDefaults:v8];
+    v7 = [self policyWithFetchRequest:requestCopy];
+    standardPreferences = [MEMORY[0x277CFBEE8] standardPreferences];
+    v9 = [self policyWithUserDefaults:standardPreferences];
 
-    v10 = [a1 policyWithCurrentProcessEntitlements];
+    policyWithCurrentProcessEntitlements = [self policyWithCurrentProcessEntitlements];
     v15[0] = v7;
     v15[1] = v9;
-    v15[2] = v10;
+    v15[2] = policyWithCurrentProcessEntitlements;
     v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:3];
-    v12 = [a1 policyWithPolicies:v11];
+    policyForNoContactsAccess = [self policyWithPolicies:v11];
   }
 
   else
   {
-    v12 = [a1 policyForNoContactsAccess];
+    policyForNoContactsAccess = [self policyForNoContactsAccess];
   }
 
   v13 = *MEMORY[0x277D85DE8];
 
-  return v12;
+  return policyForNoContactsAccess;
 }
 
-+ (CNAutocompleteSourceInclusionPolicy)policyWithFetchRequest:(id)a3
++ (CNAutocompleteSourceInclusionPolicy)policyWithFetchRequest:(id)request
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CFBDB8] sharedInstance];
-  v6 = [v5 isAccessGranted];
+  requestCopy = request;
+  mEMORY[0x277CFBDB8] = [MEMORY[0x277CFBDB8] sharedInstance];
+  isAccessGranted = [mEMORY[0x277CFBDB8] isAccessGranted];
 
-  if ((v6 & 1) == 0)
+  if ((isAccessGranted & 1) == 0)
   {
-    v7 = [a1 policyForNoContactsAccess];
+    policyForNoContactsAccess = [self policyForNoContactsAccess];
     goto LABEL_13;
   }
 
-  v7 = objc_alloc_init(_CNAutocompleteMutableSourceInclusionPolicy);
-  if ([v4 isZeroKeywordSearch])
+  policyForNoContactsAccess = objc_alloc_init(_CNAutocompleteMutableSourceInclusionPolicy);
+  if ([requestCopy isZeroKeywordSearch])
   {
-    if ([v4 searchType] == 4)
+    if ([requestCopy searchType] == 4)
     {
-      -[_CNAutocompleteMutableSourceInclusionPolicy setIncludeRecents:](v7, "setIncludeRecents:", [v4 includeRecents]);
+      -[_CNAutocompleteMutableSourceInclusionPolicy setIncludeRecents:](policyForNoContactsAccess, "setIncludeRecents:", [requestCopy includeRecents]);
       v8 = CNALoggingContextDebug();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
@@ -91,19 +91,19 @@ LABEL_10:
     goto LABEL_12;
   }
 
-  -[_CNAutocompleteMutableSourceInclusionPolicy setIncludeContacts:](v7, "setIncludeContacts:", [v4 includeContacts]);
-  -[_CNAutocompleteMutableSourceInclusionPolicy setIncludeRecents:](v7, "setIncludeRecents:", [v4 includeRecents]);
-  -[_CNAutocompleteMutableSourceInclusionPolicy setIncludeStewie:](v7, "setIncludeStewie:", [v4 includeStewie]);
-  -[_CNAutocompleteMutableSourceInclusionPolicy setIncludeSuggestions:](v7, "setIncludeSuggestions:", [v4 includeSuggestions]);
-  -[_CNAutocompleteMutableSourceInclusionPolicy setIncludeLocalExtensions:](v7, "setIncludeLocalExtensions:", [v4 includeLocalExtensions]);
-  -[_CNAutocompleteMutableSourceInclusionPolicy setIncludeDirectoryServers:](v7, "setIncludeDirectoryServers:", [v4 includeDirectoryServers]);
-  -[_CNAutocompleteMutableSourceInclusionPolicy setIncludeCalendarServers:](v7, "setIncludeCalendarServers:", [v4 includeCalendarServers]);
+  -[_CNAutocompleteMutableSourceInclusionPolicy setIncludeContacts:](policyForNoContactsAccess, "setIncludeContacts:", [requestCopy includeContacts]);
+  -[_CNAutocompleteMutableSourceInclusionPolicy setIncludeRecents:](policyForNoContactsAccess, "setIncludeRecents:", [requestCopy includeRecents]);
+  -[_CNAutocompleteMutableSourceInclusionPolicy setIncludeStewie:](policyForNoContactsAccess, "setIncludeStewie:", [requestCopy includeStewie]);
+  -[_CNAutocompleteMutableSourceInclusionPolicy setIncludeSuggestions:](policyForNoContactsAccess, "setIncludeSuggestions:", [requestCopy includeSuggestions]);
+  -[_CNAutocompleteMutableSourceInclusionPolicy setIncludeLocalExtensions:](policyForNoContactsAccess, "setIncludeLocalExtensions:", [requestCopy includeLocalExtensions]);
+  -[_CNAutocompleteMutableSourceInclusionPolicy setIncludeDirectoryServers:](policyForNoContactsAccess, "setIncludeDirectoryServers:", [requestCopy includeDirectoryServers]);
+  -[_CNAutocompleteMutableSourceInclusionPolicy setIncludeCalendarServers:](policyForNoContactsAccess, "setIncludeCalendarServers:", [requestCopy includeCalendarServers]);
 LABEL_12:
-  -[_CNAutocompleteMutableSourceInclusionPolicy setIncludePredictions:](v7, "setIncludePredictions:", [v4 includePredictions]);
-  [(_CNAutocompleteMutableSourceInclusionPolicy *)v7 setIncludeSupplementalResults:1];
+  -[_CNAutocompleteMutableSourceInclusionPolicy setIncludePredictions:](policyForNoContactsAccess, "setIncludePredictions:", [requestCopy includePredictions]);
+  [(_CNAutocompleteMutableSourceInclusionPolicy *)policyForNoContactsAccess setIncludeSupplementalResults:1];
 LABEL_13:
 
-  return v7;
+  return policyForNoContactsAccess;
 }
 
 + (id)policyForNoContactsAccess
@@ -113,18 +113,18 @@ LABEL_13:
   return v2;
 }
 
-+ (CNAutocompleteSourceInclusionPolicy)policyWithUserDefaults:(id)a3
++ (CNAutocompleteSourceInclusionPolicy)policyWithUserDefaults:(id)defaults
 {
-  v3 = a3;
-  v4 = [[_CNAutocompleteUserDefaultsSourceInclusionPolicy alloc] initWithUserDefaults:v3];
+  defaultsCopy = defaults;
+  v4 = [[_CNAutocompleteUserDefaultsSourceInclusionPolicy alloc] initWithUserDefaults:defaultsCopy];
 
   return v4;
 }
 
-+ (CNAutocompleteSourceInclusionPolicy)policyWithPolicies:(id)a3
++ (CNAutocompleteSourceInclusionPolicy)policyWithPolicies:(id)policies
 {
-  v3 = a3;
-  v4 = [[_CNAutocompleteAggregateSourceInclusionPolicy alloc] initWithPolicies:v3];
+  policiesCopy = policies;
+  v4 = [[_CNAutocompleteAggregateSourceInclusionPolicy alloc] initWithPolicies:policiesCopy];
 
   return v4;
 }

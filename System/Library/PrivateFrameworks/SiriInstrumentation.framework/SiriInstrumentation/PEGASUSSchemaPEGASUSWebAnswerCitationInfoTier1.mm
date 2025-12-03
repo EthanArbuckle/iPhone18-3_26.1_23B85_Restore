@@ -1,28 +1,28 @@
 @interface PEGASUSSchemaPEGASUSWebAnswerCitationInfoTier1
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (PEGASUSSchemaPEGASUSWebAnswerCitationInfoTier1)initWithDictionary:(id)a3;
-- (PEGASUSSchemaPEGASUSWebAnswerCitationInfoTier1)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (PEGASUSSchemaPEGASUSWebAnswerCitationInfoTier1)initWithDictionary:(id)dictionary;
+- (PEGASUSSchemaPEGASUSWebAnswerCitationInfoTier1)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (int)citationIndicesAtIndex:(unint64_t)a3;
-- (void)addCitationIndices:(int)a3;
-- (void)writeTo:(id)a3;
+- (int)citationIndicesAtIndex:(unint64_t)index;
+- (void)addCitationIndices:(int)indices;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PEGASUSSchemaPEGASUSWebAnswerCitationInfoTier1
 
-- (PEGASUSSchemaPEGASUSWebAnswerCitationInfoTier1)initWithDictionary:(id)a3
+- (PEGASUSSchemaPEGASUSWebAnswerCitationInfoTier1)initWithDictionary:(id)dictionary
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v21.receiver = self;
   v21.super_class = PEGASUSSchemaPEGASUSWebAnswerCitationInfoTier1;
   v5 = [(PEGASUSSchemaPEGASUSWebAnswerCitationInfoTier1 *)&v21 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"subText"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"subText"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -30,7 +30,7 @@
       [(PEGASUSSchemaPEGASUSWebAnswerCitationInfoTier1 *)v5 setSubText:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"citationIndices"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"citationIndices"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -78,30 +78,30 @@
   return v5;
 }
 
-- (PEGASUSSchemaPEGASUSWebAnswerCitationInfoTier1)initWithJSON:(id)a3
+- (PEGASUSSchemaPEGASUSWebAnswerCitationInfoTier1)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(PEGASUSSchemaPEGASUSWebAnswerCitationInfoTier1 *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(PEGASUSSchemaPEGASUSWebAnswerCitationInfoTier1 *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(PEGASUSSchemaPEGASUSWebAnswerCitationInfoTier1 *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -114,48 +114,48 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_citationIndices count])
   {
-    v4 = [(PEGASUSSchemaPEGASUSWebAnswerCitationInfoTier1 *)self citationIndices];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"citationIndices"];
+    citationIndices = [(PEGASUSSchemaPEGASUSWebAnswerCitationInfoTier1 *)self citationIndices];
+    v5 = [citationIndices copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"citationIndices"];
   }
 
   if (self->_subText)
   {
-    v6 = [(PEGASUSSchemaPEGASUSWebAnswerCitationInfoTier1 *)self subText];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"subText"];
+    subText = [(PEGASUSSchemaPEGASUSWebAnswerCitationInfoTier1 *)self subText];
+    v7 = [subText copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"subText"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(PEGASUSSchemaPEGASUSWebAnswerCitationInfoTier1 *)self subText];
-  v6 = [v4 subText];
-  if ((v5 != 0) == (v6 == 0))
+  subText = [(PEGASUSSchemaPEGASUSWebAnswerCitationInfoTier1 *)self subText];
+  subText2 = [equalCopy subText];
+  if ((subText != 0) == (subText2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(PEGASUSSchemaPEGASUSWebAnswerCitationInfoTier1 *)self subText];
-  if (v7)
+  subText3 = [(PEGASUSSchemaPEGASUSWebAnswerCitationInfoTier1 *)self subText];
+  if (subText3)
   {
-    v8 = v7;
-    v9 = [(PEGASUSSchemaPEGASUSWebAnswerCitationInfoTier1 *)self subText];
-    v10 = [v4 subText];
-    v11 = [v9 isEqual:v10];
+    v8 = subText3;
+    subText4 = [(PEGASUSSchemaPEGASUSWebAnswerCitationInfoTier1 *)self subText];
+    subText5 = [equalCopy subText];
+    v11 = [subText4 isEqual:subText5];
 
     if (!v11)
     {
@@ -167,12 +167,12 @@
   {
   }
 
-  v5 = [(PEGASUSSchemaPEGASUSWebAnswerCitationInfoTier1 *)self citationIndices];
-  v6 = [v4 citationIndices];
-  if ((v5 != 0) != (v6 == 0))
+  subText = [(PEGASUSSchemaPEGASUSWebAnswerCitationInfoTier1 *)self citationIndices];
+  subText2 = [equalCopy citationIndices];
+  if ((subText != 0) != (subText2 == 0))
   {
-    v12 = [(PEGASUSSchemaPEGASUSWebAnswerCitationInfoTier1 *)self citationIndices];
-    if (!v12)
+    citationIndices = [(PEGASUSSchemaPEGASUSWebAnswerCitationInfoTier1 *)self citationIndices];
+    if (!citationIndices)
     {
 
 LABEL_15:
@@ -180,10 +180,10 @@ LABEL_15:
       goto LABEL_13;
     }
 
-    v13 = v12;
-    v14 = [(PEGASUSSchemaPEGASUSWebAnswerCitationInfoTier1 *)self citationIndices];
-    v15 = [v4 citationIndices];
-    v16 = [v14 isEqual:v15];
+    v13 = citationIndices;
+    citationIndices2 = [(PEGASUSSchemaPEGASUSWebAnswerCitationInfoTier1 *)self citationIndices];
+    citationIndices3 = [equalCopy citationIndices];
+    v16 = [citationIndices2 isEqual:citationIndices3];
 
     if (v16)
     {
@@ -203,13 +203,13 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PEGASUSSchemaPEGASUSWebAnswerCitationInfoTier1 *)self subText];
+  toCopy = to;
+  subText = [(PEGASUSSchemaPEGASUSWebAnswerCitationInfoTier1 *)self subText];
 
-  if (v5)
+  if (subText)
   {
     PBDataWriterWriteStringField();
   }
@@ -247,23 +247,23 @@ LABEL_13:
   }
 }
 
-- (int)citationIndicesAtIndex:(unint64_t)a3
+- (int)citationIndicesAtIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_citationIndices objectAtIndexedSubscript:a3];
-  v4 = [v3 intValue];
+  v3 = [(NSArray *)self->_citationIndices objectAtIndexedSubscript:index];
+  intValue = [v3 intValue];
 
-  return v4;
+  return intValue;
 }
 
-- (void)addCitationIndices:(int)a3
+- (void)addCitationIndices:(int)indices
 {
-  v3 = *&a3;
+  v3 = *&indices;
   citationIndices = self->_citationIndices;
   if (!citationIndices)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_citationIndices;
-    self->_citationIndices = v6;
+    self->_citationIndices = array;
 
     citationIndices = self->_citationIndices;
   }
@@ -272,33 +272,33 @@ LABEL_13:
   [(NSArray *)citationIndices addObject:v8];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v7.receiver = self;
   v7.super_class = PEGASUSSchemaPEGASUSWebAnswerCitationInfoTier1;
-  v5 = [(SISchemaInstrumentationMessage *)&v7 applySensitiveConditionsPolicy:v4];
-  if ([v4 isConditionSet:2])
+  v5 = [(SISchemaInstrumentationMessage *)&v7 applySensitiveConditionsPolicy:policyCopy];
+  if ([policyCopy isConditionSet:2])
   {
     [(PEGASUSSchemaPEGASUSWebAnswerCitationInfoTier1 *)self deleteSubText];
   }
 
-  if ([v4 isConditionSet:4])
+  if ([policyCopy isConditionSet:4])
   {
     [(PEGASUSSchemaPEGASUSWebAnswerCitationInfoTier1 *)self deleteSubText];
   }
 
-  if ([v4 isConditionSet:5])
+  if ([policyCopy isConditionSet:5])
   {
     [(PEGASUSSchemaPEGASUSWebAnswerCitationInfoTier1 *)self deleteSubText];
   }
 
-  if ([v4 isConditionSet:6])
+  if ([policyCopy isConditionSet:6])
   {
     [(PEGASUSSchemaPEGASUSWebAnswerCitationInfoTier1 *)self deleteSubText];
   }
 
-  if ([v4 isConditionSet:7])
+  if ([policyCopy isConditionSet:7])
   {
     [(PEGASUSSchemaPEGASUSWebAnswerCitationInfoTier1 *)self deleteSubText];
   }

@@ -1,32 +1,32 @@
 @interface BMFetchAtomBatchesRequest
 - (id)dictionaryRepresentation;
-- (id)initFromDictionary:(id)a3;
+- (id)initFromDictionary:(id)dictionary;
 @end
 
 @implementation BMFetchAtomBatchesRequest
 
-- (id)initFromDictionary:(id)a3
+- (id)initFromDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v24.receiver = self;
   v24.super_class = BMFetchAtomBatchesRequest;
-  v5 = [(BMPeerToPeerMessage *)&v24 initFromDictionary:v4];
+  v5 = [(BMPeerToPeerMessage *)&v24 initFromDictionary:dictionaryCopy];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"batchSize"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"batchSize"];
     v5[9] = [v6 unsignedIntegerValue];
 
-    v7 = [v4 objectForKeyedSubscript:@"batchSequenceNumber"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"batchSequenceNumber"];
     v5[10] = [v7 unsignedIntegerValue];
 
-    v8 = [v4 objectForKeyedSubscript:@"isReciprocalRequest"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"isReciprocalRequest"];
     *(v5 + 40) = [v8 BOOLValue];
 
-    v9 = [v4 objectForKeyedSubscript:@"atomBatchVersion"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"atomBatchVersion"];
     v5[8] = [v9 unsignedIntegerValue];
 
     v10 = objc_autoreleasePoolPush();
-    v11 = [v4 objectForKeyedSubscript:@"vectorClock"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"vectorClock"];
     v23 = 0;
     v12 = [BMMultiStreamVectorClock deserialize:v11 error:&v23];
     v13 = v23;
@@ -42,11 +42,11 @@
       }
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"rangeClockVectors"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"rangeClockVectors"];
 
     if (v16)
     {
-      v17 = [v4 objectForKeyedSubscript:@"rangeClockVectors"];
+      v17 = [dictionaryCopy objectForKeyedSubscript:@"rangeClockVectors"];
 
       v22 = 0;
       v18 = [BMMultiStreamTimestampClockVector deserialize:v17 error:&v22];
@@ -146,8 +146,8 @@
 
   v26.receiver = self;
   v26.super_class = BMFetchAtomBatchesRequest;
-  v21 = [(BMPeerToPeerMessage *)&v26 dictionaryRepresentation];
-  [v20 addEntriesFromDictionary:v21];
+  dictionaryRepresentation = [(BMPeerToPeerMessage *)&v26 dictionaryRepresentation];
+  [v20 addEntriesFromDictionary:dictionaryRepresentation];
 
   return v20;
 }

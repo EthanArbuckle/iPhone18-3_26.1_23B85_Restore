@@ -1,16 +1,16 @@
 @interface VKWalkAssistStatus
-- (VKWalkAssistStatus)initWithArrivalRadius:(double)a3 delegate:(id)a4;
+- (VKWalkAssistStatus)initWithArrivalRadius:(double)radius delegate:(id)delegate;
 - (VKWalkAssistStatusDelegate)delegate;
 - (void)_makeStatusAnnouncement;
 - (void)dealloc;
-- (void)updateAssistStatusWithCurrentDistance:(double)a3 startRouteRoadName:(id)a4 isFacingStartLocation:(BOOL)a5 isStationary:(BOOL)a6;
+- (void)updateAssistStatusWithCurrentDistance:(double)distance startRouteRoadName:(id)name isFacingStartLocation:(BOOL)location isStationary:(BOOL)stationary;
 @end
 
 @implementation VKWalkAssistStatus
 
-- (VKWalkAssistStatus)initWithArrivalRadius:(double)a3 delegate:(id)a4
+- (VKWalkAssistStatus)initWithArrivalRadius:(double)radius delegate:(id)delegate
 {
-  v6 = a4;
+  delegateCopy = delegate;
   v11.receiver = self;
   v11.super_class = VKWalkAssistStatus;
   v7 = [(VKWalkAssistStatus *)&v11 init];
@@ -18,8 +18,8 @@
   if (v7)
   {
     v7->_lastCurrentDistance = 0.0;
-    v7->_arrivalRadius = a3;
-    objc_storeWeak(&v7->_delegate, v6);
+    v7->_arrivalRadius = radius;
+    objc_storeWeak(&v7->_delegate, delegateCopy);
     v9 = v8;
   }
 
@@ -28,30 +28,30 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x29EDBA068] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = VKWalkAssistStatus;
   [(VKWalkAssistStatus *)&v4 dealloc];
 }
 
-- (void)updateAssistStatusWithCurrentDistance:(double)a3 startRouteRoadName:(id)a4 isFacingStartLocation:(BOOL)a5 isStationary:(BOOL)a6
+- (void)updateAssistStatusWithCurrentDistance:(double)distance startRouteRoadName:(id)name isFacingStartLocation:(BOOL)location isStationary:(BOOL)stationary
 {
-  v6 = a6;
-  v7 = a5;
-  v11 = a4;
-  [(VKWalkAssistStatus *)self setCurrentDistance:a3];
+  stationaryCopy = stationary;
+  locationCopy = location;
+  nameCopy = name;
+  [(VKWalkAssistStatus *)self setCurrentDistance:distance];
   lastCurrentDistance = self->_lastCurrentDistance;
   if (lastCurrentDistance == 0.0)
   {
-    lastCurrentDistance = a3;
+    lastCurrentDistance = distance;
   }
 
   [(VKWalkAssistStatus *)self setLastCurrentDistance:lastCurrentDistance];
-  [(VKWalkAssistStatus *)self setIsFacingStartLocation:v7];
-  [(VKWalkAssistStatus *)self setIsStationary:v6];
-  [(VKWalkAssistStatus *)self setStartRouteRoadName:v11];
+  [(VKWalkAssistStatus *)self setIsFacingStartLocation:locationCopy];
+  [(VKWalkAssistStatus *)self setIsStationary:stationaryCopy];
+  [(VKWalkAssistStatus *)self setStartRouteRoadName:nameCopy];
   [(VKWalkAssistStatus *)self _makeStatusAnnouncement];
 }
 
@@ -61,8 +61,8 @@
   v4 = v3;
   [(VKWalkAssistStatus *)self lastCurrentDistance];
   v6 = v5;
-  v7 = [(VKWalkAssistStatus *)self startRouteRoadName];
-  if (v7)
+  startRouteRoadName = [(VKWalkAssistStatus *)self startRouteRoadName];
+  if (startRouteRoadName)
   {
     [(VKWalkAssistStatus *)self startRouteRoadName];
   }
@@ -73,12 +73,12 @@
   }
   v23 = ;
 
-  v8 = [(VKWalkAssistStatus *)self isFacingStartLocation];
-  v9 = [(VKWalkAssistStatus *)self isStationary];
+  isFacingStartLocation = [(VKWalkAssistStatus *)self isFacingStartLocation];
+  isStationary = [(VKWalkAssistStatus *)self isStationary];
   if (v4 <= self->_arrivalRadius)
   {
-    v20 = [(VKWalkAssistStatus *)self delegate];
-    [v20 didArrive:1];
+    delegate = [(VKWalkAssistStatus *)self delegate];
+    [delegate didArrive:1];
   }
 
   else
@@ -88,12 +88,12 @@
       goto LABEL_18;
     }
 
-    v10 = v9;
+    v10 = isStationary;
     [(VKWalkAssistStatus *)self setLastCurrentDistance:v4];
-    v11 = [MEMORY[0x29EDB8DE0] currentLocale];
-    v12 = [v11 _navigation_distanceUsesMetricSystem];
+    currentLocale = [MEMORY[0x29EDB8DE0] currentLocale];
+    _navigation_distanceUsesMetricSystem = [currentLocale _navigation_distanceUsesMetricSystem];
 
-    if (v8)
+    if (isFacingStartLocation)
     {
       v13 = @"APPROACHING_LOCATION_METERS";
       if (v10)
@@ -102,7 +102,7 @@
       }
 
       v14 = v13;
-      if ((v12 & 1) == 0)
+      if ((_navigation_distanceUsesMetricSystem & 1) == 0)
       {
         v15 = @"APPROACHING_LOCATION_FEET";
         if (v10)
@@ -118,18 +118,18 @@
       v17 = MEMORY[0x29EDBA0F8];
       v18 = AXVectorKitLocString(v14);
       v19 = AXFormatInteger();
-      v20 = [v17 localizedStringWithFormat:v18, v23, v19];
+      delegate = [v17 localizedStringWithFormat:v18, v23, v19];
     }
 
     else
     {
       v21 = MEMORY[0x29EDBA0F8];
       v14 = AXVectorKitLocString(@"MOVING_AWAY");
-      v20 = [v21 localizedStringWithFormat:v14, v23];
+      delegate = [v21 localizedStringWithFormat:v14, v23];
     }
 
-    v22 = [(VKWalkAssistStatus *)self delegate];
-    [v22 didUpdateStatusWithAnnouncement:v20];
+    delegate2 = [(VKWalkAssistStatus *)self delegate];
+    [delegate2 didUpdateStatusWithAnnouncement:delegate];
   }
 
 LABEL_18:

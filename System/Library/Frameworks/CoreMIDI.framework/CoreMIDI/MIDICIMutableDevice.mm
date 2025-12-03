@@ -1,23 +1,23 @@
 @interface MIDICIMutableDevice
-- (BOOL)addProfile:(id)a3 error:(id *)a4;
-- (BOOL)handleDiscoveryInquiry:(unsigned __int8)a3 view:(const discovery_inquiry_view *)a4;
-- (BOOL)handleEndpointInformationInquiry:(unsigned __int8)a3 view:(const endpoint_information_inquiry_view *)a4;
-- (BOOL)handleInvalidateMUID:(unsigned __int8)a3 view:(const invalidate_muid_view *)a4;
-- (BOOL)handleProfileIDView:(unsigned __int8)a3 view:(const profile_id_view *)a4;
-- (BOOL)handleProfileInquiry:(unsigned __int8)a3 view:(const profile_inquiry_view *)a4;
-- (BOOL)handleProfileSpecificData:(unsigned __int8)a3 fromDevice:(id)a4 view:(const profile_specific_data_view *)a5;
-- (BOOL)handleSysExIdentityRequest:(unsigned __int8)a3;
-- (BOOL)handleSysex:(unsigned __int8)a3 sysEx:(const void *)a4;
-- (BOOL)receiveMessageViaSource:(const void *)a3 error:(id *)a4;
+- (BOOL)addProfile:(id)profile error:(id *)error;
+- (BOOL)handleDiscoveryInquiry:(unsigned __int8)inquiry view:(const discovery_inquiry_view *)view;
+- (BOOL)handleEndpointInformationInquiry:(unsigned __int8)inquiry view:(const endpoint_information_inquiry_view *)view;
+- (BOOL)handleInvalidateMUID:(unsigned __int8)d view:(const invalidate_muid_view *)view;
+- (BOOL)handleProfileIDView:(unsigned __int8)view view:(const profile_id_view *)a4;
+- (BOOL)handleProfileInquiry:(unsigned __int8)inquiry view:(const profile_inquiry_view *)view;
+- (BOOL)handleProfileSpecificData:(unsigned __int8)data fromDevice:(id)device view:(const profile_specific_data_view *)view;
+- (BOOL)handleSysExIdentityRequest:(unsigned __int8)request;
+- (BOOL)handleSysex:(unsigned __int8)sysex sysEx:(const void *)ex;
+- (BOOL)receiveMessageViaSource:(const void *)source error:(id *)error;
 - (BOOL)registerWithServer;
-- (BOOL)removeProfile:(id)a3 error:(id *)a4;
-- (BOOL)sendMessageToCIDevice:(id)a3 withSubType:(unsigned __int8)a4 deviceID:(unsigned __int8)a5 data:(id)a6 error:(id *)a7;
-- (BOOL)setEnabled:(BOOL)a3 error:(id *)a4;
-- (BOOL)setProfile:(id)a3 newState:(BOOL)a4 enabledChannelCount:(unsigned __int16)a5 error:(id *)a6;
-- (BOOL)setResourceList:(id)a3 error:(id *)a4;
-- (MIDICIMutableDevice)initWithUMPEndpointPair:(id)a3 functionBlock:(id)a4 capabilities:(unsigned __int8)a5 sysExSizeLimit:(unint64_t)a6 maxPERequests:(unint64_t)a7 queue:(id)a8 profileSpecificDataCallback:(id)a9 messageCallback:(id)a10;
+- (BOOL)removeProfile:(id)profile error:(id *)error;
+- (BOOL)sendMessageToCIDevice:(id)device withSubType:(unsigned __int8)type deviceID:(unsigned __int8)d data:(id)data error:(id *)error;
+- (BOOL)setEnabled:(BOOL)enabled error:(id *)error;
+- (BOOL)setProfile:(id)profile newState:(BOOL)state enabledChannelCount:(unsigned __int16)count error:(id *)error;
+- (BOOL)setResourceList:(id)list error:(id *)error;
+- (MIDICIMutableDevice)initWithUMPEndpointPair:(id)pair functionBlock:(id)block capabilities:(unsigned __int8)capabilities sysExSizeLimit:(unint64_t)limit maxPERequests:(unint64_t)requests queue:(id)queue profileSpecificDataCallback:(id)callback messageCallback:(id)self0;
 - (id).cxx_construct;
-- (id)findProfile:(profile_id)a3;
+- (id)findProfile:(profile_id)profile;
 - (void)dealloc;
 - (void)receiveMessageViaSource:(-[MIDICIMutableDevice)receiveMessageViaSource:error:]::$_2 error:;
 - (void)setupMIDIStreamObjects;
@@ -32,17 +32,17 @@
   return self;
 }
 
-- (BOOL)handleProfileSpecificData:(unsigned __int8)a3 fromDevice:(id)a4 view:(const profile_specific_data_view *)a5
+- (BOOL)handleProfileSpecificData:(unsigned __int8)data fromDevice:(id)device view:(const profile_specific_data_view *)view
 {
-  v7 = a4;
-  v8 = [(MIDICIMutableDevice *)self findProfile:*(*(a5->var0 + 1) + 12) | (*(*(a5->var0 + 1) + 13) << 8)];
+  deviceCopy = device;
+  v8 = [(MIDICIMutableDevice *)self findProfile:*(*(view->var0 + 1) + 12) | (*(*(view->var0 + 1) + 13) << 8)];
   if (!v8)
   {
     goto LABEL_6;
   }
 
-  v9 = *(a5->var0 + 1);
-  if (*(a5->var0 + 2) - v9 <= 0x14uLL)
+  v9 = *(view->var0 + 1);
+  if (*(view->var0 + 2) - v9 <= 0x14uLL)
   {
     __assert_rtn("make_uint28", "sysex.h", 249, "data_pos + 3 < data.size()");
   }
@@ -50,8 +50,8 @@
   if (v9[17] | (v9[18] << 7) | (v9[19] << 14) | (v9[20] << 21))
   {
     v10 = objc_alloc(MEMORY[0x277CBEA90]);
-    v11 = *(a5->var0 + 1);
-    if (*(a5->var0 + 2) - v11 <= 0x14uLL)
+    v11 = *(view->var0 + 1);
+    if (*(view->var0 + 2) - v11 <= 0x14uLL)
     {
       __assert_rtn("make_uint28", "sysex.h", 249, "data_pos + 3 < data.size()");
     }
@@ -63,7 +63,7 @@
     v17[2] = __65__MIDICIMutableDevice_handleProfileSpecificData_fromDevice_view___block_invoke;
     v17[3] = &unk_278A287C8;
     v17[4] = self;
-    v18 = v7;
+    v18 = deviceCopy;
     v19 = v8;
     v20 = v12;
     v14 = v12;
@@ -81,7 +81,7 @@ LABEL_6:
   return v15;
 }
 
-- (BOOL)handleProfileIDView:(unsigned __int8)a3 view:(const profile_id_view *)a4
+- (BOOL)handleProfileIDView:(unsigned __int8)view view:(const profile_id_view *)a4
 {
   v6 = [(MIDICIMutableDevice *)self findProfile:*(*(a4->var0 + 1) + 12) | (*(*(a4->var0 + 1) + 13) << 8)];
   v8 = v6;
@@ -127,25 +127,25 @@ LABEL_6:
   return v12;
 }
 
-- (BOOL)handleProfileInquiry:(unsigned __int8)a3 view:(const profile_inquiry_view *)a4
+- (BOOL)handleProfileInquiry:(unsigned __int8)inquiry view:(const profile_inquiry_view *)view
 {
   v64 = *MEMORY[0x277D85DE8];
   v57 = 0u;
   v58 = 0u;
   v59 = 0u;
   v60 = 0u;
-  v5 = [(MIDICIDevice *)self profiles];
-  v6 = [v5 countByEnumeratingWithState:&v57 objects:v63 count:16];
+  profiles = [(MIDICIDevice *)self profiles];
+  v6 = [profiles countByEnumeratingWithState:&v57 objects:v63 count:16];
   if (v6)
   {
-    v45 = a4;
+    viewCopy = view;
     v7 = 0;
     v52 = 0;
     v53 = 0;
     v8 = 0;
     v9 = 0;
     v10 = 0;
-    v47 = v5;
+    v47 = profiles;
     v48 = *v58;
     do
     {
@@ -155,14 +155,14 @@ LABEL_6:
       {
         if (*v58 != v48)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(profiles);
         }
 
         v12 = *(*(&v57 + 1) + 8 * v11);
-        v13 = [v12 profileID];
-        v14 = [v12 isEnabled];
-        v15 = v14;
-        if (v14)
+        profileID = [v12 profileID];
+        isEnabled = [v12 isEnabled];
+        v15 = isEnabled;
+        if (isEnabled)
         {
           v16 = v7;
         }
@@ -173,14 +173,14 @@ LABEL_6:
         }
 
         v17 = v53;
-        if (!v14)
+        if (!isEnabled)
         {
           v17 = v52;
         }
 
         if (v16 >= v17)
         {
-          if (v14)
+          if (isEnabled)
           {
             v19 = v10;
           }
@@ -222,8 +222,8 @@ LABEL_6:
 
           v25 = v10;
           v26 = 5 * v21;
-          *(v26 + 4) = BYTE4(v13);
-          *v26 = v13;
+          *(v26 + 4) = BYTE4(profileID);
+          *v26 = profileID;
           v18 = 5 * v21 + 5;
           v27 = v26 - v20;
           memcpy((v26 - v20), v19, v20);
@@ -274,12 +274,12 @@ LABEL_6:
 
         else
         {
-          *v16 = v13;
-          *(v16 + 4) = BYTE4(v13);
+          *v16 = profileID;
+          *(v16 + 4) = BYTE4(profileID);
           v18 = v16 + 5;
         }
 
-        v5 = v47;
+        profiles = v47;
         if (v15)
         {
           v7 = v18;
@@ -298,7 +298,7 @@ LABEL_6:
     }
 
     while (v6);
-    a4 = v45;
+    view = viewCopy;
   }
 
   else
@@ -309,8 +309,8 @@ LABEL_6:
     v10 = 0;
   }
 
-  v31 = *(a4->var0 + 1);
-  if (*(a4->var0 + 2) - v31 < 8uLL)
+  v31 = *(view->var0 + 1);
+  if (*(view->var0 + 2) - v31 < 8uLL)
   {
     v41 = "data_pos + 3 < data.size()";
     v42 = 249;
@@ -421,18 +421,18 @@ LABEL_78:
   return v39;
 }
 
-- (BOOL)handleEndpointInformationInquiry:(unsigned __int8)a3 view:(const endpoint_information_inquiry_view *)a4
+- (BOOL)handleEndpointInformationInquiry:(unsigned __int8)inquiry view:(const endpoint_information_inquiry_view *)view
 {
   __dst[2] = *MEMORY[0x277D85DE8];
-  if (*(*(a4->var0 + 1) + 12))
+  if (*(*(view->var0 + 1) + 12))
   {
     return 0;
   }
 
-  v7 = [(MIDIUMPEndpoint *)self->super._endpoint productInstanceID];
-  v8 = [v7 UTF8String];
+  productInstanceID = [(MIDIUMPEndpoint *)self->super._endpoint productInstanceID];
+  uTF8String = [productInstanceID UTF8String];
 
-  v9 = strlen(v8);
+  v9 = strlen(uTF8String);
   if (v9 >= 0x10)
   {
     v10 = 16;
@@ -445,9 +445,9 @@ LABEL_78:
 
   __dst[0] = 0;
   __dst[1] = 0;
-  memcpy(__dst, v8, v10);
-  v11 = *(a4->var0 + 1);
-  if (*(a4->var0 + 2) - v11 <= 7uLL)
+  memcpy(__dst, uTF8String, v10);
+  v11 = *(view->var0 + 1);
+  if (*(view->var0 + 2) - v11 <= 7uLL)
   {
     __assert_rtn("make_uint28", "sysex.h", 249, "data_pos + 3 < data.size()");
   }
@@ -469,10 +469,10 @@ LABEL_78:
   return v4;
 }
 
-- (BOOL)handleInvalidateMUID:(unsigned __int8)a3 view:(const invalidate_muid_view *)a4
+- (BOOL)handleInvalidateMUID:(unsigned __int8)d view:(const invalidate_muid_view *)view
 {
-  v4 = *(a4->var0 + 1);
-  if (*(a4->var0 + 2) - v4 <= 0xFuLL)
+  v4 = *(view->var0 + 1);
+  if (*(view->var0 + 2) - v4 <= 0xFuLL)
   {
     __assert_rtn("make_uint28", "sysex.h", 249, "data_pos + 3 < data.size()");
   }
@@ -488,7 +488,7 @@ LABEL_78:
   return v6 == MUID;
 }
 
-- (BOOL)handleSysExIdentityRequest:(unsigned __int8)a3
+- (BOOL)handleSysExIdentityRequest:(unsigned __int8)request
 {
   v7 = deviceInfoToIdentity(self->super._deviceInfo);
   v8 = v4;
@@ -506,12 +506,12 @@ LABEL_78:
   return v5;
 }
 
-- (BOOL)handleDiscoveryInquiry:(unsigned __int8)a3 view:(const discovery_inquiry_view *)a4
+- (BOOL)handleDiscoveryInquiry:(unsigned __int8)inquiry view:(const discovery_inquiry_view *)view
 {
   v17 = deviceInfoToIdentity(self->super._deviceInfo);
   v18 = v6;
-  v7 = *(a4->var0 + 1);
-  if (*(a4->var0 + 2) - v7 <= 7uLL)
+  v7 = *(view->var0 + 1);
+  if (*(view->var0 + 2) - v7 <= 7uLL)
   {
     __assert_rtn("make_uint28", "sysex.h", 249, "data_pos + 3 < data.size()");
   }
@@ -560,23 +560,23 @@ LABEL_78:
   return v12;
 }
 
-- (BOOL)handleSysex:(unsigned __int8)a3 sysEx:(const void *)a4
+- (BOOL)handleSysex:(unsigned __int8)sysex sysEx:(const void *)ex
 {
-  if (*a4 == 8257536)
+  if (*ex == 8257536)
   {
-    v5 = *(a4 + 1);
-    if ((*(a4 + 2) - v5) >= 0xC && *(v5 + 1) == 13)
+    v5 = *(ex + 1);
+    if ((*(ex + 2) - v5) >= 0xC && *(v5 + 1) == 13)
     {
-      v6 = a3;
-      midi::universal_sysex::message_view::message_view(&v73, a4);
-      if (*a4 != 8257536 || (v8 = *(a4 + 1), (*(a4 + 2) - v8) < 0xC) || *(v8 + 1) != 13)
+      sysexCopy = sysex;
+      midi::universal_sysex::message_view::message_view(&v73, ex);
+      if (*ex != 8257536 || (v8 = *(ex + 1), (*(ex + 2) - v8) < 0xC) || *(v8 + 1) != 13)
       {
         __assert_rtn("capability_inquiry_view", "capability_inquiry.h", 2486, "validate(sx)");
       }
 
       v9 = v73;
       v10 = +[MIDICIDeviceManager sharedInstance];
-      v11 = [v10 serverMUID];
+      serverMUID = [v10 serverMUID];
 
       v12 = *(v9 + 8);
       if (*(v9 + 16) - v12 <= 7uLL)
@@ -590,7 +590,7 @@ LABEL_78:
 
       os_unfair_recursive_lock_lock_with_options();
       v77 = -9;
-      v16 = [objc_alloc(MEMORY[0x277CBEB28]) initWithBytes:*(a4 + 1) length:*(a4 + 2) - *(a4 + 1)];
+      v16 = [objc_alloc(MEMORY[0x277CBEB28]) initWithBytes:*(ex + 1) length:*(ex + 2) - *(ex + 1)];
       [v16 appendBytes:&v77 length:1];
       if (self->_messageCallback)
       {
@@ -609,7 +609,7 @@ LABEL_78:
         v70 = v9;
         v18 = 1;
         v71 = 1;
-        v72 = v6;
+        v72 = sysexCopy;
         v68 = v16;
         dispatch_sync(callbackQueue, block);
         LOBYTE(callbackQueue) = *(v74 + 24);
@@ -628,16 +628,16 @@ LABEL_78:
       }
 
       v20 = v19[8] | (v19[9] << 7) | (v19[10] << 14) | (v19[11] << 21);
-      if (v20 != 0xFFFFFFF && v20 != self->super._MUID && v20 != v11)
+      if (v20 != 0xFFFFFFF && v20 != self->super._MUID && v20 != serverMUID)
       {
         goto LABEL_14;
       }
 
-      v22 = *a4;
-      if (*a4 == 8257536)
+      v22 = *ex;
+      if (*ex == 8257536)
       {
-        v23 = *(a4 + 1);
-        v24 = *(a4 + 2);
+        v23 = *(ex + 1);
+        v24 = *(ex + 2);
         v25 = v24 - v23;
         v26 = v23[3];
         v27 = 28;
@@ -648,15 +648,15 @@ LABEL_78:
 
         if (v25 >= v27 && v23[1] == 13 && v23[2] == 112)
         {
-          midi::universal_sysex::message_view::message_view(&v64, a4);
-          if (*a4 != 8257536 || (v28 = *(a4 + 1), (*(a4 + 2) - v28) < 0xC) || *(v28 + 1) != 13)
+          midi::universal_sysex::message_view::message_view(&v64, ex);
+          if (*ex != 8257536 || (v28 = *(ex + 1), (*(ex + 2) - v28) < 0xC) || *(v28 + 1) != 13)
           {
             __assert_rtn("capability_inquiry_view", "capability_inquiry.h", 2486, "validate(sx)");
           }
 
           v73 = v64;
           LOBYTE(v74) = 1;
-          v29 = [(MIDICIMutableDevice *)self handleDiscoveryInquiry:v6 view:&v73];
+          v29 = [(MIDICIMutableDevice *)self handleDiscoveryInquiry:sysexCopy view:&v73];
           goto LABEL_76;
         }
 
@@ -671,15 +671,15 @@ LABEL_78:
 
         if (v25 >= v31 && v23[1] == 13 && v23[2] == 113)
         {
-          midi::universal_sysex::message_view::message_view(&v62, a4);
-          if (*a4 != 8257536 || (v32 = *(a4 + 1), (*(a4 + 2) - v32) < 0xC) || *(v32 + 1) != 13)
+          midi::universal_sysex::message_view::message_view(&v62, ex);
+          if (*ex != 8257536 || (v32 = *(ex + 1), (*(ex + 2) - v32) < 0xC) || *(v32 + 1) != 13)
           {
             __assert_rtn("capability_inquiry_view", "capability_inquiry.h", 2486, "validate(sx)");
           }
 
           v64 = v62;
           v65 = 1;
-          v29 = [(MIDICIMutableDevice *)self handleDiscoveryReply:v6 view:&v64];
+          v29 = [(MIDICIMutableDevice *)self handleDiscoveryReply:sysexCopy view:&v64];
           goto LABEL_76;
         }
       }
@@ -695,8 +695,8 @@ LABEL_78:
           goto LABEL_52;
         }
 
-        v23 = *(a4 + 1);
-        v24 = *(a4 + 2);
+        v23 = *(ex + 1);
+        v24 = *(ex + 2);
       }
 
       v33 = v24 - v23;
@@ -712,7 +712,7 @@ LABEL_78:
 
           if (v23[2] == 1)
           {
-            [(MIDICIMutableDevice *)self handleSysExIdentityRequest:v6];
+            [(MIDICIMutableDevice *)self handleSysExIdentityRequest:sysexCopy];
 LABEL_14:
             v18 = 0;
 LABEL_77:
@@ -726,99 +726,99 @@ LABEL_77:
         {
           if (v23[2] == 114)
           {
-            midi::universal_sysex::message_view::message_view(&v60, a4);
-            if (*a4 != 8257536 || (v35 = *(a4 + 1), (*(a4 + 2) - v35) < 0xC) || *(v35 + 1) != 13)
+            midi::universal_sysex::message_view::message_view(&v60, ex);
+            if (*ex != 8257536 || (v35 = *(ex + 1), (*(ex + 2) - v35) < 0xC) || *(v35 + 1) != 13)
             {
               __assert_rtn("capability_inquiry_view", "capability_inquiry.h", 2486, "validate(sx)");
             }
 
             v62 = v60;
             v63 = 1;
-            v29 = [(MIDICIMutableDevice *)self handleEndpointInformationInquiry:v6 view:&v62];
+            v29 = [(MIDICIMutableDevice *)self handleEndpointInformationInquiry:sysexCopy view:&v62];
             goto LABEL_76;
           }
 
 LABEL_53:
-          v36 = *(a4 + 1);
-          v37 = *(a4 + 2) - v36;
+          v36 = *(ex + 1);
+          v37 = *(ex + 2) - v36;
           if (v37 >= 2 && (*(v36 + 1) | (v22 >> 8)) == 0x7E0D && (v22 | 0x10000) == 0x7F0000 && v37 >= 0x10 && *(v36 + 2) == 126)
           {
-            midi::universal_sysex::message_view::message_view(&v58, a4);
-            if (*a4 != 8257536 || (v43 = *(a4 + 1), (*(a4 + 2) - v43) < 0xC) || *(v43 + 1) != 13)
+            midi::universal_sysex::message_view::message_view(&v58, ex);
+            if (*ex != 8257536 || (v43 = *(ex + 1), (*(ex + 2) - v43) < 0xC) || *(v43 + 1) != 13)
             {
               __assert_rtn("capability_inquiry_view", "capability_inquiry.h", 2486, "validate(sx)");
             }
 
             v60 = v58;
             v61 = 1;
-            [(MIDICIMutableDevice *)self handleInvalidateMUID:v6 view:&v60];
+            [(MIDICIMutableDevice *)self handleInvalidateMUID:sysexCopy view:&v60];
             goto LABEL_14;
           }
 
 LABEL_57:
           v60 = 0;
-          v58 = midi::ci::as<midi::ci::nak_view>(a4);
+          v58 = midi::ci::as<midi::ci::nak_view>(ex);
           v59 = v38;
           if (v38)
           {
-            v29 = [(MIDICIMutableDevice *)self handleNAK:v6 view:&v58];
+            v29 = [(MIDICIMutableDevice *)self handleNAK:sysexCopy view:&v58];
           }
 
           else
           {
-            v56 = midi::ci::as<midi::ci::profile_inquiry_view>(a4);
+            v56 = midi::ci::as<midi::ci::profile_inquiry_view>(ex);
             v57 = v39;
             if (v39)
             {
-              v29 = [(MIDICIMutableDevice *)self handleProfileInquiry:v6 view:&v56];
+              v29 = [(MIDICIMutableDevice *)self handleProfileInquiry:sysexCopy view:&v56];
             }
 
             else
             {
-              v54 = midi::ci::as<midi::ci::profile_id_view>(a4);
+              v54 = midi::ci::as<midi::ci::profile_id_view>(ex);
               v55 = v40;
               if (v40)
               {
-                v29 = [(MIDICIMutableDevice *)self handleProfileIDView:v6 view:&v54];
+                v29 = [(MIDICIMutableDevice *)self handleProfileIDView:sysexCopy view:&v54];
               }
 
               else
               {
-                v52 = midi::ci::as<midi::ci::profile_details_inquiry_view>(a4);
+                v52 = midi::ci::as<midi::ci::profile_details_inquiry_view>(ex);
                 v53 = v41;
                 if (v41)
                 {
-                  v29 = [(MIDICIMutableDevice *)self handleProfileDetailsInquiry:v6 view:&v52];
+                  v29 = [(MIDICIMutableDevice *)self handleProfileDetailsInquiry:sysexCopy view:&v52];
                 }
 
                 else
                 {
-                  v50 = midi::ci::as<midi::ci::profile_id_view>(a4);
+                  v50 = midi::ci::as<midi::ci::profile_id_view>(ex);
                   v51 = v42;
                   if (v42)
                   {
-                    v29 = [(MIDICIMutableDevice *)self handleProfileIDView:v6 view:&v50];
+                    v29 = [(MIDICIMutableDevice *)self handleProfileIDView:sysexCopy view:&v50];
                   }
 
                   else
                   {
-                    v48 = midi::ci::as<midi::ci::profile_specific_data_view>(a4);
+                    v48 = midi::ci::as<midi::ci::profile_specific_data_view>(ex);
                     v49 = v44;
                     if (v44)
                     {
-                      v29 = [(MIDICIMutableDevice *)self handleProfileSpecificData:v6 fromDevice:v15 view:&v48];
+                      v29 = [(MIDICIMutableDevice *)self handleProfileSpecificData:sysexCopy fromDevice:v15 view:&v48];
                     }
 
                     else
                     {
-                      property_data = midi::ci::as<midi::ci::get_property_data_view>(a4);
+                      property_data = midi::ci::as<midi::ci::get_property_data_view>(ex);
                       v47 = v45;
                       if ((v45 & 1) == 0)
                       {
                         goto LABEL_14;
                       }
 
-                      v29 = [(MIDICIMutableDevice *)self handleGetProperty:v6 fromDevice:v15 view:&property_data];
+                      v29 = [(MIDICIMutableDevice *)self handleGetProperty:sysexCopy fromDevice:v15 view:&property_data];
                     }
                   }
                 }
@@ -867,22 +867,22 @@ void __41__MIDICIMutableDevice_handleSysex_sysEx___block_invoke(uint64_t a1)
 
 - (void)setupMIDIStreamObjects
 {
-  objc_destroyWeak((a1 + 8));
+  objc_destroyWeak((self + 8));
 
   JUMPOUT(0x2383C8250);
 }
 
-- (BOOL)receiveMessageViaSource:(const void *)a3 error:(id *)a4
+- (BOOL)receiveMessageViaSource:(const void *)source error:(id *)error
 {
-  v7 = [(MIDICIDevice *)self group];
-  v8 = self;
+  group = [(MIDICIDevice *)self group];
+  selfCopy = self;
   v9 = 3;
-  if ((*a3 & 0xFF0000) != 0)
+  if ((*source & 0xFF0000) != 0)
   {
     v9 = 1;
   }
 
-  if (*a3)
+  if (*source)
   {
     v10 = v9;
   }
@@ -892,21 +892,21 @@ void __41__MIDICIMutableDevice_handleSysex_sysEx___block_invoke(uint64_t a1)
     v10 = 0;
   }
 
-  std::vector<unsigned char>::vector[abi:ne200100](&__p, ((2 * (((v10 + *(a3 + 2) - *(a3 + 1)) * 0xAAAAAAAAAAAAAAABLL) >> 64)) & 0xFFFFFFFFFFFFFFF8) + 28);
+  std::vector<unsigned char>::vector[abi:ne200100](&__p, ((2 * (((v10 + *(source + 2) - *(source + 1)) * 0xAAAAAAAAAAAAAAABLL) >> 64)) & 0xFFFFFFFFFFFFFFF8) + 28);
   v11 = __p;
   evtlist[0] = __p;
   evtlist[1] = (v28 - __p);
   *__p = 1;
   evtlist[2] = (v11 + 8);
   *(v11 + 4) = 0;
-  if (v7 >= 0x10)
+  if (group >= 0x10)
   {
     __assert_rtn("set_group", "universal_packet.h", 414, "c < 16");
   }
 
-  v12 = *a3;
+  v12 = *source;
   v13 = 3;
-  if ((*a3 & 0xFF0000) != 0)
+  if ((*source & 0xFF0000) != 0)
   {
     v13 = 1;
   }
@@ -916,24 +916,24 @@ void __41__MIDICIMutableDevice_handleSysex_sysEx___block_invoke(uint64_t a1)
     v13 = 0;
   }
 
-  v14 = (v13 + *(a3 + 2) - *(a3 + 1)) >= 7;
+  v14 = (v13 + *(source + 2) - *(source + 1)) >= 7;
   v15 = 806354944;
   if (!v14)
   {
     v15 = 805306368;
   }
 
-  v29 = v15 | (v7 << 24);
+  v29 = v15 | (group << 24);
   v30 = 0;
   midi::sysex7_packet::add_payload_byte(&v29, BYTE2(v12) & 0x7F);
-  if (*a3)
+  if (*source)
   {
-    midi::sysex7_packet::add_payload_byte(&v29, BYTE1(*a3) & 0x7F);
-    midi::sysex7_packet::add_payload_byte(&v29, *a3 & 0x7F);
+    midi::sysex7_packet::add_payload_byte(&v29, BYTE1(*source) & 0x7F);
+    midi::sysex7_packet::add_payload_byte(&v29, *source & 0x7F);
   }
 
-  v18 = a3 + 8;
-  v16 = *(a3 + 1);
+  v18 = source + 8;
+  v16 = *(source + 1);
   v17 = *(v18 + 1);
   if (v16 == v17)
   {
@@ -942,7 +942,7 @@ void __41__MIDICIMutableDevice_handleSysex_sysEx___block_invoke(uint64_t a1)
 
   else
   {
-    v19 = v7 << 24;
+    v19 = group << 24;
     v20 = &v17[~v16];
     do
     {
@@ -978,17 +978,17 @@ void __41__MIDICIMutableDevice_handleSysex_sysEx___block_invoke(uint64_t a1)
     SysexMessageToEventList<[MIDICIMutableDevice receiveMessageViaSource:error:]::$_2>(unsigned char,midi::sysex7 const&,[MIDICIMutableDevice receiveMessageViaSource:error:]::$_2)::{lambda(midi::data_message const&)#1}::operator()(evtlist, &v29);
   }
 
-  v23 = MIDIReceivedEventList(v8->super._MIDISource, evtlist[0]);
+  v23 = MIDIReceivedEventList(selfCopy->super._MIDISource, evtlist[0]);
   if (__p)
   {
     v28 = __p;
     operator delete(__p);
   }
 
-  if (a4 && v23)
+  if (error && v23)
   {
     v24 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:v23 userInfo:0];
-    *a4 = v24;
+    *error = v24;
   }
 
   return v23 == 0;
@@ -1140,11 +1140,11 @@ LABEL_43:
   return result;
 }
 
-- (BOOL)setProfile:(id)a3 newState:(BOOL)a4 enabledChannelCount:(unsigned __int16)a5 error:(id *)a6
+- (BOOL)setProfile:(id)profile newState:(BOOL)state enabledChannelCount:(unsigned __int16)count error:(id *)error
 {
-  v7 = a4;
+  stateCopy = state;
   v29 = *MEMORY[0x277D85DE8];
-  v9 = a3;
+  profileCopy = profile;
   os_unfair_recursive_lock_lock_with_options();
   v26 = 0u;
   v27 = 0u;
@@ -1164,14 +1164,14 @@ LABEL_43:
           objc_enumerationMutation(v10);
         }
 
-        if (*(*(&v24 + 1) + 8 * i) == v9)
+        if (*(*(&v24 + 1) + 8 * i) == profileCopy)
         {
 
-          v15 = [v9 profileID];
-          __src = v15;
-          v22 = BYTE4(v15);
+          profileID = [profileCopy profileID];
+          __src = profileID;
+          v22 = BYTE4(profileID);
           MUID = self->super._MUID;
-          if (v7)
+          if (stateCopy)
           {
             midi::ci::message::make_with_payload_size(v18, 5, 36, MUID, 0xFFFFFFFu, 127);
           }
@@ -1182,7 +1182,7 @@ LABEL_43:
           }
 
           std::vector<unsigned char>::__insert_with_size[abi:ne200100]<unsigned char const*,unsigned char const*>(&__p, __dst, &__src, v23, 5);
-          LOBYTE(a6) = [(MIDICIMutableDevice *)self receiveMessageViaSource:v18 error:a6];
+          LOBYTE(error) = [(MIDICIMutableDevice *)self receiveMessageViaSource:v18 error:error];
           if (__p)
           {
             __dst = __p;
@@ -1203,59 +1203,59 @@ LABEL_43:
     }
   }
 
-  if (a6)
+  if (error)
   {
     v14 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:-10842 userInfo:0];
-    *a6 = v14;
+    *error = v14;
 
-    LOBYTE(a6) = 0;
+    LOBYTE(error) = 0;
   }
 
 LABEL_16:
   os_unfair_recursive_lock_unlock();
 
-  return a6;
+  return error;
 }
 
-- (BOOL)sendMessageToCIDevice:(id)a3 withSubType:(unsigned __int8)a4 deviceID:(unsigned __int8)a5 data:(id)a6 error:(id *)a7
+- (BOOL)sendMessageToCIDevice:(id)device withSubType:(unsigned __int8)type deviceID:(unsigned __int8)d data:(id)data error:(id *)error
 {
-  v11 = a3;
-  v12 = a6;
-  midi::ci::message::message(&v14, a4, self->super._MUID, [v11 MUID], a5);
+  deviceCopy = device;
+  dataCopy = data;
+  midi::ci::message::message(&v14, type, self->super._MUID, [deviceCopy MUID], d);
 }
 
-- (BOOL)setResourceList:(id)a3 error:(id *)a4
+- (BOOL)setResourceList:(id)list error:(id *)error
 {
-  v6 = a3;
+  listCopy = list;
   os_unfair_recursive_lock_lock_with_options();
-  v7 = [MEMORY[0x277CBEA60] arrayWithArray:v6];
+  v7 = [MEMORY[0x277CBEA60] arrayWithArray:listCopy];
   resourceList = self->super._resourceList;
   self->super._resourceList = v7;
 
   os_unfair_recursive_lock_unlock();
-  v9 = [(MIDICIDevice *)self serializeDescription];
-  v10 = UMPCIObjectSetDescription([(MIDICIDevice *)self objectRef], v9);
+  serializeDescription = [(MIDICIDevice *)self serializeDescription];
+  v10 = UMPCIObjectSetDescription([(MIDICIDevice *)self objectRef], serializeDescription);
   v11 = v10;
-  if (a4 && v10)
+  if (error && v10)
   {
     v12 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:-10844 userInfo:0];
-    *a4 = v12;
+    *error = v12;
   }
 
   return v11 == 0;
 }
 
-- (id)findProfile:(profile_id)a3
+- (id)findProfile:(profile_id)profile
 {
-  v3 = *&a3.var0;
+  v3 = *&profile.var0;
   v17 = *MEMORY[0x277D85DE8];
   os_unfair_recursive_lock_lock_with_options();
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(MIDICIDevice *)self profiles];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  profiles = [(MIDICIDevice *)self profiles];
+  v6 = [profiles countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = *v13;
@@ -1266,7 +1266,7 @@ LABEL_16:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(profiles);
         }
 
         v10 = *(*(&v12 + 1) + 8 * i);
@@ -1277,7 +1277,7 @@ LABEL_16:
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [profiles countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v6)
       {
         continue;
@@ -1294,10 +1294,10 @@ LABEL_11:
   return v6;
 }
 
-- (BOOL)removeProfile:(id)a3 error:(id *)a4
+- (BOOL)removeProfile:(id)profile error:(id *)error
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  profileCopy = profile;
   os_unfair_recursive_lock_lock_with_options();
   v7 = [(NSArray *)self->super._profiles mutableCopy];
   v25 = 0u;
@@ -1318,22 +1318,22 @@ LABEL_11:
           objc_enumerationMutation(v8);
         }
 
-        if (*(*(&v23 + 1) + 8 * i) == v6)
+        if (*(*(&v23 + 1) + 8 * i) == profileCopy)
         {
 
-          [v8 removeObject:v6];
+          [v8 removeObject:profileCopy];
           v13 = [v8 copy];
           profiles = self->super._profiles;
           self->super._profiles = v13;
 
           if (self->super._isEnabled)
           {
-            v15 = [v6 profileID];
-            __src = v15;
-            v21 = BYTE4(v15);
+            profileID = [profileCopy profileID];
+            __src = profileID;
+            v21 = BYTE4(profileID);
             midi::ci::message::make_with_payload_size(v17, 5, 39, self->super._MUID, 0xFFFFFFFu, 127);
             std::vector<unsigned char>::__insert_with_size[abi:ne200100]<unsigned char const*,unsigned char const*>(&__p, __dst, &__src, v22, 5);
-            LOBYTE(a4) = [(MIDICIMutableDevice *)self receiveMessageViaSource:v17 error:a4];
+            LOBYTE(error) = [(MIDICIMutableDevice *)self receiveMessageViaSource:v17 error:error];
             if (__p)
             {
               __dst = __p;
@@ -1343,7 +1343,7 @@ LABEL_11:
 
           else
           {
-            LOBYTE(a4) = 1;
+            LOBYTE(error) = 1;
           }
 
           goto LABEL_15;
@@ -1360,39 +1360,39 @@ LABEL_11:
     }
   }
 
-  if (a4)
+  if (error)
   {
     v12 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:-10842 userInfo:0];
-    *a4 = v12;
+    *error = v12;
 
-    LOBYTE(a4) = 0;
+    LOBYTE(error) = 0;
   }
 
 LABEL_15:
 
   os_unfair_recursive_lock_unlock();
-  return a4;
+  return error;
 }
 
-- (BOOL)addProfile:(id)a3 error:(id *)a4
+- (BOOL)addProfile:(id)profile error:(id *)error
 {
-  v6 = a3;
+  profileCopy = profile;
   os_unfair_recursive_lock_lock_with_options();
   v7 = [(NSArray *)self->super._profiles mutableCopy];
-  [v7 addObject:v6];
-  [v6 registerToDevice:self];
+  [v7 addObject:profileCopy];
+  [profileCopy registerToDevice:self];
   v8 = [v7 copy];
   profiles = self->super._profiles;
   self->super._profiles = v8;
 
   if (self->super._isEnabled)
   {
-    v10 = [v6 profileID];
-    __src = v10;
-    v17 = BYTE4(v10);
+    profileID = [profileCopy profileID];
+    __src = profileID;
+    v17 = BYTE4(profileID);
     midi::ci::message::make_with_payload_size(v13, 5, 38, self->super._MUID, 0xFFFFFFFu, 127);
     std::vector<unsigned char>::__insert_with_size[abi:ne200100]<unsigned char const*,unsigned char const*>(&__p, __dst, &__src, v18, 5);
-    v11 = [(MIDICIMutableDevice *)self receiveMessageViaSource:v13 error:a4];
+    v11 = [(MIDICIMutableDevice *)self receiveMessageViaSource:v13 error:error];
     if (__p)
     {
       __dst = __p;
@@ -1409,33 +1409,33 @@ LABEL_15:
   return v11;
 }
 
-- (BOOL)setEnabled:(BOOL)a3 error:(id *)a4
+- (BOOL)setEnabled:(BOOL)enabled error:(id *)error
 {
-  v5 = a3;
+  enabledCopy = enabled;
   os_unfair_recursive_lock_lock_with_options();
   objectRef = self->super._objectRef;
   if (objectRef)
   {
 LABEL_4:
-    v8 = UMPCIObjectSetEnableState(objectRef, v5);
+    v8 = UMPCIObjectSetEnableState(objectRef, enabledCopy);
     if (v8)
     {
-      if (a4)
+      if (error)
       {
         v9 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:v8 userInfo:0];
 LABEL_10:
         v10 = v9;
-        *a4 = v10;
+        *error = v10;
 
-        LOBYTE(a4) = 0;
+        LOBYTE(error) = 0;
         goto LABEL_11;
       }
     }
 
     else
     {
-      self->super._isEnabled = v5;
-      LOBYTE(a4) = 1;
+      self->super._isEnabled = enabledCopy;
+      LOBYTE(error) = 1;
     }
 
     goto LABEL_11;
@@ -1447,7 +1447,7 @@ LABEL_10:
     goto LABEL_4;
   }
 
-  if (a4)
+  if (error)
   {
     v9 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:-10844 userInfo:0];
     goto LABEL_10;
@@ -1455,7 +1455,7 @@ LABEL_10:
 
 LABEL_11:
   os_unfair_recursive_lock_unlock();
-  return a4;
+  return error;
 }
 
 - (BOOL)registerWithServer
@@ -1463,9 +1463,9 @@ LABEL_11:
   v42 = *MEMORY[0x277D85DE8];
   v39.receiver = self;
   v39.super_class = MIDICIMutableDevice;
-  v24 = [(MIDICIDevice *)&v39 serializeDescription];
+  serializeDescription = [(MIDICIDevice *)&v39 serializeDescription];
   v38 = 0;
-  if (UMPCIObjectCreate(4, v24, &v38))
+  if (UMPCIObjectCreate(4, serializeDescription, &v38))
   {
     v2 = 0;
   }
@@ -1545,8 +1545,8 @@ LABEL_11:
                   }
 
                   v17 = *(*(&v27 + 1) + 8 * j);
-                  v18 = [v17 profileID];
-                  if (v18 == v31 && BYTE4(v18) == v32)
+                  profileID = [v17 profileID];
+                  if (profileID == v31 && BYTE4(profileID) == v32)
                   {
                     [v17 setObjectRef:{objc_msgSend(v8, "unsignedIntValue")}];
 
@@ -1607,14 +1607,14 @@ LABEL_30:
   [(MIDICIMutableDevice *)&v6 dealloc];
 }
 
-- (MIDICIMutableDevice)initWithUMPEndpointPair:(id)a3 functionBlock:(id)a4 capabilities:(unsigned __int8)a5 sysExSizeLimit:(unint64_t)a6 maxPERequests:(unint64_t)a7 queue:(id)a8 profileSpecificDataCallback:(id)a9 messageCallback:(id)a10
+- (MIDICIMutableDevice)initWithUMPEndpointPair:(id)pair functionBlock:(id)block capabilities:(unsigned __int8)capabilities sysExSizeLimit:(unint64_t)limit maxPERequests:(unint64_t)requests queue:(id)queue profileSpecificDataCallback:(id)callback messageCallback:(id)self0
 {
-  v13 = a5;
-  v17 = a3;
-  v43 = a4;
-  v42 = a8;
-  aBlock = a9;
-  v44 = a10;
+  capabilitiesCopy = capabilities;
+  pairCopy = pair;
+  blockCopy = block;
+  queueCopy = queue;
+  aBlock = callback;
+  messageCallbackCopy = messageCallback;
   if (CheckVirtualEndpointCreation(void)::virtualEndpointsAllowed < 0)
   {
     CheckVirtualEndpointCreation(void)::virtualEndpointsAllowed = 0;
@@ -1627,7 +1627,7 @@ LABEL_30:
     else if (!CheckVirtualEndpointCreation(void)::virtualEndpointsAllowed)
     {
 LABEL_11:
-      v40 = 0;
+      selfCopy = 0;
       goto LABEL_12;
     }
   }
@@ -1637,37 +1637,37 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  objc_storeStrong(&self->_callbackQueue, a8);
+  objc_storeStrong(&self->_callbackQueue, queue);
   v22 = MUIDGenerator::instance([(MIDICIMutableDevice *)self setupMIDIStreamObjects]);
   v23 = MUIDGenerator::operator()(v22);
   self->super._MUID = v23;
   UMPCIClients::instance(v23);
   self->super._ownerClientRef = UMPCIClients::instance(void)::all;
-  v24 = *&vshl_u16(vdup_n_s16(v13), 0xFFFCFFFDFFFEFFFFLL) & 0xFF01FF01FF01FF01;
+  v24 = *&vshl_u16(vdup_n_s16(capabilitiesCopy), 0xFFFCFFFDFFFEFFFFLL) & 0xFF01FF01FF01FF01;
   *&self->super._supportsProtocolNegotiation = vuzp1_s8(v24, v24).u32[0];
-  self->super._maxSysExSize = a6;
-  self->super._maxPropertyExchangeRequests = a7;
+  self->super._maxSysExSize = limit;
+  self->super._maxPropertyExchangeRequests = requests;
   v25 = _Block_copy(aBlock);
   profileSpecificDataCallback = self->_profileSpecificDataCallback;
   self->_profileSpecificDataCallback = v25;
 
-  v27 = _Block_copy(v44);
+  v27 = _Block_copy(messageCallbackCopy);
   messageCallback = self->_messageCallback;
   self->_messageCallback = v27;
 
-  self->super._MIDISource = [v17 MIDISource];
-  self->super._MIDIDestination = [v17 MIDIDestination];
-  v29 = [v17 deviceInfo];
+  self->super._MIDISource = [pairCopy MIDISource];
+  self->super._MIDIDestination = [pairCopy MIDIDestination];
+  deviceInfo = [pairCopy deviceInfo];
   deviceInfo = self->super._deviceInfo;
-  self->super._deviceInfo = v29;
+  self->super._deviceInfo = deviceInfo;
 
-  objc_storeStrong(&self->super._endpoint, a3);
+  objc_storeStrong(&self->super._endpoint, pair);
   v31 = objc_opt_new();
   profiles = self->super._profiles;
   self->super._profiles = v31;
 
-  -[MIDICIDevice setGroup:](self, "setGroup:", [v43 firstGroup]);
-  v33 = [v17 receiveBlock];
+  -[MIDICIDevice setGroup:](self, "setGroup:", [blockCopy firstGroup]);
+  receiveBlock = [pairCopy receiveBlock];
   ptr = self->_messenger.__ptr_;
   v35 = self->_sysexCollector.__ptr_;
   v47[0] = MEMORY[0x277D85DD0];
@@ -1676,21 +1676,21 @@ LABEL_11:
   v47[3] = &unk_278A28778;
   v49 = ptr;
   v50 = v35;
-  v36 = v33;
+  v36 = receiveBlock;
   v48 = v36;
   v37 = _Block_copy(v47);
   v46 = _Block_copy(v37);
-  [v17 setReceiveTapBlock:&v46];
+  [pairCopy setReceiveTapBlock:&v46];
   v38 = v46;
   v46 = 0;
 
   v39 = +[MIDICIDeviceManager sharedInstance];
   [v39 addMutableDevice:self];
 
-  v40 = self;
+  selfCopy = self;
 LABEL_12:
 
-  return v40;
+  return selfCopy;
 }
 
 uint64_t __153__MIDICIMutableDevice_initWithUMPEndpointPair_functionBlock_capabilities_sysExSizeLimit_maxPERequests_queue_profileSpecificDataCallback_messageCallback___block_invoke(uint64_t a1, uint64_t a2)

@@ -1,25 +1,25 @@
 @interface BMHealthKitWorkoutEvent_v1
-- (BMHealthKitWorkoutEvent_v1)initWithProto:(id)a3;
+- (BMHealthKitWorkoutEvent_v1)initWithProto:(id)proto;
 @end
 
 @implementation BMHealthKitWorkoutEvent_v1
 
-- (BMHealthKitWorkoutEvent_v1)initWithProto:(id)a3
+- (BMHealthKitWorkoutEvent_v1)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (v4)
+  protoCopy = proto;
+  if (protoCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [v5 isFirstPartyDonation];
-      v7 = [v5 isIndoor];
-      v8 = [v5 activityType];
-      v9 = [v5 activityUUID];
-      v10 = [v5 eventType];
-      v11 = v10;
-      if (v10 >= 5)
+      v5 = protoCopy;
+      isFirstPartyDonation = [v5 isFirstPartyDonation];
+      isIndoor = [v5 isIndoor];
+      activityType = [v5 activityType];
+      activityUUID = [v5 activityUUID];
+      eventType = [v5 eventType];
+      v11 = eventType;
+      if (eventType >= 5)
       {
         v14 = __biome_log_for_category();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -32,12 +32,12 @@
 
       else
       {
-        v12 = qword_184D27A18[v10];
+        v12 = qword_184D27A18[eventType];
       }
 
-      self = [(BMHealthKitWorkoutEvent *)self initWithIsFirstPartyDonation:v6 isIndoor:v7 activityType:v8 activityUUID:v9 eventType:v12 isUpdate:[v5 isUpdate]];
+      self = [(BMHealthKitWorkoutEvent *)self initWithIsFirstPartyDonation:isFirstPartyDonation isIndoor:isIndoor activityType:activityType activityUUID:activityUUID eventType:v12 isUpdate:[v5 isUpdate]];
 
-      v13 = self;
+      selfCopy = self;
     }
 
     else
@@ -48,16 +48,16 @@
         [BMHealthKitWorkoutEvent initWithProto:];
       }
 
-      v13 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v13 = 0;
+    selfCopy = 0;
   }
 
-  return v13;
+  return selfCopy;
 }
 
 @end

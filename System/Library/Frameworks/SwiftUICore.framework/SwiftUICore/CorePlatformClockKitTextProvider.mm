@@ -1,15 +1,15 @@
 @interface CorePlatformClockKitTextProvider
-- (BOOL)isEqual:(id)a3;
-- (CorePlatformClockKitTextProvider)initWithProvider:(id)a3;
-- (id)attributedTextAndSize:(CGSize *)a3 forMaxWidth:(double)a4 font:(__CTFont *)a5 smallFont:(__CTFont *)a6 upperCase:(BOOL)a7 luminanceReduced:(BOOL)a8 now:(id)a9;
+- (BOOL)isEqual:(id)equal;
+- (CorePlatformClockKitTextProvider)initWithProvider:(id)provider;
+- (id)attributedTextAndSize:(CGSize *)size forMaxWidth:(double)width font:(__CTFont *)font smallFont:(__CTFont *)smallFont upperCase:(BOOL)case luminanceReduced:(BOOL)reduced now:(id)now;
 - (int64_t)updateFrequency;
 @end
 
 @implementation CorePlatformClockKitTextProvider
 
-- (CorePlatformClockKitTextProvider)initWithProvider:(id)a3
+- (CorePlatformClockKitTextProvider)initWithProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v9.receiver = self;
   v9.super_class = CorePlatformClockKitTextProvider;
   v6 = [(CorePlatformClockKitTextProvider *)&v9 init];
@@ -21,7 +21,7 @@
       goto LABEL_7;
     }
 
-    objc_storeStrong(&v6->_provider, a3);
+    objc_storeStrong(&v6->_provider, provider);
   }
 
   v7 = v6;
@@ -30,15 +30,15 @@ LABEL_7:
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     provider = self->_provider;
-    v6 = [v4 provider];
-    v7 = [(SwiftUI_CLKTextProvider *)provider isEqual:v6];
+    provider = [equalCopy provider];
+    v7 = [(SwiftUI_CLKTextProvider *)provider isEqual:provider];
   }
 
   else
@@ -51,21 +51,21 @@ LABEL_7:
 
 - (int64_t)updateFrequency
 {
-  v2 = [(CorePlatformClockKitTextProvider *)self provider];
-  v3 = [v2 updateFrequency];
+  provider = [(CorePlatformClockKitTextProvider *)self provider];
+  updateFrequency = [provider updateFrequency];
 
-  return v3;
+  return updateFrequency;
 }
 
-- (id)attributedTextAndSize:(CGSize *)a3 forMaxWidth:(double)a4 font:(__CTFont *)a5 smallFont:(__CTFont *)a6 upperCase:(BOOL)a7 luminanceReduced:(BOOL)a8 now:(id)a9
+- (id)attributedTextAndSize:(CGSize *)size forMaxWidth:(double)width font:(__CTFont *)font smallFont:(__CTFont *)smallFont upperCase:(BOOL)case luminanceReduced:(BOOL)reduced now:(id)now
 {
-  v9 = a8;
-  v10 = a7;
+  reducedCopy = reduced;
+  caseCopy = case;
   v16 = MEMORY[0x1E69E58C0];
-  v17 = a9;
-  v18 = [v16 _clockKitProvider_StyleWithFont:a5 smallFont:a6 uppercase:v10 luminanceReduced:v9];
-  v19 = [(CorePlatformClockKitTextProvider *)self provider];
-  v20 = [v19 attributedTextAndSize:a3 forMaxWidth:v18 withStyle:v17 now:a4];
+  nowCopy = now;
+  v18 = [v16 _clockKitProvider_StyleWithFont:font smallFont:smallFont uppercase:caseCopy luminanceReduced:reducedCopy];
+  provider = [(CorePlatformClockKitTextProvider *)self provider];
+  v20 = [provider attributedTextAndSize:size forMaxWidth:v18 withStyle:nowCopy now:width];
 
   return v20;
 }

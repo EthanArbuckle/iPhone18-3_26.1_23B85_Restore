@@ -1,26 +1,26 @@
 @interface HDHealthRecordRulesetResource
-+ (id)resourceFromDictionary:(id)a3 resourceName:(id)a4 error:(id *)a5;
++ (id)resourceFromDictionary:(id)dictionary resourceName:(id)name error:(id *)error;
 @end
 
 @implementation HDHealthRecordRulesetResource
 
-+ (id)resourceFromDictionary:(id)a3 resourceName:(id)a4 error:(id *)a5
++ (id)resourceFromDictionary:(id)dictionary resourceName:(id)name error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  dictionaryCopy = dictionary;
+  nameCopy = name;
   v9 = objc_alloc_init(HDHealthRecordRulesetResource);
   if (!v9)
   {
-    [MEMORY[0x277CCA9B8] hk_assignError:a5 code:100 format:@"Couldn't construct ruleset resource - init failed"];
+    [MEMORY[0x277CCA9B8] hk_assignError:error code:100 format:@"Couldn't construct ruleset resource - init failed"];
     v19 = 0;
     goto LABEL_55;
   }
 
-  v10 = [v8 copy];
+  v10 = [nameCopy copy];
   resourceName = v9->_resourceName;
   v9->_resourceName = v10;
 
-  v12 = [v7 hk_safeValueForKeyPath:@"clinicalType" class:objc_opt_class() error:a5];
+  v12 = [dictionaryCopy hk_safeValueForKeyPath:@"clinicalType" class:objc_opt_class() error:error];
   if (v12)
   {
     v13 = [[HDHealthRecordClinicalType alloc] initWithClinicalTypeName:v12];
@@ -30,16 +30,16 @@
     if (v9->_clinicalType)
     {
       v61 = 0;
-      v15 = [v7 hk_safeArrayIfExistsForKeyPath:@"containReferences" error:&v61];
+      v15 = [dictionaryCopy hk_safeArrayIfExistsForKeyPath:@"containReferences" error:&v61];
       v16 = v61;
       v17 = v16;
       if (!v15 && v16)
       {
-        if (a5)
+        if (error)
         {
           v18 = v16;
           v19 = 0;
-          *a5 = v17;
+          *error = v17;
         }
 
         else
@@ -54,16 +54,16 @@
       objc_storeStrong(&v9->_containReferences, v15);
 
       v60 = 0;
-      v20 = [v7 hk_safeValueIfExistsForKeyPath:@"apiContainedReferenceRules" class:objc_opt_class() error:&v60];
+      v20 = [dictionaryCopy hk_safeValueIfExistsForKeyPath:@"apiContainedReferenceRules" class:objc_opt_class() error:&v60];
       v21 = v60;
       v17 = v21;
       if (!v20 && v21)
       {
-        if (a5)
+        if (error)
         {
           v22 = v21;
           v19 = 0;
-          *a5 = v17;
+          *error = v17;
 LABEL_52:
 
 LABEL_53:
@@ -78,7 +78,7 @@ LABEL_30:
 
       if ([v20 count])
       {
-        v23 = [HDHealthRecordRulesetReferenceRule referenceRulesetsForRules:v20 error:a5];
+        v23 = [HDHealthRecordRulesetReferenceRule referenceRulesetsForRules:v20 error:error];
         if (!v23)
         {
           goto LABEL_30;
@@ -90,17 +90,17 @@ LABEL_30:
 
       v52 = v20;
       v59 = v17;
-      v25 = [v7 hk_safeArrayIfExistsForKeyPath:@"retrieveReferences" error:&v59];
+      v25 = [dictionaryCopy hk_safeArrayIfExistsForKeyPath:@"retrieveReferences" error:&v59];
       v26 = v59;
 
       v27 = v25;
       if (!v25 && v26)
       {
-        if (a5)
+        if (error)
         {
           v28 = v26;
           v19 = 0;
-          *a5 = v26;
+          *error = v26;
         }
 
         else
@@ -115,7 +115,7 @@ LABEL_30:
       v51 = v25;
       objc_storeStrong(&v9->_retrieveReferences, v25);
       v58 = v26;
-      v29 = [v7 hk_safeArrayForKeyPath:@"displayNameKeyPaths" error:&v58];
+      v29 = [dictionaryCopy hk_safeArrayForKeyPath:@"displayNameKeyPaths" error:&v58];
       v30 = v58;
 
       if (v29)
@@ -125,11 +125,11 @@ LABEL_30:
 
       else if (v30)
       {
-        if (a5)
+        if (error)
         {
           v40 = v30;
           v19 = 0;
-          *a5 = v30;
+          *error = v30;
         }
 
         else
@@ -151,7 +151,7 @@ LABEL_51:
 
       v50 = v29;
       v57 = v30;
-      v31 = [v7 hk_safeDictionaryIfExistsForKeyPath:@"redactionRules" error:&v57];
+      v31 = [dictionaryCopy hk_safeDictionaryIfExistsForKeyPath:@"redactionRules" error:&v57];
       v32 = v57;
 
       v33 = v31;
@@ -160,7 +160,7 @@ LABEL_51:
         v49 = v31;
         objc_storeStrong(&v9->_redactionRules, v31);
         v56 = v32;
-        v35 = [v7 hk_safeValueForKeyPath:@"properties" class:objc_opt_class() error:&v56];
+        v35 = [dictionaryCopy hk_safeValueForKeyPath:@"properties" class:objc_opt_class() error:&v56];
         v36 = v56;
 
         medicalRecordProperties = v9->_medicalRecordProperties;
@@ -170,7 +170,7 @@ LABEL_51:
         {
 
           v55 = 0;
-          v38 = [v7 hk_safeValueForKeyPath:@"resourcePath" class:objc_opt_class() error:&v55];
+          v38 = [dictionaryCopy hk_safeValueForKeyPath:@"resourcePath" class:objc_opt_class() error:&v55];
           v39 = v55;
           v32 = v39;
           if (v38 || !v39)
@@ -182,7 +182,7 @@ LABEL_51:
 
             else
             {
-              v41 = v8;
+              v41 = nameCopy;
             }
 
             v42 = [v41 copy];
@@ -190,7 +190,7 @@ LABEL_51:
             v9->_resourceType = v42;
 
             v54 = 0;
-            v44 = [v7 hk_safeValueForKeyPath:@"condition" class:objc_opt_class() error:&v54];
+            v44 = [dictionaryCopy hk_safeValueForKeyPath:@"condition" class:objc_opt_class() error:&v54];
             v32 = v54;
             if (v44)
             {
@@ -210,7 +210,7 @@ LABEL_51:
 
           else
           {
-            [MEMORY[0x277CCA9B8] hk_assignError:a5 code:3 description:@"resource must have resourcePath" underlyingError:v39];
+            [MEMORY[0x277CCA9B8] hk_assignError:error code:3 description:@"resource must have resourcePath" underlyingError:v39];
             v19 = 0;
             v33 = v49;
           }
@@ -218,18 +218,18 @@ LABEL_51:
 
         else
         {
-          [MEMORY[0x277CCA9B8] hk_assignError:a5 code:3 description:@"resource properties must be non-empty" underlyingError:v36];
+          [MEMORY[0x277CCA9B8] hk_assignError:error code:3 description:@"resource properties must be non-empty" underlyingError:v36];
           v19 = 0;
           v32 = v36;
           v33 = v49;
         }
       }
 
-      else if (a5)
+      else if (error)
       {
         v34 = v32;
         v19 = 0;
-        *a5 = v32;
+        *error = v32;
       }
 
       else
@@ -243,7 +243,7 @@ LABEL_51:
       goto LABEL_50;
     }
 
-    [MEMORY[0x277CCA9B8] hk_assignError:a5 code:100 format:{@"Couldn't construct ruleset resource for unknown clinical type %@", v12}];
+    [MEMORY[0x277CCA9B8] hk_assignError:error code:100 format:{@"Couldn't construct ruleset resource for unknown clinical type %@", v12}];
   }
 
   v19 = 0;

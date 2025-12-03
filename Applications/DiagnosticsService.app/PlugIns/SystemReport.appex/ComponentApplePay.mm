@@ -1,6 +1,6 @@
 @interface ComponentApplePay
 - (BOOL)isPresent;
-- (void)populateAttributes:(id)a3;
+- (void)populateAttributes:(id)attributes;
 @end
 
 @implementation ComponentApplePay
@@ -18,9 +18,9 @@
   return v4 != 0;
 }
 
-- (void)populateAttributes:(id)a3
+- (void)populateAttributes:(id)attributes
 {
-  v3 = a3;
+  attributesCopy = attributes;
   if (objc_opt_class())
   {
     v7 = 0;
@@ -28,19 +28,19 @@
     v5 = v7;
     if (v5)
     {
-      v6 = DiagnosticLogHandleForCategory();
-      if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
+      serialNumber = DiagnosticLogHandleForCategory();
+      if (os_log_type_enabled(serialNumber, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
         v9 = v5;
-        _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Failed to get secure element serial with error %@", buf, 0xCu);
+        _os_log_impl(&_mh_execute_header, serialNumber, OS_LOG_TYPE_INFO, "Failed to get secure element serial with error %@", buf, 0xCu);
       }
     }
 
     else
     {
-      v6 = [v4 serialNumber];
-      [v3 setObject:v6 forKeyedSubscript:@"serialNumber"];
+      serialNumber = [v4 serialNumber];
+      [attributesCopy setObject:serialNumber forKeyedSubscript:@"serialNumber"];
     }
   }
 

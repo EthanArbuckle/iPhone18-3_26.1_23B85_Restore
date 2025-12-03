@@ -1,7 +1,7 @@
 @interface UICollectionViewCell
 - (BOOL)maps_suppressBackgroundColors;
 - (void)_maps_setCollectionViewCellBackgroundConfiguration;
-- (void)setMaps_suppressBackgroundColors:(BOOL)a3;
+- (void)setMaps_suppressBackgroundColors:(BOOL)colors;
 @end
 
 @implementation UICollectionViewCell
@@ -22,14 +22,14 @@
 - (BOOL)maps_suppressBackgroundColors
 {
   v2 = objc_getAssociatedObject(self, &unk_10195D078);
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-- (void)setMaps_suppressBackgroundColors:(BOOL)a3
+- (void)setMaps_suppressBackgroundColors:(BOOL)colors
 {
-  v4 = [NSNumber numberWithBool:a3];
+  v4 = [NSNumber numberWithBool:colors];
   objc_setAssociatedObject(self, &unk_10195D078, v4, 1);
 
   [(UICollectionViewCell *)self setNeedsUpdateConfiguration];

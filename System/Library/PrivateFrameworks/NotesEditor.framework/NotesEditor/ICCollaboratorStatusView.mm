@@ -1,13 +1,13 @@
 @interface ICCollaboratorStatusView
-- (ICCollaboratorStatusView)initWithCoder:(id)a3;
-- (ICCollaboratorStatusView)initWithFrame:(CGRect)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (ICCollaboratorStatusView)initWithCoder:(id)coder;
+- (ICCollaboratorStatusView)initWithFrame:(CGRect)frame;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (void)didMoveToWindow;
 @end
 
 @implementation ICCollaboratorStatusView
 
-- (ICCollaboratorStatusView)initWithCoder:(id)a3
+- (ICCollaboratorStatusView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR___ICCollaboratorStatusView_hasDisplayedInWindow) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR___ICCollaboratorStatusView_avatarView) = 0;
@@ -19,15 +19,15 @@
   return result;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = test.y;
+  x = test.x;
   v13.receiver = self;
   v13.super_class = type metadata accessor for CollaboratorStatusView();
   v7 = v13.receiver;
-  v8 = a4;
-  v9 = [(ICCollaboratorStatusView *)&v13 hitTest:v8 withEvent:x, y];
+  eventCopy = event;
+  v9 = [(ICCollaboratorStatusView *)&v13 hitTest:eventCopy withEvent:x, y];
   if (!v9)
   {
 
@@ -52,11 +52,11 @@ LABEL_5:
 
 - (void)didMoveToWindow
 {
-  v2 = self;
+  selfCopy = self;
   sub_21537B8C0();
 }
 
-- (ICCollaboratorStatusView)initWithFrame:(CGRect)a3
+- (ICCollaboratorStatusView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

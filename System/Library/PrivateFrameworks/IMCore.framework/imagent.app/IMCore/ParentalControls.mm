@@ -1,14 +1,14 @@
 @interface ParentalControls
-+ (id)objectForKey:(id)a3;
++ (id)objectForKey:(id)key;
 + (id)standardControls;
-- (BOOL)disableAccount:(id)a3;
-- (BOOL)disableService:(id)a3;
-- (BOOL)disableServiceSession:(id)a3;
-- (BOOL)forceAllowlistForServiceSession:(id)a3;
+- (BOOL)disableAccount:(id)account;
+- (BOOL)disableService:(id)service;
+- (BOOL)disableServiceSession:(id)session;
+- (BOOL)forceAllowlistForServiceSession:(id)session;
 - (ParentalControls)init;
-- (id)_serviceWithName:(id)a3;
-- (id)allowlistForServiceSession:(id)a3;
-- (void)_managedPrefsNotification:(id)a3;
+- (id)_serviceWithName:(id)name;
+- (id)allowlistForServiceSession:(id)session;
+- (void)_managedPrefsNotification:(id)notification;
 - (void)_updateParentalSettings;
 - (void)updateAccountActivation;
 @end
@@ -51,14 +51,14 @@
   return v2;
 }
 
-- (id)_serviceWithName:(id)a3
+- (id)_serviceWithName:(id)name
 {
   result = [(NSMutableDictionary *)self->_parentalControls objectForKey:?];
   if (!result)
   {
     v6 = objc_alloc_init(ParentalControlsService);
-    [(ParentalControlsService *)v6 setName:a3];
-    [(NSMutableDictionary *)self->_parentalControls setObject:v6 forKey:a3];
+    [(ParentalControlsService *)v6 setName:name];
+    [(NSMutableDictionary *)self->_parentalControls setObject:v6 forKey:name];
 
     return v6;
   }
@@ -81,12 +81,12 @@
   [(ParentalControls *)self updateAccountActivation];
 }
 
-+ (id)objectForKey:(id)a3
++ (id)objectForKey:(id)key
 {
-  result = [a3 length];
+  result = [key length];
   if (result)
   {
-    v5 = [@"Setting." stringByAppendingString:a3];
+    v5 = [@"Setting." stringByAppendingString:key];
 
     return [NSUserDefaults _IMAgentObjectForKey:v5];
   }
@@ -97,10 +97,10 @@
 - (void)updateAccountActivation
 {
   v3 = +[IMDAccountController sharedAccountController];
-  v4 = [v3 isLoading];
+  isLoading = [v3 isLoading];
   v5 = +[IMRGLog registration];
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
-  if (v4)
+  if (isLoading)
   {
     if (v6)
     {
@@ -121,8 +121,8 @@
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v7 = [v3 accounts];
-    v8 = [v7 countByEnumeratingWithState:&v16 objects:v22 count:16];
+    accounts = [v3 accounts];
+    v8 = [accounts countByEnumeratingWithState:&v16 objects:v22 count:16];
     if (v8)
     {
       v10 = v8;
@@ -135,7 +135,7 @@
         {
           if (*v17 != v11)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(accounts);
           }
 
           v13 = *(*(&v16 + 1) + 8 * i);
@@ -160,7 +160,7 @@
           }
         }
 
-        v10 = [v7 countByEnumeratingWithState:&v16 objects:v22 count:16];
+        v10 = [accounts countByEnumeratingWithState:&v16 objects:v22 count:16];
       }
 
       while (v10);
@@ -168,44 +168,44 @@
   }
 }
 
-- (BOOL)disableService:(id)a3
+- (BOOL)disableService:(id)service
 {
-  if (a3)
+  if (service)
   {
-    v5 = [(ParentalControls *)self active];
-    if (v5)
+    active = [(ParentalControls *)self active];
+    if (active)
     {
-      v6 = -[ParentalControls _serviceWithName:](self, "_serviceWithName:", [a3 internalName]);
+      v6 = -[ParentalControls _serviceWithName:](self, "_serviceWithName:", [service internalName]);
 
-      LOBYTE(v5) = [v6 disableService];
+      LOBYTE(active) = [v6 disableService];
     }
   }
 
   else
   {
-    LOBYTE(v5) = 1;
+    LOBYTE(active) = 1;
   }
 
-  return v5;
+  return active;
 }
 
-- (BOOL)disableAccount:(id)a3
+- (BOOL)disableAccount:(id)account
 {
-  v4 = [a3 service];
+  service = [account service];
 
-  return [(ParentalControls *)self disableService:v4];
+  return [(ParentalControls *)self disableService:service];
 }
 
-- (BOOL)disableServiceSession:(id)a3
+- (BOOL)disableServiceSession:(id)session
 {
-  v4 = [a3 service];
+  service = [session service];
 
-  return [(ParentalControls *)self disableService:v4];
+  return [(ParentalControls *)self disableService:service];
 }
 
-- (id)allowlistForServiceSession:(id)a3
+- (id)allowlistForServiceSession:(id)session
 {
-  result = [a3 service];
+  result = [session service];
   if (result)
   {
     v5 = result;
@@ -232,30 +232,30 @@
   return result;
 }
 
-- (BOOL)forceAllowlistForServiceSession:(id)a3
+- (BOOL)forceAllowlistForServiceSession:(id)session
 {
-  v4 = [a3 service];
-  if (v4)
+  service = [session service];
+  if (service)
   {
-    v5 = v4;
-    v6 = [(ParentalControls *)self active];
-    if (v6)
+    v5 = service;
+    active = [(ParentalControls *)self active];
+    if (active)
     {
       v7 = -[ParentalControls _serviceWithName:](self, "_serviceWithName:", [v5 internalName]);
 
-      LOBYTE(v6) = [v7 forceAllowlist];
+      LOBYTE(active) = [v7 forceAllowlist];
     }
   }
 
   else
   {
-    LOBYTE(v6) = 1;
+    LOBYTE(active) = 1;
   }
 
-  return v6;
+  return active;
 }
 
-- (void)_managedPrefsNotification:(id)a3
+- (void)_managedPrefsNotification:(id)notification
 {
   [(ParentalControls *)self _updateParentalSettings];
   v3 = +[IMDAccountController sharedAccountController];

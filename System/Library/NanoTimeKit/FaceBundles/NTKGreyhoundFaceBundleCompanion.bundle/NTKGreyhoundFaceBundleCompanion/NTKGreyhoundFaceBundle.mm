@@ -1,32 +1,32 @@
 @interface NTKGreyhoundFaceBundle
-- (id)defaultFaceForDevice:(id)a3;
-- (id)galleryEditOptionsForDevice:(id)a3;
-- (id)galleryFacesForDevice:(id)a3;
-- (id)galleryPigmentsForDevice:(id)a3;
-- (id)heroFacesForDevice:(id)a3;
+- (id)defaultFaceForDevice:(id)device;
+- (id)galleryEditOptionsForDevice:(id)device;
+- (id)galleryFacesForDevice:(id)device;
+- (id)galleryPigmentsForDevice:(id)device;
+- (id)heroFacesForDevice:(id)device;
 @end
 
 @implementation NTKGreyhoundFaceBundle
 
-- (id)defaultFaceForDevice:(id)a3
+- (id)defaultFaceForDevice:(id)device
 {
-  v3 = a3;
-  v4 = [objc_opt_class() identifier];
-  v5 = [objc_opt_class() analyticsIdentifier];
-  v6 = [NTKGreyhoundFace bundledFaceWithIdentifier:v4 analyticsIdentifier:v5 forDevice:v3 initCustomization:0];
+  deviceCopy = device;
+  identifier = [objc_opt_class() identifier];
+  analyticsIdentifier = [objc_opt_class() analyticsIdentifier];
+  v6 = [NTKGreyhoundFace bundledFaceWithIdentifier:identifier analyticsIdentifier:analyticsIdentifier forDevice:deviceCopy initCustomization:0];
 
   return v6;
 }
 
-- (id)galleryFacesForDevice:(id)a3
+- (id)galleryFacesForDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v5 = +[NSMutableArray array];
-  if ([v4 isRunningNapiliGMOrLater])
+  if ([deviceCopy isRunningNapiliGMOrLater])
   {
     v35.receiver = self;
     v35.super_class = NTKGreyhoundFaceBundle;
-    v6 = [(NTKGreyhoundFaceBundle *)&v35 galleryFacesForDevice:v4];
+    v6 = [(NTKGreyhoundFaceBundle *)&v35 galleryFacesForDevice:deviceCopy];
     [v5 addObjectsFromArray:v6];
 
     [v5 enumerateObjectsUsingBlock:&stru_14488];
@@ -34,25 +34,25 @@
 
   else
   {
-    [(NTKGreyhoundFaceBundle *)self defaultFaceForDevice:v4];
+    [(NTKGreyhoundFaceBundle *)self defaultFaceForDevice:deviceCopy];
     v24 = v29 = v5;
     if ([v24 deviceSupportsPigmentEditOption])
     {
-      v28 = [(NTKGreyhoundFaceBundle *)self galleryDefaultPigmentOptionsForDevice:v4, v24];
+      v28 = [(NTKGreyhoundFaceBundle *)self galleryDefaultPigmentOptionsForDevice:deviceCopy, v24];
     }
 
     else
     {
-      v7 = [NTKGreyhoundColorEditOption optionWithCaliforniaColor:3000 forDevice:v4, v24];
+      v7 = [NTKGreyhoundColorEditOption optionWithCaliforniaColor:3000 forDevice:deviceCopy, v24];
       v37[0] = v7;
-      v8 = [NTKGreyhoundColorEditOption optionWithCaliforniaColor:3002 forDevice:v4];
+      v8 = [NTKGreyhoundColorEditOption optionWithCaliforniaColor:3002 forDevice:deviceCopy];
       v37[1] = v8;
-      v9 = [NTKGreyhoundColorEditOption optionWithCaliforniaColor:3004 forDevice:v4];
+      v9 = [NTKGreyhoundColorEditOption optionWithCaliforniaColor:3004 forDevice:deviceCopy];
       v37[2] = v9;
       v28 = [NSArray arrayWithObjects:v37 count:3];
     }
 
-    if ([v4 supportsPDRCapability:360081074])
+    if ([deviceCopy supportsPDRCapability:360081074])
     {
       v26 = [&off_16170 arrayByAddingObject:&off_158E8];
     }
@@ -87,17 +87,17 @@
               }
 
               v14 = *(*(&v31 + 1) + 8 * i);
-              v15 = [objc_opt_class() identifier];
-              v16 = [objc_opt_class() analyticsIdentifier];
-              v17 = [NTKGreyhoundFace bundledFaceWithIdentifier:v15 analyticsIdentifier:v16 forDevice:v4 initCustomization:0];
+              identifier = [objc_opt_class() identifier];
+              analyticsIdentifier = [objc_opt_class() analyticsIdentifier];
+              v17 = [NTKGreyhoundFace bundledFaceWithIdentifier:identifier analyticsIdentifier:analyticsIdentifier forDevice:deviceCopy initCustomization:0];
 
               if (v17)
               {
                 v18 = [v28 objectAtIndexedSubscript:v30];
                 v19 = [&off_16158 objectAtIndexedSubscript:v30];
-                v20 = +[NTKGreyhoundTypefaceEditOption optionWithTypeface:forDevice:](NTKGreyhoundTypefaceEditOption, "optionWithTypeface:forDevice:", [v19 unsignedIntValue], v4);
+                v20 = +[NTKGreyhoundTypefaceEditOption optionWithTypeface:forDevice:](NTKGreyhoundTypefaceEditOption, "optionWithTypeface:forDevice:", [v19 unsignedIntValue], deviceCopy);
 
-                v21 = +[NTKGreyhoundStyleEditOption optionWithStyle:forDevice:](NTKGreyhoundStyleEditOption, "optionWithStyle:forDevice:", [v14 unsignedIntValue], v4);
+                v21 = +[NTKGreyhoundStyleEditOption optionWithStyle:forDevice:](NTKGreyhoundStyleEditOption, "optionWithStyle:forDevice:", [v14 unsignedIntValue], deviceCopy);
                 [v17 selectOption:v18 forCustomEditMode:10 slot:0];
                 [v17 selectOption:v20 forCustomEditMode:13 slot:0];
                 [v17 selectOption:v21 forCustomEditMode:15 slot:0];
@@ -125,9 +125,9 @@
   return v22;
 }
 
-- (id)galleryEditOptionsForDevice:(id)a3
+- (id)galleryEditOptionsForDevice:(id)device
 {
-  if ([a3 isRunningNapiliGMOrLater])
+  if ([device isRunningNapiliGMOrLater])
   {
     v5[0] = &off_15900;
     v5[1] = &off_15918;
@@ -146,9 +146,9 @@
   return v3;
 }
 
-- (id)galleryPigmentsForDevice:(id)a3
+- (id)galleryPigmentsForDevice:(id)device
 {
-  if ([a3 isRunningNapiliGMOrLater])
+  if ([device isRunningNapiliGMOrLater])
   {
     v5[0] = ntk_evergreen_navyBlue;
     v5[1] = ntk_evergreen_black;
@@ -167,17 +167,17 @@
   return v3;
 }
 
-- (id)heroFacesForDevice:(id)a3
+- (id)heroFacesForDevice:(id)device
 {
-  v4 = a3;
-  if ([v4 supportsPDRCapability:4094027452])
+  deviceCopy = device;
+  if ([deviceCopy supportsPDRCapability:4094027452])
   {
     v5 = &__NSArray0__struct;
   }
 
   else
   {
-    v6 = [(NTKGreyhoundFaceBundle *)self defaultFaceForDevice:v4];
+    v6 = [(NTKGreyhoundFaceBundle *)self defaultFaceForDevice:deviceCopy];
     v7 = [[NTKFaceBundleSortableGalleryFace alloc] initWithFace:v6 priority:700];
     v8 = v7;
     if (v7)

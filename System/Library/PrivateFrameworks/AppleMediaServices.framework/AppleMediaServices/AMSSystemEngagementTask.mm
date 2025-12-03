@@ -1,48 +1,48 @@
 @interface AMSSystemEngagementTask
 + (AMSBagKeySet)bagKeySet;
 + (id)createBagForSubProfile;
-- (AMSSystemEngagementTask)initWithRequest:(id)a3;
-- (AMSSystemEngagementTask)initWithRequest:(id)a3 bag:(id)a4;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (id)_processIdentifierForBundleIdentifier:(id)a3;
+- (AMSSystemEngagementTask)initWithRequest:(id)request;
+- (AMSSystemEngagementTask)initWithRequest:(id)request bag:(id)bag;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (id)_processIdentifierForBundleIdentifier:(id)identifier;
 - (id)_snapshotBagDataPromise;
 - (id)_unlockDeviceIfNeeded;
 - (id)present;
-- (void)_activateIfWithError:(id *)a3;
-- (void)_finishTaskWithResult:(id)a3 error:(id)a4;
+- (void)_activateIfWithError:(id *)error;
+- (void)_finishTaskWithResult:(id)result error:(id)error;
 - (void)_invalidateRemoteAlert;
-- (void)_listenForAppForegroundWithHandle:(id)a3 monitorInApp:(BOOL)a4;
-- (void)engagementTaskDidFinishWithResult:(id)a3 error:(id)a4 completion:(id)a5;
-- (void)remoteAlertHandle:(id)a3 didInvalidateWithError:(id)a4;
-- (void)remoteAlertHandleDidActivate:(id)a3;
-- (void)remoteAlertHandleDidDeactivate:(id)a3;
+- (void)_listenForAppForegroundWithHandle:(id)handle monitorInApp:(BOOL)app;
+- (void)engagementTaskDidFinishWithResult:(id)result error:(id)error completion:(id)completion;
+- (void)remoteAlertHandle:(id)handle didInvalidateWithError:(id)error;
+- (void)remoteAlertHandleDidActivate:(id)activate;
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate;
 @end
 
 @implementation AMSSystemEngagementTask
 
-- (AMSSystemEngagementTask)initWithRequest:(id)a3
+- (AMSSystemEngagementTask)initWithRequest:(id)request
 {
-  v5 = a3;
+  requestCopy = request;
   v9.receiver = self;
   v9.super_class = AMSSystemEngagementTask;
   v6 = [(AMSTask *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_request, a3);
+    objc_storeStrong(&v6->_request, request);
   }
 
   return v7;
 }
 
-- (AMSSystemEngagementTask)initWithRequest:(id)a3 bag:(id)a4
+- (AMSSystemEngagementTask)initWithRequest:(id)request bag:(id)bag
 {
-  v7 = a4;
-  v8 = [(AMSSystemEngagementTask *)self initWithRequest:a3];
+  bagCopy = bag;
+  v8 = [(AMSSystemEngagementTask *)self initWithRequest:request];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_bag, a4);
+    objc_storeStrong(&v8->_bag, bag);
   }
 
   return v9;
@@ -197,7 +197,7 @@ id __34__AMSSystemEngagementTask_present__block_invoke_10(uint64_t a1, void *a2,
   return v19;
 }
 
-- (void)remoteAlertHandleDidActivate:(id)a3
+- (void)remoteAlertHandleDidActivate:(id)activate
 {
   v13 = *MEMORY[0x1E69E9840];
   v4 = +[AMSLogConfig sharedConfig];
@@ -206,21 +206,21 @@ id __34__AMSSystemEngagementTask_present__block_invoke_10(uint64_t a1, void *a2,
     v4 = +[AMSLogConfig sharedConfig];
   }
 
-  v5 = [v4 OSLogObject];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v4 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v6 = objc_opt_class();
-    v7 = [(AMSSystemEngagementTask *)self request];
-    v8 = [v7 logKey];
+    request = [(AMSSystemEngagementTask *)self request];
+    logKey = [request logKey];
     v9 = 138543618;
     v10 = v6;
     v11 = 2114;
-    v12 = v8;
-    _os_log_impl(&dword_192869000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Remote alert did activate", &v9, 0x16u);
+    v12 = logKey;
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Remote alert did activate", &v9, 0x16u);
   }
 }
 
-- (void)remoteAlertHandleDidDeactivate:(id)a3
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate
 {
   v20 = *MEMORY[0x1E69E9840];
   v4 = +[AMSLogConfig sharedConfig];
@@ -229,22 +229,22 @@ id __34__AMSSystemEngagementTask_present__block_invoke_10(uint64_t a1, void *a2,
     v4 = +[AMSLogConfig sharedConfig];
   }
 
-  v5 = [v4 OSLogObject];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v4 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v6 = objc_opt_class();
-    v7 = [(AMSSystemEngagementTask *)self request];
-    v8 = [v7 logKey];
+    request = [(AMSSystemEngagementTask *)self request];
+    logKey = [request logKey];
     v16 = 138543618;
     v17 = v6;
     v18 = 2114;
-    v19 = v8;
-    _os_log_impl(&dword_192869000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Remote alert did deactivate", &v16, 0x16u);
+    v19 = logKey;
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Remote alert did deactivate", &v16, 0x16u);
   }
 
-  v9 = [(AMSSystemEngagementTask *)self presentationTargetHandle];
+  presentationTargetHandle = [(AMSSystemEngagementTask *)self presentationTargetHandle];
 
-  if (!v9)
+  if (!presentationTargetHandle)
   {
     v10 = +[AMSLogConfig sharedConfig];
     if (!v10)
@@ -252,17 +252,17 @@ id __34__AMSSystemEngagementTask_present__block_invoke_10(uint64_t a1, void *a2,
       v10 = +[AMSLogConfig sharedConfig];
     }
 
-    v11 = [v10 OSLogObject];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+    oSLogObject2 = [v10 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
     {
       v12 = objc_opt_class();
-      v13 = [(AMSSystemEngagementTask *)self request];
-      v14 = [v13 logKey];
+      request2 = [(AMSSystemEngagementTask *)self request];
+      logKey2 = [request2 logKey];
       v16 = 138543618;
       v17 = v12;
       v18 = 2114;
-      v19 = v14;
-      _os_log_impl(&dword_192869000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Resolving due to missing presentation target", &v16, 0x16u);
+      v19 = logKey2;
+      _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Resolving due to missing presentation target", &v16, 0x16u);
     }
 
     v15 = AMSError(6, 0, 0, 0);
@@ -270,129 +270,129 @@ id __34__AMSSystemEngagementTask_present__block_invoke_10(uint64_t a1, void *a2,
   }
 }
 
-- (void)remoteAlertHandle:(id)a3 didInvalidateWithError:(id)a4
+- (void)remoteAlertHandle:(id)handle didInvalidateWithError:(id)error
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  errorCopy = error;
   v6 = +[AMSLogConfig sharedConfig];
   if (!v6)
   {
     v6 = +[AMSLogConfig sharedConfig];
   }
 
-  v7 = [v6 OSLogObject];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v6 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v8 = objc_opt_class();
-    v9 = [(AMSSystemEngagementTask *)self request];
-    v10 = [v9 logKey];
+    request = [(AMSSystemEngagementTask *)self request];
+    logKey = [request logKey];
     v12 = 138543874;
     v13 = v8;
     v14 = 2114;
-    v15 = v10;
+    v15 = logKey;
     v16 = 2114;
-    v17 = v5;
-    _os_log_impl(&dword_192869000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Remote alert did invalidate. Error: %{public}@", &v12, 0x20u);
+    v17 = errorCopy;
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Remote alert did invalidate. Error: %{public}@", &v12, 0x20u);
   }
 
   v11 = AMSError(6, 0, 0, 0);
   [(AMSSystemEngagementTask *)self _finishTaskWithResult:0 error:v11];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  connectionCopy = connection;
   v6 = +[AMSLogConfig sharedConfig];
   if (!v6)
   {
     v6 = +[AMSLogConfig sharedConfig];
   }
 
-  v7 = [v6 OSLogObject];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v6 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v8 = objc_opt_class();
-    v9 = [(AMSSystemEngagementTask *)self request];
-    v10 = [v9 logKey];
+    request = [(AMSSystemEngagementTask *)self request];
+    logKey = [request logKey];
     v14 = 138543618;
     v15 = v8;
     v16 = 2114;
-    v17 = v10;
-    _os_log_impl(&dword_192869000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Received connection from view service", &v14, 0x16u);
+    v17 = logKey;
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Received connection from view service", &v14, 0x16u);
   }
 
   v11 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F07B6AD8];
-  [v5 setExportedInterface:v11];
+  [connectionCopy setExportedInterface:v11];
 
   v12 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F07CE1C8];
-  [v5 setRemoteObjectInterface:v12];
+  [connectionCopy setRemoteObjectInterface:v12];
 
-  [v5 setExportedObject:self];
-  [v5 resume];
-  [(AMSSystemEngagementTask *)self setUnderlyingRemoteConnection:v5];
+  [connectionCopy setExportedObject:self];
+  [connectionCopy resume];
+  [(AMSSystemEngagementTask *)self setUnderlyingRemoteConnection:connectionCopy];
 
   return 1;
 }
 
-- (void)engagementTaskDidFinishWithResult:(id)a3 error:(id)a4 completion:(id)a5
+- (void)engagementTaskDidFinishWithResult:(id)result error:(id)error completion:(id)completion
 {
   v24 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  resultCopy = result;
+  errorCopy = error;
+  completionCopy = completion;
   v11 = +[AMSLogConfig sharedConfig];
   if (!v11)
   {
     v11 = +[AMSLogConfig sharedConfig];
   }
 
-  v12 = [v11 OSLogObject];
-  if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v11 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v13 = objc_opt_class();
-    v14 = [(AMSSystemEngagementTask *)self request];
-    v15 = [v14 logKey];
+    request = [(AMSSystemEngagementTask *)self request];
+    logKey = [request logKey];
     v16 = 138544130;
     v17 = v13;
     v18 = 2114;
-    v19 = v15;
+    v19 = logKey;
     v20 = 2114;
-    v21 = v8;
+    v21 = resultCopy;
     v22 = 2114;
-    v23 = v9;
-    _os_log_impl(&dword_192869000, v12, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Task finished. (result: %{public}@, error: %{public}@)", &v16, 0x2Au);
+    v23 = errorCopy;
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Task finished. (result: %{public}@, error: %{public}@)", &v16, 0x2Au);
   }
 
-  v10[2](v10);
-  [(AMSSystemEngagementTask *)self _finishTaskWithResult:v8 error:v9];
+  completionCopy[2](completionCopy);
+  [(AMSSystemEngagementTask *)self _finishTaskWithResult:resultCopy error:errorCopy];
 }
 
-- (void)_activateIfWithError:(id *)a3
+- (void)_activateIfWithError:(id *)error
 {
   v85 = *MEMORY[0x1E69E9840];
-  v5 = [(AMSSystemEngagementTask *)self remoteAlertHandle];
-  v6 = [v5 isValid];
+  remoteAlertHandle = [(AMSSystemEngagementTask *)self remoteAlertHandle];
+  isValid = [remoteAlertHandle isValid];
 
-  if ((v6 & 1) == 0)
+  if ((isValid & 1) == 0)
   {
-    *a3 = AMSError(12, @"Remote Handle Not Valid", 0, 0);
+    *error = AMSError(12, @"Remote Handle Not Valid", 0, 0);
     return;
   }
 
-  v7 = [(AMSSystemEngagementTask *)self remoteAlertHandle];
-  v8 = [v7 isActive];
+  remoteAlertHandle2 = [(AMSSystemEngagementTask *)self remoteAlertHandle];
+  isActive = [remoteAlertHandle2 isActive];
 
-  if (v8)
+  if (isActive)
   {
-    v9 = +[AMSLogConfig sharedConfig];
-    if (!v9)
+    clientInfo = +[AMSLogConfig sharedConfig];
+    if (!clientInfo)
     {
-      v9 = +[AMSLogConfig sharedConfig];
+      clientInfo = +[AMSLogConfig sharedConfig];
     }
 
-    v10 = [v9 OSLogObject];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [clientInfo OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v11 = objc_opt_class();
       v12 = AMSLogKey();
@@ -400,34 +400,34 @@ id __34__AMSSystemEngagementTask_present__block_invoke_10(uint64_t a1, void *a2,
       *&buf[4] = v11;
       *&buf[12] = 2114;
       *&buf[14] = v12;
-      _os_log_impl(&dword_192869000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Skipping re-activation: handle already active", buf, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Skipping re-activation: handle already active", buf, 0x16u);
     }
 
     goto LABEL_38;
   }
 
-  v9 = [(AMSSystemEngagementTask *)self clientInfo];
+  clientInfo = [(AMSSystemEngagementTask *)self clientInfo];
 
-  if (!v9 || (v13 = MEMORY[0x1E696ACC8], -[AMSSystemEngagementTask clientInfo](self, "clientInfo"), v14 = objc_claimAutoreleasedReturnValue(), v77 = 0, [v13 archivedDataWithRootObject:v14 requiringSecureCoding:1 error:&v77], v9 = objc_claimAutoreleasedReturnValue(), v10 = v77, v14, !v10))
+  if (!clientInfo || (v13 = MEMORY[0x1E696ACC8], -[AMSSystemEngagementTask clientInfo](self, "clientInfo"), v14 = objc_claimAutoreleasedReturnValue(), v77 = 0, [v13 archivedDataWithRootObject:v14 requiringSecureCoding:1 error:&v77], clientInfo = objc_claimAutoreleasedReturnValue(), oSLogObject = v77, v14, !oSLogObject))
   {
     v16 = MEMORY[0x1E696ACC8];
-    v17 = [(AMSSystemEngagementTask *)self request];
+    request = [(AMSSystemEngagementTask *)self request];
     v76 = 0;
-    v18 = [v16 archivedDataWithRootObject:v17 requiringSecureCoding:1 error:&v76];
-    v10 = v76;
+    v18 = [v16 archivedDataWithRootObject:request requiringSecureCoding:1 error:&v76];
+    oSLogObject = v76;
 
-    if (v10)
+    if (oSLogObject)
     {
-      v19 = v10;
-      *a3 = v10;
+      v19 = oSLogObject;
+      *error = oSLogObject;
 LABEL_37:
 
       goto LABEL_38;
     }
 
-    v20 = [(AMSSystemEngagementTask *)self _snapshotBagDataPromise];
+    _snapshotBagDataPromise = [(AMSSystemEngagementTask *)self _snapshotBagDataPromise];
     v75 = 0;
-    v71 = [v20 resultWithError:&v75];
+    v71 = [_snapshotBagDataPromise resultWithError:&v75];
     v21 = v75;
 
     v70 = v21;
@@ -439,20 +439,20 @@ LABEL_37:
         v22 = +[AMSLogConfig sharedConfig];
       }
 
-      v23 = [v22 OSLogObject];
-      if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
+      oSLogObject2 = [v22 OSLogObject];
+      if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
       {
         v24 = objc_opt_class();
         [(AMSSystemEngagementTask *)self request];
         v26 = v25 = v18;
-        v27 = [v26 logKey];
+        logKey = [v26 logKey];
         *buf = 138543874;
         *&buf[4] = v24;
         *&buf[12] = 2114;
-        *&buf[14] = v27;
+        *&buf[14] = logKey;
         *&buf[22] = 2114;
         *&buf[24] = v70;
-        _os_log_impl(&dword_192869000, v23, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to snapshot bag. Error: %{public}@", buf, 0x20u);
+        _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to snapshot bag. Error: %{public}@", buf, 0x20u);
 
         v18 = v25;
       }
@@ -460,7 +460,7 @@ LABEL_37:
 
     if ([(AMSSystemEngagementTask *)self disablePresentationTarget])
     {
-      v28 = 0;
+      processHandle = 0;
     }
 
     else
@@ -471,68 +471,68 @@ LABEL_37:
         v29 = +[AMSLogConfig sharedConfig];
       }
 
-      v30 = [v29 OSLogObject];
-      if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
+      oSLogObject3 = [v29 OSLogObject];
+      if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_DEFAULT))
       {
         v66 = objc_opt_class();
         v31 = AMSLogKey();
         [(AMSSystemEngagementTask *)self clientInfo];
         v32 = v68 = v18;
-        v33 = [v32 bundleIdentifier];
-        v34 = [(AMSSystemEngagementTask *)self clientInfo];
-        v35 = [v34 auditTokenData];
+        bundleIdentifier = [v32 bundleIdentifier];
+        clientInfo2 = [(AMSSystemEngagementTask *)self clientInfo];
+        auditTokenData = [clientInfo2 auditTokenData];
         *buf = 138544130;
         *&buf[4] = v66;
         *&buf[12] = 2114;
         *&buf[14] = v31;
         *&buf[22] = 2112;
-        *&buf[24] = v33;
+        *&buf[24] = bundleIdentifier;
         v81 = 2112;
-        v82 = v35;
-        _os_log_impl(&dword_192869000, v30, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] looking for handle for bundle: %@ audit: %@", buf, 0x2Au);
+        v82 = auditTokenData;
+        _os_log_impl(&dword_192869000, oSLogObject3, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] looking for handle for bundle: %@ audit: %@", buf, 0x2Au);
 
         v18 = v68;
       }
 
-      v36 = [(AMSSystemEngagementTask *)self clientInfo];
-      v37 = [v36 auditTokenData];
+      clientInfo3 = [(AMSSystemEngagementTask *)self clientInfo];
+      auditTokenData2 = [clientInfo3 auditTokenData];
 
-      if (!v37)
+      if (!auditTokenData2)
       {
         v69 = v18;
-        v49 = [(AMSSystemEngagementTask *)self clientInfo];
-        v50 = [v49 bundleIdentifier];
-        if (v50)
+        clientInfo4 = [(AMSSystemEngagementTask *)self clientInfo];
+        bundleIdentifier2 = [clientInfo4 bundleIdentifier];
+        if (bundleIdentifier2)
         {
-          v51 = v50;
+          v51 = bundleIdentifier2;
           v52 = +[AMSProcessInfo currentProcess];
-          v53 = [v52 bundleIdentifier];
-          v54 = [(AMSSystemEngagementTask *)self clientInfo];
-          v55 = [v54 bundleIdentifier];
-          v56 = [v53 isEqualToString:v55];
+          bundleIdentifier3 = [v52 bundleIdentifier];
+          clientInfo5 = [(AMSSystemEngagementTask *)self clientInfo];
+          bundleIdentifier4 = [clientInfo5 bundleIdentifier];
+          v56 = [bundleIdentifier3 isEqualToString:bundleIdentifier4];
 
           if ((v56 & 1) == 0)
           {
-            v57 = [(AMSSystemEngagementTask *)self clientInfo];
-            v58 = [v57 bundleIdentifier];
-            v59 = [(AMSSystemEngagementTask *)self _processIdentifierForBundleIdentifier:v58];
+            clientInfo6 = [(AMSSystemEngagementTask *)self clientInfo];
+            bundleIdentifier5 = [clientInfo6 bundleIdentifier];
+            v59 = [(AMSSystemEngagementTask *)self _processIdentifierForBundleIdentifier:bundleIdentifier5];
 
             if (v59)
             {
-              v28 = [MEMORY[0x1E698E740] processHandleForPID:{objc_msgSend(v59, "intValue")}];
+              processHandle = [MEMORY[0x1E698E740] processHandleForPID:{objc_msgSend(v59, "intValue")}];
               v60 = +[AMSLogConfig sharedConfig];
               if (!v60)
               {
                 v60 = +[AMSLogConfig sharedConfig];
               }
 
-              v61 = [v60 OSLogObject];
-              if (os_log_type_enabled(v61, OS_LOG_TYPE_DEFAULT))
+              oSLogObject4 = [v60 OSLogObject];
+              if (os_log_type_enabled(oSLogObject4, OS_LOG_TYPE_DEFAULT))
               {
                 v62 = objc_opt_class();
                 v63 = AMSLogKey();
-                v67 = [(AMSSystemEngagementTask *)self clientInfo];
-                v64 = [v67 bundleIdentifier];
+                clientInfo7 = [(AMSSystemEngagementTask *)self clientInfo];
+                bundleIdentifier6 = [clientInfo7 bundleIdentifier];
                 *buf = 138544386;
                 *&buf[4] = v62;
                 *&buf[12] = 2114;
@@ -540,16 +540,16 @@ LABEL_37:
                 *&buf[22] = 2112;
                 *&buf[24] = v59;
                 v81 = 2112;
-                v82 = v64;
+                v82 = bundleIdentifier6;
                 v83 = 2112;
-                v84 = v28;
-                _os_log_impl(&dword_192869000, v61, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Found pid: %@ for bundle: %@ <%@>", buf, 0x34u);
+                v84 = processHandle;
+                _os_log_impl(&dword_192869000, oSLogObject4, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Found pid: %@ for bundle: %@ <%@>", buf, 0x34u);
               }
             }
 
             else
             {
-              v28 = 0;
+              processHandle = 0;
             }
 
             v18 = v69;
@@ -562,17 +562,17 @@ LABEL_37:
         {
         }
 
-        v65 = [MEMORY[0x1E6963620] bundleRecordForCurrentProcess];
+        bundleRecordForCurrentProcess = [MEMORY[0x1E6963620] bundleRecordForCurrentProcess];
 
-        if (v65)
+        if (bundleRecordForCurrentProcess)
         {
-          v28 = [MEMORY[0x1E698E740] processHandle];
+          processHandle = [MEMORY[0x1E698E740] processHandle];
           v41 = 1;
         }
 
         else
         {
-          v28 = 0;
+          processHandle = 0;
           v41 = 0;
         }
 
@@ -581,14 +581,14 @@ LABEL_37:
       }
 
       memset(buf, 0, sizeof(buf));
-      v38 = [(AMSSystemEngagementTask *)self clientInfo];
-      v39 = [v38 auditTokenData];
-      [v39 getBytes:buf length:32];
+      clientInfo8 = [(AMSSystemEngagementTask *)self clientInfo];
+      auditTokenData3 = [clientInfo8 auditTokenData];
+      [auditTokenData3 getBytes:buf length:32];
 
       v74[0] = *buf;
       v74[1] = *&buf[16];
       v40 = [MEMORY[0x1E698E620] tokenFromAuditToken:v74];
-      v28 = [MEMORY[0x1E698E740] processHandleForAuditToken:v40];
+      processHandle = [MEMORY[0x1E698E740] processHandleForAuditToken:v40];
     }
 
 LABEL_27:
@@ -605,25 +605,25 @@ LABEL_28:
       [v44 setObject:v71 forKeyedSubscript:@"bagData"];
     }
 
-    if (v9)
+    if (clientInfo)
     {
-      [v44 setObject:v9 forKeyedSubscript:@"clientInfoData"];
+      [v44 setObject:clientInfo forKeyedSubscript:@"clientInfoData"];
     }
 
     v45 = v18;
-    if (v28)
+    if (processHandle)
     {
       [v44 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"attachedToApp"];
     }
 
     v46 = objc_alloc_init(MEMORY[0x1E69D4288]);
     [v46 setUserInfo:v44];
-    if (v28)
+    if (processHandle)
     {
-      v47 = [objc_alloc(MEMORY[0x1E69D42C0]) initWithTargetProcess:v28];
+      v47 = [objc_alloc(MEMORY[0x1E69D42C0]) initWithTargetProcess:processHandle];
       [v46 setPresentationTarget:v47];
 
-      [(AMSSystemEngagementTask *)self _listenForAppForegroundWithHandle:v28 monitorInApp:v41];
+      [(AMSSystemEngagementTask *)self _listenForAppForegroundWithHandle:processHandle monitorInApp:v41];
     }
 
     block[0] = MEMORY[0x1E69E9820];
@@ -639,8 +639,8 @@ LABEL_28:
     goto LABEL_37;
   }
 
-  v15 = v10;
-  *a3 = v10;
+  v15 = oSLogObject;
+  *error = oSLogObject;
 LABEL_38:
 }
 
@@ -650,18 +650,18 @@ void __48__AMSSystemEngagementTask__activateIfWithError___block_invoke(uint64_t 
   [v2 activateWithContext:*(a1 + 40)];
 }
 
-- (void)_finishTaskWithResult:(id)a3 error:(id)a4
+- (void)_finishTaskWithResult:(id)result error:(id)error
 {
-  v9 = a3;
-  v6 = a4;
+  resultCopy = result;
+  errorCopy = error;
   if (![(AMSTask *)self isFinished])
   {
-    v7 = [(AMSSystemEngagementTask *)self underlyingRemoteConnection];
-    [v7 invalidate];
+    underlyingRemoteConnection = [(AMSSystemEngagementTask *)self underlyingRemoteConnection];
+    [underlyingRemoteConnection invalidate];
 
     [(AMSSystemEngagementTask *)self setUnderlyingRemoteConnection:0];
-    v8 = [(AMSSystemEngagementTask *)self resultPromise];
-    [v8 finishWithResult:v9 error:v6];
+    resultPromise = [(AMSSystemEngagementTask *)self resultPromise];
+    [resultPromise finishWithResult:resultCopy error:errorCopy];
   }
 }
 
@@ -714,43 +714,43 @@ uint64_t __49__AMSSystemEngagementTask__invalidateRemoteAlert__block_invoke(uint
   return [v11 setDisplayLayoutMonitor:0];
 }
 
-- (void)_listenForAppForegroundWithHandle:(id)a3 monitorInApp:(BOOL)a4
+- (void)_listenForAppForegroundWithHandle:(id)handle monitorInApp:(BOOL)app
 {
-  v4 = a4;
+  appCopy = app;
   v68 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(AMSTask *)self isFinished];
-  if (v6 && !v7)
+  handleCopy = handle;
+  isFinished = [(AMSTask *)self isFinished];
+  if (handleCopy && !isFinished)
   {
-    v8 = [v6 bundleIdentifier];
+    bundleIdentifier = [handleCopy bundleIdentifier];
     v9 = +[AMSLogConfig sharedConfig];
     if (!v9)
     {
       v9 = +[AMSLogConfig sharedConfig];
     }
 
-    v10 = [v9 OSLogObject];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v9 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v11 = objc_opt_class();
-      v12 = [(AMSSystemEngagementTask *)self request];
-      v13 = [v12 logKey];
+      request = [(AMSSystemEngagementTask *)self request];
+      logKey = [request logKey];
       *buf = 138543874;
       v63 = v11;
       v64 = 2114;
-      v65 = v13;
+      v65 = logKey;
       v66 = 2112;
-      v67 = v8;
-      _os_log_impl(&dword_192869000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Listening for app foreground: %@", buf, 0x20u);
+      v67 = bundleIdentifier;
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Listening for app foreground: %@", buf, 0x20u);
     }
 
-    v14 = [(AMSSystemEngagementTask *)self presentationTargetHandle];
-    v15 = v14 == 0;
+    presentationTargetHandle = [(AMSSystemEngagementTask *)self presentationTargetHandle];
+    v15 = presentationTargetHandle == 0;
 
     if (v15)
     {
       v61 = 0;
-      v16 = [MEMORY[0x1E69C75D0] handleForLegacyHandle:v6 error:&v61];
+      v16 = [MEMORY[0x1E69C75D0] handleForLegacyHandle:handleCopy error:&v61];
       v17 = v61;
       objc_initWeak(buf, self);
       v59[0] = MEMORY[0x1E69E9820];
@@ -766,53 +766,53 @@ uint64_t __49__AMSSystemEngagementTask__invalidateRemoteAlert__block_invoke(uint
 
     v18 = +[AMSLogConfig sharedConfig];
     v19 = v18;
-    if (v4)
+    if (appCopy)
     {
       if (!v18)
       {
         v19 = +[AMSLogConfig sharedConfig];
       }
 
-      v20 = [v19 OSLogObject];
-      if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
+      oSLogObject2 = [v19 OSLogObject];
+      if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
       {
         v21 = objc_opt_class();
-        v22 = [(AMSSystemEngagementTask *)self request];
-        v23 = [v22 logKey];
+        request2 = [(AMSSystemEngagementTask *)self request];
+        logKey2 = [request2 logKey];
         *buf = 138543618;
         v63 = v21;
         v64 = 2114;
-        v65 = v23;
-        _os_log_impl(&dword_192869000, v20, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Monitoring for in app notifications", buf, 0x16u);
+        v65 = logKey2;
+        _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Monitoring for in app notifications", buf, 0x16u);
       }
 
-      v24 = [(AMSSystemEngagementTask *)self displayDidBecomeActiveToken];
-      v25 = v24 == 0;
+      displayDidBecomeActiveToken = [(AMSSystemEngagementTask *)self displayDidBecomeActiveToken];
+      v25 = displayDidBecomeActiveToken == 0;
 
       if (v25)
       {
-        v26 = [MEMORY[0x1E696AD88] defaultCenter];
+        defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
         v58[0] = MEMORY[0x1E69E9820];
         v58[1] = 3221225472;
         v58[2] = __74__AMSSystemEngagementTask__listenForAppForegroundWithHandle_monitorInApp___block_invoke_105;
         v58[3] = &unk_1E73BC7F8;
         v58[4] = self;
-        v27 = [v26 addObserverForName:@"UIApplicationDidBecomeActiveNotification" object:0 queue:0 usingBlock:v58];
+        v27 = [defaultCenter addObserverForName:@"UIApplicationDidBecomeActiveNotification" object:0 queue:0 usingBlock:v58];
         [(AMSSystemEngagementTask *)self setDisplayDidBecomeActiveToken:v27];
       }
 
-      v28 = [(AMSSystemEngagementTask *)self displayWillForegroundToken];
-      v29 = v28 == 0;
+      displayWillForegroundToken = [(AMSSystemEngagementTask *)self displayWillForegroundToken];
+      v29 = displayWillForegroundToken == 0;
 
       if (v29)
       {
-        v30 = [MEMORY[0x1E696AD88] defaultCenter];
+        defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
         v57[0] = MEMORY[0x1E69E9820];
         v57[1] = 3221225472;
         v57[2] = __74__AMSSystemEngagementTask__listenForAppForegroundWithHandle_monitorInApp___block_invoke_110;
         v57[3] = &unk_1E73BC7F8;
         v57[4] = self;
-        v31 = [v30 addObserverForName:@"UIApplicationWillEnterForegroundNotification" object:0 queue:0 usingBlock:v57];
+        v31 = [defaultCenter2 addObserverForName:@"UIApplicationWillEnterForegroundNotification" object:0 queue:0 usingBlock:v57];
         [(AMSSystemEngagementTask *)self setDisplayWillForegroundToken:v31];
       }
     }
@@ -824,24 +824,24 @@ uint64_t __49__AMSSystemEngagementTask__invalidateRemoteAlert__block_invoke(uint
         v19 = +[AMSLogConfig sharedConfig];
       }
 
-      v32 = [v19 OSLogObject];
-      if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
+      oSLogObject3 = [v19 OSLogObject];
+      if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_DEFAULT))
       {
         v33 = objc_opt_class();
-        v34 = [(AMSSystemEngagementTask *)self request];
-        v35 = [v34 logKey];
-        v36 = [(AMSSystemEngagementTask *)self displayLayoutMonitor];
+        request3 = [(AMSSystemEngagementTask *)self request];
+        logKey3 = [request3 logKey];
+        displayLayoutMonitor = [(AMSSystemEngagementTask *)self displayLayoutMonitor];
         *buf = 138543874;
         v63 = v33;
         v64 = 2114;
-        v65 = v35;
+        v65 = logKey3;
         v66 = 2112;
-        v67 = v36;
-        _os_log_impl(&dword_192869000, v32, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Monitoring for app forgrond: %@", buf, 0x20u);
+        v67 = displayLayoutMonitor;
+        _os_log_impl(&dword_192869000, oSLogObject3, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Monitoring for app forgrond: %@", buf, 0x20u);
       }
 
-      v37 = [(AMSSystemEngagementTask *)self displayLayoutMonitor];
-      v38 = v37 == 0;
+      displayLayoutMonitor2 = [(AMSSystemEngagementTask *)self displayLayoutMonitor];
+      v38 = displayLayoutMonitor2 == 0;
 
       if (v38)
       {
@@ -852,32 +852,32 @@ uint64_t __49__AMSSystemEngagementTask__invalidateRemoteAlert__block_invoke(uint
           v39 = +[AMSLogConfig sharedConfig];
         }
 
-        v40 = [v39 OSLogObject];
-        if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
+        oSLogObject4 = [v39 OSLogObject];
+        if (os_log_type_enabled(oSLogObject4, OS_LOG_TYPE_DEFAULT))
         {
           v41 = objc_opt_class();
-          v42 = [(AMSSystemEngagementTask *)self request];
-          v43 = [v42 logKey];
-          v44 = [(AMSSystemEngagementTask *)self displayLayoutMonitor];
+          request4 = [(AMSSystemEngagementTask *)self request];
+          logKey4 = [request4 logKey];
+          displayLayoutMonitor3 = [(AMSSystemEngagementTask *)self displayLayoutMonitor];
           *buf = 138543874;
           v63 = v41;
           v64 = 2114;
-          v65 = v43;
+          v65 = logKey4;
           v66 = 2112;
-          v67 = v44;
-          _os_log_impl(&dword_192869000, v40, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] (2) Monitoring for app forgrond: %@", buf, 0x20u);
+          v67 = displayLayoutMonitor3;
+          _os_log_impl(&dword_192869000, oSLogObject4, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] (2) Monitoring for app forgrond: %@", buf, 0x20u);
         }
 
-        v45 = [MEMORY[0x1E699FAF8] configurationForDefaultMainDisplayMonitor];
+        configurationForDefaultMainDisplayMonitor = [MEMORY[0x1E699FAF8] configurationForDefaultMainDisplayMonitor];
         v53[0] = MEMORY[0x1E69E9820];
         v53[1] = 3221225472;
         v53[2] = __74__AMSSystemEngagementTask__listenForAppForegroundWithHandle_monitorInApp___block_invoke_112;
         v53[3] = &unk_1E73BC820;
         objc_copyWeak(&v55, &location);
-        v54 = v8;
-        [v45 setTransitionHandler:v53];
-        [v45 setNeedsUserInteractivePriority:1];
-        v46 = [MEMORY[0x1E699FAE0] monitorWithConfiguration:v45];
+        v54 = bundleIdentifier;
+        [configurationForDefaultMainDisplayMonitor setTransitionHandler:v53];
+        [configurationForDefaultMainDisplayMonitor setNeedsUserInteractivePriority:1];
+        v46 = [MEMORY[0x1E699FAE0] monitorWithConfiguration:configurationForDefaultMainDisplayMonitor];
         [(AMSSystemEngagementTask *)self setDisplayLayoutMonitor:v46];
 
         v47 = +[AMSLogConfig sharedConfig];
@@ -886,20 +886,20 @@ uint64_t __49__AMSSystemEngagementTask__invalidateRemoteAlert__block_invoke(uint
           v47 = +[AMSLogConfig sharedConfig];
         }
 
-        v48 = [v47 OSLogObject];
-        if (os_log_type_enabled(v48, OS_LOG_TYPE_DEFAULT))
+        oSLogObject5 = [v47 OSLogObject];
+        if (os_log_type_enabled(oSLogObject5, OS_LOG_TYPE_DEFAULT))
         {
           v49 = objc_opt_class();
-          v50 = [(AMSSystemEngagementTask *)self request];
-          v51 = [v50 logKey];
-          v52 = [(AMSSystemEngagementTask *)self displayLayoutMonitor];
+          request5 = [(AMSSystemEngagementTask *)self request];
+          logKey5 = [request5 logKey];
+          displayLayoutMonitor4 = [(AMSSystemEngagementTask *)self displayLayoutMonitor];
           *buf = 138543874;
           v63 = v49;
           v64 = 2114;
-          v65 = v51;
+          v65 = logKey5;
           v66 = 2112;
-          v67 = v52;
-          _os_log_impl(&dword_192869000, v48, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] (3) Monitoring for app forgrond: %@", buf, 0x20u);
+          v67 = displayLayoutMonitor4;
+          _os_log_impl(&dword_192869000, oSLogObject5, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] (3) Monitoring for app forgrond: %@", buf, 0x20u);
         }
 
         objc_destroyWeak(&v55);
@@ -1177,10 +1177,10 @@ LABEL_35:
 LABEL_36:
 }
 
-- (id)_processIdentifierForBundleIdentifier:(id)a3
+- (id)_processIdentifierForBundleIdentifier:(id)identifier
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E69C7610] predicateMatchingBundleIdentifier:a3];
+  v3 = [MEMORY[0x1E69C7610] predicateMatchingBundleIdentifier:identifier];
   v17 = 0;
   v4 = [MEMORY[0x1E69C75D0] handleForPredicate:v3 error:&v17];
   v5 = v17;
@@ -1192,8 +1192,8 @@ LABEL_36:
       v6 = +[AMSLogConfig sharedConfig];
     }
 
-    v7 = [v6 OSLogObject];
-    if (!os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v6 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_12;
     }
@@ -1207,7 +1207,7 @@ LABEL_36:
     v22 = 2114;
     v23 = v5;
     v10 = "%{public}@: [%{public}@] Failed to fetch handle: %{public}@";
-    v11 = v7;
+    v11 = oSLogObject;
     v12 = 32;
 LABEL_11:
     _os_log_impl(&dword_192869000, v11, OS_LOG_TYPE_ERROR, v10, buf, v12);
@@ -1226,8 +1226,8 @@ LABEL_12:
       v6 = +[AMSLogConfig sharedConfig];
     }
 
-    v7 = [v6 OSLogObject];
-    if (!os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v6 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_12;
     }
@@ -1239,7 +1239,7 @@ LABEL_12:
     v20 = 2114;
     v21 = v9;
     v10 = "%{public}@: [%{public}@] Failed to fetch handle. -1 or 0";
-    v11 = v7;
+    v11 = oSLogObject;
     v12 = 22;
     goto LABEL_11;
   }
@@ -1258,8 +1258,8 @@ LABEL_13:
   {
     v4 = objc_alloc_init(AMSPromise);
     v5 = [(AMSSystemEngagementTask *)self bag];
-    v6 = [(AMSPromise *)v4 completionHandlerAdapter];
-    [v5 createSnapshotWithCompletion:v6];
+    completionHandlerAdapter = [(AMSPromise *)v4 completionHandlerAdapter];
+    [v5 createSnapshotWithCompletion:completionHandlerAdapter];
 
     [(AMSPromise *)v4 thenWithBlock:&__block_literal_global_136];
   }
@@ -1302,9 +1302,9 @@ void __48__AMSSystemEngagementTask__unlockDeviceIfNeeded__block_invoke(uint64_t 
 
 + (id)createBagForSubProfile
 {
-  v2 = [objc_opt_class() bagSubProfile];
-  v3 = [objc_opt_class() bagSubProfileVersion];
-  v4 = [AMSBag bagForProfile:v2 profileVersion:v3];
+  bagSubProfile = [objc_opt_class() bagSubProfile];
+  bagSubProfileVersion = [objc_opt_class() bagSubProfileVersion];
+  v4 = [AMSBag bagForProfile:bagSubProfile profileVersion:bagSubProfileVersion];
 
   return v4;
 }

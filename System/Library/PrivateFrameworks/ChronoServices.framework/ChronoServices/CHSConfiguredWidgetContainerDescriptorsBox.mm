@@ -1,19 +1,19 @@
 @interface CHSConfiguredWidgetContainerDescriptorsBox
-- (CHSConfiguredWidgetContainerDescriptorsBox)initWithCoder:(id)a3;
-- (CHSConfiguredWidgetContainerDescriptorsBox)initWithDescriptors:(id)a3;
+- (CHSConfiguredWidgetContainerDescriptorsBox)initWithCoder:(id)coder;
+- (CHSConfiguredWidgetContainerDescriptorsBox)initWithDescriptors:(id)descriptors;
 @end
 
 @implementation CHSConfiguredWidgetContainerDescriptorsBox
 
-- (CHSConfiguredWidgetContainerDescriptorsBox)initWithDescriptors:(id)a3
+- (CHSConfiguredWidgetContainerDescriptorsBox)initWithDescriptors:(id)descriptors
 {
-  v4 = a3;
+  descriptorsCopy = descriptors;
   v9.receiver = self;
   v9.super_class = CHSConfiguredWidgetContainerDescriptorsBox;
   v5 = [(CHSConfiguredWidgetContainerDescriptorsBox *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [descriptorsCopy copy];
     descriptors = v5->_descriptors;
     v5->_descriptors = v6;
   }
@@ -21,28 +21,28 @@
   return v5;
 }
 
-- (CHSConfiguredWidgetContainerDescriptorsBox)initWithCoder:(id)a3
+- (CHSConfiguredWidgetContainerDescriptorsBox)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = MEMORY[0x1E695DFD8];
   v6 = objc_opt_class();
   v7 = [v5 setWithObjects:{v6, objc_opt_class(), 0}];
-  v8 = [v4 decodeObjectOfClasses:v7 forKey:@"descriptors"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"descriptors"];
 
   v10 = __60__CHSConfiguredWidgetContainerDescriptorsBox_initWithCoder___block_invoke(v9, v8);
 
   if (v10)
   {
     self = [(CHSConfiguredWidgetContainerDescriptorsBox *)self initWithDescriptors:v10];
-    v11 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
 id __60__CHSConfiguredWidgetContainerDescriptorsBox_initWithCoder___block_invoke(uint64_t a1, void *a2)

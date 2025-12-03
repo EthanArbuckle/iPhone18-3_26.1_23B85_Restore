@@ -1,61 +1,61 @@
 @interface MDMBook
-- (MDMBook)initWithCoder:(id)a3;
-- (MDMBook)initWithManifestDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (MDMBook)initWithCoder:(id)coder;
+- (MDMBook)initWithManifestDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)friendlyName;
 - (id)manifestDictionary;
-- (void)encodeWithCoder:(id)a3;
-- (void)updateBookAttributesByCopyingFromBook:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)updateBookAttributesByCopyingFromBook:(id)book;
 @end
 
 @implementation MDMBook
 
-- (MDMBook)initWithManifestDictionary:(id)a3
+- (MDMBook)initWithManifestDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v27.receiver = self;
   v27.super_class = MDMBook;
   v5 = [(MDMBook *)&v27 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"Artist"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"Artist"];
     author = v5->_author;
     v5->_author = v6;
 
-    v8 = [v4 objectForKeyedSubscript:@"Title"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"Title"];
     title = v5->_title;
     v5->_title = v8;
 
-    v10 = [v4 objectForKeyedSubscript:@"FullPath"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"FullPath"];
     fullPath = v5->_fullPath;
     v5->_fullPath = v10;
 
-    v12 = [v4 objectForKeyedSubscript:@"Version"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"Version"];
     version = v5->_version;
     v5->_version = v12;
 
-    v14 = [v4 objectForKeyedSubscript:@"PersistentID"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"PersistentID"];
     persistentID = v5->_persistentID;
     v5->_persistentID = v14;
 
-    v16 = [v4 objectForKeyedSubscript:@"iTunesStoreID"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"iTunesStoreID"];
     iTunesStoreID = v5->_iTunesStoreID;
     v5->_iTunesStoreID = v16;
 
-    v18 = [v4 objectForKeyedSubscript:@"buyParams"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"buyParams"];
     buyParams = v5->_buyParams;
     v5->_buyParams = v18;
 
-    v20 = [v4 objectForKeyedSubscript:@"State"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"State"];
     state = v5->_state;
     v5->_state = v20;
 
-    v22 = [v4 objectForKeyedSubscript:@"Kind"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"Kind"];
     kind = v5->_kind;
     v5->_kind = v22;
 
-    v24 = [v4 objectForKeyedSubscript:@"DownloadIdentifier"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"DownloadIdentifier"];
     downloadIdentifier = v5->_downloadIdentifier;
     v5->_downloadIdentifier = v24;
   }
@@ -63,50 +63,50 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MDMBook);
-  v5 = [(MDMBook *)self author];
-  [(MDMBook *)v4 setAuthor:v5];
+  author = [(MDMBook *)self author];
+  [(MDMBook *)v4 setAuthor:author];
 
-  v6 = [(MDMBook *)self title];
-  [(MDMBook *)v4 setTitle:v6];
+  title = [(MDMBook *)self title];
+  [(MDMBook *)v4 setTitle:title];
 
-  v7 = [(MDMBook *)self fullPath];
-  [(MDMBook *)v4 setFullPath:v7];
+  fullPath = [(MDMBook *)self fullPath];
+  [(MDMBook *)v4 setFullPath:fullPath];
 
-  v8 = [(MDMBook *)self version];
-  [(MDMBook *)v4 setVersion:v8];
+  version = [(MDMBook *)self version];
+  [(MDMBook *)v4 setVersion:version];
 
-  v9 = [(MDMBook *)self persistentID];
-  [(MDMBook *)v4 setPersistentID:v9];
+  persistentID = [(MDMBook *)self persistentID];
+  [(MDMBook *)v4 setPersistentID:persistentID];
 
-  v10 = [(MDMBook *)self iTunesStoreID];
-  [(MDMBook *)v4 setITunesStoreID:v10];
+  iTunesStoreID = [(MDMBook *)self iTunesStoreID];
+  [(MDMBook *)v4 setITunesStoreID:iTunesStoreID];
 
-  v11 = [(MDMBook *)self buyParams];
-  [(MDMBook *)v4 setBuyParams:v11];
+  buyParams = [(MDMBook *)self buyParams];
+  [(MDMBook *)v4 setBuyParams:buyParams];
 
-  v12 = [(MDMBook *)self state];
-  [(MDMBook *)v4 setState:v12];
+  state = [(MDMBook *)self state];
+  [(MDMBook *)v4 setState:state];
 
-  v13 = [(MDMBook *)self kind];
-  [(MDMBook *)v4 setKind:v13];
+  kind = [(MDMBook *)self kind];
+  [(MDMBook *)v4 setKind:kind];
 
-  v14 = [(MDMBook *)self downloadIdentifier];
-  [(MDMBook *)v4 setDownloadIdentifier:v14];
+  downloadIdentifier = [(MDMBook *)self downloadIdentifier];
+  [(MDMBook *)v4 setDownloadIdentifier:downloadIdentifier];
 
   return v4;
 }
 
 - (id)manifestDictionary
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   author = self->_author;
   if (author)
   {
-    [v3 setObject:author forKeyedSubscript:@"Artist"];
+    [dictionary setObject:author forKeyedSubscript:@"Artist"];
   }
 
   title = self->_title;
@@ -120,8 +120,8 @@
   if (fullPath)
   {
     [v4 setObject:fullPath forKeyedSubscript:@"FullPath"];
-    v8 = [(NSString *)self->_fullPath lastPathComponent];
-    [v4 setObject:v8 forKeyedSubscript:@"Path"];
+    lastPathComponent = [(NSString *)self->_fullPath lastPathComponent];
+    [v4 setObject:lastPathComponent forKeyedSubscript:@"Path"];
   }
 
   version = self->_version;
@@ -171,53 +171,53 @@
 
 - (id)friendlyName
 {
-  v3 = [(MDMBook *)self title];
+  title = [(MDMBook *)self title];
 
-  if (v3)
+  if (title)
   {
-    v4 = [(MDMBook *)self title];
+    title2 = [(MDMBook *)self title];
 LABEL_5:
-    v6 = v4;
+    v6 = title2;
     goto LABEL_6;
   }
 
-  v5 = [(MDMBook *)self persistentID];
+  persistentID = [(MDMBook *)self persistentID];
 
-  if (v5)
+  if (persistentID)
   {
-    v4 = [(MDMBook *)self persistentID];
+    title2 = [(MDMBook *)self persistentID];
     goto LABEL_5;
   }
 
-  v8 = [(MDMBook *)self iTunesStoreID];
+  iTunesStoreID = [(MDMBook *)self iTunesStoreID];
 
-  if (!v8)
+  if (!iTunesStoreID)
   {
-    v4 = [(MDMBook *)self description];
+    title2 = [(MDMBook *)self description];
     goto LABEL_5;
   }
 
   v9 = DMCUSEnglishNumberFormatter();
-  v10 = [(MDMBook *)self iTunesStoreID];
-  v6 = [v9 stringFromNumber:v10];
+  iTunesStoreID2 = [(MDMBook *)self iTunesStoreID];
+  v6 = [v9 stringFromNumber:iTunesStoreID2];
 
 LABEL_6:
 
   return v6;
 }
 
-- (void)updateBookAttributesByCopyingFromBook:(id)a3
+- (void)updateBookAttributesByCopyingFromBook:(id)book
 {
-  v4 = a3;
-  v5 = [v4 author];
-  [(MDMBook *)self setAuthor:v5];
+  bookCopy = book;
+  author = [bookCopy author];
+  [(MDMBook *)self setAuthor:author];
 
-  v6 = [v4 title];
-  [(MDMBook *)self setTitle:v6];
+  title = [bookCopy title];
+  [(MDMBook *)self setTitle:title];
 
-  v7 = [v4 version];
+  version = [bookCopy version];
 
-  [(MDMBook *)self setVersion:v7];
+  [(MDMBook *)self setVersion:version];
 }
 
 - (id)description
@@ -228,177 +228,177 @@ LABEL_6:
   v4 = [(MDMBook *)&v24 description];
   v5 = [v3 stringWithFormat:@"%@\n", v4];
 
-  v6 = [(MDMBook *)self persistentID];
+  persistentID = [(MDMBook *)self persistentID];
 
-  if (v6)
+  if (persistentID)
   {
-    v7 = [(MDMBook *)self persistentID];
-    [v5 appendFormat:@"  PersistentID: %@\n", v7];
+    persistentID2 = [(MDMBook *)self persistentID];
+    [v5 appendFormat:@"  PersistentID: %@\n", persistentID2];
   }
 
-  v8 = [(MDMBook *)self iTunesStoreID];
+  iTunesStoreID = [(MDMBook *)self iTunesStoreID];
 
-  if (v8)
+  if (iTunesStoreID)
   {
-    v9 = [(MDMBook *)self iTunesStoreID];
-    [v5 appendFormat:@"  iTunes ID: %@\n", v9];
+    iTunesStoreID2 = [(MDMBook *)self iTunesStoreID];
+    [v5 appendFormat:@"  iTunes ID: %@\n", iTunesStoreID2];
   }
 
-  v10 = [(MDMBook *)self buyParams];
+  buyParams = [(MDMBook *)self buyParams];
 
-  if (v10)
+  if (buyParams)
   {
     [v5 appendString:@"  Buy Params: Present\n"];
   }
 
-  v11 = [(MDMBook *)self title];
+  title = [(MDMBook *)self title];
 
-  if (v11)
+  if (title)
   {
-    v12 = [(MDMBook *)self title];
-    [v5 appendFormat:@"  Title: %@\n", v12];
+    title2 = [(MDMBook *)self title];
+    [v5 appendFormat:@"  Title: %@\n", title2];
   }
 
-  v13 = [(MDMBook *)self author];
+  author = [(MDMBook *)self author];
 
-  if (v13)
+  if (author)
   {
-    v14 = [(MDMBook *)self author];
-    [v5 appendFormat:@"  Author: %@\n", v14];
+    author2 = [(MDMBook *)self author];
+    [v5 appendFormat:@"  Author: %@\n", author2];
   }
 
-  v15 = [(MDMBook *)self fullPath];
+  fullPath = [(MDMBook *)self fullPath];
 
-  if (v15)
+  if (fullPath)
   {
-    v16 = [(MDMBook *)self fullPath];
-    [v5 appendFormat:@" Path: %@\n", v16];
+    fullPath2 = [(MDMBook *)self fullPath];
+    [v5 appendFormat:@" Path: %@\n", fullPath2];
   }
 
-  v17 = [(MDMBook *)self state];
+  state = [(MDMBook *)self state];
 
-  if (v17)
+  if (state)
   {
-    v18 = [(MDMBook *)self state];
-    [v5 appendFormat:@"  State: %@\n", v18];
+    state2 = [(MDMBook *)self state];
+    [v5 appendFormat:@"  State: %@\n", state2];
   }
 
-  v19 = [(MDMBook *)self kind];
+  kind = [(MDMBook *)self kind];
 
-  if (v19)
+  if (kind)
   {
-    v20 = [(MDMBook *)self kind];
-    [v5 appendFormat:@"  Kind: %@\n", v20];
+    kind2 = [(MDMBook *)self kind];
+    [v5 appendFormat:@"  Kind: %@\n", kind2];
   }
 
-  v21 = [(MDMBook *)self downloadIdentifier];
+  downloadIdentifier = [(MDMBook *)self downloadIdentifier];
 
-  if (v21)
+  if (downloadIdentifier)
   {
-    v22 = [(MDMBook *)self downloadIdentifier];
-    [v5 appendFormat:@"  Download ID: %@", v22];
+    downloadIdentifier2 = [(MDMBook *)self downloadIdentifier];
+    [v5 appendFormat:@"  Download ID: %@", downloadIdentifier2];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(MDMBook *)self author];
-  [v4 encodeObject:v5 forKey:@"author"];
+  coderCopy = coder;
+  author = [(MDMBook *)self author];
+  [coderCopy encodeObject:author forKey:@"author"];
 
-  v6 = [(MDMBook *)self title];
-  [v4 encodeObject:v6 forKey:@"title"];
+  title = [(MDMBook *)self title];
+  [coderCopy encodeObject:title forKey:@"title"];
 
-  v7 = [(MDMBook *)self kind];
-  [v4 encodeObject:v7 forKey:@"kind"];
+  kind = [(MDMBook *)self kind];
+  [coderCopy encodeObject:kind forKey:@"kind"];
 
-  v8 = [(MDMBook *)self fullPath];
-  [v4 encodeObject:v8 forKey:@"fullPath"];
+  fullPath = [(MDMBook *)self fullPath];
+  [coderCopy encodeObject:fullPath forKey:@"fullPath"];
 
-  v9 = [(MDMBook *)self version];
-  [v4 encodeObject:v9 forKey:@"version"];
+  version = [(MDMBook *)self version];
+  [coderCopy encodeObject:version forKey:@"version"];
 
-  v10 = [(MDMBook *)self persistentID];
-  [v4 encodeObject:v10 forKey:@"persistentID"];
+  persistentID = [(MDMBook *)self persistentID];
+  [coderCopy encodeObject:persistentID forKey:@"persistentID"];
 
-  v11 = [(MDMBook *)self iTunesStoreID];
-  [v4 encodeObject:v11 forKey:@"iTunesStoreID"];
+  iTunesStoreID = [(MDMBook *)self iTunesStoreID];
+  [coderCopy encodeObject:iTunesStoreID forKey:@"iTunesStoreID"];
 
-  v12 = [(MDMBook *)self buyParams];
-  [v4 encodeObject:v12 forKey:@"buyParams"];
+  buyParams = [(MDMBook *)self buyParams];
+  [coderCopy encodeObject:buyParams forKey:@"buyParams"];
 
-  v13 = [(MDMBook *)self state];
-  [v4 encodeObject:v13 forKey:@"state"];
+  state = [(MDMBook *)self state];
+  [coderCopy encodeObject:state forKey:@"state"];
 
-  v14 = [(MDMBook *)self downloadIdentifier];
-  [v4 encodeObject:v14 forKey:@"downloadIdentifier"];
+  downloadIdentifier = [(MDMBook *)self downloadIdentifier];
+  [coderCopy encodeObject:downloadIdentifier forKey:@"downloadIdentifier"];
 
-  v15 = [(MDMBook *)self previousVersion];
-  [v4 encodeObject:v15 forKey:@"previousVersion"];
+  previousVersion = [(MDMBook *)self previousVersion];
+  [coderCopy encodeObject:previousVersion forKey:@"previousVersion"];
 }
 
-- (MDMBook)initWithCoder:(id)a3
+- (MDMBook)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v40.receiver = self;
   v40.super_class = MDMBook;
   v5 = [(MDMBook *)&v40 init];
   if (v5)
   {
     v6 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-    v7 = [v4 decodeObjectOfClasses:v6 forKey:@"author"];
+    v7 = [coderCopy decodeObjectOfClasses:v6 forKey:@"author"];
     author = v5->_author;
     v5->_author = v7;
 
     v9 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"title"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"title"];
     title = v5->_title;
     v5->_title = v10;
 
     v12 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"kind"];
+    v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"kind"];
     kind = v5->_kind;
     v5->_kind = v13;
 
     v15 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-    v16 = [v4 decodeObjectOfClasses:v15 forKey:@"fullPath"];
+    v16 = [coderCopy decodeObjectOfClasses:v15 forKey:@"fullPath"];
     fullPath = v5->_fullPath;
     v5->_fullPath = v16;
 
     v18 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-    v19 = [v4 decodeObjectOfClasses:v18 forKey:@"version"];
+    v19 = [coderCopy decodeObjectOfClasses:v18 forKey:@"version"];
     version = v5->_version;
     v5->_version = v19;
 
     v21 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-    v22 = [v4 decodeObjectOfClasses:v21 forKey:@"persistentID"];
+    v22 = [coderCopy decodeObjectOfClasses:v21 forKey:@"persistentID"];
     persistentID = v5->_persistentID;
     v5->_persistentID = v22;
 
     v24 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-    v25 = [v4 decodeObjectOfClasses:v24 forKey:@"iTunesStoreID"];
+    v25 = [coderCopy decodeObjectOfClasses:v24 forKey:@"iTunesStoreID"];
     iTunesStoreID = v5->_iTunesStoreID;
     v5->_iTunesStoreID = v25;
 
     v27 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-    v28 = [v4 decodeObjectOfClasses:v27 forKey:@"buyParams"];
+    v28 = [coderCopy decodeObjectOfClasses:v27 forKey:@"buyParams"];
     buyParams = v5->_buyParams;
     v5->_buyParams = v28;
 
     v30 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-    v31 = [v4 decodeObjectOfClasses:v30 forKey:@"state"];
+    v31 = [coderCopy decodeObjectOfClasses:v30 forKey:@"state"];
     state = v5->_state;
     v5->_state = v31;
 
     v33 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-    v34 = [v4 decodeObjectOfClasses:v33 forKey:@"downloadIdentifier"];
+    v34 = [coderCopy decodeObjectOfClasses:v33 forKey:@"downloadIdentifier"];
     downloadIdentifier = v5->_downloadIdentifier;
     v5->_downloadIdentifier = v34;
 
     v36 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-    v37 = [v4 decodeObjectOfClasses:v36 forKey:@"previousVersion"];
+    v37 = [coderCopy decodeObjectOfClasses:v36 forKey:@"previousVersion"];
     previousVersion = v5->_previousVersion;
     v5->_previousVersion = v37;
   }

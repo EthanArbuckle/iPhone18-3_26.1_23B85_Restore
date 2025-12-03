@@ -1,17 +1,17 @@
 @interface WFThingsTaskActionMigration
-+ (BOOL)workflowNeedsMigration:(id)a3 fromClientVersion:(id)a4;
++ (BOOL)workflowNeedsMigration:(id)migration fromClientVersion:(id)version;
 - (NSDateFormatter)dateFormatter;
 - (void)migrateWorkflow;
 @end
 
 @implementation WFThingsTaskActionMigration
 
-+ (BOOL)workflowNeedsMigration:(id)a3 fromClientVersion:(id)a4
++ (BOOL)workflowNeedsMigration:(id)migration fromClientVersion:(id)version
 {
-  v5 = a3;
-  if (WFCompareBundleVersions(a4, @"128") == 3)
+  migrationCopy = migration;
+  if (WFCompareBundleVersions(version, @"128") == 3)
   {
-    HasActionsWithIdentifier = WFWorkflowHasActionsWithIdentifier(@"com.culturedcode.ThingsTouch.addtask", v5);
+    HasActionsWithIdentifier = WFWorkflowHasActionsWithIdentifier(@"com.culturedcode.ThingsTouch.addtask", migrationCopy);
   }
 
   else
@@ -29,8 +29,8 @@
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v3 = [(WFWorkflowMigration *)self actions];
-  v4 = [v3 countByEnumeratingWithState:&v24 objects:v28 count:16];
+  actions = [(WFWorkflowMigration *)self actions];
+  v4 = [actions countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v4)
   {
     v5 = v4;
@@ -42,18 +42,18 @@
       {
         if (*v25 != v23)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(actions);
         }
 
         v7 = *(*(&v24 + 1) + 8 * v6);
-        v8 = [(WFWorkflowMigration *)self actionIdentifierKey];
-        v9 = [v7 objectForKey:v8];
+        actionIdentifierKey = [(WFWorkflowMigration *)self actionIdentifierKey];
+        v9 = [v7 objectForKey:actionIdentifierKey];
         v10 = [v9 isEqualToString:@"com.culturedcode.ThingsTouch.addtask"];
 
         if (v10)
         {
-          v11 = [(WFWorkflowMigration *)self actionParametersKey];
-          v12 = [v7 objectForKeyedSubscript:v11];
+          actionParametersKey = [(WFWorkflowMigration *)self actionParametersKey];
+          v12 = [v7 objectForKeyedSubscript:actionParametersKey];
 
           v13 = [v12 objectForKeyedSubscript:@"thingsDueDate"];
           objc_opt_class();
@@ -61,9 +61,9 @@
 
           if (isKindOfClass)
           {
-            v15 = [(WFThingsTaskActionMigration *)self dateFormatter];
+            dateFormatter = [(WFThingsTaskActionMigration *)self dateFormatter];
             v16 = [v12 objectForKeyedSubscript:@"thingsDueDate"];
-            v17 = [v15 stringFromDate:v16];
+            v17 = [dateFormatter stringFromDate:v16];
             [v12 setObject:v17 forKeyedSubscript:@"thingsDueDate"];
             goto LABEL_9;
           }
@@ -74,17 +74,17 @@
 
           if (v19)
           {
-            v15 = [v12 objectForKeyedSubscript:@"thingsDueDate"];
-            v16 = WFDeserializedVariableObject(v15, 0, 0);
+            dateFormatter = [v12 objectForKeyedSubscript:@"thingsDueDate"];
+            v16 = WFDeserializedVariableObject(dateFormatter, 0, 0);
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
               v17 = [[WFVariableString alloc] initWithVariable:v16];
               WFSerializedVariableObject(v17);
-              v21 = v20 = v3;
+              v21 = v20 = actions;
               [v12 setObject:v21 forKeyedSubscript:@"thingsDueDate"];
 
-              v3 = v20;
+              actions = v20;
 LABEL_9:
             }
           }
@@ -94,7 +94,7 @@ LABEL_9:
       }
 
       while (v5 != v6);
-      v5 = [v3 countByEnumeratingWithState:&v24 objects:v28 count:16];
+      v5 = [actions countByEnumeratingWithState:&v24 objects:v28 count:16];
     }
 
     while (v5);

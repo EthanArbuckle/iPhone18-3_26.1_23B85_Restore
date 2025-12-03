@@ -1,8 +1,8 @@
 @interface SRLanguageConfiguration
 + (id)configuration;
-- (BOOL)isSupportedLanguage:(id)a3 deliveryType:(id)a4;
+- (BOOL)isSupportedLanguage:(id)language deliveryType:(id)type;
 - (SRLanguageConfiguration)init;
-- (void)loadSupportedLanguages:(id)a3;
+- (void)loadSupportedLanguages:(id)languages;
 @end
 
 @implementation SRLanguageConfiguration
@@ -43,28 +43,28 @@ uint64_t __40__SRLanguageConfiguration_configuration__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)loadSupportedLanguages:(id)a3
+- (void)loadSupportedLanguages:(id)languages
 {
-  v17 = a3;
-  v4 = [MEMORY[0x1E696AC08] defaultManager];
-  v5 = [v4 fileExistsAtPath:v17];
+  languagesCopy = languages;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v5 = [defaultManager fileExistsAtPath:languagesCopy];
 
   if (v5)
   {
     v6 = MEMORY[0x1E695DF20];
-    v7 = [MEMORY[0x1E695DFF8] fileURLWithPath:v17];
+    v7 = [MEMORY[0x1E695DFF8] fileURLWithPath:languagesCopy];
     v8 = [v6 dictionaryWithContentsOfURL:v7 error:0];
     v9 = [v8 mutableCopy];
 
     if (v9)
     {
       v10 = [v9 objectForKeyedSubscript:@"Version"];
-      v11 = [v10 unsignedIntValue];
+      unsignedIntValue = [v10 unsignedIntValue];
     }
 
     else
     {
-      v11 = 0;
+      unsignedIntValue = 0;
     }
 
     pthread_rwlock_wrlock(&sLanguagesLock);
@@ -74,15 +74,15 @@ uint64_t __40__SRLanguageConfiguration_configuration__block_invoke()
     if (supportedLanguageMap)
     {
       v15 = [(NSDictionary *)v12 objectForKeyedSubscript:@"Version"];
-      v16 = [v15 unsignedIntValue];
+      unsignedIntValue2 = [v15 unsignedIntValue];
     }
 
     else
     {
-      v16 = 0;
+      unsignedIntValue2 = 0;
     }
 
-    if (v11 > v16)
+    if (unsignedIntValue > unsignedIntValue2)
     {
       objc_storeStrong(p_supportedLanguageMap, v9);
     }
@@ -93,19 +93,19 @@ uint64_t __40__SRLanguageConfiguration_configuration__block_invoke()
   MEMORY[0x1EEE66BE0]();
 }
 
-- (BOOL)isSupportedLanguage:(id)a3 deliveryType:(id)a4
+- (BOOL)isSupportedLanguage:(id)language deliveryType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
+  languageCopy = language;
+  typeCopy = type;
   pthread_rwlock_rdlock(&sLanguagesLock);
   supportedLanguageMap = self->_supportedLanguageMap;
   if (supportedLanguageMap)
   {
-    v9 = [(NSDictionary *)supportedLanguageMap objectForKeyedSubscript:v7];
+    v9 = [(NSDictionary *)supportedLanguageMap objectForKeyedSubscript:typeCopy];
     if (v9)
     {
-      v10 = [(NSDictionary *)self->_supportedLanguageMap objectForKeyedSubscript:v7];
-      v11 = [v10 containsObject:v6];
+      v10 = [(NSDictionary *)self->_supportedLanguageMap objectForKeyedSubscript:typeCopy];
+      v11 = [v10 containsObject:languageCopy];
     }
 
     else

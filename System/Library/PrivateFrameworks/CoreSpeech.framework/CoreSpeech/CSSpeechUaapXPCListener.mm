@@ -1,7 +1,7 @@
 @interface CSSpeechUaapXPCListener
 - (CSSpeechUaapXPCListener)init;
-- (void)_handleError:(id)a3;
-- (void)_handleNewConnection:(id)a3;
+- (void)_handleError:(id)error;
+- (void)_handleNewConnection:(id)connection;
 - (void)listen;
 @end
 
@@ -30,9 +30,9 @@
   objc_destroyWeak(buf);
 }
 
-- (void)_handleNewConnection:(id)a3
+- (void)_handleNewConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v5 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
@@ -41,9 +41,9 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s CSSpeechUaaPXPCListener recieved a new client connection", buf, 0xCu);
   }
 
-  if ([CSUtils machXPCConnection:v4 hasEntitlement:@"corespeech.uaap.xpc"])
+  if ([CSUtils machXPCConnection:connectionCopy hasEntitlement:@"corespeech.uaap.xpc"])
   {
-    v6 = [[CSSpeechUaapXPCConnection alloc] initWithConnection:v4];
+    v6 = [[CSSpeechUaapXPCConnection alloc] initWithConnection:connectionCopy];
     if (v6)
     {
       objc_initWeak(buf, self);
@@ -66,7 +66,7 @@
   }
 }
 
-- (void)_handleError:(id)a3
+- (void)_handleError:(id)error
 {
   v4 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_ERROR))
@@ -75,7 +75,7 @@
     v6 = 136315394;
     v7 = "[CSSpeechUaapXPCListener _handleError:]";
     v8 = 2080;
-    string = xpc_dictionary_get_string(a3, _xpc_error_key_description);
+    string = xpc_dictionary_get_string(error, _xpc_error_key_description);
     _os_log_error_impl(&_mh_execute_header, v5, OS_LOG_TYPE_ERROR, "%s CSSpeechUaaPXPCListener recieved error event: %s", &v6, 0x16u);
   }
 }

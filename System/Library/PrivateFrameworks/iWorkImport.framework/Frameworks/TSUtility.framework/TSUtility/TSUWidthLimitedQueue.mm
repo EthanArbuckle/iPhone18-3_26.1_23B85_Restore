@@ -1,15 +1,15 @@
 @interface TSUWidthLimitedQueue
-- (TSUWidthLimitedQueue)initWithLimit:(unint64_t)a3 name:(id)a4 targetQueue:(id)a5;
-- (void)performAsync:(id)a3;
-- (void)performSync:(id)a3;
+- (TSUWidthLimitedQueue)initWithLimit:(unint64_t)limit name:(id)name targetQueue:(id)queue;
+- (void)performAsync:(id)async;
+- (void)performSync:(id)sync;
 @end
 
 @implementation TSUWidthLimitedQueue
 
-- (TSUWidthLimitedQueue)initWithLimit:(unint64_t)a3 name:(id)a4 targetQueue:(id)a5
+- (TSUWidthLimitedQueue)initWithLimit:(unint64_t)limit name:(id)name targetQueue:(id)queue
 {
-  v8 = a4;
-  v9 = a5;
+  nameCopy = name;
+  queueCopy = queue;
   v25.receiver = self;
   v25.super_class = TSUWidthLimitedQueue;
   v10 = [(TSUWidthLimitedQueue *)&v25 init];
@@ -18,36 +18,36 @@
     goto LABEL_23;
   }
 
-  if (qword_280A65CC0 == a3)
+  if (qword_280A65CC0 == limit)
   {
-    v11 = [MEMORY[0x277CCAC38] processInfo];
-    v12 = [v11 processorCount];
+    processInfo = [MEMORY[0x277CCAC38] processInfo];
+    processorCount = [processInfo processorCount];
 
-    if (v12 <= 1)
+    if (processorCount <= 1)
     {
       v13 = 1;
     }
 
     else
     {
-      v13 = v12;
+      v13 = processorCount;
     }
 
     v14 = 2 * v13;
     if (v14 >= 0x18)
     {
-      a3 = 24;
+      limit = 24;
     }
 
     else
     {
-      a3 = v14;
+      limit = v14;
     }
 
-    if (a3)
+    if (limit)
     {
 LABEL_4:
-      if (!v8)
+      if (!nameCopy)
       {
         goto LABEL_15;
       }
@@ -56,7 +56,7 @@ LABEL_4:
     }
   }
 
-  else if (a3)
+  else if (limit)
   {
     goto LABEL_4;
   }
@@ -66,48 +66,48 @@ LABEL_4:
   [TSUAssertionHandler handleFailureInFunction:v15 file:v16 lineNumber:52 isFatal:0 description:"Queue limit should be at least one."];
 
   +[TSUAssertionHandler logBacktraceThrottled];
-  a3 = 1;
-  if (!v8)
+  limit = 1;
+  if (!nameCopy)
   {
 LABEL_15:
 
-    v8 = @"com.apple.tangier.limitedqueue";
+    nameCopy = @"com.apple.tangier.limitedqueue";
     goto LABEL_16;
   }
 
 LABEL_14:
-  if (![(__CFString *)v8 length])
+  if (![(__CFString *)nameCopy length])
   {
     goto LABEL_15;
   }
 
 LABEL_16:
-  if (a3 >> 31)
+  if (limit >> 31)
   {
     sub_27711427C();
-    LODWORD(a3) = 0x7FFFFFFF;
+    LODWORD(limit) = 0x7FFFFFFF;
   }
 
   v10->mReaderCount = 0;
-  v10->mLimit = a3;
-  v17 = [(__CFString *)v8 stringByAppendingString:@".manager"];
-  v18 = [v17 UTF8String];
-  if (!v18)
+  v10->mLimit = limit;
+  v17 = [(__CFString *)nameCopy stringByAppendingString:@".manager"];
+  uTF8String = [v17 UTF8String];
+  if (!uTF8String)
   {
-    v18 = "com.apple.tangier.limitedqueue.manager";
+    uTF8String = "com.apple.tangier.limitedqueue.manager";
   }
 
-  v19 = dispatch_queue_create(v18, 0);
+  v19 = dispatch_queue_create(uTF8String, 0);
   mManagerQueue = v10->mManagerQueue;
   v10->mManagerQueue = v19;
 
-  v21 = [(__CFString *)v8 UTF8String];
-  if (!v21)
+  uTF8String2 = [(__CFString *)nameCopy UTF8String];
+  if (!uTF8String2)
   {
-    v21 = "com.apple.tangier.limitedqueue";
+    uTF8String2 = "com.apple.tangier.limitedqueue";
   }
 
-  v22 = dispatch_queue_create_with_target_V2(v21, MEMORY[0x277D85CD8], v9);
+  v22 = dispatch_queue_create_with_target_V2(uTF8String2, MEMORY[0x277D85CD8], queueCopy);
   mTargetQueue = v10->mTargetQueue;
   v10->mTargetQueue = v22;
 
@@ -118,31 +118,31 @@ LABEL_23:
   return v10;
 }
 
-- (void)performAsync:(id)a3
+- (void)performAsync:(id)async
 {
-  v4 = a3;
+  asyncCopy = async;
   mManagerQueue = self->mManagerQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = sub_2770BA890;
   v7[3] = &unk_27A702858;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = asyncCopy;
+  v6 = asyncCopy;
   dispatch_async(mManagerQueue, v7);
 }
 
-- (void)performSync:(id)a3
+- (void)performSync:(id)sync
 {
-  v4 = a3;
+  syncCopy = sync;
   mManagerQueue = self->mManagerQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = sub_2770BAA80;
   v7[3] = &unk_27A702858;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = syncCopy;
+  v6 = syncCopy;
   dispatch_barrier_sync(mManagerQueue, v7);
 }
 

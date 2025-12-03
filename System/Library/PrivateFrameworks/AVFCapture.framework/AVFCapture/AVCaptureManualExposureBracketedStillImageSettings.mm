@@ -1,22 +1,22 @@
 @interface AVCaptureManualExposureBracketedStillImageSettings
-- (id)_initManualExposureSettingsWithExposureDuration:(id *)a3 ISO:(float)a4;
+- (id)_initManualExposureSettingsWithExposureDuration:(id *)duration ISO:(float)o;
 - (id)debugDescription;
 - (id)description;
 @end
 
 @implementation AVCaptureManualExposureBracketedStillImageSettings
 
-- (id)_initManualExposureSettingsWithExposureDuration:(id *)a3 ISO:(float)a4
+- (id)_initManualExposureSettingsWithExposureDuration:(id *)duration ISO:(float)o
 {
   v8.receiver = self;
   v8.super_class = AVCaptureManualExposureBracketedStillImageSettings;
   result = [(AVCaptureBracketedStillImageSettings *)&v8 initSubclass];
   if (result)
   {
-    var3 = a3->var3;
-    *(result + 8) = *&a3->var0;
+    var3 = duration->var3;
+    *(result + 8) = *&duration->var0;
     *(result + 3) = var3;
-    *(result + 8) = a4;
+    *(result + 8) = o;
   }
 
   return result;

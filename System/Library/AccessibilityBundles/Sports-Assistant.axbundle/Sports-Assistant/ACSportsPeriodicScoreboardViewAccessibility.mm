@@ -1,36 +1,36 @@
 @interface ACSportsPeriodicScoreboardViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityElements;
-- (void)didChangeMatchupFromMatchup:(id)a3;
+- (void)didChangeMatchupFromMatchup:(id)matchup;
 @end
 
 @implementation ACSportsPeriodicScoreboardViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"ACSportsPeriodicScoreboardView" isKindOfClass:@"ACSportsScoreboardView"];
-  [v3 validateClass:@"ACSportsScoreboardView" hasInstanceVariable:@"_headerLabel" withType:"SiriUIContentLabel"];
-  [v3 validateClass:@"ACSportsScoreboardView" hasInstanceVariable:@"_subtitleLabel" withType:"SiriUIContentLabel"];
-  [v3 validateClass:@"ACSportsScoreboardView" hasInstanceVariable:@"_venueNameLabel" withType:"UILabel"];
-  [v3 validateClass:@"ACSportsPeriodicScoreboardView" hasInstanceVariable:@"_lineScoreViews" withType:"NSMutableArray"];
-  [v3 validateClass:@"ACSportsPeriodicScoreboardView" hasInstanceVariable:@"_totalLineScoreView" withType:"ACSportsMatchupLineScoreView"];
-  [v3 validateClass:@"ACSportsScoreboardView" hasInstanceMethod:@"matchup" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SASportsMatchup" hasInstanceMethod:@"homeEntity" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SASportsMatchup" hasInstanceMethod:@"homeScore" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SASportsMatchup" hasInstanceMethod:@"awayEntity" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SASportsMatchup" hasInstanceMethod:@"awayScore" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SASportsEntity" hasInstanceMethod:@"name" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ACSportsPeriodicScoreboardView" hasInstanceMethod:@"didChangeMatchupFromMatchup:" withFullSignature:{"v", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"ACSportsPeriodicScoreboardView" isKindOfClass:@"ACSportsScoreboardView"];
+  [validationsCopy validateClass:@"ACSportsScoreboardView" hasInstanceVariable:@"_headerLabel" withType:"SiriUIContentLabel"];
+  [validationsCopy validateClass:@"ACSportsScoreboardView" hasInstanceVariable:@"_subtitleLabel" withType:"SiriUIContentLabel"];
+  [validationsCopy validateClass:@"ACSportsScoreboardView" hasInstanceVariable:@"_venueNameLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"ACSportsPeriodicScoreboardView" hasInstanceVariable:@"_lineScoreViews" withType:"NSMutableArray"];
+  [validationsCopy validateClass:@"ACSportsPeriodicScoreboardView" hasInstanceVariable:@"_totalLineScoreView" withType:"ACSportsMatchupLineScoreView"];
+  [validationsCopy validateClass:@"ACSportsScoreboardView" hasInstanceMethod:@"matchup" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SASportsMatchup" hasInstanceMethod:@"homeEntity" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SASportsMatchup" hasInstanceMethod:@"homeScore" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SASportsMatchup" hasInstanceMethod:@"awayEntity" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SASportsMatchup" hasInstanceMethod:@"awayScore" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SASportsEntity" hasInstanceMethod:@"name" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ACSportsPeriodicScoreboardView" hasInstanceMethod:@"didChangeMatchupFromMatchup:" withFullSignature:{"v", "@", 0}];
 }
 
 - (id)accessibilityElements
 {
   v40 = *MEMORY[0x29EDCA608];
-  v3 = [(ACSportsPeriodicScoreboardViewAccessibility *)self _accessibilityValueForKey:@"AXScoreboardElements"];
-  if (!v3)
+  array = [(ACSportsPeriodicScoreboardViewAccessibility *)self _accessibilityValueForKey:@"AXScoreboardElements"];
+  if (!array)
   {
-    v3 = [MEMORY[0x29EDB8DE8] array];
+    array = [MEMORY[0x29EDB8DE8] array];
     v4 = [(ACSportsPeriodicScoreboardViewAccessibility *)self safeValueForKey:@"_headerLabel"];
     v5 = [(ACSportsPeriodicScoreboardViewAccessibility *)self safeValueForKey:@"_subtitleLabel"];
     v6 = [(ACSportsPeriodicScoreboardViewAccessibility *)self safeValueForKey:@"matchup"];
@@ -46,7 +46,7 @@
 
       v13 = [v7 safeValueForKey:@"awayScore"];
       v33 = v5;
-      v27 = [v5 accessibilityLabel];
+      accessibilityLabel = [v5 accessibilityLabel];
       v29 = v13;
       v30 = v12;
       v31 = v10;
@@ -54,8 +54,8 @@
       v14 = __UIAXStringForVariables();
 
       v28 = v14;
-      [v4 setAccessibilityLabel:{v14, v10, v12, v13, v27, @"__AXStringForVariablesSentinel"}];
-      [v3 axSafelyAddObject:v4];
+      [v4 setAccessibilityLabel:{v14, v10, v12, v13, accessibilityLabel, @"__AXStringForVariablesSentinel"}];
+      [array axSafelyAddObject:v4];
       v38 = 0;
       objc_opt_class();
       v15 = [(ACSportsPeriodicScoreboardViewAccessibility *)self safeValueForKey:@"_lineScoreViews"];
@@ -82,7 +82,7 @@
 
             v22 = *(*(&v34 + 1) + 8 * i);
             [v22 _accessibilitySetRetainedValue:v7 forKey:@"AXSportsMatchup"];
-            [v3 addObject:v22];
+            [array addObject:v22];
           }
 
           v19 = [v17 countByEnumeratingWithState:&v34 objects:v39 count:16];
@@ -94,27 +94,27 @@
       v23 = [(ACSportsPeriodicScoreboardViewAccessibility *)self safeValueForKey:@"_totalLineScoreView"];
       [v23 _accessibilitySetRetainedValue:@"total" forKey:@"AXSportsScorePeriodType"];
       [v23 _accessibilitySetRetainedValue:v7 forKey:@"AXSportsMatchup"];
-      [v3 axSafelyAddObject:v23];
+      [array axSafelyAddObject:v23];
       v24 = [(ACSportsPeriodicScoreboardViewAccessibility *)self safeValueForKey:@"_venueNameLabel"];
       [v24 _accessibilitySetRetainedValue:MEMORY[0x29EDB8EB0] forKey:@"AXIsSportsPeriodVenueLabel"];
-      [v3 axSafelyAddObject:v24];
+      [array axSafelyAddObject:v24];
 
       v5 = v33;
     }
 
-    [(ACSportsPeriodicScoreboardViewAccessibility *)self _accessibilitySetRetainedValue:v3 forKey:@"AXScoreboardElements"];
+    [(ACSportsPeriodicScoreboardViewAccessibility *)self _accessibilitySetRetainedValue:array forKey:@"AXScoreboardElements"];
   }
 
   v25 = *MEMORY[0x29EDCA608];
 
-  return v3;
+  return array;
 }
 
-- (void)didChangeMatchupFromMatchup:(id)a3
+- (void)didChangeMatchupFromMatchup:(id)matchup
 {
   v4.receiver = self;
   v4.super_class = ACSportsPeriodicScoreboardViewAccessibility;
-  [(ACSportsPeriodicScoreboardViewAccessibility *)&v4 didChangeMatchupFromMatchup:a3];
+  [(ACSportsPeriodicScoreboardViewAccessibility *)&v4 didChangeMatchupFromMatchup:matchup];
   [(ACSportsPeriodicScoreboardViewAccessibility *)self _accessibilityRemoveValueForKey:@"AXScoreboardElements"];
 }
 

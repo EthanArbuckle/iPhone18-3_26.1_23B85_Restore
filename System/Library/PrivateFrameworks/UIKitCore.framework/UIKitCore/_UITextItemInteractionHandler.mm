@@ -2,30 +2,30 @@
 - (_NSRange)range;
 - (_UITextContent)textContentView;
 - (_UITextInteractableItem)item;
-- (_UITextItemInteractionHandler)initWithItem:(id)a3 textContentView:(id)a4;
+- (_UITextItemInteractionHandler)initWithItem:(id)item textContentView:(id)view;
 - (id)_editMenuConfiguration;
 - (id)_menuForInteractableItem;
-- (id)_preparedMenuConfigurationWithDefaultMenu:(id)a3;
+- (id)_preparedMenuConfigurationWithDefaultMenu:(id)menu;
 - (id)contextMenuConfiguration;
 - (id)primaryAction;
 @end
 
 @implementation _UITextItemInteractionHandler
 
-- (_UITextItemInteractionHandler)initWithItem:(id)a3 textContentView:(id)a4
+- (_UITextItemInteractionHandler)initWithItem:(id)item textContentView:(id)view
 {
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  viewCopy = view;
   v13.receiver = self;
   v13.super_class = _UITextItemInteractionHandler;
   v8 = [(_UITextItemInteractionHandler *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_item, v6);
-    objc_storeWeak(&v9->_textContentView, v7);
-    v10 = [v6 range];
-    v9->_range.location = [v10 asRange];
+    objc_storeWeak(&v8->_item, itemCopy);
+    objc_storeWeak(&v9->_textContentView, viewCopy);
+    range = [itemCopy range];
+    v9->_range.location = [range asRange];
     v9->_range.length = v11;
   }
 
@@ -34,19 +34,19 @@
 
 - (id)contextMenuConfiguration
 {
-  v3 = [(_UITextItemInteractionHandler *)self _defaultContextMenuConfiguration];
-  v4 = [(_UITextItemInteractionHandler *)self _defaultMenuForInteractableItem];
-  v5 = [v3 actionProvider];
+  _defaultContextMenuConfiguration = [(_UITextItemInteractionHandler *)self _defaultContextMenuConfiguration];
+  _defaultMenuForInteractableItem = [(_UITextItemInteractionHandler *)self _defaultMenuForInteractableItem];
+  actionProvider = [_defaultContextMenuConfiguration actionProvider];
 
-  if (v5)
+  if (actionProvider)
   {
-    v6 = [v3 actionProvider];
-    v7 = v6[2](v6, MEMORY[0x1E695E0F0]);
+    actionProvider2 = [_defaultContextMenuConfiguration actionProvider];
+    v7 = actionProvider2[2](actionProvider2, MEMORY[0x1E695E0F0]);
 
-    v4 = v7;
+    _defaultMenuForInteractableItem = v7;
   }
 
-  v8 = [(_UITextItemInteractionHandler *)self _preparedMenuConfigurationWithDefaultMenu:v4];
+  v8 = [(_UITextItemInteractionHandler *)self _preparedMenuConfigurationWithDefaultMenu:_defaultMenuForInteractableItem];
   v9 = v8;
   if (v8)
   {
@@ -56,50 +56,50 @@
     aBlock[3] = &unk_1E70F46B8;
     v10 = v8;
     v21 = v10;
-    v22 = v4;
+    v22 = _defaultMenuForInteractableItem;
     v11 = _Block_copy(aBlock);
-    v12 = [v3 previewProvider];
-    v13 = [v10 preview];
-    v14 = [v13 _previewView];
+    previewProvider = [_defaultContextMenuConfiguration previewProvider];
+    preview = [v10 preview];
+    _previewView = [preview _previewView];
 
-    if (v14)
+    if (_previewView)
     {
       v18[0] = MEMORY[0x1E69E9820];
       v18[1] = 3221225472;
       v18[2] = __57___UITextItemInteractionHandler_contextMenuConfiguration__block_invoke_2;
       v18[3] = &unk_1E70F46E0;
-      v19 = v14;
-      v15 = _Block_copy(v18);
+      v19 = _previewView;
+      preview2 = _Block_copy(v18);
 
-      v12 = v19;
+      previewProvider = v19;
     }
 
     else
     {
-      v15 = [v10 preview];
+      preview2 = [v10 preview];
 
-      if (v15)
+      if (preview2)
       {
         goto LABEL_9;
       }
     }
 
-    v12 = v15;
+    previewProvider = preview2;
 LABEL_9:
-    if (v3)
+    if (_defaultContextMenuConfiguration)
     {
-      [v3 setPreviewProvider:v12];
-      [v3 setActionProvider:v11];
+      [_defaultContextMenuConfiguration setPreviewProvider:previewProvider];
+      [_defaultContextMenuConfiguration setActionProvider:v11];
     }
 
     else
     {
-      v3 = [UIContextMenuConfiguration configurationWithIdentifier:0 previewProvider:v12 actionProvider:v11];
+      _defaultContextMenuConfiguration = [UIContextMenuConfiguration configurationWithIdentifier:0 previewProvider:previewProvider actionProvider:v11];
     }
 
-    v3 = v3;
+    _defaultContextMenuConfiguration = _defaultContextMenuConfiguration;
 
-    v16 = v3;
+    v16 = _defaultContextMenuConfiguration;
     goto LABEL_13;
   }
 
@@ -111,89 +111,89 @@ LABEL_13:
 
 - (id)_editMenuConfiguration
 {
-  v3 = [(_UITextItemInteractionHandler *)self item];
-  [v3 location];
+  item = [(_UITextItemInteractionHandler *)self item];
+  [item location];
   v5 = v4;
   v7 = v6;
 
   v8 = [UIEditMenuConfiguration configurationWithIdentifier:0 sourcePoint:v5, v7];
-  v9 = [(_UITextItemInteractionHandler *)self item];
-  [v8 set_preferredElementDisplayMode:{objc_msgSend(v9, "preferredElementDisplayMode")}];
+  item2 = [(_UITextItemInteractionHandler *)self item];
+  [v8 set_preferredElementDisplayMode:{objc_msgSend(item2, "preferredElementDisplayMode")}];
 
   return v8;
 }
 
 - (id)primaryAction
 {
-  v3 = [(_UITextItemInteractionHandler *)self _defaultPrimaryActionForInteractableItem];
-  v4 = [(_UITextItemInteractionHandler *)self item];
-  v5 = [v4 preparedPrimaryActionWithDefaultAction:v3];
+  _defaultPrimaryActionForInteractableItem = [(_UITextItemInteractionHandler *)self _defaultPrimaryActionForInteractableItem];
+  item = [(_UITextItemInteractionHandler *)self item];
+  _menuForInteractableItem = [item preparedPrimaryActionWithDefaultAction:_defaultPrimaryActionForInteractableItem];
 
-  if (!v5)
+  if (!_menuForInteractableItem)
   {
     if ([(_UITextItemInteractionHandler *)self _canPresentMenuWithoutPrimaryAction])
     {
-      v5 = [(_UITextItemInteractionHandler *)self _menuForInteractableItem];
+      _menuForInteractableItem = [(_UITextItemInteractionHandler *)self _menuForInteractableItem];
 
-      if (v5)
+      if (_menuForInteractableItem)
       {
         v7[0] = MEMORY[0x1E69E9820];
         v7[1] = 3221225472;
         v7[2] = __46___UITextItemInteractionHandler_primaryAction__block_invoke;
         v7[3] = &unk_1E70F4708;
         v7[4] = self;
-        v5 = [UIAction actionWithTitle:&stru_1EFB14550 image:0 identifier:@"_UITextItemInteractionHandler.presentMenu.action" handler:v7];
+        _menuForInteractableItem = [UIAction actionWithTitle:&stru_1EFB14550 image:0 identifier:@"_UITextItemInteractionHandler.presentMenu.action" handler:v7];
       }
     }
 
     else
     {
-      v5 = 0;
+      _menuForInteractableItem = 0;
     }
   }
 
-  return v5;
+  return _menuForInteractableItem;
 }
 
-- (id)_preparedMenuConfigurationWithDefaultMenu:(id)a3
+- (id)_preparedMenuConfigurationWithDefaultMenu:(id)menu
 {
-  v4 = a3;
-  v5 = [(_UITextItemInteractionHandler *)self item];
-  v6 = [v5 preparedMenuConfiguration];
+  menuCopy = menu;
+  item = [(_UITextItemInteractionHandler *)self item];
+  preparedMenuConfiguration = [item preparedMenuConfiguration];
 
-  if (!v6)
+  if (!preparedMenuConfiguration)
   {
-    if (!v4)
+    if (!menuCopy)
     {
-      v4 = [(_UITextItemInteractionHandler *)self _defaultMenuForInteractableItem];
+      menuCopy = [(_UITextItemInteractionHandler *)self _defaultMenuForInteractableItem];
     }
 
-    v7 = [(_UITextItemInteractionHandler *)self item];
-    [v7 prepareMenuConfigurationWithDefaultMenu:v4];
+    item2 = [(_UITextItemInteractionHandler *)self item];
+    [item2 prepareMenuConfigurationWithDefaultMenu:menuCopy];
   }
 
-  v8 = [(_UITextItemInteractionHandler *)self item];
-  v9 = [v8 preparedMenuConfiguration];
+  item3 = [(_UITextItemInteractionHandler *)self item];
+  preparedMenuConfiguration2 = [item3 preparedMenuConfiguration];
 
-  return v9;
+  return preparedMenuConfiguration2;
 }
 
 - (id)_menuForInteractableItem
 {
   v3 = [(_UITextItemInteractionHandler *)self _preparedMenuConfigurationWithDefaultMenu:0];
-  v4 = [v3 menu];
-  v5 = v4;
-  if (v4)
+  menu = [v3 menu];
+  v5 = menu;
+  if (menu)
   {
-    v6 = v4;
+    _defaultMenuForInteractableItem = menu;
   }
 
   else
   {
-    v6 = [(_UITextItemInteractionHandler *)self _defaultMenuForInteractableItem];
+    _defaultMenuForInteractableItem = [(_UITextItemInteractionHandler *)self _defaultMenuForInteractableItem];
   }
 
-  v7 = v6;
+  v7 = _defaultMenuForInteractableItem;
 
   return v7;
 }

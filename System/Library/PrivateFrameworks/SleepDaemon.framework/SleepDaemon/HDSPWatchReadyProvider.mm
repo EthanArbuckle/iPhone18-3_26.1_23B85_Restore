@@ -4,29 +4,29 @@
 - (BOOL)isSystemReady;
 - (HDSPEnvironment)environment;
 - (HDSPSystemReadyDelegate)delegate;
-- (HDSPWatchReadyProvider)initWithEnvironment:(id)a3;
-- (void)_withLock:(id)a3;
+- (HDSPWatchReadyProvider)initWithEnvironment:(id)environment;
+- (void)_withLock:(id)lock;
 - (void)restoreDidFinish;
 - (void)springboardDidStart;
 @end
 
 @implementation HDSPWatchReadyProvider
 
-- (HDSPWatchReadyProvider)initWithEnvironment:(id)a3
+- (HDSPWatchReadyProvider)initWithEnvironment:(id)environment
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  environmentCopy = environment;
   v18.receiver = self;
   v18.super_class = HDSPWatchReadyProvider;
   v5 = [(HDSPWatchReadyProvider *)&v18 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_environment, v4);
+    objc_storeWeak(&v5->_environment, environmentCopy);
     v6->_lock._os_unfair_lock_opaque = 0;
     v7 = [HDSPSpringboardMonitor alloc];
-    v8 = [v4 defaultCallbackScheduler];
-    v9 = [(HDSPSpringboardMonitor *)v7 initWithCallbackScheduler:v8 isAppleWatch:1];
+    defaultCallbackScheduler = [environmentCopy defaultCallbackScheduler];
+    v9 = [(HDSPSpringboardMonitor *)v7 initWithCallbackScheduler:defaultCallbackScheduler isAppleWatch:1];
     springboardMonitor = v6->_springboardMonitor;
     v6->_springboardMonitor = v9;
 
@@ -50,11 +50,11 @@
   return v6;
 }
 
-- (void)_withLock:(id)a3
+- (void)_withLock:(id)lock
 {
-  v4 = a3;
+  lockCopy = lock;
   os_unfair_lock_lock(&self->_lock);
-  v4[2](v4);
+  lockCopy[2](lockCopy);
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -62,10 +62,10 @@
 - (BOOL)isSystemReady
 {
   v12 = *MEMORY[0x277D85DE8];
-  v3 = [(HDSPSpringboardMonitor *)self->_springboardMonitor isSpringboardStarted];
+  isSpringboardStarted = [(HDSPSpringboardMonitor *)self->_springboardMonitor isSpringboardStarted];
   v4 = HKSPLogForCategory();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
-  if (!v3)
+  if (!isSpringboardStarted)
   {
     if (v5)
     {
@@ -104,9 +104,9 @@ LABEL_10:
 {
   v12 = *MEMORY[0x277D85DE8];
   WeakRetained = objc_loadWeakRetained(&self->_environment);
-  v4 = [WeakRetained isDemoEnvironment];
+  isDemoEnvironment = [WeakRetained isDemoEnvironment];
 
-  if (v4)
+  if (isDemoEnvironment)
   {
     v5 = HKSPLogForCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))

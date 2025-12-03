@@ -1,5 +1,5 @@
 @interface SLBertClassifierResult
-- (SLBertClassifierResult)initWithScore:(id)a3 assetVersion:(id)a4 extractedFeats:(id)a5;
+- (SLBertClassifierResult)initWithScore:(id)score assetVersion:(id)version extractedFeats:(id)feats;
 - (id)dictionaryRepresentation;
 @end
 
@@ -7,28 +7,28 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  [v3 addEntriesFromDictionary:self->_extractedFeats];
-  [v3 setObject:self->_domainProb forKey:@"domainProb"];
-  [v3 setObject:self->_assetVersion forKey:@"assetVersion"];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  [dictionary addEntriesFromDictionary:self->_extractedFeats];
+  [dictionary setObject:self->_domainProb forKey:@"domainProb"];
+  [dictionary setObject:self->_assetVersion forKey:@"assetVersion"];
 
-  return v3;
+  return dictionary;
 }
 
-- (SLBertClassifierResult)initWithScore:(id)a3 assetVersion:(id)a4 extractedFeats:(id)a5
+- (SLBertClassifierResult)initWithScore:(id)score assetVersion:(id)version extractedFeats:(id)feats
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  scoreCopy = score;
+  versionCopy = version;
+  featsCopy = feats;
   v15.receiver = self;
   v15.super_class = SLBertClassifierResult;
   v12 = [(SLBertClassifierResult *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_domainProb, a3);
-    objc_storeStrong(&v13->_assetVersion, a4);
-    objc_storeStrong(&v13->_extractedFeats, a5);
+    objc_storeStrong(&v12->_domainProb, score);
+    objc_storeStrong(&v13->_assetVersion, version);
+    objc_storeStrong(&v13->_extractedFeats, feats);
   }
 
   return v13;

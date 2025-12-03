@@ -1,7 +1,7 @@
 @interface CKDAppContainerTuple
-- (BOOL)isEqual:(id)a3;
-- (CKDAppContainerTuple)initWithApplicationID:(id)a3 containerID:(id)a4 persona:(id)a5;
-- (CKDAppContainerTuple)initWithApplicationID:(id)a3 containerID:(id)a4 personaID:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (CKDAppContainerTuple)initWithApplicationID:(id)d containerID:(id)iD persona:(id)persona;
+- (CKDAppContainerTuple)initWithApplicationID:(id)d containerID:(id)iD personaID:(id)personaID;
 - (NSString)personaID;
 - (id)CKPropertiesDescription;
 - (unint64_t)hash;
@@ -40,53 +40,53 @@
   return v13;
 }
 
-- (CKDAppContainerTuple)initWithApplicationID:(id)a3 containerID:(id)a4 personaID:(id)a5
+- (CKDAppContainerTuple)initWithApplicationID:(id)d containerID:(id)iD personaID:(id)personaID
 {
-  v8 = a3;
-  v9 = a4;
-  v11 = a5;
-  if (!v11)
+  dCopy = d;
+  iDCopy = iD;
+  personaIDCopy = personaID;
+  if (!personaIDCopy)
   {
     v12 = 0;
     goto LABEL_5;
   }
 
-  v12 = objc_msgSend_personaWithIdentifier_error_(MEMORY[0x277CBC558], v10, v11, 0);
+  v12 = objc_msgSend_personaWithIdentifier_error_(MEMORY[0x277CBC558], v10, personaIDCopy, 0);
   if (v12)
   {
 LABEL_5:
-    v16 = objc_msgSend_initWithApplicationID_containerID_persona_(self, v10, v8, v9, v12);
+    v16 = objc_msgSend_initWithApplicationID_containerID_persona_(self, v10, dCopy, iDCopy, v12);
     goto LABEL_6;
   }
 
   v13 = objc_alloc(MEMORY[0x277CBC558]);
-  v12 = objc_msgSend_initWithIdentifier_type_(v13, v14, v11, 0);
-  v16 = objc_msgSend_initWithApplicationID_containerID_persona_(self, v15, v8, v9, v12);
+  v12 = objc_msgSend_initWithIdentifier_type_(v13, v14, personaIDCopy, 0);
+  v16 = objc_msgSend_initWithApplicationID_containerID_persona_(self, v15, dCopy, iDCopy, v12);
 LABEL_6:
   v17 = v16;
 
   return v17;
 }
 
-- (CKDAppContainerTuple)initWithApplicationID:(id)a3 containerID:(id)a4 persona:(id)a5
+- (CKDAppContainerTuple)initWithApplicationID:(id)d containerID:(id)iD persona:(id)persona
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  iDCopy = iD;
+  personaCopy = persona;
   v25.receiver = self;
   v25.super_class = CKDAppContainerTuple;
   v13 = [(CKDAppContainerTuple *)&v25 init];
   if (v13)
   {
-    v14 = objc_msgSend_copy(v8, v11, v12);
+    v14 = objc_msgSend_copy(dCopy, v11, v12);
     applicationID = v13->_applicationID;
     v13->_applicationID = v14;
 
-    v18 = objc_msgSend_copy(v9, v16, v17);
+    v18 = objc_msgSend_copy(iDCopy, v16, v17);
     containerID = v13->_containerID;
     v13->_containerID = v18;
 
-    v22 = objc_msgSend_copy(v10, v20, v21);
+    v22 = objc_msgSend_copy(personaCopy, v20, v21);
     persona = v13->_persona;
     v13->_persona = v22;
   }
@@ -94,10 +94,10 @@ LABEL_6:
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v26 = 1;
   }
@@ -107,7 +107,7 @@ LABEL_6:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v8 = objc_msgSend_applicationID(self, v6, v7);
       v11 = objc_msgSend_applicationID(v5, v9, v10);
       v12 = CKObjectsAreBothNilOrEqual();

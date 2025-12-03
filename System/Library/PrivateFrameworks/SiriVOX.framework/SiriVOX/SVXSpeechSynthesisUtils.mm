@@ -1,12 +1,12 @@
 @interface SVXSpeechSynthesisUtils
-- (BOOL)requestHasSpeakableContents:(id)a3;
+- (BOOL)requestHasSpeakableContents:(id)contents;
 - (SVXSpeechSynthesisUtils)init;
-- (SVXSpeechSynthesisUtils)initWithLocaleFactory:(id)a3 sessionUtils:(id)a4;
-- (id)createAudioFromUIAudioData:(id)a3;
-- (id)createLocaleFromLanguageCode:(id)a3;
+- (SVXSpeechSynthesisUtils)initWithLocaleFactory:(id)factory sessionUtils:(id)utils;
+- (id)createAudioFromUIAudioData:(id)data;
+- (id)createLocaleFromLanguageCode:(id)code;
 - (id)createPhaticPrompt;
-- (id)getOutputVoiceInfoWithAllowsFallback:(BOOL)a3 preferences:(id)a4;
-- (int64_t)getGenderFromVoiceGender:(int64_t)a3;
+- (id)getOutputVoiceInfoWithAllowsFallback:(BOOL)fallback preferences:(id)preferences;
+- (int64_t)getGenderFromVoiceGender:(int64_t)gender;
 @end
 
 @implementation SVXSpeechSynthesisUtils
@@ -18,39 +18,39 @@
   return v2;
 }
 
-- (BOOL)requestHasSpeakableContents:(id)a3
+- (BOOL)requestHasSpeakableContents:(id)contents
 {
-  v3 = a3;
-  v4 = [v3 speakableText];
-  v5 = [v4 length];
+  contentsCopy = contents;
+  speakableText = [contentsCopy speakableText];
+  v5 = [speakableText length];
 
-  if (v5 || ([v3 presynthesizedAudio], v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "data"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "length"), v7, v6, v8))
+  if (v5 || ([contentsCopy presynthesizedAudio], v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "data"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "length"), v7, v6, v8))
   {
     v9 = 1;
   }
 
   else
   {
-    v11 = [v3 localizationKey];
-    v9 = [v11 length] != 0;
+    localizationKey = [contentsCopy localizationKey];
+    v9 = [localizationKey length] != 0;
   }
 
   return v9;
 }
 
-- (id)createAudioFromUIAudioData:(id)a3
+- (id)createAudioFromUIAudioData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v3 = a3;
+    dataCopy = data;
     v4 = [SVXSpeechSynthesisAudio alloc];
-    v5 = [v3 audioBuffer];
-    v6 = [v3 decoderStreamDescription];
-    v7 = SVXAudioStreamBasicDescriptionCreateFromUIAudioDescription(v6);
-    v8 = [v3 playerStreamDescription];
+    audioBuffer = [dataCopy audioBuffer];
+    decoderStreamDescription = [dataCopy decoderStreamDescription];
+    v7 = SVXAudioStreamBasicDescriptionCreateFromUIAudioDescription(decoderStreamDescription);
+    playerStreamDescription = [dataCopy playerStreamDescription];
 
-    v9 = SVXAudioStreamBasicDescriptionCreateFromUIAudioDescription(v8);
-    v10 = [(SVXSpeechSynthesisAudio *)v4 initWithData:v5 decoderASBD:v7 playerASBD:v9];
+    v9 = SVXAudioStreamBasicDescriptionCreateFromUIAudioDescription(playerStreamDescription);
+    v10 = [(SVXSpeechSynthesisAudio *)v4 initWithData:audioBuffer decoderASBD:v7 playerASBD:v9];
   }
 
   else
@@ -61,28 +61,28 @@
   return v10;
 }
 
-- (id)getOutputVoiceInfoWithAllowsFallback:(BOOL)a3 preferences:(id)a4
+- (id)getOutputVoiceInfoWithAllowsFallback:(BOOL)fallback preferences:(id)preferences
 {
-  v4 = a3;
+  fallbackCopy = fallback;
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  if (!v6)
+  preferencesCopy = preferences;
+  if (!preferencesCopy)
   {
-    v22 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v23 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[SVXSpeechSynthesisUtils getOutputVoiceInfoWithAllowsFallback:preferences:]"];
-    [v22 handleFailureInFunction:v23 file:@"SVXSpeechSynthesisUtils.m" lineNumber:109 description:{@"Invalid parameter not satisfying: %@", @"preferences != nil"}];
+    [currentHandler handleFailureInFunction:v23 file:@"SVXSpeechSynthesisUtils.m" lineNumber:109 description:{@"Invalid parameter not satisfying: %@", @"preferences != nil"}];
   }
 
-  v7 = [v6 outputVoice];
-  v8 = [v7 languageCode];
-  v9 = [v8 length];
+  outputVoice = [preferencesCopy outputVoice];
+  languageCode = [outputVoice languageCode];
+  v9 = [languageCode length];
 
   if (!v9)
   {
     v10 = MEMORY[0x277CEF098];
     v11 = *MEMORY[0x277CEF098];
     v12 = os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_ERROR);
-    if (v7)
+    if (outputVoice)
     {
       if (v12)
       {
@@ -100,7 +100,7 @@
       v13 = "%s Output voice info is nil.";
 LABEL_17:
       _os_log_error_impl(&dword_2695B9000, v11, OS_LOG_TYPE_ERROR, v13, buf, 0xCu);
-      if (!v4)
+      if (!fallbackCopy)
       {
         goto LABEL_18;
       }
@@ -108,19 +108,19 @@ LABEL_17:
       goto LABEL_9;
     }
 
-    if (!v4)
+    if (!fallbackCopy)
     {
 LABEL_18:
       v18 = 0;
-      v14 = v7;
+      v14 = outputVoice;
 LABEL_19:
 
-      v7 = v18;
+      outputVoice = v18;
       goto LABEL_20;
     }
 
 LABEL_9:
-    v14 = [(SVXSessionUtils *)self->_sessionUtils getLanguageCodeWithAllowsFallback:1 preferences:v6];
+    v14 = [(SVXSessionUtils *)self->_sessionUtils getLanguageCodeWithAllowsFallback:1 preferences:preferencesCopy];
     v15 = *v10;
     if (os_log_type_enabled(*v10, OS_LOG_TYPE_INFO))
     {
@@ -142,7 +142,7 @@ LABEL_9:
       _os_log_impl(&dword_2695B9000, v17, OS_LOG_TYPE_INFO, "%s Output voice language code is %@.", buf, 0x16u);
     }
 
-    v18 = [objc_alloc(MEMORY[0x277CEF528]) initWithLanguageCode:v16 gender:objc_msgSend(v7 isCustom:"gender") name:1 footprint:0 contentVersion:0 masteredVersion:{0, 0}];
+    v18 = [objc_alloc(MEMORY[0x277CEF528]) initWithLanguageCode:v16 gender:objc_msgSend(outputVoice isCustom:"gender") name:1 footprint:0 contentVersion:0 masteredVersion:{0, 0}];
 
     v19 = *v10;
     if (os_log_type_enabled(*v10, OS_LOG_TYPE_INFO))
@@ -161,16 +161,16 @@ LABEL_20:
 
   v20 = *MEMORY[0x277D85DE8];
 
-  return v7;
+  return outputVoice;
 }
 
-- (id)createLocaleFromLanguageCode:(id)a3
+- (id)createLocaleFromLanguageCode:(id)code
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 length])
+  codeCopy = code;
+  if ([codeCopy length])
   {
-    v5 = [(SVXNSLocaleFactory *)self->_localeFactory canonicalLocaleIdentifierFromString:v4];
+    v5 = [(SVXNSLocaleFactory *)self->_localeFactory canonicalLocaleIdentifierFromString:codeCopy];
     if (v5)
     {
       localeFactory = self->_localeFactory;
@@ -185,12 +185,12 @@ LABEL_20:
         v13 = 136315394;
         v14 = "[SVXSpeechSynthesisUtils createLocaleFromLanguageCode:]";
         v15 = 2112;
-        v16 = v4;
+        v16 = codeCopy;
         _os_log_error_impl(&dword_2695B9000, v10, OS_LOG_TYPE_ERROR, "%s Canonical locale identifier is nil, fallback to use language code %@ directly.", &v13, 0x16u);
       }
 
       localeFactory = self->_localeFactory;
-      v7 = v4;
+      v7 = codeCopy;
     }
 
     v9 = [(SVXNSLocaleFactory *)localeFactory localeWithLocaleIdentifier:v7];
@@ -214,31 +214,31 @@ LABEL_20:
   return v9;
 }
 
-- (int64_t)getGenderFromVoiceGender:(int64_t)a3
+- (int64_t)getGenderFromVoiceGender:(int64_t)gender
 {
-  if ((a3 - 1) >= 3)
+  if ((gender - 1) >= 3)
   {
     return 0;
   }
 
   else
   {
-    return a3;
+    return gender;
   }
 }
 
-- (SVXSpeechSynthesisUtils)initWithLocaleFactory:(id)a3 sessionUtils:(id)a4
+- (SVXSpeechSynthesisUtils)initWithLocaleFactory:(id)factory sessionUtils:(id)utils
 {
-  v7 = a3;
-  v8 = a4;
+  factoryCopy = factory;
+  utilsCopy = utils;
   v12.receiver = self;
   v12.super_class = SVXSpeechSynthesisUtils;
   v9 = [(SVXSpeechSynthesisUtils *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_localeFactory, a3);
-    objc_storeStrong(&v10->_sessionUtils, a4);
+    objc_storeStrong(&v9->_localeFactory, factory);
+    objc_storeStrong(&v10->_sessionUtils, utils);
   }
 
   return v10;

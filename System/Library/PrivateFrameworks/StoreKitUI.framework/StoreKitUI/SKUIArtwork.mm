@@ -1,23 +1,23 @@
 @interface SKUIArtwork
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGSize)size;
 - (NSMutableDictionary)cacheRepresentation;
 - (NSString)description;
 - (NSURL)URL;
-- (SKUIArtwork)initWithArtworkDictionary:(id)a3;
-- (SKUIArtwork)initWithCacheRepresentation:(id)a3;
-- (SKUIArtwork)initWithCoder:(id)a3;
-- (SKUIArtwork)initWithURL:(id)a3 size:(CGSize)a4;
+- (SKUIArtwork)initWithArtworkDictionary:(id)dictionary;
+- (SKUIArtwork)initWithCacheRepresentation:(id)representation;
+- (SKUIArtwork)initWithCoder:(id)coder;
+- (SKUIArtwork)initWithURL:(id)l size:(CGSize)size;
 - (id)_lookupDictionary;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SKUIArtwork
 
-- (SKUIArtwork)initWithArtworkDictionary:(id)a3
+- (SKUIArtwork)initWithArtworkDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIArtwork initWithArtworkDictionary:];
@@ -28,21 +28,21 @@
   v5 = [(SKUIArtwork *)&v10 init];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"url"];
+    v6 = [dictionaryCopy objectForKey:@"url"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       objc_storeStrong(&v5->_urlString, v6);
     }
 
-    v7 = [v4 objectForKey:@"width"];
+    v7 = [dictionaryCopy objectForKey:@"width"];
 
     if (objc_opt_respondsToSelector())
     {
       v5->_width = [v7 integerValue];
     }
 
-    v8 = [v4 objectForKey:@"height"];
+    v8 = [dictionaryCopy objectForKey:@"height"];
 
     if (objc_opt_respondsToSelector())
     {
@@ -53,11 +53,11 @@
   return v5;
 }
 
-- (SKUIArtwork)initWithURL:(id)a3 size:(CGSize)a4
+- (SKUIArtwork)initWithURL:(id)l size:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3;
+  height = size.height;
+  width = size.width;
+  lCopy = l;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     [SKUIArtwork initWithURL:size:];
@@ -70,7 +70,7 @@
   if (v8)
   {
     v8->_height = height;
-    v10 = [v7 copy];
+    v10 = [lCopy copy];
     url = v9->_url;
     v9->_url = v10;
 
@@ -117,20 +117,20 @@
 
 - (id)_lookupDictionary
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = [(NSURL *)self->_url absoluteString];
-  if (v4 || (v4 = self->_urlString) != 0)
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  absoluteString = [(NSURL *)self->_url absoluteString];
+  if (absoluteString || (absoluteString = self->_urlString) != 0)
   {
-    v5 = v4;
-    [v3 setObject:v4 forKey:@"url"];
+    v5 = absoluteString;
+    [dictionary setObject:absoluteString forKey:@"url"];
   }
 
   v6 = [objc_alloc(MEMORY[0x277CCABB0]) initWithInteger:self->_height];
-  [v3 setObject:v6 forKey:@"height"];
+  [dictionary setObject:v6 forKey:@"height"];
   v7 = [objc_alloc(MEMORY[0x277CCABB0]) initWithInteger:self->_width];
-  [v3 setObject:v7 forKey:@"width"];
+  [dictionary setObject:v7 forKey:@"width"];
 
-  return v3;
+  return dictionary;
 }
 
 - (NSString)description
@@ -147,14 +147,14 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (v5 == objc_opt_class() && (width = self->_width, width == [v4 width]) && (height = self->_height, height == objc_msgSend(v4, "height")))
+  if (v5 == objc_opt_class() && (width = self->_width, width == [equalCopy width]) && (height = self->_height, height == objc_msgSend(equalCopy, "height")))
   {
     v8 = [(SKUIArtwork *)self URL];
-    v9 = [v4 URL];
+    v9 = [equalCopy URL];
     v10 = [v8 isEqual:v9];
   }
 
@@ -166,9 +166,9 @@
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(v4 + 8) = self->_height;
   objc_storeStrong((v4 + 24), self->_urlString);
   v5 = [(NSURL *)self->_url copy];
@@ -179,9 +179,9 @@
   return v4;
 }
 
-- (SKUIArtwork)initWithCacheRepresentation:(id)a3
+- (SKUIArtwork)initWithCacheRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -190,14 +190,14 @@
     v5 = [(SKUIArtwork *)&v12 init];
     if (v5)
     {
-      v6 = [v4 objectForKey:@"height"];
+      v6 = [representationCopy objectForKey:@"height"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         v5->_height = [v6 intValue];
       }
 
-      v7 = [v4 objectForKey:@"width"];
+      v7 = [representationCopy objectForKey:@"width"];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -205,7 +205,7 @@
         v5->_width = [v7 intValue];
       }
 
-      v8 = [v4 objectForKey:@"url"];
+      v8 = [representationCopy objectForKey:@"url"];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -236,27 +236,27 @@
   [v3 setObject:v5 forKey:@"width"];
 
   v6 = [(SKUIArtwork *)self URL];
-  v7 = [v6 absoluteString];
+  absoluteString = [v6 absoluteString];
 
-  if (v7)
+  if (absoluteString)
   {
-    [v3 setObject:v7 forKey:@"url"];
+    [v3 setObject:absoluteString forKey:@"url"];
   }
 
   return v3;
 }
 
-- (SKUIArtwork)initWithCoder:(id)a3
+- (SKUIArtwork)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = SKUIArtwork;
   v5 = [(SKUIArtwork *)&v9 init];
   if (v5)
   {
-    v5->_height = [v4 decodeIntegerForKey:@"height"];
-    v5->_width = [v4 decodeIntegerForKey:@"width"];
-    v6 = [v4 decodeObjectForKey:@"URL"];
+    v5->_height = [coderCopy decodeIntegerForKey:@"height"];
+    v5->_width = [coderCopy decodeIntegerForKey:@"width"];
+    v6 = [coderCopy decodeObjectForKey:@"URL"];
     url = v5->_url;
     v5->_url = v6;
   }
@@ -264,13 +264,13 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   height = self->_height;
-  v5 = a3;
-  [v5 encodeInteger:height forKey:@"height"];
-  [v5 encodeInteger:self->_width forKey:@"width"];
-  [v5 encodeObject:self->_url forKey:@"URL"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:height forKey:@"height"];
+  [coderCopy encodeInteger:self->_width forKey:@"width"];
+  [coderCopy encodeObject:self->_url forKey:@"URL"];
 }
 
 - (void)initWithArtworkDictionary:.cold.1()

@@ -1,5 +1,5 @@
 @interface CarKeyboardModeController
-- (CarKeyboardModeController)initWithRequestedInteractionModel:(unint64_t)a3 resultsProvider:(id)a4;
+- (CarKeyboardModeController)initWithRequestedInteractionModel:(unint64_t)model resultsProvider:(id)provider;
 - (ChromeViewController)chromeViewController;
 - (id)fullscreenViewController;
 - (id)fullscreenViewControllerDismissalTransition;
@@ -9,21 +9,21 @@
 - (void)_ppt_selectKeyboardSearchButton;
 - (void)_setPlaceholder;
 - (void)_toggleTouchKeyboard;
-- (void)_updatePreferredInputViewHeightWithPreferredMinimumRowHeight:(double)a3;
-- (void)didDismissSearchController:(id)a3;
-- (void)enumerateKeyboardSubviewsWithBlock:(id)a3;
+- (void)_updatePreferredInputViewHeightWithPreferredMinimumRowHeight:(double)height;
+- (void)didDismissSearchController:(id)controller;
+- (void)enumerateKeyboardSubviewsWithBlock:(id)block;
 - (void)pptEndEditing;
-- (void)pptHandleTextChange:(id)a3;
-- (void)pptInvokeSearch:(id)a3;
-- (void)searchBar:(id)a3 textDidChange:(id)a4;
-- (void)searchBarCancelButtonClicked:(id)a3;
-- (void)searchBarSearchButtonClicked:(id)a3;
-- (void)updateSearchResultsForSearchController:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)pptHandleTextChange:(id)change;
+- (void)pptInvokeSearch:(id)search;
+- (void)searchBar:(id)bar textDidChange:(id)change;
+- (void)searchBarCancelButtonClicked:(id)clicked;
+- (void)searchBarSearchButtonClicked:(id)clicked;
+- (void)updateSearchResultsForSearchController:(id)controller;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewIsAppearing:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)wantsKeyboardVisible:(BOOL)a3;
+- (void)viewIsAppearing:(BOOL)appearing;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)wantsKeyboardVisible:(BOOL)visible;
 @end
 
 @implementation CarKeyboardModeController
@@ -35,81 +35,81 @@
   return WeakRetained;
 }
 
-- (void)pptInvokeSearch:(id)a3
+- (void)pptInvokeSearch:(id)search
 {
-  v4 = a3;
-  v5 = [(CarKeyboardModeController *)self resultsProvider];
-  [v5 handleSearchButtonPressedWithText:v4];
+  searchCopy = search;
+  resultsProvider = [(CarKeyboardModeController *)self resultsProvider];
+  [resultsProvider handleSearchButtonPressedWithText:searchCopy];
 }
 
 - (void)pptEndEditing
 {
-  v3 = [(CarKeyboardModeController *)self searchController];
-  v2 = [v3 searchBar];
-  [v2 resignFirstResponder];
+  searchController = [(CarKeyboardModeController *)self searchController];
+  searchBar = [searchController searchBar];
+  [searchBar resignFirstResponder];
 }
 
-- (void)pptHandleTextChange:(id)a3
+- (void)pptHandleTextChange:(id)change
 {
-  v4 = a3;
-  v6 = [(CarKeyboardModeController *)self searchController];
-  v5 = [v6 searchBar];
-  [v5 setText:v4];
+  changeCopy = change;
+  searchController = [(CarKeyboardModeController *)self searchController];
+  searchBar = [searchController searchBar];
+  [searchBar setText:changeCopy];
 }
 
 - (void)_ppt_selectKeyboardSearchButton
 {
-  v3 = [(CarKeyboardModeController *)self searchController];
-  v4 = [v3 searchBar];
-  v5 = [v4 text];
-  v6 = [v5 length];
+  searchController = [(CarKeyboardModeController *)self searchController];
+  searchBar = [searchController searchBar];
+  text = [searchBar text];
+  v6 = [text length];
 
   if (v6)
   {
-    v10 = [(CarKeyboardModeController *)self resultsProvider];
-    v7 = [(CarKeyboardModeController *)self searchController];
-    v8 = [v7 searchBar];
-    v9 = [v8 text];
-    [v10 handleSearchButtonPressedWithText:v9];
+    resultsProvider = [(CarKeyboardModeController *)self resultsProvider];
+    searchController2 = [(CarKeyboardModeController *)self searchController];
+    searchBar2 = [searchController2 searchBar];
+    text2 = [searchBar2 text];
+    [resultsProvider handleSearchButtonPressedWithText:text2];
   }
 }
 
-- (void)didDismissSearchController:(id)a3
+- (void)didDismissSearchController:(id)controller
 {
   v4 = +[CarChromeModeCoordinator sharedInstance];
   [v4 popFromContext:self];
 }
 
-- (void)searchBar:(id)a3 textDidChange:(id)a4
+- (void)searchBar:(id)bar textDidChange:(id)change
 {
-  v5 = a4;
-  v6 = [(CarKeyboardModeController *)self resultsProvider];
-  [v6 handleSearchTextDidChange:v5];
+  changeCopy = change;
+  resultsProvider = [(CarKeyboardModeController *)self resultsProvider];
+  [resultsProvider handleSearchTextDidChange:changeCopy];
 }
 
-- (void)searchBarCancelButtonClicked:(id)a3
+- (void)searchBarCancelButtonClicked:(id)clicked
 {
-  v4 = [(CarKeyboardModeController *)self chromeViewController];
-  [v4 captureUserAction:2002];
+  chromeViewController = [(CarKeyboardModeController *)self chromeViewController];
+  [chromeViewController captureUserAction:2002];
 
-  v5 = [(CarKeyboardModeController *)self resultsProvider];
-  [v5 handleCancelButtonPressed];
+  resultsProvider = [(CarKeyboardModeController *)self resultsProvider];
+  [resultsProvider handleCancelButtonPressed];
 }
 
-- (void)searchBarSearchButtonClicked:(id)a3
+- (void)searchBarSearchButtonClicked:(id)clicked
 {
-  v4 = a3;
-  v6 = [(CarKeyboardModeController *)self resultsProvider];
-  v5 = [v4 text];
+  clickedCopy = clicked;
+  resultsProvider = [(CarKeyboardModeController *)self resultsProvider];
+  text = [clickedCopy text];
 
-  [v6 handleSearchButtonPressedWithText:v5];
+  [resultsProvider handleSearchButtonPressedWithText:text];
 }
 
-- (void)updateSearchResultsForSearchController:(id)a3
+- (void)updateSearchResultsForSearchController:(id)controller
 {
-  v4 = a3;
-  v5 = [(CarKeyboardModeController *)self resultsProvider];
-  [v5 updateSearchResultsForSearchController:v4];
+  controllerCopy = controller;
+  resultsProvider = [(CarKeyboardModeController *)self resultsProvider];
+  [resultsProvider updateSearchResultsForSearchController:controllerCopy];
 }
 
 - (id)fullscreenViewControllerDismissalTransition
@@ -142,18 +142,18 @@
   return wrapperNavigationController;
 }
 
-- (void)enumerateKeyboardSubviewsWithBlock:(id)a3
+- (void)enumerateKeyboardSubviewsWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = [(CarKeyboardModeController *)self searchController];
-  v6 = [v5 view];
-  v7 = [v6 subviews];
+  searchController = [(CarKeyboardModeController *)self searchController];
+  view = [searchController view];
+  subviews = [view subviews];
 
-  v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v8 = [subviews countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v8)
   {
     v9 = v8;
@@ -165,21 +165,21 @@
       {
         if (*v18 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(subviews);
         }
 
         v12 = *(*(&v17 + 1) + 8 * v11);
-        v13 = [(CarKeyboardModeController *)self resultsProvider];
-        v14 = [v13 view];
-        v15 = [v14 isDescendantOfView:v12];
+        resultsProvider = [(CarKeyboardModeController *)self resultsProvider];
+        view2 = [resultsProvider view];
+        v15 = [view2 isDescendantOfView:v12];
 
         if ((v15 & 1) == 0)
         {
-          v16 = [v12 backgroundColor];
+          backgroundColor = [v12 backgroundColor];
 
-          if (v16)
+          if (backgroundColor)
           {
-            v4[2](v4, v12);
+            blockCopy[2](blockCopy, v12);
           }
         }
 
@@ -187,7 +187,7 @@
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v9 = [subviews countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v9);
@@ -230,12 +230,12 @@
     }
 
     [(NSHashTable *)self->_hiddenKeyboardViews removeAllObjects];
-    v8 = [(CarKeyboardModeController *)self searchController];
-    v9 = [v8 searchBar];
-    [v9 becomeFirstResponder];
+    searchController = [(CarKeyboardModeController *)self searchController];
+    searchBar = [searchController searchBar];
+    [searchBar becomeFirstResponder];
 
-    v10 = [(CarKeyboardModeController *)self resultsProvider];
-    [v10 didUpdateKeyboardVisibility:1];
+    resultsProvider = [(CarKeyboardModeController *)self resultsProvider];
+    [resultsProvider didUpdateKeyboardVisibility:1];
   }
 }
 
@@ -256,18 +256,18 @@
     v8[3] = &unk_101626268;
     v8[4] = self;
     [(CarKeyboardModeController *)self enumerateKeyboardSubviewsWithBlock:v8];
-    v5 = [(CarKeyboardModeController *)self searchController];
-    v6 = [v5 searchBar];
-    [v6 resignFirstResponder];
+    searchController = [(CarKeyboardModeController *)self searchController];
+    searchBar = [searchController searchBar];
+    [searchBar resignFirstResponder];
 
-    v7 = [(CarKeyboardModeController *)self resultsProvider];
-    [v7 didUpdateKeyboardVisibility:0];
+    resultsProvider = [(CarKeyboardModeController *)self resultsProvider];
+    [resultsProvider didUpdateKeyboardVisibility:0];
   }
 }
 
-- (void)wantsKeyboardVisible:(BOOL)a3
+- (void)wantsKeyboardVisible:(BOOL)visible
 {
-  if (a3)
+  if (visible)
   {
     [(CarKeyboardModeController *)self _forciblyShowTouchKeyboard];
   }
@@ -293,42 +293,42 @@
   }
 }
 
-- (void)_updatePreferredInputViewHeightWithPreferredMinimumRowHeight:(double)a3
+- (void)_updatePreferredInputViewHeightWithPreferredMinimumRowHeight:(double)height
 {
-  v5 = [(CarKeyboardModeController *)self view];
-  [v5 bounds];
+  view = [(CarKeyboardModeController *)self view];
+  [view bounds];
   Height = CGRectGetHeight(v21);
 
-  v7 = [(UINavigationController *)self->_wrapperNavigationController navigationBar];
-  [v7 frame];
+  navigationBar = [(UINavigationController *)self->_wrapperNavigationController navigationBar];
+  [navigationBar frame];
   v8 = CGRectGetHeight(v22);
 
-  v9 = Height - fmax(a3, 44.0) - v8;
-  v10 = [(CarKeyboardModeController *)self searchController];
-  v11 = [v10 searchBar];
-  v12 = [v11 searchTextField];
-  v13 = [v12 textInputTraits];
-  [v13 preferredInputViewHeight];
+  v9 = Height - fmax(height, 44.0) - v8;
+  searchController = [(CarKeyboardModeController *)self searchController];
+  searchBar = [searchController searchBar];
+  searchTextField = [searchBar searchTextField];
+  textInputTraits = [searchTextField textInputTraits];
+  [textInputTraits preferredInputViewHeight];
   v15 = v14;
 
   if (vabdd_f64(v15, v9) > 2.22044605e-16)
   {
-    v19 = [(CarKeyboardModeController *)self searchController];
-    v16 = [v19 searchBar];
-    v17 = [v16 searchTextField];
-    v18 = [v17 textInputTraits];
-    [v18 setPreferredInputViewHeight:v9];
+    searchController2 = [(CarKeyboardModeController *)self searchController];
+    searchBar2 = [searchController2 searchBar];
+    searchTextField2 = [searchBar2 searchTextField];
+    textInputTraits2 = [searchTextField2 textInputTraits];
+    [textInputTraits2 setPreferredInputViewHeight:v9];
   }
 }
 
 - (void)_setPlaceholder
 {
   v3 = +[MapsOfflineUIHelper sharedHelper];
-  v4 = [v3 isUsingOfflineMaps];
+  isUsingOfflineMaps = [v3 isUsingOfflineMaps];
 
   v5 = +[NSBundle mainBundle];
   v10 = v5;
-  if (v4)
+  if (isUsingOfflineMaps)
   {
     v6 = @"[Offline CarPlay Search] Search Offline Maps";
   }
@@ -339,29 +339,29 @@
   }
 
   v7 = [v5 localizedStringForKey:v6 value:@"localized string not found" table:0];
-  v8 = [(CarKeyboardModeController *)self searchController];
-  v9 = [v8 searchBar];
-  [v9 setPlaceholder:v7];
+  searchController = [(CarKeyboardModeController *)self searchController];
+  searchBar = [searchController searchBar];
+  [searchBar setPlaceholder:v7];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v7.receiver = self;
   v7.super_class = CarKeyboardModeController;
-  [(CarKeyboardModeController *)&v7 viewDidAppear:a3];
-  v4 = [(CarKeyboardModeController *)self searchController];
-  v5 = [v4 searchBar];
-  [v5 becomeFirstResponder];
+  [(CarKeyboardModeController *)&v7 viewDidAppear:appear];
+  searchController = [(CarKeyboardModeController *)self searchController];
+  searchBar = [searchController searchBar];
+  [searchBar becomeFirstResponder];
 
   v6 = +[NSNotificationCenter defaultCenter];
   [v6 postNotificationName:@"PPTTest_CarKeyboardModeController_DidDisplayKeyboard" object:0 userInfo:0];
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
   v12.receiver = self;
   v12.super_class = CarKeyboardModeController;
-  [(CarKeyboardModeController *)&v12 viewIsAppearing:a3];
+  [(CarKeyboardModeController *)&v12 viewIsAppearing:appearing];
   if (GEOConfigGetBOOL())
   {
     v4 = +[CarFocusableButton button];
@@ -370,30 +370,30 @@
     [v4 setImage:v5 forState:0];
 
     [v4 addTarget:self action:"_toggleTouchKeyboard" forControlEvents:64];
-    v6 = [(CarKeyboardModeController *)self searchController];
-    v7 = [v6 searchBar];
-    v8 = [v7 searchTextField];
-    [v8 setRightView:v4];
+    searchController = [(CarKeyboardModeController *)self searchController];
+    searchBar = [searchController searchBar];
+    searchTextField = [searchBar searchTextField];
+    [searchTextField setRightView:v4];
 
-    v9 = [(CarKeyboardModeController *)self searchController];
-    v10 = [v9 searchBar];
-    v11 = [v10 searchTextField];
-    [v11 setRightViewMode:3];
+    searchController2 = [(CarKeyboardModeController *)self searchController];
+    searchBar2 = [searchController2 searchBar];
+    searchTextField2 = [searchBar2 searchTextField];
+    [searchTextField2 setRightViewMode:3];
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v7.receiver = self;
   v7.super_class = CarKeyboardModeController;
-  [(CarKeyboardModeController *)&v7 viewWillAppear:a3];
-  v4 = [(CarKeyboardModeController *)self resultsProvider];
-  [v4 preferredMinimumRowHeight];
+  [(CarKeyboardModeController *)&v7 viewWillAppear:appear];
+  resultsProvider = [(CarKeyboardModeController *)self resultsProvider];
+  [resultsProvider preferredMinimumRowHeight];
   [(CarKeyboardModeController *)self _updatePreferredInputViewHeightWithPreferredMinimumRowHeight:?];
 
   v5 = MapsSuggestionsResourceDepotForMapsProcess();
-  v6 = [v5 oneInsights];
-  [v6 preload];
+  oneInsights = [v5 oneInsights];
+  [oneInsights preload];
 }
 
 - (void)viewDidLoad
@@ -402,75 +402,75 @@
   v17.super_class = CarKeyboardModeController;
   [(CarKeyboardModeController *)&v17 viewDidLoad];
   [(CarKeyboardModeController *)self setDefinesPresentationContext:1];
-  v3 = [(CarKeyboardModeController *)self searchController];
-  v4 = [v3 searchBar];
-  [v4 setDelegate:self];
+  searchController = [(CarKeyboardModeController *)self searchController];
+  searchBar = [searchController searchBar];
+  [searchBar setDelegate:self];
 
-  v5 = [(CarKeyboardModeController *)self searchController];
-  v6 = [v5 searchBar];
-  [v6 setShowsCancelButton:1];
+  searchController2 = [(CarKeyboardModeController *)self searchController];
+  searchBar2 = [searchController2 searchBar];
+  [searchBar2 setShowsCancelButton:1];
 
-  v7 = [(CarKeyboardModeController *)self searchController];
-  v8 = [v7 searchBar];
-  v9 = [(CarKeyboardModeController *)self navigationItem];
-  [v9 setTitleView:v8];
+  searchController3 = [(CarKeyboardModeController *)self searchController];
+  searchBar3 = [searchController3 searchBar];
+  navigationItem = [(CarKeyboardModeController *)self navigationItem];
+  [navigationItem setTitleView:searchBar3];
 
-  v10 = [(CarKeyboardModeController *)self navigationItem];
-  [v10 setHidesBackButton:1];
+  navigationItem2 = [(CarKeyboardModeController *)self navigationItem];
+  [navigationItem2 setHidesBackButton:1];
 
   [(CarKeyboardModeController *)self setExtendedLayoutIncludesOpaqueBars:1];
   [(CarKeyboardModeController *)self setEdgesForExtendedLayout:1];
-  v11 = [(CarKeyboardModeController *)self view];
-  [v11 setAccessibilityIdentifier:@"CarKeyboardSearch"];
+  view = [(CarKeyboardModeController *)self view];
+  [view setAccessibilityIdentifier:@"CarKeyboardSearch"];
 
-  v12 = [(CarKeyboardModeController *)self searchController];
-  v13 = [v12 searchBar];
-  [v13 setAccessibilityIdentifier:@"CarSearchBar"];
+  searchController4 = [(CarKeyboardModeController *)self searchController];
+  searchBar4 = [searchController4 searchBar];
+  [searchBar4 setAccessibilityIdentifier:@"CarSearchBar"];
 
   v14 = +[UIColor tableBackgroundColor];
-  v15 = [(CarKeyboardModeController *)self view];
-  [v15 setBackgroundColor:v14];
+  view2 = [(CarKeyboardModeController *)self view];
+  [view2 setBackgroundColor:v14];
 
   [(CarKeyboardModeController *)self _setPlaceholder];
   v16 = +[NSNotificationCenter defaultCenter];
   [v16 addObserver:self selector:"_offlineSettingChangeHandler" name:@"UsingOfflineMapsStateChangedNotification" object:0];
 }
 
-- (CarKeyboardModeController)initWithRequestedInteractionModel:(unint64_t)a3 resultsProvider:(id)a4
+- (CarKeyboardModeController)initWithRequestedInteractionModel:(unint64_t)model resultsProvider:(id)provider
 {
-  v7 = a4;
-  v8 = [[UISearchController alloc] initWithSearchResultsController:v7];
+  providerCopy = provider;
+  v8 = [[UISearchController alloc] initWithSearchResultsController:providerCopy];
   v14.receiver = self;
   v14.super_class = CarKeyboardModeController;
   v9 = [(CarKeyboardModeController *)&v14 initWithSearchController:v8];
   if (v9)
   {
-    if (!a3)
+    if (!model)
     {
       v10 = +[CarDisplayController sharedInstance];
       if ([v10 primaryInteractionModel])
       {
         v11 = +[CarDisplayController sharedInstance];
-        a3 = [v11 primaryInteractionModel];
+        model = [v11 primaryInteractionModel];
       }
 
       else
       {
-        a3 = 1;
+        model = 1;
       }
     }
 
-    v9->_requestedInteractionModel = a3;
-    objc_storeStrong(&v9->_resultsProvider, a4);
-    [v8 _setRequestedInteractionModel:a3];
+    v9->_requestedInteractionModel = model;
+    objc_storeStrong(&v9->_resultsProvider, provider);
+    [v8 _setRequestedInteractionModel:model];
     [v8 setHidesNavigationBarDuringPresentation:0];
     [v8 setActive:1];
     [v8 setDelegate:v9];
     [v8 setSearchResultsUpdater:v9];
-    v12 = [v8 searchBar];
-    [v12 setSpellCheckingType:1];
+    searchBar = [v8 searchBar];
+    [searchBar setSpellCheckingType:1];
 
-    [v8 setShowsSearchResultsController:{objc_msgSend(v7, "shouldAlwaysBeVisible")}];
+    [v8 setShowsSearchResultsController:{objc_msgSend(providerCopy, "shouldAlwaysBeVisible")}];
   }
 
   return v9;

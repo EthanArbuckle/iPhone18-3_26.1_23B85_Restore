@@ -2,14 +2,14 @@
 + (CGSize)_intrinsicDownloadIndicatorViewSize;
 - (CGSize)intrinsicContentSize;
 - (TKDownloadIndicatorView)init;
-- (TKDownloadIndicatorView)initWithFrame:(CGRect)a3;
-- (void)_handleDisplayLinkDidFire:(id)a3;
+- (TKDownloadIndicatorView)initWithFrame:(CGRect)frame;
+- (void)_handleDisplayLinkDidFire:(id)fire;
 - (void)_stopProgressAnimation;
 - (void)dealloc;
-- (void)drawRect:(CGRect)a3;
-- (void)setBounds:(CGRect)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setProgress:(float)a3 animated:(BOOL)a4 completion:(id)a5;
+- (void)drawRect:(CGRect)rect;
+- (void)setBounds:(CGRect)bounds;
+- (void)setFrame:(CGRect)frame;
+- (void)setProgress:(float)progress animated:(BOOL)animated completion:(id)completion;
 @end
 
 @implementation TKDownloadIndicatorView
@@ -23,11 +23,11 @@
   return [(TKDownloadIndicatorView *)self initWithFrame:v3, v4, v5, v6];
 }
 
-- (TKDownloadIndicatorView)initWithFrame:(CGRect)a3
+- (TKDownloadIndicatorView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = TKDownloadIndicatorView;
-  v3 = [(TKDownloadIndicatorView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(TKDownloadIndicatorView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -64,31 +64,31 @@
   return result;
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
   v4.receiver = self;
   v4.super_class = TKDownloadIndicatorView;
-  [(TKDownloadIndicatorView *)&v4 setBounds:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(TKDownloadIndicatorView *)&v4 setBounds:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   [(TKDownloadIndicatorView *)self setNeedsDisplay];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = TKDownloadIndicatorView;
-  [(TKDownloadIndicatorView *)&v4 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(TKDownloadIndicatorView *)&v4 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(TKDownloadIndicatorView *)self setNeedsDisplay];
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   CurrentContext = UIGraphicsGetCurrentContext();
   CGContextSaveGState(CurrentContext);
   v24 = [MEMORY[0x277D75348] colorWithRed:0.56640625 green:0.56640625 blue:0.5859375 alpha:1.0];
   [v24 setFill];
   [v24 setStroke];
-  v5 = [(TKDownloadIndicatorView *)self traitCollection];
-  [v5 displayScale];
+  traitCollection = [(TKDownloadIndicatorView *)self traitCollection];
+  [traitCollection displayScale];
   TKFloatGetSafeScaleForValue(v6);
   v8 = v7;
 
@@ -146,36 +146,36 @@
   CGContextRestoreGState(CurrentContext);
 }
 
-- (void)setProgress:(float)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)setProgress:(float)progress animated:(BOOL)animated completion:(id)completion
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = a3;
-  if (a3 < 0.0)
+  animatedCopy = animated;
+  completionCopy = completion;
+  progressCopy = progress;
+  if (progress < 0.0)
   {
-    v9 = 0.0;
+    progressCopy = 0.0;
   }
 
-  v10 = fmin(v9, 1.0);
+  v10 = fmin(progressCopy, 1.0);
   progress = self->_progress;
-  v27 = v8;
+  v27 = completionCopy;
   if (llroundf(progress * 8388600.0) == llroundf(v10 * 8388600.0))
   {
-    if (!v8)
+    if (!completionCopy)
     {
       goto LABEL_23;
     }
 
-    (v8[2])(v8);
+    (completionCopy[2])(completionCopy);
   }
 
   else
   {
     self->_progress = v10;
-    v12 = [(TKDownloadIndicatorView *)self window];
-    v13 = [v12 screen];
+    window = [(TKDownloadIndicatorView *)self window];
+    screen = [window screen];
 
-    if (v5 && v13)
+    if (animatedCopy && screen)
     {
       v14 = CACurrentMediaTime();
       self->_progressAnimationStartTime = v14;
@@ -190,13 +190,13 @@
       v15 = v27;
       if (!self->_displayLink)
       {
-        v16 = [v13 displayLinkWithTarget:self selector:sel__handleDisplayLinkDidFire_];
+        v16 = [screen displayLinkWithTarget:self selector:sel__handleDisplayLinkDidFire_];
         displayLink = self->_displayLink;
         self->_displayLink = v16;
 
         v18 = self->_displayLink;
-        v19 = [MEMORY[0x277CBEB88] mainRunLoop];
-        [(CADisplayLink *)v18 addToRunLoop:v19 forMode:*MEMORY[0x277CBE738]];
+        mainRunLoop = [MEMORY[0x277CBEB88] mainRunLoop];
+        [(CADisplayLink *)v18 addToRunLoop:mainRunLoop forMode:*MEMORY[0x277CBE738]];
 
         v15 = v27;
       }
@@ -243,15 +243,15 @@
     }
   }
 
-  v8 = v27;
+  completionCopy = v27;
 LABEL_23:
 }
 
-- (void)_handleDisplayLinkDidFire:(id)a3
+- (void)_handleDisplayLinkDidFire:(id)fire
 {
   if (llround(self->_progressAnimationStartTime * 8388608.0) != llround(self->_progressAnimationEndTime * 8388608.0))
   {
-    [a3 timestamp];
+    [fire timestamp];
     v5 = (v4 - self->_progressAnimationStartTime) / (self->_progressAnimationEndTime - self->_progressAnimationStartTime);
     if (v5 >= 0.99)
     {

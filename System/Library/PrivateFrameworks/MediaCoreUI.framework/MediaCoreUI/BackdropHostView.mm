@@ -1,5 +1,5 @@
 @interface BackdropHostView
-- (_TtC11MediaCoreUI16BackdropHostView)initWithFrame:(CGRect)a3;
+- (_TtC11MediaCoreUI16BackdropHostView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
@@ -20,7 +20,7 @@
   }
 }
 
-- (_TtC11MediaCoreUI16BackdropHostView)initWithFrame:(CGRect)a3
+- (_TtC11MediaCoreUI16BackdropHostView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

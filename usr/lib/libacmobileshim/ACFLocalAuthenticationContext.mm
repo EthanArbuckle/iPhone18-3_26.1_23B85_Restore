@@ -1,7 +1,7 @@
 @interface ACFLocalAuthenticationContext
 - (LAContext)context;
 - (void)dealloc;
-- (void)evaluatePolicy:(int64_t)a3 completion:(id)a4;
+- (void)evaluatePolicy:(int64_t)policy completion:(id)completion;
 @end
 
 @implementation ACFLocalAuthenticationContext
@@ -28,27 +28,27 @@
   return result;
 }
 
-- (void)evaluatePolicy:(int64_t)a3 completion:(id)a4
+- (void)evaluatePolicy:(int64_t)policy completion:(id)completion
 {
-  if (!a4)
+  if (!completion)
   {
     [objc_msgSend(MEMORY[0x29EDB9F28] "currentHandler")];
   }
 
-  v7 = [a4 copy];
+  v7 = [completion copy];
   if ([(ACFLocalAuthenticationContext *)self localizedFallbackTitle])
   {
     [(LAContext *)[(ACFLocalAuthenticationContext *)self context] setLocalizedFallbackTitle:[(ACFLocalAuthenticationContext *)self localizedFallbackTitle]];
   }
 
-  v8 = [(ACFLocalAuthenticationContext *)self context];
-  v9 = [(ACFLocalAuthenticationContext *)self localizedReason];
+  context = [(ACFLocalAuthenticationContext *)self context];
+  localizedReason = [(ACFLocalAuthenticationContext *)self localizedReason];
   v10[0] = MEMORY[0x29EDCA5F8];
   v10[1] = 3221225472;
   v10[2] = __59__ACFLocalAuthenticationContext_evaluatePolicy_completion___block_invoke;
   v10[3] = &unk_29EE91A80;
   v10[4] = v7;
-  [(LAContext *)v8 evaluatePolicy:a3 localizedReason:v9 reply:v10];
+  [(LAContext *)context evaluatePolicy:policy localizedReason:localizedReason reply:v10];
 }
 
 void __59__ACFLocalAuthenticationContext_evaluatePolicy_completion___block_invoke(uint64_t a1, char a2, uint64_t a3)

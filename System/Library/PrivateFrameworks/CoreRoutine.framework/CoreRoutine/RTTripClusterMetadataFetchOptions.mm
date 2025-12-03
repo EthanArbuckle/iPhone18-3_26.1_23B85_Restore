@@ -1,25 +1,25 @@
 @interface RTTripClusterMetadataFetchOptions
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToFetchOptions:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToFetchOptions:(id)options;
 - (RTTripClusterMetadataFetchOptions)init;
-- (RTTripClusterMetadataFetchOptions)initWithCoder:(id)a3;
-- (RTTripClusterMetadataFetchOptions)initWithOriginVisitLatitude:(double)a3 originVisitLongitude:(double)a4 destinationVisitLatitude:(double)a5 destinationVisitLongitude:(double)a6;
-- (void)encodeWithCoder:(id)a3;
+- (RTTripClusterMetadataFetchOptions)initWithCoder:(id)coder;
+- (RTTripClusterMetadataFetchOptions)initWithOriginVisitLatitude:(double)latitude originVisitLongitude:(double)longitude destinationVisitLatitude:(double)visitLatitude destinationVisitLongitude:(double)visitLongitude;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RTTripClusterMetadataFetchOptions
 
-- (RTTripClusterMetadataFetchOptions)initWithOriginVisitLatitude:(double)a3 originVisitLongitude:(double)a4 destinationVisitLatitude:(double)a5 destinationVisitLongitude:(double)a6
+- (RTTripClusterMetadataFetchOptions)initWithOriginVisitLatitude:(double)latitude originVisitLongitude:(double)longitude destinationVisitLatitude:(double)visitLatitude destinationVisitLongitude:(double)visitLongitude
 {
   v11.receiver = self;
   v11.super_class = RTTripClusterMetadataFetchOptions;
   result = [(RTTripClusterMetadataFetchOptions *)&v11 init];
   if (result)
   {
-    result->_originVisitLatitude = a3;
-    result->_originVisitLongitude = a4;
-    result->_destinationVisitLatitude = a5;
-    result->_destinationVisitLongitude = a6;
+    result->_originVisitLatitude = latitude;
+    result->_originVisitLongitude = longitude;
+    result->_destinationVisitLatitude = visitLatitude;
+    result->_destinationVisitLongitude = visitLongitude;
   }
 
   return result;
@@ -39,46 +39,46 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(RTTripClusterMetadataFetchOptions *)self isEqualToFetchOptions:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(RTTripClusterMetadataFetchOptions *)self isEqualToFetchOptions:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToFetchOptions:(id)a3
+- (BOOL)isEqualToFetchOptions:(id)options
 {
-  v4 = a3;
-  if (!v4)
+  optionsCopy = options;
+  if (!optionsCopy)
   {
     goto LABEL_8;
   }
 
   [(RTTripClusterMetadataFetchOptions *)self originVisitLatitude];
   v6 = v5;
-  [v4 originVisitLatitude];
+  [optionsCopy originVisitLatitude];
   v8 = vabdd_f64(v6, v7);
   [(RTTripClusterMetadataFetchOptions *)self originVisitLongitude];
   v10 = v9;
-  [v4 originVisitLongitude];
+  [optionsCopy originVisitLongitude];
   v12 = v11;
   [(RTTripClusterMetadataFetchOptions *)self destinationVisitLatitude];
   v14 = v13;
-  [v4 destinationVisitLatitude];
+  [optionsCopy destinationVisitLatitude];
   v16 = v15;
   [(RTTripClusterMetadataFetchOptions *)self destinationVisitLongitude];
   v18 = v17;
-  [v4 destinationVisitLongitude];
+  [optionsCopy destinationVisitLongitude];
   if (v8 < 2.22044605e-16)
   {
     v20 = vabdd_f64(v18, v19);
@@ -100,29 +100,29 @@ LABEL_8:
   return v22;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   [(RTTripClusterMetadataFetchOptions *)self originVisitLatitude];
-  [v4 encodeDouble:@"originVisitLat" forKey:?];
+  [coderCopy encodeDouble:@"originVisitLat" forKey:?];
   [(RTTripClusterMetadataFetchOptions *)self originVisitLongitude];
-  [v4 encodeDouble:@"originVisitLon" forKey:?];
+  [coderCopy encodeDouble:@"originVisitLon" forKey:?];
   [(RTTripClusterMetadataFetchOptions *)self destinationVisitLatitude];
-  [v4 encodeDouble:@"destinationVisitLat" forKey:?];
+  [coderCopy encodeDouble:@"destinationVisitLat" forKey:?];
   [(RTTripClusterMetadataFetchOptions *)self destinationVisitLongitude];
-  [v4 encodeDouble:@"destinationVisitLon" forKey:?];
+  [coderCopy encodeDouble:@"destinationVisitLon" forKey:?];
 }
 
-- (RTTripClusterMetadataFetchOptions)initWithCoder:(id)a3
+- (RTTripClusterMetadataFetchOptions)initWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 decodeDoubleForKey:@"originVisitLat"];
+  coderCopy = coder;
+  [coderCopy decodeDoubleForKey:@"originVisitLat"];
   v6 = v5;
-  [v4 decodeDoubleForKey:@"originVisitLon"];
+  [coderCopy decodeDoubleForKey:@"originVisitLon"];
   v8 = v7;
-  [v4 decodeDoubleForKey:@"destinationVisitLat"];
+  [coderCopy decodeDoubleForKey:@"destinationVisitLat"];
   v10 = v9;
-  [v4 decodeDoubleForKey:@"destinationVisitLon"];
+  [coderCopy decodeDoubleForKey:@"destinationVisitLon"];
   v12 = v11;
 
   return [(RTTripClusterMetadataFetchOptions *)self initWithOriginVisitLatitude:v6 originVisitLongitude:v8 destinationVisitLatitude:v10 destinationVisitLongitude:v12];

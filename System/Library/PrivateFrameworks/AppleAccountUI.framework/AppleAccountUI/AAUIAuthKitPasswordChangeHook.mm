@@ -1,28 +1,28 @@
 @interface AAUIAuthKitPasswordChangeHook
-- (AAUIAuthKitPasswordChangeHook)initWithAltDSID:(id)a3;
-- (BOOL)shouldMatchModel:(id)a3;
+- (AAUIAuthKitPasswordChangeHook)initWithAltDSID:(id)d;
+- (BOOL)shouldMatchModel:(id)model;
 - (RUIServerHookDelegate)delegate;
-- (id)_tableViewRowWithID:(id)a3 inObjectModel:(id)a4;
-- (void)_handleChangeForObjectModel:(id)a3 completion:(id)a4;
-- (void)_harvestDataFromServerHTTPResponse:(id)a3;
-- (void)_updateiCloudAccountWithCompletion:(id)a3;
-- (void)harvestDataFromResponse:(id)a3;
-- (void)processElement:(id)a3 attributes:(id)a4 objectModel:(id)a5 completion:(id)a6;
-- (void)textFieldEditingDidEnd:(id)a3;
+- (id)_tableViewRowWithID:(id)d inObjectModel:(id)model;
+- (void)_handleChangeForObjectModel:(id)model completion:(id)completion;
+- (void)_harvestDataFromServerHTTPResponse:(id)response;
+- (void)_updateiCloudAccountWithCompletion:(id)completion;
+- (void)harvestDataFromResponse:(id)response;
+- (void)processElement:(id)element attributes:(id)attributes objectModel:(id)model completion:(id)completion;
+- (void)textFieldEditingDidEnd:(id)end;
 @end
 
 @implementation AAUIAuthKitPasswordChangeHook
 
-- (AAUIAuthKitPasswordChangeHook)initWithAltDSID:(id)a3
+- (AAUIAuthKitPasswordChangeHook)initWithAltDSID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v10.receiver = self;
   v10.super_class = AAUIAuthKitPasswordChangeHook;
   v5 = [(AAUIAuthKitPasswordChangeHook *)&v10 init];
   if (v5)
   {
-    v6 = [MEMORY[0x1E6959A48] defaultStore];
-    v7 = [v6 aa_appleAccountWithAltDSID:v4];
+    defaultStore = [MEMORY[0x1E6959A48] defaultStore];
+    v7 = [defaultStore aa_appleAccountWithAltDSID:dCopy];
     appleAccount = v5->_appleAccount;
     v5->_appleAccount = v7;
   }
@@ -30,42 +30,42 @@
   return v5;
 }
 
-- (void)processElement:(id)a3 attributes:(id)a4 objectModel:(id)a5 completion:(id)a6
+- (void)processElement:(id)element attributes:(id)attributes objectModel:(id)model completion:(id)completion
 {
-  v8 = a6;
+  completionCopy = completion;
   v9 = _AALogSystem();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
   {
     [AAUIAuthKitPasswordChangeHook processElement:a2 attributes:v9 objectModel:? completion:?];
   }
 
-  (*(v8 + 2))(v8, 0, 0);
+  (*(completionCopy + 2))(completionCopy, 0, 0);
 }
 
-- (BOOL)shouldMatchModel:(id)a3
+- (BOOL)shouldMatchModel:(id)model
 {
-  v3 = a3;
-  v4 = [v3 clientInfo];
-  v5 = [v4 objectForKeyedSubscript:@"newPasswordRowId"];
+  modelCopy = model;
+  clientInfo = [modelCopy clientInfo];
+  v5 = [clientInfo objectForKeyedSubscript:@"newPasswordRowId"];
   if (v5)
   {
-    v6 = 1;
+    bOOLValue = 1;
   }
 
   else
   {
-    v7 = [v3 clientInfo];
-    v8 = [v7 objectForKeyedSubscript:@"currentPasswordRowId"];
+    clientInfo2 = [modelCopy clientInfo];
+    v8 = [clientInfo2 objectForKeyedSubscript:@"currentPasswordRowId"];
     if (v8)
     {
-      v6 = 1;
+      bOOLValue = 1;
     }
 
     else
     {
       objc_opt_class();
-      v9 = [v3 clientInfo];
-      v10 = [v9 objectForKeyedSubscript:@"passwordUpdated"];
+      clientInfo3 = [modelCopy clientInfo];
+      v10 = [clientInfo3 objectForKeyedSubscript:@"passwordUpdated"];
       if (objc_opt_isKindOfClass())
       {
         v11 = v10;
@@ -76,28 +76,28 @@
         v11 = 0;
       }
 
-      v6 = [v11 BOOLValue];
+      bOOLValue = [v11 BOOLValue];
     }
   }
 
-  return v6;
+  return bOOLValue;
 }
 
-- (void)harvestDataFromResponse:(id)a3
+- (void)harvestDataFromResponse:(id)response
 {
-  v4 = a3;
-  if ([v4 statusCode] != 401)
+  responseCopy = response;
+  if ([responseCopy statusCode] != 401)
   {
-    [(AAUIAuthKitPasswordChangeHook *)self _harvestDataFromServerHTTPResponse:v4];
+    [(AAUIAuthKitPasswordChangeHook *)self _harvestDataFromServerHTTPResponse:responseCopy];
   }
 }
 
-- (void)textFieldEditingDidEnd:(id)a3
+- (void)textFieldEditingDidEnd:(id)end
 {
-  v4 = a3;
-  v5 = [(RUITableViewRow *)self->_oldPasswordRow control];
+  endCopy = end;
+  control = [(RUITableViewRow *)self->_oldPasswordRow control];
 
-  if (v5 == v4)
+  if (control == endCopy)
   {
     v9 = _AAUILogSystem();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -106,18 +106,18 @@
       _os_log_impl(&dword_1C5355000, v9, OS_LOG_TYPE_DEFAULT, "User has entered their old password.", buf, 2u);
     }
 
-    v10 = [v4 text];
+    text = [endCopy text];
     oldPassword = self->_oldPassword;
-    self->_oldPassword = v10;
+    self->_oldPassword = text;
   }
 
   else
   {
-    v6 = [(RUITableViewRow *)self->_newPasswordRow control];
+    control2 = [(RUITableViewRow *)self->_newPasswordRow control];
 
     oldPassword = _AAUILogSystem();
     v8 = os_log_type_enabled(oldPassword, OS_LOG_TYPE_DEFAULT);
-    if (v6 == v4)
+    if (control2 == endCopy)
     {
       if (v8)
       {
@@ -125,9 +125,9 @@
         _os_log_impl(&dword_1C5355000, oldPassword, OS_LOG_TYPE_DEFAULT, "User has entered a new password. Will not commit just yet.", v13, 2u);
       }
 
-      v11 = [v4 text];
+      text2 = [endCopy text];
       oldPassword = self->_newPassword;
-      self->_newPassword = v11;
+      self->_newPassword = text2;
     }
 
     else if (v8)
@@ -138,14 +138,14 @@
   }
 }
 
-- (void)_handleChangeForObjectModel:(id)a3 completion:(id)a4
+- (void)_handleChangeForObjectModel:(id)model completion:(id)completion
 {
   v33 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  modelCopy = model;
+  completionCopy = completion;
   objc_opt_class();
-  v8 = [v6 clientInfo];
-  v9 = [v8 objectForKeyedSubscript:@"currentPasswordRowId"];
+  clientInfo = [modelCopy clientInfo];
+  v9 = [clientInfo objectForKeyedSubscript:@"currentPasswordRowId"];
   if (objc_opt_isKindOfClass())
   {
     v10 = v9;
@@ -158,7 +158,7 @@
 
   if (v10)
   {
-    v11 = [(AAUIAuthKitPasswordChangeHook *)self _tableViewRowWithID:v10 inObjectModel:v6];
+    v11 = [(AAUIAuthKitPasswordChangeHook *)self _tableViewRowWithID:v10 inObjectModel:modelCopy];
     oldPasswordRow = self->_oldPasswordRow;
     self->_oldPasswordRow = v11;
 
@@ -189,8 +189,8 @@
   }
 
   objc_opt_class();
-  v16 = [v6 clientInfo];
-  v17 = [v16 objectForKeyedSubscript:@"newPasswordRowId"];
+  clientInfo2 = [modelCopy clientInfo];
+  v17 = [clientInfo2 objectForKeyedSubscript:@"newPasswordRowId"];
   if (objc_opt_isKindOfClass())
   {
     v18 = v17;
@@ -215,7 +215,7 @@
       _os_log_impl(&dword_1C5355000, v19, OS_LOG_TYPE_DEFAULT, "Found new password row %@ for identifier %@.", &v29, 0x16u);
     }
 
-    v22 = [(AAUIAuthKitPasswordChangeHook *)self _tableViewRowWithID:v18 inObjectModel:v6];
+    v22 = [(AAUIAuthKitPasswordChangeHook *)self _tableViewRowWithID:v18 inObjectModel:modelCopy];
     v23 = self->_newPasswordRow;
     self->_newPasswordRow = v22;
 
@@ -235,8 +235,8 @@
   }
 
   objc_opt_class();
-  v25 = [v6 clientInfo];
-  v26 = [v25 objectForKeyedSubscript:@"passwordUpdated"];
+  clientInfo3 = [modelCopy clientInfo];
+  v26 = [clientInfo3 objectForKeyedSubscript:@"passwordUpdated"];
   if (objc_opt_isKindOfClass())
   {
     v27 = v26;
@@ -247,35 +247,35 @@
     v27 = 0;
   }
 
-  v28 = [v27 BOOLValue];
-  if (v28)
+  bOOLValue = [v27 BOOLValue];
+  if (bOOLValue)
   {
-    [(AAUIAuthKitPasswordChangeHook *)self _updateiCloudAccountWithCompletion:v7];
+    [(AAUIAuthKitPasswordChangeHook *)self _updateiCloudAccountWithCompletion:completionCopy];
   }
 
   else
   {
-    (*(v7 + 2))(v7, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 }
 
-- (void)_harvestDataFromServerHTTPResponse:(id)a3
+- (void)_harvestDataFromServerHTTPResponse:(id)response
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  responseCopy = response;
   v5 = _AAUILogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138477827;
-    v11 = v4;
+    v11 = responseCopy;
     _os_log_impl(&dword_1C5355000, v5, OS_LOG_TYPE_DEFAULT, "Harvesting data from response: %{private}@", &v10, 0xCu);
   }
 
-  v6 = [v4 allHeaderFields];
-  v7 = [v6 objectForKeyedSubscript:@"X-Apple-I-Password-Updated"];
-  v8 = [v7 BOOLValue];
+  allHeaderFields = [responseCopy allHeaderFields];
+  v7 = [allHeaderFields objectForKeyedSubscript:@"X-Apple-I-Password-Updated"];
+  bOOLValue = [v7 BOOLValue];
 
-  if (v8)
+  if (bOOLValue)
   {
     v9 = _AAUILogSystem();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -288,12 +288,12 @@
   }
 }
 
-- (void)_updateiCloudAccountWithCompletion:(id)a3
+- (void)_updateiCloudAccountWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(AAUIAuthKitPasswordChangeHook *)self appleAccount];
+  completionCopy = completion;
+  appleAccount = [(AAUIAuthKitPasswordChangeHook *)self appleAccount];
 
-  if (v5)
+  if (appleAccount)
   {
     v6 = [(NSString *)self->_newPassword length];
     v7 = _AAUILogSystem();
@@ -306,39 +306,39 @@
         _os_log_impl(&dword_1C5355000, v8, OS_LOG_TYPE_DEFAULT, "Committing new password locally.", buf, 2u);
       }
 
-      v9 = [(AAUIAuthKitPasswordChangeHook *)self appleAccount];
-      [v9 _aa_setRawPassword:self->_newPassword];
+      appleAccount2 = [(AAUIAuthKitPasswordChangeHook *)self appleAccount];
+      [appleAccount2 _aa_setRawPassword:self->_newPassword];
 
       v10 = [(NSString *)self->_oldPassword length];
-      v11 = _AAUILogSystem();
-      v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
+      appleAccount3 = _AAUILogSystem();
+      v12 = os_log_type_enabled(appleAccount3, OS_LOG_TYPE_DEFAULT);
       if (v10)
       {
         if (v12)
         {
           *buf = 0;
-          _os_log_impl(&dword_1C5355000, v11, OS_LOG_TYPE_DEFAULT, "Setting old password on account credentials.", buf, 2u);
+          _os_log_impl(&dword_1C5355000, appleAccount3, OS_LOG_TYPE_DEFAULT, "Setting old password on account credentials.", buf, 2u);
         }
 
-        v11 = [(AAUIAuthKitPasswordChangeHook *)self appleAccount];
-        v13 = [v11 credential];
-        [v13 setCredentialItem:self->_oldPassword forKey:*MEMORY[0x1E69599B8]];
+        appleAccount3 = [(AAUIAuthKitPasswordChangeHook *)self appleAccount];
+        credential = [appleAccount3 credential];
+        [credential setCredentialItem:self->_oldPassword forKey:*MEMORY[0x1E69599B8]];
       }
 
       else if (v12)
       {
         *buf = 0;
-        _os_log_impl(&dword_1C5355000, v11, OS_LOG_TYPE_DEFAULT, "Server UI flow did not provide an old password.", buf, 2u);
+        _os_log_impl(&dword_1C5355000, appleAccount3, OS_LOG_TYPE_DEFAULT, "Server UI flow did not provide an old password.", buf, 2u);
       }
 
-      v15 = [MEMORY[0x1E6959A48] defaultStore];
-      v16 = [(AAUIAuthKitPasswordChangeHook *)self appleAccount];
+      defaultStore = [MEMORY[0x1E6959A48] defaultStore];
+      appleAccount4 = [(AAUIAuthKitPasswordChangeHook *)self appleAccount];
       v17[0] = MEMORY[0x1E69E9820];
       v17[1] = 3221225472;
       v17[2] = __68__AAUIAuthKitPasswordChangeHook__updateiCloudAccountWithCompletion___block_invoke;
       v17[3] = &unk_1E820DFD8;
-      v18 = v4;
-      [v15 renewCredentialsForAccount:v16 completion:v17];
+      v18 = completionCopy;
+      [defaultStore renewCredentialsForAccount:appleAccount4 completion:v17];
 
       goto LABEL_20;
     }
@@ -348,10 +348,10 @@
       [AAUIAuthKitPasswordChangeHook _updateiCloudAccountWithCompletion:v8];
     }
 
-    if (v4)
+    if (completionCopy)
     {
 LABEL_16:
-      (*(v4 + 2))(v4, 0, 0);
+      (*(completionCopy + 2))(completionCopy, 0, 0);
     }
   }
 
@@ -363,7 +363,7 @@ LABEL_16:
       [AAUIAccountMigrationHook _invokeShieldMigrationFlowWithPendingDOB:v14 completion:?];
     }
 
-    if (v4)
+    if (completionCopy)
     {
       goto LABEL_16;
     }
@@ -404,16 +404,16 @@ LABEL_8:
   }
 }
 
-- (id)_tableViewRowWithID:(id)a3 inObjectModel:(id)a4
+- (id)_tableViewRowWithID:(id)d inObjectModel:(id)model
 {
   v51 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  dCopy = d;
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v6 = [a4 allPages];
-  v7 = [v6 countByEnumeratingWithState:&v44 objects:v50 count:16];
+  allPages = [model allPages];
+  v7 = [allPages countByEnumeratingWithState:&v44 objects:v50 count:16];
   if (v7)
   {
     v8 = v7;
@@ -424,25 +424,25 @@ LABEL_8:
       {
         if (*v45 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allPages);
         }
 
         v11 = *(*(&v44 + 1) + 8 * i);
         if ([v11 hasTableView])
         {
-          v12 = [v11 tableViewOM];
+          tableViewOM = [v11 tableViewOM];
           v40 = 0u;
           v41 = 0u;
           v42 = 0u;
           v43 = 0u;
-          v35 = v12;
-          v13 = [v12 sections];
-          v31 = [v13 countByEnumeratingWithState:&v40 objects:v49 count:16];
+          v35 = tableViewOM;
+          sections = [tableViewOM sections];
+          v31 = [sections countByEnumeratingWithState:&v40 objects:v49 count:16];
           if (v31)
           {
             v14 = *v41;
-            v33 = v13;
-            v34 = v6;
+            v33 = sections;
+            v34 = allPages;
             v29 = v8;
             v30 = v9;
             v28 = *v41;
@@ -453,7 +453,7 @@ LABEL_8:
               {
                 if (*v41 != v14)
                 {
-                  objc_enumerationMutation(v13);
+                  objc_enumerationMutation(sections);
                 }
 
                 v32 = v15;
@@ -462,8 +462,8 @@ LABEL_8:
                 v37 = 0u;
                 v38 = 0u;
                 v39 = 0u;
-                v17 = [v16 rows];
-                v18 = [v17 countByEnumeratingWithState:&v36 objects:v48 count:16];
+                rows = [v16 rows];
+                v18 = [rows countByEnumeratingWithState:&v36 objects:v48 count:16];
                 if (v18)
                 {
                   v19 = v18;
@@ -474,24 +474,24 @@ LABEL_8:
                     {
                       if (*v37 != v20)
                       {
-                        objc_enumerationMutation(v17);
+                        objc_enumerationMutation(rows);
                       }
 
                       v22 = *(*(&v36 + 1) + 8 * j);
-                      v23 = [v22 attributes];
-                      v24 = [v23 objectForKeyedSubscript:@"id"];
-                      v25 = [v24 isEqual:v5];
+                      attributes = [v22 attributes];
+                      v24 = [attributes objectForKeyedSubscript:@"id"];
+                      v25 = [v24 isEqual:dCopy];
 
                       if (v25)
                       {
                         v26 = v22;
 
-                        v6 = v34;
+                        allPages = v34;
                         goto LABEL_28;
                       }
                     }
 
-                    v19 = [v17 countByEnumeratingWithState:&v36 objects:v48 count:16];
+                    v19 = [rows countByEnumeratingWithState:&v36 objects:v48 count:16];
                     if (v19)
                     {
                       continue;
@@ -502,8 +502,8 @@ LABEL_8:
                 }
 
                 v15 = v32 + 1;
-                v13 = v33;
-                v6 = v34;
+                sections = v33;
+                allPages = v34;
                 v8 = v29;
                 v9 = v30;
                 v14 = v28;
@@ -518,7 +518,7 @@ LABEL_8:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v44 objects:v50 count:16];
+      v8 = [allPages countByEnumeratingWithState:&v44 objects:v50 count:16];
       v26 = 0;
     }
 

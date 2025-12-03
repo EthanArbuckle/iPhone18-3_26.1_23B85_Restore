@@ -1,22 +1,22 @@
 @interface HKHistogramAnnotationViewDataSource
-- (HKHistogramAnnotationViewDataSource)initWithFormatter:(id)a3;
-- (id)valueViewForColumnAtIndex:(int64_t)a3 orientation:(int64_t)a4;
-- (int64_t)numberOfValuesForAnnotationView:(id)a3;
-- (void)updateWithPointSelectionContexts:(id)a3;
+- (HKHistogramAnnotationViewDataSource)initWithFormatter:(id)formatter;
+- (id)valueViewForColumnAtIndex:(int64_t)index orientation:(int64_t)orientation;
+- (int64_t)numberOfValuesForAnnotationView:(id)view;
+- (void)updateWithPointSelectionContexts:(id)contexts;
 @end
 
 @implementation HKHistogramAnnotationViewDataSource
 
-- (HKHistogramAnnotationViewDataSource)initWithFormatter:(id)a3
+- (HKHistogramAnnotationViewDataSource)initWithFormatter:(id)formatter
 {
-  v5 = a3;
+  formatterCopy = formatter;
   v11.receiver = self;
   v11.super_class = HKHistogramAnnotationViewDataSource;
   v6 = [(HKHistogramAnnotationViewDataSource *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_formatter, a3);
+    objc_storeStrong(&v6->_formatter, formatter);
     v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
     keyValuePairs = v7->_keyValuePairs;
     v7->_keyValuePairs = v8;
@@ -25,19 +25,19 @@
   return v7;
 }
 
-- (void)updateWithPointSelectionContexts:(id)a3
+- (void)updateWithPointSelectionContexts:(id)contexts
 {
   v37 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(HKHistogramAnnotationViewDataSource *)self keyValuePairs];
-  [v5 removeAllObjects];
+  contextsCopy = contexts;
+  keyValuePairs = [(HKHistogramAnnotationViewDataSource *)self keyValuePairs];
+  [keyValuePairs removeAllObjects];
 
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v7 = v4;
+  v7 = contextsCopy;
   v8 = [v7 countByEnumeratingWithState:&v31 objects:v36 count:16];
   if (v8)
   {
@@ -53,8 +53,8 @@
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v31 + 1) + 8 * v11) userInfo];
-        [v6 addObjectsFromArray:v12];
+        userInfo = [*(*(&v31 + 1) + 8 * v11) userInfo];
+        [v6 addObjectsFromArray:userInfo];
 
         ++v11;
       }
@@ -68,8 +68,8 @@
 
   v26 = v7;
 
-  v13 = [(HKHistogramAnnotationViewDataSource *)self formatter];
-  v14 = [v13 formattedSelectedRangeLabelDataWithChartData:v6 context:0];
+  formatter = [(HKHistogramAnnotationViewDataSource *)self formatter];
+  v14 = [formatter formattedSelectedRangeLabelDataWithChartData:v6 context:0];
 
   v29 = 0u;
   v30 = 0u;
@@ -93,15 +93,15 @@
 
         v20 = *(*(&v27 + 1) + 8 * v19);
         v21 = objc_alloc_init(HKInteractiveChartAnnotationViewKeyValueLabel);
-        v22 = [(HKInteractiveChartAnnotationViewKeyValueLabel *)v21 keyLabel];
-        [v22 setSelectedRangeData:v20];
+        keyLabel = [(HKInteractiveChartAnnotationViewKeyValueLabel *)v21 keyLabel];
+        [keyLabel setSelectedRangeData:v20];
 
-        v23 = [(HKInteractiveChartAnnotationViewKeyValueLabel *)v21 valueLabel];
-        v24 = [v20 attributedString];
-        [v23 setAttributedText:v24];
+        valueLabel = [(HKInteractiveChartAnnotationViewKeyValueLabel *)v21 valueLabel];
+        attributedString = [v20 attributedString];
+        [valueLabel setAttributedText:attributedString];
 
-        v25 = [(HKHistogramAnnotationViewDataSource *)self keyValuePairs];
-        [v25 addObject:v21];
+        keyValuePairs2 = [(HKHistogramAnnotationViewDataSource *)self keyValuePairs];
+        [keyValuePairs2 addObject:v21];
 
         ++v19;
       }
@@ -114,22 +114,22 @@
   }
 }
 
-- (int64_t)numberOfValuesForAnnotationView:(id)a3
+- (int64_t)numberOfValuesForAnnotationView:(id)view
 {
-  v3 = [(HKHistogramAnnotationViewDataSource *)self keyValuePairs];
-  v4 = [v3 count];
+  keyValuePairs = [(HKHistogramAnnotationViewDataSource *)self keyValuePairs];
+  v4 = [keyValuePairs count];
 
   return v4;
 }
 
-- (id)valueViewForColumnAtIndex:(int64_t)a3 orientation:(int64_t)a4
+- (id)valueViewForColumnAtIndex:(int64_t)index orientation:(int64_t)orientation
 {
-  v6 = [(HKHistogramAnnotationViewDataSource *)self keyValuePairs];
-  v7 = [v6 objectAtIndexedSubscript:a3];
+  keyValuePairs = [(HKHistogramAnnotationViewDataSource *)self keyValuePairs];
+  v7 = [keyValuePairs objectAtIndexedSubscript:index];
 
-  if (a4)
+  if (orientation)
   {
-    if (a4 != 1)
+    if (orientation != 1)
     {
       goto LABEL_6;
     }

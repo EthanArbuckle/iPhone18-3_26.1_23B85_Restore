@@ -1,7 +1,7 @@
 @interface HDIDSParticipant
 - (HDIDSParticipant)init;
-- (HDIDSParticipant)initWithDevice:(id)a3;
-- (HDIDSParticipant)initWithIdentifier:(id)a3;
+- (HDIDSParticipant)initWithDevice:(id)device;
+- (HDIDSParticipant)initWithIdentifier:(id)identifier;
 - (id)description;
 @end
 
@@ -17,41 +17,41 @@
   return 0;
 }
 
-- (HDIDSParticipant)initWithDevice:(id)a3
+- (HDIDSParticipant)initWithDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v12.receiver = self;
   v12.super_class = HDIDSParticipant;
   v6 = [(HDIDSParticipant *)&v12 init];
   if (v6)
   {
-    v7 = [v5 hd_destinationIdentifier];
+    hd_destinationIdentifier = [deviceCopy hd_destinationIdentifier];
     destinationIdentifier = v6->_destinationIdentifier;
-    v6->_destinationIdentifier = v7;
+    v6->_destinationIdentifier = hd_destinationIdentifier;
 
-    v9 = [v5 hd_deviceIdentifier];
+    hd_deviceIdentifier = [deviceCopy hd_deviceIdentifier];
     deviceIdentifier = v6->_deviceIdentifier;
-    v6->_deviceIdentifier = v9;
+    v6->_deviceIdentifier = hd_deviceIdentifier;
 
-    objc_storeStrong(&v6->_device, a3);
+    objc_storeStrong(&v6->_device, device);
   }
 
   return v6;
 }
 
-- (HDIDSParticipant)initWithIdentifier:(id)a3
+- (HDIDSParticipant)initWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = HDIDSParticipant;
   v5 = [(HDIDSParticipant *)&v11 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     destinationIdentifier = v5->_destinationIdentifier;
     v5->_destinationIdentifier = v6;
 
-    v8 = [v4 copy];
+    v8 = [identifierCopy copy];
     deviceIdentifier = v5->_deviceIdentifier;
     v5->_deviceIdentifier = v8;
   }
@@ -64,7 +64,7 @@
   device = self->_device;
   if (device)
   {
-    v4 = [(IDSDevice *)device hd_shortDescription];
+    hd_shortDescription = [(IDSDevice *)device hd_shortDescription];
   }
 
   else
@@ -72,10 +72,10 @@
     v5 = MEMORY[0x277CCACA8];
     v6 = objc_opt_class();
     v7 = NSStringFromClass(v6);
-    v4 = [v5 stringWithFormat:@"<%@:%p destinationIdentifier=%@", v7, self, self->_destinationIdentifier];
+    hd_shortDescription = [v5 stringWithFormat:@"<%@:%p destinationIdentifier=%@", v7, self, self->_destinationIdentifier];
   }
 
-  return v4;
+  return hd_shortDescription;
 }
 
 @end

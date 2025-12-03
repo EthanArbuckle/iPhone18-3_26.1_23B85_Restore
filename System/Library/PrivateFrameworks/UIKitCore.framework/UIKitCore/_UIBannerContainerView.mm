@@ -1,93 +1,93 @@
 @interface _UIBannerContainerView
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (_UIBannerContainerView)initWithFrame:(CGRect)a3;
-- (id)_bannerAnimationToVisible:(BOOL)a3 hiddenValue:(id)a4 visibleValue:(id)a5 withKeyPath:(id)a6;
-- (void)_dismissBanner:(id)a3 alongsideAnimations:(id)a4 completion:(id)a5;
-- (void)_presentBanner:(id)a3 completion:(id)a4;
-- (void)_setBanner:(id)a3 visible:(BOOL)a4 alongsideAnimations:(id)a5 completion:(id)a6;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (_UIBannerContainerView)initWithFrame:(CGRect)frame;
+- (id)_bannerAnimationToVisible:(BOOL)visible hiddenValue:(id)value visibleValue:(id)visibleValue withKeyPath:(id)path;
+- (void)_dismissBanner:(id)banner alongsideAnimations:(id)animations completion:(id)completion;
+- (void)_presentBanner:(id)banner completion:(id)completion;
+- (void)_setBanner:(id)banner visible:(BOOL)visible alongsideAnimations:(id)animations completion:(id)completion;
 - (void)updateConstraints;
 @end
 
 @implementation _UIBannerContainerView
 
-- (_UIBannerContainerView)initWithFrame:(CGRect)a3
+- (_UIBannerContainerView)initWithFrame:(CGRect)frame
 {
   v10.receiver = self;
   v10.super_class = _UIBannerContainerView;
-  v3 = [(UIView *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     banners = v3->_banners;
-    v3->_banners = v4;
+    v3->_banners = array;
 
-    v6 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     constraints = v3->_constraints;
-    v3->_constraints = v6;
+    v3->_constraints = array2;
 
-    v8 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v8 addObserver:v3 selector:sel_statusBarFrameDidChange_ name:@"UIApplicationDidChangeStatusBarFrameNotification" object:UIApp];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel_statusBarFrameDidChange_ name:@"UIApplicationDidChangeStatusBarFrameNotification" object:UIApp];
   }
 
   return v3;
 }
 
-- (void)_presentBanner:(id)a3 completion:(id)a4
+- (void)_presentBanner:(id)banner completion:(id)completion
 {
   v44[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 view];
-  [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [(NSMutableArray *)self->_banners addObject:v6];
-  [(UIView *)self addSubview:v8];
-  v9 = [MEMORY[0x1E695DF70] array];
-  v10 = [v8 leadingAnchor];
-  v11 = [(UIView *)self leadingAnchor];
-  v12 = [v10 constraintGreaterThanOrEqualToAnchor:v11 constant:8.0];
-  [v9 addObject:v12];
+  bannerCopy = banner;
+  completionCopy = completion;
+  view = [bannerCopy view];
+  [view setTranslatesAutoresizingMaskIntoConstraints:0];
+  [(NSMutableArray *)self->_banners addObject:bannerCopy];
+  [(UIView *)self addSubview:view];
+  array = [MEMORY[0x1E695DF70] array];
+  leadingAnchor = [view leadingAnchor];
+  leadingAnchor2 = [(UIView *)self leadingAnchor];
+  v12 = [leadingAnchor constraintGreaterThanOrEqualToAnchor:leadingAnchor2 constant:8.0];
+  [array addObject:v12];
 
-  v13 = [v8 centerXAnchor];
-  v14 = [(UIView *)self centerXAnchor];
-  v15 = [v13 constraintEqualToAnchor:v14];
-  [v9 addObject:v15];
+  centerXAnchor = [view centerXAnchor];
+  centerXAnchor2 = [(UIView *)self centerXAnchor];
+  v15 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
+  [array addObject:v15];
 
-  v16 = [v8 widthAnchor];
-  v17 = [v16 constraintLessThanOrEqualToConstant:480.0];
-  [v9 addObject:v17];
+  widthAnchor = [view widthAnchor];
+  v17 = [widthAnchor constraintLessThanOrEqualToConstant:480.0];
+  [array addObject:v17];
 
-  v18 = [v8 widthAnchor];
-  v19 = [v18 constraintEqualToConstant:480.0];
+  widthAnchor2 = [view widthAnchor];
+  v19 = [widthAnchor2 constraintEqualToConstant:480.0];
   LODWORD(v20) = 1147207680;
   v21 = [v19 _ui_constraintWithPriority:v20];
-  [v9 addObject:v21];
+  [array addObject:v21];
 
-  v22 = [v8 topAnchor];
-  v23 = [(UIView *)self topAnchor];
-  v24 = [v22 constraintEqualToAnchor:v23 constant:0.0];
+  topAnchor = [view topAnchor];
+  topAnchor2 = [(UIView *)self topAnchor];
+  v24 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:0.0];
   LODWORD(v25) = 1147207680;
   v26 = [v24 _ui_constraintWithPriority:v25];
-  [v6 setVisibleConstraint:v26];
+  [bannerCopy setVisibleConstraint:v26];
 
-  v27 = [v8 bottomAnchor];
-  v28 = [(UIView *)self topAnchor];
-  v29 = [v27 constraintEqualToAnchor:v28];
-  [v6 setHiddenConstraint:v29];
+  bottomAnchor = [view bottomAnchor];
+  topAnchor3 = [(UIView *)self topAnchor];
+  v29 = [bottomAnchor constraintEqualToAnchor:topAnchor3];
+  [bannerCopy setHiddenConstraint:v29];
 
-  v30 = [v6 hiddenConstraint];
-  [v9 addObject:v30];
+  hiddenConstraint = [bannerCopy hiddenConstraint];
+  [array addObject:hiddenConstraint];
 
   [(UIView *)self setNeedsUpdateConstraints];
-  [MEMORY[0x1E69977A0] activateConstraints:v9];
+  [MEMORY[0x1E69977A0] activateConstraints:array];
   [(UIView *)self layoutIfNeeded];
-  v31 = [v8 _screen];
-  LODWORD(v28) = _UIScreenUsesMinimumSafeAreas([v31 _screenType]);
+  _screen = [view _screen];
+  LODWORD(topAnchor3) = _UIScreenUsesMinimumSafeAreas([_screen _screenType]);
 
-  if (v28)
+  if (topAnchor3)
   {
-    v32 = [v8 layer];
-    v33 = [v32 filters];
-    v34 = [v33 count];
+    layer = [view layer];
+    filters = [layer filters];
+    v34 = [filters count];
 
     if (!v34)
     {
@@ -96,13 +96,13 @@
       [v35 setName:@"gaussianBlur"];
       v44[0] = v35;
       v36 = [MEMORY[0x1E695DEC8] arrayWithObjects:v44 count:1];
-      v37 = [v8 layer];
-      [v37 setFilters:v36];
+      layer2 = [view layer];
+      [layer2 setFilters:v36];
     }
 
     CGAffineTransformMakeScale(&v43, 0.8, 0.8);
     location = v43;
-    [v8 setTransform:&location];
+    [view setTransform:&location];
   }
 
   objc_initWeak(&location, self);
@@ -111,9 +111,9 @@
   v39[2] = __52___UIBannerContainerView__presentBanner_completion___block_invoke;
   v39[3] = &unk_1E70FDEC0;
   objc_copyWeak(&v41, &location);
-  v38 = v7;
+  v38 = completionCopy;
   v40 = v38;
-  [(_UIBannerContainerView *)self _setBanner:v6 visible:1 alongsideAnimations:0 completion:v39];
+  [(_UIBannerContainerView *)self _setBanner:bannerCopy visible:1 alongsideAnimations:0 completion:v39];
 
   objc_destroyWeak(&v41);
   objc_destroyWeak(&location);
@@ -125,8 +125,8 @@
   v18.receiver = self;
   v18.super_class = _UIBannerContainerView;
   [(UIView *)&v18 updateConstraints];
-  v3 = [(UIView *)self window];
-  v4 = __UIStatusBarManagerForWindow(v3);
+  window = [(UIView *)self window];
+  v4 = __UIStatusBarManagerForWindow(window);
   [v4 statusBarHeight];
   v6 = v5;
 
@@ -151,8 +151,8 @@
           objc_enumerationMutation(v7);
         }
 
-        v13 = [*(*(&v14 + 1) + 8 * v12) visibleConstraint];
-        [v13 setConstant:v10];
+        visibleConstraint = [*(*(&v14 + 1) + 8 * v12) visibleConstraint];
+        [visibleConstraint setConstant:v10];
 
         ++v12;
       }
@@ -165,53 +165,53 @@
   }
 }
 
-- (void)_dismissBanner:(id)a3 alongsideAnimations:(id)a4 completion:(id)a5
+- (void)_dismissBanner:(id)banner alongsideAnimations:(id)animations completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  bannerCopy = banner;
+  animationsCopy = animations;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __72___UIBannerContainerView__dismissBanner_alongsideAnimations_completion___block_invoke;
   v13[3] = &unk_1E710B160;
   objc_copyWeak(&v16, &location);
-  v11 = v8;
+  v11 = bannerCopy;
   v14 = v11;
-  v12 = v10;
+  v12 = completionCopy;
   v15 = v12;
-  [(_UIBannerContainerView *)self _setBanner:v11 visible:0 alongsideAnimations:v9 completion:v13];
+  [(_UIBannerContainerView *)self _setBanner:v11 visible:0 alongsideAnimations:animationsCopy completion:v13];
 
   objc_destroyWeak(&v16);
   objc_destroyWeak(&location);
 }
 
-- (id)_bannerAnimationToVisible:(BOOL)a3 hiddenValue:(id)a4 visibleValue:(id)a5 withKeyPath:(id)a6
+- (id)_bannerAnimationToVisible:(BOOL)visible hiddenValue:(id)value visibleValue:(id)visibleValue withKeyPath:(id)path
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [MEMORY[0x1E6979318] animationWithKeyPath:a6];
+  visibleCopy = visible;
+  valueCopy = value;
+  visibleValueCopy = visibleValue;
+  v11 = [MEMORY[0x1E6979318] animationWithKeyPath:path];
   [v11 setDuration:0.5];
   [v11 setFillMode:*MEMORY[0x1E69797E0]];
-  if (v8)
+  if (visibleCopy)
   {
-    v12 = v9;
+    v12 = valueCopy;
   }
 
   else
   {
-    v12 = v10;
+    v12 = visibleValueCopy;
   }
 
-  if (v8)
+  if (visibleCopy)
   {
-    v13 = v10;
+    v13 = visibleValueCopy;
   }
 
   else
   {
-    v13 = v9;
+    v13 = valueCopy;
   }
 
   [v11 setFromValue:v12];
@@ -222,22 +222,22 @@
   return v11;
 }
 
-- (void)_setBanner:(id)a3 visible:(BOOL)a4 alongsideAnimations:(id)a5 completion:(id)a6
+- (void)_setBanner:(id)banner visible:(BOOL)visible alongsideAnimations:(id)animations completion:(id)completion
 {
-  v7 = a4;
-  v10 = a5;
-  v11 = a6;
-  v12 = a3;
-  v13 = [v12 visibleConstraint];
-  [v13 setActive:v7];
+  visibleCopy = visible;
+  animationsCopy = animations;
+  completionCopy = completion;
+  bannerCopy = banner;
+  visibleConstraint = [bannerCopy visibleConstraint];
+  [visibleConstraint setActive:visibleCopy];
 
-  v14 = [v12 hiddenConstraint];
-  [v14 setActive:v7 ^ 1];
+  hiddenConstraint = [bannerCopy hiddenConstraint];
+  [hiddenConstraint setActive:visibleCopy ^ 1];
 
-  v15 = [v12 view];
+  view = [bannerCopy view];
 
-  v16 = [v15 _screen];
-  v17 = _UIScreenUsesMinimumSafeAreas([v16 _screenType]);
+  _screen = [view _screen];
+  v17 = _UIScreenUsesMinimumSafeAreas([_screen _screenType]);
 
   if (v17)
   {
@@ -246,18 +246,18 @@
     aBlock[2] = __76___UIBannerContainerView__setBanner_visible_alongsideAnimations_completion___block_invoke;
     aBlock[3] = &unk_1E70F5B18;
     v18 = &v28;
-    v28 = v10;
-    v19 = v15;
-    v31 = v7;
+    v28 = animationsCopy;
+    v19 = view;
+    v31 = visibleCopy;
     v29 = v19;
-    v30 = self;
-    v20 = v10;
+    selfCopy = self;
+    v20 = animationsCopy;
     v21 = _Block_copy(aBlock);
     v25[0] = MEMORY[0x1E69E9820];
     v25[1] = 3221225472;
     v25[2] = __76___UIBannerContainerView__setBanner_visible_alongsideAnimations_completion___block_invoke_155;
     v25[3] = &unk_1E7103030;
-    v26 = v11;
+    v26 = completionCopy;
     [UIView _animateUsingSpringWithDampingRatio:1 response:v21 tracking:v25 dampingRatioSmoothing:1.0 responseSmoothing:0.5 targetSmoothing:0.08 projectionDeceleration:1.0 animations:0.0 completion:0.0];
   }
 
@@ -268,17 +268,17 @@
     v23[2] = __76___UIBannerContainerView__setBanner_visible_alongsideAnimations_completion___block_invoke_2;
     v23[3] = &unk_1E70F35B8;
     v18 = v24;
-    v24[0] = v10;
+    v24[0] = animationsCopy;
     v24[1] = self;
-    v22 = v10;
-    [UIView animateWithDuration:v23 animations:v11 completion:0.5];
+    v22 = animationsCopy;
+    [UIView animateWithDuration:v23 animations:completionCopy completion:0.5];
   }
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   v18 = *MEMORY[0x1E69E9840];
   v13 = 0u;
   v14 = 0u;
@@ -298,8 +298,8 @@
           objc_enumerationMutation(v6);
         }
 
-        v10 = [*(*(&v13 + 1) + 8 * i) view];
-        [v10 frame];
+        view = [*(*(&v13 + 1) + 8 * i) view];
+        [view frame];
         v19.x = x;
         v19.y = y;
         v11 = CGRectContainsPoint(v20, v19);

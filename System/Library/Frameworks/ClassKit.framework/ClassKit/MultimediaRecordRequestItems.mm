@@ -2,8 +2,8 @@
 - (NSArray)assetFieldNames;
 - (_TtC9progressd28MultimediaRecordRequestItems)init;
 - (int64_t)parentEntityType;
-- (void)setAssetFieldNames:(id)a3;
-- (void)setParentEntityType:(int64_t)a3;
+- (void)setAssetFieldNames:(id)names;
+- (void)setParentEntityType:(int64_t)type;
 @end
 
 @implementation MultimediaRecordRequestItems
@@ -15,11 +15,11 @@
   return *(self + v3);
 }
 
-- (void)setParentEntityType:(int64_t)a3
+- (void)setParentEntityType:(int64_t)type
 {
   v5 = OBJC_IVAR____TtC9progressd28MultimediaRecordRequestItems_parentEntityType;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = type;
 }
 
 - (NSArray)assetFieldNames
@@ -33,7 +33,7 @@
   return v5.super.isa;
 }
 
-- (void)setAssetFieldNames:(id)a3
+- (void)setAssetFieldNames:(id)names
 {
   v4 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   v5 = OBJC_IVAR____TtC9progressd28MultimediaRecordRequestItems_assetFieldNames;

@@ -1,7 +1,7 @@
 @interface TSCH3DChartElementSceneObjectProcessGeometryOnlyItems
 - (void)dealloc;
-- (void)processDelayedItemsWithOpacity:(float)a3;
-- (void)processElementInfo:(id)a3 eachValue:(BOOL)a4;
+- (void)processDelayedItemsWithOpacity:(float)opacity;
+- (void)processElementInfo:(id)info eachValue:(BOOL)value;
 @end
 
 @implementation TSCH3DChartElementSceneObjectProcessGeometryOnlyItems
@@ -23,14 +23,14 @@
   [(TSCH3DChartElementSceneObjectProcessGeometryOnlyItems *)&v25 dealloc];
 }
 
-- (void)processElementInfo:(id)a3 eachValue:(BOOL)a4
+- (void)processElementInfo:(id)info eachValue:(BOOL)value
 {
-  v4 = a4;
-  v6 = a3;
+  valueCopy = value;
+  infoCopy = info;
   WeakRetained = objc_loadWeakRetained(&self->super._sceneObject);
-  LODWORD(v4) = objc_msgSend_render_pushMatrix_delayedPass_(WeakRetained, v8, v9, v10, v11, v6, v4, 0);
+  LODWORD(valueCopy) = objc_msgSend_render_pushMatrix_delayedPass_(WeakRetained, v8, v9, v10, v11, infoCopy, valueCopy, 0);
 
-  if (v4)
+  if (valueCopy)
   {
     v16 = MEMORY[0x277D81150];
     v17 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v12, v13, v14, v15, "[TSCH3DChartElementSceneObjectProcessGeometryOnlyItems processElementInfo:eachValue:]");
@@ -43,9 +43,9 @@
   }
 }
 
-- (void)processDelayedItemsWithOpacity:(float)a3
+- (void)processDelayedItemsWithOpacity:(float)opacity
 {
-  if (objc_msgSend_count(self->super._delayedItems, a2, *&a3, v3, v4))
+  if (objc_msgSend_count(self->super._delayedItems, a2, *&opacity, v3, v4))
   {
     v9 = MEMORY[0x277D81150];
     v10 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v5, v6, v7, v8, "[TSCH3DChartElementSceneObjectProcessGeometryOnlyItems processDelayedItemsWithOpacity:]");

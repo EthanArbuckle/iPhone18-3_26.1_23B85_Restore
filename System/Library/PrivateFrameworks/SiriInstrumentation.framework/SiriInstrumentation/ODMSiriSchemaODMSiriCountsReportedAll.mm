@@ -1,30 +1,30 @@
 @interface ODMSiriSchemaODMSiriCountsReportedAll
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (ODMSiriSchemaODMSiriCountsReportedAll)initWithDictionary:(id)a3;
-- (ODMSiriSchemaODMSiriCountsReportedAll)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (ODMSiriSchemaODMSiriCountsReportedAll)initWithDictionary:(id)dictionary;
+- (ODMSiriSchemaODMSiriCountsReportedAll)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (int)segmentsAtIndex:(unint64_t)a3;
+- (int)segmentsAtIndex:(unint64_t)index;
 - (unint64_t)hash;
-- (void)addSegments:(int)a3;
-- (void)addSiriCountsAll:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addSegments:(int)segments;
+- (void)addSiriCountsAll:(id)all;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ODMSiriSchemaODMSiriCountsReportedAll
 
-- (ODMSiriSchemaODMSiriCountsReportedAll)initWithDictionary:(id)a3
+- (ODMSiriSchemaODMSiriCountsReportedAll)initWithDictionary:(id)dictionary
 {
   v37 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v34.receiver = self;
   v34.super_class = ODMSiriSchemaODMSiriCountsReportedAll;
   v5 = [(ODMSiriSchemaODMSiriCountsReportedAll *)&v34 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"aggregationInterval"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"aggregationInterval"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -32,7 +32,7 @@
       [(ODMSiriSchemaODMSiriCountsReportedAll *)v5 setAggregationInterval:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"siriCountsAll"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"siriCountsAll"];
     objc_opt_class();
     v25 = v6;
     if (objc_opt_isKindOfClass())
@@ -78,7 +78,7 @@
       v6 = v25;
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"segments"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"segments"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -128,30 +128,30 @@
   return v5;
 }
 
-- (ODMSiriSchemaODMSiriCountsReportedAll)initWithJSON:(id)a3
+- (ODMSiriSchemaODMSiriCountsReportedAll)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(ODMSiriSchemaODMSiriCountsReportedAll *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(ODMSiriSchemaODMSiriCountsReportedAll *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(ODMSiriSchemaODMSiriCountsReportedAll *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -165,33 +165,33 @@
 - (id)dictionaryRepresentation
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_aggregationInterval)
   {
-    v4 = [(ODMSiriSchemaODMSiriCountsReportedAll *)self aggregationInterval];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    aggregationInterval = [(ODMSiriSchemaODMSiriCountsReportedAll *)self aggregationInterval];
+    dictionaryRepresentation = [aggregationInterval dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"aggregationInterval"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"aggregationInterval"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"aggregationInterval"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"aggregationInterval"];
     }
   }
 
   if ([(NSArray *)self->_segments count])
   {
-    v7 = [(ODMSiriSchemaODMSiriCountsReportedAll *)self segments];
-    v8 = [v7 copy];
-    [v3 setObject:v8 forKeyedSubscript:@"segments"];
+    segments = [(ODMSiriSchemaODMSiriCountsReportedAll *)self segments];
+    v8 = [segments copy];
+    [dictionary setObject:v8 forKeyedSubscript:@"segments"];
   }
 
   if ([(NSArray *)self->_siriCountsAlls count])
   {
-    v9 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
@@ -211,16 +211,16 @@
             objc_enumerationMutation(v10);
           }
 
-          v15 = [*(*(&v18 + 1) + 8 * i) dictionaryRepresentation];
-          if (v15)
+          dictionaryRepresentation2 = [*(*(&v18 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation2)
           {
-            [v9 addObject:v15];
+            [array addObject:dictionaryRepresentation2];
           }
 
           else
           {
-            v16 = [MEMORY[0x1E695DFB0] null];
-            [v9 addObject:v16];
+            null2 = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null2];
           }
         }
 
@@ -230,12 +230,12 @@
       while (v12);
     }
 
-    [v3 setObject:v9 forKeyedSubscript:@"siriCountsAll"];
+    [dictionary setObject:array forKeyedSubscript:@"siriCountsAll"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3, v18];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary, v18];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -245,28 +245,28 @@
   return v4 ^ [(NSArray *)self->_segments hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
-  v5 = [(ODMSiriSchemaODMSiriCountsReportedAll *)self aggregationInterval];
-  v6 = [v4 aggregationInterval];
-  if ((v5 != 0) == (v6 == 0))
+  aggregationInterval = [(ODMSiriSchemaODMSiriCountsReportedAll *)self aggregationInterval];
+  aggregationInterval2 = [equalCopy aggregationInterval];
+  if ((aggregationInterval != 0) == (aggregationInterval2 == 0))
   {
     goto LABEL_16;
   }
 
-  v7 = [(ODMSiriSchemaODMSiriCountsReportedAll *)self aggregationInterval];
-  if (v7)
+  aggregationInterval3 = [(ODMSiriSchemaODMSiriCountsReportedAll *)self aggregationInterval];
+  if (aggregationInterval3)
   {
-    v8 = v7;
-    v9 = [(ODMSiriSchemaODMSiriCountsReportedAll *)self aggregationInterval];
-    v10 = [v4 aggregationInterval];
-    v11 = [v9 isEqual:v10];
+    v8 = aggregationInterval3;
+    aggregationInterval4 = [(ODMSiriSchemaODMSiriCountsReportedAll *)self aggregationInterval];
+    aggregationInterval5 = [equalCopy aggregationInterval];
+    v11 = [aggregationInterval4 isEqual:aggregationInterval5];
 
     if (!v11)
     {
@@ -278,20 +278,20 @@
   {
   }
 
-  v5 = [(ODMSiriSchemaODMSiriCountsReportedAll *)self siriCountsAlls];
-  v6 = [v4 siriCountsAlls];
-  if ((v5 != 0) == (v6 == 0))
+  aggregationInterval = [(ODMSiriSchemaODMSiriCountsReportedAll *)self siriCountsAlls];
+  aggregationInterval2 = [equalCopy siriCountsAlls];
+  if ((aggregationInterval != 0) == (aggregationInterval2 == 0))
   {
     goto LABEL_16;
   }
 
-  v12 = [(ODMSiriSchemaODMSiriCountsReportedAll *)self siriCountsAlls];
-  if (v12)
+  siriCountsAlls = [(ODMSiriSchemaODMSiriCountsReportedAll *)self siriCountsAlls];
+  if (siriCountsAlls)
   {
-    v13 = v12;
-    v14 = [(ODMSiriSchemaODMSiriCountsReportedAll *)self siriCountsAlls];
-    v15 = [v4 siriCountsAlls];
-    v16 = [v14 isEqual:v15];
+    v13 = siriCountsAlls;
+    siriCountsAlls2 = [(ODMSiriSchemaODMSiriCountsReportedAll *)self siriCountsAlls];
+    siriCountsAlls3 = [equalCopy siriCountsAlls];
+    v16 = [siriCountsAlls2 isEqual:siriCountsAlls3];
 
     if (!v16)
     {
@@ -303,12 +303,12 @@
   {
   }
 
-  v5 = [(ODMSiriSchemaODMSiriCountsReportedAll *)self segments];
-  v6 = [v4 segments];
-  if ((v5 != 0) != (v6 == 0))
+  aggregationInterval = [(ODMSiriSchemaODMSiriCountsReportedAll *)self segments];
+  aggregationInterval2 = [equalCopy segments];
+  if ((aggregationInterval != 0) != (aggregationInterval2 == 0))
   {
-    v17 = [(ODMSiriSchemaODMSiriCountsReportedAll *)self segments];
-    if (!v17)
+    segments = [(ODMSiriSchemaODMSiriCountsReportedAll *)self segments];
+    if (!segments)
     {
 
 LABEL_20:
@@ -316,10 +316,10 @@ LABEL_20:
       goto LABEL_18;
     }
 
-    v18 = v17;
-    v19 = [(ODMSiriSchemaODMSiriCountsReportedAll *)self segments];
-    v20 = [v4 segments];
-    v21 = [v19 isEqual:v20];
+    v18 = segments;
+    segments2 = [(ODMSiriSchemaODMSiriCountsReportedAll *)self segments];
+    segments3 = [equalCopy segments];
+    v21 = [segments2 isEqual:segments3];
 
     if (v21)
     {
@@ -339,15 +339,15 @@ LABEL_18:
   return v22;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(ODMSiriSchemaODMSiriCountsReportedAll *)self aggregationInterval];
+  toCopy = to;
+  aggregationInterval = [(ODMSiriSchemaODMSiriCountsReportedAll *)self aggregationInterval];
 
-  if (v5)
+  if (aggregationInterval)
   {
-    v6 = [(ODMSiriSchemaODMSiriCountsReportedAll *)self aggregationInterval];
+    aggregationInterval2 = [(ODMSiriSchemaODMSiriCountsReportedAll *)self aggregationInterval];
     PBDataWriterWriteSubmessage();
   }
 
@@ -415,23 +415,23 @@ LABEL_18:
   }
 }
 
-- (int)segmentsAtIndex:(unint64_t)a3
+- (int)segmentsAtIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_segments objectAtIndexedSubscript:a3];
-  v4 = [v3 intValue];
+  v3 = [(NSArray *)self->_segments objectAtIndexedSubscript:index];
+  intValue = [v3 intValue];
 
-  return v4;
+  return intValue;
 }
 
-- (void)addSegments:(int)a3
+- (void)addSegments:(int)segments
 {
-  v3 = *&a3;
+  v3 = *&segments;
   segments = self->_segments;
   if (!segments)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_segments;
-    self->_segments = v6;
+    self->_segments = array;
 
     segments = self->_segments;
   }
@@ -440,41 +440,41 @@ LABEL_18:
   [(NSArray *)segments addObject:v8];
 }
 
-- (void)addSiriCountsAll:(id)a3
+- (void)addSiriCountsAll:(id)all
 {
-  v4 = a3;
+  allCopy = all;
   siriCountsAlls = self->_siriCountsAlls;
-  v8 = v4;
+  v8 = allCopy;
   if (!siriCountsAlls)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_siriCountsAlls;
-    self->_siriCountsAlls = v6;
+    self->_siriCountsAlls = array;
 
-    v4 = v8;
+    allCopy = v8;
     siriCountsAlls = self->_siriCountsAlls;
   }
 
-  [(NSArray *)siriCountsAlls addObject:v4];
+  [(NSArray *)siriCountsAlls addObject:allCopy];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v12.receiver = self;
   v12.super_class = ODMSiriSchemaODMSiriCountsReportedAll;
-  v5 = [(SISchemaInstrumentationMessage *)&v12 applySensitiveConditionsPolicy:v4];
-  v6 = [(ODMSiriSchemaODMSiriCountsReportedAll *)self aggregationInterval];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v12 applySensitiveConditionsPolicy:policyCopy];
+  aggregationInterval = [(ODMSiriSchemaODMSiriCountsReportedAll *)self aggregationInterval];
+  v7 = [aggregationInterval applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(ODMSiriSchemaODMSiriCountsReportedAll *)self deleteAggregationInterval];
   }
 
-  v9 = [(ODMSiriSchemaODMSiriCountsReportedAll *)self siriCountsAlls];
-  v10 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v9 underConditions:v4];
+  siriCountsAlls = [(ODMSiriSchemaODMSiriCountsReportedAll *)self siriCountsAlls];
+  v10 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:siriCountsAlls underConditions:policyCopy];
   [(ODMSiriSchemaODMSiriCountsReportedAll *)self setSiriCountsAlls:v10];
 
   return v5;

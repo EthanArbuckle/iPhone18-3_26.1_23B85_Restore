@@ -1,6 +1,6 @@
 @interface NUTestPatternAuxiliaryProperties
 - ($0AC6E346AE4835514AAA8AC86D8F4844)size;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation NUTestPatternAuxiliaryProperties
@@ -14,13 +14,13 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [NUTestPatternAuxiliaryProperties allocWithZone:a3];
+  v4 = [NUTestPatternAuxiliaryProperties allocWithZone:zone];
   v5 = [(NUTestPatternAuxiliaryProperties *)self size];
   [(NUTestPatternAuxiliaryProperties *)v4 setSize:v5, v6];
-  v7 = [(NUTestPatternAuxiliaryProperties *)self auxiliaryImageTypeCGIdentifier];
-  [(NUTestPatternAuxiliaryProperties *)v4 setAuxiliaryImageTypeCGIdentifier:v7];
+  auxiliaryImageTypeCGIdentifier = [(NUTestPatternAuxiliaryProperties *)self auxiliaryImageTypeCGIdentifier];
+  [(NUTestPatternAuxiliaryProperties *)v4 setAuxiliaryImageTypeCGIdentifier:auxiliaryImageTypeCGIdentifier];
 
   return v4;
 }

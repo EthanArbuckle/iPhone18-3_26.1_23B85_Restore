@@ -1,33 +1,33 @@
 @interface SBBaseWindowSceneStatusBarChangeAssertion
 - (NSString)description;
 - (SBBaseWindowSceneStatusBarChangeAssertion)init;
-- (id)_initWithWindowSceneStatusBarAssertionManager:(id)a3 reason:(id)a4;
+- (id)_initWithWindowSceneStatusBarAssertionManager:(id)manager reason:(id)reason;
 @end
 
 @implementation SBBaseWindowSceneStatusBarChangeAssertion
 
 - (SBBaseWindowSceneStatusBarChangeAssertion)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"SBWindowSceneStatusBarChangeAssertion.m" lineNumber:23 description:@"You cannot invoke this directly."];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SBWindowSceneStatusBarChangeAssertion.m" lineNumber:23 description:@"You cannot invoke this directly."];
 
   return 0;
 }
 
-- (id)_initWithWindowSceneStatusBarAssertionManager:(id)a3 reason:(id)a4
+- (id)_initWithWindowSceneStatusBarAssertionManager:(id)manager reason:(id)reason
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  reasonCopy = reason;
   v12.receiver = self;
   v12.super_class = SBBaseWindowSceneStatusBarChangeAssertion;
   v8 = [(SBBaseWindowSceneStatusBarChangeAssertion *)&v12 init];
   if (v8)
   {
-    v9 = [v7 copy];
+    v9 = [reasonCopy copy];
     reason = v8->_reason;
     v8->_reason = v9;
 
-    objc_storeWeak(&v8->_assertionManager, v6);
+    objc_storeWeak(&v8->_assertionManager, managerCopy);
   }
 
   return v8;

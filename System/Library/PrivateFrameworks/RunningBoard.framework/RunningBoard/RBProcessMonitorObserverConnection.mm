@@ -1,20 +1,20 @@
 @interface RBProcessMonitorObserverConnection
 - (NSString)description;
-- (RBProcessMonitorObserverConnection)initWithConnection:(id)a3;
+- (RBProcessMonitorObserverConnection)initWithConnection:(id)connection;
 @end
 
 @implementation RBProcessMonitorObserverConnection
 
-- (RBProcessMonitorObserverConnection)initWithConnection:(id)a3
+- (RBProcessMonitorObserverConnection)initWithConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v9.receiver = self;
   v9.super_class = RBProcessMonitorObserverConnection;
   v6 = [(RBProcessMonitorObserverConnection *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_connection, a3);
+    objc_storeStrong(&v6->_connection, connection);
   }
 
   return v7;

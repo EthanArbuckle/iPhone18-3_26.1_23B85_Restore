@@ -1,24 +1,24 @@
 @interface PHPersistentObjectChangeDetails
-- (PHPersistentObjectChangeDetails)initWithObjectType:(int64_t)a3 insertedIdentifiers:(id)a4 updatedIdentifiers:(id)a5 deletedIdentifiers:(id)a6;
+- (PHPersistentObjectChangeDetails)initWithObjectType:(int64_t)type insertedIdentifiers:(id)identifiers updatedIdentifiers:(id)updatedIdentifiers deletedIdentifiers:(id)deletedIdentifiers;
 @end
 
 @implementation PHPersistentObjectChangeDetails
 
-- (PHPersistentObjectChangeDetails)initWithObjectType:(int64_t)a3 insertedIdentifiers:(id)a4 updatedIdentifiers:(id)a5 deletedIdentifiers:(id)a6
+- (PHPersistentObjectChangeDetails)initWithObjectType:(int64_t)type insertedIdentifiers:(id)identifiers updatedIdentifiers:(id)updatedIdentifiers deletedIdentifiers:(id)deletedIdentifiers
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  identifiersCopy = identifiers;
+  updatedIdentifiersCopy = updatedIdentifiers;
+  deletedIdentifiersCopy = deletedIdentifiers;
   v22.receiver = self;
   v22.super_class = PHPersistentObjectChangeDetails;
   v13 = [(PHPersistentObjectChangeDetails *)&v22 init];
   v14 = v13;
   if (v13)
   {
-    v13->_objectType = a3;
-    if (v10)
+    v13->_objectType = type;
+    if (identifiersCopy)
     {
-      v15 = v10;
+      v15 = identifiersCopy;
     }
 
     else
@@ -29,9 +29,9 @@
     insertedLocalIdentifiers = v14->_insertedLocalIdentifiers;
     v14->_insertedLocalIdentifiers = v15;
 
-    if (v11)
+    if (updatedIdentifiersCopy)
     {
-      v17 = v11;
+      v17 = updatedIdentifiersCopy;
     }
 
     else
@@ -42,9 +42,9 @@
     updatedLocalIdentifiers = v14->_updatedLocalIdentifiers;
     v14->_updatedLocalIdentifiers = v17;
 
-    if (v12)
+    if (deletedIdentifiersCopy)
     {
-      v19 = v12;
+      v19 = deletedIdentifiersCopy;
     }
 
     else

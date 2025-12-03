@@ -1,35 +1,35 @@
 @interface WBSFormMetadata
-+ (id)formMetadataFromSerializedData:(id)a3;
++ (id)formMetadataFromSerializedData:(id)data;
 - (BOOL)containsAtLeastOneSecureTextField;
 - (BOOL)containsClassifications;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGRect)_controlsBoundingRect;
 - (NSArray)uniqueIDsOfPasswordControlAndRelatedControls;
 - (NSData)serializedData;
 - (WBSFormControlMetadata)bestControlForStreamlinedLoginFocus;
-- (WBSFormMetadata)initWithCoder:(id)a3;
-- (WBSFormMetadata)initWithDictionary:(id)a3;
-- (WBSFormMetadata)initWithJSValue:(id)a3;
-- (WBSFormMetadata)initWithMetadata:(id)a3;
+- (WBSFormMetadata)initWithCoder:(id)coder;
+- (WBSFormMetadata)initWithDictionary:(id)dictionary;
+- (WBSFormMetadata)initWithJSValue:(id)value;
+- (WBSFormMetadata)initWithMetadata:(id)metadata;
 - (id)_init;
-- (id)_valueOfControlWithUniqueID:(id)a3;
+- (id)_valueOfControlWithUniqueID:(id)d;
 - (id)description;
-- (id)dictionaryRepresentationRedactingSensitiveValues:(BOOL)a3 withKnownSensitiveValues:(id)a4;
-- (id)formMetadataByReplacingControlsWith:(id)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)dictionaryRepresentationRedactingSensitiveValues:(BOOL)values withKnownSensitiveValues:(id)sensitiveValues;
+- (id)formMetadataByReplacingControlsWith:(id)with;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 - (void)serializedData;
 @end
 
 @implementation WBSFormMetadata
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = v5;
     if (self != v5)
     {
@@ -59,30 +59,30 @@ LABEL_38:
   return v16;
 }
 
-- (WBSFormMetadata)initWithJSValue:(id)a3
+- (WBSFormMetadata)initWithJSValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   v46.receiver = self;
   v46.super_class = WBSFormMetadata;
   v5 = [(WBSFormMetadata *)&v46 init];
   if (v5
-    && ([v4 objectForKeyedSubscript:@"DisallowsAutocomplete"], v6 = objc_claimAutoreleasedReturnValue(), v5->_allowsAutocomplete = objc_msgSend(v6, "toBool") ^ 1, v6, objc_msgSend(v4, "objectForKeyedSubscript:", @"Annotations"), v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "toDictionary"), v8 = objc_claimAutoreleasedReturnValue(), annotations = v5->_annotations, v5->_annotations = v8, annotations, v7, objc_msgSend(v4, "objectForKeyedSubscript:", @"AutoFillFormType"), v10 = objc_claimAutoreleasedReturnValue(), v5->_type = objc_msgSend(v10, "toInt32"), v10, v5->_type <= 5)
-    && (stringForKey(v4, @"ConfirmPasswordElementUniqueID"),
+    && ([valueCopy objectForKeyedSubscript:@"DisallowsAutocomplete"], v6 = objc_claimAutoreleasedReturnValue(), v5->_allowsAutocomplete = objc_msgSend(v6, "toBool") ^ 1, v6, objc_msgSend(valueCopy, "objectForKeyedSubscript:", @"Annotations"), v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "toDictionary"), v8 = objc_claimAutoreleasedReturnValue(), annotations = v5->_annotations, v5->_annotations = v8, annotations, v7, objc_msgSend(valueCopy, "objectForKeyedSubscript:", @"AutoFillFormType"), v10 = objc_claimAutoreleasedReturnValue(), v5->_type = objc_msgSend(v10, "toInt32"), v10, v5->_type <= 5)
+    && (stringForKey(valueCopy, @"ConfirmPasswordElementUniqueID"),
         v11 = objc_claimAutoreleasedReturnValue(),
         confirmPasswordElementUniqueID = v5->_confirmPasswordElementUniqueID,
         v5->_confirmPasswordElementUniqueID = v11,
         confirmPasswordElementUniqueID,
-        [v4 objectForKeyedSubscript:@"ContainsActiveElement"],
+        [valueCopy objectForKeyedSubscript:@"ContainsActiveElement"],
         v13 = objc_claimAutoreleasedReturnValue(),
         v5->_containsActiveElement = [v13 toBool],
         v13,
-        stringForKey(v4, @"FirstCreditCardCardholderFieldOrCreditCardNumberFieldUniqueID"),
+        stringForKey(valueCopy, @"FirstCreditCardCardholderFieldOrCreditCardNumberFieldUniqueID"),
         v14 = objc_claimAutoreleasedReturnValue(),
         firstCreditCardCardholderFieldOrCreditCardNumberFieldUniqueID = v5->_firstCreditCardCardholderFieldOrCreditCardNumberFieldUniqueID,
         v5->_firstCreditCardCardholderFieldOrCreditCardNumberFieldUniqueID = v14,
         firstCreditCardCardholderFieldOrCreditCardNumberFieldUniqueID,
         v16 = MEMORY[0x1E695DFF8],
-        stringForKey(v4, @"FormAction"),
+        stringForKey(valueCopy, @"FormAction"),
         v17 = objc_claimAutoreleasedReturnValue(),
         [v16 safari_URLWithDataAsString:v17],
         v18 = objc_claimAutoreleasedReturnValue(),
@@ -90,7 +90,7 @@ LABEL_38:
         v5->_action = v18,
         action,
         v17,
-        [v4 objectForKeyedSubscript:@"FormControls"],
+        [valueCopy objectForKeyedSubscript:@"FormControls"],
         v20 = objc_claimAutoreleasedReturnValue(),
         [v20 toArray],
         v21 = objc_claimAutoreleasedReturnValue(),
@@ -101,67 +101,67 @@ LABEL_38:
         controls,
         v21,
         v20,
-        [v4 objectForKeyedSubscript:@"FormID"],
+        [valueCopy objectForKeyedSubscript:@"FormID"],
         v24 = objc_claimAutoreleasedReturnValue(),
         [v24 toDouble],
         v5->_uniqueID = v25,
         v24,
-        stringForKey(v4, @"LogicalFormElementSelector"),
+        stringForKey(valueCopy, @"LogicalFormElementSelector"),
         v26 = objc_claimAutoreleasedReturnValue(),
         logicalFormElementSelector = v5->_logicalFormElementSelector,
         v5->_logicalFormElementSelector = v26,
         logicalFormElementSelector,
-        [v4 objectForKeyedSubscript:@"FormIsBestForPageLevelAutoFill"],
+        [valueCopy objectForKeyedSubscript:@"FormIsBestForPageLevelAutoFill"],
         v28 = objc_claimAutoreleasedReturnValue(),
         v5->_bestForPageLevelAutoFill = [v28 toBool],
         v28,
-        [v4 objectForKeyedSubscript:@"FormIsBestForStreamlinedLogin"],
+        [valueCopy objectForKeyedSubscript:@"FormIsBestForStreamlinedLogin"],
         v29 = objc_claimAutoreleasedReturnValue(),
         v5->_bestForStreamlinedLogin = [v29 toBool],
         v29,
-        [v4 objectForKeyedSubscript:@"FormIsEligibleForAutomaticLogin"],
+        [valueCopy objectForKeyedSubscript:@"FormIsEligibleForAutomaticLogin"],
         v30 = objc_claimAutoreleasedReturnValue(),
         v5->_eligibleForAutomaticLogin = [v30 toBool],
         v30,
-        [v4 objectForKeyedSubscript:@"IsVisible"],
+        [valueCopy objectForKeyedSubscript:@"IsVisible"],
         v31 = objc_claimAutoreleasedReturnValue(),
         v5->_visible = [v31 toBool],
         v31,
-        [v4 objectForKeyedSubscript:@"FormUsesRelAsync"],
+        [valueCopy objectForKeyedSubscript:@"FormUsesRelAsync"],
         v32 = objc_claimAutoreleasedReturnValue(),
         v5->_usesRelAsync = [v32 toBool],
         v32,
-        stringForKey(v4, @"OldPasswordElementUniqueID"),
+        stringForKey(valueCopy, @"OldPasswordElementUniqueID"),
         v33 = objc_claimAutoreleasedReturnValue(),
         oldPasswordElementUniqueID = v5->_oldPasswordElementUniqueID,
         v5->_oldPasswordElementUniqueID = v33,
         oldPasswordElementUniqueID,
-        stringForKey(v4, @"PasswordElementUniqueID"),
+        stringForKey(valueCopy, @"PasswordElementUniqueID"),
         v35 = objc_claimAutoreleasedReturnValue(),
         passwordElementUniqueID = v5->_passwordElementUniqueID,
         v5->_passwordElementUniqueID = v35,
         passwordElementUniqueID,
-        stringForKey(v4, @"TextSample"),
+        stringForKey(valueCopy, @"TextSample"),
         v37 = objc_claimAutoreleasedReturnValue(),
         textSample = v5->_textSample,
         v5->_textSample = v37,
         textSample,
-        stringForKey(v4, @"UsernameElementUniqueID"),
+        stringForKey(valueCopy, @"UsernameElementUniqueID"),
         v39 = objc_claimAutoreleasedReturnValue(),
         userNameElementUniqueID = v5->_userNameElementUniqueID,
         v5->_userNameElementUniqueID = v39,
         userNameElementUniqueID,
-        [v4 objectForKeyedSubscript:@"UsesGeneratedPassword"],
+        [valueCopy objectForKeyedSubscript:@"UsesGeneratedPassword"],
         v41 = objc_claimAutoreleasedReturnValue(),
         v5->_usesGeneratedPassword = [v41 toBool],
         v41,
-        [v4 objectForKeyedSubscript:@"RequestType"],
+        [valueCopy objectForKeyedSubscript:@"RequestType"],
         v42 = objc_claimAutoreleasedReturnValue(),
         v5->_requestType = [v42 toInt32],
         v42,
         v5->_requestType <= 4))
   {
-    v43 = [v4 objectForKeyedSubscript:@"FormIsSearchForm"];
+    v43 = [valueCopy objectForKeyedSubscript:@"FormIsSearchForm"];
     v5->_isSearchForm = [v43 toBool];
 
     v44 = v5;
@@ -183,31 +183,31 @@ WBSFormControlMetadata *__35__WBSFormMetadata_initWithJSValue___block_invoke(uin
   return v3;
 }
 
-- (WBSFormMetadata)initWithDictionary:(id)a3
+- (WBSFormMetadata)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v45.receiver = self;
   v45.super_class = WBSFormMetadata;
   v5 = [(WBSFormMetadata *)&v45 init];
   if (v5
-    && ([v4 objectForKeyedSubscript:@"AutoFillFormType"], v6 = objc_claimAutoreleasedReturnValue(), v6, v6)
-    && ([v4 objectForKeyedSubscript:@"DisallowsAutocomplete"], v7 = objc_claimAutoreleasedReturnValue(), v5->_allowsAutocomplete = objc_msgSend(v7, "BOOLValue") ^ 1, v7, objc_msgSend(v4, "objectForKeyedSubscript:", @"Annotations"), v8 = objc_claimAutoreleasedReturnValue(), annotations = v5->_annotations, v5->_annotations = v8, annotations, objc_msgSend(v4, "objectForKeyedSubscript:", @"AutoFillFormType"), v10 = objc_claimAutoreleasedReturnValue(), v5->_type = objc_msgSend(v10, "integerValue"), v10, v5->_type <= 5)
-    && ([v4 objectForKeyedSubscript:@"ConfirmPasswordElementUniqueID"],
+    && ([dictionaryCopy objectForKeyedSubscript:@"AutoFillFormType"], v6 = objc_claimAutoreleasedReturnValue(), v6, v6)
+    && ([dictionaryCopy objectForKeyedSubscript:@"DisallowsAutocomplete"], v7 = objc_claimAutoreleasedReturnValue(), v5->_allowsAutocomplete = objc_msgSend(v7, "BOOLValue") ^ 1, v7, objc_msgSend(dictionaryCopy, "objectForKeyedSubscript:", @"Annotations"), v8 = objc_claimAutoreleasedReturnValue(), annotations = v5->_annotations, v5->_annotations = v8, annotations, objc_msgSend(dictionaryCopy, "objectForKeyedSubscript:", @"AutoFillFormType"), v10 = objc_claimAutoreleasedReturnValue(), v5->_type = objc_msgSend(v10, "integerValue"), v10, v5->_type <= 5)
+    && ([dictionaryCopy objectForKeyedSubscript:@"ConfirmPasswordElementUniqueID"],
         v11 = objc_claimAutoreleasedReturnValue(),
         confirmPasswordElementUniqueID = v5->_confirmPasswordElementUniqueID,
         v5->_confirmPasswordElementUniqueID = v11,
         confirmPasswordElementUniqueID,
-        [v4 objectForKeyedSubscript:@"ContainsActiveElement"],
+        [dictionaryCopy objectForKeyedSubscript:@"ContainsActiveElement"],
         v13 = objc_claimAutoreleasedReturnValue(),
         v5->_containsActiveElement = [v13 BOOLValue],
         v13,
-        [v4 objectForKeyedSubscript:@"FirstCreditCardCardholderFieldOrCreditCardNumberFieldUniqueID"],
+        [dictionaryCopy objectForKeyedSubscript:@"FirstCreditCardCardholderFieldOrCreditCardNumberFieldUniqueID"],
         v14 = objc_claimAutoreleasedReturnValue(),
         firstCreditCardCardholderFieldOrCreditCardNumberFieldUniqueID = v5->_firstCreditCardCardholderFieldOrCreditCardNumberFieldUniqueID,
         v5->_firstCreditCardCardholderFieldOrCreditCardNumberFieldUniqueID = v14,
         firstCreditCardCardholderFieldOrCreditCardNumberFieldUniqueID,
         v16 = MEMORY[0x1E695DFF8],
-        [v4 objectForKeyedSubscript:@"FormAction"],
+        [dictionaryCopy objectForKeyedSubscript:@"FormAction"],
         v17 = objc_claimAutoreleasedReturnValue(),
         [v16 safari_URLWithDataAsString:v17],
         v18 = objc_claimAutoreleasedReturnValue(),
@@ -215,7 +215,7 @@ WBSFormControlMetadata *__35__WBSFormMetadata_initWithJSValue___block_invoke(uin
         v5->_action = v18,
         action,
         v17,
-        [v4 objectForKeyedSubscript:@"FormControls"],
+        [dictionaryCopy objectForKeyedSubscript:@"FormControls"],
         v20 = objc_claimAutoreleasedReturnValue(),
         [v20 safari_mapObjectsUsingBlock:&__block_literal_global_4_0],
         v21 = objc_claimAutoreleasedReturnValue(),
@@ -223,67 +223,67 @@ WBSFormControlMetadata *__35__WBSFormMetadata_initWithJSValue___block_invoke(uin
         v5->_controls = v21,
         controls,
         v20,
-        [v4 objectForKeyedSubscript:@"FormID"],
+        [dictionaryCopy objectForKeyedSubscript:@"FormID"],
         v23 = objc_claimAutoreleasedReturnValue(),
         [v23 doubleValue],
         v5->_uniqueID = v24,
         v23,
-        [v4 objectForKeyedSubscript:@"LogicalFormElementSelector"],
+        [dictionaryCopy objectForKeyedSubscript:@"LogicalFormElementSelector"],
         v25 = objc_claimAutoreleasedReturnValue(),
         logicalFormElementSelector = v5->_logicalFormElementSelector,
         v5->_logicalFormElementSelector = v25,
         logicalFormElementSelector,
-        [v4 objectForKeyedSubscript:@"FormIsBestForPageLevelAutoFill"],
+        [dictionaryCopy objectForKeyedSubscript:@"FormIsBestForPageLevelAutoFill"],
         v27 = objc_claimAutoreleasedReturnValue(),
         v5->_bestForPageLevelAutoFill = [v27 BOOLValue],
         v27,
-        [v4 objectForKeyedSubscript:@"FormIsBestForStreamlinedLogin"],
+        [dictionaryCopy objectForKeyedSubscript:@"FormIsBestForStreamlinedLogin"],
         v28 = objc_claimAutoreleasedReturnValue(),
         v5->_bestForStreamlinedLogin = [v28 BOOLValue],
         v28,
-        [v4 objectForKeyedSubscript:@"FormIsEligibleForAutomaticLogin"],
+        [dictionaryCopy objectForKeyedSubscript:@"FormIsEligibleForAutomaticLogin"],
         v29 = objc_claimAutoreleasedReturnValue(),
         v5->_eligibleForAutomaticLogin = [v29 BOOLValue],
         v29,
-        [v4 objectForKeyedSubscript:@"IsVisible"],
+        [dictionaryCopy objectForKeyedSubscript:@"IsVisible"],
         v30 = objc_claimAutoreleasedReturnValue(),
         v5->_visible = [v30 BOOLValue],
         v30,
-        [v4 objectForKeyedSubscript:@"FormUsesRelAsync"],
+        [dictionaryCopy objectForKeyedSubscript:@"FormUsesRelAsync"],
         v31 = objc_claimAutoreleasedReturnValue(),
         v5->_usesRelAsync = [v31 BOOLValue],
         v31,
-        [v4 objectForKeyedSubscript:@"OldPasswordElementUniqueID"],
+        [dictionaryCopy objectForKeyedSubscript:@"OldPasswordElementUniqueID"],
         v32 = objc_claimAutoreleasedReturnValue(),
         oldPasswordElementUniqueID = v5->_oldPasswordElementUniqueID,
         v5->_oldPasswordElementUniqueID = v32,
         oldPasswordElementUniqueID,
-        [v4 objectForKeyedSubscript:@"PasswordElementUniqueID"],
+        [dictionaryCopy objectForKeyedSubscript:@"PasswordElementUniqueID"],
         v34 = objc_claimAutoreleasedReturnValue(),
         passwordElementUniqueID = v5->_passwordElementUniqueID,
         v5->_passwordElementUniqueID = v34,
         passwordElementUniqueID,
-        [v4 objectForKeyedSubscript:@"TextSample"],
+        [dictionaryCopy objectForKeyedSubscript:@"TextSample"],
         v36 = objc_claimAutoreleasedReturnValue(),
         textSample = v5->_textSample,
         v5->_textSample = v36,
         textSample,
-        [v4 objectForKeyedSubscript:@"UsernameElementUniqueID"],
+        [dictionaryCopy objectForKeyedSubscript:@"UsernameElementUniqueID"],
         v38 = objc_claimAutoreleasedReturnValue(),
         userNameElementUniqueID = v5->_userNameElementUniqueID,
         v5->_userNameElementUniqueID = v38,
         userNameElementUniqueID,
-        [v4 objectForKeyedSubscript:@"UsesGeneratedPassword"],
+        [dictionaryCopy objectForKeyedSubscript:@"UsesGeneratedPassword"],
         v40 = objc_claimAutoreleasedReturnValue(),
         v5->_usesGeneratedPassword = [v40 BOOLValue],
         v40,
-        [v4 objectForKeyedSubscript:@"RequestType"],
+        [dictionaryCopy objectForKeyedSubscript:@"RequestType"],
         v41 = objc_claimAutoreleasedReturnValue(),
         v5->_requestType = [v41 integerValue],
         v41,
         v5->_requestType <= 4))
   {
-    v42 = [v4 objectForKeyedSubscript:@"FormIsSearchForm"];
+    v42 = [dictionaryCopy objectForKeyedSubscript:@"FormIsSearchForm"];
     v5->_isSearchForm = [v42 BOOLValue];
 
     v43 = v5;
@@ -305,62 +305,62 @@ WBSFormControlMetadata *__38__WBSFormMetadata_initWithDictionary___block_invoke(
   return v3;
 }
 
-- (WBSFormMetadata)initWithMetadata:(id)a3
+- (WBSFormMetadata)initWithMetadata:(id)metadata
 {
-  v4 = a3;
+  metadataCopy = metadata;
   v27.receiver = self;
   v27.super_class = WBSFormMetadata;
   v5 = [(WBSFormMetadata *)&v27 init];
   v6 = v5;
   if (v5)
   {
-    v5->_allowsAutocomplete = *(v4 + 72);
-    v5->_type = *(v4 + 2);
-    v5->_containsActiveElement = *(v4 + 73);
-    v5->_uniqueID = *(v4 + 13);
-    objc_storeStrong(&v5->_logicalFormElementSelector, *(v4 + 14));
-    v6->_bestForPageLevelAutoFill = *(v4 + 74);
-    v6->_bestForStreamlinedLogin = *(v4 + 75);
-    v6->_eligibleForAutomaticLogin = *(v4 + 76);
-    v6->_visible = *(v4 + 77);
-    v6->_usesRelAsync = *(v4 + 78);
-    v6->_usesGeneratedPassword = *(v4 + 79);
-    v6->_requestType = *(v4 + 16);
-    v6->_isSearchForm = *(v4 + 80);
-    v7 = [*(v4 + 11) copy];
+    v5->_allowsAutocomplete = *(metadataCopy + 72);
+    v5->_type = *(metadataCopy + 2);
+    v5->_containsActiveElement = *(metadataCopy + 73);
+    v5->_uniqueID = *(metadataCopy + 13);
+    objc_storeStrong(&v5->_logicalFormElementSelector, *(metadataCopy + 14));
+    v6->_bestForPageLevelAutoFill = *(metadataCopy + 74);
+    v6->_bestForStreamlinedLogin = *(metadataCopy + 75);
+    v6->_eligibleForAutomaticLogin = *(metadataCopy + 76);
+    v6->_visible = *(metadataCopy + 77);
+    v6->_usesRelAsync = *(metadataCopy + 78);
+    v6->_usesGeneratedPassword = *(metadataCopy + 79);
+    v6->_requestType = *(metadataCopy + 16);
+    v6->_isSearchForm = *(metadataCopy + 80);
+    v7 = [*(metadataCopy + 11) copy];
     annotations = v6->_annotations;
     v6->_annotations = v7;
 
-    v9 = [*(v4 + 6) copy];
+    v9 = [*(metadataCopy + 6) copy];
     confirmPasswordElementUniqueID = v6->_confirmPasswordElementUniqueID;
     v6->_confirmPasswordElementUniqueID = v9;
 
-    v11 = [*(v4 + 8) copy];
+    v11 = [*(metadataCopy + 8) copy];
     firstCreditCardCardholderFieldOrCreditCardNumberFieldUniqueID = v6->_firstCreditCardCardholderFieldOrCreditCardNumberFieldUniqueID;
     v6->_firstCreditCardCardholderFieldOrCreditCardNumberFieldUniqueID = v11;
 
-    objc_storeStrong(&v6->_action, *(v4 + 12));
-    v13 = [*(v4 + 3) copy];
+    objc_storeStrong(&v6->_action, *(metadataCopy + 12));
+    v13 = [*(metadataCopy + 3) copy];
     controls = v6->_controls;
     v6->_controls = v13;
 
-    v15 = [*(v4 + 7) copy];
+    v15 = [*(metadataCopy + 7) copy];
     oldPasswordElementUniqueID = v6->_oldPasswordElementUniqueID;
     v6->_oldPasswordElementUniqueID = v15;
 
-    v17 = [*(v4 + 5) copy];
+    v17 = [*(metadataCopy + 5) copy];
     passwordElementUniqueID = v6->_passwordElementUniqueID;
     v6->_passwordElementUniqueID = v17;
 
-    v19 = [*(v4 + 15) copy];
+    v19 = [*(metadataCopy + 15) copy];
     textSample = v6->_textSample;
     v6->_textSample = v19;
 
-    v21 = [*(v4 + 4) copy];
+    v21 = [*(metadataCopy + 4) copy];
     userNameElementUniqueID = v6->_userNameElementUniqueID;
     v6->_userNameElementUniqueID = v21;
 
-    v23 = [*(v4 + 17) copy];
+    v23 = [*(metadataCopy + 17) copy];
     passwordRequirements = v6->_passwordRequirements;
     v6->_passwordRequirements = v23;
 
@@ -377,68 +377,68 @@ WBSFormControlMetadata *__38__WBSFormMetadata_initWithDictionary___block_invoke(
   return [(WBSFormMetadata *)&v3 init];
 }
 
-- (id)formMetadataByReplacingControlsWith:(id)a3
+- (id)formMetadataByReplacingControlsWith:(id)with
 {
-  v4 = a3;
-  v5 = [[WBSFormMetadata alloc] _init];
-  *(v5 + 72) = self->_allowsAutocomplete;
-  *(v5 + 2) = self->_type;
-  *(v5 + 73) = self->_containsActiveElement;
-  *(v5 + 13) = self->_uniqueID;
-  objc_storeStrong(v5 + 14, self->_logicalFormElementSelector);
-  *(v5 + 74) = self->_bestForPageLevelAutoFill;
-  *(v5 + 75) = self->_bestForStreamlinedLogin;
-  *(v5 + 76) = self->_eligibleForAutomaticLogin;
-  *(v5 + 77) = self->_visible;
-  *(v5 + 78) = self->_usesRelAsync;
-  *(v5 + 79) = self->_usesGeneratedPassword;
-  *(v5 + 16) = self->_requestType;
-  *(v5 + 80) = self->_isSearchForm;
+  withCopy = with;
+  _init = [[WBSFormMetadata alloc] _init];
+  *(_init + 72) = self->_allowsAutocomplete;
+  *(_init + 2) = self->_type;
+  *(_init + 73) = self->_containsActiveElement;
+  *(_init + 13) = self->_uniqueID;
+  objc_storeStrong(_init + 14, self->_logicalFormElementSelector);
+  *(_init + 74) = self->_bestForPageLevelAutoFill;
+  *(_init + 75) = self->_bestForStreamlinedLogin;
+  *(_init + 76) = self->_eligibleForAutomaticLogin;
+  *(_init + 77) = self->_visible;
+  *(_init + 78) = self->_usesRelAsync;
+  *(_init + 79) = self->_usesGeneratedPassword;
+  *(_init + 16) = self->_requestType;
+  *(_init + 80) = self->_isSearchForm;
   v6 = [(NSDictionary *)self->_annotations copy];
-  v7 = *(v5 + 11);
-  *(v5 + 11) = v6;
+  v7 = *(_init + 11);
+  *(_init + 11) = v6;
 
   v8 = [(NSString *)self->_confirmPasswordElementUniqueID copy];
-  v9 = *(v5 + 6);
-  *(v5 + 6) = v8;
+  v9 = *(_init + 6);
+  *(_init + 6) = v8;
 
   v10 = [(NSString *)self->_firstCreditCardCardholderFieldOrCreditCardNumberFieldUniqueID copy];
-  v11 = *(v5 + 8);
-  *(v5 + 8) = v10;
+  v11 = *(_init + 8);
+  *(_init + 8) = v10;
 
-  objc_storeStrong(v5 + 12, self->_action);
-  v12 = [v4 mutableCopy];
+  objc_storeStrong(_init + 12, self->_action);
+  v12 = [withCopy mutableCopy];
 
-  v13 = *(v5 + 3);
-  *(v5 + 3) = v12;
+  v13 = *(_init + 3);
+  *(_init + 3) = v12;
 
   v14 = [(NSString *)self->_oldPasswordElementUniqueID copy];
-  v15 = *(v5 + 7);
-  *(v5 + 7) = v14;
+  v15 = *(_init + 7);
+  *(_init + 7) = v14;
 
   v16 = [(NSString *)self->_passwordElementUniqueID copy];
-  v17 = *(v5 + 5);
-  *(v5 + 5) = v16;
+  v17 = *(_init + 5);
+  *(_init + 5) = v16;
 
   v18 = [(NSString *)self->_textSample copy];
-  v19 = *(v5 + 15);
-  *(v5 + 15) = v18;
+  v19 = *(_init + 15);
+  *(_init + 15) = v18;
 
   v20 = [(NSString *)self->_userNameElementUniqueID copy];
-  v21 = *(v5 + 4);
-  *(v5 + 4) = v20;
+  v21 = *(_init + 4);
+  *(_init + 4) = v20;
 
   v22 = [(NSDictionary *)self->_passwordRequirements copy];
-  v23 = *(v5 + 17);
-  *(v5 + 17) = v22;
+  v23 = *(_init + 17);
+  *(_init + 17) = v22;
 
-  return v5;
+  return _init;
 }
 
-- (id)dictionaryRepresentationRedactingSensitiveValues:(BOOL)a3 withKnownSensitiveValues:(id)a4
+- (id)dictionaryRepresentationRedactingSensitiveValues:(BOOL)values withKnownSensitiveValues:(id)sensitiveValues
 {
-  v27 = a3;
-  v28 = a4;
+  valuesCopy = values;
+  sensitiveValuesCopy = sensitiveValues;
   v26 = MEMORY[0x1E695DF90];
   v5 = [MEMORY[0x1E696AD98] numberWithDouble:self->_type];
   v6 = [MEMORY[0x1E696AD98] numberWithBool:self->_containsActiveElement];
@@ -452,7 +452,7 @@ WBSFormControlMetadata *__38__WBSFormMetadata_initWithDictionary___block_invoke(
     [v10 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"DisallowsAutocomplete"];
   }
 
-  if (self->_annotations && !v27)
+  if (self->_annotations && !valuesCopy)
   {
     [v10 setObject:? forKeyedSubscript:?];
   }
@@ -470,10 +470,10 @@ WBSFormControlMetadata *__38__WBSFormMetadata_initWithDictionary___block_invoke(
   }
 
   action = self->_action;
-  if (action && !v27)
+  if (action && !valuesCopy)
   {
-    v14 = [(NSURL *)action safari_originalDataAsString];
-    [v10 setObject:v14 forKeyedSubscript:@"FormAction"];
+    safari_originalDataAsString = [(NSURL *)action safari_originalDataAsString];
+    [v10 setObject:safari_originalDataAsString forKeyedSubscript:@"FormAction"];
   }
 
   controls = self->_controls;
@@ -483,7 +483,7 @@ WBSFormControlMetadata *__38__WBSFormMetadata_initWithDictionary___block_invoke(
     v29[1] = 3221225472;
     v29[2] = __93__WBSFormMetadata_dictionaryRepresentationRedactingSensitiveValues_withKnownSensitiveValues___block_invoke;
     v29[3] = &__block_descriptor_33_e46___NSDictionary_16__0__WBSFormControlMetadata_8l;
-    v30 = v27;
+    v30 = valuesCopy;
     v16 = [(NSArray *)controls safari_mapObjectsUsingBlock:v29];
     [v10 setObject:v16 forKeyedSubscript:@"FormControls"];
   }
@@ -502,9 +502,9 @@ WBSFormControlMetadata *__38__WBSFormMetadata_initWithDictionary___block_invoke(
 
   if (self->_textSample)
   {
-    if (v28 && v27)
+    if (sensitiveValuesCopy && valuesCopy)
     {
-      v19 = [(NSString *)self->_textSample safari_stringByRedactingStrings:v28 withReplacement:@"<redacted>"];
+      v19 = [(NSString *)self->_textSample safari_stringByRedactingStrings:sensitiveValuesCopy withReplacement:@"<redacted>"];
       [v10 setObject:v19 forKeyedSubscript:@"TextSample"];
     }
 
@@ -716,9 +716,9 @@ uint64_t __40__WBSFormMetadata_visualOrderComparator__block_invoke(uint64_t a1, 
   return v2;
 }
 
-+ (id)formMetadataFromSerializedData:(id)a3
++ (id)formMetadataFromSerializedData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -736,7 +736,7 @@ uint64_t __40__WBSFormMetadata_visualOrderComparator__block_invoke(uint64_t a1, 
   v11 = objc_opt_class();
   v12 = [v4 setWithObjects:{v5, v6, v7, v8, v9, v10, v11, objc_opt_class(), 0}];
   v18 = 0;
-  v13 = [MEMORY[0x1E696ACD0] _strictlyUnarchivedObjectOfClasses:v12 fromData:v3 error:&v18];
+  v13 = [MEMORY[0x1E696ACD0] _strictlyUnarchivedObjectOfClasses:v12 fromData:dataCopy error:&v18];
   v14 = v18;
   if (v14)
   {
@@ -765,158 +765,158 @@ LABEL_10:
   return v16;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v16 = a3;
-  [v16 encodeInteger:self->_type forKey:@"AutoFillFormType"];
-  [v16 encodeInteger:self->_uniqueID forKey:@"FormID"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:self->_type forKey:@"AutoFillFormType"];
+  [coderCopy encodeInteger:self->_uniqueID forKey:@"FormID"];
   if (!self->_allowsAutocomplete)
   {
-    [v16 encodeBool:1 forKey:@"DisallowsAutocomplete"];
+    [coderCopy encodeBool:1 forKey:@"DisallowsAutocomplete"];
   }
 
   if (self->_containsActiveElement)
   {
-    [v16 encodeBool:1 forKey:@"ContainsActiveElement"];
+    [coderCopy encodeBool:1 forKey:@"ContainsActiveElement"];
   }
 
-  v4 = v16;
+  v4 = coderCopy;
   if (self->_visible)
   {
-    [v16 encodeBool:1 forKey:@"IsVisible"];
-    v4 = v16;
+    [coderCopy encodeBool:1 forKey:@"IsVisible"];
+    v4 = coderCopy;
   }
 
   if (self->_usesGeneratedPassword)
   {
-    [v16 encodeBool:1 forKey:@"UsesGeneratedPassword"];
-    v4 = v16;
+    [coderCopy encodeBool:1 forKey:@"UsesGeneratedPassword"];
+    v4 = coderCopy;
   }
 
   annotations = self->_annotations;
   if (annotations)
   {
-    [v16 encodeObject:annotations forKey:@"Annotations"];
-    v4 = v16;
+    [coderCopy encodeObject:annotations forKey:@"Annotations"];
+    v4 = coderCopy;
   }
 
   confirmPasswordElementUniqueID = self->_confirmPasswordElementUniqueID;
   if (confirmPasswordElementUniqueID)
   {
-    [v16 encodeObject:confirmPasswordElementUniqueID forKey:@"ConfirmPasswordElementUniqueID"];
-    v4 = v16;
+    [coderCopy encodeObject:confirmPasswordElementUniqueID forKey:@"ConfirmPasswordElementUniqueID"];
+    v4 = coderCopy;
   }
 
   firstCreditCardCardholderFieldOrCreditCardNumberFieldUniqueID = self->_firstCreditCardCardholderFieldOrCreditCardNumberFieldUniqueID;
   if (firstCreditCardCardholderFieldOrCreditCardNumberFieldUniqueID)
   {
-    [v16 encodeObject:firstCreditCardCardholderFieldOrCreditCardNumberFieldUniqueID forKey:@"FirstCreditCardCardholderFieldOrCreditCardNumberFieldUniqueID"];
-    v4 = v16;
+    [coderCopy encodeObject:firstCreditCardCardholderFieldOrCreditCardNumberFieldUniqueID forKey:@"FirstCreditCardCardholderFieldOrCreditCardNumberFieldUniqueID"];
+    v4 = coderCopy;
   }
 
   action = self->_action;
   if (action)
   {
-    [v16 encodeObject:action forKey:@"FormAction"];
-    v4 = v16;
+    [coderCopy encodeObject:action forKey:@"FormAction"];
+    v4 = coderCopy;
   }
 
   controls = self->_controls;
   if (controls)
   {
-    [v16 encodeObject:controls forKey:@"FormControls"];
-    v4 = v16;
+    [coderCopy encodeObject:controls forKey:@"FormControls"];
+    v4 = coderCopy;
   }
 
   oldPasswordElementUniqueID = self->_oldPasswordElementUniqueID;
   if (oldPasswordElementUniqueID)
   {
-    [v16 encodeObject:oldPasswordElementUniqueID forKey:@"OldPasswordElementUniqueID"];
-    v4 = v16;
+    [coderCopy encodeObject:oldPasswordElementUniqueID forKey:@"OldPasswordElementUniqueID"];
+    v4 = coderCopy;
   }
 
   passwordElementUniqueID = self->_passwordElementUniqueID;
   if (passwordElementUniqueID)
   {
-    [v16 encodeObject:passwordElementUniqueID forKey:@"PasswordElementUniqueID"];
-    v4 = v16;
+    [coderCopy encodeObject:passwordElementUniqueID forKey:@"PasswordElementUniqueID"];
+    v4 = coderCopy;
   }
 
   textSample = self->_textSample;
   if (textSample)
   {
-    [v16 encodeObject:textSample forKey:@"TextSample"];
-    v4 = v16;
+    [coderCopy encodeObject:textSample forKey:@"TextSample"];
+    v4 = coderCopy;
   }
 
   userNameElementUniqueID = self->_userNameElementUniqueID;
   if (userNameElementUniqueID)
   {
-    [v16 encodeObject:userNameElementUniqueID forKey:@"UsernameElementUniqueID"];
-    v4 = v16;
+    [coderCopy encodeObject:userNameElementUniqueID forKey:@"UsernameElementUniqueID"];
+    v4 = coderCopy;
   }
 
   if (self->_usesRelAsync)
   {
-    [v16 encodeBool:1 forKey:@"FormUsesRelAsync"];
-    v4 = v16;
+    [coderCopy encodeBool:1 forKey:@"FormUsesRelAsync"];
+    v4 = coderCopy;
   }
 
   if (self->_bestForPageLevelAutoFill)
   {
-    [v16 encodeBool:1 forKey:@"FormIsBestForPageLevelAutoFill"];
-    v4 = v16;
+    [coderCopy encodeBool:1 forKey:@"FormIsBestForPageLevelAutoFill"];
+    v4 = coderCopy;
   }
 
   if (self->_bestForStreamlinedLogin)
   {
-    [v16 encodeBool:1 forKey:@"FormIsBestForStreamlinedLogin"];
-    v4 = v16;
+    [coderCopy encodeBool:1 forKey:@"FormIsBestForStreamlinedLogin"];
+    v4 = coderCopy;
   }
 
   if (self->_eligibleForAutomaticLogin)
   {
-    [v16 encodeBool:1 forKey:@"FormIsEligibleForAutomaticLogin"];
-    v4 = v16;
+    [coderCopy encodeBool:1 forKey:@"FormIsEligibleForAutomaticLogin"];
+    v4 = coderCopy;
   }
 
   if (self->_requestType <= 4)
   {
-    [v16 encodeInteger:? forKey:?];
-    v4 = v16;
+    [coderCopy encodeInteger:? forKey:?];
+    v4 = coderCopy;
   }
 
   if (self->_isSearchForm)
   {
-    [v16 encodeBool:1 forKey:@"FormIsSearchForm"];
-    v4 = v16;
+    [coderCopy encodeBool:1 forKey:@"FormIsSearchForm"];
+    v4 = coderCopy;
   }
 
   passwordRequirements = self->_passwordRequirements;
   if (passwordRequirements)
   {
-    [v16 encodeObject:passwordRequirements forKey:@"PasswordRequirements"];
-    v4 = v16;
+    [coderCopy encodeObject:passwordRequirements forKey:@"PasswordRequirements"];
+    v4 = coderCopy;
   }
 
   logicalFormElementSelector = self->_logicalFormElementSelector;
   if (logicalFormElementSelector)
   {
-    [v16 encodeObject:logicalFormElementSelector forKey:@"LogicalFormElementSelector"];
-    v4 = v16;
+    [coderCopy encodeObject:logicalFormElementSelector forKey:@"LogicalFormElementSelector"];
+    v4 = coderCopy;
   }
 }
 
-- (WBSFormMetadata)initWithCoder:(id)a3
+- (WBSFormMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v54.receiver = self;
   v54.super_class = WBSFormMetadata;
   v5 = [(WBSFormMetadata *)&v54 init];
   if (v5)
   {
     v6 = objc_opt_class();
-    v7 = [v4 decodeIntegerForKey:@"AutoFillFormType"];
+    v7 = [coderCopy decodeIntegerForKey:@"AutoFillFormType"];
     v5->_type = v7;
     v8 = MEMORY[0x1E696A490];
     if (v7 >= 6)
@@ -924,20 +924,20 @@ LABEL_10:
       [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E696A490] format:{@"Form type is invalid: %lu", v7}];
     }
 
-    v5->_uniqueID = [v4 decodeIntegerForKey:@"FormID"];
-    v9 = [v4 decodeObjectOfClass:v6 forKey:@"LogicalFormElementSelector"];
+    v5->_uniqueID = [coderCopy decodeIntegerForKey:@"FormID"];
+    v9 = [coderCopy decodeObjectOfClass:v6 forKey:@"LogicalFormElementSelector"];
     logicalFormElementSelector = v5->_logicalFormElementSelector;
     v5->_logicalFormElementSelector = v9;
 
-    v5->_allowsAutocomplete = [v4 decodeBoolForKey:@"DisallowsAutocomplete"] ^ 1;
-    v5->_containsActiveElement = [v4 decodeBoolForKey:@"ContainsActiveElement"];
-    v5->_visible = [v4 decodeBoolForKey:@"IsVisible"];
-    v5->_usesGeneratedPassword = [v4 decodeBoolForKey:@"UsesGeneratedPassword"];
+    v5->_allowsAutocomplete = [coderCopy decodeBoolForKey:@"DisallowsAutocomplete"] ^ 1;
+    v5->_containsActiveElement = [coderCopy decodeBoolForKey:@"ContainsActiveElement"];
+    v5->_visible = [coderCopy decodeBoolForKey:@"IsVisible"];
+    v5->_usesGeneratedPassword = [coderCopy decodeBoolForKey:@"UsesGeneratedPassword"];
     v11 = MEMORY[0x1E695DFD8];
     v12 = objc_opt_class();
     v13 = objc_opt_class();
     v14 = [v11 setWithObjects:{v12, v13, v6, objc_opt_class(), 0}];
-    v15 = [v4 decodeObjectOfClasses:v14 forKey:@"Annotations"];
+    v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"Annotations"];
     annotations = v5->_annotations;
     v5->_annotations = v15;
 
@@ -950,15 +950,15 @@ LABEL_10:
       }
     }
 
-    v17 = [v4 decodeObjectOfClass:v6 forKey:@"ConfirmPasswordElementUniqueID"];
+    v17 = [coderCopy decodeObjectOfClass:v6 forKey:@"ConfirmPasswordElementUniqueID"];
     confirmPasswordElementUniqueID = v5->_confirmPasswordElementUniqueID;
     v5->_confirmPasswordElementUniqueID = v17;
 
-    v19 = [v4 decodeObjectOfClass:v6 forKey:@"FirstCreditCardCardholderFieldOrCreditCardNumberFieldUniqueID"];
+    v19 = [coderCopy decodeObjectOfClass:v6 forKey:@"FirstCreditCardCardholderFieldOrCreditCardNumberFieldUniqueID"];
     firstCreditCardCardholderFieldOrCreditCardNumberFieldUniqueID = v5->_firstCreditCardCardholderFieldOrCreditCardNumberFieldUniqueID;
     v5->_firstCreditCardCardholderFieldOrCreditCardNumberFieldUniqueID = v19;
 
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"FormAction"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"FormAction"];
     action = v5->_action;
     v5->_action = v21;
 
@@ -967,7 +967,7 @@ LABEL_10:
     v25 = objc_opt_class();
     v26 = objc_opt_class();
     v27 = [v23 setWithObjects:{v24, v25, v26, objc_opt_class(), 0}];
-    v28 = [v4 decodeObjectOfClasses:v27 forKey:@"FormControls"];
+    v28 = [coderCopy decodeObjectOfClasses:v27 forKey:@"FormControls"];
     controls = v5->_controls;
     v5->_controls = v28;
 
@@ -992,34 +992,34 @@ LABEL_10:
     v33 = v5->_controls;
     v5->_controls = v32;
 
-    v34 = [v4 decodeObjectOfClass:v6 forKey:@"OldPasswordElementUniqueID"];
+    v34 = [coderCopy decodeObjectOfClass:v6 forKey:@"OldPasswordElementUniqueID"];
     oldPasswordElementUniqueID = v5->_oldPasswordElementUniqueID;
     v5->_oldPasswordElementUniqueID = v34;
 
-    v36 = [v4 decodeObjectOfClass:v6 forKey:@"PasswordElementUniqueID"];
+    v36 = [coderCopy decodeObjectOfClass:v6 forKey:@"PasswordElementUniqueID"];
     passwordElementUniqueID = v5->_passwordElementUniqueID;
     v5->_passwordElementUniqueID = v36;
 
-    v38 = [v4 decodeObjectOfClass:v6 forKey:@"TextSample"];
+    v38 = [coderCopy decodeObjectOfClass:v6 forKey:@"TextSample"];
     textSample = v5->_textSample;
     v5->_textSample = v38;
 
-    v40 = [v4 decodeObjectOfClass:v6 forKey:@"UsernameElementUniqueID"];
+    v40 = [coderCopy decodeObjectOfClass:v6 forKey:@"UsernameElementUniqueID"];
     userNameElementUniqueID = v5->_userNameElementUniqueID;
     v5->_userNameElementUniqueID = v40;
 
-    v5->_usesRelAsync = [v4 decodeBoolForKey:@"FormUsesRelAsync"];
-    v5->_bestForPageLevelAutoFill = [v4 decodeBoolForKey:@"FormIsBestForPageLevelAutoFill"];
-    v5->_bestForStreamlinedLogin = [v4 decodeBoolForKey:@"FormIsBestForStreamlinedLogin"];
-    v5->_eligibleForAutomaticLogin = [v4 decodeBoolForKey:@"FormIsEligibleForAutomaticLogin"];
-    v42 = [v4 decodeIntegerForKey:@"RequestType"];
+    v5->_usesRelAsync = [coderCopy decodeBoolForKey:@"FormUsesRelAsync"];
+    v5->_bestForPageLevelAutoFill = [coderCopy decodeBoolForKey:@"FormIsBestForPageLevelAutoFill"];
+    v5->_bestForStreamlinedLogin = [coderCopy decodeBoolForKey:@"FormIsBestForStreamlinedLogin"];
+    v5->_eligibleForAutomaticLogin = [coderCopy decodeBoolForKey:@"FormIsEligibleForAutomaticLogin"];
+    v42 = [coderCopy decodeIntegerForKey:@"RequestType"];
     v5->_requestType = v42;
     if (v42 >= 5)
     {
       [MEMORY[0x1E695DF30] raise:*v8 format:{@"Request type is invalid: %lu", v42}];
     }
 
-    v5->_isSearchForm = [v4 decodeBoolForKey:@"FormIsSearchForm"];
+    v5->_isSearchForm = [coderCopy decodeBoolForKey:@"FormIsSearchForm"];
     v43 = MEMORY[0x1E695DFD8];
     v44 = objc_opt_class();
     v45 = objc_opt_class();
@@ -1027,7 +1027,7 @@ LABEL_10:
     v47 = objc_opt_class();
     v48 = objc_opt_class();
     v49 = [v43 setWithObjects:{v44, v45, v46, v47, v48, v6, objc_opt_class(), 0}];
-    v50 = [v4 decodeObjectOfClasses:v49 forKey:@"PasswordRequirements"];
+    v50 = [coderCopy decodeObjectOfClasses:v49 forKey:@"PasswordRequirements"];
     passwordRequirements = v5->_passwordRequirements;
     v5->_passwordRequirements = v50;
 
@@ -1049,15 +1049,15 @@ id __33__WBSFormMetadata_initWithCoder___block_invoke(uint64_t a1, void *a2)
   v2 = MEMORY[0x1E695DEC8];
   passwordElementUniqueID = self->_passwordElementUniqueID;
   confirmPasswordElementUniqueID = self->_confirmPasswordElementUniqueID;
-  v5 = [MEMORY[0x1E695DFB0] null];
-  v6 = [v2 safari_arrayWithObjectsUnlessNil:{passwordElementUniqueID, confirmPasswordElementUniqueID, v5}];
+  null = [MEMORY[0x1E695DFB0] null];
+  v6 = [v2 safari_arrayWithObjectsUnlessNil:{passwordElementUniqueID, confirmPasswordElementUniqueID, null}];
 
   return v6;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [WBSMutableFormMetadata allocWithZone:a3];
+  v4 = [WBSMutableFormMetadata allocWithZone:zone];
 
   return [(WBSFormMetadata *)v4 initWithMetadata:self];
 }
@@ -1132,9 +1132,9 @@ LABEL_12:
           objc_enumerationMutation(v2);
         }
 
-        v6 = [*(*(&v8 + 1) + 8 * i) classification];
+        classification = [*(*(&v8 + 1) + 8 * i) classification];
 
-        if (v6)
+        if (classification)
         {
           LOBYTE(v3) = 1;
           goto LABEL_11;
@@ -1181,7 +1181,7 @@ LABEL_11:
         v7 = *(*(&v11 + 1) + 8 * i);
         if ([v7 isVisible] && (objc_msgSend(v7, "isDisabled") & 1) == 0)
         {
-          v8 = [v7 uniqueID];
+          uniqueID = [v7 uniqueID];
           if ([v7 looksLikeOneTimeCodeField] & 1) != 0 || (WBSIsEqual() & 1) != 0 || (WBSIsEqual())
           {
             v9 = v7;
@@ -1207,27 +1207,27 @@ LABEL_16:
   return v9;
 }
 
-- (id)_valueOfControlWithUniqueID:(id)a3
+- (id)_valueOfControlWithUniqueID:(id)d
 {
-  v4 = a3;
-  if ([v4 length])
+  dCopy = d;
+  if ([dCopy length])
   {
     controls = self->_controls;
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __47__WBSFormMetadata__valueOfControlWithUniqueID___block_invoke;
     v9[3] = &unk_1E7FC6010;
-    v10 = v4;
+    v10 = dCopy;
     v6 = [(NSArray *)controls safari_firstObjectPassingTest:v9];
-    v7 = [v6 value];
+    value = [v6 value];
   }
 
   else
   {
-    v7 = 0;
+    value = 0;
   }
 
-  return v7;
+  return value;
 }
 
 uint64_t __47__WBSFormMetadata__valueOfControlWithUniqueID___block_invoke(uint64_t a1, void *a2)
@@ -1251,8 +1251,8 @@ uint64_t __47__WBSFormMetadata__valueOfControlWithUniqueID___block_invoke(uint64
 
 - (void)serializedData
 {
-  v3 = a1;
-  v4 = [a2 safari_privacyPreservingDescription];
+  selfCopy = self;
+  safari_privacyPreservingDescription = [a2 safari_privacyPreservingDescription];
   OUTLINED_FUNCTION_0_1(&dword_1BB6F3000, v5, v6, "Failed to archive WBSFormMetadata: %{public}@", v7, v8, v9, v10, 2u);
 }
 

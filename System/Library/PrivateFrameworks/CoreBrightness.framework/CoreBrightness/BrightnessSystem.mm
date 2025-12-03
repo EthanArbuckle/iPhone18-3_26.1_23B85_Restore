@@ -7,31 +7,31 @@
 
 - (BrightnessSystem)init
 {
-  v6 = self;
+  selfCopy = self;
   v5 = a2;
   v4.receiver = self;
   v4.super_class = BrightnessSystem;
-  v6 = [(BrightnessSystem *)&v4 init];
-  if (v6)
+  selfCopy = [(BrightnessSystem *)&v4 init];
+  if (selfCopy)
   {
     v2 = objc_alloc_init(BrightnessSystemInternal);
-    v6->bsi = v2;
+    selfCopy->bsi = v2;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (void)dealloc
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   if (self->bsi)
   {
-    [(BrightnessSystemInternal *)v4->bsi destroyServer];
-    MEMORY[0x1E69E5920](v4->bsi);
+    [(BrightnessSystemInternal *)selfCopy->bsi destroyServer];
+    MEMORY[0x1E69E5920](selfCopy->bsi);
   }
 
-  v2.receiver = v4;
+  v2.receiver = selfCopy;
   v2.super_class = BrightnessSystem;
   [(BrightnessSystem *)&v2 dealloc];
 }

@@ -6,8 +6,8 @@
 
 - (id)wa_bold
 {
-  v1 = [a1 fontDescriptor];
-  v2 = [v1 fontDescriptorWithSymbolicTraits:2];
+  fontDescriptor = [self fontDescriptor];
+  v2 = [fontDescriptor fontDescriptorWithSymbolicTraits:2];
 
   v3 = [MEMORY[0x277D74300] fontWithDescriptor:v2 size:0.0];
 

@@ -1,14 +1,14 @@
 @interface JavaUtilZipCheckedOutputStream
-- (JavaUtilZipCheckedOutputStream)initWithJavaIoOutputStream:(id)a3 withJavaUtilZipChecksum:(id)a4;
+- (JavaUtilZipCheckedOutputStream)initWithJavaIoOutputStream:(id)stream withJavaUtilZipChecksum:(id)checksum;
 - (void)dealloc;
 @end
 
 @implementation JavaUtilZipCheckedOutputStream
 
-- (JavaUtilZipCheckedOutputStream)initWithJavaIoOutputStream:(id)a3 withJavaUtilZipChecksum:(id)a4
+- (JavaUtilZipCheckedOutputStream)initWithJavaIoOutputStream:(id)stream withJavaUtilZipChecksum:(id)checksum
 {
-  JavaIoFilterOutputStream_initWithJavaIoOutputStream_(self, a3);
-  JreStrongAssign(&self->check_, a4);
+  JavaIoFilterOutputStream_initWithJavaIoOutputStream_(self, stream);
+  JreStrongAssign(&self->check_, checksum);
   return self;
 }
 

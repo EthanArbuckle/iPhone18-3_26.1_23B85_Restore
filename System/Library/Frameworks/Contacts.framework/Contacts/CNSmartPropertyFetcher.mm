@@ -1,18 +1,18 @@
 @interface CNSmartPropertyFetcher
-- (CNSmartPropertyFetcher)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CNSmartPropertyFetcher)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation CNSmartPropertyFetcher
 
-- (CNSmartPropertyFetcher)initWithCoder:(id)a3
+- (CNSmartPropertyFetcher)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = CNSmartPropertyFetcher;
   return [(CNSmartPropertyFetcher *)&v4 init];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v3 = objc_opt_class();
 

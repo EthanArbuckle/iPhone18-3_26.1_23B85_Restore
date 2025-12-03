@@ -1,14 +1,14 @@
 @interface THAButton
-- (BOOL)isEqual:(id)a3;
-- (THAButton)initWithType:(unint64_t)a3 identifier:(unsigned __int8)a4;
+- (BOOL)isEqual:(id)equal;
+- (THAButton)initWithType:(unint64_t)type identifier:(unsigned __int8)identifier;
 @end
 
 @implementation THAButton
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -18,11 +18,11 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       if (v5 && (v6 = [(THAButton *)self identifier], v6 == [(THAButton *)v5 identifier]))
       {
-        v7 = [(THAButton *)self type];
-        v8 = v7 == [(THAButton *)v5 type];
+        type = [(THAButton *)self type];
+        v8 = type == [(THAButton *)v5 type];
       }
 
       else
@@ -40,15 +40,15 @@
   return v8;
 }
 
-- (THAButton)initWithType:(unint64_t)a3 identifier:(unsigned __int8)a4
+- (THAButton)initWithType:(unint64_t)type identifier:(unsigned __int8)identifier
 {
   v7.receiver = self;
   v7.super_class = THAButton;
   result = [(THAButton *)&v7 init];
   if (result)
   {
-    result->_type = a3;
-    result->_identifier = a4;
+    result->_type = type;
+    result->_identifier = identifier;
   }
 
   return result;

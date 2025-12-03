@@ -1,15 +1,15 @@
 @interface AVAssetWriterInputMediaDataRequester
-- (AVAssetWriterInputMediaDataRequester)initWithRequestQueue:(id)a3 requestBlock:(id)a4;
+- (AVAssetWriterInputMediaDataRequester)initWithRequestQueue:(id)queue requestBlock:(id)block;
 - (AVAssetWriterInputMediaDataRequesterDelegate)delegate;
 - (void)_collectUncollectables_invokedFromDeallocAndFinalize;
 - (void)dealloc;
 - (void)requestMediaDataIfNecessary;
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation AVAssetWriterInputMediaDataRequester
 
-- (AVAssetWriterInputMediaDataRequester)initWithRequestQueue:(id)a3 requestBlock:(id)a4
+- (AVAssetWriterInputMediaDataRequester)initWithRequestQueue:(id)queue requestBlock:(id)block
 {
   v21.receiver = self;
   v21.super_class = AVAssetWriterInputMediaDataRequester;
@@ -17,13 +17,13 @@
   v8 = v7;
   if (v7)
   {
-    if (a3)
+    if (queue)
     {
-      if (a4)
+      if (block)
       {
-        dispatch_retain(a3);
-        v8->_requestQueue = a3;
-        v8->_requestBlock = [a4 copy];
+        dispatch_retain(queue);
+        v8->_requestQueue = queue;
+        v8->_requestBlock = [block copy];
         v8->_ivarAccessQueue = av_readwrite_dispatch_queue_create("com.apple.avfoundation.mediadatarequester.ivars");
         return v8;
       }
@@ -89,10 +89,10 @@
   v5[4] = self;
   v5[5] = &v6;
   av_readwrite_dispatch_queue_read(ivarAccessQueue, v5);
-  v3 = [v7[5] referencedObject];
+  referencedObject = [v7[5] referencedObject];
 
   _Block_object_dispose(&v6, 8);
-  return v3;
+  return referencedObject;
 }
 
 id __48__AVAssetWriterInputMediaDataRequester_delegate__block_invoke(uint64_t a1)
@@ -102,9 +102,9 @@ id __48__AVAssetWriterInputMediaDataRequester_delegate__block_invoke(uint64_t a1
   return result;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = [[AVWeakReference alloc] initWithReferencedObject:a3];
+  v4 = [[AVWeakReference alloc] initWithReferencedObject:delegate];
   ivarAccessQueue = self->_ivarAccessQueue;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
@@ -125,24 +125,24 @@ void __52__AVAssetWriterInputMediaDataRequester_setDelegate___block_invoke(uint6
 - (void)requestMediaDataIfNecessary
 {
   v3 = objc_autoreleasePoolPush();
-  v4 = [(AVAssetWriterInputMediaDataRequester *)self delegate];
-  if (v4)
+  delegate = [(AVAssetWriterInputMediaDataRequester *)self delegate];
+  if (delegate)
   {
-    if ([(AVAssetWriterInputMediaDataRequesterDelegate *)v4 mediaDataRequesterShouldRequestMediaData])
+    if ([(AVAssetWriterInputMediaDataRequesterDelegate *)delegate mediaDataRequesterShouldRequestMediaData])
     {
       (*(self->_requestBlock + 2))();
-      v5 = [(AVAssetWriterInputMediaDataRequester *)self delegate];
-      if (v5)
+      delegate2 = [(AVAssetWriterInputMediaDataRequester *)self delegate];
+      if (delegate2)
       {
-        if ([(AVAssetWriterInputMediaDataRequesterDelegate *)v5 mediaDataRequesterShouldRequestMediaData])
+        if ([(AVAssetWriterInputMediaDataRequesterDelegate *)delegate2 mediaDataRequesterShouldRequestMediaData])
         {
-          v6 = [(AVAssetWriterInputMediaDataRequester *)self requestQueue];
+          requestQueue = [(AVAssetWriterInputMediaDataRequester *)self requestQueue];
           block[0] = MEMORY[0x1E69E9820];
           block[1] = 3221225472;
           block[2] = __67__AVAssetWriterInputMediaDataRequester_requestMediaDataIfNecessary__block_invoke;
           block[3] = &unk_1E7460C00;
           block[4] = self;
-          dispatch_async(v6, block);
+          dispatch_async(requestQueue, block);
         }
       }
     }

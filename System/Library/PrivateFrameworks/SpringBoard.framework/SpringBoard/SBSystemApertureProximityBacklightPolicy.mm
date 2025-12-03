@@ -1,15 +1,15 @@
 @interface SBSystemApertureProximityBacklightPolicy
 - (BOOL)_isGracePeriodDisabledByEntitledApp;
-- (BOOL)proximityBacklightPolicyTouchHandlingView:(id)a3 shouldConsumeTouchForHitTest:(CGPoint)a4 withEvent:(id)a5;
-- (SBSystemApertureProximityBacklightPolicy)initWithConfiguration:(id)a3;
+- (BOOL)proximityBacklightPolicyTouchHandlingView:(id)view shouldConsumeTouchForHitTest:(CGPoint)test withEvent:(id)event;
+- (SBSystemApertureProximityBacklightPolicy)initWithConfiguration:(id)configuration;
 - (SBSystemApertureProximityBacklightPolicyDelegate)delegate;
 - (double)_nontelephonyTouchAllowanceGracePeriod;
-- (void)_objectThatCanPreventTouchesWithinProximityDidChange:(BOOL)a3 fromGracePeriod:(BOOL)a4;
+- (void)_objectThatCanPreventTouchesWithinProximityDidChange:(BOOL)change fromGracePeriod:(BOOL)period;
 - (void)_scheduleBacklightFactorToZeroForTouchWithinSystemAperture;
 - (void)_startCancelingTouches;
 - (void)_stopCancelingTouches;
 - (void)dealloc;
-- (void)proximitySensorManager:(id)a3 objectWithinProximityDidChange:(BOOL)a4 detectionMode:(int)a5;
+- (void)proximitySensorManager:(id)manager objectWithinProximityDidChange:(BOOL)change detectionMode:(int)mode;
 @end
 
 @implementation SBSystemApertureProximityBacklightPolicy
@@ -33,9 +33,9 @@
   if (!self->_suppressSystemGestures)
   {
     BKSHIDServicesCancelTouchesOnMainDisplay();
-    v6 = [(SBDefaultProximityBacklightPolicy *)self systemGestureManager];
+    systemGestureManager = [(SBDefaultProximityBacklightPolicy *)self systemGestureManager];
     v3 = +[SBSystemGestureManager deviceHardwareButtonGestureTypes];
-    v4 = [v6 acquireSystemGestureDisableAssertionForReason:@"objectInProximity" exceptSystemGestureTypes:v3];
+    v4 = [systemGestureManager acquireSystemGestureDisableAssertionForReason:@"objectInProximity" exceptSystemGestureTypes:v3];
     suppressSystemGestures = self->_suppressSystemGestures;
     self->_suppressSystemGestures = v4;
   }
@@ -43,40 +43,40 @@
 
 - (double)_nontelephonyTouchAllowanceGracePeriod
 {
-  v3 = [MEMORY[0x277CF06F8] sharedInstance];
-  v4 = [v3 sensorCharacteristics];
+  mEMORY[0x277CF06F8] = [MEMORY[0x277CF06F8] sharedInstance];
+  sensorCharacteristics = [mEMORY[0x277CF06F8] sensorCharacteristics];
 
-  v5 = [v4 suggestedSystemApertureGracePeriodForScreenOff];
-  if (v5 == 0x7FFFFFFFFFFFFFFFLL)
+  suggestedSystemApertureGracePeriodForScreenOff = [sensorCharacteristics suggestedSystemApertureGracePeriodForScreenOff];
+  if (suggestedSystemApertureGracePeriodForScreenOff == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v6 = [(SBSystemApertureProximityBacklightPolicy *)self _proximitySettings];
-    [v6 nonTelephonyTouchAllowanceGracePeriodDuration];
+    _proximitySettings = [(SBSystemApertureProximityBacklightPolicy *)self _proximitySettings];
+    [_proximitySettings nonTelephonyTouchAllowanceGracePeriodDuration];
     v8 = v7;
   }
 
   else
   {
-    v8 = v5 / 1000.0;
+    v8 = suggestedSystemApertureGracePeriodForScreenOff / 1000.0;
   }
 
   return v8;
 }
 
-- (SBSystemApertureProximityBacklightPolicy)initWithConfiguration:(id)a3
+- (SBSystemApertureProximityBacklightPolicy)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v11.receiver = self;
   v11.super_class = SBSystemApertureProximityBacklightPolicy;
-  v5 = [(SBDefaultProximityBacklightPolicy *)&v11 initWithConfiguration:v4];
+  v5 = [(SBDefaultProximityBacklightPolicy *)&v11 initWithConfiguration:configurationCopy];
   if (v5)
   {
-    v6 = [v4 sensorModeController];
+    sensorModeController = [configurationCopy sensorModeController];
     sensorModeController = v5->_sensorModeController;
-    v5->_sensorModeController = v6;
+    v5->_sensorModeController = sensorModeController;
 
-    v8 = [v4 proximitySettings];
+    proximitySettings = [configurationCopy proximitySettings];
     proximitySettings = v5->_proximitySettings;
-    v5->_proximitySettings = v8;
+    v5->_proximitySettings = proximitySettings;
 
     BKSHIDServicesSetObjectInProximityIgnoresTouches();
   }
@@ -92,17 +92,17 @@
   [(SBDefaultProximityBacklightPolicy *)&v3 dealloc];
 }
 
-- (void)proximitySensorManager:(id)a3 objectWithinProximityDidChange:(BOOL)a4 detectionMode:(int)a5
+- (void)proximitySensorManager:(id)manager objectWithinProximityDidChange:(BOOL)change detectionMode:(int)mode
 {
-  v6 = a4;
+  changeCopy = change;
   *&v28[5] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = !self->_suppressBacklightChanges || !v6;
+  managerCopy = manager;
+  v9 = !self->_suppressBacklightChanges || !changeCopy;
   if (v9 || self->_objectThatCanPreventTouchesInProximity)
   {
-    if (self->_objectInProximityAccordingToProxManager != v6)
+    if (self->_objectInProximityAccordingToProxManager != changeCopy)
     {
-      self->_objectInProximityAccordingToProxManager = v6;
+      self->_objectInProximityAccordingToProxManager = changeCopy;
       if (self->_touchAllowanceGracePeriodTimer)
       {
         v10 = SBLogProximitySensor();
@@ -110,7 +110,7 @@
         {
           v11 = NSStringFromBKSHIDServicesProximityDetectionMode();
           *buf = 67109378;
-          v28[0] = v6;
+          v28[0] = changeCopy;
           LOWORD(v28[1]) = 2114;
           *(&v28[1] + 2) = v11;
           _os_log_impl(&dword_21ED4E000, v10, OS_LOG_TYPE_DEFAULT, "Canceling grace period due to incoming event (objectInProximity:%{BOOL}u mode:%{public}@)", buf, 0x12u);
@@ -122,10 +122,10 @@
       }
 
       [(SBSystemApertureProximityBacklightPolicy *)self _nontelephonyTouchAllowanceGracePeriod];
-      if (v6 && (v14 = v13, v13 > 0.0) && ((v15 = [(SBSystemApertureProximityBacklightPolicy *)self _isGracePeriodDisabledByEntitledApp], a5 != 6) ? (v16 = 1) : (v16 = v15), (v16 & 1) == 0))
+      if (changeCopy && (v14 = v13, v13 > 0.0) && ((v15 = [(SBSystemApertureProximityBacklightPolicy *)self _isGracePeriodDisabledByEntitledApp], mode != 6) ? (v16 = 1) : (v16 = v15), (v16 & 1) == 0))
       {
         objc_initWeak(&location, self);
-        objc_initWeak(&from, v8);
+        objc_initWeak(&from, managerCopy);
         v18 = SBLogProximitySensor();
         if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
         {
@@ -154,7 +154,7 @@
 
       else
       {
-        [(SBSystemApertureProximityBacklightPolicy *)self _objectThatCanPreventTouchesWithinProximityDidChange:v6 fromGracePeriod:0];
+        [(SBSystemApertureProximityBacklightPolicy *)self _objectThatCanPreventTouchesWithinProximityDidChange:changeCopy fromGracePeriod:0];
       }
     }
   }
@@ -194,38 +194,38 @@ void __112__SBSystemApertureProximityBacklightPolicy_proximitySensorManager_obje
   }
 }
 
-- (void)_objectThatCanPreventTouchesWithinProximityDidChange:(BOOL)a3 fromGracePeriod:(BOOL)a4
+- (void)_objectThatCanPreventTouchesWithinProximityDidChange:(BOOL)change fromGracePeriod:(BOOL)period
 {
   v29 = *MEMORY[0x277D85DE8];
-  if (self->_objectThatCanPreventTouchesInProximity != a3)
+  if (self->_objectThatCanPreventTouchesInProximity != change)
   {
-    v4 = a4;
-    v5 = a3;
-    v7 = [(SBSystemApertureProximityBacklightPolicy *)self delegate];
+    periodCopy = period;
+    changeCopy = change;
+    delegate = [(SBSystemApertureProximityBacklightPolicy *)self delegate];
     WeakRetained = objc_loadWeakRetained(&self->_touchTrackingView);
     v9 = objc_loadWeakRetained(&self->_touchBlockingView);
-    self->_objectThatCanPreventTouchesInProximity = v5;
-    v10 = [(SBSystemApertureProximityBacklightPolicy *)self _proximitySettings];
-    v11 = [v10 allowTouchesInJindoWhenObjectInProximity];
+    self->_objectThatCanPreventTouchesInProximity = changeCopy;
+    _proximitySettings = [(SBSystemApertureProximityBacklightPolicy *)self _proximitySettings];
+    allowTouchesInJindoWhenObjectInProximity = [_proximitySettings allowTouchesInJindoWhenObjectInProximity];
 
-    if (v5)
+    if (changeCopy)
     {
       if (!WeakRetained)
       {
-        WeakRetained = [[_SBSystemApertureProximityTouchHandlingView alloc] initWithDelegate:self hitTestsAsOpaque:v11 ^ 1u];
+        WeakRetained = [[_SBSystemApertureProximityTouchHandlingView alloc] initWithDelegate:self hitTestsAsOpaque:allowTouchesInJindoWhenObjectInProximity ^ 1u];
       }
 
-      v12 = [(SBSystemApertureProximityBacklightPolicy *)self _proximitySettings];
-      v13 = [v12 colorScreenEdgeWhenObjectInProximity];
+      _proximitySettings2 = [(SBSystemApertureProximityBacklightPolicy *)self _proximitySettings];
+      colorScreenEdgeWhenObjectInProximity = [_proximitySettings2 colorScreenEdgeWhenObjectInProximity];
 
-      if (v13)
+      if (colorScreenEdgeWhenObjectInProximity)
       {
-        v14 = [(_SBSystemApertureProximityTouchHandlingView *)WeakRetained layer];
-        v15 = [MEMORY[0x277D75348] systemYellowColor];
-        [v14 setBorderColor:{objc_msgSend(v15, "CGColor")}];
+        layer = [(_SBSystemApertureProximityTouchHandlingView *)WeakRetained layer];
+        systemYellowColor = [MEMORY[0x277D75348] systemYellowColor];
+        [layer setBorderColor:{objc_msgSend(systemYellowColor, "CGColor")}];
 
-        v16 = [(_SBSystemApertureProximityTouchHandlingView *)WeakRetained layer];
-        [v16 setBorderWidth:3.0];
+        layer2 = [(_SBSystemApertureProximityTouchHandlingView *)WeakRetained layer];
+        [layer2 setBorderWidth:3.0];
       }
 
       if (!v9)
@@ -235,8 +235,8 @@ void __112__SBSystemApertureProximityBacklightPolicy_proximitySensorManager_obje
 
       objc_storeWeak(&self->_touchTrackingView, WeakRetained);
       objc_storeWeak(&self->_touchBlockingView, v9);
-      [v7 systemApertureProximityBacklightPolicy:self embedProximityTouchTrackingView:WeakRetained touchBlockingView:v9];
-      if (v4)
+      [delegate systemApertureProximityBacklightPolicy:self embedProximityTouchTrackingView:WeakRetained touchBlockingView:v9];
+      if (periodCopy)
       {
         v17 = SBLogProximitySensor();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
@@ -247,13 +247,13 @@ void __112__SBSystemApertureProximityBacklightPolicy_proximitySensorManager_obje
 
         [(SBSystemApertureProximityBacklightPolicy *)self _startCancelingTouches];
         v18 = 0.0;
-        v19 = self;
+        selfCopy2 = self;
 LABEL_13:
-        [(SBDefaultProximityBacklightPolicy *)v19 _scheduleBacklightFactorToZeroAfterDebounceDuration:v18];
+        [(SBDefaultProximityBacklightPolicy *)selfCopy2 _scheduleBacklightFactorToZeroAfterDebounceDuration:v18];
         goto LABEL_24;
       }
 
-      if ([v7 systemApertureProximityBacklightPolicyShouldConsiderSystemApertureInert:self])
+      if ([delegate systemApertureProximityBacklightPolicyShouldConsiderSystemApertureInert:self])
       {
         v22 = SBLogProximitySensor();
         if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
@@ -267,8 +267,8 @@ LABEL_13:
         goto LABEL_24;
       }
 
-      v23 = [(SBSystemApertureProximityBacklightPolicy *)self _proximitySettings];
-      [v23 initialBacklightDebounceDuration];
+      _proximitySettings3 = [(SBSystemApertureProximityBacklightPolicy *)self _proximitySettings];
+      [_proximitySettings3 initialBacklightDebounceDuration];
       v25 = v24;
 
       if (BSFloatGreaterThanFloat())
@@ -282,7 +282,7 @@ LABEL_13:
         }
 
         [(SBSystemApertureProximityBacklightPolicy *)self _startCancelingTouches];
-        v19 = self;
+        selfCopy2 = self;
         v18 = v25;
         goto LABEL_13;
       }
@@ -302,7 +302,7 @@ LABEL_25:
         return;
       }
 
-      [v7 systemApertureProximityBacklightPolicy:self removeProximityTouchTrackingView:WeakRetained touchBlockingView:v9];
+      [delegate systemApertureProximityBacklightPolicy:self removeProximityTouchTrackingView:WeakRetained touchBlockingView:v9];
     }
 
 LABEL_24:
@@ -312,50 +312,50 @@ LABEL_24:
   }
 }
 
-- (BOOL)proximityBacklightPolicyTouchHandlingView:(id)a3 shouldConsumeTouchForHitTest:(CGPoint)a4 withEvent:(id)a5
+- (BOOL)proximityBacklightPolicyTouchHandlingView:(id)view shouldConsumeTouchForHitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a4.y;
-  x = a4.x;
+  y = test.y;
+  x = test.x;
   v18[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  viewCopy = view;
   WeakRetained = objc_loadWeakRetained(&self->_touchTrackingView);
   v10 = objc_loadWeakRetained(&self->_touchBlockingView);
-  v11 = [(SBSystemApertureProximityBacklightPolicy *)self delegate];
-  v12 = [v11 systemApertureProximityBacklightPolicyShouldConsiderSystemApertureInert:self];
-  v13 = [(SBSystemApertureProximityBacklightPolicy *)self _proximitySettings];
-  v14 = [v13 allowTouchesInJindoWhenObjectInProximity];
+  delegate = [(SBSystemApertureProximityBacklightPolicy *)self delegate];
+  v12 = [delegate systemApertureProximityBacklightPolicyShouldConsiderSystemApertureInert:self];
+  _proximitySettings = [(SBSystemApertureProximityBacklightPolicy *)self _proximitySettings];
+  allowTouchesInJindoWhenObjectInProximity = [_proximitySettings allowTouchesInJindoWhenObjectInProximity];
 
   if ((v12 & 1) == 0)
   {
-    if (WeakRetained == v8)
+    if (WeakRetained == viewCopy)
     {
       v15 = self->_numberOfTouchesWhileObjectInProximity + 1;
       self->_numberOfTouchesWhileObjectInProximity = v15;
       if (v15 <= 2)
       {
-        self->_isTrackingTouchPossiblyInJindoWithObjectInProximity = [v11 systemApertureProximityBacklightPolicy:self isSystemApertureElementVisibleAtPoint:{x, y}];
+        self->_isTrackingTouchPossiblyInJindoWithObjectInProximity = [delegate systemApertureProximityBacklightPolicy:self isSystemApertureElementVisibleAtPoint:{x, y}];
         v18[0] = *MEMORY[0x277CBE738];
         v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v18 count:1];
         [(SBSystemApertureProximityBacklightPolicy *)self performSelector:sel__scheduleBacklightFactorToZeroForTouchWithinSystemAperture withObject:0 afterDelay:v16 inModes:0.0];
       }
     }
 
-    else if (v10 == v8)
+    else if (v10 == viewCopy)
     {
       self->_isTrackingTouchPossiblyInJindoWithObjectInProximity = 0;
     }
   }
 
-  return v10 == v8 || (v14 & 1) == 0;
+  return v10 == viewCopy || (allowTouchesInJindoWhenObjectInProximity & 1) == 0;
 }
 
 - (BOOL)_isGracePeriodDisabledByEntitledApp
 {
-  v2 = self;
+  selfCopy = self;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  LOBYTE(v2) = [WeakRetained systemApertureProximityBacklightPolicyShouldDisableGracePeriod:v2];
+  LOBYTE(selfCopy) = [WeakRetained systemApertureProximityBacklightPolicyShouldDisableGracePeriod:selfCopy];
 
-  return v2;
+  return selfCopy;
 }
 
 - (void)_scheduleBacklightFactorToZeroForTouchWithinSystemAperture
@@ -364,8 +364,8 @@ LABEL_24:
   if (self->_isTrackingTouchPossiblyInJindoWithObjectInProximity)
   {
     self->_isTrackingTouchPossiblyInJindoWithObjectInProximity = 0;
-    v3 = [(SBSystemApertureProximityBacklightPolicy *)self _proximitySettings];
-    [v3 subsequentBacklightDebounceDuration];
+    _proximitySettings = [(SBSystemApertureProximityBacklightPolicy *)self _proximitySettings];
+    [_proximitySettings subsequentBacklightDebounceDuration];
     v5 = v4;
 
     v6 = SBLogProximitySensor();

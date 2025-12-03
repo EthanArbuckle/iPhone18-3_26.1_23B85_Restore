@@ -1,19 +1,19 @@
 @interface STAskToManageContactsApprovedResponseReceivedUserNotificationContext
-- (STAskToManageContactsApprovedResponseReceivedUserNotificationContext)initWithChildName:(id)a3;
-- (STAskToManageContactsApprovedResponseReceivedUserNotificationContext)initWithCoder:(id)a3;
-- (void)customizeNotificationContent:(id)a3 withCompletionBlock:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (STAskToManageContactsApprovedResponseReceivedUserNotificationContext)initWithChildName:(id)name;
+- (STAskToManageContactsApprovedResponseReceivedUserNotificationContext)initWithCoder:(id)coder;
+- (void)customizeNotificationContent:(id)content withCompletionBlock:(id)block;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation STAskToManageContactsApprovedResponseReceivedUserNotificationContext
 
-- (STAskToManageContactsApprovedResponseReceivedUserNotificationContext)initWithChildName:(id)a3
+- (STAskToManageContactsApprovedResponseReceivedUserNotificationContext)initWithChildName:(id)name
 {
   v8.receiver = self;
   v8.super_class = STAskToManageContactsApprovedResponseReceivedUserNotificationContext;
-  v3 = a3;
+  nameCopy = name;
   v4 = [(STUserNotificationContext *)&v8 initWithIdentifier:@"AskToManageContactsResponseReceivedUserNotificationContextIdentifier"];
-  v5 = [v3 copy];
+  v5 = [nameCopy copy];
 
   childName = v4->_childName;
   v4->_childName = v5;
@@ -21,15 +21,15 @@
   return v4;
 }
 
-- (STAskToManageContactsApprovedResponseReceivedUserNotificationContext)initWithCoder:(id)a3
+- (STAskToManageContactsApprovedResponseReceivedUserNotificationContext)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = STAskToManageContactsApprovedResponseReceivedUserNotificationContext;
-  v5 = [(STUserNotificationContext *)&v9 initWithCoder:v4];
+  v5 = [(STUserNotificationContext *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"childName"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"childName"];
     childName = v5->_childName;
     v5->_childName = v6;
   }
@@ -37,30 +37,30 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = STAskToManageContactsApprovedResponseReceivedUserNotificationContext;
-  v4 = a3;
-  [(STUserNotificationContext *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_childName forKey:{@"childName", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(STUserNotificationContext *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_childName forKey:{@"childName", v5.receiver, v5.super_class}];
 }
 
-- (void)customizeNotificationContent:(id)a3 withCompletionBlock:(id)a4
+- (void)customizeNotificationContent:(id)content withCompletionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  contentCopy = content;
+  blockCopy = block;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __121__STAskToManageContactsApprovedResponseReceivedUserNotificationContext_customizeNotificationContent_withCompletionBlock___block_invoke;
   v11[3] = &unk_1E7CE6B80;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
+  v12 = contentCopy;
+  selfCopy = self;
+  v14 = blockCopy;
   v10.receiver = self;
   v10.super_class = STAskToManageContactsApprovedResponseReceivedUserNotificationContext;
-  v8 = v7;
-  v9 = v6;
+  v8 = blockCopy;
+  v9 = contentCopy;
   [(STUserNotificationContext *)&v10 customizeNotificationContent:v9 withCompletionBlock:v11];
 }
 

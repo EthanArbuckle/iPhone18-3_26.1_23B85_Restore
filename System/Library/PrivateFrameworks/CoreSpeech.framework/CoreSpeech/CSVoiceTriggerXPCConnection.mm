@@ -1,16 +1,16 @@
 @interface CSVoiceTriggerXPCConnection
-- (CSVoiceTriggerXPCConnection)initWithConnection:(id)a3;
+- (CSVoiceTriggerXPCConnection)initWithConnection:(id)connection;
 - (CSVoiceTriggerXPCConnectionDelegate)delegate;
-- (void)_handleClientError:(id)a3 client:(id)a4;
-- (void)_handleClientEvent:(id)a3;
-- (void)_handleClientMessage:(id)a3 client:(id)a4;
-- (void)_handleEnableVoiceTriggerWithSiriAssertionRequest:(id)a3;
-- (void)_handlePhraseSpotterBypassRequest:(id)a3;
-- (void)_handleRaiseToSpeakBypassRequest:(id)a3;
-- (void)_handleVoiceTriggerStatsFetchEvent:(id)a3 client:(id)a4;
-- (void)_handleVoiceTriggerXPCServiceMessage:(id)a3 client:(id)a4;
+- (void)_handleClientError:(id)error client:(id)client;
+- (void)_handleClientEvent:(id)event;
+- (void)_handleClientMessage:(id)message client:(id)client;
+- (void)_handleEnableVoiceTriggerWithSiriAssertionRequest:(id)request;
+- (void)_handlePhraseSpotterBypassRequest:(id)request;
+- (void)_handleRaiseToSpeakBypassRequest:(id)request;
+- (void)_handleVoiceTriggerStatsFetchEvent:(id)event client:(id)client;
+- (void)_handleVoiceTriggerXPCServiceMessage:(id)message client:(id)client;
 - (void)_handleVoiceTriggeredSiriSessionCancelled;
-- (void)_sendReply:(id)a3 client:(id)a4 result:(BOOL)a5 error:(id)a6;
+- (void)_sendReply:(id)reply client:(id)client result:(BOOL)result error:(id)error;
 - (void)activateConnection;
 @end
 
@@ -23,27 +23,27 @@
   return WeakRetained;
 }
 
-- (void)_handleVoiceTriggerStatsFetchEvent:(id)a3 client:(id)a4
+- (void)_handleVoiceTriggerStatsFetchEvent:(id)event client:(id)client
 {
-  v5 = a4;
-  v6 = a3;
+  clientCopy = client;
+  eventCopy = event;
   v7 = +[CSVoiceTriggerXPCServiceProxy sharedInstance];
-  v10 = [v7 fetchVoiceTriggerStats];
+  fetchVoiceTriggerStats = [v7 fetchVoiceTriggerStats];
 
-  reply = xpc_dictionary_create_reply(v6);
-  xpc_dictionary_set_BOOL(reply, "result", v10 != 0);
-  v9 = [v10 _cs_xpcObject];
-  xpc_dictionary_set_value(reply, "triggerStats", v9);
+  reply = xpc_dictionary_create_reply(eventCopy);
+  xpc_dictionary_set_BOOL(reply, "result", fetchVoiceTriggerStats != 0);
+  _cs_xpcObject = [fetchVoiceTriggerStats _cs_xpcObject];
+  xpc_dictionary_set_value(reply, "triggerStats", _cs_xpcObject);
 
-  xpc_connection_send_message(v5, reply);
+  xpc_connection_send_message(clientCopy, reply);
 }
 
-- (void)_handleEnableVoiceTriggerWithSiriAssertionRequest:(id)a3
+- (void)_handleEnableVoiceTriggerWithSiriAssertionRequest:(id)request
 {
-  v3 = a3;
-  v4 = xpc_dictionary_get_BOOL(v3, "enable");
-  v7 = [NSString stringWithUTF8String:xpc_dictionary_get_string(v3, "assertion")];
-  v5 = xpc_dictionary_get_double(v3, "timestamp");
+  requestCopy = request;
+  v4 = xpc_dictionary_get_BOOL(requestCopy, "enable");
+  v7 = [NSString stringWithUTF8String:xpc_dictionary_get_string(requestCopy, "assertion")];
+  v5 = xpc_dictionary_get_double(requestCopy, "timestamp");
 
   v6 = +[CSVoiceTriggerXPCServiceProxy sharedInstance];
   [v6 enableVoiceTrigger:v4 withAssertion:v7 timestamp:v5];
@@ -63,21 +63,21 @@
   [v3 notifyVoiceTriggeredSiriSessionCancelled];
 }
 
-- (void)_handleRaiseToSpeakBypassRequest:(id)a3
+- (void)_handleRaiseToSpeakBypassRequest:(id)request
 {
-  v3 = a3;
-  v4 = xpc_dictionary_get_BOOL(v3, "raiseToSpeakBypass");
-  v5 = xpc_dictionary_get_double(v3, "bypassTimeout");
+  requestCopy = request;
+  v4 = xpc_dictionary_get_BOOL(requestCopy, "raiseToSpeakBypass");
+  v5 = xpc_dictionary_get_double(requestCopy, "bypassTimeout");
 
   v6 = +[CSVoiceTriggerXPCServiceProxy sharedInstance];
   [v6 setRaiseToSpeakBypassing:v4 timeout:v5];
 }
 
-- (void)_handlePhraseSpotterBypassRequest:(id)a3
+- (void)_handlePhraseSpotterBypassRequest:(id)request
 {
-  v3 = a3;
-  v4 = xpc_dictionary_get_BOOL(v3, "phraseSpotterBypass");
-  v5 = xpc_dictionary_get_double(v3, "bypassTimeout");
+  requestCopy = request;
+  v4 = xpc_dictionary_get_BOOL(requestCopy, "phraseSpotterBypass");
+  v5 = xpc_dictionary_get_double(requestCopy, "bypassTimeout");
 
   v6 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
@@ -95,13 +95,13 @@
   [v7 setPhraseSpotterBypassing:v4 timeout:v5];
 }
 
-- (void)_handleVoiceTriggerXPCServiceMessage:(id)a3 client:(id)a4
+- (void)_handleVoiceTriggerXPCServiceMessage:(id)message client:(id)client
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = xpc_dictionary_get_dictionary(v6, "body");
+  messageCopy = message;
+  clientCopy = client;
+  v8 = xpc_dictionary_get_dictionary(messageCopy, "body");
   v9 = v8;
-  if (!v7 || !v6 || !v8)
+  if (!clientCopy || !messageCopy || !v8)
   {
     v12 = CSLogContextFacilityCoreSpeech;
     if (!os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_ERROR))
@@ -169,26 +169,26 @@ LABEL_17:
     goto LABEL_20;
   }
 
-  [(CSVoiceTriggerXPCConnection *)self _handleVoiceTriggerStatsFetchEvent:v6 client:v7];
+  [(CSVoiceTriggerXPCConnection *)self _handleVoiceTriggerStatsFetchEvent:messageCopy client:clientCopy];
 LABEL_10:
 }
 
-- (void)_sendReply:(id)a3 client:(id)a4 result:(BOOL)a5 error:(id)a6
+- (void)_sendReply:(id)reply client:(id)client result:(BOOL)result error:(id)error
 {
-  v8 = a4;
-  message = xpc_dictionary_create_reply(a3);
-  xpc_dictionary_set_BOOL(message, "result", a5);
-  xpc_connection_send_message(v8, message);
+  clientCopy = client;
+  message = xpc_dictionary_create_reply(reply);
+  xpc_dictionary_set_BOOL(message, "result", result);
+  xpc_connection_send_message(clientCopy, message);
 }
 
-- (void)_handleClientError:(id)a3 client:(id)a4
+- (void)_handleClientError:(id)error client:(id)client
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6 && v7)
+  errorCopy = error;
+  clientCopy = client;
+  v8 = clientCopy;
+  if (errorCopy && clientCopy)
   {
-    if (v6 == &_xpc_error_connection_invalid || v6 == &_xpc_error_connection_interrupted)
+    if (errorCopy == &_xpc_error_connection_invalid || errorCopy == &_xpc_error_connection_interrupted)
     {
       v10 = CSLogContextFacilityCoreSpeech;
       if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
@@ -211,14 +211,14 @@ LABEL_10:
         if (v14)
         {
           v15 = objc_loadWeakRetained(&self->_delegate);
-          [v15 CSVoiceTriggerXPCConnectionReceivedClientError:self clientError:v6 client:v8];
+          [v15 CSVoiceTriggerXPCConnectionReceivedClientError:self clientError:errorCopy client:v8];
         }
       }
     }
 
     else
     {
-      string = xpc_dictionary_get_string(v6, _xpc_error_key_description);
+      string = xpc_dictionary_get_string(errorCopy, _xpc_error_key_description);
       v17 = CSLogContextFacilityCoreSpeech;
       if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_ERROR))
       {
@@ -232,12 +232,12 @@ LABEL_10:
   }
 }
 
-- (void)_handleClientMessage:(id)a3 client:(id)a4
+- (void)_handleClientMessage:(id)message client:(id)client
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6 || !v7)
+  messageCopy = message;
+  clientCopy = client;
+  v8 = clientCopy;
+  if (!messageCopy || !clientCopy)
   {
     v9 = CSLogContextFacilityCoreSpeech;
     if (!os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_ERROR))
@@ -248,7 +248,7 @@ LABEL_10:
     v14 = 136315650;
     v15 = "[CSVoiceTriggerXPCConnection _handleClientMessage:client:]";
     v16 = 2050;
-    v17 = v6;
+    v17 = messageCopy;
     v18 = 2050;
     v19 = v8;
     v10 = "%s message = %{public}p, client = %{public}p, cannot handle message";
@@ -259,7 +259,7 @@ LABEL_10:
     goto LABEL_8;
   }
 
-  if (xpc_dictionary_get_int64(v6, "type") != 2)
+  if (xpc_dictionary_get_int64(messageCopy, "type") != 2)
   {
     v13 = CSLogContextFacilityCoreSpeech;
     if (!os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_ERROR))
@@ -275,17 +275,17 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  [(CSVoiceTriggerXPCConnection *)self _handleVoiceTriggerXPCServiceMessage:v6 client:v8];
+  [(CSVoiceTriggerXPCConnection *)self _handleVoiceTriggerXPCServiceMessage:messageCopy client:v8];
 LABEL_8:
 }
 
-- (void)_handleClientEvent:(id)a3
+- (void)_handleClientEvent:(id)event
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && self->_connection)
+  eventCopy = event;
+  v5 = eventCopy;
+  if (eventCopy && self->_connection)
   {
-    type = xpc_get_type(v4);
+    type = xpc_get_type(eventCopy);
     if (type == &_xpc_type_dictionary)
     {
       [(CSVoiceTriggerXPCConnection *)self _handleClientMessage:v5 client:self->_connection];
@@ -348,16 +348,16 @@ LABEL_12:
   objc_destroyWeak(&location);
 }
 
-- (CSVoiceTriggerXPCConnection)initWithConnection:(id)a3
+- (CSVoiceTriggerXPCConnection)initWithConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v13.receiver = self;
   v13.super_class = CSVoiceTriggerXPCConnection;
   v6 = [(CSVoiceTriggerXPCConnection *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_connection, a3);
+    objc_storeStrong(&v6->_connection, connection);
     v8 = dispatch_queue_create("voicetrigger xpc service connection client queue", 0);
     queue = v7->_queue;
     v7->_queue = v8;

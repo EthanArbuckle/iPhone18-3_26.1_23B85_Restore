@@ -1,8 +1,8 @@
 @interface SearchDotPlace
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CLLocationCoordinate2D)coordinate;
 - (SearchDotPlace)init;
-- (SearchDotPlace)initWithGEODotPlace:(id)a3;
+- (SearchDotPlace)initWithGEODotPlace:(id)place;
 - (unint64_t)hash;
 @end
 
@@ -17,10 +17,10 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -30,11 +30,11 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(SearchDotPlace *)self identifier];
-      v7 = [(SearchDotPlace *)v5 identifier];
+      v5 = equalCopy;
+      identifier = [(SearchDotPlace *)self identifier];
+      identifier2 = [(SearchDotPlace *)v5 identifier];
 
-      v8 = [v6 isEqualToGEOMapItemIdentifier:v7];
+      v8 = [identifier isEqualToGEOMapItemIdentifier:identifier2];
     }
 
     else
@@ -48,40 +48,40 @@
 
 - (unint64_t)hash
 {
-  v2 = [(SearchDotPlace *)self identifier];
-  v3 = [v2 muid];
+  identifier = [(SearchDotPlace *)self identifier];
+  muid = [identifier muid];
 
-  return v3;
+  return muid;
 }
 
-- (SearchDotPlace)initWithGEODotPlace:(id)a3
+- (SearchDotPlace)initWithGEODotPlace:(id)place
 {
-  v4 = a3;
+  placeCopy = place;
   v21.receiver = self;
   v21.super_class = SearchDotPlace;
   v5 = [(SearchDotPlace *)&v21 init];
   if (v5)
   {
-    v6 = [v4 identifier];
+    identifier = [placeCopy identifier];
     identifier = v5->_identifier;
-    v5->_identifier = v6;
+    v5->_identifier = identifier;
 
-    v8 = [v4 latLng];
-    [v8 lat];
+    latLng = [placeCopy latLng];
+    [latLng lat];
     v10 = v9;
-    v11 = [v4 latLng];
-    [v11 lng];
+    latLng2 = [placeCopy latLng];
+    [latLng2 lng];
     v5->_coordinate = CLLocationCoordinate2DMake(v10, v12);
 
-    v13 = [v4 styleAttributes];
+    styleAttributes = [placeCopy styleAttributes];
     styleAttributes = v5->_styleAttributes;
-    v5->_styleAttributes = v13;
+    v5->_styleAttributes = styleAttributes;
 
-    v15 = [v4 name];
+    name = [placeCopy name];
     name = v5->_name;
-    v5->_name = v15;
+    v5->_name = name;
 
-    v17 = [[GEODotPlaceMapItem alloc] initWithDotPlace:v4];
+    v17 = [[GEODotPlaceMapItem alloc] initWithDotPlace:placeCopy];
     v18 = [[MKMapItem alloc] initWithGeoMapItem:v17 isPlaceHolderPlace:0];
     mapItem = v5->_mapItem;
     v5->_mapItem = v18;

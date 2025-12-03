@@ -1,7 +1,7 @@
 @interface _PXStoryVisualDiagnosticsCropRectsConfiguration
 - ($DE86DB94EF19EE5A2E3DBC1B0E7D1028)kenBurnsAnimationInfo;
 - (CGSize)TVPreviewSize;
-- (void)setKenBurnsAnimationInfo:(id *)a3;
+- (void)setKenBurnsAnimationInfo:(id *)info;
 @end
 
 @implementation _PXStoryVisualDiagnosticsCropRectsConfiguration
@@ -15,19 +15,19 @@
   return result;
 }
 
-- (void)setKenBurnsAnimationInfo:(id *)a3
+- (void)setKenBurnsAnimationInfo:(id *)info
 {
-  v3 = *&a3->var0.var0.a;
-  v4 = *&a3->var0.var0.c;
-  v5 = *&a3->var1.var0.a;
-  *&self->kenBurnsAnimationInfo.sourceContentsRect.t.tx = *&a3->var0.var0.tx;
+  v3 = *&info->var0.var0.a;
+  v4 = *&info->var0.var0.c;
+  v5 = *&info->var1.var0.a;
+  *&self->kenBurnsAnimationInfo.sourceContentsRect.t.tx = *&info->var0.var0.tx;
   *&self->kenBurnsAnimationInfo.targetContentsRect.t.a = v5;
   *&self->kenBurnsAnimationInfo.sourceContentsRect.t.a = v3;
   *&self->kenBurnsAnimationInfo.sourceContentsRect.t.c = v4;
-  v6 = *&a3->var1.var0.c;
-  v7 = *&a3->var1.var0.tx;
-  v8 = *&a3->var2.var0;
-  self->kenBurnsAnimationInfo.duration.epoch = a3->var2.var3;
+  v6 = *&info->var1.var0.c;
+  v7 = *&info->var1.var0.tx;
+  v8 = *&info->var2.var0;
+  self->kenBurnsAnimationInfo.duration.epoch = info->var2.var3;
   *&self->kenBurnsAnimationInfo.targetContentsRect.t.tx = v7;
   *&self->kenBurnsAnimationInfo.duration.value = v8;
   *&self->kenBurnsAnimationInfo.targetContentsRect.t.c = v6;

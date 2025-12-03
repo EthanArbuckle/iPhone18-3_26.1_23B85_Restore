@@ -1,69 +1,69 @@
 @interface SASProximityAnisetteDataProvider
-- (void)eraseAnisetteWithCompletion:(id)a3;
-- (void)legacyAnisetteDataForDSID:(id)a3 withCompletion:(id)a4;
-- (void)provisionAnisetteWithCompletion:(id)a3;
-- (void)syncAnisetteWithSIMData:(id)a3 completion:(id)a4;
+- (void)eraseAnisetteWithCompletion:(id)completion;
+- (void)legacyAnisetteDataForDSID:(id)d withCompletion:(id)completion;
+- (void)provisionAnisetteWithCompletion:(id)completion;
+- (void)syncAnisetteWithSIMData:(id)data completion:(id)completion;
 @end
 
 @implementation SASProximityAnisetteDataProvider
 
-- (void)provisionAnisetteWithCompletion:(id)a3
+- (void)provisionAnisetteWithCompletion:(id)completion
 {
-  v7 = a3;
+  completionCopy = completion;
   v4 = objc_alloc_init(SASProximityAnisetteRequestAction);
   [(SASProximityAnisetteRequestAction *)v4 setRequest:0];
-  v5 = [(SASProximityAnisetteDataProvider *)self session];
-  v6 = [v5 sendAction:v4];
+  session = [(SASProximityAnisetteDataProvider *)self session];
+  v6 = [session sendAction:v4];
 
-  if (v7)
+  if (completionCopy)
   {
-    v7[2](v7, [(SASProximityAnisetteRequestAction *)v4 success], 0);
+    completionCopy[2](completionCopy, [(SASProximityAnisetteRequestAction *)v4 success], 0);
   }
 }
 
-- (void)syncAnisetteWithSIMData:(id)a3 completion:(id)a4
+- (void)syncAnisetteWithSIMData:(id)data completion:(id)completion
 {
-  v10 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  dataCopy = data;
   v7 = objc_alloc_init(SASProximityAnisetteRequestAction);
   [(SASProximityAnisetteRequestAction *)v7 setRequest:1];
-  [(SASProximityAnisetteRequestAction *)v7 setSim:v6];
+  [(SASProximityAnisetteRequestAction *)v7 setSim:dataCopy];
 
-  v8 = [(SASProximityAnisetteDataProvider *)self session];
-  v9 = [v8 sendAction:v7];
+  session = [(SASProximityAnisetteDataProvider *)self session];
+  v9 = [session sendAction:v7];
 
-  if (v10)
+  if (completionCopy)
   {
-    v10[2](v10, [(SASProximityAnisetteRequestAction *)v7 success], 0);
+    completionCopy[2](completionCopy, [(SASProximityAnisetteRequestAction *)v7 success], 0);
   }
 }
 
-- (void)eraseAnisetteWithCompletion:(id)a3
+- (void)eraseAnisetteWithCompletion:(id)completion
 {
-  v7 = a3;
+  completionCopy = completion;
   v4 = objc_alloc_init(SASProximityAnisetteRequestAction);
   [(SASProximityAnisetteRequestAction *)v4 setRequest:2];
-  v5 = [(SASProximityAnisetteDataProvider *)self session];
-  v6 = [v5 sendAction:v4];
+  session = [(SASProximityAnisetteDataProvider *)self session];
+  v6 = [session sendAction:v4];
 
-  if (v7)
+  if (completionCopy)
   {
-    v7[2](v7, [(SASProximityAnisetteRequestAction *)v4 success], 0);
+    completionCopy[2](completionCopy, [(SASProximityAnisetteRequestAction *)v4 success], 0);
   }
 }
 
-- (void)legacyAnisetteDataForDSID:(id)a3 withCompletion:(id)a4
+- (void)legacyAnisetteDataForDSID:(id)d withCompletion:(id)completion
 {
-  v9 = a4;
+  completionCopy = completion;
   v5 = objc_alloc_init(SASProximityAnisetteRequestAction);
   [(SASProximityAnisetteRequestAction *)v5 setRequest:4];
-  v6 = [(SASProximityAnisetteDataProvider *)self session];
-  v7 = [v6 sendAction:v5];
+  session = [(SASProximityAnisetteDataProvider *)self session];
+  v7 = [session sendAction:v5];
 
-  if (v9)
+  if (completionCopy)
   {
-    v8 = [(SASProximityAnisetteRequestAction *)v5 anisetteData];
-    v9[2](v9, v8, 0);
+    anisetteData = [(SASProximityAnisetteRequestAction *)v5 anisetteData];
+    completionCopy[2](completionCopy, anisetteData, 0);
   }
 }
 

@@ -1,7 +1,7 @@
 @interface CRLColorAccessibility
-+ (id)crlaxCastFrom:(id)a3;
-+ (id)crlaxHueNameForValue:(double)a3;
-+ (id)crlaxOpacityDescriptionStringForAlphaComponent:(double)a3;
++ (id)crlaxCastFrom:(id)from;
++ (id)crlaxHueNameForValue:(double)value;
++ (id)crlaxOpacityDescriptionStringForAlphaComponent:(double)component;
 - (NSString)crlaxApproximateColorDescription;
 - (NSString)crlaxApproximateColorDescriptionWithOpacity;
 - (NSString)crlaxHueName;
@@ -12,32 +12,32 @@
 - (double)crlaxHue;
 - (double)crlaxLuminance;
 - (double)crlaxSaturation;
-- (id)_crlaxColorDescriptionForAttributes:(id)a3;
+- (id)_crlaxColorDescriptionForAttributes:(id)attributes;
 @end
 
 @implementation CRLColorAccessibility
 
 - (UIColor)crlaxUIColor
 {
-  v2 = [(CRLColorAccessibility *)self crlaxTarget];
-  v3 = [v2 UIColor];
+  crlaxTarget = [(CRLColorAccessibility *)self crlaxTarget];
+  uIColor = [crlaxTarget UIColor];
 
-  return v3;
+  return uIColor;
 }
 
-+ (id)crlaxCastFrom:(id)a3
++ (id)crlaxCastFrom:(id)from
 {
-  v3 = a3;
+  fromCopy = from;
   v4 = objc_opt_class();
-  v5 = __CRLAccessibilityCastAsSafeCategory(v4, v3, 0, 0);
+  v5 = __CRLAccessibilityCastAsSafeCategory(v4, fromCopy, 0, 0);
 
   return v5;
 }
 
 - (double)crlaxHue
 {
-  v2 = [(CRLColorAccessibility *)self crlaxTarget];
-  [v2 hueComponent];
+  crlaxTarget = [(CRLColorAccessibility *)self crlaxTarget];
+  [crlaxTarget hueComponent];
   v4 = v3;
 
   return v4;
@@ -45,8 +45,8 @@
 
 - (double)crlaxSaturation
 {
-  v2 = [(CRLColorAccessibility *)self crlaxTarget];
-  [v2 saturationComponent];
+  crlaxTarget = [(CRLColorAccessibility *)self crlaxTarget];
+  [crlaxTarget saturationComponent];
   v4 = v3;
 
   return v4;
@@ -76,8 +76,8 @@
 
 - (NSString)crlaxApproximateColorDescription
 {
-  v3 = [(CRLColorAccessibility *)self _crlaxCachedApproximateColorDescription];
-  if (!v3)
+  _crlaxCachedApproximateColorDescription = [(CRLColorAccessibility *)self _crlaxCachedApproximateColorDescription];
+  if (!_crlaxCachedApproximateColorDescription)
   {
     [(CRLColorAccessibility *)self crlaxHue];
     v5 = v4;
@@ -88,105 +88,105 @@
     if (v8 > 0.99000001)
     {
       v10 = +[NSBundle mainBundle];
-      v11 = v10;
+      crlaxLightnessModifier2 = v10;
       v12 = @"White";
 LABEL_6:
-      v3 = [v10 localizedStringForKey:v12 value:0 table:0];
+      _crlaxCachedApproximateColorDescription = [v10 localizedStringForKey:v12 value:0 table:0];
 LABEL_16:
 
-      [(CRLColorAccessibility *)self _crlaxSetCachedApproximateColorDescription:v3];
+      [(CRLColorAccessibility *)self _crlaxSetCachedApproximateColorDescription:_crlaxCachedApproximateColorDescription];
       goto LABEL_17;
     }
 
     if (v8 < 0.00999999978)
     {
       v10 = +[NSBundle mainBundle];
-      v11 = v10;
+      crlaxLightnessModifier2 = v10;
       v12 = @"Black";
       goto LABEL_6;
     }
 
     if (v7 >= 0.0500000007)
     {
-      v17 = [(CRLColorAccessibility *)self crlaxLightnessModifier];
-      v11 = v17;
+      crlaxLightnessModifier = [(CRLColorAccessibility *)self crlaxLightnessModifier];
+      crlaxLightnessModifier2 = crlaxLightnessModifier;
       if (v5 > 0.0560000017 && v5 < 0.111000001 && v9 < 0.430000007)
       {
-        v22[0] = v17;
-        v13 = [(CRLColorAccessibility *)self crlaxSaturationModifier];
-        v22[1] = v13;
-        v14 = +[NSBundle mainBundle];
-        v18 = [v14 localizedStringForKey:@"Brown" value:0 table:0];
+        v22[0] = crlaxLightnessModifier;
+        crlaxSaturationModifier = [(CRLColorAccessibility *)self crlaxSaturationModifier];
+        v22[1] = crlaxSaturationModifier;
+        crlaxHueName = +[NSBundle mainBundle];
+        v18 = [crlaxHueName localizedStringForKey:@"Brown" value:0 table:0];
         v22[2] = v18;
         v19 = [NSArray arrayWithObjects:v22 count:3];
-        v3 = [(CRLColorAccessibility *)self _crlaxColorDescriptionForAttributes:v19];
+        _crlaxCachedApproximateColorDescription = [(CRLColorAccessibility *)self _crlaxColorDescriptionForAttributes:v19];
 
 LABEL_15:
         goto LABEL_16;
       }
 
-      v21[0] = v17;
-      v13 = [(CRLColorAccessibility *)self crlaxSaturationModifier];
-      v21[1] = v13;
-      v14 = [(CRLColorAccessibility *)self crlaxHueName];
-      v21[2] = v14;
+      v21[0] = crlaxLightnessModifier;
+      crlaxSaturationModifier = [(CRLColorAccessibility *)self crlaxSaturationModifier];
+      v21[1] = crlaxSaturationModifier;
+      crlaxHueName = [(CRLColorAccessibility *)self crlaxHueName];
+      v21[2] = crlaxHueName;
       v15 = v21;
       v16 = 3;
     }
 
     else
     {
-      v11 = [(CRLColorAccessibility *)self crlaxLightnessModifier];
-      v23[0] = v11;
-      v13 = +[NSBundle mainBundle];
-      v14 = [v13 localizedStringForKey:@"Gray" value:0 table:0];
-      v23[1] = v14;
+      crlaxLightnessModifier2 = [(CRLColorAccessibility *)self crlaxLightnessModifier];
+      v23[0] = crlaxLightnessModifier2;
+      crlaxSaturationModifier = +[NSBundle mainBundle];
+      crlaxHueName = [crlaxSaturationModifier localizedStringForKey:@"Gray" value:0 table:0];
+      v23[1] = crlaxHueName;
       v15 = v23;
       v16 = 2;
     }
 
     v18 = [NSArray arrayWithObjects:v15 count:v16];
-    v3 = [(CRLColorAccessibility *)self _crlaxColorDescriptionForAttributes:v18];
+    _crlaxCachedApproximateColorDescription = [(CRLColorAccessibility *)self _crlaxColorDescriptionForAttributes:v18];
     goto LABEL_15;
   }
 
 LABEL_17:
 
-  return v3;
+  return _crlaxCachedApproximateColorDescription;
 }
 
 - (NSString)crlaxApproximateColorDescriptionWithOpacity
 {
-  v3 = [(CRLColorAccessibility *)self crlaxTarget];
-  v4 = [v3 isClear];
+  crlaxTarget = [(CRLColorAccessibility *)self crlaxTarget];
+  isClear = [crlaxTarget isClear];
 
-  if (v4)
+  if (isClear)
   {
-    v5 = +[NSBundle mainBundle];
-    v6 = [v5 localizedStringForKey:@"Clear" value:0 table:0];
+    crlaxApproximateColorDescription = +[NSBundle mainBundle];
+    v6 = [crlaxApproximateColorDescription localizedStringForKey:@"Clear" value:0 table:0];
   }
 
   else
   {
-    v7 = [(CRLColorAccessibility *)self crlaxTarget];
-    v8 = [v7 isOpaque];
+    crlaxTarget2 = [(CRLColorAccessibility *)self crlaxTarget];
+    isOpaque = [crlaxTarget2 isOpaque];
 
-    v5 = [(CRLColorAccessibility *)self crlaxApproximateColorDescription];
-    if (v8)
+    crlaxApproximateColorDescription = [(CRLColorAccessibility *)self crlaxApproximateColorDescription];
+    if (isOpaque)
     {
       goto LABEL_6;
     }
 
-    v9 = [(CRLColorAccessibility *)self crlaxTarget];
-    [v9 alphaComponent];
+    crlaxTarget3 = [(CRLColorAccessibility *)self crlaxTarget];
+    [crlaxTarget3 alphaComponent];
     v10 = [CRLColorAccessibility crlaxOpacityDescriptionStringForAlphaComponent:?];
-    v6 = __CRLAccessibilityStringForVariables(1, v5, v11, v12, v13, v14, v15, v16, v10);
+    v6 = __CRLAccessibilityStringForVariables(1, crlaxApproximateColorDescription, v11, v12, v13, v14, v15, v16, v10);
   }
 
-  v5 = v6;
+  crlaxApproximateColorDescription = v6;
 LABEL_6:
 
-  return v5;
+  return crlaxApproximateColorDescription;
 }
 
 - (NSString)crlaxHueName
@@ -251,14 +251,14 @@ LABEL_8:
   return v6;
 }
 
-+ (id)crlaxHueNameForValue:(double)a3
++ (id)crlaxHueNameForValue:(double)value
 {
-  if (a3 < 0.0 || a3 > 1.0)
+  if (value < 0.0 || value > 1.0)
   {
     if (CRLAccessibilityShouldPerformValidationChecks())
     {
       ShouldCrashOnValidationErrorAfterLaunch = CRLAccessibilityShouldCrashOnValidationErrorAfterLaunch();
-      if (__CRLAccessibilityHandleValidationErrorWithDescription(ShouldCrashOnValidationErrorAfterLaunch, 0, @"Hue value should be in range [0..1f], got %f", v6, v7, v8, v9, v10, *&a3))
+      if (__CRLAccessibilityHandleValidationErrorWithDescription(ShouldCrashOnValidationErrorAfterLaunch, 0, @"Hue value should be in range [0..1f], got %f", v6, v7, v8, v9, v10, *&value))
       {
         abort();
       }
@@ -269,39 +269,39 @@ LABEL_8:
 
   else
   {
-    if (a3 >= 0.0280000009)
+    if (value >= 0.0280000009)
     {
-      if (a3 >= 0.0560000017)
+      if (value >= 0.0560000017)
       {
-        if (a3 >= 0.111000001)
+        if (value >= 0.111000001)
         {
-          if (a3 >= 0.128999993)
+          if (value >= 0.128999993)
           {
-            if (a3 >= 0.166999996)
+            if (value >= 0.166999996)
             {
-              if (a3 >= 0.222000003)
+              if (value >= 0.222000003)
               {
-                if (a3 >= 0.388999999)
+                if (value >= 0.388999999)
                 {
-                  if (a3 >= 0.469000012)
+                  if (value >= 0.469000012)
                   {
-                    if (a3 >= 0.540000021)
+                    if (value >= 0.540000021)
                     {
-                      if (a3 >= 0.611000001)
+                      if (value >= 0.611000001)
                       {
-                        if (a3 >= 0.666999996)
+                        if (value >= 0.666999996)
                         {
-                          if (a3 >= 0.800000012)
+                          if (value >= 0.800000012)
                           {
-                            if (a3 >= 0.888999999)
+                            if (value >= 0.888999999)
                             {
-                              if (a3 >= 0.916999996)
+                              if (value >= 0.916999996)
                               {
-                                if (a3 >= 0.958000004)
+                                if (value >= 0.958000004)
                                 {
                                   v12 = +[NSBundle mainBundle];
                                   v13 = v12;
-                                  if (a3 >= 0.986000001)
+                                  if (value >= 0.986000001)
                                   {
                                     v14 = @"red";
                                   }
@@ -437,12 +437,12 @@ LABEL_8:
   return v11;
 }
 
-+ (id)crlaxOpacityDescriptionStringForAlphaComponent:(double)a3
++ (id)crlaxOpacityDescriptionStringForAlphaComponent:(double)component
 {
   v4 = +[NSBundle mainBundle];
   v5 = [v4 localizedStringForKey:@"%d percent opaque" value:0 table:0];
 
-  v6 = [NSString localizedStringWithFormat:v5, sub_1004C31F4(a3 * 100.0)];
+  v6 = [NSString localizedStringWithFormat:v5, sub_1004C31F4(component * 100.0)];
 
   return v6;
 }
@@ -451,22 +451,22 @@ LABEL_8:
 {
   [(CRLColorAccessibility *)self crlaxLuminance];
   v4 = vcvtad_u64_f64(v3 * 100.0);
-  v5 = [(CRLColorAccessibility *)self crlaxApproximateColorDescription];
+  crlaxApproximateColorDescription = [(CRLColorAccessibility *)self crlaxApproximateColorDescription];
   v6 = CRLAccessibilityLocalizedUnsignedInteger(v4);
-  v7 = [NSString stringWithFormat:@"%@ %@", v5, v6];
+  v7 = [NSString stringWithFormat:@"%@ %@", crlaxApproximateColorDescription, v6];
 
   return v7;
 }
 
-- (id)_crlaxColorDescriptionForAttributes:(id)a3
+- (id)_crlaxColorDescriptionForAttributes:(id)attributes
 {
-  v3 = a3;
+  attributesCopy = attributes;
   v4 = +[NSMutableString string];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v3;
+  v5 = attributesCopy;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {

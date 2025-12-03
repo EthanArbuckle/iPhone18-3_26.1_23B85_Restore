@@ -1,21 +1,21 @@
 @interface PKTransactionAuthenticationComplexPasscodeTextField
-- (CGRect)editingRectForBounds:(CGRect)a3;
-- (CGRect)placeholderRectForBounds:(CGRect)a3;
-- (CGRect)textRectForBounds:(CGRect)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGRect)editingRectForBounds:(CGRect)bounds;
+- (CGRect)placeholderRectForBounds:(CGRect)bounds;
+- (CGRect)textRectForBounds:(CGRect)bounds;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (UIEdgeInsets)textInsets;
 @end
 
 @implementation PKTransactionAuthenticationComplexPasscodeTextField
 
-- (CGRect)textRectForBounds:(CGRect)a3
+- (CGRect)textRectForBounds:(CGRect)bounds
 {
   top = self->_textInsets.top;
   left = self->_textInsets.left;
-  v5 = a3.origin.x + left;
-  v6 = a3.origin.y + top;
-  v7 = a3.size.width - (left + self->_textInsets.right);
-  v8 = a3.size.height - (top + self->_textInsets.bottom);
+  v5 = bounds.origin.x + left;
+  v6 = bounds.origin.y + top;
+  v7 = bounds.size.width - (left + self->_textInsets.right);
+  v8 = bounds.size.height - (top + self->_textInsets.bottom);
   result.size.height = v8;
   result.size.width = v7;
   result.origin.y = v6;
@@ -23,14 +23,14 @@
   return result;
 }
 
-- (CGRect)editingRectForBounds:(CGRect)a3
+- (CGRect)editingRectForBounds:(CGRect)bounds
 {
   top = self->_textInsets.top;
   left = self->_textInsets.left;
-  v5 = a3.origin.x + left;
-  v6 = a3.origin.y + top;
-  v7 = a3.size.width - (left + self->_textInsets.right);
-  v8 = a3.size.height - (top + self->_textInsets.bottom);
+  v5 = bounds.origin.x + left;
+  v6 = bounds.origin.y + top;
+  v7 = bounds.size.width - (left + self->_textInsets.right);
+  v8 = bounds.size.height - (top + self->_textInsets.bottom);
   result.size.height = v8;
   result.size.width = v7;
   result.origin.y = v6;
@@ -38,14 +38,14 @@
   return result;
 }
 
-- (CGRect)placeholderRectForBounds:(CGRect)a3
+- (CGRect)placeholderRectForBounds:(CGRect)bounds
 {
   top = self->_textInsets.top;
   left = self->_textInsets.left;
-  v5 = a3.origin.x + left;
-  v6 = a3.origin.y + top;
-  v7 = a3.size.width - (left + self->_textInsets.right);
-  v8 = a3.size.height - (top + self->_textInsets.bottom);
+  v5 = bounds.origin.x + left;
+  v6 = bounds.origin.y + top;
+  v7 = bounds.size.width - (left + self->_textInsets.right);
+  v8 = bounds.size.height - (top + self->_textInsets.bottom);
   result.size.height = v8;
   result.size.width = v7;
   result.origin.y = v6;
@@ -53,12 +53,12 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
+  width = fits.width;
   v7.receiver = self;
   v7.super_class = PKTransactionAuthenticationComplexPasscodeTextField;
-  [(PKTransactionAuthenticationComplexPasscodeTextField *)&v7 sizeThatFits:a3.width, a3.height];
+  [(PKTransactionAuthenticationComplexPasscodeTextField *)&v7 sizeThatFits:fits.width, fits.height];
   v5 = v4 + v4;
   v6 = width;
   result.height = v5;

@@ -23,7 +23,7 @@
   {
     v5 = *(&self->super.isa + OBJC_IVAR___BlastDoorSMSCTPartAttributedChipList_sMSCTPartAttributedChipList);
     v6 = self->sMSCTPartAttributedChipList[OBJC_IVAR___BlastDoorSMSCTPartAttributedChipList_sMSCTPartAttributedChipList] & 1;
-    v2 = self;
+    selfCopy = self;
 
     MBDChipList.dictionaryRepresentation.getter();
     v3 = sub_2146D9468();

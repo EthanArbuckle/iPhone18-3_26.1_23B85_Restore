@@ -1,6 +1,6 @@
 @interface WKCustomProtocol
-+ (BOOL)canInitWithRequest:(id)a3;
-- (WKCustomProtocol)initWithRequest:(id)a3 cachedResponse:(id)a4 client:(id)a5;
++ (BOOL)canInitWithRequest:(id)request;
+- (WKCustomProtocol)initWithRequest:(id)request cachedResponse:(id)response client:(id)client;
 - (id).cxx_construct;
 - (uint64_t)startLoading;
 - (uint64_t)stopLoading;
@@ -10,7 +10,7 @@
 
 @implementation WKCustomProtocol
 
-+ (BOOL)canInitWithRequest:(id)a3
++ (BOOL)canInitWithRequest:(id)request
 {
   if (byte_1EB01CFF1)
   {
@@ -37,7 +37,7 @@
 
   if (v5)
   {
-    MEMORY[0x19EB02040](&v9, [objc_msgSend(objc_msgSend(a3 "URL")]);
+    MEMORY[0x19EB02040](&v9, [objc_msgSend(objc_msgSend(request "URL")]);
     LOBYTE(v4) = WebKit::LegacyCustomProtocolManager::supportsScheme(v5, &v9);
     v7 = v9;
     v9 = 0;
@@ -53,11 +53,11 @@
   return (v5 != 0) & v4;
 }
 
-- (WKCustomProtocol)initWithRequest:(id)a3 cachedResponse:(id)a4 client:(id)a5
+- (WKCustomProtocol)initWithRequest:(id)request cachedResponse:(id)response client:(id)client
 {
   v17.receiver = self;
   v17.super_class = WKCustomProtocol;
-  v5 = [(NSURLProtocol *)&v17 initWithRequest:a3 cachedResponse:a4 client:a5];
+  v5 = [(NSURLProtocol *)&v17 initWithRequest:request cachedResponse:response client:client];
   if (!v5)
   {
     return v5;
@@ -140,14 +140,14 @@ LABEL_11:
 
 - (void)startLoading
 {
-  *a1 = &unk_1F10EC298;
-  v2 = a1[2];
-  a1[2] = 0;
+  *self = &unk_1F10EC298;
+  v2 = self[2];
+  self[2] = 0;
   if (v2)
   {
   }
 
-  return a1;
+  return self;
 }
 
 - (void)stopLoading
@@ -228,8 +228,8 @@ LABEL_11:
   if (v4)
   {
 LABEL_10:
-    v6 = *(a1 + 8);
-    MEMORY[0x19EB06210](v7, *(a1 + 16));
+    v6 = *(self + 8);
+    MEMORY[0x19EB06210](v7, *(self + 16));
     WebKit::LegacyCustomProtocolManager::startLoading(v4, v6, v7);
     WebCore::ResourceRequest::~ResourceRequest(v7);
     return WebKit::LegacyCustomProtocolManager::deref(v4);
@@ -286,8 +286,8 @@ LABEL_10:
     return result;
   }
 
-  WebKit::LegacyCustomProtocolManager::stopLoading(v4, *(a1 + 8));
-  WebKit::LegacyCustomProtocolManager::removeCustomProtocol(v4, *(a1 + 8));
+  WebKit::LegacyCustomProtocolManager::stopLoading(v4, *(self + 8));
+  WebKit::LegacyCustomProtocolManager::removeCustomProtocol(v4, *(self + 8));
 
   return WebKit::LegacyCustomProtocolManager::deref(v4);
 }

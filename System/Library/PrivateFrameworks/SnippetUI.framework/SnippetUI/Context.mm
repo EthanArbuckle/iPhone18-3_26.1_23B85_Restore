@@ -2,32 +2,32 @@
 - (VRXInteractionDelegate)interactionDelegate;
 - (double)snippetWidth;
 - (int64_t)backgroundMaterial;
-- (void)setBackgroundMaterial:(int64_t)a3;
-- (void)setCurrentIdiom:(int64_t)a3;
-- (void)setInteractionDelegate:(id)a3;
-- (void)setSnippetWidth:(double)a3;
+- (void)setBackgroundMaterial:(int64_t)material;
+- (void)setCurrentIdiom:(int64_t)idiom;
+- (void)setInteractionDelegate:(id)delegate;
+- (void)setSnippetWidth:(double)width;
 @end
 
 @implementation Context
 
-- (void)setCurrentIdiom:(int64_t)a3
+- (void)setCurrentIdiom:(int64_t)idiom
 {
-  v4 = self;
-  sub_26A61D238(a3);
+  selfCopy = self;
+  sub_26A61D238(idiom);
 }
 
 - (double)snippetWidth
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_26A61D870();
 
   return v3;
 }
 
-- (void)setSnippetWidth:(double)a3
+- (void)setSnippetWidth:(double)width
 {
-  v5 = self;
-  v4.n128_f64[0] = a3;
+  selfCopy = self;
+  v4.n128_f64[0] = width;
   sub_26A61D934(v4);
 }
 
@@ -38,26 +38,26 @@
   return v2;
 }
 
-- (void)setInteractionDelegate:(id)a3
+- (void)setInteractionDelegate:(id)delegate
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_26A61DD38();
 }
 
 - (int64_t)backgroundMaterial
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_26A61E03C();
 
   return v3;
 }
 
-- (void)setBackgroundMaterial:(int64_t)a3
+- (void)setBackgroundMaterial:(int64_t)material
 {
-  v3 = a3;
-  v4 = self;
-  sub_26A61E0FC(v3);
+  materialCopy = material;
+  selfCopy = self;
+  sub_26A61E0FC(materialCopy);
 }
 
 @end

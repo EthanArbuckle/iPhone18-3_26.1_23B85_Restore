@@ -1,25 +1,25 @@
 @interface TUIWidgetBuilder
 - (id)finalizeAnimationGroups;
-- (id)finalizeWidgetWithParent:(id)a3;
-- (void)addAnimationGroup:(id)a3 withName:(id)a4;
-- (void)addModel:(id)a3;
-- (void)addWidgetData:(id)a3 withKey:(id)a4;
-- (void)configureWithChildNode:(id)a3 attributes:(id)a4;
+- (id)finalizeWidgetWithParent:(id)parent;
+- (void)addAnimationGroup:(id)group withName:(id)name;
+- (void)addModel:(id)model;
+- (void)addWidgetData:(id)data withKey:(id)key;
+- (void)configureWithChildNode:(id)node attributes:(id)attributes;
 @end
 
 @implementation TUIWidgetBuilder
 
-- (void)configureWithChildNode:(id)a3 attributes:(id)a4
+- (void)configureWithChildNode:(id)node attributes:(id)attributes
 {
-  v5 = [a4 stringForAttribute:137 node:a3.var0];
+  v5 = [attributes stringForAttribute:137 node:node.var0];
   key = self->_key;
   self->_key = v5;
 }
 
-- (void)addWidgetData:(id)a3 withKey:(id)a4
+- (void)addWidgetData:(id)data withKey:(id)key
 {
-  v10 = a3;
-  v6 = a4;
+  dataCopy = data;
+  keyCopy = key;
   data = self->_data;
   if (!data)
   {
@@ -30,19 +30,19 @@
     data = self->_data;
   }
 
-  [(NSMutableDictionary *)data setObject:v10 forKeyedSubscript:v6];
-  [(NSMutableDictionary *)self->_models setObject:0 forKeyedSubscript:v6];
+  [(NSMutableDictionary *)data setObject:dataCopy forKeyedSubscript:keyCopy];
+  [(NSMutableDictionary *)self->_models setObject:0 forKeyedSubscript:keyCopy];
 }
 
-- (id)finalizeWidgetWithParent:(id)a3
+- (id)finalizeWidgetWithParent:(id)parent
 {
-  v4 = a3;
+  parentCopy = parent;
   models = self->_models;
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_12779C;
   v10[3] = &unk_262158;
-  v6 = v4;
+  v6 = parentCopy;
   v11 = v6;
   [(NSMutableDictionary *)models enumerateKeysAndObjectsUsingBlock:v10];
   data = self->_data;
@@ -59,13 +59,13 @@
   return v8;
 }
 
-- (void)addModel:(id)a3
+- (void)addModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   if (self->_key)
   {
-    v8 = v4;
-    [(TUIWidgetBuilder *)self addWidgetData:v4 withKey:?];
+    v8 = modelCopy;
+    [(TUIWidgetBuilder *)self addWidgetData:modelCopy withKey:?];
     models = self->_models;
     if (!models)
     {
@@ -77,14 +77,14 @@
     }
 
     [(NSMutableDictionary *)models setObject:v8 forKeyedSubscript:self->_key];
-    v4 = v8;
+    modelCopy = v8;
   }
 }
 
-- (void)addAnimationGroup:(id)a3 withName:(id)a4
+- (void)addAnimationGroup:(id)group withName:(id)name
 {
-  v10 = a3;
-  v6 = a4;
+  groupCopy = group;
+  nameCopy = name;
   animations = self->_animations;
   if (!animations)
   {
@@ -95,7 +95,7 @@
     animations = self->_animations;
   }
 
-  [(NSMutableDictionary *)animations setObject:v10 forKeyedSubscript:v6];
+  [(NSMutableDictionary *)animations setObject:groupCopy forKeyedSubscript:nameCopy];
 }
 
 - (id)finalizeAnimationGroups

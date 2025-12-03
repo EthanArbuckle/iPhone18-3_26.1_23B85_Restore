@@ -1,7 +1,7 @@
 @interface VCPVideMetaOrientationAnalyzer
 - (VCPVideMetaOrientationAnalyzer)init;
 - (id)privateResults;
-- (int)processMetadataGroup:(id)a3 flags:(unint64_t *)a4;
+- (int)processMetadataGroup:(id)group flags:(unint64_t *)flags;
 @end
 
 @implementation VCPVideMetaOrientationAnalyzer
@@ -13,9 +13,9 @@
   v2 = [(VCPVideMetaOrientationAnalyzer *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     results = v2->_results;
-    v2->_results = v3;
+    v2->_results = array;
 
     if (v2->_results)
     {
@@ -38,12 +38,12 @@
   return v6;
 }
 
-- (int)processMetadataGroup:(id)a3 flags:(unint64_t *)a4
+- (int)processMetadataGroup:(id)group flags:(unint64_t *)flags
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v19 = v4;
-  if (!v4)
+  groupCopy = group;
+  v19 = groupCopy;
+  if (!groupCopy)
   {
     v17 = -50;
     goto LABEL_22;
@@ -53,7 +53,7 @@
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  obj = [v4 items];
+  obj = [groupCopy items];
   v5 = [obj countByEnumeratingWithState:&v24 objects:v33 count:16];
   if (!v5)
   {
@@ -71,18 +71,18 @@
       }
 
       v7 = *(*(&v24 + 1) + 8 * i);
-      v8 = [v7 numberValue];
-      v9 = [v7 numberValue];
-      if ([v9 integerValue] <= 0)
+      numberValue = [v7 numberValue];
+      numberValue2 = [v7 numberValue];
+      if ([numberValue2 integerValue] <= 0)
       {
 
 LABEL_11:
-        v8 = &unk_1F49BD810;
+        numberValue = &unk_1F49BD810;
         goto LABEL_12;
       }
 
-      v10 = [v7 numberValue];
-      v11 = [v10 integerValue] > 8;
+      numberValue3 = [v7 numberValue];
+      v11 = [numberValue3 integerValue] > 8;
 
       if (v11)
       {
@@ -121,7 +121,7 @@ LABEL_12:
       v32[1] = v14;
       v31[2] = @"attributes";
       v29 = @"orientation";
-      v30 = v8;
+      v30 = numberValue;
       v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v30 forKeys:&v29 count:1];
       v32[2] = v15;
       v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v32 forKeys:v31 count:3];

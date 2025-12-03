@@ -1,9 +1,9 @@
 @interface SearchUIPhotoAssetCache
 + (id)sharedCache;
-- (id)assetForImage:(id)a3;
-- (id)assetsForImages:(id)a3;
-- (id)itemsToBatchPreFetchForRowModel:(id)a3;
-- (void)computeObjectsForKeys:(id)a3 completionHandler:(id)a4;
+- (id)assetForImage:(id)image;
+- (id)assetsForImages:(id)images;
+- (id)itemsToBatchPreFetchForRowModel:(id)model;
+- (void)computeObjectsForKeys:(id)keys completionHandler:(id)handler;
 @end
 
 @implementation SearchUIPhotoAssetCache
@@ -14,7 +14,7 @@
   block[1] = 3221225472;
   block[2] = __38__SearchUIPhotoAssetCache_sharedCache__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedCache_onceToken_1 != -1)
   {
     dispatch_once(&sharedCache_onceToken_1, block);
@@ -33,46 +33,46 @@ uint64_t __38__SearchUIPhotoAssetCache_sharedCache__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)computeObjectsForKeys:(id)a3 completionHandler:(id)a4
+- (void)computeObjectsForKeys:(id)keys completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [SearchUIPhotosUtilities fetchAssetsForImages:a3];
-  (*(a4 + 2))(v6, v7);
+  handlerCopy = handler;
+  v7 = [SearchUIPhotosUtilities fetchAssetsForImages:keys];
+  (*(handler + 2))(handlerCopy, v7);
 }
 
-- (id)assetForImage:(id)a3
+- (id)assetForImage:(id)image
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(TLKAsyncCache *)self getCachedObjectIfAvailableForKey:v4];
-  if (!v5)
+  imageCopy = image;
+  photoIdentifier = [(TLKAsyncCache *)self getCachedObjectIfAvailableForKey:imageCopy];
+  if (!photoIdentifier)
   {
-    v5 = [v4 photoIdentifier];
+    photoIdentifier = [imageCopy photoIdentifier];
 
-    if (v5)
+    if (photoIdentifier)
     {
-      v6 = [v4 photoIdentifier];
-      v10[0] = v6;
+      photoIdentifier2 = [imageCopy photoIdentifier];
+      v10[0] = photoIdentifier2;
       v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
-      v8 = +[SearchUIPhotosUtilities fetchResultForPhotoIdentifiers:isSyndicated:](SearchUIPhotosUtilities, "fetchResultForPhotoIdentifiers:isSyndicated:", v7, [v4 isSyndicated]);
-      v5 = [v8 firstObject];
+      v8 = +[SearchUIPhotosUtilities fetchResultForPhotoIdentifiers:isSyndicated:](SearchUIPhotosUtilities, "fetchResultForPhotoIdentifiers:isSyndicated:", v7, [imageCopy isSyndicated]);
+      photoIdentifier = [v8 firstObject];
     }
   }
 
-  return v5;
+  return photoIdentifier;
 }
 
-- (id)assetsForImages:(id)a3
+- (id)assetsForImages:(id)images
 {
   v38 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  imagesCopy = images;
   v5 = objc_opt_new();
   v6 = objc_opt_new();
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v7 = v4;
+  v7 = imagesCopy;
   v8 = [v7 countByEnumeratingWithState:&v32 objects:v37 count:16];
   if (v8)
   {
@@ -162,25 +162,25 @@ void __43__SearchUIPhotoAssetCache_assetsForImages___block_invoke(uint64_t a1, v
   [*(a1 + 32) setObject:v7 forKeyedSubscript:v6];
 }
 
-- (id)itemsToBatchPreFetchForRowModel:(id)a3
+- (id)itemsToBatchPreFetchForRowModel:(id)model
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 cardSection];
+  modelCopy = model;
+  cardSection = [modelCopy cardSection];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v6 = [v3 cardSection];
-    v7 = [v6 thumbnail];
+    cardSection2 = [modelCopy cardSection];
+    thumbnail = [cardSection2 thumbnail];
     objc_opt_class();
     v8 = objc_opt_isKindOfClass();
 
     if (v8)
     {
-      v9 = [v6 thumbnail];
-      v12[0] = v9;
+      thumbnail2 = [cardSection2 thumbnail];
+      v12[0] = thumbnail2;
       v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1];
 
       goto LABEL_6;

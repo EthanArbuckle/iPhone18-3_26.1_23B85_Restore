@@ -5,11 +5,11 @@
 - (id)compact;
 - (id)duplicate;
 - (id)order;
-- (id)putWithInt:(int)a3 withLong:(int64_t)a4;
-- (id)putWithLong:(int64_t)a3;
+- (id)putWithInt:(int)int withLong:(int64_t)long;
+- (id)putWithLong:(int64_t)long;
 - (id)slice;
 - (int64_t)get;
-- (int64_t)getWithInt:(int)a3;
+- (int64_t)getWithInt:(int)int;
 - (void)dealloc;
 @end
 
@@ -23,9 +23,9 @@
     JreThrowNullPointerException();
   }
 
-  v4 = [(JavaNioByteBuffer *)byteBuffer asReadOnlyBuffer];
+  asReadOnlyBuffer = [(JavaNioByteBuffer *)byteBuffer asReadOnlyBuffer];
   v5 = [JavaNioByteBufferAsLongBuffer alloc];
-  sub_100267C28(v5, v4);
+  sub_100267C28(v5, asReadOnlyBuffer);
   v6 = v5;
   v6->super.super.limit_ = self->super.super.limit_;
   v6->super.super.position_ = self->super.super.position_;
@@ -96,7 +96,7 @@
   return [(JavaNioByteBuffer *)byteBuffer getLongWithInt:(8 * position)];
 }
 
-- (int64_t)getWithInt:(int)a3
+- (int64_t)getWithInt:(int)int
 {
   [(JavaNioBuffer *)self checkIndexWithInt:?];
   byteBuffer = self->byteBuffer_;
@@ -105,7 +105,7 @@
     JreThrowNullPointerException();
   }
 
-  return [(JavaNioByteBuffer *)byteBuffer getLongWithInt:(8 * a3)];
+  return [(JavaNioByteBuffer *)byteBuffer getLongWithInt:(8 * int)];
 }
 
 - (BOOL)isDirect
@@ -141,7 +141,7 @@
   return [(JavaNioByteBuffer *)byteBuffer order];
 }
 
-- (id)putWithLong:(int64_t)a3
+- (id)putWithLong:(int64_t)long
 {
   position = self->super.super.position_;
   if (position == self->super.super.limit_)
@@ -157,11 +157,11 @@
   }
 
   self->super.super.position_ = position + 1;
-  [(JavaNioByteBuffer *)byteBuffer putLongWithInt:(8 * position) withLong:a3];
+  [(JavaNioByteBuffer *)byteBuffer putLongWithInt:(8 * position) withLong:long];
   return self;
 }
 
-- (id)putWithInt:(int)a3 withLong:(int64_t)a4
+- (id)putWithInt:(int)int withLong:(int64_t)long
 {
   [(JavaNioBuffer *)self checkIndexWithInt:?];
   byteBuffer = self->byteBuffer_;
@@ -170,7 +170,7 @@
     JreThrowNullPointerException();
   }
 
-  [(JavaNioByteBuffer *)byteBuffer putLongWithInt:(8 * a3) withLong:a4];
+  [(JavaNioByteBuffer *)byteBuffer putLongWithInt:(8 * int) withLong:long];
   return self;
 }
 

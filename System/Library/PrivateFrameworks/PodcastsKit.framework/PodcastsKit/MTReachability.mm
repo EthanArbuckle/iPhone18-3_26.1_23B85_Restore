@@ -1,19 +1,19 @@
 @interface MTReachability
 + (id)sharedInstance;
 - (BOOL)isPodcastsCellularDownloadsEnabled;
-- (BOOL)showInternetUnreachableDialogWithAcknowledmentBlock:(id)a3;
+- (BOOL)showInternetUnreachableDialogWithAcknowledmentBlock:(id)block;
 - (MTReachability)init;
 - (id)reasonTextForNoInternet;
 - (unint64_t)reasonForNoInternet;
 - (void)_applicationDidBecomeActive;
-- (void)_showAlertForInternetUnavailableReason:(unint64_t)a3 completion:(id)a4;
+- (void)_showAlertForInternetUnavailableReason:(unint64_t)reason completion:(id)completion;
 - (void)_updateAirplaneMode;
-- (void)_updateGlobalCellularWithCompletion:(id)a3;
+- (void)_updateGlobalCellularWithCompletion:(id)completion;
 - (void)_updateReachability;
-- (void)addObserver:(id)a3;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
-- (void)removeObserver:(id)a3;
-- (void)setHasDeterminedActualGlobalCellularState:(BOOL)a3;
+- (void)removeObserver:(id)observer;
+- (void)setHasDeterminedActualGlobalCellularState:(BOOL)state;
 @end
 
 @implementation MTReachability
@@ -24,7 +24,7 @@
   block[1] = 3221225472;
   block[2] = __32__MTReachability_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken != -1)
   {
     dispatch_once(&sharedInstance_onceToken, block);
@@ -58,24 +58,24 @@ void __32__MTReachability_sharedInstance__block_invoke(uint64_t a1)
       _os_log_impl(&dword_25E9F0000, v3, OS_LOG_TYPE_DEFAULT, "Initializing Reachability", buf, 2u);
     }
 
-    v4 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     callbacks = v2->_callbacks;
-    v2->_callbacks = v4;
+    v2->_callbacks = weakObjectsHashTable;
 
     v6 = dispatch_queue_create("com.apple.MTReachability.cellularQueue", 0);
     cellularQueue = v2->_cellularQueue;
     v2->_cellularQueue = v6;
 
     v2->_hasDeterminedActualGlobalCellularState = 0;
-    v8 = [MEMORY[0x277CBEBD0] _applePodcastsFoundationSharedUserDefaults];
-    v2->_globalCellularEnabled = [v8 BOOLForKey:*MEMORY[0x277D3DD08]];
+    _applePodcastsFoundationSharedUserDefaults = [MEMORY[0x277CBEBD0] _applePodcastsFoundationSharedUserDefaults];
+    v2->_globalCellularEnabled = [_applePodcastsFoundationSharedUserDefaults BOOLForKey:*MEMORY[0x277D3DD08]];
 
-    v9 = [MEMORY[0x277D3DAD0] reachabilityForInternetConnection];
+    reachabilityForInternetConnection = [MEMORY[0x277D3DAD0] reachabilityForInternetConnection];
     reachability = v2->_reachability;
-    v2->_reachability = v9;
+    v2->_reachability = reachabilityForInternetConnection;
 
-    v11 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v11 addObserver:v2 selector:sel__updateReachability name:*MEMORY[0x277D3DF20] object:v2->_reachability];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__updateReachability name:*MEMORY[0x277D3DF20] object:v2->_reachability];
 
     [(ITMReachability *)v2->_reachability startNotifier];
     [(MTReachability *)v2 _updateReachability];
@@ -84,8 +84,8 @@ void __32__MTReachability_sharedInstance__block_invoke(uint64_t a1)
     v2->_radiosPreferences = v12;
 
     [(RadiosPreferences *)v2->_radiosPreferences setDelegate:v2];
-    v14 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v14 addObserver:v2 selector:sel__applicationDidBecomeActive name:*MEMORY[0x277D3DA50] object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v2 selector:sel__applicationDidBecomeActive name:*MEMORY[0x277D3DA50] object:0];
 
     [(MTReachability *)v2 _updateAirplaneMode];
     v16[0] = MEMORY[0x277D85DD0];
@@ -101,13 +101,13 @@ void __32__MTReachability_sharedInstance__block_invoke(uint64_t a1)
 
 - (void)dealloc
 {
-  v3 = [(MTReachability *)self reachability];
-  [v3 stopNotifier];
+  reachability = [(MTReachability *)self reachability];
+  [reachability stopNotifier];
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v5 = *MEMORY[0x277D3DF20];
-  v6 = [(MTReachability *)self reachability];
-  [v4 removeObserver:self name:v5 object:v6];
+  reachability2 = [(MTReachability *)self reachability];
+  [defaultCenter removeObserver:self name:v5 object:reachability2];
 
   v7.receiver = self;
   v7.super_class = MTReachability;
@@ -135,82 +135,82 @@ void __32__MTReachability_sharedInstance__block_invoke(uint64_t a1)
     _os_log_impl(&dword_25E9F0000, v3, OS_LOG_TYPE_DEFAULT, "Updating reachability", buf, 2u);
   }
 
-  v4 = [(MTReachability *)self isReachable];
-  v5 = [(MTReachability *)self reachability];
-  -[MTReachability setNetworkStatus:](self, "setNetworkStatus:", [v5 currentReachabilityStatus]);
+  isReachable = [(MTReachability *)self isReachable];
+  reachability = [(MTReachability *)self reachability];
+  -[MTReachability setNetworkStatus:](self, "setNetworkStatus:", [reachability currentReachabilityStatus]);
 
   [(MTReachability *)self setReachable:1];
-  v6 = [(MTReachability *)self networkStatus];
-  if (v6)
+  networkStatus = [(MTReachability *)self networkStatus];
+  if (networkStatus)
   {
-    if (v6 == 1)
+    if (networkStatus == 1)
     {
-      v7 = 1;
+      isGlobalCellularEnabled = 1;
     }
 
     else
     {
-      if (v6 != 2)
+      if (networkStatus != 2)
       {
         goto LABEL_10;
       }
 
-      v7 = [(MTReachability *)self isGlobalCellularEnabled];
+      isGlobalCellularEnabled = [(MTReachability *)self isGlobalCellularEnabled];
     }
   }
 
   else
   {
-    v7 = 0;
+    isGlobalCellularEnabled = 0;
   }
 
-  [(MTReachability *)self setReachable:v7];
+  [(MTReachability *)self setReachable:isGlobalCellularEnabled];
 LABEL_10:
   v8 = _MTLogCategoryNetwork();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(MTReachability *)self reachability];
-    v10 = [v9 currentReachabilityStatus];
+    reachability2 = [(MTReachability *)self reachability];
+    currentReachabilityStatus = [reachability2 currentReachabilityStatus];
     *buf = 134217984;
-    *v31 = v10;
+    *v31 = currentReachabilityStatus;
     _os_log_impl(&dword_25E9F0000, v8, OS_LOG_TYPE_DEFAULT, "\treachability status <%ld>", buf, 0xCu);
   }
 
   v11 = _MTLogCategoryNetwork();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [(MTReachability *)self isGlobalCellularEnabled];
+    isGlobalCellularEnabled2 = [(MTReachability *)self isGlobalCellularEnabled];
     *buf = 67109120;
-    *v31 = v12;
+    *v31 = isGlobalCellularEnabled2;
     _os_log_impl(&dword_25E9F0000, v11, OS_LOG_TYPE_DEFAULT, "\tcellular enabled <%x>", buf, 8u);
   }
 
   v13 = _MTLogCategoryNetwork();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [(MTReachability *)self hasDeterminedActualGlobalCellularState];
+    hasDeterminedActualGlobalCellularState = [(MTReachability *)self hasDeterminedActualGlobalCellularState];
     *buf = 67109120;
-    *v31 = !v14;
+    *v31 = !hasDeterminedActualGlobalCellularState;
     _os_log_impl(&dword_25E9F0000, v13, OS_LOG_TYPE_DEFAULT, "\tis using cached global cellular setting <%x>", buf, 8u);
   }
 
   v15 = _MTLogCategoryNetwork();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
-    v16 = [(MTReachability *)self isReachable];
+    isReachable2 = [(MTReachability *)self isReachable];
     *buf = 67109376;
-    *v31 = v4;
+    *v31 = isReachable;
     *&v31[4] = 1024;
-    *&v31[6] = v16;
+    *&v31[6] = isReachable2;
     _os_log_impl(&dword_25E9F0000, v15, OS_LOG_TYPE_DEFAULT, "\treachability changing from %i to %i", buf, 0xEu);
   }
 
-  v17 = [(MTReachability *)self callbacks];
-  objc_sync_enter(v17);
-  v18 = [(MTReachability *)self callbacks];
-  v19 = [v18 copy];
+  callbacks = [(MTReachability *)self callbacks];
+  objc_sync_enter(callbacks);
+  callbacks2 = [(MTReachability *)self callbacks];
+  v19 = [callbacks2 copy];
 
-  objc_sync_exit(v17);
+  objc_sync_exit(callbacks);
   v27 = 0u;
   v28 = 0u;
   v25 = 0u;
@@ -230,7 +230,7 @@ LABEL_10:
           objc_enumerationMutation(v20);
         }
 
-        [*(*(&v25 + 1) + 8 * v23++) reachabilityChangedFrom:v4 to:{-[MTReachability isReachable](self, "isReachable", v25)}];
+        [*(*(&v25 + 1) + 8 * v23++) reachabilityChangedFrom:isReachable to:{-[MTReachability isReachable](self, "isReachable", v25)}];
       }
 
       while (v21 != v23);
@@ -243,47 +243,47 @@ LABEL_10:
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setHasDeterminedActualGlobalCellularState:(BOOL)a3
+- (void)setHasDeterminedActualGlobalCellularState:(BOOL)state
 {
-  self->_hasDeterminedActualGlobalCellularState = a3;
-  if (a3)
+  self->_hasDeterminedActualGlobalCellularState = state;
+  if (state)
   {
-    v5 = [MEMORY[0x277CBEBD0] _applePodcastsFoundationSharedUserDefaults];
-    v4 = [(MTReachability *)self isGlobalCellularEnabled];
-    [v5 setBool:v4 forKey:*MEMORY[0x277D3DD08]];
+    _applePodcastsFoundationSharedUserDefaults = [MEMORY[0x277CBEBD0] _applePodcastsFoundationSharedUserDefaults];
+    isGlobalCellularEnabled = [(MTReachability *)self isGlobalCellularEnabled];
+    [_applePodcastsFoundationSharedUserDefaults setBool:isGlobalCellularEnabled forKey:*MEMORY[0x277D3DD08]];
   }
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v6 = a3;
-  v4 = [(MTReachability *)self callbacks];
-  objc_sync_enter(v4);
-  v5 = [(MTReachability *)self callbacks];
-  [v5 addObject:v6];
+  observerCopy = observer;
+  callbacks = [(MTReachability *)self callbacks];
+  objc_sync_enter(callbacks);
+  callbacks2 = [(MTReachability *)self callbacks];
+  [callbacks2 addObject:observerCopy];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(callbacks);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v6 = a3;
-  v4 = [(MTReachability *)self callbacks];
-  objc_sync_enter(v4);
-  v5 = [(MTReachability *)self callbacks];
-  [v5 removeObject:v6];
+  observerCopy = observer;
+  callbacks = [(MTReachability *)self callbacks];
+  objc_sync_enter(callbacks);
+  callbacks2 = [(MTReachability *)self callbacks];
+  [callbacks2 removeObject:observerCopy];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(callbacks);
 }
 
 - (id)reasonTextForNoInternet
 {
-  v2 = [(MTReachability *)self reasonForNoInternet];
-  switch(v2)
+  reasonForNoInternet = [(MTReachability *)self reasonForNoInternet];
+  switch(reasonForNoInternet)
   {
     case 1uLL:
-      v3 = [MEMORY[0x277CCA8D8] mainBundle];
-      v4 = v3;
+      mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+      mainBundle2 = mainBundle;
       v5 = @"Airplane Mode";
       goto LABEL_9;
     case 2uLL:
@@ -296,16 +296,16 @@ LABEL_10:
 
       v8 = MEMORY[0x277CCA8D8];
       v9 = v7;
-      v4 = [v8 mainBundle];
-      v10 = [v4 localizedStringForKey:v9 value:&stru_2870B1390 table:0];
+      mainBundle2 = [v8 mainBundle];
+      v10 = [mainBundle2 localizedStringForKey:v9 value:&stru_2870B1390 table:0];
 
       goto LABEL_10;
     case 3uLL:
-      v3 = [MEMORY[0x277CCA8D8] mainBundle];
-      v4 = v3;
+      mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+      mainBundle2 = mainBundle;
       v5 = @"No Internet";
 LABEL_9:
-      v10 = [v3 localizedStringForKey:v5 value:&stru_2870B1390 table:0];
+      v10 = [mainBundle localizedStringForKey:v5 value:&stru_2870B1390 table:0];
 LABEL_10:
 
       goto LABEL_12;
@@ -317,9 +317,9 @@ LABEL_12:
   return v10;
 }
 
-- (BOOL)showInternetUnreachableDialogWithAcknowledmentBlock:(id)a3
+- (BOOL)showInternetUnreachableDialogWithAcknowledmentBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   if ([(MTReachability *)self isReachable]|| (v5 = [(MTReachability *)self reasonForNoInternet]) == 0)
   {
     v6 = 0;
@@ -327,7 +327,7 @@ LABEL_12:
 
   else
   {
-    [(MTReachability *)self _showAlertForInternetUnavailableReason:v5 completion:v4];
+    [(MTReachability *)self _showAlertForInternetUnavailableReason:v5 completion:blockCopy];
     v6 = 1;
   }
 
@@ -375,23 +375,23 @@ LABEL_12:
 
 - (BOOL)isPodcastsCellularDownloadsEnabled
 {
-  v3 = [MEMORY[0x277CBEBD0] _applePodcastsFoundationSettingsUserDefaults];
-  v4 = ([v3 BOOLForKey:*MEMORY[0x277D3DDB0]] & 1) == 0 && -[MTReachability isGlobalCellularEnabled](self, "isGlobalCellularEnabled");
+  _applePodcastsFoundationSettingsUserDefaults = [MEMORY[0x277CBEBD0] _applePodcastsFoundationSettingsUserDefaults];
+  v4 = ([_applePodcastsFoundationSettingsUserDefaults BOOLForKey:*MEMORY[0x277D3DDB0]] & 1) == 0 && -[MTReachability isGlobalCellularEnabled](self, "isGlobalCellularEnabled");
 
   return v4;
 }
 
-- (void)_showAlertForInternetUnavailableReason:(unint64_t)a3 completion:(id)a4
+- (void)_showAlertForInternetUnavailableReason:(unint64_t)reason completion:(id)completion
 {
   v27 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = 0;
-  if (a3 > 1)
+  completionCopy = completion;
+  preferencesURL = 0;
+  if (reason > 1)
   {
-    if (a3 == 2)
+    if (reason == 2)
     {
-      v15 = [MEMORY[0x277CCA8D8] mainBundle];
-      v8 = [v15 localizedStringForKey:@"ALERT_TITLE_GLOBAL_CELLULAR_DISABLED" value:&stru_2870B1390 table:0];
+      mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+      v8 = [mainBundle localizedStringForKey:@"ALERT_TITLE_GLOBAL_CELLULAR_DISABLED" value:&stru_2870B1390 table:0];
 
       v16 = MGGetBoolAnswer();
       v17 = @"ALERT_MESSAGE_GLOBAL_CELLULAR_DISABLED_WIFI";
@@ -402,21 +402,21 @@ LABEL_12:
 
       v18 = MEMORY[0x277CCA8D8];
       v19 = v17;
-      v20 = [v18 mainBundle];
-      v7 = [v20 localizedStringForKey:v19 value:&stru_2870B1390 table:0];
+      mainBundle2 = [v18 mainBundle];
+      v7 = [mainBundle2 localizedStringForKey:v19 value:&stru_2870B1390 table:0];
 
-      v6 = [MEMORY[0x277D3F9B0] preferencesURL];
+      preferencesURL = [MEMORY[0x277D3F9B0] preferencesURL];
       goto LABEL_14;
     }
 
     v7 = 0;
     v8 = 0;
-    if (a3 == 3)
+    if (reason == 3)
     {
-      v14 = [MEMORY[0x277CCA8D8] mainBundle];
-      v8 = [v14 localizedStringForKey:@"ALERT_TITLE_NO_INTERNET" value:&stru_2870B1390 table:0];
+      mainBundle3 = [MEMORY[0x277CCA8D8] mainBundle];
+      v8 = [mainBundle3 localizedStringForKey:@"ALERT_TITLE_NO_INTERNET" value:&stru_2870B1390 table:0];
 
-      v6 = 0;
+      preferencesURL = 0;
 LABEL_10:
       v7 = 0;
     }
@@ -424,14 +424,14 @@ LABEL_10:
 
   else
   {
-    if (!a3)
+    if (!reason)
     {
       goto LABEL_17;
     }
 
     v7 = 0;
     v8 = 0;
-    if (a3 == 1)
+    if (reason == 1)
     {
       v9 = MGGetBoolAnswer();
       v10 = @"ALERT_TITLE_AIRPLANE_MODE_WIFI";
@@ -442,10 +442,10 @@ LABEL_10:
 
       v11 = MEMORY[0x277CCA8D8];
       v12 = v10;
-      v13 = [v11 mainBundle];
-      v8 = [v13 localizedStringForKey:v12 value:&stru_2870B1390 table:0];
+      mainBundle4 = [v11 mainBundle];
+      v8 = [mainBundle4 localizedStringForKey:v12 value:&stru_2870B1390 table:0];
 
-      v6 = [MEMORY[0x277D3F948] preferencesURL];
+      preferencesURL = [MEMORY[0x277D3F948] preferencesURL];
       goto LABEL_10;
     }
   }
@@ -465,9 +465,9 @@ LABEL_17:
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateGlobalCellularWithCompletion:(id)a3
+- (void)_updateGlobalCellularWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = *MEMORY[0x277CBECE8];
   cellularQueue = self->_cellularQueue;
   v7 = _CTServerConnectionCreateOnTargetQueue();
@@ -480,7 +480,7 @@ LABEL_17:
     block[3] = &unk_279A44A20;
     v11 = v7;
     block[4] = self;
-    v10 = v4;
+    v10 = completionCopy;
     dispatch_async(v8, block);
   }
 }
@@ -548,13 +548,13 @@ uint64_t __54__MTReachability__updateGlobalCellularWithCompletion___block_invoke
 - (void)_updateAirplaneMode
 {
   [(RadiosPreferences *)self->_radiosPreferences refresh];
-  v3 = [(RadiosPreferences *)self->_radiosPreferences airplaneMode];
-  if (self->_airplaneModeEnabled != v3)
+  airplaneMode = [(RadiosPreferences *)self->_radiosPreferences airplaneMode];
+  if (self->_airplaneModeEnabled != airplaneMode)
   {
-    self->_airplaneModeEnabled = v3;
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
+    self->_airplaneModeEnabled = airplaneMode;
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v4 = [MEMORY[0x277CCABB0] numberWithBool:self->_airplaneModeEnabled];
-    [v5 postNotificationName:@"MTAirplaneModeChangedNotification" object:v4];
+    [defaultCenter postNotificationName:@"MTAirplaneModeChangedNotification" object:v4];
   }
 }
 

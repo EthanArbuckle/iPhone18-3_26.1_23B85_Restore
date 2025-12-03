@@ -2,43 +2,43 @@
 - (BOOL)_isIcloud;
 - (BOOL)directPushNotificationsSupported;
 - (BOOL)enabled;
-- (NMCUIAccount)initWithACAccount:(id)a3;
-- (NMCUIAccount)initWithNNMKAccount:(id)a3;
+- (NMCUIAccount)initWithACAccount:(id)account;
+- (NMCUIAccount)initWithNNMKAccount:(id)account;
 - (NSString)accountTypeIdentifier;
 - (NSString)displayName;
 - (NSString)emailAddress;
 - (NSString)identifier;
 - (NSString)username;
-- (id)rootAccount:(id)a3;
+- (id)rootAccount:(id)account;
 @end
 
 @implementation NMCUIAccount
 
-- (NMCUIAccount)initWithACAccount:(id)a3
+- (NMCUIAccount)initWithACAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   v8.receiver = self;
   v8.super_class = NMCUIAccount;
   v5 = [(NMCUIAccount *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(NMCUIAccount *)v5 setAcAccount:v4];
+    [(NMCUIAccount *)v5 setAcAccount:accountCopy];
   }
 
   return v6;
 }
 
-- (NMCUIAccount)initWithNNMKAccount:(id)a3
+- (NMCUIAccount)initWithNNMKAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   v8.receiver = self;
   v8.super_class = NMCUIAccount;
   v5 = [(NMCUIAccount *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(NMCUIAccount *)v5 setNnmkAccount:v4];
+    [(NMCUIAccount *)v5 setNnmkAccount:accountCopy];
   }
 
   return v6;
@@ -49,7 +49,7 @@
   if (self->_acAccount)
   {
     v2 = [(NMCUIAccount *)self rootAccount:?];
-    v3 = [v2 accountDescription];
+    accountDescription = [v2 accountDescription];
   }
 
   else
@@ -57,16 +57,16 @@
     nnmkAccount = self->_nnmkAccount;
     if (nnmkAccount)
     {
-      v3 = [(NNMKAccount *)nnmkAccount displayName];
+      accountDescription = [(NNMKAccount *)nnmkAccount displayName];
     }
 
     else
     {
-      v3 = 0;
+      accountDescription = 0;
     }
   }
 
-  return v3;
+  return accountDescription;
 }
 
 - (NSString)identifier
@@ -94,8 +94,8 @@
   acAccount = self->_acAccount;
   if (acAccount)
   {
-    v4 = [(ACAccount *)acAccount accountType];
-    v5 = [v4 identifier];
+    accountType = [(ACAccount *)acAccount accountType];
+    identifier = [accountType identifier];
   }
 
   else
@@ -103,16 +103,16 @@
     nnmkAccount = self->_nnmkAccount;
     if (nnmkAccount)
     {
-      v5 = [(NNMKAccount *)nnmkAccount typeIdentifier];
+      identifier = [(NNMKAccount *)nnmkAccount typeIdentifier];
     }
 
     else
     {
-      v5 = 0;
+      identifier = 0;
     }
   }
 
-  return v5;
+  return identifier;
 }
 
 - (NSString)emailAddress
@@ -120,7 +120,7 @@
   acAccount = self->_acAccount;
   if (acAccount)
   {
-    v4 = [(ACAccount *)acAccount username];
+    username = [(ACAccount *)acAccount username];
   }
 
   else
@@ -128,27 +128,27 @@
     nnmkAccount = self->_nnmkAccount;
     if (nnmkAccount)
     {
-      v6 = [(NNMKAccount *)nnmkAccount defaultEmailAddress];
-      v7 = v6;
-      if (v6)
+      defaultEmailAddress = [(NNMKAccount *)nnmkAccount defaultEmailAddress];
+      v7 = defaultEmailAddress;
+      if (defaultEmailAddress)
       {
-        v4 = v6;
+        username = defaultEmailAddress;
       }
 
       else
       {
-        v8 = [(NNMKAccount *)self->_nnmkAccount emailAddresses];
-        v4 = [v8 firstObject];
+        emailAddresses = [(NNMKAccount *)self->_nnmkAccount emailAddresses];
+        username = [emailAddresses firstObject];
       }
     }
 
     else
     {
-      v4 = 0;
+      username = 0;
     }
   }
 
-  return v4;
+  return username;
 }
 
 - (NSString)username
@@ -211,8 +211,8 @@
 - (BOOL)_isIcloud
 {
   v35 = *MEMORY[0x277D85DE8];
-  v3 = [(NMCUIAccount *)self accountTypeIdentifier];
-  v4 = [v3 isEqualToString:*MEMORY[0x277CB8C68]];
+  accountTypeIdentifier = [(NMCUIAccount *)self accountTypeIdentifier];
+  v4 = [accountTypeIdentifier isEqualToString:*MEMORY[0x277CB8C68]];
 
   if (!v4)
   {
@@ -253,7 +253,7 @@
       v9 = v7;
     }
 
-    v10 = v9;
+    emailAddresses = v9;
 
     goto LABEL_11;
   }
@@ -266,13 +266,13 @@ LABEL_22:
     goto LABEL_25;
   }
 
-  v10 = [(NNMKAccount *)nnmkAccount emailAddresses];
+  emailAddresses = [(NNMKAccount *)nnmkAccount emailAddresses];
 LABEL_11:
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v12 = v10;
+  v12 = emailAddresses;
   v13 = [v12 countByEnumeratingWithState:&v21 objects:v34 count:16];
   if (v13)
   {
@@ -329,18 +329,18 @@ LABEL_25:
   return v13;
 }
 
-- (id)rootAccount:(id)a3
+- (id)rootAccount:(id)account
 {
-  v4 = a3;
-  v5 = [v4 parentAccount];
-  if (v5)
+  accountCopy = account;
+  parentAccount = [accountCopy parentAccount];
+  if (parentAccount)
   {
-    v6 = [(NMCUIAccount *)self rootAccount:v5];
+    v6 = [(NMCUIAccount *)self rootAccount:parentAccount];
   }
 
   else
   {
-    v6 = v4;
+    v6 = accountCopy;
   }
 
   v7 = v6;

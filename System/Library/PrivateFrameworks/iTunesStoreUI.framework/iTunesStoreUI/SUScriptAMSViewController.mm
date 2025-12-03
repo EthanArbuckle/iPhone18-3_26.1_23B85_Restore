@@ -1,28 +1,28 @@
 @interface SUScriptAMSViewController
-+ (id)webScriptNameForKeyName:(id)a3;
-+ (id)webScriptNameForSelector:(SEL)a3;
++ (id)webScriptNameForKeyName:(id)name;
++ (id)webScriptNameForSelector:(SEL)selector;
 + (void)initialize;
 - (NSString)DSID;
 - (NSString)URL;
-- (SUScriptAMSViewController)initWithPrimaryAccount:(id)a3;
+- (SUScriptAMSViewController)initWithPrimaryAccount:(id)account;
 - (id)newNativeViewController;
 - (id)scriptAttributeKeys;
-- (void)setDSID:(id)a3;
-- (void)setURL:(id)a3;
+- (void)setDSID:(id)d;
+- (void)setURL:(id)l;
 @end
 
 @implementation SUScriptAMSViewController
 
-- (SUScriptAMSViewController)initWithPrimaryAccount:(id)a3
+- (SUScriptAMSViewController)initWithPrimaryAccount:(id)account
 {
-  v5 = a3;
+  accountCopy = account;
   v9.receiver = self;
   v9.super_class = SUScriptAMSViewController;
   v6 = [(SUScriptObject *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_primaryAccount, a3);
+    objc_storeStrong(&v6->_primaryAccount, account);
   }
 
   return v7;
@@ -32,41 +32,41 @@
 {
   v40 = *MEMORY[0x1E69E9840];
   [(SUScriptObject *)self lock];
-  v3 = [(objc_class *)getAMSUIWebViewControllerClass() bagSubProfile];
-  v4 = [(objc_class *)getAMSUIWebViewControllerClass() bagSubProfileVersion];
+  bagSubProfile = [(objc_class *)getAMSUIWebViewControllerClass() bagSubProfile];
+  bagSubProfileVersion = [(objc_class *)getAMSUIWebViewControllerClass() bagSubProfileVersion];
   v5 = MEMORY[0x1E698C7E0];
-  v6 = [(objc_class *)getAMSUIWebViewControllerClass() bagKeySet];
-  [v5 registerBagKeySet:v6 forProfile:v3 profileVersion:v4];
+  bagKeySet = [(objc_class *)getAMSUIWebViewControllerClass() bagKeySet];
+  [v5 registerBagKeySet:bagKeySet forProfile:bagSubProfile profileVersion:bagSubProfileVersion];
 
-  v7 = [MEMORY[0x1E698C7D8] bagForProfile:v3 profileVersion:v4];
+  v7 = [MEMORY[0x1E698C7D8] bagForProfile:bagSubProfile profileVersion:bagSubProfileVersion];
   DSID = self->_DSID;
   if (!DSID || ([MEMORY[0x1E696AD98] numberWithInteger:{-[NSString integerValue](DSID, "integerValue")}], v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(MEMORY[0x1E6959A48], "ams_sharedAccountStore"), v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "ams_iTunesAccountWithDSID:", v9), v11 = objc_claimAutoreleasedReturnValue(), v10, v9, !v11))
   {
-    v12 = [(SUScriptAMSViewController *)self primaryAccount];
-    v13 = [v12 account];
-    v14 = [v13 uniqueIdentifier];
+    primaryAccount = [(SUScriptAMSViewController *)self primaryAccount];
+    account = [primaryAccount account];
+    uniqueIdentifier = [account uniqueIdentifier];
 
-    if (!v14 || ([MEMORY[0x1E6959A48] ams_sharedAccountStore], v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v15, "ams_iTunesAccountWithDSID:", v14), v11 = objc_claimAutoreleasedReturnValue(), v15, v14, !v11))
+    if (!uniqueIdentifier || ([MEMORY[0x1E6959A48] ams_sharedAccountStore], v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v15, "ams_iTunesAccountWithDSID:", uniqueIdentifier), v11 = objc_claimAutoreleasedReturnValue(), v15, uniqueIdentifier, !v11))
     {
-      v16 = [MEMORY[0x1E69D4938] sharedConfig];
-      if (!v16)
+      mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+      if (!mEMORY[0x1E69D4938])
       {
-        v16 = [MEMORY[0x1E69D4938] sharedConfig];
+        mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
       }
 
-      v17 = [v16 shouldLog];
-      if ([v16 shouldLogToDisk])
+      shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+      if ([mEMORY[0x1E69D4938] shouldLogToDisk])
       {
-        v18 = v17 | 2;
+        v18 = shouldLog | 2;
       }
 
       else
       {
-        v18 = v17;
+        v18 = shouldLog;
       }
 
-      v19 = [v16 OSLogObject];
-      if (!os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
+      oSLogObject = [mEMORY[0x1E69D4938] OSLogObject];
+      if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
       {
         v18 &= 2u;
       }
@@ -92,9 +92,9 @@ LABEL_16:
           goto LABEL_17;
         }
 
-        v19 = [MEMORY[0x1E696AEC0] stringWithCString:v23 encoding:{4, v38, v37, *v38, *&v38[16]}];
+        oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v23 encoding:{4, v38, v37, *v38, *&v38[16]}];
         free(v23);
-        v36 = v19;
+        v36 = oSLogObject;
         SSFileLog();
       }
 
@@ -103,25 +103,25 @@ LABEL_16:
   }
 
 LABEL_17:
-  v24 = [MEMORY[0x1E69D4938] sharedConfig];
-  if (!v24)
+  mEMORY[0x1E69D4938]2 = [MEMORY[0x1E69D4938] sharedConfig];
+  if (!mEMORY[0x1E69D4938]2)
   {
-    v24 = [MEMORY[0x1E69D4938] sharedConfig];
+    mEMORY[0x1E69D4938]2 = [MEMORY[0x1E69D4938] sharedConfig];
   }
 
-  v25 = [v24 shouldLog];
-  if ([v24 shouldLogToDisk])
+  shouldLog2 = [mEMORY[0x1E69D4938]2 shouldLog];
+  if ([mEMORY[0x1E69D4938]2 shouldLogToDisk])
   {
-    v26 = v25 | 2;
+    v26 = shouldLog2 | 2;
   }
 
   else
   {
-    v26 = v25;
+    v26 = shouldLog2;
   }
 
-  v27 = [v24 OSLogObject];
-  if (!os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
+  oSLogObject2 = [mEMORY[0x1E69D4938]2 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
   {
     v26 &= 2u;
   }
@@ -145,7 +145,7 @@ LABEL_17:
 
   if (v31)
   {
-    v27 = [MEMORY[0x1E696AEC0] stringWithCString:v31 encoding:{4, v38, v37}];
+    oSLogObject2 = [MEMORY[0x1E696AEC0] stringWithCString:v31 encoding:{4, v38, v37}];
     free(v31);
     SSFileLog();
 LABEL_27:
@@ -168,21 +168,21 @@ LABEL_27:
   return v3;
 }
 
-- (void)setDSID:(id)a3
+- (void)setDSID:(id)d
 {
-  v6 = a3;
+  dCopy = d;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
 
-    v6 = 0;
+    dCopy = 0;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     [(SUScriptObject *)self lock];
-    v4 = [v6 copy];
+    v4 = [dCopy copy];
     DSID = self->_DSID;
     self->_DSID = v4;
 
@@ -195,21 +195,21 @@ LABEL_27:
   }
 }
 
-- (void)setURL:(id)a3
+- (void)setURL:(id)l
 {
-  v6 = a3;
+  lCopy = l;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
 
-    v6 = 0;
+    lCopy = 0;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     [(SUScriptObject *)self lock];
-    v4 = [v6 copy];
+    v4 = [lCopy copy];
     URL = self->_URL;
     self->_URL = v4;
 
@@ -231,28 +231,28 @@ LABEL_27:
   return v3;
 }
 
-+ (id)webScriptNameForKeyName:(id)a3
++ (id)webScriptNameForKeyName:(id)name
 {
-  v4 = a3;
-  v5 = [__KeyMapping_81 objectForKey:v4];
+  nameCopy = name;
+  v5 = [__KeyMapping_81 objectForKey:nameCopy];
   if (!v5)
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___SUScriptAMSViewController;
-    v5 = objc_msgSendSuper2(&v7, sel_webScriptNameForKeyName_, v4);
+    v5 = objc_msgSendSuper2(&v7, sel_webScriptNameForKeyName_, nameCopy);
   }
 
   return v5;
 }
 
-+ (id)webScriptNameForSelector:(SEL)a3
++ (id)webScriptNameForSelector:(SEL)selector
 {
-  v5 = SUWebScriptNameForSelector2(a3, &__SelectorMapping_61, 0);
+  v5 = SUWebScriptNameForSelector2(selector, &__SelectorMapping_61, 0);
   if (!v5)
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___SUScriptAMSViewController;
-    v5 = objc_msgSendSuper2(&v7, sel_webScriptNameForSelector_, a3);
+    v5 = objc_msgSendSuper2(&v7, sel_webScriptNameForSelector_, selector);
   }
 
   return v5;
@@ -262,16 +262,16 @@ LABEL_27:
 {
   v5.receiver = self;
   v5.super_class = SUScriptAMSViewController;
-  v2 = [(SUScriptViewController *)&v5 scriptAttributeKeys];
-  v3 = [__KeyMapping_81 allKeys];
-  [v2 addObjectsFromArray:v3];
+  scriptAttributeKeys = [(SUScriptViewController *)&v5 scriptAttributeKeys];
+  allKeys = [__KeyMapping_81 allKeys];
+  [scriptAttributeKeys addObjectsFromArray:allKeys];
 
-  return v2;
+  return scriptAttributeKeys;
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     __KeyMapping_81 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{@"DSID", @"URL", @"URL", 0}];
 

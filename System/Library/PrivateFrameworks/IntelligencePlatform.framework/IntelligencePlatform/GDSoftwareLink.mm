@@ -1,13 +1,13 @@
 @interface GDSoftwareLink
-- (GDSoftwareLink)initWithRelationshipIdTriplesIterator:(id)a3;
+- (GDSoftwareLink)initWithRelationshipIdTriplesIterator:(id)iterator;
 @end
 
 @implementation GDSoftwareLink
 
-- (GDSoftwareLink)initWithRelationshipIdTriplesIterator:(id)a3
+- (GDSoftwareLink)initWithRelationshipIdTriplesIterator:(id)iterator
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  iteratorCopy = iterator;
   v31.receiver = self;
   v31.super_class = GDSoftwareLink;
   v5 = [(GDSoftwareLink *)&v31 init];
@@ -22,8 +22,8 @@ LABEL_20:
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v26 = v4;
-  v6 = v4;
+  v26 = iteratorCopy;
+  v6 = iteratorCopy;
   v7 = [v6 countByEnumeratingWithState:&v27 objects:v32 count:16];
   if (!v7)
   {
@@ -46,14 +46,14 @@ LABEL_20:
       if (!v5->_relationshipIdentifier)
       {
         v12 = [GDRelationshipIdentifier alloc];
-        v13 = [v11 relationshipId];
-        v14 = [(GDRelationshipIdentifier *)v12 initWithString:v13];
+        relationshipId = [v11 relationshipId];
+        v14 = [(GDRelationshipIdentifier *)v12 initWithString:relationshipId];
         relationshipIdentifier = v5->_relationshipIdentifier;
         v5->_relationshipIdentifier = v14;
       }
 
-      v16 = [v11 relationshipPredicate];
-      if ([v16 isEqual:@"nm_softwareIdentifier"])
+      relationshipPredicate = [v11 relationshipPredicate];
+      if ([relationshipPredicate isEqual:@"nm_softwareIdentifier"])
       {
         v17 = [GDEntityIdentifier alloc];
         conversationIdentifier = [v11 object];
@@ -62,23 +62,23 @@ LABEL_20:
         v5->_softwareEntityIdentifier = v19;
       }
 
-      else if ([v16 isEqual:@"PS69"])
+      else if ([relationshipPredicate isEqual:@"PS69"])
       {
-        v21 = [v11 object];
+        object = [v11 object];
         conversationIdentifier = v5->_conversationIdentifier;
-        v5->_conversationIdentifier = v21;
+        v5->_conversationIdentifier = object;
       }
 
       else
       {
-        if (![v16 isEqual:@"PS396"])
+        if (![relationshipPredicate isEqual:@"PS396"])
         {
           goto LABEL_16;
         }
 
-        v22 = [v11 object];
+        object2 = [v11 object];
         conversationIdentifier = v5->_identifierType;
-        v5->_identifierType = v22;
+        v5->_identifierType = object2;
       }
 
 LABEL_16:
@@ -94,7 +94,7 @@ LABEL_18:
 
   if (v5->_relationshipIdentifier)
   {
-    v4 = v26;
+    iteratorCopy = v26;
     if (v5->_softwareEntityIdentifier)
     {
       goto LABEL_20;
@@ -106,7 +106,7 @@ LABEL_18:
   else
   {
     v23 = 0;
-    v4 = v26;
+    iteratorCopy = v26;
   }
 
 LABEL_23:

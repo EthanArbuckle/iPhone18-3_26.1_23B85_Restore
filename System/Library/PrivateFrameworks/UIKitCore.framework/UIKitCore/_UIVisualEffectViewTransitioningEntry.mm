@@ -1,63 +1,63 @@
 @interface _UIVisualEffectViewTransitioningEntry
-- (BOOL)shouldAnimateProperty:(id)a3;
-- (_UIVisualEffectViewTransitioningEntry)initWithSourceEntry:(id)a3 destinationEntry:(id)a4;
+- (BOOL)shouldAnimateProperty:(id)property;
+- (_UIVisualEffectViewTransitioningEntry)initWithSourceEntry:(id)entry destinationEntry:(id)destinationEntry;
 - (id)copyForTransitionOut;
-- (id)copyForTransitionToEffect:(id)a3;
+- (id)copyForTransitionToEffect:(id)effect;
 - (id)description;
 @end
 
 @implementation _UIVisualEffectViewTransitioningEntry
 
-- (_UIVisualEffectViewTransitioningEntry)initWithSourceEntry:(id)a3 destinationEntry:(id)a4
+- (_UIVisualEffectViewTransitioningEntry)initWithSourceEntry:(id)entry destinationEntry:(id)destinationEntry
 {
-  v7 = a3;
-  v8 = a4;
+  entryCopy = entry;
+  destinationEntryCopy = destinationEntry;
   v15.receiver = self;
   v15.super_class = _UIVisualEffectViewTransitioningEntry;
   v9 = [(_UIVisualEffectViewTransitioningEntry *)&v15 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_sourceEntry, a3);
-    objc_storeStrong(&v10->_destinationEntry, a4);
-    v11 = [(_UIVisualEffectViewEntry *)v10->_sourceEntry requirements];
-    v12 = [(_UIVisualEffectViewEntry *)v10->_destinationEntry requirements];
-    if (v11 == v12 || v12 == 0)
+    objc_storeStrong(&v9->_sourceEntry, entry);
+    objc_storeStrong(&v10->_destinationEntry, destinationEntry);
+    requirements = [(_UIVisualEffectViewEntry *)v10->_sourceEntry requirements];
+    requirements2 = [(_UIVisualEffectViewEntry *)v10->_destinationEntry requirements];
+    if (requirements == requirements2 || requirements2 == 0)
     {
       goto LABEL_8;
     }
 
-    if (!v11)
+    if (!requirements)
     {
-      v11 = v12;
+      requirements = requirements2;
 LABEL_8:
-      [(_UIVisualEffectViewEntry *)v10 setRequirements:v11];
+      [(_UIVisualEffectViewEntry *)v10 setRequirements:requirements];
     }
   }
 
   return v10;
 }
 
-- (BOOL)shouldAnimateProperty:(id)a3
+- (BOOL)shouldAnimateProperty:(id)property
 {
-  v4 = a3;
-  v5 = [(_UIVisualEffectViewEntry *)self->_sourceEntry shouldAnimateProperty:v4]|| [(_UIVisualEffectViewEntry *)self->_destinationEntry shouldAnimateProperty:v4];
+  propertyCopy = property;
+  v5 = [(_UIVisualEffectViewEntry *)self->_sourceEntry shouldAnimateProperty:propertyCopy]|| [(_UIVisualEffectViewEntry *)self->_destinationEntry shouldAnimateProperty:propertyCopy];
 
   return v5;
 }
 
-- (id)copyForTransitionToEffect:(id)a3
+- (id)copyForTransitionToEffect:(id)effect
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"_UIVisualEffectModel.m" lineNumber:307 description:@"Logic error: attempt to transition from a transitioning helper effect."];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"_UIVisualEffectModel.m" lineNumber:307 description:@"Logic error: attempt to transition from a transitioning helper effect."];
 
   return 0;
 }
 
 - (id)copyForTransitionOut
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"_UIVisualEffectModel.m" lineNumber:313 description:@"Logic error: attempt to transition from a transitioning helper effect."];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"_UIVisualEffectModel.m" lineNumber:313 description:@"Logic error: attempt to transition from a transitioning helper effect."];
 
   return 0;
 }

@@ -1,8 +1,8 @@
 @interface NTKTritiumComplicationSpecifierProvider
-+ (id)_getIconForBundleID:(id)a3;
++ (id)_getIconForBundleID:(id)d;
 - (NTKTritiumComplicationSpecifierProvider)init;
 - (NTKTritiumComplicationSpecifierProviderDelegate)delegate;
-- (id)_createSpecifierForApp:(id)a3;
+- (id)_createSpecifierForApp:(id)app;
 - (id)appInfosForAppsWithComplications;
 - (id)bundleIDsForLegacyComplications;
 - (void)dealloc;
@@ -56,7 +56,7 @@
   v4 = NTKSharedRemoteComplicationProvider();
   v5 = +[NTKWidgetTritiumComplicationProvider shared];
   v6 = +[NTKBundleComplicationManager sharedManager];
-  v7 = [(NTKTritiumComplicationSpecifierProvider *)self bundleIDsForLegacyComplications];
+  bundleIDsForLegacyComplications = [(NTKTritiumComplicationSpecifierProvider *)self bundleIDsForLegacyComplications];
   v8 = dispatch_group_create();
   dispatch_group_enter(v8);
   v18[0] = _NSConcreteStackBlock;
@@ -66,12 +66,12 @@
   v19 = v4;
   v20 = v5;
   v21 = v6;
-  v22 = v7;
+  v22 = bundleIDsForLegacyComplications;
   v9 = v3;
   v23 = v9;
   v24 = v8;
   v10 = v8;
-  v11 = v7;
+  v11 = bundleIDsForLegacyComplications;
   v12 = v6;
   v13 = v5;
   v14 = v4;
@@ -88,34 +88,34 @@
   v2 = +[CLKDevice currentDevice];
   v3 = NTKComplicationTypesToBundleIDMappingForDevice();
 
-  v4 = [v3 allValues];
-  v5 = [NSSet setWithArray:v4];
+  allValues = [v3 allValues];
+  v5 = [NSSet setWithArray:allValues];
 
   return v5;
 }
 
-- (id)_createSpecifierForApp:(id)a3
+- (id)_createSpecifierForApp:(id)app
 {
-  v4 = a3;
-  v5 = [v4 info];
-  v6 = [v5 localizedName];
-  v7 = [(NTKTritiumComplicationSpecifierProvider *)self delegate];
-  v8 = [(NTKTritiumComplicationSpecifierProvider *)self delegate];
-  v9 = [v8 specifierSetter];
-  v10 = [(NTKTritiumComplicationSpecifierProvider *)self delegate];
-  v11 = +[PSSpecifier preferenceSpecifierNamed:target:set:get:detail:cell:edit:](PSSpecifier, "preferenceSpecifierNamed:target:set:get:detail:cell:edit:", v6, v7, v9, [v10 specifierGetter], 0, 6, 0);
+  appCopy = app;
+  info = [appCopy info];
+  localizedName = [info localizedName];
+  delegate = [(NTKTritiumComplicationSpecifierProvider *)self delegate];
+  delegate2 = [(NTKTritiumComplicationSpecifierProvider *)self delegate];
+  specifierSetter = [delegate2 specifierSetter];
+  delegate3 = [(NTKTritiumComplicationSpecifierProvider *)self delegate];
+  v11 = +[PSSpecifier preferenceSpecifierNamed:target:set:get:detail:cell:edit:](PSSpecifier, "preferenceSpecifierNamed:target:set:get:detail:cell:edit:", localizedName, delegate, specifierSetter, [delegate3 specifierGetter], 0, 6, 0);
 
-  v12 = [v4 info];
-  v13 = [v12 appBundleID];
-  [v11 setUserInfo:v13];
+  info2 = [appCopy info];
+  appBundleID = [info2 appBundleID];
+  [v11 setUserInfo:appBundleID];
 
-  v14 = [v4 info];
-  v15 = [v14 appBundleID];
-  [v11 setIdentifier:v15];
+  info3 = [appCopy info];
+  appBundleID2 = [info3 appBundleID];
+  [v11 setIdentifier:appBundleID2];
 
-  v16 = [v4 info];
-  v17 = [v16 appBundleID];
-  [v11 setProperty:v17 forKey:PSLazyIconAppID];
+  info4 = [appCopy info];
+  appBundleID3 = [info4 appBundleID];
+  [v11 setProperty:appBundleID3 forKey:PSLazyIconAppID];
 
   [v11 setProperty:&__kCFBooleanTrue forKey:PSLazyIconLoading];
   v22 = 0;
@@ -141,10 +141,10 @@
   return v11;
 }
 
-+ (id)_getIconForBundleID:(id)a3
++ (id)_getIconForBundleID:(id)d
 {
-  v3 = a3;
-  v4 = [[ISIcon alloc] initWithBundleIdentifier:v3];
+  dCopy = d;
+  v4 = [[ISIcon alloc] initWithBundleIdentifier:dCopy];
 
   v5 = +[UITraitCollection currentTraitCollection];
   [v5 displayScale];

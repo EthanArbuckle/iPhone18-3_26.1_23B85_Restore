@@ -1,23 +1,23 @@
 @interface MRDNetworkMonitor
 - (MRDNetworkMonitor)init;
 - (void)cancel;
-- (void)startWithQueue:(id)a3;
+- (void)startWithQueue:(id)queue;
 @end
 
 @implementation MRDNetworkMonitor
 
-- (void)startWithQueue:(id)a3
+- (void)startWithQueue:(id)queue
 {
   v4 = *(&self->super.isa + OBJC_IVAR___MRDNetworkMonitor_monitor);
-  v6 = a3;
-  v5 = self;
+  queueCopy = queue;
+  selfCopy = self;
   NWPathMonitor.start(queue:)();
 }
 
 - (void)cancel
 {
   v2 = *(&self->super.isa + OBJC_IVAR___MRDNetworkMonitor_monitor);
-  v3 = self;
+  selfCopy = self;
   NWPathMonitor.cancel()();
 }
 

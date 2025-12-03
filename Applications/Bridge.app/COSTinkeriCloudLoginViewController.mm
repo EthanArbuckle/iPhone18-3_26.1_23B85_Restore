@@ -7,10 +7,10 @@
 - (id)remoteUIStyle;
 - (id)username;
 - (id)viewController;
-- (void)appleIDAuthController:(id)a3 didSignInWithSuccess:(BOOL)a4 error:(id)a5;
-- (void)setDelegate:(id)a3;
+- (void)appleIDAuthController:(id)controller didSignInWithSuccess:(BOOL)success error:(id)error;
+- (void)setDelegate:(id)delegate;
 - (void)setupViewController;
-- (void)willPresentModalNavigationController:(id)a3;
+- (void)willPresentModalNavigationController:(id)controller;
 @end
 
 @implementation COSTinkeriCloudLoginViewController
@@ -45,8 +45,8 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%s", buf, 0xCu);
   }
 
-  v4 = [(COSTinkeriCloudLoginViewController *)self view];
-  [v4 setUserInteractionEnabled:0];
+  view = [(COSTinkeriCloudLoginViewController *)self view];
+  [view setUserInteractionEnabled:0];
 
   v5 = objc_alloc_init(AAUISignInViewController);
   signInController = self->_signInController;
@@ -54,36 +54,36 @@
 
   [(AAUISignInViewController *)self->_signInController setAllowsAccountCreation:0];
   [(AAUISignInViewController *)self->_signInController setShowServiceIcons:0];
-  v7 = [UIApp setupController];
-  v8 = [v7 tinkerFamilyMember];
-  v9 = v8;
-  if (!v8)
+  setupController = [UIApp setupController];
+  tinkerFamilyMember = [setupController tinkerFamilyMember];
+  v9 = tinkerFamilyMember;
+  if (!tinkerFamilyMember)
   {
     goto LABEL_10;
   }
 
-  if ([v8 isChildAccount])
+  if ([tinkerFamilyMember isChildAccount])
   {
-    v10 = [v9 appleID];
+    appleID = [v9 appleID];
 
-    if (v10)
+    if (appleID)
     {
-      v11 = [v9 appleID];
-      [(AAUISignInViewController *)self->_signInController setUsername:v11];
+      appleID2 = [v9 appleID];
+      [(AAUISignInViewController *)self->_signInController setUsername:appleID2];
 
       [(AAUISignInViewController *)self->_signInController setCanEditUsername:0];
       v12 = +[NSBundle mainBundle];
       v13 = [v12 localizedStringForKey:@"TINKER_APPLE_ID_SIGNIN_U13_USERNAME_TITLE_%@" value:&stru_10026E598 table:@"Localizable-tinker"];
-      v14 = [v7 tinkerUserName];
-      v15 = [NSString stringWithFormat:v13, v14];
+      tinkerUserName = [setupController tinkerUserName];
+      v15 = [NSString stringWithFormat:v13, tinkerUserName];
       signInTitle = self->_signInTitle;
       self->_signInTitle = v15;
 
       v17 = +[NSBundle mainBundle];
       v18 = [v17 localizedStringForKey:@"TINKER_APPLE_ID_SIGNIN_U13_USERNAME_MESSAGE_%@_%@" value:&stru_10026E598 table:@"Localizable-tinker"];
-      v19 = [v7 tinkerUserName];
-      v20 = [v9 appleID];
-      v21 = [NSString stringWithFormat:v18, v19, v20];
+      tinkerUserName2 = [setupController tinkerUserName];
+      appleID3 = [v9 appleID];
+      v21 = [NSString stringWithFormat:v18, tinkerUserName2, appleID3];
       signInMessage = self->_signInMessage;
       self->_signInMessage = v21;
 
@@ -93,14 +93,14 @@
 
   if (([v9 isChildAccount] & 1) == 0 && (objc_msgSend(v9, "appleID"), v23 = objc_claimAutoreleasedReturnValue(), v23, v23))
   {
-    v24 = [v9 appleID];
-    [(AAUISignInViewController *)self->_signInController setUsername:v24];
+    appleID4 = [v9 appleID];
+    [(AAUISignInViewController *)self->_signInController setUsername:appleID4];
 
     [(AAUISignInViewController *)self->_signInController setCanEditUsername:0];
     v25 = +[NSBundle mainBundle];
     v26 = [v25 localizedStringForKey:@"TINKER_APPLE_ID_SIGNIN_O13_USERNAME_TITLE_%@" value:&stru_10026E598 table:@"Localizable-tinker"];
-    v27 = [v7 tinkerUserName];
-    v28 = [NSString stringWithFormat:v26, v27];
+    tinkerUserName3 = [setupController tinkerUserName];
+    v28 = [NSString stringWithFormat:v26, tinkerUserName3];
     v29 = self->_signInTitle;
     self->_signInTitle = v28;
 
@@ -127,44 +127,44 @@ LABEL_10:
   self->_signInMessage = v35;
 LABEL_12:
 
-  v36 = [UIApp setupController];
-  v37 = [v36 tinkerAuthenticationController];
+  setupController2 = [UIApp setupController];
+  tinkerAuthenticationController = [setupController2 tinkerAuthenticationController];
   authController = self->_authController;
-  self->_authController = v37;
+  self->_authController = tinkerAuthenticationController;
 
   [(COSAppleIDAuthController *)self->_authController setDelegate:self];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v40 = [WeakRetained navigationController];
-  [(COSAppleIDAuthController *)self->_authController setPresentingController:v40];
+  navigationController = [WeakRetained navigationController];
+  [(COSAppleIDAuthController *)self->_authController setPresentingController:navigationController];
 
   [(AAUISignInViewController *)self->_signInController setDelegate:self->_authController];
-  v41 = [(COSAppleIDAuthController *)self->_authController proxiedDevice];
+  proxiedDevice = [(COSAppleIDAuthController *)self->_authController proxiedDevice];
 
-  if (!v41)
+  if (!proxiedDevice)
   {
     v42 = +[UIApplication sharedApplication];
-    v43 = [v42 bridgeController];
+    bridgeController = [v42 bridgeController];
     v44[0] = _NSConcreteStackBlock;
     v44[1] = 3221225472;
     v44[2] = sub_1000F71DC;
     v44[3] = &unk_100268958;
     v44[4] = self;
-    [v43 requestProxiedDeviceForWatchWithCompletion:v44];
+    [bridgeController requestProxiedDeviceForWatchWithCompletion:v44];
   }
 }
 
 - (id)authenticationContext
 {
-  v3 = [(COSAppleIDAuthController *)self->_authController baseAppContext];
-  [v3 setAuthenticationType:2];
-  v4 = [(COSAppleIDAuthController *)self->_authController proxiedDevice];
-  [v3 setProxiedDevice:v4];
+  baseAppContext = [(COSAppleIDAuthController *)self->_authController baseAppContext];
+  [baseAppContext setAuthenticationType:2];
+  proxiedDevice = [(COSAppleIDAuthController *)self->_authController proxiedDevice];
+  [baseAppContext setProxiedDevice:proxiedDevice];
 
-  v5 = [(COSTinkeriCloudLoginViewController *)self username];
-  [v3 setUsername:v5];
+  username = [(COSTinkeriCloudLoginViewController *)self username];
+  [baseAppContext setUsername:username];
 
-  [v3 setTitle:self->_signInTitle];
-  [v3 setReason:self->_signInMessage];
+  [baseAppContext setTitle:self->_signInTitle];
+  [baseAppContext setReason:self->_signInMessage];
   v6 = pbb_accountsignin_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -172,26 +172,26 @@ LABEL_12:
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Returning custom authentication context", v8, 2u);
   }
 
-  return v3;
+  return baseAppContext;
 }
 
 - (id)username
 {
-  v2 = [UIApp setupController];
-  v3 = [v2 tinkerFamilyMember];
-  v4 = [v3 appleID];
+  setupController = [UIApp setupController];
+  tinkerFamilyMember = [setupController tinkerFamilyMember];
+  appleID = [tinkerFamilyMember appleID];
 
-  return v4;
+  return appleID;
 }
 
-- (void)appleIDAuthController:(id)a3 didSignInWithSuccess:(BOOL)a4 error:(id)a5
+- (void)appleIDAuthController:(id)controller didSignInWithSuccess:(BOOL)success error:(id)error
 {
-  v5 = a4;
-  v7 = a5;
-  v8 = [UIApp setupController];
-  v9 = [v8 pairingReportManager];
+  successCopy = success;
+  errorCopy = error;
+  setupController = [UIApp setupController];
+  pairingReportManager = [setupController pairingReportManager];
 
-  if (v5)
+  if (successCopy)
   {
     signInController = self->_signInController;
     self->_signInController = 0;
@@ -206,22 +206,22 @@ LABEL_12:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v16 = 138412290;
-      v17 = v7;
+      v17 = errorCopy;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Tinker sign in failed with error: %@", &v16, 0xCu);
     }
 
-    if ([v7 code])
+    if ([errorCopy code])
     {
-      v13 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v7 code]);
-      [v9 addPairingTimeEventToPairingReportPlist:65 withValue:v13 withError:0];
+      v13 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [errorCopy code]);
+      [pairingReportManager addPairingTimeEventToPairingReportPlist:65 withValue:v13 withError:0];
     }
 
-    v14 = [v7 domain];
+    domain = [errorCopy domain];
 
-    if (v14)
+    if (domain)
     {
-      v15 = [v7 domain];
-      [v9 addPairingTimeEventStringToPairingReportPlist:66 withValue:v15 withError:0];
+      domain2 = [errorCopy domain];
+      [pairingReportManager addPairingTimeEventStringToPairingReportPlist:66 withValue:domain2 withError:0];
     }
   }
 }
@@ -233,9 +233,9 @@ LABEL_12:
   return v2;
 }
 
-- (void)willPresentModalNavigationController:(id)a3
+- (void)willPresentModalNavigationController:(id)controller
 {
-  v3 = [a3 navigationBar];
+  navigationBar = [controller navigationBar];
   BPSApplyStyleToNavBar();
 }
 
@@ -249,11 +249,11 @@ LABEL_12:
   }
 
   [(COSTinkeriCloudLoginViewController *)self setupViewController];
-  v4 = [(COSAppleIDAuthController *)self->_authController proxiedDevice];
+  proxiedDevice = [(COSAppleIDAuthController *)self->_authController proxiedDevice];
 
   v5 = pbb_accountsignin_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
-  if (v4)
+  if (proxiedDevice)
   {
     if (v6)
     {
@@ -273,7 +273,7 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  return v4 == 0;
+  return proxiedDevice == 0;
 }
 
 - (BOOL)holdWithWaitScreen
@@ -288,9 +288,9 @@ LABEL_8:
   return 0;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v5 = pbb_accountsignin_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -298,7 +298,7 @@ LABEL_8:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "setDelegate", v6, 2u);
   }
 
-  objc_storeWeak(&self->_delegate, v4);
+  objc_storeWeak(&self->_delegate, delegateCopy);
 }
 
 - (id)localizedWaitScreenDescription

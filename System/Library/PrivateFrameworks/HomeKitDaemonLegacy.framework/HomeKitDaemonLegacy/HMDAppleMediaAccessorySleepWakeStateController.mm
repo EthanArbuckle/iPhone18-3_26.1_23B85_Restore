@@ -1,11 +1,11 @@
 @interface HMDAppleMediaAccessorySleepWakeStateController
-- (HMDAppleMediaAccessorySleepWakeStateController)initWithAccessoryUUID:(id)a3 dataSource:(id)a4;
+- (HMDAppleMediaAccessorySleepWakeStateController)initWithAccessoryUUID:(id)d dataSource:(id)source;
 - (NSUUID)messageTargetUUID;
 - (OS_dispatch_queue)messageReceiveQueue;
 - (id)dataSource;
-- (void)_handleFetchSleepWakeStateMessage:(id)a3;
-- (void)configureWithHome:(id)a3 messageDispatcher:(id)a4 workQueue:(id)a5;
-- (void)fetchSleepWakeStateWithCompletion:(id)a3;
+- (void)_handleFetchSleepWakeStateMessage:(id)message;
+- (void)configureWithHome:(id)home messageDispatcher:(id)dispatcher workQueue:(id)queue;
+- (void)fetchSleepWakeStateWithCompletion:(id)completion;
 @end
 
 @implementation HMDAppleMediaAccessorySleepWakeStateController
@@ -32,21 +32,21 @@
   return self;
 }
 
-- (void)_handleFetchSleepWakeStateMessage:(id)a3
+- (void)_handleFetchSleepWakeStateMessage:(id)message
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDAppleMediaAccessorySleepWakeStateController *)&self->super.super.isa dataSource];
-  v6 = [v5 deviceForAppleMediaAccessorySleepWakeStateController:self];
+  messageCopy = message;
+  dataSource = [(HMDAppleMediaAccessorySleepWakeStateController *)&self->super.super.isa dataSource];
+  v6 = [dataSource deviceForAppleMediaAccessorySleepWakeStateController:self];
   if ([v6 isCurrentDevice])
   {
-    v7 = [v5 currentDeviceProductInfoForAppleMediaAccessorySleepWakeStateController:self];
-    v8 = [v7 productClass];
+    v7 = [dataSource currentDeviceProductInfoForAppleMediaAccessorySleepWakeStateController:self];
+    productClass = [v7 productClass];
     v9 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy = self;
     v11 = HMFGetOSLogHandle();
     v12 = os_log_type_enabled(v11, OS_LOG_TYPE_ERROR);
-    if (v8 == 4)
+    if (productClass == 4)
     {
       if (v12)
       {
@@ -70,15 +70,15 @@ LABEL_12:
 
     objc_autoreleasePoolPop(v9);
     v19 = [MEMORY[0x277CCA9B8] hmErrorWithCode:48];
-    [v4 respondWithError:v19];
+    [messageCopy respondWithError:v19];
 
     goto LABEL_14;
   }
 
-  if (([v4 isRemote] & 1) != 0 || objc_msgSend(v4, "isSecureRemote"))
+  if (([messageCopy isRemote] & 1) != 0 || objc_msgSend(messageCopy, "isSecureRemote"))
   {
     v15 = objc_autoreleasePoolPush();
-    v16 = self;
+    selfCopy2 = self;
     v17 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
@@ -90,7 +90,7 @@ LABEL_12:
 
     objc_autoreleasePoolPop(v15);
     v7 = [MEMORY[0x277CCA9B8] hmErrorWithCode:-1];
-    [v4 respondWithError:v7];
+    [messageCopy respondWithError:v7];
   }
 
   else
@@ -99,7 +99,7 @@ LABEL_12:
     v21[1] = 3221225472;
     v21[2] = __84__HMDAppleMediaAccessorySleepWakeStateController__handleFetchSleepWakeStateMessage___block_invoke;
     v21[3] = &unk_279734E28;
-    v22 = v4;
+    v22 = messageCopy;
     [(HMDAppleMediaAccessorySleepWakeStateController *)self fetchSleepWakeStateWithCompletion:v21];
     v7 = v22;
   }
@@ -144,19 +144,19 @@ void __84__HMDAppleMediaAccessorySleepWakeStateController__handleFetchSleepWakeS
   }
 }
 
-- (void)fetchSleepWakeStateWithCompletion:(id)a3
+- (void)fetchSleepWakeStateWithCompletion:(id)completion
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDAppleMediaAccessorySleepWakeStateController *)&self->super.super.isa dataSource];
-  v6 = [v5 deviceForAppleMediaAccessorySleepWakeStateController:self];
+  completionCopy = completion;
+  dataSource = [(HMDAppleMediaAccessorySleepWakeStateController *)&self->super.super.isa dataSource];
+  v6 = [dataSource deviceForAppleMediaAccessorySleepWakeStateController:self];
 
   if (v6)
   {
     os_unfair_lock_lock_with_options();
     v7 = self->_fetchSleepWakeFuture;
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
@@ -182,8 +182,8 @@ void __84__HMDAppleMediaAccessorySleepWakeStateController__handleFetchSleepWakeS
       os_unfair_lock_unlock(&self->_lock);
       v17 = v6;
       v18 = [HMDRemoteDeviceMessageDestination alloc];
-      v19 = [(HMDAppleMediaAccessorySleepWakeStateController *)v9 messageTargetUUID];
-      v20 = [(HMDRemoteDeviceMessageDestination *)v18 initWithTarget:v19 device:v17];
+      messageTargetUUID = [(HMDAppleMediaAccessorySleepWakeStateController *)selfCopy messageTargetUUID];
+      v20 = [(HMDRemoteDeviceMessageDestination *)v18 initWithTarget:messageTargetUUID device:v17];
 
       v21 = [MEMORY[0x277D0F848] messageWithName:*MEMORY[0x277CCFD50] destination:v20 payload:0];
       [v21 setSecureRemote:1];
@@ -191,18 +191,18 @@ void __84__HMDAppleMediaAccessorySleepWakeStateController__handleFetchSleepWakeS
       *&buf[8] = 3221225472;
       *&buf[16] = __80__HMDAppleMediaAccessorySleepWakeStateController__sendSleepWakeMessageToDevice___block_invoke;
       v37 = &unk_279734E00;
-      v38 = v9;
+      v38 = selfCopy;
       [v21 setResponseHandler:buf];
-      v22 = [v17 isCurrentDevice];
+      isCurrentDevice = [v17 isCurrentDevice];
 
-      if (v22)
+      if (isCurrentDevice)
       {
-        [(HMDAppleMediaAccessorySleepWakeStateController *)v9 _handleFetchSleepWakeStateMessage:v21];
+        [(HMDAppleMediaAccessorySleepWakeStateController *)selfCopy _handleFetchSleepWakeStateMessage:v21];
       }
 
       else
       {
-        [objc_getProperty(v9 v23];
+        [objc_getProperty(selfCopy v23];
       }
 
       v12 = &unk_253D4B000;
@@ -213,7 +213,7 @@ void __84__HMDAppleMediaAccessorySleepWakeStateController__handleFetchSleepWakeS
     v24 = v32;
     v33 = __84__HMDAppleMediaAccessorySleepWakeStateController_fetchSleepWakeStateWithCompletion___block_invoke;
     v34 = &unk_279734DD8;
-    v25 = v4;
+    v25 = completionCopy;
     v35 = v25;
     v26 = [(NAFuture *)v7 addSuccessBlock:&v31];
     v29[0] = MEMORY[0x277D85DD0];
@@ -227,7 +227,7 @@ void __84__HMDAppleMediaAccessorySleepWakeStateController__handleFetchSleepWakeS
   else
   {
     v13 = objc_autoreleasePoolPush();
-    v14 = self;
+    selfCopy2 = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
@@ -239,7 +239,7 @@ void __84__HMDAppleMediaAccessorySleepWakeStateController__handleFetchSleepWakeS
 
     objc_autoreleasePoolPop(v13);
     v7 = [MEMORY[0x277CCA9B8] hmErrorWithCode:20];
-    (*(v4 + 2))(v4, 0, v7);
+    (*(completionCopy + 2))(completionCopy, 0, v7);
   }
 
   v28 = *MEMORY[0x277D85DE8];
@@ -323,17 +323,17 @@ void __80__HMDAppleMediaAccessorySleepWakeStateController__sendSleepWakeMessageT
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)configureWithHome:(id)a3 messageDispatcher:(id)a4 workQueue:(id)a5
+- (void)configureWithHome:(id)home messageDispatcher:(id)dispatcher workQueue:(id)queue
 {
   v22[2] = *MEMORY[0x277D85DE8];
-  v21 = a3;
+  homeCopy = home;
   if (self)
   {
-    v8 = a4;
-    objc_setProperty_atomic(self, v9, a5, 24);
-    objc_setProperty_atomic(self, v10, v8, 40);
+    dispatcherCopy = dispatcher;
+    objc_setProperty_atomic(self, v9, queue, 24);
+    objc_setProperty_atomic(self, v10, dispatcherCopy, 40);
 
-    v11 = v21;
+    v11 = homeCopy;
     v12 = [HMDXPCMessagePolicy policyWithEntitlements:5];
     v22[0] = v12;
     v13 = [HMDUserMessagePolicy userMessagePolicyWithHome:v11 userPrivilege:0 remoteAccessRequired:1];
@@ -358,10 +358,10 @@ void __80__HMDAppleMediaAccessorySleepWakeStateController__sendSleepWakeMessageT
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDAppleMediaAccessorySleepWakeStateController)initWithAccessoryUUID:(id)a3 dataSource:(id)a4
+- (HMDAppleMediaAccessorySleepWakeStateController)initWithAccessoryUUID:(id)d dataSource:(id)source
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  sourceCopy = source;
   v13.receiver = self;
   v13.super_class = HMDAppleMediaAccessorySleepWakeStateController;
   v8 = [(HMDAppleMediaAccessorySleepWakeStateController *)&v13 init];
@@ -369,11 +369,11 @@ void __80__HMDAppleMediaAccessorySleepWakeStateController__sendSleepWakeMessageT
   if (v8)
   {
     v8->_lock._os_unfair_lock_opaque = 0;
-    v10 = [v6 copy];
+    v10 = [dCopy copy];
     accessoryUUID = v9->_accessoryUUID;
     v9->_accessoryUUID = v10;
 
-    objc_storeWeak(&v9->_dataSource, v7);
+    objc_storeWeak(&v9->_dataSource, sourceCopy);
   }
 
   return v9;

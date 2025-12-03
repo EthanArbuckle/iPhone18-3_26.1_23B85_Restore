@@ -1,14 +1,14 @@
 @interface CMAttitude
-- (BOOL)isEqual:(id)a3;
-- (CMAttitude)initWithCoder:(id)a3;
-- (CMAttitude)initWithQuaternion:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CMAttitude)initWithCoder:(id)coder;
+- (CMAttitude)initWithQuaternion:(id)quaternion;
 - (CMQuaternion)quaternion;
 - (CMRotationMatrix)rotationMatrix;
 - (double)pitch;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)multiplyByInverseOfAttitude:(CMAttitude *)attitude;
 @end
 
@@ -35,12 +35,12 @@
   [(CMAttitude *)&v3 dealloc];
 }
 
-- (CMAttitude)initWithQuaternion:(id)a3
+- (CMAttitude)initWithQuaternion:(id)quaternion
 {
-  var3 = a3.var3;
-  var2 = a3.var2;
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var3 = quaternion.var3;
+  var2 = quaternion.var2;
+  var1 = quaternion.var1;
+  var0 = quaternion.var0;
   v12.receiver = self;
   v12.super_class = CMAttitude;
   v7 = [(CMAttitude *)&v12 init];
@@ -53,34 +53,34 @@
   return v7;
 }
 
-- (CMAttitude)initWithCoder:(id)a3
+- (CMAttitude)initWithCoder:(id)coder
 {
-  objc_msgSend_decodeDoubleForKey_(a3, a2, @"kCMAttitudeCodingKeyQX");
-  objc_msgSend_decodeDoubleForKey_(a3, v5, @"kCMAttitudeCodingKeyQY");
-  objc_msgSend_decodeDoubleForKey_(a3, v6, @"kCMAttitudeCodingKeyQZ");
-  objc_msgSend_decodeDoubleForKey_(a3, v7, @"kCMAttitudeCodingKeyQW");
+  objc_msgSend_decodeDoubleForKey_(coder, a2, @"kCMAttitudeCodingKeyQX");
+  objc_msgSend_decodeDoubleForKey_(coder, v5, @"kCMAttitudeCodingKeyQY");
+  objc_msgSend_decodeDoubleForKey_(coder, v6, @"kCMAttitudeCodingKeyQZ");
+  objc_msgSend_decodeDoubleForKey_(coder, v7, @"kCMAttitudeCodingKeyQW");
 
   return objc_msgSend_initWithQuaternion_(self, v8, v9);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   internal = self->_internal;
   v5 = internal[3];
   v6 = internal[4];
   v7 = internal[1];
-  objc_msgSend_encodeDouble_forKey_(a3, a2, @"kCMAttitudeCodingKeyQX", internal[2]);
-  objc_msgSend_encodeDouble_forKey_(a3, v8, @"kCMAttitudeCodingKeyQY", v5);
-  objc_msgSend_encodeDouble_forKey_(a3, v9, @"kCMAttitudeCodingKeyQZ", v6);
+  objc_msgSend_encodeDouble_forKey_(coder, a2, @"kCMAttitudeCodingKeyQX", internal[2]);
+  objc_msgSend_encodeDouble_forKey_(coder, v8, @"kCMAttitudeCodingKeyQY", v5);
+  objc_msgSend_encodeDouble_forKey_(coder, v9, @"kCMAttitudeCodingKeyQZ", v6);
 
-  objc_msgSend_encodeDouble_forKey_(a3, v10, @"kCMAttitudeCodingKeyQW", v7);
+  objc_msgSend_encodeDouble_forKey_(coder, v10, @"kCMAttitudeCodingKeyQW", v7);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   internal = self->_internal;
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = internal[1];
   v11 = internal[2];
   v12 = internal[3];
@@ -89,7 +89,7 @@
   return objc_msgSend_initWithQuaternion_(v7, v8, v9, v10, v11, v12, v13);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -98,7 +98,7 @@
   }
 
   internal = self->_internal;
-  v7 = *(a3 + 1);
+  v7 = *(equal + 1);
 
   return objc_msgSend_isEqual_(internal, v5, v7);
 }

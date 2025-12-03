@@ -1,18 +1,18 @@
 @interface VideoConferenceControlCenterModuleEffectControlAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityCustomActions;
 - (id)accessibilityLabel;
 @end
 
 @implementation VideoConferenceControlCenterModuleEffectControlAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"VideoConferenceControlCenterModule.EffectControl" hasSwiftField:@"isExpanded" withSwiftType:"Bool"];
-  [v3 validateClass:@"VideoConferenceControlCenterModule.EffectControl" hasSwiftField:@"buttonTitle" withSwiftType:"String"];
-  [v3 validateClass:@"VideoConferenceControlCenterModule.EffectControl" hasSwiftField:@"controlType" withSwiftType:"ControlType"];
-  [v3 validateClass:@"VideoConferenceControlCenterModule.EffectControl" hasSwiftField:@"expandChevron" withSwiftType:"UIButton"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"VideoConferenceControlCenterModule.EffectControl" hasSwiftField:@"isExpanded" withSwiftType:"Bool"];
+  [validationsCopy validateClass:@"VideoConferenceControlCenterModule.EffectControl" hasSwiftField:@"buttonTitle" withSwiftType:"String"];
+  [validationsCopy validateClass:@"VideoConferenceControlCenterModule.EffectControl" hasSwiftField:@"controlType" withSwiftType:"ControlType"];
+  [validationsCopy validateClass:@"VideoConferenceControlCenterModule.EffectControl" hasSwiftField:@"expandChevron" withSwiftType:"UIButton"];
 }
 
 - (id)accessibilityLabel
@@ -21,17 +21,17 @@
   v4 = v3;
   if (v3)
   {
-    v5 = v3;
+    accessibilityLabel = v3;
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = VideoConferenceControlCenterModuleEffectControlAccessibility;
-    v5 = [(VideoConferenceControlCenterModuleEffectControlAccessibility *)&v8 accessibilityLabel];
+    accessibilityLabel = [(VideoConferenceControlCenterModuleEffectControlAccessibility *)&v8 accessibilityLabel];
   }
 
-  v6 = v5;
+  v6 = accessibilityLabel;
 
   return v6;
 }
@@ -40,18 +40,18 @@
 {
   v18.receiver = self;
   v18.super_class = VideoConferenceControlCenterModuleEffectControlAccessibility;
-  v3 = [(VideoConferenceControlCenterModuleEffectControlAccessibility *)&v18 accessibilityCustomActions];
-  v4 = [v3 mutableCopy];
+  accessibilityCustomActions = [(VideoConferenceControlCenterModuleEffectControlAccessibility *)&v18 accessibilityCustomActions];
+  array = [accessibilityCustomActions mutableCopy];
 
   v5 = [(VideoConferenceControlCenterModuleEffectControlAccessibility *)self safeSwiftValueForKey:@"controlType"];
-  v6 = [v5 safeSwiftEnumCase];
-  v7 = [v6 isEqualToString:@"expandable"];
+  safeSwiftEnumCase = [v5 safeSwiftEnumCase];
+  v7 = [safeSwiftEnumCase isEqualToString:@"expandable"];
 
   if (v7)
   {
-    if (!v4)
+    if (!array)
     {
-      v4 = [MEMORY[0x29EDB8DE8] array];
+      array = [MEMORY[0x29EDB8DE8] array];
     }
 
     objc_initWeak(&location, self);
@@ -64,12 +64,12 @@
     objc_copyWeak(&v16, &location);
     v10 = [v8 initWithName:v9 actionHandler:&v12];
 
-    [v4 axSafelyAddObject:{v10, v12, v13, v14, v15}];
+    [array axSafelyAddObject:{v10, v12, v13, v14, v15}];
     objc_destroyWeak(&v16);
     objc_destroyWeak(&location);
   }
 
-  return v4;
+  return array;
 }
 
 uint64_t __90__VideoConferenceControlCenterModuleEffectControlAccessibility_accessibilityCustomActions__block_invoke(uint64_t a1, void *a2)

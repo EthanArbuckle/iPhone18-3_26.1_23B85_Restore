@@ -1,6 +1,6 @@
 @interface HomeStorageOutlineNode
-- (HomeStorageOutlineNode)initWithDictionaryRepresentation:(id)a3;
-- (HomeStorageOutlineNode)initWithExpandedValue:(id)a3 children:(id)a4;
+- (HomeStorageOutlineNode)initWithDictionaryRepresentation:(id)representation;
+- (HomeStorageOutlineNode)initWithExpandedValue:(id)value children:(id)children;
 - (NSDictionary)dictionaryRepresentation;
 @end
 
@@ -36,10 +36,10 @@
   return v10;
 }
 
-- (HomeStorageOutlineNode)initWithDictionaryRepresentation:(id)a3
+- (HomeStorageOutlineNode)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"expanded"];
+  representationCopy = representation;
+  v5 = [representationCopy objectForKeyedSubscript:@"expanded"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -53,7 +53,7 @@
 
   v7 = v6;
 
-  v8 = [v4 objectForKeyedSubscript:@"children"];
+  v8 = [representationCopy objectForKeyedSubscript:@"children"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -80,18 +80,18 @@
   return v12;
 }
 
-- (HomeStorageOutlineNode)initWithExpandedValue:(id)a3 children:(id)a4
+- (HomeStorageOutlineNode)initWithExpandedValue:(id)value children:(id)children
 {
-  v7 = a3;
-  v8 = a4;
+  valueCopy = value;
+  childrenCopy = children;
   v14.receiver = self;
   v14.super_class = HomeStorageOutlineNode;
   v9 = [(HomeStorageOutlineNode *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_expandedValue, a3);
-    v11 = [NSDictionary dictionaryWithDictionary:v8];
+    objc_storeStrong(&v9->_expandedValue, value);
+    v11 = [NSDictionary dictionaryWithDictionary:childrenCopy];
     children = v10->_children;
     v10->_children = v11;
   }

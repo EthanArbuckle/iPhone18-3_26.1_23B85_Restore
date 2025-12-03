@@ -1,10 +1,10 @@
 @interface HearingSettingsBandwidthFilterSliderCell
-+ (id)sliderLabelForValue:(float)a3;
++ (id)sliderLabelForValue:(float)value;
 @end
 
 @implementation HearingSettingsBandwidthFilterSliderCell
 
-+ (id)sliderLabelForValue:(float)a3
++ (id)sliderLabelForValue:(float)value
 {
   v3 = comfortSoundsLocString();
   v4 = AXFormatFloat();

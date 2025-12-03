@@ -1,16 +1,16 @@
 @interface ImpressionSent
-- (_TtC17PromotedContentUI14ImpressionSent)initWithCoder:(id)a3;
-- (_TtC17PromotedContentUI14ImpressionSent)initWithFrame:(CGRect)a3;
+- (_TtC17PromotedContentUI14ImpressionSent)initWithCoder:(id)coder;
+- (_TtC17PromotedContentUI14ImpressionSent)initWithFrame:(CGRect)frame;
 @end
 
 @implementation ImpressionSent
 
-- (_TtC17PromotedContentUI14ImpressionSent)initWithFrame:(CGRect)a3
+- (_TtC17PromotedContentUI14ImpressionSent)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC17PromotedContentUI14ImpressionSent_alreadySent) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC17PromotedContentUI14ImpressionSent_alreadyRecorded) = 0;
   v8.receiver = self;
@@ -18,14 +18,14 @@
   return [(ImpressionSent *)&v8 initWithFrame:x, y, width, height];
 }
 
-- (_TtC17PromotedContentUI14ImpressionSent)initWithCoder:(id)a3
+- (_TtC17PromotedContentUI14ImpressionSent)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC17PromotedContentUI14ImpressionSent_alreadySent) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC17PromotedContentUI14ImpressionSent_alreadyRecorded) = 0;
   v7.receiver = self;
   v7.super_class = type metadata accessor for ImpressionSent();
-  v4 = a3;
-  v5 = [(ImpressionSent *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(ImpressionSent *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

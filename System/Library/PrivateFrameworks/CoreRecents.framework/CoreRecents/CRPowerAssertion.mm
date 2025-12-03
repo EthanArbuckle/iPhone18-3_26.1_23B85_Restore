@@ -1,5 +1,5 @@
 @interface CRPowerAssertion
-- (CRPowerAssertion)initWithIdentifier:(id)a3 timeout:(double)a4;
+- (CRPowerAssertion)initWithIdentifier:(id)identifier timeout:(double)timeout;
 - (void)dealloc;
 @end
 
@@ -18,7 +18,7 @@
   [(CRPowerAssertion *)&v4 dealloc];
 }
 
-- (CRPowerAssertion)initWithIdentifier:(id)a3 timeout:(double)a4
+- (CRPowerAssertion)initWithIdentifier:(id)identifier timeout:(double)timeout
 {
   v6.receiver = self;
   v6.super_class = CRPowerAssertion;

@@ -1,35 +1,35 @@
 @interface EQKitBox
-- (BOOL)isEqual:(id)a3;
-- (CGAffineTransform)transformFromDescendant:(SEL)a3;
+- (BOOL)isEqual:(id)equal;
+- (CGAffineTransform)transformFromDescendant:(SEL)descendant;
 - (CGRect)erasableBounds;
 - (double)layoutDepth;
 - (double)layoutHeight;
 - (double)layoutVSize;
 - (double)vsize;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
 @implementation EQKitBox
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v4, v5, a3, v6);
+  v7 = objc_msgSend_allocWithZone_(v4, v5, zone, v6);
 
   return MEMORY[0x2821F9670](v7, sel_init, v8, v9);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (!a3)
+  if (!equal)
   {
     return 0;
   }
 
   v5 = objc_opt_class();
 
-  return objc_msgSend_isMemberOfClass_(a3, v4, v5, v6);
+  return objc_msgSend_isMemberOfClass_(equal, v4, v5, v6);
 }
 
 - (double)vsize
@@ -108,14 +108,14 @@
   return result;
 }
 
-- (CGAffineTransform)transformFromDescendant:(SEL)a3
+- (CGAffineTransform)transformFromDescendant:(SEL)descendant
 {
   v6 = MEMORY[0x277CBF2C0];
   v7 = *(MEMORY[0x277CBF2C0] + 16);
   *&retstr->a = *MEMORY[0x277CBF2C0];
   *&retstr->c = v7;
   *&retstr->tx = *(v6 + 32);
-  return objc_msgSend_p_getTransform_fromDescendant_(self, a3, retstr, a4);
+  return objc_msgSend_p_getTransform_fromDescendant_(self, descendant, retstr, a4);
 }
 
 - (id)description

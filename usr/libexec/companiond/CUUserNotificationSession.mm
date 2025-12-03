@@ -1,41 +1,41 @@
 @interface CUUserNotificationSession
-+ (id)cad_sessionWithContent:(id)a3;
++ (id)cad_sessionWithContent:(id)content;
 @end
 
 @implementation CUUserNotificationSession
 
-+ (id)cad_sessionWithContent:(id)a3
++ (id)cad_sessionWithContent:(id)content
 {
-  v4 = a3;
-  v5 = objc_alloc_init(a1);
-  v6 = [v4 bundleIdentifier];
-  [v5 setBundleID:v6];
+  contentCopy = content;
+  v5 = objc_alloc_init(self);
+  bundleIdentifier = [contentCopy bundleIdentifier];
+  [v5 setBundleID:bundleIdentifier];
 
-  v7 = [v4 categoryIdentifier];
-  [v5 setCategoryID:v7];
+  categoryIdentifier = [contentCopy categoryIdentifier];
+  [v5 setCategoryID:categoryIdentifier];
 
-  v8 = [v4 identifier];
-  [v5 setIdentifier:v8];
+  identifier = [contentCopy identifier];
+  [v5 setIdentifier:identifier];
 
-  [v5 setFlags:{objc_msgSend(v4, "flags")}];
-  v9 = [v4 iconSystemName];
-  [v5 setIconSystemName:v9];
+  [v5 setFlags:{objc_msgSend(contentCopy, "flags")}];
+  iconSystemName = [contentCopy iconSystemName];
+  [v5 setIconSystemName:iconSystemName];
 
-  v10 = [v4 iconName];
-  [v5 setIconName:v10];
+  iconName = [contentCopy iconName];
+  [v5 setIconName:iconName];
 
-  v11 = [v4 titleKey];
-  [v5 setTitleKey:v11];
+  titleKey = [contentCopy titleKey];
+  [v5 setTitleKey:titleKey];
 
-  v12 = [v4 titleArguments];
-  [v5 setTitleArguments:v12];
+  titleArguments = [contentCopy titleArguments];
+  [v5 setTitleArguments:titleArguments];
 
-  v13 = [v4 bodyKey];
-  [v5 setBodyKey:v13];
+  bodyKey = [contentCopy bodyKey];
+  [v5 setBodyKey:bodyKey];
 
-  v14 = [v4 bodyArguments];
+  bodyArguments = [contentCopy bodyArguments];
 
-  [v5 setBodyArguments:v14];
+  [v5 setBodyArguments:bodyArguments];
 
   return v5;
 }

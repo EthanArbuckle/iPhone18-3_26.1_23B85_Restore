@@ -2,7 +2,7 @@
 + (id)sharedInstance;
 - (VUIMarkAsWatchedRequestManager)init;
 - (id)_init;
-- (void)sendRequestForItemID:(id)a3 itemType:(id)a4 channelID:(id)a5 adamID:(id)a6;
+- (void)sendRequestForItemID:(id)d itemType:(id)type channelID:(id)iD adamID:(id)adamID;
 @end
 
 @implementation VUIMarkAsWatchedRequestManager
@@ -33,9 +33,9 @@ void __48__VUIMarkAsWatchedRequestManager_sharedInstance__block_invoke()
   v2 = [(VUIMarkAsWatchedRequestManager *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     ongoingItemIDOperationDictionary = v2->_ongoingItemIDOperationDictionary;
-    v2->_ongoingItemIDOperationDictionary = v3;
+    v2->_ongoingItemIDOperationDictionary = dictionary;
   }
 
   return v2;
@@ -47,29 +47,29 @@ void __48__VUIMarkAsWatchedRequestManager_sharedInstance__block_invoke()
   objc_exception_throw(v2);
 }
 
-- (void)sendRequestForItemID:(id)a3 itemType:(id)a4 channelID:(id)a5 adamID:(id)a6
+- (void)sendRequestForItemID:(id)d itemType:(id)type channelID:(id)iD adamID:(id)adamID
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(NSMutableDictionary *)self->_ongoingItemIDOperationDictionary objectForKey:v10];
+  dCopy = d;
+  typeCopy = type;
+  iDCopy = iD;
+  adamIDCopy = adamID;
+  v14 = [(NSMutableDictionary *)self->_ongoingItemIDOperationDictionary objectForKey:dCopy];
   v15 = v14;
   if (!v14 || [v14 isCancelled])
   {
-    v16 = [objc_alloc(MEMORY[0x1E69E1548]) initWithItemID:v10];
+    v16 = [objc_alloc(MEMORY[0x1E69E1548]) initWithItemID:dCopy];
     if (v16)
     {
       objc_initWeak(&location, v16);
       objc_initWeak(&from, self);
       v17 = +[VUIStreamingBookmarkCache sharedInstance];
-      [v17 removeBookmarkForCanonicalID:v10];
+      [v17 removeBookmarkForCanonicalID:dCopy];
 
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __81__VUIMarkAsWatchedRequestManager_sendRequestForItemID_itemType_channelID_adamID___block_invoke;
       block[3] = &unk_1E872D768;
-      v18 = v13;
+      v18 = adamIDCopy;
       v31 = v18;
       dispatch_async(MEMORY[0x1E69E96A0], block);
       v19 = [MEMORY[0x1E69705D0] vui_mediaItemForStoreIdentifierString:v18];
@@ -85,12 +85,12 @@ void __48__VUIMarkAsWatchedRequestManager_sharedInstance__block_invoke()
       v26 = &unk_1E8730290;
       objc_copyWeak(&v28, &location);
       objc_copyWeak(&v29, &from);
-      v21 = v10;
+      v21 = dCopy;
       v27 = v21;
       [v16 setCompletionBlock:&v23];
       [(NSMutableDictionary *)self->_ongoingItemIDOperationDictionary setValue:v16 forKey:v21, v23, v24, v25, v26];
-      v22 = [MEMORY[0x1E696ADC8] wlkDefaultQueue];
-      [v22 addOperation:v16];
+      wlkDefaultQueue = [MEMORY[0x1E696ADC8] wlkDefaultQueue];
+      [wlkDefaultQueue addOperation:v16];
 
       objc_destroyWeak(&v29);
       objc_destroyWeak(&v28);

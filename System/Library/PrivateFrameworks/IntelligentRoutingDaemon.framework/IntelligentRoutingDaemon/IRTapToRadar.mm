@@ -1,14 +1,14 @@
 @interface IRTapToRadar
 + (id)shared;
 - (IRTapToRadar)init;
-- (id)_createErrorEventPromptIfAllowed:(id)a3;
-- (id)_createErrorEventsPromptsForMediaEvent:(id)a3;
-- (id)_createPeriodicPromptIfAllowed:(id)a3;
-- (id)_createPeriodicPromptsForMediaEvent:(id)a3;
-- (id)_errorEventQuestionaire:(id)a3;
-- (id)_triggerUserPrompts:(id)a3;
-- (void)_initiatePopupAndTTR:(id)a3;
-- (void)promptForTapToRadarIfAllowed:(id)a3;
+- (id)_createErrorEventPromptIfAllowed:(id)allowed;
+- (id)_createErrorEventsPromptsForMediaEvent:(id)event;
+- (id)_createPeriodicPromptIfAllowed:(id)allowed;
+- (id)_createPeriodicPromptsForMediaEvent:(id)event;
+- (id)_errorEventQuestionaire:(id)questionaire;
+- (id)_triggerUserPrompts:(id)prompts;
+- (void)_initiatePopupAndTTR:(id)r;
+- (void)promptForTapToRadarIfAllowed:(id)allowed;
 @end
 
 @implementation IRTapToRadar
@@ -51,17 +51,17 @@ uint64_t __22__IRTapToRadar_shared__block_invoke()
   return v3;
 }
 
-- (void)promptForTapToRadarIfAllowed:(id)a3
+- (void)promptForTapToRadarIfAllowed:(id)allowed
 {
-  v4 = a3;
-  v5 = [(IRTapToRadar *)self queue];
+  allowedCopy = allowed;
+  queue = [(IRTapToRadar *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __45__IRTapToRadar_promptForTapToRadarIfAllowed___block_invoke;
   v7[3] = &unk_2797E2260;
-  v8 = v4;
-  v6 = v4;
-  IRDispatchAsyncWithStrongSelf(v5, self, v7);
+  v8 = allowedCopy;
+  v6 = allowedCopy;
+  IRDispatchAsyncWithStrongSelf(queue, self, v7);
 }
 
 void __45__IRTapToRadar_promptForTapToRadarIfAllowed___block_invoke(uint64_t a1, void *a2)
@@ -75,26 +75,26 @@ void __45__IRTapToRadar_promptForTapToRadarIfAllowed___block_invoke(uint64_t a1,
   }
 }
 
-- (void)_initiatePopupAndTTR:(id)a3
+- (void)_initiatePopupAndTTR:(id)r
 {
-  v13 = a3;
+  rCopy = r;
   if (+[IRPlatformInfo isInternalInstall]&& ![(IRTapToRadar *)self pendingNotificationPresent])
   {
     [(IRTapToRadar *)self setPendingNotificationPresent:1];
-    v4 = [(IRTapToRadar *)self _triggerUserPrompts:v13];
+    v4 = [(IRTapToRadar *)self _triggerUserPrompts:rCopy];
     if (v4)
     {
       v5 = MEMORY[0x277CCACA8];
-      v6 = [v13 query];
-      v7 = [v6 radarDescription];
-      v8 = [v5 stringWithFormat:@"%@%@", v7, v4];
-      v9 = [v13 query];
-      [v9 setRadarDescription:v8];
+      query = [rCopy query];
+      radarDescription = [query radarDescription];
+      v8 = [v5 stringWithFormat:@"%@%@", radarDescription, v4];
+      query2 = [rCopy query];
+      [query2 setRadarDescription:v8];
 
-      v10 = [MEMORY[0x277CC1E80] defaultWorkspace];
-      v11 = [v13 query];
-      v12 = [v11 build];
-      [v10 openURL:v12 configuration:0 completionHandler:&__block_literal_global_204];
+      defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+      query3 = [rCopy query];
+      build = [query3 build];
+      [defaultWorkspace openURL:build configuration:0 completionHandler:&__block_literal_global_204];
 
       [(IRTapToRadar *)self setPendingNotificationPresent:0];
     }
@@ -115,20 +115,20 @@ void __37__IRTapToRadar__initiatePopupAndTTR___block_invoke(uint64_t a1, void *a
   }
 }
 
-- (id)_errorEventQuestionaire:(id)a3
+- (id)_errorEventQuestionaire:(id)questionaire
 {
   v15[4] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  questionaireCopy = questionaire;
   LOWORD(v11) = 257;
-  v4 = [[IRTTRpopup alloc] initWithHeader:v3 key:@"RadarPrompt" message:@"\nIf you find this suggestion unreasonable defaultButton:would you like to assist by answering 3 yes/no questions?" otherButton:@"Open radar" alternateButton:@"Not now" ttrWillOpen:0 dismissWillStop:v11];
+  v4 = [[IRTTRpopup alloc] initWithHeader:questionaireCopy key:@"RadarPrompt" message:@"\nIf you find this suggestion unreasonable defaultButton:would you like to assist by answering 3 yes/no questions?" otherButton:@"Open radar" alternateButton:@"Not now" ttrWillOpen:0 dismissWillStop:v11];
   LOWORD(v12) = 0;
-  v5 = [[IRTTRpopup alloc] initWithHeader:v3 key:@"QuestionSameRoom" message:@"\nQuestion 1/3:\nIs the suggested device located in the room you are currently in?" defaultButton:@"I don't know" otherButton:@"No" alternateButton:@"Yes" ttrWillOpen:v12 dismissWillStop:v4];
+  v5 = [[IRTTRpopup alloc] initWithHeader:questionaireCopy key:@"QuestionSameRoom" message:@"\nQuestion 1/3:\nIs the suggested device located in the room you are currently in?" defaultButton:@"I don't know" otherButton:@"No" alternateButton:@"Yes" ttrWillOpen:v12 dismissWillStop:v4];
   v15[1] = v5;
   LOWORD(v13) = 0;
-  v6 = [[IRTTRpopup alloc] initWithHeader:v3 key:@"QuestionPreviouslyRouted" message:@"\nQuestion 2/3:\nHave you previously routed to this device from this room? " defaultButton:@"I don't know" otherButton:@"No" alternateButton:@"Yes" ttrWillOpen:v13 dismissWillStop:?];
+  v6 = [[IRTTRpopup alloc] initWithHeader:questionaireCopy key:@"QuestionPreviouslyRouted" message:@"\nQuestion 2/3:\nHave you previously routed to this device from this room? " defaultButton:@"I don't know" otherButton:@"No" alternateButton:@"Yes" ttrWillOpen:v13 dismissWillStop:?];
   v15[2] = v6;
   LOWORD(v14) = 0;
-  v7 = [[IRTTRpopup alloc] initWithHeader:v3 key:@"QuestionAirplayIntent" message:@"\nQuestion 3/3:\nWas your intention to route content to a different device?" defaultButton:@"I don't know" otherButton:@"No" alternateButton:@"Yes" ttrWillOpen:v14 dismissWillStop:?];
+  v7 = [[IRTTRpopup alloc] initWithHeader:questionaireCopy key:@"QuestionAirplayIntent" message:@"\nQuestion 3/3:\nWas your intention to route content to a different device?" defaultButton:@"I don't know" otherButton:@"No" alternateButton:@"Yes" ttrWillOpen:v14 dismissWillStop:?];
 
   v15[3] = v7;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:4];
@@ -138,10 +138,10 @@ void __37__IRTapToRadar__initiatePopupAndTTR___block_invoke(uint64_t a1, void *a
   return v8;
 }
 
-- (id)_triggerUserPrompts:(id)a3
+- (id)_triggerUserPrompts:(id)prompts
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  promptsCopy = prompts;
   v22 = 0;
   v23 = &v22;
   v24 = 0x2020000000;
@@ -152,20 +152,20 @@ void __37__IRTapToRadar__initiatePopupAndTTR___block_invoke(uint64_t a1, void *a
   v19 = __Block_byref_object_copy__13;
   v20 = __Block_byref_object_dispose__13;
   v21 = objc_opt_new();
-  v5 = [v4 popups];
+  popups = [promptsCopy popups];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __36__IRTapToRadar__triggerUserPrompts___block_invoke;
   v15[3] = &unk_2797E22A8;
   v15[4] = &v22;
   v15[5] = &v16;
-  [v5 enumerateObjectsUsingBlock:v15];
+  [popups enumerateObjectsUsingBlock:v15];
 
   self->_pendingNotificationPresent = 0;
   v6 = objc_opt_new();
-  v7 = [v4 query];
-  v8 = [v7 title];
-  [v6 setObject:v8 forKeyedSubscript:@"reason"];
+  query = [promptsCopy query];
+  title = [query title];
+  [v6 setObject:title forKeyedSubscript:@"reason"];
 
   [v6 setObject:v17[5] forKeyedSubscript:@"prompts"];
   v9 = [MEMORY[0x277CCAAA0] dataWithJSONObject:v6 options:1 error:0];
@@ -269,13 +269,13 @@ LABEL_13:
   [*(*(*(a1 + 40) + 8) + 40) addObject:v16];
 }
 
-- (id)_createErrorEventPromptIfAllowed:(id)a3
+- (id)_createErrorEventPromptIfAllowed:(id)allowed
 {
   v36 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  allowedCopy = allowed;
   v5 = +[IRPreferences shared];
-  v6 = [v5 liveOnTtrDebugDataRequestsEnabled];
-  if (([v6 BOOLValue] & 1) == 0)
+  liveOnTtrDebugDataRequestsEnabled = [v5 liveOnTtrDebugDataRequestsEnabled];
+  if (([liveOnTtrDebugDataRequestsEnabled BOOLValue] & 1) == 0)
   {
 
 LABEL_12:
@@ -284,10 +284,10 @@ LABEL_12:
   }
 
   v7 = +[IRPreferences shared];
-  v8 = [v7 liveOnEnable];
-  v9 = [v8 BOOLValue];
+  liveOnEnable = [v7 liveOnEnable];
+  bOOLValue = [liveOnEnable BOOLValue];
 
-  if (!v9)
+  if (!bOOLValue)
   {
     goto LABEL_12;
   }
@@ -303,8 +303,8 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  v10 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v11 = [v10 objectForKey:@"IRTTRErrorEventsLastPopupDate"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v11 = [standardUserDefaults objectForKey:@"IRTTRErrorEventsLastPopupDate"];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -323,28 +323,28 @@ LABEL_12:
   [v12 timeIntervalSinceNow];
   v15 = -v14;
   v16 = +[IRPreferences shared];
-  v17 = [v16 ttrThrottleTimeSec];
-  [v17 doubleValue];
+  ttrThrottleTimeSec = [v16 ttrThrottleTimeSec];
+  [ttrThrottleTimeSec doubleValue];
   v19 = v18;
 
   if (v19 <= v15)
   {
 LABEL_17:
-    v21 = [(IRTapToRadar *)self _createErrorEventsPromptsForMediaEvent:v4];
+    v21 = [(IRTapToRadar *)self _createErrorEventsPromptsForMediaEvent:allowedCopy];
     if (v21)
     {
-      v24 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+      standardUserDefaults2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
       v25 = [MEMORY[0x277CBEAA8] now];
-      [v24 setObject:v25 forKey:@"IRTTRErrorEventsLastPopupDate"];
+      [standardUserDefaults2 setObject:v25 forKey:@"IRTTRErrorEventsLastPopupDate"];
 
       v26 = *MEMORY[0x277D21260];
       if (os_log_type_enabled(*MEMORY[0x277D21260], OS_LOG_TYPE_INFO))
       {
         v27 = v26;
-        v28 = [v21 query];
-        v29 = [v28 title];
+        query = [v21 query];
+        title = [query title];
         v30 = 138412290;
-        v31 = *&v29;
+        v31 = *&title;
         _os_log_impl(&dword_25543D000, v27, OS_LOG_TYPE_INFO, "#ttr, TTR Error Event prompt created: %@", &v30, 0xCu);
       }
     }
@@ -373,13 +373,13 @@ LABEL_13:
   return v21;
 }
 
-- (id)_createPeriodicPromptIfAllowed:(id)a3
+- (id)_createPeriodicPromptIfAllowed:(id)allowed
 {
   v36 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  allowedCopy = allowed;
   v5 = +[IRPreferences shared];
-  v6 = [v5 liveOnTtrPeriodicDataRequestsEnabled];
-  if (([v6 BOOLValue] & 1) == 0)
+  liveOnTtrPeriodicDataRequestsEnabled = [v5 liveOnTtrPeriodicDataRequestsEnabled];
+  if (([liveOnTtrPeriodicDataRequestsEnabled BOOLValue] & 1) == 0)
   {
 
 LABEL_11:
@@ -388,10 +388,10 @@ LABEL_11:
   }
 
   v7 = +[IRPreferences shared];
-  v8 = [v7 liveOnEnable];
-  v9 = [v8 BOOLValue];
+  liveOnEnable = [v7 liveOnEnable];
+  bOOLValue = [liveOnEnable BOOLValue];
 
-  if (!v9)
+  if (!bOOLValue)
   {
     goto LABEL_11;
   }
@@ -402,8 +402,8 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  v10 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v11 = [v10 objectForKey:@"IRTTRPeriodicLastPopupDate"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v11 = [standardUserDefaults objectForKey:@"IRTTRPeriodicLastPopupDate"];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -422,28 +422,28 @@ LABEL_11:
   [v12 timeIntervalSinceNow];
   v15 = -v14;
   v16 = +[IRPreferences shared];
-  v17 = [v16 ttrPeriodicThrottleTimeSec];
-  [v17 doubleValue];
+  ttrPeriodicThrottleTimeSec = [v16 ttrPeriodicThrottleTimeSec];
+  [ttrPeriodicThrottleTimeSec doubleValue];
   v19 = v18;
 
   if (v19 <= v15)
   {
 LABEL_16:
-    v21 = [(IRTapToRadar *)self _createPeriodicPromptsForMediaEvent:v4];
+    v21 = [(IRTapToRadar *)self _createPeriodicPromptsForMediaEvent:allowedCopy];
     if (v21)
     {
-      v24 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+      standardUserDefaults2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
       v25 = [MEMORY[0x277CBEAA8] now];
-      [v24 setObject:v25 forKey:@"IRTTRPeriodicLastPopupDate"];
+      [standardUserDefaults2 setObject:v25 forKey:@"IRTTRPeriodicLastPopupDate"];
 
       v26 = *MEMORY[0x277D21260];
       if (os_log_type_enabled(*MEMORY[0x277D21260], OS_LOG_TYPE_INFO))
       {
         v27 = v26;
-        v28 = [v21 query];
-        v29 = [v28 title];
+        query = [v21 query];
+        title = [query title];
         v30 = 138412290;
-        v31 = *&v29;
+        v31 = *&title;
         _os_log_impl(&dword_25543D000, v27, OS_LOG_TYPE_INFO, "#ttr, TTR Periodic prompt created: %@", &v30, 0xCu);
       }
     }
@@ -472,30 +472,30 @@ LABEL_12:
   return v21;
 }
 
-- (id)_createErrorEventsPromptsForMediaEvent:(id)a3
+- (id)_createErrorEventsPromptsForMediaEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v5 = objc_opt_new();
   v6 = objc_opt_new();
   [v5 setQuery:v6];
 
-  v7 = [v5 query];
-  [v7 setExtensionIdentifiers:&unk_286768F38];
+  query = [v5 query];
+  [query setExtensionIdentifiers:&unk_286768F38];
 
-  v8 = [v5 query];
-  [v8 setRemoteDeviceSelections:&unk_286768F50];
+  query2 = [v5 query];
+  [query2 setRemoteDeviceSelections:&unk_286768F50];
 
-  v9 = [v5 query];
-  [v9 setRadarDescription:@"Thank you in assisting in Coriander Live On.\nYou can add any relevant information here:\n\n Please do not change description beyond this point.\n#############################\n"];
+  query3 = [v5 query];
+  [query3 setRadarDescription:@"Thank you in assisting in Coriander Live On.\nYou can add any relevant information here:\n\n Please do not change description beyond this point.\n#############################\n"];
 
-  v10 = [v4 eventType];
-  if (v10 == 2)
+  eventType = [eventCopy eventType];
+  if (eventType == 2)
   {
     v11 = @"Coriander - Automatic Route Revoked";
     goto LABEL_5;
   }
 
-  if (v10 == 4)
+  if (eventType == 4)
   {
     v11 = @"Coriander - One-Tap Suggestion Rejected";
 LABEL_5:
@@ -503,8 +503,8 @@ LABEL_5:
     [v5 setPopups:v12];
 
     v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"[Coriander Live On Event Prompt] %@", v11];
-    v14 = [v5 query];
-    [v14 setTitle:v13];
+    query4 = [v5 query];
+    [query4 setTitle:v13];
 
     v15 = v5;
     goto LABEL_7;
@@ -516,25 +516,25 @@ LABEL_7:
   return v15;
 }
 
-- (id)_createPeriodicPromptsForMediaEvent:(id)a3
+- (id)_createPeriodicPromptsForMediaEvent:(id)event
 {
   v18[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  eventCopy = event;
   v4 = objc_opt_new();
   v5 = objc_opt_new();
   [v4 setQuery:v5];
 
-  v6 = [v4 query];
-  [v6 setExtensionIdentifiers:&unk_286768F68];
+  query = [v4 query];
+  [query setExtensionIdentifiers:&unk_286768F68];
 
-  v7 = [v4 query];
-  [v7 setRemoteDeviceSelections:&unk_286768F80];
+  query2 = [v4 query];
+  [query2 setRemoteDeviceSelections:&unk_286768F80];
 
-  v8 = [v4 query];
-  [v8 setRadarDescription:@"Thank you in assisting in Coriander Live On.\nYou can add any relevant information here:\n\n Please do not change description beyond this point.\n#############################\n"];
+  query3 = [v4 query];
+  [query3 setRadarDescription:@"Thank you in assisting in Coriander Live On.\nYou can add any relevant information here:\n\n Please do not change description beyond this point.\n#############################\n"];
 
-  v9 = [v3 eventType];
-  if (v9 != 5 && v9)
+  eventType = [eventCopy eventType];
+  if (eventType != 5 && eventType)
   {
     v14 = 0;
   }
@@ -548,8 +548,8 @@ LABEL_7:
     [v4 setPopups:v11];
 
     v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"[Coriander Live On Periodic Prompt] %@", @"Coriander - Periodic data collection"];
-    v13 = [v4 query];
-    [v13 setTitle:v12];
+    query4 = [v4 query];
+    [query4 setTitle:v12];
 
     v14 = v4;
   }

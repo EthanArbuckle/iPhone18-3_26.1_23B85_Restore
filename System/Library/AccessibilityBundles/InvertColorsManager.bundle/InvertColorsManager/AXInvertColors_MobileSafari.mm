@@ -1,25 +1,25 @@
 @interface AXInvertColors_MobileSafari
-+ (void)installCategories:(id)a3;
-+ (void)performValidations:(id)a3;
++ (void)installCategories:(id)categories;
++ (void)performValidations:(id)validations;
 @end
 
 @implementation AXInvertColors_MobileSafari
 
-+ (void)performValidations:(id)a3
++ (void)performValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"BrowserController" hasInstanceMethod:@"_initSubviews" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"BrowserController" hasInstanceMethod:@"rootViewController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"BrowserRootViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"Application" hasInstanceMethod:@"browserControllers" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"BrowserController" hasInstanceMethod:@"_initSubviews" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"BrowserController" hasInstanceMethod:@"rootViewController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"BrowserRootViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"Application" hasInstanceMethod:@"browserControllers" withFullSignature:{"@", 0}];
 }
 
-+ (void)installCategories:(id)a3
++ (void)installCategories:(id)categories
 {
-  v3 = a3;
-  [v3 installSafeCategory:@"BrowserControllerInvertColorsAccessibility" canInteractWithTargetClass:1];
-  [v3 installSafeCategory:@"SafariApplicationInvertColorsAccessibility" canInteractWithTargetClass:1];
-  [v3 installSafeCategory:@"TabExplanationViewInvertColorsAccessibility" canInteractWithTargetClass:1];
+  categoriesCopy = categories;
+  [categoriesCopy installSafeCategory:@"BrowserControllerInvertColorsAccessibility" canInteractWithTargetClass:1];
+  [categoriesCopy installSafeCategory:@"SafariApplicationInvertColorsAccessibility" canInteractWithTargetClass:1];
+  [categoriesCopy installSafeCategory:@"TabExplanationViewInvertColorsAccessibility" canInteractWithTargetClass:1];
 }
 
 @end

@@ -1,23 +1,23 @@
 @interface RPTWaitTestParameters
-- (RPTWaitTestParameters)initWithTestName:(id)a3 wait:(double)a4 completionHandler:(id)a5;
+- (RPTWaitTestParameters)initWithTestName:(id)name wait:(double)wait completionHandler:(id)handler;
 - (id)composerBlock;
 @end
 
 @implementation RPTWaitTestParameters
 
-- (RPTWaitTestParameters)initWithTestName:(id)a3 wait:(double)a4 completionHandler:(id)a5
+- (RPTWaitTestParameters)initWithTestName:(id)name wait:(double)wait completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  nameCopy = name;
+  handlerCopy = handler;
   v15.receiver = self;
   v15.super_class = RPTWaitTestParameters;
   v10 = [(RPTWaitTestParameters *)&v15 init];
   v11 = v10;
   if (v10)
   {
-    [(RPTWaitTestParameters *)v10 setTestName:v8];
-    v11->_waitDuration = a4;
-    v12 = [v9 copy];
+    [(RPTWaitTestParameters *)v10 setTestName:nameCopy];
+    v11->_waitDuration = wait;
+    v12 = [handlerCopy copy];
     completionHandler = v11->_completionHandler;
     v11->_completionHandler = v12;
   }

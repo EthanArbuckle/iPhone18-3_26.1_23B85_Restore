@@ -1,31 +1,31 @@
 @interface HFItemManagerBatchedDelegateAdapter
 - (BOOL)hasUncommittedBatchingReasons;
 - (HFItemManager)itemManager;
-- (HFItemManagerBatchedDelegateAdapter)initWithItemManager:(id)a3 readPolicy:(id)a4;
+- (HFItemManagerBatchedDelegateAdapter)initWithItemManager:(id)manager readPolicy:(id)policy;
 - (SEL)batchedSenderSelector;
-- (id)_itemProvidersToReloadForInvalidationReasons:(id)a3;
-- (id)commitBatchWithReason:(id)a3 senderSelector:(SEL)a4;
-- (id)requestUpdateForItems:(id)a3 itemProviderInvalidationReasons:(id)a4 modifiedHome:(id)a5 senderSelector:(SEL)a6;
+- (id)_itemProvidersToReloadForInvalidationReasons:(id)reasons;
+- (id)commitBatchWithReason:(id)reason senderSelector:(SEL)selector;
+- (id)requestUpdateForItems:(id)items itemProviderInvalidationReasons:(id)reasons modifiedHome:(id)home senderSelector:(SEL)selector;
 - (void)_executeBatch;
 - (void)_reset;
-- (void)beginBatchWithReason:(id)a3;
-- (void)setBatchedSenderSelector:(SEL)a3;
+- (void)beginBatchWithReason:(id)reason;
+- (void)setBatchedSenderSelector:(SEL)selector;
 @end
 
 @implementation HFItemManagerBatchedDelegateAdapter
 
-- (HFItemManagerBatchedDelegateAdapter)initWithItemManager:(id)a3 readPolicy:(id)a4
+- (HFItemManagerBatchedDelegateAdapter)initWithItemManager:(id)manager readPolicy:(id)policy
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  policyCopy = policy;
   v23.receiver = self;
   v23.super_class = HFItemManagerBatchedDelegateAdapter;
   v8 = [(HFItemManagerBatchedDelegateAdapter *)&v23 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_itemManager, v6);
-    objc_storeStrong(&v9->_readPolicy, a4);
+    objc_storeWeak(&v8->_itemManager, managerCopy);
+    objc_storeStrong(&v9->_readPolicy, policy);
     v10 = [MEMORY[0x277CBEB58] set];
     uncommittedBatchingReasons = v9->_uncommittedBatchingReasons;
     v9->_uncommittedBatchingReasons = v10;
@@ -46,7 +46,7 @@
     finishExecutingBatchFuture = v9->_finishExecutingBatchFuture;
     v9->_finishExecutingBatchFuture = v18;
 
-    v20 = [[HFItemManagerMessageBatchCoordinator alloc] initWithItemManager:v6 delegateAdapter:v9];
+    v20 = [[HFItemManagerMessageBatchCoordinator alloc] initWithItemManager:managerCopy delegateAdapter:v9];
     batchCoordinator = v9->_batchCoordinator;
     v9->_batchCoordinator = v20;
   }
@@ -54,33 +54,33 @@
   return v9;
 }
 
-- (void)beginBatchWithReason:(id)a3
+- (void)beginBatchWithReason:(id)reason
 {
-  v5 = a3;
-  v6 = [(HFItemManagerBatchedDelegateAdapter *)self uncommittedBatchingReasons];
-  v7 = [v6 count];
+  reasonCopy = reason;
+  uncommittedBatchingReasons = [(HFItemManagerBatchedDelegateAdapter *)self uncommittedBatchingReasons];
+  v7 = [uncommittedBatchingReasons count];
 
   if (!v7)
   {
-    v8 = [(HFItemManagerBatchedDelegateAdapter *)self startExecutingBatchFuture];
+    startExecutingBatchFuture = [(HFItemManagerBatchedDelegateAdapter *)self startExecutingBatchFuture];
     objc_initWeak(&location, self);
-    v9 = [MEMORY[0x277D2C938] mainThreadScheduler];
+    mainThreadScheduler = [MEMORY[0x277D2C938] mainThreadScheduler];
     v13 = MEMORY[0x277D85DD0];
     v14 = 3221225472;
     v15 = __60__HFItemManagerBatchedDelegateAdapter_beginBatchWithReason___block_invoke;
     v16 = &unk_277DF3AB8;
     objc_copyWeak(v18, &location);
-    v10 = v8;
+    v10 = startExecutingBatchFuture;
     v17 = v10;
     v18[1] = a2;
-    v11 = [v9 afterDelay:&v13 performBlock:15.0];
+    v11 = [mainThreadScheduler afterDelay:&v13 performBlock:15.0];
 
     objc_destroyWeak(v18);
     objc_destroyWeak(&location);
   }
 
   v12 = [(HFItemManagerBatchedDelegateAdapter *)self uncommittedBatchingReasons:v13];
-  [v12 addObject:v5];
+  [v12 addObject:reasonCopy];
 }
 
 void __60__HFItemManagerBatchedDelegateAdapter_beginBatchWithReason___block_invoke(uint64_t a1)
@@ -134,12 +134,12 @@ void __60__HFItemManagerBatchedDelegateAdapter_beginBatchWithReason___block_invo
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (id)commitBatchWithReason:(id)a3 senderSelector:(SEL)a4
+- (id)commitBatchWithReason:(id)reason senderSelector:(SEL)selector
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(HFItemManagerBatchedDelegateAdapter *)self uncommittedBatchingReasons];
-  v8 = [v7 containsObject:v6];
+  reasonCopy = reason;
+  uncommittedBatchingReasons = [(HFItemManagerBatchedDelegateAdapter *)self uncommittedBatchingReasons];
+  v8 = [uncommittedBatchingReasons containsObject:reasonCopy];
 
   if ((v8 & 1) == 0)
   {
@@ -147,92 +147,92 @@ void __60__HFItemManagerBatchedDelegateAdapter_beginBatchWithReason___block_invo
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       v16 = 138412290;
-      v17 = v6;
+      v17 = reasonCopy;
       _os_log_error_impl(&dword_20D9BF000, v9, OS_LOG_TYPE_ERROR, "Requested to commit a HFItemManagerBatchedDelegateAdapter batch with a reason that wasn't in flight: %@", &v16, 0xCu);
     }
   }
 
-  v10 = [(HFItemManagerBatchedDelegateAdapter *)self uncommittedBatchingReasons];
-  [v10 removeObject:v6];
+  uncommittedBatchingReasons2 = [(HFItemManagerBatchedDelegateAdapter *)self uncommittedBatchingReasons];
+  [uncommittedBatchingReasons2 removeObject:reasonCopy];
 
-  v11 = [(HFItemManagerBatchedDelegateAdapter *)self finishExecutingBatchFuture];
-  v12 = [(HFItemManagerBatchedDelegateAdapter *)self uncommittedBatchingReasons];
-  v13 = [v12 count];
+  finishExecutingBatchFuture = [(HFItemManagerBatchedDelegateAdapter *)self finishExecutingBatchFuture];
+  uncommittedBatchingReasons3 = [(HFItemManagerBatchedDelegateAdapter *)self uncommittedBatchingReasons];
+  v13 = [uncommittedBatchingReasons3 count];
 
   if (!v13)
   {
-    [(HFItemManagerBatchedDelegateAdapter *)self setBatchedSenderSelector:a4];
+    [(HFItemManagerBatchedDelegateAdapter *)self setBatchedSenderSelector:selector];
     [(HFItemManagerBatchedDelegateAdapter *)self _executeBatch];
   }
 
   v14 = *MEMORY[0x277D85DE8];
 
-  return v11;
+  return finishExecutingBatchFuture;
 }
 
 - (BOOL)hasUncommittedBatchingReasons
 {
-  v2 = [(HFItemManagerBatchedDelegateAdapter *)self uncommittedBatchingReasons];
-  v3 = [v2 count] != 0;
+  uncommittedBatchingReasons = [(HFItemManagerBatchedDelegateAdapter *)self uncommittedBatchingReasons];
+  v3 = [uncommittedBatchingReasons count] != 0;
 
   return v3;
 }
 
-- (id)requestUpdateForItems:(id)a3 itemProviderInvalidationReasons:(id)a4 modifiedHome:(id)a5 senderSelector:(SEL)a6
+- (id)requestUpdateForItems:(id)items itemProviderInvalidationReasons:(id)reasons modifiedHome:(id)home senderSelector:(SEL)selector
 {
   v47 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (![v10 count] && !objc_msgSend(v11, "count"))
+  itemsCopy = items;
+  reasonsCopy = reasons;
+  homeCopy = home;
+  if (![itemsCopy count] && !objc_msgSend(reasonsCopy, "count"))
   {
 LABEL_16:
-    v20 = [MEMORY[0x277D2C900] futureWithNoResult];
+    futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
     goto LABEL_17;
   }
 
-  v13 = [(HFItemManagerBatchedDelegateAdapter *)self itemManager];
-  v14 = [v13 home];
+  itemManager = [(HFItemManagerBatchedDelegateAdapter *)self itemManager];
+  home = [itemManager home];
 
-  if (!v14)
+  if (!home)
   {
     v28 = HFLogForCategory(0x2CuLL);
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
     {
-      v31 = NSStringFromSelector(a6);
+      v31 = NSStringFromSelector(selector);
       v37 = 138412290;
-      v38 = v31;
+      selfCopy = v31;
       _os_log_error_impl(&dword_20D9BF000, v28, OS_LOG_TYPE_ERROR, "Request to update for %@, but no home set", &v37, 0xCu);
     }
 
     goto LABEL_16;
   }
 
-  if (v12)
+  if (homeCopy)
   {
-    v15 = [(HFItemManagerBatchedDelegateAdapter *)self itemManager];
-    v16 = [v15 home];
+    itemManager2 = [(HFItemManagerBatchedDelegateAdapter *)self itemManager];
+    home2 = [itemManager2 home];
 
-    if (v16 != v12)
+    if (home2 != homeCopy)
     {
       v17 = HFLogForCategory(0x2CuLL);
       if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
       {
-        v32 = NSStringFromSelector(a6);
-        v33 = [v12 hf_prettyDescription];
-        v34 = [(HFItemManagerBatchedDelegateAdapter *)self itemManager];
-        v35 = [v34 home];
-        v36 = [v35 hf_prettyDescription];
+        v32 = NSStringFromSelector(selector);
+        hf_prettyDescription = [homeCopy hf_prettyDescription];
+        itemManager3 = [(HFItemManagerBatchedDelegateAdapter *)self itemManager];
+        home3 = [itemManager3 home];
+        hf_prettyDescription2 = [home3 hf_prettyDescription];
         v37 = 138413314;
-        v38 = self;
+        selfCopy = self;
         v39 = 2112;
         v40 = v32;
         v41 = 2112;
-        v42 = v33;
+        v42 = hf_prettyDescription;
         v43 = 2112;
-        v44 = v36;
+        v44 = hf_prettyDescription2;
         v45 = 2112;
-        v46 = v10;
+        v46 = itemsCopy;
         _os_log_error_impl(&dword_20D9BF000, v17, OS_LOG_TYPE_ERROR, "Request %@ to update for %@, but home does not match. modifiedHome: %@ itemManager.home: %@. itemsToUpdate: %@", &v37, 0x34u);
       }
 
@@ -240,28 +240,28 @@ LABEL_16:
     }
   }
 
-  v18 = [(HFItemManagerBatchedDelegateAdapter *)self batchedItemsToUpdate];
-  [v18 unionSet:v10];
+  batchedItemsToUpdate = [(HFItemManagerBatchedDelegateAdapter *)self batchedItemsToUpdate];
+  [batchedItemsToUpdate unionSet:itemsCopy];
 
-  v19 = [(HFItemManagerBatchedDelegateAdapter *)self batchedItemProviderInvalidationReasons];
-  [v19 addObjectsFromArray:v11];
+  batchedItemProviderInvalidationReasons = [(HFItemManagerBatchedDelegateAdapter *)self batchedItemProviderInvalidationReasons];
+  [batchedItemProviderInvalidationReasons addObjectsFromArray:reasonsCopy];
 
-  [(HFItemManagerBatchedDelegateAdapter *)self setBatchedSenderSelector:a6];
-  v20 = [(HFItemManagerBatchedDelegateAdapter *)self finishExecutingBatchFuture];
-  v21 = [(HFItemManagerBatchedDelegateAdapter *)self uncommittedBatchingReasons];
-  v22 = [v21 count];
+  [(HFItemManagerBatchedDelegateAdapter *)self setBatchedSenderSelector:selector];
+  futureWithNoResult = [(HFItemManagerBatchedDelegateAdapter *)self finishExecutingBatchFuture];
+  uncommittedBatchingReasons = [(HFItemManagerBatchedDelegateAdapter *)self uncommittedBatchingReasons];
+  v22 = [uncommittedBatchingReasons count];
 
   if (v22)
   {
     v23 = HFLogForCategory(0x2CuLL);
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
     {
-      v24 = NSStringFromSelector(a6);
-      v25 = [(HFItemManagerBatchedDelegateAdapter *)self uncommittedBatchingReasons];
-      v26 = [v25 allObjects];
-      v27 = [v26 componentsJoinedByString:{@", "}];
+      v24 = NSStringFromSelector(selector);
+      uncommittedBatchingReasons2 = [(HFItemManagerBatchedDelegateAdapter *)self uncommittedBatchingReasons];
+      allObjects = [uncommittedBatchingReasons2 allObjects];
+      v27 = [allObjects componentsJoinedByString:{@", "}];
       v37 = 138412546;
-      v38 = v24;
+      selfCopy = v24;
       v39 = 2112;
       v40 = v27;
       _os_log_impl(&dword_20D9BF000, v23, OS_LOG_TYPE_DEFAULT, "Deferring update for: %@ because there are uncommitted delegate batching reasons: %@", &v37, 0x16u);
@@ -277,21 +277,21 @@ LABEL_17:
 
   v29 = *MEMORY[0x277D85DE8];
 
-  return v20;
+  return futureWithNoResult;
 }
 
-- (id)_itemProvidersToReloadForInvalidationReasons:(id)a3
+- (id)_itemProvidersToReloadForInvalidationReasons:(id)reasons
 {
-  v4 = a3;
-  v5 = [(HFItemManagerBatchedDelegateAdapter *)self itemManager];
-  v6 = [v5 itemProviders];
+  reasonsCopy = reasons;
+  itemManager = [(HFItemManagerBatchedDelegateAdapter *)self itemManager];
+  itemProviders = [itemManager itemProviders];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __84__HFItemManagerBatchedDelegateAdapter__itemProvidersToReloadForInvalidationReasons___block_invoke;
   v10[3] = &unk_277DF6898;
-  v11 = v4;
-  v7 = v4;
-  v8 = [v6 na_filter:v10];
+  v11 = reasonsCopy;
+  v7 = reasonsCopy;
+  v8 = [itemProviders na_filter:v10];
 
   return v8;
 }
@@ -307,54 +307,54 @@ uint64_t __84__HFItemManagerBatchedDelegateAdapter__itemProvidersToReloadForInva
 - (void)_executeBatch
 {
   v22[2] = *MEMORY[0x277D85DE8];
-  v3 = [(HFItemManagerBatchedDelegateAdapter *)self startExecutingBatchFuture];
+  startExecutingBatchFuture = [(HFItemManagerBatchedDelegateAdapter *)self startExecutingBatchFuture];
   v4 = NAEmptyResult();
-  [v3 finishWithResult:v4];
+  [startExecutingBatchFuture finishWithResult:v4];
 
-  v5 = [(HFItemManagerBatchedDelegateAdapter *)self batchedItemsToUpdate];
-  v6 = [v5 copy];
+  batchedItemsToUpdate = [(HFItemManagerBatchedDelegateAdapter *)self batchedItemsToUpdate];
+  v6 = [batchedItemsToUpdate copy];
 
-  v7 = [(HFItemManagerBatchedDelegateAdapter *)self batchedItemProviderInvalidationReasons];
-  v8 = [v7 copy];
+  batchedItemProviderInvalidationReasons = [(HFItemManagerBatchedDelegateAdapter *)self batchedItemProviderInvalidationReasons];
+  v8 = [batchedItemProviderInvalidationReasons copy];
 
-  v9 = [(HFItemManagerBatchedDelegateAdapter *)self batchedSenderSelector];
-  v10 = [(HFItemManagerBatchedDelegateAdapter *)self finishExecutingBatchFuture];
+  batchedSenderSelector = [(HFItemManagerBatchedDelegateAdapter *)self batchedSenderSelector];
+  finishExecutingBatchFuture = [(HFItemManagerBatchedDelegateAdapter *)self finishExecutingBatchFuture];
   [(HFItemManagerBatchedDelegateAdapter *)self _reset];
   v11 = [(HFItemManagerBatchedDelegateAdapter *)self _itemProvidersToReloadForInvalidationReasons:v8];
   if ([v11 count])
   {
-    v12 = [(HFItemManagerBatchedDelegateAdapter *)self itemManager];
-    v13 = [(HFItemManagerBatchedDelegateAdapter *)self readPolicy];
-    v14 = [v12 _reloadItemProviders:v11 updateItems:v6 shouldUpdateExistingItems:0 senderSelector:v9 readPolicy:v13];
+    itemManager = [(HFItemManagerBatchedDelegateAdapter *)self itemManager];
+    readPolicy = [(HFItemManagerBatchedDelegateAdapter *)self readPolicy];
+    v14 = [itemManager _reloadItemProviders:v11 updateItems:v6 shouldUpdateExistingItems:0 senderSelector:batchedSenderSelector readPolicy:readPolicy];
   }
 
   else
   {
     if (![v6 count])
     {
-      [v10 finishWithNoResult];
+      [finishExecutingBatchFuture finishWithNoResult];
       goto LABEL_6;
     }
 
-    v12 = objc_opt_new();
-    [v12 setSenderSelector:v9];
-    v15 = [(HFItemManagerBatchedDelegateAdapter *)self readPolicy];
-    [v12 setReadPolicy:v15];
+    itemManager = objc_opt_new();
+    [itemManager setSenderSelector:batchedSenderSelector];
+    readPolicy2 = [(HFItemManagerBatchedDelegateAdapter *)self readPolicy];
+    [itemManager setReadPolicy:readPolicy2];
 
     v21[0] = HFItemUpdateOptionFullUpdateIndicated;
     v21[1] = HFItemUpdateOptionDelegateDispatched;
     v22[0] = MEMORY[0x277CBEC38];
     v22[1] = MEMORY[0x277CBEC38];
     v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v22 forKeys:v21 count:2];
-    [v12 setUpdateOptions:v16];
+    [itemManager setUpdateOptions:v16];
 
-    v13 = [(HFItemManagerBatchedDelegateAdapter *)self itemManager];
-    v14 = [v13 _updateResultsForItems:v6 context:v12];
+    readPolicy = [(HFItemManagerBatchedDelegateAdapter *)self itemManager];
+    v14 = [readPolicy _updateResultsForItems:v6 context:itemManager];
   }
 
   v17 = v14;
-  v18 = [v10 completionHandlerAdapter];
-  v19 = [v17 addCompletionBlock:v18];
+  completionHandlerAdapter = [finishExecutingBatchFuture completionHandlerAdapter];
+  v19 = [v17 addCompletionBlock:completionHandlerAdapter];
 
 LABEL_6:
   v20 = *MEMORY[0x277D85DE8];
@@ -362,11 +362,11 @@ LABEL_6:
 
 - (void)_reset
 {
-  v3 = [(HFItemManagerBatchedDelegateAdapter *)self batchedItemsToUpdate];
-  [v3 removeAllObjects];
+  batchedItemsToUpdate = [(HFItemManagerBatchedDelegateAdapter *)self batchedItemsToUpdate];
+  [batchedItemsToUpdate removeAllObjects];
 
-  v4 = [(HFItemManagerBatchedDelegateAdapter *)self batchedItemProviderInvalidationReasons];
-  [v4 removeAllObjects];
+  batchedItemProviderInvalidationReasons = [(HFItemManagerBatchedDelegateAdapter *)self batchedItemProviderInvalidationReasons];
+  [batchedItemProviderInvalidationReasons removeAllObjects];
 
   [(HFItemManagerBatchedDelegateAdapter *)self setBatchedSenderSelector:0];
   v5 = objc_alloc_init(MEMORY[0x277D2C900]);
@@ -396,19 +396,19 @@ LABEL_6:
   }
 }
 
-- (void)setBatchedSenderSelector:(SEL)a3
+- (void)setBatchedSenderSelector:(SEL)selector
 {
-  if (a3)
+  if (selector)
   {
-    v3 = a3;
+    selectorCopy = selector;
   }
 
   else
   {
-    v3 = 0;
+    selectorCopy = 0;
   }
 
-  self->_batchedSenderSelector = v3;
+  self->_batchedSenderSelector = selectorCopy;
 }
 
 @end

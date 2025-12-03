@@ -12,11 +12,11 @@
 - (uint64_t)mad_saveChangesWithError:()MediaAnalysis
 {
   v23 = *MEMORY[0x1E69E9840];
-  if ([a1 hasChanges])
+  if ([self hasChanges])
   {
     v5 = mach_continuous_time();
     v16 = 0;
-    v6 = [a1 save:&v16];
+    v6 = [self save:&v16];
     v7 = v16;
     if (v6)
     {
@@ -29,13 +29,13 @@
         v11 = qos_class_self();
         v12 = VCPMAQoSDescription(v11);
         v13 = v12;
-        v14 = [v12 UTF8String];
+        uTF8String = [v12 UTF8String];
         *buf = 134349570;
         v18 = v5;
         v19 = 2082;
         v20 = "SaveToDisk";
         v21 = 2082;
-        v22 = v14;
+        v22 = uTF8String;
         _os_signpost_emit_with_name_impl(&dword_1C9B70000, v8, OS_SIGNPOST_EVENT, v10, "CoreDataPersistence", "%{public, signpost.description:begin_time}llu Type=%{public, signpost.telemetry:string1}s QoS=%{public, signpost.telemetry:string2}s  enableTelemetry=YES ", buf, 0x20u);
       }
 
@@ -96,9 +96,9 @@
   v16 = &v24;
   v7 = v6;
   v17 = &v18;
-  v14 = a1;
+  selfCopy = self;
   v15 = v7;
-  [a1 performBlockAndWait:&v10];
+  [self performBlockAndWait:&v10];
   v8 = *(v25 + 24);
   if (a4 && (v25[3] & 1) == 0)
   {
@@ -119,7 +119,7 @@
   v7 = [objc_alloc(MEMORY[0x1E695D538]) initWithFetchRequest:v6];
   [v7 setResultType:1];
   v16 = 0;
-  v8 = [a1 executeRequest:v7 error:&v16];
+  v8 = [self executeRequest:v7 error:&v16];
   v9 = v16;
   if (v9)
   {
@@ -135,18 +135,18 @@
 
   else
   {
-    v11 = [v8 result];
+    result = [v8 result];
     v12 = MEMORY[0x1E695D628];
     v18 = *MEMORY[0x1E695D2F8];
-    v19 = v11;
+    v19 = result;
     v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v19 forKeys:&v18 count:1];
-    v17 = a1;
-    v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v17 count:1];
+    selfCopy = self;
+    v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:&selfCopy count:1];
     [v12 mergeChangesFromRemoteContextSave:v13 intoContexts:v14];
 
     if (a4)
     {
-      *a4 = [v11 count];
+      *a4 = [result count];
     }
 
     v10 = 0;
@@ -178,14 +178,14 @@
   v18[1] = 3221225472;
   v18[2] = __82__NSManagedObjectContext_MediaAnalysis__mad_insertBatch_entityName_insertedCount___block_invoke;
   v18[3] = &unk_1E834DB60;
-  v18[4] = a1;
+  v18[4] = self;
   v11 = v10;
   v19 = v11;
   v20 = &v22;
   v21 = &v28;
   v12 = (v23 + 5);
   obj = v23[5];
-  [a1 mad_performAndSaveChanges:v18 error:&obj];
+  [self mad_performAndSaveChanges:v18 error:&obj];
   objc_storeStrong(v12, obj);
   if (v23[5])
   {
@@ -225,8 +225,8 @@
   v2[1] = 3221225472;
   v2[2] = __50__NSManagedObjectContext_MediaAnalysis__mad_reset__block_invoke;
   v2[3] = &unk_1E834BDC0;
-  v2[4] = a1;
-  return [a1 performBlockAndWait:v2];
+  v2[4] = self;
+  return [self performBlockAndWait:v2];
 }
 
 - (uint64_t)mad_hasChanges
@@ -239,9 +239,9 @@
   v3[1] = 3221225472;
   v3[2] = __55__NSManagedObjectContext_MediaAnalysis__mad_hasChanges__block_invoke;
   v3[3] = &unk_1E834C4B0;
-  v3[4] = a1;
+  v3[4] = self;
   v3[5] = &v4;
-  [a1 performBlockAndWait:v3];
+  [self performBlockAndWait:v3];
   v1 = *(v5 + 24);
   _Block_object_dispose(&v4, 8);
   return v1;

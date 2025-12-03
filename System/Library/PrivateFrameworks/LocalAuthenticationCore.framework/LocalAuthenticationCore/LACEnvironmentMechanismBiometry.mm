@@ -1,19 +1,19 @@
 @interface LACEnvironmentMechanismBiometry
-- (BOOL)isEqual:(id)a3;
-- (LACEnvironmentMechanismBiometry)initWithAvailabilityError:(id)a3 biometryType:(int64_t)a4 enrolled:(BOOL)a5 lockedOut:(BOOL)a6 stateHash:(id)a7 sensorInaccessible:(BOOL)a8 approvalState:(int64_t)a9;
-- (LACEnvironmentMechanismBiometry)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (LACEnvironmentMechanismBiometry)initWithAvailabilityError:(id)error biometryType:(int64_t)type enrolled:(BOOL)enrolled lockedOut:(BOOL)out stateHash:(id)hash sensorInaccessible:(BOOL)inaccessible approvalState:(int64_t)state;
+- (LACEnvironmentMechanismBiometry)initWithCoder:(id)coder;
 - (id)descriptionDetails;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LACEnvironmentMechanismBiometry
 
-- (LACEnvironmentMechanismBiometry)initWithAvailabilityError:(id)a3 biometryType:(int64_t)a4 enrolled:(BOOL)a5 lockedOut:(BOOL)a6 stateHash:(id)a7 sensorInaccessible:(BOOL)a8 approvalState:(int64_t)a9
+- (LACEnvironmentMechanismBiometry)initWithAvailabilityError:(id)error biometryType:(int64_t)type enrolled:(BOOL)enrolled lockedOut:(BOOL)out stateHash:(id)hash sensorInaccessible:(BOOL)inaccessible approvalState:(int64_t)state
 {
-  v16 = a7;
-  v17 = a3;
-  v18 = NSLocalizedStringFromLACBiometryType(a4);
-  switch(a4)
+  hashCopy = hash;
+  errorCopy = error;
+  v18 = NSLocalizedStringFromLACBiometryType(type);
+  switch(type)
   {
     case 1:
       v19 = @"touchid";
@@ -31,16 +31,16 @@
 
   v22.receiver = self;
   v22.super_class = LACEnvironmentMechanismBiometry;
-  v20 = [(LACEnvironmentMechanism *)&v22 initWithAvailabilityError:v17 localizedName:v18 iconSystemName:v19];
+  v20 = [(LACEnvironmentMechanism *)&v22 initWithAvailabilityError:errorCopy localizedName:v18 iconSystemName:v19];
 
   if (v20)
   {
-    v20->_biometryType = a4;
-    v20->_enrolled = a5;
-    v20->_lockedOut = a6;
-    objc_storeStrong(&v20->_stateHash, a7);
-    v20->_sensorInaccessible = a8;
-    v20->_approvalState = a9;
+    v20->_biometryType = type;
+    v20->_enrolled = enrolled;
+    v20->_lockedOut = out;
+    objc_storeStrong(&v20->_stateHash, hash);
+    v20->_sensorInaccessible = inaccessible;
+    v20->_approvalState = state;
   }
 
   return v20;
@@ -78,54 +78,54 @@ LABEL_6:
   v6 = *v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v17.receiver = self;
   v17.super_class = LACEnvironmentMechanismBiometry;
-  v4 = a3;
-  [(LACEnvironmentMechanism *)&v17 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(LACEnvironmentMechanism *)&v17 encodeWithCoder:coderCopy];
   v5 = [(LACEnvironmentMechanismBiometry *)self biometryType:v17.receiver];
   v6 = NSStringFromSelector(sel_biometryType);
-  [v4 encodeInteger:v5 forKey:v6];
+  [coderCopy encodeInteger:v5 forKey:v6];
 
-  v7 = [(LACEnvironmentMechanismBiometry *)self enrolled];
+  enrolled = [(LACEnvironmentMechanismBiometry *)self enrolled];
   v8 = NSStringFromSelector(sel_enrolled);
-  [v4 encodeBool:v7 forKey:v8];
+  [coderCopy encodeBool:enrolled forKey:v8];
 
-  v9 = [(LACEnvironmentMechanismBiometry *)self lockedOut];
+  lockedOut = [(LACEnvironmentMechanismBiometry *)self lockedOut];
   v10 = NSStringFromSelector(sel_lockedOut);
-  [v4 encodeBool:v9 forKey:v10];
+  [coderCopy encodeBool:lockedOut forKey:v10];
 
-  v11 = [(LACEnvironmentMechanismBiometry *)self stateHash];
+  stateHash = [(LACEnvironmentMechanismBiometry *)self stateHash];
   v12 = NSStringFromSelector(sel_stateHash);
-  [v4 encodeObject:v11 forKey:v12];
+  [coderCopy encodeObject:stateHash forKey:v12];
 
-  v13 = [(LACEnvironmentMechanismBiometry *)self sensorInaccessible];
+  sensorInaccessible = [(LACEnvironmentMechanismBiometry *)self sensorInaccessible];
   v14 = NSStringFromSelector(sel_sensorInaccessible);
-  [v4 encodeBool:v13 forKey:v14];
+  [coderCopy encodeBool:sensorInaccessible forKey:v14];
 
-  v15 = [(LACEnvironmentMechanismBiometry *)self approvalState];
+  approvalState = [(LACEnvironmentMechanismBiometry *)self approvalState];
   v16 = NSStringFromSelector(sel_approvalState);
-  [v4 encodeInt:v15 forKey:v16];
+  [coderCopy encodeInt:approvalState forKey:v16];
 }
 
-- (LACEnvironmentMechanismBiometry)initWithCoder:(id)a3
+- (LACEnvironmentMechanismBiometry)initWithCoder:(id)coder
 {
-  v3 = a3;
+  coderCopy = coder;
   v20 = NSStringFromSelector(sel_availabilityError);
-  v17 = [v3 decodeObjectForKey:v20];
+  v17 = [coderCopy decodeObjectForKey:v20];
   v19 = NSStringFromSelector(sel_biometryType);
-  v16 = [v3 decodeIntegerForKey:v19];
+  v16 = [coderCopy decodeIntegerForKey:v19];
   v4 = NSStringFromSelector(sel_enrolled);
-  v15 = [v3 decodeBoolForKey:v4];
+  v15 = [coderCopy decodeBoolForKey:v4];
   v5 = NSStringFromSelector(sel_lockedOut);
-  v6 = [v3 decodeBoolForKey:v5];
+  v6 = [coderCopy decodeBoolForKey:v5];
   v7 = NSStringFromSelector(sel_stateHash);
-  v8 = [v3 decodeObjectForKey:v7];
+  v8 = [coderCopy decodeObjectForKey:v7];
   v9 = NSStringFromSelector(sel_sensorInaccessible);
-  v10 = [v3 decodeBoolForKey:v9];
+  v10 = [coderCopy decodeBoolForKey:v9];
   v11 = NSStringFromSelector(sel_approvalState);
-  v12 = [v3 decodeIntForKey:v11];
+  v12 = [coderCopy decodeIntForKey:v11];
 
   v13 = [(LACEnvironmentMechanismBiometry *)self initWithAvailabilityError:v17 biometryType:v16 enrolled:v15 lockedOut:v6 stateHash:v8 sensorInaccessible:v10 approvalState:v12];
   return v13;
@@ -163,10 +163,10 @@ LABEL_6:
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     LOBYTE(v15) = 1;
     goto LABEL_13;
@@ -174,49 +174,49 @@ LABEL_6:
 
   v18.receiver = self;
   v18.super_class = LACEnvironmentMechanismBiometry;
-  if (![(LACEnvironmentMechanism *)&v18 isEqual:v4]|| (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  if (![(LACEnvironmentMechanism *)&v18 isEqual:equalCopy]|| (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     LOBYTE(v15) = 0;
     goto LABEL_13;
   }
 
-  v5 = v4;
-  v6 = [(LACEnvironmentMechanismBiometry *)self biometryType];
-  if (v6 != [(LACEnvironmentMechanismBiometry *)v5 biometryType])
+  v5 = equalCopy;
+  biometryType = [(LACEnvironmentMechanismBiometry *)self biometryType];
+  if (biometryType != [(LACEnvironmentMechanismBiometry *)v5 biometryType])
   {
     goto LABEL_9;
   }
 
-  v7 = [(LACEnvironmentMechanismBiometry *)self enrolled];
-  if (v7 != [(LACEnvironmentMechanismBiometry *)v5 enrolled])
+  enrolled = [(LACEnvironmentMechanismBiometry *)self enrolled];
+  if (enrolled != [(LACEnvironmentMechanismBiometry *)v5 enrolled])
   {
     goto LABEL_9;
   }
 
-  v8 = [(LACEnvironmentMechanismBiometry *)self lockedOut];
-  if (v8 != [(LACEnvironmentMechanismBiometry *)v5 lockedOut])
+  lockedOut = [(LACEnvironmentMechanismBiometry *)self lockedOut];
+  if (lockedOut != [(LACEnvironmentMechanismBiometry *)v5 lockedOut])
   {
     goto LABEL_9;
   }
 
-  v9 = [(LACEnvironmentMechanismBiometry *)self stateHash];
-  v10 = [(LACEnvironmentMechanismBiometry *)v5 stateHash];
-  v11 = v10;
-  if (v9 == v10)
+  stateHash = [(LACEnvironmentMechanismBiometry *)self stateHash];
+  stateHash2 = [(LACEnvironmentMechanismBiometry *)v5 stateHash];
+  v11 = stateHash2;
+  if (stateHash == stateHash2)
   {
 
     goto LABEL_15;
   }
 
-  v12 = [(LACEnvironmentMechanismBiometry *)self stateHash];
-  v13 = [(LACEnvironmentMechanismBiometry *)v5 stateHash];
-  v14 = [v12 isEqualToData:v13];
+  stateHash3 = [(LACEnvironmentMechanismBiometry *)self stateHash];
+  stateHash4 = [(LACEnvironmentMechanismBiometry *)v5 stateHash];
+  v14 = [stateHash3 isEqualToData:stateHash4];
 
   if (v14)
   {
 LABEL_15:
-    v17 = [(LACEnvironmentMechanismBiometry *)self sensorInaccessible];
-    v15 = v17 ^ [(LACEnvironmentMechanismBiometry *)v5 sensorInaccessible]^ 1;
+    sensorInaccessible = [(LACEnvironmentMechanismBiometry *)self sensorInaccessible];
+    v15 = sensorInaccessible ^ [(LACEnvironmentMechanismBiometry *)v5 sensorInaccessible]^ 1;
     goto LABEL_10;
   }
 

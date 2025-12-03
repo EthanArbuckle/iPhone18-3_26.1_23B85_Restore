@@ -1,30 +1,30 @@
 @interface ASKLoadBundleResourceOperation
 + (id)_searchBundles;
-- (ASKLoadBundleResourceOperation)initWithResourceName:(id)a3;
-- (ASKLoadBundleResourceOperation)initWithURLRequest:(id)a3 URLSession:(id)a4 dataConsumer:(id)a5;
+- (ASKLoadBundleResourceOperation)initWithResourceName:(id)name;
+- (ASKLoadBundleResourceOperation)initWithURLRequest:(id)request URLSession:(id)session dataConsumer:(id)consumer;
 - (void)main;
 @end
 
 @implementation ASKLoadBundleResourceOperation
 
-- (ASKLoadBundleResourceOperation)initWithURLRequest:(id)a3 URLSession:(id)a4 dataConsumer:(id)a5
+- (ASKLoadBundleResourceOperation)initWithURLRequest:(id)request URLSession:(id)session dataConsumer:(id)consumer
 {
-  v6 = [a3 URL];
-  v7 = [v6 host];
-  v8 = [(ASKLoadBundleResourceOperation *)self initWithResourceName:v7];
+  v6 = [request URL];
+  host = [v6 host];
+  v8 = [(ASKLoadBundleResourceOperation *)self initWithResourceName:host];
 
   return v8;
 }
 
-- (ASKLoadBundleResourceOperation)initWithResourceName:(id)a3
+- (ASKLoadBundleResourceOperation)initWithResourceName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v9.receiver = self;
   v9.super_class = ASKLoadBundleResourceOperation;
   v5 = [(ASKLoadBundleResourceOperation *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [nameCopy copy];
     resourceName = v5->_resourceName;
     v5->_resourceName = v6;
   }
@@ -63,8 +63,8 @@ void __48__ASKLoadBundleResourceOperation__searchBundles__block_invoke()
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v3 = [objc_opt_class() _searchBundles];
-  v4 = [v3 countByEnumeratingWithState:&v20 objects:v26 count:16];
+  _searchBundles = [objc_opt_class() _searchBundles];
+  v4 = [_searchBundles countByEnumeratingWithState:&v20 objects:v26 count:16];
   if (v4)
   {
     v5 = v4;
@@ -75,7 +75,7 @@ LABEL_3:
     {
       if (*v21 != v6)
       {
-        objc_enumerationMutation(v3);
+        objc_enumerationMutation(_searchBundles);
       }
 
       v8 = *(*(&v20 + 1) + 8 * v7);
@@ -85,12 +85,12 @@ LABEL_3:
       }
 
       v9 = MEMORY[0x277D755B8];
-      v10 = [(ASKLoadBundleResourceOperation *)self resourceName];
-      v11 = [v9 imageNamed:v10 inBundle:v8 compatibleWithTraitCollection:0];
+      resourceName = [(ASKLoadBundleResourceOperation *)self resourceName];
+      v11 = [v9 imageNamed:resourceName inBundle:v8 compatibleWithTraitCollection:0];
 
       if (v11)
       {
-        v17 = self;
+        selfCopy2 = self;
         v18 = v11;
         v19 = 0;
         goto LABEL_13;
@@ -98,7 +98,7 @@ LABEL_3:
 
       if (v5 == ++v7)
       {
-        v5 = [v3 countByEnumeratingWithState:&v20 objects:v26 count:16];
+        v5 = [_searchBundles countByEnumeratingWithState:&v20 objects:v26 count:16];
         if (v5)
         {
           goto LABEL_3;
@@ -119,21 +119,21 @@ LABEL_10:
     }
 
     v12 = MEMORY[0x277CCACA8];
-    v13 = [(ASKLoadBundleResourceOperation *)self resourceName];
-    v14 = [objc_opt_class() _searchBundles];
-    v3 = [v12 stringWithFormat:@"No image found for %@ in %@", v13, v14, v20];
+    resourceName2 = [(ASKLoadBundleResourceOperation *)self resourceName];
+    _searchBundles2 = [objc_opt_class() _searchBundles];
+    _searchBundles = [v12 stringWithFormat:@"No image found for %@ in %@", resourceName2, _searchBundles2, v20];
 
     v15 = MEMORY[0x277CCA9B8];
     v24 = *MEMORY[0x277CCA450];
-    v25 = v3;
+    v25 = _searchBundles;
     v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v25 forKeys:&v24 count:1];
     v11 = [v15 errorWithDomain:@"ASKLoadBundleResourceOperationErrorDomain" code:560557415 userInfo:v16];
 
-    v17 = self;
+    selfCopy2 = self;
     v18 = 0;
     v19 = v11;
 LABEL_13:
-    [(ASKLoadResourceOperation *)v17 didCompleteWithResource:v18 error:v19];
+    [(ASKLoadResourceOperation *)selfCopy2 didCompleteWithResource:v18 error:v19];
   }
 }
 

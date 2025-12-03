@@ -1,17 +1,17 @@
 @interface SiriSharedUIReplayUtilityWrapper
 + (BOOL)shouldSkipAutoDismissal;
 + (id)sharedInstance;
-+ (void)registerReplayCallback:(id)a3;
-+ (void)replayAll:(unint64_t)a3 from:(id)a4 completion:(id)a5;
-+ (void)replayAt:(unint64_t)a3 from:(id)a4;
-+ (void)setReplayEnabled:(BOOL)a3;
-+ (void)setReplayOverridePath:(id)a3;
-- (BOOL)hasContentAtPoint:(CGPoint)a3;
++ (void)registerReplayCallback:(id)callback;
++ (void)replayAll:(unint64_t)all from:(id)from completion:(id)completion;
++ (void)replayAt:(unint64_t)at from:(id)from;
++ (void)setReplayEnabled:(BOOL)enabled;
++ (void)setReplayOverridePath:(id)path;
+- (BOOL)hasContentAtPoint:(CGPoint)point;
 - (BOOL)isReplayTestEnv;
 - (BOOL)isReplaying;
 - (BOOL)isSiriDetached;
-- (void)addReplayControlTo:(id)a3;
-- (void)receivedReplayCommand:(id)a3;
+- (void)addReplayControlTo:(id)to;
+- (void)receivedReplayCommand:(id)command;
 - (void)replayWithTestEnviormentData;
 - (void)setIsSiriDetached;
 @end
@@ -24,9 +24,9 @@
   if (v2)
   {
     v3 = +[_TtC12SiriSharedUI25SiriSharedUIReplayUtility shared];
-    v4 = [v3 shouldSkipAutoDismissal];
+    shouldSkipAutoDismissal = [v3 shouldSkipAutoDismissal];
 
-    LOBYTE(v2) = v4;
+    LOBYTE(v2) = shouldSkipAutoDismissal;
   }
 
   return v2;
@@ -38,7 +38,7 @@
   block[1] = 3221225472;
   block[2] = __50__SiriSharedUIReplayUtilityWrapper_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken != -1)
   {
     dispatch_once(&sharedInstance_onceToken, block);
@@ -82,36 +82,36 @@ LABEL_8:
   return MEMORY[0x2821F96F8]();
 }
 
-+ (void)replayAll:(unint64_t)a3 from:(id)a4 completion:(id)a5
++ (void)replayAll:(unint64_t)all from:(id)from completion:(id)completion
 {
-  v9 = a4;
-  v7 = a5;
+  fromCopy = from;
+  completionCopy = completion;
   if (AFIsInternalInstall())
   {
     v8 = +[_TtC12SiriSharedUI25SiriSharedUIReplayUtility shared];
-    [v8 replayAllWithIntervalSeconds:a3 recordingUrl:v9 completion:v7];
+    [v8 replayAllWithIntervalSeconds:all recordingUrl:fromCopy completion:completionCopy];
   }
 }
 
-+ (void)replayAt:(unint64_t)a3 from:(id)a4
++ (void)replayAt:(unint64_t)at from:(id)from
 {
-  v6 = a4;
+  fromCopy = from;
   if (AFIsInternalInstall())
   {
     v5 = +[_TtC12SiriSharedUI25SiriSharedUIReplayUtility shared];
-    [v5 replayAtIndex:a3 recordingUrl:v6];
+    [v5 replayAtIndex:at recordingUrl:fromCopy];
   }
 }
 
-+ (void)setReplayEnabled:(BOOL)a3
++ (void)setReplayEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v8 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v8 setBool:v3 forKey:@"Replay Enabled"];
+  enabledCopy = enabled;
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults setBool:enabledCopy forKey:@"Replay Enabled"];
   v5 = sharedInstance;
-  if (!v3 || sharedInstance)
+  if (!enabledCopy || sharedInstance)
   {
-    if (v3)
+    if (enabledCopy)
     {
       goto LABEL_7;
     }
@@ -124,7 +124,7 @@ LABEL_8:
 
   else
   {
-    v6 = objc_alloc_init(a1);
+    v6 = objc_alloc_init(self);
     v7 = sharedInstance;
     sharedInstance = v6;
   }
@@ -132,43 +132,43 @@ LABEL_8:
 LABEL_7:
 }
 
-+ (void)setReplayOverridePath:(id)a3
++ (void)setReplayOverridePath:(id)path
 {
   v3 = MEMORY[0x277CBEBD0];
-  v4 = a3;
-  v6 = [v3 standardUserDefaults];
+  pathCopy = path;
+  standardUserDefaults = [v3 standardUserDefaults];
   v5 = +[_TtC12SiriSharedUI25SiriSharedUIReplayUtility replayOverridePathKey];
-  [v6 setObject:v4 forKey:v5];
+  [standardUserDefaults setObject:pathCopy forKey:v5];
 }
 
-+ (void)registerReplayCallback:(id)a3
++ (void)registerReplayCallback:(id)callback
 {
-  v4 = a3;
+  callbackCopy = callback;
   if (AFIsInternalInstall())
   {
     v3 = +[_TtC12SiriSharedUI25SiriSharedUIReplayUtility shared];
-    [v3 registerWithReplayCallback:v4];
+    [v3 registerWithReplayCallback:callbackCopy];
   }
 }
 
-- (void)receivedReplayCommand:(id)a3
+- (void)receivedReplayCommand:(id)command
 {
-  v3 = a3;
+  commandCopy = command;
   v4 = +[_TtC12SiriSharedUI25SiriSharedUIReplayUtility shared];
-  [v4 received:v3];
+  [v4 received:commandCopy];
 }
 
-- (void)addReplayControlTo:(id)a3
+- (void)addReplayControlTo:(id)to
 {
-  v3 = a3;
+  toCopy = to;
   v4 = +[_TtC12SiriSharedUI25SiriSharedUIReplayUtility shared];
-  [v4 addReplayControlTo:v3];
+  [v4 addReplayControlTo:toCopy];
 }
 
-- (BOOL)hasContentAtPoint:(CGPoint)a3
+- (BOOL)hasContentAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v5 = +[_TtC12SiriSharedUI25SiriSharedUIReplayUtility shared];
   v6 = [v5 hasContentAt:{x, y}];
 
@@ -178,17 +178,17 @@ LABEL_7:
 - (BOOL)isReplaying
 {
   v2 = +[_TtC12SiriSharedUI25SiriSharedUIReplayUtility shared];
-  v3 = [v2 isReplaying];
+  isReplaying = [v2 isReplaying];
 
-  return v3;
+  return isReplaying;
 }
 
 - (BOOL)isSiriDetached
 {
   v2 = +[_TtC12SiriSharedUI25SiriSharedUIReplayUtility shared];
-  v3 = [v2 isSiriDetached];
+  isSiriDetached = [v2 isSiriDetached];
 
-  return v3;
+  return isSiriDetached;
 }
 
 - (void)setIsSiriDetached
@@ -200,9 +200,9 @@ LABEL_7:
 - (BOOL)isReplayTestEnv
 {
   v2 = +[_TtC12SiriSharedUI25SiriSharedUIReplayUtility shared];
-  v3 = [v2 isReplayTestEnv];
+  isReplayTestEnv = [v2 isReplayTestEnv];
 
-  return v3;
+  return isReplayTestEnv;
 }
 
 - (void)replayWithTestEnviormentData

@@ -1,11 +1,11 @@
 @interface SBHFloatyFolderVisualConfiguration
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGSize)contentBackgroundSize;
 - (CGSize)pageControlCustomPadding;
 - (SBHFloatyFolderVisualConfiguration)init;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (unint64_t)hash;
 @end
@@ -39,7 +39,7 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   result = objc_alloc_init(objc_opt_class());
   if (result)
@@ -58,10 +58,10 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v9 = 1;
   }
@@ -73,7 +73,7 @@
 
     if (isKindOfClass)
     {
-      v7 = v4;
+      v7 = equalCopy;
       v8 = self->_contentBackgroundSize.width == v7->_contentBackgroundSize.width && self->_contentBackgroundSize.height == v7->_contentBackgroundSize.height;
       if (v8 && self->_continuousCornerRadius == v7->_continuousCornerRadius && self->_titleFontSize == v7->_titleFontSize && self->_titleHorizontalInset == v7->_titleHorizontalInset && self->_titleBottomInset == v7->_titleBottomInset && self->_titleVerticallyCentered == v7->_titleVerticallyCentered && self->_pageControlAreaHeight == v7->_pageControlAreaHeight)
       {
@@ -109,44 +109,44 @@
 
 - (id)succinctDescription
 {
-  v2 = [(SBHFloatyFolderVisualConfiguration *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBHFloatyFolderVisualConfiguration *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBHFloatyFolderVisualConfiguration *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBHFloatyFolderVisualConfiguration *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(SBHFloatyFolderVisualConfiguration *)self succinctDescriptionBuilder];
+  succinctDescriptionBuilder = [(SBHFloatyFolderVisualConfiguration *)self succinctDescriptionBuilder];
   [(SBHFloatyFolderVisualConfiguration *)self contentBackgroundSize];
-  v5 = [v4 appendSize:@"contentBackgroundSize" withName:?];
+  v5 = [succinctDescriptionBuilder appendSize:@"contentBackgroundSize" withName:?];
   [(SBHFloatyFolderVisualConfiguration *)self continuousCornerRadius];
-  v6 = [v4 appendFloat:@"continuousCornerRadius" withName:?];
+  v6 = [succinctDescriptionBuilder appendFloat:@"continuousCornerRadius" withName:?];
   [(SBHFloatyFolderVisualConfiguration *)self titleFontSize];
-  v7 = [v4 appendFloat:@"titleFontSize" withName:?];
+  v7 = [succinctDescriptionBuilder appendFloat:@"titleFontSize" withName:?];
   [(SBHFloatyFolderVisualConfiguration *)self titleHorizontalInset];
-  v8 = [v4 appendFloat:@"titleHorizontalInset" withName:?];
+  v8 = [succinctDescriptionBuilder appendFloat:@"titleHorizontalInset" withName:?];
   [(SBHFloatyFolderVisualConfiguration *)self titleBottomInset];
-  v9 = [v4 appendFloat:@"titleBottomInset" withName:?];
-  v10 = [v4 appendBool:-[SBHFloatyFolderVisualConfiguration isTitleVerticallyCentered](self withName:{"isTitleVerticallyCentered"), @"titleVerticallyCentered"}];
+  v9 = [succinctDescriptionBuilder appendFloat:@"titleBottomInset" withName:?];
+  v10 = [succinctDescriptionBuilder appendBool:-[SBHFloatyFolderVisualConfiguration isTitleVerticallyCentered](self withName:{"isTitleVerticallyCentered"), @"titleVerticallyCentered"}];
   [(SBHFloatyFolderVisualConfiguration *)self pageControlAreaHeight];
-  v11 = [v4 appendFloat:@"pageControlAreaHeight" withName:?];
+  v11 = [succinctDescriptionBuilder appendFloat:@"pageControlAreaHeight" withName:?];
   [(SBHFloatyFolderVisualConfiguration *)self pageControlCustomPadding];
   v12 = NSStringFromCGSize(v16);
-  [v4 appendString:v12 withName:@"pageControlCustomPadding"];
+  [succinctDescriptionBuilder appendString:v12 withName:@"pageControlCustomPadding"];
 
   [(SBHFloatyFolderVisualConfiguration *)self rubberBandIntervalForOverscroll];
-  v13 = [v4 appendFloat:@"rubberBandIntervalForOverscroll" withName:?];
+  v13 = [succinctDescriptionBuilder appendFloat:@"rubberBandIntervalForOverscroll" withName:?];
 
-  return v4;
+  return succinctDescriptionBuilder;
 }
 
 - (CGSize)pageControlCustomPadding

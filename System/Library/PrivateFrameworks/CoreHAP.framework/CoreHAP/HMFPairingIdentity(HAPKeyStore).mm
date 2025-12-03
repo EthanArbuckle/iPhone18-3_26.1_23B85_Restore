@@ -9,9 +9,9 @@
   v2 = +[HAPSystemKeychainStore systemStore];
   v3 = [v2 getLocalPairingIdentity:0];
 
-  v4 = [a1 identifier];
-  v5 = [v3 identifier];
-  v6 = [v4 isEqual:v5];
+  identifier = [self identifier];
+  identifier2 = [v3 identifier];
+  v6 = [identifier isEqual:identifier2];
 
   return v6;
 }

@@ -1,8 +1,8 @@
 @interface PLAnalysisCoordinatorStepSearchIndexing
-- (void)_batchIndexAssetStartingAtIndex:(unint64_t)a3 withAssetIDs:(id)a4 searchIndexingEngine:(id)a5 library:(id)a6 progress:(id)a7 withCompletionHandler:(id)a8;
-- (void)_performStepForAssets:(id)a3 withProgress:(id)a4 withCompletionHandler:(id)a5;
+- (void)_batchIndexAssetStartingAtIndex:(unint64_t)index withAssetIDs:(id)ds searchIndexingEngine:(id)engine library:(id)library progress:(id)progress withCompletionHandler:(id)handler;
+- (void)_performStepForAssets:(id)assets withProgress:(id)progress withCompletionHandler:(id)handler;
 - (void)cancel;
-- (void)performStepForAssets:(id)a3 withProgress:(id)a4 withCompletionHandler:(id)a5;
+- (void)performStepForAssets:(id)assets withProgress:(id)progress withCompletionHandler:(id)handler;
 @end
 
 @implementation PLAnalysisCoordinatorStepSearchIndexing
@@ -13,79 +13,79 @@
   v3 = PLAnalysisCoordinatorGetLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(PLAnalysisCoordinatorStep *)self parentTaskID];
+    parentTaskID = [(PLAnalysisCoordinatorStep *)self parentTaskID];
     v5 = 138543362;
-    v6 = v4;
+    v6 = parentTaskID;
     _os_log_impl(&dword_19BF1F000, v3, OS_LOG_TYPE_DEFAULT, "[%{public}@] Search Indexing Step request to be cancelled, iterations will stop", &v5, 0xCu);
   }
 }
 
-- (void)_batchIndexAssetStartingAtIndex:(unint64_t)a3 withAssetIDs:(id)a4 searchIndexingEngine:(id)a5 library:(id)a6 progress:(id)a7 withCompletionHandler:(id)a8
+- (void)_batchIndexAssetStartingAtIndex:(unint64_t)index withAssetIDs:(id)ds searchIndexingEngine:(id)engine library:(id)library progress:(id)progress withCompletionHandler:(id)handler
 {
   v48 = *MEMORY[0x1E69E9840];
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  if ([v14 count] <= a3)
+  dsCopy = ds;
+  engineCopy = engine;
+  libraryCopy = library;
+  progressCopy = progress;
+  handlerCopy = handler;
+  if ([dsCopy count] <= index)
   {
     v22 = MEMORY[0x1E69BF2D0];
-    v23 = [MEMORY[0x1E695DFB0] null];
-    v24 = [v22 successWithResult:v23];
+    null = [MEMORY[0x1E695DFB0] null];
+    v24 = [v22 successWithResult:null];
 
-    v18[2](v18, v24);
+    handlerCopy[2](handlerCopy, v24);
   }
 
-  else if ([v17 isCancelled])
+  else if ([progressCopy isCancelled])
   {
     v19 = MEMORY[0x1E69BF2D0];
     v20 = PLErrorCreate();
     v21 = [v19 failureWithError:v20];
-    v18[2](v18, v21);
+    handlerCopy[2](handlerCopy, v21);
   }
 
   else
   {
-    v25 = [v14 count];
-    if (v25 - a3 >= 0xC8)
+    v25 = [dsCopy count];
+    if (v25 - index >= 0xC8)
     {
       v26 = 200;
     }
 
     else
     {
-      v26 = v25 - a3;
+      v26 = v25 - index;
     }
 
     v27 = PLAnalysisCoordinatorGetLog();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
     {
-      v28 = [(PLAnalysisCoordinatorStep *)self parentTaskID];
+      parentTaskID = [(PLAnalysisCoordinatorStep *)self parentTaskID];
       *buf = 138543874;
-      v43 = v28;
+      v43 = parentTaskID;
       v44 = 2048;
-      v45 = a3;
+      indexCopy = index;
       v46 = 2048;
-      v47 = a3 + v26 - 1;
+      v47 = index + v26 - 1;
       _os_log_impl(&dword_19BF1F000, v27, OS_LOG_TYPE_DEFAULT, "[%{public}@] Batch Search Indexing Range [%lu...%lu]", buf, 0x20u);
     }
 
-    v29 = [v14 subarrayWithRange:{a3, v26}];
+    v29 = [dsCopy subarrayWithRange:{index, v26}];
     v32[0] = MEMORY[0x1E69E9820];
     v32[1] = 3221225472;
     v32[2] = __148__PLAnalysisCoordinatorStepSearchIndexing__batchIndexAssetStartingAtIndex_withAssetIDs_searchIndexingEngine_library_progress_withCompletionHandler___block_invoke;
     v32[3] = &unk_1E7565F68;
-    v30 = v17;
+    v30 = progressCopy;
     v33 = v30;
-    v34 = self;
+    selfCopy = self;
     v39 = v26;
-    v40 = a3;
+    indexCopy2 = index;
     v41 = 200;
-    v35 = v14;
-    v36 = v15;
-    v37 = v16;
-    v38 = v18;
+    v35 = dsCopy;
+    v36 = engineCopy;
+    v37 = libraryCopy;
+    v38 = handlerCopy;
     v31 = [v36 indexAssetsIfNeededWithObjectIDs:v29 library:v37 completion:v32];
     [v30 addChild:v31 withPendingUnitCount:0];
     if ([v30 isCancelled])
@@ -123,28 +123,28 @@ void __148__PLAnalysisCoordinatorStepSearchIndexing__batchIndexAssetStartingAtIn
   }
 }
 
-- (void)_performStepForAssets:(id)a3 withProgress:(id)a4 withCompletionHandler:(id)a5
+- (void)_performStepForAssets:(id)assets withProgress:(id)progress withCompletionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(PLAnalysisCoordinatorStep *)self libraryServicesManager];
-  v12 = [v11 databaseContext];
-  v13 = [v12 newShortLivedLibraryWithName:"-[PLAnalysisCoordinatorStepSearchIndexing _performStepForAssets:withProgress:withCompletionHandler:]"];
+  assetsCopy = assets;
+  progressCopy = progress;
+  handlerCopy = handler;
+  libraryServicesManager = [(PLAnalysisCoordinatorStep *)self libraryServicesManager];
+  databaseContext = [libraryServicesManager databaseContext];
+  v13 = [databaseContext newShortLivedLibraryWithName:"-[PLAnalysisCoordinatorStepSearchIndexing _performStepForAssets:withProgress:withCompletionHandler:]"];
 
   if (v13)
   {
-    v14 = [(PLAnalysisCoordinatorStep *)self libraryServicesManager];
-    v15 = [v14 searchIndexingEngine];
+    libraryServicesManager2 = [(PLAnalysisCoordinatorStep *)self libraryServicesManager];
+    searchIndexingEngine = [libraryServicesManager2 searchIndexingEngine];
 
-    if (v15)
+    if (searchIndexingEngine)
     {
       v21[0] = MEMORY[0x1E69E9820];
       v21[1] = 3221225472;
       v21[2] = __100__PLAnalysisCoordinatorStepSearchIndexing__performStepForAssets_withProgress_withCompletionHandler___block_invoke;
       v21[3] = &unk_1E7571990;
-      v22 = v10;
-      [(PLAnalysisCoordinatorStepSearchIndexing *)self _batchIndexAssetStartingAtIndex:0 withAssetIDs:v8 searchIndexingEngine:v15 library:v13 progress:v9 withCompletionHandler:v21];
+      v22 = handlerCopy;
+      [(PLAnalysisCoordinatorStepSearchIndexing *)self _batchIndexAssetStartingAtIndex:0 withAssetIDs:assetsCopy searchIndexingEngine:searchIndexingEngine library:v13 progress:progressCopy withCompletionHandler:v21];
     }
 
     else
@@ -152,31 +152,31 @@ void __148__PLAnalysisCoordinatorStepSearchIndexing__batchIndexAssetStartingAtIn
       v18 = MEMORY[0x1E69BF2D0];
       v19 = PLErrorCreate();
       v20 = [v18 failureWithError:v19];
-      (*(v10 + 2))(v10, v20);
+      (*(handlerCopy + 2))(handlerCopy, v20);
     }
   }
 
   else
   {
     v16 = MEMORY[0x1E69BF2D0];
-    v15 = PLErrorCreate();
-    v17 = [v16 failureWithError:v15];
-    (*(v10 + 2))(v10, v17);
+    searchIndexingEngine = PLErrorCreate();
+    v17 = [v16 failureWithError:searchIndexingEngine];
+    (*(handlerCopy + 2))(handlerCopy, v17);
   }
 }
 
-- (void)performStepForAssets:(id)a3 withProgress:(id)a4 withCompletionHandler:(id)a5
+- (void)performStepForAssets:(id)assets withProgress:(id)progress withCompletionHandler:(id)handler
 {
   v29 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  assetsCopy = assets;
+  progressCopy = progress;
+  handlerCopy = handler;
   v11 = PLAnalysisCoordinatorGetLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [(PLAnalysisCoordinatorStep *)self parentTaskID];
+    parentTaskID = [(PLAnalysisCoordinatorStep *)self parentTaskID];
     *buf = 138543362;
-    v26 = v12;
+    v26 = parentTaskID;
     _os_log_impl(&dword_19BF1F000, v11, OS_LOG_TYPE_DEFAULT, "[%{public}@] Starting Search Indexing Step", buf, 0xCu);
   }
 
@@ -187,12 +187,12 @@ void __148__PLAnalysisCoordinatorStepSearchIndexing__batchIndexAssetStartingAtIn
   v16 = v15;
   if (v14 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v15))
   {
-    v17 = [v8 count];
-    v18 = [(PLAnalysisCoordinatorStep *)self parentTaskID];
+    v17 = [assetsCopy count];
+    parentTaskID2 = [(PLAnalysisCoordinatorStep *)self parentTaskID];
     *buf = 134349314;
     v26 = v17;
     v27 = 2114;
-    v28 = v18;
+    v28 = parentTaskID2;
     _os_signpost_emit_with_name_impl(&dword_19BF1F000, v16, OS_SIGNPOST_INTERVAL_BEGIN, v14, "AnalysisCoordinatorStepSearchIndexing", "asset count: %{public}lu, parent task: %{public}@", buf, 0x16u);
   }
 
@@ -203,10 +203,10 @@ void __148__PLAnalysisCoordinatorStepSearchIndexing__batchIndexAssetStartingAtIn
   v21[4] = self;
   v23 = v16;
   v24 = v14;
-  v19 = v10;
+  v19 = handlerCopy;
   v22 = v19;
   v20 = v16;
-  [(PLAnalysisCoordinatorStepSearchIndexing *)self _performStepForAssets:v8 withProgress:v9 withCompletionHandler:v21];
+  [(PLAnalysisCoordinatorStepSearchIndexing *)self _performStepForAssets:assetsCopy withProgress:progressCopy withCompletionHandler:v21];
 }
 
 void __99__PLAnalysisCoordinatorStepSearchIndexing_performStepForAssets_withProgress_withCompletionHandler___block_invoke(uint64_t a1, void *a2)

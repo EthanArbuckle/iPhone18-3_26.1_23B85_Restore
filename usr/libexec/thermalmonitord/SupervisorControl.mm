@@ -1,27 +1,27 @@
 @interface SupervisorControl
 - (BOOL)isHotspotFirstEngaged;
 - (BOOL)shouldEnforceLightThermalPressure;
-- (BOOL)shouldForceThermalLevelForThreshold:(int)a3;
-- (__CFString)copyFieldCurrentValueForIndex:(int)a3;
-- (__CFString)copyHeaderForIndex:(int)a3;
-- (int)computePackageCEforSeedingSource:(unsigned __int8)a3;
+- (BOOL)shouldForceThermalLevelForThreshold:(int)threshold;
+- (__CFString)copyFieldCurrentValueForIndex:(int)index;
+- (__CFString)copyHeaderForIndex:(int)index;
+- (int)computePackageCEforSeedingSource:(unsigned __int8)source;
 - (int)computePackageCurrentSeedPower;
 - (int)getThermalStateofHotspot;
 - (unsigned)chooseEffectiveSeedingSource;
 - (unsigned)seedControlEffort;
-- (void)applyAlternateTarget:(BOOL)a3;
+- (void)applyAlternateTarget:(BOOL)target;
 - (void)dealloc;
-- (void)overrideTargetTemperature:(float)a3;
+- (void)overrideTargetTemperature:(float)temperature;
 - (void)resetTargetTemperature;
-- (void)setDecisionTableSection:(id)a3;
-- (void)updateHotSpotTemperatureAndStatus:(float)a3;
+- (void)setDecisionTableSection:(id)section;
+- (void)updateHotSpotTemperatureAndStatus:(float)status;
 @end
 
 @implementation SupervisorControl
 
-- (void)setDecisionTableSection:(id)a3
+- (void)setDecisionTableSection:(id)section
 {
-  v30 = self;
+  selfCopy = self;
   v4 = [[NSMutableArray alloc] initWithCapacity:17];
   v5 = 0;
   v6 = &off_1000862F0;
@@ -30,7 +30,7 @@
   v9 = @"dtFormatType";
   do
   {
-    v10 = [a3 valueForKey:{v6[v5], v30}];
+    v10 = [section valueForKey:{v6[v5], selfCopy}];
     if (v10)
     {
       v11 = v10;
@@ -76,7 +76,7 @@
         v31 = v15;
         v16 = p_info;
         v17 = [MaxLoadIndexTableSectionPiecewiseLinear alloc];
-        v18 = a3;
+        sectionCopy = section;
         v19 = v6;
         v20 = v8;
         v21 = v4;
@@ -90,7 +90,7 @@
         v4 = v21;
         v8 = v20;
         v6 = v19;
-        a3 = v18;
+        section = sectionCopy;
         v13 = [(MaxLoadIndexTableSectionPiecewiseLinear *)v25 initWithDecisionTreeSectionControlEfforts:v26 maxLIs:v24 unconstrainedMaxLI:v31];
       }
     }
@@ -130,7 +130,7 @@ LABEL_24:
   }
 
   while (v5 != 17);
-  v30->_maxLoadIndexTable = [v4 copy];
+  selfCopy->_maxLoadIndexTable = [v4 copy];
 }
 
 - (void)dealloc
@@ -140,52 +140,52 @@ LABEL_24:
   [(PidComponent *)&v2 dealloc];
 }
 
-- (void)updateHotSpotTemperatureAndStatus:(float)a3
+- (void)updateHotSpotTemperatureAndStatus:(float)status
 {
   self->hotspotTemperature = *(&self->super.controlEffort + 1);
-  *(&self->super.controlEffort + 1) = a3;
+  *(&self->super.controlEffort + 1) = status;
   TARGET = self->super.TARGET;
   if (self->forcedThermalPressureLevelLight.isTriggered)
   {
     TARGET = TARGET - self->THERMAL_TRAP_SLEEP;
   }
 
-  self->forcedThermalPressureLevelLight.isTriggered = TARGET < a3;
+  self->forcedThermalPressureLevelLight.isTriggered = TARGET < status;
 }
 
 - (unsigned)seedControlEffort
 {
-  v2 = self;
-  v3 = [(SupervisorControl *)self chooseEffectiveSeedingSource];
-  if ((v3 - 3) <= 3u)
+  selfCopy = self;
+  chooseEffectiveSeedingSource = [(SupervisorControl *)self chooseEffectiveSeedingSource];
+  if ((chooseEffectiveSeedingSource - 3) <= 3u)
   {
-    LOBYTE(v2) = [(SupervisorControl *)v2 computePackageCEforSeedingSource:v3];
-    return v2;
+    LOBYTE(selfCopy) = [(SupervisorControl *)selfCopy computePackageCEforSeedingSource:chooseEffectiveSeedingSource];
+    return selfCopy;
   }
 
-  if (v3 == 2)
+  if (chooseEffectiveSeedingSource == 2)
   {
-    v4 = [qword_1000ABCB0 getCPUTargetPower];
-    v5 = [qword_1000ABCB0 getGPUTargetPower];
+    getCPUTargetPower = [qword_1000ABCB0 getCPUTargetPower];
+    getGPUTargetPower = [qword_1000ABCB0 getGPUTargetPower];
   }
 
   else
   {
-    if (v3 != 1)
+    if (chooseEffectiveSeedingSource != 1)
     {
-      v4 = 0;
+      getCPUTargetPower = 0;
       goto LABEL_12;
     }
 
-    v4 = [qword_1000ABCB0 getCurrentCPUPower];
-    v5 = [qword_1000ABCB0 getCurrentGPUPower];
+    getCPUTargetPower = [qword_1000ABCB0 getCurrentCPUPower];
+    getGPUTargetPower = [qword_1000ABCB0 getCurrentGPUPower];
   }
 
-  v6 = v5;
-  if (v4 < v5)
+  v6 = getGPUTargetPower;
+  if (getCPUTargetPower < getGPUTargetPower)
   {
-    v7 = [qword_1000ABCB0 getCurrentGPULoadingIndex:v5];
-    LODWORD(v2) = [-[NSArray objectAtIndex:](v2->_maxLoadIndexTable objectAtIndex:{1), "getControlEffortForMaxLI:", v7}];
+    v7 = [qword_1000ABCB0 getCurrentGPULoadingIndex:getGPUTargetPower];
+    LODWORD(selfCopy) = [-[NSArray objectAtIndex:](selfCopy->_maxLoadIndexTable objectAtIndex:{1), "getControlEffortForMaxLI:", v7}];
     if (byte_1000AB2F8 == 1)
     {
       v8 = qword_1000AB718;
@@ -196,37 +196,37 @@ LABEL_24:
         v14 = 1024;
         v15 = v7;
         v16 = 1024;
-        v17 = v2;
+        v17 = selfCopy;
         v9 = "<Notice> Seeding from GPU power %d, seed maxLI %d, CE %d";
 LABEL_15:
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, v9, &v12, 0x14u);
-        return v2;
+        return selfCopy;
       }
     }
 
-    return v2;
+    return selfCopy;
   }
 
 LABEL_12:
-  v10 = [qword_1000ABCB0 getCurrentCPULoadingIndex:v4];
-  LODWORD(v2) = [-[NSArray objectAtIndex:](v2->_maxLoadIndexTable objectAtIndex:{0), "getControlEffortForMaxLI:", v10}];
+  v10 = [qword_1000ABCB0 getCurrentCPULoadingIndex:getCPUTargetPower];
+  LODWORD(selfCopy) = [-[NSArray objectAtIndex:](selfCopy->_maxLoadIndexTable objectAtIndex:{0), "getControlEffortForMaxLI:", v10}];
   if (byte_1000AB2F8 == 1)
   {
     v8 = qword_1000AB718;
     if (os_log_type_enabled(qword_1000AB718, OS_LOG_TYPE_DEFAULT))
     {
       v12 = 67109632;
-      v13 = v4;
+      v13 = getCPUTargetPower;
       v14 = 1024;
       v15 = v10;
       v16 = 1024;
-      v17 = v2;
+      v17 = selfCopy;
       v9 = "<Notice> Seeding from CPU power %d, seed maxLI %d, CE %d";
       goto LABEL_15;
     }
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (unsigned)chooseEffectiveSeedingSource
@@ -302,25 +302,25 @@ LABEL_14:
   return seedingSource;
 }
 
-- (int)computePackageCEforSeedingSource:(unsigned __int8)a3
+- (int)computePackageCEforSeedingSource:(unsigned __int8)source
 {
-  switch(a3)
+  switch(source)
   {
     case 5u:
-      v4 = [qword_1000ABCB0 getCurrentPackagePower];
+      getCurrentPackagePower = [qword_1000ABCB0 getCurrentPackagePower];
       break;
     case 4u:
-      v4 = [qword_1000ABCB0 getPackageTargetPower];
+      getCurrentPackagePower = [qword_1000ABCB0 getPackageTargetPower];
       break;
     case 3u:
-      v4 = [(SupervisorControl *)self computePackageCurrentSeedPower];
+      getCurrentPackagePower = [(SupervisorControl *)self computePackageCurrentSeedPower];
       break;
     default:
       v5 = 0;
       goto LABEL_9;
   }
 
-  v5 = v4;
+  v5 = getCurrentPackagePower;
 LABEL_9:
   v6 = [qword_1000ABCB0 getCurrentPackageLoadingIndex:v5];
   v7 = [-[NSArray objectAtIndex:](self->_maxLoadIndexTable objectAtIndex:{12), "getControlEffortForMaxLI:", v6}];
@@ -346,28 +346,28 @@ LABEL_9:
 {
   [qword_1000ABCB0 getCLPCPackagePowerCPUSplitFraction];
   v3 = v2;
-  v4 = [qword_1000ABCB0 getCurrentCPUPower];
-  v5 = [qword_1000ABCB0 getCurrentGPUPower];
-  if (v4 > v5)
+  getCurrentCPUPower = [qword_1000ABCB0 getCurrentCPUPower];
+  getCurrentGPUPower = [qword_1000ABCB0 getCurrentGPUPower];
+  if (getCurrentCPUPower > getCurrentGPUPower)
   {
-    v6 = v4;
+    v6 = getCurrentCPUPower;
   }
 
   else
   {
     v3 = 1.0 - v3;
-    v6 = v5;
+    v6 = getCurrentGPUPower;
   }
 
   v7 = (v6 / v3);
   if (byte_1000AB2F8 == 1)
   {
-    v8 = v5;
+    v8 = getCurrentGPUPower;
     v9 = qword_1000AB718;
     if (os_log_type_enabled(qword_1000AB718, OS_LOG_TYPE_DEFAULT))
     {
       v11[0] = 67109888;
-      v11[1] = v4;
+      v11[1] = getCurrentCPUPower;
       v12 = 1024;
       v13 = v8;
       v14 = 2048;
@@ -450,9 +450,9 @@ LABEL_9:
   return result;
 }
 
-- (BOOL)shouldForceThermalLevelForThreshold:(int)a3
+- (BOOL)shouldForceThermalLevelForThreshold:(int)threshold
 {
-  v3 = &self->tState + 3 * a3;
+  v3 = &self->tState + 3 * threshold;
   v4 = *v3;
   if (*v3 <= 0.0)
   {
@@ -488,9 +488,9 @@ LABEL_9:
   return result;
 }
 
-- (void)overrideTargetTemperature:(float)a3
+- (void)overrideTargetTemperature:(float)temperature
 {
-  self->super.TARGET = a3;
+  self->super.TARGET = temperature;
   if (byte_1000AB2F8 == 1)
   {
     v5 = qword_1000AB718;
@@ -502,7 +502,7 @@ LABEL_9:
       v9 = 1024;
       v10 = mitigationType;
       v11 = 2048;
-      v12 = a3;
+      temperatureCopy = temperature;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "<Notice> %s: hotspot %d, target %0.2f", &v7, 0x1Cu);
     }
   }
@@ -529,12 +529,12 @@ LABEL_9:
   }
 }
 
-- (void)applyAlternateTarget:(BOOL)a3
+- (void)applyAlternateTarget:(BOOL)target
 {
   alternateTarget = self->_alternateTarget;
   if (alternateTarget >= 0.0)
   {
-    if (!a3)
+    if (!target)
     {
       alternateTarget = self->_targetNominal;
     }
@@ -555,15 +555,15 @@ LABEL_9:
   }
 }
 
-- (__CFString)copyHeaderForIndex:(int)a3
+- (__CFString)copyHeaderForIndex:(int)index
 {
-  if (!a3)
+  if (!index)
   {
     v3 = @"Control Effort%@";
     return CFStringCreateWithFormat(kCFAllocatorDefault, 0, v3, self->super.nameofComponent);
   }
 
-  if (a3 == 1)
+  if (index == 1)
   {
     v3 = @"Integrator%@";
     return CFStringCreateWithFormat(kCFAllocatorDefault, 0, v3, self->super.nameofComponent);
@@ -572,16 +572,16 @@ LABEL_9:
   return 0;
 }
 
-- (__CFString)copyFieldCurrentValueForIndex:(int)a3
+- (__CFString)copyFieldCurrentValueForIndex:(int)index
 {
-  if (a3 == 1)
+  if (index == 1)
   {
     v3 = kCFAllocatorDefault;
     integrator = self->super.integrator;
     return CFStringCreateWithFormat(v3, 0, @"%d", integrator);
   }
 
-  if (!a3)
+  if (!index)
   {
     v3 = kCFAllocatorDefault;
     integrator = self->super.controlEffort;

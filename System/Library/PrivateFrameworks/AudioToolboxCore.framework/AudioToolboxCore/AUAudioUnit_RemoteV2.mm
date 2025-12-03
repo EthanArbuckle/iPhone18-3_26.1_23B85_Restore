@@ -1,8 +1,8 @@
 @interface AUAudioUnit_RemoteV2
-- (AUAudioUnit_RemoteV2)initWithXPCService:()unique_ptr<AUHostingServiceClient componentDescription:(std:(AudioComponentDescription *)a4 :(OpaqueAudioComponentInstance *)a5 default_delete<AUHostingServiceClient>>)a3 instance:(id)a6 instanceUUID:(id *)a7 error:;
+- (AUAudioUnit_RemoteV2)initWithXPCService:()unique_ptr<AUHostingServiceClient componentDescription:(std:(AudioComponentDescription *)description :(OpaqueAudioComponentInstance *)a5 default_delete<AUHostingServiceClient>>)a3 instance:(id)instance instanceUUID:(id *)d error:;
 - (BOOL)providesUserInterface;
-- (id)_valueForProperty:(id)a3 error:(id *)a4;
-- (void)_setValue:(id)a3 forKey:(id)a4 error:(id *)a5;
+- (id)_valueForProperty:(id)property error:(id *)error;
+- (void)_setValue:(id)value forKey:(id)key error:(id *)error;
 - (void)dealloc;
 - (void)initWithXPCService:componentDescription:instance:instanceUUID:error:;
 @end
@@ -11,9 +11,9 @@
 
 - (BOOL)providesUserInterface
 {
-  v3 = [(AUAudioUnit *)self cachedViewController];
+  cachedViewController = [(AUAudioUnit *)self cachedViewController];
 
-  if (v3)
+  if (cachedViewController)
   {
     return 1;
   }
@@ -26,39 +26,39 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v6 BOOLValue];
+    bOOLValue = [v6 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
-- (void)_setValue:(id)a3 forKey:(id)a4 error:(id *)a5
+- (void)_setValue:(id)value forKey:(id)key error:(id *)error
 {
-  v12 = a3;
-  v8 = a4;
+  valueCopy = value;
+  keyCopy = key;
   v9 = +[AUAudioUnit keyPathsForValuesAffectingAllParameterValues];
-  v10 = [v9 containsObject:v8];
+  v10 = [v9 containsObject:keyCopy];
 
   if (v10)
   {
-    [(AUAudioUnit_XPC *)self _setState:v12 forKey:v8 error:a5];
+    [(AUAudioUnit_XPC *)self _setState:valueCopy forKey:keyCopy error:error];
   }
 
   else
   {
-    v11 = [AUAudioUnitProperty propertyWithKey:v8];
-    [(AUAudioUnit_XPC *)self _setValue:v12 forProperty:v11 error:a5];
+    v11 = [AUAudioUnitProperty propertyWithKey:keyCopy];
+    [(AUAudioUnit_XPC *)self _setValue:valueCopy forProperty:v11 error:error];
   }
 }
 
-- (id)_valueForProperty:(id)a3 error:(id *)a4
+- (id)_valueForProperty:(id)property error:(id *)error
 {
-  v4 = [(AUAudioUnit_XPC *)self _getValueForProperty:a3 error:a4];
+  v4 = [(AUAudioUnit_XPC *)self _getValueForProperty:property error:error];
 
   return v4;
 }
@@ -76,15 +76,15 @@
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (AUAudioUnit_RemoteV2)initWithXPCService:()unique_ptr<AUHostingServiceClient componentDescription:(std:(AudioComponentDescription *)a4 :(OpaqueAudioComponentInstance *)a5 default_delete<AUHostingServiceClient>>)a3 instance:(id)a6 instanceUUID:(id *)a7 error:
+- (AUAudioUnit_RemoteV2)initWithXPCService:()unique_ptr<AUHostingServiceClient componentDescription:(std:(AudioComponentDescription *)description :(OpaqueAudioComponentInstance *)a5 default_delete<AUHostingServiceClient>>)a3 instance:(id)instance instanceUUID:(id *)d error:
 {
   v38 = *MEMORY[0x1E69E9840];
-  v13 = a6;
-  v27 = *&a4->componentType;
-  LODWORD(v28) = a4->componentFlagsMask;
+  instanceCopy = instance;
+  v27 = *&description->componentType;
+  LODWORD(v28) = description->componentFlagsMask;
   v34.receiver = self;
   v34.super_class = AUAudioUnit_RemoteV2;
-  v14 = [(AUAudioUnit *)&v34 initWithComponentDescription:&v27 options:0 error:a7];
+  v14 = [(AUAudioUnit *)&v34 initWithComponentDescription:&v27 options:0 error:d];
   v15 = v14;
   if (v14)
   {
@@ -92,7 +92,7 @@
     *a3.__ptr_ = 0;
     std::unique_ptr<AUHostingServiceClient>::reset[abi:ne200100](&v14->_service.__ptr_, v16);
     [(AUAudioUnit_XPC *)v15 _setComponentInstance:a5];
-    objc_storeStrong(&v15->_auInstanceUUID, a6);
+    objc_storeStrong(&v15->_auInstanceUUID, instance);
     objc_initWeak(&location, v15);
     ptr = v15->_service.__ptr_;
     objc_copyWeak(&to, &location);
@@ -126,9 +126,9 @@
     v26[4] = &v27;
     [(AUAudioUnit_XPC *)v19 _doOpen:v20 completion:v26];
 
-    if (a7)
+    if (d)
     {
-      *a7 = *(*(&v27 + 1) + 40);
+      *d = *(*(&v27 + 1) + 40);
     }
 
     v23 = v19;
@@ -143,7 +143,7 @@
 
 - (void)initWithXPCService:componentDescription:instance:instanceUUID:error:
 {
-  objc_destroyWeak((a1 + 8));
+  objc_destroyWeak((self + 8));
 
   JUMPOUT(0x193ADF220);
 }

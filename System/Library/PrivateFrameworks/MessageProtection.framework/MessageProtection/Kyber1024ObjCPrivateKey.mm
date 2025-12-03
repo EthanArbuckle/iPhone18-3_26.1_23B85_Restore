@@ -2,7 +2,7 @@
 - (NSData)protobufData;
 - (_TtC17MessageProtection22Kyber1024ObjCPublicKey)publicKey;
 - (_TtC17MessageProtection23Kyber1024ObjCPrivateKey)init;
-- (_TtC17MessageProtection23Kyber1024ObjCPrivateKey)initWithProtoBufData:(id)a3 error:(id *)a4;
+- (_TtC17MessageProtection23Kyber1024ObjCPrivateKey)initWithProtoBufData:(id)data error:(id *)error;
 @end
 
 @implementation Kyber1024ObjCPrivateKey
@@ -19,7 +19,7 @@
   MEMORY[0x28223BE20](v8 - 8);
   v11 = &v17 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
   outlined init with copy of TetraKEM1024Key(self + OBJC_IVAR____TtC17MessageProtection23Kyber1024ObjCPrivateKey_privKey, v11);
-  v12 = self;
+  selfCopy = self;
   TetraKEM1024Key.publicKey.getter(v7);
   outlined destroy of TetraKEM1024Key(v11);
   v13 = type metadata accessor for Kyber1024ObjCPublicKey(0);
@@ -48,9 +48,9 @@
   return [(Kyber1024ObjCPrivateKey *)&v10 init];
 }
 
-- (_TtC17MessageProtection23Kyber1024ObjCPrivateKey)initWithProtoBufData:(id)a3 error:(id *)a4
+- (_TtC17MessageProtection23Kyber1024ObjCPrivateKey)initWithProtoBufData:(id)data error:(id *)error
 {
-  v4 = a3;
+  dataCopy = data;
   v5 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v7 = v6;
 
@@ -59,7 +59,7 @@
 
 - (NSData)protobufData
 {
-  v2 = self;
+  selfCopy = self;
   v3 = Kyber1024ObjCPrivateKey.protobufData.getter();
   v5 = v4;
 

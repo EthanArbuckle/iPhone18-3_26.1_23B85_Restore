@@ -1,7 +1,7 @@
 @interface UARPMetaDataComposePayloadHashAlgorithm
 - (UARPMetaDataComposePayloadHashAlgorithm)init;
-- (UARPMetaDataComposePayloadHashAlgorithm)initWithLength:(unint64_t)a3 value:(void *)a4;
-- (UARPMetaDataComposePayloadHashAlgorithm)initWithPropertyListValue:(id)a3 relativeURL:(id)a4;
+- (UARPMetaDataComposePayloadHashAlgorithm)initWithLength:(unint64_t)length value:(void *)value;
+- (UARPMetaDataComposePayloadHashAlgorithm)initWithPropertyListValue:(id)value relativeURL:(id)l;
 - (id)description;
 - (id)tlvValue;
 @end
@@ -26,16 +26,16 @@
   return v3;
 }
 
-- (UARPMetaDataComposePayloadHashAlgorithm)initWithPropertyListValue:(id)a3 relativeURL:(id)a4
+- (UARPMetaDataComposePayloadHashAlgorithm)initWithPropertyListValue:(id)value relativeURL:(id)l
 {
-  v5 = a3;
+  valueCopy = value;
   v6 = [(UARPMetaDataComposePayloadHashAlgorithm *)self init];
   v7 = v6;
   if (v6)
   {
     v13.receiver = v6;
     v13.super_class = UARPMetaDataComposePayloadHashAlgorithm;
-    v8 = [(UARPMetaData *)&v13 stringFromPlistValue:v5];
+    v8 = [(UARPMetaData *)&v13 stringFromPlistValue:valueCopy];
     algorithm = v7->_algorithm;
     v7->_algorithm = v8;
 
@@ -57,12 +57,12 @@
   return v11;
 }
 
-- (UARPMetaDataComposePayloadHashAlgorithm)initWithLength:(unint64_t)a3 value:(void *)a4
+- (UARPMetaDataComposePayloadHashAlgorithm)initWithLength:(unint64_t)length value:(void *)value
 {
   v6 = [(UARPMetaDataComposePayloadHashAlgorithm *)self init];
   if (v6)
   {
-    v7 = [[NSString alloc] initWithBytes:a4 length:a3 encoding:4];
+    v7 = [[NSString alloc] initWithBytes:value length:length encoding:4];
     algorithm = v6->_algorithm;
     v6->_algorithm = v7;
 
@@ -74,19 +74,19 @@
 
 - (id)tlvValue
 {
-  v3 = [(UARPMetaDataComposePayloadHashAlgorithm *)self algorithm];
+  algorithm = [(UARPMetaDataComposePayloadHashAlgorithm *)self algorithm];
   v6.receiver = self;
   v6.super_class = UARPMetaDataComposePayloadHashAlgorithm;
-  v4 = [(UARPMetaData *)&v6 tlvValueWithString:v3];
+  v4 = [(UARPMetaData *)&v6 tlvValueWithString:algorithm];
 
   return v4;
 }
 
 - (id)description
 {
-  v3 = [(UARPMetaData *)self tlvName];
-  v4 = [(UARPMetaDataComposePayloadHashAlgorithm *)self algorithm];
-  v5 = [NSString stringWithFormat:@"<%@: %@>", v3, v4];
+  tlvName = [(UARPMetaData *)self tlvName];
+  algorithm = [(UARPMetaDataComposePayloadHashAlgorithm *)self algorithm];
+  v5 = [NSString stringWithFormat:@"<%@: %@>", tlvName, algorithm];
 
   return v5;
 }

@@ -1,5 +1,5 @@
 @interface MTUpdateTimerIntentHandler
-- (id)_timerFromIntentTargetTimer:(id)a3 defaultState:(int64_t)a4;
+- (id)_timerFromIntentTargetTimer:(id)timer defaultState:(int64_t)state;
 @end
 
 @implementation MTUpdateTimerIntentHandler
@@ -249,19 +249,19 @@ void __120__MTUpdateTimerIntentHandler__updateTimer_dryRun_allowMultiple_exclude
   }
 }
 
-- (id)_timerFromIntentTargetTimer:(id)a3 defaultState:(int64_t)a4
+- (id)_timerFromIntentTargetTimer:(id)timer defaultState:(int64_t)state
 {
-  v5 = a3;
-  v6 = 2 * ([v5 type] == 2);
+  timerCopy = timer;
+  v6 = 2 * ([timerCopy type] == 2);
   v7 = objc_alloc(MEMORY[0x1E696EAC0]);
-  v8 = [v5 label];
-  [v5 duration];
+  label = [timerCopy label];
+  [timerCopy duration];
   v10 = v9;
-  [v5 remainingTime];
+  [timerCopy remainingTime];
   v12 = v11;
-  v13 = [v5 identifier];
+  identifier = [timerCopy identifier];
 
-  v14 = [v7 initWithLabel:v8 duration:v13 remainingTime:a4 identifier:v6 state:v10 type:v12];
+  v14 = [v7 initWithLabel:label duration:identifier remainingTime:state identifier:v6 state:v10 type:v12];
 
   return v14;
 }

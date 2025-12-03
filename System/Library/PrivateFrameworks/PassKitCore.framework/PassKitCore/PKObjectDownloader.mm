@@ -1,16 +1,16 @@
 @interface PKObjectDownloader
 + (id)sharedImageAssetDownloader;
 - (PKObjectDownloader)init;
-- (PKObjectDownloader)initWithSession:(id)a3;
-- (id)_logStringFromCachedResponse:(id)a3 data:(id)a4;
-- (id)_logStringFromRequest:(id)a3;
-- (id)_logStringFromResponse:(id)a3 data:(id)a4;
-- (id)cachedDataForURL:(id)a3;
-- (void)_handleResponseForURL:(id)a3 data:(id)a4 response:(id)a5 error:(id)a6;
-- (void)_scheduleDownload:(id)a3 forURL:(id)a4;
+- (PKObjectDownloader)initWithSession:(id)session;
+- (id)_logStringFromCachedResponse:(id)response data:(id)data;
+- (id)_logStringFromRequest:(id)request;
+- (id)_logStringFromResponse:(id)response data:(id)data;
+- (id)cachedDataForURL:(id)l;
+- (void)_handleResponseForURL:(id)l data:(id)data response:(id)response error:(id)error;
+- (void)_scheduleDownload:(id)download forURL:(id)l;
 - (void)_schedulePendingDownloads;
-- (void)downloadFromUrl:(id)a3 completionHandler:(id)a4;
-- (void)downloadWithRequest:(id)a3 completionHandler:(id)a4;
+- (void)downloadFromUrl:(id)url completionHandler:(id)handler;
+- (void)downloadWithRequest:(id)request completionHandler:(id)handler;
 - (void)invalidate;
 @end
 
@@ -41,22 +41,22 @@ void __48__PKObjectDownloader_sharedImageAssetDownloader__block_invoke()
 
 - (PKObjectDownloader)init
 {
-  v3 = [MEMORY[0x1E695AC78] sharedSession];
-  v4 = [(PKObjectDownloader *)self initWithSession:v3];
+  mEMORY[0x1E695AC78] = [MEMORY[0x1E695AC78] sharedSession];
+  v4 = [(PKObjectDownloader *)self initWithSession:mEMORY[0x1E695AC78]];
 
   return v4;
 }
 
-- (PKObjectDownloader)initWithSession:(id)a3
+- (PKObjectDownloader)initWithSession:(id)session
 {
-  v5 = a3;
+  sessionCopy = session;
   v18.receiver = self;
   v18.super_class = PKObjectDownloader;
   v6 = [(PKObjectDownloader *)&v18 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_session, a3);
+    objc_storeStrong(&v6->_session, session);
     v8 = dispatch_queue_create("com.apple.passKitCore.PKObjectDownloader", 0);
     queue = v7->_queue;
     v7->_queue = v8;
@@ -73,33 +73,33 @@ void __48__PKObjectDownloader_sharedImageAssetDownloader__block_invoke()
     downloadingURLs = v7->_downloadingURLs;
     v7->_downloadingURLs = v14;
 
-    v16 = [v5 configuration];
-    v7->_concurrentRequests = [v16 HTTPMaximumConnectionsPerHost];
+    configuration = [sessionCopy configuration];
+    v7->_concurrentRequests = [configuration HTTPMaximumConnectionsPerHost];
   }
 
   return v7;
 }
 
-- (void)_handleResponseForURL:(id)a3 data:(id)a4 response:(id)a5 error:(id)a6
+- (void)_handleResponseForURL:(id)l data:(id)data response:(id)response error:(id)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  lCopy = l;
+  dataCopy = data;
+  responseCopy = response;
+  errorCopy = error;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __64__PKObjectDownloader__handleResponseForURL_data_response_error___block_invoke;
   block[3] = &unk_1E79C7D80;
   block[4] = self;
-  v20 = v10;
-  v21 = v12;
-  v22 = v11;
-  v23 = v13;
-  v15 = v13;
-  v16 = v11;
-  v17 = v12;
-  v18 = v10;
+  v20 = lCopy;
+  v21 = responseCopy;
+  v22 = dataCopy;
+  v23 = errorCopy;
+  v15 = errorCopy;
+  v16 = dataCopy;
+  v17 = responseCopy;
+  v18 = lCopy;
   dispatch_async(queue, block);
 }
 
@@ -205,8 +205,8 @@ void __64__PKObjectDownloader__handleResponseForURL_data_response_error___block_
           v13 = PKLogFacilityTypeGetObject(2uLL);
           if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
           {
-            v14 = [v12 task];
-            [v14 currentRequest];
+            task = [v12 task];
+            [task currentRequest];
             v15 = v4;
             v17 = v16 = v3;
             v18 = [(PKObjectDownloader *)self _logStringFromRequest:v17];
@@ -238,55 +238,55 @@ void __64__PKObjectDownloader__handleResponseForURL_data_response_error___block_
   [(NSMutableOrderedSet *)self->_pendingURLs removeObjectsInArray:v3];
 }
 
-- (void)_scheduleDownload:(id)a3 forURL:(id)a4
+- (void)_scheduleDownload:(id)download forURL:(id)l
 {
   v14 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (([(NSMutableSet *)self->_downloadingURLs containsObject:v7]& 1) != 0)
+  downloadCopy = download;
+  lCopy = l;
+  if (([(NSMutableSet *)self->_downloadingURLs containsObject:lCopy]& 1) != 0)
   {
-    v8 = PKLogFacilityTypeGetObject(2uLL);
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    task2 = PKLogFacilityTypeGetObject(2uLL);
+    if (os_log_type_enabled(task2, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [v6 task];
-      v10 = [v9 currentRequest];
-      v11 = [(PKObjectDownloader *)self _logStringFromRequest:v10];
+      task = [downloadCopy task];
+      currentRequest = [task currentRequest];
+      v11 = [(PKObjectDownloader *)self _logStringFromRequest:currentRequest];
       v12 = 138412290;
       v13 = v11;
-      _os_log_impl(&dword_1AD337000, v8, OS_LOG_TYPE_DEFAULT, "PKObjectDownloader: Error - attempted to schedule already downloading request:%@", &v12, 0xCu);
+      _os_log_impl(&dword_1AD337000, task2, OS_LOG_TYPE_DEFAULT, "PKObjectDownloader: Error - attempted to schedule already downloading request:%@", &v12, 0xCu);
     }
   }
 
   else
   {
-    [(NSMutableSet *)self->_downloadingURLs addObject:v7];
-    v8 = [v6 task];
-    [v8 resume];
+    [(NSMutableSet *)self->_downloadingURLs addObject:lCopy];
+    task2 = [downloadCopy task];
+    [task2 resume];
   }
 }
 
-- (id)cachedDataForURL:(id)a3
+- (id)cachedDataForURL:(id)l
 {
   v27 = *MEMORY[0x1E69E9840];
   session = self->_session;
-  v5 = a3;
-  v6 = [(NSURLSession *)session configuration];
-  v7 = [v6 URLCache];
+  lCopy = l;
+  configuration = [(NSURLSession *)session configuration];
+  uRLCache = [configuration URLCache];
   v8 = MEMORY[0x1E695AC68];
-  v9 = [v6 requestCachePolicy];
-  [v6 timeoutIntervalForRequest];
-  v10 = [v8 requestWithURL:v5 cachePolicy:v9 timeoutInterval:?];
+  requestCachePolicy = [configuration requestCachePolicy];
+  [configuration timeoutIntervalForRequest];
+  v10 = [v8 requestWithURL:lCopy cachePolicy:requestCachePolicy timeoutInterval:?];
 
-  v11 = [v7 cachedResponseForRequest:v10];
-  v12 = [v11 data];
-  if (v12)
+  v11 = [uRLCache cachedResponseForRequest:v10];
+  data = [v11 data];
+  if (data)
   {
-    v13 = v12;
-    v14 = [v11 response];
+    v13 = data;
+    response = [v11 response];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v15 = v14;
+      v15 = response;
     }
 
     else
@@ -294,10 +294,10 @@ void __64__PKObjectDownloader__handleResponseForURL_data_response_error___block_
       v15 = 0;
     }
 
-    v19 = [v15 statusCode];
+    statusCode = [v15 statusCode];
     v20 = PKLogFacilityTypeGetObject(2uLL);
     v21 = os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT);
-    if (v15 && (v19 - 200) <= 0x63)
+    if (v15 && (statusCode - 200) <= 0x63)
     {
       if (v21)
       {
@@ -343,27 +343,27 @@ void __64__PKObjectDownloader__handleResponseForURL_data_response_error___block_
   return v18;
 }
 
-- (void)downloadFromUrl:(id)a3 completionHandler:(id)a4
+- (void)downloadFromUrl:(id)url completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v13 = [(PKObjectDownloader *)self session];
+  handlerCopy = handler;
+  urlCopy = url;
+  session = [(PKObjectDownloader *)self session];
   v8 = MEMORY[0x1E695AC68];
-  v9 = [v13 configuration];
-  v10 = [v9 requestCachePolicy];
-  v11 = [v13 configuration];
-  [v11 timeoutIntervalForRequest];
-  v12 = [v8 requestWithURL:v7 cachePolicy:v10 timeoutInterval:?];
+  configuration = [session configuration];
+  requestCachePolicy = [configuration requestCachePolicy];
+  configuration2 = [session configuration];
+  [configuration2 timeoutIntervalForRequest];
+  v12 = [v8 requestWithURL:urlCopy cachePolicy:requestCachePolicy timeoutInterval:?];
 
-  [(PKObjectDownloader *)self downloadWithRequest:v12 completionHandler:v6];
+  [(PKObjectDownloader *)self downloadWithRequest:v12 completionHandler:handlerCopy];
 }
 
-- (void)downloadWithRequest:(id)a3 completionHandler:(id)a4
+- (void)downloadWithRequest:(id)request completionHandler:(id)handler
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 URL];
+  requestCopy = request;
+  handlerCopy = handler;
+  v8 = [requestCopy URL];
   v9 = v8;
   if (v8)
   {
@@ -374,8 +374,8 @@ void __64__PKObjectDownloader__handleResponseForURL_data_response_error___block_
     v14[3] = &unk_1E79C4EF0;
     v14[4] = self;
     v15 = v8;
-    v16 = v6;
-    v17 = v7;
+    v16 = requestCopy;
+    v17 = handlerCopy;
     dispatch_async(queue, v14);
   }
 
@@ -385,15 +385,15 @@ void __64__PKObjectDownloader__handleResponseForURL_data_response_error___block_
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v19 = v6;
+      v19 = requestCopy;
       _os_log_impl(&dword_1AD337000, v11, OS_LOG_TYPE_DEFAULT, "PKObjectDownloader: No URL for request: %@", buf, 0xCu);
     }
 
-    if (v7)
+    if (handlerCopy)
     {
       v12 = objc_alloc(MEMORY[0x1E696ABC0]);
       v13 = [v12 initWithDomain:*MEMORY[0x1E696A978] code:-1002 userInfo:0];
-      (*(v7 + 2))(v7, 0, 0, v13);
+      (*(handlerCopy + 2))(handlerCopy, 0, 0, v13);
     }
   }
 }
@@ -485,54 +485,54 @@ void __60__PKObjectDownloader_downloadWithRequest_completionHandler___block_invo
   [v6 _handleResponseForURL:v11 data:v10 response:v9 error:v8];
 }
 
-- (id)_logStringFromRequest:(id)a3
+- (id)_logStringFromRequest:(id)request
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = a3;
-  v5 = [v4 HTTPMethod];
-  v6 = [v4 URL];
-  v7 = [v4 allHTTPHeaderFields];
-  v8 = [v7 debugDescription];
-  v9 = [v4 HTTPBody];
+  requestCopy = request;
+  hTTPMethod = [requestCopy HTTPMethod];
+  v6 = [requestCopy URL];
+  allHTTPHeaderFields = [requestCopy allHTTPHeaderFields];
+  v8 = [allHTTPHeaderFields debugDescription];
+  hTTPBody = [requestCopy HTTPBody];
 
-  v10 = [v3 stringWithFormat:@"\n%@ %@\n%@\n%@\n", v5, v6, v8, v9];
+  v10 = [v3 stringWithFormat:@"\n%@ %@\n%@\n%@\n", hTTPMethod, v6, v8, hTTPBody];
 
   return v10;
 }
 
-- (id)_logStringFromCachedResponse:(id)a3 data:(id)a4
+- (id)_logStringFromCachedResponse:(id)response data:(id)data
 {
-  v6 = a4;
-  v7 = [a3 response];
-  v8 = [(PKObjectDownloader *)self _logStringFromResponse:v7 data:v6];
+  dataCopy = data;
+  response = [response response];
+  v8 = [(PKObjectDownloader *)self _logStringFromResponse:response data:dataCopy];
 
   return v8;
 }
 
-- (id)_logStringFromResponse:(id)a3 data:(id)a4
+- (id)_logStringFromResponse:(id)response data:(id)data
 {
-  v5 = a3;
-  v6 = a4;
+  responseCopy = response;
+  dataCopy = data;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   v8 = MEMORY[0x1E696AEC0];
   if (isKindOfClass)
   {
-    v9 = v5;
+    v9 = responseCopy;
     v10 = [v9 URL];
-    v11 = [v9 statusCode];
-    v12 = [v9 allHeaderFields];
+    statusCode = [v9 statusCode];
+    allHeaderFields = [v9 allHeaderFields];
 
-    v13 = [v12 debugDescription];
-    v14 = [v6 length];
+    v13 = [allHeaderFields debugDescription];
+    v14 = [dataCopy length];
 
-    v15 = [v8 stringWithFormat:@"\n%@ %ld\n%@\nData length: %lu\n", v10, v11, v13, v14];
+    v15 = [v8 stringWithFormat:@"\n%@ %ld\n%@\nData length: %lu\n", v10, statusCode, v13, v14];
   }
 
   else
   {
-    v10 = [v5 URL];
-    v16 = [v6 length];
+    v10 = [responseCopy URL];
+    v16 = [dataCopy length];
 
     v15 = [v8 stringWithFormat:@"\n%@\nData length: %lu\n", v10, v16];
   }

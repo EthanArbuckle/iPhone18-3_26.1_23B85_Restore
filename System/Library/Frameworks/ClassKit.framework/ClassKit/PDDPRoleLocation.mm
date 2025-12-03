@@ -1,14 +1,14 @@
 @interface PDDPRoleLocation
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsRoleType:(id)a3;
+- (int)StringAsRoleType:(id)type;
 - (int)roleType;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PDDPRoleLocation
@@ -26,45 +26,45 @@
   }
 }
 
-- (int)StringAsRoleType:(id)a3
+- (int)StringAsRoleType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN_ROLE_TYPE"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"UNKNOWN_ROLE_TYPE"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"ADMINISTRATOR"])
+  else if ([typeCopy isEqualToString:@"ADMINISTRATOR"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"SITE_MANAGER"])
+  else if ([typeCopy isEqualToString:@"SITE_MANAGER"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"MANAGER"])
+  else if ([typeCopy isEqualToString:@"MANAGER"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"INSTRUCTOR"])
+  else if ([typeCopy isEqualToString:@"INSTRUCTOR"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"STAFF"])
+  else if ([typeCopy isEqualToString:@"STAFF"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"STUDENT"])
+  else if ([typeCopy isEqualToString:@"STUDENT"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"CUSTOM"])
+  else if ([typeCopy isEqualToString:@"CUSTOM"])
   {
     v4 = 7;
   }
@@ -82,8 +82,8 @@
   v7.receiver = self;
   v7.super_class = PDDPRoleLocation;
   v3 = [(PDDPRoleLocation *)&v7 description];
-  v4 = [(PDDPRoleLocation *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(PDDPRoleLocation *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -123,61 +123,61 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_roleId)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_locationId)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (*&self->_has)
   {
     roleType = self->_roleType;
     PBDataWriterWriteInt32Field();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_roleId)
   {
-    [v4 setRoleId:?];
-    v4 = v5;
+    [toCopy setRoleId:?];
+    toCopy = v5;
   }
 
   if (self->_locationId)
   {
     [v5 setLocationId:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 6) = self->_roleType;
-    *(v4 + 28) |= 1u;
+    *(toCopy + 6) = self->_roleType;
+    *(toCopy + 28) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_roleId copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_roleId copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
-  v8 = [(NSString *)self->_locationId copyWithZone:a3];
+  v8 = [(NSString *)self->_locationId copyWithZone:zone];
   v9 = v5[1];
   v5[1] = v8;
 
@@ -190,16 +190,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_10;
   }
 
   roleId = self->_roleId;
-  if (roleId | *(v4 + 2))
+  if (roleId | *(equalCopy + 2))
   {
     if (![(NSString *)roleId isEqual:?])
     {
@@ -208,7 +208,7 @@
   }
 
   locationId = self->_locationId;
-  if (locationId | *(v4 + 1))
+  if (locationId | *(equalCopy + 1))
   {
     if (![(NSString *)locationId isEqual:?])
     {
@@ -216,10 +216,10 @@
     }
   }
 
-  v7 = (*(v4 + 28) & 1) == 0;
+  v7 = (*(equalCopy + 28) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 28) & 1) != 0 && self->_roleType == *(v4 + 6))
+    if ((*(equalCopy + 28) & 1) != 0 && self->_roleType == *(equalCopy + 6))
     {
       v7 = 1;
       goto LABEL_11;
@@ -251,25 +251,25 @@ LABEL_11:
   return v4 ^ v3 ^ v5;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 2))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 2))
   {
     [(PDDPRoleLocation *)self setRoleId:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(PDDPRoleLocation *)self setLocationId:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[7])
+  if (fromCopy[7])
   {
-    self->_roleType = v4[6];
+    self->_roleType = fromCopy[6];
     *&self->_has |= 1u;
   }
 }

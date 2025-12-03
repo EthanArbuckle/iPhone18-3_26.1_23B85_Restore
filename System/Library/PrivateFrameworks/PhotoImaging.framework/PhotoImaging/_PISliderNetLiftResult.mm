@@ -8,8 +8,8 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(_PISliderNetLiftResult *)self styleFeatureVectorData];
-  v6 = [v3 stringWithFormat:@"<%@:%p> data=%@", v4, self, v5];
+  styleFeatureVectorData = [(_PISliderNetLiftResult *)self styleFeatureVectorData];
+  v6 = [v3 stringWithFormat:@"<%@:%p> data=%@", v4, self, styleFeatureVectorData];
 
   return v6;
 }

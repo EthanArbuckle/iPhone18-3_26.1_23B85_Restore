@@ -1,19 +1,19 @@
 @interface CCSignalDoneFetchingMergeableDeltas
 - (id)dictionaryRepresentation;
-- (id)initFromDictionary:(id)a3;
+- (id)initFromDictionary:(id)dictionary;
 @end
 
 @implementation CCSignalDoneFetchingMergeableDeltas
 
-- (id)initFromDictionary:(id)a3
+- (id)initFromDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v8.receiver = self;
   v8.super_class = CCSignalDoneFetchingMergeableDeltas;
-  v5 = [(CCPeerToPeerMessage *)&v8 initFromDictionary:v4];
+  v5 = [(CCPeerToPeerMessage *)&v8 initFromDictionary:dictionaryCopy];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"isReciprocalRequest"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"isReciprocalRequest"];
     v5[40] = [v6 BOOLValue];
   }
 
@@ -28,8 +28,8 @@
 
   v7.receiver = self;
   v7.super_class = CCSignalDoneFetchingMergeableDeltas;
-  v5 = [(CCPeerToPeerMessage *)&v7 dictionaryRepresentation];
-  [v3 addEntriesFromDictionary:v5];
+  dictionaryRepresentation = [(CCPeerToPeerMessage *)&v7 dictionaryRepresentation];
+  [v3 addEntriesFromDictionary:dictionaryRepresentation];
 
   return v3;
 }

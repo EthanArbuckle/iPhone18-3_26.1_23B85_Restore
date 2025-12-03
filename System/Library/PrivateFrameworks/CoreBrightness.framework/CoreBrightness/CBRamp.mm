@@ -1,21 +1,21 @@
 @interface CBRamp
-+ (id)newLinearRampWithWithOrigin:(float)a3 target:(float)a4 length:(float)a5 frequency:(float)a6 identifier:(id)a7;
-- (CBRamp)initWithOrigin:(float)a3 target:(float)a4 length:(float)a5 frequency:(float)a6 identifier:(id)a7 properties:(id)a8;
++ (id)newLinearRampWithWithOrigin:(float)origin target:(float)target length:(float)length frequency:(float)frequency identifier:(id)identifier;
+- (CBRamp)initWithOrigin:(float)origin target:(float)target length:(float)length frequency:(float)frequency identifier:(id)identifier properties:(id)properties;
 - (id)description;
-- (void)clockRamp:(double)a3;
+- (void)clockRamp:(double)ramp;
 - (void)dealloc;
 @end
 
 @implementation CBRamp
 
-+ (id)newLinearRampWithWithOrigin:(float)a3 target:(float)a4 length:(float)a5 frequency:(float)a6 identifier:(id)a7
++ (id)newLinearRampWithWithOrigin:(float)origin target:(float)target length:(float)length frequency:(float)frequency identifier:(id)identifier
 {
   v7 = [CBRamp alloc];
-  *&v8 = a3;
-  *&v9 = a4;
-  *&v10 = a5;
-  *&v11 = a6;
-  v13 = [(CBRamp *)v7 initWithOrigin:a7 target:v8 length:v9 frequency:v10 identifier:v11];
+  *&v8 = origin;
+  *&v9 = target;
+  *&v10 = length;
+  *&v11 = frequency;
+  v13 = [(CBRamp *)v7 initWithOrigin:identifier target:v8 length:v9 frequency:v10 identifier:v11];
   [(CBRamp *)v13 setRampProgressCallback:&__block_literal_global_8];
   return v13;
 }
@@ -82,90 +82,90 @@ float __73__CBRamp_newLinearRampWithWithOrigin_target_length_frequency_identifie
   return v26;
 }
 
-- (CBRamp)initWithOrigin:(float)a3 target:(float)a4 length:(float)a5 frequency:(float)a6 identifier:(id)a7 properties:(id)a8
+- (CBRamp)initWithOrigin:(float)origin target:(float)target length:(float)length frequency:(float)frequency identifier:(id)identifier properties:(id)properties
 {
-  v26 = self;
+  selfCopy = self;
   v25 = a2;
-  v24 = a3;
-  v23 = a4;
-  v22 = a5;
-  v21 = a6;
-  v20 = a7;
-  v19 = a8;
+  originCopy = origin;
+  targetCopy = target;
+  lengthCopy = length;
+  frequencyCopy = frequency;
+  identifierCopy = identifier;
+  propertiesCopy = properties;
   v18.receiver = self;
   v18.super_class = CBRamp;
-  v26 = [(CBRamp *)&v18 init];
-  if (v26)
+  selfCopy = [(CBRamp *)&v18 init];
+  if (selfCopy)
   {
-    v8 = [v20 copy];
-    v26->_identifier = v8;
-    v26->_originalValue = v24;
-    v26->_targetValue = v23;
-    v26->_length = v22;
-    v26->_remainingLength = v22;
-    v26->_frequency = v21;
-    v9 = [v19 copy];
-    v26->_properties = v9;
-    v26->_isFinished = 0;
+    v8 = [identifierCopy copy];
+    selfCopy->_identifier = v8;
+    selfCopy->_originalValue = originCopy;
+    selfCopy->_targetValue = targetCopy;
+    selfCopy->_length = lengthCopy;
+    selfCopy->_remainingLength = lengthCopy;
+    selfCopy->_frequency = frequencyCopy;
+    v9 = [propertiesCopy copy];
+    selfCopy->_properties = v9;
+    selfCopy->_isFinished = 0;
     v15 = objc_alloc(MEMORY[0x1E696AEC0]);
     v14 = [+[CBRamp className](CBRamp "className")];
-    v17 = [v15 initWithFormat:@"%s.%s.%s", "com.apple.CoreBrightness", v14, -[NSString cStringUsingEncoding:](v26->_identifier, "cStringUsingEncoding:", 1)];
+    v17 = [v15 initWithFormat:@"%s.%s.%s", "com.apple.CoreBrightness", v14, -[NSString cStringUsingEncoding:](selfCopy->_identifier, "cStringUsingEncoding:", 1)];
     v10 = os_log_create([v17 cStringUsingEncoding:1], "default");
-    v26->_logHandle = v10;
+    selfCopy->_logHandle = v10;
     MEMORY[0x1E69E5920](v17);
     info = 0;
     mach_timebase_info(&info);
     LODWORD(v12) = info.denom;
     LODWORD(v11) = info.numer;
-    v26->_sMachTimebaseFactor = v11 / v12 * 0.000000001;
-    v26->_startTime = mach_absolute_time() * v26->_sMachTimebaseFactor;
-    v26->_currentTimestamp = v26->_startTime;
-    v26->_largestStep = -1.0;
-    v26->_totalSteps = -1;
-    v26->_largestTimeDelta = 0.0;
-    v26->_startAbsoluteTime = CFAbsoluteTimeGetCurrent();
-    v26->_currentAbsoluteTimestamp = v26->_startAbsoluteTime;
-    [(CBRamp *)v26 setRampFinishedCallback:0];
+    selfCopy->_sMachTimebaseFactor = v11 / v12 * 0.000000001;
+    selfCopy->_startTime = mach_absolute_time() * selfCopy->_sMachTimebaseFactor;
+    selfCopy->_currentTimestamp = selfCopy->_startTime;
+    selfCopy->_largestStep = -1.0;
+    selfCopy->_totalSteps = -1;
+    selfCopy->_largestTimeDelta = 0.0;
+    selfCopy->_startAbsoluteTime = CFAbsoluteTimeGetCurrent();
+    selfCopy->_currentAbsoluteTimestamp = selfCopy->_startAbsoluteTime;
+    [(CBRamp *)selfCopy setRampFinishedCallback:0];
   }
 
-  return v26;
+  return selfCopy;
 }
 
 - (void)dealloc
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   if (self->_logHandle)
   {
-    MEMORY[0x1E69E5920](v5->_logHandle);
+    MEMORY[0x1E69E5920](selfCopy->_logHandle);
   }
 
-  if (v5->_rampProgressCallback)
+  if (selfCopy->_rampProgressCallback)
   {
-    _Block_release(v5->_rampProgressCallback);
+    _Block_release(selfCopy->_rampProgressCallback);
   }
 
-  if (v5->_rampFinishedCallback)
+  if (selfCopy->_rampFinishedCallback)
   {
-    _Block_release(v5->_rampFinishedCallback);
+    _Block_release(selfCopy->_rampFinishedCallback);
   }
 
-  MEMORY[0x1E69E5920](v5->_identifier);
-  MEMORY[0x1E69E5920](v5->_properties);
-  *&v2 = MEMORY[0x1E69E5920](v5->_trackedAnimation).n128_u64[0];
-  v3.receiver = v5;
+  MEMORY[0x1E69E5920](selfCopy->_identifier);
+  MEMORY[0x1E69E5920](selfCopy->_properties);
+  *&v2 = MEMORY[0x1E69E5920](selfCopy->_trackedAnimation).n128_u64[0];
+  v3.receiver = selfCopy;
   v3.super_class = CBRamp;
   [(CBRamp *)&v3 dealloc];
 }
 
 - (id)description
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   return [MEMORY[0x1E696AEC0] stringWithFormat:@"CBRamp: %@ | %f -> %f (%f) | %f sec | %f Hz", self->_identifier, self->_originalValue, self->_targetValue, self->_currentValue, self->_length, self->_frequency, a2, self];
 }
 
-- (void)clockRamp:(double)a3
+- (void)clockRamp:(double)ramp
 {
   v21 = *MEMORY[0x1E69E9840];
   if (self->_isFinished)
@@ -186,7 +186,7 @@ float __73__CBRamp_newLinearRampWithWithOrigin_target_length_frequency_identifie
   currentValue = self->_currentValue;
   currentTimestamp = self->_currentTimestamp;
   v15 = currentTimestamp;
-  self->_currentTimestamp = a3;
+  self->_currentTimestamp = ramp;
   v13 = (self->_currentTimestamp - self->_startTime) / self->_length;
   v4 = self->_length - (self->_currentTimestamp - self->_startTime);
   self->_remainingLength = v4;

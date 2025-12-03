@@ -1,34 +1,34 @@
 @interface IMDCoreSpotlightMessageAttachmentIndexer
-+ (BOOL)_attachmentIsSticker:(id)a3;
-+ (BOOL)messageSupportsIndexingForItem:(id)a3;
++ (BOOL)_attachmentIsSticker:(id)sticker;
++ (BOOL)messageSupportsIndexingForItem:(id)item;
 + (id)assetUUIDKey;
-+ (id)attachmentIndexTypeForPath:(id)a3 filename:(id)a4 isSticker:(BOOL)a5 isCommSafetySensitive:(BOOL)a6 knownSender:(BOOL)a7;
++ (id)attachmentIndexTypeForPath:(id)path filename:(id)filename isSticker:(BOOL)sticker isCommSafetySensitive:(BOOL)sensitive knownSender:(BOOL)sender;
 + (id)attachmentIsSyndicatableMediaKey;
-+ (id)auxiliaryItemsForPrimaryAttributes:(id)a3 withItem:(id)a4 chat:(id)a5 context:(id)a6 timingProfiler:(id)a7 rejectedItems:(id)a8;
++ (id)auxiliaryItemsForPrimaryAttributes:(id)attributes withItem:(id)item chat:(id)chat context:(id)context timingProfiler:(id)profiler rejectedItems:(id)items;
 + (id)livePhotoComplementKey;
 + (id)momentShareURLKey;
-+ (id)videoComplementPathForResourceURL:(id)a3;
-+ (void)indexItem:(id)a3 withChat:(id)a4 context:(id)a5 metadataToUpdate:(id)a6 timingProfiler:(id)a7;
++ (id)videoComplementPathForResourceURL:(id)l;
++ (void)indexItem:(id)item withChat:(id)chat context:(id)context metadataToUpdate:(id)update timingProfiler:(id)profiler;
 @end
 
 @implementation IMDCoreSpotlightMessageAttachmentIndexer
 
-+ (void)indexItem:(id)a3 withChat:(id)a4 context:(id)a5 metadataToUpdate:(id)a6 timingProfiler:(id)a7
++ (void)indexItem:(id)item withChat:(id)chat context:(id)context metadataToUpdate:(id)update timingProfiler:(id)profiler
 {
   v105 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v87 = a4;
-  v88 = a5;
-  v90 = a6;
-  v89 = a7;
-  v97 = v12;
-  v14 = objc_msgSend_objectForKey_(v12, v13, @"hasAttachments");
-  LODWORD(a6) = objc_msgSend_BOOLValue(v14, v15, v16);
+  itemCopy = item;
+  chatCopy = chat;
+  contextCopy = context;
+  updateCopy = update;
+  profilerCopy = profiler;
+  v97 = itemCopy;
+  v14 = objc_msgSend_objectForKey_(itemCopy, v13, @"hasAttachments");
+  LODWORD(update) = objc_msgSend_BOOLValue(v14, v15, v16);
 
-  v18 = objc_msgSend_messageSupportsIndexingForItem_(a1, v17, v12);
-  if (a6 && v18)
+  v18 = objc_msgSend_messageSupportsIndexingForItem_(self, v17, itemCopy);
+  if (update && v18)
   {
-    v86 = objc_msgSend_objectForKeyedSubscript_(v12, v19, @"attachments");
+    v86 = objc_msgSend_objectForKeyedSubscript_(itemCopy, v19, @"attachments");
     v20 = v86;
     if (!objc_msgSend_count(v86, v21, v22))
     {
@@ -174,11 +174,11 @@ LABEL_71:
     {
       if (objc_msgSend_count(v91, v68, v69))
       {
-        objc_msgSend_setAttachmentPaths_(v90, v72, v91);
+        objc_msgSend_setAttachmentPaths_(updateCopy, v72, v91);
 LABEL_56:
         if (objc_msgSend_count(v93, v74, v75))
         {
-          objc_msgSend_setAttachmentNames_(v90, v77, v93);
+          objc_msgSend_setAttachmentNames_(updateCopy, v77, v93);
         }
 
         else if (objc_msgSend_verboseLoggingEnabled(MEMORY[0x1E69A7FF8], v77, v78) && IMOSLoggingEnabled())
@@ -193,7 +193,7 @@ LABEL_56:
 
         if (objc_msgSend_count(v92, v79, v80))
         {
-          objc_msgSend_setAttachmentTypes_(v90, v82, v92);
+          objc_msgSend_setAttachmentTypes_(updateCopy, v82, v92);
         }
 
         else if (objc_msgSend_verboseLoggingEnabled(MEMORY[0x1E69A7FF8], v82, v83) && IMOSLoggingEnabled())
@@ -231,38 +231,38 @@ LABEL_72:
   v85 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)auxiliaryItemsForPrimaryAttributes:(id)a3 withItem:(id)a4 chat:(id)a5 context:(id)a6 timingProfiler:(id)a7 rejectedItems:(id)a8
++ (id)auxiliaryItemsForPrimaryAttributes:(id)attributes withItem:(id)item chat:(id)chat context:(id)context timingProfiler:(id)profiler rejectedItems:(id)items
 {
   v368 = *MEMORY[0x1E69E9840];
-  v322 = a3;
-  v13 = a4;
-  v327 = a5;
-  v331 = a6;
-  v311 = a7;
-  v324 = a8;
-  _IMDCoreRecentsApiInit(v324, v14, v15);
-  v344 = v13;
-  v17 = objc_msgSend_objectForKey_(v13, v16, @"hasAttachments");
+  attributesCopy = attributes;
+  itemCopy = item;
+  chatCopy = chat;
+  contextCopy = context;
+  profilerCopy = profiler;
+  itemsCopy = items;
+  _IMDCoreRecentsApiInit(itemsCopy, v14, v15);
+  v344 = itemCopy;
+  v17 = objc_msgSend_objectForKey_(itemCopy, v16, @"hasAttachments");
   v20 = objc_msgSend_BOOLValue(v17, v18, v19);
 
-  v22 = objc_msgSend_messageSupportsIndexingForItem_(a1, v21, v13);
-  v321 = objc_msgSend_objectForKey_(v327, v23, @"groupName");
-  v330 = objc_msgSend_objectForKey_(v13, v24, @"messageSummaryInfo");
+  v22 = objc_msgSend_messageSupportsIndexingForItem_(self, v21, itemCopy);
+  v321 = objc_msgSend_objectForKey_(chatCopy, v23, @"groupName");
+  v330 = objc_msgSend_objectForKey_(itemCopy, v24, @"messageSummaryInfo");
   v26 = objc_msgSend_objectForKey_(v330, v25, *MEMORY[0x1E69A7228]);
   v338 = objc_msgSend_unsignedIntegerValue(v26, v27, v28);
 
-  v30 = objc_msgSend_objectForKey_(v13, v29, @"flags");
-  LOBYTE(a5) = objc_msgSend_unsignedLongLongValue(v30, v31, v32);
+  v30 = objc_msgSend_objectForKey_(itemCopy, v29, @"flags");
+  LOBYTE(chat) = objc_msgSend_unsignedLongLongValue(v30, v31, v32);
 
-  v315 = a5;
-  if ((a5 & 4) != 0)
+  chatCopy2 = chat;
+  if ((chat & 4) != 0)
   {
     IsKnownContact = 1;
   }
 
   else
   {
-    v34 = objc_msgSend_objectForKeyedSubscript_(v13, v33, @"handle");
+    v34 = objc_msgSend_objectForKeyedSubscript_(itemCopy, v33, @"handle");
     IsKnownContact = _IMDCoreSpotlightIsKnownContact(v34);
   }
 
@@ -270,7 +270,7 @@ LABEL_72:
   v37 = 0x1E69A7000;
   if ((v20 & v22) == 1)
   {
-    objc_msgSend_objectForKeyedSubscript_(v13, v35, @"attachments");
+    objc_msgSend_objectForKeyedSubscript_(itemCopy, v35, @"attachments");
     v354 = 0u;
     v355 = 0u;
     v352 = 0u;
@@ -310,7 +310,7 @@ LABEL_72:
           v59 = objc_msgSend_objectForKeyedSubscript_(v42, v58, @"previewGenerationState");
           objc_msgSend_unsignedLongLongValue(v59, v60, v61);
 
-          if (objc_msgSend_ignoreRejections(v331, v62, v63))
+          if (objc_msgSend_ignoreRejections(contextCopy, v62, v63))
           {
             v342 = 0;
             goto LABEL_19;
@@ -341,7 +341,7 @@ LABEL_19:
               {
                 v69 = objc_alloc(MEMORY[0x1E69A7FF0]);
                 v71 = objc_msgSend_initWithDomain_identifier_reason_(v69, v70, @"attachmentDomain", v50, 2);
-                objc_msgSend_addObject_(v324, v72, v71);
+                objc_msgSend_addObject_(itemsCopy, v72, v71);
                 goto LABEL_166;
               }
 
@@ -350,7 +350,7 @@ LABEL_167:
               goto LABEL_168;
             }
 
-            v71 = objc_msgSend_copy(v322, v66, v67);
+            v71 = objc_msgSend_copy(attributesCopy, v66, v67);
             v333 = IMCMMAssetIndexFromIMFileTransferGUID();
             v73 = objc_alloc(MEMORY[0x1E69A8148]);
             v76 = objc_msgSend_defaultPrefix(MEMORY[0x1E69A8140], v74, v75);
@@ -365,10 +365,10 @@ LABEL_167:
                 if (v326)
                 {
                   objc_msgSend_setContentURL_(v71, v82, v326);
-                  v86 = objc_msgSend_videoComplementPathForResourceURL_(a1, v83, v326);
+                  v86 = objc_msgSend_videoComplementPathForResourceURL_(self, v83, v326);
                   if (v86)
                   {
-                    v87 = objc_msgSend_livePhotoComplementKey(a1, v84, v85);
+                    v87 = objc_msgSend_livePhotoComplementKey(self, v84, v85);
                     objc_msgSend_setValue_forCustomKey_(v71, v88, v86, v87);
                   }
                 }
@@ -438,8 +438,8 @@ LABEL_167:
               v111 = objc_msgSend_objectForKeyedSubscript_(v42, v106, @"isCommSafetySensitive");
               v114 = objc_msgSend_BOOLValue(v111, v112, v113);
 
-              IsSticker = objc_msgSend__attachmentIsSticker_(a1, v115, v42);
-              v339 = objc_msgSend_attachmentIndexTypeForPath_filename_isSticker_isCommSafetySensitive_knownSender_(a1, v117, v341, v334, IsSticker, v114, IsKnownContact);
+              IsSticker = objc_msgSend__attachmentIsSticker_(self, v115, v42);
+              v339 = objc_msgSend_attachmentIndexTypeForPath_filename_isSticker_isCommSafetySensitive_knownSender_(self, v117, v341, v334, IsSticker, v114, IsKnownContact);
               v120 = objc_msgSend_verboseLoggingEnabled(MEMORY[0x1E69A7FF8], v118, v119);
               if (v339)
               {
@@ -572,7 +572,7 @@ LABEL_72:
                 goto LABEL_127;
               }
 
-              if ((v315 & 4) == 0 && (objc_msgSend_isReindexing(v331, v162, v163) & 1) == 0)
+              if ((chatCopy2 & 4) == 0 && (objc_msgSend_isReindexing(contextCopy, v162, v163) & 1) == 0)
               {
                 v164 = objc_msgSend_objectForKey_(v344, v162, @"time");
                 v166 = objc_msgSend_objectForKey_(v344, v165, @"lalh");
@@ -668,16 +668,16 @@ LABEL_127:
             v226 = objc_msgSend_objectForKeyedSubscript_(v42, v225, @"isCommSafetySensitive");
             v229 = objc_msgSend_BOOLValue(v226, v227, v228);
 
-            if ((objc_msgSend__attachmentIsSticker_(a1, v230, v42) & 1) == 0)
+            if ((objc_msgSend__attachmentIsSticker_(self, v230, v42) & 1) == 0)
             {
               LOBYTE(v310) = objc_msgSend_verboseLoggingEnabled(MEMORY[0x1E69A7FF8], v231, v232);
-              isCommSafetySensitive_verbose = objc_msgSend__attachmentSyndicationTypeForAttachmentGUID_syndicationIdentifier_attachmentUTI_attributedBody_encodedSyndicationRanges_isCommSafetySensitive_verbose_(IMDAttachmentSyndicationUtilities, v233, v346, v50, v343, v345, v224, v229, v310, v311);
+              isCommSafetySensitive_verbose = objc_msgSend__attachmentSyndicationTypeForAttachmentGUID_syndicationIdentifier_attachmentUTI_attributedBody_encodedSyndicationRanges_isCommSafetySensitive_verbose_(IMDAttachmentSyndicationUtilities, v233, v346, v50, v343, v345, v224, v229, v310, profilerCopy);
               if (((isCommSafetySensitive_verbose == 1) & IsKnownContact) == 1)
               {
                 LOBYTE(v310) = objc_msgSend_verboseLoggingEnabled(MEMORY[0x1E69A7FF8], v231, v235);
                 isCMM_verbose = objc_msgSend__attachmentGUIDIsSyndicatable_syndicationIdentifier_attachmentUTI_attributedBody_encodedSyndicationRanges_isCMM_verbose_(IMDAttachmentSyndicationUtilities, v236, v346, v50, v343, v345, v224, v338 != 0, v310);
                 v239 = objc_msgSend_numberWithBool_(MEMORY[0x1E696AD98], v238, isCMM_verbose);
-                v242 = objc_msgSend_attachmentIsSyndicatableMediaKey(a1, v240, v241);
+                v242 = objc_msgSend_attachmentIsSyndicatableMediaKey(self, v240, v241);
                 objc_msgSend_setValue_forCustomKey_(v71, v243, v239, v242);
 
 LABEL_135:
@@ -710,7 +710,7 @@ LABEL_135:
               else
               {
                 v248 = objc_alloc_init(IMDSharedWithYouMetadataManager);
-                v250 = objc_msgSend_updateAttributesWithSharedWithYouMetadata_withItem_chat_(v248, v249, v71, v344, v327);
+                v250 = objc_msgSend_updateAttributesWithSharedWithYouMetadata_withItem_chat_(v248, v249, v71, v344, chatCopy);
                 if (v250)
                 {
                   if (IMOSLoggingEnabled())
@@ -737,19 +737,19 @@ LABEL_135:
               v258 = objc_msgSend_objectForKey_(v253, v254, v317);
               if (v258)
               {
-                v259 = objc_msgSend_momentShareURLKey(a1, v256, v257);
+                v259 = objc_msgSend_momentShareURLKey(self, v256, v257);
                 objc_msgSend_setValue_forCustomKey_(v71, v260, v258, v259);
               }
 
               v263 = objc_msgSend_objectForKey_(v255, v256, v316);
               if (v263)
               {
-                v264 = objc_msgSend_assetUUIDKey(a1, v261, v262);
+                v264 = objc_msgSend_assetUUIDKey(self, v261, v262);
                 objc_msgSend_setValue_forCustomKey_(v71, v265, v263, v264);
               }
             }
 
-            v266 = objc_msgSend_objectForKey_(v327, v254, @"guid");
+            v266 = objc_msgSend_objectForKey_(chatCopy, v254, @"guid");
             if (objc_msgSend_verboseLoggingEnabled(MEMORY[0x1E69A7FF8], v267, v268) && IMOSLoggingEnabled())
             {
               v269 = OSLogHandleForIMFoundationCategory();
@@ -763,10 +763,10 @@ LABEL_135:
               }
             }
 
-            v272 = _IMDCoreSpotlightChatUIDForChatDictionary(v327);
+            v272 = _IMDCoreSpotlightChatUIDForChatDictionary(chatCopy);
             if (v272)
             {
-              v273 = objc_msgSend_chatUniqueIdentifierKey(a1, v270, v271);
+              v273 = objc_msgSend_chatUniqueIdentifierKey(self, v270, v271);
               objc_msgSend_setValue_forCustomKey_(v71, v274, v272, v273);
             }
 
@@ -824,7 +824,7 @@ LABEL_135:
 
             v92 = objc_alloc(MEMORY[0x1E69A7FF0]);
             v71 = objc_msgSend_initWithDomain_identifier_reason_(v92, v93, @"attachmentDomain", v50, 1010);
-            objc_msgSend_addObject_(v324, v94, v71);
+            objc_msgSend_addObject_(itemsCopy, v94, v71);
           }
 
 LABEL_166:
@@ -882,15 +882,15 @@ LABEL_170:
   return v323;
 }
 
-+ (id)attachmentIndexTypeForPath:(id)a3 filename:(id)a4 isSticker:(BOOL)a5 isCommSafetySensitive:(BOOL)a6 knownSender:(BOOL)a7
++ (id)attachmentIndexTypeForPath:(id)path filename:(id)filename isSticker:(BOOL)sticker isCommSafetySensitive:(BOOL)sensitive knownSender:(BOOL)sender
 {
-  v7 = a7;
-  v8 = a6;
-  v61 = a5;
+  senderCopy = sender;
+  sensitiveCopy = sensitive;
+  stickerCopy = sticker;
   v66 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v14 = objc_msgSend_pathExtension(v11, v12, v13);
+  pathCopy = path;
+  filenameCopy = filename;
+  v14 = objc_msgSend_pathExtension(filenameCopy, v12, v13);
   v17 = objc_msgSend_lowercaseString(v14, v15, v16);
 
   isEqualToString = objc_msgSend_isEqualToString_(v17, v18, @"vcf");
@@ -917,7 +917,7 @@ LABEL_170:
 
     else if (isEqualToString)
     {
-      v33 = objc_msgSend_stringByDeletingPathExtension(v11, v30, v31);
+      v33 = objc_msgSend_stringByDeletingPathExtension(filenameCopy, v30, v31);
       v36 = objc_msgSend_pathExtension(v33, v34, v35);
       v38 = objc_msgSend_isEqualToString_(v36, v37, @"loc");
 
@@ -954,12 +954,12 @@ LABEL_170:
       v48 = objc_opt_class();
       if (objc_msgSend_isEqual_(v44, v49, v48))
       {
-        if (v61)
+        if (stickerCopy)
         {
           v51 = @"st";
         }
 
-        else if (v7 && (IMDCoreSpotlightPhotoAtPathIsScreenshot(v10, v50) & 1) != 0)
+        else if (senderCopy && (IMDCoreSpotlightPhotoAtPathIsScreenshot(pathCopy, v50) & 1) != 0)
         {
           v51 = @"scr";
         }
@@ -977,7 +977,7 @@ LABEL_170:
         {
           v51 = @"apto";
           v54 = @"st";
-          v55 = !v61;
+          v55 = !stickerCopy;
         }
 
         else
@@ -995,7 +995,7 @@ LABEL_170:
         }
       }
 
-      if (v8)
+      if (sensitiveCopy)
       {
         v32 = @"csspto";
       }
@@ -1011,28 +1011,28 @@ LABEL_170:
   return v32;
 }
 
-+ (BOOL)_attachmentIsSticker:(id)a3
++ (BOOL)_attachmentIsSticker:(id)sticker
 {
   if (IMDCoreSpotlightMessageAttachmentIndexer_TestOverrideIsSticker)
   {
     return 1;
   }
 
-  v4 = objc_msgSend_objectForKeyedSubscript_(a3, a2, @"isSticker");
+  v4 = objc_msgSend_objectForKeyedSubscript_(sticker, a2, @"isSticker");
   v7 = objc_msgSend_BOOLValue(v4, v5, v6);
 
   return v7;
 }
 
-+ (BOOL)messageSupportsIndexingForItem:(id)a3
++ (BOOL)messageSupportsIndexingForItem:(id)item
 {
   v37 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v5 = objc_msgSend_objectForKey_(v3, v4, @"balloonBundleID");
-  v7 = objc_msgSend_objectForKey_(v3, v6, @"hasAttachments");
+  itemCopy = item;
+  v5 = objc_msgSend_objectForKey_(itemCopy, v4, @"balloonBundleID");
+  v7 = objc_msgSend_objectForKey_(itemCopy, v6, @"hasAttachments");
   v10 = objc_msgSend_BOOLValue(v7, v8, v9);
 
-  v12 = objc_msgSend_objectForKey_(v3, v11, @"messageSummaryInfo");
+  v12 = objc_msgSend_objectForKey_(itemCopy, v11, @"messageSummaryInfo");
   v14 = objc_msgSend_objectForKey_(v12, v13, *MEMORY[0x1E69A7228]);
   v17 = objc_msgSend_unsignedIntegerValue(v14, v15, v16);
 
@@ -1108,14 +1108,14 @@ LABEL_170:
   return v20;
 }
 
-+ (id)videoComplementPathForResourceURL:(id)a3
++ (id)videoComplementPathForResourceURL:(id)l
 {
   v48 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v42 = objc_msgSend_pathExtension(v4, v5, v6);
-  v9 = objc_msgSend_path(v4, v7, v8);
+  lCopy = l;
+  v42 = objc_msgSend_pathExtension(lCopy, v5, v6);
+  v9 = objc_msgSend_path(lCopy, v7, v8);
   v12 = objc_msgSend_stringByDeletingPathExtension(v9, v10, v11);
-  objc_msgSend__possibleVideoComplementExtensions(a1, v13, v14);
+  objc_msgSend__possibleVideoComplementExtensions(self, v13, v14);
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;

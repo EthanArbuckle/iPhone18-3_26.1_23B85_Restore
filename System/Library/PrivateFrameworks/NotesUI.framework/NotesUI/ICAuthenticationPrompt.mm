@@ -1,7 +1,7 @@
 @interface ICAuthenticationPrompt
-+ (id)promptForChangingMode:(signed __int16)a3 account:(id)a4;
-+ (id)promptForDeletingNotes:(id)a3;
-+ (id)promptForIntent:(unint64_t)a3 object:(id)a4;
++ (id)promptForChangingMode:(signed __int16)mode account:(id)account;
++ (id)promptForDeletingNotes:(id)notes;
++ (id)promptForIntent:(unint64_t)intent object:(id)object;
 - (BOOL)allowsAlternativeAuthentication;
 - (BOOL)allowsAuthentication;
 - (BOOL)allowsBiometricAuthentication;
@@ -11,14 +11,14 @@
 - (BOOL)forcesSecondaryAuthentication;
 - (BOOL)hasDivergedKey;
 - (BOOL)hasPassphrase;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)needsAuthentication;
 - (BOOL)needsCloudAccount;
 - (BOOL)needsDevicePassword;
 - (BOOL)needsKeychain;
 - (BOOL)needsSecondaryAuthentication;
 - (BOOL)needsUserRecordUpdate;
-- (ICAuthenticationPrompt)initWithIntent:(unint64_t)a3 object:(id)a4;
+- (ICAuthenticationPrompt)initWithIntent:(unint64_t)intent object:(id)object;
 - (ICCloudSyncingObject)authenticationObject;
 - (NSArray)unauthenticatedNotes;
 - (NSString)cloudAccountName;
@@ -48,34 +48,34 @@
 - (NSString)customAccountName
 {
   v3 = MEMORY[0x1E69B7658];
-  v4 = [(ICAuthenticationPrompt *)self object];
-  v5 = [v4 managedObjectContext];
-  v6 = [v3 allActiveAccountsInContext:v5];
+  object = [(ICAuthenticationPrompt *)self object];
+  managedObjectContext = [object managedObjectContext];
+  v6 = [v3 allActiveAccountsInContext:managedObjectContext];
   if ([v6 count] < 2)
   {
-    v9 = 0;
+    ic_trimmedString = 0;
   }
 
   else
   {
-    v7 = [(ICAuthenticationPrompt *)self account];
-    v8 = [v7 localizedName];
-    v9 = [v8 ic_trimmedString];
+    account = [(ICAuthenticationPrompt *)self account];
+    localizedName = [account localizedName];
+    ic_trimmedString = [localizedName ic_trimmedString];
   }
 
-  return v9;
+  return ic_trimmedString;
 }
 
 - (NSString)cloudAccountName
 {
-  v3 = [MEMORY[0x1E69B7A28] sharedInstance];
-  v4 = [v3 accountStore];
-  v5 = [(ICAuthenticationPrompt *)self account];
-  v6 = [v5 identifier];
-  v7 = [v4 accountWithIdentifier:v6];
-  v8 = [v7 username];
+  mEMORY[0x1E69B7A28] = [MEMORY[0x1E69B7A28] sharedInstance];
+  accountStore = [mEMORY[0x1E69B7A28] accountStore];
+  account = [(ICAuthenticationPrompt *)self account];
+  identifier = [account identifier];
+  v7 = [accountStore accountWithIdentifier:identifier];
+  username = [v7 username];
 
-  return v8;
+  return username;
 }
 
 - (void)updateStrings
@@ -88,14 +88,14 @@
   {
     if ([(ICAuthenticationPrompt *)self allowsCustomPasswordAuthentication])
     {
-      v3 = [(ICAuthenticationPrompt *)self customAccountName];
+      customAccountName = [(ICAuthenticationPrompt *)self customAccountName];
 
-      if (v3)
+      if (customAccountName)
       {
         v4 = __ICLocalizedFrameworkString_impl(@"Try again or enter the notes password for your “%@” account.", @"Try again or enter the notes password for your “%@” account.", 0, 1);
         v5 = MEMORY[0x1E696AEC0];
-        v6 = [(ICAuthenticationPrompt *)self customAccountName];
-        v7 = [v5 localizedStringWithFormat:v4, v6];
+        customAccountName2 = [(ICAuthenticationPrompt *)self customAccountName];
+        v7 = [v5 localizedStringWithFormat:v4, customAccountName2];
         [(ICAuthenticationPrompt *)self setReason:v7];
 
 LABEL_11:
@@ -136,12 +136,12 @@ LABEL_12:
     [(ICAuthenticationPrompt *)self setFallbackButtonTitle:v10];
   }
 
-  v11 = [(ICAuthenticationPrompt *)self intent];
-  if (v11 <= 3)
+  intent = [(ICAuthenticationPrompt *)self intent];
+  if (intent <= 3)
   {
-    if (v11 > 1)
+    if (intent > 1)
     {
-      if (v11 == 2)
+      if (intent == 2)
       {
 
         [(ICAuthenticationPrompt *)self updateStringsForAddLock];
@@ -154,9 +154,9 @@ LABEL_12:
       }
     }
 
-    else if (v11)
+    else if (intent)
     {
-      if (v11 == 1)
+      if (intent == 1)
       {
 
         [(ICAuthenticationPrompt *)self updateStringsForViewAttachment];
@@ -170,9 +170,9 @@ LABEL_12:
     }
   }
 
-  else if (v11 <= 5)
+  else if (intent <= 5)
   {
-    if (v11 == 4)
+    if (intent == 4)
     {
 
       [(ICAuthenticationPrompt *)self updateStringsForDeleteNotes];
@@ -187,7 +187,7 @@ LABEL_12:
 
   else
   {
-    switch(v11)
+    switch(intent)
     {
       case 6:
 
@@ -236,8 +236,8 @@ LABEL_12:
 LABEL_19:
     v15 = __ICLocalizedFrameworkString_impl(v11, v11, 0, 1);
     v12 = MEMORY[0x1E696AEC0];
-    v13 = [(ICAuthenticationPrompt *)self customAccountName];
-    v14 = [v12 localizedStringWithFormat:v15, v13];
+    customAccountName = [(ICAuthenticationPrompt *)self customAccountName];
+    v14 = [v12 localizedStringWithFormat:v15, customAccountName];
     [(ICAuthenticationPrompt *)self setReason:v14];
 
     goto LABEL_20;
@@ -245,13 +245,13 @@ LABEL_19:
 
   if ([(ICAuthenticationPrompt *)self authenticationMechanism]== 4)
   {
-    v8 = [(ICAuthenticationPrompt *)self customAccountName];
-    if (v8)
+    customAccountName2 = [(ICAuthenticationPrompt *)self customAccountName];
+    if (customAccountName2)
     {
-      v9 = v8;
-      v10 = [(ICAuthenticationPrompt *)self hasDivergedKey];
+      v9 = customAccountName2;
+      hasDivergedKey = [(ICAuthenticationPrompt *)self hasDivergedKey];
 
-      if (!v10)
+      if (!hasDivergedKey)
       {
         v11 = @"Enter the password you created for notes in your “%@” account.";
         goto LABEL_19;
@@ -298,9 +298,9 @@ LABEL_20:
   {
     if ([(ICAuthenticationPrompt *)self authenticationMechanism]== 4)
     {
-      v6 = [(ICAuthenticationPrompt *)self customAccountName];
+      customAccountName = [(ICAuthenticationPrompt *)self customAccountName];
 
-      if (v6)
+      if (customAccountName)
       {
         v5 = @"Enter the password you created for notes in your “%@” account.";
         goto LABEL_8;
@@ -349,8 +349,8 @@ LABEL_17:
 LABEL_8:
   v11 = __ICLocalizedFrameworkString_impl(v5, v5, 0, 1);
   v7 = MEMORY[0x1E696AEC0];
-  v8 = [(ICAuthenticationPrompt *)self customAccountName];
-  v9 = [v7 localizedStringWithFormat:v11, v8];
+  customAccountName2 = [(ICAuthenticationPrompt *)self customAccountName];
+  v9 = [v7 localizedStringWithFormat:v11, customAccountName2];
   [(ICAuthenticationPrompt *)self setReason:v9];
 
 LABEL_18:
@@ -387,8 +387,8 @@ LABEL_18:
 LABEL_19:
     v15 = __ICLocalizedFrameworkString_impl(v11, v11, 0, 1);
     v12 = MEMORY[0x1E696AEC0];
-    v13 = [(ICAuthenticationPrompt *)self customAccountName];
-    v14 = [v12 localizedStringWithFormat:v15, v13];
+    customAccountName = [(ICAuthenticationPrompt *)self customAccountName];
+    v14 = [v12 localizedStringWithFormat:v15, customAccountName];
     [(ICAuthenticationPrompt *)self setReason:v14];
 
     goto LABEL_20;
@@ -396,13 +396,13 @@ LABEL_19:
 
   if ([(ICAuthenticationPrompt *)self authenticationMechanism]== 4)
   {
-    v8 = [(ICAuthenticationPrompt *)self customAccountName];
-    if (v8)
+    customAccountName2 = [(ICAuthenticationPrompt *)self customAccountName];
+    if (customAccountName2)
     {
-      v9 = v8;
-      v10 = [(ICAuthenticationPrompt *)self hasDivergedKey];
+      v9 = customAccountName2;
+      hasDivergedKey = [(ICAuthenticationPrompt *)self hasDivergedKey];
 
-      if (!v10)
+      if (!hasDivergedKey)
       {
         v11 = @"Enter the password you created for notes in your “%@” account.";
         goto LABEL_19;
@@ -430,13 +430,13 @@ LABEL_20:
 
 - (void)updateStringsForDeleteNotes
 {
-  v3 = [(ICAuthenticationPrompt *)self unauthenticatedNotes];
-  if ([v3 count])
+  unauthenticatedNotes = [(ICAuthenticationPrompt *)self unauthenticatedNotes];
+  if ([unauthenticatedNotes count])
   {
-    v4 = [(ICAuthenticationPrompt *)self notes];
-    v5 = [v4 count];
-    v6 = [(ICAuthenticationPrompt *)self unauthenticatedNotes];
-    v7 = [v6 count];
+    notes = [(ICAuthenticationPrompt *)self notes];
+    v5 = [notes count];
+    unauthenticatedNotes2 = [(ICAuthenticationPrompt *)self unauthenticatedNotes];
+    v7 = [unauthenticatedNotes2 count];
 
     if (v5 > v7)
     {
@@ -450,8 +450,8 @@ LABEL_20:
   {
   }
 
-  v8 = [(ICAuthenticationPrompt *)self unauthenticatedNotes];
-  v9 = [v8 count];
+  unauthenticatedNotes3 = [(ICAuthenticationPrompt *)self unauthenticatedNotes];
+  v9 = [unauthenticatedNotes3 count];
 
   if (v9 == 1)
   {
@@ -475,9 +475,9 @@ LABEL_20:
   {
     if ([(ICAuthenticationPrompt *)self authenticationMechanism]== 4)
     {
-      v6 = [(ICAuthenticationPrompt *)self customAccountName];
+      customAccountName = [(ICAuthenticationPrompt *)self customAccountName];
 
-      if (v6)
+      if (customAccountName)
       {
         v5 = @"One or more notes are locked. Enter the password you created for notes in your “%@” account.";
         goto LABEL_8;
@@ -497,7 +497,7 @@ LABEL_20:
 
         v12 = __ICLocalizedFrameworkString_impl(@"One or more notes are locked. Enter the password for “%@” to delete these notes.", @"One or more notes are locked. Enter the password for “%@” to delete these notes.", 0, 1);
         v7 = MEMORY[0x1E696AEC0];
-        v8 = [(ICAuthenticationPrompt *)self cloudAccountName];
+        cloudAccountName = [(ICAuthenticationPrompt *)self cloudAccountName];
         goto LABEL_9;
       }
 
@@ -534,10 +534,10 @@ LABEL_20:
 LABEL_8:
   v12 = __ICLocalizedFrameworkString_impl(v5, v5, 0, 1);
   v7 = MEMORY[0x1E696AEC0];
-  v8 = [(ICAuthenticationPrompt *)self customAccountName];
+  cloudAccountName = [(ICAuthenticationPrompt *)self customAccountName];
 LABEL_9:
-  v9 = v8;
-  v10 = [v7 localizedStringWithFormat:v12, v8];
+  v9 = cloudAccountName;
+  v10 = [v7 localizedStringWithFormat:v12, cloudAccountName];
   [(ICAuthenticationPrompt *)self setReason:v10];
 
 LABEL_21:
@@ -552,9 +552,9 @@ LABEL_21:
   {
     if ([(ICAuthenticationPrompt *)self authenticationMechanism]== 4)
     {
-      v6 = [(ICAuthenticationPrompt *)self customAccountName];
+      customAccountName = [(ICAuthenticationPrompt *)self customAccountName];
 
-      if (v6)
+      if (customAccountName)
       {
         v5 = @"Enter the password you created for notes in your “%@” account.";
         goto LABEL_8;
@@ -574,7 +574,7 @@ LABEL_21:
 
         v12 = __ICLocalizedFrameworkString_impl(@"Enter the password for “%@” to delete this note.", @"Enter the password for “%@” to delete this note.", 0, 1);
         v7 = MEMORY[0x1E696AEC0];
-        v8 = [(ICAuthenticationPrompt *)self cloudAccountName];
+        cloudAccountName = [(ICAuthenticationPrompt *)self cloudAccountName];
         goto LABEL_9;
       }
 
@@ -611,10 +611,10 @@ LABEL_20:
 LABEL_8:
   v12 = __ICLocalizedFrameworkString_impl(v5, v5, 0, 1);
   v7 = MEMORY[0x1E696AEC0];
-  v8 = [(ICAuthenticationPrompt *)self customAccountName];
+  cloudAccountName = [(ICAuthenticationPrompt *)self customAccountName];
 LABEL_9:
-  v9 = v8;
-  v10 = [v7 localizedStringWithFormat:v12, v8];
+  v9 = cloudAccountName;
+  v10 = [v7 localizedStringWithFormat:v12, cloudAccountName];
   [(ICAuthenticationPrompt *)self setReason:v10];
 
 LABEL_21:
@@ -629,9 +629,9 @@ LABEL_21:
   {
     if ([(ICAuthenticationPrompt *)self authenticationMechanism]== 4)
     {
-      v6 = [(ICAuthenticationPrompt *)self customAccountName];
+      customAccountName = [(ICAuthenticationPrompt *)self customAccountName];
 
-      if (v6)
+      if (customAccountName)
       {
         v5 = @"Enter the password you created for notes in your “%@” account.";
         goto LABEL_8;
@@ -651,7 +651,7 @@ LABEL_21:
 
         v12 = __ICLocalizedFrameworkString_impl(@"Enter the password for “%@” to delete these notes.", @"Enter the password for “%@” to delete these notes.", 0, 1);
         v7 = MEMORY[0x1E696AEC0];
-        v8 = [(ICAuthenticationPrompt *)self cloudAccountName];
+        cloudAccountName = [(ICAuthenticationPrompt *)self cloudAccountName];
         goto LABEL_9;
       }
 
@@ -688,10 +688,10 @@ LABEL_20:
 LABEL_8:
   v12 = __ICLocalizedFrameworkString_impl(v5, v5, 0, 1);
   v7 = MEMORY[0x1E696AEC0];
-  v8 = [(ICAuthenticationPrompt *)self customAccountName];
+  cloudAccountName = [(ICAuthenticationPrompt *)self customAccountName];
 LABEL_9:
-  v9 = v8;
-  v10 = [v7 localizedStringWithFormat:v12, v8];
+  v9 = cloudAccountName;
+  v10 = [v7 localizedStringWithFormat:v12, cloudAccountName];
   [(ICAuthenticationPrompt *)self setReason:v10];
 
 LABEL_21:
@@ -709,9 +709,9 @@ LABEL_21:
       return;
     }
 
-    v6 = [(ICAuthenticationPrompt *)self customAccountName];
+    customAccountName = [(ICAuthenticationPrompt *)self customAccountName];
 
-    if (v6)
+    if (customAccountName)
     {
       v5 = @"Enter the password you created for notes in your “%@” account.";
       goto LABEL_8;
@@ -748,8 +748,8 @@ LABEL_15:
 LABEL_8:
   v11 = __ICLocalizedFrameworkString_impl(v5, v5, 0, 1);
   v7 = MEMORY[0x1E696AEC0];
-  v8 = [(ICAuthenticationPrompt *)self customAccountName];
-  v9 = [v7 localizedStringWithFormat:v11, v8];
+  customAccountName2 = [(ICAuthenticationPrompt *)self customAccountName];
+  v9 = [v7 localizedStringWithFormat:v11, customAccountName2];
   [(ICAuthenticationPrompt *)self setReason:v9];
 
 LABEL_16:
@@ -767,15 +767,15 @@ LABEL_16:
       return;
     }
 
-    v7 = [(ICAuthenticationPrompt *)self customAccountName];
+    customAccountName = [(ICAuthenticationPrompt *)self customAccountName];
 
-    if (v7)
+    if (customAccountName)
     {
       v13 = __ICLocalizedFrameworkString_impl(@"Enter the password for “%@” to reset the notes password for your “%@” account.", @"Enter the password for “%@” to reset the notes password for your “%@” account.", 0, 1);
       v8 = MEMORY[0x1E696AEC0];
-      v9 = [(ICAuthenticationPrompt *)self cloudAccountName];
-      v10 = [(ICAuthenticationPrompt *)self customAccountName];
-      v11 = [v8 localizedStringWithFormat:v13, v9, v10];
+      cloudAccountName = [(ICAuthenticationPrompt *)self cloudAccountName];
+      customAccountName2 = [(ICAuthenticationPrompt *)self customAccountName];
+      v11 = [v8 localizedStringWithFormat:v13, cloudAccountName, customAccountName2];
       [(ICAuthenticationPrompt *)self setReason:v11];
 
 LABEL_11:
@@ -784,22 +784,22 @@ LABEL_11:
 
     v13 = __ICLocalizedFrameworkString_impl(@"Enter the password for “%@” to reset your notes password.", @"Enter the password for “%@” to reset your notes password.", 0, 1);
     v5 = MEMORY[0x1E696AEC0];
-    v6 = [(ICAuthenticationPrompt *)self cloudAccountName];
+    cloudAccountName2 = [(ICAuthenticationPrompt *)self cloudAccountName];
 LABEL_10:
-    v9 = v6;
-    v12 = [v5 localizedStringWithFormat:v13, v6];
+    cloudAccountName = cloudAccountName2;
+    v12 = [v5 localizedStringWithFormat:v13, cloudAccountName2];
     [(ICAuthenticationPrompt *)self setReason:v12];
 
     goto LABEL_11;
   }
 
-  v4 = [(ICAuthenticationPrompt *)self customAccountName];
+  customAccountName3 = [(ICAuthenticationPrompt *)self customAccountName];
 
-  if (v4)
+  if (customAccountName3)
   {
     v13 = __ICLocalizedFrameworkString_impl(@"Reset the notes password for your “%@” account.", @"Reset the notes password for your “%@” account.", 0, 1);
     v5 = MEMORY[0x1E696AEC0];
-    v6 = [(ICAuthenticationPrompt *)self customAccountName];
+    cloudAccountName2 = [(ICAuthenticationPrompt *)self customAccountName];
     goto LABEL_10;
   }
 
@@ -835,9 +835,9 @@ LABEL_12:
       return;
     }
 
-    v7 = [(ICAuthenticationPrompt *)self customAccountName];
+    customAccountName = [(ICAuthenticationPrompt *)self customAccountName];
 
-    if (v7)
+    if (customAccountName)
     {
       v6 = @"Enter the password you created for notes in your “%@” account.";
       goto LABEL_8;
@@ -880,8 +880,8 @@ LABEL_15:
 LABEL_8:
   v13 = __ICLocalizedFrameworkString_impl(v6, v6, 0, 1);
   v8 = MEMORY[0x1E696AEC0];
-  v9 = [(ICAuthenticationPrompt *)self customAccountName];
-  v10 = [v8 localizedStringWithFormat:v13, v9];
+  customAccountName2 = [(ICAuthenticationPrompt *)self customAccountName];
+  v10 = [v8 localizedStringWithFormat:v13, customAccountName2];
   [(ICAuthenticationPrompt *)self setReason:v10];
 
 LABEL_16:
@@ -896,9 +896,9 @@ LABEL_16:
   {
     if ([(ICAuthenticationPrompt *)self authenticationMechanism]== 4)
     {
-      v6 = [(ICAuthenticationPrompt *)self customAccountName];
+      customAccountName = [(ICAuthenticationPrompt *)self customAccountName];
 
-      if (v6)
+      if (customAccountName)
       {
         v5 = @"Enter the password you created for notes in your “%@” account.";
         goto LABEL_10;
@@ -914,9 +914,9 @@ LABEL_16:
         return;
       }
 
-      v7 = [(ICAuthenticationPrompt *)self customAccountName];
+      customAccountName2 = [(ICAuthenticationPrompt *)self customAccountName];
 
-      if (v7)
+      if (customAccountName2)
       {
         v5 = @"Lock “%@” notes with passcode.";
         goto LABEL_10;
@@ -931,9 +931,9 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  v4 = [(ICAuthenticationPrompt *)self customAccountName];
+  customAccountName3 = [(ICAuthenticationPrompt *)self customAccountName];
 
-  if (!v4)
+  if (!customAccountName3)
   {
     if ([(ICAuthenticationPrompt *)self allowsCustomPasswordAuthentication])
     {
@@ -957,8 +957,8 @@ LABEL_18:
 LABEL_10:
   v12 = __ICLocalizedFrameworkString_impl(v5, v5, 0, 1);
   v8 = MEMORY[0x1E696AEC0];
-  v9 = [(ICAuthenticationPrompt *)self customAccountName];
-  v10 = [v8 localizedStringWithFormat:v12, v9];
+  customAccountName4 = [(ICAuthenticationPrompt *)self customAccountName];
+  v10 = [v8 localizedStringWithFormat:v12, customAccountName4];
   [(ICAuthenticationPrompt *)self setReason:v10];
 
 LABEL_19:
@@ -984,10 +984,10 @@ LABEL_19:
 LABEL_11:
         v14 = __ICLocalizedFrameworkString_impl(v4, v4, 0, 1);
         [(ICAuthenticationPrompt *)self setReason:v14];
-        v6 = self;
+        selfCopy2 = self;
         v7 = v14;
 LABEL_26:
-        [(ICAuthenticationPrompt *)v6 setReason:v7];
+        [(ICAuthenticationPrompt *)selfCopy2 setReason:v7];
         goto LABEL_27;
       }
 
@@ -1017,7 +1017,7 @@ LABEL_26:
       v13 = @"Turn on Face ID for locked notes.";
 LABEL_25:
       v7 = __ICLocalizedFrameworkString_impl(v13, v13, 0, 1);
-      v6 = self;
+      selfCopy2 = self;
       v14 = v7;
       goto LABEL_26;
     }
@@ -1056,9 +1056,9 @@ LABEL_25:
     }
   }
 
-  v9 = [(ICAuthenticationPrompt *)self customAccountName];
+  customAccountName = [(ICAuthenticationPrompt *)self customAccountName];
 
-  if (!v9)
+  if (!customAccountName)
   {
     v13 = @"Enter your locked notes password.";
     goto LABEL_25;
@@ -1066,17 +1066,17 @@ LABEL_25:
 
   v14 = __ICLocalizedFrameworkString_impl(@"Enter the password you created for notes in your “%@” account.", @"Enter the password you created for notes in your “%@” account.", 0, 1);
   v10 = MEMORY[0x1E696AEC0];
-  v11 = [(ICAuthenticationPrompt *)self customAccountName];
-  v12 = [v10 localizedStringWithFormat:v14, v11];
+  customAccountName2 = [(ICAuthenticationPrompt *)self customAccountName];
+  v12 = [v10 localizedStringWithFormat:v14, customAccountName2];
   [(ICAuthenticationPrompt *)self setReason:v12];
 
 LABEL_27:
 }
 
-- (ICAuthenticationPrompt)initWithIntent:(unint64_t)a3 object:(id)a4
+- (ICAuthenticationPrompt)initWithIntent:(unint64_t)intent object:(id)object
 {
   v30[1] = *MEMORY[0x1E69E9840];
-  v7 = a4;
+  objectCopy = object;
   v29.receiver = self;
   v29.super_class = ICAuthenticationPrompt;
   v8 = [(ICAuthenticationPrompt *)&v29 init];
@@ -1087,40 +1087,40 @@ LABEL_27:
     v10 = v9;
     if (v9)
     {
-      v11 = v9;
+      cloudAccount = v9;
     }
 
     else
     {
-      v11 = [v7 cloudAccount];
+      cloudAccount = [objectCopy cloudAccount];
     }
 
-    v12 = v11;
+    v12 = cloudAccount;
 
     objc_opt_class();
     v13 = ICDynamicCast();
     v14 = v13;
     if (v13)
     {
-      v15 = v13;
+      note = v13;
     }
 
     else
     {
       objc_opt_class();
       v16 = ICDynamicCast();
-      v15 = [v16 note];
+      note = [v16 note];
     }
 
     [MEMORY[0x1E69B77C8] refreshBiometricsContext];
     [MEMORY[0x1E69B77C8] refreshHasPasscode];
-    v8->_intent = a3;
-    objc_storeStrong(&v8->_object, a4);
+    v8->_intent = intent;
+    objc_storeStrong(&v8->_object, object);
     objc_storeStrong(&v8->_account, v12);
-    objc_storeStrong(&v8->_note, v15);
-    if (v15)
+    objc_storeStrong(&v8->_note, note);
+    if (note)
     {
-      v30[0] = v15;
+      v30[0] = note;
       v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v30 count:1];
     }
 
@@ -1134,11 +1134,11 @@ LABEL_27:
 
     *&v8->_usesBiometricAuthenticationIfAvailable = 257;
     v8->_internetReachable = [MEMORY[0x1E69B7AD0] isInternetReachable];
-    v19 = [MEMORY[0x1E69B76D0] sharedState];
-    if ([v19 biometricsEnabledForAccount:v12])
+    mEMORY[0x1E69B76D0] = [MEMORY[0x1E69B76D0] sharedState];
+    if ([mEMORY[0x1E69B76D0] biometricsEnabledForAccount:v12])
     {
-      v20 = [MEMORY[0x1E69B76D0] sharedState];
-      if ([v20 checkSupportsBiometrics])
+      mEMORY[0x1E69B76D0]2 = [MEMORY[0x1E69B76D0] sharedState];
+      if ([mEMORY[0x1E69B76D0]2 checkSupportsBiometrics])
       {
         v21 = [MEMORY[0x1E69B77C8] biometricsLockedOut] ^ 1;
       }
@@ -1158,15 +1158,15 @@ LABEL_27:
 
     v8->_biometricAuthenticationType = [MEMORY[0x1E69B77C8] biometricsType];
     v8->_keychainAvailable = [MEMORY[0x1E69B7798] isSyncAvailableForAccount:v12];
-    v22 = [MEMORY[0x1E69B76D0] sharedState];
-    v23 = [(ICAuthenticationPrompt *)v8 authenticationObject];
-    v24 = [v22 mainKeyFromKeychainForObject:v23];
+    mEMORY[0x1E69B76D0]3 = [MEMORY[0x1E69B76D0] sharedState];
+    authenticationObject = [(ICAuthenticationPrompt *)v8 authenticationObject];
+    v24 = [mEMORY[0x1E69B76D0]3 mainKeyFromKeychainForObject:authenticationObject];
     v8->_hasKeychainItem = v24 != 0;
 
-    v25 = [MEMORY[0x1E69B7A28] sharedInstance];
-    v26 = [v25 accountStore];
-    v27 = [v26 aa_primaryAppleAccount];
-    v8->_hasCloudAccount = v27 != 0;
+    mEMORY[0x1E69B7A28] = [MEMORY[0x1E69B7A28] sharedInstance];
+    accountStore = [mEMORY[0x1E69B7A28] accountStore];
+    aa_primaryAppleAccount = [accountStore aa_primaryAppleAccount];
+    v8->_hasCloudAccount = aa_primaryAppleAccount != 0;
 
     v8->_hasDevicePassword = [MEMORY[0x1E69B77C8] hasPasscode];
     v8->_authenticationAction = 1;
@@ -1187,21 +1187,21 @@ LABEL_27:
   v31 = NSStringFromAuthenticationIntent([(ICAuthenticationPrompt *)self intent]);
   v32 = NSStringFromAuthenticationAction([(ICAuthenticationPrompt *)self authenticationAction]);
   v29 = NSStringFromAuthenticationMechanism([(ICAuthenticationPrompt *)self authenticationMechanism]);
-  v27 = [(ICAuthenticationPrompt *)self account];
-  v30 = [v27 shortLoggingDescription];
-  v26 = [(ICAuthenticationPrompt *)self account];
-  v25 = [v26 accountData];
-  [v25 lockedNotesMode];
+  account = [(ICAuthenticationPrompt *)self account];
+  shortLoggingDescription = [account shortLoggingDescription];
+  account2 = [(ICAuthenticationPrompt *)self account];
+  accountData = [account2 accountData];
+  [accountData lockedNotesMode];
   v28 = NSStringFromAccountDataLockedNotesMode();
   v4 = MEMORY[0x1E696AD98];
-  v21 = [(ICAuthenticationPrompt *)self account];
-  v20 = [v21 accountData];
-  v17 = [v4 numberWithBool:{objc_msgSend(v20, "supportsV1Neo")}];
-  v19 = [(ICAuthenticationPrompt *)self object];
-  v16 = [v19 shortLoggingDescription];
+  account3 = [(ICAuthenticationPrompt *)self account];
+  accountData2 = [account3 accountData];
+  v17 = [v4 numberWithBool:{objc_msgSend(accountData2, "supportsV1Neo")}];
+  object = [(ICAuthenticationPrompt *)self object];
+  shortLoggingDescription2 = [object shortLoggingDescription];
   v5 = MEMORY[0x1E69B7728];
-  v18 = [(ICAuthenticationPrompt *)self object];
-  [v5 cipherVersionForObject:v18];
+  object2 = [(ICAuthenticationPrompt *)self object];
+  [v5 cipherVersionForObject:object2];
   v6 = ICCipherNameForCipherVersion();
   v15 = [MEMORY[0x1E696AD98] numberWithBool:{-[ICAuthenticationPrompt isInternetReachable](self, "isInternetReachable")}];
   v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[ICAuthenticationPrompt isBiometricAuthenticationEnabled](self, "isBiometricAuthenticationEnabled")}];
@@ -1211,39 +1211,39 @@ LABEL_27:
   v10 = [MEMORY[0x1E696AD98] numberWithBool:{-[ICAuthenticationPrompt hasDevicePassword](self, "hasDevicePassword")}];
   v11 = [MEMORY[0x1E696AD98] numberWithBool:{-[ICAuthenticationPrompt hasDivergedKey](self, "hasDivergedKey")}];
   v12 = [MEMORY[0x1E696AD98] numberWithBool:{-[ICAuthenticationPrompt needsUserRecordUpdate](self, "needsUserRecordUpdate")}];
-  v24 = [v23 stringWithFormat:@"<%@: %p, intent: %@, action: %@, mechanism: %@, account: %@, account.lockedNotesMode: %@, account.supportsV1Neo: %@, object: %@, object.cipherVersion: %@, isInternetReachable: %@, isBiometricAuthenticationEnabled: %@, isKeychainAvailable: %@, hasKeychainItem: %@, hasCloudAccount: %@, hasDevicePassword: %@, hasDivergedKey: %@, needsUserRecordUpdate: %@>", v22, self, v31, v32, v29, v30, v28, v17, v16, v6, v15, v7, v14, v8, v9, v10, v11, v12];
+  v24 = [v23 stringWithFormat:@"<%@: %p, intent: %@, action: %@, mechanism: %@, account: %@, account.lockedNotesMode: %@, account.supportsV1Neo: %@, object: %@, object.cipherVersion: %@, isInternetReachable: %@, isBiometricAuthenticationEnabled: %@, isKeychainAvailable: %@, hasKeychainItem: %@, hasCloudAccount: %@, hasDevicePassword: %@, hasDivergedKey: %@, needsUserRecordUpdate: %@>", v22, self, v31, v32, v29, shortLoggingDescription, v28, v17, shortLoggingDescription2, v6, v15, v7, v14, v8, v9, v10, v11, v12];
 
   return v24;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   v5 = ICDynamicCast();
 
-  v6 = [v5 intent];
-  if (v6 == [(ICAuthenticationPrompt *)self intent])
+  intent = [v5 intent];
+  if (intent == [(ICAuthenticationPrompt *)self intent])
   {
-    v7 = [v5 object];
-    v8 = [(ICAuthenticationPrompt *)self object];
-    if (v7 == v8)
+    object = [v5 object];
+    object2 = [(ICAuthenticationPrompt *)self object];
+    if (object == object2)
     {
-      v10 = [v5 notes];
-      v11 = [(ICAuthenticationPrompt *)self notes];
-      if ([v10 isEqualToArray:v11])
+      notes = [v5 notes];
+      notes2 = [(ICAuthenticationPrompt *)self notes];
+      if ([notes isEqualToArray:notes2])
       {
-        v12 = [v5 unauthenticatedNotes];
-        v13 = [(ICAuthenticationPrompt *)self unauthenticatedNotes];
-        if ([v12 isEqualToArray:v13])
+        unauthenticatedNotes = [v5 unauthenticatedNotes];
+        unauthenticatedNotes2 = [(ICAuthenticationPrompt *)self unauthenticatedNotes];
+        if ([unauthenticatedNotes isEqualToArray:unauthenticatedNotes2])
         {
-          v14 = [v5 secondaryAuthenticationMode];
-          v9 = v14 == [(ICAuthenticationPrompt *)self secondaryAuthenticationMode];
+          secondaryAuthenticationMode = [v5 secondaryAuthenticationMode];
+          v9 = secondaryAuthenticationMode == [(ICAuthenticationPrompt *)self secondaryAuthenticationMode];
         }
 
         else
@@ -1275,10 +1275,10 @@ LABEL_27:
 - (unint64_t)hash
 {
   v38 = *MEMORY[0x1E69E9840];
-  v32 = [(ICAuthenticationPrompt *)self intent];
-  v3 = [(ICAuthenticationPrompt *)self object];
-  v4 = [v3 hash];
-  v5 = [(ICAuthenticationPrompt *)self notes];
+  intent = [(ICAuthenticationPrompt *)self intent];
+  object = [(ICAuthenticationPrompt *)self object];
+  v4 = [object hash];
+  notes = [(ICAuthenticationPrompt *)self notes];
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
   v8 = [v7 hash];
@@ -1287,7 +1287,7 @@ LABEL_27:
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v9 = v5;
+  v9 = notes;
   v10 = [v9 countByEnumeratingWithState:&v33 objects:v37 count:16];
   if (v10)
   {
@@ -1311,7 +1311,7 @@ LABEL_27:
     while (v11);
   }
 
-  v14 = [(ICAuthenticationPrompt *)self unauthenticatedNotes];
+  unauthenticatedNotes = [(ICAuthenticationPrompt *)self unauthenticatedNotes];
   v15 = objc_opt_class();
   v16 = NSStringFromClass(v15);
   v17 = [v16 hash];
@@ -1320,7 +1320,7 @@ LABEL_27:
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v18 = v14;
+  v18 = unauthenticatedNotes;
   v19 = [v18 countByEnumeratingWithState:&v33 objects:v37 count:16];
   if (v19)
   {
@@ -1345,30 +1345,30 @@ LABEL_27:
   }
 
   [(ICAuthenticationPrompt *)self secondaryAuthenticationMode];
-  v30 = ICHashWithHashKeys(v32, v23, v24, v25, v26, v27, v28, v29, v4);
+  v30 = ICHashWithHashKeys(intent, v23, v24, v25, v26, v27, v28, v29, v4);
 
   return v30;
 }
 
-+ (id)promptForIntent:(unint64_t)a3 object:(id)a4
++ (id)promptForIntent:(unint64_t)intent object:(id)object
 {
-  v5 = a4;
-  v6 = [[ICAuthenticationPrompt alloc] initWithIntent:a3 object:v5];
+  objectCopy = object;
+  v6 = [[ICAuthenticationPrompt alloc] initWithIntent:intent object:objectCopy];
 
   [(ICAuthenticationPrompt *)v6 update];
 
   return v6;
 }
 
-+ (id)promptForDeletingNotes:(id)a3
++ (id)promptForDeletingNotes:(id)notes
 {
-  v3 = a3;
+  notesCopy = notes;
   v4 = MEMORY[0x1E695DFD8];
-  v5 = [v3 ic_compactMap:&__block_literal_global_95];
+  v5 = [notesCopy ic_compactMap:&__block_literal_global_95];
   v6 = [v4 setWithArray:v5];
 
-  v7 = [v6 allObjects];
-  v8 = [v7 firstObject];
+  allObjects = [v6 allObjects];
+  firstObject = [allObjects firstObject];
 
   if ([v6 count] != 1)
   {
@@ -1379,22 +1379,22 @@ LABEL_27:
     }
   }
 
-  v10 = [v3 ic_objectsPassingTest:&__block_literal_global_34_0];
+  v10 = [notesCopy ic_objectsPassingTest:&__block_literal_global_34_0];
 
-  v11 = [[ICAuthenticationPrompt alloc] initWithIntent:4 object:v8];
+  v11 = [[ICAuthenticationPrompt alloc] initWithIntent:4 object:firstObject];
   [(ICAuthenticationPrompt *)v11 setNotes:v10];
   [(ICAuthenticationPrompt *)v11 update];
 
   return v11;
 }
 
-+ (id)promptForChangingMode:(signed __int16)a3 account:(id)a4
++ (id)promptForChangingMode:(signed __int16)mode account:(id)account
 {
-  v4 = a3;
-  v5 = a4;
-  v6 = [[ICAuthenticationPrompt alloc] initWithIntent:7 object:v5];
+  modeCopy = mode;
+  accountCopy = account;
+  v6 = [[ICAuthenticationPrompt alloc] initWithIntent:7 object:accountCopy];
 
-  [(ICAuthenticationPrompt *)v6 setSecondaryAuthenticationMode:v4];
+  [(ICAuthenticationPrompt *)v6 setSecondaryAuthenticationMode:modeCopy];
   [(ICAuthenticationPrompt *)v6 update];
 
   return v6;
@@ -1402,18 +1402,18 @@ LABEL_27:
 
 - (NSArray)unauthenticatedNotes
 {
-  v2 = [(ICAuthenticationPrompt *)self notes];
-  v3 = [v2 ic_objectsPassingTest:&__block_literal_global_36];
+  notes = [(ICAuthenticationPrompt *)self notes];
+  v3 = [notes ic_objectsPassingTest:&__block_literal_global_36];
 
   return v3;
 }
 
 - (ICCloudSyncingObject)authenticationObject
 {
-  v3 = [(ICAuthenticationPrompt *)self intent];
-  if (v3 <= 8)
+  intent = [(ICAuthenticationPrompt *)self intent];
+  if (intent <= 8)
   {
-    if (((1 << v3) & 0x1F4) != 0)
+    if (((1 << intent) & 0x1F4) != 0)
     {
       [(ICAuthenticationPrompt *)self account];
     }
@@ -1422,30 +1422,30 @@ LABEL_27:
     {
       [(ICAuthenticationPrompt *)self object];
     }
-    v3 = ;
+    intent = ;
   }
 
-  return v3;
+  return intent;
 }
 
 - (BOOL)allowsAuthentication
 {
-  v3 = [(ICAuthenticationPrompt *)self intent];
+  intent = [(ICAuthenticationPrompt *)self intent];
   LOBYTE(v4) = 1;
-  if (v3 <= 6)
+  if (intent <= 6)
   {
-    if (((1 << v3) & 0xB) != 0)
+    if (((1 << intent) & 0xB) != 0)
     {
-      v6 = [(ICAuthenticationPrompt *)self object];
-      if ([v6 isPasswordProtected])
+      object = [(ICAuthenticationPrompt *)self object];
+      if ([object isPasswordProtected])
       {
-        v8 = [(ICAuthenticationPrompt *)self object];
-        v9 = [v8 primaryEncryptedData];
-        if (!v9)
+        object2 = [(ICAuthenticationPrompt *)self object];
+        primaryEncryptedData = [object2 primaryEncryptedData];
+        if (!primaryEncryptedData)
         {
-          v10 = [(ICAuthenticationPrompt *)self object];
-          v11 = [v10 cryptoWrappedKey];
-          LOBYTE(v4) = v11 != 0;
+          object3 = [(ICAuthenticationPrompt *)self object];
+          cryptoWrappedKey = [object3 cryptoWrappedKey];
+          LOBYTE(v4) = cryptoWrappedKey != 0;
         }
 
         goto LABEL_13;
@@ -1454,14 +1454,14 @@ LABEL_27:
       goto LABEL_10;
     }
 
-    if (((1 << v3) & 0x60) != 0)
+    if (((1 << intent) & 0x60) != 0)
     {
       v5 = MEMORY[0x1E69B7728];
-      v6 = [(ICAuthenticationPrompt *)self authenticationObject];
-      if ([v5 shouldAuthenticateWithCustomPasswordForObject:v6])
+      object = [(ICAuthenticationPrompt *)self authenticationObject];
+      if ([v5 shouldAuthenticateWithCustomPasswordForObject:object])
       {
-        v7 = [(ICAuthenticationPrompt *)self account];
-        LOBYTE(v4) = [v7 hasPassphraseSet];
+        account = [(ICAuthenticationPrompt *)self account];
+        LOBYTE(v4) = [account hasPassphraseSet];
 
 LABEL_13:
         return v4;
@@ -1472,10 +1472,10 @@ LABEL_10:
       goto LABEL_13;
     }
 
-    if (v3 == 2)
+    if (intent == 2)
     {
-      v6 = [(ICAuthenticationPrompt *)self object];
-      v4 = [v6 isPasswordProtected] ^ 1;
+      object = [(ICAuthenticationPrompt *)self object];
+      v4 = [object isPasswordProtected] ^ 1;
       goto LABEL_13;
     }
   }
@@ -1485,14 +1485,14 @@ LABEL_10:
 
 - (BOOL)needsAuthentication
 {
-  v3 = [(ICAuthenticationPrompt *)self intent];
+  intent = [(ICAuthenticationPrompt *)self intent];
   LOBYTE(v4) = 1;
-  if (v3 > 2)
+  if (intent > 2)
   {
-    if ((v3 - 5) < 2)
+    if ((intent - 5) < 2)
     {
-      v5 = [(ICAuthenticationPrompt *)self authenticationObject];
-      if ([v5 hasPassphraseSet])
+      authenticationObject = [(ICAuthenticationPrompt *)self authenticationObject];
+      if ([authenticationObject hasPassphraseSet])
       {
         LOBYTE(v4) = [(ICAuthenticationPrompt *)self allowsCustomPasswordAuthentication];
         goto LABEL_15;
@@ -1503,24 +1503,24 @@ LABEL_11:
       goto LABEL_15;
     }
 
-    if (v3 == 4)
+    if (intent == 4)
     {
-      v5 = [(ICAuthenticationPrompt *)self unauthenticatedNotes];
-      LOBYTE(v4) = [v5 count] != 0;
+      authenticationObject = [(ICAuthenticationPrompt *)self unauthenticatedNotes];
+      LOBYTE(v4) = [authenticationObject count] != 0;
       goto LABEL_15;
     }
 
-    if (v3 != 3)
+    if (intent != 3)
     {
       return v4;
     }
 
 LABEL_7:
-    v5 = [(ICAuthenticationPrompt *)self authenticationObject];
-    if ([v5 isPasswordProtected])
+    authenticationObject = [(ICAuthenticationPrompt *)self authenticationObject];
+    if ([authenticationObject isPasswordProtected])
     {
-      v6 = [(ICAuthenticationPrompt *)self authenticationObject];
-      v4 = [v6 isAuthenticated] ^ 1;
+      authenticationObject2 = [(ICAuthenticationPrompt *)self authenticationObject];
+      v4 = [authenticationObject2 isAuthenticated] ^ 1;
 
 LABEL_15:
       return v4;
@@ -1529,15 +1529,15 @@ LABEL_15:
     goto LABEL_11;
   }
 
-  if (v3 < 2)
+  if (intent < 2)
   {
     goto LABEL_7;
   }
 
-  if (v3 == 2)
+  if (intent == 2)
   {
-    v5 = [(ICAuthenticationPrompt *)self authenticationObject];
-    v4 = [v5 isAuthenticated] ^ 1;
+    authenticationObject = [(ICAuthenticationPrompt *)self authenticationObject];
+    v4 = [authenticationObject isAuthenticated] ^ 1;
     goto LABEL_15;
   }
 
@@ -1551,42 +1551,42 @@ LABEL_15:
     return 0;
   }
 
-  v3 = [(ICAuthenticationPrompt *)self account];
-  v4 = [v3 resolvedLockedNotesMode];
-  if (v4 == [(ICAuthenticationPrompt *)self secondaryAuthenticationMode])
+  account = [(ICAuthenticationPrompt *)self account];
+  resolvedLockedNotesMode = [account resolvedLockedNotesMode];
+  if (resolvedLockedNotesMode == [(ICAuthenticationPrompt *)self secondaryAuthenticationMode])
   {
-    v5 = 0;
+    hasPassphraseSet = 0;
   }
 
   else if ([(ICAuthenticationPrompt *)self allowsCustomPasswordAuthentication])
   {
-    v6 = [(ICAuthenticationPrompt *)self authenticationObject];
-    v5 = [v6 hasPassphraseSet];
+    authenticationObject = [(ICAuthenticationPrompt *)self authenticationObject];
+    hasPassphraseSet = [authenticationObject hasPassphraseSet];
   }
 
   else
   {
-    v5 = 1;
+    hasPassphraseSet = 1;
   }
 
-  return v5;
+  return hasPassphraseSet;
 }
 
 - (BOOL)forcesSecondaryAuthentication
 {
   if ([(ICAuthenticationPrompt *)self intent]== 7)
   {
-    v3 = [(ICAuthenticationPrompt *)self account];
-    v4 = [v3 resolvedLockedNotesMode];
-    if (v4 == [(ICAuthenticationPrompt *)self secondaryAuthenticationMode]|| ![(ICAuthenticationPrompt *)self allowsCustomPasswordAuthentication])
+    account = [(ICAuthenticationPrompt *)self account];
+    resolvedLockedNotesMode = [account resolvedLockedNotesMode];
+    if (resolvedLockedNotesMode == [(ICAuthenticationPrompt *)self secondaryAuthenticationMode]|| ![(ICAuthenticationPrompt *)self allowsCustomPasswordAuthentication])
     {
       LOBYTE(v6) = 0;
     }
 
     else
     {
-      v5 = [(ICAuthenticationPrompt *)self authenticationObject];
-      v6 = [v5 hasPassphraseSet] ^ 1;
+      authenticationObject = [(ICAuthenticationPrompt *)self authenticationObject];
+      v6 = [authenticationObject hasPassphraseSet] ^ 1;
     }
   }
 
@@ -1600,8 +1600,8 @@ LABEL_15:
 
 - (BOOL)needsKeychain
 {
-  v3 = [(ICAuthenticationPrompt *)self intent];
-  if (v3 == 7)
+  intent = [(ICAuthenticationPrompt *)self intent];
+  if (intent == 7)
   {
     if ([(ICAuthenticationPrompt *)self secondaryAuthenticationMode]== 2)
     {
@@ -1611,7 +1611,7 @@ LABEL_15:
     return 0;
   }
 
-  if (v3 != 2 || ![(ICAuthenticationPrompt *)self allowsDevicePasswordAuthentication])
+  if (intent != 2 || ![(ICAuthenticationPrompt *)self allowsDevicePasswordAuthentication])
   {
     return 0;
   }
@@ -1623,13 +1623,13 @@ LABEL_4:
 
 - (BOOL)needsCloudAccount
 {
-  v3 = [(ICAuthenticationPrompt *)self intent];
-  if (v3 == 7)
+  intent = [(ICAuthenticationPrompt *)self intent];
+  if (intent == 7)
   {
     return [(ICAuthenticationPrompt *)self secondaryAuthenticationMode]== 2;
   }
 
-  if (v3 != 2)
+  if (intent != 2)
   {
     return 0;
   }
@@ -1639,13 +1639,13 @@ LABEL_4:
 
 - (BOOL)needsDevicePassword
 {
-  v3 = [(ICAuthenticationPrompt *)self intent];
-  if (v3 == 7)
+  intent = [(ICAuthenticationPrompt *)self intent];
+  if (intent == 7)
   {
     return [(ICAuthenticationPrompt *)self secondaryAuthenticationMode]== 2;
   }
 
-  if (v3 != 2)
+  if (intent != 2)
   {
     return 0;
   }
@@ -1655,35 +1655,35 @@ LABEL_4:
 
 - (BOOL)allowsAlternativeAuthentication
 {
-  v3 = [(ICAuthenticationPrompt *)self intent];
-  if (v3 - 5 < 2)
+  intent = [(ICAuthenticationPrompt *)self intent];
+  if (intent - 5 < 2)
   {
     return 1;
   }
 
-  if (v3 != 4)
+  if (intent != 4)
   {
     return 0;
   }
 
-  v5 = [(ICAuthenticationPrompt *)self account];
-  v4 = [v5 accountType] != 3 || -[ICAuthenticationPrompt hasDevicePassword](self, "hasDevicePassword");
+  account = [(ICAuthenticationPrompt *)self account];
+  v4 = [account accountType] != 3 || -[ICAuthenticationPrompt hasDevicePassword](self, "hasDevicePassword");
 
   return v4;
 }
 
 - (BOOL)forcesAlternativeAuthentication
 {
-  v3 = [(ICAuthenticationPrompt *)self intent];
-  if (v3 == 6)
+  intent = [(ICAuthenticationPrompt *)self intent];
+  if (intent == 6)
   {
     LOBYTE(v5) = 1;
   }
 
-  else if (v3 == 4 && [(ICAuthenticationPrompt *)self allowsCustomPasswordAuthentication])
+  else if (intent == 4 && [(ICAuthenticationPrompt *)self allowsCustomPasswordAuthentication])
   {
-    v4 = [(ICAuthenticationPrompt *)self authenticationObject];
-    v5 = [v4 hasPassphraseSet] ^ 1;
+    authenticationObject = [(ICAuthenticationPrompt *)self authenticationObject];
+    v5 = [authenticationObject hasPassphraseSet] ^ 1;
   }
 
   else
@@ -1696,38 +1696,38 @@ LABEL_4:
 
 - (BOOL)allowsCustomPasswordAuthentication
 {
-  v3 = [(ICAuthenticationPrompt *)self allowsAuthentication];
-  if (v3)
+  allowsAuthentication = [(ICAuthenticationPrompt *)self allowsAuthentication];
+  if (allowsAuthentication)
   {
     v4 = MEMORY[0x1E69B7728];
-    v5 = [(ICAuthenticationPrompt *)self authenticationObject];
-    LOBYTE(v4) = [v4 shouldAuthenticateWithCustomPasswordForObject:v5];
+    authenticationObject = [(ICAuthenticationPrompt *)self authenticationObject];
+    LOBYTE(v4) = [v4 shouldAuthenticateWithCustomPasswordForObject:authenticationObject];
 
-    LOBYTE(v3) = v4;
+    LOBYTE(allowsAuthentication) = v4;
   }
 
-  return v3;
+  return allowsAuthentication;
 }
 
 - (BOOL)allowsDevicePasswordAuthentication
 {
-  v3 = [(ICAuthenticationPrompt *)self allowsAuthentication];
-  if (v3)
+  allowsAuthentication = [(ICAuthenticationPrompt *)self allowsAuthentication];
+  if (allowsAuthentication)
   {
     v4 = MEMORY[0x1E69B7728];
-    v5 = [(ICAuthenticationPrompt *)self authenticationObject];
-    LOBYTE(v4) = [v4 shouldAuthenticateWithDevicePasswordForObject:v5];
+    authenticationObject = [(ICAuthenticationPrompt *)self authenticationObject];
+    LOBYTE(v4) = [v4 shouldAuthenticateWithDevicePasswordForObject:authenticationObject];
 
-    LOBYTE(v3) = v4;
+    LOBYTE(allowsAuthentication) = v4;
   }
 
-  return v3;
+  return allowsAuthentication;
 }
 
 - (BOOL)allowsBiometricAuthentication
 {
-  v3 = [(ICAuthenticationPrompt *)self intent];
-  if (v3 > 7 || ((1 << v3) & 0xBD) == 0)
+  intent = [(ICAuthenticationPrompt *)self intent];
+  if (intent > 7 || ((1 << intent) & 0xBD) == 0)
   {
     return 0;
   }
@@ -1753,27 +1753,27 @@ LABEL_4:
 
 - (BOOL)hasPassphrase
 {
-  v3 = [(ICAuthenticationPrompt *)self authenticationObject];
-  if ([v3 hasPassphraseSet])
+  authenticationObject = [(ICAuthenticationPrompt *)self authenticationObject];
+  if ([authenticationObject hasPassphraseSet])
   {
-    v4 = 1;
+    hasPassphraseSet = 1;
   }
 
   else
   {
-    v5 = [(ICAuthenticationPrompt *)self account];
-    v4 = [v5 hasPassphraseSet];
+    account = [(ICAuthenticationPrompt *)self account];
+    hasPassphraseSet = [account hasPassphraseSet];
   }
 
-  return v4;
+  return hasPassphraseSet;
 }
 
 - (BOOL)hasDivergedKey
 {
-  v3 = [(ICAuthenticationPrompt *)self account];
-  v4 = [v3 cryptoStrategy];
-  v5 = [(ICAuthenticationPrompt *)self object];
-  v6 = [v4 hasSameKeyAsObject:v5];
+  account = [(ICAuthenticationPrompt *)self account];
+  cryptoStrategy = [account cryptoStrategy];
+  object = [(ICAuthenticationPrompt *)self object];
+  v6 = [cryptoStrategy hasSameKeyAsObject:object];
 
   return v6 ^ 1;
 }
@@ -1783,31 +1783,31 @@ LABEL_4:
   if ([(ICAuthenticationPrompt *)self isInternetReachable])
   {
     v3 = MEMORY[0x1E69B7728];
-    v4 = [(ICAuthenticationPrompt *)self authenticationObject];
-    v5 = [v3 cipherVersionForObject:v4];
+    authenticationObject = [(ICAuthenticationPrompt *)self authenticationObject];
+    v5 = [v3 cipherVersionForObject:authenticationObject];
 
-    v6 = [(ICAuthenticationPrompt *)self account];
-    LODWORD(v4) = [v6 accountType];
+    account = [(ICAuthenticationPrompt *)self account];
+    LODWORD(authenticationObject) = [account accountType];
 
-    LOBYTE(v6) = 0;
-    if (v4 == 1 && !v5)
+    LOBYTE(account) = 0;
+    if (authenticationObject == 1 && !v5)
     {
-      v7 = [(ICAuthenticationPrompt *)self intent];
-      LOBYTE(v6) = 1;
-      if (v7 <= 8 && ((1 << v7) & 0x11B) != 0)
+      intent = [(ICAuthenticationPrompt *)self intent];
+      LOBYTE(account) = 1;
+      if (intent <= 8 && ((1 << intent) & 0x11B) != 0)
       {
-        v8 = [(ICAuthenticationPrompt *)self account];
-        LODWORD(v6) = [v8 hasPassphraseSet] ^ 1;
+        account2 = [(ICAuthenticationPrompt *)self account];
+        LODWORD(account) = [account2 hasPassphraseSet] ^ 1;
       }
     }
   }
 
   else
   {
-    LOBYTE(v6) = 0;
+    LOBYTE(account) = 0;
   }
 
-  return v6;
+  return account;
 }
 
 - (void)update
@@ -1830,7 +1830,7 @@ LABEL_4:
     if ([(ICAuthenticationPrompt *)self needsDevicePassword]&& ![(ICAuthenticationPrompt *)self hasDevicePassword])
     {
       [(ICAuthenticationPrompt *)self setAuthenticationAction:1];
-      v6 = [(ICAuthenticationPrompt *)self failureAlerts];
+      failureAlerts = [(ICAuthenticationPrompt *)self failureAlerts];
       v7 = +[ICAuthenticationAlert setDevicePasswordActionAlert];
     }
 
@@ -1838,7 +1838,7 @@ LABEL_4:
     {
       if (![(ICAuthenticationPrompt *)self needsAuthentication])
       {
-        v4 = self;
+        selfCopy2 = self;
         v5 = 0;
         goto LABEL_24;
       }
@@ -1846,10 +1846,10 @@ LABEL_4:
       if ([(ICAuthenticationPrompt *)self needsCloudAccount]&& ![(ICAuthenticationPrompt *)self hasCloudAccount])
       {
         [(ICAuthenticationPrompt *)self setAuthenticationAction:1];
-        v6 = [(ICAuthenticationPrompt *)self failureAlerts];
-        v18 = [(ICAuthenticationPrompt *)self account];
-        v19 = [ICAuthenticationAlert signIntoCloudAccountActionAlertWithAccount:v18];
-        v20 = [v6 arrayByAddingObject:v19];
+        failureAlerts = [(ICAuthenticationPrompt *)self failureAlerts];
+        account = [(ICAuthenticationPrompt *)self account];
+        v19 = [ICAuthenticationAlert signIntoCloudAccountActionAlertWithAccount:account];
+        v20 = [failureAlerts arrayByAddingObject:v19];
         [(ICAuthenticationPrompt *)self setFailureAlerts:v20];
 
         goto LABEL_22;
@@ -1858,7 +1858,7 @@ LABEL_4:
       if ([(ICAuthenticationPrompt *)self needsKeychain]&& ![(ICAuthenticationPrompt *)self isKeychainAvailable])
       {
         [(ICAuthenticationPrompt *)self setAuthenticationAction:1];
-        v6 = [(ICAuthenticationPrompt *)self failureAlerts];
+        failureAlerts = [(ICAuthenticationPrompt *)self failureAlerts];
       }
 
       else
@@ -1868,10 +1868,10 @@ LABEL_4:
           if ([(ICAuthenticationPrompt *)self secondaryAuthenticationMode]== 1)
           {
 LABEL_18:
-            v4 = self;
+            selfCopy2 = self;
             v5 = 3;
 LABEL_24:
-            [(ICAuthenticationPrompt *)v4 setAuthenticationAction:v5];
+            [(ICAuthenticationPrompt *)selfCopy2 setAuthenticationAction:v5];
             goto LABEL_25;
           }
 
@@ -1893,28 +1893,28 @@ LABEL_63:
           [(ICAuthenticationPrompt *)self setAuthenticationAction:2];
           if ([(ICAuthenticationPrompt *)self allowsCustomPasswordAuthentication])
           {
-            v21 = [(ICAuthenticationPrompt *)self account];
-            v22 = [v21 accountType];
+            account2 = [(ICAuthenticationPrompt *)self account];
+            accountType = [account2 accountType];
 
-            if (v22 == 3)
+            if (accountType == 3)
             {
 LABEL_55:
-              v23 = self;
+              selfCopy6 = self;
               v24 = 5;
 LABEL_74:
-              [(ICAuthenticationPrompt *)v23 setAuthenticationMechanism:v24];
+              [(ICAuthenticationPrompt *)selfCopy6 setAuthenticationMechanism:v24];
               goto LABEL_25;
             }
           }
 
           else if (![(ICAuthenticationPrompt *)self allowsDevicePasswordAuthentication])
           {
-            v23 = self;
+            selfCopy6 = self;
             v24 = 0;
             goto LABEL_74;
           }
 
-          v23 = self;
+          selfCopy6 = self;
           v24 = 6;
           goto LABEL_74;
         }
@@ -1922,7 +1922,7 @@ LABEL_74:
         [(ICAuthenticationPrompt *)self setAuthenticationAction:2];
         if ([(ICAuthenticationPrompt *)self allowsCustomPasswordAuthentication])
         {
-          v23 = self;
+          selfCopy6 = self;
           v24 = 4;
           goto LABEL_74;
         }
@@ -1940,28 +1940,28 @@ LABEL_74:
           goto LABEL_25;
         }
 
-        v31 = [(ICAuthenticationPrompt *)self authenticationObject];
-        v32 = [v31 canAuthenticate];
+        authenticationObject = [(ICAuthenticationPrompt *)self authenticationObject];
+        canAuthenticate = [authenticationObject canAuthenticate];
 
-        if (v32)
+        if (canAuthenticate)
         {
           if ([(ICAuthenticationPrompt *)self hasDevicePassword])
           {
             goto LABEL_25;
           }
 
-          v6 = [(ICAuthenticationPrompt *)self successAlerts];
+          failureAlerts = [(ICAuthenticationPrompt *)self successAlerts];
           v8 = +[ICAuthenticationAlert setDevicePasswordInfoAlert];
-          v9 = [v6 arrayByAddingObject:v8];
+          v9 = [failureAlerts arrayByAddingObject:v8];
           [(ICAuthenticationPrompt *)self setSuccessAlerts:v9];
           goto LABEL_21;
         }
 
         [(ICAuthenticationPrompt *)self setAuthenticationAction:1];
         [(ICAuthenticationPrompt *)self setAuthenticationMechanism:0];
-        v33 = [(ICAuthenticationPrompt *)self isKeychainAvailable];
-        v6 = [(ICAuthenticationPrompt *)self failureAlerts];
-        if (v33)
+        isKeychainAvailable = [(ICAuthenticationPrompt *)self isKeychainAvailable];
+        failureAlerts = [(ICAuthenticationPrompt *)self failureAlerts];
+        if (isKeychainAvailable)
         {
           v7 = +[ICAuthenticationAlert keychainItemMissingInfoAlert];
           goto LABEL_20;
@@ -1975,13 +1975,13 @@ LABEL_74:
   else
   {
     [(ICAuthenticationPrompt *)self setAuthenticationAction:1];
-    v6 = [(ICAuthenticationPrompt *)self failureAlerts];
+    failureAlerts = [(ICAuthenticationPrompt *)self failureAlerts];
     v7 = +[ICAuthenticationAlert cannotUnlockInfoAlert];
   }
 
 LABEL_20:
   v8 = v7;
-  v9 = [v6 arrayByAddingObject:v7];
+  v9 = [failureAlerts arrayByAddingObject:v7];
   [(ICAuthenticationPrompt *)self setFailureAlerts:v9];
 LABEL_21:
 
@@ -2006,11 +2006,11 @@ LABEL_25:
 LABEL_59:
         if ([(ICAuthenticationPrompt *)self allowsCustomPasswordAuthentication]&& ![(ICAuthenticationPrompt *)self intent])
         {
-          v25 = [(ICAuthenticationPrompt *)self account];
-          v26 = [ICAuthenticationAlert rememberCustomPasswordInfoAlertWithAccount:v25];
+          account3 = [(ICAuthenticationPrompt *)self account];
+          v26 = [ICAuthenticationAlert rememberCustomPasswordInfoAlertWithAccount:account3];
 
-          v27 = [(ICAuthenticationPrompt *)self successAlerts];
-          v28 = [v27 arrayByAddingObject:v26];
+          successAlerts = [(ICAuthenticationPrompt *)self successAlerts];
+          v28 = [successAlerts arrayByAddingObject:v26];
           [(ICAuthenticationPrompt *)self setSuccessAlerts:v28];
         }
 
@@ -2034,17 +2034,17 @@ LABEL_32:
   {
     if (!-[ICAuthenticationPrompt allowsBiometricAuthentication](self, "allowsBiometricAuthentication") && [MEMORY[0x1E69B77C8] biometricsAvailable])
     {
-      v11 = [(ICAuthenticationPrompt *)self account];
-      v12 = [ICAuthenticationAlert enableBiometricsActionAlertWithAccount:v11];
+      account4 = [(ICAuthenticationPrompt *)self account];
+      v12 = [ICAuthenticationAlert enableBiometricsActionAlertWithAccount:account4];
 
-      v13 = [(ICAuthenticationPrompt *)self successAlerts];
-      v14 = [v13 arrayByAddingObject:v12];
+      successAlerts2 = [(ICAuthenticationPrompt *)self successAlerts];
+      v14 = [successAlerts2 arrayByAddingObject:v12];
       [(ICAuthenticationPrompt *)self setSuccessAlerts:v14];
     }
 
-    v15 = [(ICAuthenticationPrompt *)self successAlerts];
+    successAlerts3 = [(ICAuthenticationPrompt *)self successAlerts];
     v16 = +[ICAuthenticationAlert aboutLockedNotesInfoAlert];
-    v17 = [v15 arrayByAddingObject:v16];
+    v17 = [successAlerts3 arrayByAddingObject:v16];
     [(ICAuthenticationPrompt *)self setSuccessAlerts:v17];
   }
 

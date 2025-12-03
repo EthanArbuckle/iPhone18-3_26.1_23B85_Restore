@@ -1,12 +1,12 @@
 @interface ScreenshotCollectionViewCell
-- (_TtC8AppStore28ScreenshotCollectionViewCell)initWithCoder:(id)a3;
+- (_TtC8AppStore28ScreenshotCollectionViewCell)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 @end
 
 @implementation ScreenshotCollectionViewCell
 
-- (_TtC8AppStore28ScreenshotCollectionViewCell)initWithCoder:(id)a3
+- (_TtC8AppStore28ScreenshotCollectionViewCell)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC8AppStore28ScreenshotCollectionViewCell_itemLayoutContext;
   v5 = type metadata accessor for ItemLayoutContext();
@@ -22,13 +22,13 @@
 
 - (void)prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   sub_10038525C();
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_10038536C();
 }
 

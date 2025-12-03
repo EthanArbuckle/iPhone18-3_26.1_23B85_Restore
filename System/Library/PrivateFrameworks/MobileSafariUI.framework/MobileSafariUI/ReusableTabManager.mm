@@ -1,9 +1,9 @@
 @interface ReusableTabManager
-- (id)faviconForUUID:(id)a3;
-- (id)reusableTabDocumentWithUUID:(id)a3;
+- (id)faviconForUUID:(id)d;
+- (id)reusableTabDocumentWithUUID:(id)d;
 - (id)tabGroupManager;
 - (id)windowStates;
-- (void)enumerateReusableTabDocuments:(id)a3;
+- (void)enumerateReusableTabDocuments:(id)documents;
 @end
 
 @implementation ReusableTabManager
@@ -11,53 +11,53 @@
 - (id)tabGroupManager
 {
   v2 = +[Application sharedApplication];
-  v3 = [v2 tabGroupManager];
+  tabGroupManager = [v2 tabGroupManager];
 
-  return v3;
+  return tabGroupManager;
 }
 
-- (id)faviconForUUID:(id)a3
+- (id)faviconForUUID:(id)d
 {
-  v3 = [(WBReusableTabManager *)self referenceToTabWithUUID:a3];
+  v3 = [(WBReusableTabManager *)self referenceToTabWithUUID:d];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 tabCollectionItem];
-    v6 = [v5 icon];
+    tabCollectionItem = [v3 tabCollectionItem];
+    icon = [tabCollectionItem icon];
   }
 
   else
   {
-    v6 = 0;
+    icon = 0;
   }
 
-  return v6;
+  return icon;
 }
 
-- (id)reusableTabDocumentWithUUID:(id)a3
+- (id)reusableTabDocumentWithUUID:(id)d
 {
-  v3 = [(WBReusableTabManager *)self referenceToTabWithUUID:a3];
+  v3 = [(WBReusableTabManager *)self referenceToTabWithUUID:d];
 
   return v3;
 }
 
-- (void)enumerateReusableTabDocuments:(id)a3
+- (void)enumerateReusableTabDocuments:(id)documents
 {
-  v4 = a3;
+  documentsCopy = documents;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __52__ReusableTabManager_enumerateReusableTabDocuments___block_invoke;
   v6[3] = &unk_2781D7B98;
-  v7 = v4;
-  v5 = v4;
+  v7 = documentsCopy;
+  v5 = documentsCopy;
   [(WBReusableTabManager *)self enumerateReusableTabs:v6];
 }
 
 - (id)windowStates
 {
   v2 = +[Application sharedApplication];
-  v3 = [v2 browserControllers];
-  v4 = [v3 safari_mapObjectsUsingBlock:&__block_literal_global_16];
+  browserControllers = [v2 browserControllers];
+  v4 = [browserControllers safari_mapObjectsUsingBlock:&__block_literal_global_16];
 
   return v4;
 }

@@ -1,36 +1,36 @@
 @interface TSPExternalReferenceDataStorage
-- (TSPExternalReferenceDataStorage)initWithBookmarkData:(id)a3 context:(id)a4;
-- (TSPExternalReferenceDataStorage)initWithURL:(id)a3;
+- (TSPExternalReferenceDataStorage)initWithBookmarkData:(id)data context:(id)context;
+- (TSPExternalReferenceDataStorage)initWithURL:(id)l;
 @end
 
 @implementation TSPExternalReferenceDataStorage
 
-- (TSPExternalReferenceDataStorage)initWithURL:(id)a3
+- (TSPExternalReferenceDataStorage)initWithURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v13.receiver = self;
   v13.super_class = TSPExternalReferenceDataStorage;
   v6 = [(TSPExternalReferenceDataStorage *)&v13 init];
   if (v6)
   {
-    if ([v5 isFileReferenceURL])
+    if ([lCopy isFileReferenceURL])
     {
-      objc_storeStrong(&v6->_URL, a3);
+      objc_storeStrong(&v6->_URL, l);
     }
 
-    else if ([v5 isFileURL])
+    else if ([lCopy isFileURL])
     {
-      v7 = [v5 fileReferenceURL];
+      fileReferenceURL = [lCopy fileReferenceURL];
       URL = v6->_URL;
-      v6->_URL = v7;
+      v6->_URL = fileReferenceURL;
     }
 
     else
     {
-      v9 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSPExternalReferenceDataStorage initWithURL:]"];
       v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/persistence/src/TSPExternalReferenceDataStorage.mm"];
-      [v9 handleFailureInFunction:v10 file:v11 lineNumber:51 description:@"Bad URL type"];
+      [currentHandler handleFailureInFunction:v10 file:v11 lineNumber:51 description:@"Bad URL type"];
 
       v6 = 0;
     }
@@ -39,18 +39,18 @@
   return v6;
 }
 
-- (TSPExternalReferenceDataStorage)initWithBookmarkData:(id)a3 context:(id)a4
+- (TSPExternalReferenceDataStorage)initWithBookmarkData:(id)data context:(id)context
 {
-  v7 = a3;
-  v8 = a4;
+  dataCopy = data;
+  contextCopy = context;
   v13.receiver = self;
   v13.super_class = TSPExternalReferenceDataStorage;
   v9 = [(TSPExternalReferenceDataStorage *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_bookmarkData, a3);
-    objc_storeWeak(&v10->_context, v8);
+    objc_storeStrong(&v9->_bookmarkData, data);
+    objc_storeWeak(&v10->_context, contextCopy);
     v11 = v10;
   }
 

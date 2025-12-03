@@ -3,7 +3,7 @@
 - (BOOL)checkFirstUnlock;
 - (CAMFirstUnlockProtection)init;
 - (void)_performPendingBlocksAfterFirstUnlock;
-- (void)performAfterFirstUnlock:(id)a3;
+- (void)performAfterFirstUnlock:(id)unlock;
 @end
 
 @implementation CAMFirstUnlockProtection
@@ -77,17 +77,17 @@
   }
 }
 
-- (void)performAfterFirstUnlock:(id)a3
+- (void)performAfterFirstUnlock:(id)unlock
 {
-  v4 = a3;
+  unlockCopy = unlock;
   if (MKBDeviceUnlockedSinceBoot() == 1 || ([(CAMFirstUnlockProtection *)self _performPendingBlocksAfterFirstUnlock], !self->_isLocked))
   {
-    v4[2](v4);
+    unlockCopy[2](unlockCopy);
   }
 
   else if (self->_isWatchingForUnlock)
   {
-    v5 = [v4 copy];
+    v5 = [unlockCopy copy];
     [(NSMutableArray *)self->_pendingBlocks addObject:v5];
   }
 
@@ -122,12 +122,12 @@
     {
       NSLog(@"Unable to wait for first unlock", v12, v13, v14, v15);
       self->_isLocked = 0;
-      v4[2](v4);
+      unlockCopy[2](unlockCopy);
     }
 
     else
     {
-      v11 = [v4 copy];
+      v11 = [unlockCopy copy];
       [(NSMutableArray *)self->_pendingBlocks addObject:v11];
     }
 

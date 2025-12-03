@@ -1,28 +1,28 @@
 @interface ASRSchemaASREmbeddedSpeechProcessContext
-- (ASRSchemaASREmbeddedSpeechProcessContext)initWithDictionary:(id)a3;
-- (ASRSchemaASREmbeddedSpeechProcessContext)initWithJSON:(id)a3;
+- (ASRSchemaASREmbeddedSpeechProcessContext)initWithDictionary:(id)dictionary;
+- (ASRSchemaASREmbeddedSpeechProcessContext)initWithJSON:(id)n;
 - (ASRSchemaASREmbeddedSpeechProcessStarted)startedOrChanged;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (void)deleteStartedOrChanged;
-- (void)setStartedOrChanged:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setStartedOrChanged:(id)changed;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ASRSchemaASREmbeddedSpeechProcessContext
 
-- (ASRSchemaASREmbeddedSpeechProcessContext)initWithDictionary:(id)a3
+- (ASRSchemaASREmbeddedSpeechProcessContext)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = ASRSchemaASREmbeddedSpeechProcessContext;
   v5 = [(ASRSchemaASREmbeddedSpeechProcessContext *)&v10 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"startedOrChanged"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"startedOrChanged"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -36,30 +36,30 @@
   return v5;
 }
 
-- (ASRSchemaASREmbeddedSpeechProcessContext)initWithJSON:(id)a3
+- (ASRSchemaASREmbeddedSpeechProcessContext)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(ASRSchemaASREmbeddedSpeechProcessContext *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(ASRSchemaASREmbeddedSpeechProcessContext *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(ASRSchemaASREmbeddedSpeechProcessContext *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -72,43 +72,43 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_startedOrChanged)
   {
-    v4 = [(ASRSchemaASREmbeddedSpeechProcessContext *)self startedOrChanged];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    startedOrChanged = [(ASRSchemaASREmbeddedSpeechProcessContext *)self startedOrChanged];
+    dictionaryRepresentation = [startedOrChanged dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"startedOrChanged"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"startedOrChanged"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"startedOrChanged"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"startedOrChanged"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     whichContextevent = self->_whichContextevent;
-    if (whichContextevent == [v4 whichContextevent])
+    if (whichContextevent == [equalCopy whichContextevent])
     {
-      v6 = [(ASRSchemaASREmbeddedSpeechProcessContext *)self startedOrChanged];
-      v7 = [v4 startedOrChanged];
-      v8 = v7;
-      if ((v6 != 0) != (v7 == 0))
+      startedOrChanged = [(ASRSchemaASREmbeddedSpeechProcessContext *)self startedOrChanged];
+      startedOrChanged2 = [equalCopy startedOrChanged];
+      v8 = startedOrChanged2;
+      if ((startedOrChanged != 0) != (startedOrChanged2 == 0))
       {
-        v9 = [(ASRSchemaASREmbeddedSpeechProcessContext *)self startedOrChanged];
-        if (!v9)
+        startedOrChanged3 = [(ASRSchemaASREmbeddedSpeechProcessContext *)self startedOrChanged];
+        if (!startedOrChanged3)
         {
 
 LABEL_11:
@@ -116,10 +116,10 @@ LABEL_11:
           goto LABEL_9;
         }
 
-        v10 = v9;
-        v11 = [(ASRSchemaASREmbeddedSpeechProcessContext *)self startedOrChanged];
-        v12 = [v4 startedOrChanged];
-        v13 = [v11 isEqual:v12];
+        v10 = startedOrChanged3;
+        startedOrChanged4 = [(ASRSchemaASREmbeddedSpeechProcessContext *)self startedOrChanged];
+        startedOrChanged5 = [equalCopy startedOrChanged];
+        v13 = [startedOrChanged4 isEqual:startedOrChanged5];
 
         if (v13)
         {
@@ -139,14 +139,14 @@ LABEL_9:
   return v14;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
-  v4 = [(ASRSchemaASREmbeddedSpeechProcessContext *)self startedOrChanged];
+  toCopy = to;
+  startedOrChanged = [(ASRSchemaASREmbeddedSpeechProcessContext *)self startedOrChanged];
 
-  if (v4)
+  if (startedOrChanged)
   {
-    v5 = [(ASRSchemaASREmbeddedSpeechProcessContext *)self startedOrChanged];
+    startedOrChanged2 = [(ASRSchemaASREmbeddedSpeechProcessContext *)self startedOrChanged];
     PBDataWriterWriteSubmessage();
   }
 }
@@ -176,29 +176,29 @@ LABEL_9:
   return v3;
 }
 
-- (void)setStartedOrChanged:(id)a3
+- (void)setStartedOrChanged:(id)changed
 {
   v3 = 101;
-  if (!a3)
+  if (!changed)
   {
     v3 = 0;
   }
 
   self->_whichContextevent = v3;
-  objc_storeStrong(&self->_startedOrChanged, a3);
+  objc_storeStrong(&self->_startedOrChanged, changed);
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = ASRSchemaASREmbeddedSpeechProcessContext;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(ASRSchemaASREmbeddedSpeechProcessContext *)self startedOrChanged:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(ASRSchemaASREmbeddedSpeechProcessContext *)self deleteStartedOrChanged];
   }

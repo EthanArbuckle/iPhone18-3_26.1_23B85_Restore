@@ -1,30 +1,30 @@
 @interface HDDatabasePruningCoordinator
-+ (void)registerDisabledPeriodicActivitiesForUnsupportedDaemon:(id)a3;
-- (HDDatabasePruningCoordinator)initWithDaemon:(id)a3;
++ (void)registerDisabledPeriodicActivitiesForUnsupportedDaemon:(id)daemon;
+- (HDDatabasePruningCoordinator)initWithDaemon:(id)daemon;
 - (id)diagnosticDescription;
 - (void)dealloc;
-- (void)performPeriodicActivity:(id)a3 completion:(id)a4;
-- (void)periodicActivity:(id)a3 configureXPCActivityCriteria:(id)a4;
-- (void)profileDidBecomeReady:(id)a3;
+- (void)performPeriodicActivity:(id)activity completion:(id)completion;
+- (void)periodicActivity:(id)activity configureXPCActivityCriteria:(id)criteria;
+- (void)profileDidBecomeReady:(id)ready;
 @end
 
 @implementation HDDatabasePruningCoordinator
 
-- (HDDatabasePruningCoordinator)initWithDaemon:(id)a3
+- (HDDatabasePruningCoordinator)initWithDaemon:(id)daemon
 {
-  v4 = a3;
+  daemonCopy = daemon;
   v11.receiver = self;
   v11.super_class = HDDatabasePruningCoordinator;
   v5 = [(HDDatabasePruningCoordinator *)&v11 init];
   v6 = v5;
   if (v5)
   {
-    v7 = objc_storeWeak(&v5->_daemon, v4);
-    v8 = [v4 primaryProfile];
-    [v8 registerProfileReadyObserver:v6 queue:0];
+    v7 = objc_storeWeak(&v5->_daemon, daemonCopy);
+    primaryProfile = [daemonCopy primaryProfile];
+    [primaryProfile registerProfileReadyObserver:v6 queue:0];
 
-    v9 = [MEMORY[0x277D10AF8] sharedDiagnosticManager];
-    [v9 addObject:v6];
+    mEMORY[0x277D10AF8] = [MEMORY[0x277D10AF8] sharedDiagnosticManager];
+    [mEMORY[0x277D10AF8] addObject:v6];
   }
 
   return v6;
@@ -32,43 +32,43 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277D10AF8] sharedDiagnosticManager];
-  [v3 removeObject:self];
+  mEMORY[0x277D10AF8] = [MEMORY[0x277D10AF8] sharedDiagnosticManager];
+  [mEMORY[0x277D10AF8] removeObject:self];
 
   v4.receiver = self;
   v4.super_class = HDDatabasePruningCoordinator;
   [(HDDatabasePruningCoordinator *)&v4 dealloc];
 }
 
-- (void)profileDidBecomeReady:(id)a3
+- (void)profileDidBecomeReady:(id)ready
 {
   v4 = [HDPeriodicActivity alloc];
   WeakRetained = objc_loadWeakRetained(&self->_daemon);
-  v5 = [WeakRetained primaryProfile];
+  primaryProfile = [WeakRetained primaryProfile];
   v6 = HKLogInfrastructure();
-  v7 = [(HDPeriodicActivity *)v4 initWithProfile:v5 name:@"com.apple.healthd.prune-database" interval:self delegate:v6 loggingCategory:28800.0];
+  v7 = [(HDPeriodicActivity *)v4 initWithProfile:primaryProfile name:@"com.apple.healthd.prune-database" interval:self delegate:v6 loggingCategory:28800.0];
   activity = self->_activity;
   self->_activity = v7;
 }
 
-+ (void)registerDisabledPeriodicActivitiesForUnsupportedDaemon:(id)a3
++ (void)registerDisabledPeriodicActivitiesForUnsupportedDaemon:(id)daemon
 {
   v3 = HKLogInfrastructure();
   [HDPeriodicActivity registerDisabledPeriodicActivityWithName:@"com.apple.healthd.prune-database" loggingCategory:v3];
 }
 
-- (void)periodicActivity:(id)a3 configureXPCActivityCriteria:(id)a4
+- (void)periodicActivity:(id)activity configureXPCActivityCriteria:(id)criteria
 {
   v5 = *MEMORY[0x277D86230];
-  xdict = a4;
+  xdict = criteria;
   xpc_dictionary_set_BOOL(xdict, v5, 1);
   xpc_dictionary_set_string(xdict, *MEMORY[0x277D86340], *MEMORY[0x277D86348]);
   WeakRetained = objc_loadWeakRetained(&self->_daemon);
-  v7 = [WeakRetained behavior];
-  v8 = [v7 isAppleWatch];
+  behavior = [WeakRetained behavior];
+  isAppleWatch = [behavior isAppleWatch];
 
   v9 = MEMORY[0x277D86370];
-  if (!v8)
+  if (!isAppleWatch)
   {
     v9 = MEMORY[0x277D86378];
   }
@@ -76,39 +76,39 @@
   xpc_dictionary_set_BOOL(xdict, *v9, 1);
 }
 
-- (void)performPeriodicActivity:(id)a3 completion:(id)a4
+- (void)performPeriodicActivity:(id)activity completion:(id)completion
 {
   v57 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  if ([v8 BOOLForKey:@"HDPPTTestRunning"])
+  activityCopy = activity;
+  completionCopy = completion;
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  if ([standardUserDefaults BOOLForKey:@"HDPPTTestRunning"])
   {
-    (*(v7 + 2))(v7, 0, 0, 0.0);
+    (*(completionCopy + 2))(completionCopy, 0, 0, 0.0);
   }
 
   else
   {
-    v33 = v8;
+    v33 = standardUserDefaults;
     v9 = [(HKDaemonTransaction *)HDDaemonTransaction transactionWithOwner:self activityName:@"pruneDatabase"];
     WeakRetained = objc_loadWeakRetained(&self->_daemon);
-    v31 = [WeakRetained profileManager];
-    v10 = [v31 allProfileIdentifiers];
+    profileManager = [WeakRetained profileManager];
+    allProfileIdentifiers = [profileManager allProfileIdentifiers];
     v44[0] = MEMORY[0x277D85DD0];
     v44[1] = 3221225472;
     v44[2] = __67__HDDatabasePruningCoordinator_performPeriodicActivity_completion___block_invoke;
     v44[3] = &unk_27862BE28;
-    v35 = v6;
-    v45 = v6;
+    v35 = activityCopy;
+    v45 = activityCopy;
     v41[0] = MEMORY[0x277D85DD0];
     v41[1] = 3221225472;
     v41[2] = __67__HDDatabasePruningCoordinator_performPeriodicActivity_completion___block_invoke_2;
     v41[3] = &unk_27862BE50;
     v42 = v9;
-    v34 = v7;
-    v43 = v7;
+    v34 = completionCopy;
+    v43 = completionCopy;
     v11 = v9;
-    v12 = v10;
+    v12 = allProfileIdentifiers;
     v38 = v44;
     v13 = v41;
     if (self)
@@ -126,7 +126,7 @@
       v37 = v14;
       [v14 beginTask];
       v15 = objc_loadWeakRetained(&self->_daemon);
-      v40 = [v15 profileManager];
+      profileManager2 = [v15 profileManager];
 
       v50 = 0u;
       v51 = 0u;
@@ -149,7 +149,7 @@
             }
 
             v19 = *(*(&v48 + 1) + 8 * i);
-            v20 = [v40 profileForIdentifier:{v19, v28}];
+            v20 = [profileManager2 profileForIdentifier:{v19, v28}];
             if (v20)
             {
               _HKInitializeLogging();
@@ -161,21 +161,21 @@
                 _os_log_impl(&dword_228986000, v21, OS_LOG_TYPE_DEFAULT, "Pruning database for profile %{public}@", buf, 0xCu);
               }
 
-              v22 = [v20 attachmentManager];
-              [v22 runMaintenanceOperationIfNeeded];
+              attachmentManager = [v20 attachmentManager];
+              [attachmentManager runMaintenanceOperationIfNeeded];
 
               [v37 beginTask];
               v23 = [[HDDatabasePruningTask alloc] initWithProfile:v20];
               v24 = objc_loadWeakRetained(&self->_daemon);
-              v25 = [v24 maintenanceWorkCoordinator];
-              v26 = [MEMORY[0x277CBEAA8] date];
+              maintenanceWorkCoordinator = [v24 maintenanceWorkCoordinator];
+              date = [MEMORY[0x277CBEAA8] date];
               v46[0] = MEMORY[0x277D85DD0];
               v46[1] = 3221225472;
               v46[2] = __112__HDDatabasePruningCoordinator__pruneProfilesWithIdentifiers_takeAccessibilityAssertion_shouldDefer_completion___block_invoke_316;
               v46[3] = &unk_27862BE98;
               v46[4] = v19;
               v47 = v37;
-              [(HDDatabasePruningTask *)v23 enqueueMaintenanceOperationOnCoordinator:v25 takeAccessibilityAssertion:1 nowDate:v26 shouldDefer:v38 completion:v46];
+              [(HDDatabasePruningTask *)v23 enqueueMaintenanceOperationOnCoordinator:maintenanceWorkCoordinator takeAccessibilityAssertion:1 nowDate:date shouldDefer:v38 completion:v46];
             }
           }
 
@@ -191,9 +191,9 @@
       v13 = v28;
     }
 
-    v7 = v34;
-    v6 = v35;
-    v8 = v33;
+    completionCopy = v34;
+    activityCopy = v35;
+    standardUserDefaults = v33;
   }
 
   v27 = *MEMORY[0x277D85DE8];
@@ -327,12 +327,12 @@ void __112__HDDatabasePruningCoordinator__pruneProfilesWithIdentifiers_takeAcces
   v2 = "in";
   if (self)
   {
-    v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v4 = [v3 objectForKey:@"HDDatabasePruningLastAttemptDateKey"];
-    v5 = [v3 objectForKey:@"HDDatabasePruningCompletedKey"];
-    v6 = [v5 BOOLValue];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v4 = [standardUserDefaults objectForKey:@"HDDatabasePruningLastAttemptDateKey"];
+    v5 = [standardUserDefaults objectForKey:@"HDDatabasePruningCompletedKey"];
+    bOOLValue = [v5 BOOLValue];
 
-    if (v6)
+    if (bOOLValue)
     {
       v2 = "";
     }

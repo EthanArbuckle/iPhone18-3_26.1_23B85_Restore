@@ -1,22 +1,22 @@
 @interface OTBottleContents
-- (BOOL)isEqual:(id)a3;
-- (BOOL)readFrom:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)readFrom:(id)from;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation OTBottleContents
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   peerSigningPrivKey = self->_peerSigningPrivKey;
-  v6 = v4[2];
-  v9 = v4;
+  v6 = fromCopy[2];
+  v9 = fromCopy;
   if (peerSigningPrivKey)
   {
     if (!v6)
@@ -37,10 +37,10 @@
     [(OTBottleContents *)self setPeerSigningPrivKey:?];
   }
 
-  v4 = v9;
+  fromCopy = v9;
 LABEL_7:
   peerEncryptionPrivKey = self->_peerEncryptionPrivKey;
-  v8 = v4[1];
+  v8 = fromCopy[1];
   if (peerEncryptionPrivKey)
   {
     if (v8)
@@ -57,13 +57,13 @@ LABEL_7:
   _objc_release_x1();
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((peerSigningPrivKey = self->_peerSigningPrivKey, !(peerSigningPrivKey | v4[2])) || -[OTPrivateKey isEqual:](peerSigningPrivKey, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((peerSigningPrivKey = self->_peerSigningPrivKey, !(peerSigningPrivKey | equalCopy[2])) || -[OTPrivateKey isEqual:](peerSigningPrivKey, "isEqual:")))
   {
     peerEncryptionPrivKey = self->_peerEncryptionPrivKey;
-    if (peerEncryptionPrivKey | v4[1])
+    if (peerEncryptionPrivKey | equalCopy[1])
     {
       v7 = [(OTPrivateKey *)peerEncryptionPrivKey isEqual:?];
     }
@@ -82,64 +82,64 @@ LABEL_7:
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(OTPrivateKey *)self->_peerSigningPrivKey copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(OTPrivateKey *)self->_peerSigningPrivKey copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
-  v8 = [(OTPrivateKey *)self->_peerEncryptionPrivKey copyWithZone:a3];
+  v8 = [(OTPrivateKey *)self->_peerEncryptionPrivKey copyWithZone:zone];
   v9 = v5[1];
   v5[1] = v8;
 
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_peerSigningPrivKey)
   {
-    [v4 setPeerSigningPrivKey:?];
-    v4 = v5;
+    [toCopy setPeerSigningPrivKey:?];
+    toCopy = v5;
   }
 
   if (self->_peerEncryptionPrivKey)
   {
     [v5 setPeerEncryptionPrivKey:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_peerSigningPrivKey)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_peerEncryptionPrivKey)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (BOOL)readFrom:(id)a3
+- (BOOL)readFrom:(id)from
 {
-  v5 = [a3 position];
-  if (v5 < [a3 length])
+  position = [from position];
+  if (position < [from length])
   {
     do
     {
-      if ([a3 hasError])
+      if ([from hasError])
       {
-        return [a3 hasError] ^ 1;
+        return [from hasError] ^ 1;
       }
 
       v6 = 0;
@@ -148,18 +148,18 @@ LABEL_7:
       while (1)
       {
         LOBYTE(v18[0]) = 0;
-        v9 = [a3 position] + 1;
-        if (v9 >= [a3 position] && (v10 = objc_msgSend(a3, "position") + 1, v10 <= objc_msgSend(a3, "length")))
+        v9 = [from position] + 1;
+        if (v9 >= [from position] && (v10 = objc_msgSend(from, "position") + 1, v10 <= objc_msgSend(from, "length")))
         {
-          v11 = [a3 data];
-          [v11 getBytes:v18 range:{objc_msgSend(a3, "position"), 1}];
+          data = [from data];
+          [data getBytes:v18 range:{objc_msgSend(from, "position"), 1}];
 
-          [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+          [from setPosition:{objc_msgSend(from, "position") + 1}];
         }
 
         else
         {
-          [a3 _setError];
+          [from _setError];
         }
 
         v8 |= (v18[0] & 0x7F) << v6;
@@ -176,11 +176,11 @@ LABEL_7:
         }
       }
 
-      v13 = [a3 hasError] ? 0 : v8;
+      v13 = [from hasError] ? 0 : v8;
 LABEL_15:
-      if (([a3 hasError] & 1) != 0 || (v13 & 7) == 4)
+      if (([from hasError] & 1) != 0 || (v13 & 7) == 4)
       {
-        return [a3 hasError] ^ 1;
+        return [from hasError] ^ 1;
       }
 
       if ((v13 >> 3) == 4)
@@ -208,7 +208,7 @@ LABEL_15:
       objc_storeStrong(&self->PBCodable_opaque[v15], v14);
       v18[0] = 0xAAAAAAAAAAAAAAAALL;
       v18[1] = 0xAAAAAAAAAAAAAAAALL;
-      if (!PBReaderPlaceMark() || !sub_10020DB78(v14, a3))
+      if (!PBReaderPlaceMark() || !sub_10020DB78(v14, from))
       {
 
         return 0;
@@ -217,13 +217,13 @@ LABEL_15:
       PBReaderRecallMark();
 
 LABEL_25:
-      v16 = [a3 position];
+      position2 = [from position];
     }
 
-    while (v16 < [a3 length]);
+    while (position2 < [from length]);
   }
 
-  return [a3 hasError] ^ 1;
+  return [from hasError] ^ 1;
 }
 
 - (id)dictionaryRepresentation
@@ -232,15 +232,15 @@ LABEL_25:
   peerSigningPrivKey = self->_peerSigningPrivKey;
   if (peerSigningPrivKey)
   {
-    v5 = [(OTPrivateKey *)peerSigningPrivKey dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"peerSigningPrivKey"];
+    dictionaryRepresentation = [(OTPrivateKey *)peerSigningPrivKey dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation forKey:@"peerSigningPrivKey"];
   }
 
   peerEncryptionPrivKey = self->_peerEncryptionPrivKey;
   if (peerEncryptionPrivKey)
   {
-    v7 = [(OTPrivateKey *)peerEncryptionPrivKey dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"peerEncryptionPrivKey"];
+    dictionaryRepresentation2 = [(OTPrivateKey *)peerEncryptionPrivKey dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation2 forKey:@"peerEncryptionPrivKey"];
   }
 
   return v3;
@@ -251,8 +251,8 @@ LABEL_25:
   v7.receiver = self;
   v7.super_class = OTBottleContents;
   v3 = [(OTBottleContents *)&v7 description];
-  v4 = [(OTBottleContents *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(OTBottleContents *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }

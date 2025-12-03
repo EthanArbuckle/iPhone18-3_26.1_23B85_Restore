@@ -1,14 +1,14 @@
 @interface PKPlugInCore
-- (BOOL)hasEntitlement:(id)a3;
+- (BOOL)hasEntitlement:(id)entitlement;
 - (BOOL)isAppExtension;
 - (BOOL)isData;
 - (BOOL)isDedicated;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isHybrid;
 - (BOOL)oldStyle;
-- (BOOL)setDictionaries:(id)a3;
-- (BOOL)setupWithForm:(id)a3;
-- (BOOL)setupWithName:(id)a3 extensionPointPlatform:(unsigned int)a4 url:(id)a5 bundleInfo:(id)a6 uuid:(id)a7 discoveryInstanceUUID:(id)a8 extensionPointCache:(id)a9;
+- (BOOL)setDictionaries:(id)dictionaries;
+- (BOOL)setupWithForm:(id)form;
+- (BOOL)setupWithName:(id)name extensionPointPlatform:(unsigned int)platform url:(id)url bundleInfo:(id)info uuid:(id)uuid discoveryInstanceUUID:(id)d extensionPointCache:(id)cache;
 - (BOOL)shouldTerminateOnHold;
 - (BOOL)usesHostPersona;
 - (NSDate)timestamp;
@@ -23,30 +23,30 @@
 - (NSString)sdkSpec;
 - (NSString)version;
 - (PKPlugInCore)init;
-- (PKPlugInCore)initWithExternalProviders:(id)a3;
-- (PKPlugInCore)initWithForm:(id)a3 externalProviders:(id)a4;
-- (id)_localizedFileProviderActionNamesForPKDict:(id)a3 fromBundle:(id)a4;
-- (id)attribute:(id)a3;
+- (PKPlugInCore)initWithExternalProviders:(id)providers;
+- (PKPlugInCore)initWithForm:(id)form externalProviders:(id)providers;
+- (id)_localizedFileProviderActionNamesForPKDict:(id)dict fromBundle:(id)bundle;
+- (id)attribute:(id)attribute;
 - (id)debugDescription;
 - (id)description;
 - (id)diagnose;
 - (id)embeddedProtocolSpec;
-- (id)export:(id *)a3;
-- (id)infoKey:(id)a3;
-- (id)mergeSDKDictionary:(id)a3 intoExtensionDictionary:(id)a4;
-- (id)mergeSharedResources:(id)a3 into:(id)a4;
-- (id)pluginKey:(id)a3;
+- (id)export:(id *)export;
+- (id)infoKey:(id)key;
+- (id)mergeSDKDictionary:(id)dictionary intoExtensionDictionary:(id)extensionDictionary;
+- (id)mergeSharedResources:(id)resources into:(id)into;
+- (id)pluginKey:(id)key;
 - (id)protocolSpec;
-- (id)resolveSDKWithInfoPlist:(id)a3 extensionPointCache:(id)a4;
+- (id)resolveSDKWithInfoPlist:(id)plist extensionPointCache:(id)cache;
 - (id)sdkOnlyKeyPaths;
-- (id)valueForEntitlement:(id)a3;
+- (id)valueForEntitlement:(id)entitlement;
 - (unint64_t)hash;
 - (void)_loadLocalizedFileProviderActionNames;
 - (void)_loadLocalizedNames;
 - (void)canonicalize;
-- (void)localizedInfoDictionaryForKeys:(id)a3 completion:(id)a4;
-- (void)setAnnotation:(id)a3 value:(id)a4;
-- (void)updateFromForm:(id)a3;
+- (void)localizedInfoDictionaryForKeys:(id)keys completion:(id)completion;
+- (void)setAnnotation:(id)annotation value:(id)value;
+- (void)updateFromForm:(id)form;
 @end
 
 @implementation PKPlugInCore
@@ -67,55 +67,55 @@
 
 - (unint64_t)hash
 {
-  v3 = [(PKPlugInCore *)self uuid];
-  if (!v3)
+  uuid = [(PKPlugInCore *)self uuid];
+  if (!uuid)
   {
     sub_1C68B5A78();
   }
 
-  v4 = [(PKPlugInCore *)self uuid];
-  v5 = [v4 hash];
+  uuid2 = [(PKPlugInCore *)self uuid];
+  v5 = [uuid2 hash];
 
   return v5;
 }
 
 - (NSString)containingPath
 {
-  v2 = [(PKPlugInCore *)self containingUrl];
-  v3 = [v2 path];
+  containingUrl = [(PKPlugInCore *)self containingUrl];
+  path = [containingUrl path];
 
-  return v3;
+  return path;
 }
 
 - (BOOL)isDedicated
 {
   v2 = [(PKPlugInCore *)self pluginKey:@"Dedicated"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (NSString)path
 {
   v2 = [(PKPlugInCore *)self url];
-  v3 = [v2 path];
+  path = [v2 path];
 
-  return v3;
+  return path;
 }
 
 - (BOOL)isAppExtension
 {
   v2 = [(PKPlugInCore *)self url];
-  v3 = [v2 path];
-  v4 = [v3 hasSuffix:@".appex"];
+  path = [v2 path];
+  v4 = [path hasSuffix:@".appex"];
 
   return v4;
 }
 
 - (BOOL)isData
 {
-  v2 = [(PKPlugInCore *)self protocolSpec];
-  v3 = [@"#Data" isEqual:v2];
+  protocolSpec = [(PKPlugInCore *)self protocolSpec];
+  v3 = [@"#Data" isEqual:protocolSpec];
 
   return v3;
 }
@@ -142,34 +142,34 @@
 - (NSString)localizedName
 {
   v19 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_localizedName)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_localizedName)
   {
-    [(PKPlugInCore *)v2 _loadLocalizedNames];
+    [(PKPlugInCore *)selfCopy _loadLocalizedNames];
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   v3 = pklog_handle_for_category(3);
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
-    v4 = [(PKPlugInCore *)v2 uuid];
-    v5 = [(PKPlugInCore *)v2 identifier];
-    v6 = [(PKPlugInCore *)v2 version];
-    localizedName = v2->_localizedName;
+    uuid = [(PKPlugInCore *)selfCopy uuid];
+    identifier = [(PKPlugInCore *)selfCopy identifier];
+    version = [(PKPlugInCore *)selfCopy version];
+    localizedName = selfCopy->_localizedName;
     v11 = 138544130;
-    v12 = v4;
+    v12 = uuid;
     v13 = 2112;
-    v14 = v5;
+    v14 = identifier;
     v15 = 2112;
-    v16 = v6;
+    v16 = version;
     v17 = 2112;
     v18 = localizedName;
     _os_log_impl(&dword_1C6892000, v3, OS_LOG_TYPE_INFO, "[u %{public}@] [%@(%@)] got localized name: %@", &v11, 0x2Au);
   }
 
-  v8 = v2->_localizedName;
+  v8 = selfCopy->_localizedName;
   v9 = *MEMORY[0x1E69E9840];
 
   return v8;
@@ -178,34 +178,34 @@
 - (NSString)localizedShortName
 {
   v19 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_localizedShortName)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_localizedShortName)
   {
-    [(PKPlugInCore *)v2 _loadLocalizedNames];
+    [(PKPlugInCore *)selfCopy _loadLocalizedNames];
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   v3 = pklog_handle_for_category(3);
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
-    v4 = [(PKPlugInCore *)v2 uuid];
-    v5 = [(PKPlugInCore *)v2 identifier];
-    v6 = [(PKPlugInCore *)v2 version];
-    localizedShortName = v2->_localizedShortName;
+    uuid = [(PKPlugInCore *)selfCopy uuid];
+    identifier = [(PKPlugInCore *)selfCopy identifier];
+    version = [(PKPlugInCore *)selfCopy version];
+    localizedShortName = selfCopy->_localizedShortName;
     v11 = 138544130;
-    v12 = v4;
+    v12 = uuid;
     v13 = 2112;
-    v14 = v5;
+    v14 = identifier;
     v15 = 2112;
-    v16 = v6;
+    v16 = version;
     v17 = 2112;
     v18 = localizedShortName;
     _os_log_impl(&dword_1C6892000, v3, OS_LOG_TYPE_INFO, "[u %{public}@] [%@(%@)] got localized short name: %@", &v11, 0x2Au);
   }
 
-  v8 = v2->_localizedShortName;
+  v8 = selfCopy->_localizedShortName;
   v9 = *MEMORY[0x1E69E9840];
 
   return v8;
@@ -215,29 +215,29 @@
 {
   v44 = *MEMORY[0x1E69E9840];
   v3 = objc_autoreleasePoolPush();
-  v4 = [(PKPlugInCore *)self external];
-  v5 = [v4 ls];
-  v6 = [v5 hasLSDatabaseAccess];
+  external = [(PKPlugInCore *)self external];
+  v5 = [external ls];
+  hasLSDatabaseAccess = [v5 hasLSDatabaseAccess];
 
-  if (!v6)
+  if (!hasLSDatabaseAccess)
   {
     goto LABEL_7;
   }
 
-  v7 = [(PKPlugInCore *)self external];
-  v8 = [v7 ls];
-  v9 = [(PKPlugInCore *)self uuid];
-  v10 = [v8 plugInRecordForUUID:v9];
+  external2 = [(PKPlugInCore *)self external];
+  v8 = [external2 ls];
+  uuid = [(PKPlugInCore *)self uuid];
+  v10 = [v8 plugInRecordForUUID:uuid];
 
   if (v10)
   {
-    v11 = [v10 localizedName];
+    localizedName = [v10 localizedName];
     localizedName = self->_localizedName;
-    self->_localizedName = v11;
+    self->_localizedName = localizedName;
 
-    v13 = [v10 localizedShortName];
+    localizedShortName = [v10 localizedShortName];
     localizedShortName = self->_localizedShortName;
-    self->_localizedShortName = v13;
+    self->_localizedShortName = localizedShortName;
   }
 
   else
@@ -257,18 +257,18 @@ LABEL_7:
     v16 = v33;
     if (v15)
     {
-      v17 = [(PKPlugInCore *)self external];
-      v18 = [v17 filesystem];
-      v19 = [(PKPlugInCore *)self url];
-      v20 = [v18 bundleWithURL:v19];
+      external3 = [(PKPlugInCore *)self external];
+      filesystem = [external3 filesystem];
+      bundleInfoDictionary = [(PKPlugInCore *)self url];
+      v20 = [filesystem bundleWithURL:bundleInfoDictionary];
 
-      v21 = [v20 localizedInfoDictionary];
-      v22 = [v21 objectForKeyedSubscript:@"CFBundleDisplayName"];
+      localizedInfoDictionary = [v20 localizedInfoDictionary];
+      v22 = [localizedInfoDictionary objectForKeyedSubscript:@"CFBundleDisplayName"];
       v23 = v22;
       if (!v22)
       {
-        v19 = [(PKPlugInCore *)self bundleInfoDictionary];
-        v23 = [v19 objectForKeyedSubscript:@"CFBundleDisplayName"];
+        bundleInfoDictionary = [(PKPlugInCore *)self bundleInfoDictionary];
+        v23 = [bundleInfoDictionary objectForKeyedSubscript:@"CFBundleDisplayName"];
       }
 
       objc_storeStrong(&self->_localizedName, v23);
@@ -276,12 +276,12 @@ LABEL_7:
       {
       }
 
-      v24 = [v21 objectForKeyedSubscript:@"CFBundleName"];
+      v24 = [localizedInfoDictionary objectForKeyedSubscript:@"CFBundleName"];
       v25 = v24;
       if (!v24)
       {
-        v19 = [(PKPlugInCore *)self bundleInfoDictionary];
-        v25 = [v19 objectForKeyedSubscript:@"CFBundleName"];
+        bundleInfoDictionary = [(PKPlugInCore *)self bundleInfoDictionary];
+        v25 = [bundleInfoDictionary objectForKeyedSubscript:@"CFBundleName"];
       }
 
       objc_storeStrong(&self->_localizedShortName, v25);
@@ -292,17 +292,17 @@ LABEL_7:
       v26 = pklog_handle_for_category(3);
       if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
       {
-        v28 = [(PKPlugInCore *)self uuid];
-        v29 = [(PKPlugInCore *)self identifier];
-        v30 = [(PKPlugInCore *)self version];
+        uuid2 = [(PKPlugInCore *)self uuid];
+        identifier = [(PKPlugInCore *)self identifier];
+        version = [(PKPlugInCore *)self version];
         v31 = self->_localizedName;
         v32 = self->_localizedShortName;
         *buf = 138544386;
-        v35 = v28;
+        v35 = uuid2;
         v36 = 2112;
-        v37 = v29;
+        v37 = identifier;
         v38 = 2112;
-        v39 = v30;
+        v39 = version;
         v40 = 2112;
         v41 = v31;
         v42 = 2112;
@@ -328,12 +328,12 @@ LABEL_7:
 - (id)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(PKPlugInCore *)self uuid];
-  v5 = [(PKPlugInCore *)self identifier];
-  v6 = [(PKPlugInCore *)self version];
-  v7 = [(PKPlugInCore *)self discoveryInstanceUUID];
-  v8 = [(PKPlugInCore *)self path];
-  v9 = [v3 initWithFormat:@"<[u %@] [%@(%@)], [d %@] [%@]>", v4, v5, v6, v7, v8];
+  uuid = [(PKPlugInCore *)self uuid];
+  identifier = [(PKPlugInCore *)self identifier];
+  version = [(PKPlugInCore *)self version];
+  discoveryInstanceUUID = [(PKPlugInCore *)self discoveryInstanceUUID];
+  path = [(PKPlugInCore *)self path];
+  v9 = [v3 initWithFormat:@"<[u %@] [%@(%@)], [d %@] [%@]>", uuid, identifier, version, discoveryInstanceUUID, path];
 
   return v9;
 }
@@ -341,12 +341,12 @@ LABEL_7:
 - (void)canonicalize
 {
   v3 = MEMORY[0x1E695DF90];
-  v4 = [(PKPlugInCore *)self attributes];
-  v11 = [v3 dictionaryWithDictionary:v4];
+  attributes = [(PKPlugInCore *)self attributes];
+  v11 = [v3 dictionaryWithDictionary:attributes];
 
   v5 = MEMORY[0x1E695DF90];
-  v6 = [(PKPlugInCore *)self plugInDictionary];
-  v7 = [v5 dictionaryWithDictionary:v6];
+  plugInDictionary = [(PKPlugInCore *)self plugInDictionary];
+  v7 = [v5 dictionaryWithDictionary:plugInDictionary];
 
   [v7 setObject:v11 forKeyedSubscript:@"NSExtensionAttributes"];
   [(PKPlugInCore *)self setPlugInDictionary:v7];
@@ -430,9 +430,9 @@ LABEL_8:
 
 - (id)diagnose
 {
-  v4 = [(PKPlugInCore *)self identifier];
+  identifier = [(PKPlugInCore *)self identifier];
 
-  if (!v4)
+  if (!identifier)
   {
     v27 = @"missing identifier (no NSExtensionIdentifier, nor even CFBundleIdentifier)";
 LABEL_21:
@@ -440,9 +440,9 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  v11 = [(PKPlugInCore *)self protocolSpec];
+  protocolSpec = [(PKPlugInCore *)self protocolSpec];
 
-  if (!v11)
+  if (!protocolSpec)
   {
     v28 = PKProtocolInfoKey;
 LABEL_10:
@@ -451,23 +451,23 @@ LABEL_10:
     goto LABEL_23;
   }
 
-  v18 = [(PKPlugInCore *)self attributes];
+  attributes = [(PKPlugInCore *)self attributes];
 
-  if (!v18)
+  if (!attributes)
   {
     v28 = PKAttributesInfoKey;
     goto LABEL_10;
   }
 
-  v25 = [(PKPlugInCore *)self isAppExtension];
-  if (!v25)
+  isAppExtension = [(PKPlugInCore *)self isAppExtension];
+  if (!isAppExtension)
   {
     v26 = 0;
     goto LABEL_17;
   }
 
-  v2 = [(PKPlugInCore *)self principalSpec];
-  if ([v2 isEqualToString:@"NSObject"])
+  principalSpec = [(PKPlugInCore *)self principalSpec];
+  if ([principalSpec isEqualToString:@"NSObject"])
   {
     v26 = 0;
     goto LABEL_17;
@@ -477,7 +477,7 @@ LABEL_10:
   {
     v26 = 1;
 LABEL_17:
-    if (v25)
+    if (isAppExtension)
     {
       goto LABEL_18;
     }
@@ -492,10 +492,10 @@ LABEL_13:
   }
 
   v29 = [(PKPlugInCore *)self url];
-  v30 = [v29 path];
-  v26 = [v30 hasPrefix:@"/AppleInternal/"] ^ 1;
+  path = [v29 path];
+  v26 = [path hasPrefix:@"/AppleInternal/"] ^ 1;
 
-  if (!v25)
+  if (!isAppExtension)
   {
     goto LABEL_13;
   }
@@ -550,27 +550,27 @@ LABEL_23:
   return v4;
 }
 
-- (PKPlugInCore)initWithExternalProviders:(id)a3
+- (PKPlugInCore)initWithExternalProviders:(id)providers
 {
-  v5 = a3;
+  providersCopy = providers;
   v9.receiver = self;
   v9.super_class = PKPlugInCore;
   v6 = [(PKPlugInCore *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_external, a3);
+    objc_storeStrong(&v6->_external, providers);
   }
 
   return v7;
 }
 
-- (PKPlugInCore)initWithForm:(id)a3 externalProviders:(id)a4
+- (PKPlugInCore)initWithForm:(id)form externalProviders:(id)providers
 {
-  v6 = a3;
-  v7 = [(PKPlugInCore *)self initWithExternalProviders:a4];
+  formCopy = form;
+  v7 = [(PKPlugInCore *)self initWithExternalProviders:providers];
   v8 = v7;
-  if (v7 && ![(PKPlugInCore *)v7 setupWithForm:v6])
+  if (v7 && ![(PKPlugInCore *)v7 setupWithForm:formCopy])
   {
 
     v8 = 0;
@@ -579,16 +579,16 @@ LABEL_23:
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [(PKPlugInCore *)self uuid];
-  if (!v5)
+  equalCopy = equal;
+  uuid = [(PKPlugInCore *)self uuid];
+  if (!uuid)
   {
     sub_1C68B5A4C();
   }
 
-  if (self == v4)
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -598,9 +598,9 @@ LABEL_23:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [(PKPlugInCore *)self uuid];
-      v7 = [(PKPlugInCore *)v4 uuid];
-      v8 = [v6 isEqual:v7];
+      uuid2 = [(PKPlugInCore *)self uuid];
+      uuid3 = [(PKPlugInCore *)equalCopy uuid];
+      v8 = [uuid2 isEqual:uuid3];
     }
 
     else
@@ -612,33 +612,33 @@ LABEL_23:
   return v8;
 }
 
-- (BOOL)setupWithName:(id)a3 extensionPointPlatform:(unsigned int)a4 url:(id)a5 bundleInfo:(id)a6 uuid:(id)a7 discoveryInstanceUUID:(id)a8 extensionPointCache:(id)a9
+- (BOOL)setupWithName:(id)name extensionPointPlatform:(unsigned int)platform url:(id)url bundleInfo:(id)info uuid:(id)uuid discoveryInstanceUUID:(id)d extensionPointCache:(id)cache
 {
   v43 = *MEMORY[0x1E69E9840];
-  v16 = a3;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
-  v22 = v21;
-  if (!v17)
+  nameCopy = name;
+  urlCopy = url;
+  infoCopy = info;
+  uuidCopy = uuid;
+  dCopy = d;
+  cacheCopy = cache;
+  v22 = cacheCopy;
+  if (!urlCopy)
   {
     goto LABEL_22;
   }
 
-  if (v16)
+  if (nameCopy)
   {
-    self->_extensionPointPlatform = a4;
-    if (!v18)
+    self->_extensionPointPlatform = platform;
+    if (!infoCopy)
     {
       goto LABEL_16;
     }
 
-    if (v21)
+    if (cacheCopy)
     {
-      v33 = v20;
-      v23 = [(PKPlugInCore *)self normalizeInfoDictionary:v18];
+      v33 = dCopy;
+      v23 = [(PKPlugInCore *)self normalizeInfoDictionary:infoCopy];
       v24 = [(PKPlugInCore *)self resolveSDKWithInfoPlist:v23 extensionPointCache:v22];
 
       v34 = v24;
@@ -646,23 +646,23 @@ LABEL_23:
       if (v25)
       {
         [(PKPlugInCore *)self canonicalize];
-        v20 = v33;
+        dCopy = v33;
       }
 
       else
       {
         log = pklog_handle_for_category(6);
-        v20 = v33;
+        dCopy = v33;
         if (os_log_type_enabled(log, OS_LOG_TYPE_ERROR))
         {
           *buf = 138413058;
           v36 = v33;
           v37 = 2114;
-          v38 = v16;
+          v38 = nameCopy;
           v39 = 2114;
-          v40 = v17;
+          v40 = urlCopy;
           v41 = 2114;
-          v42 = v18;
+          v42 = infoCopy;
           _os_log_error_impl(&dword_1C6892000, log, OS_LOG_TYPE_ERROR, "[d %@] malformed plugin dictionary in plugin [%{public}@] at [%{public}@]: %{public}@", buf, 0x2Au);
         }
       }
@@ -677,23 +677,23 @@ LABEL_22:
       goto LABEL_23;
     }
 
-    if ([(PKPlugInCore *)self setDictionaries:v18])
+    if ([(PKPlugInCore *)self setDictionaries:infoCopy])
     {
 LABEL_16:
-      objc_storeStrong(&self->_identifier, a3);
-      objc_storeStrong(&self->_url, a5);
-      v28 = v19;
-      if (!v19)
+      objc_storeStrong(&self->_identifier, name);
+      objc_storeStrong(&self->_url, url);
+      uUID = uuidCopy;
+      if (!uuidCopy)
       {
-        v28 = [MEMORY[0x1E696AFB0] UUID];
+        uUID = [MEMORY[0x1E696AFB0] UUID];
       }
 
-      objc_storeStrong(&self->_uuid, v28);
-      if (!v19)
+      objc_storeStrong(&self->_uuid, uUID);
+      if (!uuidCopy)
       {
       }
 
-      v29 = v20;
+      v29 = dCopy;
       p_super = &self->_discoveryInstanceUUID->super;
       self->_discoveryInstanceUUID = v29;
       v27 = 1;
@@ -704,13 +704,13 @@ LABEL_16:
     if (os_log_type_enabled(p_super, OS_LOG_TYPE_ERROR))
     {
       *buf = 138413058;
-      v36 = v20;
+      v36 = dCopy;
       v37 = 2114;
-      v38 = v16;
+      v38 = nameCopy;
       v39 = 2114;
-      v40 = v17;
+      v40 = urlCopy;
       v41 = 2114;
-      v42 = v18;
+      v42 = infoCopy;
       _os_log_error_impl(&dword_1C6892000, p_super, OS_LOG_TYPE_ERROR, "[d %@] malformed plugin dictionary in plugin [%{public}@] at [%{public}@]: %{public}@", buf, 0x2Au);
       v27 = 0;
       goto LABEL_21;
@@ -722,7 +722,7 @@ LABEL_16:
     p_super = pklog_handle_for_category(6);
     if (os_log_type_enabled(p_super, OS_LOG_TYPE_ERROR))
     {
-      sub_1C68B5AA4(v20, v17);
+      sub_1C68B5AA4(dCopy, urlCopy);
       v27 = 0;
       goto LABEL_21;
     }
@@ -736,15 +736,15 @@ LABEL_23:
   return v27;
 }
 
-- (BOOL)setDictionaries:(id)a3
+- (BOOL)setDictionaries:(id)dictionaries
 {
   v27 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  dictionariesCopy = dictionaries;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    objc_storeStrong(&self->_bundleInfoDictionary, a3);
-    v6 = [v5 objectForKeyedSubscript:@"NSExtension"];
+    objc_storeStrong(&self->_bundleInfoDictionary, dictionaries);
+    v6 = [dictionariesCopy objectForKeyedSubscript:@"NSExtension"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -755,16 +755,16 @@ LABEL_23:
         v8 = pklog_handle_for_category(6);
         if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
         {
-          v16 = [(PKPlugInCore *)self discoveryInstanceUUID];
-          v9 = [(PKPlugInCore *)self uuid];
-          v10 = [(PKPlugInCore *)self identifier];
+          discoveryInstanceUUID = [(PKPlugInCore *)self discoveryInstanceUUID];
+          uuid = [(PKPlugInCore *)self uuid];
+          identifier = [(PKPlugInCore *)self identifier];
           [(PKPlugInCore *)self version];
           *buf = 138413314;
-          v18 = v16;
+          v18 = discoveryInstanceUUID;
           v19 = 2114;
-          v20 = v9;
+          v20 = uuid;
           v21 = 2112;
-          v22 = v10;
+          v22 = identifier;
           v24 = v23 = 2112;
           v11 = v24;
           v25 = 2114;
@@ -773,7 +773,7 @@ LABEL_23:
         }
       }
 
-      v12 = [(PKPlugInCore *)self plugInDictionary];
+      plugInDictionary = [(PKPlugInCore *)self plugInDictionary];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
     }
@@ -793,15 +793,15 @@ LABEL_23:
   return isKindOfClass & 1;
 }
 
-- (BOOL)setupWithForm:(id)a3
+- (BOOL)setupWithForm:(id)form
 {
   v50 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  formCopy = form;
   v5 = objc_alloc(MEMORY[0x1E695DFF8]);
-  v6 = [v4 objectForKeyedSubscript:@"path"];
+  v6 = [formCopy objectForKeyedSubscript:@"path"];
   v45 = [v5 initFileURLWithPath:v6];
 
-  v7 = [v4 objectForKeyedSubscript:@"discoveryInstanceUUID"];
+  v7 = [formCopy objectForKeyedSubscript:@"discoveryInstanceUUID"];
   if (v7)
   {
     v8 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:v7];
@@ -812,125 +812,125 @@ LABEL_23:
     v8 = 0;
   }
 
-  v9 = [v4 objectForKeyedSubscript:@"epPlatform"];
-  v15 = [v9 unsignedIntValue];
-  v10 = [v4 objectForKeyedSubscript:@"identifier"];
-  v11 = [v4 objectForKeyedSubscript:@"bundleInfo"];
+  v9 = [formCopy objectForKeyedSubscript:@"epPlatform"];
+  unsignedIntValue = [v9 unsignedIntValue];
+  v10 = [formCopy objectForKeyedSubscript:@"identifier"];
+  v11 = [formCopy objectForKeyedSubscript:@"bundleInfo"];
   v12 = objc_alloc(MEMORY[0x1E696AFB0]);
-  v13 = [v4 objectForKeyedSubscript:@"uuid"];
+  v13 = [formCopy objectForKeyedSubscript:@"uuid"];
   v14 = [v12 initWithUUIDString:v13];
-  LODWORD(v15) = [(PKPlugInCore *)self setupWithName:v10 extensionPointPlatform:v15 url:v45 bundleInfo:v11 uuid:v14 discoveryInstanceUUID:v8 extensionPointCache:0];
+  LODWORD(unsignedIntValue) = [(PKPlugInCore *)self setupWithName:v10 extensionPointPlatform:unsignedIntValue url:v45 bundleInfo:v11 uuid:v14 discoveryInstanceUUID:v8 extensionPointCache:0];
 
-  if (v15)
+  if (unsignedIntValue)
   {
-    v16 = [v4 objectForKeyedSubscript:@"hubProtocolVersion"];
+    v16 = [formCopy objectForKeyedSubscript:@"hubProtocolVersion"];
     -[PKPlugInCore setHubProtocolVersion:](self, "setHubProtocolVersion:", [v16 unsignedIntegerValue]);
 
-    v17 = [v4 objectForKeyedSubscript:@"hubProtocolVersion"];
+    v17 = [formCopy objectForKeyedSubscript:@"hubProtocolVersion"];
     if (!v17)
     {
       [(PKPlugInCore *)self setHubProtocolVersion:1];
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"original-identifier"];
+    v18 = [formCopy objectForKeyedSubscript:@"original-identifier"];
     [(PKPlugInCore *)self setOriginalIdentifier:v18];
 
-    v19 = [v4 objectForKeyedSubscript:@"hash"];
+    v19 = [formCopy objectForKeyedSubscript:@"hash"];
     [(PKPlugInCore *)self setCdhash:v19];
 
-    v20 = [v4 objectForKeyedSubscript:@"requirement"];
+    v20 = [formCopy objectForKeyedSubscript:@"requirement"];
     [(PKPlugInCore *)self setRequirement:v20];
 
-    v21 = [v4 objectForKeyedSubscript:@"lastmodified"];
+    v21 = [formCopy objectForKeyedSubscript:@"lastmodified"];
     -[PKPlugInCore setLastModified:](self, "setLastModified:", [v21 longValue]);
 
-    v22 = [v4 objectForKeyedSubscript:@"entitlements"];
+    v22 = [formCopy objectForKeyedSubscript:@"entitlements"];
     [(PKPlugInCore *)self setEntitlements:v22];
 
-    v23 = [v4 objectForKeyedSubscript:@"containingPath"];
+    v23 = [formCopy objectForKeyedSubscript:@"containingPath"];
     if (v23)
     {
       v24 = [objc_alloc(MEMORY[0x1E695DFF8]) initFileURLWithPath:v23];
       [(PKPlugInCore *)self setContainingUrl:v24];
     }
 
-    v25 = [v4 objectForKeyedSubscript:@"containingBundleIdentifier"];
+    v25 = [formCopy objectForKeyedSubscript:@"containingBundleIdentifier"];
     [(PKPlugInCore *)self setContainingBundleIdentifier:v25];
 
-    v26 = [v4 objectForKeyedSubscript:@"systemResident"];
+    v26 = [formCopy objectForKeyedSubscript:@"systemResident"];
     -[PKPlugInCore setOnSystemVolume:](self, "setOnSystemVolume:", [v26 BOOLValue]);
 
-    v27 = [v4 objectForKeyedSubscript:@"annotations"];
+    v27 = [formCopy objectForKeyedSubscript:@"annotations"];
     [(PKPlugInCore *)self setAnnotations:v27];
 
     v28 = pklog_handle_for_category(6);
     if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
     {
-      v29 = [(PKPlugInCore *)self identifier];
+      identifier = [(PKPlugInCore *)self identifier];
       [(PKPlugInCore *)self annotations];
       v44 = v7;
       v30 = v23;
-      v31 = v15;
-      v15 = v9;
+      v31 = unsignedIntValue;
+      unsignedIntValue = v9;
       v32 = v8;
       v34 = v33 = v17;
       *buf = 138412546;
-      v47 = v29;
+      v47 = identifier;
       v48 = 2112;
       v49 = v34;
       _os_log_impl(&dword_1C6892000, v28, OS_LOG_TYPE_INFO, "%@: annotations = %@", buf, 0x16u);
 
       v17 = v33;
       v8 = v32;
-      v9 = v15;
-      LOBYTE(v15) = v31;
+      v9 = unsignedIntValue;
+      LOBYTE(unsignedIntValue) = v31;
       v23 = v30;
       v7 = v44;
     }
 
-    v35 = [v4 objectForKeyedSubscript:@"localizedContainingDisplayName"];
+    v35 = [formCopy objectForKeyedSubscript:@"localizedContainingDisplayName"];
     [(PKPlugInCore *)self setLocalizedContainingName:v35];
 
-    v36 = [v4 objectForKeyedSubscript:@"isRBManaged"];
+    v36 = [formCopy objectForKeyedSubscript:@"isRBManaged"];
     -[PKPlugInCore setIsRBManaged:](self, "setIsRBManaged:", [v36 BOOLValue]);
 
     v37 = pklog_handle_for_category(6);
     if (os_log_type_enabled(v37, OS_LOG_TYPE_INFO))
     {
-      v38 = [(PKPlugInCore *)self identifier];
-      v39 = [(PKPlugInCore *)self isRBManaged];
+      identifier2 = [(PKPlugInCore *)self identifier];
+      isRBManaged = [(PKPlugInCore *)self isRBManaged];
       v40 = "will not";
-      if (v39)
+      if (isRBManaged)
       {
         v40 = "will";
       }
 
       *buf = 138412546;
-      v47 = v38;
+      v47 = identifier2;
       v48 = 2080;
       v49 = v40;
       _os_log_impl(&dword_1C6892000, v37, OS_LOG_TYPE_INFO, "%@: %s be managed by runningboard", buf, 0x16u);
     }
 
-    v41 = [v4 objectForKeyedSubscript:@"launchPersonas"];
+    v41 = [formCopy objectForKeyedSubscript:@"launchPersonas"];
     [(PKPlugInCore *)self setLaunchPersonas:v41];
   }
 
   v42 = *MEMORY[0x1E69E9840];
-  return v15;
+  return unsignedIntValue;
 }
 
-- (id)resolveSDKWithInfoPlist:(id)a3 extensionPointCache:(id)a4
+- (id)resolveSDKWithInfoPlist:(id)plist extensionPointCache:(id)cache
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  plistCopy = plist;
+  cacheCopy = cache;
+  if (!plistCopy)
   {
     sub_1C68B5CD8();
   }
 
-  v8 = [(PKPlugInCore *)self sdkDictionaryWithInfoPlist:v6 extensionPointCache:v7];
-  v9 = v6;
+  v8 = [(PKPlugInCore *)self sdkDictionaryWithInfoPlist:plistCopy extensionPointCache:cacheCopy];
+  v9 = plistCopy;
   v10 = v9;
   if (v8)
   {
@@ -940,13 +940,13 @@ LABEL_23:
   return v10;
 }
 
-- (id)mergeSDKDictionary:(id)a3 intoExtensionDictionary:(id)a4
+- (id)mergeSDKDictionary:(id)dictionary intoExtensionDictionary:(id)extensionDictionary
 {
   v31[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [a4 mutableCopy];
-  v8 = [(PKPlugInCore *)self sdkOnlyKeyPaths];
-  [v7 pk_removeItemsAtKeyPaths:v8];
+  dictionaryCopy = dictionary;
+  v7 = [extensionDictionary mutableCopy];
+  sdkOnlyKeyPaths = [(PKPlugInCore *)self sdkOnlyKeyPaths];
+  [v7 pk_removeItemsAtKeyPaths:sdkOnlyKeyPaths];
 
   v9 = MEMORY[0x1E695DFD8];
   v31[0] = @"NSExtension";
@@ -959,22 +959,22 @@ LABEL_23:
   v20[2] = sub_1C68A7114;
   v20[3] = &unk_1E827F8E8;
   v20[4] = self;
-  [v7 pk_overlayDictionary:v6 existingValuesTakePrecedent:1 exceptKeyPaths:v11 exemptionHandler:v20];
+  [v7 pk_overlayDictionary:dictionaryCopy existingValuesTakePrecedent:1 exceptKeyPaths:v11 exemptionHandler:v20];
 
   v12 = pklog_handle_for_category(6);
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
-    v15 = [(PKPlugInCore *)self uuid];
-    v16 = [(PKPlugInCore *)self identifier];
-    v17 = [(PKPlugInCore *)self version];
+    uuid = [(PKPlugInCore *)self uuid];
+    identifier = [(PKPlugInCore *)self identifier];
+    version = [(PKPlugInCore *)self version];
     v18 = [v7 objectForKeyedSubscript:@"NSExtension"];
     v19 = [v7 objectForKeyedSubscript:@"XPCService"];
     *buf = 138544386;
-    v22 = v15;
+    v22 = uuid;
     v23 = 2112;
-    v24 = v16;
+    v24 = identifier;
     v25 = 2112;
-    v26 = v17;
+    v26 = version;
     v27 = 2112;
     v28 = v18;
     v29 = 2112;
@@ -987,23 +987,23 @@ LABEL_23:
   return v7;
 }
 
-- (id)mergeSharedResources:(id)a3 into:(id)a4
+- (id)mergeSharedResources:(id)resources into:(id)into
 {
   v5 = MEMORY[0x1E695DFA8];
-  v6 = a3;
-  v7 = [v5 setWithArray:a4];
-  [v7 addObjectsFromArray:v6];
+  resourcesCopy = resources;
+  v7 = [v5 setWithArray:into];
+  [v7 addObjectsFromArray:resourcesCopy];
 
-  v8 = [v7 allObjects];
+  allObjects = [v7 allObjects];
 
-  return v8;
+  return allObjects;
 }
 
-- (id)export:(id *)a3
+- (id)export:(id *)export
 {
   v41[11] = *MEMORY[0x1E69E9840];
-  v4 = [(PKPlugInCore *)self bundleInfoDictionary];
-  v5 = [v4 mutableCopy];
+  bundleInfoDictionary = [(PKPlugInCore *)self bundleInfoDictionary];
+  v5 = [bundleInfoDictionary mutableCopy];
 
   [v5 removeObjectForKey:@"CFBundleInfoPlistURL"];
   v35 = MEMORY[0x1E695DF90];
@@ -1011,47 +1011,47 @@ LABEL_23:
   v38 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[PKPlugInCore hubProtocolVersion](self, "hubProtocolVersion")}];
   v41[0] = v38;
   v40[1] = @"path";
-  v37 = [(PKPlugInCore *)self path];
-  v41[1] = v37;
+  path = [(PKPlugInCore *)self path];
+  v41[1] = path;
   v40[2] = @"systemResident";
   v36 = [MEMORY[0x1E696AD98] numberWithBool:{-[PKPlugInCore onSystemVolume](self, "onSystemVolume")}];
   v41[2] = v36;
   v40[3] = @"identifier";
-  v34 = [(PKPlugInCore *)self identifier];
-  v41[3] = v34;
+  identifier = [(PKPlugInCore *)self identifier];
+  v41[3] = identifier;
   v40[4] = @"original-identifier";
-  v33 = [(PKPlugInCore *)self originalIdentifier];
-  v41[4] = v33;
+  originalIdentifier = [(PKPlugInCore *)self originalIdentifier];
+  v41[4] = originalIdentifier;
   v40[5] = @"version";
-  v6 = [(PKPlugInCore *)self version];
-  if (v6)
+  version = [(PKPlugInCore *)self version];
+  if (version)
   {
-    v7 = [(PKPlugInCore *)self version];
+    version2 = [(PKPlugInCore *)self version];
   }
 
   else
   {
-    v7 = @"<none>";
+    version2 = @"<none>";
   }
 
-  v41[5] = v7;
+  v41[5] = version2;
   v41[6] = v5;
   v39 = v5;
   v40[6] = @"bundleInfo";
   v40[7] = @"uuid";
-  v8 = [(PKPlugInCore *)self uuid];
-  v9 = [v8 UUIDString];
-  v41[7] = v9;
+  uuid = [(PKPlugInCore *)self uuid];
+  uUIDString = [uuid UUIDString];
+  v41[7] = uUIDString;
   v40[8] = @"lastmodified";
   v10 = [MEMORY[0x1E696AD98] numberWithLong:{-[PKPlugInCore lastModified](self, "lastModified")}];
   v41[8] = v10;
   v40[9] = @"annotations";
-  v11 = [(PKPlugInCore *)self annotations];
-  v12 = v11;
+  annotations = [(PKPlugInCore *)self annotations];
+  v12 = annotations;
   v13 = MEMORY[0x1E695E0F8];
-  if (v11)
+  if (annotations)
   {
-    v13 = v11;
+    v13 = annotations;
   }
 
   v41[9] = v13;
@@ -1061,60 +1061,60 @@ LABEL_23:
   v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v41 forKeys:v40 count:11];
   v16 = [v35 dictionaryWithDictionary:v15];
 
-  if (v6)
+  if (version)
   {
   }
 
-  v17 = [(PKPlugInCore *)self entitlements];
+  entitlements = [(PKPlugInCore *)self entitlements];
 
-  if (v17)
+  if (entitlements)
   {
-    v18 = [(PKPlugInCore *)self entitlements];
-    [v16 setObject:v18 forKeyedSubscript:@"entitlements"];
+    entitlements2 = [(PKPlugInCore *)self entitlements];
+    [v16 setObject:entitlements2 forKeyedSubscript:@"entitlements"];
   }
 
-  v19 = [(PKPlugInCore *)self containingPath];
+  containingPath = [(PKPlugInCore *)self containingPath];
 
-  if (v19)
+  if (containingPath)
   {
-    v20 = [(PKPlugInCore *)self containingPath];
-    [v16 setObject:v20 forKeyedSubscript:@"containingPath"];
+    containingPath2 = [(PKPlugInCore *)self containingPath];
+    [v16 setObject:containingPath2 forKeyedSubscript:@"containingPath"];
   }
 
-  v21 = [(PKPlugInCore *)self containingBundleIdentifier];
+  containingBundleIdentifier = [(PKPlugInCore *)self containingBundleIdentifier];
 
-  if (v21)
+  if (containingBundleIdentifier)
   {
-    v22 = [(PKPlugInCore *)self containingBundleIdentifier];
-    [v16 setObject:v22 forKeyedSubscript:@"containingBundleIdentifier"];
+    containingBundleIdentifier2 = [(PKPlugInCore *)self containingBundleIdentifier];
+    [v16 setObject:containingBundleIdentifier2 forKeyedSubscript:@"containingBundleIdentifier"];
   }
 
-  v23 = [(PKPlugInCore *)self localizedContainingName];
+  localizedContainingName = [(PKPlugInCore *)self localizedContainingName];
 
-  if (v23)
+  if (localizedContainingName)
   {
-    v24 = [(PKPlugInCore *)self localizedContainingName];
-    [v16 setObject:v24 forKeyedSubscript:@"localizedContainingDisplayName"];
+    localizedContainingName2 = [(PKPlugInCore *)self localizedContainingName];
+    [v16 setObject:localizedContainingName2 forKeyedSubscript:@"localizedContainingDisplayName"];
   }
 
-  v25 = [(PKPlugInCore *)self discoveryInstanceUUID];
+  discoveryInstanceUUID = [(PKPlugInCore *)self discoveryInstanceUUID];
 
-  if (v25)
+  if (discoveryInstanceUUID)
   {
-    v26 = [(PKPlugInCore *)self discoveryInstanceUUID];
-    v27 = [v26 UUIDString];
-    [v16 setObject:v27 forKeyedSubscript:@"discoveryInstanceUUID"];
+    discoveryInstanceUUID2 = [(PKPlugInCore *)self discoveryInstanceUUID];
+    uUIDString2 = [discoveryInstanceUUID2 UUIDString];
+    [v16 setObject:uUIDString2 forKeyedSubscript:@"discoveryInstanceUUID"];
   }
 
   v28 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[PKPlugInCore extensionPointPlatform](self, "extensionPointPlatform")}];
   [v16 setObject:v28 forKeyedSubscript:@"epPlatform"];
 
-  v29 = [(PKPlugInCore *)self launchPersonas];
+  launchPersonas = [(PKPlugInCore *)self launchPersonas];
 
-  if (v29)
+  if (launchPersonas)
   {
-    v30 = [(PKPlugInCore *)self launchPersonas];
-    [v16 setObject:v30 forKeyedSubscript:@"launchPersonas"];
+    launchPersonas2 = [(PKPlugInCore *)self launchPersonas];
+    [v16 setObject:launchPersonas2 forKeyedSubscript:@"launchPersonas"];
   }
 
   v31 = *MEMORY[0x1E69E9840];
@@ -1134,14 +1134,14 @@ LABEL_23:
   return v3;
 }
 
-- (void)updateFromForm:(id)a3
+- (void)updateFromForm:(id)form
 {
   v38 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  formCopy = form;
   v5 = pklog_handle_for_category(10);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    sub_1C68B5DA0(self, v4, v5);
+    sub_1C68B5DA0(self, formCopy, v5);
   }
 
   if (![(PKPlugInCore *)self annotationTimestamp])
@@ -1149,11 +1149,11 @@ LABEL_23:
     goto LABEL_21;
   }
 
-  v6 = [v4 objectForKeyedSubscript:@"annotations"];
+  v6 = [formCopy objectForKeyedSubscript:@"annotations"];
   v7 = [v6 objectForKeyedSubscript:@"bootuuid"];
 
-  v8 = [v4 objectForKeyedSubscript:@"annotations"];
-  v9 = [v8 objectForKeyedSubscript:@"timestamp"];
+  bootInstance = [formCopy objectForKeyedSubscript:@"annotations"];
+  v9 = [bootInstance objectForKeyedSubscript:@"timestamp"];
 
   if (v9)
   {
@@ -1177,11 +1177,11 @@ LABEL_23:
     goto LABEL_15;
   }
 
-  v8 = [(PKPlugInCore *)self bootInstance];
-  if ([v7 isEqualToString:v8])
+  bootInstance = [(PKPlugInCore *)self bootInstance];
+  if ([v7 isEqualToString:bootInstance])
   {
-    v12 = [v9 unsignedLongLongValue];
-    v13 = v12 <= [(PKPlugInCore *)self annotationTimestamp];
+    unsignedLongLongValue = [v9 unsignedLongLongValue];
+    v13 = unsignedLongLongValue <= [(PKPlugInCore *)self annotationTimestamp];
     if (!v11)
     {
       goto LABEL_16;
@@ -1204,7 +1204,7 @@ LABEL_16:
 
 LABEL_21:
     [(PKPlugInCore *)self setAnnotationTimestamp:0];
-    v18 = [v4 objectForKeyedSubscript:@"annotations"];
+    v18 = [formCopy objectForKeyedSubscript:@"annotations"];
     [(PKPlugInCore *)self setAnnotations:v18];
 
     goto LABEL_22;
@@ -1213,27 +1213,27 @@ LABEL_21:
   v14 = pklog_handle_for_category(10);
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
-    v21 = [(PKPlugInCore *)self uuid];
-    v15 = [(PKPlugInCore *)self identifier];
-    v16 = [(PKPlugInCore *)self version];
-    v20 = [v9 unsignedLongLongValue];
-    v17 = [(PKPlugInCore *)self bootInstance];
+    uuid = [(PKPlugInCore *)self uuid];
+    identifier = [(PKPlugInCore *)self identifier];
+    version = [(PKPlugInCore *)self version];
+    unsignedLongLongValue2 = [v9 unsignedLongLongValue];
+    bootInstance2 = [(PKPlugInCore *)self bootInstance];
     *buf = 138545154;
-    v23 = v21;
+    v23 = uuid;
     v24 = 2112;
-    v25 = v15;
+    v25 = identifier;
     v26 = 2112;
-    v27 = v16;
+    v27 = version;
     v28 = 2080;
     v29 = "[PKPlugInCore updateFromForm:]";
     v30 = 2112;
     v31 = v7;
     v32 = 2048;
-    v33 = v20;
+    v33 = unsignedLongLongValue2;
     v34 = 2112;
-    v35 = v17;
+    v35 = bootInstance2;
     v36 = 2048;
-    v37 = [(PKPlugInCore *)self annotationTimestamp];
+    annotationTimestamp = [(PKPlugInCore *)self annotationTimestamp];
     _os_log_impl(&dword_1C6892000, v14, OS_LOG_TYPE_DEFAULT, "[u %{public}@] [%@(%@)] %s ignoring annotation update (%@, %llu) vs. (%@, %llu)", buf, 0x52u);
   }
 
@@ -1241,35 +1241,35 @@ LABEL_22:
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setAnnotation:(id)a3 value:(id)a4
+- (void)setAnnotation:(id)annotation value:(id)value
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  annotationCopy = annotation;
+  valueCopy = value;
   [(PKPlugInCore *)self setAnnotationTimestamp:mach_continuous_time()];
-  v8 = [(PKPlugInCore *)self annotations];
-  v9 = [v7 copy];
-  v10 = [v8 dictionaryChanging:v6 to:v9];
+  annotations = [(PKPlugInCore *)self annotations];
+  v9 = [valueCopy copy];
+  v10 = [annotations dictionaryChanging:annotationCopy to:v9];
   [(PKPlugInCore *)self setAnnotations:v10];
 
   v11 = pklog_handle_for_category(10);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
-    v13 = [(PKPlugInCore *)self uuid];
-    v14 = [(PKPlugInCore *)self identifier];
-    v15 = [(PKPlugInCore *)self version];
+    uuid = [(PKPlugInCore *)self uuid];
+    identifier = [(PKPlugInCore *)self identifier];
+    version = [(PKPlugInCore *)self version];
     v16 = 138544642;
-    v17 = v13;
+    v17 = uuid;
     v18 = 2112;
-    v19 = v14;
+    v19 = identifier;
     v20 = 2112;
     v22 = 2080;
-    v21 = v15;
+    v21 = version;
     v23 = "[PKPlugInCore setAnnotation:value:]";
     v24 = 2112;
-    v25 = v6;
+    v25 = annotationCopy;
     v26 = 2112;
-    v27 = v7;
+    v27 = valueCopy;
     _os_log_debug_impl(&dword_1C6892000, v11, OS_LOG_TYPE_DEBUG, "[u %{public}@] [%@(%@)] %s set annotation %@ : %@", &v16, 0x3Eu);
   }
 
@@ -1302,13 +1302,13 @@ LABEL_22:
 
 - (id)embeddedProtocolSpec
 {
-  v3 = [(PKPlugInCore *)self pluginKey:@"EmbeddedProtocol"];
-  if (!v3)
+  protocolSpec = [(PKPlugInCore *)self pluginKey:@"EmbeddedProtocol"];
+  if (!protocolSpec)
   {
-    v3 = [(PKPlugInCore *)self protocolSpec];
+    protocolSpec = [(PKPlugInCore *)self protocolSpec];
   }
 
-  return v3;
+  return protocolSpec;
 }
 
 - (NSDate)timestamp
@@ -1321,32 +1321,32 @@ LABEL_22:
 - (BOOL)shouldTerminateOnHold
 {
   v2 = [(PKPlugInCore *)self pluginKey:@"NSExtensionShouldTerminateOnHold"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-- (id)infoKey:(id)a3
+- (id)infoKey:(id)key
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PKPlugInCore *)self bundleInfoDictionary];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  keyCopy = key;
+  bundleInfoDictionary = [(PKPlugInCore *)self bundleInfoDictionary];
+  v6 = [bundleInfoDictionary objectForKeyedSubscript:keyCopy];
 
   v7 = pklog_handle_for_category(3);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    v10 = [(PKPlugInCore *)self uuid];
-    v11 = [(PKPlugInCore *)self identifier];
-    v12 = [(PKPlugInCore *)self version];
+    uuid = [(PKPlugInCore *)self uuid];
+    identifier = [(PKPlugInCore *)self identifier];
+    version = [(PKPlugInCore *)self version];
     v13 = 138544386;
-    v14 = v10;
+    v14 = uuid;
     v15 = 2112;
-    v16 = v11;
+    v16 = identifier;
     v17 = 2112;
-    v18 = v12;
+    v18 = version;
     v19 = 2112;
-    v20 = v4;
+    v20 = keyCopy;
     v21 = 2112;
     v22 = v6;
     _os_log_debug_impl(&dword_1C6892000, v7, OS_LOG_TYPE_DEBUG, "[u %{public}@] [%@(%@)] info [%@] => [%@]", &v13, 0x34u);
@@ -1357,36 +1357,36 @@ LABEL_22:
   return v6;
 }
 
-- (id)pluginKey:(id)a3
+- (id)pluginKey:(id)key
 {
-  v4 = a3;
-  v5 = [(PKPlugInCore *)self plugInDictionary];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  keyCopy = key;
+  plugInDictionary = [(PKPlugInCore *)self plugInDictionary];
+  v6 = [plugInDictionary objectForKeyedSubscript:keyCopy];
 
   return v6;
 }
 
-- (id)attribute:(id)a3
+- (id)attribute:(id)attribute
 {
-  v4 = a3;
-  v5 = [(PKPlugInCore *)self attributes];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  attributeCopy = attribute;
+  attributes = [(PKPlugInCore *)self attributes];
+  v6 = [attributes objectForKeyedSubscript:attributeCopy];
 
   return v6;
 }
 
-- (id)valueForEntitlement:(id)a3
+- (id)valueForEntitlement:(id)entitlement
 {
-  v4 = a3;
-  v5 = [(PKPlugInCore *)self entitlements];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  entitlementCopy = entitlement;
+  entitlements = [(PKPlugInCore *)self entitlements];
+  v6 = [entitlements objectForKeyedSubscript:entitlementCopy];
 
   return v6;
 }
 
-- (BOOL)hasEntitlement:(id)a3
+- (BOOL)hasEntitlement:(id)entitlement
 {
-  v3 = [(PKPlugInCore *)self valueForEntitlement:a3];
+  v3 = [(PKPlugInCore *)self valueForEntitlement:entitlement];
   v4 = v3;
   if (v3)
   {
@@ -1401,25 +1401,25 @@ LABEL_22:
   return v5;
 }
 
-- (void)localizedInfoDictionaryForKeys:(id)a3 completion:(id)a4
+- (void)localizedInfoDictionaryForKeys:(id)keys completion:(id)completion
 {
   v41 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E695DF90] dictionary];
-  v9 = v8;
+  keysCopy = keys;
+  completionCopy = completion;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v9 = dictionary;
   if (self->_bundleInfoDictionary)
   {
     v34 = 0u;
     v35 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v10 = v6;
+    v10 = keysCopy;
     v11 = [v10 countByEnumeratingWithState:&v32 objects:v40 count:16];
     if (v11)
     {
-      v28 = v7;
-      v29 = v6;
+      v28 = completionCopy;
+      v29 = keysCopy;
       v31 = 0;
       v12 = *v33;
       v30 = *MEMORY[0x1E696A578];
@@ -1446,28 +1446,28 @@ LABEL_22:
           v15 = *(*(&v32 + 1) + 8 * v13);
           if ([v15 isEqualToString:@"CFBundleName"])
           {
-            v16 = [(PKPlugInCore *)self localizedShortName];
-            if (!v16)
+            localizedShortName = [(PKPlugInCore *)self localizedShortName];
+            if (!localizedShortName)
             {
               goto LABEL_14;
             }
           }
 
-          else if (![v15 isEqualToString:@"CFBundleDisplayName"] || (-[PKPlugInCore localizedName](self, "localizedName"), (v16 = objc_claimAutoreleasedReturnValue()) == 0))
+          else if (![v15 isEqualToString:@"CFBundleDisplayName"] || (-[PKPlugInCore localizedName](self, "localizedName"), (localizedShortName = objc_claimAutoreleasedReturnValue()) == 0))
           {
 LABEL_14:
-            v16 = [(PKPlugInCore *)self infoKey:v15];
-            if (!v16)
+            localizedShortName = [(PKPlugInCore *)self infoKey:v15];
+            if (!localizedShortName)
             {
-              v16 = [(NSDictionary *)self->_bundleInfoDictionary objectForKey:v15];
-              if (!v16)
+              localizedShortName = [(NSDictionary *)self->_bundleInfoDictionary objectForKey:v15];
+              if (!localizedShortName)
               {
                 goto LABEL_18;
               }
             }
           }
 
-          if (![v16 conformsToProtocol:&unk_1F4649970])
+          if (![localizedShortName conformsToProtocol:&unk_1F4649970])
           {
 
             v17 = MEMORY[0x1E696ABC0];
@@ -1485,7 +1485,7 @@ LABEL_14:
             goto LABEL_24;
           }
 
-          [v9 setObject:v16 forKeyedSubscript:v15];
+          [v9 setObject:localizedShortName forKeyedSubscript:v15];
 LABEL_18:
 
           ++v13;
@@ -1496,8 +1496,8 @@ LABEL_18:
         if (!v11)
         {
 LABEL_24:
-          v7 = v28;
-          v6 = v29;
+          completionCopy = v28;
+          keysCopy = v29;
           v22 = v31;
           goto LABEL_27;
         }
@@ -1529,22 +1529,22 @@ LABEL_27:
     sub_1C68B5FB8();
   }
 
-  v7[2](v7, v9, v22);
+  completionCopy[2](completionCopy, v9, v22);
   v27 = *MEMORY[0x1E69E9840];
 }
 
 - (NSDictionary)localizedFileProviderActionNames
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_localizedFileProviderActionNames)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_localizedFileProviderActionNames)
   {
-    [(PKPlugInCore *)v2 _loadLocalizedFileProviderActionNames];
+    [(PKPlugInCore *)selfCopy _loadLocalizedFileProviderActionNames];
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  localizedFileProviderActionNames = v2->_localizedFileProviderActionNames;
+  localizedFileProviderActionNames = selfCopy->_localizedFileProviderActionNames;
 
   return localizedFileProviderActionNames;
 }
@@ -1557,13 +1557,13 @@ LABEL_27:
   v5 = v14;
   if (v4)
   {
-    v6 = [(PKPlugInCore *)self external];
-    v7 = [v6 filesystem];
+    external = [(PKPlugInCore *)self external];
+    filesystem = [external filesystem];
     v8 = [(PKPlugInCore *)self url];
-    v9 = [v7 bundleWithURL:v8];
+    v9 = [filesystem bundleWithURL:v8];
 
-    v10 = [(PKPlugInCore *)self plugInDictionary];
-    v11 = [(PKPlugInCore *)self _localizedFileProviderActionNamesForPKDict:v10 fromBundle:v9];
+    plugInDictionary = [(PKPlugInCore *)self plugInDictionary];
+    v11 = [(PKPlugInCore *)self _localizedFileProviderActionNamesForPKDict:plugInDictionary fromBundle:v9];
     localizedFileProviderActionNames = self->_localizedFileProviderActionNames;
     self->_localizedFileProviderActionNames = v11;
 
@@ -1586,13 +1586,13 @@ LABEL_27:
   objc_autoreleasePoolPop(v3);
 }
 
-- (id)_localizedFileProviderActionNamesForPKDict:(id)a3 fromBundle:(id)a4
+- (id)_localizedFileProviderActionNamesForPKDict:(id)dict fromBundle:(id)bundle
 {
-  v6 = a3;
-  v7 = a4;
+  dictCopy = dict;
+  bundleCopy = bundle;
   v8 = objc_opt_new();
   v9 = objc_autoreleasePoolPush();
-  v10 = [v6 objectForKeyedSubscript:@"NSExtensionFileProviderActions"];
+  v10 = [dictCopy objectForKeyedSubscript:@"NSExtensionFileProviderActions"];
   if (v10)
   {
     v14[0] = MEMORY[0x1E69E9820];
@@ -1600,8 +1600,8 @@ LABEL_27:
     v14[2] = sub_1C68A89B8;
     v14[3] = &unk_1E827F910;
     v15 = v8;
-    v16 = v7;
-    v17 = self;
+    v16 = bundleCopy;
+    selfCopy = self;
     [v10 enumerateObjectsUsingBlock:v14];
 
     v11 = v15;
@@ -1625,16 +1625,16 @@ LABEL_27:
 - (id)debugDescription
 {
   v14 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v3 = [(PKPlugInCore *)self uuid];
-  v4 = [(PKPlugInCore *)self identifier];
-  v5 = [(PKPlugInCore *)self version];
-  v6 = [(PKPlugInCore *)self isAppExtension];
-  v7 = [(PKPlugInCore *)self onSystemVolume];
-  v8 = [(PKPlugInCore *)self containingBundleIdentifier];
-  v9 = [(PKPlugInCore *)self lastModified];
-  v10 = [(PKPlugInCore *)self discoveryInstanceUUID];
-  v11 = [(PKPlugInCore *)self path];
-  v12 = [v14 initWithFormat:@"<PKPlugInCore: %p; uuid = [%@], identifier = [%@(%@)], isAppExtension = %d, onSystemVolume = %d, containingBundle = [%@], lastModified = %ld, discoveryInstanceUUID = [%@], path = [%@]>", self, v3, v4, v5, v6, v7, v8, v9, v10, v11];
+  uuid = [(PKPlugInCore *)self uuid];
+  identifier = [(PKPlugInCore *)self identifier];
+  version = [(PKPlugInCore *)self version];
+  isAppExtension = [(PKPlugInCore *)self isAppExtension];
+  onSystemVolume = [(PKPlugInCore *)self onSystemVolume];
+  containingBundleIdentifier = [(PKPlugInCore *)self containingBundleIdentifier];
+  lastModified = [(PKPlugInCore *)self lastModified];
+  discoveryInstanceUUID = [(PKPlugInCore *)self discoveryInstanceUUID];
+  path = [(PKPlugInCore *)self path];
+  v12 = [v14 initWithFormat:@"<PKPlugInCore: %p; uuid = [%@], identifier = [%@(%@)], isAppExtension = %d, onSystemVolume = %d, containingBundle = [%@], lastModified = %ld, discoveryInstanceUUID = [%@], path = [%@]>", self, uuid, identifier, version, isAppExtension, onSystemVolume, containingBundleIdentifier, lastModified, discoveryInstanceUUID, path];
 
   return v12;
 }

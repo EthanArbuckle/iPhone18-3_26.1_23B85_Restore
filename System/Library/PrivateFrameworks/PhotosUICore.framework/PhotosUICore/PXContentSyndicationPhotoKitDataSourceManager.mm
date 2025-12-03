@@ -1,26 +1,26 @@
 @interface PXContentSyndicationPhotoKitDataSourceManager
 + (id)createCountsController;
 - (PXContentSyndicationPhotoKitDataSourceManager)init;
-- (PXContentSyndicationPhotoKitDataSourceManager)initWithPhotoLibrary:(id)a3;
+- (PXContentSyndicationPhotoKitDataSourceManager)initWithPhotoLibrary:(id)library;
 - (id)assetFetchResultProvider;
 - (id)createAssetsDataSourceManager;
 - (id)createInitialDataSource;
 - (id)imageProvider;
-- (id)prepareForPhotoLibraryChange:(id)a3;
+- (id)prepareForPhotoLibraryChange:(id)change;
 - (id)socialLayerHighlightProvider;
-- (void)photoLibraryDidChangeOnMainQueue:(id)a3 withPreparedInfo:(id)a4;
-- (void)setDataSource:(id)a3 changeDetails:(id)a4;
+- (void)photoLibraryDidChangeOnMainQueue:(id)queue withPreparedInfo:(id)info;
+- (void)setDataSource:(id)source changeDetails:(id)details;
 @end
 
 @implementation PXContentSyndicationPhotoKitDataSourceManager
 
-- (void)photoLibraryDidChangeOnMainQueue:(id)a3 withPreparedInfo:(id)a4
+- (void)photoLibraryDidChangeOnMainQueue:(id)queue withPreparedInfo:(id)info
 {
   v34[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = [(PXSectionedDataSourceManager *)self dataSource];
-  if (v9)
+  queueCopy = queue;
+  infoCopy = info;
+  dataSource = [(PXSectionedDataSourceManager *)self dataSource];
+  if (dataSource)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -28,34 +28,34 @@
       goto LABEL_3;
     }
 
-    v22 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v25 = objc_opt_class();
     v24 = NSStringFromClass(v25);
-    v26 = [v9 px_descriptionForAssertionMessage];
-    [v22 handleFailureInMethod:a2 object:self file:@"PXContentSyndicationPhotoKitDataSource.m" lineNumber:355 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"self.dataSource", v24, v26}];
+    px_descriptionForAssertionMessage = [dataSource px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXContentSyndicationPhotoKitDataSource.m" lineNumber:355 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"self.dataSource", v24, px_descriptionForAssertionMessage}];
   }
 
   else
   {
-    v22 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v23 = objc_opt_class();
     v24 = NSStringFromClass(v23);
-    [v22 handleFailureInMethod:a2 object:self file:@"PXContentSyndicationPhotoKitDataSource.m" lineNumber:355 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"self.dataSource", v24}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXContentSyndicationPhotoKitDataSource.m" lineNumber:355 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"self.dataSource", v24}];
   }
 
 LABEL_3:
-  v10 = [v8 objectForKeyedSubscript:@"currentDataSource"];
+  v10 = [infoCopy objectForKeyedSubscript:@"currentDataSource"];
 
-  if (v10 == v9)
+  if (v10 == dataSource)
   {
-    v11 = [v8 objectForKeyedSubscript:@"preparedDataSource"];
-    v12 = [v8 objectForKeyedSubscript:@"preparedUnderlyingChangeDetails"];
+    v11 = [infoCopy objectForKeyedSubscript:@"preparedDataSource"];
+    v12 = [infoCopy objectForKeyedSubscript:@"preparedUnderlyingChangeDetails"];
   }
 
   else
   {
     v28 = 0;
-    v11 = [v9 dataSourceUpdatedWithChange:v7 underlyingArrayChangeDetails:&v28];
+    v11 = [dataSource dataSourceUpdatedWithChange:queueCopy underlyingArrayChangeDetails:&v28];
     v12 = v28;
   }
 
@@ -71,37 +71,37 @@ LABEL_3:
     }
   }
 
-  if (v11 != v9)
+  if (v11 != dataSource)
   {
-    v27 = v7;
+    v27 = queueCopy;
     v15 = [off_1E77218B0 alloc];
-    v16 = [v9 identifier];
-    v17 = [v11 identifier];
-    v18 = [off_1E7721450 changeDetailsWithNoChanges];
+    identifier = [dataSource identifier];
+    identifier2 = [v11 identifier];
+    changeDetailsWithNoChanges = [off_1E7721450 changeDetailsWithNoChanges];
     v33 = &unk_1F190DB88;
     v34[0] = v13;
     v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v34 forKeys:&v33 count:1];
-    v20 = [v15 initWithFromDataSourceIdentifier:v16 toDataSourceIdentifier:v17 sectionChanges:v18 itemChangeDetailsBySection:v19 subitemChangeDetailsByItemBySection:0];
+    v20 = [v15 initWithFromDataSourceIdentifier:identifier toDataSourceIdentifier:identifier2 sectionChanges:changeDetailsWithNoChanges itemChangeDetailsBySection:v19 subitemChangeDetailsByItemBySection:0];
 
     v21 = PLSyndicationUIGetLog();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v30 = v9;
+      v30 = dataSource;
       v31 = 2114;
       v32 = v11;
       _os_log_impl(&dword_1A3C1C000, v21, OS_LOG_TYPE_DEFAULT, "ContentSyndicationPhotoKitDataSourceManager: Updating data Source from: %{public}@ to %{public}@", buf, 0x16u);
     }
 
     [(PXContentSyndicationPhotoKitDataSourceManager *)self setDataSource:v11 changeDetails:v20];
-    v7 = v27;
+    queueCopy = v27;
   }
 }
 
-- (id)prepareForPhotoLibraryChange:(id)a3
+- (id)prepareForPhotoLibraryChange:(id)change
 {
   v21[3] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  changeCopy = change;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -118,7 +118,7 @@ LABEL_3:
   dispatch_sync(MEMORY[0x1E69E96A0], block);
   v6 = v15[5];
   v12 = 0;
-  v7 = [v6 dataSourceUpdatedWithChange:v5 underlyingArrayChangeDetails:&v12];
+  v7 = [v6 dataSourceUpdatedWithChange:changeCopy underlyingArrayChangeDetails:&v12];
   v8 = v12;
   v9 = v15[5];
   v20[0] = @"currentDataSource";
@@ -223,12 +223,12 @@ LABEL_3:
   return assetFetchResultProvider;
 }
 
-- (void)setDataSource:(id)a3 changeDetails:(id)a4
+- (void)setDataSource:(id)source changeDetails:(id)details
 {
   v49 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  sourceCopy = source;
+  detailsCopy = details;
+  if (!detailsCopy)
   {
     goto LABEL_21;
   }
@@ -240,14 +240,14 @@ LABEL_3:
     _os_log_impl(&dword_1A3C1C000, v9, OS_LOG_TYPE_DEFAULT, "ContentSyndicationPhotoKitDataSourceManager: setDataSource: has non-nil change details. Attempting to invalidate key asset fetch results for affected asset collections", buf, 2u);
   }
 
-  v10 = [v8 itemChangesInSection:0];
-  if (![v10 hasIncrementalChanges])
+  assetFetchResultProvider = [detailsCopy itemChangesInSection:0];
+  if (![assetFetchResultProvider hasIncrementalChanges])
   {
 LABEL_20:
 
 LABEL_21:
-    v10 = [(PXContentSyndicationPhotoKitDataSourceManager *)self assetFetchResultProvider];
-    [v10 invalidateAllAssetFetchResults];
+    assetFetchResultProvider = [(PXContentSyndicationPhotoKitDataSourceManager *)self assetFetchResultProvider];
+    [assetFetchResultProvider invalidateAllAssetFetchResults];
     goto LABEL_22;
   }
 
@@ -257,75 +257,75 @@ LABEL_21:
   v42 = __Block_byref_object_copy__220933;
   v43 = __Block_byref_object_dispose__220934;
   v44 = [MEMORY[0x1E695DFA8] set];
-  v11 = [v10 removedIndexes];
-  if ([v11 count])
+  removedIndexes = [assetFetchResultProvider removedIndexes];
+  if ([removedIndexes count])
   {
-    v12 = [(PXSectionedDataSourceManager *)self dataSource];
-    if (v12)
+    dataSource = [(PXSectionedDataSourceManager *)self dataSource];
+    if (dataSource)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
 LABEL_8:
-        v13 = [v12 numberOfItemsInSection:0];
+        v13 = [dataSource numberOfItemsInSection:0];
         v34[0] = MEMORY[0x1E69E9820];
         v34[1] = 3221225472;
         v34[2] = __77__PXContentSyndicationPhotoKitDataSourceManager_setDataSource_changeDetails___block_invoke;
         v34[3] = &unk_1E7747118;
         v37 = v13;
-        v14 = v12;
+        v14 = dataSource;
         v38 = 0;
         v35 = v14;
         v36 = buf;
-        [v11 enumerateIndexesUsingBlock:v34];
+        [removedIndexes enumerateIndexesUsingBlock:v34];
         v15 = PLSyndicationUIGetLog();
         if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
         {
           *v45 = 138543362;
-          v46 = v11;
+          v46 = removedIndexes;
           _os_log_impl(&dword_1A3C1C000, v15, OS_LOG_TYPE_INFO, "ContentSyndicationPhotoKitDataSourceManager: Invalidating key asset fetchresults for removed indexes (relative to old data source): %{public}@", v45, 0xCu);
         }
 
         goto LABEL_11;
       }
 
-      v27 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v24 = objc_opt_class();
       v26 = NSStringFromClass(v24);
-      v25 = [v12 px_descriptionForAssertionMessage];
-      [v27 handleFailureInMethod:a2 object:self file:@"PXContentSyndicationPhotoKitDataSource.m" lineNumber:247 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"self.dataSource", v26, v25}];
+      px_descriptionForAssertionMessage = [dataSource px_descriptionForAssertionMessage];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXContentSyndicationPhotoKitDataSource.m" lineNumber:247 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"self.dataSource", v26, px_descriptionForAssertionMessage}];
     }
 
     else
     {
-      v27 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v23 = objc_opt_class();
       v26 = NSStringFromClass(v23);
-      [v27 handleFailureInMethod:a2 object:self file:@"PXContentSyndicationPhotoKitDataSource.m" lineNumber:247 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"self.dataSource", v26}];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXContentSyndicationPhotoKitDataSource.m" lineNumber:247 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"self.dataSource", v26}];
     }
 
     goto LABEL_8;
   }
 
 LABEL_11:
-  v16 = [v10 changedIndexes];
-  if (v16)
+  changedIndexes = [assetFetchResultProvider changedIndexes];
+  if (changedIndexes)
   {
-    v17 = [v7 numberOfItemsInSection:0];
+    v17 = [sourceCopy numberOfItemsInSection:0];
     v29[0] = MEMORY[0x1E69E9820];
     v29[1] = 3221225472;
     v29[2] = __77__PXContentSyndicationPhotoKitDataSourceManager_setDataSource_changeDetails___block_invoke_269;
     v29[3] = &unk_1E7747118;
     v32 = v17;
     v33 = 0;
-    v30 = v7;
+    v30 = sourceCopy;
     v31 = buf;
-    [v16 enumerateIndexesUsingBlock:v29];
+    [changedIndexes enumerateIndexesUsingBlock:v29];
     v18 = PLSyndicationUIGetLog();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
     {
       *v45 = 138543362;
-      v46 = v16;
+      v46 = changedIndexes;
       _os_log_impl(&dword_1A3C1C000, v18, OS_LOG_TYPE_INFO, "ContentSyndicationPhotoKitDataSourceManager: Invalidating key asset fetchresults for changed indexes (relative to new data source): %{public}@", v45, 0xCu);
     }
   }
@@ -349,15 +349,15 @@ LABEL_11:
     _os_log_impl(&dword_1A3C1C000, v19, OS_LOG_TYPE_INFO, "ContentSyndicationPhotoKitDataSourceManager: Invalidating %tu asset collection fetch results after change notification: %@", v45, 0x16u);
   }
 
-  v22 = [(PXContentSyndicationPhotoKitDataSourceManager *)self assetFetchResultProvider];
-  [v22 invalidateAssetFetchResultsInAssetCollections:*(v40 + 5)];
+  assetFetchResultProvider2 = [(PXContentSyndicationPhotoKitDataSourceManager *)self assetFetchResultProvider];
+  [assetFetchResultProvider2 invalidateAssetFetchResultsInAssetCollections:*(v40 + 5)];
 
   _Block_object_dispose(buf, 8);
 LABEL_22:
 
   v28.receiver = self;
   v28.super_class = PXContentSyndicationPhotoKitDataSourceManager;
-  [(PXSectionedDataSourceManager *)&v28 setDataSource:v7 changeDetails:v8];
+  [(PXSectionedDataSourceManager *)&v28 setDataSource:sourceCopy changeDetails:detailsCopy];
 }
 
 void __77__PXContentSyndicationPhotoKitDataSourceManager_setDataSource_changeDetails___block_invoke(uint64_t a1, unint64_t a2)
@@ -403,19 +403,19 @@ void __77__PXContentSyndicationPhotoKitDataSourceManager_setDataSource_changeDet
   v4 = os_signpost_id_generate(v3);
   if (PFProcessIsLaunchedToExecuteTests())
   {
-    v5 = 0;
+    loadVerySmallInitialBatchOfRecentCollections = 0;
   }
 
   else
   {
     v6 = +[PXContentSyndicationSettings sharedInstance];
-    v5 = [v6 loadVerySmallInitialBatchOfRecentCollections];
+    loadVerySmallInitialBatchOfRecentCollections = [v6 loadVerySmallInitialBatchOfRecentCollections];
   }
 
-  v7 = [MEMORY[0x1E695DF00] date];
+  date = [MEMORY[0x1E695DF00] date];
   v8 = PLSyndicationUIGetLog();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
-  if (v5)
+  if (loadVerySmallInitialBatchOfRecentCollections)
   {
     if (v9)
     {
@@ -453,9 +453,9 @@ void __77__PXContentSyndicationPhotoKitDataSourceManager_setDataSource_changeDet
   }
 
   v15 = [[PXContentSyndicationPhotoKitDataSource alloc] initWithFetchResult:v10];
-  if (v5)
+  if (loadVerySmallInitialBatchOfRecentCollections)
   {
-    v16 = [MEMORY[0x1E695DF00] date];
+    date2 = [MEMORY[0x1E695DF00] date];
     v17 = PLSyndicationUIGetLog();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
@@ -470,10 +470,10 @@ void __77__PXContentSyndicationPhotoKitDataSourceManager_setDataSource_changeDet
     block[3] = &unk_1E7747928;
     v26 = v4;
     v22 = v3;
-    v23 = self;
-    v24 = v7;
-    v25 = v16;
-    v19 = v16;
+    selfCopy = self;
+    v24 = date;
+    v25 = date2;
+    v19 = date2;
     dispatch_async(v18, block);
   }
 
@@ -537,13 +537,13 @@ void __72__PXContentSyndicationPhotoKitDataSourceManager_createInitialDataSource
   [*(a1 + 40) setDataSource:v2 changeDetails:0];
 }
 
-- (PXContentSyndicationPhotoKitDataSourceManager)initWithPhotoLibrary:(id)a3
+- (PXContentSyndicationPhotoKitDataSourceManager)initWithPhotoLibrary:(id)library
 {
-  v6 = a3;
-  if (!v6)
+  libraryCopy = library;
+  if (!libraryCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PXContentSyndicationPhotoKitDataSource.m" lineNumber:170 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXContentSyndicationPhotoKitDataSource.m" lineNumber:170 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
   }
 
   v11.receiver = self;
@@ -552,7 +552,7 @@ void __72__PXContentSyndicationPhotoKitDataSourceManager_createInitialDataSource
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_photoLibrary, a3);
+    objc_storeStrong(&v7->_photoLibrary, library);
   }
 
   return v8;
@@ -567,7 +567,7 @@ void __72__PXContentSyndicationPhotoKitDataSourceManager_createInitialDataSource
   if (v3)
   {
     self = [(PXContentSyndicationPhotoKitDataSourceManager *)self initWithPhotoLibrary:v3];
-    v5 = self;
+    selfCopy = self;
   }
 
   else
@@ -580,10 +580,10 @@ void __72__PXContentSyndicationPhotoKitDataSourceManager_createInitialDataSource
       _os_log_impl(&dword_1A3C1C000, v6, OS_LOG_TYPE_ERROR, "Error opening syndication library: %@", buf, 0xCu);
     }
 
-    v5 = 0;
+    selfCopy = 0;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 + (id)createCountsController

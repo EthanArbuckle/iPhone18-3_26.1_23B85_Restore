@@ -1,8 +1,8 @@
 @interface PKPassBucketTemplate
 - (CGRect)bucketRect;
 - (PKPassFieldTemplate)defaultFieldTemplate;
-- (id)templateForFieldAtIndex:(unint64_t)a3;
-- (void)addFieldTemplate:(id)a3;
+- (id)templateForFieldAtIndex:(unint64_t)index;
+- (void)addFieldTemplate:(id)template;
 @end
 
 @implementation PKPassBucketTemplate
@@ -35,36 +35,36 @@
   return result;
 }
 
-- (void)addFieldTemplate:(id)a3
+- (void)addFieldTemplate:(id)template
 {
-  v4 = a3;
+  templateCopy = template;
   fieldTemplates = self->_fieldTemplates;
-  v8 = v4;
+  v8 = templateCopy;
   if (!fieldTemplates)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_fieldTemplates;
     self->_fieldTemplates = v6;
 
-    v4 = v8;
+    templateCopy = v8;
     fieldTemplates = self->_fieldTemplates;
   }
 
-  [(NSMutableArray *)fieldTemplates addObject:v4];
+  [(NSMutableArray *)fieldTemplates addObject:templateCopy];
 }
 
-- (id)templateForFieldAtIndex:(unint64_t)a3
+- (id)templateForFieldAtIndex:(unint64_t)index
 {
-  if ([(PKPassBucketTemplate *)self maxFields]>= a3)
+  if ([(PKPassBucketTemplate *)self maxFields]>= index)
   {
-    if ([(NSMutableArray *)self->_fieldTemplates count]<= a3)
+    if ([(NSMutableArray *)self->_fieldTemplates count]<= index)
     {
       v6 = 0;
     }
 
     else
     {
-      v6 = [(NSMutableArray *)self->_fieldTemplates objectAtIndex:a3];
+      v6 = [(NSMutableArray *)self->_fieldTemplates objectAtIndex:index];
     }
 
     v5 = [PKPassFieldTemplate _templateByResolvingTemplate:v6 withDefault:self->_defaultFieldTemplate];

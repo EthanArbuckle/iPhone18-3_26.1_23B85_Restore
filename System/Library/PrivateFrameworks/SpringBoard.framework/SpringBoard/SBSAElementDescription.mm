@@ -1,6 +1,6 @@
 @interface SBSAElementDescription
-+ (id)instanceWithBlock:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)instanceWithBlock:(id)block;
+- (BOOL)isEqual:(id)equal;
 - (CGAffineTransform)leadingViewTransform;
 - (CGAffineTransform)minimalViewTransform;
 - (CGAffineTransform)trailingViewTransform;
@@ -8,12 +8,12 @@
 - (CGSize)minimalViewScale;
 - (CGSize)trailingViewScale;
 - (NSString)description;
-- (id)copyWithBlock:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithBlock:(id)block;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)_setLeadingViewTransform:(CGAffineTransform *)a3;
-- (void)_setMinimalViewTransform:(CGAffineTransform *)a3;
-- (void)_setTrailingViewTransform:(CGAffineTransform *)a3;
+- (void)_setLeadingViewTransform:(CGAffineTransform *)transform;
+- (void)_setMinimalViewTransform:(CGAffineTransform *)transform;
+- (void)_setTrailingViewTransform:(CGAffineTransform *)transform;
 @end
 
 @implementation SBSAElementDescription
@@ -46,16 +46,16 @@
   return self;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v76 = [MEMORY[0x277CF0C20] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
+  equalCopy = equal;
+  v76 = [MEMORY[0x277CF0C20] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
   interfaceElementIdentifier = self->_interfaceElementIdentifier;
   v126[0] = MEMORY[0x277D85DD0];
   v126[1] = 3221225472;
   v126[2] = __34__SBSAElementDescription_isEqual___block_invoke;
   v126[3] = &unk_2783ACDB8;
-  v6 = v4;
+  v6 = equalCopy;
   v127 = v6;
   v75 = [v76 appendObject:interfaceElementIdentifier counterpart:v126];
   associatedSystemApertureElementIdentity = self->_associatedSystemApertureElementIdentity;
@@ -313,8 +313,8 @@ double __34__SBSAElementDescription_isEqual___block_invoke_19@<D0>(uint64_t a1@<
 
 - (unint64_t)hash
 {
-  v33 = [MEMORY[0x277CF0C40] builder];
-  v32 = [v33 appendObject:self->_interfaceElementIdentifier];
+  builder = [MEMORY[0x277CF0C40] builder];
+  v32 = [builder appendObject:self->_interfaceElementIdentifier];
   v31 = [v32 appendObject:self->_associatedSystemApertureElementIdentity];
   v30 = [v31 appendInteger:self->_appearState];
   v29 = [v30 appendCGFloat:self->_sensorObscuringShadowProgress];
@@ -397,7 +397,7 @@ double __34__SBSAElementDescription_isEqual___block_invoke_19@<D0>(uint64_t a1@<
   return v24;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   v5 = [(NSUUID *)self->_interfaceElementIdentifier copy];
@@ -407,9 +407,9 @@ double __34__SBSAElementDescription_isEqual___block_invoke_19@<D0>(uint64_t a1@<
   if (self->_associatedSystemApertureElementIdentity)
   {
     v7 = [SBSAElementIdentification alloc];
-    v8 = [(SAElementIdentifying *)self->_associatedSystemApertureElementIdentity clientIdentifier];
-    v9 = [(SAElementIdentifying *)self->_associatedSystemApertureElementIdentity elementIdentifier];
-    v10 = [(SBSAElementIdentification *)v7 initWithClientIdentifier:v8 elementIdentifier:v9];
+    clientIdentifier = [(SAElementIdentifying *)self->_associatedSystemApertureElementIdentity clientIdentifier];
+    elementIdentifier = [(SAElementIdentifying *)self->_associatedSystemApertureElementIdentity elementIdentifier];
+    v10 = [(SBSAElementIdentification *)v7 initWithClientIdentifier:clientIdentifier elementIdentifier:elementIdentifier];
     v11 = *(v4 + 3);
     *(v4 + 3) = v10;
   }
@@ -454,23 +454,23 @@ double __34__SBSAElementDescription_isEqual___block_invoke_19@<D0>(uint64_t a1@<
   return v4;
 }
 
-+ (id)instanceWithBlock:(id)a3
++ (id)instanceWithBlock:(id)block
 {
-  v3 = a3;
+  blockCopy = block;
   v4 = objc_alloc_init(objc_opt_class());
-  v5 = [v4 copyWithBlock:v3];
+  v5 = [v4 copyWithBlock:blockCopy];
 
   return v5;
 }
 
-- (id)copyWithBlock:(id)a3
+- (id)copyWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = [(SBSAElementDescription *)self copy];
-  if (v4)
+  if (blockCopy)
   {
     v6 = [objc_alloc(objc_msgSend(objc_opt_class() "mutatorClass"))];
-    v4[2](v4, v6);
+    blockCopy[2](blockCopy, v6);
   }
 
   return v5;
@@ -485,11 +485,11 @@ double __34__SBSAElementDescription_isEqual___block_invoke_19@<D0>(uint64_t a1@<
   return result;
 }
 
-- (void)_setLeadingViewTransform:(CGAffineTransform *)a3
+- (void)_setLeadingViewTransform:(CGAffineTransform *)transform
 {
-  v3 = *&a3->a;
-  v4 = *&a3->c;
-  *&self->_leadingViewTransform.tx = *&a3->tx;
+  v3 = *&transform->a;
+  v4 = *&transform->c;
+  *&self->_leadingViewTransform.tx = *&transform->tx;
   *&self->_leadingViewTransform.c = v4;
   *&self->_leadingViewTransform.a = v3;
 }
@@ -503,11 +503,11 @@ double __34__SBSAElementDescription_isEqual___block_invoke_19@<D0>(uint64_t a1@<
   return result;
 }
 
-- (void)_setTrailingViewTransform:(CGAffineTransform *)a3
+- (void)_setTrailingViewTransform:(CGAffineTransform *)transform
 {
-  v3 = *&a3->a;
-  v4 = *&a3->tx;
-  *&self->_trailingViewTransform.c = *&a3->c;
+  v3 = *&transform->a;
+  v4 = *&transform->tx;
+  *&self->_trailingViewTransform.c = *&transform->c;
   *&self->_trailingViewTransform.tx = v4;
   *&self->_trailingViewTransform.a = v3;
 }
@@ -521,11 +521,11 @@ double __34__SBSAElementDescription_isEqual___block_invoke_19@<D0>(uint64_t a1@<
   return result;
 }
 
-- (void)_setMinimalViewTransform:(CGAffineTransform *)a3
+- (void)_setMinimalViewTransform:(CGAffineTransform *)transform
 {
-  v3 = *&a3->a;
-  v4 = *&a3->tx;
-  *&self->_minimalViewTransform.c = *&a3->c;
+  v3 = *&transform->a;
+  v4 = *&transform->tx;
+  *&self->_minimalViewTransform.c = *&transform->c;
   *&self->_minimalViewTransform.tx = v4;
   *&self->_minimalViewTransform.a = v3;
 }

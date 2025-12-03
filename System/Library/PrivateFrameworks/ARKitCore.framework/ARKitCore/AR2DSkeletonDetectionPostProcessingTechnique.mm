@@ -2,10 +2,10 @@
 - (ABPK2DDetectionResult)abpkPrevious3DSkeleton;
 - (AR2DSkeletonDetectionPostProcessingTechnique)init;
 - (double)requiredTimeInterval;
-- (id)processData:(id)a3;
-- (void)_process2DSkeletonRawEspressoResultInBackground:(id)a3;
-- (void)prepare:(BOOL)a3;
-- (void)requestResultDataAtTimestamp:(double)a3 context:(id)a4;
+- (id)processData:(id)data;
+- (void)_process2DSkeletonRawEspressoResultInBackground:(id)background;
+- (void)prepare:(BOOL)prepare;
+- (void)requestResultDataAtTimestamp:(double)timestamp context:(id)context;
 @end
 
 @implementation AR2DSkeletonDetectionPostProcessingTechnique
@@ -36,10 +36,10 @@
   return v3;
 }
 
-- (void)prepare:(BOOL)a3
+- (void)prepare:(BOOL)prepare
 {
   v21 = *MEMORY[0x1E69E9840];
-  self->_deterministic = a3;
+  self->_deterministic = prepare;
   if (!self->_postprocess2d)
   {
     self->_use3DSupportSkeletonForExtrapolation = [ARKitUserDefaults BOOLForKey:@"com.apple.arkit.bodyTracking.useSupport3DSkeleton"];
@@ -69,7 +69,7 @@
           v17 = 138543618;
           v18 = v12;
           v19 = 2048;
-          v20 = self;
+          selfCopy2 = self;
           _os_log_impl(&dword_1C241C000, v10, OS_LOG_TYPE_ERROR, "%{public}@ <%p>: Initialization of 2d post-processing algorithm failed", &v17, 0x16u);
         }
       }
@@ -81,13 +81,13 @@
         v17 = 138543618;
         v18 = v14;
         v19 = 2048;
-        v20 = self;
+        selfCopy2 = self;
         _os_log_impl(&dword_1C241C000, v10, OS_LOG_TYPE_INFO, "Error: %{public}@ <%p>: Initialization of 2d post-processing algorithm failed", &v17, 0x16u);
       }
 
-      v15 = [(ARTechnique *)self delegate];
+      delegate = [(ARTechnique *)self delegate];
       v16 = ARErrorWithCodeAndUserInfo(151, 0);
-      [v15 technique:self didFailWithError:v16];
+      [delegate technique:self didFailWithError:v16];
     }
   }
 }
@@ -104,15 +104,15 @@
   return result;
 }
 
-- (id)processData:(id)a3
+- (id)processData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v12.receiver = self;
     v12.super_class = AR2DSkeletonDetectionPostProcessingTechnique;
-    v5 = [(ARImageBasedTechnique *)&v12 processData:v4];
+    v5 = [(ARImageBasedTechnique *)&v12 processData:dataCopy];
     objc_initWeak(&location, self);
     processingQueue = self->_processingQueue;
     block[0] = MEMORY[0x1E69E9820];
@@ -120,7 +120,7 @@
     block[2] = __60__AR2DSkeletonDetectionPostProcessingTechnique_processData___block_invoke;
     block[3] = &unk_1E817C1D0;
     objc_copyWeak(&v10, &location);
-    v9 = v4;
+    v9 = dataCopy;
     dispatch_async(processingQueue, block);
     if (self->_deterministic)
     {
@@ -131,7 +131,7 @@
     objc_destroyWeak(&location);
   }
 
-  return v4;
+  return dataCopy;
 }
 
 void __60__AR2DSkeletonDetectionPostProcessingTechnique_processData___block_invoke(uint64_t a1)
@@ -140,10 +140,10 @@ void __60__AR2DSkeletonDetectionPostProcessingTechnique_processData___block_invo
   [WeakRetained _process2DSkeletonRawEspressoResultInBackground:*(a1 + 32)];
 }
 
-- (void)_process2DSkeletonRawEspressoResultInBackground:(id)a3
+- (void)_process2DSkeletonRawEspressoResultInBackground:(id)background
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  backgroundCopy = background;
   v5 = _ARLogGeneral();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -152,32 +152,32 @@ void __60__AR2DSkeletonDetectionPostProcessingTechnique_processData___block_invo
     *buf = 138543618;
     v30 = v7;
     v31 = 2048;
-    v32 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C241C000, v5, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: Process 2D Skeleton Raw Espresso Result In Background", buf, 0x16u);
   }
 
   dispatch_assert_queue_V2(self->_processingQueue);
-  v8 = [v4 rotationNeeded];
-  v9 = [v4 inputImageData];
-  [v9 timestamp];
+  rotationNeeded = [backgroundCopy rotationNeeded];
+  inputImageData = [backgroundCopy inputImageData];
+  [inputImageData timestamp];
   v11 = v10;
-  [v9 timestamp];
+  [inputImageData timestamp];
   kdebug_trace();
-  v12 = [v4 inputImageData];
-  Width = CVPixelBufferGetWidth([v12 pixelBuffer]);
-  v14 = [v4 inputImageData];
-  Height = CVPixelBufferGetHeight([v14 pixelBuffer]);
+  inputImageData2 = [backgroundCopy inputImageData];
+  Width = CVPixelBufferGetWidth([inputImageData2 pixelBuffer]);
+  inputImageData3 = [backgroundCopy inputImageData];
+  Height = CVPixelBufferGetHeight([inputImageData3 pixelBuffer]);
 
-  v16 = [v4 imageDataForNeuralNetwork];
-  v17 = CVPixelBufferGetWidth([v16 pixelBuffer]);
-  v18 = [v4 imageDataForNeuralNetwork];
-  v19 = CVPixelBufferGetHeight([v18 pixelBuffer]);
+  imageDataForNeuralNetwork = [backgroundCopy imageDataForNeuralNetwork];
+  v17 = CVPixelBufferGetWidth([imageDataForNeuralNetwork pixelBuffer]);
+  imageDataForNeuralNetwork2 = [backgroundCopy imageDataForNeuralNetwork];
+  v19 = CVPixelBufferGetHeight([imageDataForNeuralNetwork2 pixelBuffer]);
 
   v20 = [objc_alloc(MEMORY[0x1E698A938]) initWithType:1 inputResolution:Width outputResolution:{Height, v17, v19}];
   os_unfair_lock_lock(&self->_previous3DSkeletonLock);
   postprocess2d = self->_postprocess2d;
-  [v9 timestamp];
-  LODWORD(postprocess2d) = [(ABPK2DDetectionPostprocess *)postprocess2d extract2DSkeletonfromBuffers:v4 withImagePreProcessingParams:v20 atTimestamp:self->_abpkPrevious3DSkeleton previousSkeleton3D:?];
+  [inputImageData timestamp];
+  LODWORD(postprocess2d) = [(ABPK2DDetectionPostprocess *)postprocess2d extract2DSkeletonfromBuffers:backgroundCopy withImagePreProcessingParams:v20 atTimestamp:self->_abpkPrevious3DSkeleton previousSkeleton3D:?];
   os_unfair_lock_unlock(&self->_previous3DSkeletonLock);
   if (postprocess2d == -6661)
   {
@@ -190,41 +190,41 @@ void __60__AR2DSkeletonDetectionPostProcessingTechnique_processData___block_invo
 
   else
   {
-    v22 = [(ABPK2DDetectionPostprocess *)self->_postprocess2d getRaw2DDetectionResultforRotation:v8 croppedRect:0.0, 0.0, 1.0, 1.0];
-    v23 = [(ABPK2DDetectionPostprocess *)self->_postprocess2d get2DDetectionResultforRotation:v8 croppedRect:0.0, 0.0, 1.0, 1.0];
+    v22 = [(ABPK2DDetectionPostprocess *)self->_postprocess2d getRaw2DDetectionResultforRotation:rotationNeeded croppedRect:0.0, 0.0, 1.0, 1.0];
+    v23 = [(ABPK2DDetectionPostprocess *)self->_postprocess2d get2DDetectionResultforRotation:rotationNeeded croppedRect:0.0, 0.0, 1.0, 1.0];
     v24 = objc_opt_new();
     [v24 setTimestamp:v11];
     [v24 setTrackedDetectionResult:v23];
     [v24 setRawDetectionResult:v22];
     if (self->_shouldPush3DSupportSkeleton)
     {
-      v25 = [(ABPK2DDetectionPostprocess *)self->_postprocess2d getAligned3DSkeleton];
-      [v24 setAlignedDetectionResult:v25];
+      getAligned3DSkeleton = [(ABPK2DDetectionPostprocess *)self->_postprocess2d getAligned3DSkeleton];
+      [v24 setAlignedDetectionResult:getAligned3DSkeleton];
     }
 
     v27 = v24;
     v26 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v27 count:1];
     [(ARImageBasedTechnique *)self pushResultData:v26 forTimestamp:v11];
 
-    [v9 timestamp];
+    [inputImageData timestamp];
     kdebug_trace();
   }
 }
 
-- (void)requestResultDataAtTimestamp:(double)a3 context:(id)a4
+- (void)requestResultDataAtTimestamp:(double)timestamp context:(id)context
 {
   v99 = *MEMORY[0x1E69E9840];
-  v70 = a4;
+  contextCopy = context;
   v89.receiver = self;
   v89.super_class = AR2DSkeletonDetectionPostProcessingTechnique;
-  [(ARImageBasedTechnique *)&v89 requestResultDataAtTimestamp:a3 context:?];
-  v5 = [v70 resultDataOfClass:objc_opt_class()];
-  v71 = [v5 firstObject];
+  [(ARImageBasedTechnique *)&v89 requestResultDataAtTimestamp:timestamp context:?];
+  v5 = [contextCopy resultDataOfClass:objc_opt_class()];
+  firstObject = [v5 firstObject];
 
-  v6 = [v71 resultDataOfClass:objc_opt_class()];
-  v82 = [v6 firstObject];
+  v6 = [firstObject resultDataOfClass:objc_opt_class()];
+  firstObject2 = [v6 firstObject];
 
-  if (!v82 || ([v82 retargetedSkeletons], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "count") == 0, v7, v8))
+  if (!firstObject2 || ([firstObject2 retargetedSkeletons], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "count") == 0, v7, v8))
   {
     os_unfair_lock_lock(&self->_previous3DSkeletonLock);
     abpkPrevious3DSkeleton = self->_abpkPrevious3DSkeleton;
@@ -235,16 +235,16 @@ void __60__AR2DSkeletonDetectionPostProcessingTechnique_processData___block_invo
 
   else
   {
-    v9 = [v82 retargetedSkeletons];
-    v81 = [v9 firstObject];
+    retargetedSkeletons = [firstObject2 retargetedSkeletons];
+    firstObject3 = [retargetedSkeletons firstObject];
 
-    [v82 cameraIntrinsics];
+    [firstObject2 cameraIntrinsics];
     v83 = v10;
-    [v82 cameraIntrinsics];
+    [firstObject2 cameraIntrinsics];
     v79 = v11;
-    [v82 cameraIntrinsics];
+    [firstObject2 cameraIntrinsics];
     v77 = v12;
-    [v81 visionTransform];
+    [firstObject3 visionTransform];
     v13 = 0;
     v14 = v83;
     v14.i32[3] = 0;
@@ -267,27 +267,27 @@ void __60__AR2DSkeletonDetectionPostProcessingTechnique_processData___block_invo
     v80 = *__p;
     v75 = v97;
     v76 = v96;
-    v68 = [v81 liftedSkeletonData];
-    v21 = [v68 skeletonDetectionResult2D];
-    v22 = [v21 rotation];
+    liftedSkeletonData = [firstObject3 liftedSkeletonData];
+    skeletonDetectionResult2D = [liftedSkeletonData skeletonDetectionResult2D];
+    rotation = [skeletonDetectionResult2D rotation];
 
-    v23 = -v22 * 3.14159265 / 180.0;
+    v23 = -rotation * 3.14159265 / 180.0;
     v24 = __sincosf_stret(v23);
     v25 = +[ARSkeletonDefinition defaultBody2DSkeletonDefinition];
-    v26 = [v25 jointCount];
+    jointCount = [v25 jointCount];
 
     __p[0] = 0;
     __p[1] = 0;
     v95.i64[0] = 0;
-    _ZNSt3__16vectorIDv2_fNS_9allocatorIS1_EEE7reserveEm(__p, v26);
+    _ZNSt3__16vectorIDv2_fNS_9allocatorIS1_EEE7reserveEm(__p, jointCount);
     v87 = 0u;
     v88 = 0u;
     v85 = 0u;
     v86 = 0u;
     v27 = +[ARSkeletonDefinition defaultBody2DSkeletonDefinition];
-    v28 = [v27 jointNames];
+    jointNames = [v27 jointNames];
 
-    v29 = [v28 countByEnumeratingWithState:&v85 objects:v98 count:16];
+    v29 = [jointNames countByEnumeratingWithState:&v85 objects:v98 count:16];
     if (v29)
     {
       v30.f32[0] = -v24.__sinval;
@@ -304,7 +304,7 @@ void __60__AR2DSkeletonDetectionPostProcessingTechnique_processData___block_invo
         {
           if (*v86 != v31)
           {
-            objc_enumerationMutation(v28);
+            objc_enumerationMutation(jointNames);
           }
 
           v38 = *(*(&v85 + 1) + 8 * i);
@@ -315,8 +315,8 @@ void __60__AR2DSkeletonDetectionPostProcessingTechnique_processData___block_invo
           }
 
           v39 = +[ARSkeletonDefinition defaultBody3DSkeletonDefinition];
-          v40 = [v39 jointNames];
-          v41 = [v40 indexOfObject:v38];
+          jointNames2 = [v39 jointNames];
+          v41 = [jointNames2 indexOfObject:v38];
 
           if (v41 == 0x7FFFFFFFFFFFFFFFLL)
           {
@@ -337,12 +337,12 @@ void __60__AR2DSkeletonDetectionPostProcessingTechnique_processData___block_invo
 
           else
           {
-            v84 = *([v81 jointModelTransforms] + (v41 << 6) + 48);
-            [v81 estimatedScaleFactor];
+            v84 = *([firstObject3 jointModelTransforms] + (v41 << 6) + 48);
+            [firstObject3 estimatedScaleFactor];
             v43 = v42;
-            [v82 imageResolution];
+            [firstObject2 imageResolution];
             v45 = v44;
-            [v82 imageResolution];
+            [firstObject2 imageResolution];
             v46 = v43;
             v47 = vmulq_n_f32(v84, v46);
             v48 = vaddq_f32(v75, vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(v80, v47.f32[0]), v78, *v47.f32, 1), v76, v47, 2));
@@ -404,7 +404,7 @@ void __60__AR2DSkeletonDetectionPostProcessingTechnique_processData___block_invo
           }
         }
 
-        v29 = [v28 countByEnumeratingWithState:&v85 objects:v98 count:16];
+        v29 = [jointNames countByEnumeratingWithState:&v85 objects:v98 count:16];
       }
 
       while (v29);
@@ -423,12 +423,12 @@ void __60__AR2DSkeletonDetectionPostProcessingTechnique_processData___block_invo
     }
 
     v59 = +[ARSkeletonDefinition defaultBody2DSkeletonDefinition];
-    v60 = [v59 jointNames];
-    v61 = [v60 indexOfObject:@"right_ear_joint"];
+    jointNames3 = [v59 jointNames];
+    v61 = [jointNames3 indexOfObject:@"right_ear_joint"];
 
     v62 = +[ARSkeletonDefinition defaultBody2DSkeletonDefinition];
-    v63 = [v62 jointNames];
-    v64 = [v63 indexOfObject:@"left_ear_joint"];
+    jointNames4 = [v62 jointNames];
+    v64 = [jointNames4 indexOfObject:@"left_ear_joint"];
 
     v65 = v90[0];
     if (v61 != 0x7FFFFFFFFFFFFFFFLL)

@@ -5,35 +5,35 @@
 - (NSMutableSet)listeners;
 - (TIInputModeAssetStatusManager)init;
 - (TILinguisticAssetDownloadClient)client;
-- (id)addedInputModesForInputModes:(id)a3;
-- (id)dummyFilePathForInputMode:(id)a3 assetStatus:(int64_t)a4;
+- (id)addedInputModesForInputModes:(id)modes;
+- (id)dummyFilePathForInputMode:(id)mode assetStatus:(int64_t)status;
 - (id)inputModesCurrentlyInProgressOrAvailable;
-- (id)inputModesToRemoveForInputModes:(id)a3;
-- (id)normalizedInputModesForInputModes:(id)a3;
-- (int64_t)assetStatusForInputMode:(id)a3;
-- (void)addDebuggingTimerForInputMode:(id)a3 status:(int64_t)a4 duration:(double)a5;
-- (void)addListener:(id)a3;
-- (void)debuggingTimerFired:(id)a3;
+- (id)inputModesToRemoveForInputModes:(id)modes;
+- (id)normalizedInputModesForInputModes:(id)modes;
+- (int64_t)assetStatusForInputMode:(id)mode;
+- (void)addDebuggingTimerForInputMode:(id)mode status:(int64_t)status duration:(double)duration;
+- (void)addListener:(id)listener;
+- (void)debuggingTimerFired:(id)fired;
 - (void)refetchStatusForInputModesCurrentlyInProgressOrAvailable;
-- (void)removeListener:(id)a3;
-- (void)startDownloadingAssetsForInputMode:(id)a3;
-- (void)startMonitoringAssetUpdateStatusForInputModes:(id)a3 includeExisting:(BOOL)a4;
-- (void)updateAssetStatus:(int64_t)a3 forInputMode:(id)a4;
-- (void)updateListenerOnMainThread:(id)a3 status:(int64_t)a4 inputModeName:(id)a5;
+- (void)removeListener:(id)listener;
+- (void)startDownloadingAssetsForInputMode:(id)mode;
+- (void)startMonitoringAssetUpdateStatusForInputModes:(id)modes includeExisting:(BOOL)existing;
+- (void)updateAssetStatus:(int64_t)status forInputMode:(id)mode;
+- (void)updateListenerOnMainThread:(id)thread status:(int64_t)status inputModeName:(id)name;
 @end
 
 @implementation TIInputModeAssetStatusManager
 
-- (void)startDownloadingAssetsForInputMode:(id)a3
+- (void)startDownloadingAssetsForInputMode:(id)mode
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = TIInputModeGetNormalizedIdentifier(v4);
+  modeCopy = mode;
+  v5 = TIInputModeGetNormalizedIdentifier(modeCopy);
   v6 = asset_status_manager_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v12 = v4;
+    v12 = modeCopy;
     v13 = 2112;
     v14 = v5;
     _os_log_impl(&dword_1863F7000, v6, OS_LOG_TYPE_DEFAULT, "Start downloading assets for %@ (Normalized: %@)", buf, 0x16u);
@@ -57,14 +57,14 @@
         _os_log_impl(&dword_1863F7000, v7, OS_LOG_TYPE_DEFAULT, "Attempt update asset for input mode identifier %@", buf, 0xCu);
       }
 
-      v8 = [(TIInputModeAssetStatusManager *)self client];
+      client = [(TIInputModeAssetStatusManager *)self client];
       v9[0] = MEMORY[0x1E69E9820];
       v9[1] = 3221225472;
       v9[2] = __68__TIInputModeAssetStatusManager_startDownloadingAssetsForInputMode___block_invoke;
       v9[3] = &unk_1E6F4D5B0;
       v9[4] = self;
       v10 = v5;
-      [v8 updateAssetForInputModeIdentifier:v10 callback:v9];
+      [client updateAssetForInputModeIdentifier:v10 callback:v9];
     }
   }
 }
@@ -133,22 +133,22 @@ LABEL_12:
   [*(a1 + 32) refetchStatusForInputModesCurrentlyInProgressOrAvailable];
 }
 
-- (void)startMonitoringAssetUpdateStatusForInputModes:(id)a3 includeExisting:(BOOL)a4
+- (void)startMonitoringAssetUpdateStatusForInputModes:(id)modes includeExisting:(BOOL)existing
 {
-  v4 = a4;
+  existingCopy = existing;
   v64 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  modesCopy = modes;
   v7 = asset_status_manager_log();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v6 componentsJoinedByString:{@", "}];
+    v8 = [modesCopy componentsJoinedByString:{@", "}];
     *buf = 138412290;
     v63 = v8;
     _os_log_impl(&dword_1863F7000, v7, OS_LOG_TYPE_DEFAULT, "Start monitoring asset update status for input modes %@", buf, 0xCu);
   }
 
-  v40 = v6;
-  v9 = [(TIInputModeAssetStatusManager *)self normalizedInputModesForInputModes:v6];
+  v40 = modesCopy;
+  v9 = [(TIInputModeAssetStatusManager *)self normalizedInputModesForInputModes:modesCopy];
   v10 = [(TIInputModeAssetStatusManager *)self addedInputModesForInputModes:v9];
   v11 = [(TIInputModeAssetStatusManager *)self inputModesToRemoveForInputModes:v9];
   v12 = asset_status_manager_log();
@@ -190,8 +190,8 @@ LABEL_12:
         }
 
         v20 = *(*(&v55 + 1) + 8 * i);
-        v21 = [(TIInputModeAssetStatusManager *)self inputModeToAssetStatusMap];
-        [v21 removeObjectForKey:v20];
+        inputModeToAssetStatusMap = [(TIInputModeAssetStatusManager *)self inputModeToAssetStatusMap];
+        [inputModeToAssetStatusMap removeObjectForKey:v20];
       }
 
       v17 = [obj countByEnumeratingWithState:&v55 objects:v61 count:16];
@@ -203,7 +203,7 @@ LABEL_12:
   [(TIInputModeAssetStatusManager *)self unlockAccessToAssetStatusMap];
   v38 = v10;
   v39 = v9;
-  if (v4)
+  if (existingCopy)
   {
     v22 = v9;
   }
@@ -234,13 +234,13 @@ LABEL_12:
 
         v24 = *(*(&v51 + 1) + 8 * v23);
         [(TIInputModeAssetStatusManager *)self lockAccessToAssetStatusMap];
-        v25 = [(TIInputModeAssetStatusManager *)self inputModeToAssetStatusMap];
-        v26 = [v25 objectForKeyedSubscript:v24];
+        inputModeToAssetStatusMap2 = [(TIInputModeAssetStatusManager *)self inputModeToAssetStatusMap];
+        v26 = [inputModeToAssetStatusMap2 objectForKeyedSubscript:v24];
 
         if (!v26)
         {
-          v27 = [(TIInputModeAssetStatusManager *)self inputModeToAssetStatusMap];
-          [v27 setObject:&unk_1EF7DC560 forKeyedSubscript:v24];
+          inputModeToAssetStatusMap3 = [(TIInputModeAssetStatusManager *)self inputModeToAssetStatusMap];
+          [inputModeToAssetStatusMap3 setObject:&unk_1EF7DC560 forKeyedSubscript:v24];
         }
 
         [(TIInputModeAssetStatusManager *)self unlockAccessToAssetStatusMap];
@@ -266,9 +266,9 @@ LABEL_12:
                 }
 
                 v32 = *(*(&v47 + 1) + 8 * j);
-                v33 = [MEMORY[0x1E696AC08] defaultManager];
+                defaultManager = [MEMORY[0x1E696AC08] defaultManager];
                 v34 = -[TIInputModeAssetStatusManager dummyFilePathForInputMode:assetStatus:](self, "dummyFilePathForInputMode:assetStatus:", v24, [v32 unsignedIntegerValue]);
-                v35 = [v33 fileExistsAtPath:v34];
+                v35 = [defaultManager fileExistsAtPath:v34];
 
                 if (v35)
                 {
@@ -293,14 +293,14 @@ LABEL_12:
             _os_log_impl(&dword_1863F7000, v36, OS_LOG_TYPE_DEFAULT, "Attempt fetch of update status for input mode %@", buf, 0xCu);
           }
 
-          v37 = [(TIInputModeAssetStatusManager *)self client];
+          client = [(TIInputModeAssetStatusManager *)self client];
           v46[0] = MEMORY[0x1E69E9820];
           v46[1] = 3221225472;
           v46[2] = __95__TIInputModeAssetStatusManager_startMonitoringAssetUpdateStatusForInputModes_includeExisting___block_invoke;
           v46[3] = &unk_1E6F4D588;
           v46[4] = v24;
           v46[5] = self;
-          [v37 fetchAssetUpdateStatusForInputModeIdentifier:v24 callback:v46];
+          [client fetchAssetUpdateStatusForInputModeIdentifier:v24 callback:v46];
         }
 
         v23 = v45 + 1;
@@ -338,60 +338,60 @@ void __95__TIInputModeAssetStatusManager_startMonitoringAssetUpdateStatusForInpu
   }
 }
 
-- (int64_t)assetStatusForInputMode:(id)a3
+- (int64_t)assetStatusForInputMode:(id)mode
 {
-  v4 = TIInputModeGetNormalizedIdentifier(a3);
+  v4 = TIInputModeGetNormalizedIdentifier(mode);
   if (v4)
   {
     [(TIInputModeAssetStatusManager *)self lockAccessToAssetStatusMap];
-    v5 = [(TIInputModeAssetStatusManager *)self inputModeToAssetStatusMap];
-    v6 = [v5 objectForKeyedSubscript:v4];
-    v7 = [v6 unsignedIntegerValue];
+    inputModeToAssetStatusMap = [(TIInputModeAssetStatusManager *)self inputModeToAssetStatusMap];
+    v6 = [inputModeToAssetStatusMap objectForKeyedSubscript:v4];
+    unsignedIntegerValue = [v6 unsignedIntegerValue];
 
     [(TIInputModeAssetStatusManager *)self unlockAccessToAssetStatusMap];
   }
 
   else
   {
-    v7 = 0;
+    unsignedIntegerValue = 0;
   }
 
-  return v7;
+  return unsignedIntegerValue;
 }
 
-- (void)removeListener:(id)a3
+- (void)removeListener:(id)listener
 {
-  v4 = a3;
-  v5 = [(TIInputModeAssetStatusManager *)self listeners];
-  [v5 removeObject:v4];
+  listenerCopy = listener;
+  listeners = [(TIInputModeAssetStatusManager *)self listeners];
+  [listeners removeObject:listenerCopy];
 }
 
-- (void)addListener:(id)a3
+- (void)addListener:(id)listener
 {
-  v4 = a3;
-  v5 = [(TIInputModeAssetStatusManager *)self listeners];
-  [v5 addObject:v4];
+  listenerCopy = listener;
+  listeners = [(TIInputModeAssetStatusManager *)self listeners];
+  [listeners addObject:listenerCopy];
 }
 
 - (void)refetchStatusForInputModesCurrentlyInProgressOrAvailable
 {
-  v3 = [(TIInputModeAssetStatusManager *)self inputModesCurrentlyInProgressOrAvailable];
-  [(TIInputModeAssetStatusManager *)self startMonitoringAssetUpdateStatusForInputModes:v3 includeExisting:1];
+  inputModesCurrentlyInProgressOrAvailable = [(TIInputModeAssetStatusManager *)self inputModesCurrentlyInProgressOrAvailable];
+  [(TIInputModeAssetStatusManager *)self startMonitoringAssetUpdateStatusForInputModes:inputModesCurrentlyInProgressOrAvailable includeExisting:1];
 }
 
 - (id)inputModesCurrentlyInProgressOrAvailable
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   [(TIInputModeAssetStatusManager *)self lockAccessToAssetStatusMap];
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(TIInputModeAssetStatusManager *)self inputModeToAssetStatusMap];
-  v5 = [v4 allKeys];
+  inputModeToAssetStatusMap = [(TIInputModeAssetStatusManager *)self inputModeToAssetStatusMap];
+  allKeys = [inputModeToAssetStatusMap allKeys];
 
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v6 = [allKeys countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
     v7 = v6;
@@ -402,21 +402,21 @@ void __95__TIInputModeAssetStatusManager_startMonitoringAssetUpdateStatusForInpu
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allKeys);
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        v11 = [(TIInputModeAssetStatusManager *)self inputModeToAssetStatusMap];
-        v12 = [v11 objectForKeyedSubscript:v10];
-        v13 = [v12 unsignedIntValue];
+        inputModeToAssetStatusMap2 = [(TIInputModeAssetStatusManager *)self inputModeToAssetStatusMap];
+        v12 = [inputModeToAssetStatusMap2 objectForKeyedSubscript:v10];
+        unsignedIntValue = [v12 unsignedIntValue];
 
-        if ((v13 - 1) <= 1)
+        if ((unsignedIntValue - 1) <= 1)
         {
-          [v3 addObject:v10];
+          [array addObject:v10];
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [allKeys countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v7);
@@ -424,25 +424,25 @@ void __95__TIInputModeAssetStatusManager_startMonitoringAssetUpdateStatusForInpu
 
   [(TIInputModeAssetStatusManager *)self unlockAccessToAssetStatusMap];
 
-  return v3;
+  return array;
 }
 
-- (id)inputModesToRemoveForInputModes:(id)a3
+- (id)inputModesToRemoveForInputModes:(id)modes
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
+  modesCopy = modes;
+  array = [MEMORY[0x1E695DF70] array];
   [(TIInputModeAssetStatusManager *)self lockAccessToAssetStatusMap];
-  v6 = [(TIInputModeAssetStatusManager *)self inputModeToAssetStatusMap];
-  v7 = [v6 allKeys];
+  inputModeToAssetStatusMap = [(TIInputModeAssetStatusManager *)self inputModeToAssetStatusMap];
+  allKeys = [inputModeToAssetStatusMap allKeys];
 
   [(TIInputModeAssetStatusManager *)self unlockAccessToAssetStatusMap];
-  v8 = [MEMORY[0x1E695DFD8] setWithArray:v4];
+  v8 = [MEMORY[0x1E695DFD8] setWithArray:modesCopy];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v9 = v7;
+  v9 = allKeys;
   v10 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v10)
   {
@@ -460,7 +460,7 @@ void __95__TIInputModeAssetStatusManager_startMonitoringAssetUpdateStatusForInpu
         v14 = *(*(&v16 + 1) + 8 * i);
         if (([v8 containsObject:{v14, v16}] & 1) == 0)
         {
-          [v5 addObject:v14];
+          [array addObject:v14];
         }
       }
 
@@ -470,20 +470,20 @@ void __95__TIInputModeAssetStatusManager_startMonitoringAssetUpdateStatusForInpu
     while (v11);
   }
 
-  return v5;
+  return array;
 }
 
-- (id)addedInputModesForInputModes:(id)a3
+- (id)addedInputModesForInputModes:(id)modes
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
+  modesCopy = modes;
+  array = [MEMORY[0x1E695DF70] array];
   [(TIInputModeAssetStatusManager *)self lockAccessToAssetStatusMap];
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v4;
+  v6 = modesCopy;
   v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
@@ -499,15 +499,15 @@ void __95__TIInputModeAssetStatusManager_startMonitoringAssetUpdateStatusForInpu
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
-        v12 = [(TIInputModeAssetStatusManager *)self inputModeToAssetStatusMap];
-        v13 = [v12 objectForKeyedSubscript:v11];
+        inputModeToAssetStatusMap = [(TIInputModeAssetStatusManager *)self inputModeToAssetStatusMap];
+        v13 = [inputModeToAssetStatusMap objectForKeyedSubscript:v11];
 
         if (!v13)
         {
-          v14 = [(TIInputModeAssetStatusManager *)self inputModeToAssetStatusMap];
-          [v14 setObject:&unk_1EF7DC560 forKeyedSubscript:v11];
+          inputModeToAssetStatusMap2 = [(TIInputModeAssetStatusManager *)self inputModeToAssetStatusMap];
+          [inputModeToAssetStatusMap2 setObject:&unk_1EF7DC560 forKeyedSubscript:v11];
 
-          [v5 addObject:v11];
+          [array addObject:v11];
         }
       }
 
@@ -519,19 +519,19 @@ void __95__TIInputModeAssetStatusManager_startMonitoringAssetUpdateStatusForInpu
 
   [(TIInputModeAssetStatusManager *)self unlockAccessToAssetStatusMap];
 
-  return v5;
+  return array;
 }
 
-- (id)normalizedInputModesForInputModes:(id)a3
+- (id)normalizedInputModesForInputModes:(id)modes
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF70] array];
+  modesCopy = modes;
+  array = [MEMORY[0x1E695DF70] array];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = v3;
+  v5 = modesCopy;
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
@@ -549,7 +549,7 @@ void __95__TIInputModeAssetStatusManager_startMonitoringAssetUpdateStatusForInpu
         v10 = TIInputModeGetNormalizedIdentifier(*(*(&v12 + 1) + 8 * i));
         if (v10)
         {
-          [v4 addObject:{v10, v12}];
+          [array addObject:{v10, v12}];
         }
       }
 
@@ -559,45 +559,45 @@ void __95__TIInputModeAssetStatusManager_startMonitoringAssetUpdateStatusForInpu
     while (v7);
   }
 
-  return v4;
+  return array;
 }
 
-- (void)debuggingTimerFired:(id)a3
+- (void)debuggingTimerFired:(id)fired
 {
-  v7 = [a3 userInfo];
-  v4 = [v7 objectForKeyedSubscript:@"TIInputModeDebugging"];
-  v5 = [v7 objectForKeyedSubscript:@"TIInputModeAssetStatus"];
-  v6 = [v5 unsignedIntegerValue];
+  userInfo = [fired userInfo];
+  v4 = [userInfo objectForKeyedSubscript:@"TIInputModeDebugging"];
+  v5 = [userInfo objectForKeyedSubscript:@"TIInputModeAssetStatus"];
+  unsignedIntegerValue = [v5 unsignedIntegerValue];
 
-  [(TIInputModeAssetStatusManager *)self updateAssetStatus:v6 forInputMode:v4];
+  [(TIInputModeAssetStatusManager *)self updateAssetStatus:unsignedIntegerValue forInputMode:v4];
 }
 
-- (void)addDebuggingTimerForInputMode:(id)a3 status:(int64_t)a4 duration:(double)a5
+- (void)addDebuggingTimerForInputMode:(id)mode status:(int64_t)status duration:(double)duration
 {
   v15[2] = *MEMORY[0x1E69E9840];
   v14[0] = @"TIInputModeDebugging";
   v14[1] = @"TIInputModeAssetStatus";
-  v15[0] = a3;
+  v15[0] = mode;
   v8 = MEMORY[0x1E696AD98];
-  v9 = a3;
-  v10 = [v8 numberWithInteger:a4];
+  modeCopy = mode;
+  v10 = [v8 numberWithInteger:status];
   v15[1] = v10;
   v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:v14 count:2];
 
-  v12 = [MEMORY[0x1E695DFF0] scheduledTimerWithTimeInterval:self target:sel_debuggingTimerFired_ selector:v11 userInfo:0 repeats:a5];
+  v12 = [MEMORY[0x1E695DFF0] scheduledTimerWithTimeInterval:self target:sel_debuggingTimerFired_ selector:v11 userInfo:0 repeats:duration];
 
-  v13 = [(TIInputModeAssetStatusManager *)self debuggingTimers];
-  [v13 addObject:v12];
+  debuggingTimers = [(TIInputModeAssetStatusManager *)self debuggingTimers];
+  [debuggingTimers addObject:v12];
 }
 
-- (id)dummyFilePathForInputMode:(id)a3 assetStatus:(int64_t)a4
+- (id)dummyFilePathForInputMode:(id)mode assetStatus:(int64_t)status
 {
   v13[2] = *MEMORY[0x1E69E9840];
-  v5 = TIInputModeGetNormalizedIdentifier(a3);
+  v5 = TIInputModeGetNormalizedIdentifier(mode);
   v6 = v5;
-  if (a4 <= 2)
+  if (status <= 2)
   {
-    v7 = [v5 stringByAppendingString:off_1E6F4D5D0[a4]];
+    v7 = [v5 stringByAppendingString:off_1E6F4D5D0[status]];
 
     v6 = v7;
   }
@@ -607,27 +607,27 @@ void __95__TIInputModeAssetStatusManager_startMonitoringAssetUpdateStatusForInpu
   v13[1] = v6;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:2];
   v10 = [v8 fileURLWithPathComponents:v9];
-  v11 = [v10 path];
+  path = [v10 path];
 
-  return v11;
+  return path;
 }
 
-- (void)updateAssetStatus:(int64_t)a3 forInputMode:(id)a4
+- (void)updateAssetStatus:(int64_t)status forInputMode:(id)mode
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  modeCopy = mode;
   [(TIInputModeAssetStatusManager *)self lockAccessToAssetStatusMap];
-  v7 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  v8 = [(TIInputModeAssetStatusManager *)self inputModeToAssetStatusMap];
-  [v8 setObject:v7 forKeyedSubscript:v6];
+  v7 = [MEMORY[0x1E696AD98] numberWithInteger:status];
+  inputModeToAssetStatusMap = [(TIInputModeAssetStatusManager *)self inputModeToAssetStatusMap];
+  [inputModeToAssetStatusMap setObject:v7 forKeyedSubscript:modeCopy];
 
   [(TIInputModeAssetStatusManager *)self unlockAccessToAssetStatusMap];
   v9 = asset_status_manager_log();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+    v10 = [MEMORY[0x1E696AD98] numberWithInteger:status];
     *buf = 138412546;
-    v22 = v6;
+    v22 = modeCopy;
     v23 = 2112;
     v24 = v10;
     _os_log_impl(&dword_1863F7000, v9, OS_LOG_TYPE_DEFAULT, "Updated status of input mode %@ to %@", buf, 0x16u);
@@ -637,8 +637,8 @@ void __95__TIInputModeAssetStatusManager_startMonitoringAssetUpdateStatusForInpu
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v11 = [(TIInputModeAssetStatusManager *)self listeners];
-  v12 = [v11 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  listeners = [(TIInputModeAssetStatusManager *)self listeners];
+  v12 = [listeners countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v12)
   {
     v13 = v12;
@@ -650,33 +650,33 @@ void __95__TIInputModeAssetStatusManager_startMonitoringAssetUpdateStatusForInpu
       {
         if (*v17 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(listeners);
         }
 
-        [(TIInputModeAssetStatusManager *)self updateListenerOnMainThread:*(*(&v16 + 1) + 8 * v15++) status:a3 inputModeName:v6];
+        [(TIInputModeAssetStatusManager *)self updateListenerOnMainThread:*(*(&v16 + 1) + 8 * v15++) status:status inputModeName:modeCopy];
       }
 
       while (v13 != v15);
-      v13 = [v11 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v13 = [listeners countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v13);
   }
 }
 
-- (void)updateListenerOnMainThread:(id)a3 status:(int64_t)a4 inputModeName:(id)a5
+- (void)updateListenerOnMainThread:(id)thread status:(int64_t)status inputModeName:(id)name
 {
-  v8 = a3;
-  v9 = a5;
+  threadCopy = thread;
+  nameCopy = name;
   v13 = MEMORY[0x1E69E9820];
   v14 = 3221225472;
   v15 = __81__TIInputModeAssetStatusManager_updateListenerOnMainThread_status_inputModeName___block_invoke;
   v16 = &unk_1E6F4D560;
-  v10 = v8;
+  v10 = threadCopy;
   v17 = v10;
-  v11 = v9;
-  v19 = self;
-  v20 = a4;
+  v11 = nameCopy;
+  selfCopy = self;
+  statusCopy = status;
   v18 = v11;
   v12 = MEMORY[0x1866068F0](&v13);
   if ([MEMORY[0x1E696AF00] isMainThread])
@@ -716,9 +716,9 @@ uint64_t __81__TIInputModeAssetStatusManager_updateListenerOnMainThread_status_i
   inputModeToAssetStatusMap = self->_inputModeToAssetStatusMap;
   if (!inputModeToAssetStatusMap)
   {
-    v4 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v5 = self->_inputModeToAssetStatusMap;
-    self->_inputModeToAssetStatusMap = v4;
+    self->_inputModeToAssetStatusMap = dictionary;
 
     inputModeToAssetStatusMap = self->_inputModeToAssetStatusMap;
   }

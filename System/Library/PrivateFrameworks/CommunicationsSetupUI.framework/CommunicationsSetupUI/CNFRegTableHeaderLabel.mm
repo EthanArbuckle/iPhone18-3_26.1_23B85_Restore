@@ -1,22 +1,22 @@
 @interface CNFRegTableHeaderLabel
-- (CNFRegTableHeaderLabel)initWithSpecifier:(id)a3;
-- (double)preferredHeightForWidth:(double)a3;
+- (CNFRegTableHeaderLabel)initWithSpecifier:(id)specifier;
+- (double)preferredHeightForWidth:(double)width;
 - (int64_t)_labelTextAlignment;
 @end
 
 @implementation CNFRegTableHeaderLabel
 
-- (CNFRegTableHeaderLabel)initWithSpecifier:(id)a3
+- (CNFRegTableHeaderLabel)initWithSpecifier:(id)specifier
 {
   v8.receiver = self;
   v8.super_class = CNFRegTableHeaderLabel;
-  v3 = [(CNFRegTableLabel *)&v8 initWithSpecifier:a3];
+  v3 = [(CNFRegTableLabel *)&v8 initWithSpecifier:specifier];
   if (v3)
   {
     v4 = +[CNFRegAppearanceController globalAppearanceController];
-    v5 = [v4 tableHeaderFont];
+    tableHeaderFont = [v4 tableHeaderFont];
 
-    if (v5)
+    if (tableHeaderFont)
     {
       [v4 tableHeaderFont];
     }
@@ -40,34 +40,34 @@
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 intValue];
+    intValue = [v3 intValue];
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = CNFRegTableHeaderLabel;
-    v5 = [(CNFRegTableLabel *)&v7 _labelTextAlignment];
+    intValue = [(CNFRegTableLabel *)&v7 _labelTextAlignment];
   }
 
-  return v5;
+  return intValue;
 }
 
-- (double)preferredHeightForWidth:(double)a3
+- (double)preferredHeightForWidth:(double)width
 {
   v9.receiver = self;
   v9.super_class = CNFRegTableHeaderLabel;
-  [(CNFRegTableLabel *)&v9 preferredHeightForWidth:a3];
+  [(CNFRegTableLabel *)&v9 preferredHeightForWidth:width];
   v4 = v3;
   if (v3 > 0.0)
   {
-    v5 = [MEMORY[0x277D75418] currentDevice];
-    v6 = [v5 userInterfaceIdiom] == 1 ? 34.0 : 35.0;
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    v6 = [currentDevice userInterfaceIdiom] == 1 ? 34.0 : 35.0;
 
     if (v4 < v6)
     {
-      v7 = [MEMORY[0x277D75418] currentDevice];
-      if ([v7 userInterfaceIdiom] == 1)
+      currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+      if ([currentDevice2 userInterfaceIdiom] == 1)
       {
         v4 = 34.0;
       }

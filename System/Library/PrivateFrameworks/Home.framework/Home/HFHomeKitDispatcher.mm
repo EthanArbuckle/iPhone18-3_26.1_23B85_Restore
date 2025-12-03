@@ -1,12 +1,12 @@
 @interface HFHomeKitDispatcher
 + (BOOL)synchronizesHomeDataModel;
-+ (id)_logSettingsWithFormatter:(id)a3;
++ (id)_logSettingsWithFormatter:(id)formatter;
 + (id)sharedDispatcher;
 + (void)initialize;
-+ (void)setConfiguration:(id)a3;
++ (void)setConfiguration:(id)configuration;
 - (BOOL)_shouldPersistSelectedHomeToDefaults;
 - (BOOL)selectedHomeFollowsLocation;
-- (BOOL)setSelectedHomeWithName:(id)a3;
+- (BOOL)setSelectedHomeWithName:(id)name;
 - (HFHomeKitDispatcher)init;
 - (NAFuture)allHomesFuture;
 - (NAFuture)firstHomeAddedFuture;
@@ -14,26 +14,26 @@
 - (NAFuture)locationSensingAvailableFuture;
 - (id)_primaryHome;
 - (id)_setupLocationSensingCoordinator;
-- (id)climateActivityLogCoordinatorForHome:(id)a3;
-- (id)homeFutureWithUser:(id)a3;
+- (id)climateActivityLogCoordinatorForHome:(id)home;
+- (id)homeFutureWithUser:(id)user;
 - (id)homeSensingActiveFuture;
-- (id)pinCodeManagerForHome:(id)a3;
-- (id)securityActivityLogCoordinatorForHome:(id)a3;
-- (id)userFutureWithUniqueIdentifierStr:(id)a3;
+- (id)pinCodeManagerForHome:(id)home;
+- (id)securityActivityLogCoordinatorForHome:(id)home;
+- (id)userFutureWithUniqueIdentifierStr:(id)str;
 - (int64_t)_dataModelContextForCurrentEnvironment;
 - (void)_createHomeManagerIfNecessary;
-- (void)_fetchSettingsForLightProfiles:(id)a3;
-- (void)_finishAllHomesPromises:(id)a3;
-- (void)_finishFirstHomeAddedPromises:(id)a3;
-- (void)_finishHomePromises:(id)a3;
-- (void)_handleHomeManagerDidUpdateHomes:(id)a3;
+- (void)_fetchSettingsForLightProfiles:(id)profiles;
+- (void)_finishAllHomesPromises:(id)promises;
+- (void)_finishFirstHomeAddedPromises:(id)promises;
+- (void)_finishHomePromises:(id)promises;
+- (void)_handleHomeManagerDidUpdateHomes:(id)homes;
 - (void)_initializeObservers;
-- (void)_requestSelectedHome:(id)a3;
-- (void)_setDelegationEnabled:(BOOL)a3 forAccessoryHierarchy:(id)a4;
-- (void)_setDelegationEnabled:(BOOL)a3 forMediaProfileContainer:(id)a4 session:(id)a5;
-- (void)_setDelegationEnabled:(BOOL)a3 forUser:(id)a4;
-- (void)_setHomePersonManagerObservationEnabled:(BOOL)a3;
-- (void)_setSoftwareUpateControllerV2DelegationEnabled:(BOOL)a3;
+- (void)_requestSelectedHome:(id)home;
+- (void)_setDelegationEnabled:(BOOL)enabled forAccessoryHierarchy:(id)hierarchy;
+- (void)_setDelegationEnabled:(BOOL)enabled forMediaProfileContainer:(id)container session:(id)session;
+- (void)_setDelegationEnabled:(BOOL)enabled forUser:(id)user;
+- (void)_setHomePersonManagerObservationEnabled:(BOOL)enabled;
+- (void)_setSoftwareUpateControllerV2DelegationEnabled:(BOOL)enabled;
 - (void)_setupAccessoryObserver;
 - (void)_setupHomeManagerObserver;
 - (void)_setupHomeObserver;
@@ -44,96 +44,96 @@
 - (void)_setupSofwareUpdateControllerV2Observer;
 - (void)_setupStateDumpHandlers;
 - (void)_setupSymptomFixSessionObserver;
-- (void)_updateHomeActivityStateForHome:(id)a3;
-- (void)_updateRemoteAccessStateForHome:(id)a3 notifyingObservers:(BOOL)a4;
-- (void)addAccessoryObserver:(id)a3;
-- (void)addAudioControlObserver:(id)a3;
-- (void)addCameraObserver:(id)a3;
-- (void)addDiagnosticInfoObserver:(id)a3;
-- (void)addHomeKitSettingsObserver:(id)a3;
-- (void)addHomeManagerObserver:(id)a3;
-- (void)addHomeObserver:(id)a3;
-- (void)addHomePersonManagerObserver:(id)a3;
-- (void)addLightObserver:(id)a3;
-- (void)addMediaDestinationControllerObserver:(id)a3;
-- (void)addMediaObjectObserver:(id)a3;
-- (void)addMediaProfileObserver:(id)a3;
-- (void)addMediaSessionObserver:(id)a3;
-- (void)addNetworkConfigurationObserver:(id)a3;
-- (void)addObservationForCameraClipManager:(id)a3;
-- (void)addResidentDeviceObserver:(id)a3;
-- (void)addSiriEndpointProfileObserver:(id)a3;
-- (void)addSoftwareUpdateControllerObserver:(id)a3;
-- (void)addSoftwareUpdateControllerV2Observer:(id)a3;
-- (void)addSoftwareUpdateObserver:(id)a3;
-- (void)addSymptomFixSessionObserver:(id)a3;
-- (void)addSymptomsHandlerObserver:(id)a3;
-- (void)addTelevisionObserver:(id)a3;
-- (void)addUserObserver:(id)a3;
-- (void)addWalletKeyDeviceStateObserver:(id)a3;
-- (void)configureHomeStateStreamWithHome:(id)a3;
-- (void)configureHomeStateStreamWithHomeManager:(id)a3;
+- (void)_updateHomeActivityStateForHome:(id)home;
+- (void)_updateRemoteAccessStateForHome:(id)home notifyingObservers:(BOOL)observers;
+- (void)addAccessoryObserver:(id)observer;
+- (void)addAudioControlObserver:(id)observer;
+- (void)addCameraObserver:(id)observer;
+- (void)addDiagnosticInfoObserver:(id)observer;
+- (void)addHomeKitSettingsObserver:(id)observer;
+- (void)addHomeManagerObserver:(id)observer;
+- (void)addHomeObserver:(id)observer;
+- (void)addHomePersonManagerObserver:(id)observer;
+- (void)addLightObserver:(id)observer;
+- (void)addMediaDestinationControllerObserver:(id)observer;
+- (void)addMediaObjectObserver:(id)observer;
+- (void)addMediaProfileObserver:(id)observer;
+- (void)addMediaSessionObserver:(id)observer;
+- (void)addNetworkConfigurationObserver:(id)observer;
+- (void)addObservationForCameraClipManager:(id)manager;
+- (void)addResidentDeviceObserver:(id)observer;
+- (void)addSiriEndpointProfileObserver:(id)observer;
+- (void)addSoftwareUpdateControllerObserver:(id)observer;
+- (void)addSoftwareUpdateControllerV2Observer:(id)observer;
+- (void)addSoftwareUpdateObserver:(id)observer;
+- (void)addSymptomFixSessionObserver:(id)observer;
+- (void)addSymptomsHandlerObserver:(id)observer;
+- (void)addTelevisionObserver:(id)observer;
+- (void)addUserObserver:(id)observer;
+- (void)addWalletKeyDeviceStateObserver:(id)observer;
+- (void)configureHomeStateStreamWithHome:(id)home;
+- (void)configureHomeStateStreamWithHomeManager:(id)manager;
 - (void)dealloc;
-- (void)disconnectDataModelDelegatesWithReason:(id)a3;
+- (void)disconnectDataModelDelegatesWithReason:(id)reason;
 - (void)disconnectHomeStateStream;
-- (void)dispatchAccessoryObserverMessage:(id)a3 sender:(id)a4;
-- (void)dispatchAudioControlObserverMessage:(id)a3 sender:(id)a4;
-- (void)dispatchCameraObserverMessage:(id)a3 sender:(id)a4;
-- (void)dispatchHomeKitSettingMessage:(id)a3 sender:(id)a4;
-- (void)dispatchHomeKitSettingsObserverMessage:(id)a3 sender:(id)a4;
-- (void)dispatchHomeManagerObserverMessage:(id)a3 sender:(id)a4;
-- (void)dispatchHomeObserverMessage:(id)a3 sender:(id)a4;
-- (void)dispatchHomePersonManagerObserverMessage:(id)a3 sender:(id)a4;
-- (void)dispatchLightObserverMessage:(id)a3 sender:(id)a4;
-- (void)dispatchLightProfileUpdate:(id)a3 settings:(id)a4 error:(id)a5;
-- (void)dispatchMediaDestinationControllerObserverMessage:(id)a3 sender:(id)a4;
-- (void)dispatchMediaObjectObserverMessage:(id)a3 sender:(id)a4;
-- (void)dispatchMediaSessionObserverMessage:(id)a3 sender:(id)a4;
-- (void)dispatchNetworkConfigurationObserverMessage:(id)a3 sender:(id)a4;
-- (void)dispatchSiriEndpointObserverMessage:(id)a3 sender:(id)a4;
-- (void)dispatchSoftwareUpdateControllerMessage:(id)a3 sender:(id)a4;
-- (void)dispatchSoftwareUpdateMessage:(id)a3 sender:(id)a4;
-- (void)dispatchSymptomFixSessionObserverMessage:(id)a3 sender:(id)a4;
-- (void)dispatchSymptomsHandlerMessage:(id)a3 sender:(id)a4;
-- (void)dispatchTelevisionObserverMessage:(id)a3 sender:(id)a4;
-- (void)dispatchUserObserverMessage:(id)a3 sender:(id)a4;
-- (void)dispatchWalletKeyDeviceStateObserverMessage:(id)a3 sender:(id)a4;
-- (void)fetchSettingsForLightProfiles:(id)a3;
-- (void)homeManagerWasCreated:(id)a3;
-- (void)installStateArbiter:(id)a3 installStateDidChange:(BOOL)a4;
-- (void)reconnectDataModelDelegatesWithReason:(id)a3;
+- (void)dispatchAccessoryObserverMessage:(id)message sender:(id)sender;
+- (void)dispatchAudioControlObserverMessage:(id)message sender:(id)sender;
+- (void)dispatchCameraObserverMessage:(id)message sender:(id)sender;
+- (void)dispatchHomeKitSettingMessage:(id)message sender:(id)sender;
+- (void)dispatchHomeKitSettingsObserverMessage:(id)message sender:(id)sender;
+- (void)dispatchHomeManagerObserverMessage:(id)message sender:(id)sender;
+- (void)dispatchHomeObserverMessage:(id)message sender:(id)sender;
+- (void)dispatchHomePersonManagerObserverMessage:(id)message sender:(id)sender;
+- (void)dispatchLightObserverMessage:(id)message sender:(id)sender;
+- (void)dispatchLightProfileUpdate:(id)update settings:(id)settings error:(id)error;
+- (void)dispatchMediaDestinationControllerObserverMessage:(id)message sender:(id)sender;
+- (void)dispatchMediaObjectObserverMessage:(id)message sender:(id)sender;
+- (void)dispatchMediaSessionObserverMessage:(id)message sender:(id)sender;
+- (void)dispatchNetworkConfigurationObserverMessage:(id)message sender:(id)sender;
+- (void)dispatchSiriEndpointObserverMessage:(id)message sender:(id)sender;
+- (void)dispatchSoftwareUpdateControllerMessage:(id)message sender:(id)sender;
+- (void)dispatchSoftwareUpdateMessage:(id)message sender:(id)sender;
+- (void)dispatchSymptomFixSessionObserverMessage:(id)message sender:(id)sender;
+- (void)dispatchSymptomsHandlerMessage:(id)message sender:(id)sender;
+- (void)dispatchTelevisionObserverMessage:(id)message sender:(id)sender;
+- (void)dispatchUserObserverMessage:(id)message sender:(id)sender;
+- (void)dispatchWalletKeyDeviceStateObserverMessage:(id)message sender:(id)sender;
+- (void)fetchSettingsForLightProfiles:(id)profiles;
+- (void)homeManagerWasCreated:(id)created;
+- (void)installStateArbiter:(id)arbiter installStateDidChange:(BOOL)change;
+- (void)reconnectDataModelDelegatesWithReason:(id)reason;
 - (void)registerHomeStateStream;
-- (void)removeAccessoryObserver:(id)a3;
-- (void)removeAudioControlObserver:(id)a3;
-- (void)removeCameraObserver:(id)a3;
-- (void)removeDiagnosticInfoObserver:(id)a3;
-- (void)removeHomeKitSettingsObserver:(id)a3;
-- (void)removeHomeManagerObserver:(id)a3;
-- (void)removeHomeObserver:(id)a3;
-- (void)removeHomePersonManagerObserver:(id)a3;
-- (void)removeLightObserver:(id)a3;
-- (void)removeMediaDestinationControllerObserver:(id)a3;
-- (void)removeMediaObjectObserver:(id)a3;
-- (void)removeMediaProfileObserver:(id)a3;
-- (void)removeMediaSessionObserver:(id)a3;
-- (void)removeNetworkConfigurationObserver:(id)a3;
-- (void)removeObservationForCameraClipManager:(id)a3;
-- (void)removeResidentDeviceObserver:(id)a3;
-- (void)removeSiriEndpointProfileObserver:(id)a3;
-- (void)removeSoftwareUpdateControllerObserver:(id)a3;
-- (void)removeSoftwareUpdateControllerV2Observer:(id)a3;
-- (void)removeSoftwareUpdateObserver:(id)a3;
-- (void)removeSymptomFixSessionObserver:(id)a3;
-- (void)removeSymptomsHandlerObserver:(id)a3;
-- (void)removeTelevisionObserver:(id)a3;
-- (void)removeUserObserver:(id)a3;
-- (void)removeWalletKeyDeviceStateObserver:(id)a3;
-- (void)setHomeManagerAndUpdateDelegate:(id)a3;
-- (void)setOverrideHome:(id)a3;
-- (void)setSelectedHome:(id)a3 userInitiated:(BOOL)a4;
-- (void)stateRestorationSettings:(id)a3 selectedHomeIdentifierDidUpdateExternally:(id)a4;
+- (void)removeAccessoryObserver:(id)observer;
+- (void)removeAudioControlObserver:(id)observer;
+- (void)removeCameraObserver:(id)observer;
+- (void)removeDiagnosticInfoObserver:(id)observer;
+- (void)removeHomeKitSettingsObserver:(id)observer;
+- (void)removeHomeManagerObserver:(id)observer;
+- (void)removeHomeObserver:(id)observer;
+- (void)removeHomePersonManagerObserver:(id)observer;
+- (void)removeLightObserver:(id)observer;
+- (void)removeMediaDestinationControllerObserver:(id)observer;
+- (void)removeMediaObjectObserver:(id)observer;
+- (void)removeMediaProfileObserver:(id)observer;
+- (void)removeMediaSessionObserver:(id)observer;
+- (void)removeNetworkConfigurationObserver:(id)observer;
+- (void)removeObservationForCameraClipManager:(id)manager;
+- (void)removeResidentDeviceObserver:(id)observer;
+- (void)removeSiriEndpointProfileObserver:(id)observer;
+- (void)removeSoftwareUpdateControllerObserver:(id)observer;
+- (void)removeSoftwareUpdateControllerV2Observer:(id)observer;
+- (void)removeSoftwareUpdateObserver:(id)observer;
+- (void)removeSymptomFixSessionObserver:(id)observer;
+- (void)removeSymptomsHandlerObserver:(id)observer;
+- (void)removeTelevisionObserver:(id)observer;
+- (void)removeUserObserver:(id)observer;
+- (void)removeWalletKeyDeviceStateObserver:(id)observer;
+- (void)setHomeManagerAndUpdateDelegate:(id)delegate;
+- (void)setOverrideHome:(id)home;
+- (void)setSelectedHome:(id)home userInitiated:(BOOL)initiated;
+- (void)stateRestorationSettings:(id)settings selectedHomeIdentifierDidUpdateExternally:(id)externally;
 - (void)updateHome;
-- (void)updateHomeManagerConfiguration:(id)a3;
+- (void)updateHomeManagerConfiguration:(id)configuration;
 - (void)updateHomeSensingState;
 - (void)updateSelectedHome;
 @end
@@ -142,17 +142,17 @@
 
 - (void)registerHomeStateStream
 {
-  v2 = self;
+  selfCopy = self;
   HFHomeKitDispatcher.registerHomeStateStream()();
 }
 
 - (void)disconnectHomeStateStream
 {
-  v2 = self;
+  selfCopy = self;
   HFHomeKitDispatcher.disconnectHomeStateStream()();
 }
 
-- (void)configureHomeStateStreamWithHomeManager:(id)a3
+- (void)configureHomeStateStreamWithHomeManager:(id)manager
 {
   v4 = sub_20DD639C4();
   v5 = *(v4 - 8);
@@ -160,7 +160,7 @@
   MEMORY[0x28223BE20](v4);
   v8 = &v10 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_20DD63B44();
-  v11 = a3;
+  managerCopy = manager;
   if (sub_20DD639E4())
   {
     MEMORY[0x20F324A90]();
@@ -172,26 +172,26 @@
 
   else
   {
-    v9 = v11;
+    v9 = managerCopy;
   }
 }
 
-- (void)configureHomeStateStreamWithHome:(id)a3
+- (void)configureHomeStateStreamWithHome:(id)home
 {
   v4 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27C8443F0, &qword_20DD93820);
   v5 = *(*(v4 - 8) + 64);
   MEMORY[0x28223BE20](v4 - 8);
   v7 = &v13 - v6;
   sub_20DD63B44();
-  v14 = a3;
+  homeCopy = home;
   if (sub_20DD639E4())
   {
     sub_20DD63BB4();
     v8 = sub_20DD65114();
     (*(*(v8 - 8) + 56))(v7, 1, 1, v8);
     v9 = swift_allocObject();
-    v10 = v14;
-    *(v9 + 16) = v14;
+    v10 = homeCopy;
+    *(v9 + 16) = homeCopy;
     v11 = v10;
     sub_20DD63B94();
 
@@ -200,15 +200,15 @@
 
   else
   {
-    v12 = v14;
+    v12 = homeCopy;
   }
 }
 
 + (void)initialize
 {
-  v2 = [MEMORY[0x277CD1A98] defaultPrivateConfiguration];
+  defaultPrivateConfiguration = [MEMORY[0x277CD1A98] defaultPrivateConfiguration];
   v3 = qword_280E03DB8;
-  qword_280E03DB8 = v2;
+  qword_280E03DB8 = defaultPrivateConfiguration;
 
   v4 = +[HFExecutionEnvironment isHomeApp](HFExecutionEnvironment, "isHomeApp") || +[HFExecutionEnvironment isShortcuts](HFExecutionEnvironment, "isShortcuts") || +[HFExecutionEnvironment isSpringBoard](HFExecutionEnvironment, "isSpringBoard") || +[HFExecutionEnvironment isMacShortcuts](HFExecutionEnvironment, "isMacShortcuts") || +[HFExecutionEnvironment isHomeControlService](HFExecutionEnvironment, "isHomeControlService") || +[HFExecutionEnvironment isSettings](HFExecutionEnvironment, "isSettings") || +[HFExecutionEnvironment isWatchApp](HFExecutionEnvironment, "isWatchApp") || +[HFExecutionEnvironment isHomeUIService];
   _MergedGlobals_327 = v4;
@@ -231,20 +231,20 @@
   return v2 & 1;
 }
 
-+ (void)setConfiguration:(id)a3
++ (void)setConfiguration:(id)configuration
 {
-  if (a3)
+  if (configuration)
   {
-    v3 = [a3 copy];
+    defaultPrivateConfiguration = [configuration copy];
   }
 
   else
   {
-    v3 = [MEMORY[0x277CD1A98] defaultPrivateConfiguration];
+    defaultPrivateConfiguration = [MEMORY[0x277CD1A98] defaultPrivateConfiguration];
   }
 
   v4 = qword_280E03DB8;
-  qword_280E03DB8 = v3;
+  qword_280E03DB8 = defaultPrivateConfiguration;
 }
 
 + (id)sharedDispatcher
@@ -253,7 +253,7 @@
   block[1] = 3221225472;
   block[2] = __39__HFHomeKitDispatcher_sharedDispatcher__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_280E03DC8 != -1)
   {
     dispatch_once(&qword_280E03DC8, block);
@@ -293,41 +293,41 @@ void __39__HFHomeKitDispatcher_sharedDispatcher__block_invoke(uint64_t a1)
     }
 
     [(HFHomeKitDispatcher *)v2 _initializeObservers];
-    v5 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     homePromises = v2->_homePromises;
-    v2->_homePromises = v5;
+    v2->_homePromises = array;
 
-    v7 = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
     firstHomeAddedPromises = v2->_firstHomeAddedPromises;
-    v2->_firstHomeAddedPromises = v7;
+    v2->_firstHomeAddedPromises = array2;
 
-    v9 = [MEMORY[0x277CBEB18] array];
+    array3 = [MEMORY[0x277CBEB18] array];
     allHomesPromises = v2->_allHomesPromises;
-    v2->_allHomesPromises = v9;
+    v2->_allHomesPromises = array3;
 
-    v11 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     remoteAccessStateByHomeID = v2->_remoteAccessStateByHomeID;
-    v2->_remoteAccessStateByHomeID = v11;
+    v2->_remoteAccessStateByHomeID = dictionary;
 
     v2->_willAcceptHomeFutures = 0;
     v13 = objc_alloc_init(HFHomeKitPreferencesUtilities);
     v14 = [HFHomeManagerCreator alloc];
     v15 = +[HFExecutionEnvironment sharedInstance];
-    v16 = [v15 hostProcess];
-    v17 = [(HFHomeManagerCreator *)v14 initWithHostProcess:v16 configuration:qword_280E03DB8 homeStatus:v13 delegate:v2];
+    hostProcess = [v15 hostProcess];
+    v17 = [(HFHomeManagerCreator *)v14 initWithHostProcess:hostProcess configuration:qword_280E03DB8 homeStatus:v13 delegate:v2];
     [(HFHomeKitDispatcher *)v2 setHomeManagerCreator:v17];
 
     [(HFHomeKitDispatcher *)v2 _createHomeManagerIfNecessary];
-    v18 = [(HFHomeKitDispatcher *)v2 allHomesFuture];
+    allHomesFuture = [(HFHomeKitDispatcher *)v2 allHomesFuture];
     v34[0] = MEMORY[0x277D85DD0];
     v34[1] = 3221225472;
     v34[2] = __27__HFHomeKitDispatcher_init__block_invoke;
     v34[3] = &unk_277DF9508;
     v19 = v2;
     v35 = v19;
-    v20 = [v18 addSuccessBlock:v34];
-    v21 = [(HFHomeKitDispatcher *)v19 _setupLocationSensingCoordinator];
-    [(HFHomeKitDispatcher *)v19 setLocationCoordinatorSetupFuture:v21];
+    v20 = [allHomesFuture addSuccessBlock:v34];
+    _setupLocationSensingCoordinator = [(HFHomeKitDispatcher *)v19 _setupLocationSensingCoordinator];
+    [(HFHomeKitDispatcher *)v19 setLocationCoordinatorSetupFuture:_setupLocationSensingCoordinator];
 
     v22 = +[HFHomeAppInstallStateArbiter sharedInstance];
     [v22 addObserver:v19];
@@ -417,97 +417,97 @@ void __27__HFHomeKitDispatcher_init__block_invoke_2(uint64_t a1)
   [WeakRetained _createHomeManagerIfNecessary];
 }
 
-- (void)disconnectDataModelDelegatesWithReason:(id)a3
+- (void)disconnectDataModelDelegatesWithReason:(id)reason
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  reasonCopy = reason;
   v5 = HFLogForCategory(0x27uLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v17 = 138412290;
-    v18 = v4;
+    v18 = reasonCopy;
     _os_log_impl(&dword_20D9BF000, v5, OS_LOG_TYPE_DEFAULT, "Disabling data model delegates with reason: %@", &v17, 0xCu);
   }
 
-  v6 = [MEMORY[0x277D16F78] shared];
-  [(HFHomeKitDispatcher *)self removeHomeManagerObserver:v6];
+  mEMORY[0x277D16F78] = [MEMORY[0x277D16F78] shared];
+  [(HFHomeKitDispatcher *)self removeHomeManagerObserver:mEMORY[0x277D16F78]];
 
-  v7 = [MEMORY[0x277D16F78] shared];
-  [(HFHomeKitDispatcher *)self removeHomeObserver:v7];
+  mEMORY[0x277D16F78]2 = [MEMORY[0x277D16F78] shared];
+  [(HFHomeKitDispatcher *)self removeHomeObserver:mEMORY[0x277D16F78]2];
 
-  v8 = [MEMORY[0x277D16F78] shared];
-  [(HFHomeKitDispatcher *)self removeAccessoryObserver:v8];
+  mEMORY[0x277D16F78]3 = [MEMORY[0x277D16F78] shared];
+  [(HFHomeKitDispatcher *)self removeAccessoryObserver:mEMORY[0x277D16F78]3];
 
-  v9 = [MEMORY[0x277D16F78] shared];
-  [(HFHomeKitDispatcher *)self removeMediaSessionObserver:v9];
+  mEMORY[0x277D16F78]4 = [MEMORY[0x277D16F78] shared];
+  [(HFHomeKitDispatcher *)self removeMediaSessionObserver:mEMORY[0x277D16F78]4];
 
-  v10 = [MEMORY[0x277D16F78] shared];
-  [(HFHomeKitDispatcher *)self removeMediaObjectObserver:v10];
+  mEMORY[0x277D16F78]5 = [MEMORY[0x277D16F78] shared];
+  [(HFHomeKitDispatcher *)self removeMediaObjectObserver:mEMORY[0x277D16F78]5];
 
-  v11 = [MEMORY[0x277D16F78] shared];
-  [(HFHomeKitDispatcher *)self removeResidentDeviceObserver:v11];
+  mEMORY[0x277D16F78]6 = [MEMORY[0x277D16F78] shared];
+  [(HFHomeKitDispatcher *)self removeResidentDeviceObserver:mEMORY[0x277D16F78]6];
 
-  v12 = [MEMORY[0x277D16F78] shared];
-  [(HFHomeKitDispatcher *)self removeLightObserver:v12];
+  mEMORY[0x277D16F78]7 = [MEMORY[0x277D16F78] shared];
+  [(HFHomeKitDispatcher *)self removeLightObserver:mEMORY[0x277D16F78]7];
 
-  v13 = [MEMORY[0x277D16F78] shared];
-  [(HFHomeKitDispatcher *)self removeSoftwareUpdateObserver:v13];
+  mEMORY[0x277D16F78]8 = [MEMORY[0x277D16F78] shared];
+  [(HFHomeKitDispatcher *)self removeSoftwareUpdateObserver:mEMORY[0x277D16F78]8];
 
-  v14 = [MEMORY[0x277D16F78] shared];
-  [(HFHomeKitDispatcher *)self removeSoftwareUpdateControllerV2Observer:v14];
+  mEMORY[0x277D16F78]9 = [MEMORY[0x277D16F78] shared];
+  [(HFHomeKitDispatcher *)self removeSoftwareUpdateControllerV2Observer:mEMORY[0x277D16F78]9];
 
-  v15 = [MEMORY[0x277D16F78] shared];
-  [(HFHomeKitDispatcher *)self removeSymptomsHandlerObserver:v15];
+  mEMORY[0x277D16F78]10 = [MEMORY[0x277D16F78] shared];
+  [(HFHomeKitDispatcher *)self removeSymptomsHandlerObserver:mEMORY[0x277D16F78]10];
 
   [(HFHomeKitDispatcher *)self disconnectHomeStateStream];
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)reconnectDataModelDelegatesWithReason:(id)a3
+- (void)reconnectDataModelDelegatesWithReason:(id)reason
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  reasonCopy = reason;
   if ([objc_opt_class() synchronizesHomeDataModel])
   {
     v5 = HFLogForCategory(0x27uLL);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v18 = 138412290;
-      v19 = v4;
+      v19 = reasonCopy;
       _os_log_impl(&dword_20D9BF000, v5, OS_LOG_TYPE_DEFAULT, "Enabling data model delegates with reason: %@", &v18, 0xCu);
     }
 
-    v6 = [(HFHomeKitDispatcher *)self _dataModelContextForCurrentEnvironment];
-    [MEMORY[0x277D16F78] setContext:v6];
-    v7 = [MEMORY[0x277D16F78] shared];
-    [(HFHomeKitDispatcher *)self addHomeManagerObserver:v7];
+    _dataModelContextForCurrentEnvironment = [(HFHomeKitDispatcher *)self _dataModelContextForCurrentEnvironment];
+    [MEMORY[0x277D16F78] setContext:_dataModelContextForCurrentEnvironment];
+    mEMORY[0x277D16F78] = [MEMORY[0x277D16F78] shared];
+    [(HFHomeKitDispatcher *)self addHomeManagerObserver:mEMORY[0x277D16F78]];
 
-    v8 = [MEMORY[0x277D16F78] shared];
-    [(HFHomeKitDispatcher *)self addHomeObserver:v8];
+    mEMORY[0x277D16F78]2 = [MEMORY[0x277D16F78] shared];
+    [(HFHomeKitDispatcher *)self addHomeObserver:mEMORY[0x277D16F78]2];
 
-    v9 = [MEMORY[0x277D16F78] shared];
-    [(HFHomeKitDispatcher *)self addAccessoryObserver:v9];
+    mEMORY[0x277D16F78]3 = [MEMORY[0x277D16F78] shared];
+    [(HFHomeKitDispatcher *)self addAccessoryObserver:mEMORY[0x277D16F78]3];
 
-    v10 = [MEMORY[0x277D16F78] shared];
-    [(HFHomeKitDispatcher *)self addMediaSessionObserver:v10];
+    mEMORY[0x277D16F78]4 = [MEMORY[0x277D16F78] shared];
+    [(HFHomeKitDispatcher *)self addMediaSessionObserver:mEMORY[0x277D16F78]4];
 
-    v11 = [MEMORY[0x277D16F78] shared];
-    [(HFHomeKitDispatcher *)self addMediaObjectObserver:v11];
+    mEMORY[0x277D16F78]5 = [MEMORY[0x277D16F78] shared];
+    [(HFHomeKitDispatcher *)self addMediaObjectObserver:mEMORY[0x277D16F78]5];
 
-    v12 = [MEMORY[0x277D16F78] shared];
-    [(HFHomeKitDispatcher *)self addResidentDeviceObserver:v12];
+    mEMORY[0x277D16F78]6 = [MEMORY[0x277D16F78] shared];
+    [(HFHomeKitDispatcher *)self addResidentDeviceObserver:mEMORY[0x277D16F78]6];
 
-    v13 = [MEMORY[0x277D16F78] shared];
-    [(HFHomeKitDispatcher *)self addLightObserver:v13];
+    mEMORY[0x277D16F78]7 = [MEMORY[0x277D16F78] shared];
+    [(HFHomeKitDispatcher *)self addLightObserver:mEMORY[0x277D16F78]7];
 
-    v14 = [MEMORY[0x277D16F78] shared];
-    [(HFHomeKitDispatcher *)self addSoftwareUpdateObserver:v14];
+    mEMORY[0x277D16F78]8 = [MEMORY[0x277D16F78] shared];
+    [(HFHomeKitDispatcher *)self addSoftwareUpdateObserver:mEMORY[0x277D16F78]8];
 
-    v15 = [MEMORY[0x277D16F78] shared];
-    [(HFHomeKitDispatcher *)self addSoftwareUpdateControllerV2Observer:v15];
+    mEMORY[0x277D16F78]9 = [MEMORY[0x277D16F78] shared];
+    [(HFHomeKitDispatcher *)self addSoftwareUpdateControllerV2Observer:mEMORY[0x277D16F78]9];
 
-    v16 = [MEMORY[0x277D16F78] shared];
-    [(HFHomeKitDispatcher *)self addSymptomsHandlerObserver:v16];
+    mEMORY[0x277D16F78]10 = [MEMORY[0x277D16F78] shared];
+    [(HFHomeKitDispatcher *)self addSymptomsHandlerObserver:mEMORY[0x277D16F78]10];
 
     [(HFHomeKitDispatcher *)self registerHomeStateStream];
   }
@@ -530,8 +530,8 @@ void __27__HFHomeKitDispatcher_init__block_invoke_2(uint64_t a1)
   self->_diagnosticInfoManager = v3;
 
   v5 = MEMORY[0x277D2C8E0];
-  v6 = [objc_opt_class() _defaultLogSettings];
-  v7 = [v5 dispatcherWithProtocol:&unk_2825450E0 logSettings:v6];
+  _defaultLogSettings = [objc_opt_class() _defaultLogSettings];
+  v7 = [v5 dispatcherWithProtocol:&unk_2825450E0 logSettings:_defaultLogSettings];
   softwareUpdateObserverDispatcher = self->_softwareUpdateObserverDispatcher;
   self->_softwareUpdateObserverDispatcher = v7;
 
@@ -543,75 +543,75 @@ void __27__HFHomeKitDispatcher_init__block_invoke_2(uint64_t a1)
   }
 
   v11 = MEMORY[0x277D2C8E0];
-  v12 = [objc_opt_class() _defaultLogSettings];
-  v13 = [v11 dispatcherWithProtocol:&unk_282545C08 logSettings:v12];
+  _defaultLogSettings2 = [objc_opt_class() _defaultLogSettings];
+  v13 = [v11 dispatcherWithProtocol:&unk_282545C08 logSettings:_defaultLogSettings2];
   siriEndpointProfileObserverDispatcher = self->_siriEndpointProfileObserverDispatcher;
   self->_siriEndpointProfileObserverDispatcher = v13;
 
   [(HFHomeKitDispatcher *)self _setupSymptomFixSessionObserver];
   v15 = MEMORY[0x277D2C8E0];
-  v16 = [objc_opt_class() _defaultLogSettings];
-  v17 = [v15 dispatcherWithProtocol:&unk_282544AA0 logSettings:v16];
+  _defaultLogSettings3 = [objc_opt_class() _defaultLogSettings];
+  v17 = [v15 dispatcherWithProtocol:&unk_282544AA0 logSettings:_defaultLogSettings3];
   audioControlObserverDispatcher = self->_audioControlObserverDispatcher;
   self->_audioControlObserverDispatcher = v17;
 
   v19 = MEMORY[0x277D2C8E0];
-  v20 = [objc_opt_class() _defaultLogSettings];
-  v21 = [v19 dispatcherWithProtocol:&unk_2825447B8 logSettings:v20];
+  _defaultLogSettings4 = [objc_opt_class() _defaultLogSettings];
+  v21 = [v19 dispatcherWithProtocol:&unk_2825447B8 logSettings:_defaultLogSettings4];
   cameraObserverDispatcher = self->_cameraObserverDispatcher;
   self->_cameraObserverDispatcher = v21;
 
   v23 = MEMORY[0x277D2C8E0];
-  v24 = [objc_opt_class() _defaultLogSettings];
-  v25 = [v23 dispatcherWithProtocol:&unk_282545618 logSettings:v24];
+  _defaultLogSettings5 = [objc_opt_class() _defaultLogSettings];
+  v25 = [v23 dispatcherWithProtocol:&unk_282545618 logSettings:_defaultLogSettings5];
   userObserverDispatcher = self->_userObserverDispatcher;
   self->_userObserverDispatcher = v25;
 
   v27 = MEMORY[0x277D2C8E0];
-  v28 = [objc_opt_class() _defaultLogSettings];
-  v29 = [v27 dispatcherWithProtocol:&unk_282545260 logSettings:v28];
+  _defaultLogSettings6 = [objc_opt_class() _defaultLogSettings];
+  v29 = [v27 dispatcherWithProtocol:&unk_282545260 logSettings:_defaultLogSettings6];
   symptomsHandlerObserverDispatcher = self->_symptomsHandlerObserverDispatcher;
   self->_symptomsHandlerObserverDispatcher = v29;
 
   v31 = MEMORY[0x277D2C8E0];
-  v32 = [objc_opt_class() _defaultLogSettings];
-  v33 = [v31 dispatcherWithProtocol:&unk_282535CD0 logSettings:v32];
+  _defaultLogSettings7 = [objc_opt_class() _defaultLogSettings];
+  v33 = [v31 dispatcherWithProtocol:&unk_282535CD0 logSettings:_defaultLogSettings7];
   homeKitSettingsObserverDispatcher = self->_homeKitSettingsObserverDispatcher;
   self->_homeKitSettingsObserverDispatcher = v33;
 
   v35 = MEMORY[0x277D2C8E0];
-  v36 = [objc_opt_class() _defaultLogSettings];
-  v37 = [v35 dispatcherWithProtocol:&unk_282544DB8 logSettings:v36];
+  _defaultLogSettings8 = [objc_opt_class() _defaultLogSettings];
+  v37 = [v35 dispatcherWithProtocol:&unk_282544DB8 logSettings:_defaultLogSettings8];
   networkConfigurationObserverDispatcher = self->_networkConfigurationObserverDispatcher;
   self->_networkConfigurationObserverDispatcher = v37;
 
   v39 = MEMORY[0x277D2C8E0];
-  v40 = [objc_opt_class() _defaultLogSettings];
-  v41 = [v39 dispatcherWithProtocol:&unk_282545710 logSettings:v40];
+  _defaultLogSettings9 = [objc_opt_class() _defaultLogSettings];
+  v41 = [v39 dispatcherWithProtocol:&unk_282545710 logSettings:_defaultLogSettings9];
   televisionObserverDispatcher = self->_televisionObserverDispatcher;
   self->_televisionObserverDispatcher = v41;
 
   v43 = MEMORY[0x277D2C8E0];
-  v44 = [objc_opt_class() _defaultLogSettings];
-  v45 = [v43 dispatcherWithProtocol:&unk_282545938 logSettings:v44];
+  _defaultLogSettings10 = [objc_opt_class() _defaultLogSettings];
+  v45 = [v43 dispatcherWithProtocol:&unk_282545938 logSettings:_defaultLogSettings10];
   homePersonManagerDispatcher = self->_homePersonManagerDispatcher;
   self->_homePersonManagerDispatcher = v45;
 
   v47 = MEMORY[0x277D2C8E0];
-  v48 = [objc_opt_class() _defaultLogSettings];
-  v49 = [v47 dispatcherWithProtocol:&unk_282545F08 logSettings:v48];
+  _defaultLogSettings11 = [objc_opt_class() _defaultLogSettings];
+  v49 = [v47 dispatcherWithProtocol:&unk_282545F08 logSettings:_defaultLogSettings11];
   lightObserverDispatcher = self->_lightObserverDispatcher;
   self->_lightObserverDispatcher = v49;
 
   v51 = MEMORY[0x277D2C8E0];
-  v52 = [objc_opt_class() _defaultLogSettings];
-  v53 = [v51 dispatcherWithProtocol:&unk_2825460A0 logSettings:v52];
+  _defaultLogSettings12 = [objc_opt_class() _defaultLogSettings];
+  v53 = [v51 dispatcherWithProtocol:&unk_2825460A0 logSettings:_defaultLogSettings12];
   walletKeyDeviceStateObserverDispatcher = self->_walletKeyDeviceStateObserverDispatcher;
   self->_walletKeyDeviceStateObserverDispatcher = v53;
 
   v55 = MEMORY[0x277D2C8E0];
-  v56 = [objc_opt_class() _defaultLogSettings];
-  v57 = [v55 dispatcherWithProtocol:&unk_282545DE0 logSettings:v56];
+  _defaultLogSettings13 = [objc_opt_class() _defaultLogSettings];
+  v57 = [v55 dispatcherWithProtocol:&unk_282545DE0 logSettings:_defaultLogSettings13];
   mediaDestinationControllerObserverDispatcher = self->_mediaDestinationControllerObserverDispatcher;
   self->_mediaDestinationControllerObserverDispatcher = v57;
 
@@ -623,12 +623,12 @@ void __27__HFHomeKitDispatcher_init__block_invoke_2(uint64_t a1)
   if ([objc_opt_class() synchronizesHomeDataModel] && !+[HFExecutionEnvironment isCarousel](HFExecutionEnvironment, "isCarousel"))
   {
     v59 = +[HFExecutionEnvironment sharedInstance];
-    v60 = [MEMORY[0x277D16F78] shared];
-    [v59 addObserver:v60];
+    mEMORY[0x277D16F78] = [MEMORY[0x277D16F78] shared];
+    [v59 addObserver:mEMORY[0x277D16F78]];
 
-    v62 = [MEMORY[0x277D16F78] shared];
+    mEMORY[0x277D16F78]2 = [MEMORY[0x277D16F78] shared];
     v61 = +[HFExecutionEnvironment sharedInstance];
-    [v62 executionEnvironmentRunningStateDidChange:v61];
+    [mEMORY[0x277D16F78]2 executionEnvironmentRunningStateDidChange:v61];
   }
 }
 
@@ -685,13 +685,13 @@ id __43__HFHomeKitDispatcher__volatileLogSettings__block_invoke(uint64_t a1, voi
   return v5;
 }
 
-+ (id)_logSettingsWithFormatter:(id)a3
++ (id)_logSettingsWithFormatter:(id)formatter
 {
   v3 = MEMORY[0x277D2C8E8];
-  v4 = a3;
+  formatterCopy = formatter;
   v5 = [v3 alloc];
   v6 = HFLogForCategory(0x27uLL);
-  v7 = [v5 initWithLog:v6 logType:0 argumentFormatter:v4];
+  v7 = [v5 initWithLog:v6 logType:0 argumentFormatter:formatterCopy];
 
   return v7;
 }
@@ -700,8 +700,8 @@ id __43__HFHomeKitDispatcher__volatileLogSettings__block_invoke(uint64_t a1, voi
 {
   objc_initWeak(&location, self);
   v4 = MEMORY[0x277D2C8E0];
-  v5 = [objc_opt_class() _defaultLogSettings];
-  v6 = [v4 dispatcherWithProtocol:&unk_28252CFC8 logSettings:v5];
+  _defaultLogSettings = [objc_opt_class() _defaultLogSettings];
+  v6 = [v4 dispatcherWithProtocol:&unk_28252CFC8 logSettings:_defaultLogSettings];
   homeManagerObserverDispatcher = self->_homeManagerObserverDispatcher;
   self->_homeManagerObserverDispatcher = v6;
 
@@ -915,8 +915,8 @@ uint64_t __48__HFHomeKitDispatcher__setupHomeManagerObserver__block_invoke_273(u
 - (void)_setupHomeObserver
 {
   v3 = MEMORY[0x277D2C8E0];
-  v4 = [objc_opt_class() _defaultLogSettings];
-  v5 = [v3 dispatcherWithProtocol:&unk_282528678 logSettings:v4];
+  _defaultLogSettings = [objc_opt_class() _defaultLogSettings];
+  v5 = [v3 dispatcherWithProtocol:&unk_282528678 logSettings:_defaultLogSettings];
   homeObserverDispatcher = self->_homeObserverDispatcher;
   self->_homeObserverDispatcher = v5;
 
@@ -1056,8 +1056,8 @@ void __41__HFHomeKitDispatcher__setupHomeObserver__block_invoke_5(uint64_t a1, v
 - (void)_setupAccessoryObserver
 {
   v3 = MEMORY[0x277D2C8E0];
-  v4 = [objc_opt_class() _volatileLogSettings];
-  v5 = [v3 dispatcherWithProtocol:&unk_2825441E8 logSettings:v4];
+  _volatileLogSettings = [objc_opt_class() _volatileLogSettings];
+  v5 = [v3 dispatcherWithProtocol:&unk_2825441E8 logSettings:_volatileLogSettings];
   accessoryObserverDispatcher = self->_accessoryObserverDispatcher;
   self->_accessoryObserverDispatcher = v5;
 
@@ -1127,8 +1127,8 @@ void __46__HFHomeKitDispatcher__setupAccessoryObserver__block_invoke_3(uint64_t 
 - (void)_setupResidentDeviceObserver
 {
   v3 = MEMORY[0x277D2C8E0];
-  v4 = [objc_opt_class() _defaultLogSettings];
-  v5 = [v3 dispatcherWithProtocol:&unk_28252D278 logSettings:v4];
+  _defaultLogSettings = [objc_opt_class() _defaultLogSettings];
+  v5 = [v3 dispatcherWithProtocol:&unk_28252D278 logSettings:_defaultLogSettings];
   residentDeviceObserverDispatcher = self->_residentDeviceObserverDispatcher;
   self->_residentDeviceObserverDispatcher = v5;
 
@@ -1201,8 +1201,8 @@ uint64_t __51__HFHomeKitDispatcher__setupResidentDeviceObserver__block_invoke_4(
 - (void)_setupMediaObjectObserver
 {
   v3 = MEMORY[0x277D2C8E0];
-  v4 = [objc_opt_class() _defaultLogSettings];
-  v5 = [v3 dispatcherWithProtocol:&unk_282536018 logSettings:v4];
+  _defaultLogSettings = [objc_opt_class() _defaultLogSettings];
+  v5 = [v3 dispatcherWithProtocol:&unk_282536018 logSettings:_defaultLogSettings];
   mediaObjectObserverDispatcher = self->_mediaObjectObserverDispatcher;
   self->_mediaObjectObserverDispatcher = v5;
 
@@ -1252,8 +1252,8 @@ void __48__HFHomeKitDispatcher__setupMediaObjectObserver__block_invoke_2(uint64_
 - (void)_setupMediaSessionObserver
 {
   v3 = MEMORY[0x277D2C8E0];
-  v4 = [objc_opt_class() _defaultLogSettings];
-  v5 = [v3 dispatcherWithProtocol:&unk_282544990 logSettings:v4];
+  _defaultLogSettings = [objc_opt_class() _defaultLogSettings];
+  v5 = [v3 dispatcherWithProtocol:&unk_282544990 logSettings:_defaultLogSettings];
   mediaSessionObserverDispatcher = self->_mediaSessionObserverDispatcher;
   self->_mediaSessionObserverDispatcher = v5;
 
@@ -1272,8 +1272,8 @@ __CFString *__49__HFHomeKitDispatcher__setupMediaSessionObserver__block_invoke(u
 - (void)_setupSofwareUpdateControllerObserver
 {
   v3 = MEMORY[0x277D2C8E0];
-  v4 = [objc_opt_class() _defaultLogSettings];
-  v5 = [v3 dispatcherWithProtocol:&unk_282544EB8 logSettings:v4];
+  _defaultLogSettings = [objc_opt_class() _defaultLogSettings];
+  v5 = [v3 dispatcherWithProtocol:&unk_282544EB8 logSettings:_defaultLogSettings];
   softwareUpdateControllerObserverDispatcher = self->_softwareUpdateControllerObserverDispatcher;
   self->_softwareUpdateControllerObserverDispatcher = v5;
 
@@ -1334,52 +1334,52 @@ void __60__HFHomeKitDispatcher__setupSofwareUpdateControllerObserver__block_invo
 - (void)_setupSofwareUpdateControllerV2Observer
 {
   v3 = MEMORY[0x277D2C8E0];
-  v4 = [objc_opt_class() _defaultLogSettings];
-  v5 = [v3 dispatcherWithProtocol:&unk_282526A00 logSettings:v4];
+  _defaultLogSettings = [objc_opt_class() _defaultLogSettings];
+  v5 = [v3 dispatcherWithProtocol:&unk_282526A00 logSettings:_defaultLogSettings];
   softwareUpdateControllerV2ObserverDispatcher = self->_softwareUpdateControllerV2ObserverDispatcher;
   self->_softwareUpdateControllerV2ObserverDispatcher = v5;
 
-  v10 = [(HFHomeKitDispatcher *)self softwareUpdateControllerV2ObserverDispatcher];
-  v7 = [v10 proxy];
-  v8 = [(HFHomeKitDispatcher *)self home];
-  v9 = [v8 softwareUpdateController];
-  [v9 setDelegate:v7];
+  softwareUpdateControllerV2ObserverDispatcher = [(HFHomeKitDispatcher *)self softwareUpdateControllerV2ObserverDispatcher];
+  proxy = [softwareUpdateControllerV2ObserverDispatcher proxy];
+  home = [(HFHomeKitDispatcher *)self home];
+  softwareUpdateController = [home softwareUpdateController];
+  [softwareUpdateController setDelegate:proxy];
 }
 
-- (void)_setSoftwareUpateControllerV2DelegationEnabled:(BOOL)a3
+- (void)_setSoftwareUpateControllerV2DelegationEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  if (a3)
+  enabledCopy = enabled;
+  if (enabled)
   {
-    v8 = [(HFHomeKitDispatcher *)self softwareUpdateControllerV2ObserverDispatcher];
-    v5 = [v8 proxy];
+    softwareUpdateControllerV2ObserverDispatcher = [(HFHomeKitDispatcher *)self softwareUpdateControllerV2ObserverDispatcher];
+    proxy = [softwareUpdateControllerV2ObserverDispatcher proxy];
   }
 
   else
   {
-    v5 = 0;
+    proxy = 0;
   }
 
-  v6 = [(HFHomeKitDispatcher *)self home];
-  v7 = [v6 softwareUpdateController];
-  [v7 setDelegate:v5];
+  home = [(HFHomeKitDispatcher *)self home];
+  softwareUpdateController = [home softwareUpdateController];
+  [softwareUpdateController setDelegate:proxy];
 
-  if (v3)
+  if (enabledCopy)
   {
   }
 
   else
   {
-    v8 = [(HFHomeKitDispatcher *)self softwareUpdateManager];
-    [v8 resetCaches];
+    softwareUpdateControllerV2ObserverDispatcher = [(HFHomeKitDispatcher *)self softwareUpdateManager];
+    [softwareUpdateControllerV2ObserverDispatcher resetCaches];
   }
 }
 
 - (void)_setupSymptomFixSessionObserver
 {
   v3 = MEMORY[0x277D2C8E0];
-  v4 = [objc_opt_class() _defaultLogSettings];
-  v5 = [v3 dispatcherWithProtocol:&unk_282545C98 logSettings:v4];
+  _defaultLogSettings = [objc_opt_class() _defaultLogSettings];
+  v5 = [v3 dispatcherWithProtocol:&unk_282545C98 logSettings:_defaultLogSettings];
   symptomFixSessionObserverDispatcher = self->_symptomFixSessionObserverDispatcher;
   self->_symptomFixSessionObserverDispatcher = v5;
 
@@ -1489,21 +1489,21 @@ __CFString *__46__HFHomeKitDispatcher__setupStateDumpHandlers__block_invoke_3(vo
 
 - (void)_createHomeManagerIfNecessary
 {
-  v3 = [(HFHomeKitDispatcher *)self homeManager];
+  homeManager = [(HFHomeKitDispatcher *)self homeManager];
 
-  if (!v3)
+  if (!homeManager)
   {
-    v4 = [(HFHomeKitDispatcher *)self homeManagerCreator];
-    v5 = [v4 canCreateHomeManager];
+    homeManagerCreator = [(HFHomeKitDispatcher *)self homeManagerCreator];
+    canCreateHomeManager = [homeManagerCreator canCreateHomeManager];
 
-    if (v5)
+    if (canCreateHomeManager)
     {
-      v6 = [(HFHomeKitDispatcher *)self homeManagerCreator];
-      v7 = [v6 createHomeManagerIfNeeded];
+      homeManagerCreator2 = [(HFHomeKitDispatcher *)self homeManagerCreator];
+      createHomeManagerIfNeeded = [homeManagerCreator2 createHomeManagerIfNeeded];
 
-      if (v7)
+      if (createHomeManagerIfNeeded)
       {
-        [(HFHomeKitDispatcher *)self setHomeManagerAndUpdateDelegate:v7];
+        [(HFHomeKitDispatcher *)self setHomeManagerAndUpdateDelegate:createHomeManagerIfNeeded];
         v8 = HFLogForCategory(0x27uLL);
         if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
         {
@@ -1525,19 +1525,19 @@ __CFString *__46__HFHomeKitDispatcher__setupStateDumpHandlers__block_invoke_3(vo
       [(HFHomeKitDispatcher *)self setWillAcceptHomeFutures:0];
     }
 
-    [(HFHomeKitDispatcher *)self setWillAcceptHomeFutures:v5];
+    [(HFHomeKitDispatcher *)self setWillAcceptHomeFutures:canCreateHomeManager];
   }
 }
 
-- (void)setHomeManagerAndUpdateDelegate:(id)a3
+- (void)setHomeManagerAndUpdateDelegate:(id)delegate
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  delegateCopy = delegate;
   v6 = HFLogForCategory(0x27uLL);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v14 = 138412290;
-    v15 = v5;
+    v15 = delegateCopy;
     _os_log_impl(&dword_20D9BF000, v6, OS_LOG_TYPE_DEFAULT, "Setting home manager to %@ and awaiting home update", &v14, 0xCu);
   }
 
@@ -1551,21 +1551,21 @@ __CFString *__46__HFHomeKitDispatcher__setupStateDumpHandlers__block_invoke_3(vo
   selectedHome = self->_selectedHome;
   self->_selectedHome = 0;
 
-  objc_storeStrong(&self->_homeManager, a3);
-  self->_willAcceptHomeFutures = v5 != 0;
+  objc_storeStrong(&self->_homeManager, delegate);
+  self->_willAcceptHomeFutures = delegateCopy != 0;
   if ([objc_opt_class() synchronizesHomeDataModel])
   {
-    v10 = [MEMORY[0x277D16F78] shared];
-    [v10 setHomeManager:v5];
+    mEMORY[0x277D16F78] = [MEMORY[0x277D16F78] shared];
+    [mEMORY[0x277D16F78] setHomeManager:delegateCopy];
 
-    [(HFHomeKitDispatcher *)self configureHomeStateStreamWithHomeManager:v5];
+    [(HFHomeKitDispatcher *)self configureHomeStateStreamWithHomeManager:delegateCopy];
   }
 
-  v11 = [(HFHomeKitDispatcher *)self homeManagerObserverDispatcher];
-  v12 = [v11 proxy];
-  [(HMHomeManager *)self->_homeManager setDelegate:v12];
+  homeManagerObserverDispatcher = [(HFHomeKitDispatcher *)self homeManagerObserverDispatcher];
+  proxy = [homeManagerObserverDispatcher proxy];
+  [(HMHomeManager *)self->_homeManager setDelegate:proxy];
 
-  if (!v5)
+  if (!delegateCopy)
   {
     [(HFHomeKitDispatcher *)self _initializeObservers];
   }
@@ -1573,45 +1573,45 @@ __CFString *__46__HFHomeKitDispatcher__setupStateDumpHandlers__block_invoke_3(vo
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateHomeManagerConfiguration:(id)a3
+- (void)updateHomeManagerConfiguration:(id)configuration
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  configurationCopy = configuration;
   v5 = +[HFHomeKitDispatcher configuration];
-  v6 = [v5 options];
-  v7 = [v4 options];
+  options = [v5 options];
+  options2 = [configurationCopy options];
 
-  if (v6 != v7)
+  if (options != options2)
   {
     v8 = HFLogForCategory(0);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      [v4 options];
+      [configurationCopy options];
       v9 = HMHomeManagerOptionsToString();
       v14 = 138412290;
       v15 = v9;
       _os_log_impl(&dword_20D9BF000, v8, OS_LOG_TYPE_DEFAULT, "Updating Home Manager configuration with options [%@]", &v14, 0xCu);
     }
 
-    [HFHomeKitDispatcher setConfiguration:v4];
-    v10 = [(HFHomeKitDispatcher *)self homeManagerCreator];
-    [v10 setConfiguration:v4];
+    [HFHomeKitDispatcher setConfiguration:configurationCopy];
+    homeManagerCreator = [(HFHomeKitDispatcher *)self homeManagerCreator];
+    [homeManagerCreator setConfiguration:configurationCopy];
 
-    v11 = [(HFHomeKitDispatcher *)self homeManagerCreator];
-    v12 = [v11 createHomeManagerIfNeeded];
+    homeManagerCreator2 = [(HFHomeKitDispatcher *)self homeManagerCreator];
+    createHomeManagerIfNeeded = [homeManagerCreator2 createHomeManagerIfNeeded];
 
-    if (v12)
+    if (createHomeManagerIfNeeded)
     {
-      [(HFHomeKitDispatcher *)self setHomeManagerAndUpdateDelegate:v12];
+      [(HFHomeKitDispatcher *)self setHomeManagerAndUpdateDelegate:createHomeManagerIfNeeded];
     }
   }
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)homeManagerWasCreated:(id)a3
+- (void)homeManagerWasCreated:(id)created
 {
-  [(HFHomeKitDispatcher *)self setHomeManagerAndUpdateDelegate:a3];
+  [(HFHomeKitDispatcher *)self setHomeManagerAndUpdateDelegate:created];
   v4 = HFLogForCategory(0x27uLL);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -1627,94 +1627,94 @@ __CFString *__46__HFHomeKitDispatcher__setupStateDumpHandlers__block_invoke_3(vo
   }
 }
 
-- (void)addHomeManagerObserver:(id)a3
+- (void)addHomeManagerObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(HFHomeKitDispatcher *)self homeManagerObserverDispatcher];
-  [v5 addObserver:v4];
+  observerCopy = observer;
+  homeManagerObserverDispatcher = [(HFHomeKitDispatcher *)self homeManagerObserverDispatcher];
+  [homeManagerObserverDispatcher addObserver:observerCopy];
 }
 
-- (void)removeHomeManagerObserver:(id)a3
+- (void)removeHomeManagerObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(HFHomeKitDispatcher *)self homeManagerObserverDispatcher];
-  [v5 removeObserver:v4];
+  observerCopy = observer;
+  homeManagerObserverDispatcher = [(HFHomeKitDispatcher *)self homeManagerObserverDispatcher];
+  [homeManagerObserverDispatcher removeObserver:observerCopy];
 }
 
-- (void)addHomeObserver:(id)a3
+- (void)addHomeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(HFHomeKitDispatcher *)self homeObserverDispatcher];
-  [v5 addObserver:v4];
+  observerCopy = observer;
+  homeObserverDispatcher = [(HFHomeKitDispatcher *)self homeObserverDispatcher];
+  [homeObserverDispatcher addObserver:observerCopy];
 }
 
-- (void)removeHomeObserver:(id)a3
+- (void)removeHomeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(HFHomeKitDispatcher *)self homeObserverDispatcher];
-  [v5 removeObserver:v4];
+  observerCopy = observer;
+  homeObserverDispatcher = [(HFHomeKitDispatcher *)self homeObserverDispatcher];
+  [homeObserverDispatcher removeObserver:observerCopy];
 }
 
-- (void)addAccessoryObserver:(id)a3
+- (void)addAccessoryObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(HFHomeKitDispatcher *)self accessoryObserverDispatcher];
-  [v5 addObserver:v4];
+  observerCopy = observer;
+  accessoryObserverDispatcher = [(HFHomeKitDispatcher *)self accessoryObserverDispatcher];
+  [accessoryObserverDispatcher addObserver:observerCopy];
 }
 
-- (void)removeAccessoryObserver:(id)a3
+- (void)removeAccessoryObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(HFHomeKitDispatcher *)self accessoryObserverDispatcher];
-  [v5 removeObserver:v4];
+  observerCopy = observer;
+  accessoryObserverDispatcher = [(HFHomeKitDispatcher *)self accessoryObserverDispatcher];
+  [accessoryObserverDispatcher removeObserver:observerCopy];
 }
 
-- (void)addResidentDeviceObserver:(id)a3
+- (void)addResidentDeviceObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(HFHomeKitDispatcher *)self residentDeviceObserverDispatcher];
-  [v5 addObserver:v4];
+  observerCopy = observer;
+  residentDeviceObserverDispatcher = [(HFHomeKitDispatcher *)self residentDeviceObserverDispatcher];
+  [residentDeviceObserverDispatcher addObserver:observerCopy];
 }
 
-- (void)removeResidentDeviceObserver:(id)a3
+- (void)removeResidentDeviceObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(HFHomeKitDispatcher *)self residentDeviceObserverDispatcher];
-  [v5 removeObserver:v4];
+  observerCopy = observer;
+  residentDeviceObserverDispatcher = [(HFHomeKitDispatcher *)self residentDeviceObserverDispatcher];
+  [residentDeviceObserverDispatcher removeObserver:observerCopy];
 }
 
-- (void)addCameraObserver:(id)a3
+- (void)addCameraObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(HFHomeKitDispatcher *)self cameraObserverDispatcher];
-  [v5 addObserver:v4];
+  observerCopy = observer;
+  cameraObserverDispatcher = [(HFHomeKitDispatcher *)self cameraObserverDispatcher];
+  [cameraObserverDispatcher addObserver:observerCopy];
 }
 
-- (void)removeCameraObserver:(id)a3
+- (void)removeCameraObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(HFHomeKitDispatcher *)self cameraObserverDispatcher];
-  [v5 removeObserver:v4];
+  observerCopy = observer;
+  cameraObserverDispatcher = [(HFHomeKitDispatcher *)self cameraObserverDispatcher];
+  [cameraObserverDispatcher removeObserver:observerCopy];
 }
 
-- (void)addMediaObjectObserver:(id)a3
+- (void)addMediaObjectObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(HFHomeKitDispatcher *)self mediaObjectObserverDispatcher];
-  [v5 addObserver:v4];
+  observerCopy = observer;
+  mediaObjectObserverDispatcher = [(HFHomeKitDispatcher *)self mediaObjectObserverDispatcher];
+  [mediaObjectObserverDispatcher addObserver:observerCopy];
 }
 
-- (void)removeMediaObjectObserver:(id)a3
+- (void)removeMediaObjectObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(HFHomeKitDispatcher *)self mediaObjectObserverDispatcher];
-  [v5 removeObserver:v4];
+  observerCopy = observer;
+  mediaObjectObserverDispatcher = [(HFHomeKitDispatcher *)self mediaObjectObserverDispatcher];
+  [mediaObjectObserverDispatcher removeObserver:observerCopy];
 }
 
-- (void)addMediaProfileObserver:(id)a3
+- (void)addMediaProfileObserver:(id)observer
 {
   v11 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  observerCopy = observer;
   v6 = HFLogForCategory(0x27uLL);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
@@ -1724,14 +1724,14 @@ __CFString *__46__HFHomeKitDispatcher__setupStateDumpHandlers__block_invoke_3(vo
     _os_log_error_impl(&dword_20D9BF000, v6, OS_LOG_TYPE_ERROR, "This selector, %@, has been deprecated! Please move to addMediaObjectObserver: and move to HFMediaObjectObserver away from HFMediaProfileObserver!", &v9, 0xCu);
   }
 
-  [(HFHomeKitDispatcher *)self addMediaObjectObserver:v5];
+  [(HFHomeKitDispatcher *)self addMediaObjectObserver:observerCopy];
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeMediaProfileObserver:(id)a3
+- (void)removeMediaProfileObserver:(id)observer
 {
   v11 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  observerCopy = observer;
   v6 = HFLogForCategory(0x27uLL);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
@@ -1741,437 +1741,437 @@ __CFString *__46__HFHomeKitDispatcher__setupStateDumpHandlers__block_invoke_3(vo
     _os_log_error_impl(&dword_20D9BF000, v6, OS_LOG_TYPE_ERROR, "This selector, %@, has been deprecated! Please move to removeMediaObjectObserver: and move to HFMediaObjectObserver away from HFMediaProfileObserver!", &v9, 0xCu);
   }
 
-  [(HFHomeKitDispatcher *)self removeMediaObjectObserver:v5];
+  [(HFHomeKitDispatcher *)self removeMediaObjectObserver:observerCopy];
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addMediaSessionObserver:(id)a3
+- (void)addMediaSessionObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(HFHomeKitDispatcher *)self mediaSessionObserverDispatcher];
-  [v5 addObserver:v4];
+  observerCopy = observer;
+  mediaSessionObserverDispatcher = [(HFHomeKitDispatcher *)self mediaSessionObserverDispatcher];
+  [mediaSessionObserverDispatcher addObserver:observerCopy];
 }
 
-- (void)removeMediaSessionObserver:(id)a3
+- (void)removeMediaSessionObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(HFHomeKitDispatcher *)self mediaSessionObserverDispatcher];
-  [v5 removeObserver:v4];
+  observerCopy = observer;
+  mediaSessionObserverDispatcher = [(HFHomeKitDispatcher *)self mediaSessionObserverDispatcher];
+  [mediaSessionObserverDispatcher removeObserver:observerCopy];
 }
 
-- (void)addSiriEndpointProfileObserver:(id)a3
+- (void)addSiriEndpointProfileObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(HFHomeKitDispatcher *)self siriEndpointProfileObserverDispatcher];
-  [v5 addObserver:v4];
+  observerCopy = observer;
+  siriEndpointProfileObserverDispatcher = [(HFHomeKitDispatcher *)self siriEndpointProfileObserverDispatcher];
+  [siriEndpointProfileObserverDispatcher addObserver:observerCopy];
 }
 
-- (void)removeSiriEndpointProfileObserver:(id)a3
+- (void)removeSiriEndpointProfileObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(HFHomeKitDispatcher *)self siriEndpointProfileObserverDispatcher];
-  [v5 removeObserver:v4];
+  observerCopy = observer;
+  siriEndpointProfileObserverDispatcher = [(HFHomeKitDispatcher *)self siriEndpointProfileObserverDispatcher];
+  [siriEndpointProfileObserverDispatcher removeObserver:observerCopy];
 }
 
-- (void)addAudioControlObserver:(id)a3
+- (void)addAudioControlObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(HFHomeKitDispatcher *)self audioControlObserverDispatcher];
-  [v5 addObserver:v4];
+  observerCopy = observer;
+  audioControlObserverDispatcher = [(HFHomeKitDispatcher *)self audioControlObserverDispatcher];
+  [audioControlObserverDispatcher addObserver:observerCopy];
 }
 
-- (void)removeAudioControlObserver:(id)a3
+- (void)removeAudioControlObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(HFHomeKitDispatcher *)self audioControlObserverDispatcher];
-  [v5 removeObserver:v4];
+  observerCopy = observer;
+  audioControlObserverDispatcher = [(HFHomeKitDispatcher *)self audioControlObserverDispatcher];
+  [audioControlObserverDispatcher removeObserver:observerCopy];
 }
 
-- (void)addHomeKitSettingsObserver:(id)a3
+- (void)addHomeKitSettingsObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(HFHomeKitDispatcher *)self homeKitSettingsObserverDispatcher];
-  [v5 addObserver:v4];
+  observerCopy = observer;
+  homeKitSettingsObserverDispatcher = [(HFHomeKitDispatcher *)self homeKitSettingsObserverDispatcher];
+  [homeKitSettingsObserverDispatcher addObserver:observerCopy];
 }
 
-- (void)removeHomeKitSettingsObserver:(id)a3
+- (void)removeHomeKitSettingsObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(HFHomeKitDispatcher *)self homeKitSettingsObserverDispatcher];
-  [v5 removeObserver:v4];
+  observerCopy = observer;
+  homeKitSettingsObserverDispatcher = [(HFHomeKitDispatcher *)self homeKitSettingsObserverDispatcher];
+  [homeKitSettingsObserverDispatcher removeObserver:observerCopy];
 }
 
-- (void)addNetworkConfigurationObserver:(id)a3
+- (void)addNetworkConfigurationObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(HFHomeKitDispatcher *)self networkConfigurationObserverDispatcher];
-  [v5 addObserver:v4];
+  observerCopy = observer;
+  networkConfigurationObserverDispatcher = [(HFHomeKitDispatcher *)self networkConfigurationObserverDispatcher];
+  [networkConfigurationObserverDispatcher addObserver:observerCopy];
 }
 
-- (void)removeNetworkConfigurationObserver:(id)a3
+- (void)removeNetworkConfigurationObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(HFHomeKitDispatcher *)self networkConfigurationObserverDispatcher];
-  [v5 removeObserver:v4];
+  observerCopy = observer;
+  networkConfigurationObserverDispatcher = [(HFHomeKitDispatcher *)self networkConfigurationObserverDispatcher];
+  [networkConfigurationObserverDispatcher removeObserver:observerCopy];
 }
 
-- (void)addSymptomFixSessionObserver:(id)a3
+- (void)addSymptomFixSessionObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(HFHomeKitDispatcher *)self symptomFixSessionObserverDispatcher];
-  [v5 addObserver:v4];
+  observerCopy = observer;
+  symptomFixSessionObserverDispatcher = [(HFHomeKitDispatcher *)self symptomFixSessionObserverDispatcher];
+  [symptomFixSessionObserverDispatcher addObserver:observerCopy];
 }
 
-- (void)removeSymptomFixSessionObserver:(id)a3
+- (void)removeSymptomFixSessionObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(HFHomeKitDispatcher *)self symptomFixSessionObserverDispatcher];
-  [v5 removeObserver:v4];
+  observerCopy = observer;
+  symptomFixSessionObserverDispatcher = [(HFHomeKitDispatcher *)self symptomFixSessionObserverDispatcher];
+  [symptomFixSessionObserverDispatcher removeObserver:observerCopy];
 }
 
-- (void)addSoftwareUpdateControllerObserver:(id)a3
+- (void)addSoftwareUpdateControllerObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(HFHomeKitDispatcher *)self softwareUpdateControllerObserverDispatcher];
-  [v5 addObserver:v4];
+  observerCopy = observer;
+  softwareUpdateControllerObserverDispatcher = [(HFHomeKitDispatcher *)self softwareUpdateControllerObserverDispatcher];
+  [softwareUpdateControllerObserverDispatcher addObserver:observerCopy];
 }
 
-- (void)removeSoftwareUpdateControllerObserver:(id)a3
+- (void)removeSoftwareUpdateControllerObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(HFHomeKitDispatcher *)self softwareUpdateControllerObserverDispatcher];
-  [v5 removeObserver:v4];
+  observerCopy = observer;
+  softwareUpdateControllerObserverDispatcher = [(HFHomeKitDispatcher *)self softwareUpdateControllerObserverDispatcher];
+  [softwareUpdateControllerObserverDispatcher removeObserver:observerCopy];
 }
 
-- (void)addSoftwareUpdateObserver:(id)a3
+- (void)addSoftwareUpdateObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(HFHomeKitDispatcher *)self softwareUpdateObserverDispatcher];
-  [v5 addObserver:v4];
+  observerCopy = observer;
+  softwareUpdateObserverDispatcher = [(HFHomeKitDispatcher *)self softwareUpdateObserverDispatcher];
+  [softwareUpdateObserverDispatcher addObserver:observerCopy];
 }
 
-- (void)removeSoftwareUpdateObserver:(id)a3
+- (void)removeSoftwareUpdateObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(HFHomeKitDispatcher *)self softwareUpdateObserverDispatcher];
-  [v5 removeObserver:v4];
+  observerCopy = observer;
+  softwareUpdateObserverDispatcher = [(HFHomeKitDispatcher *)self softwareUpdateObserverDispatcher];
+  [softwareUpdateObserverDispatcher removeObserver:observerCopy];
 }
 
-- (void)addSoftwareUpdateControllerV2Observer:(id)a3
+- (void)addSoftwareUpdateControllerV2Observer:(id)observer
 {
-  v4 = a3;
-  v5 = [(HFHomeKitDispatcher *)self softwareUpdateControllerV2ObserverDispatcher];
-  [v5 addObserver:v4];
+  observerCopy = observer;
+  softwareUpdateControllerV2ObserverDispatcher = [(HFHomeKitDispatcher *)self softwareUpdateControllerV2ObserverDispatcher];
+  [softwareUpdateControllerV2ObserverDispatcher addObserver:observerCopy];
 }
 
-- (void)removeSoftwareUpdateControllerV2Observer:(id)a3
+- (void)removeSoftwareUpdateControllerV2Observer:(id)observer
 {
-  v4 = a3;
-  v5 = [(HFHomeKitDispatcher *)self softwareUpdateControllerV2ObserverDispatcher];
-  [v5 removeObserver:v4];
+  observerCopy = observer;
+  softwareUpdateControllerV2ObserverDispatcher = [(HFHomeKitDispatcher *)self softwareUpdateControllerV2ObserverDispatcher];
+  [softwareUpdateControllerV2ObserverDispatcher removeObserver:observerCopy];
 }
 
-- (void)addUserObserver:(id)a3
+- (void)addUserObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(HFHomeKitDispatcher *)self userObserverDispatcher];
-  [v5 addObserver:v4];
+  observerCopy = observer;
+  userObserverDispatcher = [(HFHomeKitDispatcher *)self userObserverDispatcher];
+  [userObserverDispatcher addObserver:observerCopy];
 }
 
-- (void)removeUserObserver:(id)a3
+- (void)removeUserObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(HFHomeKitDispatcher *)self userObserverDispatcher];
-  [v5 removeObserver:v4];
+  observerCopy = observer;
+  userObserverDispatcher = [(HFHomeKitDispatcher *)self userObserverDispatcher];
+  [userObserverDispatcher removeObserver:observerCopy];
 }
 
-- (void)addSymptomsHandlerObserver:(id)a3
+- (void)addSymptomsHandlerObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(HFHomeKitDispatcher *)self symptomsHandlerObserverDispatcher];
-  [v5 addObserver:v4];
+  observerCopy = observer;
+  symptomsHandlerObserverDispatcher = [(HFHomeKitDispatcher *)self symptomsHandlerObserverDispatcher];
+  [symptomsHandlerObserverDispatcher addObserver:observerCopy];
 }
 
-- (void)removeSymptomsHandlerObserver:(id)a3
+- (void)removeSymptomsHandlerObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(HFHomeKitDispatcher *)self symptomsHandlerObserverDispatcher];
-  [v5 removeObserver:v4];
+  observerCopy = observer;
+  symptomsHandlerObserverDispatcher = [(HFHomeKitDispatcher *)self symptomsHandlerObserverDispatcher];
+  [symptomsHandlerObserverDispatcher removeObserver:observerCopy];
 }
 
-- (void)addTelevisionObserver:(id)a3
+- (void)addTelevisionObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(HFHomeKitDispatcher *)self televisionObserverDispatcher];
-  [v5 addObserver:v4];
+  observerCopy = observer;
+  televisionObserverDispatcher = [(HFHomeKitDispatcher *)self televisionObserverDispatcher];
+  [televisionObserverDispatcher addObserver:observerCopy];
 }
 
-- (void)removeTelevisionObserver:(id)a3
+- (void)removeTelevisionObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(HFHomeKitDispatcher *)self televisionObserverDispatcher];
-  [v5 removeObserver:v4];
+  observerCopy = observer;
+  televisionObserverDispatcher = [(HFHomeKitDispatcher *)self televisionObserverDispatcher];
+  [televisionObserverDispatcher removeObserver:observerCopy];
 }
 
-- (void)addHomePersonManagerObserver:(id)a3
+- (void)addHomePersonManagerObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(HFHomeKitDispatcher *)self homePersonManagerDispatcher];
-  [v5 addObserver:v4];
+  observerCopy = observer;
+  homePersonManagerDispatcher = [(HFHomeKitDispatcher *)self homePersonManagerDispatcher];
+  [homePersonManagerDispatcher addObserver:observerCopy];
 }
 
-- (void)removeHomePersonManagerObserver:(id)a3
+- (void)removeHomePersonManagerObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(HFHomeKitDispatcher *)self homePersonManagerDispatcher];
-  [v5 removeObserver:v4];
+  observerCopy = observer;
+  homePersonManagerDispatcher = [(HFHomeKitDispatcher *)self homePersonManagerDispatcher];
+  [homePersonManagerDispatcher removeObserver:observerCopy];
 }
 
-- (void)addMediaDestinationControllerObserver:(id)a3
+- (void)addMediaDestinationControllerObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(HFHomeKitDispatcher *)self mediaDestinationControllerObserverDispatcher];
-  [v5 addObserver:v4];
+  observerCopy = observer;
+  mediaDestinationControllerObserverDispatcher = [(HFHomeKitDispatcher *)self mediaDestinationControllerObserverDispatcher];
+  [mediaDestinationControllerObserverDispatcher addObserver:observerCopy];
 }
 
-- (void)removeMediaDestinationControllerObserver:(id)a3
+- (void)removeMediaDestinationControllerObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(HFHomeKitDispatcher *)self mediaDestinationControllerObserverDispatcher];
-  [v5 removeObserver:v4];
+  observerCopy = observer;
+  mediaDestinationControllerObserverDispatcher = [(HFHomeKitDispatcher *)self mediaDestinationControllerObserverDispatcher];
+  [mediaDestinationControllerObserverDispatcher removeObserver:observerCopy];
 }
 
-- (void)addLightObserver:(id)a3
+- (void)addLightObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(HFHomeKitDispatcher *)self lightObserverDispatcher];
-  [v5 addObserver:v4];
+  observerCopy = observer;
+  lightObserverDispatcher = [(HFHomeKitDispatcher *)self lightObserverDispatcher];
+  [lightObserverDispatcher addObserver:observerCopy];
 }
 
-- (void)removeLightObserver:(id)a3
+- (void)removeLightObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(HFHomeKitDispatcher *)self lightObserverDispatcher];
-  [v5 removeObserver:v4];
+  observerCopy = observer;
+  lightObserverDispatcher = [(HFHomeKitDispatcher *)self lightObserverDispatcher];
+  [lightObserverDispatcher removeObserver:observerCopy];
 }
 
-- (void)addWalletKeyDeviceStateObserver:(id)a3
+- (void)addWalletKeyDeviceStateObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(HFHomeKitDispatcher *)self walletKeyDeviceStateObserverDispatcher];
-  [v5 addObserver:v4];
+  observerCopy = observer;
+  walletKeyDeviceStateObserverDispatcher = [(HFHomeKitDispatcher *)self walletKeyDeviceStateObserverDispatcher];
+  [walletKeyDeviceStateObserverDispatcher addObserver:observerCopy];
 }
 
-- (void)removeWalletKeyDeviceStateObserver:(id)a3
+- (void)removeWalletKeyDeviceStateObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(HFHomeKitDispatcher *)self walletKeyDeviceStateObserverDispatcher];
-  [v5 removeObserver:v4];
+  observerCopy = observer;
+  walletKeyDeviceStateObserverDispatcher = [(HFHomeKitDispatcher *)self walletKeyDeviceStateObserverDispatcher];
+  [walletKeyDeviceStateObserverDispatcher removeObserver:observerCopy];
 }
 
-- (void)addDiagnosticInfoObserver:(id)a3
+- (void)addDiagnosticInfoObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(HFHomeKitDispatcher *)self diagnosticInfoManager];
-  [v5 addObserver:v4];
+  observerCopy = observer;
+  diagnosticInfoManager = [(HFHomeKitDispatcher *)self diagnosticInfoManager];
+  [diagnosticInfoManager addObserver:observerCopy];
 }
 
-- (void)removeDiagnosticInfoObserver:(id)a3
+- (void)removeDiagnosticInfoObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(HFHomeKitDispatcher *)self diagnosticInfoManager];
-  [v5 removeObserver:v4];
+  observerCopy = observer;
+  diagnosticInfoManager = [(HFHomeKitDispatcher *)self diagnosticInfoManager];
+  [diagnosticInfoManager removeObserver:observerCopy];
 }
 
-- (void)dispatchHomeManagerObserverMessage:(id)a3 sender:(id)a4
+- (void)dispatchHomeManagerObserverMessage:(id)message sender:(id)sender
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HFHomeKitDispatcher *)self homeManagerObserverDispatcher];
-  [v8 dispatchMessageExcludingSender:v6 usingBlock:v7];
+  senderCopy = sender;
+  messageCopy = message;
+  homeManagerObserverDispatcher = [(HFHomeKitDispatcher *)self homeManagerObserverDispatcher];
+  [homeManagerObserverDispatcher dispatchMessageExcludingSender:senderCopy usingBlock:messageCopy];
 }
 
-- (void)dispatchHomeObserverMessage:(id)a3 sender:(id)a4
+- (void)dispatchHomeObserverMessage:(id)message sender:(id)sender
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HFHomeKitDispatcher *)self homeObserverDispatcher];
-  [v8 dispatchMessageExcludingSender:v6 usingBlock:v7];
+  senderCopy = sender;
+  messageCopy = message;
+  homeObserverDispatcher = [(HFHomeKitDispatcher *)self homeObserverDispatcher];
+  [homeObserverDispatcher dispatchMessageExcludingSender:senderCopy usingBlock:messageCopy];
 }
 
-- (void)dispatchAccessoryObserverMessage:(id)a3 sender:(id)a4
+- (void)dispatchAccessoryObserverMessage:(id)message sender:(id)sender
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HFHomeKitDispatcher *)self accessoryObserverDispatcher];
-  [v8 dispatchMessageExcludingSender:v6 usingBlock:v7];
+  senderCopy = sender;
+  messageCopy = message;
+  accessoryObserverDispatcher = [(HFHomeKitDispatcher *)self accessoryObserverDispatcher];
+  [accessoryObserverDispatcher dispatchMessageExcludingSender:senderCopy usingBlock:messageCopy];
 }
 
-- (void)dispatchCameraObserverMessage:(id)a3 sender:(id)a4
+- (void)dispatchCameraObserverMessage:(id)message sender:(id)sender
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HFHomeKitDispatcher *)self cameraObserverDispatcher];
-  [v8 dispatchMessageExcludingSender:v6 usingBlock:v7];
+  senderCopy = sender;
+  messageCopy = message;
+  cameraObserverDispatcher = [(HFHomeKitDispatcher *)self cameraObserverDispatcher];
+  [cameraObserverDispatcher dispatchMessageExcludingSender:senderCopy usingBlock:messageCopy];
 }
 
-- (void)dispatchMediaSessionObserverMessage:(id)a3 sender:(id)a4
+- (void)dispatchMediaSessionObserverMessage:(id)message sender:(id)sender
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HFHomeKitDispatcher *)self mediaSessionObserverDispatcher];
-  [v8 dispatchMessageExcludingSender:v6 usingBlock:v7];
+  senderCopy = sender;
+  messageCopy = message;
+  mediaSessionObserverDispatcher = [(HFHomeKitDispatcher *)self mediaSessionObserverDispatcher];
+  [mediaSessionObserverDispatcher dispatchMessageExcludingSender:senderCopy usingBlock:messageCopy];
 }
 
-- (void)dispatchAudioControlObserverMessage:(id)a3 sender:(id)a4
+- (void)dispatchAudioControlObserverMessage:(id)message sender:(id)sender
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HFHomeKitDispatcher *)self audioControlObserverDispatcher];
-  [v8 dispatchMessageExcludingSender:v6 usingBlock:v7];
+  senderCopy = sender;
+  messageCopy = message;
+  audioControlObserverDispatcher = [(HFHomeKitDispatcher *)self audioControlObserverDispatcher];
+  [audioControlObserverDispatcher dispatchMessageExcludingSender:senderCopy usingBlock:messageCopy];
 }
 
-- (void)dispatchMediaObjectObserverMessage:(id)a3 sender:(id)a4
+- (void)dispatchMediaObjectObserverMessage:(id)message sender:(id)sender
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HFHomeKitDispatcher *)self mediaObjectObserverDispatcher];
-  [v8 dispatchMessageExcludingSender:v6 usingBlock:v7];
+  senderCopy = sender;
+  messageCopy = message;
+  mediaObjectObserverDispatcher = [(HFHomeKitDispatcher *)self mediaObjectObserverDispatcher];
+  [mediaObjectObserverDispatcher dispatchMessageExcludingSender:senderCopy usingBlock:messageCopy];
 }
 
-- (void)dispatchHomeKitSettingMessage:(id)a3 sender:(id)a4
+- (void)dispatchHomeKitSettingMessage:(id)message sender:(id)sender
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HFHomeKitDispatcher *)self homeKitSettingsObserverDispatcher];
-  [v8 dispatchMessageExcludingSender:v6 usingBlock:v7];
+  senderCopy = sender;
+  messageCopy = message;
+  homeKitSettingsObserverDispatcher = [(HFHomeKitDispatcher *)self homeKitSettingsObserverDispatcher];
+  [homeKitSettingsObserverDispatcher dispatchMessageExcludingSender:senderCopy usingBlock:messageCopy];
 }
 
-- (void)dispatchSiriEndpointObserverMessage:(id)a3 sender:(id)a4
+- (void)dispatchSiriEndpointObserverMessage:(id)message sender:(id)sender
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HFHomeKitDispatcher *)self siriEndpointProfileObserverDispatcher];
-  [v8 dispatchMessageExcludingSender:v6 usingBlock:v7];
+  senderCopy = sender;
+  messageCopy = message;
+  siriEndpointProfileObserverDispatcher = [(HFHomeKitDispatcher *)self siriEndpointProfileObserverDispatcher];
+  [siriEndpointProfileObserverDispatcher dispatchMessageExcludingSender:senderCopy usingBlock:messageCopy];
 }
 
-- (void)dispatchSymptomFixSessionObserverMessage:(id)a3 sender:(id)a4
+- (void)dispatchSymptomFixSessionObserverMessage:(id)message sender:(id)sender
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HFHomeKitDispatcher *)self symptomFixSessionObserverDispatcher];
-  [v8 dispatchMessageExcludingSender:v6 usingBlock:v7];
+  senderCopy = sender;
+  messageCopy = message;
+  symptomFixSessionObserverDispatcher = [(HFHomeKitDispatcher *)self symptomFixSessionObserverDispatcher];
+  [symptomFixSessionObserverDispatcher dispatchMessageExcludingSender:senderCopy usingBlock:messageCopy];
 }
 
-- (void)dispatchSoftwareUpdateControllerMessage:(id)a3 sender:(id)a4
+- (void)dispatchSoftwareUpdateControllerMessage:(id)message sender:(id)sender
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HFHomeKitDispatcher *)self softwareUpdateControllerObserverDispatcher];
-  [v8 dispatchMessageExcludingSender:v6 usingBlock:v7];
+  senderCopy = sender;
+  messageCopy = message;
+  softwareUpdateControllerObserverDispatcher = [(HFHomeKitDispatcher *)self softwareUpdateControllerObserverDispatcher];
+  [softwareUpdateControllerObserverDispatcher dispatchMessageExcludingSender:senderCopy usingBlock:messageCopy];
 }
 
-- (void)dispatchSoftwareUpdateMessage:(id)a3 sender:(id)a4
+- (void)dispatchSoftwareUpdateMessage:(id)message sender:(id)sender
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HFHomeKitDispatcher *)self softwareUpdateObserverDispatcher];
-  [v8 dispatchMessageExcludingSender:v6 usingBlock:v7];
+  senderCopy = sender;
+  messageCopy = message;
+  softwareUpdateObserverDispatcher = [(HFHomeKitDispatcher *)self softwareUpdateObserverDispatcher];
+  [softwareUpdateObserverDispatcher dispatchMessageExcludingSender:senderCopy usingBlock:messageCopy];
 }
 
-- (void)dispatchSymptomsHandlerMessage:(id)a3 sender:(id)a4
+- (void)dispatchSymptomsHandlerMessage:(id)message sender:(id)sender
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HFHomeKitDispatcher *)self symptomsHandlerObserverDispatcher];
-  [v8 dispatchMessageExcludingSender:v6 usingBlock:v7];
+  senderCopy = sender;
+  messageCopy = message;
+  symptomsHandlerObserverDispatcher = [(HFHomeKitDispatcher *)self symptomsHandlerObserverDispatcher];
+  [symptomsHandlerObserverDispatcher dispatchMessageExcludingSender:senderCopy usingBlock:messageCopy];
 }
 
-- (void)dispatchUserObserverMessage:(id)a3 sender:(id)a4
+- (void)dispatchUserObserverMessage:(id)message sender:(id)sender
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HFHomeKitDispatcher *)self userObserverDispatcher];
-  [v8 dispatchMessageExcludingSender:v6 usingBlock:v7];
+  senderCopy = sender;
+  messageCopy = message;
+  userObserverDispatcher = [(HFHomeKitDispatcher *)self userObserverDispatcher];
+  [userObserverDispatcher dispatchMessageExcludingSender:senderCopy usingBlock:messageCopy];
 }
 
-- (void)dispatchTelevisionObserverMessage:(id)a3 sender:(id)a4
+- (void)dispatchTelevisionObserverMessage:(id)message sender:(id)sender
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HFHomeKitDispatcher *)self televisionObserverDispatcher];
-  [v8 dispatchMessageExcludingSender:v6 usingBlock:v7];
+  senderCopy = sender;
+  messageCopy = message;
+  televisionObserverDispatcher = [(HFHomeKitDispatcher *)self televisionObserverDispatcher];
+  [televisionObserverDispatcher dispatchMessageExcludingSender:senderCopy usingBlock:messageCopy];
 }
 
-- (void)dispatchLightObserverMessage:(id)a3 sender:(id)a4
+- (void)dispatchLightObserverMessage:(id)message sender:(id)sender
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HFHomeKitDispatcher *)self lightObserverDispatcher];
-  [v8 dispatchMessageExcludingSender:v6 usingBlock:v7];
+  senderCopy = sender;
+  messageCopy = message;
+  lightObserverDispatcher = [(HFHomeKitDispatcher *)self lightObserverDispatcher];
+  [lightObserverDispatcher dispatchMessageExcludingSender:senderCopy usingBlock:messageCopy];
 }
 
-- (void)dispatchWalletKeyDeviceStateObserverMessage:(id)a3 sender:(id)a4
+- (void)dispatchWalletKeyDeviceStateObserverMessage:(id)message sender:(id)sender
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HFHomeKitDispatcher *)self walletKeyDeviceStateObserverDispatcher];
-  [v8 dispatchMessageExcludingSender:v6 usingBlock:v7];
+  senderCopy = sender;
+  messageCopy = message;
+  walletKeyDeviceStateObserverDispatcher = [(HFHomeKitDispatcher *)self walletKeyDeviceStateObserverDispatcher];
+  [walletKeyDeviceStateObserverDispatcher dispatchMessageExcludingSender:senderCopy usingBlock:messageCopy];
 }
 
-- (void)dispatchHomeKitSettingsObserverMessage:(id)a3 sender:(id)a4
+- (void)dispatchHomeKitSettingsObserverMessage:(id)message sender:(id)sender
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HFHomeKitDispatcher *)self homeKitSettingsObserverDispatcher];
-  [v8 dispatchMessageExcludingSender:v6 usingBlock:v7];
+  senderCopy = sender;
+  messageCopy = message;
+  homeKitSettingsObserverDispatcher = [(HFHomeKitDispatcher *)self homeKitSettingsObserverDispatcher];
+  [homeKitSettingsObserverDispatcher dispatchMessageExcludingSender:senderCopy usingBlock:messageCopy];
 }
 
-- (void)dispatchNetworkConfigurationObserverMessage:(id)a3 sender:(id)a4
+- (void)dispatchNetworkConfigurationObserverMessage:(id)message sender:(id)sender
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HFHomeKitDispatcher *)self networkConfigurationObserverDispatcher];
-  [v8 dispatchMessageExcludingSender:v6 usingBlock:v7];
+  senderCopy = sender;
+  messageCopy = message;
+  networkConfigurationObserverDispatcher = [(HFHomeKitDispatcher *)self networkConfigurationObserverDispatcher];
+  [networkConfigurationObserverDispatcher dispatchMessageExcludingSender:senderCopy usingBlock:messageCopy];
 }
 
-- (void)dispatchHomePersonManagerObserverMessage:(id)a3 sender:(id)a4
+- (void)dispatchHomePersonManagerObserverMessage:(id)message sender:(id)sender
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HFHomeKitDispatcher *)self homePersonManagerDispatcher];
-  [v8 dispatchMessageExcludingSender:v6 usingBlock:v7];
+  senderCopy = sender;
+  messageCopy = message;
+  homePersonManagerDispatcher = [(HFHomeKitDispatcher *)self homePersonManagerDispatcher];
+  [homePersonManagerDispatcher dispatchMessageExcludingSender:senderCopy usingBlock:messageCopy];
 }
 
-- (void)dispatchMediaDestinationControllerObserverMessage:(id)a3 sender:(id)a4
+- (void)dispatchMediaDestinationControllerObserverMessage:(id)message sender:(id)sender
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HFHomeKitDispatcher *)self mediaDestinationControllerObserverDispatcher];
-  [v8 dispatchMessageExcludingSender:v6 usingBlock:v7];
+  senderCopy = sender;
+  messageCopy = message;
+  mediaDestinationControllerObserverDispatcher = [(HFHomeKitDispatcher *)self mediaDestinationControllerObserverDispatcher];
+  [mediaDestinationControllerObserverDispatcher dispatchMessageExcludingSender:senderCopy usingBlock:messageCopy];
 }
 
 - (void)updateHome
 {
   v31 = *MEMORY[0x277D85DE8];
-  v3 = [(HFHomeKitDispatcher *)self overrideHome];
-  v4 = v3;
-  if (v3)
+  overrideHome = [(HFHomeKitDispatcher *)self overrideHome];
+  v4 = overrideHome;
+  if (overrideHome)
   {
-    v5 = v3;
+    selectedHome = overrideHome;
   }
 
   else
   {
-    v5 = [(HFHomeKitDispatcher *)self selectedHome];
+    selectedHome = [(HFHomeKitDispatcher *)self selectedHome];
   }
 
-  v6 = v5;
+  v6 = selectedHome;
 
-  v7 = [(HFHomeKitDispatcher *)self home];
-  v8 = [v7 uniqueIdentifier];
-  v9 = [v6 uniqueIdentifier];
-  v10 = [v8 isEqual:v9];
+  home = [(HFHomeKitDispatcher *)self home];
+  uniqueIdentifier = [home uniqueIdentifier];
+  uniqueIdentifier2 = [v6 uniqueIdentifier];
+  v10 = [uniqueIdentifier isEqual:uniqueIdentifier2];
 
   if ((v10 & 1) == 0)
   {
@@ -2182,66 +2182,66 @@ __CFString *__46__HFHomeKitDispatcher__setupStateDumpHandlers__block_invoke_3(vo
       v27 = 138412546;
       v28 = v6;
       v29 = 1024;
-      v30 = [objc_opt_class() synchronizesHomeDataModel];
+      synchronizesHomeDataModel = [objc_opt_class() synchronizesHomeDataModel];
       _os_log_impl(&dword_20D9BF000, v11, OS_LOG_TYPE_DEFAULT, "Updating dispatcher home to %@. synchronizesHomeDataModel is %{BOOL}d", &v27, 0x12u);
     }
 
     [(HFHomeKitDispatcher *)self setHome:v6];
     [(HFHomeKitDispatcher *)self _setDelegationEnabledForObjectsInCurrentHome:1];
-    v12 = [(HFHomeKitDispatcher *)self home];
+    home2 = [(HFHomeKitDispatcher *)self home];
 
-    if (v12)
+    if (home2)
     {
-      v13 = [(HFHomeKitDispatcher *)self firstHomeAddedPromises];
-      [(HFHomeKitDispatcher *)self _finishFirstHomeAddedPromises:v13];
+      firstHomeAddedPromises = [(HFHomeKitDispatcher *)self firstHomeAddedPromises];
+      [(HFHomeKitDispatcher *)self _finishFirstHomeAddedPromises:firstHomeAddedPromises];
 
-      v14 = [(HFHomeKitDispatcher *)self firstHomeAddedPromises];
-      [v14 removeAllObjects];
+      firstHomeAddedPromises2 = [(HFHomeKitDispatcher *)self firstHomeAddedPromises];
+      [firstHomeAddedPromises2 removeAllObjects];
     }
 
     if ([(HFHomeKitDispatcher *)self hasLoadedHomes])
     {
-      v15 = [(HFHomeKitDispatcher *)self homeManagerObserverDispatcher];
-      v16 = [v15 proxy];
-      v17 = [(HFHomeKitDispatcher *)self homeManager];
-      v18 = [(HFHomeKitDispatcher *)self home];
-      [v16 homeKitDispatcher:self manager:v17 didChangeHome:v18];
+      homeManagerObserverDispatcher = [(HFHomeKitDispatcher *)self homeManagerObserverDispatcher];
+      proxy = [homeManagerObserverDispatcher proxy];
+      homeManager = [(HFHomeKitDispatcher *)self homeManager];
+      home3 = [(HFHomeKitDispatcher *)self home];
+      [proxy homeKitDispatcher:self manager:homeManager didChangeHome:home3];
     }
 
     v19 = MEMORY[0x277CBEB98];
-    v20 = [(HFHomeKitDispatcher *)self home];
-    v21 = [v20 hf_allLightProfiles];
-    v22 = [v19 setWithArray:v21];
+    home4 = [(HFHomeKitDispatcher *)self home];
+    hf_allLightProfiles = [home4 hf_allLightProfiles];
+    v22 = [v19 setWithArray:hf_allLightProfiles];
 
     [(HFHomeKitDispatcher *)self fetchSettingsForLightProfiles:v22];
   }
 
   if ([objc_opt_class() synchronizesHomeDataModel])
   {
-    v23 = [(HFHomeKitDispatcher *)self home];
-    v24 = [MEMORY[0x277D16F78] shared];
-    [v24 setCurrentHome:v23];
+    home5 = [(HFHomeKitDispatcher *)self home];
+    mEMORY[0x277D16F78] = [MEMORY[0x277D16F78] shared];
+    [mEMORY[0x277D16F78] setCurrentHome:home5];
 
-    v25 = [(HFHomeKitDispatcher *)self home];
-    [(HFHomeKitDispatcher *)self configureHomeStateStreamWithHome:v25];
+    home6 = [(HFHomeKitDispatcher *)self home];
+    [(HFHomeKitDispatcher *)self configureHomeStateStreamWithHome:home6];
   }
 
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setSelectedHome:(id)a3 userInitiated:(BOOL)a4
+- (void)setSelectedHome:(id)home userInitiated:(BOOL)initiated
 {
-  v4 = a4;
+  initiatedCopy = initiated;
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(HMHome *)self->_selectedHome uniqueIdentifier];
-  [(HFHomeKitDispatcher *)self _requestSelectedHome:v6];
-  if (v4)
+  homeCopy = home;
+  uniqueIdentifier = [(HMHome *)self->_selectedHome uniqueIdentifier];
+  [(HFHomeKitDispatcher *)self _requestSelectedHome:homeCopy];
+  if (initiatedCopy)
   {
     if ([(HFHomeKitDispatcher *)self _shouldPersistSelectedHomeToDefaults])
     {
-      v8 = [(HMHome *)self->_selectedHome uniqueIdentifier];
-      v9 = [v7 isEqual:v8];
+      uniqueIdentifier2 = [(HMHome *)self->_selectedHome uniqueIdentifier];
+      v9 = [uniqueIdentifier isEqual:uniqueIdentifier2];
 
       if ((v9 & 1) == 0)
       {
@@ -2251,23 +2251,23 @@ __CFString *__46__HFHomeKitDispatcher__setupStateDumpHandlers__block_invoke_3(vo
         v11 = HFLogForCategory(0x2DuLL);
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
         {
-          v12 = [(HMHome *)self->_selectedHome name];
-          v13 = [(HMHome *)self->_selectedHome uniqueIdentifier];
-          v14 = [v13 UUIDString];
+          name = [(HMHome *)self->_selectedHome name];
+          uniqueIdentifier3 = [(HMHome *)self->_selectedHome uniqueIdentifier];
+          uUIDString = [uniqueIdentifier3 UUIDString];
           v17 = 138478083;
-          v18 = v12;
+          v18 = name;
           v19 = 2114;
-          v20 = v14;
+          v20 = uUIDString;
           _os_log_impl(&dword_20D9BF000, v11, OS_LOG_TYPE_DEFAULT, "User initiated change to home: %{private}@ %{public}@", &v17, 0x16u);
         }
 
         notify_post(HFHomeSelectedHomeChangedNotification);
         if ([objc_opt_class() synchronizesHomeDataModel])
         {
-          v15 = [MEMORY[0x277D16F78] shared];
-          [v15 setCurrentHome:v6];
+          mEMORY[0x277D16F78] = [MEMORY[0x277D16F78] shared];
+          [mEMORY[0x277D16F78] setCurrentHome:homeCopy];
 
-          [(HFHomeKitDispatcher *)self configureHomeStateStreamWithHome:v6];
+          [(HFHomeKitDispatcher *)self configureHomeStateStreamWithHome:homeCopy];
         }
       }
     }
@@ -2276,18 +2276,18 @@ __CFString *__46__HFHomeKitDispatcher__setupStateDumpHandlers__block_invoke_3(vo
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)setSelectedHomeWithName:(id)a3
+- (BOOL)setSelectedHomeWithName:(id)name
 {
-  v4 = a3;
-  v5 = [(HFHomeKitDispatcher *)self homeManager];
-  v6 = [v5 homes];
+  nameCopy = name;
+  homeManager = [(HFHomeKitDispatcher *)self homeManager];
+  homes = [homeManager homes];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __47__HFHomeKitDispatcher_setSelectedHomeWithName___block_invoke;
   v10[3] = &unk_277DF5E78;
-  v11 = v4;
-  v7 = v4;
-  v8 = [v6 na_firstObjectPassingTest:v10];
+  v11 = nameCopy;
+  v7 = nameCopy;
+  v8 = [homes na_firstObjectPassingTest:v10];
 
   if (v8)
   {
@@ -2305,137 +2305,137 @@ uint64_t __47__HFHomeKitDispatcher_setSelectedHomeWithName___block_invoke(uint64
   return v4;
 }
 
-- (void)_requestSelectedHome:(id)a3
+- (void)_requestSelectedHome:(id)home
 {
   v46 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  homeCopy = home;
   v5 = HFLogForCategory(0x27uLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(HMHome *)v4 name];
-    v7 = [(HMHome *)v4 uniqueIdentifier];
+    name = [(HMHome *)homeCopy name];
+    uniqueIdentifier = [(HMHome *)homeCopy uniqueIdentifier];
     v42 = 138478083;
-    v43 = v6;
+    v43 = name;
     v44 = 2114;
-    v45 = v7;
+    v45 = uniqueIdentifier;
     _os_log_impl(&dword_20D9BF000, v5, OS_LOG_TYPE_DEFAULT, "_requestSelectedHome %{private}@ %{public}@", &v42, 0x16u);
   }
 
-  v8 = [(HFHomeKitDispatcher *)self homeManager];
-  v9 = [v8 currentAccessory];
+  homeManager = [(HFHomeKitDispatcher *)self homeManager];
+  currentAccessory = [homeManager currentAccessory];
 
-  v10 = v4;
-  if (v9)
+  home2 = homeCopy;
+  if (currentAccessory)
   {
-    v11 = [(HFHomeKitDispatcher *)self homeManager];
-    v12 = [v11 currentAccessory];
-    v13 = [v12 home];
+    homeManager2 = [(HFHomeKitDispatcher *)self homeManager];
+    currentAccessory2 = [homeManager2 currentAccessory];
+    home = [currentAccessory2 home];
 
-    if (v13 != v4)
+    if (home != homeCopy)
     {
       v14 = HFLogForCategory(0x27uLL);
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
-        v40 = [(HMHome *)v4 name];
-        v41 = [(HMHome *)v4 uniqueIdentifier];
+        name2 = [(HMHome *)homeCopy name];
+        uniqueIdentifier2 = [(HMHome *)homeCopy uniqueIdentifier];
         v42 = 138478083;
-        v43 = v40;
+        v43 = name2;
         v44 = 2114;
-        v45 = v41;
+        v45 = uniqueIdentifier2;
         _os_log_error_impl(&dword_20D9BF000, v14, OS_LOG_TYPE_ERROR, "Current accessory set, Ignoring requested home - %{private}@ %{public}@", &v42, 0x16u);
       }
     }
 
-    v15 = [(HFHomeKitDispatcher *)self homeManager];
-    v16 = [v15 currentAccessory];
-    v10 = [v16 home];
+    homeManager3 = [(HFHomeKitDispatcher *)self homeManager];
+    currentAccessory3 = [homeManager3 currentAccessory];
+    home2 = [currentAccessory3 home];
 
     v17 = HFLogForCategory(0x27uLL);
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
-      v18 = [(HMHome *)v4 name];
-      v19 = [(HMHome *)v4 uniqueIdentifier];
+      name3 = [(HMHome *)homeCopy name];
+      uniqueIdentifier3 = [(HMHome *)homeCopy uniqueIdentifier];
       v42 = 138478083;
-      v43 = v18;
+      v43 = name3;
       v44 = 2114;
-      v45 = v19;
+      v45 = uniqueIdentifier3;
       _os_log_impl(&dword_20D9BF000, v17, OS_LOG_TYPE_DEFAULT, "Selected home defaulting to currentAccessory Home - %{private}@ %{public}@", &v42, 0x16u);
     }
   }
 
-  if (!v10)
+  if (!home2)
   {
-    v10 = [(HFHomeKitDispatcher *)self _primaryHome];
+    home2 = [(HFHomeKitDispatcher *)self _primaryHome];
     v20 = HFLogForCategory(0x27uLL);
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
-      v21 = [(HMHome *)v4 name];
-      v22 = [(HMHome *)v4 uniqueIdentifier];
+      name4 = [(HMHome *)homeCopy name];
+      uniqueIdentifier4 = [(HMHome *)homeCopy uniqueIdentifier];
       v42 = 138478083;
-      v43 = v21;
+      v43 = name4;
       v44 = 2114;
-      v45 = v22;
+      v45 = uniqueIdentifier4;
       _os_log_impl(&dword_20D9BF000, v20, OS_LOG_TYPE_DEFAULT, "Selected home not specified - using primary home %{private}@ %{public}@", &v42, 0x16u);
     }
 
-    if (!v10)
+    if (!home2)
     {
-      v23 = [(HFHomeKitDispatcher *)self homeManager];
-      v24 = [v23 homes];
-      v10 = [v24 firstObject];
+      homeManager4 = [(HFHomeKitDispatcher *)self homeManager];
+      homes = [homeManager4 homes];
+      home2 = [homes firstObject];
 
       v25 = HFLogForCategory(0x27uLL);
       if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
       {
-        v26 = [(HMHome *)v4 name];
-        v27 = [(HMHome *)v4 uniqueIdentifier];
+        name5 = [(HMHome *)homeCopy name];
+        uniqueIdentifier5 = [(HMHome *)homeCopy uniqueIdentifier];
         v42 = 138478083;
-        v43 = v26;
+        v43 = name5;
         v44 = 2114;
-        v45 = v27;
+        v45 = uniqueIdentifier5;
         _os_log_impl(&dword_20D9BF000, v25, OS_LOG_TYPE_DEFAULT, "Primary home not specified - using first home %{private}@ %{public}@", &v42, 0x16u);
       }
     }
   }
 
-  if (v10 != self->_selectedHome)
+  if (home2 != self->_selectedHome)
   {
-    v28 = [(HMHome *)v10 uniqueIdentifier];
-    v29 = [(HMHome *)self->_selectedHome uniqueIdentifier];
-    v30 = [v28 isEqual:v29];
+    uniqueIdentifier6 = [(HMHome *)home2 uniqueIdentifier];
+    uniqueIdentifier7 = [(HMHome *)self->_selectedHome uniqueIdentifier];
+    v30 = [uniqueIdentifier6 isEqual:uniqueIdentifier7];
 
     if ((v30 & 1) == 0)
     {
       v31 = HFLogForCategory(0x27uLL);
       if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
       {
-        v32 = [(HMHome *)v10 name];
-        v33 = [(HMHome *)v10 uniqueIdentifier];
+        name6 = [(HMHome *)home2 name];
+        uniqueIdentifier8 = [(HMHome *)home2 uniqueIdentifier];
         v42 = 138478083;
-        v43 = v32;
+        v43 = name6;
         v44 = 2114;
-        v45 = v33;
+        v45 = uniqueIdentifier8;
         _os_log_impl(&dword_20D9BF000, v31, OS_LOG_TYPE_DEFAULT, "Selected home is now %{private}@ %{public}@", &v42, 0x16u);
       }
 
-      objc_storeStrong(&self->_selectedHome, v10);
+      objc_storeStrong(&self->_selectedHome, home2);
       if ([(HFHomeKitDispatcher *)self _shouldPersistSelectedHomeToDefaults]&& !+[HFUtilities isInternalTest])
       {
         v34 = HFLogForCategory(0x27uLL);
         if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
         {
-          v35 = [(HMHome *)v10 name];
-          v36 = [(HMHome *)v10 uniqueIdentifier];
+          name7 = [(HMHome *)home2 name];
+          uniqueIdentifier9 = [(HMHome *)home2 uniqueIdentifier];
           v42 = 138478083;
-          v43 = v35;
+          v43 = name7;
           v44 = 2114;
-          v45 = v36;
+          v45 = uniqueIdentifier9;
           _os_log_impl(&dword_20D9BF000, v34, OS_LOG_TYPE_DEFAULT, "Notifying local clients of selected home change and saving to preferences %{private}@ %{public}@", &v42, 0x16u);
         }
 
-        v37 = [(HMHome *)v10 uniqueIdentifier];
+        uniqueIdentifier10 = [(HMHome *)home2 uniqueIdentifier];
         v38 = +[HFStateRestorationSettings sharedInstance];
-        [v38 setSelectedHomeIdentifier:v37];
+        [v38 setSelectedHomeIdentifier:uniqueIdentifier10];
       }
 
       [(HFHomeKitDispatcher *)self updateHome];
@@ -2445,20 +2445,20 @@ uint64_t __47__HFHomeKitDispatcher_setSelectedHomeWithName___block_invoke(uint64
   v39 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setOverrideHome:(id)a3
+- (void)setOverrideHome:(id)home
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  homeCopy = home;
   v5 = HFLogForCategory(0x27uLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = v4;
+    v9 = homeCopy;
     _os_log_impl(&dword_20D9BF000, v5, OS_LOG_TYPE_DEFAULT, "Override home is now %@", &v8, 0xCu);
   }
 
   overrideHome = self->_overrideHome;
-  self->_overrideHome = v4;
+  self->_overrideHome = homeCopy;
 
   [(HFHomeKitDispatcher *)self updateHome];
   v7 = *MEMORY[0x277D85DE8];
@@ -2480,21 +2480,21 @@ uint64_t __47__HFHomeKitDispatcher_setSelectedHomeWithName___block_invoke(uint64
     else
     {
       v4 = objc_alloc_init(MEMORY[0x277D2C918]);
-      v9 = [(HFHomeKitDispatcher *)self homePromises];
-      [v9 addObject:v4];
+      homePromises = [(HFHomeKitDispatcher *)self homePromises];
+      [homePromises addObject:v4];
     }
 
-    v6 = [v4 future];
+    future = [v4 future];
   }
 
   else
   {
-    v6 = 0;
+    future = 0;
   }
 
   v7 = *MEMORY[0x277D85DE8];
 
-  return v6;
+  return future;
 }
 
 - (NAFuture)firstHomeAddedFuture
@@ -2502,11 +2502,11 @@ uint64_t __47__HFHomeKitDispatcher_setSelectedHomeWithName___block_invoke(uint64
   v11[1] = *MEMORY[0x277D85DE8];
   if ([(HFHomeKitDispatcher *)self willAcceptHomeFutures])
   {
-    v3 = [(HFHomeKitDispatcher *)self home];
+    home = [(HFHomeKitDispatcher *)self home];
 
     v4 = objc_alloc_init(MEMORY[0x277D2C918]);
     v5 = v4;
-    if (v3)
+    if (home)
     {
       v11[0] = v4;
       v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:1];
@@ -2515,21 +2515,21 @@ uint64_t __47__HFHomeKitDispatcher_setSelectedHomeWithName___block_invoke(uint64
 
     else
     {
-      v8 = [(HFHomeKitDispatcher *)self firstHomeAddedPromises];
-      [v8 addObject:v5];
+      firstHomeAddedPromises = [(HFHomeKitDispatcher *)self firstHomeAddedPromises];
+      [firstHomeAddedPromises addObject:v5];
     }
 
-    v7 = [v5 future];
+    future = [v5 future];
   }
 
   else
   {
-    v7 = 0;
+    future = 0;
   }
 
   v9 = *MEMORY[0x277D85DE8];
 
-  return v7;
+  return future;
 }
 
 - (NAFuture)allHomesFuture
@@ -2537,10 +2537,10 @@ uint64_t __47__HFHomeKitDispatcher_setSelectedHomeWithName___block_invoke(uint64
   v11[1] = *MEMORY[0x277D85DE8];
   if ([(HFHomeKitDispatcher *)self willAcceptHomeFutures])
   {
-    v3 = [(HFHomeKitDispatcher *)self hasLoadedHomes];
+    hasLoadedHomes = [(HFHomeKitDispatcher *)self hasLoadedHomes];
     v4 = objc_alloc_init(MEMORY[0x277D2C918]);
     v5 = v4;
-    if (v3)
+    if (hasLoadedHomes)
     {
       v11[0] = v4;
       v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:1];
@@ -2549,34 +2549,34 @@ uint64_t __47__HFHomeKitDispatcher_setSelectedHomeWithName___block_invoke(uint64
 
     else
     {
-      v8 = [(HFHomeKitDispatcher *)self allHomesPromises];
-      [v8 addObject:v5];
+      allHomesPromises = [(HFHomeKitDispatcher *)self allHomesPromises];
+      [allHomesPromises addObject:v5];
     }
 
-    v7 = [v5 future];
+    future = [v5 future];
   }
 
   else
   {
-    v7 = 0;
+    future = 0;
   }
 
   v9 = *MEMORY[0x277D85DE8];
 
-  return v7;
+  return future;
 }
 
-- (id)homeFutureWithUser:(id)a3
+- (id)homeFutureWithUser:(id)user
 {
-  v4 = a3;
-  v5 = [(HFHomeKitDispatcher *)self allHomesFuture];
+  userCopy = user;
+  allHomesFuture = [(HFHomeKitDispatcher *)self allHomesFuture];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __42__HFHomeKitDispatcher_homeFutureWithUser___block_invoke;
   v9[3] = &unk_277DF5938;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 flatMap:v9];
+  v10 = userCopy;
+  v6 = userCopy;
+  v7 = [allHomesFuture flatMap:v9];
 
   return v7;
 }
@@ -2668,17 +2668,17 @@ LABEL_18:
   return v17;
 }
 
-- (id)userFutureWithUniqueIdentifierStr:(id)a3
+- (id)userFutureWithUniqueIdentifierStr:(id)str
 {
-  v4 = a3;
-  v5 = [(HFHomeKitDispatcher *)self allHomesFuture];
+  strCopy = str;
+  allHomesFuture = [(HFHomeKitDispatcher *)self allHomesFuture];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __57__HFHomeKitDispatcher_userFutureWithUniqueIdentifierStr___block_invoke;
   v9[3] = &unk_277DF5938;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 flatMap:v9];
+  v10 = strCopy;
+  v6 = strCopy;
+  v7 = [allHomesFuture flatMap:v9];
 
   return v7;
 }
@@ -2769,28 +2769,28 @@ LABEL_18:
 
 - (NAFuture)locationSensingAvailableFuture
 {
-  v3 = [(HFHomeKitDispatcher *)self locationCoordinator];
+  locationCoordinator = [(HFHomeKitDispatcher *)self locationCoordinator];
 
-  if (v3)
+  if (locationCoordinator)
   {
-    v4 = [(HFHomeKitDispatcher *)self locationCoordinator];
-    v5 = [v4 locationSensingAvailableFuture];
+    locationCoordinator2 = [(HFHomeKitDispatcher *)self locationCoordinator];
+    locationSensingAvailableFuture = [locationCoordinator2 locationSensingAvailableFuture];
   }
 
   else
   {
-    v5 = [MEMORY[0x277D2C900] futureWithResult:MEMORY[0x277CBEC28]];
+    locationSensingAvailableFuture = [MEMORY[0x277D2C900] futureWithResult:MEMORY[0x277CBEC28]];
   }
 
-  return v5;
+  return locationSensingAvailableFuture;
 }
 
 - (BOOL)selectedHomeFollowsLocation
 {
-  v2 = [(HFHomeKitDispatcher *)self locationCoordinator];
-  v3 = [v2 homeSensingEnabled];
+  locationCoordinator = [(HFHomeKitDispatcher *)self locationCoordinator];
+  homeSensingEnabled = [locationCoordinator homeSensingEnabled];
 
-  return v3;
+  return homeSensingEnabled;
 }
 
 - (id)_setupLocationSensingCoordinator
@@ -2809,15 +2809,15 @@ LABEL_18:
   {
     objc_initWeak(&location, self);
     v3 = +[HFHomeAppInstallStateArbiter sharedInstance];
-    v4 = [v3 homeAppInstalledFuture];
-    v5 = [MEMORY[0x277D0F8F0] mainScheduler];
-    v6 = [v4 reschedule:v5];
+    homeAppInstalledFuture = [v3 homeAppInstalledFuture];
+    mainScheduler = [MEMORY[0x277D0F8F0] mainScheduler];
+    v6 = [homeAppInstalledFuture reschedule:mainScheduler];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __55__HFHomeKitDispatcher__setupLocationSensingCoordinator__block_invoke_610;
     v10[3] = &unk_277DF8540;
     objc_copyWeak(&v11, &location);
-    v7 = [v6 flatMap:v10];
+    futureWithNoResult = [v6 flatMap:v10];
     objc_destroyWeak(&v11);
 
     objc_destroyWeak(&location);
@@ -2832,10 +2832,10 @@ LABEL_18:
       _os_log_impl(&dword_20D9BF000, v8, OS_LOG_TYPE_DEFAULT, "Skipping setup of Home Sensing", &location, 2u);
     }
 
-    v7 = [MEMORY[0x277D2C900] futureWithNoResult];
+    futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
   }
 
-  return v7;
+  return futureWithNoResult;
 }
 
 void __55__HFHomeKitDispatcher__setupLocationSensingCoordinator__block_invoke(uint64_t a1)
@@ -2889,131 +2889,131 @@ id __55__HFHomeKitDispatcher__setupLocationSensingCoordinator__block_invoke_610(
   return v9;
 }
 
-- (id)pinCodeManagerForHome:(id)a3
+- (id)pinCodeManagerForHome:(id)home
 {
-  v4 = a3;
-  v5 = [(HFHomeKitDispatcher *)self pinCodeManager];
-  v6 = [v5 home];
-  v7 = [v6 uniqueIdentifier];
-  v8 = [v4 uniqueIdentifier];
-  v9 = [v7 isEqual:v8];
+  homeCopy = home;
+  pinCodeManager = [(HFHomeKitDispatcher *)self pinCodeManager];
+  home = [pinCodeManager home];
+  uniqueIdentifier = [home uniqueIdentifier];
+  uniqueIdentifier2 = [homeCopy uniqueIdentifier];
+  v9 = [uniqueIdentifier isEqual:uniqueIdentifier2];
 
   if (v9)
   {
-    v10 = [(HFHomeKitDispatcher *)self pinCodeManager];
+    pinCodeManager2 = [(HFHomeKitDispatcher *)self pinCodeManager];
   }
 
   else
   {
-    v10 = [[HFPinCodeManager alloc] initWithHome:v4];
-    v11 = [(HFHomeKitDispatcher *)self home];
-    v12 = [v11 uniqueIdentifier];
-    v13 = [v4 uniqueIdentifier];
-    v14 = [v12 isEqual:v13];
+    pinCodeManager2 = [[HFPinCodeManager alloc] initWithHome:homeCopy];
+    home2 = [(HFHomeKitDispatcher *)self home];
+    uniqueIdentifier3 = [home2 uniqueIdentifier];
+    uniqueIdentifier4 = [homeCopy uniqueIdentifier];
+    v14 = [uniqueIdentifier3 isEqual:uniqueIdentifier4];
 
     if (v14)
     {
-      [(HFHomeKitDispatcher *)self setPinCodeManager:v10];
+      [(HFHomeKitDispatcher *)self setPinCodeManager:pinCodeManager2];
     }
   }
 
-  return v10;
+  return pinCodeManager2;
 }
 
-- (id)securityActivityLogCoordinatorForHome:(id)a3
+- (id)securityActivityLogCoordinatorForHome:(id)home
 {
-  v4 = a3;
-  v5 = [(HFHomeKitDispatcher *)self securityActivityLogCoordinator];
-  v6 = [v5 home];
-  v7 = [v6 uniqueIdentifier];
-  v8 = [v4 uniqueIdentifier];
-  v9 = [v7 isEqual:v8];
+  homeCopy = home;
+  securityActivityLogCoordinator = [(HFHomeKitDispatcher *)self securityActivityLogCoordinator];
+  home = [securityActivityLogCoordinator home];
+  uniqueIdentifier = [home uniqueIdentifier];
+  uniqueIdentifier2 = [homeCopy uniqueIdentifier];
+  v9 = [uniqueIdentifier isEqual:uniqueIdentifier2];
 
   if (v9)
   {
-    v10 = [(HFHomeKitDispatcher *)self securityActivityLogCoordinator];
+    securityActivityLogCoordinator2 = [(HFHomeKitDispatcher *)self securityActivityLogCoordinator];
   }
 
   else
   {
-    v10 = [[HFActivityLogCoordinator alloc] initWithHome:v4 targetKind:0];
-    v11 = [(HFHomeKitDispatcher *)self home];
-    v12 = [v11 uniqueIdentifier];
-    v13 = [v4 uniqueIdentifier];
-    v14 = [v12 isEqual:v13];
+    securityActivityLogCoordinator2 = [[HFActivityLogCoordinator alloc] initWithHome:homeCopy targetKind:0];
+    home2 = [(HFHomeKitDispatcher *)self home];
+    uniqueIdentifier3 = [home2 uniqueIdentifier];
+    uniqueIdentifier4 = [homeCopy uniqueIdentifier];
+    v14 = [uniqueIdentifier3 isEqual:uniqueIdentifier4];
 
     if (v14)
     {
-      [(HFHomeKitDispatcher *)self setSecurityActivityLogCoordinator:v10];
+      [(HFHomeKitDispatcher *)self setSecurityActivityLogCoordinator:securityActivityLogCoordinator2];
     }
   }
 
-  return v10;
+  return securityActivityLogCoordinator2;
 }
 
-- (id)climateActivityLogCoordinatorForHome:(id)a3
+- (id)climateActivityLogCoordinatorForHome:(id)home
 {
-  v4 = a3;
-  v5 = [(HFHomeKitDispatcher *)self climateActivityLogCoordinator];
-  v6 = [v5 home];
-  v7 = [v6 uniqueIdentifier];
-  v8 = [v4 uniqueIdentifier];
-  v9 = [v7 isEqual:v8];
+  homeCopy = home;
+  climateActivityLogCoordinator = [(HFHomeKitDispatcher *)self climateActivityLogCoordinator];
+  home = [climateActivityLogCoordinator home];
+  uniqueIdentifier = [home uniqueIdentifier];
+  uniqueIdentifier2 = [homeCopy uniqueIdentifier];
+  v9 = [uniqueIdentifier isEqual:uniqueIdentifier2];
 
   if (v9)
   {
-    v10 = [(HFHomeKitDispatcher *)self climateActivityLogCoordinator];
+    climateActivityLogCoordinator2 = [(HFHomeKitDispatcher *)self climateActivityLogCoordinator];
   }
 
   else
   {
-    v10 = [[HFActivityLogCoordinator alloc] initWithHome:v4 targetKind:1];
-    v11 = [(HFHomeKitDispatcher *)self home];
-    v12 = [v11 uniqueIdentifier];
-    v13 = [v4 uniqueIdentifier];
-    v14 = [v12 isEqual:v13];
+    climateActivityLogCoordinator2 = [[HFActivityLogCoordinator alloc] initWithHome:homeCopy targetKind:1];
+    home2 = [(HFHomeKitDispatcher *)self home];
+    uniqueIdentifier3 = [home2 uniqueIdentifier];
+    uniqueIdentifier4 = [homeCopy uniqueIdentifier];
+    v14 = [uniqueIdentifier3 isEqual:uniqueIdentifier4];
 
     if (v14)
     {
-      [(HFHomeKitDispatcher *)self setClimateActivityLogCoordinator:v10];
+      [(HFHomeKitDispatcher *)self setClimateActivityLogCoordinator:climateActivityLogCoordinator2];
     }
   }
 
-  return v10;
+  return climateActivityLogCoordinator2;
 }
 
 - (void)updateSelectedHome
 {
   v48 = *MEMORY[0x277D85DE8];
-  v3 = [(HFHomeKitDispatcher *)self homeManager];
-  v4 = [v3 currentAccessory];
-  v5 = [v4 home];
+  homeManager = [(HFHomeKitDispatcher *)self homeManager];
+  currentAccessory = [homeManager currentAccessory];
+  home = [currentAccessory home];
 
-  if (v5)
+  if (home)
   {
     v6 = HFLogForCategory(0x27uLL);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [(HFHomeKitDispatcher *)self homeManager];
-      v8 = [v7 currentAccessory];
-      v9 = [(HFHomeKitDispatcher *)self homeManager];
-      v10 = [v9 currentAccessory];
-      v11 = [v10 home];
+      homeManager2 = [(HFHomeKitDispatcher *)self homeManager];
+      currentAccessory2 = [homeManager2 currentAccessory];
+      homeManager3 = [(HFHomeKitDispatcher *)self homeManager];
+      currentAccessory3 = [homeManager3 currentAccessory];
+      home2 = [currentAccessory3 home];
       *buf = 138413058;
-      v41 = self;
+      selfCopy3 = self;
       v42 = 2080;
       v43 = "[HFHomeKitDispatcher updateSelectedHome]";
       v44 = 2112;
-      v45 = v8;
+      v45 = currentAccessory2;
       v46 = 2112;
-      v47 = v11;
+      v47 = home2;
       _os_log_impl(&dword_20D9BF000, v6, OS_LOG_TYPE_DEFAULT, "(%@:%s) selected home is currentAccessory %@ home %@", buf, 0x2Au);
     }
 
-    v12 = [(HFHomeKitDispatcher *)self homeManager];
-    v13 = [v12 currentAccessory];
-    v14 = [v13 home];
-    v15 = [v14 uniqueIdentifier];
+    homeManager4 = [(HFHomeKitDispatcher *)self homeManager];
+    currentAccessory4 = [homeManager4 currentAccessory];
+    home3 = [currentAccessory4 home];
+    uniqueIdentifier = [home3 uniqueIdentifier];
 
 LABEL_5:
     goto LABEL_6;
@@ -3023,91 +3023,91 @@ LABEL_5:
   {
     if (([objc_opt_class() allowHomeSensingOverride] & 1) == 0)
     {
-      v25 = [(HFHomeKitDispatcher *)self homeManager];
-      v26 = [v25 currentHome];
+      homeManager5 = [(HFHomeKitDispatcher *)self homeManager];
+      currentHome = [homeManager5 currentHome];
 
-      if (v26)
+      if (currentHome)
       {
         v27 = HFLogForCategory(0x27uLL);
         if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
         {
-          v28 = [(HFHomeKitDispatcher *)self homeManager];
-          v29 = [v28 currentHome];
-          v30 = [v29 name];
-          v31 = [(HFHomeKitDispatcher *)self homeManager];
-          v32 = [v31 currentHome];
-          v33 = [v32 uniqueIdentifier];
+          homeManager6 = [(HFHomeKitDispatcher *)self homeManager];
+          currentHome2 = [homeManager6 currentHome];
+          name = [currentHome2 name];
+          homeManager7 = [(HFHomeKitDispatcher *)self homeManager];
+          currentHome3 = [homeManager7 currentHome];
+          uniqueIdentifier2 = [currentHome3 uniqueIdentifier];
           *buf = 138413059;
-          v41 = self;
+          selfCopy3 = self;
           v42 = 2080;
           v43 = "[HFHomeKitDispatcher updateSelectedHome]";
           v44 = 2113;
-          v45 = v30;
+          v45 = name;
           v46 = 2114;
-          v47 = v33;
+          v47 = uniqueIdentifier2;
           _os_log_impl(&dword_20D9BF000, v27, OS_LOG_TYPE_DEFAULT, "(%@:%s) selected home is current home %{private}@ %{public}@", buf, 0x2Au);
         }
 
-        v12 = [(HFHomeKitDispatcher *)self homeManager];
-        v13 = [v12 currentHome];
-        v15 = [v13 uniqueIdentifier];
+        homeManager4 = [(HFHomeKitDispatcher *)self homeManager];
+        currentAccessory4 = [homeManager4 currentHome];
+        uniqueIdentifier = [currentAccessory4 uniqueIdentifier];
         goto LABEL_5;
       }
     }
   }
 
   v35 = +[HFStateRestorationSettings sharedInstance];
-  v15 = [v35 selectedHomeIdentifier];
+  uniqueIdentifier = [v35 selectedHomeIdentifier];
 
-  v12 = HFLogForCategory(0x27uLL);
-  if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+  homeManager4 = HFLogForCategory(0x27uLL);
+  if (os_log_type_enabled(homeManager4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v41 = self;
+    selfCopy3 = self;
     v42 = 2080;
     v43 = "[HFHomeKitDispatcher updateSelectedHome]";
     v44 = 2114;
-    v45 = v15;
-    _os_log_impl(&dword_20D9BF000, v12, OS_LOG_TYPE_DEFAULT, "(%@:%s) selected home is synced identifier %{public}@", buf, 0x20u);
+    v45 = uniqueIdentifier;
+    _os_log_impl(&dword_20D9BF000, homeManager4, OS_LOG_TYPE_DEFAULT, "(%@:%s) selected home is synced identifier %{public}@", buf, 0x20u);
   }
 
 LABEL_6:
 
-  if (v15)
+  if (uniqueIdentifier)
   {
-    v16 = [(HFHomeKitDispatcher *)self homeManager];
-    v17 = [v16 homes];
+    homeManager8 = [(HFHomeKitDispatcher *)self homeManager];
+    homes = [homeManager8 homes];
     v38[0] = MEMORY[0x277D85DD0];
     v38[1] = 3221225472;
     v38[2] = __41__HFHomeKitDispatcher_updateSelectedHome__block_invoke;
     v38[3] = &unk_277DF5E78;
-    v18 = v15;
+    v18 = uniqueIdentifier;
     p_super = &v18->super;
-    v19 = [v17 na_firstObjectPassingTest:v38];
+    _primaryHome = [homes na_firstObjectPassingTest:v38];
 
     v20 = HFLogForCategory(0x27uLL);
     v21 = v20;
-    if (v19)
+    if (_primaryHome)
     {
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
       {
-        v22 = [v19 name];
-        v23 = [v19 uniqueIdentifier];
+        name2 = [_primaryHome name];
+        uniqueIdentifier3 = [_primaryHome uniqueIdentifier];
         *buf = 138478083;
-        v41 = v22;
+        selfCopy3 = name2;
         v42 = 2114;
-        v43 = v23;
+        v43 = uniqueIdentifier3;
         _os_log_impl(&dword_20D9BF000, v21, OS_LOG_TYPE_DEFAULT, "Loaded synced selected home %{private}@ %{public}@", buf, 0x16u);
       }
 
-      v24 = p_super;
+      homeManager9 = p_super;
       goto LABEL_26;
     }
 
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v41 = v18;
+      selfCopy3 = v18;
       _os_log_error_impl(&dword_20D9BF000, v21, OS_LOG_TYPE_ERROR, "Unable to find synced selected home matching identifier %@", buf, 0xCu);
     }
 
@@ -3124,17 +3124,17 @@ LABEL_6:
     }
   }
 
-  v19 = [(HFHomeKitDispatcher *)self _primaryHome];
-  if (!v19)
+  _primaryHome = [(HFHomeKitDispatcher *)self _primaryHome];
+  if (!_primaryHome)
   {
-    v24 = [(HFHomeKitDispatcher *)self homeManager];
-    v36 = [v24 homes];
-    v19 = [v36 firstObject];
+    homeManager9 = [(HFHomeKitDispatcher *)self homeManager];
+    homes2 = [homeManager9 homes];
+    _primaryHome = [homes2 firstObject];
 
 LABEL_26:
   }
 
-  [(HFHomeKitDispatcher *)self _requestSelectedHome:v19];
+  [(HFHomeKitDispatcher *)self _requestSelectedHome:_primaryHome];
 
   v37 = *MEMORY[0x277D85DE8];
 }
@@ -3148,23 +3148,23 @@ uint64_t __41__HFHomeKitDispatcher_updateSelectedHome__block_invoke(uint64_t a1,
   return v4;
 }
 
-- (void)_handleHomeManagerDidUpdateHomes:(id)a3
+- (void)_handleHomeManagerDidUpdateHomes:(id)homes
 {
   v57 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  homesCopy = homes;
   v5 = HFLogForCategory(0x27uLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 currentHome];
-    v7 = [v6 name];
-    v8 = [v4 currentHome];
-    v9 = [v8 uniqueIdentifier];
+    currentHome = [homesCopy currentHome];
+    name = [currentHome name];
+    currentHome2 = [homesCopy currentHome];
+    uniqueIdentifier = [currentHome2 uniqueIdentifier];
     *buf = 138412803;
-    v52 = v4;
+    v52 = homesCopy;
     v53 = 2113;
-    v54 = v7;
+    v54 = name;
     v55 = 2114;
-    v56 = v9;
+    v56 = uniqueIdentifier;
     _os_log_impl(&dword_20D9BF000, v5, OS_LOG_TYPE_DEFAULT, "homeManagerDidUpdateHomes: %@, manager's currentHome: %{private}@ %{public}@", buf, 0x20u);
   }
 
@@ -3182,10 +3182,10 @@ uint64_t __41__HFHomeKitDispatcher_updateSelectedHome__block_invoke(uint64_t a1,
     v47 = 0u;
     v44 = 0u;
     v45 = 0u;
-    v11 = [(HFHomeKitDispatcher *)self homeManagerObserverDispatcher];
-    v12 = [v11 observers];
+    homeManagerObserverDispatcher = [(HFHomeKitDispatcher *)self homeManagerObserverDispatcher];
+    observers = [homeManagerObserverDispatcher observers];
 
-    v13 = [v12 countByEnumeratingWithState:&v44 objects:v50 count:16];
+    v13 = [observers countByEnumeratingWithState:&v44 objects:v50 count:16];
     if (v13)
     {
       v14 = v13;
@@ -3196,22 +3196,22 @@ uint64_t __41__HFHomeKitDispatcher_updateSelectedHome__block_invoke(uint64_t a1,
         {
           if (*v45 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(observers);
           }
 
           v17 = *(*(&v44 + 1) + 8 * i);
           if (objc_opt_respondsToSelector())
           {
-            [v17 homeManagerDidFinishUnknownChange:v4];
+            [v17 homeManagerDidFinishUnknownChange:homesCopy];
           }
 
           else if (objc_opt_respondsToSelector())
           {
-            [v17 homeManagerDidUpdateHomes:v4];
+            [v17 homeManagerDidUpdateHomes:homesCopy];
           }
         }
 
-        v14 = [v12 countByEnumeratingWithState:&v44 objects:v50 count:16];
+        v14 = [observers countByEnumeratingWithState:&v44 objects:v50 count:16];
       }
 
       while (v14);
@@ -3229,17 +3229,17 @@ uint64_t __41__HFHomeKitDispatcher_updateSelectedHome__block_invoke(uint64_t a1,
 
     [(HFHomeKitDispatcher *)self updateSelectedHome];
     [(HFHomeKitDispatcher *)self setHasLoadedHomes:1];
-    v19 = [(HFHomeKitDispatcher *)self homePromises];
-    [(HFHomeKitDispatcher *)self _finishHomePromises:v19];
+    homePromises = [(HFHomeKitDispatcher *)self homePromises];
+    [(HFHomeKitDispatcher *)self _finishHomePromises:homePromises];
 
-    v20 = [(HFHomeKitDispatcher *)self homePromises];
-    [v20 removeAllObjects];
+    homePromises2 = [(HFHomeKitDispatcher *)self homePromises];
+    [homePromises2 removeAllObjects];
 
-    v21 = [(HFHomeKitDispatcher *)self allHomesPromises];
-    [(HFHomeKitDispatcher *)self _finishAllHomesPromises:v21];
+    allHomesPromises = [(HFHomeKitDispatcher *)self allHomesPromises];
+    [(HFHomeKitDispatcher *)self _finishAllHomesPromises:allHomesPromises];
 
-    v22 = [(HFHomeKitDispatcher *)self allHomesPromises];
-    [v22 removeAllObjects];
+    allHomesPromises2 = [(HFHomeKitDispatcher *)self allHomesPromises];
+    [allHomesPromises2 removeAllObjects];
 
     v23 = HFLogForCategory(0x27uLL);
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
@@ -3252,10 +3252,10 @@ uint64_t __41__HFHomeKitDispatcher_updateSelectedHome__block_invoke(uint64_t a1,
     v43 = 0u;
     v40 = 0u;
     v41 = 0u;
-    v24 = [(HFHomeKitDispatcher *)self homeManagerObserverDispatcher];
-    v25 = [v24 observers];
+    homeManagerObserverDispatcher2 = [(HFHomeKitDispatcher *)self homeManagerObserverDispatcher];
+    observers2 = [homeManagerObserverDispatcher2 observers];
 
-    v26 = [v25 countByEnumeratingWithState:&v40 objects:v49 count:16];
+    v26 = [observers2 countByEnumeratingWithState:&v40 objects:v49 count:16];
     if (v26)
     {
       v27 = v26;
@@ -3266,22 +3266,22 @@ uint64_t __41__HFHomeKitDispatcher_updateSelectedHome__block_invoke(uint64_t a1,
         {
           if (*v41 != v28)
           {
-            objc_enumerationMutation(v25);
+            objc_enumerationMutation(observers2);
           }
 
           v30 = *(*(&v40 + 1) + 8 * j);
           if (objc_opt_respondsToSelector())
           {
-            [v30 homeManagerDidFinishInitialDatabaseLoad:v4];
+            [v30 homeManagerDidFinishInitialDatabaseLoad:homesCopy];
           }
 
           else if (objc_opt_respondsToSelector())
           {
-            [v30 homeManagerDidUpdateHomes:v4];
+            [v30 homeManagerDidUpdateHomes:homesCopy];
           }
         }
 
-        v27 = [v25 countByEnumeratingWithState:&v40 objects:v49 count:16];
+        v27 = [observers2 countByEnumeratingWithState:&v40 objects:v49 count:16];
       }
 
       while (v27);
@@ -3291,8 +3291,8 @@ uint64_t __41__HFHomeKitDispatcher_updateSelectedHome__block_invoke(uint64_t a1,
     v39 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v12 = [v4 homes];
-    v31 = [v12 countByEnumeratingWithState:&v36 objects:v48 count:16];
+    observers = [homesCopy homes];
+    v31 = [observers countByEnumeratingWithState:&v36 objects:v48 count:16];
     if (v31)
     {
       v32 = v31;
@@ -3303,13 +3303,13 @@ uint64_t __41__HFHomeKitDispatcher_updateSelectedHome__block_invoke(uint64_t a1,
         {
           if (*v37 != v33)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(observers);
           }
 
           [(HFHomeKitDispatcher *)self _updateRemoteAccessStateForHome:*(*(&v36 + 1) + 8 * k) notifyingObservers:0];
         }
 
-        v32 = [v12 countByEnumeratingWithState:&v36 objects:v48 count:16];
+        v32 = [observers countByEnumeratingWithState:&v36 objects:v48 count:16];
       }
 
       while (v32);
@@ -3319,30 +3319,30 @@ uint64_t __41__HFHomeKitDispatcher_updateSelectedHome__block_invoke(uint64_t a1,
   v35 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateRemoteAccessStateForHome:(id)a3 notifyingObservers:(BOOL)a4
+- (void)_updateRemoteAccessStateForHome:(id)home notifyingObservers:(BOOL)observers
 {
-  v4 = a4;
+  observersCopy = observers;
   v24 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  if (v7)
+  homeCopy = home;
+  if (homeCopy)
   {
-    v8 = [(HFHomeKitDispatcher *)self remoteAccessStateByHomeID];
-    v9 = [v7 uniqueIdentifier];
-    v10 = [v8 objectForKeyedSubscript:v9];
+    remoteAccessStateByHomeID = [(HFHomeKitDispatcher *)self remoteAccessStateByHomeID];
+    uniqueIdentifier = [homeCopy uniqueIdentifier];
+    v10 = [remoteAccessStateByHomeID objectForKeyedSubscript:uniqueIdentifier];
 
-    v11 = [v7 hf_remoteAccessState];
-    if (!v10 || [v10 integerValue] != v11)
+    hf_remoteAccessState = [homeCopy hf_remoteAccessState];
+    if (!v10 || [v10 integerValue] != hf_remoteAccessState)
     {
-      v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v11];
-      v13 = [(HFHomeKitDispatcher *)self remoteAccessStateByHomeID];
-      v14 = [v7 uniqueIdentifier];
-      [v13 setObject:v12 forKeyedSubscript:v14];
+      v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:hf_remoteAccessState];
+      remoteAccessStateByHomeID2 = [(HFHomeKitDispatcher *)self remoteAccessStateByHomeID];
+      uniqueIdentifier2 = [homeCopy uniqueIdentifier];
+      [remoteAccessStateByHomeID2 setObject:v12 forKeyedSubscript:uniqueIdentifier2];
 
-      if (v4)
+      if (observersCopy)
       {
-        v15 = [(HFHomeKitDispatcher *)self homeObserverDispatcher];
-        v16 = [v15 proxy];
-        [v16 home:v7 remoteAccessStateDidChange:v11];
+        homeObserverDispatcher = [(HFHomeKitDispatcher *)self homeObserverDispatcher];
+        proxy = [homeObserverDispatcher proxy];
+        [proxy home:homeCopy remoteAccessStateDidChange:hf_remoteAccessState];
       }
     }
   }
@@ -3354,7 +3354,7 @@ uint64_t __41__HFHomeKitDispatcher_updateSelectedHome__block_invoke(uint64_t a1,
     {
       v19 = NSStringFromSelector(a2);
       v20 = 138412546;
-      v21 = self;
+      selfCopy = self;
       v22 = 2112;
       v23 = v19;
       _os_log_error_impl(&dword_20D9BF000, v17, OS_LOG_TYPE_ERROR, "%@:%@: Unexpected nil home", &v20, 0x16u);
@@ -3364,15 +3364,15 @@ uint64_t __41__HFHomeKitDispatcher_updateSelectedHome__block_invoke(uint64_t a1,
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_finishHomePromises:(id)a3
+- (void)_finishHomePromises:(id)promises
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  promisesCopy = promises;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v5 = [promisesCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -3384,29 +3384,29 @@ uint64_t __41__HFHomeKitDispatcher_updateSelectedHome__block_invoke(uint64_t a1,
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(promisesCopy);
         }
 
         v9 = *(*(&v13 + 1) + 8 * v8);
-        v10 = [(HFHomeKitDispatcher *)self home];
+        home = [(HFHomeKitDispatcher *)self home];
 
-        if (v10)
+        if (home)
         {
-          v11 = [(HFHomeKitDispatcher *)self home];
-          [v9 finishWithResult:v11];
+          home2 = [(HFHomeKitDispatcher *)self home];
+          [v9 finishWithResult:home2];
         }
 
         else
         {
-          v11 = [MEMORY[0x277CCA9B8] hf_errorWithCode:30];
-          [v9 finishWithError:v11];
+          home2 = [MEMORY[0x277CCA9B8] hf_errorWithCode:30];
+          [v9 finishWithError:home2];
         }
 
         ++v8;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [promisesCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
@@ -3415,15 +3415,15 @@ uint64_t __41__HFHomeKitDispatcher_updateSelectedHome__block_invoke(uint64_t a1,
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_finishAllHomesPromises:(id)a3
+- (void)_finishAllHomesPromises:(id)promises
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  promisesCopy = promises;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v5 = [promisesCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v5)
   {
     v6 = v5;
@@ -3435,32 +3435,32 @@ uint64_t __41__HFHomeKitDispatcher_updateSelectedHome__block_invoke(uint64_t a1,
       {
         if (*v17 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(promisesCopy);
         }
 
         v9 = *(*(&v16 + 1) + 8 * v8);
-        v10 = [(HFHomeKitDispatcher *)self homeManager];
-        v11 = [v10 homes];
+        homeManager = [(HFHomeKitDispatcher *)self homeManager];
+        homes = [homeManager homes];
 
-        if (v11)
+        if (homes)
         {
-          v12 = [(HFHomeKitDispatcher *)self homeManager];
-          v13 = [v12 homes];
-          v14 = [v13 sortedArrayUsingComparator:&__block_literal_global_619];
+          homeManager2 = [(HFHomeKitDispatcher *)self homeManager];
+          homes2 = [homeManager2 homes];
+          v14 = [homes2 sortedArrayUsingComparator:&__block_literal_global_619];
           [v9 finishWithResult:v14];
         }
 
         else
         {
-          v12 = [MEMORY[0x277CCA9B8] hf_errorWithCode:30];
-          [v9 finishWithError:v12];
+          homeManager2 = [MEMORY[0x277CCA9B8] hf_errorWithCode:30];
+          [v9 finishWithError:homeManager2];
         }
 
         ++v8;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v6 = [promisesCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v6);
@@ -3479,19 +3479,19 @@ uint64_t __47__HFHomeKitDispatcher__finishAllHomesPromises___block_invoke(uint64
   return v7;
 }
 
-- (void)_finishFirstHomeAddedPromises:(id)a3
+- (void)_finishFirstHomeAddedPromises:(id)promises
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [(HFHomeKitDispatcher *)self home];
+  promisesCopy = promises;
+  home = [(HFHomeKitDispatcher *)self home];
 
-  if (!v6)
+  if (!home)
   {
-    v16 = [MEMORY[0x277CCA890] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"HFHomeKitDispatcher.m" lineNumber:1693 description:{@"Invalid parameter not satisfying: %@", @"self.home != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HFHomeKitDispatcher.m" lineNumber:1693 description:{@"Invalid parameter not satisfying: %@", @"self.home != nil"}];
   }
 
-  if ([v5 count])
+  if ([promisesCopy count])
   {
     v7 = HFLogForCategory(0x27uLL);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -3505,7 +3505,7 @@ uint64_t __47__HFHomeKitDispatcher__finishAllHomesPromises___block_invoke(uint64
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v8 = v5;
+  v8 = promisesCopy;
   v9 = [v8 countByEnumeratingWithState:&v17 objects:v22 count:16];
   if (v9)
   {
@@ -3522,8 +3522,8 @@ uint64_t __47__HFHomeKitDispatcher__finishAllHomesPromises___block_invoke(uint64
         }
 
         v13 = *(*(&v17 + 1) + 8 * v12);
-        v14 = [(HFHomeKitDispatcher *)self home];
-        [v13 finishWithResult:v14];
+        home2 = [(HFHomeKitDispatcher *)self home];
+        [v13 finishWithResult:home2];
 
         ++v12;
       }
@@ -3540,92 +3540,92 @@ uint64_t __47__HFHomeKitDispatcher__finishAllHomesPromises___block_invoke(uint64
 
 - (id)_primaryHome
 {
-  v3 = [(HFHomeKitDispatcher *)self homeManager];
-  v4 = [v3 homes];
-  v5 = [v4 count];
+  homeManager = [(HFHomeKitDispatcher *)self homeManager];
+  homes = [homeManager homes];
+  v5 = [homes count];
 
   if (v5)
   {
-    v6 = [(HFHomeKitDispatcher *)self homeManager];
-    v7 = [v6 primaryHome];
+    homeManager2 = [(HFHomeKitDispatcher *)self homeManager];
+    primaryHome = [homeManager2 primaryHome];
   }
 
   else
   {
-    v7 = 0;
+    primaryHome = 0;
   }
 
-  return v7;
+  return primaryHome;
 }
 
-- (void)addObservationForCameraClipManager:(id)a3
+- (void)addObservationForCameraClipManager:(id)manager
 {
-  v6 = a3;
-  v4 = [(HFHomeKitDispatcher *)self cameraObserverDispatcher];
-  v5 = [v4 proxy];
+  managerCopy = manager;
+  cameraObserverDispatcher = [(HFHomeKitDispatcher *)self cameraObserverDispatcher];
+  proxy = [cameraObserverDispatcher proxy];
 
-  if (v5)
+  if (proxy)
   {
-    [v6 addObserver:v5];
+    [managerCopy addObserver:proxy];
   }
 }
 
-- (void)removeObservationForCameraClipManager:(id)a3
+- (void)removeObservationForCameraClipManager:(id)manager
 {
-  v6 = a3;
-  v4 = [(HFHomeKitDispatcher *)self cameraObserverDispatcher];
-  v5 = [v4 proxy];
+  managerCopy = manager;
+  cameraObserverDispatcher = [(HFHomeKitDispatcher *)self cameraObserverDispatcher];
+  proxy = [cameraObserverDispatcher proxy];
 
-  if (v5)
+  if (proxy)
   {
-    [v6 removeObserver:v5];
+    [managerCopy removeObserver:proxy];
   }
 }
 
-- (void)_setDelegationEnabled:(BOOL)a3 forAccessoryHierarchy:(id)a4
+- (void)_setDelegationEnabled:(BOOL)enabled forAccessoryHierarchy:(id)hierarchy
 {
-  v4 = a3;
+  enabledCopy = enabled;
   v85 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [v6 home];
-  v8 = [(HFHomeKitDispatcher *)self home];
-  v9 = [v7 isEqual:v8];
+  hierarchyCopy = hierarchy;
+  home = [hierarchyCopy home];
+  home2 = [(HFHomeKitDispatcher *)self home];
+  v9 = [home isEqual:home2];
 
   if ((v9 & 1) == 0)
   {
     v10 = HFLogForCategory(0x27uLL);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      v60 = [v6 home];
-      v61 = [(HFHomeKitDispatcher *)self home];
+      home3 = [hierarchyCopy home];
+      home4 = [(HFHomeKitDispatcher *)self home];
       *buf = 138412802;
-      v80 = v6;
+      v80 = hierarchyCopy;
       v81 = 2112;
-      v82 = v60;
+      v82 = home3;
       v83 = 2112;
-      v84 = v61;
+      v84 = home4;
       _os_log_error_impl(&dword_20D9BF000, v10, OS_LOG_TYPE_ERROR, "Setting delegate for accessory %@ with home %@ not in current home %@", buf, 0x20u);
     }
   }
 
-  if (v4)
+  if (enabledCopy)
   {
-    v11 = [(HFHomeKitDispatcher *)self accessoryObserverDispatcher];
-    v12 = [v11 proxy];
-    [v6 setDelegate:v12];
+    accessoryObserverDispatcher = [(HFHomeKitDispatcher *)self accessoryObserverDispatcher];
+    proxy = [accessoryObserverDispatcher proxy];
+    [hierarchyCopy setDelegate:proxy];
   }
 
   else
   {
-    [v6 setDelegate:0];
+    [hierarchyCopy setDelegate:0];
   }
 
   v74 = 0u;
   v75 = 0u;
   v72 = 0u;
   v73 = 0u;
-  v13 = [v6 cameraProfiles];
-  v14 = [v13 countByEnumeratingWithState:&v72 objects:v78 count:16];
+  cameraProfiles = [hierarchyCopy cameraProfiles];
+  v14 = [cameraProfiles countByEnumeratingWithState:&v72 objects:v78 count:16];
   if (v14)
   {
     v15 = v14;
@@ -3637,47 +3637,47 @@ uint64_t __47__HFHomeKitDispatcher__finishAllHomesPromises___block_invoke(uint64
       {
         if (*v73 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(cameraProfiles);
         }
 
         v18 = *(*(&v72 + 1) + 8 * v17);
-        if (v4)
+        if (enabledCopy)
         {
-          v19 = [(HFHomeKitDispatcher *)self cameraObserverDispatcher];
-          v20 = [v19 proxy];
+          cameraObserverDispatcher = [(HFHomeKitDispatcher *)self cameraObserverDispatcher];
+          proxy2 = [cameraObserverDispatcher proxy];
         }
 
         else
         {
-          v20 = 0;
+          proxy2 = 0;
         }
 
-        v21 = [v18 snapshotControl];
-        [v21 setDelegate:v20];
+        snapshotControl = [v18 snapshotControl];
+        [snapshotControl setDelegate:proxy2];
 
-        v22 = [v18 streamControl];
-        [v22 setDelegate:v20];
+        streamControl = [v18 streamControl];
+        [streamControl setDelegate:proxy2];
 
-        v23 = [v18 userSettings];
-        [v23 setDelegate:v20];
+        userSettings = [v18 userSettings];
+        [userSettings setDelegate:proxy2];
 
         ++v17;
       }
 
       while (v15 != v17);
-      v15 = [v13 countByEnumeratingWithState:&v72 objects:v78 count:16];
+      v15 = [cameraProfiles countByEnumeratingWithState:&v72 objects:v78 count:16];
     }
 
     while (v15);
   }
 
-  v24 = [v6 profiles];
-  v25 = [v24 na_map:&__block_literal_global_632];
+  profiles = [hierarchyCopy profiles];
+  v25 = [profiles na_map:&__block_literal_global_632];
   v70[0] = MEMORY[0x277D85DD0];
   v70[1] = 3221225472;
   v70[2] = __67__HFHomeKitDispatcher__setDelegationEnabled_forAccessoryHierarchy___block_invoke_2;
   v70[3] = &unk_277E02620;
-  v71 = v4;
+  v71 = enabledCopy;
   v70[4] = self;
   [v25 na_each:v70];
 
@@ -3685,8 +3685,8 @@ uint64_t __47__HFHomeKitDispatcher__finishAllHomesPromises___block_invoke(uint64
   v69 = 0u;
   v66 = 0u;
   v67 = 0u;
-  v26 = [v6 televisionProfiles];
-  v27 = [v26 countByEnumeratingWithState:&v66 objects:v77 count:16];
+  televisionProfiles = [hierarchyCopy televisionProfiles];
+  v27 = [televisionProfiles countByEnumeratingWithState:&v66 objects:v77 count:16];
   if (v27)
   {
     v28 = v27;
@@ -3698,15 +3698,15 @@ uint64_t __47__HFHomeKitDispatcher__finishAllHomesPromises___block_invoke(uint64
       {
         if (*v67 != v29)
         {
-          objc_enumerationMutation(v26);
+          objc_enumerationMutation(televisionProfiles);
         }
 
         v31 = *(*(&v66 + 1) + 8 * v30);
-        if (v4)
+        if (enabledCopy)
         {
-          v32 = [(HFHomeKitDispatcher *)self televisionObserverDispatcher];
-          v33 = [v32 proxy];
-          [v31 setDelegate:v33];
+          televisionObserverDispatcher = [(HFHomeKitDispatcher *)self televisionObserverDispatcher];
+          proxy3 = [televisionObserverDispatcher proxy];
+          [v31 setDelegate:proxy3];
         }
 
         else
@@ -3718,126 +3718,126 @@ uint64_t __47__HFHomeKitDispatcher__finishAllHomesPromises___block_invoke(uint64
       }
 
       while (v28 != v30);
-      v28 = [v26 countByEnumeratingWithState:&v66 objects:v77 count:16];
+      v28 = [televisionProfiles countByEnumeratingWithState:&v66 objects:v77 count:16];
     }
 
     while (v28);
   }
 
-  if (v4)
+  if (enabledCopy)
   {
-    v26 = [(HFHomeKitDispatcher *)self softwareUpdateControllerObserverDispatcher];
-    v34 = [v26 proxy];
+    televisionProfiles = [(HFHomeKitDispatcher *)self softwareUpdateControllerObserverDispatcher];
+    proxy4 = [televisionProfiles proxy];
   }
 
   else
   {
-    v34 = 0;
+    proxy4 = 0;
   }
 
-  v35 = [v6 softwareUpdateController];
-  [v35 setDelegate:v34];
+  softwareUpdateController = [hierarchyCopy softwareUpdateController];
+  [softwareUpdateController setDelegate:proxy4];
 
-  if (v4)
+  if (enabledCopy)
   {
 
-    v26 = [(HFHomeKitDispatcher *)self softwareUpdateObserverDispatcher];
-    v36 = [v26 proxy];
-  }
-
-  else
-  {
-    v36 = 0;
-  }
-
-  v37 = [v6 softwareUpdateController];
-  v38 = [v37 availableUpdate];
-  [v38 setDelegate:v36];
-
-  if (v4)
-  {
-
-    v39 = [(HFHomeKitDispatcher *)self softwareUpdateManager];
-    v40 = [MEMORY[0x277CBEB98] na_setWithSafeObject:v6];
-    [v39 startObservingSoftwareUpdatesForAccessories:v40];
+    televisionProfiles = [(HFHomeKitDispatcher *)self softwareUpdateObserverDispatcher];
+    proxy5 = [televisionProfiles proxy];
   }
 
   else
   {
-    v39 = [(HFHomeKitDispatcher *)self softwareUpdateManager];
-    v40 = [MEMORY[0x277CBEB98] na_setWithSafeObject:v6];
-    [v39 stopObservingSoftwareUpdatesForAccessories:v40];
+    proxy5 = 0;
   }
 
-  v41 = [v6 mediaProfile];
+  softwareUpdateController2 = [hierarchyCopy softwareUpdateController];
+  availableUpdate = [softwareUpdateController2 availableUpdate];
+  [availableUpdate setDelegate:proxy5];
 
-  if (v41)
+  if (enabledCopy)
   {
-    v42 = [v6 mediaProfile];
-    [(HFHomeKitDispatcher *)self _setDelegationEnabled:1 forMediaProfileContainer:v42 session:0];
 
-    v41 = 0;
-    if ([v6 hf_isAppleTV])
+    softwareUpdateManager = [(HFHomeKitDispatcher *)self softwareUpdateManager];
+    mediaDestinationControllerObserverDispatcher = [MEMORY[0x277CBEB98] na_setWithSafeObject:hierarchyCopy];
+    [softwareUpdateManager startObservingSoftwareUpdatesForAccessories:mediaDestinationControllerObserverDispatcher];
+  }
+
+  else
+  {
+    softwareUpdateManager = [(HFHomeKitDispatcher *)self softwareUpdateManager];
+    mediaDestinationControllerObserverDispatcher = [MEMORY[0x277CBEB98] na_setWithSafeObject:hierarchyCopy];
+    [softwareUpdateManager stopObservingSoftwareUpdatesForAccessories:mediaDestinationControllerObserverDispatcher];
+  }
+
+  mediaProfile = [hierarchyCopy mediaProfile];
+
+  if (mediaProfile)
+  {
+    mediaProfile2 = [hierarchyCopy mediaProfile];
+    [(HFHomeKitDispatcher *)self _setDelegationEnabled:1 forMediaProfileContainer:mediaProfile2 session:0];
+
+    mediaProfile = 0;
+    if ([hierarchyCopy hf_isAppleTV])
     {
-      v41 = v6;
+      mediaProfile = hierarchyCopy;
     }
 
-    if (v4)
+    if (enabledCopy)
     {
-      v40 = [(HFHomeKitDispatcher *)self mediaDestinationControllerObserverDispatcher];
-      v43 = [v40 proxy];
+      mediaDestinationControllerObserverDispatcher = [(HFHomeKitDispatcher *)self mediaDestinationControllerObserverDispatcher];
+      proxy6 = [mediaDestinationControllerObserverDispatcher proxy];
     }
 
     else
     {
-      v43 = 0;
+      proxy6 = 0;
     }
 
-    v44 = [v41 audioDestinationController];
-    [v44 setDelegate:v43];
+    audioDestinationController = [mediaProfile audioDestinationController];
+    [audioDestinationController setDelegate:proxy6];
 
-    if (v4)
+    if (enabledCopy)
     {
     }
   }
 
   if (!+[HFExecutionEnvironment isHomeWidgetRelatedProcess])
   {
-    if (v4)
+    if (enabledCopy)
     {
-      v41 = [(HFHomeKitDispatcher *)self symptomsHandlerObserverDispatcher];
-      v45 = [v41 proxy];
+      mediaProfile = [(HFHomeKitDispatcher *)self symptomsHandlerObserverDispatcher];
+      proxy7 = [mediaProfile proxy];
     }
 
     else
     {
-      v45 = 0;
+      proxy7 = 0;
     }
 
-    v46 = [v6 symptomsHandler];
-    [v46 setDelegate:v45];
+    symptomsHandler = [hierarchyCopy symptomsHandler];
+    [symptomsHandler setDelegate:proxy7];
 
-    if (v4)
+    if (enabledCopy)
     {
     }
   }
 
-  v47 = [v6 hf_siriEndpointProfile];
+  hf_siriEndpointProfile = [hierarchyCopy hf_siriEndpointProfile];
 
-  if (v47)
+  if (hf_siriEndpointProfile)
   {
-    v48 = [(HFHomeKitDispatcher *)self siriEndpointProfileObserverDispatcher];
-    v49 = [v48 proxy];
-    v50 = [v6 hf_siriEndpointProfile];
-    [v50 setDelegate:v49];
+    siriEndpointProfileObserverDispatcher = [(HFHomeKitDispatcher *)self siriEndpointProfileObserverDispatcher];
+    proxy8 = [siriEndpointProfileObserverDispatcher proxy];
+    hf_siriEndpointProfile2 = [hierarchyCopy hf_siriEndpointProfile];
+    [hf_siriEndpointProfile2 setDelegate:proxy8];
   }
 
-  v51 = [v6 lightProfiles];
+  lightProfiles = [hierarchyCopy lightProfiles];
   v62 = 0u;
   v63 = 0u;
   v64 = 0u;
   v65 = 0u;
-  v52 = [v51 countByEnumeratingWithState:&v62 objects:v76 count:16];
+  v52 = [lightProfiles countByEnumeratingWithState:&v62 objects:v76 count:16];
   if (v52)
   {
     v53 = v52;
@@ -3849,15 +3849,15 @@ uint64_t __47__HFHomeKitDispatcher__finishAllHomesPromises___block_invoke(uint64
       {
         if (*v63 != v54)
         {
-          objc_enumerationMutation(v51);
+          objc_enumerationMutation(lightProfiles);
         }
 
         v56 = *(*(&v62 + 1) + 8 * v55);
-        if (v4)
+        if (enabledCopy)
         {
-          v57 = [(HFHomeKitDispatcher *)self lightObserverDispatcher];
-          v58 = [v57 proxy];
-          [v56 setDelegate:v58];
+          lightObserverDispatcher = [(HFHomeKitDispatcher *)self lightObserverDispatcher];
+          proxy9 = [lightObserverDispatcher proxy];
+          [v56 setDelegate:proxy9];
         }
 
         else
@@ -3869,7 +3869,7 @@ uint64_t __47__HFHomeKitDispatcher__finishAllHomesPromises___block_invoke(uint64
       }
 
       while (v53 != v55);
-      v53 = [v51 countByEnumeratingWithState:&v62 objects:v76 count:16];
+      v53 = [lightProfiles countByEnumeratingWithState:&v62 objects:v76 count:16];
     }
 
     while (v53);
@@ -3916,75 +3916,75 @@ void __67__HFHomeKitDispatcher__setDelegationEnabled_forAccessoryHierarchy___blo
   }
 }
 
-- (void)_setDelegationEnabled:(BOOL)a3 forMediaProfileContainer:(id)a4 session:(id)a5
+- (void)_setDelegationEnabled:(BOOL)enabled forMediaProfileContainer:(id)container session:(id)session
 {
-  v7 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v7)
+  enabledCopy = enabled;
+  containerCopy = container;
+  sessionCopy = session;
+  v11 = sessionCopy;
+  if (enabledCopy)
   {
-    v12 = [(HFHomeKitDispatcher *)self mediaSessionObserverDispatcher];
-    v13 = [v12 proxy];
-    [v11 setDelegate:v13];
+    mediaSessionObserverDispatcher = [(HFHomeKitDispatcher *)self mediaSessionObserverDispatcher];
+    proxy = [mediaSessionObserverDispatcher proxy];
+    [v11 setDelegate:proxy];
 
-    v14 = [(HFHomeKitDispatcher *)self mediaObjectObserverDispatcher];
-    v15 = [v14 proxy];
-    [v9 setDelegate:v15];
+    mediaObjectObserverDispatcher = [(HFHomeKitDispatcher *)self mediaObjectObserverDispatcher];
+    proxy2 = [mediaObjectObserverDispatcher proxy];
+    [containerCopy setDelegate:proxy2];
 
-    v5 = [(HFHomeKitDispatcher *)self mediaSessionObserverDispatcher];
-    v16 = [v5 proxy];
+    mediaSessionObserverDispatcher2 = [(HFHomeKitDispatcher *)self mediaSessionObserverDispatcher];
+    proxy3 = [mediaSessionObserverDispatcher2 proxy];
   }
 
   else
   {
-    [v10 setDelegate:0];
-    [v9 setDelegate:0];
-    v16 = 0;
+    [sessionCopy setDelegate:0];
+    [containerCopy setDelegate:0];
+    proxy3 = 0;
   }
 
-  v17 = [v9 mediaSession];
-  [v17 setDelegate:v16];
+  mediaSession = [containerCopy mediaSession];
+  [mediaSession setDelegate:proxy3];
 
-  if (v7)
+  if (enabledCopy)
   {
 
-    v5 = [(HFHomeKitDispatcher *)self audioControlObserverDispatcher];
-    v18 = [v5 proxy];
+    mediaSessionObserverDispatcher2 = [(HFHomeKitDispatcher *)self audioControlObserverDispatcher];
+    proxy4 = [mediaSessionObserverDispatcher2 proxy];
   }
 
   else
   {
-    v18 = 0;
+    proxy4 = 0;
   }
 
-  v19 = [v9 mediaSession];
-  v20 = [v19 audioControl];
-  [v20 setDelegate:v18];
+  mediaSession2 = [containerCopy mediaSession];
+  audioControl = [mediaSession2 audioControl];
+  [audioControl setDelegate:proxy4];
 
-  if (v7)
+  if (enabledCopy)
   {
 
-    v5 = [(HFHomeKitDispatcher *)self homeKitSettingsObserverDispatcher];
-    v21 = [v5 proxy];
+    mediaSessionObserverDispatcher2 = [(HFHomeKitDispatcher *)self homeKitSettingsObserverDispatcher];
+    proxy5 = [mediaSessionObserverDispatcher2 proxy];
   }
 
   else
   {
-    v21 = 0;
+    proxy5 = 0;
   }
 
-  v22 = [v9 settings];
-  [v22 setDelegate:v21];
+  settings = [containerCopy settings];
+  [settings setDelegate:proxy5];
 
-  if (v7)
+  if (enabledCopy)
   {
   }
 
   if (!+[HFExecutionEnvironment isHomeWidgetRelatedProcess])
   {
     objc_opt_class();
-    v23 = v9;
+    v23 = containerCopy;
     if (objc_opt_isKindOfClass())
     {
       v24 = v23;
@@ -3997,14 +3997,14 @@ void __67__HFHomeKitDispatcher__setDelegationEnabled_forAccessoryHierarchy___blo
 
     v25 = v24;
 
-    v26 = [v25 accessories];
+    accessories = [v25 accessories];
     v27[0] = MEMORY[0x277D85DD0];
     v27[1] = 3221225472;
     v27[2] = __78__HFHomeKitDispatcher__setDelegationEnabled_forMediaProfileContainer_session___block_invoke;
     v27[3] = &unk_277E02648;
-    v28 = v7;
+    v28 = enabledCopy;
     v27[4] = self;
-    [v26 na_each:v27];
+    [accessories na_each:v27];
   }
 }
 
@@ -4031,133 +4031,133 @@ void __78__HFHomeKitDispatcher__setDelegationEnabled_forMediaProfileContainer_se
   }
 }
 
-- (void)_setDelegationEnabled:(BOOL)a3 forUser:(id)a4
+- (void)_setDelegationEnabled:(BOOL)enabled forUser:(id)user
 {
-  v4 = a3;
+  enabledCopy = enabled;
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [(HFHomeKitDispatcher *)self home];
-  v8 = [v6 userSettingsForHome:v7];
+  userCopy = user;
+  home = [(HFHomeKitDispatcher *)self home];
+  v8 = [userCopy userSettingsForHome:home];
 
-  v9 = [v8 settings];
-  v10 = [v9 rootGroup];
+  settings = [v8 settings];
+  rootGroup = [settings rootGroup];
 
-  if (!v10)
+  if (!rootGroup)
   {
     v11 = HFLogForCategory(0x27uLL);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       v21 = 138412290;
-      v22 = v6;
+      v22 = userCopy;
       _os_log_error_impl(&dword_20D9BF000, v11, OS_LOG_TYPE_ERROR, "Attempting to set delegate for user %@ settings - but settings are invalid", &v21, 0xCu);
     }
   }
 
-  v12 = [v8 privateSettings];
-  v13 = [v12 rootGroup];
+  privateSettings = [v8 privateSettings];
+  rootGroup2 = [privateSettings rootGroup];
 
-  if (v13)
+  if (rootGroup2)
   {
-    if (v4)
+    if (enabledCopy)
     {
 LABEL_7:
-      v12 = [(HFHomeKitDispatcher *)self homeKitSettingsObserverDispatcher];
-      v14 = [v12 proxy];
+      privateSettings = [(HFHomeKitDispatcher *)self homeKitSettingsObserverDispatcher];
+      proxy = [privateSettings proxy];
       goto LABEL_12;
     }
   }
 
   else
   {
-    v12 = HFLogForCategory(0x27uLL);
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+    privateSettings = HFLogForCategory(0x27uLL);
+    if (os_log_type_enabled(privateSettings, OS_LOG_TYPE_ERROR))
     {
       v21 = 138412290;
-      v22 = v6;
-      _os_log_error_impl(&dword_20D9BF000, v12, OS_LOG_TYPE_ERROR, "Attempting to set delegate for user %@ private settings - but private settings are invalid", &v21, 0xCu);
+      v22 = userCopy;
+      _os_log_error_impl(&dword_20D9BF000, privateSettings, OS_LOG_TYPE_ERROR, "Attempting to set delegate for user %@ private settings - but private settings are invalid", &v21, 0xCu);
     }
 
-    if (v4)
+    if (enabledCopy)
     {
       goto LABEL_7;
     }
   }
 
-  v14 = 0;
+  proxy = 0;
 LABEL_12:
-  v15 = [v8 settings];
-  [v15 setDelegate:v14];
+  settings2 = [v8 settings];
+  [settings2 setDelegate:proxy];
 
-  if (v4)
+  if (enabledCopy)
   {
 
-    v12 = [(HFHomeKitDispatcher *)self homeKitSettingsObserverDispatcher];
-    v16 = [v12 proxy];
+    privateSettings = [(HFHomeKitDispatcher *)self homeKitSettingsObserverDispatcher];
+    proxy2 = [privateSettings proxy];
   }
 
   else
   {
-    v16 = 0;
+    proxy2 = 0;
   }
 
-  v17 = [v8 privateSettings];
-  [v17 setDelegate:v16];
+  privateSettings2 = [v8 privateSettings];
+  [privateSettings2 setDelegate:proxy2];
 
-  if (v4)
+  if (enabledCopy)
   {
 
-    v18 = [(HFHomeKitDispatcher *)self userObserverDispatcher];
-    v19 = [v18 proxy];
-    [v6 setDelegate:v19];
+    userObserverDispatcher = [(HFHomeKitDispatcher *)self userObserverDispatcher];
+    proxy3 = [userObserverDispatcher proxy];
+    [userCopy setDelegate:proxy3];
   }
 
   else
   {
-    [v6 setDelegate:0];
+    [userCopy setDelegate:0];
   }
 
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_setHomePersonManagerObservationEnabled:(BOOL)a3
+- (void)_setHomePersonManagerObservationEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v5 = [(HFHomeKitDispatcher *)self home];
-  v8 = [v5 personManager];
+  enabledCopy = enabled;
+  home = [(HFHomeKitDispatcher *)self home];
+  personManager = [home personManager];
 
-  if (v8)
+  if (personManager)
   {
-    v6 = [(HFHomeKitDispatcher *)self homePersonManagerDispatcher];
-    v7 = [v6 proxy];
-    if (v3)
+    homePersonManagerDispatcher = [(HFHomeKitDispatcher *)self homePersonManagerDispatcher];
+    proxy = [homePersonManagerDispatcher proxy];
+    if (enabledCopy)
     {
-      [v8 addObserver:v7];
+      [personManager addObserver:proxy];
     }
 
     else
     {
-      [v8 removeObserver:v7];
+      [personManager removeObserver:proxy];
     }
   }
 }
 
 - (id)homeSensingActiveFuture
 {
-  v3 = [(HFHomeKitDispatcher *)self locationCoordinatorSetupFuture];
+  locationCoordinatorSetupFuture = [(HFHomeKitDispatcher *)self locationCoordinatorSetupFuture];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __46__HFHomeKitDispatcher_homeSensingActiveFuture__block_invoke;
   v10[3] = &unk_277DF8340;
   v10[4] = self;
-  v4 = [v3 flatMap:v10];
+  v4 = [locationCoordinatorSetupFuture flatMap:v10];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __46__HFHomeKitDispatcher_homeSensingActiveFuture__block_invoke_2;
   v9[3] = &unk_277E02670;
   v9[4] = self;
   v5 = [v4 flatMap:v9];
-  v6 = [MEMORY[0x277D2C938] mainThreadScheduler];
-  v7 = [v5 reschedule:v6];
+  mainThreadScheduler = [MEMORY[0x277D2C938] mainThreadScheduler];
+  v7 = [v5 reschedule:mainThreadScheduler];
 
   return v7;
 }
@@ -4191,14 +4191,14 @@ id __46__HFHomeKitDispatcher_homeSensingActiveFuture__block_invoke_2(id *a1, voi
 - (void)updateHomeSensingState
 {
   objc_initWeak(&location, self);
-  v3 = [(HFHomeKitDispatcher *)self allHomesFuture];
+  allHomesFuture = [(HFHomeKitDispatcher *)self allHomesFuture];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __45__HFHomeKitDispatcher_updateHomeSensingState__block_invoke;
   v5[3] = &unk_277E026C0;
   v5[4] = self;
   objc_copyWeak(&v6, &location);
-  v4 = [v3 addCompletionBlock:v5];
+  v4 = [allHomesFuture addCompletionBlock:v5];
 
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
@@ -4294,11 +4294,11 @@ void __45__HFHomeKitDispatcher_updateHomeSensingState__block_invoke_639(uint64_t
 
 - (BOOL)_shouldPersistSelectedHomeToDefaults
 {
-  v2 = [(HFHomeKitDispatcher *)self homeManager];
-  v3 = [v2 currentAccessory];
-  v4 = [v3 home];
+  homeManager = [(HFHomeKitDispatcher *)self homeManager];
+  currentAccessory = [homeManager currentAccessory];
+  home = [currentAccessory home];
 
-  if (v4)
+  if (home)
   {
     return 0;
   }
@@ -4308,29 +4308,29 @@ void __45__HFHomeKitDispatcher_updateHomeSensingState__block_invoke_639(uint64_t
   return [v6 allowHomeSensingOverride];
 }
 
-- (void)fetchSettingsForLightProfiles:(id)a3
+- (void)fetchSettingsForLightProfiles:(id)profiles
 {
-  v4 = a3;
-  v5 = [(HFHomeKitDispatcher *)self home];
+  profilesCopy = profiles;
+  home = [(HFHomeKitDispatcher *)self home];
 
-  if (v5)
+  if (home)
   {
     if (+[HFUtilities isInternalTest])
     {
-      [(HFHomeKitDispatcher *)self _fetchSettingsForLightProfiles:v4];
+      [(HFHomeKitDispatcher *)self _fetchSettingsForLightProfiles:profilesCopy];
     }
 
     else
     {
       objc_initWeak(&location, self);
-      v6 = [MEMORY[0x277D0F8F0] defaultScheduler];
+      defaultScheduler = [MEMORY[0x277D0F8F0] defaultScheduler];
       v8[0] = MEMORY[0x277D85DD0];
       v8[1] = 3221225472;
       v8[2] = __53__HFHomeKitDispatcher_fetchSettingsForLightProfiles___block_invoke;
       v8[3] = &unk_277DF3A68;
       objc_copyWeak(&v10, &location);
-      v9 = v4;
-      v7 = [v6 performWithQualityOfService:17 block:v8];
+      v9 = profilesCopy;
+      v7 = [defaultScheduler performWithQualityOfService:17 block:v8];
 
       objc_destroyWeak(&v10);
       objc_destroyWeak(&location);
@@ -4344,16 +4344,16 @@ void __53__HFHomeKitDispatcher_fetchSettingsForLightProfiles___block_invoke(uint
   [WeakRetained _fetchSettingsForLightProfiles:*(a1 + 32)];
 }
 
-- (void)_fetchSettingsForLightProfiles:(id)a3
+- (void)_fetchSettingsForLightProfiles:(id)profiles
 {
-  v4 = a3;
-  v5 = [(HFHomeKitDispatcher *)self home];
+  profilesCopy = profiles;
+  home = [(HFHomeKitDispatcher *)self home];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __54__HFHomeKitDispatcher__fetchSettingsForLightProfiles___block_invoke;
   v6[3] = &unk_277E026E8;
   v6[4] = self;
-  [v5 fetchSettingsForLightProfiles:v4 withCompletion:v6];
+  [home fetchSettingsForLightProfiles:profilesCopy withCompletion:v6];
 }
 
 void __54__HFHomeKitDispatcher__fetchSettingsForLightProfiles___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -4409,35 +4409,35 @@ void __54__HFHomeKitDispatcher__fetchSettingsForLightProfiles___block_invoke(uin
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)dispatchLightProfileUpdate:(id)a3 settings:(id)a4 error:(id)a5
+- (void)dispatchLightProfileUpdate:(id)update settings:(id)settings error:(id)error
 {
   v20 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v9)
+  updateCopy = update;
+  settingsCopy = settings;
+  errorCopy = error;
+  if (!settingsCopy)
   {
     v11 = HFLogForCategory(0x27uLL);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v17 = v8;
+      v17 = updateCopy;
       v18 = 2112;
-      v19 = v10;
+      v19 = errorCopy;
       _os_log_error_impl(&dword_20D9BF000, v11, OS_LOG_TYPE_ERROR, "Received error trying to fetch light profile settings. Profile: %@ %@", buf, 0x16u);
     }
 
     goto LABEL_6;
   }
 
-  if ([v9 supportedFeatures])
+  if ([settingsCopy supportedFeatures])
   {
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __65__HFHomeKitDispatcher_dispatchLightProfileUpdate_settings_error___block_invoke;
     v13[3] = &unk_277E02710;
-    v14 = v8;
-    v15 = v9;
+    v14 = updateCopy;
+    v15 = settingsCopy;
     [(HFHomeKitDispatcher *)self dispatchLightObserverMessage:v13 sender:0];
 
     v11 = v14;
@@ -4482,12 +4482,12 @@ LABEL_6:
   return 0;
 }
 
-- (void)installStateArbiter:(id)a3 installStateDidChange:(BOOL)a4
+- (void)installStateArbiter:(id)arbiter installStateDidChange:(BOOL)change
 {
-  if (a4)
+  if (change)
   {
-    v5 = [(HFHomeKitDispatcher *)self _setupLocationSensingCoordinator];
-    [(HFHomeKitDispatcher *)self setLocationCoordinatorSetupFuture:v5];
+    _setupLocationSensingCoordinator = [(HFHomeKitDispatcher *)self _setupLocationSensingCoordinator];
+    [(HFHomeKitDispatcher *)self setLocationCoordinatorSetupFuture:_setupLocationSensingCoordinator];
   }
 
   else
@@ -4497,15 +4497,15 @@ LABEL_6:
   }
 }
 
-- (void)stateRestorationSettings:(id)a3 selectedHomeIdentifierDidUpdateExternally:(id)a4
+- (void)stateRestorationSettings:(id)settings selectedHomeIdentifierDidUpdateExternally:(id)externally
 {
   v10 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  externallyCopy = externally;
   v6 = HFLogForCategory(0x27uLL);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = v5;
+    v9 = externallyCopy;
     _os_log_impl(&dword_20D9BF000, v6, OS_LOG_TYPE_DEFAULT, "Received selected home changed notification. New selected home identifier: %@", &v8, 0xCu);
   }
 
@@ -4513,16 +4513,16 @@ LABEL_6:
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateHomeActivityStateForHome:(id)a3
+- (void)_updateHomeActivityStateForHome:(id)home
 {
-  v4 = a3;
+  homeCopy = home;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __55__HFHomeKitDispatcher__updateHomeActivityStateForHome___block_invoke;
   v6[3] = &unk_277DF3370;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = homeCopy;
+  v5 = homeCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 

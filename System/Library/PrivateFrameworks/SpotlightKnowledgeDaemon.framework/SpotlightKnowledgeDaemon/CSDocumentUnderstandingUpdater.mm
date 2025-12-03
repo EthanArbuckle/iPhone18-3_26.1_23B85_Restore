@@ -1,13 +1,13 @@
 @interface CSDocumentUnderstandingUpdater
-- (BOOL)handleDonation:(id)a3 turboEnabled:(BOOL)a4 completionHandler:(id)a5 cancelBlock:(id)a6;
-- (BOOL)journalItemHasDocUnderstandingSN:(id)a3;
-- (BOOL)journalItemIsSupportedDocument:(id)a3;
-- (BOOL)journalItemNeedsDocUnderstanding:(id)a3;
-- (BOOL)shouldHandleJournalItem:(id)a3 bundleID:(id)a4;
+- (BOOL)handleDonation:(id)donation turboEnabled:(BOOL)enabled completionHandler:(id)handler cancelBlock:(id)block;
+- (BOOL)journalItemHasDocUnderstandingSN:(id)n;
+- (BOOL)journalItemIsSupportedDocument:(id)document;
+- (BOOL)journalItemNeedsDocUnderstanding:(id)understanding;
+- (BOOL)shouldHandleJournalItem:(id)item bundleID:(id)d;
 - (id)description;
-- (id)getStrForDUPersonalIDType:(int64_t)a3;
+- (id)getStrForDUPersonalIDType:(int64_t)type;
 - (id)includeBundleIDs;
-- (int64_t)getItemDocumentType:(id)a3;
+- (int64_t)getItemDocumentType:(id)type;
 @end
 
 @implementation CSDocumentUnderstandingUpdater
@@ -16,25 +16,25 @@
 {
   v3 = objc_alloc(MEMORY[0x277CCACA8]);
   v4 = objc_opt_class();
-  v5 = [(CSDocumentUnderstandingUpdater *)self taskName];
-  v6 = [v3 initWithFormat:@"<%@:%p; %@>", v4, self, v5];
+  taskName = [(CSDocumentUnderstandingUpdater *)self taskName];
+  v6 = [v3 initWithFormat:@"<%@:%p; %@>", v4, self, taskName];
 
   return v6;
 }
 
 - (id)includeBundleIDs
 {
-  v2 = [MEMORY[0x277D657A0] sharedContext];
-  v3 = [v2 docUnderstandingIncludeBundles];
+  mEMORY[0x277D657A0] = [MEMORY[0x277D657A0] sharedContext];
+  docUnderstandingIncludeBundles = [mEMORY[0x277D657A0] docUnderstandingIncludeBundles];
 
-  return v3;
+  return docUnderstandingIncludeBundles;
 }
 
-- (BOOL)journalItemNeedsDocUnderstanding:(id)a3
+- (BOOL)journalItemNeedsDocUnderstanding:(id)understanding
 {
   v8 = 0uLL;
   v9 = 0;
-  [(CSEventDonationJournalItem *)a3 attrDictObj];
+  [(CSEventDonationJournalItem *)understanding attrDictObj];
   PlistObjectForKey = _MDPlistDictionaryGetPlistObjectForKey();
   if (PlistObjectForKey)
   {
@@ -47,11 +47,11 @@
   return PlistObjectForKey;
 }
 
-- (BOOL)journalItemHasDocUnderstandingSN:(id)a3
+- (BOOL)journalItemHasDocUnderstandingSN:(id)n
 {
   v8 = 0uLL;
   v9 = 0;
-  [(CSEventDonationJournalItem *)a3 attrDictObj];
+  [(CSEventDonationJournalItem *)n attrDictObj];
   PlistObjectForKey = _MDPlistDictionaryGetPlistObjectForKey();
   if (PlistObjectForKey)
   {
@@ -64,16 +64,16 @@
   return PlistObjectForKey;
 }
 
-- (BOOL)journalItemIsSupportedDocument:(id)a3
+- (BOOL)journalItemIsSupportedDocument:(id)document
 {
-  v3 = a3;
+  documentCopy = document;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
   v13 = 0;
   v8 = 0uLL;
   v9 = 0;
-  [(CSEventDonationJournalItem *)v3 attrDictObj];
+  [(CSEventDonationJournalItem *)documentCopy attrDictObj];
   if (_MDPlistDictionaryGetPlistObjectForKey())
   {
     v6 = v8;
@@ -121,12 +121,12 @@ LABEL_8:
   return result;
 }
 
-- (BOOL)shouldHandleJournalItem:(id)a3 bundleID:(id)a4
+- (BOOL)shouldHandleJournalItem:(id)item bundleID:(id)d
 {
-  v5 = a3;
-  if ([(CSDocumentUnderstandingUpdater *)self journalItemNeedsDocUnderstanding:v5])
+  itemCopy = item;
+  if ([(CSDocumentUnderstandingUpdater *)self journalItemNeedsDocUnderstanding:itemCopy])
   {
-    v6 = ![(CSDocumentUnderstandingUpdater *)self journalItemHasDocUnderstandingSN:v5];
+    v6 = ![(CSDocumentUnderstandingUpdater *)self journalItemHasDocUnderstandingSN:itemCopy];
   }
 
   else
@@ -137,16 +137,16 @@ LABEL_8:
   return v6;
 }
 
-- (int64_t)getItemDocumentType:(id)a3
+- (int64_t)getItemDocumentType:(id)type
 {
-  v3 = a3;
+  typeCopy = type;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
   v13 = 0;
   v8 = 0uLL;
   v9 = 0;
-  [(CSEventDonationJournalItem *)v3 attrDictObj];
+  [(CSEventDonationJournalItem *)typeCopy attrDictObj];
   if (_MDPlistDictionaryGetPlistObjectForKey())
   {
     v6 = v8;
@@ -200,25 +200,25 @@ uint64_t __54__CSDocumentUnderstandingUpdater_getItemDocumentType___block_invoke
   return result;
 }
 
-- (id)getStrForDUPersonalIDType:(int64_t)a3
+- (id)getStrForDUPersonalIDType:(int64_t)type
 {
-  if (a3 > 0xD)
+  if (type > 0xD)
   {
     return &stru_2846CE8D8;
   }
 
   else
   {
-    return off_27893CB10[a3];
+    return off_27893CB10[type];
   }
 }
 
-- (BOOL)handleDonation:(id)a3 turboEnabled:(BOOL)a4 completionHandler:(id)a5 cancelBlock:(id)a6
+- (BOOL)handleDonation:(id)donation turboEnabled:(BOOL)enabled completionHandler:(id)handler cancelBlock:(id)block
 {
   v102 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v63 = a5;
-  v10 = a6;
+  donationCopy = donation;
+  handlerCopy = handler;
+  blockCopy = block;
   context = objc_autoreleasePoolPush();
   v11 = SKGLogEventInit();
   spid = os_signpost_id_generate(v11);
@@ -232,13 +232,13 @@ uint64_t __54__CSDocumentUnderstandingUpdater_getItemDocumentType___block_invoke
   }
 
   v14 = objc_alloc_init(CSEventFeedback);
-  [(CSEventFeedback *)v14 setIndexType:[(CSEventListenerManager *)v9 folderFd]];
+  [(CSEventFeedback *)v14 setIndexType:[(CSEventListenerManager *)donationCopy folderFd]];
   [(CSEventFeedback *)v14 start];
-  v15 = [MEMORY[0x277D657A0] sharedContext];
-  v16 = [v15 docUnderstandingFetchAttributes];
+  mEMORY[0x277D657A0] = [MEMORY[0x277D657A0] sharedContext];
+  docUnderstandingFetchAttributes = [mEMORY[0x277D657A0] docUnderstandingFetchAttributes];
 
   v17 = objc_alloc(MEMORY[0x277CCACA8]);
-  v18 = [MEMORY[0x277CCACA8] stringWithUTF8String:-[CSEventListenerManager journalMap](v9)];
+  v18 = [MEMORY[0x277CCACA8] stringWithUTF8String:-[CSEventListenerManager journalMap](donationCopy)];
   v19 = [v17 initWithString:v18];
 
   if (v19)
@@ -253,10 +253,10 @@ uint64_t __54__CSDocumentUnderstandingUpdater_getItemDocumentType___block_invoke
 
   [(CSEventFeedback *)v14 setBundleID:v20, spid - 1];
   v21 = objc_alloc(MEMORY[0x277CCACA8]);
-  v22 = [(CSEventListenerDonation *)v9 protectionClass];
-  v60 = [v21 initWithString:v22];
+  protectionClass = [(CSEventListenerDonation *)donationCopy protectionClass];
+  v60 = [v21 initWithString:protectionClass];
 
-  v23 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:-[CSEventListenerManager totalJournalSize](v9)];
+  v23 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:-[CSEventListenerManager totalJournalSize](donationCopy)];
   v90 = 0;
   v91 = &v90;
   v92 = 0x2020000000;
@@ -279,21 +279,21 @@ uint64_t __54__CSDocumentUnderstandingUpdater_getItemDocumentType___block_invoke
   v74[4] = self;
   v24 = v19;
   v75 = v24;
-  v25 = v10;
+  v25 = blockCopy;
   v80 = v25;
-  v26 = v9;
+  v26 = donationCopy;
   v76 = v26;
   v81 = v83;
   v27 = v14;
   v77 = v27;
-  v58 = v16;
+  v58 = docUnderstandingFetchAttributes;
   v78 = v58;
   v28 = v23;
   v79 = v28;
   v82 = buf;
   [v26 iterateItems:v74];
-  LODWORD(v16) = v25[2](v25);
-  if (!v16)
+  LODWORD(docUnderstandingFetchAttributes) = v25[2](v25);
+  if (!docUnderstandingFetchAttributes)
   {
     v91[3] = dispatch_time(0, 0) - v57;
     v56 = [*(v85 + 5) count];
@@ -302,14 +302,14 @@ uint64_t __54__CSDocumentUnderstandingUpdater_getItemDocumentType___block_invoke
       v35 = SKGLogDocUnderstandingInit();
       if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
       {
-        v36 = [(CSEventListenerDonation *)v26 indexTypeName];
-        v37 = [(CSEventListenerManager *)v26 totalJournalSize];
+        indexTypeName = [(CSEventListenerDonation *)v26 indexTypeName];
+        totalJournalSize = [(CSEventListenerManager *)v26 totalJournalSize];
         *v94 = 138413058;
-        v95 = self;
+        selfCopy2 = self;
         v96 = 2080;
-        v97 = v36;
+        v97 = indexTypeName;
         v98 = 2048;
-        v99 = v37;
+        v99 = totalJournalSize;
         v100 = 2048;
         v101 = v56;
         _os_log_impl(&dword_231B25000, v35, OS_LOG_TYPE_DEFAULT, "### %@ donation %s sn:%llu found %lu items", v94, 0x2Au);
@@ -351,7 +351,7 @@ LABEL_33:
         v70 = v56;
         v71 = v47;
         v72 = spid;
-        v67 = v63;
+        v67 = handlerCopy;
         [v43 indexSearchableItems:v51 timeout:v50 timeoutError:v64 completion:3.0e11];
 
         v34 = 1;
@@ -374,8 +374,8 @@ LABEL_38:
       goto LABEL_42;
     }
 
-    v38 = [(CSEventListenerDonation *)v26 homePathHash];
-    v39 = getCSBasePathForId(v38);
+    homePathHash = [(CSEventListenerDonation *)v26 homePathHash];
+    v39 = getCSBasePathForId(homePathHash);
     if (v39)
     {
       if (SKGLogGetCurrentLoggingLevel() >= 4)
@@ -384,9 +384,9 @@ LABEL_38:
         if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
         {
           v41 = v39;
-          v42 = [v39 UTF8String];
+          uTF8String = [v39 UTF8String];
           *v94 = 136315138;
-          v95 = v42;
+          selfCopy2 = uTF8String;
           _os_log_impl(&dword_231B25000, v40, OS_LOG_TYPE_DEFAULT, "Creating CSManagedSearchableIndex for path = %s", v94, 0xCu);
         }
       }
@@ -405,8 +405,8 @@ LABEL_32:
       v44 = SKGLogDocUnderstandingInit();
       if (os_log_type_enabled(v44, OS_LOG_TYPE_ERROR))
       {
-        v45 = [(CSEventListenerDonation *)v26 homePathHash];
-        [CSDocumentUnderstandingUpdater handleDonation:v94 turboEnabled:v45 completionHandler:v44 cancelBlock:?];
+        homePathHash2 = [(CSEventListenerDonation *)v26 homePathHash];
+        [CSDocumentUnderstandingUpdater handleDonation:v94 turboEnabled:homePathHash2 completionHandler:v44 cancelBlock:?];
       }
     }
 
@@ -419,28 +419,28 @@ LABEL_32:
     v29 = SKGLogDocUnderstandingInit();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
     {
-      spida = v16;
-      v30 = [(CSDocumentUnderstandingUpdater *)self taskName];
-      v31 = v30;
-      v32 = [v30 UTF8String];
-      v16 = [(CSEventListenerDonation *)v26 indexTypeName];
-      v33 = [(CSEventListenerManager *)v26 totalJournalSize];
+      spida = docUnderstandingFetchAttributes;
+      taskName = [(CSDocumentUnderstandingUpdater *)self taskName];
+      v31 = taskName;
+      uTF8String2 = [taskName UTF8String];
+      docUnderstandingFetchAttributes = [(CSEventListenerDonation *)v26 indexTypeName];
+      totalJournalSize2 = [(CSEventListenerManager *)v26 totalJournalSize];
       *v94 = 138413058;
-      v95 = self;
+      selfCopy2 = self;
       v96 = 2080;
-      v97 = v32;
+      v97 = uTF8String2;
       v98 = 2080;
-      v99 = v16;
+      v99 = docUnderstandingFetchAttributes;
       v100 = 2048;
-      v101 = v33;
+      v101 = totalJournalSize2;
       _os_log_impl(&dword_231B25000, v29, OS_LOG_TYPE_DEFAULT, "### %@ cancelling %s due to expiration request while processing type='%s' sn:'%llu'", v94, 0x2Au);
 
-      LOBYTE(v16) = spida;
+      LOBYTE(docUnderstandingFetchAttributes) = spida;
     }
   }
 
   [(CSEventFeedback *)v27 end];
-  (*(v63 + 2))(v63, 0, 0, 0);
+  (*(handlerCopy + 2))(handlerCopy, 0, 0, 0);
   v34 = 0;
 LABEL_43:
 
@@ -451,7 +451,7 @@ LABEL_43:
   objc_autoreleasePoolPop(context);
 
   v53 = *MEMORY[0x277D85DE8];
-  return v16 | v34;
+  return docUnderstandingFetchAttributes | v34;
 }
 
 uint64_t __92__CSDocumentUnderstandingUpdater_handleDonation_turboEnabled_completionHandler_cancelBlock___block_invoke(uint64_t a1, void *a2)

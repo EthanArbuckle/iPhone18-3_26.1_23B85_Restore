@@ -1,14 +1,14 @@
 @interface LSDatabaseContext
 + (LSDatabaseContext)sharedDatabaseContext;
-- (BOOL)startAccessingCurrentUserSessionReturningError:(id *)a3;
-- (BOOL)startAccessingSystemScopeReturningError:(id *)a3;
+- (BOOL)startAccessingCurrentUserSessionReturningError:(id *)error;
+- (BOOL)startAccessingSystemScopeReturningError:(id *)error;
 - (NSData)currentPersistentIdentifier;
 - (id)_init;
-- (id)addDatabaseChangeObserver4WebKit:(id)a3;
-- (void)accessCurrentUserSessionUsingBlock:(id)a3;
-- (void)accessSystemScopeUsingBlock:(id)a3;
-- (void)getSystemContentDatabaseObject4WebKit:(id)a3;
-- (void)observeDatabaseChange4WebKit:(id)a3;
+- (id)addDatabaseChangeObserver4WebKit:(id)kit;
+- (void)accessCurrentUserSessionUsingBlock:(id)block;
+- (void)accessSystemScopeUsingBlock:(id)block;
+- (void)getSystemContentDatabaseObject4WebKit:(id)kit;
+- (void)observeDatabaseChange4WebKit:(id)kit;
 - (void)releaseObservedDatabase4WebKit;
 @end
 
@@ -57,19 +57,19 @@ void __42__LSDatabaseContext_sharedDatabaseContext__block_invoke()
   *v8 = v9[0];
   *&v8[12] = *(v9 + 12);
   *&v8[28] = SequenceNumber;
-  v5 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytes:v8 length:36];
-  if (!v5)
+  data = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytes:v8 length:36];
+  if (!data)
   {
 LABEL_3:
-    v5 = [MEMORY[0x1E695DEF0] data];
+    data = [MEMORY[0x1E695DEF0] data];
   }
 
   v6 = *MEMORY[0x1E69E9840];
 
-  return v5;
+  return data;
 }
 
-- (id)addDatabaseChangeObserver4WebKit:(id)a3
+- (id)addDatabaseChangeObserver4WebKit:(id)kit
 {
   v13 = *LaunchServices::DatabaseContext::getPerThreadStateReference(self);
   v14 = 0;
@@ -84,7 +84,7 @@ LABEL_3:
     v12[1] = 3221225472;
     v12[2] = __76__LSDatabaseContext_WebKitChangeTracking__addDatabaseChangeObserver4WebKit___block_invoke;
     v12[3] = &unk_1E6A1BA18;
-    v12[4] = a3;
+    v12[4] = kit;
     v6 = MEMORY[0x1865D71B0](v12);
     v7 = +[_LSDServiceDomain defaultServiceDomain];
     v8 = _LSContextAddChangeObserver(v5, v7, v6);
@@ -126,19 +126,19 @@ void __76__LSDatabaseContext_WebKitChangeTracking__addDatabaseChangeObserver4Web
   objc_autoreleasePoolPop(v6);
 }
 
-- (void)getSystemContentDatabaseObject4WebKit:(id)a3
+- (void)getSystemContentDatabaseObject4WebKit:(id)kit
 {
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __81__LSDatabaseContext_WebKitChangeTracking__getSystemContentDatabaseObject4WebKit___block_invoke;
   v6[3] = &unk_1E6A19090;
-  v6[4] = a3;
+  v6[4] = kit;
   v4 = [(_LSDService *)_LSDReadService XPCProxyWithErrorHandler:v6];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __81__LSDatabaseContext_WebKitChangeTracking__getSystemContentDatabaseObject4WebKit___block_invoke_2;
   v5[3] = &unk_1E6A1BA40;
-  v5[4] = a3;
+  v5[4] = kit;
   [v4 getSystemContentStoreWithCompletionHandler:v5];
 }
 
@@ -186,18 +186,18 @@ void __81__LSDatabaseContext_WebKitChangeTracking__getSystemContentDatabaseObjec
   v9 = 0;
 }
 
-- (void)observeDatabaseChange4WebKit:(id)a3
+- (void)observeDatabaseChange4WebKit:(id)kit
 {
   v25 = *MEMORY[0x1E69E9840];
-  if (a3 && object_getClass(a3) == MEMORY[0x1E69E9E80])
+  if (kit && object_getClass(kit) == MEMORY[0x1E69E9E80])
   {
-    string = xpc_dictionary_get_string(a3, "path");
+    string = xpc_dictionary_get_string(kit, "path");
     if (string)
     {
       string = [[FSNode alloc] initWithFileSystemRepresentation:string flags:0 error:0];
     }
 
-    v5 = xpc_dictionary_get_value(a3, "store");
+    v5 = xpc_dictionary_get_value(kit, "store");
     if (v5)
     {
       v6 = _CSStoreCreateWithXPCRepresentation();
@@ -208,7 +208,7 @@ void __81__LSDatabaseContext_WebKitChangeTracking__getSystemContentDatabaseObjec
       v6 = 0;
     }
 
-    v7 = xpc_dictionary_get_value(a3, "insecureProcessID");
+    v7 = xpc_dictionary_get_value(kit, "insecureProcessID");
     v8 = v7;
     if (v7 && object_getClass(v7) == MEMORY[0x1E69E9F18])
     {
@@ -301,32 +301,32 @@ LABEL_31:
   v22 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)startAccessingSystemScopeReturningError:(id *)a3
+- (BOOL)startAccessingSystemScopeReturningError:(id *)error
 {
   v4 = systemIfExistsElseDefaultServiceDomain();
-  LOBYTE(a3) = _LSDatabaseContextStartAccessingWithDomain(v4, 0, a3);
+  LOBYTE(error) = _LSDatabaseContextStartAccessingWithDomain(v4, 0, error);
 
-  return a3;
+  return error;
 }
 
-- (void)accessSystemScopeUsingBlock:(id)a3
+- (void)accessSystemScopeUsingBlock:(id)block
 {
   v4 = systemIfExistsElseDefaultServiceDomain();
-  _LSDatabaseContextAccessWithDomainUsingBlock(v4, 0, a3);
+  _LSDatabaseContextAccessWithDomainUsingBlock(v4, 0, block);
 }
 
-- (BOOL)startAccessingCurrentUserSessionReturningError:(id *)a3
+- (BOOL)startAccessingCurrentUserSessionReturningError:(id *)error
 {
   v4 = +[_LSDServiceDomain currentUserSessionDomain];
-  LOBYTE(a3) = _LSDatabaseContextStartAccessingWithDomain(v4, 0, a3);
+  LOBYTE(error) = _LSDatabaseContextStartAccessingWithDomain(v4, 0, error);
 
-  return a3;
+  return error;
 }
 
-- (void)accessCurrentUserSessionUsingBlock:(id)a3
+- (void)accessCurrentUserSessionUsingBlock:(id)block
 {
   v4 = +[_LSDServiceDomain currentUserSessionDomain];
-  _LSDatabaseContextAccessWithDomainUsingBlock(v4, 0, a3);
+  _LSDatabaseContextAccessWithDomainUsingBlock(v4, 0, block);
 }
 
 @end

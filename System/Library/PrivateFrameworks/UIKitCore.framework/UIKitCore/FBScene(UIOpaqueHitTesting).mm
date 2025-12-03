@@ -9,25 +9,25 @@
 {
   v2 = objc_opt_class();
 
-  return [a1 conformsToExtension:v2];
+  return [self conformsToExtension:v2];
 }
 
 - (uint64_t)ui_setHitTestsAsOpaque:()UIOpaqueHitTesting
 {
-  result = [a1 ui_hitTestsAsOpaque];
+  result = [self ui_hitTestsAsOpaque];
   if (result != a3)
   {
     v6 = objc_opt_class();
     if (a3)
     {
 
-      return [a1 addExtension:v6];
+      return [self addExtension:v6];
     }
 
     else
     {
 
-      return [a1 removeExtension:v6];
+      return [self removeExtension:v6];
     }
   }
 

@@ -1,28 +1,28 @@
 @interface AAUISecurityCodeVerifyHook
-- (BOOL)shouldMatchElement:(id)a3;
-- (BOOL)shouldMatchModel:(id)a3;
+- (BOOL)shouldMatchElement:(id)element;
+- (BOOL)shouldMatchModel:(id)model;
 - (RUIServerHookDelegate)delegate;
-- (void)_verifySecurityCodeWithServerAttributes:(id)a3 completion:(id)a4;
-- (void)processObjectModel:(id)a3 completion:(id)a4;
+- (void)_verifySecurityCodeWithServerAttributes:(id)attributes completion:(id)completion;
+- (void)processObjectModel:(id)model completion:(id)completion;
 @end
 
 @implementation AAUISecurityCodeVerifyHook
 
-- (BOOL)shouldMatchElement:(id)a3
+- (BOOL)shouldMatchElement:(id)element
 {
-  v3 = [a3 name];
-  v4 = [v3 isEqualToString:@"icsc:verify"];
+  name = [element name];
+  v4 = [name isEqualToString:@"icsc:verify"];
 
   return v4;
 }
 
-- (BOOL)shouldMatchModel:(id)a3
+- (BOOL)shouldMatchModel:(id)model
 {
-  v3 = a3;
+  modelCopy = model;
   objc_opt_class();
-  v4 = [v3 clientInfo];
+  clientInfo = [modelCopy clientInfo];
 
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69C7058]];
+  v5 = [clientInfo objectForKeyedSubscript:*MEMORY[0x1E69C7058]];
   if (objc_opt_isKindOfClass())
   {
     v6 = v5;
@@ -37,32 +37,32 @@
   return v7;
 }
 
-- (void)processObjectModel:(id)a3 completion:(id)a4
+- (void)processObjectModel:(id)model completion:(id)completion
 {
-  v6 = a4;
-  v7 = [a3 clientInfo];
-  [(AAUISecurityCodeVerifyHook *)self _verifySecurityCodeWithServerAttributes:v7 completion:v6];
+  completionCopy = completion;
+  clientInfo = [model clientInfo];
+  [(AAUISecurityCodeVerifyHook *)self _verifySecurityCodeWithServerAttributes:clientInfo completion:completionCopy];
 }
 
-- (void)_verifySecurityCodeWithServerAttributes:(id)a3 completion:(id)a4
+- (void)_verifySecurityCodeWithServerAttributes:(id)attributes completion:(id)completion
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  attributesCopy = attributes;
+  completionCopy = completion;
   v8 = _AAUILogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v26 = v6;
+    v26 = attributesCopy;
     _os_log_impl(&dword_1C5355000, v8, OS_LOG_TYPE_DEFAULT, "Verifying security code with server attributes (%@)", buf, 0xCu);
   }
 
-  v9 = [(AAUISecurityCodeVerifyHook *)self delegate];
-  v10 = [v9 presentationContextForHook:self];
+  delegate = [(AAUISecurityCodeVerifyHook *)self delegate];
+  v10 = [delegate presentationContextForHook:self];
 
   v11 = [[AAUID2DEncryptionFlowContext alloc] initWithType:7];
   objc_opt_class();
-  v12 = [v6 objectForKeyedSubscript:*MEMORY[0x1E69C7068]];
+  v12 = [attributesCopy objectForKeyedSubscript:*MEMORY[0x1E69C7068]];
   if (objc_opt_isKindOfClass())
   {
     v13 = v12;
@@ -73,8 +73,8 @@
     v13 = 0;
   }
 
-  v14 = [v13 BOOLValue];
-  if (v14)
+  bOOLValue = [v13 BOOLValue];
+  if (bOOLValue)
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
@@ -96,9 +96,9 @@
   v21[2] = __81__AAUISecurityCodeVerifyHook__verifySecurityCodeWithServerAttributes_completion___block_invoke;
   v21[3] = &unk_1E820C960;
   v22 = v11;
-  v23 = self;
-  v24 = v7;
-  v19 = v7;
+  selfCopy = self;
+  v24 = completionCopy;
+  v19 = completionCopy;
   v20 = v11;
   [(AAUIManateeStateValidator *)v16 verifyAndRepairManateeWithCompletion:v21];
 }

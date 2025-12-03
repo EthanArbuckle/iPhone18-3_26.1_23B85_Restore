@@ -1,19 +1,19 @@
 @interface VCVideoStreamRateAdaptation
 - (BOOL)runVideoStreamRateAdaptation;
-- (VCVideoStreamRateAdaptation)initWithMediaStreamRateAdaptationParam:(const tagVCMediaStreamRateAdaptationParams *)a3;
+- (VCVideoStreamRateAdaptation)initWithMediaStreamRateAdaptationParam:(const tagVCMediaStreamRateAdaptationParams *)param;
 - (id)className;
 - (void)dealloc;
-- (void)receivedTMMBN:(unsigned int)a3;
-- (void)reportingVideoStreamEvent:(unsigned __int16)a3;
+- (void)receivedTMMBN:(unsigned int)n;
+- (void)reportingVideoStreamEvent:(unsigned __int16)event;
 - (void)runVideoStreamRateAdaptation;
-- (void)scheduleTMMBR:(unsigned int)a3;
-- (void)setEnableRateAdaptation:(BOOL)a3 maxBitrate:(unsigned int)a4 minBitrate:(unsigned int)a5 adaptationInterval:(double)a6;
-- (void)setOperatingBitrate:(unsigned int)a3;
+- (void)scheduleTMMBR:(unsigned int)r;
+- (void)setEnableRateAdaptation:(BOOL)adaptation maxBitrate:(unsigned int)bitrate minBitrate:(unsigned int)minBitrate adaptationInterval:(double)interval;
+- (void)setOperatingBitrate:(unsigned int)bitrate;
 @end
 
 @implementation VCVideoStreamRateAdaptation
 
-- (VCVideoStreamRateAdaptation)initWithMediaStreamRateAdaptationParam:(const tagVCMediaStreamRateAdaptationParams *)a3
+- (VCVideoStreamRateAdaptation)initWithMediaStreamRateAdaptationParam:(const tagVCMediaStreamRateAdaptationParams *)param
 {
   v27 = *MEMORY[0x1E69E9840];
   v16.receiver = self;
@@ -22,11 +22,11 @@
   v5 = v4;
   if (v4)
   {
-    v4->_rtpHandle = a3->var5;
-    v4->_reportingAgent = a3->var2;
+    v4->_rtpHandle = param->var5;
+    v4->_reportingAgent = param->var2;
     v4->_reportingModuleID = VCReporting_GetDynamicReportingModuleID();
     reportingInheritModuleSpecificInfoFromParent();
-    v5->_rateController = [[VCVideoStreamRateController alloc] initWithDumpID:a3->var1];
+    v5->_rateController = [[VCVideoStreamRateController alloc] initWithDumpID:param->var1];
     v5->_rateAdaptationEnabled = 0;
     [VCDefaults getDoubleValueForKey:@"videoStreamAverageBitrateWindowDuration" defaultValue:1.0];
     v5->_averageBitrateWindowDuration = v6;
@@ -146,7 +146,7 @@ LABEL_11:
         v18 = 2112;
         v19 = v3;
         v20 = 2048;
-        v21 = self;
+        selfCopy = self;
         v6 = " [%s] %s:%d %@(%p) ";
         v7 = v10;
         v8 = 48;
@@ -161,18 +161,18 @@ LABEL_11:
   [(VCMediaStreamRateAdaptation *)&v11 dealloc];
 }
 
-- (void)setEnableRateAdaptation:(BOOL)a3 maxBitrate:(unsigned int)a4 minBitrate:(unsigned int)a5 adaptationInterval:(double)a6
+- (void)setEnableRateAdaptation:(BOOL)adaptation maxBitrate:(unsigned int)bitrate minBitrate:(unsigned int)minBitrate adaptationInterval:(double)interval
 {
-  self->_rateAdaptationEnabled = a3;
-  if (a3)
+  self->_rateAdaptationEnabled = adaptation;
+  if (adaptation)
   {
-    v6 = *&a5;
-    v7 = *&a4;
-    [(VCVideoStreamRateController *)self->_rateController setRateControlInterval:a6];
+    v6 = *&minBitrate;
+    v7 = *&bitrate;
+    [(VCVideoStreamRateController *)self->_rateController setRateControlInterval:interval];
     [(VCVideoStreamRateController *)self->_rateController setMaxTargetBitrate:v7 minTargetBitrate:v6];
-    v9 = [(VCVideoStreamRateController *)self->_rateController minBitrate];
-    self->_operatingBitrate = v9;
-    [(VCVideoStreamRateAdaptation *)self scheduleTMMBR:v9];
+    minBitrate = [(VCVideoStreamRateController *)self->_rateController minBitrate];
+    self->_operatingBitrate = minBitrate;
+    [(VCVideoStreamRateAdaptation *)self scheduleTMMBR:minBitrate];
     self->_isOperatingAtMinBitrate = 0;
     self->_isOperatingAtMaxBitrate = 0;
   }
@@ -253,10 +253,10 @@ LABEL_11:
   }
 }
 
-- (void)receivedTMMBN:(unsigned int)a3
+- (void)receivedTMMBN:(unsigned int)n
 {
   v36 = *MEMORY[0x1E69E9840];
-  self->_receivedTmmbnBitrate = a3;
+  self->_receivedTmmbnBitrate = n;
   v4 = micro();
   self->_tmmbnReceiveTime = v4;
   self->_tmmbRTT = v4 - self->_tmmbrSendTime;
@@ -332,11 +332,11 @@ LABEL_11:
   }
 }
 
-- (void)setOperatingBitrate:(unsigned int)a3
+- (void)setOperatingBitrate:(unsigned int)bitrate
 {
-  if (self->_operatingBitrate == a3)
+  if (self->_operatingBitrate == bitrate)
   {
-    if (self->_adaptationTime <= 0.0 || self->_isOperatingAtMinBitrate || [(VCVideoStreamRateController *)self->_rateController minBitrate]< a3)
+    if (self->_adaptationTime <= 0.0 || self->_isOperatingAtMinBitrate || [(VCVideoStreamRateController *)self->_rateController minBitrate]< bitrate)
     {
       v4 = 0;
     }
@@ -350,8 +350,8 @@ LABEL_11:
 
   else
   {
-    self->_operatingBitrate = a3;
-    self->_isOperatingAtMinBitrate = [(VCVideoStreamRateController *)self->_rateController minBitrate]>= a3;
+    self->_operatingBitrate = bitrate;
+    self->_isOperatingAtMinBitrate = [(VCVideoStreamRateController *)self->_rateController minBitrate]>= bitrate;
     operatingBitrate = self->_operatingBitrate;
     self->_isOperatingAtMaxBitrate = operatingBitrate >= [(VCVideoStreamRateController *)self->_rateController maxBitrate];
     v4 = 1;
@@ -360,13 +360,13 @@ LABEL_11:
   self->_downlinkQualityDidChange = v4;
 }
 
-- (void)scheduleTMMBR:(unsigned int)a3
+- (void)scheduleTMMBR:(unsigned int)r
 {
   v23 = *MEMORY[0x1E69E9840];
-  if (a3 && self->_sendTmmbrBitrate != a3)
+  if (r && self->_sendTmmbrBitrate != r)
   {
     self->_downlinkQualityDidChange = 1;
-    self->_sendTmmbrBitrate = a3;
+    self->_sendTmmbrBitrate = r;
     [(VCVideoStreamRateAdaptation *)self reportingVideoStreamEvent:226];
   }
 
@@ -428,12 +428,12 @@ LABEL_11:
   return NSStringFromClass(v2);
 }
 
-- (void)reportingVideoStreamEvent:(unsigned __int16)a3
+- (void)reportingVideoStreamEvent:(unsigned __int16)event
 {
-  v3 = a3;
+  eventCopy = event;
   v5 = *MEMORY[0x1E695E480];
   Mutable = CFDictionaryCreateMutable(*MEMORY[0x1E695E480], 0, MEMORY[0x1E695E9D8], MEMORY[0x1E695E9E8]);
-  if (v3 == 227)
+  if (eventCopy == 227)
   {
     v21 = CFStringCreateWithFormat(v5, 0, @"%d", self->_receivedTmmbnBitrate);
     CFDictionaryAddValue(Mutable, @"VCVSTMMB", v21);
@@ -444,7 +444,7 @@ LABEL_11:
 
   else
   {
-    if (v3 != 226)
+    if (eventCopy != 226)
     {
       return;
     }
@@ -491,7 +491,7 @@ LABEL_11:
 {
   v14 = *MEMORY[0x1E69E9840];
   v4 = 136316162;
-  v5 = a1;
+  selfCopy = self;
   v6 = 2080;
   v7 = "[VCVideoStreamRateAdaptation runVideoStreamRateAdaptation]";
   v8 = 1024;

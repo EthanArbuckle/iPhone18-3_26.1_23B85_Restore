@@ -1,25 +1,25 @@
 @interface GDGraphAgentAffiliationRelationship
-- (GDGraphAgentAffiliationRelationship)initWithLabelField:(id)a3 personIdField:(id)a4 allLabelField:(id)a5 allPersonIdField:(id)a6;
+- (GDGraphAgentAffiliationRelationship)initWithLabelField:(id)field personIdField:(id)idField allLabelField:(id)labelField allPersonIdField:(id)personIdField;
 @end
 
 @implementation GDGraphAgentAffiliationRelationship
 
-- (GDGraphAgentAffiliationRelationship)initWithLabelField:(id)a3 personIdField:(id)a4 allLabelField:(id)a5 allPersonIdField:(id)a6
+- (GDGraphAgentAffiliationRelationship)initWithLabelField:(id)field personIdField:(id)idField allLabelField:(id)labelField allPersonIdField:(id)personIdField
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  fieldCopy = field;
+  idFieldCopy = idField;
+  labelFieldCopy = labelField;
+  personIdFieldCopy = personIdField;
   v18.receiver = self;
   v18.super_class = GDGraphAgentAffiliationRelationship;
   v15 = [(GDGraphAgentAffiliationRelationship *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_label, a3);
-    objc_storeStrong(&v16->_personId, a4);
-    objc_storeStrong(&v16->_allLabel, a5);
-    objc_storeStrong(&v16->_allPersonId, a6);
+    objc_storeStrong(&v15->_label, field);
+    objc_storeStrong(&v16->_personId, idField);
+    objc_storeStrong(&v16->_allLabel, labelField);
+    objc_storeStrong(&v16->_allPersonId, personIdField);
   }
 
   return v16;

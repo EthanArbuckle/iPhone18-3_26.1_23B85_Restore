@@ -1,6 +1,6 @@
 @interface VPWatermarkReader
 - (VPWatermarkReader)init;
-- (id)readWatermarkInPixelBuffer:(__CVBuffer *)a3 error:(id *)a4;
+- (id)readWatermarkInPixelBuffer:(__CVBuffer *)buffer error:(id *)error;
 - (void)reset;
 @end
 
@@ -28,17 +28,17 @@
   }
 }
 
-- (id)readWatermarkInPixelBuffer:(__CVBuffer *)a3 error:(id *)a4
+- (id)readWatermarkInPixelBuffer:(__CVBuffer *)buffer error:(id *)error
 {
-  v6 = [(VPWatermarkReader *)self firstCapturedFrameDate:a3];
+  v6 = [(VPWatermarkReader *)self firstCapturedFrameDate:buffer];
 
   if (!v6)
   {
-    v7 = [MEMORY[0x277CBEAA8] date];
-    [(VPWatermarkReader *)self setFirstCapturedFrameDate:v7];
+    date = [MEMORY[0x277CBEAA8] date];
+    [(VPWatermarkReader *)self setFirstCapturedFrameDate:date];
   }
 
-  if (!a3)
+  if (!buffer)
   {
     if (gLogCategory_SVW > 60 || gLogCategory_SVW == -1 && !_LogCategory_Initialize())
     {
@@ -54,7 +54,7 @@ LABEL_53:
     goto LABEL_37;
   }
 
-  if (!CVPixelBufferIsPlanar(a3))
+  if (!CVPixelBufferIsPlanar(buffer))
   {
     if (gLogCategory_SVW > 60 || gLogCategory_SVW == -1 && !_LogCategory_Initialize())
     {
@@ -64,9 +64,9 @@ LABEL_53:
     goto LABEL_42;
   }
 
-  WidthOfPlane = CVPixelBufferGetWidthOfPlane(a3, 1uLL);
-  HeightOfPlane = CVPixelBufferGetHeightOfPlane(a3, 1uLL);
-  BytesPerRowOfPlane = CVPixelBufferGetBytesPerRowOfPlane(a3, 1uLL);
+  WidthOfPlane = CVPixelBufferGetWidthOfPlane(buffer, 1uLL);
+  HeightOfPlane = CVPixelBufferGetHeightOfPlane(buffer, 1uLL);
+  BytesPerRowOfPlane = CVPixelBufferGetBytesPerRowOfPlane(buffer, 1uLL);
   v11 = BytesPerRowOfPlane;
   if (!self->_reader || WidthOfPlane != self->_readerWidth || HeightOfPlane != self->_readerHeight || BytesPerRowOfPlane != self->_readerRowBytes)
   {
@@ -97,7 +97,7 @@ LABEL_53:
     HCImagePerspectiveReader::Reset(self->_reader);
   }
 
-  if (CVPixelBufferLockBaseAddress(a3, 1uLL))
+  if (CVPixelBufferLockBaseAddress(buffer, 1uLL))
   {
     if (gLogCategory_SVW <= 60 && (gLogCategory_SVW != -1 || _LogCategory_Initialize()))
     {
@@ -109,9 +109,9 @@ LABEL_53:
     goto LABEL_21;
   }
 
-  BaseAddressOfPlane = CVPixelBufferGetBaseAddressOfPlane(a3, 1uLL);
+  BaseAddressOfPlane = CVPixelBufferGetBaseAddressOfPlane(buffer, 1uLL);
   v18 = HCImagePerspectiveReader::ProcessUVFrame(self->_reader, BaseAddressOfPlane, HeightOfPlane, WidthOfPlane, v11, v27);
-  CVPixelBufferUnlockBaseAddress(a3, 1uLL);
+  CVPixelBufferUnlockBaseAddress(buffer, 1uLL);
   if (v18)
   {
     if (gLogCategory_SVW <= 60 && (gLogCategory_SVW != -1 || _LogCategory_Initialize()))

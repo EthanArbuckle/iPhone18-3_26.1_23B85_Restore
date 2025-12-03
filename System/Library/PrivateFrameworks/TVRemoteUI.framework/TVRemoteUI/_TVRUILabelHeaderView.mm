@@ -1,17 +1,17 @@
 @interface _TVRUILabelHeaderView
-- (_TVRUILabelHeaderView)initWithFrame:(CGRect)a3;
+- (_TVRUILabelHeaderView)initWithFrame:(CGRect)frame;
 - (void)_configureHierarchy;
 - (void)prepareForReuse;
-- (void)setTitle:(id)a3;
+- (void)setTitle:(id)title;
 @end
 
 @implementation _TVRUILabelHeaderView
 
-- (_TVRUILabelHeaderView)initWithFrame:(CGRect)a3
+- (_TVRUILabelHeaderView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = _TVRUILabelHeaderView;
-  v3 = [(_TVRUILabelHeaderView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(_TVRUILabelHeaderView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -29,24 +29,24 @@
   [(_TVRUILabelHeaderView *)self setTitle:0];
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  objc_storeStrong(&self->_title, a3);
-  v5 = a3;
-  v6 = [(_TVRUILabelHeaderView *)self titleLabel];
-  [v6 setText:v5];
+  objc_storeStrong(&self->_title, title);
+  titleCopy = title;
+  titleLabel = [(_TVRUILabelHeaderView *)self titleLabel];
+  [titleLabel setText:titleCopy];
 }
 
 - (void)_configureHierarchy
 {
   v35 = *MEMORY[0x277D85DE8];
-  v2 = [(_TVRUILabelHeaderView *)self contentView];
+  contentView = [(_TVRUILabelHeaderView *)self contentView];
   v3 = objc_alloc_init(MEMORY[0x277D756B8]);
   v4 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D769D0]];
   [(UILabel *)v3 setFont:v4];
 
-  v5 = [MEMORY[0x277D75348] lightTextColor];
-  [(UILabel *)v3 setTextColor:v5];
+  lightTextColor = [MEMORY[0x277D75348] lightTextColor];
+  [(UILabel *)v3 setTextColor:lightTextColor];
 
   [(UILabel *)v3 setAdjustsFontForContentSizeCategory:1];
   v30 = 0u;
@@ -71,7 +71,7 @@
 
         v11 = *(*(&v28 + 1) + 8 * i);
         [v11 setTranslatesAutoresizingMaskIntoConstraints:0];
-        [v2 addSubview:v11];
+        [contentView addSubview:v11];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v28 objects:v34 count:16];
@@ -81,21 +81,21 @@
   }
 
   v21 = MEMORY[0x277CCAAD0];
-  v26 = [(UILabel *)v3 leadingAnchor];
-  v25 = [v2 leadingAnchor];
-  v24 = [v26 constraintEqualToAnchor:v25 constant:0.0];
+  leadingAnchor = [(UILabel *)v3 leadingAnchor];
+  leadingAnchor2 = [contentView leadingAnchor];
+  v24 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:0.0];
   v32[0] = v24;
-  v23 = [(UILabel *)v3 trailingAnchor];
-  v22 = [v2 trailingAnchor];
-  v12 = [v23 constraintEqualToAnchor:v22 constant:-0.0];
+  trailingAnchor = [(UILabel *)v3 trailingAnchor];
+  trailingAnchor2 = [contentView trailingAnchor];
+  v12 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-0.0];
   v32[1] = v12;
-  v13 = [(UILabel *)v3 topAnchor];
-  v14 = [v2 topAnchor];
-  v15 = [v13 constraintEqualToAnchor:v14 constant:2.0];
+  topAnchor = [(UILabel *)v3 topAnchor];
+  topAnchor2 = [contentView topAnchor];
+  v15 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:2.0];
   v32[2] = v15;
-  v16 = [(UILabel *)v3 bottomAnchor];
-  v17 = [v2 bottomAnchor];
-  v18 = [v16 constraintEqualToAnchor:v17 constant:-2.0];
+  bottomAnchor = [(UILabel *)v3 bottomAnchor];
+  bottomAnchor2 = [contentView bottomAnchor];
+  v18 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-2.0];
   v32[3] = v18;
   v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v32 count:4];
   [v21 activateConstraints:v19];

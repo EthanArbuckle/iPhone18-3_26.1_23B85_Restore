@@ -1,106 +1,106 @@
 @interface BNContentViewController
-+ (id)_retargetableBannerTransitionAnimatorForAnimator:(id)a3;
++ (id)_retargetableBannerTransitionAnimatorForAnimator:(id)animator;
 + (void)initialize;
-- (BNContentViewController)initWithAuthority:(id)a3;
+- (BNContentViewController)initWithAuthority:(id)authority;
 - (BNPosting)poster;
 - (BNPresentingDelegate)delegate;
-- (BOOL)_isDraggingDismissalEnabledForPresentable:(id)a3;
-- (BOOL)_isDraggingEnabledForPresentable:(id)a3;
-- (BOOL)_isDraggingInteractionEnabledForPresentable:(id)a3;
-- (BOOL)_isLocalDraggingEnabledForPresentable:(id)a3;
-- (BOOL)_isPresentableNotice:(id)a3;
-- (BOOL)_isTouchOutsideDismissalEnabledForPresentable:(id)a3;
-- (BOOL)_resetActiveBannerTransitionAnimator:(id)a3;
-- (BOOL)_resetActiveBannerTransitionContextIfComplete:(id)a3;
+- (BOOL)_isDraggingDismissalEnabledForPresentable:(id)presentable;
+- (BOOL)_isDraggingEnabledForPresentable:(id)presentable;
+- (BOOL)_isDraggingInteractionEnabledForPresentable:(id)presentable;
+- (BOOL)_isLocalDraggingEnabledForPresentable:(id)presentable;
+- (BOOL)_isPresentableNotice:(id)notice;
+- (BOOL)_isTouchOutsideDismissalEnabledForPresentable:(id)presentable;
+- (BOOL)_resetActiveBannerTransitionAnimator:(id)animator;
+- (BOOL)_resetActiveBannerTransitionContextIfComplete:(id)complete;
 - (BOOL)becomeFirstResponder;
 - (BOOL)canBecomeFirstResponder;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveEvent:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveEvent:(id)event;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (BOOL)resignFirstResponder;
 - (BOOL)shouldAutorotate;
-- (BOOL)shouldFenceAnimationsForPresentable:(id)a3;
-- (BOOL)shouldNewTierBeAddedToTopForPresentable:(id)a3 withPresentable:(id)a4;
-- (CGPoint)_locationOfScrollEvent:(id)a3 inContainerViewForGesture:(id)a4;
-- (CGPoint)_locationOfTouch:(id)a3 inContainerViewForGesture:(id)a4;
-- (CGPoint)_translationInContainerViewForGesture:(id)a3;
-- (CGPoint)_velocityInContainerViewForGesture:(id)a3;
-- (CGPoint)gestureRecognizerProxy:(id)a3 locationForTouch:(id)a4 inCoordinateSpace:(id)a5;
-- (CGPoint)gestureRecognizerProxy:(id)a3 translationInCoordinateSpace:(id)a4;
-- (CGPoint)gestureRecognizerProxy:(id)a3 velocityInCoordinateSpace:(id)a4;
-- (CGPoint)gestureRecognizerProxy:(id)a3 visualTranslationInCoordinateSpace:(id)a4;
-- (CGRect)_dismissedFrameForViewController:(id)a3 withContainerBounds:(CGRect)a4;
-- (CGRect)_dismissedFrameWithPaddingForViewController:(id)a3 withContainerBounds:(CGRect)a4;
-- (CGRect)_dismissedFrameWithPaddingForViewController:(id)a3 withContainerBounds:(CGRect)a4 targetTransform:(CGAffineTransform *)a5;
-- (CGRect)_insetFrame:(CGRect)a3 forViewController:(id)a4;
-- (CGRect)_outsetFrame:(CGRect)a3 forViewController:(id)a4;
-- (CGRect)_presentedFrame:(BOOL)a3 forViewController:(id)a4 withContainerBounds:(CGRect)a5 overshoot:(BOOL)a6 targetTransform:(CGAffineTransform *)a7;
-- (CGRect)_presentedFrameForPresentable:(id)a3 withContainerBounds:(CGRect)a4;
-- (CGRect)_presentedFrameForViewController:(id)a3 withContainerBounds:(CGRect)a4;
-- (CGRect)_presentedFrameForViewController:(id)a3 withContainerBounds:(CGRect)a4 targetTransform:(CGAffineTransform *)a5;
-- (CGRect)_presentedFrameForViewController:(id)a3 withContentFrame:(CGRect)a4 afterContentWithFrame:(CGRect)a5;
-- (CGSize)sizeForChildContentContainer:(id)a3 withParentContainerSize:(CGSize)a4;
+- (BOOL)shouldFenceAnimationsForPresentable:(id)presentable;
+- (BOOL)shouldNewTierBeAddedToTopForPresentable:(id)presentable withPresentable:(id)withPresentable;
+- (CGPoint)_locationOfScrollEvent:(id)event inContainerViewForGesture:(id)gesture;
+- (CGPoint)_locationOfTouch:(id)touch inContainerViewForGesture:(id)gesture;
+- (CGPoint)_translationInContainerViewForGesture:(id)gesture;
+- (CGPoint)_velocityInContainerViewForGesture:(id)gesture;
+- (CGPoint)gestureRecognizerProxy:(id)proxy locationForTouch:(id)touch inCoordinateSpace:(id)space;
+- (CGPoint)gestureRecognizerProxy:(id)proxy translationInCoordinateSpace:(id)space;
+- (CGPoint)gestureRecognizerProxy:(id)proxy velocityInCoordinateSpace:(id)space;
+- (CGPoint)gestureRecognizerProxy:(id)proxy visualTranslationInCoordinateSpace:(id)space;
+- (CGRect)_dismissedFrameForViewController:(id)controller withContainerBounds:(CGRect)bounds;
+- (CGRect)_dismissedFrameWithPaddingForViewController:(id)controller withContainerBounds:(CGRect)bounds;
+- (CGRect)_dismissedFrameWithPaddingForViewController:(id)controller withContainerBounds:(CGRect)bounds targetTransform:(CGAffineTransform *)transform;
+- (CGRect)_insetFrame:(CGRect)frame forViewController:(id)controller;
+- (CGRect)_outsetFrame:(CGRect)frame forViewController:(id)controller;
+- (CGRect)_presentedFrame:(BOOL)frame forViewController:(id)controller withContainerBounds:(CGRect)bounds overshoot:(BOOL)overshoot targetTransform:(CGAffineTransform *)transform;
+- (CGRect)_presentedFrameForPresentable:(id)presentable withContainerBounds:(CGRect)bounds;
+- (CGRect)_presentedFrameForViewController:(id)controller withContainerBounds:(CGRect)bounds;
+- (CGRect)_presentedFrameForViewController:(id)controller withContainerBounds:(CGRect)bounds targetTransform:(CGAffineTransform *)transform;
+- (CGRect)_presentedFrameForViewController:(id)controller withContentFrame:(CGRect)frame afterContentWithFrame:(CGRect)withFrame;
+- (CGSize)sizeForChildContentContainer:(id)container withParentContainerSize:(CGSize)size;
 - (NSArray)presentedPresentables;
 - (NSArray)topPresentables;
-- (id)_dismissPresentablesWithIdentification:(id)a3 reason:(id)a4 animated:(BOOL)a5 userInfo:(id)a6;
+- (id)_dismissPresentablesWithIdentification:(id)identification reason:(id)reason animated:(BOOL)animated userInfo:(id)info;
 - (id)_layoutManager;
-- (id)_newBannerTransitionContextForMorphFromViewController:(id)a3 toViewController:(id)a4 animated:(BOOL)a5;
-- (id)_newBannerTransitionContextForPresenting:(BOOL)a3 viewController:(id)a4 animated:(BOOL)a5;
-- (id)_presentableForGestureInView:(id)a3;
-- (id)_presentableForScrollEvent:(id)a3;
-- (id)_presentableForTouch:(id)a3;
-- (id)_presentablesWithIdentification:(id)a3 requiringUniqueMatch:(BOOL)a4;
-- (id)dismissPresentablesWithIdentification:(id)a3 reason:(id)a4 animated:(BOOL)a5 userInfo:(id)a6;
-- (id)dismissPresentablesWithIdentification:(id)a3 reason:(id)a4 userInfo:(id)a5;
-- (id)sizeTransitionAnimationSettingsForPresentable:(id)a3;
-- (id)userInterfaceStyleTransitionAnimationSettingsForPresentable:(id)a3 forTransitionToStyle:(int64_t)a4;
-- (int64_t)_effectTierForPresentable:(id)a3;
+- (id)_newBannerTransitionContextForMorphFromViewController:(id)controller toViewController:(id)viewController animated:(BOOL)animated;
+- (id)_newBannerTransitionContextForPresenting:(BOOL)presenting viewController:(id)controller animated:(BOOL)animated;
+- (id)_presentableForGestureInView:(id)view;
+- (id)_presentableForScrollEvent:(id)event;
+- (id)_presentableForTouch:(id)touch;
+- (id)_presentablesWithIdentification:(id)identification requiringUniqueMatch:(BOOL)match;
+- (id)dismissPresentablesWithIdentification:(id)identification reason:(id)reason animated:(BOOL)animated userInfo:(id)info;
+- (id)dismissPresentablesWithIdentification:(id)identification reason:(id)reason userInfo:(id)info;
+- (id)sizeTransitionAnimationSettingsForPresentable:(id)presentable;
+- (id)userInterfaceStyleTransitionAnimationSettingsForPresentable:(id)presentable forTransitionToStyle:(int64_t)style;
+- (int64_t)_effectTierForPresentable:(id)presentable;
 - (unint64_t)supportedInterfaceOrientations;
-- (void)_dismissPresentable:(id)a3 withReason:(id)a4 animated:(BOOL)a5 userInfo:(id)a6;
-- (void)_gestureRecognizerFailed:(id)a3;
-- (void)_handlePan:(id)a3;
-- (void)_insertPresentable:(id)a3 referencePresentable:(id)a4 withTransitioningDelegate:(id)a5 incrementingTier:(BOOL)a6 addToTop:(BOOL)a7;
-- (void)_morphFromPresentable:(id)a3 toPresentable:(id)a4 withOptions:(unint64_t)a5 userInfo:(id)a6 stateChange:(BOOL)a7;
+- (void)_dismissPresentable:(id)presentable withReason:(id)reason animated:(BOOL)animated userInfo:(id)info;
+- (void)_gestureRecognizerFailed:(id)failed;
+- (void)_handlePan:(id)pan;
+- (void)_insertPresentable:(id)presentable referencePresentable:(id)referencePresentable withTransitioningDelegate:(id)delegate incrementingTier:(BOOL)tier addToTop:(BOOL)top;
+- (void)_morphFromPresentable:(id)presentable toPresentable:(id)toPresentable withOptions:(unint64_t)options userInfo:(id)info stateChange:(BOOL)change;
 - (void)_postLayoutChangeForVisibleNotifications;
-- (void)_removePresentable:(id)a3;
-- (void)_resetPresentableForActiveGesture:(id)a3;
-- (void)_updateFrameForChildContentContainer:(id)a3 minimumTopInsetUpdate:(BOOL)a4;
-- (void)bannerContentOutsetsDidInvalidateForPresentableViewController:(id)a3;
-- (void)getRotationContentSettings:(id *)a3 forWindow:(id)a4;
+- (void)_removePresentable:(id)presentable;
+- (void)_resetPresentableForActiveGesture:(id)gesture;
+- (void)_updateFrameForChildContentContainer:(id)container minimumTopInsetUpdate:(BOOL)update;
+- (void)bannerContentOutsetsDidInvalidateForPresentableViewController:(id)controller;
+- (void)getRotationContentSettings:(id *)settings forWindow:(id)window;
 - (void)loadView;
-- (void)morphFromPresentable:(id)a3 toPresentable:(id)a4 withOptions:(unint64_t)a5 userInfo:(id)a6 stateChange:(BOOL)a7;
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3;
+- (void)morphFromPresentable:(id)presentable toPresentable:(id)toPresentable withOptions:(unint64_t)options userInfo:(id)info stateChange:(BOOL)change;
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container;
 - (void)preferredMinimumTopInsetDidInvalidate;
-- (void)presentPresentable:(id)a3 withOptions:(unint64_t)a4 userInfo:(id)a5;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)presentPresentable:(id)presentable withOptions:(unint64_t)options userInfo:(id)info;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation BNContentViewController
 
 - (NSArray)presentedPresentables
 {
-  v3 = [(BNTieredArray *)self->_presentables allObjects];
-  v4 = [v3 mutableCopy];
+  allObjects = [(BNTieredArray *)self->_presentables allObjects];
+  v4 = [allObjects mutableCopy];
 
-  v5 = [(NSMutableSet *)self->_dismissingPresentables allObjects];
-  [v4 removeObjectsInArray:v5];
+  allObjects2 = [(NSMutableSet *)self->_dismissingPresentables allObjects];
+  [v4 removeObjectsInArray:allObjects2];
 
   return v4;
 }
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v2 = [(BNContentViewController *)self _topPresentable];
-  v3 = UIViewControllerFromPresentable(v2);
-  v4 = [v3 supportedInterfaceOrientations];
-  if (v4)
+  _topPresentable = [(BNContentViewController *)self _topPresentable];
+  v3 = UIViewControllerFromPresentable(_topPresentable);
+  supportedInterfaceOrientations = [v3 supportedInterfaceOrientations];
+  if (supportedInterfaceOrientations)
   {
-    v5 = v4;
+    v5 = supportedInterfaceOrientations;
   }
 
   else
@@ -113,7 +113,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
     BNRegisterBannerKitLogging();
@@ -156,8 +156,8 @@
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(BNContentViewController *)self topPresentables];
-  v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  topPresentables = [(BNContentViewController *)self topPresentables];
+  v3 = [topPresentables countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v3)
   {
     v4 = *v10;
@@ -167,20 +167,20 @@
       {
         if (*v10 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(topPresentables);
         }
 
         v6 = UIViewControllerFromPresentable(*(*(&v9 + 1) + 8 * i));
-        v7 = [v6 canBecomeFirstResponder];
+        canBecomeFirstResponder = [v6 canBecomeFirstResponder];
 
-        if (v7)
+        if (canBecomeFirstResponder)
         {
           LOBYTE(v3) = 1;
           goto LABEL_11;
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v3 = [topPresentables countByEnumeratingWithState:&v9 objects:v13 count:16];
       if (v3)
       {
         continue;
@@ -216,8 +216,8 @@ void __42__BNContentViewController_topPresentables__block_invoke(uint64_t a1, vo
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(BNContentViewController *)self topPresentables];
-  v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  topPresentables = [(BNContentViewController *)self topPresentables];
+  v3 = [topPresentables countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v3)
   {
     v4 = *v10;
@@ -227,20 +227,20 @@ void __42__BNContentViewController_topPresentables__block_invoke(uint64_t a1, vo
       {
         if (*v10 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(topPresentables);
         }
 
         v6 = UIViewControllerFromPresentable(*(*(&v9 + 1) + 8 * i));
-        v7 = [v6 becomeFirstResponder];
+        becomeFirstResponder = [v6 becomeFirstResponder];
 
-        if (v7)
+        if (becomeFirstResponder)
         {
           LOBYTE(v3) = 1;
           goto LABEL_11;
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v3 = [topPresentables countByEnumeratingWithState:&v9 objects:v13 count:16];
       if (v3)
       {
         continue;
@@ -274,17 +274,17 @@ LABEL_11:
 {
   v41 = *MEMORY[0x1E69E9840];
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(BNContentViewController *)self viewIfLoaded];
-  v5 = [v4 window];
+  viewIfLoaded = [(BNContentViewController *)self viewIfLoaded];
+  window = [viewIfLoaded window];
 
-  v32 = v5;
-  v31 = [v5 screen];
+  v32 = window;
+  screen = [window screen];
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v6 = [(BNTieredArray *)self->_presentables allObjects];
-  v7 = [v6 countByEnumeratingWithState:&v34 objects:v40 count:16];
+  allObjects = [(BNTieredArray *)self->_presentables allObjects];
+  v7 = [allObjects countByEnumeratingWithState:&v34 objects:v40 count:16];
   if (v7)
   {
     v8 = v7;
@@ -295,18 +295,18 @@ LABEL_11:
       {
         if (*v35 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allObjects);
         }
 
         v11 = *(*(&v34 + 1) + 8 * i);
         v12 = UIViewControllerFromPresentable(v11);
         if ([v12 isViewLoaded])
         {
-          v13 = [v12 view];
-          v14 = [v13 superview];
-          [v13 frame];
+          view = [v12 view];
+          superview = [view superview];
+          [view frame];
           [(BNContentViewController *)self _insetFrame:v12 forViewController:?];
-          [v14 convertRect:0 toView:?];
+          [superview convertRect:0 toView:?];
           v16 = v15;
           v18 = v17;
           v20 = v19;
@@ -323,17 +323,17 @@ LABEL_11:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v34 objects:v40 count:16];
+      v8 = [allObjects countByEnumeratingWithState:&v34 objects:v40 count:16];
     }
 
     while (v8);
   }
 
-  v29 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v38 = @"BNPresentableIdentificationsToFrames";
   v39 = v3;
   v30 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v39 forKeys:&v38 count:1];
-  [v29 postNotificationName:@"BNPresentableLayoutDidChange" object:v31 userInfo:v30];
+  [defaultCenter postNotificationName:@"BNPresentableLayoutDidChange" object:screen userInfo:v30];
 }
 
 - (BOOL)resignFirstResponder
@@ -343,8 +343,8 @@ LABEL_11:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(BNContentViewController *)self topPresentables];
-  v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  topPresentables = [(BNContentViewController *)self topPresentables];
+  v3 = [topPresentables countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v3)
   {
     v4 = *v10;
@@ -354,20 +354,20 @@ LABEL_11:
       {
         if (*v10 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(topPresentables);
         }
 
         v6 = UIViewControllerFromPresentable(*(*(&v9 + 1) + 8 * i));
-        v7 = [v6 resignFirstResponder];
+        resignFirstResponder = [v6 resignFirstResponder];
 
-        if (v7)
+        if (resignFirstResponder)
         {
           LOBYTE(v3) = 1;
           goto LABEL_11;
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v3 = [topPresentables countByEnumeratingWithState:&v9 objects:v13 count:16];
       if (v3)
       {
         continue;
@@ -385,8 +385,8 @@ LABEL_11:
 - (void)loadView
 {
   v3 = [BNContentViewControllerView alloc];
-  v5 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v5 bounds];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen bounds];
   v4 = [(BNContentViewControllerView *)v3 initWithFrame:?];
   [(BNContentViewController *)self setView:v4];
 }
@@ -396,8 +396,8 @@ LABEL_11:
   v7.receiver = self;
   v7.super_class = BNContentViewController;
   [(BNContentViewController *)&v7 viewDidLoad];
-  v3 = [(BNContentViewController *)self view];
-  [v3 setAutoresizesSubviews:0];
+  view = [(BNContentViewController *)self view];
+  [view setAutoresizesSubviews:0];
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = objc_opt_respondsToSelector();
@@ -420,9 +420,9 @@ LABEL_11:
   [(UIPanGestureRecognizer *)self->_panGesture setDelegate:self];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v17 = *MEMORY[0x1E69E9840];
   v15.receiver = self;
   v15.super_class = BNContentViewController;
@@ -448,7 +448,7 @@ LABEL_11:
         }
 
         v10 = UIViewControllerFromPresentable(*(*(&v11 + 1) + 8 * v9));
-        [v10 bs_beginAppearanceTransition:1 animated:{v3, v11}];
+        [v10 bs_beginAppearanceTransition:1 animated:{appearCopy, v11}];
 
         ++v9;
       }
@@ -461,12 +461,12 @@ LABEL_11:
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v16 = *MEMORY[0x1E69E9840];
   v14.receiver = self;
   v14.super_class = BNContentViewController;
-  [(BNContentViewController *)&v14 viewDidAppear:a3];
+  [(BNContentViewController *)&v14 viewDidAppear:appear];
   [(UIPanGestureRecognizer *)self->_panGesture setEnabled:1];
   v12 = 0u;
   v13 = 0u;
@@ -502,9 +502,9 @@ LABEL_11:
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v17 = *MEMORY[0x1E69E9840];
   v15.receiver = self;
   v15.super_class = BNContentViewController;
@@ -530,7 +530,7 @@ LABEL_11:
         }
 
         v10 = UIViewControllerFromPresentable(*(*(&v11 + 1) + 8 * v9));
-        [v10 bs_beginAppearanceTransition:0 animated:{v3, v11}];
+        [v10 bs_beginAppearanceTransition:0 animated:{disappearCopy, v11}];
 
         ++v9;
       }
@@ -543,12 +543,12 @@ LABEL_11:
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v16 = *MEMORY[0x1E69E9840];
   v14.receiver = self;
   v14.super_class = BNContentViewController;
-  [(BNContentViewController *)&v14 viewDidDisappear:a3];
+  [(BNContentViewController *)&v14 viewDidDisappear:disappear];
   [(UIPanGestureRecognizer *)self->_panGesture setEnabled:0];
   v12 = 0u;
   v13 = 0u;
@@ -591,8 +591,8 @@ LABEL_11:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v2 = [(BNContentViewController *)self topPresentables];
-  v3 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  topPresentables = [(BNContentViewController *)self topPresentables];
+  v3 = [topPresentables countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v3)
   {
     v4 = v3;
@@ -603,20 +603,20 @@ LABEL_11:
       {
         if (*v12 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(topPresentables);
         }
 
         v7 = UIViewControllerFromPresentable(*(*(&v11 + 1) + 8 * i));
-        v8 = [v7 shouldAutorotate];
+        shouldAutorotate = [v7 shouldAutorotate];
 
-        if (!v8)
+        if (!shouldAutorotate)
         {
           v9 = 0;
           goto LABEL_11;
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v4 = [topPresentables countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v4)
       {
         continue;
@@ -632,17 +632,17 @@ LABEL_11:
   return v9;
 }
 
-- (void)getRotationContentSettings:(id *)a3 forWindow:(id)a4
+- (void)getRotationContentSettings:(id *)settings forWindow:(id)window
 {
-  if (a3)
+  if (settings)
   {
-    a3->var6 = 0;
+    settings->var6 = 0;
   }
 }
 
-- (void)bannerContentOutsetsDidInvalidateForPresentableViewController:(id)a3
+- (void)bannerContentOutsetsDidInvalidateForPresentableViewController:(id)controller
 {
-  v4 = UIViewControllerFromPresentable(a3);
+  v4 = UIViewControllerFromPresentable(controller);
   v5 = v4;
   if (v4)
   {
@@ -654,26 +654,26 @@ LABEL_11:
   MEMORY[0x1EEE66BB8](v4, v5);
 }
 
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container
 {
   v5.receiver = self;
   v5.super_class = BNContentViewController;
-  v4 = a3;
-  [(BNContentViewController *)&v5 preferredContentSizeDidChangeForChildContentContainer:v4];
-  [(BNContentViewController *)self _updateFrameForChildContentContainer:v4 minimumTopInsetUpdate:0, v5.receiver, v5.super_class];
+  containerCopy = container;
+  [(BNContentViewController *)&v5 preferredContentSizeDidChangeForChildContentContainer:containerCopy];
+  [(BNContentViewController *)self _updateFrameForChildContentContainer:containerCopy minimumTopInsetUpdate:0, v5.receiver, v5.super_class];
 }
 
-- (void)_updateFrameForChildContentContainer:(id)a3 minimumTopInsetUpdate:(BOOL)a4
+- (void)_updateFrameForChildContentContainer:(id)container minimumTopInsetUpdate:(BOOL)update
 {
-  v4 = a4;
+  updateCopy = update;
   v76 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  containerCopy = container;
   v69 = 0u;
   v70 = 0u;
   v71 = 0u;
   v72 = 0u;
-  v7 = [(BNContentViewController *)self allPresentables];
-  v8 = [v7 countByEnumeratingWithState:&v69 objects:v75 count:16];
+  allPresentables = [(BNContentViewController *)self allPresentables];
+  v8 = [allPresentables countByEnumeratingWithState:&v69 objects:v75 count:16];
   if (v8)
   {
     v9 = *v70;
@@ -683,12 +683,12 @@ LABEL_3:
     {
       if (*v70 != v9)
       {
-        objc_enumerationMutation(v7);
+        objc_enumerationMutation(allPresentables);
       }
 
       v11 = *(*(&v69 + 1) + 8 * v10);
       v12 = UIViewControllerFromPresentable(v11);
-      v13 = v12 == v6;
+      v13 = v12 == containerCopy;
 
       if (v13)
       {
@@ -697,7 +697,7 @@ LABEL_3:
 
       if (v8 == ++v10)
       {
-        v8 = [v7 countByEnumeratingWithState:&v69 objects:v75 count:16];
+        v8 = [allPresentables countByEnumeratingWithState:&v69 objects:v75 count:16];
         if (v8)
         {
           goto LABEL_3;
@@ -725,8 +725,8 @@ LABEL_3:
     }
 
     v18 = UIViewControllerFromPresentable(v14);
-    v19 = [(BNContentViewController *)self transitionCoordinator];
-    if (v19 || v18 != v6)
+    transitionCoordinator = [(BNContentViewController *)self transitionCoordinator];
+    if (transitionCoordinator || v18 != containerCopy)
     {
       goto LABEL_40;
     }
@@ -742,12 +742,12 @@ LABEL_41:
     if (os_log_type_enabled(BNLogPresenting, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v74 = v6;
+      v74 = containerCopy;
       _os_log_impl(&dword_1C42DC000, v20, OS_LOG_TYPE_DEFAULT, "Animating preferred content size change of child container: %{public}@", buf, 0xCu);
     }
 
-    v21 = [(BNContentViewController *)self view];
-    [v21 bounds];
+    view = [(BNContentViewController *)self view];
+    [view bounds];
     v23 = v22;
     v25 = v24;
     v27 = v26;
@@ -767,19 +767,19 @@ LABEL_41:
     v35 = v31;
     v36 = v32;
     v37 = v33;
-    if (v4)
+    if (updateCopy)
     {
-      v38 = [v18 view];
+      view2 = [v18 view];
     }
 
     else
     {
       v39 = [v18 bn_shouldAnimateViewTransitionToSize:{v32, v33}];
-      v40 = [v18 view];
-      v38 = v40;
+      view3 = [v18 view];
+      view2 = view3;
       if ((v39 & 1) == 0)
       {
-        [v40 _removeAllRetargetableAnimations:1];
+        [view3 _removeAllRetargetableAnimations:1];
         v41 = 0;
         goto LABEL_26;
       }
@@ -787,29 +787,29 @@ LABEL_41:
 
     v41 = 1;
 LABEL_26:
-    [v38 frame];
+    [view2 frame];
     v43 = v42;
     v45 = v44;
     v47 = v46;
     v49 = v48;
-    v50 = [(BNContentViewController *)self view];
-    v51 = [BNTransitionContext transitionContextForTransitionOfViewController:v18 fromFrame:v50 toFrame:v43 inContainerView:v45, v47, v49, *&v34, *&v35, v36, v37];
+    view4 = [(BNContentViewController *)self view];
+    v51 = [BNTransitionContext transitionContextForTransitionOfViewController:v18 fromFrame:view4 toFrame:v43 inContainerView:v45, v47, v49, *&v34, *&v35, v36, v37];
 
     if (v41)
     {
-      v52 = [(BNContentViewController *)self bs_isAppearingOrAppeared];
+      bs_isAppearingOrAppeared = [(BNContentViewController *)self bs_isAppearingOrAppeared];
     }
 
     else
     {
-      v52 = 0;
+      bs_isAppearingOrAppeared = 0;
     }
 
-    [v51 setAnimated:v52];
-    v63 = [v18 transitioningDelegate];
+    [v51 setAnimated:bs_isAppearingOrAppeared];
+    transitioningDelegate = [v18 transitioningDelegate];
     if (v41)
     {
-      if (v4)
+      if (updateCopy)
       {
         v53 = [BNBannerAnimator alloc];
         v54 = +[BNBannerAnimator defaultResizeAnimationSettings];
@@ -820,7 +820,7 @@ LABEL_26:
       {
         if (objc_opt_respondsToSelector())
         {
-          v56 = [v63 animationControllerForResizingController:v18 userInfo:0];
+          v56 = [transitioningDelegate animationControllerForResizingController:v18 userInfo:0];
         }
 
         else
@@ -838,7 +838,7 @@ LABEL_26:
     }
 
     objc_initWeak(buf, self);
-    v57 = [v51 transitionCoordinator];
+    transitionCoordinator2 = [v51 transitionCoordinator];
     v64[0] = MEMORY[0x1E69E9820];
     v64[1] = 3221225472;
     v64[2] = __86__BNContentViewController__updateFrameForChildContentContainer_minimumTopInsetUpdate___block_invoke;
@@ -846,25 +846,25 @@ LABEL_26:
     objc_copyWeak(v68, buf);
     v58 = v55;
     v65 = v58;
-    v19 = v38;
-    v66 = v19;
+    transitionCoordinator = view2;
+    v66 = transitionCoordinator;
     v68[1] = v34;
     v68[2] = v35;
     v68[3] = *&v36;
     v68[4] = *&v37;
     v59 = v14;
     v67 = v59;
-    [v57 animateAlongsideTransition:v64 completion:0];
+    [transitionCoordinator2 animateAlongsideTransition:v64 completion:0];
 
-    v60 = [v51 transitionCoordinator];
-    [v18 viewWillTransitionToSize:v60 withTransitionCoordinator:{v36, v37}];
+    transitionCoordinator3 = [v51 transitionCoordinator];
+    [v18 viewWillTransitionToSize:transitionCoordinator3 withTransitionCoordinator:{v36, v37}];
 
-    [v19 _removeAllRetargetableAnimations:0];
+    [transitionCoordinator _removeAllRetargetableAnimations:0];
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     if (objc_opt_respondsToSelector())
     {
-      v62 = [v51 transitionCoordinator];
-      [WeakRetained presenter:self presentable:v59 willTransitionToSize:v62 withTransitionCoordinator:{v36, v37}];
+      transitionCoordinator4 = [v51 transitionCoordinator];
+      [WeakRetained presenter:self presentable:v59 willTransitionToSize:transitionCoordinator4 withTransitionCoordinator:{v36, v37}];
     }
 
     [v51 performTransitionWithAnimator:v58];
@@ -877,7 +877,7 @@ LABEL_40:
   }
 
 LABEL_9:
-  v14 = v7;
+  v14 = allPresentables;
 LABEL_42:
 
 LABEL_43:
@@ -904,38 +904,38 @@ void __86__BNContentViewController__updateFrameForChildContentContainer_minimumT
   [*(a1 + 40) layoutIfNeeded];
 }
 
-- (CGSize)sizeForChildContentContainer:(id)a3 withParentContainerSize:(CGSize)a4
+- (CGSize)sizeForChildContentContainer:(id)container withParentContainerSize:(CGSize)size
 {
-  v5 = [(BNContentViewController *)self _layoutManager];
+  _layoutManager = [(BNContentViewController *)self _layoutManager];
   BSRectWithSize();
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  v14 = [(BNContentViewController *)self view];
-  v15 = [v14 window];
+  view = [(BNContentViewController *)self view];
+  window = [view window];
 
-  if ([v15 _bn_isRotating])
+  if ([window _bn_isRotating])
   {
-    v16 = [v15 _toWindowOrientation];
+    _toWindowOrientation = [window _toWindowOrientation];
   }
 
   else
   {
-    v16 = [v15 interfaceOrientation];
+    _toWindowOrientation = [window interfaceOrientation];
   }
 
-  v17 = v16;
-  v18 = [v15 screen];
-  [v5 useableContainerFrameInContainerBounds:v18 onScreen:v17 interfaceOrientation:{v7, v9, v11, v13}];
+  v17 = _toWindowOrientation;
+  screen = [window screen];
+  [_layoutManager useableContainerFrameInContainerBounds:screen onScreen:v17 interfaceOrientation:{v7, v9, v11, v13}];
   v20 = v19;
   v22 = v21;
   v24 = v23;
   v26 = v25;
 
-  v27 = [(BNContentViewController *)self traitCollection];
-  [v27 displayScale];
-  [v5 presentedFrameForContentWithPreferredSize:v24 inUseableContainerFrame:v26 containerBounds:v20 scale:{v22, v24, v26, *&v7, *&v9, *&v11, *&v13, v28}];
+  traitCollection = [(BNContentViewController *)self traitCollection];
+  [traitCollection displayScale];
+  [_layoutManager presentedFrameForContentWithPreferredSize:v24 inUseableContainerFrame:v26 containerBounds:v20 scale:{v22, v24, v26, *&v7, *&v9, *&v11, *&v13, v28}];
   v30 = v29;
   v32 = v31;
 
@@ -946,12 +946,12 @@ void __86__BNContentViewController__updateFrameForChildContentContainer_minimumT
   return result;
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v35 = *MEMORY[0x1E69E9840];
-  v7 = a4;
+  coordinatorCopy = coordinator;
   v8 = BNLogPresenting;
   if (os_log_type_enabled(BNLogPresenting, OS_LOG_TYPE_DEFAULT))
   {
@@ -971,20 +971,20 @@ void __86__BNContentViewController__updateFrameForChildContentContainer_minimumT
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained presenter:self willTransitionToSize:v7 withTransitionCoordinator:{width, height}];
+    [WeakRetained presenter:self willTransitionToSize:coordinatorCopy withTransitionCoordinator:{width, height}];
   }
 
   v14 = self->_activeBannerTransitionContext;
-  v15 = [(BNTransitionContext *)v14 transitionCoordinator];
-  v16 = v15;
-  if (v15)
+  transitionCoordinator = [(BNTransitionContext *)v14 transitionCoordinator];
+  v16 = transitionCoordinator;
+  if (transitionCoordinator)
   {
-    v17 = v15;
+    v17 = transitionCoordinator;
   }
 
   else
   {
-    v17 = v7;
+    v17 = coordinatorCopy;
   }
 
   v18 = v17;
@@ -1001,7 +1001,7 @@ void __86__BNContentViewController__updateFrameForChildContentContainer_minimumT
   v29[1] = *&width;
   v29[2] = *&height;
   objc_copyWeak(v29, buf);
-  v20 = v7;
+  v20 = coordinatorCopy;
   v28 = v20;
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
@@ -1153,44 +1153,44 @@ uint64_t __78__BNContentViewController_viewWillTransitionToSize_withTransitionCo
   return MEMORY[0x1EEE66BB8](WeakRetained, v3);
 }
 
-- (BNContentViewController)initWithAuthority:(id)a3
+- (BNContentViewController)initWithAuthority:(id)authority
 {
-  v5 = a3;
+  authorityCopy = authority;
   v9.receiver = self;
   v9.super_class = BNContentViewController;
   v6 = [(BNContentViewController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_authority, a3);
+    objc_storeStrong(&v6->_authority, authority);
   }
 
   return v7;
 }
 
-- (void)presentPresentable:(id)a3 withOptions:(unint64_t)a4 userInfo:(id)a5
+- (void)presentPresentable:(id)presentable withOptions:(unint64_t)options userInfo:(id)info
 {
-  v6 = a4;
+  optionsCopy = options;
   v102 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v69 = a5;
+  presentableCopy = presentable;
+  infoCopy = info;
   v9 = BNLogPresenting;
   if (os_log_type_enabled(BNLogPresenting, OS_LOG_TYPE_DEFAULT))
   {
     v10 = v9;
-    v11 = BNEffectivePresentableDescription(v8);
+    v11 = BNEffectivePresentableDescription(presentableCopy);
     LODWORD(buf) = 138543362;
     *(&buf + 4) = v11;
     _os_log_impl(&dword_1C42DC000, v10, OS_LOG_TYPE_DEFAULT, "Asked to present presentable: %{public}@", &buf, 0xCu);
   }
 
-  if (v8 && ([(NSMutableSet *)self->_presentingPresentables containsObject:v8]& 1) == 0)
+  if (presentableCopy && ([(NSMutableSet *)self->_presentingPresentables containsObject:presentableCopy]& 1) == 0)
   {
     v12 = BNLogPresenting;
     if (os_log_type_enabled(BNLogPresenting, OS_LOG_TYPE_DEFAULT))
     {
       v13 = v12;
-      v14 = BNEffectivePresentableDescription(v8);
+      v14 = BNEffectivePresentableDescription(presentableCopy);
       LODWORD(buf) = 138543362;
       *(&buf + 4) = v14;
       _os_log_impl(&dword_1C42DC000, v13, OS_LOG_TYPE_DEFAULT, "Presenting presentable %{public}@", &buf, 0xCu);
@@ -1206,8 +1206,8 @@ uint64_t __78__BNContentViewController_viewWillTransitionToSize_withTransitionCo
       presentingPresentables = self->_presentingPresentables;
     }
 
-    [(NSMutableSet *)presentingPresentables addObject:v8];
-    [(NSMutableSet *)self->_dismissingPresentables removeObject:v8];
+    [(NSMutableSet *)presentingPresentables addObject:presentableCopy];
+    [(NSMutableSet *)self->_dismissingPresentables removeObject:presentableCopy];
     v65 = 0;
     *&buf = 0;
     *(&buf + 1) = &buf;
@@ -1215,87 +1215,87 @@ uint64_t __78__BNContentViewController_viewWillTransitionToSize_withTransitionCo
     v99 = __Block_byref_object_copy__0;
     v100 = __Block_byref_object_dispose__0;
     v101 = 0;
-    if (v6)
+    if (optionsCopy)
     {
-      v18 = [v8 requesterIdentifier];
-      v19 = [(BNTieredArray *)self->_presentables allObjects];
+      requesterIdentifier = [presentableCopy requesterIdentifier];
+      allObjects = [(BNTieredArray *)self->_presentables allObjects];
       v20 = MEMORY[0x1E696AE18];
       v91[0] = MEMORY[0x1E69E9820];
       v91[1] = 3221225472;
       v91[2] = __67__BNContentViewController_presentPresentable_withOptions_userInfo___block_invoke;
       v91[3] = &unk_1E81E4CC0;
-      v92 = v8;
-      v21 = v18;
+      v92 = presentableCopy;
+      v21 = requesterIdentifier;
       v93 = v21;
-      v94 = self;
+      selfCopy = self;
       v22 = [v20 predicateWithBlock:v91];
-      v65 = [v19 filteredArrayUsingPredicate:v22];
+      v65 = [allObjects filteredArrayUsingPredicate:v22];
 
       v23 = objc_alloc_init(MEMORY[0x1E695DF70]);
       v24 = *(*(&buf + 1) + 40);
       *(*(&buf + 1) + 40) = v23;
     }
 
-    v25 = UIViewControllerFromPresentable(v8);
-    v68 = [v25 transitioningDelegate];
-    if (!v68)
+    v25 = UIViewControllerFromPresentable(presentableCopy);
+    transitioningDelegate = [v25 transitioningDelegate];
+    if (!transitioningDelegate)
     {
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
       if (objc_opt_respondsToSelector())
       {
-        v68 = [WeakRetained defaultTransitioningDelegateForPresenter:self];
+        transitioningDelegate = [WeakRetained defaultTransitioningDelegateForPresenter:self];
       }
 
       else
       {
-        v68 = objc_alloc_init(BNDefaultBannerTransitioningDelegate);
+        transitioningDelegate = objc_alloc_init(BNDefaultBannerTransitioningDelegate);
       }
 
-      [v25 setTransitioningDelegate:v68];
+      [v25 setTransitioningDelegate:transitioningDelegate];
     }
 
-    v27 = [(BNContentViewController *)self _presentablesWithIdentification:v8 requiringUniqueMatch:1];
+    v27 = [(BNContentViewController *)self _presentablesWithIdentification:presentableCopy requiringUniqueMatch:1];
     v28 = [v27 count];
 
     if (!v28)
     {
-      v29 = [(BNContentViewController *)self _topPresentable];
-      v30 = [(BNContentViewController *)self shouldOverlapPresentable:v29 withPresentable:v8];
-      v31 = [(BNContentViewController *)self shouldNewTierBeAddedToTopForPresentable:v29 withPresentable:v8];
-      if (v30 && ![(BNContentViewController *)self _isPresentableNotice:v8]&& [(BNContentViewController *)self _isPresentableNotice:v29])
+      _topPresentable = [(BNContentViewController *)self _topPresentable];
+      v30 = [(BNContentViewController *)self shouldOverlapPresentable:_topPresentable withPresentable:presentableCopy];
+      v31 = [(BNContentViewController *)self shouldNewTierBeAddedToTopForPresentable:_topPresentable withPresentable:presentableCopy];
+      if (v30 && ![(BNContentViewController *)self _isPresentableNotice:presentableCopy]&& [(BNContentViewController *)self _isPresentableNotice:_topPresentable])
       {
-        [(BNContentViewController *)self _insertPresentable:v8 beneathPresentable:v29 withTransitioningDelegate:v68];
+        [(BNContentViewController *)self _insertPresentable:presentableCopy beneathPresentable:_topPresentable withTransitioningDelegate:transitioningDelegate];
         v32 = 1;
       }
 
       else
       {
-        [(BNContentViewController *)self _addPresentable:v8 withTransitioningDelegate:v68 incrementingTier:!v30 addTierToTop:v31];
+        [(BNContentViewController *)self _addPresentable:presentableCopy withTransitioningDelegate:transitioningDelegate incrementingTier:!v30 addTierToTop:v31];
         v32 = 0;
       }
 
       [(BNContentViewController *)self addChildViewController:v25];
       [v25 didMoveToParentViewController:self];
-      v33 = [v25 view];
-      v34 = [(BNContentViewController *)self view];
-      v35 = v34;
+      view = [v25 view];
+      view2 = [(BNContentViewController *)self view];
+      v35 = view2;
       if (v32)
       {
-        v36 = UIViewControllerFromPresentable(v29);
-        v37 = [v36 view];
-        [v35 insertSubview:v33 belowSubview:v37];
+        v36 = UIViewControllerFromPresentable(_topPresentable);
+        view3 = [v36 view];
+        [v35 insertSubview:view belowSubview:view3];
       }
 
       else
       {
-        [v34 addSubview:v33];
+        [view2 addSubview:view];
       }
     }
 
-    v38 = [(BNContentViewController *)self bs_isAppearingOrAppeared];
-    v39 = [(BNContentViewController *)self _newBannerTransitionContextForPresenting:1 viewController:v25 animated:v38];
+    bs_isAppearingOrAppeared = [(BNContentViewController *)self bs_isAppearingOrAppeared];
+    v39 = [(BNContentViewController *)self _newBannerTransitionContextForPresenting:1 viewController:v25 animated:bs_isAppearingOrAppeared];
     objc_storeStrong(&self->_activeBannerTransitionContext, v39);
-    if (v28 && (UIViewControllerFromPresentable(v8), v40 = objc_claimAutoreleasedReturnValue(), -[BNTransitionContext viewControllerForKey:](self->_activeBannerTransitionContext, "viewControllerForKey:", *MEMORY[0x1E69DE768]), v41 = objc_claimAutoreleasedReturnValue(), v42 = BSEqualObjects(), v41, v40, v42) && ([objc_opt_class() _retargetableBannerTransitionAnimatorForAnimator:self->_activeBannerTransitionAnimator], v43 = objc_claimAutoreleasedReturnValue(), v44 = v43, v43))
+    if (v28 && (UIViewControllerFromPresentable(presentableCopy), v40 = objc_claimAutoreleasedReturnValue(), -[BNTransitionContext viewControllerForKey:](self->_activeBannerTransitionContext, "viewControllerForKey:", *MEMORY[0x1E69DE768]), v41 = objc_claimAutoreleasedReturnValue(), v42 = BSEqualObjects(), v41, v40, v42) && ([objc_opt_class() _retargetableBannerTransitionAnimatorForAnimator:self->_activeBannerTransitionAnimator], v43 = objc_claimAutoreleasedReturnValue(), v44 = v43, v43))
     {
       v45 = 0;
       v46 = v44;
@@ -1305,12 +1305,12 @@ uint64_t __78__BNContentViewController_viewWillTransitionToSize_withTransitionCo
     {
       if (objc_opt_respondsToSelector())
       {
-        [(BNDefaultBannerTransitioningDelegate *)v68 animationControllerForPresentedController:v25 presentingController:self sourceController:self userInfo:v69];
+        [(BNDefaultBannerTransitioningDelegate *)transitioningDelegate animationControllerForPresentedController:v25 presentingController:self sourceController:self userInfo:infoCopy];
       }
 
       else
       {
-        [(BNDefaultBannerTransitioningDelegate *)v68 animationControllerForPresentedController:v25 presentingController:self sourceController:self];
+        [(BNDefaultBannerTransitioningDelegate *)transitioningDelegate animationControllerForPresentedController:v25 presentingController:self sourceController:self];
       }
       v46 = ;
       objc_storeStrong(&self->_activeBannerTransitionAnimator, v46);
@@ -1319,24 +1319,24 @@ uint64_t __78__BNContentViewController_viewWillTransitionToSize_withTransitionCo
     }
 
     v64 = v44;
-    v67 = [v39 transitionCoordinator];
+    transitionCoordinator = [v39 transitionCoordinator];
     objc_initWeak(&location, self);
     v80[0] = MEMORY[0x1E69E9820];
     v80[1] = 3221225472;
     v80[2] = __67__BNContentViewController_presentPresentable_withOptions_userInfo___block_invoke_2;
     v80[3] = &unk_1E81E4CE8;
     objc_copyWeak(&v88, &location);
-    v47 = v8;
+    v47 = presentableCopy;
     v81 = v47;
     v48 = v25;
-    v89 = v38;
+    v89 = bs_isAppearingOrAppeared;
     v82 = v48;
-    v83 = self;
+    selfCopy2 = self;
     v49 = v39;
     v84 = v49;
     v61 = v65;
     v85 = v61;
-    v50 = v69;
+    v50 = infoCopy;
     v86 = v50;
     p_buf = &buf;
     v74[0] = MEMORY[0x1E69E9820];
@@ -1352,11 +1352,11 @@ uint64_t __78__BNContentViewController_viewWillTransitionToSize_withTransitionCo
     v77 = v51;
     v62 = v48;
     v78 = v62;
-    [v67 animateAlongsideTransition:v80 completion:v74];
+    [transitionCoordinator animateAlongsideTransition:v80 completion:v74];
     v52 = objc_loadWeakRetained(&self->_delegate);
     if (objc_opt_respondsToSelector())
     {
-      [v52 presenter:self willPresentPresentable:v51 withTransitionCoordinator:v67 userInfo:{v50, v61}];
+      [v52 presenter:self willPresentPresentable:v51 withTransitionCoordinator:transitionCoordinator userInfo:{v50, v61}];
     }
 
     if (v45)
@@ -1667,52 +1667,52 @@ void __67__BNContentViewController_presentPresentable_withOptions_userInfo___blo
   }
 }
 
-- (id)dismissPresentablesWithIdentification:(id)a3 reason:(id)a4 userInfo:(id)a5
+- (id)dismissPresentablesWithIdentification:(id)identification reason:(id)reason userInfo:(id)info
 {
   v20 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identificationCopy = identification;
+  reasonCopy = reason;
+  infoCopy = info;
   v11 = BNLogPresenting;
   if (os_log_type_enabled(BNLogPresenting, OS_LOG_TYPE_DEFAULT))
   {
     v12 = v11;
-    v13 = BNPresentableIdentificationDescription(v8);
+    v13 = BNPresentableIdentificationDescription(identificationCopy);
     v16 = 138543618;
     v17 = v13;
     v18 = 2114;
-    v19 = v9;
+    v19 = reasonCopy;
     _os_log_impl(&dword_1C42DC000, v12, OS_LOG_TYPE_DEFAULT, "Asked to dismiss presentables with identification %{public}@ with reason '%{public}@'", &v16, 0x16u);
   }
 
-  v14 = [(BNContentViewController *)self _dismissPresentablesWithIdentification:v8 reason:v9 animated:[(BNContentViewController *)self bs_isAppearingOrAppeared] userInfo:v10];
+  v14 = [(BNContentViewController *)self _dismissPresentablesWithIdentification:identificationCopy reason:reasonCopy animated:[(BNContentViewController *)self bs_isAppearingOrAppeared] userInfo:infoCopy];
 
   return v14;
 }
 
-- (id)dismissPresentablesWithIdentification:(id)a3 reason:(id)a4 animated:(BOOL)a5 userInfo:(id)a6
+- (id)dismissPresentablesWithIdentification:(id)identification reason:(id)reason animated:(BOOL)animated userInfo:(id)info
 {
-  v7 = a5;
+  animatedCopy = animated;
   v30 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  identificationCopy = identification;
+  reasonCopy = reason;
+  infoCopy = info;
   v13 = BNLogPresenting;
   if (os_log_type_enabled(BNLogPresenting, OS_LOG_TYPE_DEFAULT))
   {
     v14 = v13;
-    v15 = BNPresentableIdentificationDescription(v10);
+    v15 = BNPresentableIdentificationDescription(identificationCopy);
     v16 = NSStringFromBOOL();
     v24 = 138543874;
     v25 = v15;
     v26 = 2114;
-    v27 = v11;
+    v27 = reasonCopy;
     v28 = 2114;
     v29 = v16;
     _os_log_impl(&dword_1C42DC000, v14, OS_LOG_TYPE_DEFAULT, "Asked to dismiss presentables with identification %{public}@ with reason '%{public}@' (animated=%{public}@)", &v24, 0x20u);
   }
 
-  if (v7)
+  if (animatedCopy)
   {
     if (([(BNContentViewController *)self bs_isAppearingOrAppeared]& 1) != 0)
     {
@@ -1725,7 +1725,7 @@ void __67__BNContentViewController_presentPresentable_withOptions_userInfo___blo
     {
       v19 = v18;
       v20 = NSStringFromBOOL();
-      v21 = BNPresentableIdentificationDescription(v10);
+      v21 = BNPresentableIdentificationDescription(identificationCopy);
       v24 = 138543618;
       v25 = v20;
       v26 = 2114;
@@ -1736,42 +1736,42 @@ void __67__BNContentViewController_presentPresentable_withOptions_userInfo___blo
 
   v17 = 0;
 LABEL_9:
-  v22 = [(BNContentViewController *)self _dismissPresentablesWithIdentification:v10 reason:v11 animated:v17 userInfo:v12];
+  v22 = [(BNContentViewController *)self _dismissPresentablesWithIdentification:identificationCopy reason:reasonCopy animated:v17 userInfo:infoCopy];
 
   return v22;
 }
 
-- (void)morphFromPresentable:(id)a3 toPresentable:(id)a4 withOptions:(unint64_t)a5 userInfo:(id)a6 stateChange:(BOOL)a7
+- (void)morphFromPresentable:(id)presentable toPresentable:(id)toPresentable withOptions:(unint64_t)options userInfo:(id)info stateChange:(BOOL)change
 {
-  v7 = a7;
-  v18 = a3;
-  v12 = a4;
-  v13 = a6;
-  v14 = UIViewControllerFromPresentable(v18);
-  if (v18 && (v15 = -[NSMutableSet containsObject:](self->_dismissingPresentables, "containsObject:", v18), v12) && (v15 & 1) == 0 && (-[NSMutableSet containsObject:](self->_presentingPresentables, "containsObject:", v12) & 1) == 0 && (-[BNContentViewController childViewControllers](self, "childViewControllers"), v16 = objc_claimAutoreleasedReturnValue(), v17 = [v16 containsObject:v14], v16, v17))
+  changeCopy = change;
+  presentableCopy = presentable;
+  toPresentableCopy = toPresentable;
+  infoCopy = info;
+  v14 = UIViewControllerFromPresentable(presentableCopy);
+  if (presentableCopy && (v15 = -[NSMutableSet containsObject:](self->_dismissingPresentables, "containsObject:", presentableCopy), toPresentableCopy) && (v15 & 1) == 0 && (-[NSMutableSet containsObject:](self->_presentingPresentables, "containsObject:", toPresentableCopy) & 1) == 0 && (-[BNContentViewController childViewControllers](self, "childViewControllers"), v16 = objc_claimAutoreleasedReturnValue(), v17 = [v16 containsObject:v14], v16, v17))
   {
-    [(BNContentViewController *)self _morphFromPresentable:v18 toPresentable:v12 withOptions:a5 userInfo:v13 stateChange:v7];
+    [(BNContentViewController *)self _morphFromPresentable:presentableCopy toPresentable:toPresentableCopy withOptions:options userInfo:infoCopy stateChange:changeCopy];
   }
 
   else
   {
-    [(BNContentViewController *)self presentPresentable:v12 withOptions:a5 userInfo:v13];
+    [(BNContentViewController *)self presentPresentable:toPresentableCopy withOptions:options userInfo:infoCopy];
   }
 }
 
-- (void)_morphFromPresentable:(id)a3 toPresentable:(id)a4 withOptions:(unint64_t)a5 userInfo:(id)a6 stateChange:(BOOL)a7
+- (void)_morphFromPresentable:(id)presentable toPresentable:(id)toPresentable withOptions:(unint64_t)options userInfo:(id)info stateChange:(BOOL)change
 {
-  v7 = a7;
+  changeCopy = change;
   v63 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v43 = a6;
+  presentableCopy = presentable;
+  toPresentableCopy = toPresentable;
+  infoCopy = info;
   v13 = BNLogPresenting;
   if (os_log_type_enabled(BNLogPresenting, OS_LOG_TYPE_DEFAULT))
   {
     v14 = v13;
-    v15 = BNEffectivePresentableDescription(v11);
-    v16 = BNEffectivePresentableDescription(v12);
+    v15 = BNEffectivePresentableDescription(presentableCopy);
+    v16 = BNEffectivePresentableDescription(toPresentableCopy);
     *buf = 138543618;
     v60 = v15;
     v61 = 2114;
@@ -1796,16 +1796,16 @@ LABEL_9:
     dismissingPresentables = self->_dismissingPresentables;
   }
 
-  [(NSMutableSet *)dismissingPresentables addObject:v11];
-  [(NSMutableSet *)self->_presentingPresentables removeObject:v11];
-  [(NSMutableSet *)self->_presentingPresentables addObject:v12];
-  [(NSMutableSet *)self->_dismissingPresentables removeObject:v12];
-  v22 = UIViewControllerFromPresentable(v11);
-  v23 = UIViewControllerFromPresentable(v12);
-  v24 = [v23 transitioningDelegate];
+  [(NSMutableSet *)dismissingPresentables addObject:presentableCopy];
+  [(NSMutableSet *)self->_presentingPresentables removeObject:presentableCopy];
+  [(NSMutableSet *)self->_presentingPresentables addObject:toPresentableCopy];
+  [(NSMutableSet *)self->_dismissingPresentables removeObject:toPresentableCopy];
+  v22 = UIViewControllerFromPresentable(presentableCopy);
+  v23 = UIViewControllerFromPresentable(toPresentableCopy);
+  transitioningDelegate = [v23 transitioningDelegate];
   if (objc_opt_respondsToSelector())
   {
-    v25 = v24;
+    v25 = transitioningDelegate;
     goto LABEL_15;
   }
 
@@ -1822,7 +1822,7 @@ LABEL_9:
 
   else
   {
-    v25 = v24;
+    v25 = transitioningDelegate;
   }
 
   v27 = objc_alloc_init(BNDefaultBannerTransitioningDelegate);
@@ -1832,28 +1832,28 @@ LABEL_14:
   [v23 setTransitioningDelegate:v25];
 
 LABEL_15:
-  [(BNContentViewController *)self _insertPresentable:v12 referencePresentable:v11 withTransitioningDelegate:v25 incrementingTier:0 addToTop:0];
+  [(BNContentViewController *)self _insertPresentable:toPresentableCopy referencePresentable:presentableCopy withTransitioningDelegate:v25 incrementingTier:0 addToTop:0];
   [(BNContentViewController *)self bs_addChildViewController:v23];
   v28 = [(BNContentViewController *)self _newBannerTransitionContextForMorphFromViewController:v22 toViewController:v23 animated:1];
   objc_storeStrong(&self->_activeBannerTransitionContext, v28);
-  v29 = [v25 animationControllerMorphFromPresentedController:v22 presentingController:v23 sourceController:self userInfo:v43 stateChange:v7];
+  v29 = [v25 animationControllerMorphFromPresentedController:v22 presentingController:v23 sourceController:self userInfo:infoCopy stateChange:changeCopy];
   objc_storeStrong(&self->_activeBannerTransitionAnimator, v29);
-  v42 = [v28 transitionCoordinator];
+  transitionCoordinator = [v28 transitionCoordinator];
   objc_initWeak(buf, self);
   v52[0] = MEMORY[0x1E69E9820];
   v52[1] = 3221225472;
   v52[2] = __96__BNContentViewController__morphFromPresentable_toPresentable_withOptions_userInfo_stateChange___block_invoke;
   v52[3] = &unk_1E81E4D38;
   objc_copyWeak(&v58, buf);
-  v30 = v12;
+  v30 = toPresentableCopy;
   v53 = v30;
-  v31 = v11;
+  v31 = presentableCopy;
   v54 = v31;
   v32 = v22;
   v55 = v32;
   v33 = v23;
   v56 = v33;
-  v57 = self;
+  selfCopy = self;
   v44[0] = MEMORY[0x1E69E9820];
   v44[1] = 3221225472;
   v44[2] = __96__BNContentViewController__morphFromPresentable_toPresentable_withOptions_userInfo_stateChange___block_invoke_70;
@@ -1871,17 +1871,17 @@ LABEL_15:
   v49 = v38;
   v39 = v32;
   v50 = v39;
-  [v42 animateAlongsideTransition:v52 completion:v44];
+  [transitionCoordinator animateAlongsideTransition:v52 completion:v44];
   v40 = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [v40 presenter:self willPresentPresentable:v36 withTransitionCoordinator:v42 userInfo:v43];
+    [v40 presenter:self willPresentPresentable:v36 withTransitionCoordinator:transitionCoordinator userInfo:infoCopy];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v41 = [v34 transitionCoordinator];
-    [v40 presenter:self willDismissPresentable:v38 withTransitionCoordinator:v41 userInfo:v43];
+    transitionCoordinator2 = [v34 transitionCoordinator];
+    [v40 presenter:self willDismissPresentable:v38 withTransitionCoordinator:transitionCoordinator2 userInfo:infoCopy];
   }
 
   [v34 performTransitionWithAnimator:v35];
@@ -2110,23 +2110,23 @@ void __96__BNContentViewController__morphFromPresentable_toPresentable_withOptio
 
 - (void)preferredMinimumTopInsetDidInvalidate
 {
-  v3 = [(BNContentViewController *)self _topPresentable];
-  v8 = UIViewControllerFromPresentable(v3);
+  _topPresentable = [(BNContentViewController *)self _topPresentable];
+  v8 = UIViewControllerFromPresentable(_topPresentable);
 
   if (v8)
   {
-    v4 = [(BNContentViewController *)self transitionCoordinator];
-    if ([v4 isAnimated])
+    transitionCoordinator = [(BNContentViewController *)self transitionCoordinator];
+    if ([transitionCoordinator isAnimated])
     {
     }
 
     else
     {
-      v5 = [(BNContentViewController *)self view];
-      v6 = [v5 window];
-      v7 = [v6 _bn_isRotating];
+      view = [(BNContentViewController *)self view];
+      window = [view window];
+      _bn_isRotating = [window _bn_isRotating];
 
-      if ((v7 & 1) == 0)
+      if ((_bn_isRotating & 1) == 0)
       {
         [(BNContentViewController *)self _updateFrameForChildContentContainer:v8 minimumTopInsetUpdate:1];
       }
@@ -2134,15 +2134,15 @@ void __96__BNContentViewController__morphFromPresentable_toPresentable_withOptio
   }
 }
 
-- (id)sizeTransitionAnimationSettingsForPresentable:(id)a3
+- (id)sizeTransitionAnimationSettingsForPresentable:(id)presentable
 {
-  v3 = a3;
-  v4 = UIViewControllerFromPresentable(v3);
-  v5 = [v4 transitioningDelegate];
+  presentableCopy = presentable;
+  v4 = UIViewControllerFromPresentable(presentableCopy);
+  transitioningDelegate = [v4 transitioningDelegate];
 
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v5 sizeTransitionAnimationSettingsForPresentable:v3];
+    v6 = [transitioningDelegate sizeTransitionAnimationSettingsForPresentable:presentableCopy];
   }
 
   else
@@ -2153,13 +2153,13 @@ void __96__BNContentViewController__morphFromPresentable_toPresentable_withOptio
   return v6;
 }
 
-- (id)userInterfaceStyleTransitionAnimationSettingsForPresentable:(id)a3 forTransitionToStyle:(int64_t)a4
+- (id)userInterfaceStyleTransitionAnimationSettingsForPresentable:(id)presentable forTransitionToStyle:(int64_t)style
 {
-  v6 = a3;
+  presentableCopy = presentable;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    v8 = [WeakRetained userInterfaceStyleTransitionAnimationSettingsForPresentable:v6 forTransitionToStyle:a4];
+    v8 = [WeakRetained userInterfaceStyleTransitionAnimationSettingsForPresentable:presentableCopy forTransitionToStyle:style];
   }
 
   else
@@ -2170,13 +2170,13 @@ void __96__BNContentViewController__morphFromPresentable_toPresentable_withOptio
   return v8;
 }
 
-- (BOOL)shouldFenceAnimationsForPresentable:(id)a3
+- (BOOL)shouldFenceAnimationsForPresentable:(id)presentable
 {
-  v4 = a3;
+  presentableCopy = presentable;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    v6 = [WeakRetained shouldFenceAnimationsForPresentable:v4];
+    v6 = [WeakRetained shouldFenceAnimationsForPresentable:presentableCopy];
   }
 
   else
@@ -2187,17 +2187,17 @@ void __96__BNContentViewController__morphFromPresentable_toPresentable_withOptio
   return v6;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
   v28 = *MEMORY[0x1E69E9840];
-  v5 = [(BNContentViewController *)self _presentableForTouch:a4];
+  v5 = [(BNContentViewController *)self _presentableForTouch:touch];
   if (v5)
   {
     objc_storeStrong(&self->_presentableForActiveGesture, v5);
-    v6 = [(BNContentViewController *)self view];
+    view = [(BNContentViewController *)self view];
     v7 = UIViewControllerFromPresentable(self->_presentableForActiveGesture);
-    v8 = [v7 view];
-    [v6 bringSubviewToFront:v8];
+    view2 = [v7 view];
+    [view bringSubviewToFront:view2];
 
     v9 = BNLogPresenting;
     if (os_log_type_enabled(BNLogPresenting, OS_LOG_TYPE_DEFAULT))
@@ -2222,8 +2222,8 @@ void __96__BNContentViewController__morphFromPresentable_toPresentable_withOptio
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v14 = [(BNContentViewController *)self topPresentables];
-    v15 = [v14 countByEnumeratingWithState:&v21 objects:v25 count:16];
+    topPresentables = [(BNContentViewController *)self topPresentables];
+    v15 = [topPresentables countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v15)
     {
       v16 = v15;
@@ -2234,7 +2234,7 @@ void __96__BNContentViewController__morphFromPresentable_toPresentable_withOptio
         {
           if (*v22 != v17)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(topPresentables);
           }
 
           v19 = *(*(&v21 + 1) + 8 * i);
@@ -2244,7 +2244,7 @@ void __96__BNContentViewController__morphFromPresentable_toPresentable_withOptio
           }
         }
 
-        v16 = [v14 countByEnumeratingWithState:&v21 objects:v25 count:16];
+        v16 = [topPresentables countByEnumeratingWithState:&v21 objects:v25 count:16];
       }
 
       while (v16);
@@ -2256,20 +2256,20 @@ void __96__BNContentViewController__morphFromPresentable_toPresentable_withOptio
   return v13;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveEvent:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveEvent:(id)event
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  if ([v5 type] == 10)
+  eventCopy = event;
+  if ([eventCopy type] == 10)
   {
-    v6 = [(BNContentViewController *)self _presentableForScrollEvent:v5];
+    v6 = [(BNContentViewController *)self _presentableForScrollEvent:eventCopy];
     if (v6)
     {
       objc_storeStrong(&self->_presentableForActiveGesture, v6);
-      v7 = [(BNContentViewController *)self view];
+      view = [(BNContentViewController *)self view];
       v8 = UIViewControllerFromPresentable(self->_presentableForActiveGesture);
-      v9 = [v8 view];
-      [v7 bringSubviewToFront:v9];
+      view2 = [v8 view];
+      [view bringSubviewToFront:view2];
 
       v10 = BNLogPresenting;
       if (os_log_type_enabled(BNLogPresenting, OS_LOG_TYPE_DEFAULT))
@@ -2287,10 +2287,10 @@ void __96__BNContentViewController__morphFromPresentable_toPresentable_withOptio
   return 1;
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  beginCopy = begin;
   presentableForActiveGesture = self->_presentableForActiveGesture;
   if (presentableForActiveGesture)
   {
@@ -2323,7 +2323,7 @@ void __96__BNContentViewController__morphFromPresentable_toPresentable_withOptio
   return v7 & v8;
 }
 
-- (void)_gestureRecognizerFailed:(id)a3
+- (void)_gestureRecognizerFailed:(id)failed
 {
   if ([(BNContentViewController *)self _isLocalDraggingEnabledForPresentable:self->_presentableForActiveGesture])
   {
@@ -2333,16 +2333,16 @@ void __96__BNContentViewController__morphFromPresentable_toPresentable_withOptio
   }
 }
 
-- (CGPoint)gestureRecognizerProxy:(id)a3 locationForTouch:(id)a4 inCoordinateSpace:(id)a5
+- (CGPoint)gestureRecognizerProxy:(id)proxy locationForTouch:(id)touch inCoordinateSpace:(id)space
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [(BNContentViewController *)self view];
-  [(BNContentViewController *)self _locationOfTouch:v8 inContainerViewForGesture:self->_panGesture];
+  spaceCopy = space;
+  touchCopy = touch;
+  view = [(BNContentViewController *)self view];
+  [(BNContentViewController *)self _locationOfTouch:touchCopy inContainerViewForGesture:self->_panGesture];
   v11 = v10;
   v13 = v12;
 
-  [v9 convertPoint:v7 toCoordinateSpace:{v11, v13}];
+  [view convertPoint:spaceCopy toCoordinateSpace:{v11, v13}];
   v15 = v14;
   v17 = v16;
 
@@ -2353,12 +2353,12 @@ void __96__BNContentViewController__morphFromPresentable_toPresentable_withOptio
   return result;
 }
 
-- (CGPoint)gestureRecognizerProxy:(id)a3 velocityInCoordinateSpace:(id)a4
+- (CGPoint)gestureRecognizerProxy:(id)proxy velocityInCoordinateSpace:(id)space
 {
-  v5 = a4;
-  v6 = [(BNContentViewController *)self view];
+  spaceCopy = space;
+  view = [(BNContentViewController *)self view];
   [(BNContentViewController *)self _velocityInContainerViewForGesture:self->_panGesture];
-  [v6 convertPoint:v5 toCoordinateSpace:?];
+  [view convertPoint:spaceCopy toCoordinateSpace:?];
   v8 = v7;
   v10 = v9;
 
@@ -2369,12 +2369,12 @@ void __96__BNContentViewController__morphFromPresentable_toPresentable_withOptio
   return result;
 }
 
-- (CGPoint)gestureRecognizerProxy:(id)a3 translationInCoordinateSpace:(id)a4
+- (CGPoint)gestureRecognizerProxy:(id)proxy translationInCoordinateSpace:(id)space
 {
-  v5 = a4;
-  v6 = [(BNContentViewController *)self view];
+  spaceCopy = space;
+  view = [(BNContentViewController *)self view];
   [(BNContentViewController *)self _translationInContainerViewForGesture:self->_panGesture];
-  [v6 convertPoint:v5 toCoordinateSpace:?];
+  [view convertPoint:spaceCopy toCoordinateSpace:?];
   v8 = v7;
   v10 = v9;
 
@@ -2385,13 +2385,13 @@ void __96__BNContentViewController__morphFromPresentable_toPresentable_withOptio
   return result;
 }
 
-- (CGPoint)gestureRecognizerProxy:(id)a3 visualTranslationInCoordinateSpace:(id)a4
+- (CGPoint)gestureRecognizerProxy:(id)proxy visualTranslationInCoordinateSpace:(id)space
 {
-  v5 = a4;
-  v6 = [(BNContentViewController *)self view];
+  spaceCopy = space;
+  view = [(BNContentViewController *)self view];
   [(BNContentViewController *)self _translationInContainerViewForGesture:self->_panGesture];
-  _RubberBandedTranslationInContainerView(v6);
-  [v6 convertPoint:v5 toCoordinateSpace:?];
+  _RubberBandedTranslationInContainerView(view);
+  [view convertPoint:spaceCopy toCoordinateSpace:?];
   v8 = v7;
   v10 = v9;
 
@@ -2402,14 +2402,14 @@ void __96__BNContentViewController__morphFromPresentable_toPresentable_withOptio
   return result;
 }
 
-+ (id)_retargetableBannerTransitionAnimatorForAnimator:(id)a3
++ (id)_retargetableBannerTransitionAnimatorForAnimator:(id)animator
 {
-  v3 = a3;
-  if ((objc_opt_respondsToSelector() & 1) != 0 && [v3 isRetargetable])
+  animatorCopy = animator;
+  if ((objc_opt_respondsToSelector() & 1) != 0 && [animatorCopy isRetargetable])
   {
     if (objc_opt_respondsToSelector())
     {
-      v4 = v3;
+      v4 = animatorCopy;
     }
 
     else
@@ -2428,26 +2428,26 @@ void __96__BNContentViewController__morphFromPresentable_toPresentable_withOptio
   return v4;
 }
 
-- (BOOL)shouldNewTierBeAddedToTopForPresentable:(id)a3 withPresentable:(id)a4
+- (BOOL)shouldNewTierBeAddedToTopForPresentable:(id)presentable withPresentable:(id)withPresentable
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = (objc_opt_respondsToSelector() & 1) == 0 || [(BNConsidering *)self->_authority shouldNewTierBeAddedToTopForPresentable:v6 withPresentable:v7]== 1;
+  presentableCopy = presentable;
+  withPresentableCopy = withPresentable;
+  v8 = (objc_opt_respondsToSelector() & 1) == 0 || [(BNConsidering *)self->_authority shouldNewTierBeAddedToTopForPresentable:presentableCopy withPresentable:withPresentableCopy]== 1;
 
   return v8;
 }
 
-- (BOOL)_isPresentableNotice:(id)a3
+- (BOOL)_isPresentableNotice:(id)notice
 {
-  v3 = a3;
-  v4 = (objc_opt_respondsToSelector() & 1) != 0 && [v3 presentableBehavior] == 1;
+  noticeCopy = notice;
+  v4 = (objc_opt_respondsToSelector() & 1) != 0 && [noticeCopy presentableBehavior] == 1;
 
   return v4;
 }
 
-- (CGRect)_insetFrame:(CGRect)a3 forViewController:(id)a4
+- (CGRect)_insetFrame:(CGRect)frame forViewController:(id)controller
 {
-  [a4 bannerContentOutsets];
+  [controller bannerContentOutsets];
 
   UIRectInset();
   result.size.height = v7;
@@ -2457,9 +2457,9 @@ void __96__BNContentViewController__morphFromPresentable_toPresentable_withOptio
   return result;
 }
 
-- (CGRect)_outsetFrame:(CGRect)a3 forViewController:(id)a4
+- (CGRect)_outsetFrame:(CGRect)frame forViewController:(id)controller
 {
-  [a4 bannerContentOutsets];
+  [controller bannerContentOutsets];
 
   UIRectInset();
   result.size.height = v7;
@@ -2469,47 +2469,47 @@ void __96__BNContentViewController__morphFromPresentable_toPresentable_withOptio
   return result;
 }
 
-- (CGRect)_presentedFrame:(BOOL)a3 forViewController:(id)a4 withContainerBounds:(CGRect)a5 overshoot:(BOOL)a6 targetTransform:(CGAffineTransform *)a7
+- (CGRect)_presentedFrame:(BOOL)frame forViewController:(id)controller withContainerBounds:(CGRect)bounds overshoot:(BOOL)overshoot targetTransform:(CGAffineTransform *)transform
 {
-  v8 = a6;
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v13 = a3;
-  v15 = a4;
-  v16 = [(BNContentViewController *)self view];
-  v17 = [v16 window];
+  overshootCopy = overshoot;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  frameCopy = frame;
+  controllerCopy = controller;
+  view = [(BNContentViewController *)self view];
+  window = [view window];
 
-  v18 = *&a7->c;
-  *&rect2[1] = *&a7->a;
+  v18 = *&transform->c;
+  *&rect2[1] = *&transform->a;
   *&rect2[3] = v18;
-  *&rect2[5] = *&a7->tx;
+  *&rect2[5] = *&transform->tx;
   if (CGAffineTransformIsIdentity(&rect2[1]))
   {
-    v19 = [v17 interfaceOrientation];
+    interfaceOrientation = [window interfaceOrientation];
   }
 
   else
   {
-    v19 = [v17 _toWindowOrientation];
+    interfaceOrientation = [window _toWindowOrientation];
   }
 
-  v20 = v19;
-  v21 = [(BNContentViewController *)self _layoutManager];
-  v22 = [v17 screen];
+  v20 = interfaceOrientation;
+  _layoutManager = [(BNContentViewController *)self _layoutManager];
+  screen = [window screen];
   v89 = y;
   v87 = width;
-  [v21 useableContainerFrameInContainerBounds:v22 onScreen:v20 interfaceOrientation:{x, y, width, height}];
+  [_layoutManager useableContainerFrameInContainerBounds:screen onScreen:v20 interfaceOrientation:{x, y, width, height}];
   v90 = v23;
   v25 = v24;
   v27 = v26;
   v29 = v28;
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  if (v13 && (objc_opt_respondsToSelector() & 1) != 0)
+  if (frameCopy && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v15 preferredContentSize];
+    [controllerCopy preferredContentSize];
     v32 = v31;
     v92.origin.x = v90;
     v92.origin.y = v25;
@@ -2595,28 +2595,28 @@ void __96__BNContentViewController__morphFromPresentable_toPresentable_withOptio
     }
   }
 
-  v47 = [v17 traitCollection];
-  [v47 displayScale];
+  traitCollection = [window traitCollection];
+  [traitCollection displayScale];
   v49 = v48;
 
-  [v21 presentedFrameForContentWithPreferredSize:v27 inUseableContainerFrame:v29 containerBounds:v90 scale:{v86, v27, v29, rect2[0], *&v89, *&v87, *&height, v49}];
-  [v15 preferredContentSizeWithPresentationSize:v50 containerSize:{v51, v87, height}];
+  [_layoutManager presentedFrameForContentWithPreferredSize:v27 inUseableContainerFrame:v29 containerBounds:v90 scale:{v86, v27, v29, rect2[0], *&v89, *&v87, *&height, v49}];
+  [controllerCopy preferredContentSizeWithPresentationSize:v50 containerSize:{v51, v87, height}];
   v53 = v52;
   v55 = v54;
-  if (v13)
+  if (frameCopy)
   {
-    v56 = [(BNContentViewController *)self layoutManager];
+    layoutManager = [(BNContentViewController *)self layoutManager];
     v78 = v49;
     v57 = v89;
-    [v56 presentedFrameForContentWithPreferredSize:v53 inUseableContainerFrame:v55 containerBounds:v90 scale:{v86, v27, v29, rect2[0], *&v89, *&v87, *&height, v78}];
+    [layoutManager presentedFrameForContentWithPreferredSize:v53 inUseableContainerFrame:v55 containerBounds:v90 scale:{v86, v27, v29, rect2[0], *&v89, *&v87, *&height, v78}];
   }
 
   else
   {
-    v56 = [(BNContentViewController *)self _layoutManager];
+    layoutManager = [(BNContentViewController *)self _layoutManager];
     v79 = v49;
     v57 = v89;
-    [v56 dismissedFrameForContentWithPreferredSize:v8 inUseableContainerFrame:v53 containerBounds:v55 overshoot:v90 scale:{v86, v27, v29, rect2[0], *&v89, *&v87, *&height, v79}];
+    [layoutManager dismissedFrameForContentWithPreferredSize:overshootCopy inUseableContainerFrame:v53 containerBounds:v55 overshoot:v90 scale:{v86, v27, v29, rect2[0], *&v89, *&v87, *&height, v79}];
   }
 
   v62 = v58;
@@ -2634,7 +2634,7 @@ void __96__BNContentViewController__morphFromPresentable_toPresentable_withOptio
   v104.size.height = v88;
   if (!CGRectEqualToRect(v102, v104))
   {
-    [(BNContentViewController *)self _outsetFrame:v15 forViewController:v62, v63, v64, v65];
+    [(BNContentViewController *)self _outsetFrame:controllerCopy forViewController:v62, v63, v64, v65];
   }
 
   UIRectIntegralWithScale();
@@ -2654,13 +2654,13 @@ void __96__BNContentViewController__morphFromPresentable_toPresentable_withOptio
   return result;
 }
 
-- (CGRect)_dismissedFrameForViewController:(id)a3 withContainerBounds:(CGRect)a4
+- (CGRect)_dismissedFrameForViewController:(id)controller withContainerBounds:(CGRect)bounds
 {
   v4 = *(MEMORY[0x1E695EFD0] + 16);
   v9[0] = *MEMORY[0x1E695EFD0];
   v9[1] = v4;
   v9[2] = *(MEMORY[0x1E695EFD0] + 32);
-  [(BNContentViewController *)self _presentedFrame:0 forViewController:a3 withContainerBounds:0 overshoot:v9 targetTransform:a4.origin.x, a4.origin.y, a4.size.width, a4.size.height];
+  [(BNContentViewController *)self _presentedFrame:0 forViewController:controller withContainerBounds:0 overshoot:v9 targetTransform:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   result.size.height = v8;
   result.size.width = v7;
   result.origin.y = v6;
@@ -2668,13 +2668,13 @@ void __96__BNContentViewController__morphFromPresentable_toPresentable_withOptio
   return result;
 }
 
-- (CGRect)_dismissedFrameWithPaddingForViewController:(id)a3 withContainerBounds:(CGRect)a4 targetTransform:(CGAffineTransform *)a5
+- (CGRect)_dismissedFrameWithPaddingForViewController:(id)controller withContainerBounds:(CGRect)bounds targetTransform:(CGAffineTransform *)transform
 {
-  v5 = *&a5->c;
-  v10[0] = *&a5->a;
+  v5 = *&transform->c;
+  v10[0] = *&transform->a;
   v10[1] = v5;
-  v10[2] = *&a5->tx;
-  [(BNContentViewController *)self _presentedFrame:0 forViewController:a3 withContainerBounds:1 overshoot:v10 targetTransform:a4.origin.x, a4.origin.y, a4.size.width, a4.size.height];
+  v10[2] = *&transform->tx;
+  [(BNContentViewController *)self _presentedFrame:0 forViewController:controller withContainerBounds:1 overshoot:v10 targetTransform:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   result.size.height = v9;
   result.size.width = v8;
   result.origin.y = v7;
@@ -2682,13 +2682,13 @@ void __96__BNContentViewController__morphFromPresentable_toPresentable_withOptio
   return result;
 }
 
-- (CGRect)_dismissedFrameWithPaddingForViewController:(id)a3 withContainerBounds:(CGRect)a4
+- (CGRect)_dismissedFrameWithPaddingForViewController:(id)controller withContainerBounds:(CGRect)bounds
 {
   v4 = *(MEMORY[0x1E695EFD0] + 16);
   v9[0] = *MEMORY[0x1E695EFD0];
   v9[1] = v4;
   v9[2] = *(MEMORY[0x1E695EFD0] + 32);
-  [(BNContentViewController *)self _dismissedFrameWithPaddingForViewController:a3 withContainerBounds:v9 targetTransform:a4.origin.x, a4.origin.y, a4.size.width, a4.size.height];
+  [(BNContentViewController *)self _dismissedFrameWithPaddingForViewController:controller withContainerBounds:v9 targetTransform:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   result.size.height = v8;
   result.size.width = v7;
   result.origin.y = v6;
@@ -2696,13 +2696,13 @@ void __96__BNContentViewController__morphFromPresentable_toPresentable_withOptio
   return result;
 }
 
-- (CGRect)_presentedFrameForViewController:(id)a3 withContainerBounds:(CGRect)a4 targetTransform:(CGAffineTransform *)a5
+- (CGRect)_presentedFrameForViewController:(id)controller withContainerBounds:(CGRect)bounds targetTransform:(CGAffineTransform *)transform
 {
-  v5 = *&a5->c;
-  v10[0] = *&a5->a;
+  v5 = *&transform->c;
+  v10[0] = *&transform->a;
   v10[1] = v5;
-  v10[2] = *&a5->tx;
-  [(BNContentViewController *)self _presentedFrame:1 forViewController:a3 withContainerBounds:0 overshoot:v10 targetTransform:a4.origin.x, a4.origin.y, a4.size.width, a4.size.height];
+  v10[2] = *&transform->tx;
+  [(BNContentViewController *)self _presentedFrame:1 forViewController:controller withContainerBounds:0 overshoot:v10 targetTransform:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   result.size.height = v9;
   result.size.width = v8;
   result.origin.y = v7;
@@ -2710,13 +2710,13 @@ void __96__BNContentViewController__morphFromPresentable_toPresentable_withOptio
   return result;
 }
 
-- (CGRect)_presentedFrameForViewController:(id)a3 withContainerBounds:(CGRect)a4
+- (CGRect)_presentedFrameForViewController:(id)controller withContainerBounds:(CGRect)bounds
 {
   v4 = *(MEMORY[0x1E695EFD0] + 16);
   v9[0] = *MEMORY[0x1E695EFD0];
   v9[1] = v4;
   v9[2] = *(MEMORY[0x1E695EFD0] + 32);
-  [(BNContentViewController *)self _presentedFrameForViewController:a3 withContainerBounds:v9 targetTransform:a4.origin.x, a4.origin.y, a4.size.width, a4.size.height];
+  [(BNContentViewController *)self _presentedFrameForViewController:controller withContainerBounds:v9 targetTransform:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   result.size.height = v8;
   result.size.width = v7;
   result.origin.y = v6;
@@ -2724,14 +2724,14 @@ void __96__BNContentViewController__morphFromPresentable_toPresentable_withOptio
   return result;
 }
 
-- (int64_t)_effectTierForPresentable:(id)a3
+- (int64_t)_effectTierForPresentable:(id)presentable
 {
-  v4 = [(BNTieredArray *)self->_presentables indexPathForObject:a3];
-  v5 = [v4 tier];
+  v4 = [(BNTieredArray *)self->_presentables indexPathForObject:presentable];
+  tier = [v4 tier];
 
-  if ((v5 - 1) <= 0x7FFFFFFFFFFFFFFDLL)
+  if ((tier - 1) <= 0x7FFFFFFFFFFFFFFDLL)
   {
-    v6 = v5 + 1;
+    v6 = tier + 1;
     do
     {
       v7 = MEMORY[0x1E695DFD8];
@@ -2741,7 +2741,7 @@ void __96__BNContentViewController__morphFromPresentable_toPresentable_withOptio
 
       if (v10)
       {
-        v5 = v6 - 2;
+        tier = v6 - 2;
       }
 
       --v6;
@@ -2750,17 +2750,17 @@ void __96__BNContentViewController__morphFromPresentable_toPresentable_withOptio
     while (v6 > 1);
   }
 
-  return v5;
+  return tier;
 }
 
-- (CGRect)_presentedFrameForPresentable:(id)a3 withContainerBounds:(CGRect)a4
+- (CGRect)_presentedFrameForPresentable:(id)presentable withContainerBounds:(CGRect)bounds
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3;
-  v10 = UIViewControllerFromPresentable(v9);
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  presentableCopy = presentable;
+  v10 = UIViewControllerFromPresentable(presentableCopy);
   v70 = width;
   v71 = height;
   [(BNContentViewController *)self _presentedFrameForViewController:v10 withContainerBounds:x, y, width, height];
@@ -2768,14 +2768,14 @@ void __96__BNContentViewController__morphFromPresentable_toPresentable_withOptio
   v14 = v13;
   v16 = v15;
   v18 = v17;
-  v19 = [(BNContentViewController *)self view];
-  [v19 bounds];
+  view = [(BNContentViewController *)self view];
+  [view bounds];
   v21 = v20;
   v23 = v22;
 
   if (v21 != v16 || v23 != v18)
   {
-    v25 = [(BNContentViewController *)self _effectTierForPresentable:v9];
+    v25 = [(BNContentViewController *)self _effectTierForPresentable:presentableCopy];
     v26 = v25 - 1;
     if (v25 >= 1)
     {
@@ -2797,8 +2797,8 @@ void __96__BNContentViewController__morphFromPresentable_toPresentable_withOptio
       v50 = v49;
       v52 = v51;
 
-      v53 = [(BNContentViewController *)self layoutManager];
-      [v53 presentedFrameForContentWithFrame:v28 afterContentWithFrame:{v30, v32, v34, v46, v48, v50, v52}];
+      layoutManager = [(BNContentViewController *)self layoutManager];
+      [layoutManager presentedFrameForContentWithFrame:v28 afterContentWithFrame:{v30, v32, v34, v46, v48, v50, v52}];
       v55 = v54;
       v57 = v56;
       v59 = v58;
@@ -2823,25 +2823,25 @@ void __96__BNContentViewController__morphFromPresentable_toPresentable_withOptio
   return result;
 }
 
-- (CGRect)_presentedFrameForViewController:(id)a3 withContentFrame:(CGRect)a4 afterContentWithFrame:(CGRect)a5
+- (CGRect)_presentedFrameForViewController:(id)controller withContentFrame:(CGRect)frame afterContentWithFrame:(CGRect)withFrame
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v9 = a4.size.height;
-  v10 = a4.size.width;
-  v11 = a4.origin.y;
-  v12 = a4.origin.x;
-  v14 = a3;
-  v15 = [(BNContentViewController *)self _layoutManager];
-  [v15 presentedFrameForContentWithFrame:v12 afterContentWithFrame:{v11, v10, v9, x, y, width, height}];
+  height = withFrame.size.height;
+  width = withFrame.size.width;
+  y = withFrame.origin.y;
+  x = withFrame.origin.x;
+  v9 = frame.size.height;
+  v10 = frame.size.width;
+  v11 = frame.origin.y;
+  v12 = frame.origin.x;
+  controllerCopy = controller;
+  _layoutManager = [(BNContentViewController *)self _layoutManager];
+  [_layoutManager presentedFrameForContentWithFrame:v12 afterContentWithFrame:{v11, v10, v9, x, y, width, height}];
   v17 = v16;
   v19 = v18;
   v21 = v20;
   v23 = v22;
 
-  [(BNContentViewController *)self _outsetFrame:v14 forViewController:v17, v19, v21, v23];
+  [(BNContentViewController *)self _outsetFrame:controllerCopy forViewController:v17, v19, v21, v23];
   v25 = v24;
   v27 = v26;
   v29 = v28;
@@ -2858,25 +2858,25 @@ void __96__BNContentViewController__morphFromPresentable_toPresentable_withOptio
   return result;
 }
 
-- (id)_newBannerTransitionContextForPresenting:(BOOL)a3 viewController:(id)a4 animated:(BOOL)a5
+- (id)_newBannerTransitionContextForPresenting:(BOOL)presenting viewController:(id)controller animated:(BOOL)animated
 {
-  v5 = a5;
-  v6 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v6)
+  animatedCopy = animated;
+  presentingCopy = presenting;
+  controllerCopy = controller;
+  v9 = controllerCopy;
+  if (presentingCopy)
   {
     v10 = 0;
   }
 
   else
   {
-    v10 = v8;
+    v10 = controllerCopy;
   }
 
-  if (v6)
+  if (presentingCopy)
   {
-    v11 = v8;
+    v11 = controllerCopy;
   }
 
   else
@@ -2884,18 +2884,18 @@ void __96__BNContentViewController__morphFromPresentable_toPresentable_withOptio
     v11 = 0;
   }
 
-  v12 = [(BNContentViewController *)self view];
-  v13 = [BNTransitionContext transitionContextForTransitionFromViewController:v10 toViewController:v11 inContainerView:v12];
+  view = [(BNContentViewController *)self view];
+  v13 = [BNTransitionContext transitionContextForTransitionFromViewController:v10 toViewController:v11 inContainerView:view];
 
-  [v13 setAnimated:v5];
-  v14 = [(BNContentViewController *)self view];
-  [v14 bounds];
+  [v13 setAnimated:animatedCopy];
+  view2 = [(BNContentViewController *)self view];
+  [view2 bounds];
   v16 = v15;
   v18 = v17;
   v20 = v19;
   v22 = v21;
 
-  if (v6)
+  if (presentingCopy)
   {
     [(BNContentViewController *)self _dismissedFrameForViewController:v9 withContainerBounds:v16, v18, v20, v22];
     [v13 setToStartFrame:?];
@@ -2914,31 +2914,31 @@ void __96__BNContentViewController__morphFromPresentable_toPresentable_withOptio
   return v13;
 }
 
-- (id)_newBannerTransitionContextForMorphFromViewController:(id)a3 toViewController:(id)a4 animated:(BOOL)a5
+- (id)_newBannerTransitionContextForMorphFromViewController:(id)controller toViewController:(id)viewController animated:(BOOL)animated
 {
-  v5 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [(BNContentViewController *)self view];
-  v11 = [BNTransitionContext transitionContextForTransitionFromViewController:v9 toViewController:v8 inContainerView:v10];
+  animatedCopy = animated;
+  viewControllerCopy = viewController;
+  controllerCopy = controller;
+  view = [(BNContentViewController *)self view];
+  v11 = [BNTransitionContext transitionContextForTransitionFromViewController:controllerCopy toViewController:viewControllerCopy inContainerView:view];
 
-  [v11 setAnimated:v5];
-  v12 = [(BNContentViewController *)self view];
-  [v12 bounds];
+  [v11 setAnimated:animatedCopy];
+  view2 = [(BNContentViewController *)self view];
+  [view2 bounds];
   v14 = v13;
   v16 = v15;
   v18 = v17;
   v20 = v19;
 
-  v21 = [v9 view];
+  view3 = [controllerCopy view];
 
-  [v21 frame];
+  [view3 frame];
   v23 = v22;
   v25 = v24;
   v27 = v26;
   v29 = v28;
 
-  [(BNContentViewController *)self _presentedFrameForViewController:v8 withContainerBounds:v14, v16, v18, v20];
+  [(BNContentViewController *)self _presentedFrameForViewController:viewControllerCopy withContainerBounds:v14, v16, v18, v20];
   v31 = v30;
   v33 = v32;
   v35 = v34;
@@ -2952,48 +2952,48 @@ void __96__BNContentViewController__morphFromPresentable_toPresentable_withOptio
   return v11;
 }
 
-- (BOOL)_resetActiveBannerTransitionAnimator:(id)a3
+- (BOOL)_resetActiveBannerTransitionAnimator:(id)animator
 {
   activeBannerTransitionAnimator = self->_activeBannerTransitionAnimator;
-  if (activeBannerTransitionAnimator == a3)
+  if (activeBannerTransitionAnimator == animator)
   {
     self->_activeBannerTransitionAnimator = 0;
   }
 
-  return activeBannerTransitionAnimator == a3;
+  return activeBannerTransitionAnimator == animator;
 }
 
-- (BOOL)_resetActiveBannerTransitionContextIfComplete:(id)a3
+- (BOOL)_resetActiveBannerTransitionContextIfComplete:(id)complete
 {
   activeBannerTransitionContext = self->_activeBannerTransitionContext;
-  if (activeBannerTransitionContext == a3)
+  if (activeBannerTransitionContext == complete)
   {
-    v5 = [(BNTransitionContext *)activeBannerTransitionContext isComplete];
-    if (v5)
+    isComplete = [(BNTransitionContext *)activeBannerTransitionContext isComplete];
+    if (isComplete)
     {
       v6 = self->_activeBannerTransitionContext;
       self->_activeBannerTransitionContext = 0;
 
-      LOBYTE(v5) = 1;
+      LOBYTE(isComplete) = 1;
     }
   }
 
   else
   {
-    LOBYTE(v5) = 0;
+    LOBYTE(isComplete) = 0;
   }
 
-  return v5;
+  return isComplete;
 }
 
-- (void)_insertPresentable:(id)a3 referencePresentable:(id)a4 withTransitioningDelegate:(id)a5 incrementingTier:(BOOL)a6 addToTop:(BOOL)a7
+- (void)_insertPresentable:(id)presentable referencePresentable:(id)referencePresentable withTransitioningDelegate:(id)delegate incrementingTier:(BOOL)tier addToTop:(BOOL)top
 {
-  v7 = a7;
-  v8 = a6;
-  v21 = a3;
-  v12 = a4;
-  v13 = a5;
-  if (v21)
+  topCopy = top;
+  tierCopy = tier;
+  presentableCopy = presentable;
+  referencePresentableCopy = referencePresentable;
+  delegateCopy = delegate;
+  if (presentableCopy)
   {
     if (!self->_presentables)
     {
@@ -3002,7 +3002,7 @@ void __96__BNContentViewController__morphFromPresentable_toPresentable_withOptio
       self->_presentables = v14;
     }
 
-    if (v13)
+    if (delegateCopy)
     {
       transitioningDelegates = self->_transitioningDelegates;
       if (!transitioningDelegates)
@@ -3014,7 +3014,7 @@ void __96__BNContentViewController__morphFromPresentable_toPresentable_withOptio
         transitioningDelegates = self->_transitioningDelegates;
       }
 
-      [(NSMutableSet *)transitioningDelegates addObject:v13];
+      [(NSMutableSet *)transitioningDelegates addObject:delegateCopy];
     }
 
     if (![(BNTieredArray *)self->_presentables count])
@@ -3024,32 +3024,32 @@ void __96__BNContentViewController__morphFromPresentable_toPresentable_withOptio
     }
 
     v20 = self->_presentables;
-    if (v12)
+    if (referencePresentableCopy)
     {
-      [(BNTieredArray *)v20 addObject:v21 toTierOfObject:v12 addObjectToTop:v7];
+      [(BNTieredArray *)v20 addObject:presentableCopy toTierOfObject:referencePresentableCopy addObjectToTop:topCopy];
     }
 
     else
     {
-      [(BNTieredArray *)v20 addObject:v21 incrementingTier:v8 addTierToTop:v7];
+      [(BNTieredArray *)v20 addObject:presentableCopy incrementingTier:tierCopy addTierToTop:topCopy];
     }
   }
 }
 
-- (void)_removePresentable:(id)a3
+- (void)_removePresentable:(id)presentable
 {
-  if (a3)
+  if (presentable)
   {
     presentables = self->_presentables;
-    v5 = a3;
-    [(BNTieredArray *)presentables removeObject:v5];
-    v6 = UIViewControllerFromPresentable(v5);
+    presentableCopy = presentable;
+    [(BNTieredArray *)presentables removeObject:presentableCopy];
+    v6 = UIViewControllerFromPresentable(presentableCopy);
 
-    v8 = [v6 transitioningDelegate];
+    transitioningDelegate = [v6 transitioningDelegate];
 
-    if (v8)
+    if (transitioningDelegate)
     {
-      [(NSMutableSet *)self->_transitioningDelegates removeObject:v8];
+      [(NSMutableSet *)self->_transitioningDelegates removeObject:transitioningDelegate];
     }
 
     if (![(BNTieredArray *)self->_presentables count])
@@ -3060,18 +3060,18 @@ void __96__BNContentViewController__morphFromPresentable_toPresentable_withOptio
   }
 }
 
-- (void)_dismissPresentable:(id)a3 withReason:(id)a4 animated:(BOOL)a5 userInfo:(id)a6
+- (void)_dismissPresentable:(id)presentable withReason:(id)reason animated:(BOOL)animated userInfo:(id)info
 {
-  v7 = a5;
+  animatedCopy = animated;
   v69 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  if (v10 && ([(NSMutableSet *)self->_dismissingPresentables containsObject:v10]& 1) == 0)
+  presentableCopy = presentable;
+  reasonCopy = reason;
+  infoCopy = info;
+  if (presentableCopy && ([(NSMutableSet *)self->_dismissingPresentables containsObject:presentableCopy]& 1) == 0)
   {
-    v47 = UIViewControllerFromPresentable(v10);
-    v13 = [(BNContentViewController *)self childViewControllers];
-    v14 = [v13 containsObject:v47];
+    v47 = UIViewControllerFromPresentable(presentableCopy);
+    childViewControllers = [(BNContentViewController *)self childViewControllers];
+    v14 = [childViewControllers containsObject:v47];
 
     if (v14)
     {
@@ -3079,17 +3079,17 @@ void __96__BNContentViewController__morphFromPresentable_toPresentable_withOptio
       if (os_log_type_enabled(BNLogPresenting, OS_LOG_TYPE_DEFAULT))
       {
         v16 = v15;
-        v17 = BNEffectivePresentableDescription(v10);
+        v17 = BNEffectivePresentableDescription(presentableCopy);
         v18 = @"without";
         *buf = 138543874;
         v64 = v17;
         v65 = 2114;
-        if (v7)
+        if (animatedCopy)
         {
           v18 = @"with";
         }
 
-        v66 = v11;
+        v66 = reasonCopy;
         v67 = 2114;
         v68 = v18;
         _os_log_impl(&dword_1C42DC000, v16, OS_LOG_TYPE_DEFAULT, "Dismissing presentable %{public}@ with reason '%{public}@' %{public}@ animation ", buf, 0x20u);
@@ -3105,15 +3105,15 @@ void __96__BNContentViewController__morphFromPresentable_toPresentable_withOptio
         dismissingPresentables = self->_dismissingPresentables;
       }
 
-      [(NSMutableSet *)dismissingPresentables addObject:v10];
-      [(NSMutableSet *)self->_presentingPresentables removeObject:v10];
-      v22 = [(BNContentViewController *)self _presentablesWithIdentification:v10 requiringUniqueMatch:1];
+      [(NSMutableSet *)dismissingPresentables addObject:presentableCopy];
+      [(NSMutableSet *)self->_presentingPresentables removeObject:presentableCopy];
+      v22 = [(BNContentViewController *)self _presentablesWithIdentification:presentableCopy requiringUniqueMatch:1];
       v23 = [v22 count] == 0;
 
-      v24 = [(BNContentViewController *)self _newBannerTransitionContextForPresenting:0 viewController:v47 animated:v7];
+      v24 = [(BNContentViewController *)self _newBannerTransitionContextForPresenting:0 viewController:v47 animated:animatedCopy];
       objc_storeStrong(&self->_activeBannerTransitionContext, v24);
-      [v24 setRevocationReason:v11];
-      if (!v23 && (UIViewControllerFromPresentable(v10), v25 = objc_claimAutoreleasedReturnValue(), -[BNTransitionContext viewControllerForKey:](self->_activeBannerTransitionContext, "viewControllerForKey:", *MEMORY[0x1E69DE778]), v26 = objc_claimAutoreleasedReturnValue(), v27 = BSEqualObjects(), v26, v25, v27) && ([objc_opt_class() _retargetableBannerTransitionAnimatorForAnimator:self->_activeBannerTransitionAnimator], v28 = objc_claimAutoreleasedReturnValue(), v29 = v28, v28))
+      [v24 setRevocationReason:reasonCopy];
+      if (!v23 && (UIViewControllerFromPresentable(presentableCopy), v25 = objc_claimAutoreleasedReturnValue(), -[BNTransitionContext viewControllerForKey:](self->_activeBannerTransitionContext, "viewControllerForKey:", *MEMORY[0x1E69DE778]), v26 = objc_claimAutoreleasedReturnValue(), v27 = BSEqualObjects(), v26, v25, v27) && ([objc_opt_class() _retargetableBannerTransitionAnimatorForAnimator:self->_activeBannerTransitionAnimator], v28 = objc_claimAutoreleasedReturnValue(), v29 = v28, v28))
       {
         v43 = 0;
         v44 = v29;
@@ -3122,14 +3122,14 @@ void __96__BNContentViewController__morphFromPresentable_toPresentable_withOptio
 
       else
       {
-        v30 = [v47 transitioningDelegate];
+        transitioningDelegate = [v47 transitioningDelegate];
         if (objc_opt_respondsToSelector())
         {
-          if ([v11 isEqualToString:@"BNBannerRevocationReasonReplaceExisting"])
+          if ([reasonCopy isEqualToString:@"BNBannerRevocationReasonReplaceExisting"])
           {
-            if (v12)
+            if (infoCopy)
             {
-              v31 = [v12 mutableCopy];
+              v31 = [infoCopy mutableCopy];
             }
 
             else
@@ -3143,40 +3143,40 @@ void __96__BNContentViewController__morphFromPresentable_toPresentable_withOptio
 
           else
           {
-            v32 = v12;
+            v32 = infoCopy;
           }
 
-          obj = [v30 animationControllerForDismissedController:v47 userInfo:v32];
+          obj = [transitioningDelegate animationControllerForDismissedController:v47 userInfo:v32];
           objc_storeStrong(&self->_activeBannerTransitionAnimator, obj);
         }
 
         else
         {
-          obj = [v30 animationControllerForDismissedController:v47];
-          v32 = v12;
+          obj = [transitioningDelegate animationControllerForDismissedController:v47];
+          v32 = infoCopy;
           objc_storeStrong(&self->_activeBannerTransitionAnimator, obj);
         }
 
         v44 = 0;
         v43 = 1;
-        v12 = v32;
+        infoCopy = v32;
       }
 
-      v46 = [v24 transitionCoordinator];
+      transitionCoordinator = [v24 transitionCoordinator];
       objc_initWeak(&location, self);
       v55[0] = MEMORY[0x1E69E9820];
       v55[1] = 3221225472;
       v55[2] = __76__BNContentViewController__dismissPresentable_withReason_animated_userInfo___block_invoke;
       v55[3] = &unk_1E81E4D88;
-      v33 = v10;
+      v33 = presentableCopy;
       v56 = v33;
-      v34 = v11;
+      v34 = reasonCopy;
       v57 = v34;
       v35 = v47;
       v58 = v35;
-      v61 = v7;
+      v61 = animatedCopy;
       objc_copyWeak(&v60, &location);
-      v59 = self;
+      selfCopy = self;
       v48[0] = MEMORY[0x1E69E9820];
       v48[1] = 3221225472;
       v48[2] = __76__BNContentViewController__dismissPresentable_withReason_animated_userInfo___block_invoke_106;
@@ -3190,12 +3190,12 @@ void __96__BNContentViewController__morphFromPresentable_toPresentable_withOptio
       v51 = v38;
       v52 = v35;
       v53 = v34;
-      [v46 animateAlongsideTransition:v55 completion:v48];
+      [transitionCoordinator animateAlongsideTransition:v55 completion:v48];
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
       if (objc_opt_respondsToSelector())
       {
-        v40 = [v36 transitionCoordinator];
-        [WeakRetained presenter:self willDismissPresentable:v38 withTransitionCoordinator:v40 userInfo:v12];
+        transitionCoordinator2 = [v36 transitionCoordinator];
+        [WeakRetained presenter:self willDismissPresentable:v38 withTransitionCoordinator:transitionCoordinator2 userInfo:infoCopy];
       }
 
       if (v43)
@@ -3429,10 +3429,10 @@ void __76__BNContentViewController__dismissPresentable_withReason_animated_userI
   }
 }
 
-- (id)_presentablesWithIdentification:(id)a3 requiringUniqueMatch:(BOOL)a4
+- (id)_presentablesWithIdentification:(id)identification requiringUniqueMatch:(BOOL)match
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  identificationCopy = identification;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -3454,7 +3454,7 @@ void __76__BNContentViewController__dismissPresentable_withReason_animated_userI
         }
 
         v13 = *(*(&v15 + 1) + 8 * i);
-        if (BNIsPresentableIdentifiedByIdentification(v13, v6, a4))
+        if (BNIsPresentableIdentifiedByIdentification(v13, identificationCopy, match))
         {
           if (!v10)
           {
@@ -3479,13 +3479,13 @@ void __76__BNContentViewController__dismissPresentable_withReason_animated_userI
   return v10;
 }
 
-- (id)_dismissPresentablesWithIdentification:(id)a3 reason:(id)a4 animated:(BOOL)a5 userInfo:(id)a6
+- (id)_dismissPresentablesWithIdentification:(id)identification reason:(id)reason animated:(BOOL)animated userInfo:(id)info
 {
-  v7 = a5;
+  animatedCopy = animated;
   v23 = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  v11 = a6;
-  v12 = [(BNContentViewController *)self _presentablesWithIdentification:a3 requiringUniqueMatch:0];
+  reasonCopy = reason;
+  infoCopy = info;
+  v12 = [(BNContentViewController *)self _presentablesWithIdentification:identification requiringUniqueMatch:0];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
@@ -3504,7 +3504,7 @@ void __76__BNContentViewController__dismissPresentable_withReason_animated_userI
           objc_enumerationMutation(v12);
         }
 
-        [(BNContentViewController *)self _dismissPresentable:*(*(&v18 + 1) + 8 * i) withReason:v10 animated:v7 userInfo:v11];
+        [(BNContentViewController *)self _dismissPresentable:*(*(&v18 + 1) + 8 * i) withReason:reasonCopy animated:animatedCopy userInfo:infoCopy];
       }
 
       v14 = [v12 countByEnumeratingWithState:&v18 objects:v22 count:16];
@@ -3516,101 +3516,101 @@ void __76__BNContentViewController__dismissPresentable_withReason_animated_userI
   return v12;
 }
 
-- (BOOL)_isDraggingDismissalEnabledForPresentable:(id)a3
+- (BOOL)_isDraggingDismissalEnabledForPresentable:(id)presentable
 {
-  v3 = a3;
+  presentableCopy = presentable;
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 isDraggingDismissalEnabled];
+    isDraggingDismissalEnabled = [presentableCopy isDraggingDismissalEnabled];
   }
 
   else
   {
-    v4 = 1;
+    isDraggingDismissalEnabled = 1;
   }
 
-  return v4;
+  return isDraggingDismissalEnabled;
 }
 
-- (BOOL)_isDraggingInteractionEnabledForPresentable:(id)a3
+- (BOOL)_isDraggingInteractionEnabledForPresentable:(id)presentable
 {
-  v3 = a3;
+  presentableCopy = presentable;
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 isDraggingInteractionEnabled];
+    isDraggingInteractionEnabled = [presentableCopy isDraggingInteractionEnabled];
   }
 
   else
   {
-    v4 = 0;
+    isDraggingInteractionEnabled = 0;
   }
 
-  return v4;
+  return isDraggingInteractionEnabled;
 }
 
-- (BOOL)_isDraggingEnabledForPresentable:(id)a3
+- (BOOL)_isDraggingEnabledForPresentable:(id)presentable
 {
-  v4 = a3;
-  v5 = [(BNContentViewController *)self _isDraggingDismissalEnabledForPresentable:v4]|| [(BNContentViewController *)self _isDraggingInteractionEnabledForPresentable:v4];
+  presentableCopy = presentable;
+  v5 = [(BNContentViewController *)self _isDraggingDismissalEnabledForPresentable:presentableCopy]|| [(BNContentViewController *)self _isDraggingInteractionEnabledForPresentable:presentableCopy];
 
   return v5;
 }
 
-- (BOOL)_isLocalDraggingEnabledForPresentable:(id)a3
+- (BOOL)_isLocalDraggingEnabledForPresentable:(id)presentable
 {
-  if (self->_presentableForActiveGesture != a3)
+  if (self->_presentableForActiveGesture != presentable)
   {
     return 1;
   }
 
   p_presentedFrameForPresentableForActiveGesture = &self->_presentedFrameForPresentableForActiveGesture;
-  v5 = [(BNContentViewController *)self view];
-  [v5 bounds];
+  view = [(BNContentViewController *)self view];
+  [view bounds];
   v3 = p_presentedFrameForPresentableForActiveGesture->size.height != v7 || p_presentedFrameForPresentableForActiveGesture->size.width != v6;
 
   return v3;
 }
 
-- (BOOL)_isTouchOutsideDismissalEnabledForPresentable:(id)a3
+- (BOOL)_isTouchOutsideDismissalEnabledForPresentable:(id)presentable
 {
-  v3 = a3;
+  presentableCopy = presentable;
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 isTouchOutsideDismissalEnabled];
+    isTouchOutsideDismissalEnabled = [presentableCopy isTouchOutsideDismissalEnabled];
   }
 
   else
   {
-    v4 = 0;
+    isTouchOutsideDismissalEnabled = 0;
   }
 
-  return v4;
+  return isTouchOutsideDismissalEnabled;
 }
 
-- (CGPoint)_locationOfTouch:(id)a3 inContainerViewForGesture:(id)a4
+- (CGPoint)_locationOfTouch:(id)touch inContainerViewForGesture:(id)gesture
 {
-  v6 = a3;
-  v7 = a4;
+  touchCopy = touch;
+  gestureCopy = gesture;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v9 = [(BNContentViewController *)self view];
+  view = [(BNContentViewController *)self view];
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained presenter:self gestureRecognizer:v7 locationForTouch:v6 inView:v9];
+    [WeakRetained presenter:self gestureRecognizer:gestureCopy locationForTouch:touchCopy inView:view];
   }
 
   else
   {
-    if (v6)
+    if (touchCopy)
     {
-      v12 = v6;
+      v12 = touchCopy;
     }
 
     else
     {
-      v12 = v7;
+      v12 = gestureCopy;
     }
 
-    [v12 locationInView:v9];
+    [v12 locationInView:view];
   }
 
   v13 = v10;
@@ -3623,20 +3623,20 @@ void __76__BNContentViewController__dismissPresentable_withReason_animated_userI
   return result;
 }
 
-- (CGPoint)_locationOfScrollEvent:(id)a3 inContainerViewForGesture:(id)a4
+- (CGPoint)_locationOfScrollEvent:(id)event inContainerViewForGesture:(id)gesture
 {
-  v6 = a4;
-  v7 = a3;
+  gestureCopy = gesture;
+  eventCopy = event;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v9 = [(BNContentViewController *)self view];
+  view = [(BNContentViewController *)self view];
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained presenter:self gestureRecognizer:v6 locationForEvent:v7 inView:v9];
+    [WeakRetained presenter:self gestureRecognizer:gestureCopy locationForEvent:eventCopy inView:view];
   }
 
   else
   {
-    [v7 locationInView:v9];
+    [eventCopy locationInView:view];
   }
 
   v12 = v10;
@@ -3649,16 +3649,16 @@ void __76__BNContentViewController__dismissPresentable_withReason_animated_userI
   return result;
 }
 
-- (id)_presentableForGestureInView:(id)a3
+- (id)_presentableForGestureInView:(id)view
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  viewCopy = view;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(BNContentViewController *)self topPresentables];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  topPresentables = [(BNContentViewController *)self topPresentables];
+  v6 = [topPresentables countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = *v15;
@@ -3668,13 +3668,13 @@ void __76__BNContentViewController__dismissPresentable_withReason_animated_userI
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(topPresentables);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
         v10 = UIViewControllerFromPresentable(v9);
-        v11 = [v10 view];
-        v12 = [v4 isDescendantOfView:v11];
+        view = [v10 view];
+        v12 = [viewCopy isDescendantOfView:view];
 
         if (v12)
         {
@@ -3683,7 +3683,7 @@ void __76__BNContentViewController__dismissPresentable_withReason_animated_userI
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [topPresentables countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v6)
       {
         continue;
@@ -3698,43 +3698,43 @@ LABEL_11:
   return v6;
 }
 
-- (id)_presentableForTouch:(id)a3
+- (id)_presentableForTouch:(id)touch
 {
-  [(BNContentViewController *)self _locationOfTouch:a3 inContainerViewForGesture:self->_panGesture];
+  [(BNContentViewController *)self _locationOfTouch:touch inContainerViewForGesture:self->_panGesture];
   v5 = v4;
   v7 = v6;
-  v8 = [(BNContentViewController *)self view];
-  v9 = [v8 hitTest:0 withEvent:{v5, v7}];
+  view = [(BNContentViewController *)self view];
+  v9 = [view hitTest:0 withEvent:{v5, v7}];
 
   v10 = [(BNContentViewController *)self _presentableForGestureInView:v9];
 
   return v10;
 }
 
-- (id)_presentableForScrollEvent:(id)a3
+- (id)_presentableForScrollEvent:(id)event
 {
   panGesture = self->_panGesture;
-  v5 = a3;
-  [(BNContentViewController *)self _locationOfScrollEvent:v5 inContainerViewForGesture:panGesture];
+  eventCopy = event;
+  [(BNContentViewController *)self _locationOfScrollEvent:eventCopy inContainerViewForGesture:panGesture];
   v7 = v6;
   v9 = v8;
-  v10 = [(BNContentViewController *)self view];
-  v11 = [v10 hitTest:v5 withEvent:{v7, v9}];
+  view = [(BNContentViewController *)self view];
+  v11 = [view hitTest:eventCopy withEvent:{v7, v9}];
 
   v12 = [(BNContentViewController *)self _presentableForGestureInView:v11];
 
   return v12;
 }
 
-- (void)_resetPresentableForActiveGesture:(id)a3
+- (void)_resetPresentableForActiveGesture:(id)gesture
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
+  gestureCopy = gesture;
+  v5 = gestureCopy;
   presentableForActiveGesture = self->_presentableForActiveGesture;
   if (presentableForActiveGesture)
   {
-    v7 = presentableForActiveGesture == v4;
+    v7 = presentableForActiveGesture == gestureCopy;
   }
 
   else
@@ -3767,20 +3767,20 @@ LABEL_11:
   }
 }
 
-- (CGPoint)_translationInContainerViewForGesture:(id)a3
+- (CGPoint)_translationInContainerViewForGesture:(id)gesture
 {
-  v4 = a3;
+  gestureCopy = gesture;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v6 = objc_opt_respondsToSelector();
-  v7 = [(BNContentViewController *)self view];
+  view = [(BNContentViewController *)self view];
   if (v6)
   {
-    [WeakRetained presenter:self gestureRecognizer:v4 translationInView:v7];
+    [WeakRetained presenter:self gestureRecognizer:gestureCopy translationInView:view];
   }
 
   else
   {
-    [v4 translationInView:v7];
+    [gestureCopy translationInView:view];
   }
 
   v10 = v8;
@@ -3793,20 +3793,20 @@ LABEL_11:
   return result;
 }
 
-- (CGPoint)_velocityInContainerViewForGesture:(id)a3
+- (CGPoint)_velocityInContainerViewForGesture:(id)gesture
 {
-  v4 = a3;
+  gestureCopy = gesture;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v6 = objc_opt_respondsToSelector();
-  v7 = [(BNContentViewController *)self view];
+  view = [(BNContentViewController *)self view];
   if (v6)
   {
-    [WeakRetained presenter:self gestureRecognizer:v4 velocityInView:v7];
+    [WeakRetained presenter:self gestureRecognizer:gestureCopy velocityInView:view];
   }
 
   else
   {
-    [v4 velocityInView:v7];
+    [gestureCopy velocityInView:view];
   }
 
   v10 = v8;
@@ -3819,21 +3819,21 @@ LABEL_11:
   return result;
 }
 
-- (void)_handlePan:(id)a3
+- (void)_handlePan:(id)pan
 {
-  v5 = a3;
-  v6 = [v5 state];
-  if (v6 > 2)
+  panCopy = pan;
+  state = [panCopy state];
+  if (state > 2)
   {
-    if (v6 == 3)
+    if (state == 3)
     {
       if ([(BNContentViewController *)self _isLocalDraggingEnabledForPresentable:self->_presentableForActiveGesture])
       {
-        [(BNContentViewController *)self _translationInContainerViewForGesture:v5];
+        [(BNContentViewController *)self _translationInContainerViewForGesture:panCopy];
         v29 = v28;
         if ([(BNContentViewController *)self _isDraggingDismissalEnabledForPresentable:self->_presentableForActiveGesture])
         {
-          if (CGRectGetHeight(self->_presentedFrameForPresentableForActiveGesture) * 0.5 < -v29 || (-[BNContentViewController view](self, "view"), v30 = objc_claimAutoreleasedReturnValue(), [v5 velocityInView:v30], v32 = v31, v30, v32 < -100.0))
+          if (CGRectGetHeight(self->_presentedFrameForPresentableForActiveGesture) * 0.5 < -v29 || (-[BNContentViewController view](self, "view"), v30 = objc_claimAutoreleasedReturnValue(), [panCopy velocityInView:v30], v32 = v31, v30, v32 < -100.0))
           {
             if (objc_opt_respondsToSelector())
             {
@@ -3883,7 +3883,7 @@ LABEL_11:
       }
     }
 
-    else if (v6 != 4)
+    else if (state != 4)
     {
       goto LABEL_34;
     }
@@ -3896,7 +3896,7 @@ LABEL_11:
     if ([(BNContentViewController *)self _isLocalDraggingEnabledForPresentable:self->_presentableForActiveGesture])
     {
       v37 = UIViewControllerFromPresentable(self->_presentableForActiveGesture);
-      v38 = [v37 view];
+      view = [v37 view];
 
       size = self->_presentedFrameForPresentableForActiveGesture.size;
       origin = self->_presentedFrameForPresentableForActiveGesture.origin;
@@ -3906,7 +3906,7 @@ LABEL_11:
       v43[1] = 3221225472;
       v43[2] = __38__BNContentViewController__handlePan___block_invoke_140;
       v43[3] = &unk_1E81E4DD8;
-      WeakRetained = v38;
+      WeakRetained = view;
       v44 = WeakRetained;
       v46 = origin;
       v47 = v50;
@@ -3921,7 +3921,7 @@ LABEL_33:
     }
   }
 
-  else if (v6 == 1)
+  else if (state == 1)
   {
     presentableForActiveGesture = self->_presentableForActiveGesture;
     if (!presentableForActiveGesture)
@@ -3930,8 +3930,8 @@ LABEL_33:
       presentableForActiveGesture = *&origin.width;
     }
 
-    v18 = [(BNContentViewController *)self view];
-    [v18 bounds];
+    view2 = [(BNContentViewController *)self view];
+    [view2 bounds];
     [(BNContentViewController *)self _presentedFrameForPresentable:presentableForActiveGesture withContainerBounds:?];
     self->_presentedFrameForPresentableForActiveGesture.origin.x = v19;
     self->_presentedFrameForPresentableForActiveGesture.origin.y = v20;
@@ -3947,8 +3947,8 @@ LABEL_33:
     {
       v23 = [BNPanGestureLocalProxy alloc];
       panGesture = self->_panGesture;
-      v25 = [(BNContentViewController *)self view];
-      v26 = [(BNPanGestureLocalProxy *)v23 initWithPanGestureRecognizer:panGesture containerView:v25];
+      view3 = [(BNContentViewController *)self view];
+      v26 = [(BNPanGestureLocalProxy *)v23 initWithPanGestureRecognizer:panGesture containerView:view3];
       panGestureProxyForActivePresentable = self->_panGestureProxyForActivePresentable;
       self->_panGestureProxyForActivePresentable = v26;
 
@@ -3958,20 +3958,20 @@ LABEL_33:
     }
   }
 
-  else if (v6 == 2 && [(BNContentViewController *)self _isLocalDraggingEnabledForPresentable:self->_presentableForActiveGesture])
+  else if (state == 2 && [(BNContentViewController *)self _isLocalDraggingEnabledForPresentable:self->_presentableForActiveGesture])
   {
     x = self->_presentedFrameForPresentableForActiveGesture.origin.x;
     y = self->_presentedFrameForPresentableForActiveGesture.origin.y;
     origin = self->_presentedFrameForPresentableForActiveGesture.size;
     WeakRetained = [(BNContentViewController *)self view];
-    [(BNContentViewController *)self _translationInContainerViewForGesture:v5];
+    [(BNContentViewController *)self _translationInContainerViewForGesture:panCopy];
     v11 = v10;
     if (v10 < 0.0 && [(BNContentViewController *)self _isDraggingDismissalEnabledForPresentable:self->_presentableForActiveGesture]|| v11 >= 0.0 && [(BNContentViewController *)self _isDraggingInteractionEnabledForPresentable:self->_presentableForActiveGesture])
     {
       _RubberBandedTranslationInContainerView(WeakRetained);
       v13 = y + v12;
       v14 = UIViewControllerFromPresentable(self->_presentableForActiveGesture);
-      v15 = [v14 view];
+      view4 = [v14 view];
 
       v53[0] = MEMORY[0x1E69E9820];
       v53[1] = 3221225472;
@@ -3980,9 +3980,9 @@ LABEL_33:
       v56 = x;
       v57 = v13;
       v58 = origin;
-      v54 = v15;
-      v55 = self;
-      v16 = v15;
+      v54 = view4;
+      selfCopy = self;
+      v16 = view4;
       [BNBannerTransitionAnimator animateInteractive:1 animations:v53 completion:0];
     }
 

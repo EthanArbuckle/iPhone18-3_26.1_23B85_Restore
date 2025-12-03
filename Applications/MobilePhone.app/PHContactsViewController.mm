@@ -1,56 +1,56 @@
 @interface PHContactsViewController
 + ($1FF454C5B48E436092D281DABF654916)badge;
-- (BOOL)contactNavigationController:(id)a3 shouldShowCardForContact:(id)a4;
+- (BOOL)contactNavigationController:(id)controller shouldShowCardForContact:(id)contact;
 - (BOOL)shouldSaveAndRestoreState;
 - (BOOL)shouldSnapshot;
-- (BOOL)tabBarControllerShouldSelectViewController:(id)a3;
+- (BOOL)tabBarControllerShouldSelectViewController:(id)controller;
 - (CNContact)savedPerson;
 - (PHContactsControllerDelegate)contactsControllerDelegate;
-- (PHContactsViewController)initWithContactStore:(id)a3;
-- (PHContactsViewController)initWithContactStore:(id)a3 allowsLargeTitles:(BOOL)a4 allowsSearch:(BOOL)a5;
-- (PHContactsViewController)initWithDataSource:(id)a3 allowsLargeTitles:(BOOL)a4 allowsSearch:(BOOL)a5;
+- (PHContactsViewController)initWithContactStore:(id)store;
+- (PHContactsViewController)initWithContactStore:(id)store allowsLargeTitles:(BOOL)titles allowsSearch:(BOOL)search;
+- (PHContactsViewController)initWithDataSource:(id)source allowsLargeTitles:(BOOL)titles allowsSearch:(BOOL)search;
 - (id)tabBarIconName;
 - (void)_restoreState;
-- (void)contactNavigationControllerDidCancel:(id)a3;
-- (void)handleURL:(id)a3;
+- (void)contactNavigationControllerDidCancel:(id)cancel;
+- (void)handleURL:(id)l;
 - (void)savedPerson;
-- (void)setSavedPerson:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)setSavedPerson:(id)person;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation PHContactsViewController
 
-- (PHContactsViewController)initWithContactStore:(id)a3
+- (PHContactsViewController)initWithContactStore:(id)store
 {
-  v5 = a3;
-  v6 = [[CNContactStoreDataSource alloc] initWithStore:v5];
+  storeCopy = store;
+  v6 = [[CNContactStoreDataSource alloc] initWithStore:storeCopy];
   v7 = [(PHContactsViewController *)self initWithDataSource:v6];
 
   if (v7)
   {
-    objc_storeStrong(&v7->_contactStore, a3);
+    objc_storeStrong(&v7->_contactStore, store);
   }
 
   return v7;
 }
 
-- (PHContactsViewController)initWithContactStore:(id)a3 allowsLargeTitles:(BOOL)a4 allowsSearch:(BOOL)a5
+- (PHContactsViewController)initWithContactStore:(id)store allowsLargeTitles:(BOOL)titles allowsSearch:(BOOL)search
 {
-  v5 = a5;
-  v7 = a3;
-  v8 = [[CNContactStoreDataSource alloc] initWithStore:v7];
+  searchCopy = search;
+  storeCopy = store;
+  v8 = [[CNContactStoreDataSource alloc] initWithStore:storeCopy];
 
-  v9 = [(PHContactsViewController *)self initWithDataSource:v8 allowsLargeTitles:1 allowsSearch:v5];
+  v9 = [(PHContactsViewController *)self initWithDataSource:v8 allowsLargeTitles:1 allowsSearch:searchCopy];
   return v9;
 }
 
-- (PHContactsViewController)initWithDataSource:(id)a3 allowsLargeTitles:(BOOL)a4 allowsSearch:(BOOL)a5
+- (PHContactsViewController)initWithDataSource:(id)source allowsLargeTitles:(BOOL)titles allowsSearch:(BOOL)search
 {
-  v5 = a5;
-  v6 = a4;
-  v8 = a3;
+  searchCopy = search;
+  titlesCopy = titles;
+  sourceCopy = source;
   v16.receiver = self;
   v16.super_class = PHContactsViewController;
   if ([(PHContactsViewController *)&v16 respondsToSelector:"initWithDataSource:withOptions:"])
@@ -58,13 +58,13 @@
     v15.receiver = self;
     v15.super_class = [(PHContactsViewController *)self superclass];
     v17[0] = @"allowsLargeTitles";
-    v9 = [NSNumber numberWithBool:v6];
+    v9 = [NSNumber numberWithBool:titlesCopy];
     v17[1] = @"allowsSearch";
     v18[0] = v9;
-    v10 = [NSNumber numberWithBool:v5];
+    v10 = [NSNumber numberWithBool:searchCopy];
     v18[1] = v10;
     v11 = [NSDictionary dictionaryWithObjects:v18 forKeys:v17 count:2];
-    v12 = [(PHContactsViewController *)&v15 initWithDataSource:v8 withOptions:v11];
+    v12 = [(PHContactsViewController *)&v15 initWithDataSource:sourceCopy withOptions:v11];
 
     if (!v12)
     {
@@ -76,7 +76,7 @@
 
   v14.receiver = self;
   v14.super_class = PHContactsViewController;
-  v12 = [(PHContactsViewController *)&v14 initWithDataSource:v8 allowsLargeTitles:v6];
+  v12 = [(PHContactsViewController *)&v14 initWithDataSource:sourceCopy allowsLargeTitles:titlesCopy];
   if (v12)
   {
 LABEL_5:
@@ -98,24 +98,24 @@ LABEL_6:
   v6.super_class = PHContactsViewController;
   [(PHContactsViewController *)&v6 viewDidLoad];
   [(PHContactsViewController *)self setDefinesPresentationContext:0];
-  v3 = [(PHContactsViewController *)self contactListViewController];
-  [v3 setShouldDisplayMeContactBanner:1];
+  contactListViewController = [(PHContactsViewController *)self contactListViewController];
+  [contactListViewController setShouldDisplayMeContactBanner:1];
 
   [(PHContactsViewController *)self _restoreState];
   v4 = objc_opt_new();
-  v5 = [(PHContactsViewController *)self tabBarItem];
-  [v5 setStandardAppearance:v4];
+  tabBarItem = [(PHContactsViewController *)self tabBarItem];
+  [tabBarItem setStandardAppearance:v4];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v13.receiver = self;
   v13.super_class = PHContactsViewController;
-  [(PHContactsViewController *)&v13 viewWillAppear:a3];
+  [(PHContactsViewController *)&v13 viewWillAppear:appear];
   v4 = objc_alloc_init(TUFeatureFlags);
-  v5 = [v4 nameAndPhotoEnabledC3];
+  nameAndPhotoEnabledC3 = [v4 nameAndPhotoEnabledC3];
 
-  if (v5)
+  if (nameAndPhotoEnabledC3)
   {
     v6 = PHDefaultLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -124,26 +124,26 @@ LABEL_6:
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Going to present CNKCNSharedProfileOnboardingController on launch", v12, 2u);
     }
 
-    v7 = [(PHContactsViewController *)self onboardingController];
+    onboardingController = [(PHContactsViewController *)self onboardingController];
 
-    if (!v7)
+    if (!onboardingController)
     {
       v8 = objc_opt_new();
       [(PHContactsViewController *)self setOnboardingController:v8];
     }
 
-    v9 = [(PHContactsViewController *)self onboardingController];
+    onboardingController2 = [(PHContactsViewController *)self onboardingController];
     v10 = +[TUCallCenter sharedInstance];
-    v11 = [v10 contactStore];
-    [v9 presentOnboardingControllerOnLaunchIfNeededFrom:self withContactStore:v11];
+    contactStore = [v10 contactStore];
+    [onboardingController2 presentOnboardingControllerOnLaunchIfNeededFrom:self withContactStore:contactStore];
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v9.receiver = self;
   v9.super_class = PHContactsViewController;
-  [(PHContactsViewController *)&v9 viewDidAppear:a3];
+  [(PHContactsViewController *)&v9 viewDidAppear:appear];
   [(PHContactsViewController *)self finishSwitchTestIfNeeded];
   v4 = +[MPSignpost sharedInstance];
   [v4 contactsTabViewAppeared];
@@ -166,24 +166,24 @@ LABEL_6:
   [v7 postNotificationName:@"PHPhoneTabBarControllerTabViewDidAppearNotification" object:v6];
 }
 
-- (BOOL)tabBarControllerShouldSelectViewController:(id)a3
+- (BOOL)tabBarControllerShouldSelectViewController:(id)controller
 {
-  v4 = [a3 selectedViewController];
+  selectedViewController = [controller selectedViewController];
 
-  if (v4 == self)
+  if (selectedViewController == self)
   {
     [(PHContactsViewController *)self showAllContactsList];
   }
 
-  return v4 != self;
+  return selectedViewController != self;
 }
 
 - (BOOL)shouldSnapshot
 {
-  v2 = [(PHContactsViewController *)self contactListViewController];
-  v3 = [v2 isSearching];
+  contactListViewController = [(PHContactsViewController *)self contactListViewController];
+  isSearching = [contactListViewController isSearching];
 
-  return v3 ^ 1;
+  return isSearching ^ 1;
 }
 
 + ($1FF454C5B48E436092D281DABF654916)badge
@@ -203,34 +203,34 @@ LABEL_6:
   return v3;
 }
 
-- (void)contactNavigationControllerDidCancel:(id)a3
+- (void)contactNavigationControllerDidCancel:(id)cancel
 {
-  v4 = [(PHContactsViewController *)self presentingViewController];
-  [v4 dismissViewControllerAnimated:1 completion:0];
+  presentingViewController = [(PHContactsViewController *)self presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:1 completion:0];
 
-  v5 = [(PHContactsViewController *)self contactsControllerDelegate];
-  if (v5)
+  contactsControllerDelegate = [(PHContactsViewController *)self contactsControllerDelegate];
+  if (contactsControllerDelegate)
   {
-    v6 = v5;
-    v7 = [(PHContactsViewController *)self contactsControllerDelegate];
+    v6 = contactsControllerDelegate;
+    contactsControllerDelegate2 = [(PHContactsViewController *)self contactsControllerDelegate];
     v8 = objc_opt_respondsToSelector();
 
     if (v8)
     {
-      v9 = [(PHContactsViewController *)self contactsControllerDelegate];
-      [v9 contactsControllerDidCancel:self];
+      contactsControllerDelegate3 = [(PHContactsViewController *)self contactsControllerDelegate];
+      [contactsControllerDelegate3 contactsControllerDidCancel:self];
     }
   }
 }
 
-- (BOOL)contactNavigationController:(id)a3 shouldShowCardForContact:(id)a4
+- (BOOL)contactNavigationController:(id)controller shouldShowCardForContact:(id)contact
 {
-  v5 = a4;
-  v6 = [(PHContactsViewController *)self contactsControllerDelegate];
-  if (v6 && (v7 = v6, [(PHContactsViewController *)self contactsControllerDelegate], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_opt_respondsToSelector(), v8, v7, (v9 & 1) != 0))
+  contactCopy = contact;
+  contactsControllerDelegate = [(PHContactsViewController *)self contactsControllerDelegate];
+  if (contactsControllerDelegate && (v7 = contactsControllerDelegate, [(PHContactsViewController *)self contactsControllerDelegate], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_opt_respondsToSelector(), v8, v7, (v9 & 1) != 0))
   {
-    v10 = [(PHContactsViewController *)self contactsControllerDelegate];
-    v11 = [v10 contactsControllerShouldContinueAfterSelectingContact:v5];
+    contactsControllerDelegate2 = [(PHContactsViewController *)self contactsControllerDelegate];
+    v11 = [contactsControllerDelegate2 contactsControllerShouldContinueAfterSelectingContact:contactCopy];
   }
 
   else
@@ -240,7 +240,7 @@ LABEL_6:
 
   if ([(PHContactsViewController *)self shouldSaveAndRestoreState]&& v11)
   {
-    [(PHContactsViewController *)self setSavedPerson:v5];
+    [(PHContactsViewController *)self setSavedPerson:contactCopy];
   }
 
   return v11;
@@ -252,15 +252,15 @@ LABEL_6:
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (CNContact)savedPerson
@@ -268,12 +268,12 @@ LABEL_6:
   v3 = PHPreferencesGetValueInDomain();
   if (v3)
   {
-    v4 = [(PHContactsViewController *)self contactStore];
+    contactStore = [(PHContactsViewController *)self contactStore];
     v5 = +[CNContactViewController descriptorForRequiredKeys];
     v13 = v5;
     v6 = [NSArray arrayWithObjects:&v13 count:1];
     v12 = 0;
-    v7 = [v4 unifiedContactWithIdentifier:v3 keysToFetch:v6 error:&v12];
+    v7 = [contactStore unifiedContactWithIdentifier:v3 keysToFetch:v6 error:&v12];
     v8 = v12;
 
     if (v7)
@@ -304,9 +304,9 @@ LABEL_6:
   return v7;
 }
 
-- (void)setSavedPerson:(id)a3
+- (void)setSavedPerson:(id)person
 {
-  v3 = [a3 identifier];
+  identifier = [person identifier];
   PHPreferencesSetValueInDomain();
 }
 
@@ -314,28 +314,28 @@ LABEL_6:
 {
   if ([(PHContactsViewController *)self shouldSaveAndRestoreState])
   {
-    v3 = [(PHContactsViewController *)self savedPerson];
+    savedPerson = [(PHContactsViewController *)self savedPerson];
 
-    if (v3)
+    if (savedPerson)
     {
-      v4 = [(PHContactsViewController *)self savedPerson];
-      [(PHContactsViewController *)self showCardForContact:v4 animated:0];
+      savedPerson2 = [(PHContactsViewController *)self savedPerson];
+      [(PHContactsViewController *)self showCardForContact:savedPerson2 animated:0];
     }
   }
 }
 
-- (void)handleURL:(id)a3
+- (void)handleURL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   v4 = PHDefaultLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v7 = v3;
+    v7 = lCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Attempting to open URL %@", buf, 0xCu);
   }
 
-  v5 = v3;
+  v5 = lCopy;
   TUGuaranteeExecutionOnMainThreadSync();
 }
 
@@ -402,7 +402,7 @@ LABEL_8:
 - (void)savedPerson
 {
   v2 = 138412290;
-  v3 = a1;
+  selfCopy = self;
   _os_log_error_impl(&_mh_execute_header, a2, OS_LOG_TYPE_ERROR, "Unable to fetch contact with identifier from saved store: %@", &v2, 0xCu);
 }
 

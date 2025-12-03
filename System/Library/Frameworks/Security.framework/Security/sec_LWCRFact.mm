@@ -1,9 +1,9 @@
 @interface sec_LWCRFact
-+ (id)BOOLFact:(BOOL)a3;
-+ (id)dataFact:(id)a3;
-+ (id)entitlementsFact:(id)a3;
-+ (id)integerFact:(id)a3;
-+ (id)stringFact:(id)a3;
++ (id)BOOLFact:(BOOL)fact;
++ (id)dataFact:(id)fact;
++ (id)entitlementsFact:(id)fact;
++ (id)integerFact:(id)fact;
++ (id)stringFact:(id)fact;
 - (id).cxx_construct;
 - (void)dealloc;
 @end
@@ -30,12 +30,12 @@
   [(sec_LWCRFact *)&v3 dealloc];
 }
 
-+ (id)dataFact:(id)a3
++ (id)dataFact:(id)fact
 {
-  v3 = a3;
+  factCopy = fact;
   v4 = objc_alloc_init(sec_LWCRFact);
   v4->fact.type = 6;
-  v5 = [v3 copy];
+  v5 = [factCopy copy];
   dataFactStorage = v4->dataFactStorage;
   v4->dataFactStorage = v5;
 
@@ -45,9 +45,9 @@
   return v4;
 }
 
-+ (id)entitlementsFact:(id)a3
++ (id)entitlementsFact:(id)fact
 {
-  v3 = a3;
+  factCopy = fact;
   v4 = objc_alloc_init(sec_LWCRFact);
   v4->fact.type = 1;
   v5 = CESerializeCFDictionary();
@@ -83,12 +83,12 @@
   return v7;
 }
 
-+ (id)stringFact:(id)a3
++ (id)stringFact:(id)fact
 {
-  v3 = a3;
+  factCopy = fact;
   v4 = objc_alloc_init(sec_LWCRFact);
   v4->fact.type = 4;
-  v5 = [v3 copy];
+  v5 = [factCopy copy];
   stringFactStorage = v4->stringFactStorage;
   v4->stringFactStorage = v5;
 
@@ -98,22 +98,22 @@
   return v4;
 }
 
-+ (id)integerFact:(id)a3
++ (id)integerFact:(id)fact
 {
-  v3 = a3;
+  factCopy = fact;
   v4 = objc_alloc_init(sec_LWCRFact);
   v4->fact.type = 3;
-  v4->fact.value.integer = [v3 longLongValue];
+  v4->fact.value.integer = [factCopy longLongValue];
 
   return v4;
 }
 
-+ (id)BOOLFact:(BOOL)a3
++ (id)BOOLFact:(BOOL)fact
 {
-  v3 = a3;
+  factCopy = fact;
   v4 = objc_alloc_init(sec_LWCRFact);
   v4->fact.type = 5;
-  v4->fact.value.integer = v3;
+  v4->fact.value.integer = factCopy;
 
   return v4;
 }

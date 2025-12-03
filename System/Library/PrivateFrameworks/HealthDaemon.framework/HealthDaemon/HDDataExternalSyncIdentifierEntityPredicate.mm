@@ -1,23 +1,23 @@
 @interface HDDataExternalSyncIdentifierEntityPredicate
-+ (__CFString)_propertyForKey:(uint64_t)a1;
-+ (id)_valueClassForKey:(uint64_t)a1;
-+ (id)predicateWithMetadataKey:(id)a3 allowedValues:(id)a4;
-+ (id)predicateWithMetadataKey:(id)a3 exists:(BOOL)a4;
-+ (id)predicateWithMetadataKey:(id)a3 value:(id)a4 operatorType:(unint64_t)a5;
++ (__CFString)_propertyForKey:(uint64_t)key;
++ (id)_valueClassForKey:(uint64_t)key;
++ (id)predicateWithMetadataKey:(id)key allowedValues:(id)values;
++ (id)predicateWithMetadataKey:(id)key exists:(BOOL)exists;
++ (id)predicateWithMetadataKey:(id)key value:(id)value operatorType:(unint64_t)type;
 - (NSString)description;
-- (id)SQLForEntityClass:(Class)a3;
+- (id)SQLForEntityClass:(Class)class;
 @end
 
 @implementation HDDataExternalSyncIdentifierEntityPredicate
 
-+ (id)predicateWithMetadataKey:(id)a3 allowedValues:(id)a4
++ (id)predicateWithMetadataKey:(id)key allowedValues:(id)values
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
-  v8 = objc_alloc_init(a1);
-  v9 = v7;
-  v10 = v6;
+  valuesCopy = values;
+  keyCopy = key;
+  v8 = objc_alloc_init(self);
+  v9 = keyCopy;
+  v10 = valuesCopy;
   v11 = objc_opt_self();
   v12 = [(HDDataExternalSyncIdentifierEntityPredicate *)v11 _propertyForKey:v9];
   if (v12)
@@ -66,18 +66,18 @@
     {
       [MEMORY[0x277D10B70] falsePredicate];
     }
-    v20 = ;
+    falsePredicate = ;
 
     v10 = v24;
   }
 
   else
   {
-    v20 = [MEMORY[0x277D10B70] falsePredicate];
+    falsePredicate = [MEMORY[0x277D10B70] falsePredicate];
   }
 
   v21 = v8[1];
-  v8[1] = v20;
+  v8[1] = falsePredicate;
 
   *(v8 + 16) = 0;
   v22 = *MEMORY[0x277D85DE8];
@@ -85,18 +85,18 @@
   return v8;
 }
 
-+ (id)predicateWithMetadataKey:(id)a3 value:(id)a4 operatorType:(unint64_t)a5
++ (id)predicateWithMetadataKey:(id)key value:(id)value operatorType:(unint64_t)type
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = objc_alloc_init(a1);
-  v11 = v9;
-  v12 = v8;
+  valueCopy = value;
+  keyCopy = key;
+  v10 = objc_alloc_init(self);
+  v11 = keyCopy;
+  v12 = valueCopy;
   v13 = objc_opt_self();
   v14 = [(HDDataExternalSyncIdentifierEntityPredicate *)v13 _propertyForKey:v11];
   if (v14)
   {
-    if (v12 || a5 != 5)
+    if (v12 || type != 5)
     {
       [(HDDataExternalSyncIdentifierEntityPredicate *)v13 _valueClassForKey:v11];
       if (objc_opt_isKindOfClass())
@@ -106,30 +106,30 @@
 
       else
       {
-        [MEMORY[0x277D10B70] BOOLeanPredicateWithValue:a5 == 5];
+        [MEMORY[0x277D10B70] BOOLeanPredicateWithValue:type == 5];
       }
-      v15 = ;
+      falsePredicate = ;
     }
 
     else
     {
-      v15 = [MEMORY[0x277D10B60] isNotNullPredicateWithProperty:v14];
+      falsePredicate = [MEMORY[0x277D10B60] isNotNullPredicateWithProperty:v14];
     }
   }
 
   else
   {
-    v15 = [MEMORY[0x277D10B70] falsePredicate];
+    falsePredicate = [MEMORY[0x277D10B70] falsePredicate];
   }
 
-  v16 = v15;
+  v16 = falsePredicate;
 
   v17 = v10[1];
   v10[1] = v16;
 
   if (v12)
   {
-    v18 = a5 == 5;
+    v18 = type == 5;
   }
 
   else
@@ -143,22 +143,22 @@
   return v10;
 }
 
-+ (id)predicateWithMetadataKey:(id)a3 exists:(BOOL)a4
++ (id)predicateWithMetadataKey:(id)key exists:(BOOL)exists
 {
-  v5 = objc_alloc_init(a1);
+  v5 = objc_alloc_init(self);
   v6 = v5[1];
   v5[1] = 0;
 
-  *(v5 + 16) = !a4;
+  *(v5 + 16) = !exists;
 
   return v5;
 }
 
-- (id)SQLForEntityClass:(Class)a3
+- (id)SQLForEntityClass:(Class)class
 {
   v5 = +[(HDSQLiteSchemaEntity *)HDDataExternalSyncIdentifierEntity];
-  v6 = [(objc_class *)a3 entityClassForEnumeration];
-  v7 = [v6 disambiguatedSQLForProperty:*MEMORY[0x277D10A40]];
+  entityClassForEnumeration = [(objc_class *)class entityClassForEnumeration];
+  v7 = [entityClassForEnumeration disambiguatedSQLForProperty:*MEMORY[0x277D10A40]];
   v8 = [(HDSQLiteSchemaEntity *)HDDataExternalSyncIdentifierEntity disambiguatedSQLForProperty:@"object_id"];
   v9 = [(HDSQLitePredicate *)self->_valuePredicate SQLForEntityClass:objc_opt_class()];
   v10 = objc_msgSend(MEMORY[0x277CCAB68], "stringWithString:", @"(");
@@ -234,7 +234,7 @@ LABEL_10:
   return v9;
 }
 
-+ (__CFString)_propertyForKey:(uint64_t)a1
++ (__CFString)_propertyForKey:(uint64_t)key
 {
   v2 = a2;
   objc_opt_self();
@@ -256,7 +256,7 @@ LABEL_10:
   return v3;
 }
 
-+ (id)_valueClassForKey:(uint64_t)a1
++ (id)_valueClassForKey:(uint64_t)key
 {
   v2 = a2;
   objc_opt_self();

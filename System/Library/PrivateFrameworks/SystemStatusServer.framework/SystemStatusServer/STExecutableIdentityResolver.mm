@@ -1,8 +1,8 @@
 @interface STExecutableIdentityResolver
-+ (id)responsibleIdentityForAuditToken:(id *)a3;
++ (id)responsibleIdentityForAuditToken:(id *)token;
 - (STExecutableIdentityResolver)init;
 - (id)beginBatchResolutionSession;
-- (id)resolvedIdentityForIdentity:(id)a3;
+- (id)resolvedIdentityForIdentity:(id)identity;
 @end
 
 @implementation STExecutableIdentityResolver
@@ -22,11 +22,11 @@
   return v2;
 }
 
-+ (id)responsibleIdentityForAuditToken:(id *)a3
++ (id)responsibleIdentityForAuditToken:(id *)token
 {
   v4 = objc_alloc(MEMORY[0x277D6B980]);
-  v5 = *&a3->var0[4];
-  v9[0] = *a3->var0;
+  v5 = *&token->var0[4];
+  v9[0] = *token->var0;
   v9[1] = v5;
   v6 = [v4 initWithAuditToken:v9];
   v7 = _STExecutableIdentityResolvedIdentityForIdentity(v6, 1, 0);
@@ -52,9 +52,9 @@
   return v5;
 }
 
-- (id)resolvedIdentityForIdentity:(id)a3
+- (id)resolvedIdentityForIdentity:(id)identity
 {
-  v4 = a3;
+  identityCopy = identity;
   if (self)
   {
     cache = self->_cache;
@@ -65,10 +65,10 @@
     cache = 0;
   }
 
-  v6 = [(STReferenceCountedCache *)cache cachedObjectForKey:v4];
+  v6 = [(STReferenceCountedCache *)cache cachedObjectForKey:identityCopy];
   if (!v6)
   {
-    v6 = _STExecutableIdentityResolvedIdentityForIdentity(v4, 0, 1);
+    v6 = _STExecutableIdentityResolvedIdentityForIdentity(identityCopy, 0, 1);
   }
 
   return v6;

@@ -1,14 +1,14 @@
 @interface AppStateMonitor
-- (AppStateMonitor)initWithPID:(int)a3;
+- (AppStateMonitor)initWithPID:(int)d;
 - (id).cxx_construct;
 - (int)currentAppState;
-- (void)_process:(id)a3 didUpdateState:(id)a4;
+- (void)_process:(id)_process didUpdateState:(id)state;
 - (void)dealloc;
 @end
 
 @implementation AppStateMonitor
 
-- (AppStateMonitor)initWithPID:(int)a3
+- (AppStateMonitor)initWithPID:(int)d
 {
   v23.receiver = self;
   v23.super_class = AppStateMonitor;
@@ -20,7 +20,7 @@
     v4->_processNameInternal = 0;
 
     v5->_lock._os_unfair_lock_opaque = 0;
-    v5->_monitoredPID = a3;
+    v5->_monitoredPID = d;
     objc_initWeak(&location, v5);
     v7 = [MEMORY[0x277D46F50] identifierWithPid:v5->_monitoredPID];
     v21 = 0;
@@ -34,9 +34,9 @@
       sub_271022A00(v9);
     }
 
-    v11 = [(RBSProcessHandle *)v5->_processHandle name];
+    name = [(RBSProcessHandle *)v5->_processHandle name];
     v12 = v5->_processNameInternal;
-    v5->_processNameInternal = v11;
+    v5->_processNameInternal = name;
 
     [(RBSProcessHandle *)v5->_processHandle monitorForDeath:&unk_2880F8A18];
     v13 = MEMORY[0x277D46F80];
@@ -89,29 +89,29 @@
   }
 }
 
-- (void)_process:(id)a3 didUpdateState:(id)a4
+- (void)_process:(id)_process didUpdateState:(id)state
 {
   v33 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 state];
-  v9 = sub_271007D48(v8);
+  _processCopy = _process;
+  stateCopy = state;
+  state = [stateCopy state];
+  v9 = sub_271007D48(state);
   v11 = v10;
 
-  v12 = [v7 previousState];
-  v13 = sub_271007D48(v12);
+  previousState = [stateCopy previousState];
+  v13 = sub_271007D48(previousState);
   v15 = v14;
 
-  v16 = [v6 pid];
+  v16 = [_processCopy pid];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
-    v17 = [v6 name];
+    name = [_processCopy name];
     LODWORD(v26) = 67109891;
     HIDWORD(v26) = v15;
     v27 = 1024;
     v28 = v11;
     v29 = 2113;
-    v30 = v17;
+    v30 = name;
     v31 = 1024;
     v32 = v16;
     _os_log_impl(&dword_271001000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "VisionHWAServer: previousState: %d, state: %d, name: %{private}@, pid: %d", &v26, 0x1Eu);
@@ -120,9 +120,9 @@
   os_unfair_lock_lock(&self->_lock);
   if (!self->_processNameInternal)
   {
-    v18 = [v6 name];
+    name2 = [_processCopy name];
     processNameInternal = self->_processNameInternal;
-    self->_processNameInternal = v18;
+    self->_processNameInternal = name2;
   }
 
   engaged = self->_latestState.__engaged_;

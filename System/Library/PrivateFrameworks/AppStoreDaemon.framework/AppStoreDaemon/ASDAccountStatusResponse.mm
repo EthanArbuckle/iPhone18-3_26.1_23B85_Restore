@@ -1,20 +1,20 @@
 @interface ASDAccountStatusResponse
-- (ASDAccountStatusResponse)initWithAccountID:(id)a3;
-- (ASDAccountStatusResponse)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (ASDAccountStatusResponse)initWithAccountID:(id)d;
+- (ASDAccountStatusResponse)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ASDAccountStatusResponse
 
-- (ASDAccountStatusResponse)initWithAccountID:(id)a3
+- (ASDAccountStatusResponse)initWithAccountID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v9.receiver = self;
   v9.super_class = ASDAccountStatusResponse;
   v5 = [(ASDAccountStatusResponse *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dCopy copy];
     accountID = v5->_accountID;
     v5->_accountID = v6;
   }
@@ -22,31 +22,31 @@
   return v5;
 }
 
-- (ASDAccountStatusResponse)initWithCoder:(id)a3
+- (ASDAccountStatusResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(ASDAccountStatusResponse *)self initWithAccountID:0];
   if (v5)
   {
     objc_opt_class();
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_accountID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_accountID"];
     accountID = v5->_accountID;
     v5->_accountID = v6;
 
-    v5->_accountStatus = [v4 decodeIntegerForKey:@"_accountStatus"];
-    v5->_hasCachedFamilyInfo = [v4 decodeBoolForKey:@"_hasCachedFamilyInfo"];
+    v5->_accountStatus = [coderCopy decodeIntegerForKey:@"_accountStatus"];
+    v5->_hasCachedFamilyInfo = [coderCopy decodeBoolForKey:@"_hasCachedFamilyInfo"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   accountID = self->_accountID;
-  v5 = a3;
-  [v5 encodeObject:accountID forKey:@"_accountID"];
-  [v5 encodeInteger:self->_accountStatus forKey:@"_accountStatus"];
-  [v5 encodeBool:self->_hasCachedFamilyInfo forKey:@"_hasCachedFamilyInfo"];
+  coderCopy = coder;
+  [coderCopy encodeObject:accountID forKey:@"_accountID"];
+  [coderCopy encodeInteger:self->_accountStatus forKey:@"_accountStatus"];
+  [coderCopy encodeBool:self->_hasCachedFamilyInfo forKey:@"_hasCachedFamilyInfo"];
 }
 
 @end

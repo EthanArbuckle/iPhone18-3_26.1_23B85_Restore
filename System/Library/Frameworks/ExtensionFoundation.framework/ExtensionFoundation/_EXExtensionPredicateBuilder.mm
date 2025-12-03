@@ -1,54 +1,54 @@
 @interface _EXExtensionPredicateBuilder
-- (_EXExtensionPredicateBuilder)initWithActivationRules:(_EXExtensionActivationRules *)a3 predicateDictionary:(id)a4;
-- (id)applyRuleWithRuleName:(id)a3 acceptRule:(id)a4 rejectRule:(id)a5 types:(id)a6 exceptTypes:(id)a7 parentType:(id)a8 children:(id)a9 parentAccepted:(BOOL)a10 accepted:(BOOL *)a11 acceptedTypesInSubtree:(id *)a12 exceptTypesInSubtree:(id *)a13;
-- (id)gatherChildrenPredicateWithRuleDictionary:(id)a3 parentType:(id)a4 parentAccepted:(BOOL)a5 acceptedChildTypes:(id *)a6 exceptChildTypes:(id *)a7;
+- (_EXExtensionPredicateBuilder)initWithActivationRules:(_EXExtensionActivationRules *)rules predicateDictionary:(id)dictionary;
+- (id)applyRuleWithRuleName:(id)name acceptRule:(id)rule rejectRule:(id)rejectRule types:(id)types exceptTypes:(id)exceptTypes parentType:(id)type children:(id)children parentAccepted:(BOOL)self0 accepted:(BOOL *)self1 acceptedTypesInSubtree:(id *)self2 exceptTypesInSubtree:(id *)self3;
+- (id)gatherChildrenPredicateWithRuleDictionary:(id)dictionary parentType:(id)type parentAccepted:(BOOL)accepted acceptedChildTypes:(id *)types exceptChildTypes:(id *)childTypes;
 - (id)makePredicate;
-- (id)predicateForRejectExceptOtherTypesRule:(id)a3 type:(id)a4 otherTypes:(id)a5;
+- (id)predicateForRejectExceptOtherTypesRule:(id)rule type:(id)type otherTypes:(id)types;
 @end
 
 @implementation _EXExtensionPredicateBuilder
 
-- (_EXExtensionPredicateBuilder)initWithActivationRules:(_EXExtensionActivationRules *)a3 predicateDictionary:(id)a4
+- (_EXExtensionPredicateBuilder)initWithActivationRules:(_EXExtensionActivationRules *)rules predicateDictionary:(id)dictionary
 {
-  v7 = a4;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = _EXExtensionPredicateBuilder;
   v8 = [(_EXExtensionPredicateBuilder *)&v13 init];
   if (v8)
   {
-    v9 = [v7 objectForKeyedSubscript:@"NSExtensionActivationDictionaryVersion"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"NSExtensionActivationDictionaryVersion"];
     v8->_version = [v9 unsignedIntegerValue];
 
-    v10 = [v7 objectForKeyedSubscript:@"NSExtensionActivationUsesStrictMatching"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"NSExtensionActivationUsesStrictMatching"];
     v8->_strictMatchingSpecified = [v10 BOOLValue];
 
     v11 = v8->_strictMatchingSpecified || v8->_version < 2;
     v8->_usesStrictMatching = v11;
-    objc_storeStrong(&v8->_predicateDictionary, a4);
-    v8->_activationRules = a3;
+    objc_storeStrong(&v8->_predicateDictionary, dictionary);
+    v8->_activationRules = rules;
   }
 
   return v8;
 }
 
-- (id)predicateForRejectExceptOtherTypesRule:(id)a3 type:(id)a4 otherTypes:(id)a5
+- (id)predicateForRejectExceptOtherTypesRule:(id)rule type:(id)type otherTypes:(id)types
 {
   v22[2] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v8 | v9)
+  ruleCopy = rule;
+  typeCopy = type;
+  typesCopy = types;
+  v11 = typesCopy;
+  if (ruleCopy | typeCopy)
   {
-    if (!v8 && v10 && [v10 count])
+    if (!ruleCopy && typesCopy && [typesCopy count])
     {
       if ([v11 count] < 2)
       {
         v19[0] = @"TYPE";
         v19[1] = @"OTHER_TYPE";
-        v20[0] = v9;
-        v15 = [v11 firstObject];
-        v20[1] = v15;
+        v20[0] = typeCopy;
+        firstObject = [v11 firstObject];
+        v20[1] = firstObject;
         v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:v19 count:2];
 
         v14 = 8;
@@ -58,7 +58,7 @@
       {
         v21[0] = @"TYPE";
         v21[1] = @"OTHER_TYPES";
-        v22[0] = v9;
+        v22[0] = typeCopy;
         v22[1] = v11;
         v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v22 forKeys:v21 count:2];
         v14 = 16;
@@ -78,7 +78,7 @@
 
     else
     {
-      v12 = [(_EXExtensionPredicateBuilder *)self predicateForCountingRule:v8 type:v9 exceptTypes:0 specifiedCount:0];
+      v12 = [(_EXExtensionPredicateBuilder *)self predicateForCountingRule:ruleCopy type:typeCopy exceptTypes:0 specifiedCount:0];
     }
   }
 
@@ -92,28 +92,28 @@
   return v12;
 }
 
-- (id)applyRuleWithRuleName:(id)a3 acceptRule:(id)a4 rejectRule:(id)a5 types:(id)a6 exceptTypes:(id)a7 parentType:(id)a8 children:(id)a9 parentAccepted:(BOOL)a10 accepted:(BOOL *)a11 acceptedTypesInSubtree:(id *)a12 exceptTypesInSubtree:(id *)a13
+- (id)applyRuleWithRuleName:(id)name acceptRule:(id)rule rejectRule:(id)rejectRule types:(id)types exceptTypes:(id)exceptTypes parentType:(id)type children:(id)children parentAccepted:(BOOL)self0 accepted:(BOOL *)self1 acceptedTypesInSubtree:(id *)self2 exceptTypesInSubtree:(id *)self3
 {
-  v19 = a3;
-  v41 = a4;
-  v43 = a5;
-  v20 = a6;
-  v44 = a7;
-  v21 = a8;
-  v22 = a9;
-  v23 = [(NSDictionary *)self->_predicateDictionary objectForKey:v19];
-  v24 = [v23 intValue];
-  v25 = v24;
+  nameCopy = name;
+  ruleCopy = rule;
+  rejectRuleCopy = rejectRule;
+  typesCopy = types;
+  exceptTypesCopy = exceptTypes;
+  typeCopy = type;
+  childrenCopy = children;
+  v23 = [(NSDictionary *)self->_predicateDictionary objectForKey:nameCopy];
+  intValue = [v23 intValue];
+  v25 = intValue;
   v26 = v23 == 0;
-  if (v24)
+  if (intValue)
   {
     v26 = 1;
   }
 
-  v27 = v24 > 0 != v26 && (!self->_usesStrictMatching || a10);
-  if ([v20 count])
+  v27 = intValue > 0 != v26 && (!self->_usesStrictMatching || accepted);
+  if ([typesCopy count])
   {
-    v28 = [v20 objectAtIndex:0];
+    v28 = [typesCopy objectAtIndex:0];
   }
 
   else
@@ -121,13 +121,13 @@
     v28 = 0;
   }
 
-  v42 = v21;
-  v40 = v22;
+  v42 = typeCopy;
+  v40 = childrenCopy;
   if (v27)
   {
     v48 = 0;
     v47 = 0;
-    v29 = [(_EXExtensionPredicateBuilder *)self gatherChildrenPredicateWithRuleDictionary:v22 parentType:v21 parentAccepted:a10 acceptedChildTypes:&v48 exceptChildTypes:&v47];
+    v29 = [(_EXExtensionPredicateBuilder *)self gatherChildrenPredicateWithRuleDictionary:childrenCopy parentType:typeCopy parentAccepted:accepted acceptedChildTypes:&v48 exceptChildTypes:&v47];
     v30 = v48;
     v31 = v47;
     if (v25 <= 0)
@@ -136,16 +136,16 @@
     }
 
 LABEL_13:
-    v33 = self;
-    v34 = v41;
-    v32 = [(_EXExtensionPredicateBuilder *)v33 predicateForCountingRule:v41 type:v28 exceptTypes:v44 specifiedCount:v25];
+    selfCopy = self;
+    v34 = ruleCopy;
+    v32 = [(_EXExtensionPredicateBuilder *)selfCopy predicateForCountingRule:ruleCopy type:v28 exceptTypes:exceptTypesCopy specifiedCount:v25];
     *a11 = 1;
     goto LABEL_20;
   }
 
   v45 = 0;
   v46 = 0;
-  v29 = [(_EXExtensionPredicateBuilder *)self gatherChildrenPredicateWithRuleDictionary:v22 parentType:v28 parentAccepted:v25 > 0 acceptedChildTypes:&v46 exceptChildTypes:&v45];
+  v29 = [(_EXExtensionPredicateBuilder *)self gatherChildrenPredicateWithRuleDictionary:childrenCopy parentType:v28 parentAccepted:v25 > 0 acceptedChildTypes:&v46 exceptChildTypes:&v45];
   v30 = v46;
   v31 = v45;
   if (v25 >= 1)
@@ -154,16 +154,16 @@ LABEL_13:
   }
 
   *a11 = 0;
-  if (v43 || !self->_usesStrictMatching)
+  if (rejectRuleCopy || !self->_usesStrictMatching)
   {
-    v35 = [MEMORY[0x1E695DF70] array];
-    [v35 addObjectsFromArray:v30];
-    if (a10)
+    array = [MEMORY[0x1E695DF70] array];
+    [array addObjectsFromArray:v30];
+    if (accepted)
     {
-      [v35 addObject:v42];
+      [array addObject:v42];
     }
 
-    v32 = [(_EXExtensionPredicateBuilder *)self predicateForRejectExceptOtherTypesRule:v43 type:v28 otherTypes:v35];
+    v32 = [(_EXExtensionPredicateBuilder *)self predicateForRejectExceptOtherTypesRule:rejectRuleCopy type:v28 otherTypes:array];
 
     goto LABEL_19;
   }
@@ -171,33 +171,33 @@ LABEL_13:
 LABEL_11:
   v32 = 0;
 LABEL_19:
-  v34 = v41;
+  v34 = ruleCopy;
 LABEL_20:
-  if (a12)
+  if (subtree)
   {
     v36 = v30;
-    *a12 = v30;
+    *subtree = v30;
   }
 
-  if (a13)
+  if (inSubtree)
   {
     v37 = v31;
-    *a13 = v31;
+    *inSubtree = v31;
   }
 
   v38 = _EXExtensionMakeAndPredicate(v32, v29);
   if (+[EXConcreteExtension _shouldLogExtensionDiscovery])
   {
-    NSLog(&cfstr_GeneratedPredi.isa, v38, v19);
+    NSLog(&cfstr_GeneratedPredi.isa, v38, nameCopy);
   }
 
   return v38;
 }
 
-- (id)gatherChildrenPredicateWithRuleDictionary:(id)a3 parentType:(id)a4 parentAccepted:(BOOL)a5 acceptedChildTypes:(id *)a6 exceptChildTypes:(id *)a7
+- (id)gatherChildrenPredicateWithRuleDictionary:(id)dictionary parentType:(id)type parentAccepted:(BOOL)accepted acceptedChildTypes:(id *)types exceptChildTypes:(id *)childTypes
 {
-  v12 = a3;
-  v13 = a4;
+  dictionaryCopy = dictionary;
+  typeCopy = type;
   v35 = 0;
   v36 = &v35;
   v37 = 0x3032000000;
@@ -221,21 +221,21 @@ LABEL_20:
   v17[2] = __136___EXExtensionPredicateBuilder_gatherChildrenPredicateWithRuleDictionary_parentType_parentAccepted_acceptedChildTypes_exceptChildTypes___block_invoke;
   v17[3] = &unk_1E6E4E230;
   v17[4] = self;
-  v14 = v13;
-  v22 = a5;
+  v14 = typeCopy;
+  acceptedCopy = accepted;
   v18 = v14;
   v19 = &v35;
   v20 = &v29;
   v21 = &v23;
-  [v12 enumerateKeysAndObjectsUsingBlock:v17];
-  if (a6)
+  [dictionaryCopy enumerateKeysAndObjectsUsingBlock:v17];
+  if (types)
   {
-    *a6 = v30[5];
+    *types = v30[5];
   }
 
-  if (a7)
+  if (childTypes)
   {
-    *a7 = v24[5];
+    *childTypes = v24[5];
   }
 
   v15 = _EXExtensionMakeAndPredicateWithArray(v36[5]);

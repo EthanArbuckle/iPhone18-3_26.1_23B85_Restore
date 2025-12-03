@@ -1,21 +1,21 @@
 @interface CHParseTableCell
-+ (_NSRange)rangeFromString:(id)a3;
-- (CHParseTableCell)initWithRange:(_NSRange)a3;
-- (_NSRange)_terminalsRangeRecursive:(id)a3;
++ (_NSRange)rangeFromString:(id)string;
+- (CHParseTableCell)initWithRange:(_NSRange)range;
+- (_NSRange)_terminalsRangeRecursive:(id)recursive;
 - (_NSRange)inputRange;
 - (_NSRange)originalRange;
 - (_NSRange)terminalsRange;
 - (id)description;
-- (id)initNonTerminal:(id)a3 range:(_NSRange)a4;
+- (id)initNonTerminal:(id)terminal range:(_NSRange)range;
 @end
 
 @implementation CHParseTableCell
 
-- (CHParseTableCell)initWithRange:(_NSRange)a3
+- (CHParseTableCell)initWithRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  result = objc_msgSend_init(self, a2, a3.location, a3.length, v3, v4);
+  length = range.length;
+  location = range.location;
+  result = objc_msgSend_init(self, a2, range.location, range.length, v3, v4);
   if (result)
   {
     result->_inputRange.location = location;
@@ -25,16 +25,16 @@
   return result;
 }
 
-- (id)initNonTerminal:(id)a3 range:(_NSRange)a4
+- (id)initNonTerminal:(id)terminal range:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v8 = a3;
+  length = range.length;
+  location = range.location;
+  terminalCopy = terminal;
   v14 = objc_msgSend_init(self, v9, v10, v11, v12, v13);
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong((v14 + 8), a3);
+    objc_storeStrong((v14 + 8), terminal);
     v15[12] = location;
     v15[13] = length;
   }
@@ -55,9 +55,9 @@
   return v22;
 }
 
-+ (_NSRange)rangeFromString:(id)a3
++ (_NSRange)rangeFromString:(id)string
 {
-  v6 = objc_msgSend_componentsSeparatedByString_(a3, a2, @"-", v3, v4, v5);
+  v6 = objc_msgSend_componentsSeparatedByString_(string, a2, @"-", v3, v4, v5);
   v11 = objc_msgSend_objectAtIndexedSubscript_(v6, v7, 0, v8, v9, v10);
   v17 = objc_msgSend_integerValue(v11, v12, v13, v14, v15, v16);
   v22 = objc_msgSend_objectAtIndexedSubscript_(v6, v18, 1, v19, v20, v21);
@@ -83,17 +83,17 @@
   return result;
 }
 
-- (_NSRange)_terminalsRangeRecursive:(id)a3
+- (_NSRange)_terminalsRangeRecursive:(id)recursive
 {
-  v4 = a3;
-  v10 = objc_msgSend_rightNode(v4, v5, v6, v7, v8, v9);
+  recursiveCopy = recursive;
+  v10 = objc_msgSend_rightNode(recursiveCopy, v5, v6, v7, v8, v9);
 
-  objc_msgSend_leftNode(v4, v11, v12, v13, v14, v15);
+  objc_msgSend_leftNode(recursiveCopy, v11, v12, v13, v14, v15);
   if (v10)
     v16 = {;
     v21 = objc_msgSend__terminalsRangeRecursive_(self, v17, v16, v18, v19, v20);
     v23 = v22;
-    v28 = objc_msgSend_rightNode(v4, v22, v24, v25, v26, v27);
+    v28 = objc_msgSend_rightNode(recursiveCopy, v22, v24, v25, v26, v27);
     v47.location = objc_msgSend__terminalsRangeRecursive_(self, v29, v28, v30, v31, v32);
     v47.length = v33;
     v45.location = v21;

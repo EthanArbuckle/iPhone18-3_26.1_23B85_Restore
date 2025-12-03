@@ -1,185 +1,185 @@
 @interface _DASDaemonClient
-- (BOOL)activityCompletedInternal:(id)a3;
+- (BOOL)activityCompletedInternal:(id)internal;
 - (BOOL)hasEntitlementForCustomIconBundleIdentifier;
-- (BOOL)hasEntitlementsForRequestedResources:(int64_t)a3 error:(id *)a4;
-- (BOOL)isInternalContinuedProcessingActivity:(id)a3;
+- (BOOL)hasEntitlementsForRequestedResources:(int64_t)resources error:(id *)error;
+- (BOOL)isInternalContinuedProcessingActivity:(id)activity;
 - (NSString)bundleIdentifier;
 - (NSString)rootBundleIdentifier;
 - (RBSProcessHandle)processHandle;
 - (RBSProcessHandle)rootProcessHandle;
-- (_DASDaemonClient)initWithDaemon:(id)a3 withConnection:(id)a4 isRestricted:(BOOL)a5;
-- (id)activityNamesFromActivities:(id)a3;
-- (id)unlockedActivitiesWithNames:(id)a3 inSet:(id)a4;
+- (_DASDaemonClient)initWithDaemon:(id)daemon withConnection:(id)connection isRestricted:(BOOL)restricted;
+- (id)activityNamesFromActivities:(id)activities;
+- (id)unlockedActivitiesWithNames:(id)names inSet:(id)set;
 - (void)_resetWidgetBudgets;
-- (void)acknowledgeSystemTaskLaunchWithIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)acknowledgeSystemTaskSuspensionWithIdentifier:(id)a3 retryAfter:(double)a4 completionHandler:(id)a5;
-- (void)activity:(id)a3 blockedOnPolicies:(id)a4;
-- (void)activity:(id)a3 runWithoutHonoringPolicies:(id)a4;
-- (void)activityCanceled:(id)a3;
-- (void)activityCanceledWithReason:(id)a3 expirationReason:(int64_t)a4;
-- (void)activityCompleted:(id)a3;
-- (void)activityContainsOverrides:(id)a3 handler:(id)a4;
-- (void)activityStarted:(id)a3;
-- (void)addPauseExceptParameter:(id)a3 handler:(id)a4;
-- (void)allBudgetsWithHandler:(id)a3;
-- (void)backgroundAppRefreshEnabledForApp:(id)a3 withHandler:(id)a4;
-- (void)balanceForBudgetWithName:(id)a3 withHandler:(id)a4;
-- (void)blockingPoliciesWithParameters:(id)a3 handler:(id)a4;
-- (void)cancelActivities:(id)a3;
-- (void)cancelActivitiesWithReason:(id)a3 cancellationReason:(int64_t)a4;
+- (void)acknowledgeSystemTaskLaunchWithIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)acknowledgeSystemTaskSuspensionWithIdentifier:(id)identifier retryAfter:(double)after completionHandler:(id)handler;
+- (void)activity:(id)activity blockedOnPolicies:(id)policies;
+- (void)activity:(id)activity runWithoutHonoringPolicies:(id)policies;
+- (void)activityCanceled:(id)canceled;
+- (void)activityCanceledWithReason:(id)reason expirationReason:(int64_t)expirationReason;
+- (void)activityCompleted:(id)completed;
+- (void)activityContainsOverrides:(id)overrides handler:(id)handler;
+- (void)activityStarted:(id)started;
+- (void)addPauseExceptParameter:(id)parameter handler:(id)handler;
+- (void)allBudgetsWithHandler:(id)handler;
+- (void)backgroundAppRefreshEnabledForApp:(id)app withHandler:(id)handler;
+- (void)balanceForBudgetWithName:(id)name withHandler:(id)handler;
+- (void)blockingPoliciesWithParameters:(id)parameters handler:(id)handler;
+- (void)cancelActivities:(id)activities;
+- (void)cancelActivitiesWithReason:(id)reason cancellationReason:(int64_t)cancellationReason;
 - (void)cancelAllActivities;
-- (void)cancelAllTaskRequestsWithCompletionHandler:(id)a3;
-- (void)cancelTaskRequestWithIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)clientFailedtoExpireTaskWithIdentifier:(id)a3;
-- (void)completeSystemTaskWithIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)continuedProcessingDeviceCapabilities:(id)a3;
-- (void)createActivityGroup:(id)a3;
-- (void)currentAllocations:(unint64_t)a3 timeFilter:(id)a4 bgsqlData:(id)a5 withHandler:(id)a6;
-- (void)currentPredictionsWithHandler:(id)a3;
+- (void)cancelAllTaskRequestsWithCompletionHandler:(id)handler;
+- (void)cancelTaskRequestWithIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)clientFailedtoExpireTaskWithIdentifier:(id)identifier;
+- (void)completeSystemTaskWithIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)continuedProcessingDeviceCapabilities:(id)capabilities;
+- (void)createActivityGroup:(id)group;
+- (void)currentAllocations:(unint64_t)allocations timeFilter:(id)filter bgsqlData:(id)data withHandler:(id)handler;
+- (void)currentPredictionsWithHandler:(id)handler;
 - (void)dealloc;
-- (void)decrementBy:(double)a3 forBudgetWithName:(id)a4;
-- (void)deferActivities:(id)a3 withHandler:(id)a4;
-- (void)delayedRunningActivitiesWithHandler:(id)a3;
-- (void)delayedStartActivities:(id)a3;
-- (void)deleteLimitForActivity:(id)a3 forLimiterWithName:(id)a4 handler:(id)a5;
-- (void)disableAppRefreshForApps:(id)a3;
-- (void)endLaunchWithReason:(id)a3 forApp:(id)a4;
-- (void)establishConnection:(id)a3;
-- (void)evaluateAllActivities:(id)a3 handler:(id)a4;
-- (void)evaluatePolicies:(id)a3 handler:(id)a4;
-- (void)forceResetOfResultIdentifier:(id)a3;
-- (void)forceRunActivities:(id)a3;
-- (void)getActivityTimelines:(id)a3 timeFilter:(id)a4 bgsqlData:(id)a5 handler:(id)a6;
-- (void)getBuddyEvents:(id)a3 bgsqlData:(id)a4 handler:(id)a5;
-- (void)getConditionsPenalties:(id)a3 handler:(id)a4;
-- (void)getContentionPenalties:(id)a3 handler:(id)a4;
-- (void)getDeviceConditionTimelines:(id)a3 bgsqlData:(id)a4 handler:(id)a5;
-- (void)getElapsedRuntimes:(id)a3 timeFilter:(id)a4 bgsqlData:(id)a5 handler:(id)a6;
-- (void)getEligibilityTimelines:(id)a3 timeFilter:(id)a4 bgsqlData:(id)a5 handler:(id)a6;
-- (void)getEstimatedMADCompletionTimes:(id)a3 endDate:(id)a4 bgsqlData:(id)a5 handler:(id)a6;
-- (void)getEstimatedRuntimes:(id)a3 timeFilter:(id)a4 bgsqlData:(id)a5 handler:(id)a6;
-- (void)getFeatureTimelines:(id)a3 timeFilter:(id)a4 bgsqlData:(id)a5 handler:(id)a6;
-- (void)getInstallTimeline:(id)a3 bgsqlData:(id)a4 handler:(id)a5;
-- (void)getLimiterResponseForActivity:(id)a3 handler:(id)a4;
-- (void)getOvernightIntensiveSchedulerEfficiencyMetrics:(id)a3 bgsqlData:(id)a4 handler:(id)a5;
-- (void)getPendingTaskRequestsWithCompletionHandler:(id)a3;
-- (void)getRuntimeLimit:(id)a3 handler:(id)a4;
-- (void)getSchedulerEfficiencyMetrics:(id)a3 bgsqlData:(id)a4 handler:(id)a5;
-- (void)getSortedCandidateActivities:(id)a3 handler:(id)a4;
-- (void)handleClientFailedtoExpireTaskWithIdentifier:(id)a3 completionHandler:(id)a4;
+- (void)decrementBy:(double)by forBudgetWithName:(id)name;
+- (void)deferActivities:(id)activities withHandler:(id)handler;
+- (void)delayedRunningActivitiesWithHandler:(id)handler;
+- (void)delayedStartActivities:(id)activities;
+- (void)deleteLimitForActivity:(id)activity forLimiterWithName:(id)name handler:(id)handler;
+- (void)disableAppRefreshForApps:(id)apps;
+- (void)endLaunchWithReason:(id)reason forApp:(id)app;
+- (void)establishConnection:(id)connection;
+- (void)evaluateAllActivities:(id)activities handler:(id)handler;
+- (void)evaluatePolicies:(id)policies handler:(id)handler;
+- (void)forceResetOfResultIdentifier:(id)identifier;
+- (void)forceRunActivities:(id)activities;
+- (void)getActivityTimelines:(id)timelines timeFilter:(id)filter bgsqlData:(id)data handler:(id)handler;
+- (void)getBuddyEvents:(id)events bgsqlData:(id)data handler:(id)handler;
+- (void)getConditionsPenalties:(id)penalties handler:(id)handler;
+- (void)getContentionPenalties:(id)penalties handler:(id)handler;
+- (void)getDeviceConditionTimelines:(id)timelines bgsqlData:(id)data handler:(id)handler;
+- (void)getElapsedRuntimes:(id)runtimes timeFilter:(id)filter bgsqlData:(id)data handler:(id)handler;
+- (void)getEligibilityTimelines:(id)timelines timeFilter:(id)filter bgsqlData:(id)data handler:(id)handler;
+- (void)getEstimatedMADCompletionTimes:(id)times endDate:(id)date bgsqlData:(id)data handler:(id)handler;
+- (void)getEstimatedRuntimes:(id)runtimes timeFilter:(id)filter bgsqlData:(id)data handler:(id)handler;
+- (void)getFeatureTimelines:(id)timelines timeFilter:(id)filter bgsqlData:(id)data handler:(id)handler;
+- (void)getInstallTimeline:(id)timeline bgsqlData:(id)data handler:(id)handler;
+- (void)getLimiterResponseForActivity:(id)activity handler:(id)handler;
+- (void)getOvernightIntensiveSchedulerEfficiencyMetrics:(id)metrics bgsqlData:(id)data handler:(id)handler;
+- (void)getPendingTaskRequestsWithCompletionHandler:(id)handler;
+- (void)getRuntimeLimit:(id)limit handler:(id)handler;
+- (void)getSchedulerEfficiencyMetrics:(id)metrics bgsqlData:(id)data handler:(id)handler;
+- (void)getSortedCandidateActivities:(id)activities handler:(id)handler;
+- (void)handleClientFailedtoExpireTaskWithIdentifier:(id)identifier completionHandler:(id)handler;
 - (void)handleClientInterruption;
-- (void)handleClientLedSystemTaskExpirationWithIdentifier:(id)a3 retryAfter:(double)a4 completionHandler:(id)a5;
-- (void)handleLaunchFromDaemonForActivities:(id)a3;
-- (void)handleRunningActivities:(id)a3;
-- (void)inspect:(id)a3 withHandler:(id)a4;
-- (void)pauseWithParameters:(id)a3 handler:(id)a4;
-- (void)policiesWithHandler:(id)a3;
-- (void)prewarmApplication:(id)a3;
-- (void)prewarmSuspendWithHandler:(id)a3;
-- (void)queryDependenciesOfTaskIdentifier:(id)a3 withHandler:(id)a4;
-- (void)queryStatusOfResultIdentifier:(id)a3 withHandler:(id)a4;
-- (void)removeKnownActivitiesFromSet:(id)a3;
-- (void)reportProgressMetricsForIdentifier:(id)a3 taskName:(id)a4 itemsCompleted:(id)a5 totalItemCount:(id)a6 qos:(id)a7 workloadCategory:(unint64_t)a8 expectedValue:(id)a9 withHandler:(id)a10;
-- (void)reportSystemTaskWithIdentifier:(id)a3 consumedResults:(id)a4 completionHandler:(id)a5;
-- (void)reportSystemTaskWithIdentifier:(id)a3 producedResults:(id)a4 completionHandler:(id)a5;
-- (void)reportTaskWorkloadProgress:(id)a3 target:(unint64_t)a4 completed:(unint64_t)a5 category:(unint64_t)a6 subCategory:(id)a7 completionHandler:(id)a8;
-- (void)reportThroughputMetricsForIdentifier:(id)a3 taskName:(id)a4 itemCount:(unint64_t)a5 totalDuration:(double)a6 qos:(id)a7 workloadCategory:(unint64_t)a8 expectedValue:(id)a9 withHandler:(id)a10;
-- (void)resetResultsForIdentifier:(id)a3 byTaskWithIdentifier:(id)a4 completionHandler:(id)a5;
-- (void)resubmitRunningTasks:(id)a3;
-- (void)resumeTaskSchedulingWithIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)runActivities:(id)a3;
-- (void)runActivitiesWithDelayedStart:(id)a3;
-- (void)runActivitiesWithUrgency:(int64_t)a3 activities:(id)a4;
-- (void)runProceedableActivities:(id)a3 handler:(id)a4;
-- (void)runningActivitiesWithHandler:(id)a3;
-- (void)runningGroupActivitiesWithHandler:(id)a3;
-- (void)setBalance:(double)a3 forBudgetWithName:(id)a4;
-- (void)setCapacity:(double)a3 forBudgetWithName:(id)a4;
-- (void)startedActivities:(id)a3;
-- (void)statisticsWithHandler:(id)a3;
-- (void)submitActivities:(id)a3;
-- (void)submitActivitiesInternal:(id)a3;
-- (void)submitActivity:(id)a3;
-- (void)submitActivity:(id)a3 inGroup:(id)a4;
-- (void)submitActivity:(id)a3 inGroup:(id)a4 withHandler:(id)a5;
-- (void)submitActivity:(id)a3 inGroupWithName:(id)a4;
-- (void)submitActivityInternal:(id)a3;
-- (void)submitRateLimitConfiguration:(id)a3 handler:(id)a4;
-- (void)submitTaskRequest:(id)a3 withHandler:(id)a4;
-- (void)submitTaskRequestWithIdentifier:(id)a3 descriptor:(id)a4 completionHandler:(id)a5;
-- (void)submittedActivitiesWithHandler:(id)a3;
-- (void)suspendActivities:(id)a3;
-- (void)triggerScoreEvaluationAndRunActivities:(id)a3 handler:(id)a4;
-- (void)unregisterSystemTaskWithIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)updateActivity:(id)a3 withParameters:(id)a4;
-- (void)updateLimit:(double)a3 forActivity:(id)a4 forLimiterWithName:(id)a5 handler:(id)a6;
-- (void)updateOngoingTask:(id)a3 completionHandler:(id)a4;
-- (void)updateProgressForOngoingTask:(id)a3 completionHandler:(id)a4;
-- (void)updateTaskRequestWithIdentifier:(id)a3 descriptor:(id)a4 completionHandler:(id)a5;
-- (void)validateCTBGTaskRequestWithActivity:(id)a3;
-- (void)willExpireBGTaskActivities:(id)a3;
+- (void)handleClientLedSystemTaskExpirationWithIdentifier:(id)identifier retryAfter:(double)after completionHandler:(id)handler;
+- (void)handleLaunchFromDaemonForActivities:(id)activities;
+- (void)handleRunningActivities:(id)activities;
+- (void)inspect:(id)inspect withHandler:(id)handler;
+- (void)pauseWithParameters:(id)parameters handler:(id)handler;
+- (void)policiesWithHandler:(id)handler;
+- (void)prewarmApplication:(id)application;
+- (void)prewarmSuspendWithHandler:(id)handler;
+- (void)queryDependenciesOfTaskIdentifier:(id)identifier withHandler:(id)handler;
+- (void)queryStatusOfResultIdentifier:(id)identifier withHandler:(id)handler;
+- (void)removeKnownActivitiesFromSet:(id)set;
+- (void)reportProgressMetricsForIdentifier:(id)identifier taskName:(id)name itemsCompleted:(id)completed totalItemCount:(id)count qos:(id)qos workloadCategory:(unint64_t)category expectedValue:(id)value withHandler:(id)self0;
+- (void)reportSystemTaskWithIdentifier:(id)identifier consumedResults:(id)results completionHandler:(id)handler;
+- (void)reportSystemTaskWithIdentifier:(id)identifier producedResults:(id)results completionHandler:(id)handler;
+- (void)reportTaskWorkloadProgress:(id)progress target:(unint64_t)target completed:(unint64_t)completed category:(unint64_t)category subCategory:(id)subCategory completionHandler:(id)handler;
+- (void)reportThroughputMetricsForIdentifier:(id)identifier taskName:(id)name itemCount:(unint64_t)count totalDuration:(double)duration qos:(id)qos workloadCategory:(unint64_t)category expectedValue:(id)value withHandler:(id)self0;
+- (void)resetResultsForIdentifier:(id)identifier byTaskWithIdentifier:(id)withIdentifier completionHandler:(id)handler;
+- (void)resubmitRunningTasks:(id)tasks;
+- (void)resumeTaskSchedulingWithIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)runActivities:(id)activities;
+- (void)runActivitiesWithDelayedStart:(id)start;
+- (void)runActivitiesWithUrgency:(int64_t)urgency activities:(id)activities;
+- (void)runProceedableActivities:(id)activities handler:(id)handler;
+- (void)runningActivitiesWithHandler:(id)handler;
+- (void)runningGroupActivitiesWithHandler:(id)handler;
+- (void)setBalance:(double)balance forBudgetWithName:(id)name;
+- (void)setCapacity:(double)capacity forBudgetWithName:(id)name;
+- (void)startedActivities:(id)activities;
+- (void)statisticsWithHandler:(id)handler;
+- (void)submitActivities:(id)activities;
+- (void)submitActivitiesInternal:(id)internal;
+- (void)submitActivity:(id)activity;
+- (void)submitActivity:(id)activity inGroup:(id)group;
+- (void)submitActivity:(id)activity inGroup:(id)group withHandler:(id)handler;
+- (void)submitActivity:(id)activity inGroupWithName:(id)name;
+- (void)submitActivityInternal:(id)internal;
+- (void)submitRateLimitConfiguration:(id)configuration handler:(id)handler;
+- (void)submitTaskRequest:(id)request withHandler:(id)handler;
+- (void)submitTaskRequestWithIdentifier:(id)identifier descriptor:(id)descriptor completionHandler:(id)handler;
+- (void)submittedActivitiesWithHandler:(id)handler;
+- (void)suspendActivities:(id)activities;
+- (void)triggerScoreEvaluationAndRunActivities:(id)activities handler:(id)handler;
+- (void)unregisterSystemTaskWithIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)updateActivity:(id)activity withParameters:(id)parameters;
+- (void)updateLimit:(double)limit forActivity:(id)activity forLimiterWithName:(id)name handler:(id)handler;
+- (void)updateOngoingTask:(id)task completionHandler:(id)handler;
+- (void)updateProgressForOngoingTask:(id)task completionHandler:(id)handler;
+- (void)updateTaskRequestWithIdentifier:(id)identifier descriptor:(id)descriptor completionHandler:(id)handler;
+- (void)validateCTBGTaskRequestWithActivity:(id)activity;
+- (void)willExpireBGTaskActivities:(id)activities;
 @end
 
 @implementation _DASDaemonClient
 
 - (NSString)rootBundleIdentifier
 {
-  v2 = [(_DASDaemonClient *)self rootProcessHandle];
-  v3 = [v2 bundle];
-  v4 = [v3 identifier];
+  rootProcessHandle = [(_DASDaemonClient *)self rootProcessHandle];
+  bundle = [rootProcessHandle bundle];
+  identifier = [bundle identifier];
 
-  return v4;
+  return identifier;
 }
 
 - (RBSProcessHandle)rootProcessHandle
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  rootProcessHandle = v2->_rootProcessHandle;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  rootProcessHandle = selfCopy->_rootProcessHandle;
   if (!rootProcessHandle)
   {
-    for (i = [(_DASDaemonClient *)v2 processHandle];
+    for (i = [(_DASDaemonClient *)selfCopy processHandle];
     {
-      v5 = v2->_rootProcessHandle;
-      v2->_rootProcessHandle = i;
+      v5 = selfCopy->_rootProcessHandle;
+      selfCopy->_rootProcessHandle = i;
 
-      v6 = [(RBSProcessHandle *)v2->_rootProcessHandle hostProcess];
+      hostProcess = [(RBSProcessHandle *)selfCopy->_rootProcessHandle hostProcess];
 
-      v7 = v2->_rootProcessHandle;
-      if (!v6)
+      v7 = selfCopy->_rootProcessHandle;
+      if (!hostProcess)
       {
         break;
       }
 
-      [(RBSProcessHandle *)v2->_rootProcessHandle hostProcess];
+      [(RBSProcessHandle *)selfCopy->_rootProcessHandle hostProcess];
     }
 
-    v8 = [(_DASDaemonClient *)v2 processHandle];
+    processHandle = [(_DASDaemonClient *)selfCopy processHandle];
 
-    if (v7 == v8)
+    if (v7 == processHandle)
     {
       v9 = +[_DASDaemonLogger defaultCategory];
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
       {
-        v10 = [(_DASDaemonClient *)v2 processHandle];
-        sub_10012BEB4(v10, v13, v9);
+        processHandle2 = [(_DASDaemonClient *)selfCopy processHandle];
+        sub_10012BEB4(processHandle2, v13, v9);
       }
     }
 
-    rootProcessHandle = v2->_rootProcessHandle;
+    rootProcessHandle = selfCopy->_rootProcessHandle;
   }
 
   v11 = rootProcessHandle;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v11;
 }
 
 - (RBSProcessHandle)processHandle
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  processHandle = v2->_processHandle;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  processHandle = selfCopy->_processHandle;
   if (processHandle)
   {
     v4 = processHandle;
@@ -187,14 +187,14 @@
 
   else
   {
-    v5 = [RBSProcessIdentifier identifierWithPid:[(NSXPCConnection *)v2->_connection processIdentifier]];
+    v5 = [RBSProcessIdentifier identifierWithPid:[(NSXPCConnection *)selfCopy->_connection processIdentifier]];
     v12 = 0;
     v6 = [RBSProcessHandle handleForIdentifier:v5 error:&v12];
     v7 = v12;
-    v8 = v2->_processHandle;
-    v2->_processHandle = v6;
+    v8 = selfCopy->_processHandle;
+    selfCopy->_processHandle = v6;
 
-    v9 = v2->_processHandle;
+    v9 = selfCopy->_processHandle;
     if (!v9 || v7)
     {
       v10 = +[_DASDaemonLogger defaultCategory];
@@ -203,13 +203,13 @@
         sub_10012BE40();
       }
 
-      v9 = v2->_processHandle;
+      v9 = selfCopy->_processHandle;
     }
 
     v4 = v9;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v4;
 }
@@ -217,8 +217,8 @@
 - (void)handleClientInterruption
 {
   [(_DASDaemonClient *)self cancelAllActivities];
-  v3 = [(_DASDaemonClient *)self daemon];
-  [v3 removeClient:self];
+  daemon = [(_DASDaemonClient *)self daemon];
+  [daemon removeClient:self];
 }
 
 - (void)cancelAllActivities
@@ -282,19 +282,19 @@
   [(_DASDaemonClient *)&v3 dealloc];
 }
 
-- (_DASDaemonClient)initWithDaemon:(id)a3 withConnection:(id)a4 isRestricted:(BOOL)a5
+- (_DASDaemonClient)initWithDaemon:(id)daemon withConnection:(id)connection isRestricted:(BOOL)restricted
 {
-  v9 = a3;
-  v10 = a4;
+  daemonCopy = daemon;
+  connectionCopy = connection;
   v29.receiver = self;
   v29.super_class = _DASDaemonClient;
   v11 = [(_DASDaemonClient *)&v29 init];
   v12 = v11;
   if (v11)
   {
-    v11->_restricted = a5;
-    objc_storeStrong(&v11->_daemon, a3);
-    objc_storeStrong(&v12->_connection, a4);
+    v11->_restricted = restricted;
+    objc_storeStrong(&v11->_daemon, daemon);
+    objc_storeStrong(&v12->_connection, connection);
     if (qword_10020B808 != -1)
     {
       sub_10012B974();
@@ -340,9 +340,9 @@
   return v12;
 }
 
-- (void)removeKnownActivitiesFromSet:(id)a3
+- (void)removeKnownActivitiesFromSet:(id)set
 {
-  v4 = a3;
+  setCopy = set;
   v5 = self->_submittedTasks;
   objc_sync_enter(v5);
   v10 = 0u;
@@ -364,7 +364,7 @@
           objc_enumerationMutation(v6);
         }
 
-        [v4 removeObject:{*(*(&v10 + 1) + 8 * v9), v10}];
+        [setCopy removeObject:{*(*(&v10 + 1) + 8 * v9), v10}];
         v9 = v9 + 1;
       }
 
@@ -378,11 +378,11 @@
   objc_sync_exit(v5);
 }
 
-- (id)unlockedActivitiesWithNames:(id)a3 inSet:(id)a4
+- (id)unlockedActivitiesWithNames:(id)names inSet:(id)set
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 count];
+  namesCopy = names;
+  setCopy = set;
+  v7 = [namesCopy count];
   v15[0] = 0;
   v15[1] = v15;
   v15[2] = 0x2020000000;
@@ -391,28 +391,28 @@
   v11[1] = 3221225472;
   v11[2] = sub_1000F3064;
   v11[3] = &unk_1001B8A10;
-  v8 = v5;
+  v8 = namesCopy;
   v12 = v8;
   v13 = v15;
   v14 = v7;
-  v9 = [v6 objectsPassingTest:v11];
+  v9 = [setCopy objectsPassingTest:v11];
 
   _Block_object_dispose(v15, 8);
 
   return v9;
 }
 
-- (id)activityNamesFromActivities:(id)a3
+- (id)activityNamesFromActivities:(id)activities
 {
-  v3 = a3;
-  if ([v3 count])
+  activitiesCopy = activities;
+  if ([activitiesCopy count])
   {
     v4 = +[NSMutableArray array];
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v5 = v3;
+    v5 = activitiesCopy;
     v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v6)
     {
@@ -427,8 +427,8 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v13 + 1) + 8 * i) name];
-          [v4 addObject:v10];
+          name = [*(*(&v13 + 1) + 8 * i) name];
+          [v4 addObject:name];
         }
 
         v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -448,9 +448,9 @@
   return v11;
 }
 
-- (void)runActivitiesWithDelayedStart:(id)a3
+- (void)runActivitiesWithDelayedStart:(id)start
 {
-  v4 = a3;
+  startCopy = start;
   v5 = +[NSMutableSet set];
   v6 = self->_submittedTasks;
   objc_sync_enter(v6);
@@ -458,7 +458,7 @@
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = v4;
+  v7 = startCopy;
   v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
@@ -494,15 +494,15 @@
     [(NSMutableSet *)self->_delayedStartTasks _DAS_unionSetOverridingExisting:v5];
     objc_sync_exit(v12);
 
-    v13 = [(NSXPCConnection *)self->_connection remoteObjectProxy];
+    remoteObjectProxy = [(NSXPCConnection *)self->_connection remoteObjectProxy];
     v14 = [NSSet setWithSet:v5];
-    [v13 runActivitiesWithDelayedStart:v14];
+    [remoteObjectProxy runActivitiesWithDelayedStart:v14];
   }
 }
 
-- (void)runActivities:(id)a3
+- (void)runActivities:(id)activities
 {
-  v4 = a3;
+  activitiesCopy = activities;
   v5 = +[NSMutableSet set];
   v6 = self->_submittedTasks;
   objc_sync_enter(v6);
@@ -510,7 +510,7 @@
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v7 = v4;
+  v7 = activitiesCopy;
   v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v8)
   {
@@ -542,15 +542,15 @@
   if ([v5 count])
   {
     [(_DASDaemonClient *)self handleRunningActivities:v5];
-    v12 = [(NSXPCConnection *)self->_connection remoteObjectProxy];
+    remoteObjectProxy = [(NSXPCConnection *)self->_connection remoteObjectProxy];
     v13 = [NSSet setWithSet:v5];
-    [v12 runActivities:v13];
+    [remoteObjectProxy runActivities:v13];
   }
 }
 
-- (void)suspendActivities:(id)a3
+- (void)suspendActivities:(id)activities
 {
-  v4 = a3;
+  activitiesCopy = activities;
   v5 = +[NSMutableSet set];
   v6 = self->_startedTasks;
   objc_sync_enter(v6);
@@ -558,7 +558,7 @@
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v7 = v4;
+  v7 = activitiesCopy;
   v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v8)
   {
@@ -588,15 +588,15 @@
   objc_sync_exit(v6);
   if ([v5 count])
   {
-    v12 = [(NSXPCConnection *)self->_connection remoteObjectProxy];
+    remoteObjectProxy = [(NSXPCConnection *)self->_connection remoteObjectProxy];
     v13 = [NSSet setWithSet:v7];
-    [v12 suspendActivities:v13];
+    [remoteObjectProxy suspendActivities:v13];
   }
 }
 
-- (void)cancelActivities:(id)a3
+- (void)cancelActivities:(id)activities
 {
-  v4 = a3;
+  activitiesCopy = activities;
   v5 = +[NSMutableSet set];
   v6 = self->_submittedTasks;
   objc_sync_enter(v6);
@@ -604,7 +604,7 @@
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v7 = v4;
+  v7 = activitiesCopy;
   v8 = [v7 countByEnumeratingWithState:&v24 objects:v29 count:16];
   if (v8)
   {
@@ -670,15 +670,15 @@
   objc_sync_exit(v12);
   if ([v5 count])
   {
-    v18 = [(NSXPCConnection *)self->_connection remoteObjectProxy];
+    remoteObjectProxy = [(NSXPCConnection *)self->_connection remoteObjectProxy];
     v19 = [NSSet setWithSet:v13];
-    [v18 cancelActivities:v19];
+    [remoteObjectProxy cancelActivities:v19];
   }
 }
 
-- (void)cancelActivitiesWithReason:(id)a3 cancellationReason:(int64_t)a4
+- (void)cancelActivitiesWithReason:(id)reason cancellationReason:(int64_t)cancellationReason
 {
-  v6 = a3;
+  reasonCopy = reason;
   v7 = +[NSMutableSet set];
   v8 = self->_submittedTasks;
   objc_sync_enter(v8);
@@ -686,7 +686,7 @@
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v9 = v6;
+  v9 = reasonCopy;
   v10 = [v9 countByEnumeratingWithState:&v26 objects:v31 count:16];
   if (v10)
   {
@@ -752,49 +752,49 @@
   objc_sync_exit(v14);
   if ([v7 count])
   {
-    v20 = [(NSXPCConnection *)self->_connection remoteObjectProxy];
+    remoteObjectProxy = [(NSXPCConnection *)self->_connection remoteObjectProxy];
     v21 = [NSSet setWithSet:v15];
-    [v20 cancelActivitiesWithReason:v21 cancellationReason:a4];
+    [remoteObjectProxy cancelActivitiesWithReason:v21 cancellationReason:cancellationReason];
   }
 }
 
-- (void)activity:(id)a3 blockedOnPolicies:(id)a4
+- (void)activity:(id)activity blockedOnPolicies:(id)policies
 {
   connection = self->_connection;
-  v6 = a4;
-  v7 = a3;
-  v8 = [(NSXPCConnection *)connection remoteObjectProxy];
-  [v8 activity:v7 blockedOnPolicies:v6];
+  policiesCopy = policies;
+  activityCopy = activity;
+  remoteObjectProxy = [(NSXPCConnection *)connection remoteObjectProxy];
+  [remoteObjectProxy activity:activityCopy blockedOnPolicies:policiesCopy];
 }
 
-- (void)activity:(id)a3 runWithoutHonoringPolicies:(id)a4
+- (void)activity:(id)activity runWithoutHonoringPolicies:(id)policies
 {
   connection = self->_connection;
-  v6 = a4;
-  v7 = a3;
-  v8 = [(NSXPCConnection *)connection remoteObjectProxy];
-  [v8 activity:v7 runWithoutHonoringPolicies:v6];
+  policiesCopy = policies;
+  activityCopy = activity;
+  remoteObjectProxy = [(NSXPCConnection *)connection remoteObjectProxy];
+  [remoteObjectProxy activity:activityCopy runWithoutHonoringPolicies:policiesCopy];
 }
 
-- (void)submitActivityInternal:(id)a3
+- (void)submitActivityInternal:(id)internal
 {
-  v5 = a3;
+  internalCopy = internal;
   v4 = self->_submittedTasks;
   objc_sync_enter(v4);
-  if ([v5 userIdentifier] == -1)
+  if ([internalCopy userIdentifier] == -1)
   {
-    [v5 setUserIdentifier:{-[NSXPCConnection effectiveUserIdentifier](self->_connection, "effectiveUserIdentifier")}];
+    [internalCopy setUserIdentifier:{-[NSXPCConnection effectiveUserIdentifier](self->_connection, "effectiveUserIdentifier")}];
   }
 
-  [v5 setPid:{-[NSXPCConnection processIdentifier](self->_connection, "processIdentifier")}];
-  [(_DASDaemonClient *)self setApplicationURLForActivity:v5];
-  [(NSMutableSet *)self->_submittedTasks _DAS_addOrReplaceObject:v5];
+  [internalCopy setPid:{-[NSXPCConnection processIdentifier](self->_connection, "processIdentifier")}];
+  [(_DASDaemonClient *)self setApplicationURLForActivity:internalCopy];
+  [(NSMutableSet *)self->_submittedTasks _DAS_addOrReplaceObject:internalCopy];
   objc_sync_exit(v4);
 }
 
-- (void)submitActivitiesInternal:(id)a3
+- (void)submitActivitiesInternal:(id)internal
 {
-  v4 = a3;
+  internalCopy = internal;
   v5 = self->_submittedTasks;
   objc_sync_enter(v5);
   v6 = objc_autoreleasePoolPush();
@@ -802,7 +802,7 @@
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v7 = v4;
+  v7 = internalCopy;
   v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v8)
   {
@@ -837,9 +837,9 @@
   objc_sync_exit(v5);
 }
 
-- (void)submitActivity:(id)a3
+- (void)submitActivity:(id)activity
 {
-  v5 = a3;
+  activityCopy = activity;
   if (self->_restricted)
   {
     v6 = [_DASDaemonLogger logForCategory:@"bar"];
@@ -853,14 +853,14 @@
 
   else
   {
-    [(_DASDaemonClient *)self submitActivityInternal:v5];
-    [(_DASDaemon *)self->_daemon submitActivity:v5];
+    [(_DASDaemonClient *)self submitActivityInternal:activityCopy];
+    [(_DASDaemon *)self->_daemon submitActivity:activityCopy];
   }
 }
 
-- (void)submitActivities:(id)a3
+- (void)submitActivities:(id)activities
 {
-  v5 = a3;
+  activitiesCopy = activities;
   if (self->_restricted)
   {
     v6 = [_DASDaemonLogger logForCategory:@"bar"];
@@ -874,25 +874,25 @@
 
   else
   {
-    [(_DASDaemonClient *)self submitActivitiesInternal:v5];
-    [(_DASDaemon *)self->_daemon submitActivities:v5];
+    [(_DASDaemonClient *)self submitActivitiesInternal:activitiesCopy];
+    [(_DASDaemon *)self->_daemon submitActivities:activitiesCopy];
   }
 }
 
-- (void)handleRunningActivities:(id)a3
+- (void)handleRunningActivities:(id)activities
 {
-  v5 = a3;
+  activitiesCopy = activities;
   v4 = self->_startedTasks;
   objc_sync_enter(v4);
-  [(NSMutableSet *)self->_startedTasks _DAS_unionSetOverridingExisting:v5];
+  [(NSMutableSet *)self->_startedTasks _DAS_unionSetOverridingExisting:activitiesCopy];
   objc_sync_exit(v4);
 
-  [(_DASDaemon *)self->_daemon handleRunningActivities:v5];
+  [(_DASDaemon *)self->_daemon handleRunningActivities:activitiesCopy];
 }
 
-- (void)startedActivities:(id)a3
+- (void)startedActivities:(id)activities
 {
-  v5 = a3;
+  activitiesCopy = activities;
   if (self->_restricted)
   {
     v6 = [_DASDaemonLogger logForCategory:@"bar"];
@@ -906,22 +906,22 @@
 
   else
   {
-    v7 = [NSSet setWithArray:v5];
+    v7 = [NSSet setWithArray:activitiesCopy];
     v8 = self->_startedTasks;
     objc_sync_enter(v8);
     [(NSMutableSet *)self->_startedTasks unionSet:v7];
     objc_sync_exit(v8);
 
-    v9 = self;
-    objc_sync_enter(v9);
-    [(_DASDaemon *)v9->_daemon startedActivities:v7];
-    objc_sync_exit(v9);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    [(_DASDaemon *)selfCopy->_daemon startedActivities:v7];
+    objc_sync_exit(selfCopy);
   }
 }
 
-- (void)delayedStartActivities:(id)a3
+- (void)delayedStartActivities:(id)activities
 {
-  v5 = a3;
+  activitiesCopy = activities;
   if (self->_restricted)
   {
     v6 = [_DASDaemonLogger logForCategory:@"bar"];
@@ -935,7 +935,7 @@
 
   else
   {
-    v7 = [NSSet setWithArray:v5];
+    v7 = [NSSet setWithArray:activitiesCopy];
     v8 = self->_delayedStartTasks;
     objc_sync_enter(v8);
     [(NSMutableSet *)self->_delayedStartTasks unionSet:v7];
@@ -943,9 +943,9 @@
   }
 }
 
-- (void)activityStarted:(id)a3
+- (void)activityStarted:(id)started
 {
-  v5 = a3;
+  startedCopy = started;
   if (self->_restricted)
   {
     v6 = [_DASDaemonLogger logForCategory:@"bar"];
@@ -961,20 +961,20 @@
   {
     v7 = self->_delayedStartTasks;
     objc_sync_enter(v7);
-    if ([(NSMutableSet *)self->_delayedStartTasks containsObject:v5])
+    if ([(NSMutableSet *)self->_delayedStartTasks containsObject:startedCopy])
     {
-      [(NSMutableSet *)self->_delayedStartTasks removeObject:v5];
+      [(NSMutableSet *)self->_delayedStartTasks removeObject:startedCopy];
       objc_sync_exit(v7);
 
       v8 = self->_startedTasks;
       objc_sync_enter(v8);
-      [(NSMutableSet *)self->_startedTasks _DAS_addOrReplaceObject:v5];
+      [(NSMutableSet *)self->_startedTasks _DAS_addOrReplaceObject:startedCopy];
       objc_sync_exit(v8);
 
-      v9 = self;
-      objc_sync_enter(v9);
-      [(_DASDaemon *)v9->_daemon activityStarted:v5];
-      objc_sync_exit(v9);
+      selfCopy = self;
+      objc_sync_enter(selfCopy);
+      [(_DASDaemon *)selfCopy->_daemon activityStarted:startedCopy];
+      objc_sync_exit(selfCopy);
     }
 
     else
@@ -982,9 +982,9 @@
       v10 = +[_DASDaemonLogger defaultCategory];
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
-        v11 = [v5 shortDescription];
+        shortDescription = [startedCopy shortDescription];
         v12 = 138412290;
-        v13 = v11;
+        v13 = shortDescription;
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Can't start %@!,not scheduled to run!", &v12, 0xCu);
       }
 
@@ -993,15 +993,15 @@
   }
 }
 
-- (BOOL)activityCompletedInternal:(id)a3
+- (BOOL)activityCompletedInternal:(id)internal
 {
-  v4 = a3;
+  internalCopy = internal;
   v5 = self->_startedTasks;
   objc_sync_enter(v5);
-  v6 = [(NSMutableSet *)self->_startedTasks containsObject:v4];
+  v6 = [(NSMutableSet *)self->_startedTasks containsObject:internalCopy];
   if (v6)
   {
-    [(NSMutableSet *)self->_startedTasks removeObject:v4];
+    [(NSMutableSet *)self->_startedTasks removeObject:internalCopy];
   }
 
   else
@@ -1009,9 +1009,9 @@
     v7 = +[_DASDaemonLogger defaultCategory];
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 shortDescription];
+      shortDescription = [internalCopy shortDescription];
       v12 = 138412290;
-      v13 = v8;
+      v13 = shortDescription;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Can't complete, %@ - not running, cancelling instead!", &v12, 0xCu);
     }
   }
@@ -1020,20 +1020,20 @@
 
   v9 = self->_submittedTasks;
   objc_sync_enter(v9);
-  [(NSMutableSet *)self->_submittedTasks removeObject:v4];
+  [(NSMutableSet *)self->_submittedTasks removeObject:internalCopy];
   objc_sync_exit(v9);
 
   v10 = self->_delayedStartTasks;
   objc_sync_enter(v10);
-  [(NSMutableSet *)self->_delayedStartTasks removeObject:v4];
+  [(NSMutableSet *)self->_delayedStartTasks removeObject:internalCopy];
   objc_sync_exit(v10);
 
   return v6;
 }
 
-- (void)activityCompleted:(id)a3
+- (void)activityCompleted:(id)completed
 {
-  v5 = a3;
+  completedCopy = completed;
   if (self->_restricted)
   {
     v6 = [_DASDaemonLogger logForCategory:@"bar"];
@@ -1047,29 +1047,29 @@
 
   else
   {
-    v7 = [(_DASDaemonClient *)self activityCompletedInternal:v5];
-    v8 = self;
-    objc_sync_enter(v8);
-    daemon = v8->_daemon;
+    v7 = [(_DASDaemonClient *)self activityCompletedInternal:completedCopy];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    daemon = selfCopy->_daemon;
     if (v7)
     {
-      [(_DASDaemon *)daemon activityCompleted:v5];
+      [(_DASDaemon *)daemon activityCompleted:completedCopy];
     }
 
     else
     {
-      [(_DASDaemon *)daemon activityCanceled:v5];
+      [(_DASDaemon *)daemon activityCanceled:completedCopy];
     }
 
-    objc_sync_exit(v8);
+    objc_sync_exit(selfCopy);
   }
 }
 
-- (void)activityCanceled:(id)a3
+- (void)activityCanceled:(id)canceled
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_restricted && ([v5 isContinuedProcessingTask] & 1) == 0)
+  canceledCopy = canceled;
+  v6 = canceledCopy;
+  if (self->_restricted && ([canceledCopy isContinuedProcessingTask] & 1) == 0)
   {
     v11 = [_DASDaemonLogger logForCategory:@"bar"];
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -1097,18 +1097,18 @@
     [(NSMutableSet *)self->_delayedStartTasks removeObject:v6];
     objc_sync_exit(v9);
 
-    v10 = self;
-    objc_sync_enter(v10);
-    [(_DASDaemon *)v10->_daemon activityCanceled:v6];
-    objc_sync_exit(v10);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    [(_DASDaemon *)selfCopy->_daemon activityCanceled:v6];
+    objc_sync_exit(selfCopy);
   }
 }
 
-- (void)activityCanceledWithReason:(id)a3 expirationReason:(int64_t)a4
+- (void)activityCanceledWithReason:(id)reason expirationReason:(int64_t)expirationReason
 {
-  v7 = a3;
-  v8 = v7;
-  if (self->_restricted && ([v7 isContinuedProcessingTask] & 1) == 0)
+  reasonCopy = reason;
+  v8 = reasonCopy;
+  if (self->_restricted && ([reasonCopy isContinuedProcessingTask] & 1) == 0)
   {
     v13 = [_DASDaemonLogger logForCategory:@"bar"];
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -1136,18 +1136,18 @@
     [(NSMutableSet *)self->_delayedStartTasks removeObject:v8];
     objc_sync_exit(v11);
 
-    v12 = self;
-    objc_sync_enter(v12);
-    [(_DASDaemon *)v12->_daemon activityCanceledWithReason:v8 expirationReason:a4];
-    objc_sync_exit(v12);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    [(_DASDaemon *)selfCopy->_daemon activityCanceledWithReason:v8 expirationReason:expirationReason];
+    objc_sync_exit(selfCopy);
   }
 }
 
-- (void)clientFailedtoExpireTaskWithIdentifier:(id)a3
+- (void)clientFailedtoExpireTaskWithIdentifier:(id)identifier
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_restricted && ([v5 isContinuedProcessingTask] & 1) == 0)
+  identifierCopy = identifier;
+  v6 = identifierCopy;
+  if (self->_restricted && ([identifierCopy isContinuedProcessingTask] & 1) == 0)
   {
     v11 = [_DASDaemonLogger logForCategory:@"bar"];
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -1175,30 +1175,30 @@
     [(NSMutableSet *)self->_delayedStartTasks removeObject:v6];
     objc_sync_exit(v9);
 
-    v10 = self;
-    objc_sync_enter(v10);
-    [(_DASDaemon *)v10->_daemon clientFailedtoExpireTaskWithIdentifier:v6];
-    objc_sync_exit(v10);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    [(_DASDaemon *)selfCopy->_daemon clientFailedtoExpireTaskWithIdentifier:v6];
+    objc_sync_exit(selfCopy);
   }
 }
 
-- (void)updateActivity:(id)a3 withParameters:(id)a4
+- (void)updateActivity:(id)activity withParameters:(id)parameters
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = self;
-  objc_sync_enter(v7);
-  [(_DASDaemon *)v7->_daemon updateActivity:v8 withParameters:v6];
-  objc_sync_exit(v7);
+  activityCopy = activity;
+  parametersCopy = parameters;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(_DASDaemon *)selfCopy->_daemon updateActivity:activityCopy withParameters:parametersCopy];
+  objc_sync_exit(selfCopy);
 }
 
 - (void)_resetWidgetBudgets
 {
   v3 = +[NSXPCConnection currentConnection];
   v4 = [v3 valueForEntitlement:@"com.apple.dasd.widgetBudgetReset"];
-  v5 = [v4 BOOLValue];
+  bOOLValue = [v4 BOOLValue];
 
-  if (v5)
+  if (bOOLValue)
   {
     daemon = self->_daemon;
 
@@ -1218,9 +1218,9 @@
   }
 }
 
-- (void)createActivityGroup:(id)a3
+- (void)createActivityGroup:(id)group
 {
-  v5 = a3;
+  groupCopy = group;
   if (self->_restricted)
   {
     v6 = [_DASDaemonLogger logForCategory:@"bar"];
@@ -1237,7 +1237,7 @@
     v7 = [(NSXPCConnection *)self->_connection valueForEntitlement:@"com.apple.networkd.configure_connection_pool"];
     if ([v7 BOOLValue])
     {
-      [(_DASDaemon *)self->_daemon createActivityGroup:v5];
+      [(_DASDaemon *)self->_daemon createActivityGroup:groupCopy];
     }
 
     else
@@ -1252,10 +1252,10 @@
   }
 }
 
-- (void)submitActivity:(id)a3 inGroupWithName:(id)a4
+- (void)submitActivity:(id)activity inGroupWithName:(id)name
 {
-  v7 = a3;
-  v8 = a4;
+  activityCopy = activity;
+  nameCopy = name;
   if (self->_restricted)
   {
     v9 = [_DASDaemonLogger logForCategory:@"bar"];
@@ -1269,15 +1269,15 @@
 
   else
   {
-    [(_DASDaemonClient *)self submitActivityInternal:v7];
-    [(_DASDaemon *)self->_daemon submitActivity:v7 inGroupWithName:v8];
+    [(_DASDaemonClient *)self submitActivityInternal:activityCopy];
+    [(_DASDaemon *)self->_daemon submitActivity:activityCopy inGroupWithName:nameCopy];
   }
 }
 
-- (void)submitActivity:(id)a3 inGroup:(id)a4
+- (void)submitActivity:(id)activity inGroup:(id)group
 {
-  v7 = a3;
-  v8 = a4;
+  activityCopy = activity;
+  groupCopy = group;
   if (self->_restricted)
   {
     v9 = [_DASDaemonLogger logForCategory:@"bar"];
@@ -1291,26 +1291,26 @@
 
   else
   {
-    [(_DASDaemonClient *)self submitActivityInternal:v7];
-    [(_DASDaemon *)self->_daemon submitActivity:v7 inGroup:v8];
+    [(_DASDaemonClient *)self submitActivityInternal:activityCopy];
+    [(_DASDaemon *)self->_daemon submitActivity:activityCopy inGroup:groupCopy];
   }
 }
 
-- (void)submitActivity:(id)a3 inGroup:(id)a4 withHandler:(id)a5
+- (void)submitActivity:(id)activity inGroup:(id)group withHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 userIdentifier] == -1)
+  activityCopy = activity;
+  groupCopy = group;
+  handlerCopy = handler;
+  if ([activityCopy userIdentifier] == -1)
   {
-    [v8 setUserIdentifier:{-[NSXPCConnection effectiveUserIdentifier](self->_connection, "effectiveUserIdentifier")}];
+    [activityCopy setUserIdentifier:{-[NSXPCConnection effectiveUserIdentifier](self->_connection, "effectiveUserIdentifier")}];
   }
 
-  [v8 setPid:{-[NSXPCConnection processIdentifier](self->_connection, "processIdentifier")}];
-  [(_DASDaemonClient *)self setApplicationURLForActivity:v8];
+  [activityCopy setPid:{-[NSXPCConnection processIdentifier](self->_connection, "processIdentifier")}];
+  [(_DASDaemonClient *)self setApplicationURLForActivity:activityCopy];
   v11 = self->_submittedTasks;
   objc_sync_enter(v11);
-  [(NSMutableSet *)self->_submittedTasks _DAS_addOrReplaceObject:v8];
+  [(NSMutableSet *)self->_submittedTasks _DAS_addOrReplaceObject:activityCopy];
   objc_sync_exit(v11);
 
   v22 = 0;
@@ -1330,7 +1330,7 @@
   v15[3] = &unk_1001B8A38;
   v15[4] = &v22;
   v15[5] = &v16;
-  [(_DASDaemon *)daemon submitActivity:v8 inGroup:v9 withHandler:v15];
+  [(_DASDaemon *)daemon submitActivity:activityCopy inGroup:groupCopy withHandler:v15];
   if (v23[3])
   {
     v13 = 1;
@@ -1338,25 +1338,25 @@
 
   else
   {
-    v14 = self;
-    objc_sync_enter(v14);
-    [(NSMutableSet *)self->_submittedTasks removeObject:v8];
-    objc_sync_exit(v14);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    [(NSMutableSet *)self->_submittedTasks removeObject:activityCopy];
+    objc_sync_exit(selfCopy);
 
     v13 = *(v23 + 24);
   }
 
-  v10[2](v10, v13 & 1, v17[5]);
+  handlerCopy[2](handlerCopy, v13 & 1, v17[5]);
   _Block_object_dispose(&v16, 8);
 
   _Block_object_dispose(&v22, 8);
 }
 
-- (void)endLaunchWithReason:(id)a3 forApp:(id)a4
+- (void)endLaunchWithReason:(id)reason forApp:(id)app
 {
   if (self->_restricted)
   {
-    v6 = [_DASDaemonLogger logForCategory:@"bar", a4];
+    v6 = [_DASDaemonLogger logForCategory:@"bar", app];
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
       sub_10012B9C4(a2);
@@ -1369,16 +1369,16 @@
   {
     daemon = self->_daemon;
 
-    [(_DASDaemon *)daemon endLaunchWithReason:a3 forApp:a4];
+    [(_DASDaemon *)daemon endLaunchWithReason:reason forApp:app];
   }
 }
 
-- (void)backgroundAppRefreshEnabledForApp:(id)a3 withHandler:(id)a4
+- (void)backgroundAppRefreshEnabledForApp:(id)app withHandler:(id)handler
 {
   if (self->_restricted)
   {
-    v6 = [_DASDaemonLogger logForCategory:@"bar", a4];
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    handler = [_DASDaemonLogger logForCategory:@"bar", handler];
+    if (os_log_type_enabled(handler, OS_LOG_TYPE_ERROR))
     {
       sub_10012B9C4(a2);
     }
@@ -1390,11 +1390,11 @@
   {
     daemon = self->_daemon;
 
-    [(_DASDaemon *)daemon backgroundAppRefreshEnabledForApp:a3 withHandler:a4];
+    [(_DASDaemon *)daemon backgroundAppRefreshEnabledForApp:app withHandler:handler];
   }
 }
 
-- (void)disableAppRefreshForApps:(id)a3
+- (void)disableAppRefreshForApps:(id)apps
 {
   if (self->_restricted)
   {
@@ -1411,27 +1411,27 @@
   {
     daemon = self->_daemon;
 
-    [(_DASDaemon *)daemon disableAppRefreshForApps:a3];
+    [(_DASDaemon *)daemon disableAppRefreshForApps:apps];
   }
 }
 
 - (NSString)bundleIdentifier
 {
-  v2 = [(_DASDaemonClient *)self processHandle];
-  v3 = [v2 bundle];
-  v4 = [v3 identifier];
+  processHandle = [(_DASDaemonClient *)self processHandle];
+  bundle = [processHandle bundle];
+  identifier = [bundle identifier];
 
-  return v4;
+  return identifier;
 }
 
-- (BOOL)hasEntitlementsForRequestedResources:(int64_t)a3 error:(id *)a4
+- (BOOL)hasEntitlementsForRequestedResources:(int64_t)resources error:(id *)error
 {
-  if (a3)
+  if (resources)
   {
     v7 = [(NSXPCConnection *)self->_connection valueForEntitlement:@"com.apple.developer.background-tasks.continued-processing.gpu"];
-    v5 = [v7 BOOLValue];
+    bOOLValue = [v7 BOOLValue];
 
-    if (v5)
+    if (bOOLValue)
     {
       v4 = 0;
     }
@@ -1451,24 +1451,24 @@
     {
       v10 = [NSError errorWithDomain:_DASActivitySchedulerErrorDomain code:3 userInfo:&off_1001CAFB8];
 
-      v5 = 0;
+      bOOLValue = 0;
       v4 = v10;
     }
 
-    if (a4 && v4)
+    if (error && v4)
     {
       v11 = v4;
-      *a4 = v4;
+      *error = v4;
     }
   }
 
   else
   {
     v4 = 0;
-    v5 = 1;
+    bOOLValue = 1;
   }
 
-  return v5;
+  return bOOLValue;
 }
 
 - (BOOL)hasEntitlementForCustomIconBundleIdentifier
@@ -1476,50 +1476,50 @@
   v3 = [(NSXPCConnection *)self->_connection valueForEntitlement:@"com.apple.das.private.bgtask.continuedprocessing.iconBundleIdentifier"];
   if ([v3 BOOLValue])
   {
-    v4 = 1;
+    bOOLValue = 1;
   }
 
   else
   {
     v5 = [(NSXPCConnection *)self->_connection valueForEntitlement:@"com.apple.developer.web-browser-engine.networking"];
-    v4 = [v5 BOOLValue];
+    bOOLValue = [v5 BOOLValue];
   }
 
-  return v4;
+  return bOOLValue;
 }
 
-- (void)validateCTBGTaskRequestWithActivity:(id)a3
+- (void)validateCTBGTaskRequestWithActivity:(id)activity
 {
   daemon = self->_daemon;
-  v4 = a3;
-  v5 = [(_DASDaemon *)daemon enManager];
-  [v5 setIsENActivity:v4];
+  activityCopy = activity;
+  enManager = [(_DASDaemon *)daemon enManager];
+  [enManager setIsENActivity:activityCopy];
 }
 
-- (BOOL)isInternalContinuedProcessingActivity:(id)a3
+- (BOOL)isInternalContinuedProcessingActivity:(id)activity
 {
-  v3 = [a3 launchReason];
-  v4 = [v3 isEqualToString:_DASLaunchReasonContinuedProcessingInternal];
+  launchReason = [activity launchReason];
+  v4 = [launchReason isEqualToString:_DASLaunchReasonContinuedProcessingInternal];
 
   return v4;
 }
 
-- (void)submitTaskRequest:(id)a3 withHandler:(id)a4
+- (void)submitTaskRequest:(id)request withHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [_DASActivity validateBGTaskRequestWithActivity:v6];
+  requestCopy = request;
+  handlerCopy = handler;
+  v8 = [_DASActivity validateBGTaskRequestWithActivity:requestCopy];
   v9 = v8;
   if (!v8)
   {
     v24 = [NSError errorWithDomain:_DASActivitySchedulerErrorDomain code:3 userInfo:0];
-    v7[2](v7, v24);
+    handlerCopy[2](handlerCopy, v24);
 
     goto LABEL_73;
   }
 
-  v10 = [v8 launchReason];
-  v11 = [v10 isEqualToString:_DASLaunchReasonHealthResearch];
+  launchReason = [v8 launchReason];
+  v11 = [launchReason isEqualToString:_DASLaunchReasonHealthResearch];
 
   if (v11)
   {
@@ -1535,18 +1535,18 @@
       }
 
       v26 = [NSError errorWithDomain:_DASActivitySchedulerErrorDomain code:0 userInfo:0];
-      v7[2](v7, v26);
+      handlerCopy[2](handlerCopy, v26);
 
       goto LABEL_73;
     }
   }
 
-  v15 = [v9 isContinuedProcessingTask];
-  if (v15)
+  isContinuedProcessingTask = [v9 isContinuedProcessingTask];
+  if (isContinuedProcessingTask)
   {
-    v16 = [v9 continuedProcessingWrapper];
+    continuedProcessingWrapper = [v9 continuedProcessingWrapper];
     v83 = 0;
-    v17 = -[_DASDaemonClient hasEntitlementsForRequestedResources:error:](self, "hasEntitlementsForRequestedResources:error:", [v16 resources], &v83);
+    v17 = -[_DASDaemonClient hasEntitlementsForRequestedResources:error:](self, "hasEntitlementsForRequestedResources:error:", [continuedProcessingWrapper resources], &v83);
     v18 = v83;
 
     if ((v17 & 1) == 0)
@@ -1554,28 +1554,28 @@
       v27 = [_DASDaemonLogger logForCategory:@"BackgroundTasks"];
       if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
       {
-        v73 = [v9 name];
-        v74 = [(NSXPCConnection *)self->_connection processIdentifier];
+        name = [v9 name];
+        processIdentifier = [(NSXPCConnection *)self->_connection processIdentifier];
         *buf = 138543874;
-        *&buf[4] = v73;
+        *&buf[4] = name;
         *&buf[12] = 1024;
-        *&buf[14] = v74;
+        *&buf[14] = processIdentifier;
         *&buf[18] = 2112;
         *&buf[20] = v18;
         _os_log_error_impl(&_mh_execute_header, v27, OS_LOG_TYPE_ERROR, "%{public}@: Process %d not entitled for requested resources: %@", buf, 0x1Cu);
       }
 
-      v7[2](v7, v18);
+      handlerCopy[2](handlerCopy, v18);
       goto LABEL_72;
     }
 
-    v19 = [v9 continuedProcessingWrapper];
-    v20 = [v19 iconBundleIdentifier];
-    if (v20)
+    continuedProcessingWrapper2 = [v9 continuedProcessingWrapper];
+    iconBundleIdentifier = [continuedProcessingWrapper2 iconBundleIdentifier];
+    if (iconBundleIdentifier)
     {
-      v21 = [(_DASDaemonClient *)self hasEntitlementForCustomIconBundleIdentifier];
+      hasEntitlementForCustomIconBundleIdentifier = [(_DASDaemonClient *)self hasEntitlementForCustomIconBundleIdentifier];
 
-      if ((v21 & 1) == 0)
+      if ((hasEntitlementForCustomIconBundleIdentifier & 1) == 0)
       {
         v22 = [_DASDaemonLogger logForCategory:@"BackgroundTasks"];
         if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -1584,7 +1584,7 @@
         }
 
         v23 = [NSError errorWithDomain:_DASActivitySchedulerErrorDomain code:0 userInfo:0];
-        v7[2](v7, v23);
+        handlerCopy[2](handlerCopy, v23);
 
 LABEL_72:
         goto LABEL_73;
@@ -1597,34 +1597,34 @@ LABEL_72:
 
     if ([(_DASDaemonClient *)self isInternalContinuedProcessingActivity:v9])
     {
-      v28 = 1;
+      isForegroundAppProxy = 1;
     }
 
     else
     {
-      v29 = [v9 continuedProcessingWrapper];
-      v28 = [v29 isForegroundAppProxy];
+      continuedProcessingWrapper3 = [v9 continuedProcessingWrapper];
+      isForegroundAppProxy = [continuedProcessingWrapper3 isForegroundAppProxy];
     }
 
-    v30 = [(_DASDaemonClient *)self bundleIdentifier];
-    v31 = v30 == 0;
+    bundleIdentifier = [(_DASDaemonClient *)self bundleIdentifier];
+    v31 = bundleIdentifier == 0;
 
-    if ((v31 & v28) != 0)
+    if ((v31 & isForegroundAppProxy) != 0)
     {
       v32 = [_DASDaemonLogger logForCategory:@"BackgroundTasks"];
       if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
       {
-        v33 = [v9 name];
+        name2 = [v9 name];
         *buf = 138543362;
-        *&buf[4] = v33;
+        *&buf[4] = name2;
         _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEFAULT, "%{public}@: Accepting submission even though we were unable to resolve the submitting bundle identifier (internal submission)", buf, 0xCu);
       }
     }
 
     else
     {
-      v34 = [(_DASDaemonClient *)self bundleIdentifier];
-      v35 = v34 == 0;
+      bundleIdentifier2 = [(_DASDaemonClient *)self bundleIdentifier];
+      v35 = bundleIdentifier2 == 0;
 
       if (v35)
       {
@@ -1635,18 +1635,18 @@ LABEL_72:
         }
 
         v70 = [NSError errorWithDomain:_DASActivitySchedulerErrorDomain code:6 userInfo:0];
-        v7[2](v7, v70);
+        handlerCopy[2](handlerCopy, v70);
 
         goto LABEL_72;
       }
     }
 
-    v36 = [(_DASDaemonClient *)self rootBundleIdentifier];
-    if (v36)
+    rootBundleIdentifier = [(_DASDaemonClient *)self rootBundleIdentifier];
+    if (rootBundleIdentifier)
     {
-      v37 = [v9 clientProvidedIdentifier];
-      v38 = [(_DASDaemonClient *)self rootBundleIdentifier];
-      v39 = [v37 hasPrefix:v38];
+      clientProvidedIdentifier = [v9 clientProvidedIdentifier];
+      rootBundleIdentifier2 = [(_DASDaemonClient *)self rootBundleIdentifier];
+      v39 = [clientProvidedIdentifier hasPrefix:rootBundleIdentifier2];
     }
 
     else
@@ -1654,10 +1654,10 @@ LABEL_72:
       v39 = 0;
     }
 
-    v40 = [v9 continuedProcessingWrapper];
-    v41 = [v40 isForegroundAppProxy];
+    continuedProcessingWrapper4 = [v9 continuedProcessingWrapper];
+    isForegroundAppProxy2 = [continuedProcessingWrapper4 isForegroundAppProxy];
 
-    if (((v41 | v39) & 1) == 0)
+    if (((isForegroundAppProxy2 | v39) & 1) == 0)
     {
       v67 = [_DASDaemonLogger logForCategory:@"BackgroundTasks"];
       if (os_log_type_enabled(v67, OS_LOG_TYPE_ERROR))
@@ -1666,24 +1666,24 @@ LABEL_72:
       }
 
       v68 = [NSError errorWithDomain:_DASActivitySchedulerErrorDomain code:3 userInfo:0];
-      v7[2](v7, v68);
+      handlerCopy[2](handlerCopy, v68);
 
       goto LABEL_72;
     }
 
     v42 = +[_DASProcessLifecycleMonitor sharedMonitor];
-    v43 = [v42 foregroundedApplications];
+    foregroundedApplications = [v42 foregroundedApplications];
 
-    v44 = [(_DASDaemonClient *)self rootBundleIdentifier];
-    v45 = [v9 continuedProcessingWrapper];
-    v46 = [v45 isForegroundAppProxy];
+    rootBundleIdentifier3 = [(_DASDaemonClient *)self rootBundleIdentifier];
+    continuedProcessingWrapper5 = [v9 continuedProcessingWrapper];
+    isForegroundAppProxy3 = [continuedProcessingWrapper5 isForegroundAppProxy];
 
-    if (v46)
+    if (isForegroundAppProxy3)
     {
-      v47 = [v9 relatedApplications];
-      v48 = [v47 firstObject];
+      relatedApplications = [v9 relatedApplications];
+      firstObject = [relatedApplications firstObject];
 
-      v44 = v48;
+      rootBundleIdentifier3 = firstObject;
     }
 
     v49 = [_DASDaemonLogger logForCategory:@"BackgroundTasks"];
@@ -1692,34 +1692,34 @@ LABEL_72:
       sub_10012C10C(v9, self, v49);
     }
 
-    if (!-[_DASDaemonClient isInternalContinuedProcessingActivity:](self, "isInternalContinuedProcessingActivity:", v9) && ([v43 containsObject:v44] & 1) == 0)
+    if (!-[_DASDaemonClient isInternalContinuedProcessingActivity:](self, "isInternalContinuedProcessingActivity:", v9) && ([foregroundedApplications containsObject:rootBundleIdentifier3] & 1) == 0)
     {
       v71 = [_DASDaemonLogger logForCategory:@"BackgroundTasks"];
       if (os_log_type_enabled(v71, OS_LOG_TYPE_ERROR))
       {
-        v75 = [v9 name];
-        v76 = [(_DASDaemonClient *)self rootBundleIdentifier];
+        name3 = [v9 name];
+        rootBundleIdentifier4 = [(_DASDaemonClient *)self rootBundleIdentifier];
         *buf = 138543874;
-        *&buf[4] = v75;
+        *&buf[4] = name3;
         *&buf[12] = 2112;
-        *&buf[14] = v43;
+        *&buf[14] = foregroundedApplications;
         *&buf[22] = 2112;
-        *&buf[24] = v76;
+        *&buf[24] = rootBundleIdentifier4;
         _os_log_error_impl(&_mh_execute_header, v71, OS_LOG_TYPE_ERROR, "%{public}@: Foregrounded apps (%@) don't include expected identifier: %@", buf, 0x20u);
       }
 
       v72 = [NSError errorWithDomain:_DASActivitySchedulerErrorDomain code:0 userInfo:0];
-      v7[2](v7, v72);
+      handlerCopy[2](handlerCopy, v72);
 
       goto LABEL_73;
     }
   }
 
-  v50 = [v9 clientProvidedIdentifier];
-  if ([v50 hasPrefix:@"com.apple."])
+  clientProvidedIdentifier2 = [v9 clientProvidedIdentifier];
+  if ([clientProvidedIdentifier2 hasPrefix:@"com.apple."])
   {
-    v51 = [(_DASDaemonClient *)self bundleIdentifier];
-    v52 = [v51 hasPrefix:@"com.apple."];
+    bundleIdentifier3 = [(_DASDaemonClient *)self bundleIdentifier];
+    v52 = [bundleIdentifier3 hasPrefix:@"com.apple."];
 
     if ((v52 & 1) == 0)
     {
@@ -1730,7 +1730,7 @@ LABEL_72:
       }
 
       v54 = [NSError errorWithDomain:_DASActivitySchedulerErrorDomain code:3 userInfo:0];
-      v7[2](v7, v54);
+      handlerCopy[2](handlerCopy, v54);
 
       goto LABEL_73;
     }
@@ -1740,22 +1740,22 @@ LABEL_72:
   {
   }
 
-  v55 = [(_DASDaemonClient *)self rootBundleIdentifier];
-  if (v55)
+  rootBundleIdentifier5 = [(_DASDaemonClient *)self rootBundleIdentifier];
+  if (rootBundleIdentifier5)
   {
-    v56 = [v9 relatedApplications];
-    v57 = [v56 count] == 0;
+    relatedApplications2 = [v9 relatedApplications];
+    v57 = [relatedApplications2 count] == 0;
 
     if (v57)
     {
-      v58 = [(_DASDaemonClient *)self rootBundleIdentifier];
-      v87 = v58;
+      rootBundleIdentifier6 = [(_DASDaemonClient *)self rootBundleIdentifier];
+      v87 = rootBundleIdentifier6;
       v59 = [NSArray arrayWithObjects:&v87 count:1];
       [v9 setRelatedApplications:v59];
     }
   }
 
-  if (v15)
+  if (isContinuedProcessingTask)
   {
     [v9 setShouldBePersisted:1];
     [v9 setSuspendable:1];
@@ -1815,7 +1815,7 @@ LABEL_72:
       v66 = *(*&buf[8] + 40);
     }
 
-    v7[2](v7, v66);
+    handlerCopy[2](handlerCopy, v66);
     _Block_object_dispose(&v78, 8);
     _Block_object_dispose(buf, 8);
   }
@@ -1827,19 +1827,19 @@ LABEL_72:
       sub_10012C2A8();
     }
 
-    v7[2](v7, v62);
+    handlerCopy[2](handlerCopy, v62);
   }
 
 LABEL_73:
 }
 
-- (void)getPendingTaskRequestsWithCompletionHandler:(id)a3
+- (void)getPendingTaskRequestsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(_DASDaemonClient *)self rootBundleIdentifier];
-  if (v5)
+  handlerCopy = handler;
+  rootBundleIdentifier = [(_DASDaemonClient *)self rootBundleIdentifier];
+  if (rootBundleIdentifier)
   {
-    [(_DASDaemon *)self->_daemon getPendingTaskRequestsForApplication:v5 withCompletionHandler:v4];
+    [(_DASDaemon *)self->_daemon getPendingTaskRequestsForApplication:rootBundleIdentifier withCompletionHandler:handlerCopy];
   }
 
   else
@@ -1851,18 +1851,18 @@ LABEL_73:
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "App missing application-identifier", v7, 2u);
     }
 
-    v4[2](v4, &__NSArray0__struct);
+    handlerCopy[2](handlerCopy, &__NSArray0__struct);
   }
 }
 
-- (void)cancelTaskRequestWithIdentifier:(id)a3 completionHandler:(id)a4
+- (void)cancelTaskRequestWithIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(_DASDaemonClient *)self rootBundleIdentifier];
-  if (v8)
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  rootBundleIdentifier = [(_DASDaemonClient *)self rootBundleIdentifier];
+  if (rootBundleIdentifier)
   {
-    [(_DASDaemon *)self->_daemon cancelTaskRequestWithIdentifier:v6 forApplication:v8];
+    [(_DASDaemon *)self->_daemon cancelTaskRequestWithIdentifier:identifierCopy forApplication:rootBundleIdentifier];
   }
 
   else
@@ -1875,16 +1875,16 @@ LABEL_73:
     }
   }
 
-  v7[2](v7);
+  handlerCopy[2](handlerCopy);
 }
 
-- (void)cancelAllTaskRequestsWithCompletionHandler:(id)a3
+- (void)cancelAllTaskRequestsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(_DASDaemonClient *)self rootBundleIdentifier];
-  if (v5)
+  handlerCopy = handler;
+  rootBundleIdentifier = [(_DASDaemonClient *)self rootBundleIdentifier];
+  if (rootBundleIdentifier)
   {
-    [(_DASDaemon *)self->_daemon cancelAllTaskRequestsForApplication:v5];
+    [(_DASDaemon *)self->_daemon cancelAllTaskRequestsForApplication:rootBundleIdentifier];
   }
 
   else
@@ -1897,34 +1897,34 @@ LABEL_73:
     }
   }
 
-  v4[2](v4);
+  handlerCopy[2](handlerCopy);
 }
 
-- (void)handleLaunchFromDaemonForActivities:(id)a3
+- (void)handleLaunchFromDaemonForActivities:(id)activities
 {
-  v4 = a3;
+  activitiesCopy = activities;
   v5 = [_DASDaemonLogger logForCategory:@"BackgroundTasks"];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412546;
-    v9 = self;
+    selfCopy = self;
     v10 = 2112;
-    v11 = v4;
+    v11 = activitiesCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Telling client %@ to handle activities: %@", &v8, 0x16u);
   }
 
   v6 = self->_runningBGTasks;
   objc_sync_enter(v6);
-  [(NSMutableSet *)self->_runningBGTasks unionSet:v4];
+  [(NSMutableSet *)self->_runningBGTasks unionSet:activitiesCopy];
   objc_sync_exit(v6);
 
-  v7 = [(NSXPCConnection *)self->_connection remoteObjectProxy];
-  [v7 handleLaunchFromDaemonForActivities:v4];
+  remoteObjectProxy = [(NSXPCConnection *)self->_connection remoteObjectProxy];
+  [remoteObjectProxy handleLaunchFromDaemonForActivities:activitiesCopy];
 }
 
-- (void)willExpireBGTaskActivities:(id)a3
+- (void)willExpireBGTaskActivities:(id)activities
 {
-  v4 = a3;
+  activitiesCopy = activities;
   v5 = +[NSMutableSet set];
   v6 = self->_runningBGTasks;
   objc_sync_enter(v6);
@@ -1932,7 +1932,7 @@ LABEL_73:
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v7 = v4;
+  v7 = activitiesCopy;
   v8 = [v7 countByEnumeratingWithState:&v14 objects:v22 count:16];
   if (v8)
   {
@@ -1966,60 +1966,60 @@ LABEL_73:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v19 = self;
+      selfCopy = self;
       v20 = 2112;
       v21 = v5;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Warning client %@ for activities about to expire: %@", buf, 0x16u);
     }
 
-    v13 = [(NSXPCConnection *)self->_connection remoteObjectProxy];
-    [v13 willExpireBGTaskActivities:v5];
+    remoteObjectProxy = [(NSXPCConnection *)self->_connection remoteObjectProxy];
+    [remoteObjectProxy willExpireBGTaskActivities:v5];
   }
 }
 
-- (void)establishConnection:(id)a3
+- (void)establishConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v5 = [_DASDaemonLogger logForCategory:@"BackgroundTasks"];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Establishing connection from client: %@", &v6, 0xCu);
   }
 
-  [(_DASDaemon *)self->_daemon establishConnectionFromClient:self withCompletionHandler:v4];
+  [(_DASDaemon *)self->_daemon establishConnectionFromClient:self withCompletionHandler:connectionCopy];
 }
 
-- (void)updateOngoingTask:(id)a3 completionHandler:(id)a4
+- (void)updateOngoingTask:(id)task completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  taskCopy = task;
+  handlerCopy = handler;
   v8 = [_DASDaemonLogger logForCategory:@"BackgroundTasks"];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     sub_10012C4D0();
   }
 
-  [(_DASDaemon *)self->_daemon updateOngoingTask:v6 completionHandler:v7];
+  [(_DASDaemon *)self->_daemon updateOngoingTask:taskCopy completionHandler:handlerCopy];
 }
 
-- (void)updateProgressForOngoingTask:(id)a3 completionHandler:(id)a4
+- (void)updateProgressForOngoingTask:(id)task completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  taskCopy = task;
+  handlerCopy = handler;
   v8 = [_DASDaemonLogger logForCategory:@"BackgroundTasks"];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    sub_10012C544(v6);
+    sub_10012C544(taskCopy);
   }
 
-  [(_DASDaemon *)self->_daemon updateProgressForOngoingTask:v6 completionHandler:v7];
+  [(_DASDaemon *)self->_daemon updateProgressForOngoingTask:taskCopy completionHandler:handlerCopy];
 }
 
-- (void)continuedProcessingDeviceCapabilities:(id)a3
+- (void)continuedProcessingDeviceCapabilities:(id)capabilities
 {
-  v4 = a3;
+  capabilitiesCopy = capabilities;
   v5 = [_DASDaemonLogger logForCategory:@"BackgroundTasks"];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -2027,137 +2027,137 @@ LABEL_73:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Queried for device resource capabilities", v6, 2u);
   }
 
-  [(_DASDaemon *)self->_daemon continuedProcessingDeviceCapabilities:v4];
+  [(_DASDaemon *)self->_daemon continuedProcessingDeviceCapabilities:capabilitiesCopy];
 }
 
-- (void)acknowledgeSystemTaskLaunchWithIdentifier:(id)a3 completionHandler:(id)a4
+- (void)acknowledgeSystemTaskLaunchWithIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  identifierCopy = identifier;
   v8 = +[_DASBGSystemTaskHelper sharedInstance];
-  [v8 acknowledgeSystemTaskLaunchWithIdentifier:v7 withPID:-[NSXPCConnection processIdentifier](self->_connection withUID:"processIdentifier") completionHandler:{-[NSXPCConnection effectiveUserIdentifier](self->_connection, "effectiveUserIdentifier"), v6}];
+  [v8 acknowledgeSystemTaskLaunchWithIdentifier:identifierCopy withPID:-[NSXPCConnection processIdentifier](self->_connection withUID:"processIdentifier") completionHandler:{-[NSXPCConnection effectiveUserIdentifier](self->_connection, "effectiveUserIdentifier"), handlerCopy}];
 }
 
-- (void)acknowledgeSystemTaskSuspensionWithIdentifier:(id)a3 retryAfter:(double)a4 completionHandler:(id)a5
+- (void)acknowledgeSystemTaskSuspensionWithIdentifier:(id)identifier retryAfter:(double)after completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a3;
+  handlerCopy = handler;
+  identifierCopy = identifier;
   v10 = +[_DASBGSystemTaskHelper sharedInstance];
-  [v10 acknowledgeSystemTaskSuspensionWithIdentifier:v9 withPID:-[NSXPCConnection processIdentifier](self->_connection withUID:"processIdentifier") retryAfter:-[NSXPCConnection effectiveUserIdentifier](self->_connection completionHandler:{"effectiveUserIdentifier"), v8, a4}];
+  [v10 acknowledgeSystemTaskSuspensionWithIdentifier:identifierCopy withPID:-[NSXPCConnection processIdentifier](self->_connection withUID:"processIdentifier") retryAfter:-[NSXPCConnection effectiveUserIdentifier](self->_connection completionHandler:{"effectiveUserIdentifier"), handlerCopy, after}];
 }
 
-- (void)handleClientLedSystemTaskExpirationWithIdentifier:(id)a3 retryAfter:(double)a4 completionHandler:(id)a5
+- (void)handleClientLedSystemTaskExpirationWithIdentifier:(id)identifier retryAfter:(double)after completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a3;
+  handlerCopy = handler;
+  identifierCopy = identifier;
   v10 = +[_DASBGSystemTaskHelper sharedInstance];
-  [v10 handleClientLedSystemTaskExpirationWithIdentifier:v9 withPID:-[NSXPCConnection processIdentifier](self->_connection withUID:"processIdentifier") retryAfter:-[NSXPCConnection effectiveUserIdentifier](self->_connection completionHandler:{"effectiveUserIdentifier"), v8, a4}];
+  [v10 handleClientLedSystemTaskExpirationWithIdentifier:identifierCopy withPID:-[NSXPCConnection processIdentifier](self->_connection withUID:"processIdentifier") retryAfter:-[NSXPCConnection effectiveUserIdentifier](self->_connection completionHandler:{"effectiveUserIdentifier"), handlerCopy, after}];
 }
 
-- (void)handleClientFailedtoExpireTaskWithIdentifier:(id)a3 completionHandler:(id)a4
+- (void)handleClientFailedtoExpireTaskWithIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  identifierCopy = identifier;
   v8 = +[_DASBGSystemTaskHelper sharedInstance];
-  [v8 handleClientFailedtoExpireTaskWithIdentifier:v7 withPID:-[NSXPCConnection processIdentifier](self->_connection withUID:"processIdentifier") completionHandler:{-[NSXPCConnection effectiveUserIdentifier](self->_connection, "effectiveUserIdentifier"), v6}];
+  [v8 handleClientFailedtoExpireTaskWithIdentifier:identifierCopy withPID:-[NSXPCConnection processIdentifier](self->_connection withUID:"processIdentifier") completionHandler:{-[NSXPCConnection effectiveUserIdentifier](self->_connection, "effectiveUserIdentifier"), handlerCopy}];
 }
 
-- (void)submitTaskRequestWithIdentifier:(id)a3 descriptor:(id)a4 completionHandler:(id)a5
+- (void)submitTaskRequestWithIdentifier:(id)identifier descriptor:(id)descriptor completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  handlerCopy = handler;
+  descriptorCopy = descriptor;
+  identifierCopy = identifier;
   v11 = +[_DASBGSystemTaskHelper sharedInstance];
-  [v11 submitTaskRequestWithIdentifier:v10 descriptor:v9 withPID:-[NSXPCConnection processIdentifier](self->_connection withUID:"processIdentifier") completionHandler:{-[NSXPCConnection effectiveUserIdentifier](self->_connection, "effectiveUserIdentifier"), v8}];
+  [v11 submitTaskRequestWithIdentifier:identifierCopy descriptor:descriptorCopy withPID:-[NSXPCConnection processIdentifier](self->_connection withUID:"processIdentifier") completionHandler:{-[NSXPCConnection effectiveUserIdentifier](self->_connection, "effectiveUserIdentifier"), handlerCopy}];
 }
 
-- (void)updateTaskRequestWithIdentifier:(id)a3 descriptor:(id)a4 completionHandler:(id)a5
+- (void)updateTaskRequestWithIdentifier:(id)identifier descriptor:(id)descriptor completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  handlerCopy = handler;
+  descriptorCopy = descriptor;
+  identifierCopy = identifier;
   v11 = +[_DASBGSystemTaskHelper sharedInstance];
-  [v11 updateTaskRequestWithIdentifier:v10 descriptor:v9 withPID:-[NSXPCConnection processIdentifier](self->_connection withUID:"processIdentifier") completionHandler:{-[NSXPCConnection effectiveUserIdentifier](self->_connection, "effectiveUserIdentifier"), v8}];
+  [v11 updateTaskRequestWithIdentifier:identifierCopy descriptor:descriptorCopy withPID:-[NSXPCConnection processIdentifier](self->_connection withUID:"processIdentifier") completionHandler:{-[NSXPCConnection effectiveUserIdentifier](self->_connection, "effectiveUserIdentifier"), handlerCopy}];
 }
 
-- (void)completeSystemTaskWithIdentifier:(id)a3 completionHandler:(id)a4
+- (void)completeSystemTaskWithIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  identifierCopy = identifier;
   v8 = +[_DASBGSystemTaskHelper sharedInstance];
-  [v8 completeSystemTaskWithIdentifier:v7 withPID:-[NSXPCConnection processIdentifier](self->_connection withUID:"processIdentifier") completionHandler:{-[NSXPCConnection effectiveUserIdentifier](self->_connection, "effectiveUserIdentifier"), v6}];
+  [v8 completeSystemTaskWithIdentifier:identifierCopy withPID:-[NSXPCConnection processIdentifier](self->_connection withUID:"processIdentifier") completionHandler:{-[NSXPCConnection effectiveUserIdentifier](self->_connection, "effectiveUserIdentifier"), handlerCopy}];
 }
 
-- (void)resumeTaskSchedulingWithIdentifier:(id)a3 completionHandler:(id)a4
+- (void)resumeTaskSchedulingWithIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  identifierCopy = identifier;
   v8 = +[_DASBGSystemTaskHelper sharedInstance];
-  [v8 resumeTaskSchedulingWithIdentifier:v7 withPID:-[NSXPCConnection processIdentifier](self->_connection withUID:"processIdentifier") completionHandler:{-[NSXPCConnection effectiveUserIdentifier](self->_connection, "effectiveUserIdentifier"), v6}];
+  [v8 resumeTaskSchedulingWithIdentifier:identifierCopy withPID:-[NSXPCConnection processIdentifier](self->_connection withUID:"processIdentifier") completionHandler:{-[NSXPCConnection effectiveUserIdentifier](self->_connection, "effectiveUserIdentifier"), handlerCopy}];
 }
 
-- (void)unregisterSystemTaskWithIdentifier:(id)a3 completionHandler:(id)a4
+- (void)unregisterSystemTaskWithIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  identifierCopy = identifier;
   v8 = +[_DASBGSystemTaskHelper sharedInstance];
-  [v8 unregisterSystemTaskWithIdentifier:v7 withPID:-[NSXPCConnection processIdentifier](self->_connection withUID:"processIdentifier") completionHandler:{-[NSXPCConnection effectiveUserIdentifier](self->_connection, "effectiveUserIdentifier"), v6}];
+  [v8 unregisterSystemTaskWithIdentifier:identifierCopy withPID:-[NSXPCConnection processIdentifier](self->_connection withUID:"processIdentifier") completionHandler:{-[NSXPCConnection effectiveUserIdentifier](self->_connection, "effectiveUserIdentifier"), handlerCopy}];
 }
 
-- (void)reportSystemTaskWithIdentifier:(id)a3 producedResults:(id)a4 completionHandler:(id)a5
+- (void)reportSystemTaskWithIdentifier:(id)identifier producedResults:(id)results completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  handlerCopy = handler;
+  resultsCopy = results;
+  identifierCopy = identifier;
   v11 = +[_DASBGSystemTaskHelper sharedInstance];
-  [v11 reportSystemTaskWithIdentifier:v10 producedResults:v9 withPID:-[NSXPCConnection processIdentifier](self->_connection withUID:"processIdentifier") completionHandler:{-[NSXPCConnection effectiveUserIdentifier](self->_connection, "effectiveUserIdentifier"), v8}];
+  [v11 reportSystemTaskWithIdentifier:identifierCopy producedResults:resultsCopy withPID:-[NSXPCConnection processIdentifier](self->_connection withUID:"processIdentifier") completionHandler:{-[NSXPCConnection effectiveUserIdentifier](self->_connection, "effectiveUserIdentifier"), handlerCopy}];
 }
 
-- (void)reportSystemTaskWithIdentifier:(id)a3 consumedResults:(id)a4 completionHandler:(id)a5
+- (void)reportSystemTaskWithIdentifier:(id)identifier consumedResults:(id)results completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  handlerCopy = handler;
+  resultsCopy = results;
+  identifierCopy = identifier;
   v11 = +[_DASBGSystemTaskHelper sharedInstance];
-  [v11 reportSystemTaskWithIdentifier:v10 consumedResults:v9 withPID:-[NSXPCConnection processIdentifier](self->_connection withUID:"processIdentifier") completionHandler:{-[NSXPCConnection effectiveUserIdentifier](self->_connection, "effectiveUserIdentifier"), v8}];
+  [v11 reportSystemTaskWithIdentifier:identifierCopy consumedResults:resultsCopy withPID:-[NSXPCConnection processIdentifier](self->_connection withUID:"processIdentifier") completionHandler:{-[NSXPCConnection effectiveUserIdentifier](self->_connection, "effectiveUserIdentifier"), handlerCopy}];
 }
 
-- (void)resetResultsForIdentifier:(id)a3 byTaskWithIdentifier:(id)a4 completionHandler:(id)a5
+- (void)resetResultsForIdentifier:(id)identifier byTaskWithIdentifier:(id)withIdentifier completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  handlerCopy = handler;
+  withIdentifierCopy = withIdentifier;
+  identifierCopy = identifier;
   v11 = +[_DASBGSystemTaskHelper sharedInstance];
-  [v11 resetResultsForIdentifier:v10 byTaskWithIdentifier:v9 withPID:-[NSXPCConnection processIdentifier](self->_connection withUID:"processIdentifier") completionHandler:{-[NSXPCConnection effectiveUserIdentifier](self->_connection, "effectiveUserIdentifier"), v8}];
+  [v11 resetResultsForIdentifier:identifierCopy byTaskWithIdentifier:withIdentifierCopy withPID:-[NSXPCConnection processIdentifier](self->_connection withUID:"processIdentifier") completionHandler:{-[NSXPCConnection effectiveUserIdentifier](self->_connection, "effectiveUserIdentifier"), handlerCopy}];
 }
 
-- (void)reportTaskWorkloadProgress:(id)a3 target:(unint64_t)a4 completed:(unint64_t)a5 category:(unint64_t)a6 subCategory:(id)a7 completionHandler:(id)a8
+- (void)reportTaskWorkloadProgress:(id)progress target:(unint64_t)target completed:(unint64_t)completed category:(unint64_t)category subCategory:(id)subCategory completionHandler:(id)handler
 {
-  v14 = a8;
-  v15 = a7;
-  v16 = a3;
+  handlerCopy = handler;
+  subCategoryCopy = subCategory;
+  progressCopy = progress;
   v19 = +[_DASBGSystemTaskHelper sharedInstance];
-  v17 = [(NSXPCConnection *)self->_connection processIdentifier];
+  processIdentifier = [(NSXPCConnection *)self->_connection processIdentifier];
   LODWORD(v18) = [(NSXPCConnection *)self->_connection effectiveUserIdentifier];
-  [v19 recordTaskWorkloadProgress:v16 target:a4 completed:a5 category:a6 subCategory:v15 withPID:v17 withUID:v18 completionHandler:v14];
+  [v19 recordTaskWorkloadProgress:progressCopy target:target completed:completed category:category subCategory:subCategoryCopy withPID:processIdentifier withUID:v18 completionHandler:handlerCopy];
 }
 
-- (void)inspect:(id)a3 withHandler:(id)a4
+- (void)inspect:(id)inspect withHandler:(id)handler
 {
-  v5 = a4;
-  v6 = a3;
+  handlerCopy = handler;
+  inspectCopy = inspect;
   v7 = +[_DASBGSystemTaskHelper sharedInstance];
-  [v7 inspect:v6 withHandler:v5];
+  [v7 inspect:inspectCopy withHandler:handlerCopy];
 }
 
-- (void)resubmitRunningTasks:(id)a3
+- (void)resubmitRunningTasks:(id)tasks
 {
-  v4 = a3;
+  tasksCopy = tasks;
   v5 = +[_DASBGSystemTaskHelper sharedInstance];
-  [v5 resubmitRunningTasks:v4 withPID:-[NSXPCConnection processIdentifier](self->_connection withUID:{"processIdentifier"), -[NSXPCConnection effectiveUserIdentifier](self->_connection, "effectiveUserIdentifier")}];
+  [v5 resubmitRunningTasks:tasksCopy withPID:-[NSXPCConnection processIdentifier](self->_connection withUID:{"processIdentifier"), -[NSXPCConnection effectiveUserIdentifier](self->_connection, "effectiveUserIdentifier")}];
 }
 
-- (void)submittedActivitiesWithHandler:(id)a3
+- (void)submittedActivitiesWithHandler:(id)handler
 {
   if (self->_restricted)
   {
@@ -2174,11 +2174,11 @@ LABEL_73:
   {
     daemon = self->_daemon;
 
-    [(_DASDaemon *)daemon submittedActivitiesWithHandler:a3];
+    [(_DASDaemon *)daemon submittedActivitiesWithHandler:handler];
   }
 }
 
-- (void)delayedRunningActivitiesWithHandler:(id)a3
+- (void)delayedRunningActivitiesWithHandler:(id)handler
 {
   if (self->_restricted)
   {
@@ -2195,11 +2195,11 @@ LABEL_73:
   {
     daemon = self->_daemon;
 
-    [(_DASDaemon *)daemon delayedRunningActivitiesWithHandler:a3];
+    [(_DASDaemon *)daemon delayedRunningActivitiesWithHandler:handler];
   }
 }
 
-- (void)runningActivitiesWithHandler:(id)a3
+- (void)runningActivitiesWithHandler:(id)handler
 {
   if (self->_restricted)
   {
@@ -2216,11 +2216,11 @@ LABEL_73:
   {
     daemon = self->_daemon;
 
-    [(_DASDaemon *)daemon runningActivitiesWithHandler:a3];
+    [(_DASDaemon *)daemon runningActivitiesWithHandler:handler];
   }
 }
 
-- (void)runningGroupActivitiesWithHandler:(id)a3
+- (void)runningGroupActivitiesWithHandler:(id)handler
 {
   if (self->_restricted)
   {
@@ -2237,14 +2237,14 @@ LABEL_73:
   {
     daemon = self->_daemon;
 
-    [(_DASDaemon *)daemon runningGroupActivitiesWithHandler:a3];
+    [(_DASDaemon *)daemon runningGroupActivitiesWithHandler:handler];
   }
 }
 
-- (void)forceRunActivities:(id)a3
+- (void)forceRunActivities:(id)activities
 {
-  v5 = a3;
-  v6 = v5;
+  activitiesCopy = activities;
+  v6 = activitiesCopy;
   if (self->_restricted)
   {
     v7 = [_DASDaemonLogger logForCategory:@"bar"];
@@ -2263,18 +2263,18 @@ LABEL_73:
     v13[2] = sub_1000F7D2C;
     v13[3] = &unk_1001B56E0;
     v13[4] = self;
-    v14 = v5;
+    v14 = activitiesCopy;
     v8 = dispatch_block_create(DISPATCH_BLOCK_DETACHED, v13);
     v8[2](v8, v9, v10, v11, v12);
   }
 }
 
-- (void)runActivitiesWithUrgency:(int64_t)a3 activities:(id)a4
+- (void)runActivitiesWithUrgency:(int64_t)urgency activities:(id)activities
 {
   if (self->_restricted)
   {
-    v6 = [_DASDaemonLogger logForCategory:@"bar", a4];
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    activities = [_DASDaemonLogger logForCategory:@"bar", activities];
+    if (os_log_type_enabled(activities, OS_LOG_TYPE_ERROR))
     {
       sub_10012B9C4(a2);
     }
@@ -2286,16 +2286,16 @@ LABEL_73:
   {
     daemon = self->_daemon;
 
-    [(_DASDaemon *)daemon runActivitiesWithUrgency:a3 activities:a4];
+    [(_DASDaemon *)daemon runActivitiesWithUrgency:urgency activities:activities];
   }
 }
 
-- (void)deferActivities:(id)a3 withHandler:(id)a4
+- (void)deferActivities:(id)activities withHandler:(id)handler
 {
   if (self->_restricted)
   {
-    v6 = [_DASDaemonLogger logForCategory:@"bar", a4];
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    handler = [_DASDaemonLogger logForCategory:@"bar", handler];
+    if (os_log_type_enabled(handler, OS_LOG_TYPE_ERROR))
     {
       sub_10012B9C4(a2);
     }
@@ -2307,53 +2307,11 @@ LABEL_73:
   {
     daemon = self->_daemon;
 
-    [(_DASDaemon *)daemon deferActivities:a3 withHandler:a4];
+    [(_DASDaemon *)daemon deferActivities:activities withHandler:handler];
   }
 }
 
-- (void)currentPredictionsWithHandler:(id)a3
-{
-  if (self->_restricted)
-  {
-    v5 = [_DASDaemonLogger logForCategory:@"bar"];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
-    {
-      sub_10012B9C4(a2);
-    }
-
-    [(NSXPCConnection *)self->_connection invalidate];
-  }
-
-  else
-  {
-    daemon = self->_daemon;
-
-    [(_DASDaemon *)daemon currentPredictionsWithHandler:a3];
-  }
-}
-
-- (void)currentAllocations:(unint64_t)a3 timeFilter:(id)a4 bgsqlData:(id)a5 withHandler:(id)a6
-{
-  if (self->_restricted)
-  {
-    v8 = [_DASDaemonLogger logForCategory:@"bar", a4, a5, a6];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
-    {
-      sub_10012B9C4(a2);
-    }
-
-    [(NSXPCConnection *)self->_connection invalidate];
-  }
-
-  else
-  {
-    daemon = self->_daemon;
-
-    [(_DASDaemon *)daemon currentAllocations:a3 timeFilter:a4 bgsqlData:a5 withHandler:a6];
-  }
-}
-
-- (void)statisticsWithHandler:(id)a3
+- (void)currentPredictionsWithHandler:(id)handler
 {
   if (self->_restricted)
   {
@@ -2370,13 +2328,55 @@ LABEL_73:
   {
     daemon = self->_daemon;
 
-    [(_DASDaemon *)daemon statisticsWithHandler:a3];
+    [(_DASDaemon *)daemon currentPredictionsWithHandler:handler];
   }
 }
 
-- (void)forceResetOfResultIdentifier:(id)a3
+- (void)currentAllocations:(unint64_t)allocations timeFilter:(id)filter bgsqlData:(id)data withHandler:(id)handler
 {
-  v5 = a3;
+  if (self->_restricted)
+  {
+    handler = [_DASDaemonLogger logForCategory:@"bar", filter, data, handler];
+    if (os_log_type_enabled(handler, OS_LOG_TYPE_ERROR))
+    {
+      sub_10012B9C4(a2);
+    }
+
+    [(NSXPCConnection *)self->_connection invalidate];
+  }
+
+  else
+  {
+    daemon = self->_daemon;
+
+    [(_DASDaemon *)daemon currentAllocations:allocations timeFilter:filter bgsqlData:data withHandler:handler];
+  }
+}
+
+- (void)statisticsWithHandler:(id)handler
+{
+  if (self->_restricted)
+  {
+    v5 = [_DASDaemonLogger logForCategory:@"bar"];
+    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    {
+      sub_10012B9C4(a2);
+    }
+
+    [(NSXPCConnection *)self->_connection invalidate];
+  }
+
+  else
+  {
+    daemon = self->_daemon;
+
+    [(_DASDaemon *)daemon statisticsWithHandler:handler];
+  }
+}
+
+- (void)forceResetOfResultIdentifier:(id)identifier
+{
+  identifierCopy = identifier;
   if (self->_restricted)
   {
     v6 = [_DASDaemonLogger logForCategory:@"dependencies"];
@@ -2391,14 +2391,14 @@ LABEL_73:
   else
   {
     v7 = +[_DASActivityDependencyManager sharedInstance];
-    [v7 dastool_forceResetOfResultIdentifier:v5];
+    [v7 dastool_forceResetOfResultIdentifier:identifierCopy];
   }
 }
 
-- (void)queryStatusOfResultIdentifier:(id)a3 withHandler:(id)a4
+- (void)queryStatusOfResultIdentifier:(id)identifier withHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   if (self->_restricted)
   {
     v9 = [_DASDaemonLogger logForCategory:@"dependencies"];
@@ -2413,16 +2413,16 @@ LABEL_73:
   else
   {
     v10 = +[_DASActivityDependencyManager sharedInstance];
-    v11 = [v10 dastool_queryStatusOfResultIdentifier:v7];
+    v11 = [v10 dastool_queryStatusOfResultIdentifier:identifierCopy];
 
-    v8[2](v8, v11);
+    handlerCopy[2](handlerCopy, v11);
   }
 }
 
-- (void)queryDependenciesOfTaskIdentifier:(id)a3 withHandler:(id)a4
+- (void)queryDependenciesOfTaskIdentifier:(id)identifier withHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   if (self->_restricted)
   {
     v9 = [_DASDaemonLogger logForCategory:@"dependencies"];
@@ -2436,7 +2436,7 @@ LABEL_73:
 
   else
   {
-    v10 = [(_DASDaemon *)self->_daemon getActivityWithName:v7];
+    v10 = [(_DASDaemon *)self->_daemon getActivityWithName:identifierCopy];
     if (v10)
     {
       v11 = +[NSMutableDictionary dictionary];
@@ -2445,8 +2445,8 @@ LABEL_73:
       v26 = 0u;
       v27 = 0u;
       v23 = v10;
-      v12 = [v10 dependencies];
-      v13 = [v12 countByEnumeratingWithState:&v24 objects:v32 count:16];
+      dependencies = [v10 dependencies];
+      v13 = [dependencies countByEnumeratingWithState:&v24 objects:v32 count:16];
       if (v13)
       {
         v14 = v13;
@@ -2457,7 +2457,7 @@ LABEL_73:
           {
             if (*v25 != v15)
             {
-              objc_enumerationMutation(v12);
+              objc_enumerationMutation(dependencies);
             }
 
             v17 = *(*(&v24 + 1) + 8 * i);
@@ -2469,11 +2469,11 @@ LABEL_73:
               _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "dependency: %@", buf, 0xCu);
             }
 
-            v19 = [v17 dictionary];
-            [v11 addEntriesFromDictionary:v19];
+            dictionary = [v17 dictionary];
+            [v11 addEntriesFromDictionary:dictionary];
           }
 
-          v14 = [v12 countByEnumeratingWithState:&v24 objects:v32 count:16];
+          v14 = [dependencies countByEnumeratingWithState:&v24 objects:v32 count:16];
         }
 
         while (v14);
@@ -2481,12 +2481,12 @@ LABEL_73:
 
       v28[0] = @"activityIdentifier";
       v10 = v23;
-      v20 = [v23 name];
+      name = [v23 name];
       v28[1] = @"dependencies";
-      v29[0] = v20;
+      v29[0] = name;
       v29[1] = v11;
       v21 = [NSDictionary dictionaryWithObjects:v29 forKeys:v28 count:2];
-      v8[2](v8, v21);
+      handlerCopy[2](handlerCopy, v21);
     }
 
     else
@@ -2497,17 +2497,17 @@ LABEL_73:
         sub_10012C5DC();
       }
 
-      v8[2](v8, 0);
+      handlerCopy[2](handlerCopy, 0);
     }
   }
 }
 
-- (void)deleteLimitForActivity:(id)a3 forLimiterWithName:(id)a4 handler:(id)a5
+- (void)deleteLimitForActivity:(id)activity forLimiterWithName:(id)name handler:(id)handler
 {
   if (self->_restricted)
   {
-    v7 = [_DASDaemonLogger logForCategory:@"budgeting", a4, a5];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    handler = [_DASDaemonLogger logForCategory:@"budgeting", name, handler];
+    if (os_log_type_enabled(handler, OS_LOG_TYPE_ERROR))
     {
       sub_10012B9C4(a2);
     }
@@ -2519,16 +2519,16 @@ LABEL_73:
   {
     daemon = self->_daemon;
 
-    [(_DASDaemon *)daemon deleteLimitForActivity:a3 forLimiterWithName:a4 handler:a5];
+    [(_DASDaemon *)daemon deleteLimitForActivity:activity forLimiterWithName:name handler:handler];
   }
 }
 
-- (void)updateLimit:(double)a3 forActivity:(id)a4 forLimiterWithName:(id)a5 handler:(id)a6
+- (void)updateLimit:(double)limit forActivity:(id)activity forLimiterWithName:(id)name handler:(id)handler
 {
   if (self->_restricted)
   {
-    v8 = [_DASDaemonLogger logForCategory:@"budgeting", a5, a6, a3];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    limit = [_DASDaemonLogger logForCategory:@"budgeting", name, handler, limit];
+    if (os_log_type_enabled(limit, OS_LOG_TYPE_ERROR))
     {
       sub_10012B9C4(a2);
     }
@@ -2540,16 +2540,16 @@ LABEL_73:
   {
     daemon = self->_daemon;
 
-    [(_DASDaemon *)daemon updateLimit:a4 forActivity:a5 forLimiterWithName:a6 handler:a3];
+    [(_DASDaemon *)daemon updateLimit:activity forActivity:name forLimiterWithName:handler handler:limit];
   }
 }
 
-- (void)getLimiterResponseForActivity:(id)a3 handler:(id)a4
+- (void)getLimiterResponseForActivity:(id)activity handler:(id)handler
 {
   if (self->_restricted)
   {
-    v6 = [_DASDaemonLogger logForCategory:@"budgeting", a4];
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    handler = [_DASDaemonLogger logForCategory:@"budgeting", handler];
+    if (os_log_type_enabled(handler, OS_LOG_TYPE_ERROR))
     {
       sub_10012B9C4(a2);
     }
@@ -2561,16 +2561,16 @@ LABEL_73:
   {
     daemon = self->_daemon;
 
-    [(_DASDaemon *)daemon getLimiterResponseForActivity:a3 handler:a4];
+    [(_DASDaemon *)daemon getLimiterResponseForActivity:activity handler:handler];
   }
 }
 
-- (void)getRuntimeLimit:(id)a3 handler:(id)a4
+- (void)getRuntimeLimit:(id)limit handler:(id)handler
 {
   if (self->_restricted)
   {
-    v6 = [_DASDaemonLogger logForCategory:@"budgeting", a4];
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    handler = [_DASDaemonLogger logForCategory:@"budgeting", handler];
+    if (os_log_type_enabled(handler, OS_LOG_TYPE_ERROR))
     {
       sub_10012B9C4(a2);
     }
@@ -2582,16 +2582,16 @@ LABEL_73:
   {
     daemon = self->_daemon;
 
-    [(_DASDaemon *)daemon getRuntimeLimit:a3 handler:a4];
+    [(_DASDaemon *)daemon getRuntimeLimit:limit handler:handler];
   }
 }
 
-- (void)getElapsedRuntimes:(id)a3 timeFilter:(id)a4 bgsqlData:(id)a5 handler:(id)a6
+- (void)getElapsedRuntimes:(id)runtimes timeFilter:(id)filter bgsqlData:(id)data handler:(id)handler
 {
   if (self->_restricted)
   {
-    v8 = [_DASDaemonLogger logForCategory:@"latency", a4, a5, a6];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    handler = [_DASDaemonLogger logForCategory:@"latency", filter, data, handler];
+    if (os_log_type_enabled(handler, OS_LOG_TYPE_ERROR))
     {
       sub_10012B9C4(a2);
     }
@@ -2603,16 +2603,16 @@ LABEL_73:
   {
     daemon = self->_daemon;
 
-    [(_DASDaemon *)daemon getElapsedRuntimes:a3 timeFilter:a4 bgsqlData:a5 handler:a6];
+    [(_DASDaemon *)daemon getElapsedRuntimes:runtimes timeFilter:filter bgsqlData:data handler:handler];
   }
 }
 
-- (void)getEstimatedRuntimes:(id)a3 timeFilter:(id)a4 bgsqlData:(id)a5 handler:(id)a6
+- (void)getEstimatedRuntimes:(id)runtimes timeFilter:(id)filter bgsqlData:(id)data handler:(id)handler
 {
   if (self->_restricted)
   {
-    v8 = [_DASDaemonLogger logForCategory:@"latency", a4, a5, a6];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    handler = [_DASDaemonLogger logForCategory:@"latency", filter, data, handler];
+    if (os_log_type_enabled(handler, OS_LOG_TYPE_ERROR))
     {
       sub_10012B9C4(a2);
     }
@@ -2624,16 +2624,16 @@ LABEL_73:
   {
     daemon = self->_daemon;
 
-    [(_DASDaemon *)daemon getEstimatedRuntimes:a3 timeFilter:a4 bgsqlData:a5 handler:a6];
+    [(_DASDaemon *)daemon getEstimatedRuntimes:runtimes timeFilter:filter bgsqlData:data handler:handler];
   }
 }
 
-- (void)getConditionsPenalties:(id)a3 handler:(id)a4
+- (void)getConditionsPenalties:(id)penalties handler:(id)handler
 {
   if (self->_restricted)
   {
-    v6 = [_DASDaemonLogger logForCategory:@"latency", a4];
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    handler = [_DASDaemonLogger logForCategory:@"latency", handler];
+    if (os_log_type_enabled(handler, OS_LOG_TYPE_ERROR))
     {
       sub_10012B9C4(a2);
     }
@@ -2645,16 +2645,16 @@ LABEL_73:
   {
     daemon = self->_daemon;
 
-    [(_DASDaemon *)daemon getConditionsPenalties:a3 handler:a4];
+    [(_DASDaemon *)daemon getConditionsPenalties:penalties handler:handler];
   }
 }
 
-- (void)getContentionPenalties:(id)a3 handler:(id)a4
+- (void)getContentionPenalties:(id)penalties handler:(id)handler
 {
   if (self->_restricted)
   {
-    v6 = [_DASDaemonLogger logForCategory:@"latency", a4];
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    handler = [_DASDaemonLogger logForCategory:@"latency", handler];
+    if (os_log_type_enabled(handler, OS_LOG_TYPE_ERROR))
     {
       sub_10012B9C4(a2);
     }
@@ -2666,16 +2666,16 @@ LABEL_73:
   {
     daemon = self->_daemon;
 
-    [(_DASDaemon *)daemon getContentionPenalties:a3 handler:a4];
+    [(_DASDaemon *)daemon getContentionPenalties:penalties handler:handler];
   }
 }
 
-- (void)getFeatureTimelines:(id)a3 timeFilter:(id)a4 bgsqlData:(id)a5 handler:(id)a6
+- (void)getFeatureTimelines:(id)timelines timeFilter:(id)filter bgsqlData:(id)data handler:(id)handler
 {
   if (self->_restricted)
   {
-    v8 = [_DASDaemonLogger logForCategory:@"latency", a4, a5, a6];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    handler = [_DASDaemonLogger logForCategory:@"latency", filter, data, handler];
+    if (os_log_type_enabled(handler, OS_LOG_TYPE_ERROR))
     {
       sub_10012B9C4(a2);
     }
@@ -2687,16 +2687,16 @@ LABEL_73:
   {
     daemon = self->_daemon;
 
-    [(_DASDaemon *)daemon getFeatureTimelines:a3 timeFilter:a4 bgsqlData:a5 handler:a6];
+    [(_DASDaemon *)daemon getFeatureTimelines:timelines timeFilter:filter bgsqlData:data handler:handler];
   }
 }
 
-- (void)getActivityTimelines:(id)a3 timeFilter:(id)a4 bgsqlData:(id)a5 handler:(id)a6
+- (void)getActivityTimelines:(id)timelines timeFilter:(id)filter bgsqlData:(id)data handler:(id)handler
 {
   if (self->_restricted)
   {
-    v8 = [_DASDaemonLogger logForCategory:@"latency", a4, a5, a6];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    handler = [_DASDaemonLogger logForCategory:@"latency", filter, data, handler];
+    if (os_log_type_enabled(handler, OS_LOG_TYPE_ERROR))
     {
       sub_10012B9C4(a2);
     }
@@ -2708,16 +2708,16 @@ LABEL_73:
   {
     daemon = self->_daemon;
 
-    [(_DASDaemon *)daemon getActivityTimelines:a3 timeFilter:a4 bgsqlData:a5 handler:a6];
+    [(_DASDaemon *)daemon getActivityTimelines:timelines timeFilter:filter bgsqlData:data handler:handler];
   }
 }
 
-- (void)getEligibilityTimelines:(id)a3 timeFilter:(id)a4 bgsqlData:(id)a5 handler:(id)a6
+- (void)getEligibilityTimelines:(id)timelines timeFilter:(id)filter bgsqlData:(id)data handler:(id)handler
 {
   if (self->_restricted)
   {
-    v8 = [_DASDaemonLogger logForCategory:@"latency", a4, a5, a6];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    handler = [_DASDaemonLogger logForCategory:@"latency", filter, data, handler];
+    if (os_log_type_enabled(handler, OS_LOG_TYPE_ERROR))
     {
       sub_10012B9C4(a2);
     }
@@ -2729,16 +2729,16 @@ LABEL_73:
   {
     daemon = self->_daemon;
 
-    [(_DASDaemon *)daemon getEligibilityTimelines:a3 timeFilter:a4 bgsqlData:a5 handler:a6];
+    [(_DASDaemon *)daemon getEligibilityTimelines:timelines timeFilter:filter bgsqlData:data handler:handler];
   }
 }
 
-- (void)getDeviceConditionTimelines:(id)a3 bgsqlData:(id)a4 handler:(id)a5
+- (void)getDeviceConditionTimelines:(id)timelines bgsqlData:(id)data handler:(id)handler
 {
   if (self->_restricted)
   {
-    v7 = [_DASDaemonLogger logForCategory:@"latency", a4, a5];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    handler = [_DASDaemonLogger logForCategory:@"latency", data, handler];
+    if (os_log_type_enabled(handler, OS_LOG_TYPE_ERROR))
     {
       sub_10012B9C4(a2);
     }
@@ -2750,16 +2750,16 @@ LABEL_73:
   {
     daemon = self->_daemon;
 
-    [(_DASDaemon *)daemon getDeviceConditionTimelines:a3 bgsqlData:a4 handler:a5];
+    [(_DASDaemon *)daemon getDeviceConditionTimelines:timelines bgsqlData:data handler:handler];
   }
 }
 
-- (void)getSchedulerEfficiencyMetrics:(id)a3 bgsqlData:(id)a4 handler:(id)a5
+- (void)getSchedulerEfficiencyMetrics:(id)metrics bgsqlData:(id)data handler:(id)handler
 {
   if (self->_restricted)
   {
-    v7 = [_DASDaemonLogger logForCategory:@"latency", a4, a5];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    handler = [_DASDaemonLogger logForCategory:@"latency", data, handler];
+    if (os_log_type_enabled(handler, OS_LOG_TYPE_ERROR))
     {
       sub_10012B9C4(a2);
     }
@@ -2771,16 +2771,16 @@ LABEL_73:
   {
     daemon = self->_daemon;
 
-    [(_DASDaemon *)daemon getSchedulerEfficiencyMetrics:a3 bgsqlData:a4 handler:a5];
+    [(_DASDaemon *)daemon getSchedulerEfficiencyMetrics:metrics bgsqlData:data handler:handler];
   }
 }
 
-- (void)getOvernightIntensiveSchedulerEfficiencyMetrics:(id)a3 bgsqlData:(id)a4 handler:(id)a5
+- (void)getOvernightIntensiveSchedulerEfficiencyMetrics:(id)metrics bgsqlData:(id)data handler:(id)handler
 {
   if (self->_restricted)
   {
-    v7 = [_DASDaemonLogger logForCategory:@"latency", a4, a5];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    handler = [_DASDaemonLogger logForCategory:@"latency", data, handler];
+    if (os_log_type_enabled(handler, OS_LOG_TYPE_ERROR))
     {
       sub_10012B9C4(a2);
     }
@@ -2792,16 +2792,16 @@ LABEL_73:
   {
     daemon = self->_daemon;
 
-    [(_DASDaemon *)daemon getOvernightIntensiveSchedulerEfficiencyMetrics:a3 bgsqlData:a4 handler:a5];
+    [(_DASDaemon *)daemon getOvernightIntensiveSchedulerEfficiencyMetrics:metrics bgsqlData:data handler:handler];
   }
 }
 
-- (void)getInstallTimeline:(id)a3 bgsqlData:(id)a4 handler:(id)a5
+- (void)getInstallTimeline:(id)timeline bgsqlData:(id)data handler:(id)handler
 {
   if (self->_restricted)
   {
-    v7 = [_DASDaemonLogger logForCategory:@"latency", a4, a5];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    handler = [_DASDaemonLogger logForCategory:@"latency", data, handler];
+    if (os_log_type_enabled(handler, OS_LOG_TYPE_ERROR))
     {
       sub_10012B9C4(a2);
     }
@@ -2813,16 +2813,16 @@ LABEL_73:
   {
     daemon = self->_daemon;
 
-    [(_DASDaemon *)daemon getInstallTimeline:a3 bgsqlData:a4 handler:a5];
+    [(_DASDaemon *)daemon getInstallTimeline:timeline bgsqlData:data handler:handler];
   }
 }
 
-- (void)getBuddyEvents:(id)a3 bgsqlData:(id)a4 handler:(id)a5
+- (void)getBuddyEvents:(id)events bgsqlData:(id)data handler:(id)handler
 {
   if (self->_restricted)
   {
-    v7 = [_DASDaemonLogger logForCategory:@"latency", a4, a5];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    handler = [_DASDaemonLogger logForCategory:@"latency", data, handler];
+    if (os_log_type_enabled(handler, OS_LOG_TYPE_ERROR))
     {
       sub_10012B9C4(a2);
     }
@@ -2834,16 +2834,16 @@ LABEL_73:
   {
     daemon = self->_daemon;
 
-    [(_DASDaemon *)daemon getBuddyEvents:a3 bgsqlData:a4 handler:a5];
+    [(_DASDaemon *)daemon getBuddyEvents:events bgsqlData:data handler:handler];
   }
 }
 
-- (void)getEstimatedMADCompletionTimes:(id)a3 endDate:(id)a4 bgsqlData:(id)a5 handler:(id)a6
+- (void)getEstimatedMADCompletionTimes:(id)times endDate:(id)date bgsqlData:(id)data handler:(id)handler
 {
   if (self->_restricted)
   {
-    v8 = [_DASDaemonLogger logForCategory:@"latency", a4, a5, a6];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    handler = [_DASDaemonLogger logForCategory:@"latency", date, data, handler];
+    if (os_log_type_enabled(handler, OS_LOG_TYPE_ERROR))
     {
       sub_10012B9C4(a2);
     }
@@ -2855,16 +2855,16 @@ LABEL_73:
   {
     daemon = self->_daemon;
 
-    [(_DASDaemon *)daemon getEstimatedMADCompletionTimes:a3 endDate:a4 bgsqlData:a5 handler:a6];
+    [(_DASDaemon *)daemon getEstimatedMADCompletionTimes:times endDate:date bgsqlData:data handler:handler];
   }
 }
 
-- (void)getSortedCandidateActivities:(id)a3 handler:(id)a4
+- (void)getSortedCandidateActivities:(id)activities handler:(id)handler
 {
   if (self->_restricted)
   {
-    v6 = [_DASDaemonLogger logForCategory:@"client", a4];
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    handler = [_DASDaemonLogger logForCategory:@"client", handler];
+    if (os_log_type_enabled(handler, OS_LOG_TYPE_ERROR))
     {
       sub_10012B9C4(a2);
     }
@@ -2876,16 +2876,16 @@ LABEL_73:
   {
     daemon = self->_daemon;
 
-    [(_DASDaemon *)daemon getSortedCandidateActivities:a3 handler:a4];
+    [(_DASDaemon *)daemon getSortedCandidateActivities:activities handler:handler];
   }
 }
 
-- (void)triggerScoreEvaluationAndRunActivities:(id)a3 handler:(id)a4
+- (void)triggerScoreEvaluationAndRunActivities:(id)activities handler:(id)handler
 {
   if (self->_restricted)
   {
-    v6 = [_DASDaemonLogger logForCategory:@"client", a4];
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    handler = [_DASDaemonLogger logForCategory:@"client", handler];
+    if (os_log_type_enabled(handler, OS_LOG_TYPE_ERROR))
     {
       sub_10012B9C4(a2);
     }
@@ -2897,11 +2897,11 @@ LABEL_73:
   {
     daemon = self->_daemon;
 
-    [(_DASDaemon *)daemon triggerScoreEvaluationAndRunActivities:a3 handler:a4];
+    [(_DASDaemon *)daemon triggerScoreEvaluationAndRunActivities:activities handler:handler];
   }
 }
 
-- (void)allBudgetsWithHandler:(id)a3
+- (void)allBudgetsWithHandler:(id)handler
 {
   if (self->_restricted)
   {
@@ -2918,15 +2918,57 @@ LABEL_73:
   {
     daemon = self->_daemon;
 
-    [(_DASDaemon *)daemon allBudgetsWithHandler:a3];
+    [(_DASDaemon *)daemon allBudgetsWithHandler:handler];
   }
 }
 
-- (void)balanceForBudgetWithName:(id)a3 withHandler:(id)a4
+- (void)balanceForBudgetWithName:(id)name withHandler:(id)handler
 {
   if (self->_restricted)
   {
-    v6 = [_DASDaemonLogger logForCategory:@"budgeting", a4];
+    handler = [_DASDaemonLogger logForCategory:@"budgeting", handler];
+    if (os_log_type_enabled(handler, OS_LOG_TYPE_ERROR))
+    {
+      sub_10012B9C4(a2);
+    }
+
+    [(NSXPCConnection *)self->_connection invalidate];
+  }
+
+  else
+  {
+    daemon = self->_daemon;
+
+    [(_DASDaemon *)daemon balanceForBudgetWithName:name withHandler:handler];
+  }
+}
+
+- (void)setBalance:(double)balance forBudgetWithName:(id)name
+{
+  if (self->_restricted)
+  {
+    balance = [_DASDaemonLogger logForCategory:@"budgeting", balance];
+    if (os_log_type_enabled(balance, OS_LOG_TYPE_ERROR))
+    {
+      sub_10012B9C4(a2);
+    }
+
+    [(NSXPCConnection *)self->_connection invalidate];
+  }
+
+  else
+  {
+    daemon = self->_daemon;
+
+    [(_DASDaemon *)daemon setBalance:name forBudgetWithName:balance];
+  }
+}
+
+- (void)decrementBy:(double)by forBudgetWithName:(id)name
+{
+  if (self->_restricted)
+  {
+    v6 = [_DASDaemonLogger logForCategory:@"budgeting", by];
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
       sub_10012B9C4(a2);
@@ -2939,16 +2981,16 @@ LABEL_73:
   {
     daemon = self->_daemon;
 
-    [(_DASDaemon *)daemon balanceForBudgetWithName:a3 withHandler:a4];
+    [(_DASDaemon *)daemon decrementBy:name forBudgetWithName:by];
   }
 }
 
-- (void)setBalance:(double)a3 forBudgetWithName:(id)a4
+- (void)setCapacity:(double)capacity forBudgetWithName:(id)name
 {
   if (self->_restricted)
   {
-    v6 = [_DASDaemonLogger logForCategory:@"budgeting", a3];
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    capacity = [_DASDaemonLogger logForCategory:@"budgeting", capacity];
+    if (os_log_type_enabled(capacity, OS_LOG_TYPE_ERROR))
     {
       sub_10012B9C4(a2);
     }
@@ -2960,53 +3002,11 @@ LABEL_73:
   {
     daemon = self->_daemon;
 
-    [(_DASDaemon *)daemon setBalance:a4 forBudgetWithName:a3];
+    [(_DASDaemon *)daemon setCapacity:name forBudgetWithName:capacity];
   }
 }
 
-- (void)decrementBy:(double)a3 forBudgetWithName:(id)a4
-{
-  if (self->_restricted)
-  {
-    v6 = [_DASDaemonLogger logForCategory:@"budgeting", a3];
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
-    {
-      sub_10012B9C4(a2);
-    }
-
-    [(NSXPCConnection *)self->_connection invalidate];
-  }
-
-  else
-  {
-    daemon = self->_daemon;
-
-    [(_DASDaemon *)daemon decrementBy:a4 forBudgetWithName:a3];
-  }
-}
-
-- (void)setCapacity:(double)a3 forBudgetWithName:(id)a4
-{
-  if (self->_restricted)
-  {
-    v6 = [_DASDaemonLogger logForCategory:@"budgeting", a3];
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
-    {
-      sub_10012B9C4(a2);
-    }
-
-    [(NSXPCConnection *)self->_connection invalidate];
-  }
-
-  else
-  {
-    daemon = self->_daemon;
-
-    [(_DASDaemon *)daemon setCapacity:a4 forBudgetWithName:a3];
-  }
-}
-
-- (void)policiesWithHandler:(id)a3
+- (void)policiesWithHandler:(id)handler
 {
   if (self->_restricted)
   {
@@ -3023,16 +3023,16 @@ LABEL_73:
   {
     daemon = self->_daemon;
 
-    [(_DASDaemon *)daemon policiesWithHandler:a3];
+    [(_DASDaemon *)daemon policiesWithHandler:handler];
   }
 }
 
-- (void)evaluatePolicies:(id)a3 handler:(id)a4
+- (void)evaluatePolicies:(id)policies handler:(id)handler
 {
   if (self->_restricted)
   {
-    v6 = [_DASDaemonLogger logForCategory:@"bar", a4];
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    handler = [_DASDaemonLogger logForCategory:@"bar", handler];
+    if (os_log_type_enabled(handler, OS_LOG_TYPE_ERROR))
     {
       sub_10012B9C4(a2);
     }
@@ -3044,16 +3044,16 @@ LABEL_73:
   {
     daemon = self->_daemon;
 
-    [(_DASDaemon *)daemon evaluatePolicies:a3 handler:a4];
+    [(_DASDaemon *)daemon evaluatePolicies:policies handler:handler];
   }
 }
 
-- (void)evaluateAllActivities:(id)a3 handler:(id)a4
+- (void)evaluateAllActivities:(id)activities handler:(id)handler
 {
   if (self->_restricted)
   {
-    v6 = [_DASDaemonLogger logForCategory:@"bar", a4];
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    handler = [_DASDaemonLogger logForCategory:@"bar", handler];
+    if (os_log_type_enabled(handler, OS_LOG_TYPE_ERROR))
     {
       sub_10012B9C4(a2);
     }
@@ -3065,16 +3065,16 @@ LABEL_73:
   {
     daemon = self->_daemon;
 
-    [(_DASDaemon *)daemon evaluateAllActivities:a3 handler:a4];
+    [(_DASDaemon *)daemon evaluateAllActivities:activities handler:handler];
   }
 }
 
-- (void)runProceedableActivities:(id)a3 handler:(id)a4
+- (void)runProceedableActivities:(id)activities handler:(id)handler
 {
   if (self->_restricted)
   {
-    v6 = [_DASDaemonLogger logForCategory:@"bar", a4];
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    handler = [_DASDaemonLogger logForCategory:@"bar", handler];
+    if (os_log_type_enabled(handler, OS_LOG_TYPE_ERROR))
     {
       sub_10012B9C4(a2);
     }
@@ -3086,16 +3086,16 @@ LABEL_73:
   {
     daemon = self->_daemon;
 
-    [(_DASDaemon *)daemon runProceedableActivities:a3 handler:a4];
+    [(_DASDaemon *)daemon runProceedableActivities:activities handler:handler];
   }
 }
 
-- (void)activityContainsOverrides:(id)a3 handler:(id)a4
+- (void)activityContainsOverrides:(id)overrides handler:(id)handler
 {
   if (self->_restricted)
   {
-    v6 = [_DASDaemonLogger logForCategory:@"bar", a4];
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    handler = [_DASDaemonLogger logForCategory:@"bar", handler];
+    if (os_log_type_enabled(handler, OS_LOG_TYPE_ERROR))
     {
       sub_10012B9C4(a2);
     }
@@ -3107,16 +3107,16 @@ LABEL_73:
   {
     daemon = self->_daemon;
 
-    [(_DASDaemon *)daemon activityContainsOverrides:a3 handler:a4];
+    [(_DASDaemon *)daemon activityContainsOverrides:overrides handler:handler];
   }
 }
 
-- (void)blockingPoliciesWithParameters:(id)a3 handler:(id)a4
+- (void)blockingPoliciesWithParameters:(id)parameters handler:(id)handler
 {
   if (self->_restricted)
   {
-    v6 = [_DASDaemonLogger logForCategory:@"bar", a4];
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    handler = [_DASDaemonLogger logForCategory:@"bar", handler];
+    if (os_log_type_enabled(handler, OS_LOG_TYPE_ERROR))
     {
       sub_10012B9C4(a2);
     }
@@ -3128,16 +3128,16 @@ LABEL_73:
   {
     daemon = self->_daemon;
 
-    [(_DASDaemon *)daemon blockingPoliciesWithParameters:a3 handler:a4];
+    [(_DASDaemon *)daemon blockingPoliciesWithParameters:parameters handler:handler];
   }
 }
 
-- (void)submitRateLimitConfiguration:(id)a3 handler:(id)a4
+- (void)submitRateLimitConfiguration:(id)configuration handler:(id)handler
 {
   if (self->_restricted)
   {
-    v6 = [_DASDaemonLogger logForCategory:@"bar", a4];
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    handler = [_DASDaemonLogger logForCategory:@"bar", handler];
+    if (os_log_type_enabled(handler, OS_LOG_TYPE_ERROR))
     {
       sub_10012B9C4(a2);
     }
@@ -3149,16 +3149,16 @@ LABEL_73:
   {
     daemon = self->_daemon;
 
-    [(_DASDaemon *)daemon submitRateLimitConfiguration:a3 handler:a4];
+    [(_DASDaemon *)daemon submitRateLimitConfiguration:configuration handler:handler];
   }
 }
 
-- (void)pauseWithParameters:(id)a3 handler:(id)a4
+- (void)pauseWithParameters:(id)parameters handler:(id)handler
 {
   if (self->_restricted)
   {
-    v6 = [_DASDaemonLogger logForCategory:@"bar", a4];
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    handler = [_DASDaemonLogger logForCategory:@"bar", handler];
+    if (os_log_type_enabled(handler, OS_LOG_TYPE_ERROR))
     {
       sub_10012B9C4(a2);
     }
@@ -3170,16 +3170,16 @@ LABEL_73:
   {
     daemon = self->_daemon;
 
-    [(_DASDaemon *)daemon pauseWithParameters:a3 handler:a4];
+    [(_DASDaemon *)daemon pauseWithParameters:parameters handler:handler];
   }
 }
 
-- (void)addPauseExceptParameter:(id)a3 handler:(id)a4
+- (void)addPauseExceptParameter:(id)parameter handler:(id)handler
 {
   if (self->_restricted)
   {
-    v6 = [_DASDaemonLogger logForCategory:@"bar", a4];
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    handler = [_DASDaemonLogger logForCategory:@"bar", handler];
+    if (os_log_type_enabled(handler, OS_LOG_TYPE_ERROR))
     {
       sub_10012B9C4(a2);
     }
@@ -3191,39 +3191,39 @@ LABEL_73:
   {
     daemon = self->_daemon;
 
-    [(_DASDaemon *)daemon addPauseExceptParameter:a3 handler:a4];
+    [(_DASDaemon *)daemon addPauseExceptParameter:parameter handler:handler];
   }
 }
 
-- (void)reportThroughputMetricsForIdentifier:(id)a3 taskName:(id)a4 itemCount:(unint64_t)a5 totalDuration:(double)a6 qos:(id)a7 workloadCategory:(unint64_t)a8 expectedValue:(id)a9 withHandler:(id)a10
+- (void)reportThroughputMetricsForIdentifier:(id)identifier taskName:(id)name itemCount:(unint64_t)count totalDuration:(double)duration qos:(id)qos workloadCategory:(unint64_t)category expectedValue:(id)value withHandler:(id)self0
 {
   connection = self->_connection;
-  v19 = a10;
-  v20 = a9;
-  v21 = a7;
-  v22 = a4;
-  v23 = a3;
-  v24 = [_DASBGSystemTask taskNameWithIdentifier:v22 UID:[(NSXPCConnection *)connection effectiveUserIdentifier]];
+  handlerCopy = handler;
+  valueCopy = value;
+  qosCopy = qos;
+  nameCopy = name;
+  identifierCopy = identifier;
+  v24 = [_DASBGSystemTask taskNameWithIdentifier:nameCopy UID:[(NSXPCConnection *)connection effectiveUserIdentifier]];
 
-  [(_DASDaemon *)self->_daemon reportThroughputMetricsForIdentifier:v23 taskName:v24 itemCount:a5 totalDuration:v21 qos:a8 workloadCategory:v20 expectedValue:a6 withHandler:v19];
+  [(_DASDaemon *)self->_daemon reportThroughputMetricsForIdentifier:identifierCopy taskName:v24 itemCount:count totalDuration:qosCopy qos:category workloadCategory:valueCopy expectedValue:duration withHandler:handlerCopy];
 }
 
-- (void)reportProgressMetricsForIdentifier:(id)a3 taskName:(id)a4 itemsCompleted:(id)a5 totalItemCount:(id)a6 qos:(id)a7 workloadCategory:(unint64_t)a8 expectedValue:(id)a9 withHandler:(id)a10
+- (void)reportProgressMetricsForIdentifier:(id)identifier taskName:(id)name itemsCompleted:(id)completed totalItemCount:(id)count qos:(id)qos workloadCategory:(unint64_t)category expectedValue:(id)value withHandler:(id)self0
 {
   connection = self->_connection;
-  v17 = a10;
-  v18 = a9;
-  v19 = a7;
-  v20 = a6;
-  v21 = a5;
-  v22 = a4;
-  v23 = a3;
-  v25 = [_DASBGSystemTask taskNameWithIdentifier:v22 UID:[(NSXPCConnection *)connection effectiveUserIdentifier]];
+  handlerCopy = handler;
+  valueCopy = value;
+  qosCopy = qos;
+  countCopy = count;
+  completedCopy = completed;
+  nameCopy = name;
+  identifierCopy = identifier;
+  v25 = [_DASBGSystemTask taskNameWithIdentifier:nameCopy UID:[(NSXPCConnection *)connection effectiveUserIdentifier]];
 
-  [(_DASDaemon *)self->_daemon reportProgressMetricsForIdentifier:v23 taskName:v25 itemsCompleted:v21 totalItemCount:v20 qos:v19 workloadCategory:a8 expectedValue:v18 withHandler:v17];
+  [(_DASDaemon *)self->_daemon reportProgressMetricsForIdentifier:identifierCopy taskName:v25 itemsCompleted:completedCopy totalItemCount:countCopy qos:qosCopy workloadCategory:category expectedValue:valueCopy withHandler:handlerCopy];
 }
 
-- (void)prewarmApplication:(id)a3
+- (void)prewarmApplication:(id)application
 {
   if (self->_restricted)
   {
@@ -3240,20 +3240,20 @@ LABEL_73:
   {
     daemon = self->_daemon;
 
-    [(_DASDaemon *)daemon prewarmApplication:a3];
+    [(_DASDaemon *)daemon prewarmApplication:application];
   }
 }
 
-- (void)prewarmSuspendWithHandler:(id)a3
+- (void)prewarmSuspendWithHandler:(id)handler
 {
-  v5 = a3;
-  v4 = [(_DASDaemonClient *)self rootBundleIdentifier];
-  if (!v4)
+  handlerCopy = handler;
+  rootBundleIdentifier = [(_DASDaemonClient *)self rootBundleIdentifier];
+  if (!rootBundleIdentifier)
   {
-    v5[2](v5, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 
-  [(_DASDaemon *)self->_daemon prewarmSuspendApplication:v4 withHandler:v5];
+  [(_DASDaemon *)self->_daemon prewarmSuspendApplication:rootBundleIdentifier withHandler:handlerCopy];
 }
 
 @end

@@ -1,13 +1,13 @@
 @interface ICTagDetailCell
 - (NSString)text;
 - (id)selectionOperatorChangeHandler;
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3;
-- (void)setAttributedText:(id)a3;
-- (void)setSelectionOperatorChangeHandler:(id)a3;
-- (void)setShowOperatorMenuButton:(BOOL)a3;
-- (void)setTagSelection:(id)a3;
-- (void)setText:(id)a3;
-- (void)updateForTagSelection:(id)a3 animated:(BOOL)a4;
+- (void)_bridgedUpdateConfigurationUsingState:(id)state;
+- (void)setAttributedText:(id)text;
+- (void)setSelectionOperatorChangeHandler:(id)handler;
+- (void)setShowOperatorMenuButton:(BOOL)button;
+- (void)setTagSelection:(id)selection;
+- (void)setText:(id)text;
+- (void)updateForTagSelection:(id)selection animated:(BOOL)animated;
 @end
 
 @implementation ICTagDetailCell
@@ -34,9 +34,9 @@
   return v3;
 }
 
-- (void)setSelectionOperatorChangeHandler:(id)a3
+- (void)setSelectionOperatorChangeHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = v4;
@@ -54,7 +54,7 @@
   v8 = *(self + OBJC_IVAR___ICTagDetailCell_selectionOperatorChangeHandler);
   *v7 = v6;
   v7[1] = v4;
-  v9 = self;
+  selfCopy = self;
   sub_10000C840(v8);
 }
 
@@ -74,9 +74,9 @@
   return v2;
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  if (a3)
+  if (text)
   {
     v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v6 = v5;
@@ -88,46 +88,46 @@
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   sub_1003F9450(v4, v6);
 }
 
-- (void)setAttributedText:(id)a3
+- (void)setAttributedText:(id)text
 {
-  v6 = a3;
-  v5 = self;
-  sub_1003FB458(a3);
+  textCopy = text;
+  selfCopy = self;
+  sub_1003FB458(text);
 }
 
-- (void)setTagSelection:(id)a3
+- (void)setTagSelection:(id)selection
 {
-  v5 = a3;
-  v6 = self;
-  sub_1003F987C(a3);
+  selectionCopy = selection;
+  selfCopy = self;
+  sub_1003F987C(selection);
 }
 
-- (void)setShowOperatorMenuButton:(BOOL)a3
+- (void)setShowOperatorMenuButton:(BOOL)button
 {
-  *(self + OBJC_IVAR___ICTagDetailCell_showOperatorMenuButton) = a3;
-  v3 = self;
+  *(self + OBJC_IVAR___ICTagDetailCell_showOperatorMenuButton) = button;
+  selfCopy = self;
   sub_1003F9B08();
 }
 
-- (void)updateForTagSelection:(id)a3 animated:(BOOL)a4
+- (void)updateForTagSelection:(id)selection animated:(BOOL)animated
 {
-  v6 = a3;
-  v7 = self;
-  sub_1003F9F54(v6, a4);
+  selectionCopy = selection;
+  selfCopy = self;
+  sub_1003F9F54(selectionCopy, animated);
 }
 
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3
+- (void)_bridgedUpdateConfigurationUsingState:(id)state
 {
   v4 = type metadata accessor for UICellConfigurationState();
   v5 = *(v4 - 8);
   __chkstk_darwin(v4);
   v7 = &v9 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   static UICellConfigurationState._unconditionallyBridgeFromObjectiveC(_:)();
-  v8 = self;
+  selfCopy = self;
   sub_1003FA48C(v7);
 
   (*(v5 + 8))(v7, v4);

@@ -1,20 +1,20 @@
 @interface REMCDSharedToMeReminderPlaceholder
-- (BOOL)isConnectedToAccountObject:(id)a3;
+- (BOOL)isConnectedToAccountObject:(id)object;
 @end
 
 @implementation REMCDSharedToMeReminderPlaceholder
 
-- (BOOL)isConnectedToAccountObject:(id)a3
+- (BOOL)isConnectedToAccountObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v5 = +[REMLogStore write];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_FAULT))
   {
     sub_100766460(v5);
   }
 
-  v6 = [(REMCDSharedToMeReminderPlaceholder *)self reminder];
-  v7 = [v6 isConnectedToAccountObject:v4];
+  reminder = [(REMCDSharedToMeReminderPlaceholder *)self reminder];
+  v7 = [reminder isConnectedToAccountObject:objectCopy];
 
   return v7;
 }

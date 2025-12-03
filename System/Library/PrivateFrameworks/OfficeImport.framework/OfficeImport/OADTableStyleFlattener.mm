@@ -1,128 +1,128 @@
 @interface OADTableStyleFlattener
-- (void)applyCellPropertiesToTextBodyPropertiesInCell:(id)a3;
-- (void)applyResolvedPartStyle:(id)a3 leftStroke:(id)a4 rightStroke:(id)a5 topStroke:(id)a6 bottomStroke:(id)a7 toCell:(id)a8;
-- (void)applyTextStyle:(id)a3 toParagraph:(id)a4;
+- (void)applyCellPropertiesToTextBodyPropertiesInCell:(id)cell;
+- (void)applyResolvedPartStyle:(id)style leftStroke:(id)stroke rightStroke:(id)rightStroke topStroke:(id)topStroke bottomStroke:(id)bottomStroke toCell:(id)cell;
+- (void)applyTextStyle:(id)style toParagraph:(id)paragraph;
 @end
 
 @implementation OADTableStyleFlattener
 
-- (void)applyCellPropertiesToTextBodyPropertiesInCell:(id)a3
+- (void)applyCellPropertiesToTextBodyPropertiesInCell:(id)cell
 {
-  v7 = a3;
-  v3 = [v7 properties];
-  v4 = [v7 textBody];
-  v5 = [v4 properties];
+  cellCopy = cell;
+  properties = [cellCopy properties];
+  textBody = [cellCopy textBody];
+  properties2 = [textBody properties];
 
-  v6 = [v5 parent];
-  [v5 setParent:0];
-  if ([v3 isLeftMarginOverridden] && (objc_msgSend(v5, "hasLeftInset") & 1) == 0)
+  parent = [properties2 parent];
+  [properties2 setParent:0];
+  if ([properties isLeftMarginOverridden] && (objc_msgSend(properties2, "hasLeftInset") & 1) == 0)
   {
-    [v3 leftMargin];
-    [v5 setLeftInset:?];
+    [properties leftMargin];
+    [properties2 setLeftInset:?];
   }
 
-  if ([v3 isRightMarginOverridden] && (objc_msgSend(v5, "hasRightInset") & 1) == 0)
+  if ([properties isRightMarginOverridden] && (objc_msgSend(properties2, "hasRightInset") & 1) == 0)
   {
-    [v3 rightMargin];
-    [v5 setRightInset:?];
+    [properties rightMargin];
+    [properties2 setRightInset:?];
   }
 
-  if ([v3 isTopMarginOverridden] && (objc_msgSend(v5, "hasTopInset") & 1) == 0)
+  if ([properties isTopMarginOverridden] && (objc_msgSend(properties2, "hasTopInset") & 1) == 0)
   {
-    [v3 topMargin];
-    [v5 setTopInset:?];
+    [properties topMargin];
+    [properties2 setTopInset:?];
   }
 
-  if ([v3 isBottomMarginOverridden] && (objc_msgSend(v5, "hasBottomInset") & 1) == 0)
+  if ([properties isBottomMarginOverridden] && (objc_msgSend(properties2, "hasBottomInset") & 1) == 0)
   {
-    [v3 bottomMargin];
-    [v5 setBottomInset:?];
+    [properties bottomMargin];
+    [properties2 setBottomInset:?];
   }
 
-  if ([v3 isTextFlowOverridden] && (objc_msgSend(v5, "hasFlowType") & 1) == 0)
+  if ([properties isTextFlowOverridden] && (objc_msgSend(properties2, "hasFlowType") & 1) == 0)
   {
-    [v5 setFlowType:{objc_msgSend(v3, "textFlow")}];
+    [properties2 setFlowType:{objc_msgSend(properties, "textFlow")}];
   }
 
-  if ([v3 isTextAnchorOverridden] && (objc_msgSend(v5, "hasTextAnchorType") & 1) == 0)
+  if ([properties isTextAnchorOverridden] && (objc_msgSend(properties2, "hasTextAnchorType") & 1) == 0)
   {
-    [v5 setTextAnchorType:{objc_msgSend(v3, "textAnchor")}];
+    [properties2 setTextAnchorType:{objc_msgSend(properties, "textAnchor")}];
   }
 
-  if ([v3 isTextAnchorCenterOverridden] && (objc_msgSend(v5, "hasIsAnchorCenter") & 1) == 0)
+  if ([properties isTextAnchorCenterOverridden] && (objc_msgSend(properties2, "hasIsAnchorCenter") & 1) == 0)
   {
-    [v5 setIsAnchorCenter:{objc_msgSend(v3, "textAnchorCenter")}];
+    [properties2 setIsAnchorCenter:{objc_msgSend(properties, "textAnchorCenter")}];
   }
 
-  if ([v3 isTextHorizontalOverflowOverridden] && (objc_msgSend(v5, "hasHorizontalOverflowType") & 1) == 0)
+  if ([properties isTextHorizontalOverflowOverridden] && (objc_msgSend(properties2, "hasHorizontalOverflowType") & 1) == 0)
   {
-    [v5 setHorizontalOverflowType:{objc_msgSend(v3, "textHorizontalOverflow")}];
+    [properties2 setHorizontalOverflowType:{objc_msgSend(properties, "textHorizontalOverflow")}];
   }
 
-  if ([v3 isTextAnchorCenterOverridden] && (objc_msgSend(v5, "hasIsAnchorCenter") & 1) == 0)
+  if ([properties isTextAnchorCenterOverridden] && (objc_msgSend(properties2, "hasIsAnchorCenter") & 1) == 0)
   {
-    [v5 setIsAnchorCenter:{objc_msgSend(v3, "textAnchorCenter")}];
+    [properties2 setIsAnchorCenter:{objc_msgSend(properties, "textAnchorCenter")}];
   }
 
-  [v5 setParent:v6];
+  [properties2 setParent:parent];
 }
 
-- (void)applyResolvedPartStyle:(id)a3 leftStroke:(id)a4 rightStroke:(id)a5 topStroke:(id)a6 bottomStroke:(id)a7 toCell:(id)a8
+- (void)applyResolvedPartStyle:(id)style leftStroke:(id)stroke rightStroke:(id)rightStroke topStroke:(id)topStroke bottomStroke:(id)bottomStroke toCell:(id)cell
 {
-  v28 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  v19 = [v18 properties];
-  [(OADTableStyleFlattener *)self applyCellPropertiesToTextBodyPropertiesInCell:v18];
-  v20 = [v28 textStyle];
-  [(OADTableStyleResolver *)self applyTextStyle:v20 toCell:v18];
+  styleCopy = style;
+  strokeCopy = stroke;
+  rightStrokeCopy = rightStroke;
+  topStrokeCopy = topStroke;
+  bottomStrokeCopy = bottomStroke;
+  cellCopy = cell;
+  properties = [cellCopy properties];
+  [(OADTableStyleFlattener *)self applyCellPropertiesToTextBodyPropertiesInCell:cellCopy];
+  textStyle = [styleCopy textStyle];
+  [(OADTableStyleResolver *)self applyTextStyle:textStyle toCell:cellCopy];
 
-  v21 = [v19 fill];
+  fill = [properties fill];
 
-  if (!v21)
+  if (!fill)
   {
-    v22 = [v28 cellStyle];
-    v23 = [v22 fill];
-    [v19 setFill:v23];
+    cellStyle = [styleCopy cellStyle];
+    fill2 = [cellStyle fill];
+    [properties setFill:fill2];
   }
 
-  v24 = [v19 leftStroke];
+  leftStroke = [properties leftStroke];
 
-  if (!v24)
+  if (!leftStroke)
   {
-    [v19 setLeftStroke:v14];
+    [properties setLeftStroke:strokeCopy];
   }
 
-  v25 = [v19 rightStroke];
+  rightStroke = [properties rightStroke];
 
-  if (!v25)
+  if (!rightStroke)
   {
-    [v19 setRightStroke:v15];
+    [properties setRightStroke:rightStrokeCopy];
   }
 
-  v26 = [v19 topStroke];
+  topStroke = [properties topStroke];
 
-  if (!v26)
+  if (!topStroke)
   {
-    [v19 setTopStroke:v16];
+    [properties setTopStroke:topStrokeCopy];
   }
 
-  v27 = [v19 bottomStroke];
+  bottomStroke = [properties bottomStroke];
 
-  if (!v27)
+  if (!bottomStroke)
   {
-    [v19 setBottomStroke:v17];
+    [properties setBottomStroke:bottomStrokeCopy];
   }
 }
 
-- (void)applyTextStyle:(id)a3 toParagraph:(id)a4
+- (void)applyTextStyle:(id)style toParagraph:(id)paragraph
 {
-  v6 = a3;
-  v5 = [a4 properties];
-  [OADTable applyTextStyle:v6 toParagraphProperties:v5];
+  styleCopy = style;
+  properties = [paragraph properties];
+  [OADTable applyTextStyle:styleCopy toParagraphProperties:properties];
 }
 
 @end

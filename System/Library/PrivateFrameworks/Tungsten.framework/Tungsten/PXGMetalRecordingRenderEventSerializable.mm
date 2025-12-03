@@ -1,5 +1,5 @@
 @interface PXGMetalRecordingRenderEventSerializable
-- (PXGMetalRecordingRenderEventSerializable)initWithSerializableObject:(id)a3;
+- (PXGMetalRecordingRenderEventSerializable)initWithSerializableObject:(id)object;
 - (_NSRange)bufferRange;
 - (id)createSerializableObject;
 @end
@@ -19,13 +19,13 @@
 {
   v21[2] = *MEMORY[0x277D85DE8];
   v19[0] = @"texture";
-  v3 = [(PXGMetalRecordingRenderEventSerializable *)self texture];
-  v4 = [v3 createSerializableObject];
-  v20[0] = v4;
+  texture = [(PXGMetalRecordingRenderEventSerializable *)self texture];
+  createSerializableObject = [texture createSerializableObject];
+  v20[0] = createSerializableObject;
   v19[1] = @"bufferRange";
-  v5 = [(PXGMetalRecordingRenderEventSerializable *)self bufferRange];
+  bufferRange = [(PXGMetalRecordingRenderEventSerializable *)self bufferRange];
   v7 = v6;
-  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v5];
+  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:bufferRange];
   v21[0] = v8;
   v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v7];
   v21[1] = v9;
@@ -37,30 +37,30 @@
   v11 = [MEMORY[0x277CCABB0] numberWithFloat:?];
   v20[2] = v11;
   v19[3] = @"contentsGravity";
-  v12 = [(PXGMetalRecordingRenderEventSerializable *)self contentsGravity];
-  v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v12];
+  contentsGravity = [(PXGMetalRecordingRenderEventSerializable *)self contentsGravity];
+  v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:contentsGravity];
   v20[3] = v13;
   v19[4] = @"isOpaque";
-  v14 = [(PXGMetalRecordingRenderEventSerializable *)self isOpaque];
-  v15 = [MEMORY[0x277CCABB0] numberWithBool:v14];
+  isOpaque = [(PXGMetalRecordingRenderEventSerializable *)self isOpaque];
+  v15 = [MEMORY[0x277CCABB0] numberWithBool:isOpaque];
   v20[4] = v15;
   v19[5] = @"spriteIndices";
-  v16 = [(PXGMetalRecordingRenderEventSerializable *)self spriteIndices];
-  v20[5] = v16;
+  spriteIndices = [(PXGMetalRecordingRenderEventSerializable *)self spriteIndices];
+  v20[5] = spriteIndices;
   v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:v19 count:6];
 
   return v17;
 }
 
-- (PXGMetalRecordingRenderEventSerializable)initWithSerializableObject:(id)a3
+- (PXGMetalRecordingRenderEventSerializable)initWithSerializableObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v24.receiver = self;
   v24.super_class = PXGMetalRecordingRenderEventSerializable;
   v5 = [(PXGMetalRecordingRenderEventSerializable *)&v24 init];
   if (v5)
   {
-    v6 = v4;
+    v6 = objectCopy;
     v7 = [PXGMetalRecordingMetalSpriteTextureSerializable alloc];
     v8 = [v6 objectForKeyedSubscript:@"texture"];
     v9 = [(PXGMetalRecordingMetalSpriteTextureSerializable *)v7 initWithSerializableObject:v8];
@@ -69,12 +69,12 @@
 
     v11 = [v6 objectForKeyedSubscript:@"bufferRange"];
     v12 = [v11 objectAtIndexedSubscript:0];
-    v13 = [v12 unsignedIntValue];
+    unsignedIntValue = [v12 unsignedIntValue];
     v14 = [v11 objectAtIndexedSubscript:1];
-    v15 = [v14 unsignedIntValue];
+    unsignedIntValue2 = [v14 unsignedIntValue];
 
-    v5->_bufferRange.location = v13;
-    v5->_bufferRange.length = v15;
+    v5->_bufferRange.location = unsignedIntValue;
+    v5->_bufferRange.length = unsignedIntValue2;
 
     v16 = [v6 objectForKeyedSubscript:@"zPosition"];
     [v16 floatValue];

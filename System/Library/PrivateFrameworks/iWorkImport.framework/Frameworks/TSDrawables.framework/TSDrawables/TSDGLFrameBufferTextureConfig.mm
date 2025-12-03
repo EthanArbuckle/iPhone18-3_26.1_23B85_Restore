@@ -1,17 +1,17 @@
 @interface TSDGLFrameBufferTextureConfig
-+ (id)textureConfigWithSize:(CGSize)a3 internalFormat:(int)a4 format:(unsigned int)a5 type:(unsigned int)a6 attachment:(unsigned int)a7 textureParameters:(id)a8 name:(id)a9 backingSurface:(__IOSurface *)a10;
++ (id)textureConfigWithSize:(CGSize)size internalFormat:(int)format format:(unsigned int)a5 type:(unsigned int)type attachment:(unsigned int)attachment textureParameters:(id)parameters name:(id)name backingSurface:(__IOSurface *)self0;
 - (CGSize)size;
-- (TSDGLFrameBufferTextureConfig)initWithSize:(CGSize)a3 internalFormat:(int)a4 format:(unsigned int)a5 type:(unsigned int)a6 attachment:(unsigned int)a7 textureParameters:(id)a8 name:(id)a9 backingSurface:(__IOSurface *)a10;
-- (id)copyWithZone:(_NSZone *)a3;
+- (TSDGLFrameBufferTextureConfig)initWithSize:(CGSize)size internalFormat:(int)format format:(unsigned int)a5 type:(unsigned int)type attachment:(unsigned int)attachment textureParameters:(id)parameters name:(id)name backingSurface:(__IOSurface *)self0;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
 @end
 
 @implementation TSDGLFrameBufferTextureConfig
 
-- (TSDGLFrameBufferTextureConfig)initWithSize:(CGSize)a3 internalFormat:(int)a4 format:(unsigned int)a5 type:(unsigned int)a6 attachment:(unsigned int)a7 textureParameters:(id)a8 name:(id)a9 backingSurface:(__IOSurface *)a10
+- (TSDGLFrameBufferTextureConfig)initWithSize:(CGSize)size internalFormat:(int)format format:(unsigned int)a5 type:(unsigned int)type attachment:(unsigned int)attachment textureParameters:(id)parameters name:(id)name backingSurface:(__IOSurface *)self0
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v25.receiver = self;
   v25.super_class = TSDGLFrameBufferTextureConfig;
   v18 = [(TSDGLFrameBufferTextureConfig *)&v25 init];
@@ -20,15 +20,15 @@
   {
     v18->_textureSize.width = width;
     v18->_textureSize.height = height;
-    v18->_internalFormat = a4;
+    v18->_internalFormat = format;
     v18->_GLFormat = a5;
-    v18->_GLType = a6;
-    v18->_attachment = a7;
-    v18->_name = objc_msgSend_copy(a9, v19, v20);
-    v21->_textureParameters = a8;
-    if (a10)
+    v18->_GLType = type;
+    v18->_attachment = attachment;
+    v18->_name = objc_msgSend_copy(name, v19, v20);
+    v21->_textureParameters = parameters;
+    if (surface)
     {
-      v21->_backingSurface = CFRetain(a10);
+      v21->_backingSurface = CFRetain(surface);
     }
 
     if (!v21->_name)
@@ -57,7 +57,7 @@
   [(TSDGLFrameBufferTextureConfig *)&v4 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [TSDGLFrameBufferTextureConfig alloc];
   internalFormat = self->_internalFormat;
@@ -76,16 +76,16 @@
   }
 }
 
-+ (id)textureConfigWithSize:(CGSize)a3 internalFormat:(int)a4 format:(unsigned int)a5 type:(unsigned int)a6 attachment:(unsigned int)a7 textureParameters:(id)a8 name:(id)a9 backingSurface:(__IOSurface *)a10
++ (id)textureConfigWithSize:(CGSize)size internalFormat:(int)format format:(unsigned int)a5 type:(unsigned int)type attachment:(unsigned int)attachment textureParameters:(id)parameters name:(id)name backingSurface:(__IOSurface *)self0
 {
-  v12 = *&a7;
-  v13 = *&a6;
+  v12 = *&attachment;
+  v13 = *&type;
   v14 = *&a5;
-  v15 = *&a4;
-  height = a3.height;
-  width = a3.width;
+  v15 = *&format;
+  height = size.height;
+  width = size.width;
   v18 = objc_alloc(objc_opt_class());
-  v20 = objc_msgSend_initWithSize_internalFormat_format_type_attachment_textureParameters_name_backingSurface_(v18, v19, v15, v14, v13, v12, a8, a9, width, height, a10);
+  v20 = objc_msgSend_initWithSize_internalFormat_format_type_attachment_textureParameters_name_backingSurface_(v18, v19, v15, v14, v13, v12, parameters, name, width, height, surface);
 
   return v20;
 }

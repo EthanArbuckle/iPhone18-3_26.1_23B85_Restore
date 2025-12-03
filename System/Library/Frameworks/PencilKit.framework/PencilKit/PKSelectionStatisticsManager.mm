@@ -1,13 +1,13 @@
 @interface PKSelectionStatisticsManager
 + (id)sharedStatisticsManager;
 - (void)_endSelectionSession;
-- (void)_recordSelectionSession:(id)a3;
+- (void)_recordSelectionSession:(id)session;
 - (void)logEndSelectionSessionIfNecessary;
-- (void)logScrollEventWithContentOffset:(CGPoint)a3;
-- (void)logSelectionAction:(int64_t)a3;
-- (void)recordDidMakeSelectionWithType:(int64_t)a3;
-- (void)recordLassoSelectionEventWithContentType:(int64_t)a3;
-- (void)recordSmartSelectionEventWithType:(int64_t)a3 contentType:(int64_t)a4 gestureInvoked:(int64_t)a5;
+- (void)logScrollEventWithContentOffset:(CGPoint)offset;
+- (void)logSelectionAction:(int64_t)action;
+- (void)recordDidMakeSelectionWithType:(int64_t)type;
+- (void)recordLassoSelectionEventWithContentType:(int64_t)type;
+- (void)recordSmartSelectionEventWithType:(int64_t)type contentType:(int64_t)contentType gestureInvoked:(int64_t)invoked;
 @end
 
 @implementation PKSelectionStatisticsManager
@@ -31,10 +31,10 @@ void __55__PKSelectionStatisticsManager_sharedStatisticsManager__block_invoke()
   qword_1ED6A5548 = v0;
 }
 
-- (void)recordDidMakeSelectionWithType:(int64_t)a3
+- (void)recordDidMakeSelectionWithType:(int64_t)type
 {
   v3 = @"smartSelection";
-  if (!a3)
+  if (!type)
   {
     v3 = @"lasso";
   }
@@ -57,7 +57,7 @@ id __63__PKSelectionStatisticsManager_recordDidMakeSelectionWithType___block_inv
   return v2;
 }
 
-- (void)recordLassoSelectionEventWithContentType:(int64_t)a3
+- (void)recordLassoSelectionEventWithContentType:(int64_t)type
 {
   if (self->_selectionSession)
   {
@@ -71,9 +71,9 @@ id __63__PKSelectionStatisticsManager_recordDidMakeSelectionWithType___block_inv
     self->_selectionSession = v5;
   }
 
-  [(PKSelectionStatisticsSession *)self->_selectionSession logGesture:6 selectionType:0 contentType:a3];
+  [(PKSelectionStatisticsSession *)self->_selectionSession logGesture:6 selectionType:0 contentType:type];
   [(PKSelectionStatisticsManager *)self performSelector:sel__endSelectionSession withObject:0 afterDelay:180.0];
-  v7 = PKAnalyticsStringForContentType(a3);
+  v7 = PKAnalyticsStringForContentType(type);
   v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.pencilkit.%@", @"selection.lassoSelection"];
   v10 = v7;
   v9 = v7;
@@ -91,7 +91,7 @@ id __73__PKSelectionStatisticsManager_recordLassoSelectionEventWithContentType__
   return v2;
 }
 
-- (void)recordSmartSelectionEventWithType:(int64_t)a3 contentType:(int64_t)a4 gestureInvoked:(int64_t)a5
+- (void)recordSmartSelectionEventWithType:(int64_t)type contentType:(int64_t)contentType gestureInvoked:(int64_t)invoked
 {
   if (self->_selectionSession)
   {
@@ -105,11 +105,11 @@ id __73__PKSelectionStatisticsManager_recordLassoSelectionEventWithContentType__
     self->_selectionSession = v9;
   }
 
-  [(PKSelectionStatisticsSession *)self->_selectionSession logGesture:a5 selectionType:a3 contentType:a4];
+  [(PKSelectionStatisticsSession *)self->_selectionSession logGesture:invoked selectionType:type contentType:contentType];
   [(PKSelectionStatisticsManager *)self performSelector:sel__endSelectionSession withObject:0 afterDelay:180.0];
-  v11 = PKAnalyticsStringForSelectionType(a3);
-  v12 = PKAnalyticsStringForContentType(a4);
-  v13 = PKAnalyticsStringForSelectionGesture(a5);
+  v11 = PKAnalyticsStringForSelectionType(type);
+  v12 = PKAnalyticsStringForContentType(contentType);
+  v13 = PKAnalyticsStringForSelectionGesture(invoked);
   v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.pencilkit.%@", @"selection.smartSelection"];
   v18 = v11;
   v19 = v12;
@@ -134,14 +134,14 @@ id __93__PKSelectionStatisticsManager_recordSmartSelectionEventWithType_contentT
   return v2;
 }
 
-- (void)logSelectionAction:(int64_t)a3
+- (void)logSelectionAction:(int64_t)action
 {
   if (self->_selectionSession)
   {
     [MEMORY[0x1E69E58C0] cancelPreviousPerformRequestsWithTarget:self selector:sel__endSelectionSession object:0];
     selectionSession = self->_selectionSession;
 
-    [(PKSelectionStatisticsSession *)selectionSession logSelectionAction:a3];
+    [(PKSelectionStatisticsSession *)selectionSession logSelectionAction:action];
   }
 
   else
@@ -150,24 +150,24 @@ id __93__PKSelectionStatisticsManager_recordSmartSelectionEventWithType_contentT
     v7 = self->_selectionSession;
     self->_selectionSession = v6;
 
-    [(PKSelectionStatisticsSession *)self->_selectionSession logSelectionAction:a3];
+    [(PKSelectionStatisticsSession *)self->_selectionSession logSelectionAction:action];
 
     [(PKSelectionStatisticsManager *)self performSelector:sel__endSelectionSession withObject:0 afterDelay:180.0];
   }
 }
 
-- (void)logScrollEventWithContentOffset:(CGPoint)a3
+- (void)logScrollEventWithContentOffset:(CGPoint)offset
 {
   x = self->_lastContentOffset.x;
   y = self->_lastContentOffset.y;
-  self->_lastContentOffset = a3;
+  self->_lastContentOffset = offset;
   selectionSession = self->_selectionSession;
   if (selectionSession)
   {
-    if (sqrt((a3.y - y) * (a3.y - y) + (a3.x - x) * (a3.x - x)) > 1000.0)
+    if (sqrt((offset.y - y) * (offset.y - y) + (offset.x - x) * (offset.x - x)) > 1000.0)
     {
-      v7 = [(PKSelectionStatisticsSession *)selectionSession lastActionTaken];
-      v8 = [v7 isEqualToString:@"selectionActionTypeNone"];
+      lastActionTaken = [(PKSelectionStatisticsSession *)selectionSession lastActionTaken];
+      v8 = [lastActionTaken isEqualToString:@"selectionActionTypeNone"];
 
       if (v8)
       {
@@ -196,18 +196,18 @@ id __93__PKSelectionStatisticsManager_recordSmartSelectionEventWithType_contentT
   }
 }
 
-- (void)_recordSelectionSession:(id)a3
+- (void)_recordSelectionSession:(id)session
 {
   v19[7] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = PKAnalyticsStringForSelectionType([v3 lastSelectionType]);
-  v5 = PKAnalyticsStringForContentType([v3 lastContentType]);
-  v6 = [MEMORY[0x1E695DF90] dictionary];
+  sessionCopy = session;
+  v4 = PKAnalyticsStringForSelectionType([sessionCopy lastSelectionType]);
+  v5 = PKAnalyticsStringForContentType([sessionCopy lastContentType]);
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v19[0] = &unk_1F47C1790;
   v18[0] = @"sessionCount";
   v18[1] = @"timeSpentEditingSelection";
   v7 = MEMORY[0x1E696AD98];
-  [v3 timeSpentSelecting];
+  [sessionCopy timeSpentSelecting];
   v8 = [v7 numberWithDouble:?];
   v19[1] = v8;
   v19[2] = v4;
@@ -215,26 +215,26 @@ id __93__PKSelectionStatisticsManager_recordSmartSelectionEventWithType_contentT
   v18[3] = @"selectionContents";
   v19[3] = v5;
   v18[4] = @"selectionEditCount";
-  v9 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v3, "selectionGestureCount")}];
+  v9 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(sessionCopy, "selectionGestureCount")}];
   v19[4] = v9;
   v18[5] = @"selectionActionType";
-  v10 = [v3 lastSignificantActionTaken];
-  v19[5] = v10;
+  lastSignificantActionTaken = [sessionCopy lastSignificantActionTaken];
+  v19[5] = lastSignificantActionTaken;
   v18[6] = @"deselected";
-  v11 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v3, "numberOfTimesSelectionWasClearedInASession")}];
+  v11 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(sessionCopy, "numberOfTimesSelectionWasClearedInASession")}];
   v19[6] = v11;
   v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v19 forKeys:v18 count:7];
 
-  [v6 addEntriesFromDictionary:v12];
-  v13 = [v3 selectionGestureDictionary];
-  [v6 addEntriesFromDictionary:v13];
+  [dictionary addEntriesFromDictionary:v12];
+  selectionGestureDictionary = [sessionCopy selectionGestureDictionary];
+  [dictionary addEntriesFromDictionary:selectionGestureDictionary];
 
-  v14 = [v3 selectionActionDictionary];
+  selectionActionDictionary = [sessionCopy selectionActionDictionary];
 
-  [v6 addEntriesFromDictionary:v14];
+  [dictionary addEntriesFromDictionary:selectionActionDictionary];
   v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.pencilkit.%@", @"selection.session"];
-  v17 = v6;
-  v16 = v6;
+  v17 = dictionary;
+  v16 = dictionary;
   AnalyticsSendEventLazy();
 }
 

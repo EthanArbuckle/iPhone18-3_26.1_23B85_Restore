@@ -1,13 +1,13 @@
 @interface UpsellOfferTransactionView
-- (CGSize)vui_layoutSubviews:(CGSize)a3 computationOnly:(BOOL)a4;
-- (CGSize)vui_sizeThatFits:(CGSize)a3;
+- (CGSize)vui_layoutSubviews:(CGSize)subviews computationOnly:(BOOL)only;
+- (CGSize)vui_sizeThatFits:(CGSize)fits;
 @end
 
 @implementation UpsellOfferTransactionView
 
-- (CGSize)vui_sizeThatFits:(CGSize)a3
+- (CGSize)vui_sizeThatFits:(CGSize)fits
 {
-  v3 = self;
+  selfCopy = self;
   v4 = OUTLINED_FUNCTION_6_12();
   sub_1E38D3128(v4, v5);
   v7 = v6;
@@ -20,12 +20,12 @@
   return result;
 }
 
-- (CGSize)vui_layoutSubviews:(CGSize)a3 computationOnly:(BOOL)a4
+- (CGSize)vui_layoutSubviews:(CGSize)subviews computationOnly:(BOOL)only
 {
-  v4 = a4;
-  v5 = self;
+  onlyCopy = only;
+  selfCopy = self;
   OUTLINED_FUNCTION_6_12();
-  sub_1E38D3544(v4);
+  sub_1E38D3544(onlyCopy);
   v7 = v6;
   v9 = v8;
 

@@ -1,7 +1,7 @@
 @interface ACCUserNotification
 - (ACCUserNotification)init;
 - (void)createBackingUserNotification;
-- (void)setUserNotificationCF:(__CFUserNotification *)a3;
+- (void)setUserNotificationCF:(__CFUserNotification *)f;
 - (void)updateBackingUserNotification;
 @end
 
@@ -17,9 +17,9 @@
   {
     v2->_userNotificationCF = 0;
     v4 = +[NSUUID UUID];
-    v5 = [v4 UUIDString];
+    uUIDString = [v4 UUIDString];
     uuid = v3->_uuid;
-    v3->_uuid = v5;
+    v3->_uuid = uUIDString;
 
     v3->_type = 0;
     title = v3->_title;
@@ -71,11 +71,11 @@
 
   [(ACCUserNotification *)self isModal];
   v41[0] = kCFUserNotificationAlertHeaderKey;
-  v4 = [(ACCUserNotification *)self title];
-  v40 = v4;
-  if (v4)
+  title = [(ACCUserNotification *)self title];
+  v40 = title;
+  if (title)
   {
-    v5 = v4;
+    v5 = title;
   }
 
   else
@@ -85,11 +85,11 @@
 
   v42[0] = v5;
   v41[1] = kCFUserNotificationAlertMessageKey;
-  v6 = [(ACCUserNotification *)self message];
-  v7 = v6;
-  if (v6)
+  message = [(ACCUserNotification *)self message];
+  v7 = message;
+  if (message)
   {
-    v8 = v6;
+    v8 = message;
   }
 
   else
@@ -111,15 +111,15 @@
   v10 = [NSNumber numberWithBool:[(ACCUserNotification *)self ignoreQuietMode]];
   v42[5] = v10;
   v41[6] = SBUserNotificationLockScreenAlertHeaderKey;
-  v11 = [(ACCUserNotification *)self lockScreenTitle];
-  v12 = v11;
-  if (!v11)
+  lockScreenTitle = [(ACCUserNotification *)self lockScreenTitle];
+  v12 = lockScreenTitle;
+  if (!lockScreenTitle)
   {
-    v13 = [(ACCUserNotification *)self title];
-    v36 = v13;
-    if (v13)
+    title2 = [(ACCUserNotification *)self title];
+    v36 = title2;
+    if (title2)
     {
-      v12 = v13;
+      v12 = title2;
     }
 
     else
@@ -130,15 +130,15 @@
 
   v42[6] = v12;
   v41[7] = SBUserNotificationLockScreenAlertMessageKey;
-  v14 = [(ACCUserNotification *)self lockScreenMessage];
-  v15 = v14;
-  if (!v14)
+  lockScreenMessage = [(ACCUserNotification *)self lockScreenMessage];
+  v15 = lockScreenMessage;
+  if (!lockScreenMessage)
   {
-    v16 = [(ACCUserNotification *)self message];
-    v2 = v16;
-    if (v16)
+    message2 = [(ACCUserNotification *)self message];
+    v2 = message2;
+    if (message2)
     {
-      v15 = v16;
+      v15 = message2;
     }
 
     else
@@ -154,57 +154,57 @@
   v18 = [NSDictionary dictionaryWithObjects:v42 forKeys:v41 count:9];
   v19 = [v18 mutableCopy];
 
-  if (!v14)
+  if (!lockScreenMessage)
   {
   }
 
-  if (!v11)
+  if (!lockScreenTitle)
   {
   }
 
-  v20 = [(ACCUserNotification *)self defaultButtonName];
-  if (v20)
+  defaultButtonName = [(ACCUserNotification *)self defaultButtonName];
+  if (defaultButtonName)
   {
-    v21 = v20;
-    v22 = [(ACCUserNotification *)self defaultButtonName];
-    v23 = [v22 length];
+    v21 = defaultButtonName;
+    defaultButtonName2 = [(ACCUserNotification *)self defaultButtonName];
+    v23 = [defaultButtonName2 length];
 
     if (v23)
     {
-      v24 = [(ACCUserNotification *)self defaultButtonName];
-      [v19 setObject:v24 forKey:kCFUserNotificationDefaultButtonTitleKey];
+      defaultButtonName3 = [(ACCUserNotification *)self defaultButtonName];
+      [v19 setObject:defaultButtonName3 forKey:kCFUserNotificationDefaultButtonTitleKey];
     }
   }
 
-  v25 = [(ACCUserNotification *)self otherButtonName];
-  if (v25)
+  otherButtonName = [(ACCUserNotification *)self otherButtonName];
+  if (otherButtonName)
   {
-    v26 = v25;
-    v27 = [(ACCUserNotification *)self otherButtonName];
-    v28 = [v27 length];
+    v26 = otherButtonName;
+    otherButtonName2 = [(ACCUserNotification *)self otherButtonName];
+    v28 = [otherButtonName2 length];
 
     if (v28)
     {
-      v29 = [(ACCUserNotification *)self otherButtonName];
-      [v19 setObject:v29 forKey:kCFUserNotificationAlternateButtonTitleKey];
+      otherButtonName3 = [(ACCUserNotification *)self otherButtonName];
+      [v19 setObject:otherButtonName3 forKey:kCFUserNotificationAlternateButtonTitleKey];
     }
   }
 
-  v30 = [(ACCUserNotification *)self systemSoundID];
+  systemSoundID = [(ACCUserNotification *)self systemSoundID];
 
-  if (v30)
+  if (systemSoundID)
   {
-    v31 = [(ACCUserNotification *)self systemSoundID];
-    [v19 setObject:v31 forKey:SBUserNotificationSystemSoundIDKey];
+    systemSoundID2 = [(ACCUserNotification *)self systemSoundID];
+    [v19 setObject:systemSoundID2 forKey:SBUserNotificationSystemSoundIDKey];
   }
 
-  v32 = [(ACCUserNotification *)self iconConfiguration];
-  v33 = [v32 count];
+  iconConfiguration = [(ACCUserNotification *)self iconConfiguration];
+  v33 = [iconConfiguration count];
 
   if (v33)
   {
-    v34 = [(ACCUserNotification *)self iconConfiguration];
-    [v19 setObject:v34 forKey:SBUserNotificationHeaderGraphicIconDefinitionKey];
+    iconConfiguration2 = [(ACCUserNotification *)self iconConfiguration];
+    [v19 setObject:iconConfiguration2 forKey:SBUserNotificationHeaderGraphicIconDefinitionKey];
   }
 
   if ([(ACCUserNotification *)self presentViaSystemAperture])
@@ -216,7 +216,7 @@
   [(ACCUserNotification *)self setUserNotificationCFDict:v35];
 }
 
-- (void)setUserNotificationCF:(__CFUserNotification *)a3
+- (void)setUserNotificationCF:(__CFUserNotification *)f
 {
   userNotificationCF = self->_userNotificationCF;
   if (userNotificationCF)
@@ -224,9 +224,9 @@
     CFRelease(userNotificationCF);
   }
 
-  if (a3)
+  if (f)
   {
-    v6 = CFRetain(a3);
+    v6 = CFRetain(f);
   }
 
   else
@@ -239,10 +239,10 @@
 
 - (void)updateBackingUserNotification
 {
-  v3 = [(ACCUserNotification *)self userNotificationCF];
+  userNotificationCF = [(ACCUserNotification *)self userNotificationCF];
   [(ACCUserNotification *)self createBackingUserNotification];
 
-  [(ACCUserNotification *)self setUserNotificationCF:v3];
+  [(ACCUserNotification *)self setUserNotificationCF:userNotificationCF];
 }
 
 @end

@@ -1,25 +1,25 @@
 @interface WFTrelloGetItemsAction
 - (void)initializeParameters;
-- (void)runAsynchronouslyWithInput:(id)a3;
-- (void)updateBoards:(id)a3 onAccount:(id)a4;
-- (void)updateListCache:(id)a3 board:(id)a4 account:(id)a5;
+- (void)runAsynchronouslyWithInput:(id)input;
+- (void)updateBoards:(id)boards onAccount:(id)account;
+- (void)updateListCache:(id)cache board:(id)board account:(id)account;
 @end
 
 @implementation WFTrelloGetItemsAction
 
-- (void)updateListCache:(id)a3 board:(id)a4 account:(id)a5
+- (void)updateListCache:(id)cache board:(id)board account:(id)account
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 identifier];
+  cacheCopy = cache;
+  boardCopy = board;
+  accountCopy = account;
+  identifier = [boardCopy identifier];
 
-  if (v11)
+  if (identifier)
   {
-    v12 = [v9 identifier];
-    v20 = WFDiskCacheKey(v12, v13, v14, v15, v16, v17, v18, v19, @"WFTrelloLists");
+    identifier2 = [boardCopy identifier];
+    v20 = WFDiskCacheKey(identifier2, v13, v14, v15, v16, v17, v18, v19, @"WFTrelloLists");
 
-    if ([v10 isValid] && objc_msgSend(v8, "count"))
+    if ([accountCopy isValid] && objc_msgSend(cacheCopy, "count"))
     {
       v21 = +[WFDiskCache workflowCache];
       v23[0] = MEMORY[0x277D85DD0];
@@ -27,7 +27,7 @@
       v23[2] = __56__WFTrelloGetItemsAction_updateListCache_board_account___block_invoke;
       v23[3] = &unk_278C224A0;
       v23[4] = self;
-      [v21 setObject:v8 forKey:v20 completion:v23];
+      [v21 setObject:cacheCopy forKey:v20 completion:v23];
     }
 
     else
@@ -59,10 +59,10 @@ void __56__WFTrelloGetItemsAction_updateListCache_board_account___block_invoke_2
   [v0 postNotificationName:@"WFTrelloListParameterNeedsUpdate" object:0];
 }
 
-- (void)updateBoards:(id)a3 onAccount:(id)a4
+- (void)updateBoards:(id)boards onAccount:(id)account
 {
-  v6 = a3;
-  if ([a4 isValid] && objc_msgSend(v6, "count"))
+  boardsCopy = boards;
+  if ([account isValid] && objc_msgSend(boardsCopy, "count"))
   {
     v7 = +[WFDiskCache workflowCache];
     v9[0] = MEMORY[0x277D85DD0];
@@ -70,7 +70,7 @@ void __56__WFTrelloGetItemsAction_updateListCache_board_account___block_invoke_2
     v9[2] = __49__WFTrelloGetItemsAction_updateBoards_onAccount___block_invoke;
     v9[3] = &unk_278C224A0;
     v9[4] = self;
-    [v7 setObject:v6 forKey:@"WFTrelloBoards" completion:v9];
+    [v7 setObject:boardsCopy forKey:@"WFTrelloBoards" completion:v9];
   }
 
   else
@@ -96,21 +96,21 @@ void __49__WFTrelloGetItemsAction_updateBoards_onAccount___block_invoke_2()
   [v0 postNotificationName:@"WFTrelloBoardParameterNeedsUpdateNotification" object:0];
 }
 
-- (void)runAsynchronouslyWithInput:(id)a3
+- (void)runAsynchronouslyWithInput:(id)input
 {
   v55[1] = *MEMORY[0x277D85DE8];
-  v4 = [(WFTrelloGetItemsAction *)self resourceManager];
-  v5 = [v4 resourceObjectsOfClass:objc_opt_class()];
-  v6 = [v5 anyObject];
+  resourceManager = [(WFTrelloGetItemsAction *)self resourceManager];
+  v5 = [resourceManager resourceObjectsOfClass:objc_opt_class()];
+  anyObject = [v5 anyObject];
 
-  v7 = [v6 accounts];
-  v8 = [v7 firstObject];
+  accounts = [anyObject accounts];
+  firstObject = [accounts firstObject];
 
-  if ([v8 isValid])
+  if ([firstObject isValid])
   {
     v9 = [WFTrelloSessionManager alloc];
-    v10 = [v8 token];
-    v11 = [(WFTrelloSessionManager *)v9 initWithConfiguration:0 token:v10];
+    token = [firstObject token];
+    v11 = [(WFTrelloSessionManager *)v9 initWithConfiguration:0 token:token];
 
     v12 = [(WFTrelloGetItemsAction *)self parameterValueForKey:@"WFTrelloBoard" ofClass:objc_opt_class()];
     v13 = [(WFTrelloGetItemsAction *)self parameterValueForKey:@"WFTrelloItemType" ofClass:objc_opt_class()];
@@ -121,7 +121,7 @@ void __49__WFTrelloGetItemsAction_updateBoards_onAccount___block_invoke_2()
       v45[2] = __53__WFTrelloGetItemsAction_runAsynchronouslyWithInput___block_invoke;
       v45[3] = &unk_278C21150;
       v45[4] = self;
-      v46 = v8;
+      v46 = firstObject;
       [(WFTrelloSessionManager *)v11 getOpenBoardsWithCompletionHandler:v45];
       v14 = v46;
 LABEL_8:
@@ -140,7 +140,7 @@ LABEL_8:
         v42[4] = self;
         v12 = v12;
         v43 = v12;
-        v44 = v8;
+        v44 = firstObject;
         [(WFTrelloSessionManager *)v11 getListsForBoard:v12 completionHandler:v42];
 
         v14 = v43;
@@ -183,9 +183,9 @@ LABEL_18:
     }
 
     v18 = [(WFTrelloGetItemsAction *)self parameterValueForKey:@"WFTrelloList" ofClass:objc_opt_class()];
-    v19 = [v18 identifier];
+    identifier = [v18 identifier];
 
-    if (!v19)
+    if (!identifier)
     {
       v39 = +[WFDiskCache workflowCache];
       v20 = MEMORY[0x277CBEB98];
@@ -193,11 +193,11 @@ LABEL_18:
       v49[1] = objc_opt_class();
       v38 = [MEMORY[0x277CBEA60] arrayWithObjects:v49 count:2];
       v21 = [v20 setWithArray:v38];
-      v22 = [v12 identifier];
-      v37 = [v39 objectOfClasses:v21 forKeyComponents:{v22, @"WFTrelloLists", 0}];
+      identifier2 = [v12 identifier];
+      v37 = [v39 objectOfClasses:v21 forKeyComponents:{identifier2, @"WFTrelloLists", 0}];
 
-      v23 = [v18 name];
-      v24 = [v37 objectMatchingKey:@"name" value:v23];
+      name = [v18 name];
+      v24 = [v37 objectMatchingKey:@"name" value:name];
 
       v18 = v24;
     }

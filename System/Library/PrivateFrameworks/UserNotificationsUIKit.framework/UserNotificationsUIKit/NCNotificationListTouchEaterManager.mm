@@ -1,19 +1,19 @@
 @interface NCNotificationListTouchEaterManager
-- (BOOL)_isPointInWindowSpace:(CGPoint)a3 insideView:(id)a4;
-- (BOOL)_shouldReceiveTouch:(id)a3 forGestureRecognizer:(id)a4;
+- (BOOL)_isPointInWindowSpace:(CGPoint)space insideView:(id)view;
+- (BOOL)_shouldReceiveTouch:(id)touch forGestureRecognizer:(id)recognizer;
 - (NCNotificationListCoalescingControlsHandler)coalescingControlsHandlerInClearState;
 - (NCNotificationListSectionHeaderView)headerViewInClearState;
 - (PLSwipeInteraction)swipeInteractionInRevealedState;
-- (id)initForView:(id)a3;
-- (void)_handleEatenTouch:(id)a3;
-- (void)_handleEatenTouchBeginStateForGestureRecognizer:(id)a3;
-- (void)_handleEatenTouchEndStateForGestureRecognizer:(id)a3;
+- (id)initForView:(id)view;
+- (void)_handleEatenTouch:(id)touch;
+- (void)_handleEatenTouchBeginStateForGestureRecognizer:(id)recognizer;
+- (void)_handleEatenTouchEndStateForGestureRecognizer:(id)recognizer;
 - (void)removeTouchGestureRecognizer;
-- (void)setCoalescingControlsHandlerInClearState:(id)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setHeaderViewInClearState:(id)a3;
-- (void)setSwipeInteractionInRevealedState:(id)a3;
-- (void)setTouchEaterEnabled:(BOOL)a3;
+- (void)setCoalescingControlsHandlerInClearState:(id)state;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setHeaderViewInClearState:(id)state;
+- (void)setSwipeInteractionInRevealedState:(id)state;
+- (void)setTouchEaterEnabled:(BOOL)enabled;
 @end
 
 @implementation NCNotificationListTouchEaterManager
@@ -27,20 +27,20 @@
 
 - (void)removeTouchGestureRecognizer
 {
-  v3 = [(NCTouchEaterGestureRecognizer *)self->_touchEater view];
-  [v3 removeGestureRecognizer:self->_touchEater];
+  view = [(NCTouchEaterGestureRecognizer *)self->_touchEater view];
+  [view removeGestureRecognizer:self->_touchEater];
 }
 
-- (id)initForView:(id)a3
+- (id)initForView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v13.receiver = self;
   v13.super_class = NCNotificationListTouchEaterManager;
   v5 = [(NCNotificationListTouchEaterManager *)&v13 init];
   if (v5)
   {
-    v6 = [v4 window];
-    v7 = v6;
+    window = [viewCopy window];
+    v7 = window;
     touchEater = v5->_touchEater;
     if (touchEater)
     {
@@ -49,7 +49,7 @@
 
     else
     {
-      v9 = v6 == 0;
+      v9 = window == 0;
     }
 
     if (!v9)
@@ -69,43 +69,43 @@
   return v5;
 }
 
-- (void)setHeaderViewInClearState:(id)a3
+- (void)setHeaderViewInClearState:(id)state
 {
-  obj = a3;
-  v4 = [(NCNotificationListTouchEaterManager *)self headerViewInClearState];
-  if (v4 != obj)
+  obj = state;
+  headerViewInClearState = [(NCNotificationListTouchEaterManager *)self headerViewInClearState];
+  if (headerViewInClearState != obj)
   {
-    [v4 resetClearButtonStateAnimated:1];
+    [headerViewInClearState resetClearButtonStateAnimated:1];
     objc_storeWeak(&self->_headerViewInClearState, obj);
   }
 
   [(NCNotificationListTouchEaterManager *)self setTouchEaterEnabled:obj != 0];
 }
 
-- (void)setCoalescingControlsHandlerInClearState:(id)a3
+- (void)setCoalescingControlsHandlerInClearState:(id)state
 {
-  obj = a3;
-  v4 = [(NCNotificationListTouchEaterManager *)self coalescingControlsHandlerInClearState];
-  if (v4 != obj)
+  obj = state;
+  coalescingControlsHandlerInClearState = [(NCNotificationListTouchEaterManager *)self coalescingControlsHandlerInClearState];
+  if (coalescingControlsHandlerInClearState != obj)
   {
-    [v4 resetClearButtonStateAnimated:1];
+    [coalescingControlsHandlerInClearState resetClearButtonStateAnimated:1];
     objc_storeWeak(&self->_coalescingControlsHandlerInClearState, obj);
   }
 
   [(NCNotificationListTouchEaterManager *)self setTouchEaterEnabled:obj != 0];
 }
 
-- (void)setSwipeInteractionInRevealedState:(id)a3
+- (void)setSwipeInteractionInRevealedState:(id)state
 {
-  obj = a3;
-  v4 = [(NCNotificationListTouchEaterManager *)self swipeInteractionInRevealedState];
+  obj = state;
+  swipeInteractionInRevealedState = [(NCNotificationListTouchEaterManager *)self swipeInteractionInRevealedState];
   v5 = obj;
-  v6 = v4;
-  if (v4 != obj)
+  v6 = swipeInteractionInRevealedState;
+  if (swipeInteractionInRevealedState != obj)
   {
     if (obj)
     {
-      [v4 hideActionsAnimated:1 fastAnimation:0 completion:0];
+      [swipeInteractionInRevealedState hideActionsAnimated:1 fastAnimation:0 completion:0];
     }
 
     objc_storeWeak(&self->_swipeInteractionInRevealedState, obj);
@@ -115,35 +115,35 @@
   [(NCNotificationListTouchEaterManager *)self setTouchEaterEnabled:v5 != 0];
 }
 
-- (void)setTouchEaterEnabled:(BOOL)a3
+- (void)setTouchEaterEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v4 = [(NCNotificationListTouchEaterManager *)self touchEater];
-  [v4 setEnabled:v3];
+  enabledCopy = enabled;
+  touchEater = [(NCNotificationListTouchEaterManager *)self touchEater];
+  [touchEater setEnabled:enabledCopy];
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
-    v4 = [(NCNotificationListTouchEaterManager *)self swipeInteractionInRevealedState];
-    if (v4)
+    swipeInteractionInRevealedState = [(NCNotificationListTouchEaterManager *)self swipeInteractionInRevealedState];
+    if (swipeInteractionInRevealedState)
     {
       v5 = 1;
     }
 
     else
     {
-      v6 = [(NCNotificationListTouchEaterManager *)self headerViewInClearState];
-      if (v6)
+      headerViewInClearState = [(NCNotificationListTouchEaterManager *)self headerViewInClearState];
+      if (headerViewInClearState)
       {
         v5 = 1;
       }
 
       else
       {
-        v7 = [(NCNotificationListTouchEaterManager *)self coalescingControlsHandlerInClearState];
-        v5 = v7 != 0;
+        coalescingControlsHandlerInClearState = [(NCNotificationListTouchEaterManager *)self coalescingControlsHandlerInClearState];
+        v5 = coalescingControlsHandlerInClearState != 0;
       }
     }
   }
@@ -153,28 +153,28 @@
     v5 = 0;
   }
 
-  v8 = [(NCNotificationListTouchEaterManager *)self touchEater];
-  [v8 setEnabled:v5];
+  touchEater = [(NCNotificationListTouchEaterManager *)self touchEater];
+  [touchEater setEnabled:v5];
 }
 
-- (void)_handleEatenTouch:(id)a3
+- (void)_handleEatenTouch:(id)touch
 {
-  v4 = a3;
-  if ([v4 state] == 3)
+  touchCopy = touch;
+  if ([touchCopy state] == 3)
   {
-    [(NCNotificationListTouchEaterManager *)self _handleEatenTouchBeginStateForGestureRecognizer:v4];
+    [(NCNotificationListTouchEaterManager *)self _handleEatenTouchBeginStateForGestureRecognizer:touchCopy];
   }
 
-  [(NCNotificationListTouchEaterManager *)self _handleEatenTouchEndStateForGestureRecognizer:v4];
+  [(NCNotificationListTouchEaterManager *)self _handleEatenTouchEndStateForGestureRecognizer:touchCopy];
 }
 
-- (BOOL)_isPointInWindowSpace:(CGPoint)a3 insideView:(id)a4
+- (BOOL)_isPointInWindowSpace:(CGPoint)space insideView:(id)view
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = a4;
-  [v6 bounds];
-  [v6 convertRect:0 toView:?];
+  y = space.y;
+  x = space.x;
+  viewCopy = view;
+  [viewCopy bounds];
+  [viewCopy convertRect:0 toView:?];
   v8 = v7;
   v10 = v9;
   v12 = v11;
@@ -190,40 +190,40 @@
   return CGRectContainsPoint(*&v15, *&v19);
 }
 
-- (BOOL)_shouldReceiveTouch:(id)a3 forGestureRecognizer:(id)a4
+- (BOOL)_shouldReceiveTouch:(id)touch forGestureRecognizer:(id)recognizer
 {
-  v5 = a3;
-  v6 = [(NCNotificationListTouchEaterManager *)self swipeInteractionInRevealedState];
-  if (v6)
+  touchCopy = touch;
+  swipeInteractionInRevealedState = [(NCNotificationListTouchEaterManager *)self swipeInteractionInRevealedState];
+  if (swipeInteractionInRevealedState)
   {
-    [v5 locationInView:0];
+    [touchCopy locationInView:0];
     v8 = v7;
     v10 = v9;
-    v11 = [v6 view];
-    v12 = [(NCNotificationListTouchEaterManager *)self _isPointInWindowSpace:v11 insideView:v8, v10];
+    view = [swipeInteractionInRevealedState view];
+    v12 = [(NCNotificationListTouchEaterManager *)self _isPointInWindowSpace:view insideView:v8, v10];
 
     if (!v12)
     {
-      [v6 hideActionsAnimated:1 fastAnimation:0 completion:0];
+      [swipeInteractionInRevealedState hideActionsAnimated:1 fastAnimation:0 completion:0];
     }
   }
 
-  v13 = [(NCNotificationListTouchEaterManager *)self coalescingControlsHandlerInClearState];
-  [v5 locationInView:0];
+  coalescingControlsHandlerInClearState = [(NCNotificationListTouchEaterManager *)self coalescingControlsHandlerInClearState];
+  [touchCopy locationInView:0];
   v16 = v14;
   v17 = v15;
-  if (v13 && ([v13 shouldReceiveTouchAtPointInWindowSpace:{v14, v15}] & 1) == 0)
+  if (coalescingControlsHandlerInClearState && ([coalescingControlsHandlerInClearState shouldReceiveTouchAtPointInWindowSpace:{v14, v15}] & 1) == 0)
   {
-    [v13 resetClearButtonStateAnimated:1];
+    [coalescingControlsHandlerInClearState resetClearButtonStateAnimated:1];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_headerViewInClearState);
   v19 = WeakRetained;
   if (WeakRetained)
   {
-    v20 = [WeakRetained clearButton];
-    [v20 convertPoint:0 fromView:{v16, v17}];
-    if (([v20 pointInside:0 withEvent:?] & 1) == 0)
+    clearButton = [WeakRetained clearButton];
+    [clearButton convertPoint:0 fromView:{v16, v17}];
+    if (([clearButton pointInside:0 withEvent:?] & 1) == 0)
     {
       [v19 resetClearButtonStateAnimated:1];
     }
@@ -232,19 +232,19 @@
   return 0;
 }
 
-- (void)_handleEatenTouchBeginStateForGestureRecognizer:(id)a3
+- (void)_handleEatenTouchBeginStateForGestureRecognizer:(id)recognizer
 {
-  v4 = [(NCNotificationListTouchEaterManager *)self swipeInteractionInRevealedState];
-  [v4 hideActionsAnimated:1 fastAnimation:0 completion:0];
+  swipeInteractionInRevealedState = [(NCNotificationListTouchEaterManager *)self swipeInteractionInRevealedState];
+  [swipeInteractionInRevealedState hideActionsAnimated:1 fastAnimation:0 completion:0];
 
-  v5 = [(NCNotificationListTouchEaterManager *)self headerViewInClearState];
-  [v5 resetClearButtonStateAnimated:1];
+  headerViewInClearState = [(NCNotificationListTouchEaterManager *)self headerViewInClearState];
+  [headerViewInClearState resetClearButtonStateAnimated:1];
 
-  v6 = [(NCNotificationListTouchEaterManager *)self coalescingControlsHandlerInClearState];
-  [v6 resetClearButtonStateAnimated:1];
+  coalescingControlsHandlerInClearState = [(NCNotificationListTouchEaterManager *)self coalescingControlsHandlerInClearState];
+  [coalescingControlsHandlerInClearState resetClearButtonStateAnimated:1];
 }
 
-- (void)_handleEatenTouchEndStateForGestureRecognizer:(id)a3
+- (void)_handleEatenTouchEndStateForGestureRecognizer:(id)recognizer
 {
   [(NCNotificationListTouchEaterManager *)self setSwipeInteractionInRevealedState:0];
   [(NCNotificationListTouchEaterManager *)self setHeaderViewInClearState:0];

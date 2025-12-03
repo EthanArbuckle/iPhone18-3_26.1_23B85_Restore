@@ -2,8 +2,8 @@
 - (CGAffineTransform)cardSuperviewToTransform;
 - (CGAffineTransform)cardToTransform;
 - (CGPoint)cardToCenter;
-- (void)setCardSuperviewToTransform:(CGAffineTransform *)a3;
-- (void)setCardToTransform:(CGAffineTransform *)a3;
+- (void)setCardSuperviewToTransform:(CGAffineTransform *)transform;
+- (void)setCardToTransform:(CGAffineTransform *)transform;
 @end
 
 @implementation BCCardStackTransitionCardMoveAnimationItem
@@ -26,11 +26,11 @@
   return self;
 }
 
-- (void)setCardToTransform:(CGAffineTransform *)a3
+- (void)setCardToTransform:(CGAffineTransform *)transform
 {
-  v4 = *&a3->c;
-  v3 = *&a3->tx;
-  *&self->_cardToTransform.a = *&a3->a;
+  v4 = *&transform->c;
+  v3 = *&transform->tx;
+  *&self->_cardToTransform.a = *&transform->a;
   *&self->_cardToTransform.c = v4;
   *&self->_cardToTransform.tx = v3;
 }
@@ -44,11 +44,11 @@
   return self;
 }
 
-- (void)setCardSuperviewToTransform:(CGAffineTransform *)a3
+- (void)setCardSuperviewToTransform:(CGAffineTransform *)transform
 {
-  v4 = *&a3->c;
-  v3 = *&a3->tx;
-  *&self->_cardSuperviewToTransform.a = *&a3->a;
+  v4 = *&transform->c;
+  v3 = *&transform->tx;
+  *&self->_cardSuperviewToTransform.a = *&transform->a;
   *&self->_cardSuperviewToTransform.c = v4;
   *&self->_cardSuperviewToTransform.tx = v3;
 }

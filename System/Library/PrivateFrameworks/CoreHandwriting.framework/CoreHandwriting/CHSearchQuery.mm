@@ -1,19 +1,19 @@
 @interface CHSearchQuery
-- (CHSearchQuery)initWithRecognitionSession:(id)a3;
+- (CHSearchQuery)initWithRecognitionSession:(id)session;
 - (NSArray)foundItems;
 - (NSString)queryString;
-- (id)q_foundItemsForSearchString:(id)a3 sessionResult:(id)a4;
+- (id)q_foundItemsForSearchString:(id)string sessionResult:(id)result;
 - (void)q_updateQueryResult;
-- (void)setQueryString:(id)a3;
+- (void)setQueryString:(id)string;
 @end
 
 @implementation CHSearchQuery
 
-- (CHSearchQuery)initWithRecognitionSession:(id)a3
+- (CHSearchQuery)initWithRecognitionSession:(id)session
 {
   v7.receiver = self;
   v7.super_class = CHSearchQuery;
-  v3 = [(CHQuery *)&v7 initWithRecognitionSession:a3];
+  v3 = [(CHQuery *)&v7 initWithRecognitionSession:session];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x1E695DEC8]);
@@ -181,13 +181,13 @@ LABEL_24:
   }
 }
 
-- (id)q_foundItemsForSearchString:(id)a3 sessionResult:(id)a4
+- (id)q_foundItemsForSearchString:(id)string sessionResult:(id)result
 {
   v430 = *MEMORY[0x1E69E9840];
-  v361 = a3;
-  v365 = a4;
+  stringCopy = string;
+  resultCopy = result;
   v373 = objc_msgSend_array(MEMORY[0x1E695DF70], v5, v6, v7, v8, v9);
-  v15 = objc_msgSend_strokeGroupingResult(v365, v10, v11, v12, v13, v14);
+  v15 = objc_msgSend_strokeGroupingResult(resultCopy, v10, v11, v12, v13, v14);
   v21 = objc_msgSend_recognitionSession(self, v16, v17, v18, v19, v20);
   v27 = objc_msgSend_strokeGroupOrdering(v21, v22, v23, v24, v25, v26);
   v31 = objc_msgSend_strokeGroupsSortedBy_textGroupsOnly_(v15, v28, v27, 1, v29, v30);
@@ -216,7 +216,7 @@ LABEL_24:
         v364 = v39;
         v41 = *(*(&v406 + 1) + 8 * v39);
         v42 = objc_msgSend_uniqueIdentifier(v41, v34, v35, v36, v37, v38, v355);
-        v368 = objc_msgSend_recognitionResultForStrokeGroupIdentifier_(v365, v43, v42, v44, v45, v46);
+        v368 = objc_msgSend_recognitionResultForStrokeGroupIdentifier_(resultCopy, v43, v42, v44, v45, v46);
         v57 = objc_msgSend_mathResult(v368, v47, v48, v49, v50, v51);
         if (!v57)
         {
@@ -233,7 +233,7 @@ LABEL_9:
           v389 = &unk_1E6DDE300;
           v390 = &v391;
           v366 = v368;
-          v374 = v361;
+          v374 = stringCopy;
           v371 = v387;
           if (self && objc_msgSend_length(v374, v75, v76, v77, v78, v79))
           {
@@ -472,7 +472,7 @@ LABEL_9:
             v281 = 257;
           }
 
-          v379 = objc_msgSend_stringByReplacingOccurrencesOfString_withString_(v361, v278, @" ", &stru_1EF1C0318, v279, v280);
+          v379 = objc_msgSend_stringByReplacingOccurrencesOfString_withString_(stringCopy, v278, @" ", &stru_1EF1C0318, v279, v280);
           v403 = 0u;
           v404 = 0u;
           v401 = 0u;
@@ -580,17 +580,17 @@ LABEL_90:
   return v373;
 }
 
-- (void)setQueryString:(id)a3
+- (void)setQueryString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v10 = objc_msgSend_processingQueue(self, v5, v6, v7, v8, v9);
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = sub_1837BAE18;
   v12[3] = &unk_1E6DDE2B8;
   v12[4] = self;
-  v13 = v4;
-  v11 = v4;
+  v13 = stringCopy;
+  v11 = stringCopy;
   dispatch_sync(v10, v12);
 }
 

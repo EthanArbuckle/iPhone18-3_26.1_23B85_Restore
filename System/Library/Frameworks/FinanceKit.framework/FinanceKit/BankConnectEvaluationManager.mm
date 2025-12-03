@@ -1,7 +1,7 @@
 @interface BankConnectEvaluationManager
 + (id)makeManager;
 - (_TtC10FinanceKit28BankConnectEvaluationManager)init;
-- (void)reevaluateEligibilityWithCompletionHandler:(id)a3;
+- (void)reevaluateEligibilityWithCompletionHandler:(id)handler;
 @end
 
 @implementation BankConnectEvaluationManager
@@ -13,12 +13,12 @@
   return v2;
 }
 
-- (void)reevaluateEligibilityWithCompletionHandler:(id)a3
+- (void)reevaluateEligibilityWithCompletionHandler:(id)handler
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EB99C280);
   MEMORY[0x1EEE9AC00](v5 - 8);
   v7 = &v14 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   *(v9 + 24) = self;
@@ -34,7 +34,7 @@
   v12[3] = 0;
   v12[4] = &unk_1B780BB50;
   v12[5] = v11;
-  v13 = self;
+  selfCopy = self;
   sub_1B77E494C(0, 0, v7, &unk_1B780D8F0, v12);
 }
 

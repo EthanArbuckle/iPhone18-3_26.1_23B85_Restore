@@ -1,34 +1,34 @@
 @interface ShowSearchInfoActionHandler
-+ (void)performAction:(id)a3 inContext:(id)a4;
++ (void)performAction:(id)action inContext:(id)context;
 @end
 
 @implementation ShowSearchInfoActionHandler
 
-+ (void)performAction:(id)a3 inContext:(id)a4
++ (void)performAction:(id)action inContext:(id)context
 {
-  v12 = a3;
-  v5 = a4;
+  actionCopy = action;
+  contextCopy = context;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v12;
+    v6 = actionCopy;
     v7 = objc_alloc_init(SearchFieldItem);
-    v8 = [v6 searchInfo];
-    v9 = [v8 searchText];
-    [(SearchFieldItem *)v7 setSearchString:v9];
+    searchInfo = [v6 searchInfo];
+    searchText = [searchInfo searchText];
+    [(SearchFieldItem *)v7 setSearchString:searchText];
 
-    if ([v5 isCarPlayOnlyContext])
+    if ([contextCopy isCarPlayOnlyContext])
     {
-      v10 = [[SearchSession alloc] initWithOrigin:2];
-      v11 = [v6 searchInfo];
-      [(SearchSession *)v10 restoreSearchForItem:v7 withResults:v11];
+      appCoordinator = [[SearchSession alloc] initWithOrigin:2];
+      searchInfo2 = [v6 searchInfo];
+      [(SearchSession *)appCoordinator restoreSearchForItem:v7 withResults:searchInfo2];
     }
 
     else
     {
-      v10 = [v5 appCoordinator];
-      v11 = [v6 searchInfo];
-      [(SearchSession *)v10 openSearch:v7 andResults:v11];
+      appCoordinator = [contextCopy appCoordinator];
+      searchInfo2 = [v6 searchInfo];
+      [(SearchSession *)appCoordinator openSearch:v7 andResults:searchInfo2];
     }
   }
 }

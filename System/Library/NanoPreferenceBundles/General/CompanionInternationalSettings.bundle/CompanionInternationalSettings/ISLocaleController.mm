@@ -3,12 +3,12 @@
 - (UISearchBar)searchBar;
 - (UISearchController)searchController;
 - (id)_mainContentView;
-- (id)filteredRegionsForRegionList:(id)a3 searchString:(id)a4;
-- (id)sectionIndexTitlesForTableView:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (id)filteredRegionsForRegionList:(id)list searchString:(id)string;
+- (id)sectionIndexTitlesForTableView:(id)view;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)cancelSearchAndDismiss;
 - (void)dealloc;
 - (void)deselectHighlightedRow;
@@ -16,10 +16,10 @@
 - (void)loadRegions;
 - (void)loadSections;
 - (void)loadView;
-- (void)reloadDataAndScrollToCheckedRegionAnimated:(BOOL)a3;
-- (void)searchBar:(id)a3 textDidChange:(id)a4;
-- (void)searchBarTextDidBeginEditing:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)reloadDataAndScrollToCheckedRegionAnimated:(BOOL)animated;
+- (void)searchBar:(id)bar textDidChange:(id)change;
+- (void)searchBarTextDidBeginEditing:(id)editing;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
@@ -30,8 +30,8 @@
 {
   [(UITableView *)self->_tableView setDelegate:0];
   [(UITableView *)self->_tableView setDataSource:0];
-  v3 = [(ISLocaleController *)self searchBar];
-  [v3 setDelegate:0];
+  searchBar = [(ISLocaleController *)self searchBar];
+  [searchBar setDelegate:0];
 
   v4.receiver = self;
   v4.super_class = ISLocaleController;
@@ -60,8 +60,8 @@
   if (!contentView)
   {
     WeakRetained = objc_loadWeakRetained(&self->PSViewController_opaque[OBJC_IVAR___PSViewController__parentController]);
-    v5 = [WeakRetained view];
-    [v5 frame];
+    view = [WeakRetained view];
+    [view frame];
     v7 = v6;
     v9 = v8;
 
@@ -71,37 +71,37 @@
 
     [(UIView *)self->_contentView setAutoresizingMask:18];
     v12 = [[UISearchController alloc] initWithSearchResultsController:0];
-    v13 = [(ISLocaleController *)self navigationItem];
-    [v13 setSearchController:v12];
+    navigationItem = [(ISLocaleController *)self navigationItem];
+    [navigationItem setSearchController:v12];
 
-    v14 = [(ISLocaleController *)self navigationItem];
-    [v14 setHidesSearchBarWhenScrolling:0];
+    navigationItem2 = [(ISLocaleController *)self navigationItem];
+    [navigationItem2 setHidesSearchBarWhenScrolling:0];
 
-    v15 = [(ISLocaleController *)self navigationItem];
-    v16 = [v15 searchController];
-    [(ISLocaleController *)self setSearchController:v16];
+    navigationItem3 = [(ISLocaleController *)self navigationItem];
+    searchController = [navigationItem3 searchController];
+    [(ISLocaleController *)self setSearchController:searchController];
 
-    v17 = [(ISLocaleController *)self searchController];
-    v18 = [v17 searchBar];
-    [(ISLocaleController *)self setSearchBar:v18];
+    searchController2 = [(ISLocaleController *)self searchController];
+    searchBar = [searchController2 searchBar];
+    [(ISLocaleController *)self setSearchBar:searchBar];
 
-    v19 = [(ISLocaleController *)self searchController];
-    [v19 setHidesNavigationBarDuringPresentation:1];
+    searchController3 = [(ISLocaleController *)self searchController];
+    [searchController3 setHidesNavigationBarDuringPresentation:1];
 
-    v20 = [(ISLocaleController *)self searchController];
-    [v20 setObscuresBackgroundDuringPresentation:0];
+    searchController4 = [(ISLocaleController *)self searchController];
+    [searchController4 setObscuresBackgroundDuringPresentation:0];
 
-    v21 = [(ISLocaleController *)self searchBar];
-    [v21 setDelegate:self];
+    searchBar2 = [(ISLocaleController *)self searchBar];
+    [searchBar2 setDelegate:self];
 
     v22 = [NSBundle bundleForClass:objc_opt_class()];
     v23 = [v22 localizedStringForKey:@"SEARCH" value:&stru_28F98 table:@"InternationalSettings"];
-    v24 = [(ISLocaleController *)self searchBar];
-    [v24 setPlaceholder:v23];
+    searchBar3 = [(ISLocaleController *)self searchBar];
+    [searchBar3 setPlaceholder:v23];
 
     v25 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:24 target:self action:"navBarCloseButtonClicked"];
-    v26 = [(ISLocaleController *)self navigationItem];
-    [v26 setLeftBarButtonItem:v25];
+    navigationItem4 = [(ISLocaleController *)self navigationItem];
+    [navigationItem4 setLeftBarButtonItem:v25];
 
     v27 = [[UITableView alloc] initWithFrame:0 style:{0.0, 0.0, v7, v9}];
     [(UITableView *)v27 setAutoresizingMask:18];
@@ -124,8 +124,8 @@
 - (void)loadSections
 {
   v3 = +[UILocalizedIndexedCollation currentCollation];
-  v4 = [v3 sectionTitles];
-  v5 = [v4 count];
+  sectionTitles = [v3 sectionTitles];
+  v5 = [sectionTitles count];
 
   v6 = +[NSMutableArray array];
   if (v5)
@@ -146,9 +146,9 @@
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v19 = self;
-  v9 = [(ISLocaleController *)self regionsList];
-  v10 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  selfCopy = self;
+  regionsList = [(ISLocaleController *)self regionsList];
+  v10 = [regionsList countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v10)
   {
     v11 = v10;
@@ -159,7 +159,7 @@
       {
         if (*v21 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(regionsList);
         }
 
         v14 = *(*(&v20 + 1) + 8 * i);
@@ -167,7 +167,7 @@
         [v15 addObject:v14];
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v11 = [regionsList countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v11);
@@ -183,23 +183,23 @@
     }
   }
 
-  [(ISLocaleController *)v19 setSections:v6];
+  [(ISLocaleController *)selfCopy setSections:v6];
 }
 
 - (void)loadRegions
 {
-  v3 = [(ISLocaleController *)self regionsList];
+  regionsList = [(ISLocaleController *)self regionsList];
 
-  if (!v3)
+  if (!regionsList)
   {
-    v19 = self;
+    selfCopy = self;
     v4 = +[COSInternationalController currentLocale];
-    v5 = [v4 regionCode];
+    regionCode = [v4 regionCode];
 
     v6 = @"US";
-    if (v5)
+    if (regionCode)
     {
-      v6 = v5;
+      v6 = regionCode;
     }
 
     v20 = v6;
@@ -236,7 +236,7 @@
             [v8 addObject:v18];
             if ([(__CFString *)v20 isEqualToString:v14])
             {
-              [(ISLocaleController *)v19 setCurrentRegion:v18];
+              [(ISLocaleController *)selfCopy setCurrentRegion:v18];
             }
           }
 
@@ -250,15 +250,15 @@
       while (v11);
     }
 
-    [(ISLocaleController *)v19 setRegionsList:v8];
+    [(ISLocaleController *)selfCopy setRegionsList:v8];
   }
 }
 
 - (void)loadView
 {
-  v3 = [(ISLocaleController *)self _mainContentView];
+  _mainContentView = [(ISLocaleController *)self _mainContentView];
   contentView = self->_contentView;
-  self->_contentView = v3;
+  self->_contentView = _mainContentView;
 
   v5 = self->_contentView;
 
@@ -295,20 +295,20 @@
   v3 = [_NSLocalizedStringResource alloc];
   v4 = +[NSLocale currentLocale];
   v5 = [NSBundle bundleForClass:objc_opt_class()];
-  v6 = [v5 bundleURL];
-  v7 = [v3 initWithKey:@"GENERAL" table:@"InternationalSettings" locale:v4 bundleURL:v6];
+  bundleURL = [v5 bundleURL];
+  v7 = [v3 initWithKey:@"GENERAL" table:@"InternationalSettings" locale:v4 bundleURL:bundleURL];
 
   v8 = [_NSLocalizedStringResource alloc];
   v9 = +[NSLocale currentLocale];
   v10 = [NSBundle bundleForClass:objc_opt_class()];
-  v11 = [v10 bundleURL];
-  v12 = [v8 initWithKey:@"INTERNATIONAL" table:@"InternationalSettings" locale:v9 bundleURL:v11];
+  bundleURL2 = [v10 bundleURL];
+  v12 = [v8 initWithKey:@"INTERNATIONAL" table:@"InternationalSettings" locale:v9 bundleURL:bundleURL2];
 
   v13 = [_NSLocalizedStringResource alloc];
   v14 = +[NSLocale currentLocale];
   v15 = [NSBundle bundleForClass:objc_opt_class()];
-  v16 = [v15 bundleURL];
-  v17 = [v13 initWithKey:@"SELECT_REGION" table:@"InternationalSettings" locale:v14 bundleURL:v16];
+  bundleURL3 = [v15 bundleURL];
+  v17 = [v13 initWithKey:@"SELECT_REGION" table:@"InternationalSettings" locale:v14 bundleURL:bundleURL3];
 
   v20[0] = v7;
   v20[1] = v12;
@@ -316,40 +316,40 @@
   [(ISLocaleController *)self pe_emitNavigationEventForSystemSettingsWithGraphicIconIdentifier:@"com.apple.graphic-icon.language" title:v17 localizedNavigationComponents:v18 deepLink:v19];
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
   if (self->_searchMode)
   {
     return 1;
   }
 
-  v4 = [(ISLocaleController *)self sections];
-  v5 = [v4 count];
+  sections = [(ISLocaleController *)self sections];
+  v5 = [sections count];
 
   return v5;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
   if (self->_searchMode)
   {
-    v4 = [(ISLocaleController *)self filteredListContent:a3];
-    v5 = [v4 count];
+    sections = [(ISLocaleController *)self filteredListContent:view];
+    v5 = [sections count];
   }
 
   else
   {
-    v4 = [(ISLocaleController *)self sections];
-    v7 = [v4 objectAtIndex:a4];
+    sections = [(ISLocaleController *)self sections];
+    v7 = [sections objectAtIndex:section];
     v5 = [v7 count];
   }
 
   return v5;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  if (self->_searchMode || (-[ISLocaleController sections](self, "sections", a3), v5 = objc_claimAutoreleasedReturnValue(), [v5 objectAtIndex:a4], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "count"), v6, v5, !v7))
+  if (self->_searchMode || (-[ISLocaleController sections](self, "sections", view), v5 = objc_claimAutoreleasedReturnValue(), [v5 objectAtIndex:section], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "count"), v6, v5, !v7))
   {
     v10 = 0;
   }
@@ -357,33 +357,33 @@
   else
   {
     v8 = +[UILocalizedIndexedCollation currentCollation];
-    v9 = [v8 sectionTitles];
-    v10 = [v9 objectAtIndex:a4];
+    sectionTitles = [v8 sectionTitles];
+    v10 = [sectionTitles objectAtIndex:section];
   }
 
   return v10;
 }
 
-- (id)sectionIndexTitlesForTableView:(id)a3
+- (id)sectionIndexTitlesForTableView:(id)view
 {
   if (self->_searchMode)
   {
-    v3 = 0;
+    sectionIndexTitles = 0;
   }
 
   else
   {
     v4 = +[UILocalizedIndexedCollation currentCollation];
-    v3 = [v4 sectionIndexTitles];
+    sectionIndexTitles = [v4 sectionIndexTitles];
   }
 
-  return v3;
+  return sectionIndexTitles;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"kCellIdentifier"];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"kCellIdentifier"];
   if (!v7)
   {
     v7 = [[UITableViewCell alloc] initWithStyle:0 reuseIdentifier:@"kCellIdentifier"];
@@ -391,20 +391,20 @@
 
   if (self->_searchMode)
   {
-    v8 = [(ISLocaleController *)self filteredListContent];
-    v9 = [v8 objectAtIndex:{objc_msgSend(v6, "row")}];
+    filteredListContent = [(ISLocaleController *)self filteredListContent];
+    v9 = [filteredListContent objectAtIndex:{objc_msgSend(pathCopy, "row")}];
   }
 
   else
   {
-    v8 = [(ISLocaleController *)self sections];
-    v10 = [v8 objectAtIndex:{objc_msgSend(v6, "section")}];
-    v9 = [v10 objectAtIndex:{objc_msgSend(v6, "row")}];
+    filteredListContent = [(ISLocaleController *)self sections];
+    v10 = [filteredListContent objectAtIndex:{objc_msgSend(pathCopy, "section")}];
+    v9 = [v10 objectAtIndex:{objc_msgSend(pathCopy, "row")}];
   }
 
-  v11 = [(ISLocaleController *)self currentRegion];
+  currentRegion = [(ISLocaleController *)self currentRegion];
 
-  if (v9 == v11)
+  if (v9 == currentRegion)
   {
     v12 = 3;
   }
@@ -415,34 +415,34 @@
   }
 
   [v7 setAccessoryType:v12];
-  v13 = [v9 regionName];
-  v14 = [v7 textLabel];
-  [v14 setText:v13];
+  regionName = [v9 regionName];
+  textLabel = [v7 textLabel];
+  [textLabel setText:regionName];
 
   return v7;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v17 = a3;
-  v6 = a4;
+  viewCopy = view;
+  pathCopy = path;
   if (self->_searchMode)
   {
-    v7 = [(ISLocaleController *)self filteredListContent];
-    v8 = [v7 objectAtIndex:{objc_msgSend(v6, "row")}];
+    filteredListContent = [(ISLocaleController *)self filteredListContent];
+    v8 = [filteredListContent objectAtIndex:{objc_msgSend(pathCopy, "row")}];
   }
 
   else
   {
-    v7 = [(ISLocaleController *)self sections];
-    v9 = [v7 objectAtIndex:{objc_msgSend(v6, "section")}];
-    v8 = [v9 objectAtIndex:{objc_msgSend(v6, "row")}];
+    filteredListContent = [(ISLocaleController *)self sections];
+    v9 = [filteredListContent objectAtIndex:{objc_msgSend(pathCopy, "section")}];
+    v8 = [v9 objectAtIndex:{objc_msgSend(pathCopy, "row")}];
   }
 
   v10 = +[COSInternationalController currentLocale];
-  v11 = [v10 regionCode];
-  v12 = [v8 regionCode];
-  v13 = [v11 isEqualToString:v12];
+  regionCode = [v10 regionCode];
+  regionCode2 = [v8 regionCode];
+  v13 = [regionCode isEqualToString:regionCode2];
 
   if (v13)
   {
@@ -463,30 +463,30 @@
 - (void)deselectHighlightedRow
 {
   tableView = self->_tableView;
-  v3 = [(UITableView *)tableView indexPathForSelectedRow];
-  [(UITableView *)tableView deselectRowAtIndexPath:v3 animated:1];
+  indexPathForSelectedRow = [(UITableView *)tableView indexPathForSelectedRow];
+  [(UITableView *)tableView deselectRowAtIndexPath:indexPathForSelectedRow animated:1];
 }
 
-- (void)reloadDataAndScrollToCheckedRegionAnimated:(BOOL)a3
+- (void)reloadDataAndScrollToCheckedRegionAnimated:(BOOL)animated
 {
-  v20 = a3;
+  animatedCopy = animated;
   if (!self->_searchMode)
   {
     [(UITableView *)self->_tableView reloadData];
-    v4 = [(ISLocaleController *)self currentRegion];
+    currentRegion = [(ISLocaleController *)self currentRegion];
 
-    if (v4)
+    if (currentRegion)
     {
-      v5 = [(ISLocaleController *)self sections];
-      v6 = [v5 count];
+      sections = [(ISLocaleController *)self sections];
+      v6 = [sections count];
 
       if (v6)
       {
         v7 = 0;
         do
         {
-          v8 = [(ISLocaleController *)self sections];
-          v9 = [v8 objectAtIndexedSubscript:v7];
+          sections2 = [(ISLocaleController *)self sections];
+          v9 = [sections2 objectAtIndexedSubscript:v7];
 
           if ([v9 count])
           {
@@ -494,10 +494,10 @@
             while (1)
             {
               v11 = [v9 objectAtIndexedSubscript:v10];
-              v12 = [v11 regionCode];
-              v13 = [(ISLocaleController *)self currentRegion];
-              v14 = [v13 regionCode];
-              v15 = [v12 isEqualToString:v14];
+              regionCode = [v11 regionCode];
+              currentRegion2 = [(ISLocaleController *)self currentRegion];
+              regionCode2 = [currentRegion2 regionCode];
+              v15 = [regionCode isEqualToString:regionCode2];
 
               if (v15)
               {
@@ -512,14 +512,14 @@
 
             tableView = self->_tableView;
             v17 = [NSIndexPath indexPathForRow:v10 inSection:v7];
-            [(UITableView *)tableView scrollToRowAtIndexPath:v17 atScrollPosition:1 animated:v20];
+            [(UITableView *)tableView scrollToRowAtIndexPath:v17 atScrollPosition:1 animated:animatedCopy];
           }
 
 LABEL_11:
 
           ++v7;
-          v18 = [(ISLocaleController *)self sections];
-          v19 = [v18 count];
+          sections3 = [(ISLocaleController *)self sections];
+          v19 = [sections3 count];
         }
 
         while (v7 < v19);
@@ -528,15 +528,15 @@ LABEL_11:
   }
 }
 
-- (void)searchBar:(id)a3 textDidChange:(id)a4
+- (void)searchBar:(id)bar textDidChange:(id)change
 {
-  v6 = a3;
-  v7 = a4;
+  barCopy = bar;
+  changeCopy = change;
   [(ISLocaleController *)self setFilteredListContent:0];
-  v8 = [(ISLocaleController *)self searchQueue];
-  [v8 cancelAllOperations];
+  searchQueue = [(ISLocaleController *)self searchQueue];
+  [searchQueue cancelAllOperations];
 
-  if ([v7 length])
+  if ([changeCopy length])
   {
     self->_searchMode = 1;
     v9 = objc_alloc_init(NSBlockOperation);
@@ -545,8 +545,8 @@ LABEL_11:
     v12 = 3221225472;
     v13 = sub_ECE8;
     v14 = &unk_28D20;
-    v15 = self;
-    v16 = v7;
+    selfCopy = self;
+    v16 = changeCopy;
     objc_copyWeak(&v17, &location);
     [v9 addExecutionBlock:&v11];
     v10 = [(ISLocaleController *)self searchQueue:v11];
@@ -563,17 +563,17 @@ LABEL_11:
   }
 }
 
-- (id)filteredRegionsForRegionList:(id)a3 searchString:(id)a4
+- (id)filteredRegionsForRegionList:(id)list searchString:(id)string
 {
-  v5 = a3;
-  v18 = a4;
+  listCopy = list;
+  stringCopy = string;
   v20 = +[NSMutableArray array];
-  v6 = [NSPredicate predicateWithFormat:@"SELF beginswith[cld] %@", v18];
+  stringCopy = [NSPredicate predicateWithFormat:@"SELF beginswith[cld] %@", stringCopy];
   v32 = 0u;
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  obj = v5;
+  obj = listCopy;
   v7 = [obj countByEnumeratingWithState:&v30 objects:v34 count:16];
   if (v7)
   {
@@ -588,8 +588,8 @@ LABEL_11:
         }
 
         v10 = *(*(&v30 + 1) + 8 * i);
-        v11 = [v10 regionName];
-        if ([v6 evaluateWithObject:v11])
+        regionName = [v10 regionName];
+        if ([stringCopy evaluateWithObject:regionName])
         {
           [v20 addObject:v10];
         }
@@ -600,22 +600,22 @@ LABEL_11:
           v27 = &v26;
           v28 = 0x2020000000;
           v29 = 0;
-          v12 = [v11 length];
+          v12 = [regionName length];
           v21[0] = _NSConcreteStackBlock;
           v21[1] = 3221225472;
           v21[2] = sub_F100;
           v21[3] = &unk_28DB8;
-          v22 = v6;
+          v22 = stringCopy;
           v13 = v20;
           v23 = v13;
           v24 = v10;
           v25 = &v26;
-          [v11 enumerateSubstringsInRange:0 options:v12 usingBlock:{3, v21}];
+          [regionName enumerateSubstringsInRange:0 options:v12 usingBlock:{3, v21}];
           if ((v27[3] & 1) == 0)
           {
-            v14 = [v10 regionCode];
-            v15 = [v18 uppercaseString];
-            v16 = [v14 hasPrefix:v15];
+            regionCode = [v10 regionCode];
+            uppercaseString = [stringCopy uppercaseString];
+            v16 = [regionCode hasPrefix:uppercaseString];
 
             if (v16)
             {
@@ -636,11 +636,11 @@ LABEL_11:
   return v20;
 }
 
-- (void)searchBarTextDidBeginEditing:(id)a3
+- (void)searchBarTextDidBeginEditing:(id)editing
 {
-  v4 = [(ISLocaleController *)self searchBar];
-  v5 = [v4 text];
-  v6 = [v5 length];
+  searchBar = [(ISLocaleController *)self searchBar];
+  text = [searchBar text];
+  v6 = [text length];
 
   if (!v6)
   {
@@ -653,8 +653,8 @@ LABEL_11:
 
 - (void)cancelSearchAndDismiss
 {
-  v3 = [(ISLocaleController *)self searchController];
-  [v3 setActive:0];
+  searchController = [(ISLocaleController *)self searchController];
+  [searchController setActive:0];
 
   WeakRetained = objc_loadWeakRetained(&self->PSViewController_opaque[OBJC_IVAR___PSViewController__parentController]);
   [WeakRetained dismiss];

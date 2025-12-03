@@ -1,34 +1,34 @@
 @interface GCAdaptiveTriggersXPCProxyClientEndpointDescription
-- (GCAdaptiveTriggersXPCProxyClientEndpointDescription)initWithCoder:(id)a3;
-- (GCAdaptiveTriggersXPCProxyClientEndpointDescription)initWithIdentifier:(id)a3 initialStatuses:(id)a4;
-- (id)materializeWithContext:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (GCAdaptiveTriggersXPCProxyClientEndpointDescription)initWithCoder:(id)coder;
+- (GCAdaptiveTriggersXPCProxyClientEndpointDescription)initWithIdentifier:(id)identifier initialStatuses:(id)statuses;
+- (id)materializeWithContext:(id)context;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation GCAdaptiveTriggersXPCProxyClientEndpointDescription
 
-- (GCAdaptiveTriggersXPCProxyClientEndpointDescription)initWithIdentifier:(id)a3 initialStatuses:(id)a4
+- (GCAdaptiveTriggersXPCProxyClientEndpointDescription)initWithIdentifier:(id)identifier initialStatuses:(id)statuses
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  statusesCopy = statuses;
   v12.receiver = self;
   v12.super_class = GCAdaptiveTriggersXPCProxyClientEndpointDescription;
   v8 = [(GCAdaptiveTriggersXPCProxyClientEndpointDescription *)&v12 init];
   if (v8)
   {
-    v9 = [v6 copyWithZone:0];
+    v9 = [identifierCopy copyWithZone:0];
     identifier = v8->_identifier;
     v8->_identifier = v9;
 
-    objc_storeStrong(&v8->_initialStatuses, a4);
+    objc_storeStrong(&v8->_initialStatuses, statuses);
   }
 
   return v8;
 }
 
-- (GCAdaptiveTriggersXPCProxyClientEndpointDescription)initWithCoder:(id)a3
+- (GCAdaptiveTriggersXPCProxyClientEndpointDescription)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = GCAdaptiveTriggersXPCProxyClientEndpointDescription;
   v5 = [(GCAdaptiveTriggersXPCProxyClientEndpointDescription *)&v15 init];
@@ -37,12 +37,12 @@
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"initialStatuses"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"initialStatuses"];
     initialStatuses = v5->_initialStatuses;
     v5->_initialStatuses = v9;
 
     v11 = GCIPCObjectIdentifier_Classes();
-    v12 = [v4 decodeObjectOfClasses:v11 forKey:@"identifier"];
+    v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v12;
   }
@@ -50,33 +50,33 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   initialStatuses = self->_initialStatuses;
-  v5 = a3;
-  [v5 encodeObject:initialStatuses forKey:@"initialStatuses"];
-  [v5 encodeObject:self->_identifier forKey:@"identifier"];
+  coderCopy = coder;
+  [coderCopy encodeObject:initialStatuses forKey:@"initialStatuses"];
+  [coderCopy encodeObject:self->_identifier forKey:@"identifier"];
 }
 
-- (id)materializeWithContext:(id)a3
+- (id)materializeWithContext:(id)context
 {
-  v4 = a3;
-  v5 = v4;
+  contextCopy = context;
+  v5 = contextCopy;
   materializedObject = self->_materializedObject;
   if (materializedObject)
   {
     goto LABEL_4;
   }
 
-  v7 = [v4 IPCServiceRegistry];
-  v8 = [v7 serviceClientForIPCService:&unk_1F4EB3948];
+  iPCServiceRegistry = [contextCopy IPCServiceRegistry];
+  v8 = [iPCServiceRegistry serviceClientForIPCService:&unk_1F4EB3948];
 
   if (v8)
   {
-    v9 = [v8 adaptiveTriggersXPCProxyServiceRemoteServer];
+    adaptiveTriggersXPCProxyServiceRemoteServer = [v8 adaptiveTriggersXPCProxyServiceRemoteServer];
     v10 = [[GCAdaptiveTriggersXPCProxyClientEndpoint alloc] initWithIdentifier:self->_identifier initialStatuses:self->_initialStatuses];
-    v11 = [v5 IPCObjectRegistry];
-    [v11 registerIPCObject:v10];
+    iPCObjectRegistry = [v5 IPCObjectRegistry];
+    [iPCObjectRegistry registerIPCObject:v10];
 
     v12 = dispatch_semaphore_create(0);
     v21[0] = MEMORY[0x1E69E9820];
@@ -89,7 +89,7 @@
     v24 = v12;
     v14 = v12;
     v15 = v8;
-    [v9 adaptiveTriggersXPCProxyServiceClientEndpointConnect:v13 reply:v21];
+    [adaptiveTriggersXPCProxyServiceRemoteServer adaptiveTriggersXPCProxyServiceClientEndpointConnect:v13 reply:v21];
     v16 = dispatch_time(0, 1000000000);
     dispatch_semaphore_wait(v14, v16);
     v17 = self->_materializedObject;

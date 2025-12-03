@@ -1,8 +1,8 @@
 @interface CNPosterOnboardingWelcomeViewWrapper
 - (UIViewController)hostingController;
 - (_TtC10ContactsUI36CNPosterOnboardingWelcomeViewWrapper)init;
-- (_TtC10ContactsUI36CNPosterOnboardingWelcomeViewWrapper)initWithContact:(id)a3 hasOptionToSkip:(BOOL)a4 hasExistingNickname:(BOOL)a5 navigationBarHeight:(double)a6 delegate:(id)a7 windowScene:(id)a8;
-- (void)setHostingController:(id)a3;
+- (_TtC10ContactsUI36CNPosterOnboardingWelcomeViewWrapper)initWithContact:(id)contact hasOptionToSkip:(BOOL)skip hasExistingNickname:(BOOL)nickname navigationBarHeight:(double)height delegate:(id)delegate windowScene:(id)scene;
+- (void)setHostingController:(id)controller;
 @end
 
 @implementation CNPosterOnboardingWelcomeViewWrapper
@@ -14,21 +14,21 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setHostingController:(id)a3
+- (void)setHostingController:(id)controller
 {
   v5 = OBJC_IVAR____TtC10ContactsUI36CNPosterOnboardingWelcomeViewWrapper_hostingController;
   swift_beginAccess();
   v6 = *(&self->super.isa + v5);
-  *(&self->super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.isa + v5) = controller;
+  controllerCopy = controller;
 }
 
-- (_TtC10ContactsUI36CNPosterOnboardingWelcomeViewWrapper)initWithContact:(id)a3 hasOptionToSkip:(BOOL)a4 hasExistingNickname:(BOOL)a5 navigationBarHeight:(double)a6 delegate:(id)a7 windowScene:(id)a8
+- (_TtC10ContactsUI36CNPosterOnboardingWelcomeViewWrapper)initWithContact:(id)contact hasOptionToSkip:(BOOL)skip hasExistingNickname:(BOOL)nickname navigationBarHeight:(double)height delegate:(id)delegate windowScene:(id)scene
 {
-  v13 = a3;
+  contactCopy = contact;
   swift_unknownObjectRetain();
-  v14 = a8;
-  v15 = sub_199B29F10(v13, a4, a5, a6, a7, v14);
+  sceneCopy = scene;
+  v15 = sub_199B29F10(contactCopy, skip, nickname, height, delegate, sceneCopy);
   swift_unknownObjectRelease();
 
   return v15;

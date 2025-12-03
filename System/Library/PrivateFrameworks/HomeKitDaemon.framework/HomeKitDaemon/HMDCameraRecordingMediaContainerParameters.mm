@@ -1,30 +1,30 @@
 @interface HMDCameraRecordingMediaContainerParameters
 - (BOOL)_parseFromTLVData;
-- (HMDCameraRecordingMediaContainerParameters)initWithCoder:(id)a3;
-- (HMDCameraRecordingMediaContainerParameters)initWithFragmentLength:(id)a3;
+- (HMDCameraRecordingMediaContainerParameters)initWithCoder:(id)coder;
+- (HMDCameraRecordingMediaContainerParameters)initWithFragmentLength:(id)length;
 - (NSData)tlvData;
-- (void)description:(id)a3 indent:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (void)description:(id)description indent:(id)indent;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMDCameraRecordingMediaContainerParameters
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HMDCameraRecordingMediaContainerParameters *)self fragmentLength];
-  [v4 encodeObject:v5 forKey:@"kMediaContainerParametersFragmentLength"];
+  coderCopy = coder;
+  fragmentLength = [(HMDCameraRecordingMediaContainerParameters *)self fragmentLength];
+  [coderCopy encodeObject:fragmentLength forKey:@"kMediaContainerParametersFragmentLength"];
 }
 
-- (HMDCameraRecordingMediaContainerParameters)initWithCoder:(id)a3
+- (HMDCameraRecordingMediaContainerParameters)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = HMDCameraRecordingMediaContainerParameters;
   v5 = [(HMDCameraRecordingMediaContainerParameters *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kMediaContainerParametersFragmentLength"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kMediaContainerParametersFragmentLength"];
     fragmentLength = v5->_fragmentLength;
     v5->_fragmentLength = v6;
   }
@@ -32,26 +32,26 @@
   return v5;
 }
 
-- (void)description:(id)a3 indent:(id)a4
+- (void)description:(id)description indent:(id)indent
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HAPTLVBase *)self tlvDatablob];
-  [v7 appendFormat:@"\n%@tlvDatablob = %@ ", v6, v8];
+  indentCopy = indent;
+  descriptionCopy = description;
+  tlvDatablob = [(HAPTLVBase *)self tlvDatablob];
+  [descriptionCopy appendFormat:@"\n%@tlvDatablob = %@ ", indentCopy, tlvDatablob];
 
-  v9 = [(HMDCameraRecordingMediaContainerParameters *)self fragmentLength];
-  [v7 appendFormat:@"\n%@fragmentLength = %@ ", v6, v9];
+  fragmentLength = [(HMDCameraRecordingMediaContainerParameters *)self fragmentLength];
+  [descriptionCopy appendFormat:@"\n%@fragmentLength = %@ ", indentCopy, fragmentLength];
 }
 
 - (NSData)tlvData
 {
-  v3 = [MEMORY[0x277CFEC80] creator];
-  v4 = [(HMDCameraRecordingMediaContainerParameters *)self fragmentLength];
-  [v3 addTLV:1 length:4 number:v4];
+  creator = [MEMORY[0x277CFEC80] creator];
+  fragmentLength = [(HMDCameraRecordingMediaContainerParameters *)self fragmentLength];
+  [creator addTLV:1 length:4 number:fragmentLength];
 
-  v5 = [v3 serialize];
+  serialize = [creator serialize];
 
-  return v5;
+  return serialize;
 }
 
 - (BOOL)_parseFromTLVData
@@ -63,25 +63,25 @@
   v5 = [(HAPTLVBase *)self _parse:v4];
   if (v5)
   {
-    v6 = [v3 field];
+    field = [v3 field];
     fragmentLength = self->_fragmentLength;
-    self->_fragmentLength = v6;
+    self->_fragmentLength = field;
   }
 
   v8 = *MEMORY[0x277D85DE8];
   return v5;
 }
 
-- (HMDCameraRecordingMediaContainerParameters)initWithFragmentLength:(id)a3
+- (HMDCameraRecordingMediaContainerParameters)initWithFragmentLength:(id)length
 {
-  v5 = a3;
+  lengthCopy = length;
   v9.receiver = self;
   v9.super_class = HMDCameraRecordingMediaContainerParameters;
   v6 = [(HMDCameraRecordingMediaContainerParameters *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_fragmentLength, a3);
+    objc_storeStrong(&v6->_fragmentLength, length);
   }
 
   return v7;

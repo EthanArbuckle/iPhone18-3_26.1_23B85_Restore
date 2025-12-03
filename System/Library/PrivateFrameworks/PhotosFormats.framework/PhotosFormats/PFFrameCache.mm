@@ -1,28 +1,28 @@
 @interface PFFrameCache
 + (id)sharedFrameGenerationQueue;
-- (CGImage)_createPredrawnImage:(CGImage *)a3;
-- (CGImage)_frameAtIndex:(unint64_t)a3 allowLazy:(BOOL)a4;
-- (PFFrameCache)initWithImageSource:(CGImageSource *)a3 cachingStrategy:(int64_t)a4 useGlobalDecodeQueue:(BOOL)a5;
+- (CGImage)_createPredrawnImage:(CGImage *)image;
+- (CGImage)_frameAtIndex:(unint64_t)index allowLazy:(BOOL)lazy;
+- (PFFrameCache)initWithImageSource:(CGImageSource *)source cachingStrategy:(int64_t)strategy useGlobalDecodeQueue:(BOOL)queue;
 - (int64_t)cacheStrategy;
-- (void)_frameGenerationQueue_cacheFrameAtIndex:(unint64_t)a3;
+- (void)_frameGenerationQueue_cacheFrameAtIndex:(unint64_t)index;
 - (void)_frameGenerationQueue_updateFrameCache;
 - (void)_updateDesiredCacheSize;
 - (void)_updateFrameCache;
 - (void)_updateIfNeeded;
 - (void)dealloc;
-- (void)setCacheStrategy:(int64_t)a3;
+- (void)setCacheStrategy:(int64_t)strategy;
 @end
 
 @implementation PFFrameCache
 
-- (CGImage)_createPredrawnImage:(CGImage *)a3
+- (CGImage)_createPredrawnImage:(CGImage *)image
 {
-  Width = CGImageGetWidth(a3);
-  Height = CGImageGetHeight(a3);
-  BitsPerComponent = CGImageGetBitsPerComponent(a3);
-  BytesPerRow = CGImageGetBytesPerRow(a3);
-  ColorSpace = CGImageGetColorSpace(a3);
-  AlphaInfo = CGImageGetAlphaInfo(a3);
+  Width = CGImageGetWidth(image);
+  Height = CGImageGetHeight(image);
+  BitsPerComponent = CGImageGetBitsPerComponent(image);
+  BytesPerRow = CGImageGetBytesPerRow(image);
+  ColorSpace = CGImageGetColorSpace(image);
+  AlphaInfo = CGImageGetAlphaInfo(image);
   v10 = AlphaInfo;
   if (AlphaInfo <= kCGImageAlphaOnly && ((0x99u >> AlphaInfo) & 1) != 0)
   {
@@ -37,7 +37,7 @@
     v16.size.height = Height;
     v16.origin.x = 0.0;
     v16.origin.y = 0.0;
-    CGContextDrawImage(v11, v16, a3);
+    CGContextDrawImage(v11, v16, image);
     Image = CGBitmapContextCreateImage(v12);
     CGContextRelease(v12);
     return Image;
@@ -198,13 +198,13 @@ void __54__PFFrameCache__frameGenerationQueue_updateFrameCache__block_invoke_2(u
   [v2 removeObjectForKey:v3];
 }
 
-- (void)_frameGenerationQueue_cacheFrameAtIndex:(unint64_t)a3
+- (void)_frameGenerationQueue_cacheFrameAtIndex:(unint64_t)index
 {
   v15[1] = *MEMORY[0x1E69E9840];
   v14 = *MEMORY[0x1E696E0A8];
   v15[0] = MEMORY[0x1E695E110];
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:&v14 count:1];
-  ImageAtIndex = CGImageSourceCreateImageAtIndex(self->_gifSource, a3, v5);
+  ImageAtIndex = CGImageSourceCreateImageAtIndex(self->_gifSource, index, v5);
   if (ImageAtIndex)
   {
     v7 = ImageAtIndex;
@@ -219,7 +219,7 @@ void __54__PFFrameCache__frameGenerationQueue_updateFrameCache__block_invoke_2(u
     else if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
       *buf = 134217984;
-      v13 = a3;
+      indexCopy2 = index;
       _os_log_error_impl(&dword_1B35C1000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "PFFrameCache: Predrawing failed for image at index %lu", buf, 0xCu);
     }
 
@@ -229,7 +229,7 @@ void __54__PFFrameCache__frameGenerationQueue_updateFrameCache__block_invoke_2(u
     block[2] = __56__PFFrameCache__frameGenerationQueue_cacheFrameAtIndex___block_invoke;
     block[3] = &unk_1E7B66720;
     block[4] = self;
-    block[5] = a3;
+    block[5] = index;
     block[6] = v7;
     dispatch_sync(cacheIsolationQueue, block);
   }
@@ -237,7 +237,7 @@ void __54__PFFrameCache__frameGenerationQueue_updateFrameCache__block_invoke_2(u
   else if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     *buf = 134217984;
-    v13 = a3;
+    indexCopy2 = index;
     _os_log_error_impl(&dword_1B35C1000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "PFFrameCache: Unable to create image for index %lu", buf, 0xCu);
   }
 }
@@ -354,7 +354,7 @@ uint64_t __39__PFFrameCache__updateDesiredCacheSize__block_invoke(uint64_t resul
   [(PFFrameCache *)self _updateFrameCache];
 }
 
-- (void)setCacheStrategy:(int64_t)a3
+- (void)setCacheStrategy:(int64_t)strategy
 {
   cacheIsolationQueue = self->_cacheIsolationQueue;
   v5[0] = MEMORY[0x1E69E9820];
@@ -362,7 +362,7 @@ uint64_t __39__PFFrameCache__updateDesiredCacheSize__block_invoke(uint64_t resul
   v5[2] = __33__PFFrameCache_setCacheStrategy___block_invoke;
   v5[3] = &unk_1E7B653F8;
   v5[4] = self;
-  v5[5] = a3;
+  v5[5] = strategy;
   dispatch_sync(cacheIsolationQueue, v5);
   [(PFFrameCache *)self _updateIfNeeded];
 }
@@ -399,7 +399,7 @@ uint64_t __33__PFFrameCache_setCacheStrategy___block_invoke(uint64_t result)
   return v3;
 }
 
-- (CGImage)_frameAtIndex:(unint64_t)a3 allowLazy:(BOOL)a4
+- (CGImage)_frameAtIndex:(unint64_t)index allowLazy:(BOOL)lazy
 {
   v10 = 0;
   v11 = &v10;
@@ -411,9 +411,9 @@ uint64_t __33__PFFrameCache_setCacheStrategy___block_invoke(uint64_t result)
   v8[2] = __40__PFFrameCache__frameAtIndex_allowLazy___block_invoke;
   v8[3] = &unk_1E7B653D0;
   v8[5] = &v10;
-  v8[6] = a3;
+  v8[6] = index;
   v8[4] = self;
-  v9 = a4;
+  lazyCopy = lazy;
   dispatch_sync(cacheIsolationQueue, v8);
   [(PFFrameCache *)self _updateFrameCache];
   v6 = v11[3];
@@ -486,44 +486,44 @@ void __40__PFFrameCache__frameAtIndex_allowLazy___block_invoke(uint64_t a1)
   }
 }
 
-- (PFFrameCache)initWithImageSource:(CGImageSource *)a3 cachingStrategy:(int64_t)a4 useGlobalDecodeQueue:(BOOL)a5
+- (PFFrameCache)initWithImageSource:(CGImageSource *)source cachingStrategy:(int64_t)strategy useGlobalDecodeQueue:(BOOL)queue
 {
-  v5 = a5;
+  queueCopy = queue;
   v19.receiver = self;
   v19.super_class = PFFrameCache;
   v8 = [(PFFrameCache *)&v19 init];
   if (v8)
   {
-    v8->_gifSource = CFRetain(a3);
-    v8->_frameCount = CGImageSourceGetCount(a3);
+    v8->_gifSource = CFRetain(source);
+    v8->_frameCount = CGImageSourceGetCount(source);
     v9 = objc_alloc_init(MEMORY[0x1E695DF90]);
     frameCache = v8->_frameCache;
     v8->_frameCache = v9;
 
-    v8->_fullCachingCost = pf_estimateFullAnimatedImageMemoryCost(a3);
+    v8->_fullCachingCost = pf_estimateFullAnimatedImageMemoryCost(source);
     v11 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_USER_INITIATED, 0);
     v12 = dispatch_queue_create("com.apple.PFFrameCache.cacheIsolationQueue", v11);
     cacheIsolationQueue = v8->_cacheIsolationQueue;
     v8->_cacheIsolationQueue = v12;
 
-    if (v5)
+    if (queueCopy)
     {
-      v14 = [objc_opt_class() sharedFrameGenerationQueue];
+      sharedFrameGenerationQueue = [objc_opt_class() sharedFrameGenerationQueue];
     }
 
     else
     {
-      v14 = dispatch_queue_create("com.apple.PFFrameCache.frameGenerationQueue", v11);
+      sharedFrameGenerationQueue = dispatch_queue_create("com.apple.PFFrameCache.frameGenerationQueue", v11);
     }
 
     frameGenerationQueue = v8->_frameGenerationQueue;
-    v8->_frameGenerationQueue = v14;
+    v8->_frameGenerationQueue = sharedFrameGenerationQueue;
 
-    v16 = [MEMORY[0x1E696AD50] indexSet];
+    indexSet = [MEMORY[0x1E696AD50] indexSet];
     cachedIndexes = v8->_cachedIndexes;
-    v8->_cachedIndexes = v16;
+    v8->_cachedIndexes = indexSet;
 
-    v8->_cacheStrategy = a4;
+    v8->_cacheStrategy = strategy;
     [(PFFrameCache *)v8 _updateIfNeeded];
   }
 

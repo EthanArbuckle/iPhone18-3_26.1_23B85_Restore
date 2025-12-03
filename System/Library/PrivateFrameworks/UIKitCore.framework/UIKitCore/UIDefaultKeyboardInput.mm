@@ -1,12 +1,12 @@
 @interface UIDefaultKeyboardInput
 - (CGRect)caretRect;
-- (CGRect)caretRectForPosition:(id)a3;
-- (CGRect)firstRectForRange:(id)a3;
+- (CGRect)caretRectForPosition:(id)position;
+- (CGRect)firstRectForRange:(id)range;
 - (_NSRange)selectionRange;
-- (id)methodSignatureForSelector:(SEL)a3;
+- (id)methodSignatureForSelector:(SEL)selector;
 - (id)textInputTraits;
-- (void)forwardInvocation:(id)a3;
-- (void)takeTraitsFrom:(id)a3;
+- (void)forwardInvocation:(id)invocation;
+- (void)takeTraitsFrom:(id)from;
 @end
 
 @implementation UIDefaultKeyboardInput
@@ -26,27 +26,27 @@
   return m_traits;
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
-  v4 = a3;
-  v5 = [(UIDefaultKeyboardInput *)self textInputTraits];
-  [v4 selector];
+  invocationCopy = invocation;
+  textInputTraits = [(UIDefaultKeyboardInput *)self textInputTraits];
+  [invocationCopy selector];
   if (objc_opt_respondsToSelector())
   {
-    [v4 invokeWithTarget:v5];
+    [invocationCopy invokeWithTarget:textInputTraits];
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = UIDefaultKeyboardInput;
-    [(UIDefaultKeyboardInput *)&v6 forwardInvocation:v4];
+    [(UIDefaultKeyboardInput *)&v6 forwardInvocation:invocationCopy];
   }
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
-  v4 = [objc_opt_class() instanceMethodSignatureForSelector:a3];
+  v4 = [objc_opt_class() instanceMethodSignatureForSelector:selector];
   v5 = v4;
   if (v4)
   {
@@ -55,7 +55,7 @@
 
   else
   {
-    v6 = [objc_opt_class() instanceMethodSignatureForSelector:a3];
+    v6 = [objc_opt_class() instanceMethodSignatureForSelector:selector];
   }
 
   v7 = v6;
@@ -63,11 +63,11 @@
   return v7;
 }
 
-- (void)takeTraitsFrom:(id)a3
+- (void)takeTraitsFrom:(id)from
 {
-  v4 = a3;
-  v5 = [(UIDefaultKeyboardInput *)self textInputTraits];
-  [v5 takeTraitsFrom:v4];
+  fromCopy = from;
+  textInputTraits = [(UIDefaultKeyboardInput *)self textInputTraits];
+  [textInputTraits takeTraitsFrom:fromCopy];
 }
 
 - (_NSRange)selectionRange
@@ -92,7 +92,7 @@
   return result;
 }
 
-- (CGRect)firstRectForRange:(id)a3
+- (CGRect)firstRectForRange:(id)range
 {
   v3 = *MEMORY[0x1E695F050];
   v4 = *(MEMORY[0x1E695F050] + 8);
@@ -105,7 +105,7 @@
   return result;
 }
 
-- (CGRect)caretRectForPosition:(id)a3
+- (CGRect)caretRectForPosition:(id)position
 {
   v3 = *MEMORY[0x1E695F050];
   v4 = *(MEMORY[0x1E695F050] + 8);

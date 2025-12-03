@@ -1,27 +1,27 @@
 @interface SBWindowingSwitcherPersonality
-- (BOOL)_shouldResetCacheForEvent:(id)a3;
+- (BOOL)_shouldResetCacheForEvent:(id)event;
 - (CGRect)bounds;
-- (CGSize)_minimumSizeForDisplayItem:(id)a3;
-- (CGSize)_sceneFittingSize:(CGSize)a3 minimumSize:(CGSize)a4;
-- (CGSize)preferredSceneSizeThatFits:(CGSize)a3 displayItem:(id)a4;
+- (CGSize)_minimumSizeForDisplayItem:(id)item;
+- (CGSize)_sceneFittingSize:(CGSize)size minimumSize:(CGSize)minimumSize;
+- (CGSize)preferredSceneSizeThatFits:(CGSize)fits displayItem:(id)item;
 - (SBSwitcherPersonalityView)view;
-- (SBWindowingSwitcherPersonality)initWithSwitcherModifier:(id)a3;
-- (id)handleEvent:(id)a3;
+- (SBWindowingSwitcherPersonality)initWithSwitcherModifier:(id)modifier;
+- (id)handleEvent:(id)event;
 - (id)identifiersInStrip;
 - (id)recentAppLayouts;
-- (void)_updateCurrentAppLayout:(id)a3;
-- (void)handleEvent:(id)a3 responseHandler:(id)a4;
-- (void)performWithFinalPresentationValue:(id)a3;
-- (void)performWithInterfaceOrientation:(int64_t)a3 block:(id)a4;
-- (void)performWithUpdateMode:(int64_t)a3 block:(id)a4;
+- (void)_updateCurrentAppLayout:(id)layout;
+- (void)handleEvent:(id)event responseHandler:(id)handler;
+- (void)performWithFinalPresentationValue:(id)value;
+- (void)performWithInterfaceOrientation:(int64_t)orientation block:(id)block;
+- (void)performWithUpdateMode:(int64_t)mode block:(id)block;
 @end
 
 @implementation SBWindowingSwitcherPersonality
 
-- (SBWindowingSwitcherPersonality)initWithSwitcherModifier:(id)a3
+- (SBWindowingSwitcherPersonality)initWithSwitcherModifier:(id)modifier
 {
-  v5 = a3;
-  if (!v5)
+  modifierCopy = modifier;
+  if (!modifierCopy)
   {
     [(SBWindowingSwitcherPersonality *)a2 initWithSwitcherModifier:?];
   }
@@ -31,7 +31,7 @@
   v6 = [(SBSwitcherModifier *)&v14 init];
   if (v6)
   {
-    v7 = [[SBRootWindowingModifier alloc] initWithSwitcherModifier:v5];
+    v7 = [[SBRootWindowingModifier alloc] initWithSwitcherModifier:modifierCopy];
     rootModifier = v6->_rootModifier;
     v6->_rootModifier = v7;
 
@@ -48,23 +48,23 @@
   return v6;
 }
 
-- (void)performWithInterfaceOrientation:(int64_t)a3 block:(id)a4
+- (void)performWithInterfaceOrientation:(int64_t)orientation block:(id)block
 {
-  v6 = a4;
-  if ([(SBWindowingSwitcherPersonality *)self switcherInterfaceOrientation]== a3)
+  blockCopy = block;
+  if ([(SBWindowingSwitcherPersonality *)self switcherInterfaceOrientation]== orientation)
   {
-    v6[2](v6);
+    blockCopy[2](blockCopy);
   }
 
   else
   {
-    v7 = [[SBOverrideInterfaceOrientationSwitcherModifier alloc] initWithInterfaceOrientation:a3];
+    v7 = [[SBOverrideInterfaceOrientationSwitcherModifier alloc] initWithInterfaceOrientation:orientation];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __72__SBWindowingSwitcherPersonality_performWithInterfaceOrientation_block___block_invoke;
     v8[3] = &unk_2783A98A0;
     v8[4] = self;
-    v9 = v6;
+    v9 = blockCopy;
     [(SBChainableModifier *)self performTransactionWithTemporaryChildModifier:v7 usingBlock:v8];
   }
 }
@@ -77,34 +77,34 @@ uint64_t __72__SBWindowingSwitcherPersonality_performWithInterfaceOrientation_bl
   return v2();
 }
 
-- (void)performWithUpdateMode:(int64_t)a3 block:(id)a4
+- (void)performWithUpdateMode:(int64_t)mode block:(id)block
 {
-  v6 = a4;
-  v7 = [[SBFixedLayoutModeSwitcherModifier alloc] initWithUpdateMode:a3];
-  [(SBChainableModifier *)self performTransactionWithTemporaryChildModifier:v7 usingBlock:v6];
+  blockCopy = block;
+  v7 = [[SBFixedLayoutModeSwitcherModifier alloc] initWithUpdateMode:mode];
+  [(SBChainableModifier *)self performTransactionWithTemporaryChildModifier:v7 usingBlock:blockCopy];
 }
 
-- (void)performWithFinalPresentationValue:(id)a3
+- (void)performWithFinalPresentationValue:(id)value
 {
-  v4 = a3;
-  v5 = [(SBWindowingSwitcherPersonality *)self switcherModifier];
-  v6 = [v5 animatablePropertyIdentifiers];
+  valueCopy = value;
+  switcherModifier = [(SBWindowingSwitcherPersonality *)self switcherModifier];
+  animatablePropertyIdentifiers = [switcherModifier animatablePropertyIdentifiers];
 
-  if ([v6 count])
+  if ([animatablePropertyIdentifiers count])
   {
-    v7 = [[SBOverridePresentationValueSwitcherModifier alloc] initWithAnimatablePropertyKeys:v6 presentationValue:1.0];
+    v7 = [[SBOverridePresentationValueSwitcherModifier alloc] initWithAnimatablePropertyKeys:animatablePropertyIdentifiers presentationValue:1.0];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __68__SBWindowingSwitcherPersonality_performWithFinalPresentationValue___block_invoke;
     v8[3] = &unk_2783A98A0;
     v8[4] = self;
-    v9 = v4;
+    v9 = valueCopy;
     [(SBChainableModifier *)self performTransactionWithTemporaryChildModifier:v7 usingBlock:v8];
   }
 
   else
   {
-    v4[2](v4);
+    valueCopy[2](valueCopy);
   }
 }
 
@@ -118,19 +118,19 @@ uint64_t __68__SBWindowingSwitcherPersonality_performWithFinalPresentationValue_
 
 - (id)identifiersInStrip
 {
-  v2 = [(SBWindowingSwitcherPersonality *)self strip];
-  v3 = [v2 appLayoutsInStrip];
-  v4 = [v3 bs_flatten];
-  v5 = [v4 bs_compactMap:&__block_literal_global_126];
+  strip = [(SBWindowingSwitcherPersonality *)self strip];
+  appLayoutsInStrip = [strip appLayoutsInStrip];
+  bs_flatten = [appLayoutsInStrip bs_flatten];
+  v5 = [bs_flatten bs_compactMap:&__block_literal_global_126];
 
   return v5;
 }
 
-- (CGSize)preferredSceneSizeThatFits:(CGSize)a3 displayItem:(id)a4
+- (CGSize)preferredSceneSizeThatFits:(CGSize)fits displayItem:(id)item
 {
-  height = a3.height;
-  width = a3.width;
-  [(SBWindowingSwitcherPersonality *)self _minimumSizeForDisplayItem:a4];
+  height = fits.height;
+  width = fits.width;
+  [(SBWindowingSwitcherPersonality *)self _minimumSizeForDisplayItem:item];
 
   [(SBWindowingSwitcherPersonality *)self _sceneFittingSize:width minimumSize:height, v7, v8];
   result.height = v10;
@@ -138,15 +138,15 @@ uint64_t __68__SBWindowingSwitcherPersonality_performWithFinalPresentationValue_
   return result;
 }
 
-- (void)handleEvent:(id)a3 responseHandler:(id)a4
+- (void)handleEvent:(id)event responseHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 type] != 34)
+  eventCopy = event;
+  handlerCopy = handler;
+  if ([eventCopy type] != 34)
   {
-    if ([v6 isTransitionEvent])
+    if ([eventCopy isTransitionEvent])
     {
-      v8 = v6;
+      v8 = eventCopy;
       [(SBWindowingSwitcherPersonality *)self _updateCurrentAppLayout:v8];
       if ([v8 phase] == 2)
       {
@@ -166,12 +166,12 @@ uint64_t __68__SBWindowingSwitcherPersonality_performWithFinalPresentationValue_
       HIDWORD(v34) = 0;
     }
 
-    if ([(SBWindowingSwitcherPersonality *)self _shouldResetCacheForEvent:v6])
+    if ([(SBWindowingSwitcherPersonality *)self _shouldResetCacheForEvent:eventCopy])
     {
       [(SBSceneHandleSizesCache *)self->_sceneHandleSizeCache reset];
     }
 
-    v10 = [(SBWindowingModifier *)self->_rootModifier handleEvent:v6];
+    v10 = [(SBWindowingModifier *)self->_rootModifier handleEvent:eventCopy];
     v44 = 0;
     v45 = &v44;
     v46 = 0x3032000000;
@@ -204,7 +204,7 @@ uint64_t __68__SBWindowingSwitcherPersonality_performWithFinalPresentationValue_
       {
         self->_shouldDeferVisibleOverlayAndUnderlayViewsUpdate = 1;
         [(SBRootWindowingModifier *)self->_rootModifier layoutViewModelsIfNeeded];
-        v7[2](v7, v11);
+        handlerCopy[2](handlerCopy, v11);
         self->_shouldDeferVisibleOverlayAndUnderlayViewsUpdate = 0;
       }
     }
@@ -215,16 +215,16 @@ uint64_t __68__SBWindowingSwitcherPersonality_performWithFinalPresentationValue_
       v12 = v10;
     }
 
-    v13 = [(SBWindowingModifier *)self->_rootModifier stateModel];
-    v14 = [v13 strip];
-    v15 = [v14 copy];
+    stateModel = [(SBWindowingModifier *)self->_rootModifier stateModel];
+    strip = [stateModel strip];
+    v15 = [strip copy];
 
     if ((BSEqualObjects() & 1) == 0)
     {
       rootModifier = self->_rootModifier;
       v17 = [[SBStripChangedModifierActivity alloc] initWithNewStrip:v15 phase:0];
       v18 = [(SBWindowingModifier *)rootModifier handleEvent:v17];
-      v7[2](v7, v18);
+      handlerCopy[2](handlerCopy, v18);
 
       objc_storeStrong(&self->_strip, v15);
       v19 = self->_rootModifier;
@@ -235,24 +235,24 @@ uint64_t __68__SBWindowingSwitcherPersonality_performWithFinalPresentationValue_
       v12 = v22;
     }
 
-    v23 = [v13 arcSwipeInitialAppLayout];
+    arcSwipeInitialAppLayout = [stateModel arcSwipeInitialAppLayout];
     arcSwipeInitialAppLayout = self->_arcSwipeInitialAppLayout;
-    self->_arcSwipeInitialAppLayout = v23;
+    self->_arcSwipeInitialAppLayout = arcSwipeInitialAppLayout;
 
-    v25 = [v13 arcSwipeNextDisplayItem];
+    arcSwipeNextDisplayItem = [stateModel arcSwipeNextDisplayItem];
     arcSwipeNextDisplayItem = self->_arcSwipeNextDisplayItem;
-    self->_arcSwipeNextDisplayItem = v25;
+    self->_arcSwipeNextDisplayItem = arcSwipeNextDisplayItem;
 
-    v27 = [v13 arcSwipePreviousDisplayItem];
+    arcSwipePreviousDisplayItem = [stateModel arcSwipePreviousDisplayItem];
     arcSwipePreviousDisplayItem = self->_arcSwipePreviousDisplayItem;
-    self->_arcSwipePreviousDisplayItem = v27;
+    self->_arcSwipePreviousDisplayItem = arcSwipePreviousDisplayItem;
 
     [(SBRootWindowingModifier *)self->_rootModifier layoutViewModelsIfNeeded];
     if (v35)
     {
-      v29 = [(SBChainableModifier *)self delegate];
+      delegate = [(SBChainableModifier *)self delegate];
       v30 = objc_opt_class();
-      v31 = v29;
+      v31 = delegate;
       if (v30)
       {
         if (objc_opt_isKindOfClass())
@@ -276,7 +276,7 @@ uint64_t __68__SBWindowingSwitcherPersonality_performWithFinalPresentationValue_
       [v33 performDeferredUpdateVisibleOverlayAndUnderlayViews];
     }
 
-    v7[2](v7, v12);
+    handlerCopy[2](handlerCopy, v12);
     if (v36)
     {
       [(SBRootWindowingModifier *)self->_rootModifier layoutViewModelsIfNeeded];
@@ -311,11 +311,11 @@ void __62__SBWindowingSwitcherPersonality_handleEvent_responseHandler___block_in
 LABEL_6:
 }
 
-- (id)handleEvent:(id)a3
+- (id)handleEvent:(id)event
 {
-  v4 = a3;
-  v5 = [v4 switcherModifierEvent];
-  if (v5)
+  eventCopy = event;
+  switcherModifierEvent = [eventCopy switcherModifierEvent];
+  if (switcherModifierEvent)
   {
     v11 = 0;
     v12 = &v11;
@@ -323,13 +323,13 @@ LABEL_6:
     v14 = __Block_byref_object_copy__45;
     v15 = __Block_byref_object_dispose__45;
     v16 = 0;
-    v6 = [v4 switcherModifierEvent];
+    switcherModifierEvent2 = [eventCopy switcherModifierEvent];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __46__SBWindowingSwitcherPersonality_handleEvent___block_invoke;
     v10[3] = &unk_2783B44C0;
     v10[4] = &v11;
-    [(SBWindowingSwitcherPersonality *)self handleEvent:v6 responseHandler:v10];
+    [(SBWindowingSwitcherPersonality *)self handleEvent:switcherModifierEvent2 responseHandler:v10];
 
     v7 = v12[5];
     _Block_object_dispose(&v11, 8);
@@ -339,7 +339,7 @@ LABEL_6:
   {
     v9.receiver = self;
     v9.super_class = SBWindowingSwitcherPersonality;
-    v7 = [(SBChainableModifier *)&v9 handleEvent:v4];
+    v7 = [(SBChainableModifier *)&v9 handleEvent:eventCopy];
   }
 
   return v7;
@@ -368,41 +368,41 @@ LABEL_6:
 - (id)recentAppLayouts
 {
   WeakRetained = objc_loadWeakRetained(&self->_view);
-  v3 = [WeakRetained recentAppLayouts];
+  recentAppLayouts = [WeakRetained recentAppLayouts];
 
-  return v3;
+  return recentAppLayouts;
 }
 
-- (void)_updateCurrentAppLayout:(id)a3
+- (void)_updateCurrentAppLayout:(id)layout
 {
-  v4 = a3;
-  obj = [v4 toAppLayout];
-  v5 = [v4 toEnvironmentMode];
-  v6 = [v4 isAnimated];
-  v7 = [v4 phase];
+  layoutCopy = layout;
+  obj = [layoutCopy toAppLayout];
+  toEnvironmentMode = [layoutCopy toEnvironmentMode];
+  isAnimated = [layoutCopy isAnimated];
+  phase = [layoutCopy phase];
 
-  if (v7 == 2 || (v6 & 1) == 0)
+  if (phase == 2 || (isAnimated & 1) == 0)
   {
     objc_storeStrong(&self->_currentAppLayout, obj);
-    self->_currentEnvironmentMode = v5;
+    self->_currentEnvironmentMode = toEnvironmentMode;
   }
 }
 
-- (CGSize)_minimumSizeForDisplayItem:(id)a3
+- (CGSize)_minimumSizeForDisplayItem:(id)item
 {
-  v4 = a3;
-  [(SBSceneHandleSizesCache *)self->_sceneHandleSizeCache minimumSizeForDisplayItem:v4];
+  itemCopy = item;
+  [(SBSceneHandleSizesCache *)self->_sceneHandleSizeCache minimumSizeForDisplayItem:itemCopy];
   v6 = v5;
   v8 = v7;
   if (BSSizeEqualToSize())
   {
     WeakRetained = objc_loadWeakRetained(&self->_view);
-    v10 = [WeakRetained deviceApplicationSceneHandleForDisplayItem:v4];
+    v10 = [WeakRetained deviceApplicationSceneHandleForDisplayItem:itemCopy];
 
     [v10 layoutPreferencesMinimumSize];
     v6 = v11;
     v8 = v12;
-    [(SBSceneHandleSizesCache *)self->_sceneHandleSizeCache setMinimumSize:v4 forDisplayItem:?];
+    [(SBSceneHandleSizesCache *)self->_sceneHandleSizeCache setMinimumSize:itemCopy forDisplayItem:?];
   }
 
   v13 = v6;
@@ -412,12 +412,12 @@ LABEL_6:
   return result;
 }
 
-- (CGSize)_sceneFittingSize:(CGSize)a3 minimumSize:(CGSize)a4
+- (CGSize)_sceneFittingSize:(CGSize)size minimumSize:(CGSize)minimumSize
 {
-  height = a4.height;
-  width = a4.width;
-  v6 = a3.height;
-  v7 = a3.width;
+  height = minimumSize.height;
+  width = minimumSize.width;
+  v6 = size.height;
+  v7 = size.width;
   IsZero = BSFloatIsZero();
   if (width < v7)
   {
@@ -461,22 +461,22 @@ LABEL_6:
   return result;
 }
 
-- (BOOL)_shouldResetCacheForEvent:(id)a3
+- (BOOL)_shouldResetCacheForEvent:(id)event
 {
-  v3 = a3;
-  v4 = [v3 isTransitionEvent];
-  if (v3 && v4 && [v3 phase] == 1)
+  eventCopy = event;
+  isTransitionEvent = [eventCopy isTransitionEvent];
+  if (eventCopy && isTransitionEvent && [eventCopy phase] == 1)
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [v3 isGestureEvent];
+    isGestureEvent = [eventCopy isGestureEvent];
     v5 = 0;
-    if (v3 && v6)
+    if (eventCopy && isGestureEvent)
     {
-      v5 = [v3 phase] == 1;
+      v5 = [eventCopy phase] == 1;
     }
   }
 

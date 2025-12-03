@@ -3,16 +3,16 @@
 + (void)_scheduleSharedInstanceTeardown;
 + (void)_tearDown;
 - (ACSystemConfigManager)init;
-- (int)accountsWithAccountTypeIdentifierExist:(id)a3;
-- (int64_t)countOfAccountsWithAccountTypeIdentifier:(id)a3;
+- (int)accountsWithAccountTypeIdentifierExist:(id)exist;
+- (int64_t)countOfAccountsWithAccountTypeIdentifier:(id)identifier;
 - (void)_createSCPreferencesSession;
 - (void)_destroySCPreferencesSession;
-- (void)_getValueForKey:(id)a3;
-- (void)_handleSCPreferencesSessionNotification:(unsigned int)a3;
-- (void)_setValue:(void *)a3 forKey:(id)a4;
+- (void)_getValueForKey:(id)key;
+- (void)_handleSCPreferencesSessionNotification:(unsigned int)notification;
+- (void)_setValue:(void *)value forKey:(id)key;
 - (void)dealloc;
-- (void)setAccountsWithAccountTypeIdentifier:(id)a3 exist:(BOOL)a4;
-- (void)setCountOfAccounts:(int64_t)a3 withAccountTypeIdentifier:(id)a4;
+- (void)setAccountsWithAccountTypeIdentifier:(id)identifier exist:(BOOL)exist;
+- (void)setCountOfAccounts:(int64_t)accounts withAccountTypeIdentifier:(id)identifier;
 @end
 
 @implementation ACSystemConfigManager
@@ -27,7 +27,7 @@
     __sharedACSystemConfigManager = v3;
   }
 
-  [a1 _scheduleSharedInstanceTeardown];
+  [self _scheduleSharedInstanceTeardown];
   v5 = __sharedACSystemConfigManager;
   pthread_mutex_unlock(&__SystemConfigManagerMutex);
 
@@ -102,18 +102,18 @@
   [(ACSystemConfigManager *)&v3 dealloc];
 }
 
-- (int)accountsWithAccountTypeIdentifierExist:(id)a3
+- (int)accountsWithAccountTypeIdentifierExist:(id)exist
 {
-  v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.exists", a3];
-  v5 = [(ACSystemConfigManager *)self _getValueForKey:v4];
-  v6 = [v5 intValue];
+  exist = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.exists", exist];
+  v5 = [(ACSystemConfigManager *)self _getValueForKey:exist];
+  intValue = [v5 intValue];
 
-  return v6;
+  return intValue;
 }
 
-- (void)setAccountsWithAccountTypeIdentifier:(id)a3 exist:(BOOL)a4
+- (void)setAccountsWithAccountTypeIdentifier:(id)identifier exist:(BOOL)exist
 {
-  if (a4)
+  if (exist)
   {
     v5 = &unk_1F2118958;
   }
@@ -123,43 +123,43 @@
     v5 = &unk_1F2118970;
   }
 
-  v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.exists", a3];
-  [(ACSystemConfigManager *)self _setValue:v5 forKey:v6];
+  identifier = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.exists", identifier];
+  [(ACSystemConfigManager *)self _setValue:v5 forKey:identifier];
 }
 
-- (int64_t)countOfAccountsWithAccountTypeIdentifier:(id)a3
+- (int64_t)countOfAccountsWithAccountTypeIdentifier:(id)identifier
 {
-  v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.count", a3];
-  v5 = [(ACSystemConfigManager *)self _getValueForKey:v4];
+  identifier = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.count", identifier];
+  v5 = [(ACSystemConfigManager *)self _getValueForKey:identifier];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 integerValue];
+    integerValue = [v5 integerValue];
   }
 
   else
   {
-    v7 = -1;
+    integerValue = -1;
   }
 
-  return v7;
+  return integerValue;
 }
 
-- (void)setCountOfAccounts:(int64_t)a3 withAccountTypeIdentifier:(id)a4
+- (void)setCountOfAccounts:(int64_t)accounts withAccountTypeIdentifier:(id)identifier
 {
-  v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.count", a4];
-  -[ACSystemConfigManager _setValue:forKey:](self, "_setValue:forKey:", [MEMORY[0x1E696AD98] numberWithInteger:a3], v6);
+  identifier = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.count", identifier];
+  -[ACSystemConfigManager _setValue:forKey:](self, "_setValue:forKey:", [MEMORY[0x1E696AD98] numberWithInteger:accounts], identifier);
 }
 
 - (void)_createSCPreferencesSession
 {
-  v3 = [MEMORY[0x1E696AAE8] mainBundle];
-  v4 = [v3 bundleIdentifier];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
 
-  if (!v4)
+  if (!bundleIdentifier)
   {
-    v5 = [MEMORY[0x1E696AE30] processInfo];
-    v4 = [v5 processName];
+    processInfo = [MEMORY[0x1E696AE30] processInfo];
+    bundleIdentifier = [processInfo processName];
   }
 
   preferencesQueue = self->_preferencesQueue;
@@ -168,8 +168,8 @@
   v8[2] = __52__ACSystemConfigManager__createSCPreferencesSession__block_invoke;
   v8[3] = &unk_1E7975590;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = bundleIdentifier;
+  v7 = bundleIdentifier;
   dispatch_sync(preferencesQueue, v8);
 }
 
@@ -228,14 +228,14 @@ void __53__ACSystemConfigManager__destroySCPreferencesSession__block_invoke(uint
   }
 }
 
-- (void)_handleSCPreferencesSessionNotification:(unsigned int)a3
+- (void)_handleSCPreferencesSessionNotification:(unsigned int)notification
 {
   preferencesQueue = self->_preferencesQueue;
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __65__ACSystemConfigManager__handleSCPreferencesSessionNotification___block_invoke;
   v4[3] = &unk_1E7977358;
-  v5 = a3;
+  notificationCopy = notification;
   v4[4] = self;
   dispatch_sync(preferencesQueue, v4);
 }
@@ -262,9 +262,9 @@ void __65__ACSystemConfigManager__handleSCPreferencesSessionNotification___block
   }
 }
 
-- (void)_getValueForKey:(id)a3
+- (void)_getValueForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -274,10 +274,10 @@ void __65__ACSystemConfigManager__handleSCPreferencesSessionNotification___block
   block[1] = 3221225472;
   block[2] = __41__ACSystemConfigManager__getValueForKey___block_invoke;
   block[3] = &unk_1E7977290;
-  v10 = v4;
+  v10 = keyCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = keyCopy;
   dispatch_sync(preferencesQueue, block);
   v7 = v13[3];
 
@@ -292,18 +292,18 @@ CFPropertyListRef __41__ACSystemConfigManager__getValueForKey___block_invoke(uin
   return result;
 }
 
-- (void)_setValue:(void *)a3 forKey:(id)a4
+- (void)_setValue:(void *)value forKey:(id)key
 {
-  v6 = a4;
+  keyCopy = key;
   preferencesQueue = self->_preferencesQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __42__ACSystemConfigManager__setValue_forKey___block_invoke;
   block[3] = &unk_1E7977380;
   block[4] = self;
-  v10 = v6;
-  v11 = a3;
-  v8 = v6;
+  v10 = keyCopy;
+  valueCopy = value;
+  v8 = keyCopy;
   dispatch_sync(preferencesQueue, block);
 }
 

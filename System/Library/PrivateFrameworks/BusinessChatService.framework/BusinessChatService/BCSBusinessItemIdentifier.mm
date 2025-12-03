@@ -1,7 +1,7 @@
 @interface BCSBusinessItemIdentifier
-+ (BCSBusinessItemIdentifier)identifierWithBusinessItem:(uint64_t)a1;
-+ (BCSBusinessItemIdentifier)identifierWithPhoneNumber:(uint64_t)a1;
-- (BOOL)matchesItemIdentifying:(id)a3;
++ (BCSBusinessItemIdentifier)identifierWithBusinessItem:(uint64_t)item;
++ (BCSBusinessItemIdentifier)identifierWithPhoneNumber:(uint64_t)number;
+- (BOOL)matchesItemIdentifying:(id)identifying;
 - (NSObject)itemIdentifier;
 - (NSString)debugDescription;
 - (NSString)description;
@@ -11,7 +11,7 @@
 
 @implementation BCSBusinessItemIdentifier
 
-+ (BCSBusinessItemIdentifier)identifierWithPhoneNumber:(uint64_t)a1
++ (BCSBusinessItemIdentifier)identifierWithPhoneNumber:(uint64_t)number
 {
   v2 = a2;
   objc_opt_self();
@@ -34,7 +34,7 @@
   return v3;
 }
 
-+ (BCSBusinessItemIdentifier)identifierWithBusinessItem:(uint64_t)a1
++ (BCSBusinessItemIdentifier)identifierWithBusinessItem:(uint64_t)item
 {
   v2 = a2;
   objc_opt_self();
@@ -58,37 +58,37 @@
 {
   if (self)
   {
-    v2 = [(BCSBusinessItemIdentifier *)self succinctDescriptionBuilder];
-    v3 = [v2 build];
+    succinctDescriptionBuilder = [(BCSBusinessItemIdentifier *)self succinctDescriptionBuilder];
+    build = [succinctDescriptionBuilder build];
   }
 
   else
   {
-    v3 = 0;
+    build = 0;
   }
 
-  return v3;
+  return build;
 }
 
 - (NSString)debugDescription
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
-    v3 = [(BCSBusinessItemIdentifier *)self succinctDescriptionBuilder];
-    v4 = [v3 appendInt64:objc_msgSend(v2 withName:{"truncatedHash"), @"truncatedHash"}];
-    v2 = [v3 build];
+    succinctDescriptionBuilder = [(BCSBusinessItemIdentifier *)self succinctDescriptionBuilder];
+    v4 = [succinctDescriptionBuilder appendInt64:objc_msgSend(selfCopy withName:{"truncatedHash"), @"truncatedHash"}];
+    selfCopy = [succinctDescriptionBuilder build];
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (NSObject)itemIdentifier
 {
   v2 = MEMORY[0x277CCABB0];
-  v3 = [(BCSBusinessItemIdentifier *)self truncatedHash];
+  truncatedHash = [(BCSBusinessItemIdentifier *)self truncatedHash];
 
-  return [v2 numberWithLongLong:v3];
+  return [v2 numberWithLongLong:truncatedHash];
 }
 
 - (int64_t)truncatedHash
@@ -101,15 +101,15 @@
   return self;
 }
 
-- (BOOL)matchesItemIdentifying:(id)a3
+- (BOOL)matchesItemIdentifying:(id)identifying
 {
-  v4 = a3;
-  v5 = [v4 type];
-  if (v5 == [(BCSBusinessItemIdentifier *)self type])
+  identifyingCopy = identifying;
+  type = [identifyingCopy type];
+  if (type == [(BCSBusinessItemIdentifier *)self type])
   {
-    v6 = [v4 itemIdentifier];
-    v7 = [(BCSBusinessItemIdentifier *)self itemIdentifier];
-    v8 = [v6 isEqual:v7];
+    itemIdentifier = [identifyingCopy itemIdentifier];
+    itemIdentifier2 = [(BCSBusinessItemIdentifier *)self itemIdentifier];
+    v8 = [itemIdentifier isEqual:itemIdentifier2];
   }
 
   else
@@ -122,9 +122,9 @@
 
 - (id)succinctDescriptionBuilder
 {
-  v2 = [MEMORY[0x277CF0C00] builderWithObject:a1];
-  v3 = [a1 itemIdentifier];
-  v4 = [v2 appendObject:v3 withName:@"itemIdentifier"];
+  v2 = [MEMORY[0x277CF0C00] builderWithObject:self];
+  itemIdentifier = [self itemIdentifier];
+  v4 = [v2 appendObject:itemIdentifier withName:@"itemIdentifier"];
 
   return v2;
 }

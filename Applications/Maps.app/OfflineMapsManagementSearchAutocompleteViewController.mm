@@ -1,19 +1,19 @@
 @interface OfflineMapsManagementSearchAutocompleteViewController
 - (BOOL)isSearchLoading;
 - (OfflineMapsManagementActionCoordination)delegate;
-- (void)_addSubscriptionForMapItem:(id)a3;
+- (void)_addSubscriptionForMapItem:(id)item;
 - (void)_dismiss;
-- (void)_enableTextFieldNotification:(BOOL)a3;
+- (void)_enableTextFieldNotification:(BOOL)notification;
 - (void)_setupConstraints;
 - (void)_setupViews;
-- (void)_textFieldDidChange:(id)a3;
-- (void)dataSource:(id)a3 itemTapped:(id)a4;
+- (void)_textFieldDidChange:(id)change;
+- (void)dataSource:(id)source itemTapped:(id)tapped;
 - (void)didBecomeCurrent;
 - (void)didResignCurrent;
-- (void)setIsSearchLoading:(BOOL)a3;
+- (void)setIsSearchLoading:(BOOL)loading;
 - (void)viewDidLoad;
-- (void)willBecomeCurrent:(BOOL)a3;
-- (void)willResignCurrent:(BOOL)a3;
+- (void)willBecomeCurrent:(BOOL)current;
+- (void)willResignCurrent:(BOOL)current;
 @end
 
 @implementation OfflineMapsManagementSearchAutocompleteViewController
@@ -25,24 +25,24 @@
   return WeakRetained;
 }
 
-- (void)setIsSearchLoading:(BOOL)a3
+- (void)setIsSearchLoading:(BOOL)loading
 {
-  v3 = a3;
-  self->_isSearchLoading = a3;
-  v5 = [(OfflineMapsManagementSearchAutocompleteViewController *)self activityIndicator];
-  v6 = v5;
-  if (v3)
+  loadingCopy = loading;
+  self->_isSearchLoading = loading;
+  activityIndicator = [(OfflineMapsManagementSearchAutocompleteViewController *)self activityIndicator];
+  v6 = activityIndicator;
+  if (loadingCopy)
   {
-    [v5 startAnimating];
+    [activityIndicator startAnimating];
   }
 
   else
   {
-    [v5 stopAnimating];
+    [activityIndicator stopAnimating];
   }
 
-  v7 = [(OfflineMapsManagementSearchAutocompleteViewController *)self activityIndicator];
-  [v7 setHidden:!v3];
+  activityIndicator2 = [(OfflineMapsManagementSearchAutocompleteViewController *)self activityIndicator];
+  [activityIndicator2 setHidden:!loadingCopy];
 }
 
 - (BOOL)isSearchLoading
@@ -79,24 +79,24 @@
   return self->_isSearchLoading;
 }
 
-- (void)_textFieldDidChange:(id)a3
+- (void)_textFieldDidChange:(id)change
 {
-  v6 = [(OfflineMapsManagementSearchAutocompleteViewController *)self searchDataSource];
-  v4 = [(OfflineMapsManagementSearchAutocompleteViewController *)self searchField];
-  v5 = [v4 text];
-  [v6 updateForSearchQuery:v5];
+  searchDataSource = [(OfflineMapsManagementSearchAutocompleteViewController *)self searchDataSource];
+  searchField = [(OfflineMapsManagementSearchAutocompleteViewController *)self searchField];
+  text = [searchField text];
+  [searchDataSource updateForSearchQuery:text];
 }
 
-- (void)dataSource:(id)a3 itemTapped:(id)a4
+- (void)dataSource:(id)source itemTapped:(id)tapped
 {
-  v6 = a3;
-  v7 = a4;
+  sourceCopy = source;
+  tappedCopy = tapped;
   if (![(OfflineMapsManagementSearchAutocompleteViewController *)self isSearchLoading])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = v7;
+      v8 = tappedCopy;
       v9 = [[MKLocalSearchRequest alloc] initWithCompletion:v8];
       v10 = [[MKLocalSearch alloc] initWithRequest:v9];
       [(OfflineMapsManagementSearchAutocompleteViewController *)self setIsSearchLoading:1];
@@ -114,14 +114,14 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v11 = [v7 mapItem];
-      [(OfflineMapsManagementSearchAutocompleteViewController *)self _addSubscriptionForMapItem:v11];
+      mapItem = [tappedCopy mapItem];
+      [(OfflineMapsManagementSearchAutocompleteViewController *)self _addSubscriptionForMapItem:mapItem];
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v12 = v7;
+      v12 = tappedCopy;
       v13 = &OBJC_PROTOCOL___MSPHistoryEntryPlaceDisplay;
       objc_opt_class();
       v14 = v12;
@@ -149,9 +149,9 @@
 
       if (v19)
       {
-        v20 = [v19 historyEntry];
-        v21 = [v20 geoMapItem];
-        v22 = [MKMapItem _itemWithGeoMapItem:v21];
+        historyEntry = [v19 historyEntry];
+        geoMapItem = [historyEntry geoMapItem];
+        v22 = [MKMapItem _itemWithGeoMapItem:geoMapItem];
 
         [(OfflineMapsManagementSearchAutocompleteViewController *)self _addSubscriptionForMapItem:v22];
       }
@@ -159,12 +159,12 @@
   }
 }
 
-- (void)_enableTextFieldNotification:(BOOL)a3
+- (void)_enableTextFieldNotification:(BOOL)notification
 {
-  v3 = a3;
+  notificationCopy = notification;
   v6 = +[NSNotificationCenter defaultCenter];
   [(OfflineMapsManagementSearchAutocompleteViewController *)self searchField];
-  if (v3)
+  if (notificationCopy)
     v5 = {;
     [v6 addObserver:self selector:"_textFieldDidChange:" name:UITextFieldTextDidChangeNotification object:v5];
   }
@@ -175,115 +175,115 @@
   }
 }
 
-- (void)_addSubscriptionForMapItem:(id)a3
+- (void)_addSubscriptionForMapItem:(id)item
 {
-  v12 = a3;
-  v4 = [(OfflineMapsManagementSearchAutocompleteViewController *)self searchBar];
-  [v4 resignFirstResponder];
+  itemCopy = item;
+  searchBar = [(OfflineMapsManagementSearchAutocompleteViewController *)self searchBar];
+  [searchBar resignFirstResponder];
 
-  v5 = [v12 _geoMapItem];
-  v6 = [v5 offlineDownloadRegion];
+  _geoMapItem = [itemCopy _geoMapItem];
+  offlineDownloadRegion = [_geoMapItem offlineDownloadRegion];
 
-  v7 = [v12 name];
+  name = [itemCopy name];
   v8 = +[MKUserLocation title];
-  v9 = [v7 isEqualToString:v8];
+  v9 = [name isEqualToString:v8];
 
   if (v9)
   {
-    v10 = [v12 _addressFormattedAsCity];
+    _addressFormattedAsCity = [itemCopy _addressFormattedAsCity];
 
-    v7 = v10;
+    name = _addressFormattedAsCity;
   }
 
-  v11 = [(OfflineMapsManagementSearchAutocompleteViewController *)self delegate];
-  [v11 presentOfflineMapRegionSelectorForRegion:v6 name:v7];
+  delegate = [(OfflineMapsManagementSearchAutocompleteViewController *)self delegate];
+  [delegate presentOfflineMapRegionSelectorForRegion:offlineDownloadRegion name:name];
 }
 
 - (void)_dismiss
 {
-  v2 = [(OfflineMapsManagementSearchAutocompleteViewController *)self delegate];
-  [v2 closeAddNewMapSearchAutocomplete];
+  delegate = [(OfflineMapsManagementSearchAutocompleteViewController *)self delegate];
+  [delegate closeAddNewMapSearchAutocomplete];
 }
 
 - (void)_setupConstraints
 {
-  v68 = [(OfflineMapsManagementSearchAutocompleteViewController *)self modalCardHeaderView];
-  v66 = [v68 topAnchor];
-  v67 = [(ContaineeViewController *)self headerView];
-  v65 = [v67 topAnchor];
-  v64 = [v66 constraintEqualToAnchor:v65];
+  modalCardHeaderView = [(OfflineMapsManagementSearchAutocompleteViewController *)self modalCardHeaderView];
+  topAnchor = [modalCardHeaderView topAnchor];
+  headerView = [(ContaineeViewController *)self headerView];
+  topAnchor2 = [headerView topAnchor];
+  v64 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v69[0] = v64;
-  v63 = [(OfflineMapsManagementSearchAutocompleteViewController *)self modalCardHeaderView];
-  v61 = [v63 leadingAnchor];
-  v62 = [(ContaineeViewController *)self headerView];
-  v60 = [v62 leadingAnchor];
-  v59 = [v61 constraintEqualToAnchor:v60];
+  modalCardHeaderView2 = [(OfflineMapsManagementSearchAutocompleteViewController *)self modalCardHeaderView];
+  leadingAnchor = [modalCardHeaderView2 leadingAnchor];
+  headerView2 = [(ContaineeViewController *)self headerView];
+  leadingAnchor2 = [headerView2 leadingAnchor];
+  v59 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v69[1] = v59;
-  v58 = [(OfflineMapsManagementSearchAutocompleteViewController *)self modalCardHeaderView];
-  v56 = [v58 trailingAnchor];
-  v57 = [(ContaineeViewController *)self headerView];
-  v55 = [v57 trailingAnchor];
-  v54 = [v56 constraintEqualToAnchor:v55];
+  modalCardHeaderView3 = [(OfflineMapsManagementSearchAutocompleteViewController *)self modalCardHeaderView];
+  trailingAnchor = [modalCardHeaderView3 trailingAnchor];
+  headerView3 = [(ContaineeViewController *)self headerView];
+  trailingAnchor2 = [headerView3 trailingAnchor];
+  v54 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v69[2] = v54;
-  v53 = [(OfflineMapsManagementSearchAutocompleteViewController *)self modalCardHeaderView];
-  v51 = [v53 bottomAnchor];
-  v52 = [(OfflineMapsManagementSearchAutocompleteViewController *)self searchBar];
-  v50 = [v52 topAnchor];
-  v49 = [v51 constraintEqualToAnchor:v50 constant:10.0];
+  modalCardHeaderView4 = [(OfflineMapsManagementSearchAutocompleteViewController *)self modalCardHeaderView];
+  bottomAnchor = [modalCardHeaderView4 bottomAnchor];
+  searchBar = [(OfflineMapsManagementSearchAutocompleteViewController *)self searchBar];
+  topAnchor3 = [searchBar topAnchor];
+  v49 = [bottomAnchor constraintEqualToAnchor:topAnchor3 constant:10.0];
   v69[3] = v49;
-  v48 = [(OfflineMapsManagementSearchAutocompleteViewController *)self searchBar];
-  v46 = [v48 leadingAnchor];
-  v47 = [(ContaineeViewController *)self headerView];
-  v45 = [v47 leadingAnchor];
-  v44 = [v46 constraintEqualToAnchor:v45];
+  searchBar2 = [(OfflineMapsManagementSearchAutocompleteViewController *)self searchBar];
+  leadingAnchor3 = [searchBar2 leadingAnchor];
+  headerView4 = [(ContaineeViewController *)self headerView];
+  leadingAnchor4 = [headerView4 leadingAnchor];
+  v44 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v69[4] = v44;
-  v43 = [(OfflineMapsManagementSearchAutocompleteViewController *)self searchBar];
-  v41 = [v43 trailingAnchor];
-  v42 = [(ContaineeViewController *)self headerView];
-  v40 = [v42 trailingAnchor];
-  v39 = [v41 constraintEqualToAnchor:v40];
+  searchBar3 = [(OfflineMapsManagementSearchAutocompleteViewController *)self searchBar];
+  trailingAnchor3 = [searchBar3 trailingAnchor];
+  headerView5 = [(ContaineeViewController *)self headerView];
+  trailingAnchor4 = [headerView5 trailingAnchor];
+  v39 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v69[5] = v39;
-  v38 = [(OfflineMapsManagementSearchAutocompleteViewController *)self searchBar];
-  v36 = [v38 bottomAnchor];
-  v37 = [(ContaineeViewController *)self headerView];
-  v35 = [v37 bottomAnchor];
-  v34 = [v36 constraintEqualToAnchor:v35];
+  searchBar4 = [(OfflineMapsManagementSearchAutocompleteViewController *)self searchBar];
+  bottomAnchor2 = [searchBar4 bottomAnchor];
+  headerView6 = [(ContaineeViewController *)self headerView];
+  bottomAnchor3 = [headerView6 bottomAnchor];
+  v34 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
   v69[6] = v34;
-  v33 = [(OfflineMapsManagementSearchAutocompleteViewController *)self collectionView];
-  v31 = [v33 topAnchor];
-  v32 = [(ContaineeViewController *)self contentView];
-  v30 = [v32 topAnchor];
-  v29 = [v31 constraintEqualToAnchor:v30];
+  collectionView = [(OfflineMapsManagementSearchAutocompleteViewController *)self collectionView];
+  topAnchor4 = [collectionView topAnchor];
+  contentView = [(ContaineeViewController *)self contentView];
+  topAnchor5 = [contentView topAnchor];
+  v29 = [topAnchor4 constraintEqualToAnchor:topAnchor5];
   v69[7] = v29;
-  v28 = [(OfflineMapsManagementSearchAutocompleteViewController *)self collectionView];
-  v26 = [v28 leadingAnchor];
-  v27 = [(ContaineeViewController *)self contentView];
-  v25 = [v27 leadingAnchor];
-  v24 = [v26 constraintEqualToAnchor:v25];
+  collectionView2 = [(OfflineMapsManagementSearchAutocompleteViewController *)self collectionView];
+  leadingAnchor5 = [collectionView2 leadingAnchor];
+  contentView2 = [(ContaineeViewController *)self contentView];
+  leadingAnchor6 = [contentView2 leadingAnchor];
+  v24 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
   v69[8] = v24;
-  v23 = [(OfflineMapsManagementSearchAutocompleteViewController *)self collectionView];
-  v21 = [v23 trailingAnchor];
-  v22 = [(ContaineeViewController *)self contentView];
-  v20 = [v22 trailingAnchor];
-  v19 = [v21 constraintEqualToAnchor:v20];
+  collectionView3 = [(OfflineMapsManagementSearchAutocompleteViewController *)self collectionView];
+  trailingAnchor5 = [collectionView3 trailingAnchor];
+  contentView3 = [(ContaineeViewController *)self contentView];
+  trailingAnchor6 = [contentView3 trailingAnchor];
+  v19 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
   v69[9] = v19;
-  v18 = [(OfflineMapsManagementSearchAutocompleteViewController *)self collectionView];
-  v16 = [v18 bottomAnchor];
-  v17 = [(ContaineeViewController *)self contentView];
-  v15 = [v17 bottomAnchor];
-  v14 = [v16 constraintEqualToAnchor:v15];
+  collectionView4 = [(OfflineMapsManagementSearchAutocompleteViewController *)self collectionView];
+  bottomAnchor4 = [collectionView4 bottomAnchor];
+  contentView4 = [(ContaineeViewController *)self contentView];
+  bottomAnchor5 = [contentView4 bottomAnchor];
+  v14 = [bottomAnchor4 constraintEqualToAnchor:bottomAnchor5];
   v69[10] = v14;
-  v13 = [(OfflineMapsManagementSearchAutocompleteViewController *)self activityIndicator];
-  v3 = [v13 trailingAnchor];
-  v4 = [(OfflineMapsManagementSearchAutocompleteViewController *)self modalCardHeaderView];
-  v5 = [v4 trailingAnchor];
-  v6 = [v3 constraintEqualToAnchor:v5 constant:-16.0];
+  activityIndicator = [(OfflineMapsManagementSearchAutocompleteViewController *)self activityIndicator];
+  trailingAnchor7 = [activityIndicator trailingAnchor];
+  modalCardHeaderView5 = [(OfflineMapsManagementSearchAutocompleteViewController *)self modalCardHeaderView];
+  trailingAnchor8 = [modalCardHeaderView5 trailingAnchor];
+  v6 = [trailingAnchor7 constraintEqualToAnchor:trailingAnchor8 constant:-16.0];
   v69[11] = v6;
-  v7 = [(OfflineMapsManagementSearchAutocompleteViewController *)self activityIndicator];
-  v8 = [v7 centerYAnchor];
-  v9 = [(OfflineMapsManagementSearchAutocompleteViewController *)self modalCardHeaderView];
-  v10 = [v9 centerYAnchor];
-  v11 = [v8 constraintEqualToAnchor:v10];
+  activityIndicator2 = [(OfflineMapsManagementSearchAutocompleteViewController *)self activityIndicator];
+  centerYAnchor = [activityIndicator2 centerYAnchor];
+  modalCardHeaderView6 = [(OfflineMapsManagementSearchAutocompleteViewController *)self modalCardHeaderView];
+  centerYAnchor2 = [modalCardHeaderView6 centerYAnchor];
+  v11 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v69[12] = v11;
   v12 = [NSArray arrayWithObjects:v69 count:13];
   [NSLayoutConstraint activateConstraints:v12];
@@ -294,75 +294,75 @@
   v3 = objc_alloc_init(GEOMapDataSubscriptionManager);
   [(OfflineMapsManagementSearchAutocompleteViewController *)self setSubscriptionManager:v3];
 
-  v4 = [(ContaineeViewController *)self cardPresentationController];
-  [v4 setPresentedModally:1];
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  [cardPresentationController setPresentedModally:1];
 
-  v5 = [(ContaineeViewController *)self cardPresentationController];
-  [v5 setTakesAvailableHeight:1];
+  cardPresentationController2 = [(ContaineeViewController *)self cardPresentationController];
+  [cardPresentationController2 setTakesAvailableHeight:1];
 
-  v6 = [(ContaineeViewController *)self cardPresentationController];
-  [v6 setAllowsSwipeToDismiss:0];
+  cardPresentationController3 = [(ContaineeViewController *)self cardPresentationController];
+  [cardPresentationController3 setAllowsSwipeToDismiss:0];
 
-  v7 = [(ContaineeViewController *)self headerView];
+  headerView = [(ContaineeViewController *)self headerView];
   v8 = [_TtC4Maps19ModalCardHeaderView alloc];
   y = CGRectZero.origin.y;
   width = CGRectZero.size.width;
   height = CGRectZero.size.height;
-  v12 = [(ModalCardHeaderView *)v8 initWithFrame:CGRectZero.origin.x, y, width, height];
-  [(OfflineMapsManagementSearchAutocompleteViewController *)self setModalCardHeaderView:v12];
+  height = [(ModalCardHeaderView *)v8 initWithFrame:CGRectZero.origin.x, y, width, height];
+  [(OfflineMapsManagementSearchAutocompleteViewController *)self setModalCardHeaderView:height];
 
-  v13 = [(OfflineMapsManagementSearchAutocompleteViewController *)self modalCardHeaderView];
-  [v13 setTranslatesAutoresizingMaskIntoConstraints:0];
+  modalCardHeaderView = [(OfflineMapsManagementSearchAutocompleteViewController *)self modalCardHeaderView];
+  [modalCardHeaderView setTranslatesAutoresizingMaskIntoConstraints:0];
 
   v14 = +[NSBundle mainBundle];
   v15 = [v14 localizedStringForKey:@"Download New Map [page title]" value:@"localized string not found" table:@"Offline"];
-  v16 = [(OfflineMapsManagementSearchAutocompleteViewController *)self modalCardHeaderView];
-  [v16 setTitle:v15];
+  modalCardHeaderView2 = [(OfflineMapsManagementSearchAutocompleteViewController *)self modalCardHeaderView];
+  [modalCardHeaderView2 setTitle:v15];
 
   v17 = [MapsThemeButton buttonWithType:7];
   [v17 addTarget:self action:"_dismiss" forEvents:64];
-  v18 = [(OfflineMapsManagementSearchAutocompleteViewController *)self modalCardHeaderView];
-  [v18 setLeadingButton:v17];
+  modalCardHeaderView3 = [(OfflineMapsManagementSearchAutocompleteViewController *)self modalCardHeaderView];
+  [modalCardHeaderView3 setLeadingButton:v17];
 
-  v19 = [(OfflineMapsManagementSearchAutocompleteViewController *)self modalCardHeaderView];
-  [v7 addSubview:v19];
+  modalCardHeaderView4 = [(OfflineMapsManagementSearchAutocompleteViewController *)self modalCardHeaderView];
+  [headerView addSubview:modalCardHeaderView4];
 
   v20 = objc_alloc_init(PassthruSearchBar);
   [(OfflineMapsManagementSearchAutocompleteViewController *)self setSearchBar:v20];
 
-  v21 = [(OfflineMapsManagementSearchAutocompleteViewController *)self searchBar];
-  [v21 setTranslatesAutoresizingMaskIntoConstraints:0];
+  searchBar = [(OfflineMapsManagementSearchAutocompleteViewController *)self searchBar];
+  [searchBar setTranslatesAutoresizingMaskIntoConstraints:0];
 
   v22 = +[NSBundle mainBundle];
   v23 = [v22 localizedStringForKey:@"Search city [search bar placeholder]" value:@"localized string not found" table:@"Offline"];
-  v24 = [(OfflineMapsManagementSearchAutocompleteViewController *)self searchBar];
-  [v24 setPlaceholder:v23];
+  searchBar2 = [(OfflineMapsManagementSearchAutocompleteViewController *)self searchBar];
+  [searchBar2 setPlaceholder:v23];
 
-  v25 = [(OfflineMapsManagementSearchAutocompleteViewController *)self searchBar];
-  [v25 setDelegate:self];
+  searchBar3 = [(OfflineMapsManagementSearchAutocompleteViewController *)self searchBar];
+  [searchBar3 setDelegate:self];
 
-  v26 = [(OfflineMapsManagementSearchAutocompleteViewController *)self searchBar];
-  [v26 setTextFieldDelegate:self];
+  searchBar4 = [(OfflineMapsManagementSearchAutocompleteViewController *)self searchBar];
+  [searchBar4 setTextFieldDelegate:self];
 
-  v27 = [(OfflineMapsManagementSearchAutocompleteViewController *)self searchBar];
-  [v7 addSubview:v27];
+  searchBar5 = [(OfflineMapsManagementSearchAutocompleteViewController *)self searchBar];
+  [headerView addSubview:searchBar5];
 
-  v28 = [(OfflineMapsManagementSearchAutocompleteViewController *)self searchBar];
-  v29 = [v28 searchTextField];
-  [(OfflineMapsManagementSearchAutocompleteViewController *)self setSearchField:v29];
+  searchBar6 = [(OfflineMapsManagementSearchAutocompleteViewController *)self searchBar];
+  searchTextField = [searchBar6 searchTextField];
+  [(OfflineMapsManagementSearchAutocompleteViewController *)self setSearchField:searchTextField];
 
-  v30 = [(OfflineMapsManagementSearchAutocompleteViewController *)self searchField];
-  [v30 setReturnKeyType:9];
+  searchField = [(OfflineMapsManagementSearchAutocompleteViewController *)self searchField];
+  [searchField setReturnKeyType:9];
 
   v31 = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:100];
   [(OfflineMapsManagementSearchAutocompleteViewController *)self setActivityIndicator:v31];
 
-  v32 = [(OfflineMapsManagementSearchAutocompleteViewController *)self activityIndicator];
-  [v32 setTranslatesAutoresizingMaskIntoConstraints:0];
+  activityIndicator = [(OfflineMapsManagementSearchAutocompleteViewController *)self activityIndicator];
+  [activityIndicator setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v33 = [(OfflineMapsManagementSearchAutocompleteViewController *)self modalCardHeaderView];
-  v34 = [(OfflineMapsManagementSearchAutocompleteViewController *)self activityIndicator];
-  [v33 addSubview:v34];
+  modalCardHeaderView5 = [(OfflineMapsManagementSearchAutocompleteViewController *)self modalCardHeaderView];
+  activityIndicator2 = [(OfflineMapsManagementSearchAutocompleteViewController *)self activityIndicator];
+  [modalCardHeaderView5 addSubview:activityIndicator2];
 
   objc_initWeak(&location, self);
   v35 = [UICollectionViewCompositionalLayout alloc];
@@ -376,19 +376,19 @@
   v38 = [v37 initWithFrame:v36 collectionViewLayout:{CGRectZero.origin.x, y, width, height, v45, v46, v47, v48}];
   [(OfflineMapsManagementSearchAutocompleteViewController *)self setCollectionView:v38];
 
-  v39 = [(OfflineMapsManagementSearchAutocompleteViewController *)self collectionView];
-  [v39 setTranslatesAutoresizingMaskIntoConstraints:0];
+  collectionView = [(OfflineMapsManagementSearchAutocompleteViewController *)self collectionView];
+  [collectionView setTranslatesAutoresizingMaskIntoConstraints:0];
 
   v40 = +[UIColor clearColor];
-  v41 = [(OfflineMapsManagementSearchAutocompleteViewController *)self collectionView];
-  [v41 setBackgroundColor:v40];
+  collectionView2 = [(OfflineMapsManagementSearchAutocompleteViewController *)self collectionView];
+  [collectionView2 setBackgroundColor:v40];
 
-  v42 = [(OfflineMapsManagementSearchAutocompleteViewController *)self collectionView];
-  [v42 setAccessibilityIdentifier:@"OfflineMapsSearchACCollectionView"];
+  collectionView3 = [(OfflineMapsManagementSearchAutocompleteViewController *)self collectionView];
+  [collectionView3 setAccessibilityIdentifier:@"OfflineMapsSearchACCollectionView"];
 
-  v43 = [(ContaineeViewController *)self contentView];
-  v44 = [(OfflineMapsManagementSearchAutocompleteViewController *)self collectionView];
-  [v43 addSubview:v44];
+  contentView = [(ContaineeViewController *)self contentView];
+  collectionView4 = [(OfflineMapsManagementSearchAutocompleteViewController *)self collectionView];
+  [contentView addSubview:collectionView4];
 
   objc_destroyWeak(&v49);
   objc_destroyWeak(&location);
@@ -402,13 +402,13 @@
   [(ContaineeViewController *)&v3 didResignCurrent];
 }
 
-- (void)willResignCurrent:(BOOL)a3
+- (void)willResignCurrent:(BOOL)current
 {
   v5.receiver = self;
   v5.super_class = OfflineMapsManagementSearchAutocompleteViewController;
-  [(ContaineeViewController *)&v5 willResignCurrent:a3];
-  v4 = [(OfflineMapsManagementSearchAutocompleteViewController *)self searchDataSource];
-  [v4 setActive:0];
+  [(ContaineeViewController *)&v5 willResignCurrent:current];
+  searchDataSource = [(OfflineMapsManagementSearchAutocompleteViewController *)self searchDataSource];
+  [searchDataSource setActive:0];
 }
 
 - (void)didBecomeCurrent
@@ -416,27 +416,27 @@
   v4.receiver = self;
   v4.super_class = OfflineMapsManagementSearchAutocompleteViewController;
   [(ContaineeViewController *)&v4 didBecomeCurrent];
-  v3 = [(OfflineMapsManagementSearchAutocompleteViewController *)self searchField];
-  [v3 becomeFirstResponder];
+  searchField = [(OfflineMapsManagementSearchAutocompleteViewController *)self searchField];
+  [searchField becomeFirstResponder];
 
   [(OfflineMapsManagementSearchAutocompleteViewController *)self _enableTextFieldNotification:1];
 }
 
-- (void)willBecomeCurrent:(BOOL)a3
+- (void)willBecomeCurrent:(BOOL)current
 {
   v9.receiver = self;
   v9.super_class = OfflineMapsManagementSearchAutocompleteViewController;
-  [(ContaineeViewController *)&v9 willBecomeCurrent:a3];
+  [(ContaineeViewController *)&v9 willBecomeCurrent:current];
   v4 = [OfflineMapsManagementSearchAutocompleteDataSource alloc];
-  v5 = [(OfflineMapsManagementSearchAutocompleteViewController *)self collectionView];
-  v6 = [(OfflineMapsManagementSearchAutocompleteDataSource *)v4 initWithCollectionView:v5 updateLocation:1];
+  collectionView = [(OfflineMapsManagementSearchAutocompleteViewController *)self collectionView];
+  v6 = [(OfflineMapsManagementSearchAutocompleteDataSource *)v4 initWithCollectionView:collectionView updateLocation:1];
   [(OfflineMapsManagementSearchAutocompleteViewController *)self setSearchDataSource:v6];
 
-  v7 = [(OfflineMapsManagementSearchAutocompleteViewController *)self searchDataSource];
-  [v7 setDelegate:self];
+  searchDataSource = [(OfflineMapsManagementSearchAutocompleteViewController *)self searchDataSource];
+  [searchDataSource setDelegate:self];
 
-  v8 = [(OfflineMapsManagementSearchAutocompleteViewController *)self searchDataSource];
-  [v8 setActive:1];
+  searchDataSource2 = [(OfflineMapsManagementSearchAutocompleteViewController *)self searchDataSource];
+  [searchDataSource2 setActive:1];
 }
 
 - (void)viewDidLoad

@@ -1,35 +1,35 @@
 @interface AKAlignmentGuideController
-- (AKAlignmentGuideController)initWithPageController:(id)a3;
+- (AKAlignmentGuideController)initWithPageController:(id)controller;
 - (AKPageController)pageController;
-- (CGPoint)guideAlignedPointForPoint:(CGPoint)a3 withEvent:(id)a4 orRecognizer:(id)a5;
+- (CGPoint)guideAlignedPointForPoint:(CGPoint)point withEvent:(id)event orRecognizer:(id)recognizer;
 - (void)dealloc;
 @end
 
 @implementation AKAlignmentGuideController
 
-- (AKAlignmentGuideController)initWithPageController:(id)a3
+- (AKAlignmentGuideController)initWithPageController:(id)controller
 {
   v67 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  controllerCopy = controller;
   v64.receiver = self;
   v64.super_class = AKAlignmentGuideController;
   v5 = [(AKAlignmentGuideController *)&v64 init];
   v6 = v5;
   if (v5)
   {
-    [(AKAlignmentGuideController *)v5 setPageController:v4];
-    -[AKAlignmentGuideController setExifHasFlippedAxes:](v6, "setExifHasFlippedAxes:", +[AKGeometryHelper exifOrientationHasReversedAxes:](AKGeometryHelper, "exifOrientationHasReversedAxes:", [v4 currentModelToScreenExifOrientation]));
-    [v4 currentModelToScreenScaleFactor];
+    [(AKAlignmentGuideController *)v5 setPageController:controllerCopy];
+    -[AKAlignmentGuideController setExifHasFlippedAxes:](v6, "setExifHasFlippedAxes:", +[AKGeometryHelper exifOrientationHasReversedAxes:](AKGeometryHelper, "exifOrientationHasReversedAxes:", [controllerCopy currentModelToScreenExifOrientation]));
+    [controllerCopy currentModelToScreenScaleFactor];
     [(AKAlignmentGuideController *)v6 setScreenToModelScaleFactor:1.0 / v7];
-    v8 = [v4 pageModelController];
-    v9 = [v8 selectedAnnotations];
+    pageModelController = [controllerCopy pageModelController];
+    selectedAnnotations = [pageModelController selectedAnnotations];
 
     v10 = MEMORY[0x277CBEB58];
-    v11 = [v4 pageModelController];
-    v12 = [v11 annotations];
-    v13 = [v10 setWithArray:v12];
+    pageModelController2 = [controllerCopy pageModelController];
+    annotations = [pageModelController2 annotations];
+    v13 = [v10 setWithArray:annotations];
 
-    [v13 minusSet:v9];
+    [v13 minusSet:selectedAnnotations];
     v14 = [v13 count];
     v6->_otherAnnotationCentersCount = 0;
     if (v14 >> 60)
@@ -60,7 +60,7 @@ LABEL_35:
     v63 = 0u;
     v60 = 0u;
     v61 = 0u;
-    v20 = v9;
+    v20 = selectedAnnotations;
     v21 = [v20 countByEnumeratingWithState:&v60 objects:v66 count:16];
     if (v21)
     {
@@ -125,8 +125,8 @@ LABEL_35:
 
     else
     {
-      v54 = v9;
-      v55 = v4;
+      v54 = selectedAnnotations;
+      v55 = controllerCopy;
       v71.origin.x = x;
       v71.origin.y = y;
       v71.size.width = width;
@@ -207,8 +207,8 @@ LABEL_35:
         while (v39);
       }
 
-      v9 = v54;
-      v4 = v55;
+      selectedAnnotations = v54;
+      controllerCopy = v55;
     }
 
     goto LABEL_35;
@@ -221,10 +221,10 @@ LABEL_36:
 
 - (void)dealloc
 {
-  v3 = [(AKAlignmentGuideController *)self pageController];
-  v4 = [v3 layerPresentationManager];
-  [v4 setAlignmentGuidePositionX:1.79769313e308];
-  [v4 setAlignmentGuidePositionY:1.79769313e308];
+  pageController = [(AKAlignmentGuideController *)self pageController];
+  layerPresentationManager = [pageController layerPresentationManager];
+  [layerPresentationManager setAlignmentGuidePositionX:1.79769313e308];
+  [layerPresentationManager setAlignmentGuidePositionY:1.79769313e308];
   free(self->_otherAnnotationCenters);
 
   v5.receiver = self;
@@ -232,17 +232,17 @@ LABEL_36:
   [(AKAlignmentGuideController *)&v5 dealloc];
 }
 
-- (CGPoint)guideAlignedPointForPoint:(CGPoint)a3 withEvent:(id)a4 orRecognizer:(id)a5
+- (CGPoint)guideAlignedPointForPoint:(CGPoint)point withEvent:(id)event orRecognizer:(id)recognizer
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = [(AKAlignmentGuideController *)self pageController:a4];
-  v8 = [v7 controller];
-  v9 = [v8 mainEventHandler];
-  v10 = [v7 layerPresentationManager];
-  [v9 firstDragPoint];
-  [v10 setAlignmentGuidePositionX:1.79769313e308];
-  [v10 setAlignmentGuidePositionY:1.79769313e308];
+  y = point.y;
+  x = point.x;
+  v7 = [(AKAlignmentGuideController *)self pageController:event];
+  controller = [v7 controller];
+  mainEventHandler = [controller mainEventHandler];
+  layerPresentationManager = [v7 layerPresentationManager];
+  [mainEventHandler firstDragPoint];
+  [layerPresentationManager setAlignmentGuidePositionX:1.79769313e308];
+  [layerPresentationManager setAlignmentGuidePositionY:1.79769313e308];
 
   v11 = x;
   v12 = y;

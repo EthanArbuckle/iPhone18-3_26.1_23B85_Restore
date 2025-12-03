@@ -1,8 +1,8 @@
 @interface _SearchEntryWithMatchDisplay
-- (_SearchEntryWithMatchDisplay)initWithFrame:(CGRect)a3;
+- (_SearchEntryWithMatchDisplay)initWithFrame:(CGRect)frame;
 - (id)_createMatchDisplayLabel;
 - (void)layoutSubviews;
-- (void)setMatchDisplayString:(id)a3;
+- (void)setMatchDisplayString:(id)string;
 @end
 
 @implementation _SearchEntryWithMatchDisplay
@@ -13,39 +13,39 @@
   v4 = [v3 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
   [v4 setOpaque:0];
   [v4 setHidden:1];
-  v5 = [MEMORY[0x1E69DC888] systemGrayColor];
-  [v4 setTextColor:v5];
+  systemGrayColor = [MEMORY[0x1E69DC888] systemGrayColor];
+  [v4 setTextColor:systemGrayColor];
 
-  v6 = [(_SearchEntryWithMatchDisplay *)self searchField];
-  v7 = [v6 font];
-  [v4 setFont:v7];
+  searchField = [(_SearchEntryWithMatchDisplay *)self searchField];
+  font = [searchField font];
+  [v4 setFont:font];
 
   return v4;
 }
 
-- (_SearchEntryWithMatchDisplay)initWithFrame:(CGRect)a3
+- (_SearchEntryWithMatchDisplay)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = _SearchEntryWithMatchDisplay;
-  v3 = [(_SearchEntryWithMatchDisplay *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(_SearchEntryWithMatchDisplay *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(_SearchEntryWithMatchDisplay *)v3 _createMatchDisplayLabel];
+    _createMatchDisplayLabel = [(_SearchEntryWithMatchDisplay *)v3 _createMatchDisplayLabel];
     matchDisplayLabel = v4->_matchDisplayLabel;
-    v4->_matchDisplayLabel = v5;
+    v4->_matchDisplayLabel = _createMatchDisplayLabel;
 
     [(_SearchEntryWithMatchDisplay *)v4 addSubview:v4->_matchDisplayLabel];
-    v7 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-    [(_SearchEntryWithMatchDisplay *)v4 setBackgroundColor:v7];
+    systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+    [(_SearchEntryWithMatchDisplay *)v4 setBackgroundColor:systemBackgroundColor];
   }
 
   return v4;
 }
 
-- (void)setMatchDisplayString:(id)a3
+- (void)setMatchDisplayString:(id)string
 {
-  [(UILabel *)self->_matchDisplayLabel setText:a3];
+  [(UILabel *)self->_matchDisplayLabel setText:string];
 
   [(_SearchEntryWithMatchDisplay *)self setNeedsLayout];
 }

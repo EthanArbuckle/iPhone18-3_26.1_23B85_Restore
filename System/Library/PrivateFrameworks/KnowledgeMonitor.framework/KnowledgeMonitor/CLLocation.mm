@@ -1,27 +1,27 @@
 @interface CLLocation
 - (id)randomData;
 - (id)readDeviceSpecificSalt;
-- (id)setSaltToUserDefaults:(void *)a3 scheme:;
-- (uint64_t)sha256HashForGeohash:(void *)a3 salt:;
-- (unint64_t)preservePrivacyForGeoHash:(void *)a1;
+- (id)setSaltToUserDefaults:(void *)defaults scheme:;
+- (uint64_t)sha256HashForGeohash:(void *)geohash salt:;
+- (unint64_t)preservePrivacyForGeoHash:(void *)hash;
 @end
 
 @implementation CLLocation
 
 - (id)readDeviceSpecificSalt
 {
-  if (a1)
+  if (self)
   {
     v2 = [objc_alloc(MEMORY[0x277CBEBD0]) initWithSuiteName:@"com.apple.CoreDuet"];
     v3 = [v2 dataForKey:@"CDPrivacyPreservingLocationHashDeviceSpecificSalt"];
     if (!v3)
     {
-      v3 = [(CLLocation *)a1 setSaltToUserDefaults:v2 scheme:@"CDPrivacyPreservingLocationHashDeviceSpecificSalt"];
-      v5 = [MEMORY[0x277CFE0C8] knowledgeChannel];
-      if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
+      v3 = [(CLLocation *)self setSaltToUserDefaults:v2 scheme:@"CDPrivacyPreservingLocationHashDeviceSpecificSalt"];
+      knowledgeChannel = [MEMORY[0x277CFE0C8] knowledgeChannel];
+      if (os_log_type_enabled(knowledgeChannel, OS_LOG_TYPE_INFO))
       {
         *v6 = 0;
-        _os_log_impl(&dword_22595A000, v5, OS_LOG_TYPE_INFO, "PrivacyPreservingLocationHash: Created a new salt for privacy preservation.", v6, 2u);
+        _os_log_impl(&dword_22595A000, knowledgeChannel, OS_LOG_TYPE_INFO, "PrivacyPreservingLocationHash: Created a new salt for privacy preservation.", v6, 2u);
       }
     }
   }
@@ -34,31 +34,31 @@
   return v3;
 }
 
-- (unint64_t)preservePrivacyForGeoHash:(void *)a1
+- (unint64_t)preservePrivacyForGeoHash:(void *)hash
 {
-  if (!a1)
+  if (!hash)
   {
     return 0;
   }
 
-  v4 = [(CLLocation *)a1 readDeviceSpecificSalt];
-  v5 = [(CLLocation *)a1 sha256HashForGeohash:a2 salt:v4]& 0xFFFFFFFFFFFFFC00;
+  readDeviceSpecificSalt = [(CLLocation *)hash readDeviceSpecificSalt];
+  v5 = [(CLLocation *)hash sha256HashForGeohash:a2 salt:readDeviceSpecificSalt]& 0xFFFFFFFFFFFFFC00;
 
   return v5;
 }
 
-- (uint64_t)sha256HashForGeohash:(void *)a3 salt:
+- (uint64_t)sha256HashForGeohash:(void *)geohash salt:
 {
   v12 = *MEMORY[0x277D85DE8];
   v9 = a2;
-  v4 = a3;
-  if (a1)
+  geohashCopy = geohash;
+  if (self)
   {
     v5 = objc_opt_new();
     [v5 appendBytes:&v9 length:8];
-    if (v4)
+    if (geohashCopy)
     {
-      [v5 appendData:v4];
+      [v5 appendData:geohashCopy];
     }
 
     *md = 0u;
@@ -76,36 +76,36 @@
   return v6;
 }
 
-- (id)setSaltToUserDefaults:(void *)a3 scheme:
+- (id)setSaltToUserDefaults:(void *)defaults scheme:
 {
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  defaultsCopy = defaults;
+  if (self)
   {
-    a1 = [(CLLocation *)a1 randomData];
-    if (a1)
+    self = [(CLLocation *)self randomData];
+    if (self)
     {
-      [v5 setObject:a1 forKey:v6];
-      v7 = a1;
+      [v5 setObject:self forKey:defaultsCopy];
+      selfCopy = self;
     }
 
     else
     {
-      v8 = [MEMORY[0x277CFE0C8] knowledgeChannel];
-      if (os_log_type_enabled(v8, OS_LOG_TYPE_FAULT))
+      knowledgeChannel = [MEMORY[0x277CFE0C8] knowledgeChannel];
+      if (os_log_type_enabled(knowledgeChannel, OS_LOG_TYPE_FAULT))
       {
         *v10 = 0;
-        _os_log_fault_impl(&dword_22595A000, v8, OS_LOG_TYPE_FAULT, "PrivacyPreservingLocationHash: Tried to generate a salt for privacy preservation, but got back an empty NSData object", v10, 2u);
+        _os_log_fault_impl(&dword_22595A000, knowledgeChannel, OS_LOG_TYPE_FAULT, "PrivacyPreservingLocationHash: Tried to generate a salt for privacy preservation, but got back an empty NSData object", v10, 2u);
       }
     }
   }
 
-  return a1;
+  return self;
 }
 
 - (id)randomData
 {
-  if (a1)
+  if (self)
   {
     v1 = [MEMORY[0x277CBEB28] dataWithLength:8];
     if (SecRandomCopyBytes(*MEMORY[0x277CDC540], 8uLL, [v1 mutableBytes]))

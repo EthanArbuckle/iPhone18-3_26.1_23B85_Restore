@@ -1,16 +1,16 @@
 @interface AMWaveformDataSource
-- (AMWaveformDataSource)initWithWaveformGenerator:(id)a3;
-- (void)appendAveragePowerLevelsByDigestingWaveformSegment:(id)a3;
+- (AMWaveformDataSource)initWithWaveformGenerator:(id)generator;
+- (void)appendAveragePowerLevelsByDigestingWaveformSegment:(id)segment;
 - (void)beginLoading;
 @end
 
 @implementation AMWaveformDataSource
 
-- (AMWaveformDataSource)initWithWaveformGenerator:(id)a3
+- (AMWaveformDataSource)initWithWaveformGenerator:(id)generator
 {
   v7.receiver = self;
   v7.super_class = AMWaveformDataSource;
-  v3 = [(RCWaveformDataSource *)&v7 initWithWaveformGenerator:a3 generatedWaveformOutputURL:0];
+  v3 = [(RCWaveformDataSource *)&v7 initWithWaveformGenerator:generator generatedWaveformOutputURL:0];
   if (v3)
   {
     v4 = +[NSMutableArray array];
@@ -23,25 +23,25 @@
 
 - (void)beginLoading
 {
-  v3 = [(RCWaveformDataSource *)self waveformGenerator];
-  [v3 beginLoading];
+  waveformGenerator = [(RCWaveformDataSource *)self waveformGenerator];
+  [waveformGenerator beginLoading];
 
-  v4 = [(RCWaveformDataSource *)self waveformGenerator];
-  [v4 addSegmentOutputObserver:self];
+  waveformGenerator2 = [(RCWaveformDataSource *)self waveformGenerator];
+  [waveformGenerator2 addSegmentOutputObserver:self];
 }
 
-- (void)appendAveragePowerLevelsByDigestingWaveformSegment:(id)a3
+- (void)appendAveragePowerLevelsByDigestingWaveformSegment:(id)segment
 {
-  v4 = a3;
-  v5 = [(RCWaveformDataSource *)self waveformGenerator];
-  v6 = [v5 state];
+  segmentCopy = segment;
+  waveformGenerator = [(RCWaveformDataSource *)self waveformGenerator];
+  state = [waveformGenerator state];
 
-  if (v6 == &dword_0 + 1)
+  if (state == &dword_0 + 1)
   {
-    v7 = [(RCWaveformDataSource *)self waveformGenerator];
-    v9 = v4;
+    waveformGenerator2 = [(RCWaveformDataSource *)self waveformGenerator];
+    v9 = segmentCopy;
     v8 = [NSArray arrayWithObjects:&v9 count:1];
-    [v7 appendAveragePowerLevelsByDigestingWaveformSegments:v8];
+    [waveformGenerator2 appendAveragePowerLevelsByDigestingWaveformSegments:v8];
   }
 }
 

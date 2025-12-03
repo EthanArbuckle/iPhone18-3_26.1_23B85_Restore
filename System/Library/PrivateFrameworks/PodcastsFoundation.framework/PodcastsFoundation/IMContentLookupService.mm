@@ -1,26 +1,26 @@
 @interface IMContentLookupService
-- (IMContentLookupService)initWithIds:(id)a3;
+- (IMContentLookupService)initWithIds:(id)ids;
 - (void)_configureRequest;
-- (void)request:(id)a3;
+- (void)request:(id)request;
 @end
 
 @implementation IMContentLookupService
 
-- (IMContentLookupService)initWithIds:(id)a3
+- (IMContentLookupService)initWithIds:(id)ids
 {
-  v4 = a3;
+  idsCopy = ids;
   v13.receiver = self;
   v13.super_class = IMContentLookupService;
   v5 = [(IMContentLookupService *)&v13 init];
   v6 = v5;
   if (v5)
   {
-    [(IMContentLookupService *)v5 setIds:v4];
+    [(IMContentLookupService *)v5 setIds:idsCopy];
     v7 = objc_alloc(MEMORY[0x1E698C970]);
     v8 = +[IMURLBag sharedInstance];
-    v9 = [MEMORY[0x1E698CAC8] currentProcess];
-    v10 = [v9 bundleIdentifier];
-    v11 = [v7 initWithBag:v8 caller:v10 keyProfile:v6->_profile];
+    currentProcess = [MEMORY[0x1E698CAC8] currentProcess];
+    bundleIdentifier = [currentProcess bundleIdentifier];
+    v11 = [v7 initWithBag:v8 caller:bundleIdentifier keyProfile:v6->_profile];
     [(IMContentLookupService *)v6 setAmsLookup:v11];
 
     [(IMContentLookupService *)v6 setVersion:1];
@@ -29,9 +29,9 @@
   return v6;
 }
 
-- (void)request:(id)a3
+- (void)request:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   [(IMContentLookupService *)self _configureRequest];
   v5 = [(IMContentLookupService *)self ids];
 
@@ -45,13 +45,13 @@
     v9[2] = __34__IMContentLookupService_request___block_invoke;
     v9[3] = &unk_1E856B038;
     v9[4] = self;
-    v10 = v4;
+    v10 = requestCopy;
     [v8 addFinishBlock:v9];
   }
 
   else
   {
-    (*(v4 + 2))(v4, MEMORY[0x1E695E0F8]);
+    (*(requestCopy + 2))(requestCopy, MEMORY[0x1E695E0F8]);
   }
 }
 
@@ -107,10 +107,10 @@ void __34__IMContentLookupService_request___block_invoke(uint64_t a1, void *a2)
 {
   [(AMSLookup *)self->_amsLookup setKeyProfile:self->_profile];
   [(AMSLookup *)self->_amsLookup setImageProfile:self->_artworkType];
-  v3 = [(IMContentLookupService *)self version];
+  version = [(IMContentLookupService *)self version];
   amsLookup = self->_amsLookup;
 
-  [(AMSLookup *)amsLookup setVersion:v3];
+  [(AMSLookup *)amsLookup setVersion:version];
 }
 
 @end

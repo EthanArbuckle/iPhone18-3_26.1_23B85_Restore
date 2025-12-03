@@ -1,15 +1,15 @@
 @interface GroupConfigurationLoader
 - (_TtC18HealthPlatformCore24GroupConfigurationLoader)init;
-- (id)elementGroupWithIdentifier:(id)a3;
+- (id)elementGroupWithIdentifier:(id)identifier;
 @end
 
 @implementation GroupConfigurationLoader
 
-- (id)elementGroupWithIdentifier:(id)a3
+- (id)elementGroupWithIdentifier:(id)identifier
 {
-  v3 = [objc_opt_self() topElementGroupWithIdentifier_];
+  topElementGroupWithIdentifier_ = [objc_opt_self() topElementGroupWithIdentifier_];
 
-  return v3;
+  return topElementGroupWithIdentifier_;
 }
 
 - (_TtC18HealthPlatformCore24GroupConfigurationLoader)init

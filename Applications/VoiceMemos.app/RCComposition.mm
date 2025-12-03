@@ -6,10 +6,10 @@
 
 - (BOOL)compositionIsShareable
 {
-  v2 = [(RCComposition *)self composedAVURL];
+  composedAVURL = [(RCComposition *)self composedAVURL];
   v3 = +[NSFileManager defaultManager];
-  v4 = [v2 path];
-  v5 = [v3 fileExistsAtPath:v4];
+  path = [composedAVURL path];
+  v5 = [v3 fileExistsAtPath:path];
 
   return v5;
 }

@@ -1,50 +1,50 @@
 @interface ARQLSandboxingURLWrapper
-+ (id)wrapperWithURL:(id)a3 readonly:(BOOL)a4 error:(id *)a5;
-+ (void)assembleURL:(id)a3 sandbox:(id)a4 physicalURL:(id)a5 physicalSandbox:(id)a6;
-- (ARQLSandboxingURLWrapper)initWithCoder:(id)a3;
-- (id)issueSandboxExtensionForURL:(id)a3 extensionClass:(const char *)a4 report:(BOOL)a5 error:(id *)a6;
-- (void)encodeWithCoder:(id)a3;
++ (id)wrapperWithURL:(id)l readonly:(BOOL)readonly error:(id *)error;
++ (void)assembleURL:(id)l sandbox:(id)sandbox physicalURL:(id)rL physicalSandbox:(id)physicalSandbox;
+- (ARQLSandboxingURLWrapper)initWithCoder:(id)coder;
+- (id)issueSandboxExtensionForURL:(id)l extensionClass:(const char *)class report:(BOOL)report error:(id *)error;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ARQLSandboxingURLWrapper
 
-+ (id)wrapperWithURL:(id)a3 readonly:(BOOL)a4 error:(id *)a5
++ (id)wrapperWithURL:(id)l readonly:(BOOL)readonly error:(id *)error
 {
   v5 = MEMORY[0x277D861B8];
-  if (!a4)
+  if (!readonly)
   {
     v5 = MEMORY[0x277D861C0];
   }
 
-  return [a1 wrapperWithURL:a3 extensionClass:*v5 error:a5];
+  return [self wrapperWithURL:l extensionClass:*v5 error:error];
 }
 
-- (id)issueSandboxExtensionForURL:(id)a3 extensionClass:(const char *)a4 report:(BOOL)a5 error:(id *)a6
+- (id)issueSandboxExtensionForURL:(id)l extensionClass:(const char *)class report:(BOOL)report error:(id *)error
 {
-  v7 = a3;
-  v8 = [v7 path];
-  v9 = [v7 hasDirectoryPath];
+  lCopy = l;
+  path = [lCopy path];
+  hasDirectoryPath = [lCopy hasDirectoryPath];
 
-  if (v9)
+  if (hasDirectoryPath)
   {
-    v10 = [v8 stringByAppendingString:@"/"];
+    v10 = [path stringByAppendingString:@"/"];
 
-    v8 = v10;
+    path = v10;
   }
 
   v11 = *MEMORY[0x277D861F0];
   v12 = *MEMORY[0x277D861F8];
-  [v8 fileSystemRepresentation];
+  [path fileSystemRepresentation];
   v13 = sandbox_extension_issue_file();
   if (v13)
   {
     v14 = [MEMORY[0x277CBEA90] dataWithBytesNoCopy:v13 length:strlen(v13) + 1 freeWhenDone:1];
   }
 
-  else if (a6)
+  else if (error)
   {
     [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.AssetViewer.ARQLSandboxingURLWrapper" code:1 userInfo:0];
-    *a6 = v14 = 0;
+    *error = v14 = 0;
   }
 
   else
@@ -55,53 +55,53 @@
   return v14;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  [v5 encodeObject:self->_url forKey:@"NSURL"];
-  [v5 encodeObject:self->_scope forKey:@"NSURLScope"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_url forKey:@"NSURL"];
+  [coderCopy encodeObject:self->_scope forKey:@"NSURLScope"];
   promiseURL = self->_promiseURL;
   if (promiseURL)
   {
-    [v5 encodeObject:promiseURL forKey:@"NSPromise"];
-    [v5 encodeObject:self->_promiseScope forKey:@"NSPromiseScope"];
+    [coderCopy encodeObject:promiseURL forKey:@"NSPromise"];
+    [coderCopy encodeObject:self->_promiseScope forKey:@"NSPromiseScope"];
   }
 }
 
-+ (void)assembleURL:(id)a3 sandbox:(id)a4 physicalURL:(id)a5 physicalSandbox:(id)a6
++ (void)assembleURL:(id)l sandbox:(id)sandbox physicalURL:(id)rL physicalSandbox:(id)physicalSandbox
 {
-  v12 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  if (v12)
+  lCopy = l;
+  sandboxCopy = sandbox;
+  rLCopy = rL;
+  physicalSandboxCopy = physicalSandbox;
+  if (lCopy)
   {
-    if (v9)
+    if (sandboxCopy)
     {
-      MEMORY[0x23EE8CB30](v12, v9);
+      MEMORY[0x23EE8CB30](lCopy, sandboxCopy);
     }
 
-    if (v10 && v11)
+    if (rLCopy && physicalSandboxCopy)
     {
-      MEMORY[0x23EE8CB30](v10, v11);
+      MEMORY[0x23EE8CB30](rLCopy, physicalSandboxCopy);
     }
 
     _CFURLPromiseSetPhysicalURL();
   }
 }
 
-- (ARQLSandboxingURLWrapper)initWithCoder:(id)a3
+- (ARQLSandboxingURLWrapper)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v18.receiver = self;
   v18.super_class = ARQLSandboxingURLWrapper;
   v5 = [(ARQLSandboxingURLWrapper *)&v18 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"NSURL"];
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"NSPromise"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"NSURLScope"];
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"NSPromiseScope"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"NSURL"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"NSPromise"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"NSURLScope"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"NSPromiseScope"];
     [objc_opt_class() assembleURL:v6 sandbox:v8 physicalURL:v7 physicalSandbox:v9];
     url = v5->_url;
     v5->_url = v6;

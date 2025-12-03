@@ -1,9 +1,9 @@
 @interface PRSPosterDescriptor
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (PRSPosterDescriptor)init;
-- (PRSPosterDescriptor)initWithBSXPCCoder:(id)a3;
-- (id)_initWithPath:(id)a3;
+- (PRSPosterDescriptor)initWithBSXPCCoder:(id)coder;
+- (id)_initWithPath:(id)path;
 - (unint64_t)hash;
 - (void)dealloc;
 @end
@@ -28,7 +28,7 @@
     v15 = 2114;
     v16 = v11;
     v17 = 2048;
-    v18 = self;
+    selfCopy = self;
     v19 = 2114;
     v20 = @"PRSPosterDescriptor.m";
     v21 = 1024;
@@ -52,18 +52,18 @@
   [(PRSPosterDescriptor *)&v3 dealloc];
 }
 
-- (id)_initWithPath:(id)a3
+- (id)_initWithPath:(id)path
 {
-  v6 = a3;
-  if (!v6)
+  pathCopy = path;
+  if (!pathCopy)
   {
     [PRSPosterDescriptor _initWithPath:a2];
   }
 
-  v7 = v6;
-  v8 = [v6 descriptorIdentifier];
+  v7 = pathCopy;
+  descriptorIdentifier = [pathCopy descriptorIdentifier];
 
-  if (!v8)
+  if (!descriptorIdentifier)
   {
     [(PRSPosterDescriptor *)v7 _initWithPath:a2];
   }
@@ -74,7 +74,7 @@
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_path, a3);
+    objc_storeStrong(&v9->_path, path);
     path = v10->_path;
     v12 = objc_opt_class();
     v13 = NSStringFromClass(v12);
@@ -88,26 +88,26 @@
 
 - (unint64_t)hash
 {
-  v3 = [(PFPosterPath *)self->_path serverIdentity];
-  v4 = v3;
-  if (v3)
+  serverIdentity = [(PFPosterPath *)self->_path serverIdentity];
+  v4 = serverIdentity;
+  if (serverIdentity)
   {
-    v5 = [v3 hash];
+    v5 = [serverIdentity hash];
   }
 
   else
   {
-    v6 = [(PFPosterPath *)self->_path contentsURL];
-    v5 = [v6 hash];
+    contentsURL = [(PFPosterPath *)self->_path contentsURL];
+    v5 = [contentsURL hash];
   }
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -117,16 +117,16 @@
     v5 = objc_opt_class();
     if (v5 == objc_opt_class())
     {
-      v7 = [(PFPosterPath *)self->_path serverIdentity];
-      if (v7)
+      serverIdentity = [(PFPosterPath *)self->_path serverIdentity];
+      if (serverIdentity)
       {
-        v8 = [(PFPosterPath *)v4->_path serverIdentity];
+        serverIdentity2 = [(PFPosterPath *)equalCopy->_path serverIdentity];
         v6 = BSEqualObjects();
       }
 
       else
       {
-        v6 = [(PFPosterPath *)self->_path isEqual:v4->_path];
+        v6 = [(PFPosterPath *)self->_path isEqual:equalCopy->_path];
       }
     }
 
@@ -149,10 +149,10 @@
   return v6;
 }
 
-- (PRSPosterDescriptor)initWithBSXPCCoder:(id)a3
+- (PRSPosterDescriptor)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_posterDescriptorPath"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_posterDescriptorPath"];
 
   v6 = [(PRSPosterDescriptor *)self _initWithPath:v5];
   return v6;

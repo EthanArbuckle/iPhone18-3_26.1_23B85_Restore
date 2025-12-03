@@ -1,41 +1,41 @@
 @interface NowPlayingTransportControlStackView
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (_TtC12NowPlayingUI35NowPlayingTransportControlStackView)initWithCoder:(id)a3;
-- (_TtC12NowPlayingUI35NowPlayingTransportControlStackView)initWithFrame:(CGRect)a3;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (_TtC12NowPlayingUI35NowPlayingTransportControlStackView)initWithCoder:(id)coder;
+- (_TtC12NowPlayingUI35NowPlayingTransportControlStackView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation NowPlayingTransportControlStackView
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  v4 = a4;
-  y = a3.y;
-  x = a3.x;
-  v8 = a4;
-  v9 = self;
-  LOBYTE(v4) = sub_F9320(v4, x, y);
+  eventCopy = event;
+  y = inside.y;
+  x = inside.x;
+  eventCopy2 = event;
+  selfCopy = self;
+  LOBYTE(eventCopy) = sub_F9320(eventCopy, x, y);
 
-  return v4 & 1;
+  return eventCopy & 1;
 }
 
-- (_TtC12NowPlayingUI35NowPlayingTransportControlStackView)initWithFrame:(CGRect)a3
+- (_TtC12NowPlayingUI35NowPlayingTransportControlStackView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC12NowPlayingUI35NowPlayingTransportControlStackView_useBoundsAsPointInside) = 0;
   v8.receiver = self;
   v8.super_class = type metadata accessor for NowPlayingTransportControlStackView();
   return [(NowPlayingTransportControlStackView *)&v8 initWithFrame:x, y, width, height];
 }
 
-- (_TtC12NowPlayingUI35NowPlayingTransportControlStackView)initWithCoder:(id)a3
+- (_TtC12NowPlayingUI35NowPlayingTransportControlStackView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC12NowPlayingUI35NowPlayingTransportControlStackView_useBoundsAsPointInside) = 0;
   v5.receiver = self;
   v5.super_class = type metadata accessor for NowPlayingTransportControlStackView();
-  return [(NowPlayingTransportControlStackView *)&v5 initWithCoder:a3];
+  return [(NowPlayingTransportControlStackView *)&v5 initWithCoder:coder];
 }
 
 @end

@@ -1,23 +1,23 @@
 @interface PHAssetGridMetadataProperties
 + (id)propertiesToFetch;
-- (PHAssetGridMetadataProperties)initWithFetchDictionary:(id)a3 asset:(id)a4 prefetched:(BOOL)a5;
+- (PHAssetGridMetadataProperties)initWithFetchDictionary:(id)dictionary asset:(id)asset prefetched:(BOOL)prefetched;
 @end
 
 @implementation PHAssetGridMetadataProperties
 
-- (PHAssetGridMetadataProperties)initWithFetchDictionary:(id)a3 asset:(id)a4 prefetched:(BOOL)a5
+- (PHAssetGridMetadataProperties)initWithFetchDictionary:(id)dictionary asset:(id)asset prefetched:(BOOL)prefetched
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  prefetchedCopy = prefetched;
+  dictionaryCopy = dictionary;
+  assetCopy = asset;
   v19.receiver = self;
   v19.super_class = PHAssetGridMetadataProperties;
   v10 = [(PHAssetGridMetadataProperties *)&v19 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeWeak(&v10->super._asset, v9);
-    if (v5)
+    objc_storeWeak(&v10->super._asset, assetCopy);
+    if (prefetchedCopy)
     {
       v12 = @"additionalAttributes.title";
     }
@@ -27,7 +27,7 @@
       v12 = @"title";
     }
 
-    if (v5)
+    if (prefetchedCopy)
     {
       v13 = @"additionalAttributes.originalFilename";
     }
@@ -37,11 +37,11 @@
       v13 = @"originalFilename";
     }
 
-    v14 = [v8 objectForKeyedSubscript:v12];
+    v14 = [dictionaryCopy objectForKeyedSubscript:v12];
     title = v11->_title;
     v11->_title = v14;
 
-    v16 = [v8 objectForKeyedSubscript:v13];
+    v16 = [dictionaryCopy objectForKeyedSubscript:v13];
     originalFilename = v11->_originalFilename;
     v11->_originalFilename = v16;
   }

@@ -6,13 +6,13 @@
 - (NSArray)hapticActions;
 - (NSArray)oneShotSoundActions;
 - (NSArray)speechActions;
-- (void)_addAction:(id)a3;
-- (void)addActiveSoundItemWithID:(id)a3;
-- (void)addActiveSoundItemWithURL:(id)a3;
-- (void)addHapticItemWithURL:(id)a3 intensity:(double)a4;
-- (void)addSoundItemWithID:(id)a3;
-- (void)addSoundItemWithURL:(id)a3;
-- (void)addSpeechItem:(id)a3;
+- (void)_addAction:(id)action;
+- (void)addActiveSoundItemWithID:(id)d;
+- (void)addActiveSoundItemWithURL:(id)l;
+- (void)addHapticItemWithURL:(id)l intensity:(double)intensity;
+- (void)addSoundItemWithID:(id)d;
+- (void)addSoundItemWithURL:(id)l;
+- (void)addSpeechItem:(id)item;
 @end
 
 @implementation AXMOutputRequest
@@ -51,9 +51,9 @@ void __39__AXMOutputRequest_speechItemSeparator__block_invoke()
     queue = v2->_queue;
     v2->_queue = v5;
 
-    v7 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     queue_actions = v2->_queue_actions;
-    v2->_queue_actions = v7;
+    v2->_queue_actions = array;
   }
 
   return v2;
@@ -91,9 +91,9 @@ void __27__AXMOutputRequest_actions__block_invoke(uint64_t a1)
 
 - (NSArray)speechActions
 {
-  v2 = [(AXMOutputRequest *)self actions];
+  actions = [(AXMOutputRequest *)self actions];
   v3 = [MEMORY[0x1E696AE18] predicateWithBlock:&__block_literal_global_35];
-  v4 = [v2 filteredArrayUsingPredicate:v3];
+  v4 = [actions filteredArrayUsingPredicate:v3];
 
   return v4;
 }
@@ -109,9 +109,9 @@ uint64_t __33__AXMOutputRequest_speechActions__block_invoke(uint64_t a1, void *a
 
 - (NSArray)oneShotSoundActions
 {
-  v2 = [(AXMOutputRequest *)self actions];
+  actions = [(AXMOutputRequest *)self actions];
   v3 = [MEMORY[0x1E696AE18] predicateWithBlock:&__block_literal_global_38];
-  v4 = [v2 filteredArrayUsingPredicate:v3];
+  v4 = [actions filteredArrayUsingPredicate:v3];
 
   return v4;
 }
@@ -127,9 +127,9 @@ uint64_t __39__AXMOutputRequest_oneShotSoundActions__block_invoke(uint64_t a1, v
 
 - (NSArray)activeSoundActions
 {
-  v2 = [(AXMOutputRequest *)self actions];
+  actions = [(AXMOutputRequest *)self actions];
   v3 = [MEMORY[0x1E696AE18] predicateWithBlock:&__block_literal_global_41];
-  v4 = [v2 filteredArrayUsingPredicate:v3];
+  v4 = [actions filteredArrayUsingPredicate:v3];
 
   return v4;
 }
@@ -145,9 +145,9 @@ uint64_t __38__AXMOutputRequest_activeSoundActions__block_invoke(uint64_t a1, vo
 
 - (NSArray)hapticActions
 {
-  v2 = [(AXMOutputRequest *)self actions];
+  actions = [(AXMOutputRequest *)self actions];
   v3 = [MEMORY[0x1E696AE18] predicateWithBlock:&__block_literal_global_44];
-  v4 = [v2 filteredArrayUsingPredicate:v3];
+  v4 = [actions filteredArrayUsingPredicate:v3];
 
   return v4;
 }
@@ -161,35 +161,35 @@ uint64_t __33__AXMOutputRequest_hapticActions__block_invoke(uint64_t a1, void *a
   return isKindOfClass & 1;
 }
 
-- (void)_addAction:(id)a3
+- (void)_addAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   queue = self->_queue;
   v9 = MEMORY[0x1E69E9820];
   v10 = 3221225472;
   v11 = __31__AXMOutputRequest__addAction___block_invoke;
   v12 = &unk_1E7A1CB30;
-  v13 = self;
-  v14 = v4;
-  v6 = v4;
+  selfCopy = self;
+  v14 = actionCopy;
+  v6 = actionCopy;
   dispatch_sync(queue, &v9);
   handle = self->_handle;
-  v8 = [v6 handle];
-  [(AXMOutputRequestHandle *)handle addActionHandle:v8];
+  handle = [v6 handle];
+  [(AXMOutputRequestHandle *)handle addActionHandle:handle];
 }
 
-- (void)addSpeechItem:(id)a3
+- (void)addSpeechItem:(id)item
 {
-  v4 = a3;
-  v5 = [[AXMSpeechOutputAction alloc] initWithText:v4];
+  itemCopy = item;
+  v5 = [[AXMSpeechOutputAction alloc] initWithText:itemCopy];
 
   [(AXMOutputRequest *)self _addAction:v5];
 }
 
-- (void)addSoundItemWithID:(id)a3
+- (void)addSoundItemWithID:(id)d
 {
-  v4 = a3;
-  v5 = [(AXMSoundOutputAction *)[AXMOneShotSoundOutputAction alloc] initWithSoundID:v4];
+  dCopy = d;
+  v5 = [(AXMSoundOutputAction *)[AXMOneShotSoundOutputAction alloc] initWithSoundID:dCopy];
   if (v5)
   {
     [(AXMOutputRequest *)self _addAction:v5];
@@ -205,10 +205,10 @@ uint64_t __33__AXMOutputRequest_hapticActions__block_invoke(uint64_t a1, void *a
   }
 }
 
-- (void)addSoundItemWithURL:(id)a3
+- (void)addSoundItemWithURL:(id)l
 {
-  v4 = a3;
-  v5 = [(AXMSoundOutputAction *)[AXMOneShotSoundOutputAction alloc] initWithURL:v4];
+  lCopy = l;
+  v5 = [(AXMSoundOutputAction *)[AXMOneShotSoundOutputAction alloc] initWithURL:lCopy];
   if (v5)
   {
     [(AXMOutputRequest *)self _addAction:v5];
@@ -224,10 +224,10 @@ uint64_t __33__AXMOutputRequest_hapticActions__block_invoke(uint64_t a1, void *a
   }
 }
 
-- (void)addActiveSoundItemWithID:(id)a3
+- (void)addActiveSoundItemWithID:(id)d
 {
-  v4 = a3;
-  v5 = [[AXMActiveSoundOutputAction alloc] initWithSoundID:v4];
+  dCopy = d;
+  v5 = [[AXMActiveSoundOutputAction alloc] initWithSoundID:dCopy];
   if (v5)
   {
     [(AXMOutputRequest *)self _addAction:v5];
@@ -243,10 +243,10 @@ uint64_t __33__AXMOutputRequest_hapticActions__block_invoke(uint64_t a1, void *a
   }
 }
 
-- (void)addActiveSoundItemWithURL:(id)a3
+- (void)addActiveSoundItemWithURL:(id)l
 {
-  v4 = a3;
-  v5 = [[AXMActiveSoundOutputAction alloc] initWithURL:v4];
+  lCopy = l;
+  v5 = [[AXMActiveSoundOutputAction alloc] initWithURL:lCopy];
   if (v5)
   {
     [(AXMOutputRequest *)self _addAction:v5];
@@ -262,11 +262,11 @@ uint64_t __33__AXMOutputRequest_hapticActions__block_invoke(uint64_t a1, void *a
   }
 }
 
-- (void)addHapticItemWithURL:(id)a3 intensity:(double)a4
+- (void)addHapticItemWithURL:(id)l intensity:(double)intensity
 {
-  v6 = a3;
-  v7 = [[AXMHapticOutputAction alloc] initWithURL:v6];
-  [(AXMHapticOutputAction *)v7 setHapticIntensity:a4];
+  lCopy = l;
+  v7 = [[AXMHapticOutputAction alloc] initWithURL:lCopy];
+  [(AXMHapticOutputAction *)v7 setHapticIntensity:intensity];
   if (v7)
   {
     [(AXMOutputRequest *)self _addAction:v7];

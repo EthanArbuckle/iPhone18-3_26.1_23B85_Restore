@@ -1,12 +1,12 @@
 @interface HKCodableAFibBurdenValue
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HKCodableAFibBurdenValue
@@ -17,92 +17,92 @@
   v8.receiver = self;
   v8.super_class = HKCodableAFibBurdenValue;
   v4 = [(HKCodableAFibBurdenValue *)&v8 description];
-  v5 = [(HKCodableAFibBurdenValue *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HKCodableAFibBurdenValue *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   value = self->_value;
   if (value)
   {
-    v5 = [(HKCodableQuantity *)value dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"value"];
+    dictionaryRepresentation = [(HKCodableQuantity *)value dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"value"];
   }
 
   dayIndexRange = self->_dayIndexRange;
   if (dayIndexRange)
   {
-    v7 = [(HKCodableDayIndexRange *)dayIndexRange dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"dayIndexRange"];
+    dictionaryRepresentation2 = [(HKCodableDayIndexRange *)dayIndexRange dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"dayIndexRange"];
   }
 
   if (*&self->_has)
   {
     v8 = [MEMORY[0x1E696AD98] numberWithBool:self->_valueClamped];
-    [v3 setObject:v8 forKey:@"valueClamped"];
+    [dictionary setObject:v8 forKey:@"valueClamped"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_value)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_dayIndexRange)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
     PBDataWriterWriteBOOLField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_value)
   {
-    [v4 setValue:?];
-    v4 = v5;
+    [toCopy setValue:?];
+    toCopy = v5;
   }
 
   if (self->_dayIndexRange)
   {
     [v5 setDayIndexRange:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    v4[24] = self->_valueClamped;
-    v4[28] |= 1u;
+    toCopy[24] = self->_valueClamped;
+    toCopy[28] |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(HKCodableQuantity *)self->_value copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(HKCodableQuantity *)self->_value copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
-  v8 = [(HKCodableDayIndexRange *)self->_dayIndexRange copyWithZone:a3];
+  v8 = [(HKCodableDayIndexRange *)self->_dayIndexRange copyWithZone:zone];
   v9 = *(v5 + 8);
   *(v5 + 8) = v8;
 
@@ -115,16 +115,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_8;
   }
 
   value = self->_value;
-  if (value | *(v4 + 2))
+  if (value | *(equalCopy + 2))
   {
     if (![(HKCodableQuantity *)value isEqual:?])
     {
@@ -133,7 +133,7 @@
   }
 
   dayIndexRange = self->_dayIndexRange;
-  if (dayIndexRange | *(v4 + 1))
+  if (dayIndexRange | *(equalCopy + 1))
   {
     if (![(HKCodableDayIndexRange *)dayIndexRange isEqual:?])
     {
@@ -141,10 +141,10 @@
     }
   }
 
-  v7 = (*(v4 + 28) & 1) == 0;
+  v7 = (*(equalCopy + 28) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 28) & 1) == 0)
+    if ((*(equalCopy + 28) & 1) == 0)
     {
 LABEL_8:
       v7 = 0;
@@ -153,13 +153,13 @@ LABEL_8:
 
     if (self->_valueClamped)
     {
-      if ((*(v4 + 24) & 1) == 0)
+      if ((*(equalCopy + 24) & 1) == 0)
       {
         goto LABEL_8;
       }
     }
 
-    else if (*(v4 + 24))
+    else if (*(equalCopy + 24))
     {
       goto LABEL_8;
     }
@@ -189,12 +189,12 @@ LABEL_9:
   return v4 ^ v3 ^ v5;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   value = self->_value;
-  v6 = *(v4 + 2);
-  v9 = v4;
+  v6 = *(fromCopy + 2);
+  v9 = fromCopy;
   if (value)
   {
     if (!v6)
@@ -215,10 +215,10 @@ LABEL_9:
     [(HKCodableAFibBurdenValue *)self setValue:?];
   }
 
-  v4 = v9;
+  fromCopy = v9;
 LABEL_7:
   dayIndexRange = self->_dayIndexRange;
-  v8 = *(v4 + 1);
+  v8 = *(fromCopy + 1);
   if (dayIndexRange)
   {
     if (!v8)
@@ -239,15 +239,15 @@ LABEL_7:
     dayIndexRange = [(HKCodableAFibBurdenValue *)self setDayIndexRange:?];
   }
 
-  v4 = v9;
+  fromCopy = v9;
 LABEL_13:
-  if (*(v4 + 28))
+  if (*(fromCopy + 28))
   {
-    self->_valueClamped = *(v4 + 24);
+    self->_valueClamped = *(fromCopy + 24);
     *&self->_has |= 1u;
   }
 
-  MEMORY[0x1EEE66BB8](dayIndexRange, v4);
+  MEMORY[0x1EEE66BB8](dayIndexRange, fromCopy);
 }
 
 @end

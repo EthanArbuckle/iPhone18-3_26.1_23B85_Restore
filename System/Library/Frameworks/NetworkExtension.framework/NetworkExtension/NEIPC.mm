@@ -1,21 +1,21 @@
 @interface NEIPC
-- (void)logMessageType:(int)a1 data:(void *)a2 actionString:(void *)a3;
-- (void)setupMessageHandlingWithQueue:(void *)a1;
+- (void)logMessageType:(int)type data:(void *)data actionString:(void *)string;
+- (void)setupMessageHandlingWithQueue:(void *)queue;
 - (void)stop;
 @end
 
 @implementation NEIPC
 
-- (void)logMessageType:(int)a1 data:(void *)a2 actionString:(void *)a3
+- (void)logMessageType:(int)type data:(void *)data actionString:(void *)string
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = a2;
-  v6 = a3;
+  dataCopy = data;
+  stringCopy = string;
   if (nelog_is_debug_logging_enabled())
   {
-    if ([v5 length])
+    if ([dataCopy length])
     {
-      CC_SHA1([v5 bytes], objc_msgSend(v5, "length"), md);
+      CC_SHA1([dataCopy bytes], objc_msgSend(dataCopy, "length"), md);
       v7 = [MEMORY[0x1E695DEF0] dataWithBytesNoCopy:md length:20 freeWhenDone:0];
     }
 
@@ -27,12 +27,12 @@
     v8 = ne_log_obj();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
-      v10 = [v5 length];
+      v10 = [dataCopy length];
       v11 = [v7 description];
       v12 = 138413058;
-      v13 = v6;
+      v13 = stringCopy;
       v14 = 1024;
-      v15 = a1;
+      typeCopy = type;
       v16 = 2048;
       v17 = v10;
       v18 = 2112;
@@ -60,9 +60,9 @@ void __35__NEIPC_handleMessage_withHandler___block_invoke(uint64_t a1, void *a2)
 
 - (void)stop
 {
-  if (a1)
+  if (self)
   {
-    self = a1;
+    self = self;
     objc_sync_enter(self);
     if (objc_getProperty(self, v1, 16, 1))
     {
@@ -85,22 +85,22 @@ void __35__NEIPC_handleMessage_withHandler___block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (void)setupMessageHandlingWithQueue:(void *)a1
+- (void)setupMessageHandlingWithQueue:(void *)queue
 {
-  if (a1)
+  if (queue)
   {
     v3 = a2;
-    Property = objc_getProperty(a1, v4, 16, 1);
+    Property = objc_getProperty(queue, v4, 16, 1);
     xpc_connection_set_target_queue(Property, v3);
 
-    v7 = objc_getProperty(a1, v6, 16, 1);
+    v7 = objc_getProperty(queue, v6, 16, 1);
     handler[0] = MEMORY[0x1E69E9820];
     handler[1] = 3221225472;
     handler[2] = __39__NEIPC_setupMessageHandlingWithQueue___block_invoke;
     handler[3] = &unk_1E7F0AF98;
-    handler[4] = a1;
+    handler[4] = queue;
     xpc_connection_set_event_handler(v7, handler);
-    v9 = objc_getProperty(a1, v8, 16, 1);
+    v9 = objc_getProperty(queue, v8, 16, 1);
     xpc_connection_resume(v9);
   }
 }

@@ -1,7 +1,7 @@
 @interface ContactProviderController
-- (id)readToggleSwitchSpecifierValue:(id)a3;
+- (id)readToggleSwitchSpecifierValue:(id)value;
 - (id)specifiers;
-- (void)setToggleSwitchSpecifierValue:(id)a3 specifier:(id)a4;
+- (void)setToggleSwitchSpecifierValue:(id)value specifier:(id)specifier;
 - (void)viewDidLoad;
 @end
 
@@ -70,47 +70,47 @@
   return v4;
 }
 
-- (id)readToggleSwitchSpecifierValue:(id)a3
+- (id)readToggleSwitchSpecifierValue:(id)value
 {
-  v3 = [a3 userInfo];
-  v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 isEnabled]);
+  userInfo = [value userInfo];
+  v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [userInfo isEnabled]);
 
   return v4;
 }
 
-- (void)setToggleSwitchSpecifierValue:(id)a3 specifier:(id)a4
+- (void)setToggleSwitchSpecifierValue:(id)value specifier:(id)specifier
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v6 userInfo];
-  v9 = [v7 BOOLValue];
+  specifierCopy = specifier;
+  valueCopy = value;
+  userInfo = [specifierCopy userInfo];
+  bOOLValue = [valueCopy BOOLValue];
 
-  v10 = [v8 domainIdentifier];
-  v11 = [v8 bundleIdentifier];
-  if (v9)
+  domainIdentifier = [userInfo domainIdentifier];
+  bundleIdentifier = [userInfo bundleIdentifier];
+  if (bOOLValue)
   {
     v15 = 0;
     v12 = &v15;
-    [CNContactProviderSupport enableDomain:v10 bundleIdentifier:v11 shouldSynchronize:1 error:&v15];
+    [CNContactProviderSupport enableDomain:domainIdentifier bundleIdentifier:bundleIdentifier shouldSynchronize:1 error:&v15];
   }
 
   else
   {
     v14 = 0;
     v12 = &v14;
-    [CNContactProviderSupport disableDomain:v10 bundleIdentifier:v11 error:&v14];
+    [CNContactProviderSupport disableDomain:domainIdentifier bundleIdentifier:bundleIdentifier error:&v14];
   }
 
   v13 = *v12;
 
   if (v13)
   {
-    [(ContactProviderController *)self reloadSpecifier:v6];
+    [(ContactProviderController *)self reloadSpecifier:specifierCopy];
   }
 
   else
   {
-    [v8 setEnabled:v9];
+    [userInfo setEnabled:bOOLValue];
   }
 }
 

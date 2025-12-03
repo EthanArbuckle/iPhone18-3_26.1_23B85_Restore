@@ -1,12 +1,12 @@
 @interface BarSeriesLayer
 - (_TtC10FitnessApp14BarSeriesLayer)init;
-- (_TtC10FitnessApp14BarSeriesLayer)initWithLayer:(id)a3;
+- (_TtC10FitnessApp14BarSeriesLayer)initWithLayer:(id)layer;
 - (void)layoutSublayers;
 @end
 
 @implementation BarSeriesLayer
 
-- (_TtC10FitnessApp14BarSeriesLayer)initWithLayer:(id)a3
+- (_TtC10FitnessApp14BarSeriesLayer)initWithLayer:(id)layer
 {
   swift_unknownObjectRetain();
   _bridgeAnyObjectToAny(_:)();
@@ -16,7 +16,7 @@
 
 - (void)layoutSublayers
 {
-  v2 = self;
+  selfCopy = self;
   sub_100465210();
 }
 

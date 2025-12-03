@@ -3,7 +3,7 @@
 - (NSString)networkRequestId;
 - (NSString)text;
 - (NSString)url;
-- (RWIProtocolConsoleMessage)initWithSource:(int64_t)a3 level:(int64_t)a4 text:(id)a5;
+- (RWIProtocolConsoleMessage)initWithSource:(int64_t)source level:(int64_t)level text:(id)text;
 - (RWIProtocolConsoleStackTrace)stackTrace;
 - (double)timestamp;
 - (int)column;
@@ -12,42 +12,42 @@
 - (int64_t)level;
 - (int64_t)source;
 - (int64_t)type;
-- (void)setLevel:(int64_t)a3;
-- (void)setNetworkRequestId:(id)a3;
-- (void)setParameters:(id)a3;
-- (void)setSource:(int64_t)a3;
-- (void)setStackTrace:(id)a3;
-- (void)setText:(id)a3;
-- (void)setTimestamp:(double)a3;
-- (void)setType:(int64_t)a3;
-- (void)setUrl:(id)a3;
+- (void)setLevel:(int64_t)level;
+- (void)setNetworkRequestId:(id)id;
+- (void)setParameters:(id)parameters;
+- (void)setSource:(int64_t)source;
+- (void)setStackTrace:(id)trace;
+- (void)setText:(id)text;
+- (void)setTimestamp:(double)timestamp;
+- (void)setType:(int64_t)type;
+- (void)setUrl:(id)url;
 @end
 
 @implementation RWIProtocolConsoleMessage
 
-- (RWIProtocolConsoleMessage)initWithSource:(int64_t)a3 level:(int64_t)a4 text:(id)a5
+- (RWIProtocolConsoleMessage)initWithSource:(int64_t)source level:(int64_t)level text:(id)text
 {
-  v8 = a5;
+  textCopy = text;
   v12.receiver = self;
   v12.super_class = RWIProtocolConsoleMessage;
   v9 = [(RWIProtocolJSONObject *)&v12 init];
   if (v9)
   {
-    if (!v8)
+    if (!textCopy)
     {
       [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"required property '%@' cannot be nil", @"text"}];
     }
 
-    [(RWIProtocolConsoleMessage *)v9 setSource:a3];
-    [(RWIProtocolConsoleMessage *)v9 setLevel:a4];
-    [(RWIProtocolConsoleMessage *)v9 setText:v8];
+    [(RWIProtocolConsoleMessage *)v9 setSource:source];
+    [(RWIProtocolConsoleMessage *)v9 setLevel:level];
+    [(RWIProtocolConsoleMessage *)v9 setText:textCopy];
     v10 = v9;
   }
 
   return v9;
 }
 
-- (void)setSource:(int64_t)a3
+- (void)setSource:(int64_t)source
 {
   Inspector::toProtocolString();
   if (v6)
@@ -115,7 +115,7 @@ LABEL_8:
   return v10;
 }
 
-- (void)setLevel:(int64_t)a3
+- (void)setLevel:(int64_t)level
 {
   WTF::StringImpl::createWithoutCopyingNonEmpty();
   if (v6)
@@ -183,11 +183,11 @@ LABEL_8:
   return v10;
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolConsoleMessage;
-  [(RWIProtocolJSONObject *)&v3 setString:a3 forKey:@"text"];
+  [(RWIProtocolJSONObject *)&v3 setString:text forKey:@"text"];
 }
 
 - (NSString)text
@@ -199,7 +199,7 @@ LABEL_8:
   return v2;
 }
 
-- (void)setType:(int64_t)a3
+- (void)setType:(int64_t)type
 {
   Inspector::toProtocolString();
   if (v6)
@@ -267,11 +267,11 @@ LABEL_8:
   return v10;
 }
 
-- (void)setUrl:(id)a3
+- (void)setUrl:(id)url
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolConsoleMessage;
-  [(RWIProtocolJSONObject *)&v3 setString:a3 forKey:@"url"];
+  [(RWIProtocolJSONObject *)&v3 setString:url forKey:@"url"];
 }
 
 - (NSString)url
@@ -304,14 +304,14 @@ LABEL_8:
   return [(RWIProtocolJSONObject *)&v3 integerForKey:@"repeatCount"];
 }
 
-- (void)setParameters:(id)a3
+- (void)setParameters:(id)parameters
 {
   v22 = *MEMORY[0x277D85DE8];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  obj = a3;
+  obj = parameters;
   v3 = [obj countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v3)
   {
@@ -375,11 +375,11 @@ LABEL_8:
   return v2;
 }
 
-- (void)setStackTrace:(id)a3
+- (void)setStackTrace:(id)trace
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolConsoleMessage;
-  [(RWIProtocolJSONObject *)&v3 setObject:a3 forKey:@"stackTrace"];
+  [(RWIProtocolJSONObject *)&v3 setObject:trace forKey:@"stackTrace"];
 }
 
 - (RWIProtocolConsoleStackTrace)stackTrace
@@ -437,11 +437,11 @@ LABEL_8:
   return v7;
 }
 
-- (void)setNetworkRequestId:(id)a3
+- (void)setNetworkRequestId:(id)id
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolConsoleMessage;
-  [(RWIProtocolJSONObject *)&v3 setString:a3 forKey:@"networkRequestId"];
+  [(RWIProtocolJSONObject *)&v3 setString:id forKey:@"networkRequestId"];
 }
 
 - (NSString)networkRequestId
@@ -453,11 +453,11 @@ LABEL_8:
   return v2;
 }
 
-- (void)setTimestamp:(double)a3
+- (void)setTimestamp:(double)timestamp
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolConsoleMessage;
-  [(RWIProtocolJSONObject *)&v3 setDouble:@"timestamp" forKey:a3];
+  [(RWIProtocolJSONObject *)&v3 setDouble:@"timestamp" forKey:timestamp];
 }
 
 - (double)timestamp

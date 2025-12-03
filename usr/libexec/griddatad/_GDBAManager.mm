@@ -1,17 +1,17 @@
 @interface _GDBAManager
-+ (id)loadNumberForPreferenceKey:(id)a3;
++ (id)loadNumberForPreferenceKey:(id)key;
 + (id)sharedInstance;
-+ (void)saveNumber:(id)a3 forKey:(id)a4;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
++ (void)saveNumber:(id)number forKey:(id)key;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (_GDBAManager)init;
 - (id)boundaryPolygons;
-- (void)locationManager:(id)a3 didFailWithError:(id)a4;
-- (void)locationManagerDidChangeAuthorization:(id)a3;
-- (void)registerClientID:(id)a3 locationBundlePath:(id)a4 handler:(id)a5;
-- (void)setupLocationManagerForPath:(id)a3 identifier:(id)a4;
+- (void)locationManager:(id)manager didFailWithError:(id)error;
+- (void)locationManagerDidChangeAuthorization:(id)authorization;
+- (void)registerClientID:(id)d locationBundlePath:(id)path handler:(id)handler;
+- (void)setupLocationManagerForPath:(id)path identifier:(id)identifier;
 - (void)updateBA;
-- (void)updateBAClientID:(id)a3 handler:(id)a4;
-- (void)updateBAStatusForLocationManager:(id)a3;
+- (void)updateBAClientID:(id)d handler:(id)handler;
+- (void)updateBAStatusForLocationManager:(id)manager;
 @end
 
 @implementation _GDBAManager
@@ -70,44 +70,44 @@
   return v3;
 }
 
-+ (id)loadNumberForPreferenceKey:(id)a3
++ (id)loadNumberForPreferenceKey:(id)key
 {
-  v3 = CFPreferencesCopyValue(a3, @"com.apple.gridDataServices", kCFPreferencesAnyUser, kCFPreferencesAnyHost);
+  v3 = CFPreferencesCopyValue(key, @"com.apple.gridDataServices", kCFPreferencesAnyUser, kCFPreferencesAnyHost);
 
   return v3;
 }
 
-+ (void)saveNumber:(id)a3 forKey:(id)a4
++ (void)saveNumber:(id)number forKey:(id)key
 {
-  CFPreferencesSetValue(a4, a3, @"com.apple.gridDataServices", kCFPreferencesAnyUser, kCFPreferencesAnyHost);
+  CFPreferencesSetValue(key, number, @"com.apple.gridDataServices", kCFPreferencesAnyUser, kCFPreferencesAnyHost);
 
   CFPreferencesSynchronize(@"com.apple.gridDataServices", kCFPreferencesAnyUser, kCFPreferencesAnyHost);
 }
 
-- (void)locationManagerDidChangeAuthorization:(id)a3
+- (void)locationManagerDidChangeAuthorization:(id)authorization
 {
-  v4 = a3;
+  authorizationCopy = authorization;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
     v6 = log;
-    v7 = [v4 description];
+    v7 = [authorizationCopy description];
     v8 = 138412290;
     v9 = v7;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Location Manager did change authorization for manager: %@", &v8, 0xCu);
   }
 
-  [(_GDBAManager *)self updateBAStatusForLocationManager:v4];
+  [(_GDBAManager *)self updateBAStatusForLocationManager:authorizationCopy];
 }
 
-- (void)locationManager:(id)a3 didFailWithError:(id)a4
+- (void)locationManager:(id)manager didFailWithError:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v5;
+    v8 = errorCopy;
     _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEFAULT, "Location Manager failed with error: %@", &v7, 0xCu);
   }
 }
@@ -136,8 +136,8 @@
       v11 = v10;
       if (v10)
       {
-        v12 = [v10 allKeys];
-        v13 = [v12 count];
+        allKeys = [v10 allKeys];
+        v13 = [allKeys count];
 
         if (v13)
         {
@@ -158,8 +158,8 @@
   v11 = v15;
   if (v15)
   {
-    v16 = [v15 allKeys];
-    v17 = [v16 count];
+    allKeys2 = [v15 allKeys];
+    v17 = [allKeys2 count];
 
     if (v17)
     {
@@ -213,9 +213,9 @@ LABEL_21:
   return v11;
 }
 
-- (void)updateBAStatusForLocationManager:(id)a3
+- (void)updateBAStatusForLocationManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v5 = +[_GDSBalancingAuthority loadBalancingAuthorityStatus];
   v6 = [v5 mutableCopy];
 
@@ -229,11 +229,11 @@ LABEL_21:
   v10[1] = 3221225472;
   v10[2] = sub_100001974;
   v10[3] = &unk_100008388;
-  v11 = v4;
-  v12 = self;
+  v11 = managerCopy;
+  selfCopy = self;
   v13 = v6;
   v8 = v6;
-  v9 = v4;
+  v9 = managerCopy;
   [(NSMutableDictionary *)clientIDToLocationManager enumerateKeysAndObjectsUsingBlock:v10];
   [_GDSBalancingAuthority saveBalancingAuthorityStatus:v8];
 }
@@ -241,19 +241,19 @@ LABEL_21:
 - (void)updateBA
 {
   v3 = os_transaction_create();
-  v4 = [(_GDBAManager *)self queue];
+  queue = [(_GDBAManager *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100001BC8;
   block[3] = &unk_100008320;
   block[4] = self;
-  dispatch_sync(v4, block);
+  dispatch_sync(queue, block);
 }
 
-- (void)setupLocationManagerForPath:(id)a3 identifier:(id)a4
+- (void)setupLocationManagerForPath:(id)path identifier:(id)identifier
 {
-  v12 = a3;
-  v6 = a4;
+  pathCopy = path;
+  identifierCopy = identifier;
   if (!self->_clientIDToLocationManager)
   {
     v7 = +[NSMutableDictionary dictionary];
@@ -262,59 +262,59 @@ LABEL_21:
   }
 
   v9 = [CLLocationManager alloc];
-  v10 = [NSBundle bundleWithPath:v12];
+  v10 = [NSBundle bundleWithPath:pathCopy];
   v11 = [v9 initWithEffectiveBundle:v10 delegate:self onQueue:self->_queue];
 
   [v11 setDesiredAccuracy:3000.0];
-  [(NSMutableDictionary *)self->_clientIDToLocationManager setObject:v11 forKeyedSubscript:v6];
+  [(NSMutableDictionary *)self->_clientIDToLocationManager setObject:v11 forKeyedSubscript:identifierCopy];
 }
 
-- (void)registerClientID:(id)a3 locationBundlePath:(id)a4 handler:(id)a5
+- (void)registerClientID:(id)d locationBundlePath:(id)path handler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  pathCopy = path;
+  handlerCopy = handler;
   queue = self->_queue;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_10000251C;
   v15[3] = &unk_100008500;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = dCopy;
+  v17 = pathCopy;
+  v18 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = pathCopy;
+  v14 = dCopy;
   dispatch_sync(queue, v15);
 }
 
-- (void)updateBAClientID:(id)a3 handler:(id)a4
+- (void)updateBAClientID:(id)d handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  handlerCopy = handler;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412290;
-    v10 = v6;
+    v10 = dCopy;
     _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEFAULT, "Received request for BA update from %@!", &v9, 0xCu);
   }
 
   [(_GDBAManager *)self updateBA];
-  v7[2](v7, 0);
+  handlerCopy[2](handlerCopy, 0);
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   if (os_log_type_enabled(self->_log, OS_LOG_TYPE_DEBUG))
   {
     sub_1000039E4();
   }
 
-  v8 = [v7 valueForEntitlement:@"com.apple.griddata.allow"];
+  v8 = [connectionCopy valueForEntitlement:@"com.apple.griddata.allow"];
   v9 = v8;
   if (v8 && ([v8 BOOLValue] & 1) != 0)
   {
@@ -323,15 +323,15 @@ LABEL_21:
     {
       v11 = log;
       v16[0] = 67109120;
-      v16[1] = [v7 processIdentifier];
+      v16[1] = [connectionCopy processIdentifier];
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Listener accepted new connection from PID %d\n", v16, 8u);
     }
 
     v12 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL____GDSManagerProtocol];
-    [v7 setExportedInterface:v12];
+    [connectionCopy setExportedInterface:v12];
 
-    [v7 setExportedObject:self];
-    [v7 resume];
+    [connectionCopy setExportedObject:self];
+    [connectionCopy resume];
     v13 = 1;
   }
 
@@ -340,7 +340,7 @@ LABEL_21:
     v14 = [(_GDBAManager *)self log];
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
-      sub_100003A24(v7, v14);
+      sub_100003A24(connectionCopy, v14);
     }
 
     v13 = 0;

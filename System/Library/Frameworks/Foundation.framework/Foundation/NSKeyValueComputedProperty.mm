@@ -1,34 +1,34 @@
 @interface NSKeyValueComputedProperty
-- (id)_initWithContainerClass:(id)a3 keyPath:(id)a4 propertiesBeingInitialized:(__CFSet *)a5;
-- (id)_keyPathIfAffectedByValueForKey:(id)a3 exactMatch:(BOOL *)a4;
-- (id)_keyPathIfAffectedByValueForMemberOfKeys:(id)a3;
+- (id)_initWithContainerClass:(id)class keyPath:(id)path propertiesBeingInitialized:(__CFSet *)initialized;
+- (id)_keyPathIfAffectedByValueForKey:(id)key exactMatch:(BOOL *)match;
+- (id)_keyPathIfAffectedByValueForMemberOfKeys:(id)keys;
 - (void)dealloc;
 @end
 
 @implementation NSKeyValueComputedProperty
 
-- (id)_initWithContainerClass:(id)a3 keyPath:(id)a4 propertiesBeingInitialized:(__CFSet *)a5
+- (id)_initWithContainerClass:(id)class keyPath:(id)path propertiesBeingInitialized:(__CFSet *)initialized
 {
   v16 = *MEMORY[0x1E69E9840];
   v15.receiver = self;
   v15.super_class = NSKeyValueComputedProperty;
-  v7 = [NSKeyValueProperty _initWithContainerClass:sel__initWithContainerClass_keyPath_propertiesBeingInitialized_ keyPath:a3 propertiesBeingInitialized:?];
+  v7 = [NSKeyValueProperty _initWithContainerClass:sel__initWithContainerClass_keyPath_propertiesBeingInitialized_ keyPath:class propertiesBeingInitialized:?];
   if (v7)
   {
-    v8 = [a4 rangeOfString:@"."];
+    v8 = [path rangeOfString:@"."];
     if (v9)
     {
       v10 = v8;
-      v7[3] = [objc_msgSend(a4 substringWithRange:{1, v8 - 1), "copy"}];
-      v11 = [objc_msgSend(a4 substringFromIndex:{v10 + 1), "copy"}];
+      v7[3] = [objc_msgSend(path substringWithRange:{1, v8 - 1), "copy"}];
+      v11 = [objc_msgSend(path substringFromIndex:{v10 + 1), "copy"}];
       v7[4] = v11;
-      v12 = NSKeyValuePropertyForIsaAndKeyPathInner(*(v7[1] + 8), v11, a5);
+      v12 = NSKeyValuePropertyForIsaAndKeyPathInner(*(v7[1] + 8), v11, initialized);
       v13 = &OBJC_IVAR___NSKeyValueComputedProperty__operationArgumentProperty;
     }
 
     else
     {
-      v12 = [a4 copy];
+      v12 = [path copy];
       v13 = &OBJC_IVAR___NSKeyValueComputedProperty__operationName;
     }
 
@@ -47,14 +47,14 @@
   [(NSKeyValueProperty *)&v3 dealloc];
 }
 
-- (id)_keyPathIfAffectedByValueForKey:(id)a3 exactMatch:(BOOL *)a4
+- (id)_keyPathIfAffectedByValueForKey:(id)key exactMatch:(BOOL *)match
 {
-  if (a4)
+  if (match)
   {
-    *a4 = 0;
+    *match = 0;
   }
 
-  result = [(NSKeyValueProperty *)self->_operationArgumentProperty keyPathIfAffectedByValueForKey:a3 exactMatch:0];
+  result = [(NSKeyValueProperty *)self->_operationArgumentProperty keyPathIfAffectedByValueForKey:key exactMatch:0];
   if (result)
   {
     return self->super._keyPath;
@@ -63,9 +63,9 @@
   return result;
 }
 
-- (id)_keyPathIfAffectedByValueForMemberOfKeys:(id)a3
+- (id)_keyPathIfAffectedByValueForMemberOfKeys:(id)keys
 {
-  result = [(NSKeyValueProperty *)self->_operationArgumentProperty keyPathIfAffectedByValueForMemberOfKeys:a3];
+  result = [(NSKeyValueProperty *)self->_operationArgumentProperty keyPathIfAffectedByValueForMemberOfKeys:keys];
   if (result)
   {
     return self->super._keyPath;

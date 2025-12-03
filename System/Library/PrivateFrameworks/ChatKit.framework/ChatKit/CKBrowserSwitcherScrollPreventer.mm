@@ -1,26 +1,26 @@
 @interface CKBrowserSwitcherScrollPreventer
 - (CGPoint)contentOffset;
 - (CGSize)contentSize;
-- (CKBrowserSwitcherScrollPreventer)initWithFrame:(CGRect)a3;
+- (CKBrowserSwitcherScrollPreventer)initWithFrame:(CGRect)frame;
 - (CKBrowserSwitcherScrollPreventerDelegate)delegate;
 - (void)layoutSubviews;
-- (void)scrollViewDidEndDecelerating:(id)a3;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)setContentOffset:(CGPoint)a3;
-- (void)setContentSize:(CGSize)a3;
-- (void)setScrollEnabled:(BOOL)a3;
-- (void)setSwitching:(BOOL)a3;
+- (void)scrollViewDidEndDecelerating:(id)decelerating;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)setContentOffset:(CGPoint)offset;
+- (void)setContentSize:(CGSize)size;
+- (void)setScrollEnabled:(BOOL)enabled;
+- (void)setSwitching:(BOOL)switching;
 @end
 
 @implementation CKBrowserSwitcherScrollPreventer
 
-- (CKBrowserSwitcherScrollPreventer)initWithFrame:(CGRect)a3
+- (CKBrowserSwitcherScrollPreventer)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v20.receiver = self;
   v20.super_class = CKBrowserSwitcherScrollPreventer;
   v7 = [(CKBrowserSwitcherScrollPreventer *)&v20 initWithFrame:?];
@@ -76,15 +76,15 @@
   v24.receiver = self;
   v24.super_class = CKBrowserSwitcherScrollPreventer;
   [(CKBrowserSwitcherScrollPreventer *)&v24 layoutSubviews];
-  v3 = [(CKBrowserSwitcherScrollPreventer *)self isEngaged];
+  isEngaged = [(CKBrowserSwitcherScrollPreventer *)self isEngaged];
   [(CKBrowserSwitcherScrollPreventer *)self setEngaged:0];
   [(CKBrowserSwitcherScrollPreventer *)self bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(CKBrowserSwitcherScrollPreventer *)self horizontalScrollView];
-  [v12 setFrame:{v5, v7, v9, v11}];
+  horizontalScrollView = [(CKBrowserSwitcherScrollPreventer *)self horizontalScrollView];
+  [horizontalScrollView setFrame:{v5, v7, v9, v11}];
 
   v13 = +[CKUIBehavior sharedBehaviors];
   [v13 browserSwitcherEdgeGestureWidth];
@@ -99,83 +99,83 @@
   y = v26.origin.y;
   width = v26.size.width;
   height = v26.size.height;
-  v20 = [(CKBrowserSwitcherScrollPreventer *)self horizontalScrollPreventerView];
-  [v20 setFrame:{x, y, width, height}];
+  horizontalScrollPreventerView = [(CKBrowserSwitcherScrollPreventer *)self horizontalScrollPreventerView];
+  [horizontalScrollPreventerView setFrame:{x, y, width, height}];
 
   v27.origin.x = v5;
   v27.origin.y = v7;
   v27.size.width = v9;
   v27.size.height = v11;
   v21 = CGRectGetHeight(v27);
-  v22 = [(CKBrowserSwitcherScrollPreventer *)self horizontalScrollView];
-  [v22 setContentSize:{1.79769313e308, v21}];
+  horizontalScrollView2 = [(CKBrowserSwitcherScrollPreventer *)self horizontalScrollView];
+  [horizontalScrollView2 setContentSize:{1.79769313e308, v21}];
 
-  v23 = [(CKBrowserSwitcherScrollPreventer *)self delegate];
-  [v23 scrollPreventerDidLayoutSubviews:self];
+  delegate = [(CKBrowserSwitcherScrollPreventer *)self delegate];
+  [delegate scrollPreventerDidLayoutSubviews:self];
 
-  [(CKBrowserSwitcherScrollPreventer *)self setEngaged:v3];
+  [(CKBrowserSwitcherScrollPreventer *)self setEngaged:isEngaged];
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
-  v4 = a3;
-  v5 = [(CKBrowserSwitcherScrollPreventer *)self horizontalScrollView];
+  draggingCopy = dragging;
+  horizontalScrollView = [(CKBrowserSwitcherScrollPreventer *)self horizontalScrollView];
 
-  if (v5 == v4)
+  if (horizontalScrollView == draggingCopy)
   {
-    v6 = [(CKBrowserSwitcherScrollPreventer *)self delegate];
-    [v6 scrollPreventerWillBeginDragging:self];
+    delegate = [(CKBrowserSwitcherScrollPreventer *)self delegate];
+    [delegate scrollPreventerWillBeginDragging:self];
   }
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v12 = a3;
-  v4 = [(CKBrowserSwitcherScrollPreventer *)self horizontalScrollView];
+  scrollCopy = scroll;
+  horizontalScrollView = [(CKBrowserSwitcherScrollPreventer *)self horizontalScrollView];
 
-  v5 = v12;
-  if (v4 == v12)
+  v5 = scrollCopy;
+  if (horizontalScrollView == scrollCopy)
   {
-    [v12 contentOffset];
+    [scrollCopy contentOffset];
     v7 = v6;
     v9 = v8;
-    v10 = [(CKBrowserSwitcherScrollPreventer *)self isEngaged];
-    v5 = v12;
-    if (v10)
+    isEngaged = [(CKBrowserSwitcherScrollPreventer *)self isEngaged];
+    v5 = scrollCopy;
+    if (isEngaged)
     {
-      v11 = [(CKBrowserSwitcherScrollPreventer *)self delegate];
-      [v11 scrollPreventer:self scrolledToOffset:{v7, v9}];
+      delegate = [(CKBrowserSwitcherScrollPreventer *)self delegate];
+      [delegate scrollPreventer:self scrolledToOffset:{v7, v9}];
 
-      v5 = v12;
+      v5 = scrollCopy;
     }
   }
 }
 
-- (void)scrollViewDidEndDecelerating:(id)a3
+- (void)scrollViewDidEndDecelerating:(id)decelerating
 {
-  v4 = a3;
-  v7 = [(CKBrowserSwitcherScrollPreventer *)self horizontalScrollView];
+  deceleratingCopy = decelerating;
+  horizontalScrollView = [(CKBrowserSwitcherScrollPreventer *)self horizontalScrollView];
 
-  v5 = v7;
-  if (v7 == v4)
+  v5 = horizontalScrollView;
+  if (horizontalScrollView == deceleratingCopy)
   {
-    v6 = [(CKBrowserSwitcherScrollPreventer *)self isEngaged];
+    isEngaged = [(CKBrowserSwitcherScrollPreventer *)self isEngaged];
 
-    if (!v6)
+    if (!isEngaged)
     {
       return;
     }
 
-    v8 = [(CKBrowserSwitcherScrollPreventer *)self delegate];
-    [v8 scrollPreventerDidEndDecelerating:self];
-    v5 = v8;
+    delegate = [(CKBrowserSwitcherScrollPreventer *)self delegate];
+    [delegate scrollPreventerDidEndDecelerating:self];
+    v5 = delegate;
   }
 }
 
 - (CGPoint)contentOffset
 {
-  v2 = [(CKBrowserSwitcherScrollPreventer *)self horizontalScrollView];
-  [v2 contentOffset];
+  horizontalScrollView = [(CKBrowserSwitcherScrollPreventer *)self horizontalScrollView];
+  [horizontalScrollView contentOffset];
   v4 = v3;
   v6 = v5;
 
@@ -186,18 +186,18 @@
   return result;
 }
 
-- (void)setContentOffset:(CGPoint)a3
+- (void)setContentOffset:(CGPoint)offset
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(CKBrowserSwitcherScrollPreventer *)self horizontalScrollView];
-  [v5 setContentOffset:{x, y}];
+  y = offset.y;
+  x = offset.x;
+  horizontalScrollView = [(CKBrowserSwitcherScrollPreventer *)self horizontalScrollView];
+  [horizontalScrollView setContentOffset:{x, y}];
 }
 
 - (CGSize)contentSize
 {
-  v2 = [(CKBrowserSwitcherScrollPreventer *)self horizontalScrollView];
-  [v2 contentSize];
+  horizontalScrollView = [(CKBrowserSwitcherScrollPreventer *)self horizontalScrollView];
+  [horizontalScrollView contentSize];
   v4 = v3;
   v6 = v5;
 
@@ -208,30 +208,30 @@
   return result;
 }
 
-- (void)setContentSize:(CGSize)a3
+- (void)setContentSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(CKBrowserSwitcherScrollPreventer *)self horizontalScrollView];
-  [v5 setContentSize:{width, height}];
+  height = size.height;
+  width = size.width;
+  horizontalScrollView = [(CKBrowserSwitcherScrollPreventer *)self horizontalScrollView];
+  [horizontalScrollView setContentSize:{width, height}];
 }
 
-- (void)setScrollEnabled:(BOOL)a3
+- (void)setScrollEnabled:(BOOL)enabled
 {
-  if (self->_scrollEnabled != a3)
+  if (self->_scrollEnabled != enabled)
   {
-    v4 = a3;
-    self->_scrollEnabled = a3;
-    v5 = [(CKBrowserSwitcherScrollPreventer *)self horizontalScrollView];
-    [v5 setScrollEnabled:v4];
+    enabledCopy = enabled;
+    self->_scrollEnabled = enabled;
+    horizontalScrollView = [(CKBrowserSwitcherScrollPreventer *)self horizontalScrollView];
+    [horizontalScrollView setScrollEnabled:enabledCopy];
   }
 }
 
-- (void)setSwitching:(BOOL)a3
+- (void)setSwitching:(BOOL)switching
 {
-  if (self->_switching != a3)
+  if (self->_switching != switching)
   {
-    self->_switching = a3;
+    self->_switching = switching;
   }
 }
 

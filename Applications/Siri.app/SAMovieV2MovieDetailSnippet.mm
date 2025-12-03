@@ -7,16 +7,16 @@
 - (id)_afui_mapsRelatedChildren
 {
   v3 = +[NSMutableArray array];
-  v4 = [(SAMovieV2MovieDetailSnippet *)self showtimeSnippet];
-  if (v4)
+  showtimeSnippet = [(SAMovieV2MovieDetailSnippet *)self showtimeSnippet];
+  if (showtimeSnippet)
   {
-    [v3 addObject:v4];
+    [v3 addObject:showtimeSnippet];
   }
 
-  v5 = [(SAMovieV2MovieDetailSnippet *)self theaterShowtimeListSnippet];
-  if (v5)
+  theaterShowtimeListSnippet = [(SAMovieV2MovieDetailSnippet *)self theaterShowtimeListSnippet];
+  if (theaterShowtimeListSnippet)
   {
-    [v3 addObject:v5];
+    [v3 addObject:theaterShowtimeListSnippet];
   }
 
   return v3;

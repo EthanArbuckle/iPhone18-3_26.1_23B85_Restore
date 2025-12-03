@@ -1,36 +1,36 @@
 @interface SRSleepSession
 + (void)initialize;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (SRSleepSession)initWithBinarySampleRepresentation:(id)a3 metadata:(id)a4 timestamp:(double)a5;
-- (SRSleepSession)initWithCoder:(id)a3;
-- (SRSleepSession)initWithStartDate:(id)a3 identifier:(id)a4 duration:(double)a5;
+- (SRSleepSession)initWithBinarySampleRepresentation:(id)representation metadata:(id)metadata timestamp:(double)timestamp;
+- (SRSleepSession)initWithCoder:(id)coder;
+- (SRSleepSession)initWithStartDate:(id)date identifier:(id)identifier duration:(double)duration;
 - (id)binarySampleRepresentation;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SRSleepSession
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     SRLogSleepSession = os_log_create("com.apple.SensorKit", "SRLogSleepSession");
   }
 }
 
-- (SRSleepSession)initWithStartDate:(id)a3 identifier:(id)a4 duration:(double)a5
+- (SRSleepSession)initWithStartDate:(id)date identifier:(id)identifier duration:(double)duration
 {
   v10.receiver = self;
   v10.super_class = SRSleepSession;
   v8 = [(SRSleepSession *)&v10 init];
   if (v8)
   {
-    v8->_startDate = a3;
-    v8->_identifier = [a4 copy];
-    v8->_duration = a5;
+    v8->_startDate = date;
+    v8->_identifier = [identifier copy];
+    v8->_duration = duration;
   }
 
   return v8;
@@ -43,10 +43,10 @@
   [(SRSleepSession *)&v3 dealloc];
 }
 
-- (SRSleepSession)initWithBinarySampleRepresentation:(id)a3 metadata:(id)a4 timestamp:(double)a5
+- (SRSleepSession)initWithBinarySampleRepresentation:(id)representation metadata:(id)metadata timestamp:(double)timestamp
 {
   v16 = *MEMORY[0x1E69E9840];
-  if (![a3 length])
+  if (![representation length])
   {
     goto LABEL_7;
   }
@@ -58,7 +58,7 @@
   {
     self = result;
     v12 = 0;
-    v8 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:a3 error:&v12];
+    v8 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:representation error:&v12];
     if (v8)
     {
       v9 = v8;
@@ -108,17 +108,17 @@ LABEL_8:
   return result;
 }
 
-- (SRSleepSession)initWithCoder:(id)a3
+- (SRSleepSession)initWithCoder:(id)coder
 {
   v20 = *MEMORY[0x1E69E9840];
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
-  v6 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"startDate"];
-  v7 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
-  [a3 decodeDoubleForKey:@"duration"];
+  v6 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"startDate"];
+  v7 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  [coder decodeDoubleForKey:@"duration"];
   if (v7)
   {
     v9 = v6 == 0;
@@ -156,18 +156,18 @@ LABEL_8:
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
-  [a3 encodeObject:-[SRSleepSession startDate](self forKey:{"startDate"), @"startDate"}];
-  [a3 encodeObject:-[SRSleepSession identifier](self forKey:{"identifier"), @"identifier"}];
+  [coder encodeObject:-[SRSleepSession startDate](self forKey:{"startDate"), @"startDate"}];
+  [coder encodeObject:-[SRSleepSession identifier](self forKey:{"identifier"), @"identifier"}];
   [(SRSleepSession *)self duration];
 
-  [a3 encodeDouble:@"duration" forKey:?];
+  [coder encodeDouble:@"duration" forKey:?];
 }
 
 - (NSString)description
@@ -178,16 +178,16 @@ LABEL_8:
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
   v7 = [v3 stringFromDate:{-[SRSleepSession startDate](self, "startDate")}];
-  v8 = [(SRSleepSession *)self identifier];
+  identifier = [(SRSleepSession *)self identifier];
   [(SRSleepSession *)self duration];
-  v10 = [v4 stringWithFormat:@"%@ (%p) {start date: %@, identifier: %@, duration: %f}", v6, self, v7, v8, v9];
+  v10 = [v4 stringWithFormat:@"%@ (%p) {start date: %@, identifier: %@, duration: %f}", v6, self, v7, identifier, v9];
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     LOBYTE(v5) = 1;
   }
@@ -197,15 +197,15 @@ LABEL_8:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = -[NSDate isEqualToDate:](-[SRSleepSession startDate](self, "startDate"), "isEqualToDate:", [a3 startDate]);
+      v5 = -[NSDate isEqualToDate:](-[SRSleepSession startDate](self, "startDate"), "isEqualToDate:", [equal startDate]);
       if (v5)
       {
-        v5 = -[NSString isEqual:](-[SRSleepSession identifier](self, "identifier"), "isEqual:", [a3 identifier]);
+        v5 = -[NSString isEqual:](-[SRSleepSession identifier](self, "identifier"), "isEqual:", [equal identifier]);
         if (v5)
         {
           [(SRSleepSession *)self duration];
           v7 = v6;
-          [a3 duration];
+          [equal duration];
           LOBYTE(v5) = vabdd_f64(v7, v8) < 0.00000011920929;
         }
       }

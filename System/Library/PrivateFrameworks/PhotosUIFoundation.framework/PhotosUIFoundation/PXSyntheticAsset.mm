@@ -1,40 +1,40 @@
 @interface PXSyntheticAsset
-+ (id)syntheticAssetWithSerializableDescription:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)syntheticAssetWithSerializableDescription:(id)description;
+- (BOOL)isEqual:(id)equal;
 - (CGAffineTransform)transform;
 - (CGPoint)positionOffset;
-- (CGRect)_cropAssetRectFromCropRect:(CGRect)a3;
-- (CGRect)_cropRectFromCropAssetRect:(CGRect)a3;
+- (CGRect)_cropAssetRectFromCropRect:(CGRect)rect;
+- (CGRect)_cropRectFromCropAssetRect:(CGRect)rect;
 - (CGRect)acceptableCropAssetRect;
 - (CGRect)acceptableCropRect;
-- (CGRect)bestCropRectForAspectRatio:(double)a3;
-- (CGRect)bestCropRectForAspectRatio:(double)a3 verticalContentMode:(int64_t)a4 cropMode:(int64_t)a5;
-- (CGRect)bestCropRectForAspectRatioV2:(double)a3 verticalContentMode:(int64_t)a4 cropMode:(int64_t)a5;
+- (CGRect)bestCropRectForAspectRatio:(double)ratio;
+- (CGRect)bestCropRectForAspectRatio:(double)ratio verticalContentMode:(int64_t)mode cropMode:(int64_t)cropMode;
+- (CGRect)bestCropRectForAspectRatioV2:(double)v2 verticalContentMode:(int64_t)mode cropMode:(int64_t)cropMode;
 - (CGRect)bestPlaybackAssetRect;
 - (CGRect)bestPlaybackRect;
 - (CGRect)faceAreaAssetRect;
 - (CGRect)faceAreaRect;
 - (CGRect)preferredCropAssetRect;
 - (CGRect)preferredCropRect;
-- (CGRect)suggestedCropForTargetSize:(CGSize)a3 withFocusRegion:(CGRect)a4;
-- (CGRect)suggestedCropForTargetSize:(CGSize)a3 withOcclusionRegion:(CGRect)a4 andOutputCropScore:(double *)a5;
+- (CGRect)suggestedCropForTargetSize:(CGSize)size withFocusRegion:(CGRect)region;
+- (CGRect)suggestedCropForTargetSize:(CGSize)size withOcclusionRegion:(CGRect)region andOutputCropScore:(double *)score;
 - (CGSize)size;
 - (NSDate)localCreationDate;
 - (NSString)serializableDescription;
-- (PXSyntheticAsset)initWithCoder:(id)a3;
-- (PXSyntheticAsset)initWithConfiguration:(id)a3;
+- (PXSyntheticAsset)initWithCoder:(id)coder;
+- (PXSyntheticAsset)initWithConfiguration:(id)configuration;
 - (double)aspectRatio;
-- (int64_t)isContentEqualTo:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setAcceptableCropAssetRect:(CGRect)a3;
-- (void)setBestPlaybackAssetRect:(CGRect)a3;
-- (void)setFaceAreaAssetRect:(CGRect)a3;
-- (void)setLabel:(id)a3;
-- (void)setLocalCreationDate:(id)a3;
-- (void)setLocalizedGeoDescription:(id)a3;
-- (void)setPreferredCropAssetRect:(CGRect)a3;
-- (void)setSceneClassifications:(id)a3;
-- (void)setUuid:(id)a3;
+- (int64_t)isContentEqualTo:(id)to;
+- (void)encodeWithCoder:(id)coder;
+- (void)setAcceptableCropAssetRect:(CGRect)rect;
+- (void)setBestPlaybackAssetRect:(CGRect)rect;
+- (void)setFaceAreaAssetRect:(CGRect)rect;
+- (void)setLabel:(id)label;
+- (void)setLocalCreationDate:(id)date;
+- (void)setLocalizedGeoDescription:(id)description;
+- (void)setPreferredCropAssetRect:(CGRect)rect;
+- (void)setSceneClassifications:(id)classifications;
+- (void)setUuid:(id)uuid;
 @end
 
 @implementation PXSyntheticAsset
@@ -128,7 +128,7 @@
   return self;
 }
 
-- (CGRect)suggestedCropForTargetSize:(CGSize)a3 withOcclusionRegion:(CGRect)a4 andOutputCropScore:(double *)a5
+- (CGRect)suggestedCropForTargetSize:(CGSize)size withOcclusionRegion:(CGRect)region andOutputCropScore:(double *)score
 {
   v5 = *MEMORY[0x1E695F050];
   v6 = *(MEMORY[0x1E695F050] + 8);
@@ -141,10 +141,10 @@
   return result;
 }
 
-- (CGRect)suggestedCropForTargetSize:(CGSize)a3 withFocusRegion:(CGRect)a4
+- (CGRect)suggestedCropForTargetSize:(CGSize)size withFocusRegion:(CGRect)region
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(PXSyntheticAsset *)self faceAreaRect];
   v45 = v7;
   v9 = v8;
@@ -153,15 +153,15 @@
   PFCropUtilitiesCoreClass = getPFCropUtilitiesCoreClass();
   PXSizeGetAspectRatio(width, height);
   v16 = v15;
-  v17 = [(PXSyntheticAsset *)self pixelWidth];
-  v18 = [(PXSyntheticAsset *)self pixelHeight];
+  pixelWidth = [(PXSyntheticAsset *)self pixelWidth];
+  pixelHeight = [(PXSyntheticAsset *)self pixelHeight];
   [(PXSyntheticAsset *)self preferredCropRect];
   v20 = v19;
   v22 = v21;
   v24 = v23;
   v26 = v25;
   [(PXSyntheticAsset *)self acceptableCropRect];
-  [PFCropUtilitiesCoreClass bestCropRectV2ForAspectRatio:v17 withFocusRegion:v18 sourcePixelWidth:0 sourcePixelHeight:v16 sourcePreferredCropRectNormalized:a4.origin.x sourceAcceptableCropRectNormalized:a4.origin.y sourceFaceAreaRectNormalized:a4.size.width outputCropScore:{a4.size.height, v20, v22, v24, v26, v27, v28, v29, v30, v45, *&v13, v9, *&v11}];
+  [PFCropUtilitiesCoreClass bestCropRectV2ForAspectRatio:pixelWidth withFocusRegion:pixelHeight sourcePixelWidth:0 sourcePixelHeight:v16 sourcePreferredCropRectNormalized:region.origin.x sourceAcceptableCropRectNormalized:region.origin.y sourceFaceAreaRectNormalized:region.size.width outputCropScore:{region.size.height, v20, v22, v24, v26, v27, v28, v29, v30, v45, *&v13, v9, *&v11}];
   v32 = v31;
   v34 = v33;
   v36 = v35;
@@ -178,23 +178,23 @@
   return result;
 }
 
-- (CGRect)bestCropRectForAspectRatioV2:(double)a3 verticalContentMode:(int64_t)a4 cropMode:(int64_t)a5
+- (CGRect)bestCropRectForAspectRatioV2:(double)v2 verticalContentMode:(int64_t)mode cropMode:(int64_t)cropMode
 {
-  [(PXSyntheticAsset *)self faceAreaRect:a4];
+  [(PXSyntheticAsset *)self faceAreaRect:mode];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = 1.0 - (v12 + v10);
   PFCropUtilitiesCoreClass = getPFCropUtilitiesCoreClass();
-  v15 = [(PXSyntheticAsset *)self pixelWidth];
-  v16 = [(PXSyntheticAsset *)self pixelHeight];
+  pixelWidth = [(PXSyntheticAsset *)self pixelWidth];
+  pixelHeight = [(PXSyntheticAsset *)self pixelHeight];
   [(PXSyntheticAsset *)self preferredCropRect];
   v18 = v17;
   v20 = v19;
   v22 = v21;
   v24 = v23;
   [(PXSyntheticAsset *)self acceptableCropRect];
-  [PFCropUtilitiesCoreClass bestCropRectV2ForAspectRatio:v15 withFocusRegion:v16 sourcePixelWidth:0 sourcePixelHeight:a3 sourcePreferredCropRectNormalized:*MEMORY[0x1E695F050] sourceAcceptableCropRectNormalized:*(MEMORY[0x1E695F050] + 8) sourceFaceAreaRectNormalized:*(MEMORY[0x1E695F050] + 16) outputCropScore:{*(MEMORY[0x1E695F050] + 24), v18, v20, v22, v24, v25, v26, v27, v28, v7, *&v13, v9, *&v11}];
+  [PFCropUtilitiesCoreClass bestCropRectV2ForAspectRatio:pixelWidth withFocusRegion:pixelHeight sourcePixelWidth:0 sourcePixelHeight:v2 sourcePreferredCropRectNormalized:*MEMORY[0x1E695F050] sourceAcceptableCropRectNormalized:*(MEMORY[0x1E695F050] + 8) sourceFaceAreaRectNormalized:*(MEMORY[0x1E695F050] + 16) outputCropScore:{*(MEMORY[0x1E695F050] + 24), v18, v20, v22, v24, v25, v26, v27, v28, v7, *&v13, v9, *&v11}];
   result.size.height = v32;
   result.size.width = v31;
   result.origin.y = v30;
@@ -202,7 +202,7 @@
   return result;
 }
 
-- (CGRect)bestCropRectForAspectRatio:(double)a3 verticalContentMode:(int64_t)a4 cropMode:(int64_t)a5
+- (CGRect)bestCropRectForAspectRatio:(double)ratio verticalContentMode:(int64_t)mode cropMode:(int64_t)cropMode
 {
   [(PXSyntheticAsset *)self faceAreaRect];
   v9 = v8;
@@ -210,15 +210,15 @@
   v13 = v12;
   v15 = 1.0 - (v14 + v12);
   PFCropUtilitiesCoreClass = getPFCropUtilitiesCoreClass();
-  v17 = [(PXSyntheticAsset *)self pixelWidth];
-  v18 = [(PXSyntheticAsset *)self pixelHeight];
+  pixelWidth = [(PXSyntheticAsset *)self pixelWidth];
+  pixelHeight = [(PXSyntheticAsset *)self pixelHeight];
   [(PXSyntheticAsset *)self preferredCropRect];
   v20 = v19;
   v22 = v21;
   v24 = v23;
   v26 = v25;
   [(PXSyntheticAsset *)self acceptableCropRect];
-  [PFCropUtilitiesCoreClass bestCropRectForAspectRatio:a4 verticalContentMode:a5 cropMode:v17 sourcePixelWidth:v18 sourcePixelHeight:a3 sourcePreferredCropRectNormalized:v20 sourceAcceptableCropRectNormalized:v22 sourceFaceAreaRectNormalized:{v24, v26, v27, v28, v29, v30, v9, *&v15, v11, *&v13}];
+  [PFCropUtilitiesCoreClass bestCropRectForAspectRatio:mode verticalContentMode:cropMode cropMode:pixelWidth sourcePixelWidth:pixelHeight sourcePixelHeight:ratio sourcePreferredCropRectNormalized:v20 sourceAcceptableCropRectNormalized:v22 sourceFaceAreaRectNormalized:{v24, v26, v27, v28, v29, v30, v9, *&v15, v11, *&v13}];
   result.size.height = v34;
   result.size.width = v33;
   result.origin.y = v32;
@@ -226,9 +226,9 @@
   return result;
 }
 
-- (CGRect)bestCropRectForAspectRatio:(double)a3
+- (CGRect)bestCropRectForAspectRatio:(double)ratio
 {
-  [(PXSyntheticAsset *)self bestCropRectForAspectRatio:0 verticalContentMode:3 cropMode:a3];
+  [(PXSyntheticAsset *)self bestCropRectForAspectRatio:0 verticalContentMode:3 cropMode:ratio];
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -236,9 +236,9 @@
   return result;
 }
 
-- (int64_t)isContentEqualTo:(id)a3
+- (int64_t)isContentEqualTo:(id)to
 {
-  if ([(PXSyntheticAsset *)self isEqual:a3])
+  if ([(PXSyntheticAsset *)self isEqual:to])
   {
     return 2;
   }
@@ -254,15 +254,15 @@
   localCreationDate = self->_localCreationDate;
   if (localCreationDate)
   {
-    v3 = localCreationDate;
+    creationDate = localCreationDate;
   }
 
   else
   {
-    v3 = [(PXSyntheticAsset *)self creationDate];
+    creationDate = [(PXSyntheticAsset *)self creationDate];
   }
 
-  return v3;
+  return creationDate;
 }
 
 - (double)aspectRatio
@@ -284,10 +284,10 @@
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -297,17 +297,17 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(PXSyntheticAsset *)self uuid];
-      v7 = [(PXSyntheticAsset *)v5 uuid];
-      if (v6 == v7)
+      v5 = equalCopy;
+      uuid = [(PXSyntheticAsset *)self uuid];
+      uuid2 = [(PXSyntheticAsset *)v5 uuid];
+      if (uuid == uuid2)
       {
         v8 = 1;
       }
 
       else
       {
-        v8 = [v6 isEqualToString:v7];
+        v8 = [uuid isEqualToString:uuid2];
       }
     }
 
@@ -320,9 +320,9 @@
   return v8;
 }
 
-- (PXSyntheticAsset)initWithCoder:(id)a3
+- (PXSyntheticAsset)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v45.receiver = self;
   v45.super_class = PXSyntheticAsset;
   v5 = [(PXSyntheticAsset *)&v45 init];
@@ -330,132 +330,132 @@
   {
     v6 = objc_opt_class();
     v7 = NSStringFromSelector(sel_uuid);
-    v8 = [v4 decodeObjectOfClass:v6 forKey:v7];
+    v8 = [coderCopy decodeObjectOfClass:v6 forKey:v7];
     uuid = v5->_uuid;
     v5->_uuid = v8;
 
     v10 = NSStringFromSelector(sel_size);
-    [v4 decodeCGSizeForKey:v10];
+    [coderCopy decodeCGSizeForKey:v10];
     v5->_size.width = v11;
     v5->_size.height = v12;
 
     v13 = NSStringFromSelector(sel_preferredCropRect);
-    [v4 decodeCGRectForKey:v13];
+    [coderCopy decodeCGRectForKey:v13];
     v5->_preferredCropRect.origin.x = v14;
     v5->_preferredCropRect.origin.y = v15;
     v5->_preferredCropRect.size.width = v16;
     v5->_preferredCropRect.size.height = v17;
 
     v18 = NSStringFromSelector(sel_acceptableCropRect);
-    [v4 decodeCGRectForKey:v18];
+    [coderCopy decodeCGRectForKey:v18];
     v5->_acceptableCropRect.origin.x = v19;
     v5->_acceptableCropRect.origin.y = v20;
     v5->_acceptableCropRect.size.width = v21;
     v5->_acceptableCropRect.size.height = v22;
 
     v23 = NSStringFromSelector(sel_bestPlaybackRect);
-    [v4 decodeCGRectForKey:v23];
+    [coderCopy decodeCGRectForKey:v23];
     v5->_bestPlaybackRect.origin.x = v24;
     v5->_bestPlaybackRect.origin.y = v25;
     v5->_bestPlaybackRect.size.width = v26;
     v5->_bestPlaybackRect.size.height = v27;
 
     v28 = NSStringFromSelector(sel_faceAreaRect);
-    [v4 decodeCGRectForKey:v28];
+    [coderCopy decodeCGRectForKey:v28];
     v5->_faceAreaRect.origin.x = v29;
     v5->_faceAreaRect.origin.y = v30;
     v5->_faceAreaRect.size.width = v31;
     v5->_faceAreaRect.size.height = v32;
 
     v33 = NSStringFromSelector(sel_playbackStyle);
-    v5->_playbackStyle = [v4 decodeIntegerForKey:v33];
+    v5->_playbackStyle = [coderCopy decodeIntegerForKey:v33];
 
     v34 = objc_opt_class();
     v35 = NSStringFromSelector(sel_label);
-    v36 = [v4 decodeObjectOfClass:v34 forKey:v35];
+    v36 = [coderCopy decodeObjectOfClass:v34 forKey:v35];
     label = v5->_label;
     v5->_label = v36;
 
     v38 = objc_opt_class();
     v39 = NSStringFromSelector(sel_tintColor);
-    v40 = [v4 decodeObjectOfClass:v38 forKey:v39];
+    v40 = [coderCopy decodeObjectOfClass:v38 forKey:v39];
     tintColor = v5->_tintColor;
     v5->_tintColor = v40;
 
     v42 = NSStringFromSelector(sel_audioScore);
-    [v4 decodeFloatForKey:v42];
+    [coderCopy decodeFloatForKey:v42];
     v5->_audioScore = v43;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   uuid = self->_uuid;
-  v5 = a3;
+  coderCopy = coder;
   v6 = NSStringFromSelector(sel_uuid);
-  [v5 encodeObject:uuid forKey:v6];
+  [coderCopy encodeObject:uuid forKey:v6];
 
   v7 = NSStringFromSelector(sel_size);
-  [v5 encodeCGSize:v7 forKey:{self->_size.width, self->_size.height}];
+  [coderCopy encodeCGSize:v7 forKey:{self->_size.width, self->_size.height}];
 
   v8 = NSStringFromSelector(sel_preferredCropRect);
-  [v5 encodeCGRect:v8 forKey:{self->_preferredCropRect.origin.x, self->_preferredCropRect.origin.y, self->_preferredCropRect.size.width, self->_preferredCropRect.size.height}];
+  [coderCopy encodeCGRect:v8 forKey:{self->_preferredCropRect.origin.x, self->_preferredCropRect.origin.y, self->_preferredCropRect.size.width, self->_preferredCropRect.size.height}];
 
   v9 = NSStringFromSelector(sel_acceptableCropRect);
-  [v5 encodeCGRect:v9 forKey:{self->_acceptableCropRect.origin.x, self->_acceptableCropRect.origin.y, self->_acceptableCropRect.size.width, self->_acceptableCropRect.size.height}];
+  [coderCopy encodeCGRect:v9 forKey:{self->_acceptableCropRect.origin.x, self->_acceptableCropRect.origin.y, self->_acceptableCropRect.size.width, self->_acceptableCropRect.size.height}];
 
   v10 = NSStringFromSelector(sel_bestPlaybackRect);
-  [v5 encodeCGRect:v10 forKey:{self->_bestPlaybackRect.origin.x, self->_bestPlaybackRect.origin.y, self->_bestPlaybackRect.size.width, self->_bestPlaybackRect.size.height}];
+  [coderCopy encodeCGRect:v10 forKey:{self->_bestPlaybackRect.origin.x, self->_bestPlaybackRect.origin.y, self->_bestPlaybackRect.size.width, self->_bestPlaybackRect.size.height}];
 
   v11 = NSStringFromSelector(sel_faceAreaRect);
-  [v5 encodeCGRect:v11 forKey:{self->_faceAreaRect.origin.x, self->_faceAreaRect.origin.y, self->_faceAreaRect.size.width, self->_faceAreaRect.size.height}];
+  [coderCopy encodeCGRect:v11 forKey:{self->_faceAreaRect.origin.x, self->_faceAreaRect.origin.y, self->_faceAreaRect.size.width, self->_faceAreaRect.size.height}];
 
   playbackStyle = self->_playbackStyle;
   v13 = NSStringFromSelector(sel_playbackStyle);
-  [v5 encodeInteger:playbackStyle forKey:v13];
+  [coderCopy encodeInteger:playbackStyle forKey:v13];
 
   label = self->_label;
   v15 = NSStringFromSelector(sel_label);
-  [v5 encodeObject:label forKey:v15];
+  [coderCopy encodeObject:label forKey:v15];
 
   tintColor = self->_tintColor;
   v17 = NSStringFromSelector(sel_tintColor);
-  [v5 encodeObject:tintColor forKey:v17];
+  [coderCopy encodeObject:tintColor forKey:v17];
 
   audioScore = self->_audioScore;
   v20 = NSStringFromSelector(sel_audioScore);
   *&v19 = audioScore;
-  [v5 encodeFloat:v20 forKey:v19];
+  [coderCopy encodeFloat:v20 forKey:v19];
 }
 
-- (void)setLocalCreationDate:(id)a3
+- (void)setLocalCreationDate:(id)date
 {
-  v4 = [a3 copy];
+  v4 = [date copy];
   localCreationDate = self->_localCreationDate;
   self->_localCreationDate = v4;
 
   MEMORY[0x1EEE66BB8](v4, localCreationDate);
 }
 
-- (void)setLocalizedGeoDescription:(id)a3
+- (void)setLocalizedGeoDescription:(id)description
 {
-  v4 = [a3 copy];
+  v4 = [description copy];
   localizedGeoDescription = self->_localizedGeoDescription;
   self->_localizedGeoDescription = v4;
 
   MEMORY[0x1EEE66BB8](v4, localizedGeoDescription);
 }
 
-- (void)setSceneClassifications:(id)a3
+- (void)setSceneClassifications:(id)classifications
 {
-  v4 = a3;
-  v5 = [v4 copy];
+  classificationsCopy = classifications;
+  v5 = [classificationsCopy copy];
   sceneClassifications = self->_sceneClassifications;
   self->_sceneClassifications = v5;
 
-  v7 = [v4 objectsPassingTest:&__block_literal_global_16];
+  v7 = [classificationsCopy objectsPassingTest:&__block_literal_global_16];
 
   self->_hasPeopleSceneMidOrGreaterConfidence = [v7 count] != 0;
 }
@@ -484,8 +484,8 @@ BOOL __44__PXSyntheticAsset_setSceneClassifications___block_invoke(uint64_t a1, 
   v5 = v9;
   if (!v4)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"PXSyntheticAsset.m" lineNumber:187 description:{@"failed to archive data: %@", v5}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSyntheticAsset.m" lineNumber:187 description:{@"failed to archive data: %@", v5}];
   }
 
   v6 = [v4 base64EncodedStringWithOptions:0];
@@ -493,22 +493,22 @@ BOOL __44__PXSyntheticAsset_setSceneClassifications___block_invoke(uint64_t a1, 
   return v6;
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
-  v4 = [a3 copy];
+  v4 = [label copy];
   label = self->_label;
   self->_label = v4;
 
   MEMORY[0x1EEE66BB8](v4, label);
 }
 
-- (CGRect)_cropRectFromCropAssetRect:(CGRect)a3
+- (CGRect)_cropRectFromCropAssetRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (CGRectIsNull(a3))
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  if (CGRectIsNull(rect))
   {
     v8 = *MEMORY[0x1E695F050];
     v9 = *(MEMORY[0x1E695F050] + 8);
@@ -546,13 +546,13 @@ BOOL __44__PXSyntheticAsset_setSceneClassifications___block_invoke(uint64_t a1, 
   return result;
 }
 
-- (CGRect)_cropAssetRectFromCropRect:(CGRect)a3
+- (CGRect)_cropAssetRectFromCropRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (CGRectIsNull(a3))
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  if (CGRectIsNull(rect))
   {
     v8 = *MEMORY[0x1E695F050];
     v9 = *(MEMORY[0x1E695F050] + 8);
@@ -578,30 +578,30 @@ BOOL __44__PXSyntheticAsset_setSceneClassifications___block_invoke(uint64_t a1, 
   return result;
 }
 
-- (void)setFaceAreaAssetRect:(CGRect)a3
+- (void)setFaceAreaAssetRect:(CGRect)rect
 {
-  [(PXSyntheticAsset *)self _cropRectFromCropAssetRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(PXSyntheticAsset *)self _cropRectFromCropAssetRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
 
   [(PXSyntheticAsset *)self setFaceAreaRect:?];
 }
 
-- (void)setBestPlaybackAssetRect:(CGRect)a3
+- (void)setBestPlaybackAssetRect:(CGRect)rect
 {
-  [(PXSyntheticAsset *)self _cropRectFromCropAssetRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(PXSyntheticAsset *)self _cropRectFromCropAssetRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
 
   [(PXSyntheticAsset *)self setBestPlaybackRect:?];
 }
 
-- (void)setAcceptableCropAssetRect:(CGRect)a3
+- (void)setAcceptableCropAssetRect:(CGRect)rect
 {
-  [(PXSyntheticAsset *)self _cropRectFromCropAssetRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(PXSyntheticAsset *)self _cropRectFromCropAssetRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
 
   [(PXSyntheticAsset *)self setAcceptableCropRect:?];
 }
 
-- (void)setPreferredCropAssetRect:(CGRect)a3
+- (void)setPreferredCropAssetRect:(CGRect)rect
 {
-  [(PXSyntheticAsset *)self _cropRectFromCropAssetRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(PXSyntheticAsset *)self _cropRectFromCropAssetRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
 
   [(PXSyntheticAsset *)self setPreferredCropRect:?];
 }
@@ -654,27 +654,27 @@ BOOL __44__PXSyntheticAsset_setSceneClassifications___block_invoke(uint64_t a1, 
   return result;
 }
 
-- (void)setUuid:(id)a3
+- (void)setUuid:(id)uuid
 {
-  v4 = [a3 copy];
+  v4 = [uuid copy];
   uuid = self->_uuid;
   self->_uuid = v4;
 
   MEMORY[0x1EEE66BB8](v4, uuid);
 }
 
-- (PXSyntheticAsset)initWithConfiguration:(id)a3
+- (PXSyntheticAsset)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v18.receiver = self;
   v18.super_class = PXSyntheticAsset;
   v5 = [(PXSyntheticAsset *)&v18 init];
   if (v5)
   {
-    v6 = [MEMORY[0x1E696AFB0] UUID];
-    v7 = [v6 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
     v8 = *(v5 + 2);
-    *(v5 + 2) = v7;
+    *(v5 + 2) = uUIDString;
 
     v9 = MEMORY[0x1E695F050];
     *(v5 + 120) = vdupq_n_s64(0x407F400000000000uLL);
@@ -690,36 +690,36 @@ BOOL __44__PXSyntheticAsset_setSceneClassifications___block_invoke(uint64_t a1, 
     *(v5 + 248) = v11;
     *(v5 + 3) = 1;
     *(v5 + 3) = xmmword_1B40724C0;
-    v12 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     v13 = *(v5 + 8);
-    *(v5 + 8) = v12;
+    *(v5 + 8) = date;
 
     *(v5 + 3) = 1056964608;
-    v14 = [MEMORY[0x1E69DC888] grayColor];
+    grayColor = [MEMORY[0x1E69DC888] grayColor];
     v15 = *(v5 + 5);
-    *(v5 + 5) = v14;
+    *(v5 + 5) = grayColor;
 
-    v4[2](v4, v5);
-    v16 = [v5 uuid];
-    *(v5 + 14) = [v16 hash];
+    configurationCopy[2](configurationCopy, v5);
+    uuid = [v5 uuid];
+    *(v5 + 14) = [uuid hash];
   }
 
   return v5;
 }
 
-+ (id)syntheticAssetWithSerializableDescription:(id)a3
++ (id)syntheticAssetWithSerializableDescription:(id)description
 {
   v5 = MEMORY[0x1E695DEF0];
-  v6 = a3;
-  v7 = [[v5 alloc] initWithBase64EncodedString:v6 options:0];
+  descriptionCopy = description;
+  v7 = [[v5 alloc] initWithBase64EncodedString:descriptionCopy options:0];
 
   v12 = 0;
   v8 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:v7 error:&v12];
   v9 = v12;
   if (!v8)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:a1 file:@"PXSyntheticAsset.m" lineNumber:180 description:{@"failed to unarchive data: %@", v9}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSyntheticAsset.m" lineNumber:180 description:{@"failed to unarchive data: %@", v9}];
   }
 
   return v8;

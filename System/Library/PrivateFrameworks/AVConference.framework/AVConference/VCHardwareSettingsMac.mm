@@ -1,7 +1,7 @@
 @interface VCHardwareSettingsMac
 + (id)sharedInstance;
-+ (id)virtualHardwareSettings:(id)a3;
-- (BOOL)_isMachineNewerThanSandybridge:(int)a3;
++ (id)virtualHardwareSettings:(id)settings;
+- (BOOL)_isMachineNewerThanSandybridge:(int)sandybridge;
 - (BOOL)canDoHEVC;
 - (BOOL)canDoHiDefDecoding;
 - (BOOL)canDoHiDefEncoding;
@@ -17,8 +17,8 @@
 - (BOOL)useSoftFramerateSwitching;
 - (NSArray)supportedVideoPayloads;
 - (VCHardwareSettingsMac)init;
-- (id)_getCPUTypeStringForMachineType:(int)a3;
-- (id)initForDevice:(id)a3;
+- (id)_getCPUTypeStringForMachineType:(int)type;
+- (id)initForDevice:(id)device;
 - (id)queryBoardId;
 - (int)_getCPUFamilyType;
 - (int)hardwareScore;
@@ -114,7 +114,7 @@
   return v3;
 }
 
-- (id)initForDevice:(id)a3
+- (id)initForDevice:(id)device
 {
   v11 = *MEMORY[0x1E69E9840];
   v4 = [(VCHardwareSettingsMac *)self init];
@@ -131,9 +131,9 @@ LABEL_7:
   v9 = 0u;
   v6 = 0u;
   v7 = 0u;
-  if ((VCVirtualHardwareConfigurations_OSXConfigurationForDevice(a3, &v6) & 1) == 0)
+  if ((VCVirtualHardwareConfigurations_OSXConfigurationForDevice(device, &v6) & 1) == 0)
   {
-    [VCHardwareSettingsMac initForDevice:a3];
+    [VCHardwareSettingsMac initForDevice:device];
     goto LABEL_7;
   }
 
@@ -156,19 +156,19 @@ LABEL_7:
   return v4;
 }
 
-+ (id)virtualHardwareSettings:(id)a3
++ (id)virtualHardwareSettings:(id)settings
 {
   v19 = *MEMORY[0x1E69E9840];
   if (virtualHardwareSettings___virtualHardwareSettingsDeviceA)
   {
-    if ([a3 isEqual:{objc_msgSend(virtualHardwareSettings___virtualHardwareSettingsDeviceA, "machineName")}])
+    if ([settings isEqual:{objc_msgSend(virtualHardwareSettings___virtualHardwareSettingsDeviceA, "machineName")}])
     {
       return virtualHardwareSettings___virtualHardwareSettingsDeviceA;
     }
 
     else if (virtualHardwareSettings___virtualHardwareSettingsDeviceB)
     {
-      if ([a3 isEqual:{objc_msgSend(virtualHardwareSettings___virtualHardwareSettingsDeviceB, "machineName")}])
+      if ([settings isEqual:{objc_msgSend(virtualHardwareSettings___virtualHardwareSettingsDeviceB, "machineName")}])
       {
         return virtualHardwareSettings___virtualHardwareSettingsDeviceB;
       }
@@ -193,7 +193,7 @@ LABEL_7:
 
         virtualHardwareSettings___virtualHardwareSettingsDeviceA = 0;
         virtualHardwareSettings___virtualHardwareSettingsDeviceB = 0;
-        return [VCHardwareSettingsMac virtualHardwareSettings:a3];
+        return [VCHardwareSettingsMac virtualHardwareSettings:settings];
       }
     }
 
@@ -212,12 +212,12 @@ LABEL_7:
           v15 = 1024;
           v16 = 174;
           v17 = 2112;
-          v18 = a3;
+          settingsCopy2 = settings;
           _os_log_impl(&dword_1DB56E000, v8, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Initializing new virtual hardware settings B for device=%@", &v11, 0x26u);
         }
       }
 
-      result = [[VCHardwareSettingsMac alloc] initForDevice:a3];
+      result = [[VCHardwareSettingsMac alloc] initForDevice:settings];
       virtualHardwareSettings___virtualHardwareSettingsDeviceB = result;
     }
   }
@@ -237,12 +237,12 @@ LABEL_7:
         v15 = 1024;
         v16 = 164;
         v17 = 2112;
-        v18 = a3;
+        settingsCopy2 = settings;
         _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Initializing new virtual hardware settings A for device=%@", &v11, 0x26u);
       }
     }
 
-    result = [[VCHardwareSettingsMac alloc] initForDevice:a3];
+    result = [[VCHardwareSettingsMac alloc] initForDevice:settings];
     virtualHardwareSettings___virtualHardwareSettingsDeviceA = result;
   }
 
@@ -351,9 +351,9 @@ uint64_t __41__VCHardwareSettingsMac_setupMachineName__block_invoke(uint64_t a1,
   }
 }
 
-- (id)_getCPUTypeStringForMachineType:(int)a3
+- (id)_getCPUTypeStringForMachineType:(int)type
 {
-  if ((a3 & 0x400) != 0)
+  if ((type & 0x400) != 0)
   {
 LABEL_9:
     if (layoutID() == 80)
@@ -368,12 +368,12 @@ LABEL_9:
   }
 
   v3 = @"G5";
-  if ((a3 & 0x100) == 0)
+  if ((type & 0x100) == 0)
   {
     v3 = @"G4";
-    if ((a3 & 2) == 0)
+    if ((type & 2) == 0)
     {
-      if (a3)
+      if (type)
       {
         return @"G3";
       }
@@ -404,14 +404,14 @@ LABEL_9:
   return v3;
 }
 
-- (BOOL)_isMachineNewerThanSandybridge:(int)a3
+- (BOOL)_isMachineNewerThanSandybridge:(int)sandybridge
 {
   result = 0;
-  if (a3 > 1463508715)
+  if (sandybridge > 1463508715)
   {
-    if (a3 > 2009171117)
+    if (sandybridge > 2009171117)
     {
-      if (a3 == 2009171118)
+      if (sandybridge == 2009171118)
       {
         return result;
       }
@@ -421,7 +421,7 @@ LABEL_9:
 
     else
     {
-      if (a3 == 1463508716)
+      if (sandybridge == 1463508716)
       {
         return result;
       }
@@ -430,9 +430,9 @@ LABEL_9:
     }
   }
 
-  else if (a3 > -310978391)
+  else if (sandybridge > -310978391)
   {
-    if (a3 == -310978390)
+    if (sandybridge == -310978390)
     {
       return result;
     }
@@ -442,7 +442,7 @@ LABEL_9:
 
   else
   {
-    if (a3 == -1439483605)
+    if (sandybridge == -1439483605)
     {
       return result;
     }
@@ -450,7 +450,7 @@ LABEL_9:
     v4 = -823913143;
   }
 
-  if (a3 != v4)
+  if (sandybridge != v4)
   {
     return 1;
   }
@@ -560,7 +560,7 @@ LABEL_15:
   IsInternalOSInstalled = VRTraceIsInternalOSInstalled();
   if (!VTIsStereoMVHEVCEncodeSupported())
   {
-    v4 = 0;
+    isAppleSiliconMac = 0;
     if (!IsInternalOSInstalled)
     {
       goto LABEL_3;
@@ -572,7 +572,7 @@ LABEL_10:
     return VCDefaults_GetBoolValueForKey(@"forceEnableMVHEVCSupport", v5);
   }
 
-  v4 = [(VCHardwareSettingsMac *)self isAppleSiliconMac];
+  isAppleSiliconMac = [(VCHardwareSettingsMac *)self isAppleSiliconMac];
   if (IsInternalOSInstalled)
   {
     goto LABEL_10;
@@ -589,7 +589,7 @@ LABEL_3:
     dispatch_once(&supportsMVHEVCEncode_onceToken, block);
   }
 
-  v5 = supportsMVHEVCEncode_coreCount > 3 && v4;
+  v5 = supportsMVHEVCEncode_coreCount > 3 && isAppleSiliconMac;
   return VCDefaults_GetBoolValueForKey(@"forceEnableMVHEVCSupport", v5);
 }
 
@@ -724,15 +724,15 @@ LABEL_8:
 {
   if (VTIsStereoMVHEVCDecodeSupported())
   {
-    v3 = [(VCHardwareSettingsMac *)self isAppleSiliconMac];
+    isAppleSiliconMac = [(VCHardwareSettingsMac *)self isAppleSiliconMac];
   }
 
   else
   {
-    v3 = 0;
+    isAppleSiliconMac = 0;
   }
 
-  return VCDefaults_GetBoolValueForKey(@"forceEnableMVHEVCSupport", v3);
+  return VCDefaults_GetBoolValueForKey(@"forceEnableMVHEVCSupport", isAppleSiliconMac);
 }
 
 - (BOOL)canDoHEVC
@@ -826,7 +826,7 @@ LABEL_8:
   objc_sync_enter(v3);
   if (VRTraceIsInternalOSInstalled() && (v4 = [+[VCDefaults virtualHardware] sharedInstance]!= 0)
   {
-    v5 = [a1 virtualHardwareSettings:v4];
+    v5 = [self virtualHardwareSettings:v4];
     objc_sync_exit(v3);
   }
 
@@ -1332,9 +1332,9 @@ LABEL_25:
 
 - (BOOL)supportsMultiway1080pStream
 {
-  v2 = [(VCHardwareSettingsMac *)self isAppleSiliconMac];
+  isAppleSiliconMac = [(VCHardwareSettingsMac *)self isAppleSiliconMac];
 
-  return VCDefaults_GetBoolValueForKey(@"supportsMultiway1080pStream", v2);
+  return VCDefaults_GetBoolValueForKey(@"supportsMultiway1080pStream", isAppleSiliconMac);
 }
 
 - (unsigned)screenWidth
@@ -1688,25 +1688,25 @@ LABEL_3:
 
 - (NSArray)supportedVideoPayloads
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [(NSArray *)v3 addObject:&unk_1F5798190];
-  [(NSArray *)v3 addObject:&unk_1F57981A8];
+  array = [MEMORY[0x1E695DF70] array];
+  [(NSArray *)array addObject:&unk_1F5798190];
+  [(NSArray *)array addObject:&unk_1F57981A8];
   if ([(VCHardwareSettings *)self supportHEVC])
   {
-    [(NSArray *)v3 addObject:&unk_1F57981C0];
+    [(NSArray *)array addObject:&unk_1F57981C0];
   }
 
-  return v3;
+  return array;
 }
 
 - (BOOL)supportsDedicatedSystemAudioStream
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [(VCHardwareSettingsMac *)self supportsSystemAudioTap];
-  if (v3)
+  supportsSystemAudioTap = [(VCHardwareSettingsMac *)self supportsSystemAudioTap];
+  if (supportsSystemAudioTap)
   {
     numProcessors = self->_numProcessors;
-    LOBYTE(v3) = 1;
+    LOBYTE(supportsSystemAudioTap) = 1;
     if (numProcessors <= 943936838)
     {
       if (numProcessors > 260141637)
@@ -1744,18 +1744,18 @@ LABEL_3:
     {
       if (![(VCHardwareSettingsMac *)self isMacBookAir])
       {
-        LOBYTE(v3) = 1;
-        return v3;
+        LOBYTE(supportsSystemAudioTap) = 1;
+        return supportsSystemAudioTap;
       }
 
       if (VRTraceGetErrorLogLevelForModule() >= 6)
       {
         v8 = VRTraceErrorLogLevelToCSTR();
         v9 = *MEMORY[0x1E6986650];
-        v3 = os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT);
-        if (!v3)
+        supportsSystemAudioTap = os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT);
+        if (!supportsSystemAudioTap)
         {
-          return v3;
+          return supportsSystemAudioTap;
         }
 
         v11 = 136315650;
@@ -1767,11 +1767,11 @@ LABEL_3:
         _os_log_impl(&dword_1DB56E000, v9, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Forcing mixed in system audio", &v11, 0x1Cu);
       }
 
-      LOBYTE(v3) = 0;
+      LOBYTE(supportsSystemAudioTap) = 0;
     }
   }
 
-  return v3;
+  return supportsSystemAudioTap;
 }
 
 - (void)initForDevice:(uint64_t)a1 .cold.1(uint64_t a1)
@@ -1815,7 +1815,7 @@ LABEL_3:
 - (void)supportsMVHEVCEncode
 {
   v21 = *MEMORY[0x1E69E9840];
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 7)
     {
@@ -1840,7 +1840,7 @@ LABEL_11:
   {
     if (objc_opt_respondsToSelector())
     {
-      v6 = [a1 performSelector:sel_logPrefix];
+      v6 = [self performSelector:sel_logPrefix];
     }
 
     else
@@ -1861,7 +1861,7 @@ LABEL_11:
         v17 = 2112;
         v18 = v6;
         v19 = 2048;
-        v20 = a1;
+        selfCopy = self;
         v9 = " [%s] %s:%d %@(%p) Skipping AVE multicore checks on internal install";
         v10 = v13;
         v11 = 48;

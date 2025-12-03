@@ -1,10 +1,10 @@
 @interface SpeakTypingServices
 + (id)sharedInstance;
 - (AXUIClient)speakTypingClient;
-- (BOOL)notifySpeakServicesForAttributedSpeechOutput:(id)a3;
-- (BOOL)notifySpeakServicesForSpeakAutoCorrections:(id)a3 forCurrentInputMode:(id)a4;
-- (BOOL)notifySpeakServicesForSpeechOutput:(id)a3 volume:(double)a4 speakingRate:(double)a5;
-- (BOOL)notifySpeakServicesToFeedbackQuickTypePrediction:(id)a3 forCurrentInputMode:(id)a4;
+- (BOOL)notifySpeakServicesForAttributedSpeechOutput:(id)output;
+- (BOOL)notifySpeakServicesForSpeakAutoCorrections:(id)corrections forCurrentInputMode:(id)mode;
+- (BOOL)notifySpeakServicesForSpeechOutput:(id)output volume:(double)volume speakingRate:(double)rate;
+- (BOOL)notifySpeakServicesToFeedbackQuickTypePrediction:(id)prediction forCurrentInputMode:(id)mode;
 - (BOOL)notifySpeakServicesToInitializeServerConnection;
 - (BOOL)notifySpeakServicesToStopSpeaking;
 - (BOOL)notifySpeakServicesToStopSpeakingAutocorrections;
@@ -14,10 +14,10 @@
 - (id)lastSpokenString;
 - (id)lastUsedVoiceIdentifier;
 - (void)clearLastSpokenString;
-- (void)connectionWithServiceWasInterruptedForUserInterfaceClient:(id)a3;
+- (void)connectionWithServiceWasInterruptedForUserInterfaceClient:(id)client;
 - (void)dealloc;
 - (void)initializeServerConnection;
-- (void)setVoiceIdentifier:(id)a3 forLanguage:(id)a4;
+- (void)setVoiceIdentifier:(id)identifier forLanguage:(id)language;
 @end
 
 @implementation SpeakTypingServices
@@ -57,8 +57,8 @@ uint64_t __37__SpeakTypingServices_sharedInstance__block_invoke()
 
 - (void)dealloc
 {
-  v3 = [(SpeakTypingServices *)self speakTypingClient];
-  [v3 setDelegate:0];
+  speakTypingClient = [(SpeakTypingServices *)self speakTypingClient];
+  [speakTypingClient setDelegate:0];
 
   v4.receiver = self;
   v4.super_class = SpeakTypingServices;
@@ -79,31 +79,31 @@ uint64_t __37__SpeakTypingServices_sharedInstance__block_invoke()
 
 - (void)clearLastSpokenString
 {
-  v4 = [(SpeakTypingServices *)self speakTypingClient];
-  v2 = [v4 sendSynchronousMessage:MEMORY[0x277CBEC10] withIdentifier:9 error:0];
+  speakTypingClient = [(SpeakTypingServices *)self speakTypingClient];
+  v2 = [speakTypingClient sendSynchronousMessage:MEMORY[0x277CBEC10] withIdentifier:9 error:0];
   v3 = [v2 objectForKey:@"result"];
 }
 
-- (void)setVoiceIdentifier:(id)a3 forLanguage:(id)a4
+- (void)setVoiceIdentifier:(id)identifier forLanguage:(id)language
 {
   v13[2] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SpeakTypingServices *)self speakTypingClient];
+  languageCopy = language;
+  identifierCopy = identifier;
+  speakTypingClient = [(SpeakTypingServices *)self speakTypingClient];
   v12[0] = @"voiceIdentifier";
   v12[1] = @"language";
-  v13[0] = v7;
-  v13[1] = v6;
+  v13[0] = identifierCopy;
+  v13[1] = languageCopy;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:v12 count:2];
 
-  v10 = [v8 sendSynchronousMessage:v9 withIdentifier:10 error:0];
+  v10 = [speakTypingClient sendSynchronousMessage:v9 withIdentifier:10 error:0];
   v11 = *MEMORY[0x277D85DE8];
 }
 
 - (id)lastUsedVoiceIdentifier
 {
-  v2 = [(SpeakTypingServices *)self speakTypingClient];
-  v3 = [v2 sendSynchronousMessage:MEMORY[0x277CBEC10] withIdentifier:8 error:0];
+  speakTypingClient = [(SpeakTypingServices *)self speakTypingClient];
+  v3 = [speakTypingClient sendSynchronousMessage:MEMORY[0x277CBEC10] withIdentifier:8 error:0];
   v4 = [v3 objectForKey:@"result"];
 
   return v4;
@@ -111,8 +111,8 @@ uint64_t __37__SpeakTypingServices_sharedInstance__block_invoke()
 
 - (id)lastSpokenString
 {
-  v2 = [(SpeakTypingServices *)self speakTypingClient];
-  v3 = [v2 sendSynchronousMessage:MEMORY[0x277CBEC10] withIdentifier:7 error:0];
+  speakTypingClient = [(SpeakTypingServices *)self speakTypingClient];
+  v3 = [speakTypingClient sendSynchronousMessage:MEMORY[0x277CBEC10] withIdentifier:7 error:0];
   v4 = [v3 objectForKey:@"result"];
 
   return v4;
@@ -120,26 +120,26 @@ uint64_t __37__SpeakTypingServices_sharedInstance__block_invoke()
 
 - (BOOL)verifyTestingConnection
 {
-  v2 = [(SpeakTypingServices *)self speakTypingClient];
-  v3 = [v2 sendSynchronousMessage:MEMORY[0x277CBEC10] withIdentifier:15 error:0];
+  speakTypingClient = [(SpeakTypingServices *)self speakTypingClient];
+  v3 = [speakTypingClient sendSynchronousMessage:MEMORY[0x277CBEC10] withIdentifier:15 error:0];
   v4 = [v3 objectForKey:@"result"];
-  v5 = [v4 BOOLValue];
+  bOOLValue = [v4 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
 - (BOOL)notifySpeakServicesToStopSpeaking
 {
-  v2 = [(SpeakTypingServices *)self speakTypingClient];
-  [v2 sendAsynchronousMessage:MEMORY[0x277CBEC10] withIdentifier:5 targetAccessQueue:0 completion:0];
+  speakTypingClient = [(SpeakTypingServices *)self speakTypingClient];
+  [speakTypingClient sendAsynchronousMessage:MEMORY[0x277CBEC10] withIdentifier:5 targetAccessQueue:0 completion:0];
 
   return 1;
 }
 
 - (BOOL)notifySpeakServicesToStopSpeakingAutocorrections
 {
-  v2 = [(SpeakTypingServices *)self speakTypingClient];
-  [v2 sendAsynchronousMessage:&unk_287BD1608 withIdentifier:5 targetAccessQueue:0 completion:0];
+  speakTypingClient = [(SpeakTypingServices *)self speakTypingClient];
+  [speakTypingClient sendAsynchronousMessage:&unk_287BD1608 withIdentifier:5 targetAccessQueue:0 completion:0];
 
   return 1;
 }
@@ -154,96 +154,96 @@ uint64_t __37__SpeakTypingServices_sharedInstance__block_invoke()
   return 1;
 }
 
-- (BOOL)notifySpeakServicesForAttributedSpeechOutput:(id)a3
+- (BOOL)notifySpeakServicesForAttributedSpeechOutput:(id)output
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (output)
   {
-    v5 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:a3 requiringSecureCoding:1 error:0];
-    v6 = [(SpeakTypingServices *)self speakTypingClient];
+    v5 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:output requiringSecureCoding:1 error:0];
+    speakTypingClient = [(SpeakTypingServices *)self speakTypingClient];
     v10 = *MEMORY[0x277CE7C80];
     v11[0] = v5;
     v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:&v10 count:1];
-    [v6 sendAsynchronousMessage:v7 withIdentifier:6 targetAccessQueue:0 completion:0];
+    [speakTypingClient sendAsynchronousMessage:v7 withIdentifier:6 targetAccessQueue:0 completion:0];
   }
 
-  result = a3 != 0;
+  result = output != 0;
   v9 = *MEMORY[0x277D85DE8];
   return result;
 }
 
-- (BOOL)notifySpeakServicesForSpeechOutput:(id)a3 volume:(double)a4 speakingRate:(double)a5
+- (BOOL)notifySpeakServicesForSpeechOutput:(id)output volume:(double)volume speakingRate:(double)rate
 {
   v18[3] = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (output)
   {
-    v9 = a3;
-    v10 = [(SpeakTypingServices *)self speakTypingClient];
+    outputCopy = output;
+    speakTypingClient = [(SpeakTypingServices *)self speakTypingClient];
     v11 = *MEMORY[0x277CE7C80];
-    v18[0] = v9;
+    v18[0] = outputCopy;
     v17[0] = v11;
     v17[1] = @"AXSpeakTypingPayloadKeyVolume";
-    v12 = [MEMORY[0x277CCABB0] numberWithDouble:a4];
+    v12 = [MEMORY[0x277CCABB0] numberWithDouble:volume];
     v18[1] = v12;
     v17[2] = @"AXSpeakTypingPayloadKeyRate";
-    v13 = [MEMORY[0x277CCABB0] numberWithDouble:a5];
+    v13 = [MEMORY[0x277CCABB0] numberWithDouble:rate];
     v18[2] = v13;
     v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:v17 count:3];
 
-    [v10 sendAsynchronousMessage:v14 withIdentifier:6 targetAccessQueue:0 completion:0];
+    [speakTypingClient sendAsynchronousMessage:v14 withIdentifier:6 targetAccessQueue:0 completion:0];
   }
 
-  result = a3 != 0;
+  result = output != 0;
   v16 = *MEMORY[0x277D85DE8];
   return result;
 }
 
-- (BOOL)notifySpeakServicesForSpeakAutoCorrections:(id)a3 forCurrentInputMode:(id)a4
+- (BOOL)notifySpeakServicesForSpeakAutoCorrections:(id)corrections forCurrentInputMode:(id)mode
 {
   v14[2] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = v6;
-  if (a3)
+  modeCopy = mode;
+  v7 = modeCopy;
+  if (corrections)
   {
-    if (!v6)
+    if (!modeCopy)
     {
       v7 = &stru_287BD1328;
     }
 
-    v8 = a3;
-    v9 = [(SpeakTypingServices *)self speakTypingClient];
+    correctionsCopy = corrections;
+    speakTypingClient = [(SpeakTypingServices *)self speakTypingClient];
     v13[0] = *MEMORY[0x277CE7C80];
     v13[1] = @"AXSpeakTypingPayloadKeyLanguage";
-    v14[0] = v8;
+    v14[0] = correctionsCopy;
     v14[1] = v7;
     v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:v13 count:2];
 
-    [v9 sendAsynchronousMessage:v10 withIdentifier:4 targetAccessQueue:0 completion:0];
+    [speakTypingClient sendAsynchronousMessage:v10 withIdentifier:4 targetAccessQueue:0 completion:0];
   }
 
   v11 = *MEMORY[0x277D85DE8];
-  return a3 != 0;
+  return corrections != 0;
 }
 
-- (BOOL)notifySpeakServicesToFeedbackQuickTypePrediction:(id)a3 forCurrentInputMode:(id)a4
+- (BOOL)notifySpeakServicesToFeedbackQuickTypePrediction:(id)prediction forCurrentInputMode:(id)mode
 {
   v14[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (UIAccessibilityIsVoiceOverRunning() || ![v6 length])
+  predictionCopy = prediction;
+  modeCopy = mode;
+  if (UIAccessibilityIsVoiceOverRunning() || ![predictionCopy length])
   {
     v10 = 0;
   }
 
   else
   {
-    v8 = [(SpeakTypingServices *)self speakTypingClient];
+    speakTypingClient = [(SpeakTypingServices *)self speakTypingClient];
     v13[0] = *MEMORY[0x277CE7C78];
     v13[1] = @"AXSpeakTypingPayloadKeyLanguage";
-    v14[0] = v6;
-    v14[1] = v7;
+    v14[0] = predictionCopy;
+    v14[1] = modeCopy;
     v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:v13 count:2];
-    [v8 sendAsynchronousMessage:v9 withIdentifier:3 targetAccessQueue:0 completion:0];
+    [speakTypingClient sendAsynchronousMessage:v9 withIdentifier:3 targetAccessQueue:0 completion:0];
 
     v10 = 1;
   }
@@ -254,11 +254,11 @@ uint64_t __37__SpeakTypingServices_sharedInstance__block_invoke()
 
 - (id)_clientIdentifier
 {
-  v2 = [MEMORY[0x277CCAC38] processInfo];
-  v3 = [v2 processIdentifier];
+  processInfo = [MEMORY[0x277CCAC38] processInfo];
+  processIdentifier = [processInfo processIdentifier];
 
   v4 = MEMORY[0x277CCACA8];
-  v5 = [MEMORY[0x277CCABB0] numberWithInt:v3];
+  v5 = [MEMORY[0x277CCABB0] numberWithInt:processIdentifier];
   v6 = [v4 stringWithFormat:@"SpeakTypingClientIdentifier-%@", v5];
 
   return v6;
@@ -269,8 +269,8 @@ uint64_t __37__SpeakTypingServices_sharedInstance__block_invoke()
   if (!self->_speakTypingClient)
   {
     v4 = objc_alloc(MEMORY[0x277CE7740]);
-    v5 = [(SpeakTypingServices *)self _clientIdentifier];
-    v6 = [v4 initWithIdentifier:v5 serviceBundleName:@"SpeakServer"];
+    _clientIdentifier = [(SpeakTypingServices *)self _clientIdentifier];
+    v6 = [v4 initWithIdentifier:_clientIdentifier serviceBundleName:@"SpeakServer"];
     speakTypingClient = self->_speakTypingClient;
     self->_speakTypingClient = v6;
 
@@ -282,9 +282,9 @@ uint64_t __37__SpeakTypingServices_sharedInstance__block_invoke()
   }
 }
 
-- (void)connectionWithServiceWasInterruptedForUserInterfaceClient:(id)a3
+- (void)connectionWithServiceWasInterruptedForUserInterfaceClient:(id)client
 {
-  if (self->_speakTypingClient == a3)
+  if (self->_speakTypingClient == client)
   {
     block[5] = v3;
     block[6] = v4;

@@ -1,15 +1,15 @@
 @interface MediaContinuityUsageSecureCodingWrapper
 - (_TtC18MediaContinuityKit39MediaContinuityUsageSecureCodingWrapper)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MediaContinuityUsageSecureCodingWrapper
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_25846768C(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_25846768C(coderCopy);
 }
 
 - (_TtC18MediaContinuityKit39MediaContinuityUsageSecureCodingWrapper)init

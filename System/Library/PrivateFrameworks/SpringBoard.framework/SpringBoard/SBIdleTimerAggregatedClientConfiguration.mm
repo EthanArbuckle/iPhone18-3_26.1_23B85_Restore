@@ -1,26 +1,26 @@
 @interface SBIdleTimerAggregatedClientConfiguration
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)expirationTimeoutIntervalRangeForPrecedence:(unint64_t)a3;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)expirationTimeoutIntervalRangeForPrecedence:(unint64_t)precedence;
 - (id)resolvedExpirationTimeoutRange;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
-- (void)setDisablesTimerWithPrecedence:(unint64_t)a3;
-- (void)setMaxExpirationTimeout:(double)a3 ifLeastForPrecedence:(unint64_t)a4;
-- (void)setMaxExpirationTimeout:(double)a3 withPrecedence:(unint64_t)a4;
-- (void)setMinExpirationTimeout:(double)a3 ifGreatestForPrecedence:(unint64_t)a4;
-- (void)setMinExpirationTimeout:(double)a3 withPrecedence:(unint64_t)a4;
+- (void)setDisablesTimerWithPrecedence:(unint64_t)precedence;
+- (void)setMaxExpirationTimeout:(double)timeout ifLeastForPrecedence:(unint64_t)precedence;
+- (void)setMaxExpirationTimeout:(double)timeout withPrecedence:(unint64_t)precedence;
+- (void)setMinExpirationTimeout:(double)timeout ifGreatestForPrecedence:(unint64_t)precedence;
+- (void)setMinExpirationTimeout:(double)timeout withPrecedence:(unint64_t)precedence;
 @end
 
 @implementation SBIdleTimerAggregatedClientConfiguration
 
-- (void)setDisablesTimerWithPrecedence:(unint64_t)a3
+- (void)setDisablesTimerWithPrecedence:(unint64_t)precedence
 {
-  v4 = [[SBIdleTimerConfigurationDisablesTimerSetting alloc] initWithPrecedence:a3];
+  v4 = [[SBIdleTimerConfigurationDisablesTimerSetting alloc] initWithPrecedence:precedence];
   disableTimerSetting = self->_disableTimerSetting;
   self->_disableTimerSetting = v4;
 }
 
-- (void)setMinExpirationTimeout:(double)a3 withPrecedence:(unint64_t)a4
+- (void)setMinExpirationTimeout:(double)timeout withPrecedence:(unint64_t)precedence
 {
   resolvedExpirationTimeoutRange = self->_resolvedExpirationTimeoutRange;
   self->_resolvedExpirationTimeoutRange = 0;
@@ -35,10 +35,10 @@
     minExpirationTimeoutSettings = self->_minExpirationTimeoutSettings;
   }
 
-  [(SBIdleTimerTimeoutPrecedenceSettings *)minExpirationTimeoutSettings _setTimeout:a4 withPrecedence:a3];
+  [(SBIdleTimerTimeoutPrecedenceSettings *)minExpirationTimeoutSettings _setTimeout:precedence withPrecedence:timeout];
 }
 
-- (void)setMinExpirationTimeout:(double)a3 ifGreatestForPrecedence:(unint64_t)a4
+- (void)setMinExpirationTimeout:(double)timeout ifGreatestForPrecedence:(unint64_t)precedence
 {
   resolvedExpirationTimeoutRange = self->_resolvedExpirationTimeoutRange;
   self->_resolvedExpirationTimeoutRange = 0;
@@ -47,17 +47,17 @@
   if (minExpirationTimeoutSettings)
   {
 
-    [(SBIdleTimerTimeoutPrecedenceSettings *)minExpirationTimeoutSettings _setTimeout:a4 ifGreatestForPrecedence:a3];
+    [(SBIdleTimerTimeoutPrecedenceSettings *)minExpirationTimeoutSettings _setTimeout:precedence ifGreatestForPrecedence:timeout];
   }
 
   else
   {
 
-    [(SBIdleTimerAggregatedClientConfiguration *)self setMinExpirationTimeout:a4 withPrecedence:a3];
+    [(SBIdleTimerAggregatedClientConfiguration *)self setMinExpirationTimeout:precedence withPrecedence:timeout];
   }
 }
 
-- (void)setMaxExpirationTimeout:(double)a3 withPrecedence:(unint64_t)a4
+- (void)setMaxExpirationTimeout:(double)timeout withPrecedence:(unint64_t)precedence
 {
   resolvedExpirationTimeoutRange = self->_resolvedExpirationTimeoutRange;
   self->_resolvedExpirationTimeoutRange = 0;
@@ -72,10 +72,10 @@
     maxExpirationTimeoutSettings = self->_maxExpirationTimeoutSettings;
   }
 
-  [(SBIdleTimerTimeoutPrecedenceSettings *)maxExpirationTimeoutSettings _setTimeout:a4 withPrecedence:a3];
+  [(SBIdleTimerTimeoutPrecedenceSettings *)maxExpirationTimeoutSettings _setTimeout:precedence withPrecedence:timeout];
 }
 
-- (void)setMaxExpirationTimeout:(double)a3 ifLeastForPrecedence:(unint64_t)a4
+- (void)setMaxExpirationTimeout:(double)timeout ifLeastForPrecedence:(unint64_t)precedence
 {
   resolvedExpirationTimeoutRange = self->_resolvedExpirationTimeoutRange;
   self->_resolvedExpirationTimeoutRange = 0;
@@ -84,31 +84,31 @@
   if (maxExpirationTimeoutSettings)
   {
 
-    [(SBIdleTimerTimeoutPrecedenceSettings *)maxExpirationTimeoutSettings _setTimeout:a4 ifLeastForPrecedence:a3];
+    [(SBIdleTimerTimeoutPrecedenceSettings *)maxExpirationTimeoutSettings _setTimeout:precedence ifLeastForPrecedence:timeout];
   }
 
   else
   {
 
-    [(SBIdleTimerAggregatedClientConfiguration *)self setMaxExpirationTimeout:a4 withPrecedence:a3];
+    [(SBIdleTimerAggregatedClientConfiguration *)self setMaxExpirationTimeout:precedence withPrecedence:timeout];
   }
 }
 
-- (id)expirationTimeoutIntervalRangeForPrecedence:(unint64_t)a3
+- (id)expirationTimeoutIntervalRangeForPrecedence:(unint64_t)precedence
 {
   minExpirationTimeoutSettings = self->_minExpirationTimeoutSettings;
   v6 = 0.0;
   v7 = 0.0;
   if (minExpirationTimeoutSettings)
   {
-    [(SBIdleTimerTimeoutPrecedenceSettings *)minExpirationTimeoutSettings _intervalForPrecedence:a3];
+    [(SBIdleTimerTimeoutPrecedenceSettings *)minExpirationTimeoutSettings _intervalForPrecedence:precedence];
     v7 = v8;
   }
 
   maxExpirationTimeoutSettings = self->_maxExpirationTimeoutSettings;
   if (maxExpirationTimeoutSettings)
   {
-    [(SBIdleTimerTimeoutPrecedenceSettings *)maxExpirationTimeoutSettings _intervalForPrecedence:a3];
+    [(SBIdleTimerTimeoutPrecedenceSettings *)maxExpirationTimeoutSettings _intervalForPrecedence:precedence];
     v6 = v10;
     if ((BSFloatIsZero() & 1) == 0)
     {
@@ -150,10 +150,10 @@
 
 - (id)succinctDescription
 {
-  v2 = [(SBIdleTimerAggregatedClientConfiguration *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBIdleTimerAggregatedClientConfiguration *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -166,12 +166,12 @@
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBIdleTimerAggregatedClientConfiguration *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBIdleTimerAggregatedClientConfiguration *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 @end

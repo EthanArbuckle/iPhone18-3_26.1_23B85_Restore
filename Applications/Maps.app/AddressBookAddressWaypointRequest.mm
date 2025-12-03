@@ -1,40 +1,40 @@
 @interface AddressBookAddressWaypointRequest
-+ (id)_clientAttributesForAddress:(id)a3;
-- (AddressBookAddressWaypointRequest)initWithAddress:(id)a3 mapItem:(id)a4;
-- (BOOL)isEquivalentToOtherRequest:(id)a3;
++ (id)_clientAttributesForAddress:(id)address;
+- (AddressBookAddressWaypointRequest)initWithAddress:(id)address mapItem:(id)item;
+- (BOOL)isEquivalentToOtherRequest:(id)request;
 - (CLLocationCoordinate2D)coordinate;
 - (NSString)debugDescription;
 - (NSString)description;
 - (NSString)waypointName;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)loadComposedWaypointWithTraits:(id)a3 clientResolvedCompletionHandler:(id)a4 completionHandler:(id)a5 networkActivityHandler:(id)a6;
-- (id)waypointIconWithScale:(double)a3;
-- (void)_maps_buildDescriptionWithBlock:(id)a3;
-- (void)recordRAPInformation:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)loadComposedWaypointWithTraits:(id)traits clientResolvedCompletionHandler:(id)handler completionHandler:(id)completionHandler networkActivityHandler:(id)activityHandler;
+- (id)waypointIconWithScale:(double)scale;
+- (void)_maps_buildDescriptionWithBlock:(id)block;
+- (void)recordRAPInformation:(id)information;
 @end
 
 @implementation AddressBookAddressWaypointRequest
 
-- (void)recordRAPInformation:(id)a3
+- (void)recordRAPInformation:(id)information
 {
   addressString = self->_addressString;
-  v4 = a3;
-  [v4 setSingleLineAddressString:addressString];
-  [v4 setOrigin:1];
+  informationCopy = information;
+  [informationCopy setSingleLineAddressString:addressString];
+  [informationCopy setOrigin:1];
 }
 
-- (id)loadComposedWaypointWithTraits:(id)a3 clientResolvedCompletionHandler:(id)a4 completionHandler:(id)a5 networkActivityHandler:(id)a6
+- (id)loadComposedWaypointWithTraits:(id)traits clientResolvedCompletionHandler:(id)handler completionHandler:(id)completionHandler networkActivityHandler:(id)activityHandler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(AddressBookAddressWaypointRequest *)self cachedLoadResult];
+  traitsCopy = traits;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  activityHandlerCopy = activityHandler;
+  cachedLoadResult = [(AddressBookAddressWaypointRequest *)self cachedLoadResult];
 
-  if (v14)
+  if (cachedLoadResult)
   {
-    v15 = [(AddressBookAddressWaypointRequest *)self cachedLoadResult];
-    v12[2](v12, v15);
+    cachedLoadResult2 = [(AddressBookAddressWaypointRequest *)self cachedLoadResult];
+    completionHandlerCopy[2](completionHandlerCopy, cachedLoadResult2);
 
     v16 = 0;
   }
@@ -47,10 +47,10 @@
     v25[2] = sub_100C7074C;
     v25[3] = &unk_10164F520;
     objc_copyWeak(&v27, &location);
-    v26 = v12;
+    v26 = completionHandlerCopy;
     v17 = objc_retainBlock(v25);
-    v18 = [(AddressBookAddressWaypointRequest *)self addressString];
-    v19 = [(AddressBookAddressWaypointRequest *)self clientAttributes];
+    addressString = [(AddressBookAddressWaypointRequest *)self addressString];
+    clientAttributes = [(AddressBookAddressWaypointRequest *)self clientAttributes];
     v22[0] = _NSConcreteStackBlock;
     v22[1] = 3221225472;
     v22[2] = sub_100C707BC;
@@ -58,7 +58,7 @@
     objc_copyWeak(&v24, &location);
     v20 = v17;
     v23 = v20;
-    v16 = [GEOComposedWaypoint composedWaypointForAddressString:v18 traits:v10 clientAttributes:v19 completionHandler:v22 networkActivityHandler:v13];
+    v16 = [GEOComposedWaypoint composedWaypointForAddressString:addressString traits:traitsCopy clientAttributes:clientAttributes completionHandler:v22 networkActivityHandler:activityHandlerCopy];
 
     objc_destroyWeak(&v24);
     objc_destroyWeak(&v27);
@@ -68,17 +68,17 @@
   return v16;
 }
 
-- (BOOL)isEquivalentToOtherRequest:(id)a3
+- (BOOL)isEquivalentToOtherRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(AddressBookAddressWaypointRequest *)self addressString];
-    v7 = [v5 addressString];
+    v5 = requestCopy;
+    addressString = [(AddressBookAddressWaypointRequest *)self addressString];
+    addressString2 = [v5 addressString];
 
-    v8 = [v6 isEqualToString:v7];
+    v8 = [addressString isEqualToString:addressString2];
   }
 
   else
@@ -91,41 +91,41 @@
 
 - (NSString)waypointName
 {
-  v3 = [(AddressBookAddressWaypointRequest *)self contact];
-  if (v3)
+  contact = [(AddressBookAddressWaypointRequest *)self contact];
+  if (contact)
   {
-    v4 = v3;
-    v5 = [(AddressBookAddressWaypointRequest *)self address];
+    v4 = contact;
+    address = [(AddressBookAddressWaypointRequest *)self address];
 
-    if (v5)
+    if (address)
     {
-      v6 = [(AddressBookAddressWaypointRequest *)self address];
-      v7 = [v6 waypointCompositeName];
+      address2 = [(AddressBookAddressWaypointRequest *)self address];
+      waypointCompositeName = [address2 waypointCompositeName];
 LABEL_6:
-      v9 = v7;
+      v9 = waypointCompositeName;
       goto LABEL_8;
     }
   }
 
-  v8 = [(MKMapItem *)self->_mapItem name];
-  if (v8)
+  name = [(MKMapItem *)self->_mapItem name];
+  if (name)
   {
-    v7 = v8;
-    v6 = v7;
+    waypointCompositeName = name;
+    address2 = waypointCompositeName;
     goto LABEL_6;
   }
 
   v9 = MKLocalizedStringForUnknownLocation();
-  v6 = 0;
+  address2 = 0;
 LABEL_8:
 
   return v9;
 }
 
-- (id)waypointIconWithScale:(double)a3
+- (id)waypointIconWithScale:(double)scale
 {
-  v4 = [(AddressBookAddressWaypointRequest *)self address];
-  v5 = [v4 thumbnailIconWithScale:2 size:a3];
+  address = [(AddressBookAddressWaypointRequest *)self address];
+  v5 = [address thumbnailIconWithScale:2 size:scale];
 
   return v5;
 }
@@ -139,21 +139,21 @@ LABEL_8:
   return result;
 }
 
-- (void)_maps_buildDescriptionWithBlock:(id)a3
+- (void)_maps_buildDescriptionWithBlock:(id)block
 {
-  v4 = (a3 + 16);
-  v5 = *(a3 + 2);
-  v6 = a3;
+  v4 = (block + 16);
+  v5 = *(block + 2);
+  blockCopy = block;
   v5();
-  (*v4)(v6, @"addressString", self->_addressString);
-  (*v4)(v6, @"clientAttributes", self->_clientAttributes);
-  (*v4)(v6, @"contact", &self->_contact->super.isa);
-  (*v4)(v6, @"mapItem", &self->_mapItem->super.isa);
+  (*v4)(blockCopy, @"addressString", self->_addressString);
+  (*v4)(blockCopy, @"clientAttributes", self->_clientAttributes);
+  (*v4)(blockCopy, @"contact", &self->_contact->super.isa);
+  (*v4)(blockCopy, @"mapItem", &self->_mapItem->super.isa);
 }
 
 - (NSString)debugDescription
 {
-  v2 = self;
+  selfCopy = self;
   v14 = _NSConcreteStackBlock;
   v15 = 3221225472;
   v16 = sub_100C70D84;
@@ -161,8 +161,8 @@ LABEL_8:
   v3 = objc_alloc_init(NSMutableArray);
   v18 = v3;
   v4 = objc_retainBlock(&v14);
-  [(AddressBookAddressWaypointRequest *)v2 _maps_buildDescriptionWithBlock:v4];
-  v5 = v2;
+  [(AddressBookAddressWaypointRequest *)selfCopy _maps_buildDescriptionWithBlock:v4];
+  v5 = selfCopy;
   if (v5)
   {
     v6 = objc_opt_class();
@@ -196,7 +196,7 @@ LABEL_9:
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   v14 = _NSConcreteStackBlock;
   v15 = 3221225472;
   v16 = sub_100C70FD4;
@@ -204,8 +204,8 @@ LABEL_9:
   v3 = objc_alloc_init(NSMutableArray);
   v18 = v3;
   v4 = objc_retainBlock(&v14);
-  [(AddressBookAddressWaypointRequest *)v2 _maps_buildDescriptionWithBlock:v4];
-  v5 = v2;
+  [(AddressBookAddressWaypointRequest *)selfCopy _maps_buildDescriptionWithBlock:v4];
+  v5 = selfCopy;
   if (v5)
   {
     v6 = objc_opt_class();
@@ -237,36 +237,36 @@ LABEL_9:
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "initWithAddress:mapItem:", self->_address, self->_mapItem}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "initWithAddress:mapItem:", self->_address, self->_mapItem}];
   objc_storeStrong(v4 + 6, self->_cachedLoadResult);
   return v4;
 }
 
-- (AddressBookAddressWaypointRequest)initWithAddress:(id)a3 mapItem:(id)a4
+- (AddressBookAddressWaypointRequest)initWithAddress:(id)address mapItem:(id)item
 {
-  v7 = a3;
-  v8 = a4;
-  if ([v7 isValid])
+  addressCopy = address;
+  itemCopy = item;
+  if ([addressCopy isValid])
   {
     v26.receiver = self;
     v26.super_class = AddressBookAddressWaypointRequest;
     v9 = [(AddressBookAddressWaypointRequest *)&v26 init];
     if (v9)
     {
-      v10 = [v7 singleLineAddress];
-      v11 = [objc_opt_class() _clientAttributesForAddress:v7];
-      v12 = [v7 contact];
-      if (!v8)
+      singleLineAddress = [addressCopy singleLineAddress];
+      v11 = [objc_opt_class() _clientAttributesForAddress:addressCopy];
+      contact = [addressCopy contact];
+      if (!itemCopy)
       {
         v13 = [MKMapItem alloc];
-        v14 = [v7 addressDictionary];
-        v8 = [v13 initWithAddressDictionary:v14];
+        addressDictionary = [addressCopy addressDictionary];
+        itemCopy = [v13 initWithAddressDictionary:addressDictionary];
       }
 
-      objc_storeStrong(&v9->_address, a3);
-      v15 = [v10 copy];
+      objc_storeStrong(&v9->_address, address);
+      v15 = [singleLineAddress copy];
       addressString = v9->_addressString;
       v9->_addressString = v15;
 
@@ -275,14 +275,14 @@ LABEL_9:
       v9->_clientAttributes = v17;
 
       contact = v9->_contact;
-      v9->_contact = v12;
-      v20 = v12;
+      v9->_contact = contact;
+      v20 = contact;
 
-      objc_storeStrong(&v9->_mapItem, v8);
+      objc_storeStrong(&v9->_mapItem, itemCopy);
     }
 
     self = v9;
-    v21 = self;
+    selfCopy = self;
   }
 
   else
@@ -295,38 +295,38 @@ LABEL_9:
       *buf = 138412546;
       v28 = v24;
       v29 = 2112;
-      v30 = v7;
+      v30 = addressCopy;
       _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_INFO, "Invalid %@ was passed in: %@", buf, 0x16u);
     }
 
-    v21 = 0;
+    selfCopy = 0;
   }
 
-  return v21;
+  return selfCopy;
 }
 
-+ (id)_clientAttributesForAddress:(id)a3
++ (id)_clientAttributesForAddress:(id)address
 {
-  v3 = a3;
+  addressCopy = address;
   v4 = objc_alloc_init(GEOMapItemAddressBookAttributes);
-  v5 = [v3 compositeName];
-  [v4 setName:v5];
+  compositeName = [addressCopy compositeName];
+  [v4 setName:compositeName];
 
-  v6 = [v3 spokenNameForNavigation];
-  if ([v6 length])
+  spokenNameForNavigation = [addressCopy spokenNameForNavigation];
+  if ([spokenNameForNavigation length])
   {
-    [v4 setSpokenName:v6];
+    [v4 setSpokenName:spokenNameForNavigation];
   }
 
-  [v4 setAddressType:{objc_msgSend(v3, "addressType")}];
-  [v4 setIsMe:{objc_msgSend(v3, "isMeCard")}];
-  v7 = [v3 addressValue];
-  v8 = [v7 identifier];
-  [v4 setAddressIdentifier:v8];
+  [v4 setAddressType:{objc_msgSend(addressCopy, "addressType")}];
+  [v4 setIsMe:{objc_msgSend(addressCopy, "isMeCard")}];
+  addressValue = [addressCopy addressValue];
+  identifier = [addressValue identifier];
+  [v4 setAddressIdentifier:identifier];
 
-  v9 = [v3 contact];
-  v10 = [v9 identifier];
-  [v4 setContactIdentifier:v10];
+  contact = [addressCopy contact];
+  identifier2 = [contact identifier];
+  [v4 setContactIdentifier:identifier2];
 
   v11 = objc_alloc_init(GEOMapItemClientAttributes);
   [v11 setAddressBookAttributes:v4];

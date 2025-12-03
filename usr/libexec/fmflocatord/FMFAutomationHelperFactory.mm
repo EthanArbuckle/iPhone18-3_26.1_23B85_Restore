@@ -1,6 +1,6 @@
 @interface FMFAutomationHelperFactory
 + (id)sharedFactory;
-- (Class)automationHelperClassWithName:(id)a3;
+- (Class)automationHelperClassWithName:(id)name;
 @end
 
 @implementation FMFAutomationHelperFactory
@@ -17,14 +17,14 @@
   return v3;
 }
 
-- (Class)automationHelperClassWithName:(id)a3
+- (Class)automationHelperClassWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = sub_100002830();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v15 = 138412290;
-    v16 = v4;
+    v16 = nameCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Loading automation class %@", &v15, 0xCu);
   }
 
@@ -45,15 +45,15 @@
 
   else
   {
-    v10 = [(FMFAutomationHelperFactory *)self automationHelperBundle];
-    v11 = [v10 classNamed:v4];
+    automationHelperBundle = [(FMFAutomationHelperFactory *)self automationHelperBundle];
+    v11 = [automationHelperBundle classNamed:nameCopy];
 
     if (!v11)
     {
       v12 = sub_100002830();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
-        sub_100038C58(v4, v12);
+        sub_100038C58(nameCopy, v12);
       }
     }
 

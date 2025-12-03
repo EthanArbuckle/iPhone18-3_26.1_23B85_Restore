@@ -1,5 +1,5 @@
 @interface _NSFileWatcherFileHandleInfo
-+ (id)openFileWithPath:(id)a3;
++ (id)openFileWithPath:(id)path;
 - (void)close;
 - (void)dealloc;
 @end
@@ -32,10 +32,10 @@
   [(_NSFileWatcherFileHandleInfo *)&v3 dealloc];
 }
 
-+ (id)openFileWithPath:(id)a3
++ (id)openFileWithPath:(id)path
 {
   v12 = *MEMORY[0x1E69E9840];
-  v3 = open([a3 fileSystemRepresentation], 2129920);
+  v3 = open([path fileSystemRepresentation], 2129920);
   if (_MergedGlobals_151 != -1)
   {
     dispatch_once(&_MergedGlobals_151, &__block_literal_global_84);

@@ -1,8 +1,8 @@
 @interface ADIntentsUserActivityManager
 - (ADIntentsUserActivityManager)init;
 - (id)description;
-- (id)userActivityForID:(id)a3;
-- (void)setUserActivity:(id)a3 forID:(id)a4;
+- (id)userActivityForID:(id)d;
+- (void)setUserActivity:(id)activity forID:(id)d;
 @end
 
 @implementation ADIntentsUserActivityManager
@@ -18,29 +18,29 @@
   return v5;
 }
 
-- (void)setUserActivity:(id)a3 forID:(id)a4
+- (void)setUserActivity:(id)activity forID:(id)d
 {
-  v8 = a3;
-  v6 = a4;
-  if (v6)
+  activityCopy = activity;
+  dCopy = d;
+  if (dCopy)
   {
     [(ADIntentsUserActivityManager *)self reset];
     userActivitiesStore = self->_userActivitiesStore;
-    if (v8)
+    if (activityCopy)
     {
-      [(NSMutableDictionary *)userActivitiesStore setObject:v8 forKey:v6];
+      [(NSMutableDictionary *)userActivitiesStore setObject:activityCopy forKey:dCopy];
     }
 
     else
     {
-      [(NSMutableDictionary *)userActivitiesStore removeObjectForKey:v6];
+      [(NSMutableDictionary *)userActivitiesStore removeObjectForKey:dCopy];
     }
   }
 }
 
-- (id)userActivityForID:(id)a3
+- (id)userActivityForID:(id)d
 {
-  if (a3)
+  if (d)
   {
     v5 = [(NSMutableDictionary *)self->_userActivitiesStore objectForKey:?];
     if (!v5)

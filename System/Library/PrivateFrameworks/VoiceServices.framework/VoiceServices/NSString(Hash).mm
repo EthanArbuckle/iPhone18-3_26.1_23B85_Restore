@@ -7,18 +7,18 @@
 
 - (id)preinstalledAudioHashForLanguage:()Hash name:
 {
-  v4 = [a1 stringByAppendingFormat:@" %@ %@", a3, a4];
-  v5 = [v4 sha256hex];
+  v4 = [self stringByAppendingFormat:@" %@ %@", a3, a4];
+  sha256hex = [v4 sha256hex];
 
-  return v5;
+  return sha256hex;
 }
 
 - (id)sha256hex
 {
   v8 = *MEMORY[0x277D85DE8];
-  v1 = [a1 UTF8String];
-  v2 = strlen(v1);
-  CC_SHA256(v1, v2, md);
+  uTF8String = [self UTF8String];
+  v2 = strlen(uTF8String);
+  CC_SHA256(uTF8String, v2, md);
   v3 = [MEMORY[0x277CCAB68] stringWithCapacity:64];
   for (i = 0; i != 32; ++i)
   {

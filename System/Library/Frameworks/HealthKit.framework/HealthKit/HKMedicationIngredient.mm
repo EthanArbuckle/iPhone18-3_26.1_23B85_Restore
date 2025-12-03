@@ -1,10 +1,10 @@
 @interface HKMedicationIngredient
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HKMedicationIngredient)init;
-- (HKMedicationIngredient)initWithCoder:(id)a3;
-- (HKMedicationIngredient)initWithSubstanceCodingCollection:(id)a3 numerator:(id)a4 denominator:(id)a5;
+- (HKMedicationIngredient)initWithCoder:(id)coder;
+- (HKMedicationIngredient)initWithSubstanceCodingCollection:(id)collection numerator:(id)numerator denominator:(id)denominator;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKMedicationIngredient
@@ -19,25 +19,25 @@
   return 0;
 }
 
-- (HKMedicationIngredient)initWithSubstanceCodingCollection:(id)a3 numerator:(id)a4 denominator:(id)a5
+- (HKMedicationIngredient)initWithSubstanceCodingCollection:(id)collection numerator:(id)numerator denominator:(id)denominator
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  collectionCopy = collection;
+  numeratorCopy = numerator;
+  denominatorCopy = denominator;
   v19.receiver = self;
   v19.super_class = HKMedicationIngredient;
   v11 = [(HKMedicationIngredient *)&v19 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [collectionCopy copy];
     substanceCodingCollection = v11->_substanceCodingCollection;
     v11->_substanceCodingCollection = v12;
 
-    v14 = [v9 copy];
+    v14 = [numeratorCopy copy];
     numerator = v11->_numerator;
     v11->_numerator = v14;
 
-    v16 = [v10 copy];
+    v16 = [denominatorCopy copy];
     denominator = v11->_denominator;
     v11->_denominator = v16;
   }
@@ -45,10 +45,10 @@
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v14 = 1;
   }
@@ -58,26 +58,26 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(HKMedicationIngredient *)v5 substanceCodingCollection];
-      v7 = [(HKMedicationIngredient *)self substanceCodingCollection];
-      v8 = v7;
-      if (v6 == v7)
+      v5 = equalCopy;
+      substanceCodingCollection = [(HKMedicationIngredient *)v5 substanceCodingCollection];
+      substanceCodingCollection2 = [(HKMedicationIngredient *)self substanceCodingCollection];
+      v8 = substanceCodingCollection2;
+      if (substanceCodingCollection == substanceCodingCollection2)
       {
       }
 
       else
       {
-        v9 = [(HKMedicationIngredient *)self substanceCodingCollection];
-        if (!v9)
+        substanceCodingCollection3 = [(HKMedicationIngredient *)self substanceCodingCollection];
+        if (!substanceCodingCollection3)
         {
           goto LABEL_19;
         }
 
-        v10 = v9;
-        v11 = [(HKMedicationIngredient *)v5 substanceCodingCollection];
-        v12 = [(HKMedicationIngredient *)self substanceCodingCollection];
-        v13 = [v11 isEqual:v12];
+        v10 = substanceCodingCollection3;
+        substanceCodingCollection4 = [(HKMedicationIngredient *)v5 substanceCodingCollection];
+        substanceCodingCollection5 = [(HKMedicationIngredient *)self substanceCodingCollection];
+        v13 = [substanceCodingCollection4 isEqual:substanceCodingCollection5];
 
         if (!v13)
         {
@@ -85,25 +85,25 @@
         }
       }
 
-      v6 = [(HKMedicationIngredient *)v5 numerator];
-      v15 = [(HKMedicationIngredient *)self numerator];
-      v8 = v15;
-      if (v6 == v15)
+      substanceCodingCollection = [(HKMedicationIngredient *)v5 numerator];
+      numerator = [(HKMedicationIngredient *)self numerator];
+      v8 = numerator;
+      if (substanceCodingCollection == numerator)
       {
       }
 
       else
       {
-        v16 = [(HKMedicationIngredient *)self numerator];
-        if (!v16)
+        numerator2 = [(HKMedicationIngredient *)self numerator];
+        if (!numerator2)
         {
           goto LABEL_19;
         }
 
-        v17 = v16;
-        v18 = [(HKMedicationIngredient *)v5 numerator];
-        v19 = [(HKMedicationIngredient *)self numerator];
-        v20 = [v18 isEqual:v19];
+        v17 = numerator2;
+        numerator3 = [(HKMedicationIngredient *)v5 numerator];
+        numerator4 = [(HKMedicationIngredient *)self numerator];
+        v20 = [numerator3 isEqual:numerator4];
 
         if (!v20)
         {
@@ -111,10 +111,10 @@
         }
       }
 
-      v6 = [(HKMedicationIngredient *)v5 denominator];
-      v21 = [(HKMedicationIngredient *)self denominator];
-      v8 = v21;
-      if (v6 == v21)
+      substanceCodingCollection = [(HKMedicationIngredient *)v5 denominator];
+      denominator = [(HKMedicationIngredient *)self denominator];
+      v8 = denominator;
+      if (substanceCodingCollection == denominator)
       {
 
 LABEL_24:
@@ -122,13 +122,13 @@ LABEL_24:
         goto LABEL_21;
       }
 
-      v22 = [(HKMedicationIngredient *)self denominator];
-      if (v22)
+      denominator2 = [(HKMedicationIngredient *)self denominator];
+      if (denominator2)
       {
-        v23 = v22;
-        v24 = [(HKMedicationIngredient *)v5 denominator];
-        v25 = [(HKMedicationIngredient *)self denominator];
-        v26 = [v24 isEqual:v25];
+        v23 = denominator2;
+        denominator3 = [(HKMedicationIngredient *)v5 denominator];
+        denominator4 = [(HKMedicationIngredient *)self denominator];
+        v26 = [denominator3 isEqual:denominator4];
 
         if (v26)
         {
@@ -162,23 +162,23 @@ LABEL_22:
   return v4 ^ [(HKQuantity *)self->_denominator hash];
 }
 
-- (HKMedicationIngredient)initWithCoder:(id)a3
+- (HKMedicationIngredient)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = HKMedicationIngredient;
   v5 = [(HKMedicationIngredient *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Collection"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Collection"];
     substanceCodingCollection = v5->_substanceCodingCollection;
     v5->_substanceCodingCollection = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Numerator"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Numerator"];
     numerator = v5->_numerator;
     v5->_numerator = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Denominator"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Denominator"];
     denominator = v5->_denominator;
     v5->_denominator = v10;
   }
@@ -186,13 +186,13 @@ LABEL_22:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   substanceCodingCollection = self->_substanceCodingCollection;
-  v5 = a3;
-  [v5 encodeObject:substanceCodingCollection forKey:@"Collection"];
-  [v5 encodeObject:self->_numerator forKey:@"Numerator"];
-  [v5 encodeObject:self->_denominator forKey:@"Denominator"];
+  coderCopy = coder;
+  [coderCopy encodeObject:substanceCodingCollection forKey:@"Collection"];
+  [coderCopy encodeObject:self->_numerator forKey:@"Numerator"];
+  [coderCopy encodeObject:self->_denominator forKey:@"Denominator"];
 }
 
 @end

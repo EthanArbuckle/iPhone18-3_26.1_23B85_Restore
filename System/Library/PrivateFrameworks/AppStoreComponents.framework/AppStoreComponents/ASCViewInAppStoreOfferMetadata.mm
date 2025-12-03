@@ -1,7 +1,7 @@
 @interface ASCViewInAppStoreOfferMetadata
 - (ASCViewInAppStoreOfferMetadata)init;
-- (ASCViewInAppStoreOfferMetadata)initWithCoder:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (ASCViewInAppStoreOfferMetadata)initWithCoder:(id)coder;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 - (unint64_t)hash;
 @end
@@ -15,28 +15,28 @@
   return [(ASCOfferMetadata *)&v3 _init];
 }
 
-- (ASCViewInAppStoreOfferMetadata)initWithCoder:(id)a3
+- (ASCViewInAppStoreOfferMetadata)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = ASCViewInAppStoreOfferMetadata;
-  return [(ASCOfferMetadata *)&v4 initWithCoder:a3];
+  return [(ASCOfferMetadata *)&v4 initWithCoder:coder];
 }
 
 - (unint64_t)hash
 {
   v3 = objc_alloc_init(ASCHasher);
-  v4 = [(ASCViewInAppStoreOfferMetadata *)self title];
-  [(ASCHasher *)v3 combineObject:v4];
+  title = [(ASCViewInAppStoreOfferMetadata *)self title];
+  [(ASCHasher *)v3 combineObject:title];
 
-  v5 = [(ASCHasher *)v3 finalizeHash];
-  return v5;
+  finalizeHash = [(ASCHasher *)v3 finalizeHash];
+  return finalizeHash;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v3 = a3;
+    equalCopy = equal;
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
   }
@@ -52,12 +52,12 @@
 - (id)description
 {
   v3 = [[ASCDescriber alloc] initWithObject:self];
-  v4 = [(ASCViewInAppStoreOfferMetadata *)self title];
-  [(ASCDescriber *)v3 addObject:v4 withName:@"title"];
+  title = [(ASCViewInAppStoreOfferMetadata *)self title];
+  [(ASCDescriber *)v3 addObject:title withName:@"title"];
 
-  v5 = [(ASCDescriber *)v3 finalizeDescription];
+  finalizeDescription = [(ASCDescriber *)v3 finalizeDescription];
 
-  return v5;
+  return finalizeDescription;
 }
 
 @end

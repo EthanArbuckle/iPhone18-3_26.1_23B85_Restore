@@ -1,20 +1,20 @@
 @interface TUINavigationBarItemBox
-- (void)setMenuContainer:(id)a3;
+- (void)setMenuContainer:(id)container;
 @end
 
 @implementation TUINavigationBarItemBox
 
-- (void)setMenuContainer:(id)a3
+- (void)setMenuContainer:(id)container
 {
-  v5 = a3;
+  containerCopy = container;
   menuContainer = self->_menuContainer;
-  if (menuContainer != v5)
+  if (menuContainer != containerCopy)
   {
-    v7 = v5;
+    v7 = containerCopy;
     [(TUIMenuContainer *)menuContainer setParentModel:0];
-    objc_storeStrong(&self->_menuContainer, a3);
+    objc_storeStrong(&self->_menuContainer, container);
     [(TUIMenuContainer *)self->_menuContainer setParentModel:self];
-    v5 = v7;
+    containerCopy = v7;
   }
 }
 

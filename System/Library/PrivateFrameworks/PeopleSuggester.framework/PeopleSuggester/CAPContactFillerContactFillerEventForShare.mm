@@ -1,32 +1,32 @@
 @interface CAPContactFillerContactFillerEventForShare
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)addShareEvents:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addShareEvents:(id)events;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CAPContactFillerContactFillerEventForShare
 
-- (void)addShareEvents:(id)a3
+- (void)addShareEvents:(id)events
 {
-  v4 = a3;
+  eventsCopy = events;
   shareEvents = self->_shareEvents;
-  v8 = v4;
+  v8 = eventsCopy;
   if (!shareEvents)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_shareEvents;
     self->_shareEvents = v6;
 
-    v4 = v8;
+    eventsCopy = v8;
     shareEvents = self->_shareEvents;
   }
 
-  [(NSMutableArray *)shareEvents addObject:v4];
+  [(NSMutableArray *)shareEvents addObject:eventsCopy];
 }
 
 - (id)description
@@ -35,8 +35,8 @@
   v8.receiver = self;
   v8.super_class = CAPContactFillerContactFillerEventForShare;
   v4 = [(CAPContactFillerContactFillerEventForShare *)&v8 description];
-  v5 = [(CAPContactFillerContactFillerEventForShare *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(CAPContactFillerContactFillerEventForShare *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -44,12 +44,12 @@
 - (id)dictionaryRepresentation
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   sessionId = self->_sessionId;
   if (sessionId)
   {
-    [v3 setObject:sessionId forKey:@"sessionId"];
+    [dictionary setObject:sessionId forKey:@"sessionId"];
   }
 
   if ([(NSMutableArray *)self->_shareEvents count])
@@ -74,8 +74,8 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
+          [v6 addObject:dictionaryRepresentation];
         }
 
         v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -92,16 +92,16 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (!self->_sessionId)
   {
     [CAPContactFillerContactFillerEventForShare writeTo:];
   }
 
-  v5 = v4;
+  v5 = toCopy;
   PBDataWriterWriteStringField();
   v15 = 0u;
   v16 = 0u;
@@ -138,31 +138,31 @@
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
-  [v8 setSessionId:self->_sessionId];
+  toCopy = to;
+  [toCopy setSessionId:self->_sessionId];
   if ([(CAPContactFillerContactFillerEventForShare *)self shareEventsCount])
   {
-    [v8 clearShareEvents];
-    v4 = [(CAPContactFillerContactFillerEventForShare *)self shareEventsCount];
-    if (v4)
+    [toCopy clearShareEvents];
+    shareEventsCount = [(CAPContactFillerContactFillerEventForShare *)self shareEventsCount];
+    if (shareEventsCount)
     {
-      v5 = v4;
+      v5 = shareEventsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(CAPContactFillerContactFillerEventForShare *)self shareEventsAtIndex:i];
-        [v8 addShareEvents:v7];
+        [toCopy addShareEvents:v7];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_sessionId copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_sessionId copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
@@ -186,7 +186,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v16 + 1) + 8 * v12) copyWithZone:{a3, v16}];
+        v13 = [*(*(&v16 + 1) + 8 * v12) copyWithZone:{zone, v16}];
         [v5 addShareEvents:v13];
 
         ++v12;
@@ -203,13 +203,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((sessionId = self->_sessionId, !(sessionId | v4[1])) || -[NSString isEqual:](sessionId, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((sessionId = self->_sessionId, !(sessionId | equalCopy[1])) || -[NSString isEqual:](sessionId, "isEqual:")))
   {
     shareEvents = self->_shareEvents;
-    if (shareEvents | v4[2])
+    if (shareEvents | equalCopy[2])
     {
       v7 = [(NSMutableArray *)shareEvents isEqual:?];
     }
@@ -228,11 +228,11 @@
   return v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (*(v4 + 1))
+  fromCopy = from;
+  if (*(fromCopy + 1))
   {
     [(CAPContactFillerContactFillerEventForShare *)self setSessionId:?];
   }
@@ -241,7 +241,7 @@
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = *(v4 + 2);
+  v5 = *(fromCopy + 2);
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {

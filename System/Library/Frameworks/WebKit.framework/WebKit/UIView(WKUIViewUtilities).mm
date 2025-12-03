@@ -6,27 +6,27 @@
 
 - (void)_web_setSubviews:()WKUIViewUtilities
 {
-  v5 = [objc_msgSend(a1 "subviews")];
+  v5 = [objc_msgSend(self "subviews")];
   v6 = [a3 count];
   if (v6)
   {
     for (i = 0; i != v6; ++i)
     {
       v8 = [a3 objectAtIndex:i];
-      if (i >= v5 || [objc_msgSend(a1 "subviews")] != v8)
+      if (i >= v5 || [objc_msgSend(self "subviews")] != v8)
       {
-        [a1 insertSubview:v8 atIndex:i];
+        [self insertSubview:v8 atIndex:i];
       }
     }
   }
 
-  v9 = [objc_msgSend(a1 "subviews")];
+  v9 = [objc_msgSend(self "subviews")];
   if (v6 < v9)
   {
     v12 = 0;
     do
     {
-      v10 = [objc_msgSend(a1 "subviews")];
+      v10 = [objc_msgSend(self "subviews")];
       if ([v10 conformsToProtocol:&unk_1F11B3730])
       {
         v11 = v12;

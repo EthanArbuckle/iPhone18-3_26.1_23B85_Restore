@@ -1,29 +1,29 @@
 @interface _UIPhysicalButtonConfiguration
-+ (id)_cameraShutterConfigurationsForButtons:(uint64_t)a3 withFilter:(uint64_t)a4 andOptionsProvider:;
-+ (id)_cameraShutterConfigurationsWithFilter:(id)a3 andOptionsProvider:(id)a4;
-+ (id)_cameraShutterConfigurationsWithOptions:(id)a3;
-+ (id)_cameraShutterConfigurationsWithOptionsProvider:(id)a3;
-+ (id)_configurationWithPhysicalButton:(unint64_t)a3 behavior:(unint64_t)a4 behaviorOptions:(id)a5;
++ (id)_cameraShutterConfigurationsForButtons:(uint64_t)buttons withFilter:(uint64_t)filter andOptionsProvider:;
++ (id)_cameraShutterConfigurationsWithFilter:(id)filter andOptionsProvider:(id)provider;
++ (id)_cameraShutterConfigurationsWithOptions:(id)options;
++ (id)_cameraShutterConfigurationsWithOptionsProvider:(id)provider;
++ (id)_configurationWithPhysicalButton:(unint64_t)button behavior:(unint64_t)behavior behaviorOptions:(id)options;
 + (id)_ringerButtonDynamicActionConfiguration;
 + (id)_volumeConfigurations;
 - (BOOL)_isEqualToConfigurationMinusGeneration:(_BOOL8)result;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_UIPhysicalButtonBehaviorOptions)_behaviorOptions;
 - (_UIPhysicalButtonConfiguration)init;
-- (_UIPhysicalButtonConfiguration)initWithBSXPCCoder:(id)a3;
-- (_UIPhysicalButtonConfiguration)initWithCoder:(id)a3;
-- (_UIPhysicalButtonConfiguration)initWithXPCDictionary:(id)a3;
-- (id)_initWithPhysicalButton:(unint64_t)a3 behavior:(void *)a4 behaviorOptions:(uint64_t)a5 generation:(void *)a6 auditToken:;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)debugDescriptionWithMultilinePrefix:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (_UIPhysicalButtonConfiguration)initWithBSXPCCoder:(id)coder;
+- (_UIPhysicalButtonConfiguration)initWithCoder:(id)coder;
+- (_UIPhysicalButtonConfiguration)initWithXPCDictionary:(id)dictionary;
+- (id)_initWithPhysicalButton:(unint64_t)button behavior:(void *)behavior behaviorOptions:(uint64_t)options generation:(void *)generation auditToken:;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 - (unint64_t)hash;
-- (void)encodeWithBSXPCCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)encodeWithXPCDictionary:(id)a3;
+- (void)encodeWithBSXPCCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
+- (void)encodeWithXPCDictionary:(id)dictionary;
 @end
 
 @implementation _UIPhysicalButtonConfiguration
@@ -37,20 +37,20 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E698E6B8] builder];
-  v4 = [v3 appendUnsignedInteger:self->_button];
-  v5 = [v3 appendUnsignedInteger:self->_behavior];
-  v6 = [v3 appendObject:self->_behaviorOptions];
-  v7 = [v3 appendObject:self->_auditToken];
-  v8 = [v3 appendString:self->_name];
-  v9 = [v3 appendBool:self->_wantsSystemShellExclusivePriority];
-  v10 = [v3 appendInt64:self->_generation];
-  v11 = [v3 hash];
+  builder = [MEMORY[0x1E698E6B8] builder];
+  v4 = [builder appendUnsignedInteger:self->_button];
+  v5 = [builder appendUnsignedInteger:self->_behavior];
+  v6 = [builder appendObject:self->_behaviorOptions];
+  v7 = [builder appendObject:self->_auditToken];
+  v8 = [builder appendString:self->_name];
+  v9 = [builder appendBool:self->_wantsSystemShellExclusivePriority];
+  v10 = [builder appendInt64:self->_generation];
+  v11 = [builder hash];
 
   return v11;
 }
 
-+ (id)_configurationWithPhysicalButton:(unint64_t)a3 behavior:(unint64_t)a4 behaviorOptions:(id)a5
++ (id)_configurationWithPhysicalButton:(unint64_t)button behavior:(unint64_t)behavior behaviorOptions:(id)options
 {
   v8 = [_UIPhysicalButtonConfiguration alloc];
   bytes = 0;
@@ -60,9 +60,9 @@
     if (v9)
     {
       v12 = v9;
-      v17 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v16 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"uint64_t _UIPhysicalButtonConfigurationRandomGeneration(void)"];
-      [v17 handleFailureInFunction:v16 file:@"_UIPhysicalButtonConfiguration.m" lineNumber:291 description:{@"Failed to create configuration generation with status: %d", v12}];
+      [currentHandler handleFailureInFunction:v16 file:@"_UIPhysicalButtonConfiguration.m" lineNumber:291 description:{@"Failed to create configuration generation with status: %d", v12}];
     }
 
     v10 = bytes;
@@ -78,53 +78,53 @@
   }
 
   while (v11);
-  v13 = [MEMORY[0x1E698E620] tokenForCurrentProcess];
-  v14 = [(_UIPhysicalButtonConfiguration *)v8 _initWithPhysicalButton:a3 behavior:a4 behaviorOptions:a5 generation:v10 auditToken:v13];
+  tokenForCurrentProcess = [MEMORY[0x1E698E620] tokenForCurrentProcess];
+  v14 = [(_UIPhysicalButtonConfiguration *)v8 _initWithPhysicalButton:button behavior:behavior behaviorOptions:options generation:v10 auditToken:tokenForCurrentProcess];
 
   return v14;
 }
 
-- (id)_initWithPhysicalButton:(unint64_t)a3 behavior:(void *)a4 behaviorOptions:(uint64_t)a5 generation:(void *)a6 auditToken:
+- (id)_initWithPhysicalButton:(unint64_t)button behavior:(void *)behavior behaviorOptions:(uint64_t)options generation:(void *)generation auditToken:
 {
-  v6 = a1;
-  if (!a1)
+  selfCopy = self;
+  if (!self)
   {
-    return v6;
+    return selfCopy;
   }
 
   v12 = objc_opt_class();
   if (v12 != objc_opt_class())
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:sel__initWithPhysicalButton_behavior_behaviorOptions_generation_auditToken_ object:v6 file:@"_UIPhysicalButtonConfiguration.m" lineNumber:476 description:@"_UIPhysicalButtonConfiguration cannot be subclassed"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:sel__initWithPhysicalButton_behavior_behaviorOptions_generation_auditToken_ object:selfCopy file:@"_UIPhysicalButtonConfiguration.m" lineNumber:476 description:@"_UIPhysicalButtonConfiguration cannot be subclassed"];
   }
 
   if ((_UIPhysicalButtonIsValid(a2) & 1) == 0)
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v20 handleFailureInMethod:sel__initWithPhysicalButton_behavior_behaviorOptions_generation_auditToken_ object:v6 file:@"_UIPhysicalButtonConfiguration.m" lineNumber:478 description:{@"Invalid button: %lu", a2}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:sel__initWithPhysicalButton_behavior_behaviorOptions_generation_auditToken_ object:selfCopy file:@"_UIPhysicalButtonConfiguration.m" lineNumber:478 description:{@"Invalid button: %lu", a2}];
   }
 
-  if ((_UIPhysicalButtonBehaviorIsValidForButton(a3, a2) & 1) == 0)
+  if ((_UIPhysicalButtonBehaviorIsValidForButton(button, a2) & 1) == 0)
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
     v22 = _NSStringFromUIPhysicalButton(a2);
-    v23 = _NSStringFromUIPhysicalButtonBehavior(a3);
-    [v21 handleFailureInMethod:sel__initWithPhysicalButton_behavior_behaviorOptions_generation_auditToken_ object:v6 file:@"_UIPhysicalButtonConfiguration.m" lineNumber:480 description:{@"Invalid behavior for button: %@; behavior: %@", v22, v23}];
+    v23 = _NSStringFromUIPhysicalButtonBehavior(button);
+    [currentHandler3 handleFailureInMethod:sel__initWithPhysicalButton_behavior_behaviorOptions_generation_auditToken_ object:selfCopy file:@"_UIPhysicalButtonConfiguration.m" lineNumber:480 description:{@"Invalid behavior for button: %@; behavior: %@", v22, v23}];
   }
 
-  if (_UIPhysicalButtonBehaviorOptionsIsValidForBehavior(a4, a3))
+  if (_UIPhysicalButtonBehaviorOptionsIsValidForBehavior(behavior, button))
   {
-    if (a5)
+    if (options)
     {
       goto LABEL_10;
     }
 
 LABEL_15:
-    v26 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v26 handleFailureInMethod:sel__initWithPhysicalButton_behavior_behaviorOptions_generation_auditToken_ object:v6 file:@"_UIPhysicalButtonConfiguration.m" lineNumber:483 description:{@"Invalid configuration generation: %llu", 0}];
+    currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler4 handleFailureInMethod:sel__initWithPhysicalButton_behavior_behaviorOptions_generation_auditToken_ object:selfCopy file:@"_UIPhysicalButtonConfiguration.m" lineNumber:483 description:{@"Invalid configuration generation: %llu", 0}];
 
-    if (a6)
+    if (generation)
     {
       goto LABEL_11;
     }
@@ -132,59 +132,59 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  v24 = [MEMORY[0x1E696AAA8] currentHandler];
-  v25 = _NSStringFromUIPhysicalButtonBehavior(a3);
-  [v24 handleFailureInMethod:sel__initWithPhysicalButton_behavior_behaviorOptions_generation_auditToken_ object:v6 file:@"_UIPhysicalButtonConfiguration.m" lineNumber:482 description:{@"Invalid options for %@: %@", v25, a4}];
+  currentHandler5 = [MEMORY[0x1E696AAA8] currentHandler];
+  v25 = _NSStringFromUIPhysicalButtonBehavior(button);
+  [currentHandler5 handleFailureInMethod:sel__initWithPhysicalButton_behavior_behaviorOptions_generation_auditToken_ object:selfCopy file:@"_UIPhysicalButtonConfiguration.m" lineNumber:482 description:{@"Invalid options for %@: %@", v25, behavior}];
 
-  if (!a5)
+  if (!options)
   {
     goto LABEL_15;
   }
 
 LABEL_10:
-  if (a6)
+  if (generation)
   {
     goto LABEL_11;
   }
 
 LABEL_16:
-  v27 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v27 handleFailureInMethod:sel__initWithPhysicalButton_behavior_behaviorOptions_generation_auditToken_ object:v6 file:@"_UIPhysicalButtonConfiguration.m" lineNumber:484 description:{@"Invalid configuration auditToken: %@", 0}];
+  currentHandler6 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler6 handleFailureInMethod:sel__initWithPhysicalButton_behavior_behaviorOptions_generation_auditToken_ object:selfCopy file:@"_UIPhysicalButtonConfiguration.m" lineNumber:484 description:{@"Invalid configuration auditToken: %@", 0}];
 
 LABEL_11:
-  v28.receiver = v6;
+  v28.receiver = selfCopy;
   v28.super_class = _UIPhysicalButtonConfiguration;
   v13 = objc_msgSendSuper2(&v28, sel_init);
-  v6 = v13;
+  selfCopy = v13;
   if (v13)
   {
     v13[2] = a2;
-    v13[3] = a3;
-    v14 = [a4 copy];
-    v15 = *(v6 + 4);
-    *(v6 + 4) = v14;
+    v13[3] = button;
+    v14 = [behavior copy];
+    v15 = *(selfCopy + 4);
+    *(selfCopy + 4) = v14;
 
-    *(v6 + 5) = a5;
-    v16 = [a6 copy];
-    v17 = *(v6 + 6);
-    *(v6 + 6) = v16;
+    *(selfCopy + 5) = options;
+    v16 = [generation copy];
+    v17 = *(selfCopy + 6);
+    *(selfCopy + 6) = v16;
 
-    *(v6 + 8) = 0;
+    *(selfCopy + 8) = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-+ (id)_cameraShutterConfigurationsForButtons:(uint64_t)a3 withFilter:(uint64_t)a4 andOptionsProvider:
++ (id)_cameraShutterConfigurationsForButtons:(uint64_t)buttons withFilter:(uint64_t)filter andOptionsProvider:
 {
   v62 = *MEMORY[0x1E69E9840];
   v43 = objc_opt_self();
   if (![a2 count])
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:sel__cameraShutterConfigurationsForButtons_withFilter_andOptionsProvider_ object:v43 file:@"_UIPhysicalButtonConfiguration.m" lineNumber:342 description:{@"Invalid parameter not satisfying: %@", @"buttonNumberArray.count > 0"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:sel__cameraShutterConfigurationsForButtons_withFilter_andOptionsProvider_ object:v43 file:@"_UIPhysicalButtonConfiguration.m" lineNumber:342 description:{@"Invalid parameter not satisfying: %@", @"buttonNumberArray.count > 0"}];
 
-    if (a3)
+    if (buttons)
     {
       goto LABEL_3;
     }
@@ -194,7 +194,7 @@ LABEL_25:
     goto LABEL_26;
   }
 
-  if (!a3)
+  if (!buttons)
   {
     goto LABEL_25;
   }
@@ -212,7 +212,7 @@ LABEL_3:
     v8 = v7;
     v9 = 0;
     v10 = *v56;
-    v44 = a3;
+    buttonsCopy = buttons;
     do
     {
       for (i = 0; i != v8; ++i)
@@ -223,10 +223,10 @@ LABEL_3:
         }
 
         v12 = *(*(&v55 + 1) + 8 * i);
-        v13 = [v12 unsignedIntegerValue];
-        if (((*(a3 + 16))(a3, v13) & 1) == 0)
+        unsignedIntegerValue = [v12 unsignedIntegerValue];
+        if (((*(buttons + 16))(buttons, unsignedIntegerValue) & 1) == 0)
         {
-          v14 = a4;
+          filterCopy = filter;
           v15 = v8;
           if (!v9)
           {
@@ -234,7 +234,7 @@ LABEL_3:
           }
 
           [v9 removeObject:v12];
-          v16 = _UIPhysicalButtonRequiredButtonsForButton(v13);
+          v16 = _UIPhysicalButtonRequiredButtonsForButton(unsignedIntegerValue);
           v51 = 0u;
           v52 = 0u;
           v53 = 0u;
@@ -263,8 +263,8 @@ LABEL_3:
           }
 
           v8 = v15;
-          a4 = v14;
-          a3 = v44;
+          filter = filterCopy;
+          buttons = buttonsCopy;
         }
       }
 
@@ -296,8 +296,8 @@ LABEL_26:
   v25 = v23;
   if (!v24)
   {
-    v41 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v41 handleFailureInMethod:sel__cameraShutterConfigurationsForButtons_withFilter_andOptionsProvider_ object:v43 file:@"_UIPhysicalButtonConfiguration.m" lineNumber:370 description:@"Invalid camera shutter configuration filter resulted in removal of all buttons"];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:sel__cameraShutterConfigurationsForButtons_withFilter_andOptionsProvider_ object:v43 file:@"_UIPhysicalButtonConfiguration.m" lineNumber:370 description:@"Invalid camera shutter configuration filter resulted in removal of all buttons"];
 
     v25 = a2;
   }
@@ -325,10 +325,10 @@ LABEL_26:
           objc_enumerationMutation(obja);
         }
 
-        v32 = [*(*(&v47 + 1) + 8 * v31) unsignedIntegerValue];
-        if (a4)
+        unsignedIntegerValue2 = [*(*(&v47 + 1) + 8 * v31) unsignedIntegerValue];
+        if (filter)
         {
-          v33 = (*(a4 + 16))(a4, v32);
+          v33 = (*(filter + 16))(filter, unsignedIntegerValue2);
         }
 
         else
@@ -343,15 +343,15 @@ LABEL_26:
 
         else
         {
-          v37 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v37 handleFailureInMethod:sel__cameraShutterConfigurationsForButtons_withFilter_andOptionsProvider_ object:v43 file:@"_UIPhysicalButtonConfiguration.m" lineNumber:382 description:{@"Invalid options object for camera shutter configurations: %@", v33}];
+          currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler3 handleFailureInMethod:sel__cameraShutterConfigurationsForButtons_withFilter_andOptionsProvider_ object:v43 file:@"_UIPhysicalButtonConfiguration.m" lineNumber:382 description:{@"Invalid options object for camera shutter configurations: %@", v33}];
 
           v34 = +[_UIPhysicalButtonBehaviorCameraShutterOptions behaviorOptions];
         }
 
         v35 = v34;
 
-        v36 = [_UIPhysicalButtonConfiguration _configurationWithPhysicalButton:v32 behavior:0 behaviorOptions:v35];
+        v36 = [_UIPhysicalButtonConfiguration _configurationWithPhysicalButton:unsignedIntegerValue2 behavior:0 behaviorOptions:v35];
         [v27 addObject:v36];
 
         ++v31;
@@ -370,34 +370,34 @@ LABEL_26:
   return v39;
 }
 
-+ (id)_cameraShutterConfigurationsWithOptionsProvider:(id)a3
++ (id)_cameraShutterConfigurationsWithOptionsProvider:(id)provider
 {
   v5 = _UIPhysicalButtonAndBehaviorMap();
   v6 = [v5 objectForKey:&unk_1EFE34078];
 
-  v7 = [(_UIPhysicalButtonConfiguration *)a1 _cameraShutterConfigurationsForButtons:v6 withFilter:0 andOptionsProvider:a3];
+  v7 = [(_UIPhysicalButtonConfiguration *)self _cameraShutterConfigurationsForButtons:v6 withFilter:0 andOptionsProvider:provider];
 
   return v7;
 }
 
-+ (id)_cameraShutterConfigurationsWithFilter:(id)a3 andOptionsProvider:(id)a4
++ (id)_cameraShutterConfigurationsWithFilter:(id)filter andOptionsProvider:(id)provider
 {
   v7 = _UIPhysicalButtonAndBehaviorMap();
   v8 = [v7 objectForKey:&unk_1EFE34078];
 
-  v9 = [(_UIPhysicalButtonConfiguration *)a1 _cameraShutterConfigurationsForButtons:v8 withFilter:a3 andOptionsProvider:a4];
+  v9 = [(_UIPhysicalButtonConfiguration *)self _cameraShutterConfigurationsForButtons:v8 withFilter:filter andOptionsProvider:provider];
 
   return v9;
 }
 
-+ (id)_cameraShutterConfigurationsWithOptions:(id)a3
++ (id)_cameraShutterConfigurationsWithOptions:(id)options
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __74___UIPhysicalButtonConfiguration__cameraShutterConfigurationsWithOptions___block_invoke;
   v5[3] = &unk_1E712C568;
-  v5[4] = a3;
-  v3 = [a1 _cameraShutterConfigurationsWithOptionsProvider:v5];
+  v5[4] = options;
+  v3 = [self _cameraShutterConfigurationsWithOptionsProvider:v5];
 
   return v3;
 }
@@ -421,8 +421,8 @@ LABEL_26:
 
 - (_UIPhysicalButtonConfiguration)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"_UIPhysicalButtonConfiguration.m" lineNumber:466 description:{@"%s: init is not allowed on %@", "-[_UIPhysicalButtonConfiguration init]", objc_opt_class()}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"_UIPhysicalButtonConfiguration.m" lineNumber:466 description:{@"%s: init is not allowed on %@", "-[_UIPhysicalButtonConfiguration init]", objc_opt_class()}];
 
   return 0;
 }
@@ -514,31 +514,31 @@ LABEL_22:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
-  if (!a3 || !_NSIsNSObject())
+  if (!equal || !_NSIsNSObject())
   {
     return 0;
   }
 
-  v5 = a3;
+  equalCopy = equal;
   v6 = [(_UIPhysicalButtonConfiguration *)self hash];
-  v7 = v6 == [v5 hash] && -[_UIPhysicalButtonConfiguration _isEqualToConfigurationMinusGeneration:](self, v5) && self->_generation == v5[5];
+  v7 = v6 == [equalCopy hash] && -[_UIPhysicalButtonConfiguration _isEqualToConfigurationMinusGeneration:](self, equalCopy) && self->_generation == equalCopy[5];
 
   return v7;
 }
 
 - (id)succinctDescription
 {
-  v2 = [(_UIPhysicalButtonConfiguration *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(_UIPhysicalButtonConfiguration *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -571,40 +571,40 @@ LABEL_22:
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(_UIPhysicalButtonConfiguration *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(_UIPhysicalButtonConfiguration *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)debugDescriptionWithMultilinePrefix:(id)a3
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(_UIPhysicalButtonConfiguration *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(_UIPhysicalButtonConfiguration *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v5 = [MEMORY[0x1E698E680] builderWithObject:self];
-  [v5 setActiveMultilinePrefix:a3];
+  [v5 setActiveMultilinePrefix:prefix];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __72___UIPhysicalButtonConfiguration_descriptionBuilderWithMultilinePrefix___block_invoke;
   v10[3] = &unk_1E70F35B8;
   v6 = v5;
   v11 = v6;
-  v12 = self;
+  selfCopy = self;
   v7 = [v6 modifyBody:v10];
   v8 = v6;
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[_UIPhysicalButtonConfiguration alloc] _initWithPhysicalButton:self->_behavior behavior:self->_behaviorOptions behaviorOptions:self->_generation generation:self->_auditToken auditToken:?];
   [v4 _setName:self->_name];
@@ -612,29 +612,29 @@ LABEL_22:
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_button];
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_behavior];
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_generation];
-  [a3 encodeObject:v7 forKey:@"button"];
-  [a3 encodeObject:v5 forKey:@"behavior"];
-  [a3 encodeObject:self->_behaviorOptions forKey:@"behaviorOptions"];
-  [a3 encodeObject:self->_name forKey:@"name"];
-  [a3 encodeBool:self->_wantsSystemShellExclusivePriority forKey:@"wantsSystemShellExclusivePriority"];
-  [a3 encodeObject:v6 forKey:@"generation"];
-  [a3 encodeObject:self->_auditToken forKey:@"auditToken"];
+  [coder encodeObject:v7 forKey:@"button"];
+  [coder encodeObject:v5 forKey:@"behavior"];
+  [coder encodeObject:self->_behaviorOptions forKey:@"behaviorOptions"];
+  [coder encodeObject:self->_name forKey:@"name"];
+  [coder encodeBool:self->_wantsSystemShellExclusivePriority forKey:@"wantsSystemShellExclusivePriority"];
+  [coder encodeObject:v6 forKey:@"generation"];
+  [coder encodeObject:self->_auditToken forKey:@"auditToken"];
 }
 
-- (_UIPhysicalButtonConfiguration)initWithCoder:(id)a3
+- (_UIPhysicalButtonConfiguration)initWithCoder:(id)coder
 {
-  v6 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"button"];
-  v7 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"behavior"];
-  v8 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"behaviorOptions"];
-  v9 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
-  v10 = [a3 decodeBoolForKey:@"wantsSystemShellExclusivePriority"];
-  v11 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"generation"];
-  v12 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"auditToken"];
+  v6 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"button"];
+  v7 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"behavior"];
+  v8 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"behaviorOptions"];
+  v9 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+  v10 = [coder decodeBoolForKey:@"wantsSystemShellExclusivePriority"];
+  v11 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"generation"];
+  v12 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"auditToken"];
   v13 = v12;
   if (v6)
   {
@@ -648,10 +648,10 @@ LABEL_22:
 
   if (v14 || v11 == 0 || v12 == 0)
   {
-    v22 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v22 handleFailureInMethod:a2 object:self file:@"_UIPhysicalButtonConfiguration.m" lineNumber:667 description:{@"Invalid encoded configuration: %@", a3}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIPhysicalButtonConfiguration.m" lineNumber:667 description:{@"Invalid encoded configuration: %@", coder}];
 
-    v20 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -667,46 +667,46 @@ LABEL_22:
     }
 
     self = v17;
-    v20 = self;
+    selfCopy = self;
   }
 
-  return v20;
+  return selfCopy;
 }
 
-- (void)encodeWithXPCDictionary:(id)a3
+- (void)encodeWithXPCDictionary:(id)dictionary
 {
-  v5 = [@"button" UTF8String];
-  v6 = [@"behavior" UTF8String];
+  uTF8String = [@"button" UTF8String];
+  uTF8String2 = [@"behavior" UTF8String];
   [@"behaviorOptions" UTF8String];
   [@"name" UTF8String];
-  v7 = [@"wantsSystemShellExclusivePriority" UTF8String];
-  v8 = [@"generation" UTF8String];
+  uTF8String3 = [@"wantsSystemShellExclusivePriority" UTF8String];
+  uTF8String4 = [@"generation" UTF8String];
   [@"auditToken" UTF8String];
-  xpc_dictionary_set_uint64(a3, v5, self->_button);
-  xpc_dictionary_set_uint64(a3, v6, self->_behavior);
+  xpc_dictionary_set_uint64(dictionary, uTF8String, self->_button);
+  xpc_dictionary_set_uint64(dictionary, uTF8String2, self->_behavior);
   BSSerializeBSXPCEncodableObjectToXPCDictionaryWithKey();
   BSSerializeStringToXPCDictionaryWithKey();
-  xpc_dictionary_set_BOOL(a3, v7, self->_wantsSystemShellExclusivePriority);
-  xpc_dictionary_set_uint64(a3, v8, self->_generation);
+  xpc_dictionary_set_BOOL(dictionary, uTF8String3, self->_wantsSystemShellExclusivePriority);
+  xpc_dictionary_set_uint64(dictionary, uTF8String4, self->_generation);
 
   BSSerializeBSXPCEncodableObjectToXPCDictionaryWithKey();
 }
 
-- (_UIPhysicalButtonConfiguration)initWithXPCDictionary:(id)a3
+- (_UIPhysicalButtonConfiguration)initWithXPCDictionary:(id)dictionary
 {
-  v4 = [@"button" UTF8String];
-  v5 = [@"behavior" UTF8String];
+  uTF8String = [@"button" UTF8String];
+  uTF8String2 = [@"behavior" UTF8String];
   [@"behaviorOptions" UTF8String];
   [@"name" UTF8String];
-  v6 = [@"wantsSystemShellExclusivePriority" UTF8String];
-  v7 = [@"generation" UTF8String];
+  uTF8String3 = [@"wantsSystemShellExclusivePriority" UTF8String];
+  uTF8String4 = [@"generation" UTF8String];
   [@"auditToken" UTF8String];
-  uint64 = xpc_dictionary_get_uint64(a3, v4);
-  v9 = xpc_dictionary_get_uint64(a3, v5);
+  uint64 = xpc_dictionary_get_uint64(dictionary, uTF8String);
+  v9 = xpc_dictionary_get_uint64(dictionary, uTF8String2);
   v10 = BSCreateDeserializedBSXPCEncodableObjectFromXPCDictionaryWithKey();
   v11 = BSCreateDeserializedStringFromXPCDictionaryWithKey();
-  v12 = xpc_dictionary_get_BOOL(a3, v6);
-  v13 = xpc_dictionary_get_uint64(a3, v7);
+  v12 = xpc_dictionary_get_BOOL(dictionary, uTF8String3);
+  v13 = xpc_dictionary_get_uint64(dictionary, uTF8String4);
   v14 = BSCreateDeserializedBSXPCEncodableObjectFromXPCDictionaryWithKey();
   v15 = [(_UIPhysicalButtonConfiguration *)self _initWithPhysicalButton:v9 behavior:v10 behaviorOptions:v13 generation:v14 auditToken:?];
   if (v15)
@@ -721,29 +721,29 @@ LABEL_22:
   return v15;
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
   v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_button];
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_behavior];
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_generation];
-  [a3 encodeObject:v7 forKey:@"button"];
-  [a3 encodeObject:v5 forKey:@"behavior"];
-  [a3 encodeObject:self->_behaviorOptions forKey:@"behaviorOptions"];
-  [a3 encodeObject:self->_name forKey:@"name"];
-  [a3 encodeBool:self->_wantsSystemShellExclusivePriority forKey:@"wantsSystemShellExclusivePriority"];
-  [a3 encodeObject:v6 forKey:@"generation"];
-  [a3 encodeObject:self->_auditToken forKey:@"auditToken"];
+  [coder encodeObject:v7 forKey:@"button"];
+  [coder encodeObject:v5 forKey:@"behavior"];
+  [coder encodeObject:self->_behaviorOptions forKey:@"behaviorOptions"];
+  [coder encodeObject:self->_name forKey:@"name"];
+  [coder encodeBool:self->_wantsSystemShellExclusivePriority forKey:@"wantsSystemShellExclusivePriority"];
+  [coder encodeObject:v6 forKey:@"generation"];
+  [coder encodeObject:self->_auditToken forKey:@"auditToken"];
 }
 
-- (_UIPhysicalButtonConfiguration)initWithBSXPCCoder:(id)a3
+- (_UIPhysicalButtonConfiguration)initWithBSXPCCoder:(id)coder
 {
-  v6 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"button"];
-  v7 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"behavior"];
-  v8 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"behaviorOptions"];
-  v9 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
-  v10 = [a3 decodeBoolForKey:@"wantsSystemShellExclusivePriority"];
-  v11 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"generation"];
-  v12 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"auditToken"];
+  v6 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"button"];
+  v7 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"behavior"];
+  v8 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"behaviorOptions"];
+  v9 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+  v10 = [coder decodeBoolForKey:@"wantsSystemShellExclusivePriority"];
+  v11 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"generation"];
+  v12 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"auditToken"];
   if (v6)
   {
     v13 = v7 == 0;
@@ -756,10 +756,10 @@ LABEL_22:
 
   if (v13 || v11 == 0)
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"_UIPhysicalButtonConfiguration.m" lineNumber:759 description:{@"Invalid encoded configuration: %@", a3}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIPhysicalButtonConfiguration.m" lineNumber:759 description:{@"Invalid encoded configuration: %@", coder}];
 
-    v18 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -775,10 +775,10 @@ LABEL_22:
     }
 
     self = v15;
-    v18 = self;
+    selfCopy = self;
   }
 
-  return v18;
+  return selfCopy;
 }
 
 @end

@@ -3,52 +3,52 @@
 - (id)delegate;
 - (uint64_t)proximitySettings;
 - (void)loadView;
-- (void)setDelegate:(void *)a1;
-- (void)setProximitySettings:(uint64_t)a1;
-- (void)setStatusBarHeight:(double *)a1;
+- (void)setDelegate:(void *)delegate;
+- (void)setProximitySettings:(uint64_t)settings;
+- (void)setStatusBarHeight:(double *)height;
 @end
 
 @implementation _SBProximityTouchHandlingViewController
 
 - (id)delegate
 {
-  if (a1)
+  if (self)
   {
-    v1 = [a1 _view];
-    v2 = [(_SBProximityTouchHandlingView *)v1 delegate];
+    _view = [self _view];
+    delegate = [(_SBProximityTouchHandlingView *)_view delegate];
   }
 
   else
   {
-    v2 = 0;
+    delegate = 0;
   }
 
-  return v2;
+  return delegate;
 }
 
-- (void)setDelegate:(void *)a1
+- (void)setDelegate:(void *)delegate
 {
   obj = a2;
-  if (a1)
+  if (delegate)
   {
-    v3 = [a1 _view];
-    v4 = v3;
-    if (v3)
+    _view = [delegate _view];
+    v4 = _view;
+    if (_view)
     {
-      objc_storeWeak((v3 + 408), obj);
+      objc_storeWeak((_view + 408), obj);
     }
   }
 }
 
-- (void)setStatusBarHeight:(double *)a1
+- (void)setStatusBarHeight:(double *)height
 {
-  if (a1 && a1[124] != a2)
+  if (height && height[124] != a2)
   {
-    a1[124] = a2;
-    v3 = [a1 _view];
-    if (v3)
+    height[124] = a2;
+    _view = [height _view];
+    if (_view)
     {
-      v3[52] = a2;
+      _view[52] = a2;
     }
   }
 }
@@ -58,17 +58,17 @@
   v3 = [_SBProximityTouchHandlingView alloc];
   v8 = [(_SBProximityTouchHandlingView *)v3 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   [v8 setOpaque:0];
-  v4 = [v8 layer];
-  [v4 setHitTestsAsOpaque:1];
+  layer = [v8 layer];
+  [layer setHitTestsAsOpaque:1];
 
   if ([(SBProximitySettings *)self->_proximitySettings colorScreenEdgeWhenObjectInProximity])
   {
-    v5 = [v8 layer];
-    v6 = [MEMORY[0x277D75348] systemMintColor];
-    [v5 setBorderColor:{objc_msgSend(v6, "CGColor")}];
+    layer2 = [v8 layer];
+    systemMintColor = [MEMORY[0x277D75348] systemMintColor];
+    [layer2 setBorderColor:{objc_msgSend(systemMintColor, "CGColor")}];
 
-    v7 = [v8 layer];
-    [v7 setBorderWidth:3.0];
+    layer3 = [v8 layer];
+    [layer3 setBorderWidth:3.0];
   }
 
   if (v8)
@@ -81,9 +81,9 @@
 
 - (double)statusBarHeight
 {
-  if (a1)
+  if (self)
   {
-    return *(a1 + 992);
+    return *(self + 992);
   }
 
   else
@@ -102,11 +102,11 @@
   return result;
 }
 
-- (void)setProximitySettings:(uint64_t)a1
+- (void)setProximitySettings:(uint64_t)settings
 {
-  if (a1)
+  if (settings)
   {
-    objc_storeStrong((a1 + 1000), a2);
+    objc_storeStrong((settings + 1000), a2);
   }
 }
 

@@ -1,28 +1,28 @@
 @interface VMUBacktraceRecursionInfo
-- (VMUBacktraceRecursionInfo)initWithDictionary:(id)a3;
+- (VMUBacktraceRecursionInfo)initWithDictionary:(id)dictionary;
 - (id)dictionary;
 @end
 
 @implementation VMUBacktraceRecursionInfo
 
-- (VMUBacktraceRecursionInfo)initWithDictionary:(id)a3
+- (VMUBacktraceRecursionInfo)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = VMUBacktraceRecursionInfo;
   v5 = [(VMUBacktraceRecursionInfo *)&v11 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"hottestElided"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"hottestElided"];
     v5->_hottestElided = [v6 unsignedIntValue];
 
-    v7 = [v4 objectForKeyedSubscript:@"coldestElided"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"coldestElided"];
     v5->_coldestElided = [v7 unsignedIntValue];
 
-    v8 = [v4 objectForKeyedSubscript:@"depth"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"depth"];
     v5->_depth = [v8 unsignedIntValue];
 
-    v9 = [v4 objectForKeyedSubscript:@"keyPC"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"keyPC"];
     v5->_keyPC = [v9 unsignedLongLongValue];
   }
 

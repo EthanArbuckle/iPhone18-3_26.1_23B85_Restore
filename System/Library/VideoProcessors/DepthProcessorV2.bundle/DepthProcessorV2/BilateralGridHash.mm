@@ -1,30 +1,30 @@
 @interface BilateralGridHash
-- (BOOL)_hashMapFindKey:(unint64_t)a3 to:(unsigned int *)a4;
-- (BilateralGridHash)initWithWidth:(unsigned int)a3 height:(unsigned int)a4 maxHashTableSize:(unint64_t)a5;
-- (const)blur_indices:(int)a3 n_blur_indices:(int *)a4;
-- (int)_addHashKeyAtX:(unsigned int)a3 Y:(unsigned int)a4 key:(unint64_t)a5;
-- (int)_computeBilateralSpace:(__CVBuffer *)a3 sigma_s:(unsigned int)a4 sigma_r_luma:(unsigned int)a5 sigma_r_chroma:(unsigned int)a6;
-- (void)blur:(const float *)a3 pout:(float *)a4;
-- (void)blur_n:(float *)a3;
-- (void)blur_ones:(float *)a3;
+- (BOOL)_hashMapFindKey:(unint64_t)key to:(unsigned int *)to;
+- (BilateralGridHash)initWithWidth:(unsigned int)width height:(unsigned int)height maxHashTableSize:(unint64_t)size;
+- (const)blur_indices:(int)blur_indices n_blur_indices:(int *)n_blur_indices;
+- (int)_addHashKeyAtX:(unsigned int)x Y:(unsigned int)y key:(unint64_t)key;
+- (int)_computeBilateralSpace:(__CVBuffer *)space sigma_s:(unsigned int)sigma_s sigma_r_luma:(unsigned int)sigma_r_luma sigma_r_chroma:(unsigned int)sigma_r_chroma;
+- (void)blur:(const float *)blur pout:(float *)pout;
+- (void)blur_n:(float *)blur_n;
+- (void)blur_ones:(float *)blur_ones;
 - (void)clear;
 - (void)computeBlurIndices;
 - (void)computeCoordIndices;
 - (void)computeInterpIndices;
 - (void)dealloc;
-- (void)normalize:(const float *)a3 pout:(float *)a4;
-- (void)normalize_blur:(const float *)a3 pout:(float *)a4;
+- (void)normalize:(const float *)normalize pout:(float *)pout;
+- (void)normalize_blur:(const float *)normalize_blur pout:(float *)pout;
 - (void)releaseResources;
-- (void)slice:(const float *)a3 outPixelBuffer:(__CVBuffer *)a4;
-- (void)slice_trilinear:(__CVBuffer *)a3 pin:(const float *)a4 pout:(__CVBuffer *)a5;
-- (void)splat:(__CVBuffer *)a3 pout:(float *)a4;
-- (void)splat_ones:(float *)a3;
-- (void)splat_w_mul_x:(__CVBuffer *)a3 inPixelBuffer:(__CVBuffer *)a4 pout:(float *)a5;
+- (void)slice:(const float *)slice outPixelBuffer:(__CVBuffer *)buffer;
+- (void)slice_trilinear:(__CVBuffer *)slice_trilinear pin:(const float *)pin pout:(__CVBuffer *)pout;
+- (void)splat:(__CVBuffer *)splat pout:(float *)pout;
+- (void)splat_ones:(float *)splat_ones;
+- (void)splat_w_mul_x:(__CVBuffer *)splat_w_mul_x inPixelBuffer:(__CVBuffer *)buffer pout:(float *)pout;
 @end
 
 @implementation BilateralGridHash
 
-- (BilateralGridHash)initWithWidth:(unsigned int)a3 height:(unsigned int)a4 maxHashTableSize:(unint64_t)a5
+- (BilateralGridHash)initWithWidth:(unsigned int)width height:(unsigned int)height maxHashTableSize:(unint64_t)size
 {
   v23.receiver = self;
   v23.super_class = BilateralGridHash;
@@ -36,12 +36,12 @@
   }
 
   v8->_n_dims = 0;
-  v8->_width = a3;
-  v10 = a4 * a3;
-  v8->_height = a4;
+  v8->_width = width;
+  v10 = height * width;
+  v8->_height = height;
   v8->_sigma_s = 0;
   *&v8->_sigma_r_luma = 0;
-  v8->_max_hash_table_size = a5;
+  v8->_max_hash_table_size = size;
   v8->_hash_table_size = 0;
   v11 = malloc_type_calloc(v10, 4uLL, 0x100004052888210uLL);
   v9->_hash_matrix_data = v11;
@@ -53,7 +53,7 @@ LABEL_24:
     goto LABEL_13;
   }
 
-  v12 = malloc_type_malloc(24 * a5, 0x1000040504FFAC1uLL);
+  v12 = malloc_type_malloc(24 * size, 0x1000040504FFAC1uLL);
   v9->_hash_table = v12;
   if (!v12)
   {
@@ -61,7 +61,7 @@ LABEL_24:
     goto LABEL_24;
   }
 
-  v13 = malloc_type_malloc(40 * a5, 0x100004052888210uLL);
+  v13 = malloc_type_malloc(40 * size, 0x100004052888210uLL);
   v9->_blur_indices = v13;
   if (!v13)
   {
@@ -69,7 +69,7 @@ LABEL_24:
     goto LABEL_24;
   }
 
-  v14 = malloc_type_malloc(4 * a5 + 4, 0x100004052888210uLL);
+  v14 = malloc_type_malloc(4 * size + 4, 0x100004052888210uLL);
   v9->_coord_indices = v14;
   if (!v14)
   {
@@ -85,7 +85,7 @@ LABEL_24:
     goto LABEL_24;
   }
 
-  v16 = malloc_type_malloc(4 * a5, 0x100004052888210uLL);
+  v16 = malloc_type_malloc(4 * size, 0x100004052888210uLL);
   v9->_coord_indices_off = v16;
   if (!v16)
   {
@@ -93,7 +93,7 @@ LABEL_24:
     goto LABEL_24;
   }
 
-  v17 = malloc_type_malloc(4 * a5 + 4, 0x100004052888210uLL);
+  v17 = malloc_type_malloc(4 * size + 4, 0x100004052888210uLL);
   v9->_interp_indices = v17;
   if (!v17)
   {
@@ -101,7 +101,7 @@ LABEL_24:
     goto LABEL_24;
   }
 
-  v18 = malloc_type_malloc(20 * a5, 0x100004052888210uLL);
+  v18 = malloc_type_malloc(20 * size, 0x100004052888210uLL);
   v9->_interp_table = v18;
   if (!v18)
   {
@@ -109,7 +109,7 @@ LABEL_24:
     goto LABEL_24;
   }
 
-  v19 = malloc_type_malloc(5 * a5, 0x100004077774924uLL);
+  v19 = malloc_type_malloc(5 * size, 0x100004077774924uLL);
   v9->_interp_pad = v19;
   if (!v19)
   {
@@ -117,7 +117,7 @@ LABEL_24:
     goto LABEL_24;
   }
 
-  v20 = sub_29571B244(a5);
+  v20 = sub_29571B244(size);
   v9->_hash_map = v20;
   if (!v20)
   {
@@ -218,21 +218,21 @@ LABEL_13:
   sub_29571B534(self->_hash_map);
 }
 
-- (void)splat:(__CVBuffer *)a3 pout:(float *)a4
+- (void)splat:(__CVBuffer *)splat pout:(float *)pout
 {
-  if (a3)
+  if (splat)
   {
-    if (a4)
+    if (pout)
     {
       if (self->_hash_matrix_data)
       {
-        v9 = objc_msgSend_hashTableSize(self, a2, a3, a4, v4, v5);
+        v9 = objc_msgSend_hashTableSize(self, a2, splat, pout, v4, v5);
         v15 = objc_msgSend_width(self, v10, v11, v12, v13, v14);
         v21 = objc_msgSend_height(self, v16, v17, v18, v19, v20);
-        CVPixelBufferLockBaseAddress(a3, 1uLL);
-        BytesPerRow = CVPixelBufferGetBytesPerRow(a3);
-        v23 = CVPixelBufferGetBytesPerRow(a3);
-        bzero(a4, 4 * v9);
+        CVPixelBufferLockBaseAddress(splat, 1uLL);
+        BytesPerRow = CVPixelBufferGetBytesPerRow(splat);
+        v23 = CVPixelBufferGetBytesPerRow(splat);
+        bzero(pout, 4 * v9);
         if (v21)
         {
           v24 = 0;
@@ -246,7 +246,7 @@ LABEL_13:
               do
               {
                 v29 = hash_matrix_data[v28];
-                a4[v29] = *(v23 + v26) + a4[v29];
+                pout[v29] = *(v23 + v26) + pout[v29];
                 v26 += 4;
                 ++v28;
               }
@@ -259,7 +259,7 @@ LABEL_13:
           }
         }
 
-        CVPixelBufferUnlockBaseAddress(a3, 1uLL);
+        CVPixelBufferUnlockBaseAddress(splat, 1uLL);
       }
 
       else
@@ -280,29 +280,29 @@ LABEL_13:
   }
 }
 
-- (void)splat_w_mul_x:(__CVBuffer *)a3 inPixelBuffer:(__CVBuffer *)a4 pout:(float *)a5
+- (void)splat_w_mul_x:(__CVBuffer *)splat_w_mul_x inPixelBuffer:(__CVBuffer *)buffer pout:(float *)pout
 {
-  if (a3)
+  if (splat_w_mul_x)
   {
-    if (a4)
+    if (buffer)
     {
-      if (a5)
+      if (pout)
       {
         if (self->_hash_matrix_data)
         {
-          PixelFormatType = CVPixelBufferGetPixelFormatType(a4);
+          PixelFormatType = CVPixelBufferGetPixelFormatType(buffer);
           if (PixelFormatType == 1278226534 || PixelFormatType == 1717855600 || PixelFormatType == 1717856627)
           {
             v37 = objc_msgSend_hashTableSize(self, v10, v11, v12, v13, v14);
             v20 = objc_msgSend_width(self, v15, v16, v17, v18, v19);
             v26 = objc_msgSend_height(self, v21, v22, v23, v24, v25);
-            CVPixelBufferLockBaseAddress(a3, 0);
-            CVPixelBufferLockBaseAddress(a4, 0);
-            BytesPerRowOfPlane = CVPixelBufferGetBytesPerRowOfPlane(a3, 0);
-            v28 = CVPixelBufferGetBytesPerRowOfPlane(a4, 0);
-            BaseAddressOfPlane = CVPixelBufferGetBaseAddressOfPlane(a3, 0);
-            v30 = CVPixelBufferGetBaseAddressOfPlane(a4, 0);
-            bzero(a5, 4 * v37);
+            CVPixelBufferLockBaseAddress(splat_w_mul_x, 0);
+            CVPixelBufferLockBaseAddress(buffer, 0);
+            BytesPerRowOfPlane = CVPixelBufferGetBytesPerRowOfPlane(splat_w_mul_x, 0);
+            v28 = CVPixelBufferGetBytesPerRowOfPlane(buffer, 0);
+            BaseAddressOfPlane = CVPixelBufferGetBaseAddressOfPlane(splat_w_mul_x, 0);
+            v30 = CVPixelBufferGetBaseAddressOfPlane(buffer, 0);
+            bzero(pout, 4 * v37);
             if (v26)
             {
               v31 = 0;
@@ -316,7 +316,7 @@ LABEL_13:
                   do
                   {
                     v36 = hash_matrix_data[v35];
-                    a5[v36] = a5[v36] + (*&BaseAddressOfPlane[v33] * *&v30[v33]);
+                    pout[v36] = pout[v36] + (*&BaseAddressOfPlane[v33] * *&v30[v33]);
                     v33 += 4;
                     ++v35;
                   }
@@ -330,9 +330,9 @@ LABEL_13:
               }
             }
 
-            CVPixelBufferUnlockBaseAddress(a3, 0);
+            CVPixelBufferUnlockBaseAddress(splat_w_mul_x, 0);
 
-            CVPixelBufferUnlockBaseAddress(a4, 0);
+            CVPixelBufferUnlockBaseAddress(buffer, 0);
           }
 
           else
@@ -366,22 +366,22 @@ LABEL_13:
   }
 }
 
-- (void)slice:(const float *)a3 outPixelBuffer:(__CVBuffer *)a4
+- (void)slice:(const float *)slice outPixelBuffer:(__CVBuffer *)buffer
 {
-  if (a3)
+  if (slice)
   {
-    if (a4)
+    if (buffer)
     {
       if (self->_hash_matrix_data)
       {
-        PixelFormatType = CVPixelBufferGetPixelFormatType(a4);
+        PixelFormatType = CVPixelBufferGetPixelFormatType(buffer);
         if (PixelFormatType == 1278226534 || PixelFormatType == 1717855600 || PixelFormatType == 1717856627)
         {
           v13 = objc_msgSend_width(self, v8, v9, v10, v11, v12);
           v19 = objc_msgSend_height(self, v14, v15, v16, v17, v18);
-          CVPixelBufferLockBaseAddress(a4, 0);
-          BytesPerRowOfPlane = CVPixelBufferGetBytesPerRowOfPlane(a4, 0);
-          BaseAddressOfPlane = CVPixelBufferGetBaseAddressOfPlane(a4, 0);
+          CVPixelBufferLockBaseAddress(buffer, 0);
+          BytesPerRowOfPlane = CVPixelBufferGetBytesPerRowOfPlane(buffer, 0);
+          BaseAddressOfPlane = CVPixelBufferGetBaseAddressOfPlane(buffer, 0);
           if (v19)
           {
             v22 = 0;
@@ -394,7 +394,7 @@ LABEL_13:
                 v26 = v22;
                 do
                 {
-                  *&BaseAddressOfPlane[v24] = a3[hash_matrix_data[v26]];
+                  *&BaseAddressOfPlane[v24] = slice[hash_matrix_data[v26]];
                   v24 += 4;
                   ++v26;
                 }
@@ -407,7 +407,7 @@ LABEL_13:
             }
           }
 
-          CVPixelBufferUnlockBaseAddress(a4, 0);
+          CVPixelBufferUnlockBaseAddress(buffer, 0);
         }
 
         else
@@ -435,13 +435,13 @@ LABEL_13:
   }
 }
 
-- (void)slice_trilinear:(__CVBuffer *)a3 pin:(const float *)a4 pout:(__CVBuffer *)a5
+- (void)slice_trilinear:(__CVBuffer *)slice_trilinear pin:(const float *)pin pout:(__CVBuffer *)pout
 {
-  if (a3)
+  if (slice_trilinear)
   {
-    if (a4)
+    if (pin)
     {
-      if (a5)
+      if (pout)
       {
         if (self->_hash_matrix_data)
         {
@@ -451,14 +451,14 @@ LABEL_13:
             {
               if (self->_interp_pad)
               {
-                v10 = objc_msgSend_width(self, a2, a3, a4, a5, v5);
+                v10 = objc_msgSend_width(self, a2, slice_trilinear, pin, pout, v5);
                 v16 = objc_msgSend_height(self, v11, v12, v13, v14, v15);
-                CVPixelBufferLockBaseAddress(a3, 0);
-                CVPixelBufferLockBaseAddress(a5, 0);
-                BytesPerRowOfPlane = CVPixelBufferGetBytesPerRowOfPlane(a3, 0);
-                v18 = CVPixelBufferGetBytesPerRowOfPlane(a5, 0);
-                BaseAddressOfPlane = CVPixelBufferGetBaseAddressOfPlane(a3, 0);
-                v20 = CVPixelBufferGetBaseAddressOfPlane(a5, 0);
+                CVPixelBufferLockBaseAddress(slice_trilinear, 0);
+                CVPixelBufferLockBaseAddress(pout, 0);
+                BytesPerRowOfPlane = CVPixelBufferGetBytesPerRowOfPlane(slice_trilinear, 0);
+                v18 = CVPixelBufferGetBytesPerRowOfPlane(pout, 0);
+                BaseAddressOfPlane = CVPixelBufferGetBaseAddressOfPlane(slice_trilinear, 0);
+                v20 = CVPixelBufferGetBaseAddressOfPlane(pout, 0);
                 if (v16)
                 {
                   v22 = 0;
@@ -485,7 +485,7 @@ LABEL_13:
                         v38 = vsub_f32(v37, vcvt_f32_s32(vcvt_s32_f32(v37)));
                         v39 = vsub_f32(_D1, v38);
                         v40 = vmuls_lane_f32((1.0 - v30) * v39.f32[0], v39, 1);
-                        v21 = a4[v34] * v40;
+                        v21 = pin[v34] * v40;
                         if (v35 < v36)
                         {
                           v41 = &self->_interp_table[v35];
@@ -529,7 +529,7 @@ LABEL_13:
                             }
 
                             v51 = v50 * v49;
-                            v21 = v21 + (v51 * a4[v44]);
+                            v21 = v21 + (v51 * pin[v44]);
                             v40 = v40 + v51;
                             --v43;
                           }
@@ -551,9 +551,9 @@ LABEL_13:
                   while (v22 != v16);
                 }
 
-                CVPixelBufferUnlockBaseAddress(a3, 0);
+                CVPixelBufferUnlockBaseAddress(slice_trilinear, 0);
 
-                CVPixelBufferUnlockBaseAddress(a5, 0);
+                CVPixelBufferUnlockBaseAddress(pout, 0);
               }
 
               else
@@ -598,27 +598,27 @@ LABEL_13:
   }
 }
 
-- (void)blur:(const float *)a3 pout:(float *)a4
+- (void)blur:(const float *)blur pout:(float *)pout
 {
-  if (a3)
+  if (blur)
   {
-    if (a4)
+    if (pout)
     {
       if (self->_hash_table)
       {
         if (self->_blur_indices)
         {
-          v9 = objc_msgSend_countDims(self, a2, a3, a4, v4, v5);
+          v9 = objc_msgSend_countDims(self, a2, blur, pout, v4, v5);
           v15 = objc_msgSend_hashTableSize(self, v10, v11, v12, v13, v14);
           if (v15)
           {
             v16 = v15;
-            v17 = a4;
-            v18 = a3;
+            poutCopy = pout;
+            blurCopy = blur;
             do
             {
-              v19 = *v18++;
-              *v17++ = v19 * (2 * v9);
+              v19 = *blurCopy++;
+              *poutCopy++ = v19 * (2 * v9);
               --v16;
             }
 
@@ -639,14 +639,14 @@ LABEL_13:
               v22 = hash_table[v16].var4;
               if (var4 < v22)
               {
-                v23 = a4[v16];
+                v23 = pout[v16];
                 v24 = &self->_blur_indices[var4];
                 v25 = v22 - var4;
                 do
                 {
                   v26 = *v24++;
-                  v23 = a3[v26] + v23;
-                  a4[v16] = v23;
+                  v23 = blur[v26] + v23;
+                  pout[v16] = v23;
                   --v25;
                 }
 
@@ -684,28 +684,28 @@ LABEL_13:
   }
 }
 
-- (void)normalize:(const float *)a3 pout:(float *)a4
+- (void)normalize:(const float *)normalize pout:(float *)pout
 {
-  if (a3)
+  if (normalize)
   {
-    v6 = a4;
-    if (a4)
+    poutCopy = pout;
+    if (pout)
     {
       if (self->_hash_table)
       {
-        v8 = a3;
-        v9 = objc_msgSend_hashTableSize(self, a2, a3, a4, v4, v5);
+        normalizeCopy = normalize;
+        v9 = objc_msgSend_hashTableSize(self, a2, normalize, pout, v4, v5);
         if (v9)
         {
           v10 = v9;
           p_var1 = &self->_hash_table->var1;
           do
           {
-            v12 = *v8++;
+            v12 = *normalizeCopy++;
             v13 = v12;
             v14 = *p_var1;
             p_var1 += 6;
-            *v6++ = v13 / v14;
+            *poutCopy++ = v13 / v14;
             --v10;
           }
 
@@ -731,28 +731,28 @@ LABEL_13:
   }
 }
 
-- (void)normalize_blur:(const float *)a3 pout:(float *)a4
+- (void)normalize_blur:(const float *)normalize_blur pout:(float *)pout
 {
-  if (a3)
+  if (normalize_blur)
   {
-    v6 = a4;
-    if (a4)
+    poutCopy = pout;
+    if (pout)
     {
       if (self->_hash_table)
       {
-        v8 = a3;
-        v9 = objc_msgSend_hashTableSize(self, a2, a3, a4, v4, v5);
+        normalize_blurCopy = normalize_blur;
+        v9 = objc_msgSend_hashTableSize(self, a2, normalize_blur, pout, v4, v5);
         if (v9)
         {
           v10 = v9;
           p_var2 = &self->_hash_table->var2;
           do
           {
-            v12 = *v8++;
+            v12 = *normalize_blurCopy++;
             v13 = v12;
             v14 = *p_var2;
             p_var2 += 6;
-            *v6++ = v13 / v14;
+            *poutCopy++ = v13 / v14;
             --v10;
           }
 
@@ -778,14 +778,14 @@ LABEL_13:
   }
 }
 
-- (void)splat_ones:(float *)a3
+- (void)splat_ones:(float *)splat_ones
 {
-  if (a3)
+  if (splat_ones)
   {
     if (self->_hash_table)
     {
-      v7 = a3;
-      v8 = objc_msgSend_hashTableSize(self, a2, a3, v3, v4, v5);
+      splat_onesCopy = splat_ones;
+      v8 = objc_msgSend_hashTableSize(self, a2, splat_ones, v3, v4, v5);
       if (v8)
       {
         v9 = v8;
@@ -794,7 +794,7 @@ LABEL_13:
         {
           v11 = *p_var1;
           p_var1 += 6;
-          *v7++ = v11;
+          *splat_onesCopy++ = v11;
           --v9;
         }
 
@@ -814,14 +814,14 @@ LABEL_13:
   }
 }
 
-- (void)blur_ones:(float *)a3
+- (void)blur_ones:(float *)blur_ones
 {
-  if (a3)
+  if (blur_ones)
   {
     if (self->_hash_table)
     {
-      v7 = a3;
-      v8 = objc_msgSend_hashTableSize(self, a2, a3, v3, v4, v5);
+      blur_onesCopy = blur_ones;
+      v8 = objc_msgSend_hashTableSize(self, a2, blur_ones, v3, v4, v5);
       if (v8)
       {
         v9 = v8;
@@ -830,7 +830,7 @@ LABEL_13:
         {
           v11 = *p_var2;
           p_var2 += 6;
-          *v7++ = v11;
+          *blur_onesCopy++ = v11;
           --v9;
         }
 
@@ -850,14 +850,14 @@ LABEL_13:
   }
 }
 
-- (void)blur_n:(float *)a3
+- (void)blur_n:(float *)blur_n
 {
-  if (a3)
+  if (blur_n)
   {
     if (self->_hash_table)
     {
-      v7 = a3;
-      v8 = objc_msgSend_hashTableSize(self, a2, a3, v3, v4, v5);
+      blur_nCopy = blur_n;
+      v8 = objc_msgSend_hashTableSize(self, a2, blur_n, v3, v4, v5);
       if (v8)
       {
         v9 = v8;
@@ -866,7 +866,7 @@ LABEL_13:
         {
           v11 = *p_var3;
           p_var3 += 6;
-          *v7++ = v11;
+          *blur_nCopy++ = v11;
           --v9;
         }
 
@@ -886,9 +886,9 @@ LABEL_13:
   }
 }
 
-- (const)blur_indices:(int)a3 n_blur_indices:(int *)a4
+- (const)blur_indices:(int)blur_indices n_blur_indices:(int *)n_blur_indices
 {
-  if (!a4)
+  if (!n_blur_indices)
   {
     sub_295734D68();
     return 0;
@@ -908,42 +908,42 @@ LABEL_13:
     return 0;
   }
 
-  if (a3 < 1)
+  if (blur_indices < 1)
   {
     var4 = 0;
   }
 
   else
   {
-    var4 = hash_table[a3 - 1].var4;
+    var4 = hash_table[blur_indices - 1].var4;
   }
 
-  *a4 = hash_table[a3].var4 - var4;
+  *n_blur_indices = hash_table[blur_indices].var4 - var4;
   return &blur_indices[var4];
 }
 
-- (int)_computeBilateralSpace:(__CVBuffer *)a3 sigma_s:(unsigned int)a4 sigma_r_luma:(unsigned int)a5 sigma_r_chroma:(unsigned int)a6
+- (int)_computeBilateralSpace:(__CVBuffer *)space sigma_s:(unsigned int)sigma_s sigma_r_luma:(unsigned int)sigma_r_luma sigma_r_chroma:(unsigned int)sigma_r_chroma
 {
-  if (a3)
+  if (space)
   {
-    v6 = a6;
-    v8 = a4;
-    v9 = a3;
+    sigma_r_chromaCopy = sigma_r_chroma;
+    sigma_sCopy = sigma_s;
+    spaceCopy = space;
     self->_n_dims = 5;
-    self->_sigma_s = a4;
-    self->_sigma_r_luma = a5;
-    self->_sigma_r_chroma = a6;
-    Width = CVPixelBufferGetWidth(a3);
-    Height = CVPixelBufferGetHeight(v9);
-    CVPixelBufferLockBaseAddress(v9, 0);
-    BytesPerRowOfPlane = CVPixelBufferGetBytesPerRowOfPlane(v9, 0);
-    v49 = CVPixelBufferGetBytesPerRowOfPlane(v9, 1uLL);
-    BaseAddressOfPlane = CVPixelBufferGetBaseAddressOfPlane(v9, 0);
-    v57 = CVPixelBufferGetBaseAddressOfPlane(v9, 1uLL);
+    self->_sigma_s = sigma_s;
+    self->_sigma_r_luma = sigma_r_luma;
+    self->_sigma_r_chroma = sigma_r_chroma;
+    Width = CVPixelBufferGetWidth(space);
+    Height = CVPixelBufferGetHeight(spaceCopy);
+    CVPixelBufferLockBaseAddress(spaceCopy, 0);
+    BytesPerRowOfPlane = CVPixelBufferGetBytesPerRowOfPlane(spaceCopy, 0);
+    v49 = CVPixelBufferGetBytesPerRowOfPlane(spaceCopy, 1uLL);
+    BaseAddressOfPlane = CVPixelBufferGetBaseAddressOfPlane(spaceCopy, 0);
+    v57 = CVPixelBufferGetBaseAddressOfPlane(spaceCopy, 1uLL);
     if (Height >= 2)
     {
       v51 = 0;
-      v52 = v8;
+      v52 = sigma_sCopy;
       LODWORD(v16) = Width >> 1;
       v47 = 2 * BytesPerRowOfPlane;
       if (Width >> 1 <= 1)
@@ -956,12 +956,12 @@ LABEL_13:
         v16 = v16;
       }
 
-      v45 = v9;
+      v45 = spaceCopy;
       v46 = v16;
       v50 = &BaseAddressOfPlane[BytesPerRowOfPlane];
       v17 = BaseAddressOfPlane;
       v48 = Width;
-      v53 = v6;
+      v53 = sigma_r_chromaCopy;
       while (Width < 2)
       {
 LABEL_15:
@@ -980,8 +980,8 @@ LABEL_15:
       v19 = (2 * v51);
       v20 = v50;
       v21 = v46;
-      v55 = (v19 | 1) / v8;
-      v56 = v19 / v8;
+      v55 = (v19 | 1) / sigma_sCopy;
+      v56 = v19 / sigma_sCopy;
       v54 = v17;
       while (1)
       {
@@ -991,26 +991,26 @@ LABEL_15:
         LODWORD(v22) = v22[1];
         v24 = *v20;
         v25 = v20[1];
-        v26 = v57[v18] / v6;
-        v27 = v57[v18 + 1] / v6;
-        LOBYTE(v59) = v18 / v8;
+        v26 = v57[v18] / sigma_r_chromaCopy;
+        v27 = v57[v18 + 1] / sigma_r_chromaCopy;
+        LOBYTE(v59) = v18 / sigma_sCopy;
         BYTE1(v59) = v56;
-        BYTE2(v59) = v23 / a5;
+        BYTE2(v59) = v23 / sigma_r_luma;
         HIBYTE(v59) = v26;
         v60 = v27;
-        v61[0] = (v18 + 1) / v8;
+        v61[0] = (v18 + 1) / sigma_sCopy;
         v61[1] = v56;
-        v61[2] = v22 / a5;
+        v61[2] = v22 / sigma_r_luma;
         v61[3] = v26;
         v61[4] = v27;
         v62[0] = v59;
         v62[1] = v55;
-        v62[2] = v24 / a5;
+        v62[2] = v24 / sigma_r_luma;
         v62[3] = v26;
         v62[4] = v27;
         v63[0] = v61[0];
         v63[1] = v55;
-        v63[2] = v25 / a5;
+        v63[2] = v25 / sigma_r_luma;
         v63[3] = v26;
         v63[4] = v27;
         v28 = sub_2957285EC(&v59, 5);
@@ -1050,8 +1050,8 @@ LABEL_15:
         v20 += 2;
         v18 += 2;
         v21 = v58 - 1;
-        v8 = v52;
-        v6 = v53;
+        sigma_sCopy = v52;
+        sigma_r_chromaCopy = v53;
         v17 = v54;
         if (v58 == 1)
         {
@@ -1062,7 +1062,7 @@ LABEL_15:
       v15 = v43;
       sub_295734F14();
 LABEL_17:
-      v9 = v45;
+      spaceCopy = v45;
     }
 
     else
@@ -1070,7 +1070,7 @@ LABEL_17:
       v15 = 0;
     }
 
-    CVPixelBufferUnlockBaseAddress(v9, 0);
+    CVPixelBufferUnlockBaseAddress(spaceCopy, 0);
   }
 
   else
@@ -1291,13 +1291,13 @@ LABEL_17:
   self->_interp_indices[v10] = v9;
 }
 
-- (BOOL)_hashMapFindKey:(unint64_t)a3 to:(unsigned int *)a4
+- (BOOL)_hashMapFindKey:(unint64_t)key to:(unsigned int *)to
 {
-  if (a4)
+  if (to)
   {
     hash_map = self->_hash_map;
 
-    return sub_29571B59C(hash_map, a3, a4);
+    return sub_29571B59C(hash_map, key, to);
   }
 
   else
@@ -1307,19 +1307,19 @@ LABEL_17:
   }
 }
 
-- (int)_addHashKeyAtX:(unsigned int)a3 Y:(unsigned int)a4 key:(unint64_t)a5
+- (int)_addHashKeyAtX:(unsigned int)x Y:(unsigned int)y key:(unint64_t)key
 {
   if (self->_hash_matrix_data)
   {
     if (self->_hash_table)
     {
       v19 = 0;
-      if (objc_msgSend__hashMapFindKey_to_(self, a2, a5, &v19, a5, v5))
+      if (objc_msgSend__hashMapFindKey_to_(self, a2, key, &v19, key, v5))
       {
         result = 0;
         v14 = v19;
         hash_table = self->_hash_table;
-        self->_hash_matrix_data[a3 + self->_width * a4] = v19;
+        self->_hash_matrix_data[x + self->_width * y] = v19;
         ++hash_table[v14].var1;
       }
 
@@ -1336,10 +1336,10 @@ LABEL_17:
           v17 = self->_hash_table;
           self->_hash_table_size = hash_table_size + 1;
           v18 = &v17[hash_table_size];
-          v18->var0.var0 = a5;
+          v18->var0.var0 = key;
           *&v18->var1 = xmmword_295743020;
-          self->_hash_matrix_data[a3 + self->_width * a4] = hash_table_size;
-          objc_msgSend__hashMapAddKey_andValue_(self, v10, a5, hash_table_size, v11, v12);
+          self->_hash_matrix_data[x + self->_width * y] = hash_table_size;
+          objc_msgSend__hashMapAddKey_andValue_(self, v10, key, hash_table_size, v11, v12);
           return 0;
         }
       }

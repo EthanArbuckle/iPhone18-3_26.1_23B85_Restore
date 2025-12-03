@@ -1,5 +1,5 @@
 @interface MCUIBridgeRMConfigurationsDataProvider
-- (MCUIBridgeRMConfigurationsDataProvider)initWithProfileIdentifier:(id)a3;
+- (MCUIBridgeRMConfigurationsDataProvider)initWithProfileIdentifier:(id)identifier;
 - (id)_rmConfigurationViewModels;
 - (id)pluginSectionViewModels;
 - (id)pluginViewModels;
@@ -8,16 +8,16 @@
 
 @implementation MCUIBridgeRMConfigurationsDataProvider
 
-- (MCUIBridgeRMConfigurationsDataProvider)initWithProfileIdentifier:(id)a3
+- (MCUIBridgeRMConfigurationsDataProvider)initWithProfileIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = MCUIBridgeRMConfigurationsDataProvider;
   v6 = [(MCUIBridgeRMConfigurationsDataProvider *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_profileIdentifier, a3);
+    objc_storeStrong(&v6->_profileIdentifier, identifier);
   }
 
   return v7;
@@ -25,12 +25,12 @@
 
 - (id)profileViewModels
 {
-  v2 = [(MCUIBridgeRMConfigurationsDataProvider *)self _rmConfigurationViewModels];
-  v3 = [v2 profileViewModels];
-  v4 = v3;
-  if (v3)
+  _rmConfigurationViewModels = [(MCUIBridgeRMConfigurationsDataProvider *)self _rmConfigurationViewModels];
+  profileViewModels = [_rmConfigurationViewModels profileViewModels];
+  v4 = profileViewModels;
+  if (profileViewModels)
   {
-    v5 = v3;
+    v5 = profileViewModels;
   }
 
   else
@@ -45,12 +45,12 @@
 
 - (id)pluginSectionViewModels
 {
-  v2 = [(MCUIBridgeRMConfigurationsDataProvider *)self _rmConfigurationViewModels];
-  v3 = [v2 pluginSectionViewModels];
-  v4 = v3;
-  if (v3)
+  _rmConfigurationViewModels = [(MCUIBridgeRMConfigurationsDataProvider *)self _rmConfigurationViewModels];
+  pluginSectionViewModels = [_rmConfigurationViewModels pluginSectionViewModels];
+  v4 = pluginSectionViewModels;
+  if (pluginSectionViewModels)
   {
-    v5 = v3;
+    v5 = pluginSectionViewModels;
   }
 
   else
@@ -65,12 +65,12 @@
 
 - (id)pluginViewModels
 {
-  v2 = [(MCUIBridgeRMConfigurationsDataProvider *)self _rmConfigurationViewModels];
-  v3 = [v2 pluginViewModels];
-  v4 = v3;
-  if (v3)
+  _rmConfigurationViewModels = [(MCUIBridgeRMConfigurationsDataProvider *)self _rmConfigurationViewModels];
+  pluginViewModels = [_rmConfigurationViewModels pluginViewModels];
+  v4 = pluginViewModels;
+  if (pluginViewModels)
   {
-    v5 = v3;
+    v5 = pluginViewModels;
   }
 
   else

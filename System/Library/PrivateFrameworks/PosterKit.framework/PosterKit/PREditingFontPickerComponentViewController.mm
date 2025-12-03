@@ -1,39 +1,39 @@
 @interface PREditingFontPickerComponentViewController
-+ (id)defaultFontIdentifiersForRole:(id)a3 titleString:(id)a4;
-+ (id)defaultItemsForRole:(id)a3 titleString:(id)a4;
++ (id)defaultFontIdentifiersForRole:(id)role titleString:(id)string;
++ (id)defaultItemsForRole:(id)role titleString:(id)string;
 - (BOOL)_shouldShowWeightSlider;
-- (PREditingFontPickerComponentViewController)initWithItems:(id)a3 selectedItem:(id)a4 role:(id)a5 titleString:(id)a6;
+- (PREditingFontPickerComponentViewController)initWithItems:(id)items selectedItem:(id)item role:(id)role titleString:(id)string;
 - (PREditingFontPickerComponentViewControllerDelegate)delegate;
 - (double)estimatedHeight;
 - (id)configureFontPickerViewIfNecessary;
-- (id)contentStringForFont:(id)a3 locale:(id)a4;
+- (id)contentStringForFont:(id)font locale:(id)locale;
 - (id)contentStringNumberFormatter;
 - (void)_updateWeightSliderVisibility;
 - (void)filterFontViewsByLocale;
-- (void)fontSliderDidUpdateWeight:(id)a3;
+- (void)fontSliderDidUpdateWeight:(id)weight;
 - (void)loadView;
-- (void)setFontWeight:(double)a3;
-- (void)setLocale:(id)a3;
+- (void)setFontWeight:(double)weight;
+- (void)setLocale:(id)locale;
 - (void)updateLayoutForCurrentSize;
 - (void)viewDidLayoutSubviews;
 @end
 
 @implementation PREditingFontPickerComponentViewController
 
-+ (id)defaultFontIdentifiersForRole:(id)a3 titleString:(id)a4
++ (id)defaultFontIdentifiersForRole:(id)role titleString:(id)string
 {
   v15[4] = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  if ([a3 isEqual:@"PRPosterRoleIncomingCall"])
+  stringCopy = string;
+  if ([role isEqual:@"PRPosterRoleIncomingCall"])
   {
     v15[0] = @"PRTimeFontIdentifierSFPro";
     v15[1] = @"PRTimeFontIdentifierSFRounded";
     v15[2] = @"PRTimeFontIdentifierNewYorkAlpha";
     v15[3] = @"PRTimeFontIdentifierSFCondensed";
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:4];
-    if ([v5 length])
+    if ([stringCopy length])
     {
-      v7 = [PRIncomingCallFontsProvider timeFontIdentifiersForText:v5 availableFonts:v6];
+      v7 = [PRIncomingCallFontsProvider timeFontIdentifiersForText:stringCopy availableFonts:v6];
     }
 
     else
@@ -80,9 +80,9 @@
   return v11;
 }
 
-+ (id)defaultItemsForRole:(id)a3 titleString:(id)a4
++ (id)defaultItemsForRole:(id)role titleString:(id)string
 {
-  v4 = [a1 defaultFontIdentifiersForRole:a3 titleString:a4];
+  v4 = [self defaultFontIdentifiersForRole:role titleString:string];
   v5 = [v4 bs_map:&__block_literal_global_33];
 
   return v5;
@@ -98,37 +98,37 @@ PREditingFontPickerItem *__78__PREditingFontPickerComponentViewController_defaul
   return v4;
 }
 
-- (PREditingFontPickerComponentViewController)initWithItems:(id)a3 selectedItem:(id)a4 role:(id)a5 titleString:(id)a6
+- (PREditingFontPickerComponentViewController)initWithItems:(id)items selectedItem:(id)item role:(id)role titleString:(id)string
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  itemsCopy = items;
+  itemCopy = item;
+  roleCopy = role;
+  stringCopy = string;
   v21.receiver = self;
   v21.super_class = PREditingFontPickerComponentViewController;
   v14 = [(PREditingFontPickerComponentViewController *)&v21 init];
   if (v14)
   {
-    v15 = [v10 copy];
+    v15 = [itemsCopy copy];
     items = v14->_items;
     v14->_items = v15;
 
-    v17 = v11;
-    if (!v11)
+    firstObject = itemCopy;
+    if (!itemCopy)
     {
-      v17 = [v10 firstObject];
+      firstObject = [itemsCopy firstObject];
     }
 
-    objc_storeStrong(&v14->_selectedItem, v17);
-    if (!v11)
+    objc_storeStrong(&v14->_selectedItem, firstObject);
+    if (!itemCopy)
     {
     }
 
-    objc_storeStrong(&v14->_role, a5);
-    objc_storeStrong(&v14->_titleString, a6);
-    v18 = [MEMORY[0x1E695DF58] currentLocale];
+    objc_storeStrong(&v14->_role, role);
+    objc_storeStrong(&v14->_titleString, string);
+    currentLocale = [MEMORY[0x1E695DF58] currentLocale];
     locale = v14->_locale;
-    v14->_locale = v18;
+    v14->_locale = currentLocale;
 
     v14->_fontSize = 50.0;
   }
@@ -144,8 +144,8 @@ PREditingFontPickerItem *__78__PREditingFontPickerComponentViewController_defaul
   }
 
   v3 = contentStringNumberFormatter_numberFormatter;
-  v4 = [(PREditingFontPickerComponentViewController *)self locale];
-  [v3 setLocale:v4];
+  locale = [(PREditingFontPickerComponentViewController *)self locale];
+  [v3 setLocale:locale];
 
   v5 = contentStringNumberFormatter_numberFormatter;
 
@@ -163,27 +163,27 @@ uint64_t __74__PREditingFontPickerComponentViewController_contentStringNumberFor
   return [v2 setNumberStyle:1];
 }
 
-- (id)contentStringForFont:(id)a3 locale:(id)a4
+- (id)contentStringForFont:(id)font locale:(id)locale
 {
   v27[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
-  v9 = [(PREditingFontPickerComponentViewController *)self role];
-  v10 = [v9 isEqualToString:@"PRPosterRoleIncomingCall"];
+  fontCopy = font;
+  localeCopy = locale;
+  v8 = fontCopy;
+  role = [(PREditingFontPickerComponentViewController *)self role];
+  v10 = [role isEqualToString:@"PRPosterRoleIncomingCall"];
 
   if (v10)
   {
     v11 = [PRIncomingCallFontsProvider sampleStringForFont:v8 displayingText:self->_titleString];
-    v13 = v12;
+    contentStringNumberFormatter = v12;
 
-    v14 = v13;
+    v14 = contentStringNumberFormatter;
   }
 
   else
   {
-    v13 = [(PREditingFontPickerComponentViewController *)self contentStringNumberFormatter];
-    v11 = [v13 stringFromNumber:&unk_1F1C6B968];
+    contentStringNumberFormatter = [(PREditingFontPickerComponentViewController *)self contentStringNumberFormatter];
+    v11 = [contentStringNumberFormatter stringFromNumber:&unk_1F1C6B968];
     v14 = v8;
   }
 
@@ -195,8 +195,8 @@ uint64_t __74__PREditingFontPickerComponentViewController_contentStringNumberFor
   v18 = [v16 dictionaryWithDictionary:v17];
 
   v19 = MEMORY[0x1E695DF58];
-  v20 = [v7 localeIdentifier];
-  v21 = [v19 componentsFromLocaleIdentifier:v20];
+  localeIdentifier = [localeCopy localeIdentifier];
+  v21 = [v19 componentsFromLocaleIdentifier:localeIdentifier];
   v22 = [v21 objectForKeyedSubscript:@"numbers"];
 
   if (PRTimeNumberingSystemRequiresLanguageTagging(v22))
@@ -214,10 +214,10 @@ uint64_t __74__PREditingFontPickerComponentViewController_contentStringNumberFor
 {
   v47[1] = *MEMORY[0x1E69E9840];
   v3 = objc_alloc_init(MEMORY[0x1E69DD250]);
-  v4 = [MEMORY[0x1E69DC888] clearColor];
-  [v3 setBackgroundColor:v4];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [v3 setBackgroundColor:clearColor];
 
-  v5 = [(PREditingFontPickerComponentViewController *)self configureFontPickerViewIfNecessary];
+  configureFontPickerViewIfNecessary = [(PREditingFontPickerComponentViewController *)self configureFontPickerViewIfNecessary];
   v6 = objc_alloc_init(MEMORY[0x1E69C5640]);
   fontWeightSlider = self->_fontWeightSlider;
   self->_fontWeightSlider = v6;
@@ -225,9 +225,9 @@ uint64_t __74__PREditingFontPickerComponentViewController_contentStringNumberFor
   [(UISlider *)self->_fontWeightSlider addTarget:self action:sel_fontSliderDidUpdateWeight_ forControlEvents:4096];
   [(UISlider *)self->_fontWeightSlider setHidden:[(PREditingFontPickerComponentViewController *)self _shouldShowWeightSlider]^ 1];
   v8 = self->_fontWeightSlider;
-  v9 = [(PREditingFontPickerComponentViewController *)self _shouldShowWeightSlider];
+  _shouldShowWeightSlider = [(PREditingFontPickerComponentViewController *)self _shouldShowWeightSlider];
   v10 = 0.0;
-  if (v9)
+  if (_shouldShowWeightSlider)
   {
     v10 = 1.0;
   }
@@ -243,10 +243,10 @@ uint64_t __74__PREditingFontPickerComponentViewController_contentStringNumberFor
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v47 count:1];
   v15 = [v13 arrayWithArray:v14];
 
-  if (v5)
+  if (configureFontPickerViewIfNecessary)
   {
-    [v3 addSubview:v5];
-    [v15 insertObject:v5 atIndex:0];
+    [v3 addSubview:configureFontPickerViewIfNecessary];
+    [v15 insertObject:configureFontPickerViewIfNecessary atIndex:0];
   }
 
   v43 = v15;
@@ -255,45 +255,45 @@ uint64_t __74__PREditingFontPickerComponentViewController_contentStringNumberFor
   [v16 setAlignment:3];
   [v16 setSpacing:16.0];
   [v16 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v17 = [MEMORY[0x1E69DC888] clearColor];
-  [v16 setBackgroundColor:v17];
+  clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+  [v16 setBackgroundColor:clearColor2];
 
   [v3 addSubview:v16];
   v35 = MEMORY[0x1E696ACD8];
-  v42 = [v16 leadingAnchor];
-  v41 = [v3 leadingAnchor];
-  v40 = [v42 constraintEqualToAnchor:v41];
+  leadingAnchor = [v16 leadingAnchor];
+  leadingAnchor2 = [v3 leadingAnchor];
+  v40 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v46[0] = v40;
-  v39 = [v16 trailingAnchor];
-  v38 = [v3 trailingAnchor];
-  v37 = [v39 constraintEqualToAnchor:v38];
+  trailingAnchor = [v16 trailingAnchor];
+  trailingAnchor2 = [v3 trailingAnchor];
+  v37 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v46[1] = v37;
-  v36 = [v16 topAnchor];
-  v34 = [v3 topAnchor];
-  v33 = [v36 constraintEqualToAnchor:v34];
+  topAnchor = [v16 topAnchor];
+  topAnchor2 = [v3 topAnchor];
+  v33 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v46[2] = v33;
-  v32 = [v16 bottomAnchor];
+  bottomAnchor = [v16 bottomAnchor];
   v44 = v3;
-  v31 = [v3 bottomAnchor];
-  v18 = [v32 constraintEqualToAnchor:v31];
+  bottomAnchor2 = [v3 bottomAnchor];
+  v18 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v46[3] = v18;
-  v19 = [(UISlider *)self->_fontWeightSlider widthAnchor];
-  v20 = [v16 widthAnchor];
-  v21 = [v19 constraintEqualToAnchor:v20 constant:-72.0];
+  widthAnchor = [(UISlider *)self->_fontWeightSlider widthAnchor];
+  widthAnchor2 = [v16 widthAnchor];
+  v21 = [widthAnchor constraintEqualToAnchor:widthAnchor2 constant:-72.0];
   v46[4] = v21;
-  v22 = [(UISlider *)self->_fontWeightSlider heightAnchor];
-  v23 = [v22 constraintEqualToConstant:34.0];
+  heightAnchor = [(UISlider *)self->_fontWeightSlider heightAnchor];
+  v23 = [heightAnchor constraintEqualToConstant:34.0];
   v46[5] = v23;
   [MEMORY[0x1E695DEC8] arrayWithObjects:v46 count:6];
-  v25 = v24 = v5;
+  v25 = v24 = configureFontPickerViewIfNecessary;
   [v35 activateConstraints:v25];
 
   if (v24)
   {
     v26 = MEMORY[0x1E696ACD8];
-    v27 = [v24 widthAnchor];
-    v28 = [v16 widthAnchor];
-    v29 = [v27 constraintEqualToAnchor:v28];
+    widthAnchor3 = [v24 widthAnchor];
+    widthAnchor4 = [v16 widthAnchor];
+    v29 = [widthAnchor3 constraintEqualToAnchor:widthAnchor4];
     v45 = v29;
     v30 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v45 count:1];
     [v26 activateConstraints:v30];
@@ -307,8 +307,8 @@ uint64_t __74__PREditingFontPickerComponentViewController_contentStringNumberFor
 - (id)configureFontPickerViewIfNecessary
 {
   v62 = *MEMORY[0x1E69E9840];
-  v3 = [(PREditingFontPickerComponentViewController *)self items];
-  v4 = [v3 count];
+  items = [(PREditingFontPickerComponentViewController *)self items];
+  v4 = [items count];
 
   if (v4 > 1)
   {
@@ -318,12 +318,12 @@ uint64_t __74__PREditingFontPickerComponentViewController_contentStringNumberFor
     v58 = 0u;
     v55 = 0u;
     v56 = 0u;
-    v6 = [(PREditingFontPickerComponentViewController *)self items];
-    v7 = [v6 countByEnumeratingWithState:&v55 objects:v61 count:16];
+    items2 = [(PREditingFontPickerComponentViewController *)self items];
+    v7 = [items2 countByEnumeratingWithState:&v55 objects:v61 count:16];
     if (v7)
     {
       v8 = *v56;
-      obj = v6;
+      obj = items2;
       do
       {
         for (i = 0; i != v7; ++i)
@@ -334,12 +334,12 @@ uint64_t __74__PREditingFontPickerComponentViewController_contentStringNumberFor
           }
 
           v10 = *(*(&v55 + 1) + 8 * i);
-          v11 = [v10 fontConfiguration];
-          v12 = [v11 effectiveFontForRole:self->_role ignoringWeight:1];
+          fontConfiguration = [v10 fontConfiguration];
+          v12 = [fontConfiguration effectiveFontForRole:self->_role ignoringWeight:1];
           v13 = [v12 fontWithSize:self->_fontSize];
 
-          v14 = [(PREditingFontPickerComponentViewController *)self locale];
-          v15 = [(PREditingFontPickerComponentViewController *)self contentStringForFont:v13 locale:v14];
+          locale = [(PREditingFontPickerComponentViewController *)self locale];
+          v15 = [(PREditingFontPickerComponentViewController *)self contentStringForFont:v13 locale:locale];
 
           largestItemHeight = self->_largestItemHeight;
           [v15 size];
@@ -354,12 +354,12 @@ uint64_t __74__PREditingFontPickerComponentViewController_contentStringNumberFor
           }
 
           self->_largestItemHeight = v18;
-          v19 = [(PREditingFontPickerComponentViewController *)self role];
-          v20 = objc_alloc_init([PREditingFontPickerCellView fontPickerCellViewClassForRole:v19]);
+          role = [(PREditingFontPickerComponentViewController *)self role];
+          v20 = objc_alloc_init([PREditingFontPickerCellView fontPickerCellViewClassForRole:role]);
 
           [v20 configureWithAttributedString:v15];
-          v21 = [MEMORY[0x1E69DC888] clearColor];
-          [v20 setBackgroundColor:v21];
+          clearColor = [MEMORY[0x1E69DC888] clearColor];
+          [v20 setBackgroundColor:clearColor];
 
           v22 = [MEMORY[0x1E69DC888] colorWithWhite:1.0 alpha:0.2];
           [v20 setBorderColor:v22];
@@ -389,7 +389,7 @@ uint64_t __74__PREditingFontPickerComponentViewController_contentStringNumberFor
           objc_destroyWeak(&from);
         }
 
-        v6 = obj;
+        items2 = obj;
         v7 = [obj countByEnumeratingWithState:&v55 objects:v61 count:16];
       }
 
@@ -397,16 +397,16 @@ uint64_t __74__PREditingFontPickerComponentViewController_contentStringNumberFor
     }
 
     [(PREditingFontPickerComponentViewController *)self setCellViews:v50];
-    v25 = [MEMORY[0x1E695DF70] array];
-    [v25 addObjectsFromArray:v50];
-    v26 = [objc_alloc(MEMORY[0x1E69DCF90]) initWithArrangedSubviews:v25];
+    array = [MEMORY[0x1E695DF70] array];
+    [array addObjectsFromArray:v50];
+    v26 = [objc_alloc(MEMORY[0x1E69DCF90]) initWithArrangedSubviews:array];
     [v26 setAxis:0];
     [v26 setAlignment:1];
     [v26 setSpacing:20.0];
     [v26 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v27 = [MEMORY[0x1E69DC888] clearColor];
-    [v26 setBackgroundColor:v27];
-    v38 = v25;
+    clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+    [v26 setBackgroundColor:clearColor2];
+    v38 = array;
 
     v5 = objc_alloc_init(MEMORY[0x1E69DCEF8]);
     [v5 setContentInset:{0.0, 36.0, 0.0, 36.0}];
@@ -415,37 +415,37 @@ uint64_t __74__PREditingFontPickerComponentViewController_contentStringNumberFor
     [v5 setClipsToBounds:0];
     [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
     [v5 addSubview:v26];
-    v28 = [MEMORY[0x1E69DC888] clearColor];
-    [v5 setBackgroundColor:v28];
+    clearColor3 = [MEMORY[0x1E69DC888] clearColor];
+    [v5 setBackgroundColor:clearColor3];
 
     if ([v26 effectiveUserInterfaceLayoutDirection] == 1)
     {
       CGAffineTransformMakeRotation(&from, 3.14159265);
-      [v26 setTransform:{&from, v25}];
+      [v26 setTransform:{&from, array}];
       CGAffineTransformMakeRotation(&from, 3.14159265);
       [v5 setTransform:&from];
     }
 
     v40 = MEMORY[0x1E696ACD8];
     obja = [v26 leadingAnchor];
-    v47 = [v5 leadingAnchor];
-    v46 = [obja constraintEqualToAnchor:v47];
+    leadingAnchor = [v5 leadingAnchor];
+    v46 = [obja constraintEqualToAnchor:leadingAnchor];
     v60[0] = v46;
-    v45 = [v26 trailingAnchor];
-    v44 = [v5 trailingAnchor];
-    v43 = [v45 constraintEqualToAnchor:v44];
+    trailingAnchor = [v26 trailingAnchor];
+    trailingAnchor2 = [v5 trailingAnchor];
+    v43 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v60[1] = v43;
-    v42 = [v26 topAnchor];
-    v41 = [v5 topAnchor];
-    v29 = [v42 constraintEqualToAnchor:v41];
+    topAnchor = [v26 topAnchor];
+    topAnchor2 = [v5 topAnchor];
+    v29 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v60[2] = v29;
-    v30 = [v26 bottomAnchor];
-    v31 = [v5 bottomAnchor];
-    v32 = [v30 constraintEqualToAnchor:v31];
+    bottomAnchor = [v26 bottomAnchor];
+    bottomAnchor2 = [v5 bottomAnchor];
+    v32 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v60[3] = v32;
-    v33 = [v26 heightAnchor];
-    v34 = [v5 heightAnchor];
-    v35 = [v33 constraintEqualToAnchor:v34];
+    heightAnchor = [v26 heightAnchor];
+    heightAnchor2 = [v5 heightAnchor];
+    v35 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
     v60[4] = v35;
     v36 = [MEMORY[0x1E695DEC8] arrayWithObjects:v60 count:5];
     [v40 activateConstraints:v36];
@@ -496,23 +496,23 @@ void __80__PREditingFontPickerComponentViewController_configureFontPickerViewIfN
   [WeakRetained _updateWeightSliderVisibility];
 }
 
-- (void)setFontWeight:(double)a3
+- (void)setFontWeight:(double)weight
 {
-  if (self->_fontWeight != a3)
+  if (self->_fontWeight != weight)
   {
-    self->_fontWeight = a3;
-    *&a3 = a3;
-    [(UISlider *)self->_fontWeightSlider setValue:a3];
+    self->_fontWeight = weight;
+    *&weight = weight;
+    [(UISlider *)self->_fontWeightSlider setValue:weight];
   }
 }
 
-- (void)fontSliderDidUpdateWeight:(id)a3
+- (void)fontSliderDidUpdateWeight:(id)weight
 {
-  v4 = a3;
-  [v4 value];
+  weightCopy = weight;
+  [weightCopy value];
   self->_fontWeight = v5;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [v4 value];
+  [weightCopy value];
   v7 = v6;
 
   [WeakRetained fontPickerComponentViewController:self didChangeFontWeight:v7];
@@ -520,7 +520,7 @@ void __80__PREditingFontPickerComponentViewController_configureFontPickerViewIfN
 
 - (BOOL)_shouldShowWeightSlider
 {
-  v3 = [(PREditingFontPickerComponentViewController *)self delegate];
+  delegate = [(PREditingFontPickerComponentViewController *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if ((v4 & 1) == 0)
@@ -528,30 +528,30 @@ void __80__PREditingFontPickerComponentViewController_configureFontPickerViewIfN
     return 0;
   }
 
-  v5 = [(PREditingFontPickerComponentViewController *)self delegate];
-  v6 = [v5 fontPickerComponentViewControllerShouldShowWeightSliderForSelectedFont:self];
+  delegate2 = [(PREditingFontPickerComponentViewController *)self delegate];
+  v6 = [delegate2 fontPickerComponentViewControllerShouldShowWeightSliderForSelectedFont:self];
 
   return v6;
 }
 
 - (void)_updateWeightSliderVisibility
 {
-  v3 = [(PREditingFontPickerComponentViewController *)self _shouldShowWeightSlider];
+  _shouldShowWeightSlider = [(PREditingFontPickerComponentViewController *)self _shouldShowWeightSlider];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __75__PREditingFontPickerComponentViewController__updateWeightSliderVisibility__block_invoke;
   v11[3] = &unk_1E78437A0;
   v11[4] = self;
-  v12 = v3;
+  v12 = _shouldShowWeightSlider;
   v4 = MEMORY[0x1AC574C60](v11);
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __75__PREditingFontPickerComponentViewController__updateWeightSliderVisibility__block_invoke_2;
   v9[3] = &unk_1E78437A0;
   v9[4] = self;
-  v10 = v3;
+  v10 = _shouldShowWeightSlider;
   v5 = MEMORY[0x1AC574C60](v9);
-  if (v3)
+  if (_shouldShowWeightSlider)
   {
     v4[2](v4);
     [MEMORY[0x1E69DD250] animateWithDuration:0 delay:v5 options:0 animations:0.15 completion:0.3];
@@ -600,30 +600,30 @@ void __75__PREditingFontPickerComponentViewController__updateWeightSliderVisibil
 - (void)updateLayoutForCurrentSize
 {
   v49 = *MEMORY[0x1E69E9840];
-  v3 = [(PREditingFontPickerComponentViewController *)self isUsingSmallerSizing];
+  isUsingSmallerSizing = [(PREditingFontPickerComponentViewController *)self isUsingSmallerSizing];
   v4 = MEMORY[0x1E696ACD8];
-  v5 = [(PREditingFontPickerComponentViewController *)self widthCellConstraints];
-  [v4 deactivateConstraints:v5];
+  widthCellConstraints = [(PREditingFontPickerComponentViewController *)self widthCellConstraints];
+  [v4 deactivateConstraints:widthCellConstraints];
 
   v6 = MEMORY[0x1E696ACD8];
-  v7 = [(PREditingFontPickerComponentViewController *)self heightCellConstraints];
-  [v6 deactivateConstraints:v7];
+  heightCellConstraints = [(PREditingFontPickerComponentViewController *)self heightCellConstraints];
+  [v6 deactivateConstraints:heightCellConstraints];
 
   v8 = 52.0;
-  if (v3)
+  if (isUsingSmallerSizing)
   {
     v8 = 50.0;
   }
 
   self->_fontSize = v8;
-  v43 = [MEMORY[0x1E695DF70] array];
-  v42 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v9 = [(PREditingFontPickerComponentViewController *)self cellViews];
-  v10 = [v9 countByEnumeratingWithState:&v44 objects:v48 count:16];
+  cellViews = [(PREditingFontPickerComponentViewController *)self cellViews];
+  v10 = [cellViews countByEnumeratingWithState:&v44 objects:v48 count:16];
   if (v10)
   {
     v11 = v10;
@@ -634,55 +634,55 @@ void __75__PREditingFontPickerComponentViewController__updateWeightSliderVisibil
       {
         if (*v45 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(cellViews);
         }
 
         v14 = *(*(&v44 + 1) + 8 * i);
-        v15 = [v14 contentFont];
-        v16 = [(PREditingFontPickerComponentViewController *)self locale];
-        v17 = [(PREditingFontPickerComponentViewController *)self contentStringForFont:v15 locale:v16];
+        contentFont = [v14 contentFont];
+        locale = [(PREditingFontPickerComponentViewController *)self locale];
+        v17 = [(PREditingFontPickerComponentViewController *)self contentStringForFont:contentFont locale:locale];
 
         [v14 configureWithAttributedString:v17];
-        [v14 setUsingSmallerSizing:v3];
-        v18 = [v14 widthCellConstraint];
-        [v43 addObject:v18];
+        [v14 setUsingSmallerSizing:isUsingSmallerSizing];
+        widthCellConstraint = [v14 widthCellConstraint];
+        [array addObject:widthCellConstraint];
 
-        v19 = [v14 heightCellConstraint];
-        [v42 addObject:v19];
+        heightCellConstraint = [v14 heightCellConstraint];
+        [array2 addObject:heightCellConstraint];
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v44 objects:v48 count:16];
+      v11 = [cellViews countByEnumeratingWithState:&v44 objects:v48 count:16];
     }
 
     while (v11);
   }
 
-  v20 = [v43 copy];
+  v20 = [array copy];
   widthCellConstraints = self->_widthCellConstraints;
   self->_widthCellConstraints = v20;
 
-  v22 = [v42 copy];
+  v22 = [array2 copy];
   heightCellConstraints = self->_heightCellConstraints;
   self->_heightCellConstraints = v22;
 
   if ([(PREditingFontPickerComponentViewController *)self isViewLoaded])
   {
-    v24 = [(PREditingFontPickerComponentViewController *)self view];
-    [v24 bounds];
+    view = [(PREditingFontPickerComponentViewController *)self view];
+    [view bounds];
     v26 = v25;
 
     if (self->_configuredViewWidth != v26)
     {
-      v27 = [(PREditingFontPickerComponentViewController *)self role];
-      v28 = [PREditingFontPickerCellView fontPickerCellViewClassForRole:v27];
+      role = [(PREditingFontPickerComponentViewController *)self role];
+      v28 = [PREditingFontPickerCellView fontPickerCellViewClassForRole:role];
 
-      [(objc_class *)v28 defaultCellSizeUsingSmallerSizing:v3];
+      [(objc_class *)v28 defaultCellSizeUsingSmallerSizing:isUsingSmallerSizing];
       v30 = v26 - v29;
-      v31 = [(PREditingFontPickerComponentViewController *)self stackViewLeadingConstraint];
-      [v31 constant];
+      stackViewLeadingConstraint = [(PREditingFontPickerComponentViewController *)self stackViewLeadingConstraint];
+      [stackViewLeadingConstraint constant];
       v33 = v32;
-      v34 = [(PREditingFontPickerComponentViewController *)self stackViewTrailingConstraint];
-      [v34 constant];
+      stackViewTrailingConstraint = [(PREditingFontPickerComponentViewController *)self stackViewTrailingConstraint];
+      [stackViewTrailingConstraint constant];
       v36 = v33 - v35;
 
       if (v30 >= v36)
@@ -695,8 +695,8 @@ void __75__PREditingFontPickerComponentViewController__updateWeightSliderVisibil
         v37 = v30 * 0.5;
       }
 
-      v38 = [(PREditingFontPickerComponentViewController *)self stackViewLeadingConstraint];
-      v39 = v38;
+      stackViewLeadingConstraint2 = [(PREditingFontPickerComponentViewController *)self stackViewLeadingConstraint];
+      v39 = stackViewLeadingConstraint2;
       if (v37 >= 0.0)
       {
         v40 = v37;
@@ -707,10 +707,10 @@ void __75__PREditingFontPickerComponentViewController__updateWeightSliderVisibil
         v40 = 0.0;
       }
 
-      [v38 setConstant:v40];
+      [stackViewLeadingConstraint2 setConstant:v40];
 
-      v41 = [(PREditingFontPickerComponentViewController *)self stackViewTrailingConstraint];
-      [v41 setConstant:{fmin(-v37, 0.0)}];
+      stackViewTrailingConstraint2 = [(PREditingFontPickerComponentViewController *)self stackViewTrailingConstraint];
+      [stackViewTrailingConstraint2 setConstant:{fmin(-v37, 0.0)}];
 
       self->_configuredViewWidth = v26;
     }
@@ -722,8 +722,8 @@ void __75__PREditingFontPickerComponentViewController__updateWeightSliderVisibil
   v8.receiver = self;
   v8.super_class = PREditingFontPickerComponentViewController;
   [(PREditingFontPickerComponentViewController *)&v8 viewDidLayoutSubviews];
-  v3 = [(PREditingFontPickerComponentViewController *)self view];
-  [v3 bounds];
+  view = [(PREditingFontPickerComponentViewController *)self view];
+  [view bounds];
   v5 = v4;
 
   if (v5 > 375.0)
@@ -743,8 +743,8 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v7 = [MEMORY[0x1E69DC938] currentDevice];
-  v6 = [v7 userInterfaceIdiom] != 1;
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  v6 = [currentDevice userInterfaceIdiom] != 1;
 
   if (((v6 ^ [(PREditingFontPickerComponentViewController *)self isUsingSmallerSizing]) & 1) == 0)
   {
@@ -756,19 +756,19 @@ LABEL_6:
   [(PREditingFontPickerComponentViewController *)self updateLayoutForCurrentSize];
 }
 
-- (void)setLocale:(id)a3
+- (void)setLocale:(id)locale
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (self->_locale != v5)
+  localeCopy = locale;
+  if (self->_locale != localeCopy)
   {
-    objc_storeStrong(&self->_locale, a3);
+    objc_storeStrong(&self->_locale, locale);
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v6 = [(PREditingFontPickerComponentViewController *)self cellViews];
-    v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    cellViews = [(PREditingFontPickerComponentViewController *)self cellViews];
+    v7 = [cellViews countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v7)
     {
       v8 = v7;
@@ -779,19 +779,19 @@ LABEL_6:
         {
           if (*v16 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(cellViews);
           }
 
           v11 = *(*(&v15 + 1) + 8 * i);
-          v12 = [v11 contentFont];
-          v13 = [(PREditingFontPickerComponentViewController *)self locale];
-          v14 = [(PREditingFontPickerComponentViewController *)self contentStringForFont:v12 locale:v13];
+          contentFont = [v11 contentFont];
+          locale = [(PREditingFontPickerComponentViewController *)self locale];
+          v14 = [(PREditingFontPickerComponentViewController *)self contentStringForFont:contentFont locale:locale];
 
           [v11 configureWithAttributedString:v14];
           [v11 invalidateIntrinsicContentSize];
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v8 = [cellViews countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v8);
@@ -828,21 +828,21 @@ LABEL_6:
           }
 
           v8 = *(*(&v20 + 1) + 8 * i);
-          v9 = [v8 contentFont];
-          v10 = [(PREditingFontPickerComponentViewController *)self locale];
-          v11 = [(PREditingFontPickerComponentViewController *)self contentStringForFont:v9 locale:v10];
-          v12 = [v11 string];
+          contentFont = [v8 contentFont];
+          locale = [(PREditingFontPickerComponentViewController *)self locale];
+          v11 = [(PREditingFontPickerComponentViewController *)self contentStringForFont:contentFont locale:locale];
+          string = [v11 string];
 
-          v13 = [v8 contentFont];
-          v14 = [v13 fontDescriptor];
-          v15 = [v14 objectForKey:v6];
+          contentFont2 = [v8 contentFont];
+          fontDescriptor = [contentFont2 fontDescriptor];
+          v15 = [fontDescriptor objectForKey:v6];
 
-          if ([v12 length])
+          if ([string length])
           {
             v16 = 0;
             do
             {
-              v17 = [v15 characterIsMember:{objc_msgSend(v12, "characterAtIndex:", v16)}];
+              v17 = [v15 characterIsMember:{objc_msgSend(string, "characterAtIndex:", v16)}];
               if ((v17 & 1) == 0)
               {
                 break;
@@ -851,7 +851,7 @@ LABEL_6:
               ++v16;
             }
 
-            while (v16 < [v12 length]);
+            while (v16 < [string length]);
           }
 
           else
@@ -888,9 +888,9 @@ LABEL_6:
 {
   if (([(PREditingFontPickerComponentViewController *)self isViewLoaded]& 1) == 0 && [(NSArray *)self->_items count]>= 2)
   {
-    v3 = [(PREditingFontPickerComponentViewController *)self isUsingSmallerSizing];
+    isUsingSmallerSizing = [(PREditingFontPickerComponentViewController *)self isUsingSmallerSizing];
     v4 = 64.0;
-    if (v3)
+    if (isUsingSmallerSizing)
     {
       v4 = 62.0;
     }

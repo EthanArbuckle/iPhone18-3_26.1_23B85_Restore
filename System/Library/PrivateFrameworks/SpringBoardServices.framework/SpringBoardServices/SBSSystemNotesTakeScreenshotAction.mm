@@ -1,33 +1,33 @@
 @interface SBSSystemNotesTakeScreenshotAction
 - (BSXPCCodingArray)displaysToScreenshot;
-- (SBSSystemNotesTakeScreenshotAction)initWithDisplaysToScreenshot:(id)a3 responder:(id)a4;
+- (SBSSystemNotesTakeScreenshotAction)initWithDisplaysToScreenshot:(id)screenshot responder:(id)responder;
 @end
 
 @implementation SBSSystemNotesTakeScreenshotAction
 
-- (SBSSystemNotesTakeScreenshotAction)initWithDisplaysToScreenshot:(id)a3 responder:(id)a4
+- (SBSSystemNotesTakeScreenshotAction)initWithDisplaysToScreenshot:(id)screenshot responder:(id)responder
 {
-  v6 = a3;
+  screenshotCopy = screenshot;
   v7 = MEMORY[0x1E698E700];
-  v8 = a4;
+  responderCopy = responder;
   v9 = objc_alloc_init(v7);
-  if (v6)
+  if (screenshotCopy)
   {
-    v10 = [objc_alloc(MEMORY[0x1E698E7B0]) initWithArray:v6];
+    v10 = [objc_alloc(MEMORY[0x1E698E7B0]) initWithArray:screenshotCopy];
     [v9 setObject:v10 forSetting:0];
   }
 
   v13.receiver = self;
   v13.super_class = SBSSystemNotesTakeScreenshotAction;
-  v11 = [(SBSSystemNotesTakeScreenshotAction *)&v13 initWithInfo:v9 responder:v8];
+  v11 = [(SBSSystemNotesTakeScreenshotAction *)&v13 initWithInfo:v9 responder:responderCopy];
 
   return v11;
 }
 
 - (BSXPCCodingArray)displaysToScreenshot
 {
-  v2 = [(SBSSystemNotesTakeScreenshotAction *)self info];
-  v3 = [v2 objectForSetting:0];
+  info = [(SBSSystemNotesTakeScreenshotAction *)self info];
+  v3 = [info objectForSetting:0];
 
   return v3;
 }

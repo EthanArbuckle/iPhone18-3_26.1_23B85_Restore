@@ -1,16 +1,16 @@
 @interface DisplayLinkHandler
 - (_TtC14MusicUtilitiesP33_A1FC62D80C043A876151FA559C82DA5918DisplayLinkHandler)init;
-- (void)handleDisplayLinkFired:(id)a3;
+- (void)handleDisplayLinkFired:(id)fired;
 @end
 
 @implementation DisplayLinkHandler
 
-- (void)handleDisplayLinkFired:(id)a3
+- (void)handleDisplayLinkFired:(id)fired
 {
-  if (a3)
+  if (fired)
   {
     v3 = *(&self->super.isa + OBJC_IVAR____TtC14MusicUtilitiesP33_A1FC62D80C043A876151FA559C82DA5918DisplayLinkHandler__handler);
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     objc_opt_self();
     v5 = swift_dynamicCastObjCClassUnconditional();

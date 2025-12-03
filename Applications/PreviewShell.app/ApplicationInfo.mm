@@ -1,15 +1,15 @@
 @interface ApplicationInfo
 - (NSURL)executableURL;
-- (void)_loadFromProxy:(id)a3;
+- (void)_loadFromProxy:(id)proxy;
 @end
 
 @implementation ApplicationInfo
 
-- (void)_loadFromProxy:(id)a3
+- (void)_loadFromProxy:(id)proxy
 {
   v4.receiver = self;
   v4.super_class = type metadata accessor for ApplicationInfo();
-  [(ApplicationInfo *)&v4 _loadFromProxy:a3];
+  [(ApplicationInfo *)&v4 _loadFromProxy:proxy];
 }
 
 - (NSURL)executableURL
@@ -18,7 +18,7 @@
   v4 = *(*(v3 - 8) + 64);
   __chkstk_darwin(v3 - 8);
   v6 = &v15 - v5;
-  v7 = self;
+  selfCopy = self;
   sub_1000151AC(v6);
 
   v8 = type metadata accessor for URL();

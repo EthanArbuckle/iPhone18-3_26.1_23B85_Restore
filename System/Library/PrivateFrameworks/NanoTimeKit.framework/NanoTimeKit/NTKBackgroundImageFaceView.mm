@@ -1,35 +1,35 @@
 @interface NTKBackgroundImageFaceView
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
 - (CGPoint)timeViewZoomEndingCenter;
 - (CGRect)maskZoomStartingBounds;
 - (CGRect)vignetteZoomStartingBounds;
-- (double)_backgroundImageAlphaForEditMode:(int64_t)a3;
-- (double)_timeLabelAlphaForEditMode:(int64_t)a3;
+- (double)_backgroundImageAlphaForEditMode:(int64_t)mode;
+- (double)_timeLabelAlphaForEditMode:(int64_t)mode;
 - (double)_timeTravelYAdjustment;
-- (id)_complicationDisplayWrapperForTouch:(id)a3;
-- (id)_digitalTimeLabelStyleFromViewMode:(int64_t)a3 faceBounds:(CGRect)a4;
-- (id)_updateFontInStyle:(id)a3 monospace:(BOOL)a4;
-- (void)_applyBreathingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (void)_applyRubberBandingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (void)_applyScaleTransform:(id)a3;
+- (id)_complicationDisplayWrapperForTouch:(id)touch;
+- (id)_digitalTimeLabelStyleFromViewMode:(int64_t)mode faceBounds:(CGRect)bounds;
+- (id)_updateFontInStyle:(id)style monospace:(BOOL)monospace;
+- (void)_applyBreathingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_applyRubberBandingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_applyScaleTransform:(id)transform;
 - (void)_applyShowContentForUnadornedSnapshot;
-- (void)_applyTransitionFraction:(double)a3 fromOption:(id)a4 toOption:(id)a5 forCustomEditMode:(int64_t)a6 slot:(id)a7;
+- (void)_applyTransitionFraction:(double)fraction fromOption:(id)option toOption:(id)toOption forCustomEditMode:(int64_t)mode slot:(id)slot;
 - (void)_cleanupAfterEditing;
-- (void)_cleanupAfterTransitionToOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (void)_configureForEditMode:(int64_t)a3;
-- (void)_configureForTransitionFraction:(double)a3 fromEditMode:(int64_t)a4 toEditMode:(int64_t)a5;
-- (void)_endScrubbingAnimated:(BOOL)a3 withCompletion:(id)a4;
+- (void)_cleanupAfterTransitionToOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_configureForEditMode:(int64_t)mode;
+- (void)_configureForTransitionFraction:(double)fraction fromEditMode:(int64_t)mode toEditMode:(int64_t)editMode;
+- (void)_endScrubbingAnimated:(BOOL)animated withCompletion:(id)completion;
 - (void)_loadSnapshotContentViews;
 - (void)_prepareForEditing;
-- (void)_removeAllSubviewsFrom:(id)a3;
-- (void)_scrubToDate:(id)a3 animated:(BOOL)a4;
-- (void)_startScrubbingAnimated:(BOOL)a3 withCompletion:(id)a4;
+- (void)_removeAllSubviewsFrom:(id)from;
+- (void)_scrubToDate:(id)date animated:(BOOL)animated;
+- (void)_startScrubbingAnimated:(BOOL)animated withCompletion:(id)completion;
 - (void)_unloadSnapshotContentViews;
-- (void)setViewMode:(int64_t)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)setViewMode:(int64_t)mode;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation NTKBackgroundImageFaceView
@@ -39,9 +39,9 @@
   v20.receiver = self;
   v20.super_class = NTKBackgroundImageFaceView;
   [(NTKDigitalFaceView *)&v20 _loadSnapshotContentViews];
-  v3 = [(NTKFaceView *)self timeView];
-  v4 = [MEMORY[0x277D75348] whiteColor];
-  [v3 setTextColor:v4];
+  timeView = [(NTKFaceView *)self timeView];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  [timeView setTextColor:whiteColor];
 
   v5 = objc_alloc(MEMORY[0x277D75D18]);
   [(NTKBackgroundImageFaceView *)self bounds];
@@ -50,14 +50,14 @@
   self->_backgroundContainerView = v6;
 
   [(UIView *)self->_backgroundContainerView setAutoresizingMask:18];
-  v8 = [(NTKFaceView *)self contentView];
+  contentView = [(NTKFaceView *)self contentView];
   v9 = self->_backgroundContainerView;
-  v10 = [(NTKFaceView *)self foregroundContainerView];
-  [v8 insertSubview:v9 belowSubview:v10];
+  foregroundContainerView = [(NTKFaceView *)self foregroundContainerView];
+  [contentView insertSubview:v9 belowSubview:foregroundContainerView];
 
-  v11 = [(NTKBackgroundImageFaceView *)self _selectedContentView];
+  _selectedContentView = [(NTKBackgroundImageFaceView *)self _selectedContentView];
   selectedContentView = self->_selectedContentView;
-  self->_selectedContentView = v11;
+  self->_selectedContentView = _selectedContentView;
 
   [(UIView *)self->_backgroundContainerView addSubview:self->_selectedContentView];
   v13 = self->_selectedContentView;
@@ -72,12 +72,12 @@
 
   [(UIView *)self->_transitionDimmingView setAutoresizingMask:18];
   v17 = self->_transitionDimmingView;
-  v18 = [MEMORY[0x277D75348] blackColor];
-  [(UIView *)v17 setBackgroundColor:v18];
+  blackColor = [MEMORY[0x277D75348] blackColor];
+  [(UIView *)v17 setBackgroundColor:blackColor];
 
   [(UIView *)self->_transitionDimmingView setAlpha:0.0];
-  v19 = [(NTKFaceView *)self contentView];
-  [v19 addSubview:self->_transitionDimmingView];
+  contentView2 = [(NTKFaceView *)self contentView];
+  [contentView2 addSubview:self->_transitionDimmingView];
 
   self->_breathScaleModifier = 1.0;
   self->_rubberBandScaleModifier = 1.0;
@@ -97,10 +97,10 @@
   self->_selectedContentView = 0;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v5 = a4;
-  v6 = [v5 view];
+  touchCopy = touch;
+  view = [touchCopy view];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -109,23 +109,23 @@
 
   else
   {
-    v8 = [(NTKBackgroundImageFaceView *)self _complicationDisplayWrapperForTouch:v5];
+    v8 = [(NTKBackgroundImageFaceView *)self _complicationDisplayWrapperForTouch:touchCopy];
     v7 = v8 == 0;
   }
 
   return v7;
 }
 
-- (id)_complicationDisplayWrapperForTouch:(id)a3
+- (id)_complicationDisplayWrapperForTouch:(id)touch
 {
-  v4 = a3;
+  touchCopy = touch;
   v10 = 0;
   v11 = &v10;
   v12 = 0x3032000000;
   v13 = __Block_byref_object_copy__15;
   v14 = __Block_byref_object_dispose__15;
   v15 = 0;
-  [v4 locationInView:self];
+  [touchCopy locationInView:self];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __66__NTKBackgroundImageFaceView__complicationDisplayWrapperForTouch___block_invoke;
@@ -161,25 +161,25 @@ void __66__NTKBackgroundImageFaceView__complicationDisplayWrapperForTouch___bloc
   }
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v5 = [a3 anyObject];
-  v6 = [(NTKBackgroundImageFaceView *)self _complicationDisplayWrapperForTouch:v5];
+  anyObject = [began anyObject];
+  v6 = [(NTKBackgroundImageFaceView *)self _complicationDisplayWrapperForTouch:anyObject];
   touchWrapper = self->_touchWrapper;
   self->_touchWrapper = v6;
 
   v8 = self->_touchWrapper;
   if (v8)
   {
-    v9 = [(NTKComplicationDisplayWrapperView *)v8 display];
-    [v9 setHighlighted:1];
+    display = [(NTKComplicationDisplayWrapperView *)v8 display];
+    [display setHighlighted:1];
   }
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
-  v5 = [a3 anyObject];
-  obj = [(NTKBackgroundImageFaceView *)self _complicationDisplayWrapperForTouch:v5];
+  anyObject = [moved anyObject];
+  obj = [(NTKBackgroundImageFaceView *)self _complicationDisplayWrapperForTouch:anyObject];
 
   v6 = obj;
   touchWrapper = self->_touchWrapper;
@@ -187,16 +187,16 @@ void __66__NTKBackgroundImageFaceView__complicationDisplayWrapperForTouch___bloc
   {
     if (touchWrapper)
     {
-      v8 = [(NTKComplicationDisplayWrapperView *)touchWrapper display];
-      [v8 setHighlighted:0];
+      display = [(NTKComplicationDisplayWrapperView *)touchWrapper display];
+      [display setHighlighted:0];
 
       v6 = obj;
     }
 
     if (v6)
     {
-      v9 = [(NTKComplicationDisplayWrapperView *)v6 display];
-      [v9 setHighlighted:1];
+      display2 = [(NTKComplicationDisplayWrapperView *)v6 display];
+      [display2 setHighlighted:1];
     }
 
     objc_storeStrong(&self->_touchWrapper, obj);
@@ -204,23 +204,23 @@ void __66__NTKBackgroundImageFaceView__complicationDisplayWrapperForTouch___bloc
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
   touchWrapper = self->_touchWrapper;
   if (touchWrapper)
   {
-    v6 = [(NTKComplicationDisplayWrapperView *)touchWrapper display:a3];
+    v6 = [(NTKComplicationDisplayWrapperView *)touchWrapper display:ended];
     [v6 setHighlighted:0];
 
     if ([(NTKComplicationDisplayWrapperView *)self->_touchWrapper tapEnabled])
     {
-      v7 = [(NTKComplicationDisplayWrapperView *)self->_touchWrapper touchUpInsideHandler];
+      touchUpInsideHandler = [(NTKComplicationDisplayWrapperView *)self->_touchWrapper touchUpInsideHandler];
 
-      if (v7)
+      if (touchUpInsideHandler)
       {
-        v8 = [(NTKComplicationDisplayWrapperView *)self->_touchWrapper touchUpInsideHandler];
-        v9 = [(NTKComplicationDisplayWrapperView *)self->_touchWrapper display];
-        (v8)[2](v8, v9);
+        touchUpInsideHandler2 = [(NTKComplicationDisplayWrapperView *)self->_touchWrapper touchUpInsideHandler];
+        display = [(NTKComplicationDisplayWrapperView *)self->_touchWrapper display];
+        (touchUpInsideHandler2)[2](touchUpInsideHandler2, display);
       }
     }
 
@@ -229,12 +229,12 @@ void __66__NTKBackgroundImageFaceView__complicationDisplayWrapperForTouch___bloc
   }
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
   touchWrapper = self->_touchWrapper;
   if (touchWrapper)
   {
-    v6 = [(NTKComplicationDisplayWrapperView *)touchWrapper display:a3];
+    v6 = [(NTKComplicationDisplayWrapperView *)touchWrapper display:cancelled];
     [v6 setHighlighted:0];
 
     v7 = self->_touchWrapper;
@@ -242,77 +242,77 @@ void __66__NTKBackgroundImageFaceView__complicationDisplayWrapperForTouch___bloc
   }
 }
 
-- (id)_digitalTimeLabelStyleFromViewMode:(int64_t)a3 faceBounds:(CGRect)a4
+- (id)_digitalTimeLabelStyleFromViewMode:(int64_t)mode faceBounds:(CGRect)bounds
 {
-  [(NTKBackgroundImageFaceView *)self bounds:a3];
+  [(NTKBackgroundImageFaceView *)self bounds:mode];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [(NTKFaceView *)self device];
-  v14 = NTKDigitalTimeLabelStyleWideRightSideMargin(v13);
-  v15 = [(NTKFaceView *)self device];
-  v16 = [NTKDigitalTimeLabelStyle defaultStyleForBounds:1 withRightSideMargin:v15 applyAdvanceFudge:v6 forDevice:v8, v10, v12, v14];
+  device = [(NTKFaceView *)self device];
+  v14 = NTKDigitalTimeLabelStyleWideRightSideMargin(device);
+  device2 = [(NTKFaceView *)self device];
+  v16 = [NTKDigitalTimeLabelStyle defaultStyleForBounds:1 withRightSideMargin:device2 applyAdvanceFudge:v6 forDevice:v8, v10, v12, v14];
 
   return v16;
 }
 
-- (id)_updateFontInStyle:(id)a3 monospace:(BOOL)a4
+- (id)_updateFontInStyle:(id)style monospace:(BOOL)monospace
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = v5;
-  if (v4)
+  monospaceCopy = monospace;
+  styleCopy = style;
+  v6 = styleCopy;
+  if (monospaceCopy)
   {
-    v7 = [v5 copy];
+    v7 = [styleCopy copy];
     v8 = MEMORY[0x277CBBB08];
-    v9 = [v6 threeDigitFont];
-    [v9 pointSize];
+    threeDigitFont = [v6 threeDigitFont];
+    [threeDigitFont pointSize];
     v10 = [v8 systemFontOfSize:?];
-    v11 = [v10 CLKFontWithMonospacedNumbers];
+    cLKFontWithMonospacedNumbers = [v10 CLKFontWithMonospacedNumbers];
 
-    [v7 setFourDigitFont:v11];
-    [v7 setThreeDigitFont:v11];
+    [v7 setFourDigitFont:cLKFontWithMonospacedNumbers];
+    [v7 setThreeDigitFont:cLKFontWithMonospacedNumbers];
   }
 
   else
   {
-    v7 = v5;
+    v7 = styleCopy;
   }
 
   return v7;
 }
 
-- (void)_configureForTransitionFraction:(double)a3 fromEditMode:(int64_t)a4 toEditMode:(int64_t)a5
+- (void)_configureForTransitionFraction:(double)fraction fromEditMode:(int64_t)mode toEditMode:(int64_t)editMode
 {
   [(NTKBackgroundImageFaceView *)self _backgroundImageAlphaForEditMode:?];
-  [(NTKBackgroundImageFaceView *)self _backgroundImageAlphaForEditMode:a5];
-  v8 = [(NTKBackgroundImageFaceView *)self _selectedContentView];
+  [(NTKBackgroundImageFaceView *)self _backgroundImageAlphaForEditMode:editMode];
+  _selectedContentView = [(NTKBackgroundImageFaceView *)self _selectedContentView];
   CLKInterpolateBetweenFloatsClipped();
-  [v8 setAlpha:?];
+  [_selectedContentView setAlpha:?];
 
-  [(NTKBackgroundImageFaceView *)self _timeLabelAlphaForEditMode:a4];
-  [(NTKBackgroundImageFaceView *)self _timeLabelAlphaForEditMode:a5];
-  v9 = [(NTKFaceView *)self timeView];
+  [(NTKBackgroundImageFaceView *)self _timeLabelAlphaForEditMode:mode];
+  [(NTKBackgroundImageFaceView *)self _timeLabelAlphaForEditMode:editMode];
+  timeView = [(NTKFaceView *)self timeView];
   CLKInterpolateBetweenFloatsClipped();
-  [v9 setAlpha:?];
+  [timeView setAlpha:?];
 }
 
-- (void)_configureForEditMode:(int64_t)a3
+- (void)_configureForEditMode:(int64_t)mode
 {
-  v5 = [(NTKBackgroundImageFaceView *)self _selectedContentView];
-  [(NTKBackgroundImageFaceView *)self _backgroundImageAlphaForEditMode:a3];
-  [v5 setAlpha:?];
+  _selectedContentView = [(NTKBackgroundImageFaceView *)self _selectedContentView];
+  [(NTKBackgroundImageFaceView *)self _backgroundImageAlphaForEditMode:mode];
+  [_selectedContentView setAlpha:?];
 
-  v6 = [(NTKFaceView *)self timeView];
-  [(NTKBackgroundImageFaceView *)self _timeLabelAlphaForEditMode:a3];
-  [v6 setAlpha:?];
+  timeView = [(NTKFaceView *)self timeView];
+  [(NTKBackgroundImageFaceView *)self _timeLabelAlphaForEditMode:mode];
+  [timeView setAlpha:?];
 }
 
-- (double)_backgroundImageAlphaForEditMode:(int64_t)a3
+- (double)_backgroundImageAlphaForEditMode:(int64_t)mode
 {
   result = 0.4;
-  if (a3 != 1)
+  if (mode != 1)
   {
     return 1.0;
   }
@@ -320,10 +320,10 @@ void __66__NTKBackgroundImageFaceView__complicationDisplayWrapperForTouch___bloc
   return result;
 }
 
-- (double)_timeLabelAlphaForEditMode:(int64_t)a3
+- (double)_timeLabelAlphaForEditMode:(int64_t)mode
 {
   result = 0.2;
-  if (!a3)
+  if (!mode)
   {
     return 1.0;
   }
@@ -336,8 +336,8 @@ void __66__NTKBackgroundImageFaceView__complicationDisplayWrapperForTouch___bloc
   v6.receiver = self;
   v6.super_class = NTKBackgroundImageFaceView;
   [(NTKFaceView *)&v6 _prepareForEditing];
-  v3 = [(NTKFaceView *)self device];
-  [v3 screenCornerRadius];
+  device = [(NTKFaceView *)self device];
+  [device screenCornerRadius];
   v5 = v4;
 
   NTKApplyViewCornerRadius(self->_backgroundContainerView, v5);
@@ -351,20 +351,20 @@ void __66__NTKBackgroundImageFaceView__complicationDisplayWrapperForTouch___bloc
   NTKApplyViewCornerRadius(self->_backgroundContainerView, 0.0);
 }
 
-- (void)setViewMode:(int64_t)a3
+- (void)setViewMode:(int64_t)mode
 {
   v3.receiver = self;
   v3.super_class = NTKBackgroundImageFaceView;
-  [(NTKDigitalFaceView *)&v3 setViewMode:a3];
+  [(NTKDigitalFaceView *)&v3 setViewMode:mode];
 }
 
-- (void)_applyTransitionFraction:(double)a3 fromOption:(id)a4 toOption:(id)a5 forCustomEditMode:(int64_t)a6 slot:(id)a7
+- (void)_applyTransitionFraction:(double)fraction fromOption:(id)option toOption:(id)toOption forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v11 = a4;
-  v12 = a5;
-  if ([v11 isEqual:v12])
+  optionCopy = option;
+  toOptionCopy = toOption;
+  if ([optionCopy isEqual:toOptionCopy])
   {
-    if ([v12 isEqual:self->_editOptionFrom])
+    if ([toOptionCopy isEqual:self->_editOptionFrom])
     {
       transitionViewFrom = self->_transitionViewFrom;
       v14 = *(MEMORY[0x277CBF2C0] + 16);
@@ -378,7 +378,7 @@ LABEL_13:
       goto LABEL_14;
     }
 
-    if ([v12 isEqual:self->_editOptionTo])
+    if ([toOptionCopy isEqual:self->_editOptionTo])
     {
       transitionViewTo = self->_transitionViewTo;
       v49 = *(MEMORY[0x277CBF2C0] + 16);
@@ -393,20 +393,20 @@ LABEL_13:
 
   else
   {
-    v16 = [(NTKFaceView *)self device];
-    [v16 screenCornerRadius];
+    device = [(NTKFaceView *)self device];
+    [device screenCornerRadius];
     v18 = v17;
 
     [(UIView *)self->_transitionViewFrom setHidden:0];
     [(UIView *)self->_transitionViewTo setHidden:0];
     [(NTKBackgroundImageFaceView *)self _beginTransitionToOption];
-    v19 = [(NTKEditOption *)self->_editOptionTo isEqual:v12];
+    v19 = [(NTKEditOption *)self->_editOptionTo isEqual:toOptionCopy];
     v20 = MEMORY[0x277CBF2C0];
     if ((v19 & 1) == 0)
     {
-      objc_storeStrong(&self->_editOptionTo, a5);
+      objc_storeStrong(&self->_editOptionTo, toOption);
       [(UIView *)self->_transitionViewTo removeFromSuperview];
-      v21 = [(NTKBackgroundImageFaceView *)self _viewForEditOption:v12];
+      v21 = [(NTKBackgroundImageFaceView *)self _viewForEditOption:toOptionCopy];
       v22 = self->_transitionViewTo;
       self->_transitionViewTo = v21;
 
@@ -430,11 +430,11 @@ LABEL_13:
       [(UIView *)v26 setAlpha:?];
     }
 
-    if (([(NTKEditOption *)self->_editOptionFrom isEqual:v11]& 1) == 0)
+    if (([(NTKEditOption *)self->_editOptionFrom isEqual:optionCopy]& 1) == 0)
     {
-      objc_storeStrong(&self->_editOptionFrom, a4);
+      objc_storeStrong(&self->_editOptionFrom, option);
       [(UIView *)self->_transitionViewFrom removeFromSuperview];
-      v27 = [(NTKBackgroundImageFaceView *)self _viewForEditOption:v11];
+      v27 = [(NTKBackgroundImageFaceView *)self _viewForEditOption:optionCopy];
       v28 = self->_transitionViewFrom;
       self->_transitionViewFrom = v27;
 
@@ -453,12 +453,12 @@ LABEL_13:
 
     v32 = self->_transitionViewFrom;
     [(NTKBackgroundImageFaceView *)self bounds];
-    CGAffineTransformMakeTranslation(&v50, 0.0, -(a3 * v33));
+    CGAffineTransformMakeTranslation(&v50, 0.0, -(fraction * v33));
     v34 = [(UIView *)v32 setTransform:&v50];
     v35.f64[0] = 0.0;
     v36.f64[0] = 0.0;
     v37.f64[0] = 1.0;
-    v46 = NTKFindCubicBezierPoint(a3, v35, 0.0, v36, 0.0, v37, 0.0, v34, v38, v39, v40, v41, v42, v43, v44, v45);
+    v46 = NTKFindCubicBezierPoint(fraction, v35, 0.0, v36, 0.0, v37, 0.0, v34, v38, v39, v40, v41, v42, v43, v44, v45);
     v47 = self->_transitionViewTo;
     CGAffineTransformMakeScale(&v50, (1.0 - v46) * -0.1 + 1.0, (1.0 - v46) * -0.1 + 1.0);
     [(UIView *)v47 setTransform:&v50, 0x3FF0000000000000, 0];
@@ -467,9 +467,9 @@ LABEL_13:
 LABEL_14:
 }
 
-- (void)_cleanupAfterTransitionToOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_cleanupAfterTransitionToOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  [(UIView *)self->_transitionViewFrom removeFromSuperview:a3];
+  [(UIView *)self->_transitionViewFrom removeFromSuperview:option];
   [(UIView *)self->_transitionViewTo removeFromSuperview];
   editOptionFrom = self->_editOptionFrom;
   self->_editOptionFrom = 0;
@@ -484,19 +484,19 @@ LABEL_14:
   self->_transitionViewTo = 0;
 }
 
-- (void)_applyBreathingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyBreathingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  self->_breathScaleModifier = NTKLargeElementScaleForBreathingFraction(a3);
+  self->_breathScaleModifier = NTKLargeElementScaleForBreathingFraction(fraction);
   backgroundContainerView = self->_backgroundContainerView;
 
   [(NTKBackgroundImageFaceView *)self _applyScaleTransform:backgroundContainerView];
 }
 
-- (void)_applyRubberBandingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyRubberBandingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v8 = NTKScaleForRubberBandingFraction(a3);
-  v9 = NTKAlphaForRubberBandingFraction(a3);
-  [(NTKBackgroundImageFaceView *)self _backgroundImageAlphaForEditMode:a4];
+  v8 = NTKScaleForRubberBandingFraction(fraction);
+  v9 = NTKAlphaForRubberBandingFraction(fraction);
+  [(NTKBackgroundImageFaceView *)self _backgroundImageAlphaForEditMode:mode];
   v11 = v9 * v10;
   self->_rubberBandScaleModifier = v8;
   [(NTKBackgroundImageFaceView *)self _applyScaleTransform:self->_backgroundContainerView];
@@ -505,18 +505,18 @@ LABEL_14:
   [(UIView *)transitionDimmingView setAlpha:1.0 - v11];
 }
 
-- (void)_applyScaleTransform:(id)a3
+- (void)_applyScaleTransform:(id)transform
 {
   v3 = self->_breathScaleModifier * self->_rubberBandScaleModifier;
-  v4 = a3;
+  transformCopy = transform;
   CGAffineTransformMakeScale(&v5, v3, v3);
-  [v4 setTransform:&v5];
+  [transformCopy setTransform:&v5];
 }
 
 - (double)_timeTravelYAdjustment
 {
-  v2 = [(NTKFaceView *)self device];
-  if ([v2 sizeClass])
+  device = [(NTKFaceView *)self device];
+  if ([device sizeClass])
   {
     v3 = 13.5;
   }
@@ -529,16 +529,16 @@ LABEL_14:
   return v3;
 }
 
-- (void)_startScrubbingAnimated:(BOOL)a3 withCompletion:(id)a4
+- (void)_startScrubbingAnimated:(BOOL)animated withCompletion:(id)completion
 {
-  v4 = a3;
+  animatedCopy = animated;
   v15.receiver = self;
   v15.super_class = NTKBackgroundImageFaceView;
-  [(NTKFaceView *)&v15 _startScrubbingAnimated:a3 withCompletion:a4];
+  [(NTKFaceView *)&v15 _startScrubbingAnimated:animated withCompletion:completion];
   self->_shouldAdjustLayoutForTimeTravel = 1;
   [(NTKFaceView *)self _loadLayoutRules];
-  v6 = [(NTKFaceView *)self foregroundContainerView];
-  [v6 setNeedsLayout];
+  foregroundContainerView = [(NTKFaceView *)self foregroundContainerView];
+  [foregroundContainerView setNeedsLayout];
 
   timeTravelDimmingOverlayView = self->_timeTravelDimmingOverlayView;
   if (!timeTravelDimmingOverlayView)
@@ -549,18 +549,18 @@ LABEL_14:
     v10 = self->_timeTravelDimmingOverlayView;
     self->_timeTravelDimmingOverlayView = v9;
 
-    v11 = [MEMORY[0x277D75348] blackColor];
-    [(UIView *)self->_timeTravelDimmingOverlayView setBackgroundColor:v11];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    [(UIView *)self->_timeTravelDimmingOverlayView setBackgroundColor:blackColor];
 
     timeTravelDimmingOverlayView = self->_timeTravelDimmingOverlayView;
   }
 
   [(UIView *)timeTravelDimmingOverlayView setAlpha:0.0];
   v12 = self->_timeTravelDimmingOverlayView;
-  v13 = [(NTKFaceView *)self foregroundContainerView];
-  [(NTKBackgroundImageFaceView *)self insertSubview:v12 belowSubview:v13];
+  foregroundContainerView2 = [(NTKFaceView *)self foregroundContainerView];
+  [(NTKBackgroundImageFaceView *)self insertSubview:v12 belowSubview:foregroundContainerView2];
 
-  if (v4)
+  if (animatedCopy)
   {
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
@@ -583,44 +583,44 @@ uint64_t __69__NTKBackgroundImageFaceView__startScrubbingAnimated_withCompletion
   return [v3 _startScrubbingAnimationFromUIViewAnimateWithDuration];
 }
 
-- (void)_scrubToDate:(id)a3 animated:(BOOL)a4
+- (void)_scrubToDate:(id)date animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v10.receiver = self;
   v10.super_class = NTKBackgroundImageFaceView;
-  v6 = a3;
-  [(NTKFaceView *)&v10 _scrubToDate:v6 animated:v4];
+  dateCopy = date;
+  [(NTKFaceView *)&v10 _scrubToDate:dateCopy animated:animatedCopy];
   v7 = [(NTKFaceView *)self timeView:v10.receiver];
   v8 = v7;
   v9 = 0.3;
-  if (!v4)
+  if (!animatedCopy)
   {
     v9 = 0.0;
   }
 
-  [v7 setOverrideDate:v6 duration:v9];
+  [v7 setOverrideDate:dateCopy duration:v9];
 }
 
-- (void)_endScrubbingAnimated:(BOOL)a3 withCompletion:(id)a4
+- (void)_endScrubbingAnimated:(BOOL)animated withCompletion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(NTKFaceView *)self timeView];
-  v8 = v7;
+  animatedCopy = animated;
+  completionCopy = completion;
+  timeView = [(NTKFaceView *)self timeView];
+  v8 = timeView;
   v9 = 0.0;
-  if (v4)
+  if (animatedCopy)
   {
     v9 = 0.3;
   }
 
-  [v7 setOverrideDate:0 duration:v9];
+  [timeView setOverrideDate:0 duration:v9];
 
   self->_shouldAdjustLayoutForTimeTravel = 0;
   [(NTKFaceView *)self _loadLayoutRules];
-  v10 = [(NTKFaceView *)self foregroundContainerView];
-  [v10 setNeedsLayout];
+  foregroundContainerView = [(NTKFaceView *)self foregroundContainerView];
+  [foregroundContainerView setNeedsLayout];
 
-  if (v4)
+  if (animatedCopy)
   {
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
@@ -644,7 +644,7 @@ uint64_t __69__NTKBackgroundImageFaceView__startScrubbingAnimated_withCompletion
 
   v11.receiver = self;
   v11.super_class = NTKBackgroundImageFaceView;
-  [(NTKFaceView *)&v11 _endScrubbingAnimated:v4 withCompletion:v6];
+  [(NTKFaceView *)&v11 _endScrubbingAnimated:animatedCopy withCompletion:completionCopy];
 }
 
 uint64_t __67__NTKBackgroundImageFaceView__endScrubbingAnimated_withCompletion___block_invoke(uint64_t a1)
@@ -660,14 +660,14 @@ uint64_t __67__NTKBackgroundImageFaceView__endScrubbingAnimated_withCompletion__
 
 - (void)_applyShowContentForUnadornedSnapshot
 {
-  v3 = [(NTKFaceView *)self timeView];
-  [v3 setHidden:{-[NTKFaceView showContentForUnadornedSnapshot](self, "showContentForUnadornedSnapshot")}];
+  timeView = [(NTKFaceView *)self timeView];
+  [timeView setHidden:{-[NTKFaceView showContentForUnadornedSnapshot](self, "showContentForUnadornedSnapshot")}];
 }
 
-- (void)_removeAllSubviewsFrom:(id)a3
+- (void)_removeAllSubviewsFrom:(id)from
 {
-  v3 = [a3 subviews];
-  [v3 makeObjectsPerformSelector:sel_removeFromSuperview];
+  subviews = [from subviews];
+  [subviews makeObjectsPerformSelector:sel_removeFromSuperview];
 }
 
 - (CGPoint)timeViewZoomEndingCenter

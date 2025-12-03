@@ -1,32 +1,32 @@
 @interface SXDocumentTextContentProvider
 + (id)sharedQueue;
-- (SXDocumentTextContentProvider)initWithDocument:(id)a3;
-- (id)textContentForComponent:(id)a3 withType:(unint64_t)a4;
-- (id)textContentForComponents:(id)a3 withType:(unint64_t)a4;
-- (void)textContentForType:(unint64_t)a3 onCompletion:(id)a4;
+- (SXDocumentTextContentProvider)initWithDocument:(id)document;
+- (id)textContentForComponent:(id)component withType:(unint64_t)type;
+- (id)textContentForComponents:(id)components withType:(unint64_t)type;
+- (void)textContentForType:(unint64_t)type onCompletion:(id)completion;
 @end
 
 @implementation SXDocumentTextContentProvider
 
-- (SXDocumentTextContentProvider)initWithDocument:(id)a3
+- (SXDocumentTextContentProvider)initWithDocument:(id)document
 {
-  v5 = a3;
+  documentCopy = document;
   v9.receiver = self;
   v9.super_class = SXDocumentTextContentProvider;
   v6 = [(SXDocumentTextContentProvider *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_document, a3);
+    objc_storeStrong(&v6->_document, document);
   }
 
   return v7;
 }
 
-- (void)textContentForType:(unint64_t)a3 onCompletion:(id)a4
+- (void)textContentForType:(unint64_t)type onCompletion:(id)completion
 {
-  v6 = a4;
-  if (v6)
+  completionCopy = completion;
+  if (completionCopy)
   {
     objc_initWeak(&location, self);
     v7 = +[SXDocumentTextContentProvider sharedQueue];
@@ -35,8 +35,8 @@
     v8[2] = __65__SXDocumentTextContentProvider_textContentForType_onCompletion___block_invoke;
     v8[3] = &unk_1E8500B50;
     objc_copyWeak(v10, &location);
-    v10[1] = a3;
-    v9 = v6;
+    v10[1] = type;
+    v9 = completionCopy;
     dispatch_async(v7, v8);
 
     objc_destroyWeak(v10);
@@ -84,16 +84,16 @@ void __65__SXDocumentTextContentProvider_textContentForType_onCompletion___block
   (*(v1 + 16))(v1, v2);
 }
 
-- (id)textContentForComponents:(id)a3 withType:(unint64_t)a4
+- (id)textContentForComponents:(id)components withType:(unint64_t)type
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [MEMORY[0x1E696AD60] string];
+  componentsCopy = components;
+  string = [MEMORY[0x1E696AD60] string];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v8 = v6;
+  v8 = componentsCopy;
   v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v9)
   {
@@ -108,15 +108,15 @@ void __65__SXDocumentTextContentProvider_textContentForType_onCompletion___block
           objc_enumerationMutation(v8);
         }
 
-        v13 = [(SXDocumentTextContentProvider *)self textContentForComponent:*(*(&v15 + 1) + 8 * i) withType:a4, v15];
+        v13 = [(SXDocumentTextContentProvider *)self textContentForComponent:*(*(&v15 + 1) + 8 * i) withType:type, v15];
         if ([v13 length])
         {
-          if ([v7 length])
+          if ([string length])
           {
-            [v7 appendString:@"\n"];
+            [string appendString:@"\n"];
           }
 
-          [v7 appendString:v13];
+          [string appendString:v13];
         }
       }
 
@@ -126,53 +126,53 @@ void __65__SXDocumentTextContentProvider_textContentForType_onCompletion___block
     while (v10);
   }
 
-  return v7;
+  return string;
 }
 
-- (id)textContentForComponent:(id)a3 withType:(unint64_t)a4
+- (id)textContentForComponent:(id)component withType:(unint64_t)type
 {
-  v6 = a3;
-  v7 = [v6 classification];
-  v8 = [(SXDocumentTextContentProvider *)self classification:v7 isValidForType:a4];
+  componentCopy = component;
+  classification = [componentCopy classification];
+  v8 = [(SXDocumentTextContentProvider *)self classification:classification isValidForType:type];
 
   if (v8)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = v6;
-      if (-[SXDocumentTextContentProvider contentRelevance:isValidForType:](self, "contentRelevance:isValidForType:", [v9 contentRelevance], a4))
+      v9 = componentCopy;
+      if (-[SXDocumentTextContentProvider contentRelevance:isValidForType:](self, "contentRelevance:isValidForType:", [v9 contentRelevance], type))
       {
-        v10 = [v9 text];
+        text = [v9 text];
       }
 
       else
       {
-        v10 = 0;
+        text = 0;
       }
     }
 
     else
     {
-      v10 = 0;
+      text = 0;
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v11 = [v6 components];
-      v12 = [(SXDocumentTextContentProvider *)self textContentForComponents:v11 withType:a4];
+      components = [componentCopy components];
+      v12 = [(SXDocumentTextContentProvider *)self textContentForComponents:components withType:type];
 
-      v10 = v12;
+      text = v12;
     }
   }
 
   else
   {
-    v10 = 0;
+    text = 0;
   }
 
-  return v10;
+  return text;
 }
 
 + (id)sharedQueue

@@ -1,20 +1,20 @@
 @interface ProtobufHelper
-+ (void)processProtobuf:(id)a3 result:(id)a4 data:(id)a5;
++ (void)processProtobuf:(id)protobuf result:(id)result data:(id)data;
 @end
 
 @implementation ProtobufHelper
 
-+ (void)processProtobuf:(id)a3 result:(id)a4 data:(id)a5
++ (void)processProtobuf:(id)protobuf result:(id)result data:(id)data
 {
-  v8 = a3;
+  protobufCopy = protobuf;
   swift_unknownObjectRetain();
-  v9 = a5;
+  dataCopy = data;
   v10 = sub_1B11218CC();
   v12 = v11;
 
   swift_getObjCClassMetadata();
   swift_getObjectType();
-  sub_1B108D438(a3, a4, v10, v12);
+  sub_1B108D438(protobuf, result, v10, v12);
   sub_1B106C204(v10, v12);
 
   swift_unknownObjectRelease();

@@ -1,49 +1,49 @@
 @interface LKClasses
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToLKClasses:(id)a3;
-- (LKClasses)initWithClassArray:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToLKClasses:(id)classes;
+- (LKClasses)initWithClassArray:(id)array;
 @end
 
 @implementation LKClasses
 
-- (LKClasses)initWithClassArray:(id)a3
+- (LKClasses)initWithClassArray:(id)array
 {
-  v5 = a3;
+  arrayCopy = array;
   v9.receiver = self;
   v9.super_class = LKClasses;
   v6 = [(LKClasses *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_classes, a3);
+    objc_storeStrong(&v6->_classes, array);
   }
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(LKClasses *)self isEqualToLKClasses:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(LKClasses *)self isEqualToLKClasses:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToLKClasses:(id)a3
+- (BOOL)isEqualToLKClasses:(id)classes
 {
-  v4 = a3;
+  classesCopy = classes;
   v5 = [(NSArray *)self->_classes count];
-  v6 = [v4 classes];
-  v7 = [v6 count];
+  classes = [classesCopy classes];
+  v7 = [classes count];
 
   if (v5 == v7)
   {
@@ -53,8 +53,8 @@
       do
       {
         v9 = [(NSArray *)self->_classes objectAtIndexedSubscript:v8];
-        v10 = [v4 classes];
-        v11 = [v10 objectAtIndexedSubscript:v8];
+        classes2 = [classesCopy classes];
+        v11 = [classes2 objectAtIndexedSubscript:v8];
         v12 = [v9 isEqual:v11];
 
         if ((v12 & 1) == 0)

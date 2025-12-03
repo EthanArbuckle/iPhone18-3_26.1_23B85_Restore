@@ -1,18 +1,18 @@
 @interface CKDetonatedAttachmentBalloonView
-- (CGSize)sizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4 tailInsets:(UIEdgeInsets *)a5;
+- (CGSize)sizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets tailInsets:(UIEdgeInsets *)tailInsets;
 - (CKBalloonDescriptor_t)highlightOverlayBalloonDescriptor;
-- (CKDetonatedAttachmentBalloonView)initWithFrame:(CGRect)a3;
-- (UIEdgeInsets)alignmentRectInsetsForBoundsSize:(CGSize)a3;
+- (CKDetonatedAttachmentBalloonView)initWithFrame:(CGRect)frame;
+- (UIEdgeInsets)alignmentRectInsetsForBoundsSize:(CGSize)size;
 - (void)layoutSubviews;
 @end
 
 @implementation CKDetonatedAttachmentBalloonView
 
-- (CKDetonatedAttachmentBalloonView)initWithFrame:(CGRect)a3
+- (CKDetonatedAttachmentBalloonView)initWithFrame:(CGRect)frame
 {
   v16.receiver = self;
   v16.super_class = CKDetonatedAttachmentBalloonView;
-  v3 = [(CKColoredBalloonView *)&v16 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CKColoredBalloonView *)&v16 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [CKDetonatedAttachmentView alloc];
@@ -25,11 +25,11 @@
     -[CKColoredBalloonView setColor:](v3, "setColor:", [v7 attachmentBalloonFillColor]);
 
     v8 = +[CKUIBehavior sharedBehaviors];
-    v9 = [v8 attachmentBalloonStrokeColor];
+    attachmentBalloonStrokeColor = [v8 attachmentBalloonStrokeColor];
 
     v10 = +[CKUIBehavior sharedBehaviors];
-    v11 = [v10 theme];
-    v12 = [v11 unfilledBalloonColorForColorType:v9];
+    theme = [v10 theme];
+    v12 = [theme unfilledBalloonColorForColorType:attachmentBalloonStrokeColor];
     [v12 ck_imColorComponents];
     [(CKBalloonView *)v3 setStrokeColor:?];
 
@@ -81,9 +81,9 @@
   [(CKDetonatedAttachmentView *)attachmentView setFrame:floor((v4 + (v8 - v15) * 0.5) * v18) / v18, floor((v6 + (v10 - v17) * 0.5) * v18) / v18, v15, v17];
 }
 
-- (UIEdgeInsets)alignmentRectInsetsForBoundsSize:(CGSize)a3
+- (UIEdgeInsets)alignmentRectInsetsForBoundsSize:(CGSize)size
 {
-  v4 = [(CKBalloonView *)self orientation:a3.width];
+  v4 = [(CKBalloonView *)self orientation:size.width];
   v5 = +[CKUIBehavior sharedBehaviors];
   [(CKColoredBalloonView *)self balloonDescriptor];
   [v5 attachmentBalloonAlignmentRectInsetsWithTailShape:v18];
@@ -120,9 +120,9 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4 tailInsets:(UIEdgeInsets *)a5
+- (CGSize)sizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets tailInsets:(UIEdgeInsets *)tailInsets
 {
-  v5 = [CKUIBehavior sharedBehaviors:a4];
+  v5 = [CKUIBehavior sharedBehaviors:insets];
   [v5 detonatedItemBalloonViewSize];
   v7 = v6;
   v9 = v8;

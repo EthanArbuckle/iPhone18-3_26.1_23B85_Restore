@@ -1,7 +1,7 @@
 @interface FCRecipeItemsOperation
 - (FCRecipeItemsOperation)init;
-- (FCRecipeItemsOperation)initWithContext:(id)a3 recipeListIDs:(id)a4;
-- (void)operationWillFinishWithError:(id)a3;
+- (FCRecipeItemsOperation)initWithContext:(id)context recipeListIDs:(id)ds;
+- (void)operationWillFinishWithError:(id)error;
 - (void)performOperation;
 @end
 
@@ -33,21 +33,21 @@
   objc_exception_throw(v6);
 }
 
-- (FCRecipeItemsOperation)initWithContext:(id)a3 recipeListIDs:(id)a4
+- (FCRecipeItemsOperation)initWithContext:(id)context recipeListIDs:(id)ds
 {
-  v7 = a3;
-  v8 = a4;
+  contextCopy = context;
+  dsCopy = ds;
   v14.receiver = self;
   v14.super_class = FCRecipeItemsOperation;
   v9 = [(FCOperation *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_context, a3);
-    objc_storeStrong(&v10->_recipeListIDs, a4);
-    v11 = [MEMORY[0x1E695DEC8] array];
+    objc_storeStrong(&v9->_context, context);
+    objc_storeStrong(&v10->_recipeListIDs, ds);
+    array = [MEMORY[0x1E695DEC8] array];
     networkEvents = v10->_networkEvents;
-    v10->_networkEvents = v11;
+    v10->_networkEvents = array;
   }
 
   return v10;
@@ -55,7 +55,7 @@
 
 - (void)performOperation
 {
-  v2 = self;
+  selfCopy = self;
   v29 = *MEMORY[0x1E69E9840];
   if (self)
   {
@@ -67,11 +67,11 @@
     v3 = FCOperationLog;
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
-      v4 = [(FCOperation *)v2 shortOperationDescription];
-      v5 = v4;
-      if (v2)
+      shortOperationDescription = [(FCOperation *)selfCopy shortOperationDescription];
+      v5 = shortOperationDescription;
+      if (selfCopy)
       {
-        recipeListIDs = v2->_recipeListIDs;
+        recipeListIDs = selfCopy->_recipeListIDs;
       }
 
       else
@@ -80,16 +80,16 @@
       }
 
       *buf = 138543618;
-      v26 = v4;
+      v26 = shortOperationDescription;
       v27 = 2114;
       v28 = recipeListIDs;
       _os_log_impl(&dword_1B63EF000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ will fetch from recipe list IDs: %{public}@", buf, 0x16u);
     }
 
     v7 = objc_alloc_init(FCCKBatchedMultiFetchQueryOperation);
-    if (v2)
+    if (selfCopy)
     {
-      context = v2->_context;
+      context = selfCopy->_context;
     }
 
     else
@@ -97,9 +97,9 @@
       context = 0;
     }
 
-    v9 = [(FCContentContext *)context internalContentContext];
-    v10 = [v9 contentDatabase];
-    [(FCCKBatchedMultiFetchQueryOperation *)v7 setDatabase:v10];
+    internalContentContext = [(FCContentContext *)context internalContentContext];
+    contentDatabase = [internalContentContext contentDatabase];
+    [(FCCKBatchedMultiFetchQueryOperation *)v7 setDatabase:contentDatabase];
 
     v12 = +[FCEdgeCacheHint edgeCacheHintForRecipeLists];
     if (v7)
@@ -107,9 +107,9 @@
       objc_setProperty_nonatomic_copy(v7, v11, v12, 424);
     }
 
-    if (v2)
+    if (selfCopy)
     {
-      v13 = v2->_recipeListIDs;
+      v13 = selfCopy->_recipeListIDs;
     }
 
     else
@@ -142,7 +142,7 @@
     v23[1] = 3221225472;
     v23[2] = __42__FCRecipeItemsOperation_performOperation__block_invoke_10;
     v23[3] = &unk_1E7C36D40;
-    v23[4] = v2;
+    v23[4] = selfCopy;
     v16 = [MEMORY[0x1E695DEC8] fc_array:v23];
     [(FCCKBatchedMultiFetchQueryOperation *)v7 setRecordSpecs:v16];
 
@@ -150,7 +150,7 @@
     newValue[1] = 3221225472;
     newValue[2] = __42__FCRecipeItemsOperation_performOperation__block_invoke_2;
     newValue[3] = &unk_1E7C36D68;
-    newValue[4] = v2;
+    newValue[4] = selfCopy;
     if (v7)
     {
       objc_setProperty_nonatomic_copy(v7, v17, newValue, 448);
@@ -161,14 +161,14 @@
     v20[1] = 3221225472;
     v20[2] = __42__FCRecipeItemsOperation_performOperation__block_invoke_6;
     v20[3] = &unk_1E7C406A0;
-    v20[4] = v2;
+    v20[4] = selfCopy;
     objc_copyWeak(&v21, buf);
     if (v7)
     {
       objc_setProperty_nonatomic_copy(v7, v18, v20, 464);
     }
 
-    [(FCOperation *)v2 associateChildOperation:v7];
+    [(FCOperation *)selfCopy associateChildOperation:v7];
     [(FCOperation *)v7 start];
     objc_destroyWeak(&v21);
     objc_destroyWeak(buf);
@@ -180,7 +180,7 @@
     v24[1] = 3221225472;
     v24[2] = __42__FCRecipeItemsOperation_performOperation__block_invoke;
     v24[3] = &unk_1E7C36EA0;
-    v24[4] = v2;
+    v24[4] = selfCopy;
     __42__FCRecipeItemsOperation_performOperation__block_invoke(v24);
   }
 
@@ -342,15 +342,15 @@ void __42__FCRecipeItemsOperation_performOperation__block_invoke_6(uint64_t a1, 
   }
 }
 
-- (void)operationWillFinishWithError:(id)a3
+- (void)operationWillFinishWithError:(id)error
 {
-  v6 = a3;
-  v4 = [(FCRecipeItemsOperation *)self completionHandler];
+  errorCopy = error;
+  completionHandler = [(FCRecipeItemsOperation *)self completionHandler];
 
-  if (v4)
+  if (completionHandler)
   {
-    v5 = [(FCRecipeItemsOperation *)self completionHandler];
-    (v5)[2](v5, v6);
+    completionHandler2 = [(FCRecipeItemsOperation *)self completionHandler];
+    (completionHandler2)[2](completionHandler2, errorCopy);
   }
 }
 

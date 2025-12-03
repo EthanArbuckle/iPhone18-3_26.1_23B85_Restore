@@ -1,14 +1,14 @@
 @interface GainMapStage
-+ (int)prewarmShaders:(id)a3;
-- (GainMapStage)initWithMetalContext:(id)a3;
++ (int)prewarmShaders:(id)shaders;
+- (GainMapStage)initWithMetalContext:(id)context;
 @end
 
 @implementation GainMapStage
 
-- (GainMapStage)initWithMetalContext:(id)a3
+- (GainMapStage)initWithMetalContext:(id)context
 {
-  v5 = a3;
-  if (!v5)
+  contextCopy = context;
+  if (!contextCopy)
   {
     sub_2958BD1B8(self);
 LABEL_8:
@@ -26,7 +26,7 @@ LABEL_8:
     goto LABEL_4;
   }
 
-  objc_storeStrong(&v6->_metalContext, a3);
+  objc_storeStrong(&v6->_metalContext, context);
   v11 = objc_msgSend_sharedInstance(GainMapShared, v8, v9, v10);
   v14 = objc_msgSend_getShaders_(v11, v12, v7->_metalContext, v13);
   shaders = v7->_shaders;
@@ -43,13 +43,13 @@ LABEL_4:
   return v7;
 }
 
-+ (int)prewarmShaders:(id)a3
++ (int)prewarmShaders:(id)shaders
 {
-  v3 = a3;
-  if (v3)
+  shadersCopy = shaders;
+  if (shadersCopy)
   {
     v4 = [GainMapShaders alloc];
-    v7 = objc_msgSend_initWithMetal_(v4, v5, v3, v6);
+    v7 = objc_msgSend_initWithMetal_(v4, v5, shadersCopy, v6);
     if (v7)
     {
       v8 = 0;

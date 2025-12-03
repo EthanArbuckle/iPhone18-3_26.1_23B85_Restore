@@ -7,44 +7,44 @@
 
 - (id)sbh_appName
 {
-  v1 = [a1 extensionIdentity];
-  v2 = [v1 extensionBundleIdentifier];
+  extensionIdentity = [self extensionIdentity];
+  extensionBundleIdentifier = [extensionIdentity extensionBundleIdentifier];
 
-  v3 = SBHContainingBundleRecordForWidgetWithBundleIdentifier(v2);
-  v4 = [v3 localizedName];
-  v5 = v4;
-  if (v4)
+  v3 = SBHContainingBundleRecordForWidgetWithBundleIdentifier(extensionBundleIdentifier);
+  localizedName = [v3 localizedName];
+  v5 = localizedName;
+  if (localizedName)
   {
-    v6 = v4;
+    localizedShortName = localizedName;
   }
 
   else
   {
-    v6 = [v3 localizedShortName];
+    localizedShortName = [v3 localizedShortName];
   }
 
-  v7 = v6;
+  v7 = localizedShortName;
 
   return v7;
 }
 
 - (id)sbh_galleryItemIdentifier
 {
-  v2 = objc_getAssociatedObject(a1, &SBHControlDescriptorGalleryItemIdentifierKey);
+  v2 = objc_getAssociatedObject(self, &SBHControlDescriptorGalleryItemIdentifierKey);
   if (!v2)
   {
-    v3 = [a1 extensionIdentity];
+    extensionIdentity = [self extensionIdentity];
     v4 = MEMORY[0x1E696AEC0];
-    v5 = [v3 extensionBundleIdentifier];
-    v6 = [a1 kind];
-    v7 = [v3 containerBundleIdentifier];
-    v8 = [a1 preferredControlSize];
-    v9 = [a1 displayName];
-    v10 = [a1 widgetDescription];
-    v11 = [a1 intentType];
-    v2 = [v4 stringWithFormat:@"CONTROL_DESCRIPTOR:%@-%@-%@-%lu-%@-%@-%@", v5, v6, v7, v8, v9, v10, v11];
+    extensionBundleIdentifier = [extensionIdentity extensionBundleIdentifier];
+    kind = [self kind];
+    containerBundleIdentifier = [extensionIdentity containerBundleIdentifier];
+    preferredControlSize = [self preferredControlSize];
+    displayName = [self displayName];
+    widgetDescription = [self widgetDescription];
+    intentType = [self intentType];
+    v2 = [v4 stringWithFormat:@"CONTROL_DESCRIPTOR:%@-%@-%@-%lu-%@-%@-%@", extensionBundleIdentifier, kind, containerBundleIdentifier, preferredControlSize, displayName, widgetDescription, intentType];
 
-    objc_setAssociatedObject(a1, &SBHControlDescriptorGalleryItemIdentifierKey, v2, 1);
+    objc_setAssociatedObject(self, &SBHControlDescriptorGalleryItemIdentifierKey, v2, 1);
   }
 
   return v2;

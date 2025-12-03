@@ -1,45 +1,45 @@
 @interface LACParamChecker
-+ (id)_checkDictionary:(id)a3 againstClassDictionary:(id)a4 entryName:(id)a5 customCheckBlock:(id)a6;
-+ (id)_checkEventProcessing:(id)a3;
-+ (id)_checkEventProcessingEventDictionary:(id)a3;
-+ (id)_checkSet:(id)a3 forValue:(id)a4 entityName:(id)a5;
-+ (id)checkACL:(id)a3;
-+ (id)checkCredentialType:(int64_t)a3;
-+ (id)checkEvent:(int64_t)a3;
-+ (id)checkInternalOperation:(int64_t)a3 options:(id)a4;
-+ (id)checkOptions:(id)a3;
-+ (id)checkPolicy:(int64_t)a3;
-+ (id)checkStorageOptions:(id)a3;
++ (id)_checkDictionary:(id)dictionary againstClassDictionary:(id)classDictionary entryName:(id)name customCheckBlock:(id)block;
++ (id)_checkEventProcessing:(id)processing;
++ (id)_checkEventProcessingEventDictionary:(id)dictionary;
++ (id)_checkSet:(id)set forValue:(id)value entityName:(id)name;
++ (id)checkACL:(id)l;
++ (id)checkCredentialType:(int64_t)type;
++ (id)checkEvent:(int64_t)event;
++ (id)checkInternalOperation:(int64_t)operation options:(id)options;
++ (id)checkOptions:(id)options;
++ (id)checkPolicy:(int64_t)policy;
++ (id)checkStorageOptions:(id)options;
 @end
 
 @implementation LACParamChecker
 
-+ (id)_checkSet:(id)a3 forValue:(id)a4 entityName:(id)a5
++ (id)_checkSet:(id)set forValue:(id)value entityName:(id)name
 {
-  v7 = a4;
-  v8 = a5;
-  if ([a3 containsObject:v7])
+  valueCopy = value;
+  nameCopy = name;
+  if ([set containsObject:valueCopy])
   {
     v9 = 0;
   }
 
   else
   {
-    v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unknown %@: '%@'", v8, v7];
-    v9 = [LACError errorWithCode:-1001 debugDescription:v10];
+    valueCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unknown %@: '%@'", nameCopy, valueCopy];
+    v9 = [LACError errorWithCode:-1001 debugDescription:valueCopy];
   }
 
   return v9;
 }
 
-+ (id)_checkDictionary:(id)a3 againstClassDictionary:(id)a4 entryName:(id)a5 customCheckBlock:(id)a6
++ (id)_checkDictionary:(id)dictionary againstClassDictionary:(id)classDictionary entryName:(id)name customCheckBlock:(id)block
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [v9 count];
-  if (v13 <= [v10 count])
+  dictionaryCopy = dictionary;
+  classDictionaryCopy = classDictionary;
+  nameCopy = name;
+  blockCopy = block;
+  v13 = [dictionaryCopy count];
+  if (v13 <= [classDictionaryCopy count])
   {
     v22 = 0;
     v23 = &v22;
@@ -52,10 +52,10 @@
     v17[2] = __86__LACParamChecker__checkDictionary_againstClassDictionary_entryName_customCheckBlock___block_invoke;
     v17[3] = &unk_1E7A97B58;
     v21 = &v22;
-    v18 = v11;
-    v19 = v10;
-    v20 = v12;
-    [v9 enumerateKeysAndObjectsUsingBlock:v17];
+    v18 = nameCopy;
+    v19 = classDictionaryCopy;
+    v20 = blockCopy;
+    [dictionaryCopy enumerateKeysAndObjectsUsingBlock:v17];
     v15 = v23[5];
 
     _Block_object_dispose(&v22, 8);
@@ -63,7 +63,7 @@
 
   else
   {
-    v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Exceeded number of %@s: %d (maximum allowed: %d).", v11, objc_msgSend(v9, "count"), objc_msgSend(v10, "count")];
+    v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Exceeded number of %@s: %d (maximum allowed: %d).", nameCopy, objc_msgSend(dictionaryCopy, "count"), objc_msgSend(classDictionaryCopy, "count")];
     v15 = [LACError errorWithCode:-1001 debugDescription:v14];
   }
 
@@ -120,9 +120,9 @@ LABEL_11:
 LABEL_12:
 }
 
-+ (id)checkOptions:(id)a3
++ (id)checkOptions:(id)options
 {
-  v3 = a3;
+  optionsCopy = options;
   if (getTKTokenAuthOperationClass())
   {
     TKTokenAuthOperationClass = getTKTokenAuthOperationClass();
@@ -143,7 +143,7 @@ LABEL_12:
     dispatch_once(&checkOptions__onceToken, block);
   }
 
-  v5 = [LACParamChecker _checkDictionary:v3 againstClassDictionary:checkOptions__allOptions entryName:@"option" customCheckBlock:&__block_literal_global_32];
+  v5 = [LACParamChecker _checkDictionary:optionsCopy againstClassDictionary:checkOptions__allOptions entryName:@"option" customCheckBlock:&__block_literal_global_32];
 
   return v5;
 }
@@ -408,16 +408,16 @@ id __32__LACParamChecker_checkOptions___block_invoke_2(uint64_t a1, void *a2, vo
   return v5;
 }
 
-+ (id)checkStorageOptions:(id)a3
++ (id)checkStorageOptions:(id)options
 {
   v3 = checkStorageOptions__onceToken;
-  v4 = a3;
+  optionsCopy = options;
   if (v3 != -1)
   {
     +[LACParamChecker checkStorageOptions:];
   }
 
-  v5 = [LACParamChecker _checkDictionary:v4 againstClassDictionary:checkStorageOptions__allOptions entryName:@"option" customCheckBlock:0];
+  v5 = [LACParamChecker _checkDictionary:optionsCopy againstClassDictionary:checkStorageOptions__allOptions entryName:@"option" customCheckBlock:0];
 
   return v5;
 }
@@ -435,9 +435,9 @@ void __39__LACParamChecker_checkStorageOptions___block_invoke()
   v3 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)_checkEventProcessing:(id)a3
++ (id)_checkEventProcessing:(id)processing
 {
-  v3 = a3;
+  processingCopy = processing;
   v7 = 0;
   v8 = &v7;
   v9 = 0x3032000000;
@@ -449,7 +449,7 @@ void __39__LACParamChecker_checkStorageOptions___block_invoke()
   v6[2] = __41__LACParamChecker__checkEventProcessing___block_invoke;
   v6[3] = &unk_1E7A97BC0;
   v6[4] = &v7;
-  [v3 enumerateKeysAndObjectsUsingBlock:v6];
+  [processingCopy enumerateKeysAndObjectsUsingBlock:v6];
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
 
@@ -509,16 +509,16 @@ LABEL_8:
 LABEL_9:
 }
 
-+ (id)_checkEventProcessingEventDictionary:(id)a3
++ (id)_checkEventProcessingEventDictionary:(id)dictionary
 {
   v3 = _checkEventProcessingEventDictionary__onceToken;
-  v4 = a3;
+  dictionaryCopy = dictionary;
   if (v3 != -1)
   {
     +[LACParamChecker _checkEventProcessingEventDictionary:];
   }
 
-  v5 = [LACParamChecker _checkDictionary:v4 againstClassDictionary:_checkEventProcessingEventDictionary__allProcessingOptions entryName:@"processing option" customCheckBlock:0];
+  v5 = [LACParamChecker _checkDictionary:dictionaryCopy againstClassDictionary:_checkEventProcessingEventDictionary__allProcessingOptions entryName:@"processing option" customCheckBlock:0];
 
   return v5;
 }
@@ -545,7 +545,7 @@ void __56__LACParamChecker__checkEventProcessingEventDictionary___block_invoke()
   v6 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)checkPolicy:(int64_t)a3
++ (id)checkPolicy:(int64_t)policy
 {
   if (checkPolicy__onceToken != -1)
   {
@@ -553,7 +553,7 @@ void __56__LACParamChecker__checkEventProcessingEventDictionary___block_invoke()
   }
 
   v4 = checkPolicy__allPolicies;
-  v5 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v5 = [MEMORY[0x1E696AD98] numberWithInteger:policy];
   v6 = [LACParamChecker _checkSet:v4 forValue:v5 entityName:@"policy"];
 
   return v6;
@@ -591,9 +591,9 @@ void __31__LACParamChecker_checkPolicy___block_invoke()
   checkPolicy__allPolicies = v6;
 }
 
-+ (id)checkACL:(id)a3
++ (id)checkACL:(id)l
 {
-  if (a3)
+  if (l)
   {
     v5 = 0;
   }
@@ -606,7 +606,7 @@ void __31__LACParamChecker_checkPolicy___block_invoke()
   return v5;
 }
 
-+ (id)checkEvent:(int64_t)a3
++ (id)checkEvent:(int64_t)event
 {
   if (checkEvent__onceToken != -1)
   {
@@ -614,7 +614,7 @@ void __31__LACParamChecker_checkPolicy___block_invoke()
   }
 
   v4 = checkEvent__allEvents;
-  v5 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v5 = [MEMORY[0x1E696AD98] numberWithInteger:event];
   v6 = [LACParamChecker _checkSet:v4 forValue:v5 entityName:@"event"];
 
   return v6;
@@ -635,7 +635,7 @@ void __30__LACParamChecker_checkEvent___block_invoke()
   checkEvent__allEvents = v7;
 }
 
-+ (id)checkCredentialType:(int64_t)a3
++ (id)checkCredentialType:(int64_t)type
 {
   if (checkCredentialType__onceToken != -1)
   {
@@ -643,7 +643,7 @@ void __30__LACParamChecker_checkEvent___block_invoke()
   }
 
   v4 = checkCredentialType__allCredentialTypes;
-  v5 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v5 = [MEMORY[0x1E696AD98] numberWithInteger:type];
   v6 = [LACParamChecker _checkSet:v4 forValue:v5 entityName:@"credential type"];
 
   return v6;
@@ -666,21 +666,21 @@ void __39__LACParamChecker_checkCredentialType___block_invoke()
   checkCredentialType__allCredentialTypes = v9;
 }
 
-+ (id)checkInternalOperation:(int64_t)a3 options:(id)a4
++ (id)checkInternalOperation:(int64_t)operation options:(id)options
 {
-  v5 = a4;
+  optionsCopy = options;
   if (checkInternalOperation_options__onceToken != -1)
   {
     +[LACParamChecker checkInternalOperation:options:];
   }
 
   v6 = checkInternalOperation_options__allInternalOperations;
-  v7 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v7 = [MEMORY[0x1E696AD98] numberWithInteger:operation];
   v8 = [v6 objectForKeyedSubscript:v7];
 
   if (v8)
   {
-    if (!v5 || (objc_opt_isKindOfClass() & 1) != 0)
+    if (!optionsCopy || (objc_opt_isKindOfClass() & 1) != 0)
     {
       v9 = 0;
       goto LABEL_10;
@@ -693,7 +693,7 @@ void __39__LACParamChecker_checkCredentialType___block_invoke()
   else
   {
     v10 = MEMORY[0x1E696AEC0];
-    v11 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+    v11 = [MEMORY[0x1E696AD98] numberWithInteger:operation];
     v12 = [v10 stringWithFormat:@"Unknown internalOperation: %@", v11];
     v9 = [LACError errorWithCode:-1001 debugDescription:v12];
   }

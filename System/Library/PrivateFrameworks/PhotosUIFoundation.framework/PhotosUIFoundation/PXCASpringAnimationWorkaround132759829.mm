@@ -1,14 +1,14 @@
 @interface PXCASpringAnimationWorkaround132759829
-- (float)_solveForInput:(float)a3;
+- (float)_solveForInput:(float)input;
 @end
 
 @implementation PXCASpringAnimationWorkaround132759829
 
-- (float)_solveForInput:(float)a3
+- (float)_solveForInput:(float)input
 {
-  v4 = a3;
+  inputCopy = input;
   [(PXCASpringAnimationWorkaround132759829 *)self duration];
-  v6 = v4 / v5;
+  v6 = inputCopy / v5;
   *&v6 = v6;
   v8.receiver = self;
   v8.super_class = PXCASpringAnimationWorkaround132759829;

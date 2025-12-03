@@ -1,21 +1,21 @@
 @interface ATAudioSessionClientImpl
-- (ATAudioSessionClientImpl)initWithSession:(id)a3;
-- (ATAudioSessionClientImpl)initWithStrongSession:(id)a3;
+- (ATAudioSessionClientImpl)initWithSession:(id)session;
+- (ATAudioSessionClientImpl)initWithStrongSession:(id)session;
 - (AVAudioSession)avas;
 - (BOOL)isValid;
 - (id).cxx_construct;
-- (int)AudioSessionGetPropertySizeImpl:(unsigned int)a3 size:(unsigned int *)a4;
-- (int)AudioSessionSetActiveImpl:(unsigned __int8)a3 flags:(unsigned int)a4;
+- (int)AudioSessionGetPropertySizeImpl:(unsigned int)impl size:(unsigned int *)size;
+- (int)AudioSessionSetActiveImpl:(unsigned __int8)impl flags:(unsigned int)flags;
 - (int)resetClientConfiguration;
-- (int)setClientConfiguration:(__CFRunLoop *)a3 runLoopMode:(__CFString *)a4 listenerProc:(void *)a5 userData:(void *)a6;
-- (void)addNSNotificationListenerFor:(id)a3 session:(id)a4 block:(id)a5;
-- (void)addNSNotificationListenerFor:(id)a3 session:(id)a4 selector:(SEL)a5;
-- (void)callPropertyListeners:(unsigned int)a3 data:(id)a4;
-- (void)handleInterruption:(id)a3;
-- (void)handleRouteChange:(id)a3;
-- (void)handleServerDeath:(id)a3;
-- (void)handleServerReset:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (int)setClientConfiguration:(__CFRunLoop *)configuration runLoopMode:(__CFString *)mode listenerProc:(void *)proc userData:(void *)data;
+- (void)addNSNotificationListenerFor:(id)for session:(id)session block:(id)block;
+- (void)addNSNotificationListenerFor:(id)for session:(id)session selector:(SEL)selector;
+- (void)callPropertyListeners:(unsigned int)listeners data:(id)data;
+- (void)handleInterruption:(id)interruption;
+- (void)handleRouteChange:(id)change;
+- (void)handleServerDeath:(id)death;
+- (void)handleServerReset:(id)reset;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation ATAudioSessionClientImpl
@@ -34,10 +34,10 @@
   return self;
 }
 
-- (void)callPropertyListeners:(unsigned int)a3 data:(id)a4
+- (void)callPropertyListeners:(unsigned int)listeners data:(id)data
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  dataCopy = data;
   if (!self->_clientRunLoop.mCFObject || !self->_clientRunLoopMode.mObject.mCFObject)
   {
     if (kAudioSessionClientLogSubsystem)
@@ -106,9 +106,9 @@ LABEL_11:
   v13[2] = __55__ATAudioSessionClientImpl_callPropertyListeners_data___block_invoke;
   v13[3] = &unk_1E7ECDEE8;
   objc_copyWeak(&v16, location);
-  v17 = a3;
-  v14 = v6;
-  v15 = self;
+  listenersCopy = listeners;
+  v14 = dataCopy;
+  selfCopy = self;
   CFRunLoopPerformBlock(mCFObject, v8, v13);
   CFRunLoopWakeUp(self->_clientRunLoop.mCFObject);
 
@@ -217,27 +217,27 @@ LABEL_17:
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v15 = a3;
-  v9 = a4;
-  v10 = a5;
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
   WeakRetained = objc_loadWeakRetained(&self->_weakSession);
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v13 = [ATAudioSessionUtils getAudioSessionProperty:v15];
-    v14 = [v10 objectForKey:*MEMORY[0x1E696A4F0]];
+    v13 = [ATAudioSessionUtils getAudioSessionProperty:pathCopy];
+    v14 = [changeCopy objectForKey:*MEMORY[0x1E696A4F0]];
     [(ATAudioSessionClientImpl *)self callPropertyListeners:v13 data:v14];
   }
 }
 
-- (void)handleServerReset:(id)a3
+- (void)handleServerReset:(id)reset
 {
   v11 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  resetCopy = reset;
   if (kAudioSessionClientLogSubsystem)
   {
     v4 = *kAudioSessionClientLogSubsystem;
@@ -266,10 +266,10 @@ LABEL_8:
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleServerDeath:(id)a3
+- (void)handleServerDeath:(id)death
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  deathCopy = death;
   if (kAudioSessionClientLogSubsystem)
   {
     v5 = *kAudioSessionClientLogSubsystem;
@@ -301,10 +301,10 @@ LABEL_8:
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleRouteChange:(id)a3
+- (void)handleRouteChange:(id)change
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  changeCopy = change;
   if (kAudioSessionClientLogSubsystem)
   {
     v5 = *kAudioSessionClientLogSubsystem;
@@ -323,22 +323,22 @@ LABEL_8:
   v7 = v5;
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v4 userInfo];
+    userInfo = [changeCopy userInfo];
     v18 = 136315650;
     v19 = "ATAudioSessionClientImpl.mm";
     v20 = 1024;
     v21 = 649;
     v22 = 2112;
-    v23 = v8;
+    v23 = userInfo;
     _os_log_impl(&dword_1B9A08000, v7, OS_LOG_TYPE_DEFAULT, "%25s:%-5d Route change received %@", &v18, 0x1Cu);
   }
 
 LABEL_8:
-  if (v4)
+  if (changeCopy)
   {
-    v9 = [v4 userInfo];
-    v10 = v9;
-    if (!v9)
+    userInfo2 = [changeCopy userInfo];
+    v10 = userInfo2;
+    if (!userInfo2)
     {
       if (kAudioSessionClientLogSubsystem)
       {
@@ -367,7 +367,7 @@ LABEL_8:
       goto LABEL_26;
     }
 
-    v11 = [v9 objectForKey:*MEMORY[0x1E698D6E0]];
+    v11 = [userInfo2 objectForKey:*MEMORY[0x1E698D6E0]];
     v12 = v11 == 0;
 
     if (v12)
@@ -405,10 +405,10 @@ LABEL_26:
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleInterruption:(id)a3
+- (void)handleInterruption:(id)interruption
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  interruptionCopy = interruption;
   if (kAudioSessionClientLogSubsystem)
   {
     v5 = *kAudioSessionClientLogSubsystem;
@@ -427,28 +427,28 @@ LABEL_26:
   v7 = v5;
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v4 userInfo];
+    userInfo = [interruptionCopy userInfo];
     *buf = 136315650;
     v27 = "ATAudioSessionClientImpl.mm";
     v28 = 1024;
     v29 = 595;
     v30 = 2112;
-    v31 = v8;
+    v31 = userInfo;
     _os_log_impl(&dword_1B9A08000, v7, OS_LOG_TYPE_DEFAULT, "%25s:%-5d Interruption received %@", buf, 0x1Cu);
   }
 
 LABEL_8:
-  if (v4)
+  if (interruptionCopy)
   {
-    v9 = [v4 userInfo];
-    v10 = v9;
-    if (v9)
+    userInfo2 = [interruptionCopy userInfo];
+    v10 = userInfo2;
+    if (userInfo2)
     {
-      v11 = [v9 objectForKey:*MEMORY[0x1E698D580]];
-      v12 = [v11 unsignedLongValue];
-      if (v12)
+      v11 = [userInfo2 objectForKey:*MEMORY[0x1E698D580]];
+      unsignedLongValue = [v11 unsignedLongValue];
+      if (unsignedLongValue)
       {
-        v13 = v12 == 1;
+        v13 = unsignedLongValue == 1;
       }
 
       else
@@ -522,12 +522,12 @@ void __47__ATAudioSessionClientImpl_handleInterruption___block_invoke(uint64_t a
   }
 }
 
-- (void)addNSNotificationListenerFor:(id)a3 session:(id)a4 block:(id)a5
+- (void)addNSNotificationListenerFor:(id)for session:(id)session block:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  std::string::basic_string[abi:ne200100]<0>(__p, [v8 UTF8String]);
+  forCopy = for;
+  sessionCopy = session;
+  blockCopy = block;
+  std::string::basic_string[abi:ne200100]<0>(__p, [forCopy UTF8String]);
   left = self->_newNotificationCenterObservers.__tree_.__end_node_.__left_;
   if (!left)
   {
@@ -559,11 +559,11 @@ LABEL_8:
   }
 }
 
-- (void)addNSNotificationListenerFor:(id)a3 session:(id)a4 selector:(SEL)a5
+- (void)addNSNotificationListenerFor:(id)for session:(id)session selector:(SEL)selector
 {
-  v7 = a3;
-  v8 = a4;
-  std::string::basic_string[abi:ne200100]<0>(v12, [v7 UTF8String]);
+  forCopy = for;
+  sessionCopy = session;
+  std::string::basic_string[abi:ne200100]<0>(v12, [forCopy UTF8String]);
   left = self->_oldNotificationCenterObservers.__tree_.__end_node_.__left_;
   if (!left)
   {
@@ -639,7 +639,7 @@ void __82__ATAudioSessionClientImpl_AudioSessionAddPropertyListenerImpl_userProc
   }
 }
 
-- (int)AudioSessionGetPropertySizeImpl:(unsigned int)a3 size:(unsigned int *)a4
+- (int)AudioSessionGetPropertySizeImpl:(unsigned int)impl size:(unsigned int *)size
 {
   v14 = *MEMORY[0x1E69E9840];
   if (kAudioSessionClientLogSubsystem)
@@ -667,15 +667,15 @@ void __82__ATAudioSessionClientImpl_AudioSessionAddPropertyListenerImpl_userProc
   }
 
 LABEL_8:
-  asPropertyInfo::GetPropertyInfo(&v10, a3);
-  *a4 = v11;
+  asPropertyInfo::GetPropertyInfo(&v10, impl);
+  *size = v11;
   v8 = *MEMORY[0x1E69E9840];
   return 0;
 }
 
-- (int)AudioSessionSetActiveImpl:(unsigned __int8)a3 flags:(unsigned int)a4
+- (int)AudioSessionSetActiveImpl:(unsigned __int8)impl flags:(unsigned int)flags
 {
-  v5 = a3;
+  implCopy = impl;
   v28 = *MEMORY[0x1E69E9840];
   if (kAudioSessionClientLogSubsystem)
   {
@@ -707,7 +707,7 @@ LABEL_8:
   if (WeakRetained)
   {
     v21 = 0;
-    v11 = [WeakRetained setActive:v5 == 1 withOptions:a4 error:&v21];
+    v11 = [WeakRetained setActive:implCopy == 1 withOptions:flags error:&v21];
     v12 = v21;
     v13 = v12;
     if (v11)
@@ -717,7 +717,7 @@ LABEL_8:
         v14 = *kAudioSessionClientLogSubsystem;
         if (!v14)
         {
-          v15 = 0;
+          code = 0;
 LABEL_30:
 
           goto LABEL_31;
@@ -735,7 +735,7 @@ LABEL_30:
         v17 = @"Activated";
         v23 = "ATAudioSessionClientImpl.mm";
         *buf = 136315650;
-        if (!v5)
+        if (!implCopy)
         {
           v17 = @"Deactivated";
         }
@@ -747,15 +747,15 @@ LABEL_30:
         _os_log_impl(&dword_1B9A08000, v14, OS_LOG_TYPE_INFO, "%25s:%-5d Session %@ !", buf, 0x1Cu);
       }
 
-      v15 = 0;
+      code = 0;
     }
 
     else
     {
-      v15 = 2003329396;
+      code = 2003329396;
       if (v12 && [v12 code])
       {
-        v15 = [v13 code];
+        code = [v13 code];
       }
 
       if (kAudioSessionClientLogSubsystem)
@@ -780,7 +780,7 @@ LABEL_30:
         v24 = 1024;
         v25 = 281;
         v26 = 1024;
-        LODWORD(v27) = v15;
+        LODWORD(v27) = code;
         _os_log_impl(&dword_1B9A08000, v14, OS_LOG_TYPE_ERROR, "%25s:%-5d activation failed. status = %d", buf, 0x18u);
       }
     }
@@ -788,11 +788,11 @@ LABEL_30:
     goto LABEL_30;
   }
 
-  v15 = 560557673;
+  code = 560557673;
 LABEL_31:
 
   v19 = *MEMORY[0x1E69E9840];
-  return v15;
+  return code;
 }
 
 - (AVAudioSession)avas
@@ -838,7 +838,7 @@ LABEL_31:
   return 0;
 }
 
-- (int)setClientConfiguration:(__CFRunLoop *)a3 runLoopMode:(__CFString *)a4 listenerProc:(void *)a5 userData:(void *)a6
+- (int)setClientConfiguration:(__CFRunLoop *)configuration runLoopMode:(__CFString *)mode listenerProc:(void *)proc userData:(void *)data
 {
   v28 = *MEMORY[0x1E69E9840];
   if (kAudioSessionClientLogSubsystem)
@@ -901,20 +901,20 @@ LABEL_41:
       goto LABEL_41;
     }
 
-    if (a3)
+    if (configuration)
     {
-      CFRetain(a3);
+      CFRetain(configuration);
       mCFObject = self->_clientRunLoop.mCFObject;
-      self->_clientRunLoop.mCFObject = a3;
+      self->_clientRunLoop.mCFObject = configuration;
       if (mCFObject)
       {
         CFRelease(mCFObject);
       }
     }
 
-    if (a4)
+    if (mode)
     {
-      applesauce::CF::StringRef::from_get(buf, a4);
+      applesauce::CF::StringRef::from_get(buf, mode);
       v16 = self->_clientRunLoopMode.mObject.mCFObject;
       self->_clientRunLoopMode.mObject.mCFObject = *buf;
       *buf = v16;
@@ -924,13 +924,13 @@ LABEL_41:
       }
     }
 
-    if (a5)
+    if (proc)
     {
-      self->_clientInterruptionListenerProc = a5;
+      self->_clientInterruptionListenerProc = proc;
 LABEL_33:
-      if (a6)
+      if (data)
       {
-        self->_clientUserData = a6;
+        self->_clientUserData = data;
       }
 
       [(ATAudioSessionClientImpl *)self setInterruptionType:0];
@@ -1014,24 +1014,24 @@ void __85__ATAudioSessionClientImpl_setClientConfiguration_runLoopMode_listenerP
   return v3;
 }
 
-- (ATAudioSessionClientImpl)initWithStrongSession:(id)a3
+- (ATAudioSessionClientImpl)initWithStrongSession:(id)session
 {
-  v5 = a3;
-  v6 = [(ATAudioSessionClientImpl *)self initWithSession:v5];
+  sessionCopy = session;
+  v6 = [(ATAudioSessionClientImpl *)self initWithSession:sessionCopy];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_strongSession, a3);
+    objc_storeStrong(&v6->_strongSession, session);
     v8 = v7;
   }
 
   return v7;
 }
 
-- (ATAudioSessionClientImpl)initWithSession:(id)a3
+- (ATAudioSessionClientImpl)initWithSession:(id)session
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  sessionCopy = session;
   if (kAudioSessionClientLogSubsystem)
   {
     v5 = *kAudioSessionClientLogSubsystem;
@@ -1063,7 +1063,7 @@ LABEL_8:
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->_weakSession, v4);
+    objc_storeWeak(&v7->_weakSession, sessionCopy);
     v8->_isConfigured = 0;
     v8->_clientUserData = 0;
     Main = CFRunLoopGetMain();

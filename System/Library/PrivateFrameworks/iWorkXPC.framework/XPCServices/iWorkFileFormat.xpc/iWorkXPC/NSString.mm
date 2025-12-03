@@ -1,91 +1,91 @@
 @interface NSString
-+ (id)tsu_JSONStringFromString:(id)a3;
-+ (id)tsu_fogFilenameFromShareToken:(id)a3;
-+ (id)tsu_fogShareTokenFromFileURL:(id)a3;
-+ (id)tsu_localizedDisplayNameWithPersonNameComponents:(id)a3;
-+ (id)tsu_redactedStringWithFormat:(id)a3 arguments:(char *)a4;
-+ (id)tsu_stringByBase64EncodingBytes:(const char *)a3 length:(unint64_t)a4 breakLines:(BOOL)a5;
-+ (id)tsu_stringByHexEncodingData:(id)a3;
-+ (id)tsu_stringByIndentingString:(id)a3 times:(unint64_t)a4;
-+ (id)tsu_stringWithFormat:(id)a3 arguments:(char *)a4;
-+ (id)tsu_stringWithHexFromBytes:(const char *)a3 length:(unint64_t)a4;
++ (id)tsu_JSONStringFromString:(id)string;
++ (id)tsu_fogFilenameFromShareToken:(id)token;
++ (id)tsu_fogShareTokenFromFileURL:(id)l;
++ (id)tsu_localizedDisplayNameWithPersonNameComponents:(id)components;
++ (id)tsu_redactedStringWithFormat:(id)format arguments:(char *)arguments;
++ (id)tsu_stringByBase64EncodingBytes:(const char *)bytes length:(unint64_t)length breakLines:(BOOL)lines;
++ (id)tsu_stringByHexEncodingData:(id)data;
++ (id)tsu_stringByIndentingString:(id)string times:(unint64_t)times;
++ (id)tsu_stringWithFormat:(id)format arguments:(char *)arguments;
++ (id)tsu_stringWithHexFromBytes:(const char *)bytes length:(unint64_t)length;
 + (id)tsu_stringWithUUID;
-+ (id)tsu_unRedactedStringWithFormat:(id)a3 arguments:(char *)a4;
-- (BOOL)tsu_bindToSqlStatement:(sqlite3_stmt *)a3 index:(int)a4 error:(id *)a5;
-- (BOOL)tsu_conformsToAnyUTI:(id)a3;
-- (BOOL)tsu_containsOnlyCharactersFromSet:(id)a3;
++ (id)tsu_unRedactedStringWithFormat:(id)format arguments:(char *)arguments;
+- (BOOL)tsu_bindToSqlStatement:(sqlite3_stmt *)statement index:(int)index error:(id *)error;
+- (BOOL)tsu_conformsToAnyUTI:(id)i;
+- (BOOL)tsu_containsOnlyCharactersFromSet:(id)set;
 - (BOOL)tsu_isCJKString;
-- (BOOL)tsu_isChildOfPath:(id)a3;
-- (BOOL)tsu_isDescendantOfPath:(id)a3;
-- (BOOL)tsu_isEqualToString:(id)a3;
+- (BOOL)tsu_isChildOfPath:(id)path;
+- (BOOL)tsu_isDescendantOfPath:(id)path;
+- (BOOL)tsu_isEqualToString:(id)string;
 - (BOOL)tsu_isTaggedPointer;
-- (BOOL)tsu_pathConformsToUTI:(id)a3;
-- (BOOL)tsu_pathExtensionConformsToUTI:(id)a3;
+- (BOOL)tsu_pathConformsToUTI:(id)i;
+- (BOOL)tsu_pathExtensionConformsToUTI:(id)i;
 - (NSString)tsu_normalizedFilenameExtension;
 - (NSString)tsu_pathUTI;
 - (_NSRange)tsu_range;
-- (_NSRange)tsu_rangeOfString:(id)a3 options:(unint64_t)a4 updatingSearchRange:(_NSRange *)a5;
-- (id)tsu_UTTypeCopyPreferredTagWithClass:(id)a3;
+- (_NSRange)tsu_rangeOfString:(id)string options:(unint64_t)options updatingSearchRange:(_NSRange *)range;
+- (id)tsu_UTTypeCopyPreferredTagWithClass:(id)class;
 - (id)tsu_allFilenameExtensionIdentifiersForTag;
 - (id)tsu_encodeStringBase64;
 - (id)tsu_escapeForIcuRegex;
 - (id)tsu_escapeXML;
 - (id)tsu_firstKey;
-- (id)tsu_initRedactedWithFormat:(id)a3 arguments:(char *)a4;
-- (id)tsu_initUnRedactedWithFormat:(id)a3 arguments:(char *)a4;
-- (id)tsu_initWithSqlStatement:(sqlite3_stmt *)a3 columnIndex:(int)a4;
-- (id)tsu_keyPathByAppendingKey:(id)a3;
-- (id)tsu_keyPathByPrependingKey:(id)a3;
+- (id)tsu_initRedactedWithFormat:(id)format arguments:(char *)arguments;
+- (id)tsu_initUnRedactedWithFormat:(id)format arguments:(char *)arguments;
+- (id)tsu_initWithSqlStatement:(sqlite3_stmt *)statement columnIndex:(int)index;
+- (id)tsu_keyPathByAppendingKey:(id)key;
+- (id)tsu_keyPathByPrependingKey:(id)key;
 - (id)tsu_keyPathByRemovingFirstKey;
 - (id)tsu_keyPathByRemovingLastKey;
 - (id)tsu_lastKey;
-- (id)tsu_middleTruncateToLength:(unint64_t)a3;
-- (id)tsu_parseBaseTitleWithLocalizedCopyString:(id)a3 firstCopyFormatString:(id)a4 generalCopyFormatString:(id)a5 outNumber:(unint64_t *)a6;
+- (id)tsu_middleTruncateToLength:(unint64_t)length;
+- (id)tsu_parseBaseTitleWithLocalizedCopyString:(id)string firstCopyFormatString:(id)formatString generalCopyFormatString:(id)copyFormatString outNumber:(unint64_t *)number;
 - (id)tsu_pathExceptPrivate;
-- (id)tsu_preferredIdentifierForTagClass:(id)a3 conformingToUTI:(id)a4;
-- (id)tsu_setOfContainedWordsIncludingPunctuationAndSymbols:(BOOL)a3;
+- (id)tsu_preferredIdentifierForTagClass:(id)class conformingToUTI:(id)i;
+- (id)tsu_setOfContainedWordsIncludingPunctuationAndSymbols:(BOOL)symbols;
 - (id)tsu_sha256HexHashString;
-- (id)tsu_stringByAddingCSVEscapesForLocale:(id)a3;
-- (id)tsu_stringByAppendingSeparator:(id)a3 format:(id)a4;
-- (id)tsu_stringByApplyingSubstitutions:(id)a3;
-- (id)tsu_stringByDeletingPathExtensionIfEqualTo:(id)a3;
+- (id)tsu_stringByAddingCSVEscapesForLocale:(id)locale;
+- (id)tsu_stringByAppendingSeparator:(id)separator format:(id)format;
+- (id)tsu_stringByApplyingSubstitutions:(id)substitutions;
+- (id)tsu_stringByDeletingPathExtensionIfEqualTo:(id)to;
 - (id)tsu_stringByExpandingTableFormatting;
 - (id)tsu_stringByFixingBrokenSurrogatePairs;
-- (id)tsu_stringByIncrementingCounterAfterDuplicateTitleModifierWithLocalizedCopyString:(id)a3 firstCopyFormatString:(id)a4 generalCopyFormatString:(id)a5 numberFormatter:(id)a6 uniquenessTest:(id)a7;
-- (id)tsu_stringByIncrementingCounterAfterDuplicateTitleModifierWithUniquenessTest:(id)a3;
+- (id)tsu_stringByIncrementingCounterAfterDuplicateTitleModifierWithLocalizedCopyString:(id)string firstCopyFormatString:(id)formatString generalCopyFormatString:(id)copyFormatString numberFormatter:(id)formatter uniquenessTest:(id)test;
+- (id)tsu_stringByIncrementingCounterAfterDuplicateTitleModifierWithUniquenessTest:(id)test;
 - (id)tsu_stringByMakingFirstCharacterLowercase;
 - (id)tsu_stringByMakingFirstCharacterUppercase;
-- (id)tsu_stringByRemovingCharactersInSet:(id)a3 options:(unsigned int)a4;
-- (id)tsu_stringByReplacingInstancesOfCharactersInSet:(id)a3 withString:(id)a4;
-- (id)tsu_stringByTrimmingCharactersInSetFromFront:(id)a3;
-- (id)tsu_stringByUniquingPathInsideDirectory:(id)a3 withFormat:(id)a4;
-- (id)tsu_stringQuotedIfContainsCharacterSet:(id)a3;
-- (id)tsu_stringTrimByLimitingFirstCharacterToSet:(id)a3;
+- (id)tsu_stringByRemovingCharactersInSet:(id)set options:(unsigned int)options;
+- (id)tsu_stringByReplacingInstancesOfCharactersInSet:(id)set withString:(id)string;
+- (id)tsu_stringByTrimmingCharactersInSetFromFront:(id)front;
+- (id)tsu_stringByUniquingPathInsideDirectory:(id)directory withFormat:(id)format;
+- (id)tsu_stringQuotedIfContainsCharacterSet:(id)set;
+- (id)tsu_stringTrimByLimitingFirstCharacterToSet:(id)set;
 - (id)tsu_stringWithNormalizedHyphens;
 - (id)tsu_stringWithNormalizedHyphensAndQuotationMarks;
 - (id)tsu_stringWithNormalizedQuotationMarks;
 - (id)tsu_stringWithNormalizedSpaces;
-- (id)tsu_stringWithPathRelativeTo:(id)a3;
-- (id)tsu_stringWithPathRelativeTo:(id)a3 allowBacktracking:(BOOL)a4;
+- (id)tsu_stringWithPathRelativeTo:(id)to;
+- (id)tsu_stringWithPathRelativeTo:(id)to allowBacktracking:(BOOL)backtracking;
 - (id)tsu_stringWithRealpath;
 - (id)tsu_stringWithTrimmedWhitespace;
 - (id)tsu_stringWithoutAttachmentCharacters;
 - (id)tsu_stringWithoutBidiControls;
 - (id)tsu_stringWithoutNonbreakingSpaces;
-- (id)tsu_substringByTruncatingToSize:(CGSize)a3 forAttributes:(id)a4;
-- (id)tsu_substringWithComposedCharacterSequencesToFileSystemLength:(unint64_t)a3;
-- (id)tsu_substringWithComposedCharacterSequencesTruncatedToGlyphCount:(unint64_t)a3;
-- (id)tsu_substringWithComposedCharacterSequencesTruncatedToLength:(unint64_t)a3;
-- (id)tsu_substringWithTrailingQuoteIfNeededByTruncatingToSize:(CGSize)a3 forAttributes:(id)a4;
-- (id)tsu_tolerantStringByAppendingPathExtension:(id)a3;
+- (id)tsu_substringByTruncatingToSize:(CGSize)size forAttributes:(id)attributes;
+- (id)tsu_substringWithComposedCharacterSequencesToFileSystemLength:(unint64_t)length;
+- (id)tsu_substringWithComposedCharacterSequencesTruncatedToGlyphCount:(unint64_t)count;
+- (id)tsu_substringWithComposedCharacterSequencesTruncatedToLength:(unint64_t)length;
+- (id)tsu_substringWithTrailingQuoteIfNeededByTruncatingToSize:(CGSize)size forAttributes:(id)attributes;
+- (id)tsu_tolerantStringByAppendingPathExtension:(id)extension;
 - (id)tsu_uncommentedAddress;
 - (id)tsu_uncommentedAddressRespectingGroups;
 - (id)tsu_unescapeXML;
-- (int64_t)tsu_compareToVersionString:(id)a3;
-- (unint64_t)tsu_countInstancesOfString:(id)a3 options:(unint64_t)a4;
+- (int64_t)tsu_compareToVersionString:(id)string;
+- (unint64_t)tsu_countInstancesOfString:(id)string options:(unint64_t)options;
 - (unint64_t)tsu_numberOfKeysInKeyPath;
-- (void)tsu_appendJSONStringToString:(id)a3;
-- (void)tsu_enumerateRangesOfCharactersInSet:(id)a3 usingBlock:(id)a4;
+- (void)tsu_appendJSONStringToString:(id)string;
+- (void)tsu_enumerateRangesOfCharactersInSet:(id)set usingBlock:(id)block;
 @end
 
 @implementation NSString
@@ -108,23 +108,23 @@
   return v4;
 }
 
-+ (id)tsu_stringWithFormat:(id)a3 arguments:(char *)a4
++ (id)tsu_stringWithFormat:(id)format arguments:(char *)arguments
 {
-  v5 = a3;
-  v6 = [[NSString alloc] initWithFormat:v5 arguments:a4];
+  formatCopy = format;
+  v6 = [[NSString alloc] initWithFormat:formatCopy arguments:arguments];
 
   return v6;
 }
 
-+ (id)tsu_stringByIndentingString:(id)a3 times:(unint64_t)a4
++ (id)tsu_stringByIndentingString:(id)string times:(unint64_t)times
 {
-  v5 = a3;
-  v6 = [v5 length];
-  if (a4 && v6)
+  stringCopy = string;
+  v6 = [stringCopy length];
+  if (times && v6)
   {
     do
     {
-      v7 = [v5 stringByReplacingOccurrencesOfString:@"\n" withString:@"\n  "];
+      v7 = [stringCopy stringByReplacingOccurrencesOfString:@"\n" withString:@"\n  "];
 
       if ([v7 hasSuffix:@"\n  "])
       {
@@ -133,32 +133,32 @@
         v7 = v8;
       }
 
-      v5 = [@"  " stringByAppendingString:v7];
+      stringCopy = [@"  " stringByAppendingString:v7];
 
-      --a4;
+      --times;
     }
 
-    while (a4);
+    while (times);
   }
 
-  v9 = v5;
+  v9 = stringCopy;
 
-  return v5;
+  return stringCopy;
 }
 
 - (id)tsu_pathExceptPrivate
 {
   if ([(NSString *)self rangeOfString:@"/private"])
   {
-    v4 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v4 = [(NSString *)self substringFromIndex:v3];
+    selfCopy = [(NSString *)self substringFromIndex:v3];
   }
 
-  return v4;
+  return selfCopy;
 }
 
 - (id)tsu_stringByExpandingTableFormatting
@@ -206,11 +206,11 @@
     v9 = 0;
   }
 
-  v14 = [v5 lastObject];
-  if ([v14 count] == 1)
+  lastObject = [v5 lastObject];
+  if ([lastObject count] == 1)
   {
-    v15 = [v5 lastObject];
-    v16 = [v15 objectAtIndexedSubscript:0];
+    lastObject2 = [v5 lastObject];
+    v16 = [lastObject2 objectAtIndexedSubscript:0];
     v17 = [v16 length];
 
     if (!v17)
@@ -391,29 +391,29 @@
   return v9;
 }
 
-- (id)tsu_stringQuotedIfContainsCharacterSet:(id)a3
+- (id)tsu_stringQuotedIfContainsCharacterSet:(id)set
 {
-  v4 = self;
-  if ([(NSString *)v4 rangeOfCharacterFromSet:a3]!= 0x7FFFFFFFFFFFFFFFLL)
+  selfCopy = self;
+  if ([(NSString *)selfCopy rangeOfCharacterFromSet:set]!= 0x7FFFFFFFFFFFFFFFLL)
   {
-    v5 = [(NSString *)v4 mutableCopy];
-    [v5 replaceOccurrencesOfString:@" withString:@" options:0 range:{0, -[NSString length](v4, "length")}];
+    v5 = [(NSString *)selfCopy mutableCopy];
+    [v5 replaceOccurrencesOfString:@" withString:@" options:0 range:{0, -[NSString length](selfCopy, "length")}];
     [v5 appendString:@""];
     [v5 insertString:@"" atIndex:0];
 
-    v4 = v5;
+    selfCopy = v5;
   }
 
-  return v4;
+  return selfCopy;
 }
 
-- (id)tsu_stringByAppendingSeparator:(id)a3 format:(id)a4
+- (id)tsu_stringByAppendingSeparator:(id)separator format:(id)format
 {
-  v6 = a3;
-  v7 = [NSString tsu_stringWithFormat:a4 arguments:&v11];
+  separatorCopy = separator;
+  v7 = [NSString tsu_stringWithFormat:format arguments:&v11];
   if ([(NSString *)self length])
   {
-    v8 = [(NSString *)self stringByAppendingFormat:@"%@%@", v6, v7];
+    v8 = [(NSString *)self stringByAppendingFormat:@"%@%@", separatorCopy, v7];
 
     v7 = v8;
   }
@@ -421,22 +421,22 @@
   return v7;
 }
 
-- (id)tsu_stringByAddingCSVEscapesForLocale:(id)a3
+- (id)tsu_stringByAddingCSVEscapesForLocale:(id)locale
 {
-  v4 = a3;
-  v5 = [v4 localeSpecificStorageForKey:@"stringByAddingCSVEscapes"];
+  localeCopy = locale;
+  v5 = [localeCopy localeSpecificStorageForKey:@"stringByAddingCSVEscapes"];
   if (!v5)
   {
     v6 = +[NSCharacterSet whitespaceAndNewlineCharacterSet];
     v7 = [v6 mutableCopy];
 
     v8 = +[NSCharacterSet whitespaceCharacterSet];
-    v9 = [v8 invertedSet];
-    [v7 formIntersectionWithCharacterSet:v9];
+    invertedSet = [v8 invertedSet];
+    [v7 formIntersectionWithCharacterSet:invertedSet];
 
     [v7 addCharactersInString:@""];
-    v10 = [v4 listSeparator];
-    if ([v10 length] != 1)
+    listSeparator = [localeCopy listSeparator];
+    if ([listSeparator length] != 1)
     {
       +[TSUAssertionHandler _atomicIncrementAssertCount];
       if (TSUAssertCat_init_token != -1)
@@ -456,9 +456,9 @@
       +[TSUAssertionHandler logBacktraceThrottled];
     }
 
-    [v7 addCharactersInString:v10];
+    [v7 addCharactersInString:listSeparator];
     v5 = [v7 copy];
-    [v4 setLocaleSpecificStorage:v5 forKey:@"stringByAddingCSVEscapes"];
+    [localeCopy setLocaleSpecificStorage:v5 forKey:@"stringByAddingCSVEscapes"];
   }
 
   v13 = [(NSString *)self tsu_stringQuotedIfContainsCharacterSet:v5];
@@ -466,11 +466,11 @@
   return v13;
 }
 
-- (id)tsu_stringByUniquingPathInsideDirectory:(id)a3 withFormat:(id)a4
+- (id)tsu_stringByUniquingPathInsideDirectory:(id)directory withFormat:(id)format
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  directoryCopy = directory;
+  formatCopy = format;
+  if (!directoryCopy)
   {
     +[TSUAssertionHandler _atomicIncrementAssertCount];
     if (TSUAssertCat_init_token != -1)
@@ -490,19 +490,19 @@
     +[TSUAssertionHandler logBacktraceThrottled];
   }
 
-  v10 = self;
+  selfCopy = self;
   v11 = +[NSFileManager defaultManager];
-  v12 = [v6 stringByAppendingPathComponent:v10];
+  v12 = [directoryCopy stringByAppendingPathComponent:selfCopy];
   v13 = [v11 fileExistsAtPath:v12];
 
   if (v13)
   {
     context = objc_autoreleasePoolPush();
-    v14 = [(NSString *)v10 pathExtension];
-    if (v14)
+    pathExtension = [(NSString *)selfCopy pathExtension];
+    if (pathExtension)
     {
-      v15 = v14;
-      if ([(__CFString *)v14 length])
+      v15 = pathExtension;
+      if ([(__CFString *)pathExtension length])
       {
         v16 = [@"." stringByAppendingString:v15];
 
@@ -515,15 +515,15 @@
       v15 = &stru_1001D3878;
     }
 
-    v17 = [(NSString *)v10 stringByDeletingPathExtension];
+    stringByDeletingPathExtension = [(NSString *)selfCopy stringByDeletingPathExtension];
     v18 = 2;
     do
     {
-      v19 = v10;
+      v19 = selfCopy;
       v20 = (v18 + 1);
-      v10 = [NSString stringWithFormat:v7, v17, v18, v15];
+      selfCopy = [NSString stringWithFormat:formatCopy, stringByDeletingPathExtension, v18, v15];
 
-      v21 = [v6 stringByAppendingPathComponent:v10];
+      v21 = [directoryCopy stringByAppendingPathComponent:selfCopy];
       v22 = [v11 fileExistsAtPath:v21];
 
       v18 = v20;
@@ -534,22 +534,22 @@
     objc_autoreleasePoolPop(context);
   }
 
-  return v10;
+  return selfCopy;
 }
 
 - (id)tsu_stringByFixingBrokenSurrogatePairs
 {
-  v2 = self;
-  v3 = [(__CFString *)v2 length];
-  theString = v2;
+  selfCopy = self;
+  v3 = [(__CFString *)selfCopy length];
+  theString = selfCopy;
   v31 = 0;
   v32 = v3;
-  CharactersPtr = CFStringGetCharactersPtr(v2);
+  CharactersPtr = CFStringGetCharactersPtr(selfCopy);
   CStringPtr = 0;
   v29 = CharactersPtr;
   if (!CharactersPtr)
   {
-    CStringPtr = CFStringGetCStringPtr(v2, 0x600u);
+    CStringPtr = CFStringGetCStringPtr(selfCopy, 0x600u);
   }
 
   v26 = 0u;
@@ -617,22 +617,22 @@
 LABEL_37:
             if (!v7)
             {
-              v7 = [(__CFString *)v2 mutableCopyWithZone:0, v20, v21, v22, v23, v24, v25, v26, v27];
+              v7 = [(__CFString *)selfCopy mutableCopyWithZone:0, v20, v21, v22, v23, v24, v25, v26, v27];
 
-              v2 = v7;
+              selfCopy = v7;
             }
 
             [(__CFString *)v7 replaceCharactersInRange:v8 withString:1, @"\uFFFD", v20, v21, v22, v23, v24, v25, v26, v27];
-            v3 = [(__CFString *)v2 length];
-            theString = v2;
+            v3 = [(__CFString *)selfCopy length];
+            theString = selfCopy;
             v31 = 0;
             v32 = v3;
-            v17 = CFStringGetCharactersPtr(v2);
+            v17 = CFStringGetCharactersPtr(selfCopy);
             v18 = 0;
             v29 = v17;
             if (!v17)
             {
-              v18 = CFStringGetCStringPtr(v2, 0x600u);
+              v18 = CFStringGetCStringPtr(selfCopy, 0x600u);
             }
 
             v6 = 0;
@@ -711,33 +711,33 @@ LABEL_42:
     }
   }
 
-  return v2;
+  return selfCopy;
 }
 
-- (id)tsu_stringByRemovingCharactersInSet:(id)a3 options:(unsigned int)a4
+- (id)tsu_stringByRemovingCharactersInSet:(id)set options:(unsigned int)options
 {
-  v6 = a3;
-  if (v6)
+  setCopy = set;
+  if (setCopy)
   {
-    v7 = self;
-    if ([(NSString *)v7 rangeOfCharacterFromSet:v6]== 0x7FFFFFFFFFFFFFFFLL)
+    selfCopy = self;
+    if ([(NSString *)selfCopy rangeOfCharacterFromSet:setCopy]== 0x7FFFFFFFFFFFFFFFLL)
     {
-      v8 = v7;
+      selfCopy2 = selfCopy;
     }
 
     else
     {
-      v8 = +[NSMutableString string];
-      v11 = [(NSString *)v7 length];
+      selfCopy2 = +[NSMutableString string];
+      v11 = [(NSString *)selfCopy length];
       if (v11)
       {
         v12 = v11;
         v13 = 0;
-        v14 = a4 & 0xFFFFFFFB;
+        v14 = options & 0xFFFFFFFB;
         v15 = v11;
         do
         {
-          v16 = [(NSString *)v7 rangeOfCharacterFromSet:v6 options:v14 range:v13, v15];
+          v16 = [(NSString *)selfCopy rangeOfCharacterFromSet:setCopy options:v14 range:v13, v15];
           if (v16 == 0x7FFFFFFFFFFFFFFFLL)
           {
             v18 = 0;
@@ -758,8 +758,8 @@ LABEL_42:
             v19 = v16;
           }
 
-          v20 = [(NSString *)v7 substringWithRange:v13, v19 - v13];
-          [(NSString *)v8 appendString:v20];
+          v20 = [(NSString *)selfCopy substringWithRange:v13, v19 - v13];
+          [(NSString *)selfCopy2 appendString:v20];
 
           v13 = &v19[v18];
           v15 = v12 - &v19[v18];
@@ -788,19 +788,19 @@ LABEL_42:
     [TSUAssertionHandler handleFailureInFunction:v9 file:v10 lineNumber:309 isFatal:0 description:"invalid nil value for '%{public}s'", "charSet"];
 
     +[TSUAssertionHandler logBacktraceThrottled];
-    v8 = self;
+    selfCopy2 = self;
   }
 
-  return v8;
+  return selfCopy2;
 }
 
-- (id)tsu_stringByReplacingInstancesOfCharactersInSet:(id)a3 withString:(id)a4
+- (id)tsu_stringByReplacingInstancesOfCharactersInSet:(id)set withString:(id)string
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(NSString *)self rangeOfCharacterFromSet:v6 options:2]== 0x7FFFFFFFFFFFFFFFLL)
+  setCopy = set;
+  stringCopy = string;
+  if ([(NSString *)self rangeOfCharacterFromSet:setCopy options:2]== 0x7FFFFFFFFFFFFFFFLL)
   {
-    v8 = self;
+    selfCopy = self;
   }
 
   else
@@ -814,7 +814,7 @@ LABEL_42:
       while (1)
       {
         v17 = v11;
-        v12 = [v10 scanUpToCharactersFromSet:v6 intoString:&v17];
+        v12 = [v10 scanUpToCharactersFromSet:setCopy intoString:&v17];
         v13 = v17;
 
         if (v12)
@@ -828,12 +828,12 @@ LABEL_42:
         }
 
         v16 = v13;
-        [v10 scanCharactersFromSet:v6 intoString:&v16];
+        [v10 scanCharactersFromSet:setCopy intoString:&v16];
         v11 = v16;
 
         for (i = [v11 length]; i; --i)
         {
-          [v9 appendString:v7];
+          [v9 appendString:stringCopy];
         }
 
         if ([v10 isAtEnd])
@@ -846,18 +846,18 @@ LABEL_42:
 LABEL_13:
     }
 
-    v8 = [NSString stringWithString:v9];
+    selfCopy = [NSString stringWithString:v9];
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (unint64_t)tsu_countInstancesOfString:(id)a3 options:(unint64_t)a4
+- (unint64_t)tsu_countInstancesOfString:(id)string options:(unint64_t)options
 {
-  v6 = a3;
+  stringCopy = string;
   v7 = [(NSString *)self length];
-  v8 = [v6 length];
-  v9 = [(NSString *)self rangeOfString:v6 options:a4 range:0, v7];
+  v8 = [stringCopy length];
+  v9 = [(NSString *)self rangeOfString:stringCopy options:options range:0, v7];
   v10 = 0;
   if (v9 != 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -868,7 +868,7 @@ LABEL_13:
       ++v10;
       v12 = &v8[v9];
       v7 = &v11[v7 - &v8[v9]];
-      v9 = [(NSString *)self rangeOfString:v6 options:a4 range:&v8[v9], v7];
+      v9 = [(NSString *)self rangeOfString:stringCopy options:options range:&v8[v9], v7];
       v11 = v12;
     }
 
@@ -885,31 +885,31 @@ LABEL_13:
     sub_100159C38();
   }
 
-  v3 = self;
-  v4 = [(NSString *)v3 length];
-  *&v13 = [(NSString *)v3 rangeOfCharacterFromSet:qword_1001EAF88];
+  selfCopy = self;
+  v4 = [(NSString *)selfCopy length];
+  *&v13 = [(NSString *)selfCopy rangeOfCharacterFromSet:qword_1001EAF88];
   if (v13 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v5 = v3;
+    v5 = selfCopy;
   }
 
   else
   {
     v6 = [NSMutableString alloc];
-    v7 = [(NSString *)v3 substringToIndex:v13];
+    v7 = [(NSString *)selfCopy substringToIndex:v13];
     v5 = [v6 initWithString:v7];
 
     if (v4 != v13)
     {
       do
       {
-        [(NSString *)v5 appendFormat:@"\\%C", [(NSString *)v3 characterAtIndex:v13]];
+        [(NSString *)v5 appendFormat:@"\\%C", [(NSString *)selfCopy characterAtIndex:v13]];
         *&v13 = v13 + 1;
         *(&v13 + 1) = &v4[-v13];
         v8 = v13;
         if (v4 != v13)
         {
-          *&v12 = [(NSString *)v3 rangeOfCharacterFromSet:qword_1001EAF88 options:0 range:v13];
+          *&v12 = [(NSString *)selfCopy rangeOfCharacterFromSet:qword_1001EAF88 options:0 range:v13];
           *(&v12 + 1) = v9;
           v13 = v12;
           if (v12 == 0x7FFFFFFFFFFFFFFFLL)
@@ -919,7 +919,7 @@ LABEL_13:
 
           if (v13 != v8)
           {
-            v10 = [(NSString *)v3 substringWithRange:v8, v13 - v8];
+            v10 = [(NSString *)selfCopy substringWithRange:v8, v13 - v8];
             [(NSString *)v5 appendString:v10];
           }
         }
@@ -932,18 +932,18 @@ LABEL_13:
   return v5;
 }
 
-- (BOOL)tsu_isDescendantOfPath:(id)a3
+- (BOOL)tsu_isDescendantOfPath:(id)path
 {
-  v4 = a3;
-  v5 = [(NSString *)self pathComponents];
-  v6 = [v4 pathComponents];
-  v7 = [v6 count];
+  pathCopy = path;
+  pathComponents = [(NSString *)self pathComponents];
+  pathComponents2 = [pathCopy pathComponents];
+  v7 = [pathComponents2 count];
   if (v7)
   {
     do
     {
       v8 = v7 - 1;
-      v9 = [v6 objectAtIndexedSubscript:v7 - 1];
+      v9 = [pathComponents2 objectAtIndexedSubscript:v7 - 1];
       v10 = [v9 isEqualToString:@"/"];
 
       if (!v10)
@@ -957,7 +957,7 @@ LABEL_13:
     while (v8);
   }
 
-  v11 = [v5 count];
+  v11 = [pathComponents count];
   v12 = v7 <= v11;
   if (v7 - 1 < v11)
   {
@@ -965,8 +965,8 @@ LABEL_13:
     v14 = 1;
     do
     {
-      v15 = [v5 objectAtIndexedSubscript:v13];
-      v16 = [v6 objectAtIndexedSubscript:v13];
+      v15 = [pathComponents objectAtIndexedSubscript:v13];
+      v16 = [pathComponents2 objectAtIndexedSubscript:v13];
       v12 = [v15 isEqualToString:v16];
 
       if (v7 <= v14)
@@ -983,21 +983,21 @@ LABEL_13:
   return v12;
 }
 
-- (BOOL)tsu_isChildOfPath:(id)a3
+- (BOOL)tsu_isChildOfPath:(id)path
 {
-  v4 = a3;
-  v5 = [(NSString *)self pathComponents];
-  v6 = [v5 mutableCopy];
+  pathCopy = path;
+  pathComponents = [(NSString *)self pathComponents];
+  v6 = [pathComponents mutableCopy];
 
-  v7 = [v4 pathComponents];
-  v8 = [v7 mutableCopy];
+  pathComponents2 = [pathCopy pathComponents];
+  v8 = [pathComponents2 mutableCopy];
 
   if ([v6 count] >= 2)
   {
     do
     {
-      v9 = [v6 lastObject];
-      v10 = [v9 isEqualToString:@"/"];
+      lastObject = [v6 lastObject];
+      v10 = [lastObject isEqualToString:@"/"];
 
       if (!v10)
       {
@@ -1014,8 +1014,8 @@ LABEL_13:
   {
     do
     {
-      v11 = [v8 lastObject];
-      v12 = [v11 isEqualToString:@"/"];
+      lastObject2 = [v8 lastObject];
+      v12 = [lastObject2 isEqualToString:@"/"];
 
       if (!v12)
       {
@@ -1086,22 +1086,22 @@ LABEL_13:
   return v6;
 }
 
-- (id)tsu_substringWithComposedCharacterSequencesTruncatedToLength:(unint64_t)a3
+- (id)tsu_substringWithComposedCharacterSequencesTruncatedToLength:(unint64_t)length
 {
-  if ([(NSString *)self length]<= a3)
+  if ([(NSString *)self length]<= length)
   {
-    v5 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v5 = [(NSString *)self substringToIndex:[(NSString *)self rangeOfComposedCharacterSequenceAtIndex:a3]];
+    selfCopy = [(NSString *)self substringToIndex:[(NSString *)self rangeOfComposedCharacterSequenceAtIndex:length]];
   }
 
-  return v5;
+  return selfCopy;
 }
 
-- (id)tsu_substringWithComposedCharacterSequencesToFileSystemLength:(unint64_t)a3
+- (id)tsu_substringWithComposedCharacterSequencesToFileSystemLength:(unint64_t)length
 {
   v5 = [(NSString *)self length];
   v6 = 0;
@@ -1113,10 +1113,10 @@ LABEL_13:
       v8 = [(NSString *)self rangeOfComposedCharacterSequenceAtIndex:v6];
       v10 = v9;
       v11 = [(NSString *)self substringWithRange:v8, v9];
-      v12 = [v11 fileSystemRepresentation];
+      fileSystemRepresentation = [v11 fileSystemRepresentation];
 
-      v7 += strlen(v12);
-      if (v7 > a3)
+      v7 += strlen(fileSystemRepresentation);
+      if (v7 > length)
       {
         break;
       }
@@ -1129,21 +1129,21 @@ LABEL_13:
 
   if (v6 == v5)
   {
-    v13 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v13 = [(NSString *)self substringToIndex:v6];
+    selfCopy = [(NSString *)self substringToIndex:v6];
   }
 
-  return v13;
+  return selfCopy;
 }
 
-- (id)tsu_substringWithComposedCharacterSequencesTruncatedToGlyphCount:(unint64_t)a3
+- (id)tsu_substringWithComposedCharacterSequencesTruncatedToGlyphCount:(unint64_t)count
 {
-  v4 = self;
-  if ([(NSString *)v4 length]> a3)
+  selfCopy = self;
+  if ([(NSString *)selfCopy length]> count)
   {
     v14[0] = 0;
     v14[1] = v14;
@@ -1161,31 +1161,31 @@ LABEL_13:
     v7[3] = &unk_1001CC0F8;
     v7[4] = &v8;
     v7[5] = v14;
-    v7[6] = a3;
-    [(NSString *)v4 enumerateSubstringsInRange:0 options:[(NSString *)v4 length] usingBlock:2, v7];
-    v5 = [(NSString *)v4 substringWithRange:v9[4], v9[5]];
+    v7[6] = count;
+    [(NSString *)selfCopy enumerateSubstringsInRange:0 options:[(NSString *)selfCopy length] usingBlock:2, v7];
+    v5 = [(NSString *)selfCopy substringWithRange:v9[4], v9[5]];
 
     _Block_object_dispose(&v8, 8);
     _Block_object_dispose(v14, 8);
-    v4 = v5;
+    selfCopy = v5;
   }
 
-  return v4;
+  return selfCopy;
 }
 
-- (id)tsu_substringByTruncatingToSize:(CGSize)a3 forAttributes:(id)a4
+- (id)tsu_substringByTruncatingToSize:(CGSize)size forAttributes:(id)attributes
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
-  v8 = self;
-  [(NSString *)v8 sizeWithAttributes:v7];
+  height = size.height;
+  width = size.width;
+  attributesCopy = attributes;
+  selfCopy = self;
+  [(NSString *)selfCopy sizeWithAttributes:attributesCopy];
   if (width <= v9)
   {
     v11 = SFUMainBundle();
     v12 = [v11 localizedStringForKey:@"…" value:&stru_1001D3878 table:@"TSUtility"];
 
-    v13 = [(NSString *)v8 length];
+    v13 = [(NSString *)selfCopy length];
     v32 = 0;
     v33 = &v32;
     v34 = 0x3010000000;
@@ -1197,11 +1197,11 @@ LABEL_13:
     v24 = sub_10007640C;
     v25 = &unk_1001CC120;
     v29 = &v32;
-    v14 = v8;
+    v14 = selfCopy;
     v26 = v14;
     v15 = v12;
     v27 = v15;
-    v28 = v7;
+    v28 = attributesCopy;
     v30 = width;
     v31 = height;
     v16 = objc_retainBlock(&v22);
@@ -1231,49 +1231,49 @@ LABEL_13:
 
   else
   {
-    v10 = v8;
+    v10 = selfCopy;
   }
 
   return v10;
 }
 
-- (id)tsu_substringWithTrailingQuoteIfNeededByTruncatingToSize:(CGSize)a3 forAttributes:(id)a4
+- (id)tsu_substringWithTrailingQuoteIfNeededByTruncatingToSize:(CGSize)size forAttributes:(id)attributes
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = self;
-  v8 = a4;
+  height = size.height;
+  width = size.width;
+  selfCopy = self;
+  attributesCopy = attributes;
   v9 = SFUMainBundle();
   v10 = [v9 localizedStringForKey:@"”" value:&stru_1001D3878 table:@"TSUtility"];
 
-  v11 = [(NSString *)v7 substringFromIndex:[(NSString *)v7 length]- 1];
+  v11 = [(NSString *)selfCopy substringFromIndex:[(NSString *)selfCopy length]- 1];
   v12 = [v11 isEqualToString:v10];
-  v13 = [(NSString *)v7 tsu_substringByTruncatingToSize:v8 forAttributes:width, height];
+  height = [(NSString *)selfCopy tsu_substringByTruncatingToSize:attributesCopy forAttributes:width, height];
 
-  if (([v13 isEqualToString:v7] & 1) == 0 && v12)
+  if (([height isEqualToString:selfCopy] & 1) == 0 && v12)
   {
-    v14 = [v13 stringByAppendingString:v10];
+    v14 = [height stringByAppendingString:v10];
 
-    v13 = v14;
+    height = v14;
   }
 
-  return v13;
+  return height;
 }
 
-- (id)tsu_stringWithPathRelativeTo:(id)a3
+- (id)tsu_stringWithPathRelativeTo:(id)to
 {
-  v4 = a3;
-  if (v4)
+  toCopy = to;
+  if (toCopy)
   {
     v5 = objc_autoreleasePoolPush();
-    v6 = [(NSString *)self stringByStandardizingPath];
-    v7 = [v6 pathComponents];
+    stringByStandardizingPath = [(NSString *)self stringByStandardizingPath];
+    pathComponents = [stringByStandardizingPath pathComponents];
 
-    v8 = [v4 stringByStandardizingPath];
-    v9 = [v8 pathComponents];
+    stringByStandardizingPath2 = [toCopy stringByStandardizingPath];
+    pathComponents2 = [stringByStandardizingPath2 pathComponents];
 
-    v10 = [v7 count];
-    v11 = [v9 count];
+    v10 = [pathComponents count];
+    v11 = [pathComponents2 count];
     if (v10 < v11)
     {
       goto LABEL_10;
@@ -1290,8 +1290,8 @@ LABEL_13:
     v14 = 1;
     do
     {
-      v15 = [v9 objectAtIndexedSubscript:v13];
-      v16 = [v7 objectAtIndexedSubscript:v13];
+      v15 = [pathComponents2 objectAtIndexedSubscript:v13];
+      v16 = [pathComponents objectAtIndexedSubscript:v13];
       v17 = [v15 isEqualToString:v16];
 
       if ((v17 & 1) == 0)
@@ -1320,7 +1320,7 @@ LABEL_8:
 
       else
       {
-        v20 = [v7 subarrayWithRange:{v12, &v10[-v12]}];
+        v20 = [pathComponents subarrayWithRange:{v12, &v10[-v12]}];
         v19 = [NSString pathWithComponents:v20];
       }
     }
@@ -1336,19 +1336,19 @@ LABEL_8:
   return v19;
 }
 
-- (id)tsu_stringWithPathRelativeTo:(id)a3 allowBacktracking:(BOOL)a4
+- (id)tsu_stringWithPathRelativeTo:(id)to allowBacktracking:(BOOL)backtracking
 {
-  v6 = a3;
-  if (a4)
+  toCopy = to;
+  if (backtracking)
   {
-    v7 = [(NSString *)self stringByStandardizingPath];
-    v8 = [v7 pathComponents];
+    stringByStandardizingPath = [(NSString *)self stringByStandardizingPath];
+    pathComponents = [stringByStandardizingPath pathComponents];
 
-    v9 = [v6 stringByStandardizingPath];
-    v10 = [v9 pathComponents];
+    stringByStandardizingPath2 = [toCopy stringByStandardizingPath];
+    pathComponents2 = [stringByStandardizingPath2 pathComponents];
 
-    v11 = [v8 count];
-    v12 = [v10 count];
+    v11 = [pathComponents count];
+    v12 = [pathComponents2 count];
     v13 = v12;
     if (v12 >= v11)
     {
@@ -1366,8 +1366,8 @@ LABEL_8:
       v16 = 0;
       do
       {
-        v17 = [v10 objectAtIndexedSubscript:v15];
-        v18 = [v8 objectAtIndexedSubscript:v15];
+        v17 = [pathComponents2 objectAtIndexedSubscript:v15];
+        v18 = [pathComponents objectAtIndexedSubscript:v15];
         v19 = [v17 isEqualToString:v18];
 
         if (!v19)
@@ -1415,7 +1415,7 @@ LABEL_8:
     {
       do
       {
-        v24 = [v8 objectAtIndexedSubscript:v16];
+        v24 = [pathComponents objectAtIndexedSubscript:v16];
         v20 = [(__CFString *)v23 stringByAppendingPathComponent:v24];
 
         ++v16;
@@ -1428,16 +1428,16 @@ LABEL_8:
 
   else
   {
-    v20 = [(NSString *)self tsu_stringWithPathRelativeTo:v6];
+    v20 = [(NSString *)self tsu_stringWithPathRelativeTo:toCopy];
   }
 
   return v20;
 }
 
-- (id)tsu_stringByTrimmingCharactersInSetFromFront:(id)a3
+- (id)tsu_stringByTrimmingCharactersInSetFromFront:(id)front
 {
   p_isa = self;
-  v5 = [(NSString *)p_isa rangeOfCharacterFromSet:a3 options:8];
+  v5 = [(NSString *)p_isa rangeOfCharacterFromSet:front options:8];
   v7 = v6;
   if (v6 == [(NSString *)p_isa length])
   {
@@ -1460,24 +1460,24 @@ LABEL_6:
   return p_isa;
 }
 
-+ (id)tsu_stringWithHexFromBytes:(const char *)a3 length:(unint64_t)a4
++ (id)tsu_stringWithHexFromBytes:(const char *)bytes length:(unint64_t)length
 {
-  v4 = a4;
-  v6 = 2 * a4;
-  v7 = malloc_type_malloc(2 * a4, 0x100004077774924uLL);
-  if (v4)
+  lengthCopy = length;
+  v6 = 2 * length;
+  v7 = malloc_type_malloc(2 * length, 0x100004077774924uLL);
+  if (lengthCopy)
   {
     v8 = v7;
     do
     {
-      v9 = *a3++;
+      v9 = *bytes++;
       *v8 = a0123456789abcd[v9 >> 4];
       v8[1] = a0123456789abcd[v9 & 0xF];
       v8 += 2;
-      --v4;
+      --lengthCopy;
     }
 
-    while (v4);
+    while (lengthCopy);
   }
 
   v10 = [[NSString alloc] initWithBytesNoCopy:v7 length:v6 encoding:1 freeWhenDone:1];
@@ -1495,9 +1495,9 @@ LABEL_6:
   return objc_opt_class() == qword_1001EAF98;
 }
 
-- (id)tsu_stringByIncrementingCounterAfterDuplicateTitleModifierWithUniquenessTest:(id)a3
+- (id)tsu_stringByIncrementingCounterAfterDuplicateTitleModifierWithUniquenessTest:(id)test
 {
-  v4 = a3;
+  testCopy = test;
   v5 = SFUMainBundle();
   v6 = [v5 localizedStringForKey:@"copy" value:&stru_1001D3878 table:@"TSUtility"];
 
@@ -1508,40 +1508,40 @@ LABEL_6:
   v10 = [v9 localizedStringForKey:@"%1$@ %2$@ %3$@" value:&stru_1001D3878 table:@"TSUtility"];
 
   v11 = objc_alloc_init(NSNumberFormatter);
-  v12 = [(NSString *)self tsu_stringByIncrementingCounterAfterDuplicateTitleModifierWithLocalizedCopyString:v6 firstCopyFormatString:v8 generalCopyFormatString:v10 numberFormatter:v11 uniquenessTest:v4];
+  v12 = [(NSString *)self tsu_stringByIncrementingCounterAfterDuplicateTitleModifierWithLocalizedCopyString:v6 firstCopyFormatString:v8 generalCopyFormatString:v10 numberFormatter:v11 uniquenessTest:testCopy];
 
   return v12;
 }
 
-- (id)tsu_stringByIncrementingCounterAfterDuplicateTitleModifierWithLocalizedCopyString:(id)a3 firstCopyFormatString:(id)a4 generalCopyFormatString:(id)a5 numberFormatter:(id)a6 uniquenessTest:(id)a7
+- (id)tsu_stringByIncrementingCounterAfterDuplicateTitleModifierWithLocalizedCopyString:(id)string firstCopyFormatString:(id)formatString generalCopyFormatString:(id)copyFormatString numberFormatter:(id)formatter uniquenessTest:(id)test
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  stringCopy = string;
+  formatStringCopy = formatString;
+  copyFormatStringCopy = copyFormatString;
+  formatterCopy = formatter;
+  testCopy = test;
   v33 = 0;
-  v17 = v13;
-  v18 = [(NSString *)self tsu_parseBaseTitleWithLocalizedCopyString:v12 firstCopyFormatString:v13 generalCopyFormatString:v14 outNumber:&v33];
+  v17 = formatStringCopy;
+  v18 = [(NSString *)self tsu_parseBaseTitleWithLocalizedCopyString:stringCopy firstCopyFormatString:formatStringCopy generalCopyFormatString:copyFormatStringCopy outNumber:&v33];
   v19 = v18;
   if (v18)
   {
     v34[0] = @"%1$@";
     v34[1] = @"%2$@";
     v31 = v18;
-    v32 = v12;
+    v32 = stringCopy;
     v35[0] = v18;
-    v35[1] = v12;
+    v35[1] = stringCopy;
     v20 = [NSDictionary dictionaryWithObjects:v35 forKeys:v34 count:2];
     v21 = [v20 mutableCopy];
 
-    for (i = [(NSString *)self copy]; [(NSString *)self isEqualToString:i]|| (v16[2](v16, i) & 1) == 0; i = v29)
+    for (i = [(NSString *)self copy]; [(NSString *)self isEqualToString:i]|| (testCopy[2](testCopy, i) & 1) == 0; i = v29)
     {
       v23 = v33;
       v24 = ++v33;
       if (v23)
       {
-        v25 = v14;
+        v25 = copyFormatStringCopy;
       }
 
       else
@@ -1551,14 +1551,14 @@ LABEL_6:
 
       v26 = v25;
       v27 = [NSNumber numberWithUnsignedInteger:v24];
-      v28 = [v15 stringFromNumber:v27];
+      v28 = [formatterCopy stringFromNumber:v27];
       [v21 setObject:v28 forKeyedSubscript:@"%3$@"];
 
       v29 = [v26 tsu_stringByApplyingSubstitutions:v21];
     }
 
     v19 = v31;
-    v12 = v32;
+    stringCopy = v32;
   }
 
   else
@@ -1569,23 +1569,23 @@ LABEL_6:
   return i;
 }
 
-- (id)tsu_parseBaseTitleWithLocalizedCopyString:(id)a3 firstCopyFormatString:(id)a4 generalCopyFormatString:(id)a5 outNumber:(unint64_t *)a6
+- (id)tsu_parseBaseTitleWithLocalizedCopyString:(id)string firstCopyFormatString:(id)formatString generalCopyFormatString:(id)copyFormatString outNumber:(unint64_t *)number
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [v12 tsu_regexForTitleParsingWithLocalizedCopyString:v10 isFirstCopyFormatString:0];
+  stringCopy = string;
+  formatStringCopy = formatString;
+  copyFormatStringCopy = copyFormatString;
+  v13 = [copyFormatStringCopy tsu_regexForTitleParsingWithLocalizedCopyString:stringCopy isFirstCopyFormatString:0];
   if (!v13)
   {
-    v21 = self;
+    selfCopy2 = self;
     goto LABEL_23;
   }
 
   v14 = [v13 firstMatchInString:self options:0 range:{0, -[NSString length](self, "length")}];
   if (v14)
   {
-    v15 = [v12 rangeOfString:@"%1$@"];
-    v16 = [v12 rangeOfString:@"%3$@"];
+    v15 = [copyFormatStringCopy rangeOfString:@"%1$@"];
+    v16 = [copyFormatStringCopy rangeOfString:@"%3$@"];
     if (v15 < v16)
     {
       v17 = 1;
@@ -1607,23 +1607,23 @@ LABEL_6:
     }
 
     v19 = [v14 rangeAtIndex:v17];
-    v21 = [(NSString *)self substringWithRange:v19, v20];
+    selfCopy2 = [(NSString *)self substringWithRange:v19, v20];
     v22 = [v14 rangeAtIndex:v18];
     v24 = [(NSString *)self substringWithRange:v22, v23];
-    v25 = [v24 integerValue];
+    integerValue = [v24 integerValue];
     goto LABEL_20;
   }
 
-  v26 = [v11 tsu_regexForTitleParsingWithLocalizedCopyString:v10 isFirstCopyFormatString:1];
+  v26 = [formatStringCopy tsu_regexForTitleParsingWithLocalizedCopyString:stringCopy isFirstCopyFormatString:1];
   if (v26)
   {
     v24 = v26;
     v32 = [v26 firstMatchInString:self options:0 range:{0, -[NSString length](self, "length")}];
     if (v32)
     {
-      v27 = [v11 rangeOfString:@"%1$@"];
-      v25 = 1;
-      if (v27 < [v11 rangeOfString:@"%3$@"])
+      v27 = [formatStringCopy rangeOfString:@"%1$@"];
+      integerValue = 1;
+      if (v27 < [formatStringCopy rangeOfString:@"%3$@"])
       {
         v28 = 1;
       }
@@ -1634,35 +1634,35 @@ LABEL_6:
       }
 
       v29 = [v32 rangeAtIndex:v28];
-      v21 = [(NSString *)self substringWithRange:v29, v30];
+      selfCopy2 = [(NSString *)self substringWithRange:v29, v30];
     }
 
     else
     {
-      v21 = [(NSString *)self copy];
-      v25 = 0;
+      selfCopy2 = [(NSString *)self copy];
+      integerValue = 0;
     }
 
 LABEL_20:
-    if (a6)
+    if (number)
     {
-      *a6 = v25;
+      *number = integerValue;
     }
 
     goto LABEL_22;
   }
 
-  v21 = self;
+  selfCopy2 = self;
 LABEL_22:
 
 LABEL_23:
 
-  return v21;
+  return selfCopy2;
 }
 
-- (id)tsu_stringByApplyingSubstitutions:(id)a3
+- (id)tsu_stringByApplyingSubstitutions:(id)substitutions
 {
-  v4 = a3;
+  substitutionsCopy = substitutions;
   v5 = [(NSString *)self mutableCopy];
   v6 = objc_opt_new();
   v25[0] = _NSConcreteStackBlock;
@@ -1671,9 +1671,9 @@ LABEL_23:
   v25[3] = &unk_1001CC188;
   v25[4] = v5;
   v25[5] = v6;
-  [v4 enumerateKeysAndObjectsUsingBlock:v25];
-  v7 = [v6 allKeys];
-  v8 = [v7 sortedArrayUsingComparator:&stru_1001CC1C8];
+  [substitutionsCopy enumerateKeysAndObjectsUsingBlock:v25];
+  allKeys = [v6 allKeys];
+  v8 = [allKeys sortedArrayUsingComparator:&stru_1001CC1C8];
 
   v23 = 0u;
   v24 = 0u;
@@ -1696,10 +1696,10 @@ LABEL_23:
 
         v14 = *(*(&v21 + 1) + 8 * i);
         v15 = [v6 objectForKeyedSubscript:{v14, v21}];
-        v16 = [v14 rangeValue];
+        rangeValue = [v14 rangeValue];
         if (v15)
         {
-          v18 = v16 == 0x7FFFFFFFFFFFFFFFLL;
+          v18 = rangeValue == 0x7FFFFFFFFFFFFFFFLL;
         }
 
         else
@@ -1709,7 +1709,7 @@ LABEL_23:
 
         if (!v18)
         {
-          [v5 replaceCharactersInRange:v16 withString:{v17, v15}];
+          [v5 replaceCharactersInRange:rangeValue withString:{v17, v15}];
         }
       }
 
@@ -1724,26 +1724,26 @@ LABEL_23:
   return v19;
 }
 
-+ (id)tsu_stringByBase64EncodingBytes:(const char *)a3 length:(unint64_t)a4 breakLines:(BOOL)a5
++ (id)tsu_stringByBase64EncodingBytes:(const char *)bytes length:(unint64_t)length breakLines:(BOOL)lines
 {
-  v5 = a5;
-  v6 = a4;
-  v8 = [NSMutableString stringWithCapacity:4 * a4 / 3];
-  if (v6 < 3)
+  linesCopy = lines;
+  lengthCopy = length;
+  v8 = [NSMutableString stringWithCapacity:4 * length / 3];
+  if (lengthCopy < 3)
   {
     v12 = 0;
   }
 
   else
   {
-    v9 = a3 + 2;
-    v16 = 3 * ((v6 - 3) / 3) + 3;
+    v9 = bytes + 2;
+    v16 = 3 * ((lengthCopy - 3) / 3) + 3;
     v10 = -4;
     v11 = 4;
     do
     {
       [v8 appendFormat:@"%c%c%c%c", aAbcdefghijklmn[*(v9 - 2) >> 2], aAbcdefghijklmn[(((*(v9 - 1) << 8) | (*(v9 - 2) << 16)) >> 12) & 0x3F], aAbcdefghijklmn[((*v9 | (*(v9 - 1) << 8)) >> 6) & 0x3F], aAbcdefghijklmn[*v9 & 0x3F]];
-      if (v5 && !(v10 + 76 * (v11 / 0x4C)))
+      if (linesCopy && !(v10 + 76 * (v11 / 0x4C)))
       {
         [v8 appendString:@"\n"];
       }
@@ -1751,21 +1751,21 @@ LABEL_23:
       v9 += 3;
       v10 -= 4;
       v11 += 4;
-      v6 -= 3;
+      lengthCopy -= 3;
     }
 
-    while (v6 > 2);
+    while (lengthCopy > 2);
     v12 = v16;
   }
 
-  if (v6 == 1)
+  if (lengthCopy == 1)
   {
-    [v8 appendFormat:@"%c%c==", aAbcdefghijklmn[a3[v12] >> 2], aAbcdefghijklmn[16 * (a3[v12] & 3)], v15];
+    [v8 appendFormat:@"%c%c==", aAbcdefghijklmn[bytes[v12] >> 2], aAbcdefghijklmn[16 * (bytes[v12] & 3)], v15];
   }
 
-  else if (v6 == 2)
+  else if (lengthCopy == 2)
   {
-    v13 = &a3[v12];
+    v13 = &bytes[v12];
     [v8 appendFormat:@"%c%c%c=", aAbcdefghijklmn[*v13 >> 2], aAbcdefghijklmn[((((v13[1] & 0xF0) << 8) | (*v13 << 16)) >> 12) & 0x3F], aAbcdefghijklmn[4 * (v13[1] & 0xF)]];
   }
 
@@ -1774,29 +1774,29 @@ LABEL_23:
 
 - (id)tsu_encodeStringBase64
 {
-  v2 = [(NSString *)self UTF8String];
-  v3 = strlen(v2);
+  uTF8String = [(NSString *)self UTF8String];
+  v3 = strlen(uTF8String);
 
-  return [NSString tsu_stringByBase64EncodingBytes:v2 length:v3];
+  return [NSString tsu_stringByBase64EncodingBytes:uTF8String length:v3];
 }
 
 - (id)tsu_stringByMakingFirstCharacterLowercase
 {
-  v2 = self;
-  if ([(NSString *)v2 length])
+  selfCopy = self;
+  if ([(NSString *)selfCopy length])
   {
-    v3 = [(NSString *)v2 substringToIndex:1];
-    v4 = [v3 lowercaseString];
-    if (([v3 isEqualToString:v4] & 1) == 0)
+    v3 = [(NSString *)selfCopy substringToIndex:1];
+    lowercaseString = [v3 lowercaseString];
+    if (([v3 isEqualToString:lowercaseString] & 1) == 0)
     {
-      v5 = [(NSString *)v2 substringFromIndex:1];
-      v6 = [v4 stringByAppendingString:v5];
+      v5 = [(NSString *)selfCopy substringFromIndex:1];
+      v6 = [lowercaseString stringByAppendingString:v5];
 
-      v2 = v6;
+      selfCopy = v6;
     }
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (id)tsu_stringByMakingFirstCharacterUppercase
@@ -1805,32 +1805,32 @@ LABEL_23:
   if ([v3 length])
   {
     v4 = [(NSString *)self substringToIndex:1];
-    v5 = [v4 uppercaseString];
-    [v3 replaceCharactersInRange:0 withString:{1, v5}];
+    uppercaseString = [v4 uppercaseString];
+    [v3 replaceCharactersInRange:0 withString:{1, uppercaseString}];
   }
 
   return v3;
 }
 
-- (id)tsu_stringTrimByLimitingFirstCharacterToSet:(id)a3
+- (id)tsu_stringTrimByLimitingFirstCharacterToSet:(id)set
 {
-  v4 = a3;
-  v5 = self;
-  if ([(NSString *)v5 length])
+  setCopy = set;
+  selfCopy = self;
+  if ([(NSString *)selfCopy length])
   {
-    v6 = [(NSString *)v5 characterAtIndex:0];
-    if ([(NSString *)v5 length])
+    v6 = [(NSString *)selfCopy characterAtIndex:0];
+    if ([(NSString *)selfCopy length])
     {
-      while (([v4 characterIsMember:v6] & 1) == 0)
+      while (([setCopy characterIsMember:v6] & 1) == 0)
       {
-        v7 = [(NSString *)v5 substringFromIndex:1];
+        v7 = [(NSString *)selfCopy substringFromIndex:1];
 
         if ([v7 length])
         {
           v6 = [v7 characterAtIndex:0];
         }
 
-        v5 = v7;
+        selfCopy = v7;
         if (![v7 length])
         {
           goto LABEL_9;
@@ -1839,7 +1839,7 @@ LABEL_23:
     }
   }
 
-  v7 = v5;
+  v7 = selfCopy;
 LABEL_9:
 
   return v7;
@@ -1865,49 +1865,49 @@ LABEL_9:
   return v2;
 }
 
-- (BOOL)tsu_containsOnlyCharactersFromSet:(id)a3
+- (BOOL)tsu_containsOnlyCharactersFromSet:(id)set
 {
-  v4 = [a3 invertedSet];
-  v5 = [(NSString *)self rangeOfCharacterFromSet:v4];
+  invertedSet = [set invertedSet];
+  v5 = [(NSString *)self rangeOfCharacterFromSet:invertedSet];
 
   return v5 == 0x7FFFFFFFFFFFFFFFLL;
 }
 
-- (id)tsu_stringByDeletingPathExtensionIfEqualTo:(id)a3
+- (id)tsu_stringByDeletingPathExtensionIfEqualTo:(id)to
 {
-  v4 = a3;
-  v5 = [(NSString *)self pathExtension];
-  v6 = [v5 isEqualToString:v4];
+  toCopy = to;
+  pathExtension = [(NSString *)self pathExtension];
+  v6 = [pathExtension isEqualToString:toCopy];
 
   if (v6)
   {
-    v7 = [(NSString *)self stringByDeletingPathExtension];
+    selfCopy = [(NSString *)self stringByDeletingPathExtension];
   }
 
   else
   {
-    v7 = self;
+    selfCopy = self;
   }
 
-  v8 = v7;
+  v8 = selfCopy;
 
   return v8;
 }
 
-- (id)tsu_tolerantStringByAppendingPathExtension:(id)a3
+- (id)tsu_tolerantStringByAppendingPathExtension:(id)extension
 {
-  v4 = a3;
-  if (-[NSString isEqualToString:](self, "isEqualToString:", &stru_1001D3878) || [v4 isEqualToString:&stru_1001D3878])
+  extensionCopy = extension;
+  if (-[NSString isEqualToString:](self, "isEqualToString:", &stru_1001D3878) || [extensionCopy isEqualToString:&stru_1001D3878])
   {
-    v5 = self;
+    selfCopy = self;
 LABEL_4:
-    v6 = v5;
+    v6 = selfCopy;
     goto LABEL_5;
   }
 
   if ([(NSString *)self isEqualToString:@"\\\\""])
   {
-    v8 = [@"\\"" stringByAppendingPathExtension:v4];
+    v8 = [@"\\"" stringByAppendingPathExtension:extensionCopy];
     v9 = [@"\\"" stringByAppendingString:v8];
   }
 
@@ -1915,12 +1915,12 @@ LABEL_4:
   {
     if (![(NSString *)self length]|| [(NSString *)self characterAtIndex:0]!= 126)
     {
-      v5 = [(NSString *)self stringByAppendingPathExtension:v4];
+      selfCopy = [(NSString *)self stringByAppendingPathExtension:extensionCopy];
       goto LABEL_4;
     }
 
     v10 = [@"X" stringByAppendingString:self];
-    v8 = [v10 stringByAppendingPathExtension:v4];
+    v8 = [v10 stringByAppendingPathExtension:extensionCopy];
 
     v9 = [v8 substringFromIndex:1];
   }
@@ -1932,18 +1932,18 @@ LABEL_5:
   return v6;
 }
 
-+ (id)tsu_stringByHexEncodingData:(id)a3
++ (id)tsu_stringByHexEncodingData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v4 = +[NSMutableString string];
-  v5 = [v3 bytes];
-  v6 = [v3 length];
+  bytes = [dataCopy bytes];
+  v6 = [dataCopy length];
   if (v6)
   {
     v7 = v6;
     do
     {
-      v8 = *v5++;
+      v8 = *bytes++;
       [v4 appendFormat:@"%02x", v8];
       --v7;
     }
@@ -1956,38 +1956,38 @@ LABEL_5:
   return v9;
 }
 
-- (_NSRange)tsu_rangeOfString:(id)a3 options:(unint64_t)a4 updatingSearchRange:(_NSRange *)a5
+- (_NSRange)tsu_rangeOfString:(id)string options:(unint64_t)options updatingSearchRange:(_NSRange *)range
 {
-  v8 = a3;
-  v9 = v8;
-  if (a5)
+  stringCopy = string;
+  v9 = stringCopy;
+  if (range)
   {
-    location = a5->location;
-    length = a5->length;
-    v12 = [(NSString *)self rangeOfString:v8 options:a4 range:a5->location, length];
+    location = range->location;
+    length = range->length;
+    v12 = [(NSString *)self rangeOfString:stringCopy options:options range:range->location, length];
     v14 = v12;
     v15 = v13;
     if (v12 == 0x7FFFFFFFFFFFFFFFLL)
     {
-      *a5 = TSUInvalidRange;
+      *range = TSUInvalidRange;
     }
 
-    else if ((a4 & 4) != 0)
+    else if ((options & 4) != 0)
     {
-      a5->location = location;
-      a5->length = v12 - location;
+      range->location = location;
+      range->length = v12 - location;
     }
 
     else
     {
-      a5->location = v12 + v13;
-      a5->length = length + location - (v12 + v13);
+      range->location = v12 + v13;
+      range->length = length + location - (v12 + v13);
     }
   }
 
   else
   {
-    v14 = -[NSString rangeOfString:options:range:](self, "rangeOfString:options:range:", v8, a4, 0, [v8 length]);
+    v14 = -[NSString rangeOfString:options:range:](self, "rangeOfString:options:range:", stringCopy, options, 0, [stringCopy length]);
     v15 = v16;
   }
 
@@ -2007,10 +2007,10 @@ LABEL_5:
   return result;
 }
 
-- (void)tsu_enumerateRangesOfCharactersInSet:(id)a3 usingBlock:(id)a4
+- (void)tsu_enumerateRangesOfCharactersInSet:(id)set usingBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  setCopy = set;
+  blockCopy = block;
   v8 = [[NSScanner alloc] initWithString:self];
   [v8 setCaseSensitive:1];
   [v8 setCharactersToBeSkipped:0];
@@ -2018,12 +2018,12 @@ LABEL_5:
   {
     do
     {
-      v9 = [v8 scanLocation];
-      if ([v8 scanCharactersFromSet:v6 intoString:0])
+      scanLocation = [v8 scanLocation];
+      if ([v8 scanCharactersFromSet:setCopy intoString:0])
       {
-        v10 = [v8 scanLocation];
+        scanLocation2 = [v8 scanLocation];
         v11 = 0;
-        v7[2](v7, v9, v10 - v9, &v11);
+        blockCopy[2](blockCopy, scanLocation, scanLocation2 - scanLocation, &v11);
         if (v11)
         {
           break;
@@ -2032,7 +2032,7 @@ LABEL_5:
 
       if (([v8 isAtEnd] & 1) == 0)
       {
-        [v8 scanUpToCharactersFromSet:v6 intoString:0];
+        [v8 scanUpToCharactersFromSet:setCopy intoString:0];
       }
     }
 
@@ -2040,16 +2040,16 @@ LABEL_5:
   }
 }
 
-- (id)tsu_setOfContainedWordsIncludingPunctuationAndSymbols:(BOOL)a3
+- (id)tsu_setOfContainedWordsIncludingPunctuationAndSymbols:(BOOL)symbols
 {
-  v3 = a3;
+  symbolsCopy = symbols;
   v30 = +[NSMutableSet set];
   v37[0] = _NSConcreteStackBlock;
   v37[1] = 3221225472;
   v37[2] = sub_100078628;
   v37[3] = &unk_1001CC208;
-  v35 = v3;
-  v38 = v3;
+  v35 = symbolsCopy;
+  v38 = symbolsCopy;
   v5 = objc_retainBlock(v37);
   v36 = +[NSCharacterSet whitespaceAndNewlineCharacterSet];
   v6 = [(NSString *)self length];
@@ -2073,7 +2073,7 @@ LABEL_5:
     length = CurrentTokenRange.length;
     v14 = 0;
     v15 = CurrentTokenRange.length;
-    v34 = self;
+    selfCopy = self;
     do
     {
       if (location >= v14)
@@ -2167,7 +2167,7 @@ LABEL_21:
         v25 = v33;
       }
 
-      v26 = [(NSString *)v34 substringWithRange:v24, v25, v30];
+      v26 = [(NSString *)selfCopy substringWithRange:v24, v25, v30];
       v27 = [v26 stringByTrimmingCharactersInSet:v36];
 
       if ([v27 length])
@@ -2177,7 +2177,7 @@ LABEL_21:
 
       location = v19;
       v15 = v28;
-      self = v34;
+      self = selfCopy;
     }
 
     while (v19 != -1);
@@ -2203,30 +2203,30 @@ LABEL_21:
   return [(NSString *)self stringByReplacingOccurrencesOfString:v3 withString:&stru_1001D3878];
 }
 
-- (id)tsu_middleTruncateToLength:(unint64_t)a3
+- (id)tsu_middleTruncateToLength:(unint64_t)length
 {
-  v4 = self;
-  if ([(NSString *)v4 length]> a3)
+  selfCopy = self;
+  if ([(NSString *)selfCopy length]> length)
   {
-    v5 = (a3 >> 1) - 1;
-    v6 = [(NSString *)v4 rangeOfComposedCharacterSequencesForRange:0, v5];
-    v8 = [(NSString *)v4 substringWithRange:v6, v7];
-    v9 = [(NSString *)v4 rangeOfComposedCharacterSequencesForRange:[(NSString *)v4 length]- v5, v5];
-    v11 = [(NSString *)v4 substringWithRange:v9, v10];
+    v5 = (length >> 1) - 1;
+    v6 = [(NSString *)selfCopy rangeOfComposedCharacterSequencesForRange:0, v5];
+    v8 = [(NSString *)selfCopy substringWithRange:v6, v7];
+    v9 = [(NSString *)selfCopy rangeOfComposedCharacterSequencesForRange:[(NSString *)selfCopy length]- v5, v5];
+    v11 = [(NSString *)selfCopy substringWithRange:v9, v10];
     v12 = SFUMainBundle();
     v13 = [v12 localizedStringForKey:@"%1$@…%2$@" value:&stru_1001D3878 table:@"TSUtility"];
 
     v14 = [NSString localizedStringWithFormat:v13, v8, v11];
 
-    v4 = v14;
+    selfCopy = v14;
   }
 
-  return v4;
+  return selfCopy;
 }
 
-- (BOOL)tsu_isEqualToString:(id)a3
+- (BOOL)tsu_isEqualToString:(id)string
 {
-  if (a3)
+  if (string)
   {
     return [(NSString *)self isEqualToString:?];
   }
@@ -2239,10 +2239,10 @@ LABEL_21:
 
 - (id)tsu_stringWithNormalizedHyphensAndQuotationMarks
 {
-  v2 = [(NSString *)self tsu_stringWithNormalizedHyphens];
-  v3 = [v2 tsu_stringWithNormalizedQuotationMarks];
+  tsu_stringWithNormalizedHyphens = [(NSString *)self tsu_stringWithNormalizedHyphens];
+  tsu_stringWithNormalizedQuotationMarks = [tsu_stringWithNormalizedHyphens tsu_stringWithNormalizedQuotationMarks];
 
-  return v3;
+  return tsu_stringWithNormalizedQuotationMarks;
 }
 
 - (id)tsu_stringWithNormalizedHyphens
@@ -2277,13 +2277,13 @@ LABEL_21:
   return v4;
 }
 
-+ (id)tsu_JSONStringFromString:(id)a3
++ (id)tsu_JSONStringFromString:(id)string
 {
-  if (a3)
+  if (string)
   {
-    v3 = a3;
+    stringCopy = string;
     v4 = +[NSMutableString string];
-    [v3 tsu_appendJSONStringToString:v4];
+    [stringCopy tsu_appendJSONStringToString:v4];
   }
 
   else
@@ -2294,15 +2294,15 @@ LABEL_21:
   return v4;
 }
 
-- (void)tsu_appendJSONStringToString:(id)a3
+- (void)tsu_appendJSONStringToString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   if (qword_1001EAFE0 != -1)
   {
     sub_100159E0C();
   }
 
-  [v4 appendString:@""];
+  [stringCopy appendString:@""];
   if ([(NSString *)self rangeOfCharacterFromSet:qword_1001EAFD8]!= 0x7FFFFFFFFFFFFFFFLL)
   {
     v5 = [(NSString *)self length];
@@ -2327,7 +2327,7 @@ LABEL_35:
         {
           if (v8 == 10)
           {
-            v10 = v4;
+            v10 = stringCopy;
             v11 = @"\\n";
           }
 
@@ -2338,14 +2338,14 @@ LABEL_35:
               goto LABEL_31;
             }
 
-            v10 = v4;
+            v10 = stringCopy;
             v11 = @"\\f";
           }
         }
 
         else if (v8 == 8)
         {
-          v10 = v4;
+          v10 = stringCopy;
           v11 = @"\\b";
         }
 
@@ -2356,7 +2356,7 @@ LABEL_35:
             goto LABEL_31;
           }
 
-          v10 = v4;
+          v10 = stringCopy;
           v11 = @"\\t";
         }
       }
@@ -2365,7 +2365,7 @@ LABEL_35:
       {
         if (v8 == 13)
         {
-          v10 = v4;
+          v10 = stringCopy;
           v11 = @"\\r";
         }
 
@@ -2384,12 +2384,12 @@ LABEL_31:
               [NSString stringWithCharacters:&v13 length:1];
             }
             v12 = ;
-            [v4 appendString:v12];
+            [stringCopy appendString:v12];
 
             goto LABEL_29;
           }
 
-          v10 = v4;
+          v10 = stringCopy;
           v11 = @"\\"";
         }
       }
@@ -2399,15 +2399,15 @@ LABEL_31:
         switch(v8)
         {
           case 0x5C:
-            v10 = v4;
+            v10 = stringCopy;
             v11 = @"\\\\"";
             break;
           case 0x2028:
-            v10 = v4;
+            v10 = stringCopy;
             v11 = @"\\u2028";
             break;
           case 0x2029:
-            v10 = v4;
+            v10 = stringCopy;
             v11 = @"\\u2029";
             break;
           default:
@@ -2424,9 +2424,9 @@ LABEL_29:
     }
   }
 
-  [v4 appendString:self];
+  [stringCopy appendString:self];
 LABEL_36:
-  [v4 appendString:@""];
+  [stringCopy appendString:@""];
 }
 
 - (id)tsu_stringWithoutNonbreakingSpaces
@@ -2440,8 +2440,8 @@ LABEL_36:
 - (id)tsu_stringWithNormalizedSpaces
 {
   v3 = +[NSCharacterSet whitespaceCharacterSet];
-  v4 = [(NSString *)self tsu_stringWithoutNonbreakingSpaces];
-  v5 = [v4 tsu_stringByReplacingInstancesOfCharactersInSet:v3 withString:@" "];
+  tsu_stringWithoutNonbreakingSpaces = [(NSString *)self tsu_stringWithoutNonbreakingSpaces];
+  v5 = [tsu_stringWithoutNonbreakingSpaces tsu_stringByReplacingInstancesOfCharactersInSet:v3 withString:@" "];
 
   return v5;
 }
@@ -2597,15 +2597,15 @@ LABEL_24:
   v4 = [(NSString *)self rangeOfString:@"<"];
   if (v3 == 0x7FFFFFFFFFFFFFFFLL && v4 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = [(NSString *)self tsu_uncommentedAddress];
+    selfCopy = [(NSString *)self tsu_uncommentedAddress];
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (BOOL)tsu_isCJKString
@@ -2651,16 +2651,16 @@ LABEL_24:
   return v9;
 }
 
-+ (id)tsu_localizedDisplayNameWithPersonNameComponents:(id)a3
++ (id)tsu_localizedDisplayNameWithPersonNameComponents:(id)components
 {
-  v3 = a3;
-  if (!v3)
+  componentsCopy = components;
+  if (!componentsCopy)
   {
     v4 = 0;
     goto LABEL_20;
   }
 
-  v4 = [NSPersonNameComponentsFormatter localizedStringFromPersonNameComponents:v3 style:0 options:0];
+  v4 = [NSPersonNameComponentsFormatter localizedStringFromPersonNameComponents:componentsCopy style:0 options:0];
   if (v4)
   {
     goto LABEL_20;
@@ -2676,26 +2676,26 @@ LABEL_24:
     sub_100159E34();
   }
 
-  v5 = [v3 givenName];
-  v6 = [v5 length];
-  v7 = [v3 familyName];
-  v8 = [v7 length];
+  givenName = [componentsCopy givenName];
+  v6 = [givenName length];
+  familyName = [componentsCopy familyName];
+  v8 = [familyName length];
   if (v6 && v8)
   {
-    if (([v5 tsu_isCJKString] & 1) != 0 || objc_msgSend(v7, "tsu_isCJKString"))
+    if (([givenName tsu_isCJKString] & 1) != 0 || objc_msgSend(familyName, "tsu_isCJKString"))
     {
-      v9 = [v7 stringByAppendingString:v5];
+      v9 = [familyName stringByAppendingString:givenName];
     }
 
     else
     {
-      v9 = [NSString stringWithFormat:@"%@ %@", v5, v7];
+      v9 = [NSString stringWithFormat:@"%@ %@", givenName, familyName];
     }
   }
 
   else if (v6)
   {
-    v9 = v5;
+    v9 = givenName;
   }
 
   else
@@ -2706,7 +2706,7 @@ LABEL_24:
       goto LABEL_19;
     }
 
-    v9 = v7;
+    v9 = familyName;
   }
 
   v4 = v9;
@@ -2738,11 +2738,11 @@ LABEL_20:
   return v6;
 }
 
-- (int64_t)tsu_compareToVersionString:(id)a3
+- (int64_t)tsu_compareToVersionString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v5 = sub_100079730(self);
-  v6 = sub_100079730(v4);
+  v6 = sub_100079730(stringCopy);
   v7 = v6;
   if (v5 | v6)
   {
@@ -2822,84 +2822,84 @@ LABEL_2:
   return v4;
 }
 
-- (id)tsu_keyPathByPrependingKey:(id)a3
+- (id)tsu_keyPathByPrependingKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   if ([(NSString *)self length])
   {
-    if ([v4 length])
+    if ([keyCopy length])
     {
-      v5 = [NSString stringWithFormat:@"%@.%@", v4, self];
+      v5 = [NSString stringWithFormat:@"%@.%@", keyCopy, self];
       goto LABEL_7;
     }
 
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = v4;
+    selfCopy = keyCopy;
   }
 
-  v5 = [NSString stringWithString:v6];
+  v5 = [NSString stringWithString:selfCopy];
 LABEL_7:
   v7 = v5;
 
   return v7;
 }
 
-- (id)tsu_keyPathByAppendingKey:(id)a3
+- (id)tsu_keyPathByAppendingKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   if ([(NSString *)self length])
   {
-    if ([v4 length])
+    if ([keyCopy length])
     {
-      v5 = [NSString stringWithFormat:@"%@.%@", self, v4];
+      keyCopy = [NSString stringWithFormat:@"%@.%@", self, keyCopy];
       goto LABEL_7;
     }
 
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = v4;
+    selfCopy = keyCopy;
   }
 
-  v5 = [NSString stringWithString:v6];
+  keyCopy = [NSString stringWithString:selfCopy];
 LABEL_7:
-  v7 = v5;
+  v7 = keyCopy;
 
   return v7;
 }
 
 - (id)tsu_firstKey
 {
-  v2 = self;
-  v3 = [(NSString *)v2 rangeOfString:@"." options:2];
+  selfCopy = self;
+  v3 = [(NSString *)selfCopy rangeOfString:@"." options:2];
   if (v3 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v4 = [(NSString *)v2 substringToIndex:v3];
+    v4 = [(NSString *)selfCopy substringToIndex:v3];
 
-    v2 = v4;
+    selfCopy = v4;
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (id)tsu_lastKey
 {
-  v2 = self;
-  v3 = [(NSString *)v2 rangeOfString:@"." options:6];
+  selfCopy = self;
+  v3 = [(NSString *)selfCopy rangeOfString:@"." options:6];
   if (v3 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v4 = [(NSString *)v2 substringFromIndex:v3 + 1];
+    v4 = [(NSString *)selfCopy substringFromIndex:v3 + 1];
 
-    v2 = v4;
+    selfCopy = v4;
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (unint64_t)tsu_numberOfKeysInKeyPath
@@ -2920,16 +2920,16 @@ LABEL_7:
   return v5;
 }
 
-+ (id)tsu_fogShareTokenFromFileURL:(id)a3
++ (id)tsu_fogShareTokenFromFileURL:(id)l
 {
-  v3 = a3;
-  if ([v3 isFileURL])
+  lCopy = l;
+  if ([lCopy isFileURL])
   {
-    v4 = [v3 lastPathComponent];
-    v5 = [v4 dataUsingEncoding:4];
-    v6 = [v5 tsu_encodeToHexidecimalString];
+    lastPathComponent = [lCopy lastPathComponent];
+    v5 = [lastPathComponent dataUsingEncoding:4];
+    tsu_encodeToHexidecimalString = [v5 tsu_encodeToHexidecimalString];
     v10[0] = @"fog";
-    v10[1] = v6;
+    v10[1] = tsu_encodeToHexidecimalString;
     v7 = [NSArray arrayWithObjects:v10 count:2];
     v8 = [v7 componentsJoinedByString:@":"];
   }
@@ -2942,13 +2942,13 @@ LABEL_7:
   return v8;
 }
 
-+ (id)tsu_fogFilenameFromShareToken:(id)a3
++ (id)tsu_fogFilenameFromShareToken:(id)token
 {
-  if (a3)
+  if (token)
   {
-    v3 = [a3 componentsSeparatedByString:@":"];
-    v4 = [v3 firstObject];
-    if ([v4 isEqualToString:@"fog"] && objc_msgSend(v3, "count") == 2)
+    v3 = [token componentsSeparatedByString:@":"];
+    firstObject = [v3 firstObject];
+    if ([firstObject isEqualToString:@"fog"] && objc_msgSend(v3, "count") == 2)
     {
       v5 = [v3 objectAtIndexedSubscript:1];
       v6 = [NSData tsu_decodeFromHexidecimalString:v5];
@@ -2969,13 +2969,13 @@ LABEL_7:
   return v7;
 }
 
-- (id)tsu_initRedactedWithFormat:(id)a3 arguments:(char *)a4
+- (id)tsu_initRedactedWithFormat:(id)format arguments:(char *)arguments
 {
-  v5 = [a3 mutableCopy];
+  v5 = [format mutableCopy];
   [v5 replaceOccurrencesOfString:@"%s" withString:@"<REDACT %s REDACT>" options:0 range:{0, objc_msgSend(v5, "length")}];
   [v5 replaceOccurrencesOfString:@"%@" withString:@"<REDACT %@ REDACT>" options:0 range:{0, objc_msgSend(v5, "length")}];
   [v5 replaceOccurrencesOfString:@"%{public}" withString:@"%" options:0 range:{0, objc_msgSend(v5, "length")}];
-  v6 = [[NSString alloc] initWithFormat:v5 arguments:a4];
+  v6 = [[NSString alloc] initWithFormat:v5 arguments:arguments];
   if (qword_1001EAFF0 != -1)
   {
     sub_100159E74();
@@ -2986,34 +2986,34 @@ LABEL_7:
   return v7;
 }
 
-- (id)tsu_initUnRedactedWithFormat:(id)a3 arguments:(char *)a4
+- (id)tsu_initUnRedactedWithFormat:(id)format arguments:(char *)arguments
 {
-  v5 = [a3 mutableCopy];
+  v5 = [format mutableCopy];
   [v5 replaceOccurrencesOfString:@"%{public}" withString:@"%" options:0 range:{0, objc_msgSend(v5, "length")}];
-  v6 = [(NSString *)self initWithFormat:v5 arguments:a4];
+  v6 = [(NSString *)self initWithFormat:v5 arguments:arguments];
 
   return v6;
 }
 
-+ (id)tsu_redactedStringWithFormat:(id)a3 arguments:(char *)a4
++ (id)tsu_redactedStringWithFormat:(id)format arguments:(char *)arguments
 {
-  v5 = a3;
-  v6 = [[NSString alloc] tsu_initRedactedWithFormat:v5 arguments:a4];
+  formatCopy = format;
+  v6 = [[NSString alloc] tsu_initRedactedWithFormat:formatCopy arguments:arguments];
 
   return v6;
 }
 
-+ (id)tsu_unRedactedStringWithFormat:(id)a3 arguments:(char *)a4
++ (id)tsu_unRedactedStringWithFormat:(id)format arguments:(char *)arguments
 {
-  v5 = a3;
-  v6 = [[NSString alloc] tsu_initUnRedactedWithFormat:v5 arguments:a4];
+  formatCopy = format;
+  v6 = [[NSString alloc] tsu_initUnRedactedWithFormat:formatCopy arguments:arguments];
 
   return v6;
 }
 
-- (id)tsu_initWithSqlStatement:(sqlite3_stmt *)a3 columnIndex:(int)a4
+- (id)tsu_initWithSqlStatement:(sqlite3_stmt *)statement columnIndex:(int)index
 {
-  if (sqlite3_column_type(a3, a4) == 5)
+  if (sqlite3_column_type(statement, index) == 5)
   {
 
     return 0;
@@ -3021,13 +3021,13 @@ LABEL_7:
 
   else
   {
-    v8 = sqlite3_column_text(a3, a4);
+    v8 = sqlite3_column_text(statement, index);
 
     return [(NSString *)self initWithUTF8String:v8];
   }
 }
 
-- (BOOL)tsu_bindToSqlStatement:(sqlite3_stmt *)a3 index:(int)a4 error:(id *)a5
+- (BOOL)tsu_bindToSqlStatement:(sqlite3_stmt *)statement index:(int)index error:(id *)error
 {
   v9 = [(NSString *)self lengthOfBytesUsingEncoding:4];
   if (HIDWORD(v9))
@@ -3035,7 +3035,7 @@ LABEL_7:
     return 0;
   }
 
-  if (sqlite3_bind_text(a3, a4, [(NSString *)self UTF8String], v9, 0xFFFFFFFFFFFFFFFFLL))
+  if (sqlite3_bind_text(statement, index, [(NSString *)self UTF8String], v9, 0xFFFFFFFFFFFFFFFFLL))
   {
     if (TSUDefaultCat_init_token != -1)
     {
@@ -3045,22 +3045,22 @@ LABEL_7:
     if (os_log_type_enabled(TSUDefaultCat_log_t, OS_LOG_TYPE_ERROR))
     {
       sub_10015C328();
-      if (!a5)
+      if (!error)
       {
         return 0;
       }
     }
 
-    else if (!a5)
+    else if (!error)
     {
       return 0;
     }
 
-    if (!*a5)
+    if (!*error)
     {
       v11 = [NSError tsu_errorWithCode:0 userInfo:0];
       result = 0;
-      *a5 = v11;
+      *error = v11;
       return result;
     }
 
@@ -3070,14 +3070,14 @@ LABEL_7:
   return 1;
 }
 
-- (BOOL)tsu_conformsToAnyUTI:(id)a3
+- (BOOL)tsu_conformsToAnyUTI:(id)i
 {
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  iCopy = i;
+  v5 = [iCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -3088,7 +3088,7 @@ LABEL_7:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(iCopy);
         }
 
         if ([(NSString *)self tsu_conformsToUTI:*(*(&v11 + 1) + 8 * i), v11])
@@ -3098,7 +3098,7 @@ LABEL_7:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [iCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v6)
       {
         continue;
@@ -3116,8 +3116,8 @@ LABEL_11:
 
 - (NSString)tsu_pathUTI
 {
-  v3 = [(NSString *)self pathExtension];
-  if (!v3)
+  pathExtension = [(NSString *)self pathExtension];
+  if (!pathExtension)
   {
     goto LABEL_13;
   }
@@ -3136,10 +3136,10 @@ LABEL_11:
       v5 = &UTTypeDirectory;
     }
 
-    v7 = [*v5 identifier];
+    identifier = [*v5 identifier];
 
     v6 = UTTagClassFilenameExtension;
-    v8 = [v3 tsu_preferredIdentifierForTagClass:UTTagClassFilenameExtension conformingToUTI:v7];
+    v8 = [pathExtension tsu_preferredIdentifierForTagClass:UTTagClassFilenameExtension conformingToUTI:identifier];
     if ([v8 tsu_isDynamic])
     {
     }
@@ -3159,7 +3159,7 @@ LABEL_11:
     v6 = UTTagClassFilenameExtension;
   }
 
-  v8 = [v3 tsu_preferredIdentifierForTagClass:v6 conformingToUTI:0];
+  v8 = [pathExtension tsu_preferredIdentifierForTagClass:v6 conformingToUTI:0];
   if ([v8 tsu_isDynamic])
   {
 
@@ -3174,24 +3174,24 @@ LABEL_14:
 
 - (NSString)tsu_normalizedFilenameExtension
 {
-  v2 = [(NSString *)self tsu_pathUTI];
-  v3 = [v2 tsu_UTIFilenameExtension];
+  tsu_pathUTI = [(NSString *)self tsu_pathUTI];
+  tsu_UTIFilenameExtension = [tsu_pathUTI tsu_UTIFilenameExtension];
 
-  return v3;
+  return tsu_UTIFilenameExtension;
 }
 
-- (BOOL)tsu_pathConformsToUTI:(id)a3
+- (BOOL)tsu_pathConformsToUTI:(id)i
 {
-  v4 = a3;
-  v5 = [(NSString *)self pathExtension];
-  v6 = [v5 tsu_pathExtensionConformsToUTI:v4];
+  iCopy = i;
+  pathExtension = [(NSString *)self pathExtension];
+  v6 = [pathExtension tsu_pathExtensionConformsToUTI:iCopy];
 
   return v6;
 }
 
-- (BOOL)tsu_pathExtensionConformsToUTI:(id)a3
+- (BOOL)tsu_pathExtensionConformsToUTI:(id)i
 {
-  v4 = a3;
+  iCopy = i;
   [(NSString *)self tsu_allFilenameExtensionIdentifiersForTag];
   v11 = 0u;
   v12 = 0u;
@@ -3211,7 +3211,7 @@ LABEL_14:
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
-        if ([v9 tsu_isDynamic] & 1) == 0 && (objc_msgSend(v9, "tsu_conformsToUTI:", v4))
+        if ([v9 tsu_isDynamic] & 1) == 0 && (objc_msgSend(v9, "tsu_conformsToUTI:", iCopy))
         {
           LOBYTE(v6) = 1;
           goto LABEL_12;
@@ -3233,16 +3233,16 @@ LABEL_12:
   return v6;
 }
 
-- (id)tsu_preferredIdentifierForTagClass:(id)a3 conformingToUTI:(id)a4
+- (id)tsu_preferredIdentifierForTagClass:(id)class conformingToUTI:(id)i
 {
-  PreferredIdentifierForTag = UTTypeCreatePreferredIdentifierForTag(a3, self, a4);
+  PreferredIdentifierForTag = UTTypeCreatePreferredIdentifierForTag(class, self, i);
 
   return PreferredIdentifierForTag;
 }
 
-- (id)tsu_UTTypeCopyPreferredTagWithClass:(id)a3
+- (id)tsu_UTTypeCopyPreferredTagWithClass:(id)class
 {
-  v3 = UTTypeCopyPreferredTagWithClass(self, a3);
+  v3 = UTTypeCopyPreferredTagWithClass(self, class);
 
   return v3;
 }

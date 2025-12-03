@@ -1,18 +1,18 @@
 @interface CHFriendListTableViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation CHFriendListTableViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CHFriendListTableViewCell" isKindOfClass:@"UITableViewCell"];
-  [v3 validateClass:@"CHFriendListTableViewCell" hasInstanceMethod:@"detailLineOneLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CHFriendListTableViewCell" hasInstanceMethod:@"detailLineTwoLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CHFriendListTableViewCell" hasInstanceMethod:@"competitionBadgeView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CHFriendListTableViewCell" hasInstanceMethod:@"setFriend:snapshot:formattingManager:animated:" withFullSignature:{"v", "@", "@", "@", "B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CHFriendListTableViewCell" isKindOfClass:@"UITableViewCell"];
+  [validationsCopy validateClass:@"CHFriendListTableViewCell" hasInstanceMethod:@"detailLineOneLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CHFriendListTableViewCell" hasInstanceMethod:@"detailLineTwoLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CHFriendListTableViewCell" hasInstanceMethod:@"competitionBadgeView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CHFriendListTableViewCell" hasInstanceMethod:@"setFriend:snapshot:formattingManager:animated:" withFullSignature:{"v", "@", "@", "@", "B", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -23,8 +23,8 @@
   LOBYTE(location) = 0;
   objc_opt_class();
   v3 = __UIAccessibilityCastAsClass();
-  v4 = [v3 textLabel];
-  if (v4)
+  textLabel = [v3 textLabel];
+  if (textLabel)
   {
     v5 = [(CHFriendListTableViewCellAccessibility *)self safeValueForKey:@"detailLineOneLabel"];
     v6 = [(CHFriendListTableViewCellAccessibility *)self safeValueForKey:@"detailLineTwoLabel"];
@@ -33,14 +33,14 @@
     v8 = accessibilityLocalizedString(@"competition.in.progress");
     [v7 setAccessibilityLabel:v8];
 
-    objc_initWeak(&location, v4);
+    objc_initWeak(&location, textLabel);
     v11 = _NSConcreteStackBlock;
     v12 = 3221225472;
     v13 = __84__CHFriendListTableViewCellAccessibility__accessibilityLoadAccessibilityInformation__block_invoke;
     v14 = &unk_1C448;
     objc_copyWeak(&v15, &location);
-    [v4 _setAccessibilityLabelBlock:&v11];
-    v9 = [NSArray axArrayByIgnoringNilElementsWithCount:4, v4, v5, v6, v7, v11, v12, v13, v14];
+    [textLabel _setAccessibilityLabelBlock:&v11];
+    v9 = [NSArray axArrayByIgnoringNilElementsWithCount:4, textLabel, v5, v6, v7, v11, v12, v13, v14];
     v10 = AXLabelForElements();
     [(CHFriendListTableViewCellAccessibility *)self setAccessibilityLabel:v10];
 

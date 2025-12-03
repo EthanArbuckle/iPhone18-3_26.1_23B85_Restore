@@ -1,9 +1,9 @@
 @interface BWDeepZoomProcessorControllerConfiguration
-+ (BOOL)doDeepZoomStandardOrLiteForSampleBuffer:(opaqueCMSampleBuffer *)a3 type:(int)a4 sensorConfiguration:(id)a5 intermediateZoomSrcRectOut:(CGRect *)a6 intermediateZoomDstRectOut:(CGRect *)a7;
-+ (BOOL)doDeepZoomStandardOrLiteForType:(int)a3 sensorConfiguration:(id)a4 dimensions:(id)a5 metadata:(id)a6 stillImageSettings:(id)a7 intermediateZoomSrcRectOut:(CGRect *)a8 intermediateZoomDstRectOut:(CGRect *)a9;
-+ (BOOL)doDeepZoomTransferForSampleBuffer:(opaqueCMSampleBuffer *)a3 sensorConfiguration:(id)a4 intermediateZoomSrcRectOut:(CGRect *)a5;
-+ (int)deepZoomProcessingModeForType:(int)a3 sensorConfiguration:(id)a4;
-+ (void)quadraQSubIntermediateZoomRectForDimensions:(void *)a3 metadata:(void *)a4 sensorConfiguration:(void *)a5 stillImageSettings:;
++ (BOOL)doDeepZoomStandardOrLiteForSampleBuffer:(opaqueCMSampleBuffer *)buffer type:(int)type sensorConfiguration:(id)configuration intermediateZoomSrcRectOut:(CGRect *)out intermediateZoomDstRectOut:(CGRect *)rectOut;
++ (BOOL)doDeepZoomStandardOrLiteForType:(int)type sensorConfiguration:(id)configuration dimensions:(id)dimensions metadata:(id)metadata stillImageSettings:(id)settings intermediateZoomSrcRectOut:(CGRect *)out intermediateZoomDstRectOut:(CGRect *)rectOut;
++ (BOOL)doDeepZoomTransferForSampleBuffer:(opaqueCMSampleBuffer *)buffer sensorConfiguration:(id)configuration intermediateZoomSrcRectOut:(CGRect *)out;
++ (int)deepZoomProcessingModeForType:(int)type sensorConfiguration:(id)configuration;
++ (void)quadraQSubIntermediateZoomRectForDimensions:(void *)dimensions metadata:(void *)metadata sensorConfiguration:(void *)configuration stillImageSettings:;
 - (void)dealloc;
 @end
 
@@ -16,9 +16,9 @@
   [(BWStillImageProcessorControllerConfiguration *)&v3 dealloc];
 }
 
-+ (BOOL)doDeepZoomStandardOrLiteForType:(int)a3 sensorConfiguration:(id)a4 dimensions:(id)a5 metadata:(id)a6 stillImageSettings:(id)a7 intermediateZoomSrcRectOut:(CGRect *)a8 intermediateZoomDstRectOut:(CGRect *)a9
++ (BOOL)doDeepZoomStandardOrLiteForType:(int)type sensorConfiguration:(id)configuration dimensions:(id)dimensions metadata:(id)metadata stillImageSettings:(id)settings intermediateZoomSrcRectOut:(CGRect *)out intermediateZoomDstRectOut:(CGRect *)rectOut
 {
-  v14 = *&a3;
+  v14 = *&type;
   if (dzpc_initializeTrace_sInitializeTraceOnceToken != -1)
   {
     +[BWDeepZoomProcessorControllerConfiguration doDeepZoomStandardOrLiteForType:sensorConfiguration:dimensions:metadata:stillImageSettings:intermediateZoomSrcRectOut:intermediateZoomDstRectOut:];
@@ -35,45 +35,45 @@
     goto LABEL_70;
   }
 
-  if (!a4)
+  if (!configuration)
   {
     goto LABEL_70;
   }
 
-  if (!a6)
+  if (!metadata)
   {
     goto LABEL_70;
   }
 
   v81 = v16;
-  if (!a7)
+  if (!settings)
   {
     goto LABEL_70;
   }
 
-  v17 = [objc_msgSend(a4 "sensorIDDictionary")];
+  v17 = [objc_msgSend(configuration "sensorIDDictionary")];
   if (!v17)
   {
     goto LABEL_89;
   }
 
   LOBYTE(v15) = 0;
-  if (!HIDWORD(*&a5) || !a5.var0)
+  if (!HIDWORD(*&dimensions) || !dimensions.var0)
   {
     goto LABEL_70;
   }
 
   v18 = v17;
-  v19 = [a7 requestedSettings];
-  if (!v19)
+  requestedSettings = [settings requestedSettings];
+  if (!requestedSettings)
   {
 LABEL_89:
     LOBYTE(v15) = 0;
     goto LABEL_70;
   }
 
-  v20 = v19;
-  v86 = [BWDeepZoomProcessorControllerConfiguration deepZoomProcessingModeForType:v14 sensorConfiguration:a4];
+  v20 = requestedSettings;
+  v86 = [BWDeepZoomProcessorControllerConfiguration deepZoomProcessingModeForType:v14 sensorConfiguration:configuration];
   if (!v86)
   {
     +[BWDeepZoomProcessorControllerConfiguration doDeepZoomStandardOrLiteForType:sensorConfiguration:dimensions:metadata:stillImageSettings:intermediateZoomSrcRectOut:intermediateZoomDstRectOut:];
@@ -84,9 +84,9 @@ LABEL_89:
   v89 = *MEMORY[0x1E695F058];
   v90 = v21;
   FigCFDictionaryGetCGRectIfPresent();
-  v22 = [v20 outputWidth];
-  v23 = v22 / [v20 outputHeight];
-  FigCaptureMetadataUtilitiesComputeDenormalizedStillImageCropRect(a5.var0, *&a5 >> 32, *&v89, *(&v89 + 1), *&v90, *(&v90 + 1), v23);
+  outputWidth = [v20 outputWidth];
+  v23 = outputWidth / [v20 outputHeight];
+  FigCaptureMetadataUtilitiesComputeDenormalizedStillImageCropRect(dimensions.var0, *&dimensions >> 32, *&v89, *(&v89 + 1), *&v90, *(&v90 + 1), v23);
   width = v95.size.width;
   height = v95.size.height;
   x = v95.origin.x;
@@ -152,14 +152,14 @@ LABEL_89:
     v41 = 1.0;
   }
 
-  if (([objc_msgSend(a7 "captureSettings")] & 0x10) != 0 && objc_msgSend(v29, "objectForKeyedSubscript:", @"QSub"))
+  if (([objc_msgSend(settings "captureSettings")] & 0x10) != 0 && objc_msgSend(v29, "objectForKeyedSubscript:", @"QSub"))
   {
     [objc_msgSend(objc_msgSend(v29 objectForKeyedSubscript:{@"QSub", "objectForKeyedSubscript:", @"MinScaleFactor", "floatValue"}];
     v33 = v42;
   }
 
-  v85 = a6;
-  v43 = [a6 objectForKeyedSubscript:*off_1E798A718];
+  metadataCopy = metadata;
+  v43 = [metadata objectForKeyedSubscript:*off_1E798A718];
   v44 = v43;
   v45 = 1;
   if (v86 == 2)
@@ -198,8 +198,8 @@ LABEL_89:
 
   if (v44)
   {
-    v53 = a9;
-    if (a8 && a9)
+    rectOutCopy4 = rectOut;
+    if (out && rectOut)
     {
       if (!FigCFDictionaryGetCGRectIfPresent())
       {
@@ -228,8 +228,8 @@ LABEL_89:
     }
 
 LABEL_70:
-    v53 = a9;
-    if (!a8)
+    rectOutCopy4 = rectOut;
+    if (!out)
     {
       return v15;
     }
@@ -267,22 +267,22 @@ LABEL_73:
   }
 
   LOBYTE(v15) = 1;
-  if (!a8 || !a9)
+  if (!out || !rectOut)
   {
     goto LABEL_70;
   }
 
-  if (![v85 objectForKeyedSubscript:*off_1E798B7A0])
+  if (![metadataCopy objectForKeyedSubscript:*off_1E798B7A0])
   {
     v61 = x;
     v60 = y;
-    v62 = *&a5 >> 32;
+    v62 = *&dimensions >> 32;
     goto LABEL_75;
   }
 
   v61 = x;
   v60 = y;
-  v62 = *&a5 >> 32;
+  v62 = *&dimensions >> 32;
   if (!FigCFDictionaryGetCGRectIfPresent())
   {
 LABEL_75:
@@ -313,8 +313,8 @@ LABEL_75:
 
     v68 = ([v20 outputWidth] / v67);
     v69 = ([v20 outputHeight] / v41);
-    v98.size.width = a5.var0;
-    v98.size.height = a5.var1;
+    v98.size.width = dimensions.var0;
+    v98.size.height = dimensions.var1;
     v98.origin.x = 0.0;
     v98.origin.y = 0.0;
     v96.origin.x = v61 - (v68 - width) * 0.5;
@@ -326,12 +326,12 @@ LABEL_75:
     v93.y = v97.origin.y;
     v94.width = v97.size.width;
     v94.height = v97.size.height;
-    FigCaptureMetadataUtilitiesComputeDenormalizedStillImageCropRect(a5.var0, v62, 0.0, 0.0, 1.0, 1.0, v80);
+    FigCaptureMetadataUtilitiesComputeDenormalizedStillImageCropRect(dimensions.var0, v62, 0.0, 0.0, 1.0, 1.0, v80);
     v91.x = v70;
     v91.y = v71;
     v92.width = v72;
     v92.height = v73;
-    v53 = a9;
+    rectOutCopy4 = rectOut;
     if (dword_1EB58E220)
     {
       v74 = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
@@ -342,8 +342,8 @@ LABEL_75:
     goto LABEL_85;
   }
 
-  v63 = [objc_msgSend(v85 objectForKeyedSubscript:{*off_1E798B5A8), "intValue"}];
-  v64 = [objc_msgSend(v85 objectForKeyedSubscript:{*off_1E798B5A0), "intValue"}];
+  v63 = [objc_msgSend(metadataCopy objectForKeyedSubscript:{*off_1E798B5A8), "intValue"}];
+  v64 = [objc_msgSend(metadataCopy objectForKeyedSubscript:{*off_1E798B5A0), "intValue"}];
   if (v63 && v64)
   {
     v61 = x + (v63 - v81.width) * 0.5;
@@ -352,22 +352,22 @@ LABEL_75:
   }
 
   +[BWDeepZoomProcessorControllerConfiguration doDeepZoomStandardOrLiteForType:sensorConfiguration:dimensions:metadata:stillImageSettings:intermediateZoomSrcRectOut:intermediateZoomDstRectOut:];
-  v53 = a9;
+  rectOutCopy4 = rectOut;
 LABEL_85:
   LOBYTE(v15) = 1;
 LABEL_86:
   v75 = v94;
-  a8->origin = v93;
-  a8->size = v75;
+  out->origin = v93;
+  out->size = v75;
   v76 = v92;
-  v53->origin = v91;
-  v53->size = v76;
+  rectOutCopy4->origin = v91;
+  rectOutCopy4->size = v76;
   return v15;
 }
 
-+ (BOOL)doDeepZoomStandardOrLiteForSampleBuffer:(opaqueCMSampleBuffer *)a3 type:(int)a4 sensorConfiguration:(id)a5 intermediateZoomSrcRectOut:(CGRect *)a6 intermediateZoomDstRectOut:(CGRect *)a7
++ (BOOL)doDeepZoomStandardOrLiteForSampleBuffer:(opaqueCMSampleBuffer *)buffer type:(int)type sensorConfiguration:(id)configuration intermediateZoomSrcRectOut:(CGRect *)out intermediateZoomDstRectOut:(CGRect *)rectOut
 {
-  v10 = *&a4;
+  v10 = *&type;
   if (dzpc_initializeTrace_sInitializeTraceOnceToken != -1)
   {
     dispatch_once(&dzpc_initializeTrace_sInitializeTraceOnceToken, &__block_literal_global_140);
@@ -379,25 +379,25 @@ LABEL_86:
   v25 = v13;
   v22 = v24;
   v23 = v13;
-  if (a5)
+  if (configuration)
   {
-    if (a3)
+    if (buffer)
     {
       if ((v10 - 3) >= 0xFFFFFFFE)
       {
-        ImageBuffer = CMSampleBufferGetImageBuffer(a3);
+        ImageBuffer = CMSampleBufferGetImageBuffer(buffer);
         if (ImageBuffer)
         {
-          ImageBuffer = CMGetAttachment(a3, *off_1E798A3C8, 0);
+          ImageBuffer = CMGetAttachment(buffer, *off_1E798A3C8, 0);
           if (ImageBuffer)
           {
             v14 = ImageBuffer;
-            ImageBuffer = CMGetAttachment(a3, @"StillSettings", 0);
+            ImageBuffer = CMGetAttachment(buffer, @"StillSettings", 0);
             if (ImageBuffer)
             {
               v15 = ImageBuffer;
-              v16 = BWPixelBufferDimensionsFromSampleBuffer(a3);
-              if (a6)
+              v16 = BWPixelBufferDimensionsFromSampleBuffer(buffer);
+              if (out)
               {
                 v17 = &v24;
               }
@@ -408,12 +408,12 @@ LABEL_86:
               }
 
               v18 = &v22;
-              if (!a7)
+              if (!rectOut)
               {
                 v18 = 0;
               }
 
-              LOBYTE(ImageBuffer) = [BWDeepZoomProcessorControllerConfiguration doDeepZoomStandardOrLiteForType:v10 sensorConfiguration:a5 dimensions:v16 metadata:v14 stillImageSettings:v15 intermediateZoomSrcRectOut:v17 intermediateZoomDstRectOut:v18];
+              LOBYTE(ImageBuffer) = [BWDeepZoomProcessorControllerConfiguration doDeepZoomStandardOrLiteForType:v10 sensorConfiguration:configuration dimensions:v16 metadata:v14 stillImageSettings:v15 intermediateZoomSrcRectOut:v17 intermediateZoomDstRectOut:v18];
             }
           }
         }
@@ -421,24 +421,24 @@ LABEL_86:
     }
   }
 
-  if (a6)
+  if (out)
   {
     v19 = v25;
-    a6->origin = v24;
-    a6->size = v19;
+    out->origin = v24;
+    out->size = v19;
   }
 
-  if (a7)
+  if (rectOut)
   {
     v20 = v23;
-    a7->origin = v22;
-    a7->size = v20;
+    rectOut->origin = v22;
+    rectOut->size = v20;
   }
 
   return ImageBuffer;
 }
 
-+ (BOOL)doDeepZoomTransferForSampleBuffer:(opaqueCMSampleBuffer *)a3 sensorConfiguration:(id)a4 intermediateZoomSrcRectOut:(CGRect *)a5
++ (BOOL)doDeepZoomTransferForSampleBuffer:(opaqueCMSampleBuffer *)buffer sensorConfiguration:(id)configuration intermediateZoomSrcRectOut:(CGRect *)out
 {
   if (dzpc_initializeTrace_sInitializeTraceOnceToken != -1)
   {
@@ -449,9 +449,9 @@ LABEL_86:
   v9 = *(MEMORY[0x1E695F050] + 8);
   v10 = *(MEMORY[0x1E695F050] + 16);
   v11 = *(MEMORY[0x1E695F050] + 24);
-  if (a3 && a4 && (v12 = CMGetAttachment(a3, *off_1E798A3C8, 0)) != 0 && (v13 = v12, (v14 = CMGetAttachment(a3, @"StillSettings", 0)) != 0))
+  if (buffer && configuration && (v12 = CMGetAttachment(buffer, *off_1E798A3C8, 0)) != 0 && (v13 = v12, (v14 = CMGetAttachment(buffer, @"StillSettings", 0)) != 0))
   {
-    if (!a5)
+    if (!out)
     {
       return 1;
     }
@@ -461,8 +461,8 @@ LABEL_86:
     v17 = [v13 objectForKeyedSubscript:*off_1E798B540];
     if (v16 == 1 && [+[FigCaptureCameraParameters deepZoomTransferWithZoomedImageEnabledForPortType:"deepZoomTransferWithZoomedImageEnabledForPortType:sensorIDString:"]
     {
-      v20 = BWPixelBufferDimensionsFromSampleBuffer(a3);
-      [BWDeepZoomProcessorControllerConfiguration quadraQSubIntermediateZoomRectForDimensions:v20 metadata:v13 sensorConfiguration:a4 stillImageSettings:v15];
+      v20 = BWPixelBufferDimensionsFromSampleBuffer(buffer);
+      [BWDeepZoomProcessorControllerConfiguration quadraQSubIntermediateZoomRectForDimensions:v20 metadata:v13 sensorConfiguration:configuration stillImageSettings:v15];
       OUTLINED_FUNCTION_2_3();
       v18 = 1;
       if (!CGRectIsNull(v22) && dword_1EB58E220)
@@ -484,43 +484,43 @@ LABEL_86:
   else
   {
     v18 = 0;
-    if (!a5)
+    if (!out)
     {
       return v18;
     }
   }
 
-  a5->origin.x = v8;
-  a5->origin.y = v9;
-  a5->size.width = v10;
-  a5->size.height = v11;
+  out->origin.x = v8;
+  out->origin.y = v9;
+  out->size.width = v10;
+  out->size.height = v11;
   return v18;
 }
 
-+ (void)quadraQSubIntermediateZoomRectForDimensions:(void *)a3 metadata:(void *)a4 sensorConfiguration:(void *)a5 stillImageSettings:
++ (void)quadraQSubIntermediateZoomRectForDimensions:(void *)dimensions metadata:(void *)metadata sensorConfiguration:(void *)configuration stillImageSettings:
 {
   objc_opt_self();
-  if (a3 && a4 && a5)
+  if (dimensions && metadata && configuration)
   {
-    v9 = [objc_msgSend(a3 objectForKeyedSubscript:{*off_1E798B588), "intValue"}];
-    v10 = [objc_msgSend(a5 "captureSettings")] & 0x200000000;
+    v9 = [objc_msgSend(dimensions objectForKeyedSubscript:{*off_1E798B588), "intValue"}];
+    v10 = [objc_msgSend(configuration "captureSettings")] & 0x200000000;
     if (v9 == 1 && v10 != 0)
     {
-      if ([objc_msgSend(a4 "sensorIDDictionary")])
+      if ([objc_msgSend(metadata "sensorIDDictionary")])
       {
         if (HIDWORD(a2))
         {
           if (a2)
           {
-            v12 = [a5 requestedSettings];
-            if (v12)
+            requestedSettings = [configuration requestedSettings];
+            if (requestedSettings)
             {
-              v13 = v12;
+              v13 = requestedSettings;
               v20 = *MEMORY[0x1E695F058];
               v21 = *(MEMORY[0x1E695F058] + 16);
               FigCFDictionaryGetCGRectIfPresent();
-              v14 = [v13 outputWidth];
-              v15 = v14 / [v13 outputHeight];
+              outputWidth = [v13 outputWidth];
+              v15 = outputWidth / [v13 outputHeight];
               FigCaptureMetadataUtilitiesComputeDenormalizedStillImageCropRect(a2, a2 >> 32, *&v20, *(&v20 + 1), *&v21, *(&v21 + 1), v15);
               width = v22.size.width;
               height = v22.size.height;
@@ -549,9 +549,9 @@ LABEL_86:
   OUTLINED_FUNCTION_3();
 }
 
-+ (int)deepZoomProcessingModeForType:(int)a3 sensorConfiguration:(id)a4
++ (int)deepZoomProcessingModeForType:(int)type sensorConfiguration:(id)configuration
 {
-  if ((a3 - 4) < 0xFFFFFFFD || a4 == 0)
+  if ((type - 4) < 0xFFFFFFFD || configuration == 0)
   {
     LODWORD(v8) = 0;
   }
@@ -560,8 +560,8 @@ LABEL_86:
   {
     v12[7] = v4;
     v12[8] = v5;
-    v7 = *&a3;
-    v8 = [objc_msgSend(a4 "sensorIDDictionary")];
+    v7 = *&type;
+    v8 = [objc_msgSend(configuration "sensorIDDictionary")];
     if (v8)
     {
       v9 = v8;

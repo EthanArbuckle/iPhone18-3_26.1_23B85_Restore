@@ -1,15 +1,15 @@
 @interface AWDCoreRoutineLMPScoreBoard
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addInstances:(id)a3;
-- (void)addSecondaryInstances:(id)a3;
-- (void)copyTo:(id)a3;
+- (void)addInstances:(id)instances;
+- (void)addSecondaryInstances:(id)instances;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDCoreRoutineLMPScoreBoard
@@ -23,7 +23,7 @@
   [(AWDCoreRoutineLMPScoreBoard *)&v3 dealloc];
 }
 
-- (void)addInstances:(id)a3
+- (void)addInstances:(id)instances
 {
   instances = self->_instances;
   if (!instances)
@@ -32,10 +32,10 @@
     self->_instances = instances;
   }
 
-  [(NSMutableArray *)instances addObject:a3];
+  [(NSMutableArray *)instances addObject:instances];
 }
 
-- (void)addSecondaryInstances:(id)a3
+- (void)addSecondaryInstances:(id)instances
 {
   secondaryInstances = self->_secondaryInstances;
   if (!secondaryInstances)
@@ -44,7 +44,7 @@
     self->_secondaryInstances = secondaryInstances;
   }
 
-  [(NSMutableArray *)secondaryInstances addObject:a3];
+  [(NSMutableArray *)secondaryInstances addObject:instances];
 }
 
 - (id)description
@@ -57,10 +57,10 @@
 - (id)dictionaryRepresentation
 {
   v28 = *MEMORY[0x29EDCA608];
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   if (*&self->_has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
   }
 
   if ([(NSMutableArray *)self->_instances count])
@@ -94,7 +94,7 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKey:@"instances"];
+    [dictionary setObject:v4 forKey:@"instances"];
   }
 
   if ([(NSMutableArray *)self->_secondaryInstances count])
@@ -128,14 +128,14 @@
       while (v13);
     }
 
-    [v3 setObject:v10 forKey:@"secondary_instances"];
+    [dictionary setObject:v10 forKey:@"secondary_instances"];
   }
 
   v16 = *MEMORY[0x29EDCA608];
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v28 = *MEMORY[0x29EDCA608];
   if (*&self->_has)
@@ -205,47 +205,47 @@
   v17 = *MEMORY[0x29EDCA608];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if (*&self->_has)
   {
-    *(a3 + 1) = self->_timestamp;
-    *(a3 + 32) |= 1u;
+    *(to + 1) = self->_timestamp;
+    *(to + 32) |= 1u;
   }
 
   if ([(AWDCoreRoutineLMPScoreBoard *)self instancesCount])
   {
-    [a3 clearInstances];
-    v5 = [(AWDCoreRoutineLMPScoreBoard *)self instancesCount];
-    if (v5)
+    [to clearInstances];
+    instancesCount = [(AWDCoreRoutineLMPScoreBoard *)self instancesCount];
+    if (instancesCount)
     {
-      v6 = v5;
+      v6 = instancesCount;
       for (i = 0; i != v6; ++i)
       {
-        [a3 addInstances:{-[AWDCoreRoutineLMPScoreBoard instancesAtIndex:](self, "instancesAtIndex:", i)}];
+        [to addInstances:{-[AWDCoreRoutineLMPScoreBoard instancesAtIndex:](self, "instancesAtIndex:", i)}];
       }
     }
   }
 
   if ([(AWDCoreRoutineLMPScoreBoard *)self secondaryInstancesCount])
   {
-    [a3 clearSecondaryInstances];
-    v8 = [(AWDCoreRoutineLMPScoreBoard *)self secondaryInstancesCount];
-    if (v8)
+    [to clearSecondaryInstances];
+    secondaryInstancesCount = [(AWDCoreRoutineLMPScoreBoard *)self secondaryInstancesCount];
+    if (secondaryInstancesCount)
     {
-      v9 = v8;
+      v9 = secondaryInstancesCount;
       for (j = 0; j != v9; ++j)
       {
-        [a3 addSecondaryInstances:{-[AWDCoreRoutineLMPScoreBoard secondaryInstancesAtIndex:](self, "secondaryInstancesAtIndex:", j)}];
+        [to addSecondaryInstances:{-[AWDCoreRoutineLMPScoreBoard secondaryInstancesAtIndex:](self, "secondaryInstancesAtIndex:", j)}];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v31 = *MEMORY[0x29EDCA608];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -272,7 +272,7 @@
           objc_enumerationMutation(instances);
         }
 
-        v12 = [*(*(&v25 + 1) + 8 * i) copyWithZone:a3];
+        v12 = [*(*(&v25 + 1) + 8 * i) copyWithZone:zone];
         [v6 addInstances:v12];
       }
 
@@ -301,7 +301,7 @@
           objc_enumerationMutation(secondaryInstances);
         }
 
-        v18 = [*(*(&v21 + 1) + 8 * j) copyWithZone:a3];
+        v18 = [*(*(&v21 + 1) + 8 * j) copyWithZone:zone];
         [v6 addSecondaryInstances:v18];
       }
 
@@ -315,21 +315,21 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
-    v6 = *(a3 + 32);
+    v6 = *(equal + 32);
     if (*&self->_has)
     {
-      if ((*(a3 + 32) & 1) == 0 || self->_timestamp != *(a3 + 1))
+      if ((*(equal + 32) & 1) == 0 || self->_timestamp != *(equal + 1))
       {
         goto LABEL_11;
       }
     }
 
-    else if (*(a3 + 32))
+    else if (*(equal + 32))
     {
 LABEL_11:
       LOBYTE(v5) = 0;
@@ -337,10 +337,10 @@ LABEL_11:
     }
 
     instances = self->_instances;
-    if (!(instances | *(a3 + 2)) || (v5 = [(NSMutableArray *)instances isEqual:?]) != 0)
+    if (!(instances | *(equal + 2)) || (v5 = [(NSMutableArray *)instances isEqual:?]) != 0)
     {
       secondaryInstances = self->_secondaryInstances;
-      if (secondaryInstances | *(a3 + 3))
+      if (secondaryInstances | *(equal + 3))
       {
 
         LOBYTE(v5) = [(NSMutableArray *)secondaryInstances isEqual:?];
@@ -372,12 +372,12 @@ LABEL_11:
   return v4 ^ [(NSMutableArray *)self->_secondaryInstances hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v26 = *MEMORY[0x29EDCA608];
-  if (*(a3 + 32))
+  if (*(from + 32))
   {
-    self->_timestamp = *(a3 + 1);
+    self->_timestamp = *(from + 1);
     *&self->_has |= 1u;
   }
 
@@ -385,7 +385,7 @@ LABEL_11:
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = *(a3 + 2);
+  v5 = *(from + 2);
   v6 = [v5 countByEnumeratingWithState:&v20 objects:v25 count:16];
   if (v6)
   {
@@ -413,7 +413,7 @@ LABEL_11:
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v10 = *(a3 + 3);
+  v10 = *(from + 3);
   v11 = [v10 countByEnumeratingWithState:&v16 objects:v24 count:16];
   if (v11)
   {

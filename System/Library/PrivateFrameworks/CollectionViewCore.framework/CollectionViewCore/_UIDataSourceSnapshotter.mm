@@ -1,31 +1,31 @@
 @interface _UIDataSourceSnapshotter
-+ (id)snapshotterForDataSourceBackedView:(id)a3;
++ (id)snapshotterForDataSourceBackedView:(id)view;
 + (id)snapshotterForNoDataSource;
-+ (id)snapshotterForSectionCountsProvider:(id)a3;
-+ (id)snapshotterForSnapshot:(id)a3;
-- (BOOL)_decrementSectionCount:(int64_t)a3 byCount:(int64_t)a4;
-- (BOOL)_deleteSection:(int64_t)a3;
-- (BOOL)_incrementSectionCount:(int64_t)a3 byCount:(int64_t)a4;
-- (BOOL)_insertSection:(int64_t)a3 withInitialCount:(int64_t)a4;
-- (BOOL)indexPathIsSectionAppendingInsert:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)snapshotterForSectionCountsProvider:(id)provider;
++ (id)snapshotterForSnapshot:(id)snapshot;
+- (BOOL)_decrementSectionCount:(int64_t)count byCount:(int64_t)byCount;
+- (BOOL)_deleteSection:(int64_t)section;
+- (BOOL)_incrementSectionCount:(int64_t)count byCount:(int64_t)byCount;
+- (BOOL)_insertSection:(int64_t)section withInitialCount:(int64_t)count;
+- (BOOL)indexPathIsSectionAppendingInsert:(id)insert;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (_NSRange)rangeForSection:(int64_t)a3;
-- (_UIDataSourceSnapshotter)initWithDataSourceBackedView:(id)a3;
-- (_UIDataSourceSnapshotter)initWithSectionCounts:(id)a3;
-- (_UIDataSourceSnapshotter)initWithSectionCountsProvider:(id)a3;
+- (_NSRange)rangeForSection:(int64_t)section;
+- (_UIDataSourceSnapshotter)initWithDataSourceBackedView:(id)view;
+- (_UIDataSourceSnapshotter)initWithSectionCounts:(id)counts;
+- (_UIDataSourceSnapshotter)initWithSectionCountsProvider:(id)provider;
 - (id).cxx_construct;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)indexPathForAppendingInsertInSection:(int64_t)a3;
-- (id)indexPathForGlobalIndex:(int64_t)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)indexPathForAppendingInsertInSection:(int64_t)section;
+- (id)indexPathForGlobalIndex:(int64_t)index;
 - (id)snapshot;
-- (int64_t)globalIndexForIndexPath:(id)a3;
+- (int64_t)globalIndexForIndexPath:(id)path;
 - (int64_t)numberOfItems;
-- (int64_t)numberOfItemsBeforeSection:(int64_t)a3;
-- (int64_t)numberOfItemsInSection:(int64_t)a3;
-- (int64_t)sectionForGlobalIndex:(int64_t)a3;
+- (int64_t)numberOfItemsBeforeSection:(int64_t)section;
+- (int64_t)numberOfItemsInSection:(int64_t)section;
+- (int64_t)sectionForGlobalIndex:(int64_t)index;
 - (void)_recomputeRangeLocations;
-- (void)_resetToStateOfSnapshotter:(id)a3;
+- (void)_resetToStateOfSnapshotter:(id)snapshotter;
 @end
 
 @implementation _UIDataSourceSnapshotter
@@ -76,36 +76,36 @@
   }
 }
 
-+ (id)snapshotterForDataSourceBackedView:(id)a3
++ (id)snapshotterForDataSourceBackedView:(id)view
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithDataSourceBackedView:v4];
+  viewCopy = view;
+  v5 = [[self alloc] initWithDataSourceBackedView:viewCopy];
 
   return v5;
 }
 
-+ (id)snapshotterForSectionCountsProvider:(id)a3
++ (id)snapshotterForSectionCountsProvider:(id)provider
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithSectionCountsProvider:v4];
+  providerCopy = provider;
+  v5 = [[self alloc] initWithSectionCountsProvider:providerCopy];
 
   return v5;
 }
 
 + (id)snapshotterForNoDataSource
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
 
-+ (id)snapshotterForSnapshot:(id)a3
++ (id)snapshotterForSnapshot:(id)snapshot
 {
-  v4 = a3;
+  snapshotCopy = snapshot;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 copy];
+    v5 = [snapshotCopy copy];
   }
 
   else
@@ -114,27 +114,27 @@
     v8[1] = 3221225472;
     v8[2] = __51___UIDataSourceSnapshotter_snapshotterForSnapshot___block_invoke;
     v8[3] = &unk_278DE58E0;
-    v9 = v4;
+    v9 = snapshotCopy;
     v6 = MEMORY[0x245D4B4A0](v8);
-    v5 = [a1 snapshotterForSectionCountsProvider:v6];
+    v5 = [self snapshotterForSectionCountsProvider:v6];
   }
 
   return v5;
 }
 
-- (_UIDataSourceSnapshotter)initWithSectionCounts:(id)a3
+- (_UIDataSourceSnapshotter)initWithSectionCounts:(id)counts
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  countsCopy = counts;
   v5 = [(_UIDataSourceSnapshotter *)self init];
-  if ([v4 count])
+  if ([countsCopy count])
   {
-    std::vector<_NSRange>::reserve(&v5->_sectionRanges.__begin_, [v4 count]);
+    std::vector<_NSRange>::reserve(&v5->_sectionRanges.__begin_, [countsCopy count]);
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v6 = v4;
+    v6 = countsCopy;
     v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v7)
     {
@@ -150,11 +150,11 @@
             objc_enumerationMutation(v6);
           }
 
-          v11 = [*(*(&v14 + 1) + 8 * v10) integerValue];
+          integerValue = [*(*(&v14 + 1) + 8 * v10) integerValue];
           *&v13 = v8;
-          *(&v13 + 1) = v11;
+          *(&v13 + 1) = integerValue;
           std::vector<_NSRange>::push_back[abi:nn200100](&v5->_sectionRanges, &v13);
-          v8 += v11;
+          v8 += integerValue;
           ++v10;
         }
 
@@ -169,27 +169,27 @@
   return v5;
 }
 
-- (_UIDataSourceSnapshotter)initWithDataSourceBackedView:(id)a3
+- (_UIDataSourceSnapshotter)initWithDataSourceBackedView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v5 = [(_UIDataSourceSnapshotter *)self init];
   v6 = v5;
   if (v5)
   {
-    _UIDataSourceSnapshotterCommonInit(v5, v4, 0);
+    _UIDataSourceSnapshotterCommonInit(v5, viewCopy, 0);
   }
 
   return v6;
 }
 
-- (_UIDataSourceSnapshotter)initWithSectionCountsProvider:(id)a3
+- (_UIDataSourceSnapshotter)initWithSectionCountsProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v5 = [(_UIDataSourceSnapshotter *)self init];
   v6 = v5;
   if (v5)
   {
-    _UIDataSourceSnapshotterCommonInit(v5, 0, v4);
+    _UIDataSourceSnapshotterCommonInit(v5, 0, providerCopy);
   }
 
   return v6;
@@ -202,16 +202,16 @@
   v5 = NSStringFromClass(v4);
   v6 = [v3 stringWithFormat:@"<%@: %p ", v5, self];;
 
-  v7 = [(_UIDataSourceSnapshotter *)self numberOfSections];
-  v8 = v7;
+  numberOfSections = [(_UIDataSourceSnapshotter *)self numberOfSections];
+  v8 = numberOfSections;
   v9 = @"s";
-  v10 = v7 - 1;
-  if (v7 == 1)
+  v10 = numberOfSections - 1;
+  if (numberOfSections == 1)
   {
     v9 = &stru_2856CCCD0;
   }
 
-  [v6 appendFormat:@"%lu section%@ with item counts: [", v7, v9];
+  [v6 appendFormat:@"%lu section%@ with item counts: [", numberOfSections, v9];
   if (v8)
   {
     for (i = 0; i != v8; ++i)
@@ -229,37 +229,37 @@
   return v6;
 }
 
-- (int64_t)numberOfItemsInSection:(int64_t)a3
+- (int64_t)numberOfItemsInSection:(int64_t)section
 {
   begin = self->_sectionRanges.__begin_;
-  if (a3 >= self->_sectionRanges.__end_ - begin)
+  if (section >= self->_sectionRanges.__end_ - begin)
   {
     return 0;
   }
 
   else
   {
-    return begin[a3].length;
+    return begin[section].length;
   }
 }
 
-- (int64_t)numberOfItemsBeforeSection:(int64_t)a3
+- (int64_t)numberOfItemsBeforeSection:(int64_t)section
 {
   begin = self->_sectionRanges.__begin_;
-  if (a3 >= self->_sectionRanges.__end_ - begin)
+  if (section >= self->_sectionRanges.__end_ - begin)
   {
     return 0;
   }
 
   else
   {
-    return begin[a3].location;
+    return begin[section].location;
   }
 }
 
-- (id)indexPathForGlobalIndex:(int64_t)a3
+- (id)indexPathForGlobalIndex:(int64_t)index
 {
-  if (a3 == 0x7FFFFFFFFFFFFFFFLL || (begin = self->_sectionRanges.__begin_, end = self->_sectionRanges.__end_, begin == end))
+  if (index == 0x7FFFFFFFFFFFFFFFLL || (begin = self->_sectionRanges.__begin_, end = self->_sectionRanges.__end_, begin == end))
   {
     v8 = 0;
   }
@@ -267,7 +267,7 @@
   else
   {
     v7 = 0;
-    while (a3 < begin->location || begin->length + begin->location <= a3)
+    while (index < begin->location || begin->length + begin->location <= index)
     {
       ++v7;
       if (++begin == end)
@@ -277,36 +277,36 @@
       }
     }
 
-    v8 = [MEMORY[0x277CCAA70] indexPathForItem:a3 - begin->location inSection:{v7, v3}];
+    v8 = [MEMORY[0x277CCAA70] indexPathForItem:index - begin->location inSection:{v7, v3}];
 LABEL_12:
   }
 
   return v8;
 }
 
-- (int64_t)globalIndexForIndexPath:(id)a3
+- (int64_t)globalIndexForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  pathCopy = path;
+  v5 = pathCopy;
+  if (pathCopy)
   {
     begin = self->_sectionRanges.__begin_;
     end = self->_sectionRanges.__end_;
-    v8 = [v4 section];
-    v9 = v8;
+    section = [pathCopy section];
+    v9 = section;
     v10 = 0x7FFFFFFFFFFFFFFFLL;
-    if ((v8 & 0x8000000000000000) == 0 && v8 < end - begin)
+    if ((section & 0x8000000000000000) == 0 && section < end - begin)
     {
       v11 = self->_sectionRanges.__begin_;
-      v12 = [v5 item];
-      if (v12 >= v11[v9].length || v12 <= -1)
+      item = [v5 item];
+      if (item >= v11[v9].length || item <= -1)
       {
         v10 = 0x7FFFFFFFFFFFFFFFLL;
       }
 
       else
       {
-        v10 = v11[v9].location + v12;
+        v10 = v11[v9].location + item;
       }
     }
   }
@@ -319,17 +319,17 @@ LABEL_12:
   return v10;
 }
 
-- (_NSRange)rangeForSection:(int64_t)a3
+- (_NSRange)rangeForSection:(int64_t)section
 {
   v4 = 0;
   v5 = 0x7FFFFFFFFFFFFFFFLL;
-  if ((a3 & 0x8000000000000000) == 0)
+  if ((section & 0x8000000000000000) == 0)
   {
     p_sectionRanges = &self->_sectionRanges;
     begin = self->_sectionRanges.__begin_;
-    if (p_sectionRanges->__end_ - begin > a3)
+    if (p_sectionRanges->__end_ - begin > section)
     {
-      p_location = &begin[a3].location;
+      p_location = &begin[section].location;
       v5 = *p_location;
       v4 = p_location[1];
     }
@@ -340,7 +340,7 @@ LABEL_12:
   return result;
 }
 
-- (int64_t)sectionForGlobalIndex:(int64_t)a3
+- (int64_t)sectionForGlobalIndex:(int64_t)index
 {
   begin = self->_sectionRanges.__begin_;
   end = self->_sectionRanges.__end_;
@@ -349,7 +349,7 @@ LABEL_12:
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  for (result = 0; a3 < begin->location || a3 - begin->location >= begin->length; ++result)
+  for (result = 0; index < begin->location || index - begin->location >= begin->length; ++result)
   {
     if (++begin == end)
     {
@@ -360,10 +360,10 @@ LABEL_12:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     LOBYTE(v16) = 1;
   }
@@ -373,9 +373,9 @@ LABEL_12:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(_UIDataSourceSnapshotter *)v5 numberOfSections];
-      if (v6 == [(_UIDataSourceSnapshotter *)self numberOfSections]&& (v7 = [(_UIDataSourceSnapshotter *)v5 numberOfItems], v7 == [(_UIDataSourceSnapshotter *)self numberOfItems]))
+      v5 = equalCopy;
+      numberOfSections = [(_UIDataSourceSnapshotter *)v5 numberOfSections];
+      if (numberOfSections == [(_UIDataSourceSnapshotter *)self numberOfSections]&& (v7 = [(_UIDataSourceSnapshotter *)v5 numberOfItems], v7 == [(_UIDataSourceSnapshotter *)self numberOfItems]))
       {
         begin = self->_sectionRanges.__begin_;
         end = self->_sectionRanges.__end_;
@@ -417,17 +417,17 @@ LABEL_12:
   return v16;
 }
 
-- (BOOL)indexPathIsSectionAppendingInsert:(id)a3
+- (BOOL)indexPathIsSectionAppendingInsert:(id)insert
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  insertCopy = insert;
+  v5 = insertCopy;
+  if (insertCopy)
   {
-    v6 = [v4 section];
-    v7 = [(_UIDataSourceSnapshotter *)self numberOfSections];
-    v8 = [v5 item];
-    v9 = [(_UIDataSourceSnapshotter *)self numberOfItemsInSection:v6];
-    v11 = v6 < v7 && v8 == v9;
+    section = [insertCopy section];
+    numberOfSections = [(_UIDataSourceSnapshotter *)self numberOfSections];
+    item = [v5 item];
+    v9 = [(_UIDataSourceSnapshotter *)self numberOfItemsInSection:section];
+    v11 = section < numberOfSections && item == v9;
   }
 
   else
@@ -438,14 +438,14 @@ LABEL_12:
   return v11;
 }
 
-- (id)indexPathForAppendingInsertInSection:(int64_t)a3
+- (id)indexPathForAppendingInsertInSection:(int64_t)section
 {
   v5 = 0;
-  if ((a3 & 0x8000000000000000) == 0)
+  if ((section & 0x8000000000000000) == 0)
   {
-    if (self->_sectionRanges.__end_ - self->_sectionRanges.__begin_ > a3)
+    if (self->_sectionRanges.__end_ - self->_sectionRanges.__begin_ > section)
     {
-      v5 = [MEMORY[0x277CCAA70] indexPathForItem:-[_UIDataSourceSnapshotter numberOfItemsInSection:](self inSection:{"numberOfItemsInSection:", a3), a3}];
+      v5 = [MEMORY[0x277CCAA70] indexPathForItem:-[_UIDataSourceSnapshotter numberOfItemsInSection:](self inSection:{"numberOfItemsInSection:", section), section}];
     }
 
     v3 = vars8;
@@ -461,7 +461,7 @@ LABEL_12:
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(_UIDataSourceSnapshotter);
   v5 = v4;
@@ -476,19 +476,19 @@ LABEL_12:
   return v5;
 }
 
-- (BOOL)_decrementSectionCount:(int64_t)a3 byCount:(int64_t)a4
+- (BOOL)_decrementSectionCount:(int64_t)count byCount:(int64_t)byCount
 {
   begin = self->_sectionRanges.__begin_;
-  if (a3 >= self->_sectionRanges.__end_ - begin)
+  if (count >= self->_sectionRanges.__end_ - begin)
   {
     return 0;
   }
 
-  v7 = &begin[a3];
+  v7 = &begin[count];
   length = v7->length;
   p_length = &v7->length;
-  v10 = length - a4;
-  if (length < a4)
+  v10 = length - byCount;
+  if (length < byCount)
   {
     return 0;
   }
@@ -498,19 +498,19 @@ LABEL_12:
   return 1;
 }
 
-- (BOOL)_deleteSection:(int64_t)a3
+- (BOOL)_deleteSection:(int64_t)section
 {
   begin = self->_sectionRanges.__begin_;
   end = self->_sectionRanges.__end_;
   v5 = end - begin;
-  v7 = v5 > a3 && v5 > 0;
+  v7 = v5 > section && v5 > 0;
   if (v7)
   {
-    v9 = &begin[a3];
+    v9 = &begin[section];
     v10 = (end - &v9[1]);
     if (end != &v9[1])
     {
-      memmove(&begin[a3], &v9[1], end - &v9[1]);
+      memmove(&begin[section], &v9[1], end - &v9[1]);
     }
 
     self->_sectionRanges.__end_ = &v10[v9];
@@ -520,29 +520,29 @@ LABEL_12:
   return v7;
 }
 
-- (BOOL)_incrementSectionCount:(int64_t)a3 byCount:(int64_t)a4
+- (BOOL)_incrementSectionCount:(int64_t)count byCount:(int64_t)byCount
 {
   begin = self->_sectionRanges.__begin_;
   v6 = self->_sectionRanges.__end_ - begin;
-  if (v6 > a3)
+  if (v6 > count)
   {
-    begin[a3].length += a4;
+    begin[count].length += byCount;
     [(_UIDataSourceSnapshotter *)self _recomputeRangeLocations];
   }
 
-  return v6 > a3;
+  return v6 > count;
 }
 
-- (BOOL)_insertSection:(int64_t)a3 withInitialCount:(int64_t)a4
+- (BOOL)_insertSection:(int64_t)section withInitialCount:(int64_t)count
 {
   begin = self->_sectionRanges.__begin_;
   end = self->_sectionRanges.__end_;
   v7 = end - begin;
-  if (v7 >= a3)
+  if (v7 >= section)
   {
     v25.location = 0x7FFFFFFFFFFFFFFFLL;
-    v25.length = a4;
-    v9 = &begin[a3];
+    v25.length = count;
+    v9 = &begin[section];
     cap = self->_sectionRanges.__cap_;
     if (end >= cap)
     {
@@ -573,8 +573,8 @@ LABEL_12:
         std::__allocate_at_least[abi:nn200100]<std::allocator<_NSRange>>(v15);
       }
 
-      v16 = 16 * a3;
-      if (!a3)
+      v16 = 16 * section;
+      if (!section)
       {
         std::__allocate_at_least[abi:nn200100]<std::allocator<_NSRange>>(1uLL);
       }
@@ -637,22 +637,22 @@ LABEL_12:
     [(_UIDataSourceSnapshotter *)self _recomputeRangeLocations];
   }
 
-  return v7 >= a3;
+  return v7 >= section;
 }
 
-- (void)_resetToStateOfSnapshotter:(id)a3
+- (void)_resetToStateOfSnapshotter:(id)snapshotter
 {
-  v5 = a3;
-  v7 = v5;
-  if (!v5)
+  snapshotterCopy = snapshotter;
+  v7 = snapshotterCopy;
+  if (!snapshotterCopy)
   {
-    v6 = [MEMORY[0x277CCA890] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"_UIDataSourceSnapshotter.mm" lineNumber:351 description:{@"Invalid parameter not satisfying: %@", @"snapshotter != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIDataSourceSnapshotter.mm" lineNumber:351 description:{@"Invalid parameter not satisfying: %@", @"snapshotter != nil"}];
 
-    v5 = 0;
+    snapshotterCopy = 0;
   }
 
-  if (self != v5)
+  if (self != snapshotterCopy)
   {
     std::vector<_NSRange>::__assign_with_size[abi:nn200100]<_NSRange*,_NSRange*>(&self->_sectionRanges.__begin_, v7[1], v7[2], (v7[2] - v7[1]) >> 4);
   }

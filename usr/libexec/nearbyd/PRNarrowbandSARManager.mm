@@ -1,15 +1,15 @@
 @interface PRNarrowbandSARManager
 - (BOOL)clearSARStateOverride;
-- (BOOL)injectNarrowbandSARState:(int)a3;
+- (BOOL)injectNarrowbandSARState:(int)state;
 - (BOOL)startMonitoring;
-- (PRNarrowbandSARManager)initWithQueue:(id)a3 stateChangeHandler:(id)a4;
+- (PRNarrowbandSARManager)initWithQueue:(id)queue stateChangeHandler:(id)handler;
 - (id).cxx_construct;
 - (id)printableStateOnQueue;
-- (int)audioRouteToSARState:(int)a3;
+- (int)audioRouteToSARState:(int)state;
 - (int)checkCurrentAudioRoute;
 - (unsigned)getCurrentSARIndexOnQueue;
-- (unsigned)nbSARStateToSARIndex:(int)a3;
-- (void)audioRouteChanged:(id)a3;
+- (unsigned)nbSARStateToSARIndex:(int)index;
+- (void)audioRouteChanged:(id)changed;
 - (void)dealloc;
 - (void)initNarrowbandSARListner;
 - (void)stopMonitoring;
@@ -21,16 +21,16 @@
 - (int)checkCurrentAudioRoute
 {
   v2 = +[AVAudioSession sharedInstance];
-  v3 = [v2 currentRoute];
+  currentRoute = [v2 currentRoute];
 
-  if (v3)
+  if (currentRoute)
   {
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v4 = [v3 outputs];
-    v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    outputs = [currentRoute outputs];
+    v5 = [outputs countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v5)
     {
       v6 = *v13;
@@ -40,11 +40,11 @@
         {
           if (*v13 != v6)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(outputs);
           }
 
-          v8 = [*(*(&v12 + 1) + 8 * i) portType];
-          v9 = [v8 isEqualToString:AVAudioSessionPortBuiltInReceiver];
+          portType = [*(*(&v12 + 1) + 8 * i) portType];
+          v9 = [portType isEqualToString:AVAudioSessionPortBuiltInReceiver];
 
           if (v9)
           {
@@ -53,7 +53,7 @@
           }
         }
 
-        v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v5 = [outputs countByEnumeratingWithState:&v12 objects:v16 count:16];
         if (v5)
         {
           continue;
@@ -78,11 +78,11 @@ LABEL_12:
 - (void)updateSARStateIfRequired
 {
   dispatch_assert_queue_V2(self->_queue);
-  v3 = [(PRNarrowbandSARManager *)self checkCurrentAudioRoute];
+  checkCurrentAudioRoute = [(PRNarrowbandSARManager *)self checkCurrentAudioRoute];
   v4 = qword_1009F4A00;
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    sub_100004A08(__p, (&off_1009A3D08)[v3]);
+    sub_100004A08(__p, (&off_1009A3D08)[checkCurrentAudioRoute]);
     v5 = v16 >= 0 ? __p : __p[0];
     *buf = 136315138;
     *&buf[4] = v5;
@@ -93,7 +93,7 @@ LABEL_12:
     }
   }
 
-  v6 = [(PRNarrowbandSARManager *)self audioRouteToSARState:v3];
+  v6 = [(PRNarrowbandSARManager *)self audioRouteToSARState:checkCurrentAudioRoute];
   v7 = v6;
   if (!self->_sarStateInitialized || self->_systemSARState != v6)
   {
@@ -167,11 +167,11 @@ LABEL_12:
   }
 }
 
-- (PRNarrowbandSARManager)initWithQueue:(id)a3 stateChangeHandler:(id)a4
+- (PRNarrowbandSARManager)initWithQueue:(id)queue stateChangeHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  queueCopy = queue;
+  handlerCopy = handler;
+  if (!queueCopy)
   {
     v16 = +[NSAssertionHandler currentHandler];
     [v16 handleFailureInMethod:a2 object:self file:@"PRNarrowbandSARMonitor.mm" lineNumber:83 description:{@"Invalid parameter not satisfying: %@", @"queue"}];
@@ -183,7 +183,7 @@ LABEL_12:
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_queue, a3);
+    objc_storeStrong(&v10->_queue, queue);
     fNotificationCenter = v11->_fNotificationCenter;
     v11->_fNotificationCenter = 0;
 
@@ -194,7 +194,7 @@ LABEL_12:
     }
 
     v11->_systemSARState = 0;
-    v13 = objc_retainBlock(v9);
+    v13 = objc_retainBlock(handlerCopy);
     stateChangeHandler = v11->_stateChangeHandler;
     v11->_stateChangeHandler = v13;
   }
@@ -315,7 +315,7 @@ LABEL_10:
   }
 }
 
-- (void)audioRouteChanged:(id)a3
+- (void)audioRouteChanged:(id)changed
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -393,7 +393,7 @@ LABEL_10:
   return v3;
 }
 
-- (BOOL)injectNarrowbandSARState:(int)a3
+- (BOOL)injectNarrowbandSARState:(int)state
 {
   queue = self->_queue;
   v5[0] = _NSConcreteStackBlock;
@@ -401,7 +401,7 @@ LABEL_10:
   v5[2] = sub_1002F3FAC;
   v5[3] = &unk_10099E718;
   v5[4] = self;
-  v6 = a3;
+  stateCopy = state;
   dispatch_async(queue, v5);
   return 1;
 }
@@ -418,29 +418,29 @@ LABEL_10:
   return 1;
 }
 
-- (int)audioRouteToSARState:(int)a3
+- (int)audioRouteToSARState:(int)state
 {
-  if (a3 == 2)
+  if (state == 2)
   {
     return 2;
   }
 
   else
   {
-    return a3 == 1;
+    return state == 1;
   }
 }
 
-- (unsigned)nbSARStateToSARIndex:(int)a3
+- (unsigned)nbSARStateToSARIndex:(int)index
 {
-  if (a3 == 2)
+  if (index == 2)
   {
     return 2;
   }
 
   else
   {
-    return a3 == 1;
+    return index == 1;
   }
 }
 

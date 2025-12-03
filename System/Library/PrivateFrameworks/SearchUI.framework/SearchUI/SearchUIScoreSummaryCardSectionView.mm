@@ -1,15 +1,15 @@
 @interface SearchUIScoreSummaryCardSectionView
-+ (id)titleForScoreBoard:(id)a3 forDisplay:(BOOL)a4;
-- (BOOL)hasCommandForButtonItem:(id)a3;
-- (CGSize)containerView:(id)a3 systemLayoutSizeFittingSize:(CGSize)a4 forArrangedSubview:(id)a5;
-- (id)commandForButtonItem:(id)a3;
++ (id)titleForScoreBoard:(id)board forDisplay:(BOOL)display;
+- (BOOL)hasCommandForButtonItem:(id)item;
+- (CGSize)containerView:(id)view systemLayoutSizeFittingSize:(CGSize)size forArrangedSubview:(id)subview;
+- (id)commandForButtonItem:(id)item;
 - (id)setupContentView;
-- (void)containerView:(id)a3 willMeasureArrangedSubviewsFittingSize:(CGSize)a4 forReason:(int64_t)a5;
-- (void)didPressLeadingButtonForSplitHeader:(id)a3;
-- (void)didPressTrailingButtonForSplitHeader:(id)a3;
-- (void)performCommandForButtonItem:(id)a3;
-- (void)updateChevronVisible:(BOOL)a3 leaveSpaceForChevron:(BOOL)a4;
-- (void)updateWithRowModel:(id)a3;
+- (void)containerView:(id)view willMeasureArrangedSubviewsFittingSize:(CGSize)size forReason:(int64_t)reason;
+- (void)didPressLeadingButtonForSplitHeader:(id)header;
+- (void)didPressTrailingButtonForSplitHeader:(id)header;
+- (void)performCommandForButtonItem:(id)item;
+- (void)updateChevronVisible:(BOOL)visible leaveSpaceForChevron:(BOOL)chevron;
+- (void)updateWithRowModel:(id)model;
 @end
 
 @implementation SearchUIScoreSummaryCardSectionView
@@ -19,8 +19,8 @@
   v3 = objc_opt_new();
   [v3 disableUnbatchedUpdates];
   [(SearchUIScoreSummaryCardSectionView *)self setSplitHeaderView:v3];
-  v4 = [(SearchUIScoreSummaryCardSectionView *)self splitHeaderView];
-  [v4 setDelegate:self];
+  splitHeaderView = [(SearchUIScoreSummaryCardSectionView *)self splitHeaderView];
+  [splitHeaderView setDelegate:self];
 
   v5 = objc_opt_new();
   [v5 setHorizontalAlignment:3];
@@ -32,24 +32,24 @@
   return v5;
 }
 
-- (void)updateWithRowModel:(id)a3
+- (void)updateWithRowModel:(id)model
 {
   v13.receiver = self;
   v13.super_class = SearchUIScoreSummaryCardSectionView;
-  v4 = a3;
-  [(SearchUICardSectionView *)&v13 updateWithRowModel:v4];
-  v5 = [v4 cardSection];
+  modelCopy = model;
+  [(SearchUICardSectionView *)&v13 updateWithRowModel:modelCopy];
+  cardSection = [modelCopy cardSection];
 
-  v6 = [(SearchUIScoreSummaryCardSectionView *)self splitHeaderView];
+  splitHeaderView = [(SearchUIScoreSummaryCardSectionView *)self splitHeaderView];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __58__SearchUIScoreSummaryCardSectionView_updateWithRowModel___block_invoke;
   v9[3] = &unk_1E85B26A8;
-  v10 = v5;
-  v11 = v6;
-  v12 = self;
-  v7 = v6;
-  v8 = v5;
+  v10 = cardSection;
+  v11 = splitHeaderView;
+  selfCopy = self;
+  v7 = splitHeaderView;
+  v8 = cardSection;
   [v7 performBatchUpdates:v9];
 }
 
@@ -182,24 +182,24 @@ LABEL_7:
   [*(a1 + 40) setTrailingSubtitle:v48];
 }
 
-- (void)containerView:(id)a3 willMeasureArrangedSubviewsFittingSize:(CGSize)a4 forReason:(int64_t)a5
+- (void)containerView:(id)view willMeasureArrangedSubviewsFittingSize:(CGSize)size forReason:(int64_t)reason
 {
   v8.receiver = self;
   v8.super_class = SearchUIScoreSummaryCardSectionView;
-  [(SearchUICardSectionView *)&v8 containerView:a3 willMeasureArrangedSubviewsFittingSize:a5 forReason:a4.width, a4.height];
-  v6 = [(SearchUICardSectionView *)self isCompactWidth];
-  v7 = [(SearchUIScoreSummaryCardSectionView *)self splitHeaderView];
-  [v7 setUseCompactWidth:v6];
+  [(SearchUICardSectionView *)&v8 containerView:view willMeasureArrangedSubviewsFittingSize:reason forReason:size.width, size.height];
+  isCompactWidth = [(SearchUICardSectionView *)self isCompactWidth];
+  splitHeaderView = [(SearchUIScoreSummaryCardSectionView *)self splitHeaderView];
+  [splitHeaderView setUseCompactWidth:isCompactWidth];
 }
 
-- (CGSize)containerView:(id)a3 systemLayoutSizeFittingSize:(CGSize)a4 forArrangedSubview:(id)a5
+- (CGSize)containerView:(id)view systemLayoutSizeFittingSize:(CGSize)size forArrangedSubview:(id)subview
 {
-  height = a4.height;
-  width = a4.width;
-  v8 = a5;
-  v9 = [(SearchUIScoreSummaryCardSectionView *)self splitHeaderView];
+  height = size.height;
+  width = size.width;
+  subviewCopy = subview;
+  splitHeaderView = [(SearchUIScoreSummaryCardSectionView *)self splitHeaderView];
 
-  if (v9 == v8)
+  if (splitHeaderView == subviewCopy)
   {
     v12 = +[SearchUIUtilities isLargeIpad];
     v13 = 406.0;
@@ -218,7 +218,7 @@ LABEL_7:
       v11 = v13;
     }
 
-    [v8 effectiveLayoutSizeFittingSize:{v11, height}];
+    [subviewCopy effectiveLayoutSizeFittingSize:{v11, height}];
     v10 = v14;
   }
 
@@ -235,24 +235,24 @@ LABEL_7:
   return result;
 }
 
-- (void)updateChevronVisible:(BOOL)a3 leaveSpaceForChevron:(BOOL)a4
+- (void)updateChevronVisible:(BOOL)visible leaveSpaceForChevron:(BOOL)chevron
 {
   v4.receiver = self;
   v4.super_class = SearchUIScoreSummaryCardSectionView;
   [(SearchUICardSectionView *)&v4 updateChevronVisible:0 leaveSpaceForChevron:0];
 }
 
-+ (id)titleForScoreBoard:(id)a3 forDisplay:(BOOL)a4
++ (id)titleForScoreBoard:(id)board forDisplay:(BOOL)display
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = [v5 team1];
-  v7 = [v5 team2];
-  v8 = [v6 score];
-  if (v8)
+  displayCopy = display;
+  boardCopy = board;
+  team1 = [boardCopy team1];
+  team2 = [boardCopy team2];
+  score = [team1 score];
+  if (score)
   {
-    v9 = [v7 score];
-    v10 = v9 != 0;
+    score2 = [team2 score];
+    v10 = score2 != 0;
   }
 
   else
@@ -260,11 +260,11 @@ LABEL_7:
     v10 = 0;
   }
 
-  v11 = [v6 record];
-  if (v11)
+  record = [team1 record];
+  if (record)
   {
-    v12 = [v7 record];
-    v13 = v12 != 0;
+    record2 = [team2 record];
+    v13 = record2 != 0;
   }
 
   else
@@ -272,29 +272,29 @@ LABEL_7:
     v13 = 0;
   }
 
-  if (!v4)
+  if (!displayCopy)
   {
     v20 = MEMORY[0x1E696AEC0];
-    v18 = [v6 name];
+    name = [team1 name];
     if (v10)
     {
-      v19 = [v6 score];
-      v21 = [v7 name];
-      v22 = [v7 score];
-      v23 = [v5 subtitle];
-      v24 = [v20 stringWithFormat:@"%@, %@ – %@, %@\n %@", v18, v19, v21, v22, v23];
+      score3 = [team1 score];
+      name2 = [team2 name];
+      score4 = [team2 score];
+      subtitle = [boardCopy subtitle];
+      title = [v20 stringWithFormat:@"%@, %@ – %@, %@\n %@", name, score3, name2, score4, subtitle];
     }
 
     else
     {
       if (!v13)
       {
-        v19 = [v7 name];
-        [v20 stringWithFormat:@"%@ – %@", v18, v19];
-        v24 = LABEL_20:;
+        score3 = [team2 name];
+        [v20 stringWithFormat:@"%@ – %@", name, score3];
+        title = LABEL_20:;
 LABEL_21:
 
-        if (v24)
+        if (title)
         {
           goto LABEL_23;
         }
@@ -302,10 +302,10 @@ LABEL_21:
         goto LABEL_22;
       }
 
-      v19 = [v6 record];
-      v21 = [v7 name];
-      v22 = [v7 record];
-      v24 = [v20 stringWithFormat:@"%@, %@ – %@, %@", v18, v19, v21, v22];
+      score3 = [team1 record];
+      name2 = [team2 name];
+      score4 = [team2 record];
+      title = [v20 stringWithFormat:@"%@, %@ – %@, %@", name, score3, name2, score4];
     }
 
     goto LABEL_21;
@@ -313,62 +313,62 @@ LABEL_21:
 
   if (v10)
   {
-    v14 = [v6 score];
+    score5 = [team1 score];
     v15 = @"%@–%@";
-    if ([v14 length] <= 2)
+    if ([score5 length] <= 2)
     {
-      v16 = [v7 score];
-      if ([v16 length] <= 2)
+      score6 = [team2 score];
+      if ([score6 length] <= 2)
       {
         v15 = @"%@ – %@";
       }
     }
 
     v17 = MEMORY[0x1E696AEC0];
-    v18 = [v6 score];
-    v19 = [v7 score];
-    [v17 stringWithFormat:v15, v18, v19];
+    name = [team1 score];
+    score3 = [team2 score];
+    [v17 stringWithFormat:v15, name, score3];
     goto LABEL_20;
   }
 
 LABEL_22:
-  v24 = [v5 title];
+  title = [boardCopy title];
 LABEL_23:
 
-  return v24;
+  return title;
 }
 
-- (void)didPressLeadingButtonForSplitHeader:(id)a3
+- (void)didPressLeadingButtonForSplitHeader:(id)header
 {
-  v4 = [(SearchUICardSectionView *)self rowModel];
-  v7 = [v4 cardSection];
+  rowModel = [(SearchUICardSectionView *)self rowModel];
+  cardSection = [rowModel cardSection];
 
-  v5 = [v7 team1];
-  v6 = [v5 button];
-  [(SearchUIScoreSummaryCardSectionView *)self performCommandForButtonItem:v6];
+  team1 = [cardSection team1];
+  button = [team1 button];
+  [(SearchUIScoreSummaryCardSectionView *)self performCommandForButtonItem:button];
 }
 
-- (void)didPressTrailingButtonForSplitHeader:(id)a3
+- (void)didPressTrailingButtonForSplitHeader:(id)header
 {
-  v4 = [(SearchUICardSectionView *)self rowModel];
-  v7 = [v4 cardSection];
+  rowModel = [(SearchUICardSectionView *)self rowModel];
+  cardSection = [rowModel cardSection];
 
-  v5 = [v7 team2];
-  v6 = [v5 button];
-  [(SearchUIScoreSummaryCardSectionView *)self performCommandForButtonItem:v6];
+  team2 = [cardSection team2];
+  button = [team2 button];
+  [(SearchUIScoreSummaryCardSectionView *)self performCommandForButtonItem:button];
 }
 
-- (BOOL)hasCommandForButtonItem:(id)a3
+- (BOOL)hasCommandForButtonItem:(id)item
 {
-  v3 = [(SearchUIScoreSummaryCardSectionView *)self commandForButtonItem:a3];
+  v3 = [(SearchUIScoreSummaryCardSectionView *)self commandForButtonItem:item];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (void)performCommandForButtonItem:(id)a3
+- (void)performCommandForButtonItem:(id)item
 {
-  v3 = [(SearchUIScoreSummaryCardSectionView *)self commandForButtonItem:a3];
+  v3 = [(SearchUIScoreSummaryCardSectionView *)self commandForButtonItem:item];
   if (v3)
   {
     v5 = v3;
@@ -387,13 +387,13 @@ LABEL_23:
   }
 }
 
-- (id)commandForButtonItem:(id)a3
+- (id)commandForButtonItem:(id)item
 {
-  v4 = a3;
-  v5 = [(SearchUICardSectionView *)self rowModel];
-  v6 = [(SearchUICardSectionView *)self feedbackDelegate];
-  v7 = [SearchUIUtilities environmentForDelegate:v6];
-  v8 = [SearchUICommandHandler handlerForButton:v4 rowModel:v5 environment:v7];
+  itemCopy = item;
+  rowModel = [(SearchUICardSectionView *)self rowModel];
+  feedbackDelegate = [(SearchUICardSectionView *)self feedbackDelegate];
+  v7 = [SearchUIUtilities environmentForDelegate:feedbackDelegate];
+  v8 = [SearchUICommandHandler handlerForButton:itemCopy rowModel:rowModel environment:v7];
 
   return v8;
 }

@@ -1,10 +1,10 @@
 @interface AVAudioUnitComponent
-- (AVAudioUnitComponent)initWithComponentDescription:(AudioComponentDescription *)a3;
-- (AVAudioUnitComponent)initWithComponentDescription:(AudioComponentDescription *)a3 withAVAUManagerImpl:(AVAudioUnitComponentManagerImpl *)a4;
-- (BOOL)isComponentDescriptionMatch:(AudioComponentDescription *)a3;
+- (AVAudioUnitComponent)initWithComponentDescription:(AudioComponentDescription *)description;
+- (AVAudioUnitComponent)initWithComponentDescription:(AudioComponentDescription *)description withAVAUManagerImpl:(AVAudioUnitComponentManagerImpl *)impl;
+- (BOOL)isComponentDescriptionMatch:(AudioComponentDescription *)match;
 - (BOOL)passesAUVal;
 - (BOOL)supportsNumberInputChannels:(NSInteger)numInputChannels outputChannels:(NSInteger)numOutputChannels;
-- (BOOL)validateWithResults:(id)a3 inCompletionHandler:(id)a4;
+- (BOOL)validateWithResults:(id)results inCompletionHandler:(id)handler;
 - (NSArray)availableArchitectures;
 - (NSDictionary)configurationDictionary;
 - (NSString)localizedTypeName;
@@ -12,30 +12,30 @@
 - (NSURL)componentURL;
 - (NSURL)iconURL;
 - (UIImage)icon;
-- (id)GetTypeName:(unsigned int)a3;
+- (id)GetTypeName:(unsigned int)name;
 - (void)dealloc;
 - (void)setUserTagNames:(NSArray *)userTagNames;
 @end
 
 @implementation AVAudioUnitComponent
 
-- (BOOL)isComponentDescriptionMatch:(AudioComponentDescription *)a3
+- (BOOL)isComponentDescriptionMatch:(AudioComponentDescription *)match
 {
   if (self)
   {
     [(AVAudioUnitComponent *)self audioComponentDescription];
   }
 
-  return !a3->componentType && !a3->componentSubType && a3->componentManufacturer == 0;
+  return !match->componentType && !match->componentSubType && match->componentManufacturer == 0;
 }
 
-- (id)GetTypeName:(unsigned int)a3
+- (id)GetTypeName:(unsigned int)name
 {
-  if (a3 > 1635086187)
+  if (name > 1635086187)
   {
-    if (a3 <= 1635086950)
+    if (name <= 1635086950)
     {
-      switch(a3)
+      switch(name)
       {
         case 0x61756F6Cu:
           return @"Offline Effect";
@@ -46,14 +46,14 @@
       }
     }
 
-    else if (a3 > 1635086956)
+    else if (name > 1635086956)
     {
-      if (a3 == 1635086957)
+      if (name == 1635086957)
       {
         return @"Remote Music Effect";
       }
 
-      if (a3 == 1635086968)
+      if (name == 1635086968)
       {
         return @"Remote Effect";
       }
@@ -61,21 +61,21 @@
 
     else
     {
-      if (a3 == 1635086951)
+      if (name == 1635086951)
       {
         return @"Remote Generator";
       }
 
-      if (a3 == 1635086953)
+      if (name == 1635086953)
       {
         return @"Remote Instrument";
       }
     }
   }
 
-  else if (a3 <= 1635085669)
+  else if (name <= 1635085669)
   {
-    switch(a3)
+    switch(name)
     {
       case 0x61756663u:
         return @"Format Converter";
@@ -86,14 +86,14 @@
     }
   }
 
-  else if (a3 > 1635085684)
+  else if (name > 1635085684)
   {
-    if (a3 == 1635085685)
+    if (name == 1635085685)
     {
       return @"Music Device";
     }
 
-    if (a3 == 1635085688)
+    if (name == 1635085688)
     {
       return @"Mixer";
     }
@@ -101,12 +101,12 @@
 
   else
   {
-    if (a3 == 1635085670)
+    if (name == 1635085670)
     {
       return @"Music Effect";
     }
 
-    if (a3 == 1635085673)
+    if (name == 1635085673)
     {
       return @"MIDI Processor";
     }
@@ -119,14 +119,14 @@
 {
   v6 = [MEMORY[0x1E696AD98] numberWithInteger:numInputChannels];
   v7 = [MEMORY[0x1E696AD98] numberWithInteger:numOutputChannels];
-  v8 = [(AVAudioUnitComponent *)self configurationDictionary];
-  if (!v8)
+  configurationDictionary = [(AVAudioUnitComponent *)self configurationDictionary];
+  if (!configurationDictionary)
   {
     return 0;
   }
 
-  v9 = v8;
-  v10 = [(NSDictionary *)v8 objectForKey:@"InitialInputs"];
+  v9 = configurationDictionary;
+  v10 = [(NSDictionary *)configurationDictionary objectForKey:@"InitialInputs"];
   v11 = [(NSDictionary *)v9 objectForKey:@"InitialOutputs"];
   if (!v10)
   {
@@ -142,15 +142,15 @@
   return [v12 containsObject:v7];
 }
 
-- (BOOL)validateWithResults:(id)a3 inCompletionHandler:(id)a4
+- (BOOL)validateWithResults:(id)results inCompletionHandler:(id)handler
 {
   v4 = *(self->_impl + 1);
   inCompletionHandler[0] = MEMORY[0x1E69E9820];
   inCompletionHandler[1] = 3221225472;
   inCompletionHandler[2] = __64__AVAudioUnitComponent_validateWithResults_inCompletionHandler___block_invoke;
   inCompletionHandler[3] = &unk_1E7EF5340;
-  inCompletionHandler[4] = a4;
-  return AudioComponentValidateWithResults(v4, a3, inCompletionHandler) == 0;
+  inCompletionHandler[4] = handler;
+  return AudioComponentValidateWithResults(v4, results, inCompletionHandler) == 0;
 }
 
 - (NSDictionary)configurationDictionary
@@ -223,32 +223,32 @@
 
 - (void)setUserTagNames:(NSArray *)userTagNames
 {
-  v3 = userTagNames;
+  allObjects = userTagNames;
   if (userTagNames)
   {
     if ([(NSArray *)userTagNames count])
     {
-      v3 = [MEMORY[0x1E695DFD8] setWithArray:v3];
-      if (-[NSArray isSubsetOfSet:](v3, "isSubsetOfSet:", [MEMORY[0x1E695DFD8] setWithArray:*(self->_impl + 11)]))
+      allObjects = [MEMORY[0x1E695DFD8] setWithArray:allObjects];
+      if (-[NSArray isSubsetOfSet:](allObjects, "isSubsetOfSet:", [MEMORY[0x1E695DFD8] setWithArray:*(self->_impl + 11)]))
       {
         return;
       }
 
-      if (v3)
+      if (allObjects)
       {
-        v3 = [(NSArray *)v3 allObjects];
+        allObjects = [(NSArray *)allObjects allObjects];
       }
     }
 
     else
     {
-      v3 = 0;
+      allObjects = 0;
     }
   }
 
   impl = self->_impl;
   v6 = *(impl + 11);
-  if (v6 != v3)
+  if (v6 != allObjects)
   {
     if (!v6)
     {
@@ -257,16 +257,16 @@
     }
 
     [(NSArray *)v6 removeAllObjects];
-    if ([(NSArray *)v3 count])
+    if ([(NSArray *)allObjects count])
     {
-      [*(impl + 11) addObjectsFromArray:v3];
+      [*(impl + 11) addObjectsFromArray:allObjects];
     }
 
     operator new();
   }
 
   v7 = *(impl + 15);
-  v8 = v3;
+  v8 = allObjects;
   if (v8)
   {
     v9 = [MEMORY[0x1E695DFD8] setWithArray:v8];
@@ -282,14 +282,14 @@
       [v10 unionSet:v9];
       [*(v7 + 16) removeAllObjects];
       v11 = *(v7 + 16);
-      v12 = [v10 allObjects];
-      [v11 addObjectsFromArray:v12];
+      allObjects2 = [v10 allObjects];
+      [v11 addObjectsFromArray:allObjects2];
     }
   }
 
-  v13 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
 
-  [v13 postNotificationName:@"AVAudioUnitComponentTagsDidChangeNotification" object:self];
+  [defaultCenter postNotificationName:@"AVAudioUnitComponentTagsDidChangeNotification" object:self];
 }
 
 - (UIImage)icon
@@ -324,14 +324,14 @@
 - (NSString)localizedTypeName
 {
   impl = self->_impl;
-  v3 = [(AVAudioUnitComponent *)self typeName];
+  typeName = [(AVAudioUnitComponent *)self typeName];
   result = *(impl + 8);
-  if (v3 && !result)
+  if (typeName && !result)
   {
     BundleWithIdentifier = CFBundleGetBundleWithIdentifier(@"com.apple.audio.units.Components");
     if (BundleWithIdentifier)
     {
-      result = CFBundleCopyLocalizedString(BundleWithIdentifier, v3, v3, @"AudioUnitTypes");
+      result = CFBundleCopyLocalizedString(BundleWithIdentifier, typeName, typeName, @"AudioUnitTypes");
       *(impl + 8) = result;
     }
 
@@ -357,7 +357,7 @@
   [(AVAudioUnitComponent *)&v4 dealloc];
 }
 
-- (AVAudioUnitComponent)initWithComponentDescription:(AudioComponentDescription *)a3 withAVAUManagerImpl:(AVAudioUnitComponentManagerImpl *)a4
+- (AVAudioUnitComponent)initWithComponentDescription:(AudioComponentDescription *)description withAVAUManagerImpl:(AVAudioUnitComponentManagerImpl *)impl
 {
   v5.receiver = self;
   v5.super_class = AVAudioUnitComponent;
@@ -370,7 +370,7 @@
   return 0;
 }
 
-- (AVAudioUnitComponent)initWithComponentDescription:(AudioComponentDescription *)a3
+- (AVAudioUnitComponent)initWithComponentDescription:(AudioComponentDescription *)description
 {
   v4.receiver = self;
   v4.super_class = AVAudioUnitComponent;

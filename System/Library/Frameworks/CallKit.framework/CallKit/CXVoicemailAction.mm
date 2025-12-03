@@ -1,29 +1,29 @@
 @interface CXVoicemailAction
-- (CXVoicemailAction)initWithCoder:(id)a3;
-- (CXVoicemailAction)initWithVoicemailUUID:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CXVoicemailAction)initWithCoder:(id)coder;
+- (CXVoicemailAction)initWithVoicemailUUID:(id)d;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)customDescription;
-- (id)sanitizedCopyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)updateSanitizedCopy:(id)a3 withZone:(_NSZone *)a4;
+- (id)sanitizedCopyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
+- (void)updateSanitizedCopy:(id)copy withZone:(_NSZone *)zone;
 @end
 
 @implementation CXVoicemailAction
 
-- (CXVoicemailAction)initWithVoicemailUUID:(id)a3
+- (CXVoicemailAction)initWithVoicemailUUID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v8.receiver = self;
   v8.super_class = CXVoicemailAction;
   v6 = [(CXAction *)&v8 init];
   if (v6)
   {
-    if (!v5)
+    if (!dCopy)
     {
       [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"%s: parameter '%@' cannot be nil", "-[CXVoicemailAction initWithVoicemailUUID:]", @"voicemailUUID"}];
     }
 
-    objc_storeStrong(&v6->_voicemailUUID, a3);
+    objc_storeStrong(&v6->_voicemailUUID, d);
   }
 
   return v6;
@@ -33,56 +33,56 @@
 {
   v7.receiver = self;
   v7.super_class = CXVoicemailAction;
-  v3 = [(CXAction *)&v7 customDescription];
-  v4 = [(CXVoicemailAction *)self voicemailUUID];
-  v5 = [v4 UUIDString];
-  [v3 appendFormat:@" voicemailUUID=%@", v5];
+  customDescription = [(CXAction *)&v7 customDescription];
+  voicemailUUID = [(CXVoicemailAction *)self voicemailUUID];
+  uUIDString = [voicemailUUID UUIDString];
+  [customDescription appendFormat:@" voicemailUUID=%@", uUIDString];
 
-  return v3;
+  return customDescription;
 }
 
-- (void)updateSanitizedCopy:(id)a3 withZone:(_NSZone *)a4
+- (void)updateSanitizedCopy:(id)copy withZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = CXVoicemailAction;
-  v6 = a3;
-  [(CXAction *)&v8 updateSanitizedCopy:v6 withZone:a4];
+  copyCopy = copy;
+  [(CXAction *)&v8 updateSanitizedCopy:copyCopy withZone:zone];
   v7 = [(CXVoicemailAction *)self voicemailUUID:v8.receiver];
-  [v6 setVoicemailUUID:v7];
+  [copyCopy setVoicemailUUID:v7];
 }
 
-- (id)sanitizedCopyWithZone:(_NSZone *)a3
+- (id)sanitizedCopyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_opt_class() allocWithZone:a3];
-  v6 = [(CXVoicemailAction *)self voicemailUUID];
-  v7 = [v5 initWithVoicemailUUID:v6];
+  v5 = [objc_opt_class() allocWithZone:zone];
+  voicemailUUID = [(CXVoicemailAction *)self voicemailUUID];
+  v7 = [v5 initWithVoicemailUUID:voicemailUUID];
 
-  [(CXVoicemailAction *)self updateSanitizedCopy:v7 withZone:a3];
+  [(CXVoicemailAction *)self updateSanitizedCopy:v7 withZone:zone];
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_opt_class() allocWithZone:a3];
-  v6 = [(CXVoicemailAction *)self voicemailUUID];
-  v7 = [v5 initWithVoicemailUUID:v6];
+  v5 = [objc_opt_class() allocWithZone:zone];
+  voicemailUUID = [(CXVoicemailAction *)self voicemailUUID];
+  v7 = [v5 initWithVoicemailUUID:voicemailUUID];
 
-  [(CXAction *)self updateCopy:v7 withZone:a3];
+  [(CXAction *)self updateCopy:v7 withZone:zone];
   return v7;
 }
 
-- (CXVoicemailAction)initWithCoder:(id)a3
+- (CXVoicemailAction)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = CXVoicemailAction;
-  v5 = [(CXAction *)&v11 initWithCoder:v4];
+  v5 = [(CXAction *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = objc_opt_class();
     v7 = NSStringFromSelector(sel_voicemailUUID);
-    v8 = [v4 decodeObjectOfClass:v6 forKey:v7];
+    v8 = [coderCopy decodeObjectOfClass:v6 forKey:v7];
     voicemailUUID = v5->_voicemailUUID;
     v5->_voicemailUUID = v8;
   }
@@ -90,15 +90,15 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = CXVoicemailAction;
-  v4 = a3;
-  [(CXAction *)&v7 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(CXAction *)&v7 encodeWithCoder:coderCopy];
   v5 = [(CXVoicemailAction *)self voicemailUUID:v7.receiver];
   v6 = NSStringFromSelector(sel_voicemailUUID);
-  [v4 encodeObject:v5 forKey:v6];
+  [coderCopy encodeObject:v5 forKey:v6];
 }
 
 @end

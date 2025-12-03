@@ -20,9 +20,9 @@
   v11 = 0u;
   v12 = 0u;
   v2 = [(SearchResultTableViewCellInvertColorsAccessibility *)self safeUIViewForKey:@"_containerStackView", 0];
-  v3 = [v2 subviews];
+  subviews = [v2 subviews];
 
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v4 = [subviews countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -34,7 +34,7 @@
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(subviews);
         }
 
         v8 = *(*(&v9 + 1) + 8 * v7);
@@ -48,7 +48,7 @@
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [subviews countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);

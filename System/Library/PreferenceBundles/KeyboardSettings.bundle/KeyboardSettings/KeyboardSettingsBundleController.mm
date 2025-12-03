@@ -1,16 +1,16 @@
 @interface KeyboardSettingsBundleController
-- (id)specifiersWithSpecifier:(id)a3;
+- (id)specifiersWithSpecifier:(id)specifier;
 - (void)dealloc;
 @end
 
 @implementation KeyboardSettingsBundleController
 
-- (id)specifiersWithSpecifier:(id)a3
+- (id)specifiersWithSpecifier:(id)specifier
 {
   if (!self->_specifier)
   {
     v5 = PSIDKey;
-    if ([objc_msgSend(a3 propertyForKey:{PSIDKey), "isEqualToString:", @"General"}])
+    if ([objc_msgSend(specifier propertyForKey:{PSIDKey), "isEqualToString:", @"General"}])
     {
       v6 = [[NSBundle bundleForClass:?]value:"localizedStringForKey:value:table:" table:@"Keyboard", &stru_49C80, @"Keyboard"];
       specifier = [PSSpecifier preferenceSpecifierNamed:v6 target:0 set:0 get:0 detail:objc_opt_class() cell:1 edit:0];
@@ -20,7 +20,7 @@
 
     else
     {
-      if ([objc_msgSend(a3 propertyForKey:{v5), "isEqualToString:", @"Keyboard"}])
+      if ([objc_msgSend(specifier propertyForKey:{v5), "isEqualToString:", @"Keyboard"}])
       {
         v9 = [[NSBundle bundleForClass:?]value:"localizedStringForKey:value:table:" table:@"KEYBOARDS", &stru_49C80, @"Keyboard"];
         specifier = [PSSpecifier preferenceSpecifierNamed:v9 target:self set:0 get:"keyboardsValue:" detail:objc_opt_class() cell:2 edit:0];
@@ -30,7 +30,7 @@
       else
       {
         v10 = PSAppSettingsBundleIDKey;
-        v11 = [a3 propertyForKey:PSAppSettingsBundleIDKey];
+        v11 = [specifier propertyForKey:PSAppSettingsBundleIDKey];
         if (![+[TIKeyboardExtensionController keyboardsForBundleID:](TIKeyboardExtensionController keyboardsForBundleID:{v11), "count"}])
         {
           return &__NSArray0__struct;

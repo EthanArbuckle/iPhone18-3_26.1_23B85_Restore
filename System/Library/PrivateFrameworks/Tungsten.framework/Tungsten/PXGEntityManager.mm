@@ -1,21 +1,21 @@
 @interface PXGEntityManager
 - ($738B17BD11CC339B30296C0EA03CEC2B)createEntity;
-- (BOOL)_hasObserversForComponent:(id)a3;
+- (BOOL)_hasObserversForComponent:(id)component;
 - (PXGEffectComponent)effectComponent;
 - (PXGEntityManager)init;
-- (PXGEntityManager)initWithQueue:(id)a3;
+- (PXGEntityManager)initWithQueue:(id)queue;
 - (PXGLoadingStatusComponent)loadingStatus;
-- (id)componentForClass:(Class)a3;
-- (id)componentsForComponentClasses:(id)a3;
+- (id)componentForClass:(Class)class;
+- (id)componentsForComponentClasses:(id)classes;
 - (id)description;
-- (void)_configureComponent:(id)a3;
-- (void)_notifyChangesForComponent:(id)a3;
+- (void)_configureComponent:(id)component;
+- (void)_notifyChangesForComponent:(id)component;
 - (void)cleanupUnusedObjects;
-- (void)componentDidPerformChanges:(id)a3;
-- (void)createEntitiesWithCount:(int64_t)a3 addingToArray:(id *)a4;
-- (void)destroyEntities:(id *)a3 count:(int64_t)a4;
-- (void)registerObserver:(id)a3 forComponents:(id)a4;
-- (void)setCapacity:(int64_t)a3;
+- (void)componentDidPerformChanges:(id)changes;
+- (void)createEntitiesWithCount:(int64_t)count addingToArray:(id *)array;
+- (void)destroyEntities:(id *)entities count:(int64_t)count;
+- (void)registerObserver:(id)observer forComponents:(id)components;
+- (void)setCapacity:(int64_t)capacity;
 @end
 
 @implementation PXGEntityManager
@@ -68,43 +68,43 @@
   }
 }
 
-- (void)componentDidPerformChanges:(id)a3
+- (void)componentDidPerformChanges:(id)changes
 {
-  v10 = a3;
+  changesCopy = changes;
   --self->_componentsPerformingChangesCount;
-  v4 = [(PXGEntityManager *)self _hasObserversForComponent:v10];
-  v5 = [v10 previousDataStore];
-  v6 = [v10 dataStore];
+  v4 = [(PXGEntityManager *)self _hasObserversForComponent:changesCopy];
+  previousDataStore = [changesCopy previousDataStore];
+  dataStore = [changesCopy dataStore];
   if (v4)
   {
-    v7 = [v5 isEqual:v6];
+    v7 = [previousDataStore isEqual:dataStore];
 
     if ((v7 & 1) == 0)
     {
-      v8 = [v10 previousDataStore];
-      v9 = [v10 dataStore];
-      [v8 setContentsFrom:v9];
+      previousDataStore2 = [changesCopy previousDataStore];
+      dataStore2 = [changesCopy dataStore];
+      [previousDataStore2 setContentsFrom:dataStore2];
 
-      [(PXGEntityManager *)self _notifyChangesForComponent:v10];
+      [(PXGEntityManager *)self _notifyChangesForComponent:changesCopy];
     }
   }
 
   else
   {
-    [v5 setContentsFrom:v6];
+    [previousDataStore setContentsFrom:dataStore];
   }
 }
 
-- (void)registerObserver:(id)a3 forComponents:(id)a4
+- (void)registerObserver:(id)observer forComponents:(id)components
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  observerCopy = observer;
+  componentsCopy = components;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v8 = [componentsCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v8)
   {
     v9 = v8;
@@ -115,32 +115,32 @@
       {
         if (*v15 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(componentsCopy);
         }
 
         v12 = *(*(&v14 + 1) + 8 * i);
-        v13 = [(NSMapTable *)self->_observersByComponent objectForKey:v12];
-        if (!v13)
+        weakObjectsHashTable = [(NSMapTable *)self->_observersByComponent objectForKey:v12];
+        if (!weakObjectsHashTable)
         {
-          v13 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
-          [(NSMapTable *)self->_observersByComponent setObject:v13 forKey:v12];
+          weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+          [(NSMapTable *)self->_observersByComponent setObject:weakObjectsHashTable forKey:v12];
         }
 
-        [v13 addObject:v6];
+        [weakObjectsHashTable addObject:observerCopy];
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v9 = [componentsCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v9);
   }
 }
 
-- (void)_notifyChangesForComponent:(id)a3
+- (void)_notifyChangesForComponent:(id)component
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(NSMapTable *)self->_observersByComponent objectForKey:v4];
+  componentCopy = component;
+  v5 = [(NSMapTable *)self->_observersByComponent objectForKey:componentCopy];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -160,7 +160,7 @@
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v10 + 1) + 8 * v9++) entityManager:self componentDidChange:v4];
+        [*(*(&v10 + 1) + 8 * v9++) entityManager:self componentDidChange:componentCopy];
       }
 
       while (v7 != v9);
@@ -171,59 +171,59 @@
   }
 }
 
-- (BOOL)_hasObserversForComponent:(id)a3
+- (BOOL)_hasObserversForComponent:(id)component
 {
-  v3 = [(NSMapTable *)self->_observersByComponent objectForKey:a3];
+  v3 = [(NSMapTable *)self->_observersByComponent objectForKey:component];
   v4 = [v3 count] != 0;
 
   return v4;
 }
 
-- (id)componentsForComponentClasses:(id)a3
+- (id)componentsForComponentClasses:(id)classes
 {
   v3 = PFMap();
 
   return v3;
 }
 
-- (id)componentForClass:(Class)a3
+- (id)componentForClass:(Class)class
 {
-  v5 = [(NSMapTable *)self->_componentByClass objectForKey:?];
-  if (!v5)
+  createWithDefaultDataStore = [(NSMapTable *)self->_componentByClass objectForKey:?];
+  if (!createWithDefaultDataStore)
   {
-    v5 = [(objc_class *)a3 createWithDefaultDataStore];
-    [v5 setObserver:self];
-    [(PXGEntityManager *)self _configureComponent:v5];
-    [(NSMapTable *)self->_componentByClass setObject:v5 forKey:a3];
-    [(NSMutableArray *)self->_components addObject:v5];
+    createWithDefaultDataStore = [(objc_class *)class createWithDefaultDataStore];
+    [createWithDefaultDataStore setObserver:self];
+    [(PXGEntityManager *)self _configureComponent:createWithDefaultDataStore];
+    [(NSMapTable *)self->_componentByClass setObject:createWithDefaultDataStore forKey:class];
+    [(NSMutableArray *)self->_components addObject:createWithDefaultDataStore];
   }
 
-  return v5;
+  return createWithDefaultDataStore;
 }
 
-- (void)_configureComponent:(id)a3
+- (void)_configureComponent:(id)component
 {
-  v4 = a3;
-  v5 = [(PXGEntityManager *)self capacity];
-  v6 = [v4 dataStore];
-  [v6 setCapacity:v5];
+  componentCopy = component;
+  capacity = [(PXGEntityManager *)self capacity];
+  dataStore = [componentCopy dataStore];
+  [dataStore setCapacity:capacity];
 
-  v7 = [(PXGEntityManager *)self capacity];
-  v8 = [v4 previousDataStore];
+  capacity2 = [(PXGEntityManager *)self capacity];
+  previousDataStore = [componentCopy previousDataStore];
 
-  [v8 setCapacity:v7];
+  [previousDataStore setCapacity:capacity2];
 }
 
-- (void)destroyEntities:(id *)a3 count:(int64_t)a4
+- (void)destroyEntities:(id *)entities count:(int64_t)count
 {
   v20 = *MEMORY[0x277D85DE8];
-  if (a4)
+  if (count)
   {
-    v4 = a4;
+    countCopy = count;
     if (self->_componentsPerformingChangesCount)
     {
-      v14 = [MEMORY[0x277CCA890] currentHandler];
-      [v14 handleFailureInMethod:a2 object:self file:@"PXGEntityManager.m" lineNumber:99 description:{@"Destroying entity while changing components, this is not supported."}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXGEntityManager.m" lineNumber:99 description:{@"Destroying entity while changing components, this is not supported."}];
     }
 
     v17 = 0u;
@@ -246,7 +246,7 @@
             objc_enumerationMutation(v7);
           }
 
-          [*(*(&v15 + 1) + 8 * v11++) willDestroyEntities:a3 count:{v4, v15}];
+          [*(*(&v15 + 1) + 8 * v11++) willDestroyEntities:entities count:{countCopy, v15}];
         }
 
         while (v9 != v11);
@@ -256,46 +256,46 @@
       while (v9);
     }
 
-    if (v4 >= 1)
+    if (countCopy >= 1)
     {
       do
       {
-        var0 = a3->var0;
-        ++a3;
+        var0 = entities->var0;
+        ++entities;
         [(NSMutableIndexSet *)self->_reusableEntityIDs addIndex:var0, v15];
-        --v4;
+        --countCopy;
       }
 
-      while (v4);
+      while (countCopy);
     }
   }
 }
 
-- (void)createEntitiesWithCount:(int64_t)a3 addingToArray:(id *)a4
+- (void)createEntitiesWithCount:(int64_t)count addingToArray:(id *)array
 {
   if (self->_componentsPerformingChangesCount)
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"PXGEntityManager.m" lineNumber:77 description:{@"Creating entity while changing components, this is not supported."}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGEntityManager.m" lineNumber:77 description:{@"Creating entity while changing components, this is not supported."}];
   }
 
   v7 = [(NSMutableIndexSet *)self->_reusableEntityIDs count];
-  [(PXGEntityManager *)self setCapacity:((a3 - v7) & ~((a3 - v7) >> 63)) + [(PXGEntityManager *)self capacity]];
+  [(PXGEntityManager *)self setCapacity:((count - v7) & ~((count - v7) >> 63)) + [(PXGEntityManager *)self capacity]];
   v8 = self->_reusableEntityIDs;
-  if (a3 >= 1)
+  if (count >= 1)
   {
     v12 = v8;
     do
     {
-      v9 = [(NSMutableIndexSet *)v12 firstIndex];
-      [(NSMutableIndexSet *)v12 removeIndex:v9];
+      firstIndex = [(NSMutableIndexSet *)v12 firstIndex];
+      [(NSMutableIndexSet *)v12 removeIndex:firstIndex];
       v8 = v12;
-      a4->var0 = v9;
-      ++a4;
-      --a3;
+      array->var0 = firstIndex;
+      ++array;
+      --count;
     }
 
-    while (a3);
+    while (count);
   }
 }
 
@@ -306,22 +306,22 @@
   return v3;
 }
 
-- (void)setCapacity:(int64_t)a3
+- (void)setCapacity:(int64_t)capacity
 {
   v18 = *MEMORY[0x277D85DE8];
   capacity = self->_capacity;
-  if (capacity != a3)
+  if (capacity != capacity)
   {
-    if (capacity >= a3)
+    if (capacity >= capacity)
     {
-      v12 = [MEMORY[0x277CCA890] currentHandler];
-      [v12 handleFailureInMethod:a2 object:self file:@"PXGEntityManager.m" lineNumber:60 description:{@"Invalid parameter not satisfying: %@", @"capacity > _capacity"}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXGEntityManager.m" lineNumber:60 description:{@"Invalid parameter not satisfying: %@", @"capacity > _capacity"}];
 
       capacity = self->_capacity;
     }
 
-    self->_capacity = a3;
-    [(NSMutableIndexSet *)self->_reusableEntityIDs addIndexesInRange:capacity, a3 - capacity];
+    self->_capacity = capacity;
+    [(NSMutableIndexSet *)self->_reusableEntityIDs addIndexesInRange:capacity, capacity - capacity];
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
@@ -359,38 +359,38 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(PXGEntityManager *)self capacity];
-  v7 = [(NSMutableIndexSet *)self->_reusableEntityIDs px_shortDescription];
-  v8 = [v3 stringWithFormat:@"<%@: %p, capacity:%ld, reusable:%@>", v5, self, v6, v7];
+  capacity = [(PXGEntityManager *)self capacity];
+  px_shortDescription = [(NSMutableIndexSet *)self->_reusableEntityIDs px_shortDescription];
+  v8 = [v3 stringWithFormat:@"<%@: %p, capacity:%ld, reusable:%@>", v5, self, capacity, px_shortDescription];
 
   return v8;
 }
 
 - (PXGEntityManager)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXGEntityManager.m" lineNumber:47 description:{@"%s is not available as initializer", "-[PXGEntityManager init]"}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXGEntityManager.m" lineNumber:47 description:{@"%s is not available as initializer", "-[PXGEntityManager init]"}];
 
   abort();
 }
 
-- (PXGEntityManager)initWithQueue:(id)a3
+- (PXGEntityManager)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v17.receiver = self;
   v17.super_class = PXGEntityManager;
   v6 = [(PXGEntityManager *)&v17 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_queue, a3);
-    v8 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+    objc_storeStrong(&v6->_queue, queue);
+    strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
     observersByComponent = v7->_observersByComponent;
-    v7->_observersByComponent = v8;
+    v7->_observersByComponent = strongToStrongObjectsMapTable;
 
-    v10 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable2 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
     componentByClass = v7->_componentByClass;
-    v7->_componentByClass = v10;
+    v7->_componentByClass = strongToStrongObjectsMapTable2;
 
     v12 = objc_alloc_init(MEMORY[0x277CBEB18]);
     components = v7->_components;

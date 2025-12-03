@@ -1,30 +1,30 @@
 @interface REHTMLTagElement
-- (REHTMLTagElement)initWithTag:(id)a3 content:(id)a4;
+- (REHTMLTagElement)initWithTag:(id)tag content:(id)content;
 - (id)_prefixContentString;
 - (id)_suffixContentString;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)elementByAddingClass:(id)a3;
-- (id)elementByAddingClasses:(id)a3;
-- (id)elementBySettingAtttibutes:(id)a3;
-- (id)elementBySettingClasses:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)elementByAddingClass:(id)class;
+- (id)elementByAddingClasses:(id)classes;
+- (id)elementBySettingAtttibutes:(id)atttibutes;
+- (id)elementBySettingClasses:(id)classes;
 @end
 
 @implementation REHTMLTagElement
 
-- (REHTMLTagElement)initWithTag:(id)a3 content:(id)a4
+- (REHTMLTagElement)initWithTag:(id)tag content:(id)content
 {
-  v6 = a3;
-  v7 = a4;
+  tagCopy = tag;
+  contentCopy = content;
   v16.receiver = self;
   v16.super_class = REHTMLTagElement;
   v8 = [(REHTMLElement *)&v16 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [tagCopy copy];
     tag = v8->_tag;
     v8->_tag = v9;
 
-    v11 = [v7 copy];
+    v11 = [contentCopy copy];
     content = v8->_content;
     v8->_content = v11;
 
@@ -186,9 +186,9 @@
   v3 = v17[5];
   if (!v3)
   {
-    v4 = [(REHTMLTagElement *)self _contentString];
+    _contentString = [(REHTMLTagElement *)self _contentString];
 
-    if (v4)
+    if (_contentString)
     {
       v5 = self->_tag;
       v6 = [(NSString *)v5 length];
@@ -225,11 +225,11 @@
   return v12;
 }
 
-- (id)elementByAddingClass:(id)a3
+- (id)elementByAddingClass:(id)class
 {
-  v4 = a3;
+  classCopy = class;
   v5 = [(REHTMLTagElement *)self copy];
-  v6 = [(NSArray *)self->_classes arrayByAddingObject:v4];
+  v6 = [(NSArray *)self->_classes arrayByAddingObject:classCopy];
 
   v7 = v5[4];
   v5[4] = v6;
@@ -237,11 +237,11 @@
   return v5;
 }
 
-- (id)elementByAddingClasses:(id)a3
+- (id)elementByAddingClasses:(id)classes
 {
-  v4 = a3;
+  classesCopy = classes;
   v5 = [(REHTMLTagElement *)self copy];
-  v6 = [(NSArray *)self->_classes arrayByAddingObjectsFromArray:v4];
+  v6 = [(NSArray *)self->_classes arrayByAddingObjectsFromArray:classesCopy];
 
   v7 = v5[4];
   v5[4] = v6;
@@ -249,11 +249,11 @@
   return v5;
 }
 
-- (id)elementBySettingClasses:(id)a3
+- (id)elementBySettingClasses:(id)classes
 {
-  v4 = a3;
+  classesCopy = classes;
   v5 = [(REHTMLTagElement *)self copy];
-  v6 = [v4 copy];
+  v6 = [classesCopy copy];
 
   v7 = v5[4];
   v5[4] = v6;
@@ -261,11 +261,11 @@
   return v5;
 }
 
-- (id)elementBySettingAtttibutes:(id)a3
+- (id)elementBySettingAtttibutes:(id)atttibutes
 {
-  v4 = a3;
+  atttibutesCopy = atttibutes;
   v5 = [(REHTMLTagElement *)self copy];
-  v6 = [v4 copy];
+  v6 = [atttibutesCopy copy];
 
   v7 = v5[5];
   v5[5] = v6;
@@ -273,11 +273,11 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = REHTMLTagElement;
-  v4 = [(REHTMLElement *)&v6 copyWithZone:a3];
+  v4 = [(REHTMLElement *)&v6 copyWithZone:zone];
   objc_storeStrong(v4 + 2, self->_tag);
   objc_storeStrong(v4 + 3, self->_content);
   objc_storeStrong(v4 + 5, self->_attributes);

@@ -23,9 +23,9 @@
 - (void)executionDidBegin
 {
   v3 = objc_alloc(MEMORY[0x277CBEA90]);
-  v4 = [(VSFileReadOperation *)self source];
+  source = [(VSFileReadOperation *)self source];
   v10 = 0;
-  v5 = [v3 initWithContentsOfURL:v4 options:0 error:&v10];
+  v5 = [v3 initWithContentsOfURL:source options:0 error:&v10];
   v6 = v10;
 
   if (v5)

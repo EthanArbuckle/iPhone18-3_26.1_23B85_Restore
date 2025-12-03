@@ -1,11 +1,11 @@
 @interface TrackedMessageListItems
-- (BOOL)hasMessageListItemForItemID:(id)a3;
+- (BOOL)hasMessageListItemForItemID:(id)d;
 - (NSArray)messageListItems;
 - (NSSet)itemIDsSet;
 - (TrackedMessageListItems)init;
-- (void)trackMessageListItemWithItemID:(id)a3;
-- (void)trackmessageListItem:(id)a3;
-- (void)updateMessageListItem:(id)a3;
+- (void)trackMessageListItemWithItemID:(id)d;
+- (void)trackmessageListItem:(id)item;
+- (void)updateMessageListItem:(id)item;
 @end
 
 @implementation TrackedMessageListItems
@@ -28,57 +28,57 @@
 - (NSSet)itemIDsSet
 {
   v2 = MEMORY[0x277CBEB98];
-  v3 = [(NSMutableDictionary *)self->_trackedItems allKeys];
-  v4 = [v2 setWithArray:v3];
+  allKeys = [(NSMutableDictionary *)self->_trackedItems allKeys];
+  v4 = [v2 setWithArray:allKeys];
 
   return v4;
 }
 
 - (NSArray)messageListItems
 {
-  v2 = [(NSMutableDictionary *)self->_trackedItems allValues];
-  v3 = [v2 ef_filter:*MEMORY[0x277D07110]];
+  allValues = [(NSMutableDictionary *)self->_trackedItems allValues];
+  v3 = [allValues ef_filter:*MEMORY[0x277D07110]];
 
   return v3;
 }
 
-- (BOOL)hasMessageListItemForItemID:(id)a3
+- (BOOL)hasMessageListItemForItemID:(id)d
 {
-  v3 = [(NSMutableDictionary *)self->_trackedItems objectForKeyedSubscript:a3];
+  v3 = [(NSMutableDictionary *)self->_trackedItems objectForKeyedSubscript:d];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (void)trackmessageListItem:(id)a3
+- (void)trackmessageListItem:(id)item
 {
   trackedItems = self->_trackedItems;
-  v4 = a3;
-  v5 = [v4 itemID];
-  [(NSMutableDictionary *)trackedItems setObject:v4 forKeyedSubscript:v5];
+  itemCopy = item;
+  itemID = [itemCopy itemID];
+  [(NSMutableDictionary *)trackedItems setObject:itemCopy forKeyedSubscript:itemID];
 }
 
-- (void)trackMessageListItemWithItemID:(id)a3
+- (void)trackMessageListItemWithItemID:(id)d
 {
   v4 = MEMORY[0x277CBEB68];
-  v5 = a3;
-  v6 = [v4 null];
-  [(NSMutableDictionary *)self->_trackedItems setObject:v6 forKeyedSubscript:v5];
+  dCopy = d;
+  null = [v4 null];
+  [(NSMutableDictionary *)self->_trackedItems setObject:null forKeyedSubscript:dCopy];
 }
 
-- (void)updateMessageListItem:(id)a3
+- (void)updateMessageListItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   trackedItems = self->_trackedItems;
-  v10 = v4;
-  v6 = [v4 itemID];
-  v7 = [(NSMutableDictionary *)trackedItems objectForKeyedSubscript:v6];
+  v10 = itemCopy;
+  itemID = [itemCopy itemID];
+  v7 = [(NSMutableDictionary *)trackedItems objectForKeyedSubscript:itemID];
 
   if (v7)
   {
     v8 = self->_trackedItems;
-    v9 = [v10 itemID];
-    [(NSMutableDictionary *)v8 setObject:v10 forKeyedSubscript:v9];
+    itemID2 = [v10 itemID];
+    [(NSMutableDictionary *)v8 setObject:v10 forKeyedSubscript:itemID2];
   }
 }
 

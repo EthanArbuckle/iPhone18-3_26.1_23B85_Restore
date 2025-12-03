@@ -1,22 +1,22 @@
 @interface _TVRelatedContentShelfView
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (UIView)shelfView;
-- (_TVRelatedContentShelfView)initWithFrame:(CGRect)a3;
+- (_TVRelatedContentShelfView)initWithFrame:(CGRect)frame;
 - (id)preferredFocusEnvironments;
 - (void)_layoutRelatedView;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
 - (void)layoutSubviews;
-- (void)setRelatedView:(id)a3;
-- (void)setShelfView:(id)a3;
+- (void)setRelatedView:(id)view;
+- (void)setShelfView:(id)view;
 @end
 
 @implementation _TVRelatedContentShelfView
 
-- (_TVRelatedContentShelfView)initWithFrame:(CGRect)a3
+- (_TVRelatedContentShelfView)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = _TVRelatedContentShelfView;
-  v3 = [(_TVRelatedContentShelfView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(_TVRelatedContentShelfView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [_TVRelatedWrappingView alloc];
@@ -30,9 +30,9 @@
   return v3;
 }
 
-- (void)setShelfView:(id)a3
+- (void)setShelfView:(id)view
 {
-  obj = a3;
+  obj = view;
   WeakRetained = objc_loadWeakRetained(&self->_shelfView);
 
   if (WeakRetained != obj)
@@ -51,20 +51,20 @@
   [(_TVRelatedContentShelfView *)self setNeedsLayout];
 }
 
-- (void)setRelatedView:(id)a3
+- (void)setRelatedView:(id)view
 {
-  v5 = a3;
-  if (self->_relatedView != v5)
+  viewCopy = view;
+  if (self->_relatedView != viewCopy)
   {
-    v15 = v5;
+    v15 = viewCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [(UIView *)v15 containerGuide];
-      [v6 setEnabled:0];
+      containerGuide = [(UIView *)v15 containerGuide];
+      [containerGuide setEnabled:0];
     }
 
-    objc_storeStrong(&self->_relatedView, a3);
+    objc_storeStrong(&self->_relatedView, view);
     if (self->_relatedView)
     {
       [(_TVRelatedContentShelfView *)self bounds];
@@ -87,13 +87,13 @@
 
     else
     {
-      v14 = [(_TVRelatedWrappingView *)self->_relatedWrappingView relatedView];
-      [v14 removeFromSuperview];
+      relatedView = [(_TVRelatedWrappingView *)self->_relatedWrappingView relatedView];
+      [relatedView removeFromSuperview];
 
       [(_TVRelatedWrappingView *)self->_relatedWrappingView setRelatedView:0];
     }
 
-    v5 = v15;
+    viewCopy = v15;
   }
 }
 
@@ -123,17 +123,17 @@ LABEL_5:
   return v4;
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v5 = [MEMORY[0x277D759A0] mainScreen];
-  v14 = [v5 focusedView];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  focusedView = [mainScreen focusedView];
 
   WeakRetained = objc_loadWeakRetained(&self->_shelfView);
   if (WeakRetained)
   {
     v7 = WeakRetained;
     v8 = objc_loadWeakRetained(&self->_shelfView);
-    v9 = [v8 isDescendantOfView:v14];
+    v9 = [v8 isDescendantOfView:focusedView];
 
     if (v9)
     {
@@ -147,7 +147,7 @@ LABEL_7:
   }
 
   relatedView = self->_relatedView;
-  if (relatedView && [(UIView *)relatedView isDescendantOfView:v14])
+  if (relatedView && [(UIView *)relatedView isDescendantOfView:focusedView])
   {
     v13 = self->_relatedView;
     lastFocusedView = self->_lastFocusedView;
@@ -177,9 +177,9 @@ LABEL_8:
   relatedView = self->_relatedView;
   if (relatedView)
   {
-    v14 = [(UIView *)relatedView superview];
+    superview = [(UIView *)relatedView superview];
 
-    if (!v14)
+    if (!superview)
     {
       [(_TVRelatedContentShelfView *)self _layoutRelatedView];
     }
@@ -197,13 +197,13 @@ LABEL_8:
   [WeakRetained bounds];
   v9 = v8;
 
-  v10 = [(_TVRelatedWrappingView *)self->_relatedWrappingView relatedView];
+  relatedView = [(_TVRelatedWrappingView *)self->_relatedWrappingView relatedView];
   [(_TVRelatedWrappingView *)self->_relatedWrappingView setRelatedView:self->_relatedView];
-  v11 = [(_TVFocusRedirectView *)self->_relatedWrappingView containerGuide];
-  [v11 setEnabled:1];
+  containerGuide = [(_TVFocusRedirectView *)self->_relatedWrappingView containerGuide];
+  [containerGuide setEnabled:1];
 
   [(_TVRelatedWrappingView *)self->_relatedWrappingView addSubview:self->_relatedView];
-  if (v10)
+  if (relatedView)
   {
     [(UIView *)self->_relatedView setAlpha:0.0];
     v12 = MEMORY[0x277D75D18];
@@ -211,8 +211,8 @@ LABEL_8:
     v43[1] = 3221225472;
     v43[2] = __48___TVRelatedContentShelfView__layoutRelatedView__block_invoke;
     v43[3] = &unk_279D6E2F8;
-    v44 = v10;
-    v45 = self;
+    v44 = relatedView;
+    selfCopy = self;
     v41[0] = MEMORY[0x277D85DD0];
     v41[1] = 3221225472;
     v41[2] = __48___TVRelatedContentShelfView__layoutRelatedView__block_invoke_2;
@@ -250,7 +250,7 @@ LABEL_8:
   }
 
   [(_TVRelatedWrappingView *)self->_relatedWrappingView setFrame:v25, v26, Width, v29, v35];
-  v30 = [(_TVRelatedContentShelfView *)self effectiveUserInterfaceLayoutDirection];
+  effectiveUserInterfaceLayoutDirection = [(_TVRelatedContentShelfView *)self effectiveUserInterfaceLayoutDirection];
   if (v14 == 0.0)
   {
     v47.origin.x = v25;
@@ -261,7 +261,7 @@ LABEL_8:
   }
 
   v31 = *(v24 + 8);
-  if (v30 == 1)
+  if (effectiveUserInterfaceLayoutDirection == 1)
   {
     v48.origin.y = v39;
     v48.origin.x = v40;
@@ -281,14 +281,14 @@ LABEL_8:
   v50.size.width = Width;
   v50.size.height = v29;
   v33 = CGRectGetWidth(v50);
-  v34 = [(_TVFocusRedirectView *)self->_relatedWrappingView containerGuide];
-  [v34 _setManualLayoutFrame:{0.0, v31, v33, v29}];
+  containerGuide2 = [(_TVFocusRedirectView *)self->_relatedWrappingView containerGuide];
+  [containerGuide2 _setManualLayoutFrame:{0.0, v31, v33, v29}];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   WeakRetained = objc_loadWeakRetained(&self->_shelfView);
   [WeakRetained sizeThatFits:{width, height}];
   v8 = v7;

@@ -1,7 +1,7 @@
 @interface ARDepthEstimationTechnique
 - (ARDepthEstimationTechnique)init;
 - (id)_fullDescription;
-- (id)createResultDataFromTensors:(id *)a3 numberOfOutputTensors:(unint64_t)a4 imageDataForNeuralNetwork:(id)a5 inputImageData:(id)a6 rotationNeeded:(int64_t)a7 regionOfInterest:(CGSize)a8;
+- (id)createResultDataFromTensors:(id *)tensors numberOfOutputTensors:(unint64_t)outputTensors imageDataForNeuralNetwork:(id)network inputImageData:(id)data rotationNeeded:(int64_t)needed regionOfInterest:(CGSize)interest;
 - (id)resultDataClasses;
 - (void)dealloc;
 @end
@@ -13,32 +13,32 @@
   v27[1] = *MEMORY[0x1E69E9840];
   v3 = ARCreateFixedPriorityDispatchQueue("com.apple.arkit.depthestimationtechnique");
   v4 = [objc_alloc(MEMORY[0x1E698C130]) initWithInputPrioritization:1];
-  v5 = [v4 inferenceDescriptor];
-  v6 = [v5 colorInput];
-  v7 = [v6 name];
+  inferenceDescriptor = [v4 inferenceDescriptor];
+  colorInput = [inferenceDescriptor colorInput];
+  name = [colorInput name];
 
-  v8 = [v4 inferenceDescriptor];
-  v9 = [v8 depthOutput];
-  v10 = [v9 name];
+  inferenceDescriptor2 = [v4 inferenceDescriptor];
+  depthOutput = [inferenceDescriptor2 depthOutput];
+  name2 = [depthOutput name];
 
-  v11 = [v4 inferenceDescriptor];
-  v12 = [v11 networkURL];
+  inferenceDescriptor3 = [v4 inferenceDescriptor];
+  networkURL = [inferenceDescriptor3 networkURL];
 
-  v13 = [v4 inferenceDescriptor];
-  v14 = [v13 colorInput];
-  v15 = [v14 imageDescriptor];
-  [v15 sizeForLayout:1];
+  inferenceDescriptor4 = [v4 inferenceDescriptor];
+  colorInput2 = [inferenceDescriptor4 colorInput];
+  imageDescriptor = [colorInput2 imageDescriptor];
+  [imageDescriptor sizeForLayout:1];
   v17 = v16;
   v19 = v18;
 
-  v27[0] = v7;
+  v27[0] = name;
   v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v27 count:1];
-  v26 = v10;
+  v26 = name2;
   v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v26 count:1];
-  v22 = [v12 path];
+  path = [networkURL path];
   v25.receiver = self;
   v25.super_class = ARDepthEstimationTechnique;
-  v23 = [(ARMLImageProcessingTechnique *)&v25 initWithDispatchQueue:v3 inputTensorNames:v20 outputTensorNames:v21 networkInputScaleBeforeRotation:v22 networkFilePath:v17, v19];
+  v23 = [(ARMLImageProcessingTechnique *)&v25 initWithDispatchQueue:v3 inputTensorNames:v20 outputTensorNames:v21 networkInputScaleBeforeRotation:path networkFilePath:v17, v19];
 
   if (v23)
   {
@@ -84,11 +84,11 @@
   v3 = MEMORY[0x1E696AD60];
   v16.receiver = self;
   v16.super_class = ARDepthEstimationTechnique;
-  v4 = [(ARImageBasedTechnique *)&v16 _fullDescription];
-  v5 = [v3 stringWithFormat:@"%@\n", v4];
+  _fullDescription = [(ARImageBasedTechnique *)&v16 _fullDescription];
+  v5 = [v3 stringWithFormat:@"%@\n", _fullDescription];
 
-  v6 = [(ARImageRotationTechnique *)self->_rotationTechnique _fullDescription];
-  v7 = [v6 description];
+  _fullDescription2 = [(ARImageRotationTechnique *)self->_rotationTechnique _fullDescription];
+  v7 = [_fullDescription2 description];
   v8 = [v7 stringByReplacingOccurrencesOfString:@"\n" withString:@"\n\t\t"];
   [v5 appendFormat:@"\tRotation Technique: %@\n\n", v8];
 
@@ -105,16 +105,16 @@
   return v5;
 }
 
-- (id)createResultDataFromTensors:(id *)a3 numberOfOutputTensors:(unint64_t)a4 imageDataForNeuralNetwork:(id)a5 inputImageData:(id)a6 rotationNeeded:(int64_t)a7 regionOfInterest:(CGSize)a8
+- (id)createResultDataFromTensors:(id *)tensors numberOfOutputTensors:(unint64_t)outputTensors imageDataForNeuralNetwork:(id)network inputImageData:(id)data rotationNeeded:(int64_t)needed regionOfInterest:(CGSize)interest
 {
-  height = a8.height;
-  width = a8.width;
+  height = interest.height;
+  width = interest.width;
   v60 = *MEMORY[0x1E69E9840];
-  v13 = a6;
-  var0 = a3->var0;
-  v15 = a3->var3[0];
-  var4 = a3->var4;
-  var5 = a3->var5;
+  dataCopy = data;
+  var0 = tensors->var0;
+  v15 = tensors->var3[0];
+  var4 = tensors->var4;
+  var5 = tensors->var5;
   v18 = ARCreateCVPixelBufferFromPool(&self->_outputPixelBufferPool, 1717855600, self, @"Estimated Depth Map", var4, var5);
   v19 = v18;
   if (!v18)
@@ -125,10 +125,10 @@
   CVPixelBufferLockBaseAddress(v18, 0);
   BytesPerRow = CVPixelBufferGetBytesPerRow(v19);
   BaseAddress = CVPixelBufferGetBaseAddress(v19);
-  [v13 imageResolution];
+  [dataCopy imageResolution];
   v23 = v22;
-  [v13 cameraIntrinsics];
-  if (a7 == -90 || a7 == 90)
+  [dataCopy cameraIntrinsics];
+  if (needed == -90 || needed == 90)
   {
     v26 = height;
   }
@@ -198,7 +198,7 @@ LABEL_35:
         v54 = 138543874;
         v55 = v42;
         v56 = 2048;
-        v57 = self;
+        selfCopy2 = self;
         v58 = 1024;
         v59 = v37;
         _os_log_impl(&dword_1C241C000, v40, OS_LOG_TYPE_ERROR, "%{public}@ <%p>: Unable to resample pixel buffer: %i", &v54, 0x1Cu);
@@ -212,7 +212,7 @@ LABEL_35:
       v54 = 138543874;
       v55 = v52;
       v56 = 2048;
-      v57 = self;
+      selfCopy2 = self;
       v58 = 1024;
       v59 = v37;
       _os_log_impl(&dword_1C241C000, v40, OS_LOG_TYPE_INFO, "Error: %{public}@ <%p>: Unable to resample pixel buffer: %i", &v54, 0x1Cu);
@@ -229,16 +229,16 @@ LABEL_25:
   [v43 setPixelBuffer:v36];
   CVPixelBufferRelease(v36);
   rotationTechnique = self->_rotationTechnique;
-  if (!rotationTechnique || [(ARImageRotationTechnique *)rotationTechnique rotationAngle]!= a7 || [(ARImageRotationTechnique *)self->_rotationTechnique mirrorMode])
+  if (!rotationTechnique || [(ARImageRotationTechnique *)rotationTechnique rotationAngle]!= needed || [(ARImageRotationTechnique *)self->_rotationTechnique mirrorMode])
   {
-    v45 = [[ARImageRotationTechnique alloc] initWithRotation:a7 mirror:0];
+    v45 = [[ARImageRotationTechnique alloc] initWithRotation:needed mirror:0];
     v46 = self->_rotationTechnique;
     self->_rotationTechnique = v45;
   }
 
   v47 = [(ARImageRotationTechnique *)self->_rotationTechnique processData:v43];
   v48 = [ARMLDepthData alloc];
-  [v13 timestamp];
+  [dataCopy timestamp];
   v50 = -[ARMLDepthData initWithTimestamp:depthBuffer:source:](v48, "initWithTimestamp:depthBuffer:source:", [v47 pixelBuffer], 1, v49);
 
 LABEL_36:

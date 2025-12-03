@@ -1,17 +1,17 @@
 @interface HMDCameraSignificantEventFaceClassificationDictionaryTransformer
-+ (id)reverseTransformedValue:(id)a3 error:(id *)a4;
-+ (id)transformedValue:(id)a3 error:(id *)a4;
++ (id)reverseTransformedValue:(id)value error:(id *)error;
++ (id)transformedValue:(id)value error:(id *)error;
 @end
 
 @implementation HMDCameraSignificantEventFaceClassificationDictionaryTransformer
 
-+ (id)reverseTransformedValue:(id)a3 error:(id *)a4
++ (id)reverseTransformedValue:(id)value error:(id *)error
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  valueCopy = value;
+  v5 = valueCopy;
+  if (valueCopy)
   {
-    v6 = [v4 hmf_UUIDForKey:@"HMDCSEFC.ck.UUID"];
+    v6 = [valueCopy hmf_UUIDForKey:@"HMDCSEFC.ck.UUID"];
     if (v6)
     {
       v7 = [v5 hmf_UUIDForKey:@"HMDCSEFC.ck.personManagerUUID"];
@@ -46,34 +46,34 @@
   return v11;
 }
 
-+ (id)transformedValue:(id)a3 error:(id *)a4
++ (id)transformedValue:(id)value error:(id *)error
 {
-  if (a3)
+  if (value)
   {
     v4 = MEMORY[0x277CBEB38];
-    v5 = a3;
-    v6 = [v4 dictionary];
-    v7 = [v5 UUID];
-    v8 = [v7 UUIDString];
-    [v6 setValue:v8 forKey:@"HMDCSEFC.ck.UUID"];
+    valueCopy = value;
+    dictionary = [v4 dictionary];
+    uUID = [valueCopy UUID];
+    uUIDString = [uUID UUIDString];
+    [dictionary setValue:uUIDString forKey:@"HMDCSEFC.ck.UUID"];
 
-    v9 = [v5 personManagerUUID];
-    v10 = [v9 UUIDString];
-    [v6 setValue:v10 forKey:@"HMDCSEFC.ck.personManagerUUID"];
+    personManagerUUID = [valueCopy personManagerUUID];
+    uUIDString2 = [personManagerUUID UUIDString];
+    [dictionary setValue:uUIDString2 forKey:@"HMDCSEFC.ck.personManagerUUID"];
 
-    v11 = [v5 personUUID];
-    v12 = [v11 UUIDString];
-    [v6 setValue:v12 forKey:@"HMDCSEFC.ck.personUUID"];
+    personUUID = [valueCopy personUUID];
+    uUIDString3 = [personUUID UUIDString];
+    [dictionary setValue:uUIDString3 forKey:@"HMDCSEFC.ck.personUUID"];
 
-    v13 = [v5 personName];
-    [v6 setValue:v13 forKey:@"HMDCSEFC.ck.personName"];
+    personName = [valueCopy personName];
+    [dictionary setValue:personName forKey:@"HMDCSEFC.ck.personName"];
 
-    v14 = [v5 unassociatedFaceCropUUID];
+    unassociatedFaceCropUUID = [valueCopy unassociatedFaceCropUUID];
 
-    v15 = [v14 UUIDString];
-    [v6 setValue:v15 forKey:@"HMDCSEFC.ck.unassociatedFaceCropUUID"];
+    uUIDString4 = [unassociatedFaceCropUUID UUIDString];
+    [dictionary setValue:uUIDString4 forKey:@"HMDCSEFC.ck.unassociatedFaceCropUUID"];
 
-    v16 = [v6 copy];
+    v16 = [dictionary copy];
   }
 
   else

@@ -6,12 +6,12 @@
 
 - (id)_web_createTarget
 {
-  v2 = [(WKObject *)self _apiObject];
-  if ((*(v2->var0 + 2))(v2) == 20)
+  _apiObject = [(WKObject *)self _apiObject];
+  if ((*(_apiObject->var0 + 2))(_apiObject) == 20)
   {
-    CFRetain(v2->var1);
+    CFRetain(_apiObject->var1);
     WTF::String::isolatedCopy();
-    CFRelease(v2->var1);
+    CFRelease(_apiObject->var1);
     WTF::String::createCFString(&v7, &v8);
     v5 = v7;
     v4 = v8;

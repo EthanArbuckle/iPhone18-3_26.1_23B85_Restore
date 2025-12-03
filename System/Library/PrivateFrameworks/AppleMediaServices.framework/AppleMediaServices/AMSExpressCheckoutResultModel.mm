@@ -1,14 +1,14 @@
 @interface AMSExpressCheckoutResultModel
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AMSExpressCheckoutResultModel
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_192CA1F44(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_192CA1F44(coderCopy);
 }
 
 @end

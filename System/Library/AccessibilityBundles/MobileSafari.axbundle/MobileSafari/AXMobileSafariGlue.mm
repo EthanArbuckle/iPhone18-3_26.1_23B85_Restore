@@ -8,17 +8,17 @@
 {
   if (!_Failover)
   {
-    v2 = [MEMORY[0x29EDBD6E8] sharedInstance];
-    [v2 performValidations:&__block_literal_global withPreValidationHandler:&__block_literal_global_290 postValidationHandler:0 safeCategoryInstallationHandler:&__block_literal_global_299];
+    mEMORY[0x29EDBD6E8] = [MEMORY[0x29EDBD6E8] sharedInstance];
+    [mEMORY[0x29EDBD6E8] performValidations:&__block_literal_global withPreValidationHandler:&__block_literal_global_290 postValidationHandler:0 safeCategoryInstallationHandler:&__block_literal_global_299];
 
-    v3 = [MEMORY[0x29EDBD690] sharedInstance];
-    [v3 addHandler:&__block_literal_global_317 forFramework:@"AVKit"];
+    mEMORY[0x29EDBD690] = [MEMORY[0x29EDBD690] sharedInstance];
+    [mEMORY[0x29EDBD690] addHandler:&__block_literal_global_317 forFramework:@"AVKit"];
 
-    v4 = [MEMORY[0x29EDBD690] sharedInstance];
-    [v4 addHandler:&__block_literal_global_330 forFramework:@"StoreKitUI"];
+    mEMORY[0x29EDBD690]2 = [MEMORY[0x29EDBD690] sharedInstance];
+    [mEMORY[0x29EDBD690]2 addHandler:&__block_literal_global_330 forFramework:@"StoreKitUI"];
 
-    v5 = [MEMORY[0x29EDBD690] sharedInstance];
-    [v5 addHandler:&__block_literal_global_340 forFramework:@"SearchUI"];
+    mEMORY[0x29EDBD690]3 = [MEMORY[0x29EDBD690] sharedInstance];
+    [mEMORY[0x29EDBD690]3 addHandler:&__block_literal_global_340 forFramework:@"SearchUI"];
 
     _Failover = [objc_allocWithZone(AXMobileSafariGlue) init];
 

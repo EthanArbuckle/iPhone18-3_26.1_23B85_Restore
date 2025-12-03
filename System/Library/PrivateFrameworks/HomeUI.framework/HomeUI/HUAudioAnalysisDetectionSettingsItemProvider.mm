@@ -1,21 +1,21 @@
 @interface HUAudioAnalysisDetectionSettingsItemProvider
 - (HUAudioAnalysisDetectionSettingsItemProvider)init;
-- (HUAudioAnalysisDetectionSettingsItemProvider)initWithAccessory:(id)a3;
+- (HUAudioAnalysisDetectionSettingsItemProvider)initWithAccessory:(id)accessory;
 - (id)reloadItems;
 @end
 
 @implementation HUAudioAnalysisDetectionSettingsItemProvider
 
-- (HUAudioAnalysisDetectionSettingsItemProvider)initWithAccessory:(id)a3
+- (HUAudioAnalysisDetectionSettingsItemProvider)initWithAccessory:(id)accessory
 {
-  v5 = a3;
+  accessoryCopy = accessory;
   v11.receiver = self;
   v11.super_class = HUAudioAnalysisDetectionSettingsItemProvider;
   v6 = [(HFItemProvider *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_accessory, a3);
+    objc_storeStrong(&v6->_accessory, accessory);
     v8 = objc_opt_new();
     items = v7->_items;
     v7->_items = v8;
@@ -26,9 +26,9 @@
 
 - (HUAudioAnalysisDetectionSettingsItemProvider)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithAccessory_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HUAudioAnalysisDetectionSettingsItemProvider.m" lineNumber:71 description:{@"%s is unavailable; use %@ instead", "-[HUAudioAnalysisDetectionSettingsItemProvider init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUAudioAnalysisDetectionSettingsItemProvider.m" lineNumber:71 description:{@"%s is unavailable; use %@ instead", "-[HUAudioAnalysisDetectionSettingsItemProvider init]", v5}];
 
   return 0;
 }

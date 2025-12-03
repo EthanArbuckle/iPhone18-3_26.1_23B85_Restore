@@ -1,14 +1,14 @@
 @interface STTimeAllowancesCompatibilityController
-+ (void)showOnDemandDowntimeCompatibilityAlertIfNeededForUser:(id)a3 alertPresenter:(id)a4 completionHandler:(id)a5;
++ (void)showOnDemandDowntimeCompatibilityAlertIfNeededForUser:(id)user alertPresenter:(id)presenter completionHandler:(id)handler;
 @end
 
 @implementation STTimeAllowancesCompatibilityController
 
-+ (void)showOnDemandDowntimeCompatibilityAlertIfNeededForUser:(id)a3 alertPresenter:(id)a4 completionHandler:(id)a5
++ (void)showOnDemandDowntimeCompatibilityAlertIfNeededForUser:(id)user alertPresenter:(id)presenter completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  userCopy = user;
+  presenterCopy = presenter;
+  handlerCopy = handler;
   v53 = 0;
   v54 = &v53;
   v55 = 0x2020000000;
@@ -29,25 +29,25 @@
   v40 = __Block_byref_object_copy__5;
   v41 = __Block_byref_object_dispose__5;
   v42 = 0;
-  v10 = [v7 managedObjectContext];
+  managedObjectContext = [userCopy managedObjectContext];
   v31[0] = MEMORY[0x277D85DD0];
   v31[1] = 3221225472;
   v31[2] = __130__STTimeAllowancesCompatibilityController_showOnDemandDowntimeCompatibilityAlertIfNeededForUser_alertPresenter_completionHandler___block_invoke;
   v31[3] = &unk_279B7E290;
   v33 = &v53;
-  v11 = v7;
+  v11 = userCopy;
   v32 = v11;
   v34 = &v49;
   v35 = &v43;
   v36 = &v37;
-  [v10 performBlockAndWait:v31];
+  [managedObjectContext performBlockAndWait:v31];
 
   v12 = [objc_alloc(MEMORY[0x277CBEBD0]) initWithSuiteName:@"com.apple.preferences.screentime"];
   v13 = [v12 dictionaryForKey:@"HasShownOnDemandDowntimeCompatibilityAlertByDSID"];
   v14 = [v13 objectForKeyedSubscript:v44[5]];
-  v15 = [v14 BOOLValue];
+  bOOLValue = [v14 BOOLValue];
 
-  if (!(v15 & 1 | ((v50[3] & 1) == 0)))
+  if (!(bOOLValue & 1 | ((v50[3] & 1) == 0)))
   {
     v16 = +[STScreenTimeSettingsUIBundle bundle];
     v17 = v16;
@@ -56,12 +56,12 @@
       if (v38[5])
       {
         v25 = [v16 localizedStringForKey:@"UpdateChildDevicesAlertTitleFormat" value:&stru_28766E5A8 table:0];
-        v18 = [MEMORY[0x277CBEAF8] currentLocale];
+        currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
         v19 = objc_alloc(MEMORY[0x277CCACA8]);
-        v20 = [v19 initWithFormat:v25 locale:v18, v38[5]];
+        v20 = [v19 initWithFormat:v25 locale:currentLocale, v38[5]];
         v21 = [v17 localizedStringForKey:@"OnDemandDowntimeChildCompatibilityAlertMessageFormat" value:&stru_28766E5A8 table:0];
         v22 = objc_alloc(MEMORY[0x277CCACA8]);
-        v23 = [v22 initWithFormat:v21 locale:v18, v38[5]];
+        v23 = [v22 initWithFormat:v21 locale:currentLocale, v38[5]];
 
 LABEL_9:
         v26[0] = MEMORY[0x277D85DD0];
@@ -71,8 +71,8 @@ LABEL_9:
         v27 = v13;
         v30 = &v43;
         v28 = v12;
-        v29 = v9;
-        [v8 showAlertWithTitle:v20 message:v23 completion:v26];
+        v29 = handlerCopy;
+        [presenterCopy showAlertWithTitle:v20 message:v23 completion:v26];
 
         goto LABEL_10;
       }
@@ -91,7 +91,7 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v9[2](v9);
+  handlerCopy[2](handlerCopy);
 LABEL_10:
 
   _Block_object_dispose(&v37, 8);

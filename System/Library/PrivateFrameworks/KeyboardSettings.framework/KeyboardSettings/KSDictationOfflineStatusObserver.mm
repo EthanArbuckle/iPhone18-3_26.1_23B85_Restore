@@ -1,5 +1,5 @@
 @interface KSDictationOfflineStatusObserver
-- (KSDictationOfflineStatusObserver)initWithDelegate:(id)a3;
+- (KSDictationOfflineStatusObserver)initWithDelegate:(id)delegate;
 - (KSDictationOfflineStatusObserverDelegate)delegate;
 - (void)dealloc;
 - (void)updateOfflineDictationStatus;
@@ -7,16 +7,16 @@
 
 @implementation KSDictationOfflineStatusObserver
 
-- (KSDictationOfflineStatusObserver)initWithDelegate:(id)a3
+- (KSDictationOfflineStatusObserver)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v13.receiver = self;
   v13.super_class = KSDictationOfflineStatusObserver;
   v5 = [(KSDictationOfflineStatusObserver *)&v13 init];
   v6 = v5;
   if (v5)
   {
-    [(KSDictationOfflineStatusObserver *)v5 setDelegate:v4];
+    [(KSDictationOfflineStatusObserver *)v5 setDelegate:delegateCopy];
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
     v8 = IsTrialAssetDeliveryEnabled();
     v9 = MEMORY[0x277CEF5F0];
@@ -39,13 +39,13 @@
 
 - (void)updateOfflineDictationStatus
 {
-  v3 = [MEMORY[0x277CEF368] sharedPreferences];
+  mEMORY[0x277CEF368] = [MEMORY[0x277CEF368] sharedPreferences];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __64__KSDictationOfflineStatusObserver_updateOfflineDictationStatus__block_invoke;
   v4[3] = &unk_2797F9F40;
   v4[4] = self;
-  [v3 getOfflineDictationStatusWithCompletion:v4];
+  [mEMORY[0x277CEF368] getOfflineDictationStatusWithCompletion:v4];
 }
 
 void __64__KSDictationOfflineStatusObserver_updateOfflineDictationStatus__block_invoke(uint64_t a1, void *a2)

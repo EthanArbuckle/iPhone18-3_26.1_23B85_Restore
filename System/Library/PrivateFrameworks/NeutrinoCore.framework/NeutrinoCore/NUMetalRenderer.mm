@@ -1,19 +1,19 @@
 @interface NUMetalRenderer
-- (NUMetalRenderer)initWithCIContext:(id)a3 priority:(int64_t)a4;
-- (NUMetalRenderer)initWithMetalDevice:(id)a3 options:(id)a4;
-- (id)imageForSurface:(id)a3 options:(id)a4;
+- (NUMetalRenderer)initWithCIContext:(id)context priority:(int64_t)priority;
+- (NUMetalRenderer)initWithMetalDevice:(id)device options:(id)options;
+- (id)imageForSurface:(id)surface options:(id)options;
 - (id)name;
-- (id)renderDestinationForSurface:(id)a3;
-- (void)_configureCommandQueue:(id)a3 withOptions:(id)a4;
+- (id)renderDestinationForSurface:(id)surface;
+- (void)_configureCommandQueue:(id)queue withOptions:(id)options;
 @end
 
 @implementation NUMetalRenderer
 
-- (id)renderDestinationForSurface:(id)a3
+- (id)renderDestinationForSurface:(id)surface
 {
   v49 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  surfaceCopy = surface;
+  if (!surfaceCopy)
   {
     v12 = NUAssertLogger_23497();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -34,8 +34,8 @@
         v26 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v27 = MEMORY[0x1E696AF00];
         v28 = v26;
-        v29 = [v27 callStackSymbols];
-        v30 = [v29 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v27 callStackSymbols];
+        v30 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v46 = v26;
         v47 = 2114;
@@ -46,8 +46,8 @@
 
     else if (v16)
     {
-      v17 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v18 = [v17 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v18 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v46 = v18;
       _os_log_error_impl(&dword_1C0184000, v15, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -56,8 +56,8 @@
     _NUAssertFailHandler("[NUMetalRenderer renderDestinationForSurface:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Render/NURenderer.m", 304, @"Invalid parameter not satisfying: %s", v31, v32, v33, v34, "surface != nil");
   }
 
-  v5 = v4;
-  v6 = [v4 textureForDevice:self->_device];
+  v5 = surfaceCopy;
+  v6 = [surfaceCopy textureForDevice:self->_device];
   v7 = [objc_alloc(MEMORY[0x1E695F678]) initWithMTLTexture:v6 commandBuffer:0];
   if (v7)
   {
@@ -67,8 +67,8 @@
   else
   {
     v9 = objc_alloc(MEMORY[0x1E695F678]);
-    v10 = [v5 IOSurface];
-    v8 = [v9 initWithIOSurface:v10];
+    iOSurface = [v5 IOSurface];
+    v8 = [v9 initWithIOSurface:iOSurface];
 
     if (!v8)
     {
@@ -91,8 +91,8 @@
           v35 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
           v36 = MEMORY[0x1E696AF00];
           v37 = v35;
-          v38 = [v36 callStackSymbols];
-          v39 = [v38 componentsJoinedByString:@"\n"];
+          callStackSymbols3 = [v36 callStackSymbols];
+          v39 = [callStackSymbols3 componentsJoinedByString:@"\n"];
           *buf = 138543618;
           v46 = v35;
           v47 = 2114;
@@ -103,8 +103,8 @@
 
       else if (v23)
       {
-        v24 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v25 = [v24 componentsJoinedByString:@"\n"];
+        callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v25 = [callStackSymbols4 componentsJoinedByString:@"\n"];
         *buf = 138543362;
         v46 = v25;
         _os_log_error_impl(&dword_1C0184000, v22, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -120,12 +120,12 @@
   return v8;
 }
 
-- (id)imageForSurface:(id)a3 options:(id)a4
+- (id)imageForSurface:(id)surface options:(id)options
 {
   v30 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if (!v5)
+  surfaceCopy = surface;
+  optionsCopy = options;
+  if (!surfaceCopy)
   {
     v10 = NUAssertLogger_23497();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -146,8 +146,8 @@
         v17 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v18 = MEMORY[0x1E696AF00];
         v19 = v17;
-        v20 = [v18 callStackSymbols];
-        v21 = [v20 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v18 callStackSymbols];
+        v21 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v27 = v17;
         v28 = 2114;
@@ -158,8 +158,8 @@
 
     else if (v14)
     {
-      v15 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v16 = [v15 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v16 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v27 = v16;
       _os_log_error_impl(&dword_1C0184000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -168,8 +168,8 @@
     _NUAssertFailHandler("[NUMetalRenderer imageForSurface:options:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Render/NURenderer.m", 295, @"Invalid parameter not satisfying: %s", v22, v23, v24, v25, "surface != nil");
   }
 
-  v7 = v6;
-  v8 = [MEMORY[0x1E695F658] imageWithIOSurface:objc_msgSend(v5 options:{"IOSurfaceRef"), v6}];
+  v7 = optionsCopy;
+  v8 = [MEMORY[0x1E695F658] imageWithIOSurface:objc_msgSend(surfaceCopy options:{"IOSurfaceRef"), optionsCopy}];
 
   return v8;
 }
@@ -177,31 +177,31 @@
 - (id)name
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [(MTLDevice *)self->_device name];
-  v4 = [v2 stringWithFormat:@"Metal renderer: %@", v3];
+  name = [(MTLDevice *)self->_device name];
+  v4 = [v2 stringWithFormat:@"Metal renderer: %@", name];
 
   return v4;
 }
 
-- (void)_configureCommandQueue:(id)a3 withOptions:(id)a4
+- (void)_configureCommandQueue:(id)queue withOptions:(id)options
 {
-  v12 = a4;
+  optionsCopy = options;
   v5 = *MEMORY[0x1E695F848];
-  v6 = a3;
-  v7 = [v12 objectForKeyedSubscript:v5];
-  v8 = [v7 BOOLValue];
+  queueCopy = queue;
+  v7 = [optionsCopy objectForKeyedSubscript:v5];
+  bOOLValue = [v7 BOOLValue];
 
-  if (v8)
+  if (bOOLValue)
   {
     v9 = 1;
   }
 
   else
   {
-    v10 = [v12 objectForKeyedSubscript:*MEMORY[0x1E695F850]];
-    v11 = [v10 BOOLValue];
+    v10 = [optionsCopy objectForKeyedSubscript:*MEMORY[0x1E695F850]];
+    bOOLValue2 = [v10 BOOLValue];
 
-    if (v11)
+    if (bOOLValue2)
     {
       v9 = 2;
     }
@@ -212,16 +212,16 @@
     }
   }
 
-  [v6 setGPUPriority:v9];
-  [v6 setBackgroundGPUPriority:2];
+  [queueCopy setGPUPriority:v9];
+  [queueCopy setBackgroundGPUPriority:2];
 }
 
-- (NUMetalRenderer)initWithMetalDevice:(id)a3 options:(id)a4
+- (NUMetalRenderer)initWithMetalDevice:(id)device options:(id)options
 {
   v40 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  deviceCopy = device;
+  optionsCopy = options;
+  if (!deviceCopy)
   {
     v19 = NUAssertLogger_23497();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -242,8 +242,8 @@
         v26 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v27 = MEMORY[0x1E696AF00];
         v28 = v26;
-        v29 = [v27 callStackSymbols];
-        v30 = [v29 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v27 callStackSymbols];
+        v30 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v37 = v26;
         v38 = 2114;
@@ -254,8 +254,8 @@
 
     else if (v23)
     {
-      v24 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v25 = [v24 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v25 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v37 = v25;
       _os_log_error_impl(&dword_1C0184000, v22, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -264,11 +264,11 @@
     _NUAssertFailHandler("[NUMetalRenderer initWithMetalDevice:options:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Render/NURenderer.m", 249, @"Invalid parameter not satisfying: %s", v31, v32, v33, v34, "metalDevice != nil");
   }
 
-  v8 = v7;
-  v9 = [v6 newCommandQueue];
+  v8 = optionsCopy;
+  newCommandQueue = [deviceCopy newCommandQueue];
   v10 = [NURenderer _renderContextOptionsWithOptions:v8 nameSuffix:@"Metal"];
-  v11 = [MEMORY[0x1E695F620] contextWithMTLCommandQueue:v9 options:v10];
-  [(NUMetalRenderer *)self _configureCommandQueue:v9 withOptions:v10];
+  v11 = [MEMORY[0x1E695F620] contextWithMTLCommandQueue:newCommandQueue options:v10];
+  [(NUMetalRenderer *)self _configureCommandQueue:newCommandQueue withOptions:v10];
   v12 = [v8 objectForKeyedSubscript:*MEMORY[0x1E695F850]];
   if ([v12 BOOLValue])
   {
@@ -284,19 +284,19 @@
   v35.super_class = NUMetalRenderer;
   v14 = [(NURenderer *)&v35 initWithCIContext:v11 priority:v13];
   commandQueue = v14->_commandQueue;
-  v14->_commandQueue = v9;
-  v16 = v9;
+  v14->_commandQueue = newCommandQueue;
+  v16 = newCommandQueue;
 
   device = v14->_device;
-  v14->_device = v6;
+  v14->_device = deviceCopy;
 
   return v14;
 }
 
-- (NUMetalRenderer)initWithCIContext:(id)a3 priority:(int64_t)a4
+- (NUMetalRenderer)initWithCIContext:(id)context priority:(int64_t)priority
 {
   v36 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  contextCopy = context;
   if (_NULogOnceToken != -1)
   {
     dispatch_once(&_NULogOnceToken, &__block_literal_global_23521);
@@ -340,8 +340,8 @@ LABEL_8:
     {
       v15 = MEMORY[0x1E696AF00];
       v16 = v14;
-      v17 = [v15 callStackSymbols];
-      v18 = [v17 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v15 callStackSymbols];
+      v18 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v33 = v18;
       _os_log_error_impl(&dword_1C0184000, v16, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -357,8 +357,8 @@ LABEL_8:
     v21 = MEMORY[0x1E696AF00];
     v22 = specific;
     v23 = v19;
-    v24 = [v21 callStackSymbols];
-    v25 = [v24 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v21 callStackSymbols];
+    v25 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v33 = specific;
     v34 = 2114;

@@ -1,43 +1,43 @@
 @interface CSPickableRouteChangeMonitor
 + (id)sharedInstance;
 - (CSPickableRouteChangeMonitor)init;
-- (void)_startMonitoringWithQueue:(id)a3;
+- (void)_startMonitoringWithQueue:(id)queue;
 - (void)_startObservingAudioPickableRouteChange;
 - (void)_startObservingSystemControllerLifecycle;
 - (void)_stopMonitoring;
-- (void)_systemControllerDied:(id)a3;
-- (void)pickableRoutesDidChange:(id)a3;
+- (void)_systemControllerDied:(id)died;
+- (void)pickableRoutesDidChange:(id)change;
 @end
 
 @implementation CSPickableRouteChangeMonitor
 
 - (void)_startObservingSystemControllerLifecycle
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v4 = MEMORY[0x1E69AECB0];
-  [v3 removeObserver:self name:*MEMORY[0x1E69AECB0] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69AECB0] object:0];
 
   v9 = [MEMORY[0x1E695DEC8] arrayWithObject:*v4];
-  v5 = [MEMORY[0x1E69AED08] sharedAVSystemController];
-  [v5 setAttribute:v9 forKey:*MEMORY[0x1E69AECE0] error:0];
+  mEMORY[0x1E69AED08] = [MEMORY[0x1E69AED08] sharedAVSystemController];
+  [mEMORY[0x1E69AED08] setAttribute:v9 forKey:*MEMORY[0x1E69AECE0] error:0];
 
-  v6 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
   v7 = *v4;
-  v8 = [MEMORY[0x1E69AED08] sharedAVSystemController];
-  [v6 addObserver:self selector:sel__systemControllerDied_ name:v7 object:v8];
+  mEMORY[0x1E69AED08]2 = [MEMORY[0x1E69AED08] sharedAVSystemController];
+  [defaultCenter2 addObserver:self selector:sel__systemControllerDied_ name:v7 object:mEMORY[0x1E69AED08]2];
 }
 
-- (void)_systemControllerDied:(id)a3
+- (void)_systemControllerDied:(id)died
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  diedCopy = died;
   v5 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 136315394;
     v8 = "[CSPickableRouteChangeMonitor _systemControllerDied:]";
     v9 = 2114;
-    v10 = v4;
+    v10 = diedCopy;
     _os_log_impl(&dword_1DDA4B000, v5, OS_LOG_TYPE_DEFAULT, "%s notification = %{public}@", &v7, 0x16u);
   }
 
@@ -51,8 +51,8 @@
 - (void)_stopMonitoring
 {
   v8 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
@@ -67,15 +67,15 @@
 
 - (void)_startObservingAudioPickableRouteChange
 {
-  v6 = [MEMORY[0x1E69AED08] sharedAVSystemController];
+  mEMORY[0x1E69AED08] = [MEMORY[0x1E69AED08] sharedAVSystemController];
   v3 = MEMORY[0x1E69AEAE8];
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:{*MEMORY[0x1E69AEAE8], 0}];
-  [v6 setAttribute:v4 forKey:*MEMORY[0x1E69AECE0] error:0];
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v5 addObserver:self selector:sel_pickableRoutesDidChange_ name:*v3 object:v6];
+  [mEMORY[0x1E69AED08] setAttribute:v4 forKey:*MEMORY[0x1E69AECE0] error:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_pickableRoutesDidChange_ name:*v3 object:mEMORY[0x1E69AED08]];
 }
 
-- (void)_startMonitoringWithQueue:(id)a3
+- (void)_startMonitoringWithQueue:(id)queue
 {
   v8 = *MEMORY[0x1E69E9840];
   [(CSPickableRouteChangeMonitor *)self _startObservingSystemControllerLifecycle];
@@ -91,7 +91,7 @@
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)pickableRoutesDidChange:(id)a3
+- (void)pickableRoutesDidChange:(id)change
 {
   v9 = *MEMORY[0x1E69E9840];
   v4 = CSLogContextFacilityCoreSpeech;
@@ -115,7 +115,7 @@
 {
   if (+[CSUtils isDarwinOS])
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -123,10 +123,10 @@
     v5.receiver = self;
     v5.super_class = CSPickableRouteChangeMonitor;
     self = [(CSEventMonitor *)&v5 init];
-    v3 = self;
+    selfCopy = self;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 + (id)sharedInstance

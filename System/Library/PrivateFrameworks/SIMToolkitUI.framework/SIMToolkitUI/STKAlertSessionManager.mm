@@ -1,37 +1,37 @@
 @interface STKAlertSessionManager
-- (STKAlertSessionManager)initWithEventQueue:(id)a3 logger:(id)a4;
-- (void)enqueuePresentationForSession:(id)a3 completion:(id)a4;
+- (STKAlertSessionManager)initWithEventQueue:(id)queue logger:(id)logger;
+- (void)enqueuePresentationForSession:(id)session completion:(id)completion;
 @end
 
 @implementation STKAlertSessionManager
 
-- (STKAlertSessionManager)initWithEventQueue:(id)a3 logger:(id)a4
+- (STKAlertSessionManager)initWithEventQueue:(id)queue logger:(id)logger
 {
-  v7 = a3;
-  v8 = a4;
+  queueCopy = queue;
+  loggerCopy = logger;
   v12.receiver = self;
   v12.super_class = STKAlertSessionManager;
   v9 = [(STKAlertSessionManager *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_eventQueue, a3);
-    objc_storeStrong(&v10->_log, a4);
+    objc_storeStrong(&v9->_eventQueue, queue);
+    objc_storeStrong(&v10->_log, logger);
   }
 
   return v10;
 }
 
-- (void)enqueuePresentationForSession:(id)a3 completion:(id)a4
+- (void)enqueuePresentationForSession:(id)session completion:(id)completion
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  completionCopy = completion;
   v8 = [(STKAlertSessionManager *)self log];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v17 = v6;
+    v17 = sessionCopy;
     _os_log_impl(&dword_262BB4000, v8, OS_LOG_TYPE_DEFAULT, "Session <%p> - Enqueing for presentation", buf, 0xCu);
   }
 
@@ -41,10 +41,10 @@
   v13[2] = __67__STKAlertSessionManager_enqueuePresentationForSession_completion___block_invoke;
   v13[3] = &unk_279B4C3E0;
   v13[4] = self;
-  v14 = v6;
-  v15 = v7;
-  v10 = v7;
-  v11 = v6;
+  v14 = sessionCopy;
+  v15 = completionCopy;
+  v10 = completionCopy;
+  v11 = sessionCopy;
   [(STKAlertSessionEventQueue *)eventQueue enqueue:v13];
 
   v12 = *MEMORY[0x277D85DE8];

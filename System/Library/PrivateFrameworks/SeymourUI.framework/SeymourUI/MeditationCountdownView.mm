@@ -1,12 +1,12 @@
 @interface MeditationCountdownView
-- (_TtC9SeymourUI23MeditationCountdownView)initWithCoder:(id)a3;
-- (_TtC9SeymourUI23MeditationCountdownView)initWithFrame:(CGRect)a3;
+- (_TtC9SeymourUI23MeditationCountdownView)initWithCoder:(id)coder;
+- (_TtC9SeymourUI23MeditationCountdownView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation MeditationCountdownView
 
-- (_TtC9SeymourUI23MeditationCountdownView)initWithCoder:(id)a3
+- (_TtC9SeymourUI23MeditationCountdownView)initWithCoder:(id)coder
 {
   v3 = (&self->super.super.super.isa + OBJC_IVAR____TtC9SeymourUI23MeditationCountdownView_onCountdownStep);
   *v3 = 0;
@@ -32,7 +32,7 @@
   [(MeditationCountdownView *)&v2 layoutSubviews];
 }
 
-- (_TtC9SeymourUI23MeditationCountdownView)initWithFrame:(CGRect)a3
+- (_TtC9SeymourUI23MeditationCountdownView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,57 +1,57 @@
 @interface IMDaemonCoreBridgeImpl
 + (BOOL)hasFinishedAssetDownloadSync;
-+ (BOOL)isBackwardCompatibilityForItem:(id)a3 parentChatID:(id)a4;
-+ (BOOL)isExpectedChatIDForItem:(id)a3 chatID:(id)a4;
-+ (BOOL)isRecoverablyDeletedMessageGUID:(id)a3;
-+ (BOOL)registerGuid:(id)a3 forLocalURL:(id)a4;
-+ (BOOL)storeAttachmentWithTransfer:(id)a3 withChatGUID:(id)a4;
-+ (id)ckRecordWithT1Info:(id)a3;
-+ (id)ckRecordWithT2Info:(id)a3;
-+ (id)ckRecordWithT3Info:(id)a3;
-+ (id)createMessageItemWithRecordRef:(_IMDMessageRecordStruct *)a3 handle:(id)a4;
-+ (id)fileTransferForGUID:(id)a3;
-+ (id)fileTransferWithGUID:(id)a3;
++ (BOOL)isBackwardCompatibilityForItem:(id)item parentChatID:(id)d;
++ (BOOL)isExpectedChatIDForItem:(id)item chatID:(id)d;
++ (BOOL)isRecoverablyDeletedMessageGUID:(id)d;
++ (BOOL)registerGuid:(id)guid forLocalURL:(id)l;
++ (BOOL)storeAttachmentWithTransfer:(id)transfer withChatGUID:(id)d;
++ (id)ckRecordWithT1Info:(id)info;
++ (id)ckRecordWithT2Info:(id)info;
++ (id)ckRecordWithT3Info:(id)info;
++ (id)createMessageItemWithRecordRef:(_IMDMessageRecordStruct *)ref handle:(id)handle;
++ (id)fileTransferForGUID:(id)d;
++ (id)fileTransferWithGUID:(id)d;
 + (id)primaryAccountCountryCode;
-+ (void)addItem:(id)a3 toParentChatID:(id)a4 updatedLastMessageCount:(unint64_t)a5;
-+ (void)addParentChatID:(id)a3 toChat:(id)a4 service:(id)a5;
-+ (void)addTransfer:(id)a3 forGUID:(id)a4;
-+ (void)generatePreviewForTransfer:(id)a3;
-+ (void)handleMessageUpdateWithCKRecord:(id)a3;
-+ (void)moveMessagePartForGUID:(id)a3 deleteDate:(id)a4 partBody:(id)a5;
++ (void)addItem:(id)item toParentChatID:(id)d updatedLastMessageCount:(unint64_t)count;
++ (void)addParentChatID:(id)d toChat:(id)chat service:(id)service;
++ (void)addTransfer:(id)transfer forGUID:(id)d;
++ (void)generatePreviewForTransfer:(id)transfer;
++ (void)handleMessageUpdateWithCKRecord:(id)record;
++ (void)moveMessagePartForGUID:(id)d deleteDate:(id)date partBody:(id)body;
 + (void)reloadDatabase;
-+ (void)removeTransferFromBackup:(id)a3;
-+ (void)setSortIDForItem:(id)a3 parentChatID:(id)a4;
-+ (void)storeAttachmentWithTransfer:(id)a3 withMessageGUID:(id)a4;
-+ (void)storeAttachmentsForMessage:(id)a3;
-+ (void)updateChatUsingSyncData:(id)a3;
++ (void)removeTransferFromBackup:(id)backup;
++ (void)setSortIDForItem:(id)item parentChatID:(id)d;
++ (void)storeAttachmentWithTransfer:(id)transfer withMessageGUID:(id)d;
++ (void)storeAttachmentsForMessage:(id)message;
++ (void)updateChatUsingSyncData:(id)data;
 + (void)updateStamp;
-+ (void)updateTemporaryTransferGUIDsIfNeeded:(id)a3;
-+ (void)updateTransfer:(id)a3;
++ (void)updateTemporaryTransferGUIDsIfNeeded:(id)needed;
++ (void)updateTransfer:(id)transfer;
 @end
 
 @implementation IMDaemonCoreBridgeImpl
 
-+ (void)updateChatUsingSyncData:(id)a3
++ (void)updateChatUsingSyncData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v4 = +[IMDChatRegistry sharedInstance];
-  [v4 updateChatUsingSyncData:v3];
+  [v4 updateChatUsingSyncData:dataCopy];
 }
 
-+ (BOOL)isBackwardCompatibilityForItem:(id)a3 parentChatID:(id)a4
++ (BOOL)isBackwardCompatibilityForItem:(id)item parentChatID:(id)d
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  itemCopy = item;
+  dCopy = d;
   v9 = +[IMDChatRegistry sharedInstance];
-  v7 = [v5 service];
-  v8 = [v9 _lookupChatUsingParentChatID:v6 service:v7];
+  service = [itemCopy service];
+  v8 = [v9 _lookupChatUsingParentChatID:dCopy service:service];
 
   objc_opt_class();
   LOBYTE(v9) = 0;
   if ((objc_opt_isKindOfClass() & 1) != 0 && v8)
   {
-    v10 = v5;
+    v10 = itemCopy;
     v11 = +[IMDBackwardCompatibilityMessageIdentifier sharedIdentifier];
     LODWORD(v9) = [v11 isIgnorableBackwardCompatibilityMessage:v10 inChat:v8];
     if (v9)
@@ -59,9 +59,9 @@
       v12 = IMLogHandleForCategory();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
       {
-        v13 = [v10 guid];
+        guid = [v10 guid];
         v16 = 138412290;
-        v17 = v13;
+        v17 = guid;
         _os_log_impl(&dword_22B4CC000, v12, OS_LOG_TYPE_INFO, "Message %@ is an ignorable backward compatibility message, ignoring.", &v16, 0xCu);
       }
     }
@@ -71,16 +71,16 @@
   return v9;
 }
 
-+ (BOOL)isExpectedChatIDForItem:(id)a3 chatID:(id)a4
++ (BOOL)isExpectedChatIDForItem:(id)item chatID:(id)d
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  if ([v6 length])
+  itemCopy = item;
+  dCopy = d;
+  if ([dCopy length])
   {
     v7 = +[IMDMessageStore sharedInstance];
-    v8 = [v5 guid];
-    v9 = [v7 chatsForMessageGUID:v8];
+    guid = [itemCopy guid];
+    v9 = [v7 chatsForMessageGUID:guid];
 
     v22 = 0u;
     v23 = 0u;
@@ -101,9 +101,9 @@
           }
 
           v14 = *(*(&v20 + 1) + 8 * i);
-          v15 = [v5 service];
-          v16 = [v14 cloudKitChatIDForServiceName:v15];
-          v17 = [v6 isEqualToString:v16];
+          service = [itemCopy service];
+          v16 = [v14 cloudKitChatIDForServiceName:service];
+          v17 = [dCopy isEqualToString:v16];
 
           if (v17)
           {
@@ -134,114 +134,114 @@ LABEL_12:
   return v11;
 }
 
-+ (void)setSortIDForItem:(id)a3 parentChatID:(id)a4
++ (void)setSortIDForItem:(id)item parentChatID:(id)d
 {
-  v5 = a4;
-  v6 = a3;
+  dCopy = d;
+  itemCopy = item;
   v7 = +[IMDChatRegistry sharedInstance];
-  v8 = [v6 service];
-  v10 = [v7 _lookupChatUsingParentChatID:v5 service:v8];
+  service = [itemCopy service];
+  v10 = [v7 _lookupChatUsingParentChatID:dCopy service:service];
 
   v9 = +[IMDChatRegistry sharedInstance];
-  [v9 _setSortIDOnIncomingMessage:v6 forChat:v10];
+  [v9 _setSortIDOnIncomingMessage:itemCopy forChat:v10];
 }
 
-+ (void)addItem:(id)a3 toParentChatID:(id)a4 updatedLastMessageCount:(unint64_t)a5
++ (void)addItem:(id)item toParentChatID:(id)d updatedLastMessageCount:(unint64_t)count
 {
-  v15 = a3;
-  v8 = a4;
+  itemCopy = item;
+  dCopy = d;
   v9 = +[IMDMessageStore sharedInstance];
-  v10 = [v15 guid];
-  v11 = [v9 chatForMessageGUID:v10];
+  guid = [itemCopy guid];
+  v11 = [v9 chatForMessageGUID:guid];
 
   if (v11)
   {
-    v12 = [v15 service];
-    [a1 addParentChatID:v8 toChat:v11 service:v12];
+    service = [itemCopy service];
+    [self addParentChatID:dCopy toChat:v11 service:service];
   }
 
   else
   {
     v13 = +[IMDChatRegistry sharedInstance];
-    v14 = [v15 service];
-    v11 = [v13 _lookupChatUsingParentChatID:v8 service:v14];
+    service2 = [itemCopy service];
+    v11 = [v13 _lookupChatUsingParentChatID:dCopy service:service2];
 
     if (!v11)
     {
       goto LABEL_6;
     }
 
-    v12 = +[IMDChatRegistry sharedInstance];
-    [v12 _addItemToParentChatIfNotLocationItem:v15 parentChat:v11 updatedLastMessageCount:a5 reason:1001];
+    service = +[IMDChatRegistry sharedInstance];
+    [service _addItemToParentChatIfNotLocationItem:itemCopy parentChat:v11 updatedLastMessageCount:count reason:1001];
   }
 
 LABEL_6:
 }
 
-+ (void)addParentChatID:(id)a3 toChat:(id)a4 service:(id)a5
++ (void)addParentChatID:(id)d toChat:(id)chat service:(id)service
 {
-  v15 = a3;
-  v7 = a4;
-  v8 = a5;
-  v9 = [MEMORY[0x277D1A9B8] sharedFeatureFlags];
-  v10 = [v9 isMissingMessagesEnabled];
+  dCopy = d;
+  chatCopy = chat;
+  serviceCopy = service;
+  mEMORY[0x277D1A9B8] = [MEMORY[0x277D1A9B8] sharedFeatureFlags];
+  isMissingMessagesEnabled = [mEMORY[0x277D1A9B8] isMissingMessagesEnabled];
 
-  if (v10 && [v7 style] == 43)
+  if (isMissingMessagesEnabled && [chatCopy style] == 43)
   {
     v11 = IMChatLookupDomainForServiceName();
     if (v11)
     {
-      v12 = [v7 identifiersForDomain:v11];
-      v13 = [v12 containsObject:v15];
+      v12 = [chatCopy identifiersForDomain:v11];
+      v13 = [v12 containsObject:dCopy];
 
       if ((v13 & 1) == 0)
       {
-        [v7 assignIdentifier:v15 forDomain:v11 isHistoricalIdentifier:1];
-        [v7 setCloudKitSyncState:0];
+        [chatCopy assignIdentifier:dCopy forDomain:v11 isHistoricalIdentifier:1];
+        [chatCopy setCloudKitSyncState:0];
         v14 = +[IMDChatStore sharedInstance];
-        [v14 storeChat:v7];
+        [v14 storeChat:chatCopy];
       }
     }
   }
 }
 
-+ (void)removeTransferFromBackup:(id)a3
++ (void)removeTransferFromBackup:(id)backup
 {
-  v3 = a3;
+  backupCopy = backup;
   v4 = +[IMDCKAttachmentSyncController sharedInstance];
-  [v4 _removeTransferFromiCloudBackupWithGuid:v3];
+  [v4 _removeTransferFromiCloudBackupWithGuid:backupCopy];
 }
 
-+ (void)updateTemporaryTransferGUIDsIfNeeded:(id)a3
++ (void)updateTemporaryTransferGUIDsIfNeeded:(id)needed
 {
-  v3 = a3;
+  neededCopy = needed;
   v4 = +[IMDAttachmentStore sharedInstance];
-  [v4 updateTemporaryTransferGUIDsOnMessageIfNeeded:v3];
+  [v4 updateTemporaryTransferGUIDsOnMessageIfNeeded:neededCopy];
 }
 
-+ (id)fileTransferWithGUID:(id)a3
++ (id)fileTransferWithGUID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = +[IMDAttachmentStore sharedInstance];
-  v5 = [v4 attachmentWithGUID:v3];
+  v5 = [v4 attachmentWithGUID:dCopy];
 
   return v5;
 }
 
-+ (void)storeAttachmentWithTransfer:(id)a3 withMessageGUID:(id)a4
++ (void)storeAttachmentWithTransfer:(id)transfer withMessageGUID:(id)d
 {
-  v5 = a4;
-  v6 = a3;
+  dCopy = d;
+  transferCopy = transfer;
   v7 = +[IMDAttachmentStore sharedInstance];
-  [v7 storeAttachment:v6 associateWithMessageWithGUID:v5];
+  [v7 storeAttachment:transferCopy associateWithMessageWithGUID:dCopy];
 }
 
-+ (BOOL)storeAttachmentWithTransfer:(id)a3 withChatGUID:(id)a4
++ (BOOL)storeAttachmentWithTransfer:(id)transfer withChatGUID:(id)d
 {
-  v5 = a4;
-  v6 = a3;
+  dCopy = d;
+  transferCopy = transfer;
   v7 = +[IMDAttachmentStore sharedInstance];
-  v8 = [v7 storeAttachment:v6 associateWithMessageWithGUID:0 chatGUID:v5 storeAtExternalLocation:1];
+  v8 = [v7 storeAttachment:transferCopy associateWithMessageWithGUID:0 chatGUID:dCopy storeAtExternalLocation:1];
 
   return v8;
 }
@@ -252,16 +252,16 @@ LABEL_6:
   [v2 _forceReloadChats:1];
 }
 
-+ (void)storeAttachmentsForMessage:(id)a3
++ (void)storeAttachmentsForMessage:(id)message
 {
-  v3 = a3;
+  messageCopy = message;
   v4 = +[IMDMessageStore sharedInstance];
-  [v4 _storeAttachmentsForMessage:v3];
+  [v4 _storeAttachmentsForMessage:messageCopy];
 }
 
-+ (id)createMessageItemWithRecordRef:(_IMDMessageRecordStruct *)a3 handle:(id)a4
++ (id)createMessageItemWithRecordRef:(_IMDMessageRecordStruct *)ref handle:(id)handle
 {
-  v4 = IMDCreateIMMessageItemFromIMDMessageRecordRef(a3, a4);
+  v4 = IMDCreateIMMessageItemFromIMDMessageRecordRef(ref, handle);
 
   return v4;
 }
@@ -272,75 +272,75 @@ LABEL_6:
   [v2 updateStamp];
 }
 
-+ (id)fileTransferForGUID:(id)a3
++ (id)fileTransferForGUID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = +[IMDFileTransferCenter sharedInstance];
-  v5 = [v4 transferForGUID:v3];
+  v5 = [v4 transferForGUID:dCopy];
 
   return v5;
 }
 
-+ (void)addTransfer:(id)a3 forGUID:(id)a4
++ (void)addTransfer:(id)transfer forGUID:(id)d
 {
-  v5 = a4;
-  v6 = a3;
+  dCopy = d;
+  transferCopy = transfer;
   v7 = +[IMDFileTransferCenter sharedInstance];
-  [v7 addTransfer:v6 forGUID:v5];
+  [v7 addTransfer:transferCopy forGUID:dCopy];
 }
 
-+ (BOOL)registerGuid:(id)a3 forLocalURL:(id)a4
++ (BOOL)registerGuid:(id)guid forLocalURL:(id)l
 {
-  v5 = a4;
-  v6 = a3;
+  lCopy = l;
+  guidCopy = guid;
   v7 = +[IMDFileTransferCenter sharedInstance];
-  v8 = [v7 registerGUID:v6 forNewOutgoingTransferWithLocalURL:v5];
+  v8 = [v7 registerGUID:guidCopy forNewOutgoingTransferWithLocalURL:lCopy];
 
   return v8;
 }
 
-+ (void)updateTransfer:(id)a3
++ (void)updateTransfer:(id)transfer
 {
-  v3 = a3;
+  transferCopy = transfer;
   v4 = +[IMDFileTransferCenter sharedInstance];
-  [v4 updateTransfer:v3];
+  [v4 updateTransfer:transferCopy];
 }
 
-+ (BOOL)isRecoverablyDeletedMessageGUID:(id)a3
++ (BOOL)isRecoverablyDeletedMessageGUID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v7 = 0;
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v4 = [MEMORY[0x277D18EB0] synchronousDatabase];
+  synchronousDatabase = [MEMORY[0x277D18EB0] synchronousDatabase];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = sub_22B676BFC;
   v6[3] = &unk_278705308;
   v6[4] = &v7;
-  [v4 isRecoverablyDeletedMessageGUID:v3 completionHandler:v6];
+  [synchronousDatabase isRecoverablyDeletedMessageGUID:dCopy completionHandler:v6];
 
-  LOBYTE(v4) = *(v8 + 24);
+  LOBYTE(synchronousDatabase) = *(v8 + 24);
   _Block_object_dispose(&v7, 8);
 
-  return v4;
+  return synchronousDatabase;
 }
 
-+ (void)moveMessagePartForGUID:(id)a3 deleteDate:(id)a4 partBody:(id)a5
++ (void)moveMessagePartForGUID:(id)d deleteDate:(id)date partBody:(id)body
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  bodyCopy = body;
+  dateCopy = date;
+  dCopy = d;
   v10 = +[IMDCKRecoverableMessageSyncController sharedInstance];
-  [v10 _onRecoverableMessagePartRecordReadWithDeleteDate:v8 messageGUID:v9 partBody:v7];
+  [v10 _onRecoverableMessagePartRecordReadWithDeleteDate:dateCopy messageGUID:dCopy partBody:bodyCopy];
 }
 
 + (BOOL)hasFinishedAssetDownloadSync
 {
   v2 = +[IMDCKSyncController sharedInstance];
-  v3 = [v2 syncState];
-  v4 = [v3 getAnalyticSyncDatesObjectForKey:*MEMORY[0x277D199C8]];
+  syncState = [v2 syncState];
+  v4 = [syncState getAnalyticSyncDatesObjectForKey:*MEMORY[0x277D199C8]];
 
   if ([v4 intValue])
   {
@@ -360,66 +360,66 @@ LABEL_6:
 + (id)primaryAccountCountryCode
 {
   v2 = +[IMDCKUtilities sharedInstance];
-  v3 = [v2 _primaryAccountCountryCode];
+  _primaryAccountCountryCode = [v2 _primaryAccountCountryCode];
 
-  return v3;
+  return _primaryAccountCountryCode;
 }
 
-+ (id)ckRecordWithT1Info:(id)a3
++ (id)ckRecordWithT1Info:(id)info
 {
   v3 = MEMORY[0x277D1AA28];
-  v4 = a3;
+  infoCopy = info;
   v5 = +[IMDRecordZoneManager sharedInstance];
-  v6 = [v5 updateRecordZoneID];
+  updateRecordZoneID = [v5 updateRecordZoneID];
   v7 = +[IMDCKRecordSaltManager sharedInstance];
-  v8 = [v7 cachedSalt];
-  v9 = [v3 createCKRecordForUpdateT1:v4 zoneID:v6 salt:v8];
+  cachedSalt = [v7 cachedSalt];
+  v9 = [v3 createCKRecordForUpdateT1:infoCopy zoneID:updateRecordZoneID salt:cachedSalt];
 
   return v9;
 }
 
-+ (id)ckRecordWithT2Info:(id)a3
++ (id)ckRecordWithT2Info:(id)info
 {
   v3 = MEMORY[0x277D1AA28];
-  v4 = a3;
+  infoCopy = info;
   v5 = +[IMDRecordZoneManager sharedInstance];
-  v6 = [v5 updateRecordZoneID];
+  updateRecordZoneID = [v5 updateRecordZoneID];
   v7 = +[IMDCKRecordSaltManager sharedInstance];
-  v8 = [v7 cachedSalt];
-  v9 = [v3 createCKRecordForUpdateT2:v4 zoneID:v6 salt:v8];
+  cachedSalt = [v7 cachedSalt];
+  v9 = [v3 createCKRecordForUpdateT2:infoCopy zoneID:updateRecordZoneID salt:cachedSalt];
 
   return v9;
 }
 
-+ (id)ckRecordWithT3Info:(id)a3
++ (id)ckRecordWithT3Info:(id)info
 {
   v3 = MEMORY[0x277D1AA28];
-  v4 = a3;
+  infoCopy = info;
   v5 = +[IMDRecordZoneManager sharedInstance];
-  v6 = [v5 updateRecordZoneID];
+  updateRecordZoneID = [v5 updateRecordZoneID];
   v7 = +[IMDCKRecordSaltManager sharedInstance];
-  v8 = [v7 cachedSalt];
-  v9 = [v3 createCKRecordForUpdateT3:v4 zoneID:v6 salt:v8];
+  cachedSalt = [v7 cachedSalt];
+  v9 = [v3 createCKRecordForUpdateT3:infoCopy zoneID:updateRecordZoneID salt:cachedSalt];
 
   return v9;
 }
 
-+ (void)handleMessageUpdateWithCKRecord:(id)a3
++ (void)handleMessageUpdateWithCKRecord:(id)record
 {
-  v3 = a3;
+  recordCopy = record;
   v4 = +[IMDChatRegistry sharedInstance];
-  [v4 handleMessageUpdate:v3];
+  [v4 handleMessageUpdate:recordCopy];
 }
 
-+ (void)generatePreviewForTransfer:(id)a3
++ (void)generatePreviewForTransfer:(id)transfer
 {
-  v6 = a3;
-  v3 = [v6 localPath];
-  if ([v3 length])
+  transferCopy = transfer;
+  localPath = [transferCopy localPath];
+  if ([localPath length])
   {
-    v4 = [MEMORY[0x277D1ADF8] sharedInstance];
+    mEMORY[0x277D1ADF8] = [MEMORY[0x277D1ADF8] sharedInstance];
     v5 = [MEMORY[0x277D1AB80] contextWithKnownSender:1 serviceName:*MEMORY[0x277D1A608]];
-    [v4 generatePreviewForTransfer:v6 attachmentPath:v3 balloonBundleID:0 senderContext:v5 completionBlock:0];
+    [mEMORY[0x277D1ADF8] generatePreviewForTransfer:transferCopy attachmentPath:localPath balloonBundleID:0 senderContext:v5 completionBlock:0];
   }
 }
 

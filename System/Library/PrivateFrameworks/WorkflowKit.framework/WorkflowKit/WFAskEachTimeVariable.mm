@@ -1,12 +1,12 @@
 @interface WFAskEachTimeVariable
 - (NSString)prompt;
-- (WFAskEachTimeVariable)initWithPrompt:(id)a3 collectionFilter:(id)a4;
+- (WFAskEachTimeVariable)initWithPrompt:(id)prompt collectionFilter:(id)filter;
 - (WFDisambiguationCollectionFilter)collectionFilter;
 - (id)icon;
-- (id)rewrittenWithStrings:(id)a3;
+- (id)rewrittenWithStrings:(id)strings;
 - (id)userVisiblePrompt;
-- (id)userVisibleStringsForUseCase:(unint64_t)a3;
-- (void)retrieveContentCollectionWithVariableSource:(id)a3 completionHandler:(id)a4;
+- (id)userVisibleStringsForUseCase:(unint64_t)case;
+- (void)retrieveContentCollectionWithVariableSource:(id)source completionHandler:(id)handler;
 @end
 
 @implementation WFAskEachTimeVariable
@@ -15,8 +15,8 @@
 {
   v2 = objc_alloc(MEMORY[0x1E69E0D70]);
   v3 = [MEMORY[0x1E69E09E0] colorWithSystemColor:1];
-  v4 = [MEMORY[0x1E69E0B48] clearBackground];
-  v5 = [v2 initWithSymbolName:@"text.bubble" symbolColor:v3 background:v4];
+  clearBackground = [MEMORY[0x1E69E0B48] clearBackground];
+  v5 = [v2 initWithSymbolName:@"text.bubble" symbolColor:v3 background:clearBackground];
 
   return v5;
 }
@@ -26,8 +26,8 @@
   collectionFilter = self->_collectionFilter;
   if (!collectionFilter)
   {
-    v4 = [(WFVariable *)self dictionary];
-    v5 = [v4 objectForKey:@"CollectionFilter"];
+    dictionary = [(WFVariable *)self dictionary];
+    v5 = [dictionary objectForKey:@"CollectionFilter"];
 
     if (v5)
     {
@@ -48,8 +48,8 @@
 
 - (NSString)prompt
 {
-  v2 = [(WFVariable *)self dictionary];
-  v3 = [v2 objectForKey:@"Prompt"];
+  dictionary = [(WFVariable *)self dictionary];
+  v3 = [dictionary objectForKey:@"Prompt"];
 
   if (v3)
   {
@@ -75,10 +75,10 @@
   return v4;
 }
 
-- (void)retrieveContentCollectionWithVariableSource:(id)a3 completionHandler:(id)a4
+- (void)retrieveContentCollectionWithVariableSource:(id)source completionHandler:(id)handler
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = a4;
+  handlerCopy = handler;
   v5 = getWFGeneralLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_FAULT))
   {
@@ -87,18 +87,18 @@
     _os_log_impl(&dword_1CA256000, v5, OS_LOG_TYPE_FAULT, "%s Ask Each Time variable unexpectedly asked for content", &v7, 0xCu);
   }
 
-  (*(v4 + 2))(v4, 0, 0);
+  (*(handlerCopy + 2))(handlerCopy, 0, 0);
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (WFAskEachTimeVariable)initWithPrompt:(id)a3 collectionFilter:(id)a4
+- (WFAskEachTimeVariable)initWithPrompt:(id)prompt collectionFilter:(id)filter
 {
-  v6 = a3;
-  v7 = a4;
-  if (![v6 length])
+  promptCopy = prompt;
+  filterCopy = filter;
+  if (![promptCopy length])
   {
     v8 = 0;
-    if (v7)
+    if (filterCopy)
     {
       goto LABEL_3;
     }
@@ -108,37 +108,37 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v8 = [v6 copy];
-  if (!v7)
+  v8 = [promptCopy copy];
+  if (!filterCopy)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
-  v9 = [v7 copy];
+  v9 = [filterCopy copy];
 LABEL_6:
   v10 = objc_opt_new();
   [v10 setValue:v8 forKey:@"Prompt"];
-  v11 = [v9 serializableRepresentation];
-  [v10 setValue:v11 forKey:@"CollectionFilter"];
+  serializableRepresentation = [v9 serializableRepresentation];
+  [v10 setValue:serializableRepresentation forKey:@"CollectionFilter"];
 
   v12 = [(WFVariable *)self initWithDictionary:v10 variableProvider:0];
   return v12;
 }
 
-- (id)rewrittenWithStrings:(id)a3
+- (id)rewrittenWithStrings:(id)strings
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(WFAskEachTimeVariable *)self userVisiblePrompt];
-  if (v5)
+  stringsCopy = strings;
+  userVisiblePrompt = [(WFAskEachTimeVariable *)self userVisiblePrompt];
+  if (userVisiblePrompt)
   {
-    v6 = [v4 objectForKey:v5];
+    v6 = [stringsCopy objectForKey:userVisiblePrompt];
     if (v6)
     {
       v7 = [WFAskEachTimeVariable alloc];
-      v8 = [(WFAskEachTimeVariable *)self collectionFilter];
-      v9 = [(WFAskEachTimeVariable *)v7 initWithPrompt:v6 collectionFilter:v8];
+      collectionFilter = [(WFAskEachTimeVariable *)self collectionFilter];
+      selfCopy3 = [(WFAskEachTimeVariable *)v7 initWithPrompt:v6 collectionFilter:collectionFilter];
     }
 
     else
@@ -149,30 +149,30 @@ LABEL_6:
         v13 = 136315394;
         v14 = "[WFAskEachTimeVariable(UserStrings) rewrittenWithStrings:]";
         v15 = 2112;
-        v16 = self;
+        selfCopy = self;
         _os_log_impl(&dword_1CA256000, v10, OS_LOG_TYPE_FAULT, "%s Missing string for variable %@", &v13, 0x16u);
       }
 
-      v9 = self;
+      selfCopy3 = self;
     }
   }
 
   else
   {
-    v9 = self;
+    selfCopy3 = self;
   }
 
   v11 = *MEMORY[0x1E69E9840];
 
-  return v9;
+  return selfCopy3;
 }
 
-- (id)userVisibleStringsForUseCase:(unint64_t)a3
+- (id)userVisibleStringsForUseCase:(unint64_t)case
 {
-  v3 = [(WFAskEachTimeVariable *)self userVisiblePrompt];
-  if (v3)
+  userVisiblePrompt = [(WFAskEachTimeVariable *)self userVisiblePrompt];
+  if (userVisiblePrompt)
   {
-    [MEMORY[0x1E695DFD8] setWithObject:v3];
+    [MEMORY[0x1E695DFD8] setWithObject:userVisiblePrompt];
   }
 
   else
@@ -186,13 +186,13 @@ LABEL_6:
 
 - (id)userVisiblePrompt
 {
-  v3 = [(WFAskEachTimeVariable *)self prompt];
+  prompt = [(WFAskEachTimeVariable *)self prompt];
 
-  if (v3)
+  if (prompt)
   {
     v4 = [WFUserVisibleString alloc];
-    v5 = [(WFAskEachTimeVariable *)self prompt];
-    v6 = [(WFUserVisibleString *)v4 initWithContent:v5 ofKind:0 comment:@"Ask Each Time prompt"];
+    prompt2 = [(WFAskEachTimeVariable *)self prompt];
+    v6 = [(WFUserVisibleString *)v4 initWithContent:prompt2 ofKind:0 comment:@"Ask Each Time prompt"];
   }
 
   else

@@ -1,20 +1,20 @@
 @interface MADVIVisualSearchGatingResultItem
 - (CGRect)normalizedBoundingBox;
-- (MADVIVisualSearchGatingResultItem)initWithCoder:(id)a3;
-- (MADVIVisualSearchGatingResultItem)initWithNormalizedBoundingBox:(CGRect)a3 andDomains:(id)a4;
+- (MADVIVisualSearchGatingResultItem)initWithCoder:(id)coder;
+- (MADVIVisualSearchGatingResultItem)initWithNormalizedBoundingBox:(CGRect)box andDomains:(id)domains;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MADVIVisualSearchGatingResultItem
 
-- (MADVIVisualSearchGatingResultItem)initWithNormalizedBoundingBox:(CGRect)a3 andDomains:(id)a4
+- (MADVIVisualSearchGatingResultItem)initWithNormalizedBoundingBox:(CGRect)box andDomains:(id)domains
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = a4;
+  height = box.size.height;
+  width = box.size.width;
+  y = box.origin.y;
+  x = box.origin.x;
+  domainsCopy = domains;
   v14.receiver = self;
   v14.super_class = MADVIVisualSearchGatingResultItem;
   v11 = [(MADVIVisualSearchGatingResultItem *)&v14 init];
@@ -25,22 +25,22 @@
     v11->_normalizedBoundingBox.origin.y = y;
     v11->_normalizedBoundingBox.size.width = width;
     v11->_normalizedBoundingBox.size.height = height;
-    objc_storeStrong(&v11->_domains, a4);
+    objc_storeStrong(&v11->_domains, domains);
   }
 
   return v12;
 }
 
-- (MADVIVisualSearchGatingResultItem)initWithCoder:(id)a3
+- (MADVIVisualSearchGatingResultItem)initWithCoder:(id)coder
 {
   v17[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = MADVIVisualSearchGatingResultItem;
   v5 = [(MADVIVisualSearchGatingResultItem *)&v16 init];
   if (v5)
   {
-    [v4 decodeRectForKey:@"NormalizedBoundingBox"];
+    [coderCopy decodeRectForKey:@"NormalizedBoundingBox"];
     v5->_normalizedBoundingBox.origin.x = v6;
     v5->_normalizedBoundingBox.origin.y = v7;
     v5->_normalizedBoundingBox.size.width = v8;
@@ -51,7 +51,7 @@
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:2];
     v12 = [v10 setWithArray:v11];
 
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"Domains"];
+    v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"Domains"];
     domains = v5->_domains;
     v5->_domains = v13;
   }
@@ -59,28 +59,28 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   x = self->_normalizedBoundingBox.origin.x;
   y = self->_normalizedBoundingBox.origin.y;
   width = self->_normalizedBoundingBox.size.width;
   height = self->_normalizedBoundingBox.size.height;
-  v8 = a3;
-  [v8 encodeRect:@"NormalizedBoundingBox" forKey:{x, y, width, height}];
-  [v8 encodeObject:self->_domains forKey:@"Domains"];
+  coderCopy = coder;
+  [coderCopy encodeRect:@"NormalizedBoundingBox" forKey:{x, y, width, height}];
+  [coderCopy encodeObject:self->_domains forKey:@"Domains"];
 }
 
 - (id)description
 {
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  [v3 appendFormat:@"<%@ %p, ", v5, self];
+  [string appendFormat:@"<%@ %p, ", v5, self];
 
-  [v3 appendFormat:@"normalizedBoundingBox: %0.2fx%0.2f @ (%0.2f, %0.2f), ", *&self->_normalizedBoundingBox.size.width, *&self->_normalizedBoundingBox.size.height, *&self->_normalizedBoundingBox.origin.x, *&self->_normalizedBoundingBox.origin.y];
-  [v3 appendFormat:@"domains: %@>", self->_domains];
+  [string appendFormat:@"normalizedBoundingBox: %0.2fx%0.2f @ (%0.2f, %0.2f), ", *&self->_normalizedBoundingBox.size.width, *&self->_normalizedBoundingBox.size.height, *&self->_normalizedBoundingBox.origin.x, *&self->_normalizedBoundingBox.origin.y];
+  [string appendFormat:@"domains: %@>", self->_domains];
 
-  return v3;
+  return string;
 }
 
 - (CGRect)normalizedBoundingBox

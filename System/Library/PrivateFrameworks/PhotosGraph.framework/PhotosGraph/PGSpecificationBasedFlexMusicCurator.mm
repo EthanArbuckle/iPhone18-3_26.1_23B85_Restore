@@ -1,16 +1,16 @@
 @interface PGSpecificationBasedFlexMusicCurator
 - (PGSpecificationBasedFlexMusicCurator)init;
-- (PGSpecificationBasedFlexMusicCurator)initWithOptions:(id)a3;
-- (id)musicCurationAndReturnError:(id *)a3;
+- (PGSpecificationBasedFlexMusicCurator)initWithOptions:(id)options;
+- (id)musicCurationAndReturnError:(id *)error;
 @end
 
 @implementation PGSpecificationBasedFlexMusicCurator
 
-- (PGSpecificationBasedFlexMusicCurator)initWithOptions:(id)a3
+- (PGSpecificationBasedFlexMusicCurator)initWithOptions:(id)options
 {
   ObjectType = swift_getObjectType();
-  v6 = a3;
-  sub_22F3EAA78(v6, &v12);
+  optionsCopy = options;
+  sub_22F3EAA78(optionsCopy, &v12);
   v7 = (self + OBJC_IVAR___PGSpecificationBasedFlexMusicCurator_curationSpecification);
   v8 = v13[0];
   *v7 = v12;
@@ -23,17 +23,17 @@
   return v9;
 }
 
-- (id)musicCurationAndReturnError:(id *)a3
+- (id)musicCurationAndReturnError:(id *)error
 {
   sub_22F17682C();
   v4 = swift_allocError();
   swift_willThrow();
-  if (a3)
+  if (error)
   {
     v5 = sub_22F73F360();
 
     v6 = v5;
-    *a3 = v5;
+    *error = v5;
   }
 
   else

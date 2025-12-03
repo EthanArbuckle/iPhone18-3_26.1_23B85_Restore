@@ -1,40 +1,40 @@
 @interface TILanguageSelectionController
-+ (id)inferAdditionalInputModesForPrimary:(id)a3;
-+ (id)inferInputModeForLanguage:(id)a3 enabled:(id)a4;
-+ (id)inferSecondaryInputModeForPrimary:(id)a3 enabled:(id)a4 isSimulation:(BOOL)a5;
-+ (id)inputModeForLanguageIdentifier:(id)a3;
-+ (id)inputModesForLanguageIdentifiers:(id)a3;
-+ (id)multilingualInputModesForInputModes:(id)a3;
-+ (void)reportTypedTokens:(const void *)a3 activeInputModes:(id)a4;
-- (BOOL)bufferIsCompatibleWithContext:(const TITokenID *)a3 contextLength:(unint64_t)a4;
++ (id)inferAdditionalInputModesForPrimary:(id)primary;
++ (id)inferInputModeForLanguage:(id)language enabled:(id)enabled;
++ (id)inferSecondaryInputModeForPrimary:(id)primary enabled:(id)enabled isSimulation:(BOOL)simulation;
++ (id)inputModeForLanguageIdentifier:(id)identifier;
++ (id)inputModesForLanguageIdentifiers:(id)identifiers;
++ (id)multilingualInputModesForInputModes:(id)modes;
++ (void)reportTypedTokens:(const void *)tokens activeInputModes:(id)modes;
+- (BOOL)bufferIsCompatibleWithContext:(const TITokenID *)context contextLength:(unint64_t)length;
 - (BOOL)didProbabilityChangeSignificantly;
-- (BOOL)didUpdatedInputModesChange:(id)a3;
+- (BOOL)didUpdatedInputModesChange:(id)change;
 - (BOOL)updateInputModeProbabilities;
 - (TILanguageSelectionController)init;
-- (TILanguageSelectionController)initWithLanguageLikelihoodModel:(id)a3 preferenceProvider:(id)a4;
-- (double)lastOfflineAdaptationTimeForApp:(id)a3;
-- (float)priorProbabilityForInputMode:(id)a3;
+- (TILanguageSelectionController)initWithLanguageLikelihoodModel:(id)model preferenceProvider:(id)provider;
+- (double)lastOfflineAdaptationTimeForApp:(id)app;
+- (float)priorProbabilityForInputMode:(id)mode;
 - (id).cxx_construct;
-- (id)additionalInputModesForUpdatedPrimaryInputMode:(id)a3 withSecondaryInputMode:(id)a4;
-- (id)dynamicallyDetectedInputModesForPrimaryInputMode:(id)a3 isSimulation:(BOOL)a4;
+- (id)additionalInputModesForUpdatedPrimaryInputMode:(id)mode withSecondaryInputMode:(id)inputMode;
+- (id)dynamicallyDetectedInputModesForPrimaryInputMode:(id)mode isSimulation:(BOOL)simulation;
 - (id)fetchPreferredAdditionalInputModes;
 - (id)fetchPreferredSecondaryInputMode;
 - (id)fetchUserEnabledInputModes;
 - (id)fetchUserEnabledInputModesExcludingPreferredLanguages;
-- (id)secondaryInputModeForUpdatedPrimaryInputMode:(id)a3;
-- (id)simulateImplicitInputModeDetectionForPrimaryInputMode:(id)a3;
+- (id)secondaryInputModeForUpdatedPrimaryInputMode:(id)mode;
+- (id)simulateImplicitInputModeDetectionForPrimaryInputMode:(id)mode;
 - (vector<float,)retreiveExcessInputModeWeightRatiosFromCurrentWeights:()vector<float;
-- (void)addTokenString:(id)a3 tokenID:(TITokenID)a4 context:(const TITokenID *)a5 contextLength:(unint64_t)a6;
-- (void)appleKeyboardsInternalSettingsChanged:(id)a3;
-- (void)appleKeyboardsPreferencesChanged:(id)a3;
+- (void)addTokenString:(id)string tokenID:(TITokenID)d context:(const TITokenID *)context contextLength:(unint64_t)length;
+- (void)appleKeyboardsInternalSettingsChanged:(id)changed;
+- (void)appleKeyboardsPreferencesChanged:(id)changed;
 - (void)dealloc;
 - (void)feedBufferedTokenStringsToModel;
-- (void)rebalanceBilingualInputModeWeights:(void *)a3;
-- (void)rebalanceMultipleInputModeWeights:(void *)a3;
-- (void)removeTokenString:(id)a3 tokenID:(TITokenID)a4 context:(const TITokenID *)a5 contextLength:(unint64_t)a6;
-- (void)setAdaptationContext:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)updateActiveInputModesSuppressingNotification:(BOOL)a3;
+- (void)rebalanceBilingualInputModeWeights:(void *)weights;
+- (void)rebalanceMultipleInputModeWeights:(void *)weights;
+- (void)removeTokenString:(id)string tokenID:(TITokenID)d context:(const TITokenID *)context contextLength:(unint64_t)length;
+- (void)setAdaptationContext:(id)context;
+- (void)setDelegate:(id)delegate;
+- (void)updateActiveInputModesSuppressingNotification:(BOOL)notification;
 @end
 
 @implementation TILanguageSelectionController
@@ -47,24 +47,24 @@
   return self;
 }
 
-- (double)lastOfflineAdaptationTimeForApp:(id)a3
+- (double)lastOfflineAdaptationTimeForApp:(id)app
 {
-  v4 = a3;
-  v5 = [(TILanguageSelectionController *)self languageLikelihoodModel];
-  [v5 lastOfflineAdaptationTimeForApp:v4];
+  appCopy = app;
+  languageLikelihoodModel = [(TILanguageSelectionController *)self languageLikelihoodModel];
+  [languageLikelihoodModel lastOfflineAdaptationTimeForApp:appCopy];
   v7 = v6;
 
   return v7;
 }
 
-- (id)simulateImplicitInputModeDetectionForPrimaryInputMode:(id)a3
+- (id)simulateImplicitInputModeDetectionForPrimaryInputMode:(id)mode
 {
-  v4 = a3;
+  modeCopy = mode;
   v5 = objc_opt_new();
-  [v5 addObject:v4];
-  v6 = [(TILanguageSelectionController *)self userEnabledInputModes];
-  v7 = [(TILanguageSelectionController *)self fetchUserEnabledInputModesExcludingPreferredLanguages];
-  v8 = [TILanguageSelectionController inferSecondaryInputModeForPrimary:v4 enabled:v6 isSimulation:1 enabledExcludingPreferredLanguages:v7];
+  [v5 addObject:modeCopy];
+  userEnabledInputModes = [(TILanguageSelectionController *)self userEnabledInputModes];
+  fetchUserEnabledInputModesExcludingPreferredLanguages = [(TILanguageSelectionController *)self fetchUserEnabledInputModesExcludingPreferredLanguages];
+  v8 = [TILanguageSelectionController inferSecondaryInputModeForPrimary:modeCopy enabled:userEnabledInputModes isSimulation:1 enabledExcludingPreferredLanguages:fetchUserEnabledInputModesExcludingPreferredLanguages];
 
   if (v8)
   {
@@ -74,7 +74,7 @@
 
   else
   {
-    v9 = [(TILanguageSelectionController *)self dynamicallyDetectedInputModesForPrimaryInputMode:v4 isSimulation:1];
+    v9 = [(TILanguageSelectionController *)self dynamicallyDetectedInputModesForPrimaryInputMode:modeCopy isSimulation:1];
   }
 
   v10 = v9;
@@ -82,7 +82,7 @@
   return v10;
 }
 
-- (void)removeTokenString:(id)a3 tokenID:(TITokenID)a4 context:(const TITokenID *)a5 contextLength:(unint64_t)a6
+- (void)removeTokenString:(id)string tokenID:(TITokenID)d context:(const TITokenID *)context contextLength:(unint64_t)length
 {
   end = self->m_buffered_tokens.__end_;
   p_m_buffered_tokens = &self->m_buffered_tokens;
@@ -91,29 +91,29 @@
     v17 = end[-1];
     v12 = v17;
     self->m_buffered_tokens.__end_ = end - 1;
-    v13 = [(TILanguageSelectionController *)self bufferedTokenStrings];
-    v14 = [v13 lastObject];
+    bufferedTokenStrings = [(TILanguageSelectionController *)self bufferedTokenStrings];
+    lastObject = [bufferedTokenStrings lastObject];
 
-    v15 = [(TILanguageSelectionController *)self bufferedTokenStrings];
-    [v15 removeLastObject];
+    bufferedTokenStrings2 = [(TILanguageSelectionController *)self bufferedTokenStrings];
+    [bufferedTokenStrings2 removeLastObject];
 
-    if (v12 != a4 || ![(TILanguageSelectionController *)self bufferIsCompatibleWithContext:a5 contextLength:a6])
+    if (v12 != d || ![(TILanguageSelectionController *)self bufferIsCompatibleWithContext:context contextLength:length])
     {
       std::vector<TITokenID>::push_back[abi:nn200100](p_m_buffered_tokens, &v17);
-      v16 = [(TILanguageSelectionController *)self bufferedTokenStrings];
-      [v16 addObject:v14];
+      bufferedTokenStrings3 = [(TILanguageSelectionController *)self bufferedTokenStrings];
+      [bufferedTokenStrings3 addObject:lastObject];
 
       [(TILanguageSelectionController *)self feedBufferedTokenStringsToModel];
     }
   }
 }
 
-- (void)addTokenString:(id)a3 tokenID:(TITokenID)a4 context:(const TITokenID *)a5 contextLength:(unint64_t)a6
+- (void)addTokenString:(id)string tokenID:(TITokenID)d context:(const TITokenID *)context contextLength:(unint64_t)length
 {
-  v14 = a4;
-  v13 = a3;
-  v10 = [(TILanguageSelectionController *)self bufferIsCompatibleWithContext:a5 contextLength:a6];
-  v11 = *&a4 & 0xFFFFFFFF00000000;
+  dCopy = d;
+  stringCopy = string;
+  v10 = [(TILanguageSelectionController *)self bufferIsCompatibleWithContext:context contextLength:length];
+  v11 = *&d & 0xFFFFFFFF00000000;
   if (!v10 || v11 == 0x100000000 || v11 == 0x200000000 || (self->m_buffered_tokens.__end_ - self->m_buffered_tokens.__begin_) >= 0x191)
   {
     [(TILanguageSelectionController *)self feedBufferedTokenStringsToModel];
@@ -121,23 +121,23 @@
 
   if (v11 != 0x200000000)
   {
-    v12 = [(TILanguageSelectionController *)self bufferedTokenStrings];
-    [v12 addObject:v13];
+    bufferedTokenStrings = [(TILanguageSelectionController *)self bufferedTokenStrings];
+    [bufferedTokenStrings addObject:stringCopy];
 
-    std::vector<TITokenID>::push_back[abi:nn200100](&self->m_buffered_tokens, &v14);
+    std::vector<TITokenID>::push_back[abi:nn200100](&self->m_buffered_tokens, &dCopy);
   }
 }
 
-- (BOOL)bufferIsCompatibleWithContext:(const TITokenID *)a3 contextLength:(unint64_t)a4
+- (BOOL)bufferIsCompatibleWithContext:(const TITokenID *)context contextLength:(unint64_t)length
 {
   begin = self->m_buffered_tokens.__begin_;
   end = self->m_buffered_tokens.__end_;
   v6 = end - begin;
-  if (v6 < a4)
+  if (v6 < length)
   {
     if (begin != end)
     {
-      v7 = &a3[a4 - v6];
+      v7 = &context[length - v6];
       do
       {
         lexicon_id = begin->lexicon_id;
@@ -158,33 +158,33 @@ LABEL_30:
     return v13;
   }
 
-  if (!a4)
+  if (!length)
   {
     goto LABEL_30;
   }
 
-  v15 = &a3[a4];
-  v16 = &begin[v6 - a4];
+  v15 = &context[length];
+  v16 = &begin[v6 - length];
   do
   {
-    v17 = a3->lexicon_id;
-    v18 = a3->word_id;
-    ++a3;
+    v17 = context->lexicon_id;
+    v18 = context->word_id;
+    ++context;
     v19 = v16->lexicon_id;
     v20 = v16->word_id;
     ++v16;
     v13 = v17 == v19 && v18 == v20;
   }
 
-  while (v13 && a3 != v15);
+  while (v13 && context != v15);
   return v13;
 }
 
-- (float)priorProbabilityForInputMode:(id)a3
+- (float)priorProbabilityForInputMode:(id)mode
 {
-  v4 = a3;
-  v5 = [(TILanguageSelectionController *)self inputModeProbabilities];
-  v6 = [v5 objectForKey:v4];
+  modeCopy = mode;
+  inputModeProbabilities = [(TILanguageSelectionController *)self inputModeProbabilities];
+  v6 = [inputModeProbabilities objectForKey:modeCopy];
 
   [v6 floatValue];
   v8 = v7;
@@ -192,11 +192,11 @@ LABEL_30:
   return v8;
 }
 
-- (void)setAdaptationContext:(id)a3
+- (void)setAdaptationContext:(id)context
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (self->_adaptationContext != v5)
+  contextCopy = context;
+  if (self->_adaptationContext != contextCopy)
   {
     if (TICanLogMessageAtLevel_onceToken != -1)
     {
@@ -208,20 +208,20 @@ LABEL_30:
       v6 = TIOSLogFacility();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
       {
-        v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s Setting adaptation context = %@", "-[TILanguageSelectionController setAdaptationContext:]", v5];
+        contextCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%s Setting adaptation context = %@", "-[TILanguageSelectionController setAdaptationContext:]", contextCopy];
         *buf = 138412290;
-        v14 = v12;
+        v14 = contextCopy;
         _os_log_debug_impl(&dword_22CA55000, v6, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
       }
     }
 
     v7 = MEMORY[0x277CCACA8];
-    v8 = [(TILanguageModelAdaptationContext *)v5 recipientNameDigest];
-    v9 = [(TILanguageSelectionController *)self adaptationContext];
-    v10 = [v9 recipientNameDigest];
-    LOBYTE(v7) = [v7 _string:v8 matchesString:v10];
+    recipientNameDigest = [(TILanguageModelAdaptationContext *)contextCopy recipientNameDigest];
+    adaptationContext = [(TILanguageSelectionController *)self adaptationContext];
+    recipientNameDigest2 = [adaptationContext recipientNameDigest];
+    LOBYTE(v7) = [v7 _string:recipientNameDigest matchesString:recipientNameDigest2];
 
-    objc_storeStrong(&self->_adaptationContext, a3);
+    objc_storeStrong(&self->_adaptationContext, context);
     if ((v7 & 1) == 0)
     {
       [(TILanguageSelectionController *)self updateActiveInputModesSuppressingNotification:0];
@@ -231,23 +231,23 @@ LABEL_30:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  if (self->_delegate != a3)
+  if (self->_delegate != delegate)
   {
-    self->_delegate = a3;
-    v5 = a3;
-    v6 = [v5 primaryInputMode];
-    [(TILanguageSelectionController *)self setPrimaryInputMode:v6];
+    self->_delegate = delegate;
+    delegateCopy = delegate;
+    primaryInputMode = [delegateCopy primaryInputMode];
+    [(TILanguageSelectionController *)self setPrimaryInputMode:primaryInputMode];
 
-    v7 = [(TILanguageSelectionController *)self primaryInputMode];
-    v8 = [(TILanguageSelectionController *)self userEnabledInputModes];
-    v9 = [(TILanguageSelectionController *)self fetchUserEnabledInputModesExcludingPreferredLanguages];
-    v10 = [TILanguageSelectionController inferSecondaryInputModeForPrimary:v7 enabled:v8 isSimulation:0 enabledExcludingPreferredLanguages:v9];
+    primaryInputMode2 = [(TILanguageSelectionController *)self primaryInputMode];
+    userEnabledInputModes = [(TILanguageSelectionController *)self userEnabledInputModes];
+    fetchUserEnabledInputModesExcludingPreferredLanguages = [(TILanguageSelectionController *)self fetchUserEnabledInputModesExcludingPreferredLanguages];
+    v10 = [TILanguageSelectionController inferSecondaryInputModeForPrimary:primaryInputMode2 enabled:userEnabledInputModes isSimulation:0 enabledExcludingPreferredLanguages:fetchUserEnabledInputModesExcludingPreferredLanguages];
     [(TILanguageSelectionController *)self setInferredSecondaryInputMode:v10];
 
-    v11 = [(TILanguageSelectionController *)self primaryInputMode];
-    v12 = [TILanguageSelectionController inferAdditionalInputModesForPrimary:v11];
+    primaryInputMode3 = [(TILanguageSelectionController *)self primaryInputMode];
+    v12 = [TILanguageSelectionController inferAdditionalInputModesForPrimary:primaryInputMode3];
 
     [(TILanguageSelectionController *)self setInferredAdditionalInputModes:v12];
 
@@ -255,14 +255,14 @@ LABEL_30:
   }
 }
 
-- (void)rebalanceMultipleInputModeWeights:(void *)a3
+- (void)rebalanceMultipleInputModeWeights:(void *)weights
 {
   v21 = *MEMORY[0x277D85DE8];
-  if (*(a3 + 1) - *a3 >= 9uLL)
+  if (*(weights + 1) - *weights >= 9uLL)
   {
     if (_os_feature_enabled_impl())
     {
-      v5 = *(a3 + 1) - *a3;
+      v5 = *(weights + 1) - *weights;
       if ((v5 >> 2) >= 1)
       {
         v6 = 0;
@@ -271,7 +271,7 @@ LABEL_30:
         v9 = 0x3FC3333340000000;
         do
         {
-          v10 = *(*a3 + 4 * v6);
+          v10 = *(*weights + 4 * v6);
           if (v10 < 0.15)
           {
             if (TICanLogMessageAtLevel_onceToken != -1)
@@ -297,10 +297,10 @@ LABEL_30:
             }
 
             v12 = 0.15 - v10;
-            [(TILanguageSelectionController *)self retreiveExcessInputModeWeightRatiosFromCurrentWeights:a3];
+            [(TILanguageSelectionController *)self retreiveExcessInputModeWeightRatiosFromCurrentWeights:weights];
             v13 = 0;
             v14 = __p;
-            v15 = *a3;
+            v15 = *weights;
             do
             {
               if (v6 != v13)
@@ -407,11 +407,11 @@ LABEL_30:
   return self;
 }
 
-- (void)rebalanceBilingualInputModeWeights:(void *)a3
+- (void)rebalanceBilingualInputModeWeights:(void *)weights
 {
   v33 = *MEMORY[0x277D85DE8];
-  v3 = *a3;
-  if (*(a3 + 1) - *a3 != 8)
+  v3 = *weights;
+  if (*(weights + 1) - *weights != 8)
   {
     goto LABEL_32;
   }
@@ -432,41 +432,41 @@ LABEL_30:
       v9 = TIOSLogFacility();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
       {
-        v29 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s Boosting primary language weight to minimum (%.2g)", "-[TILanguageSelectionController rebalanceBilingualInputModeWeights:]", 0x3FE0000000000000];
+        0x3FE0000000000000 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s Boosting primary language weight to minimum (%.2g)", "-[TILanguageSelectionController rebalanceBilingualInputModeWeights:]", 0x3FE0000000000000];
         *buf = 138412290;
-        v32 = v29;
+        v32 = 0x3FE0000000000000;
         _os_log_debug_impl(&dword_22CA55000, v9, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
       }
     }
 
-    v10 = *a3;
-    v11 = *(*a3 + 4) - v8;
-    *v10 = v8 + **a3;
+    v10 = *weights;
+    v11 = *(*weights + 4) - v8;
+    *v10 = v8 + **weights;
     v10[1] = v11;
   }
 
-  v12 = [(TILanguageSelectionController *)self preferredSecondaryInputMode];
-  v13 = [(TILanguageSelectionController *)self activeInputModes];
-  v14 = [v13 objectAtIndex:1];
-  if ([v12 isEqual:v14])
+  preferredSecondaryInputMode = [(TILanguageSelectionController *)self preferredSecondaryInputMode];
+  activeInputModes = [(TILanguageSelectionController *)self activeInputModes];
+  v14 = [activeInputModes objectAtIndex:1];
+  if ([preferredSecondaryInputMode isEqual:v14])
   {
 
     goto LABEL_13;
   }
 
-  v15 = [(TILanguageSelectionController *)self inferredSecondaryInputMode];
-  v16 = [(TILanguageSelectionController *)self activeInputModes];
-  v17 = [v16 objectAtIndex:1];
-  v18 = [v15 isEqual:v17];
+  inferredSecondaryInputMode = [(TILanguageSelectionController *)self inferredSecondaryInputMode];
+  activeInputModes2 = [(TILanguageSelectionController *)self activeInputModes];
+  v17 = [activeInputModes2 objectAtIndex:1];
+  v18 = [inferredSecondaryInputMode isEqual:v17];
 
   if (v18)
   {
 LABEL_13:
-    v19 = [(TILanguageSelectionController *)self activeInputModes];
-    v20 = [v19 objectAtIndex:1];
-    v21 = [v20 normalizedIdentifier];
+    activeInputModes3 = [(TILanguageSelectionController *)self activeInputModes];
+    v20 = [activeInputModes3 objectAtIndex:1];
+    normalizedIdentifier = [v20 normalizedIdentifier];
 
-    if (([v21 hasPrefix:@"nl_"] & 1) != 0 || objc_msgSend(v21, "hasPrefix:", @"hi_Latn"))
+    if (([normalizedIdentifier hasPrefix:@"nl_"] & 1) != 0 || objc_msgSend(normalizedIdentifier, "hasPrefix:", @"hi_Latn"))
     {
       if (TICanLogMessageAtLevel_onceToken != -1)
       {
@@ -479,7 +479,7 @@ LABEL_13:
         v23 = TIOSLogFacility();
         if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
         {
-          v28 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s Using reduced minimum prior %.2g for language %s", "-[TILanguageSelectionController rebalanceBilingualInputModeWeights:]", 0x3FB99999A0000000, objc_msgSend(v21, "UTF8String")];
+          v28 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s Using reduced minimum prior %.2g for language %s", "-[TILanguageSelectionController rebalanceBilingualInputModeWeights:]", 0x3FB99999A0000000, objc_msgSend(normalizedIdentifier, "UTF8String")];
           *buf = 138412290;
           v32 = v28;
           _os_log_debug_impl(&dword_22CA55000, v23, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
@@ -497,7 +497,7 @@ LABEL_13:
 
   v22 = 0.0476;
 LABEL_24:
-  if (*(*a3 + 4) < v22)
+  if (*(*weights + 4) < v22)
   {
     if (TICanLogMessageAtLevel_onceToken != -1)
     {
@@ -516,9 +516,9 @@ LABEL_24:
       }
     }
 
-    v25 = *a3;
-    v26 = *(*a3 + 4);
-    *v25 = **a3 - (v22 - v26);
+    v25 = *weights;
+    v26 = *(*weights + 4);
+    *v25 = **weights - (v22 - v26);
     v25[1] = v26 + (v22 - v26);
   }
 
@@ -526,16 +526,16 @@ LABEL_32:
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (id)dynamicallyDetectedInputModesForPrimaryInputMode:(id)a3 isSimulation:(BOOL)a4
+- (id)dynamicallyDetectedInputModesForPrimaryInputMode:(id)mode isSimulation:(BOOL)simulation
 {
-  v4 = a4;
+  simulationCopy = simulation;
   v37 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (v6 && (!_os_feature_enabled_impl() || v4))
+  modeCopy = mode;
+  if (modeCopy && (!_os_feature_enabled_impl() || simulationCopy))
   {
-    v7 = [MEMORY[0x277CBEB18] arrayWithObject:v6];
+    v7 = [MEMORY[0x277CBEB18] arrayWithObject:modeCopy];
     v8 = [MEMORY[0x277CBEB58] set];
-    v9 = _TILSCLanguageForInputMode(v6);
+    v9 = _TILSCLanguageForInputMode(modeCopy);
     if (TICanLogMessageAtLevel_onceToken != -1)
     {
       dispatch_once(&TICanLogMessageAtLevel_onceToken, &__block_literal_global_24093);
@@ -554,11 +554,11 @@ LABEL_32:
     }
 
     [v8 addObject:v9];
-    v11 = [(TILanguageSelectionController *)self languageLikelihoodModel];
-    v12 = [v11 rankedLanguagesForRecipient:0];
+    languageLikelihoodModel = [(TILanguageSelectionController *)self languageLikelihoodModel];
+    v12 = [languageLikelihoodModel rankedLanguagesForRecipient:0];
 
     v28 = v9;
-    v29 = v6;
+    v29 = modeCopy;
     if (TICanLogMessageAtLevel_onceToken != -1)
     {
       dispatch_once(&TICanLogMessageAtLevel_onceToken, &__block_literal_global_24093);
@@ -598,8 +598,8 @@ LABEL_19:
         v19 = *(*(&v30 + 1) + 8 * v18);
         if (([v8 containsObject:v19] & 1) == 0)
         {
-          v20 = [(TILanguageSelectionController *)self userEnabledInputModes];
-          v21 = [TILanguageSelectionController inferInputModeForLanguage:v19 enabled:v20];
+          userEnabledInputModes = [(TILanguageSelectionController *)self userEnabledInputModes];
+          v21 = [TILanguageSelectionController inferInputModeForLanguage:v19 enabled:userEnabledInputModes];
 
           if (v21 && [v21 supportsMultilingualKeyboard])
           {
@@ -643,7 +643,7 @@ LABEL_19:
       }
     }
 
-    v6 = v29;
+    modeCopy = v29;
   }
 
   else
@@ -656,20 +656,20 @@ LABEL_19:
   return v7;
 }
 
-- (id)additionalInputModesForUpdatedPrimaryInputMode:(id)a3 withSecondaryInputMode:(id)a4
+- (id)additionalInputModesForUpdatedPrimaryInputMode:(id)mode withSecondaryInputMode:(id)inputMode
 {
   v45 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  modeCopy = mode;
+  inputModeCopy = inputMode;
+  v8 = inputModeCopy;
   v9 = MEMORY[0x277CBEBF8];
-  if (v6 && v7 && TILSCMaximumActiveInputModes >= 3 && _os_feature_enabled_impl())
+  if (modeCopy && inputModeCopy && TILSCMaximumActiveInputModes >= 3 && _os_feature_enabled_impl())
   {
     v9 = objc_opt_new();
-    v10 = _TILSCLanguageForInputMode(v6);
+    v10 = _TILSCLanguageForInputMode(modeCopy);
     v11 = _TILSCLanguageForInputMode(v8);
-    v12 = [(TILanguageSelectionController *)self preferredAdditionalInputModes];
-    v13 = [v12 count];
+    preferredAdditionalInputModes = [(TILanguageSelectionController *)self preferredAdditionalInputModes];
+    v13 = [preferredAdditionalInputModes count];
 
     if (v13)
     {
@@ -677,12 +677,12 @@ LABEL_19:
       v42 = 0u;
       v39 = 0u;
       v40 = 0u;
-      v14 = [(TILanguageSelectionController *)self preferredAdditionalInputModes];
-      v15 = [v14 countByEnumeratingWithState:&v39 objects:v44 count:16];
+      preferredAdditionalInputModes2 = [(TILanguageSelectionController *)self preferredAdditionalInputModes];
+      v15 = [preferredAdditionalInputModes2 countByEnumeratingWithState:&v39 objects:v44 count:16];
       if (v15)
       {
         v16 = v15;
-        v33 = v6;
+        v33 = modeCopy;
         v34 = v8;
         v17 = *v40;
         do
@@ -691,7 +691,7 @@ LABEL_19:
           {
             if (*v40 != v17)
             {
-              objc_enumerationMutation(v14);
+              objc_enumerationMutation(preferredAdditionalInputModes2);
             }
 
             v19 = *(*(&v39 + 1) + 8 * i);
@@ -704,11 +704,11 @@ LABEL_19:
             }
           }
 
-          v16 = [v14 countByEnumeratingWithState:&v39 objects:v44 count:16];
+          v16 = [preferredAdditionalInputModes2 countByEnumeratingWithState:&v39 objects:v44 count:16];
         }
 
         while (v16);
-        v6 = v33;
+        modeCopy = v33;
 LABEL_25:
         v8 = v34;
       }
@@ -716,8 +716,8 @@ LABEL_25:
 
     else
     {
-      v23 = [(TILanguageSelectionController *)self inferredAdditionalInputModes];
-      v24 = [v23 count];
+      inferredAdditionalInputModes = [(TILanguageSelectionController *)self inferredAdditionalInputModes];
+      v24 = [inferredAdditionalInputModes count];
 
       if (!v24)
       {
@@ -730,8 +730,8 @@ LABEL_27:
       v38 = 0u;
       v35 = 0u;
       v36 = 0u;
-      v14 = [(TILanguageSelectionController *)self inferredAdditionalInputModes];
-      v25 = [v14 countByEnumeratingWithState:&v35 objects:v43 count:16];
+      preferredAdditionalInputModes2 = [(TILanguageSelectionController *)self inferredAdditionalInputModes];
+      v25 = [preferredAdditionalInputModes2 countByEnumeratingWithState:&v35 objects:v43 count:16];
       if (v25)
       {
         v26 = v25;
@@ -743,7 +743,7 @@ LABEL_27:
           {
             if (*v36 != v27)
             {
-              objc_enumerationMutation(v14);
+              objc_enumerationMutation(preferredAdditionalInputModes2);
             }
 
             v29 = *(*(&v35 + 1) + 8 * j);
@@ -751,7 +751,7 @@ LABEL_27:
             [v9 addObject:v29];
           }
 
-          v26 = [v14 countByEnumeratingWithState:&v35 objects:v43 count:16];
+          v26 = [preferredAdditionalInputModes2 countByEnumeratingWithState:&v35 objects:v43 count:16];
         }
 
         while (v26);
@@ -769,78 +769,78 @@ LABEL_28:
   return v9;
 }
 
-- (id)secondaryInputModeForUpdatedPrimaryInputMode:(id)a3
+- (id)secondaryInputModeForUpdatedPrimaryInputMode:(id)mode
 {
   v19 = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!mode)
   {
-    v6 = 0;
+    preferredSecondaryInputMode2 = 0;
     goto LABEL_14;
   }
 
-  v4 = _TILSCLanguageForInputMode(a3);
-  v5 = [(TILanguageSelectionController *)self preferredSecondaryInputMode];
+  v4 = _TILSCLanguageForInputMode(mode);
+  preferredSecondaryInputMode = [(TILanguageSelectionController *)self preferredSecondaryInputMode];
 
-  if (v5)
+  if (preferredSecondaryInputMode)
   {
-    v6 = [(TILanguageSelectionController *)self preferredSecondaryInputMode];
+    preferredSecondaryInputMode2 = [(TILanguageSelectionController *)self preferredSecondaryInputMode];
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [(TIInputMode *)v6 originalIdentifier];
+      originalIdentifier = [(TIInputMode *)preferredSecondaryInputMode2 originalIdentifier];
       v13 = 136315650;
       v14 = "[TILanguageSelectionController secondaryInputModeForUpdatedPrimaryInputMode:]";
       v15 = 2112;
-      v16 = v6;
+      v16 = preferredSecondaryInputMode2;
       v17 = 2112;
-      v18 = v7;
+      v18 = originalIdentifier;
       _os_log_impl(&dword_22CA55000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%s  Configured secondary input mode = %@ with original identifier = %@", &v13, 0x20u);
     }
 
-    v8 = _TILSCLanguageForInputMode(v6);
+    v8 = _TILSCLanguageForInputMode(preferredSecondaryInputMode2);
     if ([v8 isEqualToString:v4])
     {
 
-      v6 = 0;
+      preferredSecondaryInputMode2 = 0;
     }
   }
 
   else
   {
-    v9 = [(TILanguageSelectionController *)self inferredSecondaryInputMode];
+    inferredSecondaryInputMode = [(TILanguageSelectionController *)self inferredSecondaryInputMode];
 
-    if (!v9)
+    if (!inferredSecondaryInputMode)
     {
-      v6 = 0;
+      preferredSecondaryInputMode2 = 0;
       goto LABEL_13;
     }
 
-    v6 = [(TILanguageSelectionController *)self inferredSecondaryInputMode];
+    preferredSecondaryInputMode2 = [(TILanguageSelectionController *)self inferredSecondaryInputMode];
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [(TIInputMode *)v6 originalIdentifier];
+      originalIdentifier2 = [(TIInputMode *)preferredSecondaryInputMode2 originalIdentifier];
       v13 = 136315650;
       v14 = "[TILanguageSelectionController secondaryInputModeForUpdatedPrimaryInputMode:]";
       v15 = 2112;
-      v16 = v6;
+      v16 = preferredSecondaryInputMode2;
       v17 = 2112;
-      v18 = v10;
+      v18 = originalIdentifier2;
       _os_log_impl(&dword_22CA55000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%s  Inferred secondary input mode = %@ with original identifier = %@", &v13, 0x20u);
     }
 
-    v8 = _TILSCLanguageForInputMode(v6);
+    v8 = _TILSCLanguageForInputMode(preferredSecondaryInputMode2);
   }
 
 LABEL_13:
 LABEL_14:
   v11 = *MEMORY[0x277D85DE8];
 
-  return v6;
+  return preferredSecondaryInputMode2;
 }
 
 - (void)feedBufferedTokenStringsToModel
 {
-  v3 = [(TILanguageSelectionController *)self activeInputModes];
-  [TILanguageSelectionController reportTypedTokens:&self->m_buffered_tokens activeInputModes:v3];
+  activeInputModes = [(TILanguageSelectionController *)self activeInputModes];
+  [TILanguageSelectionController reportTypedTokens:&self->m_buffered_tokens activeInputModes:activeInputModes];
 
   begin = self->m_buffered_tokens.__begin_;
   if (self->m_buffered_tokens.__end_ == begin)
@@ -855,8 +855,8 @@ LABEL_14:
     do
     {
       v6 = begin[v5];
-      v7 = [(TILanguageSelectionController *)self bufferedTokenStrings];
-      v8 = [v7 objectAtIndex:v5];
+      bufferedTokenStrings = [(TILanguageSelectionController *)self bufferedTokenStrings];
+      v8 = [bufferedTokenStrings objectAtIndex:v5];
 
       if ([v8 length])
       {
@@ -887,20 +887,20 @@ LABEL_14:
 
   if ([(__CFString *)v20 length])
   {
-    v14 = [(TILanguageSelectionController *)self adaptationContext];
-    v15 = [v14 recipientNameDigest];
+    adaptationContext = [(TILanguageSelectionController *)self adaptationContext];
+    recipientNameDigest = [adaptationContext recipientNameDigest];
 
-    v16 = [(TILanguageSelectionController *)self adaptationContext];
-    v17 = [v16 appContext];
+    adaptationContext2 = [(TILanguageSelectionController *)self adaptationContext];
+    appContext = [adaptationContext2 appContext];
 
-    v18 = [(TILanguageSelectionController *)self languageLikelihoodModel];
-    [v18 addEvidence:v20 timestamp:0 adaptationType:v15 forRecipient:v17 app:0 language:CFAbsoluteTimeGetCurrent()];
+    languageLikelihoodModel = [(TILanguageSelectionController *)self languageLikelihoodModel];
+    [languageLikelihoodModel addEvidence:v20 timestamp:0 adaptationType:recipientNameDigest forRecipient:appContext app:0 language:CFAbsoluteTimeGetCurrent()];
 
     [(TILanguageSelectionController *)self updateActiveInputModesSuppressingNotification:0];
   }
 
-  v19 = [(TILanguageSelectionController *)self bufferedTokenStrings];
-  [v19 removeAllObjects];
+  bufferedTokenStrings2 = [(TILanguageSelectionController *)self bufferedTokenStrings];
+  [bufferedTokenStrings2 removeAllObjects];
 
   self->m_buffered_tokens.__end_ = self->m_buffered_tokens.__begin_;
 }
@@ -908,8 +908,8 @@ LABEL_14:
 - (BOOL)updateInputModeProbabilities
 {
   v73 = *MEMORY[0x277D85DE8];
-  v3 = [(TILanguageSelectionController *)self activeInputModes];
-  v4 = [v3 count];
+  activeInputModes = [(TILanguageSelectionController *)self activeInputModes];
+  v4 = [activeInputModes count];
 
   if (v4)
   {
@@ -930,13 +930,13 @@ LABEL_14:
       }
     }
 
-    v6 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v58 = 0u;
     v59 = 0u;
     v60 = 0u;
     v61 = 0u;
-    v7 = [(TILanguageSelectionController *)self activeInputModes];
-    v8 = [v7 countByEnumeratingWithState:&v58 objects:v72 count:16];
+    activeInputModes2 = [(TILanguageSelectionController *)self activeInputModes];
+    v8 = [activeInputModes2 countByEnumeratingWithState:&v58 objects:v72 count:16];
     if (v8)
     {
       v9 = v8;
@@ -947,17 +947,17 @@ LABEL_14:
         {
           if (*v59 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(activeInputModes2);
           }
 
           v12 = _TILSCLanguageForInputMode(*(*(&v58 + 1) + 8 * i));
           if (v12)
           {
-            [v6 addObject:v12];
+            [array addObject:v12];
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v58 objects:v72 count:16];
+        v9 = [activeInputModes2 countByEnumeratingWithState:&v58 objects:v72 count:16];
       }
 
       while (v9);
@@ -972,16 +972,16 @@ LABEL_14:
     v70 = 0;
     v71 = 0;
     __p = 0;
-    v13 = [(TILanguageSelectionController *)self adaptationContext];
-    v14 = [v13 recipientNameDigest];
+    adaptationContext = [(TILanguageSelectionController *)self adaptationContext];
+    recipientNameDigest = [adaptationContext recipientNameDigest];
 
-    v15 = [(TILanguageSelectionController *)self languageLikelihoodModel];
+    languageLikelihoodModel = [(TILanguageSelectionController *)self languageLikelihoodModel];
     v57[0] = MEMORY[0x277D85DD0];
     v57[1] = 3221225472;
     v57[2] = __61__TILanguageSelectionController_updateInputModeProbabilities__block_invoke;
     v57[3] = &unk_278732348;
     v57[4] = &buf;
-    [v15 priorProbabilityForLanguages:v6 recipient:v14 handler:v57];
+    [languageLikelihoodModel priorProbabilityForLanguages:array recipient:recipientNameDigest handler:v57];
 
     v17 = *(*(&buf + 1) + 48);
     v18 = *(*(&buf + 1) + 56);
@@ -1098,39 +1098,39 @@ LABEL_30:
       [(TILanguageSelectionController *)self rebalanceMultipleInputModeWeights:v35];
     }
 
-    v39 = [(TILanguageSelectionController *)self inputModeProbabilities];
-    [v39 removeAllObjects];
+    inputModeProbabilities = [(TILanguageSelectionController *)self inputModeProbabilities];
+    [inputModeProbabilities removeAllObjects];
 
-    v40 = [(TILanguageSelectionController *)self activeInputModes];
-    v41 = [v40 count];
+    activeInputModes3 = [(TILanguageSelectionController *)self activeInputModes];
+    v41 = [activeInputModes3 count];
 
     if (v41)
     {
       v42 = 0;
       do
       {
-        v43 = [(TILanguageSelectionController *)self activeInputModes];
-        v44 = [v43 objectAtIndex:v42];
+        activeInputModes4 = [(TILanguageSelectionController *)self activeInputModes];
+        v44 = [activeInputModes4 objectAtIndex:v42];
 
         v45 = *(*(*(&buf + 1) + 48) + 4 * v42);
-        v46 = [(TILanguageSelectionController *)self inputModeProbabilities];
+        inputModeProbabilities2 = [(TILanguageSelectionController *)self inputModeProbabilities];
         LODWORD(v47) = v45;
         v48 = [MEMORY[0x277CCABB0] numberWithFloat:v47];
-        [v46 setObject:v48 forKey:v44];
+        [inputModeProbabilities2 setObject:v48 forKey:v44];
 
         ++v42;
-        v49 = [(TILanguageSelectionController *)self activeInputModes];
-        v50 = [v49 count];
+        activeInputModes5 = [(TILanguageSelectionController *)self activeInputModes];
+        v50 = [activeInputModes5 count];
       }
 
       while (v42 < v50);
     }
 
-    v38 = [(TILanguageSelectionController *)self didProbabilityChangeSignificantly];
-    if (v38)
+    didProbabilityChangeSignificantly = [(TILanguageSelectionController *)self didProbabilityChangeSignificantly];
+    if (didProbabilityChangeSignificantly)
     {
-      v51 = [(TILanguageSelectionController *)self inputModeProbabilities];
-      [(TILanguageSelectionController *)self setReferenceInputModeProbabilities:v51];
+      inputModeProbabilities3 = [(TILanguageSelectionController *)self inputModeProbabilities];
+      [(TILanguageSelectionController *)self setReferenceInputModeProbabilities:inputModeProbabilities3];
     }
 
     _Block_object_dispose(&buf, 8);
@@ -1143,31 +1143,31 @@ LABEL_30:
 
   else
   {
-    v37 = [(TILanguageSelectionController *)self inputModeProbabilities];
-    [v37 removeAllObjects];
+    inputModeProbabilities4 = [(TILanguageSelectionController *)self inputModeProbabilities];
+    [inputModeProbabilities4 removeAllObjects];
 
     [(TILanguageSelectionController *)self setReferenceInputModeProbabilities:MEMORY[0x277CBEC10]];
-    v38 = 0;
+    didProbabilityChangeSignificantly = 0;
   }
 
   v52 = *MEMORY[0x277D85DE8];
-  return v38;
+  return didProbabilityChangeSignificantly;
 }
 
 - (BOOL)didProbabilityChangeSignificantly
 {
-  v3 = [(TILanguageSelectionController *)self referenceInputModeProbabilities];
-  v4 = [v3 count];
-  v5 = [(TILanguageSelectionController *)self inputModeProbabilities];
-  v6 = [v5 count];
+  referenceInputModeProbabilities = [(TILanguageSelectionController *)self referenceInputModeProbabilities];
+  v4 = [referenceInputModeProbabilities count];
+  inputModeProbabilities = [(TILanguageSelectionController *)self inputModeProbabilities];
+  v6 = [inputModeProbabilities count];
 
   if (v4 != v6)
   {
     return 1;
   }
 
-  v7 = [(TILanguageSelectionController *)self activeInputModes];
-  v8 = [v7 count];
+  activeInputModes = [(TILanguageSelectionController *)self activeInputModes];
+  v8 = [activeInputModes count];
 
   if (!v8)
   {
@@ -1177,16 +1177,16 @@ LABEL_30:
   v9 = 0;
   while (1)
   {
-    v10 = [(TILanguageSelectionController *)self activeInputModes];
-    v11 = [v10 objectAtIndex:v9];
+    activeInputModes2 = [(TILanguageSelectionController *)self activeInputModes];
+    v11 = [activeInputModes2 objectAtIndex:v9];
 
-    v12 = [(TILanguageSelectionController *)self referenceInputModeProbabilities];
-    v13 = [v12 objectForKey:v11];
+    referenceInputModeProbabilities2 = [(TILanguageSelectionController *)self referenceInputModeProbabilities];
+    v13 = [referenceInputModeProbabilities2 objectForKey:v11];
     [v13 floatValue];
     v15 = v14;
 
-    v16 = [(TILanguageSelectionController *)self inputModeProbabilities];
-    v17 = [v16 objectForKey:v11];
+    inputModeProbabilities2 = [(TILanguageSelectionController *)self inputModeProbabilities];
+    v17 = [inputModeProbabilities2 objectForKey:v11];
     [v17 floatValue];
     v19 = v18;
 
@@ -1198,8 +1198,8 @@ LABEL_30:
     }
 
     ++v9;
-    v22 = [(TILanguageSelectionController *)self activeInputModes];
-    v23 = [v22 count];
+    activeInputModes3 = [(TILanguageSelectionController *)self activeInputModes];
+    v23 = [activeInputModes3 count];
 
     if (v9 >= v23)
     {
@@ -1210,92 +1210,92 @@ LABEL_30:
   return result;
 }
 
-- (BOOL)didUpdatedInputModesChange:(id)a3
+- (BOOL)didUpdatedInputModesChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   if (_os_feature_enabled_impl())
   {
     v5 = MEMORY[0x277CBEB98];
-    v6 = [(TILanguageSelectionController *)self activeInputModes];
-    v7 = [v5 setWithArray:v6];
+    activeInputModes = [(TILanguageSelectionController *)self activeInputModes];
+    activeInputModes2 = [v5 setWithArray:activeInputModes];
 
-    v8 = [MEMORY[0x277CBEB98] setWithArray:v4];
+    v8 = [MEMORY[0x277CBEB98] setWithArray:changeCopy];
 
-    v9 = [v7 isEqualToSet:v8];
-    v4 = v8;
+    v9 = [activeInputModes2 isEqualToSet:v8];
+    changeCopy = v8;
   }
 
   else
   {
-    v7 = [(TILanguageSelectionController *)self activeInputModes];
-    v9 = [v4 isEqualToArray:v7];
+    activeInputModes2 = [(TILanguageSelectionController *)self activeInputModes];
+    v9 = [changeCopy isEqualToArray:activeInputModes2];
   }
 
   return v9 ^ 1;
 }
 
-- (void)updateActiveInputModesSuppressingNotification:(BOOL)a3
+- (void)updateActiveInputModesSuppressingNotification:(BOOL)notification
 {
   v36 = *MEMORY[0x277D85DE8];
   v5 = objc_opt_new();
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(TILanguageSelectionController *)self primaryInputMode];
-    v7 = [(TILanguageSelectionController *)self primaryInputMode];
-    v8 = [v7 originalIdentifier];
+    primaryInputMode = [(TILanguageSelectionController *)self primaryInputMode];
+    primaryInputMode2 = [(TILanguageSelectionController *)self primaryInputMode];
+    originalIdentifier = [primaryInputMode2 originalIdentifier];
     v30 = 136315650;
     v31 = "[TILanguageSelectionController updateActiveInputModesSuppressingNotification:]";
     v32 = 2112;
-    v33 = v6;
+    v33 = primaryInputMode;
     v34 = 2112;
-    v35 = v8;
+    v35 = originalIdentifier;
     _os_log_impl(&dword_22CA55000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%s  Found primary input mode = %@ with original identifier = %@", &v30, 0x20u);
   }
 
-  v9 = [(TILanguageSelectionController *)self primaryInputMode];
+  primaryInputMode3 = [(TILanguageSelectionController *)self primaryInputMode];
 
-  if (v9)
+  if (primaryInputMode3)
   {
-    v10 = [(TILanguageSelectionController *)self primaryInputMode];
+    primaryInputMode4 = [(TILanguageSelectionController *)self primaryInputMode];
 
-    if (v10)
+    if (primaryInputMode4)
     {
-      v11 = [(TILanguageSelectionController *)self primaryInputMode];
-      [v5 addObject:v11];
+      primaryInputMode5 = [(TILanguageSelectionController *)self primaryInputMode];
+      [v5 addObject:primaryInputMode5];
     }
   }
 
-  v12 = [(TILanguageSelectionController *)self primaryInputMode];
-  v13 = [(TILanguageSelectionController *)self secondaryInputModeForUpdatedPrimaryInputMode:v12];
+  primaryInputMode6 = [(TILanguageSelectionController *)self primaryInputMode];
+  v13 = [(TILanguageSelectionController *)self secondaryInputModeForUpdatedPrimaryInputMode:primaryInputMode6];
 
   if (v13)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [v13 originalIdentifier];
+      originalIdentifier2 = [v13 originalIdentifier];
       v30 = 136315650;
       v31 = "[TILanguageSelectionController updateActiveInputModesSuppressingNotification:]";
       v32 = 2112;
       v33 = v13;
       v34 = 2112;
-      v35 = v14;
+      v35 = originalIdentifier2;
       _os_log_impl(&dword_22CA55000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%s  Found secondary input mode = %@ with original identifier = %@", &v30, 0x20u);
     }
 
     [v5 addObject:v13];
   }
 
-  v15 = [(TILanguageSelectionController *)self primaryInputMode];
-  v16 = [(TILanguageSelectionController *)self additionalInputModesForUpdatedPrimaryInputMode:v15 withSecondaryInputMode:v13];
+  primaryInputMode7 = [(TILanguageSelectionController *)self primaryInputMode];
+  v16 = [(TILanguageSelectionController *)self additionalInputModesForUpdatedPrimaryInputMode:primaryInputMode7 withSecondaryInputMode:v13];
 
   if ([v16 count])
   {
     [v5 addObjectsFromArray:v16];
   }
 
-  v17 = [(TILanguageSelectionController *)self primaryInputMode];
-  v18 = v17;
-  if (!v13 && v17)
+  primaryInputMode8 = [(TILanguageSelectionController *)self primaryInputMode];
+  v18 = primaryInputMode8;
+  if (!v13 && primaryInputMode8)
   {
     v19 = _os_feature_enabled_impl();
 
@@ -1304,8 +1304,8 @@ LABEL_30:
       goto LABEL_18;
     }
 
-    v20 = [(TILanguageSelectionController *)self primaryInputMode];
-    v18 = [(TILanguageSelectionController *)self dynamicallyDetectedInputModesForPrimaryInputMode:v20 isSimulation:0];
+    primaryInputMode9 = [(TILanguageSelectionController *)self primaryInputMode];
+    v18 = [(TILanguageSelectionController *)self dynamicallyDetectedInputModesForPrimaryInputMode:primaryInputMode9 isSimulation:0];
 
     if (v18)
     {
@@ -1322,44 +1322,44 @@ LABEL_18:
     [(TILanguageSelectionController *)self updateInputModeProbabilities];
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
-      v21 = [(TILanguageSelectionController *)self adaptationContext];
-      v22 = [v21 recipientNameDigest];
-      v23 = [(TILanguageSelectionController *)self inputModeProbabilities];
+      adaptationContext = [(TILanguageSelectionController *)self adaptationContext];
+      recipientNameDigest = [adaptationContext recipientNameDigest];
+      inputModeProbabilities = [(TILanguageSelectionController *)self inputModeProbabilities];
       v30 = 136315650;
       v31 = "[TILanguageSelectionController updateActiveInputModesSuppressingNotification:]";
       v32 = 2112;
-      v33 = v22;
+      v33 = recipientNameDigest;
       v34 = 2112;
-      v35 = v23;
+      v35 = inputModeProbabilities;
       _os_log_impl(&dword_22CA55000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%s  Activating new input modes (recipient=%@) = %@", &v30, 0x20u);
     }
 
-    if (!a3)
+    if (!notification)
     {
-      v24 = [(TILanguageSelectionController *)self delegate];
-      [v24 didUpdateInputModes:self];
+      delegate = [(TILanguageSelectionController *)self delegate];
+      [delegate didUpdateInputModes:self];
 LABEL_30:
     }
   }
 
   else
   {
-    v25 = [(TILanguageSelectionController *)self updateInputModeProbabilities];
+    updateInputModeProbabilities = [(TILanguageSelectionController *)self updateInputModeProbabilities];
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
-      v26 = [(TILanguageSelectionController *)self adaptationContext];
-      v27 = [v26 recipientNameDigest];
-      v28 = [(TILanguageSelectionController *)self inputModeProbabilities];
+      adaptationContext2 = [(TILanguageSelectionController *)self adaptationContext];
+      recipientNameDigest2 = [adaptationContext2 recipientNameDigest];
+      inputModeProbabilities2 = [(TILanguageSelectionController *)self inputModeProbabilities];
       v30 = 136315650;
       v31 = "[TILanguageSelectionController updateActiveInputModesSuppressingNotification:]";
       v32 = 2112;
-      v33 = v27;
+      v33 = recipientNameDigest2;
       v34 = 2112;
-      v35 = v28;
+      v35 = inputModeProbabilities2;
       _os_log_impl(&dword_22CA55000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%s  Updating input mode probs (recipient=%@) = %@", &v30, 0x20u);
     }
 
-    if (v25 && !a3)
+    if (updateInputModeProbabilities && !notification)
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
       {
@@ -1368,8 +1368,8 @@ LABEL_30:
         _os_log_impl(&dword_22CA55000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%s  Notifying delegate about significant probability change", &v30, 0xCu);
       }
 
-      v24 = [(TILanguageSelectionController *)self delegate];
-      [v24 didUpdateInputModeProbabilities:self];
+      delegate = [(TILanguageSelectionController *)self delegate];
+      [delegate didUpdateInputModeProbabilities:self];
       goto LABEL_30;
     }
   }
@@ -1377,40 +1377,40 @@ LABEL_30:
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (void)appleKeyboardsInternalSettingsChanged:(id)a3
+- (void)appleKeyboardsInternalSettingsChanged:(id)changed
 {
-  v4 = [(TILanguageSelectionController *)self fetchPreferredSecondaryInputMode];
-  [(TILanguageSelectionController *)self setPreferredSecondaryInputMode:v4];
+  fetchPreferredSecondaryInputMode = [(TILanguageSelectionController *)self fetchPreferredSecondaryInputMode];
+  [(TILanguageSelectionController *)self setPreferredSecondaryInputMode:fetchPreferredSecondaryInputMode];
 
-  v5 = [(TILanguageSelectionController *)self fetchPreferredAdditionalInputModes];
-  [(TILanguageSelectionController *)self setPreferredAdditionalInputModes:v5];
+  fetchPreferredAdditionalInputModes = [(TILanguageSelectionController *)self fetchPreferredAdditionalInputModes];
+  [(TILanguageSelectionController *)self setPreferredAdditionalInputModes:fetchPreferredAdditionalInputModes];
 
-  v6 = [(TILanguageSelectionController *)self primaryInputMode];
-  v7 = [(TILanguageSelectionController *)self userEnabledInputModes];
-  v8 = [(TILanguageSelectionController *)self fetchUserEnabledInputModesExcludingPreferredLanguages];
-  v9 = [TILanguageSelectionController inferSecondaryInputModeForPrimary:v6 enabled:v7 isSimulation:0 enabledExcludingPreferredLanguages:v8];
+  primaryInputMode = [(TILanguageSelectionController *)self primaryInputMode];
+  userEnabledInputModes = [(TILanguageSelectionController *)self userEnabledInputModes];
+  fetchUserEnabledInputModesExcludingPreferredLanguages = [(TILanguageSelectionController *)self fetchUserEnabledInputModesExcludingPreferredLanguages];
+  v9 = [TILanguageSelectionController inferSecondaryInputModeForPrimary:primaryInputMode enabled:userEnabledInputModes isSimulation:0 enabledExcludingPreferredLanguages:fetchUserEnabledInputModesExcludingPreferredLanguages];
   [(TILanguageSelectionController *)self setInferredSecondaryInputMode:v9];
 
-  v10 = [(TILanguageSelectionController *)self primaryInputMode];
-  v11 = [TILanguageSelectionController inferAdditionalInputModesForPrimary:v10];
+  primaryInputMode2 = [(TILanguageSelectionController *)self primaryInputMode];
+  v11 = [TILanguageSelectionController inferAdditionalInputModesForPrimary:primaryInputMode2];
   [(TILanguageSelectionController *)self setInferredAdditionalInputModes:v11];
 
   [(TILanguageSelectionController *)self updateActiveInputModesSuppressingNotification:0];
 }
 
-- (void)appleKeyboardsPreferencesChanged:(id)a3
+- (void)appleKeyboardsPreferencesChanged:(id)changed
 {
-  v4 = [(TILanguageSelectionController *)self fetchUserEnabledInputModes];
-  [(TILanguageSelectionController *)self setUserEnabledInputModes:v4];
+  fetchUserEnabledInputModes = [(TILanguageSelectionController *)self fetchUserEnabledInputModes];
+  [(TILanguageSelectionController *)self setUserEnabledInputModes:fetchUserEnabledInputModes];
 
-  v5 = [(TILanguageSelectionController *)self primaryInputMode];
-  v6 = [(TILanguageSelectionController *)self userEnabledInputModes];
-  v7 = [(TILanguageSelectionController *)self fetchUserEnabledInputModesExcludingPreferredLanguages];
-  v8 = [TILanguageSelectionController inferSecondaryInputModeForPrimary:v5 enabled:v6 isSimulation:0 enabledExcludingPreferredLanguages:v7];
+  primaryInputMode = [(TILanguageSelectionController *)self primaryInputMode];
+  userEnabledInputModes = [(TILanguageSelectionController *)self userEnabledInputModes];
+  fetchUserEnabledInputModesExcludingPreferredLanguages = [(TILanguageSelectionController *)self fetchUserEnabledInputModesExcludingPreferredLanguages];
+  v8 = [TILanguageSelectionController inferSecondaryInputModeForPrimary:primaryInputMode enabled:userEnabledInputModes isSimulation:0 enabledExcludingPreferredLanguages:fetchUserEnabledInputModesExcludingPreferredLanguages];
   [(TILanguageSelectionController *)self setInferredSecondaryInputMode:v8];
 
-  v9 = [(TILanguageSelectionController *)self primaryInputMode];
-  v10 = [TILanguageSelectionController inferAdditionalInputModesForPrimary:v9];
+  primaryInputMode2 = [(TILanguageSelectionController *)self primaryInputMode];
+  v10 = [TILanguageSelectionController inferAdditionalInputModesForPrimary:primaryInputMode2];
   [(TILanguageSelectionController *)self setInferredAdditionalInputModes:v10];
 
   [(TILanguageSelectionController *)self updateActiveInputModesSuppressingNotification:0];
@@ -1418,70 +1418,70 @@ LABEL_30:
 
 - (id)fetchPreferredAdditionalInputModes
 {
-  v2 = [(TILanguageSelectionController *)self preferenceProvider];
-  v3 = [v2 preferredAdditionalInputModes];
+  preferenceProvider = [(TILanguageSelectionController *)self preferenceProvider];
+  preferredAdditionalInputModes = [preferenceProvider preferredAdditionalInputModes];
 
-  return v3;
+  return preferredAdditionalInputModes;
 }
 
 - (id)fetchPreferredSecondaryInputMode
 {
-  v2 = [(TILanguageSelectionController *)self preferenceProvider];
-  v3 = [v2 preferredSecondaryInputMode];
+  preferenceProvider = [(TILanguageSelectionController *)self preferenceProvider];
+  preferredSecondaryInputMode = [preferenceProvider preferredSecondaryInputMode];
 
-  return v3;
+  return preferredSecondaryInputMode;
 }
 
 - (id)fetchUserEnabledInputModesExcludingPreferredLanguages
 {
-  v2 = [(TILanguageSelectionController *)self preferenceProvider];
-  v3 = [v2 userEnabledInputModes];
-  v4 = [TILanguageSelectionController multilingualInputModesForInputModes:v3];
+  preferenceProvider = [(TILanguageSelectionController *)self preferenceProvider];
+  userEnabledInputModes = [preferenceProvider userEnabledInputModes];
+  v4 = [TILanguageSelectionController multilingualInputModesForInputModes:userEnabledInputModes];
 
   return v4;
 }
 
 - (id)fetchUserEnabledInputModes
 {
-  v3 = [MEMORY[0x277CBEB40] orderedSet];
-  v4 = [(TILanguageSelectionController *)self preferenceProvider];
-  v5 = [v4 userEnabledInputModes];
-  [v3 addObjectsFromArray:v5];
+  orderedSet = [MEMORY[0x277CBEB40] orderedSet];
+  preferenceProvider = [(TILanguageSelectionController *)self preferenceProvider];
+  userEnabledInputModes = [preferenceProvider userEnabledInputModes];
+  [orderedSet addObjectsFromArray:userEnabledInputModes];
 
   v6 = objc_opt_class();
-  v7 = [(TILanguageSelectionController *)self preferenceProvider];
-  v8 = [v7 userPreferredLanguages];
-  v9 = [v6 inputModesForLanguageIdentifiers:v8];
-  [v3 addObjectsFromArray:v9];
+  preferenceProvider2 = [(TILanguageSelectionController *)self preferenceProvider];
+  userPreferredLanguages = [preferenceProvider2 userPreferredLanguages];
+  v9 = [v6 inputModesForLanguageIdentifiers:userPreferredLanguages];
+  [orderedSet addObjectsFromArray:v9];
 
-  v10 = [v3 array];
-  v11 = [TILanguageSelectionController multilingualInputModesForInputModes:v10];
+  array = [orderedSet array];
+  v11 = [TILanguageSelectionController multilingualInputModesForInputModes:array];
 
   return v11;
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = TILanguageSelectionController;
   [(TILanguageSelectionController *)&v4 dealloc];
 }
 
-- (TILanguageSelectionController)initWithLanguageLikelihoodModel:(id)a3 preferenceProvider:(id)a4
+- (TILanguageSelectionController)initWithLanguageLikelihoodModel:(id)model preferenceProvider:(id)provider
 {
-  v7 = a3;
-  v8 = a4;
+  modelCopy = model;
+  providerCopy = provider;
   v29.receiver = self;
   v29.super_class = TILanguageSelectionController;
   v9 = [(TILanguageSelectionController *)&v29 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_languageLikelihoodModel, a3);
-    objc_storeStrong(&v10->_preferenceProvider, a4);
+    objc_storeStrong(&v9->_languageLikelihoodModel, model);
+    objc_storeStrong(&v10->_preferenceProvider, provider);
     v11 = objc_alloc_init(MEMORY[0x277CBEA60]);
     activeInputModes = v10->_activeInputModes;
     v10->_activeInputModes = v11;
@@ -1506,21 +1506,21 @@ LABEL_30:
     bufferedTokenStrings = v10->_bufferedTokenStrings;
     v10->_bufferedTokenStrings = v21;
 
-    v23 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v23 addObserver:v10 selector:sel_appleKeyboardsPreferencesChanged_ name:@"AppleKeyboardsPreferencesChangedNotification_Private" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v10 selector:sel_appleKeyboardsPreferencesChanged_ name:@"AppleKeyboardsPreferencesChangedNotification_Private" object:0];
 
-    v24 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v24 addObserver:v10 selector:sel_appleKeyboardsInternalSettingsChanged_ name:@"AppleKeyboardsInternalSettingsChangedNotification" object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v10 selector:sel_appleKeyboardsInternalSettingsChanged_ name:@"AppleKeyboardsInternalSettingsChangedNotification" object:0];
   }
 
-  v25 = [(TILanguageSelectionController *)v10 fetchPreferredSecondaryInputMode];
-  [(TILanguageSelectionController *)v10 setPreferredSecondaryInputMode:v25];
+  fetchPreferredSecondaryInputMode = [(TILanguageSelectionController *)v10 fetchPreferredSecondaryInputMode];
+  [(TILanguageSelectionController *)v10 setPreferredSecondaryInputMode:fetchPreferredSecondaryInputMode];
 
-  v26 = [(TILanguageSelectionController *)v10 fetchPreferredAdditionalInputModes];
-  [(TILanguageSelectionController *)v10 setPreferredAdditionalInputModes:v26];
+  fetchPreferredAdditionalInputModes = [(TILanguageSelectionController *)v10 fetchPreferredAdditionalInputModes];
+  [(TILanguageSelectionController *)v10 setPreferredAdditionalInputModes:fetchPreferredAdditionalInputModes];
 
-  v27 = [(TILanguageSelectionController *)v10 fetchUserEnabledInputModes];
-  [(TILanguageSelectionController *)v10 setUserEnabledInputModes:v27];
+  fetchUserEnabledInputModes = [(TILanguageSelectionController *)v10 fetchUserEnabledInputModes];
+  [(TILanguageSelectionController *)v10 setUserEnabledInputModes:fetchUserEnabledInputModes];
 
   return v10;
 }
@@ -1534,18 +1534,18 @@ LABEL_30:
   return v5;
 }
 
-+ (void)reportTypedTokens:(const void *)a3 activeInputModes:(id)a4
++ (void)reportTypedTokens:(const void *)tokens activeInputModes:(id)modes
 {
   v57 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  if ([v5 count] >= 2 && *a3 != *(a3 + 1))
+  modesCopy = modes;
+  if ([modesCopy count] >= 2 && *tokens != *(tokens + 1))
   {
     v6 = objc_opt_new();
     v52 = 0u;
     v53 = 0u;
     v54 = 0u;
     v55 = 0u;
-    v7 = v5;
+    v7 = modesCopy;
     v8 = [v7 countByEnumeratingWithState:&v52 objects:v56 count:16];
     if (v8)
     {
@@ -1560,9 +1560,9 @@ LABEL_30:
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v52 + 1) + 8 * i) locale];
-          v13 = [v12 localeIdentifier];
-          [v6 addObject:v13];
+          locale = [*(*(&v52 + 1) + 8 * i) locale];
+          localeIdentifier = [locale localeIdentifier];
+          [v6 addObject:localeIdentifier];
         }
 
         v9 = [v7 countByEnumeratingWithState:&v52 objects:v56 count:16];
@@ -1578,8 +1578,8 @@ LABEL_30:
     v16 = [v6 objectAtIndexedSubscript:0];
     v17 = TILexiconIDForLocaleIdentifier([v16 UTF8String]);
 
-    v18 = *a3;
-    v19 = *(a3 + 1);
+    v18 = *tokens;
+    v19 = *(tokens + 1);
     v48[0] = MEMORY[0x277D85DD0];
     v48[1] = 3221225472;
     v49 = __68__TILanguageSelectionController_reportTypedTokens_activeInputModes___block_invoke;
@@ -1599,8 +1599,8 @@ LABEL_30:
     v24 = [v6 objectAtIndexedSubscript:1];
     LODWORD(v23) = TILexiconIDForLocaleIdentifier([v24 UTF8String]);
 
-    v25 = *a3;
-    v26 = *(a3 + 1);
+    v25 = *tokens;
+    v26 = *(tokens + 1);
     v44[0] = MEMORY[0x277D85DD0];
     v44[1] = 3221225472;
     v45 = __68__TILanguageSelectionController_reportTypedTokens_activeInputModes___block_invoke_2;
@@ -1622,8 +1622,8 @@ LABEL_30:
       v31 = [v6 objectAtIndexedSubscript:2];
       v32 = TILexiconIDForLocaleIdentifier([v31 UTF8String]);
 
-      v33 = *a3;
-      v34 = *(a3 + 1);
+      v33 = *tokens;
+      v34 = *(tokens + 1);
       v40[0] = MEMORY[0x277D85DD0];
       v40[1] = 3221225472;
       v41 = __68__TILanguageSelectionController_reportTypedTokens_activeInputModes___block_invoke_3;
@@ -1645,16 +1645,16 @@ LABEL_30:
   v39 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)inputModesForLanguageIdentifiers:(id)a3
++ (id)inputModesForLanguageIdentifiers:(id)identifiers
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  identifiersCopy = identifiers;
+  v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(identifiersCopy, "count")}];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v4;
+  v6 = identifiersCopy;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -1669,7 +1669,7 @@ LABEL_30:
           objc_enumerationMutation(v6);
         }
 
-        v11 = [a1 inputModeForLanguageIdentifier:{*(*(&v14 + 1) + 8 * i), v14}];
+        v11 = [self inputModeForLanguageIdentifier:{*(*(&v14 + 1) + 8 * i), v14}];
         if (v11)
         {
           [v5 addObject:v11];
@@ -1687,43 +1687,43 @@ LABEL_30:
   return v5;
 }
 
-+ (id)inputModeForLanguageIdentifier:(id)a3
++ (id)inputModeForLanguageIdentifier:(id)identifier
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = TIGetDefaultInputModesForLanguage();
   if ([v4 count] >= 2)
   {
     v5 = MEMORY[0x277CCA8D8];
-    v15[0] = v3;
+    v15[0] = identifierCopy;
     v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:1];
     v7 = [v5 preferredLocalizationsFromArray:v4 forPreferences:v6];
-    v8 = [v7 firstObject];
-    v9 = v8;
-    if (v8)
+    firstObject = [v7 firstObject];
+    v9 = firstObject;
+    if (firstObject)
     {
-      v10 = v8;
+      firstObject2 = firstObject;
     }
 
     else
     {
-      v10 = [v4 firstObject];
+      firstObject2 = [v4 firstObject];
     }
 
-    v11 = v10;
+    firstObject3 = firstObject2;
 
-    if (!v11)
+    if (!firstObject3)
     {
       goto LABEL_8;
     }
 
 LABEL_5:
-    v12 = [TIInputMode inputModeWithIdentifier:v11];
+    v12 = [TIInputMode inputModeWithIdentifier:firstObject3];
     goto LABEL_9;
   }
 
-  v11 = [v4 firstObject];
-  if (v11)
+  firstObject3 = [v4 firstObject];
+  if (firstObject3)
   {
     goto LABEL_5;
   }
@@ -1737,17 +1737,17 @@ LABEL_9:
   return v12;
 }
 
-+ (id)inferInputModeForLanguage:(id)a3 enabled:(id)a4
++ (id)inferInputModeForLanguage:(id)language enabled:(id)enabled
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CBEB18] array];
+  languageCopy = language;
+  enabledCopy = enabled;
+  array = [MEMORY[0x277CBEB18] array];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v9 = v7;
+  v9 = enabledCopy;
   v10 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v10)
   {
@@ -1764,9 +1764,9 @@ LABEL_9:
 
         v14 = *(*(&v19 + 1) + 8 * i);
         v15 = _TILSCLanguageForInputMode(v14);
-        if ([v15 isEqualToString:{v6, v19}])
+        if ([v15 isEqualToString:{languageCopy, v19}])
         {
-          [v8 addObject:v14];
+          [array addObject:v14];
         }
       }
 
@@ -1776,14 +1776,14 @@ LABEL_9:
     while (v11);
   }
 
-  if ([v8 count])
+  if ([array count])
   {
-    [v8 firstObject];
+    [array firstObject];
   }
 
   else
   {
-    [a1 inputModeForLanguageIdentifier:v6];
+    [self inputModeForLanguageIdentifier:languageCopy];
   }
   v16 = ;
 
@@ -1792,27 +1792,27 @@ LABEL_9:
   return v16;
 }
 
-+ (id)inferAdditionalInputModesForPrimary:(id)a3
++ (id)inferAdditionalInputModesForPrimary:(id)primary
 {
-  v3 = a3;
+  primaryCopy = primary;
   v4 = objc_opt_new();
   if (_os_feature_enabled_impl())
   {
-    v5 = [v3 additionalConfiguredLatinLanguages];
-    v6 = [v5 count];
+    additionalConfiguredLatinLanguages = [primaryCopy additionalConfiguredLatinLanguages];
+    v6 = [additionalConfiguredLatinLanguages count];
 
     if (v6 >= 2)
     {
-      v7 = [v3 additionalConfiguredLatinLanguages];
-      v8 = [v7 count];
+      additionalConfiguredLatinLanguages2 = [primaryCopy additionalConfiguredLatinLanguages];
+      v8 = [additionalConfiguredLatinLanguages2 count];
 
       if (v8 >= 2)
       {
         v9 = 1;
         do
         {
-          v10 = [v3 additionalConfiguredLatinLanguages];
-          v11 = [v10 objectAtIndexedSubscript:v9];
+          additionalConfiguredLatinLanguages3 = [primaryCopy additionalConfiguredLatinLanguages];
+          v11 = [additionalConfiguredLatinLanguages3 objectAtIndexedSubscript:v9];
 
           if (v11)
           {
@@ -1821,8 +1821,8 @@ LABEL_9:
           }
 
           ++v9;
-          v13 = [v3 additionalConfiguredLatinLanguages];
-          v14 = [v13 count];
+          additionalConfiguredLatinLanguages4 = [primaryCopy additionalConfiguredLatinLanguages];
+          v14 = [additionalConfiguredLatinLanguages4 count];
         }
 
         while (v14 > v9);
@@ -1833,25 +1833,25 @@ LABEL_9:
   return v4;
 }
 
-+ (id)inferSecondaryInputModeForPrimary:(id)a3 enabled:(id)a4 isSimulation:(BOOL)a5
++ (id)inferSecondaryInputModeForPrimary:(id)primary enabled:(id)enabled isSimulation:(BOOL)simulation
 {
   v37 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (!_os_feature_enabled_impl() || a5)
+  primaryCopy = primary;
+  enabledCopy = enabled;
+  if (!_os_feature_enabled_impl() || simulation)
   {
-    if (!v7 || [v8 count] < 2)
+    if (!primaryCopy || [enabledCopy count] < 2)
     {
-      v12 = 0;
+      firstObject = 0;
       goto LABEL_25;
     }
 
-    v10 = [MEMORY[0x277CBEB58] set];
+    firstObject2 = [MEMORY[0x277CBEB58] set];
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v13 = v8;
+    v13 = enabledCopy;
     v14 = [v13 countByEnumeratingWithState:&v28 objects:v32 count:16];
     if (v14)
     {
@@ -1867,7 +1867,7 @@ LABEL_9:
           }
 
           v18 = _TILSCLanguageForInputMode(*(*(&v28 + 1) + 8 * i));
-          [v10 addObject:v18];
+          [firstObject2 addObject:v18];
         }
 
         v15 = [v13 countByEnumeratingWithState:&v28 objects:v32 count:16];
@@ -1876,47 +1876,47 @@ LABEL_9:
       while (v15);
     }
 
-    v19 = _TILSCLanguageForInputMode(v7);
-    [v10 removeObject:v19];
-    if ([v10 count] == 1)
+    v19 = _TILSCLanguageForInputMode(primaryCopy);
+    [firstObject2 removeObject:v19];
+    if ([firstObject2 count] == 1)
     {
-      v20 = [v10 anyObject];
+      anyObject = [firstObject2 anyObject];
       v26[0] = MEMORY[0x277D85DD0];
       v26[1] = 3221225472;
       v26[2] = __88__TILanguageSelectionController_inferSecondaryInputModeForPrimary_enabled_isSimulation___block_invoke;
       v26[3] = &unk_278732320;
-      v27 = v20;
-      v21 = v20;
+      v27 = anyObject;
+      v21 = anyObject;
       v22 = [v13 indexesOfObjectsPassingTest:v26];
       v23 = [v13 objectsAtIndexes:v22];
 
-      v12 = [v23 firstObject];
+      firstObject = [v23 firstObject];
     }
 
     else
     {
-      v12 = 0;
+      firstObject = 0;
     }
   }
 
   else
   {
-    v9 = [(TIInputMode *)v7 additionalConfiguredLatinLanguages];
-    v10 = [v9 firstObject];
+    additionalConfiguredLatinLanguages = [(TIInputMode *)primaryCopy additionalConfiguredLatinLanguages];
+    firstObject2 = [additionalConfiguredLatinLanguages firstObject];
 
     v11 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT);
-    if (v10)
+    if (firstObject2)
     {
       if (v11)
       {
         *buf = 136315394;
         v34 = "+[TILanguageSelectionController inferSecondaryInputModeForPrimary:enabled:isSimulation:]";
         v35 = 2112;
-        v36 = v10;
+        v36 = firstObject2;
         _os_log_impl(&dword_22CA55000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%s  Sucessfully inferred secondary input mode = %@", buf, 0x16u);
       }
 
-      v12 = [TIInputMode inputModeWithIdentifier:v10];
+      firstObject = [TIInputMode inputModeWithIdentifier:firstObject2];
     }
 
     else
@@ -1928,15 +1928,15 @@ LABEL_9:
         _os_log_impl(&dword_22CA55000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%s  Unable to infer secondary input mode due to no additional input modes found for primary input mode.", buf, 0xCu);
       }
 
-      v10 = 0;
-      v12 = 0;
+      firstObject2 = 0;
+      firstObject = 0;
     }
   }
 
 LABEL_25:
   v24 = *MEMORY[0x277D85DE8];
 
-  return v12;
+  return firstObject;
 }
 
 uint64_t __88__TILanguageSelectionController_inferSecondaryInputModeForPrimary_enabled_isSimulation___block_invoke(uint64_t a1, TIInputMode *a2)
@@ -1947,11 +1947,11 @@ uint64_t __88__TILanguageSelectionController_inferSecondaryInputModeForPrimary_e
   return v4;
 }
 
-+ (id)multilingualInputModesForInputModes:(id)a3
++ (id)multilingualInputModesForInputModes:(id)modes
 {
-  v3 = a3;
-  v4 = [v3 indexesOfObjectsPassingTest:&__block_literal_global_129];
-  v5 = [v3 objectsAtIndexes:v4];
+  modesCopy = modes;
+  v4 = [modesCopy indexesOfObjectsPassingTest:&__block_literal_global_129];
+  v5 = [modesCopy objectsAtIndexes:v4];
 
   return v5;
 }

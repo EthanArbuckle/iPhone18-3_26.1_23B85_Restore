@@ -1,34 +1,34 @@
 @interface FMDBluetoothManager
 - (BOOL)_cbPoweredOff;
 - (BOOL)isDiscoveryActive;
-- (FMDBluetoothManager)initWithMockBluetoothManager:(id)a3;
+- (FMDBluetoothManager)initWithMockBluetoothManager:(id)manager;
 - (FMDBluetoothManagerDelegate)delegate;
-- (id)_bluetoothManagerDeviceForBluetoothDevice:(id)a3;
-- (id)bluetoothDeviceForBLEDevice:(id)a3;
-- (id)bluetoothManagerDeviceForBluetoothDevice:(id)a3;
+- (id)_bluetoothManagerDeviceForBluetoothDevice:(id)device;
+- (id)bluetoothDeviceForBLEDevice:(id)device;
+- (id)bluetoothManagerDeviceForBluetoothDevice:(id)device;
 - (id)newDiscovery;
-- (void)connectToDeviceAddress:(id)a3;
+- (void)connectToDeviceAddress:(id)address;
 - (void)dealloc;
-- (void)getAccessoriesWithCompletion:(id)a3;
-- (void)setAllAudioChannelsActive:(BOOL)a3;
-- (void)setInternalDeviceAudioChannels:(id)a3 profile:(int64_t)a4 active:(BOOL)a5;
+- (void)getAccessoriesWithCompletion:(id)completion;
+- (void)setAllAudioChannelsActive:(BOOL)active;
+- (void)setInternalDeviceAudioChannels:(id)channels profile:(int64_t)profile active:(BOOL)active;
 - (void)setupDiscovery;
 - (void)startMonitoringDevices;
-- (void)updateBeaconsWithDevice:(id)a3 active:(BOOL)a4;
+- (void)updateBeaconsWithDevice:(id)device active:(BOOL)active;
 @end
 
 @implementation FMDBluetoothManager
 
-- (FMDBluetoothManager)initWithMockBluetoothManager:(id)a3
+- (FMDBluetoothManager)initWithMockBluetoothManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v20.receiver = self;
   v20.super_class = FMDBluetoothManager;
   v5 = [(FMDBluetoothManager *)&v20 init];
   v6 = v5;
   if (v5)
   {
-    [(FMDBluetoothManager *)v5 setMockBluetoothManager:v4];
+    [(FMDBluetoothManager *)v5 setMockBluetoothManager:managerCopy];
     v7 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v8 = dispatch_queue_create("com.apple.icloud.findmydeviced.bluetoothdiscoveryqueue", v7);
     [(FMDBluetoothManager *)v6 setBluetoothDiscoveryQueue:v8];
@@ -38,8 +38,8 @@
     [(FMDBluetoothManager *)v6 setBluetoothManagerQueue:v10];
 
     v11 = [FMQueueSynchronizer alloc];
-    v12 = [(FMDBluetoothManager *)v6 bluetoothManagerQueue];
-    v13 = [v11 initWithQueue:v12];
+    bluetoothManagerQueue = [(FMDBluetoothManager *)v6 bluetoothManagerQueue];
+    v13 = [v11 initWithQueue:bluetoothManagerQueue];
     [(FMDBluetoothManager *)v6 setBluetoothManagerQueueSynchronizer:v13];
 
     v14 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
@@ -62,62 +62,62 @@
 
 - (void)dealloc
 {
-  v3 = [(FMDBluetoothManager *)self btDiscovery];
-  [v3 invalidate];
+  btDiscovery = [(FMDBluetoothManager *)self btDiscovery];
+  [btDiscovery invalidate];
 
   v4.receiver = self;
   v4.super_class = FMDBluetoothManager;
   [(FMDBluetoothManager *)&v4 dealloc];
 }
 
-- (void)connectToDeviceAddress:(id)a3
+- (void)connectToDeviceAddress:(id)address
 {
-  v4 = a3;
-  v5 = [(FMDBluetoothManager *)self bluetoothManagerQueue];
+  addressCopy = address;
+  bluetoothManagerQueue = [(FMDBluetoothManager *)self bluetoothManagerQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001846F4;
   block[3] = &unk_1002CD4C8;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v8 = addressCopy;
+  v6 = addressCopy;
+  dispatch_async(bluetoothManagerQueue, block);
 }
 
 - (id)newDiscovery
 {
-  v2 = [(FMDBluetoothManager *)self discoveryCoordinator];
-  v3 = [v2 newDiscovery];
+  discoveryCoordinator = [(FMDBluetoothManager *)self discoveryCoordinator];
+  newDiscovery = [discoveryCoordinator newDiscovery];
 
-  return v3;
+  return newDiscovery;
 }
 
 - (BOOL)isDiscoveryActive
 {
-  v2 = [(FMDBluetoothManager *)self discoveryCoordinator];
-  v3 = [v2 isDiscoveryActive];
+  discoveryCoordinator = [(FMDBluetoothManager *)self discoveryCoordinator];
+  isDiscoveryActive = [discoveryCoordinator isDiscoveryActive];
 
-  return v3;
+  return isDiscoveryActive;
 }
 
-- (void)getAccessoriesWithCompletion:(id)a3
+- (void)getAccessoriesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v10[0] = 0;
   v10[1] = v10;
   v10[2] = 0x3032000000;
   v10[3] = sub_10000AA64;
   v10[4] = sub_100002AFC;
   v11 = 0;
-  v5 = [(FMDBluetoothManager *)self bluetoothManagerQueue];
+  bluetoothManagerQueue = [(FMDBluetoothManager *)self bluetoothManagerQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100184BE4;
   block[3] = &unk_1002CFCA0;
   block[4] = self;
-  v8 = v4;
+  v8 = completionCopy;
   v9 = v10;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v6 = completionCopy;
+  dispatch_async(bluetoothManagerQueue, block);
 
   _Block_object_dispose(v10, 8);
 }
@@ -130,7 +130,7 @@
   v16 = 1;
   v3 = dispatch_group_create();
   dispatch_group_enter(v3);
-  v4 = [(FMDBluetoothManager *)self btController];
+  btController = [(FMDBluetoothManager *)self btController];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1001856D0;
@@ -139,7 +139,7 @@
   v10[4] = self;
   v5 = v3;
   v11 = v5;
-  [v4 getControllerInfoWithCompletion:v10];
+  [btController getControllerInfoWithCompletion:v10];
 
   v6 = dispatch_time(0, 10000000000);
   if (dispatch_group_wait(v5, v6))
@@ -169,11 +169,11 @@
   v4 = objc_alloc_init(CBDiscovery);
   [(FMDBluetoothManager *)self setBtDiscovery:v4];
 
-  v5 = [(FMDBluetoothManager *)self btDiscovery];
-  [v5 setLabel:@"FMDBluetoothManager"];
+  btDiscovery = [(FMDBluetoothManager *)self btDiscovery];
+  [btDiscovery setLabel:@"FMDBluetoothManager"];
 
-  v6 = [(FMDBluetoothManager *)self btDiscovery];
-  [v6 setDiscoveryFlags:0x80000200000];
+  btDiscovery2 = [(FMDBluetoothManager *)self btDiscovery];
+  [btDiscovery2 setDiscoveryFlags:0x80000200000];
 
   objc_initWeak(buf, self);
   v12[0] = _NSConcreteStackBlock;
@@ -181,15 +181,15 @@
   v12[2] = sub_10018599C;
   v12[3] = &unk_1002CFCF0;
   objc_copyWeak(&v13, buf);
-  v7 = [(FMDBluetoothManager *)self btDiscovery];
-  [v7 setDeviceFoundHandler:v12];
+  btDiscovery3 = [(FMDBluetoothManager *)self btDiscovery];
+  [btDiscovery3 setDeviceFoundHandler:v12];
 
   objc_copyWeak(&v11, buf);
   v8 = [(FMDBluetoothManager *)self btDiscovery:_NSConcreteStackBlock];
   [v8 setDeviceLostHandler:&v10];
 
-  v9 = [(FMDBluetoothManager *)self btDiscovery];
-  [v9 activateWithCompletion:&stru_1002CFD10];
+  btDiscovery4 = [(FMDBluetoothManager *)self btDiscovery];
+  [btDiscovery4 activateWithCompletion:&stru_1002CFD10];
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&v13);
@@ -208,32 +208,32 @@
   v15[2] = sub_100186640;
   v15[3] = &unk_1002CFD38;
   objc_copyWeak(&v16, &location);
-  v5 = [(FMDBluetoothManager *)self discoveryCoordinator];
-  [v5 setDidDiscoverDevice:v15];
+  discoveryCoordinator = [(FMDBluetoothManager *)self discoveryCoordinator];
+  [discoveryCoordinator setDidDiscoverDevice:v15];
 
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_1001867B0;
   v13[3] = &unk_1002CFD38;
   objc_copyWeak(&v14, &location);
-  v6 = [(FMDBluetoothManager *)self discoveryCoordinator];
-  [v6 setDidLoseDevice:v13];
+  discoveryCoordinator2 = [(FMDBluetoothManager *)self discoveryCoordinator];
+  [discoveryCoordinator2 setDidLoseDevice:v13];
 
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100186920;
   v11[3] = &unk_1002CFD60;
   objc_copyWeak(&v12, &location);
-  v7 = [(FMDBluetoothManager *)self discoveryCoordinator];
-  [v7 setDidEndDiscovery:v11];
+  discoveryCoordinator3 = [(FMDBluetoothManager *)self discoveryCoordinator];
+  [discoveryCoordinator3 setDidEndDiscovery:v11];
 
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100186A34;
   v9[3] = &unk_1002CD518;
   objc_copyWeak(&v10, &location);
-  v8 = [(FMDBluetoothManager *)self discoveryCoordinator];
-  [v8 setDidStartDiscovery:v9];
+  discoveryCoordinator4 = [(FMDBluetoothManager *)self discoveryCoordinator];
+  [discoveryCoordinator4 setDidStartDiscovery:v9];
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(&v12);
@@ -242,36 +242,36 @@
   objc_destroyWeak(&location);
 }
 
-- (void)setAllAudioChannelsActive:(BOOL)a3
+- (void)setAllAudioChannelsActive:(BOOL)active
 {
-  v5 = [(FMDBluetoothManager *)self bluetoothDiscoveryQueue];
-  dispatch_assert_queue_V2(v5);
+  bluetoothDiscoveryQueue = [(FMDBluetoothManager *)self bluetoothDiscoveryQueue];
+  dispatch_assert_queue_V2(bluetoothDiscoveryQueue);
 
-  v6 = [(FMDBluetoothManager *)self bluetoothManagerDevicesByAddress];
+  bluetoothManagerDevicesByAddress = [(FMDBluetoothManager *)self bluetoothManagerDevicesByAddress];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100186BF8;
   v7[3] = &unk_1002CFD88;
   v7[4] = self;
-  v8 = a3;
-  [v6 enumerateKeysAndObjectsUsingBlock:v7];
+  activeCopy = active;
+  [bluetoothManagerDevicesByAddress enumerateKeysAndObjectsUsingBlock:v7];
 }
 
-- (void)setInternalDeviceAudioChannels:(id)a3 profile:(int64_t)a4 active:(BOOL)a5
+- (void)setInternalDeviceAudioChannels:(id)channels profile:(int64_t)profile active:(BOOL)active
 {
-  v8 = a3;
-  v9 = [(FMDBluetoothManager *)self bluetoothDiscoveryQueue];
-  dispatch_assert_queue_V2(v9);
+  channelsCopy = channels;
+  bluetoothDiscoveryQueue = [(FMDBluetoothManager *)self bluetoothDiscoveryQueue];
+  dispatch_assert_queue_V2(bluetoothDiscoveryQueue);
 
-  v10 = [(FMDBluetoothManager *)self supportedAccessoryRegistry];
-  v11 = [v10 channelNamesForProfile:a4];
+  supportedAccessoryRegistry = [(FMDBluetoothManager *)self supportedAccessoryRegistry];
+  v11 = [supportedAccessoryRegistry channelNamesForProfile:profile];
 
   v16 = _NSConcreteStackBlock;
   v17 = 3221225472;
   v18 = sub_100186E48;
   v19 = &unk_1002CFDB0;
-  v21 = a5;
-  v12 = v8;
+  activeCopy = active;
+  v12 = channelsCopy;
   v20 = v12;
   [v11 enumerateObjectsUsingBlock:&v16];
   v13 = sub_100002880();
@@ -287,26 +287,26 @@
   [v15 bluetoothManagerDidUpdateDevice:v12];
 }
 
-- (void)updateBeaconsWithDevice:(id)a3 active:(BOOL)a4
+- (void)updateBeaconsWithDevice:(id)device active:(BOOL)active
 {
-  v6 = a3;
-  v7 = [(FMDBluetoothManager *)self bluetoothDiscoveryQueue];
-  dispatch_assert_queue_V2(v7);
+  deviceCopy = device;
+  bluetoothDiscoveryQueue = [(FMDBluetoothManager *)self bluetoothDiscoveryQueue];
+  dispatch_assert_queue_V2(bluetoothDiscoveryQueue);
 
-  v8 = [(FMDBluetoothManager *)self bluetoothDeviceForBLEDevice:v6];
+  v8 = [(FMDBluetoothManager *)self bluetoothDeviceForBLEDevice:deviceCopy];
   v9 = [(FMDBluetoothManager *)self _bluetoothManagerDeviceForBluetoothDevice:v8];
-  v10 = [v9 bluetoothDevice];
-  v11 = [v10 vendorID];
-  v12 = [v9 bluetoothDevice];
-  v13 = -[FMDBluetoothManager profileWithVendorID:productID:](self, "profileWithVendorID:productID:", v11, [v12 productID]);
+  bluetoothDevice = [v9 bluetoothDevice];
+  vendorID = [bluetoothDevice vendorID];
+  bluetoothDevice2 = [v9 bluetoothDevice];
+  v13 = -[FMDBluetoothManager profileWithVendorID:productID:](self, "profileWithVendorID:productID:", vendorID, [bluetoothDevice2 productID]);
 
-  v14 = [FMDBLEAudioAdvertisementParser configurationDictWithBleDevice:v6 supportedAccessoryProfile:v13];
+  v14 = [FMDBLEAudioAdvertisementParser configurationDictWithBleDevice:deviceCopy supportedAccessoryProfile:v13];
 
   v17 = _NSConcreteStackBlock;
   v18 = 3221225472;
   v19 = sub_100187054;
   v20 = &unk_1002CFDD8;
-  v22 = a4;
+  activeCopy = active;
   v21 = v9;
   v15 = v9;
   [v14 enumerateKeysAndObjectsUsingBlock:&v17];
@@ -314,24 +314,24 @@
   [v16 bluetoothManagerDidUpdateDevice:v15];
 }
 
-- (id)bluetoothDeviceForBLEDevice:(id)a3
+- (id)bluetoothDeviceForBLEDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = sub_10000AA64;
   v16 = sub_100002AFC;
   v17 = 0;
-  v5 = [(FMDBluetoothManager *)self bluetoothManagerQueueSynchronizer];
+  bluetoothManagerQueueSynchronizer = [(FMDBluetoothManager *)self bluetoothManagerQueueSynchronizer];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100187248;
   v9[3] = &unk_1002CE5F0;
-  v6 = v4;
+  v6 = deviceCopy;
   v10 = v6;
   v11 = &v12;
-  [v5 conditionalSync:v9];
+  [bluetoothManagerQueueSynchronizer conditionalSync:v9];
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -339,25 +339,25 @@
   return v7;
 }
 
-- (id)bluetoothManagerDeviceForBluetoothDevice:(id)a3
+- (id)bluetoothManagerDeviceForBluetoothDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = sub_10000AA64;
   v16 = sub_100002AFC;
   v17 = 0;
-  v5 = [(FMDBluetoothManager *)self bluetoothDiscoveryQueue];
+  bluetoothDiscoveryQueue = [(FMDBluetoothManager *)self bluetoothDiscoveryQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100187570;
   block[3] = &unk_1002CDA70;
-  v10 = v4;
+  v10 = deviceCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = deviceCopy;
+  dispatch_sync(bluetoothDiscoveryQueue, block);
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -365,30 +365,30 @@
   return v7;
 }
 
-- (id)_bluetoothManagerDeviceForBluetoothDevice:(id)a3
+- (id)_bluetoothManagerDeviceForBluetoothDevice:(id)device
 {
-  v4 = a3;
-  v5 = [(FMDBluetoothManager *)self bluetoothDiscoveryQueue];
-  dispatch_assert_queue_V2(v5);
+  deviceCopy = device;
+  bluetoothDiscoveryQueue = [(FMDBluetoothManager *)self bluetoothDiscoveryQueue];
+  dispatch_assert_queue_V2(bluetoothDiscoveryQueue);
 
-  v6 = -[FMDBluetoothManager profileWithVendorID:productID:](self, "profileWithVendorID:productID:", [v4 vendorID], objc_msgSend(v4, "productID"));
-  v7 = [v4 btAddressData];
-  v8 = [v7 fm_MACAddressString];
+  v6 = -[FMDBluetoothManager profileWithVendorID:productID:](self, "profileWithVendorID:productID:", [deviceCopy vendorID], objc_msgSend(deviceCopy, "productID"));
+  btAddressData = [deviceCopy btAddressData];
+  fm_MACAddressString = [btAddressData fm_MACAddressString];
 
-  if (!v8 || (-[FMDBluetoothManager bluetoothManagerDevicesByAddress](self, "bluetoothManagerDevicesByAddress"), v9 = objc_claimAutoreleasedReturnValue(), [v9 objectForKeyedSubscript:v8], v10 = objc_claimAutoreleasedReturnValue(), v9, !v10))
+  if (!fm_MACAddressString || (-[FMDBluetoothManager bluetoothManagerDevicesByAddress](self, "bluetoothManagerDevicesByAddress"), v9 = objc_claimAutoreleasedReturnValue(), [v9 objectForKeyedSubscript:fm_MACAddressString], v10 = objc_claimAutoreleasedReturnValue(), v9, !v10))
   {
     v10 = objc_alloc_init(FMDInternalBluetoothManagerDevice);
     [(FMDBluetoothManager *)self setInternalDeviceAudioChannels:v10 profile:v6 active:0];
-    if (v8)
+    if (fm_MACAddressString)
     {
-      v11 = [(FMDBluetoothManager *)self bluetoothManagerDevicesByAddress];
-      [v11 setObject:v10 forKey:v8];
+      bluetoothManagerDevicesByAddress = [(FMDBluetoothManager *)self bluetoothManagerDevicesByAddress];
+      [bluetoothManagerDevicesByAddress setObject:v10 forKey:fm_MACAddressString];
     }
   }
 
-  [(FMDInternalBluetoothManagerDevice *)v10 setBluetoothDevice:v4];
-  v12 = [(FMDBluetoothManager *)self supportedAccessoryRegistry];
-  v13 = [v12 advertisementStatusKeyForProfile:v6];
+  [(FMDInternalBluetoothManagerDevice *)v10 setBluetoothDevice:deviceCopy];
+  supportedAccessoryRegistry = [(FMDBluetoothManager *)self supportedAccessoryRegistry];
+  v13 = [supportedAccessoryRegistry advertisementStatusKeyForProfile:v6];
   [(FMDInternalBluetoothManagerDevice *)v10 setAdvertisementStatusKey:v13];
 
   return v10;

@@ -10,17 +10,17 @@
 - (void)startEvictionTimer
 {
   v14 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E69B0B08] currentSettings];
-  v4 = [v3 verboseImageLoadingLogging];
+  currentSettings = [MEMORY[0x1E69B0B08] currentSettings];
+  verboseImageLoadingLogging = [currentSettings verboseImageLoadingLogging];
 
-  if (v4)
+  if (verboseImageLoadingLogging)
   {
     v5 = MCLogCategoryDefault();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(MRUImageUtilitiesCacheEntry *)self identifier];
+      identifier = [(MRUImageUtilitiesCacheEntry *)self identifier];
       *buf = 138412290;
-      v13 = v6;
+      v13 = identifier;
       _os_log_impl(&dword_1A20FC000, v5, OS_LOG_TYPE_DEFAULT, "[MRUImageUtilities] Start eviction timer for entry with id: %@", buf, 0xCu);
     }
   }
@@ -78,17 +78,17 @@ void __49__MRUImageUtilitiesCacheEntry_startEvictionTimer__block_invoke(uint64_t
 - (void)dealloc
 {
   v10 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E69B0B08] currentSettings];
-  v4 = [v3 verboseImageLoadingLogging];
+  currentSettings = [MEMORY[0x1E69B0B08] currentSettings];
+  verboseImageLoadingLogging = [currentSettings verboseImageLoadingLogging];
 
-  if (v4)
+  if (verboseImageLoadingLogging)
   {
     v5 = MCLogCategoryDefault();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(MRUImageUtilitiesCacheEntry *)self identifier];
+      identifier = [(MRUImageUtilitiesCacheEntry *)self identifier];
       *buf = 138412290;
-      v9 = v6;
+      v9 = identifier;
       _os_log_impl(&dword_1A20FC000, v5, OS_LOG_TYPE_DEFAULT, "[MRUImageUtilities] Dealloc entry with id: %@", buf, 0xCu);
     }
   }
@@ -101,27 +101,27 @@ void __49__MRUImageUtilitiesCacheEntry_startEvictionTimer__block_invoke(uint64_t
 - (void)cancelEvictionTimer
 {
   v11 = *MEMORY[0x1E69E9840];
-  v3 = [(MRUImageUtilitiesCacheEntry *)self evictionTimer];
+  evictionTimer = [(MRUImageUtilitiesCacheEntry *)self evictionTimer];
 
-  if (v3)
+  if (evictionTimer)
   {
-    v4 = [MEMORY[0x1E69B0B08] currentSettings];
-    v5 = [v4 verboseImageLoadingLogging];
+    currentSettings = [MEMORY[0x1E69B0B08] currentSettings];
+    verboseImageLoadingLogging = [currentSettings verboseImageLoadingLogging];
 
-    if (v5)
+    if (verboseImageLoadingLogging)
     {
       v6 = MCLogCategoryDefault();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
-        v7 = [(MRUImageUtilitiesCacheEntry *)self identifier];
+        identifier = [(MRUImageUtilitiesCacheEntry *)self identifier];
         v9 = 138412290;
-        v10 = v7;
+        v10 = identifier;
         _os_log_impl(&dword_1A20FC000, v6, OS_LOG_TYPE_DEFAULT, "[MRUImageUtilities] Cancel eviction timer for entry with id: %@", &v9, 0xCu);
       }
     }
 
-    v8 = [(MRUImageUtilitiesCacheEntry *)self evictionTimer];
-    [v8 invalidate];
+    evictionTimer2 = [(MRUImageUtilitiesCacheEntry *)self evictionTimer];
+    [evictionTimer2 invalidate];
 
     [(MRUImageUtilitiesCacheEntry *)self setEvictionTimer:0];
   }

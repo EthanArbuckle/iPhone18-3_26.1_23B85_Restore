@@ -1,30 +1,30 @@
 @interface DOCCardPopoverAdaptablePresenter
-- (void)_presentationController:(id)a3 prepareAdaptivePresentationController:(id)a4;
-- (void)prepareForPopoverPresentation:(id)a3;
-- (void)presentationControllerWillDismiss:(id)a3;
+- (void)_presentationController:(id)controller prepareAdaptivePresentationController:(id)presentationController;
+- (void)prepareForPopoverPresentation:(id)presentation;
+- (void)presentationControllerWillDismiss:(id)dismiss;
 @end
 
 @implementation DOCCardPopoverAdaptablePresenter
 
-- (void)prepareForPopoverPresentation:(id)a3
+- (void)prepareForPopoverPresentation:(id)presentation
 {
   v6 = *(&self->super.isa + OBJC_IVAR____TtC26DocumentManagerExecutables32DOCCardPopoverAdaptablePresenter_activePresentationController);
-  *(&self->super.isa + OBJC_IVAR____TtC26DocumentManagerExecutables32DOCCardPopoverAdaptablePresenter_activePresentationController) = a3;
-  v4 = a3;
-  v5 = self;
+  *(&self->super.isa + OBJC_IVAR____TtC26DocumentManagerExecutables32DOCCardPopoverAdaptablePresenter_activePresentationController) = presentation;
+  presentationCopy = presentation;
+  selfCopy = self;
   DOCCardPopoverAdaptablePresenter.activePresentationController.didset(v6);
 }
 
-- (void)_presentationController:(id)a3 prepareAdaptivePresentationController:(id)a4
+- (void)_presentationController:(id)controller prepareAdaptivePresentationController:(id)presentationController
 {
   v7 = *(&self->super.isa + OBJC_IVAR____TtC26DocumentManagerExecutables32DOCCardPopoverAdaptablePresenter_activePresentationController);
-  *(&self->super.isa + OBJC_IVAR____TtC26DocumentManagerExecutables32DOCCardPopoverAdaptablePresenter_activePresentationController) = a4;
-  v5 = a4;
-  v6 = self;
+  *(&self->super.isa + OBJC_IVAR____TtC26DocumentManagerExecutables32DOCCardPopoverAdaptablePresenter_activePresentationController) = presentationController;
+  presentationControllerCopy = presentationController;
+  selfCopy = self;
   DOCCardPopoverAdaptablePresenter.activePresentationController.didset(v7);
 }
 
-- (void)presentationControllerWillDismiss:(id)a3
+- (void)presentationControllerWillDismiss:(id)dismiss
 {
   *(&self->super.isa + OBJC_IVAR____TtC26DocumentManagerExecutables32DOCCardPopoverAdaptablePresenter_isActivelyPresentingPopover) = 0;
   Strong = swift_unknownObjectWeakLoadStrong();

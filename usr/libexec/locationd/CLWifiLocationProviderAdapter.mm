@@ -1,25 +1,25 @@
 @interface CLWifiLocationProviderAdapter
 + (BOOL)isSupported;
 + (id)getSilo;
-+ (void)becameFatallyBlocked:(id)a3 index:(unint64_t)a4;
++ (void)becameFatallyBlocked:(id)blocked index:(unint64_t)index;
 - (CLWifiLocationProviderAdapter)init;
 - (void)adaptee;
 - (void)beginService;
-- (void)doAsync:(id)a3;
-- (void)doAsync:(id)a3 withReply:(id)a4;
-- (void)emergencyStateChange:(id)a3;
+- (void)doAsync:(id)async;
+- (void)doAsync:(id)async withReply:(id)reply;
+- (void)emergencyStateChange:(id)change;
 - (void)endService;
-- (void)requestLocationUpdateWithParameters:(id)a3;
+- (void)requestLocationUpdateWithParameters:(id)parameters;
 @end
 
 @implementation CLWifiLocationProviderAdapter
 
-+ (void)becameFatallyBlocked:(id)a3 index:(unint64_t)a4
++ (void)becameFatallyBlocked:(id)blocked index:(unint64_t)index
 {
-  v5 = a4 + 1;
-  if (a4 + 1 < [a3 count])
+  v5 = index + 1;
+  if (index + 1 < [blocked count])
   {
-    [objc_msgSend(a3 objectAtIndexedSubscript:{v5), "becameFatallyBlocked:index:", a3, v5}];
+    [objc_msgSend(blocked objectAtIndexedSubscript:{v5), "becameFatallyBlocked:index:", blocked, v5}];
   }
 }
 
@@ -66,25 +66,25 @@
   return result;
 }
 
-- (void)doAsync:(id)a3
+- (void)doAsync:(id)async
 {
-  v4 = [(CLWifiLocationProviderAdapter *)self adaptee];
-  v5 = *(a3 + 2);
+  adaptee = [(CLWifiLocationProviderAdapter *)self adaptee];
+  v5 = *(async + 2);
 
-  v5(a3, v4);
+  v5(async, adaptee);
 }
 
-- (void)doAsync:(id)a3 withReply:(id)a4
+- (void)doAsync:(id)async withReply:(id)reply
 {
-  (*(a3 + 2))(a3, [(CLWifiLocationProviderAdapter *)self adaptee]);
-  v5 = *(a4 + 2);
+  (*(async + 2))(async, [(CLWifiLocationProviderAdapter *)self adaptee]);
+  v5 = *(reply + 2);
 
-  v5(a4);
+  v5(reply);
 }
 
-- (void)emergencyStateChange:(id)a3
+- (void)emergencyStateChange:(id)change
 {
-  (*(a3 + 2))(&v8, a3, a2);
+  (*(change + 2))(&v8, change, a2);
   if (qword_1025D4630 != -1)
   {
     sub_1018FC728();
@@ -109,17 +109,17 @@
     sub_1018FC750(&v8);
   }
 
-  v6 = [(CLWifiLocationProviderAdapter *)self adaptee];
+  adaptee = [(CLWifiLocationProviderAdapter *)self adaptee];
   *&__p.__r_.__value_.__l.__data_ = v8;
   LODWORD(__p.__r_.__value_.__r.__words[2]) = v9;
-  sub_10067B3D8(v6, &__p);
+  sub_10067B3D8(adaptee, &__p);
 }
 
-- (void)requestLocationUpdateWithParameters:(id)a3
+- (void)requestLocationUpdateWithParameters:(id)parameters
 {
-  v4 = [(CLWifiLocationProviderAdapter *)self adaptee];
-  (*(a3 + 2))(v5, a3);
-  sub_100184100(v4, v5);
+  adaptee = [(CLWifiLocationProviderAdapter *)self adaptee];
+  (*(parameters + 2))(v5, parameters);
+  sub_100184100(adaptee, v5);
   if (v8 < 0)
   {
     operator delete(__p);

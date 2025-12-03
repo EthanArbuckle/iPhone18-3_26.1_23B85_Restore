@@ -1,5 +1,5 @@
 @interface WFVariable
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSHashTable)delegates;
 - (NSOrderedSet)possibleAggrandizedContentClasses;
 - (NSOrderedSet)possibleContentClasses;
@@ -7,26 +7,26 @@
 - (NSString)nameIncludingPropertyName;
 - (NSString)propertyName;
 - (NSString)type;
-- (WFVariable)initWithDictionary:(id)a3 variableProvider:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)rewrittenWithStrings:(id)a3;
-- (id)userVisibleStringsForUseCase:(unint64_t)a3;
-- (id)variableBySettingAggrandizements:(id)a3;
+- (WFVariable)initWithDictionary:(id)dictionary variableProvider:(id)provider;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)rewrittenWithStrings:(id)strings;
+- (id)userVisibleStringsForUseCase:(unint64_t)case;
+- (id)variableBySettingAggrandizements:(id)aggrandizements;
 - (unint64_t)hash;
-- (void)addDelegate:(id)a3;
-- (void)getContentWithContext:(id)a3 trackContentAttribution:(BOOL)a4 completionHandler:(id)a5;
-- (void)getFileRepresentationWithContext:(id)a3 completionHandler:(id)a4;
-- (void)getObjectRepresentationForClass:(Class)a3 context:(id)a4 completionHandler:(id)a5;
-- (void)removeDelegate:(id)a3;
+- (void)addDelegate:(id)delegate;
+- (void)getContentWithContext:(id)context trackContentAttribution:(BOOL)attribution completionHandler:(id)handler;
+- (void)getFileRepresentationWithContext:(id)context completionHandler:(id)handler;
+- (void)getObjectRepresentationForClass:(Class)class context:(id)context completionHandler:(id)handler;
+- (void)removeDelegate:(id)delegate;
 - (void)variableUpdated;
-- (void)wf_getContentItemsWithContext:(id)a3 completionHandler:(id)a4;
+- (void)wf_getContentItemsWithContext:(id)context completionHandler:(id)handler;
 @end
 
 @implementation WFVariable
 
-- (id)userVisibleStringsForUseCase:(unint64_t)a3
+- (id)userVisibleStringsForUseCase:(unint64_t)case
 {
-  v3 = self;
+  selfCopy = self;
   sub_1CA5282F8();
 
   type metadata accessor for WFUserVisibleString();
@@ -36,7 +36,7 @@
   return v4;
 }
 
-- (id)rewrittenWithStrings:(id)a3
+- (id)rewrittenWithStrings:(id)strings
 {
   type metadata accessor for WFUserVisibleString();
   sub_1CA3434EC();
@@ -46,16 +46,16 @@
   return self;
 }
 
-- (void)wf_getContentItemsWithContext:(id)a3 completionHandler:(id)a4
+- (void)wf_getContentItemsWithContext:(id)context completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __87__WFVariable_WFVariableStringContent__wf_getContentItemsWithContext_completionHandler___block_invoke;
   v8[3] = &unk_1E837DC20;
-  v9 = v6;
-  v7 = v6;
-  [(WFVariable *)self getContentWithContext:a3 completionHandler:v8];
+  v9 = handlerCopy;
+  v7 = handlerCopy;
+  [(WFVariable *)self getContentWithContext:context completionHandler:v8];
 }
 
 void __87__WFVariable_WFVariableStringContent__wf_getContentItemsWithContext_completionHandler___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -89,51 +89,51 @@ void __87__WFVariable_WFVariableStringContent__wf_getContentItemsWithContext_com
 
 - (NSString)nameIncludingPropertyName
 {
-  v3 = [(WFVariable *)self propertyName];
-  if (v3)
+  propertyName = [(WFVariable *)self propertyName];
+  if (propertyName)
   {
     v4 = MEMORY[0x1E696AEC0];
-    v5 = [(WFVariable *)self name];
-    v6 = [(WFVariable *)self propertyName];
-    v7 = [v4 stringWithFormat:@"%@ (%@)", v5, v6];
+    name = [(WFVariable *)self name];
+    propertyName2 = [(WFVariable *)self propertyName];
+    name2 = [v4 stringWithFormat:@"%@ (%@)", name, propertyName2];
   }
 
   else
   {
-    v7 = [(WFVariable *)self name];
+    name2 = [(WFVariable *)self name];
   }
 
-  return v7;
+  return name2;
 }
 
 - (NSString)propertyName
 {
-  v2 = self;
+  selfCopy = self;
   v45 = *MEMORY[0x1E69E9840];
-  v3 = [(WFVariable *)self possibleContentClasses];
+  possibleContentClasses = [(WFVariable *)self possibleContentClasses];
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v4 = [(WFVariable *)v2 aggrandizements];
-  v5 = [v4 countByEnumeratingWithState:&v38 objects:v44 count:16];
+  aggrandizements = [(WFVariable *)selfCopy aggrandizements];
+  v5 = [aggrandizements countByEnumeratingWithState:&v38 objects:v44 count:16];
   if (v5)
   {
     v6 = v5;
     v7 = *v39;
     v8 = &off_1E836E000;
-    v26 = v2;
+    v26 = selfCopy;
     v27 = *v39;
     do
     {
       v9 = 0;
-      v10 = v3;
+      v10 = possibleContentClasses;
       v28 = v6;
       do
       {
         if (*v39 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(aggrandizements);
         }
 
         v11 = *(*(&v38 + 1) + 8 * v9);
@@ -142,13 +142,13 @@ void __87__WFVariable_WFVariableStringContent__wf_getContentItemsWithContext_com
         if (objc_opt_isKindOfClass())
         {
           v29 = v11;
-          v13 = [v29 propertyName];
+          propertyName = [v29 propertyName];
           v34 = 0u;
           v35 = 0u;
           v36 = 0u;
           v37 = 0u;
-          v3 = v10;
-          v14 = [v3 countByEnumeratingWithState:&v34 objects:v43 count:16];
+          possibleContentClasses = v10;
+          v14 = [possibleContentClasses countByEnumeratingWithState:&v34 objects:v43 count:16];
           if (v14)
           {
             v15 = v14;
@@ -159,10 +159,10 @@ void __87__WFVariable_WFVariableStringContent__wf_getContentItemsWithContext_com
               {
                 if (*v35 != v16)
                 {
-                  objc_enumerationMutation(v3);
+                  objc_enumerationMutation(possibleContentClasses);
                 }
 
-                v18 = [*(*(&v34 + 1) + 8 * i) propertyForName:{v13, v26}];
+                v18 = [*(*(&v34 + 1) + 8 * i) propertyForName:{propertyName, v26}];
                 if (v18)
                 {
                   v23 = v18;
@@ -175,13 +175,13 @@ void __87__WFVariable_WFVariableStringContent__wf_getContentItemsWithContext_com
                   {
                     [v23 localizedName];
                   }
-                  v19 = ;
+                  dictionaryKey = ;
 
                   goto LABEL_32;
                 }
               }
 
-              v15 = [v3 countByEnumeratingWithState:&v34 objects:v43 count:16];
+              v15 = [possibleContentClasses countByEnumeratingWithState:&v34 objects:v43 count:16];
               if (v15)
               {
                 continue;
@@ -196,15 +196,15 @@ void __87__WFVariable_WFVariableStringContent__wf_getContentItemsWithContext_com
           v8 = &off_1E836E000;
         }
 
-        v3 = [v11 processedContentClasses:{v10, v26}];
+        possibleContentClasses = [v11 processedContentClasses:{v10, v26}];
 
         ++v9;
-        v10 = v3;
+        v10 = possibleContentClasses;
       }
 
       while (v9 != v6);
-      v6 = [v4 countByEnumeratingWithState:&v38 objects:v44 count:16];
-      v2 = v26;
+      v6 = [aggrandizements countByEnumeratingWithState:&v38 objects:v44 count:16];
+      selfCopy = v26;
     }
 
     while (v6);
@@ -214,31 +214,31 @@ void __87__WFVariable_WFVariableStringContent__wf_getContentItemsWithContext_com
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v4 = [(WFVariable *)v2 aggrandizements];
-  v19 = [v4 countByEnumeratingWithState:&v30 objects:v42 count:16];
-  if (v19)
+  aggrandizements = [(WFVariable *)selfCopy aggrandizements];
+  dictionaryKey = [aggrandizements countByEnumeratingWithState:&v30 objects:v42 count:16];
+  if (dictionaryKey)
   {
     v20 = *v31;
     while (2)
     {
-      for (j = 0; j != v19; j = j + 1)
+      for (j = 0; j != dictionaryKey; j = j + 1)
       {
         if (*v31 != v20)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(aggrandizements);
         }
 
         v22 = *(*(&v30 + 1) + 8 * j);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v19 = [v22 dictionaryKey];
+          dictionaryKey = [v22 dictionaryKey];
           goto LABEL_32;
         }
       }
 
-      v19 = [v4 countByEnumeratingWithState:&v30 objects:v42 count:16];
-      if (v19)
+      dictionaryKey = [aggrandizements countByEnumeratingWithState:&v30 objects:v42 count:16];
+      if (dictionaryKey)
       {
         continue;
       }
@@ -251,29 +251,29 @@ LABEL_32:
 
   v24 = *MEMORY[0x1E69E9840];
 
-  return v19;
+  return dictionaryKey;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(WFVariable *)self dictionary];
-  v6 = [(WFVariable *)self variableProvider];
-  v7 = [v4 initWithDictionary:v5 variableProvider:v6];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  dictionary = [(WFVariable *)self dictionary];
+  variableProvider = [(WFVariable *)self variableProvider];
+  v7 = [v4 initWithDictionary:dictionary variableProvider:variableProvider];
 
   return v7;
 }
 
-- (id)variableBySettingAggrandizements:(id)a3
+- (id)variableBySettingAggrandizements:(id)aggrandizements
 {
-  v4 = a3;
-  v5 = [(WFVariable *)self dictionary];
-  v6 = [v5 mutableCopy];
+  aggrandizementsCopy = aggrandizements;
+  dictionary = [(WFVariable *)self dictionary];
+  v6 = [dictionary mutableCopy];
 
-  v7 = WFVariableDictionaryWithAggrandizements(v4);
+  v7 = WFVariableDictionaryWithAggrandizements(aggrandizementsCopy);
 
-  v8 = [v7 allKeys];
-  v9 = [v8 count];
+  allKeys = [v7 allKeys];
+  v9 = [allKeys count];
 
   if (v9)
   {
@@ -286,8 +286,8 @@ LABEL_32:
   }
 
   v10 = objc_alloc(objc_opt_class());
-  v11 = [(WFVariable *)self variableProvider];
-  v12 = [v10 initWithDictionary:v6 variableProvider:v11];
+  variableProvider = [(WFVariable *)self variableProvider];
+  v12 = [v10 initWithDictionary:v6 variableProvider:variableProvider];
 
   return v12;
 }
@@ -296,20 +296,20 @@ LABEL_32:
 {
   v3 = objc_alloc_init(MEMORY[0x1E69AA8A0]);
   v4 = [v3 combineInteger:1176536074];
-  v5 = [(WFVariable *)self dictionary];
-  v6 = [v3 combineContentsOfPropertyListObject:v5];
+  dictionary = [(WFVariable *)self dictionary];
+  v6 = [v3 combineContentsOfPropertyListObject:dictionary];
 
-  v7 = [(WFVariable *)self variableProvider];
-  v8 = [v3 combineInteger:{objc_msgSend(v7, "hash")}];
+  variableProvider = [(WFVariable *)self variableProvider];
+  v8 = [v3 combineInteger:{objc_msgSend(variableProvider, "hash")}];
 
   v9 = [v3 finalize];
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v9 = 1;
   }
@@ -319,13 +319,13 @@ LABEL_32:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(WFVariable *)v4 dictionary];
-      v6 = [(WFVariable *)self dictionary];
-      if ([v5 isEqual:v6])
+      dictionary = [(WFVariable *)equalCopy dictionary];
+      dictionary2 = [(WFVariable *)self dictionary];
+      if ([dictionary isEqual:dictionary2])
       {
-        v7 = [(WFVariable *)self variableProvider];
-        v8 = [(WFVariable *)v4 variableProvider];
-        v9 = v7 == v8;
+        variableProvider = [(WFVariable *)self variableProvider];
+        variableProvider2 = [(WFVariable *)equalCopy variableProvider];
+        v9 = variableProvider == variableProvider2;
       }
 
       else
@@ -343,18 +343,18 @@ LABEL_32:
   return v9;
 }
 
-- (void)getFileRepresentationWithContext:(id)a3 completionHandler:(id)a4
+- (void)getFileRepresentationWithContext:(id)context completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  handlerCopy = handler;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __65__WFVariable_getFileRepresentationWithContext_completionHandler___block_invoke;
   v10[3] = &unk_1E837DAB0;
-  v11 = v6;
-  v12 = v7;
-  v8 = v6;
-  v9 = v7;
+  v11 = contextCopy;
+  v12 = handlerCopy;
+  v8 = contextCopy;
+  v9 = handlerCopy;
   [(WFVariable *)self getContentWithContext:v8 trackContentAttribution:0 completionHandler:v10];
 }
 
@@ -393,19 +393,19 @@ void __65__WFVariable_getFileRepresentationWithContext_completionHandler___block
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)getObjectRepresentationForClass:(Class)a3 context:(id)a4 completionHandler:(id)a5
+- (void)getObjectRepresentationForClass:(Class)class context:(id)context completionHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
+  contextCopy = context;
+  handlerCopy = handler;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __72__WFVariable_getObjectRepresentationForClass_context_completionHandler___block_invoke;
   v12[3] = &unk_1E837B350;
-  v13 = v8;
-  v14 = v9;
-  v15 = a3;
-  v10 = v8;
-  v11 = v9;
+  v13 = contextCopy;
+  v14 = handlerCopy;
+  classCopy = class;
+  v10 = contextCopy;
+  v11 = handlerCopy;
   [(WFVariable *)self getContentWithContext:v10 trackContentAttribution:0 completionHandler:v12];
 }
 
@@ -445,32 +445,32 @@ void __72__WFVariable_getObjectRepresentationForClass_context_completionHandler_
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)getContentWithContext:(id)a3 trackContentAttribution:(BOOL)a4 completionHandler:(id)a5
+- (void)getContentWithContext:(id)context trackContentAttribution:(BOOL)attribution completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  contextCopy = context;
+  handlerCopy = handler;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __78__WFVariable_getContentWithContext_trackContentAttribution_completionHandler___block_invoke;
   aBlock[3] = &unk_1E837B300;
   aBlock[4] = self;
-  v10 = v8;
+  v10 = contextCopy;
   v19 = v10;
-  v11 = v9;
+  v11 = handlerCopy;
   v20 = v11;
-  v21 = a4;
+  attributionCopy = attribution;
   v12 = _Block_copy(aBlock);
   v13 = v12;
   if (v10)
   {
-    v14 = [(WFVariable *)self requiredAccessResources];
-    v15 = [MEMORY[0x1E69E0C70] sharedManager];
+    requiredAccessResources = [(WFVariable *)self requiredAccessResources];
+    mEMORY[0x1E69E0C70] = [MEMORY[0x1E69E0C70] sharedManager];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __78__WFVariable_getContentWithContext_trackContentAttribution_completionHandler___block_invoke_4;
     v16[3] = &unk_1E837D0D0;
     v17 = v13;
-    [v15 requestSandboxExtensionForRunningActionWithAccessResources:v14 completion:v16];
+    [mEMORY[0x1E69E0C70] requestSandboxExtensionForRunningActionWithAccessResources:requiredAccessResources completion:v16];
   }
 
   else
@@ -621,13 +621,13 @@ void __78__WFVariable_getContentWithContext_trackContentAttribution_completionHa
 - (NSOrderedSet)possibleAggrandizedContentClasses
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [(WFVariable *)self possibleContentClasses];
+  possibleContentClasses = [(WFVariable *)self possibleContentClasses];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(WFVariable *)self aggrandizements];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  aggrandizements = [(WFVariable *)self aggrandizements];
+  v5 = [aggrandizements countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -635,22 +635,22 @@ void __78__WFVariable_getContentWithContext_trackContentAttribution_completionHa
     do
     {
       v8 = 0;
-      v9 = v3;
+      v9 = possibleContentClasses;
       do
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(aggrandizements);
         }
 
-        v3 = [*(*(&v12 + 1) + 8 * v8) processedContentClasses:v9];
+        possibleContentClasses = [*(*(&v12 + 1) + 8 * v8) processedContentClasses:v9];
 
         ++v8;
-        v9 = v3;
+        v9 = possibleContentClasses;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [aggrandizements countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -658,7 +658,7 @@ void __78__WFVariable_getContentWithContext_trackContentAttribution_completionHa
 
   v10 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return possibleContentClasses;
 }
 
 - (NSOrderedSet)possibleContentClasses
@@ -675,8 +675,8 @@ void __78__WFVariable_getContentWithContext_trackContentAttribution_completionHa
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(WFVariable *)self delegates];
-  v4 = [v3 copy];
+  delegates = [(WFVariable *)self delegates];
+  v4 = [delegates copy];
 
   v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
@@ -706,18 +706,18 @@ void __78__WFVariable_getContentWithContext_trackContentAttribution_completionHa
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeDelegate:(id)a3
+- (void)removeDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(WFVariable *)self delegates];
-  [v5 removeObject:v4];
+  delegateCopy = delegate;
+  delegates = [(WFVariable *)self delegates];
+  [delegates removeObject:delegateCopy];
 }
 
-- (void)addDelegate:(id)a3
+- (void)addDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(WFVariable *)self delegates];
-  [v5 addObject:v4];
+  delegateCopy = delegate;
+  delegates = [(WFVariable *)self delegates];
+  [delegates addObject:delegateCopy];
 }
 
 - (NSHashTable)delegates
@@ -725,9 +725,9 @@ void __78__WFVariable_getContentWithContext_trackContentAttribution_completionHa
   delegates = self->_delegates;
   if (!delegates)
   {
-    v4 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     v5 = self->_delegates;
-    self->_delegates = v4;
+    self->_delegates = weakObjectsHashTable;
 
     delegates = self->_delegates;
   }
@@ -741,47 +741,47 @@ void __78__WFVariable_getContentWithContext_trackContentAttribution_completionHa
   v8.receiver = self;
   v8.super_class = WFVariable;
   v4 = [(WFVariable *)&v8 description];
-  v5 = [(WFVariable *)self nameIncludingPropertyName];
-  v6 = [v3 stringWithFormat:@"%@: %@", v4, v5];
+  nameIncludingPropertyName = [(WFVariable *)self nameIncludingPropertyName];
+  v6 = [v3 stringWithFormat:@"%@: %@", v4, nameIncludingPropertyName];
 
   return v6;
 }
 
 - (NSString)type
 {
-  v2 = [(WFVariable *)self dictionary];
-  v3 = [v2 objectForKey:@"Type"];
+  dictionary = [(WFVariable *)self dictionary];
+  v3 = [dictionary objectForKey:@"Type"];
 
   return v3;
 }
 
-- (WFVariable)initWithDictionary:(id)a3 variableProvider:(id)a4
+- (WFVariable)initWithDictionary:(id)dictionary variableProvider:(id)provider
 {
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  providerCopy = provider;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
 
-    v6 = MEMORY[0x1E695E0F8];
+    dictionaryCopy = MEMORY[0x1E695E0F8];
   }
 
-  v8 = [v6 objectForKey:@"Type"];
+  v8 = [dictionaryCopy objectForKey:@"Type"];
   v9 = objc_opt_class();
-  v10 = WFEnforceClass_1501(v8, v9);
+  firstObject = WFEnforceClass_1501(v8, v9);
 
   v11 = objc_opt_class();
   if (v11 == objc_opt_class())
   {
     v12 = WFVariableClassesByType();
-    v13 = [v12 objectForKey:v10];
+    v13 = [v12 objectForKey:firstObject];
 
     if ([(objc_class *)v13 isSubclassOfClass:objc_opt_class()])
     {
-      v14 = [[v13 alloc] initWithDictionary:v6 variableProvider:v7];
+      v14 = [[v13 alloc] initWithDictionary:dictionaryCopy variableProvider:providerCopy];
       if (v14)
       {
-        v15 = v14;
+        selfCopy = v14;
 LABEL_17:
 
         goto LABEL_18;
@@ -795,27 +795,27 @@ LABEL_17:
   if (v16)
   {
     v17 = v16;
-    if (!v10)
+    if (!firstObject)
     {
       v18 = objc_opt_class();
       if (v18 == objc_opt_class())
       {
-        v10 = 0;
+        firstObject = 0;
       }
 
       else
       {
-        v19 = [v6 mutableCopy];
+        v19 = [dictionaryCopy mutableCopy];
         v20 = WFVariableClassesByType();
         v21 = [v20 allKeysForObject:objc_opt_class()];
-        v10 = [v21 firstObject];
+        firstObject = [v21 firstObject];
 
-        [v19 setValue:v10 forKey:@"Type"];
-        v6 = v19;
+        [v19 setValue:firstObject forKey:@"Type"];
+        dictionaryCopy = v19;
       }
     }
 
-    v22 = [v6 objectForKey:@"Aggrandizements"];
+    v22 = [dictionaryCopy objectForKey:@"Aggrandizements"];
     v23 = objc_opt_class();
     v24 = WFEnforceClass_1501(v22, v23);
 
@@ -834,19 +834,19 @@ LABEL_17:
 
     objc_storeStrong(&v17->_aggrandizements, v28);
 
-    v29 = [v6 copy];
+    v29 = [dictionaryCopy copy];
     dictionary = v17->_dictionary;
     v17->_dictionary = v29;
 
     self = v17;
-    v15 = self;
+    selfCopy = self;
     goto LABEL_17;
   }
 
-  v15 = 0;
+  selfCopy = 0;
 LABEL_18:
 
-  return v15;
+  return selfCopy;
 }
 
 WFVariableAggrandizement *__50__WFVariable_initWithDictionary_variableProvider___block_invoke(uint64_t a1, void *a2)

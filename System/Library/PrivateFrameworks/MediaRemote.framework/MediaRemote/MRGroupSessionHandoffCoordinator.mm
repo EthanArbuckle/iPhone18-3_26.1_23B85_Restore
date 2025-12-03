@@ -1,24 +1,24 @@
 @interface MRGroupSessionHandoffCoordinator
-- (MRGroupSessionHandoffCoordinator)initWithDelegate:(id)a3;
+- (MRGroupSessionHandoffCoordinator)initWithDelegate:(id)delegate;
 - (MRGroupSessionHandoffCoordinatorDelegate)delegate;
-- (void)controller:(id)a3 playbackStateDidChangeFrom:(unsigned int)a4 to:(unsigned int)a5;
-- (void)controller:(id)a3 playerPathDidChange:(id)a4;
-- (void)groupSessionDiscovery:(id)a3 discoveredSessionsDidChange:(id)a4;
+- (void)controller:(id)controller playbackStateDidChangeFrom:(unsigned int)from to:(unsigned int)to;
+- (void)controller:(id)controller playerPathDidChange:(id)change;
+- (void)groupSessionDiscovery:(id)discovery discoveredSessionsDidChange:(id)change;
 - (void)reevaluate;
 @end
 
 @implementation MRGroupSessionHandoffCoordinator
 
-- (MRGroupSessionHandoffCoordinator)initWithDelegate:(id)a3
+- (MRGroupSessionHandoffCoordinator)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v27.receiver = self;
   v27.super_class = MRGroupSessionHandoffCoordinator;
   v5 = [(MRGroupSessionHandoffCoordinator *)&v27 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     v7 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v8 = MRGroupSessionSubsystemGetQueue();
     v9 = dispatch_queue_create_with_target_V2("com.apple.MediaRemote.MRGroupSessionHandoffCoordinator.serialQueue", v7, v8);
@@ -39,16 +39,16 @@
     nowPlayingController = v6->_nowPlayingController;
     v6->_nowPlayingController = v17;
 
-    v19 = [(MRNowPlayingController *)v6->_nowPlayingController configuration];
-    [v19 setWantsChangeCallbacksDuringInitialLoad:1];
+    configuration = [(MRNowPlayingController *)v6->_nowPlayingController configuration];
+    [configuration setWantsChangeCallbacksDuringInitialLoad:1];
 
-    v20 = [(MRNowPlayingController *)v6->_nowPlayingController configuration];
-    [v20 setRequestPlaybackState:1];
+    configuration2 = [(MRNowPlayingController *)v6->_nowPlayingController configuration];
+    [configuration2 setRequestPlaybackState:1];
 
     v21 = objc_opt_class();
     v22 = NSStringFromClass(v21);
-    v23 = [(MRNowPlayingController *)v6->_nowPlayingController configuration];
-    [v23 setLabel:v22];
+    configuration3 = [(MRNowPlayingController *)v6->_nowPlayingController configuration];
+    [configuration3 setLabel:v22];
 
     [(MRNowPlayingController *)v6->_nowPlayingController setDelegate:v6];
     [(MRNowPlayingController *)v6->_nowPlayingController beginLoadingUpdates];
@@ -63,7 +63,7 @@
   return v6;
 }
 
-- (void)groupSessionDiscovery:(id)a3 discoveredSessionsDidChange:(id)a4
+- (void)groupSessionDiscovery:(id)discovery discoveredSessionsDidChange:(id)change
 {
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
@@ -74,7 +74,7 @@
   dispatch_async(queue, block);
 }
 
-- (void)controller:(id)a3 playbackStateDidChangeFrom:(unsigned int)a4 to:(unsigned int)a5
+- (void)controller:(id)controller playbackStateDidChangeFrom:(unsigned int)from to:(unsigned int)to
 {
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
@@ -85,7 +85,7 @@
   dispatch_async(queue, block);
 }
 
-- (void)controller:(id)a3 playerPathDidChange:(id)a4
+- (void)controller:(id)controller playerPathDidChange:(id)change
 {
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
@@ -99,17 +99,17 @@
 - (void)reevaluate
 {
   dispatch_assert_queue_V2(self->_queue);
-  v3 = [(MRGroupSessionHandoffCoordinator *)self nowPlayingController];
-  v4 = [v3 response];
+  nowPlayingController = [(MRGroupSessionHandoffCoordinator *)self nowPlayingController];
+  response = [nowPlayingController response];
 
-  v5 = [v4 playerPath];
-  v6 = [v5 isSystemMediaApplication];
+  playerPath = [response playerPath];
+  isSystemMediaApplication = [playerPath isSystemMediaApplication];
 
-  IsAdvancing = MRMediaRemotePlaybackStateIsAdvancing([v4 playbackState]);
-  if ((v6 & 1) != 0 || !IsAdvancing)
+  IsAdvancing = MRMediaRemotePlaybackStateIsAdvancing([response playbackState]);
+  if ((isSystemMediaApplication & 1) != 0 || !IsAdvancing)
   {
-    v9 = [(MRGroupSessionDiscovery *)self->_groupSessionDiscovery discoveredSessions];
-    v10 = [v9 msv_map:&__block_literal_global_108];
+    discoveredSessions = [(MRGroupSessionDiscovery *)self->_groupSessionDiscovery discoveredSessions];
+    v10 = [discoveredSessions msv_map:&__block_literal_global_108];
 
     v8 = [MEMORY[0x1E695DFD8] setWithArray:v10];
   }

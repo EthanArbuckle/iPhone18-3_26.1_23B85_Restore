@@ -1,40 +1,40 @@
 @interface PGMeaningQuestionFactory
 - (NSSet)meaningLabelsForWhichToGenerateQuestions;
-- (id)_dateNodesFromStartDate:(id)a3 toEndDate:(id)a4 inGraph:(id)a5;
-- (id)_expandedDateNodesFromDateNode:(id)a3;
-- (id)_expandedDateNodesFromDateNodes:(id)a3;
-- (id)_inferMeaningLabelsForMomentNode:(id)a3 meaningLabels:(id)a4 graph:(id)a5 sceneTaxonomy:(id)a6 cache:(id)a7;
-- (id)_looseCriteriasForCriteria:(id)a3 graph:(id)a4;
+- (id)_dateNodesFromStartDate:(id)date toEndDate:(id)endDate inGraph:(id)graph;
+- (id)_expandedDateNodesFromDateNode:(id)node;
+- (id)_expandedDateNodesFromDateNodes:(id)nodes;
+- (id)_inferMeaningLabelsForMomentNode:(id)node meaningLabels:(id)labels graph:(id)graph sceneTaxonomy:(id)taxonomy cache:(id)cache;
+- (id)_looseCriteriasForCriteria:(id)criteria graph:(id)graph;
 - (id)_meaningLabelsByParentMeaningLabels;
-- (id)_questionsToAddFromMomentNodes:(id)a3 useRepresentativeAssets:(BOOL)a4 localFactoryScore:(double)a5 alreadyGeneratedQuestions:(id)a6 limit:(unint64_t)a7 graph:(id)a8 sceneTaxonomy:(id)a9 progressBlock:(id)a10;
-- (id)generateQuestionsWithLimit:(unint64_t)a3 progressBlock:(id)a4;
-- (void)_updateMeaningQuestionsIfNeededWithProgressBlock:(id)a3;
+- (id)_questionsToAddFromMomentNodes:(id)nodes useRepresentativeAssets:(BOOL)assets localFactoryScore:(double)score alreadyGeneratedQuestions:(id)questions limit:(unint64_t)limit graph:(id)graph sceneTaxonomy:(id)taxonomy progressBlock:(id)self0;
+- (id)generateQuestionsWithLimit:(unint64_t)limit progressBlock:(id)block;
+- (void)_updateMeaningQuestionsIfNeededWithProgressBlock:(id)block;
 @end
 
 @implementation PGMeaningQuestionFactory
 
-- (id)_dateNodesFromStartDate:(id)a3 toEndDate:(id)a4 inGraph:(id)a5
+- (id)_dateNodesFromStartDate:(id)date toEndDate:(id)endDate inGraph:(id)graph
 {
   v7 = MEMORY[0x277CCA970];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[v7 alloc] initWithStartDate:v10 endDate:v9];
+  graphCopy = graph;
+  endDateCopy = endDate;
+  dateCopy = date;
+  v11 = [[v7 alloc] initWithStartDate:dateCopy endDate:endDateCopy];
 
-  v12 = [v8 dateNodesForLocalDateInterval:v11];
+  v12 = [graphCopy dateNodesForLocalDateInterval:v11];
 
   return v12;
 }
 
-- (id)_expandedDateNodesFromDateNode:(id)a3
+- (id)_expandedDateNodesFromDateNode:(id)node
 {
-  v4 = a3;
-  v5 = [v4 localDate];
-  if ([MEMORY[0x277D276A8] isWeekendDate:v5])
+  nodeCopy = node;
+  localDate = [nodeCopy localDate];
+  if ([MEMORY[0x277D276A8] isWeekendDate:localDate])
   {
     v18 = 0;
     v19 = 0.0;
-    [MEMORY[0x277D276A8] rangeOfWeekendLocalStartDate:&v18 interval:&v19 containingDate:v5];
+    [MEMORY[0x277D276A8] rangeOfWeekendLocalStartDate:&v18 interval:&v19 containingDate:localDate];
     v6 = v19;
     v7 = v18;
     v8 = [v7 dateByAddingTimeInterval:v6];
@@ -47,33 +47,33 @@
   {
     v19 = 0.0;
     v17 = 0;
-    [MEMORY[0x277D276A8] nextWeekendLocalStartDate:&v17 interval:&v19 options:4 afterDate:v5];
+    [MEMORY[0x277D276A8] nextWeekendLocalStartDate:&v17 interval:&v19 options:4 afterDate:localDate];
     v9 = v17;
     v15 = 0;
     v16 = 0.0;
-    [MEMORY[0x277D276A8] nextWeekendLocalStartDate:&v15 interval:&v16 options:0 afterDate:v5];
+    [MEMORY[0x277D276A8] nextWeekendLocalStartDate:&v15 interval:&v16 options:0 afterDate:localDate];
     v10 = [v15 dateByAddingTimeInterval:v16];
   }
 
-  v11 = [v4 graph];
+  graph = [nodeCopy graph];
 
-  v12 = [(PGMeaningQuestionFactory *)self _dateNodesFromStartDate:v9 toEndDate:v10 inGraph:v11];
+  v12 = [(PGMeaningQuestionFactory *)self _dateNodesFromStartDate:v9 toEndDate:v10 inGraph:graph];
 
   v13 = [v12 set];
 
   return v13;
 }
 
-- (id)_expandedDateNodesFromDateNodes:(id)a3
+- (id)_expandedDateNodesFromDateNodes:(id)nodes
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 mutableCopy];
+  nodesCopy = nodes;
+  v5 = [nodesCopy mutableCopy];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v4;
+  v6 = nodesCopy;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -103,91 +103,91 @@
   return v5;
 }
 
-- (id)_looseCriteriasForCriteria:(id)a3 graph:(id)a4
+- (id)_looseCriteriasForCriteria:(id)criteria graph:(id)graph
 {
-  v6 = a3;
-  v7 = a4;
+  criteriaCopy = criteria;
+  graphCopy = graph;
   v8 = [MEMORY[0x277CBEB58] set];
-  v9 = [v6 identifier];
-  v10 = [v6 scenesTrait];
-  if ([v10 isMatchingRequired])
+  identifier = [criteriaCopy identifier];
+  scenesTrait = [criteriaCopy scenesTrait];
+  if ([scenesTrait isMatchingRequired])
   {
     v11 = [PGMeaningfulEventSceneCollectionTrait alloc];
-    v12 = [v10 nodes];
-    v13 = [(PGMeaningfulEventSceneCollectionTrait *)v11 initWithNodes:v12];
+    nodes = [scenesTrait nodes];
+    v13 = [(PGMeaningfulEventSceneCollectionTrait *)v11 initWithNodes:nodes];
 
     [(PGMeaningfulEventSceneCollectionTrait *)v13 setMinimumNumberOfHighConfidenceAssets:1];
     [(PGMeaningfulEventSceneCollectionTrait *)v13 setMinimumNumberOfNegativeHighConfidenceAssets:0];
     [(PGMeaningfulEventSceneCollectionTrait *)v13 setMinimumRatioOfHighConfidenceAssets:0.0];
     [(PGMeaningfulEventTrait *)v13 setMinimumScore:0.00001];
-    v14 = [[PGMeaningfulEventRequiredCriteria alloc] initWithIdentifier:v9 minimumScore:v7 graph:0.00001];
+    v14 = [[PGMeaningfulEventRequiredCriteria alloc] initWithIdentifier:identifier minimumScore:graphCopy graph:0.00001];
     [(PGMeaningfulEventCriteria *)v14 setScenesTrait:v13];
     [(PGMeaningfulEventRequiredCriteria *)v14 setMustBeInteresting:0];
     [v8 addObject:v14];
   }
 
-  v15 = [v6 roisTrait];
-  v16 = [v15 isMatchingRequired];
+  roisTrait = [criteriaCopy roisTrait];
+  isMatchingRequired = [roisTrait isMatchingRequired];
 
-  if (v16)
+  if (isMatchingRequired)
   {
     v17 = [PGMeaningfulEventCollectionTrait alloc];
-    v18 = [v6 roisTrait];
-    v19 = [v18 nodes];
-    v20 = [(PGMeaningfulEventCollectionTrait *)v17 initWithNodes:v19];
+    roisTrait2 = [criteriaCopy roisTrait];
+    nodes2 = [roisTrait2 nodes];
+    v20 = [(PGMeaningfulEventCollectionTrait *)v17 initWithNodes:nodes2];
 
     [(PGMeaningfulEventTrait *)v20 setMinimumScore:0.00001];
-    v21 = [[PGMeaningfulEventRequiredCriteria alloc] initWithIdentifier:v9 minimumScore:v7 graph:0.00001];
+    v21 = [[PGMeaningfulEventRequiredCriteria alloc] initWithIdentifier:identifier minimumScore:graphCopy graph:0.00001];
     [(PGMeaningfulEventCriteria *)v21 setRoisTrait:v20];
     [(PGMeaningfulEventRequiredCriteria *)v21 setMustBeInteresting:0];
     [v8 addObject:v21];
   }
 
-  v22 = [v6 poisTrait];
-  v23 = [v22 isMatchingRequired];
+  poisTrait = [criteriaCopy poisTrait];
+  isMatchingRequired2 = [poisTrait isMatchingRequired];
 
-  if (v23)
+  if (isMatchingRequired2)
   {
     v24 = [PGMeaningfulEventCollectionTrait alloc];
-    v25 = [v6 poisTrait];
-    v26 = [v25 nodes];
-    v27 = [(PGMeaningfulEventCollectionTrait *)v24 initWithNodes:v26];
+    poisTrait2 = [criteriaCopy poisTrait];
+    nodes3 = [poisTrait2 nodes];
+    v27 = [(PGMeaningfulEventCollectionTrait *)v24 initWithNodes:nodes3];
 
     [(PGMeaningfulEventTrait *)v27 setMinimumScore:0.00001];
-    v28 = [[PGMeaningfulEventRequiredCriteria alloc] initWithIdentifier:v9 minimumScore:v7 graph:0.00001];
+    v28 = [[PGMeaningfulEventRequiredCriteria alloc] initWithIdentifier:identifier minimumScore:graphCopy graph:0.00001];
     [(PGMeaningfulEventCriteria *)v28 setPoisTrait:v27];
     [(PGMeaningfulEventRequiredCriteria *)v28 setMustBeInteresting:0];
     [v8 addObject:v28];
   }
 
-  v29 = [v6 datesTrait];
-  if ([v29 isMatchingRequired])
+  datesTrait = [criteriaCopy datesTrait];
+  if ([datesTrait isMatchingRequired])
   {
-    v30 = [v6 peopleTrait];
-    v31 = [v30 isMatchingRequired];
+    peopleTrait = [criteriaCopy peopleTrait];
+    isMatchingRequired3 = [peopleTrait isMatchingRequired];
 
-    if (!v31)
+    if (!isMatchingRequired3)
     {
       goto LABEL_11;
     }
 
-    v32 = [v6 datesTrait];
-    v33 = [v32 nodes];
-    v34 = [v33 set];
-    v29 = [(PGMeaningQuestionFactory *)self _expandedDateNodesFromDateNodes:v34];
+    datesTrait2 = [criteriaCopy datesTrait];
+    nodes4 = [datesTrait2 nodes];
+    v34 = [nodes4 set];
+    datesTrait = [(PGMeaningQuestionFactory *)self _expandedDateNodesFromDateNodes:v34];
 
     v35 = [PGMeaningfulEventCollectionTrait alloc];
-    v36 = [(MAElementCollection *)[PGGraphDateNodeCollection alloc] initWithSet:v29 graph:v7];
+    v36 = [(MAElementCollection *)[PGGraphDateNodeCollection alloc] initWithSet:datesTrait graph:graphCopy];
     v37 = [(PGMeaningfulEventCollectionTrait *)v35 initWithNodes:v36];
 
     [(PGMeaningfulEventTrait *)v37 setMinimumScore:0.00001];
     v38 = [PGMeaningfulEventCollectionTrait alloc];
-    v39 = [v6 peopleTrait];
-    v40 = [v39 nodes];
-    v41 = [(PGMeaningfulEventCollectionTrait *)v38 initWithNodes:v40];
+    peopleTrait2 = [criteriaCopy peopleTrait];
+    nodes5 = [peopleTrait2 nodes];
+    v41 = [(PGMeaningfulEventCollectionTrait *)v38 initWithNodes:nodes5];
 
     [(PGMeaningfulEventTrait *)v41 setMinimumScore:0.00001];
-    v42 = [[PGMeaningfulEventRequiredCriteria alloc] initWithIdentifier:v9 minimumScore:v7 graph:0.00001];
+    v42 = [[PGMeaningfulEventRequiredCriteria alloc] initWithIdentifier:identifier minimumScore:graphCopy graph:0.00001];
     [(PGMeaningfulEventCriteria *)v42 setDatesTrait:v37];
     [(PGMeaningfulEventCriteria *)v42 setPeopleTrait:v41];
     [(PGMeaningfulEventRequiredCriteria *)v42 setMustBeInteresting:0];
@@ -195,51 +195,51 @@
   }
 
 LABEL_11:
-  v43 = [v6 socialGroupsTrait];
-  v44 = [v43 isMatchingRequired];
+  socialGroupsTrait = [criteriaCopy socialGroupsTrait];
+  isMatchingRequired4 = [socialGroupsTrait isMatchingRequired];
 
-  if (v44)
+  if (isMatchingRequired4)
   {
     v45 = [PGMeaningfulEventCollectionTrait alloc];
-    v46 = [v6 socialGroupsTrait];
-    v47 = [v46 nodes];
-    v48 = [(PGMeaningfulEventCollectionTrait *)v45 initWithNodes:v47];
+    socialGroupsTrait2 = [criteriaCopy socialGroupsTrait];
+    nodes6 = [socialGroupsTrait2 nodes];
+    v48 = [(PGMeaningfulEventCollectionTrait *)v45 initWithNodes:nodes6];
 
     [(PGMeaningfulEventTrait *)v48 setMinimumScore:0.00001];
-    v49 = [[PGMeaningfulEventRequiredCriteria alloc] initWithIdentifier:v9 minimumScore:v7 graph:0.00001];
+    v49 = [[PGMeaningfulEventRequiredCriteria alloc] initWithIdentifier:identifier minimumScore:graphCopy graph:0.00001];
     [(PGMeaningfulEventCriteria *)v49 setSocialGroupsTrait:v48];
     [(PGMeaningfulEventRequiredCriteria *)v49 setMustBeInteresting:0];
     [v8 addObject:v49];
   }
 
-  v50 = [v6 locationMobilityTrait];
-  v51 = [v50 isMatchingRequired];
+  locationMobilityTrait = [criteriaCopy locationMobilityTrait];
+  isMatchingRequired5 = [locationMobilityTrait isMatchingRequired];
 
-  if (v51)
+  if (isMatchingRequired5)
   {
     v52 = [PGMeaningfulEventLocationMobilityTrait alloc];
-    v53 = [v6 locationMobilityTrait];
-    v54 = -[PGMeaningfulEventLocationMobilityTrait initWithMobility:](v52, "initWithMobility:", [v53 value]);
+    locationMobilityTrait2 = [criteriaCopy locationMobilityTrait];
+    v54 = -[PGMeaningfulEventLocationMobilityTrait initWithMobility:](v52, "initWithMobility:", [locationMobilityTrait2 value]);
 
     [(PGMeaningfulEventTrait *)v54 setMinimumScore:0.00001];
-    v55 = [[PGMeaningfulEventRequiredCriteria alloc] initWithIdentifier:v9 minimumScore:v7 graph:0.00001];
+    v55 = [[PGMeaningfulEventRequiredCriteria alloc] initWithIdentifier:identifier minimumScore:graphCopy graph:0.00001];
     [(PGMeaningfulEventCriteria *)v55 setLocationMobilityTrait:v54];
     [(PGMeaningfulEventRequiredCriteria *)v55 setMustBeInteresting:0];
     [v8 addObject:v55];
   }
 
-  v56 = [v6 publicEventCategoriesTrait];
-  v57 = [v56 isMatchingRequired];
+  publicEventCategoriesTrait = [criteriaCopy publicEventCategoriesTrait];
+  isMatchingRequired6 = [publicEventCategoriesTrait isMatchingRequired];
 
-  if (v57)
+  if (isMatchingRequired6)
   {
     v58 = [PGMeaningfulEventCollectionTrait alloc];
-    v59 = [v6 publicEventCategoriesTrait];
-    v60 = [v59 nodes];
-    v61 = [(PGMeaningfulEventCollectionTrait *)v58 initWithNodes:v60];
+    publicEventCategoriesTrait2 = [criteriaCopy publicEventCategoriesTrait];
+    nodes7 = [publicEventCategoriesTrait2 nodes];
+    v61 = [(PGMeaningfulEventCollectionTrait *)v58 initWithNodes:nodes7];
 
     [(PGMeaningfulEventTrait *)v61 setMinimumScore:0.00001];
-    v62 = [[PGMeaningfulEventRequiredCriteria alloc] initWithIdentifier:v9 minimumScore:v7 graph:0.00001];
+    v62 = [[PGMeaningfulEventRequiredCriteria alloc] initWithIdentifier:identifier minimumScore:graphCopy graph:0.00001];
     [(PGMeaningfulEventCriteria *)v62 setPublicEventCategoriesTrait:v61];
     [(PGMeaningfulEventRequiredCriteria *)v62 setMustBeInteresting:0];
     [v8 addObject:v62];
@@ -248,23 +248,23 @@ LABEL_11:
   return v8;
 }
 
-- (id)_inferMeaningLabelsForMomentNode:(id)a3 meaningLabels:(id)a4 graph:(id)a5 sceneTaxonomy:(id)a6 cache:(id)a7
+- (id)_inferMeaningLabelsForMomentNode:(id)node meaningLabels:(id)labels graph:(id)graph sceneTaxonomy:(id)taxonomy cache:(id)cache
 {
   v37 = *MEMORY[0x277D85DE8];
-  v30 = a3;
-  v12 = a4;
-  v29 = a5;
-  v13 = a6;
-  v14 = a7;
-  v15 = [(PGSurveyQuestionFactory *)self workingContext];
-  v16 = [v15 serviceManager];
+  nodeCopy = node;
+  labelsCopy = labels;
+  graphCopy = graph;
+  taxonomyCopy = taxonomy;
+  cacheCopy = cache;
+  workingContext = [(PGSurveyQuestionFactory *)self workingContext];
+  serviceManager = [workingContext serviceManager];
 
   v28 = [MEMORY[0x277CBEB58] set];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  obj = v12;
+  obj = labelsCopy;
   v17 = [obj countByEnumeratingWithState:&v31 objects:v36 count:16];
   if (v17)
   {
@@ -282,9 +282,9 @@ LABEL_11:
         v21 = *(*(&v31 + 1) + 8 * i);
         v35 = v21;
         v22 = [MEMORY[0x277CBEA60] arrayWithObjects:&v35 count:1];
-        v23 = [PGMeaningfulEventLooseRequiredCriteriaFactory requiredCriteriaForIdentifiers:v22 graph:v29 sceneTaxonomy:v13];
+        v23 = [PGMeaningfulEventLooseRequiredCriteriaFactory requiredCriteriaForIdentifiers:v22 graph:graphCopy sceneTaxonomy:taxonomyCopy];
 
-        v24 = [PGMeaningfulEventProcessor processRequiredCriteria:v23 forMoment:v30 meaningfulEventProcessorCache:v14 serviceManager:v16];
+        v24 = [PGMeaningfulEventProcessor processRequiredCriteria:v23 forMoment:nodeCopy meaningfulEventProcessorCache:cacheCopy serviceManager:serviceManager];
         if ([v24 count])
         {
           [v28 addObject:v21];
@@ -346,15 +346,15 @@ LABEL_11:
   return meaningLabelsForWhichToGenerateQuestions;
 }
 
-- (id)_questionsToAddFromMomentNodes:(id)a3 useRepresentativeAssets:(BOOL)a4 localFactoryScore:(double)a5 alreadyGeneratedQuestions:(id)a6 limit:(unint64_t)a7 graph:(id)a8 sceneTaxonomy:(id)a9 progressBlock:(id)a10
+- (id)_questionsToAddFromMomentNodes:(id)nodes useRepresentativeAssets:(BOOL)assets localFactoryScore:(double)score alreadyGeneratedQuestions:(id)questions limit:(unint64_t)limit graph:(id)graph sceneTaxonomy:(id)taxonomy progressBlock:(id)self0
 {
   v108 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v85 = a6;
-  v79 = a8;
-  v78 = a9;
-  v15 = a10;
-  v16 = _Block_copy(v15);
+  nodesCopy = nodes;
+  questionsCopy = questions;
+  graphCopy = graph;
+  taxonomyCopy = taxonomy;
+  blockCopy = block;
+  v16 = _Block_copy(blockCopy);
   v61 = [MEMORY[0x277CBEB98] set];
   v17 = 0.0;
   if (v16)
@@ -384,24 +384,24 @@ LABEL_11:
   }
 
   v20 = [MEMORY[0x277CBEB58] set];
-  v60 = v14;
-  if ([v14 count])
+  v60 = nodesCopy;
+  if ([nodesCopy count])
   {
-    v83 = [v85 count];
+    v83 = [questionsCopy count];
     v21 = objc_alloc(MEMORY[0x277D3C790]);
-    v22 = [(PGSurveyQuestionFactory *)self workingContext];
-    v23 = [v22 photoLibrary];
-    v67 = [v21 initWithPhotoLibrary:v23];
+    workingContext = [(PGSurveyQuestionFactory *)self workingContext];
+    photoLibrary = [workingContext photoLibrary];
+    v67 = [v21 initWithPhotoLibrary:photoLibrary];
 
     v24 = [PGMeaningfulEventProcessorCache alloc];
-    v25 = [(MAElementCollection *)[PGGraphMomentNodeCollection alloc] initWithArray:v14 graph:v79];
+    v25 = [(MAElementCollection *)[PGGraphMomentNodeCollection alloc] initWithArray:nodesCopy graph:graphCopy];
     v77 = [(PGMeaningfulEventProcessorCache *)v24 initWithMomentNodes:v25];
 
     v97 = 0u;
     v98 = 0u;
     v95 = 0u;
     v96 = 0u;
-    obj = v14;
+    obj = nodesCopy;
     v76 = [obj countByEnumeratingWithState:&v95 objects:v103 count:16];
     if (v76)
     {
@@ -409,7 +409,7 @@ LABEL_11:
       v70 = *v96;
       v26 = &selRef_assetIsSafeForWidgetDisplay_;
       v62 = v61;
-      v59 = v15;
+      v59 = blockCopy;
       while (2)
       {
         v27 = 0;
@@ -423,31 +423,31 @@ LABEL_11:
 
           v28 = *(*(&v95 + 1) + 8 * v27);
           v29 = objc_autoreleasePoolPush();
-          v30 = [(PGMeaningQuestionFactory *)self meaningLabelsForWhichToGenerateQuestions];
-          v31 = [(PGMeaningQuestionFactory *)self _inferMeaningLabelsForMomentNode:v28 meaningLabels:v30 graph:v79 sceneTaxonomy:v78 cache:v77];
+          meaningLabelsForWhichToGenerateQuestions = [(PGMeaningQuestionFactory *)self meaningLabelsForWhichToGenerateQuestions];
+          v31 = [(PGMeaningQuestionFactory *)self _inferMeaningLabelsForMomentNode:v28 meaningLabels:meaningLabelsForWhichToGenerateQuestions graph:graphCopy sceneTaxonomy:taxonomyCopy cache:v77];
           if ([v31 count])
           {
             v80 = v27;
             context = v29;
-            if (a4)
+            if (assets)
             {
               v32 = [(PGSurveyQuestionFactory *)self representativeAssetsFromMomentNode:v28 curationContext:v67];
-              v33 = [v32 allObjects];
+              allObjects = [v32 allObjects];
             }
 
             else
             {
-              v33 = [(PGSurveyQuestionFactory *)self assetsFromMomentNode:v28 curationContext:v67];
+              allObjects = [(PGSurveyQuestionFactory *)self assetsFromMomentNode:v28 curationContext:v67];
             }
 
             v34 = 1;
             v35 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"uuid" ascending:1];
             v102 = v35;
             v36 = [MEMORY[0x277CBEA60] arrayWithObjects:&v102 count:1];
-            v37 = [v33 sortedArrayUsingDescriptors:v36];
+            v37 = [allObjects sortedArrayUsingDescriptors:v36];
 
-            v38 = [v31 allObjects];
-            v39 = [v38 sortedArrayUsingSelector:v65];
+            allObjects2 = [v31 allObjects];
+            v39 = [allObjects2 sortedArrayUsingSelector:v65];
 
             v93 = 0u;
             v94 = 0u;
@@ -459,9 +459,9 @@ LABEL_11:
             {
               v41 = *v92;
               v74 = v31;
-              v75 = v30;
+              v75 = meaningLabelsForWhichToGenerateQuestions;
               v72 = v39;
-              v73 = v33;
+              v73 = allObjects;
               v71 = v40;
               v64 = *v92;
               do
@@ -499,9 +499,9 @@ LABEL_11:
                       }
 
                       v49 = *(*(&v87 + 1) + 8 * i);
-                      v50 = [v43 uuid];
-                      v51 = [[PGMeaningQuestion alloc] initWithMeaningLabel:v49 assetUUID:v50 localFactoryScore:a5];
-                      if ([(PGSurveyQuestionFactory *)self shouldAddQuestion:v51 toAlreadyGeneratedQuestions:v85])
+                      uuid = [v43 uuid];
+                      v51 = [[PGMeaningQuestion alloc] initWithMeaningLabel:v49 assetUUID:uuid localFactoryScore:score];
+                      if ([(PGSurveyQuestionFactory *)self shouldAddQuestion:v51 toAlreadyGeneratedQuestions:questionsCopy])
                       {
                         [v20 addObject:v51];
                       }
@@ -514,7 +514,7 @@ LABEL_11:
                         if (v54 - v17 >= 0.01)
                         {
                           v99 = 0;
-                          v16[2](v16, &v99, v53 / a7);
+                          v16[2](v16, &v99, v53 / limit);
                           if (v99 | v82 & 1)
                           {
                             if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -539,7 +539,7 @@ LABEL_11:
                           v54 = v17;
                         }
 
-                        if ([v20 count] + v83 >= a7)
+                        if ([v20 count] + v83 >= limit)
                         {
                           v17 = CFAbsoluteTimeGetCurrent();
                           if (v17 - v54 < 0.01)
@@ -575,9 +575,9 @@ LABEL_54:
                           v54 = v17;
 LABEL_56:
                           v31 = v74;
-                          v30 = v75;
+                          meaningLabelsForWhichToGenerateQuestions = v75;
                           v39 = v72;
-                          v33 = v73;
+                          allObjects = v73;
                           v40 = v71;
 
                           v34 = 0;
@@ -588,7 +588,7 @@ LABEL_56:
                         v17 = v54;
                       }
 
-                      else if ([v20 count] + v83 >= a7)
+                      else if ([v20 count] + v83 >= limit)
                       {
                         goto LABEL_54;
                       }
@@ -607,9 +607,9 @@ LABEL_41:
 
                   v42 = v69 + 1;
                   v31 = v74;
-                  v30 = v75;
+                  meaningLabelsForWhichToGenerateQuestions = v75;
                   v39 = v72;
-                  v33 = v73;
+                  allObjects = v73;
                   v40 = v71;
                   v41 = v64;
                 }
@@ -628,7 +628,7 @@ LABEL_57:
             {
 
               objc_autoreleasePoolPop(context);
-              v15 = v59;
+              blockCopy = v59;
               goto LABEL_80;
             }
 
@@ -641,7 +641,7 @@ LABEL_57:
         }
 
         while (v27 != v76);
-        v15 = v59;
+        blockCopy = v59;
         v76 = [obj countByEnumeratingWithState:&v95 objects:v103 count:16];
         v26 = &selRef_assetIsSafeForWidgetDisplay_;
         if (v76)
@@ -705,7 +705,7 @@ LABEL_80:
     v62 = v55;
   }
 
-  v14 = v60;
+  nodesCopy = v60;
   v19 = v62;
 LABEL_82:
 
@@ -743,12 +743,12 @@ LABEL_82:
   return v11;
 }
 
-- (void)_updateMeaningQuestionsIfNeededWithProgressBlock:(id)a3
+- (void)_updateMeaningQuestionsIfNeededWithProgressBlock:(id)block
 {
   v66 = *MEMORY[0x277D85DE8];
-  aBlock = a3;
-  v4 = [(PGSurveyQuestionFactory *)self existingQuestionsByEntityIdentifier];
-  v5 = [v4 count];
+  aBlock = block;
+  existingQuestionsByEntityIdentifier = [(PGSurveyQuestionFactory *)self existingQuestionsByEntityIdentifier];
+  v5 = [existingQuestionsByEntityIdentifier count];
 
   if (v5)
   {
@@ -778,14 +778,14 @@ LABEL_82:
       *&v64 = &buf;
       *(&v64 + 1) = 0x2020000000;
       v65 = 0;
-      v9 = [(PGMeaningQuestionFactory *)self _meaningLabelsByParentMeaningLabels];
+      _meaningLabelsByParentMeaningLabels = [(PGMeaningQuestionFactory *)self _meaningLabelsByParentMeaningLabels];
       v10 = MEMORY[0x277CBEB98];
-      v11 = [v9 allKeys];
-      v12 = [v10 setWithArray:v11];
+      allKeys = [_meaningLabelsByParentMeaningLabels allKeys];
+      v12 = [v10 setWithArray:allKeys];
 
-      v13 = [MEMORY[0x277CBEB18] array];
-      v14 = [MEMORY[0x277CBEB18] array];
-      v15 = [(PGSurveyQuestionFactory *)self existingQuestionsByEntityIdentifier];
+      array = [MEMORY[0x277CBEB18] array];
+      array2 = [MEMORY[0x277CBEB18] array];
+      existingQuestionsByEntityIdentifier2 = [(PGSurveyQuestionFactory *)self existingQuestionsByEntityIdentifier];
       v42[0] = MEMORY[0x277D85DD0];
       v42[1] = 3221225472;
       v42[2] = __77__PGMeaningQuestionFactory__updateMeaningQuestionsIfNeededWithProgressBlock___block_invoke;
@@ -799,13 +799,13 @@ LABEL_82:
       v50 = &v57;
       v17 = v12;
       v43 = v17;
-      v18 = v9;
+      v18 = _meaningLabelsByParentMeaningLabels;
       v44 = v18;
-      v19 = v13;
+      v19 = array;
       v45 = v19;
-      v20 = v14;
+      v20 = array2;
       v46 = v20;
-      [v15 enumerateKeysAndObjectsUsingBlock:v42];
+      [existingQuestionsByEntityIdentifier2 enumerateKeysAndObjectsUsingBlock:v42];
 
       if (*(v58 + 24) == 1)
       {
@@ -821,45 +821,45 @@ LABEL_82:
 
       else if ([v20 count] || objc_msgSend(v19, "count"))
       {
-        v21 = [(PGSurveyQuestionFactory *)self workingContext];
-        v33 = [v21 photoLibrary];
+        workingContext = [(PGSurveyQuestionFactory *)self workingContext];
+        photoLibrary = [workingContext photoLibrary];
 
-        v22 = [MEMORY[0x277CBEAA8] date];
+        date = [MEMORY[0x277CBEAA8] date];
         v37[0] = MEMORY[0x277D85DD0];
         v37[1] = 3221225472;
         v37[2] = __77__PGMeaningQuestionFactory__updateMeaningQuestionsIfNeededWithProgressBlock___block_invoke_264;
         v37[3] = &unk_278889470;
         v38 = v20;
-        v23 = v22;
+        v23 = date;
         v39 = v23;
-        v40 = self;
+        selfCopy = self;
         v41 = v19;
         v36 = 0;
-        v24 = [v33 performChangesAndWait:v37 error:&v36];
+        v24 = [photoLibrary performChangesAndWait:v37 error:&v36];
         v32 = v36;
         if (v24)
         {
           v25 = +[PGLogging sharedLogging];
-          v26 = [v25 loggingConnection];
+          loggingConnection = [v25 loggingConnection];
 
-          if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
+          if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_INFO))
           {
             LOWORD(v61) = 0;
-            _os_log_impl(&dword_22F0FC000, v26, OS_LOG_TYPE_INFO, "[Questions] Succeeded persisting meaning questions", &v61, 2u);
+            _os_log_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_INFO, "[Questions] Succeeded persisting meaning questions", &v61, 2u);
           }
         }
 
         else
         {
           v27 = +[PGLogging sharedLogging];
-          v26 = [v27 loggingConnection];
+          loggingConnection = [v27 loggingConnection];
 
-          if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
+          if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
           {
             v31 = [v32 description];
             v61 = 138412290;
             v62[0] = v31;
-            _os_log_error_impl(&dword_22F0FC000, v26, OS_LOG_TYPE_ERROR, "[Questions] Error performing library changes for meaning questions: %@", &v61, 0xCu);
+            _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "[Questions] Error performing library changes for meaning questions: %@", &v61, 0xCu);
           }
         }
 
@@ -1067,26 +1067,26 @@ void __77__PGMeaningQuestionFactory__updateMeaningQuestionsIfNeededWithProgressB
   }
 }
 
-- (id)generateQuestionsWithLimit:(unint64_t)a3 progressBlock:(id)a4
+- (id)generateQuestionsWithLimit:(unint64_t)limit progressBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v7 = [MEMORY[0x277CBEB58] set];
-  v8 = [(PGSurveyQuestionFactory *)self workingContext];
+  workingContext = [(PGSurveyQuestionFactory *)self workingContext];
   v13 = MEMORY[0x277D85DD0];
   v14 = 3221225472;
   v15 = __69__PGMeaningQuestionFactory_generateQuestionsWithLimit_progressBlock___block_invoke;
   v16 = &unk_27888A2F8;
-  v19 = v6;
-  v20 = a3;
-  v17 = self;
+  v19 = blockCopy;
+  limitCopy = limit;
+  selfCopy = self;
   v18 = v7;
   v9 = v7;
-  v10 = v6;
-  [v8 performSynchronousConcurrentGraphReadUsingBlock:&v13];
+  v10 = blockCopy;
+  [workingContext performSynchronousConcurrentGraphReadUsingBlock:&v13];
 
-  v11 = [v9 allObjects];
+  allObjects = [v9 allObjects];
 
-  return v11;
+  return allObjects;
 }
 
 void __69__PGMeaningQuestionFactory_generateQuestionsWithLimit_progressBlock___block_invoke(uint64_t a1, void *a2)

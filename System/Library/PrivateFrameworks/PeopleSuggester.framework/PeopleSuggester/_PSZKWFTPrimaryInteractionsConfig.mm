@@ -1,39 +1,39 @@
 @interface _PSZKWFTPrimaryInteractionsConfig
-- (_PSZKWFTPrimaryInteractionsConfig)initWithIsEnabled:(BOOL)a3 defaultConfidenceCategory:(int64_t)a4 mechanisms:(id)a5 interactionCountMaxDepths:(id)a6 interactionHistoryRelativeStartDates:(id)a7 bundleIds:(id)a8 modelType:(int64_t)a9 clusterPruneThreshold:(unint64_t)a10 maxSuggestions:(unint64_t)a11;
-- (_PSZKWFTPrimaryInteractionsConfig)initWithIsEnabled:(BOOL)a3 defaultConfidenceCategory:(int64_t)a4 modelType:(int64_t)a5;
+- (_PSZKWFTPrimaryInteractionsConfig)initWithIsEnabled:(BOOL)enabled defaultConfidenceCategory:(int64_t)category mechanisms:(id)mechanisms interactionCountMaxDepths:(id)depths interactionHistoryRelativeStartDates:(id)dates bundleIds:(id)ids modelType:(int64_t)type clusterPruneThreshold:(unint64_t)self0 maxSuggestions:(unint64_t)self1;
+- (_PSZKWFTPrimaryInteractionsConfig)initWithIsEnabled:(BOOL)enabled defaultConfidenceCategory:(int64_t)category modelType:(int64_t)type;
 @end
 
 @implementation _PSZKWFTPrimaryInteractionsConfig
 
-- (_PSZKWFTPrimaryInteractionsConfig)initWithIsEnabled:(BOOL)a3 defaultConfidenceCategory:(int64_t)a4 mechanisms:(id)a5 interactionCountMaxDepths:(id)a6 interactionHistoryRelativeStartDates:(id)a7 bundleIds:(id)a8 modelType:(int64_t)a9 clusterPruneThreshold:(unint64_t)a10 maxSuggestions:(unint64_t)a11
+- (_PSZKWFTPrimaryInteractionsConfig)initWithIsEnabled:(BOOL)enabled defaultConfidenceCategory:(int64_t)category mechanisms:(id)mechanisms interactionCountMaxDepths:(id)depths interactionHistoryRelativeStartDates:(id)dates bundleIds:(id)ids modelType:(int64_t)type clusterPruneThreshold:(unint64_t)self0 maxSuggestions:(unint64_t)self1
 {
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
+  mechanismsCopy = mechanisms;
+  depthsCopy = depths;
+  datesCopy = dates;
+  idsCopy = ids;
   v25.receiver = self;
   v25.super_class = _PSZKWFTPrimaryInteractionsConfig;
   v21 = [(_PSZKWFTPrimaryInteractionsConfig *)&v25 init];
   v22 = v21;
   if (v21)
   {
-    v21->_isEnabled = a3;
-    v21->_defaultConfidenceCategory = a4;
-    objc_storeStrong(&v21->_mechanisms, a5);
-    objc_storeStrong(&v22->_interactionCountMaxDepths, a6);
-    objc_storeStrong(&v22->_interactionHistoryRelativeStartDates, a7);
-    objc_storeStrong(&v22->_bundleIds, a8);
-    v22->_modelType = a9;
-    v22->_maxSuggestions = a11;
-    v22->_clusterPruneThreshold = a10;
+    v21->_isEnabled = enabled;
+    v21->_defaultConfidenceCategory = category;
+    objc_storeStrong(&v21->_mechanisms, mechanisms);
+    objc_storeStrong(&v22->_interactionCountMaxDepths, depths);
+    objc_storeStrong(&v22->_interactionHistoryRelativeStartDates, dates);
+    objc_storeStrong(&v22->_bundleIds, ids);
+    v22->_modelType = type;
+    v22->_maxSuggestions = suggestions;
+    v22->_clusterPruneThreshold = threshold;
   }
 
   return v22;
 }
 
-- (_PSZKWFTPrimaryInteractionsConfig)initWithIsEnabled:(BOOL)a3 defaultConfidenceCategory:(int64_t)a4 modelType:(int64_t)a5
+- (_PSZKWFTPrimaryInteractionsConfig)initWithIsEnabled:(BOOL)enabled defaultConfidenceCategory:(int64_t)category modelType:(int64_t)type
 {
-  v31 = a3;
+  enabledCopy = enabled;
   v34[2] = *MEMORY[0x1E69E9840];
   v5 = objc_opt_new();
   v6 = objc_opt_new();
@@ -74,7 +74,7 @@
   v23 = [v19 setWithArray:v22];
 
   [v8 addObject:v23];
-  v24 = [(_PSZKWFTPrimaryInteractionsConfig *)self initWithIsEnabled:v31 defaultConfidenceCategory:a4 mechanisms:v27 interactionCountMaxDepths:v6 interactionHistoryRelativeStartDates:v7 bundleIds:v8 modelType:a5 clusterPruneThreshold:5 maxSuggestions:12];
+  v24 = [(_PSZKWFTPrimaryInteractionsConfig *)self initWithIsEnabled:enabledCopy defaultConfidenceCategory:category mechanisms:v27 interactionCountMaxDepths:v6 interactionHistoryRelativeStartDates:v7 bundleIds:v8 modelType:type clusterPruneThreshold:5 maxSuggestions:12];
 
   v25 = *MEMORY[0x1E69E9840];
   return v24;

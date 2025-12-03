@@ -1,59 +1,59 @@
 @interface CRImageSpacePolyline
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGPath)path;
 - (CGRect)boundingRect;
 - (CGSize)estimatedLineSizeForPairedPointPolygon;
-- (CRImageSpacePolyline)initWithCRCodableDataRepresentation:(id)a3;
-- (CRImageSpacePolyline)initWithCoder:(id)a3;
-- (CRImageSpacePolyline)initWithPointValues:(id)a3;
-- (CRImageSpacePolyline)initWithPoints:(CGPoint *)a3 count:(unint64_t)a4;
-- (CRImageSpacePolyline)initWithPolyline:(id)a3;
+- (CRImageSpacePolyline)initWithCRCodableDataRepresentation:(id)representation;
+- (CRImageSpacePolyline)initWithCoder:(id)coder;
+- (CRImageSpacePolyline)initWithPointValues:(id)values;
+- (CRImageSpacePolyline)initWithPoints:(CGPoint *)points count:(unint64_t)count;
+- (CRImageSpacePolyline)initWithPolyline:(id)polyline;
 - (NSArray)pointValues;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)crCodableDataRepresentation;
-- (id)initWithPoints:(void *)a1;
-- (id)polylineByAppendingPoint:(CGPoint)a3;
-- (id)polylineByAppendingPolyline:(id)a3;
+- (id)initWithPoints:(void *)points;
+- (id)polylineByAppendingPoint:(CGPoint)point;
+- (id)polylineByAppendingPolyline:(id)polyline;
 - (id)rotated180;
 - (id)simplified;
-- (void)appendPoint:(double)a3;
-- (void)appendPolyline:(uint64_t)a1;
-- (void)createPathWithTransformer:(void *)a3;
+- (void)appendPoint:(double)point;
+- (void)appendPolyline:(uint64_t)polyline;
+- (void)createPathWithTransformer:(void *)transformer;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)enumeratePointsWithTransformer:(void *)a3 block:;
+- (void)encodeWithCoder:(id)coder;
+- (void)enumeratePointsWithTransformer:(void *)transformer block:;
 @end
 
 @implementation CRImageSpacePolyline
 
-- (CRImageSpacePolyline)initWithCoder:(id)a3
+- (CRImageSpacePolyline)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CRPolylineData"];
-  v6 = uncompressDataOfSize(v5, [v4 decodeIntegerForKey:@"CRPolylineUncompressedDataSize"]);
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CRPolylineData"];
+  v6 = uncompressDataOfSize(v5, [coderCopy decodeIntegerForKey:@"CRPolylineUncompressedDataSize"]);
   v7 = [(CRImageSpacePolyline *)self initWithCRCodableDataRepresentation:v6];
 
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  v4 = [(CRImageSpacePolyline *)self crCodableDataRepresentation];
-  v5 = compressData(v4);
-  [v6 encodeObject:v5 forKey:@"CRPolylineData"];
-  [v6 encodeInteger:objc_msgSend(v4 forKey:{"length"), @"CRPolylineUncompressedDataSize"}];
+  coderCopy = coder;
+  crCodableDataRepresentation = [(CRImageSpacePolyline *)self crCodableDataRepresentation];
+  v5 = compressData(crCodableDataRepresentation);
+  [coderCopy encodeObject:v5 forKey:@"CRPolylineData"];
+  [coderCopy encodeInteger:objc_msgSend(crCodableDataRepresentation forKey:{"length"), @"CRPolylineUncompressedDataSize"}];
 }
 
-- (id)initWithPoints:(void *)a1
+- (id)initWithPoints:(void *)points
 {
-  if (!a1)
+  if (!points)
   {
     return 0;
   }
 
-  v5.receiver = a1;
+  v5.receiver = points;
   v5.super_class = CRImageSpacePolyline;
   v3 = objc_msgSendSuper2(&v5, sel_init);
   if (v3)
@@ -69,13 +69,13 @@
   return v3;
 }
 
-- (CRImageSpacePolyline)initWithPolyline:(id)a3
+- (CRImageSpacePolyline)initWithPolyline:(id)polyline
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  polylineCopy = polyline;
+  v5 = polylineCopy;
+  if (polylineCopy)
   {
-    v6 = v4[1];
+    v6 = polylineCopy[1];
   }
 
   else
@@ -88,22 +88,22 @@
   return v7;
 }
 
-- (CRImageSpacePolyline)initWithPointValues:(id)a3
+- (CRImageSpacePolyline)initWithPointValues:(id)values
 {
-  v4 = a3;
+  valuesCopy = values;
   v8 = 0;
   v9 = &v8;
   v10 = 0x4812000000;
   v11 = __Block_byref_object_copy__7;
   v12 = __Block_byref_object_dispose__7;
   v13 = &unk_1B4305E9E;
-  std::vector<CGPoint>::vector[abi:ne200100](__p, [v4 count]);
+  std::vector<CGPoint>::vector[abi:ne200100](__p, [valuesCopy count]);
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __44__CRImageSpacePolyline_initWithPointValues___block_invoke;
   v7[3] = &unk_1E7BC2AF8;
   v7[4] = &v8;
-  [v4 enumerateObjectsUsingBlock:v7];
+  [valuesCopy enumerateObjectsUsingBlock:v7];
   v5 = [(CRImageSpacePolyline *)self initWithPoints:?];
   _Block_object_dispose(&v8, 8);
   if (__p[0])
@@ -124,50 +124,50 @@ void __44__CRImageSpacePolyline_initWithPointValues___block_invoke(uint64_t a1, 
   v5[1] = v7;
 }
 
-- (CRImageSpacePolyline)initWithPoints:(CGPoint *)a3 count:(unint64_t)a4
+- (CRImageSpacePolyline)initWithPoints:(CGPoint *)points count:(unint64_t)count
 {
   v6 = [(CRImageSpacePolyline *)self init];
   v7 = v6;
   if (v6)
   {
-    if (a4 > (*(v6->__points + 2) - *v6->__points) >> 4)
+    if (count > (*(v6->__points + 2) - *v6->__points) >> 4)
     {
-      if (!(a4 >> 60))
+      if (!(count >> 60))
       {
-        std::__allocate_at_least[abi:ne200100]<std::allocator<_NSRange>>(v6->__points, a4);
+        std::__allocate_at_least[abi:ne200100]<std::allocator<_NSRange>>(v6->__points, count);
       }
 
       std::vector<unsigned long>::__throw_length_error[abi:ne200100]();
     }
 
-    for (; a4; --a4)
+    for (; count; --count)
     {
-      std::vector<CGPoint>::push_back[abi:ne200100](v7->__points, a3++);
+      std::vector<CGPoint>::push_back[abi:ne200100](v7->__points, points++);
     }
   }
 
   return v7;
 }
 
-- (id)polylineByAppendingPoint:(CGPoint)a3
+- (id)polylineByAppendingPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v5 = [(CRImageSpacePolyline *)self copy];
   [(CRImageSpacePolyline *)v5 appendPoint:y];
 
   return v5;
 }
 
-- (void)appendPoint:(double)a3
+- (void)appendPoint:(double)point
 {
   *&v5 = a2;
-  *(&v5 + 1) = a3;
-  if (a1)
+  *(&v5 + 1) = point;
+  if (self)
   {
-    std::vector<CGPoint>::push_back[abi:ne200100](*(a1 + 8), &v5);
+    std::vector<CGPoint>::push_back[abi:ne200100](*(self + 8), &v5);
     src = 0;
-    objc_copyCppObjectAtomic((a1 + 16), &src, __assign_helper_atomic_property_);
+    objc_copyCppObjectAtomic((self + 16), &src, __assign_helper_atomic_property_);
     if (src)
     {
       CFRelease(src);
@@ -175,20 +175,20 @@ void __44__CRImageSpacePolyline_initWithPointValues___block_invoke(uint64_t a1, 
   }
 }
 
-- (id)polylineByAppendingPolyline:(id)a3
+- (id)polylineByAppendingPolyline:(id)polyline
 {
-  v4 = a3;
+  polylineCopy = polyline;
   v5 = [(CRImageSpacePolyline *)self copy];
-  [(CRImageSpacePolyline *)v5 appendPolyline:v4];
+  [(CRImageSpacePolyline *)v5 appendPolyline:polylineCopy];
 
   return v5;
 }
 
-- (void)appendPolyline:(uint64_t)a1
+- (void)appendPolyline:(uint64_t)polyline
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (polyline)
   {
     v5 = v3[1];
     v7 = *v5;
@@ -197,7 +197,7 @@ void __44__CRImageSpacePolyline_initWithPointValues___block_invoke(uint64_t a1, 
     v9 = (v6 - v7) >> 4;
     if (v9 >= 1)
     {
-      v10 = *(a1 + 8);
+      v10 = *(polyline + 8);
       v12 = *(v10 + 8);
       v11 = *(v10 + 16);
       if (v11 - v12 >= v8)
@@ -239,7 +239,7 @@ void __44__CRImageSpacePolyline_initWithPointValues___block_invoke(uint64_t a1, 
 
         if (v18)
         {
-          std::__allocate_at_least[abi:ne200100]<std::allocator<_NSRange>>(*(a1 + 8), v18);
+          std::__allocate_at_least[abi:ne200100]<std::allocator<_NSRange>>(*(polyline + 8), v18);
         }
 
         v19 = 16 * (v14 >> 4);
@@ -273,7 +273,7 @@ void __44__CRImageSpacePolyline_initWithPointValues___block_invoke(uint64_t a1, 
     }
 
     src = 0;
-    objc_copyCppObjectAtomic((a1 + 16), &src, __assign_helper_atomic_property_);
+    objc_copyCppObjectAtomic((polyline + 16), &src, __assign_helper_atomic_property_);
     if (src)
     {
       CFRelease(src);
@@ -330,7 +330,7 @@ void __35__CRImageSpacePolyline_description__block_invoke(uint64_t a1, double a2
 
 - (CGPath)path
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     objc_copyCppObjectAtomic(&dest, &self->__pathRef, __copy_helper_atomic_property_);
@@ -341,28 +341,28 @@ void __35__CRImageSpacePolyline_description__block_invoke(uint64_t a1, double a2
 
     else
     {
-      [(CRImageSpacePolyline *)&cf createPathWithTransformer:v2, 0];
-      objc_copyCppObjectAtomic(&v2->__pathRef, &cf, __assign_helper_atomic_property_);
+      [(CRImageSpacePolyline *)&cf createPathWithTransformer:selfCopy, 0];
+      objc_copyCppObjectAtomic(&selfCopy->__pathRef, &cf, __assign_helper_atomic_property_);
       if (cf)
       {
         CFRelease(cf);
       }
     }
 
-    objc_copyCppObjectAtomic(&dest, &v2->__pathRef, __copy_helper_atomic_property_);
-    v2 = dest;
+    objc_copyCppObjectAtomic(&dest, &selfCopy->__pathRef, __copy_helper_atomic_property_);
+    selfCopy = dest;
     if (dest)
     {
       CFRelease(dest);
     }
   }
 
-  return v2;
+  return selfCopy;
 }
 
-- (void)createPathWithTransformer:(void *)a3
+- (void)createPathWithTransformer:(void *)transformer
 {
-  v5 = a3;
+  transformerCopy = transformer;
   if (a2)
   {
     Mutable = CGPathCreateMutable();
@@ -371,7 +371,7 @@ void __35__CRImageSpacePolyline_description__block_invoke(uint64_t a1, double a2
     v7[1] = 3321888768;
     v7[2] = __50__CRImageSpacePolyline_createPathWithTransformer___block_invoke;
     v7[3] = &unk_1F2BAF630;
-    v8 = v5;
+    v8 = transformerCopy;
     if (Mutable)
     {
       CFRetain(Mutable);
@@ -379,7 +379,7 @@ void __35__CRImageSpacePolyline_description__block_invoke(uint64_t a1, double a2
 
     cf = Mutable;
     [a2 enumeratePoints:v7];
-    *a1 = MEMORY[0x1B8C73450](Mutable);
+    *self = MEMORY[0x1B8C73450](Mutable);
     if (cf)
     {
       CFRelease(cf);
@@ -393,7 +393,7 @@ void __35__CRImageSpacePolyline_description__block_invoke(uint64_t a1, double a2
 
   else
   {
-    *a1 = 0;
+    *self = 0;
   }
 }
 
@@ -441,13 +441,13 @@ void __35__CRImageSpacePolyline_pointValues__block_invoke(uint64_t a1)
   [v1 addObject:?];
 }
 
-- (void)enumeratePointsWithTransformer:(void *)a3 block:
+- (void)enumeratePointsWithTransformer:(void *)transformer block:
 {
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  transformerCopy = transformer;
+  if (self)
   {
-    v9 = *(a1 + 8);
+    v9 = *(self + 8);
     v10 = *v9;
     if (*v9 != v9[1])
     {
@@ -460,16 +460,16 @@ void __35__CRImageSpacePolyline_pointValues__block_invoke(uint64_t a1)
         if (v5)
         {
           v5[2](v5, v7.n128_f64[0], v8.n128_f64[0]);
-          v9 = *(a1 + 8);
+          v9 = *(self + 8);
         }
 
-        v6[2](v6, (v10 - *v9) >> 4, &v12, v7, v8);
+        transformerCopy[2](transformerCopy, (v10 - *v9) >> 4, &v12, v7, v8);
         if (v12)
         {
           break;
         }
 
-        v9 = *(a1 + 8);
+        v9 = *(self + 8);
         v10 += 2;
         v11 += 2;
       }
@@ -479,10 +479,10 @@ void __35__CRImageSpacePolyline_pointValues__block_invoke(uint64_t a1)
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v7 = 1;
   }
@@ -492,9 +492,9 @@ void __35__CRImageSpacePolyline_pointValues__block_invoke(uint64_t a1)
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(CRImageSpacePolyline *)self pointCount];
-      if (v6 == [(CRImageSpacePolyline *)v5 pointCount])
+      v5 = equalCopy;
+      pointCount = [(CRImageSpacePolyline *)self pointCount];
+      if (pointCount == [(CRImageSpacePolyline *)v5 pointCount])
       {
         v13 = 0;
         v14 = &v13;
@@ -622,8 +622,8 @@ LABEL_8:
     v31 = 0;
     std::vector<CGPoint>::__init_with_size[abi:ne200100]<CGPoint*,CGPoint*>(&__p, *points, points[1], (points[1] - *points) >> 4);
     v4 = __p;
-    v5 = [(CRImageSpacePolyline *)self pointCount];
-    v6 = (8 * v5) & 0x7FFFFFFFFFFFFFF0;
+    pointCount = [(CRImageSpacePolyline *)self pointCount];
+    v6 = (8 * pointCount) & 0x7FFFFFFFFFFFFFF0;
     if (v6)
     {
       v7 = v4 + v6;
@@ -651,8 +651,8 @@ LABEL_8:
 
         else
         {
-          v11 = v5 >> 1;
-          if (v5 >> 1 == (v30 - v7) >> 4)
+          v11 = pointCount >> 1;
+          if (pointCount >> 1 == (v30 - v7) >> 4)
           {
             v12 = (v4 + 1);
             v13 = v7 + 16;
@@ -677,7 +677,7 @@ LABEL_8:
           else
           {
             v16 = (v30 - v7) >> 4;
-            v17 = v5 >> 1;
+            v17 = pointCount >> 1;
             do
             {
               v18 = v17;
@@ -952,9 +952,9 @@ void *__36__CRImageSpacePolyline_boundingRect__block_invoke(void *result, double
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [CRImageSpacePolyline allocWithZone:a3];
+  v4 = [CRImageSpacePolyline allocWithZone:zone];
 
   return [(CRImageSpacePolyline *)v4 initWithPolyline:self];
 }
@@ -975,20 +975,20 @@ void *__36__CRImageSpacePolyline_boundingRect__block_invoke(void *result, double
   return v4;
 }
 
-- (CRImageSpacePolyline)initWithCRCodableDataRepresentation:(id)a3
+- (CRImageSpacePolyline)initWithCRCodableDataRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v13 = 0;
-  if ([CRCodingUtilities integerFromEncodingData:v4 offset:&v13]== 1)
+  if ([CRCodingUtilities integerFromEncodingData:representationCopy offset:&v13]== 1)
   {
-    v5 = [CRCodingUtilities unsignedIntegerFromEncodingData:v4 offset:&v13];
+    v5 = [CRCodingUtilities unsignedIntegerFromEncodingData:representationCopy offset:&v13];
     std::vector<CGPoint>::vector[abi:ne200100](__p, v5);
     if (v5)
     {
       v6 = 0;
       do
       {
-        [CRCodingUtilities pointFromEncodingData:v4 offset:&v13];
+        [CRCodingUtilities pointFromEncodingData:representationCopy offset:&v13];
         v7 = __p[0] + v6;
         *v7 = v8;
         v7[1] = v9;
@@ -1006,15 +1006,15 @@ void *__36__CRImageSpacePolyline_boundingRect__block_invoke(void *result, double
       operator delete(__p[0]);
     }
 
-    v10 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
 @end

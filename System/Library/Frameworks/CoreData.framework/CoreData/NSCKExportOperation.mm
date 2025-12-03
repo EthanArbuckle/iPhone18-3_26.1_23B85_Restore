@@ -1,7 +1,7 @@
 @interface NSCKExportOperation
 + (NSString)entityPath;
 - (unint64_t)status;
-- (void)setStatus:(unint64_t)a3;
+- (void)setStatus:(unint64_t)status;
 @end
 
 @implementation NSCKExportOperation
@@ -16,14 +16,14 @@
 
 - (unint64_t)status
 {
-  v2 = [(NSCKExportOperation *)self statusNum];
+  statusNum = [(NSCKExportOperation *)self statusNum];
 
-  return [v2 unsignedIntegerValue];
+  return [statusNum unsignedIntegerValue];
 }
 
-- (void)setStatus:(unint64_t)a3
+- (void)setStatus:(unint64_t)status
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:status];
 
   [(NSCKExportOperation *)self setStatusNum:v4];
 }

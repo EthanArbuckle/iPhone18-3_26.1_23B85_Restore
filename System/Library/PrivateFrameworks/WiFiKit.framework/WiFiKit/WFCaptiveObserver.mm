@@ -37,7 +37,7 @@
 - (void)startObservingEvents
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [(WFCaptiveObserver *)self isObserving];
+  isObserving = [(WFCaptiveObserver *)self isObserving];
   v4 = WFLogForCategory(2uLL);
   v5 = OSLogForWFLogLevel(1uLL);
   if (WFCurrentLogLevel())
@@ -51,7 +51,7 @@
   }
 
   v7 = !v6;
-  if (v3)
+  if (isObserving)
   {
     if (v7 && os_log_type_enabled(v4, v5))
     {

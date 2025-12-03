@@ -1,21 +1,21 @@
 @interface HMAccessoryInfoDataProvider
 + (id)logCategory;
-- (HMAccessoryInfoDataProvider)initWithEventStoreReadHandle:(id)a3 subscriptionProvider:(id)a4;
+- (HMAccessoryInfoDataProvider)initWithEventStoreReadHandle:(id)handle subscriptionProvider:(id)provider;
 - (HMAccessoryInfoDataProviderDataSource)dataSource;
 - (HMAccessoryInfoDataProviderDelegate)delegate;
-- (id)accessoryUUIDForIdentifier:(id)a3 homeIdentifier:(id)a4;
-- (id)dataSourceHomeWithHomeIdentifier:(id)a3;
-- (id)homeUUIDForIdentifier:(id)a3;
-- (void)configureWithHomeIdentifier:(id)a3 accessoryIdentifier:(id)a4 accessoryInfoOptions:(unint64_t)a5 dataProviderDelegate:(id)a6 completionHandler:(id)a7;
-- (void)didReceiveEvent:(id)a3 topic:(id)a4 logMessage:(id)a5;
-- (void)notifyDelegateDidReceiveAccountInfoUpdatesForAccessoryWithIdentifier:(id)a3 accountInfo:(id)a4;
-- (void)notifyDelegateDidReceiveAccountInfoUpdatesForAccessoryWithIdentifier:(id)a3 primaryUserInfo:(id)a4;
-- (void)notifyDelegateDidReceiveWifiNetworkInfoUpdatesForAccessoryWithIdentifier:(id)a3 wifiNetworkInfo:(id)a4;
-- (void)notifyOfCachedEvents:(id)a3;
-- (void)notifyOfEventStoreLastEventForTopic:(id)a3;
-- (void)notifyOfEventStoreLastEventsForTopics:(id)a3;
-- (void)subscribeToAccessoryInfoWithHomeIdentifier:(id)a3 accessoryIdentifier:(id)a4 accessoryInfoOptions:(unint64_t)a5 completionHandler:(id)a6;
-- (void)unsubscribeToAccessoryInfoWithHomeIdentifier:(id)a3 accessoryIdentifier:(id)a4 accessoryInfoOptions:(unint64_t)a5 completionHandler:(id)a6;
+- (id)accessoryUUIDForIdentifier:(id)identifier homeIdentifier:(id)homeIdentifier;
+- (id)dataSourceHomeWithHomeIdentifier:(id)identifier;
+- (id)homeUUIDForIdentifier:(id)identifier;
+- (void)configureWithHomeIdentifier:(id)identifier accessoryIdentifier:(id)accessoryIdentifier accessoryInfoOptions:(unint64_t)options dataProviderDelegate:(id)delegate completionHandler:(id)handler;
+- (void)didReceiveEvent:(id)event topic:(id)topic logMessage:(id)message;
+- (void)notifyDelegateDidReceiveAccountInfoUpdatesForAccessoryWithIdentifier:(id)identifier accountInfo:(id)info;
+- (void)notifyDelegateDidReceiveAccountInfoUpdatesForAccessoryWithIdentifier:(id)identifier primaryUserInfo:(id)info;
+- (void)notifyDelegateDidReceiveWifiNetworkInfoUpdatesForAccessoryWithIdentifier:(id)identifier wifiNetworkInfo:(id)info;
+- (void)notifyOfCachedEvents:(id)events;
+- (void)notifyOfEventStoreLastEventForTopic:(id)topic;
+- (void)notifyOfEventStoreLastEventsForTopics:(id)topics;
+- (void)subscribeToAccessoryInfoWithHomeIdentifier:(id)identifier accessoryIdentifier:(id)accessoryIdentifier accessoryInfoOptions:(unint64_t)options completionHandler:(id)handler;
+- (void)unsubscribeToAccessoryInfoWithHomeIdentifier:(id)identifier accessoryIdentifier:(id)accessoryIdentifier accessoryInfoOptions:(unint64_t)options completionHandler:(id)handler;
 @end
 
 @implementation HMAccessoryInfoDataProvider
@@ -34,21 +34,21 @@
   return WeakRetained;
 }
 
-- (id)dataSourceHomeWithHomeIdentifier:(id)a3
+- (id)dataSourceHomeWithHomeIdentifier:(id)identifier
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(HMAccessoryInfoDataProvider *)self dataSource];
-  v6 = v5;
-  if (v5)
+  identifierCopy = identifier;
+  dataSource = [(HMAccessoryInfoDataProvider *)self dataSource];
+  v6 = dataSource;
+  if (dataSource)
   {
-    v7 = [v5 accessoryInfoDataProvider:self homeWithHomeIdentifier:v4];
+    v7 = [dataSource accessoryInfoDataProvider:self homeWithHomeIdentifier:identifierCopy];
   }
 
   else
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
@@ -67,14 +67,14 @@
   return v7;
 }
 
-- (void)notifyDelegateDidReceiveAccountInfoUpdatesForAccessoryWithIdentifier:(id)a3 primaryUserInfo:(id)a4
+- (void)notifyDelegateDidReceiveAccountInfoUpdatesForAccessoryWithIdentifier:(id)identifier primaryUserInfo:(id)info
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMAccessoryInfoDataProvider *)self delegate];
+  identifierCopy = identifier;
+  infoCopy = info;
+  delegate = [(HMAccessoryInfoDataProvider *)self delegate];
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy = self;
   v11 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
@@ -82,31 +82,31 @@
     v14 = 138544130;
     v15 = v12;
     v16 = 2112;
-    v17 = v6;
+    v17 = identifierCopy;
     v18 = 2112;
-    v19 = v7;
+    v19 = infoCopy;
     v20 = 2112;
-    v21 = v8;
+    v21 = delegate;
     _os_log_impl(&dword_19BB39000, v11, OS_LOG_TYPE_INFO, "%{public}@Notifying client of did receive primaryUserInfo updates for accessory with identifier: %@ primaryUser: %@ delegate: %@", &v14, 0x2Au);
   }
 
   objc_autoreleasePoolPop(v9);
   if (objc_opt_respondsToSelector())
   {
-    [v8 accessoryInfoDataProvider:v10 didReceiveUpdatesForAccessoryWithIdentifier:v6 primaryUserInfo:v7];
+    [delegate accessoryInfoDataProvider:selfCopy didReceiveUpdatesForAccessoryWithIdentifier:identifierCopy primaryUserInfo:infoCopy];
   }
 
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)notifyDelegateDidReceiveAccountInfoUpdatesForAccessoryWithIdentifier:(id)a3 accountInfo:(id)a4
+- (void)notifyDelegateDidReceiveAccountInfoUpdatesForAccessoryWithIdentifier:(id)identifier accountInfo:(id)info
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMAccessoryInfoDataProvider *)self delegate];
+  identifierCopy = identifier;
+  infoCopy = info;
+  delegate = [(HMAccessoryInfoDataProvider *)self delegate];
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy = self;
   v11 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
@@ -114,66 +114,66 @@
     v14 = 138544130;
     v15 = v12;
     v16 = 2112;
-    v17 = v6;
+    v17 = identifierCopy;
     v18 = 2112;
-    v19 = v7;
+    v19 = infoCopy;
     v20 = 2112;
-    v21 = v8;
+    v21 = delegate;
     _os_log_impl(&dword_19BB39000, v11, OS_LOG_TYPE_INFO, "%{public}@Notifying client of did receive account info updates for accessory with identifier: %@ accountInfo: %@ delegate: %@", &v14, 0x2Au);
   }
 
   objc_autoreleasePoolPop(v9);
   if (objc_opt_respondsToSelector())
   {
-    [v8 accessoryInfoDataProvider:v10 didReceiveUpdatesForAccessoryWithIdentifier:v6 accountInfo:v7];
+    [delegate accessoryInfoDataProvider:selfCopy didReceiveUpdatesForAccessoryWithIdentifier:identifierCopy accountInfo:infoCopy];
   }
 
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)notifyDelegateDidReceiveWifiNetworkInfoUpdatesForAccessoryWithIdentifier:(id)a3 wifiNetworkInfo:(id)a4
+- (void)notifyDelegateDidReceiveWifiNetworkInfoUpdatesForAccessoryWithIdentifier:(id)identifier wifiNetworkInfo:(id)info
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMAccessoryInfoDataProvider *)self delegate];
+  identifierCopy = identifier;
+  infoCopy = info;
+  delegate = [(HMAccessoryInfoDataProvider *)self delegate];
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy = self;
   v11 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
     v12 = HMFGetLogIdentifier();
-    v13 = [v7 SSID];
+    sSID = [infoCopy SSID];
     v15 = 138544386;
     v16 = v12;
     v17 = 2112;
-    v18 = v6;
+    v18 = identifierCopy;
     v19 = 2112;
-    v20 = v7;
+    v20 = infoCopy;
     v21 = 2112;
-    v22 = v13;
+    v22 = sSID;
     v23 = 2112;
-    v24 = v8;
+    v24 = delegate;
     _os_log_impl(&dword_19BB39000, v11, OS_LOG_TYPE_DEBUG, "%{public}@Notifying client of did receive wifi network info updates for accessory with identifier: %@ wifi: %@ WiFi SSID: %@ delegate: %@", &v15, 0x34u);
   }
 
   objc_autoreleasePoolPop(v9);
   if (objc_opt_respondsToSelector())
   {
-    [v8 accessoryInfoDataProvider:v10 didReceiveUpdatesForAccessoryWithIdentifier:v6 wifiNetworkInfo:v7];
+    [delegate accessoryInfoDataProvider:selfCopy didReceiveUpdatesForAccessoryWithIdentifier:identifierCopy wifiNetworkInfo:infoCopy];
   }
 
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)didReceiveEvent:(id)a3 topic:(id)a4 logMessage:(id)a5
+- (void)didReceiveEvent:(id)event topic:(id)topic logMessage:(id)message
 {
   v88 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  eventCopy = event;
+  topicCopy = topic;
+  messageCopy = message;
   v11 = objc_autoreleasePoolPush();
-  v12 = self;
+  selfCopy = self;
   v13 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
@@ -181,78 +181,78 @@
     *buf = 138544130;
     v81 = v14;
     v82 = 2112;
-    v83 = v8;
+    v83 = eventCopy;
     v84 = 2112;
-    v85 = v9;
+    v85 = topicCopy;
     v86 = 2112;
-    v87 = v10;
+    v87 = messageCopy;
     _os_log_impl(&dword_19BB39000, v13, OS_LOG_TYPE_INFO, "%{public}@Received event: %@, topic: %@ %@", buf, 0x2Au);
   }
 
   objc_autoreleasePoolPop(v11);
-  v15 = [HMEventTopicHelper decodeTopic:v9];
-  v16 = [v15 asAccessoryTopic];
+  v15 = [HMEventTopicHelper decodeTopic:topicCopy];
+  asAccessoryTopic = [v15 asAccessoryTopic];
 
-  if (v16)
+  if (asAccessoryTopic)
   {
-    v17 = [(HMAccessoryInfoDataProvider *)v12 dataSource];
-    if ([v16 accessoryEventTopicSuffixID] == 504)
+    dataSource = [(HMAccessoryInfoDataProvider *)selfCopy dataSource];
+    if ([asAccessoryTopic accessoryEventTopicSuffixID] == 504)
     {
       v18 = [HMAccessoryInfoWifiInfo alloc];
-      v19 = [(HMAccessoryInfoAccount *)v8 encodedData];
-      v20 = [(HMAccessoryInfoWifiInfo *)v18 initWithProtoData:v19];
+      encodedData = [(HMAccessoryInfoAccount *)eventCopy encodedData];
+      v20 = [(HMAccessoryInfoWifiInfo *)v18 initWithProtoData:encodedData];
 
       if (v20)
       {
-        v72 = v8;
-        v21 = [(HMAccessoryInfoWifiInfo *)v20 hmfWifiNetworkInfo];
+        v72 = eventCopy;
+        hmfWifiNetworkInfo = [(HMAccessoryInfoWifiInfo *)v20 hmfWifiNetworkInfo];
         v22 = objc_autoreleasePoolPush();
-        v23 = v12;
+        v23 = selfCopy;
         v24 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
         {
           HMFGetLogIdentifier();
-          v25 = v69 = v17;
+          v25 = v69 = dataSource;
           [(HMAccessoryInfoDataProvider *)v23 delegate];
-          v27 = v26 = v10;
+          v27 = v26 = messageCopy;
           *buf = 138544130;
           v81 = v25;
           v82 = 2112;
-          v83 = v21;
+          v83 = hmfWifiNetworkInfo;
           v84 = 2112;
           v85 = 0;
           v86 = 2112;
           v87 = v27;
           _os_log_impl(&dword_19BB39000, v24, OS_LOG_TYPE_DEBUG, "%{public}@Modified setting:%@, error:%@, delegate:%@", buf, 0x2Au);
 
-          v10 = v26;
-          v17 = v69;
+          messageCopy = v26;
+          dataSource = v69;
         }
 
         objc_autoreleasePoolPop(v22);
-        if (v21)
+        if (hmfWifiNetworkInfo)
         {
-          v68 = v9;
-          v70 = v10;
-          v28 = [v16 homeUUID];
-          v29 = [v16 accessoryUUID];
-          v30 = v17;
-          v31 = v29;
+          v68 = topicCopy;
+          v70 = messageCopy;
+          homeUUID = [asAccessoryTopic homeUUID];
+          accessoryUUID = [asAccessoryTopic accessoryUUID];
+          v30 = dataSource;
+          v31 = accessoryUUID;
           v78 = 0;
           v79 = 0;
           v32 = v30;
-          v33 = [v30 accessoryInfoDataProvider:v23 transformHomeUUID:v28 accessoryUUID:v29 toClientHomeIdentifier:&v79 clientAccessoryIdentifier:&v78];
+          v33 = [v30 accessoryInfoDataProvider:v23 transformHomeUUID:homeUUID accessoryUUID:accessoryUUID toClientHomeIdentifier:&v79 clientAccessoryIdentifier:&v78];
           v34 = v79;
           v35 = v78;
 
           if (v33)
           {
-            [(HMAccessoryInfoDataProvider *)v23 notifyDelegateDidReceiveWifiNetworkInfoUpdatesForAccessoryWithIdentifier:v35 wifiNetworkInfo:v21];
+            [(HMAccessoryInfoDataProvider *)v23 notifyDelegateDidReceiveWifiNetworkInfoUpdatesForAccessoryWithIdentifier:v35 wifiNetworkInfo:hmfWifiNetworkInfo];
           }
 
-          v17 = v32;
-          v9 = v68;
-          v10 = v70;
+          dataSource = v32;
+          topicCopy = v68;
+          messageCopy = v70;
         }
 
         else
@@ -261,12 +261,12 @@
           v35 = 0;
         }
 
-        v8 = v72;
+        eventCopy = v72;
         goto LABEL_41;
       }
 
       v43 = objc_autoreleasePoolPush();
-      v62 = v12;
+      v62 = selfCopy;
       v46 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v46, OS_LOG_TYPE_ERROR))
       {
@@ -279,16 +279,16 @@
       goto LABEL_40;
     }
 
-    if ([v16 accessoryEventTopicSuffixID] == 510)
+    if ([asAccessoryTopic accessoryEventTopicSuffixID] == 510)
     {
-      v71 = v10;
+      v71 = messageCopy;
       v40 = [HMAccessoryInfoAccount alloc];
-      v73 = v8;
-      v41 = [(HMAccessoryInfoAccount *)v8 encodedData];
-      v42 = [(HMAccessoryInfoAccount *)v40 initWithProtoData:v41];
+      v73 = eventCopy;
+      encodedData2 = [(HMAccessoryInfoAccount *)eventCopy encodedData];
+      v42 = [(HMAccessoryInfoAccount *)v40 initWithProtoData:encodedData2];
 
       v43 = objc_autoreleasePoolPush();
-      v44 = v12;
+      v44 = selfCopy;
       v45 = HMFGetOSLogHandle();
       v46 = v45;
       if (v42)
@@ -304,12 +304,12 @@
         }
 
         objc_autoreleasePoolPop(v43);
-        v48 = [v16 homeUUID];
-        v49 = [v16 accessoryUUID];
+        homeUUID2 = [asAccessoryTopic homeUUID];
+        accessoryUUID2 = [asAccessoryTopic accessoryUUID];
         v76 = 0;
         v77 = 0;
-        v50 = v17;
-        v51 = [v17 accessoryInfoDataProvider:v44 transformHomeUUID:v48 accessoryUUID:v49 toClientHomeIdentifier:&v77 clientAccessoryIdentifier:&v76];
+        v50 = dataSource;
+        v51 = [dataSource accessoryInfoDataProvider:v44 transformHomeUUID:homeUUID2 accessoryUUID:accessoryUUID2 toClientHomeIdentifier:&v77 clientAccessoryIdentifier:&v76];
         v52 = v77;
         v53 = v76;
 
@@ -320,9 +320,9 @@
 
 LABEL_27:
 
-        v10 = v71;
-        v8 = v73;
-        v17 = v50;
+        messageCopy = v71;
+        eventCopy = v73;
+        dataSource = v50;
 LABEL_41:
 
         goto LABEL_42;
@@ -341,10 +341,10 @@ LABEL_41:
 
     else
     {
-      if ([v16 accessoryEventTopicSuffixID] != 503)
+      if ([asAccessoryTopic accessoryEventTopicSuffixID] != 503)
       {
         v43 = objc_autoreleasePoolPush();
-        v12 = v12;
+        selfCopy = selfCopy;
         v46 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v46, OS_LOG_TYPE_ERROR))
         {
@@ -352,21 +352,21 @@ LABEL_41:
           *buf = 138543618;
           v81 = v64;
           v82 = 2112;
-          v83 = v9;
+          v83 = topicCopy;
           _os_log_impl(&dword_19BB39000, v46, OS_LOG_TYPE_ERROR, "%{public}@Received event with unknown topic: %@", buf, 0x16u);
         }
 
         goto LABEL_40;
       }
 
-      v71 = v10;
+      v71 = messageCopy;
       v54 = [HMAccessoryInfoPrimaryUser alloc];
-      v73 = v8;
-      v55 = [(HMAccessoryInfoAccount *)v8 encodedData];
-      v42 = [(HMAccessoryInfoPrimaryUser *)v54 initWithProtoData:v55];
+      v73 = eventCopy;
+      encodedData3 = [(HMAccessoryInfoAccount *)eventCopy encodedData];
+      v42 = [(HMAccessoryInfoPrimaryUser *)v54 initWithProtoData:encodedData3];
 
       v43 = objc_autoreleasePoolPush();
-      v56 = v12;
+      v56 = selfCopy;
       v57 = HMFGetOSLogHandle();
       v46 = v57;
       if (v42)
@@ -382,12 +382,12 @@ LABEL_41:
         }
 
         objc_autoreleasePoolPop(v43);
-        v59 = [v16 homeUUID];
-        v60 = [v16 accessoryUUID];
+        homeUUID3 = [asAccessoryTopic homeUUID];
+        accessoryUUID3 = [asAccessoryTopic accessoryUUID];
         v74 = 0;
         v75 = 0;
-        v50 = v17;
-        v61 = [v17 accessoryInfoDataProvider:v56 transformHomeUUID:v59 accessoryUUID:v60 toClientHomeIdentifier:&v75 clientAccessoryIdentifier:&v74];
+        v50 = dataSource;
+        v61 = [dataSource accessoryInfoDataProvider:v56 transformHomeUUID:homeUUID3 accessoryUUID:accessoryUUID3 toClientHomeIdentifier:&v75 clientAccessoryIdentifier:&v74];
         v52 = v75;
         v53 = v74;
 
@@ -402,8 +402,8 @@ LABEL_41:
       if (!os_log_type_enabled(v57, OS_LOG_TYPE_ERROR))
       {
 LABEL_39:
-        v10 = v71;
-        v8 = v73;
+        messageCopy = v71;
+        eventCopy = v73;
 LABEL_40:
 
         objc_autoreleasePoolPop(v43);
@@ -422,7 +422,7 @@ LABEL_40:
   }
 
   v36 = objc_autoreleasePoolPush();
-  v37 = v12;
+  v37 = selfCopy;
   v38 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
   {
@@ -430,7 +430,7 @@ LABEL_40:
     *buf = 138543618;
     v81 = v39;
     v82 = 2112;
-    v83 = v9;
+    v83 = topicCopy;
     _os_log_impl(&dword_19BB39000, v38, OS_LOG_TYPE_ERROR, "%{public}@Failed to parse topic: %@", buf, 0x16u);
   }
 
@@ -440,51 +440,51 @@ LABEL_42:
   v67 = *MEMORY[0x1E69E9840];
 }
 
-- (void)configureWithHomeIdentifier:(id)a3 accessoryIdentifier:(id)a4 accessoryInfoOptions:(unint64_t)a5 dataProviderDelegate:(id)a6 completionHandler:(id)a7
+- (void)configureWithHomeIdentifier:(id)identifier accessoryIdentifier:(id)accessoryIdentifier accessoryInfoOptions:(unint64_t)options dataProviderDelegate:(id)delegate completionHandler:(id)handler
 {
   v30 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
+  identifierCopy = identifier;
+  accessoryIdentifierCopy = accessoryIdentifier;
+  delegateCopy = delegate;
+  handlerCopy = handler;
   v16 = objc_autoreleasePoolPush();
-  v17 = self;
+  selfCopy = self;
   v18 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
   {
     v19 = HMFGetLogIdentifier();
-    v20 = HMAccessoryInfoOptionsAsString(a5);
+    v20 = HMAccessoryInfoOptionsAsString(options);
     v22 = 138544130;
     v23 = v19;
     v24 = 2112;
-    v25 = v12;
+    v25 = identifierCopy;
     v26 = 2112;
-    v27 = v13;
+    v27 = accessoryIdentifierCopy;
     v28 = 2112;
     v29 = v20;
     _os_log_impl(&dword_19BB39000, v18, OS_LOG_TYPE_INFO, "%{public}@Configuring accessoryInfoDataProvider with home identifier: %@ accessory identifier: %@ options: %@", &v22, 0x2Au);
   }
 
   objc_autoreleasePoolPop(v16);
-  [(HMAccessoryInfoDataProvider *)v17 setDelegate:v14];
-  [(HMAccessoryInfoDataProvider *)v17 subscribeToAccessoryInfoWithHomeIdentifier:v12 accessoryIdentifier:v13 accessoryInfoOptions:a5 completionHandler:v15];
+  [(HMAccessoryInfoDataProvider *)selfCopy setDelegate:delegateCopy];
+  [(HMAccessoryInfoDataProvider *)selfCopy subscribeToAccessoryInfoWithHomeIdentifier:identifierCopy accessoryIdentifier:accessoryIdentifierCopy accessoryInfoOptions:options completionHandler:handlerCopy];
 
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (void)unsubscribeToAccessoryInfoWithHomeIdentifier:(id)a3 accessoryIdentifier:(id)a4 accessoryInfoOptions:(unint64_t)a5 completionHandler:(id)a6
+- (void)unsubscribeToAccessoryInfoWithHomeIdentifier:(id)identifier accessoryIdentifier:(id)accessoryIdentifier accessoryInfoOptions:(unint64_t)options completionHandler:(id)handler
 {
-  v7 = a5;
+  optionsCopy = options;
   v45 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [(HMAccessoryInfoDataProvider *)self homeUUIDForIdentifier:v10];
+  identifierCopy = identifier;
+  accessoryIdentifierCopy = accessoryIdentifier;
+  handlerCopy = handler;
+  v13 = [(HMAccessoryInfoDataProvider *)self homeUUIDForIdentifier:identifierCopy];
   if (v13)
   {
-    v14 = [(HMAccessoryInfoDataProvider *)self accessoryUUIDForIdentifier:v11 homeIdentifier:v10];
+    v14 = [(HMAccessoryInfoDataProvider *)self accessoryUUIDForIdentifier:accessoryIdentifierCopy homeIdentifier:identifierCopy];
     v15 = objc_autoreleasePoolPush();
-    v16 = self;
+    selfCopy = self;
     v17 = HMFGetOSLogHandle();
     v18 = v17;
     if (v14)
@@ -492,8 +492,8 @@ LABEL_42:
       if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
       {
         HMFGetLogIdentifier();
-        v19 = v34 = v11;
-        v20 = HMAccessoryInfoOptionsAsString(v7);
+        v19 = v34 = accessoryIdentifierCopy;
+        v20 = HMAccessoryInfoOptionsAsString(optionsCopy);
         *buf = 138544130;
         v38 = v19;
         v39 = 2112;
@@ -504,15 +504,15 @@ LABEL_42:
         v44 = v20;
         _os_log_impl(&dword_19BB39000, v18, OS_LOG_TYPE_INFO, "%{public}@Unsubscribing to accessory info with home uuid: %@ accessory uuid: %@ options: %@", buf, 0x2Au);
 
-        v11 = v34;
+        accessoryIdentifierCopy = v34;
       }
 
       objc_autoreleasePoolPop(v15);
-      v21 = HMAccessoryInfoEventTopicsFromOption(v7, v13, v14);
+      v21 = HMAccessoryInfoEventTopicsFromOption(optionsCopy, v13, v14);
       if ([v21 hmf_isEmpty])
       {
         v22 = objc_autoreleasePoolPush();
-        v23 = v16;
+        v23 = selfCopy;
         v24 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
         {
@@ -524,19 +524,19 @@ LABEL_42:
 
         objc_autoreleasePoolPop(v22);
         v26 = [MEMORY[0x1E696ABC0] hmErrorWithCode:3];
-        v12[2](v12, v26);
+        handlerCopy[2](handlerCopy, v26);
       }
 
       else
       {
-        v32 = [(HMAccessoryInfoDataProvider *)v16 eventSubscriptionProvider];
+        eventSubscriptionProvider = [(HMAccessoryInfoDataProvider *)selfCopy eventSubscriptionProvider];
         v35[0] = MEMORY[0x1E69E9820];
         v35[1] = 3221225472;
         v35[2] = __135__HMAccessoryInfoDataProvider_unsubscribeToAccessoryInfoWithHomeIdentifier_accessoryIdentifier_accessoryInfoOptions_completionHandler___block_invoke;
         v35[3] = &unk_1E754D870;
-        v35[4] = v16;
-        v36 = v12;
-        [v32 unregisterConsumer:v16 topicFilters:v21 completion:v35];
+        v35[4] = selfCopy;
+        v36 = handlerCopy;
+        [eventSubscriptionProvider unregisterConsumer:selfCopy topicFilters:v21 completion:v35];
       }
     }
 
@@ -548,20 +548,20 @@ LABEL_42:
         *buf = 138543618;
         v38 = v31;
         v39 = 2112;
-        v40 = v11;
+        v40 = accessoryIdentifierCopy;
         _os_log_impl(&dword_19BB39000, v18, OS_LOG_TYPE_DEBUG, "%{public}@Failed to unsubscribe to accessory info due to unknown accessory identifier: %@", buf, 0x16u);
       }
 
       objc_autoreleasePoolPop(v15);
       v21 = [MEMORY[0x1E696ABC0] hmErrorWithCode:3];
-      v12[2](v12, v21);
+      handlerCopy[2](handlerCopy, v21);
     }
   }
 
   else
   {
     v27 = objc_autoreleasePoolPush();
-    v28 = self;
+    selfCopy2 = self;
     v29 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_DEBUG))
     {
@@ -569,13 +569,13 @@ LABEL_42:
       *buf = 138543618;
       v38 = v30;
       v39 = 2112;
-      v40 = v10;
+      v40 = identifierCopy;
       _os_log_impl(&dword_19BB39000, v29, OS_LOG_TYPE_DEBUG, "%{public}@Failed to unsubscribe to accessory info due to unknown home identifier: %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v27);
     v14 = [MEMORY[0x1E696ABC0] hmErrorWithCode:3];
-    v12[2](v12, v14);
+    handlerCopy[2](handlerCopy, v14);
   }
 
   v33 = *MEMORY[0x1E69E9840];
@@ -604,26 +604,26 @@ void __135__HMAccessoryInfoDataProvider_unsubscribeToAccessoryInfoWithHomeIdenti
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)notifyOfEventStoreLastEventForTopic:(id)a3
+- (void)notifyOfEventStoreLastEventForTopic:(id)topic
 {
-  v6 = a3;
-  v4 = [(HMAccessoryInfoDataProvider *)self eventStoreReadHandle];
-  v5 = [v4 lastEventForTopic:v6];
+  topicCopy = topic;
+  eventStoreReadHandle = [(HMAccessoryInfoDataProvider *)self eventStoreReadHandle];
+  v5 = [eventStoreReadHandle lastEventForTopic:topicCopy];
 
   if (v5)
   {
-    [(HMAccessoryInfoDataProvider *)self didReceiveEvent:v5 topic:v6 logMessage:@"last event store"];
+    [(HMAccessoryInfoDataProvider *)self didReceiveEvent:v5 topic:topicCopy logMessage:@"last event store"];
   }
 }
 
-- (void)notifyOfEventStoreLastEventsForTopics:(id)a3
+- (void)notifyOfEventStoreLastEventsForTopics:(id)topics
 {
-  v4 = a3;
-  v5 = [(HMAccessoryInfoDataProvider *)self eventStoreReadHandle];
-  if (v5)
+  topicsCopy = topics;
+  eventStoreReadHandle = [(HMAccessoryInfoDataProvider *)self eventStoreReadHandle];
+  if (eventStoreReadHandle)
   {
-    v6 = v5;
-    v7 = [v4 count];
+    v6 = eventStoreReadHandle;
+    v7 = [topicsCopy count];
 
     if (v7)
     {
@@ -632,65 +632,65 @@ void __135__HMAccessoryInfoDataProvider_unsubscribeToAccessoryInfoWithHomeIdenti
       v8[2] = __69__HMAccessoryInfoDataProvider_notifyOfEventStoreLastEventsForTopics___block_invoke;
       v8[3] = &unk_1E7548FB0;
       v8[4] = self;
-      [v4 hmf_enumerateWithAutoreleasePoolUsingBlock:v8];
+      [topicsCopy hmf_enumerateWithAutoreleasePoolUsingBlock:v8];
     }
   }
 }
 
-- (void)notifyOfCachedEvents:(id)a3
+- (void)notifyOfCachedEvents:(id)events
 {
-  if (a3)
+  if (events)
   {
     v3[0] = MEMORY[0x1E69E9820];
     v3[1] = 3221225472;
     v3[2] = __52__HMAccessoryInfoDataProvider_notifyOfCachedEvents___block_invoke;
     v3[3] = &unk_1E754A3F0;
     v3[4] = self;
-    [a3 hmf_enumerateKeysAndObjectsWithAutoreleasePoolUsingBlock:v3];
+    [events hmf_enumerateKeysAndObjectsWithAutoreleasePoolUsingBlock:v3];
   }
 }
 
-- (void)subscribeToAccessoryInfoWithHomeIdentifier:(id)a3 accessoryIdentifier:(id)a4 accessoryInfoOptions:(unint64_t)a5 completionHandler:(id)a6
+- (void)subscribeToAccessoryInfoWithHomeIdentifier:(id)identifier accessoryIdentifier:(id)accessoryIdentifier accessoryInfoOptions:(unint64_t)options completionHandler:(id)handler
 {
-  v7 = a5;
+  optionsCopy = options;
   v56 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  identifierCopy = identifier;
+  accessoryIdentifierCopy = accessoryIdentifier;
+  handlerCopy = handler;
   v13 = objc_autoreleasePoolPush();
-  v14 = self;
+  selfCopy = self;
   v15 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
   {
     v16 = HMFGetLogIdentifier();
-    v17 = HMAccessoryInfoOptionsAsString(v7);
+    v17 = HMAccessoryInfoOptionsAsString(optionsCopy);
     *buf = 138544130;
     v49 = v16;
     v50 = 2112;
-    v51 = v10;
+    v51 = identifierCopy;
     v52 = 2112;
-    v53 = v11;
+    v53 = accessoryIdentifierCopy;
     v54 = 2112;
     v55 = v17;
     _os_log_impl(&dword_19BB39000, v15, OS_LOG_TYPE_INFO, "%{public}@Subscribing to accessory info with home identifier: %@ accessory identifier: %@ options: %@", buf, 0x2Au);
   }
 
   objc_autoreleasePoolPop(v13);
-  v18 = [(HMAccessoryInfoDataProvider *)v14 homeUUIDForIdentifier:v10];
+  v18 = [(HMAccessoryInfoDataProvider *)selfCopy homeUUIDForIdentifier:identifierCopy];
   if (v18)
   {
-    v19 = [(HMAccessoryInfoDataProvider *)v14 accessoryUUIDForIdentifier:v11 homeIdentifier:v10];
+    v19 = [(HMAccessoryInfoDataProvider *)selfCopy accessoryUUIDForIdentifier:accessoryIdentifierCopy homeIdentifier:identifierCopy];
     v20 = objc_autoreleasePoolPush();
-    v21 = v14;
+    v21 = selfCopy;
     v22 = HMFGetOSLogHandle();
     v23 = v22;
     if (v19)
     {
-      v42 = v11;
+      v42 = accessoryIdentifierCopy;
       if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
       {
         v24 = HMFGetLogIdentifier();
-        v25 = HMAccessoryInfoOptionsAsString(v7);
+        v25 = HMAccessoryInfoOptionsAsString(optionsCopy);
         *buf = 138544130;
         v49 = v24;
         v50 = 2112;
@@ -701,11 +701,11 @@ void __135__HMAccessoryInfoDataProvider_unsubscribeToAccessoryInfoWithHomeIdenti
         v55 = v25;
         _os_log_impl(&dword_19BB39000, v23, OS_LOG_TYPE_INFO, "%{public}@Subscribing to accessory info with home uuid: %@ accessory uuid: %@ options: %@", buf, 0x2Au);
 
-        v11 = v42;
+        accessoryIdentifierCopy = v42;
       }
 
       objc_autoreleasePoolPop(v20);
-      v26 = HMAccessoryInfoEventTopicsFromOption(v7, v18, v19);
+      v26 = HMAccessoryInfoEventTopicsFromOption(optionsCopy, v18, v19);
       if ([v26 hmf_isEmpty])
       {
         v27 = objc_autoreleasePoolPush();
@@ -721,19 +721,19 @@ void __135__HMAccessoryInfoDataProvider_unsubscribeToAccessoryInfoWithHomeIdenti
 
         objc_autoreleasePoolPop(v27);
         v31 = [MEMORY[0x1E696ABC0] hmErrorWithCode:3];
-        v12[2](v12, v31);
+        handlerCopy[2](handlerCopy, v31);
       }
 
       else
       {
-        v37 = [(HMAccessoryInfoDataProvider *)v21 dataSource];
-        v38 = [v19 UUIDString];
-        v31 = [@"Home.accessoryInfo.lastEvent." stringByAppendingString:v38];
+        dataSource = [(HMAccessoryInfoDataProvider *)v21 dataSource];
+        uUIDString = [v19 UUIDString];
+        v31 = [@"Home.accessoryInfo.lastEvent." stringByAppendingString:uUIDString];
 
-        [v37 startBatchNotificationsForDataProvider:v21 reason:v31];
+        [dataSource startBatchNotificationsForDataProvider:v21 reason:v31];
         [(HMAccessoryInfoDataProvider *)v21 notifyOfEventStoreLastEventsForTopics:v26];
-        [v37 endBatchNotificationsForDataProvider:v21 reason:v31];
-        v39 = [(HMAccessoryInfoDataProvider *)v21 eventSubscriptionProvider];
+        [dataSource endBatchNotificationsForDataProvider:v21 reason:v31];
+        eventSubscriptionProvider = [(HMAccessoryInfoDataProvider *)v21 eventSubscriptionProvider];
         v43[0] = MEMORY[0x1E69E9820];
         v43[1] = 3221225472;
         v43[2] = __133__HMAccessoryInfoDataProvider_subscribeToAccessoryInfoWithHomeIdentifier_accessoryIdentifier_accessoryInfoOptions_completionHandler___block_invoke;
@@ -741,12 +741,12 @@ void __135__HMAccessoryInfoDataProvider_unsubscribeToAccessoryInfoWithHomeIdenti
         v43[4] = v21;
         v44 = v26;
         v45 = v19;
-        v46 = v37;
-        v47 = v12;
-        v40 = v37;
-        [v39 registerConsumer:v21 topicFilters:v44 completion:v43];
+        v46 = dataSource;
+        v47 = handlerCopy;
+        v40 = dataSource;
+        [eventSubscriptionProvider registerConsumer:v21 topicFilters:v44 completion:v43];
 
-        v11 = v42;
+        accessoryIdentifierCopy = v42;
       }
     }
 
@@ -758,20 +758,20 @@ void __135__HMAccessoryInfoDataProvider_unsubscribeToAccessoryInfoWithHomeIdenti
         *buf = 138543618;
         v49 = v36;
         v50 = 2112;
-        v51 = v11;
+        v51 = accessoryIdentifierCopy;
         _os_log_impl(&dword_19BB39000, v23, OS_LOG_TYPE_ERROR, "%{public}@Failed to subscribe to accessory info due to unknown accessory identifier: %@", buf, 0x16u);
       }
 
       objc_autoreleasePoolPop(v20);
       v26 = [MEMORY[0x1E696ABC0] hmErrorWithCode:3];
-      v12[2](v12, v26);
+      handlerCopy[2](handlerCopy, v26);
     }
   }
 
   else
   {
     v32 = objc_autoreleasePoolPush();
-    v33 = v14;
+    v33 = selfCopy;
     v34 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
     {
@@ -779,13 +779,13 @@ void __135__HMAccessoryInfoDataProvider_unsubscribeToAccessoryInfoWithHomeIdenti
       *buf = 138543618;
       v49 = v35;
       v50 = 2112;
-      v51 = v10;
+      v51 = identifierCopy;
       _os_log_impl(&dword_19BB39000, v34, OS_LOG_TYPE_ERROR, "%{public}@Failed to subscribe to accessory info due to unknown home identifier: %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v32);
     v19 = [MEMORY[0x1E696ABC0] hmErrorWithCode:3];
-    v12[2](v12, v19);
+    handlerCopy[2](handlerCopy, v19);
   }
 
   v41 = *MEMORY[0x1E69E9840];
@@ -859,63 +859,63 @@ LABEL_7:
   v22 = *MEMORY[0x1E69E9840];
 }
 
-- (id)accessoryUUIDForIdentifier:(id)a3 homeIdentifier:(id)a4
+- (id)accessoryUUIDForIdentifier:(id)identifier homeIdentifier:(id)homeIdentifier
 {
-  v6 = a3;
-  v7 = [(HMAccessoryInfoDataProvider *)self dataSourceHomeWithHomeIdentifier:a4];
+  identifierCopy = identifier;
+  v7 = [(HMAccessoryInfoDataProvider *)self dataSourceHomeWithHomeIdentifier:homeIdentifier];
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 accessoryWithUniqueIdentifier:v6];
+    v9 = [v7 accessoryWithUniqueIdentifier:identifierCopy];
     v10 = v9;
     if (v9)
     {
-      v11 = [v9 uuid];
+      uuid = [v9 uuid];
     }
 
     else
     {
-      v11 = 0;
+      uuid = 0;
     }
   }
 
   else
   {
-    v11 = 0;
+    uuid = 0;
   }
 
-  return v11;
+  return uuid;
 }
 
-- (id)homeUUIDForIdentifier:(id)a3
+- (id)homeUUIDForIdentifier:(id)identifier
 {
-  v3 = [(HMAccessoryInfoDataProvider *)self dataSourceHomeWithHomeIdentifier:a3];
+  v3 = [(HMAccessoryInfoDataProvider *)self dataSourceHomeWithHomeIdentifier:identifier];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 uuid];
+    uuid = [v3 uuid];
   }
 
   else
   {
-    v5 = 0;
+    uuid = 0;
   }
 
-  return v5;
+  return uuid;
 }
 
-- (HMAccessoryInfoDataProvider)initWithEventStoreReadHandle:(id)a3 subscriptionProvider:(id)a4
+- (HMAccessoryInfoDataProvider)initWithEventStoreReadHandle:(id)handle subscriptionProvider:(id)provider
 {
-  v7 = a3;
-  v8 = a4;
+  handleCopy = handle;
+  providerCopy = provider;
   v12.receiver = self;
   v12.super_class = HMAccessoryInfoDataProvider;
   v9 = [(HMAccessoryInfoDataProvider *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_eventStoreReadHandle, a3);
-    objc_storeStrong(&v10->_eventSubscriptionProvider, a4);
+    objc_storeStrong(&v9->_eventStoreReadHandle, handle);
+    objc_storeStrong(&v10->_eventSubscriptionProvider, provider);
   }
 
   return v10;

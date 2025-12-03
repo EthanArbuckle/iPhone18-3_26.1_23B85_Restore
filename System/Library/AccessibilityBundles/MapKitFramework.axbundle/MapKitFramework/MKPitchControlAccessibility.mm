@@ -1,16 +1,16 @@
 @interface MKPitchControlAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityValue;
 @end
 
 @implementation MKPitchControlAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MKPitchControl" hasInstanceMethod:@"sliderPercent" withFullSignature:{"d", 0}];
-  [v3 validateClass:@"MKPitchControl" hasInstanceMethod:@"setSliderPercent:" withFullSignature:{"v", "d", 0}];
-  [v3 validateClass:@"MKPitchControl" hasInstanceMethod:@"degreesForPercent:" withFullSignature:{"d", "d", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MKPitchControl" hasInstanceMethod:@"sliderPercent" withFullSignature:{"d", 0}];
+  [validationsCopy validateClass:@"MKPitchControl" hasInstanceMethod:@"setSliderPercent:" withFullSignature:{"v", "d", 0}];
+  [validationsCopy validateClass:@"MKPitchControl" hasInstanceMethod:@"degreesForPercent:" withFullSignature:{"d", "d", 0}];
 }
 
 - (id)accessibilityValue

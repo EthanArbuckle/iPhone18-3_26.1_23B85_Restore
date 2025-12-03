@@ -11,15 +11,15 @@
 
 - (id)brl_serviceIdentifier
 {
-  v2 = [a1 _brl_rangeOfLastDot];
-  if (v2 == 0x7FFFFFFFFFFFFFFFLL)
+  _brl_rangeOfLastDot = [self _brl_rangeOfLastDot];
+  if (_brl_rangeOfLastDot == 0x7FFFFFFFFFFFFFFFLL)
   {
     v3 = 0;
   }
 
   else
   {
-    v3 = [a1 substringToIndex:v2];
+    v3 = [self substringToIndex:_brl_rangeOfLastDot];
   }
 
   return v3;
@@ -28,27 +28,27 @@
 - (id)brl_language
 {
   v2 = [MEMORY[0x277CCA900] characterSetWithCharactersInString:@"."];
-  v3 = [a1 rangeOfCharacterFromSet:v2 options:4];
+  v3 = [self rangeOfCharacterFromSet:v2 options:4];
   if (v3 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v4 = [a1 componentsSeparatedByString:@"-"];
-    v5 = [v4 firstObject];
+    v4 = [self componentsSeparatedByString:@"-"];
+    firstObject = [v4 firstObject];
   }
 
   else
   {
-    v4 = [a1 substringFromIndex:v3 + 1];
+    v4 = [self substringFromIndex:v3 + 1];
     v6 = [v4 componentsSeparatedByString:@"-"];
-    v5 = [v6 firstObject];
+    firstObject = [v6 firstObject];
   }
 
-  return v5;
+  return firstObject;
 }
 
 - (id)brl_variant
 {
   v2 = [MEMORY[0x277CCA900] characterSetWithCharactersInString:@"-"];
-  v3 = [a1 rangeOfCharacterFromSet:v2 options:4];
+  v3 = [self rangeOfCharacterFromSet:v2 options:4];
   if (v3 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v4 = 0;
@@ -56,7 +56,7 @@
 
   else
   {
-    v4 = [a1 substringFromIndex:v3 + 1];
+    v4 = [self substringFromIndex:v3 + 1];
   }
 
   return v4;
@@ -65,33 +65,33 @@
 - (id)brl_languageAndVariant
 {
   v2 = [MEMORY[0x277CCA900] characterSetWithCharactersInString:@"."];
-  v3 = [a1 rangeOfCharacterFromSet:v2 options:4];
+  v3 = [self rangeOfCharacterFromSet:v2 options:4];
   if (v3 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v4 = a1;
+    selfCopy = self;
   }
 
   else
   {
-    v4 = [a1 substringFromIndex:v3 + 1];
+    selfCopy = [self substringFromIndex:v3 + 1];
   }
 
-  v5 = v4;
+  v5 = selfCopy;
 
   return v5;
 }
 
 - (id)brl_tableIdentifier
 {
-  v2 = [a1 _brl_rangeOfLastDot];
-  if (v2 == 0x7FFFFFFFFFFFFFFFLL)
+  _brl_rangeOfLastDot = [self _brl_rangeOfLastDot];
+  if (_brl_rangeOfLastDot == 0x7FFFFFFFFFFFFFFFLL)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [a1 substringFromIndex:v2 + v3];
+    v4 = [self substringFromIndex:_brl_rangeOfLastDot + v3];
   }
 
   return v4;
@@ -100,7 +100,7 @@
 - (uint64_t)_brl_rangeOfLastDot
 {
   v2 = [MEMORY[0x277CCA900] characterSetWithCharactersInString:@"."];
-  v3 = [a1 rangeOfCharacterFromSet:v2 options:4];
+  v3 = [self rangeOfCharacterFromSet:v2 options:4];
 
   return v3;
 }

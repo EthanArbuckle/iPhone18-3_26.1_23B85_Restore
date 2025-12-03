@@ -1,8 +1,8 @@
 @interface PRXDisclaimerContentViewController
 - (void)_updateDisclaimerLabel;
 - (void)_updateMoreInfoButton;
-- (void)setDisclaimer:(id)a3;
-- (void)setMoreInfoAction:(id)a3;
+- (void)setDisclaimer:(id)disclaimer;
+- (void)setMoreInfoAction:(id)action;
 - (void)viewDidLoad;
 @end
 
@@ -17,15 +17,15 @@
   [(PRXDisclaimerContentViewController *)self _updateMoreInfoButton];
 }
 
-- (void)setDisclaimer:(id)a3
+- (void)setDisclaimer:(id)disclaimer
 {
-  v4 = a3;
+  disclaimerCopy = disclaimer;
   disclaimer = self->_disclaimer;
-  if (disclaimer != v4)
+  if (disclaimer != disclaimerCopy)
   {
-    v8 = v4;
-    disclaimer = [disclaimer isEqualToString:v4];
-    v4 = v8;
+    v8 = disclaimerCopy;
+    disclaimer = [disclaimer isEqualToString:disclaimerCopy];
+    disclaimerCopy = v8;
     if ((disclaimer & 1) == 0)
     {
       v6 = [v8 copy];
@@ -33,30 +33,30 @@
       self->_disclaimer = v6;
 
       disclaimer = [(PRXDisclaimerContentViewController *)self _updateDisclaimerLabel];
-      v4 = v8;
+      disclaimerCopy = v8;
     }
   }
 
-  MEMORY[0x2821F96F8](disclaimer, v4);
+  MEMORY[0x2821F96F8](disclaimer, disclaimerCopy);
 }
 
 - (void)_updateDisclaimerLabel
 {
   disclaimer = self->_disclaimer;
-  v4 = [(PRXCardContentViewController *)self contentView];
-  v3 = [v4 disclaimerLabel];
-  [v3 setText:disclaimer];
+  contentView = [(PRXCardContentViewController *)self contentView];
+  disclaimerLabel = [contentView disclaimerLabel];
+  [disclaimerLabel setText:disclaimer];
 }
 
-- (void)setMoreInfoAction:(id)a3
+- (void)setMoreInfoAction:(id)action
 {
-  v5 = a3;
-  if (self->_moreInfoAction != v5)
+  actionCopy = action;
+  if (self->_moreInfoAction != actionCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_moreInfoAction, a3);
+    v6 = actionCopy;
+    objc_storeStrong(&self->_moreInfoAction, action);
     [(PRXDisclaimerContentViewController *)self _updateMoreInfoButton];
-    v5 = v6;
+    actionCopy = v6;
   }
 }
 
@@ -64,19 +64,19 @@
 {
   if (self->_moreInfoAction)
   {
-    v5 = [PRXButton buttonWithProximityType:3];
-    v3 = [(PRXAction *)self->_moreInfoAction title];
-    [v5 setTitle:v3 forState:0];
+    contentView2 = [PRXButton buttonWithProximityType:3];
+    title = [(PRXAction *)self->_moreInfoAction title];
+    [contentView2 setTitle:title forState:0];
 
-    [v5 addTarget:self->_moreInfoAction action:sel__callHandler forControlEvents:0x2000];
-    v4 = [(PRXCardContentViewController *)self contentView];
-    [v4 setMoreInfoButton:v5];
+    [contentView2 addTarget:self->_moreInfoAction action:sel__callHandler forControlEvents:0x2000];
+    contentView = [(PRXCardContentViewController *)self contentView];
+    [contentView setMoreInfoButton:contentView2];
   }
 
   else
   {
-    v5 = [(PRXCardContentViewController *)self contentView];
-    [v5 setMoreInfoButton:0];
+    contentView2 = [(PRXCardContentViewController *)self contentView];
+    [contentView2 setMoreInfoButton:0];
   }
 }
 

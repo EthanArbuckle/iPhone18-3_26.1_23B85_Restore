@@ -1,45 +1,45 @@
 @interface StorageNeededLinkFooterView
-- (StorageNeededLinkFooterView)initWithSpecifier:(id)a3;
-- (void)setText:(id)a3;
+- (StorageNeededLinkFooterView)initWithSpecifier:(id)specifier;
+- (void)setText:(id)text;
 @end
 
 @implementation StorageNeededLinkFooterView
 
-- (StorageNeededLinkFooterView)initWithSpecifier:(id)a3
+- (StorageNeededLinkFooterView)initWithSpecifier:(id)specifier
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v9;
-  v9 = 0;
+  objc_storeStrong(location, specifier);
+  v3 = selfCopy;
+  selfCopy = 0;
   v7.receiver = v3;
   v7.super_class = StorageNeededLinkFooterView;
-  v9 = [(PSFooterHyperlinkView *)&v7 initWithSpecifier:location[0]];
-  objc_storeStrong(&v9, v9);
-  if (v9)
+  selfCopy = [(PSFooterHyperlinkView *)&v7 initWithSpecifier:location[0]];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
     v6 = [location[0] propertyForKey:*MEMORY[0x277D3FF88]];
     if ([v6 length])
     {
-      [(StorageNeededLinkFooterView *)v9 setText:v6];
+      [(StorageNeededLinkFooterView *)selfCopy setText:v6];
     }
 
     objc_storeStrong(&v6, 0);
   }
 
-  v5 = MEMORY[0x277D82BE0](v9);
+  v5 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v9, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v5;
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, text);
   if ([location[0] length])
   {
     v6 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -52,11 +52,11 @@
     *&v9 = [location[0] rangeOfString:v10];
     *(&v9 + 1) = v5;
     v8 = v9;
-    [(PSFooterHyperlinkView *)v12 setLinkRange:v9, v5];
+    [(PSFooterHyperlinkView *)selfCopy setLinkRange:v9, v5];
     objc_storeStrong(&v10, 0);
   }
 
-  v7.receiver = v12;
+  v7.receiver = selfCopy;
   v7.super_class = StorageNeededLinkFooterView;
   [(PSFooterHyperlinkView *)&v7 setText:location[0]];
   objc_storeStrong(location, 0);

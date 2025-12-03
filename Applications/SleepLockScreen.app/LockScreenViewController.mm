@@ -1,14 +1,14 @@
 @interface LockScreenViewController
 + (id)_exportedInterface;
 + (id)_remoteViewControllerInterface;
-- (_TtC15SleepLockScreen24LockScreenViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)configureWithUserInfo:(id)a3 contentBounds:(id)a4 endpoint:(id)a5;
+- (_TtC15SleepLockScreen24LockScreenViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)configureWithUserInfo:(id)info contentBounds:(id)bounds endpoint:(id)endpoint;
 - (void)didChangeContentBounds;
-- (void)didDismissForDismissType:(int64_t)a3;
-- (void)getContentPreferencesWithReplyBlock:(id)a3;
-- (void)getInlinePresentationContentFrameWithReplyBlock:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)didDismissForDismissType:(int64_t)type;
+- (void)getContentPreferencesWithReplyBlock:(id)block;
+- (void)getInlinePresentationContentFrameWithReplyBlock:(id)block;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
 @end
 
@@ -16,20 +16,20 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000043DC();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_100004878(a3, &selRef_viewDidAppear_, "[%{public}s] view did appear");
+  selfCopy = self;
+  sub_100004878(appear, &selRef_viewDidAppear_, "[%{public}s] view did appear");
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_100004878(a3, &selRef_viewDidDisappear_, "[%{public}s] view did disappear");
+  selfCopy = self;
+  sub_100004878(disappear, &selRef_viewDidDisappear_, "[%{public}s] view did disappear");
 }
 
 + (id)_remoteViewControllerInterface
@@ -46,9 +46,9 @@
   return v2;
 }
 
-- (void)configureWithUserInfo:(id)a3 contentBounds:(id)a4 endpoint:(id)a5
+- (void)configureWithUserInfo:(id)info contentBounds:(id)bounds endpoint:(id)endpoint
 {
-  if (a3)
+  if (info)
   {
     v8 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
   }
@@ -62,11 +62,11 @@
   __chkstk_darwin(v9);
   v11[2] = self;
   v11[3] = v8;
-  v11[4] = a4;
-  v11[5] = a5;
+  v11[4] = bounds;
+  v11[5] = endpoint;
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
-  v10 = self;
+  selfCopy = self;
   sub_100007E00(sub_10000F25C, v11);
   swift_unknownObjectRelease();
   swift_unknownObjectRelease();
@@ -74,13 +74,13 @@
 
 - (void)didChangeContentBounds
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000080A8();
 }
 
-- (void)getInlinePresentationContentFrameWithReplyBlock:(id)a3
+- (void)getInlinePresentationContentFrameWithReplyBlock:(id)block
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(block);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   type metadata accessor for MainActor();
@@ -89,23 +89,23 @@
   v7[4] = v5;
   v7[5] = 0;
   v7[6] = 0;
-  v6 = self;
+  selfCopy = self;
   sub_100007E00(sub_10000F238, v7);
 }
 
-- (void)getContentPreferencesWithReplyBlock:(id)a3
+- (void)getContentPreferencesWithReplyBlock:(id)block
 {
   sub_10000FC54(0, &qword_10001D430, &type metadata accessor for TaskPriority, &type metadata accessor for Optional);
   v6 = *(*(v5 - 8) + 64);
   __chkstk_darwin(v5 - 8);
   v8 = &v15 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(block);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   v11 = type metadata accessor for TaskPriority();
   (*(*(v11 - 8) + 56))(v8, 1, 1, v11);
   type metadata accessor for MainActor();
-  v12 = self;
+  selfCopy = self;
 
   v13 = static MainActor.shared.getter();
   v14 = swift_allocObject();
@@ -115,20 +115,20 @@
   v14[5] = 0;
   v14[6] = sub_10000EE4C;
   v14[7] = v10;
-  v14[8] = v12;
+  v14[8] = selfCopy;
   sub_100008C3C(0, 0, v8, &unk_1000112E0, v14);
 }
 
-- (void)didDismissForDismissType:(int64_t)a3
+- (void)didDismissForDismissType:(int64_t)type
 {
   type metadata accessor for MainActor();
   v6[2] = self;
-  v6[3] = a3;
-  v5 = self;
+  v6[3] = type;
+  selfCopy = self;
   sub_100007E00(sub_10000EDC0, v6);
 }
 
-- (_TtC15SleepLockScreen24LockScreenViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC15SleepLockScreen24LockScreenViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

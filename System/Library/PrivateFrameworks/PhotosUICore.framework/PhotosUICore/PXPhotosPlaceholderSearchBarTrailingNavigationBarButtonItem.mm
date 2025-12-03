@@ -1,13 +1,13 @@
 @interface PXPhotosPlaceholderSearchBarTrailingNavigationBarButtonItem
-- (PXPhotosPlaceholderSearchBarTrailingNavigationBarButtonItem)initWithAction:(id)a3;
-- (PXPhotosPlaceholderSearchBarTrailingNavigationBarButtonItem)initWithContainer:(id)a3 action:(id)a4;
+- (PXPhotosPlaceholderSearchBarTrailingNavigationBarButtonItem)initWithAction:(id)action;
+- (PXPhotosPlaceholderSearchBarTrailingNavigationBarButtonItem)initWithContainer:(id)container action:(id)action;
 @end
 
 @implementation PXPhotosPlaceholderSearchBarTrailingNavigationBarButtonItem
 
-- (PXPhotosPlaceholderSearchBarTrailingNavigationBarButtonItem)initWithAction:(id)a3
+- (PXPhotosPlaceholderSearchBarTrailingNavigationBarButtonItem)initWithAction:(id)action
 {
-  v3 = _Block_copy(a3);
+  v3 = _Block_copy(action);
   v4 = swift_allocObject();
   *(v4 + 16) = v3;
   swift_getObjectType();
@@ -23,13 +23,13 @@
   return v8;
 }
 
-- (PXPhotosPlaceholderSearchBarTrailingNavigationBarButtonItem)initWithContainer:(id)a3 action:(id)a4
+- (PXPhotosPlaceholderSearchBarTrailingNavigationBarButtonItem)initWithContainer:(id)container action:(id)action
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(action);
   v6 = swift_allocObject();
   *(v6 + 16) = v5;
-  v7 = a3;
-  return PhotosPlaceholderSearchBarTrailingNavigationBarButtonItem.init(container:action:)(a3, sub_1A3F3D4CC, v6);
+  containerCopy = container;
+  return PhotosPlaceholderSearchBarTrailingNavigationBarButtonItem.init(container:action:)(container, sub_1A3F3D4CC, v6);
 }
 
 @end

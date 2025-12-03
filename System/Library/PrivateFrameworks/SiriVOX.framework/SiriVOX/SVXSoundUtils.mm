@@ -1,46 +1,46 @@
 @interface SVXSoundUtils
 - (SVXSoundUtils)init;
-- (SVXSoundUtils)initWithSpeechSynthesisUtils:(id)a3 resourceURLSupplier:(id)a4;
-- (id)createAudioPlaybackRequestFromID:(int64_t)a3 preferences:(id)a4;
-- (int64_t)getIDFromAudioPlaybackRequest:(id)a3;
+- (SVXSoundUtils)initWithSpeechSynthesisUtils:(id)utils resourceURLSupplier:(id)supplier;
+- (id)createAudioPlaybackRequestFromID:(int64_t)d preferences:(id)preferences;
+- (int64_t)getIDFromAudioPlaybackRequest:(id)request;
 @end
 
 @implementation SVXSoundUtils
 
-- (id)createAudioPlaybackRequestFromID:(int64_t)a3 preferences:(id)a4
+- (id)createAudioPlaybackRequestFromID:(int64_t)d preferences:(id)preferences
 {
   v45 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  if (!v6)
+  preferencesCopy = preferences;
+  if (!preferencesCopy)
   {
-    v33 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v34 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[SVXSoundUtils createAudioPlaybackRequestFromID:preferences:]"];
-    [v33 handleFailureInFunction:v34 file:@"SVXSoundUtils.m" lineNumber:57 description:{@"Invalid parameter not satisfying: %@", @"preferences != nil"}];
+    [currentHandler handleFailureInFunction:v34 file:@"SVXSoundUtils.m" lineNumber:57 description:{@"Invalid parameter not satisfying: %@", @"preferences != nil"}];
   }
 
   v7 = 0;
-  if (a3 > 3)
+  if (d > 3)
   {
-    if (a3 != 4 && a3 != 5)
+    if (d != 4 && d != 5)
     {
-      if (a3 != 6)
+      if (d != 6)
       {
         goto LABEL_31;
       }
 
-      v36 = v6;
-      v10 = [(SVXSpeechSynthesisUtils *)self->_speechSynthesisUtils getOutputVoiceInfoWithAllowsFallback:1 preferences:v6];
+      v36 = preferencesCopy;
+      v10 = [(SVXSpeechSynthesisUtils *)self->_speechSynthesisUtils getOutputVoiceInfoWithAllowsFallback:1 preferences:preferencesCopy];
       v11 = objc_alloc(MEMORY[0x277CCACA8]);
-      v12 = [v10 languageCode];
+      languageCode = [v10 languageCode];
       v35 = v10;
-      v13 = [v10 gender];
+      gender = [v10 gender];
       v14 = @"Female";
-      if (v13 == 1)
+      if (gender == 1)
       {
         v14 = @"Male";
       }
 
-      v15 = [v11 initWithFormat:@"%@-%@-%@", @"Phatic", v12, v14];
+      v15 = [v11 initWithFormat:@"%@-%@-%@", @"Phatic", languageCode, v14];
 
       v16 = objc_alloc_init(MEMORY[0x277CBEB18]);
       v40 = 0u;
@@ -63,8 +63,8 @@
             }
 
             v22 = *(*(&v40 + 1) + 8 * i);
-            v23 = [v22 lastPathComponent];
-            v24 = [v23 hasPrefix:v15];
+            lastPathComponent = [v22 lastPathComponent];
+            v24 = [lastPathComponent hasPrefix:v15];
 
             if (v24)
             {
@@ -89,7 +89,7 @@
         v26 = 0;
       }
 
-      v6 = v36;
+      preferencesCopy = v36;
       if (v26)
       {
         goto LABEL_27;
@@ -104,7 +104,7 @@
 
   else
   {
-    if (a3 == 1)
+    if (d == 1)
     {
 LABEL_7:
       resourceURLSupplier = self->_resourceURLSupplier;
@@ -112,9 +112,9 @@ LABEL_7:
       goto LABEL_26;
     }
 
-    if (a3 != 2)
+    if (d != 2)
     {
-      if (a3 != 3)
+      if (d != 3)
       {
         goto LABEL_31;
       }
@@ -127,9 +127,9 @@ LABEL_7:
   }
 
 LABEL_26:
-  v27 = [(__CFString *)v9 stringByDeletingPathExtension];
-  v28 = [(__CFString *)v9 pathExtension];
-  v26 = [(SVXResourceURLSupplier *)resourceURLSupplier URLForResource:v27 withExtension:v28];
+  stringByDeletingPathExtension = [(__CFString *)v9 stringByDeletingPathExtension];
+  pathExtension = [(__CFString *)v9 pathExtension];
+  v26 = [(SVXResourceURLSupplier *)resourceURLSupplier URLForResource:stringByDeletingPathExtension withExtension:pathExtension];
 
   if (v26)
   {
@@ -140,7 +140,7 @@ LABEL_27:
     v37[2] = __62__SVXSoundUtils_createAudioPlaybackRequestFromID_preferences___block_invoke;
     v37[3] = &unk_279C67798;
     v38 = v26;
-    v39 = a3;
+    dCopy = d;
     v30 = v26;
     v7 = [v29 initWithBuilder:v37];
 
@@ -176,15 +176,15 @@ void __62__SVXSoundUtils_createAudioPlaybackRequestFromID_preferences___block_in
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (int64_t)getIDFromAudioPlaybackRequest:(id)a3
+- (int64_t)getIDFromAudioPlaybackRequest:(id)request
 {
-  v3 = [a3 userInfo];
-  v4 = [v3 objectForKey:@"_SVXSoundID"];
-  v5 = [v4 integerValue];
+  userInfo = [request userInfo];
+  v4 = [userInfo objectForKey:@"_SVXSoundID"];
+  integerValue = [v4 integerValue];
 
-  if (v5 <= 6)
+  if (integerValue <= 6)
   {
-    return v5;
+    return integerValue;
   }
 
   else
@@ -193,18 +193,18 @@ void __62__SVXSoundUtils_createAudioPlaybackRequestFromID_preferences___block_in
   }
 }
 
-- (SVXSoundUtils)initWithSpeechSynthesisUtils:(id)a3 resourceURLSupplier:(id)a4
+- (SVXSoundUtils)initWithSpeechSynthesisUtils:(id)utils resourceURLSupplier:(id)supplier
 {
-  v7 = a3;
-  v8 = a4;
+  utilsCopy = utils;
+  supplierCopy = supplier;
   v12.receiver = self;
   v12.super_class = SVXSoundUtils;
   v9 = [(SVXSoundUtils *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_speechSynthesisUtils, a3);
-    objc_storeStrong(&v10->_resourceURLSupplier, a4);
+    objc_storeStrong(&v9->_speechSynthesisUtils, utils);
+    objc_storeStrong(&v10->_resourceURLSupplier, supplier);
   }
 
   return v10;
@@ -214,8 +214,8 @@ void __62__SVXSoundUtils_createAudioPlaybackRequestFromID_preferences___block_in
 {
   v3 = objc_alloc_init(SVXSpeechSynthesisUtils);
   v4 = +[SVXBundleUtils sharedInstance];
-  v5 = [v4 getSiriVOXFramework];
-  v6 = [(SVXSoundUtils *)self initWithSpeechSynthesisUtils:v3 resourceURLSupplier:v5];
+  getSiriVOXFramework = [v4 getSiriVOXFramework];
+  v6 = [(SVXSoundUtils *)self initWithSpeechSynthesisUtils:v3 resourceURLSupplier:getSiriVOXFramework];
 
   return v6;
 }

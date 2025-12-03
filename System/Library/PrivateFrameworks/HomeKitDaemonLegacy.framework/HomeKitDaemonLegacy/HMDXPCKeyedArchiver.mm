@@ -1,9 +1,9 @@
 @interface HMDXPCKeyedArchiver
 - (NSData)encodedData;
-- (id)initForWritingWithMessage:(id)a3;
+- (id)initForWritingWithMessage:(id)message;
 - (void)_configure;
 - (void)dealloc;
-- (void)encodeObject:(id)a3 forKey:(id)a4;
+- (void)encodeObject:(id)object forKey:(id)key;
 - (void)finishEncoding;
 @end
 
@@ -11,252 +11,252 @@
 
 - (NSData)encodedData
 {
-  v2 = [(HMDXPCKeyedArchiver *)self archiver];
-  v3 = [v2 encodedData];
+  archiver = [(HMDXPCKeyedArchiver *)self archiver];
+  encodedData = [archiver encodedData];
 
-  return v3;
+  return encodedData;
 }
 
 - (void)finishEncoding
 {
-  v2 = [(HMDXPCKeyedArchiver *)self archiver];
-  [v2 finishEncoding];
+  archiver = [(HMDXPCKeyedArchiver *)self archiver];
+  [archiver finishEncoding];
 }
 
-- (void)encodeObject:(id)a3 forKey:(id)a4
+- (void)encodeObject:(id)object forKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HMDXPCKeyedArchiver *)self archiver];
-  [v8 encodeObject:v7 forKey:v6];
+  keyCopy = key;
+  objectCopy = object;
+  archiver = [(HMDXPCKeyedArchiver *)self archiver];
+  [archiver encodeObject:objectCopy forKey:keyCopy];
 }
 
 - (void)_configure
 {
-  v3 = [(HMDXPCKeyedArchiver *)self archiver];
-  [v3 setClassName:@"HMHome" forClass:objc_opt_class()];
+  archiver = [(HMDXPCKeyedArchiver *)self archiver];
+  [archiver setClassName:@"HMHome" forClass:objc_opt_class()];
 
-  v4 = [(HMDXPCKeyedArchiver *)self archiver];
-  [v4 setClassName:@"HMRoom" forClass:objc_opt_class()];
+  archiver2 = [(HMDXPCKeyedArchiver *)self archiver];
+  [archiver2 setClassName:@"HMRoom" forClass:objc_opt_class()];
 
-  v5 = [(HMDXPCKeyedArchiver *)self archiver];
-  [v5 setClassName:@"HMZone" forClass:objc_opt_class()];
+  archiver3 = [(HMDXPCKeyedArchiver *)self archiver];
+  [archiver3 setClassName:@"HMZone" forClass:objc_opt_class()];
 
-  v6 = [(HMDXPCKeyedArchiver *)self archiver];
-  [v6 setClassName:@"HMServiceGroup" forClass:objc_opt_class()];
+  archiver4 = [(HMDXPCKeyedArchiver *)self archiver];
+  [archiver4 setClassName:@"HMServiceGroup" forClass:objc_opt_class()];
 
-  v7 = [(HMDXPCKeyedArchiver *)self archiver];
-  [v7 setClassName:@"HMTimerTrigger" forClass:objc_opt_class()];
+  archiver5 = [(HMDXPCKeyedArchiver *)self archiver];
+  [archiver5 setClassName:@"HMTimerTrigger" forClass:objc_opt_class()];
 
-  v8 = [(HMDXPCKeyedArchiver *)self archiver];
-  [v8 setClassName:@"HMActionSet" forClass:objc_opt_class()];
+  archiver6 = [(HMDXPCKeyedArchiver *)self archiver];
+  [archiver6 setClassName:@"HMActionSet" forClass:objc_opt_class()];
 
-  v9 = [(HMDXPCKeyedArchiver *)self archiver];
-  [v9 setClassName:@"HMAccessory" forClass:objc_opt_class()];
+  archiver7 = [(HMDXPCKeyedArchiver *)self archiver];
+  [archiver7 setClassName:@"HMAccessory" forClass:objc_opt_class()];
 
-  v10 = [(HMDXPCKeyedArchiver *)self archiver];
-  [v10 setClassName:@"HMAccessory" forClass:objc_opt_class()];
+  archiver8 = [(HMDXPCKeyedArchiver *)self archiver];
+  [archiver8 setClassName:@"HMAccessory" forClass:objc_opt_class()];
 
-  v11 = [(HMDXPCKeyedArchiver *)self archiver];
-  [v11 setClassName:@"HMAccessory" forClass:objc_opt_class()];
+  archiver9 = [(HMDXPCKeyedArchiver *)self archiver];
+  [archiver9 setClassName:@"HMAccessory" forClass:objc_opt_class()];
 
-  v12 = [(HMDXPCKeyedArchiver *)self archiver];
-  [v12 setClassName:@"HMAccessory" forClass:objc_opt_class()];
+  archiver10 = [(HMDXPCKeyedArchiver *)self archiver];
+  [archiver10 setClassName:@"HMAccessory" forClass:objc_opt_class()];
 
-  v13 = [(HMDXPCKeyedArchiver *)self archiver];
-  [v13 setClassName:@"HMAccessory" forClass:objc_opt_class()];
+  archiver11 = [(HMDXPCKeyedArchiver *)self archiver];
+  [archiver11 setClassName:@"HMAccessory" forClass:objc_opt_class()];
 
-  v14 = [(HMDXPCKeyedArchiver *)self archiver];
-  [v14 setClassName:@"HMAccessory" forClass:objc_opt_class()];
+  archiver12 = [(HMDXPCKeyedArchiver *)self archiver];
+  [archiver12 setClassName:@"HMAccessory" forClass:objc_opt_class()];
 
-  v15 = [(HMDXPCKeyedArchiver *)self archiver];
-  [v15 setClassName:@"HMAccessory" forClass:objc_opt_class()];
+  archiver13 = [(HMDXPCKeyedArchiver *)self archiver];
+  [archiver13 setClassName:@"HMAccessory" forClass:objc_opt_class()];
 
-  v16 = [(HMDXPCKeyedArchiver *)self archiver];
-  [v16 setClassName:@"HMAccessory" forClass:objc_opt_class()];
+  archiver14 = [(HMDXPCKeyedArchiver *)self archiver];
+  [archiver14 setClassName:@"HMAccessory" forClass:objc_opt_class()];
 
-  v17 = [(HMDXPCKeyedArchiver *)self archiver];
-  [v17 setClassName:@"HMAccessory" forClass:objc_opt_class()];
+  archiver15 = [(HMDXPCKeyedArchiver *)self archiver];
+  [archiver15 setClassName:@"HMAccessory" forClass:objc_opt_class()];
 
-  v18 = [(HMDXPCKeyedArchiver *)self archiver];
-  [v18 setClassName:@"HMAccessory" forClass:objc_opt_class()];
+  archiver16 = [(HMDXPCKeyedArchiver *)self archiver];
+  [archiver16 setClassName:@"HMAccessory" forClass:objc_opt_class()];
 
-  v19 = [(HMDXPCKeyedArchiver *)self archiver];
-  [v19 setClassName:@"HMAccessory" forClass:objc_opt_class()];
+  archiver17 = [(HMDXPCKeyedArchiver *)self archiver];
+  [archiver17 setClassName:@"HMAccessory" forClass:objc_opt_class()];
 
-  v20 = [(HMDXPCKeyedArchiver *)self archiver];
-  [v20 setClassName:@"HMService" forClass:objc_opt_class()];
+  archiver18 = [(HMDXPCKeyedArchiver *)self archiver];
+  [archiver18 setClassName:@"HMService" forClass:objc_opt_class()];
 
-  v21 = [(HMDXPCKeyedArchiver *)self archiver];
-  [v21 setClassName:@"HMCharacteristic" forClass:objc_opt_class()];
+  archiver19 = [(HMDXPCKeyedArchiver *)self archiver];
+  [archiver19 setClassName:@"HMCharacteristic" forClass:objc_opt_class()];
 
-  v22 = [(HMDXPCKeyedArchiver *)self archiver];
-  [v22 setClassName:@"HMCharacteristicWriteAction" forClass:objc_opt_class()];
+  archiver20 = [(HMDXPCKeyedArchiver *)self archiver];
+  [archiver20 setClassName:@"HMCharacteristicWriteAction" forClass:objc_opt_class()];
 
-  v23 = [(HMDXPCKeyedArchiver *)self archiver];
-  [v23 setClassName:@"HMCharacteristicMetadata" forClass:objc_opt_class()];
+  archiver21 = [(HMDXPCKeyedArchiver *)self archiver];
+  [archiver21 setClassName:@"HMCharacteristicMetadata" forClass:objc_opt_class()];
 
-  v24 = [(HMDXPCKeyedArchiver *)self archiver];
-  [v24 setClassName:@"HMUser" forClass:objc_opt_class()];
+  archiver22 = [(HMDXPCKeyedArchiver *)self archiver];
+  [archiver22 setClassName:@"HMUser" forClass:objc_opt_class()];
 
-  v25 = [(HMDXPCKeyedArchiver *)self archiver];
-  [v25 setClassName:@"HMAssistantAccessControl" forClass:objc_opt_class()];
+  archiver23 = [(HMDXPCKeyedArchiver *)self archiver];
+  [archiver23 setClassName:@"HMAssistantAccessControl" forClass:objc_opt_class()];
 
-  v26 = [(HMDXPCKeyedArchiver *)self archiver];
-  [v26 setClassName:@"HMCharacteristicEvent" forClass:objc_opt_class()];
+  archiver24 = [(HMDXPCKeyedArchiver *)self archiver];
+  [archiver24 setClassName:@"HMCharacteristicEvent" forClass:objc_opt_class()];
 
-  v27 = [(HMDXPCKeyedArchiver *)self archiver];
-  [v27 setClassName:@"HMLocationEvent" forClass:objc_opt_class()];
+  archiver25 = [(HMDXPCKeyedArchiver *)self archiver];
+  [archiver25 setClassName:@"HMLocationEvent" forClass:objc_opt_class()];
 
-  v28 = [(HMDXPCKeyedArchiver *)self archiver];
-  [v28 setClassName:@"HMCalendarEvent" forClass:objc_opt_class()];
+  archiver26 = [(HMDXPCKeyedArchiver *)self archiver];
+  [archiver26 setClassName:@"HMCalendarEvent" forClass:objc_opt_class()];
 
-  v29 = [(HMDXPCKeyedArchiver *)self archiver];
-  [v29 setClassName:@"HMSignificantTimeEvent" forClass:objc_opt_class()];
+  archiver27 = [(HMDXPCKeyedArchiver *)self archiver];
+  [archiver27 setClassName:@"HMSignificantTimeEvent" forClass:objc_opt_class()];
 
-  v30 = [(HMDXPCKeyedArchiver *)self archiver];
-  [v30 setClassName:@"HMDurationEvent" forClass:objc_opt_class()];
+  archiver28 = [(HMDXPCKeyedArchiver *)self archiver];
+  [archiver28 setClassName:@"HMDurationEvent" forClass:objc_opt_class()];
 
-  v31 = [(HMDXPCKeyedArchiver *)self archiver];
-  [v31 setClassName:@"HMCharacteristicThresholdRangeEvent" forClass:objc_opt_class()];
+  archiver29 = [(HMDXPCKeyedArchiver *)self archiver];
+  [archiver29 setClassName:@"HMCharacteristicThresholdRangeEvent" forClass:objc_opt_class()];
 
-  v32 = [(HMDXPCKeyedArchiver *)self archiver];
-  [v32 setClassName:@"HMPresenceEvent" forClass:objc_opt_class()];
+  archiver30 = [(HMDXPCKeyedArchiver *)self archiver];
+  [archiver30 setClassName:@"HMPresenceEvent" forClass:objc_opt_class()];
 
-  v33 = [(HMDXPCKeyedArchiver *)self archiver];
-  [v33 setClassName:@"HMEventTrigger" forClass:objc_opt_class()];
+  archiver31 = [(HMDXPCKeyedArchiver *)self archiver];
+  [archiver31 setClassName:@"HMEventTrigger" forClass:objc_opt_class()];
 
-  v34 = [(HMDXPCKeyedArchiver *)self archiver];
-  [v34 setClassName:@"HMAccessoryInvitation" forClass:objc_opt_class()];
+  archiver32 = [(HMDXPCKeyedArchiver *)self archiver];
+  [archiver32 setClassName:@"HMAccessoryInvitation" forClass:objc_opt_class()];
 
-  v35 = [(HMDXPCKeyedArchiver *)self archiver];
-  [v35 setClassName:@"HMHomeInvitation" forClass:objc_opt_class()];
+  archiver33 = [(HMDXPCKeyedArchiver *)self archiver];
+  [archiver33 setClassName:@"HMHomeInvitation" forClass:objc_opt_class()];
 
-  v36 = [(HMDXPCKeyedArchiver *)self archiver];
-  [v36 setClassName:@"HMIncomingHomeInvitation" forClass:objc_opt_class()];
+  archiver34 = [(HMDXPCKeyedArchiver *)self archiver];
+  [archiver34 setClassName:@"HMIncomingHomeInvitation" forClass:objc_opt_class()];
 
-  v37 = [(HMDXPCKeyedArchiver *)self archiver];
-  [v37 setClassName:@"HMOutgoingHomeInvitation" forClass:objc_opt_class()];
+  archiver35 = [(HMDXPCKeyedArchiver *)self archiver];
+  [archiver35 setClassName:@"HMOutgoingHomeInvitation" forClass:objc_opt_class()];
 
-  v38 = [(HMDXPCKeyedArchiver *)self archiver];
-  [v38 setClassName:@"HMDevice" forClass:objc_opt_class()];
+  archiver36 = [(HMDXPCKeyedArchiver *)self archiver];
+  [archiver36 setClassName:@"HMDevice" forClass:objc_opt_class()];
 
-  v39 = [(HMDXPCKeyedArchiver *)self archiver];
-  [v39 setClassName:@"HMResidentDevice" forClass:objc_opt_class()];
+  archiver37 = [(HMDXPCKeyedArchiver *)self archiver];
+  [archiver37 setClassName:@"HMResidentDevice" forClass:objc_opt_class()];
 
-  v40 = [(HMDXPCKeyedArchiver *)self archiver];
-  [v40 setClassName:@"_HMAccessoryProfile" forClass:objc_opt_class()];
+  archiver38 = [(HMDXPCKeyedArchiver *)self archiver];
+  [archiver38 setClassName:@"_HMAccessoryProfile" forClass:objc_opt_class()];
 
-  v41 = [(HMDXPCKeyedArchiver *)self archiver];
-  [v41 setClassName:@"_HMCameraProfile" forClass:objc_opt_class()];
+  archiver39 = [(HMDXPCKeyedArchiver *)self archiver];
+  [archiver39 setClassName:@"_HMCameraProfile" forClass:objc_opt_class()];
 
-  v42 = [(HMDXPCKeyedArchiver *)self archiver];
-  [v42 setClassName:@"_HMLightProfile" forClass:objc_opt_class()];
+  archiver40 = [(HMDXPCKeyedArchiver *)self archiver];
+  [archiver40 setClassName:@"_HMLightProfile" forClass:objc_opt_class()];
 
-  v43 = [(HMDXPCKeyedArchiver *)self archiver];
-  [v43 setClassName:@"HMMediaPlaybackAction" forClass:objc_opt_class()];
+  archiver41 = [(HMDXPCKeyedArchiver *)self archiver];
+  [archiver41 setClassName:@"HMMediaPlaybackAction" forClass:objc_opt_class()];
 
-  v44 = [(HMDXPCKeyedArchiver *)self archiver];
-  [v44 setClassName:@"_HMMediaProfile" forClass:objc_opt_class()];
+  archiver42 = [(HMDXPCKeyedArchiver *)self archiver];
+  [archiver42 setClassName:@"_HMMediaProfile" forClass:objc_opt_class()];
 
-  v45 = [(HMDXPCKeyedArchiver *)self archiver];
-  [v45 setClassName:@"_HMMediaProfile" forClass:objc_opt_class()];
+  archiver43 = [(HMDXPCKeyedArchiver *)self archiver];
+  [archiver43 setClassName:@"_HMMediaProfile" forClass:objc_opt_class()];
 
-  v46 = [(HMDXPCKeyedArchiver *)self archiver];
-  [v46 setClassName:@"_HMMediaProfile" forClass:objc_opt_class()];
+  archiver44 = [(HMDXPCKeyedArchiver *)self archiver];
+  [archiver44 setClassName:@"_HMMediaProfile" forClass:objc_opt_class()];
 
-  v47 = [(HMDXPCKeyedArchiver *)self archiver];
-  [v47 setClassName:@"HMMediaSession" forClass:objc_opt_class()];
+  archiver45 = [(HMDXPCKeyedArchiver *)self archiver];
+  [archiver45 setClassName:@"HMMediaSession" forClass:objc_opt_class()];
 
-  v48 = [(HMDXPCKeyedArchiver *)self archiver];
-  [v48 setClassName:@"_HMSiriEndpointProfile" forClass:objc_opt_class()];
+  archiver46 = [(HMDXPCKeyedArchiver *)self archiver];
+  [archiver46 setClassName:@"_HMSiriEndpointProfile" forClass:objc_opt_class()];
 
-  v49 = [(HMDXPCKeyedArchiver *)self archiver];
-  [v49 setClassName:@"HMSiriEndpointProfileAssistant" forClass:objc_opt_class()];
+  archiver47 = [(HMDXPCKeyedArchiver *)self archiver];
+  [archiver47 setClassName:@"HMSiriEndpointProfileAssistant" forClass:objc_opt_class()];
 
-  v50 = [(HMDXPCKeyedArchiver *)self archiver];
-  [v50 setClassName:@"_HMDoorbellChimeProfile" forClass:objc_opt_class()];
+  archiver48 = [(HMDXPCKeyedArchiver *)self archiver];
+  [archiver48 setClassName:@"_HMDoorbellChimeProfile" forClass:objc_opt_class()];
 
-  v51 = [(HMDXPCKeyedArchiver *)self archiver];
-  [v51 setClassName:@"_HMAccessorySetting" forClass:objc_opt_class()];
+  archiver49 = [(HMDXPCKeyedArchiver *)self archiver];
+  [archiver49 setClassName:@"_HMAccessorySetting" forClass:objc_opt_class()];
 
-  v52 = [(HMDXPCKeyedArchiver *)self archiver];
-  [v52 setClassName:@"_HMAccessorySettingGroup" forClass:objc_opt_class()];
+  archiver50 = [(HMDXPCKeyedArchiver *)self archiver];
+  [archiver50 setClassName:@"_HMAccessorySettingGroup" forClass:objc_opt_class()];
 
-  v53 = [(HMDXPCKeyedArchiver *)self archiver];
-  [v53 setClassName:@"HMSoftwareUpdate" forClass:objc_opt_class()];
+  archiver51 = [(HMDXPCKeyedArchiver *)self archiver];
+  [archiver51 setClassName:@"HMSoftwareUpdate" forClass:objc_opt_class()];
 
-  v54 = [(HMDXPCKeyedArchiver *)self archiver];
-  [v54 setClassName:@"HMRemoteLoginHandler" forClass:objc_opt_class()];
+  archiver52 = [(HMDXPCKeyedArchiver *)self archiver];
+  [archiver52 setClassName:@"HMRemoteLoginHandler" forClass:objc_opt_class()];
 
-  v55 = [(HMDXPCKeyedArchiver *)self archiver];
-  [v55 setClassName:@"HMRemoteLoginAnisetteDataProvider" forClass:objc_opt_class()];
+  archiver53 = [(HMDXPCKeyedArchiver *)self archiver];
+  [archiver53 setClassName:@"HMRemoteLoginAnisetteDataProvider" forClass:objc_opt_class()];
 
-  v56 = [(HMDXPCKeyedArchiver *)self archiver];
-  [v56 setClassName:@"HMMediaSystem" forClass:objc_opt_class()];
+  archiver54 = [(HMDXPCKeyedArchiver *)self archiver];
+  [archiver54 setClassName:@"HMMediaSystem" forClass:objc_opt_class()];
 
-  v57 = [(HMDXPCKeyedArchiver *)self archiver];
-  [v57 setClassName:@"HMMediaSystem" forClass:objc_opt_class()];
+  archiver55 = [(HMDXPCKeyedArchiver *)self archiver];
+  [archiver55 setClassName:@"HMMediaSystem" forClass:objc_opt_class()];
 
-  v58 = [(HMDXPCKeyedArchiver *)self archiver];
-  [v58 setClassName:@"HMMediaSystem" forClass:objc_opt_class()];
+  archiver56 = [(HMDXPCKeyedArchiver *)self archiver];
+  [archiver56 setClassName:@"HMMediaSystem" forClass:objc_opt_class()];
 
-  v59 = [(HMDXPCKeyedArchiver *)self archiver];
-  [v59 setClassName:@"HMMediaSystemComponent" forClass:objc_opt_class()];
+  archiver57 = [(HMDXPCKeyedArchiver *)self archiver];
+  [archiver57 setClassName:@"HMMediaSystemComponent" forClass:objc_opt_class()];
 
-  v60 = [(HMDXPCKeyedArchiver *)self archiver];
-  [v60 setClassName:@"HMBulletinBoardNotification" forClass:objc_opt_class()];
+  archiver58 = [(HMDXPCKeyedArchiver *)self archiver];
+  [archiver58 setClassName:@"HMBulletinBoardNotification" forClass:objc_opt_class()];
 
-  v61 = [(HMDXPCKeyedArchiver *)self archiver];
-  [v61 setClassName:@"HMSetting" forClass:objc_opt_class()];
+  archiver59 = [(HMDXPCKeyedArchiver *)self archiver];
+  [archiver59 setClassName:@"HMSetting" forClass:objc_opt_class()];
 
-  v62 = [(HMDXPCKeyedArchiver *)self archiver];
-  [v62 setClassName:@"HMSettingGroup" forClass:objc_opt_class()];
+  archiver60 = [(HMDXPCKeyedArchiver *)self archiver];
+  [archiver60 setClassName:@"HMSettingGroup" forClass:objc_opt_class()];
 
-  v63 = [(HMDXPCKeyedArchiver *)self archiver];
-  [v63 setClassName:@"HMShortcutAction" forClass:objc_opt_class()];
+  archiver61 = [(HMDXPCKeyedArchiver *)self archiver];
+  [archiver61 setClassName:@"HMShortcutAction" forClass:objc_opt_class()];
 
-  v64 = [(HMDXPCKeyedArchiver *)self archiver];
-  [v64 setClassName:@"HMAccessoryNetworkAccessViolation" forClass:objc_opt_class()];
+  archiver62 = [(HMDXPCKeyedArchiver *)self archiver];
+  [archiver62 setClassName:@"HMAccessoryNetworkAccessViolation" forClass:objc_opt_class()];
 
-  v65 = [(HMDXPCKeyedArchiver *)self archiver];
-  [v65 setClassName:@"HMAccessoryAllowedHost" forClass:objc_opt_class()];
+  archiver63 = [(HMDXPCKeyedArchiver *)self archiver];
+  [archiver63 setClassName:@"HMAccessoryAllowedHost" forClass:objc_opt_class()];
 
-  v66 = [(HMDXPCKeyedArchiver *)self archiver];
-  [v66 setClassName:@"HMAccessoryNetworkProtectionGroup" forClass:objc_opt_class()];
+  archiver64 = [(HMDXPCKeyedArchiver *)self archiver];
+  [archiver64 setClassName:@"HMAccessoryNetworkProtectionGroup" forClass:objc_opt_class()];
 
-  v67 = [(HMDXPCKeyedArchiver *)self archiver];
-  [v67 setClassName:@"HMLightProfileNaturalLightingAction" forClass:objc_opt_class()];
+  archiver65 = [(HMDXPCKeyedArchiver *)self archiver];
+  [archiver65 setClassName:@"HMLightProfileNaturalLightingAction" forClass:objc_opt_class()];
 
-  v68 = [(HMDXPCKeyedArchiver *)self archiver];
-  [v68 setClassName:@"HMMediaDestinationController" forClass:objc_opt_class()];
+  archiver66 = [(HMDXPCKeyedArchiver *)self archiver];
+  [archiver66 setClassName:@"HMMediaDestinationController" forClass:objc_opt_class()];
 
-  v69 = [(HMDXPCKeyedArchiver *)self archiver];
-  [v69 setClassName:@"HMTriggerPolicy" forClass:objc_opt_class()];
+  archiver67 = [(HMDXPCKeyedArchiver *)self archiver];
+  [archiver67 setClassName:@"HMTriggerPolicy" forClass:objc_opt_class()];
 
-  v70 = [(HMDXPCKeyedArchiver *)self archiver];
-  [v70 setClassName:@"HMTriggerDeletePolicy" forClass:objc_opt_class()];
+  archiver68 = [(HMDXPCKeyedArchiver *)self archiver];
+  [archiver68 setClassName:@"HMTriggerDeletePolicy" forClass:objc_opt_class()];
 
-  v71 = [(HMDXPCKeyedArchiver *)self archiver];
-  [v71 setClassName:@"HMTriggerDeleteAfterExecutionPolicy" forClass:objc_opt_class()];
+  archiver69 = [(HMDXPCKeyedArchiver *)self archiver];
+  [archiver69 setClassName:@"HMTriggerDeleteAfterExecutionPolicy" forClass:objc_opt_class()];
 
-  v72 = [(HMDXPCKeyedArchiver *)self archiver];
-  [v72 setClassName:@"_HMAccessoryProfile" forClass:objc_opt_class()];
+  archiver70 = [(HMDXPCKeyedArchiver *)self archiver];
+  [archiver70 setClassName:@"_HMAccessoryProfile" forClass:objc_opt_class()];
 }
 
 - (void)dealloc
 {
-  v3 = [(HMDXPCKeyedArchiver *)self archiver];
-  objc_removeAssociatedObjects(v3);
+  archiver = [(HMDXPCKeyedArchiver *)self archiver];
+  objc_removeAssociatedObjects(archiver);
 
   v4.receiver = self;
   v4.super_class = HMDXPCKeyedArchiver;
   [(HMDXPCKeyedArchiver *)&v4 dealloc];
 }
 
-- (id)initForWritingWithMessage:(id)a3
+- (id)initForWritingWithMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v9.receiver = self;
   v9.super_class = HMDXPCKeyedArchiver;
   v5 = [(HMDXPCKeyedArchiver *)&v9 init];
@@ -267,9 +267,9 @@
     v5->_archiver = v6;
 
     objc_setAssociatedObject(v5->_archiver, @"kXPCTransportTypeAssociationKey", MEMORY[0x277CBEC38], 0x301);
-    if (v4)
+    if (messageCopy)
     {
-      objc_setAssociatedObject(v5->_archiver, @"kXPCMessageKey", v4, 0x301);
+      objc_setAssociatedObject(v5->_archiver, @"kXPCMessageKey", messageCopy, 0x301);
     }
 
     [(HMDXPCKeyedArchiver *)v5 _configure];

@@ -16,7 +16,7 @@
     if (objc_opt_isKindOfClass())
     {
       [(_DKPRValueType *)v3 setType:?];
-      [(_DKPRValue *)v2 setStringValue:a1];
+      [(_DKPRValue *)v2 setStringValue:self];
     }
 
     else
@@ -25,14 +25,14 @@
       if (objc_opt_isKindOfClass())
       {
         [(_DKPRValueType *)v3 setType:?];
-        [a1 timeIntervalSinceReferenceDate];
+        [self timeIntervalSinceReferenceDate];
         [(_DKPRValue *)v2 setDateValue:v4];
       }
 
       else
       {
         [(_DKPRValueType *)v3 setType:?];
-        v6 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:a1];
+        v6 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:self];
         [(_DKPRValue *)v2 setBlobValue:v6];
       }
     }
@@ -40,10 +40,10 @@
     goto LABEL_13;
   }
 
-  if (!CFNumberIsFloatType(a1))
+  if (!CFNumberIsFloatType(self))
   {
     valuePtr = 0;
-    if (CFNumberGetValue(a1, kCFNumberSInt64Type, &valuePtr))
+    if (CFNumberGetValue(self, kCFNumberSInt64Type, &valuePtr))
     {
       [(_DKPRValueType *)v3 setType:?];
       [(_DKPRValue *)v2 setIntegerValue:?];
@@ -56,7 +56,7 @@ LABEL_11:
   }
 
   valuePtr = 0;
-  if (!CFNumberGetValue(a1, kCFNumberDoubleType, &valuePtr))
+  if (!CFNumberGetValue(self, kCFNumberDoubleType, &valuePtr))
   {
     goto LABEL_11;
   }
@@ -82,31 +82,31 @@ LABEL_14:
   }
 
   v4 = v3;
-  v5 = [(_DKPRValue *)v4 type];
-  v6 = [(_DKPRValueType *)v5 type];
+  type = [(_DKPRValue *)v4 type];
+  v5Type = [(_DKPRValueType *)type type];
 
   v7 = 0;
-  if (v6 <= 1)
+  if (v5Type <= 1)
   {
-    if (!v6)
+    if (!v5Type)
     {
-      v8 = [MEMORY[0x1E696AD98] numberWithLongLong:-[_DKPRValue integerValue](v4)];
+      stringValue = [MEMORY[0x1E696AD98] numberWithLongLong:-[_DKPRValue integerValue](v4)];
       goto LABEL_17;
     }
 
-    if (v6 == 1)
+    if (v5Type == 1)
     {
-      v8 = [MEMORY[0x1E696AD98] numberWithDouble:-[_DKPRValue doubleValue](v4)];
+      stringValue = [MEMORY[0x1E696AD98] numberWithDouble:-[_DKPRValue doubleValue](v4)];
       goto LABEL_17;
     }
   }
 
   else
   {
-    switch(v6)
+    switch(v5Type)
     {
       case 2:
-        v8 = [(_DKPRValue *)v4 stringValue];
+        stringValue = [(_DKPRValue *)v4 stringValue];
         goto LABEL_17;
       case 3:
         v24 = MEMORY[0x1E695DFD8];
@@ -121,9 +121,9 @@ LABEL_14:
         v16 = objc_opt_class();
         v17 = [v24 setWithObjects:{v23, v9, v10, v11, v12, v13, v14, v15, v16, objc_opt_class(), 0}];
         v18 = MEMORY[0x1E696ACD0];
-        v19 = [(_DKPRValue *)v4 blobValue];
+        blobValue = [(_DKPRValue *)v4 blobValue];
         v25 = 0;
-        v20 = [v18 unarchivedObjectOfClasses:v17 fromData:v19 error:&v25];
+        v20 = [v18 unarchivedObjectOfClasses:v17 fromData:blobValue error:&v25];
         v21 = v25;
 
         if (v21)
@@ -143,9 +143,9 @@ LABEL_14:
 
         break;
       case 4:
-        v8 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:-[_DKPRValue dateValue](v4)];
+        stringValue = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:-[_DKPRValue dateValue](v4)];
 LABEL_17:
-        v7 = v8;
+        v7 = stringValue;
         break;
     }
   }

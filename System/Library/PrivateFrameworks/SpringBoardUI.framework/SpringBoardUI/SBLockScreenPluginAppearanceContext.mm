@@ -1,35 +1,35 @@
 @interface SBLockScreenPluginAppearanceContext
 - (CGRect)presentationRegion;
-- (SBLockScreenPluginAppearanceContext)initWithAppearance:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (SBLockScreenPluginAppearanceContext)initWithAppearance:(id)appearance;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 @end
 
 @implementation SBLockScreenPluginAppearanceContext
 
-- (SBLockScreenPluginAppearanceContext)initWithAppearance:(id)a3
+- (SBLockScreenPluginAppearanceContext)initWithAppearance:(id)appearance
 {
-  v4 = a3;
+  appearanceCopy = appearance;
   v9.receiver = self;
   v9.super_class = SBLockScreenPluginAppearanceContext;
   v5 = [(SBLockScreenPluginAppearanceContext *)&v9 init];
   if (v5)
   {
-    -[SBLockScreenPluginAppearanceContext setHidden:](v5, "setHidden:", [v4 isHidden]);
-    -[SBLockScreenPluginAppearanceContext setRestrictedCapabilities:](v5, "setRestrictedCapabilities:", [v4 restrictedCapabilities]);
-    -[SBLockScreenPluginAppearanceContext setBackgroundStyle:](v5, "setBackgroundStyle:", [v4 backgroundStyle]);
-    -[SBLockScreenPluginAppearanceContext setPresentationStyle:](v5, "setPresentationStyle:", [v4 presentationStyle]);
-    -[SBLockScreenPluginAppearanceContext setNotificationBehavior:](v5, "setNotificationBehavior:", [v4 notificationBehavior]);
-    v6 = [v4 legibilitySettings];
-    [(SBLockScreenPluginAppearanceContext *)v5 setLegibilitySettings:v6];
+    -[SBLockScreenPluginAppearanceContext setHidden:](v5, "setHidden:", [appearanceCopy isHidden]);
+    -[SBLockScreenPluginAppearanceContext setRestrictedCapabilities:](v5, "setRestrictedCapabilities:", [appearanceCopy restrictedCapabilities]);
+    -[SBLockScreenPluginAppearanceContext setBackgroundStyle:](v5, "setBackgroundStyle:", [appearanceCopy backgroundStyle]);
+    -[SBLockScreenPluginAppearanceContext setPresentationStyle:](v5, "setPresentationStyle:", [appearanceCopy presentationStyle]);
+    -[SBLockScreenPluginAppearanceContext setNotificationBehavior:](v5, "setNotificationBehavior:", [appearanceCopy notificationBehavior]);
+    legibilitySettings = [appearanceCopy legibilitySettings];
+    [(SBLockScreenPluginAppearanceContext *)v5 setLegibilitySettings:legibilitySettings];
 
-    v7 = [v4 elementOverrides];
-    [(SBLockScreenPluginAppearanceContext *)v5 setElementOverrides:v7];
+    elementOverrides = [appearanceCopy elementOverrides];
+    [(SBLockScreenPluginAppearanceContext *)v5 setElementOverrides:elementOverrides];
 
-    [v4 presentationRegion];
+    [appearanceCopy presentationRegion];
     [(SBLockScreenPluginAppearanceContext *)v5 setPresentationRegion:?];
   }
 
@@ -38,10 +38,10 @@
 
 - (id)succinctDescription
 {
-  v2 = [(SBLockScreenPluginAppearanceContext *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBLockScreenPluginAppearanceContext *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -64,26 +64,26 @@
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBLockScreenPluginAppearanceContext *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBLockScreenPluginAppearanceContext *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(SBLockScreenPluginAppearanceContext *)self succinctDescriptionBuilder];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(SBLockScreenPluginAppearanceContext *)self succinctDescriptionBuilder];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __77__SBLockScreenPluginAppearanceContext_descriptionBuilderWithMultilinePrefix___block_invoke;
   v9[3] = &unk_27836AE50;
-  v6 = v5;
+  v6 = succinctDescriptionBuilder;
   v10 = v6;
-  v11 = self;
-  [v6 appendBodySectionWithName:0 multilinePrefix:v4 block:v9];
+  selfCopy = self;
+  [v6 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v9];
 
   v7 = v6;
   return v6;
@@ -109,7 +109,7 @@ void __77__SBLockScreenPluginAppearanceContext_descriptionBuilderWithMultilinePr
   v10 = [v9 appendObject:v11 withName:@"presentationRegion"];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [SBLockScreenPluginMutableAppearanceContext alloc];
 

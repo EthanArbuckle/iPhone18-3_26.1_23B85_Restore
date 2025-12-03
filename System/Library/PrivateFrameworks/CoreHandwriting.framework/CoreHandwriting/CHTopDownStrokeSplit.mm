@@ -1,16 +1,16 @@
 @interface CHTopDownStrokeSplit
-+ (id)writingDirectionOrderedStrokes:(id)a3 substrokesByStrokeIdentifier:(id)a4 writingOrientation:(int64_t)a5;
++ (id)writingDirectionOrderedStrokes:(id)strokes substrokesByStrokeIdentifier:(id)identifier writingOrientation:(int64_t)orientation;
 - (CGRect)groupBounds1;
 - (CGRect)groupBounds2;
-- (CHTopDownStrokeSplit)initWithStrokes:(id)a3 substrokesByStrokeIdentifier:(id)a4 splitIndex:(int64_t)a5 writingOrientation:(int64_t)a6;
+- (CHTopDownStrokeSplit)initWithStrokes:(id)strokes substrokesByStrokeIdentifier:(id)identifier splitIndex:(int64_t)index writingOrientation:(int64_t)orientation;
 @end
 
 @implementation CHTopDownStrokeSplit
 
-- (CHTopDownStrokeSplit)initWithStrokes:(id)a3 substrokesByStrokeIdentifier:(id)a4 splitIndex:(int64_t)a5 writingOrientation:(int64_t)a6
+- (CHTopDownStrokeSplit)initWithStrokes:(id)strokes substrokesByStrokeIdentifier:(id)identifier splitIndex:(int64_t)index writingOrientation:(int64_t)orientation
 {
-  v10 = a3;
-  v11 = a4;
+  strokesCopy = strokes;
+  identifierCopy = identifier;
   v117.receiver = self;
   v117.super_class = CHTopDownStrokeSplit;
   v17 = [(CHTopDownStrokeSplit *)&v117 init];
@@ -27,10 +27,10 @@
     y = v32;
     width = v33;
     height = v34;
-    while (v30 < objc_msgSend_count(v10, v24, v25, v26, v27, v28))
+    while (v30 < objc_msgSend_count(strokesCopy, v24, v25, v26, v27, v28))
     {
-      v48 = objc_msgSend_objectAtIndexedSubscript_(v10, v39, v30, v41, v42, v43);
-      if (v30 <= a5)
+      v48 = objc_msgSend_objectAtIndexedSubscript_(strokesCopy, v39, v30, v41, v42, v43);
+      if (v30 <= index)
       {
         objc_msgSend_addObject_(v18, v44, v48, v45, v46, v47);
         objc_msgSend_bounds(v48, v58, v59, v60, v61, v62);
@@ -95,38 +95,38 @@
     *(v17 + 3) = v88 - v100;
 
     v101 = objc_opt_class();
-    v104 = objc_msgSend_writingDirectionOrderedStrokes_substrokesByStrokeIdentifier_writingOrientation_(v101, v102, v10, v11, a6, v103);
+    v104 = objc_msgSend_writingDirectionOrderedStrokes_substrokesByStrokeIdentifier_writingOrientation_(v101, v102, strokesCopy, identifierCopy, orientation, v103);
     v105 = *(v17 + 4);
     *(v17 + 4) = v104;
 
     v106 = objc_opt_class();
-    v109 = objc_msgSend_writingDirectionOrderedStrokes_substrokesByStrokeIdentifier_writingOrientation_(v106, v107, *(v17 + 1), v11, a6, v108);
+    v109 = objc_msgSend_writingDirectionOrderedStrokes_substrokesByStrokeIdentifier_writingOrientation_(v106, v107, *(v17 + 1), identifierCopy, orientation, v108);
     v110 = *(v17 + 5);
     *(v17 + 5) = v109;
 
     v111 = objc_opt_class();
-    v114 = objc_msgSend_writingDirectionOrderedStrokes_substrokesByStrokeIdentifier_writingOrientation_(v111, v112, *(v17 + 2), v11, a6, v113);
+    v114 = objc_msgSend_writingDirectionOrderedStrokes_substrokesByStrokeIdentifier_writingOrientation_(v111, v112, *(v17 + 2), identifierCopy, orientation, v113);
     v115 = *(v17 + 6);
     *(v17 + 6) = v114;
 
-    *(v17 + 7) = sub_183843F70(v18, v11);
-    *(v17 + 8) = sub_183843F70(v29, v11);
+    *(v17 + 7) = sub_183843F70(v18, identifierCopy);
+    *(v17 + 8) = sub_183843F70(v29, identifierCopy);
   }
 
   return v17;
 }
 
-+ (id)writingDirectionOrderedStrokes:(id)a3 substrokesByStrokeIdentifier:(id)a4 writingOrientation:(int64_t)a5
++ (id)writingDirectionOrderedStrokes:(id)strokes substrokesByStrokeIdentifier:(id)identifier writingOrientation:(int64_t)orientation
 {
-  v7 = a4;
+  identifierCopy = identifier;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = sub_1838441C8;
   v15[3] = &unk_1E6DDEDD0;
-  v16 = v7;
-  v17 = a5;
-  v8 = v7;
-  v13 = objc_msgSend_sortedArrayUsingComparator_(a3, v9, v15, v10, v11, v12);
+  v16 = identifierCopy;
+  orientationCopy = orientation;
+  v8 = identifierCopy;
+  v13 = objc_msgSend_sortedArrayUsingComparator_(strokes, v9, v15, v10, v11, v12);
 
   return v13;
 }

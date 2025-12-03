@@ -1,26 +1,26 @@
 @interface IFTSchemaIFTSystemPromptResolution
-- (BOOL)isEqual:(id)a3;
-- (IFTSchemaIFTSystemPromptResolution)initWithDictionary:(id)a3;
-- (IFTSchemaIFTSystemPromptResolution)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (IFTSchemaIFTSystemPromptResolution)initWithDictionary:(id)dictionary;
+- (IFTSchemaIFTSystemPromptResolution)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation IFTSchemaIFTSystemPromptResolution
 
-- (IFTSchemaIFTSystemPromptResolution)initWithDictionary:(id)a3
+- (IFTSchemaIFTSystemPromptResolution)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v19.receiver = self;
   v19.super_class = IFTSchemaIFTSystemPromptResolution;
   v5 = [(IFTSchemaIFTSystemPromptResolution *)&v19 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"statementId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"statementId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -28,7 +28,7 @@
       [(IFTSchemaIFTSystemPromptResolution *)v5 setStatementId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"userAction"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"userAction"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -36,14 +36,14 @@
       [(IFTSchemaIFTSystemPromptResolution *)v5 setUserAction:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"inputModality"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"inputModality"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[IFTSchemaIFTSystemPromptResolution setInputModality:](v5, "setInputModality:", [v10 intValue]);
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"actionEventId"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"actionEventId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -51,7 +51,7 @@
       [(IFTSchemaIFTSystemPromptResolution *)v5 setActionEventId:v12];
     }
 
-    v13 = [v4 objectForKeyedSubscript:@"systemResponseEventId"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"systemResponseEventId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -59,7 +59,7 @@
       [(IFTSchemaIFTSystemPromptResolution *)v5 setSystemResponseEventId:v14];
     }
 
-    v15 = [v4 objectForKeyedSubscript:@"input"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"input"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -73,30 +73,30 @@
   return v5;
 }
 
-- (IFTSchemaIFTSystemPromptResolution)initWithJSON:(id)a3
+- (IFTSchemaIFTSystemPromptResolution)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(IFTSchemaIFTSystemPromptResolution *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(IFTSchemaIFTSystemPromptResolution *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(IFTSchemaIFTSystemPromptResolution *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -109,49 +109,49 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_actionEventId)
   {
-    v4 = [(IFTSchemaIFTSystemPromptResolution *)self actionEventId];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    actionEventId = [(IFTSchemaIFTSystemPromptResolution *)self actionEventId];
+    dictionaryRepresentation = [actionEventId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"actionEventId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"actionEventId"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"actionEventId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"actionEventId"];
     }
   }
 
   if (self->_input)
   {
-    v7 = [(IFTSchemaIFTSystemPromptResolution *)self input];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    input = [(IFTSchemaIFTSystemPromptResolution *)self input];
+    dictionaryRepresentation2 = [input dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"input"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"input"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"input"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"input"];
     }
   }
 
   if (*&self->_has)
   {
-    v10 = [(IFTSchemaIFTSystemPromptResolution *)self inputModality];
+    inputModality = [(IFTSchemaIFTSystemPromptResolution *)self inputModality];
     v11 = @"IFTSYSTEMPROMPTRESOLUTIONINPUTMODALITY_UNKNOWN";
-    if (v10 == 1)
+    if (inputModality == 1)
     {
       v11 = @"IFTSYSTEMPROMPTRESOLUTIONINPUTMODALITY_TOUCH";
     }
 
-    if (v10 == 2)
+    if (inputModality == 2)
     {
       v12 = @"IFTSYSTEMPROMPTRESOLUTIONINPUTMODALITY_HAND_GESTURE";
     }
@@ -161,60 +161,60 @@
       v12 = v11;
     }
 
-    [v3 setObject:v12 forKeyedSubscript:@"inputModality"];
+    [dictionary setObject:v12 forKeyedSubscript:@"inputModality"];
   }
 
   if (self->_statementId)
   {
-    v13 = [(IFTSchemaIFTSystemPromptResolution *)self statementId];
-    v14 = [v13 dictionaryRepresentation];
-    if (v14)
+    statementId = [(IFTSchemaIFTSystemPromptResolution *)self statementId];
+    dictionaryRepresentation3 = [statementId dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v14 forKeyedSubscript:@"statementId"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"statementId"];
     }
 
     else
     {
-      v15 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v15 forKeyedSubscript:@"statementId"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"statementId"];
     }
   }
 
   if (self->_systemResponseEventId)
   {
-    v16 = [(IFTSchemaIFTSystemPromptResolution *)self systemResponseEventId];
-    v17 = [v16 dictionaryRepresentation];
-    if (v17)
+    systemResponseEventId = [(IFTSchemaIFTSystemPromptResolution *)self systemResponseEventId];
+    dictionaryRepresentation4 = [systemResponseEventId dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v17 forKeyedSubscript:@"systemResponseEventId"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"systemResponseEventId"];
     }
 
     else
     {
-      v18 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v18 forKeyedSubscript:@"systemResponseEventId"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"systemResponseEventId"];
     }
   }
 
   if (self->_userAction)
   {
-    v19 = [(IFTSchemaIFTSystemPromptResolution *)self userAction];
-    v20 = [v19 dictionaryRepresentation];
-    if (v20)
+    userAction = [(IFTSchemaIFTSystemPromptResolution *)self userAction];
+    dictionaryRepresentation5 = [userAction dictionaryRepresentation];
+    if (dictionaryRepresentation5)
     {
-      [v3 setObject:v20 forKeyedSubscript:@"userAction"];
+      [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"userAction"];
     }
 
     else
     {
-      v21 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v21 forKeyedSubscript:@"userAction"];
+      null5 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null5 forKeyedSubscript:@"userAction"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -236,28 +236,28 @@
   return v6 ^ v7 ^ [(IFTSchemaIFTSystemPromptResolutionInput *)self->_input hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_30;
   }
 
-  v5 = [(IFTSchemaIFTSystemPromptResolution *)self statementId];
-  v6 = [v4 statementId];
-  if ((v5 != 0) == (v6 == 0))
+  statementId = [(IFTSchemaIFTSystemPromptResolution *)self statementId];
+  statementId2 = [equalCopy statementId];
+  if ((statementId != 0) == (statementId2 == 0))
   {
     goto LABEL_29;
   }
 
-  v7 = [(IFTSchemaIFTSystemPromptResolution *)self statementId];
-  if (v7)
+  statementId3 = [(IFTSchemaIFTSystemPromptResolution *)self statementId];
+  if (statementId3)
   {
-    v8 = v7;
-    v9 = [(IFTSchemaIFTSystemPromptResolution *)self statementId];
-    v10 = [v4 statementId];
-    v11 = [v9 isEqual:v10];
+    v8 = statementId3;
+    statementId4 = [(IFTSchemaIFTSystemPromptResolution *)self statementId];
+    statementId5 = [equalCopy statementId];
+    v11 = [statementId4 isEqual:statementId5];
 
     if (!v11)
     {
@@ -269,20 +269,20 @@
   {
   }
 
-  v5 = [(IFTSchemaIFTSystemPromptResolution *)self userAction];
-  v6 = [v4 userAction];
-  if ((v5 != 0) == (v6 == 0))
+  statementId = [(IFTSchemaIFTSystemPromptResolution *)self userAction];
+  statementId2 = [equalCopy userAction];
+  if ((statementId != 0) == (statementId2 == 0))
   {
     goto LABEL_29;
   }
 
-  v12 = [(IFTSchemaIFTSystemPromptResolution *)self userAction];
-  if (v12)
+  userAction = [(IFTSchemaIFTSystemPromptResolution *)self userAction];
+  if (userAction)
   {
-    v13 = v12;
-    v14 = [(IFTSchemaIFTSystemPromptResolution *)self userAction];
-    v15 = [v4 userAction];
-    v16 = [v14 isEqual:v15];
+    v13 = userAction;
+    userAction2 = [(IFTSchemaIFTSystemPromptResolution *)self userAction];
+    userAction3 = [equalCopy userAction];
+    v16 = [userAction2 isEqual:userAction3];
 
     if (!v16)
     {
@@ -294,7 +294,7 @@
   {
   }
 
-  if ((*&self->_has & 1) != (v4[56] & 1))
+  if ((*&self->_has & 1) != (equalCopy[56] & 1))
   {
     goto LABEL_30;
   }
@@ -302,26 +302,26 @@
   if (*&self->_has)
   {
     inputModality = self->_inputModality;
-    if (inputModality != [v4 inputModality])
+    if (inputModality != [equalCopy inputModality])
     {
       goto LABEL_30;
     }
   }
 
-  v5 = [(IFTSchemaIFTSystemPromptResolution *)self actionEventId];
-  v6 = [v4 actionEventId];
-  if ((v5 != 0) == (v6 == 0))
+  statementId = [(IFTSchemaIFTSystemPromptResolution *)self actionEventId];
+  statementId2 = [equalCopy actionEventId];
+  if ((statementId != 0) == (statementId2 == 0))
   {
     goto LABEL_29;
   }
 
-  v18 = [(IFTSchemaIFTSystemPromptResolution *)self actionEventId];
-  if (v18)
+  actionEventId = [(IFTSchemaIFTSystemPromptResolution *)self actionEventId];
+  if (actionEventId)
   {
-    v19 = v18;
-    v20 = [(IFTSchemaIFTSystemPromptResolution *)self actionEventId];
-    v21 = [v4 actionEventId];
-    v22 = [v20 isEqual:v21];
+    v19 = actionEventId;
+    actionEventId2 = [(IFTSchemaIFTSystemPromptResolution *)self actionEventId];
+    actionEventId3 = [equalCopy actionEventId];
+    v22 = [actionEventId2 isEqual:actionEventId3];
 
     if (!v22)
     {
@@ -333,20 +333,20 @@
   {
   }
 
-  v5 = [(IFTSchemaIFTSystemPromptResolution *)self systemResponseEventId];
-  v6 = [v4 systemResponseEventId];
-  if ((v5 != 0) == (v6 == 0))
+  statementId = [(IFTSchemaIFTSystemPromptResolution *)self systemResponseEventId];
+  statementId2 = [equalCopy systemResponseEventId];
+  if ((statementId != 0) == (statementId2 == 0))
   {
     goto LABEL_29;
   }
 
-  v23 = [(IFTSchemaIFTSystemPromptResolution *)self systemResponseEventId];
-  if (v23)
+  systemResponseEventId = [(IFTSchemaIFTSystemPromptResolution *)self systemResponseEventId];
+  if (systemResponseEventId)
   {
-    v24 = v23;
-    v25 = [(IFTSchemaIFTSystemPromptResolution *)self systemResponseEventId];
-    v26 = [v4 systemResponseEventId];
-    v27 = [v25 isEqual:v26];
+    v24 = systemResponseEventId;
+    systemResponseEventId2 = [(IFTSchemaIFTSystemPromptResolution *)self systemResponseEventId];
+    systemResponseEventId3 = [equalCopy systemResponseEventId];
+    v27 = [systemResponseEventId2 isEqual:systemResponseEventId3];
 
     if (!v27)
     {
@@ -358,12 +358,12 @@
   {
   }
 
-  v5 = [(IFTSchemaIFTSystemPromptResolution *)self input];
-  v6 = [v4 input];
-  if ((v5 != 0) != (v6 == 0))
+  statementId = [(IFTSchemaIFTSystemPromptResolution *)self input];
+  statementId2 = [equalCopy input];
+  if ((statementId != 0) != (statementId2 == 0))
   {
-    v28 = [(IFTSchemaIFTSystemPromptResolution *)self input];
-    if (!v28)
+    input = [(IFTSchemaIFTSystemPromptResolution *)self input];
+    if (!input)
     {
 
 LABEL_33:
@@ -371,10 +371,10 @@ LABEL_33:
       goto LABEL_31;
     }
 
-    v29 = v28;
-    v30 = [(IFTSchemaIFTSystemPromptResolution *)self input];
-    v31 = [v4 input];
-    v32 = [v30 isEqual:v31];
+    v29 = input;
+    input2 = [(IFTSchemaIFTSystemPromptResolution *)self input];
+    input3 = [equalCopy input];
+    v32 = [input2 isEqual:input3];
 
     if (v32)
     {
@@ -394,22 +394,22 @@ LABEL_31:
   return v33;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v15 = a3;
-  v4 = [(IFTSchemaIFTSystemPromptResolution *)self statementId];
+  toCopy = to;
+  statementId = [(IFTSchemaIFTSystemPromptResolution *)self statementId];
 
-  if (v4)
+  if (statementId)
   {
-    v5 = [(IFTSchemaIFTSystemPromptResolution *)self statementId];
+    statementId2 = [(IFTSchemaIFTSystemPromptResolution *)self statementId];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(IFTSchemaIFTSystemPromptResolution *)self userAction];
+  userAction = [(IFTSchemaIFTSystemPromptResolution *)self userAction];
 
-  if (v6)
+  if (userAction)
   {
-    v7 = [(IFTSchemaIFTSystemPromptResolution *)self userAction];
+    userAction2 = [(IFTSchemaIFTSystemPromptResolution *)self userAction];
     PBDataWriterWriteSubmessage();
   }
 
@@ -418,81 +418,81 @@ LABEL_31:
     PBDataWriterWriteInt32Field();
   }
 
-  v8 = [(IFTSchemaIFTSystemPromptResolution *)self actionEventId];
+  actionEventId = [(IFTSchemaIFTSystemPromptResolution *)self actionEventId];
 
-  if (v8)
+  if (actionEventId)
   {
-    v9 = [(IFTSchemaIFTSystemPromptResolution *)self actionEventId];
+    actionEventId2 = [(IFTSchemaIFTSystemPromptResolution *)self actionEventId];
     PBDataWriterWriteSubmessage();
   }
 
-  v10 = [(IFTSchemaIFTSystemPromptResolution *)self systemResponseEventId];
+  systemResponseEventId = [(IFTSchemaIFTSystemPromptResolution *)self systemResponseEventId];
 
-  if (v10)
+  if (systemResponseEventId)
   {
-    v11 = [(IFTSchemaIFTSystemPromptResolution *)self systemResponseEventId];
+    systemResponseEventId2 = [(IFTSchemaIFTSystemPromptResolution *)self systemResponseEventId];
     PBDataWriterWriteSubmessage();
   }
 
-  v12 = [(IFTSchemaIFTSystemPromptResolution *)self input];
+  input = [(IFTSchemaIFTSystemPromptResolution *)self input];
 
-  v13 = v15;
-  if (v12)
+  v13 = toCopy;
+  if (input)
   {
-    v14 = [(IFTSchemaIFTSystemPromptResolution *)self input];
+    input2 = [(IFTSchemaIFTSystemPromptResolution *)self input];
     PBDataWriterWriteSubmessage();
 
-    v13 = v15;
+    v13 = toCopy;
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v22.receiver = self;
   v22.super_class = IFTSchemaIFTSystemPromptResolution;
-  v5 = [(SISchemaInstrumentationMessage *)&v22 applySensitiveConditionsPolicy:v4];
-  v6 = [(IFTSchemaIFTSystemPromptResolution *)self statementId];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v22 applySensitiveConditionsPolicy:policyCopy];
+  statementId = [(IFTSchemaIFTSystemPromptResolution *)self statementId];
+  v7 = [statementId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(IFTSchemaIFTSystemPromptResolution *)self deleteStatementId];
   }
 
-  v9 = [(IFTSchemaIFTSystemPromptResolution *)self userAction];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  userAction = [(IFTSchemaIFTSystemPromptResolution *)self userAction];
+  v10 = [userAction applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(IFTSchemaIFTSystemPromptResolution *)self deleteUserAction];
   }
 
-  v12 = [(IFTSchemaIFTSystemPromptResolution *)self actionEventId];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  actionEventId = [(IFTSchemaIFTSystemPromptResolution *)self actionEventId];
+  v13 = [actionEventId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(IFTSchemaIFTSystemPromptResolution *)self deleteActionEventId];
   }
 
-  v15 = [(IFTSchemaIFTSystemPromptResolution *)self systemResponseEventId];
-  v16 = [v15 applySensitiveConditionsPolicy:v4];
-  v17 = [v16 suppressMessage];
+  systemResponseEventId = [(IFTSchemaIFTSystemPromptResolution *)self systemResponseEventId];
+  v16 = [systemResponseEventId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage4 = [v16 suppressMessage];
 
-  if (v17)
+  if (suppressMessage4)
   {
     [(IFTSchemaIFTSystemPromptResolution *)self deleteSystemResponseEventId];
   }
 
-  v18 = [(IFTSchemaIFTSystemPromptResolution *)self input];
-  v19 = [v18 applySensitiveConditionsPolicy:v4];
-  v20 = [v19 suppressMessage];
+  input = [(IFTSchemaIFTSystemPromptResolution *)self input];
+  v19 = [input applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage5 = [v19 suppressMessage];
 
-  if (v20)
+  if (suppressMessage5)
   {
     [(IFTSchemaIFTSystemPromptResolution *)self deleteInput];
   }

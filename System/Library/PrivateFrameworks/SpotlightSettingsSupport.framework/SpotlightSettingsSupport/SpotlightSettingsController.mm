@@ -3,19 +3,19 @@
 - (id)isAnonymouslyRecordSearchQueriesEnabled;
 - (id)isShowInLookUpEnabled;
 - (id)isShowInSpotlightEnabled;
-- (id)isShowZKWRecentsEnabled:(id)a3;
+- (id)isShowZKWRecentsEnabled:(id)enabled;
 - (id)specifiers;
-- (void)configureAnonymouslyRecordingQueries:(id)a3;
-- (void)configureApplicationListSpecifiersFor:(id)a3;
-- (void)configureSafariSearchEngine:(id)a3;
-- (void)configureSearchAndLoookupSpecifiersFor:(id)a3;
-- (void)refreshSafariSearchEnginePreference:(id)a3;
+- (void)configureAnonymouslyRecordingQueries:(id)queries;
+- (void)configureApplicationListSpecifiersFor:(id)for;
+- (void)configureSafariSearchEngine:(id)engine;
+- (void)configureSearchAndLoookupSpecifiersFor:(id)for;
+- (void)refreshSafariSearchEnginePreference:(id)preference;
 - (void)saveSpotlightSettings;
-- (void)setAnonymouslyRecordSearchQueriesEnabled:(id)a3;
-- (void)setShowInLookUpEnabled:(id)a3;
-- (void)setShowInSpotlightEnabled:(id)a3;
-- (void)setShowZKWRecentsEnabled:(id)a3 forSpecifier:(id)a4;
-- (void)showAboutSearchSuggestionsSheet:(id)a3;
+- (void)setAnonymouslyRecordSearchQueriesEnabled:(id)enabled;
+- (void)setShowInLookUpEnabled:(id)enabled;
+- (void)setShowInSpotlightEnabled:(id)enabled;
+- (void)setShowZKWRecentsEnabled:(id)enabled forSpecifier:(id)specifier;
+- (void)showAboutSearchSuggestionsSheet:(id)sheet;
 - (void)viewDidLoad;
 @end
 
@@ -67,64 +67,64 @@
   return v4;
 }
 
-- (void)configureSearchAndLoookupSpecifiersFor:(id)a3
+- (void)configureSearchAndLoookupSpecifiersFor:(id)for
 {
   v4 = MEMORY[0x277D3FAD8];
-  v5 = a3;
+  forCopy = for;
   v6 = +[SpotlightSettingsController bundle];
   v7 = [v6 localizedStringForKey:@"SEARCH_AND_LOOKUP_GROUP" value:&stru_287C45188 table:@"SpotlightSettings"];
   v32 = [v4 groupSpecifierWithName:v7];
 
   v8 = [MEMORY[0x277D37670] linkWithBundleIdentifier:@"com.apple.onboarding.sirisuggestions"];
-  v9 = [v8 flow];
-  v10 = [v9 localizedButtonTitle];
+  flow = [v8 flow];
+  localizedButtonTitle = [flow localizedButtonTitle];
 
   v11 = MEMORY[0x277CCACA8];
   v12 = +[SpotlightSettingsController bundle];
   v13 = [v12 localizedStringForKey:@"SEARCH_AND_LOOKUP_FOOTER" value:&stru_287C45188 table:@"SpotlightSettings"];
-  v31 = v10;
-  v14 = [v11 stringWithFormat:@"%@ %@", v13, v10];
+  v31 = localizedButtonTitle;
+  v14 = [v11 stringWithFormat:@"%@ %@", v13, localizedButtonTitle];
 
   v15 = objc_opt_class();
   v16 = NSStringFromClass(v15);
   [v32 setObject:v16 forKeyedSubscript:*MEMORY[0x277D3FF48]];
 
   [v32 setObject:v14 forKeyedSubscript:*MEMORY[0x277D3FF70]];
-  v34.location = [v14 rangeOfString:v10];
+  v34.location = [v14 rangeOfString:localizedButtonTitle];
   v17 = NSStringFromRange(v34);
   [v32 setObject:v17 forKeyedSubscript:*MEMORY[0x277D3FF58]];
 
-  v18 = self;
+  selfCopy = self;
   v19 = [MEMORY[0x277CCAE60] valueWithNonretainedObject:self];
   [v32 setObject:v19 forKeyedSubscript:*MEMORY[0x277D3FF68]];
 
   [v32 setObject:@"showAboutSearchSuggestionsSheet:" forKeyedSubscript:*MEMORY[0x277D3FF50]];
-  [v5 addObject:v32];
+  [forCopy addObject:v32];
   v20 = MEMORY[0x277D3FAD8];
   v21 = +[SpotlightSettingsController bundle];
   v22 = [v21 localizedStringForKey:@"SEARCH_AND_LOOKUP_SHOW_RECENTS" value:&stru_287C45188 table:@"SpotlightSettings"];
-  v23 = [v20 preferenceSpecifierNamed:v22 target:v18 set:sel_setShowZKWRecentsEnabled_forSpecifier_ get:sel_isShowZKWRecentsEnabled_ detail:0 cell:6 edit:0];
+  v23 = [v20 preferenceSpecifierNamed:v22 target:selfCopy set:sel_setShowZKWRecentsEnabled_forSpecifier_ get:sel_isShowZKWRecentsEnabled_ detail:0 cell:6 edit:0];
 
   v24 = *MEMORY[0x277D3FF38];
   v25 = MEMORY[0x277CBEC38];
   [v23 setProperty:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277D3FF38]];
   v26 = *MEMORY[0x277D3FD80];
   [v23 setProperty:v25 forKey:*MEMORY[0x277D3FD80]];
-  [v5 addObject:v23];
+  [forCopy addObject:v23];
   v27 = MEMORY[0x277D3FAD8];
   v28 = +[SpotlightSettingsController bundle];
   v29 = [v28 localizedStringForKey:@"SEARCH_AND_LOOKUP_SHOW_RELATED_CONTENT" value:&stru_287C45188 table:@"SpotlightSettings"];
-  v30 = [v27 preferenceSpecifierNamed:v29 target:v18 set:sel_setShowInSpotlightEnabled_ get:sel_isShowInSpotlightEnabled detail:0 cell:6 edit:0];
+  v30 = [v27 preferenceSpecifierNamed:v29 target:selfCopy set:sel_setShowInSpotlightEnabled_ get:sel_isShowInSpotlightEnabled detail:0 cell:6 edit:0];
 
   [v30 setProperty:v25 forKey:v24];
   [v30 setProperty:v25 forKey:v26];
-  [v5 addObject:v30];
+  [forCopy addObject:v30];
 }
 
-- (void)configureSafariSearchEngine:(id)a3
+- (void)configureSafariSearchEngine:(id)engine
 {
   v54[10] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  engineCopy = engine;
   v5 = [MEMORY[0x277D3FAD8] groupSpecifierWithName:0];
   [v5 setIdentifier:@"SEARCH_ENGINE_SETTING_GROUP"];
   v53[0] = *MEMORY[0x277D40170];
@@ -167,26 +167,26 @@
   v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v52 forKeys:&v51 count:1];
   v19 = *(&self->super.super.super.super.super.isa + *MEMORY[0x277D3FD20]);
   v20 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.mobilesafari.settings"];
-  v41 = self;
+  selfCopy = self;
   v21 = SpecifiersFromPlist();
 
   v42 = v5;
   v49 = v5;
   v22 = [MEMORY[0x277CBEA60] arrayWithObjects:&v49 count:{1, 0}];
-  [v4 addObjectsFromArray:v22];
+  [engineCopy addObjectsFromArray:v22];
 
-  v43 = v4;
-  [v4 addObjectsFromArray:v21];
+  v43 = engineCopy;
+  [engineCopy addObjectsFromArray:v21];
   [MEMORY[0x277CDB8A8] loadSystemLanguageProperties];
-  v23 = [MEMORY[0x277CDB8A8] sharedInstance];
-  v24 = [MEMORY[0x277CBEB18] array];
-  v25 = [MEMORY[0x277CBEB18] array];
+  mEMORY[0x277CDB8A8] = [MEMORY[0x277CDB8A8] sharedInstance];
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v26 = [v23 enginesAvailableForUnifiedFieldSearching];
-  v27 = [v26 countByEnumeratingWithState:&v44 objects:v48 count:16];
+  enginesAvailableForUnifiedFieldSearching = [mEMORY[0x277CDB8A8] enginesAvailableForUnifiedFieldSearching];
+  v27 = [enginesAvailableForUnifiedFieldSearching countByEnumeratingWithState:&v44 objects:v48 count:16];
   if (v27)
   {
     v28 = v27;
@@ -197,56 +197,56 @@
       {
         if (*v45 != v29)
         {
-          objc_enumerationMutation(v26);
+          objc_enumerationMutation(enginesAvailableForUnifiedFieldSearching);
         }
 
         v31 = *(*(&v44 + 1) + 8 * i);
-        v32 = [v31 shortName];
-        [v24 addObject:v32];
+        shortName = [v31 shortName];
+        [array addObject:shortName];
 
-        v33 = [v31 displayName];
-        [v25 addObject:v33];
+        displayName = [v31 displayName];
+        [array2 addObject:displayName];
       }
 
-      v28 = [v26 countByEnumeratingWithState:&v44 objects:v48 count:16];
+      v28 = [enginesAvailableForUnifiedFieldSearching countByEnumeratingWithState:&v44 objects:v48 count:16];
     }
 
     while (v28);
   }
 
-  v34 = [v21 firstObject];
-  v35 = [v24 copy];
-  v36 = [v25 copy];
-  v37 = [v25 copy];
-  [v34 setValues:v35 titles:v36 shortTitles:v37];
+  firstObject = [v21 firstObject];
+  v35 = [array copy];
+  v36 = [array2 copy];
+  v37 = [array2 copy];
+  [firstObject setValues:v35 titles:v36 shortTitles:v37];
 
-  v38 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v38 addObserver:v41 selector:sel_refreshSafariSearchEnginePreference_ name:@"SAFARI_SEARCH_ENGINE_PREFERENCE_CHANGED" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:selfCopy selector:sel_refreshSafariSearchEnginePreference_ name:@"SAFARI_SEARCH_ENGINE_PREFERENCE_CHANGED" object:0];
 
   v39 = *MEMORY[0x277D85DE8];
 }
 
-- (void)configureAnonymouslyRecordingQueries:(id)a3
+- (void)configureAnonymouslyRecordingQueries:(id)queries
 {
   v24[2] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277D3FAD8];
-  v5 = a3;
+  queriesCopy = queries;
   v6 = [v4 groupSpecifierWithName:0];
   v7 = [MEMORY[0x277D37670] linkWithBundleIdentifier:@"com.apple.onboarding.sirisuggestions"];
-  v8 = [v7 flow];
-  v9 = [v8 localizedButtonTitle];
+  flow = [v7 flow];
+  localizedButtonTitle = [flow localizedButtonTitle];
 
   v10 = MEMORY[0x277CCACA8];
   v11 = +[SpotlightSettingsController bundle];
   v12 = [v11 localizedStringForKey:@"SEARCH_ALLOW_ANONYMOUS_RECORDS_FOOTER" value:&stru_287C45188 table:@"SpotlightSettings"];
-  v13 = [v10 stringWithFormat:@"%@ %@", v12, v9];
+  v13 = [v10 stringWithFormat:@"%@ %@", v12, localizedButtonTitle];
 
   [v6 setObject:v13 forKeyedSubscript:*MEMORY[0x277D3FF70]];
   v14 = objc_opt_class();
   v15 = NSStringFromClass(v14);
   [v6 setObject:v15 forKeyedSubscript:*MEMORY[0x277D3FF48]];
 
-  v25.location = [v13 rangeOfString:v9];
+  v25.location = [v13 rangeOfString:localizedButtonTitle];
   v16 = NSStringFromRange(v25);
   [v6 setObject:v16 forKeyedSubscript:*MEMORY[0x277D3FF58]];
 
@@ -263,16 +263,16 @@
   v24[0] = v6;
   v24[1] = v21;
   v22 = [MEMORY[0x277CBEA60] arrayWithObjects:v24 count:2];
-  [v5 addObjectsFromArray:v22];
+  [queriesCopy addObjectsFromArray:v22];
 
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)configureApplicationListSpecifiersFor:(id)a3
+- (void)configureApplicationListSpecifiersFor:(id)for
 {
   v64 = *MEMORY[0x277D85DE8];
-  v39 = a3;
-  v41 = self;
+  forCopy = for;
+  selfCopy = self;
   if (!self->_disabledSpotlightBundles)
   {
     v58 = 0;
@@ -341,13 +341,13 @@ LABEL_35:
   self->_disabledSpotlightDomains = v10;
 
 LABEL_11:
-  v12 = [MEMORY[0x277CEBE80] hiddenApplications];
+  hiddenApplications = [MEMORY[0x277CEBE80] hiddenApplications];
   v13 = objc_opt_new();
   v51 = 0u;
   v52 = 0u;
   v49 = 0u;
   v50 = 0u;
-  obj = v12;
+  obj = hiddenApplications;
   v14 = [obj countByEnumeratingWithState:&v49 objects:v63 count:16];
   if (v14)
   {
@@ -361,8 +361,8 @@ LABEL_11:
           objc_enumerationMutation(obj);
         }
 
-        v17 = [*(*(&v49 + 1) + 8 * i) bundleIdentifier];
-        [v13 addObject:v17];
+        bundleIdentifier = [*(*(&v49 + 1) + 8 * i) bundleIdentifier];
+        [v13 addObject:bundleIdentifier];
       }
 
       v14 = [obj countByEnumeratingWithState:&v49 objects:v63 count:16];
@@ -399,12 +399,12 @@ LABEL_11:
   v19 = [MEMORY[0x277CBEB98] setWithArray:v13];
   [v40 minusSet:v19];
 
-  if (([(NSSet *)v41->_installedBundleIDs isEqual:v40]& 1) == 0)
+  if (([(NSSet *)selfCopy->_installedBundleIDs isEqual:v40]& 1) == 0)
   {
-    objc_storeStrong(&v41->_installedBundleIDs, v40);
+    objc_storeStrong(&selfCopy->_installedBundleIDs, v40);
     v20 = [v40 mutableCopy];
     [v20 addObject:@"com.apple.iCloudDriveApp"];
-    v43 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v47 = 0u;
     v48 = 0u;
     v45 = 0u;
@@ -434,7 +434,7 @@ LABEL_11:
             [v28 setProperty:objc_opt_class() forKey:v24];
             [v28 setDetailControllerClass:objc_opt_class()];
             [v28 setProperty:MEMORY[0x277CBEC38] forKey:v25];
-            [v43 addObject:v28];
+            [array addObject:v28];
           }
         }
 
@@ -444,14 +444,14 @@ LABEL_11:
       while (v21);
     }
 
-    v29 = [MEMORY[0x277CBEA60] arrayWithArray:v43];
-    allAppsSpecifiers = v41->_allAppsSpecifiers;
-    v41->_allAppsSpecifiers = v29;
+    v29 = [MEMORY[0x277CBEA60] arrayWithArray:array];
+    allAppsSpecifiers = selfCopy->_allAppsSpecifiers;
+    selfCopy->_allAppsSpecifiers = v29;
   }
 
   v31 = [MEMORY[0x277D3FAD8] groupSpecifierWithName:0];
-  [v39 addObject:v31];
-  v32 = [(NSArray *)v41->_allAppsSpecifiers sortedArrayUsingComparator:&__block_literal_global];
+  [forCopy addObject:v31];
+  v32 = [(NSArray *)selfCopy->_allAppsSpecifiers sortedArrayUsingComparator:&__block_literal_global];
   v33 = MEMORY[0x277D3FAD8];
   v34 = +[SpotlightSettingsController bundle];
   v35 = [v34 localizedStringForKey:@"APP_CLIPS" value:&stru_287C45188 table:@"SpotlightSettings"];
@@ -461,8 +461,8 @@ LABEL_11:
   [v36 setDetailControllerClass:objc_opt_class()];
   [v36 setProperty:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277D40020]];
   [v36 setProperty:@"com.apple.graphic-icon.app-clips" forKey:*MEMORY[0x277D3FFD8]];
-  [v39 addObject:v36];
-  [v39 addObjectsFromArray:v32];
+  [forCopy addObject:v36];
+  [forCopy addObjectsFromArray:v32];
 
   v37 = *MEMORY[0x277D85DE8];
 }
@@ -477,35 +477,35 @@ uint64_t __69__SpotlightSettingsController_configureApplicationListSpecifiersFor
   return v7;
 }
 
-- (void)showAboutSearchSuggestionsSheet:(id)a3
+- (void)showAboutSearchSuggestionsSheet:(id)sheet
 {
   v4 = [MEMORY[0x277D37678] presenterForPrivacySplashWithIdentifier:@"com.apple.onboarding.sirisuggestions"];
   [v4 setPresentingViewController:self];
   [v4 present];
 }
 
-- (id)isShowZKWRecentsEnabled:(id)a3
+- (id)isShowZKWRecentsEnabled:(id)enabled
 {
   v3 = MEMORY[0x277CCABB0];
   v4 = CFPreferencesCopyAppValue(@"SuggestionsSpotlightZKWRecentsEnabled", @"com.apple.suggestions");
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 BOOLValue];
+    bOOLValue = [v4 BOOLValue];
   }
 
   else
   {
-    v6 = 1;
+    bOOLValue = 1;
   }
 
-  return [v3 numberWithBool:v6];
+  return [v3 numberWithBool:bOOLValue];
 }
 
-- (void)setShowZKWRecentsEnabled:(id)a3 forSpecifier:(id)a4
+- (void)setShowZKWRecentsEnabled:(id)enabled forSpecifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
-  CFPreferencesSetAppValue(@"SuggestionsSpotlightZKWRecentsEnabled", [MEMORY[0x277CCABB0] numberWithBool:v4], @"com.apple.suggestions");
+  bOOLValue = [enabled BOOLValue];
+  CFPreferencesSetAppValue(@"SuggestionsSpotlightZKWRecentsEnabled", [MEMORY[0x277CCABB0] numberWithBool:bOOLValue], @"com.apple.suggestions");
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
 
   CFNotificationCenterPostNotification(DarwinNotifyCenter, @"com.apple.suggestions.settingsChanged", 0, 0, 1u);
@@ -543,10 +543,10 @@ uint64_t __69__SpotlightSettingsController_configureApplicationListSpecifiersFor
   return v4;
 }
 
-- (void)setShowInLookUpEnabled:(id)a3
+- (void)setShowInLookUpEnabled:(id)enabled
 {
   v5[1] = *MEMORY[0x277D85DE8];
-  CFPreferencesSetAppValue(@"ShowInLookupEnabled", a3, @"com.apple.spotlightui");
+  CFPreferencesSetAppValue(@"ShowInLookupEnabled", enabled, @"com.apple.spotlightui");
   v5[0] = @"ShowInLookupEnabled";
   v3 = [MEMORY[0x277CBEA60] arrayWithObjects:v5 count:1];
   [SpotlightSettingsUtilities updateSearchPreferencesModificationForKeys:v3];
@@ -573,11 +573,11 @@ uint64_t __69__SpotlightSettingsController_configureApplicationListSpecifiersFor
   return [v4 numberWithBool:v3];
 }
 
-- (void)setShowInSpotlightEnabled:(id)a3
+- (void)setShowInSpotlightEnabled:(id)enabled
 {
-  v4 = [a3 intValue];
+  intValue = [enabled intValue];
   disabledSpotlightDomains = self->_disabledSpotlightDomains;
-  if (v4)
+  if (intValue)
   {
     [(NSMutableSet *)disabledSpotlightDomains removeObject:@"DOMAIN_ZKWS"];
     [(NSMutableSet *)self->_disabledSpotlightDomains removeObject:@"DOMAIN_PARSEC"];
@@ -592,7 +592,7 @@ uint64_t __69__SpotlightSettingsController_configureApplicationListSpecifiersFor
   [(SpotlightSettingsController *)self saveSpotlightSettings];
 }
 
-- (void)refreshSafariSearchEnginePreference:(id)a3
+- (void)refreshSafariSearchEnginePreference:(id)preference
 {
   v4 = [(SpotlightSettingsController *)self specifierForID:@"SEARCH_ENGINE_SETTING_GROUP"];
   [(SpotlightSettingsController *)self reloadSpecifier:v4 animated:1];
@@ -600,17 +600,17 @@ uint64_t __69__SpotlightSettingsController_configureApplicationListSpecifiersFor
 
 - (id)isAnonymouslyRecordSearchQueriesEnabled
 {
-  v2 = [MEMORY[0x277CEF368] sharedPreferences];
-  v3 = [v2 getSearchQueriesDataSharingStatus];
+  mEMORY[0x277CEF368] = [MEMORY[0x277CEF368] sharedPreferences];
+  getSearchQueriesDataSharingStatus = [mEMORY[0x277CEF368] getSearchQueriesDataSharingStatus];
 
   v4 = MEMORY[0x277CCABB0];
 
-  return [v4 numberWithInt:v3 < 2];
+  return [v4 numberWithInt:getSearchQueriesDataSharingStatus < 2];
 }
 
-- (void)setAnonymouslyRecordSearchQueriesEnabled:(id)a3
+- (void)setAnonymouslyRecordSearchQueriesEnabled:(id)enabled
 {
-  if ([a3 BOOLValue])
+  if ([enabled BOOLValue])
   {
     v3 = 1;
   }
@@ -620,8 +620,8 @@ uint64_t __69__SpotlightSettingsController_configureApplicationListSpecifiersFor
     v3 = 2;
   }
 
-  v4 = [MEMORY[0x277CEF368] sharedPreferences];
-  [v4 setSearchQueriesDataSharingStatus:v3 completion:&__block_literal_global_197];
+  mEMORY[0x277CEF368] = [MEMORY[0x277CEF368] sharedPreferences];
+  [mEMORY[0x277CEF368] setSearchQueriesDataSharingStatus:v3 completion:&__block_literal_global_197];
 }
 
 @end

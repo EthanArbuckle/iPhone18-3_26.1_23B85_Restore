@@ -1,5 +1,5 @@
 @interface FCGoalProgressDebouncer
-- (FCGoalProgressDebouncer)initWithServiceQueue:(id)a3;
+- (FCGoalProgressDebouncer)initWithServiceQueue:(id)queue;
 - (FCGoalProgressDebouncerDelegate)delegate;
 - (void)_handleTimerFired;
 - (void)debounce;
@@ -43,16 +43,16 @@
   dispatch_source_set_timer(self->_timer, v8, 0x1DCD64FFC4653600uLL, 0);
 }
 
-- (FCGoalProgressDebouncer)initWithServiceQueue:(id)a3
+- (FCGoalProgressDebouncer)initWithServiceQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v9.receiver = self;
   v9.super_class = FCGoalProgressDebouncer;
   v6 = [(FCGoalProgressDebouncer *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_serviceQueue, a3);
+    objc_storeStrong(&v6->_serviceQueue, queue);
   }
 
   return v7;

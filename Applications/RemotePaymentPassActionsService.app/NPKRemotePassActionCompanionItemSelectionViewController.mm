@@ -1,36 +1,36 @@
 @interface NPKRemotePassActionCompanionItemSelectionViewController
-+ (id)_fallbackHeaderImageForMessage:(id)a3;
-+ (id)_makeSelectItemViewForAction:(id)a3;
++ (id)_fallbackHeaderImageForMessage:(id)message;
++ (id)_makeSelectItemViewForAction:(id)action;
 - (BOOL)_shouldHideNonEssentialUI;
-- (NPKRemotePassActionCompanionItemSelectionViewController)initWithRequest:(id)a3 contact:(id)a4 delegate:(id)a5;
+- (NPKRemotePassActionCompanionItemSelectionViewController)initWithRequest:(id)request contact:(id)contact delegate:(id)delegate;
 - (NPKRemotePassActionCompanionItemSelectionViewControllerDelegate)delegate;
 - (id)_action;
-- (id)_contactImageForContact:(id)a3;
-- (void)_cancelButtonTapped:(id)a3;
-- (void)_confirmButtonTapped:(id)a3;
+- (id)_contactImageForContact:(id)contact;
+- (void)_cancelButtonTapped:(id)tapped;
+- (void)_confirmButtonTapped:(id)tapped;
 - (void)_fetchRemoteContentIfNeeded;
 - (void)_reloadSelectItemView;
 - (void)_setUpAppearance;
 - (void)_setUpNavigationItem;
 - (void)_setUpPassView;
-- (void)_setUpSelectItemViewForCommutePlanField:(id)a3;
+- (void)_setUpSelectItemViewForCommutePlanField:(id)field;
 - (void)_setUpTitleLabel;
-- (void)_showGenericErrorAlert:(id)a3;
-- (void)_showLoadingView:(BOOL)a3;
+- (void)_showGenericErrorAlert:(id)alert;
+- (void)_showLoadingView:(BOOL)view;
 - (void)_updateViewVisibility;
-- (void)setContact:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setContact:(id)contact;
+- (void)traitCollectionDidChange:(id)change;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation NPKRemotePassActionCompanionItemSelectionViewController
 
-- (NPKRemotePassActionCompanionItemSelectionViewController)initWithRequest:(id)a3 contact:(id)a4 delegate:(id)a5
+- (NPKRemotePassActionCompanionItemSelectionViewController)initWithRequest:(id)request contact:(id)contact delegate:(id)delegate
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  requestCopy = request;
+  contactCopy = contact;
+  delegateCopy = delegate;
   v34.receiver = self;
   v34.super_class = NPKRemotePassActionCompanionItemSelectionViewController;
   v12 = [(NPKRemotePassActionCompanionItemSelectionViewController *)&v34 initWithNibName:0 bundle:0];
@@ -41,28 +41,28 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v13 = [v9 action];
-  if ([v13 type] == 2)
+  action = [requestCopy action];
+  if ([action type] == 2)
   {
-    objc_storeStrong(&v12->_request, a3);
-    objc_storeWeak(&v12->_delegate, v11);
-    v14 = [v9 image];
-    v15 = v14;
-    if (v14)
+    objc_storeStrong(&v12->_request, request);
+    objc_storeWeak(&v12->_delegate, delegateCopy);
+    image = [requestCopy image];
+    v15 = image;
+    if (image)
     {
-      v16 = v14;
+      v16 = image;
     }
 
     else
     {
-      v16 = [objc_opt_class() _fallbackHeaderImageForMessage:v9];
+      v16 = [objc_opt_class() _fallbackHeaderImageForMessage:requestCopy];
     }
 
     v23 = v16;
 
     v24 = [NPKRemotePassActionPassView alloc];
-    v25 = [(NPKRemotePassActionCompanionItemSelectionViewController *)v12 view];
-    [v25 bounds];
+    view = [(NPKRemotePassActionCompanionItemSelectionViewController *)v12 view];
+    [view bounds];
     v26 = [(NPKRemotePassActionPassView *)v24 initWithPassImage:v23 frame:?];
     passView = v12->_passView;
     v12->_passView = v26;
@@ -71,16 +71,16 @@ LABEL_12:
     titleLabel = v12->_titleLabel;
     v12->_titleLabel = v28;
 
-    v30 = [objc_opt_class() _makeSelectItemViewForAction:v13];
+    v30 = [objc_opt_class() _makeSelectItemViewForAction:action];
     selectItemView = v12->_selectItemView;
     v12->_selectItemView = v30;
 
     [(NPKRemotePassActionCompanionItemSelectionViewController *)v12 _setUpAppearance];
     [(NPKRemotePassActionCompanionItemSelectionViewController *)v12 _setUpPassView];
-    [(NPKRemotePassActionCompanionItemSelectionViewController *)v12 setContact:v10];
+    [(NPKRemotePassActionCompanionItemSelectionViewController *)v12 setContact:contactCopy];
     [(NPKRemotePassActionCompanionItemSelectionViewController *)v12 _setUpTitleLabel];
-    v32 = [v9 commutePlanField];
-    [(NPKRemotePassActionCompanionItemSelectionViewController *)v12 _setUpSelectItemViewForCommutePlanField:v32];
+    commutePlanField = [requestCopy commutePlanField];
+    [(NPKRemotePassActionCompanionItemSelectionViewController *)v12 _setUpSelectItemViewForCommutePlanField:commutePlanField];
 
     goto LABEL_12;
   }
@@ -94,13 +94,13 @@ LABEL_12:
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
       v20 = objc_opt_class();
-      v21 = [v13 type];
+      type = [action type];
       *buf = 138412802;
       v36 = v20;
       v37 = 2112;
-      v38 = v13;
+      v38 = action;
       v39 = 2048;
-      v40 = v21;
+      v40 = type;
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_ERROR, "Error: Fail to init object of class %@ with action: %@ actionType: %lu", buf, 0x20u);
     }
   }
@@ -124,13 +124,13 @@ LABEL_13:
   v28.receiver = self;
   v28.super_class = NPKRemotePassActionCompanionItemSelectionViewController;
   [(NPKRemotePassActionCompanionItemSelectionViewController *)&v28 viewWillLayoutSubviews];
-  v3 = [(NPKRemotePassActionCompanionItemSelectionViewController *)self view];
-  [v3 bounds];
+  view = [(NPKRemotePassActionCompanionItemSelectionViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  [v3 safeAreaInsets];
+  [view safeAreaInsets];
   v13 = v12 + 10.0;
   x = v5 + v13;
   y = v7 + v16;
@@ -178,21 +178,21 @@ LABEL_13:
   [(PKPerformActionLoadingView *)self->_loadingView setFrame:x, y, width, height];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v10.receiver = self;
   v10.super_class = NPKRemotePassActionCompanionItemSelectionViewController;
-  [(NPKRemotePassActionCompanionItemSelectionViewController *)&v10 traitCollectionDidChange:v4];
-  v5 = [(NPKRemotePassActionCompanionItemSelectionViewController *)self traitCollection];
-  v6 = [v5 verticalSizeClass];
-  if (v6 == [v4 verticalSizeClass])
+  [(NPKRemotePassActionCompanionItemSelectionViewController *)&v10 traitCollectionDidChange:changeCopy];
+  traitCollection = [(NPKRemotePassActionCompanionItemSelectionViewController *)self traitCollection];
+  verticalSizeClass = [traitCollection verticalSizeClass];
+  if (verticalSizeClass == [changeCopy verticalSizeClass])
   {
-    v7 = [(NPKRemotePassActionCompanionItemSelectionViewController *)self traitCollection];
-    v8 = [v7 horizontalSizeClass];
-    v9 = [v4 horizontalSizeClass];
+    traitCollection2 = [(NPKRemotePassActionCompanionItemSelectionViewController *)self traitCollection];
+    horizontalSizeClass = [traitCollection2 horizontalSizeClass];
+    horizontalSizeClass2 = [changeCopy horizontalSizeClass];
 
-    if (v8 == v9)
+    if (horizontalSizeClass == horizontalSizeClass2)
     {
       goto LABEL_6;
     }
@@ -206,30 +206,30 @@ LABEL_13:
 LABEL_6:
 }
 
-- (void)setContact:(id)a3
+- (void)setContact:(id)contact
 {
-  objc_storeStrong(&self->_contact, a3);
-  v5 = a3;
-  v6 = [(NPKRemotePassActionCompanionItemSelectionViewController *)self _contactImageForContact:v5];
+  objc_storeStrong(&self->_contact, contact);
+  contactCopy = contact;
+  v6 = [(NPKRemotePassActionCompanionItemSelectionViewController *)self _contactImageForContact:contactCopy];
   [(NPKRemotePassActionPassView *)self->_passView setContactImage:v6];
 }
 
 - (void)_setUpAppearance
 {
   v4 = +[UIColor systemBackgroundColor];
-  v3 = [(NPKRemotePassActionCompanionItemSelectionViewController *)self view];
-  [v3 setBackgroundColor:v4];
+  view = [(NPKRemotePassActionCompanionItemSelectionViewController *)self view];
+  [view setBackgroundColor:v4];
 }
 
 - (void)_setUpNavigationItem
 {
-  v13 = [(NPKRemotePassActionCompanionItemSelectionViewController *)self navigationItem];
-  v3 = [(NPKRemotePassActionSelectItemRequest *)self->_request action];
-  v4 = [v3 title];
-  v5 = v4;
-  if (v4)
+  navigationItem = [(NPKRemotePassActionCompanionItemSelectionViewController *)self navigationItem];
+  action = [(NPKRemotePassActionSelectItemRequest *)self->_request action];
+  title = [action title];
+  v5 = title;
+  if (title)
   {
-    v6 = v4;
+    v6 = title;
   }
 
   else
@@ -238,17 +238,17 @@ LABEL_6:
     v6 = [v7 localizedStringForKey:@"RENEW_REQUEST_TITLE" value:&stru_100010628 table:@"RemotePaymentPassActionsService"];
   }
 
-  [v13 setTitle:v6];
-  v8 = [(NPKRemotePassActionSelectItemRequest *)self->_request action];
-  v9 = [v8 confirmationTitle];
+  [navigationItem setTitle:v6];
+  action2 = [(NPKRemotePassActionSelectItemRequest *)self->_request action];
+  confirmationTitle = [action2 confirmationTitle];
 
-  v10 = [[UIBarButtonItem alloc] initWithTitle:v9 style:0 target:self action:"_confirmButtonTapped:"];
+  v10 = [[UIBarButtonItem alloc] initWithTitle:confirmationTitle style:0 target:self action:"_confirmButtonTapped:"];
   confirmBarButtonItem = self->_confirmBarButtonItem;
   self->_confirmBarButtonItem = v10;
 
-  [v13 setRightBarButtonItem:self->_confirmBarButtonItem];
+  [navigationItem setRightBarButtonItem:self->_confirmBarButtonItem];
   v12 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:1 target:self action:"_cancelButtonTapped:"];
-  [v13 setLeftBarButtonItem:v12];
+  [navigationItem setLeftBarButtonItem:v12];
 }
 
 - (void)_setUpPassView
@@ -256,8 +256,8 @@ LABEL_6:
   if (self->_passView)
   {
     [(NPKRemotePassActionPassView *)self->_passView setHidden:[(NPKRemotePassActionCompanionItemSelectionViewController *)self _shouldHideNonEssentialUI]];
-    v3 = [(NPKRemotePassActionCompanionItemSelectionViewController *)self view];
-    [v3 addSubview:self->_passView];
+    view = [(NPKRemotePassActionCompanionItemSelectionViewController *)self view];
+    [view addSubview:self->_passView];
   }
 }
 
@@ -265,48 +265,48 @@ LABEL_6:
 {
   if (self->_titleLabel)
   {
-    v3 = [objc_opt_class() _primaryFont];
-    [(UILabel *)self->_titleLabel setFont:v3];
+    _primaryFont = [objc_opt_class() _primaryFont];
+    [(UILabel *)self->_titleLabel setFont:_primaryFont];
 
-    v4 = [objc_opt_class() _primaryTextColor];
-    [(UILabel *)self->_titleLabel setTextColor:v4];
+    _primaryTextColor = [objc_opt_class() _primaryTextColor];
+    [(UILabel *)self->_titleLabel setTextColor:_primaryTextColor];
 
     [(UILabel *)self->_titleLabel setTextAlignment:1];
     [(UILabel *)self->_titleLabel setNumberOfLines:3];
-    v5 = [(NPKRemotePassActionSelectItemRequest *)self->_request action];
-    v6 = [v5 title];
-    [(UILabel *)self->_titleLabel setText:v6];
+    action = [(NPKRemotePassActionSelectItemRequest *)self->_request action];
+    title = [action title];
+    [(UILabel *)self->_titleLabel setText:title];
 
     [(UILabel *)self->_titleLabel setHidden:[(NPKRemotePassActionCompanionItemSelectionViewController *)self _shouldHideNonEssentialUI]];
-    v7 = [(NPKRemotePassActionCompanionItemSelectionViewController *)self view];
-    [v7 addSubview:self->_titleLabel];
+    view = [(NPKRemotePassActionCompanionItemSelectionViewController *)self view];
+    [view addSubview:self->_titleLabel];
   }
 }
 
-- (void)_setUpSelectItemViewForCommutePlanField:(id)a3
+- (void)_setUpSelectItemViewForCommutePlanField:(id)field
 {
   selectItemView = self->_selectItemView;
   if (selectItemView)
   {
     [(PKPerformActionSelectItemView *)selectItemView setDelegate:self];
-    v5 = [(NPKRemotePassActionCompanionItemSelectionViewController *)self view];
-    [v5 addSubview:self->_selectItemView];
+    view = [(NPKRemotePassActionCompanionItemSelectionViewController *)self view];
+    [view addSubview:self->_selectItemView];
   }
 }
 
-+ (id)_makeSelectItemViewForAction:(id)a3
++ (id)_makeSelectItemViewForAction:(id)action
 {
-  v3 = a3;
-  v4 = [[PKPerformActionSelectItemView alloc] initWithPass:0 action:v3 paymentDataProvider:0];
+  actionCopy = action;
+  v4 = [[PKPerformActionSelectItemView alloc] initWithPass:0 action:actionCopy paymentDataProvider:0];
 
   return v4;
 }
 
-- (void)_confirmButtonTapped:(id)a3
+- (void)_confirmButtonTapped:(id)tapped
 {
-  v4 = a3;
-  v5 = [(PKPerformActionSelectItemView *)self->_selectItemView transactionAmount];
-  v6 = [(PKPerformActionSelectItemView *)self->_selectItemView transactionCurrency];
+  tappedCopy = tapped;
+  transactionAmount = [(PKPerformActionSelectItemView *)self->_selectItemView transactionAmount];
+  transactionCurrency = [(PKPerformActionSelectItemView *)self->_selectItemView transactionCurrency];
   v7 = PKCurrencyAmountMake();
 
   objc_initWeak(&location, self);
@@ -324,45 +324,45 @@ LABEL_6:
   objc_destroyWeak(&location);
 }
 
-- (void)_cancelButtonTapped:(id)a3
+- (void)_cancelButtonTapped:(id)tapped
 {
-  v5 = [(NPKRemotePassActionCompanionItemSelectionViewController *)self delegate];
-  v4 = [(NPKRemotePassActionSelectItemRequest *)self->_request identifier];
-  [v5 selectItemViewController:self didCancelForRequestIdentifier:v4];
+  delegate = [(NPKRemotePassActionCompanionItemSelectionViewController *)self delegate];
+  identifier = [(NPKRemotePassActionSelectItemRequest *)self->_request identifier];
+  [delegate selectItemViewController:self didCancelForRequestIdentifier:identifier];
 }
 
 - (id)_action
 {
-  v3 = [(NPKRemotePassActionSelectItemRequest *)self->_request action];
-  v4 = [v3 remoteContentConfiguration];
+  action = [(NPKRemotePassActionSelectItemRequest *)self->_request action];
+  remoteContentConfiguration = [action remoteContentConfiguration];
 
-  if (v4 && (remoteAction = self->_remoteAction) != 0)
+  if (remoteContentConfiguration && (remoteAction = self->_remoteAction) != 0)
   {
-    v6 = remoteAction;
+    action2 = remoteAction;
   }
 
   else
   {
-    v6 = [(NPKRemotePassActionSelectItemRequest *)self->_request action];
+    action2 = [(NPKRemotePassActionSelectItemRequest *)self->_request action];
   }
 
-  return v6;
+  return action2;
 }
 
-+ (id)_fallbackHeaderImageForMessage:(id)a3
++ (id)_fallbackHeaderImageForMessage:(id)message
 {
-  v3 = [a3 cardType];
-  if (v3 <= 2)
+  cardType = [message cardType];
+  if (cardType <= 2)
   {
-    v4 = [UIImage imageNamed:*(&off_100010510 + v3)];
+    v4 = [UIImage imageNamed:*(&off_100010510 + cardType)];
   }
 
   return v4;
 }
 
-- (id)_contactImageForContact:(id)a3
+- (id)_contactImageForContact:(id)contact
 {
-  v4 = a3;
+  contactCopy = contact;
   passView = self->_passView;
   [objc_opt_class() contactImageSize];
   v7 = v6;
@@ -384,9 +384,9 @@ LABEL_6:
 
   v9 = v8;
   _Block_object_dispose(&v24, 8);
-  v10 = [v4 givenName];
-  v11 = [v4 familyName];
-  v12 = [v8 profilePictureForContact:v4 serverImageData:0 firstName:v10 lastName:v11 diameter:v7];
+  givenName = [contactCopy givenName];
+  familyName = [contactCopy familyName];
+  v12 = [v8 profilePictureForContact:contactCopy serverImageData:0 firstName:givenName lastName:familyName diameter:v7];
 
   if (!v12 || ([UIImage imageWithData:v12], (v13 = objc_claimAutoreleasedReturnValue()) == 0))
   {
@@ -399,7 +399,7 @@ LABEL_6:
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
         LODWORD(buf) = 138412290;
-        *(&buf + 4) = v4;
+        *(&buf + 4) = contactCopy;
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Warning: No photo data found; falling back to monogram for contact: %@", &buf, 0xCu);
       }
     }
@@ -414,19 +414,19 @@ LABEL_6:
       v17 = qword_100016DC0;
     }
 
-    v20 = [v17 monogramForContact:v4];
+    v20 = [v17 monogramForContact:contactCopy];
     v21 = v20;
     if (v20)
     {
-      v22 = v20;
+      silhouetteMonogram = v20;
     }
 
     else
     {
-      v22 = [qword_100016DC0 silhouetteMonogram];
+      silhouetteMonogram = [qword_100016DC0 silhouetteMonogram];
     }
 
-    v13 = v22;
+    v13 = silhouetteMonogram;
   }
 
   return v13;
@@ -439,21 +439,21 @@ LABEL_6:
     return 1;
   }
 
-  v3 = [(NPKRemotePassActionCompanionItemSelectionViewController *)self traitCollection];
-  v4 = [v3 verticalSizeClass] == 1;
+  traitCollection = [(NPKRemotePassActionCompanionItemSelectionViewController *)self traitCollection];
+  v4 = [traitCollection verticalSizeClass] == 1;
 
   return v4;
 }
 
 - (void)_updateViewVisibility
 {
-  v3 = [(NPKRemotePassActionCompanionItemSelectionViewController *)self _shouldHideNonEssentialUI];
-  if (v3 == [(NPKRemotePassActionPassView *)self->_passView isHidden])
+  _shouldHideNonEssentialUI = [(NPKRemotePassActionCompanionItemSelectionViewController *)self _shouldHideNonEssentialUI];
+  if (_shouldHideNonEssentialUI == [(NPKRemotePassActionPassView *)self->_passView isHidden])
   {
-    v4 = [(UILabel *)self->_titleLabel isHidden];
-    [(NPKRemotePassActionPassView *)self->_passView setHidden:v3];
-    [(UILabel *)self->_titleLabel setHidden:v3];
-    if (v3 == v4)
+    isHidden = [(UILabel *)self->_titleLabel isHidden];
+    [(NPKRemotePassActionPassView *)self->_passView setHidden:_shouldHideNonEssentialUI];
+    [(UILabel *)self->_titleLabel setHidden:_shouldHideNonEssentialUI];
+    if (_shouldHideNonEssentialUI == isHidden)
     {
       return;
     }
@@ -461,19 +461,19 @@ LABEL_6:
 
   else
   {
-    [(NPKRemotePassActionPassView *)self->_passView setHidden:v3];
-    [(UILabel *)self->_titleLabel setHidden:v3];
+    [(NPKRemotePassActionPassView *)self->_passView setHidden:_shouldHideNonEssentialUI];
+    [(UILabel *)self->_titleLabel setHidden:_shouldHideNonEssentialUI];
   }
 
-  v5 = [(NPKRemotePassActionCompanionItemSelectionViewController *)self viewIfLoaded];
-  [v5 setNeedsLayout];
+  viewIfLoaded = [(NPKRemotePassActionCompanionItemSelectionViewController *)self viewIfLoaded];
+  [viewIfLoaded setNeedsLayout];
 }
 
 - (void)_fetchRemoteContentIfNeeded
 {
-  v25 = [(NPKRemotePassActionSelectItemRequest *)self->_request action];
-  v3 = [v25 remoteContentConfiguration];
-  if (v3)
+  action = [(NPKRemotePassActionSelectItemRequest *)self->_request action];
+  remoteContentConfiguration = [action remoteContentConfiguration];
+  if (remoteContentConfiguration)
   {
     remoteAction = self->_remoteAction;
 
@@ -490,9 +490,9 @@ LABEL_6:
       v7 = pk_RemotePassAction_log();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
-        v8 = [(NPKRemotePassActionSelectItemRequest *)self->_request action];
+        action2 = [(NPKRemotePassActionSelectItemRequest *)self->_request action];
         *buf = 138412290;
-        v28 = v8;
+        v28 = action2;
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Notice: Fetching remote content for action %@", buf, 0xCu);
       }
     }
@@ -514,20 +514,20 @@ LABEL_6:
       }
     }
 
-    v13 = [(NPKRemotePassActionSelectItemRequest *)self->_request deviceIdentifier];
-    v14 = [(NPKRemotePassActionSelectItemRequest *)self->_request passTypeIdentifier];
-    v15 = [(NPKRemotePassActionSelectItemRequest *)self->_request passSerialNumber];
-    v16 = v15;
-    if (v13 && v14 && v15)
+    deviceIdentifier = [(NPKRemotePassActionSelectItemRequest *)self->_request deviceIdentifier];
+    passTypeIdentifier = [(NPKRemotePassActionSelectItemRequest *)self->_request passTypeIdentifier];
+    passSerialNumber = [(NPKRemotePassActionSelectItemRequest *)self->_request passSerialNumber];
+    v16 = passSerialNumber;
+    if (deviceIdentifier && passTypeIdentifier && passSerialNumber)
     {
       [(NPKRemotePassActionCompanionItemSelectionViewController *)self _showLoadingView:1];
-      v17 = [(NPKRemotePassActionSelectItemRequest *)self->_request action];
+      action3 = [(NPKRemotePassActionSelectItemRequest *)self->_request action];
       v26[0] = _NSConcreteStackBlock;
       v26[1] = 3221225472;
       v26[2] = sub_10000470C;
       v26[3] = &unk_1000104B0;
       v26[4] = self;
-      [v9 passActionWithRemoteContentPassAction:v17 forDeviceIdentifier:v13 passTypeIdentifier:v14 passSerialNumber:v16 completion:v26];
+      [v9 passActionWithRemoteContentPassAction:action3 forDeviceIdentifier:deviceIdentifier passTypeIdentifier:passTypeIdentifier passSerialNumber:v16 completion:v26];
     }
 
     else
@@ -540,13 +540,13 @@ LABEL_6:
         goto LABEL_31;
       }
 
-      v17 = pk_RemotePassAction_log();
-      if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+      action3 = pk_RemotePassAction_log();
+      if (os_log_type_enabled(action3, OS_LOG_TYPE_ERROR))
       {
-        v20 = [(NPKRemotePassActionSelectItemRequest *)self->_request action];
-        v21 = v20;
+        action4 = [(NPKRemotePassActionSelectItemRequest *)self->_request action];
+        v21 = action4;
         v22 = @"NO";
-        if (v13)
+        if (deviceIdentifier)
         {
           v23 = @"YES";
         }
@@ -557,8 +557,8 @@ LABEL_6:
         }
 
         *buf = 138413058;
-        v28 = v20;
-        if (v14)
+        v28 = action4;
+        if (passTypeIdentifier)
         {
           v24 = @"YES";
         }
@@ -579,7 +579,7 @@ LABEL_6:
         v32 = v24;
         v33 = 2112;
         v34 = v22;
-        _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "Error: Unable to load remote content for action %@! Remote content needed, but insufficient information exists to obtain it.\nHas deviceID? %@.\nHas passTypeIdentifier? %@.\nHas passSerialNumber? %@", buf, 0x2Au);
+        _os_log_impl(&_mh_execute_header, action3, OS_LOG_TYPE_ERROR, "Error: Unable to load remote content for action %@! Remote content needed, but insufficient information exists to obtain it.\nHas deviceID? %@.\nHas passTypeIdentifier? %@.\nHas passSerialNumber? %@", buf, 0x2Au);
       }
     }
 
@@ -588,10 +588,10 @@ LABEL_31:
   }
 }
 
-- (void)_showLoadingView:(BOOL)a3
+- (void)_showLoadingView:(BOOL)view
 {
   loadingView = self->_loadingView;
-  if (a3)
+  if (view)
   {
     if (!loadingView)
     {
@@ -602,8 +602,8 @@ LABEL_31:
       self->_loadingView = v6;
     }
 
-    v8 = [(NPKRemotePassActionCompanionItemSelectionViewController *)self view];
-    [v8 addSubview:self->_loadingView];
+    view = [(NPKRemotePassActionCompanionItemSelectionViewController *)self view];
+    [view addSubview:self->_loadingView];
 
     [(PKPerformActionSelectItemView *)self->_selectItemView setDelegate:0];
     [(PKPerformActionSelectItemView *)self->_selectItemView removeFromSuperview];
@@ -623,33 +623,33 @@ LABEL_31:
   [(PKPerformActionSelectItemView *)self->_selectItemView setDelegate:0];
   [(PKPerformActionSelectItemView *)self->_selectItemView removeFromSuperview];
   v3 = objc_opt_class();
-  v4 = [(NPKRemotePassActionCompanionItemSelectionViewController *)self _action];
-  v5 = [v3 _makeSelectItemViewForAction:v4];
+  _action = [(NPKRemotePassActionCompanionItemSelectionViewController *)self _action];
+  v5 = [v3 _makeSelectItemViewForAction:_action];
   selectItemView = self->_selectItemView;
   self->_selectItemView = v5;
 
   [(PKPerformActionSelectItemView *)self->_selectItemView setDelegate:self];
-  v7 = [(NPKRemotePassActionCompanionItemSelectionViewController *)self view];
-  [v7 insertSubview:self->_selectItemView belowSubview:self->_passView];
+  view = [(NPKRemotePassActionCompanionItemSelectionViewController *)self view];
+  [view insertSubview:self->_selectItemView belowSubview:self->_passView];
 }
 
-- (void)_showGenericErrorAlert:(id)a3
+- (void)_showGenericErrorAlert:(id)alert
 {
-  v4 = a3;
-  v5 = [(NPKRemotePassActionSelectItemRequest *)self->_request action];
-  v6 = [PKPaymentPass displayableErrorForAction:v5 andReason:1];
+  alertCopy = alert;
+  action = [(NPKRemotePassActionSelectItemRequest *)self->_request action];
+  v6 = [PKPaymentPass displayableErrorForAction:action andReason:1];
 
-  v7 = [v6 localizedDescription];
-  v8 = [v6 localizedRecoverySuggestion];
-  v9 = [UIAlertController alertControllerWithTitle:v7 message:v8 preferredStyle:1];
+  localizedDescription = [v6 localizedDescription];
+  localizedRecoverySuggestion = [v6 localizedRecoverySuggestion];
+  v9 = [UIAlertController alertControllerWithTitle:localizedDescription message:localizedRecoverySuggestion preferredStyle:1];
 
   v10 = PKLocalizedPaymentString(@"PASS_ACTION_UNAVAILABLE_OK_BUTTON_TITLE");
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100004C80;
   v13[3] = &unk_1000104D8;
-  v14 = v4;
-  v11 = v4;
+  v14 = alertCopy;
+  v11 = alertCopy;
   v12 = [UIAlertAction actionWithTitle:v10 style:1 handler:v13];
   [v9 addAction:v12];
 

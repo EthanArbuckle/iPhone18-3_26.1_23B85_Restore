@@ -1,7 +1,7 @@
 @interface ExtendedLaunchToForYouTestCase
 - (NSString)testName;
 - (_TtC8StocksUI30ExtendedLaunchToForYouTestCase)init;
-- (void)runTestWithContext:(id)a3 completion:(id)a4;
+- (void)runTestWithContext:(id)context completion:(id)completion;
 @end
 
 @implementation ExtendedLaunchToForYouTestCase
@@ -14,13 +14,13 @@
   return v2;
 }
 
-- (void)runTestWithContext:(id)a3 completion:(id)a4
+- (void)runTestWithContext:(id)context completion:(id)completion
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(completion);
   v6 = swift_allocObject();
   *(v6 + 16) = v5;
   sub_220839348();
-  v7 = self;
+  selfCopy = self;
   sub_220888FBC();
   v8 = swift_allocObject();
   *(v8 + 16) = sub_2204C9E0C;

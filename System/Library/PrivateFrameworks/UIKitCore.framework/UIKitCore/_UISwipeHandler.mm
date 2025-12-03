@@ -1,28 +1,28 @@
 @interface _UISwipeHandler
 - ($A7B7FA971CD029BAA4A09478E9E1AEDA)currentSwipeConfig;
-- ($B18736ADBBD355D2E16F2B3CA0B0347D)_currentSwipeInfoWithTargetOffset:(SEL)a3 animated:(double)a4 usingSpringWithStiffness:(BOOL)a5;
-- (BOOL)_delegateWantsToDismissOnTouchDownForGestureRecognizer:(id)a3;
-- (BOOL)_swipeRecognizerBegan:(id)a3;
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (BOOL)gestureRecognizerShouldDismissForTouchUp:(id)a3;
+- ($B18736ADBBD355D2E16F2B3CA0B0347D)_currentSwipeInfoWithTargetOffset:(SEL)offset animated:(double)animated usingSpringWithStiffness:(BOOL)stiffness;
+- (BOOL)_delegateWantsToDismissOnTouchDownForGestureRecognizer:(id)recognizer;
+- (BOOL)_swipeRecognizerBegan:(id)began;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (BOOL)gestureRecognizerShouldDismissForTouchUp:(id)up;
 - (BOOL)isInteracting;
 - (UISwipeActionController)swipeController;
-- (_UISwipeHandler)initWithSwipeController:(id)a3;
-- (unint64_t)_directionForGestureRecognizer:(id)a3;
+- (_UISwipeHandler)initWithSwipeController:(id)controller;
+- (unint64_t)_directionForGestureRecognizer:(id)recognizer;
 - (void)_cancelExistingSwipe;
-- (void)_cancelExistingSwipeForGestureBeganIfNecessary:(id)a3;
-- (void)_dismissalRecognizerDidRecognize:(id)a3;
-- (void)_moveSwipedItemToOffset:(double)a3 animated:(BOOL)a4 usingSpringWithStiffness:(double)a5 isTracking:(BOOL)a6;
+- (void)_cancelExistingSwipeForGestureBeganIfNecessary:(id)necessary;
+- (void)_dismissalRecognizerDidRecognize:(id)recognize;
+- (void)_moveSwipedItemToOffset:(double)offset animated:(BOOL)animated usingSpringWithStiffness:(double)stiffness isTracking:(BOOL)tracking;
 - (void)_setUp;
-- (void)_swipeRecognizerChanged:(id)a3;
-- (void)_swipeRecognizerDidRecognize:(id)a3;
-- (void)_swipeRecognizerEnded:(id)a3 wasCancelled:(BOOL)a4;
+- (void)_swipeRecognizerChanged:(id)changed;
+- (void)_swipeRecognizerDidRecognize:(id)recognize;
+- (void)_swipeRecognizerEnded:(id)ended wasCancelled:(BOOL)cancelled;
 - (void)dealloc;
-- (void)initiateSwipeWithDirection:(unint64_t)a3 configuration:(id)a4 location:(CGPoint)a5 userInitiated:(BOOL)a6;
+- (void)initiateSwipeWithDirection:(unint64_t)direction configuration:(id)configuration location:(CGPoint)location userInitiated:(BOOL)initiated;
 - (void)resetSwipe;
-- (void)setActive:(BOOL)a3;
-- (void)updateCurrentSwipeConfig:(id *)a3;
+- (void)setActive:(BOOL)active;
+- (void)updateCurrentSwipeConfig:(id *)config;
 @end
 
 @implementation _UISwipeHandler
@@ -36,10 +36,10 @@
   [(UIPanGestureRecognizer *)self->_swipeActionPanRecognizer setDelegate:self];
   [(UIPanGestureRecognizer *)self->_swipeActionPanRecognizer _setHysteresis:25.0];
   [(UIGestureRecognizer *)self->_swipeActionPanRecognizer setAllowedTouchTypes:&unk_1EFE2D870];
-  v5 = [(_UISwipeHandler *)self swipeController];
-  v6 = [v5 swipeActionHost];
-  v7 = [(_UISwipeHandler *)self swipeController];
-  v14 = [v6 gestureRecognizerViewForSwipeActionController:v7];
+  swipeController = [(_UISwipeHandler *)self swipeController];
+  swipeActionHost = [swipeController swipeActionHost];
+  swipeController2 = [(_UISwipeHandler *)self swipeController];
+  v14 = [swipeActionHost gestureRecognizerViewForSwipeActionController:swipeController2];
 
   [v14 addGestureRecognizer:self->_swipeActionPanRecognizer];
   v8 = [[_UISwipeDismissalGestureRecognizer alloc] initWithTarget:self action:sel__dismissalRecognizerDidRecognize_];
@@ -76,16 +76,16 @@
   [(UIGestureRecognizer *)self->_dismissalGestureRecognizer setEnabled:0];
 }
 
-- (_UISwipeHandler)initWithSwipeController:(id)a3
+- (_UISwipeHandler)initWithSwipeController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v8.receiver = self;
   v8.super_class = _UISwipeHandler;
   v5 = [(_UISwipeHandler *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(_UISwipeHandler *)v5 setSwipeController:v4];
+    [(_UISwipeHandler *)v5 setSwipeController:controllerCopy];
     [(_UISwipeHandler *)v6 _setUp];
   }
 
@@ -94,11 +94,11 @@
 
 - (void)dealloc
 {
-  v3 = [(UIGestureRecognizer *)self->_swipeActionPanRecognizer view];
-  [v3 removeGestureRecognizer:self->_swipeActionPanRecognizer];
+  view = [(UIGestureRecognizer *)self->_swipeActionPanRecognizer view];
+  [view removeGestureRecognizer:self->_swipeActionPanRecognizer];
 
-  v4 = [(UIGestureRecognizer *)self->_dismissalGestureRecognizer view];
-  [v4 removeGestureRecognizer:self->_dismissalGestureRecognizer];
+  view2 = [(UIGestureRecognizer *)self->_dismissalGestureRecognizer view];
+  [view2 removeGestureRecognizer:self->_dismissalGestureRecognizer];
 
   v5.receiver = self;
   v5.super_class = _UISwipeHandler;
@@ -107,32 +107,32 @@
 
 - (BOOL)isInteracting
 {
-  v3 = [(UIGestureRecognizer *)self->_swipeActionPanRecognizer state];
-  if (v3 != UIGestureRecognizerStateBegan)
+  state = [(UIGestureRecognizer *)self->_swipeActionPanRecognizer state];
+  if (state != UIGestureRecognizerStateBegan)
   {
-    LOBYTE(v3) = [(UIGestureRecognizer *)self->_swipeActionPanRecognizer state]== UIGestureRecognizerStateChanged;
+    LOBYTE(state) = [(UIGestureRecognizer *)self->_swipeActionPanRecognizer state]== UIGestureRecognizerStateChanged;
   }
 
-  return v3;
+  return state;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a4;
-  if (self->_dismissalGestureRecognizer == a3)
+  gestureRecognizerCopy = gestureRecognizer;
+  if (self->_dismissalGestureRecognizer == recognizer)
   {
-    v8 = [(_UISwipeHandler *)self swipeController];
-    v9 = [v8 containerView];
+    swipeController = [(_UISwipeHandler *)self swipeController];
+    containerView = [swipeController containerView];
 
-    if (self->_swipeActionPanRecognizer == v6)
+    if (self->_swipeActionPanRecognizer == gestureRecognizerCopy)
     {
       v7 = 1;
     }
 
     else
     {
-      v10 = [(UIGestureRecognizer *)v6 view];
-      v7 = v10 == v9;
+      view = [(UIGestureRecognizer *)gestureRecognizerCopy view];
+      v7 = view == containerView;
     }
   }
 
@@ -144,20 +144,20 @@
   return v7;
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = [(UIGestureRecognizer *)v4 view];
-  [(UIPanGestureRecognizer *)v4 locationInView:v5];
+  beginCopy = begin;
+  view = [(UIGestureRecognizer *)beginCopy view];
+  [(UIPanGestureRecognizer *)beginCopy locationInView:view];
   v7 = v6;
   v9 = v8;
 
-  if (self->_swipeActionPanRecognizer == v4)
+  if (self->_swipeActionPanRecognizer == beginCopy)
   {
-    v12 = [(_UISwipeHandler *)self _directionForGestureRecognizer:v4];
+    v12 = [(_UISwipeHandler *)self _directionForGestureRecognizer:beginCopy];
 
-    v13 = [(_UISwipeHandler *)self swipeController];
-    v14 = [v13 swipeHandler:self mayBeginSwipeAtLocation:v12 withProposedDirection:{v7, v9}];
+    swipeController = [(_UISwipeHandler *)self swipeController];
+    v14 = [swipeController swipeHandler:self mayBeginSwipeAtLocation:v12 withProposedDirection:{v7, v9}];
 
     return v14;
   }
@@ -166,15 +166,15 @@
   {
     dismissalGestureRecognizer = self->_dismissalGestureRecognizer;
 
-    if (dismissalGestureRecognizer == v4)
+    if (dismissalGestureRecognizer == beginCopy)
     {
-      v16 = [(_UISwipeHandler *)self swipeController];
-      v17 = [v16 touchAtLocationShouldDismissSwipedItem:1 isTouchUp:{v7, v9}];
+      swipeController2 = [(_UISwipeHandler *)self swipeController];
+      v17 = [swipeController2 touchAtLocationShouldDismissSwipedItem:1 isTouchUp:{v7, v9}];
 
-      v18 = [(_UISwipeHandler *)self swipeController];
-      LOBYTE(v16) = [v18 touchAtLocationShouldDismissSwipedItem:0 isTouchUp:{v7, v9}];
+      swipeController3 = [(_UISwipeHandler *)self swipeController];
+      LOBYTE(swipeController2) = [swipeController3 touchAtLocationShouldDismissSwipedItem:0 isTouchUp:{v7, v9}];
 
-      v11 = v16 | v17;
+      v11 = swipeController2 | v17;
     }
 
     else
@@ -186,32 +186,32 @@
   }
 }
 
-- (BOOL)gestureRecognizerShouldDismissForTouchUp:(id)a3
+- (BOOL)gestureRecognizerShouldDismissForTouchUp:(id)up
 {
-  v4 = a3;
-  v5 = [v4 view];
-  [v4 locationInView:v5];
+  upCopy = up;
+  view = [upCopy view];
+  [upCopy locationInView:view];
   v7 = v6;
   v9 = v8;
 
-  v10 = [(_UISwipeHandler *)self swipeController];
-  LOBYTE(v4) = [v10 touchAtLocationShouldDismissSwipedItem:1 isTouchUp:{v7, v9}];
+  swipeController = [(_UISwipeHandler *)self swipeController];
+  LOBYTE(upCopy) = [swipeController touchAtLocationShouldDismissSwipedItem:1 isTouchUp:{v7, v9}];
 
-  return v4;
+  return upCopy;
 }
 
-- (void)_dismissalRecognizerDidRecognize:(id)a3
+- (void)_dismissalRecognizerDidRecognize:(id)recognize
 {
-  if ([a3 state] == 3 && self->_currentSwipeConfig.direction)
+  if ([recognize state] == 3 && self->_currentSwipeConfig.direction)
   {
 
     [(_UISwipeHandler *)self _cancelExistingSwipe];
   }
 }
 
-- (unint64_t)_directionForGestureRecognizer:(id)a3
+- (unint64_t)_directionForGestureRecognizer:(id)recognizer
 {
-  if (_UISwipeActionGestureRecognizerEffectiveVelocity(a3) < 0.0)
+  if (_UISwipeActionGestureRecognizerEffectiveVelocity(recognizer) < 0.0)
   {
     return 1;
   }
@@ -222,49 +222,49 @@
   }
 }
 
-- (void)_swipeRecognizerDidRecognize:(id)a3
+- (void)_swipeRecognizerDidRecognize:(id)recognize
 {
-  v4 = a3;
+  recognizeCopy = recognize;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __48___UISwipeHandler__swipeRecognizerDidRecognize___block_invoke;
   aBlock[3] = &unk_1E7116620;
   aBlock[4] = self;
-  v5 = v4;
+  v5 = recognizeCopy;
   v14 = v5;
   v6 = _Block_copy(aBlock);
-  v7 = [v5 state];
-  if (v7 > 2)
+  state = [v5 state];
+  if (state > 2)
   {
-    if (v7 == 3)
+    if (state == 3)
     {
       if (!v6[2](v6))
       {
         goto LABEL_14;
       }
 
-      v8 = self;
+      selfCopy2 = self;
       v9 = v5;
       v10 = 0;
     }
 
     else
     {
-      if (v7 != 4 || !v6[2](v6))
+      if (state != 4 || !v6[2](v6))
       {
         goto LABEL_14;
       }
 
-      v8 = self;
+      selfCopy2 = self;
       v9 = v5;
       v10 = 1;
     }
 
-    [(_UISwipeHandler *)v8 _swipeRecognizerEnded:v9 wasCancelled:v10];
+    [(_UISwipeHandler *)selfCopy2 _swipeRecognizerEnded:v9 wasCancelled:v10];
     goto LABEL_14;
   }
 
-  if (v7 == 1)
+  if (state == 1)
   {
     *&self->_flags &= 0xFCu;
     block[0] = MEMORY[0x1E69E9820];
@@ -275,7 +275,7 @@
     dispatch_async(MEMORY[0x1E69E96A0], block);
   }
 
-  else if (v7 == 2 && v6[2](v6))
+  else if (state == 2 && v6[2](v6))
   {
     [(_UISwipeHandler *)self _swipeRecognizerChanged:v5];
   }
@@ -283,17 +283,17 @@
 LABEL_14:
 }
 
-- (BOOL)_swipeRecognizerBegan:(id)a3
+- (BOOL)_swipeRecognizerBegan:(id)began
 {
-  v4 = a3;
-  [(_UISwipeHandler *)self _cancelExistingSwipeForGestureBeganIfNecessary:v4];
+  beganCopy = began;
+  [(_UISwipeHandler *)self _cancelExistingSwipeForGestureBeganIfNecessary:beganCopy];
   direction = self->_currentSwipeConfig.direction;
-  v6 = [(_UISwipeHandler *)self swipeController];
-  v7 = [v6 currentSwipeOccurrence];
+  swipeController = [(_UISwipeHandler *)self swipeController];
+  currentSwipeOccurrence = [swipeController currentSwipeOccurrence];
 
-  if (direction && v7)
+  if (direction && currentSwipeOccurrence)
   {
-    if (([v7 state] & 0xFFFFFFFFFFFFFFFELL) == 4)
+    if (([currentSwipeOccurrence state] & 0xFFFFFFFFFFFFFFFELL) == 4)
     {
       v8 = 0;
       goto LABEL_10;
@@ -302,9 +302,9 @@ LABEL_14:
 
   else if (!direction)
   {
-    v9 = [(_UISwipeHandler *)self _directionForGestureRecognizer:v4];
-    v10 = [v4 view];
-    [v4 locationInView:v10];
+    v9 = [(_UISwipeHandler *)self _directionForGestureRecognizer:beganCopy];
+    view = [beganCopy view];
+    [beganCopy locationInView:view];
     v12 = v11;
     v14 = v13;
 
@@ -313,11 +313,11 @@ LABEL_14:
 
   if (self->_currentSwipeConfig.direction)
   {
-    v15 = [(_UISwipeHandler *)self swipeController];
-    [v15 swipeHandlerDidBeginSwipe:self];
+    swipeController2 = [(_UISwipeHandler *)self swipeController];
+    [swipeController2 swipeHandlerDidBeginSwipe:self];
 
-    v16 = [(_UISwipeHandler *)self swipeFeedbackGenerator];
-    [v16 activateWithCompletionBlock:0];
+    swipeFeedbackGenerator = [(_UISwipeHandler *)self swipeFeedbackGenerator];
+    [swipeFeedbackGenerator activateWithCompletionBlock:0];
 
     [(UIGestureRecognizer *)self->_dismissalGestureRecognizer setEnabled:0];
   }
@@ -328,16 +328,16 @@ LABEL_10:
   return v8;
 }
 
-- (void)_swipeRecognizerChanged:(id)a3
+- (void)_swipeRecognizerChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   if (!self->_currentSwipeConfig.direction)
   {
     goto LABEL_61;
   }
 
-  v53 = v4;
-  v5 = _UISwipeActionGestureRecognizerEffectiveTranslation(v4);
+  v53 = changedCopy;
+  v5 = _UISwipeActionGestureRecognizerEffectiveTranslation(changedCopy);
   v6 = [(UIPanGestureRecognizer *)v53 _scrollDeviceCategory]- 1;
   if (v6 <= 4 && ((0x17u >> v6) & 1) != 0)
   {
@@ -345,8 +345,8 @@ LABEL_10:
   }
 
   v7 = v5 + self->_initialTranslation + self->_confirmationTranslationAdjustment;
-  v8 = [v53 view];
-  [v53 locationInView:v8];
+  view = [v53 view];
+  [v53 locationInView:view];
   v10 = v9;
   v12 = v11;
 
@@ -379,10 +379,10 @@ LABEL_12:
 
       if (self->_currentSwipeConfig.primaryActionIsDestructive)
       {
-        v20 = [(_UISwipeHandler *)self swipeController];
-        v21 = [v20 swipeActionHost];
-        v22 = [(_UISwipeHandler *)self swipeController];
-        v23 = [v21 itemContainerViewForSwipeActionController:v22];
+        swipeController = [(_UISwipeHandler *)self swipeController];
+        swipeActionHost = [swipeController swipeActionHost];
+        swipeController2 = [(_UISwipeHandler *)self swipeController];
+        v23 = [swipeActionHost itemContainerViewForSwipeActionController:swipeController2];
         v24 = self->_currentSwipeConfig.direction;
         v25 = self->_currentSwipeConfig.confirmationThreshold;
         v26 = v23;
@@ -393,8 +393,8 @@ LABEL_12:
         v29 = CGRectGetWidth(v56);
         if (v29 >= 414.0)
         {
-          v31 = [v28 traitCollection];
-          v32 = [v31 userInterfaceIdiom] == 6;
+          traitCollection = [v28 traitCollection];
+          v32 = [traitCollection userInterfaceIdiom] == 6;
 
           v30 = dbl_18A682750[v32];
         }
@@ -486,8 +486,8 @@ LABEL_42:
       {
         v45 = &_UIStatesFeedbackGeneratorSwipeActionStateConfirm;
 LABEL_47:
-        v46 = [(_UISwipeHandler *)self swipeFeedbackGenerator];
-        [v46 transitionToState:*v45 ended:1 atLocation:{v10, v12}];
+        swipeFeedbackGenerator = [(_UISwipeHandler *)self swipeFeedbackGenerator];
+        [swipeFeedbackGenerator transitionToState:*v45 ended:1 atLocation:{v10, v12}];
 
         goto LABEL_48;
       }
@@ -545,43 +545,43 @@ LABEL_49:
   }
 
   [(_UISwipeHandler *)self _moveSwipedItemToOffset:v17 animated:1 usingSpringWithStiffness:v7 isTracking:1.0];
-  v4 = v53;
+  changedCopy = v53;
 LABEL_61:
 }
 
-- (void)_swipeRecognizerEnded:(id)a3 wasCancelled:(BOOL)a4
+- (void)_swipeRecognizerEnded:(id)ended wasCancelled:(BOOL)cancelled
 {
   if (self->_currentSwipeConfig.direction)
   {
     self->_confirmationTranslationAdjustment = 0.0;
-    v6 = a3;
-    v7 = _UISwipeActionGestureRecognizerEffectiveVelocity(v6);
-    v8 = _UISwipeActionGestureRecognizerEffectiveTranslation(v6);
-    v9 = [(UIPanGestureRecognizer *)v6 _scrollDeviceCategory];
+    endedCopy = ended;
+    v7 = _UISwipeActionGestureRecognizerEffectiveVelocity(endedCopy);
+    v8 = _UISwipeActionGestureRecognizerEffectiveTranslation(endedCopy);
+    _scrollDeviceCategory = [(UIPanGestureRecognizer *)endedCopy _scrollDeviceCategory];
 
-    v10 = v9 - 1;
-    if (v9 - 1) <= 4 && ((0x17u >> v10))
+    v10 = _scrollDeviceCategory - 1;
+    if (_scrollDeviceCategory - 1) <= 4 && ((0x17u >> v10))
     {
       v8 = v8 / dbl_18A682760[v10] * fabs(self->_currentSwipeConfig.confirmationThreshold);
     }
 
-    if (!a4 && self->_currentSwipeState == 1)
+    if (!cancelled && self->_currentSwipeState == 1)
     {
       self->_currentSwipeState = 2;
       v23 = 0u;
       v24 = 0u;
       v22 = 0u;
       [(_UISwipeHandler *)self _currentSwipeInfoWithTargetOffset:1 animated:0.0 usingSpringWithStiffness:1.0];
-      v11 = [(_UISwipeHandler *)self swipeController];
+      swipeController = [(_UISwipeHandler *)self swipeController];
       v19 = v22;
       v20 = v23;
       v21 = v24;
-      [v11 swipeHandler:self didConfirmSwipeWithInfo:&v19];
+      [swipeController swipeHandler:self didConfirmSwipeWithInfo:&v19];
 LABEL_20:
 
 LABEL_21:
-      v18 = [(_UISwipeHandler *)self swipeFeedbackGenerator];
-      [v18 deactivate];
+      swipeFeedbackGenerator = [(_UISwipeHandler *)self swipeFeedbackGenerator];
+      [swipeFeedbackGenerator deactivate];
 
       return;
     }
@@ -645,20 +645,20 @@ LABEL_19:
     v24 = 0u;
     v22 = 0u;
     [(_UISwipeHandler *)self _currentSwipeInfoWithTargetOffset:1 animated:0.0 usingSpringWithStiffness:1.0];
-    v11 = [(_UISwipeHandler *)self swipeController];
+    swipeController = [(_UISwipeHandler *)self swipeController];
     v19 = v22;
     v20 = v23;
     v21 = v24;
-    [v11 swipeHandler:self didGenerateSwipeWithInfo:&v19 isTracking:0];
+    [swipeController swipeHandler:self didGenerateSwipeWithInfo:&v19 isTracking:0];
     goto LABEL_20;
   }
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
-  if (self->_active != a3)
+  if (self->_active != active)
   {
-    self->_active = a3;
+    self->_active = active;
     [(UIGestureRecognizer *)self->_swipeActionPanRecognizer setEnabled:?];
     if (!self->_active)
     {
@@ -669,22 +669,22 @@ LABEL_19:
   }
 }
 
-- (void)initiateSwipeWithDirection:(unint64_t)a3 configuration:(id)a4 location:(CGPoint)a5 userInitiated:(BOOL)a6
+- (void)initiateSwipeWithDirection:(unint64_t)direction configuration:(id)configuration location:(CGPoint)location userInitiated:(BOOL)initiated
 {
-  y = a5.y;
-  x = a5.x;
-  v11 = a4;
-  v12 = [(_UISwipeHandler *)self swipeController];
-  [v12 prepareForSwipeDirection:a3 startingAtTouchLocation:{x, y}];
+  y = location.y;
+  x = location.x;
+  configurationCopy = configuration;
+  swipeController = [(_UISwipeHandler *)self swipeController];
+  [swipeController prepareForSwipeDirection:direction startingAtTouchLocation:{x, y}];
 
   self->_resetSwipeWhileInitiating = 0;
   v15 = 0u;
   v16 = 0u;
-  v13 = [(_UISwipeHandler *)self swipeController];
-  v14 = v13;
-  if (v13)
+  swipeController2 = [(_UISwipeHandler *)self swipeController];
+  v14 = swipeController2;
+  if (swipeController2)
   {
-    [v13 configureForSwipeDirection:a3 configuration:v11 startingAtTouchLocation:{x, y}];
+    [swipeController2 configureForSwipeDirection:direction configuration:configurationCopy startingAtTouchLocation:{x, y}];
   }
 
   else
@@ -699,18 +699,18 @@ LABEL_19:
     *&self->_currentSwipeConfig.openThreshold = v16;
   }
 
-  if (!a6 && self->_currentSwipeConfig.direction)
+  if (!initiated && self->_currentSwipeConfig.direction)
   {
     [(UIGestureRecognizer *)self->_dismissalGestureRecognizer setEnabled:1];
     self->_initialTranslation = self->_currentSwipeConfig.openThreshold;
   }
 }
 
-- (void)_cancelExistingSwipeForGestureBeganIfNecessary:(id)a3
+- (void)_cancelExistingSwipeForGestureBeganIfNecessary:(id)necessary
 {
-  v4 = a3;
+  necessaryCopy = necessary;
   [(_UISwipeHandler *)self currentSwipeConfig];
-  if (v5 && [(_UISwipeHandler *)self _delegateWantsToDismissOnTouchDownForGestureRecognizer:v4])
+  if (v5 && [(_UISwipeHandler *)self _delegateWantsToDismissOnTouchDownForGestureRecognizer:necessaryCopy])
   {
     [(_UISwipeHandler *)self _cancelExistingSwipe];
   }
@@ -718,26 +718,26 @@ LABEL_19:
 
 - (void)_cancelExistingSwipe
 {
-  v3 = [(_UISwipeHandler *)self swipeController];
-  v2 = [v3 currentSwipeOccurrence];
-  if (([v2 state] & 0xFFFFFFFFFFFFFFFELL) != 4)
+  swipeController = [(_UISwipeHandler *)self swipeController];
+  currentSwipeOccurrence = [swipeController currentSwipeOccurrence];
+  if (([currentSwipeOccurrence state] & 0xFFFFFFFFFFFFFFFELL) != 4)
   {
-    [v3 resetSwipedItemAnimated:1 completion:0];
+    [swipeController resetSwipedItemAnimated:1 completion:0];
   }
 }
 
-- (BOOL)_delegateWantsToDismissOnTouchDownForGestureRecognizer:(id)a3
+- (BOOL)_delegateWantsToDismissOnTouchDownForGestureRecognizer:(id)recognizer
 {
-  v4 = a3;
-  v5 = [v4 view];
-  [v4 locationInView:v5];
+  recognizerCopy = recognizer;
+  view = [recognizerCopy view];
+  [recognizerCopy locationInView:view];
   v7 = v6;
   v9 = v8;
 
-  v10 = [(_UISwipeHandler *)self swipeController];
-  LOBYTE(v4) = [v10 touchAtLocationShouldDismissSwipedItem:0 isTouchUp:{v7, v9}];
+  swipeController = [(_UISwipeHandler *)self swipeController];
+  LOBYTE(recognizerCopy) = [swipeController touchAtLocationShouldDismissSwipedItem:0 isTouchUp:{v7, v9}];
 
-  return v4;
+  return recognizerCopy;
 }
 
 - ($A7B7FA971CD029BAA4A09478E9E1AEDA)currentSwipeConfig
@@ -748,30 +748,30 @@ LABEL_19:
   return self;
 }
 
-- (void)updateCurrentSwipeConfig:(id *)a3
+- (void)updateCurrentSwipeConfig:(id *)config
 {
-  v3 = *&a3->var3;
-  *&self->_currentSwipeConfig.direction = *&a3->var0;
+  v3 = *&config->var3;
+  *&self->_currentSwipeConfig.direction = *&config->var0;
   *&self->_currentSwipeConfig.openThreshold = v3;
 }
 
-- ($B18736ADBBD355D2E16F2B3CA0B0347D)_currentSwipeInfoWithTargetOffset:(SEL)a3 animated:(double)a4 usingSpringWithStiffness:(BOOL)a5
+- ($B18736ADBBD355D2E16F2B3CA0B0347D)_currentSwipeInfoWithTargetOffset:(SEL)offset animated:(double)animated usingSpringWithStiffness:(BOOL)stiffness
 {
   *&retstr->var2 = 0u;
   *&retstr->var4 = 0u;
-  retstr->var2 = a5;
+  retstr->var2 = stiffness;
   currentSwipeState = self->_currentSwipeState;
   retstr->var0 = self->_currentSwipeConfig.direction;
   retstr->var1 = currentSwipeState;
-  v11 = [(_UISwipeHandler *)self swipeController];
-  v12 = [(_UISwipeHandler *)self swipeController];
-  v13 = [v12 swipedIndexPath];
-  v32 = [v11 _swipedViewForItemAtIndexPath:v13];
+  swipeController = [(_UISwipeHandler *)self swipeController];
+  swipeController2 = [(_UISwipeHandler *)self swipeController];
+  swipedIndexPath = [swipeController2 swipedIndexPath];
+  v32 = [swipeController _swipedViewForItemAtIndexPath:swipedIndexPath];
 
   if (v32)
   {
-    v14 = [(_UISwipeHandler *)self swipeController];
-    [v14 swipeHandlerRestingFrame:self];
+    swipeController3 = [(_UISwipeHandler *)self swipeController];
+    [swipeController3 swipeHandlerRestingFrame:self];
     v16 = v15;
     v18 = v17;
     v20 = v19;
@@ -788,11 +788,11 @@ LABEL_19:
       v35.origin.y = v18;
       v35.size.width = v20;
       v35.size.height = v22;
-      v24 = CGRectGetMidX(v35) + a4;
+      v24 = CGRectGetMidX(v35) + animated;
       v25 = _UISwipeActionGestureRecognizerEffectiveVelocity(self->_swipeActionPanRecognizer);
-      v26 = [v32 layer];
-      v27 = [v26 presentationLayer];
-      [v27 position];
+      layer = [v32 layer];
+      presentationLayer = [layer presentationLayer];
+      [presentationLayer position];
       v29 = v28;
 
       v30 = -(v24 - v29);
@@ -807,7 +807,7 @@ LABEL_19:
       }
     }
 
-    retstr->var3 = a4;
+    retstr->var3 = animated;
     retstr->var4 = v23;
     retstr->var5 = a6;
   }
@@ -815,18 +815,18 @@ LABEL_19:
   return result;
 }
 
-- (void)_moveSwipedItemToOffset:(double)a3 animated:(BOOL)a4 usingSpringWithStiffness:(double)a5 isTracking:(BOOL)a6
+- (void)_moveSwipedItemToOffset:(double)offset animated:(BOOL)animated usingSpringWithStiffness:(double)stiffness isTracking:(BOOL)tracking
 {
-  v6 = a6;
+  trackingCopy = tracking;
   v11 = 0u;
   v12 = 0u;
   v10 = 0u;
-  [(_UISwipeHandler *)self _currentSwipeInfoWithTargetOffset:a4 animated:a3 usingSpringWithStiffness:a5];
-  v8 = [(_UISwipeHandler *)self swipeController];
+  [(_UISwipeHandler *)self _currentSwipeInfoWithTargetOffset:animated animated:offset usingSpringWithStiffness:stiffness];
+  swipeController = [(_UISwipeHandler *)self swipeController];
   v9[0] = v10;
   v9[1] = v11;
   v9[2] = v12;
-  [v8 swipeHandler:self didGenerateSwipeWithInfo:v9 isTracking:v6];
+  [swipeController swipeHandler:self didGenerateSwipeWithInfo:v9 isTracking:trackingCopy];
 }
 
 @end

@@ -1,30 +1,30 @@
 @interface STUnique
-+ (BOOL)addHistoryToken:(id)a3 toMetadataForStore:(id)a4 error:(id *)a5;
-+ (Class)_internalClassForSerializableClassName:(id)a3;
++ (BOOL)addHistoryToken:(id)token toMetadataForStore:(id)store error:(id *)error;
++ (Class)_internalClassForSerializableClassName:(id)name;
 + (id)cloudToLocalMapping;
-+ (id)historyTokenFromStore:(id)a3;
++ (id)historyTokenFromStore:(id)store;
 + (id)localToCloudMapping;
 + (id)mirroredEntityNames;
-- (BOOL)areLocalChangesInterestingWithError:(id *)a3;
-- (BOOL)migrateWithError:(id *)a3;
-- (BOOL)migrateWithExportNeeded:(BOOL *)a3 error:(id *)a4;
-- (STUnique)initWithPersistenceController:(id)a3;
-- (void)newResolveConflictsBetweenLocalDeltas:(id)a3 cloudDeltas:(id)a4;
-- (void)resolveConflictsBetweenLocalDeltas:(id)a3 cloudDeltas:(id)a4;
+- (BOOL)areLocalChangesInterestingWithError:(id *)error;
+- (BOOL)migrateWithError:(id *)error;
+- (BOOL)migrateWithExportNeeded:(BOOL *)needed error:(id *)error;
+- (STUnique)initWithPersistenceController:(id)controller;
+- (void)newResolveConflictsBetweenLocalDeltas:(id)deltas cloudDeltas:(id)cloudDeltas;
+- (void)resolveConflictsBetweenLocalDeltas:(id)deltas cloudDeltas:(id)cloudDeltas;
 @end
 
 @implementation STUnique
 
-- (STUnique)initWithPersistenceController:(id)a3
+- (STUnique)initWithPersistenceController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v9.receiver = self;
   v9.super_class = STUnique;
   v6 = [(STUnique *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_persistenceController, a3);
+    objc_storeStrong(&v6->_persistenceController, controller);
   }
 
   return v7;
@@ -54,7 +54,7 @@ void __31__STUnique_localToCloudMapping__block_invoke()
   block[1] = 3221225472;
   block[2] = __31__STUnique_cloudToLocalMapping__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (cloudToLocalMapping_oneTime != -1)
   {
     dispatch_once(&cloudToLocalMapping_oneTime, block);
@@ -112,7 +112,7 @@ void __31__STUnique_cloudToLocalMapping__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __31__STUnique_mirroredEntityNames__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (mirroredEntityNames_oneTime != -1)
   {
     dispatch_once(&mirroredEntityNames_oneTime, block);
@@ -165,16 +165,16 @@ void __31__STUnique_mirroredEntityNames__block_invoke(uint64_t a1)
   v11 = *MEMORY[0x1E69E9840];
 }
 
-+ (Class)_internalClassForSerializableClassName:(id)a3
++ (Class)_internalClassForSerializableClassName:(id)name
 {
   v3 = _internalClassForSerializableClassName__onceToken;
-  v4 = a3;
+  nameCopy = name;
   if (v3 != -1)
   {
     +[STUnique _internalClassForSerializableClassName:];
   }
 
-  v5 = [_internalClassForSerializableClassName__mapping objectForKeyedSubscript:v4];
+  v5 = [_internalClassForSerializableClassName__mapping objectForKeyedSubscript:nameCopy];
 
   v6 = NSClassFromString(v5);
 
@@ -220,7 +220,7 @@ void __51__STUnique__internalClassForSerializableClassName___block_invoke()
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)areLocalChangesInterestingWithError:(id *)a3
+- (BOOL)areLocalChangesInterestingWithError:(id *)error
 {
   v23 = 0;
   v24 = &v23;
@@ -232,39 +232,39 @@ void __51__STUnique__internalClassForSerializableClassName___block_invoke()
   v20 = __Block_byref_object_copy__10;
   v21 = __Block_byref_object_dispose__10;
   v22 = 0;
-  v5 = [(STUnique *)self persistenceController];
-  v6 = [v5 localStore];
-  if (v6)
+  persistenceController = [(STUnique *)self persistenceController];
+  localStore = [persistenceController localStore];
+  if (localStore)
   {
-    v7 = [v5 newBackgroundContext];
-    [v7 setName:@"Analyze"];
+    newBackgroundContext = [persistenceController newBackgroundContext];
+    [newBackgroundContext setName:@"Analyze"];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __48__STUnique_areLocalChangesInterestingWithError___block_invoke;
     v12[3] = &unk_1E7CE7A10;
     v12[4] = self;
-    v13 = v6;
-    v8 = v7;
+    v13 = localStore;
+    v8 = newBackgroundContext;
     v14 = v8;
     v15 = &v17;
     v16 = &v23;
     [v8 performBlockAndWait:v12];
-    if (a3)
+    if (error)
     {
       v9 = v18[5];
       if (v9)
       {
-        *a3 = v9;
+        *error = v9;
       }
     }
 
     v10 = *(v24 + 24);
   }
 
-  else if (a3)
+  else if (error)
   {
     [MEMORY[0x1E696ABC0] errorWithDomain:@"STErrorDomain" code:6 userInfo:0];
-    *a3 = v10 = 0;
+    *error = v10 = 0;
   }
 
   else
@@ -310,20 +310,20 @@ void __48__STUnique_areLocalChangesInterestingWithError___block_invoke(uint64_t 
   }
 }
 
-- (BOOL)migrateWithExportNeeded:(BOOL *)a3 error:(id *)a4
+- (BOOL)migrateWithExportNeeded:(BOOL *)needed error:(id *)error
 {
   v10 = 0;
   v6 = [(STUnique *)self migrateWithError:&v10];
   v7 = v10;
-  if (a3)
+  if (needed)
   {
-    *a3 = v6;
+    *needed = v6;
   }
 
-  if (a4)
+  if (error)
   {
     v7 = v7;
-    *a4 = v7;
+    *error = v7;
   }
 
   v8 = v7 == 0;
@@ -331,7 +331,7 @@ void __48__STUnique_areLocalChangesInterestingWithError___block_invoke(uint64_t 
   return v8;
 }
 
-- (BOOL)migrateWithError:(id *)a3
+- (BOOL)migrateWithError:(id *)error
 {
   v5 = +[STLog mirroring];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -353,36 +353,36 @@ void __48__STUnique_areLocalChangesInterestingWithError___block_invoke(uint64_t 
   v27 = __Block_byref_object_copy__10;
   v28 = __Block_byref_object_dispose__10;
   v29 = 0;
-  v6 = [(STUnique *)self persistenceController];
-  v7 = [v6 localStore];
-  v8 = [v6 cloudStore];
-  v9 = v8;
-  if (v7 && v8)
+  persistenceController = [(STUnique *)self persistenceController];
+  localStore = [persistenceController localStore];
+  cloudStore = [persistenceController cloudStore];
+  v9 = cloudStore;
+  if (localStore && cloudStore)
   {
-    v10 = [v6 newBackgroundContext];
-    [v10 setTransactionAuthor:@"STUnique"];
-    [v10 setName:@"Migrate"];
+    newBackgroundContext = [persistenceController newBackgroundContext];
+    [newBackgroundContext setTransactionAuthor:@"STUnique"];
+    [newBackgroundContext setName:@"Migrate"];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __29__STUnique_migrateWithError___block_invoke;
     v16[3] = &unk_1E7CE7A38;
-    v11 = v10;
+    v11 = newBackgroundContext;
     v17 = v11;
     v18 = v9;
-    v19 = v7;
-    v20 = self;
+    v19 = localStore;
+    selfCopy = self;
     v21 = &v34;
     v22 = &v30;
     v23 = &v24;
     [v11 performBlockAndWait:v16];
-    if (a3)
+    if (error)
     {
       if ((v31[3] & 1) == 0)
       {
         v12 = v25[5];
         if (v12)
         {
-          *a3 = v12;
+          *error = v12;
         }
       }
     }
@@ -396,10 +396,10 @@ void __48__STUnique_areLocalChangesInterestingWithError___block_invoke(uint64_t 
     v14 = *(v35 + 24);
   }
 
-  else if (a3)
+  else if (error)
   {
     [MEMORY[0x1E696ABC0] errorWithDomain:@"STErrorDomain" code:6 userInfo:0];
-    *a3 = v14 = 0;
+    *error = v14 = 0;
   }
 
   else
@@ -917,17 +917,17 @@ LABEL_104:
   v106 = *MEMORY[0x1E69E9840];
 }
 
-- (void)newResolveConflictsBetweenLocalDeltas:(id)a3 cloudDeltas:(id)a4
+- (void)newResolveConflictsBetweenLocalDeltas:(id)deltas cloudDeltas:(id)cloudDeltas
 {
   v29 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  deltasCopy = deltas;
+  cloudDeltasCopy = cloudDeltas;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v7 = [v5 allKeys];
-  v8 = [v7 countByEnumeratingWithState:&v22 objects:v28 count:16];
+  allKeys = [deltasCopy allKeys];
+  v8 = [allKeys countByEnumeratingWithState:&v22 objects:v28 count:16];
   if (v8)
   {
     v10 = v8;
@@ -940,12 +940,12 @@ LABEL_104:
       {
         if (*v23 != v11)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(allKeys);
         }
 
         v13 = *(*(&v22 + 1) + 8 * i);
-        v14 = [v5 objectForKeyedSubscript:{v13, v21}];
-        v15 = [v6 objectForKeyedSubscript:v13];
+        v14 = [deltasCopy objectForKeyedSubscript:{v13, v21}];
+        v15 = [cloudDeltasCopy objectForKeyedSubscript:v13];
         v16 = v15;
         if (v15)
         {
@@ -953,7 +953,7 @@ LABEL_104:
           {
             if ([v14 changeType] == 1)
             {
-              [v5 removeObjectForKey:v13];
+              [deltasCopy removeObjectForKey:v13];
               v17 = +[STLog mirroring];
               if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
               {
@@ -969,7 +969,7 @@ LABEL_16:
               goto LABEL_17;
             }
 
-            [v6 removeObjectForKey:v13];
+            [cloudDeltasCopy removeObjectForKey:v13];
             v17 = +[STLog mirroring];
             if (!os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
             {
@@ -984,7 +984,7 @@ LABEL_16:
 
           else
           {
-            [v5 removeObjectForKey:v13];
+            [deltasCopy removeObjectForKey:v13];
             v17 = +[STLog mirroring];
             if (!os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
             {
@@ -1005,7 +1005,7 @@ LABEL_15:
 LABEL_17:
       }
 
-      v10 = [v7 countByEnumeratingWithState:&v22 objects:v28 count:16];
+      v10 = [allKeys countByEnumeratingWithState:&v22 objects:v28 count:16];
     }
 
     while (v10);
@@ -1014,25 +1014,25 @@ LABEL_17:
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)resolveConflictsBetweenLocalDeltas:(id)a3 cloudDeltas:(id)a4
+- (void)resolveConflictsBetweenLocalDeltas:(id)deltas cloudDeltas:(id)cloudDeltas
 {
   v64 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  deltasCopy = deltas;
+  cloudDeltasCopy = cloudDeltas;
   v55 = 0u;
   v56 = 0u;
   v57 = 0u;
   v58 = 0u;
-  v7 = [v5 allKeys];
-  v8 = [v7 countByEnumeratingWithState:&v55 objects:v63 count:16];
+  allKeys = [deltasCopy allKeys];
+  v8 = [allKeys countByEnumeratingWithState:&v55 objects:v63 count:16];
   if (v8)
   {
     v9 = v8;
     v10 = *v56;
-    v37 = v6;
-    v38 = v5;
+    v37 = cloudDeltasCopy;
+    v38 = deltasCopy;
     v35 = *v56;
-    v36 = v7;
+    v36 = allKeys;
     do
     {
       v11 = 0;
@@ -1041,12 +1041,12 @@ LABEL_17:
       {
         if (*v56 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(allKeys);
         }
 
         v12 = *(*(&v55 + 1) + 8 * v11);
-        v13 = [v5 objectForKeyedSubscript:v12];
-        v14 = [v6 objectForKeyedSubscript:v12];
+        v13 = [deltasCopy objectForKeyedSubscript:v12];
+        v14 = [cloudDeltasCopy objectForKeyedSubscript:v12];
         if (v14)
         {
           v46 = v13;
@@ -1091,7 +1091,7 @@ LABEL_46:
               goto LABEL_46;
             }
 
-            [v6 removeObjectForKey:v15];
+            [cloudDeltasCopy removeObjectForKey:v15];
             v17 = +[STLog mirroring];
             if (!os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
             {
@@ -1150,8 +1150,8 @@ LABEL_46:
                       v48 = 0u;
                       v49 = 0u;
                       v50 = 0u;
-                      v23 = [v46 updatedProperties];
-                      v24 = [v23 copy];
+                      updatedProperties = [v46 updatedProperties];
+                      v24 = [updatedProperties copy];
 
                       v25 = [v24 countByEnumeratingWithState:&v47 objects:v59 count:16];
                       if (v25)
@@ -1168,14 +1168,14 @@ LABEL_46:
                             }
 
                             v29 = *(*(&v47 + 1) + 8 * i);
-                            v30 = [v22 name];
-                            v31 = [v29 name];
-                            v32 = [v30 isEqualToString:v31];
+                            name = [v22 name];
+                            name2 = [v29 name];
+                            v32 = [name isEqualToString:name2];
 
                             if (v32)
                             {
-                              v33 = [v29 name];
-                              [v46 removePropertyWithName:v33];
+                              name3 = [v29 name];
+                              [v46 removePropertyWithName:name3];
                             }
                           }
 
@@ -1204,15 +1204,15 @@ LABEL_46:
                   _os_log_impl(&dword_1B831F000, v17, OS_LOG_TYPE_DEFAULT, "Conflict: remote update and local update: %{public}@", buf, 0xCu);
                 }
 
-                v6 = v37;
-                v5 = v38;
+                cloudDeltasCopy = v37;
+                deltasCopy = v38;
                 v10 = v35;
-                v7 = v36;
+                allKeys = v36;
                 v9 = v39;
                 goto LABEL_45;
               }
 
-              [v6 removeObjectForKey:v15];
+              [cloudDeltasCopy removeObjectForKey:v15];
               v17 = +[STLog mirroring];
               if (!os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
               {
@@ -1228,7 +1228,7 @@ LABEL_46:
 
           else
           {
-            [v5 removeObjectForKey:v15];
+            [deltasCopy removeObjectForKey:v15];
             v17 = +[STLog mirroring];
             if (!os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
             {
@@ -1252,7 +1252,7 @@ LABEL_47:
       }
 
       while (v11 != v9);
-      v9 = [v7 countByEnumeratingWithState:&v55 objects:v63 count:16];
+      v9 = [allKeys countByEnumeratingWithState:&v55 objects:v63 count:16];
     }
 
     while (v9);
@@ -1261,11 +1261,11 @@ LABEL_47:
   v34 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)historyTokenFromStore:(id)a3
++ (id)historyTokenFromStore:(id)store
 {
-  v3 = a3;
-  v4 = [v3 metadata];
-  v5 = [v4 objectForKeyedSubscript:@"STUnique"];
+  storeCopy = store;
+  metadata = [storeCopy metadata];
+  v5 = [metadata objectForKeyedSubscript:@"STUnique"];
 
   if (v5)
   {
@@ -1277,7 +1277,7 @@ LABEL_47:
       v8 = +[STLog mirroring];
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
       {
-        [(STUnique *)v3 historyTokenFromStore:v7, v8];
+        [(STUnique *)storeCopy historyTokenFromStore:v7, v8];
       }
     }
   }
@@ -1290,26 +1290,26 @@ LABEL_47:
   return v6;
 }
 
-+ (BOOL)addHistoryToken:(id)a3 toMetadataForStore:(id)a4 error:(id *)a5
++ (BOOL)addHistoryToken:(id)token toMetadataForStore:(id)store error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v8 metadata];
-  v10 = [v9 mutableCopy];
+  tokenCopy = token;
+  storeCopy = store;
+  metadata = [storeCopy metadata];
+  v10 = [metadata mutableCopy];
 
-  if (!v7)
+  if (!tokenCopy)
   {
     [v10 removeObjectForKey:@"STUnique"];
     goto LABEL_5;
   }
 
-  v11 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v7 requiringSecureCoding:1 error:a5];
+  v11 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:tokenCopy requiringSecureCoding:1 error:error];
   if (v11)
   {
     [v10 setObject:v11 forKeyedSubscript:@"STUnique"];
 
 LABEL_5:
-    [v8 setMetadata:v10];
+    [storeCopy setMetadata:v10];
     LOBYTE(v11) = 1;
   }
 

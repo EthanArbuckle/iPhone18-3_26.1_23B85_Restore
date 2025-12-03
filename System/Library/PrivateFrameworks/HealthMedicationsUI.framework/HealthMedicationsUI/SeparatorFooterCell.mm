@@ -1,16 +1,16 @@
 @interface SeparatorFooterCell
-- (_TtC19HealthMedicationsUI19SeparatorFooterCell)initWithCoder:(id)a3;
-- (_TtC19HealthMedicationsUI19SeparatorFooterCell)initWithFrame:(CGRect)a3;
+- (_TtC19HealthMedicationsUI19SeparatorFooterCell)initWithCoder:(id)coder;
+- (_TtC19HealthMedicationsUI19SeparatorFooterCell)initWithFrame:(CGRect)frame;
 @end
 
 @implementation SeparatorFooterCell
 
-- (_TtC19HealthMedicationsUI19SeparatorFooterCell)initWithFrame:(CGRect)a3
+- (_TtC19HealthMedicationsUI19SeparatorFooterCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v7 = self + OBJC_IVAR____TtC19HealthMedicationsUI19SeparatorFooterCell_item;
   *v7 = 0u;
   *(v7 + 1) = 0u;
@@ -21,7 +21,7 @@
   return [(SeparatorFooterCell *)&v9 initWithFrame:x, y, width, height];
 }
 
-- (_TtC19HealthMedicationsUI19SeparatorFooterCell)initWithCoder:(id)a3
+- (_TtC19HealthMedicationsUI19SeparatorFooterCell)initWithCoder:(id)coder
 {
   v4 = self + OBJC_IVAR____TtC19HealthMedicationsUI19SeparatorFooterCell_item;
   *v4 = 0u;
@@ -30,8 +30,8 @@
   *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC19HealthMedicationsUI19SeparatorFooterCell____lazy_storage___separatorView) = 0;
   v8.receiver = self;
   v8.super_class = type metadata accessor for SeparatorFooterCell();
-  v5 = a3;
-  v6 = [(SeparatorFooterCell *)&v8 initWithCoder:v5];
+  coderCopy = coder;
+  v6 = [(SeparatorFooterCell *)&v8 initWithCoder:coderCopy];
 
   if (v6)
   {

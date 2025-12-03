@@ -2,14 +2,14 @@
 + (UIEdgeInsets)defaultLayoutMargins;
 - (id)setupContentView;
 - (void)observedPropertiesChanged;
-- (void)setTitle:(id)a3;
+- (void)setTitle:(id)title;
 @end
 
 @implementation TLKButtonView
 
 + (UIEdgeInsets)defaultLayoutMargins
 {
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___TLKButtonView;
   objc_msgSendSuper2(&v6, sel_defaultLayoutMargins);
   v4 = 15.79;
@@ -42,23 +42,23 @@
   return v7;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v10 = a3;
-  if (self->_title != v10)
+  titleCopy = title;
+  if (self->_title != titleCopy)
   {
-    objc_storeStrong(&self->_title, a3);
-    v5 = [(TLKView *)self observer];
-    if (v5)
+    objc_storeStrong(&self->_title, title);
+    observer = [(TLKView *)self observer];
+    if (observer)
     {
-      v6 = v5;
-      v7 = [(TLKView *)self observer];
-      v8 = [v7 batchUpdateCount];
+      v6 = observer;
+      observer2 = [(TLKView *)self observer];
+      batchUpdateCount = [observer2 batchUpdateCount];
 
-      if (!v8)
+      if (!batchUpdateCount)
       {
-        v9 = [(TLKView *)self observer];
-        [v9 propertiesDidChange];
+        observer3 = [(TLKView *)self observer];
+        [observer3 propertiesDidChange];
       }
     }
   }
@@ -66,9 +66,9 @@
 
 - (void)observedPropertiesChanged
 {
-  v4 = [(TLKButtonView *)self title];
-  v3 = [(TLKButtonView *)self titleLabel];
-  [v3 setText:v4];
+  title = [(TLKButtonView *)self title];
+  titleLabel = [(TLKButtonView *)self titleLabel];
+  [titleLabel setText:title];
 }
 
 @end

@@ -21,8 +21,8 @@
       (*v8)(v7, AFSecurityDigestibleChunksProviderData, 4);
     }
 
-    v9 = [a1 allKeys];
-    v10 = [v9 sortedArrayUsingSelector:sel_compare_];
+    allKeys = [self allKeys];
+    v10 = [allKeys sortedArrayUsingSelector:sel_compare_];
 
     v23 = 0u;
     v24 = 0u;
@@ -48,7 +48,7 @@
           v17 = objc_autoreleasePoolPush();
           if (objc_opt_respondsToSelector())
           {
-            v18 = [a1 objectForKey:v16];
+            v18 = [self objectForKey:v16];
             if (objc_opt_respondsToSelector())
             {
               [v16 af_enumerateDigestibleChunksWithOptions:0 usingBlock:v7];

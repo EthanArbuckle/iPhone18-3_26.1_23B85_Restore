@@ -1,29 +1,29 @@
 @interface HUImageOBWelcomeController
-- (HUImageOBWelcomeController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentImage:(id)a6;
-- (HUImageOBWelcomeController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentView:(id)a6;
+- (HUImageOBWelcomeController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentImage:(id)image;
+- (HUImageOBWelcomeController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentView:(id)view;
 - (UIImage)contentImage;
 - (double)_contentAspectRatio;
 - (void)_updateContentMode;
 - (void)_viewDidUpdateContent;
-- (void)setContentImage:(id)a3;
+- (void)setContentImage:(id)image;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
 
 @implementation HUImageOBWelcomeController
 
-- (HUImageOBWelcomeController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentImage:(id)a6
+- (HUImageOBWelcomeController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentImage:(id)image
 {
   v10 = MEMORY[0x277D755E8];
-  v11 = a6;
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
-  v15 = [[v10 alloc] initWithImage:v11];
+  imageCopy = image;
+  iconCopy = icon;
+  textCopy = text;
+  titleCopy = title;
+  v15 = [[v10 alloc] initWithImage:imageCopy];
 
   v18.receiver = self;
   v18.super_class = HUImageOBWelcomeController;
-  v16 = [(HUTopContentOBWelcomeController *)&v18 initWithTitle:v14 detailText:v13 icon:v12 contentView:v15];
+  v16 = [(HUTopContentOBWelcomeController *)&v18 initWithTitle:titleCopy detailText:textCopy icon:iconCopy contentView:v15];
 
   if (v16)
   {
@@ -34,11 +34,11 @@
   return v16;
 }
 
-- (HUImageOBWelcomeController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentView:(id)a6
+- (HUImageOBWelcomeController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentView:(id)view
 {
-  v8 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v9 = NSStringFromSelector(sel_initWithTitle_detailText_icon_contentImage_);
-  [v8 handleFailureInMethod:a2 object:self file:@"HUImageOBWelcomeController.m" lineNumber:38 description:{@"%s is unavailable; use %@ instead", "-[HUImageOBWelcomeController initWithTitle:detailText:icon:contentView:]", v9}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUImageOBWelcomeController.m" lineNumber:38 description:{@"%s is unavailable; use %@ instead", "-[HUImageOBWelcomeController initWithTitle:detailText:icon:contentView:]", v9}];
 
   return 0;
 }
@@ -61,45 +61,45 @@
 
 - (UIImage)contentImage
 {
-  v2 = [(HUImageOBWelcomeController *)self contentImageView];
-  v3 = [v2 image];
+  contentImageView = [(HUImageOBWelcomeController *)self contentImageView];
+  image = [contentImageView image];
 
-  return v3;
+  return image;
 }
 
-- (void)setContentImage:(id)a3
+- (void)setContentImage:(id)image
 {
-  v9 = a3;
-  v4 = [(HUImageOBWelcomeController *)self contentImageView];
-  v5 = [v4 image];
+  imageCopy = image;
+  contentImageView = [(HUImageOBWelcomeController *)self contentImageView];
+  image = [contentImageView image];
 
-  v6 = v9;
-  if (v5 != v9)
+  v6 = imageCopy;
+  if (image != imageCopy)
   {
-    v7 = [(HUImageOBWelcomeController *)self contentImageView];
-    [v7 setImage:v9];
+    contentImageView2 = [(HUImageOBWelcomeController *)self contentImageView];
+    [contentImageView2 setImage:imageCopy];
 
-    v8 = [(HUImageOBWelcomeController *)self isViewLoaded];
-    v6 = v9;
-    if (v8)
+    isViewLoaded = [(HUImageOBWelcomeController *)self isViewLoaded];
+    v6 = imageCopy;
+    if (isViewLoaded)
     {
       [(HUImageOBWelcomeController *)self _viewDidUpdateContent];
-      v6 = v9;
+      v6 = imageCopy;
     }
   }
 }
 
 - (double)_contentAspectRatio
 {
-  v3 = [(HUImageOBWelcomeController *)self contentImage];
+  contentImage = [(HUImageOBWelcomeController *)self contentImage];
 
-  if (v3)
+  if (contentImage)
   {
-    v4 = [(HUImageOBWelcomeController *)self contentImage];
-    [v4 size];
+    contentImage2 = [(HUImageOBWelcomeController *)self contentImage];
+    [contentImage2 size];
     v6 = v5;
-    v7 = [(HUImageOBWelcomeController *)self contentImage];
-    [v7 size];
+    contentImage3 = [(HUImageOBWelcomeController *)self contentImage];
+    [contentImage3 size];
     v9 = v6 / v8;
   }
 
@@ -124,8 +124,8 @@
 
 - (void)_updateContentMode
 {
-  v3 = [(HUImageOBWelcomeController *)self contentImage];
-  [v3 size];
+  contentImage = [(HUImageOBWelcomeController *)self contentImage];
+  [contentImage size];
   v5 = v4;
   [(UIImageView *)self->_contentImageView bounds];
   if (v5 > v6)
@@ -136,8 +136,8 @@
 
   else
   {
-    v7 = [(HUImageOBWelcomeController *)self contentImage];
-    [v7 size];
+    contentImage2 = [(HUImageOBWelcomeController *)self contentImage];
+    [contentImage2 size];
     v9 = v8;
     [(UIImageView *)self->_contentImageView bounds];
     v11 = v10;

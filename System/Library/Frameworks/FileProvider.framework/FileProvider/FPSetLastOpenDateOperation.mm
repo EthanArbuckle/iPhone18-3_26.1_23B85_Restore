@@ -1,38 +1,38 @@
 @interface FPSetLastOpenDateOperation
-- (FPSetLastOpenDateOperation)initWithItems:(id)a3 date:(id)a4;
+- (FPSetLastOpenDateOperation)initWithItems:(id)items date:(id)date;
 - (id)fp_prettyDescription;
-- (id)replicateForItems:(id)a3;
+- (id)replicateForItems:(id)items;
 @end
 
 @implementation FPSetLastOpenDateOperation
 
-- (id)replicateForItems:(id)a3
+- (id)replicateForItems:(id)items
 {
-  v4 = a3;
-  v5 = [[FPSetLastOpenDateOperation alloc] initWithItems:v4 date:self->_date];
+  itemsCopy = items;
+  v5 = [[FPSetLastOpenDateOperation alloc] initWithItems:itemsCopy date:self->_date];
 
   return v5;
 }
 
-- (FPSetLastOpenDateOperation)initWithItems:(id)a3 date:(id)a4
+- (FPSetLastOpenDateOperation)initWithItems:(id)items date:(id)date
 {
-  v7 = a3;
-  v8 = a4;
+  itemsCopy = items;
+  dateCopy = date;
   v13.receiver = self;
   v13.super_class = FPSetLastOpenDateOperation;
-  v9 = [(FPTransformOperation *)&v13 initWithItemsOfDifferentProviders:v7 action:0];
+  v9 = [(FPTransformOperation *)&v13 initWithItemsOfDifferentProviders:itemsCopy action:0];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_items, a3);
-    v11 = v8;
-    if (!v8)
+    objc_storeStrong(&v9->_items, items);
+    date = dateCopy;
+    if (!dateCopy)
     {
-      v11 = [MEMORY[0x1E695DF00] date];
+      date = [MEMORY[0x1E695DF00] date];
     }
 
-    objc_storeStrong(&v10->_date, v11);
-    if (!v8)
+    objc_storeStrong(&v10->_date, date);
+    if (!dateCopy)
     {
     }
 
@@ -45,9 +45,9 @@
 - (id)fp_prettyDescription
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(FPTransformOperation *)self items];
-  v5 = [v4 fp_itemIdentifiers];
-  v6 = FPAbbreviatedArrayDescription(v5);
+  items = [(FPTransformOperation *)self items];
+  fp_itemIdentifiers = [items fp_itemIdentifiers];
+  v6 = FPAbbreviatedArrayDescription(fp_itemIdentifiers);
   v7 = [v3 stringWithFormat:@"set last used date %@ to %@", v6, self->_date];
 
   return v7;

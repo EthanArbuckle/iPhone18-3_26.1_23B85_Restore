@@ -1,34 +1,34 @@
 @interface PUIStyleFontPickerButton
-+ (CGSize)defaultFontPickerButtonSizeUsingSmallerSizing:(BOOL)a3;
-+ (Class)fontPickerButtonClassForRole:(id)a3;
++ (CGSize)defaultFontPickerButtonSizeUsingSmallerSizing:(BOOL)sizing;
++ (Class)fontPickerButtonClassForRole:(id)role;
 - (CGSize)cellSize;
 - (void)_refreshHeightConstraint;
 - (void)_refreshWidthConstraint;
-- (void)configureWithAttributedString:(id)a3;
-- (void)configureWithFont:(id)a3 text:(id)a4;
-- (void)setUsingSmallerSizing:(BOOL)a3;
+- (void)configureWithAttributedString:(id)string;
+- (void)configureWithFont:(id)font text:(id)text;
+- (void)setUsingSmallerSizing:(BOOL)sizing;
 @end
 
 @implementation PUIStyleFontPickerButton
 
-+ (Class)fontPickerButtonClassForRole:(id)a3
++ (Class)fontPickerButtonClassForRole:(id)role
 {
-  [a3 isEqual:*MEMORY[0x1E69C5218]];
+  [role isEqual:*MEMORY[0x1E69C5218]];
   v3 = objc_opt_class();
 
   return v3;
 }
 
-+ (CGSize)defaultFontPickerButtonSizeUsingSmallerSizing:(BOOL)a3
++ (CGSize)defaultFontPickerButtonSizeUsingSmallerSizing:(BOOL)sizing
 {
   v3 = 79.0;
-  if (a3)
+  if (sizing)
   {
     v3 = 76.0;
   }
 
   v4 = 64.0;
-  if (a3)
+  if (sizing)
   {
     v4 = 62.0;
   }
@@ -41,34 +41,34 @@
 - (CGSize)cellSize
 {
   v3 = objc_opt_class();
-  v4 = [(PUIStyleFontPickerButton *)self isUsingSmallerSizing];
+  isUsingSmallerSizing = [(PUIStyleFontPickerButton *)self isUsingSmallerSizing];
 
-  [v3 defaultFontPickerButtonSizeUsingSmallerSizing:v4];
+  [v3 defaultFontPickerButtonSizeUsingSmallerSizing:isUsingSmallerSizing];
   result.height = v6;
   result.width = v5;
   return result;
 }
 
-- (void)configureWithFont:(id)a3 text:(id)a4
+- (void)configureWithFont:(id)font text:(id)text
 {
-  v6 = a3;
-  v7 = a4;
+  fontCopy = font;
+  textCopy = text;
   contentFont = self->_contentFont;
-  self->_contentFont = v6;
-  v9 = v6;
+  self->_contentFont = fontCopy;
+  v9 = fontCopy;
 
   contentText = self->_contentText;
-  self->_contentText = v7;
+  self->_contentText = textCopy;
 
   [(PUIStyleFontPickerButton *)self _refreshHeightConstraint];
 
   [(PUIStyleFontPickerButton *)self _refreshWidthConstraint];
 }
 
-- (void)configureWithAttributedString:(id)a3
+- (void)configureWithAttributedString:(id)string
 {
-  v4 = a3;
-  v10 = [v4 attributesAtIndex:0 effectiveRange:0];
+  stringCopy = string;
+  v10 = [stringCopy attributesAtIndex:0 effectiveRange:0];
   v5 = [v10 objectForKeyedSubscript:*MEMORY[0x1E69DB648]];
   v6 = v5;
   if (v5)
@@ -83,16 +83,16 @@
 
   v8 = v7;
 
-  v9 = [v4 string];
+  string = [stringCopy string];
 
-  [(PUIStyleFontPickerButton *)self configureWithFont:v8 text:v9];
+  [(PUIStyleFontPickerButton *)self configureWithFont:v8 text:string];
 }
 
-- (void)setUsingSmallerSizing:(BOOL)a3
+- (void)setUsingSmallerSizing:(BOOL)sizing
 {
-  if (self->_usingSmallerSizing != a3)
+  if (self->_usingSmallerSizing != sizing)
   {
-    self->_usingSmallerSizing = a3;
+    self->_usingSmallerSizing = sizing;
     [(PUIStyleFontPickerButton *)self _refreshHeightConstraint];
 
     [(PUIStyleFontPickerButton *)self _refreshWidthConstraint];
@@ -102,25 +102,25 @@
 - (void)_refreshHeightConstraint
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v3 = [(PUIStyleFontPickerButton *)self heightCellConstraint];
+  heightCellConstraint = [(PUIStyleFontPickerButton *)self heightCellConstraint];
 
-  if (v3)
+  if (heightCellConstraint)
   {
     v4 = MEMORY[0x1E696ACD8];
-    v5 = [(PUIStyleFontPickerButton *)self heightCellConstraint];
-    v14[0] = v5;
+    heightCellConstraint2 = [(PUIStyleFontPickerButton *)self heightCellConstraint];
+    v14[0] = heightCellConstraint2;
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
     [v4 deactivateConstraints:v6];
   }
 
-  v7 = [(PUIStyleFontPickerButton *)self heightAnchor];
+  heightAnchor = [(PUIStyleFontPickerButton *)self heightAnchor];
   [(PUIStyleFontPickerButton *)self cellSize];
-  v9 = [v7 constraintEqualToConstant:v8];
+  v9 = [heightAnchor constraintEqualToConstant:v8];
   [(PUIStyleFontPickerButton *)self setHeightCellConstraint:v9];
 
   v10 = MEMORY[0x1E696ACD8];
-  v11 = [(PUIStyleFontPickerButton *)self heightCellConstraint];
-  v13 = v11;
+  heightCellConstraint3 = [(PUIStyleFontPickerButton *)self heightCellConstraint];
+  v13 = heightCellConstraint3;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v13 count:1];
   [v10 activateConstraints:v12];
 }
@@ -128,25 +128,25 @@
 - (void)_refreshWidthConstraint
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v3 = [(PUIStyleFontPickerButton *)self widthCellConstraint];
+  widthCellConstraint = [(PUIStyleFontPickerButton *)self widthCellConstraint];
 
-  if (v3)
+  if (widthCellConstraint)
   {
     v4 = MEMORY[0x1E696ACD8];
-    v5 = [(PUIStyleFontPickerButton *)self widthCellConstraint];
-    v13[0] = v5;
+    widthCellConstraint2 = [(PUIStyleFontPickerButton *)self widthCellConstraint];
+    v13[0] = widthCellConstraint2;
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:1];
     [v4 deactivateConstraints:v6];
   }
 
-  v7 = [(PUIStyleFontPickerButton *)self widthAnchor];
+  widthAnchor = [(PUIStyleFontPickerButton *)self widthAnchor];
   [(PUIStyleFontPickerButton *)self cellSize];
-  v8 = [v7 constraintEqualToConstant:?];
+  v8 = [widthAnchor constraintEqualToConstant:?];
   [(PUIStyleFontPickerButton *)self setWidthCellConstraint:v8];
 
   v9 = MEMORY[0x1E696ACD8];
-  v10 = [(PUIStyleFontPickerButton *)self widthCellConstraint];
-  v12 = v10;
+  widthCellConstraint3 = [(PUIStyleFontPickerButton *)self widthCellConstraint];
+  v12 = widthCellConstraint3;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v12 count:1];
   [v9 activateConstraints:v11];
 }

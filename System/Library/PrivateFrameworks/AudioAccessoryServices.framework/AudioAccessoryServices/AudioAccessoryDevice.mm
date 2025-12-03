@@ -1,61 +1,61 @@
 @interface AudioAccessoryDevice
-- (AudioAccessoryDevice)initWithCoder:(id)a3;
-- (AudioAccessoryDevice)initWithIdentifier:(id)a3;
+- (AudioAccessoryDevice)initWithCoder:(id)coder;
+- (AudioAccessoryDevice)initWithIdentifier:(id)identifier;
 - (BOOL)connectedInfoComplete;
 - (BOOL)pairedInfoComplete;
 - (BOOL)setDefaultConfigurationsForCloudSyncedPropertiesIfNeeded;
-- (BOOL)updateWithAADeviceConfig:(id)a3;
-- (BOOL)updateWithConnectedAADeviceInfo:(id)a3;
-- (BOOL)updateWithConnectedCBDevice:(id)a3;
-- (BOOL)updateWithPairedAADevice:(id)a3;
-- (BOOL)updateWithPairedAADeviceInfo:(id)a3;
-- (BOOL)updateWithPairedCBDevice:(id)a3;
+- (BOOL)updateWithAADeviceConfig:(id)config;
+- (BOOL)updateWithConnectedAADeviceInfo:(id)info;
+- (BOOL)updateWithConnectedCBDevice:(id)device;
+- (BOOL)updateWithPairedAADevice:(id)device;
+- (BOOL)updateWithPairedAADeviceInfo:(id)info;
+- (BOOL)updateWithPairedCBDevice:(id)device;
 - (NSString)bluetoothAddress;
 - (char)dynamicEndOfChargeState;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionWithLevel:(int)a3;
-- (unsigned)CBCapToAACap:(unsigned __int8)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionWithLevel:(int)level;
+- (unsigned)CBCapToAACap:(unsigned __int8)cap;
 - (unsigned)chargingReminderCapability;
 - (unsigned)computePersonalTranslatorCapability;
 - (unsigned)optimizedBatteryChargingCapability;
-- (void)encodeWithCoder:(id)a3;
-- (void)setBatteryInfo:(id)a3;
-- (void)setBluetoothAddressData:(id)a3;
-- (void)setCloudRecordInfoLoaded:(BOOL)a3;
-- (void)setConnected:(BOOL)a3;
-- (void)setDetectedHeadGesture:(unsigned __int8)a3;
-- (void)setDynamicEndOfChargeEnabled:(char)a3;
-- (void)setDynamicEndOfChargeTempDisabled:(char)a3;
-- (void)setFarFieldSessionOnGoing:(char)a3;
-- (void)setHeartRateMonitorCapabilityChanged:(BOOL)a3;
-- (void)setHeartRateMonitorCapabilityValueOriginatedFromDevice:(BOOL)a3;
-- (void)setIdentifier:(id)a3;
-- (void)setOnConnectionActionsCalled:(BOOL)a3;
-- (void)setOptimizedBatteryChargingState:(char)a3;
-- (void)setPaired:(BOOL)a3;
-- (void)setSiriMultitoneEnabled:(char)a3;
-- (void)setSmartRoutingStateFlags:(unsigned int)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setBatteryInfo:(id)info;
+- (void)setBluetoothAddressData:(id)data;
+- (void)setCloudRecordInfoLoaded:(BOOL)loaded;
+- (void)setConnected:(BOOL)connected;
+- (void)setDetectedHeadGesture:(unsigned __int8)gesture;
+- (void)setDynamicEndOfChargeEnabled:(char)enabled;
+- (void)setDynamicEndOfChargeTempDisabled:(char)disabled;
+- (void)setFarFieldSessionOnGoing:(char)going;
+- (void)setHeartRateMonitorCapabilityChanged:(BOOL)changed;
+- (void)setHeartRateMonitorCapabilityValueOriginatedFromDevice:(BOOL)device;
+- (void)setIdentifier:(id)identifier;
+- (void)setOnConnectionActionsCalled:(BOOL)called;
+- (void)setOptimizedBatteryChargingState:(char)state;
+- (void)setPaired:(BOOL)paired;
+- (void)setSiriMultitoneEnabled:(char)enabled;
+- (void)setSmartRoutingStateFlags:(unsigned int)flags;
 @end
 
 @implementation AudioAccessoryDevice
 
-- (AudioAccessoryDevice)initWithIdentifier:(id)a3
+- (AudioAccessoryDevice)initWithIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v6 = [(AudioAccessoryDevice *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_identifier, a3);
+    objc_storeStrong(&v6->_identifier, identifier);
     v8 = v7;
   }
 
   return v7;
 }
 
-- (AudioAccessoryDevice)initWithCoder:(id)a3
+- (AudioAccessoryDevice)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(AudioAccessoryDevice *)self init];
 
   if (v5)
@@ -75,7 +75,7 @@
       v5->_adaptiveVolumeConfig = 0;
     }
 
-    v6 = v4;
+    v6 = coderCopy;
     objc_opt_class();
     NSDecodeObjectIfPresent();
 
@@ -522,24 +522,24 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v28 = v4;
+  coderCopy = coder;
+  v28 = coderCopy;
   if (self->_acceptReplyPlayPauseConfig)
   {
-    [v4 encodeInteger:? forKey:?];
-    v4 = v28;
+    [coderCopy encodeInteger:? forKey:?];
+    coderCopy = v28;
   }
 
   if (self->_adaptiveVolumeConfig)
   {
     [v28 encodeInteger:? forKey:?];
-    v4 = v28;
+    coderCopy = v28;
     if (self->_adaptiveVolumeConfig)
     {
       [v28 encodeInteger:? forKey:?];
-      v4 = v28;
+      coderCopy = v28;
     }
   }
 
@@ -547,583 +547,583 @@
   if (audiogramEnrolledTimestamp)
   {
     [v28 encodeObject:audiogramEnrolledTimestamp forKey:@"agET"];
-    v4 = v28;
+    coderCopy = v28;
   }
 
   audioStreamState = self->_audioStreamState;
   if (audioStreamState)
   {
     [v28 encodeInteger:audioStreamState forKey:@"auss"];
-    v4 = v28;
+    coderCopy = v28;
   }
 
   autoANCCapability = self->_autoANCCapability;
   if (autoANCCapability)
   {
     [v28 encodeInt64:autoANCCapability forKey:@"aaCp"];
-    v4 = v28;
+    coderCopy = v28;
   }
 
   if (self->_peerAutoANCCapability)
   {
     [v28 encodeInteger:? forKey:?];
-    v4 = v28;
+    coderCopy = v28;
   }
 
   autoANCStrength = self->_autoANCStrength;
   if (autoANCStrength)
   {
     [v28 encodeInt64:autoANCStrength forKey:@"aaSt"];
-    v4 = v28;
+    coderCopy = v28;
   }
 
   coreBluetoothDevice = self->_coreBluetoothDevice;
   if (coreBluetoothDevice)
   {
     [v28 encodeObject:coreBluetoothDevice forKey:@"cbd"];
-    v4 = v28;
+    coderCopy = v28;
   }
 
   batteryInfo = self->_batteryInfo;
   if (batteryInfo)
   {
     [v28 encodeObject:batteryInfo forKey:@"baIn"];
-    v4 = v28;
+    coderCopy = v28;
   }
 
   bluetoothAddressData = self->_bluetoothAddressData;
   if (bluetoothAddressData)
   {
     [v28 encodeObject:bluetoothAddressData forKey:@"btAd"];
-    v4 = v28;
+    coderCopy = v28;
   }
 
   if (self->_bobbleCapability)
   {
     [v28 encodeInteger:? forKey:?];
-    v4 = v28;
+    coderCopy = v28;
   }
 
   if (self->_bobbleConfig)
   {
     [v28 encodeInteger:? forKey:?];
-    v4 = v28;
+    coderCopy = v28;
   }
 
   if (self->_cameraControlCapability)
   {
     [v28 encodeInteger:? forKey:?];
-    v4 = v28;
+    coderCopy = v28;
   }
 
   if (self->_caseSoundCapability)
   {
     [v28 encodeInteger:? forKey:?];
-    v4 = v28;
+    coderCopy = v28;
   }
 
   if (self->_chargingReminderEnabled)
   {
     [v28 encodeInteger:? forKey:?];
-    v4 = v28;
+    coderCopy = v28;
   }
 
   if (self->_clickHoldModeLeft)
   {
     [v28 encodeInteger:? forKey:?];
-    v4 = v28;
+    coderCopy = v28;
   }
 
   if (self->_clickHoldModeRight)
   {
     [v28 encodeInteger:? forKey:?];
-    v4 = v28;
+    coderCopy = v28;
   }
 
   if (self->_conversationDetectCapability)
   {
     [v28 encodeInteger:? forKey:?];
-    v4 = v28;
+    coderCopy = v28;
   }
 
   if (self->_conversationDetectConfig)
   {
     [v28 encodeInteger:? forKey:?];
-    v4 = v28;
+    coderCopy = v28;
   }
 
   if (self->_crownRotationDirection)
   {
     [v28 encodeInteger:? forKey:?];
-    v4 = v28;
+    coderCopy = v28;
   }
 
   if (self->_declineDismissSkipConfig)
   {
     [v28 encodeInteger:? forKey:?];
-    v4 = v28;
+    coderCopy = v28;
   }
 
   if (self->_detectedHeadGesture)
   {
     [v28 encodeInteger:? forKey:?];
-    v4 = v28;
+    coderCopy = v28;
   }
 
   if (self->_doubleTapActionLeft)
   {
     [v28 encodeInteger:? forKey:?];
-    v4 = v28;
+    coderCopy = v28;
   }
 
   if (self->_doubleTapActionRight)
   {
     [v28 encodeInteger:? forKey:?];
-    v4 = v28;
+    coderCopy = v28;
   }
 
   if (self->_doubleTapCapability)
   {
     [v28 encodeInteger:? forKey:?];
-    v4 = v28;
+    coderCopy = v28;
   }
 
   if (self->_dynamicEndOfChargeCapability)
   {
     [v28 encodeInteger:? forKey:?];
-    v4 = v28;
+    coderCopy = v28;
   }
 
   if (self->_dynamicEndOfChargeEnabled)
   {
     [v28 encodeInteger:? forKey:?];
-    v4 = v28;
+    coderCopy = v28;
   }
 
   if (self->_dynamicEndOfChargeState)
   {
     [v28 encodeInteger:? forKey:?];
-    v4 = v28;
+    coderCopy = v28;
   }
 
   if (self->_dynamicEndOfChargeTempDisabled)
   {
     [v28 encodeInteger:? forKey:?];
-    v4 = v28;
+    coderCopy = v28;
   }
 
   if (self->_earTipFitTestCapability)
   {
     [v28 encodeInteger:? forKey:?];
-    v4 = v28;
+    coderCopy = v28;
   }
 
   if (self->_endCallCapability)
   {
     [v28 encodeInteger:? forKey:?];
-    v4 = v28;
+    coderCopy = v28;
   }
 
   if (self->_endCallConfig)
   {
     [v28 encodeInteger:? forKey:?];
-    v4 = v28;
+    coderCopy = v28;
   }
 
   if (self->_enhancedTransparencyVersion)
   {
     [v28 encodeInteger:? forKey:?];
-    v4 = v28;
+    coderCopy = v28;
   }
 
   if (self->_farFieldUplinkCapability)
   {
     [v28 encodeInteger:? forKey:?];
-    v4 = v28;
+    coderCopy = v28;
   }
 
   if (self->_farFieldSessionOnGoing)
   {
     [v28 encodeInteger:? forKey:?];
-    v4 = v28;
+    coderCopy = v28;
   }
 
   firmwareVersion = self->_firmwareVersion;
   if (firmwareVersion)
   {
     [v28 encodeObject:firmwareVersion forKey:@"frmV"];
-    v4 = v28;
+    coderCopy = v28;
   }
 
   if (self->_frequencyBand)
   {
     [v28 encodeInteger:? forKey:?];
-    v4 = v28;
+    coderCopy = v28;
   }
 
   gapaFlags = self->_gapaFlags;
   if (gapaFlags)
   {
     [v28 encodeInt64:gapaFlags forKey:@"gapa"];
-    v4 = v28;
+    coderCopy = v28;
   }
 
   if (self->_guestPaired)
   {
     [v28 encodeInteger:? forKey:?];
-    v4 = v28;
+    coderCopy = v28;
   }
 
   if (self->_headGestureToggle)
   {
     [v28 encodeInteger:? forKey:?];
-    v4 = v28;
+    coderCopy = v28;
   }
 
   if (self->_healthKitDataWriteAllowed)
   {
     [v28 encodeInteger:? forKey:?];
-    v4 = v28;
+    coderCopy = v28;
   }
 
   if (self->_hearingAidCapability)
   {
     [v28 encodeInteger:? forKey:?];
-    v4 = v28;
+    coderCopy = v28;
   }
 
   if (self->_hearingAidEnabled)
   {
     [v28 encodeInteger:? forKey:?];
-    v4 = v28;
+    coderCopy = v28;
   }
 
   if (self->_hearingAidEnrolled)
   {
     [v28 encodeInteger:? forKey:?];
-    v4 = v28;
+    coderCopy = v28;
   }
 
   if (self->_hearingAidGainSwipeEnabled)
   {
     [v28 encodeInteger:? forKey:?];
-    v4 = v28;
+    coderCopy = v28;
   }
 
   if (self->_hearingAidV2Capability)
   {
     [v28 encodeInteger:? forKey:?];
-    v4 = v28;
+    coderCopy = v28;
   }
 
   if (self->_hearingAssistEnabled)
   {
     [v28 encodeInteger:? forKey:?];
-    v4 = v28;
+    coderCopy = v28;
   }
 
   if (self->_hearingProtectionCapability)
   {
     [v28 encodeInteger:? forKey:?];
-    v4 = v28;
+    coderCopy = v28;
   }
 
   if (self->_hearingProtectionPPECapability)
   {
     [v28 encodeInteger:? forKey:?];
-    v4 = v28;
+    coderCopy = v28;
   }
 
   hearingProtectionPPECapLevel = self->_hearingProtectionPPECapLevel;
   if (hearingProtectionPPECapLevel)
   {
     [v28 encodeInt64:hearingProtectionPPECapLevel forKey:@"ppeL"];
-    v4 = v28;
+    coderCopy = v28;
   }
 
   if (self->_hearingProtectionPPEEnabled)
   {
     [v28 encodeInteger:? forKey:?];
-    v4 = v28;
+    coderCopy = v28;
   }
 
   if (self->_hearingTestCapability)
   {
     [v28 encodeInteger:? forKey:?];
-    v4 = v28;
+    coderCopy = v28;
   }
 
   if (self->_heartRateMonitorCapability)
   {
     [v28 encodeInteger:? forKey:?];
-    v4 = v28;
+    coderCopy = v28;
   }
 
   if (self->_heartRateMonitorEnabled)
   {
     [v28 encodeInteger:? forKey:?];
-    v4 = v28;
+    coderCopy = v28;
   }
 
   if (self->_hideEarDetectionCapability)
   {
     [v28 encodeInteger:? forKey:?];
-    v4 = v28;
+    coderCopy = v28;
   }
 
   if (self->_hideOffListeningModeCapability)
   {
     [v28 encodeInteger:? forKey:?];
-    v4 = v28;
+    coderCopy = v28;
   }
 
   identifier = self->_identifier;
   if (identifier)
   {
     [v28 encodeObject:identifier forKey:@"did"];
-    v4 = v28;
+    coderCopy = v28;
   }
 
   listeningMode = self->_listeningMode;
   if (listeningMode)
   {
     [v28 encodeInteger:listeningMode forKey:@"lsnM"];
-    v4 = v28;
+    coderCopy = v28;
   }
 
   listeningModeConfigs = self->_listeningModeConfigs;
   if (listeningModeConfigs)
   {
     [v28 encodeInt64:listeningModeConfigs forKey:@"lsMC"];
-    v4 = v28;
+    coderCopy = v28;
   }
 
   if (self->_listeningModeOffAllowed)
   {
     [v28 encodeInteger:? forKey:?];
-    v4 = v28;
+    coderCopy = v28;
   }
 
   if (self->_microphoneMode)
   {
     [v28 encodeInteger:? forKey:?];
-    v4 = v28;
+    coderCopy = v28;
   }
 
   model = self->_model;
   if (model)
   {
     [v28 encodeObject:model forKey:@"modl"];
-    v4 = v28;
+    coderCopy = v28;
   }
 
   if (self->_muteControlCapability)
   {
     [v28 encodeInteger:? forKey:?];
-    v4 = v28;
+    coderCopy = v28;
   }
 
   if (self->_muteControlConfig)
   {
     [v28 encodeInteger:? forKey:?];
-    v4 = v28;
+    coderCopy = v28;
   }
 
   name = self->_name;
   if (name)
   {
     [v28 encodeObject:name forKey:@"name"];
-    v4 = v28;
+    coderCopy = v28;
   }
 
   if (self->_optimizedBatteryChargingState)
   {
     [v28 encodeInteger:? forKey:?];
-    v4 = v28;
+    coderCopy = v28;
   }
 
   if (self->_ovadStreamingCapability)
   {
     [v28 encodeInteger:? forKey:?];
-    v4 = v28;
+    coderCopy = v28;
   }
 
   if (self->_personalTranslatorCapability)
   {
     [v28 encodeInteger:? forKey:?];
-    v4 = v28;
+    coderCopy = v28;
   }
 
   if (self->_placementMode)
   {
     [v28 encodeInteger:? forKey:?];
-    v4 = v28;
+    coderCopy = v28;
   }
 
   if (self->_pmeEverywhereCapability)
   {
     [v28 encodeInteger:? forKey:?];
-    v4 = v28;
+    coderCopy = v28;
   }
 
   primaryPlacement = self->_primaryPlacement;
   if (primaryPlacement)
   {
     [v28 encodeInteger:primaryPlacement forKey:@"prpl"];
-    v4 = v28;
+    coderCopy = v28;
   }
 
   productID = self->_productID;
   if (productID)
   {
     [v28 encodeInt64:productID forKey:@"prID"];
-    v4 = v28;
+    coderCopy = v28;
   }
 
   productName = self->_productName;
   if (productName)
   {
     [v28 encodeObject:productName forKey:@"prN"];
-    v4 = v28;
+    coderCopy = v28;
   }
 
   if (self->_rawGesturesConfigFlags)
   {
     [v28 encodeInteger:? forKey:?];
-    v4 = v28;
+    coderCopy = v28;
   }
 
   if (self->_remoteCameraControlConfig)
   {
     [v28 encodeInteger:? forKey:?];
-    v4 = v28;
+    coderCopy = v28;
   }
 
   if (self->_routed)
   {
     [v28 encodeBool:1 forKey:@"rutd"];
-    v4 = v28;
+    coderCopy = v28;
   }
 
   if (self->_classicRSSI)
   {
     [v28 encodeInteger:? forKey:?];
-    v4 = v28;
+    coderCopy = v28;
   }
 
   secondaryPlacement = self->_secondaryPlacement;
   if (secondaryPlacement)
   {
     [v28 encodeInteger:secondaryPlacement forKey:@"scpl"];
-    v4 = v28;
+    coderCopy = v28;
   }
 
   if (self->_selectiveSpeechListeningCapability)
   {
     [v28 encodeInteger:? forKey:?];
-    v4 = v28;
+    coderCopy = v28;
   }
 
   if (self->_selectiveSpeechListeningConfig)
   {
     [v28 encodeInteger:? forKey:?];
-    v4 = v28;
+    coderCopy = v28;
   }
 
   serialNumber = self->_serialNumber;
   if (serialNumber)
   {
     [v28 encodeObject:serialNumber forKey:@"sn"];
-    v4 = v28;
+    coderCopy = v28;
   }
 
   serialNumberLeft = self->_serialNumberLeft;
   if (serialNumberLeft)
   {
     [v28 encodeObject:serialNumberLeft forKey:@"snLe"];
-    v4 = v28;
+    coderCopy = v28;
   }
 
   serialNumberRight = self->_serialNumberRight;
   if (serialNumberRight)
   {
     [v28 encodeObject:serialNumberRight forKey:@"snRi"];
-    v4 = v28;
+    coderCopy = v28;
   }
 
   if (self->_siriMultitoneCapability)
   {
     [v28 encodeInteger:? forKey:?];
-    v4 = v28;
+    coderCopy = v28;
   }
 
   if (self->_siriMultitoneEnabled)
   {
     [v28 encodeInteger:? forKey:?];
-    v4 = v28;
+    coderCopy = v28;
   }
 
   if (self->_sleepDetectionCapability)
   {
     [v28 encodeInteger:? forKey:?];
-    v4 = v28;
+    coderCopy = v28;
   }
 
   if (self->_sleepDetectionEnabled)
   {
     [v28 encodeInteger:? forKey:?];
-    v4 = v28;
+    coderCopy = v28;
   }
 
   if (self->_smartRoutingCapability)
   {
     [v28 encodeInteger:? forKey:?];
-    v4 = v28;
+    coderCopy = v28;
   }
 
   if (self->_smartRoutingMode)
   {
     [v28 encodeInteger:? forKey:?];
-    v4 = v28;
+    coderCopy = v28;
   }
 
   smartRoutingStateFlags = self->_smartRoutingStateFlags;
   if (smartRoutingStateFlags)
   {
     [v28 encodeInt64:smartRoutingStateFlags forKey:@"smRtS"];
-    v4 = v28;
+    coderCopy = v28;
   }
 
   if (self->_spatialAudioAllowed)
   {
     [v28 encodeInteger:? forKey:?];
-    v4 = v28;
+    coderCopy = v28;
   }
 
   if (self->_streamStateAoS)
   {
     [v28 encodeInteger:? forKey:?];
-    v4 = v28;
+    coderCopy = v28;
   }
 
   if (self->_temporaryManagedPairedStatus)
   {
     [v28 encodeInteger:? forKey:?];
-    v4 = v28;
+    coderCopy = v28;
   }
 
   if (self->_vendorID)
   {
     [v28 encodeInteger:? forKey:?];
-    v4 = v28;
+    coderCopy = v28;
   }
 }
 
-- (unsigned)CBCapToAACap:(unsigned __int8)a3
+- (unsigned)CBCapToAACap:(unsigned __int8)cap
 {
-  if (a3)
+  if (cap)
   {
-    return 2 * (a3 == 1);
+    return 2 * (cap == 1);
   }
 
   else
@@ -1132,153 +1132,153 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [objc_opt_class() allocWithZone:a3];
-  [v5 setAcceptReplyPlayPauseConfig:v4->_acceptReplyPlayPauseConfig];
-  [v5 setAdaptiveVolumeCapability:v4->_adaptiveVolumeCapability];
-  [v5 setAdaptiveVolumeConfig:v4->_adaptiveVolumeConfig];
-  v6 = [(NSDate *)v4->_audiogramEnrolledTimestamp copyWithZone:a3];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = [objc_opt_class() allocWithZone:zone];
+  [v5 setAcceptReplyPlayPauseConfig:selfCopy->_acceptReplyPlayPauseConfig];
+  [v5 setAdaptiveVolumeCapability:selfCopy->_adaptiveVolumeCapability];
+  [v5 setAdaptiveVolumeConfig:selfCopy->_adaptiveVolumeConfig];
+  v6 = [(NSDate *)selfCopy->_audiogramEnrolledTimestamp copyWithZone:zone];
   [v5 setAudiogramEnrolledTimestamp:v6];
 
-  [v5 setAudioStreamState:v4->_audioStreamState];
-  [v5 setAutoANCCapability:v4->_autoANCCapability];
-  [v5 setAutoANCStrength:v4->_autoANCStrength];
-  v7 = [(AADeviceBatteryInfo *)v4->_batteryInfo copy];
+  [v5 setAudioStreamState:selfCopy->_audioStreamState];
+  [v5 setAutoANCCapability:selfCopy->_autoANCCapability];
+  [v5 setAutoANCStrength:selfCopy->_autoANCStrength];
+  v7 = [(AADeviceBatteryInfo *)selfCopy->_batteryInfo copy];
   [v5 setBatteryInfo:v7];
 
-  v8 = [(NSData *)v4->_bluetoothAddressData copyWithZone:a3];
+  v8 = [(NSData *)selfCopy->_bluetoothAddressData copyWithZone:zone];
   [v5 setBluetoothAddressData:v8];
 
-  [v5 setBobbleCapability:v4->_bobbleCapability];
-  [v5 setBobbleConfig:v4->_bobbleConfig];
-  [v5 setCameraControlCapability:v4->_cameraControlCapability];
-  [v5 setCaseSoundCapability:v4->_caseSoundCapability];
-  [v5 setChargingReminderEnabled:v4->_chargingReminderEnabled];
-  [v5 setClassicRSSI:v4->_classicRSSI];
-  [v5 setClickHoldModeLeft:v4->_clickHoldModeLeft];
-  [v5 setClickHoldModeRight:v4->_clickHoldModeRight];
-  [v5 setCloudRecordInfoLoaded:v4->_cloudRecordInfoLoaded];
-  [v5 setConnected:v4->_connected];
-  [v5 setConnectedAADeviceInfoReceived:v4->_connectedAADeviceInfoReceived];
-  [v5 setConnectedCBDeviceReceived:v4->_connectedCBDeviceReceived];
-  [v5 setConversationDetectCapability:v4->_conversationDetectCapability];
-  [v5 setConversationDetectConfig:v4->_conversationDetectConfig];
-  v9 = [(CBDevice *)v4->_coreBluetoothDevice copy];
+  [v5 setBobbleCapability:selfCopy->_bobbleCapability];
+  [v5 setBobbleConfig:selfCopy->_bobbleConfig];
+  [v5 setCameraControlCapability:selfCopy->_cameraControlCapability];
+  [v5 setCaseSoundCapability:selfCopy->_caseSoundCapability];
+  [v5 setChargingReminderEnabled:selfCopy->_chargingReminderEnabled];
+  [v5 setClassicRSSI:selfCopy->_classicRSSI];
+  [v5 setClickHoldModeLeft:selfCopy->_clickHoldModeLeft];
+  [v5 setClickHoldModeRight:selfCopy->_clickHoldModeRight];
+  [v5 setCloudRecordInfoLoaded:selfCopy->_cloudRecordInfoLoaded];
+  [v5 setConnected:selfCopy->_connected];
+  [v5 setConnectedAADeviceInfoReceived:selfCopy->_connectedAADeviceInfoReceived];
+  [v5 setConnectedCBDeviceReceived:selfCopy->_connectedCBDeviceReceived];
+  [v5 setConversationDetectCapability:selfCopy->_conversationDetectCapability];
+  [v5 setConversationDetectConfig:selfCopy->_conversationDetectConfig];
+  v9 = [(CBDevice *)selfCopy->_coreBluetoothDevice copy];
   v10 = v5[31];
   v5[31] = v9;
 
-  [v5 setCrownRotationDirection:v4->_crownRotationDirection];
-  [v5 setDeclineDismissSkipConfig:v4->_declineDismissSkipConfig];
-  [v5 setDetectedHeadGesture:v4->_detectedHeadGesture];
-  [v5 setDoubleTapActionLeft:v4->_doubleTapActionLeft];
-  [v5 setDoubleTapActionRight:v4->_doubleTapActionRight];
-  [v5 setDoubleTapCapability:v4->_doubleTapCapability];
-  [v5 setDynamicEndOfChargeCapability:v4->_dynamicEndOfChargeCapability];
-  [v5 setDynamicEndOfChargeEnabled:v4->_dynamicEndOfChargeEnabled];
-  [v5 setDynamicEndOfChargeState:{-[AudioAccessoryDevice dynamicEndOfChargeState](v4, "dynamicEndOfChargeState")}];
-  [v5 setDynamicEndOfChargeTempDisabled:v4->_dynamicEndOfChargeTempDisabled];
-  [v5 setEarTipFitTestCapability:v4->_earTipFitTestCapability];
-  [v5 setEndCallCapability:v4->_endCallCapability];
-  [v5 setEndCallConfig:v4->_endCallConfig];
-  [v5 setEnhancedTransparencyVersion:v4->_enhancedTransparencyVersion];
-  [v5 setFarFieldUplinkCapability:v4->_farFieldUplinkCapability];
-  [v5 setFarFieldSessionOnGoing:v4->_farFieldSessionOnGoing];
-  [v5 setFrequencyBand:v4->_frequencyBand];
-  v11 = [(NSString *)v4->_firmwareVersion copyWithZone:a3];
+  [v5 setCrownRotationDirection:selfCopy->_crownRotationDirection];
+  [v5 setDeclineDismissSkipConfig:selfCopy->_declineDismissSkipConfig];
+  [v5 setDetectedHeadGesture:selfCopy->_detectedHeadGesture];
+  [v5 setDoubleTapActionLeft:selfCopy->_doubleTapActionLeft];
+  [v5 setDoubleTapActionRight:selfCopy->_doubleTapActionRight];
+  [v5 setDoubleTapCapability:selfCopy->_doubleTapCapability];
+  [v5 setDynamicEndOfChargeCapability:selfCopy->_dynamicEndOfChargeCapability];
+  [v5 setDynamicEndOfChargeEnabled:selfCopy->_dynamicEndOfChargeEnabled];
+  [v5 setDynamicEndOfChargeState:{-[AudioAccessoryDevice dynamicEndOfChargeState](selfCopy, "dynamicEndOfChargeState")}];
+  [v5 setDynamicEndOfChargeTempDisabled:selfCopy->_dynamicEndOfChargeTempDisabled];
+  [v5 setEarTipFitTestCapability:selfCopy->_earTipFitTestCapability];
+  [v5 setEndCallCapability:selfCopy->_endCallCapability];
+  [v5 setEndCallConfig:selfCopy->_endCallConfig];
+  [v5 setEnhancedTransparencyVersion:selfCopy->_enhancedTransparencyVersion];
+  [v5 setFarFieldUplinkCapability:selfCopy->_farFieldUplinkCapability];
+  [v5 setFarFieldSessionOnGoing:selfCopy->_farFieldSessionOnGoing];
+  [v5 setFrequencyBand:selfCopy->_frequencyBand];
+  v11 = [(NSString *)selfCopy->_firmwareVersion copyWithZone:zone];
   [v5 setFirmwareVersion:v11];
 
-  [v5 setGapaFlags:v4->_gapaFlags];
-  [v5 setGuestPaired:v4->_guestPaired];
-  [v5 setHeadGestureToggle:v4->_headGestureToggle];
-  [v5 setHeadGestureProxCardShown:v4->_headGestureProxCardShown];
-  [v5 setHealthKitDataWriteAllowed:v4->_healthKitDataWriteAllowed];
-  [v5 setHearingAidCapability:v4->_hearingAidCapability];
-  [v5 setHearingAidEnrolled:v4->_hearingAidEnrolled];
-  [v5 setHearingAidEnabled:v4->_hearingAidEnabled];
-  [v5 setHearingAidGainSwipeEnabled:v4->_hearingAidGainSwipeEnabled];
-  [v5 setHearingAidV2Capability:v4->_hearingAidV2Capability];
-  [v5 setHearingAssistEnabled:v4->_hearingAssistEnabled];
-  [v5 setHearingProtectionCapability:v4->_hearingProtectionCapability];
-  [v5 setHearingProtectionPPECapability:v4->_hearingProtectionPPECapability];
-  [v5 setHearingProtectionPPECapLevel:v4->_hearingProtectionPPECapLevel];
-  [v5 setHearingProtectionPPEEnabled:v4->_hearingProtectionPPEEnabled];
-  [v5 setHearingTestCapability:v4->_hearingTestCapability];
-  [v5 setHeartRateMonitorCapability:v4->_heartRateMonitorCapability];
-  [v5 setHeartRateMonitorCapabilityChanged:v4->_heartRateMonitorCapabilityChanged];
-  [v5 setHeartRateMonitorCapabilityValueOriginatedFromDevice:v4->_heartRateMonitorCapabilityValueOriginatedFromDevice];
-  [v5 setHeartRateMonitorEnabled:v4->_heartRateMonitorEnabled];
-  [v5 setHideEarDetectionCapability:v4->_hideEarDetectionCapability];
-  [v5 setHideOffListeningModeCapability:v4->_hideOffListeningModeCapability];
-  v12 = [(NSString *)v4->_identifier copyWithZone:a3];
+  [v5 setGapaFlags:selfCopy->_gapaFlags];
+  [v5 setGuestPaired:selfCopy->_guestPaired];
+  [v5 setHeadGestureToggle:selfCopy->_headGestureToggle];
+  [v5 setHeadGestureProxCardShown:selfCopy->_headGestureProxCardShown];
+  [v5 setHealthKitDataWriteAllowed:selfCopy->_healthKitDataWriteAllowed];
+  [v5 setHearingAidCapability:selfCopy->_hearingAidCapability];
+  [v5 setHearingAidEnrolled:selfCopy->_hearingAidEnrolled];
+  [v5 setHearingAidEnabled:selfCopy->_hearingAidEnabled];
+  [v5 setHearingAidGainSwipeEnabled:selfCopy->_hearingAidGainSwipeEnabled];
+  [v5 setHearingAidV2Capability:selfCopy->_hearingAidV2Capability];
+  [v5 setHearingAssistEnabled:selfCopy->_hearingAssistEnabled];
+  [v5 setHearingProtectionCapability:selfCopy->_hearingProtectionCapability];
+  [v5 setHearingProtectionPPECapability:selfCopy->_hearingProtectionPPECapability];
+  [v5 setHearingProtectionPPECapLevel:selfCopy->_hearingProtectionPPECapLevel];
+  [v5 setHearingProtectionPPEEnabled:selfCopy->_hearingProtectionPPEEnabled];
+  [v5 setHearingTestCapability:selfCopy->_hearingTestCapability];
+  [v5 setHeartRateMonitorCapability:selfCopy->_heartRateMonitorCapability];
+  [v5 setHeartRateMonitorCapabilityChanged:selfCopy->_heartRateMonitorCapabilityChanged];
+  [v5 setHeartRateMonitorCapabilityValueOriginatedFromDevice:selfCopy->_heartRateMonitorCapabilityValueOriginatedFromDevice];
+  [v5 setHeartRateMonitorEnabled:selfCopy->_heartRateMonitorEnabled];
+  [v5 setHideEarDetectionCapability:selfCopy->_hideEarDetectionCapability];
+  [v5 setHideOffListeningModeCapability:selfCopy->_hideOffListeningModeCapability];
+  v12 = [(NSString *)selfCopy->_identifier copyWithZone:zone];
   [v5 setIdentifier:v12];
 
-  v13 = [(NSDate *)v4->_lastSeenConnectedTime copyWithZone:a3];
+  v13 = [(NSDate *)selfCopy->_lastSeenConnectedTime copyWithZone:zone];
   [v5 setLastSeenConnectedTime:v13];
 
-  [v5 setListeningMode:v4->_listeningMode];
-  [v5 setListeningModeConfigs:v4->_listeningModeConfigs];
-  [v5 setListeningModeOffAllowed:v4->_listeningModeOffAllowed];
-  [v5 setMicrophoneMode:v4->_microphoneMode];
-  v14 = [(NSString *)v4->_model copyWithZone:a3];
+  [v5 setListeningMode:selfCopy->_listeningMode];
+  [v5 setListeningModeConfigs:selfCopy->_listeningModeConfigs];
+  [v5 setListeningModeOffAllowed:selfCopy->_listeningModeOffAllowed];
+  [v5 setMicrophoneMode:selfCopy->_microphoneMode];
+  v14 = [(NSString *)selfCopy->_model copyWithZone:zone];
   [v5 setModel:v14];
 
-  [v5 setMuteControlCapability:v4->_muteControlCapability];
-  [v5 setMuteControlConfig:v4->_muteControlConfig];
-  v15 = [(NSString *)v4->_name copyWithZone:a3];
+  [v5 setMuteControlCapability:selfCopy->_muteControlCapability];
+  [v5 setMuteControlConfig:selfCopy->_muteControlConfig];
+  v15 = [(NSString *)selfCopy->_name copyWithZone:zone];
   [v5 setName:v15];
 
-  [v5 setOnConnectionActionsCalled:v4->_onConnectionActionsCalled];
-  [v5 setOptimizedBatteryChargingState:v4->_optimizedBatteryChargingState];
-  [v5 setOvadStreamingCapability:v4->_ovadStreamingCapability];
-  [v5 setPaired:v4->_paired];
-  [v5 setPairedAADeviceInfoReceived:v4->_pairedAADeviceInfoReceived];
-  [v5 setPairedCBDeviceReceived:v4->_pairedCBDeviceReceived];
-  [v5 setPeerAutoANCCapability:v4->_peerAutoANCCapability];
-  [v5 setPersonalTranslatorCapability:v4->_personalTranslatorCapability];
-  [v5 setPlacementMode:v4->_placementMode];
-  [v5 setPmeEverywhereCapability:v4->_pmeEverywhereCapability];
-  [v5 setPrimaryPlacement:v4->_primaryPlacement];
-  [v5 setProductID:v4->_productID];
-  v16 = [(NSString *)v4->_productName copyWithZone:a3];
+  [v5 setOnConnectionActionsCalled:selfCopy->_onConnectionActionsCalled];
+  [v5 setOptimizedBatteryChargingState:selfCopy->_optimizedBatteryChargingState];
+  [v5 setOvadStreamingCapability:selfCopy->_ovadStreamingCapability];
+  [v5 setPaired:selfCopy->_paired];
+  [v5 setPairedAADeviceInfoReceived:selfCopy->_pairedAADeviceInfoReceived];
+  [v5 setPairedCBDeviceReceived:selfCopy->_pairedCBDeviceReceived];
+  [v5 setPeerAutoANCCapability:selfCopy->_peerAutoANCCapability];
+  [v5 setPersonalTranslatorCapability:selfCopy->_personalTranslatorCapability];
+  [v5 setPlacementMode:selfCopy->_placementMode];
+  [v5 setPmeEverywhereCapability:selfCopy->_pmeEverywhereCapability];
+  [v5 setPrimaryPlacement:selfCopy->_primaryPlacement];
+  [v5 setProductID:selfCopy->_productID];
+  v16 = [(NSString *)selfCopy->_productName copyWithZone:zone];
   [v5 setProductName:v16];
 
-  [v5 setRawGesturesConfigFlags:v4->_rawGesturesConfigFlags];
-  [v5 setRemoteCameraControlConfig:v4->_remoteCameraControlConfig];
-  [v5 setRouted:{-[AudioAccessoryDevice routed](v4, "routed")}];
-  [v5 setSecondaryPlacement:v4->_secondaryPlacement];
-  [v5 setSelectiveSpeechListeningCapability:v4->_selectiveSpeechListeningCapability];
-  [v5 setSelectiveSpeechListeningConfig:v4->_selectiveSpeechListeningConfig];
-  v17 = [(NSString *)v4->_serialNumber copyWithZone:a3];
+  [v5 setRawGesturesConfigFlags:selfCopy->_rawGesturesConfigFlags];
+  [v5 setRemoteCameraControlConfig:selfCopy->_remoteCameraControlConfig];
+  [v5 setRouted:{-[AudioAccessoryDevice routed](selfCopy, "routed")}];
+  [v5 setSecondaryPlacement:selfCopy->_secondaryPlacement];
+  [v5 setSelectiveSpeechListeningCapability:selfCopy->_selectiveSpeechListeningCapability];
+  [v5 setSelectiveSpeechListeningConfig:selfCopy->_selectiveSpeechListeningConfig];
+  v17 = [(NSString *)selfCopy->_serialNumber copyWithZone:zone];
   [v5 setSerialNumber:v17];
 
-  v18 = [(NSString *)v4->_serialNumberLeft copyWithZone:a3];
+  v18 = [(NSString *)selfCopy->_serialNumberLeft copyWithZone:zone];
   [v5 setSerialNumberLeft:v18];
 
-  v19 = [(NSString *)v4->_serialNumberRight copyWithZone:a3];
+  v19 = [(NSString *)selfCopy->_serialNumberRight copyWithZone:zone];
   [v5 setSerialNumberRight:v19];
 
-  [v5 setSiriMultitoneCapability:v4->_siriMultitoneCapability];
-  [v5 setSiriMultitoneEnabled:v4->_siriMultitoneEnabled];
-  [v5 setSleepDetectionCapability:v4->_sleepDetectionCapability];
-  [v5 setSleepDetectionEnabled:v4->_sleepDetectionEnabled];
-  [v5 setSmartRoutingCapability:v4->_smartRoutingCapability];
-  [v5 setSmartRoutingMode:v4->_smartRoutingMode];
-  [v5 setSmartRoutingStateFlags:v4->_smartRoutingStateFlags];
-  [v5 setSpatialAudioAllowed:v4->_spatialAudioAllowed];
-  [v5 setStreamStateAoS:v4->_streamStateAoS];
-  [v5 setTemporaryManagedPairedStatus:v4->_temporaryManagedPairedStatus];
-  [v5 setVendorID:v4->_vendorID];
-  objc_sync_exit(v4);
+  [v5 setSiriMultitoneCapability:selfCopy->_siriMultitoneCapability];
+  [v5 setSiriMultitoneEnabled:selfCopy->_siriMultitoneEnabled];
+  [v5 setSleepDetectionCapability:selfCopy->_sleepDetectionCapability];
+  [v5 setSleepDetectionEnabled:selfCopy->_sleepDetectionEnabled];
+  [v5 setSmartRoutingCapability:selfCopy->_smartRoutingCapability];
+  [v5 setSmartRoutingMode:selfCopy->_smartRoutingMode];
+  [v5 setSmartRoutingStateFlags:selfCopy->_smartRoutingStateFlags];
+  [v5 setSpatialAudioAllowed:selfCopy->_spatialAudioAllowed];
+  [v5 setStreamStateAoS:selfCopy->_streamStateAoS];
+  [v5 setTemporaryManagedPairedStatus:selfCopy->_temporaryManagedPairedStatus];
+  [v5 setVendorID:selfCopy->_vendorID];
+  objc_sync_exit(selfCopy);
 
   return v5;
 }
 
-- (id)descriptionWithLevel:(int)a3
+- (id)descriptionWithLevel:(int)level
 {
-  v303 = a3;
+  levelCopy = level;
   identifier = self->_identifier;
   NSAppendPrintF_safe();
   v4 = 0;
@@ -1384,55 +1384,55 @@
   batteryInfo = self->_batteryInfo;
   if (batteryInfo)
   {
-    v26 = [(AADeviceBatteryInfo *)batteryInfo batteryMain];
-    v27 = v26;
-    if (v26)
+    batteryMain = [(AADeviceBatteryInfo *)batteryInfo batteryMain];
+    v27 = batteryMain;
+    if (batteryMain)
     {
-      v290 = v26;
+      v290 = batteryMain;
       NSAppendPrintF_safe();
       v28 = v14;
 
       v14 = v28;
     }
 
-    v29 = [(AADeviceBatteryInfo *)self->_batteryInfo batteryCase];
-    v30 = v29;
-    if (v29)
+    batteryCase = [(AADeviceBatteryInfo *)self->_batteryInfo batteryCase];
+    v30 = batteryCase;
+    if (batteryCase)
     {
-      v290 = v29;
+      v290 = batteryCase;
       NSAppendPrintF_safe();
       v31 = v14;
 
       v14 = v31;
     }
 
-    v32 = [(AADeviceBatteryInfo *)self->_batteryInfo batteryCombinedLeftRight];
-    v33 = v32;
-    if (v32)
+    batteryCombinedLeftRight = [(AADeviceBatteryInfo *)self->_batteryInfo batteryCombinedLeftRight];
+    v33 = batteryCombinedLeftRight;
+    if (batteryCombinedLeftRight)
     {
-      v290 = v32;
+      v290 = batteryCombinedLeftRight;
       NSAppendPrintF_safe();
       v34 = v14;
 
       v14 = v34;
     }
 
-    v35 = [(AADeviceBatteryInfo *)self->_batteryInfo batteryLeft];
-    v36 = v35;
-    if (v35)
+    batteryLeft = [(AADeviceBatteryInfo *)self->_batteryInfo batteryLeft];
+    v36 = batteryLeft;
+    if (batteryLeft)
     {
-      v290 = v35;
+      v290 = batteryLeft;
       NSAppendPrintF_safe();
       v37 = v14;
 
       v14 = v37;
     }
 
-    v38 = [(AADeviceBatteryInfo *)self->_batteryInfo batteryRight];
-    v39 = v38;
-    if (v38)
+    batteryRight = [(AADeviceBatteryInfo *)self->_batteryInfo batteryRight];
+    v39 = batteryRight;
+    if (batteryRight)
     {
-      v290 = v38;
+      v290 = batteryRight;
       NSAppendPrintF_safe();
       v40 = v14;
 
@@ -1587,10 +1587,10 @@
   NSAppendPrintF_safe();
   v63 = v53;
 
-  v64 = [(AudioAccessoryDevice *)self chargingReminderCapability];
-  if (v64)
+  chargingReminderCapability = [(AudioAccessoryDevice *)self chargingReminderCapability];
+  if (chargingReminderCapability)
   {
-    if (v64 == 1)
+    if (chargingReminderCapability == 1)
     {
       v65 = "Unsupported";
     }
@@ -1600,7 +1600,7 @@
       v65 = "?";
     }
 
-    if (v64 == 2)
+    if (chargingReminderCapability == 2)
     {
       v66 = "Supported";
     }
@@ -1680,17 +1680,17 @@
     v72 = v76;
   }
 
-  v77 = [(AudioAccessoryDevice *)self dynamicEndOfChargeState];
-  if (v77)
+  dynamicEndOfChargeState = [(AudioAccessoryDevice *)self dynamicEndOfChargeState];
+  if (dynamicEndOfChargeState)
   {
-    if (v77 > 3)
+    if (dynamicEndOfChargeState > 3)
     {
       v78 = "?";
     }
 
     else
     {
-      v78 = off_278CDDAC8[v77 - 1];
+      v78 = off_278CDDAC8[dynamicEndOfChargeState - 1];
     }
 
     v293 = ShorthandString(v78);
@@ -1703,10 +1703,10 @@
   NSAppendPrintF_safe();
   v80 = v72;
 
-  v81 = [(AudioAccessoryDevice *)self optimizedBatteryChargingCapability];
-  if (v81)
+  optimizedBatteryChargingCapability = [(AudioAccessoryDevice *)self optimizedBatteryChargingCapability];
+  if (optimizedBatteryChargingCapability)
   {
-    if (v81 == 1)
+    if (optimizedBatteryChargingCapability == 1)
     {
       v82 = "Unsupported";
     }
@@ -1716,7 +1716,7 @@
       v82 = "?";
     }
 
-    if (v81 == 2)
+    if (optimizedBatteryChargingCapability == 2)
     {
       v83 = "Supported";
     }
@@ -3055,7 +3055,7 @@
     v282 = v284;
   }
 
-  if (v303 < 0x15u)
+  if (levelCopy < 0x15u)
   {
     NSAppendPrintF_safe();
     v285 = v282;
@@ -3070,18 +3070,18 @@
 
 - (NSString)bluetoothAddress
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  bluetoothAddress = v2->_bluetoothAddress;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  bluetoothAddress = selfCopy->_bluetoothAddress;
   if (!bluetoothAddress)
   {
-    if (v2->_bluetoothAddressData)
+    if (selfCopy->_bluetoothAddressData)
     {
       v4 = CUPrintNSDataAddress();
-      v5 = v2->_bluetoothAddress;
-      v2->_bluetoothAddress = v4;
+      v5 = selfCopy->_bluetoothAddress;
+      selfCopy->_bluetoothAddress = v4;
 
-      bluetoothAddress = v2->_bluetoothAddress;
+      bluetoothAddress = selfCopy->_bluetoothAddress;
     }
 
     else
@@ -3091,17 +3091,17 @@
   }
 
   v6 = bluetoothAddress;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
 - (unsigned)chargingReminderCapability
 {
-  v2 = [(AudioAccessoryDevice *)self productID];
-  if (v2 - 8212 > 0x14 || ((1 << (v2 - 20)) & 0x190081) == 0)
+  productID = [(AudioAccessoryDevice *)self productID];
+  if (productID - 8212 > 0x14 || ((1 << (productID - 20)) & 0x190081) == 0)
   {
-    return v2 != 0;
+    return productID != 0;
   }
 
   else
@@ -3122,10 +3122,10 @@
 
 - (char)dynamicEndOfChargeState
 {
-  v3 = [(AudioAccessoryDevice *)self dynamicEndOfChargeEnabled];
-  if (v3)
+  dynamicEndOfChargeEnabled = [(AudioAccessoryDevice *)self dynamicEndOfChargeEnabled];
+  if (dynamicEndOfChargeEnabled)
   {
-    v4 = [(AudioAccessoryDevice *)self dynamicEndOfChargeEnabled];
+    dynamicEndOfChargeEnabled2 = [(AudioAccessoryDevice *)self dynamicEndOfChargeEnabled];
     if ([(AudioAccessoryDevice *)self dynamicEndOfChargeTempDisabled]== 1)
     {
       v5 = 3;
@@ -3136,26 +3136,26 @@
       v5 = 1;
     }
 
-    if (v4 == 1)
+    if (dynamicEndOfChargeEnabled2 == 1)
     {
-      LOBYTE(v3) = v5;
+      LOBYTE(dynamicEndOfChargeEnabled) = v5;
     }
 
     else
     {
-      LOBYTE(v3) = 2;
+      LOBYTE(dynamicEndOfChargeEnabled) = 2;
     }
   }
 
-  return v3;
+  return dynamicEndOfChargeEnabled;
 }
 
 - (unsigned)optimizedBatteryChargingCapability
 {
-  v2 = [(AudioAccessoryDevice *)self productID];
-  if (v2 - 8206 > 0x1A || ((1 << (v2 - 14)) & 0x6452861) == 0)
+  productID = [(AudioAccessoryDevice *)self productID];
+  if (productID - 8206 > 0x1A || ((1 << (productID - 14)) & 0x6452861) == 0)
   {
-    return v2 != 0;
+    return productID != 0;
   }
 
   else
@@ -3166,14 +3166,14 @@
 
 - (BOOL)pairedInfoComplete
 {
-  v3 = [(AudioAccessoryDevice *)self pairedCBDeviceReceived];
-  if (v3)
+  pairedCBDeviceReceived = [(AudioAccessoryDevice *)self pairedCBDeviceReceived];
+  if (pairedCBDeviceReceived)
   {
 
-    LOBYTE(v3) = [(AudioAccessoryDevice *)self pairedAADeviceInfoReceived];
+    LOBYTE(pairedCBDeviceReceived) = [(AudioAccessoryDevice *)self pairedAADeviceInfoReceived];
   }
 
-  return v3;
+  return pairedCBDeviceReceived;
 }
 
 - (unsigned)computePersonalTranslatorCapability
@@ -3210,68 +3210,68 @@
   }
 }
 
-- (void)setBatteryInfo:(id)a3
+- (void)setBatteryInfo:(id)info
 {
-  v5 = a3;
+  infoCopy = info;
   p_batteryInfo = &self->_batteryInfo;
-  if (self->_batteryInfo != v5)
+  if (self->_batteryInfo != infoCopy)
   {
-    v8 = v5;
-    v7 = self;
-    objc_sync_enter(v7);
-    objc_storeStrong(p_batteryInfo, a3);
-    objc_sync_exit(v7);
+    v8 = infoCopy;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    objc_storeStrong(p_batteryInfo, info);
+    objc_sync_exit(selfCopy);
 
-    v5 = v8;
+    infoCopy = v8;
   }
 }
 
-- (void)setBluetoothAddressData:(id)a3
+- (void)setBluetoothAddressData:(id)data
 {
-  v9 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  objc_storeStrong(&v5->_bluetoothAddressData, a3);
-  bluetoothAddressData = v5->_bluetoothAddressData;
+  dataCopy = data;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  objc_storeStrong(&selfCopy->_bluetoothAddressData, data);
+  bluetoothAddressData = selfCopy->_bluetoothAddressData;
   v7 = CUPrintNSDataAddress();
-  bluetoothAddress = v5->_bluetoothAddress;
-  v5->_bluetoothAddress = v7;
+  bluetoothAddress = selfCopy->_bluetoothAddress;
+  selfCopy->_bluetoothAddress = v7;
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)setCloudRecordInfoLoaded:(BOOL)a3
+- (void)setCloudRecordInfoLoaded:(BOOL)loaded
 {
-  if (self->_cloudRecordInfoLoaded != a3)
+  if (self->_cloudRecordInfoLoaded != loaded)
   {
     obj = self;
     objc_sync_enter(obj);
-    self->_cloudRecordInfoLoaded = a3;
+    self->_cloudRecordInfoLoaded = loaded;
     objc_sync_exit(obj);
   }
 }
 
-- (void)setConnected:(BOOL)a3
+- (void)setConnected:(BOOL)connected
 {
-  if (self->_connected != a3)
+  if (self->_connected != connected)
   {
     obj = self;
     objc_sync_enter(obj);
-    self->_connected = a3;
+    self->_connected = connected;
     objc_sync_exit(obj);
   }
 }
 
 - (BOOL)setDefaultConfigurationsForCloudSyncedPropertiesIfNeeded
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (v2->_bobbleCapability == 2 && !v2->_headGestureToggle)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_bobbleCapability == 2 && !selfCopy->_headGestureToggle)
   {
-    v2->_headGestureToggle = 2;
+    selfCopy->_headGestureToggle = 2;
     v3 = 1;
-    v2->_acceptReplyPlayPauseConfig = 1;
-    v2->_declineDismissSkipConfig = 2;
+    selfCopy->_acceptReplyPlayPauseConfig = 1;
+    selfCopy->_declineDismissSkipConfig = 2;
   }
 
   else
@@ -3279,170 +3279,170 @@
     v3 = 0;
   }
 
-  if ([(AudioAccessoryDevice *)v2 heartRateMonitorCapability]== 2 && !v2->_healthKitDataWriteAllowed)
+  if ([(AudioAccessoryDevice *)selfCopy heartRateMonitorCapability]== 2 && !selfCopy->_healthKitDataWriteAllowed)
   {
     v3 = 1;
-    v2->_healthKitDataWriteAllowed = 1;
+    selfCopy->_healthKitDataWriteAllowed = 1;
   }
 
-  if (_os_feature_enabled_impl() && [(AudioAccessoryDevice *)v2 chargingReminderCapability]== 2 && !v2->_chargingReminderEnabled)
+  if (_os_feature_enabled_impl() && [(AudioAccessoryDevice *)selfCopy chargingReminderCapability]== 2 && !selfCopy->_chargingReminderEnabled)
   {
     v3 = 1;
-    v2->_chargingReminderEnabled = 1;
+    selfCopy->_chargingReminderEnabled = 1;
   }
 
-  if (_os_feature_enabled_impl() && v2->_cameraControlCapability == 2 && !v2->_remoteCameraControlConfig)
+  if (_os_feature_enabled_impl() && selfCopy->_cameraControlCapability == 2 && !selfCopy->_remoteCameraControlConfig)
   {
     v3 = 1;
-    v2->_remoteCameraControlConfig = 1;
+    selfCopy->_remoteCameraControlConfig = 1;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)setDetectedHeadGesture:(unsigned __int8)a3
+- (void)setDetectedHeadGesture:(unsigned __int8)gesture
 {
-  if (self->_detectedHeadGesture != a3)
+  if (self->_detectedHeadGesture != gesture)
   {
     obj = self;
     objc_sync_enter(obj);
-    self->_detectedHeadGesture = a3;
+    self->_detectedHeadGesture = gesture;
     objc_sync_exit(obj);
   }
 }
 
-- (void)setDynamicEndOfChargeEnabled:(char)a3
+- (void)setDynamicEndOfChargeEnabled:(char)enabled
 {
-  if (self->_dynamicEndOfChargeEnabled != a3)
+  if (self->_dynamicEndOfChargeEnabled != enabled)
   {
     obj = self;
     objc_sync_enter(obj);
-    self->_dynamicEndOfChargeEnabled = a3;
+    self->_dynamicEndOfChargeEnabled = enabled;
     objc_sync_exit(obj);
   }
 }
 
-- (void)setHeartRateMonitorCapabilityChanged:(BOOL)a3
+- (void)setHeartRateMonitorCapabilityChanged:(BOOL)changed
 {
-  if (self->_heartRateMonitorCapabilityChanged != a3)
+  if (self->_heartRateMonitorCapabilityChanged != changed)
   {
     obj = self;
     objc_sync_enter(obj);
-    self->_heartRateMonitorCapabilityChanged = a3;
+    self->_heartRateMonitorCapabilityChanged = changed;
     objc_sync_exit(obj);
   }
 }
 
-- (void)setHeartRateMonitorCapabilityValueOriginatedFromDevice:(BOOL)a3
+- (void)setHeartRateMonitorCapabilityValueOriginatedFromDevice:(BOOL)device
 {
-  if (self->_heartRateMonitorCapabilityValueOriginatedFromDevice != a3)
+  if (self->_heartRateMonitorCapabilityValueOriginatedFromDevice != device)
   {
     obj = self;
     objc_sync_enter(obj);
-    self->_heartRateMonitorCapabilityValueOriginatedFromDevice = a3;
+    self->_heartRateMonitorCapabilityValueOriginatedFromDevice = device;
     objc_sync_exit(obj);
   }
 }
 
-- (void)setDynamicEndOfChargeTempDisabled:(char)a3
+- (void)setDynamicEndOfChargeTempDisabled:(char)disabled
 {
-  if (self->_dynamicEndOfChargeTempDisabled != a3)
+  if (self->_dynamicEndOfChargeTempDisabled != disabled)
   {
     obj = self;
     objc_sync_enter(obj);
-    self->_dynamicEndOfChargeTempDisabled = a3;
+    self->_dynamicEndOfChargeTempDisabled = disabled;
     objc_sync_exit(obj);
   }
 }
 
-- (void)setIdentifier:(id)a3
+- (void)setIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   obj = self;
   objc_sync_enter(obj);
   identifier = obj->_identifier;
-  obj->_identifier = v4;
+  obj->_identifier = identifierCopy;
 
   objc_sync_exit(obj);
 }
 
-- (void)setOnConnectionActionsCalled:(BOOL)a3
+- (void)setOnConnectionActionsCalled:(BOOL)called
 {
-  if (self->_onConnectionActionsCalled != a3)
+  if (self->_onConnectionActionsCalled != called)
   {
     obj = self;
     objc_sync_enter(obj);
-    self->_onConnectionActionsCalled = a3;
+    self->_onConnectionActionsCalled = called;
     objc_sync_exit(obj);
   }
 }
 
-- (void)setOptimizedBatteryChargingState:(char)a3
+- (void)setOptimizedBatteryChargingState:(char)state
 {
-  if (self->_optimizedBatteryChargingState != a3)
+  if (self->_optimizedBatteryChargingState != state)
   {
     obj = self;
     objc_sync_enter(obj);
-    self->_optimizedBatteryChargingState = a3;
+    self->_optimizedBatteryChargingState = state;
     objc_sync_exit(obj);
   }
 }
 
-- (void)setPaired:(BOOL)a3
+- (void)setPaired:(BOOL)paired
 {
-  if (self->_paired != a3)
+  if (self->_paired != paired)
   {
     obj = self;
     objc_sync_enter(obj);
-    self->_paired = a3;
+    self->_paired = paired;
     objc_sync_exit(obj);
   }
 }
 
-- (void)setSiriMultitoneEnabled:(char)a3
+- (void)setSiriMultitoneEnabled:(char)enabled
 {
-  if (self->_siriMultitoneEnabled != a3)
+  if (self->_siriMultitoneEnabled != enabled)
   {
     obj = self;
     objc_sync_enter(obj);
-    self->_siriMultitoneEnabled = a3;
+    self->_siriMultitoneEnabled = enabled;
     objc_sync_exit(obj);
   }
 }
 
-- (void)setSmartRoutingStateFlags:(unsigned int)a3
+- (void)setSmartRoutingStateFlags:(unsigned int)flags
 {
-  if (self->_smartRoutingStateFlags != a3)
+  if (self->_smartRoutingStateFlags != flags)
   {
     obj = self;
     objc_sync_enter(obj);
-    self->_smartRoutingStateFlags = a3;
+    self->_smartRoutingStateFlags = flags;
     objc_sync_exit(obj);
   }
 }
 
-- (void)setFarFieldSessionOnGoing:(char)a3
+- (void)setFarFieldSessionOnGoing:(char)going
 {
-  if (self->_farFieldSessionOnGoing != a3)
+  if (self->_farFieldSessionOnGoing != going)
   {
     obj = self;
     objc_sync_enter(obj);
-    self->_farFieldSessionOnGoing = a3;
+    self->_farFieldSessionOnGoing = going;
     objc_sync_exit(obj);
   }
 }
 
-- (BOOL)updateWithPairedAADevice:(id)a3
+- (BOOL)updateWithPairedAADevice:(id)device
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [v4 acceptReplyPlayPauseConfig];
-  if (v6 && [(AudioAccessoryDevice *)v5 acceptReplyPlayPauseConfig]!= v6)
+  deviceCopy = device;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  acceptReplyPlayPauseConfig = [deviceCopy acceptReplyPlayPauseConfig];
+  if (acceptReplyPlayPauseConfig && [(AudioAccessoryDevice *)selfCopy acceptReplyPlayPauseConfig]!= acceptReplyPlayPauseConfig)
   {
-    [(AudioAccessoryDevice *)v5 setAcceptReplyPlayPauseConfig:v6];
+    [(AudioAccessoryDevice *)selfCopy setAcceptReplyPlayPauseConfig:acceptReplyPlayPauseConfig];
     v7 = 1;
   }
 
@@ -3451,28 +3451,28 @@
     v7 = 0;
   }
 
-  v8 = [v4 autoANCCapability];
-  if (v8 && [(AudioAccessoryDevice *)v5 autoANCCapability]!= v8)
+  autoANCCapability = [deviceCopy autoANCCapability];
+  if (autoANCCapability && [(AudioAccessoryDevice *)selfCopy autoANCCapability]!= autoANCCapability)
   {
-    [(AudioAccessoryDevice *)v5 setAutoANCCapability:v8];
+    [(AudioAccessoryDevice *)selfCopy setAutoANCCapability:autoANCCapability];
     v7 = 1;
   }
 
-  v9 = [v4 audiogramEnrolledTimestamp];
-  if (v9)
+  audiogramEnrolledTimestamp = [deviceCopy audiogramEnrolledTimestamp];
+  if (audiogramEnrolledTimestamp)
   {
-    v10 = [(AudioAccessoryDevice *)v5 audiogramEnrolledTimestamp];
-    v11 = v9;
+    audiogramEnrolledTimestamp2 = [(AudioAccessoryDevice *)selfCopy audiogramEnrolledTimestamp];
+    v11 = audiogramEnrolledTimestamp;
     v12 = v11;
-    if (v10 == v11)
+    if (audiogramEnrolledTimestamp2 == v11)
     {
     }
 
     else
     {
-      if (v10)
+      if (audiogramEnrolledTimestamp2)
       {
-        v13 = [v10 isEqual:v11];
+        v13 = [audiogramEnrolledTimestamp2 isEqual:v11];
 
         if (v13)
         {
@@ -3484,156 +3484,156 @@
       {
       }
 
-      [(AudioAccessoryDevice *)v5 setAudiogramEnrolledTimestamp:v12];
+      [(AudioAccessoryDevice *)selfCopy setAudiogramEnrolledTimestamp:v12];
       v7 = 1;
     }
   }
 
 LABEL_16:
-  v14 = [v4 bobbleCapability];
-  if (v14 && [(AudioAccessoryDevice *)v5 bobbleCapability]!= v14)
+  bobbleCapability = [deviceCopy bobbleCapability];
+  if (bobbleCapability && [(AudioAccessoryDevice *)selfCopy bobbleCapability]!= bobbleCapability)
   {
-    [(AudioAccessoryDevice *)v5 setBobbleCapability:v14];
+    [(AudioAccessoryDevice *)selfCopy setBobbleCapability:bobbleCapability];
     v7 = 1;
   }
 
-  v15 = [v4 cameraControlCapability];
-  if (v15 && [(AudioAccessoryDevice *)v5 cameraControlCapability]!= v15)
+  cameraControlCapability = [deviceCopy cameraControlCapability];
+  if (cameraControlCapability && [(AudioAccessoryDevice *)selfCopy cameraControlCapability]!= cameraControlCapability)
   {
-    [(AudioAccessoryDevice *)v5 setCameraControlCapability:v15];
+    [(AudioAccessoryDevice *)selfCopy setCameraControlCapability:cameraControlCapability];
     v7 = 1;
   }
 
-  v16 = [v4 caseSoundCapability];
-  if (v16 && [(AudioAccessoryDevice *)v5 caseSoundCapability]!= v16)
+  caseSoundCapability = [deviceCopy caseSoundCapability];
+  if (caseSoundCapability && [(AudioAccessoryDevice *)selfCopy caseSoundCapability]!= caseSoundCapability)
   {
-    [(AudioAccessoryDevice *)v5 setCaseSoundCapability:v16];
+    [(AudioAccessoryDevice *)selfCopy setCaseSoundCapability:caseSoundCapability];
     v7 = 1;
   }
 
-  v17 = [v4 chargingReminderEnabled];
-  if (v17 && [(AudioAccessoryDevice *)v5 chargingReminderEnabled]!= v17)
+  chargingReminderEnabled = [deviceCopy chargingReminderEnabled];
+  if (chargingReminderEnabled && [(AudioAccessoryDevice *)selfCopy chargingReminderEnabled]!= chargingReminderEnabled)
   {
-    [(AudioAccessoryDevice *)v5 setChargingReminderEnabled:v17];
+    [(AudioAccessoryDevice *)selfCopy setChargingReminderEnabled:chargingReminderEnabled];
     v7 = 1;
   }
 
-  v18 = [v4 declineDismissSkipConfig];
-  if (v18 && [(AudioAccessoryDevice *)v5 declineDismissSkipConfig]!= v18)
+  declineDismissSkipConfig = [deviceCopy declineDismissSkipConfig];
+  if (declineDismissSkipConfig && [(AudioAccessoryDevice *)selfCopy declineDismissSkipConfig]!= declineDismissSkipConfig)
   {
-    [(AudioAccessoryDevice *)v5 setDeclineDismissSkipConfig:v18];
+    [(AudioAccessoryDevice *)selfCopy setDeclineDismissSkipConfig:declineDismissSkipConfig];
     v7 = 1;
   }
 
-  v19 = [v4 dynamicEndOfChargeCapability];
-  if (v19 != [(AudioAccessoryDevice *)v5 dynamicEndOfChargeCapability])
+  dynamicEndOfChargeCapability = [deviceCopy dynamicEndOfChargeCapability];
+  if (dynamicEndOfChargeCapability != [(AudioAccessoryDevice *)selfCopy dynamicEndOfChargeCapability])
   {
-    [(AudioAccessoryDevice *)v5 setDynamicEndOfChargeCapability:v19];
+    [(AudioAccessoryDevice *)selfCopy setDynamicEndOfChargeCapability:dynamicEndOfChargeCapability];
     v7 = 1;
   }
 
-  v20 = [v4 earTipFitTestCapability];
-  if (v20 && [(AudioAccessoryDevice *)v5 earTipFitTestCapability]!= v20)
+  earTipFitTestCapability = [deviceCopy earTipFitTestCapability];
+  if (earTipFitTestCapability && [(AudioAccessoryDevice *)selfCopy earTipFitTestCapability]!= earTipFitTestCapability)
   {
-    [(AudioAccessoryDevice *)v5 setEarTipFitTestCapability:v20];
+    [(AudioAccessoryDevice *)selfCopy setEarTipFitTestCapability:earTipFitTestCapability];
     v7 = 1;
   }
 
-  v21 = [v4 enhancedTransparencyVersion];
-  if (v21 != [(AudioAccessoryDevice *)v5 enhancedTransparencyVersion])
+  enhancedTransparencyVersion = [deviceCopy enhancedTransparencyVersion];
+  if (enhancedTransparencyVersion != [(AudioAccessoryDevice *)selfCopy enhancedTransparencyVersion])
   {
-    [(AudioAccessoryDevice *)v5 setEnhancedTransparencyVersion:v21];
+    [(AudioAccessoryDevice *)selfCopy setEnhancedTransparencyVersion:enhancedTransparencyVersion];
     v7 = 1;
   }
 
-  v22 = [v4 farFieldUplinkCapability];
-  if (v22 && [(AudioAccessoryDevice *)v5 farFieldUplinkCapability]!= v22)
+  farFieldUplinkCapability = [deviceCopy farFieldUplinkCapability];
+  if (farFieldUplinkCapability && [(AudioAccessoryDevice *)selfCopy farFieldUplinkCapability]!= farFieldUplinkCapability)
   {
-    [(AudioAccessoryDevice *)v5 setFarFieldUplinkCapability:v22];
+    [(AudioAccessoryDevice *)selfCopy setFarFieldUplinkCapability:farFieldUplinkCapability];
     v7 = 1;
   }
 
-  v23 = [v4 headGestureToggle];
-  if (v23 && [(AudioAccessoryDevice *)v5 headGestureToggle]!= v23)
+  headGestureToggle = [deviceCopy headGestureToggle];
+  if (headGestureToggle && [(AudioAccessoryDevice *)selfCopy headGestureToggle]!= headGestureToggle)
   {
-    [(AudioAccessoryDevice *)v5 setHeadGestureToggle:v23];
+    [(AudioAccessoryDevice *)selfCopy setHeadGestureToggle:headGestureToggle];
     v7 = 1;
   }
 
-  v24 = [v4 ovadStreamingCapability];
-  if (v24 && [(AudioAccessoryDevice *)v5 ovadStreamingCapability]!= v24)
+  ovadStreamingCapability = [deviceCopy ovadStreamingCapability];
+  if (ovadStreamingCapability && [(AudioAccessoryDevice *)selfCopy ovadStreamingCapability]!= ovadStreamingCapability)
   {
-    [(AudioAccessoryDevice *)v5 setOvadStreamingCapability:v24];
+    [(AudioAccessoryDevice *)selfCopy setOvadStreamingCapability:ovadStreamingCapability];
     v7 = 1;
   }
 
-  v25 = [v4 healthKitDataWriteAllowed];
-  if (v25 && [(AudioAccessoryDevice *)v5 healthKitDataWriteAllowed]!= v25)
+  healthKitDataWriteAllowed = [deviceCopy healthKitDataWriteAllowed];
+  if (healthKitDataWriteAllowed && [(AudioAccessoryDevice *)selfCopy healthKitDataWriteAllowed]!= healthKitDataWriteAllowed)
   {
-    [(AudioAccessoryDevice *)v5 setHealthKitDataWriteAllowed:v25];
+    [(AudioAccessoryDevice *)selfCopy setHealthKitDataWriteAllowed:healthKitDataWriteAllowed];
     v7 = 1;
   }
 
-  v26 = [v4 hearingAidCapability];
-  if (v26 && [(AudioAccessoryDevice *)v5 hearingAidCapability]!= v26)
+  hearingAidCapability = [deviceCopy hearingAidCapability];
+  if (hearingAidCapability && [(AudioAccessoryDevice *)selfCopy hearingAidCapability]!= hearingAidCapability)
   {
-    [(AudioAccessoryDevice *)v5 setHearingAidCapability:v26];
+    [(AudioAccessoryDevice *)selfCopy setHearingAidCapability:hearingAidCapability];
     v7 = 1;
   }
 
-  v27 = [v4 hearingAidV2Capability];
-  if (v27 != [(AudioAccessoryDevice *)v5 hearingAidV2Capability])
+  hearingAidV2Capability = [deviceCopy hearingAidV2Capability];
+  if (hearingAidV2Capability != [(AudioAccessoryDevice *)selfCopy hearingAidV2Capability])
   {
-    [(AudioAccessoryDevice *)v5 setHearingAidV2Capability:v27];
+    [(AudioAccessoryDevice *)selfCopy setHearingAidV2Capability:hearingAidV2Capability];
     v7 = 1;
   }
 
-  v28 = [v4 hearingProtectionCapability];
-  if (v28 && [(AudioAccessoryDevice *)v5 hearingProtectionCapability]!= v28)
+  hearingProtectionCapability = [deviceCopy hearingProtectionCapability];
+  if (hearingProtectionCapability && [(AudioAccessoryDevice *)selfCopy hearingProtectionCapability]!= hearingProtectionCapability)
   {
-    [(AudioAccessoryDevice *)v5 setHearingProtectionCapability:v28];
+    [(AudioAccessoryDevice *)selfCopy setHearingProtectionCapability:hearingProtectionCapability];
     v7 = 1;
   }
 
-  v29 = [v4 hearingProtectionPPECapability];
-  if (v29 != [(AudioAccessoryDevice *)v5 hearingProtectionPPECapability])
+  hearingProtectionPPECapability = [deviceCopy hearingProtectionPPECapability];
+  if (hearingProtectionPPECapability != [(AudioAccessoryDevice *)selfCopy hearingProtectionPPECapability])
   {
-    [(AudioAccessoryDevice *)v5 setHearingProtectionPPECapability:v29];
+    [(AudioAccessoryDevice *)selfCopy setHearingProtectionPPECapability:hearingProtectionPPECapability];
     v7 = 1;
   }
 
-  v30 = [v4 hearingTestCapability];
-  if (v30 && [(AudioAccessoryDevice *)v5 hearingTestCapability]!= v30)
+  hearingTestCapability = [deviceCopy hearingTestCapability];
+  if (hearingTestCapability && [(AudioAccessoryDevice *)selfCopy hearingTestCapability]!= hearingTestCapability)
   {
-    [(AudioAccessoryDevice *)v5 setHearingTestCapability:v30];
+    [(AudioAccessoryDevice *)selfCopy setHearingTestCapability:hearingTestCapability];
     v7 = 1;
   }
 
-  v31 = [v4 heartRateMonitorCapability];
-  if (v31 && [(AudioAccessoryDevice *)v5 heartRateMonitorCapability]!= v31)
+  heartRateMonitorCapability = [deviceCopy heartRateMonitorCapability];
+  if (heartRateMonitorCapability && [(AudioAccessoryDevice *)selfCopy heartRateMonitorCapability]!= heartRateMonitorCapability)
   {
-    [(AudioAccessoryDevice *)v5 setHeartRateMonitorCapability:v31];
+    [(AudioAccessoryDevice *)selfCopy setHeartRateMonitorCapability:heartRateMonitorCapability];
     v7 = 1;
   }
 
-  v32 = [v4 hideEarDetectionCapability];
-  if (v32 && [(AudioAccessoryDevice *)v5 hideEarDetectionCapability]!= v32)
+  hideEarDetectionCapability = [deviceCopy hideEarDetectionCapability];
+  if (hideEarDetectionCapability && [(AudioAccessoryDevice *)selfCopy hideEarDetectionCapability]!= hideEarDetectionCapability)
   {
-    [(AudioAccessoryDevice *)v5 setHideEarDetectionCapability:v32];
+    [(AudioAccessoryDevice *)selfCopy setHideEarDetectionCapability:hideEarDetectionCapability];
     v7 = 1;
   }
 
-  v33 = [v4 hideOffListeningModeCapability];
-  if (v33 && [(AudioAccessoryDevice *)v5 hideOffListeningModeCapability]!= v33)
+  hideOffListeningModeCapability = [deviceCopy hideOffListeningModeCapability];
+  if (hideOffListeningModeCapability && [(AudioAccessoryDevice *)selfCopy hideOffListeningModeCapability]!= hideOffListeningModeCapability)
   {
-    [(AudioAccessoryDevice *)v5 setHideOffListeningModeCapability:v33];
+    [(AudioAccessoryDevice *)selfCopy setHideOffListeningModeCapability:hideOffListeningModeCapability];
     v7 = 1;
   }
 
-  v34 = [v4 lastSeenConnectedTime];
-  v35 = [(AudioAccessoryDevice *)v5 lastSeenConnectedTime];
-  v36 = v34;
-  v37 = v35;
+  lastSeenConnectedTime = [deviceCopy lastSeenConnectedTime];
+  lastSeenConnectedTime2 = [(AudioAccessoryDevice *)selfCopy lastSeenConnectedTime];
+  v36 = lastSeenConnectedTime;
+  v37 = lastSeenConnectedTime2;
   v38 = v37;
   if (v36 == v37)
   {
@@ -3655,33 +3655,33 @@ LABEL_16:
     {
     }
 
-    [(AudioAccessoryDevice *)v5 setLastSeenConnectedTime:v36];
+    [(AudioAccessoryDevice *)selfCopy setLastSeenConnectedTime:v36];
     v7 = 1;
   }
 
 LABEL_79:
-  v40 = [v4 listeningModeOffAllowed];
-  if (v40 && [(AudioAccessoryDevice *)v5 listeningModeOffAllowed]!= v40)
+  listeningModeOffAllowed = [deviceCopy listeningModeOffAllowed];
+  if (listeningModeOffAllowed && [(AudioAccessoryDevice *)selfCopy listeningModeOffAllowed]!= listeningModeOffAllowed)
   {
-    [(AudioAccessoryDevice *)v5 setListeningModeOffAllowed:v40];
+    [(AudioAccessoryDevice *)selfCopy setListeningModeOffAllowed:listeningModeOffAllowed];
     v7 = 1;
   }
 
-  v41 = [v4 model];
-  if (v41)
+  model = [deviceCopy model];
+  if (model)
   {
-    v42 = [(AudioAccessoryDevice *)v5 model];
-    v43 = v41;
+    model2 = [(AudioAccessoryDevice *)selfCopy model];
+    v43 = model;
     v44 = v43;
-    if (v42 == v43)
+    if (model2 == v43)
     {
 
       goto LABEL_90;
     }
 
-    if (v42)
+    if (model2)
     {
-      v45 = [v42 isEqual:v43];
+      v45 = [model2 isEqual:v43];
 
       if (v45)
       {
@@ -3693,26 +3693,26 @@ LABEL_79:
     {
     }
 
-    [(AudioAccessoryDevice *)v5 setModel:v44];
+    [(AudioAccessoryDevice *)selfCopy setModel:v44];
     v7 = 1;
   }
 
 LABEL_90:
-  v46 = [v4 name];
-  if (v46)
+  name = [deviceCopy name];
+  if (name)
   {
-    v47 = [(AudioAccessoryDevice *)v5 name];
-    v48 = v46;
+    name2 = [(AudioAccessoryDevice *)selfCopy name];
+    v48 = name;
     v49 = v48;
-    if (v47 == v48)
+    if (name2 == v48)
     {
     }
 
     else
     {
-      if (v47)
+      if (name2)
       {
-        v50 = [v47 isEqual:v48];
+        v50 = [name2 isEqual:v48];
 
         if (v50)
         {
@@ -3724,422 +3724,422 @@ LABEL_90:
       {
       }
 
-      [(AudioAccessoryDevice *)v5 setName:v49];
+      [(AudioAccessoryDevice *)selfCopy setName:v49];
       v7 = 1;
     }
   }
 
 LABEL_98:
-  if ([v4 paired] && !-[AudioAccessoryDevice paired](v5, "paired"))
+  if ([deviceCopy paired] && !-[AudioAccessoryDevice paired](selfCopy, "paired"))
   {
     v7 = 1;
-    [(AudioAccessoryDevice *)v5 setPaired:1];
+    [(AudioAccessoryDevice *)selfCopy setPaired:1];
   }
 
-  v51 = [(AudioAccessoryDevice *)v5 computePersonalTranslatorCapability];
-  if (v51 != [(AudioAccessoryDevice *)v5 personalTranslatorCapability])
+  computePersonalTranslatorCapability = [(AudioAccessoryDevice *)selfCopy computePersonalTranslatorCapability];
+  if (computePersonalTranslatorCapability != [(AudioAccessoryDevice *)selfCopy personalTranslatorCapability])
   {
-    [(AudioAccessoryDevice *)v5 setPersonalTranslatorCapability:v51];
+    [(AudioAccessoryDevice *)selfCopy setPersonalTranslatorCapability:computePersonalTranslatorCapability];
     v7 = 1;
   }
 
-  v52 = [v4 productID];
-  if (v52 && [(AudioAccessoryDevice *)v5 productID]!= v52)
+  productID = [deviceCopy productID];
+  if (productID && [(AudioAccessoryDevice *)selfCopy productID]!= productID)
   {
-    [(AudioAccessoryDevice *)v5 setProductID:v52];
+    [(AudioAccessoryDevice *)selfCopy setProductID:productID];
     v7 = 1;
   }
 
   if (_os_feature_enabled_impl())
   {
-    v53 = [v4 remoteCameraControlConfig];
-    if (v53)
+    remoteCameraControlConfig = [deviceCopy remoteCameraControlConfig];
+    if (remoteCameraControlConfig)
     {
-      if ([(AudioAccessoryDevice *)v5 remoteCameraControlConfig]!= v53)
+      if ([(AudioAccessoryDevice *)selfCopy remoteCameraControlConfig]!= remoteCameraControlConfig)
       {
-        -[AudioAccessoryDevice setRemoteCameraControlConfig:](v5, "setRemoteCameraControlConfig:", [v4 remoteCameraControlConfig]);
+        -[AudioAccessoryDevice setRemoteCameraControlConfig:](selfCopy, "setRemoteCameraControlConfig:", [deviceCopy remoteCameraControlConfig]);
         v7 = 1;
       }
     }
   }
 
-  v54 = [v4 siriMultitoneCapability];
-  if (v54 && [(AudioAccessoryDevice *)v5 siriMultitoneCapability]!= v54)
+  siriMultitoneCapability = [deviceCopy siriMultitoneCapability];
+  if (siriMultitoneCapability && [(AudioAccessoryDevice *)selfCopy siriMultitoneCapability]!= siriMultitoneCapability)
   {
-    [(AudioAccessoryDevice *)v5 setSiriMultitoneCapability:v54];
+    [(AudioAccessoryDevice *)selfCopy setSiriMultitoneCapability:siriMultitoneCapability];
     v7 = 1;
   }
 
-  v55 = [v4 sleepDetectionCapability];
-  if (v55 && [(AudioAccessoryDevice *)v5 sleepDetectionCapability]!= v55)
+  sleepDetectionCapability = [deviceCopy sleepDetectionCapability];
+  if (sleepDetectionCapability && [(AudioAccessoryDevice *)selfCopy sleepDetectionCapability]!= sleepDetectionCapability)
   {
-    [(AudioAccessoryDevice *)v5 setSleepDetectionCapability:v55];
+    [(AudioAccessoryDevice *)selfCopy setSleepDetectionCapability:sleepDetectionCapability];
     v7 = 1;
   }
 
   if (_os_feature_enabled_impl())
   {
-    v56 = [v4 temporaryManagedPairedStatus];
-    if (v56 != [(AudioAccessoryDevice *)v5 temporaryManagedPairedStatus])
+    temporaryManagedPairedStatus = [deviceCopy temporaryManagedPairedStatus];
+    if (temporaryManagedPairedStatus != [(AudioAccessoryDevice *)selfCopy temporaryManagedPairedStatus])
     {
-      [(AudioAccessoryDevice *)v5 setTemporaryManagedPairedStatus:v56];
+      [(AudioAccessoryDevice *)selfCopy setTemporaryManagedPairedStatus:temporaryManagedPairedStatus];
       v7 = 1;
     }
   }
 
-  v57 = [v4 pairedAADeviceInfoReceived];
-  if (v57 != [(AudioAccessoryDevice *)v5 pairedAADeviceInfoReceived])
+  pairedAADeviceInfoReceived = [deviceCopy pairedAADeviceInfoReceived];
+  if (pairedAADeviceInfoReceived != [(AudioAccessoryDevice *)selfCopy pairedAADeviceInfoReceived])
   {
-    [(AudioAccessoryDevice *)v5 setPairedAADeviceInfoReceived:v57];
+    [(AudioAccessoryDevice *)selfCopy setPairedAADeviceInfoReceived:pairedAADeviceInfoReceived];
     v7 = 1;
   }
 
-  v58 = [v4 pairedCBDeviceReceived];
-  if (v58 != [(AudioAccessoryDevice *)v5 pairedCBDeviceReceived])
+  pairedCBDeviceReceived = [deviceCopy pairedCBDeviceReceived];
+  if (pairedCBDeviceReceived != [(AudioAccessoryDevice *)selfCopy pairedCBDeviceReceived])
   {
-    [(AudioAccessoryDevice *)v5 setPairedCBDeviceReceived:v58];
+    [(AudioAccessoryDevice *)selfCopy setPairedCBDeviceReceived:pairedCBDeviceReceived];
     v7 = 1;
   }
 
-  v59 = [v4 pmeEverywhereCapability];
-  if (v59 && [(AudioAccessoryDevice *)v5 pmeEverywhereCapability]!= v59)
+  pmeEverywhereCapability = [deviceCopy pmeEverywhereCapability];
+  if (pmeEverywhereCapability && [(AudioAccessoryDevice *)selfCopy pmeEverywhereCapability]!= pmeEverywhereCapability)
   {
-    [(AudioAccessoryDevice *)v5 setPmeEverywhereCapability:v59];
+    [(AudioAccessoryDevice *)selfCopy setPmeEverywhereCapability:pmeEverywhereCapability];
     v7 = 1;
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
   return v7;
 }
 
-- (BOOL)updateWithAADeviceConfig:(id)a3
+- (BOOL)updateWithAADeviceConfig:(id)config
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [v4 headGestureToggle];
-  v7 = v6 != 0;
-  if (v6)
+  configCopy = config;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  headGestureToggle = [configCopy headGestureToggle];
+  v7 = headGestureToggle != 0;
+  if (headGestureToggle)
   {
-    -[AudioAccessoryDevice setHeadGestureToggle:](v5, "setHeadGestureToggle:", [v4 headGestureToggle]);
+    -[AudioAccessoryDevice setHeadGestureToggle:](selfCopy, "setHeadGestureToggle:", [configCopy headGestureToggle]);
   }
 
-  if ([v4 acceptReplyPlayPauseConfig])
+  if ([configCopy acceptReplyPlayPauseConfig])
   {
-    -[AudioAccessoryDevice setAcceptReplyPlayPauseConfig:](v5, "setAcceptReplyPlayPauseConfig:", [v4 acceptReplyPlayPauseConfig]);
+    -[AudioAccessoryDevice setAcceptReplyPlayPauseConfig:](selfCopy, "setAcceptReplyPlayPauseConfig:", [configCopy acceptReplyPlayPauseConfig]);
     v7 = 1;
   }
 
-  if ([v4 declineDismissSkipConfig])
+  if ([configCopy declineDismissSkipConfig])
   {
-    -[AudioAccessoryDevice setDeclineDismissSkipConfig:](v5, "setDeclineDismissSkipConfig:", [v4 declineDismissSkipConfig]);
+    -[AudioAccessoryDevice setDeclineDismissSkipConfig:](selfCopy, "setDeclineDismissSkipConfig:", [configCopy declineDismissSkipConfig]);
     v7 = 1;
   }
 
   if (_os_feature_enabled_impl())
   {
-    v8 = [v4 audiogramEnrolledTimestamp];
+    audiogramEnrolledTimestamp = [configCopy audiogramEnrolledTimestamp];
 
-    if (v8)
+    if (audiogramEnrolledTimestamp)
     {
-      v9 = [v4 audiogramEnrolledTimestamp];
-      [(AudioAccessoryDevice *)v5 setAudiogramEnrolledTimestamp:v9];
+      audiogramEnrolledTimestamp2 = [configCopy audiogramEnrolledTimestamp];
+      [(AudioAccessoryDevice *)selfCopy setAudiogramEnrolledTimestamp:audiogramEnrolledTimestamp2];
 
       v7 = 1;
     }
   }
 
-  if (_os_feature_enabled_impl() && _os_feature_enabled_impl() && [v4 listeningModeOffAllowed])
+  if (_os_feature_enabled_impl() && _os_feature_enabled_impl() && [configCopy listeningModeOffAllowed])
   {
-    -[AudioAccessoryDevice setListeningModeOffAllowed:](v5, "setListeningModeOffAllowed:", [v4 listeningModeOffAllowed]);
+    -[AudioAccessoryDevice setListeningModeOffAllowed:](selfCopy, "setListeningModeOffAllowed:", [configCopy listeningModeOffAllowed]);
     v7 = 1;
   }
 
-  if (_os_feature_enabled_impl() && [v4 enableChargingReminder])
+  if (_os_feature_enabled_impl() && [configCopy enableChargingReminder])
   {
-    -[AudioAccessoryDevice setChargingReminderEnabled:](v5, "setChargingReminderEnabled:", [v4 enableChargingReminder]);
+    -[AudioAccessoryDevice setChargingReminderEnabled:](selfCopy, "setChargingReminderEnabled:", [configCopy enableChargingReminder]);
     v7 = 1;
   }
 
-  if ([v4 enableHeartRateMonitor])
+  if ([configCopy enableHeartRateMonitor])
   {
-    -[AudioAccessoryDevice setHeartRateMonitorEnabled:](v5, "setHeartRateMonitorEnabled:", [v4 enableHeartRateMonitor]);
+    -[AudioAccessoryDevice setHeartRateMonitorEnabled:](selfCopy, "setHeartRateMonitorEnabled:", [configCopy enableHeartRateMonitor]);
     v7 = 1;
   }
 
-  if (_os_feature_enabled_impl() && [v4 remoteCameraControlConfig])
+  if (_os_feature_enabled_impl() && [configCopy remoteCameraControlConfig])
   {
-    -[AudioAccessoryDevice setRemoteCameraControlConfig:](v5, "setRemoteCameraControlConfig:", [v4 remoteCameraControlConfig]);
+    -[AudioAccessoryDevice setRemoteCameraControlConfig:](selfCopy, "setRemoteCameraControlConfig:", [configCopy remoteCameraControlConfig]);
     v7 = 1;
   }
 
-  if ([v4 allowHealthKitDataWrite])
+  if ([configCopy allowHealthKitDataWrite])
   {
-    -[AudioAccessoryDevice setHealthKitDataWriteAllowed:](v5, "setHealthKitDataWriteAllowed:", [v4 allowHealthKitDataWrite]);
+    -[AudioAccessoryDevice setHealthKitDataWriteAllowed:](selfCopy, "setHealthKitDataWriteAllowed:", [configCopy allowHealthKitDataWrite]);
     v7 = 1;
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v7;
 }
 
-- (BOOL)updateWithConnectedAADeviceInfo:(id)a3
+- (BOOL)updateWithConnectedAADeviceInfo:(id)info
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [v4 autoANCStrength];
-  v7 = [(AudioAccessoryDevice *)v5 autoANCStrength];
-  v8 = v6 != v7;
-  if (v6 != v7)
+  infoCopy = info;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  autoANCStrength = [infoCopy autoANCStrength];
+  autoANCStrength2 = [(AudioAccessoryDevice *)selfCopy autoANCStrength];
+  v8 = autoANCStrength != autoANCStrength2;
+  if (autoANCStrength != autoANCStrength2)
   {
-    [(AudioAccessoryDevice *)v5 setAutoANCStrength:v6];
+    [(AudioAccessoryDevice *)selfCopy setAutoANCStrength:autoANCStrength];
   }
 
-  v9 = [v4 streamStateAoS];
-  if (v9 != [(AudioAccessoryDevice *)v5 streamStateAoS])
+  streamStateAoS = [infoCopy streamStateAoS];
+  if (streamStateAoS != [(AudioAccessoryDevice *)selfCopy streamStateAoS])
   {
-    [(AudioAccessoryDevice *)v5 setStreamStateAoS:v9];
+    [(AudioAccessoryDevice *)selfCopy setStreamStateAoS:streamStateAoS];
     v8 = 1;
   }
 
-  v10 = [v4 dynamicEndOfChargeEnabled];
-  if (v10 != [(AudioAccessoryDevice *)v5 dynamicEndOfChargeEnabled])
+  dynamicEndOfChargeEnabled = [infoCopy dynamicEndOfChargeEnabled];
+  if (dynamicEndOfChargeEnabled != [(AudioAccessoryDevice *)selfCopy dynamicEndOfChargeEnabled])
   {
-    [(AudioAccessoryDevice *)v5 setDynamicEndOfChargeEnabled:v10];
+    [(AudioAccessoryDevice *)selfCopy setDynamicEndOfChargeEnabled:dynamicEndOfChargeEnabled];
     v8 = 1;
   }
 
-  v11 = [v4 frequencyBand];
-  if (v11 != [(AudioAccessoryDevice *)v5 frequencyBand])
+  frequencyBand = [infoCopy frequencyBand];
+  if (frequencyBand != [(AudioAccessoryDevice *)selfCopy frequencyBand])
   {
-    [(AudioAccessoryDevice *)v5 setFrequencyBand:v11];
+    [(AudioAccessoryDevice *)selfCopy setFrequencyBand:frequencyBand];
     v8 = 1;
   }
 
   if (_os_feature_enabled_impl())
   {
-    v12 = [v4 hearingAidEnabled];
-    if ([(AudioAccessoryDevice *)v5 hearingAidEnabled]!= v12)
+    hearingAidEnabled = [infoCopy hearingAidEnabled];
+    if ([(AudioAccessoryDevice *)selfCopy hearingAidEnabled]!= hearingAidEnabled)
     {
-      [(AudioAccessoryDevice *)v5 setHearingAidEnabled:?];
+      [(AudioAccessoryDevice *)selfCopy setHearingAidEnabled:?];
       v8 = 1;
     }
 
-    v13 = [v4 hearingAidEnrolled];
-    if ([(AudioAccessoryDevice *)v5 hearingAidEnrolled]!= v13)
+    hearingAidEnrolled = [infoCopy hearingAidEnrolled];
+    if ([(AudioAccessoryDevice *)selfCopy hearingAidEnrolled]!= hearingAidEnrolled)
     {
-      [(AudioAccessoryDevice *)v5 setHearingAidEnrolled:?];
+      [(AudioAccessoryDevice *)selfCopy setHearingAidEnrolled:?];
       v8 = 1;
     }
 
-    v14 = [v4 hearingAidGainSwipeEnabled];
-    if ([(AudioAccessoryDevice *)v5 hearingAidGainSwipeEnabled]!= v14)
+    hearingAidGainSwipeEnabled = [infoCopy hearingAidGainSwipeEnabled];
+    if ([(AudioAccessoryDevice *)selfCopy hearingAidGainSwipeEnabled]!= hearingAidGainSwipeEnabled)
     {
-      [(AudioAccessoryDevice *)v5 setHearingAidGainSwipeEnabled:?];
+      [(AudioAccessoryDevice *)selfCopy setHearingAidGainSwipeEnabled:?];
       v8 = 1;
     }
 
-    v15 = [v4 hearingAssistEnabled];
-    if ([(AudioAccessoryDevice *)v5 hearingAssistEnabled]!= v15)
+    hearingAssistEnabled = [infoCopy hearingAssistEnabled];
+    if ([(AudioAccessoryDevice *)selfCopy hearingAssistEnabled]!= hearingAssistEnabled)
     {
-      [(AudioAccessoryDevice *)v5 setHearingAssistEnabled:?];
+      [(AudioAccessoryDevice *)selfCopy setHearingAssistEnabled:?];
       v8 = 1;
     }
   }
 
-  v16 = [v4 heartRateMonitorEnabled];
-  if ([(AudioAccessoryDevice *)v5 heartRateMonitorEnabled]!= v16)
+  heartRateMonitorEnabled = [infoCopy heartRateMonitorEnabled];
+  if ([(AudioAccessoryDevice *)selfCopy heartRateMonitorEnabled]!= heartRateMonitorEnabled)
   {
-    [(AudioAccessoryDevice *)v5 setHeartRateMonitorEnabled:?];
+    [(AudioAccessoryDevice *)selfCopy setHeartRateMonitorEnabled:?];
     v8 = 1;
   }
 
-  v17 = [v4 rawGesturesConfigFlags];
-  if (v17 != [(AudioAccessoryDevice *)v5 rawGesturesConfigFlags])
+  rawGesturesConfigFlags = [infoCopy rawGesturesConfigFlags];
+  if (rawGesturesConfigFlags != [(AudioAccessoryDevice *)selfCopy rawGesturesConfigFlags])
   {
-    [(AudioAccessoryDevice *)v5 setRawGesturesConfigFlags:v17];
+    [(AudioAccessoryDevice *)selfCopy setRawGesturesConfigFlags:rawGesturesConfigFlags];
     v8 = 1;
   }
 
-  v18 = [v4 sleepDetectionEnabled];
-  if ([(AudioAccessoryDevice *)v5 sleepDetectionEnabled]!= v18)
+  sleepDetectionEnabled = [infoCopy sleepDetectionEnabled];
+  if ([(AudioAccessoryDevice *)selfCopy sleepDetectionEnabled]!= sleepDetectionEnabled)
   {
-    [(AudioAccessoryDevice *)v5 setSleepDetectionEnabled:?];
+    [(AudioAccessoryDevice *)selfCopy setSleepDetectionEnabled:?];
     v8 = 1;
   }
 
-  v19 = [v4 hearingProtectionPPECapabilityLevel];
-  if (v19 != [(AudioAccessoryDevice *)v5 hearingProtectionPPECapLevel])
+  hearingProtectionPPECapabilityLevel = [infoCopy hearingProtectionPPECapabilityLevel];
+  if (hearingProtectionPPECapabilityLevel != [(AudioAccessoryDevice *)selfCopy hearingProtectionPPECapLevel])
   {
-    [(AudioAccessoryDevice *)v5 setHearingProtectionPPECapLevel:v19];
+    [(AudioAccessoryDevice *)selfCopy setHearingProtectionPPECapLevel:hearingProtectionPPECapabilityLevel];
     v8 = 1;
   }
 
-  v20 = [v4 hearingProtectionPPEEnabled];
-  if ([(AudioAccessoryDevice *)v5 hearingProtectionPPEEnabled]!= v20)
+  hearingProtectionPPEEnabled = [infoCopy hearingProtectionPPEEnabled];
+  if ([(AudioAccessoryDevice *)selfCopy hearingProtectionPPEEnabled]!= hearingProtectionPPEEnabled)
   {
-    [(AudioAccessoryDevice *)v5 setHearingProtectionPPEEnabled:?];
+    [(AudioAccessoryDevice *)selfCopy setHearingProtectionPPEEnabled:?];
     v8 = 1;
   }
 
-  if (![(AudioAccessoryDevice *)v5 connectedAADeviceInfoReceived])
+  if (![(AudioAccessoryDevice *)selfCopy connectedAADeviceInfoReceived])
   {
     v8 = 1;
-    [(AudioAccessoryDevice *)v5 setConnectedAADeviceInfoReceived:1];
+    [(AudioAccessoryDevice *)selfCopy setConnectedAADeviceInfoReceived:1];
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v8;
 }
 
-- (BOOL)updateWithConnectedCBDevice:(id)a3
+- (BOOL)updateWithConnectedCBDevice:(id)device
 {
-  v5 = a3;
-  v6 = self;
-  objc_sync_enter(v6);
-  v7 = [(AudioAccessoryDevice *)v6 bluetoothAddressData];
-  v8 = [v5 btAddressData];
-  v9 = v7;
-  v10 = v8;
+  deviceCopy = device;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  bluetoothAddressData = [(AudioAccessoryDevice *)selfCopy bluetoothAddressData];
+  btAddressData = [deviceCopy btAddressData];
+  btAddressData2 = bluetoothAddressData;
+  v10 = btAddressData;
   v11 = v10;
-  v12 = v9 != v10;
-  if (v9 == v10)
+  v12 = btAddressData2 != v10;
+  if (btAddressData2 == v10)
   {
 
 LABEL_8:
     goto LABEL_9;
   }
 
-  if ((v9 != 0) == (v10 == 0))
+  if ((btAddressData2 != 0) == (v10 == 0))
   {
 
     goto LABEL_7;
   }
 
-  v13 = [v9 isEqual:v10];
+  v13 = [btAddressData2 isEqual:v10];
 
   if ((v13 & 1) == 0)
   {
 LABEL_7:
-    v9 = [v5 btAddressData];
-    [(AudioAccessoryDevice *)v6 setBluetoothAddressData:v9];
+    btAddressData2 = [deviceCopy btAddressData];
+    [(AudioAccessoryDevice *)selfCopy setBluetoothAddressData:btAddressData2];
     goto LABEL_8;
   }
 
   v12 = 0;
 LABEL_9:
-  v14 = -[AudioAccessoryDevice CBCapToAACap:](v6, "CBCapToAACap:", [v5 adaptiveVolumeCapability]);
-  if (v14 && [(AudioAccessoryDevice *)v6 adaptiveVolumeCapability]!= v14)
+  v14 = -[AudioAccessoryDevice CBCapToAACap:](selfCopy, "CBCapToAACap:", [deviceCopy adaptiveVolumeCapability]);
+  if (v14 && [(AudioAccessoryDevice *)selfCopy adaptiveVolumeCapability]!= v14)
   {
-    [(AudioAccessoryDevice *)v6 setAdaptiveVolumeCapability:v14];
+    [(AudioAccessoryDevice *)selfCopy setAdaptiveVolumeCapability:v14];
     v12 = 1;
   }
 
-  v15 = [v5 adaptiveVolumeConfig];
-  if (v15 && [(AudioAccessoryDevice *)v6 adaptiveVolumeConfig]!= v15)
+  adaptiveVolumeConfig = [deviceCopy adaptiveVolumeConfig];
+  if (adaptiveVolumeConfig && [(AudioAccessoryDevice *)selfCopy adaptiveVolumeConfig]!= adaptiveVolumeConfig)
   {
-    [(AudioAccessoryDevice *)v6 setAdaptiveVolumeConfig:v15];
+    [(AudioAccessoryDevice *)selfCopy setAdaptiveVolumeConfig:adaptiveVolumeConfig];
     v12 = 1;
   }
 
-  v16 = [v5 audioStreamState];
-  if (v16 && v16 != [(AudioAccessoryDevice *)v6 audioStreamState])
+  audioStreamState = [deviceCopy audioStreamState];
+  if (audioStreamState && audioStreamState != [(AudioAccessoryDevice *)selfCopy audioStreamState])
   {
-    [(AudioAccessoryDevice *)v6 setAudioStreamState:v16];
+    [(AudioAccessoryDevice *)selfCopy setAudioStreamState:audioStreamState];
     v12 = 1;
   }
 
-  v17 = [v5 clickHoldModeLeft];
-  if (v17 && [(AudioAccessoryDevice *)v6 clickHoldModeLeft]!= v17)
+  clickHoldModeLeft = [deviceCopy clickHoldModeLeft];
+  if (clickHoldModeLeft && [(AudioAccessoryDevice *)selfCopy clickHoldModeLeft]!= clickHoldModeLeft)
   {
-    [(AudioAccessoryDevice *)v6 setClickHoldModeLeft:v17];
+    [(AudioAccessoryDevice *)selfCopy setClickHoldModeLeft:clickHoldModeLeft];
     v12 = 1;
   }
 
-  v18 = [v5 clickHoldModeRight];
-  if (v18 && [(AudioAccessoryDevice *)v6 clickHoldModeRight]!= v18)
+  clickHoldModeRight = [deviceCopy clickHoldModeRight];
+  if (clickHoldModeRight && [(AudioAccessoryDevice *)selfCopy clickHoldModeRight]!= clickHoldModeRight)
   {
-    [(AudioAccessoryDevice *)v6 setClickHoldModeRight:v18];
+    [(AudioAccessoryDevice *)selfCopy setClickHoldModeRight:clickHoldModeRight];
     v12 = 1;
   }
 
-  v19 = -[AudioAccessoryDevice CBCapToAACap:](v6, "CBCapToAACap:", [v5 conversationDetectCapability]);
-  if (v19 && [(AudioAccessoryDevice *)v6 conversationDetectCapability]!= v19)
+  v19 = -[AudioAccessoryDevice CBCapToAACap:](selfCopy, "CBCapToAACap:", [deviceCopy conversationDetectCapability]);
+  if (v19 && [(AudioAccessoryDevice *)selfCopy conversationDetectCapability]!= v19)
   {
-    [(AudioAccessoryDevice *)v6 setConversationDetectCapability:v19];
+    [(AudioAccessoryDevice *)selfCopy setConversationDetectCapability:v19];
     v12 = 1;
   }
 
-  v20 = [v5 conversationDetectConfig];
-  if (v20 && [(AudioAccessoryDevice *)v6 conversationDetectConfig]!= v20)
+  conversationDetectConfig = [deviceCopy conversationDetectConfig];
+  if (conversationDetectConfig && [(AudioAccessoryDevice *)selfCopy conversationDetectConfig]!= conversationDetectConfig)
   {
-    [(AudioAccessoryDevice *)v6 setConversationDetectConfig:v20];
+    [(AudioAccessoryDevice *)selfCopy setConversationDetectConfig:conversationDetectConfig];
     v12 = 1;
   }
 
-  v21 = [v5 crownRotationDirection];
-  if (v21 && [(AudioAccessoryDevice *)v6 crownRotationDirection]!= v21)
+  crownRotationDirection = [deviceCopy crownRotationDirection];
+  if (crownRotationDirection && [(AudioAccessoryDevice *)selfCopy crownRotationDirection]!= crownRotationDirection)
   {
-    [(AudioAccessoryDevice *)v6 setCrownRotationDirection:v21];
+    [(AudioAccessoryDevice *)selfCopy setCrownRotationDirection:crownRotationDirection];
     v12 = 1;
   }
 
-  v22 = [v5 doubleTapActionLeft];
-  if (v22 && v22 != [(AudioAccessoryDevice *)v6 doubleTapActionLeft])
+  doubleTapActionLeft = [deviceCopy doubleTapActionLeft];
+  if (doubleTapActionLeft && doubleTapActionLeft != [(AudioAccessoryDevice *)selfCopy doubleTapActionLeft])
   {
-    [(AudioAccessoryDevice *)v6 setDoubleTapActionLeft:v22];
+    [(AudioAccessoryDevice *)selfCopy setDoubleTapActionLeft:doubleTapActionLeft];
     v12 = 1;
   }
 
-  v23 = [v5 doubleTapActionRight];
-  if (v23 && v23 != [(AudioAccessoryDevice *)v6 doubleTapActionRight])
+  doubleTapActionRight = [deviceCopy doubleTapActionRight];
+  if (doubleTapActionRight && doubleTapActionRight != [(AudioAccessoryDevice *)selfCopy doubleTapActionRight])
   {
-    [(AudioAccessoryDevice *)v6 setDoubleTapActionRight:v23];
+    [(AudioAccessoryDevice *)selfCopy setDoubleTapActionRight:doubleTapActionRight];
     v12 = 1;
   }
 
-  v24 = [v5 doubleTapCapability];
-  if (v24 && v24 != [(AudioAccessoryDevice *)v6 doubleTapCapability])
+  doubleTapCapability = [deviceCopy doubleTapCapability];
+  if (doubleTapCapability && doubleTapCapability != [(AudioAccessoryDevice *)selfCopy doubleTapCapability])
   {
-    [(AudioAccessoryDevice *)v6 setDoubleTapCapability:v24];
+    [(AudioAccessoryDevice *)selfCopy setDoubleTapCapability:doubleTapCapability];
     v12 = 1;
   }
 
-  v25 = -[AudioAccessoryDevice CBCapToAACap:](v6, "CBCapToAACap:", [v5 endCallCapability]);
-  if (v25 && [(AudioAccessoryDevice *)v6 endCallCapability]!= v25)
+  v25 = -[AudioAccessoryDevice CBCapToAACap:](selfCopy, "CBCapToAACap:", [deviceCopy endCallCapability]);
+  if (v25 && [(AudioAccessoryDevice *)selfCopy endCallCapability]!= v25)
   {
-    [(AudioAccessoryDevice *)v6 setEndCallCapability:v25];
+    [(AudioAccessoryDevice *)selfCopy setEndCallCapability:v25];
     v12 = 1;
   }
 
-  v26 = [v5 endCallConfig];
-  if (v26 && v26 != [(AudioAccessoryDevice *)v6 endCallConfig])
+  endCallConfig = [deviceCopy endCallConfig];
+  if (endCallConfig && endCallConfig != [(AudioAccessoryDevice *)selfCopy endCallConfig])
   {
-    [(AudioAccessoryDevice *)v6 setEndCallConfig:v26];
+    [(AudioAccessoryDevice *)selfCopy setEndCallConfig:endCallConfig];
     v12 = 1;
   }
 
-  v27 = [(AudioAccessoryDevice *)v6 firmwareVersion];
-  v28 = [v5 firmwareVersion];
-  v29 = v27;
-  v30 = v28;
+  firmwareVersion = [(AudioAccessoryDevice *)selfCopy firmwareVersion];
+  firmwareVersion2 = [deviceCopy firmwareVersion];
+  firmwareVersion3 = firmwareVersion;
+  v30 = firmwareVersion2;
   v31 = v30;
-  if (v29 == v30)
+  if (firmwareVersion3 == v30)
   {
   }
 
   else
   {
-    if ((v29 != 0) == (v30 == 0))
+    if ((firmwareVersion3 != 0) == (v30 == 0))
     {
     }
 
     else
     {
-      v32 = [v29 isEqual:v30];
+      v32 = [firmwareVersion3 isEqual:v30];
 
       if (v32)
       {
@@ -4147,20 +4147,20 @@ LABEL_9:
       }
     }
 
-    v29 = [v5 firmwareVersion];
-    [(AudioAccessoryDevice *)v6 setFirmwareVersion:v29];
+    firmwareVersion3 = [deviceCopy firmwareVersion];
+    [(AudioAccessoryDevice *)selfCopy setFirmwareVersion:firmwareVersion3];
     v12 = 1;
   }
 
 LABEL_56:
-  v33 = [v5 gapaFlags];
-  if (v33 && [(AudioAccessoryDevice *)v6 gapaFlags]!= v33)
+  gapaFlags = [deviceCopy gapaFlags];
+  if (gapaFlags && [(AudioAccessoryDevice *)selfCopy gapaFlags]!= gapaFlags)
   {
-    [(AudioAccessoryDevice *)v6 setGapaFlags:v33];
+    [(AudioAccessoryDevice *)selfCopy setGapaFlags:gapaFlags];
     v12 = 1;
   }
 
-  if (([v5 deviceFlags] & 0x2000000) != 0)
+  if (([deviceCopy deviceFlags] & 0x2000000) != 0)
   {
     v34 = 1;
   }
@@ -4170,186 +4170,186 @@ LABEL_56:
     v34 = 2;
   }
 
-  if (v34 != [(AudioAccessoryDevice *)v6 guestPaired])
+  if (v34 != [(AudioAccessoryDevice *)selfCopy guestPaired])
   {
-    [(AudioAccessoryDevice *)v6 setGuestPaired:v34];
+    [(AudioAccessoryDevice *)selfCopy setGuestPaired:v34];
     v12 = 1;
   }
 
-  v35 = [v5 listeningMode];
-  if (v35 && v35 != [(AudioAccessoryDevice *)v6 listeningMode])
+  listeningMode = [deviceCopy listeningMode];
+  if (listeningMode && listeningMode != [(AudioAccessoryDevice *)selfCopy listeningMode])
   {
-    [(AudioAccessoryDevice *)v6 setListeningMode:v35];
+    [(AudioAccessoryDevice *)selfCopy setListeningMode:listeningMode];
     v12 = 1;
   }
 
-  v36 = [v5 listeningModeConfigs];
-  if (v36 && v36 != [(AudioAccessoryDevice *)v6 listeningModeConfigs])
+  listeningModeConfigs = [deviceCopy listeningModeConfigs];
+  if (listeningModeConfigs && listeningModeConfigs != [(AudioAccessoryDevice *)selfCopy listeningModeConfigs])
   {
-    [(AudioAccessoryDevice *)v6 setListeningModeConfigs:v36];
+    [(AudioAccessoryDevice *)selfCopy setListeningModeConfigs:listeningModeConfigs];
     v12 = 1;
   }
 
-  v37 = [v5 microphoneMode];
-  if (v37 && v37 != [(AudioAccessoryDevice *)v6 microphoneMode])
+  microphoneMode = [deviceCopy microphoneMode];
+  if (microphoneMode && microphoneMode != [(AudioAccessoryDevice *)selfCopy microphoneMode])
   {
-    [(AudioAccessoryDevice *)v6 setMicrophoneMode:v37];
+    [(AudioAccessoryDevice *)selfCopy setMicrophoneMode:microphoneMode];
     v12 = 1;
   }
 
-  v38 = -[AudioAccessoryDevice CBCapToAACap:](v6, "CBCapToAACap:", [v5 muteControlCapability]);
-  if (v38 && [(AudioAccessoryDevice *)v6 muteControlCapability]!= v38)
+  v38 = -[AudioAccessoryDevice CBCapToAACap:](selfCopy, "CBCapToAACap:", [deviceCopy muteControlCapability]);
+  if (v38 && [(AudioAccessoryDevice *)selfCopy muteControlCapability]!= v38)
   {
-    [(AudioAccessoryDevice *)v6 setMuteControlCapability:v38];
+    [(AudioAccessoryDevice *)selfCopy setMuteControlCapability:v38];
     v12 = 1;
   }
 
-  v39 = [v5 muteControlConfig];
-  if (v39 && v39 != [(AudioAccessoryDevice *)v6 muteControlConfig])
+  muteControlConfig = [deviceCopy muteControlConfig];
+  if (muteControlConfig && muteControlConfig != [(AudioAccessoryDevice *)selfCopy muteControlConfig])
   {
-    [(AudioAccessoryDevice *)v6 setMuteControlConfig:v39];
+    [(AudioAccessoryDevice *)selfCopy setMuteControlConfig:muteControlConfig];
     v12 = 1;
   }
 
-  v40 = -[AudioAccessoryDevice CBCapToAACap:](v6, "CBCapToAACap:", [v5 autoAncCapability]);
-  if (v40 && [(AudioAccessoryDevice *)v6 peerAutoANCCapability]!= v40)
+  v40 = -[AudioAccessoryDevice CBCapToAACap:](selfCopy, "CBCapToAACap:", [deviceCopy autoAncCapability]);
+  if (v40 && [(AudioAccessoryDevice *)selfCopy peerAutoANCCapability]!= v40)
   {
-    [(AudioAccessoryDevice *)v6 setPeerAutoANCCapability:v40];
+    [(AudioAccessoryDevice *)selfCopy setPeerAutoANCCapability:v40];
     v12 = 1;
   }
 
-  v41 = [v5 placementMode];
-  if (v41 && v41 != [(AudioAccessoryDevice *)v6 placementMode])
+  placementMode = [deviceCopy placementMode];
+  if (placementMode && placementMode != [(AudioAccessoryDevice *)selfCopy placementMode])
   {
-    [(AudioAccessoryDevice *)v6 setPlacementMode:v41];
+    [(AudioAccessoryDevice *)selfCopy setPlacementMode:placementMode];
     v12 = 1;
   }
 
-  v42 = [v5 primaryPlacement];
-  if (v42 && v42 != [(AudioAccessoryDevice *)v6 primaryPlacement])
+  primaryPlacement = [deviceCopy primaryPlacement];
+  if (primaryPlacement && primaryPlacement != [(AudioAccessoryDevice *)selfCopy primaryPlacement])
   {
-    [(AudioAccessoryDevice *)v6 setPrimaryPlacement:v42];
+    [(AudioAccessoryDevice *)selfCopy setPrimaryPlacement:primaryPlacement];
     v12 = 1;
   }
 
-  v43 = [v5 secondaryPlacement];
-  if (v43 && v43 != [(AudioAccessoryDevice *)v6 secondaryPlacement])
+  secondaryPlacement = [deviceCopy secondaryPlacement];
+  if (secondaryPlacement && secondaryPlacement != [(AudioAccessoryDevice *)selfCopy secondaryPlacement])
   {
-    [(AudioAccessoryDevice *)v6 setSecondaryPlacement:v43];
+    [(AudioAccessoryDevice *)selfCopy setSecondaryPlacement:secondaryPlacement];
     v12 = 1;
   }
 
-  v44 = [v5 rssi];
-  if (v44 && v44 != [(AudioAccessoryDevice *)v6 classicRSSI])
+  rssi = [deviceCopy rssi];
+  if (rssi && rssi != [(AudioAccessoryDevice *)selfCopy classicRSSI])
   {
-    [(AudioAccessoryDevice *)v6 setClassicRSSI:v44];
+    [(AudioAccessoryDevice *)selfCopy setClassicRSSI:rssi];
   }
 
-  v45 = -[AudioAccessoryDevice CBCapToAACap:](v6, "CBCapToAACap:", [v5 selectiveSpeechListeningCapability]);
-  if (v45 && [(AudioAccessoryDevice *)v6 selectiveSpeechListeningCapability]!= v45)
+  v45 = -[AudioAccessoryDevice CBCapToAACap:](selfCopy, "CBCapToAACap:", [deviceCopy selectiveSpeechListeningCapability]);
+  if (v45 && [(AudioAccessoryDevice *)selfCopy selectiveSpeechListeningCapability]!= v45)
   {
-    [(AudioAccessoryDevice *)v6 setSelectiveSpeechListeningCapability:v45];
+    [(AudioAccessoryDevice *)selfCopy setSelectiveSpeechListeningCapability:v45];
     v12 = 1;
   }
 
-  v46 = [v5 selectiveSpeechListeningConfig];
-  if (v46 && v46 != [(AudioAccessoryDevice *)v6 selectiveSpeechListeningConfig])
+  selectiveSpeechListeningConfig = [deviceCopy selectiveSpeechListeningConfig];
+  if (selectiveSpeechListeningConfig && selectiveSpeechListeningConfig != [(AudioAccessoryDevice *)selfCopy selectiveSpeechListeningConfig])
   {
-    [(AudioAccessoryDevice *)v6 setSelectiveSpeechListeningConfig:v46];
+    [(AudioAccessoryDevice *)selfCopy setSelectiveSpeechListeningConfig:selectiveSpeechListeningConfig];
     v12 = 1;
   }
 
-  v47 = [(AudioAccessoryDevice *)v6 serialNumber];
-  v48 = [v5 serialNumber];
-  v49 = v47;
-  v50 = v48;
+  serialNumber = [(AudioAccessoryDevice *)selfCopy serialNumber];
+  serialNumber2 = [deviceCopy serialNumber];
+  serialNumber3 = serialNumber;
+  v50 = serialNumber2;
   v51 = v50;
-  if (v49 == v50)
+  if (serialNumber3 == v50)
   {
 
 LABEL_107:
     goto LABEL_108;
   }
 
-  if ((v49 != 0) == (v50 == 0))
+  if ((serialNumber3 != 0) == (v50 == 0))
   {
 
     goto LABEL_106;
   }
 
-  v52 = [v49 isEqual:v50];
+  v52 = [serialNumber3 isEqual:v50];
 
   if ((v52 & 1) == 0)
   {
 LABEL_106:
-    v49 = [v5 serialNumber];
-    [(AudioAccessoryDevice *)v6 setSerialNumber:v49];
+    serialNumber3 = [deviceCopy serialNumber];
+    [(AudioAccessoryDevice *)selfCopy setSerialNumber:serialNumber3];
     v12 = 1;
     goto LABEL_107;
   }
 
 LABEL_108:
-  v53 = [(AudioAccessoryDevice *)v6 serialNumberLeft];
-  v54 = [v5 serialNumberLeft];
-  v55 = v53;
-  v56 = v54;
+  serialNumberLeft = [(AudioAccessoryDevice *)selfCopy serialNumberLeft];
+  serialNumberLeft2 = [deviceCopy serialNumberLeft];
+  serialNumberLeft3 = serialNumberLeft;
+  v56 = serialNumberLeft2;
   v57 = v56;
-  if (v55 == v56)
+  if (serialNumberLeft3 == v56)
   {
 
 LABEL_115:
     goto LABEL_116;
   }
 
-  if ((v55 != 0) == (v56 == 0))
+  if ((serialNumberLeft3 != 0) == (v56 == 0))
   {
 
     goto LABEL_114;
   }
 
-  v58 = [v55 isEqual:v56];
+  v58 = [serialNumberLeft3 isEqual:v56];
 
   if ((v58 & 1) == 0)
   {
 LABEL_114:
-    v55 = [v5 serialNumberLeft];
-    [(AudioAccessoryDevice *)v6 setSerialNumberLeft:v55];
+    serialNumberLeft3 = [deviceCopy serialNumberLeft];
+    [(AudioAccessoryDevice *)selfCopy setSerialNumberLeft:serialNumberLeft3];
     v12 = 1;
     goto LABEL_115;
   }
 
 LABEL_116:
-  v59 = [(AudioAccessoryDevice *)v6 serialNumberRight];
-  v60 = [v5 serialNumberRight];
-  v61 = v59;
-  v62 = v60;
+  serialNumberRight = [(AudioAccessoryDevice *)selfCopy serialNumberRight];
+  serialNumberRight2 = [deviceCopy serialNumberRight];
+  serialNumberRight3 = serialNumberRight;
+  v62 = serialNumberRight2;
   v63 = v62;
-  if (v61 == v62)
+  if (serialNumberRight3 == v62)
   {
 
 LABEL_123:
     goto LABEL_124;
   }
 
-  if ((v61 != 0) == (v62 == 0))
+  if ((serialNumberRight3 != 0) == (v62 == 0))
   {
 
     goto LABEL_122;
   }
 
-  v64 = [v61 isEqual:v62];
+  v64 = [serialNumberRight3 isEqual:v62];
 
   if ((v64 & 1) == 0)
   {
 LABEL_122:
-    v61 = [v5 serialNumberRight];
-    [(AudioAccessoryDevice *)v6 setSerialNumberRight:v61];
+    serialNumberRight3 = [deviceCopy serialNumberRight];
+    [(AudioAccessoryDevice *)selfCopy setSerialNumberRight:serialNumberRight3];
     v12 = 1;
     goto LABEL_123;
   }
 
 LABEL_124:
-  if (([v5 deviceFlags] & 0x10000000000) != 0)
+  if (([deviceCopy deviceFlags] & 0x10000000000) != 0)
   {
     v65 = 2;
   }
@@ -4359,20 +4359,20 @@ LABEL_124:
     v65 = 1;
   }
 
-  if (v65 != [(AudioAccessoryDevice *)v6 smartRoutingCapability])
+  if (v65 != [(AudioAccessoryDevice *)selfCopy smartRoutingCapability])
   {
-    [(AudioAccessoryDevice *)v6 setSmartRoutingCapability:v65];
+    [(AudioAccessoryDevice *)selfCopy setSmartRoutingCapability:v65];
     v12 = 1;
   }
 
-  v66 = [v5 smartRoutingMode];
-  if (v66 && v66 != [(AudioAccessoryDevice *)v6 smartRoutingMode])
+  smartRoutingMode = [deviceCopy smartRoutingMode];
+  if (smartRoutingMode && smartRoutingMode != [(AudioAccessoryDevice *)selfCopy smartRoutingMode])
   {
-    [(AudioAccessoryDevice *)v6 setSmartRoutingMode:v66];
+    [(AudioAccessoryDevice *)selfCopy setSmartRoutingMode:smartRoutingMode];
     v12 = 1;
   }
 
-  if (([v5 deviceFlags] & 0x10000000) != 0)
+  if (([deviceCopy deviceFlags] & 0x10000000) != 0)
   {
     v67 = 1;
   }
@@ -4382,253 +4382,253 @@ LABEL_124:
     v67 = 2;
   }
 
-  if (v67 != [(AudioAccessoryDevice *)v6 spatialAudioAllowed])
+  if (v67 != [(AudioAccessoryDevice *)selfCopy spatialAudioAllowed])
   {
-    [(AudioAccessoryDevice *)v6 setSpatialAudioAllowed:v67];
+    [(AudioAccessoryDevice *)selfCopy setSpatialAudioAllowed:v67];
     v12 = 1;
   }
 
-  objc_storeStrong(&v6->_coreBluetoothDevice, a3);
-  if (![(AudioAccessoryDevice *)v6 connectedCBDeviceReceived])
+  objc_storeStrong(&selfCopy->_coreBluetoothDevice, device);
+  if (![(AudioAccessoryDevice *)selfCopy connectedCBDeviceReceived])
   {
     v12 = 1;
-    [(AudioAccessoryDevice *)v6 setConnectedCBDeviceReceived:1];
+    [(AudioAccessoryDevice *)selfCopy setConnectedCBDeviceReceived:1];
   }
 
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
 
   return v12;
 }
 
-- (BOOL)updateWithPairedAADeviceInfo:(id)a3
+- (BOOL)updateWithPairedAADeviceInfo:(id)info
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [v4 autoANCCapability];
-  v7 = [(AudioAccessoryDevice *)v5 autoANCCapability];
-  v8 = v6 != v7;
-  if (v6 != v7)
+  infoCopy = info;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  autoANCCapability = [infoCopy autoANCCapability];
+  autoANCCapability2 = [(AudioAccessoryDevice *)selfCopy autoANCCapability];
+  v8 = autoANCCapability != autoANCCapability2;
+  if (autoANCCapability != autoANCCapability2)
   {
-    [(AudioAccessoryDevice *)v5 setAutoANCCapability:v6];
+    [(AudioAccessoryDevice *)selfCopy setAutoANCCapability:autoANCCapability];
   }
 
-  v9 = [v4 bobbleCapability];
-  if (v9 != [(AudioAccessoryDevice *)v5 bobbleCapability])
+  bobbleCapability = [infoCopy bobbleCapability];
+  if (bobbleCapability != [(AudioAccessoryDevice *)selfCopy bobbleCapability])
   {
-    [(AudioAccessoryDevice *)v5 setBobbleCapability:v9];
+    [(AudioAccessoryDevice *)selfCopy setBobbleCapability:bobbleCapability];
     v8 = 1;
   }
 
   if (_os_feature_enabled_impl())
   {
-    v10 = [v4 cameraControlCapability];
-    if (v10 != [(AudioAccessoryDevice *)v5 cameraControlCapability])
+    cameraControlCapability = [infoCopy cameraControlCapability];
+    if (cameraControlCapability != [(AudioAccessoryDevice *)selfCopy cameraControlCapability])
     {
-      [(AudioAccessoryDevice *)v5 setCameraControlCapability:v10];
+      [(AudioAccessoryDevice *)selfCopy setCameraControlCapability:cameraControlCapability];
       v8 = 1;
     }
   }
 
-  v11 = [v4 caseSoundCapability];
-  if (v11 != [(AudioAccessoryDevice *)v5 caseSoundCapability])
+  caseSoundCapability = [infoCopy caseSoundCapability];
+  if (caseSoundCapability != [(AudioAccessoryDevice *)selfCopy caseSoundCapability])
   {
-    [(AudioAccessoryDevice *)v5 setCaseSoundCapability:v11];
+    [(AudioAccessoryDevice *)selfCopy setCaseSoundCapability:caseSoundCapability];
     v8 = 1;
   }
 
-  v12 = [v4 dynamicEndOfChargeCapability];
-  if (v12 != [(AudioAccessoryDevice *)v5 dynamicEndOfChargeCapability])
+  dynamicEndOfChargeCapability = [infoCopy dynamicEndOfChargeCapability];
+  if (dynamicEndOfChargeCapability != [(AudioAccessoryDevice *)selfCopy dynamicEndOfChargeCapability])
   {
-    [(AudioAccessoryDevice *)v5 setDynamicEndOfChargeCapability:v12];
+    [(AudioAccessoryDevice *)selfCopy setDynamicEndOfChargeCapability:dynamicEndOfChargeCapability];
     v8 = 1;
   }
 
-  v13 = [v4 earTipFitTestCapability];
-  if (v13 != [(AudioAccessoryDevice *)v5 earTipFitTestCapability])
+  earTipFitTestCapability = [infoCopy earTipFitTestCapability];
+  if (earTipFitTestCapability != [(AudioAccessoryDevice *)selfCopy earTipFitTestCapability])
   {
-    [(AudioAccessoryDevice *)v5 setEarTipFitTestCapability:v13];
+    [(AudioAccessoryDevice *)selfCopy setEarTipFitTestCapability:earTipFitTestCapability];
     v8 = 1;
   }
 
-  v14 = [v4 enhancedTransparencyVersion];
-  if (v14 != [(AudioAccessoryDevice *)v5 enhancedTransparencyVersion])
+  enhancedTransparencyVersion = [infoCopy enhancedTransparencyVersion];
+  if (enhancedTransparencyVersion != [(AudioAccessoryDevice *)selfCopy enhancedTransparencyVersion])
   {
-    [(AudioAccessoryDevice *)v5 setEnhancedTransparencyVersion:v14];
+    [(AudioAccessoryDevice *)selfCopy setEnhancedTransparencyVersion:enhancedTransparencyVersion];
     v8 = 1;
   }
 
-  v15 = [v4 farFieldUplinkCapability];
-  if (v15 != [(AudioAccessoryDevice *)v5 farFieldUplinkCapability])
+  farFieldUplinkCapability = [infoCopy farFieldUplinkCapability];
+  if (farFieldUplinkCapability != [(AudioAccessoryDevice *)selfCopy farFieldUplinkCapability])
   {
-    [(AudioAccessoryDevice *)v5 setFarFieldUplinkCapability:v15];
+    [(AudioAccessoryDevice *)selfCopy setFarFieldUplinkCapability:farFieldUplinkCapability];
     v8 = 1;
   }
 
-  v16 = [v4 ovadStreamingCapability];
-  if (v16 != [(AudioAccessoryDevice *)v5 ovadStreamingCapability])
+  ovadStreamingCapability = [infoCopy ovadStreamingCapability];
+  if (ovadStreamingCapability != [(AudioAccessoryDevice *)selfCopy ovadStreamingCapability])
   {
-    [(AudioAccessoryDevice *)v5 setOvadStreamingCapability:v16];
+    [(AudioAccessoryDevice *)selfCopy setOvadStreamingCapability:ovadStreamingCapability];
     v8 = 1;
   }
 
   if (_os_feature_enabled_impl())
   {
-    v17 = [v4 hearingAidCapability];
-    if (v17 != [(AudioAccessoryDevice *)v5 hearingAidCapability])
+    hearingAidCapability = [infoCopy hearingAidCapability];
+    if (hearingAidCapability != [(AudioAccessoryDevice *)selfCopy hearingAidCapability])
     {
-      [(AudioAccessoryDevice *)v5 setHearingAidCapability:v17];
-      v8 = 1;
-    }
-  }
-
-  if (_os_feature_enabled_impl())
-  {
-    v18 = [v4 hearingProtectionCapability];
-    if (v18 != [(AudioAccessoryDevice *)v5 hearingProtectionCapability])
-    {
-      [(AudioAccessoryDevice *)v5 setHearingProtectionCapability:v18];
+      [(AudioAccessoryDevice *)selfCopy setHearingAidCapability:hearingAidCapability];
       v8 = 1;
     }
   }
 
   if (_os_feature_enabled_impl())
   {
-    v19 = [v4 hearingTestCapability];
-    if (v19 != [(AudioAccessoryDevice *)v5 hearingTestCapability])
+    hearingProtectionCapability = [infoCopy hearingProtectionCapability];
+    if (hearingProtectionCapability != [(AudioAccessoryDevice *)selfCopy hearingProtectionCapability])
     {
-      [(AudioAccessoryDevice *)v5 setHearingTestCapability:v19];
+      [(AudioAccessoryDevice *)selfCopy setHearingProtectionCapability:hearingProtectionCapability];
       v8 = 1;
     }
   }
 
-  v20 = [v4 heartRateMonitorCapability];
-  if (v20 != [(AudioAccessoryDevice *)v5 heartRateMonitorCapability])
+  if (_os_feature_enabled_impl())
   {
-    [(AudioAccessoryDevice *)v5 setHeartRateMonitorCapability:v20];
-    [(AudioAccessoryDevice *)v5 setHeartRateMonitorCapabilityValueOriginatedFromDevice:1];
-    v8 = 1;
-    [(AudioAccessoryDevice *)v5 setHeartRateMonitorCapabilityChanged:1];
+    hearingTestCapability = [infoCopy hearingTestCapability];
+    if (hearingTestCapability != [(AudioAccessoryDevice *)selfCopy hearingTestCapability])
+    {
+      [(AudioAccessoryDevice *)selfCopy setHearingTestCapability:hearingTestCapability];
+      v8 = 1;
+    }
   }
 
-  v21 = [v4 heartRateMonitorEnabled];
-  if ([(AudioAccessoryDevice *)v5 heartRateMonitorEnabled]!= v21)
+  heartRateMonitorCapability = [infoCopy heartRateMonitorCapability];
+  if (heartRateMonitorCapability != [(AudioAccessoryDevice *)selfCopy heartRateMonitorCapability])
   {
-    [(AudioAccessoryDevice *)v5 setHeartRateMonitorEnabled:?];
+    [(AudioAccessoryDevice *)selfCopy setHeartRateMonitorCapability:heartRateMonitorCapability];
+    [(AudioAccessoryDevice *)selfCopy setHeartRateMonitorCapabilityValueOriginatedFromDevice:1];
     v8 = 1;
+    [(AudioAccessoryDevice *)selfCopy setHeartRateMonitorCapabilityChanged:1];
   }
 
-  v22 = [v4 hideEarDetectionCapability];
-  if (v22 != [(AudioAccessoryDevice *)v5 hideEarDetectionCapability])
+  heartRateMonitorEnabled = [infoCopy heartRateMonitorEnabled];
+  if ([(AudioAccessoryDevice *)selfCopy heartRateMonitorEnabled]!= heartRateMonitorEnabled)
   {
-    [(AudioAccessoryDevice *)v5 setHideEarDetectionCapability:v22];
-    v8 = 1;
-  }
-
-  v23 = [v4 hideOffListeningModeCapability];
-  if (v23 != [(AudioAccessoryDevice *)v5 hideOffListeningModeCapability])
-  {
-    [(AudioAccessoryDevice *)v5 setHideOffListeningModeCapability:v23];
+    [(AudioAccessoryDevice *)selfCopy setHeartRateMonitorEnabled:?];
     v8 = 1;
   }
 
-  v24 = [v4 lastSeenTime];
-  v25 = [MEMORY[0x277CBEBB0] localTimeZone];
-  v26 = v24 - [v25 secondsFromGMT];
+  hideEarDetectionCapability = [infoCopy hideEarDetectionCapability];
+  if (hideEarDetectionCapability != [(AudioAccessoryDevice *)selfCopy hideEarDetectionCapability])
+  {
+    [(AudioAccessoryDevice *)selfCopy setHideEarDetectionCapability:hideEarDetectionCapability];
+    v8 = 1;
+  }
+
+  hideOffListeningModeCapability = [infoCopy hideOffListeningModeCapability];
+  if (hideOffListeningModeCapability != [(AudioAccessoryDevice *)selfCopy hideOffListeningModeCapability])
+  {
+    [(AudioAccessoryDevice *)selfCopy setHideOffListeningModeCapability:hideOffListeningModeCapability];
+    v8 = 1;
+  }
+
+  lastSeenTime = [infoCopy lastSeenTime];
+  localTimeZone = [MEMORY[0x277CBEBB0] localTimeZone];
+  v26 = lastSeenTime - [localTimeZone secondsFromGMT];
 
   if (v26 >= 1)
   {
-    v27 = [(AudioAccessoryDevice *)v5 lastSeenConnectedTime];
-    if (!v27 || (-[AudioAccessoryDevice lastSeenConnectedTime](v5, "lastSeenConnectedTime"), v28 = objc_claimAutoreleasedReturnValue(), [v28 timeIntervalSince1970], v30 = v29, v28, v27, v30 < v26))
+    lastSeenConnectedTime = [(AudioAccessoryDevice *)selfCopy lastSeenConnectedTime];
+    if (!lastSeenConnectedTime || (-[AudioAccessoryDevice lastSeenConnectedTime](selfCopy, "lastSeenConnectedTime"), v28 = objc_claimAutoreleasedReturnValue(), [v28 timeIntervalSince1970], v30 = v29, v28, lastSeenConnectedTime, v30 < v26))
     {
       v31 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:v26];
-      [(AudioAccessoryDevice *)v5 setLastSeenConnectedTime:v31];
+      [(AudioAccessoryDevice *)selfCopy setLastSeenConnectedTime:v31];
 
       v8 = 1;
     }
   }
 
-  v32 = [(AudioAccessoryDevice *)v5 pmeEverywhereCapability];
-  if (v32 != [v4 pmeEverywhereCapability])
+  pmeEverywhereCapability = [(AudioAccessoryDevice *)selfCopy pmeEverywhereCapability];
+  if (pmeEverywhereCapability != [infoCopy pmeEverywhereCapability])
   {
-    -[AudioAccessoryDevice setPmeEverywhereCapability:](v5, "setPmeEverywhereCapability:", [v4 pmeEverywhereCapability]);
+    -[AudioAccessoryDevice setPmeEverywhereCapability:](selfCopy, "setPmeEverywhereCapability:", [infoCopy pmeEverywhereCapability]);
     v8 = 1;
   }
 
-  v33 = [v4 siriMultitoneCapability];
-  if (v33 != [(AudioAccessoryDevice *)v5 siriMultitoneCapability])
+  siriMultitoneCapability = [infoCopy siriMultitoneCapability];
+  if (siriMultitoneCapability != [(AudioAccessoryDevice *)selfCopy siriMultitoneCapability])
   {
-    [(AudioAccessoryDevice *)v5 setSiriMultitoneCapability:v33];
+    [(AudioAccessoryDevice *)selfCopy setSiriMultitoneCapability:siriMultitoneCapability];
     v8 = 1;
   }
 
-  v34 = [v4 sleepDetectionCapability];
-  if (v34 != [(AudioAccessoryDevice *)v5 sleepDetectionCapability])
+  sleepDetectionCapability = [infoCopy sleepDetectionCapability];
+  if (sleepDetectionCapability != [(AudioAccessoryDevice *)selfCopy sleepDetectionCapability])
   {
-    [(AudioAccessoryDevice *)v5 setSleepDetectionCapability:v34];
+    [(AudioAccessoryDevice *)selfCopy setSleepDetectionCapability:sleepDetectionCapability];
     v8 = 1;
   }
 
-  v35 = [v4 hearingAidV2Capability];
-  if (v35 != [(AudioAccessoryDevice *)v5 hearingAidV2Capability])
+  hearingAidV2Capability = [infoCopy hearingAidV2Capability];
+  if (hearingAidV2Capability != [(AudioAccessoryDevice *)selfCopy hearingAidV2Capability])
   {
-    [(AudioAccessoryDevice *)v5 setHearingAidV2Capability:v35];
+    [(AudioAccessoryDevice *)selfCopy setHearingAidV2Capability:hearingAidV2Capability];
     v8 = 1;
   }
 
-  v36 = [v4 hearingProtectionPPECapability];
-  if (v36 != [(AudioAccessoryDevice *)v5 hearingProtectionPPECapability])
+  hearingProtectionPPECapability = [infoCopy hearingProtectionPPECapability];
+  if (hearingProtectionPPECapability != [(AudioAccessoryDevice *)selfCopy hearingProtectionPPECapability])
   {
-    [(AudioAccessoryDevice *)v5 setHearingProtectionPPECapability:v36];
+    [(AudioAccessoryDevice *)selfCopy setHearingProtectionPPECapability:hearingProtectionPPECapability];
     v8 = 1;
   }
 
   if (_os_feature_enabled_impl())
   {
-    v37 = [v4 temporaryManagedPairedStatus];
-    if ([(AudioAccessoryDevice *)v5 temporaryManagedPairedStatus]!= v37)
+    temporaryManagedPairedStatus = [infoCopy temporaryManagedPairedStatus];
+    if ([(AudioAccessoryDevice *)selfCopy temporaryManagedPairedStatus]!= temporaryManagedPairedStatus)
     {
-      [(AudioAccessoryDevice *)v5 setTemporaryManagedPairedStatus:?];
+      [(AudioAccessoryDevice *)selfCopy setTemporaryManagedPairedStatus:?];
       v8 = 1;
     }
   }
 
-  if (![(AudioAccessoryDevice *)v5 pairedAADeviceInfoReceived])
+  if (![(AudioAccessoryDevice *)selfCopy pairedAADeviceInfoReceived])
   {
     v8 = 1;
-    [(AudioAccessoryDevice *)v5 setPairedAADeviceInfoReceived:1];
+    [(AudioAccessoryDevice *)selfCopy setPairedAADeviceInfoReceived:1];
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v8;
 }
 
-- (BOOL)updateWithPairedCBDevice:(id)a3
+- (BOOL)updateWithPairedCBDevice:(id)device
 {
-  v5 = a3;
-  v6 = self;
-  objc_sync_enter(v6);
-  objc_storeStrong(&v6->_coreBluetoothDevice, a3);
-  v7 = [(AudioAccessoryDevice *)v6 bluetoothAddressData];
-  v8 = [v5 btAddressData];
-  v9 = v7;
-  v10 = v8;
+  deviceCopy = device;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  objc_storeStrong(&selfCopy->_coreBluetoothDevice, device);
+  bluetoothAddressData = [(AudioAccessoryDevice *)selfCopy bluetoothAddressData];
+  btAddressData = [deviceCopy btAddressData];
+  btAddressData2 = bluetoothAddressData;
+  v10 = btAddressData;
   v11 = v10;
-  v12 = v9 != v10;
-  if (v9 == v10)
+  v12 = btAddressData2 != v10;
+  if (btAddressData2 == v10)
   {
   }
 
   else
   {
-    if ((v9 != 0) == (v10 == 0))
+    if ((btAddressData2 != 0) == (v10 == 0))
     {
     }
 
     else
     {
-      v13 = [v9 isEqual:v10];
+      v13 = [btAddressData2 isEqual:v10];
 
       if (v13)
       {
@@ -4637,96 +4637,96 @@ LABEL_124:
       }
     }
 
-    v9 = [v5 btAddressData];
-    [(AudioAccessoryDevice *)v6 setBluetoothAddressData:v9];
+    btAddressData2 = [deviceCopy btAddressData];
+    [(AudioAccessoryDevice *)selfCopy setBluetoothAddressData:btAddressData2];
   }
 
 LABEL_9:
-  v14 = [(AudioAccessoryDevice *)v6 model];
-  v15 = [v5 model];
-  v16 = v14;
-  v17 = v15;
+  model = [(AudioAccessoryDevice *)selfCopy model];
+  model2 = [deviceCopy model];
+  model3 = model;
+  v17 = model2;
   v18 = v17;
-  if (v16 == v17)
+  if (model3 == v17)
   {
 
 LABEL_16:
     goto LABEL_17;
   }
 
-  if ((v16 != 0) == (v17 == 0))
+  if ((model3 != 0) == (v17 == 0))
   {
 
     goto LABEL_15;
   }
 
-  v19 = [v16 isEqual:v17];
+  v19 = [model3 isEqual:v17];
 
   if ((v19 & 1) == 0)
   {
 LABEL_15:
-    v16 = [v5 model];
-    [(AudioAccessoryDevice *)v6 setModel:v16];
+    model3 = [deviceCopy model];
+    [(AudioAccessoryDevice *)selfCopy setModel:model3];
     v12 = 1;
     goto LABEL_16;
   }
 
 LABEL_17:
-  v20 = [(AudioAccessoryDevice *)v6 name];
-  v21 = [v5 name];
-  v22 = v20;
-  v23 = v21;
+  name = [(AudioAccessoryDevice *)selfCopy name];
+  name2 = [deviceCopy name];
+  name3 = name;
+  v23 = name2;
   v24 = v23;
-  if (v22 == v23)
+  if (name3 == v23)
   {
 
 LABEL_24:
     goto LABEL_25;
   }
 
-  if ((v22 != 0) == (v23 == 0))
+  if ((name3 != 0) == (v23 == 0))
   {
 
     goto LABEL_23;
   }
 
-  v25 = [v22 isEqual:v23];
+  v25 = [name3 isEqual:v23];
 
   if ((v25 & 1) == 0)
   {
 LABEL_23:
-    v22 = [v5 name];
-    [(AudioAccessoryDevice *)v6 setName:v22];
+    name3 = [deviceCopy name];
+    [(AudioAccessoryDevice *)selfCopy setName:name3];
     v12 = 1;
     goto LABEL_24;
   }
 
 LABEL_25:
-  v26 = [(AudioAccessoryDevice *)v6 productID];
-  if (v26 != [v5 productID])
+  productID = [(AudioAccessoryDevice *)selfCopy productID];
+  if (productID != [deviceCopy productID])
   {
-    -[AudioAccessoryDevice setProductID:](v6, "setProductID:", [v5 productID]);
+    -[AudioAccessoryDevice setProductID:](selfCopy, "setProductID:", [deviceCopy productID]);
     v12 = 1;
   }
 
-  v27 = [(AudioAccessoryDevice *)v6 productName];
-  v28 = [v5 productName];
-  v29 = v27;
-  v30 = v28;
+  productName = [(AudioAccessoryDevice *)selfCopy productName];
+  productName2 = [deviceCopy productName];
+  productName3 = productName;
+  v30 = productName2;
   v31 = v30;
-  if (v29 == v30)
+  if (productName3 == v30)
   {
   }
 
   else
   {
-    if ((v29 != 0) == (v30 == 0))
+    if ((productName3 != 0) == (v30 == 0))
     {
     }
 
     else
     {
-      v32 = [v29 isEqual:v30];
+      v32 = [productName3 isEqual:v30];
 
       if (v32)
       {
@@ -4734,26 +4734,26 @@ LABEL_25:
       }
     }
 
-    v29 = [v5 productName];
-    [(AudioAccessoryDevice *)v6 setProductName:v29];
+    productName3 = [deviceCopy productName];
+    [(AudioAccessoryDevice *)selfCopy setProductName:productName3];
     v12 = 1;
   }
 
 LABEL_35:
-  v33 = [v5 vendorID];
-  if (v33 && [(AudioAccessoryDevice *)v6 vendorID]!= v33)
+  vendorID = [deviceCopy vendorID];
+  if (vendorID && [(AudioAccessoryDevice *)selfCopy vendorID]!= vendorID)
   {
-    [(AudioAccessoryDevice *)v6 setVendorID:v33];
+    [(AudioAccessoryDevice *)selfCopy setVendorID:vendorID];
     v12 = 1;
   }
 
-  if (![(AudioAccessoryDevice *)v6 pairedCBDeviceReceived])
+  if (![(AudioAccessoryDevice *)selfCopy pairedCBDeviceReceived])
   {
     v12 = 1;
-    [(AudioAccessoryDevice *)v6 setPairedCBDeviceReceived:1];
+    [(AudioAccessoryDevice *)selfCopy setPairedCBDeviceReceived:1];
   }
 
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
 
   return v12;
 }

@@ -32,31 +32,31 @@
       v7 = v5->_name;
       v5->_name = v6;
 
-      v8 = [MEMORY[0x1E696AAE8] mainBundle];
-      v9 = [v8 localizedInfoDictionary];
-      v10 = [v9 objectForKey:@"CFBundleDisplayName"];
+      mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+      localizedInfoDictionary = [mainBundle localizedInfoDictionary];
+      v10 = [localizedInfoDictionary objectForKey:@"CFBundleDisplayName"];
       defaultAuthorDisplayName = v5->_defaultAuthorDisplayName;
       v5->_defaultAuthorDisplayName = v10;
 
       if (![(NSString *)v5->_defaultAuthorDisplayName length])
       {
-        v12 = [v8 localizedInfoDictionary];
-        v13 = [v12 objectForKey:@"CFBundleExecutable"];
+        localizedInfoDictionary2 = [mainBundle localizedInfoDictionary];
+        v13 = [localizedInfoDictionary2 objectForKey:@"CFBundleExecutable"];
         v14 = v5->_defaultAuthorDisplayName;
         v5->_defaultAuthorDisplayName = v13;
       }
 
       if (![(NSString *)v5->_defaultAuthorDisplayName length])
       {
-        v15 = [v8 infoDictionary];
-        v16 = [v15 objectForKey:@"CFBundleDisplayName"];
+        infoDictionary = [mainBundle infoDictionary];
+        v16 = [infoDictionary objectForKey:@"CFBundleDisplayName"];
         v17 = v5->_defaultAuthorDisplayName;
         v5->_defaultAuthorDisplayName = v16;
       }
 
-      v18 = [MEMORY[0x1E696AAE8] mainBundle];
-      v19 = [v18 infoDictionary];
-      v20 = [v19 objectForKey:@"CFBundleExecutable"];
+      mainBundle2 = [MEMORY[0x1E696AAE8] mainBundle];
+      infoDictionary2 = [mainBundle2 infoDictionary];
+      v20 = [infoDictionary2 objectForKey:@"CFBundleExecutable"];
       v21 = v5->_defaultAuthorDisplayName;
       v5->_defaultAuthorDisplayName = v20;
 
@@ -78,7 +78,7 @@
     }
 
     self = v5;
-    v25 = self;
+    selfCopy = self;
   }
 
   else
@@ -90,10 +90,10 @@
       _os_log_impl(&dword_1A238D000, v26, OS_LOG_TYPE_ERROR, "Cannot create playlist with an empty name", buf, 2u);
     }
 
-    v25 = 0;
+    selfCopy = 0;
   }
 
-  return v25;
+  return selfCopy;
 }
 
 @end

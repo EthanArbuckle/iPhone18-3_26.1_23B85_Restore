@@ -1,39 +1,39 @@
 @interface TSTStrokeLayerToken
-+ (id)tokenWithStroke:(id)a3 range:(TSTSimpleRange)a4 order:(int)a5 andPosition:(unint64_t)a6;
++ (id)tokenWithStroke:(id)stroke range:(TSTSimpleRange)range order:(int)order andPosition:(unint64_t)position;
 - (TSTSimpleRange)range;
-- (TSTStrokeLayerToken)initWithStroke:(id)a3 range:(TSTSimpleRange)a4 order:(int)a5 andPosition:(unint64_t)a6;
+- (TSTStrokeLayerToken)initWithStroke:(id)stroke range:(TSTSimpleRange)range order:(int)order andPosition:(unint64_t)position;
 @end
 
 @implementation TSTStrokeLayerToken
 
-+ (id)tokenWithStroke:(id)a3 range:(TSTSimpleRange)a4 order:(int)a5 andPosition:(unint64_t)a6
++ (id)tokenWithStroke:(id)stroke range:(TSTSimpleRange)range order:(int)order andPosition:(unint64_t)position
 {
-  v7 = *&a5;
-  length = a4.length;
-  origin = a4.origin;
-  v10 = a3;
+  v7 = *&order;
+  length = range.length;
+  origin = range.origin;
+  strokeCopy = stroke;
   v11 = [TSTStrokeLayerToken alloc];
-  v13 = objc_msgSend_initWithStroke_range_order_andPosition_(v11, v12, v10, origin, length, v7, a6);
+  v13 = objc_msgSend_initWithStroke_range_order_andPosition_(v11, v12, strokeCopy, origin, length, v7, position);
 
   return v13;
 }
 
-- (TSTStrokeLayerToken)initWithStroke:(id)a3 range:(TSTSimpleRange)a4 order:(int)a5 andPosition:(unint64_t)a6
+- (TSTStrokeLayerToken)initWithStroke:(id)stroke range:(TSTSimpleRange)range order:(int)order andPosition:(unint64_t)position
 {
-  length = a4.length;
-  origin = a4.origin;
-  v12 = a3;
+  length = range.length;
+  origin = range.origin;
+  strokeCopy = stroke;
   v16.receiver = self;
   v16.super_class = TSTStrokeLayerToken;
   v13 = [(TSTStrokeLayerToken *)&v16 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_stroke, a3);
+    objc_storeStrong(&v13->_stroke, stroke);
     v14->_range.origin = origin;
     v14->_range.length = length;
-    v14->_order = a5;
-    v14->_position = a6;
+    v14->_order = order;
+    v14->_position = position;
   }
 
   return v14;

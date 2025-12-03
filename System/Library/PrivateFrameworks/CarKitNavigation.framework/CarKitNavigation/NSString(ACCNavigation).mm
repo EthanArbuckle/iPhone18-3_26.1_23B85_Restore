@@ -6,26 +6,26 @@
 
 - (__CFString)stringByEllipsingPastMaxLength:()ACCNavigation
 {
-  if (a3 && [a1 length] > a3)
+  if (a3 && [self length] > a3)
   {
     if (a3 < 3)
     {
-      v6 = @"…";
+      selfCopy = @"…";
     }
 
     else
     {
-      v5 = [a1 substringToIndex:a3 - 2];
-      v6 = [v5 stringByAppendingString:@"…"];
+      v5 = [self substringToIndex:a3 - 2];
+      selfCopy = [v5 stringByAppendingString:@"…"];
     }
   }
 
   else
   {
-    v6 = a1;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 @end

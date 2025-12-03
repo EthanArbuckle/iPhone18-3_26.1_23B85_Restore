@@ -1,25 +1,25 @@
 @interface EDPreviouslyDownloadedMessageData
-- (EDPreviouslyDownloadedMessageData)initWithHeadersOnlyData:(id)a3 partialMessageData:(id)a4 hasFullMessageData:(BOOL)a5 hasPartialMessageData:(BOOL)a6 mimeParts:(id)a7;
+- (EDPreviouslyDownloadedMessageData)initWithHeadersOnlyData:(id)data partialMessageData:(id)messageData hasFullMessageData:(BOOL)fullMessageData hasPartialMessageData:(BOOL)partialMessageData mimeParts:(id)parts;
 @end
 
 @implementation EDPreviouslyDownloadedMessageData
 
-- (EDPreviouslyDownloadedMessageData)initWithHeadersOnlyData:(id)a3 partialMessageData:(id)a4 hasFullMessageData:(BOOL)a5 hasPartialMessageData:(BOOL)a6 mimeParts:(id)a7
+- (EDPreviouslyDownloadedMessageData)initWithHeadersOnlyData:(id)data partialMessageData:(id)messageData hasFullMessageData:(BOOL)fullMessageData hasPartialMessageData:(BOOL)partialMessageData mimeParts:(id)parts
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a7;
+  dataCopy = data;
+  messageDataCopy = messageData;
+  partsCopy = parts;
   v22.receiver = self;
   v22.super_class = EDPreviouslyDownloadedMessageData;
   v16 = [(EDPreviouslyDownloadedMessageData *)&v22 init];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_headersOnlyData, a3);
-    objc_storeStrong(&v17->_partialMessageData, a4);
-    v17->_hasFullMessageData = a5;
-    v17->_hasPartialMessageData = a6;
-    v18 = [v15 copy];
+    objc_storeStrong(&v16->_headersOnlyData, data);
+    objc_storeStrong(&v17->_partialMessageData, messageData);
+    v17->_hasFullMessageData = fullMessageData;
+    v17->_hasPartialMessageData = partialMessageData;
+    v18 = [partsCopy copy];
     v19 = v18;
     if (v18)
     {

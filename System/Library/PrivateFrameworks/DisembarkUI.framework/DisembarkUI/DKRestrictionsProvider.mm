@@ -6,10 +6,10 @@
 
 - (BOOL)isPreserveESIMOnEraseEnforced
 {
-  v2 = [MEMORY[0x277D262A0] sharedConnection];
-  v3 = [v2 isPreserveESIMOnEraseEnforced];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  isPreserveESIMOnEraseEnforced = [mEMORY[0x277D262A0] isPreserveESIMOnEraseEnforced];
 
-  return v3;
+  return isPreserveESIMOnEraseEnforced;
 }
 
 @end

@@ -1,7 +1,7 @@
 @interface MCProfileServiceProfile
-- (MCProfileServiceProfile)initWithDictionary:(id)a3 signerCerts:(id)a4 allowEmptyPayload:(BOOL)a5 outError:(id *)a6;
-- (id)_badDataTypeErrorWithFieldName:(id)a3;
-- (id)_unsupportedValueErrorWithFieldName:(id)a3 value:(id)a4;
+- (MCProfileServiceProfile)initWithDictionary:(id)dictionary signerCerts:(id)certs allowEmptyPayload:(BOOL)payload outError:(id *)error;
+- (id)_badDataTypeErrorWithFieldName:(id)name;
+- (id)_unsupportedValueErrorWithFieldName:(id)name value:(id)value;
 - (id)description;
 - (id)localizedPayloadSummaryByType;
 - (id)payloads;
@@ -11,38 +11,38 @@
 
 @implementation MCProfileServiceProfile
 
-- (id)_badDataTypeErrorWithFieldName:(id)a3
+- (id)_badDataTypeErrorWithFieldName:(id)name
 {
   v8 = MEMORY[0x1E696ABC0];
-  v9 = MCErrorArray(@"ERROR_PROFILE_FIELD_INVALID_P_FIELD", a2, a3, v3, v4, v5, v6, v7, a3);
+  v9 = MCErrorArray(@"ERROR_PROFILE_FIELD_INVALID_P_FIELD", a2, name, v3, v4, v5, v6, v7, name);
   v10 = [v8 MCErrorWithDomain:@"MCProfileErrorDomain" code:1003 descriptionArray:v9 errorType:@"MCFatalError"];
 
   return v10;
 }
 
-- (id)_unsupportedValueErrorWithFieldName:(id)a3 value:(id)a4
+- (id)_unsupportedValueErrorWithFieldName:(id)name value:(id)value
 {
   v8 = MEMORY[0x1E696ABC0];
-  v9 = MCErrorArray(@"ERROR_PROFILE_FIELD_INVALID_VALUE_P_FIELD_P_VALUE", a2, a3, a4, v4, v5, v6, v7, a3);
+  v9 = MCErrorArray(@"ERROR_PROFILE_FIELD_INVALID_VALUE_P_FIELD_P_VALUE", a2, name, value, v4, v5, v6, v7, name);
   v10 = [v8 MCErrorWithDomain:@"MCProfileErrorDomain" code:1010 descriptionArray:v9 errorType:@"MCFatalError"];
 
   return v10;
 }
 
-- (MCProfileServiceProfile)initWithDictionary:(id)a3 signerCerts:(id)a4 allowEmptyPayload:(BOOL)a5 outError:(id *)a6
+- (MCProfileServiceProfile)initWithDictionary:(id)dictionary signerCerts:(id)certs allowEmptyPayload:(BOOL)payload outError:(id *)error
 {
   v64 = *MEMORY[0x1E69E9840];
-  v9 = a3;
+  dictionaryCopy = dictionary;
   v58.receiver = self;
   v58.super_class = MCProfileServiceProfile;
-  v10 = [(MCProfile *)&v58 initWithDictionary:v9 signerCerts:a4 allowEmptyPayload:1 outError:a6];
+  v10 = [(MCProfile *)&v58 initWithDictionary:dictionaryCopy signerCerts:certs allowEmptyPayload:1 outError:error];
   if (!v10)
   {
     goto LABEL_24;
   }
 
   v57 = 0;
-  v11 = [MCProfile removeRequiredObjectInDictionary:v9 key:@"PayloadContent" type:objc_opt_class() errorDomain:@"MCProfileErrorDomain" missingDataCode:1002 missingDataErrorString:@"ERROR_PROFILE_REQUIRED_FIELD_MISSING_P_FIELD" invalidDataCode:1003 invalidDataErrorString:@"ERROR_PROFILE_FIELD_INVALID_P_FIELD" outError:&v57];
+  v11 = [MCProfile removeRequiredObjectInDictionary:dictionaryCopy key:@"PayloadContent" type:objc_opt_class() errorDomain:@"MCProfileErrorDomain" missingDataCode:1002 missingDataErrorString:@"ERROR_PROFILE_REQUIRED_FIELD_MISSING_P_FIELD" invalidDataCode:1003 invalidDataErrorString:@"ERROR_PROFILE_FIELD_INVALID_P_FIELD" outError:&v57];
   v12 = v57;
   if ([(MCProfile *)v10 isStub])
   {
@@ -146,7 +146,7 @@ LABEL_13:
       v23 = [(NSArray *)v37 countByEnumeratingWithState:&v48 objects:v63 count:16];
       if (v23)
       {
-        v47 = a6;
+        errorCopy = error;
         v38 = *v49;
         while (2)
         {
@@ -176,7 +176,7 @@ LABEL_13:
         }
 
 LABEL_37:
-        a6 = v47;
+        error = errorCopy;
       }
     }
 
@@ -191,26 +191,26 @@ LABEL_37:
       if (os_log_type_enabled(_MCLogObjects, OS_LOG_TYPE_INFO))
       {
         v42 = v41;
-        v43 = [(MCProfile *)v10 friendlyName];
+        friendlyName = [(MCProfile *)v10 friendlyName];
         *buf = 138543618;
-        v60 = v43;
+        v60 = friendlyName;
         v61 = 2114;
         v62 = v11;
         _os_log_impl(&dword_1A795B000, v42, OS_LOG_TYPE_INFO, "PayloadContent for profile “%{public}@” has entries that are being ignored. They are:%{public}@", buf, 0x16u);
       }
     }
 
-    if ([v9 count])
+    if ([dictionaryCopy count])
     {
       v44 = _MCLogObjects;
       if (os_log_type_enabled(_MCLogObjects, OS_LOG_TYPE_INFO))
       {
         v45 = v44;
-        v46 = [(MCProfile *)v10 friendlyName];
+        friendlyName2 = [(MCProfile *)v10 friendlyName];
         *buf = 138543618;
-        v60 = v46;
+        v60 = friendlyName2;
         v61 = 2114;
-        v62 = v9;
+        v62 = dictionaryCopy;
         _os_log_impl(&dword_1A795B000, v45, OS_LOG_TYPE_INFO, "Profile “%{public}@” has entries that are being ignored. They are:%{public}@", buf, 0x16u);
       }
     }
@@ -228,10 +228,10 @@ LABEL_24:
 
   v25 = [(MCProfile *)v10 malformedProfileErrorWithError:v23];
   v26 = v25;
-  if (a6)
+  if (error)
   {
     v27 = v25;
-    *a6 = v26;
+    *error = v26;
   }
 
   v28 = _MCLogObjects;
@@ -240,11 +240,11 @@ LABEL_24:
     v29 = v28;
     v30 = objc_opt_class();
     v31 = v30;
-    v32 = [v26 MCVerboseDescription];
+    mCVerboseDescription = [v26 MCVerboseDescription];
     *buf = 138543618;
     v60 = v30;
     v61 = 2114;
-    v62 = v32;
+    v62 = mCVerboseDescription;
     _os_log_impl(&dword_1A795B000, v29, OS_LOG_TYPE_ERROR, "%{public}@ Can't parse profile: %{public}@", buf, 0x16u);
   }
 
@@ -285,18 +285,18 @@ LABEL_25:
 {
   v7.receiver = self;
   v7.super_class = MCProfileServiceProfile;
-  v3 = [(MCProfile *)&v7 stubDictionary];
-  [v3 setObject:@"Profile Service" forKey:@"PayloadType"];
-  v4 = [MEMORY[0x1E695DF90] dictionary];
-  [v4 MCSetObjectIfNotNil:self->_URLString forKey:@"URL"];
-  [v4 MCSetObjectIfNotNil:self->_deviceAttributes forKey:@"DeviceAttributes"];
-  [v4 MCSetObjectIfNotNil:self->_enrollmentIdentityPersistentID forKey:@"EnrollmentIdentityPersistentID"];
+  stubDictionary = [(MCProfile *)&v7 stubDictionary];
+  [stubDictionary setObject:@"Profile Service" forKey:@"PayloadType"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary MCSetObjectIfNotNil:self->_URLString forKey:@"URL"];
+  [dictionary MCSetObjectIfNotNil:self->_deviceAttributes forKey:@"DeviceAttributes"];
+  [dictionary MCSetObjectIfNotNil:self->_enrollmentIdentityPersistentID forKey:@"EnrollmentIdentityPersistentID"];
   v5 = [MEMORY[0x1E696AD98] numberWithBool:self->_confirmInstallation];
-  [v4 setObject:v5 forKey:@"ConfirmInstallation"];
+  [dictionary setObject:v5 forKey:@"ConfirmInstallation"];
 
-  [v3 setObject:v4 forKey:@"PayloadContent"];
+  [stubDictionary setObject:dictionary forKey:@"PayloadContent"];
 
-  return v3;
+  return stubDictionary;
 }
 
 - (id)description
@@ -338,8 +338,8 @@ LABEL_25:
 {
   v10.receiver = self;
   v10.super_class = MCProfileServiceProfile;
-  v3 = [(MCProfile *)&v10 serializedDictionary];
-  v4 = [v3 mutableCopy];
+  serializedDictionary = [(MCProfile *)&v10 serializedDictionary];
+  v4 = [serializedDictionary mutableCopy];
 
   URLString = self->_URLString;
   if (URLString)

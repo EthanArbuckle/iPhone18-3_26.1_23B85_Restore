@@ -1,49 +1,49 @@
 @interface GTResourceDownloader
-- (GTResourceDownloader)initWithDevice:(id)a3;
-- (id)getFramebufferPipeline:(unint64_t)a3;
-- (id)getGPUBuffer:(unint64_t)a3;
-- (id)getGPUBuffer:(unint64_t)a3 context:(id)a4;
-- (id)getGPUIndirectCommandBuffer:(id)a3 count:(unint64_t)a4;
-- (void)_downloadRequest:(apr_array_header_t *)a3 atPoint:(id)a4 dispatchGroup:(id)a5;
-- (void)_downloadRequestOld:(apr_array_header_t *)a3 atPoint:(id)a4 dispatchGroup:(id)a5;
+- (GTResourceDownloader)initWithDevice:(id)device;
+- (id)getFramebufferPipeline:(unint64_t)pipeline;
+- (id)getGPUBuffer:(unint64_t)buffer;
+- (id)getGPUBuffer:(unint64_t)buffer context:(id)context;
+- (id)getGPUIndirectCommandBuffer:(id)buffer count:(unint64_t)count;
+- (void)_downloadRequest:(apr_array_header_t *)request atPoint:(id)point dispatchGroup:(id)group;
+- (void)_downloadRequestOld:(apr_array_header_t *)old atPoint:(id)point dispatchGroup:(id)group;
 - (void)dealloc;
-- (void)downloadRequest:(apr_array_header_t *)a3;
-- (void)fillGPUBuffer:(id)a3 size:(unint64_t)a4 context:(id)a5;
+- (void)downloadRequest:(apr_array_header_t *)request;
+- (void)fillGPUBuffer:(id)buffer size:(unint64_t)size context:(id)context;
 @end
 
 @implementation GTResourceDownloader
 
-- (void)_downloadRequest:(apr_array_header_t *)a3 atPoint:(id)a4 dispatchGroup:(id)a5
+- (void)_downloadRequest:(apr_array_header_t *)request atPoint:(id)point dispatchGroup:(id)group
 {
-  v8 = a5;
-  v9 = a4;
-  [(GTResourceDownloader *)self _downloadRequestOld:a3 atPoint:v9 dispatchGroup:v8];
+  groupCopy = group;
+  pointCopy = point;
+  [(GTResourceDownloader *)self _downloadRequestOld:request atPoint:pointCopy dispatchGroup:groupCopy];
 }
 
-- (void)_downloadRequestOld:(apr_array_header_t *)a3 atPoint:(id)a4 dispatchGroup:(id)a5
+- (void)_downloadRequestOld:(apr_array_header_t *)old atPoint:(id)point dispatchGroup:(id)group
 {
-  v8 = a4;
-  v9 = a5;
+  pointCopy = point;
+  groupCopy = group;
   v10 = [[MTLSharedEventListener alloc] initWithDispatchQueue:self->_dispatchQueue];
-  if (v9)
+  if (groupCopy)
   {
-    dispatch_group_enter(v9);
+    dispatch_group_enter(groupCopy);
   }
 
-  [v8 createContext:a3];
-  atomic_fetch_add(&g_resourceCount, a3->nelts);
-  v11 = [v8 waitEvent];
-  v12 = [v8 waitValue];
+  [pointCopy createContext:old];
+  atomic_fetch_add(&g_resourceCount, old->nelts);
+  waitEvent = [pointCopy waitEvent];
+  waitValue = [pointCopy waitValue];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = __66__GTResourceDownloader__downloadRequestOld_atPoint_dispatchGroup___block_invoke;
   v15[3] = &unk_2F2238;
-  v16 = v8;
-  v17 = self;
-  v18 = v9;
-  v13 = v9;
-  v14 = v8;
-  [v11 notifyListener:v10 atValue:v12 block:v15];
+  v16 = pointCopy;
+  selfCopy = self;
+  v18 = groupCopy;
+  v13 = groupCopy;
+  v14 = pointCopy;
+  [waitEvent notifyListener:v10 atValue:waitValue block:v15];
 }
 
 void __66__GTResourceDownloader__downloadRequestOld_atPoint_dispatchGroup___block_invoke(uint64_t a1, void *a2)
@@ -369,9 +369,9 @@ void __66__GTResourceDownloader__downloadRequestOld_atPoint_dispatchGroup___bloc
   }
 }
 
-- (void)downloadRequest:(apr_array_header_t *)a3
+- (void)downloadRequest:(apr_array_header_t *)request
 {
-  if (a3->nelts)
+  if (request->nelts)
   {
     v5 = objc_opt_new();
     ++self->_downloadValue;
@@ -380,15 +380,15 @@ void __66__GTResourceDownloader__downloadRequestOld_atPoint_dispatchGroup___bloc
     [v5 setDownloadQueue:self->_downloadQueue];
     [v5 setWaitValue:0];
     [v5 setWaitEvent:self->_downloadEvent];
-    [(GTResourceDownloader *)self _downloadRequest:a3 atPoint:v5 dispatchGroup:self->_dispatchGroup];
+    [(GTResourceDownloader *)self _downloadRequest:request atPoint:v5 dispatchGroup:self->_dispatchGroup];
   }
 }
 
-- (id)getFramebufferPipeline:(unint64_t)a3
+- (id)getFramebufferPipeline:(unint64_t)pipeline
 {
   pthread_mutex_lock(&self->_framebufferPipelineMutex);
   pipelineCache = self->_pipelineCache;
-  v6 = [NSNumber numberWithUnsignedInteger:a3];
+  v6 = [NSNumber numberWithUnsignedInteger:pipeline];
   v7 = [(NSMutableDictionary *)pipelineCache objectForKey:v6];
 
   if (!v7)
@@ -402,13 +402,13 @@ void __66__GTResourceDownloader__downloadRequestOld_atPoint_dispatchGroup___bloc
     v13 = objc_opt_new();
     [v13 setVertexFunction:v11];
     [v13 setFragmentFunction:v12];
-    v14 = [v13 colorAttachments];
-    v15 = [v14 objectAtIndexedSubscript:0];
-    [v15 setPixelFormat:a3];
+    colorAttachments = [v13 colorAttachments];
+    v15 = [colorAttachments objectAtIndexedSubscript:0];
+    [v15 setPixelFormat:pipeline];
 
     v7 = [(MTLDeviceSPI *)self->_device newRenderPipelineStateWithDescriptor:v13 error:0];
     v16 = self->_pipelineCache;
-    v17 = [NSNumber numberWithUnsignedInteger:a3];
+    v17 = [NSNumber numberWithUnsignedInteger:pipeline];
     [(NSMutableDictionary *)v16 setObject:v7 forKeyedSubscript:v17];
   }
 
@@ -417,20 +417,20 @@ void __66__GTResourceDownloader__downloadRequestOld_atPoint_dispatchGroup___bloc
   return v7;
 }
 
-- (id)getGPUBuffer:(unint64_t)a3 context:(id)a4
+- (id)getGPUBuffer:(unint64_t)buffer context:(id)context
 {
-  v6 = a4;
+  contextCopy = context;
   v7 = objc_opt_new();
-  [(GTResourceDownloader *)self fillGPUBuffer:v7 size:a3 context:v6];
-  v8 = [v7 buffer];
-  [v6 retainMTLResource:v8];
+  [(GTResourceDownloader *)self fillGPUBuffer:v7 size:buffer context:contextCopy];
+  buffer = [v7 buffer];
+  [contextCopy retainMTLResource:buffer];
 
   return v7;
 }
 
-- (id)getGPUIndirectCommandBuffer:(id)a3 count:(unint64_t)a4
+- (id)getGPUIndirectCommandBuffer:(id)buffer count:(unint64_t)count
 {
-  v6 = a3;
+  bufferCopy = buffer;
   if (hideMemory)
   {
     v7 = 0x40000;
@@ -441,7 +441,7 @@ void __66__GTResourceDownloader__downloadRequestOld_atPoint_dispatchGroup___bloc
     v7 = 0;
   }
 
-  v8 = [(MTLDeviceSPI *)self->_device newIndirectCommandBufferWithDescriptor:v6 maxCommandCount:a4 options:v7];
+  v8 = [(MTLDeviceSPI *)self->_device newIndirectCommandBufferWithDescriptor:bufferCopy maxCommandCount:count options:v7];
   if (!v8)
   {
     if (getGPUIndirectCommandBuffer_count__onceToken != -1)
@@ -449,7 +449,7 @@ void __66__GTResourceDownloader__downloadRequestOld_atPoint_dispatchGroup___bloc
       dispatch_once(&getGPUIndirectCommandBuffer_count__onceToken, &__block_literal_global_365);
     }
 
-    v8 = [(MTLDeviceSPI *)self->_device newIndirectCommandBufferWithDescriptor:v6 maxCommandCount:a4 options:0];
+    v8 = [(MTLDeviceSPI *)self->_device newIndirectCommandBufferWithDescriptor:bufferCopy maxCommandCount:count options:0];
   }
 
   return v8;
@@ -476,20 +476,20 @@ void __58__GTResourceDownloader_getGPUIndirectCommandBuffer_count___block_invoke
   }
 }
 
-- (id)getGPUBuffer:(unint64_t)a3
+- (id)getGPUBuffer:(unint64_t)buffer
 {
   v5 = [[GTDownloadGPUBuffer alloc] initWithTracking:&self->_usedGPUMemory];
-  [(GTResourceDownloader *)self fillGPUBuffer:v5 size:a3 context:0];
+  [(GTResourceDownloader *)self fillGPUBuffer:v5 size:buffer context:0];
 
   return v5;
 }
 
-- (void)fillGPUBuffer:(id)a3 size:(unint64_t)a4 context:(id)a5
+- (void)fillGPUBuffer:(id)buffer size:(unint64_t)size context:(id)context
 {
-  v20 = a3;
-  v8 = a5;
-  v9 = v8;
-  v10 = (a4 + vm_page_size - 1) & -vm_page_size;
+  bufferCopy = buffer;
+  contextCopy = context;
+  v9 = contextCopy;
+  v10 = (size + vm_page_size - 1) & -vm_page_size;
   if (!self->_maxGPUMemory)
   {
     atomic_store(0, &self->_usedGPUMemory);
@@ -499,9 +499,9 @@ void __58__GTResourceDownloader_getGPUIndirectCommandBuffer_count___block_invoke
   v11 = atomic_load(&self->_usedGPUMemory);
   if (v11 + v10 > self->_maxGPUMemory)
   {
-    if (v8)
+    if (contextCopy)
     {
-      atomic_fetch_add(&self->_usedGPUMemory, -[v8 usedGPUMemory]);
+      atomic_fetch_add(&self->_usedGPUMemory, -[contextCopy usedGPUMemory]);
       [v9 flush];
     }
 
@@ -546,11 +546,11 @@ void __58__GTResourceDownloader_getGPUIndirectCommandBuffer_count___block_invoke
   }
 
   v17 = [(MTLDeviceSPI *)self->_device newBufferWithLength:v10 options:v16];
-  [v20 setBuffer:v17];
+  [bufferCopy setBuffer:v17];
 
-  v18 = [v20 buffer];
+  buffer = [bufferCopy buffer];
 
-  if (!v18)
+  if (!buffer)
   {
     if (fillGPUBuffer_size_context__onceToken != -1)
     {
@@ -558,11 +558,11 @@ void __58__GTResourceDownloader_getGPUIndirectCommandBuffer_count___block_invoke
     }
 
     v19 = [(MTLDeviceSPI *)self->_device newBufferWithLength:v10 options:0];
-    [v20 setBuffer:v19];
+    [bufferCopy setBuffer:v19];
   }
 
-  [v20 setSize:v10];
-  [v20 setOffset:0];
+  [bufferCopy setSize:v10];
+  [bufferCopy setOffset:0];
 }
 
 void __51__GTResourceDownloader_fillGPUBuffer_size_context___block_invoke(id a1)
@@ -595,9 +595,9 @@ void __51__GTResourceDownloader_fillGPUBuffer_size_context___block_invoke(id a1)
   [(GTResourceDownloader *)&v3 dealloc];
 }
 
-- (GTResourceDownloader)initWithDevice:(id)a3
+- (GTResourceDownloader)initWithDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v21.receiver = self;
   v21.super_class = GTResourceDownloader;
   v5 = [(GTResourceDownloader *)&v21 init];
@@ -605,13 +605,13 @@ void __51__GTResourceDownloader_fillGPUBuffer_size_context___block_invoke(id a1)
   if (v5)
   {
     apr_pool_create_ex(&v5->_pool, 0, 0, 0);
-    v7 = DEVICEOBJECT(v4);
+    v7 = DEVICEOBJECT(deviceCopy);
     device = v6->_device;
     v6->_device = v7;
 
-    v9 = [(MTLDeviceSPI *)v6->_device newCommandQueue];
+    newCommandQueue = [(MTLDeviceSPI *)v6->_device newCommandQueue];
     downloadQueue = v6->_downloadQueue;
-    v6->_downloadQueue = v9;
+    v6->_downloadQueue = newCommandQueue;
 
     v11 = objc_alloc_init(MTLCommandBufferDescriptor);
     commandBufferDescriptor = v6->_commandBufferDescriptor;
@@ -622,14 +622,14 @@ void __51__GTResourceDownloader_fillGPUBuffer_size_context___block_invoke(id a1)
       [(MTLCommandBufferDescriptor *)v6->_commandBufferDescriptor setErrorOptions:[(MTLCommandBufferDescriptor *)v6->_commandBufferDescriptor errorOptions]| 1];
     }
 
-    v13 = [(MTLDeviceSPI *)v6->_device newSharedEvent];
+    newSharedEvent = [(MTLDeviceSPI *)v6->_device newSharedEvent];
     downloadEvent = v6->_downloadEvent;
-    v6->_downloadEvent = v13;
+    v6->_downloadEvent = newSharedEvent;
 
     v6->_alignment = [(MTLDeviceSPI *)v6->_device linearTextureAlignmentBytes];
-    v15 = [v4 dispatchGroup];
+    dispatchGroup = [deviceCopy dispatchGroup];
     dispatchGroup = v6->_dispatchGroup;
-    v6->_dispatchGroup = v15;
+    v6->_dispatchGroup = dispatchGroup;
 
     v17 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_USER_INTERACTIVE, 0);
     v18 = dispatch_queue_create("com.apple.dt.GPUTools.downloader", v17);

@@ -1,20 +1,20 @@
 @interface WFUIPresenter
 + (WFUIPresenter)defaultPresenter;
-- (BOOL)showWebPage:(id)a3 completionHandler:(id)a4;
-- (WFUIPresenter)initWithConnection:(id)a3;
+- (BOOL)showWebPage:(id)page completionHandler:(id)handler;
+- (WFUIPresenter)initWithConnection:(id)connection;
 - (WFUIPresenterDelegate)delegate;
-- (void)applicationWillLaunchInForegroundForRunningContext:(id)a3 isLastAction:(id)a4;
-- (void)beginPersistentModeWithRunningContext:(id)a3 attribution:(id)a4 completionHandler:(id)a5;
-- (void)completePersistentModeWithSuccess:(id)a3 runningContext:(id)a4 completionHandler:(id)a5;
-- (void)dismissPresentedContentForRunningContext:(id)a3 completionHandler:(id)a4;
-- (void)pauseDialogPresentationForDuration:(id)a3 withCompletionHandler:(id)a4;
-- (void)presenterRequestedUpdatedRunViewSource:(id)a3 completionHandler:(id)a4;
-- (void)presenterRequestedWorkflowPauseForContext:(id)a3 dialogRequest:(id)a4 completionHandler:(id)a5;
-- (void)presenterRequestedWorkflowStopForContext:(id)a3;
-- (void)resumeDialogPresentationWithCompletionHandler:(id)a3;
-- (void)showDialogRequest:(id)a3 runningContext:(id)a4 completionHandler:(id)a5;
-- (void)updateAttribution:(id)a3 runningContext:(id)a4;
-- (void)updateRunViewSource:(id)a3;
+- (void)applicationWillLaunchInForegroundForRunningContext:(id)context isLastAction:(id)action;
+- (void)beginPersistentModeWithRunningContext:(id)context attribution:(id)attribution completionHandler:(id)handler;
+- (void)completePersistentModeWithSuccess:(id)success runningContext:(id)context completionHandler:(id)handler;
+- (void)dismissPresentedContentForRunningContext:(id)context completionHandler:(id)handler;
+- (void)pauseDialogPresentationForDuration:(id)duration withCompletionHandler:(id)handler;
+- (void)presenterRequestedUpdatedRunViewSource:(id)source completionHandler:(id)handler;
+- (void)presenterRequestedWorkflowPauseForContext:(id)context dialogRequest:(id)request completionHandler:(id)handler;
+- (void)presenterRequestedWorkflowStopForContext:(id)context;
+- (void)resumeDialogPresentationWithCompletionHandler:(id)handler;
+- (void)showDialogRequest:(id)request runningContext:(id)context completionHandler:(id)handler;
+- (void)updateAttribution:(id)attribution runningContext:(id)context;
+- (void)updateRunViewSource:(id)source;
 @end
 
 @implementation WFUIPresenter
@@ -26,73 +26,73 @@
   return WeakRetained;
 }
 
-- (void)presenterRequestedUpdatedRunViewSource:(id)a3 completionHandler:(id)a4
+- (void)presenterRequestedUpdatedRunViewSource:(id)source completionHandler:(id)handler
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(WFUIPresenter *)self delegate];
+  sourceCopy = source;
+  handlerCopy = handler;
+  delegate = [(WFUIPresenter *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(WFUIPresenter *)self delegate];
-    [v9 presenterRequestedUpdatedRunViewSource:v10 completionHandler:v6];
+    delegate2 = [(WFUIPresenter *)self delegate];
+    [delegate2 presenterRequestedUpdatedRunViewSource:sourceCopy completionHandler:handlerCopy];
   }
 
   else
   {
-    (*(v6 + 2))(v6, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
   }
 }
 
-- (void)presenterRequestedWorkflowPauseForContext:(id)a3 dialogRequest:(id)a4 completionHandler:(id)a5
+- (void)presenterRequestedWorkflowPauseForContext:(id)context dialogRequest:(id)request completionHandler:(id)handler
 {
-  v13 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(WFUIPresenter *)self delegate];
+  contextCopy = context;
+  requestCopy = request;
+  handlerCopy = handler;
+  delegate = [(WFUIPresenter *)self delegate];
   v11 = objc_opt_respondsToSelector();
 
   if (v11)
   {
-    v12 = [(WFUIPresenter *)self delegate];
-    [v12 presenterRequestedWorkflowPauseForContext:v13 dialogRequest:v8];
+    delegate2 = [(WFUIPresenter *)self delegate];
+    [delegate2 presenterRequestedWorkflowPauseForContext:contextCopy dialogRequest:requestCopy];
   }
 
-  v9[2](v9, 0);
+  handlerCopy[2](handlerCopy, 0);
 }
 
-- (void)presenterRequestedWorkflowStopForContext:(id)a3
+- (void)presenterRequestedWorkflowStopForContext:(id)context
 {
-  v7 = a3;
-  v4 = [(WFUIPresenter *)self delegate];
+  contextCopy = context;
+  delegate = [(WFUIPresenter *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(WFUIPresenter *)self delegate];
-    [v6 presenterRequestedWorkflowStopForContext:v7];
+    delegate2 = [(WFUIPresenter *)self delegate];
+    [delegate2 presenterRequestedWorkflowStopForContext:contextCopy];
   }
 }
 
-- (BOOL)showWebPage:(id)a3 completionHandler:(id)a4
+- (BOOL)showWebPage:(id)page completionHandler:(id)handler
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WFUIPresenter *)self connection];
+  pageCopy = page;
+  handlerCopy = handler;
+  connection = [(WFUIPresenter *)self connection];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v10 = [(WFUIPresenter *)self connection];
+    connection2 = [(WFUIPresenter *)self connection];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __47__WFUIPresenter_showWebPage_completionHandler___block_invoke;
     v19[3] = &unk_1E837BE38;
-    v11 = v7;
+    v11 = handlerCopy;
     v20 = v11;
-    v12 = [v10 synchronousPresenterWithErrorHandler:v19];
+    v12 = [connection2 synchronousPresenterWithErrorHandler:v19];
 
     v13 = v12 != 0;
     if (v12)
@@ -102,7 +102,7 @@
       v17[2] = __47__WFUIPresenter_showWebPage_completionHandler___block_invoke_2;
       v17[3] = &unk_1E83758B0;
       v18 = v11;
-      [v12 openURL:v6 completionHandler:v17];
+      [v12 openURL:pageCopy completionHandler:v17];
     }
 
     v14 = v20;
@@ -132,42 +132,42 @@ void __47__WFUIPresenter_showWebPage_completionHandler___block_invoke_2(uint64_t
   (*(v4 + 16))(v4, [a2 BOOLValue], v5);
 }
 
-- (void)dismissPresentedContentForRunningContext:(id)a3 completionHandler:(id)a4
+- (void)dismissPresentedContentForRunningContext:(id)context completionHandler:(id)handler
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WFUIPresenter *)self connection];
-  v9 = [v8 isConnected];
+  contextCopy = context;
+  handlerCopy = handler;
+  connection = [(WFUIPresenter *)self connection];
+  isConnected = [connection isConnected];
 
-  if (v9)
+  if (isConnected)
   {
-    v10 = [(WFUIPresenter *)self connection];
-    v11 = [v10 presenterWithErrorHandler:&__block_literal_global_210];
+    connection2 = [(WFUIPresenter *)self connection];
+    v11 = [connection2 presenterWithErrorHandler:&__block_literal_global_210];
 
     if (v11)
     {
-      v12 = [(WFUIPresenter *)self delegate];
-      if (v12)
+      delegate = [(WFUIPresenter *)self delegate];
+      if (delegate)
       {
-        v13 = v12;
-        v14 = [(WFUIPresenter *)self delegate];
+        v13 = delegate;
+        delegate2 = [(WFUIPresenter *)self delegate];
         v15 = objc_opt_respondsToSelector();
 
         if (v15)
         {
-          v16 = [(WFUIPresenter *)self delegate];
-          [v16 presenterWillDismissPresentedContent];
+          delegate3 = [(WFUIPresenter *)self delegate];
+          [delegate3 presenterWillDismissPresentedContent];
         }
       }
 
-      [v11 dismissPresentedContentForRunningContext:v6 completionHandler:v7];
+      [v11 dismissPresentedContentForRunningContext:contextCopy completionHandler:handlerCopy];
     }
 
     else
     {
       v18 = WFRunnerFailureErrorMessage(0);
-      v7[2](v7, v18);
+      handlerCopy[2](handlerCopy, v18);
     }
   }
 
@@ -181,7 +181,7 @@ void __47__WFUIPresenter_showWebPage_completionHandler___block_invoke_2(uint64_t
       _os_log_impl(&dword_1CA256000, v17, OS_LOG_TYPE_DEFAULT, "%s Not reaching out to UI for dismissal, this shortcut hasn't presented any UI", &v20, 0xCu);
     }
 
-    v7[2](v7, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 
   v19 = *MEMORY[0x1E69E9840];
@@ -207,17 +207,17 @@ void __76__WFUIPresenter_dismissPresentedContentForRunningContext_completionHand
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)applicationWillLaunchInForegroundForRunningContext:(id)a3 isLastAction:(id)a4
+- (void)applicationWillLaunchInForegroundForRunningContext:(id)context isLastAction:(id)action
 {
   v14 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WFUIPresenter *)self connection];
-  v9 = [v8 presenterWithErrorHandler:&__block_literal_global_208];
+  contextCopy = context;
+  actionCopy = action;
+  connection = [(WFUIPresenter *)self connection];
+  v9 = [connection presenterWithErrorHandler:&__block_literal_global_208];
 
   if (v9)
   {
-    [v9 applicationWillLaunchInForegroundForRunningContext:v6 isLastAction:v7];
+    [v9 applicationWillLaunchInForegroundForRunningContext:contextCopy isLastAction:actionCopy];
   }
 
   else
@@ -254,17 +254,17 @@ void __81__WFUIPresenter_applicationWillLaunchInForegroundForRunningContext_isLa
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updateAttribution:(id)a3 runningContext:(id)a4
+- (void)updateAttribution:(id)attribution runningContext:(id)context
 {
   v14 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WFUIPresenter *)self connection];
-  v9 = [v8 presenterWithErrorHandler:&__block_literal_global_206];
+  attributionCopy = attribution;
+  contextCopy = context;
+  connection = [(WFUIPresenter *)self connection];
+  v9 = [connection presenterWithErrorHandler:&__block_literal_global_206];
 
   if (v9)
   {
-    [v9 updateAttribution:v6 runningContext:v7];
+    [v9 updateAttribution:attributionCopy runningContext:contextCopy];
   }
 
   else
@@ -301,49 +301,49 @@ void __50__WFUIPresenter_updateAttribution_runningContext___block_invoke(uint64_
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)showDialogRequest:(id)a3 runningContext:(id)a4 completionHandler:(id)a5
+- (void)showDialogRequest:(id)request runningContext:(id)context completionHandler:(id)handler
 {
   v42 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(WFUIPresenter *)self connection];
+  requestCopy = request;
+  contextCopy = context;
+  handlerCopy = handler;
+  connection = [(WFUIPresenter *)self connection];
   v36[0] = MEMORY[0x1E69E9820];
   v36[1] = 3221225472;
   v36[2] = __68__WFUIPresenter_showDialogRequest_runningContext_completionHandler___block_invoke;
   v36[3] = &unk_1E837BE38;
-  v12 = v10;
+  v12 = handlerCopy;
   v37 = v12;
-  v13 = [v11 presenterWithErrorHandler:v36];
+  v13 = [connection presenterWithErrorHandler:v36];
 
   if (!v13)
   {
-    v25 = [objc_alloc(MEMORY[0x1E69E0AB8]) initWithResponseCode:1];
-    (*(v12 + 2))(v12, v25, 0);
+    delegate6 = [objc_alloc(MEMORY[0x1E69E0AB8]) initWithResponseCode:1];
+    (*(v12 + 2))(v12, delegate6, 0);
 LABEL_15:
 
     goto LABEL_16;
   }
 
-  v14 = [(WFUIPresenter *)self delegate];
-  if (v14)
+  delegate = [(WFUIPresenter *)self delegate];
+  if (delegate)
   {
-    v15 = v14;
-    v16 = [(WFUIPresenter *)self delegate];
+    v15 = delegate;
+    delegate2 = [(WFUIPresenter *)self delegate];
     v17 = objc_opt_respondsToSelector();
 
     if (v17)
     {
-      v18 = [(WFUIPresenter *)self delegate];
-      v19 = [v18 presenterShouldShowRequest:v8 runningContext:v9 withCompletionHandler:v12];
+      delegate3 = [(WFUIPresenter *)self delegate];
+      v19 = [delegate3 presenterShouldShowRequest:requestCopy runningContext:contextCopy withCompletionHandler:v12];
 
       if ((v19 & 1) == 0)
       {
-        v20 = [(WFUIPresenter *)self delegate];
-        if (v20)
+        delegate4 = [(WFUIPresenter *)self delegate];
+        if (delegate4)
         {
-          v21 = v20;
-          v22 = [(WFUIPresenter *)self delegate];
+          v21 = delegate4;
+          delegate5 = [(WFUIPresenter *)self delegate];
           v23 = objc_opt_respondsToSelector();
 
           if (v23)
@@ -354,12 +354,12 @@ LABEL_15:
               *buf = 136315394;
               v39 = "[WFUIPresenter showDialogRequest:runningContext:completionHandler:]";
               v40 = 2112;
-              v41 = v9;
+              v41 = contextCopy;
               _os_log_impl(&dword_1CA256000, v24, OS_LOG_TYPE_DEFAULT, "%s Workflow (%@) is running from the app and the display is off, we need to suspend the request before we pass it to the presenter", buf, 0x16u);
             }
 
-            v25 = [(WFUIPresenter *)self delegate];
-            [v25 presenterDidReceiveSuspendedResponseForRequest:v8 runningContext:v9 withCompletionHandler:v12];
+            delegate6 = [(WFUIPresenter *)self delegate];
+            [delegate6 presenterDidReceiveSuspendedResponseForRequest:requestCopy runningContext:contextCopy withCompletionHandler:v12];
             goto LABEL_15;
           }
         }
@@ -367,17 +367,17 @@ LABEL_15:
     }
   }
 
-  v26 = [(WFUIPresenter *)self delegate];
-  if (v26)
+  delegate7 = [(WFUIPresenter *)self delegate];
+  if (delegate7)
   {
-    v27 = v26;
-    v28 = [(WFUIPresenter *)self delegate];
+    v27 = delegate7;
+    delegate8 = [(WFUIPresenter *)self delegate];
     v29 = objc_opt_respondsToSelector();
 
     if (v29)
     {
-      v30 = [(WFUIPresenter *)self delegate];
-      [v30 presenterWillShowRequest:v8 runningContext:v9];
+      delegate9 = [(WFUIPresenter *)self delegate];
+      [delegate9 presenterWillShowRequest:requestCopy runningContext:contextCopy];
     }
   }
 
@@ -386,8 +386,8 @@ LABEL_15:
   v32[2] = __68__WFUIPresenter_showDialogRequest_runningContext_completionHandler___block_invoke_203;
   v32[3] = &unk_1E8373318;
   v32[4] = self;
-  v33 = v8;
-  v34 = v9;
+  v33 = requestCopy;
+  v34 = contextCopy;
   v35 = v12;
   [v13 showDialogRequest:v33 runningContext:v34 completionHandler:v32];
 
@@ -478,16 +478,16 @@ LABEL_12:
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updateRunViewSource:(id)a3
+- (void)updateRunViewSource:(id)source
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(WFUIPresenter *)self connection];
-  v6 = [v5 presenterWithErrorHandler:&__block_literal_global_195];
+  sourceCopy = source;
+  connection = [(WFUIPresenter *)self connection];
+  v6 = [connection presenterWithErrorHandler:&__block_literal_global_195];
 
   if (v6)
   {
-    [v6 updateRunViewSource:v4];
+    [v6 updateRunViewSource:sourceCopy];
   }
 
   else
@@ -524,26 +524,26 @@ void __37__WFUIPresenter_updateRunViewSource___block_invoke(uint64_t a1, void *a
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)completePersistentModeWithSuccess:(id)a3 runningContext:(id)a4 completionHandler:(id)a5
+- (void)completePersistentModeWithSuccess:(id)success runningContext:(id)context completionHandler:(id)handler
 {
-  v14 = a3;
-  v8 = a4;
-  v9 = a5;
+  successCopy = success;
+  contextCopy = context;
+  handlerCopy = handler;
   currentPersistentRunningContextIdentifier = self->_currentPersistentRunningContextIdentifier;
   self->_currentPersistentRunningContextIdentifier = 0;
 
-  v11 = [(WFUIPresenter *)self connection];
-  v12 = [v11 presenterWithErrorHandler:&__block_literal_global_193];
+  connection = [(WFUIPresenter *)self connection];
+  v12 = [connection presenterWithErrorHandler:&__block_literal_global_193];
 
   if (v12)
   {
-    [v12 completePersistentModeWithSuccess:v14 runningContext:v8 completionHandler:v9];
+    [v12 completePersistentModeWithSuccess:successCopy runningContext:contextCopy completionHandler:handlerCopy];
   }
 
   else
   {
     v13 = WFRunnerFailureErrorMessage(0);
-    v9[2](v9, v13);
+    handlerCopy[2](handlerCopy, v13);
   }
 }
 
@@ -567,28 +567,28 @@ void __84__WFUIPresenter_completePersistentModeWithSuccess_runningContext_comple
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)beginPersistentModeWithRunningContext:(id)a3 attribution:(id)a4 completionHandler:(id)a5
+- (void)beginPersistentModeWithRunningContext:(id)context attribution:(id)attribution completionHandler:(id)handler
 {
-  v16 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v16 identifier];
-  v11 = [v10 copy];
+  contextCopy = context;
+  attributionCopy = attribution;
+  handlerCopy = handler;
+  identifier = [contextCopy identifier];
+  v11 = [identifier copy];
   currentPersistentRunningContextIdentifier = self->_currentPersistentRunningContextIdentifier;
   self->_currentPersistentRunningContextIdentifier = v11;
 
-  v13 = [(WFUIPresenter *)self connection];
-  v14 = [v13 presenterWithErrorHandler:&__block_literal_global_191];
+  connection = [(WFUIPresenter *)self connection];
+  v14 = [connection presenterWithErrorHandler:&__block_literal_global_191];
 
   if (v14)
   {
-    [v14 beginPersistentModeWithRunningContext:v16 attribution:v8 completionHandler:v9];
+    [v14 beginPersistentModeWithRunningContext:contextCopy attribution:attributionCopy completionHandler:handlerCopy];
   }
 
   else
   {
     v15 = WFRunnerFailureErrorMessage(0);
-    v9[2](v9, v15);
+    handlerCopy[2](handlerCopy, v15);
   }
 }
 
@@ -612,21 +612,21 @@ void __85__WFUIPresenter_beginPersistentModeWithRunningContext_attribution_compl
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)resumeDialogPresentationWithCompletionHandler:(id)a3
+- (void)resumeDialogPresentationWithCompletionHandler:(id)handler
 {
-  v7 = a3;
-  v4 = [(WFUIPresenter *)self connection];
-  v5 = [v4 presenterWithErrorHandler:&__block_literal_global_189];
+  handlerCopy = handler;
+  connection = [(WFUIPresenter *)self connection];
+  v5 = [connection presenterWithErrorHandler:&__block_literal_global_189];
 
   if (v5)
   {
-    [v5 resumeDialogPresentationWithCompletionHandler:v7];
+    [v5 resumeDialogPresentationWithCompletionHandler:handlerCopy];
   }
 
   else
   {
     v6 = WFRunnerFailureErrorMessage(0);
-    v7[2](v7, v6);
+    handlerCopy[2](handlerCopy, v6);
   }
 }
 
@@ -650,22 +650,22 @@ void __63__WFUIPresenter_resumeDialogPresentationWithCompletionHandler___block_i
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)pauseDialogPresentationForDuration:(id)a3 withCompletionHandler:(id)a4
+- (void)pauseDialogPresentationForDuration:(id)duration withCompletionHandler:(id)handler
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(WFUIPresenter *)self connection];
-  v8 = [v7 presenterWithErrorHandler:&__block_literal_global_659];
+  durationCopy = duration;
+  handlerCopy = handler;
+  connection = [(WFUIPresenter *)self connection];
+  v8 = [connection presenterWithErrorHandler:&__block_literal_global_659];
 
   if (v8)
   {
-    [v8 pauseDialogPresentationForDuration:v10 withCompletionHandler:v6];
+    [v8 pauseDialogPresentationForDuration:durationCopy withCompletionHandler:handlerCopy];
   }
 
   else
   {
     v9 = WFRunnerFailureErrorMessage(0);
-    v6[2](v6, v9);
+    handlerCopy[2](handlerCopy, v9);
   }
 }
 
@@ -689,13 +689,13 @@ void __74__WFUIPresenter_pauseDialogPresentationForDuration_withCompletionHandle
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (WFUIPresenter)initWithConnection:(id)a3
+- (WFUIPresenter)initWithConnection:(id)connection
 {
-  v6 = a3;
-  if (!v6)
+  connectionCopy = connection;
+  if (!connectionCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"WFUIPresenter.m" lineNumber:45 description:{@"Invalid parameter not satisfying: %@", @"connection"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFUIPresenter.m" lineNumber:45 description:{@"Invalid parameter not satisfying: %@", @"connection"}];
   }
 
   v11.receiver = self;
@@ -705,10 +705,10 @@ void __74__WFUIPresenter_pauseDialogPresentationForDuration_withCompletionHandle
   {
     if (objc_opt_respondsToSelector())
     {
-      [v6 setHost:v7];
+      [connectionCopy setHost:v7];
     }
 
-    objc_storeStrong(&v7->_connection, a3);
+    objc_storeStrong(&v7->_connection, connection);
     v8 = v7;
   }
 
@@ -717,7 +717,7 @@ void __74__WFUIPresenter_pauseDialogPresentationForDuration_withCompletionHandle
 
 + (WFUIPresenter)defaultPresenter
 {
-  v2 = [a1 alloc];
+  v2 = [self alloc];
   v3 = objc_opt_new();
   v4 = [v2 initWithConnection:v3];
 

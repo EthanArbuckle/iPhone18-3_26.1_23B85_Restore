@@ -2,7 +2,7 @@
 - (BuddyInactivityTimer)init;
 - (void)_enableShelfLifeMode;
 - (void)_removePowerLog;
-- (void)_timerFired:(id)a3;
+- (void)_timerFired:(id)fired;
 - (void)start;
 - (void)stop;
 @end
@@ -31,10 +31,10 @@
 
 - (void)stop
 {
-  v10 = self;
+  selfCopy = self;
   oslog[1] = a2;
-  v2 = [(BuddyInactivityTimer *)self timer];
-  v3 = v2 == 0;
+  timer = [(BuddyInactivityTimer *)self timer];
+  v3 = timer == 0;
 
   if (!v3)
   {
@@ -49,31 +49,31 @@
     }
 
     objc_storeStrong(oslog, 0);
-    v6 = [(BuddyInactivityTimer *)v10 timer];
-    [(PCPersistentTimer *)v6 invalidate];
+    timer2 = [(BuddyInactivityTimer *)selfCopy timer];
+    [(PCPersistentTimer *)timer2 invalidate];
 
-    [(BuddyInactivityTimer *)v10 setTimer:0];
+    [(BuddyInactivityTimer *)selfCopy setTimer:0];
   }
 }
 
 - (void)start
 {
-  v24 = self;
+  selfCopy = self;
   v23 = a2;
-  v2 = [(BuddyInactivityTimer *)self timer];
+  timer = [(BuddyInactivityTimer *)self timer];
 
-  if (!v2)
+  if (!timer)
   {
     v3 = +[UIApplication sharedApplication];
-    v4 = [(UIApplication *)v3 applicationState];
+    applicationState = [(UIApplication *)v3 applicationState];
 
-    v22 = v4;
-    if (v4 == 2 || v22 == 1)
+    v22 = applicationState;
+    if (applicationState == 2 || v22 == 1)
     {
       v7 = +[UIDevice currentDevice];
-      v8 = [(UIDevice *)v7 batteryState];
+      batteryState = [(UIDevice *)v7 batteryState];
 
-      if (v8 == 1)
+      if (batteryState == 1)
       {
         v10 = dispatch_get_global_queue(0, 0);
         block = _NSConcreteStackBlock;
@@ -81,7 +81,7 @@
         v13 = 0;
         v14 = sub_1001910D0;
         v15 = &unk_10032B0D0;
-        v16 = v24;
+        v16 = selfCopy;
         dispatch_async(v10, &block);
 
         objc_storeStrong(&v16, 0);
@@ -119,12 +119,12 @@
   }
 }
 
-- (void)_timerFired:(id)a3
+- (void)_timerFired:(id)fired
 {
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, fired);
   v15 = _BYLoggingFacility();
   v14 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -136,17 +136,17 @@
   }
 
   objc_storeStrong(&v15, 0);
-  v5 = [(BuddyInactivityTimer *)v17 timer];
-  [(PCPersistentTimer *)v5 invalidate];
+  timer = [(BuddyInactivityTimer *)selfCopy timer];
+  [(PCPersistentTimer *)timer invalidate];
 
-  [(BuddyInactivityTimer *)v17 setTimer:0];
+  [(BuddyInactivityTimer *)selfCopy setTimer:0];
   v6 = +[FMDFMIPManager sharedInstance];
   v7 = _NSConcreteStackBlock;
   v8 = -1073741824;
   v9 = 0;
   v10 = sub_1001916DC;
   v11 = &unk_10032E0E8;
-  v12 = v17;
+  v12 = selfCopy;
   [(FMDFMIPManager *)v6 activationLockInfoFromDeviceWithCompletion:&v7];
 
   objc_storeStrong(&v12, 0);
@@ -201,7 +201,7 @@
 
 - (void)_enableShelfLifeMode
 {
-  v34 = self;
+  selfCopy = self;
   v33 = a2;
   v32 = MGGetProductType();
   if (v32 == 1169082144 || v32 == 3001488778 || v32 == 3885279870 || v32 == 4201643249)

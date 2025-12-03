@@ -1,21 +1,21 @@
 @interface TSPMutableIdentifierSet
-- (_TtC13TSPersistence23TSPMutableIdentifierSet)initWithCapacity:(int64_t)a3;
+- (_TtC13TSPersistence23TSPMutableIdentifierSet)initWithCapacity:(int64_t)capacity;
 - (id)makeIdentifierSet;
 - (int64_t)count;
-- (int64_t)countForIdentifier:(int64_t)a3 default:(int64_t)a4;
+- (int64_t)countForIdentifier:(int64_t)identifier default:(int64_t)default;
 - (int64_t)hash;
-- (int64_t)incrementCountBy:(int64_t)a3 forIdentifier:(int64_t)a4;
-- (int64_t)setCount:(int64_t)a3 forIdentifier:(int64_t)a4;
-- (void)enumerateIdentifiersUsingBlock:(id)a3;
-- (void)mergeWithIdentifierSet:(id)a3;
+- (int64_t)incrementCountBy:(int64_t)by forIdentifier:(int64_t)identifier;
+- (int64_t)setCount:(int64_t)count forIdentifier:(int64_t)identifier;
+- (void)enumerateIdentifiersUsingBlock:(id)block;
+- (void)mergeWithIdentifierSet:(id)set;
 @end
 
 @implementation TSPMutableIdentifierSet
 
-- (_TtC13TSPersistence23TSPMutableIdentifierSet)initWithCapacity:(int64_t)a3
+- (_TtC13TSPersistence23TSPMutableIdentifierSet)initWithCapacity:(int64_t)capacity
 {
   ObjectType = swift_getObjectType();
-  *(&self->super.isa + OBJC_IVAR____TtC13TSPersistence23TSPMutableIdentifierSet_identifierSet) = MEMORY[0x277C9ED00](a3, MEMORY[0x277D84A28], MEMORY[0x277D83B88], MEMORY[0x277D84A38]);
+  *(&self->super.isa + OBJC_IVAR____TtC13TSPersistence23TSPMutableIdentifierSet_identifierSet) = MEMORY[0x277C9ED00](capacity, MEMORY[0x277D84A28], MEMORY[0x277D83B88], MEMORY[0x277D84A38]);
   v7.receiver = self;
   v7.super_class = ObjectType;
   return [(TSPMutableIdentifierSet *)&v7 init];
@@ -28,14 +28,14 @@
   return (*(&self->super.isa + v3))[2];
 }
 
-- (int64_t)countForIdentifier:(int64_t)a3 default:(int64_t)a4
+- (int64_t)countForIdentifier:(int64_t)identifier default:(int64_t)default
 {
   v7 = OBJC_IVAR____TtC13TSPersistence23TSPMutableIdentifierSet_identifierSet;
   swift_beginAccess();
   v8 = *(&self->super.isa + v7);
   if (*(v8 + 16))
   {
-    v9 = sub_276B04718(a3);
+    v9 = sub_276B04718(identifier);
     if (v10)
     {
       if (*(*(v8 + 56) + 8 * v9))
@@ -45,17 +45,17 @@
     }
   }
 
-  return a4;
+  return default;
 }
 
-- (void)enumerateIdentifiersUsingBlock:(id)a3
+- (void)enumerateIdentifiersUsingBlock:(id)block
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(block);
   v5 = OBJC_IVAR____TtC13TSPersistence23TSPMutableIdentifierSet_identifierSet;
   swift_beginAccess();
   v6 = *(&self->super.isa + v5);
   _Block_copy(v4);
-  v7 = self;
+  selfCopy = self;
 
   sub_276B05C10(v8, v4);
   _Block_release(v4);
@@ -63,20 +63,20 @@
   _Block_release(v4);
 }
 
-- (int64_t)incrementCountBy:(int64_t)a3 forIdentifier:(int64_t)a4
+- (int64_t)incrementCountBy:(int64_t)by forIdentifier:(int64_t)identifier
 {
-  v6 = self;
-  v7 = TSPMutableIdentifierSet.incrementCount(by:for:)(a3, a4);
+  selfCopy = self;
+  v7 = TSPMutableIdentifierSet.incrementCount(by:for:)(by, identifier);
 
   return v7;
 }
 
-- (int64_t)setCount:(int64_t)a3 forIdentifier:(int64_t)a4
+- (int64_t)setCount:(int64_t)count forIdentifier:(int64_t)identifier
 {
   swift_beginAccess();
-  v7 = self;
+  selfCopy = self;
   v8 = sub_276BDAEC4();
-  v9 = sub_276B0521C(a3, a4);
+  v9 = sub_276B0521C(count, identifier);
   if (v10 & 1 | (v9 == 0))
   {
     v11 = v8;
@@ -92,11 +92,11 @@
   return v11;
 }
 
-- (void)mergeWithIdentifierSet:(id)a3
+- (void)mergeWithIdentifierSet:(id)set
 {
-  v4 = a3;
-  v5 = self;
-  TSPMutableIdentifierSet.merge(_:)(v4);
+  setCopy = set;
+  selfCopy = self;
+  TSPMutableIdentifierSet.merge(_:)(setCopy);
 }
 
 - (id)makeIdentifierSet
@@ -121,7 +121,7 @@
   swift_beginAccess();
   v4 = *(&self->super.isa + v3);
   sub_276BDAF74();
-  v5 = self;
+  selfCopy = self;
 
   sub_276B05590(&v8, v4);
 

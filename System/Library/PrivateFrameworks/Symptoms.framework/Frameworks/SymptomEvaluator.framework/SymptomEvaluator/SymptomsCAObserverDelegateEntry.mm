@@ -1,6 +1,6 @@
 @interface SymptomsCAObserverDelegateEntry
-- (BOOL)isEqual:(id)a3;
-- (BOOL)matchesDelegate:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)matchesDelegate:(id)delegate;
 - (id)description;
 @end
 
@@ -13,10 +13,10 @@
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v7 = 1;
   }
@@ -26,9 +26,9 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(SymptomsCAObserverDelegateEntry *)self delegate];
-      v6 = [(SymptomsCAObserverDelegateEntry *)v4 delegate];
-      v7 = v5 == v6;
+      delegate = [(SymptomsCAObserverDelegateEntry *)self delegate];
+      delegate2 = [(SymptomsCAObserverDelegateEntry *)equalCopy delegate];
+      v7 = delegate == delegate2;
     }
 
     else
@@ -40,16 +40,16 @@
   return v7;
 }
 
-- (BOOL)matchesDelegate:(id)a3
+- (BOOL)matchesDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(SymptomsCAObserverDelegateEntry *)self delegate];
-  v6 = v4 | v5;
+  delegateCopy = delegate;
+  delegate = [(SymptomsCAObserverDelegateEntry *)self delegate];
+  v6 = delegateCopy | delegate;
 
   if (v6)
   {
-    v8 = [(SymptomsCAObserverDelegateEntry *)self delegate];
-    v7 = v8 == v4;
+    delegate2 = [(SymptomsCAObserverDelegateEntry *)self delegate];
+    v7 = delegate2 == delegateCopy;
   }
 
   else

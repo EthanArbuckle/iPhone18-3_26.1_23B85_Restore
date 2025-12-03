@@ -1,36 +1,36 @@
 @interface MSPTransitStorageSystem
-- (BOOL)isEqual:(id)a3;
-- (MSPTransitStorageSystem)initWithSystem:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (MSPTransitStorageSystem)initWithSystem:(id)system;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MSPTransitStorageSystem
 
-- (MSPTransitStorageSystem)initWithSystem:(id)a3
+- (MSPTransitStorageSystem)initWithSystem:(id)system
 {
-  v4 = a3;
+  systemCopy = system;
   v13.receiver = self;
   v13.super_class = MSPTransitStorageSystem;
   v5 = [(MSPTransitStorageSystem *)&v13 init];
   if (v5)
   {
-    -[MSPTransitStorageSystem setMuid:](v5, "setMuid:", [v4 muid]);
-    v6 = [v4 name];
-    [(MSPTransitStorageSystem *)v5 setName:v6];
+    -[MSPTransitStorageSystem setMuid:](v5, "setMuid:", [systemCopy muid]);
+    name = [systemCopy name];
+    [(MSPTransitStorageSystem *)v5 setName:name];
 
-    v7 = [v4 artwork];
+    artwork = [systemCopy artwork];
 
-    if (v7)
+    if (artwork)
     {
       v8 = [MSPTransitStorageArtwork alloc];
-      v9 = [v4 artwork];
-      v10 = [(MSPTransitStorageArtwork *)v8 initWithArtwork:v9];
+      artwork2 = [systemCopy artwork];
+      v10 = [(MSPTransitStorageArtwork *)v8 initWithArtwork:artwork2];
       [(MSPTransitStorageSystem *)v5 setArtwork:v10];
     }
 
@@ -46,96 +46,96 @@
   v8.receiver = self;
   v8.super_class = MSPTransitStorageSystem;
   v4 = [(MSPTransitStorageSystem *)&v8 description];
-  v5 = [(MSPTransitStorageSystem *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(MSPTransitStorageSystem *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_muid];
-    [v3 setObject:v4 forKey:@"muid"];
+    [dictionary setObject:v4 forKey:@"muid"];
   }
 
   name = self->_name;
   if (name)
   {
-    [v3 setObject:name forKey:@"name"];
+    [dictionary setObject:name forKey:@"name"];
   }
 
   artwork = self->_artwork;
   if (artwork)
   {
-    v7 = [(MSPTransitStorageArtwork *)artwork dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"artwork"];
+    dictionaryRepresentation = [(MSPTransitStorageArtwork *)artwork dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"artwork"];
   }
 
   unknownFields = self->_unknownFields;
   if (unknownFields)
   {
-    v9 = [(PBUnknownFields *)unknownFields dictionaryRepresentation];
-    [v3 setObject:v9 forKey:@"Unknown Fields"];
+    dictionaryRepresentation2 = [(PBUnknownFields *)unknownFields dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"Unknown Fields"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (*&self->_has)
   {
     muid = self->_muid;
     PBDataWriterWriteUint64Field();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_name)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_artwork)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
-  [(PBUnknownFields *)self->_unknownFields writeTo:v4];
+  [(PBUnknownFields *)self->_unknownFields writeTo:toCopy];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[2] = self->_muid;
-    *(v4 + 40) |= 1u;
+    toCopy[2] = self->_muid;
+    *(toCopy + 40) |= 1u;
   }
 
-  v5 = v4;
+  v5 = toCopy;
   if (self->_name)
   {
-    [v4 setName:?];
-    v4 = v5;
+    [toCopy setName:?];
+    toCopy = v5;
   }
 
   if (self->_artwork)
   {
     [v5 setArtwork:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -143,11 +143,11 @@
     *(v5 + 40) |= 1u;
   }
 
-  v7 = [(NSString *)self->_name copyWithZone:a3];
+  v7 = [(NSString *)self->_name copyWithZone:zone];
   v8 = *(v6 + 32);
   *(v6 + 32) = v7;
 
-  v9 = [(MSPTransitStorageArtwork *)self->_artwork copyWithZone:a3];
+  v9 = [(MSPTransitStorageArtwork *)self->_artwork copyWithZone:zone];
   v10 = *(v6 + 24);
   *(v6 + 24) = v9;
 
@@ -155,24 +155,24 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_11;
   }
 
-  v5 = *(v4 + 40);
+  v5 = *(equalCopy + 40);
   if (*&self->_has)
   {
-    if ((*(v4 + 40) & 1) == 0 || self->_muid != *(v4 + 2))
+    if ((*(equalCopy + 40) & 1) == 0 || self->_muid != *(equalCopy + 2))
     {
       goto LABEL_11;
     }
   }
 
-  else if (*(v4 + 40))
+  else if (*(equalCopy + 40))
   {
 LABEL_11:
     v8 = 0;
@@ -180,13 +180,13 @@ LABEL_11:
   }
 
   name = self->_name;
-  if (name | *(v4 + 4) && ![(NSString *)name isEqual:?])
+  if (name | *(equalCopy + 4) && ![(NSString *)name isEqual:?])
   {
     goto LABEL_11;
   }
 
   artwork = self->_artwork;
-  if (artwork | *(v4 + 3))
+  if (artwork | *(equalCopy + 3))
   {
     v8 = [(MSPTransitStorageArtwork *)artwork isEqual:?];
   }
@@ -217,18 +217,18 @@ LABEL_12:
   return v4 ^ [(MSPTransitStorageArtwork *)self->_artwork hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4[5])
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy[5])
   {
-    self->_muid = v4[2];
+    self->_muid = fromCopy[2];
     *&self->_has |= 1u;
   }
 
-  v8 = v4;
-  if (v4[4])
+  v8 = fromCopy;
+  if (fromCopy[4])
   {
     [(MSPTransitStorageSystem *)self setName:?];
     v5 = v8;

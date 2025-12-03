@@ -1,15 +1,15 @@
 @interface AWDWiFiOtaSystemInfo
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasChannel:(BOOL)a3;
-- (void)setHasChannelWidth:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasChannel:(BOOL)channel;
+- (void)setHasChannelWidth:(BOOL)width;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDWiFiOtaSystemInfo
@@ -35,9 +35,9 @@
   [(AWDWiFiOtaSystemInfo *)&v3 dealloc];
 }
 
-- (void)setHasChannel:(BOOL)a3
+- (void)setHasChannel:(BOOL)channel
 {
-  if (a3)
+  if (channel)
   {
     v3 = 2;
   }
@@ -50,9 +50,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasChannelWidth:(BOOL)a3
+- (void)setHasChannelWidth:(BOOL)width
 {
-  if (a3)
+  if (width)
   {
     v3 = 4;
   }
@@ -74,112 +74,112 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   if (*&self->_has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
   }
 
   beaconInfo = self->_beaconInfo;
   if (beaconInfo)
   {
-    [v3 setObject:beaconInfo forKey:@"beaconInfo"];
+    [dictionary setObject:beaconInfo forKey:@"beaconInfo"];
   }
 
   ssid = self->_ssid;
   if (ssid)
   {
-    [v3 setObject:ssid forKey:@"ssid"];
+    [dictionary setObject:ssid forKey:@"ssid"];
   }
 
   bssid = self->_bssid;
   if (bssid)
   {
-    [v3 setObject:bssid forKey:@"bssid"];
+    [dictionary setObject:bssid forKey:@"bssid"];
   }
 
   wpsResponseType = self->_wpsResponseType;
   if (wpsResponseType)
   {
-    [v3 setObject:wpsResponseType forKey:@"wpsResponseType"];
+    [dictionary setObject:wpsResponseType forKey:@"wpsResponseType"];
   }
 
   wpsManufacturerElement = self->_wpsManufacturerElement;
   if (wpsManufacturerElement)
   {
-    [v3 setObject:wpsManufacturerElement forKey:@"wpsManufacturerElement"];
+    [dictionary setObject:wpsManufacturerElement forKey:@"wpsManufacturerElement"];
   }
 
   wpsModelName = self->_wpsModelName;
   if (wpsModelName)
   {
-    [v3 setObject:wpsModelName forKey:@"wpsModelName"];
+    [dictionary setObject:wpsModelName forKey:@"wpsModelName"];
   }
 
   wpsModelNumber = self->_wpsModelNumber;
   if (wpsModelNumber)
   {
-    [v3 setObject:wpsModelNumber forKey:@"wpsModelNumber"];
+    [dictionary setObject:wpsModelNumber forKey:@"wpsModelNumber"];
   }
 
   wpsPrimaryDeviceTypeCategory = self->_wpsPrimaryDeviceTypeCategory;
   if (wpsPrimaryDeviceTypeCategory)
   {
-    [v3 setObject:wpsPrimaryDeviceTypeCategory forKey:@"wpsPrimaryDeviceTypeCategory"];
+    [dictionary setObject:wpsPrimaryDeviceTypeCategory forKey:@"wpsPrimaryDeviceTypeCategory"];
   }
 
   wpsPrimaryDeviceTypeSubCategory = self->_wpsPrimaryDeviceTypeSubCategory;
   if (wpsPrimaryDeviceTypeSubCategory)
   {
-    [v3 setObject:wpsPrimaryDeviceTypeSubCategory forKey:@"wpsPrimaryDeviceTypeSubCategory"];
+    [dictionary setObject:wpsPrimaryDeviceTypeSubCategory forKey:@"wpsPrimaryDeviceTypeSubCategory"];
   }
 
   wpsDeviceNameElement = self->_wpsDeviceNameElement;
   if (wpsDeviceNameElement)
   {
-    [v3 setObject:wpsDeviceNameElement forKey:@"wpsDeviceNameElement"];
+    [dictionary setObject:wpsDeviceNameElement forKey:@"wpsDeviceNameElement"];
   }
 
   wpsDeviceNameData = self->_wpsDeviceNameData;
   if (wpsDeviceNameData)
   {
-    [v3 setObject:wpsDeviceNameData forKey:@"wpsDeviceNameData"];
+    [dictionary setObject:wpsDeviceNameData forKey:@"wpsDeviceNameData"];
   }
 
   wpsConfigMethods = self->_wpsConfigMethods;
   if (wpsConfigMethods)
   {
-    [v3 setObject:wpsConfigMethods forKey:@"wpsConfigMethods"];
+    [dictionary setObject:wpsConfigMethods forKey:@"wpsConfigMethods"];
   }
 
   locale = self->_locale;
   if (locale)
   {
-    [v3 setObject:locale forKey:@"locale"];
+    [dictionary setObject:locale forKey:@"locale"];
   }
 
   localeSource = self->_localeSource;
   if (localeSource)
   {
-    [v3 setObject:localeSource forKey:@"localeSource"];
+    [dictionary setObject:localeSource forKey:@"localeSource"];
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_channel), @"channel"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_channel), @"channel"}];
     has = self->_has;
   }
 
   if ((has & 4) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_channelWidth), @"channelWidth"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_channelWidth), @"channelWidth"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (*&self->_has)
   {
@@ -273,102 +273,102 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if (*&self->_has)
   {
-    *(a3 + 1) = self->_timestamp;
-    *(a3 + 136) |= 1u;
+    *(to + 1) = self->_timestamp;
+    *(to + 136) |= 1u;
   }
 
   if (self->_beaconInfo)
   {
-    [a3 setBeaconInfo:?];
+    [to setBeaconInfo:?];
   }
 
   if (self->_ssid)
   {
-    [a3 setSsid:?];
+    [to setSsid:?];
   }
 
   if (self->_bssid)
   {
-    [a3 setBssid:?];
+    [to setBssid:?];
   }
 
   if (self->_wpsResponseType)
   {
-    [a3 setWpsResponseType:?];
+    [to setWpsResponseType:?];
   }
 
   if (self->_wpsManufacturerElement)
   {
-    [a3 setWpsManufacturerElement:?];
+    [to setWpsManufacturerElement:?];
   }
 
   if (self->_wpsModelName)
   {
-    [a3 setWpsModelName:?];
+    [to setWpsModelName:?];
   }
 
   if (self->_wpsModelNumber)
   {
-    [a3 setWpsModelNumber:?];
+    [to setWpsModelNumber:?];
   }
 
   if (self->_wpsPrimaryDeviceTypeCategory)
   {
-    [a3 setWpsPrimaryDeviceTypeCategory:?];
+    [to setWpsPrimaryDeviceTypeCategory:?];
   }
 
   if (self->_wpsPrimaryDeviceTypeSubCategory)
   {
-    [a3 setWpsPrimaryDeviceTypeSubCategory:?];
+    [to setWpsPrimaryDeviceTypeSubCategory:?];
   }
 
   if (self->_wpsDeviceNameElement)
   {
-    [a3 setWpsDeviceNameElement:?];
+    [to setWpsDeviceNameElement:?];
   }
 
   if (self->_wpsDeviceNameData)
   {
-    [a3 setWpsDeviceNameData:?];
+    [to setWpsDeviceNameData:?];
   }
 
   if (self->_wpsConfigMethods)
   {
-    [a3 setWpsConfigMethods:?];
+    [to setWpsConfigMethods:?];
   }
 
   if (self->_locale)
   {
-    [a3 setLocale:?];
+    [to setLocale:?];
   }
 
   if (self->_localeSource)
   {
-    [a3 setLocaleSource:?];
+    [to setLocaleSource:?];
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(a3 + 8) = self->_channel;
-    *(a3 + 136) |= 2u;
+    *(to + 8) = self->_channel;
+    *(to + 136) |= 2u;
     has = self->_has;
   }
 
   if ((has & 4) != 0)
   {
-    *(a3 + 9) = self->_channelWidth;
-    *(a3 + 136) |= 4u;
+    *(to + 9) = self->_channelWidth;
+    *(to + 136) |= 4u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -376,26 +376,26 @@
     *(v5 + 136) |= 1u;
   }
 
-  *(v6 + 16) = [(NSData *)self->_beaconInfo copyWithZone:a3];
-  *(v6 + 56) = [(NSString *)self->_ssid copyWithZone:a3];
+  *(v6 + 16) = [(NSData *)self->_beaconInfo copyWithZone:zone];
+  *(v6 + 56) = [(NSString *)self->_ssid copyWithZone:zone];
 
-  *(v6 + 24) = [(NSString *)self->_bssid copyWithZone:a3];
-  *(v6 + 128) = [(NSString *)self->_wpsResponseType copyWithZone:a3];
+  *(v6 + 24) = [(NSString *)self->_bssid copyWithZone:zone];
+  *(v6 + 128) = [(NSString *)self->_wpsResponseType copyWithZone:zone];
 
-  *(v6 + 88) = [(NSString *)self->_wpsManufacturerElement copyWithZone:a3];
-  *(v6 + 96) = [(NSString *)self->_wpsModelName copyWithZone:a3];
+  *(v6 + 88) = [(NSString *)self->_wpsManufacturerElement copyWithZone:zone];
+  *(v6 + 96) = [(NSString *)self->_wpsModelName copyWithZone:zone];
 
-  *(v6 + 104) = [(NSString *)self->_wpsModelNumber copyWithZone:a3];
-  *(v6 + 112) = [(NSString *)self->_wpsPrimaryDeviceTypeCategory copyWithZone:a3];
+  *(v6 + 104) = [(NSString *)self->_wpsModelNumber copyWithZone:zone];
+  *(v6 + 112) = [(NSString *)self->_wpsPrimaryDeviceTypeCategory copyWithZone:zone];
 
-  *(v6 + 120) = [(NSString *)self->_wpsPrimaryDeviceTypeSubCategory copyWithZone:a3];
-  *(v6 + 80) = [(NSString *)self->_wpsDeviceNameElement copyWithZone:a3];
+  *(v6 + 120) = [(NSString *)self->_wpsPrimaryDeviceTypeSubCategory copyWithZone:zone];
+  *(v6 + 80) = [(NSString *)self->_wpsDeviceNameElement copyWithZone:zone];
 
-  *(v6 + 72) = [(NSString *)self->_wpsDeviceNameData copyWithZone:a3];
-  *(v6 + 64) = [(NSString *)self->_wpsConfigMethods copyWithZone:a3];
+  *(v6 + 72) = [(NSString *)self->_wpsDeviceNameData copyWithZone:zone];
+  *(v6 + 64) = [(NSString *)self->_wpsConfigMethods copyWithZone:zone];
 
-  *(v6 + 40) = [(NSString *)self->_locale copyWithZone:a3];
-  *(v6 + 48) = [(NSString *)self->_localeSource copyWithZone:a3];
+  *(v6 + 40) = [(NSString *)self->_locale copyWithZone:zone];
+  *(v6 + 48) = [(NSString *)self->_localeSource copyWithZone:zone];
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -413,21 +413,21 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
-    v6 = *(a3 + 136);
+    v6 = *(equal + 136);
     if (*&self->_has)
     {
-      if ((*(a3 + 136) & 1) == 0 || self->_timestamp != *(a3 + 1))
+      if ((*(equal + 136) & 1) == 0 || self->_timestamp != *(equal + 1))
       {
         goto LABEL_44;
       }
     }
 
-    else if (*(a3 + 136))
+    else if (*(equal + 136))
     {
 LABEL_44:
       LOBYTE(v5) = 0;
@@ -435,64 +435,64 @@ LABEL_44:
     }
 
     beaconInfo = self->_beaconInfo;
-    if (!(beaconInfo | *(a3 + 2)) || (v5 = [(NSData *)beaconInfo isEqual:?]) != 0)
+    if (!(beaconInfo | *(equal + 2)) || (v5 = [(NSData *)beaconInfo isEqual:?]) != 0)
     {
       ssid = self->_ssid;
-      if (!(ssid | *(a3 + 7)) || (v5 = [(NSString *)ssid isEqual:?]) != 0)
+      if (!(ssid | *(equal + 7)) || (v5 = [(NSString *)ssid isEqual:?]) != 0)
       {
         bssid = self->_bssid;
-        if (!(bssid | *(a3 + 3)) || (v5 = [(NSString *)bssid isEqual:?]) != 0)
+        if (!(bssid | *(equal + 3)) || (v5 = [(NSString *)bssid isEqual:?]) != 0)
         {
           wpsResponseType = self->_wpsResponseType;
-          if (!(wpsResponseType | *(a3 + 16)) || (v5 = [(NSString *)wpsResponseType isEqual:?]) != 0)
+          if (!(wpsResponseType | *(equal + 16)) || (v5 = [(NSString *)wpsResponseType isEqual:?]) != 0)
           {
             wpsManufacturerElement = self->_wpsManufacturerElement;
-            if (!(wpsManufacturerElement | *(a3 + 11)) || (v5 = [(NSString *)wpsManufacturerElement isEqual:?]) != 0)
+            if (!(wpsManufacturerElement | *(equal + 11)) || (v5 = [(NSString *)wpsManufacturerElement isEqual:?]) != 0)
             {
               wpsModelName = self->_wpsModelName;
-              if (!(wpsModelName | *(a3 + 12)) || (v5 = [(NSString *)wpsModelName isEqual:?]) != 0)
+              if (!(wpsModelName | *(equal + 12)) || (v5 = [(NSString *)wpsModelName isEqual:?]) != 0)
               {
                 wpsModelNumber = self->_wpsModelNumber;
-                if (!(wpsModelNumber | *(a3 + 13)) || (v5 = [(NSString *)wpsModelNumber isEqual:?]) != 0)
+                if (!(wpsModelNumber | *(equal + 13)) || (v5 = [(NSString *)wpsModelNumber isEqual:?]) != 0)
                 {
                   wpsPrimaryDeviceTypeCategory = self->_wpsPrimaryDeviceTypeCategory;
-                  if (!(wpsPrimaryDeviceTypeCategory | *(a3 + 14)) || (v5 = [(NSString *)wpsPrimaryDeviceTypeCategory isEqual:?]) != 0)
+                  if (!(wpsPrimaryDeviceTypeCategory | *(equal + 14)) || (v5 = [(NSString *)wpsPrimaryDeviceTypeCategory isEqual:?]) != 0)
                   {
                     wpsPrimaryDeviceTypeSubCategory = self->_wpsPrimaryDeviceTypeSubCategory;
-                    if (!(wpsPrimaryDeviceTypeSubCategory | *(a3 + 15)) || (v5 = [(NSString *)wpsPrimaryDeviceTypeSubCategory isEqual:?]) != 0)
+                    if (!(wpsPrimaryDeviceTypeSubCategory | *(equal + 15)) || (v5 = [(NSString *)wpsPrimaryDeviceTypeSubCategory isEqual:?]) != 0)
                     {
                       wpsDeviceNameElement = self->_wpsDeviceNameElement;
-                      if (!(wpsDeviceNameElement | *(a3 + 10)) || (v5 = [(NSString *)wpsDeviceNameElement isEqual:?]) != 0)
+                      if (!(wpsDeviceNameElement | *(equal + 10)) || (v5 = [(NSString *)wpsDeviceNameElement isEqual:?]) != 0)
                       {
                         wpsDeviceNameData = self->_wpsDeviceNameData;
-                        if (!(wpsDeviceNameData | *(a3 + 9)) || (v5 = [(NSString *)wpsDeviceNameData isEqual:?]) != 0)
+                        if (!(wpsDeviceNameData | *(equal + 9)) || (v5 = [(NSString *)wpsDeviceNameData isEqual:?]) != 0)
                         {
                           wpsConfigMethods = self->_wpsConfigMethods;
-                          if (!(wpsConfigMethods | *(a3 + 8)) || (v5 = [(NSString *)wpsConfigMethods isEqual:?]) != 0)
+                          if (!(wpsConfigMethods | *(equal + 8)) || (v5 = [(NSString *)wpsConfigMethods isEqual:?]) != 0)
                           {
                             locale = self->_locale;
-                            if (!(locale | *(a3 + 5)) || (v5 = [(NSString *)locale isEqual:?]) != 0)
+                            if (!(locale | *(equal + 5)) || (v5 = [(NSString *)locale isEqual:?]) != 0)
                             {
                               localeSource = self->_localeSource;
-                              if (!(localeSource | *(a3 + 6)) || (v5 = [(NSString *)localeSource isEqual:?]) != 0)
+                              if (!(localeSource | *(equal + 6)) || (v5 = [(NSString *)localeSource isEqual:?]) != 0)
                               {
                                 if ((*&self->_has & 2) != 0)
                                 {
-                                  if ((*(a3 + 136) & 2) == 0 || self->_channel != *(a3 + 8))
+                                  if ((*(equal + 136) & 2) == 0 || self->_channel != *(equal + 8))
                                   {
                                     goto LABEL_44;
                                   }
                                 }
 
-                                else if ((*(a3 + 136) & 2) != 0)
+                                else if ((*(equal + 136) & 2) != 0)
                                 {
                                   goto LABEL_44;
                                 }
 
-                                LOBYTE(v5) = (*(a3 + 136) & 4) == 0;
+                                LOBYTE(v5) = (*(equal + 136) & 4) == 0;
                                 if ((*&self->_has & 4) != 0)
                                 {
-                                  if ((*(a3 + 136) & 4) == 0 || self->_channelWidth != *(a3 + 9))
+                                  if ((*(equal + 136) & 4) == 0 || self->_channelWidth != *(equal + 9))
                                   {
                                     goto LABEL_44;
                                   }
@@ -568,95 +568,95 @@ LABEL_6:
   return v19 ^ v20 ^ v18 ^ v17 ^ v16 ^ v15 ^ v3 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if (*(a3 + 136))
+  if (*(from + 136))
   {
-    self->_timestamp = *(a3 + 1);
+    self->_timestamp = *(from + 1);
     *&self->_has |= 1u;
   }
 
-  if (*(a3 + 2))
+  if (*(from + 2))
   {
     [(AWDWiFiOtaSystemInfo *)self setBeaconInfo:?];
   }
 
-  if (*(a3 + 7))
+  if (*(from + 7))
   {
     [(AWDWiFiOtaSystemInfo *)self setSsid:?];
   }
 
-  if (*(a3 + 3))
+  if (*(from + 3))
   {
     [(AWDWiFiOtaSystemInfo *)self setBssid:?];
   }
 
-  if (*(a3 + 16))
+  if (*(from + 16))
   {
     [(AWDWiFiOtaSystemInfo *)self setWpsResponseType:?];
   }
 
-  if (*(a3 + 11))
+  if (*(from + 11))
   {
     [(AWDWiFiOtaSystemInfo *)self setWpsManufacturerElement:?];
   }
 
-  if (*(a3 + 12))
+  if (*(from + 12))
   {
     [(AWDWiFiOtaSystemInfo *)self setWpsModelName:?];
   }
 
-  if (*(a3 + 13))
+  if (*(from + 13))
   {
     [(AWDWiFiOtaSystemInfo *)self setWpsModelNumber:?];
   }
 
-  if (*(a3 + 14))
+  if (*(from + 14))
   {
     [(AWDWiFiOtaSystemInfo *)self setWpsPrimaryDeviceTypeCategory:?];
   }
 
-  if (*(a3 + 15))
+  if (*(from + 15))
   {
     [(AWDWiFiOtaSystemInfo *)self setWpsPrimaryDeviceTypeSubCategory:?];
   }
 
-  if (*(a3 + 10))
+  if (*(from + 10))
   {
     [(AWDWiFiOtaSystemInfo *)self setWpsDeviceNameElement:?];
   }
 
-  if (*(a3 + 9))
+  if (*(from + 9))
   {
     [(AWDWiFiOtaSystemInfo *)self setWpsDeviceNameData:?];
   }
 
-  if (*(a3 + 8))
+  if (*(from + 8))
   {
     [(AWDWiFiOtaSystemInfo *)self setWpsConfigMethods:?];
   }
 
-  if (*(a3 + 5))
+  if (*(from + 5))
   {
     [(AWDWiFiOtaSystemInfo *)self setLocale:?];
   }
 
-  if (*(a3 + 6))
+  if (*(from + 6))
   {
     [(AWDWiFiOtaSystemInfo *)self setLocaleSource:?];
   }
 
-  v5 = *(a3 + 136);
+  v5 = *(from + 136);
   if ((v5 & 2) != 0)
   {
-    self->_channel = *(a3 + 8);
+    self->_channel = *(from + 8);
     *&self->_has |= 2u;
-    v5 = *(a3 + 136);
+    v5 = *(from + 136);
   }
 
   if ((v5 & 4) != 0)
   {
-    self->_channelWidth = *(a3 + 9);
+    self->_channelWidth = *(from + 9);
     *&self->_has |= 4u;
   }
 }

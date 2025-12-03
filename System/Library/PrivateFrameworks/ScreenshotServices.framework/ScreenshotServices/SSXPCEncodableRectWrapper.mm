@@ -1,27 +1,27 @@
 @interface SSXPCEncodableRectWrapper
-+ (id)encodedRectsInDictionary:(id)a3 forKey:(id)a4;
-+ (void)encodeRects:(id)a3 inDictionary:(id)a4 forKey:(id)a5;
++ (id)encodedRectsInDictionary:(id)dictionary forKey:(id)key;
++ (void)encodeRects:(id)rects inDictionary:(id)dictionary forKey:(id)key;
 - (CGRect)rect;
-- (SSXPCEncodableRectWrapper)initWithBSXPCCoder:(id)a3;
-- (SSXPCEncodableRectWrapper)initWithCoder:(id)a3;
-- (void)encodeWithBSXPCCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (SSXPCEncodableRectWrapper)initWithBSXPCCoder:(id)coder;
+- (SSXPCEncodableRectWrapper)initWithCoder:(id)coder;
+- (void)encodeWithBSXPCCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SSXPCEncodableRectWrapper
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   [(SSXPCEncodableRectWrapper *)self rect];
-  [v4 encodeCGRect:@"SSXPCEncodableRectWrapperRectKey" forKey:?];
+  [coderCopy encodeCGRect:@"SSXPCEncodableRectWrapperRectKey" forKey:?];
 }
 
-- (SSXPCEncodableRectWrapper)initWithBSXPCCoder:(id)a3
+- (SSXPCEncodableRectWrapper)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(SSXPCEncodableRectWrapper *)self init];
-  [v4 decodeCGRectForKey:@"SSXPCEncodableRectWrapperRectKey"];
+  [coderCopy decodeCGRectForKey:@"SSXPCEncodableRectWrapperRectKey"];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -31,18 +31,18 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   [(SSXPCEncodableRectWrapper *)self rect];
-  [v4 encodeCGRect:@"SSXPCEncodableRectWrapperRectKey" forKey:?];
+  [coderCopy encodeCGRect:@"SSXPCEncodableRectWrapperRectKey" forKey:?];
 }
 
-- (SSXPCEncodableRectWrapper)initWithCoder:(id)a3
+- (SSXPCEncodableRectWrapper)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(SSXPCEncodableRectWrapper *)self init];
-  [v4 decodeCGRectForKey:@"SSXPCEncodableRectWrapperRectKey"];
+  [coderCopy decodeCGRectForKey:@"SSXPCEncodableRectWrapperRectKey"];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -52,13 +52,13 @@
   return v5;
 }
 
-+ (id)encodedRectsInDictionary:(id)a3 forKey:(id)a4
++ (id)encodedRectsInDictionary:(id)dictionary forKey:(id)key
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x1E695DF70] array];
-  [v6 cStringUsingEncoding:4];
+  dictionaryCopy = dictionary;
+  keyCopy = key;
+  array = [MEMORY[0x1E695DF70] array];
+  [keyCopy cStringUsingEncoding:4];
   v8 = BSDeserializeArrayOfBSXPCEncodableObjectsFromXPCDictionaryWithKey();
   v16 = 0u;
   v17 = 0u;
@@ -81,7 +81,7 @@
         v13 = MEMORY[0x1E696B098];
         [*(*(&v16 + 1) + 8 * i) rect];
         v14 = [v13 valueWithCGRect:?];
-        [v7 addObject:v14];
+        [array addObject:v14];
       }
 
       v10 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -90,21 +90,21 @@
     while (v10);
   }
 
-  return v7;
+  return array;
 }
 
-+ (void)encodeRects:(id)a3 inDictionary:(id)a4 forKey:(id)a5
++ (void)encodeRects:(id)rects inDictionary:(id)dictionary forKey:(id)key
 {
   v23 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [MEMORY[0x1E695DF70] array];
+  rectsCopy = rects;
+  dictionaryCopy = dictionary;
+  keyCopy = key;
+  array = [MEMORY[0x1E695DF70] array];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v11 = v7;
+  v11 = rectsCopy;
   v12 = [v11 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v12)
   {
@@ -124,7 +124,7 @@
         v17 = objc_alloc_init(SSXPCEncodableRectWrapper);
         [v16 CGRectValue];
         [(SSXPCEncodableRectWrapper *)v17 setRect:?];
-        [v10 addObject:v17];
+        [array addObject:v17];
 
         ++v15;
       }
@@ -136,7 +136,7 @@
     while (v13);
   }
 
-  [v9 cStringUsingEncoding:4];
+  [keyCopy cStringUsingEncoding:4];
   BSSerializeArrayOfBSXPCEncodableObjectsToXPCDictionaryWithKey();
 }
 

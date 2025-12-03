@@ -1,7 +1,7 @@
 @interface SecureStorageProvider
 + (id)sharedInstance;
 - (id)secureStorage;
-- (id)secureStorageWithConfig:(id)a3;
+- (id)secureStorageWithConfig:(id)config;
 @end
 
 @implementation SecureStorageProvider
@@ -25,10 +25,10 @@
   return v2;
 }
 
-- (id)secureStorageWithConfig:(id)a3
+- (id)secureStorageWithConfig:(id)config
 {
-  v3 = a3;
-  v4 = [[SecureStorage alloc] initWithConfig:v3];
+  configCopy = config;
+  v4 = [[SecureStorage alloc] initWithConfig:configCopy];
 
   return v4;
 }

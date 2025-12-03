@@ -1,8 +1,8 @@
 @interface _PXDisplayLinkWeakReference
 - (SEL)selector;
-- (_PXDisplayLinkWeakReference)initWithObject:(id)a3 selector:(SEL)a4;
+- (_PXDisplayLinkWeakReference)initWithObject:(id)object selector:(SEL)selector;
 - (id)object;
-- (void)handleDisplayLink:(id)a3;
+- (void)handleDisplayLink:(id)link;
 @end
 
 @implementation _PXDisplayLinkWeakReference
@@ -27,40 +27,40 @@
   return WeakRetained;
 }
 
-- (void)handleDisplayLink:(id)a3
+- (void)handleDisplayLink:(id)link
 {
-  v5 = a3;
-  v4 = [(_PXDisplayLinkWeakReference *)self object];
-  if (v4)
+  linkCopy = link;
+  object = [(_PXDisplayLinkWeakReference *)self object];
+  if (object)
   {
-    [v4 performSelector:-[_PXDisplayLinkWeakReference selector](self withObject:{"selector"), v5}];
+    [object performSelector:-[_PXDisplayLinkWeakReference selector](self withObject:{"selector"), linkCopy}];
   }
 
   else
   {
-    [v5 invalidate];
+    [linkCopy invalidate];
   }
 }
 
-- (_PXDisplayLinkWeakReference)initWithObject:(id)a3 selector:(SEL)a4
+- (_PXDisplayLinkWeakReference)initWithObject:(id)object selector:(SEL)selector
 {
-  v6 = a3;
+  objectCopy = object;
   v7 = [(_PXDisplayLinkWeakReference *)self init];
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->_object, v6);
-    if (a4)
+    objc_storeWeak(&v7->_object, objectCopy);
+    if (selector)
     {
-      v9 = a4;
+      selectorCopy = selector;
     }
 
     else
     {
-      v9 = 0;
+      selectorCopy = 0;
     }
 
-    v8->_selector = v9;
+    v8->_selector = selectorCopy;
   }
 
   return v8;

@@ -1,77 +1,77 @@
 @interface PKIdentityPassCredentialProperty
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToPKIdentityPassCredentialProperty:(id)a3;
-- (PKIdentityPassCredentialProperty)initWithCoder:(id)a3;
-- (PKIdentityPassCredentialProperty)initWithPassUniqueIdentifier:(id)a3 applicationIdentifier:(id)a4 subCredentialIdentifier:(id)a5;
-- (PKIdentityPassCredentialProperty)initWithPassUniqueIdentifier:(id)a3 applicationIdentifier:(id)a4 subCredentialIdentifier:(id)a5 docType:(id)a6;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToPKIdentityPassCredentialProperty:(id)property;
+- (PKIdentityPassCredentialProperty)initWithCoder:(id)coder;
+- (PKIdentityPassCredentialProperty)initWithPassUniqueIdentifier:(id)identifier applicationIdentifier:(id)applicationIdentifier subCredentialIdentifier:(id)credentialIdentifier;
+- (PKIdentityPassCredentialProperty)initWithPassUniqueIdentifier:(id)identifier applicationIdentifier:(id)applicationIdentifier subCredentialIdentifier:(id)credentialIdentifier docType:(id)type;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKIdentityPassCredentialProperty
 
-- (PKIdentityPassCredentialProperty)initWithPassUniqueIdentifier:(id)a3 applicationIdentifier:(id)a4 subCredentialIdentifier:(id)a5 docType:(id)a6
+- (PKIdentityPassCredentialProperty)initWithPassUniqueIdentifier:(id)identifier applicationIdentifier:(id)applicationIdentifier subCredentialIdentifier:(id)credentialIdentifier docType:(id)type
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  identifierCopy = identifier;
+  applicationIdentifierCopy = applicationIdentifier;
+  credentialIdentifierCopy = credentialIdentifier;
+  typeCopy = type;
   v18.receiver = self;
   v18.super_class = PKIdentityPassCredentialProperty;
   v15 = [(PKIdentityPassCredentialProperty *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_passUniqueIdentifier, a3);
-    objc_storeStrong(&v16->_applicationIdentifier, a4);
-    objc_storeStrong(&v16->_subCredentialIdentifier, a5);
-    objc_storeStrong(&v16->_docType, a6);
+    objc_storeStrong(&v15->_passUniqueIdentifier, identifier);
+    objc_storeStrong(&v16->_applicationIdentifier, applicationIdentifier);
+    objc_storeStrong(&v16->_subCredentialIdentifier, credentialIdentifier);
+    objc_storeStrong(&v16->_docType, type);
   }
 
   return v16;
 }
 
-- (PKIdentityPassCredentialProperty)initWithPassUniqueIdentifier:(id)a3 applicationIdentifier:(id)a4 subCredentialIdentifier:(id)a5
+- (PKIdentityPassCredentialProperty)initWithPassUniqueIdentifier:(id)identifier applicationIdentifier:(id)applicationIdentifier subCredentialIdentifier:(id)credentialIdentifier
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  identifierCopy = identifier;
+  applicationIdentifierCopy = applicationIdentifier;
+  credentialIdentifierCopy = credentialIdentifier;
   v15.receiver = self;
   v15.super_class = PKIdentityPassCredentialProperty;
   v12 = [(PKIdentityPassCredentialProperty *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_passUniqueIdentifier, a3);
-    objc_storeStrong(&v13->_applicationIdentifier, a4);
-    objc_storeStrong(&v13->_subCredentialIdentifier, a5);
+    objc_storeStrong(&v12->_passUniqueIdentifier, identifier);
+    objc_storeStrong(&v13->_applicationIdentifier, applicationIdentifier);
+    objc_storeStrong(&v13->_subCredentialIdentifier, credentialIdentifier);
   }
 
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKIdentityPassCredentialProperty *)self isEqualToPKIdentityPassCredentialProperty:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKIdentityPassCredentialProperty *)self isEqualToPKIdentityPassCredentialProperty:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToPKIdentityPassCredentialProperty:(id)a3
+- (BOOL)isEqualToPKIdentityPassCredentialProperty:(id)property
 {
-  v4 = a3;
-  v5 = v4[1];
+  propertyCopy = property;
+  v5 = propertyCopy[1];
   v6 = self->_passUniqueIdentifier;
   v7 = v5;
   v8 = v7;
@@ -102,7 +102,7 @@
   if (v10)
   {
 LABEL_10:
-    v11 = v4[2];
+    v11 = propertyCopy[2];
     v6 = self->_applicationIdentifier;
     v12 = v11;
     v8 = v12;
@@ -126,7 +126,7 @@ LABEL_10:
       }
     }
 
-    v13 = v4[3];
+    v13 = propertyCopy[3];
     v6 = self->_subCredentialIdentifier;
     v14 = v13;
     v8 = v14;
@@ -135,7 +135,7 @@ LABEL_10:
 
 LABEL_22:
       docType = self->_docType;
-      v16 = v4[4];
+      v16 = propertyCopy[4];
       v6 = docType;
       v17 = v16;
       v8 = v17;
@@ -189,35 +189,35 @@ LABEL_28:
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   applicationIdentifier = self->_applicationIdentifier;
-  v5 = a3;
-  [v5 encodeObject:applicationIdentifier forKey:@"passUniqueIdentifier"];
-  [v5 encodeObject:self->_passUniqueIdentifier forKey:@"paymentApplicationIdentifier"];
-  [v5 encodeObject:self->_subCredentialIdentifier forKey:@"subCredentialIdentifier"];
-  [v5 encodeObject:self->_docType forKey:@"docType"];
+  coderCopy = coder;
+  [coderCopy encodeObject:applicationIdentifier forKey:@"passUniqueIdentifier"];
+  [coderCopy encodeObject:self->_passUniqueIdentifier forKey:@"paymentApplicationIdentifier"];
+  [coderCopy encodeObject:self->_subCredentialIdentifier forKey:@"subCredentialIdentifier"];
+  [coderCopy encodeObject:self->_docType forKey:@"docType"];
 }
 
-- (PKIdentityPassCredentialProperty)initWithCoder:(id)a3
+- (PKIdentityPassCredentialProperty)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(PKIdentityPassCredentialProperty *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"passUniqueIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"passUniqueIdentifier"];
     passUniqueIdentifier = v5->_passUniqueIdentifier;
     v5->_passUniqueIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"paymentApplicationIdentifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"paymentApplicationIdentifier"];
     applicationIdentifier = v5->_applicationIdentifier;
     v5->_applicationIdentifier = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"subCredentialIdentifier"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"subCredentialIdentifier"];
     subCredentialIdentifier = v5->_subCredentialIdentifier;
     v5->_subCredentialIdentifier = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"docType"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"docType"];
     docType = v5->_docType;
     v5->_docType = v12;
   }
@@ -225,19 +225,19 @@ LABEL_28:
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_opt_class() allocWithZone:a3];
-  v6 = [(NSString *)self->_passUniqueIdentifier copyWithZone:a3];
+  v5 = [objc_opt_class() allocWithZone:zone];
+  v6 = [(NSString *)self->_passUniqueIdentifier copyWithZone:zone];
   [v5 setPassUniqueIdentifier:v6];
 
-  v7 = [(NSString *)self->_applicationIdentifier copyWithZone:a3];
+  v7 = [(NSString *)self->_applicationIdentifier copyWithZone:zone];
   [v5 setApplicationIdentifier:v7];
 
-  v8 = [(NSString *)self->_subCredentialIdentifier copyWithZone:a3];
+  v8 = [(NSString *)self->_subCredentialIdentifier copyWithZone:zone];
   [v5 setSubCredentialIdentifier:v8];
 
-  v9 = [(NSString *)self->_docType copyWithZone:a3];
+  v9 = [(NSString *)self->_docType copyWithZone:zone];
   [v5 setDocType:v9];
 
   return v5;

@@ -1,11 +1,11 @@
 @interface HKDisplayCategory
-+ (HKDisplayCategory)categoryWithID:(int64_t)a3;
-+ (HKDisplayCategory)categoryWithName:(id)a3;
++ (HKDisplayCategory)categoryWithID:(int64_t)d;
++ (HKDisplayCategory)categoryWithName:(id)name;
 + (id)allCategories;
 + (id)sortedCategories;
 - (BOOL)isTopLevelCategory;
 - (HKDisplayCategory)init;
-- (HKDisplayCategory)initWithCategoryID:(int64_t)a3 displayName:(id)a4 listIconName:(id)a5 largeListIconName:(id)a6 shareIconName:(id)a7 systemImageName:(id)a8;
+- (HKDisplayCategory)initWithCategoryID:(int64_t)d displayName:(id)name listIconName:(id)iconName largeListIconName:(id)listIconName shareIconName:(id)shareIconName systemImageName:(id)imageName;
 - (HKFillStyle)fillStyle;
 - (UIImage)largeListIcon;
 - (UIImage)listIcon;
@@ -109,18 +109,18 @@ uint64_t __56__HKDisplayCategory_BuiltinCategories__sortedCategories__block_invo
     }
   }
 
-  v4 = [(HKDisplayCategory(BuiltinCategories) *)self multiColorImageConfiguration];
-  if (v4)
+  multiColorImageConfiguration = [(HKDisplayCategory(BuiltinCategories) *)self multiColorImageConfiguration];
+  if (multiColorImageConfiguration)
   {
-    v5 = [v3 imageByApplyingSymbolConfiguration:v4];
+    v5 = [v3 imageByApplyingSymbolConfiguration:multiColorImageConfiguration];
   }
 
   else
   {
-    v6 = [(HKDisplayCategory(BuiltinCategories) *)self color];
-    if (v6)
+    color = [(HKDisplayCategory(BuiltinCategories) *)self color];
+    if (color)
     {
-      v7 = [v3 imageWithTintColor:v6 renderingMode:1];
+      v7 = [v3 imageWithTintColor:color renderingMode:1];
     }
 
     else
@@ -136,11 +136,11 @@ uint64_t __56__HKDisplayCategory_BuiltinCategories__sortedCategories__block_invo
 
 - (UIImage)listIcon
 {
-  v4 = [(HKDisplayCategory *)self _image];
-  v5 = v4;
-  if (v4)
+  _image = [(HKDisplayCategory *)self _image];
+  v5 = _image;
+  if (_image)
   {
-    v6 = v4;
+    v6 = _image;
   }
 
   else
@@ -169,10 +169,10 @@ uint64_t __56__HKDisplayCategory_BuiltinCategories__sortedCategories__block_invo
   return v6;
 }
 
-+ (HKDisplayCategory)categoryWithID:(int64_t)a3
++ (HKDisplayCategory)categoryWithID:(int64_t)d
 {
   v3 = 0;
-  switch(a3)
+  switch(d)
   {
     case 1:
       v4 = [HKDisplayCategory alloc];
@@ -402,10 +402,10 @@ LABEL_30:
   return v3;
 }
 
-+ (HKDisplayCategory)categoryWithName:(id)a3
++ (HKDisplayCategory)categoryWithName:(id)name
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"VITAL_SIGNS"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"VITAL_SIGNS"])
   {
     v4 = [HKDisplayCategory alloc];
     v5 = @"VITAL_SIGNS";
@@ -419,7 +419,7 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  if ([v3 isEqualToString:@"FITNESS"])
+  if ([nameCopy isEqualToString:@"FITNESS"])
   {
     v4 = [HKDisplayCategory alloc];
     v5 = @"FITNESS";
@@ -431,7 +431,7 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  if ([v3 isEqualToString:@"NUTRITION"])
+  if ([nameCopy isEqualToString:@"NUTRITION"])
   {
     v4 = [HKDisplayCategory alloc];
     v5 = @"NUTRITION";
@@ -443,7 +443,7 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  if ([v3 isEqualToString:@"SLEEP"])
+  if ([nameCopy isEqualToString:@"SLEEP"])
   {
     v4 = [HKDisplayCategory alloc];
     v5 = @"SLEEP";
@@ -455,7 +455,7 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  if ([v3 isEqualToString:@"BODY_MEASUREMENTS"])
+  if ([nameCopy isEqualToString:@"BODY_MEASUREMENTS"])
   {
     v4 = [HKDisplayCategory alloc];
     v5 = @"BODY_MEASUREMENTS";
@@ -467,7 +467,7 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  if ([v3 isEqualToString:@"ME"])
+  if ([nameCopy isEqualToString:@"ME"])
   {
     v4 = [HKDisplayCategory alloc];
     v5 = @"ME";
@@ -480,7 +480,7 @@ LABEL_13:
     goto LABEL_16;
   }
 
-  if ([v3 isEqualToString:@"REPRODUCTIVE_HEALTH"])
+  if ([nameCopy isEqualToString:@"REPRODUCTIVE_HEALTH"])
   {
     v4 = [HKDisplayCategory alloc];
     v5 = @"REPRODUCTIVE_HEALTH";
@@ -492,7 +492,7 @@ LABEL_13:
     goto LABEL_16;
   }
 
-  if ([v3 isEqualToString:@"CLINICAL_DOCUMENTS"])
+  if ([nameCopy isEqualToString:@"CLINICAL_DOCUMENTS"])
   {
     v4 = [HKDisplayCategory alloc];
     v5 = @"CLINICAL_DOCUMENTS";
@@ -503,7 +503,7 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  if ([v3 isEqualToString:@"MINDFULNESS"])
+  if ([nameCopy isEqualToString:@"MINDFULNESS"])
   {
     v4 = [HKDisplayCategory alloc];
     v5 = @"MINDFULNESS";
@@ -515,7 +515,7 @@ LABEL_13:
     goto LABEL_16;
   }
 
-  if ([v3 isEqualToString:@"HEART"])
+  if ([nameCopy isEqualToString:@"HEART"])
   {
     v4 = [HKDisplayCategory alloc];
     v5 = @"HEART";
@@ -527,7 +527,7 @@ LABEL_13:
     goto LABEL_16;
   }
 
-  if ([v3 isEqualToString:@"HEARING_HEALTH"])
+  if ([nameCopy isEqualToString:@"HEARING_HEALTH"])
   {
     v4 = [HKDisplayCategory alloc];
     v5 = @"HEARING_HEALTH";
@@ -539,7 +539,7 @@ LABEL_13:
     goto LABEL_16;
   }
 
-  if ([v3 isEqualToString:@"RESPIRATORY"])
+  if ([nameCopy isEqualToString:@"RESPIRATORY"])
   {
     v4 = [HKDisplayCategory alloc];
     v5 = @"RESPIRATORY";
@@ -551,7 +551,7 @@ LABEL_13:
     goto LABEL_16;
   }
 
-  if ([v3 isEqualToString:@"OTHER"])
+  if ([nameCopy isEqualToString:@"OTHER"])
   {
     v4 = [HKDisplayCategory alloc];
     v5 = @"OTHER";
@@ -563,7 +563,7 @@ LABEL_13:
     goto LABEL_16;
   }
 
-  if ([v3 isEqualToString:@"HEALTH_RECORDS"])
+  if ([nameCopy isEqualToString:@"HEALTH_RECORDS"])
   {
     v4 = [HKDisplayCategory alloc];
     v5 = @"HEALTH_RECORDS";
@@ -575,7 +575,7 @@ LABEL_13:
     goto LABEL_16;
   }
 
-  if ([v3 isEqualToString:@"ALLERGY_CATEGORY"])
+  if ([nameCopy isEqualToString:@"ALLERGY_CATEGORY"])
   {
     v4 = [HKDisplayCategory alloc];
     v5 = @"ALLERGY_CATEGORY";
@@ -588,7 +588,7 @@ LABEL_48:
     goto LABEL_16;
   }
 
-  if ([v3 isEqualToString:@"CLINICAL_VITALS_CATEGORY"])
+  if ([nameCopy isEqualToString:@"CLINICAL_VITALS_CATEGORY"])
   {
     v4 = [HKDisplayCategory alloc];
     v5 = @"CLINICAL_VITALS_CATEGORY";
@@ -598,7 +598,7 @@ LABEL_48:
     goto LABEL_48;
   }
 
-  if ([v3 isEqualToString:@"CONDITION_CATEGORY"])
+  if ([nameCopy isEqualToString:@"CONDITION_CATEGORY"])
   {
     v4 = [HKDisplayCategory alloc];
     v5 = @"CONDITION_CATEGORY";
@@ -608,7 +608,7 @@ LABEL_48:
     goto LABEL_48;
   }
 
-  if ([v3 isEqualToString:@"IMMUNIZATION_CATEGORY"])
+  if ([nameCopy isEqualToString:@"IMMUNIZATION_CATEGORY"])
   {
     v4 = [HKDisplayCategory alloc];
     v5 = @"IMMUNIZATION_CATEGORY";
@@ -618,7 +618,7 @@ LABEL_48:
     goto LABEL_48;
   }
 
-  if ([v3 isEqualToString:@"LAB_CATEGORY"])
+  if ([nameCopy isEqualToString:@"LAB_CATEGORY"])
   {
     v4 = [HKDisplayCategory alloc];
     v5 = @"LAB_CATEGORY";
@@ -628,7 +628,7 @@ LABEL_48:
     goto LABEL_48;
   }
 
-  if ([v3 isEqualToString:@"MEDICATIONS_CATEGORY"])
+  if ([nameCopy isEqualToString:@"MEDICATIONS_CATEGORY"])
   {
     v4 = [HKDisplayCategory alloc];
     v5 = @"MEDICATIONS_CATEGORY";
@@ -638,7 +638,7 @@ LABEL_48:
     goto LABEL_48;
   }
 
-  if ([v3 isEqualToString:@"PROCEDURE_CATEGORY"])
+  if ([nameCopy isEqualToString:@"PROCEDURE_CATEGORY"])
   {
     v4 = [HKDisplayCategory alloc];
     v5 = @"PROCEDURE_CATEGORY";
@@ -648,7 +648,7 @@ LABEL_48:
     goto LABEL_48;
   }
 
-  if ([v3 isEqualToString:@"MOBILITY"])
+  if ([nameCopy isEqualToString:@"MOBILITY"])
   {
     v4 = [HKDisplayCategory alloc];
     v5 = @"MOBILITY";
@@ -660,7 +660,7 @@ LABEL_48:
     goto LABEL_16;
   }
 
-  if ([v3 isEqualToString:@"SYMPTOMS"])
+  if ([nameCopy isEqualToString:@"SYMPTOMS"])
   {
     v4 = [HKDisplayCategory alloc];
     v5 = @"SYMPTOMS";
@@ -672,7 +672,7 @@ LABEL_48:
     goto LABEL_16;
   }
 
-  if ([v3 isEqualToString:@"INSURANCE_CATEGORY"])
+  if ([nameCopy isEqualToString:@"INSURANCE_CATEGORY"])
   {
     v4 = [HKDisplayCategory alloc];
     v5 = @"INSURANCE_CATEGORY";
@@ -682,7 +682,7 @@ LABEL_48:
     goto LABEL_48;
   }
 
-  if ([v3 isEqualToString:@"CLINICAL_NOTES_CATEGORY"])
+  if ([nameCopy isEqualToString:@"CLINICAL_NOTES_CATEGORY"])
   {
     v4 = [HKDisplayCategory alloc];
     v5 = @"CLINICAL_NOTES_CATEGORY";
@@ -692,7 +692,7 @@ LABEL_48:
     goto LABEL_48;
   }
 
-  if ([v3 isEqualToString:@"MEDICATION_TRACKING"])
+  if ([nameCopy isEqualToString:@"MEDICATION_TRACKING"])
   {
     v4 = [HKDisplayCategory alloc];
     v5 = @"MEDICATION_TRACKING";
@@ -710,21 +710,21 @@ LABEL_17:
   return v11;
 }
 
-- (HKDisplayCategory)initWithCategoryID:(int64_t)a3 displayName:(id)a4 listIconName:(id)a5 largeListIconName:(id)a6 shareIconName:(id)a7 systemImageName:(id)a8
+- (HKDisplayCategory)initWithCategoryID:(int64_t)d displayName:(id)name listIconName:(id)iconName largeListIconName:(id)listIconName shareIconName:(id)shareIconName systemImageName:(id)imageName
 {
-  v80 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  nameCopy = name;
+  iconNameCopy = iconName;
+  listIconNameCopy = listIconName;
+  shareIconNameCopy = shareIconName;
+  imageNameCopy = imageName;
   v81.receiver = self;
   v81.super_class = HKDisplayCategory;
   v18 = [(HKDisplayCategory *)&v81 init];
   v19 = v18;
   if (v18)
   {
-    v18->_categoryID = a3;
-    v20 = [v80 copy];
+    v18->_categoryID = d;
+    v20 = [nameCopy copy];
     categoryName = v19->_categoryName;
     v19->_categoryName = v20;
 
@@ -739,19 +739,19 @@ LABEL_17:
     embeddedDisplayName = v19->_embeddedDisplayName;
     v19->_embeddedDisplayName = v27;
 
-    v29 = [v15 copy];
+    v29 = [listIconNameCopy copy];
     largeListIconName = v19->_largeListIconName;
     v19->_largeListIconName = v29;
 
-    v31 = [v14 copy];
+    v31 = [iconNameCopy copy];
     listIconName = v19->_listIconName;
     v19->_listIconName = v31;
 
-    v33 = [v16 copy];
+    v33 = [shareIconNameCopy copy];
     shareIconName = v19->_shareIconName;
     v19->_shareIconName = v33;
 
-    v35 = [v17 copy];
+    v35 = [imageNameCopy copy];
     systemImageName = v19->_systemImageName;
     v19->_systemImageName = v35;
 
@@ -797,8 +797,8 @@ LABEL_17:
       v19->_embeddedDisplayName = v56;
     }
 
-    v79 = v16;
-    if ([(NSString *)v19->_displayName isEqualToString:v19->_categoryName, v17])
+    v79 = shareIconNameCopy;
+    if ([(NSString *)v19->_displayName isEqualToString:v19->_categoryName, imageNameCopy])
     {
       v58 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
       v59 = [v58 localizedStringForKey:v19->_categoryName value:&stru_1F42FFBE0 table:@"HealthUI-Localizable-Clinical-Notes"];
@@ -812,9 +812,9 @@ LABEL_17:
       v19->_embeddedDisplayName = v63;
     }
 
-    v65 = [MEMORY[0x1E696C608] sharedBehavior];
-    v66 = [v65 features];
-    if (([v66 chamomile] & 1) == 0)
+    mEMORY[0x1E696C608] = [MEMORY[0x1E696C608] sharedBehavior];
+    features = [mEMORY[0x1E696C608] features];
+    if (([features chamomile] & 1) == 0)
     {
 
       goto LABEL_14;
@@ -825,8 +825,8 @@ LABEL_17:
     v69 = [v68 localizedStringForKey:v19->_categoryName value:&stru_1F42FFBE0 table:@"HealthUI-Localizable-Chamomile"];
     LOBYTE(v67) = [(NSString *)v67 isEqualToString:v69];
 
-    v16 = v79;
-    v17 = v78;
+    shareIconNameCopy = v79;
+    imageNameCopy = v78;
     if ((v67 & 1) == 0)
     {
       v70 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
@@ -840,12 +840,12 @@ LABEL_17:
       v76 = v19->_embeddedDisplayName;
       v19->_embeddedDisplayName = v75;
 
-      v65 = v19->_systemImageName;
+      mEMORY[0x1E696C608] = v19->_systemImageName;
       v19->_systemImageName = @"brain.head.profile";
 LABEL_14:
 
-      v16 = v79;
-      v17 = v78;
+      shareIconNameCopy = v79;
+      imageNameCopy = v78;
     }
   }
 
@@ -865,19 +865,19 @@ LABEL_14:
 - (HKFillStyle)fillStyle
 {
   v3 = objc_alloc_init(HKSolidFillStyle);
-  v4 = [(HKDisplayCategory(BuiltinCategories) *)self color];
-  [(HKSolidFillStyle *)v3 setColor:v4];
+  color = [(HKDisplayCategory(BuiltinCategories) *)self color];
+  [(HKSolidFillStyle *)v3 setColor:color];
 
   return v3;
 }
 
 - (UIImage)largeListIcon
 {
-  v4 = [(HKDisplayCategory *)self _image];
-  v5 = v4;
-  if (v4)
+  _image = [(HKDisplayCategory *)self _image];
+  v5 = _image;
+  if (_image)
   {
-    v6 = v4;
+    v6 = _image;
   }
 
   else
@@ -908,11 +908,11 @@ LABEL_14:
 
 - (UIImage)shareIcon
 {
-  v4 = [(HKDisplayCategory *)self _image];
-  v5 = v4;
-  if (v4)
+  _image = [(HKDisplayCategory *)self _image];
+  v5 = _image;
+  if (_image)
   {
-    v6 = v4;
+    v6 = _image;
   }
 
   else
@@ -943,9 +943,9 @@ LABEL_14:
 
 - (BOOL)isTopLevelCategory
 {
-  v3 = [objc_opt_class() topLevelCategoryIdentifiers];
+  topLevelCategoryIdentifiers = [objc_opt_class() topLevelCategoryIdentifiers];
   v4 = [MEMORY[0x1E696AD98] numberWithInteger:self->_categoryID];
-  v5 = [v3 indexOfObject:v4] != 0x7FFFFFFFFFFFFFFFLL;
+  v5 = [topLevelCategoryIdentifiers indexOfObject:v4] != 0x7FFFFFFFFFFFFFFFLL;
 
   return v5;
 }

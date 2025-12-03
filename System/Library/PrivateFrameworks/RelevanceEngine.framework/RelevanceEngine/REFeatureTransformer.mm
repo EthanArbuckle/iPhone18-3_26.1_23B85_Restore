@@ -1,28 +1,28 @@
 @interface REFeatureTransformer
-+ (id)binaryTransformerWithThreshold:(id)a3;
-+ (id)bucketTransformerWithBitWidth:(unint64_t)a3;
-+ (id)bucketTransformerWithCount:(unint64_t)a3 minValue:(id)a4 maxValue:(id)a5;
-+ (id)changedTransformWithImpulseDuration:(double)a3;
-+ (id)customCategoricalTransformerWithName:(id)a3 block:(id)a4;
-+ (id)customCategoricalTransformerWithName:(id)a3 featureCount:(unint64_t)a4 transformation:(id)a5;
-+ (id)customTransformerWithName:(id)a3 outputType:(unint64_t)a4 block:(id)a5;
-+ (id)customTransformerWithName:(id)a3 outputType:(unint64_t)a4 featureCount:(unint64_t)a5 transformation:(id)a6;
++ (id)binaryTransformerWithThreshold:(id)threshold;
++ (id)bucketTransformerWithBitWidth:(unint64_t)width;
++ (id)bucketTransformerWithCount:(unint64_t)count minValue:(id)value maxValue:(id)maxValue;
++ (id)changedTransformWithImpulseDuration:(double)duration;
++ (id)customCategoricalTransformerWithName:(id)name block:(id)block;
++ (id)customCategoricalTransformerWithName:(id)name featureCount:(unint64_t)count transformation:(id)transformation;
++ (id)customTransformerWithName:(id)name outputType:(unint64_t)type block:(id)block;
++ (id)customTransformerWithName:(id)name outputType:(unint64_t)type featureCount:(unint64_t)count transformation:(id)transformation;
 + (id)featureTransformerClasses;
 + (id)hashTransform;
-+ (id)logTransformerWithBase:(id)a3;
-+ (id)maskAndShiftTransformWithStartIndex:(unint64_t)a3 endIndex:(unint64_t)a4;
-+ (id)maskTransformWithWidth:(unint64_t)a3;
-+ (id)recentTransformerWithCount:(unint64_t)a3;
++ (id)logTransformerWithBase:(id)base;
++ (id)maskAndShiftTransformWithStartIndex:(unint64_t)index endIndex:(unint64_t)endIndex;
++ (id)maskTransformWithWidth:(unint64_t)width;
++ (id)recentTransformerWithCount:(unint64_t)count;
 + (id)roundTransformer;
 - (REFeatureTransformer)init;
 - (id)_invalidationQueue;
 - (id)invalidationDelegate;
 - (void)_invalidate;
-- (void)_invalidationQueue_scheduleInvalidation:(id)a3;
+- (void)_invalidationQueue_scheduleInvalidation:(id)invalidation;
 - (void)_performAndScheduleTimer;
-- (void)configureWithInvocation:(id)a3;
-- (void)invalidateWithContext:(id)a3;
-- (void)setInvalidationDelegate:(id)a3;
+- (void)configureWithInvocation:(id)invocation;
+- (void)invalidateWithContext:(id)context;
+- (void)setInvalidationDelegate:(id)delegate;
 @end
 
 @implementation REFeatureTransformer
@@ -56,14 +56,14 @@ void __49__REFeatureTransformer_featureTransformerClasses__block_invoke()
   v2 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)bucketTransformerWithCount:(unint64_t)a3 minValue:(id)a4 maxValue:(id)a5
++ (id)bucketTransformerWithCount:(unint64_t)count minValue:(id)value maxValue:(id)maxValue
 {
   v17 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
-  v14 = RECreateIntegerFeatureValueTaggedPointer(a3);
-  v15 = RECreateFeatureValueTaggedPointer(v7);
-  v16 = RECreateFeatureValueTaggedPointer(v8);
+  valueCopy = value;
+  maxValueCopy = maxValue;
+  v14 = RECreateIntegerFeatureValueTaggedPointer(count);
+  v15 = RECreateFeatureValueTaggedPointer(valueCopy);
+  v16 = RECreateFeatureValueTaggedPointer(maxValueCopy);
   v9 = [RETransformerInvocation invocationWithArguments:&v14 count:3];
   for (i = 0; i != 24; i += 8)
   {
@@ -78,28 +78,28 @@ void __49__REFeatureTransformer_featureTransformerClasses__block_invoke()
   return v11;
 }
 
-+ (id)bucketTransformerWithBitWidth:(unint64_t)a3
++ (id)bucketTransformerWithBitWidth:(unint64_t)width
 {
-  v3 = a3;
+  widthCopy = width;
   v5 = [REFeatureValue featureValueWithDouble:0.0];
   v6 = [REFeatureValue featureValueWithDouble:1.0];
-  v7 = [a1 bucketTransformerWithCount:1 << v3 minValue:v5 maxValue:v6];
+  v7 = [self bucketTransformerWithCount:1 << widthCopy minValue:v5 maxValue:v6];
 
   return v7;
 }
 
-+ (id)logTransformerWithBase:(id)a3
++ (id)logTransformerWithBase:(id)base
 {
-  v3 = a3;
-  v4 = [[_RELogFeatureTransformer alloc] initWithBase:v3];
+  baseCopy = base;
+  v4 = [[_RELogFeatureTransformer alloc] initWithBase:baseCopy];
 
   return v4;
 }
 
-+ (id)binaryTransformerWithThreshold:(id)a3
++ (id)binaryTransformerWithThreshold:(id)threshold
 {
   v7[1] = *MEMORY[0x277D85DE8];
-  v7[0] = RECreateFeatureValueTaggedPointer(a3);
+  v7[0] = RECreateFeatureValueTaggedPointer(threshold);
   v3 = [RETransformerInvocation invocationWithArguments:v7 count:1];
   REReleaseFeatureValueTaggedPointer(v7[0]);
   v4 = objc_alloc_init(_REBinaryFeatureTransformer);
@@ -124,14 +124,14 @@ void __49__REFeatureTransformer_featureTransformerClasses__block_invoke()
   return v2;
 }
 
-+ (id)maskTransformWithWidth:(unint64_t)a3
++ (id)maskTransformWithWidth:(unint64_t)width
 {
-  v3 = [[_REWidthFeatureTransformer alloc] initWithWidth:a3 shift:0];
+  v3 = [[_REWidthFeatureTransformer alloc] initWithWidth:width shift:0];
 
   return v3;
 }
 
-+ (id)changedTransformWithImpulseDuration:(double)a3
++ (id)changedTransformWithImpulseDuration:(double)duration
 {
   v7[1] = *MEMORY[0x277D85DE8];
   v7[0] = RECreateDoubleFeatureValueTaggedPointer();
@@ -145,23 +145,23 @@ void __49__REFeatureTransformer_featureTransformerClasses__block_invoke()
   return v4;
 }
 
-+ (id)maskAndShiftTransformWithStartIndex:(unint64_t)a3 endIndex:(unint64_t)a4
++ (id)maskAndShiftTransformWithStartIndex:(unint64_t)index endIndex:(unint64_t)endIndex
 {
-  v5 = a4 - a3;
-  if (a4 < a3)
+  v5 = endIndex - index;
+  if (endIndex < index)
   {
-    [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"End index %lu must come after start index %lu", a4, a3}];
+    [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"End index %lu must come after start index %lu", endIndex, index}];
   }
 
-  v6 = [[_REWidthFeatureTransformer alloc] initWithWidth:v5 + 1 shift:a3];
+  v6 = [[_REWidthFeatureTransformer alloc] initWithWidth:v5 + 1 shift:index];
 
   return v6;
 }
 
-+ (id)recentTransformerWithCount:(unint64_t)a3
++ (id)recentTransformerWithCount:(unint64_t)count
 {
   v7[1] = *MEMORY[0x277D85DE8];
-  v7[0] = RECreateIntegerFeatureValueTaggedPointer(a3);
+  v7[0] = RECreateIntegerFeatureValueTaggedPointer(count);
   v3 = [RETransformerInvocation invocationWithArguments:v7 count:1];
   REReleaseFeatureValueTaggedPointer(v7[0]);
   v4 = objc_alloc_init(_RERecentFeatureTransformer);
@@ -172,18 +172,18 @@ void __49__REFeatureTransformer_featureTransformerClasses__block_invoke()
   return v4;
 }
 
-+ (id)customCategoricalTransformerWithName:(id)a3 block:(id)a4
++ (id)customCategoricalTransformerWithName:(id)name block:(id)block
 {
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  blockCopy = block;
+  v7 = blockCopy;
+  if (blockCopy)
   {
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __67__REFeatureTransformer_customCategoricalTransformerWithName_block___block_invoke;
     v10[3] = &unk_2785FC3A8;
-    v11 = v6;
-    v8 = [a1 customTransformerWithName:a3 outputType:1 block:v10];
+    v11 = blockCopy;
+    v8 = [self customTransformerWithName:name outputType:1 block:v10];
   }
 
   else
@@ -201,18 +201,18 @@ REFeatureValue *__67__REFeatureTransformer_customCategoricalTransformerWithName_
   return [REFeatureValue featureValueWithInt64:v1];
 }
 
-+ (id)customCategoricalTransformerWithName:(id)a3 featureCount:(unint64_t)a4 transformation:(id)a5
++ (id)customCategoricalTransformerWithName:(id)name featureCount:(unint64_t)count transformation:(id)transformation
 {
-  v8 = a5;
-  v9 = v8;
-  if (v8)
+  transformationCopy = transformation;
+  v9 = transformationCopy;
+  if (transformationCopy)
   {
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __89__REFeatureTransformer_customCategoricalTransformerWithName_featureCount_transformation___block_invoke;
     v12[3] = &unk_2785FC3D0;
-    v13 = v8;
-    v10 = [a1 customTransformerWithName:a3 outputType:1 featureCount:a4 transformation:v12];
+    v13 = transformationCopy;
+    v10 = [self customTransformerWithName:name outputType:1 featureCount:count transformation:v12];
   }
 
   else
@@ -230,18 +230,18 @@ REFeatureValue *__89__REFeatureTransformer_customCategoricalTransformerWithName_
   return [REFeatureValue featureValueWithInt64:v1];
 }
 
-+ (id)customTransformerWithName:(id)a3 outputType:(unint64_t)a4 block:(id)a5
++ (id)customTransformerWithName:(id)name outputType:(unint64_t)type block:(id)block
 {
-  v8 = a5;
-  v9 = v8;
-  if (v8)
+  blockCopy = block;
+  v9 = blockCopy;
+  if (blockCopy)
   {
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __67__REFeatureTransformer_customTransformerWithName_outputType_block___block_invoke;
     v12[3] = &unk_2785FC3D0;
-    v13 = v8;
-    v10 = [a1 customTransformerWithName:a3 outputType:a4 featureCount:1 transformation:v12];
+    v13 = blockCopy;
+    v10 = [self customTransformerWithName:name outputType:type featureCount:1 transformation:v12];
   }
 
   else
@@ -261,15 +261,15 @@ id __67__REFeatureTransformer_customTransformerWithName_outputType_block___block
   return v4;
 }
 
-+ (id)customTransformerWithName:(id)a3 outputType:(unint64_t)a4 featureCount:(unint64_t)a5 transformation:(id)a6
++ (id)customTransformerWithName:(id)name outputType:(unint64_t)type featureCount:(unint64_t)count transformation:(id)transformation
 {
-  if (a6)
+  if (transformation)
   {
-    v9 = a6;
-    v10 = a3;
-    v11 = [[_REBlockFeatureTransformer alloc] initWithFeatureCount:a5 outputFeatureType:a4 transformation:v9];
+    transformationCopy = transformation;
+    nameCopy = name;
+    v11 = [[_REBlockFeatureTransformer alloc] initWithFeatureCount:count outputFeatureType:type transformation:transformationCopy];
 
-    [(REFeatureTransformer *)v11 setName:v10];
+    [(REFeatureTransformer *)v11 setName:nameCopy];
   }
 
   else
@@ -295,9 +295,9 @@ id __67__REFeatureTransformer_customTransformerWithName_outputType_block___block
   return v2;
 }
 
-- (void)configureWithInvocation:(id)a3
+- (void)configureWithInvocation:(id)invocation
 {
-  if ([a3 numberOfArguments])
+  if ([invocation numberOfArguments])
   {
     v9 = *MEMORY[0x277CBE660];
 
@@ -325,9 +325,9 @@ void __42__REFeatureTransformer__invalidationQueue__block_invoke()
   _invalidationQueue_Queue = v0;
 }
 
-- (void)setInvalidationDelegate:(id)a3
+- (void)setInvalidationDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   if ([objc_opt_class() supportsInvalidation])
   {
     objc_storeWeak(&self->_invalidationDelegate, obj);
@@ -341,19 +341,19 @@ void __42__REFeatureTransformer__invalidationQueue__block_invoke()
   return WeakRetained;
 }
 
-- (void)invalidateWithContext:(id)a3
+- (void)invalidateWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   if ([objc_opt_class() supportsInvalidation])
   {
-    v5 = [(REFeatureTransformer *)self _invalidationQueue];
+    _invalidationQueue = [(REFeatureTransformer *)self _invalidationQueue];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __46__REFeatureTransformer_invalidateWithContext___block_invoke;
     v6[3] = &unk_2785F9AE0;
-    v7 = v4;
-    v8 = self;
-    dispatch_async(v5, v6);
+    v7 = contextCopy;
+    selfCopy = self;
+    dispatch_async(_invalidationQueue, v6);
   }
 }
 
@@ -373,12 +373,12 @@ void __46__REFeatureTransformer_invalidateWithContext___block_invoke(uint64_t a1
   }
 }
 
-- (void)_invalidationQueue_scheduleInvalidation:(id)a3
+- (void)_invalidationQueue_scheduleInvalidation:(id)invalidation
 {
-  v4 = a3;
+  invalidationCopy = invalidation;
   if (![(REPriorityQueue *)self->_scheduledUpdates containsObject:?])
   {
-    [(REPriorityQueue *)self->_scheduledUpdates insertObject:v4];
+    [(REPriorityQueue *)self->_scheduledUpdates insertObject:invalidationCopy];
   }
 
   [(REFeatureTransformer *)self _performAndScheduleTimer];
@@ -386,41 +386,41 @@ void __46__REFeatureTransformer_invalidateWithContext___block_invoke(uint64_t a1
 
 - (void)_performAndScheduleTimer
 {
-  v3 = [(REFeatureTransformer *)self _invalidationQueue];
-  dispatch_assert_queue_V2(v3);
+  _invalidationQueue = [(REFeatureTransformer *)self _invalidationQueue];
+  dispatch_assert_queue_V2(_invalidationQueue);
 
-  v4 = [MEMORY[0x277CBEAA8] date];
-  v5 = [(REPriorityQueue *)self->_scheduledUpdates minimumObject];
-  if (v5)
+  date = [MEMORY[0x277CBEAA8] date];
+  minimumObject = [(REPriorityQueue *)self->_scheduledUpdates minimumObject];
+  if (minimumObject)
   {
     do
     {
-      if ([v5 compare:v4] == 1)
+      if ([minimumObject compare:date] == 1)
       {
         break;
       }
 
       [(REFeatureTransformer *)self _invalidate];
       [(REPriorityQueue *)self->_scheduledUpdates removeMinimumObject];
-      v6 = [(REPriorityQueue *)self->_scheduledUpdates minimumObject];
+      minimumObject2 = [(REPriorityQueue *)self->_scheduledUpdates minimumObject];
 
-      v5 = v6;
+      minimumObject = minimumObject2;
     }
 
-    while (v6);
+    while (minimumObject2);
   }
 
   if ([(REPriorityQueue *)self->_scheduledUpdates count])
   {
-    v7 = [(REPriorityQueue *)self->_scheduledUpdates minimumObject];
+    minimumObject3 = [(REPriorityQueue *)self->_scheduledUpdates minimumObject];
     objc_initWeak(&location, self);
-    v8 = [(REFeatureTransformer *)self _invalidationQueue];
+    _invalidationQueue2 = [(REFeatureTransformer *)self _invalidationQueue];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __48__REFeatureTransformer__performAndScheduleTimer__block_invoke;
     v12[3] = &unk_2785F9B58;
     objc_copyWeak(&v13, &location);
-    v9 = [REUpNextTimer timerWithFireDate:v7 queue:v8 block:v12];
+    v9 = [REUpNextTimer timerWithFireDate:minimumObject3 queue:_invalidationQueue2 block:v12];
     updateTimer = self->_updateTimer;
     self->_updateTimer = v9;
 

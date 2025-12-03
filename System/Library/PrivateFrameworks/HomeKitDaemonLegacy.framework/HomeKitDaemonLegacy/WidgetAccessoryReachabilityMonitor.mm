@@ -1,26 +1,26 @@
 @interface WidgetAccessoryReachabilityMonitor
-- (BOOL)isAccessoryReachable:(id)a3;
+- (BOOL)isAccessoryReachable:(id)reachable;
 - (_TtC19HomeKitDaemonLegacy34WidgetAccessoryReachabilityMonitor)init;
-- (void)startMonitoringAccessories:(id)a3 stopMonitoring:(id)a4 completionHandler:(id)a5;
+- (void)startMonitoringAccessories:(id)accessories stopMonitoring:(id)monitoring completionHandler:(id)handler;
 @end
 
 @implementation WidgetAccessoryReachabilityMonitor
 
-- (BOOL)isAccessoryReachable:(id)a3
+- (BOOL)isAccessoryReachable:(id)reachable
 {
-  v3 = a3;
-  v4 = [v3 home];
-  if (v4)
+  reachableCopy = reachable;
+  home = [reachableCopy home];
+  if (home)
   {
-    v5 = v4;
-    v6 = [v4 isCurrentDevicePrimaryResident];
+    v5 = home;
+    isCurrentDevicePrimaryResident = [home isCurrentDevicePrimaryResident];
     v7 = &selRef_isReachable;
-    if (!v6)
+    if (!isCurrentDevicePrimaryResident)
     {
       v7 = &selRef_isRemotelyReachable;
     }
 
-    v8 = [v3 *v7];
+    v8 = [reachableCopy *v7];
   }
 
   else
@@ -31,13 +31,13 @@
   return v8;
 }
 
-- (void)startMonitoringAccessories:(id)a3 stopMonitoring:(id)a4 completionHandler:(id)a5
+- (void)startMonitoringAccessories:(id)accessories stopMonitoring:(id)monitoring completionHandler:(id)handler
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(qword_27F5A2C48, &unk_253D48880);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x28223BE20](v7 - 8);
   v10 = &v17 - v9;
-  v11 = _Block_copy(a5);
+  v11 = _Block_copy(handler);
   sub_253200644(0, &qword_281530EA0, off_279719FE0);
   sub_25320C584();
   v12 = sub_253CD0BF8();

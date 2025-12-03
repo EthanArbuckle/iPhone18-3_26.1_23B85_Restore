@@ -1,20 +1,20 @@
 @interface TLKKeyValueView
-+ (unint64_t)visibleRowsInGrid:(id)a3;
-- (BOOL)containerView:(id)a3 shouldRestartMeasurementDueToCompressionInAxis:(int64_t)a4 forReason:(int64_t)a5;
++ (unint64_t)visibleRowsInGrid:(id)grid;
+- (BOOL)containerView:(id)view shouldRestartMeasurementDueToCompressionInAxis:(int64_t)axis forReason:(int64_t)reason;
 - (BOOL)leadingGridIsHidden;
 - (BOOL)trailingGridIsHidden;
-- (CGRect)containerView:(id)a3 layoutFrameForArrangedSubview:(id)a4 withProposedFrame:(CGRect)a5;
+- (CGRect)containerView:(id)view layoutFrameForArrangedSubview:(id)subview withProposedFrame:(CGRect)frame;
 - (id)leadingTextKeyLabels;
 - (id)setupContentView;
 - (int64_t)currentStackViewDistribution;
 - (unint64_t)numberOfVisibleRowsForLeadingGrid;
 - (unint64_t)numberOfVisibleRowsForTrailingGrid;
 - (void)_reconfigureForCompressedState;
-- (void)containerView:(id)a3 willMeasureArrangedSubviewsFittingSize:(CGSize)a4 forReason:(int64_t)a5;
+- (void)containerView:(id)view willMeasureArrangedSubviewsFittingSize:(CGSize)size forReason:(int64_t)reason;
 - (void)observedPropertiesChanged;
-- (void)setImage:(id)a3;
-- (void)setLeadingTuples:(id)a3;
-- (void)setTrailingTuples:(id)a3;
+- (void)setImage:(id)image;
+- (void)setLeadingTuples:(id)tuples;
+- (void)setTrailingTuples:(id)tuples;
 @end
 
 @implementation TLKKeyValueView
@@ -37,10 +37,10 @@
   return v3;
 }
 
-- (void)setLeadingTuples:(id)a3
+- (void)setLeadingTuples:(id)tuples
 {
   v34 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  tuplesCopy = tuples;
   if (objc_opt_respondsToSelector())
   {
     [(NSArray *)self->_leadingTuples setObserver:0];
@@ -51,7 +51,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v23 = v5;
+      v23 = tuplesCopy;
       v30 = 0u;
       v31 = 0u;
       v28 = 0u;
@@ -84,11 +84,11 @@
         while (v8);
       }
 
-      v5 = v23;
+      tuplesCopy = v23;
     }
   }
 
-  objc_storeStrong(&self->_leadingTuples, a3);
+  objc_storeStrong(&self->_leadingTuples, tuples);
   if (objc_opt_respondsToSelector())
   {
     [(NSArray *)self->_leadingTuples setObserver:self];
@@ -133,25 +133,25 @@
     }
   }
 
-  v18 = [(TLKView *)self observer];
-  if (v18)
+  observer = [(TLKView *)self observer];
+  if (observer)
   {
-    v19 = v18;
-    v20 = [(TLKView *)self observer];
-    v21 = [v20 batchUpdateCount];
+    v19 = observer;
+    observer2 = [(TLKView *)self observer];
+    batchUpdateCount = [observer2 batchUpdateCount];
 
-    if (!v21)
+    if (!batchUpdateCount)
     {
-      v22 = [(TLKView *)self observer];
-      [v22 propertiesDidChange];
+      observer3 = [(TLKView *)self observer];
+      [observer3 propertiesDidChange];
     }
   }
 }
 
-- (void)setTrailingTuples:(id)a3
+- (void)setTrailingTuples:(id)tuples
 {
   v34 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  tuplesCopy = tuples;
   if (objc_opt_respondsToSelector())
   {
     [(NSArray *)self->_trailingTuples setObserver:0];
@@ -162,7 +162,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v23 = v5;
+      v23 = tuplesCopy;
       v30 = 0u;
       v31 = 0u;
       v28 = 0u;
@@ -195,11 +195,11 @@
         while (v8);
       }
 
-      v5 = v23;
+      tuplesCopy = v23;
     }
   }
 
-  objc_storeStrong(&self->_trailingTuples, a3);
+  objc_storeStrong(&self->_trailingTuples, tuples);
   if (objc_opt_respondsToSelector())
   {
     [(NSArray *)self->_trailingTuples setObserver:self];
@@ -244,49 +244,49 @@
     }
   }
 
-  v18 = [(TLKView *)self observer];
-  if (v18)
+  observer = [(TLKView *)self observer];
+  if (observer)
   {
-    v19 = v18;
-    v20 = [(TLKView *)self observer];
-    v21 = [v20 batchUpdateCount];
+    v19 = observer;
+    observer2 = [(TLKView *)self observer];
+    batchUpdateCount = [observer2 batchUpdateCount];
 
-    if (!v21)
+    if (!batchUpdateCount)
     {
-      v22 = [(TLKView *)self observer];
-      [v22 propertiesDidChange];
+      observer3 = [(TLKView *)self observer];
+      [observer3 propertiesDidChange];
     }
   }
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v10 = a3;
-  if (self->_image != v10)
+  imageCopy = image;
+  if (self->_image != imageCopy)
   {
-    objc_storeStrong(&self->_image, a3);
-    v5 = [(TLKView *)self observer];
-    if (v5)
+    objc_storeStrong(&self->_image, image);
+    observer = [(TLKView *)self observer];
+    if (observer)
     {
-      v6 = v5;
-      v7 = [(TLKView *)self observer];
-      v8 = [v7 batchUpdateCount];
+      v6 = observer;
+      observer2 = [(TLKView *)self observer];
+      batchUpdateCount = [observer2 batchUpdateCount];
 
-      if (!v8)
+      if (!batchUpdateCount)
       {
-        v9 = [(TLKView *)self observer];
-        [v9 propertiesDidChange];
+        observer3 = [(TLKView *)self observer];
+        [observer3 propertiesDidChange];
       }
     }
   }
 }
 
-- (void)containerView:(id)a3 willMeasureArrangedSubviewsFittingSize:(CGSize)a4 forReason:(int64_t)a5
+- (void)containerView:(id)view willMeasureArrangedSubviewsFittingSize:(CGSize)size forReason:(int64_t)reason
 {
-  width = a4.width;
-  if (self->_lastMeasuredWidth < a4.width)
+  width = size.width;
+  if (self->_lastMeasuredWidth < size.width)
   {
-    [(TLKKeyValueView *)self observedPropertiesChanged:a3];
+    [(TLKKeyValueView *)self observedPropertiesChanged:view];
   }
 
   self->_lastMeasuredWidth = width;
@@ -294,16 +294,16 @@
 
 - (void)_reconfigureForCompressedState
 {
-  v3 = [(TLKKeyValueView *)self trailingGrid];
-  [v3 setHidden:1];
+  trailingGrid = [(TLKKeyValueView *)self trailingGrid];
+  [trailingGrid setHidden:1];
 
   v12 = objc_opt_new();
   for (i = 0; ; ++i)
   {
-    v5 = [(TLKKeyValueView *)self leadingTuples];
-    v6 = [v5 count];
-    v7 = [(TLKKeyValueView *)self trailingTuples];
-    v8 = [v7 count] + v6;
+    leadingTuples = [(TLKKeyValueView *)self leadingTuples];
+    v6 = [leadingTuples count];
+    trailingTuples = [(TLKKeyValueView *)self trailingTuples];
+    v8 = [trailingTuples count] + v6;
 
     if (i >= v8)
     {
@@ -324,20 +324,20 @@
     [v12 addObject:v10];
   }
 
-  v11 = [(TLKKeyValueView *)self leadingGrid];
-  [v11 updateWithTuples:v12 valueColumnIsTrailing:0 truncateKey:1];
+  leadingGrid = [(TLKKeyValueView *)self leadingGrid];
+  [leadingGrid updateWithTuples:v12 valueColumnIsTrailing:0 truncateKey:1];
 }
 
-- (BOOL)containerView:(id)a3 shouldRestartMeasurementDueToCompressionInAxis:(int64_t)a4 forReason:(int64_t)a5
+- (BOOL)containerView:(id)view shouldRestartMeasurementDueToCompressionInAxis:(int64_t)axis forReason:(int64_t)reason
 {
-  if (a5 | a4)
+  if (reason | axis)
   {
     return 0;
   }
 
-  v7 = [(TLKKeyValueView *)self trailingTuples];
+  trailingTuples = [(TLKKeyValueView *)self trailingTuples];
 
-  if (!v7)
+  if (!trailingTuples)
   {
     return 0;
   }
@@ -348,46 +348,46 @@
 
 - (void)observedPropertiesChanged
 {
-  v3 = [(TLKKeyValueView *)self image];
-  v4 = [(TLKKeyValueView *)self imageView];
-  [v4 setTlkImage:v3];
+  image = [(TLKKeyValueView *)self image];
+  imageView = [(TLKKeyValueView *)self imageView];
+  [imageView setTlkImage:image];
 
-  v5 = [(TLKKeyValueView *)self image];
-  v6 = [(TLKKeyValueView *)self imageView];
-  [v6 setHidden:v5 == 0];
+  image2 = [(TLKKeyValueView *)self image];
+  imageView2 = [(TLKKeyValueView *)self imageView];
+  [imageView2 setHidden:image2 == 0];
 
-  v7 = [(TLKKeyValueView *)self leadingTuples];
-  v8 = [(TLKKeyValueView *)self leadingGrid];
-  [v8 setHidden:v7 == 0];
+  leadingTuples = [(TLKKeyValueView *)self leadingTuples];
+  leadingGrid = [(TLKKeyValueView *)self leadingGrid];
+  [leadingGrid setHidden:leadingTuples == 0];
 
-  v9 = [(TLKKeyValueView *)self trailingTuples];
-  v10 = [(TLKKeyValueView *)self trailingGrid];
-  [v10 setHidden:v9 == 0];
+  trailingTuples = [(TLKKeyValueView *)self trailingTuples];
+  trailingGrid = [(TLKKeyValueView *)self trailingGrid];
+  [trailingGrid setHidden:trailingTuples == 0];
 
-  v11 = [(TLKKeyValueView *)self trailingTuples];
-  v12 = v11 != 0;
+  trailingTuples2 = [(TLKKeyValueView *)self trailingTuples];
+  v12 = trailingTuples2 != 0;
 
-  v13 = [(TLKKeyValueView *)self leadingGrid];
-  v14 = [(TLKKeyValueView *)self leadingTuples];
-  [v13 updateWithTuples:v14 valueColumnIsTrailing:v12 truncateKey:v12];
+  leadingGrid2 = [(TLKKeyValueView *)self leadingGrid];
+  leadingTuples2 = [(TLKKeyValueView *)self leadingTuples];
+  [leadingGrid2 updateWithTuples:leadingTuples2 valueColumnIsTrailing:v12 truncateKey:v12];
 
-  v15 = [(TLKKeyValueView *)self trailingGrid];
-  v16 = [(TLKKeyValueView *)self trailingTuples];
-  [v15 updateWithTuples:v16 valueColumnIsTrailing:v12 truncateKey:v12];
+  trailingGrid2 = [(TLKKeyValueView *)self trailingGrid];
+  trailingTuples3 = [(TLKKeyValueView *)self trailingTuples];
+  [trailingGrid2 updateWithTuples:trailingTuples3 valueColumnIsTrailing:v12 truncateKey:v12];
 
-  v17 = [(TLKKeyValueView *)self image];
-  if (v17)
+  image3 = [(TLKKeyValueView *)self image];
+  if (image3)
   {
     v18 = 0;
   }
 
   else
   {
-    v19 = [(TLKKeyValueView *)self leadingTuples];
-    if (v19)
+    leadingTuples3 = [(TLKKeyValueView *)self leadingTuples];
+    if (leadingTuples3)
     {
-      v20 = [(TLKKeyValueView *)self trailingTuples];
-      v18 = v20 != 0;
+      trailingTuples4 = [(TLKKeyValueView *)self trailingTuples];
+      v18 = trailingTuples4 != 0;
     }
 
     else
@@ -396,11 +396,11 @@
     }
   }
 
-  v21 = [(TLKView *)self contentView];
-  [v21 setDistribution:v18];
+  contentView = [(TLKView *)self contentView];
+  [contentView setDistribution:v18];
 
-  v22 = [(TLKView *)self contentView];
-  v23 = v22;
+  contentView2 = [(TLKView *)self contentView];
+  v23 = contentView2;
   if (v18)
   {
     v24 = 1;
@@ -421,45 +421,45 @@
     v25 = 10.0;
   }
 
-  [v22 setAlignment:v24];
+  [contentView2 setAlignment:v24];
 
-  v26 = [(TLKView *)self contentView];
-  [v26 setSpacing:v25];
+  contentView3 = [(TLKView *)self contentView];
+  [contentView3 setSpacing:v25];
 }
 
-- (CGRect)containerView:(id)a3 layoutFrameForArrangedSubview:(id)a4 withProposedFrame:(CGRect)a5
+- (CGRect)containerView:(id)view layoutFrameForArrangedSubview:(id)subview withProposedFrame:(CGRect)frame
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v10 = a4;
-  v11 = [(TLKKeyValueView *)self imageView];
-  if (v11 == v10)
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  subviewCopy = subview;
+  imageView = [(TLKKeyValueView *)self imageView];
+  if (imageView == subviewCopy)
   {
 LABEL_11:
 
     goto LABEL_12;
   }
 
-  v12 = [(TLKKeyValueView *)self trailingGrid];
-  v13 = [v12 isHidden];
+  trailingGrid = [(TLKKeyValueView *)self trailingGrid];
+  isHidden = [trailingGrid isHidden];
 
-  if ((v13 & 1) == 0)
+  if ((isHidden & 1) == 0)
   {
     v30.origin.x = x;
     v30.origin.y = y;
     v30.size.width = width;
     v30.size.height = height;
     v14 = CGRectGetWidth(v30);
-    v15 = [(TLKKeyValueView *)self leadingGrid];
+    leadingGrid = [(TLKKeyValueView *)self leadingGrid];
     v16 = *MEMORY[0x1E695F060];
     v17 = *(MEMORY[0x1E695F060] + 8);
-    [v15 systemLayoutSizeFittingSize:{*MEMORY[0x1E695F060], v17}];
+    [leadingGrid systemLayoutSizeFittingSize:{*MEMORY[0x1E695F060], v17}];
     v19 = v18;
 
-    v20 = [(TLKKeyValueView *)self trailingGrid];
-    [v20 systemLayoutSizeFittingSize:{v16, v17}];
+    trailingGrid2 = [(TLKKeyValueView *)self trailingGrid];
+    [trailingGrid2 systemLayoutSizeFittingSize:{v16, v17}];
     v22 = v21;
 
     if (v19 >= v22)
@@ -482,9 +482,9 @@ LABEL_11:
     v31.size.width = width;
     v31.size.height = height;
     v24 = CGRectGetWidth(v31) - v14;
-    v11 = [(TLKKeyValueView *)self trailingGrid];
+    imageView = [(TLKKeyValueView *)self trailingGrid];
     v25 = 0.0;
-    if (v11 == v10)
+    if (imageView == subviewCopy)
     {
       v25 = v24;
     }
@@ -509,33 +509,33 @@ LABEL_12:
 
 - (int64_t)currentStackViewDistribution
 {
-  v2 = [(TLKView *)self contentView];
-  v3 = [v2 distribution];
+  contentView = [(TLKView *)self contentView];
+  distribution = [contentView distribution];
 
-  return v3;
+  return distribution;
 }
 
 - (BOOL)leadingGridIsHidden
 {
-  v2 = [(TLKKeyValueView *)self leadingGrid];
-  v3 = [v2 isHidden];
+  leadingGrid = [(TLKKeyValueView *)self leadingGrid];
+  isHidden = [leadingGrid isHidden];
 
-  return v3;
+  return isHidden;
 }
 
 - (BOOL)trailingGridIsHidden
 {
-  v2 = [(TLKKeyValueView *)self trailingGrid];
-  v3 = [v2 isHidden];
+  trailingGrid = [(TLKKeyValueView *)self trailingGrid];
+  isHidden = [trailingGrid isHidden];
 
-  return v3;
+  return isHidden;
 }
 
 - (unint64_t)numberOfVisibleRowsForLeadingGrid
 {
   v3 = objc_opt_class();
-  v4 = [(TLKKeyValueView *)self leadingGrid];
-  v5 = [v3 visibleRowsInGrid:v4];
+  leadingGrid = [(TLKKeyValueView *)self leadingGrid];
+  v5 = [v3 visibleRowsInGrid:leadingGrid];
 
   return v5;
 }
@@ -543,8 +543,8 @@ LABEL_12:
 - (unint64_t)numberOfVisibleRowsForTrailingGrid
 {
   v3 = objc_opt_class();
-  v4 = [(TLKKeyValueView *)self trailingGrid];
-  v5 = [v3 visibleRowsInGrid:v4];
+  trailingGrid = [(TLKKeyValueView *)self trailingGrid];
+  v5 = [v3 visibleRowsInGrid:trailingGrid];
 
   return v5;
 }
@@ -553,26 +553,26 @@ LABEL_12:
 {
   v3 = objc_opt_new();
   v4 = objc_opt_class();
-  v5 = [(TLKKeyValueView *)self leadingGrid];
-  v6 = [v4 visibleRowsInGrid:v5];
+  leadingGrid = [(TLKKeyValueView *)self leadingGrid];
+  v6 = [v4 visibleRowsInGrid:leadingGrid];
 
   if (v6)
   {
     v7 = 0;
     do
     {
-      v8 = [(TLKKeyValueView *)self leadingGrid];
-      v9 = [v8 keyLabels];
-      v10 = [v9 objectAtIndexedSubscript:v7];
-      v11 = [v10 text];
+      leadingGrid2 = [(TLKKeyValueView *)self leadingGrid];
+      keyLabels = [leadingGrid2 keyLabels];
+      v10 = [keyLabels objectAtIndexedSubscript:v7];
+      text = [v10 text];
 
-      if (v11)
+      if (text)
       {
-        v12 = [(TLKKeyValueView *)self leadingGrid];
-        v13 = [v12 keyLabels];
-        v14 = [v13 objectAtIndexedSubscript:v7];
-        v15 = [v14 text];
-        [v3 addObject:v15];
+        leadingGrid3 = [(TLKKeyValueView *)self leadingGrid];
+        keyLabels2 = [leadingGrid3 keyLabels];
+        v14 = [keyLabels2 objectAtIndexedSubscript:v7];
+        text2 = [v14 text];
+        [v3 addObject:text2];
       }
 
       else
@@ -582,8 +582,8 @@ LABEL_12:
 
       ++v7;
       v16 = objc_opt_class();
-      v17 = [(TLKKeyValueView *)self leadingGrid];
-      v18 = [v16 visibleRowsInGrid:v17];
+      leadingGrid4 = [(TLKKeyValueView *)self leadingGrid];
+      v18 = [v16 visibleRowsInGrid:leadingGrid4];
     }
 
     while (v7 < v18);
@@ -592,23 +592,23 @@ LABEL_12:
   return v3;
 }
 
-+ (unint64_t)visibleRowsInGrid:(id)a3
++ (unint64_t)visibleRowsInGrid:(id)grid
 {
-  v3 = a3;
-  if ([v3 numberOfRows])
+  gridCopy = grid;
+  if ([gridCopy numberOfRows])
   {
     v4 = 0;
     v5 = 0;
     do
     {
-      v6 = [v3 rowAtIndex:v4];
-      v7 = [v6 isHidden];
+      v6 = [gridCopy rowAtIndex:v4];
+      isHidden = [v6 isHidden];
 
-      v5 += v7 ^ 1u;
+      v5 += isHidden ^ 1u;
       ++v4;
     }
 
-    while (v4 < [v3 numberOfRows]);
+    while (v4 < [gridCopy numberOfRows]);
   }
 
   else

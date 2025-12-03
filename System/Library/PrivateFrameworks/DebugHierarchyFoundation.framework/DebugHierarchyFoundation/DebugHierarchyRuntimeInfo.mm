@@ -1,34 +1,34 @@
 @interface DebugHierarchyRuntimeInfo
-+ (id)runtimeInfoWithSerializedRepresentation:(id)a3;
++ (id)runtimeInfoWithSerializedRepresentation:(id)representation;
 - (DebugHierarchyRuntimeInfo)init;
-- (DebugHierarchyRuntimeInfo)initWithSerializedRepresentation:(id)a3;
-- (id)_describeTreeWithRoot:(id)a3 depth:(unint64_t)a4 description:(id)a5;
+- (DebugHierarchyRuntimeInfo)initWithSerializedRepresentation:(id)representation;
+- (id)_describeTreeWithRoot:(id)root depth:(unint64_t)depth description:(id)description;
 - (id)_topLevelTypes;
 - (id)debugDescription;
 - (id)serializedRepresentation;
-- (id)typeOfObject:(id)a3;
-- (id)typeWithName:(id)a3;
-- (void)_recursivelyIndexRuntimeType:(id)a3;
-- (void)_recursivelyMergeInRuntimeType:(id)a3;
+- (id)typeOfObject:(id)object;
+- (id)typeWithName:(id)name;
+- (void)_recursivelyIndexRuntimeType:(id)type;
+- (void)_recursivelyMergeInRuntimeType:(id)type;
 - (void)_reindexAllTypes;
-- (void)addType:(id)a3 toParentType:(id)a4;
+- (void)addType:(id)type toParentType:(id)parentType;
 - (void)clearData;
-- (void)mergeWith:(id)a3;
+- (void)mergeWith:(id)with;
 @end
 
 @implementation DebugHierarchyRuntimeInfo
 
-+ (id)runtimeInfoWithSerializedRepresentation:(id)a3
++ (id)runtimeInfoWithSerializedRepresentation:(id)representation
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithSerializedRepresentation:v4];
+  representationCopy = representation;
+  v5 = [[self alloc] initWithSerializedRepresentation:representationCopy];
 
   return v5;
 }
 
-- (DebugHierarchyRuntimeInfo)initWithSerializedRepresentation:(id)a3
+- (DebugHierarchyRuntimeInfo)initWithSerializedRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v5 = [(DebugHierarchyRuntimeInfo *)self init];
   if (v5)
   {
@@ -36,7 +36,7 @@
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v6 = v4;
+    v6 = representationCopy;
     v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v7)
     {
@@ -84,24 +84,24 @@
   return v2;
 }
 
-- (void)addType:(id)a3 toParentType:(id)a4
+- (void)addType:(id)type toParentType:(id)parentType
 {
-  v6 = a4;
-  v9 = a3;
-  v7 = [(DebugHierarchyRuntimeInfo *)self typeMap];
-  v8 = [v9 name];
-  [v7 setObject:v9 forKey:v8];
+  parentTypeCopy = parentType;
+  typeCopy = type;
+  typeMap = [(DebugHierarchyRuntimeInfo *)self typeMap];
+  name = [typeCopy name];
+  [typeMap setObject:typeCopy forKey:name];
 
-  [v6 addSubtype:v9];
+  [parentTypeCopy addSubtype:typeCopy];
 }
 
-- (id)typeWithName:(id)a3
+- (id)typeWithName:(id)name
 {
-  if (a3)
+  if (name)
   {
-    v4 = a3;
-    v5 = [(DebugHierarchyRuntimeInfo *)self typeMap];
-    v6 = [v5 objectForKeyedSubscript:v4];
+    nameCopy = name;
+    typeMap = [(DebugHierarchyRuntimeInfo *)self typeMap];
+    v6 = [typeMap objectForKeyedSubscript:nameCopy];
   }
 
   else
@@ -112,7 +112,7 @@
   return v6;
 }
 
-- (id)typeOfObject:(id)a3
+- (id)typeOfObject:(id)object
 {
   v4 = objc_opt_class();
   v5 = v4;
@@ -131,8 +131,8 @@
 
   if ([(objc_class *)v5 length])
   {
-    v6 = [(DebugHierarchyRuntimeInfo *)self typeMap];
-    v7 = [v6 objectForKeyedSubscript:v5];
+    typeMap = [(DebugHierarchyRuntimeInfo *)self typeMap];
+    v7 = [typeMap objectForKeyedSubscript:v5];
   }
 
   else
@@ -145,12 +145,12 @@
 
 - (void)_reindexAllTypes
 {
-  v3 = [(DebugHierarchyRuntimeInfo *)self _topLevelTypes];
+  _topLevelTypes = [(DebugHierarchyRuntimeInfo *)self _topLevelTypes];
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  v4 = [_topLevelTypes countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -162,7 +162,7 @@
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(_topLevelTypes);
         }
 
         [(DebugHierarchyRuntimeInfo *)self _recursivelyIndexRuntimeType:*(*(&v8 + 1) + 8 * v7)];
@@ -170,26 +170,26 @@
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [_topLevelTypes countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);
   }
 }
 
-- (void)_recursivelyIndexRuntimeType:(id)a3
+- (void)_recursivelyIndexRuntimeType:(id)type
 {
-  v4 = a3;
-  v5 = [(DebugHierarchyRuntimeInfo *)self typeMap];
-  v6 = [v4 name];
-  [v5 setObject:v4 forKeyedSubscript:v6];
+  typeCopy = type;
+  typeMap = [(DebugHierarchyRuntimeInfo *)self typeMap];
+  name = [typeCopy name];
+  [typeMap setObject:typeCopy forKeyedSubscript:name];
 
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v7 = [v4 subtypes];
-  v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  subtypes = [typeCopy subtypes];
+  v8 = [subtypes countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v8)
   {
     v9 = v8;
@@ -201,7 +201,7 @@
       {
         if (*v13 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(subtypes);
         }
 
         [(DebugHierarchyRuntimeInfo *)self _recursivelyIndexRuntimeType:*(*(&v12 + 1) + 8 * v11)];
@@ -209,7 +209,7 @@
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v9 = [subtypes countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v9);
@@ -218,13 +218,13 @@
 
 - (id)serializedRepresentation
 {
-  v2 = [(DebugHierarchyRuntimeInfo *)self _topLevelTypes];
-  v3 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v2 count]);
+  _topLevelTypes = [(DebugHierarchyRuntimeInfo *)self _topLevelTypes];
+  v3 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [_topLevelTypes count]);
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = v2;
+  v4 = _topLevelTypes;
   v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
@@ -239,8 +239,8 @@
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) dictionaryRepresentation];
-        [v3 addObject:v9];
+        dictionaryRepresentation = [*(*(&v12 + 1) + 8 * i) dictionaryRepresentation];
+        [v3 addObject:dictionaryRepresentation];
       }
 
       v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -261,10 +261,10 @@
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [(DebugHierarchyRuntimeInfo *)self typeMap];
-  v5 = [v4 allValues];
+  typeMap = [(DebugHierarchyRuntimeInfo *)self typeMap];
+  allValues = [typeMap allValues];
 
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v6 = [allValues countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -275,19 +275,19 @@
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allValues);
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
-        v11 = [v10 parentType];
+        parentType = [v10 parentType];
 
-        if (!v11)
+        if (!parentType)
         {
           [v3 addObject:v10];
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [allValues countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v7);
@@ -298,16 +298,16 @@
   return v12;
 }
 
-- (void)mergeWith:(id)a3
+- (void)mergeWith:(id)with
 {
-  if (a3)
+  if (with)
   {
-    v4 = [a3 _topLevelTypes];
+    _topLevelTypes = [with _topLevelTypes];
     v9 = 0u;
     v10 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+    v5 = [_topLevelTypes countByEnumeratingWithState:&v9 objects:v13 count:16];
     if (v5)
     {
       v6 = v5;
@@ -319,7 +319,7 @@
         {
           if (*v10 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(_topLevelTypes);
           }
 
           [(DebugHierarchyRuntimeInfo *)self _recursivelyMergeInRuntimeType:*(*(&v9 + 1) + 8 * v8)];
@@ -327,7 +327,7 @@
         }
 
         while (v6 != v8);
-        v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+        v6 = [_topLevelTypes countByEnumeratingWithState:&v9 objects:v13 count:16];
       }
 
       while (v6);
@@ -337,12 +337,12 @@
   }
 }
 
-- (void)_recursivelyMergeInRuntimeType:(id)a3
+- (void)_recursivelyMergeInRuntimeType:(id)type
 {
-  v4 = a3;
-  v5 = [(DebugHierarchyRuntimeInfo *)self typeMap];
-  v6 = [v4 name];
-  v7 = [v5 objectForKeyedSubscript:v6];
+  typeCopy = type;
+  typeMap = [(DebugHierarchyRuntimeInfo *)self typeMap];
+  name = [typeCopy name];
+  v7 = [typeMap objectForKeyedSubscript:name];
 
   if (v7)
   {
@@ -350,8 +350,8 @@
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v8 = [v4 subtypes];
-    v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    subtypes = [typeCopy subtypes];
+    v9 = [subtypes countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v9)
     {
       v10 = v9;
@@ -363,7 +363,7 @@
         {
           if (*v18 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(subtypes);
           }
 
           [(DebugHierarchyRuntimeInfo *)self _recursivelyMergeInRuntimeType:*(*(&v17 + 1) + 8 * v12)];
@@ -371,7 +371,7 @@
         }
 
         while (v10 != v12);
-        v10 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v10 = [subtypes countByEnumeratingWithState:&v17 objects:v21 count:16];
       }
 
       while (v10);
@@ -380,19 +380,19 @@
 
   else
   {
-    v13 = [(DebugHierarchyRuntimeInfo *)self typeMap];
-    v14 = [v4 parentType];
-    v15 = [v14 name];
-    v16 = [v13 objectForKeyedSubscript:v15];
+    typeMap2 = [(DebugHierarchyRuntimeInfo *)self typeMap];
+    parentType = [typeCopy parentType];
+    name2 = [parentType name];
+    v16 = [typeMap2 objectForKeyedSubscript:name2];
 
-    [(DebugHierarchyRuntimeInfo *)self addType:v4 toParentType:v16];
+    [(DebugHierarchyRuntimeInfo *)self addType:typeCopy toParentType:v16];
   }
 }
 
 - (void)clearData
 {
-  v2 = [(DebugHierarchyRuntimeInfo *)self typeMap];
-  [v2 removeAllObjects];
+  typeMap = [(DebugHierarchyRuntimeInfo *)self typeMap];
+  [typeMap removeAllObjects];
 }
 
 - (id)debugDescription
@@ -400,8 +400,8 @@
   v3 = [(DebugHierarchyRuntimeInfo *)self description];
   v4 = [v3 stringByAppendingString:@"\n"];
 
-  v5 = [(DebugHierarchyRuntimeInfo *)self _topLevelTypes];
-  v6 = [v5 mutableCopy];
+  _topLevelTypes = [(DebugHierarchyRuntimeInfo *)self _topLevelTypes];
+  v6 = [_topLevelTypes mutableCopy];
 
   if ([v6 count] >= 2)
   {
@@ -449,20 +449,20 @@
   return v4;
 }
 
-- (id)_describeTreeWithRoot:(id)a3 depth:(unint64_t)a4 description:(id)a5
+- (id)_describeTreeWithRoot:(id)root depth:(unint64_t)depth description:(id)description
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [&stru_29008 stringByPaddingToLength:a4 + 1 withString:@"-" startingAtIndex:0];
-  v11 = [v8 debugDescription];
-  v12 = [NSString stringWithFormat:@"%@%@ %@\n", v9, v10, v11];
+  rootCopy = root;
+  descriptionCopy = description;
+  v10 = [&stru_29008 stringByPaddingToLength:depth + 1 withString:@"-" startingAtIndex:0];
+  v11 = [rootCopy debugDescription];
+  v12 = [NSString stringWithFormat:@"%@%@ %@\n", descriptionCopy, v10, v11];
 
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v13 = [v8 subtypes];
-  v14 = [v13 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  subtypes = [rootCopy subtypes];
+  v14 = [subtypes countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v14)
   {
     v15 = v14;
@@ -475,17 +475,17 @@
       {
         if (*v21 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(subtypes);
         }
 
-        v12 = [(DebugHierarchyRuntimeInfo *)self _describeTreeWithRoot:*(*(&v20 + 1) + 8 * v17) depth:a4 + 1 description:v18];
+        v12 = [(DebugHierarchyRuntimeInfo *)self _describeTreeWithRoot:*(*(&v20 + 1) + 8 * v17) depth:depth + 1 description:v18];
 
         v17 = v17 + 1;
         v18 = v12;
       }
 
       while (v15 != v17);
-      v15 = [v13 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v15 = [subtypes countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v15);

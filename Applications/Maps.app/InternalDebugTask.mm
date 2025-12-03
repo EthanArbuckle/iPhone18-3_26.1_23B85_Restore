@@ -1,93 +1,93 @@
 @interface InternalDebugTask
 - (InternalDebugTask)init;
-- (void)_presentationControllerDismissalTransitionDidEndNotification:(id)a3;
-- (void)_presentationControllerDismissalTransitionWillBeginNotification:(id)a3;
-- (void)_presentationControllerPresentationTransitionDidEndNotification:(id)a3;
-- (void)_presentationControllerPresentationTransitionWillBeginNotification:(id)a3;
-- (void)_screenshotTakenNotification:(id)a3;
+- (void)_presentationControllerDismissalTransitionDidEndNotification:(id)notification;
+- (void)_presentationControllerDismissalTransitionWillBeginNotification:(id)notification;
+- (void)_presentationControllerPresentationTransitionDidEndNotification:(id)notification;
+- (void)_presentationControllerPresentationTransitionWillBeginNotification:(id)notification;
+- (void)_screenshotTakenNotification:(id)notification;
 @end
 
 @implementation InternalDebugTask
 
-- (void)_presentationControllerDismissalTransitionDidEndNotification:(id)a3
+- (void)_presentationControllerDismissalTransitionDidEndNotification:(id)notification
 {
-  v3 = a3;
-  v4 = [v3 userInfo];
-  v5 = [v4 objectForKey:UIPresentationControllerDismissalTransitionDidEndCompletedKey];
-  v6 = [v5 BOOLValue];
+  notificationCopy = notification;
+  userInfo = [notificationCopy userInfo];
+  v5 = [userInfo objectForKey:UIPresentationControllerDismissalTransitionDidEndCompletedKey];
+  bOOLValue = [v5 BOOLValue];
 
   v7 = sub_1007984E4();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v3 object];
+    object = [notificationCopy object];
     v9 = @"NO";
-    if (v6)
+    if (bOOLValue)
     {
       v9 = @"YES";
     }
 
     v10 = v9;
     v11 = 138543618;
-    v12 = v8;
+    v12 = object;
     v13 = 2114;
     v14 = v10;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "UIViewController was dismissed: %{public}@, completed: %{public}@", &v11, 0x16u);
   }
 }
 
-- (void)_presentationControllerDismissalTransitionWillBeginNotification:(id)a3
+- (void)_presentationControllerDismissalTransitionWillBeginNotification:(id)notification
 {
-  v3 = a3;
+  notificationCopy = notification;
   v4 = sub_1007984E4();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [v3 object];
+    object = [notificationCopy object];
     v6 = 138543362;
-    v7 = v5;
+    v7 = object;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "UIViewController will be dismissed: %{public}@", &v6, 0xCu);
   }
 }
 
-- (void)_presentationControllerPresentationTransitionDidEndNotification:(id)a3
+- (void)_presentationControllerPresentationTransitionDidEndNotification:(id)notification
 {
-  v3 = a3;
-  v4 = [v3 userInfo];
-  v5 = [v4 objectForKey:UIPresentationControllerPresentationTransitionDidEndCompletedKey];
-  v6 = [v5 BOOLValue];
+  notificationCopy = notification;
+  userInfo = [notificationCopy userInfo];
+  v5 = [userInfo objectForKey:UIPresentationControllerPresentationTransitionDidEndCompletedKey];
+  bOOLValue = [v5 BOOLValue];
 
   v7 = sub_1007984E4();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v3 object];
+    object = [notificationCopy object];
     v9 = @"NO";
-    if (v6)
+    if (bOOLValue)
     {
       v9 = @"YES";
     }
 
     v10 = v9;
     v11 = 138543618;
-    v12 = v8;
+    v12 = object;
     v13 = 2114;
     v14 = v10;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "UIViewController was presented: %{public}@, completed: %{public}@", &v11, 0x16u);
   }
 }
 
-- (void)_presentationControllerPresentationTransitionWillBeginNotification:(id)a3
+- (void)_presentationControllerPresentationTransitionWillBeginNotification:(id)notification
 {
-  v3 = a3;
+  notificationCopy = notification;
   v4 = sub_1007984E4();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [v3 object];
+    object = [notificationCopy object];
     v6 = 138543362;
-    v7 = v5;
+    v7 = object;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "UIViewController will be presented: %{public}@", &v6, 0xCu);
   }
 }
 
-- (void)_screenshotTakenNotification:(id)a3
+- (void)_screenshotTakenNotification:(id)notification
 {
   v3 = sub_1007984E4();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -209,8 +209,8 @@
 
       v25 = +[MapsInternalAlertPresentationController sharedInstance];
       v26 = +[UIApplication _maps_keyMapsWindow];
-      v27 = [v26 windowScene];
-      [v25 presentAlertController:v21 fromWindowScene:v27];
+      windowScene = [v26 windowScene];
+      [v25 presentAlertController:v21 fromWindowScene:windowScene];
 
 LABEL_23:
     }

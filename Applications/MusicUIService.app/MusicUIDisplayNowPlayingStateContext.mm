@@ -1,21 +1,21 @@
 @interface MusicUIDisplayNowPlayingStateContext
 + (id)stateContextForNowPlaying;
-- (MusicUIDisplayNowPlayingStateContext)initWithStateContext:(id)a3;
+- (MusicUIDisplayNowPlayingStateContext)initWithStateContext:(id)context;
 - (id)description;
 @end
 
 @implementation MusicUIDisplayNowPlayingStateContext
 
-- (MusicUIDisplayNowPlayingStateContext)initWithStateContext:(id)a3
+- (MusicUIDisplayNowPlayingStateContext)initWithStateContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v8.receiver = self;
   v8.super_class = MusicUIDisplayNowPlayingStateContext;
   v5 = [(MusicUIDisplayNowPlayingStateContext *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(MusicUIDisplayNowPlayingStateContext *)v5 setStateName:v4];
+    [(MusicUIDisplayNowPlayingStateContext *)v5 setStateName:contextCopy];
   }
 
   return v6;
@@ -23,7 +23,7 @@
 
 + (id)stateContextForNowPlaying
 {
-  v2 = [[a1 alloc] initWithStateContext:@"nowplaying"];
+  v2 = [[self alloc] initWithStateContext:@"nowplaying"];
 
   return v2;
 }

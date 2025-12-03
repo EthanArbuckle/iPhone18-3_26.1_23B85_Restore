@@ -1,27 +1,27 @@
 @interface DRAnalyticsEvent
-- (DRAnalyticsEvent)initWithEventName:(id)a3;
+- (DRAnalyticsEvent)initWithEventName:(id)name;
 - (NSDictionary)eventPayload;
 - (id)description;
-- (void)_queue_removeEventPayloadEntry:(id)a3;
-- (void)_queue_setEventPayloadEntry:(id)a3 value:(id)a4;
-- (void)_queue_setEventPayloadEntryToNull:(id)a3;
-- (void)removeEventPayloadEntry:(id)a3;
-- (void)setEventPayloadEntry:(id)a3 value:(id)a4;
-- (void)setEventPayloadEntryToNull:(id)a3;
+- (void)_queue_removeEventPayloadEntry:(id)entry;
+- (void)_queue_setEventPayloadEntry:(id)entry value:(id)value;
+- (void)_queue_setEventPayloadEntryToNull:(id)null;
+- (void)removeEventPayloadEntry:(id)entry;
+- (void)setEventPayloadEntry:(id)entry value:(id)value;
+- (void)setEventPayloadEntryToNull:(id)null;
 @end
 
 @implementation DRAnalyticsEvent
 
-- (DRAnalyticsEvent)initWithEventName:(id)a3
+- (DRAnalyticsEvent)initWithEventName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   v17.receiver = self;
   v17.super_class = DRAnalyticsEvent;
   v6 = [(DRAnalyticsEvent *)&v17 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_eventName, a3);
+    objc_storeStrong(&v6->_eventName, name);
     v8 = objc_alloc_init(NSMutableDictionary);
     mutableEventPayload = v7->_mutableEventPayload;
     v7->_mutableEventPayload = v8;
@@ -32,9 +32,9 @@
     v7->_stateQueue = v11;
 
     v13 = +[NSUUID UUID];
-    v14 = [v13 UUIDString];
+    uUIDString = [v13 UUIDString];
     eventUUID = v7->_eventUUID;
-    v7->_eventUUID = v14;
+    v7->_eventUUID = uUIDString;
   }
 
   return v7;
@@ -65,18 +65,18 @@
 
 - (id)description
 {
-  v3 = [(DRAnalyticsEvent *)self eventName];
-  v4 = [(DRAnalyticsEvent *)self eventUUID];
-  v5 = [(DRAnalyticsEvent *)self eventPayload];
-  v6 = [NSString stringWithFormat:@"EventName: %@ EventUUID: %@ EventPayload: %@", v3, v4, v5];
+  eventName = [(DRAnalyticsEvent *)self eventName];
+  eventUUID = [(DRAnalyticsEvent *)self eventUUID];
+  eventPayload = [(DRAnalyticsEvent *)self eventPayload];
+  v6 = [NSString stringWithFormat:@"EventName: %@ EventUUID: %@ EventPayload: %@", eventName, eventUUID, eventPayload];
 
   return v6;
 }
 
-- (void)setEventPayloadEntry:(id)a3 value:(id)a4
+- (void)setEventPayloadEntry:(id)entry value:(id)value
 {
-  v6 = a3;
-  v7 = a4;
+  entryCopy = entry;
+  valueCopy = value;
   dispatch_assert_queue_not_V2(self->_stateQueue);
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()))
@@ -84,15 +84,15 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = [v7 userInfo];
-      v9 = [v8 objectForKey:@"StaticString"];
+      userInfo = [valueCopy userInfo];
+      v9 = [userInfo objectForKey:@"StaticString"];
 
       if (!v9)
       {
-        v9 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%lu", [v7 code]);
+        v9 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%lu", [valueCopy code]);
       }
 
-      v7 = v9;
+      valueCopy = v9;
     }
 
     stateQueue = self->_stateQueue;
@@ -101,9 +101,9 @@
     block[2] = sub_10000F508;
     block[3] = &unk_100034FF0;
     block[4] = self;
-    v13 = v6;
-    v7 = v7;
-    v14 = v7;
+    v13 = entryCopy;
+    valueCopy = valueCopy;
+    v14 = valueCopy;
     dispatch_sync(stateQueue, block);
   }
 
@@ -112,14 +112,14 @@
     v11 = sub_1000118BC();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      sub_10001F5D4(v6, v7, v11);
+      sub_10001F5D4(entryCopy, valueCopy, v11);
     }
   }
 }
 
-- (void)setEventPayloadEntryToNull:(id)a3
+- (void)setEventPayloadEntryToNull:(id)null
 {
-  v4 = a3;
+  nullCopy = null;
   dispatch_assert_queue_not_V2(self->_stateQueue);
   stateQueue = self->_stateQueue;
   v7[0] = _NSConcreteStackBlock;
@@ -127,14 +127,14 @@
   v7[2] = sub_10000F5C4;
   v7[3] = &unk_100034AC0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = nullCopy;
+  v6 = nullCopy;
   dispatch_sync(stateQueue, v7);
 }
 
-- (void)removeEventPayloadEntry:(id)a3
+- (void)removeEventPayloadEntry:(id)entry
 {
-  v4 = a3;
+  entryCopy = entry;
   dispatch_assert_queue_not_V2(self->_stateQueue);
   stateQueue = self->_stateQueue;
   v7[0] = _NSConcreteStackBlock;
@@ -142,19 +142,19 @@
   v7[2] = sub_10000F67C;
   v7[3] = &unk_100034AC0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = entryCopy;
+  v6 = entryCopy;
   dispatch_sync(stateQueue, v7);
 }
 
-- (void)_queue_setEventPayloadEntry:(id)a3 value:(id)a4
+- (void)_queue_setEventPayloadEntry:(id)entry value:(id)value
 {
-  v6 = a3;
-  v7 = a4;
+  entryCopy = entry;
+  valueCopy = value;
   dispatch_assert_queue_V2(self->_stateQueue);
-  if (v6 && v7)
+  if (entryCopy && valueCopy)
   {
-    [(NSMutableDictionary *)self->_mutableEventPayload setObject:v7 forKey:v6];
+    [(NSMutableDictionary *)self->_mutableEventPayload setObject:valueCopy forKey:entryCopy];
   }
 
   else
@@ -167,15 +167,15 @@
   }
 }
 
-- (void)_queue_setEventPayloadEntryToNull:(id)a3
+- (void)_queue_setEventPayloadEntryToNull:(id)null
 {
-  v4 = a3;
+  nullCopy = null;
   dispatch_assert_queue_V2(self->_stateQueue);
-  if (v4)
+  if (nullCopy)
   {
     mutableEventPayload = self->_mutableEventPayload;
     v6 = +[NSNull null];
-    [(NSMutableDictionary *)mutableEventPayload setObject:v6 forKey:v4];
+    [(NSMutableDictionary *)mutableEventPayload setObject:v6 forKey:nullCopy];
   }
 
   else
@@ -188,12 +188,12 @@
   }
 }
 
-- (void)_queue_removeEventPayloadEntry:(id)a3
+- (void)_queue_removeEventPayloadEntry:(id)entry
 {
   stateQueue = self->_stateQueue;
-  v5 = a3;
+  entryCopy = entry;
   dispatch_assert_queue_V2(stateQueue);
-  [(NSMutableDictionary *)self->_mutableEventPayload setObject:0 forKeyedSubscript:v5];
+  [(NSMutableDictionary *)self->_mutableEventPayload setObject:0 forKeyedSubscript:entryCopy];
 }
 
 @end

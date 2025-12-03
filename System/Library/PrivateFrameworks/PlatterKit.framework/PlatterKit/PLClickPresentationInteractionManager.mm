@@ -1,35 +1,35 @@
 @interface PLClickPresentationInteractionManager
 + (void)initialize;
 - (BOOL)_delegateShouldAllowLongPressGesture;
-- (BOOL)_delegateShouldBeginInteractionWithTouchAtLocation:(CGPoint)a3;
-- (BOOL)_dismissIfPossibleWithTrigger:(int64_t)a3;
-- (BOOL)clickPresentationInteractionShouldBegin:(id)a3;
-- (BOOL)clickPresentationInteractionShouldPresent:(id)a3;
-- (BOOL)dismissIfPossible:(id)a3;
+- (BOOL)_delegateShouldBeginInteractionWithTouchAtLocation:(CGPoint)location;
+- (BOOL)_dismissIfPossibleWithTrigger:(int64_t)trigger;
+- (BOOL)clickPresentationInteractionShouldBegin:(id)begin;
+- (BOOL)clickPresentationInteractionShouldPresent:(id)present;
+- (BOOL)dismissIfPossible:(id)possible;
 - (BOOL)hasCommittedToPresentation;
-- (BOOL)presentIfPossible:(id)a3;
-- (PLClickPresentationInteractionManager)initWithPresentingViewController:(id)a3 delegate:(id)a4;
+- (BOOL)presentIfPossible:(id)possible;
+- (PLClickPresentationInteractionManager)initWithPresentingViewController:(id)controller delegate:(id)delegate;
 - (PLClickPresentationInteractionManagerDelegate)delegate;
 - (PLClickPresentationInteractionPresentable)presentedViewController;
 - (id)_delegateContainerView;
 - (id)_delegatePresentedViewController;
 - (id)_delegateTransitioningDelegate;
 - (id)_presentedViewController;
-- (id)clickPresentationInteraction:(id)a3 presentationForPresentingViewController:(id)a4;
-- (id)clickPresentationInteraction:(id)a3 previewForHighlightingAtLocation:(CGPoint)a4;
-- (unint64_t)activationStyleForClickPresentationInteraction:(id)a3;
+- (id)clickPresentationInteraction:(id)interaction presentationForPresentingViewController:(id)controller;
+- (id)clickPresentationInteraction:(id)interaction previewForHighlightingAtLocation:(CGPoint)location;
+- (unint64_t)activationStyleForClickPresentationInteraction:(id)interaction;
 - (void)_clickInteractionDidEnd;
-- (void)_clickPresentationTransitionDidDismiss:(BOOL)a3;
-- (void)_clickPresentationTransitionDidPresent:(BOOL)a3;
-- (void)_delegateDeclinedDismissingPresentedContentWithTrigger:(int64_t)a3;
+- (void)_clickPresentationTransitionDidDismiss:(BOOL)dismiss;
+- (void)_clickPresentationTransitionDidPresent:(BOOL)present;
+- (void)_delegateDeclinedDismissingPresentedContentWithTrigger:(int64_t)trigger;
 - (void)_delegateDidEndUserInteraction;
-- (void)_delegateShouldFinishInteractionThatReachedForceThreshold:(BOOL)a3 withCompletionBlock:(id)a4;
+- (void)_delegateShouldFinishInteractionThatReachedForceThreshold:(BOOL)threshold withCompletionBlock:(id)block;
 - (void)_delegateWillBeginUserInteraction;
-- (void)_delegateWillDismissPresentedContentWithTrigger:(int64_t)a3;
-- (void)_setPresentingViewControllerHighlighted:(BOOL)a3 animated:(BOOL)a4;
-- (void)clickPresentationInteractionEnded:(id)a3 wasCancelled:(BOOL)a4;
+- (void)_delegateWillDismissPresentedContentWithTrigger:(int64_t)trigger;
+- (void)_setPresentingViewControllerHighlighted:(BOOL)highlighted animated:(BOOL)animated;
+- (void)clickPresentationInteractionEnded:(id)ended wasCancelled:(BOOL)cancelled;
 - (void)resetForInitialInteraction;
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation PLClickPresentationInteractionManager
@@ -38,39 +38,39 @@
 {
   v3 = objc_opt_self();
 
-  if (v3 == a1)
+  if (v3 == self)
   {
 
     PLRegisterPlatterKitLogging();
   }
 }
 
-- (PLClickPresentationInteractionManager)initWithPresentingViewController:(id)a3 delegate:(id)a4
+- (PLClickPresentationInteractionManager)initWithPresentingViewController:(id)controller delegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  delegateCopy = delegate;
   v14.receiver = self;
   v14.super_class = PLClickPresentationInteractionManager;
   v8 = [(PLClickPresentationInteractionManager *)&v14 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_presentingViewController, v6);
-    [(PLClickPresentationInteractionManager *)v9 setDelegate:v7];
+    objc_storeWeak(&v8->_presentingViewController, controllerCopy);
+    [(PLClickPresentationInteractionManager *)v9 setDelegate:delegateCopy];
     v10 = [objc_alloc(MEMORY[0x277D75E40]) initWithDelegate:v9];
     clickPresentationInteraction = v9->_clickPresentationInteraction;
     v9->_clickPresentationInteraction = v10;
 
-    v12 = [v6 viewForPreview];
-    [v12 addInteraction:v9->_clickPresentationInteraction];
+    viewForPreview = [controllerCopy viewForPreview];
+    [viewForPreview addInteraction:v9->_clickPresentationInteraction];
   }
 
   return v9;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained != obj)
@@ -179,8 +179,8 @@
 
   else
   {
-    v6 = [WeakRetained presentingViewController];
-    if (v6)
+    presentingViewController = [WeakRetained presentingViewController];
+    if (presentingViewController)
     {
       v5 = [v4 isBeingDismissed] ^ 1;
     }
@@ -194,31 +194,31 @@
   return v5;
 }
 
-- (BOOL)presentIfPossible:(id)a3
+- (BOOL)presentIfPossible:(id)possible
 {
-  v4 = a3;
-  v5 = [(PLClickPresentationInteractionManager *)self hasCommittedToPresentation];
-  if (!v5)
+  possibleCopy = possible;
+  hasCommittedToPresentation = [(PLClickPresentationInteractionManager *)self hasCommittedToPresentation];
+  if (!hasCommittedToPresentation)
   {
     self->_didInteractionInitiateWithHint = 0;
-    v6 = [v4 copy];
+    v6 = [possibleCopy copy];
     presentationCompletion = self->_presentationCompletion;
     self->_presentationCompletion = v6;
 
     [(_UIClickPresentationInteraction *)self->_clickPresentationInteraction present];
   }
 
-  return !v5;
+  return !hasCommittedToPresentation;
 }
 
-- (BOOL)dismissIfPossible:(id)a3
+- (BOOL)dismissIfPossible:(id)possible
 {
-  v4 = a3;
+  possibleCopy = possible;
   WeakRetained = objc_loadWeakRetained(&self->_presentingViewController);
-  v6 = [WeakRetained presentedViewController];
+  presentedViewController = [WeakRetained presentedViewController];
 
-  v7 = !self->_didPresent || v6 == 0;
-  if (v7 || ([v6 isBeingDismissed] & 1) != 0)
+  v7 = !self->_didPresent || presentedViewController == 0;
+  if (v7 || ([presentedViewController isBeingDismissed] & 1) != 0)
   {
     v8 = 0;
   }
@@ -226,7 +226,7 @@
   else
   {
     self->_didPresent = 0;
-    v9 = [v4 copy];
+    v9 = [possibleCopy copy];
     dismissalCompletion = self->_dismissalCompletion;
     self->_dismissalCompletion = v9;
 
@@ -238,13 +238,13 @@
   return v8;
 }
 
-- (void)_clickPresentationTransitionDidPresent:(BOOL)a3
+- (void)_clickPresentationTransitionDidPresent:(BOOL)present
 {
-  v3 = a3;
+  presentCopy = present;
   self->_willPresent = 0;
   *&self->_clickPresentationInteractionManagerDelegateFlags &= ~0x200u;
   [(PLClickPresentationInteractionManager *)self _setPresentingViewControllerHighlighted:0 animated:0];
-  if (v3)
+  if (presentCopy)
   {
     self->_didPresent = 1;
     v7 = MEMORY[0x223D70F60](self->_presentationCompletion);
@@ -281,15 +281,15 @@
   }
 }
 
-- (void)_clickPresentationTransitionDidDismiss:(BOOL)a3
+- (void)_clickPresentationTransitionDidDismiss:(BOOL)dismiss
 {
-  if (a3)
+  if (dismiss)
   {
     [(PLClickPresentationInteractionManager *)self _clickInteractionDidEnd];
   }
 }
 
-- (BOOL)clickPresentationInteractionShouldBegin:(id)a3
+- (BOOL)clickPresentationInteractionShouldBegin:(id)begin
 {
   WeakRetained = objc_loadWeakRetained(&self->_presentingViewController);
   if ([WeakRetained isBeingDismissed])
@@ -297,10 +297,10 @@
     goto LABEL_2;
   }
 
-  v6 = [WeakRetained view];
-  v7 = [v6 window];
-  v5 = v7;
-  if (!v7)
+  view = [WeakRetained view];
+  window = [view window];
+  v5 = window;
+  if (!window)
   {
     goto LABEL_15;
   }
@@ -309,28 +309,28 @@
   {
 
 LABEL_7:
-    v6 = [(PLClickPresentationInteractionManager *)self _presentedViewController];
-    if (v6)
+    view = [(PLClickPresentationInteractionManager *)self _presentedViewController];
+    if (view)
     {
       if ((*&self->_clickPresentationInteractionManagerDelegateFlags & 0x10) != 0)
       {
         [(PLClickPresentationInteractionManager *)self _delegateWillBeginUserInteraction];
       }
 
-      v10 = [WeakRetained presentedViewController];
-      if (!v10)
+      presentedViewController = [WeakRetained presentedViewController];
+      if (!presentedViewController)
       {
         LOBYTE(v5) = 1;
         goto LABEL_15;
       }
 
-      v11 = v10;
-      LOBYTE(v5) = [v10 isBeingDismissed];
+      presentedViewController2 = presentedViewController;
+      LOBYTE(v5) = [presentedViewController isBeingDismissed];
     }
 
     else
     {
-      v11 = [WeakRetained presentedViewController];
+      presentedViewController2 = [WeakRetained presentedViewController];
       LOBYTE(v5) = 0;
     }
 
@@ -339,8 +339,8 @@ LABEL_15:
   }
 
   clickPresentationInteraction = self->_clickPresentationInteraction;
-  v9 = [WeakRetained viewForPreview];
-  [(_UIClickPresentationInteraction *)clickPresentationInteraction locationInView:v9];
+  viewForPreview = [WeakRetained viewForPreview];
+  [(_UIClickPresentationInteraction *)clickPresentationInteraction locationInView:viewForPreview];
   LODWORD(clickPresentationInteraction) = [(PLClickPresentationInteractionManager *)self _delegateShouldBeginInteractionWithTouchAtLocation:?];
 
   if (clickPresentationInteraction)
@@ -356,12 +356,12 @@ LABEL_16:
   return v5;
 }
 
-- (BOOL)clickPresentationInteractionShouldPresent:(id)a3
+- (BOOL)clickPresentationInteractionShouldPresent:(id)present
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(PLClickPresentationInteractionManager *)self _presentedViewController];
-  if (!v5)
+  presentCopy = present;
+  _presentedViewController = [(PLClickPresentationInteractionManager *)self _presentedViewController];
+  if (!_presentedViewController)
   {
     WeakRetained = objc_loadWeakRetained(&self->_presentingViewController);
     v8 = PLLogTransition;
@@ -384,8 +384,8 @@ LABEL_7:
     block[2] = __83__PLClickPresentationInteractionManager_clickPresentationInteractionShouldPresent___block_invoke;
     block[3] = &unk_278425620;
     objc_copyWeak(&v13, buf);
-    v11 = v4;
-    v12 = self;
+    v11 = presentCopy;
+    selfCopy = self;
     dispatch_async(MEMORY[0x277D85CD0], block);
 
     objc_destroyWeak(&v13);
@@ -448,11 +448,11 @@ uint64_t __83__PLClickPresentationInteractionManager_clickPresentationInteractio
   }
 }
 
-- (id)clickPresentationInteraction:(id)a3 presentationForPresentingViewController:(id)a4
+- (id)clickPresentationInteraction:(id)interaction presentationForPresentingViewController:(id)controller
 {
   v32 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  interactionCopy = interaction;
+  controllerCopy = controller;
   self->_willPresent = 1;
   WeakRetained = objc_loadWeakRetained(&self->_presentedViewController);
   if (!WeakRetained)
@@ -469,26 +469,26 @@ uint64_t __83__PLClickPresentationInteractionManager_clickPresentationInteractio
 
   if ((*&self->_clickPresentationInteractionManagerDelegateFlags & 2) != 0)
   {
-    v11 = [(PLClickPresentationInteractionManager *)self _delegateTransitioningDelegate];
+    _delegateTransitioningDelegate = [(PLClickPresentationInteractionManager *)self _delegateTransitioningDelegate];
   }
 
   else
   {
-    v11 = objc_alloc_init(PLExpandedPlatterTransitioningDelegate);
+    _delegateTransitioningDelegate = objc_alloc_init(PLExpandedPlatterTransitioningDelegate);
   }
 
-  v12 = v11;
+  v12 = _delegateTransitioningDelegate;
   v13 = objc_alloc(MEMORY[0x277D75E38]);
-  v14 = [(PLExpandedPlatterTransitioningDelegate *)v12 presentationControllerForPresentedViewController:WeakRetained presentingViewController:v7 sourceViewController:v7];
+  v14 = [(PLExpandedPlatterTransitioningDelegate *)v12 presentationControllerForPresentedViewController:WeakRetained presentingViewController:controllerCopy sourceViewController:controllerCopy];
   v15 = [v13 initWithPresentedViewController:WeakRetained presentationController:v14];
 
   objc_storeWeak(&self->_clickPresentation, v15);
   if (*&self->_clickPresentationInteractionManagerDelegateFlags)
   {
-    v16 = [(PLClickPresentationInteractionManager *)self _delegateContainerView];
-    if (v16)
+    _delegateContainerView = [(PLClickPresentationInteractionManager *)self _delegateContainerView];
+    if (_delegateContainerView)
     {
-      [v15 setCustomContainerView:v16];
+      [v15 setCustomContainerView:_delegateContainerView];
     }
   }
 
@@ -499,7 +499,7 @@ uint64_t __83__PLClickPresentationInteractionManager_clickPresentationInteractio
   v28[2] = __110__PLClickPresentationInteractionManager_clickPresentationInteraction_presentationForPresentingViewController___block_invoke;
   v28[3] = &unk_278425268;
   objc_copyWeak(&v29, buf);
-  v18 = [(PLClickPresentationPresentationTransition *)v17 initWithTransitionDelegate:v12 presentingViewController:v7 presentedViewController:WeakRetained completion:v28];
+  v18 = [(PLClickPresentationPresentationTransition *)v17 initWithTransitionDelegate:v12 presentingViewController:controllerCopy presentedViewController:WeakRetained completion:v28];
   [(PLClickPresentationTransition *)v18 setPropagatesPresentingViewTransform:[(PLClickPresentationInteractionManager *)self didInteractionInitiateWithHint]];
   [v15 setAppearanceTransition:v18];
   v19 = [PLClickPresentationDismissalTransition alloc];
@@ -508,14 +508,14 @@ uint64_t __83__PLClickPresentationInteractionManager_clickPresentationInteractio
   v25 = __110__PLClickPresentationInteractionManager_clickPresentationInteraction_presentationForPresentingViewController___block_invoke_2;
   v26 = &unk_278425268;
   objc_copyWeak(&v27, buf);
-  v20 = [(PLClickPresentationDismissalTransition *)v19 initWithTransitionDelegate:v12 presentingViewController:v7 presentedViewController:WeakRetained completion:&v23];
+  v20 = [(PLClickPresentationDismissalTransition *)v19 initWithTransitionDelegate:v12 presentingViewController:controllerCopy presentedViewController:WeakRetained completion:&v23];
   [(PLClickPresentationDismissalTransition *)v20 setPresentationTransition:v18, v23, v24, v25, v26];
   [v15 setDisappearanceTransition:v20];
   [WeakRetained loadViewIfNeeded];
   if (objc_opt_respondsToSelector())
   {
-    v21 = [WeakRetained viewForTouchContinuation];
-    [v15 setCustomViewForTouchContinuation:v21];
+    viewForTouchContinuation = [WeakRetained viewForTouchContinuation];
+    [v15 setCustomViewForTouchContinuation:viewForTouchContinuation];
   }
 
   objc_destroyWeak(&v27);
@@ -537,29 +537,29 @@ void __110__PLClickPresentationInteractionManager_clickPresentationInteraction_p
   [WeakRetained _clickPresentationTransitionDidDismiss:a2];
 }
 
-- (id)clickPresentationInteraction:(id)a3 previewForHighlightingAtLocation:(CGPoint)a4
+- (id)clickPresentationInteraction:(id)interaction previewForHighlightingAtLocation:(CGPoint)location
 {
   WeakRetained = objc_loadWeakRetained(&self->_presentingViewController);
-  v6 = [WeakRetained viewForPreview];
+  viewForPreview = [WeakRetained viewForPreview];
 
   [(PLClickPresentationInteractionManager *)self _setPresentingViewControllerHighlighted:1 animated:1];
-  v7 = [objc_alloc(MEMORY[0x277D76350]) initWithView:v6];
+  v7 = [objc_alloc(MEMORY[0x277D76350]) initWithView:viewForPreview];
 
   return v7;
 }
 
-- (void)clickPresentationInteractionEnded:(id)a3 wasCancelled:(BOOL)a4
+- (void)clickPresentationInteractionEnded:(id)ended wasCancelled:(BOOL)cancelled
 {
   [(PLClickPresentationInteractionManager *)self _setPresentingViewControllerHighlighted:0 animated:1];
 
   [(PLClickPresentationInteractionManager *)self _clickInteractionDidEnd];
 }
 
-- (unint64_t)activationStyleForClickPresentationInteraction:(id)a3
+- (unint64_t)activationStyleForClickPresentationInteraction:(id)interaction
 {
   if ((*&self->_clickPresentationInteractionManagerDelegateFlags & 0x100) != 0)
   {
-    return [(PLClickPresentationInteractionManager *)self _delegateShouldAllowLongPressGesture:a3]^ 1;
+    return [(PLClickPresentationInteractionManager *)self _delegateShouldAllowLongPressGesture:interaction]^ 1;
   }
 
   else
@@ -580,29 +580,29 @@ void __110__PLClickPresentationInteractionManager_clickPresentationInteraction_p
   return WeakRetained;
 }
 
-- (void)_setPresentingViewControllerHighlighted:(BOOL)a3 animated:(BOOL)a4
+- (void)_setPresentingViewControllerHighlighted:(BOOL)highlighted animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
+  animatedCopy = animated;
+  highlightedCopy = highlighted;
   WeakRetained = objc_loadWeakRetained(&self->_presentingViewController);
   if (objc_opt_respondsToSelector())
   {
-    if (v4)
+    if (animatedCopy)
     {
-      v7 = [MEMORY[0x277D26718] newDefaultHighlightAnimator];
+      newDefaultHighlightAnimator = [MEMORY[0x277D26718] newDefaultHighlightAnimator];
       v8 = MEMORY[0x277D85DD0];
       v9 = 3221225472;
       v10 = __90__PLClickPresentationInteractionManager__setPresentingViewControllerHighlighted_animated___block_invoke;
       v11 = &unk_278425100;
       v12 = WeakRetained;
-      v13 = v5;
-      [v7 addAnimations:&v8];
-      [v7 startAnimation];
+      v13 = highlightedCopy;
+      [newDefaultHighlightAnimator addAnimations:&v8];
+      [newDefaultHighlightAnimator startAnimation];
     }
 
     else
     {
-      [WeakRetained setHighlighted:v5];
+      [WeakRetained setHighlighted:highlightedCopy];
     }
   }
 }
@@ -614,11 +614,11 @@ void __110__PLClickPresentationInteractionManager_clickPresentationInteraction_p
     return 0;
   }
 
-  v3 = self;
+  selfCopy = self;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  LOBYTE(v3) = [WeakRetained clickPresentationInteractionManagerShouldAllowLongPressGesture:v3];
+  LOBYTE(selfCopy) = [WeakRetained clickPresentationInteractionManagerShouldAllowLongPressGesture:selfCopy];
 
-  return v3;
+  return selfCopy;
 }
 
 - (PLClickPresentationInteractionManagerDelegate)delegate
@@ -659,15 +659,15 @@ void __110__PLClickPresentationInteractionManager_clickPresentationInteraction_p
   return v4;
 }
 
-- (BOOL)_delegateShouldBeginInteractionWithTouchAtLocation:(CGPoint)a3
+- (BOOL)_delegateShouldBeginInteractionWithTouchAtLocation:(CGPoint)location
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = self;
+  y = location.y;
+  x = location.x;
+  selfCopy = self;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  LOBYTE(v5) = [WeakRetained clickPresentationInteractionManager:v5 shouldBeginInteractionWithTouchAtLocation:{x, y}];
+  LOBYTE(selfCopy) = [WeakRetained clickPresentationInteractionManager:selfCopy shouldBeginInteractionWithTouchAtLocation:{x, y}];
 
-  return v5;
+  return selfCopy;
 }
 
 - (void)_delegateWillBeginUserInteraction
@@ -682,40 +682,40 @@ void __110__PLClickPresentationInteractionManager_clickPresentationInteraction_p
   [WeakRetained clickPresentationInteractionManagerDidEndUserInteraction:self];
 }
 
-- (void)_delegateShouldFinishInteractionThatReachedForceThreshold:(BOOL)a3 withCompletionBlock:(id)a4
+- (void)_delegateShouldFinishInteractionThatReachedForceThreshold:(BOOL)threshold withCompletionBlock:(id)block
 {
-  v4 = a3;
-  v6 = a4;
+  thresholdCopy = threshold;
+  blockCopy = block;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained clickPresentationInteractionManager:self shouldFinishInteractionThatReachedForceThreshold:v4 withCompletionBlock:v6];
+  [WeakRetained clickPresentationInteractionManager:self shouldFinishInteractionThatReachedForceThreshold:thresholdCopy withCompletionBlock:blockCopy];
 }
 
-- (void)_delegateWillDismissPresentedContentWithTrigger:(int64_t)a3
+- (void)_delegateWillDismissPresentedContentWithTrigger:(int64_t)trigger
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained clickPresentationInteractionManager:self willDismissPresentedContentWithTrigger:a3];
+  [WeakRetained clickPresentationInteractionManager:self willDismissPresentedContentWithTrigger:trigger];
 }
 
-- (void)_delegateDeclinedDismissingPresentedContentWithTrigger:(int64_t)a3
+- (void)_delegateDeclinedDismissingPresentedContentWithTrigger:(int64_t)trigger
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained clickPresentationInteractionManager:self declinedDismissingPresentedContentWithTrigger:a3];
+  [WeakRetained clickPresentationInteractionManager:self declinedDismissingPresentedContentWithTrigger:trigger];
 }
 
-- (BOOL)_dismissIfPossibleWithTrigger:(int64_t)a3
+- (BOOL)_dismissIfPossibleWithTrigger:(int64_t)trigger
 {
   v12 = *MEMORY[0x277D85DE8];
   v5 = PLLogTransition;
   if (os_log_type_enabled(PLLogTransition, OS_LOG_TYPE_DEFAULT))
   {
-    if (a3 > 4)
+    if (trigger > 4)
     {
       v6 = 0;
     }
 
     else
     {
-      v6 = off_278425640[a3];
+      v6 = off_278425640[trigger];
     }
 
     *v11 = 138543362;
@@ -730,13 +730,13 @@ void __110__PLClickPresentationInteractionManager_clickPresentationInteraction_p
   {
     if ((clickPresentationInteractionManagerDelegateFlags & 0x40) != 0)
     {
-      [(PLClickPresentationInteractionManager *)self _delegateWillDismissPresentedContentWithTrigger:a3];
+      [(PLClickPresentationInteractionManager *)self _delegateWillDismissPresentedContentWithTrigger:trigger];
     }
   }
 
   else if ((clickPresentationInteractionManagerDelegateFlags & 0x80) != 0)
   {
-    [(PLClickPresentationInteractionManager *)self _delegateDeclinedDismissingPresentedContentWithTrigger:a3];
+    [(PLClickPresentationInteractionManager *)self _delegateDeclinedDismissingPresentedContentWithTrigger:trigger];
   }
 
   return v8;
@@ -757,8 +757,8 @@ void __110__PLClickPresentationInteractionManager_clickPresentationInteraction_p
       clickPresentationInteraction = self->_clickPresentationInteraction;
       self->_clickPresentationInteraction = v4;
 
-      v6 = [v7 viewForPreview];
-      [v6 addInteraction:self->_clickPresentationInteraction];
+      viewForPreview = [v7 viewForPreview];
+      [viewForPreview addInteraction:self->_clickPresentationInteraction];
 
       WeakRetained = v7;
     }

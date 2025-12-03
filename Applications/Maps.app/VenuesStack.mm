@@ -1,16 +1,16 @@
 @interface VenuesStack
-+ (id)cards:(id)a3 lastCardConformingToProtocol:(id)a4;
-+ (id)cardsFromArray:(id)a3 passingTest:(id)a4 ascending:(BOOL)a5;
-- (VenuesStack)initWithCardDealer:(id)a3;
++ (id)cards:(id)cards lastCardConformingToProtocol:(id)protocol;
++ (id)cardsFromArray:(id)array passingTest:(id)test ascending:(BOOL)ascending;
+- (VenuesStack)initWithCardDealer:(id)dealer;
 - (VenuesStackDataSource)dataSource;
 - (VenuesStackDelegate)delegate;
-- (id)lastCardConformingToProtocol:(id)a3;
-- (unint64_t)pushVenueCardItem:(id)a3 withSource:(unint64_t)a4;
-- (unint64_t)pushVenueCardItem:(id)a3 withSource:(unint64_t)a4 savePlaceCardSelectionState:(BOOL)a5;
+- (id)lastCardConformingToProtocol:(id)protocol;
+- (unint64_t)pushVenueCardItem:(id)item withSource:(unint64_t)source;
+- (unint64_t)pushVenueCardItem:(id)item withSource:(unint64_t)source savePlaceCardSelectionState:(BOOL)state;
 - (unint64_t)venueIdForCurrentCardStack;
 - (void)_notifyObserversStackDidChange;
 - (void)clearStack;
-- (void)popVenueCard:(id)a3;
+- (void)popVenueCard:(id)card;
 @end
 
 @implementation VenuesStack
@@ -63,29 +63,29 @@
   }
 }
 
-- (id)lastCardConformingToProtocol:(id)a3
+- (id)lastCardConformingToProtocol:(id)protocol
 {
-  v4 = a3;
-  v5 = [objc_opt_class() cards:self->_cardStack lastCardConformingToProtocol:v4];
+  protocolCopy = protocol;
+  v5 = [objc_opt_class() cards:self->_cardStack lastCardConformingToProtocol:protocolCopy];
 
   return v5;
 }
 
 - (unint64_t)venueIdForCurrentCardStack
 {
-  v2 = [(NSArray *)self->_cardStack firstObject];
-  v3 = v2;
-  if (v2)
+  firstObject = [(NSArray *)self->_cardStack firstObject];
+  v3 = firstObject;
+  if (firstObject)
   {
-    v4 = [v2 venueID];
+    venueID = [firstObject venueID];
   }
 
   else
   {
-    v4 = 0;
+    venueID = 0;
   }
 
-  return v4;
+  return venueID;
 }
 
 - (void)clearStack
@@ -97,11 +97,11 @@
   [(VenuesStack *)self _notifyObserversStackDidChange];
 }
 
-- (void)popVenueCard:(id)a3
+- (void)popVenueCard:(id)card
 {
-  v12 = a3;
-  v4 = [(NSArray *)self->_cardStack lastObject];
-  if (v4)
+  cardCopy = card;
+  lastObject = [(NSArray *)self->_cardStack lastObject];
+  if (lastObject)
   {
     v5 = [(NSArray *)self->_cardStack count];
     v6 = v5 - 1;
@@ -126,23 +126,23 @@
     self->_cardStack = v10;
 
     [(VenuesStack *)self _notifyObserversStackDidChange];
-    if (v12)
+    if (cardCopy)
     {
-      v12[2](v12, v4, v7, v8);
+      cardCopy[2](cardCopy, lastObject, v7, v8);
     }
   }
 
-  else if (v12)
+  else if (cardCopy)
   {
-    v12[2](v12, 0, 0, 0);
+    cardCopy[2](cardCopy, 0, 0, 0);
   }
 }
 
-- (unint64_t)pushVenueCardItem:(id)a3 withSource:(unint64_t)a4 savePlaceCardSelectionState:(BOOL)a5
+- (unint64_t)pushVenueCardItem:(id)item withSource:(unint64_t)source savePlaceCardSelectionState:(BOOL)state
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = [(VenueCardDealer *)self->_dealer newHandFromExistingHand:self->_cardStack nextTopCard:v8 source:a4];
+  stateCopy = state;
+  itemCopy = item;
+  v9 = [(VenueCardDealer *)self->_dealer newHandFromExistingHand:self->_cardStack nextTopCard:itemCopy source:source];
   if (v9 == self->_cardStack)
   {
     v13 = 1;
@@ -150,7 +150,7 @@
 
   else
   {
-    v10 = [(VenueCardDealer *)self->_dealer existingCardForHand:v9 cardItem:v8];
+    v10 = [(VenueCardDealer *)self->_dealer existingCardForHand:v9 cardItem:itemCopy];
     if (v10)
     {
       v11 = [(NSArray *)v9 indexOfObject:v10];
@@ -164,14 +164,14 @@
         v12 = 0;
       }
 
-      v14 = [(VenuesStack *)self dataSource];
-      v15 = [v14 stateForNewCardItem:v10 previousItemInStack:v12 savePlaceCardSelectionState:v5];
+      dataSource = [(VenuesStack *)self dataSource];
+      v15 = [dataSource stateForNewCardItem:v10 previousItemInStack:v12 savePlaceCardSelectionState:stateCopy];
 
-      v16 = [(NSArray *)self->_cardStack lastObject];
+      lastObject = [(NSArray *)self->_cardStack lastObject];
       v28 = v12;
-      if ([(NSArray *)v9 containsObject:v16])
+      if ([(NSArray *)v9 containsObject:lastObject])
       {
-        [(NSMapTable *)self->_cardToPreviousStateMapping setObject:v15 forKey:v16];
+        [(NSMapTable *)self->_cardToPreviousStateMapping setObject:v15 forKey:lastObject];
       }
 
       else if (![(NSArray *)self->_cardStack count])
@@ -213,7 +213,7 @@
       cardStack = self->_cardStack;
       self->_cardStack = v23;
 
-      if ([v18 count] && (-[VenuesStack delegate](self, "delegate"), v25 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v25, "venuesStack:reorderedStackAndRemovedCardItems:", self, v18), v25, a4 == 1))
+      if ([v18 count] && (-[VenuesStack delegate](self, "delegate"), v25 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v25, "venuesStack:reorderedStackAndRemovedCardItems:", self, v18), v25, source == 1))
       {
         v13 = 3;
       }
@@ -234,17 +234,17 @@
   return v13;
 }
 
-- (unint64_t)pushVenueCardItem:(id)a3 withSource:(unint64_t)a4
+- (unint64_t)pushVenueCardItem:(id)item withSource:(unint64_t)source
 {
-  v6 = a3;
-  v7 = -[VenuesStack pushVenueCardItem:withSource:savePlaceCardSelectionState:](self, "pushVenueCardItem:withSource:savePlaceCardSelectionState:", v6, a4, [v6 conformsToProtocol:&OBJC_PROTOCOL___VenuePlaceCardItem]);
+  itemCopy = item;
+  v7 = -[VenuesStack pushVenueCardItem:withSource:savePlaceCardSelectionState:](self, "pushVenueCardItem:withSource:savePlaceCardSelectionState:", itemCopy, source, [itemCopy conformsToProtocol:&OBJC_PROTOCOL___VenuePlaceCardItem]);
 
   return v7;
 }
 
-- (VenuesStack)initWithCardDealer:(id)a3
+- (VenuesStack)initWithCardDealer:(id)dealer
 {
-  v5 = a3;
+  dealerCopy = dealer;
   v15.receiver = self;
   v15.super_class = VenuesStack;
   v6 = [(VenuesStack *)&v15 init];
@@ -258,7 +258,7 @@
     cardToPreviousStateMapping = v7->_cardToPreviousStateMapping;
     v7->_cardToPreviousStateMapping = v9;
 
-    objc_storeStrong(&v7->_dealer, a3);
+    objc_storeStrong(&v7->_dealer, dealer);
     v11 = +[NSHashTable weakObjectsHashTable];
     stackObservers = v7->_stackObservers;
     v7->_stackObservers = v11;
@@ -272,18 +272,18 @@
   return v7;
 }
 
-+ (id)cardsFromArray:(id)a3 passingTest:(id)a4 ascending:(BOOL)a5
++ (id)cardsFromArray:(id)array passingTest:(id)test ascending:(BOOL)ascending
 {
-  v5 = a5;
-  v7 = a3;
-  v8 = a4;
+  ascendingCopy = ascending;
+  arrayCopy = array;
+  testCopy = test;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
   v19 = sub_100D12B70;
   v20 = sub_100D12B80;
   v21 = 0;
-  if (v5)
+  if (ascendingCopy)
   {
     v9 = 0;
   }
@@ -297,10 +297,10 @@
   v13[1] = 3221225472;
   v13[2] = sub_100D12B88;
   v13[3] = &unk_101651560;
-  v10 = v8;
+  v10 = testCopy;
   v14 = v10;
   v15 = &v16;
-  [v7 enumerateObjectsWithOptions:v9 usingBlock:v13];
+  [arrayCopy enumerateObjectsWithOptions:v9 usingBlock:v13];
   v11 = v17[5];
 
   _Block_object_dispose(&v16, 8);
@@ -308,15 +308,15 @@
   return v11;
 }
 
-+ (id)cards:(id)a3 lastCardConformingToProtocol:(id)a4
++ (id)cards:(id)cards lastCardConformingToProtocol:(id)protocol
 {
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100D12CD4;
   v9[3] = &unk_101651538;
-  v10 = a4;
-  v6 = v10;
-  v7 = [a1 cardsFromArray:a3 passingTest:v9 ascending:0];
+  protocolCopy = protocol;
+  v6 = protocolCopy;
+  v7 = [self cardsFromArray:cards passingTest:v9 ascending:0];
 
   return v7;
 }

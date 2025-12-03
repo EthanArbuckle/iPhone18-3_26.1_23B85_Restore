@@ -1,25 +1,25 @@
 @interface SDAirDropHandleriBooksItems
 - (BOOL)canHandleTransfer;
-- (SDAirDropHandleriBooksItems)initWithTransfer:(id)a3;
+- (SDAirDropHandleriBooksItems)initWithTransfer:(id)transfer;
 - (int64_t)transferTypes;
 @end
 
 @implementation SDAirDropHandleriBooksItems
 
-- (SDAirDropHandleriBooksItems)initWithTransfer:(id)a3
+- (SDAirDropHandleriBooksItems)initWithTransfer:(id)transfer
 {
   v9.receiver = self;
   v9.super_class = SDAirDropHandleriBooksItems;
-  v3 = [(SDAirDropHandlerGenericFiles *)&v9 initWithTransfer:a3 bundleIdentifier:@"com.apple.iBooks"];
+  v3 = [(SDAirDropHandlerGenericFiles *)&v9 initWithTransfer:transfer bundleIdentifier:@"com.apple.iBooks"];
   v4 = v3;
   if (v3)
   {
-    v5 = [(SDAirDropHandler *)v3 bundleProxy];
+    bundleProxy = [(SDAirDropHandler *)v3 bundleProxy];
 
-    if (v5)
+    if (bundleProxy)
     {
-      v6 = [(SDAirDropHandler *)v4 bundleProxy];
-      v10 = v6;
+      bundleProxy2 = [(SDAirDropHandler *)v4 bundleProxy];
+      v10 = bundleProxy2;
       v7 = [NSArray arrayWithObjects:&v10 count:1];
       [(SDAirDropHandlerGenericFiles *)v4 setAvailableApplications:v7];
     }
@@ -30,24 +30,24 @@
 
 - (BOOL)canHandleTransfer
 {
-  v3 = [(SDAirDropHandler *)self isJustFiles];
-  v4 = [(SDAirDropHandler *)self transfer];
-  v5 = [v4 metaData];
-  v6 = [v5 items];
-  v7 = [v6 count];
+  isJustFiles = [(SDAirDropHandler *)self isJustFiles];
+  transfer = [(SDAirDropHandler *)self transfer];
+  metaData = [transfer metaData];
+  items = [metaData items];
+  v7 = [items count];
 
   result = 0;
-  if (v3 && v7 >= 2)
+  if (isJustFiles && v7 >= 2)
   {
     v25 = 0u;
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v9 = [(SDAirDropHandler *)self transfer];
-    v10 = [v9 metaData];
-    v11 = [v10 items];
+    transfer2 = [(SDAirDropHandler *)self transfer];
+    metaData2 = [transfer2 metaData];
+    items2 = [metaData2 items];
 
-    v12 = [v11 countByEnumeratingWithState:&v23 objects:v27 count:16];
+    v12 = [items2 countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v12)
     {
       v13 = v12;
@@ -59,21 +59,21 @@
         {
           if (*v24 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(items2);
           }
 
           v17 = *(*(&v23 + 1) + 8 * i);
-          v18 = [v17 type];
+          type = [v17 type];
           v15 &= SFIsePub();
 
-          v19 = [v17 type];
+          type2 = [v17 type];
           if (SFIsPDF())
           {
           }
 
           else
           {
-            v20 = [v17 type];
+            type3 = [v17 type];
             v21 = SFIsePub();
 
             if (!v21)
@@ -84,7 +84,7 @@
           }
         }
 
-        v13 = [v11 countByEnumeratingWithState:&v23 objects:v27 count:16];
+        v13 = [items2 countByEnumeratingWithState:&v23 objects:v27 count:16];
         if (v13)
         {
           continue;

@@ -1,7 +1,7 @@
 @interface HMDUserPresenceFeed
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HMDUser)user;
-- (HMDUserPresenceFeed)initWithUser:(id)a3 presenceAuthStatus:(id)a4 presenceComputeStatus:(id)a5 presenceRegion:(id)a6 reason:(id)a7;
+- (HMDUserPresenceFeed)initWithUser:(id)user presenceAuthStatus:(id)status presenceComputeStatus:(id)computeStatus presenceRegion:(id)region reason:(id)reason;
 - (id)description;
 @end
 
@@ -14,10 +14,10 @@
   return WeakRetained;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v23 = 1;
   }
@@ -27,7 +27,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -41,44 +41,44 @@
       goto LABEL_11;
     }
 
-    v7 = [(HMDUserPresenceFeed *)self user];
-    v8 = [v7 uuid];
-    v9 = [(HMDUserPresenceFeed *)v6 user];
-    v10 = [v9 uuid];
-    v11 = [v8 isEqual:v10];
+    user = [(HMDUserPresenceFeed *)self user];
+    uuid = [user uuid];
+    user2 = [(HMDUserPresenceFeed *)v6 user];
+    uuid2 = [user2 uuid];
+    v11 = [uuid isEqual:uuid2];
 
     if (!v11)
     {
       goto LABEL_11;
     }
 
-    v12 = [(HMDUserPresenceFeed *)self presenceAuthStatus];
-    v13 = [(HMDUserPresenceFeed *)v6 presenceAuthStatus];
-    v14 = [v12 isEqual:v13];
+    presenceAuthStatus = [(HMDUserPresenceFeed *)self presenceAuthStatus];
+    presenceAuthStatus2 = [(HMDUserPresenceFeed *)v6 presenceAuthStatus];
+    v14 = [presenceAuthStatus isEqual:presenceAuthStatus2];
 
     if (!v14)
     {
       goto LABEL_11;
     }
 
-    v15 = [(HMDUserPresenceFeed *)self presenceComputeStatus];
-    v16 = [(HMDUserPresenceFeed *)v6 presenceComputeStatus];
-    v17 = [v15 isEqual:v16];
+    presenceComputeStatus = [(HMDUserPresenceFeed *)self presenceComputeStatus];
+    presenceComputeStatus2 = [(HMDUserPresenceFeed *)v6 presenceComputeStatus];
+    v17 = [presenceComputeStatus isEqual:presenceComputeStatus2];
 
     if (!v17)
     {
       goto LABEL_11;
     }
 
-    v18 = [(HMDUserPresenceFeed *)self presenceRegion];
-    v19 = [(HMDUserPresenceFeed *)v6 presenceRegion];
-    v20 = [v18 isEqual:v19];
+    presenceRegion = [(HMDUserPresenceFeed *)self presenceRegion];
+    presenceRegion2 = [(HMDUserPresenceFeed *)v6 presenceRegion];
+    v20 = [presenceRegion isEqual:presenceRegion2];
 
     if (v20)
     {
-      v21 = [(HMDUserPresenceFeed *)self reason];
-      v22 = [(HMDUserPresenceFeed *)v6 reason];
-      v23 = [v21 isEqual:v22];
+      reason = [(HMDUserPresenceFeed *)self reason];
+      reason2 = [(HMDUserPresenceFeed *)v6 reason];
+      v23 = [reason isEqual:reason2];
     }
 
     else
@@ -94,34 +94,34 @@ LABEL_11:
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HMDUserPresenceFeed *)self user];
-  v5 = [(HMDUserPresenceFeed *)self presenceAuthStatus];
-  v6 = [(HMDUserPresenceFeed *)self presenceComputeStatus];
-  v7 = [(HMDUserPresenceFeed *)self presenceRegion];
-  v8 = [(HMDUserPresenceFeed *)self reason];
-  v9 = [v3 stringWithFormat:@"[HMDUserPresenceFeed User: %@, Auth: %@, Compute: %@, Region: %@, Reason: %@]", v4, v5, v6, v7, v8];
+  user = [(HMDUserPresenceFeed *)self user];
+  presenceAuthStatus = [(HMDUserPresenceFeed *)self presenceAuthStatus];
+  presenceComputeStatus = [(HMDUserPresenceFeed *)self presenceComputeStatus];
+  presenceRegion = [(HMDUserPresenceFeed *)self presenceRegion];
+  reason = [(HMDUserPresenceFeed *)self reason];
+  v9 = [v3 stringWithFormat:@"[HMDUserPresenceFeed User: %@, Auth: %@, Compute: %@, Region: %@, Reason: %@]", user, presenceAuthStatus, presenceComputeStatus, presenceRegion, reason];
 
   return v9;
 }
 
-- (HMDUserPresenceFeed)initWithUser:(id)a3 presenceAuthStatus:(id)a4 presenceComputeStatus:(id)a5 presenceRegion:(id)a6 reason:(id)a7
+- (HMDUserPresenceFeed)initWithUser:(id)user presenceAuthStatus:(id)status presenceComputeStatus:(id)computeStatus presenceRegion:(id)region reason:(id)reason
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  userCopy = user;
+  statusCopy = status;
+  computeStatusCopy = computeStatus;
+  regionCopy = region;
+  reasonCopy = reason;
   v20.receiver = self;
   v20.super_class = HMDUserPresenceFeed;
   v17 = [(HMDUserPresenceFeed *)&v20 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeWeak(&v17->_user, v12);
-    objc_storeStrong(&v18->_presenceAuthStatus, a4);
-    objc_storeStrong(&v18->_presenceComputeStatus, a5);
-    objc_storeStrong(&v18->_presenceRegion, a6);
-    objc_storeStrong(&v18->_reason, a7);
+    objc_storeWeak(&v17->_user, userCopy);
+    objc_storeStrong(&v18->_presenceAuthStatus, status);
+    objc_storeStrong(&v18->_presenceComputeStatus, computeStatus);
+    objc_storeStrong(&v18->_presenceRegion, region);
+    objc_storeStrong(&v18->_reason, reason);
   }
 
   return v18;

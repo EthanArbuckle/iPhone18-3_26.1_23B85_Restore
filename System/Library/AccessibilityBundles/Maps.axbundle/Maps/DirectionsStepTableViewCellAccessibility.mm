@@ -1,5 +1,5 @@
 @interface DirectionsStepTableViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_axRoadDescriptionLabel;
 - (id)accessibilityLabel;
 - (void)_accessibilityLoadAccessibilityInformation;
@@ -8,13 +8,13 @@
 
 @implementation DirectionsStepTableViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"DirectionsStepTableViewCell" hasInstanceVariable:@"_stepView" withType:"DirectionsStepView"];
-  [v3 validateClass:@"DirectionsStepView" hasInstanceVariable:@"_labelListView" withType:"RouteStepLabelListView"];
-  [v3 validateClass:@"DirectionsStepView" hasInstanceVariable:@"_roadDescriptionLabel" withType:"MKMultiPartLabel"];
-  [v3 validateClass:@"DirectionsStepView" hasInstanceMethod:@"setRoute:step:stepIndex:alignToLeftEdgeIfNoManeuverSign:size:" withFullSignature:{"v", "@", "@", "Q", "B", "q", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"DirectionsStepTableViewCell" hasInstanceVariable:@"_stepView" withType:"DirectionsStepView"];
+  [validationsCopy validateClass:@"DirectionsStepView" hasInstanceVariable:@"_labelListView" withType:"RouteStepLabelListView"];
+  [validationsCopy validateClass:@"DirectionsStepView" hasInstanceVariable:@"_roadDescriptionLabel" withType:"MKMultiPartLabel"];
+  [validationsCopy validateClass:@"DirectionsStepView" hasInstanceMethod:@"setRoute:step:stepIndex:alignToLeftEdgeIfNoManeuverSign:size:" withFullSignature:{"v", "@", "@", "Q", "B", "q", 0}];
 }
 
 - (void)_axAnnotateRoadDescriptionListView
@@ -34,17 +34,17 @@
 - (id)_axRoadDescriptionLabel
 {
   v2 = [(DirectionsStepTableViewCellAccessibility *)self safeUIViewForKey:@"_roadDescriptionLabel"];
-  v3 = [v2 accessibilityLabel];
+  accessibilityLabel = [v2 accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (id)accessibilityLabel
 {
-  v3 = [(DirectionsStepTableViewCellAccessibility *)self _axStepView];
-  v4 = [v3 safeValueForKey:@"_labelListView"];
-  v5 = [v4 accessibilityLabel];
-  v8 = [(DirectionsStepTableViewCellAccessibility *)self _axRoadDescriptionLabel];
+  _axStepView = [(DirectionsStepTableViewCellAccessibility *)self _axStepView];
+  v4 = [_axStepView safeValueForKey:@"_labelListView"];
+  accessibilityLabel = [v4 accessibilityLabel];
+  _axRoadDescriptionLabel = [(DirectionsStepTableViewCellAccessibility *)self _axRoadDescriptionLabel];
   v6 = __UIAXStringForVariables();
 
   return v6;

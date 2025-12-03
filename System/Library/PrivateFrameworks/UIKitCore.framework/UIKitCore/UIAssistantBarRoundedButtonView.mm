@@ -1,17 +1,17 @@
 @interface UIAssistantBarRoundedButtonView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (UIAssistantBarRoundedButtonView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (UIAssistantBarRoundedButtonView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setDropShadow:(BOOL)a3;
+- (void)setDropShadow:(BOOL)shadow;
 @end
 
 @implementation UIAssistantBarRoundedButtonView
 
-- (UIAssistantBarRoundedButtonView)initWithFrame:(CGRect)a3
+- (UIAssistantBarRoundedButtonView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = UIAssistantBarRoundedButtonView;
-  v3 = [(UIView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [(UIButton *)UIAssistantBarRoundedButtonViewButton buttonWithType:0];
@@ -29,12 +29,12 @@
   return v3;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(UIAssistantBarRoundedButtonView *)self button];
-  [v6 sizeThatFits:{width, height}];
+  height = fits.height;
+  width = fits.width;
+  button = [(UIAssistantBarRoundedButtonView *)self button];
+  [button sizeThatFits:{width, height}];
   v8 = v7 + 33.0;
   [(UIView *)self bounds];
   v10 = v9;
@@ -46,17 +46,17 @@
   return result;
 }
 
-- (void)setDropShadow:(BOOL)a3
+- (void)setDropShadow:(BOOL)shadow
 {
-  if (self->_dropShadow != a3)
+  if (self->_dropShadow != shadow)
   {
-    v3 = a3;
-    self->_dropShadow = a3;
+    shadowCopy = shadow;
+    self->_dropShadow = shadow;
     [(UIView *)self->_shadowView removeFromSuperview];
     shadowView = self->_shadowView;
     self->_shadowView = 0;
 
-    if (v3)
+    if (shadowCopy)
     {
       v6 = objc_alloc_init(UIView);
       v7 = self->_shadowView;
@@ -68,8 +68,8 @@
       [(UIView *)self->_shadowView _setContinuousCornerRadius:6.0];
       [(UIView *)self->_shadowView setClipsToBounds:1];
       v9 = self->_shadowView;
-      v10 = [(UIAssistantBarRoundedButtonView *)self button];
-      [(UIView *)self insertSubview:v9 belowSubview:v10];
+      button = [(UIAssistantBarRoundedButtonView *)self button];
+      [(UIView *)self insertSubview:v9 belowSubview:button];
 
       [(UIView *)self setNeedsLayout];
     }
@@ -85,15 +85,15 @@
   v4 = v3;
   v6 = v5;
   v8 = v7;
-  v9 = [(UIAssistantBarRoundedButtonView *)self button];
-  [v9 sizeThatFits:{v6, v8}];
+  button = [(UIAssistantBarRoundedButtonView *)self button];
+  [button sizeThatFits:{v6, v8}];
   v11 = v10;
 
   v12 = v11 + 33.0;
   v13 = v6 - v12;
   v14 = round(v4 + (v8 + -39.0) * 0.5);
-  v15 = [(UIAssistantBarRoundedButtonView *)self button];
-  [v15 setFrame:{v13, v14, v12, 39.0}];
+  button2 = [(UIAssistantBarRoundedButtonView *)self button];
+  [button2 setFrame:{v13, v14, v12, 39.0}];
 
   if ([(UIAssistantBarRoundedButtonView *)self dropShadow])
   {

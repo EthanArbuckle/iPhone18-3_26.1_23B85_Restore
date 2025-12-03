@@ -2,19 +2,19 @@
 + (id)anonymousAccount;
 + (id)liveAccount;
 - (ACAccount)account;
-- (BOOL)getAccount:(id *)a3 error:(id *)a4;
-- (BOOL)getPersona:(id *)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (CKAccountOverrideInfo)initWithAccount:(id)a3;
-- (CKAccountOverrideInfo)initWithCoder:(id)a3;
-- (CKAccountOverrideInfo)initWithSqliteRepresentation:(id)a3;
+- (BOOL)getAccount:(id *)account error:(id *)error;
+- (BOOL)getPersona:(id *)persona error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (CKAccountOverrideInfo)initWithAccount:(id)account;
+- (CKAccountOverrideInfo)initWithCoder:(id)coder;
+- (CKAccountOverrideInfo)initWithSqliteRepresentation:(id)representation;
 - (NSString)uniqueID;
 - (id)CKPropertiesDescription;
-- (id)_initWithEmail:(id)a3 password:(id)a4 recoveryKey:(id)a5 secondEmail:(id)a6 accountID:(id)a7 altDSID:(id)a8 accountPropertyOverrides:(id)a9 overridesByDataclass:(id)a10;
-- (id)copyWithAccountPropertyOverrides:(id)a3 overridesByDataclass:(id)a4;
+- (id)_initWithEmail:(id)email password:(id)password recoveryKey:(id)key secondEmail:(id)secondEmail accountID:(id)d altDSID:(id)iD accountPropertyOverrides:(id)overrides overridesByDataclass:(id)self0;
+- (id)copyWithAccountPropertyOverrides:(id)overrides overridesByDataclass:(id)dataclass;
 - (id)sqliteRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CKAccountOverrideInfo
@@ -89,21 +89,21 @@
   return v60;
 }
 
-- (CKAccountOverrideInfo)initWithAccount:(id)a3
+- (CKAccountOverrideInfo)initWithAccount:(id)account
 {
-  v7 = a3;
-  if (!v7)
+  accountCopy = account;
+  if (!accountCopy)
   {
     v16 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], v5, v6);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v16, v17, a2, self, @"CKAccountOverrideInfo.m", 62, @"Invalid parameter not satisfying: %@", @"account");
   }
 
-  v8 = objc_msgSend_identifier(v7, v5, v6);
+  v8 = objc_msgSend_identifier(accountCopy, v5, v6);
   v10 = objc_msgSend_initWithAccountID_(self, v9, v8);
 
   if (v10)
   {
-    v13 = objc_msgSend_copy(v7, v11, v12);
+    v13 = objc_msgSend_copy(accountCopy, v11, v12);
     account = v10->_account;
     v10->_account = v13;
   }
@@ -111,50 +111,50 @@
   return v10;
 }
 
-- (id)_initWithEmail:(id)a3 password:(id)a4 recoveryKey:(id)a5 secondEmail:(id)a6 accountID:(id)a7 altDSID:(id)a8 accountPropertyOverrides:(id)a9 overridesByDataclass:(id)a10
+- (id)_initWithEmail:(id)email password:(id)password recoveryKey:(id)key secondEmail:(id)secondEmail accountID:(id)d altDSID:(id)iD accountPropertyOverrides:(id)overrides overridesByDataclass:(id)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  v22 = a9;
-  v23 = a10;
+  emailCopy = email;
+  passwordCopy = password;
+  keyCopy = key;
+  secondEmailCopy = secondEmail;
+  dCopy = d;
+  iDCopy = iD;
+  overridesCopy = overrides;
+  dataclassCopy = dataclass;
   v58.receiver = self;
   v58.super_class = CKAccountOverrideInfo;
   v26 = [(CKAccountOverrideInfo *)&v58 init];
   if (v26)
   {
-    v27 = objc_msgSend_copy(v16, v24, v25);
+    v27 = objc_msgSend_copy(emailCopy, v24, v25);
     email = v26->_email;
     v26->_email = v27;
 
-    v31 = objc_msgSend_copy(v17, v29, v30);
+    v31 = objc_msgSend_copy(passwordCopy, v29, v30);
     password = v26->_password;
     v26->_password = v31;
 
-    v35 = objc_msgSend_copy(v18, v33, v34);
+    v35 = objc_msgSend_copy(keyCopy, v33, v34);
     recoveryKey = v26->_recoveryKey;
     v26->_recoveryKey = v35;
 
-    v39 = objc_msgSend_copy(v19, v37, v38);
+    v39 = objc_msgSend_copy(secondEmailCopy, v37, v38);
     secondEmail = v26->_secondEmail;
     v26->_secondEmail = v39;
 
-    v43 = objc_msgSend_copy(v20, v41, v42);
+    v43 = objc_msgSend_copy(dCopy, v41, v42);
     accountID = v26->_accountID;
     v26->_accountID = v43;
 
-    v47 = objc_msgSend_copy(v21, v45, v46);
+    v47 = objc_msgSend_copy(iDCopy, v45, v46);
     altDSID = v26->_altDSID;
     v26->_altDSID = v47;
 
-    v51 = objc_msgSend_CKDeepCopy(v22, v49, v50);
+    v51 = objc_msgSend_CKDeepCopy(overridesCopy, v49, v50);
     accountPropertyOverrides = v26->_accountPropertyOverrides;
     v26->_accountPropertyOverrides = v51;
 
-    v55 = objc_msgSend_CKDeepCopy(v23, v53, v54);
+    v55 = objc_msgSend_CKDeepCopy(dataclassCopy, v53, v54);
     overridesByDataclass = v26->_overridesByDataclass;
     v26->_overridesByDataclass = v55;
   }
@@ -212,26 +212,26 @@
   return v2;
 }
 
-- (BOOL)getAccount:(id *)a3 error:(id *)a4
+- (BOOL)getAccount:(id *)account error:(id *)error
 {
   v38[1] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (account)
   {
-    *a3 = 0;
+    *account = 0;
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
-  v7 = self;
-  objc_sync_enter(v7);
-  account = v7->_account;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  account = selfCopy->_account;
   if (!account)
   {
-    v12 = objc_msgSend_accountID(v7, v8, v9);
-    v15 = objc_msgSend_altDSID(v7, v13, v14);
+    v12 = objc_msgSend_accountID(selfCopy, v8, v9);
+    v15 = objc_msgSend_altDSID(selfCopy, v13, v14);
     v18 = v15;
     v11 = (v12 | v15) == 0;
     if (!(v12 | v15))
@@ -266,7 +266,7 @@ LABEL_32:
         v22 = 0;
 LABEL_20:
         v21 = 0;
-        if (!a3)
+        if (!account)
         {
           goto LABEL_22;
         }
@@ -284,7 +284,7 @@ LABEL_20:
     }
 
     v24 = 0;
-    if (!a3)
+    if (!account)
     {
 LABEL_22:
       v4 = v21 != 0;
@@ -300,13 +300,13 @@ LABEL_22:
         {
           *buf = 0;
           _os_log_error_impl(&dword_1883EA000, v29, OS_LOG_TYPE_ERROR, "Found nil account instance, which indicates the adopter probably has neither com.apple.accounts.appleaccount.fullaccess entitlement or com.apple.private.accounts.allaccounts entitlement", buf, 2u);
-          if (a4)
+          if (error)
           {
             goto LABEL_27;
           }
         }
 
-        else if (a4)
+        else if (error)
         {
 LABEL_27:
           if (v22)
@@ -322,7 +322,7 @@ LABEL_27:
             v31 = 0;
             objc_msgSend_errorWithDomain_code_userInfo_format_(CKPrettyError, v30, @"CKInternalErrorDomain", 1002, 0, @"Account with %@ not found", v24);
           }
-          *a4 = ;
+          *error = ;
         }
       }
 
@@ -331,28 +331,28 @@ LABEL_27:
 
 LABEL_21:
     v28 = v21;
-    *a3 = v21;
+    *account = v21;
     goto LABEL_22;
   }
 
   v11 = 0;
-  if (a3)
+  if (account)
   {
-    *a3 = account;
+    *account = account;
   }
 
   v4 = 1;
 LABEL_33:
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
 
   v33 = *MEMORY[0x1E69E9840];
   return v11 || v4;
 }
 
-- (id)copyWithAccountPropertyOverrides:(id)a3 overridesByDataclass:(id)a4
+- (id)copyWithAccountPropertyOverrides:(id)overrides overridesByDataclass:(id)dataclass
 {
-  v6 = a3;
-  v7 = a4;
+  overridesCopy = overrides;
+  dataclassCopy = dataclass;
   v36 = objc_alloc(objc_opt_class());
   v10 = objc_msgSend_email(self, v8, v9);
   v13 = objc_msgSend_password(self, v11, v12);
@@ -360,25 +360,25 @@ LABEL_33:
   v19 = objc_msgSend_secondEmail(self, v17, v18);
   v22 = objc_msgSend_accountID(self, v20, v21);
   v27 = objc_msgSend_altDSID(self, v23, v24);
-  v28 = v6;
-  if (v6)
+  v28 = overridesCopy;
+  if (overridesCopy)
   {
-    if (v7)
+    if (dataclassCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_7:
     objc_msgSend_overridesByDataclass(self, v25, v26);
-    v35 = v7;
+    v35 = dataclassCopy;
     v31 = v13;
     v33 = v32 = v10;
     v29 = objc_msgSend__initWithEmail_password_recoveryKey_secondEmail_accountID_altDSID_accountPropertyOverrides_overridesByDataclass_(v36, v34, v32, v31, v16, v19, v22, v27, v28, v33);
 
     v10 = v32;
     v13 = v31;
-    v7 = v35;
-    if (v6)
+    dataclassCopy = v35;
+    if (overridesCopy)
     {
       goto LABEL_5;
     }
@@ -387,14 +387,14 @@ LABEL_7:
   }
 
   v28 = objc_msgSend_accountPropertyOverrides(self, v25, v26);
-  if (!v7)
+  if (!dataclassCopy)
   {
     goto LABEL_7;
   }
 
 LABEL_3:
-  v29 = objc_msgSend__initWithEmail_password_recoveryKey_secondEmail_accountID_altDSID_accountPropertyOverrides_overridesByDataclass_(v36, v25, v10, v13, v16, v19, v22, v27, v28, v7);
-  if (!v6)
+  v29 = objc_msgSend__initWithEmail_password_recoveryKey_secondEmail_accountID_altDSID_accountPropertyOverrides_overridesByDataclass_(v36, v25, v10, v13, v16, v19, v22, v27, v28, dataclassCopy);
+  if (!overridesCopy)
   {
 LABEL_4:
   }
@@ -404,10 +404,10 @@ LABEL_5:
   return v29;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v61 = 1;
   }
@@ -417,7 +417,7 @@ LABEL_5:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v8 = objc_msgSend_accountID(self, v6, v7);
       v11 = objc_msgSend_accountID(v5, v9, v10);
       v12 = CKObjectsAreBothNilOrEqual(v8, v11);
@@ -499,7 +499,7 @@ LABEL_13:
   return v61;
 }
 
-- (BOOL)getPersona:(id *)a3 error:(id *)a4
+- (BOOL)getPersona:(id *)persona error:(id *)error
 {
   v69 = *MEMORY[0x1E69E9840];
   v61 = 0;
@@ -518,8 +518,8 @@ LABEL_13:
   aBlock[1] = 3221225472;
   aBlock[2] = sub_1886A17F4;
   aBlock[3] = &unk_1E70C1758;
-  aBlock[6] = a3;
-  aBlock[7] = a4;
+  aBlock[6] = persona;
+  aBlock[7] = error;
   aBlock[4] = &v61;
   aBlock[5] = &v55;
   v5 = _Block_copy(aBlock);
@@ -654,41 +654,41 @@ LABEL_22:
   return v43 ^ v49;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v37 = a3;
+  coderCopy = coder;
   v4 = objc_autoreleasePoolPush();
   v7 = objc_msgSend_accountID(self, v5, v6);
-  objc_msgSend_encodeObject_forKey_(v37, v8, v7, @"AccountID");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v8, v7, @"AccountID");
 
   v11 = objc_msgSend_altDSID(self, v9, v10);
-  objc_msgSend_encodeObject_forKey_(v37, v12, v11, @"AltDSID");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v12, v11, @"AltDSID");
 
   v15 = objc_msgSend_email(self, v13, v14);
-  objc_msgSend_encodeObject_forKey_(v37, v16, v15, @"Email");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v16, v15, @"Email");
 
   v19 = objc_msgSend_secondEmail(self, v17, v18);
-  objc_msgSend_encodeObject_forKey_(v37, v20, v19, @"SecondEmail");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v20, v19, @"SecondEmail");
 
   v23 = objc_msgSend_password(self, v21, v22);
-  objc_msgSend_encodeObject_forKey_(v37, v24, v23, @"Password");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v24, v23, @"Password");
 
   v27 = objc_msgSend_recoveryKey(self, v25, v26);
-  objc_msgSend_encodeObject_forKey_(v37, v28, v27, @"RecoveryKey");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v28, v27, @"RecoveryKey");
 
   v31 = objc_msgSend_accountPropertyOverrides(self, v29, v30);
-  objc_msgSend_encodeObject_forKey_(v37, v32, v31, @"AccountPropertyOverrides");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v32, v31, @"AccountPropertyOverrides");
 
   v35 = objc_msgSend_overridesByDataclass(self, v33, v34);
-  objc_msgSend_encodeObject_forKey_(v37, v36, v35, @"OverridesByDataclass");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v36, v35, @"OverridesByDataclass");
 
   objc_autoreleasePoolPop(v4);
 }
 
-- (CKAccountOverrideInfo)initWithCoder:(id)a3
+- (CKAccountOverrideInfo)initWithCoder:(id)coder
 {
   v51[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v49.receiver = self;
   v49.super_class = CKAccountOverrideInfo;
   v5 = [(CKAccountOverrideInfo *)&v49 init];
@@ -696,32 +696,32 @@ LABEL_22:
   {
     v6 = objc_autoreleasePoolPush();
     v7 = objc_opt_class();
-    v9 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v8, v7, @"AccountID");
+    v9 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v8, v7, @"AccountID");
     accountID = v5->_accountID;
     v5->_accountID = v9;
 
     v11 = objc_opt_class();
-    v13 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v12, v11, @"AltDSID");
+    v13 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v12, v11, @"AltDSID");
     altDSID = v5->_altDSID;
     v5->_altDSID = v13;
 
     v15 = objc_opt_class();
-    v17 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v16, v15, @"Email");
+    v17 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v16, v15, @"Email");
     email = v5->_email;
     v5->_email = v17;
 
     v19 = objc_opt_class();
-    v21 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v20, v19, @"SecondEmail");
+    v21 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v20, v19, @"SecondEmail");
     secondEmail = v5->_secondEmail;
     v5->_secondEmail = v21;
 
     v23 = objc_opt_class();
-    v25 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v24, v23, @"Password");
+    v25 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v24, v23, @"Password");
     password = v5->_password;
     v5->_password = v25;
 
     v27 = objc_opt_class();
-    v29 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v28, v27, @"RecoveryKey");
+    v29 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v28, v27, @"RecoveryKey");
     recoveryKey = v5->_recoveryKey;
     v5->_recoveryKey = v29;
 
@@ -730,7 +730,7 @@ LABEL_22:
     v51[1] = objc_opt_class();
     v33 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v32, v51, 2);
     v35 = objc_msgSend_setWithArray_(v31, v34, v33);
-    v37 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v36, v35, @"AccountPropertyOverrides");
+    v37 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v36, v35, @"AccountPropertyOverrides");
     accountPropertyOverrides = v5->_accountPropertyOverrides;
     v5->_accountPropertyOverrides = v37;
 
@@ -739,7 +739,7 @@ LABEL_22:
     v50[1] = objc_opt_class();
     v41 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v40, v50, 2);
     v43 = objc_msgSend_setWithArray_(v39, v42, v41);
-    v45 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v44, v43, @"OverridesByDataclass");
+    v45 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v44, v43, @"OverridesByDataclass");
     overridesByDataclass = v5->_overridesByDataclass;
     v5->_overridesByDataclass = v45;
 
@@ -813,13 +813,13 @@ LABEL_22:
   return v50;
 }
 
-- (CKAccountOverrideInfo)initWithSqliteRepresentation:(id)a3
+- (CKAccountOverrideInfo)initWithSqliteRepresentation:(id)representation
 {
   v53 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (objc_msgSend_length(v4, v5, v6))
+  representationCopy = representation;
+  if (objc_msgSend_length(representationCopy, v5, v6))
   {
-    v8 = objc_msgSend_dataUsingEncoding_(v4, v7, 4);
+    v8 = objc_msgSend_dataUsingEncoding_(representationCopy, v7, 4);
     v50 = 0;
     v10 = objc_msgSend_JSONObjectWithData_options_error_(MEMORY[0x1E696ACB0], v9, v8, 0, &v50);
     v11 = v50;
@@ -838,7 +838,7 @@ LABEL_22:
         _os_log_error_impl(&dword_1883EA000, v46, OS_LOG_TYPE_ERROR, "Error converting JSON data to CKAccountOverrideInfo: %@", buf, 0xCu);
       }
 
-      v45 = 0;
+      selfCopy = 0;
     }
 
     else
@@ -890,17 +890,17 @@ LABEL_22:
       }
 
       self = v12;
-      v45 = self;
+      selfCopy = self;
     }
   }
 
   else
   {
-    v45 = 0;
+    selfCopy = 0;
   }
 
   v47 = *MEMORY[0x1E69E9840];
-  return v45;
+  return selfCopy;
 }
 
 @end

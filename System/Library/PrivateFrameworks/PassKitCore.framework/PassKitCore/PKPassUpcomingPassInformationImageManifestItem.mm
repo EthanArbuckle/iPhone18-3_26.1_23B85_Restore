@@ -1,42 +1,42 @@
 @interface PKPassUpcomingPassInformationImageManifestItem
-+ (id)createFromDictionary:(id)a3;
-- (BOOL)composeFromDictionary:(id)a3;
-- (PKPassUpcomingPassInformationImageManifestItem)initWithCoder:(id)a3;
-- (id)_createValidatedImageFromData:(id)a3 error:(id *)a4;
-- (id)_initWithURL:(id)a3;
++ (id)createFromDictionary:(id)dictionary;
+- (BOOL)composeFromDictionary:(id)dictionary;
+- (PKPassUpcomingPassInformationImageManifestItem)initWithCoder:(id)coder;
+- (id)_createValidatedImageFromData:(id)data error:(id *)error;
+- (id)_initWithURL:(id)l;
 - (id)sessionCachedImageIfExists;
-- (void)downloadImageWithCompletion:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)downloadImageWithCompletion:(id)completion;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPassUpcomingPassInformationImageManifestItem
 
-+ (id)createFromDictionary:(id)a3
++ (id)createFromDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  dictionaryCopy = dictionary;
+  v4 = dictionaryCopy;
+  if (dictionaryCopy)
   {
-    v5 = [v3 PKStringForKey:@"URL"];
+    v5 = [dictionaryCopy PKStringForKey:@"URL"];
     v6 = [MEMORY[0x1E695DFF8] URLWithString:v5];
     v7 = v6;
     if (v6)
     {
-      v8 = [v6 scheme];
-      if (v8 == @"https")
+      scheme = [v6 scheme];
+      if (scheme == @"https")
       {
         goto LABEL_6;
       }
 
-      v9 = v8;
-      if (!v8)
+      v9 = scheme;
+      if (!scheme)
       {
 LABEL_13:
 
         goto LABEL_14;
       }
 
-      v10 = [(__CFString *)v8 isEqualToString:@"https"];
+      v10 = [(__CFString *)scheme isEqualToString:@"https"];
 
       if (v10)
       {
@@ -67,10 +67,10 @@ LABEL_14:
   return v9;
 }
 
-- (id)_initWithURL:(id)a3
+- (id)_initWithURL:(id)l
 {
-  v5 = a3;
-  if (v5)
+  lCopy = l;
+  if (lCopy)
   {
     v10.receiver = self;
     v10.super_class = PKPassUpcomingPassInformationImageManifestItem;
@@ -78,26 +78,26 @@ LABEL_14:
     v7 = v6;
     if (v6)
     {
-      objc_storeStrong(&v6->_URL, a3);
+      objc_storeStrong(&v6->_URL, l);
     }
 
     self = v7;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (BOOL)composeFromDictionary:(id)a3
+- (BOOL)composeFromDictionary:(id)dictionary
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 PKStringForKey:@"SHA256"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy PKStringForKey:@"SHA256"];
   if (!v5)
   {
     v9 = PKLogFacilityTypeGetObject(0);
@@ -131,14 +131,14 @@ LABEL_24:
     goto LABEL_24;
   }
 
-  v8 = [v4 PKNumberForKey:@"size"];
+  v8 = [dictionaryCopy PKNumberForKey:@"size"];
   v9 = v8;
   if (v8)
   {
-    v10 = [v8 unsignedIntegerValue];
-    if (v10 > 0x200000)
+    unsignedIntegerValue = [v8 unsignedIntegerValue];
+    if (unsignedIntegerValue > 0x200000)
     {
-      v24 = v10;
+      v24 = unsignedIntegerValue;
       v18 = PKLogFacilityTypeGetObject(0);
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
@@ -160,7 +160,7 @@ LABEL_23:
     objc_storeStrong(&self->_size, v9);
   }
 
-  v11 = [v4 PKNumberForKey:@"scale"];
+  v11 = [dictionaryCopy PKNumberForKey:@"scale"];
   v12 = v11;
   v13 = &unk_1F23B6EA0;
   if (v11)
@@ -198,41 +198,41 @@ LABEL_25:
   return v23;
 }
 
-- (PKPassUpcomingPassInformationImageManifestItem)initWithCoder:(id)a3
+- (PKPassUpcomingPassInformationImageManifestItem)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = PKPassUpcomingPassInformationImageManifestItem;
   v5 = [(PKPassUpcomingPassInformationImageManifestItem *)&v14 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"URL"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"URL"];
     URL = v5->_URL;
     v5->_URL = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SHA256"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SHA256"];
     SHA256 = v5->_SHA256;
     v5->_SHA256 = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"size"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"size"];
     size = v5->_size;
     v5->_size = v10;
 
-    [v4 decodeDoubleForKey:@"scale"];
+    [coderCopy decodeDoubleForKey:@"scale"];
     v5->_scale = v12;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   URL = self->_URL;
-  v5 = a3;
-  [v5 encodeObject:URL forKey:@"URL"];
-  [v5 encodeObject:self->_SHA256 forKey:@"SHA256"];
-  [v5 encodeObject:self->_size forKey:@"size"];
-  [v5 encodeDouble:@"scale" forKey:self->_scale];
+  coderCopy = coder;
+  [coderCopy encodeObject:URL forKey:@"URL"];
+  [coderCopy encodeObject:self->_SHA256 forKey:@"SHA256"];
+  [coderCopy encodeObject:self->_size forKey:@"size"];
+  [coderCopy encodeDouble:@"scale" forKey:self->_scale];
 }
 
 - (id)sessionCachedImageIfExists
@@ -253,15 +253,15 @@ LABEL_25:
   return v5;
 }
 
-- (void)downloadImageWithCompletion:(id)a3
+- (void)downloadImageWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v5 = [(PKPassUpcomingPassInformationImageManifestItem *)self sessionCachedImageIfExists];
-    if (v5)
+    sessionCachedImageIfExists = [(PKPassUpcomingPassInformationImageManifestItem *)self sessionCachedImageIfExists];
+    if (sessionCachedImageIfExists)
     {
-      v4[2](v4, v5, 0);
+      completionCopy[2](completionCopy, sessionCachedImageIfExists, 0);
     }
 
     else
@@ -273,7 +273,7 @@ LABEL_25:
       v8[2] = __78__PKPassUpcomingPassInformationImageManifestItem_downloadImageWithCompletion___block_invoke;
       v8[3] = &unk_1E79CDA40;
       v8[4] = self;
-      v9 = v4;
+      v9 = completionCopy;
       [v6 downloadFromUrl:URL completionHandler:v8];
     }
   }
@@ -336,16 +336,16 @@ LABEL_9:
 LABEL_10:
 }
 
-- (id)_createValidatedImageFromData:(id)a3 error:(id *)a4
+- (id)_createValidatedImageFromData:(id)data error:(id *)error
 {
-  v6 = a3;
+  dataCopy = data;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __86__PKPassUpcomingPassInformationImageManifestItem__createValidatedImageFromData_error___block_invoke;
   aBlock[3] = &__block_descriptor_40_e17_B16__0__NSError_8l;
-  aBlock[4] = a4;
+  aBlock[4] = error;
   v7 = _Block_copy(aBlock);
-  v15 = [v6 length];
+  v15 = [dataCopy length];
   size = self->_size;
   if (size)
   {
@@ -371,8 +371,8 @@ LABEL_8:
     goto LABEL_29;
   }
 
-  v25 = [v6 SHA256Hash];
-  if (![(NSData *)self->_SHA256 isEqualToData:v25])
+  sHA256Hash = [dataCopy SHA256Hash];
+  if (![(NSData *)self->_SHA256 isEqualToData:sHA256Hash])
   {
     v33 = PKValidationErrorWithReason(@"SHA256 Hash Mismatch: Computed hash (%@) for image from %@ doesn't match listed SHA256 hash (%@).", v26, v27, v28, v29, v30, v31, v32, self->_SHA256);
 
@@ -386,7 +386,7 @@ LABEL_8:
       dispatch_once(&qword_1ED6D20C8, &__block_literal_global_200);
     }
 
-    v41 = CGImageSourceCreateWithData(v6, _MergedGlobals_268);
+    v41 = CGImageSourceCreateWithData(dataCopy, _MergedGlobals_268);
     if (!v41)
     {
       v42 = PKValidationErrorWithReason(@"File Invalid: Image from %@ is not a png.", v34, v35, v36, v37, v38, v39, v40, self->_URL);

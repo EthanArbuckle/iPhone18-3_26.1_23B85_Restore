@@ -1,16 +1,16 @@
 @interface STEyeReliefListController
 - (BOOL)_isScreenDistanceEnabled;
 - (STEyeReliefListController)init;
-- (id)_checkScreenDistanceState:(id)a3;
+- (id)_checkScreenDistanceState:(id)state;
 - (id)_createEnableScreenDistanceGroupSpecifier;
 - (id)_createEnableScreenDistanceSpecifer;
 - (id)specifiers;
-- (void)_setScreenDistance:(BOOL)a3;
-- (void)_setScreenDistance:(id)a3 specifier:(id)a4;
+- (void)_setScreenDistance:(BOOL)distance;
+- (void)_setScreenDistance:(id)distance specifier:(id)specifier;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setCoordinator:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setCoordinator:(id)coordinator;
+- (void)viewDidAppear:(BOOL)appear;
 @end
 
 @implementation STEyeReliefListController
@@ -35,52 +35,52 @@
   [(STListViewController *)&v3 dealloc];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v17[1] = *MEMORY[0x277D85DE8];
   v16.receiver = self;
   v16.super_class = STEyeReliefListController;
-  [(STPINListViewController *)&v16 viewDidAppear:a3];
+  [(STPINListViewController *)&v16 viewDidAppear:appear];
   v4 = [MEMORY[0x277CBEBC0] URLWithString:@"settings-navigation://com.apple.Settings.ScreenTime/EYE_DISTANCE"];
   v5 = objc_alloc(MEMORY[0x277CCAEB8]);
-  v6 = [MEMORY[0x277CBEAF8] currentLocale];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
   v7 = +[STScreenTimeSettingsUIBundle bundle];
-  v8 = [v7 bundleURL];
-  v9 = [v5 initWithKey:@"ScreenDistanceViewControllerTitle" table:@"Localizable" locale:v6 bundleURL:v8];
+  bundleURL = [v7 bundleURL];
+  v9 = [v5 initWithKey:@"ScreenDistanceViewControllerTitle" table:@"Localizable" locale:currentLocale bundleURL:bundleURL];
 
   v10 = objc_alloc(MEMORY[0x277CCAEB8]);
-  v11 = [MEMORY[0x277CBEAF8] currentLocale];
+  currentLocale2 = [MEMORY[0x277CBEAF8] currentLocale];
   v12 = +[STScreenTimeSettingsUIBundle bundle];
-  v13 = [v12 bundleURL];
-  v14 = [v10 initWithKey:@"ScreenTimeControllerTitle" table:@"Localizable" locale:v11 bundleURL:v13];
+  bundleURL2 = [v12 bundleURL];
+  v14 = [v10 initWithKey:@"ScreenTimeControllerTitle" table:@"Localizable" locale:currentLocale2 bundleURL:bundleURL2];
 
   v17[0] = v14;
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:1];
   [(STEyeReliefListController *)self pe_emitNavigationEventForSystemSettingsWithGraphicIconIdentifier:@"com.apple.graphic-icon.screen-time" title:v9 localizedNavigationComponents:v15 deepLink:v4];
 }
 
-- (void)setCoordinator:(id)a3
+- (void)setCoordinator:(id)coordinator
 {
-  v4 = a3;
-  v5 = [(STPINListViewController *)self coordinator];
-  [v5 removeObserver:self forKeyPath:@"eyeReliefCoordinator.viewModel.isEyeReliefEnabled" context:"STEyeReliefListControllerObservationContext"];
+  coordinatorCopy = coordinator;
+  coordinator = [(STPINListViewController *)self coordinator];
+  [coordinator removeObserver:self forKeyPath:@"eyeReliefCoordinator.viewModel.isEyeReliefEnabled" context:"STEyeReliefListControllerObservationContext"];
   v6.receiver = self;
   v6.super_class = STEyeReliefListController;
-  [(STPINListViewController *)&v6 setCoordinator:v4];
-  [v4 addObserver:self forKeyPath:@"eyeReliefCoordinator.viewModel.isEyeReliefEnabled" options:3 context:"STEyeReliefListControllerObservationContext"];
+  [(STPINListViewController *)&v6 setCoordinator:coordinatorCopy];
+  [coordinatorCopy addObserver:self forKeyPath:@"eyeReliefCoordinator.viewModel.isEyeReliefEnabled" options:3 context:"STEyeReliefListControllerObservationContext"];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (a6 == "STEyeReliefListControllerObservationContext")
+  if (context == "STEyeReliefListControllerObservationContext")
   {
     v11 = *MEMORY[0x277CCA300];
-    v12 = a5;
-    v14 = [v12 objectForKeyedSubscript:v11];
-    v13 = [v12 objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
+    changeCopy = change;
+    v14 = [changeCopy objectForKeyedSubscript:v11];
+    v13 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
 
-    LODWORD(v12) = [v14 BOOLValue];
-    if (v12 != [v13 BOOLValue])
+    LODWORD(changeCopy) = [v14 BOOLValue];
+    if (changeCopy != [v13 BOOLValue])
     {
       [(STEyeReliefListController *)self reloadSpecifiers];
     }
@@ -90,8 +90,8 @@
   {
     v15.receiver = self;
     v15.super_class = STEyeReliefListController;
-    v10 = a5;
-    [(STListViewController *)&v15 observeValueForKeyPath:a3 ofObject:a4 change:v10 context:a6];
+    changeCopy2 = change;
+    [(STListViewController *)&v15 observeValueForKeyPath:path ofObject:object change:changeCopy2 context:context];
   }
 }
 
@@ -102,14 +102,14 @@
   if (!v4)
   {
     v5 = objc_opt_new();
-    v6 = [(STEyeReliefListController *)self _createEnableScreenDistanceGroupSpecifier];
-    [v5 addObject:v6];
+    _createEnableScreenDistanceGroupSpecifier = [(STEyeReliefListController *)self _createEnableScreenDistanceGroupSpecifier];
+    [v5 addObject:_createEnableScreenDistanceGroupSpecifier];
 
-    v7 = [(STEyeReliefListController *)self _createEnableScreenDistanceSpecifer];
-    [(STEyeReliefListController *)self setEnableScreenDistanceSpecifier:v7];
+    _createEnableScreenDistanceSpecifer = [(STEyeReliefListController *)self _createEnableScreenDistanceSpecifer];
+    [(STEyeReliefListController *)self setEnableScreenDistanceSpecifier:_createEnableScreenDistanceSpecifer];
 
-    v8 = [(STEyeReliefListController *)self enableScreenDistanceSpecifier];
-    [v5 addObject:v8];
+    enableScreenDistanceSpecifier = [(STEyeReliefListController *)self enableScreenDistanceSpecifier];
+    [v5 addObject:enableScreenDistanceSpecifier];
 
     v9 = [v5 copy];
     v10 = *(&self->super.super.super.super.super.super.super.isa + v3);
@@ -139,11 +139,11 @@
   v5 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:v4 target:self set:sel__setScreenDistance_specifier_ get:sel__checkScreenDistanceState_ detail:0 cell:6 edit:objc_opt_class()];
   [(STPINListViewController *)self setUpPasscodeAndLineWrapBehaviorForSpecifier:v5];
   [v5 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:0x287675A48];
-  v6 = [(STPINListViewController *)self coordinator];
-  v7 = [v6 eyeReliefCoordinator];
-  v8 = [v7 isScreenDistanceEditable];
+  coordinator = [(STPINListViewController *)self coordinator];
+  eyeReliefCoordinator = [coordinator eyeReliefCoordinator];
+  isScreenDistanceEditable = [eyeReliefCoordinator isScreenDistanceEditable];
 
-  if ((v8 & 1) == 0)
+  if ((isScreenDistanceEditable & 1) == 0)
   {
     [v5 setObject:MEMORY[0x277CBEC28] forKeyedSubscript:*MEMORY[0x277D3FF38]];
   }
@@ -151,25 +151,25 @@
   return v5;
 }
 
-- (void)_setScreenDistance:(id)a3 specifier:(id)a4
+- (void)_setScreenDistance:(id)distance specifier:(id)specifier
 {
-  v6 = a4;
-  v7 = [a3 BOOLValue];
-  v8 = [(STPINListViewController *)self coordinator];
-  v9 = [v8 viewModel];
-  v10 = [v9 me];
+  specifierCopy = specifier;
+  bOOLValue = [distance BOOLValue];
+  coordinator = [(STPINListViewController *)self coordinator];
+  viewModel = [coordinator viewModel];
+  v10 = [viewModel me];
   if (![v10 hasPasscode])
   {
 
     goto LABEL_5;
   }
 
-  v11 = [v8 hasAlreadyEnteredPINForSession];
+  hasAlreadyEnteredPINForSession = [coordinator hasAlreadyEnteredPINForSession];
 
-  if (v11)
+  if (hasAlreadyEnteredPINForSession)
   {
 LABEL_5:
-    [(STEyeReliefListController *)self _setScreenDistance:v7];
+    [(STEyeReliefListController *)self _setScreenDistance:bOOLValue];
     goto LABEL_6;
   }
 
@@ -178,8 +178,8 @@ LABEL_5:
   v12[2] = __58__STEyeReliefListController__setScreenDistance_specifier___block_invoke;
   v12[3] = &unk_279B7CF48;
   v12[4] = self;
-  v14 = v7;
-  v13 = v6;
+  v14 = bOOLValue;
+  v13 = specifierCopy;
   [(STPINListViewController *)self showPINSheet:v13 completion:v12];
 
 LABEL_6:
@@ -199,23 +199,23 @@ uint64_t __58__STEyeReliefListController__setScreenDistance_specifier___block_in
   }
 }
 
-- (void)_setScreenDistance:(BOOL)a3
+- (void)_setScreenDistance:(BOOL)distance
 {
-  v3 = a3;
+  distanceCopy = distance;
   v5 = +[STUILog eyeRelief];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    [(STEyeReliefListController *)v3 _setScreenDistance:v5];
+    [(STEyeReliefListController *)distanceCopy _setScreenDistance:v5];
   }
 
-  v6 = [(STPINListViewController *)self coordinator];
-  v7 = [v6 eyeReliefCoordinator];
+  coordinator = [(STPINListViewController *)self coordinator];
+  eyeReliefCoordinator = [coordinator eyeReliefCoordinator];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __48__STEyeReliefListController__setScreenDistance___block_invoke;
   v8[3] = &__block_descriptor_33_e17_v16__0__NSError_8l;
-  v9 = v3;
-  [v7 persistEyeReliefState:v3 withCompletionHandler:v8];
+  v9 = distanceCopy;
+  [eyeReliefCoordinator persistEyeReliefState:distanceCopy withCompletionHandler:v8];
 }
 
 void __48__STEyeReliefListController__setScreenDistance___block_invoke(uint64_t a1, void *a2)
@@ -238,28 +238,28 @@ void __48__STEyeReliefListController__setScreenDistance___block_invoke(uint64_t 
   }
 }
 
-- (id)_checkScreenDistanceState:(id)a3
+- (id)_checkScreenDistanceState:(id)state
 {
-  v3 = [(STEyeReliefListController *)self _isScreenDistanceEnabled];
+  _isScreenDistanceEnabled = [(STEyeReliefListController *)self _isScreenDistanceEnabled];
   v4 = +[STUILog eyeRelief];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
-    [(STEyeReliefListController *)v3 _checkScreenDistanceState:v4];
+    [(STEyeReliefListController *)_isScreenDistanceEnabled _checkScreenDistanceState:v4];
   }
 
-  v5 = [MEMORY[0x277CCABB0] numberWithBool:v3];
+  v5 = [MEMORY[0x277CCABB0] numberWithBool:_isScreenDistanceEnabled];
 
   return v5;
 }
 
 - (BOOL)_isScreenDistanceEnabled
 {
-  v2 = [(STPINListViewController *)self coordinator];
-  v3 = [v2 eyeReliefCoordinator];
-  v4 = [v3 viewModel];
+  coordinator = [(STPINListViewController *)self coordinator];
+  eyeReliefCoordinator = [coordinator eyeReliefCoordinator];
+  viewModel = [eyeReliefCoordinator viewModel];
 
-  LOBYTE(v2) = [v4 isEyeReliefEnabled];
-  return v2;
+  LOBYTE(coordinator) = [viewModel isEyeReliefEnabled];
+  return coordinator;
 }
 
 - (void)_setScreenDistance:(char)a1 .cold.1(char a1, NSObject *a2)

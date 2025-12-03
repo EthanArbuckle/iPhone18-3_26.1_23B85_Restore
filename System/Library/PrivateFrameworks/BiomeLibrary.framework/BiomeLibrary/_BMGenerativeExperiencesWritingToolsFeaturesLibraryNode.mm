@@ -2,7 +2,7 @@
 + (id)ComposeAndAdjust;
 + (id)configurationForComposeAndAdjust;
 + (id)storeConfigurationForComposeAndAdjust;
-+ (id)streamWithName:(id)a3;
++ (id)streamWithName:(id)name;
 + (id)validKeyPaths;
 @end
 
@@ -11,7 +11,7 @@
 + (id)ComposeAndAdjust
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForComposeAndAdjust];
+  configurationForComposeAndAdjust = [self configurationForComposeAndAdjust];
   v3 = +[BMWritingToolsComposeAndAdjust columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -23,7 +23,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"GenerativeExperiences.WritingToolsFeatures.ComposeAndAdjust" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"GenerativeExperiences.WritingToolsFeatures.ComposeAndAdjust" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"GenerativeExperiences.WritingToolsFeatures.ComposeAndAdjust" schema:v9 configuration:configurationForComposeAndAdjust];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -32,13 +32,13 @@
 
 + (id)configurationForComposeAndAdjust
 {
-  v3 = [a1 storeConfigurationForComposeAndAdjust];
-  v4 = [a1 syncPolicyForComposeAndAdjust];
+  storeConfigurationForComposeAndAdjust = [self storeConfigurationForComposeAndAdjust];
+  syncPolicyForComposeAndAdjust = [self syncPolicyForComposeAndAdjust];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"47E15AAF-326D-4C80-9F06-1FE851995CAB"];
   BYTE2(v9) = 0;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"GenerativeExperiences.WritingToolsFeatures.ComposeAndAdjust" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"GenerativeExperiences.WritingToolsFeatures.ComposeAndAdjust" eventClass:objc_opt_class() storeConfig:storeConfigurationForComposeAndAdjust syncPolicy:syncPolicyForComposeAndAdjust legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -52,19 +52,19 @@
   return v4;
 }
 
-+ (id)streamWithName:(id)a3
++ (id)streamWithName:(id)name
 {
-  if ([a3 isEqualToString:@"ComposeAndAdjust"])
+  if ([name isEqualToString:@"ComposeAndAdjust"])
   {
-    v4 = [a1 ComposeAndAdjust];
+    composeAndAdjust = [self ComposeAndAdjust];
   }
 
   else
   {
-    v4 = 0;
+    composeAndAdjust = 0;
   }
 
-  return v4;
+  return composeAndAdjust;
 }
 
 + (id)validKeyPaths

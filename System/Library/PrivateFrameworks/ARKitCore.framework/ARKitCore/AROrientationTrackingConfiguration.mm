@@ -1,5 +1,5 @@
 @interface AROrientationTrackingConfiguration
-+ (BOOL)supportsFrameSemantics:(unint64_t)a3;
++ (BOOL)supportsFrameSemantics:(unint64_t)semantics;
 + (id)_querySupportedVideoFormats;
 + (id)supportedVideoFormats;
 - (AROrientationTrackingConfiguration)init;
@@ -12,29 +12,29 @@
 {
   v4.receiver = self;
   v4.super_class = AROrientationTrackingConfiguration;
-  v2 = [(ARConfiguration *)&v4 initPrivate];
-  if (v2 && ARShouldSupport1440pAndAutofocus())
+  initPrivate = [(ARConfiguration *)&v4 initPrivate];
+  if (initPrivate && ARShouldSupport1440pAndAutofocus())
   {
-    [(ARConfiguration *)v2 setAutoFocusEnabled:1];
+    [(ARConfiguration *)initPrivate setAutoFocusEnabled:1];
   }
 
-  return v2;
+  return initPrivate;
 }
 
 + (id)supportedVideoFormats
 {
   if (supportedVideoFormats_supportedFormats && ![supportedVideoFormats_supportedFormats count])
   {
-    v3 = [a1 _querySupportedVideoFormats];
+    _querySupportedVideoFormats = [self _querySupportedVideoFormats];
     v4 = supportedVideoFormats_supportedFormats;
-    supportedVideoFormats_supportedFormats = v3;
+    supportedVideoFormats_supportedFormats = _querySupportedVideoFormats;
   }
 
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __59__AROrientationTrackingConfiguration_supportedVideoFormats__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (supportedVideoFormats_onceToken_0 != -1)
   {
     dispatch_once(&supportedVideoFormats_onceToken_0, block);
@@ -93,11 +93,11 @@ uint64_t __59__AROrientationTrackingConfiguration_supportedVideoFormats__block_i
   return v2;
 }
 
-+ (BOOL)supportsFrameSemantics:(unint64_t)a3
++ (BOOL)supportsFrameSemantics:(unint64_t)semantics
 {
   v4 = objc_opt_class();
 
-  return [v4 supportsFrameSemantics:a3];
+  return [v4 supportsFrameSemantics:semantics];
 }
 
 - (id)description
@@ -107,16 +107,16 @@ uint64_t __59__AROrientationTrackingConfiguration_supportedVideoFormats__block_i
   v5 = NSStringFromClass(v4);
   v6 = [v3 stringWithFormat:@"<%@: %p", v5, self];
 
-  v7 = [(ARConfiguration *)self isAutoFocusEnabled];
+  isAutoFocusEnabled = [(ARConfiguration *)self isAutoFocusEnabled];
   v8 = @"Disabled";
-  if (v7)
+  if (isAutoFocusEnabled)
   {
     v8 = @"Enabled";
   }
 
   [v6 appendFormat:@" autoFocus=%@", v8];
-  v9 = [(ARConfiguration *)self descriptionWithoutBrackets];
-  [v6 appendString:v9];
+  descriptionWithoutBrackets = [(ARConfiguration *)self descriptionWithoutBrackets];
+  [v6 appendString:descriptionWithoutBrackets];
 
   [v6 appendString:@">"];
 

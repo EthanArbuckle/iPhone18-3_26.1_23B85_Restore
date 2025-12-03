@@ -1,39 +1,39 @@
 @interface WFLinkContextualAction
-- (BOOL)isEqual:(id)a3;
-- (WFLinkContextualAction)initWithAction:(id)a3 appBundleIdentifier:(id)a4 extensionBundleIdentifier:(id)a5 contextualParameters:(id)a6 authenticationPolicy:(int64_t)a7 icon:(id)a8;
-- (WFLinkContextualAction)initWithCoder:(id)a3;
-- (id)copyWithParameters:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (WFLinkContextualAction)initWithAction:(id)action appBundleIdentifier:(id)identifier extensionBundleIdentifier:(id)bundleIdentifier contextualParameters:(id)parameters authenticationPolicy:(int64_t)policy icon:(id)icon;
+- (WFLinkContextualAction)initWithCoder:(id)coder;
+- (id)copyWithParameters:(id)parameters;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)wf_launchAppIfNeededUsingSurface:(unint64_t)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)wf_launchAppIfNeededUsingSurface:(unint64_t)surface;
 @end
 
 @implementation WFLinkContextualAction
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = WFLinkContextualAction;
-  v4 = a3;
-  [(WFContextualAction *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_linkAction forKey:{@"linkAction", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_appBundleIdentifier forKey:@"appBundleIdentifier"];
-  [v4 encodeObject:self->_extensionBundleIdentifier forKey:@"extensionBundleIdentifier"];
-  [v4 encodeInteger:self->_authenticationPolicy forKey:@"authenticationPolicy"];
+  coderCopy = coder;
+  [(WFContextualAction *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_linkAction forKey:{@"linkAction", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_appBundleIdentifier forKey:@"appBundleIdentifier"];
+  [coderCopy encodeObject:self->_extensionBundleIdentifier forKey:@"extensionBundleIdentifier"];
+  [coderCopy encodeInteger:self->_authenticationPolicy forKey:@"authenticationPolicy"];
 }
 
-- (WFLinkContextualAction)initWithCoder:(id)a3
+- (WFLinkContextualAction)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = WFLinkContextualAction;
-  v5 = [(WFContextualAction *)&v13 initWithCoder:v4];
+  v5 = [(WFContextualAction *)&v13 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"appBundleIdentifier"];
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"extensionBundleIdentifier"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"linkAction"];
-    v9 = [v4 decodeIntegerForKey:@"authenticationPolicy"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"appBundleIdentifier"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"extensionBundleIdentifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"linkAction"];
+    v9 = [coderCopy decodeIntegerForKey:@"authenticationPolicy"];
     v10 = 0;
     if (v6 && v8)
     {
@@ -54,26 +54,26 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v25.receiver = self;
   v25.super_class = WFLinkContextualAction;
-  if ([(WFContextualAction *)&v25 isEqual:v4])
+  if ([(WFContextualAction *)&v25 isEqual:equalCopy])
   {
-    v5 = v4;
+    v5 = equalCopy;
     if (!v5 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
-      LOBYTE(v11) = 0;
+      LOBYTE(authenticationPolicy) = 0;
 LABEL_29:
 
       goto LABEL_30;
     }
 
-    v6 = [v5 appBundleIdentifier];
-    v7 = [(WFLinkContextualAction *)self appBundleIdentifier];
-    v8 = v6;
-    v9 = v7;
+    appBundleIdentifier = [v5 appBundleIdentifier];
+    appBundleIdentifier2 = [(WFLinkContextualAction *)self appBundleIdentifier];
+    v8 = appBundleIdentifier;
+    v9 = appBundleIdentifier2;
     v10 = v9;
     if (v8 == v9)
     {
@@ -81,7 +81,7 @@ LABEL_29:
 
     else
     {
-      LOBYTE(v11) = 0;
+      LOBYTE(authenticationPolicy) = 0;
       v12 = v9;
       v13 = v8;
       if (!v8 || !v9)
@@ -93,17 +93,17 @@ LABEL_29:
 
       if (!v14)
       {
-        LOBYTE(v11) = 0;
+        LOBYTE(authenticationPolicy) = 0;
 LABEL_28:
 
         goto LABEL_29;
       }
     }
 
-    v15 = [v5 extensionBundleIdentifier];
-    v16 = [(WFLinkContextualAction *)self extensionBundleIdentifier];
-    v13 = v15;
-    v17 = v16;
+    extensionBundleIdentifier = [v5 extensionBundleIdentifier];
+    extensionBundleIdentifier2 = [(WFLinkContextualAction *)self extensionBundleIdentifier];
+    v13 = extensionBundleIdentifier;
+    v17 = extensionBundleIdentifier2;
     v12 = v17;
     if (v13 == v17)
     {
@@ -111,7 +111,7 @@ LABEL_28:
 
     else
     {
-      LOBYTE(v11) = 0;
+      LOBYTE(authenticationPolicy) = 0;
       v18 = v17;
       v19 = v13;
       if (!v13 || !v17)
@@ -123,17 +123,17 @@ LABEL_28:
 
       if (!v20)
       {
-        LOBYTE(v11) = 0;
+        LOBYTE(authenticationPolicy) = 0;
 LABEL_27:
 
         goto LABEL_28;
       }
     }
 
-    v21 = [v5 linkAction];
-    v22 = [(WFLinkContextualAction *)self linkAction];
-    v19 = v21;
-    v23 = v22;
+    linkAction = [v5 linkAction];
+    linkAction2 = [(WFLinkContextualAction *)self linkAction];
+    v19 = linkAction;
+    v23 = linkAction2;
     v18 = v23;
     if (v19 == v23)
     {
@@ -144,29 +144,29 @@ LABEL_27:
       if (!v19 || !v23)
       {
 
-        LOBYTE(v11) = 0;
+        LOBYTE(authenticationPolicy) = 0;
         goto LABEL_26;
       }
 
-      LODWORD(v11) = [v19 isEqual:v23];
+      LODWORD(authenticationPolicy) = [v19 isEqual:v23];
 
-      if (!v11)
+      if (!authenticationPolicy)
       {
         goto LABEL_26;
       }
     }
 
-    v11 = [v5 authenticationPolicy];
-    LOBYTE(v11) = v11 == [(WFLinkContextualAction *)self authenticationPolicy];
+    authenticationPolicy = [v5 authenticationPolicy];
+    LOBYTE(authenticationPolicy) = authenticationPolicy == [(WFLinkContextualAction *)self authenticationPolicy];
 LABEL_26:
 
     goto LABEL_27;
   }
 
-  LOBYTE(v11) = 0;
+  LOBYTE(authenticationPolicy) = 0;
 LABEL_30:
 
-  return v11;
+  return authenticationPolicy;
 }
 
 - (unint64_t)hash
@@ -175,14 +175,14 @@ LABEL_30:
   v14.receiver = self;
   v14.super_class = WFLinkContextualAction;
   v4 = [v3 combineInteger:{-[WFContextualAction hash](&v14, sel_hash)}];
-  v5 = [(WFLinkContextualAction *)self appBundleIdentifier];
-  v6 = [v3 combineContentsOfPropertyListObject:v5];
+  appBundleIdentifier = [(WFLinkContextualAction *)self appBundleIdentifier];
+  v6 = [v3 combineContentsOfPropertyListObject:appBundleIdentifier];
 
-  v7 = [(WFLinkContextualAction *)self extensionBundleIdentifier];
-  v8 = [v3 combineContentsOfPropertyListObject:v7];
+  extensionBundleIdentifier = [(WFLinkContextualAction *)self extensionBundleIdentifier];
+  v8 = [v3 combineContentsOfPropertyListObject:extensionBundleIdentifier];
 
-  v9 = [(WFLinkContextualAction *)self linkAction];
-  v10 = [v3 combine:v9];
+  linkAction = [(WFLinkContextualAction *)self linkAction];
+  v10 = [v3 combine:linkAction];
 
   v11 = [v3 combineInteger:{-[WFLinkContextualAction authenticationPolicy](self, "authenticationPolicy")}];
   v12 = [v3 finalize];
@@ -190,31 +190,31 @@ LABEL_30:
   return v12;
 }
 
-- (id)copyWithParameters:(id)a3
+- (id)copyWithParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   v5 = objc_alloc(objc_opt_class());
-  v6 = [(WFLinkContextualAction *)self linkAction];
-  v7 = [(WFLinkContextualAction *)self appBundleIdentifier];
-  v8 = [(WFLinkContextualAction *)self extensionBundleIdentifier];
-  v9 = [(WFLinkContextualAction *)self authenticationPolicy];
-  v10 = [(WFContextualAction *)self icon];
-  v11 = [v5 initWithAction:v6 appBundleIdentifier:v7 extensionBundleIdentifier:v8 contextualParameters:v4 authenticationPolicy:v9 icon:v10];
+  linkAction = [(WFLinkContextualAction *)self linkAction];
+  appBundleIdentifier = [(WFLinkContextualAction *)self appBundleIdentifier];
+  extensionBundleIdentifier = [(WFLinkContextualAction *)self extensionBundleIdentifier];
+  authenticationPolicy = [(WFLinkContextualAction *)self authenticationPolicy];
+  icon = [(WFContextualAction *)self icon];
+  v11 = [v5 initWithAction:linkAction appBundleIdentifier:appBundleIdentifier extensionBundleIdentifier:extensionBundleIdentifier contextualParameters:parametersCopy authenticationPolicy:authenticationPolicy icon:icon];
 
   return v11;
 }
 
-- (WFLinkContextualAction)initWithAction:(id)a3 appBundleIdentifier:(id)a4 extensionBundleIdentifier:(id)a5 contextualParameters:(id)a6 authenticationPolicy:(int64_t)a7 icon:(id)a8
+- (WFLinkContextualAction)initWithAction:(id)action appBundleIdentifier:(id)identifier extensionBundleIdentifier:(id)bundleIdentifier contextualParameters:(id)parameters authenticationPolicy:(int64_t)policy icon:(id)icon
 {
   v38[2] = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a8;
-  if (v15)
+  actionCopy = action;
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
+  parametersCopy = parameters;
+  iconCopy = icon;
+  if (actionCopy)
   {
-    if (v16)
+    if (identifierCopy)
     {
       goto LABEL_3;
     }
@@ -222,26 +222,26 @@ LABEL_30:
 
   else
   {
-    v35 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v35 handleFailureInMethod:a2 object:self file:@"WFLinkContextualAction.m" lineNumber:29 description:{@"Invalid parameter not satisfying: %@", @"action"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFLinkContextualAction.m" lineNumber:29 description:{@"Invalid parameter not satisfying: %@", @"action"}];
 
-    if (v16)
+    if (identifierCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v36 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v36 handleFailureInMethod:a2 object:self file:@"WFLinkContextualAction.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"appBundleIdentifier"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFLinkContextualAction.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"appBundleIdentifier"}];
 
 LABEL_3:
-  v38[0] = v16;
-  v20 = [v15 identifier];
-  v38[1] = v20;
+  v38[0] = identifierCopy;
+  identifier = [actionCopy identifier];
+  v38[1] = identifier;
   v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v38 count:2];
   v22 = [v21 componentsJoinedByString:@"."];
 
-  v23 = [v18 copy];
+  v23 = [parametersCopy copy];
   v24 = v23;
   v25 = MEMORY[0x1E695E0F0];
   if (v23)
@@ -251,19 +251,19 @@ LABEL_3:
 
   v26 = v25;
 
-  v27 = [(WFContextualAction *)self initWithIdentifier:v22 wfActionIdentifier:&stru_1F28FBBB8 associatedAppBundleIdentifier:v16 parameters:v26 displayString:@"Run Link Action" title:@"Run Link Action" subtitle:0 icon:v19];
+  v27 = [(WFContextualAction *)self initWithIdentifier:v22 wfActionIdentifier:&stru_1F28FBBB8 associatedAppBundleIdentifier:identifierCopy parameters:v26 displayString:@"Run Link Action" title:@"Run Link Action" subtitle:0 icon:iconCopy];
   if (v27)
   {
-    objc_storeStrong(&v27->_linkAction, a3);
-    v28 = [v16 copy];
+    objc_storeStrong(&v27->_linkAction, action);
+    v28 = [identifierCopy copy];
     appBundleIdentifier = v27->_appBundleIdentifier;
     v27->_appBundleIdentifier = v28;
 
-    v30 = [v17 copy];
+    v30 = [bundleIdentifierCopy copy];
     extensionBundleIdentifier = v27->_extensionBundleIdentifier;
     v27->_extensionBundleIdentifier = v30;
 
-    v27->_authenticationPolicy = a7;
+    v27->_authenticationPolicy = policy;
     v32 = v27;
   }
 
@@ -271,13 +271,13 @@ LABEL_3:
   return v27;
 }
 
-- (void)wf_launchAppIfNeededUsingSurface:(unint64_t)a3
+- (void)wf_launchAppIfNeededUsingSurface:(unint64_t)surface
 {
-  v8 = [(WFLinkContextualAction *)self linkAction];
-  v5 = [(WFLinkContextualAction *)self appBundleIdentifier];
-  v6 = [(WFLinkContextualAction *)self linkAction];
-  v7 = [v6 identifier];
-  [(WFContextualAction *)self wf_launchAppIfNeededUsingSurface:a3 linkAction:v8 appBundleIdentifier:v5 actionIdentifier:v7];
+  linkAction = [(WFLinkContextualAction *)self linkAction];
+  appBundleIdentifier = [(WFLinkContextualAction *)self appBundleIdentifier];
+  linkAction2 = [(WFLinkContextualAction *)self linkAction];
+  identifier = [linkAction2 identifier];
+  [(WFContextualAction *)self wf_launchAppIfNeededUsingSurface:surface linkAction:linkAction appBundleIdentifier:appBundleIdentifier actionIdentifier:identifier];
 }
 
 @end

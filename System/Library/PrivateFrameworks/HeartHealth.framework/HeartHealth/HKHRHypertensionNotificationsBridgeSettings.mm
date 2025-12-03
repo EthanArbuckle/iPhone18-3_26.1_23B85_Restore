@@ -1,23 +1,23 @@
 @interface HKHRHypertensionNotificationsBridgeSettings
-- (HKHRHypertensionNotificationsBridgeSettings)initWithSettingsVisible:(BOOL)a3 settingsEnabled:(BOOL)a4 showOnboarding:(BOOL)a5 userInteractionEnabled:(BOOL)a6 footer:(id)a7;
+- (HKHRHypertensionNotificationsBridgeSettings)initWithSettingsVisible:(BOOL)visible settingsEnabled:(BOOL)enabled showOnboarding:(BOOL)onboarding userInteractionEnabled:(BOOL)interactionEnabled footer:(id)footer;
 @end
 
 @implementation HKHRHypertensionNotificationsBridgeSettings
 
-- (HKHRHypertensionNotificationsBridgeSettings)initWithSettingsVisible:(BOOL)a3 settingsEnabled:(BOOL)a4 showOnboarding:(BOOL)a5 userInteractionEnabled:(BOOL)a6 footer:(id)a7
+- (HKHRHypertensionNotificationsBridgeSettings)initWithSettingsVisible:(BOOL)visible settingsEnabled:(BOOL)enabled showOnboarding:(BOOL)onboarding userInteractionEnabled:(BOOL)interactionEnabled footer:(id)footer
 {
-  v13 = a7;
+  footerCopy = footer;
   v17.receiver = self;
   v17.super_class = HKHRHypertensionNotificationsBridgeSettings;
   v14 = [(HKHRHypertensionNotificationsBridgeSettings *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    v14->_settingVisible = a3;
-    v14->_settingEnabled = a4;
-    v14->_showOnboarding = a5;
-    v14->_userInteractionEnabled = a6;
-    objc_storeStrong(&v14->_footer, a7);
+    v14->_settingVisible = visible;
+    v14->_settingEnabled = enabled;
+    v14->_showOnboarding = onboarding;
+    v14->_userInteractionEnabled = interactionEnabled;
+    objc_storeStrong(&v14->_footer, footer);
   }
 
   return v15;

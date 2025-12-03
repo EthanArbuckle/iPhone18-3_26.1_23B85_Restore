@@ -1,32 +1,32 @@
 @interface OADBlipEffect
-- (BOOL)isEqual:(id)a3;
-- (OADBlipEffect)initWithType:(int)a3;
+- (BOOL)isEqual:(id)equal;
+- (OADBlipEffect)initWithType:(int)type;
 - (id)description;
 @end
 
 @implementation OADBlipEffect
 
-- (OADBlipEffect)initWithType:(int)a3
+- (OADBlipEffect)initWithType:(int)type
 {
   v5.receiver = self;
   v5.super_class = OADBlipEffect;
   result = [(OADBlipEffect *)&v5 init];
   if (result)
   {
-    result->mType = a3;
+    result->mType = type;
   }
 
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     mType = self->mType;
-    v6 = mType == [v4 type];
+    v6 = mType == [equalCopy type];
   }
 
   else

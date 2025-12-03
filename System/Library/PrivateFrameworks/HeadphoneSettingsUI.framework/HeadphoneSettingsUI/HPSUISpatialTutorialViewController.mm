@@ -1,40 +1,40 @@
 @interface HPSUISpatialTutorialViewController
-- (HPSUISpatialTutorialViewController)initWithDevice:(id)a3 content:(id)a4;
+- (HPSUISpatialTutorialViewController)initWithDevice:(id)device content:(id)content;
 - (void)checkStatusAndPlay;
-- (void)deviceDisconnectedHandler:(id)a3;
+- (void)deviceDisconnectedHandler:(id)handler;
 - (void)dismissWelcomeController;
-- (void)handleAudioSessionInterruption:(id)a3;
-- (void)handleMediaServerConnectionDied:(id)a3;
-- (void)inEarStatusChangedHandler:(id)a3;
+- (void)handleAudioSessionInterruption:(id)interruption;
+- (void)handleMediaServerConnectionDied:(id)died;
+- (void)inEarStatusChangedHandler:(id)handler;
 - (void)initCommon;
-- (void)powerChangedHandler:(id)a3;
-- (void)segmentControlValueChanged:(id)a3;
+- (void)powerChangedHandler:(id)handler;
+- (void)segmentControlValueChanged:(id)changed;
 - (void)setupConstraints;
 - (void)setupStackView;
 - (void)setupWelcomeController;
 - (void)updateInEarState;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation HPSUISpatialTutorialViewController
 
-- (HPSUISpatialTutorialViewController)initWithDevice:(id)a3 content:(id)a4
+- (HPSUISpatialTutorialViewController)initWithDevice:(id)device content:(id)content
 {
-  v6 = a3;
-  v7 = a4;
+  deviceCopy = device;
+  contentCopy = content;
   v12.receiver = self;
   v12.super_class = HPSUISpatialTutorialViewController;
   v8 = [(HPSUISpatialTutorialViewController *)&v12 init];
   if (v8)
   {
-    v9 = [BTSDeviceClassic deviceWithDevice:v6];
+    v9 = [BTSDeviceClassic deviceWithDevice:deviceCopy];
     currentDevice = v8->_currentDevice;
     v8->_currentDevice = v9;
 
-    objc_storeStrong(&v8->_content, a4);
+    objc_storeStrong(&v8->_content, content);
     [(HPSUISpatialTutorialViewController *)v8 initCommon];
   }
 
@@ -49,36 +49,36 @@
   [(HPSUISpatialTutorialViewController *)self setupWelcomeController];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v16.receiver = self;
   v16.super_class = HPSUISpatialTutorialViewController;
   [(HPSUISpatialTutorialViewController *)&v16 viewDidAppear:1];
-  v4 = [MEMORY[0x1E69708D8] sharedCommandCenter];
-  v5 = [v4 playCommand];
-  [v5 setEnabled:1];
+  mEMORY[0x1E69708D8] = [MEMORY[0x1E69708D8] sharedCommandCenter];
+  playCommand = [mEMORY[0x1E69708D8] playCommand];
+  [playCommand setEnabled:1];
 
-  v6 = [MEMORY[0x1E69708D8] sharedCommandCenter];
-  v7 = [v6 playCommand];
+  mEMORY[0x1E69708D8]2 = [MEMORY[0x1E69708D8] sharedCommandCenter];
+  playCommand2 = [mEMORY[0x1E69708D8]2 playCommand];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __52__HPSUISpatialTutorialViewController_viewDidAppear___block_invoke;
   v15[3] = &unk_1E7970C20;
   v15[4] = self;
-  v8 = [v7 addTargetWithHandler:v15];
+  v8 = [playCommand2 addTargetWithHandler:v15];
 
-  v9 = [MEMORY[0x1E69708D8] sharedCommandCenter];
-  v10 = [v9 pauseCommand];
-  [v10 setEnabled:1];
+  mEMORY[0x1E69708D8]3 = [MEMORY[0x1E69708D8] sharedCommandCenter];
+  pauseCommand = [mEMORY[0x1E69708D8]3 pauseCommand];
+  [pauseCommand setEnabled:1];
 
-  v11 = [MEMORY[0x1E69708D8] sharedCommandCenter];
-  v12 = [v11 pauseCommand];
+  mEMORY[0x1E69708D8]4 = [MEMORY[0x1E69708D8] sharedCommandCenter];
+  pauseCommand2 = [mEMORY[0x1E69708D8]4 pauseCommand];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __52__HPSUISpatialTutorialViewController_viewDidAppear___block_invoke_2;
   v14[3] = &unk_1E7970C20;
   v14[4] = self;
-  v13 = [v12 addTargetWithHandler:v14];
+  v13 = [pauseCommand2 addTargetWithHandler:v14];
 
   if (!self->_mediaSessionStarted)
   {
@@ -89,40 +89,40 @@
   [(HPSUISpatialTutorialViewController *)self checkStatusAndPlay];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   [(HPSUISpatialTutorialViewController *)self stopPlayingContent];
   [(RMMediaSession *)self->_mediaSession _stop];
   self->_mediaSessionStarted = 0;
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 removeObserver:self name:*MEMORY[0x1E698F438] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E698F438] object:0];
 
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v5 removeObserver:self name:*MEMORY[0x1E698F450] object:0];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter2 removeObserver:self name:*MEMORY[0x1E698F450] object:0];
 
-  v6 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v6 removeObserver:self name:*MEMORY[0x1E69DDAB0] object:0];
+  defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter3 removeObserver:self name:*MEMORY[0x1E69DDAB0] object:0];
 
-  v7 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v7 removeObserver:self name:*MEMORY[0x1E69DDAC8] object:0];
+  defaultCenter4 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter4 removeObserver:self name:*MEMORY[0x1E69DDAC8] object:0];
 
-  v8 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter5 = [MEMORY[0x1E696AD88] defaultCenter];
   v9 = *MEMORY[0x1E69580D8];
-  v10 = [MEMORY[0x1E6958460] sharedInstance];
-  [v8 removeObserver:self name:v9 object:v10];
+  mEMORY[0x1E6958460] = [MEMORY[0x1E6958460] sharedInstance];
+  [defaultCenter5 removeObserver:self name:v9 object:mEMORY[0x1E6958460]];
 
-  v11 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter6 = [MEMORY[0x1E696AD88] defaultCenter];
   v12 = *MEMORY[0x1E69AECB8];
-  v13 = [MEMORY[0x1E6958460] sharedInstance];
-  [v11 removeObserver:self name:v12 object:v13];
+  mEMORY[0x1E6958460]2 = [MEMORY[0x1E6958460] sharedInstance];
+  [defaultCenter6 removeObserver:self name:v12 object:mEMORY[0x1E6958460]2];
 
-  v14 = [MEMORY[0x1E69708D8] sharedCommandCenter];
-  v15 = [v14 playCommand];
-  [v15 removeTarget:0];
+  mEMORY[0x1E69708D8] = [MEMORY[0x1E69708D8] sharedCommandCenter];
+  playCommand = [mEMORY[0x1E69708D8] playCommand];
+  [playCommand removeTarget:0];
 
-  v17 = [MEMORY[0x1E69708D8] sharedCommandCenter];
-  v16 = [v17 pauseCommand];
-  [v16 removeTarget:0];
+  mEMORY[0x1E69708D8]2 = [MEMORY[0x1E69708D8] sharedCommandCenter];
+  pauseCommand = [mEMORY[0x1E69708D8]2 pauseCommand];
+  [pauseCommand removeTarget:0];
 }
 
 - (void)viewWillLayoutSubviews
@@ -136,8 +136,8 @@
 - (void)initCommon
 {
   v3 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-  v4 = [MGGetStringAnswer() uppercaseString];
-  v5 = [@"SPATIAL_AUDIO_DETAIL_" stringByAppendingString:v4];
+  uppercaseString = [MGGetStringAnswer() uppercaseString];
+  v5 = [@"SPATIAL_AUDIO_DETAIL_" stringByAppendingString:uppercaseString];
   v49 = [v3 localizedStringForKey:v5 value:&stru_1F20FAB50 table:@"DeviceConfig"];
 
   v6 = objc_alloc(MEMORY[0x1E69B7D70]);
@@ -170,10 +170,10 @@
   spatialTutorialContentView = self->_spatialTutorialContentView;
   self->_spatialTutorialContentView = v24;
 
-  v26 = [(HPSUISpatialTutorialViewController *)self content];
-  v27 = [v26 putAccesssoryInEar];
+  content = [(HPSUISpatialTutorialViewController *)self content];
+  putAccesssoryInEar = [content putAccesssoryInEar];
 
-  v28 = [MEMORY[0x1E69DC650] alertControllerWithTitle:v27 message:&stru_1F20FAB50 preferredStyle:1];
+  v28 = [MEMORY[0x1E69DC650] alertControllerWithTitle:putAccesssoryInEar message:&stru_1F20FAB50 preferredStyle:1];
   alert = self->_alert;
   self->_alert = v28;
 
@@ -198,57 +198,57 @@
   self->_mediaSession = v37;
 
   self->_mediaSessionStarted = 0;
-  v39 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v39 addObserver:self selector:sel_inEarStatusChangedHandler_ name:*MEMORY[0x1E698F438] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_inEarStatusChangedHandler_ name:*MEMORY[0x1E698F438] object:0];
 
-  v40 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v40 addObserver:self selector:sel_deviceDisconnectedHandler_ name:*MEMORY[0x1E698F450] object:0];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel_deviceDisconnectedHandler_ name:*MEMORY[0x1E698F450] object:0];
 
-  v41 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v41 addObserver:self selector:sel_applicationDidBecomeActive_ name:*MEMORY[0x1E69DDAB0] object:0];
+  defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter3 addObserver:self selector:sel_applicationDidBecomeActive_ name:*MEMORY[0x1E69DDAB0] object:0];
 
-  v42 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v42 addObserver:self selector:sel_applicationDidEnterBackground_ name:*MEMORY[0x1E69DDAC8] object:0];
+  defaultCenter4 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter4 addObserver:self selector:sel_applicationDidEnterBackground_ name:*MEMORY[0x1E69DDAC8] object:0];
 
-  v43 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter5 = [MEMORY[0x1E696AD88] defaultCenter];
   v44 = *MEMORY[0x1E69580D8];
-  v45 = [MEMORY[0x1E6958460] sharedInstance];
-  [v43 addObserver:self selector:sel_handleAudioSessionInterruption_ name:v44 object:v45];
+  mEMORY[0x1E6958460] = [MEMORY[0x1E6958460] sharedInstance];
+  [defaultCenter5 addObserver:self selector:sel_handleAudioSessionInterruption_ name:v44 object:mEMORY[0x1E6958460]];
 
-  v46 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter6 = [MEMORY[0x1E696AD88] defaultCenter];
   v47 = *MEMORY[0x1E69AECB8];
-  v48 = [MEMORY[0x1E6958460] sharedInstance];
-  [v46 addObserver:self selector:sel_handleMediaServerConnectionDied_ name:v47 object:v48];
+  mEMORY[0x1E6958460]2 = [MEMORY[0x1E6958460] sharedInstance];
+  [defaultCenter6 addObserver:self selector:sel_handleMediaServerConnectionDied_ name:v47 object:mEMORY[0x1E6958460]2];
 }
 
 - (void)setupWelcomeController
 {
-  v3 = [(HPSUISpatialTutorialViewController *)self view];
-  [v3 bounds];
+  view = [(HPSUISpatialTutorialViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(OBWelcomeController *)self->_welcomeController view];
-  [v12 setFrame:{v5, v7, v9, v11}];
+  view2 = [(OBWelcomeController *)self->_welcomeController view];
+  [view2 setFrame:{v5, v7, v9, v11}];
 
-  v13 = [(OBWelcomeController *)self->_welcomeController view];
-  [v13 setAutoresizingMask:18];
+  view3 = [(OBWelcomeController *)self->_welcomeController view];
+  [view3 setAutoresizingMask:18];
 
   [(HPSUISpatialTutorialViewController *)self setupStackView];
-  v19 = [MEMORY[0x1E69B7D00] boldButton];
+  boldButton = [MEMORY[0x1E69B7D00] boldButton];
   v14 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
   v15 = [v14 localizedStringForKey:@"SPATIAL_TUTORIAL_BUTTON_DONE" value:&stru_1F20FAB50 table:@"DeviceConfig"];
-  [v19 setTitle:v15 forState:0];
+  [boldButton setTitle:v15 forState:0];
 
-  [v19 addTarget:self action:sel_quitSpatialTutorial_ forControlEvents:64];
-  v16 = [(OBWelcomeController *)self->_welcomeController buttonTray];
-  [v16 addButton:v19];
+  [boldButton addTarget:self action:sel_quitSpatialTutorial_ forControlEvents:64];
+  buttonTray = [(OBWelcomeController *)self->_welcomeController buttonTray];
+  [buttonTray addButton:boldButton];
 
   [(HPSUISpatialTutorialViewController *)self addChildViewController:self->_welcomeController];
-  v17 = [(HPSUISpatialTutorialViewController *)self view];
-  v18 = [(OBWelcomeController *)self->_welcomeController view];
-  [v17 addSubview:v18];
+  view4 = [(HPSUISpatialTutorialViewController *)self view];
+  view5 = [(OBWelcomeController *)self->_welcomeController view];
+  [view4 addSubview:view5];
 }
 
 - (void)setupStackView
@@ -264,8 +264,8 @@
   [(UIStackView *)self->_stackView addArrangedSubview:self->_segmentedControl];
   [(UIStackView *)self->_stackView addArrangedSubview:self->_spacerView];
   [(UIStackView *)self->_stackView addArrangedSubview:self->_spatialTutorialContentView];
-  v3 = [(OBWelcomeController *)self->_welcomeController contentView];
-  [v3 addSubview:self->_stackView];
+  contentView = [(OBWelcomeController *)self->_welcomeController contentView];
+  [contentView addSubview:self->_stackView];
 }
 
 - (void)setupConstraints
@@ -277,72 +277,72 @@
   }
 
   constraints = self->_constraints;
-  v4 = [(UISegmentedControl *)self->_segmentedControl leadingAnchor];
-  v5 = [(OBWelcomeController *)self->_welcomeController headerView];
-  v6 = [v5 leadingAnchor];
-  v7 = [v4 constraintEqualToAnchor:v6];
+  leadingAnchor = [(UISegmentedControl *)self->_segmentedControl leadingAnchor];
+  headerView = [(OBWelcomeController *)self->_welcomeController headerView];
+  leadingAnchor2 = [headerView leadingAnchor];
+  v7 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [(NSMutableArray *)constraints addObject:v7];
 
   v8 = self->_constraints;
-  v9 = [(UISegmentedControl *)self->_segmentedControl trailingAnchor];
-  v10 = [(OBWelcomeController *)self->_welcomeController headerView];
-  v11 = [v10 trailingAnchor];
-  v12 = [v9 constraintEqualToAnchor:v11];
+  trailingAnchor = [(UISegmentedControl *)self->_segmentedControl trailingAnchor];
+  headerView2 = [(OBWelcomeController *)self->_welcomeController headerView];
+  trailingAnchor2 = [headerView2 trailingAnchor];
+  v12 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   [(NSMutableArray *)v8 addObject:v12];
 
   v13 = self->_constraints;
-  v14 = [(UIView *)self->_spacerView heightAnchor];
-  v15 = [(UISegmentedControl *)self->_segmentedControl heightAnchor];
-  v16 = [v14 constraintEqualToAnchor:v15];
+  heightAnchor = [(UIView *)self->_spacerView heightAnchor];
+  heightAnchor2 = [(UISegmentedControl *)self->_segmentedControl heightAnchor];
+  v16 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
   [(NSMutableArray *)v13 addObject:v16];
 
-  v17 = [(OBWelcomeController *)self->_welcomeController headerView];
-  [v17 bounds];
+  headerView3 = [(OBWelcomeController *)self->_welcomeController headerView];
+  [headerView3 bounds];
   v18 = 400.0;
   if (v19 <= 400.0)
   {
-    v20 = [(OBWelcomeController *)self->_welcomeController headerView];
-    [v20 bounds];
+    headerView4 = [(OBWelcomeController *)self->_welcomeController headerView];
+    [headerView4 bounds];
     v22 = v21;
     v18 = v22;
   }
 
   v23 = self->_constraints;
-  v24 = [(VPSpatialTutorialContentView *)self->_spatialTutorialContentView widthAnchor];
-  v25 = [v24 constraintEqualToConstant:v18];
+  widthAnchor = [(VPSpatialTutorialContentView *)self->_spatialTutorialContentView widthAnchor];
+  v25 = [widthAnchor constraintEqualToConstant:v18];
   [(NSMutableArray *)v23 addObject:v25];
 
   v26 = self->_constraints;
-  v27 = [(VPSpatialTutorialContentView *)self->_spatialTutorialContentView heightAnchor];
-  v28 = [v27 constraintEqualToConstant:v18];
+  heightAnchor3 = [(VPSpatialTutorialContentView *)self->_spatialTutorialContentView heightAnchor];
+  v28 = [heightAnchor3 constraintEqualToConstant:v18];
   [(NSMutableArray *)v26 addObject:v28];
 
   v29 = self->_constraints;
-  v30 = [(UIStackView *)self->_stackView topAnchor];
-  v31 = [(OBWelcomeController *)self->_welcomeController contentView];
-  v32 = [v31 topAnchor];
-  v33 = [v30 constraintEqualToAnchor:v32];
+  topAnchor = [(UIStackView *)self->_stackView topAnchor];
+  contentView = [(OBWelcomeController *)self->_welcomeController contentView];
+  topAnchor2 = [contentView topAnchor];
+  v33 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [(NSMutableArray *)v29 addObject:v33];
 
   v34 = self->_constraints;
-  v35 = [(UIStackView *)self->_stackView bottomAnchor];
-  v36 = [(OBWelcomeController *)self->_welcomeController contentView];
-  v37 = [v36 bottomAnchor];
-  v38 = [v35 constraintEqualToAnchor:v37];
+  bottomAnchor = [(UIStackView *)self->_stackView bottomAnchor];
+  contentView2 = [(OBWelcomeController *)self->_welcomeController contentView];
+  bottomAnchor2 = [contentView2 bottomAnchor];
+  v38 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   [(NSMutableArray *)v34 addObject:v38];
 
   v39 = self->_constraints;
-  v40 = [(UIStackView *)self->_stackView leadingAnchor];
-  v41 = [(OBWelcomeController *)self->_welcomeController contentView];
-  v42 = [v41 leadingAnchor];
-  v43 = [v40 constraintEqualToAnchor:v42];
+  leadingAnchor3 = [(UIStackView *)self->_stackView leadingAnchor];
+  contentView3 = [(OBWelcomeController *)self->_welcomeController contentView];
+  leadingAnchor4 = [contentView3 leadingAnchor];
+  v43 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   [(NSMutableArray *)v39 addObject:v43];
 
   v44 = self->_constraints;
-  v45 = [(UIStackView *)self->_stackView trailingAnchor];
-  v46 = [(OBWelcomeController *)self->_welcomeController contentView];
-  v47 = [v46 trailingAnchor];
-  v48 = [v45 constraintEqualToAnchor:v47];
+  trailingAnchor3 = [(UIStackView *)self->_stackView trailingAnchor];
+  contentView4 = [(OBWelcomeController *)self->_welcomeController contentView];
+  trailingAnchor4 = [contentView4 trailingAnchor];
+  v48 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   [(NSMutableArray *)v44 addObject:v48];
 
   v49 = MEMORY[0x1E696ACD8];
@@ -405,30 +405,30 @@
 - (void)updateInEarState
 {
   v7 = 0x300000003;
-  v3 = [(HPSUISpatialTutorialViewController *)self currentDevice];
-  v4 = [v3 classicDevice];
-  [v4 inEarStatusPrimary:&v7 + 4 secondary:&v7];
+  currentDevice = [(HPSUISpatialTutorialViewController *)self currentDevice];
+  classicDevice = [currentDevice classicDevice];
+  [classicDevice inEarStatusPrimary:&v7 + 4 secondary:&v7];
 
   self->_budsInEar = v7 == 0;
-  v5 = [(BTSDevice *)self->_currentDevice classicDevice];
-  if ([v5 productId] == 8215)
+  classicDevice2 = [(BTSDevice *)self->_currentDevice classicDevice];
+  if ([classicDevice2 productId] == 8215)
   {
     self->_budsInEar = 1;
   }
 
   else
   {
-    v6 = [(BTSDevice *)self->_currentDevice classicDevice];
-    self->_budsInEar |= [v6 productId] == 8229;
+    classicDevice3 = [(BTSDevice *)self->_currentDevice classicDevice];
+    self->_budsInEar |= [classicDevice3 productId] == 8229;
   }
 }
 
-- (void)segmentControlValueChanged:(id)a3
+- (void)segmentControlValueChanged:(id)changed
 {
-  v4 = [(UISegmentedControl *)self->_segmentedControl selectedSegmentIndex];
-  if (v4)
+  selectedSegmentIndex = [(UISegmentedControl *)self->_segmentedControl selectedSegmentIndex];
+  if (selectedSegmentIndex)
   {
-    if (v4 != 1)
+    if (selectedSegmentIndex != 1)
     {
       return;
     }
@@ -447,39 +447,39 @@
   [(VPSpatialTutorialContentView *)spatialTutorialContentView setMode:v5];
 }
 
-- (void)deviceDisconnectedHandler:(id)a3
+- (void)deviceDisconnectedHandler:(id)handler
 {
-  v7 = [a3 object];
-  v4 = [v7 address];
-  v5 = [(HPSUISpatialTutorialViewController *)self currentDevice];
-  v6 = [v5 identifier];
+  object = [handler object];
+  address = [object address];
+  currentDevice = [(HPSUISpatialTutorialViewController *)self currentDevice];
+  identifier = [currentDevice identifier];
 
-  if (v4 == v6)
+  if (address == identifier)
   {
     [(HPSUISpatialTutorialViewController *)self dismissWelcomeController];
   }
 }
 
-- (void)powerChangedHandler:(id)a3
+- (void)powerChangedHandler:(id)handler
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E698F468] sharedInstance];
-  v6 = [v5 enabled];
+  handlerCopy = handler;
+  mEMORY[0x1E698F468] = [MEMORY[0x1E698F468] sharedInstance];
+  enabled = [mEMORY[0x1E698F468] enabled];
 
   v7 = os_log_create("com.apple.connectedAudio", "HeadphoneCommonUIKit");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v4 name];
-    v9 = v8;
+    name = [handlerCopy name];
+    v9 = name;
     v10 = "off";
-    if (v6)
+    if (enabled)
     {
       v10 = "on";
     }
 
     v11 = 138412546;
-    v12 = v8;
+    v12 = name;
     v13 = 2080;
     v14 = v10;
     _os_log_impl(&dword_1AC1C3000, v7, OS_LOG_TYPE_DEFAULT, "Received %@ with power state %s", &v11, 0x16u);
@@ -488,19 +488,19 @@
   [(HPSUISpatialTutorialViewController *)self dismissWelcomeController];
 }
 
-- (void)handleAudioSessionInterruption:(id)a3
+- (void)handleAudioSessionInterruption:(id)interruption
 {
-  v6 = [a3 userInfo];
-  v4 = [v6 objectForKey:*MEMORY[0x1E6958100]];
-  v5 = [v4 unsignedIntegerValue];
+  userInfo = [interruption userInfo];
+  v4 = [userInfo objectForKey:*MEMORY[0x1E6958100]];
+  unsignedIntegerValue = [v4 unsignedIntegerValue];
 
-  if (v5 == 1)
+  if (unsignedIntegerValue == 1)
   {
     [(HPSUISpatialTutorialViewController *)self dismissWelcomeController];
   }
 }
 
-- (void)handleMediaServerConnectionDied:(id)a3
+- (void)handleMediaServerConnectionDied:(id)died
 {
   v4 = os_log_create("com.apple.connectedAudio", "HeadphoneCommonUIKit");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -512,21 +512,21 @@
   [(HPSUISpatialTutorialViewController *)self dismissWelcomeController];
 }
 
-- (void)inEarStatusChangedHandler:(id)a3
+- (void)inEarStatusChangedHandler:(id)handler
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = [a3 object];
-  v5 = [v4 objectForKeyedSubscript:@"device"];
-  v6 = [v5 address];
-  v7 = [(HPSUISpatialTutorialViewController *)self currentDevice];
-  v8 = [v7 identifier];
+  object = [handler object];
+  v5 = [object objectForKeyedSubscript:@"device"];
+  address = [v5 address];
+  currentDevice = [(HPSUISpatialTutorialViewController *)self currentDevice];
+  identifier = [currentDevice identifier];
 
-  if (v6 == v8)
+  if (address == identifier)
   {
-    v9 = [v4 objectForKeyedSubscript:@"primaryInEarStatus"];
-    v10 = [v4 objectForKeyedSubscript:@"secondaryInEarStatus"];
-    v11 = [v9 BOOLValue];
-    v12 = v11 | [v10 BOOLValue];
+    v9 = [object objectForKeyedSubscript:@"primaryInEarStatus"];
+    v10 = [object objectForKeyedSubscript:@"secondaryInEarStatus"];
+    bOOLValue = [v9 BOOLValue];
+    v12 = bOOLValue | [v10 BOOLValue];
     v13 = os_log_create("com.apple.connectedAudio", "HeadphoneCommonUIKit");
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {

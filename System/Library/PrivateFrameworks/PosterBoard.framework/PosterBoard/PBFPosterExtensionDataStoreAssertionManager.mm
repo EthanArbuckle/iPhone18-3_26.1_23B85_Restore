@@ -1,14 +1,14 @@
 @interface PBFPosterExtensionDataStoreAssertionManager
-- (BOOL)_notifyObserversOfNewAssertions:(id)a3 newlyNotInUseAssertions:(id)a4;
-- (BOOL)_notifyObserversOfUpdatedController:(id)a3;
-- (BOOL)executeTransaction:(id)a3;
+- (BOOL)_notifyObserversOfNewAssertions:(id)assertions newlyNotInUseAssertions:(id)useAssertions;
+- (BOOL)_notifyObserversOfUpdatedController:(id)controller;
+- (BOOL)executeTransaction:(id)transaction;
 - (PBFPosterExtensionDataStoreAssertionManager)init;
-- (id)inUsePosterPathIdentitiesForReason:(id)a3;
-- (int64_t)numberOfAssertionsForReason:(id)a3;
-- (void)addObserver:(id)a3;
-- (void)enumerateObservers:(id)a3;
+- (id)inUsePosterPathIdentitiesForReason:(id)reason;
+- (int64_t)numberOfAssertionsForReason:(id)reason;
+- (void)addObserver:(id)observer;
+- (void)enumerateObservers:(id)observers;
 - (void)invalidate;
-- (void)removeObserver:(id)a3;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation PBFPosterExtensionDataStoreAssertionManager
@@ -28,9 +28,9 @@
     txFlag = v2->_txFlag;
     v2->_txFlag = v5;
 
-    v7 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     observers = v2->_observers;
-    v2->_observers = v7;
+    v2->_observers = weakObjectsHashTable;
 
     v9 = objc_alloc_init(_PBFPosterExtensionDataStoreAssertionController);
     controller = v2->_controller;
@@ -40,23 +40,23 @@
   return v2;
 }
 
-- (BOOL)executeTransaction:(id)a3
+- (BOOL)executeTransaction:(id)transaction
 {
-  v4 = a3;
-  if (v4 && [(BSAtomicFlag *)self->_txFlag setFlag:1])
+  transactionCopy = transaction;
+  if (transactionCopy && [(BSAtomicFlag *)self->_txFlag setFlag:1])
   {
-    v5 = self;
-    objc_sync_enter(v5);
-    v6 = [[_PBFPosterExtensionDataStoreAssertionController alloc] initWithController:v5->_controller];
-    v7 = v4[2](v4, v6);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v6 = [[_PBFPosterExtensionDataStoreAssertionController alloc] initWithController:selfCopy->_controller];
+    v7 = transactionCopy[2](transactionCopy, v6);
     if (v7)
     {
-      [(PBFPosterExtensionDataStoreAssertionManager *)v5 _notifyObserversOfUpdatedController:v6];
+      [(PBFPosterExtensionDataStoreAssertionManager *)selfCopy _notifyObserversOfUpdatedController:v6];
     }
 
     [(BSAtomicFlag *)self->_txFlag setFlag:0];
 
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -67,55 +67,55 @@
   return v7;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v5 = a3;
+  observerCopy = observer;
   if (([(BSAtomicFlag *)self->_invalidationFlag getFlag]& 1) == 0)
   {
     v4 = self->_observers;
     objc_sync_enter(v4);
-    [(NSHashTable *)self->_observers addObject:v5];
+    [(NSHashTable *)self->_observers addObject:observerCopy];
     objc_sync_exit(v4);
   }
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v5 = a3;
+  observerCopy = observer;
   if (([(BSAtomicFlag *)self->_invalidationFlag getFlag]& 1) == 0)
   {
     v4 = self->_observers;
     objc_sync_enter(v4);
-    [(NSHashTable *)self->_observers removeObject:v5];
+    [(NSHashTable *)self->_observers removeObject:observerCopy];
     objc_sync_exit(v4);
   }
 }
 
-- (void)enumerateObservers:(id)a3
+- (void)enumerateObservers:(id)observers
 {
-  v4 = a3;
-  v5 = [(BSAtomicFlag *)self->_invalidationFlag getFlag];
-  if (v4 && (v5 & 1) == 0)
+  observersCopy = observers;
+  getFlag = [(BSAtomicFlag *)self->_invalidationFlag getFlag];
+  if (observersCopy && (getFlag & 1) == 0)
   {
     v6 = self->_observers;
     objc_sync_enter(v6);
-    v7 = [(NSHashTable *)self->_observers allObjects];
-    v8 = [v7 copy];
+    allObjects = [(NSHashTable *)self->_observers allObjects];
+    v8 = [allObjects copy];
 
     objc_sync_exit(v6);
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __66__PBFPosterExtensionDataStoreAssertionManager_enumerateObservers___block_invoke;
     v9[3] = &unk_2782C8DE8;
-    v10 = v4;
+    v10 = observersCopy;
     [v8 enumerateObjectsUsingBlock:v9];
   }
 }
 
-- (BOOL)_notifyObserversOfUpdatedController:(id)a3
+- (BOOL)_notifyObserversOfUpdatedController:(id)controller
 {
   v41 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  controllerCopy = controller;
   if (([(BSAtomicFlag *)self->_invalidationFlag getFlag]& 1) != 0)
   {
     v6 = 0;
@@ -123,22 +123,22 @@
 
   else
   {
-    v7 = self;
-    objc_sync_enter(v7);
-    obj = v7;
-    v8 = [(_PBFPosterExtensionDataStoreAssertionController *)v7->_controller inUseAssertionsByIdentity];
-    v9 = [v5 inUseAssertionsByIdentity];
-    v26 = v5;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    obj = selfCopy;
+    inUseAssertionsByIdentity = [(_PBFPosterExtensionDataStoreAssertionController *)selfCopy->_controller inUseAssertionsByIdentity];
+    inUseAssertionsByIdentity2 = [controllerCopy inUseAssertionsByIdentity];
+    v26 = controllerCopy;
     v30 = objc_opt_new();
     v10 = objc_opt_new();
-    p_controller = &v7->_controller;
-    v28 = a3;
+    p_controller = &selfCopy->_controller;
+    controllerCopy2 = controller;
     v37 = 0u;
     v38 = 0u;
     v35 = 0u;
     v36 = 0u;
-    v11 = [v8 keyEnumerator];
-    v12 = [v11 countByEnumeratingWithState:&v35 objects:v40 count:16];
+    keyEnumerator = [inUseAssertionsByIdentity keyEnumerator];
+    v12 = [keyEnumerator countByEnumeratingWithState:&v35 objects:v40 count:16];
     if (v12)
     {
       v13 = *v36;
@@ -148,11 +148,11 @@
         {
           if (*v36 != v13)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(keyEnumerator);
           }
 
           v15 = *(*(&v35 + 1) + 8 * i);
-          v16 = [v9 objectForKey:v15];
+          v16 = [inUseAssertionsByIdentity2 objectForKey:v15];
           v17 = [v16 count] == 0;
 
           if (v17)
@@ -161,7 +161,7 @@
           }
         }
 
-        v12 = [v11 countByEnumeratingWithState:&v35 objects:v40 count:16];
+        v12 = [keyEnumerator countByEnumeratingWithState:&v35 objects:v40 count:16];
       }
 
       while (v12);
@@ -171,8 +171,8 @@
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v18 = [v9 keyEnumerator];
-    v19 = [v18 countByEnumeratingWithState:&v31 objects:v39 count:16];
+    keyEnumerator2 = [inUseAssertionsByIdentity2 keyEnumerator];
+    v19 = [keyEnumerator2 countByEnumeratingWithState:&v31 objects:v39 count:16];
     if (v19)
     {
       v20 = *v32;
@@ -182,11 +182,11 @@
         {
           if (*v32 != v20)
           {
-            objc_enumerationMutation(v18);
+            objc_enumerationMutation(keyEnumerator2);
           }
 
           v22 = *(*(&v31 + 1) + 8 * j);
-          v23 = [v8 objectForKey:v22];
+          v23 = [inUseAssertionsByIdentity objectForKey:v22];
           v24 = [v23 count] == 0;
 
           if (v24)
@@ -195,35 +195,35 @@
           }
         }
 
-        v19 = [v18 countByEnumeratingWithState:&v31 objects:v39 count:16];
+        v19 = [keyEnumerator2 countByEnumeratingWithState:&v31 objects:v39 count:16];
       }
 
       while (v19);
     }
 
-    objc_storeStrong(p_controller, v28);
+    objc_storeStrong(p_controller, controllerCopy2);
     v6 = [(PBFPosterExtensionDataStoreAssertionManager *)obj _notifyObserversOfNewAssertions:v30 newlyNotInUseAssertions:v10];
 
     objc_sync_exit(obj);
-    v5 = v26;
+    controllerCopy = v26;
   }
 
   return v6;
 }
 
-- (BOOL)_notifyObserversOfNewAssertions:(id)a3 newlyNotInUseAssertions:(id)a4
+- (BOOL)_notifyObserversOfNewAssertions:(id)assertions newlyNotInUseAssertions:(id)useAssertions
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count] || objc_msgSend(v7, "count"))
+  assertionsCopy = assertions;
+  useAssertionsCopy = useAssertions;
+  if ([assertionsCopy count] || objc_msgSend(useAssertionsCopy, "count"))
   {
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __103__PBFPosterExtensionDataStoreAssertionManager__notifyObserversOfNewAssertions_newlyNotInUseAssertions___block_invoke;
     v10[3] = &unk_2782C8E10;
-    v11 = v6;
-    v12 = self;
-    v13 = v7;
+    v11 = assertionsCopy;
+    selfCopy = self;
+    v13 = useAssertionsCopy;
     [(PBFPosterExtensionDataStoreAssertionManager *)self enumerateObservers:v10];
 
     v8 = 1;
@@ -312,24 +312,24 @@ void __103__PBFPosterExtensionDataStoreAssertionManager__notifyObserversOfNewAss
   }
 }
 
-- (id)inUsePosterPathIdentitiesForReason:(id)a3
+- (id)inUsePosterPathIdentitiesForReason:(id)reason
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(_PBFPosterExtensionDataStoreAssertionController *)v5->_controller inUsePosterPathIdentitiesForReason:v4];
-  objc_sync_exit(v5);
+  reasonCopy = reason;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [(_PBFPosterExtensionDataStoreAssertionController *)selfCopy->_controller inUsePosterPathIdentitiesForReason:reasonCopy];
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
-- (int64_t)numberOfAssertionsForReason:(id)a3
+- (int64_t)numberOfAssertionsForReason:(id)reason
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(_PBFPosterExtensionDataStoreAssertionController *)v5->_controller numberOfAssertionsForReason:v4];
-  objc_sync_exit(v5);
+  reasonCopy = reason;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [(_PBFPosterExtensionDataStoreAssertionController *)selfCopy->_controller numberOfAssertionsForReason:reasonCopy];
+  objc_sync_exit(selfCopy);
 
   return v6;
 }

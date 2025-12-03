@@ -1,10 +1,10 @@
 @interface ANNotificationController
 - (ANNotificationController)init;
-- (id)_clientSideNotifierWithMachServiceName:(id)a3;
-- (void)notificationProvider:(id)a3 didActivateNotification:(id)a4;
-- (void)notificationProvider:(id)a3 didDismissNotification:(id)a4;
-- (void)removeNotificationWithID:(id)a3 completion:(id)a4;
-- (void)removeNotificationsWithEventID:(id)a3 completion:(id)a4;
+- (id)_clientSideNotifierWithMachServiceName:(id)name;
+- (void)notificationProvider:(id)provider didActivateNotification:(id)notification;
+- (void)notificationProvider:(id)provider didDismissNotification:(id)notification;
+- (void)removeNotificationWithID:(id)d completion:(id)completion;
+- (void)removeNotificationsWithEventID:(id)d completion:(id)completion;
 @end
 
 @implementation ANNotificationController
@@ -26,34 +26,34 @@
   return v2;
 }
 
-- (void)removeNotificationWithID:(id)a3 completion:(id)a4
+- (void)removeNotificationWithID:(id)d completion:(id)completion
 {
   notificationProvider = self->_notificationProvider;
-  v6 = a4;
-  [(ANNotificationProvider *)notificationProvider removeNotificationWithIdentifier:a3];
-  v6[2](v6, 1, 0);
+  completionCopy = completion;
+  [(ANNotificationProvider *)notificationProvider removeNotificationWithIdentifier:d];
+  completionCopy[2](completionCopy, 1, 0);
 }
 
-- (void)removeNotificationsWithEventID:(id)a3 completion:(id)a4
+- (void)removeNotificationsWithEventID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   notificationProvider = self->_notificationProvider;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1000044C4;
   v11[3] = &unk_10000C4D0;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = dCopy;
+  selfCopy = self;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  v10 = dCopy;
   [(ANNotificationProvider *)notificationProvider deliveredNotifications:v11];
 }
 
-- (void)notificationProvider:(id)a3 didActivateNotification:(id)a4
+- (void)notificationProvider:(id)provider didActivateNotification:(id)notification
 {
-  v5 = a4;
+  notificationCopy = notification;
   v6 = _ANLogSystem();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -62,7 +62,7 @@
     v14 = 1024;
     v15 = 76;
     v16 = 2112;
-    v17 = v5;
+    v17 = notificationCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%s (%d) Activated notification: %@", buf, 0x1Cu);
   }
 
@@ -71,15 +71,15 @@
   v9[1] = 3221225472;
   v9[2] = sub_100004814;
   v9[3] = &unk_10000C4F8;
-  v10 = v5;
-  v11 = self;
-  v8 = v5;
+  v10 = notificationCopy;
+  selfCopy = self;
+  v8 = notificationCopy;
   dispatch_async(v7, v9);
 }
 
-- (void)notificationProvider:(id)a3 didDismissNotification:(id)a4
+- (void)notificationProvider:(id)provider didDismissNotification:(id)notification
 {
-  v5 = a4;
+  notificationCopy = notification;
   v6 = _ANLogSystem();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -88,7 +88,7 @@
     v14 = 1024;
     v15 = 91;
     v16 = 2112;
-    v17 = v5;
+    v17 = notificationCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%s (%d) Dismissed notification: %@", buf, 0x1Cu);
   }
 
@@ -97,15 +97,15 @@
   v9[1] = 3221225472;
   v9[2] = sub_100004AEC;
   v9[3] = &unk_10000C4F8;
-  v10 = v5;
-  v11 = self;
-  v8 = v5;
+  v10 = notificationCopy;
+  selfCopy = self;
+  v8 = notificationCopy;
   dispatch_async(v7, v9);
 }
 
-- (id)_clientSideNotifierWithMachServiceName:(id)a3
+- (id)_clientSideNotifierWithMachServiceName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v4 = _ANLogSystem();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -114,11 +114,11 @@
     v20 = 1024;
     v21 = 110;
     v22 = 2112;
-    v23 = v3;
+    v23 = nameCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%s (%d) Creating XPC connection to %@...", buf, 0x1Cu);
   }
 
-  v5 = [[NSXPCConnection alloc] initWithMachServiceName:v3 options:0];
+  v5 = [[NSXPCConnection alloc] initWithMachServiceName:nameCopy options:0];
   v6 = +[ANClientCallbackInterface XPCInterface];
   [v5 setRemoteObjectInterface:v6];
 
@@ -126,7 +126,7 @@
   v16[1] = 3221225472;
   v16[2] = sub_100004E7C;
   v16[3] = &unk_10000C398;
-  v7 = v3;
+  v7 = nameCopy;
   v17 = v7;
   [v5 setInterruptionHandler:v16];
   v11 = _NSConcreteStackBlock;

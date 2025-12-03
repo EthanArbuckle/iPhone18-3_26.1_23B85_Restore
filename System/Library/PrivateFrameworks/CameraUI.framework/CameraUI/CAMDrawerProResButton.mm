@@ -1,29 +1,29 @@
 @interface CAMDrawerProResButton
-- (BOOL)isMenuItemSelected:(id)a3;
+- (BOOL)isMenuItemSelected:(id)selected;
 - (id)imageNameForAXHUD;
 - (id)loadMenuItems;
-- (void)didSelectMenuItem:(id)a3;
-- (void)setProResVideoMode:(int64_t)a3 animated:(BOOL)a4;
+- (void)didSelectMenuItem:(id)item;
+- (void)setProResVideoMode:(int64_t)mode animated:(BOOL)animated;
 @end
 
 @implementation CAMDrawerProResButton
 
-- (void)setProResVideoMode:(int64_t)a3 animated:(BOOL)a4
+- (void)setProResVideoMode:(int64_t)mode animated:(BOOL)animated
 {
-  if (self->_proResVideoMode != a3)
+  if (self->_proResVideoMode != mode)
   {
-    self->_proResVideoMode = a3;
-    [(CAMControlDrawerButton *)self updateImageAnimated:a4];
+    self->_proResVideoMode = mode;
+    [(CAMControlDrawerButton *)self updateImageAnimated:animated];
 
     [(CAMControlDrawerMenuButton *)self updateLabelsIfNeeded];
   }
 }
 
-- (BOOL)isMenuItemSelected:(id)a3
+- (BOOL)isMenuItemSelected:(id)selected
 {
-  v4 = [a3 value];
-  v5 = [v4 integerValue];
-  LOBYTE(self) = v5 == [(CAMDrawerProResButton *)self proResVideoMode];
+  value = [selected value];
+  integerValue = [value integerValue];
+  LOBYTE(self) = integerValue == [(CAMDrawerProResButton *)self proResVideoMode];
 
   return self;
 }
@@ -47,16 +47,16 @@
   return v2;
 }
 
-- (void)didSelectMenuItem:(id)a3
+- (void)didSelectMenuItem:(id)item
 {
-  v4 = a3;
-  v5 = [(CAMDrawerProResButton *)self proResVideoMode];
-  v6 = [v4 value];
+  itemCopy = item;
+  proResVideoMode = [(CAMDrawerProResButton *)self proResVideoMode];
+  value = [itemCopy value];
 
-  v7 = [v6 integerValue];
-  if (v5 != v7)
+  integerValue = [value integerValue];
+  if (proResVideoMode != integerValue)
   {
-    [(CAMDrawerProResButton *)self setProResVideoMode:v7 animated:1];
+    [(CAMDrawerProResButton *)self setProResVideoMode:integerValue animated:1];
 
     [(CAMDrawerProResButton *)self sendActionsForControlEvents:4096];
   }
@@ -66,15 +66,15 @@
 {
   if ([(CAMDrawerProResButton *)self shouldShowSlashForCurrentState])
   {
-    v3 = @"CAMProResButtonOff-AXHUD";
+    imageNameForCurrentState = @"CAMProResButtonOff-AXHUD";
   }
 
   else
   {
-    v3 = [(CAMDrawerProResButton *)self imageNameForCurrentState];
+    imageNameForCurrentState = [(CAMDrawerProResButton *)self imageNameForCurrentState];
   }
 
-  return v3;
+  return imageNameForCurrentState;
 }
 
 @end

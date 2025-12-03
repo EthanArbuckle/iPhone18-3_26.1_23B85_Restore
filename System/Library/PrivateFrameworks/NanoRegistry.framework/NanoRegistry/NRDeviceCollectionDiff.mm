@@ -1,25 +1,25 @@
 @interface NRDeviceCollectionDiff
-- (BOOL)isEqual:(id)a3;
-- (NRDeviceCollectionDiff)initWithCoder:(id)a3;
-- (NRDeviceCollectionDiff)initWithDeviceCollectionDiffDeviceDiffs:(id)a3;
-- (NRDeviceCollectionDiff)initWithProtobuf:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (NRDeviceCollectionDiff)initWithCoder:(id)coder;
+- (NRDeviceCollectionDiff)initWithDeviceCollectionDiffDeviceDiffs:(id)diffs;
+- (NRDeviceCollectionDiff)initWithProtobuf:(id)protobuf;
 - (NRPBDeviceCollectionDiff)protobuf;
 - (id)description;
 - (unint64_t)hash;
 - (void)_createIndex;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NRDeviceCollectionDiff
 
-- (NRDeviceCollectionDiff)initWithDeviceCollectionDiffDeviceDiffs:(id)a3
+- (NRDeviceCollectionDiff)initWithDeviceCollectionDiffDeviceDiffs:(id)diffs
 {
-  v5 = a3;
+  diffsCopy = diffs;
   v10.receiver = self;
   v10.super_class = NRDeviceCollectionDiff;
   v6 = [(NRDeviceCollectionDiff *)&v10 init];
   v7 = v6;
-  if (v6 && (objc_storeStrong(&v6->_diffDeviceDiffs, a3), ![v5 count]))
+  if (v6 && (objc_storeStrong(&v6->_diffDeviceDiffs, diffs), ![diffsCopy count]))
   {
     v8 = 0;
   }
@@ -39,7 +39,7 @@
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  obj = *(a1 + 8);
+  obj = *(self + 8);
   v2 = [obj countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v2)
   {
@@ -57,11 +57,11 @@
 
         v6 = *(*(&v12 + 1) + 8 * v5);
         v7 = [MEMORY[0x1E695DFD8] setWithObject:objc_opt_class()];
-        [NRUnarchivedObjectVerifier unarchivingVerifyObjectClasses:v6 name:@"device collection diff type key" classes:v7 owner:a1];
+        [NRUnarchivedObjectVerifier unarchivingVerifyObjectClasses:v6 name:@"device collection diff type key" classes:v7 owner:self];
 
-        v8 = [*(a1 + 8) objectForKeyedSubscript:v6];
+        v8 = [*(self + 8) objectForKeyedSubscript:v6];
         v9 = [MEMORY[0x1E695DFD8] setWithObject:objc_opt_class()];
-        [NRUnarchivedObjectVerifier unarchivingVerifyObjectClasses:v8 name:@"device collection diff type value" classes:v9 owner:a1];
+        [NRUnarchivedObjectVerifier unarchivingVerifyObjectClasses:v8 name:@"device collection diff type value" classes:v9 owner:self];
 
         ++v5;
       }
@@ -76,17 +76,17 @@
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (NRDeviceCollectionDiff)initWithCoder:(id)a3
+- (NRDeviceCollectionDiff)initWithCoder:(id)coder
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(NRDeviceCollectionDiff *)self init];
   if (!v5)
   {
     goto LABEL_5;
   }
 
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"data"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"data"];
   if (!v6)
   {
     v10 = MEMORY[0x1E695DFD8];
@@ -95,7 +95,7 @@
     v19 = objc_opt_class();
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v17 count:3];
     v12 = [v10 setWithArray:{v11, v17, v18}];
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"devices"];
+    v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"devices"];
     diffDeviceDiffs = v5->_diffDeviceDiffs;
     v5->_diffDeviceDiffs = v13;
 
@@ -115,17 +115,17 @@ LABEL_6:
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(NRDeviceCollectionDiff *)self protobuf];
-  v5 = [v6 data];
-  [v4 encodeObject:v5 forKey:@"data"];
+  coderCopy = coder;
+  protobuf = [(NRDeviceCollectionDiff *)self protobuf];
+  data = [protobuf data];
+  [coderCopy encodeObject:data forKey:@"data"];
 }
 
-- (NRDeviceCollectionDiff)initWithProtobuf:(id)a3
+- (NRDeviceCollectionDiff)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v25.receiver = self;
   v25.super_class = NRDeviceCollectionDiff;
   v5 = [(NRDeviceCollectionDiff *)&v25 init];
@@ -133,15 +133,15 @@ LABEL_6:
   if (v5)
   {
     v24 = v5;
-    v7 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v8 = 0;
-    if (!v4)
+    if (!protobufCopy)
     {
       goto LABEL_12;
     }
 
 LABEL_3:
-    for (i = v4[2]; ; i = 0)
+    for (i = protobufCopy[2]; ; i = 0)
     {
       v10 = i;
       v11 = [v10 count];
@@ -151,9 +151,9 @@ LABEL_3:
         break;
       }
 
-      if (v4)
+      if (protobufCopy)
       {
-        v12 = v4[2];
+        v12 = protobufCopy[2];
       }
 
       else
@@ -166,11 +166,11 @@ LABEL_3:
 
       if ([v14 length] == 16)
       {
-        v15 = [v14 toUUID];
+        toUUID = [v14 toUUID];
         v16 = [NRDeviceDiffType alloc];
-        if (v4)
+        if (protobufCopy)
         {
-          v17 = v4[1];
+          v17 = protobufCopy[1];
         }
 
         else
@@ -181,11 +181,11 @@ LABEL_3:
         v18 = v17;
         v19 = [v18 objectAtIndexedSubscript:v8];
         v20 = [(NRDeviceDiffType *)v16 initWithProtobuf:v19];
-        [v7 setObject:v20 forKeyedSubscript:v15];
+        [dictionary setObject:v20 forKeyedSubscript:toUUID];
       }
 
       ++v8;
-      if (v4)
+      if (protobufCopy)
       {
         goto LABEL_3;
       }
@@ -194,7 +194,7 @@ LABEL_12:
       ;
     }
 
-    v21 = [v7 copy];
+    v21 = [dictionary copy];
     v6 = v24;
     v22 = *(v24 + 8);
     *(v24 + 8) = v21;
@@ -210,11 +210,11 @@ LABEL_12:
 {
   v27 = *MEMORY[0x1E69E9840];
   v3 = objc_opt_new();
-  v4 = [MEMORY[0x1E695DF70] array];
-  [(NRPBDeviceCollectionDiff *)v3 setPairingIDs:v4];
+  array = [MEMORY[0x1E695DF70] array];
+  [(NRPBDeviceCollectionDiff *)v3 setPairingIDs:array];
 
-  v5 = [MEMORY[0x1E695DF70] array];
-  [(NRPBDeviceCollectionDiff *)v3 setDiffs:v5];
+  array2 = [MEMORY[0x1E695DF70] array];
+  [(NRPBDeviceCollectionDiff *)v3 setDiffs:array2];
 
   v24 = 0u;
   v25 = 0u;
@@ -256,8 +256,8 @@ LABEL_12:
         }
 
         v15 = v14;
-        v16 = [v11 protobuf];
-        [v15 addObject:v16];
+        protobuf = [v11 protobuf];
+        [v15 addObject:protobuf];
 
         ++v9;
       }
@@ -316,15 +316,15 @@ LABEL_12:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v8.receiver = self;
   v8.super_class = NRDeviceCollectionDiff;
-  if ([(NRDiffBase *)&v8 isEqual:v4])
+  if ([(NRDiffBase *)&v8 isEqual:equalCopy])
   {
     diffDeviceDiffs = self->_diffDeviceDiffs;
-    if (diffDeviceDiffs == v4[1])
+    if (diffDeviceDiffs == equalCopy[1])
     {
       v6 = 1;
     }
@@ -346,8 +346,8 @@ LABEL_12:
 - (id)description
 {
   v25 = *MEMORY[0x1E69E9840];
-  v2 = [(NSDictionary *)self->_diffDeviceDiffs allKeys];
-  v3 = [v2 sortedArrayUsingComparator:&__block_literal_global_10];
+  allKeys = [(NSDictionary *)self->_diffDeviceDiffs allKeys];
+  v3 = [allKeys sortedArrayUsingComparator:&__block_literal_global_10];
 
   v22 = 0u;
   v23 = 0u;
@@ -373,8 +373,8 @@ LABEL_12:
 
         v10 = *(*(&v20 + 1) + 8 * v8);
         v11 = [(NSDictionary *)self->_diffDeviceDiffs objectForKeyedSubscript:v10];
-        v12 = [v10 UUIDString];
-        v13 = [v12 stringByPaddingToLength:36 withString:@" " startingAtIndex:0];
+        uUIDString = [v10 UUIDString];
+        v13 = [uUIDString stringByPaddingToLength:36 withString:@" " startingAtIndex:0];
 
         v14 = [v11 description];
         v15 = [NRTextFormattingUtilities prefixLinesWithString:v13 withText:v14];

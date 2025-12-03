@@ -2,78 +2,78 @@
 - (BOOL)_bedtimeOrWindDownNotificationsEnabled;
 - (HDSPEnvironment)environment;
 - (HDSPSleepEventDelegate)sleepEventDelegate;
-- (HDSPSleepNotificationManager)initWithEnvironment:(id)a3;
-- (HDSPSleepNotificationManager)initWithEnvironment:(id)a3 notificationPublishers:(id)a4;
+- (HDSPSleepNotificationManager)initWithEnvironment:(id)environment;
+- (HDSPSleepNotificationManager)initWithEnvironment:(id)environment notificationPublishers:(id)publishers;
 - (NSString)providerIdentifier;
-- (id)_bedtimeNotificationEventAfterDate:(id)a3;
+- (id)_bedtimeNotificationEventAfterDate:(id)date;
 - (id)_sleepScheduleModel;
-- (id)_windDownNotificationEventAfterDate:(id)a3;
+- (id)_windDownNotificationEventAfterDate:(id)date;
 - (id)eventIdentifiers;
-- (id)upcomingEventsDueAfterDate:(id)a3;
-- (void)_bedtimeOrWindDownNotificationEventIsDue:(id)a3;
+- (id)upcomingEventsDueAfterDate:(id)date;
+- (void)_bedtimeOrWindDownNotificationEventIsDue:(id)due;
 - (void)_rescheduleEvents;
 - (void)_tearDownBedtimeReminder;
 - (void)_tearDownChargingReminder;
 - (void)_tearDownMorningNotification;
 - (void)_tearDownWakeDetectionNotification;
 - (void)_tearDownWindDownReminder;
-- (void)environmentDidBecomeReady:(id)a3;
-- (void)environmentWillBecomeReady:(id)a3;
+- (void)environmentDidBecomeReady:(id)ready;
+- (void)environmentWillBecomeReady:(id)ready;
 - (void)presentAlertForGoodMorning;
-- (void)publishNotificationForEvent:(id)a3;
-- (void)significantTimeChangeDetected:(id)a3;
-- (void)sleepEventIsDue:(id)a3;
-- (void)sleepScheduleModelManager:(id)a3 didUpdateSleepSchedule:(id)a4;
-- (void)sleepScheduleStateDidChange:(unint64_t)a3 previousState:(unint64_t)a4 reason:(unint64_t)a5;
-- (void)tearDownNotificationForEventIdentifier:(id)a3;
+- (void)publishNotificationForEvent:(id)event;
+- (void)significantTimeChangeDetected:(id)detected;
+- (void)sleepEventIsDue:(id)due;
+- (void)sleepScheduleModelManager:(id)manager didUpdateSleepSchedule:(id)schedule;
+- (void)sleepScheduleStateDidChange:(unint64_t)change previousState:(unint64_t)state reason:(unint64_t)reason;
+- (void)tearDownNotificationForEventIdentifier:(id)identifier;
 - (void)tearDownNotifications;
 @end
 
 @implementation HDSPSleepNotificationManager
 
-- (HDSPSleepNotificationManager)initWithEnvironment:(id)a3
+- (HDSPSleepNotificationManager)initWithEnvironment:(id)environment
 {
-  v4 = a3;
+  environmentCopy = environment;
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v6 = [v4 behavior];
-  v7 = [v6 hksp_supportsUserNotificationCenter];
+  behavior = [environmentCopy behavior];
+  hksp_supportsUserNotificationCenter = [behavior hksp_supportsUserNotificationCenter];
 
-  if (v7)
+  if (hksp_supportsUserNotificationCenter)
   {
-    v8 = [[HDSPUserNotificationCenter alloc] initWithEnvironment:v4];
+    v8 = [[HDSPUserNotificationCenter alloc] initWithEnvironment:environmentCopy];
     [v5 addObject:v8];
   }
 
-  v9 = [v4 behavior];
-  v10 = [v9 hksp_supportsCFUserNotifications];
+  behavior2 = [environmentCopy behavior];
+  hksp_supportsCFUserNotifications = [behavior2 hksp_supportsCFUserNotifications];
 
-  if (v10)
+  if (hksp_supportsCFUserNotifications)
   {
-    v11 = [[HDSPCFUserNotificationCenter alloc] initWithEnvironment:v4];
+    v11 = [[HDSPCFUserNotificationCenter alloc] initWithEnvironment:environmentCopy];
     [v5 addObject:v11];
   }
 
-  v12 = [v4 behavior];
-  v13 = [v12 isAppleWatch];
+  behavior3 = [environmentCopy behavior];
+  isAppleWatch = [behavior3 isAppleWatch];
 
-  if (v13)
+  if (isAppleWatch)
   {
-    v14 = [[HDSPDarwinNotificationCenter alloc] initWithEnvironment:v4];
+    v14 = [[HDSPDarwinNotificationCenter alloc] initWithEnvironment:environmentCopy];
     [v5 addObject:v14];
   }
 
-  v15 = [[HDSPOrchestrationCenter alloc] initWithEnvironment:v4];
+  v15 = [[HDSPOrchestrationCenter alloc] initWithEnvironment:environmentCopy];
   [v5 addObject:v15];
 
-  v16 = [(HDSPSleepNotificationManager *)self initWithEnvironment:v4 notificationPublishers:v5];
+  v16 = [(HDSPSleepNotificationManager *)self initWithEnvironment:environmentCopy notificationPublishers:v5];
   return v16;
 }
 
-- (HDSPSleepNotificationManager)initWithEnvironment:(id)a3 notificationPublishers:(id)a4
+- (HDSPSleepNotificationManager)initWithEnvironment:(id)environment notificationPublishers:(id)publishers
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  environmentCopy = environment;
+  publishersCopy = publishers;
   v15.receiver = self;
   v15.super_class = HDSPSleepNotificationManager;
   v8 = [(HDSPSleepNotificationManager *)&v15 init];
@@ -91,8 +91,8 @@
       _os_log_impl(&dword_269B11000, v9, OS_LOG_TYPE_DEFAULT, "[%{public}@.%p] initializing...", buf, 0x16u);
     }
 
-    objc_storeWeak(&v8->_environment, v6);
-    objc_storeStrong(&v8->_notificationPublishers, a4);
+    objc_storeWeak(&v8->_environment, environmentCopy);
+    objc_storeStrong(&v8->_notificationPublishers, publishers);
     v12 = v8;
   }
 
@@ -100,10 +100,10 @@
   return v8;
 }
 
-- (void)environmentWillBecomeReady:(id)a3
+- (void)environmentWillBecomeReady:(id)ready
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  readyCopy = ready;
   v5 = HKSPLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -113,31 +113,31 @@
     _os_log_impl(&dword_269B11000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] environmentWillBecomeReady", buf, 0xCu);
   }
 
-  v7 = [v4 sleepScheduleModelManager];
-  [v7 addObserver:self];
+  sleepScheduleModelManager = [readyCopy sleepScheduleModelManager];
+  [sleepScheduleModelManager addObserver:self];
 
-  v8 = [v4 sleepScheduler];
-  [v8 addEventHandler:self];
+  sleepScheduler = [readyCopy sleepScheduler];
+  [sleepScheduler addEventHandler:self];
 
-  v9 = [v4 sleepScheduler];
-  [v9 addEventProvider:self];
+  sleepScheduler2 = [readyCopy sleepScheduler];
+  [sleepScheduler2 addEventProvider:self];
 
-  v10 = [v4 actionManager];
-  [v10 addObserver:self];
+  actionManager = [readyCopy actionManager];
+  [actionManager addObserver:self];
 
-  v11 = [v4 sleepCoordinator];
-  [v11 addObserver:self];
+  sleepCoordinator = [readyCopy sleepCoordinator];
+  [sleepCoordinator addObserver:self];
 
-  v12 = [v4 timeChangeListener];
-  [v12 addObserver:self];
+  timeChangeListener = [readyCopy timeChangeListener];
+  [timeChangeListener addObserver:self];
 
-  v13 = [v4 behavior];
-  v14 = [v13 isAppleWatch];
+  behavior = [readyCopy behavior];
+  isAppleWatch = [behavior isAppleWatch];
 
-  if (v14)
+  if (isAppleWatch)
   {
-    v15 = [v4 goodMorningAlertManager];
-    [v15 addObserver:self];
+    goodMorningAlertManager = [readyCopy goodMorningAlertManager];
+    [goodMorningAlertManager addObserver:self];
   }
 
   notificationPublishers = self->_notificationPublishers;
@@ -145,8 +145,8 @@
   v19[1] = 3221225472;
   v19[2] = __59__HDSPSleepNotificationManager_environmentWillBecomeReady___block_invoke;
   v19[3] = &unk_279C7CB80;
-  v20 = v4;
-  v17 = v4;
+  v20 = readyCopy;
+  v17 = readyCopy;
   [(NSArray *)notificationPublishers na_each:v19];
 
   v18 = *MEMORY[0x277D85DE8];
@@ -161,10 +161,10 @@ void __59__HDSPSleepNotificationManager_environmentWillBecomeReady___block_invok
   }
 }
 
-- (void)environmentDidBecomeReady:(id)a3
+- (void)environmentDidBecomeReady:(id)ready
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  readyCopy = ready;
   v5 = HKSPLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -179,8 +179,8 @@ void __59__HDSPSleepNotificationManager_environmentWillBecomeReady___block_invok
   v10[1] = 3221225472;
   v10[2] = __58__HDSPSleepNotificationManager_environmentDidBecomeReady___block_invoke;
   v10[3] = &unk_279C7C0A0;
-  v11 = v4;
-  v8 = v4;
+  v11 = readyCopy;
+  v8 = readyCopy;
   [(NSArray *)notificationPublishers na_each:v10];
   [(HDSPSleepNotificationManager *)self _rescheduleEvents];
 
@@ -196,17 +196,17 @@ void __58__HDSPSleepNotificationManager_environmentDidBecomeReady___block_invoke
   }
 }
 
-- (void)publishNotificationForEvent:(id)a3
+- (void)publishNotificationForEvent:(id)event
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  eventCopy = event;
   v5 = HKSPLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
     v13 = objc_opt_class();
     v14 = 2114;
-    v15 = v4;
+    v15 = eventCopy;
     v6 = v13;
     _os_log_impl(&dword_269B11000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] publishNotificationForEvent: %{public}@", buf, 0x16u);
   }
@@ -216,23 +216,23 @@ void __58__HDSPSleepNotificationManager_environmentDidBecomeReady___block_invoke
   v10[1] = 3221225472;
   v10[2] = __60__HDSPSleepNotificationManager_publishNotificationForEvent___block_invoke;
   v10[3] = &unk_279C7CBA8;
-  v11 = v4;
-  v8 = v4;
+  v11 = eventCopy;
+  v8 = eventCopy;
   [(NSArray *)notificationPublishers na_each:v10];
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)tearDownNotificationForEventIdentifier:(id)a3
+- (void)tearDownNotificationForEventIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   notificationPublishers = self->_notificationPublishers;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __71__HDSPSleepNotificationManager_tearDownNotificationForEventIdentifier___block_invoke;
   v7[3] = &unk_279C7CBA8;
-  v8 = v4;
-  v6 = v4;
+  v8 = identifierCopy;
+  v6 = identifierCopy;
   [(NSArray *)notificationPublishers na_each:v7];
 }
 
@@ -259,15 +259,15 @@ void __58__HDSPSleepNotificationManager_environmentDidBecomeReady___block_invoke
   return NSStringFromClass(v2);
 }
 
-- (id)upcomingEventsDueAfterDate:(id)a3
+- (id)upcomingEventsDueAfterDate:(id)date
 {
   v4 = MEMORY[0x277CBEB18];
-  v5 = a3;
+  dateCopy = date;
   v6 = objc_alloc_init(v4);
-  v7 = [(HDSPSleepNotificationManager *)self _windDownNotificationEventAfterDate:v5];
+  v7 = [(HDSPSleepNotificationManager *)self _windDownNotificationEventAfterDate:dateCopy];
   [v6 na_safeAddObject:v7];
 
-  v8 = [(HDSPSleepNotificationManager *)self _bedtimeNotificationEventAfterDate:v5];
+  v8 = [(HDSPSleepNotificationManager *)self _bedtimeNotificationEventAfterDate:dateCopy];
 
   [v6 na_safeAddObject:v8];
   v9 = [v6 copy];
@@ -275,35 +275,35 @@ void __58__HDSPSleepNotificationManager_environmentDidBecomeReady___block_invoke
   return v9;
 }
 
-- (void)sleepEventIsDue:(id)a3
+- (void)sleepEventIsDue:(id)due
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dueCopy = due;
   v5 = HKSPLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *v20 = 138543618;
     *&v20[4] = objc_opt_class();
     *&v20[12] = 2114;
-    *&v20[14] = v4;
+    *&v20[14] = dueCopy;
     v6 = *&v20[4];
     _os_log_impl(&dword_269B11000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] sleepEventIsDue: %{public}@", v20, 0x16u);
   }
 
-  v7 = [v4 identifier];
-  if ([v7 isEqualToString:*MEMORY[0x277D621C0]])
+  identifier = [dueCopy identifier];
+  if ([identifier isEqualToString:*MEMORY[0x277D621C0]])
   {
 
     goto LABEL_6;
   }
 
-  v8 = [v4 identifier];
-  v9 = [v8 isEqualToString:*MEMORY[0x277D621F8]];
+  identifier2 = [dueCopy identifier];
+  v9 = [identifier2 isEqualToString:*MEMORY[0x277D621F8]];
 
   if (!v9)
   {
-    v10 = [v4 identifier];
-    v11 = [v10 isEqualToString:*MEMORY[0x277D621E0]];
+    identifier3 = [dueCopy identifier];
+    v11 = [identifier3 isEqualToString:*MEMORY[0x277D621E0]];
 
     if (v11)
     {
@@ -311,21 +311,21 @@ void __58__HDSPSleepNotificationManager_environmentDidBecomeReady___block_invoke
       goto LABEL_19;
     }
 
-    v12 = [v4 identifier];
-    if (([v12 isEqualToString:*MEMORY[0x277D621C8]] & 1) == 0)
+    identifier4 = [dueCopy identifier];
+    if (([identifier4 isEqualToString:*MEMORY[0x277D621C8]] & 1) == 0)
     {
-      v13 = [v4 identifier];
-      if (([v13 isEqualToString:*MEMORY[0x277D621D8]] & 1) == 0)
+      identifier5 = [dueCopy identifier];
+      if (([identifier5 isEqualToString:*MEMORY[0x277D621D8]] & 1) == 0)
       {
-        v14 = [v4 identifier];
-        if (([v14 isEqualToString:*MEMORY[0x277D621E8]] & 1) == 0)
+        identifier6 = [dueCopy identifier];
+        if (([identifier6 isEqualToString:*MEMORY[0x277D621E8]] & 1) == 0)
         {
-          v15 = [v4 identifier];
+          identifier7 = [dueCopy identifier];
           v16 = HKSHSleepScoreResultsNotificationEventIdentifier();
-          if (([v15 isEqualToString:v16] & 1) == 0)
+          if (([identifier7 isEqualToString:v16] & 1) == 0)
           {
-            v18 = [v4 identifier];
-            v19 = [v18 isEqualToString:*MEMORY[0x277D621D0]];
+            identifier8 = [dueCopy identifier];
+            v19 = [identifier8 isEqualToString:*MEMORY[0x277D621D0]];
 
             if ((v19 & 1) == 0)
             {
@@ -339,14 +339,14 @@ void __58__HDSPSleepNotificationManager_environmentDidBecomeReady___block_invoke
     }
 
 LABEL_18:
-    [(HDSPSleepNotificationManager *)self publishNotificationForEvent:v4, *v20, *&v20[8], v21];
+    [(HDSPSleepNotificationManager *)self publishNotificationForEvent:dueCopy, *v20, *&v20[8], v21];
     goto LABEL_19;
   }
 
 LABEL_6:
   if ([(HDSPSleepNotificationManager *)self _bedtimeOrWindDownNotificationsEnabled:*v20])
   {
-    [(HDSPSleepNotificationManager *)self _bedtimeOrWindDownNotificationEventIsDue:v4];
+    [(HDSPSleepNotificationManager *)self _bedtimeOrWindDownNotificationEventIsDue:dueCopy];
   }
 
 LABEL_19:
@@ -398,31 +398,31 @@ void __48__HDSPSleepNotificationManager_eventIdentifiers__block_invoke()
 
   v5 = MEMORY[0x277D624D0];
   v6 = *MEMORY[0x277D621D0];
-  v7 = [(HDSPSleepNotificationManager *)self environment];
-  v8 = [v7 currentDateProvider];
-  v10 = v8[2](v8, v9);
+  environment = [(HDSPSleepNotificationManager *)self environment];
+  currentDateProvider = [environment currentDateProvider];
+  v10 = currentDateProvider[2](currentDateProvider, v9);
   v11 = [v5 sleepEventWithIdentifier:v6 dueDate:v10];
 
   [(HDSPSleepNotificationManager *)self publishNotificationForEvent:v11];
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sleepScheduleModelManager:(id)a3 didUpdateSleepSchedule:(id)a4
+- (void)sleepScheduleModelManager:(id)manager didUpdateSleepSchedule:(id)schedule
 {
   v10 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  scheduleCopy = schedule;
   v6 = HKSPLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *v9 = 138543618;
     *&v9[4] = objc_opt_class();
     *&v9[12] = 2114;
-    *&v9[14] = v5;
+    *&v9[14] = scheduleCopy;
     v7 = *&v9[4];
     _os_log_impl(&dword_269B11000, v6, OS_LOG_TYPE_DEFAULT, "[%{public}@] didUpdateSleepSchedule: %{public}@", v9, 0x16u);
   }
 
-  if (!v5 || ([v5 isEnabledAndHasOccurrences] & 1) == 0)
+  if (!scheduleCopy || ([scheduleCopy isEnabledAndHasOccurrences] & 1) == 0)
   {
     [(HDSPSleepNotificationManager *)self tearDownNotifications:*v9];
   }
@@ -432,7 +432,7 @@ void __48__HDSPSleepNotificationManager_eventIdentifiers__block_invoke()
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sleepScheduleStateDidChange:(unint64_t)a3 previousState:(unint64_t)a4 reason:(unint64_t)a5
+- (void)sleepScheduleStateDidChange:(unint64_t)change previousState:(unint64_t)state reason:(unint64_t)reason
 {
   v28 = *MEMORY[0x277D85DE8];
   v7 = HKSPLogForCategory();
@@ -454,7 +454,7 @@ void __48__HDSPSleepNotificationManager_eventIdentifiers__block_invoke()
     _os_log_impl(&dword_269B11000, v7, OS_LOG_TYPE_DEFAULT, "[%{public}@] sleepScheduleStateChanged from %{public}@ to %{public}@ for %{public}@", &v20, 0x2Au);
   }
 
-  if (a3 == 1)
+  if (change == 1)
   {
     v16 = HKSPLogForCategory();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -471,7 +471,7 @@ void __48__HDSPSleepNotificationManager_eventIdentifiers__block_invoke()
     [(HDSPSleepNotificationManager *)self _tearDownWakeDetectionNotification];
   }
 
-  else if (a3 == 2)
+  else if (change == 2)
   {
     v13 = HKSPLogForCategory();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -490,7 +490,7 @@ void __48__HDSPSleepNotificationManager_eventIdentifiers__block_invoke()
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)significantTimeChangeDetected:(id)a3
+- (void)significantTimeChangeDetected:(id)detected
 {
   v9 = *MEMORY[0x277D85DE8];
   v4 = HKSPLogForCategory();
@@ -589,19 +589,19 @@ void __48__HDSPSleepNotificationManager_eventIdentifiers__block_invoke()
 - (id)_sleepScheduleModel
 {
   WeakRetained = objc_loadWeakRetained(&self->_environment);
-  v3 = [WeakRetained sleepScheduleModelManager];
-  v4 = [v3 sleepScheduleModel];
+  sleepScheduleModelManager = [WeakRetained sleepScheduleModelManager];
+  sleepScheduleModel = [sleepScheduleModelManager sleepScheduleModel];
 
-  return v4;
+  return sleepScheduleModel;
 }
 
 - (void)_rescheduleEvents
 {
   v12 = *MEMORY[0x277D85DE8];
-  v3 = [(HDSPSleepNotificationManager *)self _bedtimeOrWindDownNotificationsEnabled];
+  _bedtimeOrWindDownNotificationsEnabled = [(HDSPSleepNotificationManager *)self _bedtimeOrWindDownNotificationsEnabled];
   v4 = HKSPLogForCategory();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
-  if (v3)
+  if (_bedtimeOrWindDownNotificationsEnabled)
   {
     if (v5)
     {
@@ -611,8 +611,8 @@ void __48__HDSPSleepNotificationManager_eventIdentifiers__block_invoke()
       _os_log_impl(&dword_269B11000, v4, OS_LOG_TYPE_DEFAULT, "[%{public}@] Telling scheduler we have events to schedule", &v10, 0xCu);
     }
 
-    v7 = [(HDSPSleepNotificationManager *)self sleepEventDelegate];
-    [v7 eventProviderHasUpcomingEvents:self];
+    sleepEventDelegate = [(HDSPSleepNotificationManager *)self sleepEventDelegate];
+    [sleepEventDelegate eventProviderHasUpcomingEvents:self];
   }
 
   else
@@ -625,20 +625,20 @@ void __48__HDSPSleepNotificationManager_eventIdentifiers__block_invoke()
       _os_log_impl(&dword_269B11000, v4, OS_LOG_TYPE_DEFAULT, "[%{public}@] Bedtime and wind down notifications disabled", &v10, 0xCu);
     }
 
-    v7 = [(HDSPSleepNotificationManager *)self sleepEventDelegate];
-    [v7 eventProviderCancelledEvents:self];
+    sleepEventDelegate = [(HDSPSleepNotificationManager *)self sleepEventDelegate];
+    [sleepEventDelegate eventProviderCancelledEvents:self];
   }
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_bedtimeNotificationEventAfterDate:(id)a3
+- (id)_bedtimeNotificationEventAfterDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   if ([(HDSPSleepNotificationManager *)self _bedtimeOrWindDownNotificationsEnabled])
   {
-    v5 = [(HDSPSleepNotificationManager *)self _sleepScheduleModel];
-    v6 = [v5 nextEventWithIdentifier:*MEMORY[0x277D621B8] dueAfterDate:v4];
+    _sleepScheduleModel = [(HDSPSleepNotificationManager *)self _sleepScheduleModel];
+    v6 = [_sleepScheduleModel nextEventWithIdentifier:*MEMORY[0x277D621B8] dueAfterDate:dateCopy];
 
     if (v6)
     {
@@ -660,13 +660,13 @@ void __48__HDSPSleepNotificationManager_eventIdentifiers__block_invoke()
   return v8;
 }
 
-- (id)_windDownNotificationEventAfterDate:(id)a3
+- (id)_windDownNotificationEventAfterDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   if ([(HDSPSleepNotificationManager *)self _bedtimeOrWindDownNotificationsEnabled])
   {
-    v5 = [(HDSPSleepNotificationManager *)self _sleepScheduleModel];
-    v6 = [v5 nextEventWithIdentifier:*MEMORY[0x277D621F0] dueAfterDate:v4];
+    _sleepScheduleModel = [(HDSPSleepNotificationManager *)self _sleepScheduleModel];
+    v6 = [_sleepScheduleModel nextEventWithIdentifier:*MEMORY[0x277D621F0] dueAfterDate:dateCopy];
 
     if (v6)
     {
@@ -691,22 +691,22 @@ void __48__HDSPSleepNotificationManager_eventIdentifiers__block_invoke()
 - (BOOL)_bedtimeOrWindDownNotificationsEnabled
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [(HDSPSleepNotificationManager *)self _sleepScheduleModel];
-  v4 = [v3 sleepSettings];
-  v5 = [(HDSPSleepNotificationManager *)self environment];
-  v6 = [v5 behavior];
-  if (![v6 isAppleWatch])
+  _sleepScheduleModel = [(HDSPSleepNotificationManager *)self _sleepScheduleModel];
+  sleepSettings = [_sleepScheduleModel sleepSettings];
+  environment = [(HDSPSleepNotificationManager *)self environment];
+  behavior = [environment behavior];
+  if (![behavior isAppleWatch])
   {
 
     goto LABEL_7;
   }
 
-  v7 = [v4 watchSleepFeaturesEnabled];
+  watchSleepFeaturesEnabled = [sleepSettings watchSleepFeaturesEnabled];
 
-  if (v7)
+  if (watchSleepFeaturesEnabled)
   {
 LABEL_7:
-    v10 = [v4 bedtimeReminders];
+    bedtimeReminders = [sleepSettings bedtimeReminders];
     goto LABEL_8;
   }
 
@@ -719,28 +719,28 @@ LABEL_7:
     _os_log_impl(&dword_269B11000, v8, OS_LOG_TYPE_DEFAULT, "[%{public}@] Bedtime and wind down notifications disabled since sleep features are disabled on Watch.", &v13, 0xCu);
   }
 
-  v10 = 0;
+  bedtimeReminders = 0;
 LABEL_8:
 
   v11 = *MEMORY[0x277D85DE8];
-  return v10;
+  return bedtimeReminders;
 }
 
-- (void)_bedtimeOrWindDownNotificationEventIsDue:(id)a3
+- (void)_bedtimeOrWindDownNotificationEventIsDue:(id)due
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dueCopy = due;
   WeakRetained = objc_loadWeakRetained(&self->_environment);
-  v6 = [WeakRetained sleepCoordinator];
-  [v6 sleepEventIsDue:v4];
+  sleepCoordinator = [WeakRetained sleepCoordinator];
+  [sleepCoordinator sleepEventIsDue:dueCopy];
 
   v7 = objc_loadWeakRetained(&self->_environment);
-  v8 = [v7 sleepCoordinator];
-  v9 = [v8 currentSleepScheduleState];
+  sleepCoordinator2 = [v7 sleepCoordinator];
+  currentSleepScheduleState = [sleepCoordinator2 currentSleepScheduleState];
 
-  if (v9 <= 6)
+  if (currentSleepScheduleState <= 6)
   {
-    if (((1 << v9) & 0x4D) != 0)
+    if (((1 << currentSleepScheduleState) & 0x4D) != 0)
     {
       v10 = HKSPLogForCategory();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -751,16 +751,16 @@ LABEL_8:
         v15 = 138543874;
         v16 = v11;
         v17 = 2114;
-        v18 = v4;
+        v18 = dueCopy;
         v19 = 2114;
         v20 = v13;
         _os_log_impl(&dword_269B11000, v10, OS_LOG_TYPE_DEFAULT, "[%{public}@] Ignoring event %{public}@ due to being in current state %{public}@", &v15, 0x20u);
       }
     }
 
-    else if (v9 == 1)
+    else if (currentSleepScheduleState == 1)
     {
-      [(HDSPSleepNotificationManager *)self publishNotificationForEvent:v4];
+      [(HDSPSleepNotificationManager *)self publishNotificationForEvent:dueCopy];
     }
   }
 

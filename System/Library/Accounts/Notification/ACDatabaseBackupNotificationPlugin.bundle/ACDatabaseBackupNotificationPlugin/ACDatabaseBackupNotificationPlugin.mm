@@ -1,15 +1,15 @@
 @interface ACDatabaseBackupNotificationPlugin
-- (void)account:(id)a3 didChangeWithType:(int)a4 inStore:(id)a5 oldAccount:(id)a6;
+- (void)account:(id)account didChangeWithType:(int)type inStore:(id)store oldAccount:(id)oldAccount;
 @end
 
 @implementation ACDatabaseBackupNotificationPlugin
 
-- (void)account:(id)a3 didChangeWithType:(int)a4 inStore:(id)a5 oldAccount:(id)a6
+- (void)account:(id)account didChangeWithType:(int)type inStore:(id)store oldAccount:(id)oldAccount
 {
-  if ((a4 & 0xFFFFFFFD) == 1)
+  if ((type & 0xFFFFFFFD) == 1)
   {
-    v7 = [a5 databaseBackupActivity];
-    [v7 scheduleBackup];
+    databaseBackupActivity = [store databaseBackupActivity];
+    [databaseBackupActivity scheduleBackup];
   }
 }
 

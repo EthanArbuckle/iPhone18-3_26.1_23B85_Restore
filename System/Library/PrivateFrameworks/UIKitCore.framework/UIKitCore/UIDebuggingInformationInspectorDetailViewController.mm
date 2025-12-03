@@ -1,21 +1,21 @@
 @interface UIDebuggingInformationInspectorDetailViewController
-- (UIDebuggingInformationInspectorDetailViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (UIDebuggingInformationInspectorDetailViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (void)_forceViewLayout;
 - (void)_updateData;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation UIDebuggingInformationInspectorDetailViewController
 
-- (UIDebuggingInformationInspectorDetailViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (UIDebuggingInformationInspectorDetailViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v15[2] = *MEMORY[0x1E69E9840];
   v14.receiver = self;
   v14.super_class = UIDebuggingInformationInspectorDetailViewController;
-  v4 = [(UIViewController *)&v14 initWithNibName:a3 bundle:a4];
+  v4 = [(UIViewController *)&v14 initWithNibName:name bundle:bundle];
   if (v4)
   {
     v5 = [UITableView alloc];
@@ -33,8 +33,8 @@
     v15[1] = v10;
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:2];
 
-    v12 = [(UIViewController *)v4 navigationItem];
-    [v12 setRightBarButtonItems:v11];
+    navigationItem = [(UIViewController *)v4 navigationItem];
+    [navigationItem setRightBarButtonItems:v11];
   }
 
   return v4;
@@ -55,27 +55,27 @@
   v9.super_class = UIDebuggingInformationInspectorDetailViewController;
   [(UIViewController *)&v9 viewDidLoad];
   v3 = +[UIColor whiteColor];
-  v4 = [(UIViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  view = [(UIViewController *)self view];
+  [view setBackgroundColor:v3];
 
-  v5 = [(UIViewController *)self view];
-  [v5 setAutoresizingMask:18];
+  view2 = [(UIViewController *)self view];
+  [view2 setAutoresizingMask:18];
 
   [(UIView *)self->_tableView setAutoresizingMask:18];
   tableView = self->_tableView;
-  v7 = [(UIViewController *)self view];
-  [v7 bounds];
+  view3 = [(UIViewController *)self view];
+  [view3 bounds];
   [(UITableView *)tableView setFrame:?];
 
-  v8 = [(UIViewController *)self view];
-  [v8 addSubview:self->_tableView];
+  view4 = [(UIViewController *)self view];
+  [view4 addSubview:self->_tableView];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = UIDebuggingInformationInspectorDetailViewController;
-  [(UIViewController *)&v5 viewWillAppear:a3];
+  [(UIViewController *)&v5 viewWillAppear:appear];
   WeakRetained = objc_loadWeakRetained(&self->_inspectedView);
 
   if (WeakRetained)
@@ -117,9 +117,9 @@
     [(_UIDebuggingOverlayDetailOpacity *)v24 _updateForInspectedView:v26];
 
     v27 = objc_loadWeakRetained(&self->_inspectedView);
-    v28 = [v27 _wantsAutolayout];
+    _wantsAutolayout = [v27 _wantsAutolayout];
     v29 = @"No";
-    if (v28)
+    if (_wantsAutolayout)
     {
       v29 = @"Yes";
     }
@@ -171,29 +171,29 @@
   }
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v8 = -[NSArray objectAtIndexedSubscript:](self->_data, "objectAtIndexedSubscript:", [a4 row]);
-  v5 = [v8 viewController];
+  v8 = -[NSArray objectAtIndexedSubscript:](self->_data, "objectAtIndexedSubscript:", [path row]);
+  viewController = [v8 viewController];
 
-  if (v5)
+  if (viewController)
   {
-    v6 = [(UIViewController *)self navigationController];
-    v7 = [v8 viewController];
-    [v6 pushViewController:v7 animated:1];
+    navigationController = [(UIViewController *)self navigationController];
+    viewController2 = [v8 viewController];
+    [navigationController pushViewController:viewController2 animated:1];
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v5 = a4;
+  pathCopy = path;
   v6 = [[UITableViewCell alloc] initWithStyle:3 reuseIdentifier:@"kCellReuseIdentifierDetail"];
   data = self->_data;
-  v8 = [v5 row];
+  v8 = [pathCopy row];
 
   v9 = [(NSArray *)data objectAtIndexedSubscript:v8];
-  v10 = [v9 viewController];
-  if (v10)
+  viewController = [v9 viewController];
+  if (viewController)
   {
     v11 = 3;
   }
@@ -205,19 +205,19 @@
 
   [(UITableViewCell *)v6 setSelectionStyle:v11];
 
-  v12 = [v9 viewController];
-  [(UITableViewCell *)v6 setAccessoryType:v12 != 0];
+  viewController2 = [v9 viewController];
+  [(UITableViewCell *)v6 setAccessoryType:viewController2 != 0];
 
-  v13 = [v9 title];
-  v14 = [(UITableViewCell *)v6 textLabel];
-  [v14 setText:v13];
+  title = [v9 title];
+  textLabel = [(UITableViewCell *)v6 textLabel];
+  [textLabel setText:title];
 
-  v15 = [v9 detail];
-  v16 = [(UITableViewCell *)v6 detailTextLabel];
-  [v16 setText:v15];
+  detail = [v9 detail];
+  detailTextLabel = [(UITableViewCell *)v6 detailTextLabel];
+  [detailTextLabel setText:detail];
 
-  v17 = [v9 view];
-  [(UITableViewCell *)v6 setAccessoryView:v17];
+  view = [v9 view];
+  [(UITableViewCell *)v6 setAccessoryView:view];
 
   return v6;
 }

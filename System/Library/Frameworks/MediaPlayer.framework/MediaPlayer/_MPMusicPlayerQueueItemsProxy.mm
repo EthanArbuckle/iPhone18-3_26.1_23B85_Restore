@@ -1,7 +1,7 @@
 @interface _MPMusicPlayerQueueItemsProxy
 - (MPMusicPlayerApplicationController)controller;
-- (_MPMusicPlayerQueueItemsProxy)initWithController:(id)a3;
-- (id)objectAtIndex:(unint64_t)a3;
+- (_MPMusicPlayerQueueItemsProxy)initWithController:(id)controller;
+- (id)objectAtIndex:(unint64_t)index;
 - (unint64_t)count;
 @end
 
@@ -14,42 +14,42 @@
   return WeakRetained;
 }
 
-- (id)objectAtIndex:(unint64_t)a3
+- (id)objectAtIndex:(unint64_t)index
 {
   WeakRetained = objc_loadWeakRetained(&self->_controller);
-  v5 = [WeakRetained nowPlayingAtIndex:a3];
+  v5 = [WeakRetained nowPlayingAtIndex:index];
 
-  v6 = [v5 item];
+  item = [v5 item];
 
-  if (v6)
+  if (item)
   {
     v7 = [_MPMusicPlayerMediaItemProxy alloc];
-    v8 = [v5 itemIdentifier];
-    v9 = [v5 item];
-    v6 = [(_MPMusicPlayerMediaItemProxy *)v7 initWithItemIdentifier:v8 item:v9];
+    itemIdentifier = [v5 itemIdentifier];
+    item2 = [v5 item];
+    item = [(_MPMusicPlayerMediaItemProxy *)v7 initWithItemIdentifier:itemIdentifier item:item2];
   }
 
-  return v6;
+  return item;
 }
 
 - (unint64_t)count
 {
   WeakRetained = objc_loadWeakRetained(&self->_controller);
-  v3 = [WeakRetained numberOfItems];
+  numberOfItems = [WeakRetained numberOfItems];
 
-  return v3;
+  return numberOfItems;
 }
 
-- (_MPMusicPlayerQueueItemsProxy)initWithController:(id)a3
+- (_MPMusicPlayerQueueItemsProxy)initWithController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v8.receiver = self;
   v8.super_class = _MPMusicPlayerQueueItemsProxy;
   v5 = [(_MPMusicPlayerQueueItemsProxy *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_controller, v4);
+    objc_storeWeak(&v5->_controller, controllerCopy);
   }
 
   return v6;

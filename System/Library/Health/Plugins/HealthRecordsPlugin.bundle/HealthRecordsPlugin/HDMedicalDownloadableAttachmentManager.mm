@@ -1,71 +1,71 @@
 @interface HDMedicalDownloadableAttachmentManager
-- (BOOL)_addAttachmentAndMarkAvailableForAttachmentWithIdentifier:(id)a3 error:(id *)a4;
-- (BOOL)_addAttachmentForMedicalDownloadableAttachmentWithIdentifier:(id)a3 error:(id *)a4;
-- (BOOL)_beginOrResumeDownloadingAttachmentsWithError:(id *)a3;
+- (BOOL)_addAttachmentAndMarkAvailableForAttachmentWithIdentifier:(id)identifier error:(id *)error;
+- (BOOL)_addAttachmentForMedicalDownloadableAttachmentWithIdentifier:(id)identifier error:(id *)error;
+- (BOOL)_beginOrResumeDownloadingAttachmentsWithError:(id *)error;
 - (BOOL)_downloadAllowed;
-- (BOOL)_indexDownloadableAttachmentWithIdentifier:(id)a3 error:(id *)a4;
-- (BOOL)_reconcileDownloadableAttachmentToHKAttachmentForMedicalRecordWithIdentifier:(id)a3 error:(id *)a4;
-- (BOOL)_reconcileHKAttachmentForDownloadableAttachmentWithIdentifier:(id)a3 error:(id *)a4;
-- (BOOL)_removeLocalFileForAttachmentWithIdentifier:(id)a3 error:(id *)a4;
-- (BOOL)_saveInlineDataIfNeededForDownloadableAttachment:(id)a3 error:(id *)a4;
-- (BOOL)_saveInlineDataToTempFile:(id)a3 error:(id *)a4;
-- (BOOL)_updateNextRetryDateForAttachmentWithIdentifier:(id)a3 nextRetryDate:(id)a4 error:(id *)a5;
-- (BOOL)_updateNextRetryDateForFailedDownloadForAttachmentWithIdentifier:(id)a3 error:(id *)a4;
-- (BOOL)_updateNextRetryDateForFailedIndexingForAttachmentWithIdentifier:(id)a3 error:(id *)a4;
-- (BOOL)_updateNextRetryDateForFailedProcessingForAttachmentWithIdentifier:(id)a3 error:(id *)a4;
-- (BOOL)insertDownloadableAttachment:(id)a3 error:(id *)a4;
-- (BOOL)markDataAvailableForAttachmentWithIdentifier:(id)a3 attachmentContent:(id)a4 error:(id *)a5;
-- (BOOL)markDownloadCompleteForAttachmentWithIdentifier:(id)a3 fileURL:(id)a4 error:(id *)a5;
-- (BOOL)processDownloadableAttachmentWithIdentifier:(id)a3 error:(id *)a4;
-- (BOOL)removeAllAttachmentsFromMedicalRecord:(id)a3 error:(id *)a4;
-- (BOOL)removeDownloadableAttachmentWithIdentifier:(id)a3 error:(id *)a4;
-- (BOOL)triggerAttachmentRetryForMedicalRecordWithIdentifier:(id)a3 error:(id *)a4;
-- (BOOL)updateErrorStatusAndRetryCountForAttachmentWithIdentifier:(id)a3 errorStatus:(int64_t)a4 lastError:(id)a5 retryCount:(int64_t)a6 error:(id *)a7;
-- (BOOL)updateRetryCountForAttachmentWithIdentifier:(id)a3 retryCount:(int64_t)a4 nextRetryDate:(id)a5 error:(id *)a6;
-- (BOOL)updateStatusAndClearErrorForAttachmentWithIdentifier:(id)a3 status:(int64_t)a4 error:(id *)a5;
+- (BOOL)_indexDownloadableAttachmentWithIdentifier:(id)identifier error:(id *)error;
+- (BOOL)_reconcileDownloadableAttachmentToHKAttachmentForMedicalRecordWithIdentifier:(id)identifier error:(id *)error;
+- (BOOL)_reconcileHKAttachmentForDownloadableAttachmentWithIdentifier:(id)identifier error:(id *)error;
+- (BOOL)_removeLocalFileForAttachmentWithIdentifier:(id)identifier error:(id *)error;
+- (BOOL)_saveInlineDataIfNeededForDownloadableAttachment:(id)attachment error:(id *)error;
+- (BOOL)_saveInlineDataToTempFile:(id)file error:(id *)error;
+- (BOOL)_updateNextRetryDateForAttachmentWithIdentifier:(id)identifier nextRetryDate:(id)date error:(id *)error;
+- (BOOL)_updateNextRetryDateForFailedDownloadForAttachmentWithIdentifier:(id)identifier error:(id *)error;
+- (BOOL)_updateNextRetryDateForFailedIndexingForAttachmentWithIdentifier:(id)identifier error:(id *)error;
+- (BOOL)_updateNextRetryDateForFailedProcessingForAttachmentWithIdentifier:(id)identifier error:(id *)error;
+- (BOOL)insertDownloadableAttachment:(id)attachment error:(id *)error;
+- (BOOL)markDataAvailableForAttachmentWithIdentifier:(id)identifier attachmentContent:(id)content error:(id *)error;
+- (BOOL)markDownloadCompleteForAttachmentWithIdentifier:(id)identifier fileURL:(id)l error:(id *)error;
+- (BOOL)processDownloadableAttachmentWithIdentifier:(id)identifier error:(id *)error;
+- (BOOL)removeAllAttachmentsFromMedicalRecord:(id)record error:(id *)error;
+- (BOOL)removeDownloadableAttachmentWithIdentifier:(id)identifier error:(id *)error;
+- (BOOL)triggerAttachmentRetryForMedicalRecordWithIdentifier:(id)identifier error:(id *)error;
+- (BOOL)updateErrorStatusAndRetryCountForAttachmentWithIdentifier:(id)identifier errorStatus:(int64_t)status lastError:(id)error retryCount:(int64_t)count error:(id *)a7;
+- (BOOL)updateRetryCountForAttachmentWithIdentifier:(id)identifier retryCount:(int64_t)count nextRetryDate:(id)date error:(id *)error;
+- (BOOL)updateStatusAndClearErrorForAttachmentWithIdentifier:(id)identifier status:(int64_t)status error:(id *)error;
 - (HDHealthRecordsProfileExtension)profileExtension;
-- (HDMedicalDownloadableAttachmentManager)initWithProfileExtension:(id)a3;
-- (id)_applyBackoffStrategyForRetryCount:(int64_t)a3 now:(id)a4;
-- (id)_attachmentIdentifierForClinicalRecordWithUUID:(id)a3 profile:(id)a4 error:(id *)a5;
-- (id)_attachmentIdentifierForMedicalRecordWithUUID:(id)a3 profile:(id)a4 error:(id *)a5;
-- (id)_backOffPredicateWithCompareDate:(id)a3;
-- (id)_backOffPredicateWithPredicate:(id)a3;
-- (id)_clinicalRecordWithUUID:(id)a3 profile:(id)a4 error:(id *)a5;
-- (id)_determineUTType:(id)a3 error:(id *)a4;
+- (HDMedicalDownloadableAttachmentManager)initWithProfileExtension:(id)extension;
+- (id)_applyBackoffStrategyForRetryCount:(int64_t)count now:(id)now;
+- (id)_attachmentIdentifierForClinicalRecordWithUUID:(id)d profile:(id)profile error:(id *)error;
+- (id)_attachmentIdentifierForMedicalRecordWithUUID:(id)d profile:(id)profile error:(id *)error;
+- (id)_backOffPredicateWithCompareDate:(id)date;
+- (id)_backOffPredicateWithPredicate:(id)predicate;
+- (id)_clinicalRecordWithUUID:(id)d profile:(id)profile error:(id *)error;
+- (id)_determineUTType:(id)type error:(id *)error;
 - (id)_downloadableAttachmentsAwaitingDownloadPredicate;
-- (id)_downloadableAttachmentsFailedDownloadWithoutErrorPredicateWithCompareDate:(id)a3;
-- (id)_downloadableAttachmentsForMedicalRecordWithIdentifier:(id)a3 error:(id *)a4;
-- (id)_downloadableAttachmentsPredicateWithPredicate:(id)a3 downloadableAttachmentIdentifiers:(id)a4;
+- (id)_downloadableAttachmentsFailedDownloadWithoutErrorPredicateWithCompareDate:(id)date;
+- (id)_downloadableAttachmentsForMedicalRecordWithIdentifier:(id)identifier error:(id *)error;
+- (id)_downloadableAttachmentsPredicateWithPredicate:(id)predicate downloadableAttachmentIdentifiers:(id)identifiers;
 - (id)_downloadableAttachmentsReadyToIndexPredicate;
-- (id)_downloadableAttachmentsReadyToIndexWithIdentifiers:(id)a3 backOff:(BOOL)a4 error:(id *)a5;
+- (id)_downloadableAttachmentsReadyToIndexWithIdentifiers:(id)identifiers backOff:(BOOL)off error:(id *)error;
 - (id)_downloadableAttachmentsReadyToProcessPredicate;
-- (id)_downloadableAttachmentsReadyToProcessWithIdentifiers:(id)a3 backOff:(BOOL)a4 error:(id *)a5;
-- (id)_fetchDownloadableAttachmentsAwaitingDownloadWithBatchSize:(id)a3 downloadableAttachmentIdentifiers:(id)a4 backOff:(BOOL)a5 error:(id *)a6;
-- (id)_fetchDownloadableAttachmentsForPredicate:(id)a3 downloadableAttachmentIdentifiers:(id)a4 error:(id *)a5;
-- (id)_indexingAttachmentsFailedWithoutErrorPredicateWithCompareDate:(id)a3;
-- (id)_medicalRecordWithUUID:(id)a3 profile:(id)a4 error:(id *)a5;
-- (id)_processingAttachmentsFailedWithoutErrorPredicateWithCompareDate:(id)a3;
+- (id)_downloadableAttachmentsReadyToProcessWithIdentifiers:(id)identifiers backOff:(BOOL)off error:(id *)error;
+- (id)_fetchDownloadableAttachmentsAwaitingDownloadWithBatchSize:(id)size downloadableAttachmentIdentifiers:(id)identifiers backOff:(BOOL)off error:(id *)error;
+- (id)_fetchDownloadableAttachmentsForPredicate:(id)predicate downloadableAttachmentIdentifiers:(id)identifiers error:(id *)error;
+- (id)_indexingAttachmentsFailedWithoutErrorPredicateWithCompareDate:(id)date;
+- (id)_medicalRecordWithUUID:(id)d profile:(id)profile error:(id *)error;
+- (id)_processingAttachmentsFailedWithoutErrorPredicateWithCompareDate:(id)date;
 - (id)extractionServiceClientCreateIfNecessary;
-- (id)fetchAttachmentWithIdentifier:(id)a3 error:(id *)a4;
-- (id)profileWithError:(id *)a3;
-- (void)_downloadableAttachmentDidChange:(id)a3;
-- (void)downloadableAttachmentDidChange:(id)a3;
-- (void)notifyDownloadingCompleteAndRequestMoreWithIdentifiers:(id)a3 requestBatchSize:(id)a4 completion:(id)a5;
-- (void)runMedicalDownloadableAttachmentPipelineWithCompletion:(id)a3;
+- (id)fetchAttachmentWithIdentifier:(id)identifier error:(id *)error;
+- (id)profileWithError:(id *)error;
+- (void)_downloadableAttachmentDidChange:(id)change;
+- (void)downloadableAttachmentDidChange:(id)change;
+- (void)notifyDownloadingCompleteAndRequestMoreWithIdentifiers:(id)identifiers requestBatchSize:(id)size completion:(id)completion;
+- (void)runMedicalDownloadableAttachmentPipelineWithCompletion:(id)completion;
 @end
 
 @implementation HDMedicalDownloadableAttachmentManager
 
-- (HDMedicalDownloadableAttachmentManager)initWithProfileExtension:(id)a3
+- (HDMedicalDownloadableAttachmentManager)initWithProfileExtension:(id)extension
 {
-  v4 = a3;
+  extensionCopy = extension;
   v13.receiver = self;
   v13.super_class = HDMedicalDownloadableAttachmentManager;
   v5 = [(HDMedicalDownloadableAttachmentManager *)&v13 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_profileExtension, v4);
+    objc_storeWeak(&v5->_profileExtension, extensionCopy);
     *&v6->_query_lock._os_unfair_lock_opaque = 0;
     v7 = [HKObserverSet alloc];
     v8 = objc_opt_class();
@@ -78,22 +78,22 @@
   return v6;
 }
 
-- (id)profileWithError:(id *)a3
+- (id)profileWithError:(id *)error
 {
   WeakRetained = objc_loadWeakRetained(&self->_profileExtension);
-  v5 = [WeakRetained profile];
+  profile = [WeakRetained profile];
 
-  if (v5)
+  if (profile)
   {
-    v6 = v5;
+    v6 = profile;
   }
 
   else
   {
-    [NSError hk_assignError:a3 code:3 format:@"No profile found for %@", objc_opt_class()];
+    [NSError hk_assignError:error code:3 format:@"No profile found for %@", objc_opt_class()];
   }
 
-  return v5;
+  return profile;
 }
 
 - (id)extractionServiceClientCreateIfNecessary
@@ -103,9 +103,9 @@
   if (!extractionServiceClient)
   {
     WeakRetained = objc_loadWeakRetained(&self->_profileExtension);
-    v5 = [WeakRetained createHealthRecordsXPCServiceClient];
+    createHealthRecordsXPCServiceClient = [WeakRetained createHealthRecordsXPCServiceClient];
     v6 = self->_extractionServiceClient;
-    self->_extractionServiceClient = v5;
+    self->_extractionServiceClient = createHealthRecordsXPCServiceClient;
 
     extractionServiceClient = self->_extractionServiceClient;
   }
@@ -123,9 +123,9 @@
   v3 = v8;
   if (v2)
   {
-    v4 = [v2 daemon];
-    v5 = [v4 behavior];
-    v6 = [v5 healthAppNotInstalled] ^ 1;
+    daemon = [v2 daemon];
+    behavior = [daemon behavior];
+    v6 = [behavior healthAppNotInstalled] ^ 1;
   }
 
   else
@@ -159,13 +159,13 @@
   return v9;
 }
 
-- (id)_downloadableAttachmentsFailedDownloadWithoutErrorPredicateWithCompareDate:(id)a3
+- (id)_downloadableAttachmentsFailedDownloadWithoutErrorPredicateWithCompareDate:(id)date
 {
-  v3 = a3;
+  dateCopy = date;
   v4 = HDMedicalDownloadAttachmentPredicateForStatus(2);
   v11[0] = v4;
   v5 = HDMedicalDownloadableAttachmentEntityPropertyLastUpdatedDate;
-  v6 = [v3 dateByAddingTimeInterval:-600.0];
+  v6 = [dateCopy dateByAddingTimeInterval:-600.0];
 
   v7 = [HDSQLiteComparisonPredicate predicateWithProperty:v5 lessThanValue:v6];
   v11[1] = v7;
@@ -190,13 +190,13 @@
   return v10;
 }
 
-- (id)_processingAttachmentsFailedWithoutErrorPredicateWithCompareDate:(id)a3
+- (id)_processingAttachmentsFailedWithoutErrorPredicateWithCompareDate:(id)date
 {
-  v3 = a3;
+  dateCopy = date;
   v4 = HDMedicalDownloadAttachmentPredicateForStatus(10);
   v20[0] = v4;
   v5 = HDMedicalDownloadableAttachmentEntityPropertyLastUpdatedDate;
-  v6 = [v3 dateByAddingTimeInterval:-600.0];
+  v6 = [dateCopy dateByAddingTimeInterval:-600.0];
   v7 = [HDSQLiteComparisonPredicate predicateWithProperty:v5 lessThanValue:v6];
   v20[1] = v7;
   v8 = [NSArray arrayWithObjects:v20 count:2];
@@ -204,7 +204,7 @@
 
   v10 = HDMedicalDownloadAttachmentPredicateForStatus(8);
   v19[0] = v10;
-  v11 = [v3 dateByAddingTimeInterval:-600.0];
+  v11 = [dateCopy dateByAddingTimeInterval:-600.0];
 
   v12 = [HDSQLiteComparisonPredicate predicateWithProperty:v5 lessThanValue:v11];
   v19[1] = v12;
@@ -232,13 +232,13 @@
   return v8;
 }
 
-- (id)_indexingAttachmentsFailedWithoutErrorPredicateWithCompareDate:(id)a3
+- (id)_indexingAttachmentsFailedWithoutErrorPredicateWithCompareDate:(id)date
 {
-  v3 = a3;
+  dateCopy = date;
   v4 = HDMedicalDownloadAttachmentPredicateForStatus(5);
   v11[0] = v4;
   v5 = HDMedicalDownloadableAttachmentEntityPropertyLastUpdatedDate;
-  v6 = [v3 dateByAddingTimeInterval:-600.0];
+  v6 = [dateCopy dateByAddingTimeInterval:-600.0];
 
   v7 = [HDSQLiteComparisonPredicate predicateWithProperty:v5 lessThanValue:v6];
   v11[1] = v7;
@@ -248,13 +248,13 @@
   return v9;
 }
 
-- (id)_backOffPredicateWithCompareDate:(id)a3
+- (id)_backOffPredicateWithCompareDate:(id)date
 {
   v3 = HDMedicalDownloadableAttachmentEntityPropertyNextRetryDate;
-  v4 = a3;
+  dateCopy = date;
   v5 = [HDSQLiteNullPredicate isNullPredicateWithProperty:v3];
   v10[0] = v5;
-  v6 = [HDSQLiteComparisonPredicate predicateWithProperty:v3 lessThanValue:v4];
+  v6 = [HDSQLiteComparisonPredicate predicateWithProperty:v3 lessThanValue:dateCopy];
 
   v10[1] = v6;
   v7 = [NSArray arrayWithObjects:v10 count:2];
@@ -263,25 +263,25 @@
   return v8;
 }
 
-- (id)_backOffPredicateWithPredicate:(id)a3
+- (id)_backOffPredicateWithPredicate:(id)predicate
 {
-  v4 = a3;
+  predicateCopy = predicate;
   v5 = +[NSDate now];
   v6 = [(HDMedicalDownloadableAttachmentManager *)self _backOffPredicateWithCompareDate:v5];
-  v7 = [HDSQLiteCompoundPredicate compoundPredicateWithPredicate:v4 otherPredicate:v6];
+  v7 = [HDSQLiteCompoundPredicate compoundPredicateWithPredicate:predicateCopy otherPredicate:v6];
 
   return v7;
 }
 
-- (id)_downloadableAttachmentsPredicateWithPredicate:(id)a3 downloadableAttachmentIdentifiers:(id)a4
+- (id)_downloadableAttachmentsPredicateWithPredicate:(id)predicate downloadableAttachmentIdentifiers:(id)identifiers
 {
-  v6 = a3;
-  v7 = a4;
-  v13 = v6;
+  predicateCopy = predicate;
+  identifiersCopy = identifiers;
+  v13 = predicateCopy;
   v8 = [NSArray arrayWithObjects:&v13 count:1];
-  if (v7 && [v7 count])
+  if (identifiersCopy && [identifiersCopy count])
   {
-    v9 = [(HDMedicalDownloadableAttachmentManager *)self _downloadableAttachmentBatchPredicateWithIdentifiers:v7];
+    v9 = [(HDMedicalDownloadableAttachmentManager *)self _downloadableAttachmentBatchPredicateWithIdentifiers:identifiersCopy];
     v10 = [v8 arrayByAddingObject:v9];
 
     v8 = v10;
@@ -292,21 +292,21 @@
   return v11;
 }
 
-- (id)_fetchDownloadableAttachmentsForPredicate:(id)a3 downloadableAttachmentIdentifiers:(id)a4 error:(id *)a5
+- (id)_fetchDownloadableAttachmentsForPredicate:(id)predicate downloadableAttachmentIdentifiers:(id)identifiers error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(HDMedicalDownloadableAttachmentManager *)self profileWithError:a5];
+  predicateCopy = predicate;
+  identifiersCopy = identifiers;
+  v10 = [(HDMedicalDownloadableAttachmentManager *)self profileWithError:error];
   if (v10)
   {
-    v11 = [(HDMedicalDownloadableAttachmentManager *)self _downloadableAttachmentsPredicateWithPredicate:v8 downloadableAttachmentIdentifiers:v9];
+    v11 = [(HDMedicalDownloadableAttachmentManager *)self _downloadableAttachmentsPredicateWithPredicate:predicateCopy downloadableAttachmentIdentifiers:identifiersCopy];
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_7D610;
     v15[3] = &unk_1084A0;
     v12 = objc_alloc_init(NSMutableArray);
     v16 = v12;
-    if ([HDMedicalDownloadableAttachmentEntity enumerateAttachmentsWithPredicate:v11 profile:v10 error:a5 enumerationHandler:v15])
+    if ([HDMedicalDownloadableAttachmentEntity enumerateAttachmentsWithPredicate:v11 profile:v10 error:error enumerationHandler:v15])
     {
       v13 = v12;
     }
@@ -325,24 +325,24 @@
   return v13;
 }
 
-- (id)_downloadableAttachmentsForMedicalRecordWithIdentifier:(id)a3 error:(id *)a4
+- (id)_downloadableAttachmentsForMedicalRecordWithIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
-  v7 = [(HDMedicalDownloadableAttachmentManager *)self profileWithError:a4];
+  identifierCopy = identifier;
+  v7 = [(HDMedicalDownloadableAttachmentManager *)self profileWithError:error];
   if (v7)
   {
-    v8 = [(HDMedicalDownloadableAttachmentManager *)self _downloadableAttachmentsForMedicalRecordPredicateWithIdentifier:v6];
+    v8 = [(HDMedicalDownloadableAttachmentManager *)self _downloadableAttachmentsForMedicalRecordPredicateWithIdentifier:identifierCopy];
     v9 = objc_alloc_init(NSMutableArray);
     v18 = HDMedicalDownloadableAttachmentEntityPropertyIdentifier;
     v10 = [NSArray arrayWithObjects:&v18 count:1];
-    v11 = [v7 database];
+    database = [v7 database];
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
     v16[2] = sub_7D7F4;
     v16[3] = &unk_108780;
     v12 = v9;
     v17 = v12;
-    v13 = [HDMedicalDownloadableAttachmentEntity enumerateProperties:v10 withPredicate:v8 healthDatabase:v11 error:a4 enumerationHandler:v16];
+    v13 = [HDMedicalDownloadableAttachmentEntity enumerateProperties:v10 withPredicate:v8 healthDatabase:database error:error enumerationHandler:v16];
 
     if (v13)
     {
@@ -363,28 +363,28 @@
   return v14;
 }
 
-- (id)_fetchDownloadableAttachmentsAwaitingDownloadWithBatchSize:(id)a3 downloadableAttachmentIdentifiers:(id)a4 backOff:(BOOL)a5 error:(id *)a6
+- (id)_fetchDownloadableAttachmentsAwaitingDownloadWithBatchSize:(id)size downloadableAttachmentIdentifiers:(id)identifiers backOff:(BOOL)off error:(id *)error
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
+  offCopy = off;
+  sizeCopy = size;
+  identifiersCopy = identifiers;
   os_unfair_lock_lock(&self->_query_lock);
-  v12 = [(HDMedicalDownloadableAttachmentManager *)self _downloadableAttachmentsAwaitingDownloadPredicate];
-  if (v7)
+  _downloadableAttachmentsAwaitingDownloadPredicate = [(HDMedicalDownloadableAttachmentManager *)self _downloadableAttachmentsAwaitingDownloadPredicate];
+  if (offCopy)
   {
-    v13 = [(HDMedicalDownloadableAttachmentManager *)self _backOffPredicateWithPredicate:v12];
+    v13 = [(HDMedicalDownloadableAttachmentManager *)self _backOffPredicateWithPredicate:_downloadableAttachmentsAwaitingDownloadPredicate];
 
-    v12 = v13;
+    _downloadableAttachmentsAwaitingDownloadPredicate = v13;
   }
 
-  v14 = [(HDMedicalDownloadableAttachmentManager *)self _fetchDownloadableAttachmentsForPredicate:v12 downloadableAttachmentIdentifiers:v11 error:a6];
+  v14 = [(HDMedicalDownloadableAttachmentManager *)self _fetchDownloadableAttachmentsForPredicate:_downloadableAttachmentsAwaitingDownloadPredicate downloadableAttachmentIdentifiers:identifiersCopy error:error];
   if (v14)
   {
-    v36 = v12;
-    v15 = [v10 intValue];
-    if (v15 <= [&off_1103C0 intValue])
+    v36 = _downloadableAttachmentsAwaitingDownloadPredicate;
+    intValue = [sizeCopy intValue];
+    if (intValue <= [&off_1103C0 intValue])
     {
-      v16 = v10;
+      v16 = sizeCopy;
     }
 
     else
@@ -405,8 +405,8 @@
     {
       v20 = v19;
       v21 = *v39;
-      v33 = v11;
-      v34 = v10;
+      v33 = identifiersCopy;
+      v34 = sizeCopy;
 LABEL_9:
       v22 = 0;
       while (1)
@@ -419,8 +419,8 @@ LABEL_9:
         v23 = *(*(&v38 + 1) + 8 * v22);
         if ([v23 status] == &dword_0 + 1 || !objc_msgSend(v23, "status"))
         {
-          v24 = [v23 identifier];
-          v25 = [(HDMedicalDownloadableAttachmentManager *)self updateStatusAndClearErrorForAttachmentWithIdentifier:v24 status:2 error:a6];
+          identifier = [v23 identifier];
+          v25 = [(HDMedicalDownloadableAttachmentManager *)self updateStatusAndClearErrorForAttachmentWithIdentifier:identifier status:2 error:error];
 
           if ((v25 & 1) == 0)
           {
@@ -430,8 +430,8 @@ LABEL_9:
 
         if ([v23 errorStatus] == &dword_0 + 1)
         {
-          v26 = [v23 identifier];
-          v27 = [(HDMedicalDownloadableAttachmentManager *)self _updateNextRetryDateForFailedDownloadForAttachmentWithIdentifier:v26 error:a6];
+          identifier2 = [v23 identifier];
+          v27 = [(HDMedicalDownloadableAttachmentManager *)self _updateNextRetryDateForFailedDownloadForAttachmentWithIdentifier:identifier2 error:error];
 
           if ((v27 & 1) == 0)
           {
@@ -439,8 +439,8 @@ LABEL_9:
           }
         }
 
-        v28 = [v23 identifier];
-        v29 = [(HDMedicalDownloadableAttachmentManager *)self fetchAttachmentWithIdentifier:v28 error:a6];
+        identifier3 = [v23 identifier];
+        v29 = [(HDMedicalDownloadableAttachmentManager *)self fetchAttachmentWithIdentifier:identifier3 error:error];
 
         if (!v29)
         {
@@ -458,10 +458,10 @@ LABEL_9:
 LABEL_26:
 
 LABEL_27:
-          v11 = v33;
-          v10 = v34;
+          identifiersCopy = v33;
+          sizeCopy = v34;
           v14 = v35;
-          v12 = v36;
+          _downloadableAttachmentsAwaitingDownloadPredicate = v36;
 
           goto LABEL_28;
         }
@@ -469,8 +469,8 @@ LABEL_27:
         if (v20 == ++v22)
         {
           v20 = [obj countByEnumeratingWithState:&v38 objects:v42 count:16];
-          v11 = v33;
-          v10 = v34;
+          identifiersCopy = v33;
+          sizeCopy = v34;
           if (v20)
           {
             goto LABEL_9;
@@ -490,7 +490,7 @@ LABEL_21:
     os_unfair_lock_unlock(&self->_query_lock);
     v31 = v18;
     v14 = v35;
-    v12 = v36;
+    _downloadableAttachmentsAwaitingDownloadPredicate = v36;
 LABEL_28:
   }
 
@@ -503,20 +503,20 @@ LABEL_28:
   return v31;
 }
 
-- (id)_downloadableAttachmentsReadyToProcessWithIdentifiers:(id)a3 backOff:(BOOL)a4 error:(id *)a5
+- (id)_downloadableAttachmentsReadyToProcessWithIdentifiers:(id)identifiers backOff:(BOOL)off error:(id *)error
 {
-  v6 = a4;
-  v8 = a3;
+  offCopy = off;
+  identifiersCopy = identifiers;
   os_unfair_lock_lock(&self->_query_lock);
-  v9 = [(HDMedicalDownloadableAttachmentManager *)self _downloadableAttachmentsReadyToProcessPredicate];
-  if (v6)
+  _downloadableAttachmentsReadyToProcessPredicate = [(HDMedicalDownloadableAttachmentManager *)self _downloadableAttachmentsReadyToProcessPredicate];
+  if (offCopy)
   {
-    v10 = [(HDMedicalDownloadableAttachmentManager *)self _backOffPredicateWithPredicate:v9];
+    v10 = [(HDMedicalDownloadableAttachmentManager *)self _backOffPredicateWithPredicate:_downloadableAttachmentsReadyToProcessPredicate];
 
-    v9 = v10;
+    _downloadableAttachmentsReadyToProcessPredicate = v10;
   }
 
-  v11 = [(HDMedicalDownloadableAttachmentManager *)self _fetchDownloadableAttachmentsForPredicate:v9 downloadableAttachmentIdentifiers:v8 error:a5];
+  v11 = [(HDMedicalDownloadableAttachmentManager *)self _fetchDownloadableAttachmentsForPredicate:_downloadableAttachmentsReadyToProcessPredicate downloadableAttachmentIdentifiers:identifiersCopy error:error];
   if (v11)
   {
     v12 = objc_alloc_init(NSMutableArray);
@@ -530,8 +530,8 @@ LABEL_28:
     {
       v15 = v14;
       v16 = *v32;
-      v29 = v9;
-      v30 = v8;
+      v29 = _downloadableAttachmentsReadyToProcessPredicate;
+      v30 = identifiersCopy;
       v28 = v11;
       while (2)
       {
@@ -545,8 +545,8 @@ LABEL_28:
           v18 = *(*(&v31 + 1) + 8 * i);
           if ([v18 status] == &dword_4 + 3)
           {
-            v19 = [v18 identifier];
-            v20 = [(HDMedicalDownloadableAttachmentManager *)self updateStatusAndClearErrorForAttachmentWithIdentifier:v19 status:10 error:a5];
+            identifier = [v18 identifier];
+            v20 = [(HDMedicalDownloadableAttachmentManager *)self updateStatusAndClearErrorForAttachmentWithIdentifier:identifier status:10 error:error];
 
             if (!v20)
             {
@@ -556,8 +556,8 @@ LABEL_28:
 
           if ([v18 status] == &dword_0 + 3)
           {
-            v21 = [v18 identifier];
-            v22 = [(HDMedicalDownloadableAttachmentManager *)self updateStatusAndClearErrorForAttachmentWithIdentifier:v21 status:8 error:a5];
+            identifier2 = [v18 identifier];
+            v22 = [(HDMedicalDownloadableAttachmentManager *)self updateStatusAndClearErrorForAttachmentWithIdentifier:identifier2 status:8 error:error];
 
             if (!v22)
             {
@@ -567,8 +567,8 @@ LABEL_28:
 
           if ([v18 errorStatus] == &dword_0 + 2 || objc_msgSend(v18, "errorStatus") == &dword_0 + 3)
           {
-            v23 = [v18 identifier];
-            v24 = [(HDMedicalDownloadableAttachmentManager *)self _updateNextRetryDateForFailedProcessingForAttachmentWithIdentifier:v23 error:a5];
+            identifier3 = [v18 identifier];
+            v24 = [(HDMedicalDownloadableAttachmentManager *)self _updateNextRetryDateForFailedProcessingForAttachmentWithIdentifier:identifier3 error:error];
 
             if (!v24)
             {
@@ -576,20 +576,20 @@ LABEL_19:
               os_unfair_lock_unlock(&self->_query_lock);
 
               v26 = 0;
-              v9 = v29;
-              v8 = v30;
+              _downloadableAttachmentsReadyToProcessPredicate = v29;
+              identifiersCopy = v30;
               v11 = v28;
               goto LABEL_20;
             }
           }
 
-          v25 = [v18 identifier];
-          [v12 addObject:v25];
+          identifier4 = [v18 identifier];
+          [v12 addObject:identifier4];
         }
 
         v15 = [v13 countByEnumeratingWithState:&v31 objects:v35 count:16];
-        v9 = v29;
-        v8 = v30;
+        _downloadableAttachmentsReadyToProcessPredicate = v29;
+        identifiersCopy = v30;
         v11 = v28;
         if (v15)
         {
@@ -614,24 +614,24 @@ LABEL_20:
   return v26;
 }
 
-- (id)_downloadableAttachmentsReadyToIndexWithIdentifiers:(id)a3 backOff:(BOOL)a4 error:(id *)a5
+- (id)_downloadableAttachmentsReadyToIndexWithIdentifiers:(id)identifiers backOff:(BOOL)off error:(id *)error
 {
-  v6 = a4;
-  v8 = a3;
+  offCopy = off;
+  identifiersCopy = identifiers;
   os_unfair_lock_lock(&self->_query_lock);
-  v9 = [(HDMedicalDownloadableAttachmentManager *)self _downloadableAttachmentsReadyToIndexPredicate];
-  if (v6)
+  _downloadableAttachmentsReadyToIndexPredicate = [(HDMedicalDownloadableAttachmentManager *)self _downloadableAttachmentsReadyToIndexPredicate];
+  if (offCopy)
   {
-    v10 = [(HDMedicalDownloadableAttachmentManager *)self _backOffPredicateWithPredicate:v9];
+    v10 = [(HDMedicalDownloadableAttachmentManager *)self _backOffPredicateWithPredicate:_downloadableAttachmentsReadyToIndexPredicate];
 
-    v9 = v10;
+    _downloadableAttachmentsReadyToIndexPredicate = v10;
   }
 
-  v11 = [(HDMedicalDownloadableAttachmentManager *)self _fetchDownloadableAttachmentsForPredicate:v9 downloadableAttachmentIdentifiers:v8 error:a5];
+  v11 = [(HDMedicalDownloadableAttachmentManager *)self _fetchDownloadableAttachmentsForPredicate:_downloadableAttachmentsReadyToIndexPredicate downloadableAttachmentIdentifiers:identifiersCopy error:error];
   if (v11)
   {
-    v27 = v9;
-    v28 = v8;
+    v27 = _downloadableAttachmentsReadyToIndexPredicate;
+    v28 = identifiersCopy;
     v12 = objc_alloc_init(NSMutableArray);
     v29 = 0u;
     v30 = 0u;
@@ -656,8 +656,8 @@ LABEL_20:
           v18 = *(*(&v29 + 1) + 8 * i);
           if ([v18 status] == &dword_8 + 1)
           {
-            v19 = [v18 identifier];
-            v20 = [(HDMedicalDownloadableAttachmentManager *)self updateStatusAndClearErrorForAttachmentWithIdentifier:v19 status:5 error:a5];
+            identifier = [v18 identifier];
+            v20 = [(HDMedicalDownloadableAttachmentManager *)self updateStatusAndClearErrorForAttachmentWithIdentifier:identifier status:5 error:error];
 
             if (!v20)
             {
@@ -667,8 +667,8 @@ LABEL_20:
 
           if ([v18 errorStatus] == &dword_4)
           {
-            v21 = [v18 identifier];
-            v22 = [(HDMedicalDownloadableAttachmentManager *)self _updateNextRetryDateForFailedIndexingForAttachmentWithIdentifier:v21 error:a5];
+            identifier2 = [v18 identifier];
+            v22 = [(HDMedicalDownloadableAttachmentManager *)self _updateNextRetryDateForFailedIndexingForAttachmentWithIdentifier:identifier2 error:error];
 
             if (!v22)
             {
@@ -680,8 +680,8 @@ LABEL_16:
             }
           }
 
-          v23 = [v18 identifier];
-          [v12 addObject:v23];
+          identifier3 = [v18 identifier];
+          [v12 addObject:identifier3];
         }
 
         v15 = [v13 countByEnumeratingWithState:&v29 objects:v33 count:16];
@@ -698,8 +698,8 @@ LABEL_16:
     v24 = v12;
 LABEL_17:
 
-    v9 = v27;
-    v8 = v28;
+    _downloadableAttachmentsReadyToIndexPredicate = v27;
+    identifiersCopy = v28;
     v11 = v26;
   }
 
@@ -712,25 +712,25 @@ LABEL_17:
   return v24;
 }
 
-- (id)_applyBackoffStrategyForRetryCount:(int64_t)a3 now:(id)a4
+- (id)_applyBackoffStrategyForRetryCount:(int64_t)count now:(id)now
 {
-  v5 = a4;
-  v6 = v5;
-  if (a3 > 10)
+  nowCopy = now;
+  v6 = nowCopy;
+  if (count > 10)
   {
     v7 = 604800.0;
 LABEL_7:
-    v8 = [v5 dateByAddingTimeInterval:v7];
+    v8 = [nowCopy dateByAddingTimeInterval:v7];
     goto LABEL_8;
   }
 
-  if (a3 > 5)
+  if (count > 5)
   {
     v7 = 302400.0;
     goto LABEL_7;
   }
 
-  if (a3 >= 4)
+  if (count >= 4)
   {
     v7 = 86400.0;
     goto LABEL_7;
@@ -742,22 +742,22 @@ LABEL_8:
   return v8;
 }
 
-- (BOOL)updateRetryCountForAttachmentWithIdentifier:(id)a3 retryCount:(int64_t)a4 nextRetryDate:(id)a5 error:(id *)a6
+- (BOOL)updateRetryCountForAttachmentWithIdentifier:(id)identifier retryCount:(int64_t)count nextRetryDate:(id)date error:(id *)error
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = [(HDMedicalDownloadableAttachmentManager *)self profileWithError:a6];
+  identifierCopy = identifier;
+  dateCopy = date;
+  v12 = [(HDMedicalDownloadableAttachmentManager *)self profileWithError:error];
   if (v12)
   {
-    if (v11)
+    if (dateCopy)
     {
-      v13 = v11;
+      v13 = dateCopy;
     }
 
     else
     {
       v15 = +[NSDate now];
-      v13 = [(HDMedicalDownloadableAttachmentManager *)self _applyBackoffStrategyForRetryCount:a4 now:v15];
+      v13 = [(HDMedicalDownloadableAttachmentManager *)self _applyBackoffStrategyForRetryCount:count now:v15];
     }
 
     v22[0] = HDMedicalDownloadableAttachmentEntityPropertyRetryCount;
@@ -768,9 +768,9 @@ LABEL_8:
     v19[2] = sub_7E318;
     v19[3] = &unk_1073D8;
     v20 = v13;
-    v21 = a4;
+    countCopy = count;
     v17 = v13;
-    v14 = [HDMedicalDownloadableAttachmentEntity updateAttachmentWithIdentifier:v10 properties:v16 profile:v12 error:a6 bindingHandler:v19];
+    v14 = [HDMedicalDownloadableAttachmentEntity updateAttachmentWithIdentifier:identifierCopy properties:v16 profile:v12 error:error bindingHandler:v19];
   }
 
   else
@@ -781,11 +781,11 @@ LABEL_8:
   return v14;
 }
 
-- (BOOL)markDownloadCompleteForAttachmentWithIdentifier:(id)a3 fileURL:(id)a4 error:(id *)a5
+- (BOOL)markDownloadCompleteForAttachmentWithIdentifier:(id)identifier fileURL:(id)l error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(HDMedicalDownloadableAttachmentManager *)self profileWithError:a5];
+  identifierCopy = identifier;
+  lCopy = l;
+  v10 = [(HDMedicalDownloadableAttachmentManager *)self profileWithError:error];
   if (v10)
   {
     v16[0] = HDMedicalDownloadableAttachmentEntityPropertyFileURL;
@@ -799,8 +799,8 @@ LABEL_8:
     v14[1] = 3221225472;
     v14[2] = sub_7E514;
     v14[3] = &unk_105B80;
-    v15 = v9;
-    v12 = [HDMedicalDownloadableAttachmentEntity updateAttachmentWithIdentifier:v8 properties:v11 profile:v10 error:a5 bindingHandler:v14];
+    v15 = lCopy;
+    v12 = [HDMedicalDownloadableAttachmentEntity updateAttachmentWithIdentifier:identifierCopy properties:v11 profile:v10 error:error bindingHandler:v14];
   }
 
   else
@@ -811,11 +811,11 @@ LABEL_8:
   return v12;
 }
 
-- (BOOL)markDataAvailableForAttachmentWithIdentifier:(id)a3 attachmentContent:(id)a4 error:(id *)a5
+- (BOOL)markDataAvailableForAttachmentWithIdentifier:(id)identifier attachmentContent:(id)content error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(HDMedicalDownloadableAttachmentManager *)self profileWithError:a5];
+  identifierCopy = identifier;
+  contentCopy = content;
+  v10 = [(HDMedicalDownloadableAttachmentManager *)self profileWithError:error];
   if (v10)
   {
     v16[0] = HDMedicalDownloadableAttachmentEntityPropertyInlineData;
@@ -830,8 +830,8 @@ LABEL_8:
     v14[1] = 3221225472;
     v14[2] = sub_7E794;
     v14[3] = &unk_105B80;
-    v15 = v9;
-    v12 = [HDMedicalDownloadableAttachmentEntity updateAttachmentWithIdentifier:v8 properties:v11 profile:v10 error:a5 bindingHandler:v14];
+    v15 = contentCopy;
+    v12 = [HDMedicalDownloadableAttachmentEntity updateAttachmentWithIdentifier:identifierCopy properties:v11 profile:v10 error:error bindingHandler:v14];
   }
 
   else
@@ -842,10 +842,10 @@ LABEL_8:
   return v12;
 }
 
-- (BOOL)updateStatusAndClearErrorForAttachmentWithIdentifier:(id)a3 status:(int64_t)a4 error:(id *)a5
+- (BOOL)updateStatusAndClearErrorForAttachmentWithIdentifier:(id)identifier status:(int64_t)status error:(id *)error
 {
-  v8 = a3;
-  v9 = [(HDMedicalDownloadableAttachmentManager *)self profileWithError:a5];
+  identifierCopy = identifier;
+  v9 = [(HDMedicalDownloadableAttachmentManager *)self profileWithError:error];
   if (v9)
   {
     v14[0] = HDMedicalDownloadableAttachmentEntityPropertyStatus;
@@ -858,8 +858,8 @@ LABEL_8:
     v13[1] = 3221225472;
     v13[2] = sub_7EA10;
     v13[3] = &unk_1087A0;
-    v13[4] = a4;
-    v11 = [HDMedicalDownloadableAttachmentEntity updateAttachmentWithIdentifier:v8 properties:v10 profile:v9 error:a5 bindingHandler:v13];
+    v13[4] = status;
+    v11 = [HDMedicalDownloadableAttachmentEntity updateAttachmentWithIdentifier:identifierCopy properties:v10 profile:v9 error:error bindingHandler:v13];
   }
 
   else
@@ -870,18 +870,18 @@ LABEL_8:
   return v11;
 }
 
-- (BOOL)updateErrorStatusAndRetryCountForAttachmentWithIdentifier:(id)a3 errorStatus:(int64_t)a4 lastError:(id)a5 retryCount:(int64_t)a6 error:(id *)a7
+- (BOOL)updateErrorStatusAndRetryCountForAttachmentWithIdentifier:(id)identifier errorStatus:(int64_t)status lastError:(id)error retryCount:(int64_t)count error:(id *)a7
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = v13;
-  if ((!a4 || v13) && (a4 || !v13))
+  identifierCopy = identifier;
+  errorCopy = error;
+  v14 = errorCopy;
+  if ((!status || errorCopy) && (status || !errorCopy))
   {
     v16 = [(HDMedicalDownloadableAttachmentManager *)self profileWithError:a7];
     if (v16)
     {
       v17 = +[NSDate now];
-      v18 = [(HDMedicalDownloadableAttachmentManager *)self _applyBackoffStrategyForRetryCount:a6 now:v17];
+      v18 = [(HDMedicalDownloadableAttachmentManager *)self _applyBackoffStrategyForRetryCount:count now:v17];
 
       v27[0] = HDMedicalDownloadableAttachmentEntityPropertyErrorStatus;
       v27[1] = HDMedicalDownloadableAttachmentEntityPropertyLastError;
@@ -892,12 +892,12 @@ LABEL_8:
       v22[1] = 3221225472;
       v22[2] = sub_7ECC4;
       v22[3] = &unk_107878;
-      v25 = a4;
-      v26 = a6;
+      statusCopy = status;
+      countCopy = count;
       v23 = v14;
       v24 = v18;
       v20 = v18;
-      v15 = [HDMedicalDownloadableAttachmentEntity updateAttachmentWithIdentifier:v12 properties:v19 profile:v16 error:a7 bindingHandler:v22];
+      v15 = [HDMedicalDownloadableAttachmentEntity updateAttachmentWithIdentifier:identifierCopy properties:v19 profile:v16 error:a7 bindingHandler:v22];
     }
 
     else
@@ -915,11 +915,11 @@ LABEL_8:
   return v15;
 }
 
-- (BOOL)_updateNextRetryDateForAttachmentWithIdentifier:(id)a3 nextRetryDate:(id)a4 error:(id *)a5
+- (BOOL)_updateNextRetryDateForAttachmentWithIdentifier:(id)identifier nextRetryDate:(id)date error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(HDMedicalDownloadableAttachmentManager *)self profileWithError:a5];
+  identifierCopy = identifier;
+  dateCopy = date;
+  v10 = [(HDMedicalDownloadableAttachmentManager *)self profileWithError:error];
   if (v10)
   {
     v16 = HDMedicalDownloadableAttachmentEntityPropertyNextRetryDate;
@@ -928,8 +928,8 @@ LABEL_8:
     v14[1] = 3221225472;
     v14[2] = sub_7EEAC;
     v14[3] = &unk_105B80;
-    v15 = v9;
-    v12 = [HDMedicalDownloadableAttachmentEntity updateAttachmentWithIdentifier:v8 properties:v11 profile:v10 error:a5 bindingHandler:v14];
+    v15 = dateCopy;
+    v12 = [HDMedicalDownloadableAttachmentEntity updateAttachmentWithIdentifier:identifierCopy properties:v11 profile:v10 error:error bindingHandler:v14];
   }
 
   else
@@ -940,43 +940,43 @@ LABEL_8:
   return v12;
 }
 
-- (BOOL)_updateNextRetryDateForFailedDownloadForAttachmentWithIdentifier:(id)a3 error:(id *)a4
+- (BOOL)_updateNextRetryDateForFailedDownloadForAttachmentWithIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v7 = +[NSDate now];
   v8 = [v7 dateByAddingTimeInterval:600.0];
 
-  LOBYTE(a4) = [(HDMedicalDownloadableAttachmentManager *)self _updateNextRetryDateForAttachmentWithIdentifier:v6 nextRetryDate:v8 error:a4];
-  return a4;
+  LOBYTE(error) = [(HDMedicalDownloadableAttachmentManager *)self _updateNextRetryDateForAttachmentWithIdentifier:identifierCopy nextRetryDate:v8 error:error];
+  return error;
 }
 
-- (BOOL)_updateNextRetryDateForFailedProcessingForAttachmentWithIdentifier:(id)a3 error:(id *)a4
+- (BOOL)_updateNextRetryDateForFailedProcessingForAttachmentWithIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v7 = +[NSDate now];
   v8 = [v7 dateByAddingTimeInterval:600.0];
 
-  LOBYTE(a4) = [(HDMedicalDownloadableAttachmentManager *)self _updateNextRetryDateForAttachmentWithIdentifier:v6 nextRetryDate:v8 error:a4];
-  return a4;
+  LOBYTE(error) = [(HDMedicalDownloadableAttachmentManager *)self _updateNextRetryDateForAttachmentWithIdentifier:identifierCopy nextRetryDate:v8 error:error];
+  return error;
 }
 
-- (BOOL)_updateNextRetryDateForFailedIndexingForAttachmentWithIdentifier:(id)a3 error:(id *)a4
+- (BOOL)_updateNextRetryDateForFailedIndexingForAttachmentWithIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v7 = +[NSDate now];
   v8 = [v7 dateByAddingTimeInterval:600.0];
 
-  LOBYTE(a4) = [(HDMedicalDownloadableAttachmentManager *)self _updateNextRetryDateForAttachmentWithIdentifier:v6 nextRetryDate:v8 error:a4];
-  return a4;
+  LOBYTE(error) = [(HDMedicalDownloadableAttachmentManager *)self _updateNextRetryDateForAttachmentWithIdentifier:identifierCopy nextRetryDate:v8 error:error];
+  return error;
 }
 
-- (BOOL)insertDownloadableAttachment:(id)a3 error:(id *)a4
+- (BOOL)insertDownloadableAttachment:(id)attachment error:(id *)error
 {
-  v6 = a3;
-  v7 = [(HDMedicalDownloadableAttachmentManager *)self profileWithError:a4];
+  attachmentCopy = attachment;
+  v7 = [(HDMedicalDownloadableAttachmentManager *)self profileWithError:error];
   if (v7)
   {
-    v8 = [HDMedicalDownloadableAttachmentEntity insertAttachment:v6 profile:v7 error:a4];
+    v8 = [HDMedicalDownloadableAttachmentEntity insertAttachment:attachmentCopy profile:v7 error:error];
   }
 
   else
@@ -987,13 +987,13 @@ LABEL_8:
   return v8;
 }
 
-- (id)fetchAttachmentWithIdentifier:(id)a3 error:(id *)a4
+- (id)fetchAttachmentWithIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
-  v7 = [(HDMedicalDownloadableAttachmentManager *)self profileWithError:a4];
+  identifierCopy = identifier;
+  v7 = [(HDMedicalDownloadableAttachmentManager *)self profileWithError:error];
   if (v7)
   {
-    v8 = [HDMedicalDownloadableAttachmentEntity attachmentWithIdentifier:v6 profile:v7 error:a4];
+    v8 = [HDMedicalDownloadableAttachmentEntity attachmentWithIdentifier:identifierCopy profile:v7 error:error];
   }
 
   else
@@ -1004,13 +1004,13 @@ LABEL_8:
   return v8;
 }
 
-- (BOOL)removeDownloadableAttachmentWithIdentifier:(id)a3 error:(id *)a4
+- (BOOL)removeDownloadableAttachmentWithIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
-  v7 = [(HDMedicalDownloadableAttachmentManager *)self profileWithError:a4];
+  identifierCopy = identifier;
+  v7 = [(HDMedicalDownloadableAttachmentManager *)self profileWithError:error];
   if (v7)
   {
-    v8 = [HDMedicalDownloadableAttachmentEntity deleteAttachmentWithIdentifier:v6 profile:v7 error:a4];
+    v8 = [HDMedicalDownloadableAttachmentEntity deleteAttachmentWithIdentifier:identifierCopy profile:v7 error:error];
   }
 
   else
@@ -1021,20 +1021,20 @@ LABEL_8:
   return v8;
 }
 
-- (void)runMedicalDownloadableAttachmentPipelineWithCompletion:(id)a3
+- (void)runMedicalDownloadableAttachmentPipelineWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   [(HDMedicalDownloadableAttachmentManager *)self set_unitTesting_skippedAttachmentDownload:0];
-  v5 = [(HDMedicalDownloadableAttachmentManager *)self _downloadAllowed];
+  _downloadAllowed = [(HDMedicalDownloadableAttachmentManager *)self _downloadAllowed];
   _HKInitializeLogging();
   v6 = HKLogHealthRecords;
   v7 = os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_DEFAULT);
-  if (v5)
+  if (_downloadAllowed)
   {
     if (v7)
     {
       *buf = 138543362;
-      v22 = self;
+      selfCopy6 = self;
       _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: Start HKMedicalDownloadableAttachments Pipeline", buf, 0xCu);
     }
 
@@ -1043,7 +1043,7 @@ LABEL_8:
     if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v22 = self;
+      selfCopy6 = self;
       _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "%{public}@: reconcile HKMedicalDownloadableAttachments", buf, 0xCu);
     }
 
@@ -1064,7 +1064,7 @@ LABEL_8:
     if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v22 = self;
+      selfCopy6 = self;
       _os_log_impl(&dword_0, v11, OS_LOG_TYPE_DEFAULT, "%{public}@: Begin with processing / indexing for HKMedicalDownloadableAttachments already downloaded", buf, 0xCu);
     }
 
@@ -1078,7 +1078,7 @@ LABEL_8:
       if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v22 = self;
+        selfCopy6 = self;
         _os_log_impl(&dword_0, v14, OS_LOG_TYPE_DEFAULT, "%{public}@: Completed processing / indexing for HKMedicalDownloadableAttachments. Continue to Downloading.", buf, 0xCu);
       }
 
@@ -1092,11 +1092,11 @@ LABEL_8:
         if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543362;
-          v22 = self;
+          selfCopy6 = self;
           _os_log_impl(&dword_0, v17, OS_LOG_TYPE_DEFAULT, "%{public}@: Completed initiating _beginOrResumeDownloadingAttachmentsWithError", buf, 0xCu);
         }
 
-        v4[2](v4, 1, 0);
+        completionCopy[2](completionCopy, 1, 0);
       }
 
       else
@@ -1106,7 +1106,7 @@ LABEL_8:
           sub_A735C();
         }
 
-        (v4)[2](v4, 0, v16);
+        (completionCopy)[2](completionCopy, 0, v16);
       }
     }
 
@@ -1117,7 +1117,7 @@ LABEL_8:
         sub_A72AC();
       }
 
-      (v4)[2](v4, 0, v13);
+      (completionCopy)[2](completionCopy, 0, v13);
     }
   }
 
@@ -1126,24 +1126,24 @@ LABEL_8:
     if (v7)
     {
       *buf = 138543362;
-      v22 = self;
+      selfCopy6 = self;
       _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: Download is not allowed. HKMedicalDownloadableAttachments Pipeline will not run.", buf, 0xCu);
     }
 
     [(HDMedicalDownloadableAttachmentManager *)self set_unitTesting_skippedAttachmentDownload:1];
-    v4[2](v4, 1, 0);
+    completionCopy[2](completionCopy, 1, 0);
   }
 }
 
-- (void)notifyDownloadingCompleteAndRequestMoreWithIdentifiers:(id)a3 requestBatchSize:(id)a4 completion:(id)a5
+- (void)notifyDownloadingCompleteAndRequestMoreWithIdentifiers:(id)identifiers requestBatchSize:(id)size completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 count])
+  identifiersCopy = identifiers;
+  sizeCopy = size;
+  completionCopy = completion;
+  if ([identifiersCopy count])
   {
     v21 = 0;
-    v11 = [(HDMedicalDownloadableAttachmentManager *)self _processAndIndexDownloadableAttachmentsWithIdentifiers:v8 backOff:0 error:&v21];
+    v11 = [(HDMedicalDownloadableAttachmentManager *)self _processAndIndexDownloadableAttachmentsWithIdentifiers:identifiersCopy backOff:0 error:&v21];
     v12 = v21;
     if ((v11 & 1) == 0)
     {
@@ -1159,7 +1159,7 @@ LABEL_8:
     if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v23 = self;
+      selfCopy3 = self;
       _os_log_impl(&dword_0, v13, OS_LOG_TYPE_DEFAULT, "%{public}@: processing / indexing attempt completed for batch", buf, 0xCu);
     }
   }
@@ -1173,24 +1173,24 @@ LABEL_8:
     }
   }
 
-  if ([v9 isEqualToNumber:&off_1103D8])
+  if ([sizeCopy isEqualToNumber:&off_1103D8])
   {
     _HKInitializeLogging();
     v14 = HKLogHealthRecords;
     if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v23 = self;
+      selfCopy3 = self;
       _os_log_impl(&dword_0, v14, OS_LOG_TYPE_DEFAULT, "%{public}@: no more attachments requested by the downloader", buf, 0xCu);
     }
 
-    v10[2](v10, &__NSArray0__struct, 0);
+    completionCopy[2](completionCopy, &__NSArray0__struct, 0);
   }
 
   else
   {
     v20 = 0;
-    v15 = [(HDMedicalDownloadableAttachmentManager *)self _fetchDownloadableAttachmentsAwaitingDownloadWithBatchSize:v9 error:&v20];
+    v15 = [(HDMedicalDownloadableAttachmentManager *)self _fetchDownloadableAttachmentsAwaitingDownloadWithBatchSize:sizeCopy error:&v20];
     v16 = v20;
     _HKInitializeLogging();
     v17 = HKLogHealthRecords;
@@ -1201,13 +1201,13 @@ LABEL_8:
         v18 = v17;
         v19 = [v15 count];
         *buf = 138543618;
-        v23 = self;
+        selfCopy3 = self;
         v24 = 2048;
         v25 = v19;
         _os_log_impl(&dword_0, v18, OS_LOG_TYPE_DEFAULT, "%{public}@: sending %lu attachments to the downloader", buf, 0x16u);
       }
 
-      v10[2](v10, v15, 0);
+      completionCopy[2](completionCopy, v15, 0);
     }
 
     else
@@ -1217,14 +1217,14 @@ LABEL_8:
         sub_A7530();
       }
 
-      (v10)[2](v10, 0, v16);
+      (completionCopy)[2](completionCopy, 0, v16);
     }
   }
 }
 
-- (BOOL)_beginOrResumeDownloadingAttachmentsWithError:(id *)a3
+- (BOOL)_beginOrResumeDownloadingAttachmentsWithError:(id *)error
 {
-  v4 = [(HDMedicalDownloadableAttachmentManager *)self _fetchDownloadableAttachmentsAwaitingDownloadWithBatchSize:&off_1103C0 error:a3];
+  v4 = [(HDMedicalDownloadableAttachmentManager *)self _fetchDownloadableAttachmentsAwaitingDownloadWithBatchSize:&off_1103C0 error:error];
   v5 = v4;
   if (v4)
   {
@@ -1240,7 +1240,7 @@ LABEL_8:
       if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_DEFAULT))
       {
         v8 = 138543362;
-        v9 = self;
+        selfCopy = self;
         _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: no attachments awaiting download at this time", &v8, 0xCu);
       }
     }
@@ -1249,10 +1249,10 @@ LABEL_8:
   return v5 != 0;
 }
 
-- (BOOL)processDownloadableAttachmentWithIdentifier:(id)a3 error:(id *)a4
+- (BOOL)processDownloadableAttachmentWithIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
-  v7 = [(HDMedicalDownloadableAttachmentManager *)self fetchAttachmentWithIdentifier:v6 error:a4];
+  identifierCopy = identifier;
+  v7 = [(HDMedicalDownloadableAttachmentManager *)self fetchAttachmentWithIdentifier:identifierCopy error:error];
   v8 = v7;
   if (!v7)
   {
@@ -1267,7 +1267,7 @@ LABEL_8:
     if (v9)
     {
       v27 = 0;
-      v11 = [(HDMedicalDownloadableAttachmentManager *)self updateStatusAndClearErrorForAttachmentWithIdentifier:v6 status:8 error:&v27];
+      v11 = [(HDMedicalDownloadableAttachmentManager *)self updateStatusAndClearErrorForAttachmentWithIdentifier:identifierCopy status:8 error:&v27];
       v12 = v27;
       v13 = v12;
       if (v11)
@@ -1281,12 +1281,12 @@ LABEL_8:
       if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_ERROR))
       {
         v24 = v17;
-        v25 = [v13 localizedDescription];
+        localizedDescription = [v13 localizedDescription];
         v26 = HKSensitiveLogItem();
         *buf = 138543874;
-        v30 = self;
+        selfCopy2 = self;
         v31 = 2114;
-        v32 = v6;
+        v32 = identifierCopy;
         v33 = 2114;
         v34 = v26;
         _os_log_error_impl(&dword_0, v24, OS_LOG_TYPE_ERROR, "%{public}@: Failed update status for attachment %{public}@. Error: %{public}@", buf, 0x20u);
@@ -1295,10 +1295,10 @@ LABEL_8:
       v18 = v13;
       if (v18)
       {
-        if (a4)
+        if (error)
         {
           v19 = v18;
-          *a4 = v18;
+          *error = v18;
         }
 
         else
@@ -1315,12 +1315,12 @@ LABEL_8:
       if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_ERROR))
       {
         v21 = v15;
-        v22 = [v10 localizedDescription];
+        localizedDescription2 = [v10 localizedDescription];
         v23 = HKSensitiveLogItem();
         *buf = 138543874;
-        v30 = self;
+        selfCopy2 = self;
         v31 = 2114;
-        v32 = v6;
+        v32 = identifierCopy;
         v33 = 2114;
         v34 = v23;
         _os_log_error_impl(&dword_0, v21, OS_LOG_TYPE_ERROR, "%{public}@: Failed to save inlineData to file for attachment %{public}@. Error: %{public}@", buf, 0x20u);
@@ -1329,10 +1329,10 @@ LABEL_8:
       v10 = v10;
       if (v10)
       {
-        if (a4)
+        if (error)
         {
           v16 = v10;
-          *a4 = v10;
+          *error = v10;
         }
 
         else
@@ -1348,49 +1348,49 @@ LABEL_22:
   }
 
 LABEL_6:
-  v14 = [(HDMedicalDownloadableAttachmentManager *)self _addAttachmentAndMarkAvailableForAttachmentWithIdentifier:v6 error:a4];
+  v14 = [(HDMedicalDownloadableAttachmentManager *)self _addAttachmentAndMarkAvailableForAttachmentWithIdentifier:identifierCopy error:error];
 LABEL_23:
 
   return v14;
 }
 
-- (BOOL)_saveInlineDataIfNeededForDownloadableAttachment:(id)a3 error:(id *)a4
+- (BOOL)_saveInlineDataIfNeededForDownloadableAttachment:(id)attachment error:(id *)error
 {
-  v6 = a3;
-  if ([v6 status] == &dword_8 + 2)
+  attachmentCopy = attachment;
+  if ([attachmentCopy status] == &dword_8 + 2)
   {
-    v7 = [v6 inlineData];
+    inlineData = [attachmentCopy inlineData];
 
-    if (!v7)
+    if (!inlineData)
     {
-      [NSError hk_assignError:a4 code:3 format:@"HKMedicalDownloadableAttachment status is 'InlineDataAvailable' but 'inlineData' field is nil"];
+      [NSError hk_assignError:error code:3 format:@"HKMedicalDownloadableAttachment status is 'InlineDataAvailable' but 'inlineData' field is nil"];
 LABEL_17:
       v12 = 0;
       goto LABEL_18;
     }
   }
 
-  if ([v6 status] != &dword_8 + 2)
+  if ([attachmentCopy status] != &dword_8 + 2)
   {
     goto LABEL_7;
   }
 
-  v8 = [v6 inlineData];
+  inlineData2 = [attachmentCopy inlineData];
 
-  if (!v8)
+  if (!inlineData2)
   {
     goto LABEL_7;
   }
 
   v25 = 0;
-  v9 = [(HDMedicalDownloadableAttachmentManager *)self _saveInlineDataToTempFile:v6 error:&v25];
+  v9 = [(HDMedicalDownloadableAttachmentManager *)self _saveInlineDataToTempFile:attachmentCopy error:&v25];
   v10 = v25;
   v11 = v10;
   if ((v9 & 1) == 0)
   {
-    v13 = [v6 identifier];
+    identifier = [attachmentCopy identifier];
     v24 = 0;
-    v14 = -[HDMedicalDownloadableAttachmentManager updateErrorStatusAndRetryCountForAttachmentWithIdentifier:errorStatus:lastError:retryCount:error:](self, "updateErrorStatusAndRetryCountForAttachmentWithIdentifier:errorStatus:lastError:retryCount:error:", v13, 2, v11, [v6 retryCount] + 1, &v24);
+    v14 = -[HDMedicalDownloadableAttachmentManager updateErrorStatusAndRetryCountForAttachmentWithIdentifier:errorStatus:lastError:retryCount:error:](self, "updateErrorStatusAndRetryCountForAttachmentWithIdentifier:errorStatus:lastError:retryCount:error:", identifier, 2, v11, [attachmentCopy retryCount] + 1, &v24);
     v15 = v24;
 
     if ((v14 & 1) == 0)
@@ -1400,13 +1400,13 @@ LABEL_17:
       if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_ERROR))
       {
         v20 = v16;
-        v21 = [v6 identifier];
-        v22 = [v15 localizedDescription];
+        identifier2 = [attachmentCopy identifier];
+        localizedDescription = [v15 localizedDescription];
         v23 = HKSensitiveLogItem();
         *buf = 138543874;
-        v27 = self;
+        selfCopy = self;
         v28 = 2114;
-        v29 = v21;
+        v29 = identifier2;
         v30 = 2114;
         v31 = v23;
         _os_log_error_impl(&dword_0, v20, OS_LOG_TYPE_ERROR, "%{public}@: Failed update error status for attachment %{public}@. Error: %{public}@", buf, 0x20u);
@@ -1416,10 +1416,10 @@ LABEL_17:
     v17 = v11;
     if (v17)
     {
-      if (a4)
+      if (error)
       {
         v18 = v17;
-        *a4 = v17;
+        *error = v17;
       }
 
       else
@@ -1438,42 +1438,42 @@ LABEL_18:
   return v12;
 }
 
-- (BOOL)_saveInlineDataToTempFile:(id)a3 error:(id *)a4
+- (BOOL)_saveInlineDataToTempFile:(id)file error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 contentType];
-  v8 = [UTType typeWithMIMEType:v7];
+  fileCopy = file;
+  contentType = [fileCopy contentType];
+  v8 = [UTType typeWithMIMEType:contentType];
 
-  v9 = [v8 preferredFilenameExtension];
-  if (v9)
+  preferredFilenameExtension = [v8 preferredFilenameExtension];
+  if (preferredFilenameExtension)
   {
-    v10 = [v6 identifier];
-    v11 = [v10 UUIDString];
-    v12 = [v11 stringByAppendingPathExtension:v9];
+    identifier = [fileCopy identifier];
+    uUIDString = [identifier UUIDString];
+    v12 = [uUIDString stringByAppendingPathExtension:preferredFilenameExtension];
 
     v13 = +[HKClinicalStorageLocations downloadableAttachmentsDirectory];
     v26 = v12;
     v14 = [v13 URLByAppendingPathComponent:v12];
-    v15 = [v6 inlineData];
+    inlineData = [fileCopy inlineData];
     v29 = 0;
-    v16 = [HKClinicalStorageLocations storeData:v15 inLocalFileAtURL:v14 error:&v29];
+    v16 = [HKClinicalStorageLocations storeData:inlineData inLocalFileAtURL:v14 error:&v29];
     v17 = v29;
 
     if (v16)
     {
-      v18 = [(HDMedicalDownloadableAttachmentManager *)self profileWithError:a4];
+      v18 = [(HDMedicalDownloadableAttachmentManager *)self profileWithError:error];
       if (v18)
       {
         v30 = HDMedicalDownloadableAttachmentEntityPropertyFileURL;
         v19 = [NSArray arrayWithObjects:&v30 count:1];
-        [v6 identifier];
+        [fileCopy identifier];
         v20 = v25 = v13;
         v27[0] = _NSConcreteStackBlock;
         v27[1] = 3221225472;
         v27[2] = sub_80C9C;
         v27[3] = &unk_105B80;
         v28 = v14;
-        v21 = [HDMedicalDownloadableAttachmentEntity updateAttachmentWithIdentifier:v20 properties:v19 profile:v18 error:a4 bindingHandler:v27];
+        v21 = [HDMedicalDownloadableAttachmentEntity updateAttachmentWithIdentifier:v20 properties:v19 profile:v18 error:error bindingHandler:v27];
 
         v13 = v25;
 LABEL_11:
@@ -1487,11 +1487,11 @@ LABEL_11:
       v18 = v17;
       if (v18)
       {
-        if (a4)
+        if (error)
         {
           v23 = v18;
           v21 = 0;
-          *a4 = v18;
+          *error = v18;
           goto LABEL_11;
         }
 
@@ -1503,8 +1503,8 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  v22 = [v6 contentType];
-  [NSError hk_assignError:a4 code:125 format:@"ContentType not supported: %@", v22];
+  contentType2 = [fileCopy contentType];
+  [NSError hk_assignError:error code:125 format:@"ContentType not supported: %@", contentType2];
 
   v21 = 0;
 LABEL_12:
@@ -1512,14 +1512,14 @@ LABEL_12:
   return v21;
 }
 
-- (BOOL)_removeLocalFileForAttachmentWithIdentifier:(id)a3 error:(id *)a4
+- (BOOL)_removeLocalFileForAttachmentWithIdentifier:(id)identifier error:(id *)error
 {
-  v5 = [(HDMedicalDownloadableAttachmentManager *)self fetchAttachmentWithIdentifier:a3 error:?];
+  v5 = [(HDMedicalDownloadableAttachmentManager *)self fetchAttachmentWithIdentifier:identifier error:?];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 fileURL];
-    v8 = [HKClinicalStorageLocations removeLocalFileAtURL:v7 error:a4];
+    fileURL = [v5 fileURL];
+    v8 = [HKClinicalStorageLocations removeLocalFileAtURL:fileURL error:error];
   }
 
   else
@@ -1530,17 +1530,17 @@ LABEL_12:
   return v8;
 }
 
-- (BOOL)_addAttachmentAndMarkAvailableForAttachmentWithIdentifier:(id)a3 error:(id *)a4
+- (BOOL)_addAttachmentAndMarkAvailableForAttachmentWithIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v24 = 0;
-  v7 = [(HDMedicalDownloadableAttachmentManager *)self _addAttachmentForMedicalDownloadableAttachmentWithIdentifier:v6 error:&v24];
+  v7 = [(HDMedicalDownloadableAttachmentManager *)self _addAttachmentForMedicalDownloadableAttachmentWithIdentifier:identifierCopy error:&v24];
   v8 = v24;
   if (v7)
   {
-    [(HDMedicalDownloadableAttachmentManager *)self _downloadableAttachmentDidChange:v6];
+    [(HDMedicalDownloadableAttachmentManager *)self _downloadableAttachmentDidChange:identifierCopy];
     v22 = 0;
-    v9 = [(HDMedicalDownloadableAttachmentManager *)self _removeLocalFileForAttachmentWithIdentifier:v6 error:&v22];
+    v9 = [(HDMedicalDownloadableAttachmentManager *)self _removeLocalFileForAttachmentWithIdentifier:identifierCopy error:&v22];
     v10 = v22;
     v11 = v10;
     if ((v9 & 1) == 0)
@@ -1558,12 +1558,12 @@ LABEL_12:
 
   else
   {
-    v12 = [(HDMedicalDownloadableAttachmentManager *)self fetchAttachmentWithIdentifier:v6 error:a4];
+    v12 = [(HDMedicalDownloadableAttachmentManager *)self fetchAttachmentWithIdentifier:identifierCopy error:error];
     v11 = v12;
     if (v12)
     {
       v23 = 0;
-      v13 = -[HDMedicalDownloadableAttachmentManager updateErrorStatusAndRetryCountForAttachmentWithIdentifier:errorStatus:lastError:retryCount:error:](self, "updateErrorStatusAndRetryCountForAttachmentWithIdentifier:errorStatus:lastError:retryCount:error:", v6, 3, v8, [v12 retryCount] + 1, &v23);
+      v13 = -[HDMedicalDownloadableAttachmentManager updateErrorStatusAndRetryCountForAttachmentWithIdentifier:errorStatus:lastError:retryCount:error:](self, "updateErrorStatusAndRetryCountForAttachmentWithIdentifier:errorStatus:lastError:retryCount:error:", identifierCopy, 3, v8, [v12 retryCount] + 1, &v23);
       v14 = v23;
       if ((v13 & 1) == 0)
       {
@@ -1572,12 +1572,12 @@ LABEL_12:
         if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_ERROR))
         {
           v19 = v15;
-          v20 = [v14 localizedDescription];
+          localizedDescription = [v14 localizedDescription];
           v21 = HKSensitiveLogItem();
           *buf = 138543874;
-          v26 = self;
+          selfCopy = self;
           v27 = 2114;
-          v28 = v6;
+          v28 = identifierCopy;
           v29 = 2114;
           v30 = v21;
           _os_log_error_impl(&dword_0, v19, OS_LOG_TYPE_ERROR, "%{public}@: Failed update error status for attachment %{public}@. Error: %{public}@", buf, 0x20u);
@@ -1587,10 +1587,10 @@ LABEL_12:
       v16 = v8;
       if (v16)
       {
-        if (a4)
+        if (error)
         {
           v17 = v16;
-          *a4 = v16;
+          *error = v16;
         }
 
         else
@@ -1604,9 +1604,9 @@ LABEL_12:
   return v7;
 }
 
-- (BOOL)_addAttachmentForMedicalDownloadableAttachmentWithIdentifier:(id)a3 error:(id *)a4
+- (BOOL)_addAttachmentForMedicalDownloadableAttachmentWithIdentifier:(id)identifier error:(id *)error
 {
-  v7 = [(HDMedicalDownloadableAttachmentManager *)self fetchAttachmentWithIdentifier:a3 error:?];
+  v7 = [(HDMedicalDownloadableAttachmentManager *)self fetchAttachmentWithIdentifier:identifier error:?];
   v8 = v7;
   if (!v7)
   {
@@ -1615,17 +1615,17 @@ LABEL_12:
 
   if ([v7 status] == &dword_8)
   {
-    v9 = [v8 fileURL];
-    if (!v9)
+    fileURL = [v8 fileURL];
+    if (!fileURL)
     {
-      [NSError hk_assignError:a4 code:3 format:@"HKMedicalDownloadableAttachment fileURL cannot be nil when creating an HKAttachment"];
+      [NSError hk_assignError:error code:3 format:@"HKMedicalDownloadableAttachment fileURL cannot be nil when creating an HKAttachment"];
       v21 = 0;
 LABEL_59:
 
       goto LABEL_60;
     }
 
-    v10 = [NSFileHandle fileHandleForReadingFromURL:v9 error:a4];
+    v10 = [NSFileHandle fileHandleForReadingFromURL:fileURL error:error];
     if (!v10)
     {
       v21 = 0;
@@ -1634,7 +1634,7 @@ LABEL_58:
       goto LABEL_59;
     }
 
-    v11 = [(HDMedicalDownloadableAttachmentManager *)self _determineUTType:v8 error:a4];
+    v11 = [(HDMedicalDownloadableAttachmentManager *)self _determineUTType:v8 error:error];
     v12 = v11;
     if (!v11)
     {
@@ -1645,10 +1645,10 @@ LABEL_57:
     }
 
     v66 = v11;
-    v13 = [v8 medicalRecordIdentifier];
+    medicalRecordIdentifier = [v8 medicalRecordIdentifier];
     WeakRetained = objc_loadWeakRetained(&self->_profileExtension);
-    v15 = [WeakRetained profile];
-    v16 = [(HDMedicalDownloadableAttachmentManager *)self _attachmentIdentifierForMedicalRecordWithUUID:v13 profile:v15 error:a4];
+    profile = [WeakRetained profile];
+    v16 = [(HDMedicalDownloadableAttachmentManager *)self _attachmentIdentifierForMedicalRecordWithUUID:medicalRecordIdentifier profile:profile error:error];
 
     v67 = v16;
     if (!v16)
@@ -1661,26 +1661,26 @@ LABEL_56:
     }
 
     v17 = objc_alloc_init(NSMutableDictionary);
-    v18 = [v8 webURL];
+    webURL = [v8 webURL];
 
-    if (v18)
+    if (webURL)
     {
-      v19 = [v8 webURL];
-      v20 = [v19 absoluteString];
-      [v17 setObject:v20 forKeyedSubscript:HKMedicalDownloadableAttachmentMetadataWebURLKey];
+      webURL2 = [v8 webURL];
+      absoluteString = [webURL2 absoluteString];
+      [v17 setObject:absoluteString forKeyedSubscript:HKMedicalDownloadableAttachmentMetadataWebURLKey];
     }
 
     else
     {
-      v22 = [v8 inlineDataChecksum];
+      inlineDataChecksum = [v8 inlineDataChecksum];
 
-      if (!v22)
+      if (!inlineDataChecksum)
       {
         goto LABEL_23;
       }
 
-      v19 = [v8 inlineDataChecksum];
-      [v17 setObject:v19 forKeyedSubscript:HKMedicalDownloadableAttachmentMetadataInlineDataChecksumKey];
+      webURL2 = [v8 inlineDataChecksum];
+      [v17 setObject:webURL2 forKeyedSubscript:HKMedicalDownloadableAttachmentMetadataInlineDataChecksumKey];
     }
 
 LABEL_23:
@@ -1689,27 +1689,27 @@ LABEL_23:
       sub_A77CC(v8, a2, self);
     }
 
-    v23 = [v8 metadata];
+    metadata = [v8 metadata];
     v24 = HKMedicalDownloadableAttachmentMetadataOriginalCreationDateKey;
-    v25 = [v23 objectForKeyedSubscript:HKMedicalDownloadableAttachmentMetadataOriginalCreationDateKey];
+    v25 = [metadata objectForKeyedSubscript:HKMedicalDownloadableAttachmentMetadataOriginalCreationDateKey];
 
     if (v25)
     {
-      v26 = [v8 metadata];
-      v27 = [v26 objectForKeyedSubscript:v24];
+      metadata2 = [v8 metadata];
+      v27 = [metadata2 objectForKeyedSubscript:v24];
       [v17 setObject:v27 forKeyedSubscript:v24];
     }
 
     v28 = objc_loadWeakRetained(&self->_profileExtension);
-    v29 = [v28 profile];
-    [v29 attachmentManager];
+    profile2 = [v28 profile];
+    [profile2 attachmentManager];
     v31 = v30 = v17;
 
-    v32 = [v8 title];
-    v33 = v32;
-    if (v32)
+    title = [v8 title];
+    v33 = title;
+    if (title)
     {
-      v34 = v32;
+      v34 = title;
     }
 
     else
@@ -1717,32 +1717,32 @@ LABEL_23:
       v34 = &stru_1090E8;
     }
 
-    v35 = [v66 identifier];
+    identifier = [v66 identifier];
     v69 = 0;
     v62 = HKAttachmentClinicalRecordSchemaIdentifier;
     v64 = v31;
     v36 = v31;
     v37 = v30;
-    v38 = [v36 addAttachmentWithName:v34 contentTypeIdentifier:v35 fileHandle:v10 toObjectWithIdentifier:v67 schemaIdentifier:0 attachmentMetadata:&v69 referenceMetadata:? error:?];
+    v38 = [v36 addAttachmentWithName:v34 contentTypeIdentifier:identifier fileHandle:v10 toObjectWithIdentifier:v67 schemaIdentifier:0 attachmentMetadata:&v69 referenceMetadata:? error:?];
     v39 = v69;
 
     v65 = v38;
     if (v38)
     {
-      v40 = [v8 clinicalRecordIdentifier];
+      clinicalRecordIdentifier = [v8 clinicalRecordIdentifier];
 
-      if (!v40)
+      if (!clinicalRecordIdentifier)
       {
         _HKInitializeLogging();
         v52 = HKLogHealthRecords;
         if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_DEFAULT))
         {
           v53 = v52;
-          v54 = [v8 identifier];
+          identifier2 = [v8 identifier];
           *buf = 138543618;
-          v71 = self;
+          selfCopy = self;
           v72 = 2114;
-          v73 = v54;
+          v73 = identifier2;
           _os_log_impl(&dword_0, v53, OS_LOG_TYPE_DEFAULT, "%{public}@: downloadable attachment with identifier %{public}@ has no clinicalRecordIdentifier", buf, 0x16u);
         }
 
@@ -1753,10 +1753,10 @@ LABEL_23:
       }
 
       v61 = v37;
-      v41 = [v8 clinicalRecordIdentifier];
+      clinicalRecordIdentifier2 = [v8 clinicalRecordIdentifier];
       v42 = objc_loadWeakRetained(&self->_profileExtension);
-      v43 = [v42 profile];
-      v44 = [(HDMedicalDownloadableAttachmentManager *)self _attachmentIdentifierForClinicalRecordWithUUID:v41 profile:v43 error:a4];
+      profile3 = [v42 profile];
+      v44 = [(HDMedicalDownloadableAttachmentManager *)self _attachmentIdentifierForClinicalRecordWithUUID:clinicalRecordIdentifier2 profile:profile3 error:error];
 
       v60 = v44;
       if (!v44)
@@ -1770,23 +1770,23 @@ LABEL_54:
         goto LABEL_55;
       }
 
-      v58 = [v65 attachment];
+      attachment = [v65 attachment];
       v68 = v39;
       v45 = v64;
-      v46 = [v64 addReferenceWithAttachment:v58 toObjectWithIdentifier:v44 schemaIdentifier:v62 metadata:0 error:&v68];
+      v46 = [v64 addReferenceWithAttachment:attachment toObjectWithIdentifier:v44 schemaIdentifier:v62 metadata:0 error:&v68];
       v47 = v68;
 
       v59 = v46;
       v63 = v47;
       if (v46)
       {
-        v48 = [(HDMedicalDownloadableAttachmentManager *)self profileWithError:a4];
+        v48 = [(HDMedicalDownloadableAttachmentManager *)self profileWithError:error];
         if (v48)
         {
-          v49 = [v8 identifier];
-          v50 = [v65 attachment];
-          v51 = [v50 identifier];
-          v21 = [HDMedicalDownloadableAttachmentEntity _markAvailableAndClearInlineDataForAttachmentWithIdentifier:v49 attachmentIdentifier:v51 profile:v48 error:a4];
+          identifier3 = [v8 identifier];
+          attachment2 = [v65 attachment];
+          identifier4 = [attachment2 identifier];
+          v21 = [HDMedicalDownloadableAttachmentEntity _markAvailableAndClearInlineDataForAttachmentWithIdentifier:identifier3 attachmentIdentifier:identifier4 profile:v48 error:error];
 
           v45 = v64;
 LABEL_52:
@@ -1806,11 +1806,11 @@ LABEL_53:
         {
           v12 = v66;
           v37 = v61;
-          if (a4)
+          if (error)
           {
             v56 = v48;
             v21 = 0;
-            *a4 = v48;
+            *error = v48;
           }
 
           else
@@ -1849,10 +1849,10 @@ LABEL_55:
       }
     }
 
-    if (a4)
+    if (error)
     {
       v55 = v39;
-      *a4 = v39;
+      *error = v39;
     }
 
     else
@@ -1865,7 +1865,7 @@ LABEL_55:
 
   if ([v8 status] != &dword_8 + 1 && objc_msgSend(v8, "status") != &dword_4 + 2)
   {
-    [NSError hk_assignError:a4 code:3 format:@"HKMedicalDownloadableAttachment must have status 'ProcessingComplete' to create an HKAttachment"];
+    [NSError hk_assignError:error code:3 format:@"HKMedicalDownloadableAttachment must have status 'ProcessingComplete' to create an HKAttachment"];
 LABEL_16:
     v21 = 0;
     goto LABEL_60;
@@ -1883,31 +1883,31 @@ LABEL_60:
   return v21;
 }
 
-- (id)_attachmentIdentifierForMedicalRecordWithUUID:(id)a3 profile:(id)a4 error:(id *)a5
+- (id)_attachmentIdentifierForMedicalRecordWithUUID:(id)d profile:(id)profile error:(id *)error
 {
-  v5 = [(HDMedicalDownloadableAttachmentManager *)self _medicalRecordWithUUID:a3 profile:a4 error:a5];
+  v5 = [(HDMedicalDownloadableAttachmentManager *)self _medicalRecordWithUUID:d profile:profile error:error];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 attachmentObjectIdentifier];
+    attachmentObjectIdentifier = [v5 attachmentObjectIdentifier];
   }
 
   else
   {
-    v7 = 0;
+    attachmentObjectIdentifier = 0;
   }
 
-  return v7;
+  return attachmentObjectIdentifier;
 }
 
-- (id)_medicalRecordWithUUID:(id)a3 profile:(id)a4 error:(id *)a5
+- (id)_medicalRecordWithUUID:(id)d profile:(id)profile error:(id *)error
 {
-  v7 = a3;
+  dCopy = d;
   v13 = HDMedicalRecordEntityEncodingOptionSkipApplyingConceptIndex;
   v14 = &__kCFBooleanTrue;
-  v8 = a4;
+  profileCopy = profile;
   v9 = [NSDictionary dictionaryWithObjects:&v14 forKeys:&v13 count:1];
-  v10 = [HDClinicalNoteRecordEntity objectWithUUID:v7 encodingOptions:v9 profile:v8 error:a5];
+  v10 = [HDClinicalNoteRecordEntity objectWithUUID:dCopy encodingOptions:v9 profile:profileCopy error:error];
 
   if (v10)
   {
@@ -1916,16 +1916,16 @@ LABEL_60:
 
   else
   {
-    [NSError hk_assignError:a5 code:118 format:@"Medical Record with UUID: %@ not found in database.", v7, v13, v14];
+    [NSError hk_assignError:error code:118 format:@"Medical Record with UUID: %@ not found in database.", dCopy, v13, v14];
   }
 
   return v10;
 }
 
-- (id)_clinicalRecordWithUUID:(id)a3 profile:(id)a4 error:(id *)a5
+- (id)_clinicalRecordWithUUID:(id)d profile:(id)profile error:(id *)error
 {
-  v7 = a3;
-  v8 = [HDClinicalRecordEntity objectWithUUID:v7 encodingOptions:0 profile:a4 error:a5];
+  dCopy = d;
+  v8 = [HDClinicalRecordEntity objectWithUUID:dCopy encodingOptions:0 profile:profile error:error];
   v9 = v8;
   if (v8)
   {
@@ -1934,52 +1934,52 @@ LABEL_60:
 
   else
   {
-    [NSError hk_assignError:a5 code:118 format:@"Clinical Record with UUID: %@ not found in database.", v7];
+    [NSError hk_assignError:error code:118 format:@"Clinical Record with UUID: %@ not found in database.", dCopy];
   }
 
   return v9;
 }
 
-- (id)_attachmentIdentifierForClinicalRecordWithUUID:(id)a3 profile:(id)a4 error:(id *)a5
+- (id)_attachmentIdentifierForClinicalRecordWithUUID:(id)d profile:(id)profile error:(id *)error
 {
-  v7 = a3;
-  v8 = [HDClinicalRecordEntity objectWithUUID:v7 encodingOptions:0 profile:a4 error:a5];
+  dCopy = d;
+  v8 = [HDClinicalRecordEntity objectWithUUID:dCopy encodingOptions:0 profile:profile error:error];
   v9 = v8;
   if (v8)
   {
-    v10 = [v8 attachmentObjectIdentifier];
+    attachmentObjectIdentifier = [v8 attachmentObjectIdentifier];
   }
 
   else
   {
-    [NSError hk_assignError:a5 code:118 format:@"Clinical Record with UUID: %@ not found in database.", v7];
-    v10 = 0;
+    [NSError hk_assignError:error code:118 format:@"Clinical Record with UUID: %@ not found in database.", dCopy];
+    attachmentObjectIdentifier = 0;
   }
 
-  return v10;
+  return attachmentObjectIdentifier;
 }
 
-- (id)_determineUTType:(id)a3 error:(id *)a4
+- (id)_determineUTType:(id)type error:(id *)error
 {
-  v5 = a3;
-  v6 = [v5 contentType];
+  typeCopy = type;
+  contentType = [typeCopy contentType];
 
-  if (v6)
+  if (contentType)
   {
-    v7 = [v5 contentType];
-    v8 = [UTType typeWithMIMEType:v7];
+    contentType2 = [typeCopy contentType];
+    pathExtension = [UTType typeWithMIMEType:contentType2];
 
-    if (v8)
+    if (pathExtension)
     {
-      v8 = v8;
-      v9 = v8;
+      pathExtension = pathExtension;
+      v9 = pathExtension;
     }
 
     else
     {
       v14 = objc_opt_class();
-      v15 = [v5 contentType];
-      [NSError hk_assignError:a4 code:3 format:@"%@ Failed to create UTType from contentType '%@'", v14, v15];
+      contentType3 = [typeCopy contentType];
+      [NSError hk_assignError:error code:3 format:@"%@ Failed to create UTType from contentType '%@'", v14, contentType3];
 
       v9 = 0;
     }
@@ -1987,11 +1987,11 @@ LABEL_60:
 
   else
   {
-    v10 = [v5 webURL];
-    v11 = [v10 lastPathComponent];
-    v8 = [v11 pathExtension];
+    webURL = [typeCopy webURL];
+    lastPathComponent = [webURL lastPathComponent];
+    pathExtension = [lastPathComponent pathExtension];
 
-    v12 = [UTType typeWithFilenameExtension:v8];
+    v12 = [UTType typeWithFilenameExtension:pathExtension];
     v9 = v12;
     if (v12)
     {
@@ -2001,21 +2001,21 @@ LABEL_60:
     else
     {
       v16 = objc_opt_class();
-      v17 = [v5 identifier];
-      [NSError hk_assignError:a4 code:3 format:@"%@ contentType not found for HKMedicalDownloadableAttachment identifier %@", v16, v17];
+      identifier = [typeCopy identifier];
+      [NSError hk_assignError:error code:3 format:@"%@ contentType not found for HKMedicalDownloadableAttachment identifier %@", v16, identifier];
     }
   }
 
   return v9;
 }
 
-- (BOOL)_indexDownloadableAttachmentWithIdentifier:(id)a3 error:(id *)a4
+- (BOOL)_indexDownloadableAttachmentWithIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
-  v7 = [(HDMedicalDownloadableAttachmentManager *)self fetchAttachmentWithIdentifier:v6 error:a4];
+  identifierCopy = identifier;
+  v7 = [(HDMedicalDownloadableAttachmentManager *)self fetchAttachmentWithIdentifier:identifierCopy error:error];
   if (v7)
   {
-    v8 = [(HDMedicalDownloadableAttachmentManager *)self profileWithError:a4];
+    v8 = [(HDMedicalDownloadableAttachmentManager *)self profileWithError:error];
     if (!v8)
     {
       v14 = 0;
@@ -2024,37 +2024,37 @@ LABEL_11:
       goto LABEL_12;
     }
 
-    v9 = [v7 medicalRecordIdentifier];
-    v10 = [(HDMedicalDownloadableAttachmentManager *)self _medicalRecordWithUUID:v9 profile:v8 error:a4];
+    medicalRecordIdentifier = [v7 medicalRecordIdentifier];
+    v10 = [(HDMedicalDownloadableAttachmentManager *)self _medicalRecordWithUUID:medicalRecordIdentifier profile:v8 error:error];
 
     if (v10)
     {
-      v11 = [v7 attachmentIdentifier];
+      attachmentIdentifier = [v7 attachmentIdentifier];
 
-      if (v11)
+      if (attachmentIdentifier)
       {
         v12 = [HKClinicalDocumentIndexingRequest alloc];
-        v13 = [v7 attachmentIdentifier];
-        v22 = v13;
+        attachmentIdentifier2 = [v7 attachmentIdentifier];
+        v22 = attachmentIdentifier2;
         v14 = 1;
         v15 = [NSArray arrayWithObjects:&v22 count:1];
         v16 = [v12 initWithMedicalRecord:v10 attachmentIdentifiers:v15];
 
-        v17 = [(HDMedicalDownloadableAttachmentManager *)self extractionServiceClientCreateIfNecessary];
+        extractionServiceClientCreateIfNecessary = [(HDMedicalDownloadableAttachmentManager *)self extractionServiceClientCreateIfNecessary];
         v19[0] = _NSConcreteStackBlock;
         v19[1] = 3221225472;
         v19[2] = sub_81D68;
         v19[3] = &unk_1087C8;
         v19[4] = self;
-        v20 = v6;
+        v20 = identifierCopy;
         v21 = v7;
-        [v17 indexClinicalDocumentsWithRequest:v16 completion:v19];
+        [extractionServiceClientCreateIfNecessary indexClinicalDocumentsWithRequest:v16 completion:v19];
 
 LABEL_10:
         goto LABEL_11;
       }
 
-      [NSError hk_assignError:a4 code:3 format:@"HKMedicalDownloadableAttachment is missing attachmentIdentifier"];
+      [NSError hk_assignError:error code:3 format:@"HKMedicalDownloadableAttachment is missing attachmentIdentifier"];
     }
 
     v14 = 0;
@@ -2067,10 +2067,10 @@ LABEL_12:
   return v14;
 }
 
-- (BOOL)_reconcileDownloadableAttachmentToHKAttachmentForMedicalRecordWithIdentifier:(id)a3 error:(id *)a4
+- (BOOL)_reconcileDownloadableAttachmentToHKAttachmentForMedicalRecordWithIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
-  v7 = [(HDMedicalDownloadableAttachmentManager *)self profileWithError:a4];
+  identifierCopy = identifier;
+  v7 = [(HDMedicalDownloadableAttachmentManager *)self profileWithError:error];
   if (!v7)
   {
     v9 = 0;
@@ -2081,7 +2081,7 @@ LABEL_12:
   if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_DEBUG))
   {
     sub_A790C();
-    if (v6)
+    if (identifierCopy)
     {
       goto LABEL_4;
     }
@@ -2091,26 +2091,26 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if (!v6)
+  if (!identifierCopy)
   {
     goto LABEL_7;
   }
 
 LABEL_4:
-  v8 = [HDSQLiteComparisonPredicate predicateWithProperty:HDMedicalDownloadableAttachmentEntityPropertyMedicalRecordUUID equalToValue:v6];
+  v8 = [HDSQLiteComparisonPredicate predicateWithProperty:HDMedicalDownloadableAttachmentEntityPropertyMedicalRecordUUID equalToValue:identifierCopy];
 LABEL_8:
   os_unfair_lock_lock(&self->_query_lock);
   v10 = objc_alloc_init(NSMutableArray);
   v57 = HDMedicalDownloadableAttachmentEntityPropertyIdentifier;
   v11 = [NSArray arrayWithObjects:&v57 count:1];
-  v12 = [v7 database];
+  database = [v7 database];
   v46[0] = _NSConcreteStackBlock;
   v46[1] = 3221225472;
   v46[2] = sub_82544;
   v46[3] = &unk_108780;
   v13 = v10;
   v47 = v13;
-  v9 = [HDMedicalDownloadableAttachmentEntity enumerateProperties:v11 withPredicate:v8 healthDatabase:v12 error:a4 enumerationHandler:v46];
+  v9 = [HDMedicalDownloadableAttachmentEntity enumerateProperties:v11 withPredicate:v8 healthDatabase:database error:error enumerationHandler:v46];
 
   if (v9)
   {
@@ -2133,7 +2133,7 @@ LABEL_8:
     {
       v16 = v15;
       v36 = v7;
-      v37 = v6;
+      v37 = identifierCopy;
       v17 = 0;
       v18 = 0;
       v19 = *v43;
@@ -2157,7 +2157,7 @@ LABEL_8:
             if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_ERROR))
             {
               *buf = 138543874;
-              v49 = self;
+              selfCopy = self;
               v50 = 2114;
               v51 = v21;
               v52 = 2114;
@@ -2176,7 +2176,7 @@ LABEL_8:
       while (v16);
       v25 = v18;
       v7 = v36;
-      v6 = v37;
+      identifierCopy = v37;
     }
 
     else
@@ -2198,7 +2198,7 @@ LABEL_8:
         v29 = NSStringFromClass(v28);
         v30 = [v14 count];
         *buf = 138544130;
-        v49 = v29;
+        selfCopy = v29;
         v50 = 2048;
         v51 = v30;
         v52 = 2048;
@@ -2221,7 +2221,7 @@ LABEL_8:
       v33 = objc_opt_class();
       v34 = NSStringFromClass(v33);
       *buf = 138543362;
-      v49 = v34;
+      selfCopy = v34;
       _os_log_impl(&dword_0, v32, OS_LOG_TYPE_DEFAULT, "%{public}@: reconcileDownloadableAttachmentToHKAttachmentWithError completed", buf, 0xCu);
     }
   }
@@ -2235,39 +2235,39 @@ LABEL_31:
   return v9;
 }
 
-- (BOOL)_reconcileHKAttachmentForDownloadableAttachmentWithIdentifier:(id)a3 error:(id *)a4
+- (BOOL)_reconcileHKAttachmentForDownloadableAttachmentWithIdentifier:(id)identifier error:(id *)error
 {
-  v6 = [(HDMedicalDownloadableAttachmentManager *)self fetchAttachmentWithIdentifier:a3 error:?];
-  v7 = [v6 medicalRecordIdentifier];
+  v6 = [(HDMedicalDownloadableAttachmentManager *)self fetchAttachmentWithIdentifier:identifier error:?];
+  medicalRecordIdentifier = [v6 medicalRecordIdentifier];
   WeakRetained = objc_loadWeakRetained(&self->_profileExtension);
-  v9 = [WeakRetained profile];
-  v10 = [(HDMedicalDownloadableAttachmentManager *)self _medicalRecordWithUUID:v7 profile:v9 error:a4];
+  profile = [WeakRetained profile];
+  v10 = [(HDMedicalDownloadableAttachmentManager *)self _medicalRecordWithUUID:medicalRecordIdentifier profile:profile error:error];
 
   if (v10)
   {
-    v11 = [v6 clinicalRecordIdentifier];
+    clinicalRecordIdentifier = [v6 clinicalRecordIdentifier];
 
-    if (v11)
+    if (clinicalRecordIdentifier)
     {
-      v12 = [v6 clinicalRecordIdentifier];
+      clinicalRecordIdentifier2 = [v6 clinicalRecordIdentifier];
       v13 = objc_loadWeakRetained(&self->_profileExtension);
-      v14 = [v13 profile];
-      v11 = [(HDMedicalDownloadableAttachmentManager *)self _clinicalRecordWithUUID:v12 profile:v14 error:a4];
+      profile2 = [v13 profile];
+      clinicalRecordIdentifier = [(HDMedicalDownloadableAttachmentManager *)self _clinicalRecordWithUUID:clinicalRecordIdentifier2 profile:profile2 error:error];
 
-      if (!v11)
+      if (!clinicalRecordIdentifier)
       {
         goto LABEL_6;
       }
     }
 
     v15 = objc_loadWeakRetained(&self->_profileExtension);
-    v16 = [v15 profile];
-    v17 = [HDMedicalDownloadableAttachmentEntity _updateWithExistingAttachmentIfFoundForDownloadableAttachment:v6 medicalRecord:v10 clinicalRecord:v11 profile:v16 error:a4];
+    profile3 = [v15 profile];
+    v17 = [HDMedicalDownloadableAttachmentEntity _updateWithExistingAttachmentIfFoundForDownloadableAttachment:v6 medicalRecord:v10 clinicalRecord:clinicalRecordIdentifier profile:profile3 error:error];
 
     if (v17)
     {
-      v18 = [v6 identifier];
-      [(HDMedicalDownloadableAttachmentManager *)self _downloadableAttachmentDidChange:v18];
+      identifier = [v6 identifier];
+      [(HDMedicalDownloadableAttachmentManager *)self _downloadableAttachmentDidChange:identifier];
 
       v19 = 1;
     }
@@ -2287,38 +2287,38 @@ LABEL_6:
   return v19;
 }
 
-- (BOOL)triggerAttachmentRetryForMedicalRecordWithIdentifier:(id)a3 error:(id *)a4
+- (BOOL)triggerAttachmentRetryForMedicalRecordWithIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   _HKInitializeLogging();
   v7 = HKLogHealthRecords;
   if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v44 = self;
+    selfCopy8 = self;
     v45 = 2112;
-    v46 = v6;
+    v46 = identifierCopy;
     _os_log_impl(&dword_0, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: Retry HKMedicalDownloadableAttachments for medical record identifier %@", buf, 0x16u);
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_profileExtension);
-  v9 = [WeakRetained ingestionManager];
-  v10 = [v9 currentIngestionState];
+  ingestionManager = [WeakRetained ingestionManager];
+  currentIngestionState = [ingestionManager currentIngestionState];
 
-  if (v10 == &dword_0 + 1)
+  if (currentIngestionState == &dword_0 + 1)
   {
-    if (![(HDMedicalDownloadableAttachmentManager *)self _reconcileDownloadableAttachmentToHKAttachmentForMedicalRecordWithIdentifier:v6 error:a4])
+    if (![(HDMedicalDownloadableAttachmentManager *)self _reconcileDownloadableAttachmentToHKAttachmentForMedicalRecordWithIdentifier:identifierCopy error:error])
     {
       _HKInitializeLogging();
       v11 = HKLogHealthRecords;
       if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_ERROR))
       {
-        sub_A7A2C(self, v6, v11);
+        sub_A7A2C(self, identifierCopy, v11);
       }
     }
 
     v42 = 0;
-    v12 = [(HDMedicalDownloadableAttachmentManager *)self _downloadableAttachmentsForMedicalRecordWithIdentifier:v6 error:&v42];
+    v12 = [(HDMedicalDownloadableAttachmentManager *)self _downloadableAttachmentsForMedicalRecordWithIdentifier:identifierCopy error:&v42];
     v13 = v42;
     if (v12)
     {
@@ -2330,7 +2330,7 @@ LABEL_6:
           sub_A7B08();
         }
 
-        [NSError hk_assignError:a4 code:3 format:@"%@ Retry for medical record identifier %@ failed. No HKMedicalDownloadableAttachments found.", objc_opt_class(), v6];
+        [NSError hk_assignError:error code:3 format:@"%@ Retry for medical record identifier %@ failed. No HKMedicalDownloadableAttachments found.", objc_opt_class(), identifierCopy];
         goto LABEL_35;
       }
 
@@ -2354,7 +2354,7 @@ LABEL_6:
             v19 = v18;
             v20 = [v16 count];
             *buf = 138543618;
-            v44 = self;
+            selfCopy8 = self;
             v45 = 2048;
             v46 = v20;
             _os_log_impl(&dword_0, v19, OS_LOG_TYPE_DEFAULT, "%{public}@: Retry downloading %lu HKMedicalDownloadableAttachments", buf, 0x16u);
@@ -2368,7 +2368,7 @@ LABEL_6:
             if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138543362;
-              v44 = self;
+              selfCopy8 = self;
               _os_log_impl(&dword_0, v21, OS_LOG_TYPE_DEFAULT, "%{public}@: Retry downloading initiated for HKMedicalDownloadableAttachments", buf, 0xCu);
             }
           }
@@ -2378,9 +2378,9 @@ LABEL_6:
           if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138543618;
-            v44 = self;
+            selfCopy8 = self;
             v45 = 2112;
-            v46 = v6;
+            v46 = identifierCopy;
             _os_log_impl(&dword_0, v22, OS_LOG_TYPE_DEFAULT, "%{public}@: Completed initiating retry HKMedicalDownloadableAttachments for medical record identifier %@", buf, 0x16u);
           }
         }
@@ -2390,12 +2390,12 @@ LABEL_6:
           if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_ERROR))
           {
             v37 = v18;
-            v38 = [v13 localizedDescription];
+            localizedDescription = [v13 localizedDescription];
             v39 = HKSensitiveLogItem();
             *buf = 138543874;
-            v44 = self;
+            selfCopy8 = self;
             v45 = 2114;
-            v46 = v6;
+            v46 = identifierCopy;
             v47 = 2114;
             v48 = v39;
             _os_log_error_impl(&dword_0, v37, OS_LOG_TYPE_ERROR, "%{public}@: Retry downloading failed for medical record identifier %{public}@. Error: %{public}@", buf, 0x20u);
@@ -2404,10 +2404,10 @@ LABEL_6:
           v29 = v13;
           if (v29)
           {
-            if (a4)
+            if (error)
             {
               v30 = v29;
-              *a4 = v29;
+              *error = v29;
             }
 
             else
@@ -2425,12 +2425,12 @@ LABEL_6:
       if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_ERROR))
       {
         v34 = v26;
-        v35 = [v15 localizedDescription];
+        localizedDescription2 = [v15 localizedDescription];
         v36 = HKSensitiveLogItem();
         *buf = 138543874;
-        v44 = self;
+        selfCopy8 = self;
         v45 = 2114;
-        v46 = v6;
+        v46 = identifierCopy;
         v47 = 2114;
         v48 = v36;
         _os_log_error_impl(&dword_0, v34, OS_LOG_TYPE_ERROR, "%{public}@: Retry processing / indexing failed for medical record identifier %{public}@. Error: %{public}@", buf, 0x20u);
@@ -2446,12 +2446,12 @@ LABEL_6:
       if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_ERROR))
       {
         v31 = v24;
-        v32 = [v13 localizedDescription];
+        localizedDescription3 = [v13 localizedDescription];
         v33 = HKSensitiveLogItem();
         *buf = 138543874;
-        v44 = self;
+        selfCopy8 = self;
         v45 = 2114;
-        v46 = v6;
+        v46 = identifierCopy;
         v47 = 2114;
         v48 = v33;
         _os_log_error_impl(&dword_0, v31, OS_LOG_TYPE_ERROR, "%{public}@: Retry retrieving HKMedicalDownloadableAttachments for medical record identifier %{public}@ failed. Error: %{public}@", buf, 0x20u);
@@ -2463,10 +2463,10 @@ LABEL_6:
     v13 = v25;
     if (v25)
     {
-      if (a4)
+      if (error)
       {
         v27 = v25;
-        *a4 = v13;
+        *error = v13;
       }
 
       else
@@ -2487,7 +2487,7 @@ LABEL_36:
   if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v44 = self;
+    selfCopy8 = self;
     _os_log_impl(&dword_0, v23, OS_LOG_TYPE_DEFAULT, "%{public}@: Health Records ingestion in progress. Cannot retry at this time.", buf, 0xCu);
   }
 
@@ -2497,17 +2497,17 @@ LABEL_37:
   return v17;
 }
 
-- (BOOL)removeAllAttachmentsFromMedicalRecord:(id)a3 error:(id *)a4
+- (BOOL)removeAllAttachmentsFromMedicalRecord:(id)record error:(id *)error
 {
-  v6 = a3;
-  v7 = [(HDMedicalDownloadableAttachmentManager *)self profileWithError:a4];
+  recordCopy = record;
+  v7 = [(HDMedicalDownloadableAttachmentManager *)self profileWithError:error];
   if (v7)
   {
-    v8 = [(HDMedicalDownloadableAttachmentManager *)self _attachmentIdentifierForMedicalRecordWithUUID:v6 profile:v7 error:a4];
+    v8 = [(HDMedicalDownloadableAttachmentManager *)self _attachmentIdentifierForMedicalRecordWithUUID:recordCopy profile:v7 error:error];
     if (v8)
     {
-      v9 = [v7 attachmentManager];
-      v10 = [v9 removeAttachmentReferencesWithObjectIdentifier:v8 schemaIdentifier:HKAttachmentClinicalRecordSchemaIdentifier error:a4];
+      attachmentManager = [v7 attachmentManager];
+      v10 = [attachmentManager removeAttachmentReferencesWithObjectIdentifier:v8 schemaIdentifier:HKAttachmentClinicalRecordSchemaIdentifier error:error];
     }
 
     else
@@ -2524,10 +2524,10 @@ LABEL_37:
   return v10;
 }
 
-- (void)_downloadableAttachmentDidChange:(id)a3
+- (void)_downloadableAttachmentDidChange:(id)change
 {
-  v4 = a3;
-  v5 = [(HDMedicalDownloadableAttachmentManager *)self fetchAttachmentWithIdentifier:v4 error:0];
+  changeCopy = change;
+  v5 = [(HDMedicalDownloadableAttachmentManager *)self fetchAttachmentWithIdentifier:changeCopy error:0];
   if (v5)
   {
     [(HDMedicalDownloadableAttachmentManager *)self downloadableAttachmentDidChange:v5];
@@ -2543,14 +2543,14 @@ LABEL_37:
   }
 }
 
-- (void)downloadableAttachmentDidChange:(id)a3
+- (void)downloadableAttachmentDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   _HKInitializeLogging();
   v5 = HKLogHealthRecords;
   if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_DEBUG))
   {
-    sub_A31AC(self, v5, v4);
+    sub_A31AC(self, v5, changeCopy);
   }
 
   stateChangeListeners = self->_stateChangeListeners;
@@ -2558,8 +2558,8 @@ LABEL_37:
   v8[1] = 3221225472;
   v8[2] = sub_82F8C;
   v8[3] = &unk_1087F0;
-  v9 = v4;
-  v7 = v4;
+  v9 = changeCopy;
+  v7 = changeCopy;
   [(HKObserverSet *)stateChangeListeners notifyObservers:v8];
 }
 

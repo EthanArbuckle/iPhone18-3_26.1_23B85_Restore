@@ -11,20 +11,20 @@
   v27 = a4;
   context = objc_autoreleasePoolPush();
   v6 = MEMORY[0x1E695DFA8];
-  v7 = [v5 copyAddressListForTo];
-  v8 = [v6 setWithArray:v7];
+  copyAddressListForTo = [v5 copyAddressListForTo];
+  v8 = [v6 setWithArray:copyAddressListForTo];
 
-  v9 = [v5 copyAddressListForCc];
-  [v8 addObjectsFromArray:v9];
+  copyAddressListForCc = [v5 copyAddressListForCc];
+  [v8 addObjectsFromArray:copyAddressListForCc];
 
-  v10 = [v5 copyAddressListForBcc];
-  [v8 addObjectsFromArray:v10];
+  copyAddressListForBcc = [v5 copyAddressListForBcc];
+  [v8 addObjectsFromArray:copyAddressListForBcc];
 
-  v11 = [v5 copyAddressListForReplyTo];
-  [v8 addObjectsFromArray:v11];
+  copyAddressListForReplyTo = [v5 copyAddressListForReplyTo];
+  [v8 addObjectsFromArray:copyAddressListForReplyTo];
 
   v29 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v8, "count")}];
-  v12 = [MEMORY[0x1E695DF00] date];
+  date = [MEMORY[0x1E695DF00] date];
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
@@ -46,9 +46,9 @@
         }
 
         v18 = *(*(&v30 + 1) + 8 * i);
-        v19 = [v18 ea_uncommentedAddress];
-        v20 = [v18 cnaui_copyDisplayableAddressComment];
-        v21 = [MEMORY[0x1E6998FC8] recentEventForAddress:v19 displayName:v20 kind:v16 date:v12 weight:0 metadata:0 options:1];
+        ea_uncommentedAddress = [v18 ea_uncommentedAddress];
+        cnaui_copyDisplayableAddressComment = [v18 cnaui_copyDisplayableAddressComment];
+        v21 = [MEMORY[0x1E6998FC8] recentEventForAddress:ea_uncommentedAddress displayName:cnaui_copyDisplayableAddressComment kind:v16 date:date weight:0 metadata:0 options:1];
         if (v21)
         {
           [v29 addObject:v21];
@@ -61,11 +61,11 @@
     while (v14);
   }
 
-  v22 = [v5 copyAddressListForSender];
-  v23 = [v22 firstObject];
-  v24 = [v23 ea_uncommentedAddress];
+  copyAddressListForSender = [v5 copyAddressListForSender];
+  firstObject = [copyAddressListForSender firstObject];
+  ea_uncommentedAddress2 = [firstObject ea_uncommentedAddress];
 
-  [a1 recordContactEvents:v29 recentsDomain:v27 sendingAddress:v24 completion:0];
+  [self recordContactEvents:v29 recentsDomain:v27 sendingAddress:ea_uncommentedAddress2 completion:0];
   objc_autoreleasePoolPop(context);
 }
 

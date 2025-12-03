@@ -1,23 +1,23 @@
 @interface CKZoneFeature
 - (int64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CKZoneFeature
 
 - (int64_t)hash
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CKZoneFeature.hash.getter();
 
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  CKZoneFeature.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  CKZoneFeature.encode(with:)(coderCopy);
 }
 
 @end

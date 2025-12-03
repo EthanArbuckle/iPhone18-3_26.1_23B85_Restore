@@ -1,20 +1,20 @@
 @interface SMContact
-- (SMContact)initWithIdentifier:(id)a3 sessionID:(id)a4 allowReadToken:(id)a5 safetyCacheKey:(id)a6 syncDate:(id)a7 sharingInvitationData:(id)a8 shareURL:(id)a9 participantID:(id)a10;
+- (SMContact)initWithIdentifier:(id)identifier sessionID:(id)d allowReadToken:(id)token safetyCacheKey:(id)key syncDate:(id)date sharingInvitationData:(id)data shareURL:(id)l participantID:(id)self0;
 @end
 
 @implementation SMContact
 
-- (SMContact)initWithIdentifier:(id)a3 sessionID:(id)a4 allowReadToken:(id)a5 safetyCacheKey:(id)a6 syncDate:(id)a7 sharingInvitationData:(id)a8 shareURL:(id)a9 participantID:(id)a10
+- (SMContact)initWithIdentifier:(id)identifier sessionID:(id)d allowReadToken:(id)token safetyCacheKey:(id)key syncDate:(id)date sharingInvitationData:(id)data shareURL:(id)l participantID:(id)self0
 {
-  v17 = a3;
-  v29 = a4;
-  v28 = a5;
-  v27 = a6;
-  v26 = a7;
-  v25 = a8;
-  v24 = a9;
-  v23 = a10;
-  if (v17)
+  identifierCopy = identifier;
+  dCopy = d;
+  tokenCopy = token;
+  keyCopy = key;
+  dateCopy = date;
+  dataCopy = data;
+  lCopy = l;
+  iDCopy = iD;
+  if (identifierCopy)
   {
     v30.receiver = self;
     v30.super_class = SMContact;
@@ -22,18 +22,18 @@
     p_isa = &v18->super.isa;
     if (v18)
     {
-      objc_storeStrong(&v18->_identifier, a3);
-      objc_storeStrong(p_isa + 2, a4);
-      objc_storeStrong(p_isa + 3, a5);
-      objc_storeStrong(p_isa + 4, a6);
-      objc_storeStrong(p_isa + 5, a7);
-      objc_storeStrong(p_isa + 6, a8);
-      objc_storeStrong(p_isa + 7, a9);
-      objc_storeStrong(p_isa + 8, a10);
+      objc_storeStrong(&v18->_identifier, identifier);
+      objc_storeStrong(p_isa + 2, d);
+      objc_storeStrong(p_isa + 3, token);
+      objc_storeStrong(p_isa + 4, key);
+      objc_storeStrong(p_isa + 5, date);
+      objc_storeStrong(p_isa + 6, data);
+      objc_storeStrong(p_isa + 7, l);
+      objc_storeStrong(p_isa + 8, iD);
     }
 
     self = p_isa;
-    v20 = self;
+    selfCopy = self;
   }
 
   else
@@ -45,10 +45,10 @@
       _os_log_error_impl(&dword_26455D000, v21, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: identifier", buf, 2u);
     }
 
-    v20 = 0;
+    selfCopy = 0;
   }
 
-  return v20;
+  return selfCopy;
 }
 
 @end

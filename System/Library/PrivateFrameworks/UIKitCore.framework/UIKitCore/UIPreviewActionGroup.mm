@@ -1,10 +1,10 @@
 @interface UIPreviewActionGroup
 + (UIPreviewActionGroup)actionGroupWithTitle:(NSString *)title style:(UIPreviewActionStyle)style actions:(NSArray *)actions;
-+ (id)_actionGroupWithPreviewMenuItemWithSubactions:(id)a3;
-+ (id)_actionGroupWithTitle:(id)a3 style:(int64_t)a4 color:(id)a5 actions:(id)a6;
++ (id)_actionGroupWithPreviewMenuItemWithSubactions:(id)subactions;
++ (id)_actionGroupWithTitle:(id)title style:(int64_t)style color:(id)color actions:(id)actions;
 - (id)_effectiveColor;
 - (id)_effectiveImage;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation UIPreviewActionGroup
@@ -13,7 +13,7 @@
 {
   v8 = actions;
   v9 = title;
-  v10 = objc_alloc_init(a1);
+  v10 = objc_alloc_init(self);
   [v10 setTitle:v9];
 
   [v10 setStyle:style];
@@ -22,99 +22,99 @@
   return v10;
 }
 
-+ (id)_actionGroupWithTitle:(id)a3 style:(int64_t)a4 color:(id)a5 actions:(id)a6
++ (id)_actionGroupWithTitle:(id)title style:(int64_t)style color:(id)color actions:(id)actions
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a3;
-  v13 = objc_alloc_init(a1);
-  [v13 setTitle:v12];
+  actionsCopy = actions;
+  colorCopy = color;
+  titleCopy = title;
+  v13 = objc_alloc_init(self);
+  [v13 setTitle:titleCopy];
 
-  [v13 setStyle:a4];
-  [v13 _setColor:v11];
+  [v13 setStyle:style];
+  [v13 _setColor:colorCopy];
 
-  [v13 _setActions:v10];
+  [v13 _setActions:actionsCopy];
 
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(UIPreviewActionGroup *)self title];
-  [v4 setTitle:v5];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  title = [(UIPreviewActionGroup *)self title];
+  [v4 setTitle:title];
 
   [v4 setStyle:{-[UIPreviewActionGroup style](self, "style")}];
-  v6 = [(UIPreviewActionGroup *)self identifier];
-  [v4 setIdentifier:v6];
+  identifier = [(UIPreviewActionGroup *)self identifier];
+  [v4 setIdentifier:identifier];
 
-  v7 = [(UIPreviewActionGroup *)self _color];
-  [v4 _setColor:v7];
+  _color = [(UIPreviewActionGroup *)self _color];
+  [v4 _setColor:_color];
 
-  v8 = [(UIPreviewActionGroup *)self _actions];
-  [v4 _setActions:v8];
+  _actions = [(UIPreviewActionGroup *)self _actions];
+  [v4 _setActions:_actions];
 
-  v9 = [(UIPreviewActionGroup *)self image];
-  [v4 setImage:v9];
+  image = [(UIPreviewActionGroup *)self image];
+  [v4 setImage:image];
 
   return v4;
 }
 
 - (id)_effectiveColor
 {
-  v3 = [(UIPreviewActionGroup *)self _color];
-  if (!v3)
+  _color = [(UIPreviewActionGroup *)self _color];
+  if (!_color)
   {
     if ([(UIPreviewActionGroup *)self style]== 2)
     {
-      v3 = +[UIColor systemRedColor];
+      _color = +[UIColor systemRedColor];
     }
 
     else
     {
-      v3 = 0;
+      _color = 0;
     }
   }
 
-  return v3;
+  return _color;
 }
 
 - (id)_effectiveImage
 {
-  v3 = [(UIPreviewActionGroup *)self image];
-  if (!v3)
+  image = [(UIPreviewActionGroup *)self image];
+  if (!image)
   {
     if ([(UIPreviewActionGroup *)self style]== 1)
     {
-      v3 = +[UIPreviewAction _checkmarkImage];
+      image = +[UIPreviewAction _checkmarkImage];
     }
 
     else
     {
-      v3 = 0;
+      image = 0;
     }
   }
 
-  return v3;
+  return image;
 }
 
-+ (id)_actionGroupWithPreviewMenuItemWithSubactions:(id)a3
++ (id)_actionGroupWithPreviewMenuItemWithSubactions:(id)subactions
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = objc_alloc_init(a1);
-  v6 = [v4 title];
-  [v5 setTitle:v6];
+  subactionsCopy = subactions;
+  v5 = objc_alloc_init(self);
+  title = [subactionsCopy title];
+  [v5 setTitle:title];
 
-  [v5 setStyle:{objc_msgSend(v4, "style")}];
-  v7 = [MEMORY[0x1E695DF70] array];
+  [v5 setStyle:{objc_msgSend(subactionsCopy, "style")}];
+  array = [MEMORY[0x1E695DF70] array];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v22 = v4;
-  v8 = [v4 _subitems];
-  v9 = [v8 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  v22 = subactionsCopy;
+  _subitems = [subactionsCopy _subitems];
+  v9 = [_subitems countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v9)
   {
     v10 = v9;
@@ -125,12 +125,12 @@
       {
         if (*v24 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(_subitems);
         }
 
         v13 = *(*(&v23 + 1) + 8 * i);
-        v14 = [v13 _subitems];
-        if (v14 && (v15 = v14, [v13 _subitems], v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "count"), v16, v15, v17))
+        _subitems2 = [v13 _subitems];
+        if (_subitems2 && (v15 = _subitems2, [v13 _subitems], v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "count"), v16, v15, v17))
         {
           v18 = [UIPreviewActionGroup _actionGroupWithPreviewMenuItemWithSubactions:v13];
         }
@@ -141,16 +141,16 @@
         }
 
         v19 = v18;
-        [v7 addObject:v18];
+        [array addObject:v18];
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v10 = [_subitems countByEnumeratingWithState:&v23 objects:v27 count:16];
     }
 
     while (v10);
   }
 
-  v20 = [MEMORY[0x1E695DEC8] arrayWithArray:v7];
+  v20 = [MEMORY[0x1E695DEC8] arrayWithArray:array];
   [v5 _setActions:v20];
 
   return v5;

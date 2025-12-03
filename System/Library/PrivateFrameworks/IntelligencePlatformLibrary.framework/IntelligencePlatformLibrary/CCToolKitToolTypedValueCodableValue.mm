@@ -1,27 +1,27 @@
 @interface CCToolKitToolTypedValueCodableValue
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4;
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error;
 - (CCToolKitToolDisplayRepresentation)displayRepresentation;
-- (CCToolKitToolTypedValueCodableValue)initWithIdentifier:(id)a3 data:(id)a4 displayRepresentation:(id)a5 error:(id *)a6;
-- (CCToolKitToolTypedValueCodableValue)initWithJSONDictionary:(id)a3 error:(id *)a4;
+- (CCToolKitToolTypedValueCodableValue)initWithIdentifier:(id)identifier data:(id)data displayRepresentation:(id)representation error:(id *)error;
+- (CCToolKitToolTypedValueCodableValue)initWithJSONDictionary:(id)dictionary error:(id *)error;
 - (NSData)data;
 - (NSString)identifier;
 - (id)jsonDictionary;
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4;
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type;
 @end
 
 @implementation CCToolKitToolTypedValueCodableValue
 
-- (CCToolKitToolTypedValueCodableValue)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (CCToolKitToolTypedValueCodableValue)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   v21[2] = 0;
   IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
   v8 = 0;
   if (IsInstanceOfExpectedClass)
   {
-    v9 = [v6 objectForKeyedSubscript:@"identifier"];
-    v10 = [v6 objectForKeyedSubscript:@"data"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"identifier"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"data"];
     if (v10)
     {
       objc_opt_class();
@@ -45,7 +45,7 @@ LABEL_15:
       v10 = v13;
     }
 
-    v14 = [v6 objectForKeyedSubscript:@"displayRepresentation"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"displayRepresentation"];
     if (v14)
     {
       v15 = v14;
@@ -67,7 +67,7 @@ LABEL_15:
       v16 = 0;
     }
 
-    v19 = [[CCToolKitToolTypedValueCodableValue alloc] initWithIdentifier:v9 data:v10 displayRepresentation:v16 error:a4];
+    v19 = [[CCToolKitToolTypedValueCodableValue alloc] initWithIdentifier:v9 data:v10 displayRepresentation:v16 error:error];
     v15 = v16;
 LABEL_14:
 
@@ -86,22 +86,22 @@ LABEL_16:
   v3 = objc_opt_new();
   if (self->_identifier)
   {
-    v4 = [(CCToolKitToolTypedValueCodableValue *)self identifier];
-    [v3 setObject:v4 forKeyedSubscript:@"identifier"];
+    identifier = [(CCToolKitToolTypedValueCodableValue *)self identifier];
+    [v3 setObject:identifier forKeyedSubscript:@"identifier"];
   }
 
   if (self->_data)
   {
-    v5 = [(CCToolKitToolTypedValueCodableValue *)self data];
-    v6 = [v5 base64EncodedStringWithOptions:0];
+    data = [(CCToolKitToolTypedValueCodableValue *)self data];
+    v6 = [data base64EncodedStringWithOptions:0];
     [v3 setObject:v6 forKeyedSubscript:@"data"];
   }
 
   if (self->_displayRepresentation)
   {
-    v7 = [(CCToolKitToolTypedValueCodableValue *)self displayRepresentation];
-    v8 = [v7 jsonDictionary];
-    [v3 setObject:v8 forKeyedSubscript:@"displayRepresentation"];
+    displayRepresentation = [(CCToolKitToolTypedValueCodableValue *)self displayRepresentation];
+    jsonDictionary = [displayRepresentation jsonDictionary];
+    [v3 setObject:jsonDictionary forKeyedSubscript:@"displayRepresentation"];
   }
 
   v9 = [v3 copy];
@@ -109,11 +109,11 @@ LABEL_16:
   return v9;
 }
 
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type
 {
-  v5 = a3;
+  blockCopy = block;
   v6 = MEMORY[0x1E69939A8];
-  v11 = v5;
+  v11 = blockCopy;
   if (self->_identifier)
   {
     v7 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:*MEMORY[0x1E69939A8] stringValue:self->_identifier];
@@ -157,10 +157,10 @@ LABEL_16:
   return v2;
 }
 
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error
 {
-  v5 = a3;
-  v6 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:v5];
+  dataCopy = data;
+  v6 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:dataCopy];
   v7 = MEMORY[0x1E6993AB8];
   v8 = MEMORY[0x1E6993AB0];
   v9 = MEMORY[0x1E6993AA8];
@@ -326,13 +326,13 @@ LABEL_39:
   return v36;
 }
 
-- (CCToolKitToolTypedValueCodableValue)initWithIdentifier:(id)a3 data:(id)a4 displayRepresentation:(id)a5 error:(id *)a6
+- (CCToolKitToolTypedValueCodableValue)initWithIdentifier:(id)identifier data:(id)data displayRepresentation:(id)representation error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  identifierCopy = identifier;
+  dataCopy = data;
+  representationCopy = representation;
   v13 = objc_opt_new();
-  if (v10)
+  if (identifierCopy)
   {
     objc_opt_class();
     IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
@@ -343,11 +343,11 @@ LABEL_39:
     }
 
     CCPBDataWriterWriteStringField();
-    if (!v11)
+    if (!dataCopy)
     {
 LABEL_4:
       v16 = v15;
-      if (v12)
+      if (representationCopy)
       {
         goto LABEL_5;
       }
@@ -361,7 +361,7 @@ LABEL_11:
   else
   {
     v15 = 0;
-    if (!v11)
+    if (!dataCopy)
     {
       goto LABEL_4;
     }
@@ -374,13 +374,13 @@ LABEL_11:
   if (!v20)
   {
     CCSetError();
-    v19 = 0;
+    selfCopy = 0;
     v15 = v16;
     goto LABEL_14;
   }
 
   CCPBDataWriterWriteDataField();
-  if (!v12)
+  if (!representationCopy)
   {
     goto LABEL_11;
   }
@@ -392,23 +392,23 @@ LABEL_5:
 
   if (v17)
   {
-    v18 = [v12 data];
+    data = [representationCopy data];
     CCPBDataWriterWriteDataField();
 
 LABEL_12:
-    v21 = [v13 immutableData];
-    self = [(CCItemMessage *)self initWithData:v21 error:a6];
+    immutableData = [v13 immutableData];
+    self = [(CCItemMessage *)self initWithData:immutableData error:error];
 
-    v19 = self;
+    selfCopy = self;
     goto LABEL_14;
   }
 
 LABEL_7:
   CCSetError();
-  v19 = 0;
+  selfCopy = 0;
 LABEL_14:
 
-  return v19;
+  return selfCopy;
 }
 
 @end

@@ -1,7 +1,7 @@
 @interface CIBlurmapSmoothing
 + (id)customAttributes;
 - (id)outputImage;
-- (id)performPass:(id)a3 reference:(id)a4 values:(id)a5 rect:(CGRect)a6;
+- (id)performPass:(id)pass reference:(id)reference values:(id)values rect:(CGRect)rect;
 @end
 
 @implementation CIBlurmapSmoothing
@@ -33,21 +33,21 @@
   return [MEMORY[0x1E695DF20] dictionaryWithObjects:v7 forKeys:v6 count:4];
 }
 
-- (id)performPass:(id)a3 reference:(id)a4 values:(id)a5 rect:(CGRect)a6
+- (id)performPass:(id)pass reference:(id)reference values:(id)values rect:(CGRect)rect
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v36[1] = *MEMORY[0x1E69E9840];
-  [a3 extent];
+  [pass extent];
   v38 = CGRectInset(v37, -4.0, 0.0);
   v14 = v38.origin.x;
   v15 = v38.origin.y;
   v16 = v38.size.width;
   v17 = v38.size.height;
-  v18 = [(CIBlurmapSmoothing *)self _kernelH];
-  v36[0] = [a3 imageByClampingToExtent];
+  _kernelH = [(CIBlurmapSmoothing *)self _kernelH];
+  v36[0] = [pass imageByClampingToExtent];
   v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v36 count:1];
   v34[0] = @"kCIKernelOutputFormat";
   v20 = [MEMORY[0x1E696AD98] numberWithInt:2054];
@@ -55,7 +55,7 @@
   v21 = MEMORY[0x1E695E118];
   v35[0] = v20;
   v35[1] = MEMORY[0x1E695E118];
-  v22 = [v18 applyWithExtent:&__block_literal_global_58 roiCallback:v19 arguments:objc_msgSend(MEMORY[0x1E695DF20] options:{"dictionaryWithObjects:forKeys:count:", v35, v34, 2), v14, v15, v16, v17}];
+  v22 = [_kernelH applyWithExtent:&__block_literal_global_58 roiCallback:v19 arguments:objc_msgSend(MEMORY[0x1E695DF20] options:{"dictionaryWithObjects:forKeys:count:", v35, v34, 2), v14, v15, v16, v17}];
   v39.origin.x = x;
   v39.origin.y = y;
   v39.size.width = width;
@@ -71,16 +71,16 @@
   v24 = v41.origin.y;
   v25 = v41.size.width;
   v26 = v41.size.height;
-  v27 = [(CIBlurmapSmoothing *)self _kernelV];
+  _kernelV = [(CIBlurmapSmoothing *)self _kernelV];
   v33[0] = [v22 imageByClampingToExtent];
-  v33[1] = a4;
-  v33[2] = a5;
+  v33[1] = reference;
+  v33[2] = values;
   v28 = [MEMORY[0x1E695DEC8] arrayWithObjects:v33 count:3];
   v31[0] = @"kCIKernelOutputFormat";
   v31[1] = @"kCIImageAlphaOne";
   v32[0] = [MEMORY[0x1E696AD98] numberWithInt:2053];
   v32[1] = v21;
-  v29 = [v27 applyWithExtent:&__block_literal_global_31 roiCallback:v28 arguments:objc_msgSend(MEMORY[0x1E695DF20] options:{"dictionaryWithObjects:forKeys:count:", v32, v31, 2), v23, v24, v25, v26}];
+  v29 = [_kernelV applyWithExtent:&__block_literal_global_31 roiCallback:v28 arguments:objc_msgSend(MEMORY[0x1E695DF20] options:{"dictionaryWithObjects:forKeys:count:", v32, v31, 2), v23, v24, v25, v26}];
   v42.origin.x = x;
   v42.origin.y = y;
   v42.size.width = width;
@@ -158,11 +158,11 @@ double __56__CIBlurmapSmoothing_performPass_reference_values_rect___block_invoke
       v25 = v24;
       SDOFBlurmapSmoothingParameterValue(&cfstr_Localminimumbl_0.isa, self->inputTuningParameters);
       v27 = [CIVector vectorWithX:v21 Y:v23 Z:v25 W:v26];
-      v28 = [v11 imageByClampingToExtent];
-      v29 = v28;
+      imageByClampingToExtent = [v11 imageByClampingToExtent];
+      v29 = imageByClampingToExtent;
       do
       {
-        v29 = [(CIBlurmapSmoothing *)self performPass:v29 reference:v28 values:v27 rect:v13, v15, v17, v19];
+        v29 = [(CIBlurmapSmoothing *)self performPass:v29 reference:imageByClampingToExtent values:v27 rect:v13, v15, v17, v19];
         --v4;
       }
 

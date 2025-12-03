@@ -1,74 +1,74 @@
 @interface _AppExtensionEventEditHostView.HostCoordinator
 - (_TtCV10EventKitUI30_AppExtensionEventEditHostView15HostCoordinator)init;
-- (void)didCompleteWithAction:(int64_t)a3 oldToNewObjectIDMap:(id)a4 waitUntilTimestamp:(id)a5 serializedDictionary:(id)a6 objectIDToChangeSetDictionaryMap:(id)a7 objectIDToPersistentDictionaryMap:(id)a8 eventConstraints:(id)a9;
-- (void)hostViewControllerDidActivate:(id)a3;
-- (void)hostViewControllerWillDeactivate:(id)a3 error:(id)a4;
-- (void)requestPresentViewWithName:(id)a3 viewID:(id)a4 presentationStyle:(int64_t)a5;
+- (void)didCompleteWithAction:(int64_t)action oldToNewObjectIDMap:(id)map waitUntilTimestamp:(id)timestamp serializedDictionary:(id)dictionary objectIDToChangeSetDictionaryMap:(id)dictionaryMap objectIDToPersistentDictionaryMap:(id)persistentDictionaryMap eventConstraints:(id)constraints;
+- (void)hostViewControllerDidActivate:(id)activate;
+- (void)hostViewControllerWillDeactivate:(id)deactivate error:(id)error;
+- (void)requestPresentViewWithName:(id)name viewID:(id)d presentationStyle:(int64_t)style;
 @end
 
 @implementation _AppExtensionEventEditHostView.HostCoordinator
 
-- (void)hostViewControllerDidActivate:(id)a3
+- (void)hostViewControllerDidActivate:(id)activate
 {
-  v4 = a3;
-  v5 = self;
-  sub_1D35C7CC8(v4);
+  activateCopy = activate;
+  selfCopy = self;
+  sub_1D35C7CC8(activateCopy);
 }
 
-- (void)hostViewControllerWillDeactivate:(id)a3 error:(id)a4
+- (void)hostViewControllerWillDeactivate:(id)deactivate error:(id)error
 {
   v4 = MEMORY[0x1E69E7D40];
   v5 = *((*MEMORY[0x1E69E7D40] & self->super.isa) + 0x90);
-  v7 = self;
+  selfCopy = self;
   v6 = v5();
   [v6 invalidate];
 
-  (*((*v4 & v7->super.isa) + 0x98))(0);
+  (*((*v4 & selfCopy->super.isa) + 0x98))(0);
 }
 
-- (void)requestPresentViewWithName:(id)a3 viewID:(id)a4 presentationStyle:(int64_t)a5
+- (void)requestPresentViewWithName:(id)name viewID:(id)d presentationStyle:(int64_t)style
 {
   v7 = sub_1D35DF384();
   v9 = v8;
   v10 = sub_1D35DF384();
   v12 = v11;
-  v13 = self;
-  sub_1D35C929C(v7, v9, v10, v12, a5);
+  selfCopy = self;
+  sub_1D35C929C(v7, v9, v10, v12, style);
 }
 
-- (void)didCompleteWithAction:(int64_t)a3 oldToNewObjectIDMap:(id)a4 waitUntilTimestamp:(id)a5 serializedDictionary:(id)a6 objectIDToChangeSetDictionaryMap:(id)a7 objectIDToPersistentDictionaryMap:(id)a8 eventConstraints:(id)a9
+- (void)didCompleteWithAction:(int64_t)action oldToNewObjectIDMap:(id)map waitUntilTimestamp:(id)timestamp serializedDictionary:(id)dictionary objectIDToChangeSetDictionaryMap:(id)dictionaryMap objectIDToPersistentDictionaryMap:(id)persistentDictionaryMap eventConstraints:(id)constraints
 {
-  v13 = a4;
-  if (a4)
+  mapCopy = map;
+  if (map)
   {
     sub_1D35A52E0(0, &qword_1EC76AD00);
     sub_1D35BC1F4();
-    v13 = sub_1D35DF344();
+    mapCopy = sub_1D35DF344();
   }
 
-  if (a6)
+  if (dictionary)
   {
-    a6 = sub_1D35DF344();
+    dictionary = sub_1D35DF344();
   }
 
-  if (a7)
+  if (dictionaryMap)
   {
     sub_1D35A52E0(0, &qword_1EC76AD00);
     sub_1D35BC1F4();
-    a7 = sub_1D35DF344();
+    dictionaryMap = sub_1D35DF344();
   }
 
-  v23 = a5;
-  v16 = a8;
-  v17 = a9;
-  v18 = self;
-  if (v16)
+  timestampCopy = timestamp;
+  persistentDictionaryMapCopy = persistentDictionaryMap;
+  constraintsCopy = constraints;
+  selfCopy = self;
+  if (persistentDictionaryMapCopy)
   {
     sub_1D35A52E0(0, &qword_1EC76AD00);
     sub_1D35BC1F4();
     v19 = sub_1D35DF344();
 
-    if (v17)
+    if (constraintsCopy)
     {
 LABEL_9:
       v20 = sub_1D35DEF24();
@@ -81,7 +81,7 @@ LABEL_9:
   else
   {
     v19 = 0;
-    if (v17)
+    if (constraintsCopy)
     {
       goto LABEL_9;
     }
@@ -90,7 +90,7 @@ LABEL_9:
   v20 = 0;
   v22 = 0xF000000000000000;
 LABEL_12:
-  sub_1D35C9698(a3, v13, v23, a6, a7, v19, v20, v22);
+  sub_1D35C9698(action, mapCopy, timestampCopy, dictionary, dictionaryMap, v19, v20, v22);
   sub_1D35C12AC(v20, v22);
 }
 

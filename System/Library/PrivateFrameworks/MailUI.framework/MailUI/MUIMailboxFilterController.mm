@@ -1,25 +1,25 @@
 @interface MUIMailboxFilterController
-- (MUIMailboxFilterController)initWithMailboxes:(id)a3 focus:(id)a4 baseStoragePath:(id)a5 defaultsRepresentationProvider:(id)a6 filterRepresentationProvider:(id)a7 mailboxFilterClass:(Class)a8 filterProviderClass:(Class)a9 isFilteringAvailable:(BOOL)a10;
+- (MUIMailboxFilterController)initWithMailboxes:(id)mailboxes focus:(id)focus baseStoragePath:(id)path defaultsRepresentationProvider:(id)provider filterRepresentationProvider:(id)representationProvider mailboxFilterClass:(Class)class filterProviderClass:(Class)providerClass isFilteringAvailable:(BOOL)self0;
 - (void)reselectFocusedAccounts;
-- (void)updateWithFilterContext:(id)a3;
+- (void)updateWithFilterContext:(id)context;
 @end
 
 @implementation MUIMailboxFilterController
 
-- (MUIMailboxFilterController)initWithMailboxes:(id)a3 focus:(id)a4 baseStoragePath:(id)a5 defaultsRepresentationProvider:(id)a6 filterRepresentationProvider:(id)a7 mailboxFilterClass:(Class)a8 filterProviderClass:(Class)a9 isFilteringAvailable:(BOOL)a10
+- (MUIMailboxFilterController)initWithMailboxes:(id)mailboxes focus:(id)focus baseStoragePath:(id)path defaultsRepresentationProvider:(id)provider filterRepresentationProvider:(id)representationProvider mailboxFilterClass:(Class)class filterProviderClass:(Class)providerClass isFilteringAvailable:(BOOL)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
+  mailboxesCopy = mailboxes;
+  focusCopy = focus;
+  pathCopy = path;
+  providerCopy = provider;
+  representationProviderCopy = representationProvider;
   v28.receiver = self;
   v28.super_class = MUIMailboxFilterController;
   v21 = [(MUIMailboxFilterController *)&v28 init];
   if (v21)
   {
-    v22 = [[MUIMailboxFilterContext alloc] initWithMailboxes:v16 focus:v17 isFilteringAvailable:a10];
-    v23 = [[MUIMailboxFilterPersistedStore alloc] initWithBaseStoragePath:v18 defaultsRepresentationProvider:v19 filterRepresentationProvider:v20 mailboxFilterClass:a8 filterProviderClass:a9];
+    v22 = [[MUIMailboxFilterContext alloc] initWithMailboxes:mailboxesCopy focus:focusCopy isFilteringAvailable:available];
+    v23 = [[MUIMailboxFilterPersistedStore alloc] initWithBaseStoragePath:pathCopy defaultsRepresentationProvider:providerCopy filterRepresentationProvider:representationProviderCopy mailboxFilterClass:class filterProviderClass:providerClass];
     store = v21->_store;
     v21->_store = v23;
 
@@ -31,16 +31,16 @@
   return v21;
 }
 
-- (void)updateWithFilterContext:(id)a3
+- (void)updateWithFilterContext:(id)context
 {
-  v9 = a3;
-  v4 = [(MUIMailboxFilterController *)self viewModel];
-  v5 = [v4 filterContext];
+  contextCopy = context;
+  viewModel = [(MUIMailboxFilterController *)self viewModel];
+  filterContext = [viewModel filterContext];
 
-  if (v5 != v9)
+  if (filterContext != contextCopy)
   {
-    v6 = [(MUIMailboxFilterController *)self store];
-    v7 = [v6 filterViewModelForContext:v9];
+    store = [(MUIMailboxFilterController *)self store];
+    v7 = [store filterViewModelForContext:contextCopy];
     viewModel = self->_viewModel;
     self->_viewModel = v7;
   }
@@ -48,8 +48,8 @@
 
 - (void)reselectFocusedAccounts
 {
-  v2 = [(MUIMailboxFilterController *)self viewModel];
-  [v2 reselectFocusFilters];
+  viewModel = [(MUIMailboxFilterController *)self viewModel];
+  [viewModel reselectFocusFilters];
 }
 
 @end

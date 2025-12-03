@@ -6,9 +6,9 @@
 
 - (id)msgIdentifier
 {
-  v2 = [(CBPeer *)self identifier];
-  v3 = [v2 UUIDString];
-  v4 = CFUUIDCreateFromString(kCFAllocatorDefault, v3);
+  identifier = [(CBPeer *)self identifier];
+  uUIDString = [identifier UUIDString];
+  v4 = CFUUIDCreateFromString(kCFAllocatorDefault, uUIDString);
 
   return CFAutorelease(v4);
 }

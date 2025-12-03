@@ -1,23 +1,23 @@
 @interface CRLPencilKitRenderer
-+ (void)drawStrokes:(id)a3 inContext:(CGContext *)a4 overTransparentCanvas:(BOOL)a5;
++ (void)drawStrokes:(id)strokes inContext:(CGContext *)context overTransparentCanvas:(BOOL)canvas;
 @end
 
 @implementation CRLPencilKitRenderer
 
-+ (void)drawStrokes:(id)a3 inContext:(CGContext *)a4 overTransparentCanvas:(BOOL)a5
++ (void)drawStrokes:(id)strokes inContext:(CGContext *)context overTransparentCanvas:(BOOL)canvas
 {
-  v7 = a3;
+  strokesCopy = strokes;
   v8 = objc_autoreleasePoolPush();
   v9 = [PKDrawing alloc];
   v10 = objc_alloc_init(PKDrawing);
-  v11 = [v9 initWithStrokes:v7 fromDrawing:v10];
+  v11 = [v9 initWithStrokes:strokesCopy fromDrawing:v10];
 
   [v11 bounds];
   v13 = v12;
   v15 = v14;
   v17 = v16;
   v19 = v18;
-  ClipBoundingBox = CGContextGetClipBoundingBox(a4);
+  ClipBoundingBox = CGContextGetClipBoundingBox(context);
   v50.origin.x = v13;
   v50.origin.y = v15;
   v50.size.width = v17;
@@ -29,7 +29,7 @@
   height = v51.size.height;
   if (!CGRectIsEmpty(v51) && sub_10012082C(x, y, width, height))
   {
-    v24 = sub_100510A7C(a4);
+    v24 = sub_100510A7C(context);
     v25 = v24;
     if (v24 <= 0.0)
     {
@@ -62,12 +62,12 @@
       v25 = 1.0;
     }
 
-    if (sub_100510804(a4))
+    if (sub_100510804(context))
     {
       v24 = 3.0;
     }
 
-    CGContextGetCTM(&v49, a4);
+    CGContextGetCTM(&v49, context);
     v29 = v24 * (sub_100139A00(&v49.a) / v25);
     if (v29 > 0.0)
     {
@@ -79,11 +79,11 @@
       v33 = v53.size.height;
       v34 = sub_10011F340(v53.size.width, v53.size.height, v29);
       v36 = v35;
-      v37 = sub_100510804(a4);
-      v38 = sub_100510090(a4);
-      v39 = sub_1005101CC(a4);
-      v40 = sub_100510308(a4);
-      v41 = v40 | v37 | a5 & ~(v38 | v39);
+      v37 = sub_100510804(context);
+      v38 = sub_100510090(context);
+      v39 = sub_1005101CC(context);
+      v40 = sub_100510308(context);
+      v41 = v40 | v37 | canvas & ~(v38 | v39);
       if ((v40 | v37))
       {
         v42 = v40;
@@ -91,7 +91,7 @@
 
       else
       {
-        v42 = a5 & ~(v38 | v39);
+        v42 = canvas & ~(v38 | v39);
       }
 
       v43 = +[CRLPKImageRendererPool sharedPool];
@@ -105,7 +105,7 @@
       *&v44[9] = v33;
       v45 = v42;
       v44[4] = v11;
-      v44[5] = a4;
+      v44[5] = context;
       *&v44[10] = v29;
       v46 = v37;
       v47 = v38;

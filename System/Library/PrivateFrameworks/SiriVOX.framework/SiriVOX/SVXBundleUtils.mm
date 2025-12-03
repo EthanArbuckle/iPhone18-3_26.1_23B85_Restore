@@ -1,90 +1,90 @@
 @interface SVXBundleUtils
 + (id)sharedInstance;
 - (SVXBundleUtils)init;
-- (SVXBundleUtils)initWithLocalization:(id)a3;
-- (id)_getSystemFrameworkWithName:(id)a3;
-- (id)getLocalizedStringWithBundle:(id)a3 table:(id)a4 key:(id)a5 languageCode:(id)a6 gender:(int64_t)a7;
+- (SVXBundleUtils)initWithLocalization:(id)localization;
+- (id)_getSystemFrameworkWithName:(id)name;
+- (id)getLocalizedStringWithBundle:(id)bundle table:(id)table key:(id)key languageCode:(id)code gender:(int64_t)gender;
 - (id)getSiriVOXFramework;
 @end
 
 @implementation SVXBundleUtils
 
-- (id)_getSystemFrameworkWithName:(id)a3
+- (id)_getSystemFrameworkWithName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v4 = MEMORY[0x277CCA8D8];
-  v5 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"com.apple.%@", v3];
-  v6 = [v4 bundleWithIdentifier:v5];
+  nameCopy = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"com.apple.%@", nameCopy];
+  v6 = [v4 bundleWithIdentifier:nameCopy];
 
   if (!v6)
   {
     v7 = MEMORY[0x277CCA8D8];
-    v8 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"/System/Library/PrivateFrameworks/%@.framework", v3];
-    v6 = [v7 bundleWithPath:v8];
+    nameCopy2 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"/System/Library/PrivateFrameworks/%@.framework", nameCopy];
+    v6 = [v7 bundleWithPath:nameCopy2];
 
     if (!v6)
     {
       v9 = MEMORY[0x277CCA8D8];
-      v10 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"/System/Library/Frameworks/%@.framework", v3];
-      v6 = [v9 bundleWithPath:v10];
+      nameCopy3 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"/System/Library/Frameworks/%@.framework", nameCopy];
+      v6 = [v9 bundleWithPath:nameCopy3];
     }
   }
 
   return v6;
 }
 
-- (id)getLocalizedStringWithBundle:(id)a3 table:(id)a4 key:(id)a5 languageCode:(id)a6 gender:(int64_t)a7
+- (id)getLocalizedStringWithBundle:(id)bundle table:(id)table key:(id)key languageCode:(id)code gender:(int64_t)gender
 {
   v62 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v44 = a5;
-  v43 = a6;
+  bundleCopy = bundle;
+  tableCopy = table;
+  keyCopy = key;
+  codeCopy = code;
   v14 = MEMORY[0x277CEF098];
   v15 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_INFO))
   {
     v16 = v15;
-    v17 = [v12 bundleIdentifier];
-    if (a7 > 3)
+    bundleIdentifier = [bundleCopy bundleIdentifier];
+    if (gender > 3)
     {
       v18 = @"(unknown)";
     }
 
     else
     {
-      v18 = off_279C66CC8[a7];
+      v18 = off_279C66CC8[gender];
     }
 
     v19 = v18;
     *buf = 136316418;
     v51 = "[SVXBundleUtils getLocalizedStringWithBundle:table:key:languageCode:gender:]";
     v52 = 2112;
-    v53 = v17;
+    v53 = bundleIdentifier;
     v54 = 2112;
-    v55 = v13;
+    v55 = tableCopy;
     v56 = 2112;
-    v57 = v44;
+    v57 = keyCopy;
     v58 = 2112;
-    v59 = v43;
+    v59 = codeCopy;
     v60 = 2112;
     v61 = v19;
     _os_log_impl(&dword_2695B9000, v16, OS_LOG_TYPE_INFO, "%s Getting localized string with bundleIdentifier: %@, table: %@, key: %@, languageCode: %@, gender: %@", buf, 0x3Eu);
   }
 
-  v20 = v13;
+  v20 = tableCopy;
   if (v20)
   {
     afLocalization = self->_afLocalization;
-    if (v12)
+    if (bundleCopy)
     {
-      v22 = [(AFLocalization *)self->_afLocalization localizedStringForKey:v44 gender:a7 table:v20 bundle:v12 languageCode:v43];
+      v22 = [(AFLocalization *)self->_afLocalization localizedStringForKey:keyCopy gender:gender table:v20 bundle:bundleCopy languageCode:codeCopy];
     }
 
     else
     {
-      v37 = [(SVXBundleUtils *)self getSiriVOXFramework];
-      v22 = [(AFLocalization *)afLocalization localizedStringForKey:v44 gender:a7 table:v20 bundle:v37 languageCode:v43];
+      getSiriVOXFramework = [(SVXBundleUtils *)self getSiriVOXFramework];
+      v22 = [(AFLocalization *)afLocalization localizedStringForKey:keyCopy gender:gender table:v20 bundle:getSiriVOXFramework languageCode:codeCopy];
     }
 
     v36 = v20;
@@ -92,19 +92,19 @@
 
   else
   {
-    if (!v12)
+    if (!bundleCopy)
     {
       goto LABEL_11;
     }
 
-    v23 = [v12 bundleIdentifier];
-    v24 = [(SVXBundleUtils *)self getSiriVOXFramework];
-    v25 = [v24 bundleIdentifier];
-    v26 = [v23 isEqualToString:v25];
+    bundleIdentifier2 = [bundleCopy bundleIdentifier];
+    getSiriVOXFramework2 = [(SVXBundleUtils *)self getSiriVOXFramework];
+    bundleIdentifier3 = [getSiriVOXFramework2 bundleIdentifier];
+    v26 = [bundleIdentifier2 isEqualToString:bundleIdentifier3];
 
     if (!v26)
     {
-      v22 = [(AFLocalization *)self->_afLocalization localizedStringForKey:v44 gender:a7 table:0 bundle:v12 languageCode:v43];
+      v22 = [(AFLocalization *)self->_afLocalization localizedStringForKey:keyCopy gender:gender table:0 bundle:bundleCopy languageCode:codeCopy];
       v36 = 0;
     }
 
@@ -140,9 +140,9 @@ LABEL_11:
 
             v33 = *(*(&v45 + 1) + 8 * i);
             v34 = self->_afLocalization;
-            if (v12)
+            if (bundleCopy)
             {
-              v22 = [(AFLocalization *)self->_afLocalization localizedStringForKey:v44 gender:a7 table:*(*(&v45 + 1) + 8 * i) bundle:v12 languageCode:v43];
+              v22 = [(AFLocalization *)self->_afLocalization localizedStringForKey:keyCopy gender:gender table:*(*(&v45 + 1) + 8 * i) bundle:bundleCopy languageCode:codeCopy];
               if (v22)
               {
                 goto LABEL_27;
@@ -151,8 +151,8 @@ LABEL_11:
 
             else
             {
-              v35 = [(SVXBundleUtils *)self getSiriVOXFramework];
-              v22 = [(AFLocalization *)v34 localizedStringForKey:v44 gender:a7 table:v33 bundle:v35 languageCode:v43];
+              getSiriVOXFramework3 = [(SVXBundleUtils *)self getSiriVOXFramework];
+              v22 = [(AFLocalization *)v34 localizedStringForKey:keyCopy gender:gender table:v33 bundle:getSiriVOXFramework3 languageCode:codeCopy];
 
               if (v22)
               {
@@ -204,9 +204,9 @@ LABEL_28:
     v54 = 2112;
     v55 = v36;
     v56 = 2112;
-    v57 = v44;
+    v57 = keyCopy;
     v58 = 2112;
-    v59 = v43;
+    v59 = codeCopy;
     _os_log_impl(&dword_2695B9000, v38, OS_LOG_TYPE_INFO, "%s Localized string found (%@) for table %@, key %@, and languageCode %@", buf, 0x34u);
   }
 
@@ -239,16 +239,16 @@ uint64_t __37__SVXBundleUtils_getSiriVOXFramework__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (SVXBundleUtils)initWithLocalization:(id)a3
+- (SVXBundleUtils)initWithLocalization:(id)localization
 {
-  v5 = a3;
+  localizationCopy = localization;
   v9.receiver = self;
   v9.super_class = SVXBundleUtils;
   v6 = [(SVXBundleUtils *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_afLocalization, a3);
+    objc_storeStrong(&v6->_afLocalization, localization);
   }
 
   return v7;
@@ -256,8 +256,8 @@ uint64_t __37__SVXBundleUtils_getSiriVOXFramework__block_invoke(uint64_t a1)
 
 - (SVXBundleUtils)init
 {
-  v3 = [MEMORY[0x277CEF2D8] sharedInstance];
-  v4 = [(SVXBundleUtils *)self initWithLocalization:v3];
+  mEMORY[0x277CEF2D8] = [MEMORY[0x277CEF2D8] sharedInstance];
+  v4 = [(SVXBundleUtils *)self initWithLocalization:mEMORY[0x277CEF2D8]];
 
   return v4;
 }

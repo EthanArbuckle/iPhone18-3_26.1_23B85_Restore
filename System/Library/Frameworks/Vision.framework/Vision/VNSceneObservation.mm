@@ -1,65 +1,65 @@
 @interface VNSceneObservation
-+ (VNSceneObservation)observationWithSceneprints:(id)a3;
-+ (id)defaultOriginatingRequestClassNameForRequestRevision:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
-- (VNSceneObservation)initWithCoder:(id)a3;
-- (VNSceneObservation)initWithOriginatingRequestSpecifier:(id)a3 sceneprints:(id)a4;
-- (VNSceneObservation)initWithRequestRevision:(unint64_t)a3 sceneprints:(id)a4;
-- (id)VNCoreMLTransformerSceneprintsAndReturnError:(id *)a3;
++ (VNSceneObservation)observationWithSceneprints:(id)sceneprints;
++ (id)defaultOriginatingRequestClassNameForRequestRevision:(unint64_t)revision;
+- (BOOL)isEqual:(id)equal;
+- (VNSceneObservation)initWithCoder:(id)coder;
+- (VNSceneObservation)initWithOriginatingRequestSpecifier:(id)specifier sceneprints:(id)sceneprints;
+- (VNSceneObservation)initWithRequestRevision:(unint64_t)revision sceneprints:(id)sceneprints;
+- (id)VNCoreMLTransformerSceneprintsAndReturnError:(id *)error;
 - (id)data;
 - (id)vn_cloneObject;
 - (unint64_t)elementCount;
 - (unint64_t)elementType;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation VNSceneObservation
 
 - (id)data
 {
-  v3 = [(VNSceneObservation *)self sceneprints];
-  v4 = [v3 firstObject];
+  sceneprints = [(VNSceneObservation *)self sceneprints];
+  firstObject = [sceneprints firstObject];
 
-  if (v4)
+  if (firstObject)
   {
-    v5 = [v4 descriptorData];
+    descriptorData = [firstObject descriptorData];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = VNSceneObservation;
-    v5 = [(VNFeaturePrintObservation *)&v8 data];
+    descriptorData = [(VNFeaturePrintObservation *)&v8 data];
   }
 
-  v6 = v5;
+  v6 = descriptorData;
 
   return v6;
 }
 
 - (unint64_t)elementCount
 {
-  v2 = [(VNSceneObservation *)self sceneprints];
-  v3 = [v2 firstObject];
+  sceneprints = [(VNSceneObservation *)self sceneprints];
+  firstObject = [sceneprints firstObject];
 
-  v4 = [v3 elementCount];
-  return v4;
+  elementCount = [firstObject elementCount];
+  return elementCount;
 }
 
 - (unint64_t)elementType
 {
-  v2 = [(VNSceneObservation *)self sceneprints];
-  v3 = [v2 firstObject];
+  sceneprints = [(VNSceneObservation *)self sceneprints];
+  firstObject = [sceneprints firstObject];
 
-  v4 = [v3 elementType];
-  return v4;
+  elementType = [firstObject elementType];
+  return elementType;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
@@ -68,17 +68,17 @@
   {
     v13.receiver = self;
     v13.super_class = VNSceneObservation;
-    if ([(VNObservation *)&v13 isEqual:v4]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+    if ([(VNObservation *)&v13 isEqual:equalCopy]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v5 = v4;
-      v6 = [(VNSceneObservation *)self sceneprintVersion];
-      v7 = [(VNSceneObservation *)v5 sceneprintVersion];
+      v5 = equalCopy;
+      sceneprintVersion = [(VNSceneObservation *)self sceneprintVersion];
+      sceneprintVersion2 = [(VNSceneObservation *)v5 sceneprintVersion];
       v8 = VisionCoreEqualOrNilObjects();
 
       if (v8)
       {
-        v9 = [(VNSceneObservation *)self sceneprints];
-        v10 = [(VNSceneObservation *)v5 sceneprints];
+        sceneprints = [(VNSceneObservation *)self sceneprints];
+        sceneprints2 = [(VNSceneObservation *)v5 sceneprints];
         v11 = VisionCoreEqualOrNilObjects();
       }
 
@@ -102,11 +102,11 @@
   v9.receiver = self;
   v9.super_class = VNSceneObservation;
   v3 = [(VNObservation *)&v9 hash];
-  v4 = [(VNSceneObservation *)self sceneprintVersion];
-  v5 = [v4 hash];
+  sceneprintVersion = [(VNSceneObservation *)self sceneprintVersion];
+  v5 = [sceneprintVersion hash];
 
-  v6 = [(VNSceneObservation *)self sceneprints];
-  v7 = [v6 hash] ^ __ROR8__(v5 ^ __ROR8__(v3, 51), 51);
+  sceneprints = [(VNSceneObservation *)self sceneprints];
+  v7 = [sceneprints hash] ^ __ROR8__(v5 ^ __ROR8__(v3, 51), 51);
 
   return v7;
 }
@@ -115,39 +115,39 @@
 {
   v7.receiver = self;
   v7.super_class = VNSceneObservation;
-  v3 = [(VNObservation *)&v7 vn_cloneObject];
-  if (v3)
+  vn_cloneObject = [(VNObservation *)&v7 vn_cloneObject];
+  if (vn_cloneObject)
   {
     v4 = [(NSArray *)self->_sceneprints copy];
-    v5 = *(v3 + 96);
-    *(v3 + 96) = v4;
+    v5 = *(vn_cloneObject + 96);
+    *(vn_cloneObject + 96) = v4;
 
-    objc_storeStrong((v3 + 104), self->_sceneprintVersion);
+    objc_storeStrong((vn_cloneObject + 104), self->_sceneprintVersion);
   }
 
-  return v3;
+  return vn_cloneObject;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5.receiver = self;
   v5.super_class = VNSceneObservation;
-  [(VNObservation *)&v5 encodeWithCoder:v4];
-  [v4 vn_encodeCodingVersion:0 forKey:@"VNSceneObservation"];
-  [v4 encodeObject:self->_sceneprintVersion forKey:@"algo"];
-  [v4 encodeObject:self->_sceneprints forKey:@"descriptors"];
+  [(VNObservation *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy vn_encodeCodingVersion:0 forKey:@"VNSceneObservation"];
+  [coderCopy encodeObject:self->_sceneprintVersion forKey:@"algo"];
+  [coderCopy encodeObject:self->_sceneprints forKey:@"descriptors"];
 }
 
-- (VNSceneObservation)initWithCoder:(id)a3
+- (VNSceneObservation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v29.receiver = self;
   v29.super_class = VNSceneObservation;
-  v5 = [(VNObservation *)&v29 initWithCoder:v4];
-  if (v5 && ![v4 vn_decodeCodingVersionForKey:@"VNSceneObservation"])
+  v5 = [(VNObservation *)&v29 initWithCoder:coderCopy];
+  if (v5 && ![coderCopy vn_decodeCodingVersionForKey:@"VNSceneObservation"])
   {
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"algo"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"algo"];
     v8 = +[VNSceneObservation sceneprintCurrentVersion];
     if ([VNVersionParser isMajorVersion:v7 equalToMajorVersion:v8])
     {
@@ -160,7 +160,7 @@
       v21 = MEMORY[0x1E695DFD8];
       v22 = objc_opt_class();
       v23 = [v21 setWithObjects:{v22, objc_opt_class(), 0}];
-      v24 = [v4 decodeObjectOfClasses:v23 forKey:@"descriptors"];
+      v24 = [coderCopy decodeObjectOfClasses:v23 forKey:@"descriptors"];
 
       v25 = [v24 copy];
       sceneprints = v5->_sceneprints;
@@ -184,27 +184,27 @@
   return v6;
 }
 
-- (VNSceneObservation)initWithOriginatingRequestSpecifier:(id)a3 sceneprints:(id)a4
+- (VNSceneObservation)initWithOriginatingRequestSpecifier:(id)specifier sceneprints:(id)sceneprints
 {
-  v6 = a3;
-  v7 = a4;
+  specifierCopy = specifier;
+  sceneprintsCopy = sceneprints;
   v16.receiver = self;
   v16.super_class = VNSceneObservation;
-  v8 = [(VNObservation *)&v16 initWithOriginatingRequestSpecifier:v6];
+  v8 = [(VNObservation *)&v16 initWithOriginatingRequestSpecifier:specifierCopy];
   if (v8)
   {
-    v9 = [v7 copy];
-    v10 = 96;
+    v9 = [sceneprintsCopy copy];
+    firstObject = 96;
     sceneprints = v8->_sceneprints;
     v8->_sceneprints = v9;
 
-    v12 = v8;
+    version = v8;
     v13 = [(NSArray *)v8->_sceneprints count];
     if (v13)
     {
-      v10 = [(NSArray *)v8->_sceneprints firstObject];
-      v12 = [v10 version];
-      v14 = [v12 copy];
+      firstObject = [(NSArray *)v8->_sceneprints firstObject];
+      version = [firstObject version];
+      v14 = [version copy];
     }
 
     else
@@ -221,26 +221,26 @@
   return v8;
 }
 
-- (VNSceneObservation)initWithRequestRevision:(unint64_t)a3 sceneprints:(id)a4
+- (VNSceneObservation)initWithRequestRevision:(unint64_t)revision sceneprints:(id)sceneprints
 {
-  v6 = a4;
+  sceneprintsCopy = sceneprints;
   v16.receiver = self;
   v16.super_class = VNSceneObservation;
-  v7 = [(VNObservation *)&v16 initWithRequestRevision:a3];
+  v7 = [(VNObservation *)&v16 initWithRequestRevision:revision];
   if (v7)
   {
-    v8 = [v6 copy];
-    v9 = 96;
+    v8 = [sceneprintsCopy copy];
+    firstObject = 96;
     sceneprints = v7->_sceneprints;
     v7->_sceneprints = v8;
 
-    v11 = v7;
+    version = v7;
     v12 = [(NSArray *)v7->_sceneprints count];
     if (v12)
     {
-      v9 = [(NSArray *)v7->_sceneprints firstObject];
-      v11 = [v9 version];
-      v13 = [v11 copy];
+      firstObject = [(NSArray *)v7->_sceneprints firstObject];
+      version = [firstObject version];
+      v13 = [version copy];
     }
 
     else
@@ -259,17 +259,17 @@
   return v7;
 }
 
-+ (VNSceneObservation)observationWithSceneprints:(id)a3
++ (VNSceneObservation)observationWithSceneprints:(id)sceneprints
 {
-  v3 = a3;
-  v4 = [[VNSceneObservation alloc] initWithRequestRevision:1 sceneprints:v3];
+  sceneprintsCopy = sceneprints;
+  v4 = [[VNSceneObservation alloc] initWithRequestRevision:1 sceneprints:sceneprintsCopy];
 
   return v4;
 }
 
-+ (id)defaultOriginatingRequestClassNameForRequestRevision:(unint64_t)a3
++ (id)defaultOriginatingRequestClassNameForRequestRevision:(unint64_t)revision
 {
-  if (a3 - 3737841664u >= 5)
+  if (revision - 3737841664u >= 5)
   {
     return @"VNGenerateImageFeaturePrintRequest";
   }
@@ -280,27 +280,27 @@
   }
 }
 
-- (id)VNCoreMLTransformerSceneprintsAndReturnError:(id *)a3
+- (id)VNCoreMLTransformerSceneprintsAndReturnError:(id *)error
 {
-  v4 = [(VNSceneObservation *)self sceneprints];
-  if ([v4 count])
+  sceneprints = [(VNSceneObservation *)self sceneprints];
+  if ([sceneprints count])
   {
-    a3 = v4;
+    error = sceneprints;
   }
 
-  else if (a3)
+  else if (error)
   {
     v5 = objc_alloc(MEMORY[0x1E696AEC0]);
     v6 = objc_opt_class();
     v7 = NSStringFromClass(v6);
     v8 = [v5 initWithFormat:@"%@ does not have any sceneprint data", v7];
 
-    *a3 = [VNError errorForDataUnavailableWithLocalizedDescription:v8];
+    *error = [VNError errorForDataUnavailableWithLocalizedDescription:v8];
 
-    a3 = 0;
+    error = 0;
   }
 
-  return a3;
+  return error;
 }
 
 @end

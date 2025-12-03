@@ -1,19 +1,19 @@
 @interface _MFAutocompleteResultsTableViewModel
-- (_MFAutocompleteResultsTableViewModel)initWithNumberOfSections:(unint64_t)a3;
-- (id)computeDiffForModel:(id)a3;
-- (id)sectionAtIndex:(unint64_t)a3;
+- (_MFAutocompleteResultsTableViewModel)initWithNumberOfSections:(unint64_t)sections;
+- (id)computeDiffForModel:(id)model;
+- (id)sectionAtIndex:(unint64_t)index;
 - (unint64_t)numberOfNonEmptySections;
-- (void)enumerateSections:(id)a3;
-- (void)setNumberOfSections:(unint64_t)a3;
-- (void)setSection:(id)a3 atIndex:(unint64_t)a4;
+- (void)enumerateSections:(id)sections;
+- (void)setNumberOfSections:(unint64_t)sections;
+- (void)setSection:(id)section atIndex:(unint64_t)index;
 @end
 
 @implementation _MFAutocompleteResultsTableViewModel
 
-- (void)setNumberOfSections:(unint64_t)a3
+- (void)setNumberOfSections:(unint64_t)sections
 {
-  self->_numberOfSections = a3;
-  v4 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:a3];
+  self->_numberOfSections = sections;
+  v4 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:sections];
   sections = self->_sections;
   self->_sections = v4;
 }
@@ -35,20 +35,20 @@
   return v2;
 }
 
-- (void)enumerateSections:(id)a3
+- (void)enumerateSections:(id)sections
 {
-  v4 = a3;
+  sectionsCopy = sections;
   sections = self->_sections;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __58___MFAutocompleteResultsTableViewModel_enumerateSections___block_invoke;
   v7[3] = &unk_1E806CAD8;
-  v8 = v4;
-  v6 = v4;
+  v8 = sectionsCopy;
+  v6 = sectionsCopy;
   [(NSMutableDictionary *)sections enumerateKeysAndObjectsUsingBlock:v7];
 }
 
-- (_MFAutocompleteResultsTableViewModel)initWithNumberOfSections:(unint64_t)a3
+- (_MFAutocompleteResultsTableViewModel)initWithNumberOfSections:(unint64_t)sections
 {
   v7.receiver = self;
   v7.super_class = _MFAutocompleteResultsTableViewModel;
@@ -56,15 +56,15 @@
   v5 = v4;
   if (v4)
   {
-    [(_MFAutocompleteResultsTableViewModel *)v4 setNumberOfSections:a3];
+    [(_MFAutocompleteResultsTableViewModel *)v4 setNumberOfSections:sections];
   }
 
   return v5;
 }
 
-- (id)sectionAtIndex:(unint64_t)a3
+- (id)sectionAtIndex:(unint64_t)index
 {
-  if (self->_numberOfSections >= a3)
+  if (self->_numberOfSections >= index)
   {
     sections = self->_sections;
     v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:?];
@@ -75,7 +75,7 @@
     {
       v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
       v9 = self->_sections;
-      v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+      v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:index];
       [(NSMutableDictionary *)v9 setObject:v3 forKey:v10];
     }
   }
@@ -88,35 +88,35 @@
   return v3;
 }
 
-- (void)setSection:(id)a3 atIndex:(unint64_t)a4
+- (void)setSection:(id)section atIndex:(unint64_t)index
 {
   sections = self->_sections;
-  v7 = [MEMORY[0x1E695DF70] arrayWithArray:a3];
-  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
+  v7 = [MEMORY[0x1E695DF70] arrayWithArray:section];
+  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:index];
   [(NSMutableDictionary *)sections setObject:v7 forKey:v6];
 }
 
-- (id)computeDiffForModel:(id)a3
+- (id)computeDiffForModel:(id)model
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E696AD50] indexSet];
-  v6 = [MEMORY[0x1E696AD50] indexSet];
-  v7 = [MEMORY[0x1E696AD50] indexSet];
-  v8 = [v4 numberOfSections];
-  if (v8 == [(_MFAutocompleteResultsTableViewModel *)self numberOfSections])
+  modelCopy = model;
+  indexSet = [MEMORY[0x1E696AD50] indexSet];
+  indexSet2 = [MEMORY[0x1E696AD50] indexSet];
+  indexSet3 = [MEMORY[0x1E696AD50] indexSet];
+  numberOfSections = [modelCopy numberOfSections];
+  if (numberOfSections == [(_MFAutocompleteResultsTableViewModel *)self numberOfSections])
   {
     for (i = 0; i < [(_MFAutocompleteResultsTableViewModel *)self numberOfSections]; ++i)
     {
-      v10 = [v4 numberOfSections];
-      if (v10 < [(_MFAutocompleteResultsTableViewModel *)self numberOfSections])
+      numberOfSections2 = [modelCopy numberOfSections];
+      if (numberOfSections2 < [(_MFAutocompleteResultsTableViewModel *)self numberOfSections])
       {
         v11 = [(_MFAutocompleteResultsTableViewModel *)self sectionAtIndex:i];
         if ([v11 count])
         {
-          v12 = [v4 sectionAtIndex:i];
+          v12 = [modelCopy sectionAtIndex:i];
           v13 = [v12 count];
 
-          v14 = v6;
+          v14 = indexSet2;
           if (!v13)
           {
             goto LABEL_15;
@@ -128,21 +128,21 @@
         }
       }
 
-      v15 = [v4 numberOfSections];
-      if (v15 <= [(_MFAutocompleteResultsTableViewModel *)self numberOfSections])
+      numberOfSections3 = [modelCopy numberOfSections];
+      if (numberOfSections3 <= [(_MFAutocompleteResultsTableViewModel *)self numberOfSections])
       {
         goto LABEL_14;
       }
 
-      v16 = [v4 sectionAtIndex:i];
+      v16 = [modelCopy sectionAtIndex:i];
       if (![v16 count])
       {
 
 LABEL_14:
-        v19 = [v4 sectionAtIndex:i];
+        v19 = [modelCopy sectionAtIndex:i];
         v20 = [v19 count];
 
-        v14 = v7;
+        v14 = indexSet3;
         if (!v20)
         {
           continue;
@@ -154,7 +154,7 @@ LABEL_14:
       v17 = [(_MFAutocompleteResultsTableViewModel *)self sectionAtIndex:i];
       v18 = [v17 count];
 
-      v14 = v5;
+      v14 = indexSet;
       if (v18)
       {
         goto LABEL_14;
@@ -166,9 +166,9 @@ LABEL_15:
   }
 
   v21 = objc_alloc_init(_MFTableViewModelDiff);
-  [(_MFTableViewModelDiff *)v21 setChangedRows:v7];
-  [(_MFTableViewModelDiff *)v21 setDeletedRows:v6];
-  [(_MFTableViewModelDiff *)v21 setInsertedRows:v5];
+  [(_MFTableViewModelDiff *)v21 setChangedRows:indexSet3];
+  [(_MFTableViewModelDiff *)v21 setDeletedRows:indexSet2];
+  [(_MFTableViewModelDiff *)v21 setInsertedRows:indexSet];
 
   return v21;
 }

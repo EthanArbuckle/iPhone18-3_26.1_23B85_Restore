@@ -1,12 +1,12 @@
 @interface SKUITabularLockupColumn
 - (CGSize)size;
-- (SKUITabularLockupColumn)initWithColumnIdentifier:(int64_t)a3;
+- (SKUITabularLockupColumn)initWithColumnIdentifier:(int64_t)identifier;
 - (id)description;
 @end
 
 @implementation SKUITabularLockupColumn
 
-- (SKUITabularLockupColumn)initWithColumnIdentifier:(int64_t)a3
+- (SKUITabularLockupColumn)initWithColumnIdentifier:(int64_t)identifier
 {
   if (os_variant_has_internal_content())
   {
@@ -29,7 +29,7 @@
     childViewElements = v13->_childViewElements;
     v13->_childViewElements = v14;
 
-    v13->_identifier = a3;
+    v13->_identifier = identifier;
   }
 
   return v13;

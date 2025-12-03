@@ -1,12 +1,12 @@
 @interface VNFaceDetectorRevision2
-+ (id)computeStagesToBindForConfigurationOptions:(id)a3;
++ (id)computeStagesToBindForConfigurationOptions:(id)options;
 + (id)configurationOptionKeysForDetectorKey;
-+ (id)supportedComputeStageDevicesForOptions:(id)a3 error:(id *)a4;
-+ (id)supportedImageSizeSetForOptions:(id)a3 error:(id *)a4;
-- (BOOL)completeInitializationForSession:(id)a3 error:(id *)a4;
-- (BOOL)createRegionOfInterestCrop:(CGRect)a3 options:(id)a4 qosClass:(unsigned int)a5 warningRecorder:(id)a6 pixelBuffer:(__CVBuffer *)a7 error:(id *)a8 progressHandler:(id)a9;
++ (id)supportedComputeStageDevicesForOptions:(id)options error:(id *)error;
++ (id)supportedImageSizeSetForOptions:(id)options error:(id *)error;
+- (BOOL)completeInitializationForSession:(id)session error:(id *)error;
+- (BOOL)createRegionOfInterestCrop:(CGRect)crop options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder pixelBuffer:(__CVBuffer *)buffer error:(id *)error progressHandler:(id)handler;
 - (id).cxx_construct;
-- (id)processRegionOfInterest:(CGRect)a3 croppedPixelBuffer:(const __CVBuffer *)a4 options:(id)a5 qosClass:(unsigned int)a6 warningRecorder:(id)a7 error:(id *)a8 progressHandler:(id)a9;
+- (id)processRegionOfInterest:(CGRect)interest croppedPixelBuffer:(const __CVBuffer *)buffer options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder error:(id *)error progressHandler:(id)handler;
 - (void)purgeIntermediates;
 @end
 
@@ -18,7 +18,7 @@
   block[1] = 3221225472;
   block[2] = __64__VNFaceDetectorRevision2_configurationOptionKeysForDetectorKey__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (+[VNFaceDetectorRevision2 configurationOptionKeysForDetectorKey]::onceToken != -1)
   {
     dispatch_once(&+[VNFaceDetectorRevision2 configurationOptionKeysForDetectorKey]::onceToken, block);
@@ -43,7 +43,7 @@ void __64__VNFaceDetectorRevision2_configurationOptionKeysForDetectorKey__block_
   +[VNFaceDetectorRevision2 configurationOptionKeysForDetectorKey]::configurationOptionKeys = v3;
 }
 
-+ (id)supportedImageSizeSetForOptions:(id)a3 error:(id *)a4
++ (id)supportedImageSizeSetForOptions:(id)options error:(id *)error
 {
   v8[1] = *MEMORY[0x1E69E9840];
   v4 = [[VNSizeRange alloc] initWithMinimumDimension:448 maximumDimension:597 idealDimension:448];
@@ -54,18 +54,18 @@ void __64__VNFaceDetectorRevision2_configurationOptionKeysForDetectorKey__block_
   return v6;
 }
 
-+ (id)supportedComputeStageDevicesForOptions:(id)a3 error:(id *)a4
++ (id)supportedComputeStageDevicesForOptions:(id)options error:(id *)error
 {
   v8[1] = *MEMORY[0x1E69E9840];
   v7 = @"VNComputeStageMain";
-  v4 = [VNComputeDeviceUtilities espressoV1ModelComputeDevices:a3];
+  v4 = [VNComputeDeviceUtilities espressoV1ModelComputeDevices:options];
   v8[0] = v4;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v8 forKeys:&v7 count:1];
 
   return v5;
 }
 
-+ (id)computeStagesToBindForConfigurationOptions:(id)a3
++ (id)computeStagesToBindForConfigurationOptions:(id)options
 {
   v5[1] = *MEMORY[0x1E69E9840];
   v5[0] = @"VNComputeStageMain";
@@ -111,25 +111,25 @@ uint64_t __45__VNFaceDetectorRevision2_purgeIntermediates__block_invoke(uint64_t
   return 1;
 }
 
-- (id)processRegionOfInterest:(CGRect)a3 croppedPixelBuffer:(const __CVBuffer *)a4 options:(id)a5 qosClass:(unsigned int)a6 warningRecorder:(id)a7 error:(id *)a8 progressHandler:(id)a9
+- (id)processRegionOfInterest:(CGRect)interest croppedPixelBuffer:(const __CVBuffer *)buffer options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder error:(id *)error progressHandler:(id)handler
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v19 = a5;
-  v20 = a7;
-  v21 = a9;
-  v22 = [VNValidationUtilities requiredSessionInOptions:v19 error:a8];
+  height = interest.size.height;
+  width = interest.size.width;
+  y = interest.origin.y;
+  x = interest.origin.x;
+  optionsCopy = options;
+  recorderCopy = recorder;
+  handlerCopy = handler;
+  v22 = [VNValidationUtilities requiredSessionInOptions:optionsCopy error:error];
   if (v22)
   {
-    v23 = [(VNDetector *)self validatedImageBufferFromOptions:v19 error:a8];
+    v23 = [(VNDetector *)self validatedImageBufferFromOptions:optionsCopy error:error];
     v24 = v23;
     if (v23)
     {
-      v33 = v21;
-      v32 = [v23 width];
-      v25 = [v24 height];
+      v33 = handlerCopy;
+      width = [v23 width];
+      height = [v24 height];
       v51[0] = 0;
       v51[1] = v51;
       v51[2] = 0x4812000000;
@@ -137,32 +137,32 @@ uint64_t __45__VNFaceDetectorRevision2_purgeIntermediates__block_invoke(uint64_t
       v51[4] = __Block_byref_object_dispose__50;
       v51[5] = "";
       memset(v52, 0, sizeof(v52));
-      v26 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       aBlock[0] = MEMORY[0x1E69E9820];
       aBlock[1] = 3221225472;
       aBlock[2] = __125__VNFaceDetectorRevision2_processRegionOfInterest_croppedPixelBuffer_options_qosClass_warningRecorder_error_progressHandler___block_invoke;
       aBlock[3] = &unk_1E77B25E0;
-      v43 = a4;
-      v35 = v19;
-      v36 = self;
+      bufferCopy = buffer;
+      v35 = optionsCopy;
+      selfCopy = self;
       v42 = v51;
       v37 = v24;
       v38 = v22;
-      v44 = v32;
-      v45 = v25;
-      v50 = a6;
+      v44 = width;
+      v45 = height;
+      classCopy = class;
       v46 = x;
       v47 = y;
       v48 = width;
       v49 = height;
-      v39 = v20;
+      v39 = recorderCopy;
       v41 = v33;
-      v27 = v26;
+      v27 = array;
       v40 = v27;
       v28 = _Block_copy(aBlock);
-      if (v28[2](v28, a8, x, y, width, height))
+      if (v28[2](v28, error, x, y, width, height))
       {
-        v21 = v33;
+        handlerCopy = v33;
         if ([(VisionCoreRuntimeUtilities *)VNRuntimeUtilities linkTimeOrRunTimeBeforeVersion:393216])
         {
           v29 = &__block_literal_global_125;
@@ -175,7 +175,7 @@ uint64_t __45__VNFaceDetectorRevision2_purgeIntermediates__block_invoke(uint64_t
       else
       {
         v30 = 0;
-        v21 = v33;
+        handlerCopy = v33;
       }
 
       _Block_object_dispose(v51, 8);
@@ -505,41 +505,41 @@ LABEL_60:
   return v87;
 }
 
-- (BOOL)createRegionOfInterestCrop:(CGRect)a3 options:(id)a4 qosClass:(unsigned int)a5 warningRecorder:(id)a6 pixelBuffer:(__CVBuffer *)a7 error:(id *)a8 progressHandler:(id)a9
+- (BOOL)createRegionOfInterestCrop:(CGRect)crop options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder pixelBuffer:(__CVBuffer *)buffer error:(id *)error progressHandler:(id)handler
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v18 = a4;
-  v19 = a6;
-  v20 = a9;
-  v21 = [(VNDetector *)self validatedImageBufferFromOptions:v18 error:a8];
+  height = crop.size.height;
+  width = crop.size.width;
+  y = crop.origin.y;
+  x = crop.origin.x;
+  optionsCopy = options;
+  recorderCopy = recorder;
+  handlerCopy = handler;
+  v21 = [(VNDetector *)self validatedImageBufferFromOptions:optionsCopy error:error];
   v22 = v21;
   if (!v21)
   {
     goto LABEL_17;
   }
 
-  v23 = [v21 width];
-  v24 = [v22 height];
-  if (v23 >= v24)
+  width = [v21 width];
+  height = [v22 height];
+  if (width >= height)
   {
-    v25 = v24;
+    v25 = height;
   }
 
   else
   {
-    v25 = v23;
+    v25 = width;
   }
 
   if (v25 <= 0x1BF)
   {
-    VNRecordImageTooSmallWarningWithImageMinimumShortDimension(v19, 448);
+    VNRecordImageTooSmallWarningWithImageMinimumShortDimension(recorderCopy, 448);
   }
 
   v45 = 1;
-  if ([VNValidationUtilities getMTLGPUPriority:&v45 forKey:@"VNDetectorOption_MetalContextPriority" inOptions:v18 withDefaultValue:1 error:a8])
+  if ([VNValidationUtilities getMTLGPUPriority:&v45 forKey:@"VNDetectorOption_MetalContextPriority" inOptions:optionsCopy withDefaultValue:1 error:error])
   {
     v46.origin.x = x;
     v46.origin.y = y;
@@ -578,13 +578,13 @@ LABEL_60:
     }
 
     v42 = 0;
-    v38 = [v22 croppedBufferWithWidth:v36 height:v37 format:1111970369 cropRect:v18 options:a8 error:&v42 pixelBufferRepsCacheKey:{v26, v27, v28, v29}];
+    v38 = [v22 croppedBufferWithWidth:v36 height:v37 format:1111970369 cropRect:optionsCopy options:error error:&v42 pixelBufferRepsCacheKey:{v26, v27, v28, v29}];
     v39 = v42;
-    *a7 = v38;
+    *buffer = v38;
     v40 = v38 != 0;
     if (v38)
     {
-      [(VNDetector *)self recordImageCropQuickLookInfoToOptionsSafe:v18 cacheKey:v39 imageBuffer:v22];
+      [(VNDetector *)self recordImageCropQuickLookInfoToOptionsSafe:optionsCopy cacheKey:v39 imageBuffer:v22];
     }
   }
 
@@ -597,15 +597,15 @@ LABEL_17:
   return v40;
 }
 
-- (BOOL)completeInitializationForSession:(id)a3 error:(id *)a4
+- (BOOL)completeInitializationForSession:(id)session error:(id *)error
 {
   v57[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  sessionCopy = session;
   v55.receiver = self;
   v55.super_class = VNFaceDetectorRevision2;
-  if ([(VNDetector *)&v55 completeInitializationForSession:v6 error:a4])
+  if ([(VNDetector *)&v55 completeInitializationForSession:sessionCopy error:error])
   {
-    v7 = [(VNDetector *)self boundComputeDeviceForComputeStage:@"VNComputeStageMain" error:a4];
+    v7 = [(VNDetector *)self boundComputeDeviceForComputeStage:@"VNComputeStageMain" error:error];
     if (v7)
     {
       v37 = VNFrameworkBundle();
@@ -614,26 +614,26 @@ LABEL_17:
 
       if (v9)
       {
-        v10 = [(VNDetector *)self configurationOptions];
+        configurationOptions = [(VNDetector *)self configurationOptions];
         v11 = objc_opt_class();
         v12 = NSStringFromClass(v11);
         NSLog(&cfstr_FbbaCreatingVn.isa, v12);
 
-        v36 = [VNFaceBBoxAligner supportedComputeStageDevicesForOptions:v10 error:a4];
-        v13 = [v10 mutableCopy];
+        v36 = [VNFaceBBoxAligner supportedComputeStageDevicesForOptions:configurationOptions error:error];
+        v13 = [configurationOptions mutableCopy];
         v56 = @"VNComputeStageMain";
         v14 = [v36 objectForKeyedSubscript:@"VNComputeStageMain"];
-        v15 = [v14 firstObject];
-        v57[0] = v15;
+        firstObject = [v14 firstObject];
+        v57[0] = firstObject;
         v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v57 forKeys:&v56 count:1];
         [v13 setObject:v16 forKeyedSubscript:@"VNDetectorOption_ComputeStageDeviceAssignments"];
 
         v17 = [v13 copy];
-        v18 = [v6 detectorOfType:@"VNFaceBoxAlignerType" configuredWithOptions:v17 error:a4];
+        v18 = [sessionCopy detectorOfType:@"VNFaceBoxAlignerType" configuredWithOptions:v17 error:error];
         faceBBoxAligner = self->_faceBBoxAligner;
         self->_faceBBoxAligner = v18;
 
-        if (self->_faceBBoxAligner && [VNValidationUtilities getBOOLValue:&self->_preferBackgroundProcessing forKey:@"VNDetectorOption_PreferBackgroundProcessing" inOptions:v10 withDefaultValue:0 error:a4])
+        if (self->_faceBBoxAligner && [VNValidationUtilities getBOOLValue:&self->_preferBackgroundProcessing forKey:@"VNDetectorOption_PreferBackgroundProcessing" inOptions:configurationOptions withDefaultValue:0 error:error])
         {
           v39 = 0;
           v40 = &v39;
@@ -652,8 +652,8 @@ LABEL_17:
           v54 = 1041865114;
           v46 = 0;
           v20 = v9;
-          v21 = [v9 UTF8String];
-          std::string::__assign_external((v40 + 10), v21);
+          uTF8String = [v9 UTF8String];
+          std::string::__assign_external((v40 + 10), uTF8String);
           v22 = [VNComputeDeviceUtilities isNeuralEngineComputeDevice:v7];
           *(v40 + 64) = v22;
           v23 = [VNComputeDeviceUtilities isGPUComputeDevice:v7];
@@ -678,11 +678,11 @@ LABEL_17:
           *(v40 + 19) = v28;
           if (*(v29 + 65) == 1)
           {
-            v30 = [(VNDetector *)self metalContext];
-            v31 = v30;
-            if (v30)
+            metalContext = [(VNDetector *)self metalContext];
+            v31 = metalContext;
+            if (metalContext)
             {
-              v32 = *(v30 + 8);
+              v32 = *(metalContext + 8);
             }
 
             else
@@ -701,7 +701,7 @@ LABEL_17:
           aBlock[4] = self;
           aBlock[5] = &v39;
           v34 = _Block_copy(aBlock);
-          v27 = VNExecuteBlock(v34, a4);
+          v27 = VNExecuteBlock(v34, error);
 
           _Block_object_dispose(&v39, 8);
           if (SHIBYTE(v52) < 0)
@@ -721,10 +721,10 @@ LABEL_17:
         }
       }
 
-      else if (a4)
+      else if (error)
       {
         [VNError errorForInternalErrorWithLocalizedDescription:@"could not locate the face detection model file"];
-        *a4 = v27 = 0;
+        *error = v27 = 0;
       }
 
       else

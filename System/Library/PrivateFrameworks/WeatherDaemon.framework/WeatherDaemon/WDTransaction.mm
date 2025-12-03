@@ -1,31 +1,31 @@
 @interface WDTransaction
 + (id)log;
-- (WDTransaction)initWithDescription:(id)a3;
+- (WDTransaction)initWithDescription:(id)description;
 - (void)dealloc;
 @end
 
 @implementation WDTransaction
 
-- (WDTransaction)initWithDescription:(id)a3
+- (WDTransaction)initWithDescription:(id)description
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  descriptionCopy = description;
   v16.receiver = self;
   v16.super_class = WDTransaction;
   v6 = [(WDTransaction *)&v16 init];
   if (v6)
   {
-    [v5 UTF8String];
+    [descriptionCopy UTF8String];
     v7 = os_transaction_create();
     transaction = v6->_transaction;
     v6->_transaction = v7;
 
-    v9 = [MEMORY[0x1E696AFB0] UUID];
-    v10 = [v9 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
     identifier = v6->_identifier;
-    v6->_identifier = v10;
+    v6->_identifier = uUIDString;
 
-    objc_storeStrong(&v6->_transactionDescription, a3);
+    objc_storeStrong(&v6->_transactionDescription, description);
     v12 = +[WDTransaction log];
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {

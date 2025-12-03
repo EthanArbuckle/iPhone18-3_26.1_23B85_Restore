@@ -4,17 +4,17 @@
 - (NSUInteger)getDouble4x4Array:(matrix_double4x4 *)valuesArray maxCount:(NSUInteger)maxCount;
 - (NSUInteger)getFloat4x4Array:(matrix_float4x4 *)valuesArray maxCount:(NSUInteger)maxCount;
 - (VtValue)defaultVtValue;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)clear;
-- (void)resetWithUsdAttribute:(const void *)a3;
-- (void)resetWithUsdAttribute:(const void *)a3 time:(double)a4;
+- (void)resetWithUsdAttribute:(const void *)attribute;
+- (void)resetWithUsdAttribute:(const void *)attribute time:(double)time;
 - (void)setDouble4x4Array:(const matrix_double4x4 *)valuesArray count:(NSUInteger)count;
 - (void)setFloat4x4Array:(const matrix_float4x4 *)valuesArray count:(NSUInteger)count;
 @end
 
 @implementation MDLMatrix4x4Array
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [MDLMatrix4x4Array alloc];
   elementCount = self->_elementCount;
@@ -61,7 +61,7 @@
   return result;
 }
 
-- (void)resetWithUsdAttribute:(const void *)a3
+- (void)resetWithUsdAttribute:(const void *)attribute
 {
   v5[2] = *MEMORY[0x277D85DE8];
   v5[0] = 0;
@@ -76,7 +76,7 @@
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)resetWithUsdAttribute:(const void *)a3 time:(double)a4
+- (void)resetWithUsdAttribute:(const void *)attribute time:(double)time
 {
   v6[2] = *MEMORY[0x277D85DE8];
   v6[0] = 0;

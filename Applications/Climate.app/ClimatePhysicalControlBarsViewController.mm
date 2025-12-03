@@ -1,11 +1,11 @@
 @interface ClimatePhysicalControlBarsViewController
-- (_TtC7Climate40ClimatePhysicalControlBarsViewController)initWithCoder:(id)a3;
-- (_TtC7Climate40ClimatePhysicalControlBarsViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC7Climate40ClimatePhysicalControlBarsViewController)initWithCoder:(id)coder;
+- (_TtC7Climate40ClimatePhysicalControlBarsViewController)initWithNibName:(id)name bundle:(id)bundle;
 @end
 
 @implementation ClimatePhysicalControlBarsViewController
 
-- (_TtC7Climate40ClimatePhysicalControlBarsViewController)initWithCoder:(id)a3
+- (_TtC7Climate40ClimatePhysicalControlBarsViewController)initWithCoder:(id)coder
 {
   if (_swiftEmptyArrayStorage >> 62 && _CocoaArrayWrapper.endIndex.getter())
   {
@@ -23,7 +23,7 @@
   return result;
 }
 
-- (_TtC7Climate40ClimatePhysicalControlBarsViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC7Climate40ClimatePhysicalControlBarsViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

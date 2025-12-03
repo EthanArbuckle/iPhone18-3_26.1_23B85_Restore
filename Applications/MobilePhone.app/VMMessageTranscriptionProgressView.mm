@@ -59,11 +59,11 @@
   v17 = +[UIColor systemMidGrayColor];
   [(UIProgressView *)self->_progressView setTrackTintColor:v17];
 
-  v18 = [(UIProgressView *)self->_progressView layer];
-  [v18 setCornerRadius:2.0];
+  layer = [(UIProgressView *)self->_progressView layer];
+  [layer setCornerRadius:2.0];
 
-  v19 = [(UIProgressView *)self->_progressView layer];
-  [v19 setMasksToBounds:1];
+  layer2 = [(UIProgressView *)self->_progressView layer];
+  [layer2 setMasksToBounds:1];
 
   [(UIProgressView *)self->_progressView setClipsToBounds:1];
   [(UIProgressView *)self->_progressView setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -72,129 +72,129 @@
 
 - (void)loadConstraints
 {
-  v3 = [(VMMessageTranscriptionProgressView *)self foregroundView];
-  v4 = [v3 leadingAnchor];
-  v5 = [(VMMessageTranscriptionProgressView *)self leadingAnchor];
-  v6 = [v4 constraintEqualToAnchor:v5];
+  foregroundView = [(VMMessageTranscriptionProgressView *)self foregroundView];
+  leadingAnchor = [foregroundView leadingAnchor];
+  leadingAnchor2 = [(VMMessageTranscriptionProgressView *)self leadingAnchor];
+  v6 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
 
   v7 = NSStringFromSelector("foregroundViewLeadingAnchorLayoutConstraint");
   [v6 setIdentifier:v7];
 
   [v6 setActive:1];
   [(VMMessageTranscriptionProgressView *)self setForegroundViewLeadingAnchorLayoutConstraint:v6];
-  v8 = [(VMMessageTranscriptionProgressView *)self foregroundView];
-  v9 = [v8 trailingAnchor];
-  v10 = [(VMMessageTranscriptionProgressView *)self trailingAnchor];
-  v11 = [v9 constraintEqualToAnchor:v10];
+  foregroundView2 = [(VMMessageTranscriptionProgressView *)self foregroundView];
+  trailingAnchor = [foregroundView2 trailingAnchor];
+  trailingAnchor2 = [(VMMessageTranscriptionProgressView *)self trailingAnchor];
+  v11 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
 
   v12 = NSStringFromSelector("foregroundViewTrailingAnchorLayoutConstraint");
   [v11 setIdentifier:v12];
 
   [v11 setActive:1];
   [(VMMessageTranscriptionProgressView *)self setForegroundViewTrailingAnchorLayoutConstraint:v11];
-  v13 = [(VMMessageTranscriptionProgressView *)self foregroundView];
-  v14 = [v13 topAnchor];
-  v15 = [(VMMessageTranscriptionProgressView *)self topAnchor];
-  v16 = [v14 constraintEqualToAnchor:v15];
+  foregroundView3 = [(VMMessageTranscriptionProgressView *)self foregroundView];
+  topAnchor = [foregroundView3 topAnchor];
+  topAnchor2 = [(VMMessageTranscriptionProgressView *)self topAnchor];
+  v16 = [topAnchor constraintEqualToAnchor:topAnchor2];
 
   v17 = NSStringFromSelector("foregroundViewTopAnchorLayoutConstraint");
   [v16 setIdentifier:v17];
 
   [v16 setActive:1];
   [(VMMessageTranscriptionProgressView *)self setForegroundViewTopAnchorLayoutConstraint:v16];
-  v18 = [(VMMessageTranscriptionProgressView *)self foregroundView];
-  v19 = [v18 bottomAnchor];
-  v20 = [(VMMessageTranscriptionProgressView *)self bottomAnchor];
-  v21 = [v19 constraintEqualToAnchor:v20];
+  foregroundView4 = [(VMMessageTranscriptionProgressView *)self foregroundView];
+  bottomAnchor = [foregroundView4 bottomAnchor];
+  bottomAnchor2 = [(VMMessageTranscriptionProgressView *)self bottomAnchor];
+  v21 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
 
   v22 = NSStringFromSelector("foregroundViewBottomAnchorLayoutConstraint");
   [v21 setIdentifier:v22];
 
   [v21 setActive:1];
   [(VMMessageTranscriptionProgressView *)self setForegroundViewBottomAnchorLayoutConstraint:v21];
-  v23 = [(VMMessageTranscriptionProgressView *)self titleLabel];
-  v24 = [v23 centerXAnchor];
-  v25 = [(VMMessageTranscriptionProgressView *)self foregroundView];
-  v26 = [v25 centerXAnchor];
-  v27 = [v24 constraintEqualToAnchor:v26];
+  titleLabel = [(VMMessageTranscriptionProgressView *)self titleLabel];
+  centerXAnchor = [titleLabel centerXAnchor];
+  foregroundView5 = [(VMMessageTranscriptionProgressView *)self foregroundView];
+  centerXAnchor2 = [foregroundView5 centerXAnchor];
+  v27 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
 
   v28 = NSStringFromSelector("titleLabelCenterXLayoutConstraint");
   [v27 setIdentifier:v28];
 
   [v27 setActive:1];
   [(VMMessageTranscriptionProgressView *)self setTitleLabelCenterXLayoutConstraint:v27];
-  v29 = [(VMMessageTranscriptionProgressView *)self foregroundView];
-  v30 = [v29 trailingAnchor];
-  v31 = [(VMMessageTranscriptionProgressView *)self titleLabel];
-  v32 = [v31 trailingAnchor];
-  v33 = [v30 constraintGreaterThanOrEqualToAnchor:v32 constant:30.0];
+  foregroundView6 = [(VMMessageTranscriptionProgressView *)self foregroundView];
+  trailingAnchor3 = [foregroundView6 trailingAnchor];
+  titleLabel2 = [(VMMessageTranscriptionProgressView *)self titleLabel];
+  trailingAnchor4 = [titleLabel2 trailingAnchor];
+  v33 = [trailingAnchor3 constraintGreaterThanOrEqualToAnchor:trailingAnchor4 constant:30.0];
 
   v34 = NSStringFromSelector("titleLabelTrailingLayoutConstraint");
   [v33 setIdentifier:v34];
 
   [v33 setActive:1];
   [(VMMessageTranscriptionProgressView *)self setTitleLabelTrailingLayoutConstraint:v33];
-  v35 = [(VMMessageTranscriptionProgressView *)self foregroundView];
-  v36 = [v35 leadingAnchor];
-  v37 = [(VMMessageTranscriptionProgressView *)self titleLabel];
-  v38 = [v37 leadingAnchor];
-  v39 = [v36 constraintLessThanOrEqualToAnchor:v38 constant:30.0];
+  foregroundView7 = [(VMMessageTranscriptionProgressView *)self foregroundView];
+  leadingAnchor3 = [foregroundView7 leadingAnchor];
+  titleLabel3 = [(VMMessageTranscriptionProgressView *)self titleLabel];
+  leadingAnchor4 = [titleLabel3 leadingAnchor];
+  v39 = [leadingAnchor3 constraintLessThanOrEqualToAnchor:leadingAnchor4 constant:30.0];
 
   v40 = NSStringFromSelector("titleLabelLeadingLayoutConstraint");
   [v39 setIdentifier:v40];
 
   [v39 setActive:1];
   [(VMMessageTranscriptionProgressView *)self setTitleLabelLeadingLayoutConstraint:v39];
-  v41 = [(VMMessageTranscriptionProgressView *)self titleLabel];
-  v42 = [v41 firstBaselineAnchor];
-  v43 = [(VMMessageTranscriptionProgressView *)self foregroundView];
-  v44 = [v43 topAnchor];
+  titleLabel4 = [(VMMessageTranscriptionProgressView *)self titleLabel];
+  firstBaselineAnchor = [titleLabel4 firstBaselineAnchor];
+  foregroundView8 = [(VMMessageTranscriptionProgressView *)self foregroundView];
+  topAnchor3 = [foregroundView8 topAnchor];
   [(VMMessageTranscriptionProgressView *)self titleLabelFirstBaselineLayoutConstraintConstant];
-  v45 = [v42 constraintEqualToAnchor:v44 constant:?];
+  v45 = [firstBaselineAnchor constraintEqualToAnchor:topAnchor3 constant:?];
 
   v46 = NSStringFromSelector("titleLabelFirstBaselineLayoutConstraint");
   [v45 setIdentifier:v46];
 
   [v45 setActive:1];
   [(VMMessageTranscriptionProgressView *)self setTitleLabelFirstBaselineLayoutConstraint:v45];
-  v47 = [(VMMessageTranscriptionProgressView *)self progressView];
-  v48 = [v47 centerXAnchor];
-  v49 = [(VMMessageTranscriptionProgressView *)self foregroundView];
-  v50 = [v49 centerXAnchor];
-  v51 = [v48 constraintEqualToAnchor:v50];
+  progressView = [(VMMessageTranscriptionProgressView *)self progressView];
+  centerXAnchor3 = [progressView centerXAnchor];
+  foregroundView9 = [(VMMessageTranscriptionProgressView *)self foregroundView];
+  centerXAnchor4 = [foregroundView9 centerXAnchor];
+  v51 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
 
   v52 = NSStringFromSelector("progressViewCenterXLayoutConstraint");
   [v51 setIdentifier:v52];
 
   [v51 setActive:1];
   [(VMMessageTranscriptionProgressView *)self setProgressViewCenterXLayoutConstraint:v51];
-  v53 = [(VMMessageTranscriptionProgressView *)self progressView];
-  v54 = [v53 leadingAnchor];
-  v55 = [(VMMessageTranscriptionProgressView *)self foregroundView];
-  v56 = [v55 leadingAnchor];
-  v57 = [v54 constraintEqualToAnchor:v56 constant:30.0];
+  progressView2 = [(VMMessageTranscriptionProgressView *)self progressView];
+  leadingAnchor5 = [progressView2 leadingAnchor];
+  foregroundView10 = [(VMMessageTranscriptionProgressView *)self foregroundView];
+  leadingAnchor6 = [foregroundView10 leadingAnchor];
+  v57 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6 constant:30.0];
 
   v58 = NSStringFromSelector("progressViewLeadingLayoutConstraint");
   [v57 setIdentifier:v58];
 
   [v57 setActive:1];
   [(VMMessageTranscriptionProgressView *)self setProgressViewLeadingLayoutConstraint:v57];
-  v59 = [(VMMessageTranscriptionProgressView *)self foregroundView];
-  v60 = [v59 trailingAnchor];
-  v61 = [(VMMessageTranscriptionProgressView *)self progressView];
-  v62 = [v61 trailingAnchor];
-  v63 = [v60 constraintEqualToAnchor:v62 constant:30.0];
+  foregroundView11 = [(VMMessageTranscriptionProgressView *)self foregroundView];
+  trailingAnchor5 = [foregroundView11 trailingAnchor];
+  progressView3 = [(VMMessageTranscriptionProgressView *)self progressView];
+  trailingAnchor6 = [progressView3 trailingAnchor];
+  v63 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6 constant:30.0];
 
   v64 = NSStringFromSelector("progressViewTrailingLayoutConstraint");
   [v63 setIdentifier:v64];
 
   [v63 setActive:1];
   [(VMMessageTranscriptionProgressView *)self setProgressViewTrailingLayoutConstraint:v63];
-  v65 = [(VMMessageTranscriptionProgressView *)self foregroundView];
-  v66 = [v65 bottomAnchor];
-  v67 = [(VMMessageTranscriptionProgressView *)self progressView];
-  v68 = [v67 bottomAnchor];
-  v69 = [v66 constraintEqualToAnchor:v68 constant:10.0];
+  foregroundView12 = [(VMMessageTranscriptionProgressView *)self foregroundView];
+  bottomAnchor3 = [foregroundView12 bottomAnchor];
+  progressView4 = [(VMMessageTranscriptionProgressView *)self progressView];
+  bottomAnchor4 = [progressView4 bottomAnchor];
+  v69 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4 constant:10.0];
 
   v70 = NSStringFromSelector("progressViewBottomLayoutConstraint");
   [v69 setIdentifier:v70];
@@ -211,52 +211,52 @@
   v15.receiver = self;
   v15.super_class = VMMessageTranscriptionProgressView;
   [(VMMessageTranscriptionProgressView *)&v15 unloadConstraints];
-  v3 = [(VMMessageTranscriptionProgressView *)self titleLabelCenterXLayoutConstraint];
-  [v3 setActive:0];
+  titleLabelCenterXLayoutConstraint = [(VMMessageTranscriptionProgressView *)self titleLabelCenterXLayoutConstraint];
+  [titleLabelCenterXLayoutConstraint setActive:0];
 
   [(VMMessageTranscriptionProgressView *)self setTitleLabelCenterXLayoutConstraint:0];
-  v4 = [(VMMessageTranscriptionProgressView *)self titleLabelTrailingLayoutConstraint];
-  [v4 setActive:0];
+  titleLabelTrailingLayoutConstraint = [(VMMessageTranscriptionProgressView *)self titleLabelTrailingLayoutConstraint];
+  [titleLabelTrailingLayoutConstraint setActive:0];
 
   [(VMMessageTranscriptionProgressView *)self setTitleLabelTrailingLayoutConstraint:0];
-  v5 = [(VMMessageTranscriptionProgressView *)self titleLabelLeadingLayoutConstraint];
-  [v5 setActive:0];
+  titleLabelLeadingLayoutConstraint = [(VMMessageTranscriptionProgressView *)self titleLabelLeadingLayoutConstraint];
+  [titleLabelLeadingLayoutConstraint setActive:0];
 
   [(VMMessageTranscriptionProgressView *)self setTitleLabelLeadingLayoutConstraint:0];
-  v6 = [(VMMessageTranscriptionProgressView *)self titleLabelFirstBaselineLayoutConstraint];
-  [v6 setActive:0];
+  titleLabelFirstBaselineLayoutConstraint = [(VMMessageTranscriptionProgressView *)self titleLabelFirstBaselineLayoutConstraint];
+  [titleLabelFirstBaselineLayoutConstraint setActive:0];
 
   [(VMMessageTranscriptionProgressView *)self setTitleLabelFirstBaselineLayoutConstraint:0];
-  v7 = [(VMMessageTranscriptionProgressView *)self progressViewCenterXLayoutConstraint];
-  [v7 setActive:0];
+  progressViewCenterXLayoutConstraint = [(VMMessageTranscriptionProgressView *)self progressViewCenterXLayoutConstraint];
+  [progressViewCenterXLayoutConstraint setActive:0];
 
   [(VMMessageTranscriptionProgressView *)self setProgressViewCenterXLayoutConstraint:0];
-  v8 = [(VMMessageTranscriptionProgressView *)self progressViewLeadingLayoutConstraint];
-  [v8 setActive:0];
+  progressViewLeadingLayoutConstraint = [(VMMessageTranscriptionProgressView *)self progressViewLeadingLayoutConstraint];
+  [progressViewLeadingLayoutConstraint setActive:0];
 
   [(VMMessageTranscriptionProgressView *)self setProgressViewLeadingLayoutConstraint:0];
-  v9 = [(VMMessageTranscriptionProgressView *)self progressViewTrailingLayoutConstraint];
-  [v9 setActive:0];
+  progressViewTrailingLayoutConstraint = [(VMMessageTranscriptionProgressView *)self progressViewTrailingLayoutConstraint];
+  [progressViewTrailingLayoutConstraint setActive:0];
 
   [(VMMessageTranscriptionProgressView *)self setProgressViewTrailingLayoutConstraint:0];
-  v10 = [(VMMessageTranscriptionProgressView *)self progressViewBottomLayoutConstraint];
-  [v10 setActive:0];
+  progressViewBottomLayoutConstraint = [(VMMessageTranscriptionProgressView *)self progressViewBottomLayoutConstraint];
+  [progressViewBottomLayoutConstraint setActive:0];
 
   [(VMMessageTranscriptionProgressView *)self setProgressViewBottomLayoutConstraint:0];
-  v11 = [(VMMessageTranscriptionProgressView *)self foregroundViewLeadingAnchorLayoutConstraint];
-  [v11 setActive:0];
+  foregroundViewLeadingAnchorLayoutConstraint = [(VMMessageTranscriptionProgressView *)self foregroundViewLeadingAnchorLayoutConstraint];
+  [foregroundViewLeadingAnchorLayoutConstraint setActive:0];
 
   [(VMMessageTranscriptionProgressView *)self setForegroundViewLeadingAnchorLayoutConstraint:0];
-  v12 = [(VMMessageTranscriptionProgressView *)self foregroundViewTrailingAnchorLayoutConstraint];
-  [v12 setActive:0];
+  foregroundViewTrailingAnchorLayoutConstraint = [(VMMessageTranscriptionProgressView *)self foregroundViewTrailingAnchorLayoutConstraint];
+  [foregroundViewTrailingAnchorLayoutConstraint setActive:0];
 
   [(VMMessageTranscriptionProgressView *)self setForegroundViewTrailingAnchorLayoutConstraint:0];
-  v13 = [(VMMessageTranscriptionProgressView *)self foregroundViewTopAnchorLayoutConstraint];
-  [v13 setActive:0];
+  foregroundViewTopAnchorLayoutConstraint = [(VMMessageTranscriptionProgressView *)self foregroundViewTopAnchorLayoutConstraint];
+  [foregroundViewTopAnchorLayoutConstraint setActive:0];
 
   [(VMMessageTranscriptionProgressView *)self setForegroundViewTopAnchorLayoutConstraint:0];
-  v14 = [(VMMessageTranscriptionProgressView *)self foregroundViewBottomAnchorLayoutConstraint];
-  [v14 setActive:0];
+  foregroundViewBottomAnchorLayoutConstraint = [(VMMessageTranscriptionProgressView *)self foregroundViewBottomAnchorLayoutConstraint];
+  [foregroundViewBottomAnchorLayoutConstraint setActive:0];
 
   [(VMMessageTranscriptionProgressView *)self setForegroundViewBottomAnchorLayoutConstraint:0];
 }
@@ -268,18 +268,18 @@
   [(VMMessageTranscriptionProgressView *)&v7 updateConstraintsConstants];
   [(VMMessageTranscriptionProgressView *)self titleLabelFirstBaselineLayoutConstraintConstant];
   v4 = v3;
-  v5 = [(VMMessageTranscriptionProgressView *)self titleLabelFirstBaselineLayoutConstraint];
-  [v5 setConstant:v4];
+  titleLabelFirstBaselineLayoutConstraint = [(VMMessageTranscriptionProgressView *)self titleLabelFirstBaselineLayoutConstraint];
+  [titleLabelFirstBaselineLayoutConstraint setConstant:v4];
 
-  v6 = [(VMMessageTranscriptionProgressView *)self titleLabel];
-  [v6 sizeToFit];
+  titleLabel = [(VMMessageTranscriptionProgressView *)self titleLabel];
+  [titleLabel sizeToFit];
 }
 
 - (double)titleLabelFirstBaselineLayoutConstraintConstant
 {
   v2 = +[UIFont voicemailCaptionRegularFont];
-  v3 = [v2 fontDescriptor];
-  v4 = [v3 objectForKey:UIFontDescriptorTextStyleAttribute];
+  fontDescriptor = [v2 fontDescriptor];
+  v4 = [fontDescriptor objectForKey:UIFontDescriptorTextStyleAttribute];
 
   if (v4)
   {

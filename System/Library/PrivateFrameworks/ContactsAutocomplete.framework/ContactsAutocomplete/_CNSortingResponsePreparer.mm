@@ -1,19 +1,19 @@
 @interface _CNSortingResponsePreparer
-- (id)prepareResults:(id)a3 forFetch:(id)a4;
+- (id)prepareResults:(id)results forFetch:(id)fetch;
 @end
 
 @implementation _CNSortingResponsePreparer
 
-- (id)prepareResults:(id)a3 forFetch:(id)a4
+- (id)prepareResults:(id)results forFetch:(id)fetch
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CNAutocompleteQueryResponsePreparer *)self delegate];
-  [v8 autocompleteFetch:v7 willSortResults:v6];
+  resultsCopy = results;
+  fetchCopy = fetch;
+  delegate = [(CNAutocompleteQueryResponsePreparer *)self delegate];
+  [delegate autocompleteFetch:fetchCopy willSortResults:resultsCopy];
 
-  v9 = [(CNAutocompleteQueryResponsePreparer *)self delegate];
-  v10 = [v9 resultComparatorForAutocompleteFetch:v7];
+  delegate2 = [(CNAutocompleteQueryResponsePreparer *)self delegate];
+  v10 = [delegate2 resultComparatorForAutocompleteFetch:fetchCopy];
 
   v11 = CNALoggingContextDebug();
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
@@ -30,7 +30,7 @@
     v23[2] = __54___CNSortingResponsePreparer_prepareResults_forFetch___block_invoke;
     v23[3] = &unk_2781C4E58;
     v24 = v10;
-    v13 = [v6 sortedArrayUsingComparator:v23];
+    v13 = [resultsCopy sortedArrayUsingComparator:v23];
   }
 
   else
@@ -41,7 +41,7 @@
       _os_log_impl(&dword_2155FE000, v11, OS_LOG_TYPE_DEFAULT, "Using standard sorting algorithms", buf, 2u);
     }
 
-    v13 = [v6 sortedArrayUsingSelector:sel_compare_];
+    v13 = [resultsCopy sortedArrayUsingSelector:sel_compare_];
   }
 
   v14 = CNALoggingContextDebug();
@@ -66,8 +66,8 @@
     _os_log_impl(&dword_2155FE000, v14, OS_LOG_TYPE_DEFAULT, "Sorted results: (%{public}@): %{private}@", buf, 0x16u);
   }
 
-  v18 = [(_CNAutocompleteResponsePreparerDecorator *)self preparer];
-  v19 = [v18 prepareResults:v13 forFetch:v7];
+  preparer = [(_CNAutocompleteResponsePreparerDecorator *)self preparer];
+  v19 = [preparer prepareResults:v13 forFetch:fetchCopy];
 
   v20 = *MEMORY[0x277D85DE8];
 

@@ -1,14 +1,14 @@
 @interface NTKKuiperFontLoader
-+ (CGSize)_discretizedTypographicSizeForTypographicSize:(CGSize)a3;
-+ (id)_fontVariationAttributesForTypographicSize:(CGSize)a3 tickRotation:(double)a4;
-+ (id)_kuiperFontDescriptorWithTypographicSize:(CGSize)a3 tickRotation:(double)a4 flipped:(BOOL)a5 background:(BOOL)a6;
-- (NTKKuiperFontLoader)initWithFontSize:(double)a3;
++ (CGSize)_discretizedTypographicSizeForTypographicSize:(CGSize)size;
++ (id)_fontVariationAttributesForTypographicSize:(CGSize)size tickRotation:(double)rotation;
++ (id)_kuiperFontDescriptorWithTypographicSize:(CGSize)size tickRotation:(double)rotation flipped:(BOOL)flipped background:(BOOL)background;
+- (NTKKuiperFontLoader)initWithFontSize:(double)size;
 - (id)fontForMaximumOverscrollTypographicSize;
 @end
 
 @implementation NTKKuiperFontLoader
 
-- (NTKKuiperFontLoader)initWithFontSize:(double)a3
+- (NTKKuiperFontLoader)initWithFontSize:(double)size
 {
   v9.receiver = self;
   v9.super_class = NTKKuiperFontLoader;
@@ -16,7 +16,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_fontSize = a3;
+    v4->_fontSize = size;
     v6 = objc_opt_new();
     fontCache = v5->_fontCache;
     v5->_fontCache = v6;
@@ -32,11 +32,11 @@
   return [(NTKKuiperFontLoader *)self _cachedFontWithTypographicSize:0 tickRotation:0 flipped:v3 background:?];
 }
 
-+ (CGSize)_discretizedTypographicSizeForTypographicSize:(CGSize)a3
++ (CGSize)_discretizedTypographicSizeForTypographicSize:(CGSize)size
 {
-  height = a3.height;
+  height = size.height;
   v4 = roundf(height);
-  width = a3.width;
+  width = size.width;
   v6 = roundf(width);
   v7 = v4;
   result.height = v6;
@@ -44,12 +44,12 @@
   return result;
 }
 
-+ (id)_kuiperFontDescriptorWithTypographicSize:(CGSize)a3 tickRotation:(double)a4 flipped:(BOOL)a5 background:(BOOL)a6
++ (id)_kuiperFontDescriptorWithTypographicSize:(CGSize)size tickRotation:(double)rotation flipped:(BOOL)flipped background:(BOOL)background
 {
-  v6 = a6;
-  v7 = a5;
-  height = a3.height;
-  width = a3.width;
+  backgroundCopy = background;
+  flippedCopy = flipped;
+  height = size.height;
+  width = size.width;
   if (qword_16E08 != -1)
   {
     sub_79E0();
@@ -57,12 +57,12 @@
 
   v12 = [qword_16E00 copy];
   v13 = objc_opt_new();
-  v14 = [a1 _fontVariationAttributesForTypographicSize:width tickRotation:{height, a4}];
+  v14 = [self _fontVariationAttributesForTypographicSize:width tickRotation:{height, rotation}];
   [v13 setObject:v14 forKey:kCTFontVariationAttribute];
   v15 = objc_opt_new();
-  if (a4 > 0.0 || v6)
+  if (rotation > 0.0 || backgroundCopy)
   {
-    if (v6)
+    if (backgroundCopy)
     {
       if (qword_16E18 != -1)
       {
@@ -86,7 +86,7 @@
     [v15 addObject:v17];
   }
 
-  if (v7)
+  if (flippedCopy)
   {
     if (qword_16E38 != -1)
     {
@@ -106,10 +106,10 @@
   return v18;
 }
 
-+ (id)_fontVariationAttributesForTypographicSize:(CGSize)a3 tickRotation:(double)a4
++ (id)_fontVariationAttributesForTypographicSize:(CGSize)size tickRotation:(double)rotation
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v7 = objc_opt_new();
   v8 = [NSNumber numberWithDouble:width];
   v9 = [NSNumber numberWithUnsignedInt:TextToFourCharCode()];
@@ -119,9 +119,9 @@
   v11 = [NSNumber numberWithUnsignedInt:TextToFourCharCode()];
   [v7 setObject:v10 forKey:v11];
 
-  if (a4 > 0.0)
+  if (rotation > 0.0)
   {
-    v12 = [NSNumber numberWithDouble:a4];
+    v12 = [NSNumber numberWithDouble:rotation];
     v13 = [NSNumber numberWithUnsignedInt:TextToFourCharCode()];
     [v7 setObject:v12 forKey:v13];
   }

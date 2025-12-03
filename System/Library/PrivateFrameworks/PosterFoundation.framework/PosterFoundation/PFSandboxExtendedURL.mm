@@ -1,25 +1,25 @@
 @interface PFSandboxExtendedURL
-+ (id)temporaryReadonlySandboxExtendedURLForAuditToken:(id)a3 error:(id *)a4;
-+ (id)temporaryReadwriteSandboxExtendedURLForAuditToken:(id)a3 error:(id *)a4;
-- (BOOL)_consumeSandboxExtensionHandleForXPCObject:(id)a3 context:(id)a4;
++ (id)temporaryReadonlySandboxExtendedURLForAuditToken:(id)token error:(id *)error;
++ (id)temporaryReadwriteSandboxExtendedURLForAuditToken:(id)token error:(id *)error;
+- (BOOL)_consumeSandboxExtensionHandleForXPCObject:(id)object context:(id)context;
 - (BOOL)isValid;
-- (BOOL)isValidWithError:(id *)a3;
-- (PFSandboxExtendedURL)initWithBSXPCCoder:(id)a3;
-- (PFSandboxExtendedURL)initWithCoder:(id)a3;
-- (PFSandboxExtendedURL)initWithURL:(id)a3 options:(unsigned __int8)a4 auditToken:(id)a5 error:(id *)a6;
-- (id)_issueSandboxExtensionTokenWithContext:(id)a3;
+- (BOOL)isValidWithError:(id *)error;
+- (PFSandboxExtendedURL)initWithBSXPCCoder:(id)coder;
+- (PFSandboxExtendedURL)initWithCoder:(id)coder;
+- (PFSandboxExtendedURL)initWithURL:(id)l options:(unsigned __int8)options auditToken:(id)token error:(id *)error;
+- (id)_issueSandboxExtensionTokenWithContext:(id)context;
 - (void)dealloc;
-- (void)encodeWithBSXPCCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithBSXPCCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 - (void)invalidate;
 @end
 
 @implementation PFSandboxExtendedURL
 
-+ (id)temporaryReadwriteSandboxExtendedURLForAuditToken:(id)a3 error:(id *)a4
++ (id)temporaryReadwriteSandboxExtendedURLForAuditToken:(id)token error:(id *)error
 {
   v5 = MEMORY[0x1E695DFF8];
-  v6 = a3;
+  tokenCopy = token;
   v7 = [v5 pf_temporaryDirectoryURLWithBasenamePrefix:@"SandboxExtendedURLRW"];
   v8 = dispatch_get_global_queue(21, 0);
   block[0] = MEMORY[0x1E69E9820];
@@ -30,7 +30,7 @@
   v9 = v7;
   dispatch_async(v8, block);
 
-  v10 = [[PFSandboxExtendedURL alloc] initWithURL:v9 options:7 auditToken:v6 error:a4];
+  v10 = [[PFSandboxExtendedURL alloc] initWithURL:v9 options:7 auditToken:tokenCopy error:error];
 
   return v10;
 }
@@ -64,31 +64,31 @@ void __80__PFSandboxExtendedURL_temporaryReadwriteSandboxExtendedURLForAuditToke
   v8 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)temporaryReadonlySandboxExtendedURLForAuditToken:(id)a3 error:(id *)a4
++ (id)temporaryReadonlySandboxExtendedURLForAuditToken:(id)token error:(id *)error
 {
   v5 = MEMORY[0x1E695DFF8];
-  v6 = a3;
+  tokenCopy = token;
   v7 = [v5 pf_temporaryDirectoryURLWithBasenamePrefix:@"SandboxExtendedURLRO"];
   [v7 pf_markPurgableInOneHourWithError:0];
-  v8 = [[PFSandboxExtendedURL alloc] initWithURL:v7 options:3 auditToken:v6 error:a4];
+  v8 = [[PFSandboxExtendedURL alloc] initWithURL:v7 options:3 auditToken:tokenCopy error:error];
 
   return v8;
 }
 
-- (PFSandboxExtendedURL)initWithURL:(id)a3 options:(unsigned __int8)a4 auditToken:(id)a5 error:(id *)a6
+- (PFSandboxExtendedURL)initWithURL:(id)l options:(unsigned __int8)options auditToken:(id)token error:(id *)error
 {
-  v11 = a3;
-  v12 = a5;
-  if (![v11 checkResourceIsReachableAndReturnError:a6])
+  lCopy = l;
+  tokenCopy = token;
+  if (![lCopy checkResourceIsReachableAndReturnError:error])
   {
 LABEL_8:
-    v18 = 0;
+    selfCopy = 0;
     goto LABEL_12;
   }
 
-  if ([v12 isInvalid])
+  if ([tokenCopy isInvalid])
   {
-    if (a6)
+    if (error)
     {
       v13 = PFFunctionNameForAddress(v6);
       v16 = v13;
@@ -102,7 +102,7 @@ LABEL_8:
         v17 = @"(Unknown Location)";
       }
 
-      *a6 = PFGeneralErrorFromObjectWithLocalizedFailureReason(v12, v17, 0, 0, 0, @"Audit token is invalid.", v14, v15, 0);
+      *error = PFGeneralErrorFromObjectWithLocalizedFailureReason(tokenCopy, v17, 0, 0, 0, @"Audit token is invalid.", v14, v15, 0);
     }
 
     goto LABEL_8;
@@ -114,22 +114,22 @@ LABEL_8:
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_sandboxExtensionAuditToken, a5);
-    v21 = [v11 copy];
+    objc_storeStrong(&v19->_sandboxExtensionAuditToken, token);
+    v21 = [lCopy copy];
     sandboxExtensionURL = v20->_sandboxExtensionURL;
     v20->_sandboxExtensionURL = v21;
 
-    v20->_options = a4;
+    v20->_options = options;
     v23 = objc_opt_new();
     invalidationSignal = v20->_invalidationSignal;
     v20->_invalidationSignal = v23;
   }
 
   self = v20;
-  v18 = self;
+  selfCopy = self;
 LABEL_12:
 
-  return v18;
+  return selfCopy;
 }
 
 - (void)dealloc
@@ -164,16 +164,16 @@ LABEL_12:
 - (void)invalidate
 {
   v6 = *MEMORY[0x1E69E9840];
-  v2 = *a1;
+  v2 = *self;
   v4 = 138543362;
   v5 = v2;
   _os_log_debug_impl(&dword_1C269D000, a2, OS_LOG_TYPE_DEBUG, "purged contents : %{public}@", &v4, 0xCu);
   v3 = *MEMORY[0x1E69E9840];
 }
 
-- (PFSandboxExtendedURL)initWithCoder:(id)a3
+- (PFSandboxExtendedURL)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = PFSandboxExtendedURL;
   v5 = [(PFSandboxExtendedURL *)&v15 init];
@@ -181,7 +181,7 @@ LABEL_12:
   if (v5)
   {
     v5->_sandboxExtensionHandle = -1;
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_sandboxExtensionURL"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_sandboxExtensionURL"];
     sandboxExtensionURL = v6->_sandboxExtensionURL;
     v6->_sandboxExtensionURL = v7;
 
@@ -192,7 +192,7 @@ LABEL_12:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v11 = [v4 decodeXPCObjectOfType:MEMORY[0x1E69E9F10] forKey:@"sandboxToken"];
+      v11 = [coderCopy decodeXPCObjectOfType:MEMORY[0x1E69E9F10] forKey:@"sandboxToken"];
       v12 = [(PFSandboxExtendedURL *)v6 _consumeSandboxExtensionHandleForXPCObject:v11 context:@"initWithCoder"];
 
       if (!v12)
@@ -211,17 +211,17 @@ LABEL_6:
   return v13;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v14 = a3;
+  coderCopy = coder;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v14 encodeObject:self->_sandboxExtensionURL forKey:@"_sandboxExtensionURL"];
+    [coderCopy encodeObject:self->_sandboxExtensionURL forKey:@"_sandboxExtensionURL"];
     v5 = [(PFSandboxExtendedURL *)self _issueSandboxExtensionTokenWithContext:@"encodeWithCoder"];
     if (v5)
     {
-      [v14 encodeXPCObject:v5 forKey:@"sandboxToken"];
+      [coderCopy encodeXPCObject:v5 forKey:@"sandboxToken"];
     }
   }
 
@@ -247,13 +247,13 @@ LABEL_6:
   }
 }
 
-- (BOOL)isValidWithError:(id *)a3
+- (BOOL)isValidWithError:(id *)error
 {
   if ([(BSAtomicSignal *)self->_invalidationSignal hasBeenSignalled])
   {
-    if (a3)
+    if (error)
     {
-      *a3 = [MEMORY[0x1E696ABC0] pf_errorWithCode:2];
+      *error = [MEMORY[0x1E696ABC0] pf_errorWithCode:2];
     }
 
     return 0;
@@ -263,13 +263,13 @@ LABEL_6:
   {
     sandboxExtensionURL = self->_sandboxExtensionURL;
 
-    return [(NSURL *)sandboxExtensionURL checkResourceIsReachableAndReturnError:a3];
+    return [(NSURL *)sandboxExtensionURL checkResourceIsReachableAndReturnError:error];
   }
 }
 
-- (PFSandboxExtendedURL)initWithBSXPCCoder:(id)a3
+- (PFSandboxExtendedURL)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = PFSandboxExtendedURL;
   v5 = [(PFSandboxExtendedURL *)&v14 init];
@@ -277,7 +277,7 @@ LABEL_6:
   if (v5)
   {
     v5->_sandboxExtensionHandle = -1;
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_sandboxExtensionURL"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_sandboxExtensionURL"];
     sandboxExtensionURL = v6->_sandboxExtensionURL;
     v6->_sandboxExtensionURL = v7;
 
@@ -285,7 +285,7 @@ LABEL_6:
     invalidationSignal = v6->_invalidationSignal;
     v6->_invalidationSignal = v9;
 
-    v11 = [v4 decodeXPCObjectOfType:MEMORY[0x1E69E9F10] forKey:@"sandboxToken"];
+    v11 = [coderCopy decodeXPCObjectOfType:MEMORY[0x1E69E9F10] forKey:@"sandboxToken"];
     if (![(PFSandboxExtendedURL *)v6 _consumeSandboxExtensionHandleForXPCObject:v11 context:@"BSXPC"])
     {
 
@@ -302,21 +302,21 @@ LABEL_6:
   return v12;
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
-  v5 = a3;
-  [v5 encodeObject:self->_sandboxExtensionURL forKey:@"_sandboxExtensionURL"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_sandboxExtensionURL forKey:@"_sandboxExtensionURL"];
   v4 = [(PFSandboxExtendedURL *)self _issueSandboxExtensionTokenWithContext:@"BSXPC"];
   if (v4)
   {
-    [v5 encodeXPCObject:v4 forKey:@"sandboxToken"];
+    [coderCopy encodeXPCObject:v4 forKey:@"sandboxToken"];
   }
 }
 
-- (id)_issueSandboxExtensionTokenWithContext:(id)a3
+- (id)_issueSandboxExtensionTokenWithContext:(id)context
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  contextCopy = context;
   p_sandboxExtensionURL = &self->_sandboxExtensionURL;
   if ((self->_options & 4) != 0)
   {
@@ -358,7 +358,7 @@ LABEL_6:
       sandboxExtensionURL = self->_sandboxExtensionURL;
       v21 = *__error();
       *v22 = 138544130;
-      *&v22[4] = v4;
+      *&v22[4] = contextCopy;
       *&v22[12] = 1024;
       *&v22[14] = v19;
       *&v22[18] = 2114;
@@ -385,7 +385,7 @@ LABEL_13:
     v13 = PFLogPosterContents();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      [(PFSandboxExtendedURL *)v4 _issueSandboxExtensionTokenWithContext:?];
+      [(PFSandboxExtendedURL *)contextCopy _issueSandboxExtensionTokenWithContext:?];
     }
   }
 
@@ -397,25 +397,25 @@ LABEL_18:
   return v15;
 }
 
-- (BOOL)_consumeSandboxExtensionHandleForXPCObject:(id)a3 context:(id)a4
+- (BOOL)_consumeSandboxExtensionHandleForXPCObject:(id)object context:(id)context
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  objectCopy = object;
+  contextCopy = context;
+  if (!objectCopy)
   {
     v10 = PFLogPosterContents();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      [PFSandboxExtendedURL _consumeSandboxExtensionHandleForXPCObject:v7 context:self];
+      [PFSandboxExtendedURL _consumeSandboxExtensionHandleForXPCObject:contextCopy context:self];
     }
 
     goto LABEL_11;
   }
 
-  if (!xpc_string_get_string_ptr(v6))
+  if (!xpc_string_get_string_ptr(objectCopy))
   {
-    Class = object_getClass(v6);
+    Class = object_getClass(objectCopy);
     name = xpc_type_get_name(Class);
     v10 = PFLogPosterContents();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -424,11 +424,11 @@ LABEL_18:
       v14 = NSStringFromClass(v13);
       sandboxExtensionURL = self->_sandboxExtensionURL;
       v22 = 138544386;
-      v23 = v7;
+      v23 = contextCopy;
       v24 = 2080;
       v25 = name;
       v26 = 2112;
-      *v27 = v6;
+      *v27 = objectCopy;
       *&v27[8] = 2114;
       *&v27[10] = v14;
       *&v27[18] = 2114;
@@ -451,9 +451,9 @@ LABEL_18:
       v20 = NSStringFromClass(v19);
       v21 = self->_sandboxExtensionURL;
       v22 = 138544386;
-      v23 = v7;
+      v23 = contextCopy;
       v24 = 2112;
-      v25 = v6;
+      v25 = objectCopy;
       v26 = 1024;
       *v27 = v18;
       *&v27[4] = 2114;

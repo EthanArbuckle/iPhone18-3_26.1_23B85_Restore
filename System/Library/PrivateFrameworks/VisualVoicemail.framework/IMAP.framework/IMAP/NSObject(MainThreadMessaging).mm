@@ -8,16 +8,16 @@
 {
   v12 = a4;
   v11 = a5;
-  v8 = [a1 methodSignatureForSelector:a3];
-  v9 = [v8 numberOfArguments];
+  v8 = [self methodSignatureForSelector:a3];
+  numberOfArguments = [v8 numberOfArguments];
   v10 = [MEMORY[0x277CBEAE8] invocationWithMethodSignature:v8];
   [v10 retainArguments];
-  [v10 setTarget:a1];
+  [v10 setTarget:self];
   [v10 setSelector:a3];
-  if (v9 >= 3)
+  if (numberOfArguments >= 3)
   {
     [v10 setArgument:&v12 atIndex:2];
-    if (v9 != 3)
+    if (numberOfArguments != 3)
     {
       [v10 setArgument:&v11 atIndex:3];
     }

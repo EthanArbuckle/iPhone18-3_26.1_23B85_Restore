@@ -1,6 +1,6 @@
 @interface VTTestProcessorImplementation
-- (BOOL)processWithParams:(id)a3 error:(id *)a4;
-- (BOOL)startSessionWithConfiguration:(id)a3 error:(id *)a4;
+- (BOOL)processWithParams:(id)params error:(id *)error;
+- (BOOL)startSessionWithConfiguration:(id)configuration error:(id *)error;
 - (VTTestProcessorImplementation)init;
 - (void)dealloc;
 @end
@@ -16,16 +16,16 @@
   return result;
 }
 
-- (BOOL)startSessionWithConfiguration:(id)a3 error:(id *)a4
+- (BOOL)startSessionWithConfiguration:(id)configuration error:(id *)error
 {
-  v6 = [a3 flags];
-  self->_flags = v6;
-  if ((v6 & 1) == 0)
+  flags = [configuration flags];
+  self->_flags = flags;
+  if ((flags & 1) == 0)
   {
     return VTPixelTransferSessionCreate(*MEMORY[0x1E695E480], &self->_pixelTransferSession) == 0;
   }
 
-  if ((v6 & 4) != 0)
+  if ((flags & 4) != 0)
   {
     v8 = @"com.apple.testProcessor";
     v9 = -1;
@@ -39,11 +39,11 @@
 
   v10 = [MEMORY[0x1E696ABC0] errorWithDomain:v8 code:v9 userInfo:0];
   result = 0;
-  *a4 = v10;
+  *error = v10;
   return result;
 }
 
-- (BOOL)processWithParams:(id)a3 error:(id *)a4
+- (BOOL)processWithParams:(id)params error:(id *)error
 {
   flags = self->_flags;
   if ((flags & 2) != 0)
@@ -61,12 +61,12 @@
     }
 
     v12 = 0;
-    *a4 = [MEMORY[0x1E696ABC0] errorWithDomain:v10 code:v11 userInfo:0];
+    *error = [MEMORY[0x1E696ABC0] errorWithDomain:v10 code:v11 userInfo:0];
   }
 
   else
   {
-    v7 = [objc_msgSend(a3 "sourceFrame")];
+    v7 = [objc_msgSend(params "sourceFrame")];
     if (v7)
     {
       v8 = CFRetain(v7);
@@ -77,7 +77,7 @@
       v8 = 0;
     }
 
-    v13 = [objc_msgSend(a3 "destinationFrame")];
+    v13 = [objc_msgSend(params "destinationFrame")];
     if (v13)
     {
       v14 = CFRetain(v13);

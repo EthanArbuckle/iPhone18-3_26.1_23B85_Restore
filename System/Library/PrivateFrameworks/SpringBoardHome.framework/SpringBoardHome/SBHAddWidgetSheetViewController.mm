@@ -8,143 +8,143 @@
 - (BOOL)_shouldShowSuggestionsListItem;
 - (BOOL)_shouldShowTitleAndSubtitle;
 - (BOOL)_wantsNavigationBarHidden;
-- (BOOL)collectionView:(id)a3 shouldSelectItemAtIndexPath:(id)a4;
+- (BOOL)collectionView:(id)view shouldSelectItemAtIndexPath:(id)path;
 - (CGRect)keyboardFrameIntersect;
 - (NSDirectionalEdgeInsets)applicationsSectionInsets;
 - (NSDirectionalEdgeInsets)contentInsets;
 - (NSMutableDictionary)userInfo;
 - (OS_dispatch_queue)applicationWidgetCollectionIconLoadingQueue;
-- (SBHAddWidgetSheetViewController)initWithConfiguration:(id)a3;
-- (SBHAddWidgetSheetViewController)initWithListLayoutProvider:(id)a3 iconViewProvider:(id)a4 allowedWidgets:(SBHWidgetFilteringParameters)a5 appCellConfigurator:(id)a6 addWidgetSheetStyle:(unint64_t)a7;
+- (SBHAddWidgetSheetViewController)initWithConfiguration:(id)configuration;
+- (SBHAddWidgetSheetViewController)initWithListLayoutProvider:(id)provider iconViewProvider:(id)viewProvider allowedWidgets:(SBHWidgetFilteringParameters)widgets appCellConfigurator:(id)configurator addWidgetSheetStyle:(unint64_t)style;
 - (SBHPadAddWidgetSheetMetrics)_metricsForCurrentOrientation;
-- (SBHPadAddWidgetSheetMetrics)_metricsForOrientation:(SEL)a3;
+- (SBHPadAddWidgetSheetMetrics)_metricsForOrientation:(SEL)orientation;
 - (SBHWidgetDragHandling)widgetDragHandler;
 - (SBHWidgetSheetViewControllerPresenter)presenter;
-- (double)_horizontalSpacingForListLayout:(id)a3;
-- (id)_collectionViewLayoutApplicationsSectionWithStyle:(unint64_t)a3;
-- (id)_collectionViewLayoutGallerySectionWithWidth:(double)a3 sizeClasses:(id)a4;
+- (double)_horizontalSpacingForListLayout:(id)layout;
+- (id)_collectionViewLayoutApplicationsSectionWithStyle:(unint64_t)style;
+- (id)_collectionViewLayoutGallerySectionWithWidth:(double)width sizeClasses:(id)classes;
 - (id)_currentPresenter;
 - (id)_effectiveSearchController;
-- (id)_generateLayoutSectionForSectionIdx:(unint64_t)a3 width:(double)a4;
-- (id)_generateSnapshotDiffedFromSnapshot:(id)a3;
-- (id)_iconImageForApplicationWidgetCollection:(id)a3;
-- (id)_itemsArrayWithSizeClasses:(id)a3 nSmallsGroup:(id)a4 mediumAndSmallGroup:(id)a5 usesThreeColumnLayout:(BOOL)a6;
+- (id)_generateLayoutSectionForSectionIdx:(unint64_t)idx width:(double)width;
+- (id)_generateSnapshotDiffedFromSnapshot:(id)snapshot;
+- (id)_iconImageForApplicationWidgetCollection:(id)collection;
+- (id)_itemsArrayWithSizeClasses:(id)classes nSmallsGroup:(id)group mediumAndSmallGroup:(id)smallGroup usesThreeColumnLayout:(BOOL)layout;
 - (id)_listLayoutForWidgetSizing;
 - (id)_materialViewForVisualStyling;
 - (id)_newBackgroundView;
-- (id)_newPadCollectionViewLayoutGallerySectionWithWidth:(double)a3 sizeClasses:(id)a4;
-- (id)_newWrapperViewControllerWithGalleryItem:(id)a3 sizeClass:(int64_t)a4;
+- (id)_newPadCollectionViewLayoutGallerySectionWithWidth:(double)width sizeClasses:(id)classes;
+- (id)_newWrapperViewControllerWithGalleryItem:(id)item sizeClass:(int64_t)class;
 - (id)_otherDescriptionLabel;
-- (id)_podsArrayWithSizeClasses:(id)a3 columnCount:(int64_t)a4;
+- (id)_podsArrayWithSizeClasses:(id)classes columnCount:(int64_t)count;
 - (id)_presentedGalleryViewController;
-- (id)_searchTextForSearchController:(id)a3;
+- (id)_searchTextForSearchController:(id)controller;
 - (id)_sizeClasses;
 - (id)_suggestedItems;
-- (id)_updatedContentUnavailableConfigurationUsingState:(id)a3;
+- (id)_updatedContentUnavailableConfigurationUsingState:(id)state;
 - (id)applicationWidgetCollectionsToUse;
-- (id)backgroundViewMatchingMaterialBeneathAddWidgetSheetViewController:(id)a3;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4 itemIdentifier:(id)a5;
+- (id)backgroundViewMatchingMaterialBeneathAddWidgetSheetViewController:(id)controller;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path itemIdentifier:(id)identifier;
 - (id)contentUnavailableConfigurationState;
-- (id)suggestedItemsForGalleryLayoutSize:(unint64_t)a3;
+- (id)suggestedItemsForGalleryLayoutSize:(unint64_t)size;
 - (int64_t)widgetWrapperViewControllerBackgroundType;
-- (unint64_t)_applicationWidgetCollectionIndexForItemIndex:(unint64_t)a3;
-- (unint64_t)_sectionIndexForSection:(unint64_t)a3;
+- (unint64_t)_applicationWidgetCollectionIndexForItemIndex:(unint64_t)index;
+- (unint64_t)_sectionIndexForSection:(unint64_t)section;
 - (unint64_t)supportedInterfaceOrientations;
 - (void)_addBarSwipeView;
-- (void)_backgroundTapped:(id)a3;
+- (void)_backgroundTapped:(id)tapped;
 - (void)_clearDetailViewController;
-- (void)_collectionView:(id)a3 updateSeparatorVisibility:(BOOL)a4 forHighlightAtIndexPath:(id)a5;
-- (void)_contentSizeCategoryDidChange:(id)a3;
-- (void)_keyboardWillDismiss:(id)a3;
-- (void)_keyboardWillShow:(id)a3;
+- (void)_collectionView:(id)view updateSeparatorVisibility:(BOOL)visibility forHighlightAtIndexPath:(id)path;
+- (void)_contentSizeCategoryDidChange:(id)change;
+- (void)_keyboardWillDismiss:(id)dismiss;
+- (void)_keyboardWillShow:(id)show;
 - (void)_layoutCollectionViewForScalingIfNeeded;
 - (void)_layoutSearchBarGradientMaskLayers;
-- (void)_makeFakeGalleryItemsFromHomeScreenItems:(id)a3;
-- (void)_makeGalleryItemsFromHomeScreenItems:(id)a3;
-- (void)_presentDetailSheetForGalleryCellAtIndexPath:(id)a3;
-- (void)_presentDetailSheetViewControllerForApplicationWidgetCollection:(id)a3 configuredWithGalleryItem:(id)a4 selectedSizeClass:(int64_t)a5 fromCell:(id)a6 atIndexPath:(id)a7;
-- (void)_presentDetailViewController:(id)a3 fromCell:(id)a4;
+- (void)_makeFakeGalleryItemsFromHomeScreenItems:(id)items;
+- (void)_makeGalleryItemsFromHomeScreenItems:(id)items;
+- (void)_presentDetailSheetForGalleryCellAtIndexPath:(id)path;
+- (void)_presentDetailSheetViewControllerForApplicationWidgetCollection:(id)collection configuredWithGalleryItem:(id)item selectedSizeClass:(int64_t)class fromCell:(id)cell atIndexPath:(id)path;
+- (void)_presentDetailViewController:(id)controller fromCell:(id)cell;
 - (void)_presentGalleryCell;
-- (void)_refreshData:(BOOL)a3;
+- (void)_refreshData:(BOOL)data;
 - (void)_relayoutSearchBarBackground;
-- (void)_reloadData:(BOOL)a3;
+- (void)_reloadData:(BOOL)data;
 - (void)_selectFirstItem;
-- (void)_setContentInsetsForGridWithWidth:(double)a3;
+- (void)_setContentInsetsForGridWithWidth:(double)width;
 - (void)_setGrabberTopSpacingForStyleCollapsed;
 - (void)_splitApplicationWidgetCollections;
 - (void)_toggleShowingDisfavoredApplicationWidgetCollections;
 - (void)_updateCollectionViewInsets;
-- (void)_updateContentInsetsIfNecessaryForWidth:(double)a3;
+- (void)_updateContentInsetsIfNecessaryForWidth:(double)width;
 - (void)_updateHorizontalSpacing;
 - (void)_updateSearchBarContentInsets;
 - (void)_updateSearchBarOverrideUserInterfaceStyle;
-- (void)addWidgetSheetViewController:(id)a3 didSelectWidgetIconView:(id)a4;
-- (void)addWidgetSheetViewControllerDidCancel:(id)a3;
-- (void)closeButtonTapped:(id)a3;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
+- (void)addWidgetSheetViewController:(id)controller didSelectWidgetIconView:(id)view;
+- (void)addWidgetSheetViewControllerDidCancel:(id)cancel;
+- (void)closeButtonTapped:(id)tapped;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
 - (void)dealloc;
-- (void)didDismissSearchController:(id)a3;
-- (void)didMoveToParentViewController:(id)a3;
+- (void)didDismissSearchController:(id)controller;
+- (void)didMoveToParentViewController:(id)controller;
 - (void)loadView;
-- (void)presentationControllerWillDismiss:(id)a3;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)setApplicationWidgetCollections:(id)a3;
-- (void)setBarSwipeViewController:(id)a3;
-- (void)setCustomApplicationWidgetCollections:(id)a3;
-- (void)setDisfavoredApplicationWidgetCollections:(id)a3;
-- (void)setExternalSearchController:(id)a3;
-- (void)setFavoredApplicationWidgetCollections:(id)a3;
-- (void)setGalleryItems:(id)a3;
-- (void)setGalleryLayoutSize:(unint64_t)a3;
-- (void)setSuggestedItems:(id)a3 forGalleryLayoutSize:(unint64_t)a4;
-- (void)setWantsBottomAttachedPresentation:(BOOL)a3;
-- (void)updateContentUnavailableConfigurationUsingState:(id)a3;
-- (void)updateSearchResultsForSearchController:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)presentationControllerWillDismiss:(id)dismiss;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)setApplicationWidgetCollections:(id)collections;
+- (void)setBarSwipeViewController:(id)controller;
+- (void)setCustomApplicationWidgetCollections:(id)collections;
+- (void)setDisfavoredApplicationWidgetCollections:(id)collections;
+- (void)setExternalSearchController:(id)controller;
+- (void)setFavoredApplicationWidgetCollections:(id)collections;
+- (void)setGalleryItems:(id)items;
+- (void)setGalleryLayoutSize:(unint64_t)size;
+- (void)setSuggestedItems:(id)items forGalleryLayoutSize:(unint64_t)size;
+- (void)setWantsBottomAttachedPresentation:(BOOL)presentation;
+- (void)updateContentUnavailableConfigurationUsingState:(id)state;
+- (void)updateSearchResultsForSearchController:(id)controller;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
-- (void)willPresentSearchController:(id)a3;
+- (void)willPresentSearchController:(id)controller;
 @end
 
 @implementation SBHAddWidgetSheetViewController
 
-- (SBHAddWidgetSheetViewController)initWithConfiguration:(id)a3
+- (SBHAddWidgetSheetViewController)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [v4 listLayoutProvider];
-  v6 = [v4 iconViewProvider];
-  v7 = [v4 style];
+  configurationCopy = configuration;
+  listLayoutProvider = [configurationCopy listLayoutProvider];
+  iconViewProvider = [configurationCopy iconViewProvider];
+  style = [configurationCopy style];
   v8 = SBHWidgetFilteringParametersNone();
   v13.receiver = self;
   v13.super_class = SBHAddWidgetSheetViewController;
-  v10 = [(SBHAddWidgetSheetViewControllerBase *)&v13 initWithListLayoutProvider:v5 iconViewProvider:v6 allowedWidgets:v8 appCellConfigurator:v9 addWidgetSheetStyle:0, v7];
+  v10 = [(SBHAddWidgetSheetViewControllerBase *)&v13 initWithListLayoutProvider:listLayoutProvider iconViewProvider:iconViewProvider allowedWidgets:v8 appCellConfigurator:v9 addWidgetSheetStyle:0, style];
   v11 = v10;
   if (v10)
   {
-    [(SBHAddWidgetSheetViewController *)v10 setConfiguration:v4];
+    [(SBHAddWidgetSheetViewController *)v10 setConfiguration:configurationCopy];
   }
 
   return v11;
 }
 
-- (SBHAddWidgetSheetViewController)initWithListLayoutProvider:(id)a3 iconViewProvider:(id)a4 allowedWidgets:(SBHWidgetFilteringParameters)a5 appCellConfigurator:(id)a6 addWidgetSheetStyle:(unint64_t)a7
+- (SBHAddWidgetSheetViewController)initWithListLayoutProvider:(id)provider iconViewProvider:(id)viewProvider allowedWidgets:(SBHWidgetFilteringParameters)widgets appCellConfigurator:(id)configurator addWidgetSheetStyle:(unint64_t)style
 {
   v38.receiver = self;
   v38.super_class = SBHAddWidgetSheetViewController;
-  v7 = [(SBHAddWidgetSheetViewControllerBase *)&v38 initWithListLayoutProvider:a3 iconViewProvider:a4 allowedWidgets:a5.families appCellConfigurator:*&a5.includesNonStackable addWidgetSheetStyle:a6, a7];
-  v8 = v7;
-  if (v7)
+  style = [(SBHAddWidgetSheetViewControllerBase *)&v38 initWithListLayoutProvider:provider iconViewProvider:viewProvider allowedWidgets:widgets.families appCellConfigurator:*&widgets.includesNonStackable addWidgetSheetStyle:configurator, style];
+  v8 = style;
+  if (style)
   {
-    v7->_galleryLayoutSize = 4;
-    v9 = [MEMORY[0x1E695DF90] dictionary];
+    style->_galleryLayoutSize = 4;
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     suggestedItemsByGalleryLayoutSize = v8->_suggestedItemsByGalleryLayoutSize;
-    v8->_suggestedItemsByGalleryLayoutSize = v9;
+    v8->_suggestedItemsByGalleryLayoutSize = dictionary;
 
-    v11 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v11 addObserver:v8 selector:sel__contentSizeCategoryDidChange_ name:*MEMORY[0x1E69DDC48] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v8 selector:sel__contentSizeCategoryDidChange_ name:*MEMORY[0x1E69DDC48] object:0];
 
     if ([(SBHAddWidgetSheetViewControllerBase *)v8 addWidgetSheetStyle]== 1)
     {
@@ -201,8 +201,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E69DDC48] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DDC48] object:0];
 
   v4.receiver = self;
   v4.super_class = SBHAddWidgetSheetViewController;
@@ -222,33 +222,33 @@
   }
 }
 
-- (void)setSuggestedItems:(id)a3 forGalleryLayoutSize:(unint64_t)a4
+- (void)setSuggestedItems:(id)items forGalleryLayoutSize:(unint64_t)size
 {
-  v12 = a3;
+  itemsCopy = items;
   suggestedItemsByGalleryLayoutSize = self->_suggestedItemsByGalleryLayoutSize;
-  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
+  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:size];
   v8 = [(NSMutableDictionary *)suggestedItemsByGalleryLayoutSize objectForKeyedSubscript:v7];
 
-  if (v8 != v12)
+  if (v8 != itemsCopy)
   {
     v9 = self->_suggestedItemsByGalleryLayoutSize;
-    v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
-    [(NSMutableDictionary *)v9 setObject:v12 forKeyedSubscript:v10];
+    v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:size];
+    [(NSMutableDictionary *)v9 setObject:itemsCopy forKeyedSubscript:v10];
 
-    if ([(SBHAddWidgetSheetViewController *)self isViewLoaded]&& self->_galleryLayoutSize == a4)
+    if ([(SBHAddWidgetSheetViewController *)self isViewLoaded]&& self->_galleryLayoutSize == size)
     {
-      [(SBHAddWidgetSheetViewController *)self _makeGalleryItemsFromHomeScreenItems:v12];
+      [(SBHAddWidgetSheetViewController *)self _makeGalleryItemsFromHomeScreenItems:itemsCopy];
     }
 
-    v11 = [(SBHAddWidgetSheetViewController *)self _presentedGalleryViewController];
-    [v11 setSuggestedItems:v12 forGalleryLayoutSize:a4];
+    _presentedGalleryViewController = [(SBHAddWidgetSheetViewController *)self _presentedGalleryViewController];
+    [_presentedGalleryViewController setSuggestedItems:itemsCopy forGalleryLayoutSize:size];
   }
 }
 
-- (id)suggestedItemsForGalleryLayoutSize:(unint64_t)a3
+- (id)suggestedItemsForGalleryLayoutSize:(unint64_t)size
 {
   suggestedItemsByGalleryLayoutSize = self->_suggestedItemsByGalleryLayoutSize;
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:size];
   v5 = [(NSMutableDictionary *)suggestedItemsByGalleryLayoutSize objectForKeyedSubscript:v4];
 
   return v5;
@@ -263,18 +263,18 @@
   return v4;
 }
 
-- (void)setApplicationWidgetCollections:(id)a3
+- (void)setApplicationWidgetCollections:(id)collections
 {
-  v4 = a3;
-  v5 = [(SBHAddWidgetSheetViewControllerBase *)self allowedWidgets];
+  collectionsCopy = collections;
+  allowedWidgets = [(SBHAddWidgetSheetViewControllerBase *)self allowedWidgets];
   applicationWidgetCollections = self->_applicationWidgetCollections;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __67__SBHAddWidgetSheetViewController_setApplicationWidgetCollections___block_invoke;
   v15[3] = &__block_descriptor_48_e40_B16__0__SBHApplicationWidgetCollection_8l;
-  v15[4] = v5;
+  v15[4] = allowedWidgets;
   v15[5] = v7;
-  v8 = [v4 bs_filter:v15];
+  v8 = [collectionsCopy bs_filter:v15];
 
   v9 = self->_applicationWidgetCollections;
   self->_applicationWidgetCollections = v8;
@@ -287,9 +287,9 @@
 
   else
   {
-    v11 = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
+    strongToWeakObjectsMapTable = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
     v12 = self->_applicationWidgetCollectionForApplicationWidgetCollectionIdentifierLookupTable;
-    self->_applicationWidgetCollectionForApplicationWidgetCollectionIdentifierLookupTable = v11;
+    self->_applicationWidgetCollectionForApplicationWidgetCollectionIdentifierLookupTable = strongToWeakObjectsMapTable;
   }
 
   v13 = self->_applicationWidgetCollections;
@@ -366,19 +366,19 @@ void __67__SBHAddWidgetSheetViewController_setApplicationWidgetCollections___blo
   [v2 setObject:v3 forKey:v4];
 }
 
-- (void)setFavoredApplicationWidgetCollections:(id)a3
+- (void)setFavoredApplicationWidgetCollections:(id)collections
 {
   v13 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  collectionsCopy = collections;
   v6 = SBLogAddWidgetSheet();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v12 = v5;
+    v12 = collectionsCopy;
     _os_log_impl(&dword_1BEB18000, v6, OS_LOG_TYPE_DEFAULT, "setFavoredApplicationWidgetCollections:%@", buf, 0xCu);
   }
 
-  objc_storeStrong(&self->_favoredApplicationWidgetCollections, a3);
+  objc_storeStrong(&self->_favoredApplicationWidgetCollections, collections);
   favoredApplicationWidgetCollectionForApplicationWidgetCollectionIdentifierLookupTable = self->_favoredApplicationWidgetCollectionForApplicationWidgetCollectionIdentifierLookupTable;
   if (favoredApplicationWidgetCollectionForApplicationWidgetCollectionIdentifierLookupTable)
   {
@@ -387,9 +387,9 @@ void __67__SBHAddWidgetSheetViewController_setApplicationWidgetCollections___blo
 
   else
   {
-    v8 = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
+    strongToWeakObjectsMapTable = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
     v9 = self->_favoredApplicationWidgetCollectionForApplicationWidgetCollectionIdentifierLookupTable;
-    self->_favoredApplicationWidgetCollectionForApplicationWidgetCollectionIdentifierLookupTable = v8;
+    self->_favoredApplicationWidgetCollectionForApplicationWidgetCollectionIdentifierLookupTable = strongToWeakObjectsMapTable;
   }
 
   v10[0] = MEMORY[0x1E69E9820];
@@ -397,7 +397,7 @@ void __67__SBHAddWidgetSheetViewController_setApplicationWidgetCollections___blo
   v10[2] = __74__SBHAddWidgetSheetViewController_setFavoredApplicationWidgetCollections___block_invoke;
   v10[3] = &unk_1E808ABA8;
   v10[4] = self;
-  [v5 enumerateObjectsUsingBlock:v10];
+  [collectionsCopy enumerateObjectsUsingBlock:v10];
 }
 
 void __74__SBHAddWidgetSheetViewController_setFavoredApplicationWidgetCollections___block_invoke(uint64_t a1, void *a2)
@@ -408,19 +408,19 @@ void __74__SBHAddWidgetSheetViewController_setFavoredApplicationWidgetCollection
   [v2 setObject:v3 forKey:v4];
 }
 
-- (void)setDisfavoredApplicationWidgetCollections:(id)a3
+- (void)setDisfavoredApplicationWidgetCollections:(id)collections
 {
   v13 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  collectionsCopy = collections;
   v6 = SBLogAddWidgetSheet();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v12 = v5;
+    v12 = collectionsCopy;
     _os_log_impl(&dword_1BEB18000, v6, OS_LOG_TYPE_DEFAULT, "setDisFavoredApplicationWidgetCollections:%@", buf, 0xCu);
   }
 
-  objc_storeStrong(&self->_disfavoredApplicationWidgetCollections, a3);
+  objc_storeStrong(&self->_disfavoredApplicationWidgetCollections, collections);
   disfavoredApplicationWidgetCollectionForApplicationWidgetCollectionIdentifierLookupTable = self->_disfavoredApplicationWidgetCollectionForApplicationWidgetCollectionIdentifierLookupTable;
   if (disfavoredApplicationWidgetCollectionForApplicationWidgetCollectionIdentifierLookupTable)
   {
@@ -429,9 +429,9 @@ void __74__SBHAddWidgetSheetViewController_setFavoredApplicationWidgetCollection
 
   else
   {
-    v8 = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
+    strongToWeakObjectsMapTable = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
     v9 = self->_disfavoredApplicationWidgetCollectionForApplicationWidgetCollectionIdentifierLookupTable;
-    self->_disfavoredApplicationWidgetCollectionForApplicationWidgetCollectionIdentifierLookupTable = v8;
+    self->_disfavoredApplicationWidgetCollectionForApplicationWidgetCollectionIdentifierLookupTable = strongToWeakObjectsMapTable;
   }
 
   v10[0] = MEMORY[0x1E69E9820];
@@ -439,7 +439,7 @@ void __74__SBHAddWidgetSheetViewController_setFavoredApplicationWidgetCollection
   v10[2] = __77__SBHAddWidgetSheetViewController_setDisfavoredApplicationWidgetCollections___block_invoke;
   v10[3] = &unk_1E808ABA8;
   v10[4] = self;
-  [v5 enumerateObjectsUsingBlock:v10];
+  [collectionsCopy enumerateObjectsUsingBlock:v10];
 }
 
 void __77__SBHAddWidgetSheetViewController_setDisfavoredApplicationWidgetCollections___block_invoke(uint64_t a1, void *a2)
@@ -450,11 +450,11 @@ void __77__SBHAddWidgetSheetViewController_setDisfavoredApplicationWidgetCollect
   [v2 setObject:v3 forKey:v4];
 }
 
-- (void)setCustomApplicationWidgetCollections:(id)a3
+- (void)setCustomApplicationWidgetCollections:(id)collections
 {
-  v5 = a3;
+  collectionsCopy = collections;
   customApplicationWidgetCollections = self->_customApplicationWidgetCollections;
-  objc_storeStrong(&self->_customApplicationWidgetCollections, a3);
+  objc_storeStrong(&self->_customApplicationWidgetCollections, collections);
   customApplicationWidgetCollectionForApplicationWidgetCollectionIdentifierLookupTable = self->_customApplicationWidgetCollectionForApplicationWidgetCollectionIdentifierLookupTable;
   if (customApplicationWidgetCollectionForApplicationWidgetCollectionIdentifierLookupTable)
   {
@@ -463,9 +463,9 @@ void __77__SBHAddWidgetSheetViewController_setDisfavoredApplicationWidgetCollect
 
   else
   {
-    v8 = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
+    strongToWeakObjectsMapTable = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
     v9 = self->_customApplicationWidgetCollectionForApplicationWidgetCollectionIdentifierLookupTable;
-    self->_customApplicationWidgetCollectionForApplicationWidgetCollectionIdentifierLookupTable = v8;
+    self->_customApplicationWidgetCollectionForApplicationWidgetCollectionIdentifierLookupTable = strongToWeakObjectsMapTable;
   }
 
   v10[0] = MEMORY[0x1E69E9820];
@@ -473,7 +473,7 @@ void __77__SBHAddWidgetSheetViewController_setDisfavoredApplicationWidgetCollect
   v10[2] = __73__SBHAddWidgetSheetViewController_setCustomApplicationWidgetCollections___block_invoke;
   v10[3] = &unk_1E808ABA8;
   v10[4] = self;
-  [v5 enumerateObjectsUsingBlock:v10];
+  [collectionsCopy enumerateObjectsUsingBlock:v10];
   if (customApplicationWidgetCollections)
   {
     [(SBHAddWidgetSheetViewController *)self _refreshData:[(SBHAddWidgetSheetViewController *)self _shouldAnimateChanges]];
@@ -503,8 +503,8 @@ void __73__SBHAddWidgetSheetViewController_setCustomApplicationWidgetCollections
 
   else
   {
-    v5 = [MEMORY[0x1E698E698] concurrent];
-    v6 = [v5 serviceClass:25];
+    concurrent = [MEMORY[0x1E698E698] concurrent];
+    v6 = [concurrent serviceClass:25];
 
     v7 = BSDispatchQueueCreate();
     v8 = self->_applicationWidgetCollectionIconLoadingQueue;
@@ -516,11 +516,11 @@ void __73__SBHAddWidgetSheetViewController_setCustomApplicationWidgetCollections
   return v3;
 }
 
-- (void)setGalleryLayoutSize:(unint64_t)a3
+- (void)setGalleryLayoutSize:(unint64_t)size
 {
-  if (self->_galleryLayoutSize != a3)
+  if (self->_galleryLayoutSize != size)
   {
-    self->_galleryLayoutSize = a3;
+    self->_galleryLayoutSize = size;
     if ([(SBHAddWidgetSheetViewController *)self _shouldShowGallery]&& ![(SBHAddWidgetSheetViewController *)self shouldShowGalleryOnly])
     {
       [(SBHAddWidgetSheetViewController *)self _reloadData];
@@ -528,24 +528,24 @@ void __73__SBHAddWidgetSheetViewController_setCustomApplicationWidgetCollections
 
     else
     {
-      v6 = [(SBHAddWidgetSheetViewController *)self _suggestedItems];
-      [(SBHAddWidgetSheetViewController *)self _makeGalleryItemsFromHomeScreenItems:v6];
+      _suggestedItems = [(SBHAddWidgetSheetViewController *)self _suggestedItems];
+      [(SBHAddWidgetSheetViewController *)self _makeGalleryItemsFromHomeScreenItems:_suggestedItems];
     }
 
-    v7 = [(SBHAddWidgetSheetViewController *)self _presentedGalleryViewController];
-    [v7 setGalleryLayoutSize:a3];
+    _presentedGalleryViewController = [(SBHAddWidgetSheetViewController *)self _presentedGalleryViewController];
+    [_presentedGalleryViewController setGalleryLayoutSize:size];
   }
 }
 
-- (void)setWantsBottomAttachedPresentation:(BOOL)a3
+- (void)setWantsBottomAttachedPresentation:(BOOL)presentation
 {
-  if (self->_wantsBottomAttachedPresentation != a3)
+  if (self->_wantsBottomAttachedPresentation != presentation)
   {
-    v4 = a3;
-    self->_wantsBottomAttachedPresentation = a3;
+    presentationCopy = presentation;
+    self->_wantsBottomAttachedPresentation = presentation;
     [(SBHWidgetSearchController *)self->_searchController setShouldInsetContentForGrabber:?];
-    v6 = [(SBHAddWidgetSheetViewController *)self sheetPresentationController];
-    [v6 _setWantsBottomAttached:v4];
+    sheetPresentationController = [(SBHAddWidgetSheetViewController *)self sheetPresentationController];
+    [sheetPresentationController _setWantsBottomAttached:presentationCopy];
   }
 }
 
@@ -555,20 +555,20 @@ void __73__SBHAddWidgetSheetViewController_setCustomApplicationWidgetCollections
   v67.receiver = self;
   v67.super_class = SBHAddWidgetSheetViewController;
   [(SBHAddWidgetSheetViewController *)&v67 loadView];
-  v61 = [(SBHAddWidgetSheetViewController *)self view];
-  v60 = [(SBHAddWidgetSheetViewController *)self configuration];
-  v57 = [(SBHAddWidgetSheetViewControllerBase *)self addWidgetSheetStyle];
-  if (v57 != 1)
+  view = [(SBHAddWidgetSheetViewController *)self view];
+  configuration = [(SBHAddWidgetSheetViewController *)self configuration];
+  addWidgetSheetStyle = [(SBHAddWidgetSheetViewControllerBase *)self addWidgetSheetStyle];
+  if (addWidgetSheetStyle != 1)
   {
-    v3 = [(SBHAddWidgetSheetViewController *)self _newBackgroundView];
+    _newBackgroundView = [(SBHAddWidgetSheetViewController *)self _newBackgroundView];
     backgroundView = self->_backgroundView;
-    self->_backgroundView = v3;
+    self->_backgroundView = _newBackgroundView;
 
     v5 = self->_backgroundView;
-    [v61 bounds];
+    [view bounds];
     [(MTMaterialView *)v5 setFrame:?];
     [(MTMaterialView *)self->_backgroundView setAutoresizingMask:18];
-    [v61 addSubview:self->_backgroundView];
+    [view addSubview:self->_backgroundView];
   }
 
   objc_initWeak(&location, self);
@@ -583,7 +583,7 @@ void __73__SBHAddWidgetSheetViewController_setCustomApplicationWidgetCollections
   [v59 setInterSectionSpacing:16.0];
   [(_SBHCustomUICollectionViewCompositionalLayout *)v58 setConfiguration:v59];
   v7 = [_SBHAddWidgetSheetCollectionView alloc];
-  [v61 bounds];
+  [view bounds];
   v8 = [(_SBHAddWidgetSheetCollectionView *)v7 initWithFrame:v58 collectionViewLayout:?];
   collectionView = self->_collectionView;
   self->_collectionView = v8;
@@ -592,9 +592,9 @@ void __73__SBHAddWidgetSheetViewController_setCustomApplicationWidgetCollections
   [(_SBHAddWidgetSheetCollectionView *)self->_collectionView setShowsVerticalScrollIndicator:0];
   [(_SBHAddWidgetSheetCollectionView *)self->_collectionView setDelaysContentTouches:0];
   [(_SBHAddWidgetSheetCollectionView *)self->_collectionView setAccessibilityIdentifier:@"add-sheet-collection-view"];
-  -[_SBHAddWidgetSheetCollectionView setContainsInteractiveUIControls:](self->_collectionView, "setContainsInteractiveUIControls:", [v60 contentContainsInteractiveUIControls]);
+  -[_SBHAddWidgetSheetCollectionView setContainsInteractiveUIControls:](self->_collectionView, "setContainsInteractiveUIControls:", [configuration contentContainsInteractiveUIControls]);
   [(_SBHAddWidgetSheetCollectionView *)self->_collectionView _setPocketsEnabled:[(SBHAddWidgetSheetViewController *)self _wantsPocketSupressed]^ 1];
-  if ([v60 wantsGlassGroupAppliedToGalleryContents])
+  if ([configuration wantsGlassGroupAppliedToGalleryContents])
   {
     [(UIView *)self->_collectionView sbh_createGlassGroup];
   }
@@ -611,49 +611,49 @@ void __73__SBHAddWidgetSheetViewController_setCustomApplicationWidgetCollections
   self->_diffableDataSource = v12;
 
   v14 = self->_collectionView;
-  v15 = [MEMORY[0x1E69DC888] clearColor];
-  [(_SBHAddWidgetSheetCollectionView *)v14 setBackgroundColor:v15];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [(_SBHAddWidgetSheetCollectionView *)v14 setBackgroundColor:clearColor];
 
   [(_SBHAddWidgetSheetCollectionView *)self->_collectionView setKeyboardDismissMode:2];
   [(_SBHAddWidgetSheetCollectionView *)self->_collectionView registerClass:objc_opt_class() forCellWithReuseIdentifier:@"kSBHAddWidgetSheetGalleryCellReuseIdentifier"];
   [(_SBHAddWidgetSheetCollectionView *)self->_collectionView registerClass:objc_opt_class() forCellWithReuseIdentifier:@"kSBHAddWidgetSheetViewControllerCollectionViewReuseIdentifier"];
   [(_SBHAddWidgetSheetCollectionView *)self->_collectionView registerClass:objc_opt_class() forCellWithReuseIdentifier:@"kSBHAddWidgetSheetViewControllerListCellReuseIdentifier"];
-  [v61 addSubview:self->_collectionView];
+  [view addSubview:self->_collectionView];
   v16 = objc_alloc_init(_SBHAddWidgetSheetGalleryWrapperView);
   wrapperView = self->_wrapperView;
   self->_wrapperView = v16;
 
   [(_SBHAddWidgetSheetGalleryWrapperView *)self->_wrapperView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(_SBHAddWidgetSheetGalleryWrapperView *)self->_wrapperView setContentView:self->_collectionView];
-  [v61 addSubview:self->_wrapperView];
-  v55 = [(_SBHAddWidgetSheetGalleryWrapperView *)self->_wrapperView leadingAnchor];
-  v56 = [v61 safeAreaLayoutGuide];
-  v54 = [v56 leadingAnchor];
-  v53 = [v55 constraintEqualToAnchor:v54];
+  [view addSubview:self->_wrapperView];
+  leadingAnchor = [(_SBHAddWidgetSheetGalleryWrapperView *)self->_wrapperView leadingAnchor];
+  safeAreaLayoutGuide = [view safeAreaLayoutGuide];
+  leadingAnchor2 = [safeAreaLayoutGuide leadingAnchor];
+  v53 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v69[0] = v53;
-  v51 = [(_SBHAddWidgetSheetGalleryWrapperView *)self->_wrapperView trailingAnchor];
-  v52 = [v61 safeAreaLayoutGuide];
-  v18 = [v52 trailingAnchor];
-  v19 = [v51 constraintEqualToAnchor:v18];
+  trailingAnchor = [(_SBHAddWidgetSheetGalleryWrapperView *)self->_wrapperView trailingAnchor];
+  safeAreaLayoutGuide2 = [view safeAreaLayoutGuide];
+  trailingAnchor2 = [safeAreaLayoutGuide2 trailingAnchor];
+  v19 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v69[1] = v19;
-  v20 = [(_SBHAddWidgetSheetGalleryWrapperView *)self->_wrapperView topAnchor];
-  v21 = [v61 topAnchor];
-  v22 = [v20 constraintEqualToAnchor:v21];
+  topAnchor = [(_SBHAddWidgetSheetGalleryWrapperView *)self->_wrapperView topAnchor];
+  topAnchor2 = [view topAnchor];
+  v22 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v69[2] = v22;
-  v23 = [(_SBHAddWidgetSheetGalleryWrapperView *)self->_wrapperView bottomAnchor];
-  v24 = [v61 bottomAnchor];
-  v25 = [v23 constraintEqualToAnchor:v24];
+  bottomAnchor = [(_SBHAddWidgetSheetGalleryWrapperView *)self->_wrapperView bottomAnchor];
+  bottomAnchor2 = [view bottomAnchor];
+  v25 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v69[3] = v25;
   v49 = [MEMORY[0x1E695DEC8] arrayWithObjects:v69 count:4];
 
   [MEMORY[0x1E696ACD8] activateConstraints:v49];
-  if (v57 != 1)
+  if (addWidgetSheetStyle != 1)
   {
-    v26 = [v60 searchPlaceholderText];
-    v27 = v26;
-    if (v26)
+    searchPlaceholderText = [configuration searchPlaceholderText];
+    v27 = searchPlaceholderText;
+    if (searchPlaceholderText)
     {
-      v28 = v26;
+      v28 = searchPlaceholderText;
     }
 
     else
@@ -662,7 +662,7 @@ void __73__SBHAddWidgetSheetViewController_setCustomApplicationWidgetCollections
       v28 = [v29 localizedStringForKey:@"WIDGET_ADD_SHEET_SEARCH_PLACEHOLDER" value:&stru_1F3D472A8 table:@"SpringBoardHome"];
     }
 
-    v30 = [[SBHWidgetSearchController alloc] initWithAddWidgetSheetStyle:v57 placeholderText:v28];
+    v30 = [[SBHWidgetSearchController alloc] initWithAddWidgetSheetStyle:addWidgetSheetStyle placeholderText:v28];
     searchController = self->_searchController;
     self->_searchController = v30;
 
@@ -670,30 +670,30 @@ void __73__SBHAddWidgetSheetViewController_setCustomApplicationWidgetCollections
     [(SBHWidgetSearchController *)self->_searchController setDelegate:self];
     [(SBHWidgetSearchController *)self->_searchController setSearchResultsUpdater:self];
     [(SBHWidgetSearchController *)self->_searchController setShouldInsetContentForGrabber:self->_wantsBottomAttachedPresentation];
-    -[SBHWidgetSearchController setApplicationCellIncludesGalleryListView:](self->_searchController, "setApplicationCellIncludesGalleryListView:", [v60 applicationCellIncludesGalleryListView]);
+    -[SBHWidgetSearchController setApplicationCellIncludesGalleryListView:](self->_searchController, "setApplicationCellIncludesGalleryListView:", [configuration applicationCellIncludesGalleryListView]);
     v32 = self->_searchController;
-    v33 = [v60 listLayoutProvider];
-    [(SBHWidgetSearchController *)v32 setListLayoutProvider:v33];
+    listLayoutProvider = [configuration listLayoutProvider];
+    [(SBHWidgetSearchController *)v32 setListLayoutProvider:listLayoutProvider];
 
     v34 = self->_searchController;
-    v35 = [v60 gridSizeClassForContentWidth];
-    [(SBHWidgetSearchController *)v34 setWidthDefiningGridSizeClass:v35];
+    gridSizeClassForContentWidth = [configuration gridSizeClassForContentWidth];
+    [(SBHWidgetSearchController *)v34 setWidthDefiningGridSizeClass:gridSizeClassForContentWidth];
 
-    v36 = [(SBHWidgetSearchController *)self->_searchController searchBar];
+    searchBar = [(SBHWidgetSearchController *)self->_searchController searchBar];
     [(SBHAddWidgetSheetViewController *)self _updateSearchBarContentInsets];
-    [v36 sizeToFit];
-    v37 = [v60 searchTintColor];
-    if (v37)
+    [searchBar sizeToFit];
+    searchTintColor = [configuration searchTintColor];
+    if (searchTintColor)
     {
-      [v36 setTintColor:v37];
+      [searchBar setTintColor:searchTintColor];
     }
 
     [(SBHAddWidgetSheetViewController *)self _updateSearchBarOverrideUserInterfaceStyle];
     v38 = [objc_alloc(MEMORY[0x1E69DD6C8]) initWithScrollView:self->_collectionView edge:1 style:1];
-    v39 = [v36 searchField];
-    [v39 addInteraction:v38];
+    searchField = [searchBar searchField];
+    [searchField addInteraction:v38];
 
-    [v61 addSubview:v36];
+    [view addSubview:searchBar];
     [(SBHAddWidgetSheetViewController *)self _updateCollectionViewInsets];
     v40 = [MEMORY[0x1E69D3FC0] configureGradientMaskForFeatherBlurRecipe:4 onContentView:self->_collectionView];
     searchBarGradientMaskLayers = self->_searchBarGradientMaskLayers;
@@ -702,11 +702,11 @@ void __73__SBHAddWidgetSheetViewController_setCustomApplicationWidgetCollections
     [(SBHAddWidgetSheetViewController *)self _layoutSearchBarGradientMaskLayers];
   }
 
-  v42 = [(SBHAddWidgetSheetViewController *)self _materialViewForVisualStyling];
-  v43 = [v42 visualStylingProviderForCategory:2];
+  _materialViewForVisualStyling = [(SBHAddWidgetSheetViewController *)self _materialViewForVisualStyling];
+  v43 = [_materialViewForVisualStyling visualStylingProviderForCategory:2];
 
-  v44 = [(SBHWidgetSearchController *)self->_searchController searchBarTextFieldBackgroundView];
-  [v43 automaticallyUpdateView:v44 withStyle:2];
+  searchBarTextFieldBackgroundView = [(SBHWidgetSearchController *)self->_searchController searchBarTextFieldBackgroundView];
+  [v43 automaticallyUpdateView:searchBarTextFieldBackgroundView withStyle:2];
 
   v45 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:self action:sel__backgroundTapped_];
   [v45 setCancelsTouchesInView:0];
@@ -757,19 +757,19 @@ id __43__SBHAddWidgetSheetViewController_loadView__block_invoke_2(uint64_t a1, v
 
 - (id)_newBackgroundView
 {
-  v2 = [(SBHAddWidgetSheetViewController *)self configuration];
-  v3 = v2;
-  if (v2)
+  configuration = [(SBHAddWidgetSheetViewController *)self configuration];
+  v3 = configuration;
+  if (configuration)
   {
-    v4 = [v2 backgroundMaterial];
-    if (v4 > 2)
+    backgroundMaterial = [configuration backgroundMaterial];
+    if (backgroundMaterial > 2)
     {
       v5 = 0;
     }
 
     else
     {
-      v5 = qword_1BEE858C0[v4];
+      v5 = qword_1BEE858C0[backgroundMaterial];
     }
   }
 
@@ -785,20 +785,20 @@ id __43__SBHAddWidgetSheetViewController_loadView__block_invoke_2(uint64_t a1, v
   return v6;
 }
 
-- (void)_contentSizeCategoryDidChange:(id)a3
+- (void)_contentSizeCategoryDidChange:(id)change
 {
   collectionView = self->_collectionView;
-  v5 = a3;
+  changeCopy = change;
   [(_SBHAddWidgetSheetCollectionView *)collectionView contentInset];
   v7 = v6;
   [(_SBHAddWidgetSheetCollectionView *)self->_collectionView contentOffset];
   v9 = v8;
-  v11 = [(SBHAddWidgetSheetViewController *)self _effectiveSearchController];
-  [v11 _contentSizeCategoryDidChange:v5];
+  _effectiveSearchController = [(SBHAddWidgetSheetViewController *)self _effectiveSearchController];
+  [_effectiveSearchController _contentSizeCategoryDidChange:changeCopy];
 
-  v10 = [v11 searchBar];
-  [v10 sizeToFit];
-  [v10 layoutIfNeeded];
+  searchBar = [_effectiveSearchController searchBar];
+  [searchBar sizeToFit];
+  [searchBar layoutIfNeeded];
   [(SBHAddWidgetSheetViewController *)self _updateCollectionViewInsets];
   [(_SBHAddWidgetSheetCollectionView *)self->_collectionView contentInset];
   [(_SBHAddWidgetSheetCollectionView *)self->_collectionView contentOffset];
@@ -816,15 +816,15 @@ id __43__SBHAddWidgetSheetViewController_loadView__block_invoke_2(uint64_t a1, v
   p_var1 = &self[39].var1;
   if (self[39].var1.size.width == 0.0)
   {
-    v5 = self;
-    v6 = [($C48D5C44E1E4BC3B38DCA2BDA7A0443F *)self traitCollection];
-    [v6 displayScale];
+    selfCopy = self;
+    traitCollection = [($C48D5C44E1E4BC3B38DCA2BDA7A0443F *)self traitCollection];
+    [traitCollection displayScale];
     v8 = v7;
 
-    v9 = [($C48D5C44E1E4BC3B38DCA2BDA7A0443F *)v5 configuration];
-    v10 = [v9 applicationCellIncludesGalleryListView];
+    configuration = [($C48D5C44E1E4BC3B38DCA2BDA7A0443F *)selfCopy configuration];
+    applicationCellIncludesGalleryListView = [configuration applicationCellIncludesGalleryListView];
 
-    if (v10)
+    if (applicationCellIncludesGalleryListView)
     {
       SBHAddWidgetSheetListViewIconMetricsForScale(v13, v8);
 LABEL_8:
@@ -835,7 +835,7 @@ LABEL_8:
       goto LABEL_9;
     }
 
-    self = [($C48D5C44E1E4BC3B38DCA2BDA7A0443F *)v5 addWidgetSheetStyle];
+    self = [($C48D5C44E1E4BC3B38DCA2BDA7A0443F *)selfCopy addWidgetSheetStyle];
     if (self == 1)
     {
       SBHAddWidgetSheetSplitViewIconMetricsForScale(v13, v8);
@@ -857,28 +857,28 @@ LABEL_9:
   return self;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v11.receiver = self;
   v11.super_class = SBHAddWidgetSheetViewController;
-  [(SBHAddWidgetSheetViewController *)&v11 viewWillAppear:a3];
-  v4 = [(SBHAddWidgetSheetViewControllerBase *)self delegate];
-  [v4 addWidgetSheetViewControllerWillAppear:self];
+  [(SBHAddWidgetSheetViewController *)&v11 viewWillAppear:appear];
+  delegate = [(SBHAddWidgetSheetViewControllerBase *)self delegate];
+  [delegate addWidgetSheetViewControllerWillAppear:self];
 
-  v5 = [(SBHAddWidgetSheetViewController *)self _suggestedItems];
+  _suggestedItems = [(SBHAddWidgetSheetViewController *)self _suggestedItems];
   if ([(SBHAddWidgetSheetViewController *)self _canShowGallery]&& !self->_galleryItems)
   {
-    [(SBHAddWidgetSheetViewController *)self _makeGalleryItemsFromHomeScreenItems:v5];
+    [(SBHAddWidgetSheetViewController *)self _makeGalleryItemsFromHomeScreenItems:_suggestedItems];
   }
 
-  v6 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v6 addObserver:self selector:sel__keyboardWillShow_ name:*MEMORY[0x1E69DE080] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__keyboardWillShow_ name:*MEMORY[0x1E69DE080] object:0];
 
-  v7 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v7 addObserver:self selector:sel__keyboardWillDismiss_ name:*MEMORY[0x1E69DE078] object:0];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel__keyboardWillDismiss_ name:*MEMORY[0x1E69DE078] object:0];
 
-  v8 = [(SBHAddWidgetSheetViewController *)self navigationItem];
-  [v8 _setNavigationBarHidden:{-[SBHAddWidgetSheetViewController _wantsNavigationBarHidden](self, "_wantsNavigationBarHidden")}];
+  navigationItem = [(SBHAddWidgetSheetViewController *)self navigationItem];
+  [navigationItem _setNavigationBarHidden:{-[SBHAddWidgetSheetViewController _wantsNavigationBarHidden](self, "_wantsNavigationBarHidden")}];
 
   if (!self->_performedInitialSelection)
   {
@@ -900,20 +900,20 @@ LABEL_9:
   [(SBHAddWidgetSheetViewController *)self _setGrabberTopSpacingForStyleCollapsed];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v7.receiver = self;
   v7.super_class = SBHAddWidgetSheetViewController;
-  [(SBHAddWidgetSheetViewController *)&v7 viewDidAppear:a3];
-  v4 = [(SBHAddWidgetSheetViewControllerBase *)self delegate];
-  [v4 addWidgetSheetViewControllerDidAppear:self];
+  [(SBHAddWidgetSheetViewController *)&v7 viewDidAppear:appear];
+  delegate = [(SBHAddWidgetSheetViewControllerBase *)self delegate];
+  [delegate addWidgetSheetViewControllerDidAppear:self];
 
   if (!__sb__runningInSpringBoard())
   {
-    v5 = [MEMORY[0x1E69DC938] currentDevice];
-    v6 = [v5 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (v6)
+    if (userInterfaceIdiom)
     {
       goto LABEL_7;
     }
@@ -933,31 +933,31 @@ LABEL_7:
   [(SBHAddWidgetSheetViewController *)self _updateCollectionViewInsets];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = SBHAddWidgetSheetViewController;
-  [(SBHAddWidgetSheetViewController *)&v5 viewWillDisappear:a3];
-  v4 = [(SBHAddWidgetSheetViewControllerBase *)self delegate];
-  [v4 addWidgetSheetViewControllerWillDisappear:self];
+  [(SBHAddWidgetSheetViewController *)&v5 viewWillDisappear:disappear];
+  delegate = [(SBHAddWidgetSheetViewControllerBase *)self delegate];
+  [delegate addWidgetSheetViewControllerWillDisappear:self];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v8.receiver = self;
   v8.super_class = SBHAddWidgetSheetViewController;
-  [(SBHAddWidgetSheetViewController *)&v8 viewDidDisappear:a3];
-  v4 = [(SBHAddWidgetSheetViewControllerBase *)self delegate];
-  [v4 addWidgetSheetViewControllerDidDisappear:self];
+  [(SBHAddWidgetSheetViewController *)&v8 viewDidDisappear:disappear];
+  delegate = [(SBHAddWidgetSheetViewControllerBase *)self delegate];
+  [delegate addWidgetSheetViewControllerDidDisappear:self];
 
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v5 removeObserver:self name:*MEMORY[0x1E69DE080] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DE080] object:0];
 
-  v6 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v6 removeObserver:self name:*MEMORY[0x1E69DE078] object:0];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter2 removeObserver:self name:*MEMORY[0x1E69DE078] object:0];
 
-  v7 = [(SBHAddWidgetSheetViewController *)self _effectiveSearchController];
-  [v7 updateSearchBarBackgroundForScrollDistance:self forClient:2.22507386e-308];
+  _effectiveSearchController = [(SBHAddWidgetSheetViewController *)self _effectiveSearchController];
+  [_effectiveSearchController updateSearchBarBackgroundForScrollDistance:self forClient:2.22507386e-308];
 
   self->_sheetIconMetrics.horizontalSpacing = 0.0;
 }
@@ -977,8 +977,8 @@ LABEL_7:
   [(SBHAddWidgetSheetViewController *)&v4 viewDidLayoutSubviews];
   [(SBHAddWidgetSheetViewController *)self _updateSearchBarContentInsets];
   [(SBHAddWidgetSheetViewController *)self _layoutCollectionViewForScalingIfNeeded];
-  v3 = [(SBHWidgetSearchController *)self->_searchController searchBar];
-  [v3 layoutIfNeeded];
+  searchBar = [(SBHWidgetSearchController *)self->_searchController searchBar];
+  [searchBar layoutIfNeeded];
 
   [(SBHAddWidgetSheetViewController *)self _setGrabberTopSpacingForStyleCollapsed];
 }
@@ -1004,8 +1004,8 @@ LABEL_7:
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(SBHWidgetSearchController *)self->_searchController searchBarBackgroundView];
-  [v11 frame];
+  searchBarBackgroundView = [(SBHWidgetSearchController *)self->_searchController searchBarBackgroundView];
+  [searchBarBackgroundView frame];
   v13 = v12;
   v15 = v14;
   v17 = v16;
@@ -1046,21 +1046,21 @@ LABEL_7:
   }
 }
 
-- (void)didMoveToParentViewController:(id)a3
+- (void)didMoveToParentViewController:(id)controller
 {
   v10.receiver = self;
   v10.super_class = SBHAddWidgetSheetViewController;
-  [(SBHAddWidgetSheetViewController *)&v10 didMoveToParentViewController:a3];
+  [(SBHAddWidgetSheetViewController *)&v10 didMoveToParentViewController:controller];
   if ([(SBHAddWidgetSheetViewControllerBase *)self addWidgetSheetStyle]== 1 && [(SBHAddWidgetSheetViewController *)self shouldShowGalleryOnly])
   {
-    v4 = [(SBHAddWidgetSheetViewController *)self splitViewController];
-    v5 = [v4 view];
+    splitViewController = [(SBHAddWidgetSheetViewController *)self splitViewController];
+    view = [splitViewController view];
 
     v6 = self->_collectionView;
-    v7 = v6;
+    superview = v6;
     if (v6)
     {
-      v8 = v6 == v5;
+      v8 = v6 == view;
     }
 
     else
@@ -1072,20 +1072,20 @@ LABEL_7:
     {
       do
       {
-        v9 = v7;
-        [(_SBHAddWidgetSheetCollectionView *)v7 setClipsToBounds:0];
-        v7 = [(_SBHAddWidgetSheetCollectionView *)v7 superview];
+        v9 = superview;
+        [(_SBHAddWidgetSheetCollectionView *)superview setClipsToBounds:0];
+        superview = [(_SBHAddWidgetSheetCollectionView *)superview superview];
       }
 
-      while (v7 && v7 != v5);
+      while (superview && superview != view);
     }
   }
 }
 
-- (void)setGalleryItems:(id)a3
+- (void)setGalleryItems:(id)items
 {
-  v4 = a3;
-  if (self->_galleryItems != v4)
+  itemsCopy = items;
+  if (self->_galleryItems != itemsCopy)
   {
     galleryIdentifierToGalleryItemLookupTable = self->_galleryIdentifierToGalleryItemLookupTable;
     if (galleryIdentifierToGalleryItemLookupTable)
@@ -1095,15 +1095,15 @@ LABEL_7:
 
     else
     {
-      v6 = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
+      strongToWeakObjectsMapTable = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
       v7 = self->_galleryIdentifierToGalleryItemLookupTable;
-      self->_galleryIdentifierToGalleryItemLookupTable = v6;
+      self->_galleryIdentifierToGalleryItemLookupTable = strongToWeakObjectsMapTable;
     }
 
-    v8 = (v4 | self->_galleryItems) != 0;
-    if (v4)
+    v8 = (itemsCopy | self->_galleryItems) != 0;
+    if (itemsCopy)
     {
-      v9 = [(NSArray *)v4 copy];
+      v9 = [(NSArray *)itemsCopy copy];
     }
 
     else
@@ -1142,98 +1142,98 @@ void __51__SBHAddWidgetSheetViewController_setGalleryItems___block_invoke(uint64
   [v2 setObject:v3 forKey:v4];
 }
 
-- (void)setBarSwipeViewController:(id)a3
+- (void)setBarSwipeViewController:(id)controller
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_barSwipeViewController != v5)
+  controllerCopy = controller;
+  v6 = controllerCopy;
+  if (self->_barSwipeViewController != controllerCopy)
   {
-    v7 = v5;
+    v7 = controllerCopy;
     [(SBHAddWidgetSheetViewController *)self bs_removeChildViewController:?];
-    objc_storeStrong(&self->_barSwipeViewController, a3);
-    v5 = [(SBHAddWidgetSheetViewController *)self isViewLoaded];
+    objc_storeStrong(&self->_barSwipeViewController, controller);
+    controllerCopy = [(SBHAddWidgetSheetViewController *)self isViewLoaded];
     v6 = v7;
-    if (v5)
+    if (controllerCopy)
     {
-      v5 = [(SBHAddWidgetSheetViewController *)self _addBarSwipeView];
+      controllerCopy = [(SBHAddWidgetSheetViewController *)self _addBarSwipeView];
       v6 = v7;
     }
   }
 
-  MEMORY[0x1EEE66BB8](v5, v6);
+  MEMORY[0x1EEE66BB8](controllerCopy, v6);
 }
 
 - (void)_addBarSwipeView
 {
   [(SBHAddWidgetSheetViewController *)self bs_addChildViewController:self->_barSwipeViewController];
-  v4 = [(UIViewController *)self->_barSwipeViewController view];
-  v3 = [(SBHAddWidgetSheetViewController *)self view];
-  [v3 bounds];
-  [v4 setFrame:?];
+  view = [(UIViewController *)self->_barSwipeViewController view];
+  view2 = [(SBHAddWidgetSheetViewController *)self view];
+  [view2 bounds];
+  [view setFrame:?];
 
-  [v4 setUserInteractionEnabled:0];
-  [v4 setAutoresizingMask:18];
+  [view setUserInteractionEnabled:0];
+  [view setAutoresizingMask:18];
 }
 
-- (void)setExternalSearchController:(id)a3
+- (void)setExternalSearchController:(id)controller
 {
-  v5 = a3;
-  if (self->_externalSearchController != v5)
+  controllerCopy = controller;
+  if (self->_externalSearchController != controllerCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_externalSearchController, a3);
+    v6 = controllerCopy;
+    objc_storeStrong(&self->_externalSearchController, controller);
     [(SBHAddWidgetSheetViewController *)self _updateSearchBarOverrideUserInterfaceStyle];
-    v5 = v6;
+    controllerCopy = v6;
   }
 }
 
-- (void)closeButtonTapped:(id)a3
+- (void)closeButtonTapped:(id)tapped
 {
-  v4 = [(SBHAddWidgetSheetViewControllerBase *)self delegate];
+  delegate = [(SBHAddWidgetSheetViewControllerBase *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 addWidgetSheetViewControllerDidCancel:self];
+    [delegate addWidgetSheetViewControllerDidCancel:self];
   }
 }
 
-- (void)_backgroundTapped:(id)a3
+- (void)_backgroundTapped:(id)tapped
 {
   collectionView = self->_collectionView;
-  [a3 locationInView:collectionView];
+  [tapped locationInView:collectionView];
   v5 = [(_SBHAddWidgetSheetCollectionView *)collectionView indexPathForItemAtPoint:?];
 
   if (!v5)
   {
-    v6 = [(SBHAddWidgetSheetViewController *)self searchController];
-    v7 = [v6 isActive];
+    searchController = [(SBHAddWidgetSheetViewController *)self searchController];
+    isActive = [searchController isActive];
 
-    if (v7)
+    if (isActive)
     {
-      v8 = [(SBHAddWidgetSheetViewController *)self searchController];
-      [v8 setActive:0];
+      searchController2 = [(SBHAddWidgetSheetViewController *)self searchController];
+      [searchController2 setActive:0];
     }
   }
 }
 
-- (void)_keyboardWillShow:(id)a3
+- (void)_keyboardWillShow:(id)show
 {
-  v27 = [a3 userInfo];
-  v4 = [(SBHAddWidgetSheetViewController *)self view];
-  v5 = [v27 valueForKey:*MEMORY[0x1E69DDFA0]];
+  userInfo = [show userInfo];
+  view = [(SBHAddWidgetSheetViewController *)self view];
+  v5 = [userInfo valueForKey:*MEMORY[0x1E69DDFA0]];
   [v5 CGRectValue];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
 
-  v14 = [(SBHAddWidgetSheetViewController *)self view];
-  [v14 convertRect:0 fromView:{v7, v9, v11, v13}];
+  view2 = [(SBHAddWidgetSheetViewController *)self view];
+  [view2 convertRect:0 fromView:{v7, v9, v11, v13}];
   v16 = v15;
   v18 = v17;
   v20 = v19;
   v22 = v21;
 
-  [v4 bounds];
+  [view bounds];
   v30.origin.x = v23;
   v30.origin.y = v24;
   v30.size.width = v25;
@@ -1246,7 +1246,7 @@ void __51__SBHAddWidgetSheetViewController_setGalleryItems___block_invoke(uint64
   [(SBHAddWidgetSheetViewController *)self _updateCollectionViewInsets];
 }
 
-- (void)_keyboardWillDismiss:(id)a3
+- (void)_keyboardWillDismiss:(id)dismiss
 {
   v3 = *(MEMORY[0x1E695F058] + 16);
   self->_keyboardFrameIntersect.origin = *MEMORY[0x1E695F058];
@@ -1260,26 +1260,26 @@ void __51__SBHAddWidgetSheetViewController_setGalleryItems___block_invoke(uint64
   v4 = v3;
   [(_SBHAddWidgetSheetCollectionView *)self->_collectionView contentOffset];
   v6 = v5;
-  v7 = [(SBHAddWidgetSheetViewController *)self _effectiveSearchController];
-  [v7 updateSearchBarBackgroundForScrollDistance:self forClient:v4 + v6];
+  _effectiveSearchController = [(SBHAddWidgetSheetViewController *)self _effectiveSearchController];
+  [_effectiveSearchController updateSearchBarBackgroundForScrollDistance:self forClient:v4 + v6];
 
   [(SBHAddWidgetSheetViewController *)self _layoutSearchBarGradientMaskLayers];
-  v9 = [(SBHAddWidgetSheetViewController *)self _effectiveSearchController];
-  v8 = [v9 searchBar];
-  [v8 layoutIfNeeded];
+  _effectiveSearchController2 = [(SBHAddWidgetSheetViewController *)self _effectiveSearchController];
+  searchBar = [_effectiveSearchController2 searchBar];
+  [searchBar layoutIfNeeded];
 }
 
 - (void)_setGrabberTopSpacingForStyleCollapsed
 {
   if (![(SBHAddWidgetSheetViewControllerBase *)self addWidgetSheetStyle])
   {
-    v3 = [(SBHAddWidgetSheetViewController *)self sheetPresentationController];
+    sheetPresentationController = [(SBHAddWidgetSheetViewController *)self sheetPresentationController];
     [(SBHWidgetSearchController *)self->_searchController grabberTopSpacing];
-    [v3 _setGrabberTopSpacing:?];
+    [sheetPresentationController _setGrabberTopSpacing:?];
   }
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
   if (([MEMORY[0x1E69DD250] _isInAnimationBlock] & 1) == 0)
   {
@@ -1288,14 +1288,14 @@ void __51__SBHAddWidgetSheetViewController_setGalleryItems___block_invoke(uint64
   }
 }
 
-- (id)_generateSnapshotDiffedFromSnapshot:(id)a3
+- (id)_generateSnapshotDiffedFromSnapshot:(id)snapshot
 {
-  v4 = a3;
+  snapshotCopy = snapshot;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __71__SBHAddWidgetSheetViewController__generateSnapshotDiffedFromSnapshot___block_invoke;
   aBlock[3] = &unk_1E808AC90;
-  v5 = v4;
+  v5 = snapshotCopy;
   v16 = v5;
   v6 = _Block_copy(aBlock);
   v7 = objc_alloc_init(MEMORY[0x1E69955A0]);
@@ -1304,8 +1304,8 @@ void __51__SBHAddWidgetSheetViewController_setGalleryItems___block_invoke(uint64
   {
     if ([(SBHAddWidgetSheetViewController *)self _shouldShowGallery])
     {
-      v10 = [(SBHAddWidgetSheetViewController *)self galleryItems];
-      v6[2](v6, v10, v7);
+      galleryItems = [(SBHAddWidgetSheetViewController *)self galleryItems];
+      v6[2](v6, galleryItems, v7);
 LABEL_13:
     }
 
@@ -1323,10 +1323,10 @@ LABEL_14:
 
   if (v8 <= 1)
   {
-    v9 = [(SBHAddWidgetSheetViewController *)self _shouldShowCustomApplicationsSection];
-    if (v9)
+    _shouldShowCustomApplicationsSection = [(SBHAddWidgetSheetViewController *)self _shouldShowCustomApplicationsSection];
+    if (_shouldShowCustomApplicationsSection)
     {
-      __71__SBHAddWidgetSheetViewController__generateSnapshotDiffedFromSnapshot___block_invoke_5(v9, self->_customApplicationWidgetCollections, v7);
+      __71__SBHAddWidgetSheetViewController__generateSnapshotDiffedFromSnapshot___block_invoke_5(_shouldShowCustomApplicationsSection, self->_customApplicationWidgetCollections, v7);
     }
 
     goto LABEL_14;
@@ -1334,21 +1334,21 @@ LABEL_14:
 
   if (v8 == 2)
   {
-    v10 = [(SBHAddWidgetSheetViewController *)self applicationWidgetCollectionsToUse];
-    v11 = [(SBHAddWidgetSheetViewController *)self _shouldShowSuggestionsListItem];
-    if (v11)
+    galleryItems = [(SBHAddWidgetSheetViewController *)self applicationWidgetCollectionsToUse];
+    _shouldShowSuggestionsListItem = [(SBHAddWidgetSheetViewController *)self _shouldShowSuggestionsListItem];
+    if (_shouldShowSuggestionsListItem)
     {
-      __71__SBHAddWidgetSheetViewController__generateSnapshotDiffedFromSnapshot___block_invoke_4(v11, v7);
+      __71__SBHAddWidgetSheetViewController__generateSnapshotDiffedFromSnapshot___block_invoke_4(_shouldShowSuggestionsListItem, v7);
     }
 
-    __71__SBHAddWidgetSheetViewController__generateSnapshotDiffedFromSnapshot___block_invoke_7(v11, v10, v7);
+    __71__SBHAddWidgetSheetViewController__generateSnapshotDiffedFromSnapshot___block_invoke_7(_shouldShowSuggestionsListItem, galleryItems, v7);
     goto LABEL_13;
   }
 
-  v13 = [(SBHAddWidgetSheetViewController *)self _shouldShowDisfavoredSection];
-  if (v13)
+  _shouldShowDisfavoredSection = [(SBHAddWidgetSheetViewController *)self _shouldShowDisfavoredSection];
+  if (_shouldShowDisfavoredSection)
   {
-    __71__SBHAddWidgetSheetViewController__generateSnapshotDiffedFromSnapshot___block_invoke_9(v13, v7);
+    __71__SBHAddWidgetSheetViewController__generateSnapshotDiffedFromSnapshot___block_invoke_9(_shouldShowDisfavoredSection, v7);
     if (self->_isShowingDisfavoredApplicationWidgetCollections)
     {
       __71__SBHAddWidgetSheetViewController__generateSnapshotDiffedFromSnapshot___block_invoke_10(v14, self->_disfavoredApplicationWidgetCollections, v7);
@@ -1522,47 +1522,47 @@ void __71__SBHAddWidgetSheetViewController__generateSnapshotDiffedFromSnapshot__
   }
 }
 
-- (void)_refreshData:(BOOL)a3
+- (void)_refreshData:(BOOL)data
 {
-  v3 = a3;
-  v5 = [(UICollectionViewDiffableDataSource *)self->_diffableDataSource snapshot];
-  v6 = [(SBHAddWidgetSheetViewController *)self _generateSnapshotDiffedFromSnapshot:v5];
+  dataCopy = data;
+  snapshot = [(UICollectionViewDiffableDataSource *)self->_diffableDataSource snapshot];
+  v6 = [(SBHAddWidgetSheetViewController *)self _generateSnapshotDiffedFromSnapshot:snapshot];
 
-  [(UICollectionViewDiffableDataSource *)self->_diffableDataSource applySnapshot:v6 animatingDifferences:v3];
+  [(UICollectionViewDiffableDataSource *)self->_diffableDataSource applySnapshot:v6 animatingDifferences:dataCopy];
 }
 
-- (void)_reloadData:(BOOL)a3
+- (void)_reloadData:(BOOL)data
 {
   v7 = [(SBHAddWidgetSheetViewController *)self _generateSnapshotDiffedFromSnapshot:0];
-  if (a3 || (-[UICollectionViewDiffableDataSource snapshot](self->_diffableDataSource, "snapshot"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v7 isEqual:v5], v5, (v6 & 1) == 0))
+  if (data || (-[UICollectionViewDiffableDataSource snapshot](self->_diffableDataSource, "snapshot"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v7 isEqual:v5], v5, (v6 & 1) == 0))
   {
     [(UICollectionViewDiffableDataSource *)self->_diffableDataSource applySnapshotUsingReloadData:v7];
   }
 }
 
-- (unint64_t)_sectionIndexForSection:(unint64_t)a3
+- (unint64_t)_sectionIndexForSection:(unint64_t)section
 {
-  v5 = [(SBHAddWidgetSheetViewController *)self _canShowGallery];
-  v6 = [(SBHAddWidgetSheetViewController *)self _shouldShowCustomApplicationsSection];
-  if (v5 && v6)
+  _canShowGallery = [(SBHAddWidgetSheetViewController *)self _canShowGallery];
+  _shouldShowCustomApplicationsSection = [(SBHAddWidgetSheetViewController *)self _shouldShowCustomApplicationsSection];
+  if (_canShowGallery && _shouldShowCustomApplicationsSection)
   {
-    return a3;
+    return section;
   }
 
-  if (!v5 && !v6)
+  if (!_canShowGallery && !_shouldShowCustomApplicationsSection)
   {
-    a3 -= 2;
-    return a3;
+    section -= 2;
+    return section;
   }
 
-  if (v6)
+  if (_shouldShowCustomApplicationsSection)
   {
-    return --a3;
+    return --section;
   }
 
-  if (a3)
+  if (section)
   {
-    return a3 - 1;
+    return section - 1;
   }
 
   else
@@ -1571,90 +1571,90 @@ void __71__SBHAddWidgetSheetViewController__generateSnapshotDiffedFromSnapshot__
   }
 }
 
-- (unint64_t)_applicationWidgetCollectionIndexForItemIndex:(unint64_t)a3
+- (unint64_t)_applicationWidgetCollectionIndexForItemIndex:(unint64_t)index
 {
-  v4 = [(SBHAddWidgetSheetViewController *)self _shouldShowSuggestionsListItem];
-  v5 = a3 - 1;
-  if (!a3)
+  _shouldShowSuggestionsListItem = [(SBHAddWidgetSheetViewController *)self _shouldShowSuggestionsListItem];
+  v5 = index - 1;
+  if (!index)
   {
     v5 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  if (v4)
+  if (_shouldShowSuggestionsListItem)
   {
     return v5;
   }
 
   else
   {
-    return a3;
+    return index;
   }
 }
 
 - (BOOL)_shouldAnimateChanges
 {
-  v3 = [(SBHAddWidgetSheetViewController *)self isViewLoaded];
-  if (v3)
+  isViewLoaded = [(SBHAddWidgetSheetViewController *)self isViewLoaded];
+  if (isViewLoaded)
   {
 
-    LOBYTE(v3) = [(SBHAddWidgetSheetViewController *)self bs_isAppearingOrAppeared];
+    LOBYTE(isViewLoaded) = [(SBHAddWidgetSheetViewController *)self bs_isAppearingOrAppeared];
   }
 
-  return v3;
+  return isViewLoaded;
 }
 
-- (id)_iconImageForApplicationWidgetCollection:(id)a3
+- (id)_iconImageForApplicationWidgetCollection:(id)collection
 {
-  v4 = a3;
+  collectionCopy = collection;
   [(SBHAddWidgetSheetViewController *)self sheetIconMetrics];
-  v5 = [(SBHAddWidgetSheetViewController *)self collectionView];
-  v6 = [v5 traitCollection];
+  collectionView = [(SBHAddWidgetSheetViewController *)self collectionView];
+  traitCollection = [collectionView traitCollection];
 
-  v7 = [v4 customImage];
+  customImage = [collectionCopy customImage];
 
-  if (v7)
+  if (customImage)
   {
-    v8 = [v4 customImage];
+    customImage2 = [collectionCopy customImage];
   }
 
   else
   {
-    v9 = [v4 typeIdentifier];
+    typeIdentifier = [collectionCopy typeIdentifier];
 
-    if (v9)
+    if (typeIdentifier)
     {
       v10 = objc_alloc(MEMORY[0x1E69A8A00]);
-      v11 = [v4 typeIdentifier];
-      v12 = [v10 initWithType:v11];
+      typeIdentifier2 = [collectionCopy typeIdentifier];
+      icon = [v10 initWithType:typeIdentifier2];
 
-      v13 = [objc_alloc(MEMORY[0x1E69A8A30]) initWithSize:0.0 scale:{0.0, 0.0}];
-      SBHModifyImageDescriptorWithTraitCollection(v13, v6, 0);
-      v14 = SBHIconServicesImageForDescriptor(v12, v13, 0);
-      v15 = [MEMORY[0x1E69DD1B8] sbh_iconImageAppearanceFromTraitCollection:v6];
-      v8 = SBHGetIconImageFromIconServicesImage(v14);
+      applicationBundleID = [objc_alloc(MEMORY[0x1E69A8A30]) initWithSize:0.0 scale:{0.0, 0.0}];
+      SBHModifyImageDescriptorWithTraitCollection(applicationBundleID, traitCollection, 0);
+      v14 = SBHIconServicesImageForDescriptor(icon, applicationBundleID, 0);
+      v15 = [MEMORY[0x1E69DD1B8] sbh_iconImageAppearanceFromTraitCollection:traitCollection];
+      customImage2 = SBHGetIconImageFromIconServicesImage(v14);
     }
 
     else
     {
-      v12 = [v4 icon];
-      v13 = [v12 applicationBundleID];
-      v8 = SBHGetApplicationIconImageWithTraitCollection(v13, v6, 0, 0.0, 0.0, 0.0);
+      icon = [collectionCopy icon];
+      applicationBundleID = [icon applicationBundleID];
+      customImage2 = SBHGetApplicationIconImageWithTraitCollection(applicationBundleID, traitCollection, 0, 0.0, 0.0, 0.0);
     }
   }
 
-  return v8;
+  return customImage2;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4 itemIdentifier:(id)a5
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path itemIdentifier:(id)identifier
 {
   v126 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 section];
-  if (v11 != [(SBHAddWidgetSheetViewController *)self _sectionIndexForSection:0])
+  viewCopy = view;
+  pathCopy = path;
+  identifierCopy = identifier;
+  section = [pathCopy section];
+  if (section != [(SBHAddWidgetSheetViewController *)self _sectionIndexForSection:0])
   {
-    if (v11 != [(SBHAddWidgetSheetViewController *)self _sectionIndexForSection:2]&& v11 != [(SBHAddWidgetSheetViewController *)self _sectionIndexForSection:3]&& v11 != [(SBHAddWidgetSheetViewController *)self _sectionIndexForSection:1])
+    if (section != [(SBHAddWidgetSheetViewController *)self _sectionIndexForSection:2]&& section != [(SBHAddWidgetSheetViewController *)self _sectionIndexForSection:3]&& section != [(SBHAddWidgetSheetViewController *)self _sectionIndexForSection:1])
     {
       v12 = 0;
       goto LABEL_63;
@@ -1664,20 +1664,20 @@ void __71__SBHAddWidgetSheetViewController__generateSnapshotDiffedFromSnapshot__
     v122 = 0u;
     v123 = 0u;
     [(SBHAddWidgetSheetViewController *)self sheetIconMetrics];
-    v21 = [(SBHAddWidgetSheetViewController *)self configuration];
-    if ([v21 applicationCellIncludesGalleryListView])
+    configuration = [(SBHAddWidgetSheetViewController *)self configuration];
+    if ([configuration applicationCellIncludesGalleryListView])
     {
-      v110 = v21;
-      v22 = [v8 dequeueReusableCellWithReuseIdentifier:@"kSBHAddWidgetSheetViewControllerListCellReuseIdentifier" forIndexPath:v9];
+      v110 = configuration;
+      v22 = [viewCopy dequeueReusableCellWithReuseIdentifier:@"kSBHAddWidgetSheetViewControllerListCellReuseIdentifier" forIndexPath:pathCopy];
       v23 = *(&v122 + 1);
       v24 = v123;
       [v22 setIconImageInfo:{*(&v122 + 1), v123, v124}];
-      v107 = v10;
-      if (v11 == [(SBHAddWidgetSheetViewController *)self _sectionIndexForSection:1])
+      v107 = identifierCopy;
+      if (section == [(SBHAddWidgetSheetViewController *)self _sectionIndexForSection:1])
       {
-        v25 = [(NSMapTable *)self->_customApplicationWidgetCollectionForApplicationWidgetCollectionIdentifierLookupTable objectForKey:v10];
-        v26 = [v25 displayName];
-        v27 = [v26 length];
+        v25 = [(NSMapTable *)self->_customApplicationWidgetCollectionForApplicationWidgetCollectionIdentifierLookupTable objectForKey:identifierCopy];
+        displayName = [v25 displayName];
+        v27 = [displayName length];
 
         if (!v27)
         {
@@ -1687,25 +1687,25 @@ void __71__SBHAddWidgetSheetViewController__generateSnapshotDiffedFromSnapshot__
 
       else
       {
-        v25 = [(NSMapTable *)self->_favoredApplicationWidgetCollectionForApplicationWidgetCollectionIdentifierLookupTable objectForKey:v10];
+        v25 = [(NSMapTable *)self->_favoredApplicationWidgetCollectionForApplicationWidgetCollectionIdentifierLookupTable objectForKey:identifierCopy];
       }
 
-      v37 = [(SBHAddWidgetSheetViewController *)self traitCollection];
-      v38 = [v37 userInterfaceStyle];
+      traitCollection = [(SBHAddWidgetSheetViewController *)self traitCollection];
+      userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-      v39 = [[SBHIconImageAppearance alloc] initWithAppearanceType:v38 == 2];
-      v40 = [MEMORY[0x1E69A8A00] placeholderIcon];
+      v39 = [[SBHIconImageAppearance alloc] initWithAppearanceType:userInterfaceStyle == 2];
+      placeholderIcon = [MEMORY[0x1E69A8A00] placeholderIcon];
       v41 = [objc_alloc(MEMORY[0x1E69A8A30]) initWithSize:v23 scale:v24];
       v42 = SBHIconServicesOptionsForImageOptions(1);
       v104 = v41;
-      v105 = v40;
-      v102 = SBHIconServicesImageForDescriptor(v40, v41, v42);
+      v105 = placeholderIcon;
+      v102 = SBHIconServicesImageForDescriptor(placeholderIcon, v41, v42);
       v106 = v39;
       v103 = SBHGetIconImageFromIconServicesImage(v102);
       [v22 setIconImage:?];
-      v43 = [v25 collectionIdentifier];
-      [v22 setIdentifier:v43];
-      v44 = [(SBHAddWidgetSheetViewController *)self applicationWidgetCollectionIconLoadingQueue];
+      collectionIdentifier = [v25 collectionIdentifier];
+      [v22 setIdentifier:collectionIdentifier];
+      applicationWidgetCollectionIconLoadingQueue = [(SBHAddWidgetSheetViewController *)self applicationWidgetCollectionIconLoadingQueue];
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __88__SBHAddWidgetSheetViewController_collectionView_cellForItemAtIndexPath_itemIdentifier___block_invoke;
@@ -1713,77 +1713,77 @@ void __71__SBHAddWidgetSheetViewController__generateSnapshotDiffedFromSnapshot__
       block[4] = self;
       v45 = v25;
       v117 = v45;
-      v109 = v8;
-      v99 = v8;
+      v109 = viewCopy;
+      v99 = viewCopy;
       v118 = v99;
-      v93 = v9;
+      v93 = pathCopy;
       v119 = v93;
-      v46 = v43;
+      v46 = collectionIdentifier;
       v47 = v45;
       v100 = v46;
       v120 = v46;
       v48 = v22;
       v121 = v48;
-      v101 = v44;
-      dispatch_async(v44, block);
-      v49 = [v45 displayName];
-      [v48 setTitle:v49];
+      v101 = applicationWidgetCollectionIconLoadingQueue;
+      dispatch_async(applicationWidgetCollectionIconLoadingQueue, block);
+      displayName2 = [v45 displayName];
+      [v48 setTitle:displayName2];
 
-      v50 = [v48 iconListView];
-      v51 = [v50 model];
-      v52 = v51;
-      if (v50)
+      iconListView = [v48 iconListView];
+      model = [iconListView model];
+      v52 = model;
+      if (iconListView)
       {
-        v98 = v50;
-        v111 = v51;
-        v21 = v110;
+        v98 = iconListView;
+        v111 = model;
+        configuration = v110;
       }
 
       else
       {
         v94 = v48;
         v96 = v47;
-        v57 = [(SBHAddWidgetSheetViewController *)self _listLayoutForWidgetSizing];
-        v58 = [v57 numberOfColumnsForOrientation:1];
-        v59 = [v57 numberOfRowsForOrientation:1];
-        v21 = v110;
+        _listLayoutForWidgetSizing = [(SBHAddWidgetSheetViewController *)self _listLayoutForWidgetSizing];
+        v58 = [_listLayoutForWidgetSizing numberOfColumnsForOrientation:1];
+        v59 = [_listLayoutForWidgetSizing numberOfRowsForOrientation:1];
+        configuration = v110;
         if (objc_opt_respondsToSelector())
         {
-          v60 = [v57 iconGridSizeClassSizes];
+          iconGridSizeClassSizes = [_listLayoutForWidgetSizing iconGridSizeClassSizes];
         }
 
         else
         {
-          v60 = objc_alloc_init(SBHIconGridSizeClassSizeMap);
+          iconGridSizeClassSizes = objc_alloc_init(SBHIconGridSizeClassSizeMap);
         }
 
-        v66 = v60;
-        v67 = [[SBIconListModel alloc] initWithFolder:0 gridSize:v58 | (v59 << 16) gridSizeClassSizes:v60];
+        v66 = iconGridSizeClassSizes;
+        v67 = [[SBIconListModel alloc] initWithFolder:0 gridSize:v58 | (v59 << 16) gridSizeClassSizes:iconGridSizeClassSizes];
 
         [(SBIconListModel *)v67 setIconLayoutBehavior:3];
-        v68 = [v110 gridSizeClassDomain];
+        gridSizeClassDomain = [v110 gridSizeClassDomain];
         v111 = v67;
-        [(SBIconListModel *)v67 setGridSizeClassDomain:v68];
+        [(SBIconListModel *)v67 setGridSizeClassDomain:gridSizeClassDomain];
 
         if (objc_opt_respondsToSelector())
         {
-          v69 = [v57 supportedIconGridSizeClasses];
-          [(SBIconListModel *)v67 setAllowedGridSizeClasses:v69];
+          supportedIconGridSizeClasses = [_listLayoutForWidgetSizing supportedIconGridSizeClasses];
+          [(SBIconListModel *)v67 setAllowedGridSizeClasses:supportedIconGridSizeClasses];
         }
 
-        v70 = [v110 listViewClass];
-        if (!v70)
+        listViewClass = [v110 listViewClass];
+        if (!listViewClass)
         {
-          v70 = objc_opt_self();
+          listViewClass = objc_opt_self();
         }
 
-        v71 = [v70 alloc];
-        v72 = [(SBHAddWidgetSheetViewControllerBase *)self listLayoutProvider];
-        v73 = [(SBHAddWidgetSheetViewControllerBase *)self iconViewProvider];
-        v74 = [v71 initWithModel:v111 layoutProvider:v72 iconLocation:@"SBIconLocationRoot" orientation:1 iconViewProvider:v73];
+        v71 = [listViewClass alloc];
+        listLayoutProvider = [(SBHAddWidgetSheetViewControllerBase *)self listLayoutProvider];
+        iconViewProvider = [(SBHAddWidgetSheetViewControllerBase *)self iconViewProvider];
+        v74 = [v71 initWithModel:v111 layoutProvider:listLayoutProvider iconLocation:@"SBIconLocationRoot" orientation:1 iconViewProvider:iconViewProvider];
 
         [v74 setIconViewConfigurationOptions:82];
-        [v74 setIconSpacing:{SBHIconListLayoutListIconSpacingWithDefault(v57, 1, 12.0)}];
+        [v74 setIconSpacing:{SBHIconListLayoutListIconSpacingWithDefault(_listLayoutForWidgetSizing, 1, 12.0)}];
         v98 = v74;
         [v94 setIconListView:v74];
 
@@ -1792,9 +1792,9 @@ void __71__SBHAddWidgetSheetViewController__generateSnapshotDiffedFromSnapshot__
       }
 
       v75 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      v76 = [(SBHAddWidgetSheetViewControllerBase *)self delegate];
-      v77 = [v47 filteredWidgetDescriptors];
-      if ([v77 count])
+      delegate = [(SBHAddWidgetSheetViewControllerBase *)self delegate];
+      filteredWidgetDescriptors = [v47 filteredWidgetDescriptors];
+      if ([filteredWidgetDescriptors count])
       {
         [v47 filteredWidgetDescriptors];
       }
@@ -1805,7 +1805,7 @@ void __71__SBHAddWidgetSheetViewController__generateSnapshotDiffedFromSnapshot__
       }
       v78 = ;
 
-      v108 = v9;
+      v108 = pathCopy;
       if (objc_opt_respondsToSelector())
       {
         v95 = v48;
@@ -1829,7 +1829,7 @@ void __71__SBHAddWidgetSheetViewController__generateSnapshotDiffedFromSnapshot__
                 objc_enumerationMutation(v79);
               }
 
-              v84 = [v76 addWidgetSheetViewController:self widgetIconForGalleryItem:*(*(&v112 + 1) + 8 * i)];
+              v84 = [delegate addWidgetSheetViewController:self widgetIconForGalleryItem:*(*(&v112 + 1) + 8 * i)];
               [v75 bs_safeAddObject:v84];
             }
 
@@ -1839,44 +1839,44 @@ void __71__SBHAddWidgetSheetViewController__generateSnapshotDiffedFromSnapshot__
           while (v81);
         }
 
-        v21 = v110;
+        configuration = v110;
         v48 = v95;
         v47 = v97;
       }
 
       [v111 setIcons:v75];
       v85 = [v99 numberOfSections] - 1;
-      v86 = [v99 numberOfItemsInSection:v11];
-      v87 = v11 != v85 || [v93 item] != v86 - 1;
+      v86 = [v99 numberOfItemsInSection:section];
+      v87 = section != v85 || [v93 item] != v86 - 1;
       [v48 setSeparatorVisible:v87];
-      v88 = [v48 visualStylingProvider];
-      if (!v88)
+      visualStylingProvider = [v48 visualStylingProvider];
+      if (!visualStylingProvider)
       {
         [(SBHAddWidgetSheetViewController *)self _materialViewForVisualStyling];
         v90 = v89 = v47;
-        v88 = [v90 visualStylingProviderForCategory:1];
+        visualStylingProvider = [v90 visualStylingProviderForCategory:1];
 
         v47 = v89;
-        [v48 setVisualStylingProvider:v88];
+        [v48 setVisualStylingProvider:visualStylingProvider];
       }
 
       v12 = v48;
 
-      v9 = v108;
-      v8 = v109;
-      v10 = v107;
+      pathCopy = v108;
+      viewCopy = v109;
+      identifierCopy = v107;
 LABEL_62:
 
       goto LABEL_63;
     }
 
-    v12 = [v8 dequeueReusableCellWithReuseIdentifier:@"kSBHAddWidgetSheetViewControllerCollectionViewReuseIdentifier" forIndexPath:v9];
-    v28 = [(SBHAddWidgetSheetViewControllerBase *)self addWidgetSheetStyle];
-    [v12 setAddWidgetSheetStyle:v28];
+    v12 = [viewCopy dequeueReusableCellWithReuseIdentifier:@"kSBHAddWidgetSheetViewControllerCollectionViewReuseIdentifier" forIndexPath:pathCopy];
+    addWidgetSheetStyle = [(SBHAddWidgetSheetViewControllerBase *)self addWidgetSheetStyle];
+    [v12 setAddWidgetSheetStyle:addWidgetSheetStyle];
     [v12 setSeparatorAlignedToLabels:1];
     leading = 12.0;
     trailing = 12.0;
-    if (!v28)
+    if (!addWidgetSheetStyle)
     {
       leading = self->_contentInsets.leading;
       trailing = self->_contentInsets.trailing;
@@ -1884,23 +1884,23 @@ LABEL_62:
 
     [v12 setContentInsets:{12.0, leading, 12.0, trailing}];
     [v12 setContentHorizontalSpacing:*&v122];
-    [v12 setSeparatorVisible:{objc_msgSend(v9, "item") != objc_msgSend(v8, "numberOfItemsInSection:", v11) - 1}];
+    [v12 setSeparatorVisible:{objc_msgSend(pathCopy, "item") != objc_msgSend(viewCopy, "numberOfItemsInSection:", section) - 1}];
     [v12 setIconImageInfo:{*(&v122 + 1), v123, v124}];
-    if (v11 == [(SBHAddWidgetSheetViewController *)self _sectionIndexForSection:2])
+    if (section == [(SBHAddWidgetSheetViewController *)self _sectionIndexForSection:2])
     {
-      if ([v10 isEqual:@"kSBHAddWidgetSheetGallerySuggestionsItemIdentifier"])
+      if ([identifierCopy isEqual:@"kSBHAddWidgetSheetGallerySuggestionsItemIdentifier"])
       {
-        v31 = [v12 textLabel];
+        textLabel = [v12 textLabel];
         v32 = SBHBundle();
         v33 = [v32 localizedStringForKey:@"ADD_WIDGET_SHEET_SUGGESTIONS_CELL_LABEL" value:&stru_1F3D472A8 table:@"SpringBoardHome"];
-        [v31 setText:v33];
+        [textLabel setText:v33];
 
-        v34 = [v12 imageView];
+        imageView = [v12 imageView];
         v35 = MEMORY[0x1E69DCAB8];
         v36 = @"rectangle.3.offgrid";
 LABEL_27:
         v56 = [v35 systemImageNamed:v36];
-        [v34 setImage:v56];
+        [imageView setImage:v56];
 
         [v12 setImageViewRequiresVisualStyling:1];
         goto LABEL_34;
@@ -1911,30 +1911,30 @@ LABEL_27:
 
     else
     {
-      if (v11 != [(SBHAddWidgetSheetViewController *)self _sectionIndexForSection:3])
+      if (section != [(SBHAddWidgetSheetViewController *)self _sectionIndexForSection:3])
       {
         goto LABEL_34;
       }
 
-      if ([v10 isEqual:@"kSBHAddWidgetSheetOtherItemIdentifier"])
+      if ([identifierCopy isEqual:@"kSBHAddWidgetSheetOtherItemIdentifier"])
       {
-        v53 = [v12 textLabel];
+        textLabel2 = [v12 textLabel];
         v54 = SBHBundle();
         v55 = [v54 localizedStringForKey:@"ADD_WIDGET_SHEET_OTHER_CELL_LABEL" value:&stru_1F3D472A8 table:@"SpringBoardHome"];
-        [v53 setText:v55];
+        [textLabel2 setText:v55];
 
-        v34 = [v12 imageView];
+        imageView = [v12 imageView];
         v35 = MEMORY[0x1E69DCAB8];
         v36 = @"ellipsis";
         goto LABEL_27;
       }
 
-      if ([v10 isEqual:@"kSBHAddWidgetSheetOtherDescriptionItemIdentifier"])
+      if ([identifierCopy isEqual:@"kSBHAddWidgetSheetOtherDescriptionItemIdentifier"])
       {
-        v62 = [(SBHAddWidgetSheetViewController *)self _otherDescriptionLabel];
-        [v12 setDetailText:v62];
-        v92 = [v12 imageView];
-        [v92 setHidden:1];
+        _otherDescriptionLabel = [(SBHAddWidgetSheetViewController *)self _otherDescriptionLabel];
+        [v12 setDetailText:_otherDescriptionLabel];
+        imageView2 = [v12 imageView];
+        [imageView2 setHidden:1];
 
         [v12 setUserInteractionEnabled:0];
         goto LABEL_33;
@@ -1943,20 +1943,20 @@ LABEL_27:
       v61 = 1640;
     }
 
-    v62 = [*(&self->super.super.super.super.isa + v61) objectForKey:v10];
-    v63 = [(SBHAddWidgetSheetViewControllerBase *)self appCellConfigurator];
-    [v63 configureCell:v12 withApplicationWidgetCollection:v62];
+    _otherDescriptionLabel = [*(&self->super.super.super.super.isa + v61) objectForKey:identifierCopy];
+    appCellConfigurator = [(SBHAddWidgetSheetViewControllerBase *)self appCellConfigurator];
+    [appCellConfigurator configureCell:v12 withApplicationWidgetCollection:_otherDescriptionLabel];
 
     [v12 setImageViewRequiresVisualStyling:0];
 LABEL_33:
 
 LABEL_34:
-    v64 = [v12 visualStylingProvider];
-    v47 = v64;
-    if (v28 == 1 && !v64)
+    visualStylingProvider2 = [v12 visualStylingProvider];
+    v47 = visualStylingProvider2;
+    if (addWidgetSheetStyle == 1 && !visualStylingProvider2)
     {
-      v65 = [(SBHAddWidgetSheetViewController *)self _materialViewForVisualStyling];
-      v47 = [v65 visualStylingProviderForCategory:1];
+      _materialViewForVisualStyling = [(SBHAddWidgetSheetViewController *)self _materialViewForVisualStyling];
+      v47 = [_materialViewForVisualStyling visualStylingProviderForCategory:1];
 
       [v12 setVisualStylingProvider:v47];
     }
@@ -1965,32 +1965,32 @@ LABEL_34:
     goto LABEL_62;
   }
 
-  v12 = [v8 dequeueReusableCellWithReuseIdentifier:@"kSBHAddWidgetSheetGalleryCellReuseIdentifier" forIndexPath:v9];
-  v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%ld/%@", objc_msgSend(v9, "item"), v10];
-  v14 = [v12 debugLabel];
-  [v14 setText:v13];
+  v12 = [viewCopy dequeueReusableCellWithReuseIdentifier:@"kSBHAddWidgetSheetGalleryCellReuseIdentifier" forIndexPath:pathCopy];
+  identifierCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%ld/%@", objc_msgSend(pathCopy, "item"), identifierCopy];
+  debugLabel = [v12 debugLabel];
+  [debugLabel setText:identifierCopy];
 
-  v15 = [(NSMapTable *)self->_galleryIdentifierToGalleryItemLookupTable objectForKey:v10];
-  v16 = [v12 widgetWrapperViewController];
+  v15 = [(NSMapTable *)self->_galleryIdentifierToGalleryItemLookupTable objectForKey:identifierCopy];
+  widgetWrapperViewController = [v12 widgetWrapperViewController];
 
-  if (v16 != v15)
+  if (widgetWrapperViewController != v15)
   {
-    v17 = [v15 parentViewController];
-    if (v17 == self)
+    parentViewController = [v15 parentViewController];
+    if (parentViewController == self)
     {
-      v18 = [v15 view];
-      [v18 removeFromSuperview];
+      view = [v15 view];
+      [view removeFromSuperview];
 
       [v15 removeFromParentViewController];
-      v17 = 0;
+      parentViewController = 0;
     }
 
     [v12 setWidgetWrapperViewController:v15];
-    if (v17 != self)
+    if (parentViewController != self)
     {
-      v19 = [v12 widgetWrapperViewController];
-      v20 = [v12 contentView];
-      [(SBHAddWidgetSheetViewController *)self bs_addChildViewController:v19 withSuperview:v20];
+      widgetWrapperViewController2 = [v12 widgetWrapperViewController];
+      contentView = [v12 contentView];
+      [(SBHAddWidgetSheetViewController *)self bs_addChildViewController:widgetWrapperViewController2 withSuperview:contentView];
     }
   }
 
@@ -2058,14 +2058,14 @@ void __88__SBHAddWidgetSheetViewController_collectionView_cellForItemAtIndexPath
 - (void)_splitApplicationWidgetCollections
 {
   v39 = *MEMORY[0x1E69E9840];
-  v3 = [(SBHAddWidgetSheetViewController *)self applicationWidgetCollections];
-  v28 = self;
-  v4 = [(SBHAddWidgetSheetViewControllerBase *)self allowedWidgets];
+  applicationWidgetCollections = [(SBHAddWidgetSheetViewController *)self applicationWidgetCollections];
+  selfCopy = self;
+  allowedWidgets = [(SBHAddWidgetSheetViewControllerBase *)self allowedWidgets];
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  obj = v3;
+  obj = applicationWidgetCollections;
   v23 = [obj countByEnumeratingWithState:&v33 objects:v38 count:16];
   v5 = 0;
   if (v23)
@@ -2088,8 +2088,8 @@ void __88__SBHAddWidgetSheetViewController_collectionView_cellForItemAtIndexPath
         v30 = 0u;
         v31 = 0u;
         v32 = 0u;
-        v8 = [v7 widgetDescriptors];
-        v9 = [v8 countByEnumeratingWithState:&v29 objects:v37 count:16];
+        widgetDescriptors = [v7 widgetDescriptors];
+        v9 = [widgetDescriptors countByEnumeratingWithState:&v29 objects:v37 count:16];
         v26 = v5;
         if (v9)
         {
@@ -2104,12 +2104,12 @@ void __88__SBHAddWidgetSheetViewController_collectionView_cellForItemAtIndexPath
             {
               if (*v30 != v13)
               {
-                objc_enumerationMutation(v8);
+                objc_enumerationMutation(widgetDescriptors);
               }
 
               v15 = *(*(&v29 + 1) + 8 * i);
-              v16 = [(SBHAddWidgetSheetViewController *)v28 addWidgetSheetLocation];
-              if (([v15 sbh_disfavoredSizeClassesForAddWidgetSheetLocation:v16] & v4) == 0)
+              addWidgetSheetLocation = [(SBHAddWidgetSheetViewController *)selfCopy addWidgetSheetLocation];
+              if (([v15 sbh_disfavoredSizeClassesForAddWidgetSheetLocation:addWidgetSheetLocation] & allowedWidgets) == 0)
               {
                 goto LABEL_15;
               }
@@ -2120,7 +2120,7 @@ void __88__SBHAddWidgetSheetViewController_collectionView_cellForItemAtIndexPath
               }
 
               [v11 setDisfavored:1];
-              if (([v15 sbh_favoredSizeClassesForAddWidgetSheetLocation:v16] & v4) == 0)
+              if (([v15 sbh_favoredSizeClassesForAddWidgetSheetLocation:addWidgetSheetLocation] & allowedWidgets) == 0)
               {
                 v17 = v27;
                 if (!v27)
@@ -2144,7 +2144,7 @@ LABEL_15:
               }
             }
 
-            v10 = [v8 countByEnumeratingWithState:&v29 objects:v37 count:16];
+            v10 = [widgetDescriptors countByEnumeratingWithState:&v29 objects:v37 count:16];
           }
 
           while (v10);
@@ -2157,8 +2157,8 @@ LABEL_15:
           v12 = 0;
         }
 
-        v18 = [v12 widgetDescriptors];
-        v19 = [v18 mutableCopy];
+        widgetDescriptors2 = [v12 widgetDescriptors];
+        v19 = [widgetDescriptors2 mutableCopy];
 
         [v19 removeObjectsInArray:v27];
         [v12 setWidgetDescriptors:v19];
@@ -2205,18 +2205,18 @@ LABEL_15:
     v24 = 0;
   }
 
-  [(SBHAddWidgetSheetViewController *)v28 setFavoredApplicationWidgetCollections:v24];
-  [(SBHAddWidgetSheetViewController *)v28 setDisfavoredApplicationWidgetCollections:v5];
+  [(SBHAddWidgetSheetViewController *)selfCopy setFavoredApplicationWidgetCollections:v24];
+  [(SBHAddWidgetSheetViewController *)selfCopy setDisfavoredApplicationWidgetCollections:v5];
 }
 
 - (id)_otherDescriptionLabel
 {
-  v2 = [(SBHAddWidgetSheetViewController *)self addWidgetSheetLocation];
-  if (v2 <= 1)
+  addWidgetSheetLocation = [(SBHAddWidgetSheetViewController *)self addWidgetSheetLocation];
+  if (addWidgetSheetLocation <= 1)
   {
-    if (v2)
+    if (addWidgetSheetLocation)
     {
-      if (v2 == 1)
+      if (addWidgetSheetLocation == 1)
       {
         v3 = @"ADD_WIDGET_SHEET_OTHER_LOCATION_LABEL_IPAD_LOCK_SCREEN";
       }
@@ -2241,10 +2241,10 @@ LABEL_16:
 
     else
     {
-      v12 = [MEMORY[0x1E69DC938] currentDevice];
-      v13 = [v12 userInterfaceIdiom];
+      currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+      userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-      if (v13 == 1)
+      if (userInterfaceIdiom == 1)
       {
         goto LABEL_16;
       }
@@ -2255,12 +2255,12 @@ LABEL_16:
   }
 
   v4 = @"ADD_WIDGET_SHEET_OTHER_LOCATION_LABEL_CARPLAY";
-  if (v2 != 3)
+  if (addWidgetSheetLocation != 3)
   {
     v4 = 0;
   }
 
-  if (v2 == 2)
+  if (addWidgetSheetLocation == 2)
   {
     v3 = @"ADD_WIDGET_SHEET_OTHER_LOCATION_LABEL_AMBIENT";
   }
@@ -2281,36 +2281,36 @@ LABEL_11:
   return v10;
 }
 
-- (BOOL)collectionView:(id)a3 shouldSelectItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view shouldSelectItemAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [a3 indexPathsForSelectedItems];
-  v7 = [v6 containsObject:v5];
+  pathCopy = path;
+  indexPathsForSelectedItems = [view indexPathsForSelectedItems];
+  v7 = [indexPathsForSelectedItems containsObject:pathCopy];
 
   return v7 ^ 1;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v19 = a3;
-  v6 = a4;
-  objc_storeStrong(&self->_lastSelectedIndexPath, a4);
-  v7 = [v6 section];
-  if (v7 == [(SBHAddWidgetSheetViewController *)self _sectionIndexForSection:0])
+  viewCopy = view;
+  pathCopy = path;
+  objc_storeStrong(&self->_lastSelectedIndexPath, path);
+  section = [pathCopy section];
+  if (section == [(SBHAddWidgetSheetViewController *)self _sectionIndexForSection:0])
   {
-    [(SBHAddWidgetSheetViewController *)self _presentDetailSheetForGalleryCellAtIndexPath:v6];
+    [(SBHAddWidgetSheetViewController *)self _presentDetailSheetForGalleryCellAtIndexPath:pathCopy];
   }
 
   else
   {
-    v8 = [v6 section];
-    if (v8 == -[SBHAddWidgetSheetViewController _sectionIndexForSection:](self, "_sectionIndexForSection:", 2) || (v9 = [v6 section], v9 == -[SBHAddWidgetSheetViewController _sectionIndexForSection:](self, "_sectionIndexForSection:", 1)))
+    section2 = [pathCopy section];
+    if (section2 == -[SBHAddWidgetSheetViewController _sectionIndexForSection:](self, "_sectionIndexForSection:", 2) || (v9 = [pathCopy section], v9 == -[SBHAddWidgetSheetViewController _sectionIndexForSection:](self, "_sectionIndexForSection:", 1)))
     {
-      v10 = -[SBHAddWidgetSheetViewController _applicationWidgetCollectionIndexForItemIndex:](self, "_applicationWidgetCollectionIndexForItemIndex:", [v6 item]);
-      v11 = [(SBHAddWidgetSheetViewController *)self configuration];
-      v12 = [v11 applicationCellIncludesGalleryListView];
+      v10 = -[SBHAddWidgetSheetViewController _applicationWidgetCollectionIndexForItemIndex:](self, "_applicationWidgetCollectionIndexForItemIndex:", [pathCopy item]);
+      configuration = [(SBHAddWidgetSheetViewController *)self configuration];
+      applicationCellIncludesGalleryListView = [configuration applicationCellIncludesGalleryListView];
 
-      if ((v12 & 1) == 0)
+      if ((applicationCellIncludesGalleryListView & 1) == 0)
       {
         if (v10 == 0x7FFFFFFFFFFFFFFFLL)
         {
@@ -2319,8 +2319,8 @@ LABEL_11:
 
         else
         {
-          v16 = [(SBHAddWidgetSheetViewController *)self applicationWidgetCollectionsToUse];
-          v17 = [v16 objectAtIndex:v10];
+          applicationWidgetCollectionsToUse = [(SBHAddWidgetSheetViewController *)self applicationWidgetCollectionsToUse];
+          v17 = [applicationWidgetCollectionsToUse objectAtIndex:v10];
           [(SBHAddWidgetSheetViewController *)self _presentDetailSheetViewControllerForApplicationWidgetCollection:v17];
         }
       }
@@ -2328,12 +2328,12 @@ LABEL_11:
 
     else
     {
-      v13 = [v6 section];
-      if (v13 == [(SBHAddWidgetSheetViewController *)self _sectionIndexForSection:3])
+      section3 = [pathCopy section];
+      if (section3 == [(SBHAddWidgetSheetViewController *)self _sectionIndexForSection:3])
       {
-        v14 = [v6 item];
-        v15 = v14 - 2;
-        if (v14 >= 2)
+        item = [pathCopy item];
+        v15 = item - 2;
+        if (item >= 2)
         {
           v18 = [(NSArray *)self->_disfavoredApplicationWidgetCollections objectAtIndex:v15];
           [(SBHAddWidgetSheetViewController *)self _presentDetailSheetViewControllerForApplicationWidgetCollection:v18];
@@ -2342,7 +2342,7 @@ LABEL_11:
         else
         {
           [(SBHAddWidgetSheetViewController *)self _toggleShowingDisfavoredApplicationWidgetCollections];
-          [v19 deselectItemAtIndexPath:v6 animated:1];
+          [viewCopy deselectItemAtIndexPath:pathCopy animated:1];
         }
       }
     }
@@ -2351,16 +2351,16 @@ LABEL_11:
 
 - (void)_presentGalleryCell
 {
-  v3 = [(SBHAddWidgetSheetViewControllerBase *)self delegate];
-  if ((objc_opt_respondsToSelector() & 1) == 0 || ([v3 galleryViewControllerForAddWidgetSheetViewController:self], (v15 = objc_claimAutoreleasedReturnValue()) == 0))
+  delegate = [(SBHAddWidgetSheetViewControllerBase *)self delegate];
+  if ((objc_opt_respondsToSelector() & 1) == 0 || ([delegate galleryViewControllerForAddWidgetSheetViewController:self], (v15 = objc_claimAutoreleasedReturnValue()) == 0))
   {
     v4 = [SBHAddWidgetSheetViewController alloc];
-    v5 = [(SBHAddWidgetSheetViewControllerBase *)self listLayoutProvider];
-    v6 = [(SBHAddWidgetSheetViewControllerBase *)self iconViewProvider];
-    v7 = [(SBHAddWidgetSheetViewControllerBase *)self allowedWidgets];
+    listLayoutProvider = [(SBHAddWidgetSheetViewControllerBase *)self listLayoutProvider];
+    iconViewProvider = [(SBHAddWidgetSheetViewControllerBase *)self iconViewProvider];
+    allowedWidgets = [(SBHAddWidgetSheetViewControllerBase *)self allowedWidgets];
     v9 = v8;
-    v10 = [(SBHAddWidgetSheetViewControllerBase *)self appCellConfigurator];
-    v15 = [(SBHAddWidgetSheetViewController *)v4 initWithListLayoutProvider:v5 iconViewProvider:v6 allowedWidgets:v7 appCellConfigurator:v9 addWidgetSheetStyle:v10, [(SBHAddWidgetSheetViewControllerBase *)self addWidgetSheetStyle]];
+    appCellConfigurator = [(SBHAddWidgetSheetViewControllerBase *)self appCellConfigurator];
+    v15 = [(SBHAddWidgetSheetViewController *)v4 initWithListLayoutProvider:listLayoutProvider iconViewProvider:iconViewProvider allowedWidgets:allowedWidgets appCellConfigurator:v9 addWidgetSheetStyle:appCellConfigurator, [(SBHAddWidgetSheetViewControllerBase *)self addWidgetSheetStyle]];
 
     [(SBHAddWidgetSheetViewController *)v15 setAddWidgetSheetLocation:[(SBHAddWidgetSheetViewController *)self addWidgetSheetLocation]];
     [(SBHAddWidgetSheetViewControllerBase *)v15 setAddWidgetSheetWidgetBackgroundType:[(SBHAddWidgetSheetViewControllerBase *)self addWidgetSheetWidgetBackgroundType]];
@@ -2369,15 +2369,15 @@ LABEL_11:
     [(SBHAddWidgetSheetViewControllerBase *)v15 setExternalBackgroundView:self->_backgroundView];
     [(SBHAddWidgetSheetViewController *)v15 setApplicationWidgetCollections:self->_favoredApplicationWidgetCollections];
     [(SBHAddWidgetSheetViewControllerBase *)v15 setDelegate:self];
-    v11 = [(SBHAddWidgetSheetViewController *)self _suggestedItems];
-    [(SBHAddWidgetSheetViewController *)v15 setSuggestedItems:v11 forGalleryLayoutSize:self->_galleryLayoutSize];
+    _suggestedItems = [(SBHAddWidgetSheetViewController *)self _suggestedItems];
+    [(SBHAddWidgetSheetViewController *)v15 setSuggestedItems:_suggestedItems forGalleryLayoutSize:self->_galleryLayoutSize];
 
-    v12 = [(SBHAddWidgetSheetViewController *)self externalSearchController];
-    [(SBHAddWidgetSheetViewController *)v15 setExternalSearchController:v12];
+    externalSearchController = [(SBHAddWidgetSheetViewController *)self externalSearchController];
+    [(SBHAddWidgetSheetViewController *)v15 setExternalSearchController:externalSearchController];
 
-    v13 = [(SBHAddWidgetSheetViewController *)v15 view];
-    v14 = [MEMORY[0x1E69DC888] clearColor];
-    [v13 setBackgroundColor:v14];
+    view = [(SBHAddWidgetSheetViewController *)v15 view];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [view setBackgroundColor:clearColor];
 
     [(SBHAddWidgetSheetViewController *)v15 setGalleryLayoutSize:self->_galleryLayoutSize];
   }
@@ -2388,48 +2388,48 @@ LABEL_11:
 - (void)_toggleShowingDisfavoredApplicationWidgetCollections
 {
   self->_isShowingDisfavoredApplicationWidgetCollections ^= 1u;
-  v3 = [(SBHAddWidgetSheetViewController *)self _shouldAnimateChanges];
+  _shouldAnimateChanges = [(SBHAddWidgetSheetViewController *)self _shouldAnimateChanges];
 
-  [(SBHAddWidgetSheetViewController *)self _refreshData:v3];
+  [(SBHAddWidgetSheetViewController *)self _refreshData:_shouldAnimateChanges];
 }
 
-- (void)_collectionView:(id)a3 updateSeparatorVisibility:(BOOL)a4 forHighlightAtIndexPath:(id)a5
+- (void)_collectionView:(id)view updateSeparatorVisibility:(BOOL)visibility forHighlightAtIndexPath:(id)path
 {
-  v6 = a4;
-  v14 = a3;
-  v7 = a5;
+  visibilityCopy = visibility;
+  viewCopy = view;
+  pathCopy = path;
   objc_opt_class();
-  v8 = [v14 cellForItemAtIndexPath:v7];
+  v8 = [viewCopy cellForItemAtIndexPath:pathCopy];
   v9 = SBFSafeCast();
 
-  [v9 setSeparatorVisible:v6];
-  v10 = [MEMORY[0x1E696AC88] indexPathForItem:objc_msgSend(v7 inSection:{"row") - 1, objc_msgSend(v7, "section")}];
-  v11 = [v7 row];
+  [v9 setSeparatorVisible:visibilityCopy];
+  v10 = [MEMORY[0x1E696AC88] indexPathForItem:objc_msgSend(pathCopy inSection:{"row") - 1, objc_msgSend(pathCopy, "section")}];
+  v11 = [pathCopy row];
 
   if ((v11 & 0x8000000000000000) == 0)
   {
     objc_opt_class();
-    v12 = [v14 cellForItemAtIndexPath:v10];
+    v12 = [viewCopy cellForItemAtIndexPath:v10];
     v13 = SBFSafeCast();
 
-    [v13 setSeparatorVisible:v6];
+    [v13 setSeparatorVisible:visibilityCopy];
   }
 }
 
-- (void)_presentDetailSheetViewControllerForApplicationWidgetCollection:(id)a3 configuredWithGalleryItem:(id)a4 selectedSizeClass:(int64_t)a5 fromCell:(id)a6 atIndexPath:(id)a7
+- (void)_presentDetailSheetViewControllerForApplicationWidgetCollection:(id)collection configuredWithGalleryItem:(id)item selectedSizeClass:(int64_t)class fromCell:(id)cell atIndexPath:(id)path
 {
-  v9 = a3;
-  v10 = a6;
-  v11 = [v9 widgetDescriptors];
-  v12 = [v11 count];
+  collectionCopy = collection;
+  cellCopy = cell;
+  widgetDescriptors = [collectionCopy widgetDescriptors];
+  v12 = [widgetDescriptors count];
 
   if (v12)
   {
-    v13 = [(SBHAddWidgetSheetViewControllerBase *)self delegate];
-    if ((objc_opt_respondsToSelector() & 1) == 0 || ([(SBHAddWidgetSheetViewController *)v13 addWidgetSheetViewController:self detailViewControllerForWidgetCollection:v9], (v14 = objc_claimAutoreleasedReturnValue()) == 0))
+    delegate = [(SBHAddWidgetSheetViewControllerBase *)self delegate];
+    if ((objc_opt_respondsToSelector() & 1) == 0 || ([(SBHAddWidgetSheetViewController *)delegate addWidgetSheetViewController:self detailViewControllerForWidgetCollection:collectionCopy], (indexPathsForSelectedItems = objc_claimAutoreleasedReturnValue()) == 0))
     {
-      v28 = v10;
-      v15 = [(SBHAddWidgetSheetViewControllerBase *)self addWidgetSheetStyle];
+      v28 = cellCopy;
+      addWidgetSheetStyle = [(SBHAddWidgetSheetViewControllerBase *)self addWidgetSheetStyle];
       v40 = 0;
       v38 = 0u;
       v39 = 0u;
@@ -2442,12 +2442,12 @@ LABEL_11:
       v31 = 0u;
       [(SBHAddWidgetSheetViewController *)self _metricsForCurrentOrientation];
       v16 = [SBHAddWidgetDetailSheetViewController alloc];
-      v17 = [(SBHAddWidgetSheetViewControllerBase *)self listLayoutProvider];
-      v18 = [(SBHAddWidgetSheetViewControllerBase *)self iconViewProvider];
-      v19 = [(SBHAddWidgetSheetViewControllerBase *)self allowedWidgets];
+      listLayoutProvider = [(SBHAddWidgetSheetViewControllerBase *)self listLayoutProvider];
+      iconViewProvider = [(SBHAddWidgetSheetViewControllerBase *)self iconViewProvider];
+      allowedWidgets = [(SBHAddWidgetSheetViewControllerBase *)self allowedWidgets];
       v21 = v20;
-      v22 = [(SBHAddWidgetSheetViewControllerBase *)self appCellConfigurator];
-      v14 = [(SBHAddWidgetSheetViewControllerBase *)v16 initWithListLayoutProvider:v17 iconViewProvider:v18 allowedWidgets:v19 appCellConfigurator:v21 addWidgetSheetStyle:v22, v15];
+      appCellConfigurator = [(SBHAddWidgetSheetViewControllerBase *)self appCellConfigurator];
+      indexPathsForSelectedItems = [(SBHAddWidgetSheetViewControllerBase *)v16 initWithListLayoutProvider:listLayoutProvider iconViewProvider:iconViewProvider allowedWidgets:allowedWidgets appCellConfigurator:v21 addWidgetSheetStyle:appCellConfigurator, addWidgetSheetStyle];
 
       v29[6] = v37;
       v29[7] = v38;
@@ -2459,37 +2459,37 @@ LABEL_11:
       v29[5] = v36;
       v29[0] = v31;
       v29[1] = v32;
-      [(SBHAddWidgetSheetViewControllerBase *)v14 setAddWidgetSheetMetrics:v29];
-      if (v15 == 1)
+      [(SBHAddWidgetSheetViewControllerBase *)indexPathsForSelectedItems setAddWidgetSheetMetrics:v29];
+      if (addWidgetSheetStyle == 1)
       {
-        v23 = v13;
+        selfCopy = delegate;
       }
 
       else
       {
-        v23 = self;
+        selfCopy = self;
       }
 
-      [(SBHAddWidgetSheetViewControllerBase *)v14 setDelegate:v23];
-      [(SBHAddWidgetDetailSheetViewController *)v14 setApplicationWidgetCollection:v9];
-      [(SBHAddWidgetSheetViewControllerBase *)v14 setAddWidgetSheetLocation:[(SBHAddWidgetSheetViewController *)self addWidgetSheetLocation]];
-      v24 = [(SBHAddWidgetSheetViewControllerBase *)self externalBackgroundView];
-      [(SBHAddWidgetSheetViewControllerBase *)v14 setExternalBackgroundView:v24];
+      [(SBHAddWidgetSheetViewControllerBase *)indexPathsForSelectedItems setDelegate:selfCopy];
+      [(SBHAddWidgetDetailSheetViewController *)indexPathsForSelectedItems setApplicationWidgetCollection:collectionCopy];
+      [(SBHAddWidgetSheetViewControllerBase *)indexPathsForSelectedItems setAddWidgetSheetLocation:[(SBHAddWidgetSheetViewController *)self addWidgetSheetLocation]];
+      externalBackgroundView = [(SBHAddWidgetSheetViewControllerBase *)self externalBackgroundView];
+      [(SBHAddWidgetSheetViewControllerBase *)indexPathsForSelectedItems setExternalBackgroundView:externalBackgroundView];
 
-      [(SBHAddWidgetDetailSheetViewController *)v14 setExternalSearchController:self->_externalSearchController];
-      v25 = [(SBHAddWidgetSheetViewController *)self presenter];
-      [(SBHAddWidgetDetailSheetViewController *)v14 setPresenter:v25];
+      [(SBHAddWidgetDetailSheetViewController *)indexPathsForSelectedItems setExternalSearchController:self->_externalSearchController];
+      presenter = [(SBHAddWidgetSheetViewController *)self presenter];
+      [(SBHAddWidgetDetailSheetViewController *)indexPathsForSelectedItems setPresenter:presenter];
 
-      [(SBHAddWidgetSheetViewControllerBase *)v14 setAddWidgetSheetWidgetBackgroundType:[(SBHAddWidgetSheetViewControllerBase *)self addWidgetSheetWidgetBackgroundType]];
-      if (v15 == 1)
+      [(SBHAddWidgetSheetViewControllerBase *)indexPathsForSelectedItems setAddWidgetSheetWidgetBackgroundType:[(SBHAddWidgetSheetViewControllerBase *)self addWidgetSheetWidgetBackgroundType]];
+      if (addWidgetSheetStyle == 1)
       {
-        [(SBHAddWidgetDetailSheetViewController *)v14 setAdditionalSafeAreaInsets:*(&v33 + 1), 0.0, 0.0, 0.0];
+        [(SBHAddWidgetDetailSheetViewController *)indexPathsForSelectedItems setAdditionalSafeAreaInsets:*(&v33 + 1), 0.0, 0.0, 0.0];
       }
 
-      v10 = v28;
+      cellCopy = v28;
     }
 
-    [(SBHAddWidgetSheetViewController *)self _presentDetailViewController:v14 fromCell:v10];
+    [(SBHAddWidgetSheetViewController *)self _presentDetailViewController:indexPathsForSelectedItems fromCell:cellCopy];
   }
 
   else
@@ -2497,32 +2497,32 @@ LABEL_11:
     v26 = SBLogAddWidgetSheet();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
     {
-      [SBHAddWidgetSheetViewController _presentDetailSheetViewControllerForApplicationWidgetCollection:v9 configuredWithGalleryItem:v26 selectedSizeClass:? fromCell:? atIndexPath:?];
+      [SBHAddWidgetSheetViewController _presentDetailSheetViewControllerForApplicationWidgetCollection:collectionCopy configuredWithGalleryItem:v26 selectedSizeClass:? fromCell:? atIndexPath:?];
     }
 
     collectionView = self->_collectionView;
-    v14 = [(_SBHAddWidgetSheetCollectionView *)collectionView indexPathsForSelectedItems];
-    v13 = [(SBHAddWidgetDetailSheetViewController *)v14 firstObject];
-    [(_SBHAddWidgetSheetCollectionView *)collectionView deselectItemAtIndexPath:v13 animated:1];
+    indexPathsForSelectedItems = [(_SBHAddWidgetSheetCollectionView *)collectionView indexPathsForSelectedItems];
+    delegate = [(SBHAddWidgetDetailSheetViewController *)indexPathsForSelectedItems firstObject];
+    [(_SBHAddWidgetSheetCollectionView *)collectionView deselectItemAtIndexPath:delegate animated:1];
   }
 }
 
-- (void)_presentDetailViewController:(id)a3 fromCell:(id)a4
+- (void)_presentDetailViewController:(id)controller fromCell:(id)cell
 {
   v32[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  cellCopy = cell;
   if ([(SBHAddWidgetSheetViewControllerBase *)self addWidgetSheetStyle]== 1)
   {
-    v8 = [(SBHAddWidgetSheetViewController *)self splitViewController];
-    v9 = [v8 viewControllerForColumn:2];
+    splitViewController = [(SBHAddWidgetSheetViewController *)self splitViewController];
+    v9 = [splitViewController viewControllerForColumn:2];
     v10 = objc_opt_class();
-    v11 = v9;
+    sheetPresentationController = v9;
     if (v10)
     {
       if (objc_opt_isKindOfClass())
       {
-        v12 = v11;
+        v12 = sheetPresentationController;
       }
 
       else
@@ -2540,57 +2540,57 @@ LABEL_11:
 
     if (!v23)
     {
-      v24 = [v11 navigationController];
-      if (!v24)
+      navigationController = [sheetPresentationController navigationController];
+      if (!navigationController)
       {
-        v23 = [objc_alloc(MEMORY[0x1E69DCCD8]) initWithRootViewController:v6];
+        v23 = [objc_alloc(MEMORY[0x1E69DCCD8]) initWithRootViewController:controllerCopy];
         [(SBHAddWidgetSheetViewController *)self showDetailViewController:v23 sender:self];
 LABEL_21:
 
-        if (v7)
+        if (cellCopy)
         {
           v26 = objc_opt_self();
           isKindOfClass = objc_opt_isKindOfClass();
 
           if (isKindOfClass)
           {
-            v28 = [v7 widgetWrapperViewController];
-            v29 = [v28 galleryItem];
-            v30 = [v7 widgetWrapperViewController];
-            [v6 configureForGalleryItem:v29 selectedSizeClass:{objc_msgSend(v30, "selectedSizeClass")}];
+            widgetWrapperViewController = [cellCopy widgetWrapperViewController];
+            galleryItem = [widgetWrapperViewController galleryItem];
+            widgetWrapperViewController2 = [cellCopy widgetWrapperViewController];
+            [controllerCopy configureForGalleryItem:galleryItem selectedSizeClass:{objc_msgSend(widgetWrapperViewController2, "selectedSizeClass")}];
           }
         }
 
-        v31 = [(SBHAddWidgetSheetViewController *)self _effectiveSearchController];
-        v19 = [v31 searchBar];
+        _effectiveSearchController = [(SBHAddWidgetSheetViewController *)self _effectiveSearchController];
+        searchBar = [_effectiveSearchController searchBar];
 
-        [v19 resignFirstResponder];
+        [searchBar resignFirstResponder];
         goto LABEL_25;
       }
 
-      v23 = v24;
+      v23 = navigationController;
     }
 
-    v32[0] = v6;
+    v32[0] = controllerCopy;
     v25 = [MEMORY[0x1E695DEC8] arrayWithObjects:v32 count:1];
     [v23 setViewControllers:v25];
 
     goto LABEL_21;
   }
 
-  [v6 setModalPresentationStyle:2];
+  [controllerCopy setModalPresentationStyle:2];
   [(SBHAddWidgetSheetViewController *)self preferredContentSize];
-  [v6 setPreferredContentSize:?];
-  if (v7)
+  [controllerCopy setPreferredContentSize:?];
+  if (cellCopy)
   {
-    v13 = [[SBHWidgetAddSheetTransitionContext alloc] initWithSourceCell:v7];
-    [v6 setTransitioningDelegate:v13];
+    v13 = [[SBHWidgetAddSheetTransitionContext alloc] initWithSourceCell:cellCopy];
+    [controllerCopy setTransitioningDelegate:v13];
     [(SBHAddWidgetSheetViewController *)self setTransitionContext:v13];
   }
 
-  v8 = [(SBHAddWidgetSheetViewController *)self sheetPresentationController];
-  v11 = [v6 sheetPresentationController];
-  [v11 _setShouldDismissWhenTappedOutside:1];
+  splitViewController = [(SBHAddWidgetSheetViewController *)self sheetPresentationController];
+  sheetPresentationController = [controllerCopy sheetPresentationController];
+  [sheetPresentationController _setShouldDismissWhenTappedOutside:1];
   if (__sb__runningInSpringBoard())
   {
     if (SBFEffectiveDeviceClass() == 2)
@@ -2601,39 +2601,39 @@ LABEL_21:
     goto LABEL_12;
   }
 
-  v14 = [MEMORY[0x1E69DC938] currentDevice];
-  v15 = [v14 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v15 != 1)
+  if (userInterfaceIdiom != 1)
   {
 LABEL_12:
-    [v11 setPrefersGrabberVisible:1];
-    [v8 _additionalMinimumTopInset];
-    [v11 _setAdditionalMinimumTopInset:?];
-    [v8 _grabberTopSpacing];
-    [v11 _setGrabberTopSpacing:?];
+    [sheetPresentationController setPrefersGrabberVisible:1];
+    [splitViewController _additionalMinimumTopInset];
+    [sheetPresentationController _setAdditionalMinimumTopInset:?];
+    [splitViewController _grabberTopSpacing];
+    [sheetPresentationController _setGrabberTopSpacing:?];
   }
 
 LABEL_13:
-  [v8 preferredCornerRadius];
-  [v11 setPreferredCornerRadius:?];
-  [v11 setDelegate:self];
-  v16 = [(SBHAddWidgetSheetViewController *)self view];
-  [v11 setSourceView:v16];
+  [splitViewController preferredCornerRadius];
+  [sheetPresentationController setPreferredCornerRadius:?];
+  [sheetPresentationController setDelegate:self];
+  view = [(SBHAddWidgetSheetViewController *)self view];
+  [sheetPresentationController setSourceView:view];
 
-  v17 = [(SBHAddWidgetSheetViewController *)self traitCollection];
+  traitCollection = [(SBHAddWidgetSheetViewController *)self traitCollection];
   v18 = objc_opt_self();
-  v19 = [v17 objectForTrait:v18];
+  searchBar = [traitCollection objectForTrait:v18];
 
-  if (v19)
+  if (searchBar)
   {
-    v20 = [v6 traitOverrides];
+    traitOverrides = [controllerCopy traitOverrides];
     v21 = objc_opt_self();
-    [v20 setObject:v19 forTrait:v21];
+    [traitOverrides setObject:searchBar forTrait:v21];
   }
 
-  v22 = [(SBHAddWidgetSheetViewController *)self _currentPresenter];
-  [v22 presentViewController:v6 animated:1 completion:0];
+  _currentPresenter = [(SBHAddWidgetSheetViewController *)self _currentPresenter];
+  [_currentPresenter presentViewController:controllerCopy animated:1 completion:0];
 
 LABEL_25:
 }
@@ -2641,8 +2641,8 @@ LABEL_25:
 - (void)_clearDetailViewController
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v3 = [(SBHAddWidgetSheetViewController *)self splitViewController];
-  v4 = [v3 viewControllerForColumn:2];
+  splitViewController = [(SBHAddWidgetSheetViewController *)self splitViewController];
+  v4 = [splitViewController viewControllerForColumn:2];
   v5 = objc_opt_class();
   v6 = v4;
   if (v5)
@@ -2680,10 +2680,10 @@ LABEL_25:
   }
 }
 
-- (void)_presentDetailSheetForGalleryCellAtIndexPath:(id)a3
+- (void)_presentDetailSheetForGalleryCellAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(_SBHAddWidgetSheetCollectionView *)self->_collectionView cellForItemAtIndexPath:v4];
+  pathCopy = path;
+  v5 = [(_SBHAddWidgetSheetCollectionView *)self->_collectionView cellForItemAtIndexPath:pathCopy];
   v6 = objc_opt_class();
   v7 = v5;
   if (v6)
@@ -2708,14 +2708,14 @@ LABEL_25:
 
   if (v7)
   {
-    v10 = [v9 widgetWrapperViewController];
-    v11 = [v10 galleryItem];
+    widgetWrapperViewController = [v9 widgetWrapperViewController];
+    galleryItem = [widgetWrapperViewController galleryItem];
     favoredApplicationWidgetCollections = self->_favoredApplicationWidgetCollections;
     v28[0] = MEMORY[0x1E69E9820];
     v28[1] = 3221225472;
     v28[2] = __80__SBHAddWidgetSheetViewController__presentDetailSheetForGalleryCellAtIndexPath___block_invoke;
     v28[3] = &unk_1E808AD00;
-    v13 = v11;
+    v13 = galleryItem;
     v29 = v13;
     v14 = [(NSArray *)favoredApplicationWidgetCollections indexOfObjectPassingTest:v28];
     if (v14 == 0x7FFFFFFFFFFFFFFFLL)
@@ -2728,10 +2728,10 @@ LABEL_25:
     if ([(SBHAddWidgetSheetViewControllerBase *)self addWidgetSheetStyle]== 1)
     {
       v27 = v13;
-      v26 = [(SBHAddWidgetSheetViewController *)self parentViewController];
-      v17 = [v26 parentViewController];
+      parentViewController = [(SBHAddWidgetSheetViewController *)self parentViewController];
+      v26ParentViewController = [parentViewController parentViewController];
       v18 = objc_opt_class();
-      v19 = v17;
+      v19 = v26ParentViewController;
       if (v18)
       {
         if (objc_opt_isKindOfClass())
@@ -2754,9 +2754,9 @@ LABEL_25:
 
       v22 = [v21 viewControllerForColumn:0];
 
-      v23 = [v22 collectionView];
+      collectionView = [v22 collectionView];
       v24 = [MEMORY[0x1E696AC88] indexPathForItem:objc_msgSend(v22 inSection:{"_itemIndexForApplicationWidgetCollectionIndex:", v15), 0}];
-      [v23 selectItemAtIndexPath:v24 animated:1 scrollPosition:2];
+      [collectionView selectItemAtIndexPath:v24 animated:1 scrollPosition:2];
 
       v13 = v27;
     }
@@ -2767,43 +2767,43 @@ LABEL_17:
       v16 = SBLogAddWidgetSheet();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
       {
-        [(SBHAddWidgetSheetViewController *)v10 _presentDetailSheetForGalleryCellAtIndexPath:v16];
+        [(SBHAddWidgetSheetViewController *)widgetWrapperViewController _presentDetailSheetForGalleryCellAtIndexPath:v16];
       }
     }
 
     else
     {
-      v25 = [v10 galleryItem];
-      -[SBHAddWidgetSheetViewController _presentDetailSheetViewControllerForApplicationWidgetCollection:configuredWithGalleryItem:selectedSizeClass:fromCell:atIndexPath:](self, "_presentDetailSheetViewControllerForApplicationWidgetCollection:configuredWithGalleryItem:selectedSizeClass:fromCell:atIndexPath:", v16, v25, [v10 selectedSizeClass], v9, v4);
+      galleryItem2 = [widgetWrapperViewController galleryItem];
+      -[SBHAddWidgetSheetViewController _presentDetailSheetViewControllerForApplicationWidgetCollection:configuredWithGalleryItem:selectedSizeClass:fromCell:atIndexPath:](self, "_presentDetailSheetViewControllerForApplicationWidgetCollection:configuredWithGalleryItem:selectedSizeClass:fromCell:atIndexPath:", v16, galleryItem2, [widgetWrapperViewController selectedSizeClass], v9, pathCopy);
     }
   }
 }
 
 - (id)_currentPresenter
 {
-  v3 = [(SBHAddWidgetSheetViewController *)self searchController];
-  if ([v3 isActive])
+  searchController = [(SBHAddWidgetSheetViewController *)self searchController];
+  if ([searchController isActive])
   {
-    v4 = [(SBHAddWidgetSheetViewController *)self searchController];
+    selfCopy = [(SBHAddWidgetSheetViewController *)self searchController];
   }
 
   else
   {
-    v4 = self;
+    selfCopy = self;
   }
 
-  v5 = v4;
+  v5 = selfCopy;
 
   return v5;
 }
 
 - (id)_presentedGalleryViewController
 {
-  v2 = [(SBHAddWidgetSheetViewController *)self splitViewController];
-  v3 = v2;
-  if (v2)
+  splitViewController = [(SBHAddWidgetSheetViewController *)self splitViewController];
+  v3 = splitViewController;
+  if (splitViewController)
   {
-    v4 = [v2 viewControllerForColumn:2];
+    v4 = [splitViewController viewControllerForColumn:2];
     v5 = objc_opt_class();
     v6 = v4;
     if (v5)
@@ -2850,10 +2850,10 @@ LABEL_17:
 
       v12 = v11;
 
-      v13 = [v12 topViewController];
+      topViewController = [v12 topViewController];
 
       v14 = objc_opt_class();
-      v15 = v13;
+      v15 = topViewController;
       if (v14)
       {
         if (objc_opt_isKindOfClass())
@@ -2899,7 +2899,7 @@ LABEL_17:
   return userInfo;
 }
 
-- (void)didDismissSearchController:(id)a3
+- (void)didDismissSearchController:(id)controller
 {
   v19 = *MEMORY[0x1E69E9840];
   v14 = 0u;
@@ -2936,8 +2936,8 @@ LABEL_17:
   filteredApplicationWidgetCollections = self->_filteredApplicationWidgetCollections;
   self->_filteredApplicationWidgetCollections = 0;
 
-  v11 = [(SBHAddWidgetSheetViewController *)self view];
-  [v11 bringSubviewToFront:self->_closeButton];
+  view = [(SBHAddWidgetSheetViewController *)self view];
+  [view bringSubviewToFront:self->_closeButton];
 
   [(SBHAddWidgetSheetViewController *)self _reloadData];
   if ([(SBHAddWidgetSheetViewControllerBase *)self addWidgetSheetStyle]== 1 && ![(SBHAddWidgetSheetViewController *)self shouldShowGalleryOnly])
@@ -2950,7 +2950,7 @@ LABEL_17:
   }
 }
 
-- (void)willPresentSearchController:(id)a3
+- (void)willPresentSearchController:(id)controller
 {
   if ([(SBHAddWidgetSheetViewControllerBase *)self addWidgetSheetStyle]== 1)
   {
@@ -2959,13 +2959,13 @@ LABEL_17:
   }
 }
 
-- (void)updateSearchResultsForSearchController:(id)a3
+- (void)updateSearchResultsForSearchController:(id)controller
 {
   v38 = *MEMORY[0x1E69E9840];
-  v4 = [(SBHAddWidgetSheetViewController *)self _searchTextForSearchController:a3];
-  v5 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+  v4 = [(SBHAddWidgetSheetViewController *)self _searchTextForSearchController:controller];
+  whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
   v25 = v4;
-  v6 = [v4 componentsSeparatedByCharactersInSet:v5];
+  v6 = [v4 componentsSeparatedByCharactersInSet:whitespaceCharacterSet];
 
   v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v32 = 0u;
@@ -3045,14 +3045,14 @@ LABEL_17:
   }
 
   objc_storeStrong(&self->_filteredApplicationWidgetCollections, v21);
-  v22 = [(SBHAddWidgetSheetViewController *)self configuration];
-  if ([v22 wantsGlassGroupAppliedToGalleryContents])
+  configuration = [(SBHAddWidgetSheetViewController *)self configuration];
+  if ([configuration wantsGlassGroupAppliedToGalleryContents])
   {
     v23 = [v25 length];
-    v24 = [(UIView *)self->_collectionView sbh_hasGlassGroup];
-    if (v23 || v24)
+    sbh_hasGlassGroup = [(UIView *)self->_collectionView sbh_hasGlassGroup];
+    if (v23 || sbh_hasGlassGroup)
     {
-      if (v23 != 0 && v24)
+      if (v23 != 0 && sbh_hasGlassGroup)
       {
         [(UIView *)self->_collectionView sbh_removeGlass];
       }
@@ -3130,15 +3130,15 @@ BOOL __74__SBHAddWidgetSheetViewController_updateSearchResultsForSearchControlle
   return v6;
 }
 
-- (id)_searchTextForSearchController:(id)a3
+- (id)_searchTextForSearchController:(id)controller
 {
   v3 = MEMORY[0x1E696AB08];
-  v4 = a3;
-  v5 = [v3 whitespaceCharacterSet];
-  v6 = [v4 searchBar];
+  controllerCopy = controller;
+  whitespaceCharacterSet = [v3 whitespaceCharacterSet];
+  searchBar = [controllerCopy searchBar];
 
-  v7 = [v6 text];
-  v8 = [v7 stringByTrimmingCharactersInSet:v5];
+  text = [searchBar text];
+  v8 = [text stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
   if ([v8 length] >= 0x3E9)
   {
@@ -3156,20 +3156,20 @@ BOOL __74__SBHAddWidgetSheetViewController_updateSearchResultsForSearchControlle
 {
   v7.receiver = self;
   v7.super_class = SBHAddWidgetSheetViewController;
-  v3 = [(SBHAddWidgetSheetViewController *)&v7 contentUnavailableConfigurationState];
-  v4 = [(SBHAddWidgetSheetViewController *)self _effectiveSearchController];
-  v5 = [(SBHAddWidgetSheetViewController *)self _searchTextForSearchController:v4];
-  [v3 setSearchText:v5];
+  contentUnavailableConfigurationState = [(SBHAddWidgetSheetViewController *)&v7 contentUnavailableConfigurationState];
+  _effectiveSearchController = [(SBHAddWidgetSheetViewController *)self _effectiveSearchController];
+  v5 = [(SBHAddWidgetSheetViewController *)self _searchTextForSearchController:_effectiveSearchController];
+  [contentUnavailableConfigurationState setSearchText:v5];
 
-  return v3;
+  return contentUnavailableConfigurationState;
 }
 
-- (void)updateContentUnavailableConfigurationUsingState:(id)a3
+- (void)updateContentUnavailableConfigurationUsingState:(id)state
 {
-  v5 = a3;
+  stateCopy = state;
   if ([(SBHAddWidgetSheetViewController *)self _canShowContentUnavailableConfiguration])
   {
-    v4 = [(SBHAddWidgetSheetViewController *)self _updatedContentUnavailableConfigurationUsingState:v5];
+    v4 = [(SBHAddWidgetSheetViewController *)self _updatedContentUnavailableConfigurationUsingState:stateCopy];
   }
 
   else
@@ -3180,11 +3180,11 @@ BOOL __74__SBHAddWidgetSheetViewController_updateSearchResultsForSearchControlle
   [(SBHAddWidgetSheetViewController *)self setContentUnavailableConfiguration:v4];
 }
 
-- (id)_updatedContentUnavailableConfigurationUsingState:(id)a3
+- (id)_updatedContentUnavailableConfigurationUsingState:(id)state
 {
-  v4 = a3;
-  v5 = [v4 searchText];
-  if ([v5 length])
+  stateCopy = state;
+  searchText = [stateCopy searchText];
+  if ([searchText length])
   {
     v6 = [(NSArray *)self->_filteredApplicationWidgetCollections count];
 
@@ -3194,8 +3194,8 @@ BOOL __74__SBHAddWidgetSheetViewController_updateSearchResultsForSearchControlle
       goto LABEL_7;
     }
 
-    v5 = [MEMORY[0x1E69DC8C8] searchConfiguration];
-    v7 = [v5 updatedConfigurationForState:v4];
+    searchText = [MEMORY[0x1E69DC8C8] searchConfiguration];
+    v7 = [searchText updatedConfigurationForState:stateCopy];
   }
 
   else
@@ -3210,60 +3210,60 @@ LABEL_7:
 
 - (SBHWidgetDragHandling)widgetDragHandler
 {
-  v2 = [(SBHAddWidgetSheetViewControllerBase *)self delegate];
-  v3 = [v2 widgetDragHandler];
+  delegate = [(SBHAddWidgetSheetViewControllerBase *)self delegate];
+  widgetDragHandler = [delegate widgetDragHandler];
 
-  return v3;
+  return widgetDragHandler;
 }
 
-- (void)presentationControllerWillDismiss:(id)a3
+- (void)presentationControllerWillDismiss:(id)dismiss
 {
   collectionView = self->_collectionView;
-  v5 = [(_SBHAddWidgetSheetCollectionView *)collectionView indexPathsForSelectedItems];
-  v6 = [v5 firstObject];
-  [(_SBHAddWidgetSheetCollectionView *)collectionView deselectItemAtIndexPath:v6 animated:1];
+  indexPathsForSelectedItems = [(_SBHAddWidgetSheetCollectionView *)collectionView indexPathsForSelectedItems];
+  firstObject = [indexPathsForSelectedItems firstObject];
+  [(_SBHAddWidgetSheetCollectionView *)collectionView deselectItemAtIndexPath:firstObject animated:1];
 
   [(SBHWidgetAddSheetTransitionContext *)self->_transitionContext interruptAnimation];
 
   [(SBHAddWidgetSheetViewController *)self setTransitionContext:0];
 }
 
-- (void)addWidgetSheetViewControllerDidCancel:(id)a3
+- (void)addWidgetSheetViewControllerDidCancel:(id)cancel
 {
-  v4 = [(SBHAddWidgetSheetViewController *)self _currentPresenter];
-  [v4 dismissViewControllerAnimated:1 completion:0];
+  _currentPresenter = [(SBHAddWidgetSheetViewController *)self _currentPresenter];
+  [_currentPresenter dismissViewControllerAnimated:1 completion:0];
 
   collectionView = self->_collectionView;
-  v6 = [(_SBHAddWidgetSheetCollectionView *)collectionView indexPathsForSelectedItems];
-  v7 = [v6 firstObject];
-  [(_SBHAddWidgetSheetCollectionView *)collectionView deselectItemAtIndexPath:v7 animated:1];
+  indexPathsForSelectedItems = [(_SBHAddWidgetSheetCollectionView *)collectionView indexPathsForSelectedItems];
+  firstObject = [indexPathsForSelectedItems firstObject];
+  [(_SBHAddWidgetSheetCollectionView *)collectionView deselectItemAtIndexPath:firstObject animated:1];
 
   [(SBHWidgetAddSheetTransitionContext *)self->_transitionContext interruptAnimation];
 
   [(SBHAddWidgetSheetViewController *)self setTransitionContext:0];
 }
 
-- (void)addWidgetSheetViewController:(id)a3 didSelectWidgetIconView:(id)a4
+- (void)addWidgetSheetViewController:(id)controller didSelectWidgetIconView:(id)view
 {
-  v6 = a4;
-  v5 = [(SBHAddWidgetSheetViewControllerBase *)self delegate];
+  viewCopy = view;
+  delegate = [(SBHAddWidgetSheetViewControllerBase *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 addWidgetSheetViewController:self didSelectWidgetIconView:v6];
+    [delegate addWidgetSheetViewController:self didSelectWidgetIconView:viewCopy];
   }
 }
 
-- (id)backgroundViewMatchingMaterialBeneathAddWidgetSheetViewController:(id)a3
+- (id)backgroundViewMatchingMaterialBeneathAddWidgetSheetViewController:(id)controller
 {
-  v3 = [(SBHAddWidgetSheetViewController *)self _newBackgroundView];
+  _newBackgroundView = [(SBHAddWidgetSheetViewController *)self _newBackgroundView];
 
-  return v3;
+  return _newBackgroundView;
 }
 
-- (void)_makeGalleryItemsFromHomeScreenItems:(id)a3
+- (void)_makeGalleryItemsFromHomeScreenItems:(id)items
 {
   v91 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  itemsCopy = items;
   v54 = objc_alloc_init(MEMORY[0x1E695DF70]);
   [(SBHAddWidgetSheetViewControllerBase *)self allowedWidgets];
   v59 = v5;
@@ -3274,14 +3274,14 @@ LABEL_7:
   v83 = 0u;
   v84 = 0u;
   v85 = 0u;
-  v7 = v4;
+  v7 = itemsCopy;
   v8 = [v7 countByEnumeratingWithState:&v82 objects:v90 count:16];
   if (v8)
   {
     v9 = v8;
     v10 = *v83;
     v56 = v7;
-    v57 = self;
+    selfCopy = self;
     v55 = *v83;
     do
     {
@@ -3294,17 +3294,17 @@ LABEL_7:
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v82 + 1) + 8 * v11) suggestedSize];
-        if (v12 <= 1)
+        suggestedSize = [*(*(&v82 + 1) + 8 * v11) suggestedSize];
+        if (suggestedSize <= 1)
         {
-          if (!v12)
+          if (!suggestedSize)
           {
             v64 = 1;
             v13 = 1;
             goto LABEL_18;
           }
 
-          if (v12 == 1)
+          if (suggestedSize == 1)
           {
             v64 = 1;
             v13 = 2;
@@ -3314,7 +3314,7 @@ LABEL_7:
 
         else
         {
-          switch(v12)
+          switch(suggestedSize)
           {
             case 2:
               v64 = 1;
@@ -3343,8 +3343,8 @@ LABEL_18:
         v63 = v11;
         objc_opt_class();
         v65 = SBFSafeCast();
-        v14 = [v65 widgetKind];
-        v15 = [v14 containsString:@"SBHSpecialAvocadoDescriptor"];
+        widgetKind = [v65 widgetKind];
+        v15 = [widgetKind containsString:@"SBHSpecialAvocadoDescriptor"];
 
         if ([(SBHAddWidgetSheetViewControllerBase *)self allowsFakeWidgets]|| !v15)
         {
@@ -3355,23 +3355,23 @@ LABEL_18:
           {
             if (v65)
             {
-              v17 = [v65 avocadoDescriptor];
-              v49 = [v17 sanitizedDescriptor];
+              avocadoDescriptor = [v65 avocadoDescriptor];
+              sanitizedDescriptor = [avocadoDescriptor sanitizedDescriptor];
               goto LABEL_62;
             }
 
-            v49 = 0;
+            sanitizedDescriptor = 0;
           }
 
           else
           {
-            v17 = objc_opt_new();
+            avocadoDescriptor = objc_opt_new();
             v78 = 0u;
             v79 = 0u;
             v80 = 0u;
             v81 = 0u;
-            v18 = [v16 smallDefaultStack];
-            v19 = [v18 countByEnumeratingWithState:&v78 objects:v89 count:16];
+            smallDefaultStack = [v16 smallDefaultStack];
+            v19 = [smallDefaultStack countByEnumeratingWithState:&v78 objects:v89 count:16];
             if (v19)
             {
               v20 = v19;
@@ -3382,19 +3382,19 @@ LABEL_18:
                 {
                   if (*v79 != v21)
                   {
-                    objc_enumerationMutation(v18);
+                    objc_enumerationMutation(smallDefaultStack);
                   }
 
-                  v23 = [*(*(&v78 + 1) + 8 * i) avocadoDescriptor];
-                  v24 = [v23 sanitizedDescriptor];
+                  avocadoDescriptor2 = [*(*(&v78 + 1) + 8 * i) avocadoDescriptor];
+                  sanitizedDescriptor2 = [avocadoDescriptor2 sanitizedDescriptor];
 
-                  if (v24)
+                  if (sanitizedDescriptor2)
                   {
-                    [v17 addObject:v24];
+                    [avocadoDescriptor addObject:sanitizedDescriptor2];
                   }
                 }
 
-                v20 = [v18 countByEnumeratingWithState:&v78 objects:v89 count:16];
+                v20 = [smallDefaultStack countByEnumeratingWithState:&v78 objects:v89 count:16];
               }
 
               while (v20);
@@ -3405,8 +3405,8 @@ LABEL_18:
             v75 = 0u;
             v76 = 0u;
             v77 = 0u;
-            v26 = [v62 mediumDefaultStack];
-            v27 = [v26 countByEnumeratingWithState:&v74 objects:v88 count:16];
+            mediumDefaultStack = [v62 mediumDefaultStack];
+            v27 = [mediumDefaultStack countByEnumeratingWithState:&v74 objects:v88 count:16];
             if (v27)
             {
               v28 = v27;
@@ -3417,19 +3417,19 @@ LABEL_18:
                 {
                   if (*v75 != v29)
                   {
-                    objc_enumerationMutation(v26);
+                    objc_enumerationMutation(mediumDefaultStack);
                   }
 
-                  v31 = [*(*(&v74 + 1) + 8 * j) avocadoDescriptor];
-                  v32 = [v31 sanitizedDescriptor];
+                  avocadoDescriptor3 = [*(*(&v74 + 1) + 8 * j) avocadoDescriptor];
+                  sanitizedDescriptor3 = [avocadoDescriptor3 sanitizedDescriptor];
 
-                  if (v32)
+                  if (sanitizedDescriptor3)
                   {
-                    [v25 addObject:v32];
+                    [v25 addObject:sanitizedDescriptor3];
                   }
                 }
 
-                v28 = [v26 countByEnumeratingWithState:&v74 objects:v88 count:16];
+                v28 = [mediumDefaultStack countByEnumeratingWithState:&v74 objects:v88 count:16];
               }
 
               while (v28);
@@ -3440,8 +3440,8 @@ LABEL_18:
             v71 = 0u;
             v72 = 0u;
             v73 = 0u;
-            v34 = [v62 largeDefaultStack];
-            v35 = [v34 countByEnumeratingWithState:&v70 objects:v87 count:16];
+            largeDefaultStack = [v62 largeDefaultStack];
+            v35 = [largeDefaultStack countByEnumeratingWithState:&v70 objects:v87 count:16];
             if (v35)
             {
               v36 = v35;
@@ -3452,19 +3452,19 @@ LABEL_18:
                 {
                   if (*v71 != v37)
                   {
-                    objc_enumerationMutation(v34);
+                    objc_enumerationMutation(largeDefaultStack);
                   }
 
-                  v39 = [*(*(&v70 + 1) + 8 * k) avocadoDescriptor];
-                  v40 = [v39 sanitizedDescriptor];
+                  avocadoDescriptor4 = [*(*(&v70 + 1) + 8 * k) avocadoDescriptor];
+                  sanitizedDescriptor4 = [avocadoDescriptor4 sanitizedDescriptor];
 
-                  if (v40)
+                  if (sanitizedDescriptor4)
                   {
-                    [v33 addObject:v40];
+                    [v33 addObject:sanitizedDescriptor4];
                   }
                 }
 
-                v36 = [v34 countByEnumeratingWithState:&v70 objects:v87 count:16];
+                v36 = [largeDefaultStack countByEnumeratingWithState:&v70 objects:v87 count:16];
               }
 
               while (v36);
@@ -3475,8 +3475,8 @@ LABEL_18:
             v67 = 0u;
             v68 = 0u;
             v69 = 0u;
-            v42 = [v62 extraLargeDefaultStack];
-            v43 = [v42 countByEnumeratingWithState:&v66 objects:v86 count:16];
+            extraLargeDefaultStack = [v62 extraLargeDefaultStack];
+            v43 = [extraLargeDefaultStack countByEnumeratingWithState:&v66 objects:v86 count:16];
             if (v43)
             {
               v44 = v43;
@@ -3487,27 +3487,27 @@ LABEL_18:
                 {
                   if (*v67 != v45)
                   {
-                    objc_enumerationMutation(v42);
+                    objc_enumerationMutation(extraLargeDefaultStack);
                   }
 
-                  v47 = [*(*(&v66 + 1) + 8 * m) avocadoDescriptor];
-                  v48 = [v47 sanitizedDescriptor];
+                  avocadoDescriptor5 = [*(*(&v66 + 1) + 8 * m) avocadoDescriptor];
+                  sanitizedDescriptor5 = [avocadoDescriptor5 sanitizedDescriptor];
 
-                  if (v48)
+                  if (sanitizedDescriptor5)
                   {
-                    [v41 addObject:v48];
+                    [v41 addObject:sanitizedDescriptor5];
                   }
                 }
 
-                v44 = [v42 countByEnumeratingWithState:&v66 objects:v86 count:16];
+                v44 = [extraLargeDefaultStack countByEnumeratingWithState:&v66 objects:v86 count:16];
               }
 
               while (v44);
             }
 
-            v49 = [[SBHWidgetStackDescriptor alloc] initWithSmallStackDescriptors:v17 mediumStackDescriptors:v25 largeStackDescriptors:v33 extraLargeStackDescriptors:v41];
+            sanitizedDescriptor = [[SBHWidgetStackDescriptor alloc] initWithSmallStackDescriptors:avocadoDescriptor mediumStackDescriptors:v25 largeStackDescriptors:v33 extraLargeStackDescriptors:v41];
             v7 = v56;
-            self = v57;
+            self = selfCopy;
             v10 = v55;
             v9 = v60;
 LABEL_62:
@@ -3515,16 +3515,16 @@ LABEL_62:
 
           if (CHSWidgetFamilyIsAccessory())
           {
-            v50 = 1;
+            sbh_supportsRemovableBackground = 1;
           }
 
           else
           {
-            v50 = [(SBHWidgetStackDescriptor *)v49 sbh_supportsRemovableBackground];
+            sbh_supportsRemovableBackground = [(SBHWidgetStackDescriptor *)sanitizedDescriptor sbh_supportsRemovableBackground];
           }
 
           v51 = v64 ^ 1;
-          if (!v49)
+          if (!sanitizedDescriptor)
           {
             v51 = 1;
           }
@@ -3533,18 +3533,18 @@ LABEL_62:
           {
             if (v59)
             {
-              if (!(((v58 & 0x100) == 0) | v50 & 1))
+              if (!(((v58 & 0x100) == 0) | sbh_supportsRemovableBackground & 1))
               {
                 goto LABEL_75;
               }
             }
 
-            else if (![(SBHWidgetStackDescriptor *)v49 sbh_canBeAddedToStack]|| !(((v58 & 0x100) == 0) | v50 & 1))
+            else if (![(SBHWidgetStackDescriptor *)sanitizedDescriptor sbh_canBeAddedToStack]|| !(((v58 & 0x100) == 0) | sbh_supportsRemovableBackground & 1))
             {
               goto LABEL_75;
             }
 
-            v52 = [(SBHAddWidgetSheetViewController *)self _newWrapperViewControllerWithGalleryItem:v49 sizeClass:v61];
+            v52 = [(SBHAddWidgetSheetViewController *)self _newWrapperViewControllerWithGalleryItem:sanitizedDescriptor sizeClass:v61];
             [v54 addObject:v52];
           }
 
@@ -3567,21 +3567,21 @@ LABEL_77:
   [(SBHAddWidgetSheetViewController *)self setGalleryItems:v54];
 }
 
-- (void)_makeFakeGalleryItemsFromHomeScreenItems:(id)a3
+- (void)_makeFakeGalleryItemsFromHomeScreenItems:(id)items
 {
   v122 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  itemsCopy = items;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   [(SBHAddWidgetSheetViewControllerBase *)self allowedWidgets];
   v7 = v6;
   [(SBHAddWidgetSheetViewControllerBase *)self allowedWidgets];
   v89 = v8;
-  v9 = [(SBHAddWidgetSheetViewControllerBase *)self allowedWidgets];
+  allowedWidgets = [(SBHAddWidgetSheetViewControllerBase *)self allowedWidgets];
   v112 = 0u;
   v113 = 0u;
   v114 = 0u;
   v115 = 0u;
-  v10 = v4;
+  v10 = itemsCopy;
   v11 = [v10 countByEnumeratingWithState:&v112 objects:v121 count:16];
   v77 = v10;
   if (!v11)
@@ -3600,10 +3600,10 @@ LABEL_77:
   v91 = 0;
   v13 = *v113;
   v78 = v7;
-  v75 = self;
+  selfCopy = self;
   v76 = v5;
   v73 = *v113;
-  v74 = v9;
+  v74 = allowedWidgets;
   do
   {
     v14 = 0;
@@ -3615,10 +3615,10 @@ LABEL_77:
         objc_enumerationMutation(v10);
       }
 
-      v15 = [*(*(&v112 + 1) + 8 * v14) suggestedSize];
-      if (v15 <= 1)
+      suggestedSize = [*(*(&v112 + 1) + 8 * v14) suggestedSize];
+      if (suggestedSize <= 1)
       {
-        if (!v15)
+        if (!suggestedSize)
         {
           v85 = 0;
           v84 = 1;
@@ -3627,7 +3627,7 @@ LABEL_77:
           goto LABEL_18;
         }
 
-        if (v15 == 1)
+        if (suggestedSize == 1)
         {
           v84 = 0;
           v85 = 1;
@@ -3639,7 +3639,7 @@ LABEL_77:
 
       else
       {
-        switch(v15)
+        switch(suggestedSize)
         {
           case 2:
             v85 = 1;
@@ -3693,13 +3693,13 @@ LABEL_18:
       {
         v23 = v18;
         v79 = v17;
-        v20 = objc_opt_new();
+        avocadoDescriptor5 = objc_opt_new();
         v108 = 0u;
         v109 = 0u;
         v110 = 0u;
         v111 = 0u;
-        v24 = [v23 smallDefaultStack];
-        v25 = [v24 countByEnumeratingWithState:&v108 objects:v120 count:16];
+        smallDefaultStack = [v23 smallDefaultStack];
+        v25 = [smallDefaultStack countByEnumeratingWithState:&v108 objects:v120 count:16];
         if (v25)
         {
           v26 = v25;
@@ -3710,19 +3710,19 @@ LABEL_18:
             {
               if (*v109 != v27)
               {
-                objc_enumerationMutation(v24);
+                objc_enumerationMutation(smallDefaultStack);
               }
 
-              v29 = [*(*(&v108 + 1) + 8 * i) avocadoDescriptor];
-              v30 = [v29 sanitizedDescriptor];
+              avocadoDescriptor = [*(*(&v108 + 1) + 8 * i) avocadoDescriptor];
+              sanitizedDescriptor = [avocadoDescriptor sanitizedDescriptor];
 
-              if (v30)
+              if (sanitizedDescriptor)
               {
-                [v20 addObject:v30];
+                [avocadoDescriptor5 addObject:sanitizedDescriptor];
               }
             }
 
-            v26 = [v24 countByEnumeratingWithState:&v108 objects:v120 count:16];
+            v26 = [smallDefaultStack countByEnumeratingWithState:&v108 objects:v120 count:16];
           }
 
           while (v26);
@@ -3733,8 +3733,8 @@ LABEL_18:
         v105 = 0u;
         v106 = 0u;
         v107 = 0u;
-        v32 = [v86 mediumDefaultStack];
-        v33 = [v32 countByEnumeratingWithState:&v104 objects:v119 count:16];
+        mediumDefaultStack = [v86 mediumDefaultStack];
+        v33 = [mediumDefaultStack countByEnumeratingWithState:&v104 objects:v119 count:16];
         if (v33)
         {
           v34 = v33;
@@ -3745,19 +3745,19 @@ LABEL_18:
             {
               if (*v105 != v35)
               {
-                objc_enumerationMutation(v32);
+                objc_enumerationMutation(mediumDefaultStack);
               }
 
-              v37 = [*(*(&v104 + 1) + 8 * j) avocadoDescriptor];
-              v38 = [v37 sanitizedDescriptor];
+              avocadoDescriptor2 = [*(*(&v104 + 1) + 8 * j) avocadoDescriptor];
+              sanitizedDescriptor2 = [avocadoDescriptor2 sanitizedDescriptor];
 
-              if (v38)
+              if (sanitizedDescriptor2)
               {
-                [v31 addObject:v38];
+                [v31 addObject:sanitizedDescriptor2];
               }
             }
 
-            v34 = [v32 countByEnumeratingWithState:&v104 objects:v119 count:16];
+            v34 = [mediumDefaultStack countByEnumeratingWithState:&v104 objects:v119 count:16];
           }
 
           while (v34);
@@ -3768,8 +3768,8 @@ LABEL_18:
         v101 = 0u;
         v102 = 0u;
         v103 = 0u;
-        v40 = [v86 largeDefaultStack];
-        v41 = [v40 countByEnumeratingWithState:&v100 objects:v118 count:16];
+        largeDefaultStack = [v86 largeDefaultStack];
+        v41 = [largeDefaultStack countByEnumeratingWithState:&v100 objects:v118 count:16];
         if (v41)
         {
           v42 = v41;
@@ -3780,19 +3780,19 @@ LABEL_18:
             {
               if (*v101 != v43)
               {
-                objc_enumerationMutation(v40);
+                objc_enumerationMutation(largeDefaultStack);
               }
 
-              v45 = [*(*(&v100 + 1) + 8 * k) avocadoDescriptor];
-              v46 = [v45 sanitizedDescriptor];
+              avocadoDescriptor3 = [*(*(&v100 + 1) + 8 * k) avocadoDescriptor];
+              sanitizedDescriptor3 = [avocadoDescriptor3 sanitizedDescriptor];
 
-              if (v46)
+              if (sanitizedDescriptor3)
               {
-                [v39 addObject:v46];
+                [v39 addObject:sanitizedDescriptor3];
               }
             }
 
-            v42 = [v40 countByEnumeratingWithState:&v100 objects:v118 count:16];
+            v42 = [largeDefaultStack countByEnumeratingWithState:&v100 objects:v118 count:16];
           }
 
           while (v42);
@@ -3803,8 +3803,8 @@ LABEL_18:
         v97 = 0u;
         v98 = 0u;
         v99 = 0u;
-        v48 = [v86 extraLargeDefaultStack];
-        v49 = [v48 countByEnumeratingWithState:&v96 objects:v117 count:16];
+        extraLargeDefaultStack = [v86 extraLargeDefaultStack];
+        v49 = [extraLargeDefaultStack countByEnumeratingWithState:&v96 objects:v117 count:16];
         if (v49)
         {
           v50 = v49;
@@ -3815,26 +3815,26 @@ LABEL_18:
             {
               if (*v97 != v51)
               {
-                objc_enumerationMutation(v48);
+                objc_enumerationMutation(extraLargeDefaultStack);
               }
 
-              v53 = [*(*(&v96 + 1) + 8 * m) avocadoDescriptor];
-              v54 = [v53 sanitizedDescriptor];
+              avocadoDescriptor4 = [*(*(&v96 + 1) + 8 * m) avocadoDescriptor];
+              sanitizedDescriptor4 = [avocadoDescriptor4 sanitizedDescriptor];
 
-              if (v54)
+              if (sanitizedDescriptor4)
               {
-                [v47 addObject:v54];
+                [v47 addObject:sanitizedDescriptor4];
               }
             }
 
-            v50 = [v48 countByEnumeratingWithState:&v96 objects:v117 count:16];
+            v50 = [extraLargeDefaultStack countByEnumeratingWithState:&v96 objects:v117 count:16];
           }
 
           while (v50);
         }
 
-        v21 = [[SBHWidgetStackDescriptor alloc] initWithSmallStackDescriptors:v20 mediumStackDescriptors:v31 largeStackDescriptors:v39 extraLargeStackDescriptors:v47];
-        self = v75;
+        sanitizedDescriptor5 = [[SBHWidgetStackDescriptor alloc] initWithSmallStackDescriptors:avocadoDescriptor5 mediumStackDescriptors:v31 largeStackDescriptors:v39 extraLargeStackDescriptors:v47];
+        self = selfCopy;
         v5 = v76;
         v10 = v77;
         v13 = v73;
@@ -3845,8 +3845,8 @@ LABEL_18:
 
       if (v16)
       {
-        v20 = [v16 avocadoDescriptor];
-        v21 = [v20 sanitizedDescriptor];
+        avocadoDescriptor5 = [v16 avocadoDescriptor];
+        sanitizedDescriptor5 = [avocadoDescriptor5 sanitizedDescriptor];
         v22 = v85;
 LABEL_62:
 
@@ -3854,7 +3854,7 @@ LABEL_62:
         goto LABEL_63;
       }
 
-      v21 = 0;
+      sanitizedDescriptor5 = 0;
       v22 = v85;
 LABEL_63:
       if (v91)
@@ -3869,11 +3869,11 @@ LABEL_63:
 
       if (v55 != 1)
       {
-        v91 = v21;
+        v91 = sanitizedDescriptor5;
 LABEL_82:
         v59 = v87;
 LABEL_83:
-        v60 = v21;
+        v60 = sanitizedDescriptor5;
         v87 = v59;
         goto LABEL_84;
       }
@@ -3890,7 +3890,7 @@ LABEL_83:
 
       if (v56 != 1)
       {
-        v88 = v21;
+        v88 = sanitizedDescriptor5;
         goto LABEL_82;
       }
 
@@ -3902,7 +3902,7 @@ LABEL_83:
 
       if (v57 != 1)
       {
-        v90 = v21;
+        v90 = sanitizedDescriptor5;
         goto LABEL_82;
       }
 
@@ -3912,7 +3912,7 @@ LABEL_83:
         v58 = 1;
       }
 
-      v59 = v21;
+      v59 = sanitizedDescriptor5;
       if ((v58 & 1) == 0)
       {
         goto LABEL_83;
@@ -3976,15 +3976,15 @@ LABEL_93:
           objc_enumerationMutation(v62);
         }
 
-        v67 = [*(*(&v92 + 1) + 8 * n) integerValue];
-        v68 = v67;
+        integerValue = [*(*(&v92 + 1) + 8 * n) integerValue];
+        v68 = integerValue;
         v69 = 0;
-        if (v67 > 2)
+        if (integerValue > 2)
         {
           v70 = v90;
-          if (v67 != 3)
+          if (integerValue != 3)
           {
-            if (v67 != 4)
+            if (integerValue != 4)
             {
               goto LABEL_114;
             }
@@ -3996,10 +3996,10 @@ LABEL_93:
         else
         {
           v70 = v91;
-          if (v67 != 1)
+          if (integerValue != 1)
           {
             v70 = v88;
-            if (v67 != 2)
+            if (integerValue != 2)
             {
               goto LABEL_114;
             }
@@ -4062,21 +4062,21 @@ LABEL_114:
   return v3;
 }
 
-- (id)_itemsArrayWithSizeClasses:(id)a3 nSmallsGroup:(id)a4 mediumAndSmallGroup:(id)a5 usesThreeColumnLayout:(BOOL)a6
+- (id)_itemsArrayWithSizeClasses:(id)classes nSmallsGroup:(id)group mediumAndSmallGroup:(id)smallGroup usesThreeColumnLayout:(BOOL)layout
 {
-  v6 = a6;
-  v9 = a3;
-  v25 = a4;
-  v27 = a5;
+  layoutCopy = layout;
+  classesCopy = classes;
+  groupCopy = group;
+  smallGroupCopy = smallGroup;
   v10 = objc_opt_new();
-  v11 = [v9 count];
+  v11 = [classesCopy count];
   if (v11)
   {
     v12 = v11;
     v13 = 0;
     v14 = 0;
-    v15 = !v6;
-    if (v6)
+    v15 = !layoutCopy;
+    if (layoutCopy)
     {
       v16 = 2;
     }
@@ -4088,15 +4088,15 @@ LABEL_114:
 
     do
     {
-      v17 = [v9 objectAtIndex:{v13, v25}];
-      v18 = [v17 integerValue];
+      v17 = [classesCopy objectAtIndex:{v13, groupCopy}];
+      integerValue = [v17 integerValue];
       v19 = v14 + 1;
-      v20 = SBHItemAtIndexIsOfSize(v9, v14 + 1);
+      v20 = SBHItemAtIndexIsOfSize(classesCopy, v14 + 1);
       v21 = v20;
-      if (v18 == 1)
+      if (integerValue == 1)
       {
-        v23 = SBHItemAtIndexIsOfSize(v9, v14 + 2);
-        v22 = v25;
+        v23 = SBHItemAtIndexIsOfSize(classesCopy, v14 + 2);
+        v22 = groupCopy;
         if ((v21 & (v15 | v23)) != 1)
         {
           goto LABEL_9;
@@ -4105,12 +4105,12 @@ LABEL_114:
 
       else
       {
-        if (v18 != 2)
+        if (integerValue != 2)
         {
           goto LABEL_9;
         }
 
-        v22 = v27;
+        v22 = smallGroupCopy;
         v19 = v14;
         if (((v15 | v20) & 1) == 0)
         {
@@ -4131,21 +4131,21 @@ LABEL_9:
 
   if (![v10 count])
   {
-    [v10 addObject:v27];
+    [v10 addObject:smallGroupCopy];
   }
 
   return v10;
 }
 
-- (id)_collectionViewLayoutGallerySectionWithWidth:(double)a3 sizeClasses:(id)a4
+- (id)_collectionViewLayoutGallerySectionWithWidth:(double)width sizeClasses:(id)classes
 {
   v48[1] = *MEMORY[0x1E69E9840];
   v43 = self->_galleryLayoutSize == 1;
-  v42 = a4;
-  v46 = [(SBHAddWidgetSheetViewController *)self _listLayoutForWidgetSizing];
-  v5 = SBHIconListLayoutIconImageInfoForGridSizeClass(v46, @"SBHIconGridSizeClassSmall");
+  classesCopy = classes;
+  _listLayoutForWidgetSizing = [(SBHAddWidgetSheetViewController *)self _listLayoutForWidgetSizing];
+  v5 = SBHIconListLayoutIconImageInfoForGridSizeClass(_listLayoutForWidgetSizing, @"SBHIconGridSizeClassSmall");
   v7 = v6;
-  v8 = SBHIconListLayoutIconImageInfoForGridSizeClass(v46, @"SBHIconGridSizeClassMedium");
+  v8 = SBHIconListLayoutIconImageInfoForGridSizeClass(_listLayoutForWidgetSizing, @"SBHIconGridSizeClassMedium");
   v10 = v9;
   v11 = MEMORY[0x1E6995588];
   v12 = [MEMORY[0x1E6995558] absoluteDimension:v5];
@@ -4182,7 +4182,7 @@ LABEL_9:
   v30 = [MEMORY[0x1E6995590] fixedSpacing:self->_horizontalSpacing];
   [v29 setInterItemSpacing:v30];
 
-  v31 = [(SBHAddWidgetSheetViewController *)self _itemsArrayWithSizeClasses:v42 nSmallsGroup:v25 mediumAndSmallGroup:v29 usesThreeColumnLayout:v43];
+  v31 = [(SBHAddWidgetSheetViewController *)self _itemsArrayWithSizeClasses:classesCopy nSmallsGroup:v25 mediumAndSmallGroup:v29 usesThreeColumnLayout:v43];
 
   v32 = [v31 count];
   v33 = MEMORY[0x1E6995588];
@@ -4201,21 +4201,21 @@ LABEL_9:
   return v39;
 }
 
-- (id)_newPadCollectionViewLayoutGallerySectionWithWidth:(double)a3 sizeClasses:(id)a4
+- (id)_newPadCollectionViewLayoutGallerySectionWithWidth:(double)width sizeClasses:(id)classes
 {
-  v67 = a4;
-  v5 = [(SBHAddWidgetSheetViewController *)self _listLayoutForWidgetSizing];
-  v6 = SBHIconListLayoutIconImageInfoForGridSizeClass(v5, @"SBHIconGridSizeClassSmall");
+  classesCopy = classes;
+  _listLayoutForWidgetSizing = [(SBHAddWidgetSheetViewController *)self _listLayoutForWidgetSizing];
+  v6 = SBHIconListLayoutIconImageInfoForGridSizeClass(_listLayoutForWidgetSizing, @"SBHIconGridSizeClassSmall");
   v8 = v7;
-  v9 = SBHIconListLayoutIconImageInfoForGridSizeClass(v5, @"SBHIconGridSizeClassMedium");
+  v9 = SBHIconListLayoutIconImageInfoForGridSizeClass(_listLayoutForWidgetSizing, @"SBHIconGridSizeClassMedium");
   v11 = v10;
-  v12 = SBHIconListLayoutIconImageInfoForGridSizeClass(v5, @"SBHIconGridSizeClassLarge");
+  v12 = SBHIconListLayoutIconImageInfoForGridSizeClass(_listLayoutForWidgetSizing, @"SBHIconGridSizeClassLarge");
   v14 = v13;
-  v15 = SBHIconListLayoutIconImageInfoForGridSizeClass(v5, @"SBHIconGridSizeClassExtraLarge");
+  v15 = SBHIconListLayoutIconImageInfoForGridSizeClass(_listLayoutForWidgetSizing, @"SBHIconGridSizeClassExtraLarge");
   v73 = v16;
   v74 = v15;
-  v66 = v5;
-  [(SBHAddWidgetSheetViewController *)self _horizontalSpacingForListLayout:v5];
+  v66 = _listLayoutForWidgetSizing;
+  [(SBHAddWidgetSheetViewController *)self _horizontalSpacingForListLayout:_listLayoutForWidgetSizing];
   v18 = v17;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -4317,8 +4317,8 @@ LABEL_9:
   v31 = [MEMORY[0x1E6995558] estimatedDimension:v14];
   v71 = [v29 sizeWithWidthDimension:v30 heightDimension:v31];
 
-  v32 = self;
-  v33 = [(SBHAddWidgetSheetViewController *)self _podsArrayWithSizeClasses:v67 columnCount:v27];
+  selfCopy = self;
+  v33 = [(SBHAddWidgetSheetViewController *)self _podsArrayWithSizeClasses:classesCopy columnCount:v27];
   v34 = objc_alloc_init(MEMORY[0x1E695DF70]);
   if ([v33 count])
   {
@@ -4354,7 +4354,7 @@ LABEL_9:
           v40 = v35 + 3;
           v84 = *MEMORY[0x1E695EFF8];
 LABEL_17:
-          horizontalSpacing = v32->_horizontalSpacing;
+          horizontalSpacing = selfCopy->_horizontalSpacing;
           v41 = v6 + horizontalSpacing;
           v75 = COERCE_UNSIGNED_INT64(horizontalSpacing + v9 + v6 + horizontalSpacing);
           v35 = v40;
@@ -4374,7 +4374,7 @@ LABEL_17:
         }
       }
 
-      v41 = v12 + v32->_horizontalSpacing;
+      v41 = v12 + selfCopy->_horizontalSpacing;
       v35 = v40;
       v75 = v68;
 LABEL_18:
@@ -4400,23 +4400,23 @@ LABEL_18:
 
   v47 = [v34 count];
   v48 = 0.0;
-  if (!v32->_wrapperView)
+  if (!selfCopy->_wrapperView)
   {
-    v48 = v32->_horizontalSpacing;
+    v48 = selfCopy->_horizontalSpacing;
   }
 
   v49 = MEMORY[0x1E6995588];
   v50 = [MEMORY[0x1E6995558] absoluteDimension:v28 + v48];
-  v51 = [MEMORY[0x1E6995558] estimatedDimension:v32->_horizontalSpacing * (v47 - 1) + v47 * v14];
+  v51 = [MEMORY[0x1E6995558] estimatedDimension:selfCopy->_horizontalSpacing * (v47 - 1) + v47 * v14];
   v52 = [v49 sizeWithWidthDimension:v50 heightDimension:v51];
 
   v53 = [MEMORY[0x1E6995568] verticalGroupWithLayoutSize:v52 subitems:v34];
-  v54 = [MEMORY[0x1E6995590] fixedSpacing:v32->_horizontalSpacing];
+  v54 = [MEMORY[0x1E6995590] fixedSpacing:selfCopy->_horizontalSpacing];
   [v53 setInterItemSpacing:v54];
 
   v55 = [MEMORY[0x1E6995580] sectionWithGroup:v53];
-  [v55 setInterGroupSpacing:v32->_horizontalSpacing];
-  [v55 setContentInsets:{v32->_searchBarHeightAdjustment, (a3 - v28) * 0.5, 8.0, (a3 - v28) * 0.5}];
+  [v55 setInterGroupSpacing:selfCopy->_horizontalSpacing];
+  [v55 setContentInsets:{selfCopy->_searchBarHeightAdjustment, (width - v28) * 0.5, 8.0, (width - v28) * 0.5}];
 
   return v55;
 }
@@ -4575,23 +4575,23 @@ id __98__SBHAddWidgetSheetViewController__newPadCollectionViewLayoutGallerySecti
   return v2;
 }
 
-- (id)_podsArrayWithSizeClasses:(id)a3 columnCount:(int64_t)a4
+- (id)_podsArrayWithSizeClasses:(id)classes columnCount:(int64_t)count
 {
-  v5 = a3;
-  v6 = [v5 count];
+  classesCopy = classes;
+  v6 = [classesCopy count];
   v7 = objc_opt_new();
   if (v6)
   {
     v8 = 0;
-    v9 = a4 & 1;
-    v10 = v9 + a4 / 2;
+    v9 = count & 1;
+    v10 = v9 + count / 2;
     do
     {
       v11 = [v7 count];
       if (v9 && !(v11 % v10))
       {
-        v18 = SBHSizeClassForItemAtIndex(v5, v8);
-        v19 = SBHSizeClassForItemAtIndex(v5, v8 + 1);
+        v18 = SBHSizeClassForItemAtIndex(classesCopy, v8);
+        v19 = SBHSizeClassForItemAtIndex(classesCopy, v8 + 1);
         if (v18 == 1 && v19 <= 1)
         {
           [v7 addObject:&unk_1F3DB2558];
@@ -4601,10 +4601,10 @@ id __98__SBHAddWidgetSheetViewController__newPadCollectionViewLayoutGallerySecti
         continue;
       }
 
-      v12 = SBHSizeClassForItemAtIndex(v5, v8);
-      v13 = SBHSizeClassForItemAtIndex(v5, v8 + 1);
-      v14 = SBHSizeClassForItemAtIndex(v5, v8 + 2);
-      v15 = SBHSizeClassForItemAtIndex(v5, v8 + 3);
+      v12 = SBHSizeClassForItemAtIndex(classesCopy, v8);
+      v13 = SBHSizeClassForItemAtIndex(classesCopy, v8 + 1);
+      v14 = SBHSizeClassForItemAtIndex(classesCopy, v8 + 2);
+      v15 = SBHSizeClassForItemAtIndex(classesCopy, v8 + 3);
       v16 = 0;
       if (v12 > 2)
       {
@@ -4693,12 +4693,12 @@ LABEL_31:
   return v7;
 }
 
-- (void)_setContentInsetsForGridWithWidth:(double)a3
+- (void)_setContentInsetsForGridWithWidth:(double)width
 {
   galleryLayoutSize = self->_galleryLayoutSize;
-  v12 = [(SBHAddWidgetSheetViewController *)self _listLayoutForWidgetSizing];
-  v6 = [v12 iconGridSizeClassSizes];
-  v7 = [v6 hasGridSizeForGridSizeClass:@"SBHIconGridSizeClassSmall"];
+  _listLayoutForWidgetSizing = [(SBHAddWidgetSheetViewController *)self _listLayoutForWidgetSizing];
+  iconGridSizeClassSizes = [_listLayoutForWidgetSizing iconGridSizeClassSizes];
+  v7 = [iconGridSizeClassSizes hasGridSizeForGridSizeClass:@"SBHIconGridSizeClassSmall"];
 
   if (v7)
   {
@@ -4712,7 +4712,7 @@ LABEL_31:
         goto LABEL_11;
       }
 
-      v8 = SBHIconListLayoutIconImageInfoForGridSizeClass(v12, @"SBHIconGridSizeClassSmall");
+      v8 = SBHIconListLayoutIconImageInfoForGridSizeClass(_listLayoutForWidgetSizing, @"SBHIconGridSizeClassSmall");
       v9 = 4;
       if (self->_galleryLayoutSize != 2)
       {
@@ -4722,7 +4722,7 @@ LABEL_31:
 
     else
     {
-      v8 = SBHIconListLayoutIconImageInfoForGridSizeClass(v12, @"SBHIconGridSizeClassSmall");
+      v8 = SBHIconListLayoutIconImageInfoForGridSizeClass(_listLayoutForWidgetSizing, @"SBHIconGridSizeClassSmall");
       v9 = 2;
       if (self->_galleryLayoutSize == 1)
       {
@@ -4730,7 +4730,7 @@ LABEL_31:
       }
     }
 
-    v10 = a3 - (self->_horizontalSpacing * (v9 - 1) + v9 * v8);
+    v10 = width - (self->_horizontalSpacing * (v9 - 1) + v9 * v8);
     self->_contentInsets.top = 0.0;
     v11 = v10 * 0.5;
     self->_contentInsets.leading = v11;
@@ -4741,16 +4741,16 @@ LABEL_31:
 LABEL_11:
 }
 
-- (void)_updateContentInsetsIfNecessaryForWidth:(double)a3
+- (void)_updateContentInsetsIfNecessaryForWidth:(double)width
 {
-  if (self->_contentInsetUpdatedForWidth != a3)
+  if (self->_contentInsetUpdatedForWidth != width)
   {
-    [(SBHAddWidgetSheetViewController *)self _setContentInsetsForGridWithWidth:a3];
-    self->_contentInsetUpdatedForWidth = a3;
+    [(SBHAddWidgetSheetViewController *)self _setContentInsetsForGridWithWidth:width];
+    self->_contentInsetUpdatedForWidth = width;
   }
 }
 
-- (id)_collectionViewLayoutApplicationsSectionWithStyle:(unint64_t)a3
+- (id)_collectionViewLayoutApplicationsSectionWithStyle:(unint64_t)style
 {
   v5 = MEMORY[0x1E6995588];
   v6 = [MEMORY[0x1E6995558] fractionalWidthDimension:1.0];
@@ -4766,7 +4766,7 @@ LABEL_11:
   v14 = [MEMORY[0x1E6995568] horizontalGroupWithLayoutSize:v13 repeatingSubitem:v9 count:1];
   v15 = [MEMORY[0x1E6995580] sectionWithGroup:v14];
   v16 = v15;
-  if (a3)
+  if (style)
   {
     top = 0.0;
     [v15 setInterGroupSpacing:0.0];
@@ -4774,7 +4774,7 @@ LABEL_11:
 
     *&self->_applicationsSectionInsets.top = xmmword_1BEE858B0;
     *&self->_applicationsSectionInsets.bottom = _Q1;
-    if (a3 == 1)
+    if (style == 1)
     {
       [(SBHAddWidgetSheetViewController *)self _metricsForCurrentOrientation];
       self->_applicationsSectionInsets.leading = 0.0 + 0.0;
@@ -4807,8 +4807,8 @@ LABEL_11:
 
   else
   {
-    v4 = [(SBHAddWidgetSheetViewController *)self configuration];
-    v3 = [v4 applicationCellIncludesGalleryListView] ^ 1;
+    configuration = [(SBHAddWidgetSheetViewController *)self configuration];
+    v3 = [configuration applicationCellIncludesGalleryListView] ^ 1;
   }
 
   return v3;
@@ -4816,21 +4816,21 @@ LABEL_11:
 
 - (BOOL)_canShowGallery
 {
-  v3 = [(SBHAddWidgetSheetViewController *)self _shouldShowGallery];
-  v4 = [(SBHAddWidgetSheetViewController *)self _suggestedItems];
-  v5 = [v4 count];
+  _shouldShowGallery = [(SBHAddWidgetSheetViewController *)self _shouldShowGallery];
+  _suggestedItems = [(SBHAddWidgetSheetViewController *)self _suggestedItems];
+  v5 = [_suggestedItems count];
 
-  return v5 && v3;
+  return v5 && _shouldShowGallery;
 }
 
 - (BOOL)_shouldShowCustomApplicationsSection
 {
-  v3 = [(SBHAddWidgetSheetViewController *)self configuration];
-  v4 = [v3 wantsCustomApplicationsSection];
+  configuration = [(SBHAddWidgetSheetViewController *)self configuration];
+  wantsCustomApplicationsSection = [configuration wantsCustomApplicationsSection];
 
   v5 = [(NSArray *)self->_customApplicationWidgetCollections count];
   result = 0;
-  if (v4)
+  if (wantsCustomApplicationsSection)
   {
     if (v5)
     {
@@ -4869,9 +4869,9 @@ LABEL_11:
 
 - (id)_materialViewForVisualStyling
 {
-  v3 = [(SBHAddWidgetSheetViewControllerBase *)self externalBackgroundView];
-  backgroundView = v3;
-  if (!v3)
+  externalBackgroundView = [(SBHAddWidgetSheetViewControllerBase *)self externalBackgroundView];
+  backgroundView = externalBackgroundView;
+  if (!externalBackgroundView)
   {
     backgroundView = self->_backgroundView;
   }
@@ -4890,21 +4890,21 @@ LABEL_11:
 
   else
   {
-    v3 = [MEMORY[0x1E69DC938] currentDevice];
-    v2 = [v3 userInterfaceIdiom] == 0;
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    v2 = [currentDevice userInterfaceIdiom] == 0;
   }
 
   return v2;
 }
 
-- (id)_newWrapperViewControllerWithGalleryItem:(id)a3 sizeClass:(int64_t)a4
+- (id)_newWrapperViewControllerWithGalleryItem:(id)item sizeClass:(int64_t)class
 {
-  v6 = a3;
+  itemCopy = item;
   v7 = [SBHWidgetWrapperViewController alloc];
-  v8 = [(SBHAddWidgetSheetViewController *)self _shouldShowTitleAndSubtitle];
-  v9 = [(SBHAddWidgetSheetViewControllerBase *)self listLayoutProvider];
-  v10 = [(SBHAddWidgetSheetViewControllerBase *)self iconViewProvider];
-  v11 = [(SBHWidgetWrapperViewController *)v7 initWithGalleryItem:v6 titleAndSubtitleVisible:v8 listLayoutProvider:v9 iconViewProvider:v10];
+  _shouldShowTitleAndSubtitle = [(SBHAddWidgetSheetViewController *)self _shouldShowTitleAndSubtitle];
+  listLayoutProvider = [(SBHAddWidgetSheetViewControllerBase *)self listLayoutProvider];
+  iconViewProvider = [(SBHAddWidgetSheetViewControllerBase *)self iconViewProvider];
+  v11 = [(SBHWidgetWrapperViewController *)v7 initWithGalleryItem:itemCopy titleAndSubtitleVisible:_shouldShowTitleAndSubtitle listLayoutProvider:listLayoutProvider iconViewProvider:iconViewProvider];
 
   if ([(SBHAddWidgetSheetViewController *)self addWidgetSheetLocation]== 2)
   {
@@ -4912,7 +4912,7 @@ LABEL_11:
   }
 
   [(SBHWidgetWrapperViewController *)v11 setDelegate:self];
-  [(SBHWidgetWrapperViewController *)v11 setSelectedSizeClass:a4];
+  [(SBHWidgetWrapperViewController *)v11 setSelectedSizeClass:class];
   [(SBHWidgetWrapperViewController *)v11 setBackgroundType:[(SBHAddWidgetSheetViewController *)self widgetWrapperViewControllerBackgroundType]];
   return v11;
 }
@@ -4930,16 +4930,16 @@ LABEL_11:
 
 - (void)_updateSearchBarOverrideUserInterfaceStyle
 {
-  v4 = [(SBHAddWidgetSheetViewController *)self _effectiveSearchController];
-  v3 = [(SBHAddWidgetSheetViewController *)self traitCollection];
-  [v4 setOverrideUserInterfaceStyle:{objc_msgSend(v3, "userInterfaceStyle")}];
+  _effectiveSearchController = [(SBHAddWidgetSheetViewController *)self _effectiveSearchController];
+  traitCollection = [(SBHAddWidgetSheetViewController *)self traitCollection];
+  [_effectiveSearchController setOverrideUserInterfaceStyle:{objc_msgSend(traitCollection, "userInterfaceStyle")}];
 }
 
 - (void)_updateSearchBarContentInsets
 {
   searchController = self->_searchController;
-  v4 = [(SBHAddWidgetSheetViewController *)self view];
-  [v4 bounds];
+  view = [(SBHAddWidgetSheetViewController *)self view];
+  [view bounds];
   [(SBHWidgetSearchController *)searchController updateSearchBarContentInsetsWithWidth:v5];
 
   [(SBHAddWidgetSheetViewController *)self _updateCollectionViewInsets];
@@ -4947,30 +4947,30 @@ LABEL_11:
 
 - (void)_updateCollectionViewInsets
 {
-  v3 = [(SBHAddWidgetSheetViewController *)self _listLayoutForWidgetSizing];
-  v4 = [(SBHAddWidgetSheetViewController *)self configuration];
-  v5 = [v4 gridSizeClassForContentWidth];
-  v6 = v5;
+  _listLayoutForWidgetSizing = [(SBHAddWidgetSheetViewController *)self _listLayoutForWidgetSizing];
+  configuration = [(SBHAddWidgetSheetViewController *)self configuration];
+  gridSizeClassForContentWidth = [configuration gridSizeClassForContentWidth];
+  v6 = gridSizeClassForContentWidth;
   v7 = @"SBHIconGridSizeClassMedium";
-  if (v5)
+  if (gridSizeClassForContentWidth)
   {
-    v7 = v5;
+    v7 = gridSizeClassForContentWidth;
   }
 
   v8 = v7;
 
-  v9 = SBHIconListLayoutIconImageInfoForGridSizeClass(v3, v8);
-  v10 = [(SBHAddWidgetSheetViewController *)self view];
-  [v10 frame];
+  v9 = SBHIconListLayoutIconImageInfoForGridSizeClass(_listLayoutForWidgetSizing, v8);
+  view = [(SBHAddWidgetSheetViewController *)self view];
+  [view frame];
   v12 = (v11 - v9) * -0.5;
 
-  v13 = [(SBHAddWidgetSheetViewControllerBase *)self addWidgetSheetStyle];
-  v14 = [(SBHAddWidgetSheetViewController *)self searchController];
-  [v14 textFieldToWidgetsSpacing];
+  addWidgetSheetStyle = [(SBHAddWidgetSheetViewControllerBase *)self addWidgetSheetStyle];
+  searchController = [(SBHAddWidgetSheetViewController *)self searchController];
+  [searchController textFieldToWidgetsSpacing];
   v16 = v15;
 
   v17 = v16 + 12.0 + v12;
-  if (v13 == 1)
+  if (addWidgetSheetStyle == 1)
   {
     v17 = 0.0;
   }
@@ -4979,12 +4979,12 @@ LABEL_11:
   [(_SBHAddWidgetSheetCollectionView *)self->_collectionView contentInset];
   v19 = v18;
   v21 = v20;
-  if (v13 == 1)
+  if (addWidgetSheetStyle == 1)
   {
     [(SBHAddWidgetSheetViewController *)self _metricsForCurrentOrientation:0];
-    v22 = [(SBHAddWidgetSheetViewController *)self shouldShowGalleryOnly];
+    shouldShowGalleryOnly = [(SBHAddWidgetSheetViewController *)self shouldShowGalleryOnly];
     v23 = 120;
-    if (v22)
+    if (shouldShowGalleryOnly)
     {
       v23 = 40;
     }
@@ -4994,9 +4994,9 @@ LABEL_11:
 
   else
   {
-    v25 = [(SBHAddWidgetSheetViewController *)self _effectiveSearchController];
-    v26 = [v25 searchBar];
-    [v26 frame];
+    _effectiveSearchController = [(SBHAddWidgetSheetViewController *)self _effectiveSearchController];
+    searchBar = [_effectiveSearchController searchBar];
+    [searchBar frame];
     v28 = v27;
 
     v24 = v28 - self->_searchBarHeightAdjustment;
@@ -5013,8 +5013,8 @@ LABEL_11:
 
   else
   {
-    v30 = [MEMORY[0x1E69DC938] currentDevice];
-    if ([v30 userInterfaceIdiom] != 1)
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    if ([currentDevice userInterfaceIdiom] != 1)
     {
       Height = Height - self->_applicationsSectionInsets.bottom;
     }
@@ -5052,7 +5052,7 @@ LABEL_11:
   return externalSearchController;
 }
 
-- (SBHPadAddWidgetSheetMetrics)_metricsForOrientation:(SEL)a3
+- (SBHPadAddWidgetSheetMetrics)_metricsForOrientation:(SEL)orientation
 {
   if ((a4 - 3) >= 2)
   {
@@ -5084,41 +5084,41 @@ LABEL_11:
 
 - (SBHPadAddWidgetSheetMetrics)_metricsForCurrentOrientation
 {
-  v4 = [(SBHAddWidgetSheetViewController *)self view];
-  v7 = [v4 window];
+  view = [(SBHAddWidgetSheetViewController *)self view];
+  window = [view window];
 
-  v5 = v7;
-  if (!v7)
+  selfCopy = window;
+  if (!window)
   {
-    v5 = self;
+    selfCopy = self;
   }
 
-  [(SBHAddWidgetSheetViewController *)self _metricsForOrientation:[(SBHAddWidgetSheetViewController *)v5 interfaceOrientation]];
+  [(SBHAddWidgetSheetViewController *)self _metricsForOrientation:[(SBHAddWidgetSheetViewController *)selfCopy interfaceOrientation]];
 
   return result;
 }
 
-- (id)_generateLayoutSectionForSectionIdx:(unint64_t)a3 width:(double)a4
+- (id)_generateLayoutSectionForSectionIdx:(unint64_t)idx width:(double)width
 {
   [(SBHAddWidgetSheetViewController *)self _updateContentInsetsIfNecessaryForWidth:?];
-  if ([(SBHAddWidgetSheetViewController *)self _sectionIndexForSection:0]== a3)
+  if ([(SBHAddWidgetSheetViewController *)self _sectionIndexForSection:0]== idx)
   {
-    v7 = [(SBHAddWidgetSheetViewController *)self galleryLayoutSize];
-    v8 = [(SBHAddWidgetSheetViewController *)self _sizeClasses];
-    if (v7 > 1)
+    galleryLayoutSize = [(SBHAddWidgetSheetViewController *)self galleryLayoutSize];
+    _sizeClasses = [(SBHAddWidgetSheetViewController *)self _sizeClasses];
+    if (galleryLayoutSize > 1)
     {
-      v9 = [(SBHAddWidgetSheetViewController *)self _newPadCollectionViewLayoutGallerySectionWithWidth:v8 sizeClasses:a4];
+      v9 = [(SBHAddWidgetSheetViewController *)self _newPadCollectionViewLayoutGallerySectionWithWidth:_sizeClasses sizeClasses:width];
     }
 
     else
     {
-      v9 = [(SBHAddWidgetSheetViewController *)self _collectionViewLayoutGallerySectionWithWidth:v8 sizeClasses:a4];
+      v9 = [(SBHAddWidgetSheetViewController *)self _collectionViewLayoutGallerySectionWithWidth:_sizeClasses sizeClasses:width];
     }
 
     v10 = v9;
   }
 
-  else if ([(SBHAddWidgetSheetViewController *)self _sectionIndexForSection:2]== a3 || [(SBHAddWidgetSheetViewController *)self _sectionIndexForSection:3]== a3 || [(SBHAddWidgetSheetViewController *)self _sectionIndexForSection:1]== a3)
+  else if ([(SBHAddWidgetSheetViewController *)self _sectionIndexForSection:2]== idx || [(SBHAddWidgetSheetViewController *)self _sectionIndexForSection:3]== idx || [(SBHAddWidgetSheetViewController *)self _sectionIndexForSection:1]== idx)
   {
     v10 = [(SBHAddWidgetSheetViewController *)self _collectionViewLayoutApplicationsSectionWithStyle:[(SBHAddWidgetSheetViewControllerBase *)self addWidgetSheetStyle]];
   }
@@ -5133,24 +5133,24 @@ LABEL_11:
 
 - (id)_listLayoutForWidgetSizing
 {
-  v2 = [(SBHAddWidgetSheetViewControllerBase *)self listLayoutProvider];
-  v3 = [v2 layoutForIconLocation:@"SBIconLocationRoot"];
+  listLayoutProvider = [(SBHAddWidgetSheetViewControllerBase *)self listLayoutProvider];
+  v3 = [listLayoutProvider layoutForIconLocation:@"SBIconLocationRoot"];
 
   return v3;
 }
 
 - (void)_updateHorizontalSpacing
 {
-  v4 = [(SBHAddWidgetSheetViewController *)self _listLayoutForWidgetSizing];
-  [(SBHAddWidgetSheetViewController *)self _horizontalSpacingForListLayout:v4];
+  _listLayoutForWidgetSizing = [(SBHAddWidgetSheetViewController *)self _listLayoutForWidgetSizing];
+  [(SBHAddWidgetSheetViewController *)self _horizontalSpacingForListLayout:_listLayoutForWidgetSizing];
   self->_horizontalSpacing = v3;
 }
 
-- (double)_horizontalSpacingForListLayout:(id)a3
+- (double)_horizontalSpacingForListLayout:(id)layout
 {
-  v3 = a3;
-  v4 = SBHIconListLayoutIconImageInfoForGridSizeClass(v3, @"SBHIconGridSizeClassSmall");
-  v5 = SBHIconListLayoutIconImageInfoForGridSizeClass(v3, @"SBHIconGridSizeClassMedium");
+  layoutCopy = layout;
+  v4 = SBHIconListLayoutIconImageInfoForGridSizeClass(layoutCopy, @"SBHIconGridSizeClassSmall");
+  v5 = SBHIconListLayoutIconImageInfoForGridSizeClass(layoutCopy, @"SBHIconGridSizeClassMedium");
 
   result = v5 + v4 * -2.0;
   if (v5 <= v4)

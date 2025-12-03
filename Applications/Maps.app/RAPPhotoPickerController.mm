@@ -1,55 +1,55 @@
 @interface RAPPhotoPickerController
-- (RAPPhotoPickerController)initWithInitialPhoto:(id)a3;
+- (RAPPhotoPickerController)initWithInitialPhoto:(id)photo;
 - (void)_cancel;
 - (void)_clearImagePicker;
 - (void)_endPicking;
 - (void)_instrument;
 - (void)_invokeChangeHandlers;
 - (void)_presentPhotoOptions;
-- (void)_presentViewController:(id)a3;
-- (void)_proceedWithSourceType:(int64_t)a3;
-- (void)addObserver:(id)a3 changeHandler:(id)a4;
+- (void)_presentViewController:(id)controller;
+- (void)_proceedWithSourceType:(int64_t)type;
+- (void)addObserver:(id)observer changeHandler:(id)handler;
 - (void)clearSelectedPhoto;
 - (void)dealloc;
-- (void)imagePickerController:(id)a3 didFinishPickingMediaWithInfo:(id)a4;
-- (void)photoOptionsPickerDidCancel:(id)a3;
-- (void)photoOptionsPickerDidSelectAddFromLibrary:(id)a3;
-- (void)photoOptionsPickerDidSelectTakePhoto:(id)a3;
-- (void)presentationControllerDidDismiss:(id)a3;
+- (void)imagePickerController:(id)controller didFinishPickingMediaWithInfo:(id)info;
+- (void)photoOptionsPickerDidCancel:(id)cancel;
+- (void)photoOptionsPickerDidSelectAddFromLibrary:(id)library;
+- (void)photoOptionsPickerDidSelectTakePhoto:(id)photo;
+- (void)presentationControllerDidDismiss:(id)dismiss;
 - (void)startPicking;
-- (void)startPickingWithSourceType:(int64_t)a3;
+- (void)startPickingWithSourceType:(int64_t)type;
 @end
 
 @implementation RAPPhotoPickerController
 
-- (void)photoOptionsPickerDidCancel:(id)a3
+- (void)photoOptionsPickerDidCancel:(id)cancel
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_100D5C94C;
   v3[3] = &unk_101661B18;
   v3[4] = self;
-  [a3 dismissPhotoOptionsWithCompletion:v3];
+  [cancel dismissPhotoOptionsWithCompletion:v3];
 }
 
-- (void)photoOptionsPickerDidSelectAddFromLibrary:(id)a3
+- (void)photoOptionsPickerDidSelectAddFromLibrary:(id)library
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_100D5C9C8;
   v3[3] = &unk_101661B18;
   v3[4] = self;
-  [a3 dismissPhotoOptionsWithCompletion:v3];
+  [library dismissPhotoOptionsWithCompletion:v3];
 }
 
-- (void)photoOptionsPickerDidSelectTakePhoto:(id)a3
+- (void)photoOptionsPickerDidSelectTakePhoto:(id)photo
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_100D5CA48;
   v3[3] = &unk_101661B18;
   v3[4] = self;
-  [a3 dismissPhotoOptionsWithCompletion:v3];
+  [photo dismissPhotoOptionsWithCompletion:v3];
 }
 
 - (void)_cancel
@@ -65,7 +65,7 @@
   [(UIImagePickerController *)imagePicker dismissViewControllerAnimated:1 completion:v4];
 }
 
-- (void)presentationControllerDidDismiss:(id)a3
+- (void)presentationControllerDidDismiss:(id)dismiss
 {
   self->_picking = 0;
   [(RAPPhotoPickerController *)self _invokeChangeHandlers];
@@ -73,11 +73,11 @@
   [(RAPPhotoPickerController *)self _clearImagePicker];
 }
 
-- (void)imagePickerController:(id)a3 didFinishPickingMediaWithInfo:(id)a4
+- (void)imagePickerController:(id)controller didFinishPickingMediaWithInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
-  [v7 objectForKeyedSubscript:UIImagePickerControllerOriginalImage];
+  controllerCopy = controller;
+  infoCopy = info;
+  [infoCopy objectForKeyedSubscript:UIImagePickerControllerOriginalImage];
   v25[0] = _NSConcreteStackBlock;
   v25[1] = 3221225472;
   v25[2] = sub_100D5CD80;
@@ -85,19 +85,19 @@
   v8 = v25[4] = self;
   v26 = v8;
   v9 = objc_retainBlock(v25);
-  v10 = [v7 objectForKeyedSubscript:UIImagePickerControllerPHAsset];
+  v10 = [infoCopy objectForKeyedSubscript:UIImagePickerControllerPHAsset];
 
   if (v10)
   {
-    v11 = [v7 objectForKeyedSubscript:UIImagePickerControllerPHAsset];
-    v12 = [v11 location];
-    v13 = [v11 creationDate];
-    (v9[2])(v9, v12, v13);
+    v11 = [infoCopy objectForKeyedSubscript:UIImagePickerControllerPHAsset];
+    location = [v11 location];
+    creationDate = [v11 creationDate];
+    (v9[2])(v9, location, creationDate);
   }
 
   else
   {
-    if ([v6 sourceType] != 1 || (+[MKLocationManager sharedLocationManager](MKLocationManager, "sharedLocationManager"), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "isLocationServicesPossiblyAvailable"), v14, !v15))
+    if ([controllerCopy sourceType] != 1 || (+[MKLocationManager sharedLocationManager](MKLocationManager, "sharedLocationManager"), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "isLocationServicesPossiblyAvailable"), v14, !v15))
     {
       (v9[2])(v9, 0, 0);
       goto LABEL_8;
@@ -122,10 +122,10 @@ LABEL_8:
 
 - (void)_instrument
 {
-  v2 = [(RAPPhotoPickerController *)self presentingViewController];
-  if ([v2 conformsToProtocol:&OBJC_PROTOCOL___RAPInstrumentableTarget])
+  presentingViewController = [(RAPPhotoPickerController *)self presentingViewController];
+  if ([presentingViewController conformsToProtocol:&OBJC_PROTOCOL___RAPInstrumentableTarget])
   {
-    v3 = v2;
+    v3 = presentingViewController;
   }
 
   else
@@ -142,15 +142,15 @@ LABEL_8:
   }
 }
 
-- (void)_presentViewController:(id)a3
+- (void)_presentViewController:(id)controller
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100D5CFC4;
   v4[3] = &unk_101661A90;
   v4[4] = self;
-  v5 = a3;
-  v3 = v5;
+  controllerCopy = controller;
+  v3 = controllerCopy;
   dispatch_async(&_dispatch_main_q, v4);
 }
 
@@ -163,9 +163,9 @@ LABEL_8:
   [(RAPPhotoPickerController *)self _invokeChangeHandlers];
 }
 
-- (void)_proceedWithSourceType:(int64_t)a3
+- (void)_proceedWithSourceType:(int64_t)type
 {
-  if (a3 == 1)
+  if (type == 1)
   {
     v5 = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo];
     v7 = v5 == AVAuthorizationStatusAuthorized || v5 == AVAuthorizationStatusNotDetermined;
@@ -216,10 +216,10 @@ LABEL_26:
     v44 = 0;
     v15 = 0;
 LABEL_27:
-    v18 = [(RAPPhotoPickerController *)self presentingViewController];
+    presentingViewController = [(RAPPhotoPickerController *)self presentingViewController];
     v19 = +[NSBundle mainBundle];
     v20 = [v19 localizedStringForKey:@"OK [Alert dismissal]" value:@"localized string not found" table:0];
-    [v18 _maps_presentSimpleAlertWithTitle:v44 message:v15 dismissalActionTitle:v20];
+    [presentingViewController _maps_presentSimpleAlertWithTitle:v44 message:v15 dismissalActionTitle:v20];
 
     [(RAPPhotoPickerController *)self _endPicking];
 
@@ -227,12 +227,12 @@ LABEL_27:
   }
 
   p_imagePicker = &self->_imagePicker;
-  v14 = [(UIImagePickerController *)self->_imagePicker presentingViewController];
+  presentingViewController2 = [(UIImagePickerController *)self->_imagePicker presentingViewController];
 
-  if (!v14)
+  if (!presentingViewController2)
   {
-    v21 = [(RAPPhotoPickerController *)self presentingViewController];
-    if (!v21)
+    presentingViewController3 = [(RAPPhotoPickerController *)self presentingViewController];
+    if (!presentingViewController3)
     {
       [(RAPPhotoPickerController *)self _endPicking];
 LABEL_45:
@@ -242,18 +242,18 @@ LABEL_45:
 
     v22 = objc_alloc_init(UIImagePickerController);
     [v22 setDelegate:self];
-    if (!a3)
+    if (!type)
     {
-      v23 = [UTTypeImage identifier];
-      v45 = v23;
+      identifier = [UTTypeImage identifier];
+      v45 = identifier;
       v24 = [NSArray arrayWithObjects:&v45 count:1];
       [v22 setMediaTypes:v24];
     }
 
-    [v22 setSourceType:a3];
+    [v22 setSourceType:type];
     objc_storeStrong(&self->_imagePicker, v22);
     v25 = *p_imagePicker;
-    if (a3 == 1)
+    if (type == 1)
     {
       v26 = 0;
     }
@@ -267,26 +267,26 @@ LABEL_45:
         [(UIImagePickerController *)v25 setModalPresentationStyle:7];
         presentingViewController = self->_presentingViewController;
         v29 = self->_anchoringView;
-        v30 = [(UIViewController *)presentingViewController view];
-        v31 = [(UIImagePickerController *)self->_imagePicker popoverPresentationController];
-        [v31 setSourceView:v30];
+        view = [(UIViewController *)presentingViewController view];
+        popoverPresentationController = [(UIImagePickerController *)self->_imagePicker popoverPresentationController];
+        [popoverPresentationController setSourceView:view];
 
         [(UIView *)v29 bounds];
-        [v30 convertRect:v29 fromView:?];
+        [view convertRect:v29 fromView:?];
         v33 = v32;
         v35 = v34;
         v37 = v36;
         v39 = v38;
-        v40 = [(UIImagePickerController *)self->_imagePicker popoverPresentationController];
+        popoverPresentationController2 = [(UIImagePickerController *)self->_imagePicker popoverPresentationController];
 
-        [v40 setSourceRect:{v33, v35, v37, v39}];
+        [popoverPresentationController2 setSourceRect:{v33, v35, v37, v39}];
 LABEL_40:
-        v41 = [(UIImagePickerController *)self->_imagePicker presentationController];
-        [v41 setDelegate:self];
+        presentationController = [(UIImagePickerController *)self->_imagePicker presentationController];
+        [presentationController setDelegate:self];
 
         [v22 setOverrideUserInterfaceStyle:self->_overriddenInterfaceStyle];
         [(RAPPhotoPickerController *)self _presentViewController:v22];
-        if (a3 != 1)
+        if (type != 1)
         {
           if (qword_10195E488 != -1)
           {
@@ -322,16 +322,16 @@ LABEL_40:
   [(PhotoOptionsPicker *)v5 presentPhotoOptionsWithPreparationBlock:0];
 }
 
-- (void)startPickingWithSourceType:(int64_t)a3
+- (void)startPickingWithSourceType:(int64_t)type
 {
-  if (a3)
+  if (type)
   {
-    if (a3 == 2)
+    if (type == 2)
     {
       [(RAPPhotoPickerController *)self _proceedWithSourceType:0];
     }
 
-    else if (a3 == 1)
+    else if (type == 1)
     {
       [(RAPPhotoPickerController *)self _proceedWithSourceType:1];
     }
@@ -357,11 +357,11 @@ LABEL_40:
 - (void)_clearImagePicker
 {
   [(UIImagePickerController *)self->_imagePicker setDelegate:0];
-  v3 = [(UIImagePickerController *)self->_imagePicker popoverPresentationController];
-  [v3 setDelegate:0];
+  popoverPresentationController = [(UIImagePickerController *)self->_imagePicker popoverPresentationController];
+  [popoverPresentationController setDelegate:0];
 
-  v4 = [(UIImagePickerController *)self->_imagePicker presentationController];
-  [v4 setDelegate:0];
+  presentationController = [(UIImagePickerController *)self->_imagePicker presentationController];
+  [presentationController setDelegate:0];
 
   imagePicker = self->_imagePicker;
   self->_imagePicker = 0;
@@ -381,16 +381,16 @@ LABEL_40:
   [(RAPPhotoPickerController *)&v3 dealloc];
 }
 
-- (RAPPhotoPickerController)initWithInitialPhoto:(id)a3
+- (RAPPhotoPickerController)initWithInitialPhoto:(id)photo
 {
-  v5 = a3;
+  photoCopy = photo;
   v9.receiver = self;
   v9.super_class = RAPPhotoPickerController;
   v6 = [(RAPPhotoPickerController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_photo, a3);
+    objc_storeStrong(&v6->_photo, photo);
     v7->_overriddenInterfaceStyle = 0;
   }
 
@@ -430,10 +430,10 @@ LABEL_40:
   }
 }
 
-- (void)addObserver:(id)a3 changeHandler:(id)a4
+- (void)addObserver:(id)observer changeHandler:(id)handler
 {
-  v11 = a3;
-  v6 = a4;
+  observerCopy = observer;
+  handlerCopy = handler;
   observers = self->_observers;
   if (!observers)
   {
@@ -444,8 +444,8 @@ LABEL_40:
     observers = self->_observers;
   }
 
-  v10 = [v6 copy];
-  [(NSMapTable *)observers setObject:v10 forKey:v11];
+  v10 = [handlerCopy copy];
+  [(NSMapTable *)observers setObject:v10 forKey:observerCopy];
 }
 
 @end

@@ -15,18 +15,18 @@
 {
   if (a3)
   {
-    return [a1 addObject:?];
+    return [self addObject:?];
   }
 
-  return a1;
+  return self;
 }
 
 - (void)pft_addNonNilObjectIfNotPresent:()PosterFuturesKit
 {
   v4 = a3;
-  if (([a1 containsObject:?] & 1) == 0)
+  if (([self containsObject:?] & 1) == 0)
   {
-    [a1 pft_addNonNilObject:v4];
+    [self pft_addNonNilObject:v4];
   }
 }
 
@@ -37,7 +37,7 @@
     a3 = a4;
   }
 
-  return [a1 addObject:a3];
+  return [self addObject:a3];
 }
 
 - (uint64_t)pft_addObject:()PosterFuturesKit count:
@@ -62,10 +62,10 @@
 {
   if (a3)
   {
-    return [a1 insertObject:? atIndex:?];
+    return [self insertObject:? atIndex:?];
   }
 
-  return a1;
+  return self;
 }
 
 - (void)pft_removeObjectsPassingTest:()PosterFuturesKit
@@ -77,18 +77,18 @@
   v7[3] = &unk_279A52E78;
   v8 = v4;
   v5 = v4;
-  v6 = [a1 indexesOfObjectsPassingTest:v7];
-  [a1 removeObjectsAtIndexes:v6];
+  v6 = [self indexesOfObjectsPassingTest:v7];
+  [self removeObjectsAtIndexes:v6];
 }
 
 - (void)pft_reverseObjectsInRange:()PosterFuturesKit
 {
   if (a4 >= 2)
   {
-    v8 = [a1 subarrayWithRange:?];
-    v9 = [v8 pft_reversed];
+    v8 = [self subarrayWithRange:?];
+    pft_reversed = [v8 pft_reversed];
 
-    [a1 replaceObjectsInRange:a3 withObjectsFromArray:{a4, v9}];
+    [self replaceObjectsInRange:a3 withObjectsFromArray:{a4, pft_reversed}];
   }
 }
 
@@ -99,7 +99,7 @@
     v6 = (a4 & ((a5 % a4) >> 63)) + a5 % a4;
     if (v6)
     {
-      v9 = [a1 count];
+      v9 = [self count];
       v20.location = 0;
       v20.length = v9;
       v23.location = a3;
@@ -121,10 +121,10 @@
       }
 
       v11 = a3 + a4 - v6;
-      v18 = [a1 subarrayWithRange:{v11, v6}];
-      [a1 removeObjectsInRange:{v11, v6}];
+      v18 = [self subarrayWithRange:{v11, v6}];
+      [self removeObjectsInRange:{v11, v6}];
       v12 = [MEMORY[0x277CCAA78] indexSetWithIndexesInRange:{a3, v6}];
-      [a1 insertObjects:v18 atIndexes:v12];
+      [self insertObjects:v18 atIndexes:v12];
     }
   }
 }

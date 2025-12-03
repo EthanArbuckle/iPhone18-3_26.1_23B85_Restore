@@ -1,18 +1,18 @@
 @interface RBAssertionAcquisitionContext
-+ (id)contextForProcess:(id)a3 withDescriptor:(id)a4 daemonContext:(id)a5;
++ (id)contextForProcess:(id)process withDescriptor:(id)descriptor daemonContext:(id)context;
 @end
 
 @implementation RBAssertionAcquisitionContext
 
-+ (id)contextForProcess:(id)a3 withDescriptor:(id)a4 daemonContext:(id)a5
++ (id)contextForProcess:(id)process withDescriptor:(id)descriptor daemonContext:(id)context
 {
   v24 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8)
+  processCopy = process;
+  descriptorCopy = descriptor;
+  contextCopy = context;
+  if (processCopy)
   {
-    if (v9)
+    if (descriptorCopy)
     {
       goto LABEL_3;
     }
@@ -21,7 +21,7 @@
   else
   {
     +[RBAssertionAcquisitionContext contextForProcess:withDescriptor:daemonContext:];
-    if (v9)
+    if (descriptorCopy)
     {
       goto LABEL_3;
     }
@@ -30,15 +30,15 @@
   +[RBAssertionAcquisitionContext contextForProcess:withDescriptor:daemonContext:];
 LABEL_3:
   v11 = objc_alloc_init(RBAssertionAcquisitionContext);
-  objc_storeStrong(&v11->_process, a3);
-  objc_storeStrong(&v11->_descriptor, a4);
-  objc_storeStrong(&v11->_daemonContext, a5);
+  objc_storeStrong(&v11->_process, process);
+  objc_storeStrong(&v11->_descriptor, descriptor);
+  objc_storeStrong(&v11->_daemonContext, context);
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v12 = [v9 attributes];
-  v13 = [v12 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  attributes = [descriptorCopy attributes];
+  v13 = [attributes countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v13)
   {
     v14 = v13;
@@ -49,13 +49,13 @@ LABEL_3:
       {
         if (*v20 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(attributes);
         }
 
         [*(*(&v19 + 1) + 8 * i) applyToAcquisitionContext:v11];
       }
 
-      v14 = [v12 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v14 = [attributes countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v14);

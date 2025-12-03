@@ -1,25 +1,25 @@
 @interface Client
-- (Client)initWithConnection:(id)a3 entitled:(BOOL)a4;
-- (void)didWriteLog:(id)a3 filePath:(id)a4;
-- (void)failedToWriteLog:(id)a3 error:(id)a4;
-- (void)registerForEvents:(id)a3 replyHandler:(id)a4;
-- (void)registerForWrites:(id)a3 replyHandler:(id)a4;
-- (void)willWriteLog:(id)a3 details:(id)a4;
+- (Client)initWithConnection:(id)connection entitled:(BOOL)entitled;
+- (void)didWriteLog:(id)log filePath:(id)path;
+- (void)failedToWriteLog:(id)log error:(id)error;
+- (void)registerForEvents:(id)events replyHandler:(id)handler;
+- (void)registerForWrites:(id)writes replyHandler:(id)handler;
+- (void)willWriteLog:(id)log details:(id)details;
 @end
 
 @implementation Client
 
-- (Client)initWithConnection:(id)a3 entitled:(BOOL)a4
+- (Client)initWithConnection:(id)connection entitled:(BOOL)entitled
 {
-  v7 = a3;
+  connectionCopy = connection;
   v15.receiver = self;
   v15.super_class = Client;
   v8 = [(Client *)&v15 init];
   v9 = v8;
   if (v8)
   {
-    v8->_entitled = a4;
-    objc_storeStrong(&v8->_connection, a3);
+    v8->_entitled = entitled;
+    objc_storeStrong(&v8->_connection, connection);
     v10 = os_transaction_create();
     transaction = v9->_transaction;
     v9->_transaction = v10;
@@ -34,101 +34,101 @@
   return v9;
 }
 
-- (void)willWriteLog:(id)a3 details:(id)a4
+- (void)willWriteLog:(id)log details:(id)details
 {
-  v14 = a3;
-  v6 = a4;
+  logCopy = log;
+  detailsCopy = details;
   eventTypes = self->_eventTypes;
-  v8 = [v14 bugType];
-  LODWORD(eventTypes) = [(NSSet *)eventTypes containsObject:v8];
+  bugType = [logCopy bugType];
+  LODWORD(eventTypes) = [(NSSet *)eventTypes containsObject:bugType];
 
   if (eventTypes)
   {
-    v9 = [[OSALogEvent alloc] initWithIdentity:v14 details:v6];
-    v10 = [(NSXPCConnection *)self->_connection remoteObjectProxy];
-    [v10 receivedLogEvent:v9];
+    v9 = [[OSALogEvent alloc] initWithIdentity:logCopy details:detailsCopy];
+    remoteObjectProxy = [(NSXPCConnection *)self->_connection remoteObjectProxy];
+    [remoteObjectProxy receivedLogEvent:v9];
   }
 
   writeTypes = self->_writeTypes;
-  v12 = [v14 bugType];
-  LODWORD(writeTypes) = [(NSSet *)writeTypes containsObject:v12];
+  bugType2 = [logCopy bugType];
+  LODWORD(writeTypes) = [(NSSet *)writeTypes containsObject:bugType2];
 
   if (writeTypes)
   {
-    v13 = [(NSXPCConnection *)self->_connection remoteObjectProxy];
-    [v13 willWriteLog:v14];
+    remoteObjectProxy2 = [(NSXPCConnection *)self->_connection remoteObjectProxy];
+    [remoteObjectProxy2 willWriteLog:logCopy];
   }
 }
 
-- (void)didWriteLog:(id)a3 filePath:(id)a4
+- (void)didWriteLog:(id)log filePath:(id)path
 {
-  v11 = a3;
-  v6 = a4;
+  logCopy = log;
+  pathCopy = path;
   writeTypes = self->_writeTypes;
-  v8 = [v11 bugType];
-  LODWORD(writeTypes) = [(NSSet *)writeTypes containsObject:v8];
+  bugType = [logCopy bugType];
+  LODWORD(writeTypes) = [(NSSet *)writeTypes containsObject:bugType];
 
   if (writeTypes)
   {
-    v9 = [[OSALogWriteResult alloc] initWithIdentity:v11 filePath:v6];
-    v10 = [(NSXPCConnection *)self->_connection remoteObjectProxy];
-    [v10 didWriteLog:v9];
+    v9 = [[OSALogWriteResult alloc] initWithIdentity:logCopy filePath:pathCopy];
+    remoteObjectProxy = [(NSXPCConnection *)self->_connection remoteObjectProxy];
+    [remoteObjectProxy didWriteLog:v9];
   }
 }
 
-- (void)failedToWriteLog:(id)a3 error:(id)a4
+- (void)failedToWriteLog:(id)log error:(id)error
 {
-  v11 = a3;
-  v6 = a4;
+  logCopy = log;
+  errorCopy = error;
   writeTypes = self->_writeTypes;
-  v8 = [v11 bugType];
-  LODWORD(writeTypes) = [(NSSet *)writeTypes containsObject:v8];
+  bugType = [logCopy bugType];
+  LODWORD(writeTypes) = [(NSSet *)writeTypes containsObject:bugType];
 
   if (writeTypes)
   {
-    v9 = [[OSALogWriteResult alloc] initWithIdentity:v11 error:v6];
-    v10 = [(NSXPCConnection *)self->_connection remoteObjectProxy];
-    [v10 didWriteLog:v9];
+    v9 = [[OSALogWriteResult alloc] initWithIdentity:logCopy error:errorCopy];
+    remoteObjectProxy = [(NSXPCConnection *)self->_connection remoteObjectProxy];
+    [remoteObjectProxy didWriteLog:v9];
   }
 }
 
-- (void)registerForEvents:(id)a3 replyHandler:(id)a4
+- (void)registerForEvents:(id)events replyHandler:(id)handler
 {
-  v9 = a3;
-  v7 = a4;
-  sub_10000C7A0(v9);
+  eventsCopy = events;
+  handlerCopy = handler;
+  sub_10000C7A0(eventsCopy);
   if (self->_entitled)
   {
-    objc_storeStrong(&self->_eventTypes, a3);
-    v7[2](v7, 0);
+    objc_storeStrong(&self->_eventTypes, events);
+    handlerCopy[2](handlerCopy, 0);
   }
 
   else
   {
     v8 = sub_10000C938();
-    v7[2](v7, v8);
+    handlerCopy[2](handlerCopy, v8);
 
-    v7 = v8;
+    handlerCopy = v8;
   }
 }
 
-- (void)registerForWrites:(id)a3 replyHandler:(id)a4
+- (void)registerForWrites:(id)writes replyHandler:(id)handler
 {
-  v9 = a3;
-  v7 = a4;
-  sub_10000C7A0(v9);
+  writesCopy = writes;
+  handlerCopy = handler;
+  sub_10000C7A0(writesCopy);
   if (self->_entitled)
   {
-    objc_storeStrong(&self->_writeTypes, a3);
-    v7[2](v7, 0);
+    objc_storeStrong(&self->_writeTypes, writes);
+    handlerCopy[2](handlerCopy, 0);
   }
 
   else
   {
     v8 = sub_10000C938();
-    v7[2](v7, v8);
+    handlerCopy[2](handlerCopy, v8);
 
-    v7 = v8;
+    handlerCopy = v8;
   }
 }
 

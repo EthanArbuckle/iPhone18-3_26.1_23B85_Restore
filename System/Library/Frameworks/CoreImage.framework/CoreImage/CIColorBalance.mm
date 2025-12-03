@@ -90,14 +90,14 @@
     v12 = (1.0 - v10) * -0.2 + v10 * 0.2;
     v13 = fmin(fmax(v7, 0.001), 1.0);
     v14 = [-[CIImage _imageByApplyingGamma:](self->inputImage _imageByApplyingGamma:{0.25), "imageByUnpremultiplyingAlpha"}];
-    v15 = [(CIColorBalance *)self _kernel];
+    _kernel = [(CIColorBalance *)self _kernel];
     [(CIImage *)self->inputImage extent];
     v17 = v16;
     v19 = v18;
     v21 = v20;
     v23 = v22;
     v24[2] = [CIVector vectorWithX:v12 Y:v11 Z:v6 W:v13, v14, self->inputColor];
-    return [objc_msgSend(objc_msgSend(v15 applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v24, 3), v17, v19, v21, v23), "imageByPremultiplyingAlpha"), "_imageByApplyingGamma:", 4.0}];
+    return [objc_msgSend(objc_msgSend(_kernel applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v24, 3), v17, v19, v21, v23), "imageByPremultiplyingAlpha"), "_imageByApplyingGamma:", 4.0}];
   }
 
   else

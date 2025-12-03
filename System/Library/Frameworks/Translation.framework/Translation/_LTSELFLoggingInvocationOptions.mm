@@ -1,42 +1,42 @@
 @interface _LTSELFLoggingInvocationOptions
-- (_LTSELFLoggingInvocationOptions)initWithCoder:(id)a3;
-- (_LTSELFLoggingInvocationOptions)initWithTask:(int64_t)a3 inputMode:(int64_t)a4 invocationType:(int64_t)a5 translateAppContext:(id)a6;
-- (void)encodeWithCoder:(id)a3;
+- (_LTSELFLoggingInvocationOptions)initWithCoder:(id)coder;
+- (_LTSELFLoggingInvocationOptions)initWithTask:(int64_t)task inputMode:(int64_t)mode invocationType:(int64_t)type translateAppContext:(id)context;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _LTSELFLoggingInvocationOptions
 
-- (_LTSELFLoggingInvocationOptions)initWithTask:(int64_t)a3 inputMode:(int64_t)a4 invocationType:(int64_t)a5 translateAppContext:(id)a6
+- (_LTSELFLoggingInvocationOptions)initWithTask:(int64_t)task inputMode:(int64_t)mode invocationType:(int64_t)type translateAppContext:(id)context
 {
-  v11 = a6;
+  contextCopy = context;
   v16.receiver = self;
   v16.super_class = _LTSELFLoggingInvocationOptions;
   v12 = [(_LTSELFLoggingInvocationOptions *)&v16 init];
   v13 = v12;
   if (v12)
   {
-    v12->_task = a3;
-    v12->_inputMode = a4;
-    v12->_invocationType = a5;
-    objc_storeStrong(&v12->_translateAppContext, a6);
+    v12->_task = task;
+    v12->_inputMode = mode;
+    v12->_invocationType = type;
+    objc_storeStrong(&v12->_translateAppContext, context);
     v14 = v13;
   }
 
   return v13;
 }
 
-- (_LTSELFLoggingInvocationOptions)initWithCoder:(id)a3
+- (_LTSELFLoggingInvocationOptions)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = _LTSELFLoggingInvocationOptions;
   v5 = [(_LTSELFLoggingInvocationOptions *)&v10 init];
   if (v5)
   {
-    v5->_task = [v4 decodeIntegerForKey:@"task"];
-    v5->_inputMode = [v4 decodeIntegerForKey:@"inputMode"];
-    v5->_invocationType = [v4 decodeIntegerForKey:@"invocationType"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"translateAppContext"];
+    v5->_task = [coderCopy decodeIntegerForKey:@"task"];
+    v5->_inputMode = [coderCopy decodeIntegerForKey:@"inputMode"];
+    v5->_invocationType = [coderCopy decodeIntegerForKey:@"invocationType"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"translateAppContext"];
     translateAppContext = v5->_translateAppContext;
     v5->_translateAppContext = v6;
 
@@ -46,14 +46,14 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   task = self->_task;
-  v5 = a3;
-  [v5 encodeInteger:task forKey:@"task"];
-  [v5 encodeInteger:self->_inputMode forKey:@"inputMode"];
-  [v5 encodeInteger:self->_invocationType forKey:@"invocationType"];
-  [v5 encodeObject:self->_translateAppContext forKey:@"translateAppContext"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:task forKey:@"task"];
+  [coderCopy encodeInteger:self->_inputMode forKey:@"inputMode"];
+  [coderCopy encodeInteger:self->_invocationType forKey:@"invocationType"];
+  [coderCopy encodeObject:self->_translateAppContext forKey:@"translateAppContext"];
 }
 
 @end

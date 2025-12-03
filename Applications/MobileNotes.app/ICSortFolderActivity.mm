@@ -1,54 +1,54 @@
 @interface ICSortFolderActivity
-- (ICSortFolderActivity)initWithFolder:(id)a3 presentingViewController:(id)a4 presentingBarButtonItem:(id)a5 eventReporter:(id)a6 noteContainerViewMode:(int64_t)a7;
-- (ICSortFolderActivity)initWithVirtualSmartFolder:(id)a3 presentingViewController:(id)a4 presentingBarButtonItem:(id)a5 eventReporter:(id)a6 noteContainerViewMode:(int64_t)a7;
+- (ICSortFolderActivity)initWithFolder:(id)folder presentingViewController:(id)controller presentingBarButtonItem:(id)item eventReporter:(id)reporter noteContainerViewMode:(int64_t)mode;
+- (ICSortFolderActivity)initWithVirtualSmartFolder:(id)folder presentingViewController:(id)controller presentingBarButtonItem:(id)item eventReporter:(id)reporter noteContainerViewMode:(int64_t)mode;
 - (UIViewController)presentingViewController;
 - (id)activityTitle;
-- (id)menuWithCompletion:(id)a3;
-- (void)activityDidFinish:(BOOL)a3;
-- (void)performActivityWithCompletion:(id)a3;
+- (id)menuWithCompletion:(id)completion;
+- (void)activityDidFinish:(BOOL)finish;
+- (void)performActivityWithCompletion:(id)completion;
 @end
 
 @implementation ICSortFolderActivity
 
-- (ICSortFolderActivity)initWithFolder:(id)a3 presentingViewController:(id)a4 presentingBarButtonItem:(id)a5 eventReporter:(id)a6 noteContainerViewMode:(int64_t)a7
+- (ICSortFolderActivity)initWithFolder:(id)folder presentingViewController:(id)controller presentingBarButtonItem:(id)item eventReporter:(id)reporter noteContainerViewMode:(int64_t)mode
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
+  folderCopy = folder;
+  controllerCopy = controller;
+  itemCopy = item;
+  reporterCopy = reporter;
   v20.receiver = self;
   v20.super_class = ICSortFolderActivity;
   v17 = [(ICSortFolderActivity *)&v20 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_folder, a3);
-    objc_storeWeak(&v18->_presentingViewController, v14);
-    objc_storeStrong(&v18->_presentingBarButtonItem, a5);
-    objc_storeStrong(&v18->_eventReporter, a6);
-    v18->_noteContainerViewMode = a7;
+    objc_storeStrong(&v17->_folder, folder);
+    objc_storeWeak(&v18->_presentingViewController, controllerCopy);
+    objc_storeStrong(&v18->_presentingBarButtonItem, item);
+    objc_storeStrong(&v18->_eventReporter, reporter);
+    v18->_noteContainerViewMode = mode;
   }
 
   return v18;
 }
 
-- (ICSortFolderActivity)initWithVirtualSmartFolder:(id)a3 presentingViewController:(id)a4 presentingBarButtonItem:(id)a5 eventReporter:(id)a6 noteContainerViewMode:(int64_t)a7
+- (ICSortFolderActivity)initWithVirtualSmartFolder:(id)folder presentingViewController:(id)controller presentingBarButtonItem:(id)item eventReporter:(id)reporter noteContainerViewMode:(int64_t)mode
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
+  folderCopy = folder;
+  controllerCopy = controller;
+  itemCopy = item;
+  reporterCopy = reporter;
   v20.receiver = self;
   v20.super_class = ICSortFolderActivity;
   v17 = [(ICSortFolderActivity *)&v20 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_virtualSmartFolder, a3);
-    objc_storeWeak(&v18->_presentingViewController, v14);
-    objc_storeStrong(&v18->_presentingBarButtonItem, a5);
-    objc_storeStrong(&v18->_eventReporter, a6);
-    v18->_noteContainerViewMode = a7;
+    objc_storeStrong(&v17->_virtualSmartFolder, folder);
+    objc_storeWeak(&v18->_presentingViewController, controllerCopy);
+    objc_storeStrong(&v18->_presentingBarButtonItem, item);
+    objc_storeStrong(&v18->_eventReporter, reporter);
+    v18->_noteContainerViewMode = mode;
   }
 
   return v18;
@@ -62,78 +62,78 @@
   return v3;
 }
 
-- (void)performActivityWithCompletion:(id)a3
+- (void)performActivityWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(ICSortFolderActivity *)self presentingViewController];
-  v6 = [v5 presentedViewController];
+  completionCopy = completion;
+  presentingViewController = [(ICSortFolderActivity *)self presentingViewController];
+  presentedViewController = [presentingViewController presentedViewController];
 
-  if (v6)
+  if (presentedViewController)
   {
-    v7 = [(ICSortFolderActivity *)self presentingViewController];
+    presentingViewController2 = [(ICSortFolderActivity *)self presentingViewController];
     v9 = _NSConcreteStackBlock;
     v10 = 3221225472;
     v11 = sub_1000A8C40;
     v12 = &unk_100647900;
-    v13 = self;
-    v14 = v4;
-    [v7 dismissViewControllerAnimated:1 completion:&v9];
+    selfCopy = self;
+    v14 = completionCopy;
+    [presentingViewController2 dismissViewControllerAnimated:1 completion:&v9];
   }
 
-  else if (v4)
+  else if (completionCopy)
   {
-    v8 = [(ICSortFolderActivity *)self activityType];
-    (*(v4 + 2))(v4, 1, v8);
+    activityType = [(ICSortFolderActivity *)self activityType];
+    (*(completionCopy + 2))(completionCopy, 1, activityType);
   }
 
   [(ICSortFolderActivity *)self activityDidFinish:1, v9, v10, v11, v12];
 }
 
-- (void)activityDidFinish:(BOOL)a3
+- (void)activityDidFinish:(BOOL)finish
 {
   v8.receiver = self;
   v8.super_class = ICSortFolderActivity;
-  [(ICSortFolderActivity *)&v8 activityDidFinish:a3];
-  v4 = [(ICSortFolderActivity *)self eventReporter];
+  [(ICSortFolderActivity *)&v8 activityDidFinish:finish];
+  eventReporter = [(ICSortFolderActivity *)self eventReporter];
   v5 = sub_1000A0D2C([(ICSortFolderActivity *)self noteContainerViewMode]);
-  v6 = [(ICSortFolderActivity *)self activityType];
-  v7 = [(ICSortFolderActivity *)self folder];
-  [v4 submitNoteActionMenuEventForNoteBrowserWithUsageType:3 layout:v5 activityType:v6 isTimelineView:{objc_msgSend(v7, "isShowingDateHeaders")}];
+  activityType = [(ICSortFolderActivity *)self activityType];
+  folder = [(ICSortFolderActivity *)self folder];
+  [eventReporter submitNoteActionMenuEventForNoteBrowserWithUsageType:3 layout:v5 activityType:activityType isTimelineView:{objc_msgSend(folder, "isShowingDateHeaders")}];
 }
 
-- (id)menuWithCompletion:(id)a3
+- (id)menuWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(ICSortFolderActivity *)self folder];
-  if (v5)
+  completionCopy = completion;
+  folder = [(ICSortFolderActivity *)self folder];
+  if (folder)
   {
-    v6 = [(ICSortFolderActivity *)self folder];
-    [v6 customNoteSortType];
+    folder2 = [(ICSortFolderActivity *)self folder];
+    [folder2 customNoteSortType];
   }
 
   else
   {
-    v6 = [(ICSortFolderActivity *)self virtualSmartFolder];
-    [v6 noteSortType];
+    folder2 = [(ICSortFolderActivity *)self virtualSmartFolder];
+    [folder2 noteSortType];
   }
   v7 = ;
 
   v8 = [ICSortMenu alloc];
-  v9 = [(ICSortFolderActivity *)self activityTitle];
+  activityTitle = [(ICSortFolderActivity *)self activityTitle];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_1000A8ED8;
   v15[3] = &unk_1006474F8;
   v16 = v7;
-  v17 = self;
-  v18 = v4;
-  v10 = v4;
+  selfCopy = self;
+  v18 = completionCopy;
+  v10 = completionCopy;
   v11 = v7;
-  v12 = [(ICSortMenu *)v8 initWithTitle:v9 sortType:v11 selectedSortTypeHandler:v15];
+  v12 = [(ICSortMenu *)v8 initWithTitle:activityTitle sortType:v11 selectedSortTypeHandler:v15];
 
-  v13 = [(ICSortMenu *)v12 createMenu];
+  createMenu = [(ICSortMenu *)v12 createMenu];
 
-  return v13;
+  return createMenu;
 }
 
 - (UIViewController)presentingViewController

@@ -1,58 +1,58 @@
 @interface TSSStylePromise
-+ (id)promiseForStyle:(id)a3;
-- (TSSStylePromise)initWithStyle:(id)a3;
-- (void)addPromisee:(id)a3;
-- (void)fulfillWithStyle:(id)a3;
++ (id)promiseForStyle:(id)style;
+- (TSSStylePromise)initWithStyle:(id)style;
+- (void)addPromisee:(id)promisee;
+- (void)fulfillWithStyle:(id)style;
 @end
 
 @implementation TSSStylePromise
 
-+ (id)promiseForStyle:(id)a3
++ (id)promiseForStyle:(id)style
 {
-  v3 = a3;
+  styleCopy = style;
   v4 = [TSSStylePromise alloc];
-  v6 = objc_msgSend_initWithStyle_(v4, v5, v3);
+  v6 = objc_msgSend_initWithStyle_(v4, v5, styleCopy);
 
   return v6;
 }
 
-- (TSSStylePromise)initWithStyle:(id)a3
+- (TSSStylePromise)initWithStyle:(id)style
 {
-  v5 = a3;
+  styleCopy = style;
   v9.receiver = self;
   v9.super_class = TSSStylePromise;
   v6 = [(TSSStylePromise *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_sourceStyle, a3);
+    objc_storeStrong(&v6->_sourceStyle, style);
   }
 
   return v7;
 }
 
-- (void)addPromisee:(id)a3
+- (void)addPromisee:(id)promisee
 {
-  v4 = a3;
+  promiseeCopy = promisee;
   promisees = self->_promisees;
-  v8 = v4;
+  v8 = promiseeCopy;
   if (!promisees)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_promisees;
     self->_promisees = v6;
 
-    v4 = v8;
+    promiseeCopy = v8;
     promisees = self->_promisees;
   }
 
-  objc_msgSend_addObject_(promisees, v4, v4);
+  objc_msgSend_addObject_(promisees, promiseeCopy, promiseeCopy);
 }
 
-- (void)fulfillWithStyle:(id)a3
+- (void)fulfillWithStyle:(id)style
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  styleCopy = style;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -79,7 +79,7 @@
         v15[2] = sub_276CB47B0;
         v15[3] = &unk_27A6EF0B0;
         v15[4] = self;
-        v16 = v4;
+        v16 = styleCopy;
         objc_msgSend_replaceReferencedStylesUsingBlock_(v11, v12, v15);
 
         ++v10;

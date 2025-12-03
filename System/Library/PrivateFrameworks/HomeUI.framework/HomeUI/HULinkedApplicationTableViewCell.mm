@@ -1,30 +1,30 @@
 @interface HULinkedApplicationTableViewCell
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority;
 - (HFItem)item;
-- (HULinkedApplicationTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (HULinkedApplicationTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)layoutSubviews;
-- (void)setItem:(id)a3;
-- (void)updateUIWithAnimation:(BOOL)a3;
+- (void)setItem:(id)item;
+- (void)updateUIWithAnimation:(BOOL)animation;
 @end
 
 @implementation HULinkedApplicationTableViewCell
 
-- (HULinkedApplicationTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (HULinkedApplicationTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v11.receiver = self;
   v11.super_class = HULinkedApplicationTableViewCell;
-  v4 = [(HULinkedApplicationTableViewCell *)&v11 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(HULinkedApplicationTableViewCell *)&v11 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = [HULinkedApplicationView alloc];
-    v6 = [(HULinkedApplicationTableViewCell *)v4 contentView];
-    [v6 bounds];
+    contentView = [(HULinkedApplicationTableViewCell *)v4 contentView];
+    [contentView bounds];
     v7 = [(HULinkedApplicationView *)v5 initWithFrame:?];
     linkedApplicationView = v4->_linkedApplicationView;
     v4->_linkedApplicationView = v7;
 
-    v9 = [(HULinkedApplicationTableViewCell *)v4 contentView];
-    [v9 addSubview:v4->_linkedApplicationView];
+    contentView2 = [(HULinkedApplicationTableViewCell *)v4 contentView];
+    [contentView2 addSubview:v4->_linkedApplicationView];
   }
 
   return v4;
@@ -35,24 +35,24 @@
   v13.receiver = self;
   v13.super_class = HULinkedApplicationTableViewCell;
   [(HULinkedApplicationTableViewCell *)&v13 layoutSubviews];
-  v3 = [(HULinkedApplicationTableViewCell *)self contentView];
-  [v3 bounds];
+  contentView = [(HULinkedApplicationTableViewCell *)self contentView];
+  [contentView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(HULinkedApplicationTableViewCell *)self linkedApplicationView];
-  [v12 setFrame:{v5, v7, v9, v11}];
+  linkedApplicationView = [(HULinkedApplicationTableViewCell *)self linkedApplicationView];
+  [linkedApplicationView setFrame:{v5, v7, v9, v11}];
 }
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority
 {
-  height = a3.height;
-  width = a3.width;
-  v9 = [(HULinkedApplicationTableViewCell *)self linkedApplicationView];
-  *&v10 = a4;
-  *&v11 = a5;
-  [v9 systemLayoutSizeFittingSize:width withHorizontalFittingPriority:height verticalFittingPriority:{v10, v11}];
+  height = size.height;
+  width = size.width;
+  linkedApplicationView = [(HULinkedApplicationTableViewCell *)self linkedApplicationView];
+  *&v10 = priority;
+  *&v11 = fittingPriority;
+  [linkedApplicationView systemLayoutSizeFittingSize:width withHorizontalFittingPriority:height verticalFittingPriority:{v10, v11}];
   v13 = v12;
   v15 = v14;
 
@@ -65,24 +65,24 @@
 
 - (HFItem)item
 {
-  v2 = [(HULinkedApplicationTableViewCell *)self linkedApplicationView];
-  v3 = [v2 item];
+  linkedApplicationView = [(HULinkedApplicationTableViewCell *)self linkedApplicationView];
+  item = [linkedApplicationView item];
 
-  return v3;
+  return item;
 }
 
-- (void)setItem:(id)a3
+- (void)setItem:(id)item
 {
-  v4 = a3;
-  v5 = [(HULinkedApplicationTableViewCell *)self linkedApplicationView];
-  [v5 setItem:v4];
+  itemCopy = item;
+  linkedApplicationView = [(HULinkedApplicationTableViewCell *)self linkedApplicationView];
+  [linkedApplicationView setItem:itemCopy];
 }
 
-- (void)updateUIWithAnimation:(BOOL)a3
+- (void)updateUIWithAnimation:(BOOL)animation
 {
-  v3 = a3;
-  v4 = [(HULinkedApplicationTableViewCell *)self linkedApplicationView];
-  [v4 updateUIWithAnimation:v3];
+  animationCopy = animation;
+  linkedApplicationView = [(HULinkedApplicationTableViewCell *)self linkedApplicationView];
+  [linkedApplicationView updateUIWithAnimation:animationCopy];
 }
 
 @end

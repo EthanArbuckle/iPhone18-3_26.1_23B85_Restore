@@ -1,58 +1,58 @@
 @interface VisionCoreEspressoUtils
-+ (BOOL)getInputImageTensorDescriptor:(id *)a3 outputTensorDescriptors:(id *)a4 forNetworkModelFileURL:(id)a5 inputBlobName:(id)a6 pixelFormatType:(unsigned int)a7 outputBlobNamesWithTypes:(id)a8 confidencesBlobNamesWithLabelsFiles:(id)a9 error:(id *)a10;
-+ (id)E5RTBaseModelName:(id)a3 error:(id *)a4;
-+ (id)E5RTURLForModelBundle:(id)a3 modelFileIsBaseName:(BOOL)a4 error:(id *)a5;
-+ (id)E5RTURLForModelNamed:(id)a3 error:(id *)a4;
-+ (id)URLForModelNamed:(id)a3 error:(id *)a4;
-+ (id)URLForResourceFileNamed:(id)a3 error:(id *)a4;
-+ (id)tensorShapesForBlobNames:(id)a3 ofNetworkModelFileURL:(id)a4 error:(id *)a5;
++ (BOOL)getInputImageTensorDescriptor:(id *)descriptor outputTensorDescriptors:(id *)descriptors forNetworkModelFileURL:(id)l inputBlobName:(id)name pixelFormatType:(unsigned int)type outputBlobNamesWithTypes:(id)types confidencesBlobNamesWithLabelsFiles:(id)files error:(id *)self0;
++ (id)E5RTBaseModelName:(id)name error:(id *)error;
++ (id)E5RTURLForModelBundle:(id)bundle modelFileIsBaseName:(BOOL)name error:(id *)error;
++ (id)E5RTURLForModelNamed:(id)named error:(id *)error;
++ (id)URLForModelNamed:(id)named error:(id *)error;
++ (id)URLForResourceFileNamed:(id)named error:(id *)error;
++ (id)tensorShapesForBlobNames:(id)names ofNetworkModelFileURL:(id)l error:(id *)error;
 @end
 
 @implementation VisionCoreEspressoUtils
 
-+ (BOOL)getInputImageTensorDescriptor:(id *)a3 outputTensorDescriptors:(id *)a4 forNetworkModelFileURL:(id)a5 inputBlobName:(id)a6 pixelFormatType:(unsigned int)a7 outputBlobNamesWithTypes:(id)a8 confidencesBlobNamesWithLabelsFiles:(id)a9 error:(id *)a10
++ (BOOL)getInputImageTensorDescriptor:(id *)descriptor outputTensorDescriptors:(id *)descriptors forNetworkModelFileURL:(id)l inputBlobName:(id)name pixelFormatType:(unsigned int)type outputBlobNamesWithTypes:(id)types confidencesBlobNamesWithLabelsFiles:(id)files error:(id *)self0
 {
-  v11 = *&a7;
+  v11 = *&type;
   v58 = *MEMORY[0x1E69E9840];
-  v47 = a5;
-  v50 = a6;
-  v15 = a8;
-  v49 = a9;
-  v43 = v15;
+  lCopy = l;
+  nameCopy = name;
+  typesCopy = types;
+  filesCopy = files;
+  v43 = typesCopy;
   v16 = objc_alloc(MEMORY[0x1E695DF70]);
-  v17 = [v15 allKeys];
-  v48 = [v16 initWithArray:v17];
+  allKeys = [typesCopy allKeys];
+  v48 = [v16 initWithArray:allKeys];
 
-  if (v50)
+  if (nameCopy)
   {
-    [v48 addObject:v50];
+    [v48 addObject:nameCopy];
   }
 
-  if (v49)
+  if (filesCopy)
   {
-    v18 = [v49 allKeys];
-    [v48 addObjectsFromArray:v18];
+    allKeys2 = [filesCopy allKeys];
+    [v48 addObjectsFromArray:allKeys2];
   }
 
-  v45 = [a1 tensorShapesForBlobNames:v48 ofNetworkModelFileURL:v47 error:?];
+  v45 = [self tensorShapesForBlobNames:v48 ofNetworkModelFileURL:lCopy error:?];
   if (!v45)
   {
     goto LABEL_28;
   }
 
-  if (!v50)
+  if (!nameCopy)
   {
-    *a3 = 0;
+    *descriptor = 0;
     goto LABEL_10;
   }
 
   v19 = [v45 objectForKeyedSubscript:?];
   if (!v19)
   {
-    if (a10)
+    if (error)
     {
-      _noBlobInNetworkModelError(v47, v50);
-      *a10 = v36 = 0;
+      _noBlobInNetworkModelError(lCopy, nameCopy);
+      *error = v36 = 0;
       goto LABEL_37;
     }
 
@@ -61,11 +61,11 @@ LABEL_28:
     goto LABEL_37;
   }
 
-  *a3 = -[VisionCoreImageTensorDescriptor initWithName:pixelFormatType:pixelWidth:pixelHeight:]([VisionCoreImageTensorDescriptor alloc], "initWithName:pixelFormatType:pixelWidth:pixelHeight:", v50, v11, [v19 width], objc_msgSend(v19, "height"));
+  *descriptor = -[VisionCoreImageTensorDescriptor initWithName:pixelFormatType:pixelWidth:pixelHeight:]([VisionCoreImageTensorDescriptor alloc], "initWithName:pixelFormatType:pixelWidth:pixelHeight:", nameCopy, v11, [v19 width], objc_msgSend(v19, "height"));
 
 LABEL_10:
   v20 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v21 = v15;
+  v21 = typesCopy;
   v22 = v45;
   objc_opt_self();
   v55[0] = MEMORY[0x1E69E9820];
@@ -78,15 +78,15 @@ LABEL_10:
   v57 = v41;
   [v21 enumerateKeysAndObjectsUsingBlock:v55];
 
-  if (!v49)
+  if (!filesCopy)
   {
     goto LABEL_25;
   }
 
   v44 = v41;
-  v24 = v49;
+  v24 = filesCopy;
   v46 = v23;
-  v39 = v47;
+  v39 = lCopy;
   objc_opt_self();
   v53 = 0u;
   v54 = 0u;
@@ -113,9 +113,9 @@ LABEL_10:
       v29 = [v46 objectForKeyedSubscript:v28];
       if (!v29)
       {
-        if (a10)
+        if (error)
         {
-          *a10 = _noBlobInNetworkModelError(v39, v28);
+          *error = _noBlobInNetworkModelError(v39, v28);
         }
 
         goto LABEL_35;
@@ -133,10 +133,10 @@ LABEL_10:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (a10)
+        if (error)
         {
           v37 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"cannot resolve %@ into a file URL", v30];
-          *a10 = [MEMORY[0x1E696ABC0] VisionCoreErrorForUnavailableResourceWithLocalizedDescription:v37];
+          *error = [MEMORY[0x1E696ABC0] VisionCoreErrorForUnavailableResourceWithLocalizedDescription:v37];
         }
 
 LABEL_34:
@@ -147,7 +147,7 @@ LABEL_35:
         goto LABEL_36;
       }
 
-      v32 = [v31 URLForResourceFileNamed:v30 error:a10];
+      v32 = [v31 URLForResourceFileNamed:v30 error:error];
 LABEL_21:
       v33 = v32;
 
@@ -173,7 +173,7 @@ LABEL_24:
 
 LABEL_25:
   v35 = v41;
-  *a4 = v35;
+  *descriptors = v35;
   v36 = 1;
 LABEL_36:
 
@@ -221,29 +221,29 @@ void __83__VisionCoreEspressoUtils__addNewTensorDescriptorsTo_forBlobNamesWithTy
   }
 }
 
-+ (id)tensorShapesForBlobNames:(id)a3 ofNetworkModelFileURL:(id)a4 error:(id *)a5
++ (id)tensorShapesForBlobNames:(id)names ofNetworkModelFileURL:(id)l error:(id *)error
 {
   v51[19] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v40 = a4;
-  v8 = [v40 VisionCoreFileSystemPathAndReturnError:a5];
+  namesCopy = names;
+  lCopy = l;
+  v8 = [lCopy VisionCoreFileSystemPathAndReturnError:error];
   if (!v8)
   {
-    a5 = 0;
+    error = 0;
     goto LABEL_45;
   }
 
-  v9 = [v7 count];
+  v9 = [namesCopy count];
   v39 = [objc_alloc(MEMORY[0x1E695DF88]) initWithLength:40 * v9];
-  v10 = [v39 mutableBytes];
-  v11 = v10;
+  mutableBytes = [v39 mutableBytes];
+  v11 = mutableBytes;
   if (v9)
   {
     v12 = 0;
-    v13 = v10;
+    v13 = mutableBytes;
     do
     {
-      v14 = [v7 objectAtIndexedSubscript:v12];
+      v14 = [namesCopy objectAtIndexedSubscript:v12];
       *v13 = [v14 UTF8String];
       v13 += 5;
 
@@ -322,7 +322,7 @@ LABEL_27:
     }
 
 LABEL_28:
-    a5 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:v9];
+    error = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:v9];
     if (v9)
     {
       for (i = 0; i != v9; ++i)
@@ -333,8 +333,8 @@ LABEL_28:
         v48 = v27;
         v49 = v28;
         v29 = [VisionCoreEspressoTensorShape shapeForBlobDimensions:&v48];
-        v30 = [v7 objectAtIndexedSubscript:i];
-        [a5 setObject:v29 forKey:v30];
+        v30 = [namesCopy objectAtIndexedSubscript:i];
+        [error setObject:v29 forKey:v30];
 
         v11 += 40;
       }
@@ -414,78 +414,78 @@ LABEL_41:
   }
 
 LABEL_42:
-  if (a5)
+  if (error)
   {
     v37 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"unable to introspect %@", v8];
-    *a5 = [MEMORY[0x1E696ABC0] VisionCoreErrorForEspressoReturnStatus:v24 localizedDescription:v37];
+    *error = [MEMORY[0x1E696ABC0] VisionCoreErrorForEspressoReturnStatus:v24 localizedDescription:v37];
 
-    a5 = 0;
+    error = 0;
   }
 
 LABEL_44:
 
 LABEL_45:
 
-  return a5;
+  return error;
 }
 
-+ (id)E5RTURLForModelNamed:(id)a3 error:(id *)a4
++ (id)E5RTURLForModelNamed:(id)named error:(id *)error
 {
-  v5 = a3;
+  namedCopy = named;
   v6 = VisionCoreFrameworkBundle();
   if (v6)
   {
-    if ([v5 hasSuffix:@".mil"])
+    if ([namedCopy hasSuffix:@".mil"])
     {
       v7 = @"mil";
       goto LABEL_8;
     }
 
-    if ([v5 hasSuffix:@".net"])
+    if ([namedCopy hasSuffix:@".net"])
     {
       v7 = @"net";
 LABEL_8:
-      v9 = [v5 stringByDeletingPathExtension];
+      stringByDeletingPathExtension = [namedCopy stringByDeletingPathExtension];
 
-      v10 = [v6 URLForResource:v9 withExtension:v7];
+      v10 = [v6 URLForResource:stringByDeletingPathExtension withExtension:v7];
       if (v10)
       {
-        v11 = v10;
-        v5 = v9;
-        v8 = v11;
+        namedCopy = v10;
+        namedCopy = stringByDeletingPathExtension;
+        v8 = namedCopy;
       }
 
       else
       {
-        if (a4)
+        if (error)
         {
-          v12 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Could not locate model named %@", v9];
-          *a4 = [MEMORY[0x1E696ABC0] VisionCoreErrorForUnavailableResourceWithLocalizedDescription:v12];
+          v12 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Could not locate model named %@", stringByDeletingPathExtension];
+          *error = [MEMORY[0x1E696ABC0] VisionCoreErrorForUnavailableResourceWithLocalizedDescription:v12];
         }
 
-        v11 = 0;
+        namedCopy = 0;
         v8 = 0;
-        v5 = v9;
+        namedCopy = stringByDeletingPathExtension;
       }
 
       goto LABEL_15;
     }
 
-    if (a4)
+    if (error)
     {
-      v11 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unknown model extension: %@", v5];
-      [MEMORY[0x1E696ABC0] VisionCoreErrorForUnavailableResourceWithLocalizedDescription:v11];
-      *a4 = v8 = 0;
+      namedCopy = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unknown model extension: %@", namedCopy];
+      [MEMORY[0x1E696ABC0] VisionCoreErrorForUnavailableResourceWithLocalizedDescription:namedCopy];
+      *error = v8 = 0;
 LABEL_15:
 
       goto LABEL_17;
     }
   }
 
-  else if (a4)
+  else if (error)
   {
     [MEMORY[0x1E696ABC0] VisionCoreErrorForUnavailableResourceWithLocalizedDescription:@"could not locate VisionCore.framework"];
-    *a4 = v8 = 0;
+    *error = v8 = 0;
     goto LABEL_17;
   }
 
@@ -495,26 +495,26 @@ LABEL_17:
   return v8;
 }
 
-+ (id)E5RTURLForModelBundle:(id)a3 modelFileIsBaseName:(BOOL)a4 error:(id *)a5
++ (id)E5RTURLForModelBundle:(id)bundle modelFileIsBaseName:(BOOL)name error:(id *)error
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = v8;
-  if (v6)
+  nameCopy = name;
+  bundleCopy = bundle;
+  v9 = bundleCopy;
+  if (nameCopy)
   {
-    v10 = v8;
+    v10 = bundleCopy;
   }
 
   else
   {
-    v10 = [a1 E5RTBaseModelName:v8 error:a5];
+    v10 = [self E5RTBaseModelName:bundleCopy error:error];
   }
 
   v11 = v10;
   if (v10)
   {
     v12 = [v10 stringByAppendingString:@".bundle"];
-    v13 = [a1 URLForResourceFileNamed:v12 error:a5];
+    v13 = [self URLForResourceFileNamed:v12 error:error];
   }
 
   else
@@ -525,69 +525,69 @@ LABEL_17:
   return v13;
 }
 
-+ (id)E5RTBaseModelName:(id)a3 error:(id *)a4
++ (id)E5RTBaseModelName:(id)name error:(id *)error
 {
-  v5 = a3;
-  v6 = [v5 lastPathComponent];
-  if (([v6 hasSuffix:@".mil"] & 1) != 0 || objc_msgSend(v6, "hasSuffix:", @".bundle"))
+  nameCopy = name;
+  lastPathComponent = [nameCopy lastPathComponent];
+  if (([lastPathComponent hasSuffix:@".mil"] & 1) != 0 || objc_msgSend(lastPathComponent, "hasSuffix:", @".bundle"))
   {
-    v7 = [v6 stringByDeletingPathExtension];
+    stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
 LABEL_4:
-    v8 = v7;
+    v10StringByDeletingPathExtension = stringByDeletingPathExtension;
     goto LABEL_5;
   }
 
-  if (![v6 hasSuffix:@".espresso.net"])
+  if (![lastPathComponent hasSuffix:@".espresso.net"])
   {
-    if (a4)
+    if (error)
     {
-      v11 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unknown format for model: %@", v6];
-      *a4 = [MEMORY[0x1E696ABC0] VisionCoreErrorForUnavailableResourceWithLocalizedDescription:v11];
+      v11 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unknown format for model: %@", lastPathComponent];
+      *error = [MEMORY[0x1E696ABC0] VisionCoreErrorForUnavailableResourceWithLocalizedDescription:v11];
     }
 
-    v7 = v5;
+    stringByDeletingPathExtension = nameCopy;
     goto LABEL_4;
   }
 
-  v10 = [v6 stringByDeletingPathExtension];
-  v8 = [v10 stringByDeletingPathExtension];
+  stringByDeletingPathExtension2 = [lastPathComponent stringByDeletingPathExtension];
+  v10StringByDeletingPathExtension = [stringByDeletingPathExtension2 stringByDeletingPathExtension];
 
 LABEL_5:
 
-  return v8;
+  return v10StringByDeletingPathExtension;
 }
 
-+ (id)URLForModelNamed:(id)a3 error:(id *)a4
++ (id)URLForModelNamed:(id)named error:(id *)error
 {
-  v5 = a3;
+  namedCopy = named;
   v6 = VisionCoreFrameworkBundle();
   if (v6)
   {
-    if ([v5 hasSuffix:@".espresso.net"])
+    if ([namedCopy hasSuffix:@".espresso.net"])
     {
-      v7 = [v5 stringByDeletingPathExtension];
+      stringByDeletingPathExtension = [namedCopy stringByDeletingPathExtension];
 
-      v5 = v7;
+      namedCopy = stringByDeletingPathExtension;
     }
 
-    v8 = [v6 URLForResource:v5 withExtension:@"net"];
+    v8 = [v6 URLForResource:namedCopy withExtension:@"net"];
     v9 = v8;
     if (v8)
     {
       v10 = v8;
     }
 
-    else if (a4)
+    else if (error)
     {
-      v11 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Could not locate model named %@", v5];
-      *a4 = [MEMORY[0x1E696ABC0] VisionCoreErrorForUnavailableResourceWithLocalizedDescription:v11];
+      namedCopy = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Could not locate model named %@", namedCopy];
+      *error = [MEMORY[0x1E696ABC0] VisionCoreErrorForUnavailableResourceWithLocalizedDescription:namedCopy];
     }
   }
 
-  else if (a4)
+  else if (error)
   {
     [MEMORY[0x1E696ABC0] VisionCoreErrorForUnavailableResourceWithLocalizedDescription:@"could not locate VisionCore.framework"];
-    *a4 = v9 = 0;
+    *error = v9 = 0;
   }
 
   else
@@ -598,12 +598,12 @@ LABEL_5:
   return v9;
 }
 
-+ (id)URLForResourceFileNamed:(id)a3 error:(id *)a4
++ (id)URLForResourceFileNamed:(id)named error:(id *)error
 {
-  v5 = a3;
-  if ([v5 isAbsolutePath])
+  namedCopy = named;
+  if ([namedCopy isAbsolutePath])
   {
-    v6 = [MEMORY[0x1E695DFF8] fileURLWithPath:v5];
+    v6 = [MEMORY[0x1E695DFF8] fileURLWithPath:namedCopy];
   }
 
   else
@@ -612,24 +612,24 @@ LABEL_5:
     v8 = v7;
     if (v7)
     {
-      v9 = [v7 URLForResource:v5 withExtension:0];
+      v9 = [v7 URLForResource:namedCopy withExtension:0];
       v6 = v9;
       if (v9)
       {
         v10 = v9;
       }
 
-      else if (a4)
+      else if (error)
       {
-        v11 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Could not locate resource named %@", v5];
-        *a4 = [MEMORY[0x1E696ABC0] VisionCoreErrorForUnavailableResourceWithLocalizedDescription:v11];
+        namedCopy = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Could not locate resource named %@", namedCopy];
+        *error = [MEMORY[0x1E696ABC0] VisionCoreErrorForUnavailableResourceWithLocalizedDescription:namedCopy];
       }
     }
 
-    else if (a4)
+    else if (error)
     {
       [MEMORY[0x1E696ABC0] VisionCoreErrorForUnavailableResourceWithLocalizedDescription:@"could not locate VisionCore.framework"];
-      *a4 = v6 = 0;
+      *error = v6 = 0;
     }
 
     else

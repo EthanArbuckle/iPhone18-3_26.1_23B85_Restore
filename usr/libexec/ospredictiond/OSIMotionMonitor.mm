@@ -1,8 +1,8 @@
 @interface OSIMotionMonitor
 - (BOOL)currentlyInCar;
 - (OSIMotionMonitor)init;
-- (double)percentStationaryOverDuration:(double)a3;
-- (double)percentageStationaryWithActivity:(id)a3 untilDate:(id)a4;
+- (double)percentStationaryOverDuration:(double)duration;
+- (double)percentageStationaryWithActivity:(id)activity untilDate:(id)date;
 - (void)dealloc;
 @end
 
@@ -45,30 +45,30 @@
   return v2;
 }
 
-- (double)percentageStationaryWithActivity:(id)a3 untilDate:(id)a4
+- (double)percentageStationaryWithActivity:(id)activity untilDate:(id)date
 {
-  v6 = a3;
-  v7 = a4;
-  v42 = self;
+  activityCopy = activity;
+  dateCopy = date;
+  selfCopy = self;
   v8 = [(OSIMotionMonitor *)self log];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    sub_10005B068(v6, v8);
+    sub_10005B068(activityCopy, v8);
   }
 
   v45 = 0u;
   v46 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v9 = v6;
+  v9 = activityCopy;
   v10 = [v9 countByEnumeratingWithState:&v43 objects:v51 count:16];
   if (v10)
   {
     v11 = v10;
-    v40 = v7;
-    v12 = 0;
+    v40 = dateCopy;
+    startDate3 = 0;
     v13 = 0;
-    v14 = 0;
+    stationary2 = 0;
     v15 = *v44;
     v16 = 0.0;
     v17 = 0.0;
@@ -77,7 +77,7 @@
     {
       for (i = 0; i != v11; i = i + 1)
       {
-        v19 = v12;
+        v19 = startDate3;
         if (*v44 != v15)
         {
           objc_enumerationMutation(v9);
@@ -94,60 +94,60 @@
           v21 = 0;
         }
 
-        if (!((v12 == 0) | v13 & 1))
+        if (!((startDate3 == 0) | v13 & 1))
         {
-          v22 = [v20 startDate];
-          [v22 timeIntervalSinceDate:v19];
+          startDate = [v20 startDate];
+          [startDate timeIntervalSinceDate:v19];
           v17 = v17 + v23;
 
-          if ((v14 & 1) == 0)
+          if ((stationary2 & 1) == 0)
           {
-            v24 = [v20 startDate];
-            [v24 timeIntervalSinceDate:v19];
+            startDate2 = [v20 startDate];
+            [startDate2 timeIntervalSinceDate:v19];
             v16 = v16 + v25;
           }
         }
 
-        v12 = [v20 startDate];
+        startDate3 = [v20 startDate];
 
         if ([v20 confidence] && !objc_msgSend(v20, "unknown"))
         {
-          log = v42->_log;
+          log = selfCopy->_log;
           if (os_log_type_enabled(log, OS_LOG_TYPE_DEBUG))
           {
             v31 = log;
-            v32 = [v20 stationary];
-            v33 = [v20 startDate];
+            stationary = [v20 stationary];
+            startDate4 = [v20 startDate];
             *buf = 138412802;
             v48 = *&v20;
             v49 = 1024;
-            *v50 = v32;
+            *v50 = stationary;
             *&v50[4] = 2112;
-            *&v50[6] = v33;
+            *&v50[6] = startDate4;
             _os_log_debug_impl(&_mh_execute_header, v31, OS_LOG_TYPE_DEBUG, "  Using event %@ (%u from %@)", buf, 0x1Cu);
 
             v9 = v41;
           }
 
-          v14 = [v20 stationary];
+          stationary2 = [v20 stationary];
           v13 = 0;
         }
 
         else
         {
-          v26 = v42->_log;
+          v26 = selfCopy->_log;
           if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
           {
             v28 = v26;
-            v29 = [v20 unknown];
-            v30 = [v20 startDate];
+            unknown = [v20 unknown];
+            startDate5 = [v20 startDate];
             *buf = 138412802;
             v48 = *&v20;
             v49 = 1024;
-            *v50 = v29;
+            *v50 = unknown;
             v9 = v41;
             *&v50[4] = 2112;
-            *&v50[6] = v30;
+            *&v50[6] = startDate5;
             _os_log_debug_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEBUG, "  Skipping event %@ (%u from %@)", buf, 0x1Cu);
           }
 
@@ -160,7 +160,7 @@
 
     while (v11);
 
-    if (v12)
+    if (startDate3)
     {
       v34 = v13;
     }
@@ -172,17 +172,17 @@
 
     if (v34)
     {
-      v7 = v40;
+      dateCopy = v40;
     }
 
     else
     {
-      v7 = v40;
-      [v40 timeIntervalSinceDate:v12];
+      dateCopy = v40;
+      [v40 timeIntervalSinceDate:startDate3];
       v17 = v17 + v35;
-      if ((v14 & 1) == 0)
+      if ((stationary2 & 1) == 0)
       {
-        [v40 timeIntervalSinceDate:v12];
+        [v40 timeIntervalSinceDate:startDate3];
         v16 = v16 + v36;
       }
     }
@@ -191,13 +191,13 @@
   else
   {
 
-    v12 = 0;
+    startDate3 = 0;
     v16 = 0.0;
     v21 = 1;
     v17 = 0.0;
   }
 
-  v37 = [(OSIMotionMonitor *)v42 log];
+  v37 = [(OSIMotionMonitor *)selfCopy log];
   if (os_log_type_enabled(v37, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134218496;
@@ -222,13 +222,13 @@
   return v38;
 }
 
-- (double)percentStationaryOverDuration:(double)a3
+- (double)percentStationaryOverDuration:(double)duration
 {
   v5 = 1.0;
   if (+[CMMotionActivityManager isActivityAvailable])
   {
     v6 = +[NSDate now];
-    v7 = [v6 dateByAddingTimeInterval:-a3];
+    v7 = [v6 dateByAddingTimeInterval:-duration];
     v8 = +[OSIntelligenceUtilities lastLockDate];
     if (v8)
     {
@@ -257,7 +257,7 @@
     v22 = sub_10000FBE8;
     v23 = &unk_100094C70;
     v27 = &v28;
-    v24 = self;
+    selfCopy = self;
     v15 = v6;
     v25 = v15;
     v16 = v12;
@@ -293,7 +293,7 @@
   v6 = [v2 objectForKeyedSubscript:v3];
   if ([v6 BOOLValue])
   {
-    v7 = 1;
+    bOOLValue = 1;
   }
 
   else
@@ -301,17 +301,17 @@
     v8 = [v2 objectForKeyedSubscript:v4];
     if ([v8 BOOLValue])
     {
-      v7 = 1;
+      bOOLValue = 1;
     }
 
     else
     {
       v9 = [v2 objectForKeyedSubscript:v5];
-      v7 = [v9 BOOLValue];
+      bOOLValue = [v9 BOOLValue];
     }
   }
 
-  return v7;
+  return bOOLValue;
 }
 
 - (void)dealloc

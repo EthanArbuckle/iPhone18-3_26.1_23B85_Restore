@@ -1,120 +1,120 @@
 @interface CKKSKeychainView
-- (BOOL)_onQueueZoneIsReadyForFetching:(id)a3;
-- (BOOL)_onqueueOtherDevicesReportHavingTLKs:(id)a3 trustStates:(id)a4;
-- (BOOL)_onqueueResetAllInflightOQE:(id *)a3;
-- (BOOL)allowOutOfBandFetch:(id *)a3;
-- (BOOL)anyViewsInState:(id)a3;
-- (BOOL)ckErrorOrPartialError:(id)a3 isError:(int64_t)a4 zoneID:(id)a5;
-- (BOOL)haveTLKsLocally:(id)a3 error:(id *)a4;
+- (BOOL)_onQueueZoneIsReadyForFetching:(id)fetching;
+- (BOOL)_onqueueOtherDevicesReportHavingTLKs:(id)ks trustStates:(id)states;
+- (BOOL)_onqueueResetAllInflightOQE:(id *)e;
+- (BOOL)allowOutOfBandFetch:(id *)fetch;
+- (BOOL)anyViewsInState:(id)state;
+- (BOOL)ckErrorOrPartialError:(id)error isError:(int64_t)isError zoneID:(id)d;
+- (BOOL)haveTLKsLocally:(id)locally error:(id *)error;
 - (BOOL)insideSQLTransaction;
-- (BOOL)outgoingQueueEmpty:(id *)a3;
-- (BOOL)scheduleOperationWithoutDependencies:(id)a3;
-- (BOOL)setCurrentSyncingPolicy:(id)a3 policyIsFresh:(BOOL)a4;
-- (BOOL)shouldRetryAfterFetchError:(id)a3 zoneID:(id)a4;
-- (BOOL)unwrapKeysAndSaveToCache:(id)a3 syncKeys:(id)a4 error:(id *)a5;
-- (BOOL)unwrapTLKAndSaveToCache:(id)a3 tlks:(id)a4 tlkShares:(id)a5 error:(id *)a6;
+- (BOOL)outgoingQueueEmpty:(id *)empty;
+- (BOOL)scheduleOperationWithoutDependencies:(id)dependencies;
+- (BOOL)setCurrentSyncingPolicy:(id)policy policyIsFresh:(BOOL)fresh;
+- (BOOL)shouldRetryAfterFetchError:(id)error zoneID:(id)d;
+- (BOOL)unwrapKeysAndSaveToCache:(id)cache syncKeys:(id)keys error:(id *)error;
+- (BOOL)unwrapTLKAndSaveToCache:(id)cache tlks:(id)tlks tlkShares:(id)shares error:(id *)error;
 - (BOOL)waitForFetchAndIncomingQueueProcessing;
 - (BOOL)waitForKeyHierarchyReadiness;
-- (BOOL)waitForPolicy:(unint64_t)a3 error:(id *)a4;
+- (BOOL)waitForPolicy:(unint64_t)policy error:(id *)error;
 - (BOOL)waitUntilAllOperationsAreFinished;
-- (BOOL)waitUntilReadyForRPCForOperation:(id)a3 fast:(BOOL)a4 errorOnNoCloudKitAccount:(BOOL)a5 errorOnPolicyMissing:(BOOL)a6 error:(id *)a7;
-- (BOOL)zoneIsReadyForFetching:(id)a3;
-- (CKKSKeychainView)initWithContainer:(id)a3 contextID:(id)a4 activeAccount:(id)a5 accountTracker:(id)a6 lockStateTracker:(id)a7 reachabilityTracker:(id)a8 savedTLKNotifier:(id)a9 cloudKitClassDependencies:(id)a10 personaAdapter:(id)a11 accountsAdapter:(id)a12 cuttlefishAdapter:(id)a13;
+- (BOOL)waitUntilReadyForRPCForOperation:(id)operation fast:(BOOL)fast errorOnNoCloudKitAccount:(BOOL)account errorOnPolicyMissing:(BOOL)missing error:(id *)error;
+- (BOOL)zoneIsReadyForFetching:(id)fetching;
+- (CKKSKeychainView)initWithContainer:(id)container contextID:(id)d activeAccount:(id)account accountTracker:(id)tracker lockStateTracker:(id)stateTracker reachabilityTracker:(id)reachabilityTracker savedTLKNotifier:(id)notifier cloudKitClassDependencies:(id)self0 personaAdapter:(id)self1 accountsAdapter:(id)self2 cuttlefishAdapter:(id)self3;
 - (NSDate)earliestFetchTime;
 - (NSDictionary)stateConditions;
 - (NSSet)viewList;
 - (NSString)debugDescription;
 - (NSString)description;
 - (TPSyncingPolicy)syncingPolicy;
-- (id)_onqueueNextStateMachineTransition:(id)a3 flags:(id)a4 pendingFlags:(id)a5;
-- (id)becomeReadyOperation:(id)a3;
-- (id)createAccountLoggedInDependency:(id)a3;
-- (id)externalManagedViewForRPC:(id)a3 error:(id *)a4;
-- (id)fastStatus:(id)a3 zoneStateEntry:(id)a4;
-- (id)findFirstPendingOperation:(id)a3 ofClass:(Class)a4;
-- (id)findKeySets:(BOOL)a3;
-- (id)intransactionSlowStatus:(id)a3;
-- (id)loseTrustOperation:(id)a3;
-- (id)participateInFetch:(id)a3;
+- (id)_onqueueNextStateMachineTransition:(id)transition flags:(id)flags pendingFlags:(id)pendingFlags;
+- (id)becomeReadyOperation:(id)operation;
+- (id)createAccountLoggedInDependency:(id)dependency;
+- (id)externalManagedViewForRPC:(id)c error:(id *)error;
+- (id)fastStatus:(id)status zoneStateEntry:(id)entry;
+- (id)findFirstPendingOperation:(id)operation ofClass:(Class)class;
+- (id)findKeySets:(BOOL)sets;
+- (id)intransactionSlowStatus:(id)status;
+- (id)loseTrustOperation:(id)operation;
+- (id)participateInFetch:(id)fetch;
 - (id)performInitializedOperation;
-- (id)policyDependentViewStateForName:(id)a3 timeout:(unint64_t)a4 error:(id *)a5;
+- (id)policyDependentViewStateForName:(id)name timeout:(unint64_t)timeout error:(id *)error;
 - (id)resultsOfNextProcessIncomingQueueOperation;
 - (id)resyncLocal;
 - (id)resyncWithCloud;
-- (id)rpcFetchAndProcessIncomingQueue:(id)a3 because:(id)a4 errorOnClassAFailure:(BOOL)a5;
-- (id)rpcFetchBecause:(id)a3;
-- (id)rpcProcessIncomingQueue:(id)a3 errorOnClassAFailure:(BOOL)a4;
-- (id)rpcProcessOutgoingQueue:(id)a3 operationGroup:(id)a4;
-- (id)rpcResetCloudKit:(id)a3 reply:(id)a4;
-- (id)rpcResetLocal:(id)a3 reply:(id)a4;
+- (id)rpcFetchAndProcessIncomingQueue:(id)queue because:(id)because errorOnClassAFailure:(BOOL)failure;
+- (id)rpcFetchBecause:(id)because;
+- (id)rpcProcessIncomingQueue:(id)queue errorOnClassAFailure:(BOOL)failure;
+- (id)rpcProcessOutgoingQueue:(id)queue operationGroup:(id)group;
+- (id)rpcResetCloudKit:(id)kit reply:(id)reply;
+- (id)rpcResetLocal:(id)local reply:(id)reply;
 - (id)rpcWaitForPriorityViewProcessing;
-- (id)tlkMissingOperation:(id)a3;
-- (id)viewStateForName:(id)a3;
-- (id)viewsForPeerID:(id)a3 error:(id *)a4;
-- (id)viewsInState:(id)a3;
+- (id)tlkMissingOperation:(id)operation;
+- (id)viewStateForName:(id)name;
+- (id)viewsForPeerID:(id)d error:(id *)error;
+- (id)viewsInState:(id)state;
 - (id)viewsRequiringTLKUpload;
-- (id)zoneIDForViewHint:(id)a3 pcsShortcut:(BOOL)a4 error:(id *)a5;
-- (int64_t)accountStatusFromCKAccountInfo:(id)a3;
+- (id)zoneIDForViewHint:(id)hint pcsShortcut:(BOOL)shortcut error:(id *)error;
+- (int64_t)accountStatusFromCKAccountInfo:(id)info;
 - (void)_onqueuePokeKeyStateMachine;
 - (void)_onqueuePrioritizePriorityViews;
-- (void)_onqueueProcessOutgoingQueue:(id)a3 priorityRush:(BOOL)a4;
+- (void)_onqueueProcessOutgoingQueue:(id)queue priorityRush:(BOOL)rush;
 - (void)beginCloudKitOperation;
-- (void)beginTrustedOperation:(id)a3 suggestTLKUpload:(id)a4 requestPolicyCheck:(id)a5;
+- (void)beginTrustedOperation:(id)operation suggestTLKUpload:(id)upload requestPolicyCheck:(id)check;
 - (void)cancelAllOperations;
 - (void)cancelPendingOperations;
-- (void)changesFetched:(id)a3 deletedRecordIDs:(id)a4 zoneID:(id)a5 newChangeToken:(id)a6 moreComing:(BOOL)a7 resync:(BOOL)a8 fetchNewestChangesFirst:(BOOL)a9;
-- (void)cloudkitAccountStateChange:(id)a3 to:(id)a4;
-- (void)decryptCurrentItems:(id)a3 cache:(id)a4 complete:(id)a5;
-- (void)decryptPCSIdentities:(id)a3 cache:(id)a4 complete:(id)a5;
-- (void)dispatchSyncWithReadOnlySQLTransaction:(id)a3;
-- (void)dispatchSyncWithSQLTransaction:(id)a3;
+- (void)changesFetched:(id)fetched deletedRecordIDs:(id)ds zoneID:(id)d newChangeToken:(id)token moreComing:(BOOL)coming resync:(BOOL)resync fetchNewestChangesFirst:(BOOL)first;
+- (void)cloudkitAccountStateChange:(id)change to:(id)to;
+- (void)decryptCurrentItems:(id)items cache:(id)cache complete:(id)complete;
+- (void)decryptPCSIdentities:(id)identities cache:(id)cache complete:(id)complete;
+- (void)dispatchSyncWithReadOnlySQLTransaction:(id)transaction;
+- (void)dispatchSyncWithSQLTransaction:(id)transaction;
 - (void)endTrustedOperation;
-- (void)fetchCloudKitExternallyManagedViewKeyHierarchy:(id)a3 reply:(id)a4;
-- (void)fetchExternallyManagedViewKeyHierarchy:(id)a3 forceFetch:(BOOL)a4 reply:(id)a5;
-- (void)fetchPCSIdentityOutOfBand:(id)a3 forceFetch:(BOOL)a4 complete:(id)a5;
-- (void)getCurrentItemForAccessGroup:(id)a3 identifier:(id)a4 viewHint:(id)a5 fetchCloudValue:(BOOL)a6 complete:(id)a7;
-- (void)getCurrentItemOutOfBand:(id)a3 forceFetch:(BOOL)a4 complete:(id)a5;
+- (void)fetchCloudKitExternallyManagedViewKeyHierarchy:(id)hierarchy reply:(id)reply;
+- (void)fetchExternallyManagedViewKeyHierarchy:(id)hierarchy forceFetch:(BOOL)fetch reply:(id)reply;
+- (void)fetchPCSIdentityOutOfBand:(id)band forceFetch:(BOOL)fetch complete:(id)complete;
+- (void)getCurrentItemForAccessGroup:(id)group identifier:(id)identifier viewHint:(id)hint fetchCloudValue:(BOOL)value complete:(id)complete;
+- (void)getCurrentItemOutOfBand:(id)band forceFetch:(BOOL)fetch complete:(id)complete;
 - (void)halt;
 - (void)handleCKLogin;
 - (void)handleCKLogout;
-- (void)handleKeychainEventDbConnection:(__OpaqueSecDbConnection *)a3 source:(unint64_t)a4 added:(SecDbItem *)a5 deleted:(SecDbItem *)a6 rateLimiter:(id)a7;
-- (void)initialSyncStatus:(id)a3 reply:(id)a4;
+- (void)handleKeychainEventDbConnection:(__OpaqueSecDbConnection *)connection source:(unint64_t)source added:(SecDbItem *)added deleted:(SecDbItem *)deleted rateLimiter:(id)limiter;
+- (void)initialSyncStatus:(id)status reply:(id)reply;
 - (void)keyStateMachineRequestProcess;
-- (void)loadKeys:(id)a3 reply:(id)a4;
-- (void)modifyTLKSharesForExternallyManagedView:(id)a3 adding:(id)a4 deleting:(id)a5 reply:(id)a6;
-- (void)notifyForItem:(SecDbItem *)a3;
-- (void)notifyPasswordsOrPCSChangedForAddedItem:(SecDbItem *)a3 modified:(SecDbItem *)a4 deleted:(SecDbItem *)a5;
+- (void)loadKeys:(id)keys reply:(id)reply;
+- (void)modifyTLKSharesForExternallyManagedView:(id)view adding:(id)adding deleting:(id)deleting reply:(id)reply;
+- (void)notifyForItem:(SecDbItem *)item;
+- (void)notifyPasswordsOrPCSChangedForAddedItem:(SecDbItem *)item modified:(SecDbItem *)modified deleted:(SecDbItem *)deleted;
 - (void)onqueueCreatePriorityViewsProcessedWatcher;
-- (void)pcsMirrorKeysForServices:(id)a3 reply:(id)a4;
-- (void)proposeTLKForExternallyManagedView:(id)a3 proposedTLK:(id)a4 wrappedOldTLK:(id)a5 tlkShares:(id)a6 reply:(id)a7;
-- (void)receiveTLKUploadRecords:(id)a3;
-- (void)resetExternallyManagedCloudKitView:(id)a3 reply:(id)a4;
+- (void)pcsMirrorKeysForServices:(id)services reply:(id)reply;
+- (void)proposeTLKForExternallyManagedView:(id)view proposedTLK:(id)k wrappedOldTLK:(id)lK tlkShares:(id)shares reply:(id)reply;
+- (void)receiveTLKUploadRecords:(id)records;
+- (void)resetExternallyManagedCloudKitView:(id)view reply:(id)reply;
 - (void)scanLocalItems;
-- (void)scheduleOperation:(id)a3;
-- (void)selfPeerChanged:(id)a3;
+- (void)scheduleOperation:(id)operation;
+- (void)selfPeerChanged:(id)changed;
 - (void)sendMetricForFirstManateeAccess;
-- (void)setCurrentItemForAccessGroup:(id)a3 hash:(id)a4 accessGroup:(id)a5 identifier:(id)a6 viewHint:(id)a7 replacing:(id)a8 hash:(id)a9 complete:(id)a10;
+- (void)setCurrentItemForAccessGroup:(id)group hash:(id)hash accessGroup:(id)accessGroup identifier:(id)identifier viewHint:(id)hint replacing:(id)replacing hash:(id)a9 complete:(id)self0;
 - (void)testDropPolicy;
-- (void)toggleHavoc:(id)a3;
-- (void)trustedPeerSetChanged:(id)a3;
-- (void)unsetCurrentItemsForAccessGroup:(id)a3 identifiers:(id)a4 viewHint:(id)a5 complete:(id)a6;
-- (void)updateAccount:(id)a3 container:(id)a4;
-- (void)waitForOperationsOfClass:(Class)a3;
+- (void)toggleHavoc:(id)havoc;
+- (void)trustedPeerSetChanged:(id)changed;
+- (void)unsetCurrentItemsForAccessGroup:(id)group identifiers:(id)identifiers viewHint:(id)hint complete:(id)complete;
+- (void)updateAccount:(id)account container:(id)container;
+- (void)waitForOperationsOfClass:(Class)class;
 - (void)xpc24HrNotification;
 @end
 
 @implementation CKKSKeychainView
 
-- (id)fastStatus:(id)a3 zoneStateEntry:(id)a4
+- (id)fastStatus:(id)status zoneStateEntry:(id)entry
 {
-  v5 = a3;
-  v6 = a4;
+  statusCopy = status;
+  entryCopy = entry;
   v26[0] = @"view";
-  v7 = [v5 zoneName];
-  v8 = v7;
-  if (v7)
+  zoneName = [statusCopy zoneName];
+  v8 = zoneName;
+  if (zoneName)
   {
-    v9 = v7;
+    v9 = zoneName;
   }
 
   else
@@ -126,7 +126,7 @@
 
   v27[0] = v10;
   v26[1] = @"zoneCreated";
-  if ([v6 ckzonecreated])
+  if ([entryCopy ckzonecreated])
   {
     v11 = @"yes";
   }
@@ -138,7 +138,7 @@
 
   v27[1] = v11;
   v26[2] = @"zoneSubscribed";
-  if ([v6 ckzonesubscribed])
+  if ([entryCopy ckzonesubscribed])
   {
     v12 = @"yes";
   }
@@ -150,11 +150,11 @@
 
   v27[2] = v12;
   v26[3] = @"keystate";
-  v13 = [v5 viewKeyHierarchyState];
-  v14 = v13;
-  if (v13)
+  viewKeyHierarchyState = [statusCopy viewKeyHierarchyState];
+  v14 = viewKeyHierarchyState;
+  if (viewKeyHierarchyState)
   {
-    v15 = v13;
+    v15 = viewKeyHierarchyState;
   }
 
   else
@@ -166,7 +166,7 @@
 
   v27[3] = v16;
   v26[4] = @"ckksManaged";
-  if ([v5 ckksManagedView])
+  if ([statusCopy ckksManagedView])
   {
     v17 = @"yes";
   }
@@ -181,12 +181,12 @@
   v18 = +[NSNull null];
   v27[5] = v18;
   v26[6] = @"launchSequence";
-  v19 = [v5 launch];
-  v20 = [v19 eventsByTime];
+  launch = [statusCopy launch];
+  eventsByTime = [launch eventsByTime];
 
-  if (v20)
+  if (eventsByTime)
   {
-    v21 = v20;
+    v21 = eventsByTime;
   }
 
   else
@@ -198,7 +198,7 @@
 
   v27[6] = v22;
   v26[7] = @"initialSyncFinished";
-  if ([v6 initialSyncFinished])
+  if ([entryCopy initialSyncFinished])
   {
     v23 = @"yes";
   }
@@ -214,26 +214,26 @@
   return v24;
 }
 
-- (id)intransactionSlowStatus:(id)a3
+- (id)intransactionSlowStatus:(id)status
 {
-  v3 = a3;
-  v4 = [v3 zoneID];
-  v5 = [v3 contextID];
-  v6 = [CKKSCurrentKeySet loadForZone:v4 contextID:v5];
+  statusCopy = status;
+  zoneID = [statusCopy zoneID];
+  contextID = [statusCopy contextID];
+  v6 = [CKKSCurrentKeySet loadForZone:zoneID contextID:contextID];
 
-  v7 = [v6 error];
+  error = [v6 error];
 
-  if (v7)
+  if (error)
   {
-    v8 = [v3 zoneID];
-    v9 = [v8 zoneName];
-    v10 = sub_100019104(@"ckks", v9);
+    zoneID2 = [statusCopy zoneID];
+    zoneName = [zoneID2 zoneName];
+    v10 = sub_100019104(@"ckks", zoneName);
 
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      v11 = [v6 error];
+      error2 = [v6 error];
       *buf = 138412290;
-      v146 = v11;
+      v146 = error2;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "error loading keyset: %@", buf, 0xCu);
     }
   }
@@ -241,9 +241,9 @@
   v12 = objc_alloc_init(NSMutableArray);
   v124 = objc_alloc_init(NSMutableArray);
   contexta = objc_autoreleasePoolPush();
-  v13 = [v3 zoneID];
+  zoneID3 = [statusCopy zoneID];
   v140 = 0;
-  v14 = [CKKSDeviceStateEntry allInZone:v13 error:&v140];
+  v14 = [CKKSDeviceStateEntry allInZone:zoneID3 error:&v140];
   v15 = v140;
 
   v138[0] = _NSConcreteStackBlock;
@@ -254,12 +254,12 @@
   v139 = v128;
   [v14 enumerateObjectsUsingBlock:v138];
   v129 = v6;
-  v16 = [v6 currentTLKPointer];
-  v17 = [v16 currentKeyUUID];
-  v18 = [v3 contextID];
-  v19 = [v3 zoneID];
+  currentTLKPointer = [v6 currentTLKPointer];
+  currentKeyUUID = [currentTLKPointer currentKeyUUID];
+  contextID2 = [statusCopy contextID];
+  zoneID4 = [statusCopy zoneID];
   v137 = v15;
-  v20 = [CKKSTLKShareRecord allForUUID:v17 contextID:v18 zoneID:v19 error:&v137];
+  v20 = [CKKSTLKShareRecord allForUUID:currentKeyUUID contextID:contextID2 zoneID:zoneID4 error:&v137];
   v21 = v137;
 
   v135[0] = _NSConcreteStackBlock;
@@ -271,7 +271,7 @@
   [v20 enumerateObjectsUsingBlock:v135];
 
   objc_autoreleasePoolPop(contexta);
-  if ([v3 ckksManagedView])
+  if ([statusCopy ckksManagedView])
   {
     v143[0] = @"statusError";
     v23 = [v21 description];
@@ -292,11 +292,11 @@
     context = v31;
     v144[0] = v31;
     v143[1] = @"oqe";
-    v32 = [(CKKSKeychainView *)self operationDependencies];
-    v33 = [v32 contextID];
-    v34 = [v3 zoneID];
+    operationDependencies = [(CKKSKeychainView *)self operationDependencies];
+    contextID3 = [operationDependencies contextID];
+    zoneID5 = [statusCopy zoneID];
     v134 = v25;
-    v35 = [CKKSOutgoingQueueEntry countsByStateWithContextID:v33 zoneID:v34 error:&v134];
+    v35 = [CKKSOutgoingQueueEntry countsByStateWithContextID:contextID3 zoneID:zoneID5 error:&v134];
     v36 = v134;
 
     if (v35)
@@ -314,11 +314,11 @@
     v125 = v43;
     v144[1] = v43;
     v143[2] = @"iqe";
-    v44 = [(CKKSKeychainView *)self operationDependencies];
-    v45 = [v44 contextID];
-    v46 = [v3 zoneID];
+    operationDependencies2 = [(CKKSKeychainView *)self operationDependencies];
+    contextID4 = [operationDependencies2 contextID];
+    zoneID6 = [statusCopy zoneID];
     v133 = v36;
-    v47 = [CKKSIncomingQueueEntry countsByStateWithContextID:v45 zoneID:v46 error:&v133];
+    v47 = [CKKSIncomingQueueEntry countsByStateWithContextID:contextID4 zoneID:zoneID6 error:&v133];
     v48 = v133;
 
     if (v47)
@@ -336,11 +336,11 @@
     v122 = v54;
     v144[2] = v54;
     v143[3] = @"ckmirror";
-    v55 = [(CKKSKeychainView *)self operationDependencies];
-    v56 = [v55 contextID];
-    v57 = [v3 zoneID];
+    operationDependencies3 = [(CKKSKeychainView *)self operationDependencies];
+    contextID5 = [operationDependencies3 contextID];
+    zoneID7 = [statusCopy zoneID];
     v132 = v48;
-    v58 = [CKKSMirrorEntry countsByParentKeyWithContextID:v56 zoneID:v57 error:&v132];
+    v58 = [CKKSMirrorEntry countsByParentKeyWithContextID:contextID5 zoneID:zoneID7 error:&v132];
     v59 = v132;
 
     if (v58)
@@ -392,11 +392,11 @@
     v119 = v75;
     v144[5] = v75;
     v143[6] = @"keys";
-    v76 = [(CKKSKeychainView *)self operationDependencies];
-    v77 = [v76 contextID];
-    v78 = [v3 zoneID];
+    operationDependencies4 = [(CKKSKeychainView *)self operationDependencies];
+    contextID6 = [operationDependencies4 contextID];
+    zoneID8 = [statusCopy zoneID];
     v131 = v59;
-    v79 = [CKKSKey countsByClassWithContextID:v77 zoneID:v78 error:&v131];
+    v79 = [CKKSKey countsByClassWithContextID:contextID6 zoneID:zoneID8 error:&v131];
     v80 = v131;
 
     if (v79)
@@ -415,11 +415,11 @@
     v144[6] = v82;
     v143[7] = @"currentTLK";
     v83 = [v129 tlk];
-    v84 = [v83 uuid];
+    uuid = [v83 uuid];
 
-    if (v84)
+    if (uuid)
     {
-      v85 = v84;
+      v85 = uuid;
     }
 
     else
@@ -432,12 +432,12 @@
     v117 = v86;
     v144[7] = v86;
     v143[8] = @"currentClassA";
-    v87 = [v129 classA];
-    v88 = [v87 uuid];
+    classA = [v129 classA];
+    uuid2 = [classA uuid];
 
-    if (v88)
+    if (uuid2)
     {
-      v89 = v88;
+      v89 = uuid2;
     }
 
     else
@@ -450,12 +450,12 @@
     v116 = v90;
     v144[8] = v90;
     v143[9] = @"currentClassC";
-    v91 = [v129 classC];
-    v92 = [v91 uuid];
+    classC = [v129 classC];
+    uuid3 = [classC uuid];
 
-    if (v92)
+    if (uuid3)
     {
-      v93 = v92;
+      v93 = uuid3;
     }
 
     else
@@ -468,12 +468,12 @@
     v115 = v94;
     v144[9] = v94;
     v143[10] = @"currentTLKPtr";
-    v95 = [v129 currentTLKPointer];
-    v96 = [v95 currentKeyUUID];
+    currentTLKPointer2 = [v129 currentTLKPointer];
+    currentKeyUUID2 = [currentTLKPointer2 currentKeyUUID];
 
-    if (v96)
+    if (currentKeyUUID2)
     {
-      v97 = v96;
+      v97 = currentKeyUUID2;
     }
 
     else
@@ -485,12 +485,12 @@
 
     v144[10] = v98;
     v143[11] = @"currentClassAPtr";
-    v99 = [v129 currentClassAPointer];
-    v100 = [v99 currentKeyUUID];
+    currentClassAPointer = [v129 currentClassAPointer];
+    currentKeyUUID3 = [currentClassAPointer currentKeyUUID];
 
-    if (v100)
+    if (currentKeyUUID3)
     {
-      v101 = v100;
+      v101 = currentKeyUUID3;
     }
 
     else
@@ -502,14 +502,14 @@
 
     v144[11] = v102;
     v143[12] = @"currentClassCPtr";
-    v103 = [v129 currentClassCPointer];
-    v104 = [v103 currentKeyUUID];
+    currentClassCPointer = [v129 currentClassCPointer];
+    currentKeyUUID4 = [currentClassCPointer currentKeyUUID];
 
     v123 = v80;
     v105 = v22;
-    if (v104)
+    if (currentKeyUUID4)
     {
-      v106 = v104;
+      v106 = currentKeyUUID4;
     }
 
     else
@@ -521,11 +521,11 @@
 
     v144[12] = v107;
     v143[13] = @"itemsyncing";
-    v108 = [(CKKSKeychainView *)self operationDependencies];
-    v109 = [v108 syncingPolicy];
-    v110 = [v3 zoneID];
-    v111 = [v110 zoneName];
-    v112 = [v109 isSyncingEnabledForView:v111];
+    operationDependencies5 = [(CKKSKeychainView *)self operationDependencies];
+    syncingPolicy = [operationDependencies5 syncingPolicy];
+    zoneID9 = [statusCopy zoneID];
+    zoneName2 = [zoneID9 zoneName];
+    v112 = [syncingPolicy isSyncingEnabledForView:zoneName2];
     v113 = @"paused";
     if (v112)
     {
@@ -582,11 +582,11 @@
     v142[1] = v50;
     v141[2] = @"currentTLK";
     v51 = [v129 tlk];
-    v52 = [v51 uuid];
+    uuid4 = [v51 uuid];
 
-    if (v52)
+    if (uuid4)
     {
-      v53 = v52;
+      v53 = uuid4;
     }
 
     else
@@ -598,12 +598,12 @@
 
     v142[2] = v61;
     v141[3] = @"currentTLKPtr";
-    v62 = [v129 currentTLKPointer];
-    v63 = [v62 currentKeyUUID];
+    currentTLKPointer3 = [v129 currentTLKPointer];
+    currentKeyUUID5 = [currentTLKPointer3 currentKeyUUID];
 
-    if (v63)
+    if (currentKeyUUID5)
     {
-      v64 = v63;
+      v64 = currentKeyUUID5;
     }
 
     else
@@ -620,9 +620,9 @@
   return v70;
 }
 
-- (id)viewsForPeerID:(id)a3 error:(id *)a4
+- (id)viewsForPeerID:(id)d error:(id *)error
 {
-  v6 = a3;
+  dCopy = d;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -641,13 +641,13 @@
   v10[3] = &unk_100345070;
   v10[4] = self;
   v12 = &v14;
-  v7 = v6;
+  v7 = dCopy;
   v11 = v7;
   v13 = &v20;
   [(CKKSKeychainView *)self dispatchSyncWithReadOnlySQLTransaction:v10];
-  if (a4)
+  if (error)
   {
-    *a4 = v15[5];
+    *error = v15[5];
   }
 
   v8 = v21[5];
@@ -658,15 +658,15 @@
   return v8;
 }
 
-- (BOOL)waitUntilReadyForRPCForOperation:(id)a3 fast:(BOOL)a4 errorOnNoCloudKitAccount:(BOOL)a5 errorOnPolicyMissing:(BOOL)a6 error:(id *)a7
+- (BOOL)waitUntilReadyForRPCForOperation:(id)operation fast:(BOOL)fast errorOnNoCloudKitAccount:(BOOL)account errorOnPolicyMissing:(BOOL)missing error:(id *)error
 {
-  v8 = a6;
-  v9 = a5;
-  v10 = a4;
-  v12 = a3;
+  missingCopy = missing;
+  accountCopy = account;
+  fastCopy = fast;
+  operationCopy = operation;
   v13 = +[CKKSViewManager manager];
-  v14 = [v13 completedSecCKKSInitialize];
-  v15 = [v14 wait:5000000000];
+  completedSecCKKSInitialize = [v13 completedSecCKKSInitialize];
+  v15 = [completedSecCKKSInitialize wait:5000000000];
 
   if (v15)
   {
@@ -678,9 +678,9 @@
     }
   }
 
-  v17 = [(CKKSKeychainView *)self accountStateKnown];
-  v18 = v17;
-  if (v10)
+  accountStateKnown = [(CKKSKeychainView *)self accountStateKnown];
+  v18 = accountStateKnown;
+  if (fastCopy)
   {
     v19 = 500000000;
   }
@@ -690,12 +690,12 @@
     v19 = 2000000000;
   }
 
-  [v17 wait:v19];
+  [accountStateKnown wait:v19];
 
-  v20 = [(CKKSKeychainView *)self accountStatus];
-  if (v9 && v20 != 1)
+  accountStatus = [(CKKSKeychainView *)self accountStatus];
+  if (accountCopy && accountStatus != 1)
   {
-    if (v20)
+    if (accountStatus)
     {
       v21 = @"User is not signed into iCloud.";
       v22 = 10;
@@ -708,23 +708,23 @@
     }
 
     v23 = [NSError errorWithDomain:@"CKKSErrorDomain" code:v22 description:v21];
-    v25 = [(CKKSKeychainView *)self zoneName];
-    v26 = sub_100019104(@"ckkscurrent", v25);
+    zoneName = [(CKKSKeychainView *)self zoneName];
+    v26 = sub_100019104(@"ckkscurrent", zoneName);
 
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
     {
       v29 = 138412546;
-      v30 = v12;
+      v30 = operationCopy;
       v31 = 2112;
       v32 = v23;
       _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "Rejecting %@ RPC since we don't have an iCloud account: %@", &v29, 0x16u);
     }
 
-    if (a7)
+    if (error)
     {
       v27 = v23;
       v24 = 0;
-      *a7 = v23;
+      *error = v23;
 LABEL_27:
 
       goto LABEL_28;
@@ -735,15 +735,15 @@ LABEL_23:
     goto LABEL_27;
   }
 
-  if (v8)
+  if (missingCopy)
   {
-    if (![(CKKSKeychainView *)self waitForPolicy:5000000000 error:a7])
+    if (![(CKKSKeychainView *)self waitForPolicy:5000000000 error:error])
     {
       v23 = sub_100019104(@"ckks", 0);
       if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
       {
         v29 = 138412290;
-        v30 = v12;
+        v30 = operationCopy;
         _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_ERROR, "Haven't yet received a policy; failing %@", &v29, 0xCu);
       }
 
@@ -757,7 +757,7 @@ LABEL_23:
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
       v29 = 138412290;
-      v30 = v12;
+      v30 = operationCopy;
       _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_ERROR, "Haven't yet received a policy; expect failure later doing %@", &v29, 0xCu);
     }
 
@@ -771,12 +771,12 @@ LABEL_28:
   return v24;
 }
 
-- (id)policyDependentViewStateForName:(id)a3 timeout:(unint64_t)a4 error:(id *)a5
+- (id)policyDependentViewStateForName:(id)name timeout:(unint64_t)timeout error:(id *)error
 {
-  v8 = a3;
-  if (![(CKKSKeychainView *)self waitForPolicy:a4 error:a5])
+  nameCopy = name;
+  if (![(CKKSKeychainView *)self waitForPolicy:timeout error:error])
   {
-    a5 = 0;
+    error = 0;
     goto LABEL_12;
   }
 
@@ -786,21 +786,21 @@ LABEL_28:
   v23 = sub_1001B1C08;
   v24 = sub_1001B1C18;
   v25 = 0;
-  v9 = [(CKKSKeychainView *)self queue];
+  queue = [(CKKSKeychainView *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001B25A0;
   block[3] = &unk_100344920;
   block[4] = self;
-  v10 = v8;
+  v10 = nameCopy;
   v18 = v10;
   v19 = &v20;
-  dispatch_sync(v9, block);
+  dispatch_sync(queue, block);
 
   v11 = v21[5];
   if (!v11)
   {
-    if (!a5)
+    if (!error)
     {
       goto LABEL_11;
     }
@@ -809,40 +809,40 @@ LABEL_28:
     v12 = [NSString stringWithFormat:@"No syncing view for '%@'", v10];
     v27 = v12;
     v13 = [NSDictionary dictionaryWithObjects:&v27 forKeys:&v26 count:1];
-    *a5 = [NSError errorWithDomain:@"CKKSErrorDomain" code:11 userInfo:v13];
+    *error = [NSError errorWithDomain:@"CKKSErrorDomain" code:11 userInfo:v13];
 
 LABEL_10:
-    a5 = 0;
+    error = 0;
     goto LABEL_11;
   }
 
   if (([v11 ckksManagedView] & 1) == 0)
   {
-    if (!a5)
+    if (!error)
     {
       goto LABEL_11;
     }
 
-    v14 = [v21[5] zoneName];
-    v15 = [NSString stringWithFormat:@"Cannot get view %@ is externally managed", v14];;
-    *a5 = [NSError errorWithDomain:@"CKKSErrorDomain" code:63 description:v15];
+    zoneName = [v21[5] zoneName];
+    v15 = [NSString stringWithFormat:@"Cannot get view %@ is externally managed", zoneName];;
+    *error = [NSError errorWithDomain:@"CKKSErrorDomain" code:63 description:v15];
 
     goto LABEL_10;
   }
 
-  a5 = v21[5];
+  error = v21[5];
 LABEL_11:
 
   _Block_object_dispose(&v20, 8);
 LABEL_12:
 
-  return a5;
+  return error;
 }
 
-- (BOOL)waitForPolicy:(unint64_t)a3 error:(id *)a4
+- (BOOL)waitForPolicy:(unint64_t)policy error:(id *)error
 {
-  v6 = [(CKKSKeychainView *)self policyLoaded];
-  v7 = [v6 wait:a3];
+  policyLoaded = [(CKKSKeychainView *)self policyLoaded];
+  v7 = [policyLoaded wait:policy];
 
   if (v7)
   {
@@ -853,13 +853,13 @@ LABEL_12:
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_ERROR, "Haven't yet received a syncing policy", v12, 2u);
     }
 
-    if (a4)
+    if (error)
     {
       v13 = NSLocalizedDescriptionKey;
       v9 = [NSString stringWithFormat:@"CKKS syncing policy not yet loaded"];
       v14 = v9;
       v10 = [NSDictionary dictionaryWithObjects:&v14 forKeys:&v13 count:1];
-      *a4 = [NSError errorWithDomain:@"CKKSErrorDomain" code:56 userInfo:v10];
+      *error = [NSError errorWithDomain:@"CKKSErrorDomain" code:56 userInfo:v10];
     }
   }
 
@@ -868,26 +868,26 @@ LABEL_12:
 
 - (void)halt
 {
-  v3 = [(CKKSKeychainView *)self stateMachine];
-  [v3 haltOperation];
+  stateMachine = [(CKKSKeychainView *)self stateMachine];
+  [stateMachine haltOperation];
 
-  v4 = [(CKKSKeychainView *)self queue];
+  queue = [(CKKSKeychainView *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001B2AF0;
   block[3] = &unk_100346018;
   block[4] = self;
-  dispatch_sync(v4, block);
+  dispatch_sync(queue, block);
 
   [(CKKSKeychainView *)self cancelAllOperations];
   v28 = 0u;
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v5 = [(CKKSKeychainView *)self operationQueue];
-  v6 = [v5 operations];
+  operationQueue = [(CKKSKeychainView *)self operationQueue];
+  operations = [operationQueue operations];
 
-  v7 = [v6 countByEnumeratingWithState:&v26 objects:v32 count:16];
+  v7 = [operations countByEnumeratingWithState:&v26 objects:v32 count:16];
   if (v7)
   {
     v8 = v7;
@@ -898,7 +898,7 @@ LABEL_12:
       {
         if (*v27 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(operations);
         }
 
         v11 = *(*(&v26 + 1) + 8 * i);
@@ -908,7 +908,7 @@ LABEL_12:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v26 objects:v32 count:16];
+      v8 = [operations countByEnumeratingWithState:&v26 objects:v32 count:16];
     }
 
     while (v8);
@@ -918,10 +918,10 @@ LABEL_12:
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v12 = [(CKKSKeychainView *)self operationDependencies];
-  v13 = [v12 allViews];
+  operationDependencies = [(CKKSKeychainView *)self operationDependencies];
+  allViews = [operationDependencies allViews];
 
-  v14 = [v13 countByEnumeratingWithState:&v22 objects:v31 count:16];
+  v14 = [allViews countByEnumeratingWithState:&v22 objects:v31 count:16];
   if (v14)
   {
     v15 = v14;
@@ -932,44 +932,44 @@ LABEL_12:
       {
         if (*v23 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(allViews);
         }
 
         v18 = *(*(&v22 + 1) + 8 * j);
-        v19 = [v18 notifyViewChangedScheduler];
-        [v19 cancel];
+        notifyViewChangedScheduler = [v18 notifyViewChangedScheduler];
+        [notifyViewChangedScheduler cancel];
 
-        v20 = [v18 notifyViewReadyScheduler];
-        [v20 cancel];
+        notifyViewReadyScheduler = [v18 notifyViewReadyScheduler];
+        [notifyViewReadyScheduler cancel];
       }
 
-      v15 = [v13 countByEnumeratingWithState:&v22 objects:v31 count:16];
+      v15 = [allViews countByEnumeratingWithState:&v22 objects:v31 count:16];
     }
 
     while (v15);
   }
 
-  v21 = [(CKKSKeychainView *)self zoneChangeFetcher];
-  [v21 halt];
+  zoneChangeFetcher = [(CKKSKeychainView *)self zoneChangeFetcher];
+  [zoneChangeFetcher halt];
 }
 
 - (void)cancelAllOperations
 {
   [(CKKSKeychainView *)self cancelPendingOperations];
-  v3 = [(CKKSKeychainView *)self operationQueue];
-  [v3 cancelAllOperations];
+  operationQueue = [(CKKSKeychainView *)self operationQueue];
+  [operationQueue cancelAllOperations];
 }
 
 - (void)cancelPendingOperations
 {
-  v3 = [(CKKSKeychainView *)self outgoingQueueOperations];
-  objc_sync_enter(v3);
+  outgoingQueueOperations = [(CKKSKeychainView *)self outgoingQueueOperations];
+  objc_sync_enter(outgoingQueueOperations);
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [(CKKSKeychainView *)self outgoingQueueOperations];
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  outgoingQueueOperations2 = [(CKKSKeychainView *)self outgoingQueueOperations];
+  v5 = [outgoingQueueOperations2 countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = *v10;
@@ -980,7 +980,7 @@ LABEL_12:
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(outgoingQueueOperations2);
         }
 
         [*(*(&v9 + 1) + 8 * v7) cancel];
@@ -988,23 +988,23 @@ LABEL_12:
       }
 
       while (v5 != v7);
-      v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [outgoingQueueOperations2 countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
   }
 
-  v8 = [(CKKSKeychainView *)self outgoingQueueOperations];
-  [v8 removeAllObjects];
+  outgoingQueueOperations3 = [(CKKSKeychainView *)self outgoingQueueOperations];
+  [outgoingQueueOperations3 removeAllObjects];
 
-  objc_sync_exit(v3);
+  objc_sync_exit(outgoingQueueOperations);
 }
 
-- (void)waitForOperationsOfClass:(Class)a3
+- (void)waitForOperationsOfClass:(Class)class
 {
-  v3 = [(CKKSKeychainView *)self operationQueue];
-  v4 = [v3 operations];
-  v5 = [v4 copy];
+  operationQueue = [(CKKSKeychainView *)self operationQueue];
+  operations = [operationQueue operations];
+  v5 = [operations copy];
 
   v14 = 0u;
   v15 = 0u;
@@ -1045,60 +1045,60 @@ LABEL_12:
 
 - (BOOL)waitUntilAllOperationsAreFinished
 {
-  v2 = [(CKKSKeychainView *)self stateMachine];
-  v3 = [v2 paused];
-  v4 = [v3 wait:189000000000] == 0;
+  stateMachine = [(CKKSKeychainView *)self stateMachine];
+  paused = [stateMachine paused];
+  v4 = [paused wait:189000000000] == 0;
 
   return v4;
 }
 
-- (BOOL)scheduleOperationWithoutDependencies:(id)a3
+- (BOOL)scheduleOperationWithoutDependencies:(id)dependencies
 {
-  v4 = a3;
-  v5 = [(CKKSKeychainView *)self halted];
-  if (v5)
+  dependenciesCopy = dependencies;
+  halted = [(CKKSKeychainView *)self halted];
+  if (halted)
   {
-    v6 = [(CKKSKeychainView *)self zoneName];
-    v7 = sub_100019104(@"ckkszone", v6);
+    zoneName = [(CKKSKeychainView *)self zoneName];
+    operationQueue = sub_100019104(@"ckkszone", zoneName);
 
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(operationQueue, OS_LOG_TYPE_ERROR))
     {
       *v9 = 0;
-      _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_ERROR, "attempted to schedule an non-dependent operation on a halted zone, ignoring", v9, 2u);
+      _os_log_impl(&_mh_execute_header, operationQueue, OS_LOG_TYPE_ERROR, "attempted to schedule an non-dependent operation on a halted zone, ignoring", v9, 2u);
     }
   }
 
   else
   {
-    v7 = [(CKKSKeychainView *)self operationQueue];
-    [v7 addOperation:v4];
+    operationQueue = [(CKKSKeychainView *)self operationQueue];
+    [operationQueue addOperation:dependenciesCopy];
   }
 
-  return v5 ^ 1;
+  return halted ^ 1;
 }
 
-- (void)scheduleOperation:(id)a3
+- (void)scheduleOperation:(id)operation
 {
-  v4 = a3;
+  operationCopy = operation;
   if ([(CKKSKeychainView *)self halted])
   {
-    v5 = [(CKKSKeychainView *)self zoneName];
-    v6 = sub_100019104(@"ckkszone", v5);
+    zoneName = [(CKKSKeychainView *)self zoneName];
+    operationQueue = sub_100019104(@"ckkszone", zoneName);
 
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(operationQueue, OS_LOG_TYPE_ERROR))
     {
       *v8 = 0;
-      _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_ERROR, "attempted to schedule an operation on a halted zone, ignoring", v8, 2u);
+      _os_log_impl(&_mh_execute_header, operationQueue, OS_LOG_TYPE_ERROR, "attempted to schedule an operation on a halted zone, ignoring", v8, 2u);
     }
   }
 
   else
   {
-    v7 = [(CKKSKeychainView *)self accountLoggedInDependency];
-    [v4 addNullableDependency:v7];
+    accountLoggedInDependency = [(CKKSKeychainView *)self accountLoggedInDependency];
+    [operationCopy addNullableDependency:accountLoggedInDependency];
 
-    v6 = [(CKKSKeychainView *)self operationQueue];
-    [v6 addOperation:v4];
+    operationQueue = [(CKKSKeychainView *)self operationQueue];
+    [operationQueue addOperation:operationCopy];
   }
 }
 
@@ -1108,10 +1108,10 @@ LABEL_12:
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v2 = [(CKKSKeychainView *)self operationDependencies];
-  v3 = [v2 allCKKSManagedViews];
+  operationDependencies = [(CKKSKeychainView *)self operationDependencies];
+  allCKKSManagedViews = [operationDependencies allCKKSManagedViews];
 
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v4 = [allCKKSManagedViews countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1123,17 +1123,17 @@ LABEL_12:
       {
         if (*v14 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allCKKSManagedViews);
         }
 
-        v9 = [*(*(&v13 + 1) + 8 * i) keyHierarchyConditions];
-        v10 = [v9 objectForKeyedSubscript:@"ready"];
+        keyHierarchyConditions = [*(*(&v13 + 1) + 8 * i) keyHierarchyConditions];
+        v10 = [keyHierarchyConditions objectForKeyedSubscript:@"ready"];
         v11 = [v10 wait:300000000000] == 0;
 
         v7 &= v11;
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v5 = [allCKKSManagedViews countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v5);
@@ -1149,17 +1149,17 @@ LABEL_12:
 
 - (BOOL)waitForFetchAndIncomingQueueProcessing
 {
-  v3 = [(CKKSKeychainView *)self zoneChangeFetcher];
-  v4 = [v3 inflightFetch];
+  zoneChangeFetcher = [(CKKSKeychainView *)self zoneChangeFetcher];
+  inflightFetch = [zoneChangeFetcher inflightFetch];
 
-  if (v4)
+  if (inflightFetch)
   {
-    [v4 waitUntilFinished];
+    [inflightFetch waitUntilFinished];
   }
 
-  v5 = [(CKKSKeychainView *)self stateMachine];
-  v6 = [v5 flags];
-  v7 = [v6 conditionForFlagIfPresent:@"process_incoming_queue"];
+  stateMachine = [(CKKSKeychainView *)self stateMachine];
+  flags = [stateMachine flags];
+  v7 = [flags conditionForFlagIfPresent:@"process_incoming_queue"];
 
   if (v7)
   {
@@ -1171,9 +1171,9 @@ LABEL_12:
     v8 = 1;
   }
 
-  v9 = [(CKKSKeychainView *)self stateMachine];
-  v10 = [v9 paused];
-  if ([v10 wait:109000000000])
+  stateMachine2 = [(CKKSKeychainView *)self stateMachine];
+  paused = [stateMachine2 paused];
+  if ([paused wait:109000000000])
   {
     v8 = 0;
   }
@@ -1181,7 +1181,7 @@ LABEL_12:
   return v8;
 }
 
-- (BOOL)outgoingQueueEmpty:(id *)a3
+- (BOOL)outgoingQueueEmpty:(id *)empty
 {
   v6 = 0;
   v7 = &v6;
@@ -1192,17 +1192,17 @@ LABEL_12:
   v5[2] = sub_1001B3320;
   v5[3] = &unk_1003449E0;
   v5[4] = &v6;
-  v5[5] = a3;
+  v5[5] = empty;
   [(CKKSKeychainView *)self dispatchSyncWithReadOnlySQLTransaction:v5];
   v3 = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
   return v3;
 }
 
-- (void)trustedPeerSetChanged:(id)a3
+- (void)trustedPeerSetChanged:(id)changed
 {
-  v4 = [(CKKSKeychainView *)self zoneName];
-  v5 = sub_100019104(@"ckks", v4);
+  zoneName = [(CKKSKeychainView *)self zoneName];
+  v5 = sub_100019104(@"ckks", zoneName);
 
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
@@ -1210,14 +1210,14 @@ LABEL_12:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_ERROR, "Received update that the trust set has changed", v7, 2u);
   }
 
-  v6 = [(CKKSKeychainView *)self stateMachine];
-  [v6 handleFlag:@"trusted_peers_changed"];
+  stateMachine = [(CKKSKeychainView *)self stateMachine];
+  [stateMachine handleFlag:@"trusted_peers_changed"];
 }
 
-- (void)selfPeerChanged:(id)a3
+- (void)selfPeerChanged:(id)changed
 {
-  v4 = [(CKKSKeychainView *)self zoneName];
-  v5 = sub_100019104(@"ckks", v4);
+  zoneName = [(CKKSKeychainView *)self zoneName];
+  v5 = sub_100019104(@"ckks", zoneName);
 
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
@@ -1228,40 +1228,40 @@ LABEL_12:
   [(CKKSKeychainView *)self keyStateMachineRequestProcess];
 }
 
-- (BOOL)shouldRetryAfterFetchError:(id)a3 zoneID:(id)a4
+- (BOOL)shouldRetryAfterFetchError:(id)error zoneID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(CKKSKeychainView *)self ckErrorOrPartialError:v6 isError:21 zoneID:v7])
+  errorCopy = error;
+  dCopy = d;
+  if ([(CKKSKeychainView *)self ckErrorOrPartialError:errorCopy isError:21 zoneID:dCopy])
   {
-    v8 = [v7 zoneName];
-    v9 = sub_100019104(@"ckks", v8);
+    zoneName = [dCopy zoneName];
+    v9 = sub_100019104(@"ckks", zoneName);
 
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       v20 = 138412290;
-      v21 = v7;
+      v21 = dCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "Received notice that our change token is out of date (for %@). Resetting local data...", &v20, 0xCu);
     }
 
-    v10 = [(CKKSKeychainView *)self stateMachine];
-    v11 = v10;
+    stateMachine = [(CKKSKeychainView *)self stateMachine];
+    v11 = stateMachine;
     v12 = @"ck_change_token_expired";
   }
 
   else
   {
-    if (![(CKKSKeychainView *)self ckErrorOrPartialError:v6 isError:26 zoneID:v7])
+    if (![(CKKSKeychainView *)self ckErrorOrPartialError:errorCopy isError:26 zoneID:dCopy])
     {
-      v17 = [v6 domain];
-      if ([v17 isEqualToString:CKErrorDomain])
+      domain = [errorCopy domain];
+      if ([domain isEqualToString:CKErrorDomain])
       {
-        v18 = [v6 code];
+        code = [errorCopy code];
 
-        if (v18 == 5)
+        if (code == 5)
         {
-          v19 = [v7 zoneName];
-          v11 = sub_100019104(@"ckks", v19);
+          zoneName2 = [dCopy zoneName];
+          v11 = sub_100019104(@"ckks", zoneName2);
 
           if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
           {
@@ -1281,22 +1281,22 @@ LABEL_12:
       goto LABEL_11;
     }
 
-    v13 = [v7 zoneName];
-    v14 = sub_100019104(@"ckks", v13);
+    zoneName3 = [dCopy zoneName];
+    v14 = sub_100019104(@"ckks", zoneName3);
 
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
       v20 = 138412290;
-      v21 = v7;
+      v21 = dCopy;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "Received notice that our zone(%@) does not exist. Resetting local data.", &v20, 0xCu);
     }
 
-    v10 = [(CKKSKeychainView *)self stateMachine];
-    v11 = v10;
+    stateMachine = [(CKKSKeychainView *)self stateMachine];
+    v11 = stateMachine;
     v12 = @"ck_zone_missing";
   }
 
-  [v10 handleFlag:v12];
+  [stateMachine handleFlag:v12];
 LABEL_10:
 
   v15 = 0;
@@ -1305,14 +1305,14 @@ LABEL_11:
   return v15;
 }
 
-- (BOOL)ckErrorOrPartialError:(id)a3 isError:(int64_t)a4 zoneID:(id)a5
+- (BOOL)ckErrorOrPartialError:(id)error isError:(int64_t)isError zoneID:(id)d
 {
-  v7 = a3;
-  v8 = a5;
-  if ([v7 code] == a4)
+  errorCopy = error;
+  dCopy = d;
+  if ([errorCopy code] == isError)
   {
-    v9 = [v7 domain];
-    v10 = [v9 isEqualToString:CKErrorDomain];
+    domain = [errorCopy domain];
+    v10 = [domain isEqualToString:CKErrorDomain];
 
     if (v10)
     {
@@ -1320,25 +1320,25 @@ LABEL_11:
     }
   }
 
-  if ([v7 code] != 2 || (objc_msgSend(v7, "domain"), v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "isEqualToString:", CKErrorDomain), v12, !v13))
+  if ([errorCopy code] != 2 || (objc_msgSend(errorCopy, "domain"), v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "isEqualToString:", CKErrorDomain), v12, !v13))
   {
 LABEL_10:
     v11 = 0;
     goto LABEL_11;
   }
 
-  v14 = [v7 userInfo];
-  v15 = [v14 objectForKeyedSubscript:CKPartialErrorsByItemIDKey];
+  userInfo = [errorCopy userInfo];
+  v15 = [userInfo objectForKeyedSubscript:CKPartialErrorsByItemIDKey];
 
-  v16 = [v15 objectForKeyedSubscript:v8];
-  if ([v16 code] != a4)
+  v16 = [v15 objectForKeyedSubscript:dCopy];
+  if ([v16 code] != isError)
   {
 
     goto LABEL_10;
   }
 
-  v17 = [v16 domain];
-  v18 = [v17 isEqualToString:CKErrorDomain];
+  domain2 = [v16 domain];
+  v18 = [domain2 isEqualToString:CKErrorDomain];
 
   if ((v18 & 1) == 0)
   {
@@ -1352,53 +1352,53 @@ LABEL_11:
   return v11;
 }
 
-- (void)changesFetched:(id)a3 deletedRecordIDs:(id)a4 zoneID:(id)a5 newChangeToken:(id)a6 moreComing:(BOOL)a7 resync:(BOOL)a8 fetchNewestChangesFirst:(BOOL)a9
+- (void)changesFetched:(id)fetched deletedRecordIDs:(id)ds zoneID:(id)d newChangeToken:(id)token moreComing:(BOOL)coming resync:(BOOL)resync fetchNewestChangesFirst:(BOOL)first
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
+  fetchedCopy = fetched;
+  dsCopy = ds;
+  dCopy = d;
+  tokenCopy = token;
   v37 = 0;
   v38 = &v37;
   v39 = 0x2020000000;
-  v40 = [v16 count];
+  v40 = [dsCopy count];
   v28[0] = _NSConcreteStackBlock;
   v28[1] = 3221225472;
   v28[2] = sub_1001B3B08;
   v28[3] = &unk_100343F18;
   v28[4] = self;
-  v19 = v17;
+  v19 = dCopy;
   v29 = v19;
-  v20 = v15;
+  v20 = fetchedCopy;
   v30 = v20;
-  v34 = a8;
-  v21 = v16;
-  v35 = a7;
+  resyncCopy = resync;
+  v21 = dsCopy;
+  comingCopy = coming;
   v31 = v21;
   v33 = &v37;
-  v22 = v18;
+  v22 = tokenCopy;
   v32 = v22;
-  v36 = a9;
+  firstCopy = first;
   [(CKKSKeychainView *)self dispatchSyncWithSQLTransaction:v28];
-  v23 = [(CKKSKeychainView *)self operationDependencies];
-  v24 = [v19 zoneName];
-  v25 = [v23 viewStateForName:v24];
+  operationDependencies = [(CKKSKeychainView *)self operationDependencies];
+  zoneName = [v19 zoneName];
+  v25 = [operationDependencies viewStateForName:zoneName];
 
   if (v38[3])
   {
-    v26 = [v25 notifyViewChangedScheduler];
-    [v26 trigger];
+    notifyViewChangedScheduler = [v25 notifyViewChangedScheduler];
+    [notifyViewChangedScheduler trigger];
   }
 
   if (([v25 ckksManagedView] & 1) == 0)
   {
     if ([v20 count] || objc_msgSend(v21, "count"))
     {
-      v27 = [v25 notifyViewChangedScheduler];
-      [v27 trigger];
+      notifyViewChangedScheduler2 = [v25 notifyViewChangedScheduler];
+      [notifyViewChangedScheduler2 trigger];
     }
 
-    if (!a7)
+    if (!coming)
     {
       [v25 launchComplete];
     }
@@ -1407,9 +1407,9 @@ LABEL_11:
   _Block_object_dispose(&v37, 8);
 }
 
-- (id)participateInFetch:(id)a3
+- (id)participateInFetch:(id)fetch
 {
-  v4 = a3;
+  fetchCopy = fetch;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -1421,7 +1421,7 @@ LABEL_11:
   v8[2] = sub_1001B4CB8;
   v8[3] = &unk_100344920;
   v8[4] = self;
-  v5 = v4;
+  v5 = fetchCopy;
   v9 = v5;
   v10 = &v11;
   [(CKKSKeychainView *)self dispatchSyncWithReadOnlySQLTransaction:v8];
@@ -1432,18 +1432,18 @@ LABEL_11:
   return v6;
 }
 
-- (BOOL)_onQueueZoneIsReadyForFetching:(id)a3
+- (BOOL)_onQueueZoneIsReadyForFetching:(id)fetching
 {
-  v4 = a3;
-  v5 = [(CKKSKeychainView *)self queue];
-  dispatch_assert_queue_V2(v5);
+  fetchingCopy = fetching;
+  queue = [(CKKSKeychainView *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   if ([(CKKSKeychainView *)self accountStatus]== 1)
   {
-    v6 = [(CKKSKeychainView *)self operationDependencies];
-    v7 = [v6 contextID];
-    v8 = [v4 zoneName];
-    v9 = [CKKSZoneStateEntry contextID:v7 zoneName:v8];
+    operationDependencies = [(CKKSKeychainView *)self operationDependencies];
+    contextID = [operationDependencies contextID];
+    zoneName = [fetchingCopy zoneName];
+    v9 = [CKKSZoneStateEntry contextID:contextID zoneName:zoneName];
 
     if (([v9 ckzonecreated]& 1) != 0)
     {
@@ -1451,10 +1451,10 @@ LABEL_11:
       v30 = 0u;
       v27 = 0u;
       v28 = 0u;
-      v10 = [(CKKSKeychainView *)self operationDependencies];
-      v11 = [v10 views];
+      operationDependencies2 = [(CKKSKeychainView *)self operationDependencies];
+      views = [operationDependencies2 views];
 
-      v12 = [v11 countByEnumeratingWithState:&v27 objects:v32 count:16];
+      v12 = [views countByEnumeratingWithState:&v27 objects:v32 count:16];
       if (v12)
       {
         v13 = v12;
@@ -1465,13 +1465,13 @@ LABEL_5:
         {
           if (*v28 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(views);
           }
 
           v16 = *(*(&v27 + 1) + 8 * v15);
-          v17 = [v16 zoneName];
-          v18 = [v4 zoneName];
-          v19 = [v17 isEqualToString:v18];
+          zoneName2 = [v16 zoneName];
+          zoneName3 = [fetchingCopy zoneName];
+          v19 = [zoneName2 isEqualToString:zoneName3];
 
           if (v19)
           {
@@ -1480,7 +1480,7 @@ LABEL_5:
 
           if (v13 == ++v15)
           {
-            v13 = [v11 countByEnumeratingWithState:&v27 objects:v32 count:16];
+            v13 = [views countByEnumeratingWithState:&v27 objects:v32 count:16];
             if (v13)
             {
               goto LABEL_5;
@@ -1504,8 +1504,8 @@ LABEL_5:
 LABEL_11:
 
 LABEL_19:
-      v24 = [v4 zoneName];
-      v25 = sub_100019104(@"ckksfetch", v24);
+      zoneName4 = [fetchingCopy zoneName];
+      v25 = sub_100019104(@"ckksfetch", zoneName4);
 
       if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
       {
@@ -1518,8 +1518,8 @@ LABEL_19:
 
     else
     {
-      v22 = [v4 zoneName];
-      v23 = sub_100019104(@"ckksfetch", v22);
+      zoneName5 = [fetchingCopy zoneName];
+      v23 = sub_100019104(@"ckksfetch", zoneName5);
 
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
       {
@@ -1534,8 +1534,8 @@ LABEL_23:
     goto LABEL_24;
   }
 
-  v20 = [(CKKSKeychainView *)self zoneName];
-  v9 = sub_100019104(@"ckksfetch", v20);
+  zoneName6 = [(CKKSKeychainView *)self zoneName];
+  v9 = sub_100019104(@"ckksfetch", zoneName6);
 
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -1549,7 +1549,7 @@ LABEL_24:
   return v21;
 }
 
-- (BOOL)zoneIsReadyForFetching:(id)a3
+- (BOOL)zoneIsReadyForFetching:(id)fetching
 {
   v10 = 0;
   v11 = &v10;
@@ -1560,10 +1560,10 @@ LABEL_24:
   v6[2] = sub_1001B5324;
   v6[3] = &unk_100344920;
   v9 = &v10;
-  v7 = self;
-  v3 = a3;
-  v8 = v3;
-  [(CKKSKeychainView *)v7 dispatchSyncWithReadOnlySQLTransaction:v6];
+  selfCopy = self;
+  fetchingCopy = fetching;
+  v8 = fetchingCopy;
+  [(CKKSKeychainView *)selfCopy dispatchSyncWithReadOnlySQLTransaction:v6];
   v4 = *(v11 + 24);
 
   _Block_object_dispose(&v10, 8);
@@ -1572,23 +1572,23 @@ LABEL_24:
 
 - (void)_onqueuePrioritizePriorityViews
 {
-  v3 = [(CKKSKeychainView *)self operationDependencies];
-  v4 = [v3 allPriorityViews];
+  operationDependencies = [(CKKSKeychainView *)self operationDependencies];
+  allPriorityViews = [operationDependencies allPriorityViews];
 
-  if ([v4 count])
+  if ([allPriorityViews count])
   {
-    v5 = [(CKKSKeychainView *)self operationDependencies];
-    [v5 limitOperationToPriorityViews];
+    operationDependencies2 = [(CKKSKeychainView *)self operationDependencies];
+    [operationDependencies2 limitOperationToPriorityViews];
 
-    v6 = [(CKKSKeychainView *)self zoneName];
-    v7 = sub_100019104(@"ckksviews", v6);
+    zoneName = [(CKKSKeychainView *)self zoneName];
+    v7 = sub_100019104(@"ckksviews", zoneName);
 
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [(CKKSKeychainView *)self operationDependencies];
-      v9 = [v8 views];
+      operationDependencies3 = [(CKKSKeychainView *)self operationDependencies];
+      views = [operationDependencies3 views];
       *buf = 138412290;
-      v29 = v9;
+      v29 = views;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Restricting operation to priority views: %@", buf, 0xCu);
     }
 
@@ -1596,10 +1596,10 @@ LABEL_24:
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v10 = [(CKKSKeychainView *)self operationDependencies];
-    v11 = [v10 allViews];
+    operationDependencies4 = [(CKKSKeychainView *)self operationDependencies];
+    allViews = [operationDependencies4 allViews];
 
-    v12 = [v11 countByEnumeratingWithState:&v23 objects:v27 count:16];
+    v12 = [allViews countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v12)
     {
       v13 = v12;
@@ -1610,14 +1610,14 @@ LABEL_24:
         {
           if (*v24 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(allViews);
           }
 
           v16 = *(*(&v23 + 1) + 8 * i);
-          v17 = [v16 priorityView];
-          v18 = [v16 launch];
-          v19 = v18;
-          if (v17)
+          priorityView = [v16 priorityView];
+          launch = [v16 launch];
+          v19 = launch;
+          if (priorityView)
           {
             v20 = @"priority-start";
           }
@@ -1627,31 +1627,31 @@ LABEL_24:
             v20 = @"priority-pause";
           }
 
-          [v18 addEvent:v20];
+          [launch addEvent:v20];
         }
 
-        v13 = [v11 countByEnumeratingWithState:&v23 objects:v27 count:16];
+        v13 = [allViews countByEnumeratingWithState:&v23 objects:v27 count:16];
       }
 
       while (v13);
     }
 
-    v21 = [(CKKSKeychainView *)self operationDependencies];
-    v22 = [v21 overallLaunch];
-    [v22 addEvent:@"priority-start"];
+    operationDependencies5 = [(CKKSKeychainView *)self operationDependencies];
+    overallLaunch = [operationDependencies5 overallLaunch];
+    [overallLaunch addEvent:@"priority-start"];
   }
 }
 
-- (id)viewStateForName:(id)a3
+- (id)viewStateForName:(id)name
 {
-  v4 = a3;
-  v5 = [(CKKSKeychainView *)self operationDependencies];
-  v6 = [v5 viewStateForName:v4];
+  nameCopy = name;
+  operationDependencies = [(CKKSKeychainView *)self operationDependencies];
+  v6 = [operationDependencies viewStateForName:nameCopy];
 
   return v6;
 }
 
-- (BOOL)haveTLKsLocally:(id)a3 error:(id *)a4
+- (BOOL)haveTLKsLocally:(id)locally error:(id *)error
 {
   v19 = 0;
   v20 = &v19;
@@ -1667,18 +1667,18 @@ LABEL_24:
   v10[1] = 3221225472;
   v10[2] = sub_1001B578C;
   v10[3] = &unk_100345070;
-  v6 = a3;
-  v11 = v6;
-  v12 = self;
+  locallyCopy = locally;
+  v11 = locallyCopy;
+  selfCopy = self;
   v13 = &v19;
   v14 = &v15;
   [(CKKSKeychainView *)self dispatchSyncWithReadOnlySQLTransaction:v10];
-  if (a4)
+  if (error)
   {
     v7 = v20[5];
     if (v7)
     {
-      *a4 = v7;
+      *error = v7;
     }
   }
 
@@ -1692,9 +1692,9 @@ LABEL_24:
 
 - (void)testDropPolicy
 {
-  v3 = [(CKKSKeychainView *)self operationDependencies];
+  operationDependencies = [(CKKSKeychainView *)self operationDependencies];
   v4 = +[NSSet set];
-  [v3 applyNewSyncingPolicy:0 viewStates:v4];
+  [operationDependencies applyNewSyncingPolicy:0 viewStates:v4];
 
   v5 = objc_alloc_init(CKKSCondition);
   [(CKKSKeychainView *)self setPolicyLoaded:v5];
@@ -1703,7 +1703,7 @@ LABEL_24:
 - (void)onqueueCreatePriorityViewsProcessedWatcher
 {
   v3 = [OctagonStateMultiStateArrivalWatcher alloc];
-  v4 = [(CKKSKeychainView *)self queue];
+  queue = [(CKKSKeychainView *)self queue];
   v15[0] = @"ready";
   v15[1] = @"handle_all_views";
   v5 = [NSArray arrayWithObjects:v15 count:2];
@@ -1715,42 +1715,42 @@ LABEL_24:
   v8 = [NSError errorWithDomain:@"CKKSErrorDomain" code:65 description:@"CKKS currently in error state"];
   v14[1] = v8;
   v9 = [NSDictionary dictionaryWithObjects:v14 forKeys:v13 count:2];
-  v10 = [(OctagonStateMultiStateArrivalWatcher *)v3 initNamed:@"wait-for-priority-view-processing" serialQueue:v4 states:v6 failStates:v9];
+  v10 = [(OctagonStateMultiStateArrivalWatcher *)v3 initNamed:@"wait-for-priority-view-processing" serialQueue:queue states:v6 failStates:v9];
   [(CKKSKeychainView *)self setPriorityViewsProcessed:v10];
 
-  v11 = [(CKKSKeychainView *)self stateMachine];
-  v12 = [(CKKSKeychainView *)self priorityViewsProcessed];
-  [v11 _onqueueRegisterMultiStateArrivalWatcher:v12 startTimeout:-1];
+  stateMachine = [(CKKSKeychainView *)self stateMachine];
+  priorityViewsProcessed = [(CKKSKeychainView *)self priorityViewsProcessed];
+  [stateMachine _onqueueRegisterMultiStateArrivalWatcher:priorityViewsProcessed startTimeout:-1];
 }
 
-- (BOOL)setCurrentSyncingPolicy:(id)a3 policyIsFresh:(BOOL)a4
+- (BOOL)setCurrentSyncingPolicy:(id)policy policyIsFresh:(BOOL)fresh
 {
-  v50 = a4;
-  v5 = a3;
-  v51 = v5;
-  if (v5)
+  freshCopy = fresh;
+  policyCopy = policy;
+  v51 = policyCopy;
+  if (policyCopy)
   {
-    v49 = [v5 version];
-    v48 = [NSString stringWithFormat:@"%llu", [v49 versionNumber]];
+    version = [policyCopy version];
+    v48 = [NSString stringWithFormat:@"%llu", [version versionNumber]];
     v6 = [AAFAnalyticsEventSecurity alloc];
     v68[0] = v48;
     v67[0] = kSecurityRTCFieldSyncingPolicy;
     v67[1] = kSecurityRTCFieldPolicyFreshness;
-    v7 = [NSNumber numberWithBool:v50];
+    v7 = [NSNumber numberWithBool:freshCopy];
     v68[1] = v7;
     v67[2] = kSecurityRTCFieldNumViews;
-    v8 = [v51 viewList];
-    v9 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v8 count]);
+    viewList = [v51 viewList];
+    v9 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [viewList count]);
     v68[2] = v9;
     v10 = [NSDictionary dictionaryWithObjects:v68 forKeys:v67 count:3];
-    v11 = [(CKKSKeychainView *)self operationDependencies];
-    v12 = [v11 activeAccount];
-    v13 = [v12 altDSID];
-    v14 = [(CKKSKeychainView *)self operationDependencies];
-    v15 = [v14 sendMetric];
-    v16 = [v6 initWithCKKSMetrics:v10 altDSID:v13 eventName:kSecurityRTCEventNameSyncingPolicySet testsAreEnabled:0 category:kSecurityRTCEventCategoryAccountDataAccessRecovery sendMetric:v15];
+    operationDependencies = [(CKKSKeychainView *)self operationDependencies];
+    activeAccount = [operationDependencies activeAccount];
+    altDSID = [activeAccount altDSID];
+    operationDependencies2 = [(CKKSKeychainView *)self operationDependencies];
+    sendMetric = [operationDependencies2 sendMetric];
+    v16 = [v6 initWithCKKSMetrics:v10 altDSID:altDSID eventName:kSecurityRTCEventNameSyncingPolicySet testsAreEnabled:0 category:kSecurityRTCEventCategoryAccountDataAccessRecovery sendMetric:sendMetric];
 
-    v17 = [v51 viewList];
+    viewList2 = [v51 viewList];
     v18 = sub_100019104(@"ckks-policy", 0);
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
@@ -1758,42 +1758,42 @@ LABEL_24:
       *buf = 138412802;
       *&buf[4] = v51;
       *&buf[12] = 2112;
-      if (v50)
+      if (freshCopy)
       {
         v19 = @"fresh";
       }
 
       *&buf[14] = v19;
       *&buf[22] = 2112;
-      v66 = v17;
+      v66 = viewList2;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "New syncing policy: %@ (%@) views: %@", buf, 0x20u);
     }
 
-    v20 = [(CKKSKeychainView *)self operationDependencies];
-    v21 = [v20 overallLaunch];
-    [v21 addEvent:@"syncing-policy-set"];
+    operationDependencies3 = [(CKKSKeychainView *)self operationDependencies];
+    overallLaunch = [operationDependencies3 overallLaunch];
+    [overallLaunch addEvent:@"syncing-policy-set"];
 
     v64[0] = CKKSSEViewPTA;
     v64[1] = CKKSSEViewPTC;
     v22 = [NSArray arrayWithObjects:v64 count:2];
     v23 = [NSSet setWithArray:v22];
 
-    v24 = [(CKKSKeychainView *)self viewAllowList];
+    viewAllowList = [(CKKSKeychainView *)self viewAllowList];
 
-    if (v24)
+    if (viewAllowList)
     {
       v25 = sub_100019104(@"ckks-policy", 0);
       if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
       {
-        v26 = [(CKKSKeychainView *)self viewAllowList];
+        viewAllowList2 = [(CKKSKeychainView *)self viewAllowList];
         *buf = 138412290;
-        *&buf[4] = v26;
+        *&buf[4] = viewAllowList2;
         _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "Intersecting view list with allow list: %@", buf, 0xCu);
       }
 
-      v27 = [v17 mutableCopy];
-      v28 = [(CKKSKeychainView *)self viewAllowList];
-      [v27 intersectSet:v28];
+      v27 = [viewList2 mutableCopy];
+      viewAllowList3 = [(CKKSKeychainView *)self viewAllowList];
+      [v27 intersectSet:viewAllowList3];
 
       v29 = v27;
       v30 = sub_100019104(@"ckks-policy", 0);
@@ -1805,8 +1805,8 @@ LABEL_24:
       }
 
       v31 = [v23 mutableCopy];
-      v32 = [(CKKSKeychainView *)self viewAllowList];
-      [v31 intersectSet:v32];
+      viewAllowList4 = [(CKKSKeychainView *)self viewAllowList];
+      [v31 intersectSet:viewAllowList4];
 
       v33 = v31;
       v34 = sub_100019104(@"ckks-policy", 0);
@@ -1821,7 +1821,7 @@ LABEL_24:
     else
     {
       v33 = v23;
-      v29 = v17;
+      v29 = viewList2;
     }
 
     *buf = 0;
@@ -1832,8 +1832,8 @@ LABEL_24:
     v61 = &v60;
     v62 = 0x2020000000;
     v63 = 0;
-    v37 = [(CKKSKeychainView *)self operationDependencies];
-    v38 = [v37 databaseProvider];
+    operationDependencies4 = [(CKKSKeychainView *)self operationDependencies];
+    databaseProvider = [operationDependencies4 databaseProvider];
     v53[0] = _NSConcreteStackBlock;
     v53[1] = 3221225472;
     v53[2] = sub_1001B6D58;
@@ -1846,16 +1846,16 @@ LABEL_24:
     v56 = v40;
     v57 = &v60;
     v58 = buf;
-    v59 = v50;
-    [v38 dispatchSyncWithReadOnlySQLTransaction:v53];
+    v59 = freshCopy;
+    [databaseProvider dispatchSyncWithReadOnlySQLTransaction:v53];
 
-    if (v50)
+    if (freshCopy)
     {
-      v41 = [(CKKSKeychainView *)self stateMachine];
-      [v41 handleFlag:@"policy_fresh"];
+      stateMachine = [(CKKSKeychainView *)self stateMachine];
+      [stateMachine handleFlag:@"policy_fresh"];
 
-      v42 = [(CKKSKeychainView *)self stateMachine];
-      [v42 handleFlag:@"process_incoming_queue"];
+      stateMachine2 = [(CKKSKeychainView *)self stateMachine];
+      [stateMachine2 handleFlag:@"process_incoming_queue"];
     }
 
     if ([(CKKSKeychainView *)self itemModificationsBeforePolicyLoaded])
@@ -1868,15 +1868,15 @@ LABEL_24:
       }
 
       [(CKKSKeychainView *)self setItemModificationsBeforePolicyLoaded:0];
-      v44 = [(CKKSKeychainView *)self stateMachine];
-      [v44 handleFlag:@"dropped_items"];
+      stateMachine3 = [(CKKSKeychainView *)self stateMachine];
+      [stateMachine3 handleFlag:@"dropped_items"];
     }
 
     v45 = +[CKKSViewManager manager];
     [v45 setupAnalytics];
 
-    v46 = [(CKKSKeychainView *)self policyLoaded];
-    [v46 fulfill];
+    policyLoaded = [(CKKSKeychainView *)self policyLoaded];
+    [policyLoaded fulfill];
 
     [v16 sendMetricWithResult:1 error:0];
     if (*(*&buf[8] + 24))
@@ -1892,7 +1892,7 @@ LABEL_24:
     _Block_object_dispose(&v60, 8);
     _Block_object_dispose(buf, 8);
 
-    v35 = v49;
+    v35 = version;
   }
 
   else
@@ -1912,44 +1912,44 @@ LABEL_24:
 
 - (TPSyncingPolicy)syncingPolicy
 {
-  v2 = [(CKKSKeychainView *)self operationDependencies];
-  v3 = [v2 syncingPolicy];
+  operationDependencies = [(CKKSKeychainView *)self operationDependencies];
+  syncingPolicy = [operationDependencies syncingPolicy];
 
-  return v3;
+  return syncingPolicy;
 }
 
 - (void)endTrustedOperation
 {
   v3 = [AAFAnalyticsEventSecurity alloc];
-  v4 = [(CKKSKeychainView *)self operationDependencies];
-  v5 = [v4 activeAccount];
-  v6 = [v5 altDSID];
+  operationDependencies = [(CKKSKeychainView *)self operationDependencies];
+  activeAccount = [operationDependencies activeAccount];
+  altDSID = [activeAccount altDSID];
   v7 = kSecurityRTCEventNameTrustLoss;
   v8 = kSecurityRTCEventCategoryAccountDataAccessRecovery;
-  v9 = [(CKKSKeychainView *)self operationDependencies];
-  v10 = [v3 initWithCKKSMetrics:&__NSDictionary0__struct altDSID:v6 eventName:v7 testsAreEnabled:0 category:v8 sendMetric:{objc_msgSend(v9, "sendMetric")}];
+  operationDependencies2 = [(CKKSKeychainView *)self operationDependencies];
+  v10 = [v3 initWithCKKSMetrics:&__NSDictionary0__struct altDSID:altDSID eventName:v7 testsAreEnabled:0 category:v8 sendMetric:{objc_msgSend(operationDependencies2, "sendMetric")}];
 
-  v11 = [(CKKSKeychainView *)self queue];
+  queue = [(CKKSKeychainView *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001B790C;
   block[3] = &unk_100346018;
   block[4] = self;
-  dispatch_sync(v11, block);
+  dispatch_sync(queue, block);
 
   [v10 sendMetricWithResult:1 error:0];
 }
 
-- (void)beginTrustedOperation:(id)a3 suggestTLKUpload:(id)a4 requestPolicyCheck:(id)a5
+- (void)beginTrustedOperation:(id)operation suggestTLKUpload:(id)upload requestPolicyCheck:(id)check
 {
-  v8 = a3;
-  v30 = a4;
-  v29 = a5;
+  operationCopy = operation;
+  uploadCopy = upload;
+  checkCopy = check;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v9 = [v8 countByEnumeratingWithState:&v35 objects:v41 count:16];
+  v9 = [operationCopy countByEnumeratingWithState:&v35 objects:v41 count:16];
   if (v9)
   {
     v10 = v9;
@@ -1961,7 +1961,7 @@ LABEL_24:
       {
         if (*v36 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(operationCopy);
         }
 
         [*(*(&v35 + 1) + 8 * v12) registerForPeerChangeUpdates:self];
@@ -1969,7 +1969,7 @@ LABEL_24:
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v35 objects:v41 count:16];
+      v10 = [operationCopy countByEnumeratingWithState:&v35 objects:v41 count:16];
     }
 
     while (v10);
@@ -1977,14 +1977,14 @@ LABEL_24:
 
   v28 = [AAFAnalyticsEventSecurity alloc];
   v39 = kSecurityRTCFieldTrustStatus;
-  v13 = [(CKKSKeychainView *)self trustStatus];
+  trustStatus = [(CKKSKeychainView *)self trustStatus];
   v14 = @"available";
-  if (v13 == 3)
+  if (trustStatus == 3)
   {
     v14 = @"no account";
   }
 
-  if (!v13)
+  if (!trustStatus)
   {
     v14 = @"unknown";
   }
@@ -1992,56 +1992,56 @@ LABEL_24:
   v15 = v14;
   v40 = v15;
   v16 = [NSDictionary dictionaryWithObjects:&v40 forKeys:&v39 count:1];
-  v17 = [(CKKSKeychainView *)self operationDependencies];
-  v18 = [v17 activeAccount];
-  v19 = [v18 altDSID];
+  operationDependencies = [(CKKSKeychainView *)self operationDependencies];
+  activeAccount = [operationDependencies activeAccount];
+  altDSID = [activeAccount altDSID];
   v20 = kSecurityRTCEventNameTrustGain;
   v21 = kSecurityRTCEventCategoryAccountDataAccessRecovery;
-  v22 = [(CKKSKeychainView *)self operationDependencies];
-  v23 = [v28 initWithCKKSMetrics:v16 altDSID:v19 eventName:v20 testsAreEnabled:0 category:v21 sendMetric:{objc_msgSend(v22, "sendMetric")}];
+  operationDependencies2 = [(CKKSKeychainView *)self operationDependencies];
+  v23 = [v28 initWithCKKSMetrics:v16 altDSID:altDSID eventName:v20 testsAreEnabled:0 category:v21 sendMetric:{objc_msgSend(operationDependencies2, "sendMetric")}];
 
-  v24 = [(CKKSKeychainView *)self queue];
+  queue = [(CKKSKeychainView *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001B7D28;
   block[3] = &unk_100344B18;
   block[4] = self;
-  v32 = v8;
-  v33 = v29;
-  v34 = v30;
-  v25 = v30;
-  v26 = v29;
-  v27 = v8;
-  dispatch_sync(v24, block);
+  v32 = operationCopy;
+  v33 = checkCopy;
+  v34 = uploadCopy;
+  v25 = uploadCopy;
+  v26 = checkCopy;
+  v27 = operationCopy;
+  dispatch_sync(queue, block);
 
   [v23 sendMetricWithResult:1 error:0];
 }
 
 - (void)handleCKLogout
 {
-  v3 = [(CKKSKeychainView *)self queue];
+  queue = [(CKKSKeychainView *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001B815C;
   block[3] = &unk_100346018;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(queue, block);
 
-  v4 = [(CKKSKeychainView *)self operationDependencies];
-  v5 = [v4 overallLaunch];
-  [v5 addEvent:@"ck-account-logout"];
+  operationDependencies = [(CKKSKeychainView *)self operationDependencies];
+  overallLaunch = [operationDependencies overallLaunch];
+  [overallLaunch addEvent:@"ck-account-logout"];
 
-  v6 = [(CKKSKeychainView *)self stateMachine];
-  [v6 handleFlag:@"ck_account_logged_out"];
+  stateMachine = [(CKKSKeychainView *)self stateMachine];
+  [stateMachine handleFlag:@"ck_account_logged_out"];
 
-  v7 = [(CKKSKeychainView *)self accountStateKnown];
-  [v7 fulfill];
+  accountStateKnown = [(CKKSKeychainView *)self accountStateKnown];
+  [accountStateKnown fulfill];
 }
 
 - (void)handleCKLogin
 {
-  v3 = [(CKKSKeychainView *)self zoneName];
-  v4 = sub_100019104(@"ckks", v3);
+  zoneName = [(CKKSKeychainView *)self zoneName];
+  v4 = sub_100019104(@"ckks", zoneName);
 
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -2051,39 +2051,39 @@ LABEL_24:
 
   if (sub_100019064())
   {
-    v5 = [(CKKSKeychainView *)self queue];
+    queue = [(CKKSKeychainView *)self queue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1001B84F4;
     block[3] = &unk_100346018;
     block[4] = self;
-    dispatch_sync(v5, block);
+    dispatch_sync(queue, block);
 
-    v6 = [(CKKSKeychainView *)self operationDependencies];
-    v7 = [v6 overallLaunch];
-    [v7 addEvent:@"ck-account-login"];
+    operationDependencies = [(CKKSKeychainView *)self operationDependencies];
+    overallLaunch = [operationDependencies overallLaunch];
+    [overallLaunch addEvent:@"ck-account-login"];
 
     v8 = [AAFAnalyticsEventSecurity alloc];
-    v9 = [(CKKSKeychainView *)self operationDependencies];
-    v10 = [v9 activeAccount];
-    v11 = [v10 altDSID];
+    operationDependencies2 = [(CKKSKeychainView *)self operationDependencies];
+    activeAccount = [operationDependencies2 activeAccount];
+    altDSID = [activeAccount altDSID];
     v12 = kSecurityRTCEventNameCKAccountLogin;
     v13 = kSecurityRTCEventCategoryAccountDataAccessRecovery;
-    v14 = [(CKKSKeychainView *)self operationDependencies];
-    v15 = [v8 initWithCKKSMetrics:&__NSDictionary0__struct altDSID:v11 eventName:v12 testsAreEnabled:0 category:v13 sendMetric:{objc_msgSend(v14, "sendMetric")}];
+    operationDependencies3 = [(CKKSKeychainView *)self operationDependencies];
+    v15 = [v8 initWithCKKSMetrics:&__NSDictionary0__struct altDSID:altDSID eventName:v12 testsAreEnabled:0 category:v13 sendMetric:{objc_msgSend(operationDependencies3, "sendMetric")}];
 
     [v15 sendMetricWithResult:1 error:0];
-    v16 = [(CKKSKeychainView *)self stateMachine];
-    [v16 handleFlag:@"ck_account_logged_in"];
+    stateMachine = [(CKKSKeychainView *)self stateMachine];
+    [stateMachine handleFlag:@"ck_account_logged_in"];
 
-    v17 = [(CKKSKeychainView *)self accountStateKnown];
-    [v17 fulfill];
+    accountStateKnown = [(CKKSKeychainView *)self accountStateKnown];
+    [accountStateKnown fulfill];
   }
 
   else
   {
-    v18 = [(CKKSKeychainView *)self zoneName];
-    v19 = sub_100019104(@"ckks", v18);
+    zoneName2 = [(CKKSKeychainView *)self zoneName];
+    v19 = sub_100019104(@"ckks", zoneName2);
 
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
@@ -2093,92 +2093,92 @@ LABEL_24:
   }
 }
 
-- (void)updateAccount:(id)a3 container:(id)a4
+- (void)updateAccount:(id)account container:(id)container
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 isPrimaryAccount];
-  if (v7 && (v8 & 1) == 0)
+  accountCopy = account;
+  containerCopy = container;
+  isPrimaryAccount = [accountCopy isPrimaryAccount];
+  if (containerCopy && (isPrimaryAccount & 1) == 0)
   {
     v9 = sub_100019104(@"ckks-account", 0);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [v7 options];
-      v11 = [v10 accountOverrideInfo];
-      v12 = [v11 accountID];
+      options = [containerCopy options];
+      accountOverrideInfo = [options accountOverrideInfo];
+      accountID = [accountOverrideInfo accountID];
       v26 = 138412546;
-      v27 = v6;
+      v27 = accountCopy;
       v28 = 2112;
-      v29 = v12;
+      v29 = accountID;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Switching CloudKit container for CKKS & CKKSAccountStateTracker for account(%@) associated with (%@) container", &v26, 0x16u);
     }
 
-    [(CKKSKeychainView *)self setContainer:v7];
-    v13 = [(CKKSKeychainView *)self zoneChangeFetcher];
-    [v13 setContainer:v7];
+    [(CKKSKeychainView *)self setContainer:containerCopy];
+    zoneChangeFetcher = [(CKKSKeychainView *)self zoneChangeFetcher];
+    [zoneChangeFetcher setContainer:containerCopy];
 
-    v14 = [(CKKSKeychainView *)self accountTracker];
-    [v14 setContainer:v7];
+    accountTracker = [(CKKSKeychainView *)self accountTracker];
+    [accountTracker setContainer:containerCopy];
 
-    v15 = [v7 privateCloudDatabase];
-    v16 = [(CKKSKeychainView *)self operationDependencies];
-    [v16 setCkdatabase:v15];
+    privateCloudDatabase = [containerCopy privateCloudDatabase];
+    operationDependencies = [(CKKSKeychainView *)self operationDependencies];
+    [operationDependencies setCkdatabase:privateCloudDatabase];
   }
 
-  v17 = [(CKKSKeychainView *)self operationDependencies];
-  v18 = [v17 activeAccount];
-  if (!v18)
+  operationDependencies2 = [(CKKSKeychainView *)self operationDependencies];
+  activeAccount = [operationDependencies2 activeAccount];
+  if (!activeAccount)
   {
     goto LABEL_11;
   }
 
-  v19 = v18;
-  v20 = [(CKKSKeychainView *)self operationDependencies];
-  v21 = [v20 activeAccount];
-  v22 = [v21 isEqual:v6];
+  v19 = activeAccount;
+  operationDependencies3 = [(CKKSKeychainView *)self operationDependencies];
+  activeAccount2 = [operationDependencies3 activeAccount];
+  v22 = [activeAccount2 isEqual:accountCopy];
 
   if ((v22 & 1) == 0)
   {
     v23 = sub_100019104(@"ckks-account", 0);
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
     {
-      v24 = [(CKKSKeychainView *)self operationDependencies];
-      v25 = [v24 activeAccount];
+      operationDependencies4 = [(CKKSKeychainView *)self operationDependencies];
+      activeAccount3 = [operationDependencies4 activeAccount];
       v26 = 138412546;
-      v27 = v6;
+      v27 = accountCopy;
       v28 = 2112;
-      v29 = v25;
+      v29 = activeAccount3;
       _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "Updating CKKS's idea of account to %@; old: %@", &v26, 0x16u);
     }
 
-    v17 = [(CKKSKeychainView *)self operationDependencies];
-    [v17 setActiveAccount:v6];
+    operationDependencies2 = [(CKKSKeychainView *)self operationDependencies];
+    [operationDependencies2 setActiveAccount:accountCopy];
 LABEL_11:
   }
 }
 
-- (void)cloudkitAccountStateChange:(id)a3 to:(id)a4
+- (void)cloudkitAccountStateChange:(id)change to:(id)to
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CKKSKeychainView *)self zoneName];
-  v9 = sub_100019104(@"ckkszone", v8);
+  changeCopy = change;
+  toCopy = to;
+  zoneName = [(CKKSKeychainView *)self zoneName];
+  v9 = sub_100019104(@"ckkszone", zoneName);
 
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *v27 = 138412546;
-    *&v27[4] = v6;
+    *&v27[4] = changeCopy;
     v28 = 2112;
-    v29 = v7;
+    v29 = toCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Received notification of CloudKit account status change, moving from %@ to %@", v27, 0x16u);
   }
 
-  v10 = [(CKKSKeychainView *)self accountStatusFromCKAccountInfo:v6];
-  v11 = [(CKKSKeychainView *)self accountStatusFromCKAccountInfo:v7];
+  v10 = [(CKKSKeychainView *)self accountStatusFromCKAccountInfo:changeCopy];
+  v11 = [(CKKSKeychainView *)self accountStatusFromCKAccountInfo:toCopy];
   if (v10 == v11)
   {
-    v12 = [(CKKSKeychainView *)self zoneName];
-    v13 = sub_100019104(@"ckkszone", v12);
+    zoneName2 = [(CKKSKeychainView *)self zoneName];
+    v13 = sub_100019104(@"ckkszone", zoneName2);
 
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
@@ -2208,8 +2208,8 @@ LABEL_11:
     {
       if (v11 == 1)
       {
-        v16 = [(CKKSKeychainView *)self zoneName];
-        v17 = sub_100019104(@"ckkszone", v16);
+        zoneName3 = [(CKKSKeychainView *)self zoneName];
+        v17 = sub_100019104(@"ckkszone", zoneName3);
 
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
         {
@@ -2218,13 +2218,13 @@ LABEL_11:
         }
 
         [(CKKSKeychainView *)self handleCKLogin];
-        v18 = [(CKKSKeychainView *)self accountLoggedInDependency];
+        accountLoggedInDependency = [(CKKSKeychainView *)self accountLoggedInDependency];
 
-        if (v18)
+        if (accountLoggedInDependency)
         {
-          v19 = [(CKKSKeychainView *)self operationQueue];
-          v20 = [(CKKSKeychainView *)self accountLoggedInDependency];
-          [v19 addOperation:v20];
+          operationQueue = [(CKKSKeychainView *)self operationQueue];
+          accountLoggedInDependency2 = [(CKKSKeychainView *)self accountLoggedInDependency];
+          [operationQueue addOperation:accountLoggedInDependency2];
 
           [(CKKSKeychainView *)self setAccountLoggedInDependency:0];
         }
@@ -2233,8 +2233,8 @@ LABEL_11:
       goto LABEL_26;
     }
 
-    v21 = [(CKKSKeychainView *)self zoneName];
-    v22 = sub_100019104(@"ckkszone", v21);
+    zoneName4 = [(CKKSKeychainView *)self zoneName];
+    v22 = sub_100019104(@"ckkszone", zoneName4);
 
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
@@ -2247,8 +2247,8 @@ LABEL_22:
 
   else
   {
-    v24 = [(CKKSKeychainView *)self zoneName];
-    v22 = sub_100019104(@"ckkszone", v24);
+    zoneName5 = [(CKKSKeychainView *)self zoneName];
+    v22 = sub_100019104(@"ckkszone", zoneName5);
 
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
@@ -2258,9 +2258,9 @@ LABEL_22:
     }
   }
 
-  v25 = [(CKKSKeychainView *)self accountLoggedInDependency];
+  accountLoggedInDependency3 = [(CKKSKeychainView *)self accountLoggedInDependency];
 
-  if (!v25)
+  if (!accountLoggedInDependency3)
   {
     v26 = [(CKKSKeychainView *)self createAccountLoggedInDependency:@"CloudKit account logged in again."];
     [(CKKSKeychainView *)self setAccountLoggedInDependency:v26];
@@ -2270,13 +2270,13 @@ LABEL_22:
 LABEL_26:
 }
 
-- (int64_t)accountStatusFromCKAccountInfo:(id)a3
+- (int64_t)accountStatusFromCKAccountInfo:(id)info
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  infoCopy = info;
+  v4 = infoCopy;
+  if (infoCopy)
   {
-    if ([v3 accountStatus] == 1 && (objc_msgSend(v4, "hasValidCredentials") & 1) != 0)
+    if ([infoCopy accountStatus] == 1 && (objc_msgSend(v4, "hasValidCredentials") & 1) != 0)
     {
       v5 = 1;
     }
@@ -2295,16 +2295,16 @@ LABEL_26:
   return v5;
 }
 
-- (id)createAccountLoggedInDependency:(id)a3
+- (id)createAccountLoggedInDependency:(id)dependency
 {
-  v4 = a3;
+  dependencyCopy = dependency;
   objc_initWeak(&location, self);
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1001B8DD4;
   v8[3] = &unk_100344D38;
   objc_copyWeak(&v10, &location);
-  v5 = v4;
+  v5 = dependencyCopy;
   v9 = v5;
   v6 = [CKKSResultOperation named:@"account-logged-in-dependency" withBlock:v8];
   [v6 setDescriptionErrorCode:3];
@@ -2317,53 +2317,53 @@ LABEL_26:
 
 - (void)beginCloudKitOperation
 {
-  v4 = [(CKKSKeychainView *)self accountTracker];
-  v3 = [v4 registerForNotificationsOfCloudKitAccountStatusChange:self];
+  accountTracker = [(CKKSKeychainView *)self accountTracker];
+  v3 = [accountTracker registerForNotificationsOfCloudKitAccountStatusChange:self];
 }
 
 - (BOOL)insideSQLTransaction
 {
-  v2 = [(CKKSKeychainView *)self operationDependencies];
-  v3 = [v2 databaseProvider];
-  v4 = [v3 insideSQLTransaction];
+  operationDependencies = [(CKKSKeychainView *)self operationDependencies];
+  databaseProvider = [operationDependencies databaseProvider];
+  insideSQLTransaction = [databaseProvider insideSQLTransaction];
 
-  return v4;
+  return insideSQLTransaction;
 }
 
-- (void)dispatchSyncWithReadOnlySQLTransaction:(id)a3
+- (void)dispatchSyncWithReadOnlySQLTransaction:(id)transaction
 {
-  v4 = a3;
-  v6 = [(CKKSKeychainView *)self operationDependencies];
-  v5 = [v6 databaseProvider];
-  [v5 dispatchSyncWithReadOnlySQLTransaction:v4];
+  transactionCopy = transaction;
+  operationDependencies = [(CKKSKeychainView *)self operationDependencies];
+  databaseProvider = [operationDependencies databaseProvider];
+  [databaseProvider dispatchSyncWithReadOnlySQLTransaction:transactionCopy];
 }
 
-- (void)dispatchSyncWithSQLTransaction:(id)a3
+- (void)dispatchSyncWithSQLTransaction:(id)transaction
 {
-  v4 = a3;
-  v6 = [(CKKSKeychainView *)self operationDependencies];
-  v5 = [v6 databaseProvider];
-  [v5 dispatchSyncWithSQLTransaction:v4];
+  transactionCopy = transaction;
+  operationDependencies = [(CKKSKeychainView *)self operationDependencies];
+  databaseProvider = [operationDependencies databaseProvider];
+  [databaseProvider dispatchSyncWithSQLTransaction:transactionCopy];
 }
 
-- (BOOL)_onqueueResetAllInflightOQE:(id *)a3
+- (BOOL)_onqueueResetAllInflightOQE:(id *)e
 {
-  v4 = self;
-  v5 = [(CKKSKeychainView *)self queue];
-  dispatch_assert_queue_V2(v5);
+  selfCopy = self;
+  queue = [(CKKSKeychainView *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v50 = 0u;
   v48 = 0u;
   v49 = 0u;
   v47 = 0u;
-  v6 = [(CKKSKeychainView *)v4 operationDependencies];
-  v7 = [v6 allCKKSManagedViews];
+  operationDependencies = [(CKKSKeychainView *)selfCopy operationDependencies];
+  allCKKSManagedViews = [operationDependencies allCKKSManagedViews];
 
-  v8 = [v7 countByEnumeratingWithState:&v47 objects:v56 count:16];
+  v8 = [allCKKSManagedViews countByEnumeratingWithState:&v47 objects:v56 count:16];
   if (v8)
   {
-    v39 = a3;
-    v40 = v7;
+    eCopy = e;
+    v40 = allCKKSManagedViews;
     v9 = *v48;
     p_info = &OBJC_METACLASS___CKKSMemoryKeyCache.info;
     v11 = @"inflight";
@@ -2376,7 +2376,7 @@ LABEL_26:
       {
         if (*v48 != v9)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(allCKKSManagedViews);
         }
 
         v38 = v12;
@@ -2384,19 +2384,19 @@ LABEL_26:
         while (1)
         {
           v14 = p_info + 276;
-          v15 = v4;
-          v16 = [(CKKSKeychainView *)v4 operationDependencies];
-          v17 = [v16 contextID];
-          v18 = [v13 zoneID];
+          v15 = selfCopy;
+          operationDependencies2 = [(CKKSKeychainView *)selfCopy operationDependencies];
+          contextID = [operationDependencies2 contextID];
+          zoneID = [v13 zoneID];
           v46 = 0;
           v19 = v11;
-          v20 = [v14 fetch:100 state:v11 contextID:v17 zoneID:v18 error:&v46];
+          v20 = [v14 fetch:100 state:v11 contextID:contextID zoneID:zoneID error:&v46];
           v21 = v46;
 
           if (v21)
           {
-            v33 = [(CKKSKeychainView *)v15 zoneName];
-            v34 = sub_100019104(@"ckks", v33);
+            zoneName = [(CKKSKeychainView *)v15 zoneName];
+            v34 = sub_100019104(@"ckks", zoneName);
 
             if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
             {
@@ -2405,11 +2405,11 @@ LABEL_26:
               _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_ERROR, "Error finding inflight outgoing queue records: %@", buf, 0xCu);
             }
 
-            v7 = v40;
-            if (v39)
+            allCKKSManagedViews = v40;
+            if (eCopy)
             {
               v35 = v21;
-              *v39 = v21;
+              *eCopy = v21;
             }
 
 LABEL_26:
@@ -2449,8 +2449,8 @@ LABEL_26:
                 if (v27)
                 {
                   v21 = v27;
-                  v29 = [(CKKSKeychainView *)v15 zoneName];
-                  v30 = sub_100019104(@"ckks", v29);
+                  zoneName2 = [(CKKSKeychainView *)v15 zoneName];
+                  v30 = sub_100019104(@"ckks", zoneName2);
 
                   if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
                   {
@@ -2461,11 +2461,11 @@ LABEL_26:
                     _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_ERROR, "Error fixing up inflight OQE(%@): %@", buf, 0x16u);
                   }
 
-                  v7 = v40;
-                  if (v39)
+                  allCKKSManagedViews = v40;
+                  if (eCopy)
                   {
                     v31 = v21;
-                    *v39 = v21;
+                    *eCopy = v21;
                   }
 
                   goto LABEL_26;
@@ -2484,15 +2484,15 @@ LABEL_26:
 
           p_info = (&OBJC_METACLASS___CKKSMemoryKeyCache + 32);
           v11 = v19;
-          v4 = v15;
+          selfCopy = v15;
         }
 
         v12 = v38 + 1;
-        v7 = v40;
+        allCKKSManagedViews = v40;
         v9 = v36;
         p_info = (&OBJC_METACLASS___CKKSMemoryKeyCache + 32);
         v11 = v19;
-        v4 = v15;
+        selfCopy = v15;
         if ((v38 + 1) != v37)
         {
           continue;
@@ -2521,8 +2521,8 @@ LABEL_28:
 - (id)resyncLocal
 {
   v3 = [CKKSLocalSynchronizeOperation alloc];
-  v4 = [(CKKSKeychainView *)self operationDependencies];
-  v5 = [(CKKSLocalSynchronizeOperation *)v3 initWithCKKSKeychainView:self operationDependencies:v4];
+  operationDependencies = [(CKKSKeychainView *)self operationDependencies];
+  v5 = [(CKKSLocalSynchronizeOperation *)v3 initWithCKKSKeychainView:self operationDependencies:operationDependencies];
 
   [(CKKSKeychainView *)self scheduleOperation:v5];
 
@@ -2532,8 +2532,8 @@ LABEL_28:
 - (id)resyncWithCloud
 {
   v3 = [CKKSSynchronizeOperation alloc];
-  v4 = [(CKKSKeychainView *)self operationDependencies];
-  v5 = [(CKKSSynchronizeOperation *)v3 initWithCKKSKeychainView:self dependencies:v4];
+  operationDependencies = [(CKKSKeychainView *)self operationDependencies];
+  v5 = [(CKKSSynchronizeOperation *)v3 initWithCKKSKeychainView:self dependencies:operationDependencies];
 
   [(CKKSKeychainView *)self scheduleOperation:v5];
 
@@ -2542,37 +2542,37 @@ LABEL_28:
 
 - (void)xpc24HrNotification
 {
-  v2 = [(CKKSKeychainView *)self stateMachine];
-  [v2 handleFlag:@"24_hr_notification"];
+  stateMachine = [(CKKSKeychainView *)self stateMachine];
+  [stateMachine handleFlag:@"24_hr_notification"];
 }
 
-- (void)initialSyncStatus:(id)a3 reply:(id)a4
+- (void)initialSyncStatus:(id)status reply:(id)reply
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1001B9644;
   v7[3] = &unk_100343D18;
-  v8 = self;
-  v9 = a3;
-  v10 = a4;
-  v5 = v10;
-  v6 = v9;
-  [(CKKSKeychainView *)v8 dispatchSyncWithReadOnlySQLTransaction:v7];
+  selfCopy = self;
+  statusCopy = status;
+  replyCopy = reply;
+  v5 = replyCopy;
+  v6 = statusCopy;
+  [(CKKSKeychainView *)selfCopy dispatchSyncWithReadOnlySQLTransaction:v7];
 }
 
-- (void)pcsMirrorKeysForServices:(id)a3 reply:(id)a4
+- (void)pcsMirrorKeysForServices:(id)services reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  servicesCopy = services;
+  replyCopy = reply;
   objc_initWeak(&location, self);
   v11 = _NSConcreteStackBlock;
   v12 = 3221225472;
   v13 = sub_1001B985C;
   v14 = &unk_100343EC8;
   objc_copyWeak(&v17, &location);
-  v8 = v6;
+  v8 = servicesCopy;
   v15 = v8;
-  v9 = v7;
+  v9 = replyCopy;
   v16 = v9;
   v10 = [CKKSResultOperation named:@"pcs-mirror-keys" withBlock:&v11];
   [(CKKSKeychainView *)self scheduleOperation:v10, v11, v12, v13, v14];
@@ -2581,30 +2581,30 @@ LABEL_28:
   objc_destroyWeak(&location);
 }
 
-- (void)toggleHavoc:(id)a3
+- (void)toggleHavoc:(id)havoc
 {
-  v4 = a3;
+  havocCopy = havoc;
   v7 = 0;
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v5 = [(CKKSKeychainView *)self queue];
+  queue = [(CKKSKeychainView *)self queue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1001B9C24;
   v6[3] = &unk_100344E90;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v5, v6);
+  dispatch_sync(queue, v6);
 
-  (*(v4 + 2))(v4, *(v8 + 24), 0);
+  (*(havocCopy + 2))(havocCopy, *(v8 + 24), 0);
   _Block_object_dispose(&v7, 8);
 }
 
 - (void)scanLocalItems
 {
-  v2 = [(CKKSKeychainView *)self stateMachine];
-  [v2 handleFlag:@"dropped_items"];
+  stateMachine = [(CKKSKeychainView *)self stateMachine];
+  [stateMachine handleFlag:@"dropped_items"];
 }
 
 - (id)rpcWaitForPriorityViewProcessing
@@ -2615,14 +2615,14 @@ LABEL_28:
   v10 = sub_1001B1C08;
   v11 = sub_1001B1C18;
   v12 = 0;
-  v3 = [(CKKSKeychainView *)self queue];
+  queue = [(CKKSKeychainView *)self queue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1001B9FF4;
   v6[3] = &unk_100344E90;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(queue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -2630,9 +2630,9 @@ LABEL_28:
   return v4;
 }
 
-- (id)rpcProcessIncomingQueue:(id)a3 errorOnClassAFailure:(BOOL)a4
+- (id)rpcProcessIncomingQueue:(id)queue errorOnClassAFailure:(BOOL)failure
 {
-  if (a4)
+  if (failure)
   {
     v24 = @"become_ready";
     v5 = +[OctagonStateTransitionPathStep success];
@@ -2659,32 +2659,32 @@ LABEL_28:
   v9 = [NSDictionary dictionaryWithObjects:&v19 forKeys:&v18 count:1];
   v10 = [OctagonStateTransitionPath pathFromDictionary:v9];
   v11 = [OctagonStateTransitionWatcher alloc];
-  v12 = [(CKKSKeychainView *)self stateMachine];
-  v13 = [(OctagonStateTransitionWatcher *)v11 initNamed:@"process-incoming-queue" stateMachine:v12 path:v10 initialRequest:0];
+  stateMachine = [(CKKSKeychainView *)self stateMachine];
+  v13 = [(OctagonStateTransitionWatcher *)v11 initNamed:@"process-incoming-queue" stateMachine:stateMachine path:v10 initialRequest:0];
 
-  v14 = [(CKKSKeychainView *)self stateMachine];
-  [v14 registerStateTransitionWatcher:v13 startTimeout:300000000000];
+  stateMachine2 = [(CKKSKeychainView *)self stateMachine];
+  [stateMachine2 registerStateTransitionWatcher:v13 startTimeout:300000000000];
 
-  v15 = [(CKKSKeychainView *)self stateMachine];
-  [v15 handleFlag:@"process_incoming_queue"];
+  stateMachine3 = [(CKKSKeychainView *)self stateMachine];
+  [stateMachine3 handleFlag:@"process_incoming_queue"];
 
-  v16 = [v13 result];
+  result = [v13 result];
 
-  return v16;
+  return result;
 }
 
-- (id)rpcFetchAndProcessIncomingQueue:(id)a3 because:(id)a4 errorOnClassAFailure:(BOOL)a5
+- (id)rpcFetchAndProcessIncomingQueue:(id)queue because:(id)because errorOnClassAFailure:(BOOL)failure
 {
-  v5 = a5;
-  v37 = a3;
-  v38 = a4;
+  failureCopy = failure;
+  queueCopy = queue;
+  becauseCopy = because;
   v48 = 0;
-  LOBYTE(a4) = [(CKKSKeychainView *)self waitForPolicy:5000000000 error:&v48];
+  LOBYTE(because) = [(CKKSKeychainView *)self waitForPolicy:5000000000 error:&v48];
   v8 = v48;
   v36 = v8;
-  if (a4)
+  if (because)
   {
-    if (v5)
+    if (failureCopy)
     {
       v73 = @"become_ready";
       v9 = +[OctagonStateTransitionPathStep success];
@@ -2741,20 +2741,20 @@ LABEL_28:
 
     v23 = [OctagonStateTransitionPath pathFromDictionary:v33];
     v24 = [OctagonStateTransitionWatcher alloc];
-    v25 = [(CKKSKeychainView *)self stateMachine];
-    v26 = [(OctagonStateTransitionWatcher *)v24 initNamed:@"fetch-and-process" stateMachine:v25 path:v23 initialRequest:0];
+    stateMachine = [(CKKSKeychainView *)self stateMachine];
+    v26 = [(OctagonStateTransitionWatcher *)v24 initNamed:@"fetch-and-process" stateMachine:stateMachine path:v23 initialRequest:0];
 
-    v27 = [(CKKSKeychainView *)self stateMachine];
-    [v27 registerStateTransitionWatcher:v26 startTimeout:300000000000];
+    stateMachine2 = [(CKKSKeychainView *)self stateMachine];
+    [stateMachine2 registerStateTransitionWatcher:v26 startTimeout:300000000000];
 
-    v28 = [(CKKSKeychainView *)self queue];
+    queue = [(CKKSKeychainView *)self queue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1001BAD1C;
     block[3] = &unk_100343E38;
     block[4] = self;
-    v45 = v38;
-    dispatch_sync(v28, block);
+    v45 = becauseCopy;
+    dispatch_sync(queue, block);
 
     objc_initWeak(&location, self);
     v39[0] = _NSConcreteStackBlock;
@@ -2764,13 +2764,13 @@ LABEL_28:
     objc_copyWeak(&v42, &location);
     v29 = v26;
     v40 = v29;
-    v41 = v37;
+    v41 = queueCopy;
     v10 = [CKKSResultOperation named:@"check-keys" withBlockTakingSelf:v39];
-    v30 = [v29 result];
-    [v10 addDependency:v30];
+    result = [v29 result];
+    [v10 addDependency:result];
 
-    v31 = [(CKKSKeychainView *)self operationQueue];
-    [v31 addOperation:v10];
+    operationQueue = [(CKKSKeychainView *)self operationQueue];
+    [operationQueue addOperation:v10];
 
     objc_destroyWeak(&v42);
     objc_destroyWeak(&location);
@@ -2786,8 +2786,8 @@ LABEL_28:
     v46[3] = &unk_100343BA0;
     v47 = v8;
     v10 = [CKKSResultOperation named:@"fail" withBlockTakingSelf:v46];
-    v11 = [(CKKSKeychainView *)self operationQueue];
-    [v11 addOperation:v10];
+    operationQueue2 = [(CKKSKeychainView *)self operationQueue];
+    [operationQueue2 addOperation:v10];
 
     v12 = v47;
   }
@@ -2795,9 +2795,9 @@ LABEL_28:
   return v10;
 }
 
-- (id)rpcFetchBecause:(id)a3
+- (id)rpcFetchBecause:(id)because
 {
-  v4 = a3;
+  becauseCopy = because;
   v38 = 0;
   v5 = [(CKKSKeychainView *)self waitForPolicy:5000000000 error:&v38];
   v6 = v38;
@@ -2806,7 +2806,7 @@ LABEL_28:
   {
     v53 = @"begin_fetch";
     v30 = v6;
-    v31 = v4;
+    v31 = becauseCopy;
     v51 = @"fetching";
     v49[0] = @"fetchcomplete";
     v29 = +[OctagonStateTransitionPathStep success];
@@ -2836,22 +2836,22 @@ LABEL_28:
     v15 = [NSDictionary dictionaryWithObjects:&v54 forKeys:&v53 count:1];
     v16 = [OctagonStateTransitionPath pathFromDictionary:v15];
 
-    v4 = v31;
+    becauseCopy = v31;
     v17 = [OctagonStateTransitionWatcher alloc];
-    v18 = [(CKKSKeychainView *)self stateMachine];
-    v19 = [(OctagonStateTransitionWatcher *)v17 initNamed:@"rpc-fetch" stateMachine:v18 path:v16 initialRequest:0];
+    stateMachine = [(CKKSKeychainView *)self stateMachine];
+    v19 = [(OctagonStateTransitionWatcher *)v17 initNamed:@"rpc-fetch" stateMachine:stateMachine path:v16 initialRequest:0];
 
-    v20 = [(CKKSKeychainView *)self stateMachine];
-    [v20 registerStateTransitionWatcher:v19 startTimeout:300000000000];
+    stateMachine2 = [(CKKSKeychainView *)self stateMachine];
+    [stateMachine2 registerStateTransitionWatcher:v19 startTimeout:300000000000];
 
-    v21 = [(CKKSKeychainView *)self queue];
+    queue = [(CKKSKeychainView *)self queue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1001BB678;
     block[3] = &unk_100343E38;
     block[4] = self;
     v35 = v31;
-    dispatch_sync(v21, block);
+    dispatch_sync(queue, block);
 
     v32[0] = _NSConcreteStackBlock;
     v32[1] = 3221225472;
@@ -2860,11 +2860,11 @@ LABEL_28:
     v33 = v19;
     v22 = v19;
     v23 = [CKKSResultOperation named:@"check-keys" withBlockTakingSelf:v32];
-    v24 = [v22 result];
-    [v23 addDependency:v24];
+    result = [v22 result];
+    [v23 addDependency:result];
 
-    v25 = [(CKKSKeychainView *)self operationQueue];
-    [v25 addOperation:v23];
+    operationQueue = [(CKKSKeychainView *)self operationQueue];
+    [operationQueue addOperation:v23];
 
     v7 = v30;
   }
@@ -2877,8 +2877,8 @@ LABEL_28:
     v36[3] = &unk_100343BA0;
     v37 = v6;
     v23 = [CKKSResultOperation named:@"fail" withBlockTakingSelf:v36];
-    v26 = [(CKKSKeychainView *)self operationQueue];
-    [v26 addOperation:v23];
+    operationQueue2 = [(CKKSKeychainView *)self operationQueue];
+    [operationQueue2 addOperation:v23];
 
     v16 = v37;
   }
@@ -2888,61 +2888,61 @@ LABEL_28:
 
 - (id)resultsOfNextProcessIncomingQueueOperation
 {
-  v3 = [(CKKSKeychainView *)self resultsOfNextIncomingQueueOperationOperation];
-  if (!v3 || (v4 = v3, -[CKKSKeychainView resultsOfNextIncomingQueueOperationOperation](self, "resultsOfNextIncomingQueueOperationOperation"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 isPending], v5, v4, (v6 & 1) == 0))
+  resultsOfNextIncomingQueueOperationOperation = [(CKKSKeychainView *)self resultsOfNextIncomingQueueOperationOperation];
+  if (!resultsOfNextIncomingQueueOperationOperation || (v4 = resultsOfNextIncomingQueueOperationOperation, -[CKKSKeychainView resultsOfNextIncomingQueueOperationOperation](self, "resultsOfNextIncomingQueueOperationOperation"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 isPending], v5, v4, (v6 & 1) == 0))
   {
     v7 = [NSString stringWithFormat:@"wait-for-next-incoming-queue-operation"];
     v8 = [CKKSResultOperation named:v7 withBlock:&stru_100343E58];
     [(CKKSKeychainView *)self setResultsOfNextIncomingQueueOperationOperation:v8];
   }
 
-  v9 = [(CKKSKeychainView *)self resultsOfNextIncomingQueueOperationOperation];
+  resultsOfNextIncomingQueueOperationOperation2 = [(CKKSKeychainView *)self resultsOfNextIncomingQueueOperationOperation];
 
-  return v9;
+  return resultsOfNextIncomingQueueOperationOperation2;
 }
 
-- (void)_onqueueProcessOutgoingQueue:(id)a3 priorityRush:(BOOL)a4
+- (void)_onqueueProcessOutgoingQueue:(id)queue priorityRush:(BOOL)rush
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(CKKSKeychainView *)self queue];
-  dispatch_assert_queue_V2(v7);
+  rushCopy = rush;
+  queueCopy = queue;
+  queue = [(CKKSKeychainView *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  if (v6)
+  if (queueCopy)
   {
-    v8 = [(CKKSKeychainView *)self operationDependencies];
-    v9 = [v8 currentOutgoingQueueOperationGroup];
+    operationDependencies = [(CKKSKeychainView *)self operationDependencies];
+    currentOutgoingQueueOperationGroup = [operationDependencies currentOutgoingQueueOperationGroup];
 
-    if (v9)
+    if (currentOutgoingQueueOperationGroup)
     {
-      v10 = [(CKKSKeychainView *)self zoneName];
-      v11 = sub_100019104(@"ckks", v10);
+      zoneName = [(CKKSKeychainView *)self zoneName];
+      operationDependencies3 = sub_100019104(@"ckks", zoneName);
 
-      if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+      if (os_log_type_enabled(operationDependencies3, OS_LOG_TYPE_ERROR))
       {
-        v12 = [v6 name];
-        v13 = [(CKKSKeychainView *)self operationDependencies];
-        v14 = [v13 ckoperationGroup];
-        v15 = [v14 name];
+        name = [queueCopy name];
+        operationDependencies2 = [(CKKSKeychainView *)self operationDependencies];
+        ckoperationGroup = [operationDependencies2 ckoperationGroup];
+        name2 = [ckoperationGroup name];
         v18 = 138412546;
-        v19 = v12;
+        v19 = name;
         v20 = 2112;
-        v21 = v15;
-        _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_ERROR, "Throwing away CKOperationGroup(%@) in favor of (%@)", &v18, 0x16u);
+        v21 = name2;
+        _os_log_impl(&_mh_execute_header, operationDependencies3, OS_LOG_TYPE_ERROR, "Throwing away CKOperationGroup(%@) in favor of (%@)", &v18, 0x16u);
       }
     }
 
     else
     {
-      v11 = [(CKKSKeychainView *)self operationDependencies];
-      [v11 setCurrentOutgoingQueueOperationGroup:v6];
+      operationDependencies3 = [(CKKSKeychainView *)self operationDependencies];
+      [operationDependencies3 setCurrentOutgoingQueueOperationGroup:queueCopy];
     }
   }
 
-  v16 = [(CKKSKeychainView *)self stateMachine];
-  [v16 _onqueueHandleFlag:@"process_outgoing_queue"];
+  stateMachine = [(CKKSKeychainView *)self stateMachine];
+  [stateMachine _onqueueHandleFlag:@"process_outgoing_queue"];
 
-  if (v4)
+  if (rushCopy)
   {
     [(CKKSKeychainView *)self outgoingQueuePriorityOperationScheduler];
   }
@@ -2955,31 +2955,31 @@ LABEL_28:
   [v17 trigger];
 }
 
-- (id)rpcProcessOutgoingQueue:(id)a3 operationGroup:(id)a4
+- (id)rpcProcessOutgoingQueue:(id)queue operationGroup:(id)group
 {
-  v6 = a3;
-  v7 = a4;
+  queueCopy = queue;
+  groupCopy = group;
   v30 = 0;
   v31 = &v30;
   v32 = 0x3032000000;
   v33 = sub_1001B1C08;
   v34 = sub_1001B1C18;
   v35 = 0;
-  v8 = [(CKKSKeychainView *)self queue];
+  queue = [(CKKSKeychainView *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001BBE38;
   block[3] = &unk_100344920;
   block[4] = self;
   v29 = &v30;
-  v9 = v6;
+  v9 = queueCopy;
   v28 = v9;
-  dispatch_sync(v8, block);
+  dispatch_sync(queue, block);
 
   if (v31[5])
   {
     [(CKKSKeychainView *)self scheduleOperation:?];
-    v10 = v31[5];
+    result = v31[5];
   }
 
   else
@@ -2994,38 +2994,38 @@ LABEL_28:
 
     v14 = [OctagonStateTransitionPath pathFromDictionary:v13];
     v15 = [OctagonStateTransitionWatcher alloc];
-    v16 = [(CKKSKeychainView *)self stateMachine];
-    v17 = [(OctagonStateTransitionWatcher *)v15 initNamed:@"push" stateMachine:v16 path:v14 initialRequest:0];
+    stateMachine = [(CKKSKeychainView *)self stateMachine];
+    v17 = [(OctagonStateTransitionWatcher *)v15 initNamed:@"push" stateMachine:stateMachine path:v14 initialRequest:0];
 
-    v18 = [(CKKSKeychainView *)self stateMachine];
-    [v18 registerStateTransitionWatcher:v17 startTimeout:300000000000];
+    stateMachine2 = [(CKKSKeychainView *)self stateMachine];
+    [stateMachine2 registerStateTransitionWatcher:v17 startTimeout:300000000000];
 
-    v19 = [(CKKSKeychainView *)self queue];
+    queue2 = [(CKKSKeychainView *)self queue];
     v21 = _NSConcreteStackBlock;
     v22 = 3221225472;
     v23 = sub_1001BC114;
     v24 = &unk_100343E38;
-    v25 = self;
-    v26 = v7;
-    dispatch_sync(v19, &v21);
+    selfCopy = self;
+    v26 = groupCopy;
+    dispatch_sync(queue2, &v21);
 
-    v10 = [v17 result];
+    result = [v17 result];
   }
 
   _Block_object_dispose(&v30, 8);
 
-  return v10;
+  return result;
 }
 
-- (id)findFirstPendingOperation:(id)a3 ofClass:(Class)a4
+- (id)findFirstPendingOperation:(id)operation ofClass:(Class)class
 {
-  v5 = a3;
-  objc_sync_enter(v5);
+  operationCopy = operation;
+  objc_sync_enter(operationCopy);
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = v5;
+  v6 = operationCopy;
   v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
@@ -3040,7 +3040,7 @@ LABEL_28:
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
-        if (v10 && [*(*(&v13 + 1) + 8 * i) isPending] && (!a4 || (objc_opt_isKindOfClass() & 1) != 0))
+        if (v10 && [*(*(&v13 + 1) + 8 * i) isPending] && (!class || (objc_opt_isKindOfClass() & 1) != 0))
         {
           v11 = v10;
           goto LABEL_14;
@@ -3073,14 +3073,14 @@ LABEL_14:
   v10 = sub_1001B1C08;
   v11 = sub_1001B1C18;
   v12 = 0;
-  v3 = [(CKKSKeychainView *)self queue];
+  queue = [(CKKSKeychainView *)self queue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1001BC5F4;
   v6[3] = &unk_100344E90;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(queue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -3088,42 +3088,42 @@ LABEL_14:
   return v4;
 }
 
-- (void)receiveTLKUploadRecords:(id)a3
+- (void)receiveTLKUploadRecords:(id)records
 {
-  v4 = a3;
-  v5 = [(CKKSKeychainView *)self zoneName];
-  v6 = sub_100019104(@"ckkskey", v5);
+  recordsCopy = records;
+  zoneName = [(CKKSKeychainView *)self zoneName];
+  v6 = sub_100019104(@"ckkskey", zoneName);
 
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v11 = [v4 count];
+    v11 = [recordsCopy count];
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Received a set of %lu TLK upload records", buf, 0xCu);
   }
 
-  if (v4 && [v4 count])
+  if (recordsCopy && [recordsCopy count])
   {
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_1001BC7B8;
     v7[3] = &unk_100343B50;
-    v8 = v4;
-    v9 = self;
+    v8 = recordsCopy;
+    selfCopy = self;
     [(CKKSKeychainView *)self dispatchSyncWithSQLTransaction:v7];
   }
 }
 
-- (id)findKeySets:(BOOL)a3
+- (id)findKeySets:(BOOL)sets
 {
-  if (a3)
+  if (sets)
   {
-    v4 = [(CKKSKeychainView *)self queue];
+    queue = [(CKKSKeychainView *)self queue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1001BCA64;
     block[3] = &unk_100346018;
     block[4] = self;
-    dispatch_sync(v4, block);
+    dispatch_sync(queue, block);
   }
 
   v8 = 0;
@@ -3147,42 +3147,42 @@ LABEL_14:
 
 - (void)sendMetricForFirstManateeAccess
 {
-  v3 = [(CKKSKeychainView *)self operationDependencies];
-  v4 = [v3 sendMetric];
+  operationDependencies = [(CKKSKeychainView *)self operationDependencies];
+  sendMetric = [operationDependencies sendMetric];
 
-  if (v4)
+  if (sendMetric)
   {
     v5 = [AAFAnalyticsEventSecurity alloc];
-    v6 = [(CKKSKeychainView *)self operationDependencies];
-    v7 = [v6 activeAccount];
-    v8 = [v7 altDSID];
+    operationDependencies2 = [(CKKSKeychainView *)self operationDependencies];
+    activeAccount = [operationDependencies2 activeAccount];
+    altDSID = [activeAccount altDSID];
     v9 = kSecurityRTCEventNameFirstManateeKeyFetch;
     v10 = kSecurityRTCEventCategoryAccountDataAccessRecovery;
-    v11 = [(CKKSKeychainView *)self operationDependencies];
-    v12 = [v5 initWithCKKSMetrics:&__NSDictionary0__struct altDSID:v8 eventName:v9 testsAreEnabled:0 category:v10 sendMetric:{objc_msgSend(v11, "sendMetric")}];
+    operationDependencies3 = [(CKKSKeychainView *)self operationDependencies];
+    v12 = [v5 initWithCKKSMetrics:&__NSDictionary0__struct altDSID:altDSID eventName:v9 testsAreEnabled:0 category:v10 sendMetric:{objc_msgSend(operationDependencies3, "sendMetric")}];
 
     [v12 sendMetricWithResult:1 error:0];
   }
 }
 
-- (void)decryptCurrentItems:(id)a3 cache:(id)a4 complete:(id)a5
+- (void)decryptCurrentItems:(id)items cache:(id)cache complete:(id)complete
 {
-  v7 = a3;
-  v8 = a4;
-  v45 = a5;
+  itemsCopy = items;
+  cacheCopy = cache;
+  completeCopy = complete;
   v9 = objc_alloc_init(NSMutableArray);
   v58 = 0u;
   v59 = 0u;
   v60 = 0u;
   v61 = 0u;
-  obj = v7;
+  obj = itemsCopy;
   v53 = [obj countByEnumeratingWithState:&v58 objects:v66 count:16];
   v10 = 0;
   if (v53)
   {
     v52 = *v59;
     v46 = kSecAttrViewHintManatee;
-    v47 = v8;
+    v47 = cacheCopy;
 LABEL_3:
     v11 = 0;
     while (1)
@@ -3196,15 +3196,15 @@ LABEL_3:
       v12 = *(*(&v58 + 1) + 8 * v11);
       context = objc_autoreleasePoolPush();
       v13 = [CKKSItem alloc];
-      v14 = [v12 item];
-      v15 = [(CKKSKeychainView *)self operationDependencies];
-      v16 = [v15 contextID];
-      v17 = [(CKKSItem *)v13 initWithCKRecord:v14 contextID:v16];
+      item = [v12 item];
+      operationDependencies = [(CKKSKeychainView *)self operationDependencies];
+      contextID = [operationDependencies contextID];
+      v17 = [(CKKSItem *)v13 initWithCKRecord:item contextID:contextID];
 
-      v18 = [(CKKSKeychainView *)self operationDependencies];
+      operationDependencies2 = [(CKKSKeychainView *)self operationDependencies];
       v57 = 0;
       v19 = v17;
-      v20 = [CKKSIncomingQueueOperation decryptCKKSItemToAttributes:v17 keyCache:v8 ckksOperationalDependencies:v18 error:&v57];
+      v20 = [CKKSIncomingQueueOperation decryptCKKSItemToAttributes:v17 keyCache:cacheCopy ckksOperationalDependencies:operationDependencies2 error:&v57];
       v21 = v57;
 
       if (v21)
@@ -3229,28 +3229,28 @@ LABEL_3:
       {
         v50 = v19;
         v51 = v20;
-        v25 = [v12 itemPtr];
-        v26 = [v25 itemPtrName];
-        v24 = [v26 componentsSeparatedByString:@"-"];
+        itemPtr = [v12 itemPtr];
+        itemPtrName = [itemPtr itemPtrName];
+        v24 = [itemPtrName componentsSeparatedByString:@"-"];
 
         v27 = [v24 count];
         v23 = v27 == 2;
         if (v27 == 2)
         {
           v28 = [v24 objectAtIndexedSubscript:0];
-          v29 = [v24 objectAtIndexedSubscript:1];
+          itemPtrName3 = [v24 objectAtIndexedSubscript:1];
           v30 = [CKKSCurrentItemQueryResult alloc];
-          v31 = [v12 itemPtr];
-          v32 = [v31 zoneID];
+          itemPtr2 = [v12 itemPtr];
+          zoneID = [itemPtr2 zoneID];
           v48 = v28;
-          v33 = [v30 initWithIdentifier:v29 accessGroup:v28 zoneID:v32 decryptedRecord:v51];
+          v33 = [v30 initWithIdentifier:itemPtrName3 accessGroup:v28 zoneID:zoneID decryptedRecord:v51];
           [(CKKSItem *)v9 addObject:v33];
 
           if (![(CKKSKeychainView *)self firstManateeKeyFetched])
           {
-            v34 = [v12 itemPtr];
-            v35 = [v34 zoneID];
-            v36 = [v35 isEqualToString:v46];
+            itemPtr3 = [v12 itemPtr];
+            zoneID2 = [itemPtr3 zoneID];
+            v36 = [zoneID2 isEqualToString:v46];
 
             if (v36)
             {
@@ -3259,7 +3259,7 @@ LABEL_3:
             }
           }
 
-          v8 = v47;
+          cacheCopy = v47;
           v10 = v56;
           v20 = v51;
           v23 = 1;
@@ -3271,21 +3271,21 @@ LABEL_3:
           v38 = sub_100019104(@"ckks-oob", 0);
           if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
           {
-            v40 = [v12 itemPtr];
-            v41 = [v40 itemPtrName];
+            itemPtr4 = [v12 itemPtr];
+            itemPtrName2 = [itemPtr4 itemPtrName];
             *buf = 138412290;
-            v63 = v41;
+            v63 = itemPtrName2;
             _os_log_impl(&_mh_execute_header, v38, OS_LOG_TYPE_ERROR, "unexpected item pointer name format: %@", buf, 0xCu);
 
-            v8 = v47;
+            cacheCopy = v47;
           }
 
-          v42 = [v12 itemPtr];
-          v29 = [v42 itemPtrName];
-          v43 = [NSString stringWithFormat:@"Item pointer name %@ does not match expected format", v29];
+          itemPtr5 = [v12 itemPtr];
+          itemPtrName3 = [itemPtr5 itemPtrName];
+          v43 = [NSString stringWithFormat:@"Item pointer name %@ does not match expected format", itemPtrName3];
           v10 = [NSError errorWithDomain:@"CKKSErrorDomain" code:20 description:v43];
 
-          v37 = v42;
+          v37 = itemPtr5;
           v9 = 0;
           v20 = v51;
         }
@@ -3323,28 +3323,28 @@ LABEL_3:
     }
   }
 
-  v45[2](v45, v9, v10);
+  completeCopy[2](completeCopy, v9, v10);
 }
 
-- (void)decryptPCSIdentities:(id)a3 cache:(id)a4 complete:(id)a5
+- (void)decryptPCSIdentities:(id)identities cache:(id)cache complete:(id)complete
 {
-  v8 = a3;
-  v9 = a4;
-  v37 = a5;
+  identitiesCopy = identities;
+  cacheCopy = cache;
+  completeCopy = complete;
   v10 = objc_alloc_init(NSMutableArray);
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
-  obj = v8;
+  obj = identitiesCopy;
   v49 = [obj countByEnumeratingWithState:&v52 objects:v60 count:16];
   v11 = 0;
   if (v49)
   {
     v48 = *v53;
     v38 = kSecAttrViewHintManatee;
-    v39 = self;
-    v40 = v9;
+    selfCopy = self;
+    v40 = cacheCopy;
     while (2)
     {
       for (i = 0; i != v49; i = i + 1)
@@ -3357,16 +3357,16 @@ LABEL_3:
         v13 = *(*(&v52 + 1) + 8 * i);
         context = objc_autoreleasePoolPush();
         v14 = [CKKSItem alloc];
-        v15 = [v13 item];
-        v16 = [(CKKSKeychainView *)self operationDependencies];
-        v17 = [v16 contextID];
-        v18 = [(CKKSItem *)v14 initWithCKRecord:v15 contextID:v17];
+        item = [v13 item];
+        operationDependencies = [(CKKSKeychainView *)self operationDependencies];
+        contextID = [operationDependencies contextID];
+        v18 = [(CKKSItem *)v14 initWithCKRecord:item contextID:contextID];
 
         v19 = v18;
-        v20 = [(CKKSKeychainView *)self operationDependencies];
+        operationDependencies2 = [(CKKSKeychainView *)self operationDependencies];
         v51 = 0;
-        [CKKSIncomingQueueOperation decryptCKKSItemToAttributes:v18 keyCache:v9 ckksOperationalDependencies:v20 error:&v51];
-        v22 = v21 = v9;
+        [CKKSIncomingQueueOperation decryptCKKSItemToAttributes:v18 keyCache:cacheCopy ckksOperationalDependencies:operationDependencies2 error:&v51];
+        v22 = v21 = cacheCopy;
         v23 = v51;
 
         if (v23)
@@ -3392,19 +3392,19 @@ LABEL_3:
           v45 = v19;
           v46 = v11;
           v47 = [CKKSPCSIdentityQueryResult alloc];
-          v43 = [v13 service];
-          v27 = [v43 PCSServiceID];
-          v42 = [v13 service];
-          v28 = [v42 PCSPublicKey];
-          v29 = [v28 base64EncodedStringWithOptions:0];
-          v30 = [v13 service];
-          v31 = [v30 zoneID];
+          service = [v13 service];
+          pCSServiceID = [service PCSServiceID];
+          service2 = [v13 service];
+          pCSPublicKey = [service2 PCSPublicKey];
+          v29 = [pCSPublicKey base64EncodedStringWithOptions:0];
+          service3 = [v13 service];
+          zoneID = [service3 zoneID];
           v44 = v22;
-          v32 = [v47 initWithServiceNumber:v27 publicKey:v29 zoneID:v31 decryptedRecord:v22];
+          v32 = [v47 initWithServiceNumber:pCSServiceID publicKey:v29 zoneID:zoneID decryptedRecord:v22];
           [(CKKSItem *)v10 addObject:v32];
 
-          self = v39;
-          if ([(CKKSKeychainView *)v39 firstManateeKeyFetched])
+          self = selfCopy;
+          if ([(CKKSKeychainView *)selfCopy firstManateeKeyFetched])
           {
             v24 = v40;
             v11 = v46;
@@ -3412,15 +3412,15 @@ LABEL_3:
 
           else
           {
-            v33 = [v13 service];
-            v34 = [v33 zoneID];
-            v35 = [v34 isEqualToString:v38];
+            service4 = [v13 service];
+            zoneID2 = [service4 zoneID];
+            v35 = [zoneID2 isEqualToString:v38];
 
             v11 = v46;
             if (v35)
             {
-              [(CKKSKeychainView *)v39 setFirstManateeKeyFetched:1];
-              [(CKKSKeychainView *)v39 sendMetricForFirstManateeAccess];
+              [(CKKSKeychainView *)selfCopy setFirstManateeKeyFetched:1];
+              [(CKKSKeychainView *)selfCopy sendMetricForFirstManateeAccess];
             }
 
             v24 = v40;
@@ -3433,11 +3433,11 @@ LABEL_3:
         objc_autoreleasePoolPop(context);
         if (v23)
         {
-          v9 = v24;
+          cacheCopy = v24;
           goto LABEL_21;
         }
 
-        v9 = v24;
+        cacheCopy = v24;
       }
 
       v49 = [obj countByEnumeratingWithState:&v52 objects:v60 count:16];
@@ -3463,22 +3463,22 @@ LABEL_21:
     }
   }
 
-  v37[2](v37, v10, v11);
+  completeCopy[2](completeCopy, v10, v11);
 }
 
-- (BOOL)unwrapKeysAndSaveToCache:(id)a3 syncKeys:(id)a4 error:(id *)a5
+- (BOOL)unwrapKeysAndSaveToCache:(id)cache syncKeys:(id)keys error:(id *)error
 {
-  v7 = a3;
+  cacheCopy = cache;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v8 = a4;
-  v9 = [v8 countByEnumeratingWithState:&v27 objects:v35 count:16];
+  keysCopy = keys;
+  v9 = [keysCopy countByEnumeratingWithState:&v27 objects:v35 count:16];
   if (v9)
   {
     v10 = v9;
-    v24 = a5;
+    errorCopy = error;
     v11 = *v28;
     while (2)
     {
@@ -3486,12 +3486,12 @@ LABEL_21:
       {
         if (*v28 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(keysCopy);
         }
 
         v13 = *(*(&v27 + 1) + 8 * i);
         v26 = 0;
-        v14 = [v13 unwrapViaKeyHierarchy:v7 error:&v26];
+        v14 = [v13 unwrapViaKeyHierarchy:cacheCopy error:&v26];
         v15 = v26;
         if (v15)
         {
@@ -3506,18 +3506,18 @@ LABEL_21:
             _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_ERROR, "Unable to decrypt synckey %@: %@", buf, 0x16u);
           }
 
-          if (v24)
+          if (errorCopy)
           {
             v22 = v20;
-            *v24 = v20;
+            *errorCopy = v20;
           }
 
           v19 = 0;
           goto LABEL_19;
         }
 
-        v16 = [v13 uuid];
-        [v7 addKeyToCache:v16 key:v13];
+        uuid = [v13 uuid];
+        [cacheCopy addKeyToCache:uuid key:v13];
 
         v25 = 0;
         [v13 saveKeyMaterialToKeychain:&v25];
@@ -3534,7 +3534,7 @@ LABEL_21:
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v27 objects:v35 count:16];
+      v10 = [keysCopy countByEnumeratingWithState:&v27 objects:v35 count:16];
       if (v10)
       {
         continue;
@@ -3550,20 +3550,20 @@ LABEL_19:
   return v19;
 }
 
-- (BOOL)unwrapTLKAndSaveToCache:(id)a3 tlks:(id)a4 tlkShares:(id)a5 error:(id *)a6
+- (BOOL)unwrapTLKAndSaveToCache:(id)cache tlks:(id)tlks tlkShares:(id)shares error:(id *)error
 {
-  v35 = a3;
-  v9 = a4;
-  v10 = a5;
+  cacheCopy = cache;
+  tlksCopy = tlks;
+  sharesCopy = shares;
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
-  obj = v9;
+  obj = tlksCopy;
   v33 = [obj countByEnumeratingWithState:&v43 objects:v52 count:16];
   if (v33)
   {
-    v30 = a6;
+    errorCopy = error;
     v32 = *v44;
 LABEL_3:
     v11 = 0;
@@ -3579,10 +3579,10 @@ LABEL_3:
       v40 = 0u;
       v41 = 0u;
       v42 = 0u;
-      v13 = [(CKKSKeychainView *)self operationDependencies];
-      v14 = [v13 peerProviders];
+      operationDependencies = [(CKKSKeychainView *)self operationDependencies];
+      peerProviders = [operationDependencies peerProviders];
 
-      v15 = [v14 countByEnumeratingWithState:&v39 objects:v51 count:16];
+      v15 = [peerProviders countByEnumeratingWithState:&v39 objects:v51 count:16];
       if (v15)
       {
         v16 = v15;
@@ -3596,12 +3596,12 @@ LABEL_8:
         {
           if (*v40 != v18)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(peerProviders);
           }
 
-          v21 = [*(*(&v39 + 1) + 8 * v19) currentState];
+          currentState = [*(*(&v39 + 1) + 8 * v19) currentState];
           v38 = v20;
-          v22 = [v21 unwrapKey:v12 fromShares:v10 error:&v38];
+          v22 = [currentState unwrapKey:v12 fromShares:sharesCopy error:&v38];
           v17 = v38;
 
           if (v22)
@@ -3626,7 +3626,7 @@ LABEL_8:
           v20 = v17;
           if (v16 == v19)
           {
-            v16 = [v14 countByEnumeratingWithState:&v39 objects:v51 count:16];
+            v16 = [peerProviders countByEnumeratingWithState:&v39 objects:v51 count:16];
             if (v16)
             {
               goto LABEL_8;
@@ -3636,8 +3636,8 @@ LABEL_8:
           }
         }
 
-        v24 = [v12 uuid];
-        [v35 addKeyToCache:v24 key:v12];
+        uuid = [v12 uuid];
+        [cacheCopy addKeyToCache:uuid key:v12];
 
         v37 = 0;
         [v12 saveKeyMaterialToKeychain:&v37];
@@ -3672,10 +3672,10 @@ LABEL_8:
         v17 = 0;
 LABEL_28:
 
-        if (v30)
+        if (errorCopy)
         {
           v28 = [NSString stringWithFormat:@"No trusted TLKShares for %@", v12];
-          *v30 = [NSError errorWithDomain:@"CKKSErrorDomain" code:35 description:v28 underlying:v17];
+          *errorCopy = [NSError errorWithDomain:@"CKKSErrorDomain" code:35 description:v28 underlying:v17];
         }
 
         v27 = 0;
@@ -3693,27 +3693,27 @@ LABEL_28:
   return v27;
 }
 
-- (void)fetchPCSIdentityOutOfBand:(id)a3 forceFetch:(BOOL)a4 complete:(id)a5
+- (void)fetchPCSIdentityOutOfBand:(id)band forceFetch:(BOOL)fetch complete:(id)complete
 {
-  v6 = a4;
-  v49 = a3;
-  v8 = a5;
-  v9 = [(CKKSKeychainView *)self accountStateKnown];
-  [v9 wait:1000000000];
+  fetchCopy = fetch;
+  bandCopy = band;
+  completeCopy = complete;
+  accountStateKnown = [(CKKSKeychainView *)self accountStateKnown];
+  [accountStateKnown wait:1000000000];
 
-  v10 = [(CKKSKeychainView *)self accountStatus];
-  if (!v10)
+  accountStatus = [(CKKSKeychainView *)self accountStatus];
+  if (!accountStatus)
   {
     v50 = [NSError errorWithDomain:@"CKKSErrorDomain" code:64 description:@"iCloud account status unknown."];
     goto LABEL_25;
   }
 
-  if (v10 != 1 || ([(CKKSKeychainView *)self cuttlefishAdapter], v11 = objc_claimAutoreleasedReturnValue(), v11, !v11))
+  if (accountStatus != 1 || ([(CKKSKeychainView *)self cuttlefishAdapter], v11 = objc_claimAutoreleasedReturnValue(), v11, !v11))
   {
     v50 = [NSError errorWithDomain:@"CKKSErrorDomain" code:10 description:@"User is not signed into iCloud."];
 LABEL_25:
-    v35 = [(CKKSKeychainView *)self zoneName];
-    v36 = sub_100019104(@"ckks-oob", v35);
+    zoneName = [(CKKSKeychainView *)self zoneName];
+    v36 = sub_100019104(@"ckks-oob", zoneName);
 
     if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
     {
@@ -3722,7 +3722,7 @@ LABEL_25:
       _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_DEFAULT, "Rejecting PCS Identity requests since we don't have an iCloud account: %@", buf, 0xCu);
     }
 
-    v8[2](v8, 0, v50);
+    completeCopy[2](completeCopy, 0, v50);
     goto LABEL_39;
   }
 
@@ -3735,7 +3735,7 @@ LABEL_25:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       v14 = @"DISABLED";
-      if (v6)
+      if (fetchCopy)
       {
         v14 = @"ENABLED";
       }
@@ -3748,14 +3748,14 @@ LABEL_25:
     }
   }
 
-  if ((v12 | v6))
+  if ((v12 | fetchCopy))
   {
     v47 = objc_alloc_init(NSMutableArray);
     v56 = 0u;
     v57 = 0u;
     v54 = 0u;
     v55 = 0u;
-    obj = v49;
+    obj = bandCopy;
     v15 = [obj countByEnumeratingWithState:&v54 objects:v65 count:16];
     if (v15)
     {
@@ -3770,39 +3770,39 @@ LABEL_25:
           }
 
           v18 = *(*(&v54 + 1) + 8 * i);
-          v19 = [(__CFString *)v18 accessGroup];
-          if (!v19 || ([(__CFString *)v18 zoneID], v20 = objc_claimAutoreleasedReturnValue(), v21 = v20 == 0, v20, v19, v21))
+          accessGroup = [(__CFString *)v18 accessGroup];
+          if (!accessGroup || ([(__CFString *)v18 zoneID], v20 = objc_claimAutoreleasedReturnValue(), v21 = v20 == 0, v20, accessGroup, v21))
           {
-            v38 = [(CKKSKeychainView *)self zoneName];
-            v39 = sub_100019104(@"ckks-oob", v38);
+            zoneName2 = [(CKKSKeychainView *)self zoneName];
+            v39 = sub_100019104(@"ckks-oob", zoneName2);
 
             if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
             {
-              v40 = [(__CFString *)v18 accessGroup];
-              v41 = [(__CFString *)v18 zoneID];
+              accessGroup2 = [(__CFString *)v18 accessGroup];
+              zoneID = [(__CFString *)v18 zoneID];
               *buf = 138412802;
               v60 = v18;
               v61 = 2112;
-              v62 = v40;
+              v62 = accessGroup2;
               v63 = 2112;
-              v64 = v41;
+              v64 = zoneID;
               _os_log_impl(&_mh_execute_header, v39, OS_LOG_TYPE_DEFAULT, "Rejecting pcs service (%@) get since no access group(%@) or zoneID(%@) given", buf, 0x20u);
             }
 
             v42 = [NSString stringWithFormat:@"No access group or view given for PCS Service(%@)", v18];
             v43 = [NSError errorWithDomain:@"CKKSErrorDomain" code:-50 description:v42];
-            v8[2](v8, 0, v43);
+            completeCopy[2](completeCopy, 0, v43);
 
             goto LABEL_37;
           }
 
           v22 = [CuttlefishPCSServiceIdentifier alloc];
-          v23 = [(__CFString *)v18 serviceNumber];
+          serviceNumber = [(__CFString *)v18 serviceNumber];
           v24 = [NSData alloc];
-          v25 = [(__CFString *)v18 publicKey];
-          v26 = [v24 initWithBase64EncodedString:v25 options:0];
-          v27 = [(__CFString *)v18 zoneID];
-          v28 = [(CuttlefishPCSServiceIdentifier *)v22 init:v23 PCSPublicKey:v26 zoneID:v27];
+          publicKey = [(__CFString *)v18 publicKey];
+          v26 = [v24 initWithBase64EncodedString:publicKey options:0];
+          zoneID2 = [(__CFString *)v18 zoneID];
+          v28 = [(CuttlefishPCSServiceIdentifier *)v22 init:serviceNumber PCSPublicKey:v26 zoneID:zoneID2];
           [v47 addObject:v28];
         }
 
@@ -3816,12 +3816,12 @@ LABEL_25:
       }
     }
 
-    v29 = [(CKKSKeychainView *)self accountsAdapter];
-    v30 = [(CKKSKeychainView *)self personaAdapter];
-    v31 = [(CKKSKeychainView *)self operationDependencies];
-    v32 = [v31 contextID];
+    accountsAdapter = [(CKKSKeychainView *)self accountsAdapter];
+    personaAdapter = [(CKKSKeychainView *)self personaAdapter];
+    operationDependencies = [(CKKSKeychainView *)self operationDependencies];
+    contextID = [operationDependencies contextID];
     v53 = 0;
-    obj = [v29 findAccountForCurrentThread:v30 optionalAltDSID:0 cloudkitContainerName:@"com.apple.security.keychain" octagonContextID:v32 error:&v53];
+    obj = [accountsAdapter findAccountForCurrentThread:personaAdapter optionalAltDSID:0 cloudkitContainerName:@"com.apple.security.keychain" octagonContextID:contextID error:&v53];
     v33 = v53;
 
     if (!obj || v33)
@@ -3836,18 +3836,18 @@ LABEL_25:
         _os_log_impl(&_mh_execute_header, v44, OS_LOG_TYPE_ERROR, "unable to determine active account for context(%@). Issues ahead: %@", buf, 0x16u);
       }
 
-      v8[2](v8, 0, v33);
+      completeCopy[2](completeCopy, 0, v33);
 LABEL_37:
     }
 
     else
     {
       objc_initWeak(buf, self);
-      v34 = [(CKKSKeychainView *)self cuttlefishAdapter];
+      cuttlefishAdapter = [(CKKSKeychainView *)self cuttlefishAdapter];
       objc_copyWeak(&v52, buf);
-      v51 = v8;
+      v51 = completeCopy;
       obja = obj;
-      [v34 fetchPCSIdentityByKey:? pcsservices:? reply:?];
+      [cuttlefishAdapter fetchPCSIdentityByKey:? pcsservices:? reply:?];
 
       objc_destroyWeak(&v52);
       objc_destroyWeak(buf);
@@ -3864,33 +3864,33 @@ LABEL_37:
     }
 
     v48 = [NSError errorWithDomain:@"CKKSErrorDomain" code:67 description:@"Out of band fetch disabled due to CKKS readiness"];
-    v8[2](v8, 0, v48);
+    completeCopy[2](completeCopy, 0, v48);
   }
 
 LABEL_39:
 }
 
-- (void)getCurrentItemOutOfBand:(id)a3 forceFetch:(BOOL)a4 complete:(id)a5
+- (void)getCurrentItemOutOfBand:(id)band forceFetch:(BOOL)fetch complete:(id)complete
 {
-  v6 = a4;
-  v50 = a3;
-  v8 = a5;
-  v9 = [(CKKSKeychainView *)self accountStateKnown];
-  [v9 wait:1000000000];
+  fetchCopy = fetch;
+  bandCopy = band;
+  completeCopy = complete;
+  accountStateKnown = [(CKKSKeychainView *)self accountStateKnown];
+  [accountStateKnown wait:1000000000];
 
-  v10 = [(CKKSKeychainView *)self accountStatus];
-  if (!v10)
+  accountStatus = [(CKKSKeychainView *)self accountStatus];
+  if (!accountStatus)
   {
     v51 = [NSError errorWithDomain:@"CKKSErrorDomain" code:64 description:@"iCloud account status unknown."];
     goto LABEL_25;
   }
 
-  if (v10 != 1 || ([(CKKSKeychainView *)self cuttlefishAdapter], v11 = objc_claimAutoreleasedReturnValue(), v11, !v11))
+  if (accountStatus != 1 || ([(CKKSKeychainView *)self cuttlefishAdapter], v11 = objc_claimAutoreleasedReturnValue(), v11, !v11))
   {
     v51 = [NSError errorWithDomain:@"CKKSErrorDomain" code:10 description:@"User is not signed into iCloud."];
 LABEL_25:
-    v34 = [(CKKSKeychainView *)self zoneName];
-    v35 = sub_100019104(@"ckks-oob", v34);
+    zoneName = [(CKKSKeychainView *)self zoneName];
+    v35 = sub_100019104(@"ckks-oob", zoneName);
 
     if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
     {
@@ -3899,7 +3899,7 @@ LABEL_25:
       _os_log_impl(&_mh_execute_header, v35, OS_LOG_TYPE_DEFAULT, "Rejecting current item requests since we don't have an iCloud account: %@", buf, 0xCu);
     }
 
-    v8[2](v8, 0, v51);
+    completeCopy[2](completeCopy, 0, v51);
     goto LABEL_39;
   }
 
@@ -3912,7 +3912,7 @@ LABEL_25:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       v14 = @"DISABLED";
-      if (v6)
+      if (fetchCopy)
       {
         v14 = @"ENABLED";
       }
@@ -3925,14 +3925,14 @@ LABEL_25:
     }
   }
 
-  if ((v12 | v6))
+  if ((v12 | fetchCopy))
   {
     v48 = objc_alloc_init(NSMutableArray);
     v57 = 0u;
     v58 = 0u;
     v55 = 0u;
     v56 = 0u;
-    obj = v50;
+    obj = bandCopy;
     v15 = [obj countByEnumeratingWithState:&v55 objects:v66 count:16];
     if (v15)
     {
@@ -3947,40 +3947,40 @@ LABEL_25:
           }
 
           v18 = *(*(&v55 + 1) + 8 * i);
-          v19 = [v18 zoneID];
-          if (!v19 || ([v18 accessGroup], v20 = objc_claimAutoreleasedReturnValue(), v21 = v20 == 0, v20, v19, v21))
+          zoneID = [v18 zoneID];
+          if (!zoneID || ([v18 accessGroup], v20 = objc_claimAutoreleasedReturnValue(), v21 = v20 == 0, v20, zoneID, v21))
           {
-            v37 = [(CKKSKeychainView *)self zoneName];
-            v38 = sub_100019104(@"ckks-oob", v37);
+            zoneName2 = [(CKKSKeychainView *)self zoneName];
+            v38 = sub_100019104(@"ckks-oob", zoneName2);
 
             if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
             {
-              v39 = [v18 identifier];
-              v40 = [v18 accessGroup];
-              v41 = [v18 zoneID];
+              identifier = [v18 identifier];
+              accessGroup = [v18 accessGroup];
+              zoneID2 = [v18 zoneID];
               *buf = 138412802;
-              v61 = v39;
+              v61 = identifier;
               v62 = 2112;
-              v63 = v40;
+              v63 = accessGroup;
               v64 = 2112;
-              v65 = v41;
+              v65 = zoneID2;
               _os_log_impl(&_mh_execute_header, v38, OS_LOG_TYPE_DEFAULT, "Rejecting current item pointer for identifier(%@) get since no access group(%@) or zoneID(%@) given", buf, 0x20u);
             }
 
-            v42 = [v18 identifier];
-            v43 = [NSString stringWithFormat:@"No access group or view given for identifier(%@)", v42];
+            identifier2 = [v18 identifier];
+            v43 = [NSString stringWithFormat:@"No access group or view given for identifier(%@)", identifier2];
             v44 = [NSError errorWithDomain:@"CKKSErrorDomain" code:-50 description:v43];
-            v8[2](v8, 0, v44);
+            completeCopy[2](completeCopy, 0, v44);
 
             goto LABEL_37;
           }
 
           v22 = [CuttlefishCurrentItemSpecifier alloc];
-          v23 = [v18 accessGroup];
-          v24 = [v18 identifier];
-          v25 = [NSString stringWithFormat:@"%@-%@", v23, v24];
-          v26 = [v18 zoneID];
-          v27 = [(CuttlefishCurrentItemSpecifier *)v22 init:v25 zoneID:v26];
+          accessGroup2 = [v18 accessGroup];
+          identifier3 = [v18 identifier];
+          v25 = [NSString stringWithFormat:@"%@-%@", accessGroup2, identifier3];
+          zoneID3 = [v18 zoneID];
+          v27 = [(CuttlefishCurrentItemSpecifier *)v22 init:v25 zoneID:zoneID3];
           [v48 addObject:v27];
         }
 
@@ -3994,12 +3994,12 @@ LABEL_25:
       }
     }
 
-    v28 = [(CKKSKeychainView *)self accountsAdapter];
-    v29 = [(CKKSKeychainView *)self personaAdapter];
-    v30 = [(CKKSKeychainView *)self operationDependencies];
-    v31 = [v30 contextID];
+    accountsAdapter = [(CKKSKeychainView *)self accountsAdapter];
+    personaAdapter = [(CKKSKeychainView *)self personaAdapter];
+    operationDependencies = [(CKKSKeychainView *)self operationDependencies];
+    contextID = [operationDependencies contextID];
     v54 = 0;
-    obj = [v28 findAccountForCurrentThread:v29 optionalAltDSID:0 cloudkitContainerName:@"com.apple.security.keychain" octagonContextID:v31 error:&v54];
+    obj = [accountsAdapter findAccountForCurrentThread:personaAdapter optionalAltDSID:0 cloudkitContainerName:@"com.apple.security.keychain" octagonContextID:contextID error:&v54];
     v32 = v54;
 
     if (!obj || v32)
@@ -4014,18 +4014,18 @@ LABEL_25:
         _os_log_impl(&_mh_execute_header, v45, OS_LOG_TYPE_ERROR, "unable to determine active account for context(%@). Issues ahead: %@", buf, 0x16u);
       }
 
-      v8[2](v8, 0, v32);
+      completeCopy[2](completeCopy, 0, v32);
 LABEL_37:
     }
 
     else
     {
       objc_initWeak(buf, self);
-      v33 = [(CKKSKeychainView *)self cuttlefishAdapter];
+      cuttlefishAdapter = [(CKKSKeychainView *)self cuttlefishAdapter];
       objc_copyWeak(&v53, buf);
-      v52 = v8;
+      v52 = completeCopy;
       obja = obj;
-      [v33 fetchCurrentItem:? items:? reply:?];
+      [cuttlefishAdapter fetchCurrentItem:? items:? reply:?];
 
       objc_destroyWeak(&v53);
       objc_destroyWeak(buf);
@@ -4042,41 +4042,41 @@ LABEL_37:
     }
 
     v49 = [NSError errorWithDomain:@"CKKSErrorDomain" code:67 description:@"Out of band fetch disabled due to CKKS readiness"];
-    v8[2](v8, 0, v49);
+    completeCopy[2](completeCopy, 0, v49);
   }
 
 LABEL_39:
 }
 
-- (void)getCurrentItemForAccessGroup:(id)a3 identifier:(id)a4 viewHint:(id)a5 fetchCloudValue:(BOOL)a6 complete:(id)a7
+- (void)getCurrentItemForAccessGroup:(id)group identifier:(id)identifier viewHint:(id)hint fetchCloudValue:(BOOL)value complete:(id)complete
 {
-  v8 = a6;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
-  if (v8)
+  valueCopy = value;
+  groupCopy = group;
+  identifierCopy = identifier;
+  hintCopy = hint;
+  completeCopy = complete;
+  if (valueCopy)
   {
     v16 = 0;
   }
 
   else
   {
-    v16 = [v14 isEqualToString:@"ProtectedCloudStorage"];
+    v16 = [hintCopy isEqualToString:@"ProtectedCloudStorage"];
   }
 
   v40 = 0;
-  v17 = [(CKKSKeychainView *)self zoneIDForViewHint:v14 pcsShortcut:v16 error:&v40];
+  v17 = [(CKKSKeychainView *)self zoneIDForViewHint:hintCopy pcsShortcut:v16 error:&v40];
   v18 = v40;
   if (v17)
   {
-    if (v12 && v13)
+    if (groupCopy && identifierCopy)
     {
       if ((v16 & 1) != 0 || (-[CKKSKeychainView accountStateKnown](self, "accountStateKnown"), v19 = objc_claimAutoreleasedReturnValue(), [v19 wait:30000000000], v19, v20 = -[CKKSKeychainView accountStatus](self, "accountStatus"), v20 == 1))
       {
-        if (v8)
+        if (valueCopy)
         {
-          v24 = [NSSet setWithObject:v14];
+          v24 = [NSSet setWithObject:hintCopy];
           v25 = [(CKKSKeychainView *)self rpcFetchAndProcessIncomingQueue:v24 because:@"currentitemcheck" errorOnClassAFailure:0];
         }
 
@@ -4092,12 +4092,12 @@ LABEL_39:
         v31[3] = &unk_100344738;
         v26 = v25;
         v32 = v26;
-        v33 = self;
-        v38 = v15;
+        selfCopy = self;
+        v38 = completeCopy;
         objc_copyWeak(&v39, buf);
-        v34 = v12;
-        v35 = v13;
-        v36 = v14;
+        v34 = groupCopy;
+        v35 = identifierCopy;
+        v36 = hintCopy;
         v37 = v17;
         v27 = [CKKSResultOperation named:@"get-current-item-pointer" withBlock:v31];
         [v27 addNullableDependency:v26];
@@ -4127,8 +4127,8 @@ LABEL_39:
           [NSError errorWithDomain:@"CKKSErrorDomain" code:64 description:@"iCloud account status unknown."];
         }
         v28 = ;
-        v29 = [(CKKSKeychainView *)self zoneName];
-        v30 = sub_100019104(@"ckkscurrent", v29);
+        zoneName = [(CKKSKeychainView *)self zoneName];
+        v30 = sub_100019104(@"ckkscurrent", zoneName);
 
         if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
         {
@@ -4137,40 +4137,40 @@ LABEL_39:
           _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEFAULT, "Rejecting current item pointer get since we don't have an iCloud account: %@", buf, 0xCu);
         }
 
-        (*(v15 + 2))(v15, 0, v28);
+        (*(completeCopy + 2))(completeCopy, 0, v28);
       }
     }
 
     else
     {
-      v21 = [(CKKSKeychainView *)self zoneName];
-      v22 = sub_100019104(@"ckkscurrent", v21);
+      zoneName2 = [(CKKSKeychainView *)self zoneName];
+      v22 = sub_100019104(@"ckkscurrent", zoneName2);
 
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v42 = v12;
+        v42 = groupCopy;
         v43 = 2112;
-        v44 = v13;
+        v44 = identifierCopy;
         _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "Rejecting current item pointer get since no access group(%@) or identifier(%@) given", buf, 0x16u);
       }
 
       v23 = [NSError errorWithDomain:@"CKKSErrorDomain" code:-50 description:@"No access group or identifier given"];
-      (*(v15 + 2))(v15, 0, v23);
+      (*(completeCopy + 2))(completeCopy, 0, v23);
     }
   }
 
   else
   {
-    (*(v15 + 2))(v15, 0, v18);
+    (*(completeCopy + 2))(completeCopy, 0, v18);
   }
 }
 
-- (id)zoneIDForViewHint:(id)a3 pcsShortcut:(BOOL)a4 error:(id *)a5
+- (id)zoneIDForViewHint:(id)hint pcsShortcut:(BOOL)shortcut error:(id *)error
 {
-  v6 = a4;
-  v8 = a3;
-  if (v6)
+  shortcutCopy = shortcut;
+  hintCopy = hint;
+  if (shortcutCopy)
   {
     v9 = 0;
   }
@@ -4181,20 +4181,20 @@ LABEL_39:
   }
 
   v18 = 0;
-  v10 = [(CKKSKeychainView *)self policyDependentViewStateForName:v8 timeout:v9 error:&v18];
+  v10 = [(CKKSKeychainView *)self policyDependentViewStateForName:hintCopy timeout:v9 error:&v18];
   v11 = v18;
   if (v10)
   {
-    v12 = [v10 zoneID];
+    zoneID = [v10 zoneID];
 LABEL_6:
-    v13 = v12;
+    v13 = zoneID;
     goto LABEL_7;
   }
 
-  if (v6 && [v8 isEqualToString:@"ProtectedCloudStorage"])
+  if (shortcutCopy && [hintCopy isEqualToString:@"ProtectedCloudStorage"])
   {
-    v15 = [(CKKSKeychainView *)self zoneName];
-    v16 = sub_100019104(@"ckkscurrent", v15);
+    zoneName = [(CKKSKeychainView *)self zoneName];
+    v16 = sub_100019104(@"ckkscurrent", zoneName);
 
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
@@ -4203,15 +4203,15 @@ LABEL_6:
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Unable to retrieve view state, using ProtectedCloudStorage: %@", buf, 0xCu);
     }
 
-    v12 = [[CKRecordZoneID alloc] initWithZoneName:@"ProtectedCloudStorage" ownerName:CKCurrentUserDefaultName];
+    zoneID = [[CKRecordZoneID alloc] initWithZoneName:@"ProtectedCloudStorage" ownerName:CKCurrentUserDefaultName];
     goto LABEL_6;
   }
 
-  if (a5)
+  if (error)
   {
     v17 = v11;
     v13 = 0;
-    *a5 = v11;
+    *error = v11;
   }
 
   else
@@ -4224,41 +4224,41 @@ LABEL_7:
   return v13;
 }
 
-- (void)unsetCurrentItemsForAccessGroup:(id)a3 identifiers:(id)a4 viewHint:(id)a5 complete:(id)a6
+- (void)unsetCurrentItemsForAccessGroup:(id)group identifiers:(id)identifiers viewHint:(id)hint complete:(id)complete
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  groupCopy = group;
+  identifiersCopy = identifiers;
+  completeCopy = complete;
   v42 = 0;
-  v13 = [(CKKSKeychainView *)self policyDependentViewStateForName:a5 error:&v42];
+  v13 = [(CKKSKeychainView *)self policyDependentViewStateForName:hint error:&v42];
   v14 = v42;
   if (v13)
   {
-    if (v10 && v11 && [v11 count])
+    if (groupCopy && identifiersCopy && [identifiersCopy count])
     {
-      v15 = [(CKKSKeychainView *)self accountStateKnown];
-      [v15 wait:30000000000];
+      accountStateKnown = [(CKKSKeychainView *)self accountStateKnown];
+      [accountStateKnown wait:30000000000];
 
-      v16 = [(CKKSKeychainView *)self accountStatus];
-      if (v16 == 1)
+      accountStatus = [(CKKSKeychainView *)self accountStatus];
+      if (accountStatus == 1)
       {
-        v22 = [(CKKSKeychainView *)self zoneName];
-        v23 = sub_100019104(@"ckkscurrent", v22);
+        zoneName = [(CKKSKeychainView *)self zoneName];
+        v23 = sub_100019104(@"ckkscurrent", zoneName);
 
         if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
         {
-          v24 = [v11 count];
+          v24 = [identifiersCopy count];
           *buf = 138412546;
-          v44 = v10;
+          v44 = groupCopy;
           v45 = 2048;
           v46 = v24;
           _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "Starting delete current item pointer(s) operation for %@ (%lu)", buf, 0x16u);
         }
 
         v25 = [CKKSDeleteCurrentItemPointersOperation alloc];
-        v26 = [(CKKSKeychainView *)self operationDependencies];
+        operationDependencies = [(CKKSKeychainView *)self operationDependencies];
         v27 = [CKOperationGroup CKKSGroupWithName:@"currentitem-api"];
-        v28 = [(CKKSDeleteCurrentItemPointersOperation *)v25 initWithCKKSOperationDependencies:v26 viewState:v13 accessGroup:v10 identifiers:v11 ckoperationGroup:v27];
+        v28 = [(CKKSDeleteCurrentItemPointersOperation *)v25 initWithCKKSOperationDependencies:operationDependencies viewState:v13 accessGroup:groupCopy identifiers:identifiersCopy ckoperationGroup:v27];
 
         v35 = _NSConcreteStackBlock;
         v36 = 3221225472;
@@ -4266,14 +4266,14 @@ LABEL_7:
         v38 = &unk_100343D18;
         v39 = v28;
         v40 = v13;
-        v41 = v12;
+        v41 = completeCopy;
         v29 = v28;
         v30 = [CKKSResultOperation operationWithBlock:&v35];
         [v30 setName:{@"unsetCurrentItems-return-callback", v35, v36, v37, v38}];
         [v30 addDependency:v29];
         [(CKKSKeychainView *)self scheduleOperation:v30];
-        v31 = [(CKKSKeychainView *)self outgoingQueueOperations];
-        [(CKKSDeleteCurrentItemPointersOperation *)v29 linearDependencies:v31];
+        outgoingQueueOperations = [(CKKSKeychainView *)self outgoingQueueOperations];
+        [(CKKSDeleteCurrentItemPointersOperation *)v29 linearDependencies:outgoingQueueOperations];
 
         v32 = [(CKKSResultOperation *)v29 timeout:60000000000];
         [(CKKSKeychainView *)self scheduleOperation:v29];
@@ -4281,7 +4281,7 @@ LABEL_7:
 
       else
       {
-        if (v16)
+        if (accountStatus)
         {
           v17 = @"User is not signed into iCloud.";
           v18 = 10;
@@ -4294,8 +4294,8 @@ LABEL_7:
         }
 
         v29 = [NSError errorWithDomain:@"CKKSErrorDomain" code:v18 description:v17];
-        v33 = [(CKKSKeychainView *)self zoneName];
-        v34 = sub_100019104(@"ckkscurrent", v33);
+        zoneName2 = [(CKKSKeychainView *)self zoneName];
+        v34 = sub_100019104(@"ckkscurrent", zoneName2);
 
         if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
         {
@@ -4304,76 +4304,76 @@ LABEL_7:
           _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_DEFAULT, "Rejecting current item pointer delete since we don't have an iCloud account: %@", buf, 0xCu);
         }
 
-        (*(v12 + 2))(v12, v29);
+        (*(completeCopy + 2))(completeCopy, v29);
       }
     }
 
     else
     {
-      v19 = [(CKKSKeychainView *)self zoneName];
-      v20 = sub_100019104(@"ckkscurrent", v19);
+      zoneName3 = [(CKKSKeychainView *)self zoneName];
+      v20 = sub_100019104(@"ckkscurrent", zoneName3);
 
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v44 = v10;
+        v44 = groupCopy;
         v45 = 2112;
-        v46 = v11;
+        v46 = identifiersCopy;
         _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "Rejecting current item pointer delete since no access group(%@) or identifiers(%@) given", buf, 0x16u);
       }
 
       v21 = [NSError errorWithDomain:@"CKKSErrorDomain" code:-50 description:@"No access group or identifier given"];
-      (*(v12 + 2))(v12, v21);
+      (*(completeCopy + 2))(completeCopy, v21);
     }
   }
 
   else
   {
-    (*(v12 + 2))(v12, v14);
+    (*(completeCopy + 2))(completeCopy, v14);
   }
 }
 
-- (void)setCurrentItemForAccessGroup:(id)a3 hash:(id)a4 accessGroup:(id)a5 identifier:(id)a6 viewHint:(id)a7 replacing:(id)a8 hash:(id)a9 complete:(id)a10
+- (void)setCurrentItemForAccessGroup:(id)group hash:(id)hash accessGroup:(id)accessGroup identifier:(id)identifier viewHint:(id)hint replacing:(id)replacing hash:(id)a9 complete:(id)self0
 {
-  v54 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a8;
+  groupCopy = group;
+  hashCopy = hash;
+  accessGroupCopy = accessGroup;
+  identifierCopy = identifier;
+  replacingCopy = replacing;
   v20 = a9;
-  v21 = a10;
+  completeCopy = complete;
   v59 = 0;
-  v22 = [(CKKSKeychainView *)self policyDependentViewStateForName:a7 error:&v59];
+  v22 = [(CKKSKeychainView *)self policyDependentViewStateForName:hint error:&v59];
   v23 = v59;
   v24 = v23;
   if (v22)
   {
-    if (v17 && v18)
+    if (accessGroupCopy && identifierCopy)
     {
-      v25 = [(CKKSKeychainView *)self accountStateKnown];
-      [v25 wait:30000000000];
+      accountStateKnown = [(CKKSKeychainView *)self accountStateKnown];
+      [accountStateKnown wait:30000000000];
 
-      v26 = [(CKKSKeychainView *)self accountStatus];
-      v53 = v19;
-      if (v26 == 1)
+      accountStatus = [(CKKSKeychainView *)self accountStatus];
+      v53 = replacingCopy;
+      if (accountStatus == 1)
       {
-        v52 = v16;
-        v38 = [(CKKSKeychainView *)self zoneName];
-        v39 = sub_100019104(@"ckkscurrent", v38);
+        v52 = hashCopy;
+        zoneName = [(CKKSKeychainView *)self zoneName];
+        v39 = sub_100019104(@"ckkscurrent", zoneName);
 
         if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412546;
-          v61 = v17;
+          v61 = accessGroupCopy;
           v62 = 2112;
-          v63 = v18;
+          v63 = identifierCopy;
           _os_log_impl(&_mh_execute_header, v39, OS_LOG_TYPE_DEFAULT, "Starting change current pointer operation for %@-%@", buf, 0x16u);
         }
 
         v40 = [CKKSUpdateCurrentItemPointerOperation alloc];
-        v41 = [(CKKSKeychainView *)self operationDependencies];
+        operationDependencies = [(CKKSKeychainView *)self operationDependencies];
         v42 = [CKOperationGroup CKKSGroupWithName:@"currentitem-api"];
-        v43 = [(CKKSUpdateCurrentItemPointerOperation *)v40 initWithCKKSOperationDependencies:v41 viewState:v22 newItem:v54 hash:v52 accessGroup:v17 identifier:v18 replacing:v53 hash:v20 ckoperationGroup:v42];
+        v43 = [(CKKSUpdateCurrentItemPointerOperation *)v40 initWithCKKSOperationDependencies:operationDependencies viewState:v22 newItem:groupCopy hash:v52 accessGroup:accessGroupCopy identifier:identifierCopy replacing:v53 hash:v20 ckoperationGroup:v42];
 
         v55[0] = _NSConcreteStackBlock;
         v55[1] = 3221225472;
@@ -4381,26 +4381,26 @@ LABEL_7:
         v55[3] = &unk_100343D18;
         v56 = v43;
         v57 = v22;
-        v58 = v21;
+        v58 = completeCopy;
         v44 = v43;
         v45 = [CKKSResultOperation operationWithBlock:v55];
         [v45 setName:@"setCurrentItem-return-callback"];
         [v45 addDependency:v44];
         [(CKKSKeychainView *)self scheduleOperation:v45];
-        v46 = [(CKKSKeychainView *)self outgoingQueueOperations];
-        [(CKKSUpdateCurrentItemPointerOperation *)v44 linearDependencies:v46];
+        outgoingQueueOperations = [(CKKSKeychainView *)self outgoingQueueOperations];
+        [(CKKSUpdateCurrentItemPointerOperation *)v44 linearDependencies:outgoingQueueOperations];
 
-        v19 = v53;
+        replacingCopy = v53;
         v47 = [(CKKSResultOperation *)v44 timeout:60000000000];
         [(CKKSKeychainView *)self scheduleOperation:v44];
 
-        v16 = v52;
+        hashCopy = v52;
       }
 
       else
       {
-        v27 = v16;
-        if (v26)
+        v27 = hashCopy;
+        if (accountStatus)
         {
           v28 = @"User is not signed into iCloud.";
           v29 = 10;
@@ -4413,8 +4413,8 @@ LABEL_7:
         }
 
         v48 = [NSError errorWithDomain:@"CKKSErrorDomain" code:v29 description:v28];
-        v49 = [(CKKSKeychainView *)self zoneName];
-        v50 = sub_100019104(@"ckkscurrent", v49);
+        zoneName2 = [(CKKSKeychainView *)self zoneName];
+        v50 = sub_100019104(@"ckkscurrent", zoneName2);
 
         if (os_log_type_enabled(v50, OS_LOG_TYPE_DEFAULT))
         {
@@ -4423,23 +4423,23 @@ LABEL_7:
           _os_log_impl(&_mh_execute_header, v50, OS_LOG_TYPE_DEFAULT, "Rejecting current item pointer set since we don't have an iCloud account: %@", buf, 0xCu);
         }
 
-        (*(v21 + 2))(v21, v48);
-        v16 = v27;
-        v19 = v53;
+        (*(completeCopy + 2))(completeCopy, v48);
+        hashCopy = v27;
+        replacingCopy = v53;
       }
     }
 
     else
     {
-      v51 = v17;
+      v51 = accessGroupCopy;
       v30 = v23;
-      v31 = v18;
+      v31 = identifierCopy;
       v32 = v20;
-      v33 = v19;
-      v34 = v16;
+      v33 = replacingCopy;
+      v34 = hashCopy;
       v35 = [NSError errorWithDomain:@"CKKSErrorDomain" code:-50 description:@"No access group or identifier given"];
-      v36 = [(CKKSKeychainView *)self zoneName];
-      v37 = sub_100019104(@"ckkscurrent", v36);
+      zoneName3 = [(CKKSKeychainView *)self zoneName];
+      v37 = sub_100019104(@"ckkscurrent", zoneName3);
 
       if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
       {
@@ -4448,29 +4448,29 @@ LABEL_7:
         _os_log_impl(&_mh_execute_header, v37, OS_LOG_TYPE_ERROR, "Cancelling request: %@", buf, 0xCu);
       }
 
-      (*(v21 + 2))(v21, v35);
-      v16 = v34;
-      v19 = v33;
+      (*(completeCopy + 2))(completeCopy, v35);
+      hashCopy = v34;
+      replacingCopy = v33;
       v20 = v32;
-      v18 = v31;
+      identifierCopy = v31;
       v24 = v30;
-      v17 = v51;
+      accessGroupCopy = v51;
     }
   }
 
   else
   {
-    (*(v21 + 2))(v21, v23);
+    (*(completeCopy + 2))(completeCopy, v23);
   }
 }
 
-- (void)handleKeychainEventDbConnection:(__OpaqueSecDbConnection *)a3 source:(unint64_t)a4 added:(SecDbItem *)a5 deleted:(SecDbItem *)a6 rateLimiter:(id)a7
+- (void)handleKeychainEventDbConnection:(__OpaqueSecDbConnection *)connection source:(unint64_t)source added:(SecDbItem *)added deleted:(SecDbItem *)deleted rateLimiter:(id)limiter
 {
-  v84 = a7;
+  limiterCopy = limiter;
   if ((sub_100019064() & 1) == 0)
   {
-    v17 = [(CKKSKeychainView *)self zoneName];
-    v13 = sub_100019104(@"ckks", v17);
+    zoneName = [(CKKSKeychainView *)self zoneName];
+    v13 = sub_100019104(@"ckks", zoneName);
 
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
@@ -4481,43 +4481,43 @@ LABEL_7:
     goto LABEL_107;
   }
 
-  v81 = a3;
-  v82 = a4;
-  v83 = a6;
-  if (a5)
+  connectionCopy = connection;
+  sourceCopy = source;
+  deletedCopy = deleted;
+  if (added)
   {
-    v12 = a5;
+    deletedCopy2 = added;
   }
 
   else
   {
-    v12 = a6;
+    deletedCopy2 = deleted;
   }
 
-  v13 = [CKKSKey isItemKeyForKeychainView:v12];
+  v13 = [CKKSKey isItemKeyForKeychainView:deletedCopy2];
   if (v13)
   {
-    v14 = [(CKKSKeychainView *)self zoneName];
-    v15 = sub_100019104(@"ckks", v14);
+    zoneName2 = [(CKKSKeychainView *)self zoneName];
+    v15 = sub_100019104(@"ckks", zoneName2);
 
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
       *&buf[4] = v13;
       *&buf[12] = 2048;
-      *&buf[14] = v82;
+      *&buf[14] = sourceCopy;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Potential new key material from %@ (source %lu)", buf, 0x16u);
     }
 
-    v16 = [(CKKSKeychainView *)self stateMachine];
-    [v16 handleFlag:@"key_process_requested"];
+    stateMachine = [(CKKSKeychainView *)self stateMachine];
+    [stateMachine handleFlag:@"key_process_requested"];
 
     goto LABEL_107;
   }
 
-  if (a5)
+  if (added)
   {
-    v18 = sub_100015D00(a5);
+    v18 = sub_100015D00(added);
   }
 
   else
@@ -4525,10 +4525,10 @@ LABEL_7:
     v18 = 0;
   }
 
-  v19 = v83;
-  if (v83)
+  v19 = deletedCopy;
+  if (deletedCopy)
   {
-    v19 = sub_100015D00(v83);
+    v19 = sub_100015D00(deletedCopy);
   }
 
   if (((v18 | v19) & 1) == 0)
@@ -4547,7 +4547,7 @@ LABEL_7:
   }
 
   v77 = v19;
-  if (!sub_1001636C4(v12))
+  if (!sub_1001636C4(deletedCopy2))
   {
     v30 = sub_100019104(@"ckks", 0);
     if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
@@ -4566,24 +4566,24 @@ LABEL_31:
   v103 = &v102;
   v104 = 0x2020000000;
   v105 = 0;
-  v20 = [(CKKSKeychainView *)self queue];
+  queue = [(CKKSKeychainView *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001C29FC;
   block[3] = &unk_1003472B0;
   block[5] = &v102;
-  block[6] = v12;
+  block[6] = deletedCopy2;
   block[4] = self;
-  dispatch_sync(v20, block);
+  dispatch_sync(queue, block);
 
   if ((v103[3] & 1) == 0)
   {
-    [(CKKSKeychainView *)self notifyPasswordsOrPCSChangedForAddedItem:a5 modified:v12 deleted:v83];
+    [(CKKSKeychainView *)self notifyPasswordsOrPCSChangedForAddedItem:added modified:deletedCopy2 deleted:deletedCopy];
     goto LABEL_105;
   }
 
-  v21 = [(CKKSKeychainView *)self operationDependencies];
-  v80 = [v21 viewNameForItem:v12];
+  operationDependencies = [(CKKSKeychainView *)self operationDependencies];
+  v80 = [operationDependencies viewNameForItem:deletedCopy2];
 
   if (!v80)
   {
@@ -4591,11 +4591,11 @@ LABEL_31:
     if (os_log_type_enabled(v48, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138477827;
-      *&buf[4] = v12;
+      *&buf[4] = deletedCopy2;
       _os_log_impl(&_mh_execute_header, v48, OS_LOG_TYPE_DEFAULT, "No intended CKKS view for item; skipping: %{private}@", buf, 0xCu);
     }
 
-    [(CKKSKeychainView *)self notifyPasswordsOrPCSChangedForAddedItem:a5 modified:v12 deleted:v83];
+    [(CKKSKeychainView *)self notifyPasswordsOrPCSChangedForAddedItem:added modified:deletedCopy2 deleted:deletedCopy];
     goto LABEL_104;
   }
 
@@ -4603,8 +4603,8 @@ LABEL_31:
   v100 = 0u;
   v97 = 0u;
   v98 = 0u;
-  v22 = [(CKKSKeychainView *)self operationDependencies];
-  obj = [v22 allCKKSManagedViews];
+  operationDependencies2 = [(CKKSKeychainView *)self operationDependencies];
+  obj = [operationDependencies2 allCKKSManagedViews];
 
   v23 = [obj countByEnumeratingWithState:&v97 objects:v115 count:16];
   if (!v23)
@@ -4623,9 +4623,9 @@ LABEL_31:
       }
 
       v26 = *(*(&v97 + 1) + 8 * i);
-      v27 = [v26 zoneID];
-      v28 = [v27 zoneName];
-      v29 = [v28 isEqualToString:v80];
+      zoneID = [v26 zoneID];
+      zoneName3 = [zoneID zoneName];
+      v29 = [zoneName3 isEqualToString:v80];
 
       if (v29)
       {
@@ -4636,16 +4636,16 @@ LABEL_31:
           goto LABEL_42;
         }
 
-        v32 = [v31 zoneID];
-        v33 = [v32 zoneName];
-        v34 = sub_100019104(@"ckks", v33);
+        zoneID2 = [v31 zoneID];
+        zoneName4 = [zoneID2 zoneName];
+        v34 = sub_100019104(@"ckks", zoneName4);
 
         if (os_log_type_enabled(v34, OS_LOG_TYPE_DEBUG))
         {
           *buf = 138412547;
           *&buf[4] = v80;
           *&buf[12] = 2113;
-          *&buf[14] = v12;
+          *&buf[14] = deletedCopy2;
           _os_log_debug_impl(&_mh_execute_header, v34, OS_LOG_TYPE_DEBUG, "Routing item to zone %@: %{private}@", buf, 0x16u);
         }
 
@@ -4655,11 +4655,11 @@ LABEL_31:
         v110 = sub_1001B1C08;
         v111 = sub_1001B1C18;
         v112 = 0;
-        if (a5)
+        if (added)
         {
-          v35 = sub_10001A700(a5);
-          v36 = v83;
-          if (!v83)
+          v35 = sub_10001A700(added);
+          v36 = deletedCopy;
+          if (!deletedCopy)
           {
             LOBYTE(v37) = 0;
             LOBYTE(v38) = 0;
@@ -4673,14 +4673,14 @@ LABEL_31:
         else
         {
           v35 = 0;
-          if (!v83)
+          if (!deletedCopy)
           {
             v50 = 1;
             v36 = 0;
             v38 = 0;
             v49 = 0;
 LABEL_52:
-            if (a5)
+            if (added)
             {
               v51 = v49 == 0;
             }
@@ -4707,7 +4707,7 @@ LABEL_52:
               }
             }
 
-            if (!v83)
+            if (!deletedCopy)
             {
               v50 = 0;
             }
@@ -4734,19 +4734,19 @@ LABEL_67:
             v52 = v37 & v35 & (v38 ^ 1) | v37 & v41 & (v40 ^ 1);
             if ((v37 & 1) == 0)
             {
-              v54 = v83;
+              addedCopy2 = deletedCopy;
               v55 = v35 ^ 1;
-              if (v83)
+              if (deletedCopy)
               {
                 v55 = 1;
               }
 
               if (!v55)
               {
-                v54 = a5;
+                addedCopy2 = added;
               }
 
-              v83 = v54;
+              deletedCopy = addedCopy2;
               if (!v36)
               {
                 v53 = 0;
@@ -4756,9 +4756,9 @@ LABEL_67:
               }
 
 LABEL_77:
-              v56 = [v31 zoneID];
-              v57 = [v56 zoneName];
-              v58 = sub_100019104(@"ckks", v57);
+              zoneID3 = [v31 zoneID];
+              zoneName5 = [zoneID3 zoneName];
+              v58 = sub_100019104(@"ckks", zoneName5);
 
               if (os_log_type_enabled(v58, OS_LOG_TYPE_DEFAULT))
               {
@@ -4787,28 +4787,28 @@ LABEL_81:
               if (v52 & 1) == 0 || (v35)
               {
                 obja = v53;
-                v64 = v83;
-                if (a5)
+                v64 = deletedCopy;
+                if (added)
                 {
-                  v65 = a5;
+                  addedCopy3 = added;
                 }
 
                 else
                 {
-                  v65 = v83;
+                  addedCopy3 = deletedCopy;
                 }
 
-                v58 = sub_100015B5C(v65, kSecAttrAccessible);
-                v67 = v81;
-                v66 = v82;
+                v58 = sub_100015B5C(addedCopy3, kSecAttrAccessible);
+                v67 = connectionCopy;
+                v66 = sourceCopy;
                 if (([v58 isEqualToString:kSecAttrAccessibleWhenUnlocked]& 1) != 0 || ([v58 isEqualToString:kSecAttrAccessibleAfterFirstUnlock]& 1) != 0 || ([v58 isEqualToString:kSecAttrAccessibleAlwaysPrivate]& 1) != 0)
                 {
-                  if (!v82)
+                  if (!sourceCopy)
                   {
-                    v68 = sub_100015BFC(a5, &off_100343C98, 0);
-                    v69 = [v31 zoneID];
-                    v70 = [v69 zoneName];
-                    v71 = sub_100019104(@"ckks", v70);
+                    v68 = sub_100015BFC(added, &off_100343C98, 0);
+                    zoneID4 = [v31 zoneID];
+                    zoneName6 = [zoneID4 zoneName];
+                    v71 = sub_100019104(@"ckks", zoneName6);
 
                     if (os_log_type_enabled(v71, OS_LOG_TYPE_DEFAULT))
                     {
@@ -4830,36 +4830,36 @@ LABEL_81:
                       _os_log_impl(&_mh_execute_header, v71, OS_LOG_TYPE_DEFAULT, "Received an incoming %@ from SOS (%@)", v106, 0x16u);
                     }
 
-                    v66 = v82;
-                    v64 = v83;
-                    v67 = v81;
+                    v66 = sourceCopy;
+                    v64 = deletedCopy;
+                    v67 = connectionCopy;
                   }
 
-                  v73 = [(CKKSKeychainView *)self databaseProvider];
+                  databaseProvider = [(CKKSKeychainView *)self databaseProvider];
                   v85[0] = _NSConcreteStackBlock;
                   v85[1] = 3221225472;
                   v85[2] = sub_1001C2B00;
                   v85[3] = &unk_100343CF0;
                   v86 = v31;
-                  v87 = self;
+                  selfCopy = self;
                   v94 = v39;
                   v89 = buf;
-                  v90 = a5;
+                  addedCopy4 = added;
                   v95 = v52 & 1;
                   v96 = obja & 1;
                   v91 = v64;
                   v92 = v66;
-                  v88 = v84;
+                  v88 = limiterCopy;
                   v93 = v67;
-                  [v73 dispatchSyncWithConnection:v67 readWriteTxion:1 block:v85];
+                  [databaseProvider dispatchSyncWithConnection:v67 readWriteTxion:1 block:v85];
 
                   v74 = v86;
                 }
 
                 else
                 {
-                  v75 = [(CKKSKeychainView *)self zoneName];
-                  v74 = sub_100019104(@"ckks", v75);
+                  zoneName7 = [(CKKSKeychainView *)self zoneName];
+                  v74 = sub_100019104(@"ckks", zoneName7);
 
                   if (os_log_type_enabled(v74, OS_LOG_TYPE_DEFAULT))
                   {
@@ -4872,9 +4872,9 @@ LABEL_81:
                 goto LABEL_102;
               }
 
-              v62 = [v31 zoneID];
-              v63 = [v62 zoneName];
-              v58 = sub_100019104(@"ckks", v63);
+              zoneID5 = [v31 zoneID];
+              zoneName8 = [zoneID5 zoneName];
+              v58 = sub_100019104(@"ckks", zoneName8);
 
               if (os_log_type_enabled(v58, OS_LOG_TYPE_DEFAULT))
               {
@@ -4892,10 +4892,10 @@ LABEL_81:
           }
         }
 
-        v49 = v83;
-        v38 = sub_10001A700(v83);
+        v49 = deletedCopy;
+        v38 = sub_10001A700(deletedCopy);
         v36 = v35 & v38;
-        v50 = a5 == 0;
+        v50 = added == 0;
         goto LABEL_52;
       }
     }
@@ -4918,11 +4918,11 @@ LABEL_42:
     *buf = 138412547;
     *&buf[4] = v80;
     *&buf[12] = 2113;
-    *&buf[14] = v12;
+    *&buf[14] = deletedCopy2;
     _os_log_impl(&_mh_execute_header, v42, OS_LOG_TYPE_DEFAULT, "No CKKS view for %@, skipping: %{private}@", buf, 0x16u);
   }
 
-  v31 = sub_100015BFC(v12, &off_100343C98, 0);
+  v31 = sub_100015BFC(deletedCopy2, &off_100343C98, 0);
   v43 = +[CKKSViewManager manager];
   v44 = [v43 claimCallbackForUUID:v31];
 
@@ -4946,28 +4946,28 @@ LABEL_106:
 LABEL_107:
 }
 
-- (void)notifyPasswordsOrPCSChangedForAddedItem:(SecDbItem *)a3 modified:(SecDbItem *)a4 deleted:(SecDbItem *)a5
+- (void)notifyPasswordsOrPCSChangedForAddedItem:(SecDbItem *)item modified:(SecDbItem *)modified deleted:(SecDbItem *)deleted
 {
-  if (a3)
+  if (item)
   {
     [(CKKSKeychainView *)self notifyForItem:?];
   }
 
-  if (a4)
+  if (modified)
   {
-    [(CKKSKeychainView *)self notifyForItem:a4];
+    [(CKKSKeychainView *)self notifyForItem:modified];
   }
 
-  if (a5)
+  if (deleted)
   {
 
-    [(CKKSKeychainView *)self notifyForItem:a5];
+    [(CKKSKeychainView *)self notifyForItem:deleted];
   }
 }
 
-- (void)notifyForItem:(SecDbItem *)a3
+- (void)notifyForItem:(SecDbItem *)item
 {
-  v5 = sub_100015BFC(a3, &off_100343C48, 0);
+  v5 = sub_100015BFC(item, &off_100343C48, 0);
   if (v5)
   {
     v6 = v5;
@@ -4976,15 +4976,15 @@ LABEL_107:
       CFRetain(v6);
       if ([v6 isEqualToString:@"com.apple.cfnetwork"])
       {
-        v7 = [(CKKSKeychainView *)self cloudKitClassDependencies];
-        v8 = [v7 notifierClass];
+        cloudKitClassDependencies = [(CKKSKeychainView *)self cloudKitClassDependencies];
+        notifierClass = [cloudKitClassDependencies notifierClass];
         v9 = [NSString stringWithFormat:@"com.apple.security.view-change.Passwords"];
-        [v8 post:v9];
+        [notifierClass post:v9];
       }
     }
   }
 
-  v10 = sub_100015BFC(a3, &off_100343C70, 0);
+  v10 = sub_100015BFC(item, &off_100343C70, 0);
   if (v10)
   {
     cf = v10;
@@ -4993,19 +4993,19 @@ LABEL_107:
       CFRetain(cf);
       if ([cf isEqualToString:kSOSViewHintPCSMasterKey])
       {
-        v11 = [(CKKSKeychainView *)self cloudKitClassDependencies];
-        v12 = [v11 notifierClass];
+        cloudKitClassDependencies2 = [(CKKSKeychainView *)self cloudKitClassDependencies];
+        notifierClass2 = [cloudKitClassDependencies2 notifierClass];
         v13 = [NSString stringWithFormat:@"com.apple.security.view-change.PCS"];
-        [v12 post:v13];
+        [notifierClass2 post:v13];
       }
     }
   }
 }
 
-- (BOOL)_onqueueOtherDevicesReportHavingTLKs:(id)a3 trustStates:(id)a4
+- (BOOL)_onqueueOtherDevicesReportHavingTLKs:(id)ks trustStates:(id)states
 {
-  v105 = a3;
-  v5 = a4;
+  ksCopy = ks;
+  statesCopy = states;
   v6 = +[NSDate date];
   v7 = objc_alloc_init(NSDateComponents);
   [v7 setDay:-45];
@@ -5025,7 +5025,7 @@ LABEL_107:
   v129 = 0u;
   v130 = 0u;
   v131 = 0u;
-  v12 = v5;
+  v12 = statesCopy;
   v13 = [v12 countByEnumeratingWithState:&v128 objects:v140 count:16];
   if (v13)
   {
@@ -5045,8 +5045,8 @@ LABEL_107:
         v125 = 0u;
         v126 = 0u;
         v127 = 0u;
-        v18 = [v17 currentTrustedPeers];
-        v19 = [v18 countByEnumeratingWithState:&v124 objects:v139 count:16];
+        currentTrustedPeers = [v17 currentTrustedPeers];
+        v19 = [currentTrustedPeers countByEnumeratingWithState:&v124 objects:v139 count:16];
         if (v19)
         {
           v20 = v19;
@@ -5057,14 +5057,14 @@ LABEL_107:
             {
               if (*v125 != v21)
               {
-                objc_enumerationMutation(v18);
+                objc_enumerationMutation(currentTrustedPeers);
               }
 
-              v23 = [*(*(&v124 + 1) + 8 * j) peerID];
-              [v11 addObject:v23];
+              peerID = [*(*(&v124 + 1) + 8 * j) peerID];
+              [v11 addObject:peerID];
             }
 
-            v20 = [v18 countByEnumeratingWithState:&v124 objects:v139 count:16];
+            v20 = [currentTrustedPeers countByEnumeratingWithState:&v124 objects:v139 count:16];
           }
 
           while (v20);
@@ -5077,18 +5077,18 @@ LABEL_107:
     while (v14);
   }
 
-  v24 = v105;
-  v25 = [v105 currentTLKPointer];
-  v26 = [v25 zoneID];
+  v24 = ksCopy;
+  currentTLKPointer = [ksCopy currentTLKPointer];
+  zoneID = [currentTLKPointer zoneID];
   v123 = 0;
-  v27 = [CKKSDeviceStateEntry allInZone:v26 error:&v123];
+  v27 = [CKKSDeviceStateEntry allInZone:zoneID error:&v123];
   v28 = v123;
 
   v104 = v27;
   if (v28)
   {
-    v29 = [(CKKSKeychainView *)self zoneName];
-    v30 = sub_100019104(@"ckkskey", v29);
+    zoneName = [(CKKSKeychainView *)self zoneName];
+    v30 = sub_100019104(@"ckkskey", zoneName);
 
     obj = v28;
     if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
@@ -5129,11 +5129,11 @@ LABEL_107:
       }
 
       v38 = *(*(&v119 + 1) + 8 * v37);
-      v39 = [v38 circlePeerID];
-      if (v39)
+      circlePeerID = [v38 circlePeerID];
+      if (circlePeerID)
       {
-        v40 = [v38 circlePeerID];
-        v30 = [@"spid-" stringByAppendingString:v40];
+        circlePeerID2 = [v38 circlePeerID];
+        v30 = [@"spid-" stringByAppendingString:circlePeerID2];
       }
 
       else
@@ -5141,33 +5141,33 @@ LABEL_107:
         v30 = 0;
       }
 
-      v41 = [v38 circlePeerID];
-      if (([v11 containsObject:v41] & 1) != 0 || v30 && objc_msgSend(v11, "containsObject:", v30))
+      circlePeerID3 = [v38 circlePeerID];
+      if (([v11 containsObject:circlePeerID3] & 1) != 0 || v30 && objc_msgSend(v11, "containsObject:", v30))
       {
       }
 
       else
       {
-        v42 = [v38 octagonPeerID];
-        v43 = [v11 containsObject:v42];
+        octagonPeerID = [v38 octagonPeerID];
+        v43 = [v11 containsObject:octagonPeerID];
 
         if (!v43)
         {
-          v52 = [v38 storedCKRecord];
-          v53 = [v52 modificationDate];
-          v54 = [v53 compare:v106];
+          storedCKRecord = [v38 storedCKRecord];
+          modificationDate = [storedCKRecord modificationDate];
+          v54 = [modificationDate compare:v106];
 
-          v55 = [(CKKSKeychainView *)self zoneName];
-          v51 = sub_100019104(@"ckkskey", v55);
+          zoneName2 = [(CKKSKeychainView *)self zoneName];
+          v51 = sub_100019104(@"ckkskey", zoneName2);
 
           v56 = os_log_type_enabled(v51, OS_LOG_TYPE_DEFAULT);
           if (v54 != -1)
           {
             if (v56)
             {
-              v57 = [v38 circlePeerID];
+              circlePeerID4 = [v38 circlePeerID];
               *buf = v98;
-              v135 = v57;
+              v135 = circlePeerID4;
               v136 = 2112;
               v137 = v38;
               _os_log_impl(&_mh_execute_header, v51, OS_LOG_TYPE_DEFAULT, "Device (%@) is not trusted, but very recent. Including in heuristic: %@", buf, 0x16u);
@@ -5178,9 +5178,9 @@ LABEL_107:
 
           if (v56)
           {
-            v58 = [v38 circlePeerID];
+            circlePeerID5 = [v38 circlePeerID];
             *buf = v98;
-            v135 = v58;
+            v135 = circlePeerID5;
             v136 = 2112;
             v137 = v38;
             _os_log_impl(&_mh_execute_header, v51, OS_LOG_TYPE_DEFAULT, "Device (%@) is not trusted and from too long ago; ignoring device state (%@)", buf, 0x16u);
@@ -5192,14 +5192,14 @@ LABEL_38:
         }
       }
 
-      v44 = [v38 storedCKRecord];
-      v45 = [v44 modificationDate];
-      v46 = [v45 compare:v109];
+      storedCKRecord2 = [v38 storedCKRecord];
+      modificationDate2 = [storedCKRecord2 modificationDate];
+      v46 = [modificationDate2 compare:v109];
 
       if (v46 == -1)
       {
-        v50 = [(CKKSKeychainView *)self zoneName];
-        v51 = sub_100019104(@"ckkskey", v50);
+        zoneName3 = [(CKKSKeychainView *)self zoneName];
+        v51 = sub_100019104(@"ckkskey", zoneName3);
 
         if (os_log_type_enabled(v51, OS_LOG_TYPE_DEFAULT))
         {
@@ -5212,13 +5212,13 @@ LABEL_38:
       }
 
 LABEL_33:
-      v47 = [v38 keyState];
-      if ([v47 isEqualToString:@"ready"])
+      keyState = [v38 keyState];
+      if ([keyState isEqualToString:@"ready"])
       {
 
 LABEL_53:
-        v68 = [(CKKSKeychainView *)self zoneName];
-        v69 = sub_100019104(@"ckkskey", v68);
+        zoneName4 = [(CKKSKeychainView *)self zoneName];
+        v69 = sub_100019104(@"ckkskey", zoneName4);
 
         if (os_log_type_enabled(v69, OS_LOG_TYPE_DEFAULT))
         {
@@ -5231,8 +5231,8 @@ LABEL_53:
         goto LABEL_56;
       }
 
-      v48 = [v38 keyState];
-      v49 = [v48 isEqualToString:@"readypendingunlock"];
+      keyState2 = [v38 keyState];
+      v49 = [keyState2 isEqualToString:@"readypendingunlock"];
 
       if (v49)
       {
@@ -5253,22 +5253,22 @@ LABEL_39:
   while (v59);
 LABEL_48:
 
-  v24 = v105;
-  v99 = [v105 currentTLKPointer];
-  v60 = [v99 currentKeyUUID];
-  v61 = [v105 currentTLKPointer];
-  v62 = [v61 contextID];
-  v63 = [v105 currentTLKPointer];
-  v64 = [v63 zoneID];
+  v24 = ksCopy;
+  currentTLKPointer2 = [ksCopy currentTLKPointer];
+  currentKeyUUID = [currentTLKPointer2 currentKeyUUID];
+  currentTLKPointer3 = [ksCopy currentTLKPointer];
+  contextID = [currentTLKPointer3 contextID];
+  currentTLKPointer4 = [ksCopy currentTLKPointer];
+  zoneID2 = [currentTLKPointer4 zoneID];
   v118 = 0;
-  v65 = [CKKSTLKShareRecord allForUUID:v60 contextID:v62 zoneID:v64 error:&v118];
+  v65 = [CKKSTLKShareRecord allForUUID:currentKeyUUID contextID:contextID zoneID:zoneID2 error:&v118];
   v30 = v118;
 
   obj = v65;
   if (v30)
   {
-    v66 = [(CKKSKeychainView *)self zoneName];
-    v67 = sub_100019104(@"ckkskey", v66);
+    zoneName5 = [(CKKSKeychainView *)self zoneName];
+    v67 = sub_100019104(@"ckkskey", zoneName5);
 
     if (os_log_type_enabled(v67, OS_LOG_TYPE_ERROR))
     {
@@ -5311,9 +5311,9 @@ LABEL_73:
         }
 
         v90 = *(*(&v110 + 1) + 8 * v89);
-        v91 = [v90 storedCKRecord];
-        v92 = [v91 modificationDate];
-        v93 = [v92 compare:v106];
+        storedCKRecord3 = [v90 storedCKRecord];
+        modificationDate3 = [storedCKRecord3 modificationDate];
+        v93 = [modificationDate3 compare:v106];
 
         if (v93 == 1)
         {
@@ -5332,8 +5332,8 @@ LABEL_73:
         }
       }
 
-      v97 = [(CKKSKeychainView *)self zoneName];
-      v67 = sub_100019104(@"ckkskey", v97);
+      zoneName6 = [(CKKSKeychainView *)self zoneName];
+      v67 = sub_100019104(@"ckkskey", zoneName6);
 
       if (!os_log_type_enabled(v67, OS_LOG_TYPE_DEFAULT))
       {
@@ -5351,7 +5351,7 @@ LABEL_84:
 LABEL_79:
     v31 = 0;
 LABEL_56:
-    v24 = v105;
+    v24 = ksCopy;
 LABEL_57:
     v71 = v102;
     v70 = v103;
@@ -5372,8 +5372,8 @@ LABEL_61:
     }
 
     v78 = *(*(&v114 + 1) + 8 * v77);
-    v79 = [v78 senderPeerID];
-    if ([v11 containsObject:v79])
+    senderPeerID = [v78 senderPeerID];
+    if ([v11 containsObject:senderPeerID])
     {
       break;
     }
@@ -5391,11 +5391,11 @@ LABEL_69:
     }
   }
 
-  v80 = [v78 storedCKRecord];
-  v81 = [v80 modificationDate];
+  storedCKRecord4 = [v78 storedCKRecord];
+  modificationDate4 = [storedCKRecord4 modificationDate];
   v82 = v75;
   v83 = v76;
-  v84 = [v81 compare:v109];
+  v84 = [modificationDate4 compare:v109];
 
   v85 = v84 == 1;
   v76 = v83;
@@ -5406,8 +5406,8 @@ LABEL_69:
     goto LABEL_69;
   }
 
-  v94 = [(CKKSKeychainView *)self zoneName];
-  v67 = sub_100019104(@"ckkskey", v94);
+  zoneName7 = [(CKKSKeychainView *)self zoneName];
+  v67 = sub_100019104(@"ckkskey", zoneName7);
 
   if (os_log_type_enabled(v67, OS_LOG_TYPE_DEFAULT))
   {
@@ -5419,7 +5419,7 @@ LABEL_69:
 
 LABEL_85:
   v31 = 1;
-  v24 = v105;
+  v24 = ksCopy;
 LABEL_86:
   v71 = v102;
   v70 = v103;
@@ -5429,16 +5429,16 @@ LABEL_58:
   return v31;
 }
 
-- (id)tlkMissingOperation:(id)a3
+- (id)tlkMissingOperation:(id)operation
 {
-  v4 = a3;
+  operationCopy = operation;
   objc_initWeak(&location, self);
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1001C4D60;
   v8[3] = &unk_100343B78;
   objc_copyWeak(&v10, &location);
-  v5 = v4;
+  v5 = operationCopy;
   v9 = v5;
   v6 = [OctagonStateTransitionOperation named:@"tlk-missing" intending:v5 errorState:@"error" withBlockTakingSelf:v8];
 
@@ -5448,7 +5448,7 @@ LABEL_58:
   return v6;
 }
 
-- (BOOL)allowOutOfBandFetch:(id *)a3
+- (BOOL)allowOutOfBandFetch:(id *)fetch
 {
   v6 = 0;
   v7 = &v6;
@@ -5460,7 +5460,7 @@ LABEL_58:
   v5[3] = &unk_1003472B0;
   v5[4] = self;
   v5[5] = &v6;
-  v5[6] = a3;
+  v5[6] = fetch;
   [(CKKSKeychainView *)self dispatchSyncWithReadOnlySQLTransaction:v5];
   v3 = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
@@ -5473,10 +5473,10 @@ LABEL_58:
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v3 = [(CKKSKeychainView *)self operationDependencies];
-  v4 = [v3 views];
+  operationDependencies = [(CKKSKeychainView *)self operationDependencies];
+  views = [operationDependencies views];
 
-  v5 = [v4 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  v5 = [views countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (!v5)
   {
 
@@ -5488,7 +5488,7 @@ LABEL_17:
   v6 = v5;
   v7 = 0;
   v8 = *v24;
-  obj = v4;
+  obj = views;
   while (2)
   {
     for (i = 0; i != v6; i = i + 1)
@@ -5499,14 +5499,14 @@ LABEL_17:
       }
 
       v10 = *(*(&v23 + 1) + 8 * i);
-      v11 = [(CKKSKeychainView *)self operationDependencies];
-      v12 = [v11 contextID];
-      v13 = [v10 zoneName];
-      v14 = [CKKSZoneStateEntry contextID:v12 zoneName:v13];
+      operationDependencies2 = [(CKKSKeychainView *)self operationDependencies];
+      contextID = [operationDependencies2 contextID];
+      zoneName = [v10 zoneName];
+      v14 = [CKKSZoneStateEntry contextID:contextID zoneName:zoneName];
 
-      v15 = [v14 lastFetchTime];
+      lastFetchTime = [v14 lastFetchTime];
 
-      if (!v15)
+      if (!lastFetchTime)
       {
         v20 = +[NSDate distantPast];
 
@@ -5517,9 +5517,9 @@ LABEL_17:
 
       if (!v7 || ([v14 lastFetchTime], v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v7, "compare:", v16), v16, v17 == 1))
       {
-        v18 = [v14 lastFetchTime];
+        lastFetchTime2 = [v14 lastFetchTime];
 
-        v7 = v18;
+        v7 = lastFetchTime2;
       }
     }
 
@@ -5552,10 +5552,10 @@ LABEL_18:
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(CKKSKeychainView *)self operationDependencies];
-  v5 = [v4 activeManagedViews];
+  operationDependencies = [(CKKSKeychainView *)self operationDependencies];
+  activeManagedViews = [operationDependencies activeManagedViews];
 
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v6 = [activeManagedViews countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -5566,15 +5566,15 @@ LABEL_18:
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(activeManagedViews);
         }
 
-        v10 = [*(*(&v13 + 1) + 8 * i) zoneID];
-        v11 = [v10 zoneName];
-        [v3 addObject:v11];
+        zoneID = [*(*(&v13 + 1) + 8 * i) zoneID];
+        zoneName = [zoneID zoneName];
+        [v3 addObject:zoneName];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [activeManagedViews countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);
@@ -5583,26 +5583,26 @@ LABEL_18:
   return v3;
 }
 
-- (id)viewsInState:(id)a3
+- (id)viewsInState:(id)state
 {
-  v4 = a3;
-  v5 = [(CKKSKeychainView *)self operationDependencies];
-  v6 = [v5 viewsInState:v4];
+  stateCopy = state;
+  operationDependencies = [(CKKSKeychainView *)self operationDependencies];
+  v6 = [operationDependencies viewsInState:stateCopy];
 
   return v6;
 }
 
-- (BOOL)anyViewsInState:(id)a3
+- (BOOL)anyViewsInState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(CKKSKeychainView *)self operationDependencies];
-  v6 = [v5 views];
+  operationDependencies = [(CKKSKeychainView *)self operationDependencies];
+  views = [operationDependencies views];
 
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v7 = [views countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = *v14;
@@ -5612,11 +5612,11 @@ LABEL_18:
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(views);
         }
 
-        v10 = [*(*(&v13 + 1) + 8 * i) viewKeyHierarchyState];
-        v11 = [v10 isEqualToString:v4];
+        viewKeyHierarchyState = [*(*(&v13 + 1) + 8 * i) viewKeyHierarchyState];
+        v11 = [viewKeyHierarchyState isEqualToString:stateCopy];
 
         if (v11)
         {
@@ -5625,7 +5625,7 @@ LABEL_18:
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [views countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v7)
       {
         continue;
@@ -5640,16 +5640,16 @@ LABEL_11:
   return v7;
 }
 
-- (id)loseTrustOperation:(id)a3
+- (id)loseTrustOperation:(id)operation
 {
-  v4 = a3;
+  operationCopy = operation;
   objc_initWeak(&location, self);
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1001C5DA0;
   v8[3] = &unk_100343B78;
   objc_copyWeak(&v10, &location);
-  v5 = v4;
+  v5 = operationCopy;
   v9 = v5;
   v6 = [OctagonStateTransitionOperation named:@"lose-trust" intending:v5 errorState:@"error" withBlockTakingSelf:v8];
 
@@ -5659,16 +5659,16 @@ LABEL_11:
   return v6;
 }
 
-- (id)becomeReadyOperation:(id)a3
+- (id)becomeReadyOperation:(id)operation
 {
-  v4 = a3;
+  operationCopy = operation;
   objc_initWeak(&location, self);
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1001C60C0;
   v8[3] = &unk_100343B78;
   objc_copyWeak(&v10, &location);
-  v5 = v4;
+  v5 = operationCopy;
   v9 = v5;
   v6 = [OctagonStateTransitionOperation named:@"become-ready" intending:v5 errorState:@"error" withBlockTakingSelf:v8];
 
@@ -5678,19 +5678,19 @@ LABEL_11:
   return v6;
 }
 
-- (id)_onqueueNextStateMachineTransition:(id)a3 flags:(id)a4 pendingFlags:(id)a5
+- (id)_onqueueNextStateMachineTransition:(id)transition flags:(id)flags pendingFlags:(id)pendingFlags
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(CKKSKeychainView *)self queue];
-  dispatch_assert_queue_V2(v11);
+  transitionCopy = transition;
+  flagsCopy = flags;
+  pendingFlagsCopy = pendingFlags;
+  queue = [(CKKSKeychainView *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  if ([v9 _onqueueContains:@"ck_account_logged_out"])
+  if ([flagsCopy _onqueueContains:@"ck_account_logged_out"])
   {
-    [v9 _onqueueRemoveFlag:@"ck_account_logged_out"];
-    v12 = [(CKKSKeychainView *)self zoneName];
-    v13 = sub_100019104(@"ckkskey", v12);
+    [flagsCopy _onqueueRemoveFlag:@"ck_account_logged_out"];
+    zoneName = [(CKKSKeychainView *)self zoneName];
+    v13 = sub_100019104(@"ckkskey", zoneName);
 
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
@@ -5698,43 +5698,43 @@ LABEL_11:
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "CK account is not present", buf, 2u);
     }
 
-    v14 = [(CKKSKeychainView *)self operationDependencies];
-    [v14 setStateForActiveZones:@"loggedout"];
+    operationDependencies = [(CKKSKeychainView *)self operationDependencies];
+    [operationDependencies setStateForActiveZones:@"loggedout"];
 
     v15 = [CKKSLocalResetOperation alloc];
-    v16 = [(CKKSKeychainView *)self operationDependencies];
-    v17 = [(CKKSLocalResetOperation *)v15 initWithDependencies:v16 intendedState:@"loggedout" errorState:@"error"];
+    operationDependencies2 = [(CKKSKeychainView *)self operationDependencies];
+    v17 = [(CKKSLocalResetOperation *)v15 initWithDependencies:operationDependencies2 intendedState:@"loggedout" errorState:@"error"];
 
     goto LABEL_35;
   }
 
-  if ([v9 _onqueueContains:@"ck_zone_missing"])
+  if ([flagsCopy _onqueueContains:@"ck_zone_missing"])
   {
-    [v9 _onqueueRemoveFlag:@"ck_zone_missing"];
-    v18 = [(CKKSKeychainView *)self operationDependencies];
-    [v18 setStateForActiveZones:@"initializing"];
+    [flagsCopy _onqueueRemoveFlag:@"ck_zone_missing"];
+    operationDependencies3 = [(CKKSKeychainView *)self operationDependencies];
+    [operationDependencies3 setStateForActiveZones:@"initializing"];
 
-    v19 = [OctagonStateTransitionOperation named:@"ck-zone-missing" entering:@"resetlocal"];
+    performInitializedOperation = [OctagonStateTransitionOperation named:@"ck-zone-missing" entering:@"resetlocal"];
     goto LABEL_34;
   }
 
-  if ([v9 _onqueueContains:@"ck_change_token_expired"])
+  if ([flagsCopy _onqueueContains:@"ck_change_token_expired"])
   {
-    [v9 _onqueueRemoveFlag:@"ck_change_token_expired"];
-    v20 = [(CKKSKeychainView *)self operationDependencies];
-    [v20 setStateForActiveZones:@"initializing"];
+    [flagsCopy _onqueueRemoveFlag:@"ck_change_token_expired"];
+    operationDependencies4 = [(CKKSKeychainView *)self operationDependencies];
+    [operationDependencies4 setStateForActiveZones:@"initializing"];
 
-    v19 = [OctagonStateTransitionOperation named:@"ck-token-expired" entering:@"resetlocal"];
+    performInitializedOperation = [OctagonStateTransitionOperation named:@"ck-token-expired" entering:@"resetlocal"];
     goto LABEL_34;
   }
 
-  if ([v8 isEqualToString:@"loggedout"])
+  if ([transitionCopy isEqualToString:@"loggedout"])
   {
-    if (([v9 _onqueueContains:@"ck_account_logged_in"] & 1) != 0 || -[CKKSKeychainView accountStatus](self, "accountStatus") == 1)
+    if (([flagsCopy _onqueueContains:@"ck_account_logged_in"] & 1) != 0 || -[CKKSKeychainView accountStatus](self, "accountStatus") == 1)
     {
-      [v9 _onqueueRemoveFlag:@"ck_account_logged_in"];
-      v21 = [(CKKSKeychainView *)self zoneName];
-      v22 = sub_100019104(@"ckkskey", v21);
+      [flagsCopy _onqueueRemoveFlag:@"ck_account_logged_in"];
+      zoneName2 = [(CKKSKeychainView *)self zoneName];
+      v22 = sub_100019104(@"ckkskey", zoneName2);
 
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
       {
@@ -5744,23 +5744,23 @@ LABEL_11:
 
 LABEL_14:
 
-      v19 = [OctagonStateTransitionOperation named:@"ck-sign-in" entering:@"initializing"];
+      performInitializedOperation = [OctagonStateTransitionOperation named:@"ck-sign-in" entering:@"initializing"];
       goto LABEL_34;
     }
 
-    v28 = [(CKKSKeychainView *)self operationDependencies];
-    [v28 setStateForAllViews:@"loggedout"];
+    operationDependencies5 = [(CKKSKeychainView *)self operationDependencies];
+    [operationDependencies5 setStateForAllViews:@"loggedout"];
 
     goto LABEL_27;
   }
 
-  if ([v8 isEqualToString:@"wait_for_ck_account_status"])
+  if ([transitionCopy isEqualToString:@"wait_for_ck_account_status"])
   {
-    if (([v9 _onqueueContains:@"ck_account_logged_in"] & 1) != 0 || -[CKKSKeychainView accountStatus](self, "accountStatus") == 1)
+    if (([flagsCopy _onqueueContains:@"ck_account_logged_in"] & 1) != 0 || -[CKKSKeychainView accountStatus](self, "accountStatus") == 1)
     {
-      [v9 _onqueueRemoveFlag:@"ck_account_logged_in"];
-      v23 = [(CKKSKeychainView *)self zoneName];
-      v22 = sub_100019104(@"ckkskey", v23);
+      [flagsCopy _onqueueRemoveFlag:@"ck_account_logged_in"];
+      zoneName3 = [(CKKSKeychainView *)self zoneName];
+      v22 = sub_100019104(@"ckkskey", zoneName3);
 
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
       {
@@ -5771,11 +5771,11 @@ LABEL_14:
       goto LABEL_14;
     }
 
-    if ([v9 _onqueueContains:@"ck_account_logged_out"])
+    if ([flagsCopy _onqueueContains:@"ck_account_logged_out"])
     {
-      [v9 _onqueueRemoveFlag:@"ck_account_logged_out"];
-      v30 = [(CKKSKeychainView *)self zoneName];
-      v25 = sub_100019104(@"ckkskey", v30);
+      [flagsCopy _onqueueRemoveFlag:@"ck_account_logged_out"];
+      zoneName4 = [(CKKSKeychainView *)self zoneName];
+      v25 = sub_100019104(@"ckkskey", zoneName4);
 
       if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
       {
@@ -5786,8 +5786,8 @@ LABEL_14:
 LABEL_25:
 
       v26 = [CKKSLocalResetOperation alloc];
-      v27 = [(CKKSKeychainView *)self operationDependencies];
-      v17 = [(CKKSLocalResetOperation *)v26 initWithDependencies:v27 intendedState:@"loggedout" errorState:@"error"];
+      operationDependencies6 = [(CKKSKeychainView *)self operationDependencies];
+      v17 = [(CKKSLocalResetOperation *)v26 initWithDependencies:operationDependencies6 intendedState:@"loggedout" errorState:@"error"];
 
       goto LABEL_35;
     }
@@ -5797,12 +5797,12 @@ LABEL_54:
     goto LABEL_35;
   }
 
-  if ([v8 isEqual:@"initializing"])
+  if ([transitionCopy isEqual:@"initializing"])
   {
     if ([(CKKSKeychainView *)self accountStatus]== 3)
     {
-      v24 = [(CKKSKeychainView *)self zoneName];
-      v25 = sub_100019104(@"ckkskey", v24);
+      zoneName5 = [(CKKSKeychainView *)self zoneName];
+      v25 = sub_100019104(@"ckkskey", zoneName5);
 
       if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
       {
@@ -5813,71 +5813,71 @@ LABEL_54:
       goto LABEL_25;
     }
 
-    v31 = [(CKKSKeychainView *)self operationDependencies];
-    [v31 operateOnAllViews];
+    operationDependencies7 = [(CKKSKeychainView *)self operationDependencies];
+    [operationDependencies7 operateOnAllViews];
 
-    v32 = [(CKKSKeychainView *)self operationDependencies];
-    [v32 setStateForAllViews:@"initializing"];
+    operationDependencies8 = [(CKKSKeychainView *)self operationDependencies];
+    [operationDependencies8 setStateForAllViews:@"initializing"];
 
     v33 = [CKKSCreateCKZoneOperation alloc];
-    v34 = [(CKKSKeychainView *)self operationDependencies];
-    v17 = [(CKKSCreateCKZoneOperation *)v33 initWithDependencies:v34 intendedState:@"initialized" errorState:@"zonecreationfailed"];
+    operationDependencies9 = [(CKKSKeychainView *)self operationDependencies];
+    v17 = [(CKKSCreateCKZoneOperation *)v33 initWithDependencies:operationDependencies9 intendedState:@"initialized" errorState:@"zonecreationfailed"];
 
-    v35 = [(CKKSKeychainView *)self operationDependencies];
-    v36 = [v35 cloudkitRetryAfter];
-    v37 = [v36 operationDependency];
-    [(CKKSLocalResetOperation *)v17 addNullableDependency:v37];
+    operationDependencies10 = [(CKKSKeychainView *)self operationDependencies];
+    cloudkitRetryAfter = [operationDependencies10 cloudkitRetryAfter];
+    operationDependency = [cloudkitRetryAfter operationDependency];
+    [(CKKSLocalResetOperation *)v17 addNullableDependency:operationDependency];
 
-    v38 = [(CKKSKeychainView *)self operationDependencies];
-    v39 = [v38 cloudkitRetryAfter];
+    operationDependencies11 = [(CKKSKeychainView *)self operationDependencies];
+    cloudkitRetryAfter2 = [operationDependencies11 cloudkitRetryAfter];
     goto LABEL_43;
   }
 
-  if ([v8 isEqualToString:@"initialized"])
+  if ([transitionCopy isEqualToString:@"initialized"])
   {
-    if ([v9 _onqueueContains:@"new_priority_views"] && -[CKKSKeychainView trustStatus](self, "trustStatus") == 1)
+    if ([flagsCopy _onqueueContains:@"new_priority_views"] && -[CKKSKeychainView trustStatus](self, "trustStatus") == 1)
     {
-      [v9 _onqueueRemoveFlag:@"new_priority_views"];
+      [flagsCopy _onqueueRemoveFlag:@"new_priority_views"];
       [(CKKSKeychainView *)self _onqueuePrioritizePriorityViews];
     }
 
-    v19 = [(CKKSKeychainView *)self performInitializedOperation];
+    performInitializedOperation = [(CKKSKeychainView *)self performInitializedOperation];
     goto LABEL_34;
   }
 
-  if ([v8 isEqualToString:@"error"])
+  if ([transitionCopy isEqualToString:@"error"])
   {
-    if (![v9 _onqueueContains:@"ck_account_logged_in"])
+    if (![flagsCopy _onqueueContains:@"ck_account_logged_in"])
     {
-      v47 = [(CKKSKeychainView *)self zoneName];
-      v48 = sub_100019104(@"ckkskey", v47);
+      zoneName6 = [(CKKSKeychainView *)self zoneName];
+      v48 = sub_100019104(@"ckkskey", zoneName6);
 
       if (os_log_type_enabled(v48, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v217 = v8;
+        v217 = transitionCopy;
         _os_log_impl(&_mh_execute_header, v48, OS_LOG_TYPE_ERROR, "Staying in error state %@", buf, 0xCu);
       }
 
       goto LABEL_54;
     }
 
-    [v9 _onqueueRemoveFlag:@"ck_account_logged_in"];
+    [flagsCopy _onqueueRemoveFlag:@"ck_account_logged_in"];
     v41 = [CKKSLocalResetOperation alloc];
-    v38 = [(CKKSKeychainView *)self operationDependencies];
+    operationDependencies11 = [(CKKSKeychainView *)self operationDependencies];
     v42 = @"initializing";
     v43 = @"error";
     goto LABEL_48;
   }
 
-  if ([v8 isEqualToString:@"fixup_fetch_cip"])
+  if ([transitionCopy isEqualToString:@"fixup_fetch_cip"])
   {
     v44 = [CKKSFixupRefetchAllCurrentItemPointers alloc];
-    v45 = [(CKKSKeychainView *)self operationDependencies];
+    operationDependencies12 = [(CKKSKeychainView *)self operationDependencies];
     v46 = [CKOperationGroup CKKSGroupWithName:@"fixup"];
 LABEL_57:
     v49 = v46;
-    v50 = [(CKKSFixupRefetchAllCurrentItemPointers *)v44 initWithOperationDependencies:v45 ckoperationGroup:v46];
+    v50 = [(CKKSFixupRefetchAllCurrentItemPointers *)v44 initWithOperationDependencies:operationDependencies12 ckoperationGroup:v46];
 LABEL_58:
     v17 = v50;
 
@@ -5886,152 +5886,152 @@ LABEL_59:
     goto LABEL_35;
   }
 
-  if ([v8 isEqualToString:@"fixup_fetch_tlkshares"])
+  if ([transitionCopy isEqualToString:@"fixup_fetch_tlkshares"])
   {
     v44 = [CKKSFixupFetchAllTLKShares alloc];
-    v45 = [(CKKSKeychainView *)self operationDependencies];
+    operationDependencies12 = [(CKKSKeychainView *)self operationDependencies];
     v46 = [CKOperationGroup CKKSGroupWithName:@"fixup"];
     goto LABEL_57;
   }
 
-  if ([v8 isEqualToString:@"fixup_local_reload"])
+  if ([transitionCopy isEqualToString:@"fixup_local_reload"])
   {
     v51 = [CKKSFixupLocalReloadOperation alloc];
-    v45 = [(CKKSKeychainView *)self operationDependencies];
+    operationDependencies12 = [(CKKSKeychainView *)self operationDependencies];
     v49 = [CKOperationGroup CKKSGroupWithName:@"fixup"];
     v52 = @"fixup_resave_cdse";
     v53 = v51;
-    v54 = v45;
+    v54 = operationDependencies12;
     v55 = 3;
 LABEL_62:
     v50 = [(CKKSFixupLocalReloadOperation *)v53 initWithOperationDependencies:v54 fixupNumber:v55 ckoperationGroup:v49 entering:v52];
     goto LABEL_58;
   }
 
-  if ([v8 isEqualToString:@"fixup_resave_cdse"])
+  if ([transitionCopy isEqualToString:@"fixup_resave_cdse"])
   {
     v56 = [CKKSFixupResaveDeviceStateEntriesOperation alloc];
-    v45 = [(CKKSKeychainView *)self operationDependencies];
-    v17 = [(CKKSFixupResaveDeviceStateEntriesOperation *)v56 initWithOperationDependencies:v45];
+    operationDependencies12 = [(CKKSKeychainView *)self operationDependencies];
+    v17 = [(CKKSFixupResaveDeviceStateEntriesOperation *)v56 initWithOperationDependencies:operationDependencies12];
     goto LABEL_59;
   }
 
-  if ([v8 isEqualToString:@"fixup_delete_tombstones"])
+  if ([transitionCopy isEqualToString:@"fixup_delete_tombstones"])
   {
     v57 = [CKKSFixupLocalReloadOperation alloc];
-    v45 = [(CKKSKeychainView *)self operationDependencies];
+    operationDependencies12 = [(CKKSKeychainView *)self operationDependencies];
     v49 = [CKOperationGroup CKKSGroupWithName:@"fixup"];
     v52 = @"initialized";
     v53 = v57;
-    v54 = v45;
+    v54 = operationDependencies12;
     v55 = 5;
     goto LABEL_62;
   }
 
-  if ([v8 isEqualToString:@"resetzone"])
+  if ([transitionCopy isEqualToString:@"resetzone"])
   {
-    v58 = [(CKKSKeychainView *)self zoneName];
-    v59 = sub_100019104(@"ckkskey", v58);
+    zoneName7 = [(CKKSKeychainView *)self zoneName];
+    v59 = sub_100019104(@"ckkskey", zoneName7);
 
     if (os_log_type_enabled(v59, OS_LOG_TYPE_DEFAULT))
     {
-      v60 = [(CKKSKeychainView *)self operationDependencies];
-      v61 = [v60 views];
+      operationDependencies13 = [(CKKSKeychainView *)self operationDependencies];
+      views = [operationDependencies13 views];
       *buf = 138412290;
-      v217 = v61;
+      v217 = views;
       _os_log_impl(&_mh_execute_header, v59, OS_LOG_TYPE_DEFAULT, "Deleting the CloudKit Zones for %@", buf, 0xCu);
     }
 
-    v62 = [(CKKSKeychainView *)self operationDependencies];
-    [v62 setStateForActiveZones:@"resetzone"];
+    operationDependencies14 = [(CKKSKeychainView *)self operationDependencies];
+    [operationDependencies14 setStateForActiveZones:@"resetzone"];
 
     v63 = [CKKSDeleteCKZoneOperation alloc];
-    v64 = [(CKKSKeychainView *)self operationDependencies];
-    v17 = [(CKKSDeleteCKZoneOperation *)v63 initWithDependencies:v64 intendedState:@"resetlocal" errorState:@"resetzone"];
+    operationDependencies15 = [(CKKSKeychainView *)self operationDependencies];
+    v17 = [(CKKSDeleteCKZoneOperation *)v63 initWithDependencies:operationDependencies15 intendedState:@"resetlocal" errorState:@"resetzone"];
 
     goto LABEL_35;
   }
 
-  if ([v8 isEqualToString:@"zone_deletion_failed_due_to_network_error"])
+  if ([transitionCopy isEqualToString:@"zone_deletion_failed_due_to_network_error"])
   {
-    if ([v9 _onqueueContains:@"zone_deletion"])
+    if ([flagsCopy _onqueueContains:@"zone_deletion"])
     {
-      [v9 _onqueueRemoveFlag:@"zone_deletion"];
-      v19 = [OctagonStateTransitionOperation named:@"recover-from-zone-deletion-network-failure" entering:@"resetzone"];
+      [flagsCopy _onqueueRemoveFlag:@"zone_deletion"];
+      performInitializedOperation = [OctagonStateTransitionOperation named:@"recover-from-zone-deletion-network-failure" entering:@"resetzone"];
       goto LABEL_34;
     }
 
     v72 = [[OctagonPendingFlag alloc] initWithFlag:@"zone_deletion" conditions:2 delayInSeconds:0.2];
-    v73 = [(CKKSKeychainView *)self stateMachine];
+    stateMachine = [(CKKSKeychainView *)self stateMachine];
     goto LABEL_79;
   }
 
-  if ([v8 isEqualToString:@"resetlocal"])
+  if ([transitionCopy isEqualToString:@"resetlocal"])
   {
-    v65 = [(CKKSKeychainView *)self zoneName];
-    v66 = sub_100019104(@"ckkskey", v65);
+    zoneName8 = [(CKKSKeychainView *)self zoneName];
+    v66 = sub_100019104(@"ckkskey", zoneName8);
 
     if (os_log_type_enabled(v66, OS_LOG_TYPE_DEFAULT))
     {
-      v67 = [(CKKSKeychainView *)self operationDependencies];
-      v68 = [v67 views];
+      operationDependencies16 = [(CKKSKeychainView *)self operationDependencies];
+      views2 = [operationDependencies16 views];
       *buf = 138412290;
-      v217 = v68;
+      v217 = views2;
       _os_log_impl(&_mh_execute_header, v66, OS_LOG_TYPE_DEFAULT, "Resetting local data for %@", buf, 0xCu);
     }
 
     [(CKKSKeychainView *)self setLastNewTLKOperation:0];
-    v69 = [(CKKSKeychainView *)self operationDependencies];
-    [v69 setStateForActiveZones:@"initializing"];
+    operationDependencies17 = [(CKKSKeychainView *)self operationDependencies];
+    [operationDependencies17 setStateForActiveZones:@"initializing"];
 
     v70 = [CKKSLocalResetOperation alloc];
-    v71 = [(CKKSKeychainView *)self operationDependencies];
-    v17 = [(CKKSLocalResetOperation *)v70 initWithDependencies:v71 intendedState:@"initializing" errorState:@"error"];
+    operationDependencies18 = [(CKKSKeychainView *)self operationDependencies];
+    v17 = [(CKKSLocalResetOperation *)v70 initWithDependencies:operationDependencies18 intendedState:@"initializing" errorState:@"error"];
 
     goto LABEL_35;
   }
 
-  if ([v8 isEqualToString:@"zonecreationfailed"])
+  if ([transitionCopy isEqualToString:@"zonecreationfailed"])
   {
     v17 = [OctagonStateTransitionOperation named:@"recover-from-cloudkit-failure" entering:@"initializing"];
-    v75 = [(CKKSKeychainView *)self operationDependencies];
-    v76 = [v75 cloudkitRetryAfter];
-    v77 = [v76 operationDependency];
-    [(CKKSLocalResetOperation *)v17 addNullableDependency:v77];
+    operationDependencies19 = [(CKKSKeychainView *)self operationDependencies];
+    cloudkitRetryAfter3 = [operationDependencies19 cloudkitRetryAfter];
+    operationDependency2 = [cloudkitRetryAfter3 operationDependency];
+    [(CKKSLocalResetOperation *)v17 addNullableDependency:operationDependency2];
 
-    v38 = [(CKKSKeychainView *)self operationDependencies];
-    v39 = [v38 cloudkitRetryAfter];
+    operationDependencies11 = [(CKKSKeychainView *)self operationDependencies];
+    cloudkitRetryAfter2 = [operationDependencies11 cloudkitRetryAfter];
 LABEL_43:
-    v40 = v39;
-    [v39 trigger];
+    v40 = cloudkitRetryAfter2;
+    [cloudkitRetryAfter2 trigger];
 
 LABEL_44:
     goto LABEL_35;
   }
 
-  if ([v8 isEqualToString:@"zone_creation_failed_due_to_network_error"])
+  if ([transitionCopy isEqualToString:@"zone_creation_failed_due_to_network_error"])
   {
-    if ([v9 _onqueueContains:@"zone_creation"])
+    if ([flagsCopy _onqueueContains:@"zone_creation"])
     {
-      [v9 _onqueueRemoveFlag:@"zone_creation"];
-      v19 = [OctagonStateTransitionOperation named:@"recover-from-zone-creation-network-failure" entering:@"initializing"];
+      [flagsCopy _onqueueRemoveFlag:@"zone_creation"];
+      performInitializedOperation = [OctagonStateTransitionOperation named:@"recover-from-zone-creation-network-failure" entering:@"initializing"];
       goto LABEL_34;
     }
 
     v72 = [[OctagonPendingFlag alloc] initWithFlag:@"zone_creation" conditions:2 delayInSeconds:0.2];
-    v73 = [(CKKSKeychainView *)self stateMachine];
+    stateMachine = [(CKKSKeychainView *)self stateMachine];
 LABEL_79:
-    v74 = v73;
-    [v73 _onqueueHandlePendingFlagLater:v72];
+    v74 = stateMachine;
+    [stateMachine _onqueueHandlePendingFlagLater:v72];
 
     goto LABEL_54;
   }
 
-  if ([v8 isEqualToString:@"lose_trust"])
+  if ([transitionCopy isEqualToString:@"lose_trust"])
   {
-    if ([v9 _onqueueContains:@"trusted_operation_begin"])
+    if ([flagsCopy _onqueueContains:@"trusted_operation_begin"])
     {
-      [v9 _onqueueRemoveFlag:@"trusted_operation_begin"];
+      [flagsCopy _onqueueRemoveFlag:@"trusted_operation_begin"];
       [OctagonStateTransitionOperation named:@"begin-trusted-operation" entering:@"initialized"];
     }
 
@@ -6039,16 +6039,16 @@ LABEL_79:
     {
       [(CKKSKeychainView *)self loseTrustOperation:@"waitfortrust"];
     }
-    v19 = ;
+    performInitializedOperation = ;
     goto LABEL_34;
   }
 
-  if ([v8 isEqualToString:@"waitfortrust"])
+  if ([transitionCopy isEqualToString:@"waitfortrust"])
   {
     if ([(CKKSKeychainView *)self trustStatus]== 1)
     {
-      v78 = [(CKKSKeychainView *)self zoneName];
-      v79 = sub_100019104(@"ckkskey", v78);
+      zoneName9 = [(CKKSKeychainView *)self zoneName];
+      v79 = sub_100019104(@"ckkskey", zoneName9);
 
       if (os_log_type_enabled(v79, OS_LOG_TYPE_DEFAULT))
       {
@@ -6056,65 +6056,65 @@ LABEL_79:
         _os_log_impl(&_mh_execute_header, v79, OS_LOG_TYPE_DEFAULT, "Beginning trusted state machine operation", buf, 2u);
       }
 
-      v19 = [OctagonStateTransitionOperation named:@"begin-trusted-operation" entering:@"initialized"];
+      performInitializedOperation = [OctagonStateTransitionOperation named:@"begin-trusted-operation" entering:@"initialized"];
       goto LABEL_34;
     }
 
-    if ([v9 _onqueueContains:@"fetch_requested"])
+    if ([flagsCopy _onqueueContains:@"fetch_requested"])
     {
-      [v9 _onqueueRemoveFlag:@"fetch_requested"];
-      v19 = [OctagonStateTransitionOperation named:@"fetch-requested" entering:@"begin_fetch"];
+      [flagsCopy _onqueueRemoveFlag:@"fetch_requested"];
+      performInitializedOperation = [OctagonStateTransitionOperation named:@"fetch-requested" entering:@"begin_fetch"];
       goto LABEL_34;
     }
 
-    if ([v9 _onqueueContains:@"key_process_requested"])
+    if ([flagsCopy _onqueueContains:@"key_process_requested"])
     {
-      [v9 _onqueueRemoveFlag:@"key_process_requested"];
-      v19 = [OctagonStateTransitionOperation named:@"begin-trusted-operation" entering:@"process_key_hierarchy"];
+      [flagsCopy _onqueueRemoveFlag:@"key_process_requested"];
+      performInitializedOperation = [OctagonStateTransitionOperation named:@"begin-trusted-operation" entering:@"process_key_hierarchy"];
       goto LABEL_34;
     }
 
-    if ([v9 _onqueueContains:@"key_set"])
+    if ([flagsCopy _onqueueContains:@"key_set"])
     {
-      [v9 _onqueueRemoveFlag:@"key_set"];
-      v19 = [OctagonStateTransitionOperation named:@"provide-key-set" entering:@"provide_key_hieararchy_untrusted"];
+      [flagsCopy _onqueueRemoveFlag:@"key_set"];
+      performInitializedOperation = [OctagonStateTransitionOperation named:@"provide-key-set" entering:@"provide_key_hieararchy_untrusted"];
       goto LABEL_34;
     }
 
 LABEL_27:
-    if ([v9 _onqueueContains:@"24_hr_notification"])
+    if ([flagsCopy _onqueueContains:@"24_hr_notification"])
     {
-      [v9 _onqueueRemoveFlag:@"24_hr_notification"];
+      [flagsCopy _onqueueRemoveFlag:@"24_hr_notification"];
     }
 
     goto LABEL_54;
   }
 
-  if ([v8 isEqualToString:@"provide_key_hieararchy"])
+  if ([transitionCopy isEqualToString:@"provide_key_hieararchy"])
   {
     v80 = [CKKSNewTLKOperation alloc];
-    v81 = [(CKKSKeychainView *)self operationDependencies];
-    v82 = [(CKKSKeychainView *)self lastNewTLKOperation];
-    v83 = [v82 keysets];
+    operationDependencies20 = [(CKKSKeychainView *)self operationDependencies];
+    lastNewTLKOperation = [(CKKSKeychainView *)self lastNewTLKOperation];
+    keysets = [lastNewTLKOperation keysets];
     v84 = @"become_ready";
 LABEL_102:
-    v17 = [(CKKSNewTLKOperation *)v80 initWithDependencies:v81 rollTLKIfPresent:0 preexistingPendingKeySets:v83 intendedState:v84 errorState:@"error"];
+    v17 = [(CKKSNewTLKOperation *)v80 initWithDependencies:operationDependencies20 rollTLKIfPresent:0 preexistingPendingKeySets:keysets intendedState:v84 errorState:@"error"];
 
     [(CKKSKeychainView *)self setLastNewTLKOperation:v17];
     goto LABEL_35;
   }
 
-  if ([v8 isEqualToString:@"provide_key_hieararchy_untrusted"])
+  if ([transitionCopy isEqualToString:@"provide_key_hieararchy_untrusted"])
   {
     v80 = [CKKSNewTLKOperation alloc];
-    v81 = [(CKKSKeychainView *)self operationDependencies];
-    v82 = [(CKKSKeychainView *)self lastNewTLKOperation];
-    v83 = [v82 keysets];
+    operationDependencies20 = [(CKKSKeychainView *)self operationDependencies];
+    lastNewTLKOperation = [(CKKSKeychainView *)self lastNewTLKOperation];
+    keysets = [lastNewTLKOperation keysets];
     v84 = @"waitfortrust";
     goto LABEL_102;
   }
 
-  if ([v8 isEqualToString:@"handle_all_views"])
+  if ([transitionCopy isEqualToString:@"handle_all_views"])
   {
     objc_initWeak(buf, self);
     v213[0] = _NSConcreteStackBlock;
@@ -6128,26 +6128,26 @@ LABEL_102:
     goto LABEL_35;
   }
 
-  if ([v8 isEqualToString:@"become_ready"])
+  if ([transitionCopy isEqualToString:@"become_ready"])
   {
-    v19 = [(CKKSKeychainView *)self becomeReadyOperation:@"ready"];
+    performInitializedOperation = [(CKKSKeychainView *)self becomeReadyOperation:@"ready"];
     goto LABEL_34;
   }
 
-  if ([v8 isEqualToString:@"ready"])
+  if ([transitionCopy isEqualToString:@"ready"])
   {
-    [v9 _onqueueRemoveFlag:@"trusted_operation_begin"];
-    if ([v9 _onqueueContains:@"device_unlocked"])
+    [flagsCopy _onqueueRemoveFlag:@"trusted_operation_begin"];
+    if ([flagsCopy _onqueueContains:@"device_unlocked"])
     {
-      [v9 _onqueueRemoveFlag:@"device_unlocked"];
-      v19 = [OctagonStateTransitionOperation named:@"key-state-after-unlock" entering:@"initialized"];
+      [flagsCopy _onqueueRemoveFlag:@"device_unlocked"];
+      performInitializedOperation = [OctagonStateTransitionOperation named:@"key-state-after-unlock" entering:@"initialized"];
       goto LABEL_34;
     }
 
     if ([(CKKSKeychainView *)self keyStateFullRefetchRequested])
     {
-      v102 = [(CKKSKeychainView *)self zoneName];
-      v103 = sub_100019104(@"ckkskey", v102);
+      zoneName10 = [(CKKSKeychainView *)self zoneName];
+      v103 = sub_100019104(@"ckkskey", zoneName10);
 
       if (os_log_type_enabled(v103, OS_LOG_TYPE_DEFAULT))
       {
@@ -6156,20 +6156,20 @@ LABEL_102:
         _os_log_impl(&_mh_execute_header, v103, OS_LOG_TYPE_DEFAULT, "Kicking off a full key refetch based on request:%d", buf, 8u);
       }
 
-      v104 = [(CKKSKeychainView *)self operationDependencies];
-      [v104 setStateForActiveZones:@"fetching"];
+      operationDependencies21 = [(CKKSKeychainView *)self operationDependencies];
+      [operationDependencies21 setStateForActiveZones:@"fetching"];
 
-      v19 = [OctagonStateTransitionOperation named:@"full-refetch" entering:@"needrefetch"];
+      performInitializedOperation = [OctagonStateTransitionOperation named:@"full-refetch" entering:@"needrefetch"];
       goto LABEL_34;
     }
 
-    if (![v9 _onqueueContains:@"fetch_requested"])
+    if (![flagsCopy _onqueueContains:@"fetch_requested"])
     {
-      if ([v9 _onqueueContains:@"key_process_requested"])
+      if ([flagsCopy _onqueueContains:@"key_process_requested"])
       {
-        [v9 _onqueueRemoveFlag:@"key_process_requested"];
-        v109 = [(CKKSKeychainView *)self zoneName];
-        v110 = sub_100019104(@"ckkskey", v109);
+        [flagsCopy _onqueueRemoveFlag:@"key_process_requested"];
+        zoneName11 = [(CKKSKeychainView *)self zoneName];
+        v110 = sub_100019104(@"ckkskey", zoneName11);
 
         if (os_log_type_enabled(v110, OS_LOG_TYPE_DEFAULT))
         {
@@ -6177,24 +6177,24 @@ LABEL_102:
           _os_log_impl(&_mh_execute_header, v110, OS_LOG_TYPE_DEFAULT, "Kicking off a key reprocess based on request", buf, 2u);
         }
 
-        v111 = [(CKKSKeychainView *)self operationDependencies];
-        [v111 setStateForActiveCKKSManagedViews:@"process_key_hierarchy"];
+        operationDependencies22 = [(CKKSKeychainView *)self operationDependencies];
+        [operationDependencies22 setStateForActiveCKKSManagedViews:@"process_key_hierarchy"];
 
-        v19 = [OctagonStateTransitionOperation named:@"key-process" entering:@"process_key_hierarchy"];
+        performInitializedOperation = [OctagonStateTransitionOperation named:@"key-process" entering:@"process_key_hierarchy"];
         goto LABEL_34;
       }
 
-      if ([v9 _onqueueContains:@"key_set"])
+      if ([flagsCopy _onqueueContains:@"key_set"])
       {
-        [v9 _onqueueRemoveFlag:@"key_set"];
-        v19 = [OctagonStateTransitionOperation named:@"provide-key-set" entering:@"provide_key_hieararchy"];
+        [flagsCopy _onqueueRemoveFlag:@"key_set"];
+        performInitializedOperation = [OctagonStateTransitionOperation named:@"provide-key-set" entering:@"provide_key_hieararchy"];
         goto LABEL_34;
       }
 
       if ([(CKKSKeychainView *)self trustStatus]!= 1)
       {
-        v122 = [(CKKSKeychainView *)self zoneName];
-        v123 = sub_100019104(@"ckkskey", v122);
+        zoneName12 = [(CKKSKeychainView *)self zoneName];
+        v123 = sub_100019104(@"ckkskey", zoneName12);
 
         if (os_log_type_enabled(v123, OS_LOG_TYPE_DEFAULT))
         {
@@ -6202,15 +6202,15 @@ LABEL_102:
           _os_log_impl(&_mh_execute_header, v123, OS_LOG_TYPE_DEFAULT, "In ready, but there's no trust; going into waitfortrust", buf, 2u);
         }
 
-        v19 = [OctagonStateTransitionOperation named:@"trust-gone" entering:@"lose_trust"];
+        performInitializedOperation = [OctagonStateTransitionOperation named:@"trust-gone" entering:@"lose_trust"];
         goto LABEL_34;
       }
 
-      if ([v9 _onqueueContains:@"trusted_peers_changed"])
+      if ([flagsCopy _onqueueContains:@"trusted_peers_changed"])
       {
-        [v9 _onqueueRemoveFlag:@"trusted_peers_changed"];
-        v119 = [(CKKSKeychainView *)self zoneName];
-        v120 = sub_100019104(@"ckkskey", v119);
+        [flagsCopy _onqueueRemoveFlag:@"trusted_peers_changed"];
+        zoneName13 = [(CKKSKeychainView *)self zoneName];
+        v120 = sub_100019104(@"ckkskey", zoneName13);
 
         if (os_log_type_enabled(v120, OS_LOG_TYPE_DEFAULT))
         {
@@ -6218,46 +6218,46 @@ LABEL_102:
           _os_log_impl(&_mh_execute_header, v120, OS_LOG_TYPE_DEFAULT, "Received a nudge that the trusted peers set might have changed! Reprocessing.", buf, 2u);
         }
 
-        v121 = [(CKKSKeychainView *)self operationDependencies];
-        [v121 setStateForActiveCKKSManagedViews:@"process_key_hierarchy"];
+        operationDependencies23 = [(CKKSKeychainView *)self operationDependencies];
+        [operationDependencies23 setStateForActiveCKKSManagedViews:@"process_key_hierarchy"];
 
-        v19 = [OctagonStateTransitionOperation named:@"trusted-peers-changed" entering:@"process_key_hierarchy"];
+        performInitializedOperation = [OctagonStateTransitionOperation named:@"trusted-peers-changed" entering:@"process_key_hierarchy"];
         goto LABEL_34;
       }
 
-      if ([v9 _onqueueContains:@"check_queues"])
+      if ([flagsCopy _onqueueContains:@"check_queues"])
       {
-        [v9 _onqueueRemoveFlag:@"check_queues"];
-        v19 = [OctagonStateTransitionOperation named:@"check-queues" entering:@"become_ready"];
+        [flagsCopy _onqueueRemoveFlag:@"check_queues"];
+        performInitializedOperation = [OctagonStateTransitionOperation named:@"check-queues" entering:@"become_ready"];
         goto LABEL_34;
       }
 
-      if ([v9 _onqueueContains:@"24_hr_notification"])
+      if ([flagsCopy _onqueueContains:@"24_hr_notification"])
       {
-        [v9 _onqueueRemoveFlag:@"24_hr_notification"];
-        v19 = [OctagonStateTransitionOperation named:@"24-hr-check" entering:@"initialized"];
+        [flagsCopy _onqueueRemoveFlag:@"24_hr_notification"];
+        performInitializedOperation = [OctagonStateTransitionOperation named:@"24-hr-check" entering:@"initialized"];
         goto LABEL_34;
       }
 
-      if ([v9 _onqueueContains:@"item_reencryption_needed"])
+      if ([flagsCopy _onqueueContains:@"item_reencryption_needed"])
       {
-        [v9 _onqueueRemoveFlag:@"item_reencryption_needed"];
-        v19 = [OctagonStateTransitionOperation named:@"reencrypt" entering:@"reencrypt_outgoing_items"];
+        [flagsCopy _onqueueRemoveFlag:@"item_reencryption_needed"];
+        performInitializedOperation = [OctagonStateTransitionOperation named:@"reencrypt" entering:@"reencrypt_outgoing_items"];
         goto LABEL_34;
       }
 
-      if ([v9 _onqueueContains:@"process_incoming_queue"])
+      if ([flagsCopy _onqueueContains:@"process_incoming_queue"])
       {
-        [v9 _onqueueRemoveFlag:@"process_incoming_queue"];
-        v19 = [OctagonStateTransitionOperation named:@"process-incoming" entering:@"process_incoming_queue"];
+        [flagsCopy _onqueueRemoveFlag:@"process_incoming_queue"];
+        performInitializedOperation = [OctagonStateTransitionOperation named:@"process-incoming" entering:@"process_incoming_queue"];
         goto LABEL_34;
       }
 
-      if ([v9 _onqueueContains:@"dropped_items"])
+      if ([flagsCopy _onqueueContains:@"dropped_items"])
       {
-        [v9 _onqueueRemoveFlag:@"dropped_items"];
-        v168 = [(CKKSKeychainView *)self zoneName];
-        v169 = sub_100019104(@"ckkskey", v168);
+        [flagsCopy _onqueueRemoveFlag:@"dropped_items"];
+        zoneName14 = [(CKKSKeychainView *)self zoneName];
+        v169 = sub_100019104(@"ckkskey", zoneName14);
 
         if (os_log_type_enabled(v169, OS_LOG_TYPE_DEFAULT))
         {
@@ -6265,37 +6265,37 @@ LABEL_102:
           _os_log_impl(&_mh_execute_header, v169, OS_LOG_TYPE_DEFAULT, "Launching a scan operation to find dropped items", buf, 2u);
         }
 
-        v19 = [OctagonStateTransitionOperation named:@"scan" entering:@"scan_local_items"];
+        performInitializedOperation = [OctagonStateTransitionOperation named:@"scan" entering:@"scan_local_items"];
         goto LABEL_34;
       }
 
-      if ([v9 _onqueueContains:@"process_outgoing_queue"])
+      if ([flagsCopy _onqueueContains:@"process_outgoing_queue"])
       {
-        if ([v9 _onqueueContains:@"oqo_token"])
+        if ([flagsCopy _onqueueContains:@"oqo_token"])
         {
-          [v9 _onqueueRemoveFlag:@"process_outgoing_queue"];
-          [v9 _onqueueRemoveFlag:@"oqo_token"];
-          v19 = [OctagonStateTransitionOperation named:@"oqo" entering:@"process_outgoing_queue"];
+          [flagsCopy _onqueueRemoveFlag:@"process_outgoing_queue"];
+          [flagsCopy _onqueueRemoveFlag:@"oqo_token"];
+          performInitializedOperation = [OctagonStateTransitionOperation named:@"oqo" entering:@"process_outgoing_queue"];
           goto LABEL_34;
         }
 
-        v174 = [(CKKSKeychainView *)self outgoingQueueOperationScheduler];
-        [v174 trigger];
+        outgoingQueueOperationScheduler = [(CKKSKeychainView *)self outgoingQueueOperationScheduler];
+        [outgoingQueueOperationScheduler trigger];
       }
 
-      if ([v9 _onqueueContains:@"new_priority_views"])
+      if ([flagsCopy _onqueueContains:@"new_priority_views"])
       {
-        [v9 _onqueueRemoveFlag:@"new_priority_views"];
+        [flagsCopy _onqueueRemoveFlag:@"new_priority_views"];
       }
 
       v211 = 0u;
       v212 = 0u;
       v209 = 0u;
       v210 = 0u;
-      v175 = [(CKKSKeychainView *)self operationDependencies];
-      v176 = [v175 views];
+      operationDependencies24 = [(CKKSKeychainView *)self operationDependencies];
+      views3 = [operationDependencies24 views];
 
-      v177 = [v176 countByEnumeratingWithState:&v209 objects:v221 count:16];
+      v177 = [views3 countByEnumeratingWithState:&v209 objects:v221 count:16];
       if (v177)
       {
         v178 = *v210;
@@ -6305,33 +6305,33 @@ LABEL_102:
           {
             if (*v210 != v178)
             {
-              objc_enumerationMutation(v176);
+              objc_enumerationMutation(views3);
             }
 
             [*(*(&v209 + 1) + 8 * i) launchComplete];
           }
 
-          v177 = [v176 countByEnumeratingWithState:&v209 objects:v221 count:16];
+          v177 = [views3 countByEnumeratingWithState:&v209 objects:v221 count:16];
         }
 
         while (v177);
       }
 
-      v180 = [(CKKSKeychainView *)self operationDependencies];
-      v181 = [v180 overallLaunch];
-      [v181 launch];
+      operationDependencies25 = [(CKKSKeychainView *)self operationDependencies];
+      overallLaunch = [operationDependencies25 overallLaunch];
+      [overallLaunch launch];
 
       v182 = +[CKKSAnalytics logger];
-      v183 = [(CKKSKeychainView *)self operationDependencies];
-      v184 = [v183 overallLaunch];
-      [v182 noteLaunchSequence:v184];
+      operationDependencies26 = [(CKKSKeychainView *)self operationDependencies];
+      overallLaunch2 = [operationDependencies26 overallLaunch];
+      [v182 noteLaunchSequence:overallLaunch2];
 
       goto LABEL_54;
     }
 
-    [v9 _onqueueRemoveFlag:@"fetch_requested"];
-    v105 = [(CKKSKeychainView *)self zoneName];
-    v106 = sub_100019104(@"ckkskey", v105);
+    [flagsCopy _onqueueRemoveFlag:@"fetch_requested"];
+    zoneName15 = [(CKKSKeychainView *)self zoneName];
+    v106 = sub_100019104(@"ckkskey", zoneName15);
 
     if (os_log_type_enabled(v106, OS_LOG_TYPE_DEFAULT))
     {
@@ -6341,30 +6341,30 @@ LABEL_102:
 
 LABEL_141:
 
-    v19 = [OctagonStateTransitionOperation named:@"fetch-requested" entering:@"begin_fetch"];
+    performInitializedOperation = [OctagonStateTransitionOperation named:@"fetch-requested" entering:@"begin_fetch"];
     goto LABEL_34;
   }
 
-  if ([v8 isEqualToString:@"begin_fetch"])
+  if ([transitionCopy isEqualToString:@"begin_fetch"])
   {
-    [v9 _onqueueRemoveFlag:@"fetch_complete"];
-    if ([v9 _onqueueContains:@"new_priority_views"] && -[CKKSKeychainView trustStatus](self, "trustStatus") == 1)
+    [flagsCopy _onqueueRemoveFlag:@"fetch_complete"];
+    if ([flagsCopy _onqueueContains:@"new_priority_views"] && -[CKKSKeychainView trustStatus](self, "trustStatus") == 1)
     {
-      [v9 _onqueueRemoveFlag:@"new_priority_views"];
+      [flagsCopy _onqueueRemoveFlag:@"new_priority_views"];
       [(CKKSKeychainView *)self _onqueuePrioritizePriorityViews];
     }
 
     objc_initWeak(&location, self);
-    v85 = [(CKKSKeychainView *)self operationDependencies];
-    v86 = [v85 currentFetchReasons];
-    v190 = [v86 copy];
+    operationDependencies27 = [(CKKSKeychainView *)self operationDependencies];
+    currentFetchReasons = [operationDependencies27 currentFetchReasons];
+    v190 = [currentFetchReasons copy];
 
-    v87 = [(CKKSKeychainView *)self operationDependencies];
-    v88 = [v87 currentFetchReasons];
-    [v88 removeAllObjects];
+    operationDependencies28 = [(CKKSKeychainView *)self operationDependencies];
+    currentFetchReasons2 = [operationDependencies28 currentFetchReasons];
+    [currentFetchReasons2 removeAllObjects];
 
-    v89 = [(CKKSKeychainView *)self zoneChangeFetcher];
-    v189 = [v89 requestSuccessfulFetchForManyReasons:v190];
+    zoneChangeFetcher = [(CKKSKeychainView *)self zoneChangeFetcher];
+    v189 = [zoneChangeFetcher requestSuccessfulFetchForManyReasons:v190];
 
     v206[0] = _NSConcreteStackBlock;
     v206[1] = 3221225472;
@@ -6374,16 +6374,16 @@ LABEL_141:
     v191 = [CKKSResultOperation named:@"post-fetch" withBlock:v206];
     [v191 addDependency:v189];
     [(CKKSKeychainView *)self scheduleOperation:v191];
-    v90 = [(CKKSKeychainView *)self operationDependencies];
-    v91 = [v90 currentFetchReasons];
-    v194 = [v91 containsObject:@"keyhierarchy"];
+    operationDependencies29 = [(CKKSKeychainView *)self operationDependencies];
+    currentFetchReasons3 = [operationDependencies29 currentFetchReasons];
+    v194 = [currentFetchReasons3 containsObject:@"keyhierarchy"];
 
     v204 = 0u;
     v205 = 0u;
     v202 = 0u;
     v203 = 0u;
-    v92 = [(CKKSKeychainView *)self operationDependencies];
-    obj = [v92 views];
+    operationDependencies30 = [(CKKSKeychainView *)self operationDependencies];
+    obj = [operationDependencies30 views];
 
     v93 = [obj countByEnumeratingWithState:&v202 objects:v220 count:16];
     if (v93)
@@ -6399,8 +6399,8 @@ LABEL_141:
           }
 
           v95 = *(*(&v202 + 1) + 8 * j);
-          v96 = [v95 zoneName];
-          v97 = sub_100019104(@"fetch", v96);
+          zoneName16 = [v95 zoneName];
+          v97 = sub_100019104(@"fetch", zoneName16);
 
           if (os_log_type_enabled(v97, OS_LOG_TYPE_DEFAULT))
           {
@@ -6413,8 +6413,8 @@ LABEL_141:
 
           if ((v194 & 1) == 0)
           {
-            v98 = [v95 viewKeyHierarchyState];
-            v99 = [v98 isEqualToString:@"ready"];
+            viewKeyHierarchyState = [v95 viewKeyHierarchyState];
+            v99 = [viewKeyHierarchyState isEqualToString:@"ready"];
 
             if (v99)
             {
@@ -6431,9 +6431,9 @@ LABEL_141:
       while (v93);
     }
 
-    v100 = [(CKKSKeychainView *)self operationDependencies];
-    v101 = [v100 overallLaunch];
-    [v101 addEvent:@"begin-fetch"];
+    operationDependencies31 = [(CKKSKeychainView *)self operationDependencies];
+    overallLaunch3 = [operationDependencies31 overallLaunch];
+    [overallLaunch3 addEvent:@"begin-fetch"];
 
     v17 = [OctagonStateTransitionOperation named:@"waiting-for-fetch" entering:@"fetching"];
 
@@ -6442,39 +6442,39 @@ LABEL_141:
     goto LABEL_35;
   }
 
-  if ([v8 isEqualToString:@"fetching"])
+  if ([transitionCopy isEqualToString:@"fetching"])
   {
-    if ([v9 _onqueueContains:@"fetch_complete"])
+    if ([flagsCopy _onqueueContains:@"fetch_complete"])
     {
-      [v9 _onqueueRemoveFlag:@"fetch_complete"];
-      v19 = [OctagonStateTransitionOperation named:@"fetch-complete" entering:@"fetchcomplete"];
+      [flagsCopy _onqueueRemoveFlag:@"fetch_complete"];
+      performInitializedOperation = [OctagonStateTransitionOperation named:@"fetch-complete" entering:@"fetchcomplete"];
       goto LABEL_34;
     }
 
-    if ([v9 _onqueueContains:@"new_priority_views"] && -[CKKSKeychainView trustStatus](self, "trustStatus") == 1)
+    if ([flagsCopy _onqueueContains:@"new_priority_views"] && -[CKKSKeychainView trustStatus](self, "trustStatus") == 1)
     {
-      [v9 _onqueueRemoveFlag:@"new_priority_views"];
+      [flagsCopy _onqueueRemoveFlag:@"new_priority_views"];
       [(CKKSKeychainView *)self _onqueuePrioritizePriorityViews];
     }
 
     goto LABEL_54;
   }
 
-  if ([v8 isEqualToString:@"fetchcomplete"])
+  if ([transitionCopy isEqualToString:@"fetchcomplete"])
   {
-    v107 = [(CKKSKeychainView *)self operationDependencies];
-    v108 = [v107 overallLaunch];
-    [v108 addEvent:@"fetch-complete"];
+    operationDependencies32 = [(CKKSKeychainView *)self operationDependencies];
+    overallLaunch4 = [operationDependencies32 overallLaunch];
+    [overallLaunch4 addEvent:@"fetch-complete"];
 
-    v19 = [OctagonStateTransitionOperation named:@"post-fetch-process" entering:@"process_key_hierarchy"];
+    performInitializedOperation = [OctagonStateTransitionOperation named:@"post-fetch-process" entering:@"process_key_hierarchy"];
     goto LABEL_34;
   }
 
-  if ([v8 isEqualToString:@"process_key_hierarchy"])
+  if ([transitionCopy isEqualToString:@"process_key_hierarchy"])
   {
-    if ([v9 _onqueueContains:@"fetch_requested"])
+    if ([flagsCopy _onqueueContains:@"fetch_requested"])
     {
-      [v9 _onqueueRemoveFlag:@"fetch_requested"];
+      [flagsCopy _onqueueRemoveFlag:@"fetch_requested"];
       v106 = sub_100019104(@"ckkskey", 0);
       if (os_log_type_enabled(v106, OS_LOG_TYPE_DEFAULT))
       {
@@ -6485,57 +6485,57 @@ LABEL_141:
       goto LABEL_141;
     }
 
-    [v9 _onqueueRemoveFlag:@"key_process_requested"];
-    v112 = [(CKKSKeychainView *)self operationDependencies];
-    [v112 setStateForActiveCKKSManagedViews:@"process_key_hierarchy"];
+    [flagsCopy _onqueueRemoveFlag:@"key_process_requested"];
+    operationDependencies33 = [(CKKSKeychainView *)self operationDependencies];
+    [operationDependencies33 setStateForActiveCKKSManagedViews:@"process_key_hierarchy"];
 
-    v113 = [(CKKSKeychainView *)self operationDependencies];
-    [v113 setStateForActiveExternallyManagedViews:@"ready"];
+    operationDependencies34 = [(CKKSKeychainView *)self operationDependencies];
+    [operationDependencies34 setStateForActiveExternallyManagedViews:@"ready"];
 
-    v114 = [(CKKSKeychainView *)self operationDependencies];
-    v115 = [v114 overallLaunch];
-    [v115 addEvent:@"process_key_hierarchy"];
+    operationDependencies35 = [(CKKSKeychainView *)self operationDependencies];
+    overallLaunch5 = [operationDependencies35 overallLaunch];
+    [overallLaunch5 addEvent:@"process_key_hierarchy"];
 
     v116 = [CKKSProcessReceivedKeysOperation alloc];
-    v117 = [(CKKSKeychainView *)self operationDependencies];
-    v118 = [(CKKSProcessReceivedKeysOperation *)v116 initWithDependencies:v117 allowFullRefetchResult:[(CKKSKeychainView *)self keyStateMachineRefetched]^ 1 intendedState:@"check_zone_hierarchies" errorState:@"error"];
+    operationDependencies36 = [(CKKSKeychainView *)self operationDependencies];
+    v118 = [(CKKSProcessReceivedKeysOperation *)v116 initWithDependencies:operationDependencies36 allowFullRefetchResult:[(CKKSKeychainView *)self keyStateMachineRefetched]^ 1 intendedState:@"check_zone_hierarchies" errorState:@"error"];
 LABEL_162:
     v17 = v118;
 
     goto LABEL_35;
   }
 
-  if ([v8 isEqualToString:@"check_zone_hierarchies"])
+  if ([transitionCopy isEqualToString:@"check_zone_hierarchies"])
   {
     if ([(CKKSKeychainView *)self anyViewsInState:@"unhealthy"])
     {
-      v19 = [OctagonStateTransitionOperation named:@"unhealthy" entering:@"unhealthy"];
+      performInitializedOperation = [OctagonStateTransitionOperation named:@"unhealthy" entering:@"unhealthy"];
       goto LABEL_34;
     }
 
     if ([(CKKSKeychainView *)self anyViewsInState:@"tlkmissing"])
     {
-      v19 = [OctagonStateTransitionOperation named:@"tlk-missing" entering:@"tlkmissing"];
+      performInitializedOperation = [OctagonStateTransitionOperation named:@"tlk-missing" entering:@"tlkmissing"];
       goto LABEL_34;
     }
 
     if ([(CKKSKeychainView *)self anyViewsInState:@"newtlksfailed"])
     {
-      v124 = [(CKKSKeychainView *)self operationDependencies];
-      v125 = [v124 currentFetchReasons];
-      [v125 addObject:@"conflict"];
+      operationDependencies37 = [(CKKSKeychainView *)self operationDependencies];
+      currentFetchReasons4 = [operationDependencies37 currentFetchReasons];
+      [currentFetchReasons4 addObject:@"conflict"];
 
-      v19 = [OctagonStateTransitionOperation named:@"newtlks-failed" entering:@"begin_fetch"];
+      performInitializedOperation = [OctagonStateTransitionOperation named:@"newtlks-failed" entering:@"begin_fetch"];
       goto LABEL_34;
     }
 
     if ([(CKKSKeychainView *)self anyViewsInState:@"waitfortrust"])
     {
-      v128 = [(CKKSKeychainView *)self operationDependencies];
-      v129 = [v128 allViews];
-      v130 = [(CKKSKeychainView *)self operationDependencies];
-      v131 = [v130 views];
-      v132 = [v129 isEqualToSet:v131];
+      operationDependencies38 = [(CKKSKeychainView *)self operationDependencies];
+      allViews = [operationDependencies38 allViews];
+      operationDependencies39 = [(CKKSKeychainView *)self operationDependencies];
+      views4 = [operationDependencies39 views];
+      v132 = [allViews isEqualToSet:views4];
 
       if ((v132 & 1) == 0)
       {
@@ -6551,17 +6551,17 @@ LABEL_162:
         goto LABEL_35;
       }
 
-      v19 = [OctagonStateTransitionOperation named:@"no-trust" entering:@"lose_trust"];
+      performInitializedOperation = [OctagonStateTransitionOperation named:@"no-trust" entering:@"lose_trust"];
 LABEL_34:
-      v17 = v19;
+      v17 = performInitializedOperation;
       goto LABEL_35;
     }
 
     if ([(CKKSKeychainView *)self anyViewsInState:@"needrefetch"])
     {
-      v117 = [(CKKSKeychainView *)self viewsInState:@"needrefetch"];
-      v137 = [(CKKSKeychainView *)self operationDependencies];
-      [v137 operateOnSelectViews:v117];
+      operationDependencies36 = [(CKKSKeychainView *)self viewsInState:@"needrefetch"];
+      operationDependencies40 = [(CKKSKeychainView *)self operationDependencies];
+      [operationDependencies40 operateOnSelectViews:operationDependencies36];
 
       v118 = [OctagonStateTransitionOperation named:@"reset-views" entering:@"needrefetch"];
       goto LABEL_162;
@@ -6570,7 +6570,7 @@ LABEL_34:
     if ([(CKKSKeychainView *)self anyViewsInState:@"waitforunlock"])
     {
       v144 = [[OctagonPendingFlag alloc] initWithFlag:@"device_unlocked" conditions:1];
-      [v10 _onqueueHandlePendingFlagLater:v144];
+      [pendingFlagsCopy _onqueueHandlePendingFlagLater:v144];
     }
 
     if ([(CKKSKeychainView *)self anyViewsInState:@"waitfortlkcreation"])
@@ -6582,8 +6582,8 @@ LABEL_34:
         _os_log_impl(&_mh_execute_header, v145, OS_LOG_TYPE_DEFAULT, "Requesting TLK upload", buf, 2u);
       }
 
-      v146 = [(CKKSKeychainView *)self suggestTLKUpload];
-      [v146 trigger];
+      suggestTLKUpload = [(CKKSKeychainView *)self suggestTLKUpload];
+      [suggestTLKUpload trigger];
     }
 
     v195 = +[NSMutableSet set];
@@ -6591,10 +6591,10 @@ LABEL_34:
     v199 = 0u;
     v196 = 0u;
     v197 = 0u;
-    v147 = [(CKKSKeychainView *)self operationDependencies];
-    v148 = [v147 views];
+    operationDependencies41 = [(CKKSKeychainView *)self operationDependencies];
+    views5 = [operationDependencies41 views];
 
-    v149 = [v148 countByEnumeratingWithState:&v196 objects:v215 count:16];
+    v149 = [views5 countByEnumeratingWithState:&v196 objects:v215 count:16];
     if (v149)
     {
       v150 = *v197;
@@ -6604,14 +6604,14 @@ LABEL_34:
         {
           if (*v197 != v150)
           {
-            objc_enumerationMutation(v148);
+            objc_enumerationMutation(views5);
           }
 
-          v152 = [*(*(&v196 + 1) + 8 * k) viewKeyHierarchyState];
-          [v195 addObject:v152];
+          viewKeyHierarchyState2 = [*(*(&v196 + 1) + 8 * k) viewKeyHierarchyState];
+          [v195 addObject:viewKeyHierarchyState2];
         }
 
-        v149 = [v148 countByEnumeratingWithState:&v196 objects:v215 count:16];
+        v149 = [views5 countByEnumeratingWithState:&v196 objects:v215 count:16];
       }
 
       while (v149);
@@ -6631,14 +6631,14 @@ LABEL_34:
       }
     }
 
-    if ([v9 _onqueueContains:@"key_set"])
+    if ([flagsCopy _onqueueContains:@"key_set"])
     {
-      [v9 _onqueueRemoveFlag:@"key_set"];
+      [flagsCopy _onqueueRemoveFlag:@"key_set"];
       v156 = [CKKSNewTLKOperation alloc];
-      v157 = [(CKKSKeychainView *)self operationDependencies];
-      v158 = [(CKKSKeychainView *)self lastNewTLKOperation];
-      v159 = [v158 keysets];
-      v17 = [(CKKSNewTLKOperation *)v156 initWithDependencies:v157 rollTLKIfPresent:0 preexistingPendingKeySets:v159 intendedState:@"check_zone_hierarchies" errorState:@"error"];
+      operationDependencies42 = [(CKKSKeychainView *)self operationDependencies];
+      lastNewTLKOperation2 = [(CKKSKeychainView *)self lastNewTLKOperation];
+      keysets2 = [lastNewTLKOperation2 keysets];
+      v17 = [(CKKSNewTLKOperation *)v156 initWithDependencies:operationDependencies42 rollTLKIfPresent:0 preexistingPendingKeySets:keysets2 intendedState:@"check_zone_hierarchies" errorState:@"error"];
 
       [(CKKSKeychainView *)self setLastNewTLKOperation:v17];
     }
@@ -6651,27 +6651,27 @@ LABEL_34:
 
   else
   {
-    if ([v8 isEqualToString:@"tlkmissing"])
+    if ([transitionCopy isEqualToString:@"tlkmissing"])
     {
-      v19 = [(CKKSKeychainView *)self tlkMissingOperation:@"check_zone_hierarchies"];
+      performInitializedOperation = [(CKKSKeychainView *)self tlkMissingOperation:@"check_zone_hierarchies"];
       goto LABEL_34;
     }
 
-    if ([v8 isEqualToString:@"heal_tlk_shares"])
+    if ([transitionCopy isEqualToString:@"heal_tlk_shares"])
     {
       v41 = [CKKSHealTLKSharesOperation alloc];
-      v38 = [(CKKSKeychainView *)self operationDependencies];
+      operationDependencies11 = [(CKKSKeychainView *)self operationDependencies];
       v42 = @"process_incoming_queue";
       v43 = @"healtlksharesfailed";
 LABEL_48:
-      v17 = [(CKKSLocalResetOperation *)v41 initWithDependencies:v38 intendedState:v42 errorState:v43];
+      v17 = [(CKKSLocalResetOperation *)v41 initWithDependencies:operationDependencies11 intendedState:v42 errorState:v43];
       goto LABEL_44;
     }
 
-    if ([v8 isEqualToString:@"needrefetch"])
+    if ([transitionCopy isEqualToString:@"needrefetch"])
     {
-      v126 = [(CKKSKeychainView *)self zoneName];
-      v127 = sub_100019104(@"ckkskey", v126);
+      zoneName17 = [(CKKSKeychainView *)self zoneName];
+      v127 = sub_100019104(@"ckkskey", zoneName17);
 
       if (os_log_type_enabled(v127, OS_LOG_TYPE_DEFAULT))
       {
@@ -6681,14 +6681,14 @@ LABEL_48:
 
       [(CKKSKeychainView *)self setKeyStateMachineRefetched:1];
       [(CKKSKeychainView *)self setKeyStateFullRefetchRequested:0];
-      v19 = [OctagonStateTransitionOperation named:@"fetch-complete" entering:@"resetlocal"];
+      performInitializedOperation = [OctagonStateTransitionOperation named:@"fetch-complete" entering:@"resetlocal"];
       goto LABEL_34;
     }
 
-    if ([v8 isEqualToString:@"healtlksharesfailed"])
+    if ([transitionCopy isEqualToString:@"healtlksharesfailed"])
     {
-      v133 = [(CKKSKeychainView *)self zoneName];
-      v134 = sub_100019104(@"ckkskey", v133);
+      zoneName18 = [(CKKSKeychainView *)self zoneName];
+      v134 = sub_100019104(@"ckkskey", zoneName18);
 
       if (os_log_type_enabled(v134, OS_LOG_TYPE_DEFAULT))
       {
@@ -6696,19 +6696,19 @@ LABEL_48:
         _os_log_impl(&_mh_execute_header, v134, OS_LOG_TYPE_DEFAULT, "Creating new TLK shares didn't work. Attempting to refetch!", buf, 2u);
       }
 
-      v135 = [(CKKSKeychainView *)self operationDependencies];
-      v136 = [v135 currentFetchReasons];
-      [v136 addObject:@"conflict"];
+      operationDependencies43 = [(CKKSKeychainView *)self operationDependencies];
+      currentFetchReasons5 = [operationDependencies43 currentFetchReasons];
+      [currentFetchReasons5 addObject:@"conflict"];
 
-      v19 = [OctagonStateTransitionOperation named:@"heal-tlks-failed" entering:@"begin_fetch"];
+      performInitializedOperation = [OctagonStateTransitionOperation named:@"heal-tlks-failed" entering:@"begin_fetch"];
       goto LABEL_34;
     }
 
-    if ([v8 isEqualToString:@"unhealthy"])
+    if ([transitionCopy isEqualToString:@"unhealthy"])
     {
       v138 = [(CKKSKeychainView *)self trustStatus]== 1;
-      v139 = [(CKKSKeychainView *)self zoneName];
-      v140 = sub_100019104(@"ckkskey", v139);
+      zoneName19 = [(CKKSKeychainView *)self zoneName];
+      v140 = sub_100019104(@"ckkskey", zoneName19);
 
       v141 = os_log_type_enabled(v140, OS_LOG_TYPE_DEFAULT);
       if (!v138)
@@ -6719,7 +6719,7 @@ LABEL_48:
           _os_log_impl(&_mh_execute_header, v140, OS_LOG_TYPE_DEFAULT, "Looks like the key hierarchy is unhealthy, but we're untrusted.", buf, 2u);
         }
 
-        v19 = [OctagonStateTransitionOperation named:@"unhealthy-lacking-trust" entering:@"lose_trust"];
+        performInitializedOperation = [OctagonStateTransitionOperation named:@"unhealthy-lacking-trust" entering:@"lose_trust"];
         goto LABEL_34;
       }
 
@@ -6730,70 +6730,70 @@ LABEL_48:
       }
 
       v142 = [CKKSHealKeyHierarchyOperation alloc];
-      v143 = [(CKKSKeychainView *)self operationDependencies];
-      v17 = [(CKKSHealKeyHierarchyOperation *)v142 initWithDependencies:v143 allowFullRefetchResult:[(CKKSKeychainView *)self keyStateMachineRefetched]^ 1 intending:@"check_zone_hierarchies" errorState:@"error"];
+      operationDependencies44 = [(CKKSKeychainView *)self operationDependencies];
+      v17 = [(CKKSHealKeyHierarchyOperation *)v142 initWithDependencies:operationDependencies44 allowFullRefetchResult:[(CKKSKeychainView *)self keyStateMachineRefetched]^ 1 intending:@"check_zone_hierarchies" errorState:@"error"];
     }
 
     else
     {
-      if (![v8 isEqualToString:@"process_incoming_queue"])
+      if (![transitionCopy isEqualToString:@"process_incoming_queue"])
       {
-        if ([v8 isEqualToString:@"class_a_incoming_items_remaining"])
+        if ([transitionCopy isEqualToString:@"class_a_incoming_items_remaining"])
         {
-          v19 = [OctagonStateTransitionOperation named:@"iqo-errored" entering:@"become_ready"];
+          performInitializedOperation = [OctagonStateTransitionOperation named:@"iqo-errored" entering:@"become_ready"];
           goto LABEL_34;
         }
 
-        if ([v8 isEqualToString:@"scan_local_items"])
+        if ([transitionCopy isEqualToString:@"scan_local_items"])
         {
-          [v9 _onqueueRemoveFlag:@"dropped_items"];
+          [flagsCopy _onqueueRemoveFlag:@"dropped_items"];
           v170 = [CKKSScanLocalItemsOperation alloc];
-          v171 = [(CKKSKeychainView *)self operationDependencies];
-          v17 = [(CKKSScanLocalItemsOperation *)v170 initWithDependencies:v171 intending:@"become_ready" errorState:@"error" ckoperationGroup:0];
+          operationDependencies45 = [(CKKSKeychainView *)self operationDependencies];
+          v17 = [(CKKSScanLocalItemsOperation *)v170 initWithDependencies:operationDependencies45 intending:@"become_ready" errorState:@"error" ckoperationGroup:0];
 
           [(CKKSKeychainView *)self setInitiatedLocalScan:1];
           goto LABEL_35;
         }
 
-        if ([v8 isEqualToString:@"reencrypt_outgoing_items"])
+        if ([transitionCopy isEqualToString:@"reencrypt_outgoing_items"])
         {
           v172 = [CKKSReencryptOutgoingItemsOperation alloc];
-          v173 = [(CKKSKeychainView *)self operationDependencies];
-          v17 = [(CKKSReencryptOutgoingItemsOperation *)v172 initWithDependencies:v173 intendedState:@"become_ready" errorState:@"error" holdOperation:0];
+          operationDependencies46 = [(CKKSKeychainView *)self operationDependencies];
+          v17 = [(CKKSReencryptOutgoingItemsOperation *)v172 initWithDependencies:operationDependencies46 intendedState:@"become_ready" errorState:@"error" holdOperation:0];
 
           [(CKKSKeychainView *)self setLastReencryptOutgoingItemsOperation:v17];
           goto LABEL_35;
         }
 
-        if ([v8 isEqualToString:@"process_outgoing_queue"])
+        if ([transitionCopy isEqualToString:@"process_outgoing_queue"])
         {
-          [v9 _onqueueRemoveFlag:@"process_outgoing_queue"];
+          [flagsCopy _onqueueRemoveFlag:@"process_outgoing_queue"];
           v185 = [CKKSOutgoingQueueOperation alloc];
-          v186 = [(CKKSKeychainView *)self operationDependencies];
-          v17 = [(CKKSOutgoingQueueOperation *)v185 initWithDependencies:v186 intending:@"become_ready" ckErrorState:@"process_outgoing_queue_failed" errorState:@"initialized"];
+          operationDependencies47 = [(CKKSKeychainView *)self operationDependencies];
+          v17 = [(CKKSOutgoingQueueOperation *)v185 initWithDependencies:operationDependencies47 intending:@"become_ready" ckErrorState:@"process_outgoing_queue_failed" errorState:@"initialized"];
 
-          v187 = [(CKKSKeychainView *)self holdOutgoingQueueOperation];
-          [(CKKSLocalResetOperation *)v17 addNullableDependency:v187];
+          holdOutgoingQueueOperation = [(CKKSKeychainView *)self holdOutgoingQueueOperation];
+          [(CKKSLocalResetOperation *)v17 addNullableDependency:holdOutgoingQueueOperation];
 
-          v188 = [(CKKSKeychainView *)self outgoingQueueOperations];
-          [(CKKSLocalResetOperation *)v17 linearDependencies:v188];
+          outgoingQueueOperations = [(CKKSKeychainView *)self outgoingQueueOperations];
+          [(CKKSLocalResetOperation *)v17 linearDependencies:outgoingQueueOperations];
 
           [(CKKSKeychainView *)self setLastOutgoingQueueOperation:v17];
           goto LABEL_35;
         }
 
-        if ([v8 isEqualToString:@"process_outgoing_queue_failed"])
+        if ([transitionCopy isEqualToString:@"process_outgoing_queue_failed"])
         {
-          v19 = [OctagonStateTransitionOperation named:@"oqo-failure" entering:@"become_ready"];
+          performInitializedOperation = [OctagonStateTransitionOperation named:@"oqo-failure" entering:@"become_ready"];
           goto LABEL_34;
         }
 
         goto LABEL_54;
       }
 
-      [v9 _onqueueRemoveFlag:@"process_incoming_queue"];
-      v160 = [v9 _onqueueContains:@"policy_fresh"];
-      [v9 _onqueueRemoveFlag:@"policy_fresh"];
+      [flagsCopy _onqueueRemoveFlag:@"process_incoming_queue"];
+      v160 = [flagsCopy _onqueueContains:@"policy_fresh"];
+      [flagsCopy _onqueueRemoveFlag:@"policy_fresh"];
       if (v160)
       {
         v161 = sub_100019104(@"ckksincoming", 0);
@@ -6805,25 +6805,25 @@ LABEL_48:
       }
 
       v162 = [CKKSIncomingQueueOperation alloc];
-      v163 = [(CKKSKeychainView *)self operationDependencies];
-      v17 = [(CKKSIncomingQueueOperation *)v162 initWithDependencies:v163 intending:@"become_ready" pendingClassAItemsRemainingState:@"class_a_incoming_items_remaining" errorState:@"become_ready" handleMismatchedViewItems:v160];
+      operationDependencies48 = [(CKKSKeychainView *)self operationDependencies];
+      v17 = [(CKKSIncomingQueueOperation *)v162 initWithDependencies:operationDependencies48 intending:@"become_ready" pendingClassAItemsRemainingState:@"class_a_incoming_items_remaining" errorState:@"become_ready" handleMismatchedViewItems:v160];
 
-      v164 = [(CKKSKeychainView *)self resultsOfNextIncomingQueueOperationOperation];
+      resultsOfNextIncomingQueueOperationOperation = [(CKKSKeychainView *)self resultsOfNextIncomingQueueOperationOperation];
 
-      if (v164)
+      if (resultsOfNextIncomingQueueOperationOperation)
       {
-        v165 = [(CKKSKeychainView *)self resultsOfNextIncomingQueueOperationOperation];
-        [v165 addSuccessDependency:v17];
+        resultsOfNextIncomingQueueOperationOperation2 = [(CKKSKeychainView *)self resultsOfNextIncomingQueueOperationOperation];
+        [resultsOfNextIncomingQueueOperationOperation2 addSuccessDependency:v17];
 
-        v166 = [(CKKSKeychainView *)self resultsOfNextIncomingQueueOperationOperation];
-        [(CKKSKeychainView *)self scheduleOperation:v166];
+        resultsOfNextIncomingQueueOperationOperation3 = [(CKKSKeychainView *)self resultsOfNextIncomingQueueOperationOperation];
+        [(CKKSKeychainView *)self scheduleOperation:resultsOfNextIncomingQueueOperationOperation3];
 
         [(CKKSKeychainView *)self setResultsOfNextIncomingQueueOperationOperation:0];
       }
 
       [(CKKSKeychainView *)self setLastIncomingQueueOperation:v17];
-      v167 = [(CKKSKeychainView *)self holdIncomingQueueOperation];
-      [(CKKSLocalResetOperation *)v17 addNullableDependency:v167];
+      holdIncomingQueueOperation = [(CKKSKeychainView *)self holdIncomingQueueOperation];
+      [(CKKSLocalResetOperation *)v17 addNullableDependency:holdIncomingQueueOperation];
     }
   }
 
@@ -6834,32 +6834,32 @@ LABEL_35:
 
 - (void)_onqueuePokeKeyStateMachine
 {
-  v3 = [(CKKSKeychainView *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CKKSKeychainView *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(CKKSKeychainView *)self stateMachine];
-  [v4 _onqueuePokeStateMachine];
+  stateMachine = [(CKKSKeychainView *)self stateMachine];
+  [stateMachine _onqueuePokeStateMachine];
 }
 
 - (void)keyStateMachineRequestProcess
 {
-  v2 = [(CKKSKeychainView *)self stateMachine];
-  [v2 handleFlag:@"key_process_requested"];
+  stateMachine = [(CKKSKeychainView *)self stateMachine];
+  [stateMachine handleFlag:@"key_process_requested"];
 }
 
-- (id)rpcResetCloudKit:(id)a3 reply:(id)a4
+- (id)rpcResetCloudKit:(id)kit reply:(id)reply
 {
-  v25 = a3;
-  v27 = a4;
+  kitCopy = kit;
+  replyCopy = reply;
   v35 = 0;
-  LOBYTE(a4) = [(CKKSKeychainView *)self waitUntilReadyForRPCForOperation:@"reset-cloudkit" fast:0 errorOnNoCloudKitAccount:1 errorOnPolicyMissing:1 error:&v35];
+  LOBYTE(reply) = [(CKKSKeychainView *)self waitUntilReadyForRPCForOperation:@"reset-cloudkit" fast:0 errorOnNoCloudKitAccount:1 errorOnPolicyMissing:1 error:&v35];
   v6 = v35;
   v26 = v6;
-  if (a4)
+  if (reply)
   {
     objc_initWeak(&location, self);
-    v7 = [(CKKSKeychainView *)self zoneName];
-    v8 = sub_100019104(@"ckksreset", v7);
+    zoneName = [(CKKSKeychainView *)self zoneName];
+    v8 = sub_100019104(@"ckksreset", zoneName);
 
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
@@ -6872,7 +6872,7 @@ LABEL_35:
     v28[2] = sub_1001CB998;
     v28[3] = &unk_100343B78;
     objc_copyWeak(&v30, &location);
-    v29 = v25;
+    v29 = kitCopy;
     v24 = [OctagonStateTransitionOperation named:@"set-zones" intending:@"resetzone" errorState:@"error" withBlockTakingSelf:v28];
     v47 = @"initializing";
     v45[0] = @"initialized";
@@ -6885,7 +6885,7 @@ LABEL_35:
     v48 = v11;
     v12 = [NSDictionary dictionaryWithObjects:&v48 forKeys:&v47 count:1];
 
-    v13 = [(CKKSKeychainView *)self stateMachine];
+    stateMachine = [(CKKSKeychainView *)self stateMachine];
     v44[0] = @"ready";
     v44[1] = @"initialized";
     v44[2] = @"fetchcomplete";
@@ -6912,7 +6912,7 @@ LABEL_35:
     v43 = v18;
     v19 = [NSDictionary dictionaryWithObjects:&v43 forKeys:&v42 count:1];
     v20 = [OctagonStateTransitionPath pathFromDictionary:v19];
-    v21 = [v13 doWatchedStateMachineRPC:@"ckks-cloud-reset" sourceStates:v15 path:v20 transitionOp:v24 reply:v27];
+    v21 = [stateMachine doWatchedStateMachineRPC:@"ckks-cloud-reset" sourceStates:v15 path:v20 transitionOp:v24 reply:replyCopy];
 
     objc_destroyWeak(&v30);
     objc_destroyWeak(&location);
@@ -6920,27 +6920,27 @@ LABEL_35:
 
   else
   {
-    v27[2](v27, v6);
+    replyCopy[2](replyCopy, v6);
     v33[0] = _NSConcreteStackBlock;
     v33[1] = 3221225472;
     v33[2] = sub_1001CB98C;
     v33[3] = &unk_100343BA0;
     v34 = v26;
     v21 = [CKKSResultOperation named:@"fail" withBlockTakingSelf:v33];
-    v22 = [(CKKSKeychainView *)self operationQueue];
-    [v22 addOperation:v21];
+    operationQueue = [(CKKSKeychainView *)self operationQueue];
+    [operationQueue addOperation:v21];
   }
 
   return v21;
 }
 
-- (id)rpcResetLocal:(id)a3 reply:(id)a4
+- (id)rpcResetLocal:(id)local reply:(id)reply
 {
-  v6 = a3;
-  v22 = a4;
+  localCopy = local;
+  replyCopy = reply;
   objc_initWeak(&location, self);
-  v7 = [(CKKSKeychainView *)self zoneName];
-  v8 = sub_100019104(@"ckksreset", v7);
+  zoneName = [(CKKSKeychainView *)self zoneName];
+  v8 = sub_100019104(@"ckksreset", zoneName);
 
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -6953,10 +6953,10 @@ LABEL_35:
   v23[2] = sub_1001CBFD4;
   v23[3] = &unk_100343B78;
   objc_copyWeak(&v25, &location);
-  v20 = v6;
+  v20 = localCopy;
   v24 = v20;
   v21 = [OctagonStateTransitionOperation named:@"set-zones" intending:@"resetlocal" errorState:@"error" withBlockTakingSelf:v23];
-  v9 = [(CKKSKeychainView *)self stateMachine];
+  stateMachine = [(CKKSKeychainView *)self stateMachine];
   v34[2] = @"fetchcomplete";
   v34[3] = @"process_key_hierarchy";
   v34[0] = @"ready";
@@ -6980,7 +6980,7 @@ LABEL_35:
   v33 = v15;
   v16 = [NSDictionary dictionaryWithObjects:&v33 forKeys:&v32 count:1];
   v17 = [OctagonStateTransitionPath pathFromDictionary:v16];
-  v18 = [v9 doWatchedStateMachineRPC:@"local-reset" sourceStates:v11 path:v17 transitionOp:v21 reply:v22];
+  v18 = [stateMachine doWatchedStateMachineRPC:@"local-reset" sourceStates:v11 path:v17 transitionOp:v21 reply:replyCopy];
 
   objc_destroyWeak(&v25);
   objc_destroyWeak(&location);
@@ -7005,23 +7005,23 @@ LABEL_35:
 
 - (NSDictionary)stateConditions
 {
-  v2 = [(CKKSKeychainView *)self stateMachine];
-  v3 = [v2 stateConditions];
+  stateMachine = [(CKKSKeychainView *)self stateMachine];
+  stateConditions = [stateMachine stateConditions];
 
-  return v3;
+  return stateConditions;
 }
 
 - (NSString)debugDescription
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(CKKSKeychainView *)self operationDependencies];
-  v6 = [v5 contextID];
-  v7 = [(CKKSKeychainView *)self stateMachine];
-  v8 = [v7 currentState];
-  v9 = [(CKKSKeychainView *)self operationDependencies];
-  v10 = [v9 views];
-  v11 = [NSString stringWithFormat:@"<%@: cid:%@ state:%@ views:%@ %p>", v4, v6, v8, v10, self];
+  operationDependencies = [(CKKSKeychainView *)self operationDependencies];
+  contextID = [operationDependencies contextID];
+  stateMachine = [(CKKSKeychainView *)self stateMachine];
+  currentState = [stateMachine currentState];
+  operationDependencies2 = [(CKKSKeychainView *)self operationDependencies];
+  views = [operationDependencies2 views];
+  v11 = [NSString stringWithFormat:@"<%@: cid:%@ state:%@ views:%@ %p>", v4, contextID, currentState, views, self];
 
   return v11;
 }
@@ -7030,47 +7030,47 @@ LABEL_35:
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(CKKSKeychainView *)self operationDependencies];
-  v6 = [v5 contextID];
-  v7 = [(CKKSKeychainView *)self stateMachine];
-  v8 = [v7 currentState];
-  v9 = [(CKKSKeychainView *)self operationDependencies];
-  v10 = [v9 views];
-  v11 = [NSString stringWithFormat:@"<%@: cid:%@ state:%@ views:%@>", v4, v6, v8, v10];
+  operationDependencies = [(CKKSKeychainView *)self operationDependencies];
+  contextID = [operationDependencies contextID];
+  stateMachine = [(CKKSKeychainView *)self stateMachine];
+  currentState = [stateMachine currentState];
+  operationDependencies2 = [(CKKSKeychainView *)self operationDependencies];
+  views = [operationDependencies2 views];
+  v11 = [NSString stringWithFormat:@"<%@: cid:%@ state:%@ views:%@>", v4, contextID, currentState, views];
 
   return v11;
 }
 
-- (CKKSKeychainView)initWithContainer:(id)a3 contextID:(id)a4 activeAccount:(id)a5 accountTracker:(id)a6 lockStateTracker:(id)a7 reachabilityTracker:(id)a8 savedTLKNotifier:(id)a9 cloudKitClassDependencies:(id)a10 personaAdapter:(id)a11 accountsAdapter:(id)a12 cuttlefishAdapter:(id)a13
+- (CKKSKeychainView)initWithContainer:(id)container contextID:(id)d activeAccount:(id)account accountTracker:(id)tracker lockStateTracker:(id)stateTracker reachabilityTracker:(id)reachabilityTracker savedTLKNotifier:(id)notifier cloudKitClassDependencies:(id)self0 personaAdapter:(id)self1 accountsAdapter:(id)self2 cuttlefishAdapter:(id)self3
 {
-  v98 = a3;
-  v18 = a4;
-  v95 = a5;
-  v94 = a6;
-  v89 = a7;
-  v19 = a7;
-  v20 = a8;
-  v96 = v19;
-  v99 = a8;
-  v21 = a9;
-  v97 = a10;
-  v93 = a11;
-  v90 = a12;
-  v22 = a13;
+  containerCopy = container;
+  dCopy = d;
+  accountCopy = account;
+  trackerCopy = tracker;
+  stateTrackerCopy = stateTracker;
+  stateTrackerCopy2 = stateTracker;
+  reachabilityTrackerCopy = reachabilityTracker;
+  v96 = stateTrackerCopy2;
+  reachabilityTrackerCopy2 = reachabilityTracker;
+  notifierCopy = notifier;
+  dependenciesCopy = dependencies;
+  adapterCopy = adapter;
+  accountsAdapterCopy = accountsAdapter;
+  cuttlefishAdapterCopy = cuttlefishAdapter;
   v105.receiver = self;
   v105.super_class = CKKSKeychainView;
   v23 = [(CKKSKeychainView *)&v105 init];
   v24 = v23;
   if (v23)
   {
-    v92 = v21;
-    objc_storeStrong(&v23->_container, a3);
-    objc_storeStrong(&v24->_accountTracker, a6);
-    objc_storeStrong(&v24->_reachabilityTracker, v20);
-    objc_storeStrong(&v24->_lockStateTracker, v89);
-    objc_storeStrong(&v24->_cloudKitClassDependencies, a10);
-    objc_storeStrong(&v24->_personaAdapter, a11);
-    objc_storeStrong(&v24->_accountsAdapter, a12);
+    v92 = notifierCopy;
+    objc_storeStrong(&v23->_container, container);
+    objc_storeStrong(&v24->_accountTracker, tracker);
+    objc_storeStrong(&v24->_reachabilityTracker, reachabilityTrackerCopy);
+    objc_storeStrong(&v24->_lockStateTracker, stateTrackerCopy);
+    objc_storeStrong(&v24->_cloudKitClassDependencies, dependencies);
+    objc_storeStrong(&v24->_personaAdapter, adapter);
+    objc_storeStrong(&v24->_accountsAdapter, accountsAdapter);
     zoneName = v24->_zoneName;
     v24->_zoneName = @"all";
 
@@ -7080,11 +7080,11 @@ LABEL_35:
     accountLoggedInDependency = v24->_accountLoggedInDependency;
     v24->_accountLoggedInDependency = v26;
 
-    v28 = [v98 containerIdentifier];
-    v29 = [NSString stringWithFormat:@"CKKSQueue.%@.%@", v28, v18];
-    v30 = [v29 UTF8String];
+    containerIdentifier = [containerCopy containerIdentifier];
+    dCopy = [NSString stringWithFormat:@"CKKSQueue.%@.%@", containerIdentifier, dCopy];
+    uTF8String = [dCopy UTF8String];
     v31 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v32 = dispatch_queue_create(v30, v31);
+    v32 = dispatch_queue_create(uTF8String, v31);
     queue = v24->_queue;
     v24->_queue = v32;
 
@@ -7125,14 +7125,14 @@ LABEL_35:
     v24->_resyncRecordsSeen = 0;
 
     v24->_firstManateeKeyFetched = 0;
-    if ([v18 isEqualToString:&stru_100348050])
+    if ([dCopy isEqualToString:&stru_100348050])
     {
-      v50 = @"ckks";
+      dCopy2 = @"ckks";
     }
 
     else
     {
-      v50 = [NSString stringWithFormat:@"ckks-%@", v18];
+      dCopy2 = [NSString stringWithFormat:@"ckks-%@", dCopy];
     }
 
     v51 = [OctagonStateMachine alloc];
@@ -7148,12 +7148,12 @@ LABEL_35:
     }
 
     v53 = qword_10039DDB8;
-    v54 = [(OctagonStateMachine *)v51 initWithName:v50 states:v52 flags:v53 initialState:@"wait_for_ck_account_status" queue:v24->_queue stateEngine:v24 unexpectedStateErrorDomain:@"com.apple.ckks.state" lockStateTracker:v96 reachabilityTracker:v99];
+    v54 = [(OctagonStateMachine *)v51 initWithName:dCopy2 states:v52 flags:v53 initialState:@"wait_for_ck_account_status" queue:v24->_queue stateEngine:v24 unexpectedStateErrorDomain:@"com.apple.ckks.state" lockStateTracker:v96 reachabilityTracker:reachabilityTrackerCopy2];
     stateMachine = v24->_stateMachine;
     v24->_stateMachine = v54;
 
     objc_initWeak(&location, v24);
-    v87 = v22;
+    v87 = cuttlefishAdapterCopy;
     if (qword_10039DEC8 != -1)
     {
       dispatch_once(&qword_10039DEC8, &stru_100337248);
@@ -7209,49 +7209,49 @@ LABEL_35:
 
     v69 = [CKKSOperationDependencies alloc];
     v70 = +[NSSet set];
-    v71 = [(CKContainer *)v24->_container privateCloudDatabase];
+    privateCloudDatabase = [(CKContainer *)v24->_container privateCloudDatabase];
     LOBYTE(v86) = 0;
-    v72 = [(CKKSOperationDependencies *)v69 initWithViewStates:v70 contextID:v18 activeAccount:v95 ckdatabase:v71 cloudKitClassDependencies:v24->_cloudKitClassDependencies ckoperationGroup:0 flagHandler:v24->_stateMachine overallLaunch:v66 accountStateTracker:v94 lockStateTracker:v24->_lockStateTracker reachabilityTracker:v99 peerProviders:&__NSArray0__struct databaseProvider:v24->_databaseProvider savedTLKNotifier:v92 personaAdapter:v93 sendMetric:v86];
+    v72 = [(CKKSOperationDependencies *)v69 initWithViewStates:v70 contextID:dCopy activeAccount:accountCopy ckdatabase:privateCloudDatabase cloudKitClassDependencies:v24->_cloudKitClassDependencies ckoperationGroup:0 flagHandler:v24->_stateMachine overallLaunch:v66 accountStateTracker:trackerCopy lockStateTracker:v24->_lockStateTracker reachabilityTracker:reachabilityTrackerCopy2 peerProviders:&__NSArray0__struct databaseProvider:v24->_databaseProvider savedTLKNotifier:v92 personaAdapter:adapterCopy sendMetric:v86];
     operationDependencies = v24->_operationDependencies;
     v24->_operationDependencies = v72;
 
     v74 = [CKKSZoneChangeFetcher alloc];
-    v75 = [v97 fetchRecordZoneChangesOperationClass];
+    fetchRecordZoneChangesOperationClass = [dependenciesCopy fetchRecordZoneChangesOperationClass];
     reachabilityTracker = v24->_reachabilityTracker;
-    v77 = [v95 altDSID];
-    v78 = [(CKKSZoneChangeFetcher *)v74 initWithContainer:v98 fetchClass:v75 reachabilityTracker:reachabilityTracker altDSID:v77 sendMetric:0];
+    altDSID = [accountCopy altDSID];
+    v78 = [(CKKSZoneChangeFetcher *)v74 initWithContainer:containerCopy fetchClass:fetchRecordZoneChangesOperationClass reachabilityTracker:reachabilityTracker altDSID:altDSID sendMetric:0];
     zoneChangeFetcher = v24->_zoneChangeFetcher;
     v24->_zoneChangeFetcher = v78;
 
-    v80 = +[OctagonAPSReceiver receiverForNamedDelegatePort:apsConnectionClass:](OctagonAPSReceiver, "receiverForNamedDelegatePort:apsConnectionClass:", @"com.apple.securityd.aps", [v97 apsConnectionClass]);
-    v81 = [v80 registerCKKSReceiver:v24->_zoneChangeFetcher contextID:v18];
+    v80 = +[OctagonAPSReceiver receiverForNamedDelegatePort:apsConnectionClass:](OctagonAPSReceiver, "receiverForNamedDelegatePort:apsConnectionClass:", @"com.apple.securityd.aps", [dependenciesCopy apsConnectionClass]);
+    v81 = [v80 registerCKKSReceiver:v24->_zoneChangeFetcher contextID:dCopy];
     v82 = [AAFAnalyticsEventSecurity alloc];
-    v83 = [v95 altDSID];
-    v84 = [v82 initWithCKKSMetrics:&__NSDictionary0__struct altDSID:v83 eventName:kSecurityRTCEventNameLaunchStart testsAreEnabled:0 category:kSecurityRTCEventCategoryAccountDataAccessRecovery sendMetric:1];
+    altDSID2 = [accountCopy altDSID];
+    v84 = [v82 initWithCKKSMetrics:&__NSDictionary0__struct altDSID:altDSID2 eventName:kSecurityRTCEventNameLaunchStart testsAreEnabled:0 category:kSecurityRTCEventCategoryAccountDataAccessRecovery sendMetric:1];
 
     [v84 sendMetricWithResult:1 error:0];
-    objc_storeStrong(&v24->_cuttlefishAdapter, a13);
+    objc_storeStrong(&v24->_cuttlefishAdapter, cuttlefishAdapter);
     [(OctagonStateMachine *)v24->_stateMachine startOperation];
 
     objc_destroyWeak(&v101);
     objc_destroyWeak(&v103);
     objc_destroyWeak(&location);
 
-    v21 = v92;
-    v22 = v87;
+    notifierCopy = v92;
+    cuttlefishAdapterCopy = v87;
   }
 
   return v24;
 }
 
-- (void)modifyTLKSharesForExternallyManagedView:(id)a3 adding:(id)a4 deleting:(id)a5 reply:(id)a6
+- (void)modifyTLKSharesForExternallyManagedView:(id)view adding:(id)adding deleting:(id)deleting reply:(id)reply
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  viewCopy = view;
+  addingCopy = adding;
+  deletingCopy = deleting;
+  replyCopy = reply;
   v25 = 0;
-  v14 = [(CKKSKeychainView *)self externalManagedViewForRPC:v10 error:&v25];
+  v14 = [(CKKSKeychainView *)self externalManagedViewForRPC:viewCopy error:&v25];
   v15 = v25;
   if (v14)
   {
@@ -7262,12 +7262,12 @@ LABEL_35:
     v20[3] = &unk_100344840;
     objc_copyWeak(&v24, location);
     v21 = v14;
-    v22 = v11;
-    v23 = v12;
+    v22 = addingCopy;
+    v23 = deletingCopy;
     v16 = [OctagonStateTransitionGroupOperation named:@"external-tlk-rpc" intending:@"ready" errorState:@"ready" withBlockTakingSelf:v20];
-    v17 = [(CKKSKeychainView *)self stateMachine];
+    stateMachine = [(CKKSKeychainView *)self stateMachine];
     v18 = [NSSet setWithObject:@"ready"];
-    [v17 doSimpleStateMachineRPC:@"external-tlkshare-modification-rpc" op:v16 sourceStates:v18 reply:v13];
+    [stateMachine doSimpleStateMachineRPC:@"external-tlkshare-modification-rpc" op:v16 sourceStates:v18 reply:replyCopy];
 
     objc_destroyWeak(&v24);
     objc_destroyWeak(location);
@@ -7279,36 +7279,36 @@ LABEL_35:
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
       *location = 138412546;
-      *&location[4] = v10;
+      *&location[4] = viewCopy;
       v27 = 2112;
       v28 = v15;
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "Can't modify CloudKit zone for view %@: %@", location, 0x16u);
     }
 
-    v13[2](v13, v15);
+    replyCopy[2](replyCopy, v15);
   }
 }
 
-- (void)loadKeys:(id)a3 reply:(id)a4
+- (void)loadKeys:(id)keys reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CKKSKeychainView *)self databaseProvider];
+  keysCopy = keys;
+  replyCopy = reply;
+  databaseProvider = [(CKKSKeychainView *)self databaseProvider];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1001E76D4;
   v11[3] = &unk_100344DC8;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  [v8 dispatchSyncWithReadOnlySQLTransaction:v11];
+  v12 = keysCopy;
+  v13 = replyCopy;
+  v9 = replyCopy;
+  v10 = keysCopy;
+  [databaseProvider dispatchSyncWithReadOnlySQLTransaction:v11];
 }
 
-- (void)fetchCloudKitExternallyManagedViewKeyHierarchy:(id)a3 reply:(id)a4
+- (void)fetchCloudKitExternallyManagedViewKeyHierarchy:(id)hierarchy reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  hierarchyCopy = hierarchy;
+  replyCopy = reply;
   v8 = [(CKKSKeychainView *)self rpcFetchBecause:@"se-api"];
   objc_initWeak(&location, self);
   v13[0] = _NSConcreteStackBlock;
@@ -7318,9 +7318,9 @@ LABEL_35:
   objc_copyWeak(&v17, &location);
   v9 = v8;
   v14 = v9;
-  v10 = v6;
+  v10 = hierarchyCopy;
   v15 = v10;
-  v11 = v7;
+  v11 = replyCopy;
   v16 = v11;
   v12 = [CKKSResultOperation named:@"rpc-response" withBlockTakingSelf:v13];
   [v12 addDependency:v9];
@@ -7330,24 +7330,24 @@ LABEL_35:
   objc_destroyWeak(&location);
 }
 
-- (void)fetchExternallyManagedViewKeyHierarchy:(id)a3 forceFetch:(BOOL)a4 reply:(id)a5
+- (void)fetchExternallyManagedViewKeyHierarchy:(id)hierarchy forceFetch:(BOOL)fetch reply:(id)reply
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
+  fetchCopy = fetch;
+  hierarchyCopy = hierarchy;
+  replyCopy = reply;
   v13 = 0;
-  v10 = [(CKKSKeychainView *)self externalManagedViewForRPC:v8 error:&v13];
+  v10 = [(CKKSKeychainView *)self externalManagedViewForRPC:hierarchyCopy error:&v13];
   v11 = v13;
   if (v10)
   {
-    if (v6)
+    if (fetchCopy)
     {
-      [(CKKSKeychainView *)self fetchCloudKitExternallyManagedViewKeyHierarchy:v10 reply:v9];
+      [(CKKSKeychainView *)self fetchCloudKitExternallyManagedViewKeyHierarchy:v10 reply:replyCopy];
     }
 
     else
     {
-      [(CKKSKeychainView *)self loadKeys:v10 reply:v9];
+      [(CKKSKeychainView *)self loadKeys:v10 reply:replyCopy];
     }
   }
 
@@ -7357,25 +7357,25 @@ LABEL_35:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v15 = v8;
+      v15 = hierarchyCopy;
       v16 = 2112;
       v17 = v11;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Can't fetch CloudKit zone for view %@: %@", buf, 0x16u);
     }
 
-    (*(v9 + 2))(v9, 0, 0, 0, v11);
+    (*(replyCopy + 2))(replyCopy, 0, 0, 0, v11);
   }
 }
 
-- (void)proposeTLKForExternallyManagedView:(id)a3 proposedTLK:(id)a4 wrappedOldTLK:(id)a5 tlkShares:(id)a6 reply:(id)a7
+- (void)proposeTLKForExternallyManagedView:(id)view proposedTLK:(id)k wrappedOldTLK:(id)lK tlkShares:(id)shares reply:(id)reply
 {
-  v12 = a3;
-  v23 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  viewCopy = view;
+  kCopy = k;
+  lKCopy = lK;
+  sharesCopy = shares;
+  replyCopy = reply;
   v31 = 0;
-  v16 = [(CKKSKeychainView *)self externalManagedViewForRPC:v12 error:&v31];
+  v16 = [(CKKSKeychainView *)self externalManagedViewForRPC:viewCopy error:&v31];
   v17 = v31;
   if (v16)
   {
@@ -7385,16 +7385,16 @@ LABEL_35:
     v24[2] = sub_1001E8560;
     v24[3] = &unk_100344760;
     objc_copyWeak(&v30, location);
-    v25 = v23;
+    v25 = kCopy;
     v26 = v16;
-    v27 = v13;
-    v18 = v15;
+    v27 = lKCopy;
+    v18 = replyCopy;
     v29 = v18;
-    v28 = v14;
+    v28 = sharesCopy;
     v19 = [OctagonStateTransitionGroupOperation named:@"external-tlk-rpc" intending:@"ready" errorState:@"ready" withBlockTakingSelf:v24];
-    v20 = [(CKKSKeychainView *)self stateMachine];
+    stateMachine = [(CKKSKeychainView *)self stateMachine];
     v21 = [NSSet setWithObject:@"ready"];
-    [v20 doSimpleStateMachineRPC:@"external-tlk-rpc" op:v19 sourceStates:v21 reply:v18];
+    [stateMachine doSimpleStateMachineRPC:@"external-tlk-rpc" op:v19 sourceStates:v21 reply:v18];
 
     objc_destroyWeak(&v30);
     objc_destroyWeak(location);
@@ -7406,27 +7406,27 @@ LABEL_35:
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
       *location = 138412546;
-      *&location[4] = v12;
+      *&location[4] = viewCopy;
       v33 = 2112;
       v34 = v17;
       _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "Can't propose TLKs for view %@: %@", location, 0x16u);
     }
 
-    (*(v15 + 2))(v15, v17);
+    (*(replyCopy + 2))(replyCopy, v17);
   }
 }
 
-- (void)resetExternallyManagedCloudKitView:(id)a3 reply:(id)a4
+- (void)resetExternallyManagedCloudKitView:(id)view reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  replyCopy = reply;
   v13 = 0;
-  v8 = [(CKKSKeychainView *)self externalManagedViewForRPC:v6 error:&v13];
+  v8 = [(CKKSKeychainView *)self externalManagedViewForRPC:viewCopy error:&v13];
   v9 = v13;
   if (v8)
   {
-    v10 = [NSSet setWithObject:v6];
-    v11 = [(CKKSKeychainView *)self rpcResetCloudKit:v10 reply:v7];
+    v10 = [NSSet setWithObject:viewCopy];
+    v11 = [(CKKSKeychainView *)self rpcResetCloudKit:v10 reply:replyCopy];
   }
 
   else
@@ -7435,22 +7435,22 @@ LABEL_35:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v15 = v6;
+      v15 = viewCopy;
       v16 = 2112;
       v17 = v9;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Can't reset CloudKit zone for view %@: %@", buf, 0x16u);
     }
 
-    v7[2](v7, v9);
+    replyCopy[2](replyCopy, v9);
   }
 }
 
-- (id)externalManagedViewForRPC:(id)a3 error:(id *)a4
+- (id)externalManagedViewForRPC:(id)c error:(id *)error
 {
-  v6 = a3;
-  if (![(CKKSKeychainView *)self waitUntilReadyForRPCForOperation:@"external operation" fast:0 errorOnNoCloudKitAccount:1 errorOnPolicyMissing:1 error:a4])
+  cCopy = c;
+  if (![(CKKSKeychainView *)self waitUntilReadyForRPCForOperation:@"external operation" fast:0 errorOnNoCloudKitAccount:1 errorOnPolicyMissing:1 error:error])
   {
-    a4 = 0;
+    error = 0;
     goto LABEL_22;
   }
 
@@ -7458,10 +7458,10 @@ LABEL_35:
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v7 = [(CKKSKeychainView *)self operationDependencies];
-  v8 = [v7 allExternalManagedViews];
+  operationDependencies = [(CKKSKeychainView *)self operationDependencies];
+  allExternalManagedViews = [operationDependencies allExternalManagedViews];
 
-  v9 = [v8 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  v9 = [allExternalManagedViews countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v9)
   {
     v10 = v9;
@@ -7472,12 +7472,12 @@ LABEL_4:
     {
       if (*v21 != v11)
       {
-        objc_enumerationMutation(v8);
+        objc_enumerationMutation(allExternalManagedViews);
       }
 
       v13 = *(*(&v20 + 1) + 8 * v12);
-      v14 = [v13 zoneName];
-      v15 = [v14 isEqualToString:v6];
+      zoneName = [v13 zoneName];
+      v15 = [zoneName isEqualToString:cCopy];
 
       if (v15)
       {
@@ -7486,7 +7486,7 @@ LABEL_4:
 
       if (v10 == ++v12)
       {
-        v10 = [v8 countByEnumeratingWithState:&v20 objects:v24 count:16];
+        v10 = [allExternalManagedViews countByEnumeratingWithState:&v20 objects:v24 count:16];
         if (v10)
         {
           goto LABEL_4;
@@ -7506,17 +7506,17 @@ LABEL_4:
     if (![v16 ckksManagedView])
     {
       v16 = v16;
-      a4 = v16;
+      error = v16;
       goto LABEL_21;
     }
 
-    if (!a4)
+    if (!error)
     {
       goto LABEL_21;
     }
 
-    v17 = [NSString stringWithFormat:@"View is not externally managed: '%@'", v6];
-    *a4 = [NSError errorWithDomain:@"CKKSErrorDomain" code:62 description:v17];
+    cCopy = [NSString stringWithFormat:@"View is not externally managed: '%@'", cCopy];
+    *error = [NSError errorWithDomain:@"CKKSErrorDomain" code:62 description:cCopy];
   }
 
   else
@@ -7524,24 +7524,24 @@ LABEL_4:
 LABEL_10:
 
 LABEL_16:
-    if (!a4)
+    if (!error)
     {
       v16 = 0;
       goto LABEL_21;
     }
 
-    v18 = [NSString stringWithFormat:@"Unknown external view: '%@'", v6];
-    *a4 = [NSError errorWithDomain:@"CKKSErrorDomain" code:11 description:v18];
+    cCopy2 = [NSString stringWithFormat:@"Unknown external view: '%@'", cCopy];
+    *error = [NSError errorWithDomain:@"CKKSErrorDomain" code:11 description:cCopy2];
 
     v16 = 0;
   }
 
-  a4 = 0;
+  error = 0;
 LABEL_21:
 
 LABEL_22:
 
-  return a4;
+  return error;
 }
 
 @end

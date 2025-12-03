@@ -1,15 +1,15 @@
 @interface PILongExposureFusionAutoCalculator
-- (void)_computeCleanAperture:(id)a3;
-- (void)submit:(id)a3;
+- (void)_computeCleanAperture:(id)aperture;
+- (void)submit:(id)submit;
 @end
 
 @implementation PILongExposureFusionAutoCalculator
 
-- (void)submit:(id)a3
+- (void)submit:(id)submit
 {
   v40 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  submitCopy = submit;
+  if (!submitCopy)
   {
     v27 = NUAssertLogger_5886();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
@@ -20,7 +20,7 @@
       _os_log_error_impl(&dword_1C7694000, v27, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v15 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     specific = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v5 = NUAssertLogger_5886();
     v29 = os_log_type_enabled(v5, OS_LOG_TYPE_ERROR);
@@ -28,11 +28,11 @@
     {
       if (v29)
       {
-        v30 = dispatch_get_specific(*v15);
+        v30 = dispatch_get_specific(*callStackSymbols);
         v31 = MEMORY[0x1E696AF00];
         specific = v30;
-        v15 = [v31 callStackSymbols];
-        v32 = [v15 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v31 callStackSymbols];
+        v32 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v37 = v30;
         v38 = 2114;
@@ -44,9 +44,9 @@
     else if (v29)
     {
       specific = [MEMORY[0x1E696AF00] callStackSymbols];
-      v15 = [specific componentsJoinedByString:@"\n"];
+      callStackSymbols = [specific componentsJoinedByString:@"\n"];
       *buf = 138543362;
-      v37 = v15;
+      v37 = callStackSymbols;
       _os_log_error_impl(&dword_1C7694000, v5, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
     }
 
@@ -55,24 +55,24 @@
     goto LABEL_25;
   }
 
-  v5 = v4;
-  v6 = [(NURenderRequest *)self composition];
-  v7 = [v6 mediaType];
+  v5 = submitCopy;
+  composition = [(NURenderRequest *)self composition];
+  mediaType = [composition mediaType];
 
-  if (v7 == 3)
+  if (mediaType == 3)
   {
-    v8 = [(NURenderRequest *)self composition];
-    specific = [v8 objectForKeyedSubscript:@"autoLoop"];
+    composition2 = [(NURenderRequest *)self composition];
+    specific = [composition2 objectForKeyedSubscript:@"autoLoop"];
 
     v10 = [specific objectForKeyedSubscript:@"enabled"];
-    v11 = [v10 BOOLValue];
+    bOOLValue = [v10 BOOLValue];
 
     v12 = [specific objectForKeyedSubscript:@"flavor"];
     v13 = PIAutoLoopFlavorFromString(v12);
 
     v14 = [specific objectForKeyedSubscript:@"recipe"];
-    v15 = v14;
-    if (!specific || !v11 || v13 != 3 || !v14)
+    callStackSymbols = v14;
+    if (!specific || !bOOLValue || v13 != 3 || !v14)
     {
       v20 = MEMORY[0x1E69B3A48];
       v21 = [(PILongExposureFusionAutoCalculator *)self copy];
@@ -92,7 +92,7 @@
       v33[3] = &unk_1E82AA2D0;
       v35 = v5;
       v33[4] = self;
-      v34 = v15;
+      v34 = callStackSymbols;
       [(PILongExposureFusionAutoCalculator *)self _computeCleanAperture:v33];
 
 LABEL_11:
@@ -232,10 +232,10 @@ void __45__PILongExposureFusionAutoCalculator_submit___block_invoke_2(uint64_t a
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)_computeCleanAperture:(id)a3
+- (void)_computeCleanAperture:(id)aperture
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  apertureCopy = aperture;
   v5 = [objc_alloc(MEMORY[0x1E69B3D28]) initWithRequest:self];
   [v5 setName:@"PILongExposureFusionAutoCalculator-videoProperties"];
   v6 = [MEMORY[0x1E69B3C30] stopAtTagFilter:@"pre-AutoLoop"];
@@ -247,8 +247,8 @@ void __45__PILongExposureFusionAutoCalculator_submit___block_invoke_2(uint64_t a
   v9[1] = 3221225472;
   v9[2] = __60__PILongExposureFusionAutoCalculator__computeCleanAperture___block_invoke;
   v9[3] = &unk_1E82ACA08;
-  v10 = v4;
-  v8 = v4;
+  v10 = apertureCopy;
+  v8 = apertureCopy;
   [v5 submit:v9];
 }
 

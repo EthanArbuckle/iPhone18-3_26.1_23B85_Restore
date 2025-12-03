@@ -1,41 +1,41 @@
 @interface SAServiceManager
-+ (unint64_t)convertBeaconToDeviceType:(id)a3;
-+ (unint64_t)convertCLReferenceFrameToSAReferenceFrame:(int)a3;
-- (SAServiceManager)initWithQueue:(id)a3;
++ (unint64_t)convertBeaconToDeviceType:(id)type;
++ (unint64_t)convertCLReferenceFrameToSAReferenceFrame:(int)frame;
+- (SAServiceManager)initWithQueue:(id)queue;
 - (void)_fetchAndIngestLastVisit;
-- (void)_ingestVisit:(id)a3;
+- (void)_ingestVisit:(id)visit;
 - (void)dealloc;
-- (void)didFetchAllDevices:(id)a3;
-- (void)didFetchAllSafeLocations:(id)a3;
-- (void)ingestTAEvent:(id)a3;
+- (void)didFetchAllDevices:(id)devices;
+- (void)didFetchAllSafeLocations:(id)locations;
+- (void)ingestTAEvent:(id)event;
 - (void)scheduleBeaconGroupMetricSubmission;
-- (void)separationAlertsService:(id)a3 addGeofence:(id)a4;
-- (void)separationAlertsService:(id)a3 cancelSATimeEventForAlarm:(id)a4;
-- (void)separationAlertsService:(id)a3 notifySeparationsForDevices:(id)a4 withLocation:(id)a5 withContext:(id)a6;
-- (void)separationAlertsService:(id)a3 removeGeofence:(id)a4;
-- (void)separationAlertsService:(id)a3 requestBluetoothScanForTypes:(unint64_t)a4;
-- (void)separationAlertsService:(id)a3 requestLocationForType:(unint64_t)a4;
-- (void)separationAlertsService:(id)a3 requestStateForRegion:(id)a4;
-- (void)separationAlertsService:(id)a3 scheduleSATimeEvent:(double)a4 forAlarm:(id)a5;
-- (void)separationAlertsServiceFetchLastVisit:(id)a3;
-- (void)separationAlertsServiceStartBackgroundScanning:(id)a3;
-- (void)separationAlertsServiceStopBackgroundScanning:(id)a3;
-- (void)separationAlertsServiceStopLongAggressiveScan:(id)a3;
+- (void)separationAlertsService:(id)service addGeofence:(id)geofence;
+- (void)separationAlertsService:(id)service cancelSATimeEventForAlarm:(id)alarm;
+- (void)separationAlertsService:(id)service notifySeparationsForDevices:(id)devices withLocation:(id)location withContext:(id)context;
+- (void)separationAlertsService:(id)service removeGeofence:(id)geofence;
+- (void)separationAlertsService:(id)service requestBluetoothScanForTypes:(unint64_t)types;
+- (void)separationAlertsService:(id)service requestLocationForType:(unint64_t)type;
+- (void)separationAlertsService:(id)service requestStateForRegion:(id)region;
+- (void)separationAlertsService:(id)service scheduleSATimeEvent:(double)event forAlarm:(id)alarm;
+- (void)separationAlertsServiceFetchLastVisit:(id)visit;
+- (void)separationAlertsServiceStartBackgroundScanning:(id)scanning;
+- (void)separationAlertsServiceStopBackgroundScanning:(id)scanning;
+- (void)separationAlertsServiceStopLongAggressiveScan:(id)scan;
 @end
 
 @implementation SAServiceManager
 
-- (SAServiceManager)initWithQueue:(id)a3
+- (SAServiceManager)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v49.receiver = self;
   v49.super_class = SAServiceManager;
   v6 = [(SAServiceManager *)&v49 init];
   if (v6)
   {
     TARegisterLogs();
-    objc_storeStrong(&v6->_queue, a3);
-    v7 = [[SAAudioAccessory alloc] initWithQueue:v5];
+    objc_storeStrong(&v6->_queue, queue);
+    v7 = [[SAAudioAccessory alloc] initWithQueue:queueCopy];
     audioAcccessory = v6->_audioAcccessory;
     v6->_audioAcccessory = v7;
 
@@ -50,15 +50,15 @@
     v6->_analytics = v13;
 
     v15 = objc_alloc(MEMORY[0x277CBEAA8]);
-    v16 = [(SAServiceManager *)v6 analytics];
-    [v16 publishingInterval];
+    analytics = [(SAServiceManager *)v6 analytics];
+    [analytics publishingInterval];
     v17 = [v15 initWithTimeIntervalSinceNow:?];
     nextAnalyticsSubmission = v6->_nextAnalyticsSubmission;
     v6->_nextAnalyticsSubmission = v17;
 
     v19 = [SAService alloc];
-    v20 = [(SAServiceManager *)v6 analytics];
-    v21 = [(SAService *)v19 initWithAnalytics:v20 isReplay:0 audioAccessoryManager:v6->_audioAcccessory];
+    analytics2 = [(SAServiceManager *)v6 analytics];
+    v21 = [(SAService *)v19 initWithAnalytics:analytics2 isReplay:0 audioAccessoryManager:v6->_audioAcccessory];
     service = v6->_service;
     v6->_service = v21;
 
@@ -148,36 +148,36 @@ void __34__SAServiceManager_initWithQueue___block_invoke_3(uint64_t a1, void *a2
   [(SAServiceManager *)&v5 dealloc];
 }
 
-+ (unint64_t)convertBeaconToDeviceType:(id)a3
++ (unint64_t)convertBeaconToDeviceType:(id)type
 {
-  v3 = a3;
-  v4 = [v3 type];
-  if ([v4 isEqual:*MEMORY[0x277D49810]])
+  typeCopy = type;
+  type = [typeCopy type];
+  if ([type isEqual:*MEMORY[0x277D49810]])
   {
     v5 = 2;
   }
 
-  else if ([v4 isEqual:*MEMORY[0x277D49808]])
+  else if ([type isEqual:*MEMORY[0x277D49808]])
   {
     v5 = 4;
   }
 
-  else if ([v4 isEqual:*MEMORY[0x277D49818]])
+  else if ([type isEqual:*MEMORY[0x277D49818]])
   {
     v5 = 16;
   }
 
   else
   {
-    v6 = [v3 model];
-    v7 = [v6 hasPrefix:@"Watch"];
+    model = [typeCopy model];
+    v7 = [model hasPrefix:@"Watch"];
 
     if (v7)
     {
       v5 = 8;
     }
 
-    else if ([v4 isEqual:*MEMORY[0x277D49830]])
+    else if ([type isEqual:*MEMORY[0x277D49830]])
     {
       v5 = 1;
     }
@@ -187,7 +187,7 @@ void __34__SAServiceManager_initWithQueue___block_invoke_3(uint64_t a1, void *a2
       v8 = TASALog;
       if (os_log_type_enabled(TASALog, OS_LOG_TYPE_FAULT))
       {
-        [(SAServiceManager *)v4 convertBeaconToDeviceType:v8];
+        [(SAServiceManager *)type convertBeaconToDeviceType:v8];
       }
 
       v5 = 0;
@@ -197,29 +197,29 @@ void __34__SAServiceManager_initWithQueue___block_invoke_3(uint64_t a1, void *a2
   return v5;
 }
 
-+ (unint64_t)convertCLReferenceFrameToSAReferenceFrame:(int)a3
++ (unint64_t)convertCLReferenceFrameToSAReferenceFrame:(int)frame
 {
-  if (a3 == 2)
+  if (frame == 2)
   {
     return 2;
   }
 
   else
   {
-    return a3 == 1;
+    return frame == 1;
   }
 }
 
-- (void)didFetchAllSafeLocations:(id)a3
+- (void)didFetchAllSafeLocations:(id)locations
 {
   v72 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  locationsCopy = locations;
   v48 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
-  v4 = v3;
+  v4 = locationsCopy;
   v5 = [v4 countByEnumeratingWithState:&v51 objects:v71 count:16];
   if (v5)
   {
@@ -242,46 +242,46 @@ void __34__SAServiceManager_initWithQueue___block_invoke_3(uint64_t a1, void *a2
         if ([v9 approvalState] == 1)
         {
           v50 = [SASafeLocation alloc];
-          v10 = [v9 identifier];
-          v11 = [v9 location];
-          [v11 coordinate];
+          identifier = [v9 identifier];
+          location = [v9 location];
+          [location coordinate];
           v13 = v12;
-          v14 = [v9 location];
-          [v14 coordinate];
+          location2 = [v9 location];
+          [location2 coordinate];
           v16 = v15;
-          v17 = [v9 location];
-          [v17 horizontalAccuracy];
+          location3 = [v9 location];
+          [location3 horizontalAccuracy];
           v19 = v18;
-          v20 = [v9 location];
-          v21 = +[SAServiceManager convertCLReferenceFrameToSAReferenceFrame:](SAServiceManager, "convertCLReferenceFrameToSAReferenceFrame:", [v20 referenceFrame]);
-          v22 = [v9 name];
+          location4 = [v9 location];
+          v21 = +[SAServiceManager convertCLReferenceFrameToSAReferenceFrame:](SAServiceManager, "convertCLReferenceFrameToSAReferenceFrame:", [location4 referenceFrame]);
+          name = [v9 name];
           v23 = [MEMORY[0x277CBEAA8] now];
-          v24 = [(SASafeLocation *)v50 initWithLocationUUID:v10 latitude:v21 longitude:v22 radius:v23 referenceFrame:v13 name:v16 date:v19];
+          v24 = [(SASafeLocation *)v50 initWithLocationUUID:identifier latitude:v21 longitude:name radius:v23 referenceFrame:v13 name:v16 date:v19];
 
-          v25 = [v9 identifier];
-          [v48 setObject:v24 forKeyedSubscript:v25];
+          identifier2 = [v9 identifier];
+          [v48 setObject:v24 forKeyedSubscript:identifier2];
 
           v26 = TASALog;
           if (os_log_type_enabled(TASALog, OS_LOG_TYPE_DEFAULT))
           {
             v27 = v26;
-            v28 = [(SASafeLocation *)v24 identifier];
-            v29 = [(SASafeLocation *)v24 name];
+            identifier3 = [(SASafeLocation *)v24 identifier];
+            name2 = [(SASafeLocation *)v24 name];
             [(SASafeLocation *)v24 latitude];
             v31 = v30;
             [(SASafeLocation *)v24 longitude];
             v33 = v32;
             [(SASafeLocation *)v24 radius];
             v35 = v34;
-            v36 = [(SASafeLocation *)v24 referenceFrame];
+            referenceFrame = [(SASafeLocation *)v24 referenceFrame];
             *buf = 68290563;
             v56 = 0;
             v57 = 2082;
             v58 = "";
             v59 = 2113;
-            v60 = v28;
+            v60 = identifier3;
             v61 = 2113;
-            v62 = v29;
+            v62 = name2;
             v63 = 2053;
             v64 = v31;
             v65 = 2053;
@@ -289,7 +289,7 @@ void __34__SAServiceManager_initWithQueue___block_invoke_3(uint64_t a1, void *a2
             v67 = 2050;
             v68 = v35;
             v69 = 2049;
-            v70 = v36;
+            v70 = referenceFrame;
             _os_log_impl(&dword_2656EA000, v27, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#sa ServiceMgr FetchSafe, uuid:%{private}@, name:%{private}@, lat:%{sensitive}f, lon:%{sensitive}f, radius:%{public}f, refFrame:%{private}lu}", buf, 0x4Eu);
           }
 
@@ -323,16 +323,16 @@ void __34__SAServiceManager_initWithQueue___block_invoke_3(uint64_t a1, void *a2
     _os_log_impl(&dword_2656EA000, v41, OS_LOG_TYPE_DEFAULT, "#sa ServiceMgr endFetchSafe, %{public}d", buf, 8u);
   }
 
-  v43 = [(SAServiceManager *)self analytics];
-  [v43 addSafeLocationFetchResultCount:{objc_msgSend(v4, "count")}];
+  analytics = [(SAServiceManager *)self analytics];
+  [analytics addSafeLocationFetchResultCount:{objc_msgSend(v4, "count")}];
 
   v44 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didFetchAllDevices:(id)a3
+- (void)didFetchAllDevices:(id)devices
 {
   v173 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  devicesCopy = devices;
   v120 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v4 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v119 = objc_alloc_init(MEMORY[0x277CBEB38]);
@@ -342,7 +342,7 @@ void __34__SAServiceManager_initWithQueue___block_invoke_3(uint64_t a1, void *a2
   v151 = 0u;
   v152 = 0u;
   v153 = 0u;
-  obj = v3;
+  obj = devicesCopy;
   v135 = v4;
   v121 = v5;
   v124 = [obj countByEnumeratingWithState:&v150 objects:v172 count:16];
@@ -373,35 +373,35 @@ void __34__SAServiceManager_initWithQueue___block_invoke_3(uint64_t a1, void *a2
 
         v125 = v7;
         v8 = *(*(&v150 + 1) + 8 * v7);
-        v9 = [v8 groupIdentifier];
+        groupIdentifier = [v8 groupIdentifier];
 
-        if (v9)
+        if (groupIdentifier)
         {
-          v10 = [v8 groupIdentifier];
-          v11 = [v5 objectForKey:v10];
+          groupIdentifier2 = [v8 groupIdentifier];
+          v11 = [v5 objectForKey:groupIdentifier2];
 
           if (v11)
           {
-            v12 = [v8 groupIdentifier];
-            v13 = [v5 objectForKeyedSubscript:v12];
+            groupIdentifier3 = [v8 groupIdentifier];
+            v13 = [v5 objectForKeyedSubscript:groupIdentifier3];
 
-            v14 = [v8 identifier];
-            [v13 addObject:v14];
+            identifier = [v8 identifier];
+            [v13 addObject:identifier];
           }
 
           else
           {
             v15 = MEMORY[0x277CBEB58];
-            v14 = [v8 identifier];
-            v13 = [v15 setWithObject:v14];
+            identifier = [v8 identifier];
+            v13 = [v15 setWithObject:identifier];
           }
 
-          v16 = [v8 groupIdentifier];
-          [v5 setObject:v13 forKeyedSubscript:v16];
+          groupIdentifier4 = [v8 groupIdentifier];
+          [v5 setObject:v13 forKeyedSubscript:groupIdentifier4];
         }
 
-        v17 = [v8 type];
-        v18 = [v17 isEqual:v117];
+        type = [v8 type];
+        v18 = [type isEqual:v117];
 
         v127 = v6;
         if (v18)
@@ -411,8 +411,8 @@ void __34__SAServiceManager_initWithQueue___block_invoke_3(uint64_t a1, void *a2
 
         else
         {
-          v76 = [v8 type];
-          v77 = [v76 isEqual:v115];
+          type2 = [v8 type];
+          v77 = [type2 isEqual:v115];
 
           if (v77)
           {
@@ -429,8 +429,8 @@ void __34__SAServiceManager_initWithQueue___block_invoke_3(uint64_t a1, void *a2
 
           else
           {
-            v78 = [v8 type];
-            v79 = [v78 isEqual:v110];
+            type3 = [v8 type];
+            v79 = [type3 isEqual:v110];
 
             if (v79)
             {
@@ -439,8 +439,8 @@ void __34__SAServiceManager_initWithQueue___block_invoke_3(uint64_t a1, void *a2
 
             else
             {
-              v80 = [v8 model];
-              v81 = [v80 hasPrefix:@"iPhone"];
+              model = [v8 model];
+              v81 = [model hasPrefix:@"iPhone"];
 
               if (v81)
               {
@@ -449,8 +449,8 @@ void __34__SAServiceManager_initWithQueue___block_invoke_3(uint64_t a1, void *a2
 
               else
               {
-                v82 = [v8 model];
-                v83 = [v82 hasPrefix:@"iPad"];
+                model2 = [v8 model];
+                v83 = [model2 hasPrefix:@"iPad"];
 
                 if (v83)
                 {
@@ -459,8 +459,8 @@ void __34__SAServiceManager_initWithQueue___block_invoke_3(uint64_t a1, void *a2
 
                 else
                 {
-                  v84 = [v8 model];
-                  v85 = [v84 hasPrefix:@"MacBook"];
+                  model3 = [v8 model];
+                  v85 = [model3 hasPrefix:@"MacBook"];
 
                   if (v85)
                   {
@@ -478,37 +478,37 @@ void __34__SAServiceManager_initWithQueue___block_invoke_3(uint64_t a1, void *a2
         }
 
         v141 = [SADevice alloc];
-        v19 = [v8 identifier];
-        v20 = [v8 groupIdentifier];
-        v138 = [v8 partIdentifier];
-        v21 = [v8 name];
-        v22 = [v8 model];
-        v23 = [v8 systemVersion];
-        v24 = [v8 vendorId];
-        v25 = [v8 productId];
+        identifier2 = [v8 identifier];
+        groupIdentifier5 = [v8 groupIdentifier];
+        partIdentifier = [v8 partIdentifier];
+        name = [v8 name];
+        model4 = [v8 model];
+        systemVersion = [v8 systemVersion];
+        vendorId = [v8 vendorId];
+        productId = [v8 productId];
         v130 = v8;
         v26 = [SAServiceManager convertBeaconToDeviceType:v8];
-        v27 = [v130 isAppleAudioAccessory];
-        v28 = [MEMORY[0x277CBEAA8] date];
-        BYTE1(v105) = v27;
+        isAppleAudioAccessory = [v130 isAppleAudioAccessory];
+        date = [MEMORY[0x277CBEAA8] date];
+        BYTE1(v105) = isAppleAudioAccessory;
         LOBYTE(v105) = 1;
-        v129 = [(SADevice *)v141 initWithDeviceUUID:v19 groupIdentifier:v20 macAddress:0 partIdentifier:v138 name:v21 model:v22 systemVersion:v23 vendorId:v24 productId:v25 deviceType:v26 notifyEnabled:v105 isAppleAudioAccessory:v28 date:?];
+        v129 = [(SADevice *)v141 initWithDeviceUUID:identifier2 groupIdentifier:groupIdentifier5 macAddress:0 partIdentifier:partIdentifier name:name model:model4 systemVersion:systemVersion vendorId:vendorId productId:productId deviceType:v26 notifyEnabled:v105 isAppleAudioAccessory:date date:?];
 
         if ([v130 isAppleAudioAccessory])
         {
-          v29 = [v130 groupIdentifier];
+          groupIdentifier6 = [v130 groupIdentifier];
 
-          if (v29)
+          if (groupIdentifier6)
           {
             ownerSession = self->_ownerSession;
-            v31 = [v130 groupIdentifier];
+            groupIdentifier7 = [v130 groupIdentifier];
             v148[0] = MEMORY[0x277D85DD0];
             v148[1] = 3221225472;
             v148[2] = __39__SAServiceManager_didFetchAllDevices___block_invoke;
             v148[3] = &unk_279B9C7D8;
             v148[4] = self;
             v149 = v129;
-            [(SPOwnerSession *)ownerSession beaconGroupForIdentifier:v31 completion:v148];
+            [(SPOwnerSession *)ownerSession beaconGroupForIdentifier:groupIdentifier7 completion:v148];
           }
         }
 
@@ -517,8 +517,8 @@ void __34__SAServiceManager_initWithQueue___block_invoke_3(uint64_t a1, void *a2
         v145 = 0u;
         v146 = 0u;
         v147 = 0u;
-        v139 = [v130 safeLocations];
-        v33 = [v139 countByEnumeratingWithState:&v144 objects:v171 count:16];
+        safeLocations = [v130 safeLocations];
+        v33 = [safeLocations countByEnumeratingWithState:&v144 objects:v171 count:16];
         v4 = v135;
         if (v33)
         {
@@ -534,59 +534,59 @@ void __34__SAServiceManager_initWithQueue___block_invoke_3(uint64_t a1, void *a2
             {
               if (*v145 != v35)
               {
-                objc_enumerationMutation(v139);
+                objc_enumerationMutation(safeLocations);
               }
 
               v37 = *(*(&v144 + 1) + 8 * v36);
-              v38 = [v37 identifier];
-              [v32 addObject:v38];
+              identifier3 = [v37 identifier];
+              [v32 addObject:identifier3];
 
               if ([v37 approvalState] == 1)
               {
                 v39 = [SASafeLocation alloc];
-                v40 = [v37 identifier];
-                v142 = [v37 location];
-                [v142 coordinate];
+                identifier4 = [v37 identifier];
+                location = [v37 location];
+                [location coordinate];
                 v42 = v41;
-                v43 = [v37 location];
-                [v43 coordinate];
+                location2 = [v37 location];
+                [location2 coordinate];
                 v45 = v44;
-                v46 = [v37 location];
-                [v46 horizontalAccuracy];
+                location3 = [v37 location];
+                [location3 horizontalAccuracy];
                 v48 = v47;
-                v49 = [v37 location];
-                v50 = +[SAServiceManager convertCLReferenceFrameToSAReferenceFrame:](SAServiceManager, "convertCLReferenceFrameToSAReferenceFrame:", [v49 referenceFrame]);
-                v51 = [v37 name];
+                location4 = [v37 location];
+                v50 = +[SAServiceManager convertCLReferenceFrameToSAReferenceFrame:](SAServiceManager, "convertCLReferenceFrameToSAReferenceFrame:", [location4 referenceFrame]);
+                name2 = [v37 name];
                 v52 = [MEMORY[0x277CBEAA8] now];
-                v53 = [(SASafeLocation *)v39 initWithLocationUUID:v40 latitude:v50 longitude:v51 radius:v52 referenceFrame:v42 name:v45 date:v48];
+                v53 = [(SASafeLocation *)v39 initWithLocationUUID:identifier4 latitude:v50 longitude:name2 radius:v52 referenceFrame:v42 name:v45 date:v48];
 
                 v4 = v135;
-                v54 = [v37 identifier];
-                [v135 setObject:v53 forKeyedSubscript:v54];
+                identifier5 = [v37 identifier];
+                [v135 setObject:v53 forKeyedSubscript:identifier5];
 
                 v55 = TASALog;
                 if (os_log_type_enabled(TASALog, OS_LOG_TYPE_DEBUG))
                 {
                   v56 = v55;
-                  v57 = [v130 identifier];
-                  v58 = [(SASafeLocation *)v53 identifier];
-                  v59 = [(SASafeLocation *)v53 name];
+                  identifier6 = [v130 identifier];
+                  identifier7 = [(SASafeLocation *)v53 identifier];
+                  name3 = [(SASafeLocation *)v53 name];
                   [(SASafeLocation *)v53 latitude];
                   v61 = v60;
                   [(SASafeLocation *)v53 longitude];
                   v63 = v62;
                   [(SASafeLocation *)v53 radius];
                   v65 = v64;
-                  v66 = [(SASafeLocation *)v53 referenceFrame];
+                  referenceFrame = [(SASafeLocation *)v53 referenceFrame];
                   *buf = 68290819;
                   v155 = 2082;
                   v156 = "";
                   v157 = 2113;
-                  v158 = v57;
+                  v158 = identifier6;
                   v159 = 2113;
-                  v160 = v58;
+                  v160 = identifier7;
                   v161 = 2113;
-                  v162 = v59;
+                  v162 = name3;
                   v163 = 2053;
                   v164 = v61;
                   v165 = 2053;
@@ -594,7 +594,7 @@ void __34__SAServiceManager_initWithQueue___block_invoke_3(uint64_t a1, void *a2
                   v167 = 2050;
                   v168 = v65;
                   v169 = 2049;
-                  v170 = v66;
+                  v170 = referenceFrame;
                   _os_log_impl(&dword_2656EA000, v56, OS_LOG_TYPE_DEBUG, "{msg%{public}.0s:#sa ServiceMgr FetchSafeForBeacon, device:%{private}@, uuid:%{private}@, name:%{private}@, lat:%{sensitive}f, lon:%{sensitive}f, radius:%{public}f, refFrame:%{private}lu}", buf, 0x58u);
                 }
 
@@ -607,34 +607,34 @@ void __34__SAServiceManager_initWithQueue___block_invoke_3(uint64_t a1, void *a2
             }
 
             while (v34 != v36);
-            v34 = [v139 countByEnumeratingWithState:&v144 objects:v171 count:16];
+            v34 = [safeLocations countByEnumeratingWithState:&v144 objects:v171 count:16];
           }
 
           while (v34);
         }
 
-        v67 = [v130 identifier];
-        [v120 setObject:v129 forKeyedSubscript:v67];
+        identifier8 = [v130 identifier];
+        [v120 setObject:v129 forKeyedSubscript:identifier8];
 
-        v68 = [v130 identifier];
-        [v119 setObject:v32 forKeyedSubscript:v68];
+        identifier9 = [v130 identifier];
+        [v119 setObject:v32 forKeyedSubscript:identifier9];
 
         v69 = TASALog;
         if (os_log_type_enabled(TASALog, OS_LOG_TYPE_DEFAULT))
         {
           v70 = v69;
-          v71 = [v130 name];
-          v72 = [v130 identifier];
-          v73 = [v130 type];
+          name4 = [v130 name];
+          identifier10 = [v130 identifier];
+          type4 = [v130 type];
           *buf = 68290051;
           v155 = 2082;
           v156 = "";
           v157 = 2113;
-          v158 = v71;
+          v158 = name4;
           v159 = 2113;
-          v160 = v72;
+          v160 = identifier10;
           v161 = 2113;
-          v162 = v73;
+          v162 = type4;
           v163 = 2113;
           v164 = v32;
           _os_log_impl(&dword_2656EA000, v70, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#sa ServiceMgr FetchAll, name:%{private}@, device:%{private}@, type:%{private}@, safes:%{private}@}", buf, 0x3Au);
@@ -687,10 +687,10 @@ void __34__SAServiceManager_initWithQueue___block_invoke_3(uint64_t a1, void *a2
   v87 = [SABeaconGroupVerifier verifyBeaconGroupsWithBeaconGroups:v5 deviceUUIDtoDeviceMap:v120 deviceToSafeLocationMap:v119];
   -[SAServiceManager setBeaconGroupComplete:](self, "setBeaconGroupComplete:", [v87 beaconGroupComplete]);
   -[SAServiceManager setBeaconGroupSafeLocationsMatch:](self, "setBeaconGroupSafeLocationsMatch:", [v87 beaconGroupSafeLocationsMatch]);
-  v88 = [v87 deviceUUIDtoDeviceMap];
+  deviceUUIDtoDeviceMap = [v87 deviceUUIDtoDeviceMap];
 
   v132 = v87;
-  v89 = [v87 deviceToSafeLocationMap];
+  deviceToSafeLocationMap = [v87 deviceToSafeLocationMap];
 
   v90 = [SASafeLocationsEvent alloc];
   v91 = [MEMORY[0x277CBEAA8] now];
@@ -708,12 +708,12 @@ void __34__SAServiceManager_initWithQueue___block_invoke_3(uint64_t a1, void *a2
     _os_log_impl(&dword_2656EA000, v94, OS_LOG_TYPE_DEFAULT, "#sa ServiceMgr endFetchBeaconsSafe, %{public}d", buf, 8u);
   }
 
-  v96 = [(SAServiceManager *)self analytics];
-  [v96 addSafeLocationFetchResultCount:{objc_msgSend(v4, "count")}];
+  analytics = [(SAServiceManager *)self analytics];
+  [analytics addSafeLocationFetchResultCount:{objc_msgSend(v4, "count")}];
 
   v97 = [SADevicesWithSafeLocationsEvent alloc];
-  v98 = [MEMORY[0x277CBEAA8] date];
-  v99 = [(SADevicesWithSafeLocationsEvent *)v97 initWithDevices:v88 safeLocationUUIDs:v89 date:v98];
+  date2 = [MEMORY[0x277CBEAA8] date];
+  v99 = [(SADevicesWithSafeLocationsEvent *)v97 initWithDevices:deviceUUIDtoDeviceMap safeLocationUUIDs:deviceToSafeLocationMap date:date2];
 
   [(SAServiceManager *)self ingestTAEvent:v99];
   v100 = TASALog;
@@ -728,9 +728,9 @@ void __34__SAServiceManager_initWithQueue___block_invoke_3(uint64_t a1, void *a2
     _os_log_impl(&dword_2656EA000, v101, OS_LOG_TYPE_DEFAULT, "#sa ServiceMgr endFetchAll %{public}d, types, %{public}d", buf, 0xEu);
   }
 
-  v103 = [(SAServiceManager *)self analytics];
+  analytics2 = [(SAServiceManager *)self analytics];
   LOBYTE(v105) = v128;
-  [v103 addDeviceFetchResultCount:objc_msgSend(obj type1count:"count") type2count:v123 type3count:v112 type4count:v113 type5count:v107 type6count:v143 type7count:v140 type8count:v137 safeCount:v134 usingSameSafe:{objc_msgSend(v122, "count"), v105}];
+  [analytics2 addDeviceFetchResultCount:objc_msgSend(obj type1count:"count") type2count:v123 type3count:v112 type4count:v113 type5count:v107 type6count:v143 type7count:v140 type8count:v137 safeCount:v134 usingSameSafe:{objc_msgSend(v122, "count"), v105}];
 
   [(SAServiceManager *)self scheduleBeaconGroupMetricSubmission];
   v104 = *MEMORY[0x277D85DE8];
@@ -782,12 +782,12 @@ void __39__SAServiceManager_didFetchAllDevices___block_invoke_2(uint64_t a1)
 
 - (void)scheduleBeaconGroupMetricSubmission
 {
-  v3 = [(SAServiceManager *)self scheduledMetricSubmissionBlock];
+  scheduledMetricSubmissionBlock = [(SAServiceManager *)self scheduledMetricSubmissionBlock];
 
-  if (v3)
+  if (scheduledMetricSubmissionBlock)
   {
-    v4 = [(SAServiceManager *)self scheduledMetricSubmissionBlock];
-    dispatch_block_cancel(v4);
+    scheduledMetricSubmissionBlock2 = [(SAServiceManager *)self scheduledMetricSubmissionBlock];
+    dispatch_block_cancel(scheduledMetricSubmissionBlock2);
 
     [(SAServiceManager *)self setScheduledMetricSubmissionBlock:0];
   }
@@ -853,32 +853,32 @@ uint64_t __55__SAServiceManager_scheduleBeaconGroupMetricSubmission__block_invok
   return result;
 }
 
-- (void)_ingestVisit:(id)a3
+- (void)_ingestVisit:(id)visit
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SAServiceManager *)self service];
+  visitCopy = visit;
+  service = [(SAServiceManager *)self service];
 
-  if (v5)
+  if (service)
   {
-    v6 = [v4 location];
-    [v6 latitude];
+    location = [visitCopy location];
+    [location latitude];
     v8 = v7;
-    v9 = [v4 location];
-    [v9 longitude];
+    location2 = [visitCopy location];
+    [location2 longitude];
     v11 = CLLocationCoordinate2DMake(v8, v10);
 
     v12 = objc_alloc(MEMORY[0x277D73430]);
-    v13 = [v4 location];
-    [v13 horizontalUncertainty];
+    location3 = [visitCopy location];
+    [location3 horizontalUncertainty];
     v15 = v14;
-    v16 = [v4 entry];
-    v17 = [v4 exit];
-    v18 = [v4 date];
-    v19 = [v12 initWithCoordinate:v16 horizontalAccuracy:v17 arrivalDate:v18 departureDate:2 detectionDate:v11.latitude confidence:{v11.longitude, v15}];
+    entry = [visitCopy entry];
+    exit = [visitCopy exit];
+    date = [visitCopy date];
+    v19 = [v12 initWithCoordinate:entry horizontalAccuracy:exit arrivalDate:date departureDate:2 detectionDate:v11.latitude confidence:{v11.longitude, v15}];
 
-    v20 = [(SAServiceManager *)self service];
-    [v20 ingestTAEvent:v19];
+    service2 = [(SAServiceManager *)self service];
+    [service2 ingestTAEvent:v19];
   }
 
   else
@@ -903,13 +903,13 @@ uint64_t __55__SAServiceManager_scheduleBeaconGroupMetricSubmission__block_invok
   v4 = [MEMORY[0x277CCABB0] numberWithDouble:*MEMORY[0x277D01470]];
   v5 = [v3 initWithAscending:0 confidence:v4 dateInterval:0 labelVisit:1 limit:&unk_287710108];
 
-  v6 = [(SAServiceManager *)self routineManager];
+  routineManager = [(SAServiceManager *)self routineManager];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __44__SAServiceManager__fetchAndIngestLastVisit__block_invoke;
   v7[3] = &unk_279B9C878;
   v7[4] = self;
-  [v6 fetchStoredVisitsWithOptions:v5 handler:v7];
+  [routineManager fetchStoredVisitsWithOptions:v5 handler:v7];
 }
 
 void __44__SAServiceManager__fetchAndIngestLastVisit__block_invoke(uint64_t a1, void *a2)
@@ -1143,50 +1143,50 @@ LABEL_6:
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)separationAlertsService:(id)a3 notifySeparationsForDevices:(id)a4 withLocation:(id)a5 withContext:(id)a6
+- (void)separationAlertsService:(id)service notifySeparationsForDevices:(id)devices withLocation:(id)location withContext:(id)context
 {
   v35 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(SAServiceManager *)self service];
-  v15 = v14;
-  if (v11 && v14 == v10 && [v11 count])
+  serviceCopy = service;
+  devicesCopy = devices;
+  locationCopy = location;
+  contextCopy = context;
+  service = [(SAServiceManager *)self service];
+  v15 = service;
+  if (devicesCopy && service == serviceCopy && [devicesCopy count])
   {
 
-    if (v13)
+    if (contextCopy)
     {
       v16 = TASALog;
       if (os_log_type_enabled(TASALog, OS_LOG_TYPE_DEFAULT))
       {
         v17 = v16;
         *buf = 134283521;
-        v34 = [v11 count];
+        v34 = [devicesCopy count];
         _os_log_impl(&dword_2656EA000, v17, OS_LOG_TYPE_DEFAULT, "#sa ServiceMgr notifyAboutDevices:%{private}ld", buf, 0xCu);
       }
 
-      v27 = v10;
-      if ([v11 count])
+      v27 = serviceCopy;
+      if ([devicesCopy count])
       {
         v18 = 0;
         do
         {
-          v19 = [(SAServiceManager *)self analytics];
-          [v19 addAlertWithContext:v13];
+          analytics = [(SAServiceManager *)self analytics];
+          [analytics addAlertWithContext:contextCopy];
 
           ++v18;
         }
 
-        while (v18 < [v11 count]);
+        while (v18 < [devicesCopy count]);
       }
 
-      v20 = [(NSHashTable *)self->_clients allObjects];
+      allObjects = [(NSHashTable *)self->_clients allObjects];
       v28 = 0u;
       v29 = 0u;
       v30 = 0u;
       v31 = 0u;
-      v21 = [v20 countByEnumeratingWithState:&v28 objects:v32 count:16];
+      v21 = [allObjects countByEnumeratingWithState:&v28 objects:v32 count:16];
       if (v21)
       {
         v22 = v21;
@@ -1198,26 +1198,26 @@ LABEL_6:
           {
             if (*v29 != v23)
             {
-              objc_enumerationMutation(v20);
+              objc_enumerationMutation(allObjects);
             }
 
             v25 = *(*(&v28 + 1) + 8 * v24);
             if (objc_opt_respondsToSelector())
             {
-              [v25 separationAlertsServiceManager:self notifySeparationsForDevices:v11 withLocation:v12 withContext:v13];
+              [v25 separationAlertsServiceManager:self notifySeparationsForDevices:devicesCopy withLocation:locationCopy withContext:contextCopy];
             }
 
             ++v24;
           }
 
           while (v22 != v24);
-          v22 = [v20 countByEnumeratingWithState:&v28 objects:v32 count:16];
+          v22 = [allObjects countByEnumeratingWithState:&v28 objects:v32 count:16];
         }
 
         while (v22);
       }
 
-      v10 = v27;
+      serviceCopy = v27;
     }
   }
 
@@ -1228,31 +1228,31 @@ LABEL_6:
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)separationAlertsService:(id)a3 requestBluetoothScanForTypes:(unint64_t)a4
+- (void)separationAlertsService:(id)service requestBluetoothScanForTypes:(unint64_t)types
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(SAServiceManager *)self service];
+  serviceCopy = service;
+  service = [(SAServiceManager *)self service];
 
-  if (v7 == v6)
+  if (service == serviceCopy)
   {
     v8 = TASALog;
     if (os_log_type_enabled(TASALog, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134283521;
-      v23 = a4;
+      typesCopy = types;
       _os_log_impl(&dword_2656EA000, v8, OS_LOG_TYPE_DEFAULT, "#sa ServiceMgr requestBluetoothScan:%{private}#lx", buf, 0xCu);
     }
 
-    v9 = [(SAServiceManager *)self analytics];
-    [v9 addAggressiveScanRequest:a4 == 1];
+    analytics = [(SAServiceManager *)self analytics];
+    [analytics addAggressiveScanRequest:types == 1];
 
-    v10 = [(NSHashTable *)self->_clients allObjects];
+    allObjects = [(NSHashTable *)self->_clients allObjects];
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v11 = [v10 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    v11 = [allObjects countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v11)
     {
       v12 = v11;
@@ -1264,20 +1264,20 @@ LABEL_6:
         {
           if (*v18 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(allObjects);
           }
 
           v15 = *(*(&v17 + 1) + 8 * v14);
           if (objc_opt_respondsToSelector())
           {
-            [v15 separationAlertsServiceManager:self requestBluetoothScanForTypes:a4];
+            [v15 separationAlertsServiceManager:self requestBluetoothScanForTypes:types];
           }
 
           ++v14;
         }
 
         while (v12 != v14);
-        v12 = [v10 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v12 = [allObjects countByEnumeratingWithState:&v17 objects:v21 count:16];
       }
 
       while (v12);
@@ -1287,40 +1287,40 @@ LABEL_6:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)separationAlertsService:(id)a3 requestLocationForType:(unint64_t)a4
+- (void)separationAlertsService:(id)service requestLocationForType:(unint64_t)type
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(SAServiceManager *)self service];
+  serviceCopy = service;
+  service = [(SAServiceManager *)self service];
 
-  if (v7 == v6)
+  if (service == serviceCopy)
   {
     v8 = TASALog;
     if (os_log_type_enabled(TASALog, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134283521;
-      v24 = a4;
+      typeCopy = type;
       _os_log_impl(&dword_2656EA000, v8, OS_LOG_TYPE_DEFAULT, "#sa ServiceMgr requestLocationForType:%{private}#lx", buf, 0xCu);
     }
 
-    v9 = [(SAServiceManager *)self analytics];
-    v10 = v9;
-    if (a4)
+    analytics = [(SAServiceManager *)self analytics];
+    v10 = analytics;
+    if (type)
     {
-      [v9 addWifiLocationRequest:1];
+      [analytics addWifiLocationRequest:1];
     }
 
     else
     {
-      [v9 addGpsLocationRequest:1];
+      [analytics addGpsLocationRequest:1];
     }
 
-    v11 = [(NSHashTable *)self->_clients allObjects];
+    allObjects = [(NSHashTable *)self->_clients allObjects];
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v12 = [v11 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    v12 = [allObjects countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v12)
     {
       v13 = v12;
@@ -1331,17 +1331,17 @@ LABEL_6:
         {
           if (*v19 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(allObjects);
           }
 
           v16 = *(*(&v18 + 1) + 8 * i);
           if (objc_opt_respondsToSelector())
           {
-            [v16 separationAlertsServiceManager:self requestLocationForType:a4];
+            [v16 separationAlertsServiceManager:self requestLocationForType:type];
           }
         }
 
-        v13 = [v11 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v13 = [allObjects countByEnumeratingWithState:&v18 objects:v22 count:16];
       }
 
       while (v13);
@@ -1351,14 +1351,14 @@ LABEL_6:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)separationAlertsService:(id)a3 addGeofence:(id)a4
+- (void)separationAlertsService:(id)service addGeofence:(id)geofence
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SAServiceManager *)self service];
+  serviceCopy = service;
+  geofenceCopy = geofence;
+  service = [(SAServiceManager *)self service];
 
-  if (v7 && v8 == v6)
+  if (geofenceCopy && service == serviceCopy)
   {
     v9 = TASALog;
     if (os_log_type_enabled(TASALog, OS_LOG_TYPE_DEFAULT))
@@ -1367,12 +1367,12 @@ LABEL_6:
       _os_log_impl(&dword_2656EA000, v9, OS_LOG_TYPE_DEFAULT, "#sa ServiceMgr addGeofence", buf, 2u);
     }
 
-    v10 = [(NSHashTable *)self->_clients allObjects];
+    allObjects = [(NSHashTable *)self->_clients allObjects];
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v11 = [v10 countByEnumeratingWithState:&v17 objects:v22 count:16];
+    v11 = [allObjects countByEnumeratingWithState:&v17 objects:v22 count:16];
     if (v11)
     {
       v12 = v11;
@@ -1384,20 +1384,20 @@ LABEL_6:
         {
           if (*v18 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(allObjects);
           }
 
           v15 = *(*(&v17 + 1) + 8 * v14);
           if (objc_opt_respondsToSelector())
           {
-            [v15 separationAlertsServiceManager:self addGeofence:v7];
+            [v15 separationAlertsServiceManager:self addGeofence:geofenceCopy];
           }
 
           ++v14;
         }
 
         while (v12 != v14);
-        v12 = [v10 countByEnumeratingWithState:&v17 objects:v22 count:16];
+        v12 = [allObjects countByEnumeratingWithState:&v17 objects:v22 count:16];
       }
 
       while (v12);
@@ -1407,14 +1407,14 @@ LABEL_6:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)separationAlertsService:(id)a3 removeGeofence:(id)a4
+- (void)separationAlertsService:(id)service removeGeofence:(id)geofence
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SAServiceManager *)self service];
+  serviceCopy = service;
+  geofenceCopy = geofence;
+  service = [(SAServiceManager *)self service];
 
-  if (v7 && v8 == v6)
+  if (geofenceCopy && service == serviceCopy)
   {
     v9 = TASALog;
     if (os_log_type_enabled(TASALog, OS_LOG_TYPE_DEFAULT))
@@ -1423,12 +1423,12 @@ LABEL_6:
       _os_log_impl(&dword_2656EA000, v9, OS_LOG_TYPE_DEFAULT, "#sa ServiceMgr removeGeofence", buf, 2u);
     }
 
-    v10 = [(NSHashTable *)self->_clients allObjects];
+    allObjects = [(NSHashTable *)self->_clients allObjects];
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v11 = [v10 countByEnumeratingWithState:&v17 objects:v22 count:16];
+    v11 = [allObjects countByEnumeratingWithState:&v17 objects:v22 count:16];
     if (v11)
     {
       v12 = v11;
@@ -1440,20 +1440,20 @@ LABEL_6:
         {
           if (*v18 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(allObjects);
           }
 
           v15 = *(*(&v17 + 1) + 8 * v14);
           if (objc_opt_respondsToSelector())
           {
-            [v15 separationAlertsServiceManager:self removeGeofence:v7];
+            [v15 separationAlertsServiceManager:self removeGeofence:geofenceCopy];
           }
 
           ++v14;
         }
 
         while (v12 != v14);
-        v12 = [v10 countByEnumeratingWithState:&v17 objects:v22 count:16];
+        v12 = [allObjects countByEnumeratingWithState:&v17 objects:v22 count:16];
       }
 
       while (v12);
@@ -1463,14 +1463,14 @@ LABEL_6:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)separationAlertsService:(id)a3 requestStateForRegion:(id)a4
+- (void)separationAlertsService:(id)service requestStateForRegion:(id)region
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SAServiceManager *)self service];
+  serviceCopy = service;
+  regionCopy = region;
+  service = [(SAServiceManager *)self service];
 
-  if (v7 && v8 == v6)
+  if (regionCopy && service == serviceCopy)
   {
     v9 = TASALog;
     if (os_log_type_enabled(TASALog, OS_LOG_TYPE_DEFAULT))
@@ -1479,12 +1479,12 @@ LABEL_6:
       _os_log_impl(&dword_2656EA000, v9, OS_LOG_TYPE_DEFAULT, "#sa ServiceMgr requestStateForRegion", buf, 2u);
     }
 
-    v10 = [(NSHashTable *)self->_clients allObjects];
+    allObjects = [(NSHashTable *)self->_clients allObjects];
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v11 = [v10 countByEnumeratingWithState:&v17 objects:v22 count:16];
+    v11 = [allObjects countByEnumeratingWithState:&v17 objects:v22 count:16];
     if (v11)
     {
       v12 = v11;
@@ -1496,20 +1496,20 @@ LABEL_6:
         {
           if (*v18 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(allObjects);
           }
 
           v15 = *(*(&v17 + 1) + 8 * v14);
           if (objc_opt_respondsToSelector())
           {
-            [v15 separationAlertsServiceManager:self requestStateForRegion:v7];
+            [v15 separationAlertsServiceManager:self requestStateForRegion:regionCopy];
           }
 
           ++v14;
         }
 
         while (v12 != v14);
-        v12 = [v10 countByEnumeratingWithState:&v17 objects:v22 count:16];
+        v12 = [allObjects countByEnumeratingWithState:&v17 objects:v22 count:16];
       }
 
       while (v12);
@@ -1519,32 +1519,32 @@ LABEL_6:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)separationAlertsService:(id)a3 scheduleSATimeEvent:(double)a4 forAlarm:(id)a5
+- (void)separationAlertsService:(id)service scheduleSATimeEvent:(double)event forAlarm:(id)alarm
 {
   v27 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = [(SAServiceManager *)self service];
+  serviceCopy = service;
+  alarmCopy = alarm;
+  service = [(SAServiceManager *)self service];
 
-  if (v10 == v8)
+  if (service == serviceCopy)
   {
     v11 = TASALog;
     if (os_log_type_enabled(TASALog, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134349056;
-      v26 = a4;
+      eventCopy = event;
       _os_log_impl(&dword_2656EA000, v11, OS_LOG_TYPE_DEFAULT, "#sa ServiceMgr scheduleSATimeEvent:%{public}#lf", buf, 0xCu);
     }
 
-    v12 = [(SAServiceManager *)self analytics];
-    [v12 addWakeTimerRequest];
+    analytics = [(SAServiceManager *)self analytics];
+    [analytics addWakeTimerRequest];
 
-    v13 = [(NSHashTable *)self->_clients allObjects];
+    allObjects = [(NSHashTable *)self->_clients allObjects];
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v14 = [v13 countByEnumeratingWithState:&v20 objects:v24 count:16];
+    v14 = [allObjects countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v14)
     {
       v15 = v14;
@@ -1556,20 +1556,20 @@ LABEL_6:
         {
           if (*v21 != v16)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(allObjects);
           }
 
           v18 = *(*(&v20 + 1) + 8 * v17);
           if (objc_opt_respondsToSelector())
           {
-            [v18 separationAlertsServiceManager:self scheduleSATimeEvent:v9 forAlarm:a4];
+            [v18 separationAlertsServiceManager:self scheduleSATimeEvent:alarmCopy forAlarm:event];
           }
 
           ++v17;
         }
 
         while (v15 != v17);
-        v15 = [v13 countByEnumeratingWithState:&v20 objects:v24 count:16];
+        v15 = [allObjects countByEnumeratingWithState:&v20 objects:v24 count:16];
       }
 
       while (v15);
@@ -1579,14 +1579,14 @@ LABEL_6:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)separationAlertsService:(id)a3 cancelSATimeEventForAlarm:(id)a4
+- (void)separationAlertsService:(id)service cancelSATimeEventForAlarm:(id)alarm
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SAServiceManager *)self service];
+  serviceCopy = service;
+  alarmCopy = alarm;
+  service = [(SAServiceManager *)self service];
 
-  if (v8 == v6)
+  if (service == serviceCopy)
   {
     v9 = TASALog;
     if (os_log_type_enabled(TASALog, OS_LOG_TYPE_DEFAULT))
@@ -1595,16 +1595,16 @@ LABEL_6:
       v23 = 2082;
       v24 = "";
       v25 = 2114;
-      v26 = v7;
+      v26 = alarmCopy;
       _os_log_impl(&dword_2656EA000, v9, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#sa ServiceMgr cancelSATimeEventForAlarm, uuid:%{public}@}", &buf, 0x1Cu);
     }
 
-    v10 = [(NSHashTable *)self->_clients allObjects];
+    allObjects = [(NSHashTable *)self->_clients allObjects];
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v11 = [v10 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    v11 = [allObjects countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v11)
     {
       v12 = v11;
@@ -1616,20 +1616,20 @@ LABEL_6:
         {
           if (*v18 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(allObjects);
           }
 
           v15 = *(*(&v17 + 1) + 8 * v14);
           if (objc_opt_respondsToSelector())
           {
-            [v15 separationAlertsServiceManager:self cancelSATimeEventForAlarm:v7];
+            [v15 separationAlertsServiceManager:self cancelSATimeEventForAlarm:alarmCopy];
           }
 
           ++v14;
         }
 
         while (v12 != v14);
-        v12 = [v10 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v12 = [allObjects countByEnumeratingWithState:&v17 objects:v21 count:16];
       }
 
       while (v12);
@@ -1639,13 +1639,13 @@ LABEL_6:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)separationAlertsServiceStartBackgroundScanning:(id)a3
+- (void)separationAlertsServiceStartBackgroundScanning:(id)scanning
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SAServiceManager *)self service];
+  scanningCopy = scanning;
+  service = [(SAServiceManager *)self service];
 
-  if (v5 == v4)
+  if (service == scanningCopy)
   {
     v6 = TASALog;
     if (os_log_type_enabled(TASALog, OS_LOG_TYPE_DEFAULT))
@@ -1656,12 +1656,12 @@ LABEL_6:
       _os_log_impl(&dword_2656EA000, v6, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#sa ServiceMgr startBackgroundScanning}", &buf, 0x12u);
     }
 
-    v7 = [(NSHashTable *)self->_clients allObjects];
+    allObjects = [(NSHashTable *)self->_clients allObjects];
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    v8 = [allObjects countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v8)
     {
       v9 = v8;
@@ -1673,7 +1673,7 @@ LABEL_6:
         {
           if (*v15 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(allObjects);
           }
 
           v12 = *(*(&v14 + 1) + 8 * v11);
@@ -1686,7 +1686,7 @@ LABEL_6:
         }
 
         while (v9 != v11);
-        v9 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v9 = [allObjects countByEnumeratingWithState:&v14 objects:v18 count:16];
       }
 
       while (v9);
@@ -1696,13 +1696,13 @@ LABEL_6:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)separationAlertsServiceStopBackgroundScanning:(id)a3
+- (void)separationAlertsServiceStopBackgroundScanning:(id)scanning
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SAServiceManager *)self service];
+  scanningCopy = scanning;
+  service = [(SAServiceManager *)self service];
 
-  if (v5 == v4)
+  if (service == scanningCopy)
   {
     v6 = TASALog;
     if (os_log_type_enabled(TASALog, OS_LOG_TYPE_DEFAULT))
@@ -1713,12 +1713,12 @@ LABEL_6:
       _os_log_impl(&dword_2656EA000, v6, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#sa ServiceMgr stopBackgroundScanning}", &buf, 0x12u);
     }
 
-    v7 = [(NSHashTable *)self->_clients allObjects];
+    allObjects = [(NSHashTable *)self->_clients allObjects];
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    v8 = [allObjects countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v8)
     {
       v9 = v8;
@@ -1730,7 +1730,7 @@ LABEL_6:
         {
           if (*v15 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(allObjects);
           }
 
           v12 = *(*(&v14 + 1) + 8 * v11);
@@ -1743,7 +1743,7 @@ LABEL_6:
         }
 
         while (v9 != v11);
-        v9 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v9 = [allObjects countByEnumeratingWithState:&v14 objects:v18 count:16];
       }
 
       while (v9);
@@ -1753,13 +1753,13 @@ LABEL_6:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)separationAlertsServiceStopLongAggressiveScan:(id)a3
+- (void)separationAlertsServiceStopLongAggressiveScan:(id)scan
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SAServiceManager *)self service];
+  scanCopy = scan;
+  service = [(SAServiceManager *)self service];
 
-  if (v5 == v4)
+  if (service == scanCopy)
   {
     v6 = TASALog;
     if (os_log_type_enabled(TASALog, OS_LOG_TYPE_DEFAULT))
@@ -1770,12 +1770,12 @@ LABEL_6:
       _os_log_impl(&dword_2656EA000, v6, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#sa ServiceMgr stopLongAggressiveScan}", &buf, 0x12u);
     }
 
-    v7 = [(NSHashTable *)self->_clients allObjects];
+    allObjects = [(NSHashTable *)self->_clients allObjects];
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    v8 = [allObjects countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v8)
     {
       v9 = v8;
@@ -1787,7 +1787,7 @@ LABEL_6:
         {
           if (*v15 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(allObjects);
           }
 
           v12 = *(*(&v14 + 1) + 8 * v11);
@@ -1800,7 +1800,7 @@ LABEL_6:
         }
 
         while (v9 != v11);
-        v9 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v9 = [allObjects countByEnumeratingWithState:&v14 objects:v18 count:16];
       }
 
       while (v9);
@@ -1810,13 +1810,13 @@ LABEL_6:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)separationAlertsServiceFetchLastVisit:(id)a3
+- (void)separationAlertsServiceFetchLastVisit:(id)visit
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SAServiceManager *)self service];
+  visitCopy = visit;
+  service = [(SAServiceManager *)self service];
 
-  if (v5 == v4)
+  if (service == visitCopy)
   {
     v6 = TASALog;
     if (os_log_type_enabled(TASALog, OS_LOG_TYPE_DEFAULT))
@@ -1834,21 +1834,21 @@ LABEL_6:
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)ingestTAEvent:(id)a3
+- (void)ingestTAEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   service = self->_service;
-  v18 = v4;
+  v18 = eventCopy;
   if (service)
   {
-    [(SAService *)service ingestTAEvent:v4];
-    v6 = [(SAServiceManager *)self hasAttemptedToIngestLastVisitAtStartup];
-    v4 = v18;
-    if (!v6)
+    [(SAService *)service ingestTAEvent:eventCopy];
+    hasAttemptedToIngestLastVisitAtStartup = [(SAServiceManager *)self hasAttemptedToIngestLastVisitAtStartup];
+    eventCopy = v18;
+    if (!hasAttemptedToIngestLastVisitAtStartup)
     {
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
-      v4 = v18;
+      eventCopy = v18;
       if (isKindOfClass)
       {
         v8 = v18;
@@ -1858,27 +1858,27 @@ LABEL_6:
           [(SAServiceManager *)self setHasAttemptedToIngestLastVisitAtStartup:1];
         }
 
-        v4 = v18;
+        eventCopy = v18;
       }
     }
   }
 
-  v9 = [v4 getDate];
-  v10 = [(SAServiceManager *)self nextAnalyticsSubmission];
-  [v9 timeIntervalSinceDate:v10];
+  getDate = [eventCopy getDate];
+  nextAnalyticsSubmission = [(SAServiceManager *)self nextAnalyticsSubmission];
+  [getDate timeIntervalSinceDate:nextAnalyticsSubmission];
   v12 = v11;
 
   if (v12 >= 0.0)
   {
-    v13 = [(SAServiceManager *)self analytics];
-    [v13 submitDefaultAlertRateEvent];
+    analytics = [(SAServiceManager *)self analytics];
+    [analytics submitDefaultAlertRateEvent];
 
-    v14 = [(SAServiceManager *)self analytics];
-    [v14 publishAndResetAggregation];
+    analytics2 = [(SAServiceManager *)self analytics];
+    [analytics2 publishAndResetAggregation];
 
     v15 = objc_alloc(MEMORY[0x277CBEAA8]);
-    v16 = [(SAServiceManager *)self analytics];
-    [v16 publishingInterval];
+    analytics3 = [(SAServiceManager *)self analytics];
+    [analytics3 publishingInterval];
     v17 = [v15 initWithTimeIntervalSinceNow:?];
     [(SAServiceManager *)self setNextAnalyticsSubmission:v17];
   }

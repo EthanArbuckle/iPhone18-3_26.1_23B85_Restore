@@ -1,104 +1,104 @@
 @interface REMRemindersDataViewInvocationResult
-- (BOOL)isEqual:(id)a3;
-- (REMRemindersDataViewInvocationResult)initWithAccountStorages:(id)a3 listStorages:(id)a4 reminderStorages:(id)a5 objectIDs:(id)a6;
-- (REMRemindersDataViewInvocationResult)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (REMRemindersDataViewInvocationResult)initWithAccountStorages:(id)storages listStorages:(id)listStorages reminderStorages:(id)reminderStorages objectIDs:(id)ds;
+- (REMRemindersDataViewInvocationResult)initWithCoder:(id)coder;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation REMRemindersDataViewInvocationResult
 
-- (REMRemindersDataViewInvocationResult)initWithAccountStorages:(id)a3 listStorages:(id)a4 reminderStorages:(id)a5 objectIDs:(id)a6
+- (REMRemindersDataViewInvocationResult)initWithAccountStorages:(id)storages listStorages:(id)listStorages reminderStorages:(id)reminderStorages objectIDs:(id)ds
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  storagesCopy = storages;
+  listStoragesCopy = listStorages;
+  reminderStoragesCopy = reminderStorages;
+  dsCopy = ds;
   v18.receiver = self;
   v18.super_class = REMRemindersDataViewInvocationResult;
   v15 = [(REMStoreInvocationValueStorage *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_accountStorages, a3);
-    objc_storeStrong(&v16->_listStorages, a4);
-    objc_storeStrong(&v16->_reminderStorages, a5);
-    objc_storeStrong(&v16->_objectIDs, a6);
+    objc_storeStrong(&v15->_accountStorages, storages);
+    objc_storeStrong(&v16->_listStorages, listStorages);
+    objc_storeStrong(&v16->_reminderStorages, reminderStorages);
+    objc_storeStrong(&v16->_objectIDs, ds);
   }
 
   return v16;
 }
 
-- (REMRemindersDataViewInvocationResult)initWithCoder:(id)a3
+- (REMRemindersDataViewInvocationResult)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
+  coderCopy = coder;
   v6 = objc_opt_class();
   v7 = [v4 setWithObjects:{v6, objc_opt_class(), 0}];
-  v8 = [v5 decodeObjectOfClasses:v7 forKey:@"accountStorages"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"accountStorages"];
 
   v9 = MEMORY[0x1E695DFD8];
   v10 = objc_opt_class();
   v11 = [v9 setWithObjects:{v10, objc_opt_class(), 0}];
-  v12 = [v5 decodeObjectOfClasses:v11 forKey:@"listStorages"];
+  v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"listStorages"];
 
   v13 = MEMORY[0x1E695DFD8];
   v14 = objc_opt_class();
   v15 = [v13 setWithObjects:{v14, objc_opt_class(), 0}];
-  v16 = [v5 decodeObjectOfClasses:v15 forKey:@"reminderStorages"];
+  v16 = [coderCopy decodeObjectOfClasses:v15 forKey:@"reminderStorages"];
 
   v17 = MEMORY[0x1E695DFD8];
   v18 = objc_opt_class();
   v19 = [v17 setWithObjects:{v18, objc_opt_class(), 0}];
-  v20 = [v5 decodeObjectOfClasses:v19 forKey:@"objectIDs"];
+  v20 = [coderCopy decodeObjectOfClasses:v19 forKey:@"objectIDs"];
 
-  v21 = 0;
+  selfCopy = 0;
   if (v8 && v12 && v16 && v20)
   {
     self = [(REMRemindersDataViewInvocationResult *)self initWithAccountStorages:v8 listStorages:v12 reminderStorages:v16 objectIDs:v20];
-    v21 = self;
+    selfCopy = self;
   }
 
-  return v21;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(REMRemindersDataViewInvocationResult *)self accountStorages];
-  [v4 encodeObject:v5 forKey:@"accountStorages"];
+  coderCopy = coder;
+  accountStorages = [(REMRemindersDataViewInvocationResult *)self accountStorages];
+  [coderCopy encodeObject:accountStorages forKey:@"accountStorages"];
 
-  v6 = [(REMRemindersDataViewInvocationResult *)self listStorages];
-  [v4 encodeObject:v6 forKey:@"listStorages"];
+  listStorages = [(REMRemindersDataViewInvocationResult *)self listStorages];
+  [coderCopy encodeObject:listStorages forKey:@"listStorages"];
 
-  v7 = [(REMRemindersDataViewInvocationResult *)self reminderStorages];
-  [v4 encodeObject:v7 forKey:@"reminderStorages"];
+  reminderStorages = [(REMRemindersDataViewInvocationResult *)self reminderStorages];
+  [coderCopy encodeObject:reminderStorages forKey:@"reminderStorages"];
 
-  v8 = [(REMRemindersDataViewInvocationResult *)self objectIDs];
-  [v4 encodeObject:v8 forKey:@"objectIDs"];
+  objectIDs = [(REMRemindersDataViewInvocationResult *)self objectIDs];
+  [coderCopy encodeObject:objectIDs forKey:@"objectIDs"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     goto LABEL_12;
   }
 
-  v5 = [(REMRemindersDataViewInvocationResult *)self accountStorages];
-  v6 = [v4 accountStorages];
-  v7 = v6;
-  if (v5 == v6)
+  accountStorages = [(REMRemindersDataViewInvocationResult *)self accountStorages];
+  accountStorages2 = [equalCopy accountStorages];
+  v7 = accountStorages2;
+  if (accountStorages == accountStorages2)
   {
   }
 
   else
   {
-    v8 = [(REMRemindersDataViewInvocationResult *)self accountStorages];
-    v9 = [v4 accountStorages];
-    v10 = [v8 isEqual:v9];
+    accountStorages3 = [(REMRemindersDataViewInvocationResult *)self accountStorages];
+    accountStorages4 = [equalCopy accountStorages];
+    v10 = [accountStorages3 isEqual:accountStorages4];
 
     if (!v10)
     {
@@ -106,18 +106,18 @@
     }
   }
 
-  v11 = [(REMRemindersDataViewInvocationResult *)self listStorages];
-  v12 = [v4 listStorages];
-  v13 = v12;
-  if (v11 == v12)
+  listStorages = [(REMRemindersDataViewInvocationResult *)self listStorages];
+  listStorages2 = [equalCopy listStorages];
+  v13 = listStorages2;
+  if (listStorages == listStorages2)
   {
   }
 
   else
   {
-    v14 = [(REMRemindersDataViewInvocationResult *)self listStorages];
-    v15 = [v4 listStorages];
-    v16 = [v14 isEqual:v15];
+    listStorages3 = [(REMRemindersDataViewInvocationResult *)self listStorages];
+    listStorages4 = [equalCopy listStorages];
+    v16 = [listStorages3 isEqual:listStorages4];
 
     if (!v16)
     {
@@ -125,18 +125,18 @@
     }
   }
 
-  v17 = [(REMRemindersDataViewInvocationResult *)self reminderStorages];
-  v18 = [v4 reminderStorages];
-  v19 = v18;
-  if (v17 == v18)
+  reminderStorages = [(REMRemindersDataViewInvocationResult *)self reminderStorages];
+  reminderStorages2 = [equalCopy reminderStorages];
+  v19 = reminderStorages2;
+  if (reminderStorages == reminderStorages2)
   {
   }
 
   else
   {
-    v20 = [(REMRemindersDataViewInvocationResult *)self reminderStorages];
-    v21 = [v4 reminderStorages];
-    v22 = [v20 isEqual:v21];
+    reminderStorages3 = [(REMRemindersDataViewInvocationResult *)self reminderStorages];
+    reminderStorages4 = [equalCopy reminderStorages];
+    v22 = [reminderStorages3 isEqual:reminderStorages4];
 
     if (!v22)
     {
@@ -146,18 +146,18 @@ LABEL_12:
     }
   }
 
-  v25 = [(REMRemindersDataViewInvocationResult *)self objectIDs];
-  v26 = [v4 objectIDs];
-  if (v25 == v26)
+  objectIDs = [(REMRemindersDataViewInvocationResult *)self objectIDs];
+  objectIDs2 = [equalCopy objectIDs];
+  if (objectIDs == objectIDs2)
   {
     v23 = 1;
   }
 
   else
   {
-    v27 = [(REMRemindersDataViewInvocationResult *)self objectIDs];
-    v28 = [v4 objectIDs];
-    v23 = [v27 isEqual:v28];
+    objectIDs3 = [(REMRemindersDataViewInvocationResult *)self objectIDs];
+    objectIDs4 = [equalCopy objectIDs];
+    v23 = [objectIDs3 isEqual:objectIDs4];
   }
 
 LABEL_13:
@@ -166,14 +166,14 @@ LABEL_13:
 
 - (unint64_t)hash
 {
-  v3 = [(REMRemindersDataViewInvocationResult *)self accountStorages];
-  v4 = [v3 hash];
-  v5 = [(REMRemindersDataViewInvocationResult *)self listStorages];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(REMRemindersDataViewInvocationResult *)self reminderStorages];
-  v8 = [v7 hash];
-  v9 = [(REMRemindersDataViewInvocationResult *)self objectIDs];
-  v10 = v8 ^ [v9 hash];
+  accountStorages = [(REMRemindersDataViewInvocationResult *)self accountStorages];
+  v4 = [accountStorages hash];
+  listStorages = [(REMRemindersDataViewInvocationResult *)self listStorages];
+  v6 = [listStorages hash] ^ v4;
+  reminderStorages = [(REMRemindersDataViewInvocationResult *)self reminderStorages];
+  v8 = [reminderStorages hash];
+  objectIDs = [(REMRemindersDataViewInvocationResult *)self objectIDs];
+  v10 = v8 ^ [objectIDs hash];
 
   return v6 ^ v10;
 }

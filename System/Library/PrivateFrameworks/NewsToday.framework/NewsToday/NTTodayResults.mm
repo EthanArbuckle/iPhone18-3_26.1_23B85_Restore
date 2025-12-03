@@ -1,12 +1,12 @@
 @interface NTTodayResults
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NTTodayResults)init;
-- (NTTodayResults)initWithCoder:(id)a3;
-- (NTTodayResults)initWithSourceIdentifier:(id)a3 sections:(id)a4 promotionCriterion:(int)a5 expirationDate:(id)a6 headlineScale:(double)a7 assetsHoldToken:(id)a8 recordsHoldToken:(id)a9 banner:(id)a10 debugInspection:(id)a11;
+- (NTTodayResults)initWithCoder:(id)coder;
+- (NTTodayResults)initWithSourceIdentifier:(id)identifier sections:(id)sections promotionCriterion:(int)criterion expirationDate:(id)date headlineScale:(double)scale assetsHoldToken:(id)token recordsHoldToken:(id)holdToken banner:(id)self0 debugInspection:(id)self1;
 - (id)description;
 - (unint64_t)hash;
 - (unint64_t)itemCount;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NTTodayResults
@@ -37,25 +37,25 @@
   objc_exception_throw(v6);
 }
 
-- (NTTodayResults)initWithSourceIdentifier:(id)a3 sections:(id)a4 promotionCriterion:(int)a5 expirationDate:(id)a6 headlineScale:(double)a7 assetsHoldToken:(id)a8 recordsHoldToken:(id)a9 banner:(id)a10 debugInspection:(id)a11
+- (NTTodayResults)initWithSourceIdentifier:(id)identifier sections:(id)sections promotionCriterion:(int)criterion expirationDate:(id)date headlineScale:(double)scale assetsHoldToken:(id)token recordsHoldToken:(id)holdToken banner:(id)self0 debugInspection:(id)self1
 {
-  v17 = a3;
-  v18 = a4;
-  v19 = a6;
-  v20 = a8;
-  v21 = a9;
-  v36 = a10;
-  v35 = a11;
-  if (!v17 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  identifierCopy = identifier;
+  sectionsCopy = sections;
+  dateCopy = date;
+  tokenCopy = token;
+  holdTokenCopy = holdToken;
+  bannerCopy = banner;
+  inspectionCopy = inspection;
+  if (!identifierCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTTodayResults initWithSourceIdentifier:sections:promotionCriterion:expirationDate:headlineScale:assetsHoldToken:recordsHoldToken:banner:debugInspection:];
-    if (v18)
+    if (sectionsCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v18)
+  else if (sectionsCopy)
   {
     goto LABEL_6;
   }
@@ -66,7 +66,7 @@
   }
 
 LABEL_6:
-  if (!v19 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  if (!dateCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTTodayResults initWithSourceIdentifier:sections:promotionCriterion:expirationDate:headlineScale:assetsHoldToken:recordsHoldToken:banner:debugInspection:];
   }
@@ -76,10 +76,10 @@ LABEL_6:
   v22 = [(NTTodayResults *)&v37 init];
   if (v22)
   {
-    v23 = [v17 copy];
-    v24 = a9;
-    v25 = v21;
-    v26 = v20;
+    v23 = [identifierCopy copy];
+    holdTokenCopy2 = holdToken;
+    v25 = holdTokenCopy;
+    v26 = tokenCopy;
     v27 = v23;
     if (v23)
     {
@@ -93,22 +93,22 @@ LABEL_6:
 
     objc_storeStrong(&v22->_sourceIdentifier, v28);
 
-    v20 = v26;
-    v21 = v25;
-    v29 = [v18 copy];
+    tokenCopy = v26;
+    holdTokenCopy = v25;
+    v29 = [sectionsCopy copy];
     sections = v22->_sections;
     v22->_sections = v29;
 
-    v22->_promotionCriterion = a5;
-    v31 = [v19 copy];
+    v22->_promotionCriterion = criterion;
+    v31 = [dateCopy copy];
     expirationDate = v22->_expirationDate;
     v22->_expirationDate = v31;
 
-    v22->_headlineScale = a7;
-    objc_storeStrong(&v22->_assetsHoldToken, a8);
-    objc_storeStrong(&v22->_recordsHoldToken, v24);
-    objc_storeStrong(&v22->_banner, a10);
-    objc_storeStrong(&v22->_debugInspection, a11);
+    v22->_headlineScale = scale;
+    objc_storeStrong(&v22->_assetsHoldToken, token);
+    objc_storeStrong(&v22->_recordsHoldToken, holdTokenCopy2);
+    objc_storeStrong(&v22->_banner, banner);
+    objc_storeStrong(&v22->_debugInspection, inspection);
   }
 
   return v22;
@@ -120,13 +120,13 @@ LABEL_6:
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v2 = [(NTTodayResults *)self sections];
+  sections = [(NTTodayResults *)self sections];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __27__NTTodayResults_itemCount__block_invoke;
   v5[3] = &unk_279982CD8;
   v5[4] = &v6;
-  [v2 enumerateObjectsUsingBlock:v5];
+  [sections enumerateObjectsUsingBlock:v5];
 
   v3 = v7[3];
   _Block_object_dispose(&v6, 8);
@@ -139,21 +139,21 @@ void __27__NTTodayResults_itemCount__block_invoke(uint64_t a1, void *a2)
   *(*(*(a1 + 32) + 8) + 24) += [v3 count];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   v5 = FCDynamicCast();
 
   if (v5)
   {
-    v6 = [(NTTodayResults *)self sections];
-    v7 = [v5 sections];
-    if ([v6 isEqual:v7])
+    sections = [(NTTodayResults *)self sections];
+    sections2 = [v5 sections];
+    if ([sections isEqual:sections2])
     {
-      v8 = [(NTTodayResults *)self expirationDate];
-      v9 = [v5 expirationDate];
-      v10 = [v8 isEqual:v9];
+      expirationDate = [(NTTodayResults *)self expirationDate];
+      expirationDate2 = [v5 expirationDate];
+      v10 = [expirationDate isEqual:expirationDate2];
     }
 
     else
@@ -172,10 +172,10 @@ void __27__NTTodayResults_itemCount__block_invoke(uint64_t a1, void *a2)
 
 - (unint64_t)hash
 {
-  v3 = [(NTTodayResults *)self sections];
-  v4 = [v3 hash];
-  v5 = [(NTTodayResults *)self expirationDate];
-  v6 = [v5 hash];
+  sections = [(NTTodayResults *)self sections];
+  v4 = [sections hash];
+  expirationDate = [(NTTodayResults *)self expirationDate];
+  v6 = [expirationDate hash];
 
   return v6 ^ v4;
 }
@@ -183,47 +183,47 @@ void __27__NTTodayResults_itemCount__block_invoke(uint64_t a1, void *a2)
 - (id)description
 {
   v3 = [MEMORY[0x277D30F48] descriptionWithObject:self];
-  v4 = [(NTTodayResults *)self sections];
-  [v3 addField:@"sections" object:v4];
+  sections = [(NTTodayResults *)self sections];
+  [v3 addField:@"sections" object:sections];
 
-  v5 = [v3 descriptionString];
+  descriptionString = [v3 descriptionString];
 
-  return v5;
+  return descriptionString;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v8 = a3;
-  v4 = [(NTTodayResults *)self sourceIdentifier];
-  [v8 encodeObject:v4 forKey:@"si"];
+  coderCopy = coder;
+  sourceIdentifier = [(NTTodayResults *)self sourceIdentifier];
+  [coderCopy encodeObject:sourceIdentifier forKey:@"si"];
 
-  v5 = [(NTTodayResults *)self banner];
-  [v8 encodeObject:v5 forKey:@"banner"];
+  banner = [(NTTodayResults *)self banner];
+  [coderCopy encodeObject:banner forKey:@"banner"];
 
-  v6 = [(NTTodayResults *)self sections];
-  [v8 encodeObject:v6 forKey:@"sections"];
+  sections = [(NTTodayResults *)self sections];
+  [coderCopy encodeObject:sections forKey:@"sections"];
 
-  [v8 encodeInt32:-[NTTodayResults promotionCriterion](self forKey:{"promotionCriterion"), @"promotionCriterion"}];
-  v7 = [(NTTodayResults *)self expirationDate];
-  [v8 encodeObject:v7 forKey:@"expirationDate"];
+  [coderCopy encodeInt32:-[NTTodayResults promotionCriterion](self forKey:{"promotionCriterion"), @"promotionCriterion"}];
+  expirationDate = [(NTTodayResults *)self expirationDate];
+  [coderCopy encodeObject:expirationDate forKey:@"expirationDate"];
 
   [(NTTodayResults *)self headlineScale];
-  [v8 encodeDouble:@"headlineScale" forKey:?];
+  [coderCopy encodeDouble:@"headlineScale" forKey:?];
 }
 
-- (NTTodayResults)initWithCoder:(id)a3
+- (NTTodayResults)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"si"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"banner"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"si"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"banner"];
   v7 = MEMORY[0x277CBEB98];
   v8 = objc_opt_class();
   v9 = [v7 setWithObjects:{v8, objc_opt_class(), 0}];
-  v10 = [v4 decodeObjectOfClasses:v9 forKey:@"sections"];
+  v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"sections"];
 
-  v11 = [v4 decodeInt32ForKey:@"promotionCriterion"];
-  v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"expirationDate"];
-  [v4 decodeDoubleForKey:@"headlineScale"];
+  v11 = [coderCopy decodeInt32ForKey:@"promotionCriterion"];
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"expirationDate"];
+  [coderCopy decodeDoubleForKey:@"headlineScale"];
   v14 = v13;
 
   v15 = [(NTTodayResults *)self initWithSourceIdentifier:v5 sections:v10 promotionCriterion:v11 expirationDate:v12 headlineScale:0 assetsHoldToken:0 recordsHoldToken:v14 banner:v6 debugInspection:0];

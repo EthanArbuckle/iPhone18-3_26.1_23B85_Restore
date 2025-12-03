@@ -1,37 +1,37 @@
 @interface PXAlertController
-+ (id)activityAlertControllerWithTitle:(id)a3 message:(id)a4 cancelHandler:(id)a5 shouldDismiss:(BOOL)a6;
-+ (id)progressAlertControllerWithMessage:(id)a3;
-- (PXAlertController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)setContentView:(id)a3;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
++ (id)activityAlertControllerWithTitle:(id)title message:(id)message cancelHandler:(id)handler shouldDismiss:(BOOL)dismiss;
++ (id)progressAlertControllerWithMessage:(id)message;
+- (PXAlertController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)setContentView:(id)view;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation PXAlertController
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = PXAlertController;
-  [(PXAlertController *)&v4 viewDidDisappear:a3];
+  [(PXAlertController *)&v4 viewDidDisappear:disappear];
   [(UIActivityIndicatorView *)self->_activityIndicatorView stopAnimating];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = PXAlertController;
-  [(PXAlertController *)&v4 viewWillAppear:a3];
+  [(PXAlertController *)&v4 viewWillAppear:appear];
   [(UIActivityIndicatorView *)self->_activityIndicatorView startAnimating];
 }
 
-- (void)setContentView:(id)a3
+- (void)setContentView:(id)view
 {
-  v5 = a3;
-  if (self->_contentView != v5)
+  viewCopy = view;
+  if (self->_contentView != viewCopy)
   {
-    v9 = v5;
-    objc_storeStrong(&self->_contentView, a3);
+    v9 = viewCopy;
+    objc_storeStrong(&self->_contentView, view);
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -67,15 +67,15 @@
       [(PXAlertController *)self setContentViewController:0];
     }
 
-    v5 = v9;
+    viewCopy = v9;
   }
 }
 
-- (PXAlertController)initWithNibName:(id)a3 bundle:(id)a4
+- (PXAlertController)initWithNibName:(id)name bundle:(id)bundle
 {
   v8.receiver = self;
   v8.super_class = PXAlertController;
-  v4 = [(PXAlertController *)&v8 initWithNibName:a3 bundle:a4];
+  v4 = [(PXAlertController *)&v8 initWithNibName:name bundle:bundle];
   if (v4)
   {
     v5 = objc_alloc_init(_PXAlertContentViewController);
@@ -86,26 +86,26 @@
   return v4;
 }
 
-+ (id)progressAlertControllerWithMessage:(id)a3
++ (id)progressAlertControllerWithMessage:(id)message
 {
-  v3 = [a1 alertControllerWithTitle:0 message:a3 preferredStyle:1];
+  v3 = [self alertControllerWithTitle:0 message:message preferredStyle:1];
   v4 = [objc_alloc(MEMORY[0x1E69DCE48]) initWithProgressViewStyle:0];
   [v3 setContentView:v4];
 
   return v3;
 }
 
-+ (id)activityAlertControllerWithTitle:(id)a3 message:(id)a4 cancelHandler:(id)a5 shouldDismiss:(BOOL)a6
++ (id)activityAlertControllerWithTitle:(id)title message:(id)message cancelHandler:(id)handler shouldDismiss:(BOOL)dismiss
 {
-  v10 = a5;
-  v11 = [a1 alertControllerWithTitle:a3 message:a4 preferredStyle:1];
+  handlerCopy = handler;
+  v11 = [self alertControllerWithTitle:title message:message preferredStyle:1];
   v12 = PXLocalizedStringFromTable(@"PXCancel", @"PhotosUICore");
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __90__PXAlertController_activityAlertControllerWithTitle_message_cancelHandler_shouldDismiss___block_invoke;
   v15[3] = &__block_descriptor_33_e5_B8__0l;
-  v16 = a6;
-  [v11 _addActionWithTitle:v12 style:1 handler:v10 shouldDismissHandler:v15];
+  dismissCopy = dismiss;
+  [v11 _addActionWithTitle:v12 style:1 handler:handlerCopy shouldDismissHandler:v15];
 
   v13 = [objc_alloc(MEMORY[0x1E69DC638]) initWithActivityIndicatorStyle:100];
   [v11 setContentView:v13];

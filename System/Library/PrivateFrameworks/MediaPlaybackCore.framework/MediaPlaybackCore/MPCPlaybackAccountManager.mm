@@ -6,25 +6,25 @@
 - (MPCPlaybackAccount)fallbackAccount;
 - (NSArray)accounts;
 - (id)_init;
-- (id)accountForDSID:(id)a3;
-- (id)accountForHashedDSID:(id)a3;
-- (id)accountForUserIdentity:(id)a3;
-- (id)getDelegateTokenBWithTokenA:(id)a3 forDSID:(unint64_t)a4 error:(id *)a5;
-- (id)musicPlaybackRequestEnvironmentForAccount:(id)a3;
-- (void)_buildAccountFromDelegatedIdentity:(id)a3 completion:(id)a4;
-- (void)_buildAccountFromLocalIdentity:(id)a3 completion:(id)a4;
-- (void)_enumerateIdentitiesWithCompletion:(id)a3;
-- (void)_handleURLBagProviderDidUpdateBagNotification:(id)a3;
-- (void)_notifyObserversForChange:(id)a3;
-- (void)_setNeedsRefreshDueToMissingBag:(BOOL)a3;
-- (void)_updateAccountsWithAttemptCount:(int64_t)a3 completion:(id)a4;
+- (id)accountForDSID:(id)d;
+- (id)accountForHashedDSID:(id)d;
+- (id)accountForUserIdentity:(id)identity;
+- (id)getDelegateTokenBWithTokenA:(id)a forDSID:(unint64_t)d error:(id *)error;
+- (id)musicPlaybackRequestEnvironmentForAccount:(id)account;
+- (void)_buildAccountFromDelegatedIdentity:(id)identity completion:(id)completion;
+- (void)_buildAccountFromLocalIdentity:(id)identity completion:(id)completion;
+- (void)_enumerateIdentitiesWithCompletion:(id)completion;
+- (void)_handleURLBagProviderDidUpdateBagNotification:(id)notification;
+- (void)_notifyObserversForChange:(id)change;
+- (void)_setNeedsRefreshDueToMissingBag:(BOOL)bag;
+- (void)_updateAccountsWithAttemptCount:(int64_t)count completion:(id)completion;
 - (void)dealloc;
-- (void)environmentMonitorDidChangeNetworkReachability:(id)a3;
-- (void)performAfterLoadingAccounts:(id)a3;
-- (void)registerObserver:(id)a3;
+- (void)environmentMonitorDidChangeNetworkReachability:(id)reachability;
+- (void)performAfterLoadingAccounts:(id)accounts;
+- (void)registerObserver:(id)observer;
 - (void)start;
-- (void)unregisterObserver:(id)a3;
-- (void)updateCredentialsWithDelegateTokenE:(_MPCProtoDelegateInfoTokenE *)a3 forDSID:(unint64_t)a4 completion:(id)a5;
+- (void)unregisterObserver:(id)observer;
+- (void)updateCredentialsWithDelegateTokenE:(_MPCProtoDelegateInfoTokenE *)e forDSID:(unint64_t)d completion:(id)completion;
 @end
 
 @implementation MPCPlaybackAccountManager
@@ -66,13 +66,13 @@ uint64_t __42__MPCPlaybackAccountManager_sharedManager__block_invoke()
     v3->_initialAccountGroup = v4;
 
     dispatch_group_enter(v3->_initialAccountGroup);
-    v6 = [MEMORY[0x1E695DF20] dictionary];
+    dictionary = [MEMORY[0x1E695DF20] dictionary];
     accounts = v3->_accounts;
-    v3->_accounts = v6;
+    v3->_accounts = dictionary;
 
-    v8 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     observers = v3->_observers;
-    v3->_observers = v8;
+    v3->_observers = weakObjectsHashTable;
 
     v3->_observersLock = 0;
     v10 = v3->_initialAccountGroup;
@@ -89,16 +89,16 @@ uint64_t __42__MPCPlaybackAccountManager_sharedManager__block_invoke()
 
 - (void)start
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   if ((ICCurrentApplicationIsSystemApp() & 1) == 0)
   {
-    [v3 addObserver:self selector:sel__subscriptionStatusChangedNotification_ name:*MEMORY[0x1E69E41D8] object:0];
+    [defaultCenter addObserver:self selector:sel__subscriptionStatusChangedNotification_ name:*MEMORY[0x1E69E41D8] object:0];
   }
 
-  [v3 addObserver:self selector:sel__userIdentityStoreChangedNotification_ name:*MEMORY[0x1E69E4380] object:0];
+  [defaultCenter addObserver:self selector:sel__userIdentityStoreChangedNotification_ name:*MEMORY[0x1E69E4380] object:0];
   if ([MEMORY[0x1E6970538] isCurrentDeviceValidHomeAccessory])
   {
-    [v3 addObserver:self selector:sel__homeUserSettingsChangeNotification_ name:*MEMORY[0x1E696F8D0] object:0];
+    [defaultCenter addObserver:self selector:sel__homeUserSettingsChangeNotification_ name:*MEMORY[0x1E696F8D0] object:0];
   }
 
   v4 = dispatch_get_global_queue(25, 0);
@@ -121,8 +121,8 @@ uint64_t __42__MPCPlaybackAccountManager_sharedManager__block_invoke()
 - (NSArray)accounts
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(NSDictionary *)self->_accounts allValues];
-  v4 = [v3 copy];
+  allValues = [(NSDictionary *)self->_accounts allValues];
+  v4 = [allValues copy];
 
   os_unfair_lock_unlock(&self->_lock);
   v5 = [v4 sortedArrayUsingComparator:&__block_literal_global_167];
@@ -144,46 +144,46 @@ uint64_t __42__MPCPlaybackAccountManager_sharedManager__block_invoke()
 
 - (MPCPlaybackAccount)activeAccount
 {
-  v3 = [MEMORY[0x1E69E4680] activeAccount];
-  v4 = [(MPCPlaybackAccountManager *)self accountForUserIdentity:v3];
+  activeAccount = [MEMORY[0x1E69E4680] activeAccount];
+  v4 = [(MPCPlaybackAccountManager *)self accountForUserIdentity:activeAccount];
 
   return v4;
 }
 
 - (MPCPlaybackAccount)fallbackAccount
 {
-  v3 = [MEMORY[0x1E69E4680] defaultMediaIdentity];
-  v4 = [(MPCPlaybackAccountManager *)self accountForUserIdentity:v3];
+  defaultMediaIdentity = [MEMORY[0x1E69E4680] defaultMediaIdentity];
+  v4 = [(MPCPlaybackAccountManager *)self accountForUserIdentity:defaultMediaIdentity];
 
   return v4;
 }
 
-- (id)getDelegateTokenBWithTokenA:(id)a3 forDSID:(unint64_t)a4 error:(id *)a5
+- (id)getDelegateTokenBWithTokenA:(id)a forDSID:(unint64_t)d error:(id *)error
 {
-  v6 = a3;
-  v7 = self;
-  v8 = sub_1C5CB997C(v6);
+  aCopy = a;
+  selfCopy = self;
+  v8 = sub_1C5CB997C(aCopy);
 
   return v8;
 }
 
-- (void)updateCredentialsWithDelegateTokenE:(_MPCProtoDelegateInfoTokenE *)a3 forDSID:(unint64_t)a4 completion:(id)a5
+- (void)updateCredentialsWithDelegateTokenE:(_MPCProtoDelegateInfoTokenE *)e forDSID:(unint64_t)d completion:(id)completion
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(completion);
   v9 = swift_allocObject();
-  v9[2] = a3;
-  v9[3] = a4;
+  v9[2] = e;
+  v9[3] = d;
   v9[4] = v8;
   v9[5] = self;
-  v10 = a3;
-  v11 = self;
+  eCopy = e;
+  selfCopy = self;
 
   sub_1C5E3A9D0(&unk_1C6035BB0, v9);
 }
 
-- (void)_notifyObserversForChange:(id)a3
+- (void)_notifyObserversForChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   os_unfair_recursive_lock_lock_with_options();
   v5 = [(NSHashTable *)self->_observers copy];
   os_unfair_recursive_lock_unlock();
@@ -194,8 +194,8 @@ uint64_t __42__MPCPlaybackAccountManager_sharedManager__block_invoke()
     block[2] = __55__MPCPlaybackAccountManager__notifyObserversForChange___block_invoke;
     block[3] = &unk_1E82391C0;
     v7 = v5;
-    v8 = self;
-    v9 = v4;
+    selfCopy = self;
+    v9 = changeCopy;
     dispatch_async(MEMORY[0x1E69E96A0], block);
   }
 }
@@ -234,25 +234,25 @@ void __55__MPCPlaybackAccountManager__notifyObserversForChange___block_invoke(ui
   }
 }
 
-- (void)_handleURLBagProviderDidUpdateBagNotification:(id)a3
+- (void)_handleURLBagProviderDidUpdateBagNotification:(id)notification
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKey:*MEMORY[0x1E69E4358]];
+  notificationCopy = notification;
+  userInfo = [notificationCopy userInfo];
+  v6 = [userInfo objectForKey:*MEMORY[0x1E69E4358]];
 
-  v7 = [v4 userInfo];
+  userInfo2 = [notificationCopy userInfo];
 
-  v8 = [v7 objectForKey:*MEMORY[0x1E69E4350]];
+  v8 = [userInfo2 objectForKey:*MEMORY[0x1E69E4350]];
 
   if (v6)
   {
-    v9 = [v8 identity];
+    identity = [v8 identity];
 
-    if (v9)
+    if (identity)
     {
-      v10 = [v8 identity];
-      v11 = [(MPCPlaybackAccountManager *)self accountForUserIdentity:v10];
+      identity2 = [v8 identity];
+      v11 = [(MPCPlaybackAccountManager *)self accountForUserIdentity:identity2];
 
       if (v11)
       {
@@ -265,8 +265,8 @@ void __55__MPCPlaybackAccountManager__notifyObserversForChange___block_invoke(ui
           v14 = [v11 copy];
           [v14 setBag:v6];
           v15 = [(NSDictionary *)self->_accounts mutableCopy];
-          v16 = [v14 hashedDSID];
-          [v15 setObject:v14 forKeyedSubscript:v16];
+          hashedDSID = [v14 hashedDSID];
+          [v15 setObject:v14 forKeyedSubscript:hashedDSID];
 
           v17 = [v15 copy];
           accounts = self->_accounts;
@@ -281,22 +281,22 @@ void __55__MPCPlaybackAccountManager__notifyObserversForChange___block_invoke(ui
             _os_log_impl(&dword_1C5C61000, v19, OS_LOG_TYPE_DEFAULT, "[AccountManager] - Updated account for bag change notification: %{public}@", &v21, 0xCu);
           }
 
-          v20 = [(MPCPlaybackAccountManager *)self accounts];
-          [(MPCPlaybackAccountManager *)self _notifyObserversForChange:v20];
+          accounts = [(MPCPlaybackAccountManager *)self accounts];
+          [(MPCPlaybackAccountManager *)self _notifyObserversForChange:accounts];
         }
       }
     }
   }
 }
 
-- (void)_setNeedsRefreshDueToMissingBag:(BOOL)a3
+- (void)_setNeedsRefreshDueToMissingBag:(BOOL)bag
 {
-  v3 = a3;
+  bagCopy = bag;
   os_unfair_lock_lock(&self->_lock);
   needsRefreshDueToMissingBag = self->_needsRefreshDueToMissingBag;
-  self->_needsRefreshDueToMissingBag = v3;
+  self->_needsRefreshDueToMissingBag = bagCopy;
   os_unfair_lock_unlock(&self->_lock);
-  if (v3)
+  if (bagCopy)
   {
     if (!needsRefreshDueToMissingBag)
     {
@@ -308,13 +308,13 @@ void __55__MPCPlaybackAccountManager__notifyObserversForChange___block_invoke(ui
       }
 
       objc_initWeak(buf, self);
-      v7 = [MEMORY[0x1E69E45A0] sharedSecurityInfo];
+      mEMORY[0x1E69E45A0] = [MEMORY[0x1E69E45A0] sharedSecurityInfo];
       v9[0] = MEMORY[0x1E69E9820];
       v9[1] = 3221225472;
       v9[2] = __61__MPCPlaybackAccountManager__setNeedsRefreshDueToMissingBag___block_invoke;
       v9[3] = &unk_1E8239500;
       objc_copyWeak(&v10, buf);
-      [v7 performBlockAfterFirstUnlock:v9];
+      [mEMORY[0x1E69E45A0] performBlockAfterFirstUnlock:v9];
 
       objc_destroyWeak(&v10);
       objc_destroyWeak(buf);
@@ -323,8 +323,8 @@ void __55__MPCPlaybackAccountManager__notifyObserversForChange___block_invoke(ui
 
   else if (needsRefreshDueToMissingBag)
   {
-    v8 = [MEMORY[0x1E69E4428] sharedMonitor];
-    [v8 unregisterObserver:self];
+    mEMORY[0x1E69E4428] = [MEMORY[0x1E69E4428] sharedMonitor];
+    [mEMORY[0x1E69E4428] unregisterObserver:self];
   }
 }
 
@@ -346,13 +346,13 @@ void __61__MPCPlaybackAccountManager__setNeedsRefreshDueToMissingBag___block_inv
   }
 }
 
-- (void)_enumerateIdentitiesWithCompletion:(id)a3
+- (void)_enumerateIdentitiesWithCompletion:(id)completion
 {
   v55 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E69E4688] defaultIdentityStore];
+  completionCopy = completion;
+  defaultIdentityStore = [MEMORY[0x1E69E4688] defaultIdentityStore];
   v51 = 0;
-  v5 = [v4 userIdentitiesForManageableAccountsWithError:&v51];
+  v5 = [defaultIdentityStore userIdentitiesForManageableAccountsWithError:&v51];
   v6 = v51;
   v7 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
   v8 = v7;
@@ -369,14 +369,14 @@ void __61__MPCPlaybackAccountManager__setNeedsRefreshDueToMissingBag___block_inv
     v47 = 3221225472;
     v48 = __64__MPCPlaybackAccountManager__enumerateIdentitiesWithCompletion___block_invoke;
     v49 = &unk_1E8239528;
-    v50 = v3;
+    v50 = completionCopy;
     msv_dispatch_on_main_queue();
-    v9 = v50;
+    activeAccount = v50;
   }
 
   else
   {
-    v26 = v3;
+    v26 = completionCopy;
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
@@ -384,7 +384,7 @@ void __61__MPCPlaybackAccountManager__setNeedsRefreshDueToMissingBag___block_inv
       _os_log_impl(&dword_1C5C61000, v8, OS_LOG_TYPE_DEFAULT, "[AccountManager] - Manageable user identities: %{public}@", buf, 0xCu);
     }
 
-    v9 = [MEMORY[0x1E69E4680] activeAccount];
+    activeAccount = [MEMORY[0x1E69E4680] activeAccount];
     v42 = 0u;
     v43 = 0u;
     v44 = 0u;
@@ -405,8 +405,8 @@ void __61__MPCPlaybackAccountManager__setNeedsRefreshDueToMissingBag___block_inv
           }
 
           v15 = *(*(&v42 + 1) + 8 * i);
-          v16 = v9;
-          v17 = v4;
+          v16 = activeAccount;
+          v17 = defaultIdentityStore;
           v18 = v17;
           if (v15 == v16)
           {
@@ -415,7 +415,7 @@ void __61__MPCPlaybackAccountManager__setNeedsRefreshDueToMissingBag___block_inv
             goto LABEL_22;
           }
 
-          if (v9 && v15)
+          if (activeAccount && v15)
           {
             v19 = [v15 isEqualToIdentity:v16 inStore:v17];
 
@@ -441,25 +441,25 @@ void __61__MPCPlaybackAccountManager__setNeedsRefreshDueToMissingBag___block_inv
       }
     }
 
-    v20 = [MEMORY[0x1E69E4680] activeAccount];
-    v5 = [v10 arrayByAddingObject:v20];
+    activeAccount2 = [MEMORY[0x1E69E4680] activeAccount];
+    v5 = [v10 arrayByAddingObject:activeAccount2];
     v15 = v10;
-    v10 = v20;
+    v10 = activeAccount2;
 LABEL_22:
 
 LABEL_23:
-    v3 = v26;
+    completionCopy = v26;
 
     if (MSVDeviceSupportsDelegatedIdentities())
     {
       v21 = dispatch_group_create();
-      v22 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       dispatch_group_enter(v21);
       v34[0] = MEMORY[0x1E69E9820];
       v34[1] = 3221225472;
       v34[2] = __64__MPCPlaybackAccountManager__enumerateIdentitiesWithCompletion___block_invoke_2;
       v34[3] = &unk_1E82317C0;
-      v35 = v22;
+      v35 = array;
       v31[0] = MEMORY[0x1E69E9820];
       v31[1] = 3221225472;
       v31[2] = __64__MPCPlaybackAccountManager__enumerateIdentitiesWithCompletion___block_invoke_3;
@@ -468,7 +468,7 @@ LABEL_23:
       v32 = v23;
       v33 = v21;
       v24 = v21;
-      [v4 enumerateDelegateTokensWithType:1 usingBlock:v34 completionHandler:v31];
+      [defaultIdentityStore enumerateDelegateTokensWithType:1 usingBlock:v34 completionHandler:v31];
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __64__MPCPlaybackAccountManager__enumerateIdentitiesWithCompletion___block_invoke_226;
@@ -519,14 +519,14 @@ void __64__MPCPlaybackAccountManager__enumerateIdentitiesWithCompletion___block_
   dispatch_group_leave(*(a1 + 40));
 }
 
-- (void)_buildAccountFromDelegatedIdentity:(id)a3 completion:(id)a4
+- (void)_buildAccountFromDelegatedIdentity:(id)identity completion:(id)completion
 {
   v68 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = [MEMORY[0x1E69E4688] defaultIdentityStore];
+  identityCopy = identity;
+  completionCopy = completion;
+  defaultIdentityStore = [MEMORY[0x1E69E4688] defaultIdentityStore];
   v64 = 0;
-  v10 = [v9 DSIDForUserIdentity:v7 outError:&v64];
+  v10 = [defaultIdentityStore DSIDForUserIdentity:identityCopy outError:&v64];
   v43 = v64;
   quot = [v10 longLongValue];
   v12 = quot;
@@ -573,17 +573,17 @@ void __64__MPCPlaybackAccountManager__enumerateIdentitiesWithCompletion___block_
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      *&buf[4] = v7;
+      *&buf[4] = identityCopy;
       _os_log_impl(&dword_1C5C61000, v17, OS_LOG_TYPE_ERROR, "[AccountManager] Unable to get DSID for delegated identity: %{public}@", buf, 0xCu);
     }
 
-    v8[2](v8, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
-  v18 = [MEMORY[0x1E69E4688] defaultIdentityStore];
+  defaultIdentityStore2 = [MEMORY[0x1E69E4688] defaultIdentityStore];
   v19 = dispatch_group_create();
   v63 = 0;
-  v42 = [v18 getPropertiesForUserIdentity:v7 error:&v63];
+  v42 = [defaultIdentityStore2 getPropertiesForUserIdentity:identityCopy error:&v63];
   v41 = v63;
   if (v41)
   {
@@ -591,14 +591,14 @@ void __64__MPCPlaybackAccountManager__enumerateIdentitiesWithCompletion___block_
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      *&buf[4] = v7;
+      *&buf[4] = identityCopy;
       *&buf[12] = 2114;
       *&buf[14] = v41;
       _os_log_impl(&dword_1C5C61000, v20, OS_LOG_TYPE_ERROR, "[AccountManager] Unable to get properties for delegated identity: %{public}@ error:%{public}@", buf, 0x16u);
     }
   }
 
-  v21 = [v42 storefrontIdentifier];
+  storefrontIdentifier = [v42 storefrontIdentifier];
   os_unfair_lock_lock(&self->_lock);
   v22 = self->_initialAccountGroup == 0;
   os_unfair_lock_unlock(&self->_lock);
@@ -607,10 +607,10 @@ void __64__MPCPlaybackAccountManager__enumerateIdentitiesWithCompletion___block_
   v59[1] = 3221225472;
   v59[2] = __75__MPCPlaybackAccountManager__buildAccountFromDelegatedIdentity_completion___block_invoke;
   v59[3] = &unk_1E8231798;
-  v24 = v18;
+  v24 = defaultIdentityStore2;
   v60 = v24;
   v62 = v22;
-  v25 = v7;
+  v25 = identityCopy;
   v61 = v25;
   v26 = [v23 initWithBlock:v59];
   dispatch_group_enter(v19);
@@ -632,7 +632,7 @@ void __64__MPCPlaybackAccountManager__enumerateIdentitiesWithCompletion___block_
   v29 = v19;
   v57 = v29;
   v30 = [v27 initWithTimeout:v55 interruptionHandler:2.0];
-  v31 = [MEMORY[0x1E69E4658] sharedBagProvider];
+  mEMORY[0x1E69E4658] = [MEMORY[0x1E69E4658] sharedBagProvider];
   v50[0] = MEMORY[0x1E69E9820];
   v50[1] = 3221225472;
   v50[2] = __75__MPCPlaybackAccountManager__buildAccountFromDelegatedIdentity_completion___block_invoke_221;
@@ -644,7 +644,7 @@ void __64__MPCPlaybackAccountManager__enumerateIdentitiesWithCompletion___block_
   v52 = v33;
   v34 = v29;
   v53 = v34;
-  [v31 getBagForRequestContext:v26 withCompletionHandler:v50];
+  [mEMORY[0x1E69E4658] getBagForRequestContext:v26 withCompletionHandler:v50];
 
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -652,11 +652,11 @@ void __64__MPCPlaybackAccountManager__enumerateIdentitiesWithCompletion___block_
   block[3] = &unk_1E82366A8;
   v45 = v32;
   v46 = v40;
-  v48 = v8;
+  v48 = completionCopy;
   v49 = buf;
-  v47 = v21;
-  v35 = v8;
-  v36 = v21;
+  v47 = storefrontIdentifier;
+  v35 = completionCopy;
+  v36 = storefrontIdentifier;
   v37 = v40;
   v38 = v32;
   dispatch_group_notify(v34, MEMORY[0x1E69E96A0], block);
@@ -759,14 +759,14 @@ void __75__MPCPlaybackAccountManager__buildAccountFromDelegatedIdentity_completi
   (*(*(a1 + 56) + 16))();
 }
 
-- (void)_buildAccountFromLocalIdentity:(id)a3 completion:(id)a4
+- (void)_buildAccountFromLocalIdentity:(id)identity completion:(id)completion
 {
   v132 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x1E69E4688] defaultIdentityStore];
+  identityCopy = identity;
+  completionCopy = completion;
+  defaultIdentityStore = [MEMORY[0x1E69E4688] defaultIdentityStore];
   v128 = 0;
-  v8 = [v7 DSIDForUserIdentity:v5 outError:&v128];
+  v8 = [defaultIdentityStore DSIDForUserIdentity:identityCopy outError:&v128];
   v85 = v128;
   quot = [v8 longLongValue];
   v10 = quot;
@@ -813,13 +813,13 @@ void __75__MPCPlaybackAccountManager__buildAccountFromDelegatedIdentity_completi
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      *&buf[4] = v5;
+      *&buf[4] = identityCopy;
       *&buf[12] = 2114;
       *&buf[14] = v85;
       _os_log_impl(&dword_1C5C61000, v15, OS_LOG_TYPE_ERROR, "[AccountManager] Unable to get DSID for identity: %{public}@ error: %{public}@", buf, 0x16u);
     }
 
-    v6[2](v6, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
   else
@@ -829,25 +829,25 @@ void __75__MPCPlaybackAccountManager__buildAccountFromDelegatedIdentity_completi
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      *&buf[4] = v5;
+      *&buf[4] = identityCopy;
       *&buf[12] = 2114;
       *&buf[14] = v81;
       _os_log_impl(&dword_1C5C61000, v16, OS_LOG_TYPE_DEFAULT, "[AccountManager] - DSID found for %{public}@ [%{public}@]", buf, 0x16u);
     }
 
-    v17 = [MEMORY[0x1E69E4680] activeAccount];
+    activeAccount = [MEMORY[0x1E69E4680] activeAccount];
     v127 = 0;
-    v18 = [v7 DSIDForUserIdentity:v17 outError:&v127];
+    v18 = [defaultIdentityStore DSIDForUserIdentity:activeAccount outError:&v127];
     v82 = v127;
-    v19 = [v18 longLongValue];
-    v20 = v19;
-    if (v19)
+    longLongValue = [v18 longLongValue];
+    v20 = longLongValue;
+    if (longLongValue)
     {
       v21 = v130 + 1;
       do
       {
-        v22 = lldiv(v19, 10);
-        v19 = v22.quot;
+        v22 = lldiv(longLongValue, 10);
+        longLongValue = v22.quot;
         if (v22.rem >= 0)
         {
           LOBYTE(v23) = v22.rem;
@@ -888,27 +888,27 @@ void __75__MPCPlaybackAccountManager__buildAccountFromDelegatedIdentity_completi
         _os_log_impl(&dword_1C5C61000, v25, OS_LOG_TYPE_ERROR, "[AccountManager] Unable to get DSID for active identity error: %{public}@", buf, 0xCu);
       }
 
-      v6[2](v6, 0);
+      completionCopy[2](completionCopy, 0);
     }
 
     else
     {
-      v26 = [MEMORY[0x1E69E4680] defaultMediaIdentity];
+      defaultMediaIdentity = [MEMORY[0x1E69E4680] defaultMediaIdentity];
       v126 = 0;
-      v76 = [v7 DSIDForUserIdentity:v26 outError:&v126];
+      v76 = [defaultIdentityStore DSIDForUserIdentity:defaultMediaIdentity outError:&v126];
       v82 = v126;
 
       if (v76)
       {
-        v27 = [v76 longLongValue];
-        v28 = v27;
-        if (v27)
+        longLongValue2 = [v76 longLongValue];
+        v28 = longLongValue2;
+        if (longLongValue2)
         {
           v29 = v130 + 1;
           do
           {
-            v30 = lldiv(v27, 10);
-            v27 = v30.quot;
+            v30 = lldiv(longLongValue2, 10);
+            longLongValue2 = v30.quot;
             if (v30.rem >= 0)
             {
               LOBYTE(v31) = v30.rem;
@@ -948,11 +948,11 @@ void __75__MPCPlaybackAccountManager__buildAccountFromDelegatedIdentity_completi
       v33 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
       if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
       {
-        v34 = [v5 DSID];
-        v35 = [v34 stringValue];
-        v36 = MPCHashedDSIDFromDSID(v35);
+        dSID = [identityCopy DSID];
+        stringValue = [dSID stringValue];
+        v36 = MPCHashedDSIDFromDSID(stringValue);
         *buf = 138543618;
-        *&buf[4] = v5;
+        *&buf[4] = identityCopy;
         *&buf[12] = 2114;
         *&buf[14] = v36;
         _os_log_impl(&dword_1C5C61000, v33, OS_LOG_TYPE_DEFAULT, "[AccountManager] - DSID found for %{public}@ [%{public}@]", buf, 0x16u);
@@ -960,7 +960,7 @@ void __75__MPCPlaybackAccountManager__buildAccountFromDelegatedIdentity_completi
 
       v37 = dispatch_group_create();
       v125 = 0;
-      v78 = [v7 getPropertiesForUserIdentity:v5 error:&v125];
+      v78 = [defaultIdentityStore getPropertiesForUserIdentity:identityCopy error:&v125];
       v73 = v125;
       if (v73)
       {
@@ -968,35 +968,35 @@ void __75__MPCPlaybackAccountManager__buildAccountFromDelegatedIdentity_completi
         if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
         {
           *buf = 138543618;
-          *&buf[4] = v5;
+          *&buf[4] = identityCopy;
           *&buf[12] = 2114;
           *&buf[14] = v73;
           _os_log_impl(&dword_1C5C61000, v38, OS_LOG_TYPE_ERROR, "[AccountManager] Unable to get properties for identity: %{public}@ error: %{public}@", buf, 0x16u);
         }
       }
 
-      v39 = [v78 privateListeningEnabled];
-      v75 = [v39 BOOLValue];
+      privateListeningEnabled = [v78 privateListeningEnabled];
+      bOOLValue = [privateListeningEnabled BOOLValue];
 
       if ([MEMORY[0x1E6970538] isCurrentDeviceValidHomeAccessory])
       {
         v40 = MEMORY[0x1E6970548];
-        v41 = [v78 homeUserIdentifiers];
-        v42 = [v40 userMonitorWithHomeIdentifiers:v41];
+        homeUserIdentifiers = [v78 homeUserIdentifiers];
+        v42 = [v40 userMonitorWithHomeIdentifiers:homeUserIdentifiers];
 
         if (v42)
         {
-          v75 = [v42 isPrivateListeningEnabledForCurrentAccessory];
+          bOOLValue = [v42 isPrivateListeningEnabledForCurrentAccessory];
         }
 
         else
         {
-          v75 = *MEMORY[0x1E696F8D8];
+          bOOLValue = *MEMORY[0x1E696F8D8];
         }
       }
 
-      v71 = [v78 isActiveLocker];
-      v69 = [v78 storefrontIdentifier];
+      isActiveLocker = [v78 isActiveLocker];
+      storefrontIdentifier = [v78 storefrontIdentifier];
       os_unfair_lock_lock(&self->_lock);
       initialAccountGroup = self->_initialAccountGroup;
       v44 = [(NSDictionary *)self->_accounts objectForKeyedSubscript:v81];
@@ -1006,8 +1006,8 @@ void __75__MPCPlaybackAccountManager__buildAccountFromDelegatedIdentity_completi
       v120[1] = 3221225472;
       v120[2] = __71__MPCPlaybackAccountManager__buildAccountFromLocalIdentity_completion___block_invoke;
       v120[3] = &unk_1E82316F8;
-      v121 = v7;
-      v74 = v5;
+      v121 = defaultIdentityStore;
+      v74 = identityCopy;
       v122 = v74;
       v124 = initialAccountGroup == 0;
       v46 = v44;
@@ -1028,7 +1028,7 @@ void __75__MPCPlaybackAccountManager__buildAccountFromDelegatedIdentity_completi
       *&buf[16] = 0x3032000000;
       v130[0] = __Block_byref_object_copy__664;
       v130[1] = __Block_byref_object_dispose__665;
-      v131 = [v46 subscriptionStatus];
+      subscriptionStatus = [v46 subscriptionStatus];
       if ((ICCurrentApplicationIsSystemApp() & 1) == 0)
       {
         v48 = v37;
@@ -1051,7 +1051,7 @@ void __75__MPCPlaybackAccountManager__buildAccountFromDelegatedIdentity_completi
         v53 = v37;
         v118 = v53;
         v54 = [v50 initWithTimeout:v115 interruptionHandler:v47];
-        v55 = [MEMORY[0x1E69E44C8] sharedStatusController];
+        mEMORY[0x1E69E44C8] = [MEMORY[0x1E69E44C8] sharedStatusController];
         v110[0] = MEMORY[0x1E69E9820];
         v110[1] = 3221225472;
         v110[2] = __71__MPCPlaybackAccountManager__buildAccountFromLocalIdentity_completion___block_invoke_211;
@@ -1061,7 +1061,7 @@ void __75__MPCPlaybackAccountManager__buildAccountFromDelegatedIdentity_completi
         v56 = v54;
         v112 = v56;
         v113 = v53;
-        [v55 performSubscriptionStatusRequest:v52 withCompletionHandler:v110];
+        [mEMORY[0x1E69E44C8] performSubscriptionStatusRequest:v52 withCompletionHandler:v110];
 
         v37 = v48;
       }
@@ -1085,7 +1085,7 @@ void __75__MPCPlaybackAccountManager__buildAccountFromDelegatedIdentity_completi
       v59 = v37;
       v106 = v59;
       v60 = [v57 initWithTimeout:v104 interruptionHandler:v47];
-      v61 = [MEMORY[0x1E69E4658] sharedBagProvider];
+      mEMORY[0x1E69E4658] = [MEMORY[0x1E69E4658] sharedBagProvider];
       v99[0] = MEMORY[0x1E69E9820];
       v99[1] = 3221225472;
       v99[2] = __71__MPCPlaybackAccountManager__buildAccountFromLocalIdentity_completion___block_invoke_218;
@@ -1097,7 +1097,7 @@ void __75__MPCPlaybackAccountManager__buildAccountFromDelegatedIdentity_completi
       v101 = v63;
       v64 = v59;
       v102 = v64;
-      [v61 getBagForRequestContext:v77 withCompletionHandler:v99];
+      [mEMORY[0x1E69E4658] getBagForRequestContext:v77 withCompletionHandler:v99];
 
       v65 = dispatch_get_global_queue(25, 0);
       block[0] = MEMORY[0x1E69E9820];
@@ -1109,13 +1109,13 @@ void __75__MPCPlaybackAccountManager__buildAccountFromDelegatedIdentity_completi
       v88 = v79;
       v89 = v84;
       v90 = v72;
-      v97 = v71;
-      v98 = v75;
+      v97 = isActiveLocker;
+      v98 = bOOLValue;
       v91 = v81;
       v92 = v70;
       v96 = v108;
       v93 = v46;
-      v94 = v6;
+      v94 = completionCopy;
       v66 = v46;
       v67 = v70;
       v68 = v72;
@@ -1322,13 +1322,13 @@ void __71__MPCPlaybackAccountManager__buildAccountFromLocalIdentity_completion__
   dispatch_async(MEMORY[0x1E69E96A0], v14);
 }
 
-- (void)_updateAccountsWithAttemptCount:(int64_t)a3 completion:(id)a4
+- (void)_updateAccountsWithAttemptCount:(int64_t)count completion:(id)completion
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  if (v6)
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v7 = v6;
+    v7 = completionCopy;
   }
 
   else
@@ -1336,14 +1336,14 @@ void __71__MPCPlaybackAccountManager__buildAccountFromLocalIdentity_completion__
     v7 = &__block_literal_global_185;
   }
 
-  if (a3 < 4)
+  if (count < 4)
   {
     v9 = os_log_create("com.apple.amp.mediaplaybackcore", "Analytics");
     v10 = os_signpost_id_generate(v9);
 
-    v11 = [(MPCPlaybackAccountManager *)self hasLoadedInitialAccounts];
-    v12 = !v11;
-    if (!v11)
+    hasLoadedInitialAccounts = [(MPCPlaybackAccountManager *)self hasLoadedInitialAccounts];
+    v12 = !hasLoadedInitialAccounts;
+    if (!hasLoadedInitialAccounts)
     {
       v13 = os_log_create("com.apple.amp.mediaplaybackcore", "Analytics");
       v14 = v13;
@@ -1359,7 +1359,7 @@ void __71__MPCPlaybackAccountManager__buildAccountFromLocalIdentity_completion__
     v15[2] = __72__MPCPlaybackAccountManager__updateAccountsWithAttemptCount_completion___block_invoke_186;
     v15[3] = &unk_1E82316D0;
     v15[4] = self;
-    v17 = a3;
+    countCopy = count;
     v18 = v10;
     v19 = v12;
     v16 = v7;
@@ -1372,7 +1372,7 @@ void __71__MPCPlaybackAccountManager__buildAccountFromLocalIdentity_completion__
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
       *buf = 134349056;
-      v21 = a3;
+      countCopy2 = count;
       _os_log_impl(&dword_1C5C61000, v8, OS_LOG_TYPE_ERROR, "[AccountManager] - Dropped account refresh because too many (%{public}ld) attempts have been made", buf, 0xCu);
     }
 
@@ -1640,9 +1640,9 @@ BOOL __72__MPCPlaybackAccountManager__updateAccountsWithAttemptCount_completion_
   return v4;
 }
 
-- (void)environmentMonitorDidChangeNetworkReachability:(id)a3
+- (void)environmentMonitorDidChangeNetworkReachability:(id)reachability
 {
-  if ([a3 isRemoteServerReachable])
+  if ([reachability isRemoteServerReachable])
   {
     os_unfair_lock_lock(&self->_lock);
     needsRefreshDueToMissingBag = self->_needsRefreshDueToMissingBag;
@@ -1661,81 +1661,81 @@ BOOL __72__MPCPlaybackAccountManager__updateAccountsWithAttemptCount_completion_
   }
 }
 
-- (id)musicPlaybackRequestEnvironmentForAccount:(id)a3
+- (id)musicPlaybackRequestEnvironmentForAccount:(id)account
 {
-  v5 = a3;
-  if (!v5)
+  accountCopy = account;
+  if (!accountCopy)
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"MPCPlaybackAccountManager.m" lineNumber:413 description:{@"Invalid parameter not satisfying: %@", @"account"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPCPlaybackAccountManager.m" lineNumber:413 description:{@"Invalid parameter not satisfying: %@", @"account"}];
   }
 
-  if ([v5 isDelegated])
+  if ([accountCopy isDelegated])
   {
-    v6 = [(MPCPlaybackAccountManager *)self anyDelegationHostingAccount];
-    v7 = [v6 userIdentity];
-    v8 = v7;
-    if (v7)
+    anyDelegationHostingAccount = [(MPCPlaybackAccountManager *)self anyDelegationHostingAccount];
+    userIdentity = [anyDelegationHostingAccount userIdentity];
+    v8 = userIdentity;
+    if (userIdentity)
     {
-      v9 = v7;
+      defaultMediaIdentity = userIdentity;
     }
 
     else
     {
-      v9 = [MEMORY[0x1E69E4680] defaultMediaIdentity];
+      defaultMediaIdentity = [MEMORY[0x1E69E4680] defaultMediaIdentity];
     }
 
-    v10 = v9;
+    userIdentity3 = defaultMediaIdentity;
 
-    v12 = [MPCPlaybackRequestEnvironment musicRequestWithUserIdentity:v10];
+    v12 = [MPCPlaybackRequestEnvironment musicRequestWithUserIdentity:userIdentity3];
     v11 = [v12 mutableCopy];
 
     v13 = [MPCMutablePlaybackDelegationProperties alloc];
-    v14 = [v5 userIdentity];
-    v15 = [v14 DSID];
-    v16 = -[MPCPlaybackDelegationProperties initWithStoreAccountID:deviceGUID:](v13, "initWithStoreAccountID:deviceGUID:", [v15 longLongValue], @"unknown-guid");
+    userIdentity2 = [accountCopy userIdentity];
+    dSID = [userIdentity2 DSID];
+    v16 = -[MPCPlaybackDelegationProperties initWithStoreAccountID:deviceGUID:](v13, "initWithStoreAccountID:deviceGUID:", [dSID longLongValue], @"unknown-guid");
     [v11 setDelegationProperties:v16];
   }
 
   else
   {
-    v10 = [v5 userIdentity];
-    v11 = [MPCPlaybackRequestEnvironment musicRequestWithUserIdentity:v10];
+    userIdentity3 = [accountCopy userIdentity];
+    v11 = [MPCPlaybackRequestEnvironment musicRequestWithUserIdentity:userIdentity3];
   }
 
   return v11;
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_recursive_lock_lock_with_options();
-  [(NSHashTable *)self->_observers removeObject:v4];
+  [(NSHashTable *)self->_observers removeObject:observerCopy];
 
   os_unfair_recursive_lock_unlock();
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v4 = a3;
-  if (v4)
+  observerCopy = observer;
+  if (observerCopy)
   {
     os_unfair_recursive_lock_lock_with_options();
-    [(NSHashTable *)self->_observers addObject:v4];
+    [(NSHashTable *)self->_observers addObject:observerCopy];
     if ([(MPCPlaybackAccountManager *)self hasLoadedInitialAccounts])
     {
-      v5 = [(MPCPlaybackAccountManager *)self accounts];
+      accounts = [(MPCPlaybackAccountManager *)self accounts];
       os_unfair_recursive_lock_unlock();
-      if (v5)
+      if (accounts)
       {
         block[0] = MEMORY[0x1E69E9820];
         block[1] = 3221225472;
         block[2] = __46__MPCPlaybackAccountManager_registerObserver___block_invoke;
         block[3] = &unk_1E82391C0;
-        v8 = v4;
-        v9 = self;
-        v10 = v5;
-        v6 = v5;
+        v8 = observerCopy;
+        selfCopy = self;
+        v10 = accounts;
+        v6 = accounts;
         dispatch_async(MEMORY[0x1E69E96A0], block);
       }
     }
@@ -1747,20 +1747,20 @@ BOOL __72__MPCPlaybackAccountManager__updateAccountsWithAttemptCount_completion_
   }
 }
 
-- (id)accountForUserIdentity:(id)a3
+- (id)accountForUserIdentity:(id)identity
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identityCopy = identity;
   os_unfair_lock_lock(&self->_lock);
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = [(NSDictionary *)self->_accounts allValues];
-  v6 = [v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  allValues = [(NSDictionary *)self->_accounts allValues];
+  v6 = [allValues countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v6)
   {
-    v18 = self;
+    selfCopy = self;
     v7 = *v20;
     while (2)
     {
@@ -1768,15 +1768,15 @@ BOOL __72__MPCPlaybackAccountManager__updateAccountsWithAttemptCount_completion_
       {
         if (*v20 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allValues);
         }
 
         v9 = *(*(&v19 + 1) + 8 * i);
-        v10 = [v9 userIdentity];
-        v11 = [MEMORY[0x1E69E4688] defaultIdentityStore];
-        v12 = v10;
-        v13 = v4;
-        v14 = v11;
+        userIdentity = [v9 userIdentity];
+        defaultIdentityStore = [MEMORY[0x1E69E4688] defaultIdentityStore];
+        v12 = userIdentity;
+        v13 = identityCopy;
+        v14 = defaultIdentityStore;
         v15 = v14;
         if (v12 == v13)
         {
@@ -1786,7 +1786,7 @@ LABEL_16:
           goto LABEL_17;
         }
 
-        if (v4 && v12)
+        if (identityCopy && v12)
         {
           v16 = [v12 isEqualToIdentity:v13 inStore:v14];
 
@@ -1801,7 +1801,7 @@ LABEL_16:
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v6 = [allValues countByEnumeratingWithState:&v19 objects:v23 count:16];
       if (v6)
       {
         continue;
@@ -1811,7 +1811,7 @@ LABEL_16:
     }
 
 LABEL_17:
-    self = v18;
+    self = selfCopy;
   }
 
   os_unfair_lock_unlock(&self->_lock);
@@ -1819,9 +1819,9 @@ LABEL_17:
   return v6;
 }
 
-- (id)accountForHashedDSID:(id)a3
+- (id)accountForHashedDSID:(id)d
 {
-  v4 = [a3 substringToIndex:7];
+  v4 = [d substringToIndex:7];
   os_unfair_lock_lock(&self->_lock);
   v5 = [(NSDictionary *)self->_accounts objectForKeyedSubscript:v4];
   v6 = [v5 copy];
@@ -1831,9 +1831,9 @@ LABEL_17:
   return v6;
 }
 
-- (id)accountForDSID:(id)a3
+- (id)accountForDSID:(id)d
 {
-  v4 = MPCHashedDSIDFromDSID(a3);
+  v4 = MPCHashedDSIDFromDSID(d);
   v5 = [(MPCPlaybackAccountManager *)self accountForHashedDSID:v4];
 
   return v5;
@@ -1842,10 +1842,10 @@ LABEL_17:
 - (MPCPlaybackAccount)anyDelegationHostingAccount
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = [(MPCPlaybackAccountManager *)self fallbackAccount];
-  if ([v3 hasDelegationCapability])
+  fallbackAccount = [(MPCPlaybackAccountManager *)self fallbackAccount];
+  if ([fallbackAccount hasDelegationCapability])
   {
-    v4 = v3;
+    v4 = fallbackAccount;
   }
 
   else
@@ -1892,20 +1892,20 @@ LABEL_13:
   return v4;
 }
 
-- (void)performAfterLoadingAccounts:(id)a3
+- (void)performAfterLoadingAccounts:(id)accounts
 {
-  v4 = a3;
+  accountsCopy = accounts;
   os_unfair_lock_lock(&self->_lock);
   v5 = self->_initialAccountGroup;
   os_unfair_lock_unlock(&self->_lock);
   if (v5)
   {
-    dispatch_group_notify(self->_initialAccountGroup, MEMORY[0x1E69E96A0], v4);
+    dispatch_group_notify(self->_initialAccountGroup, MEMORY[0x1E69E96A0], accountsCopy);
   }
 
   else
   {
-    v4[2](v4);
+    accountsCopy[2](accountsCopy);
   }
 }
 
@@ -1944,8 +1944,8 @@ LABEL_12:
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E69E4428] sharedMonitor];
-  [v3 unregisterObserver:self];
+  mEMORY[0x1E69E4428] = [MEMORY[0x1E69E4428] sharedMonitor];
+  [mEMORY[0x1E69E4428] unregisterObserver:self];
 
   v4.receiver = self;
   v4.super_class = MPCPlaybackAccountManager;

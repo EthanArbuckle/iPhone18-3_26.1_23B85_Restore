@@ -1,46 +1,46 @@
 @interface TSWPTrackedInsertion
-- (TSWPTrackedInsertion)initWithSelection:(id)a3 string:(id)a4 changeSession:(id)a5;
+- (TSWPTrackedInsertion)initWithSelection:(id)selection string:(id)string changeSession:(id)session;
 - (_NSRange)insertedRange;
 - (int64_t)delta;
 - (void)dealloc;
-- (void)performWithStorage:(id)a3 delta:(int64_t)a4 undoTransaction:(void *)a5 replaceBlock:(id)a6;
+- (void)performWithStorage:(id)storage delta:(int64_t)delta undoTransaction:(void *)transaction replaceBlock:(id)block;
 @end
 
 @implementation TSWPTrackedInsertion
 
-- (TSWPTrackedInsertion)initWithSelection:(id)a3 string:(id)a4 changeSession:(id)a5
+- (TSWPTrackedInsertion)initWithSelection:(id)selection string:(id)string changeSession:(id)session
 {
   v14.receiver = self;
   v14.super_class = TSWPTrackedInsertion;
   v8 = [(TSWPTrackedInsertion *)&v14 init];
   if (v8)
   {
-    if ([a4 length])
+    if ([string length])
     {
-      if (a3)
+      if (selection)
       {
 LABEL_4:
-        v8->_selection = a3;
-        v8->_string = a4;
-        v8->_changeSession = a5;
+        v8->_selection = selection;
+        v8->_string = string;
+        v8->_changeSession = session;
         return v8;
       }
     }
 
     else
     {
-      v10 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPTrackedInsertion initWithSelection:string:changeSession:]"];
-      [v10 handleFailureInFunction:v11 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPTrackedInsertion.mm"), 25, @"Can't track an insertion over an empty range"}];
-      if (a3)
+      [currentHandler handleFailureInFunction:v11 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPTrackedInsertion.mm"), 25, @"Can't track an insertion over an empty range"}];
+      if (selection)
       {
         goto LABEL_4;
       }
     }
 
-    v12 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
     v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPTrackedInsertion initWithSelection:string:changeSession:]"];
-    [v12 handleFailureInFunction:v13 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPTrackedInsertion.mm"), 26, @"invalid nil value for '%s'", "selection"}];
+    [currentHandler2 handleFailureInFunction:v13 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPTrackedInsertion.mm"), 26, @"invalid nil value for '%s'", "selection"}];
     goto LABEL_4;
   }
 
@@ -54,20 +54,20 @@ LABEL_4:
   [(TSWPTrackedInsertion *)&v3 dealloc];
 }
 
-- (void)performWithStorage:(id)a3 delta:(int64_t)a4 undoTransaction:(void *)a5 replaceBlock:(id)a6
+- (void)performWithStorage:(id)storage delta:(int64_t)delta undoTransaction:(void *)transaction replaceBlock:(id)block
 {
-  if (a4)
+  if (delta)
   {
     selection = self->_selection;
-    v12 = [(TSWPSelection *)selection range];
+    range = [(TSWPSelection *)selection range];
     [(TSWPSelection *)self->_selection range];
-    v14 = [(TSWPSelection *)selection copyWithNewRange:v12 + a4, v13];
+    v14 = [(TSWPSelection *)selection copyWithNewRange:range + delta, v13];
 
     self->_selection = v14;
   }
 
-  v15 = [a3 insertionChangesTable];
-  v16 = [(TSWPSelection *)self->_selection range];
+  insertionChangesTable = [storage insertionChangesTable];
+  range2 = [(TSWPSelection *)self->_selection range];
   if (v17)
   {
     v18 = 1;
@@ -75,16 +75,16 @@ LABEL_4:
 
   else
   {
-    v18 = v15 == 0;
+    v18 = insertionChangesTable == 0;
   }
 
   if (!v18)
   {
-    [a3 range];
+    [storage range];
     v43.location = NSExpandedRange();
     v43.length = v23;
-    TSWPAttributeArray::begin(v15, &v43, &v41);
-    TSWPAttributeArray::end(v15, &v43, &v39);
+    TSWPAttributeArray::begin(insertionChangesTable, &v43, &v41);
+    TSWPAttributeArray::end(insertionChangesTable, &v43, &v39);
     for (i = v42; ; i = ++v42)
     {
       if (i == v40)
@@ -96,21 +96,21 @@ LABEL_4:
       {
         v25 = TSWPAttributeArray::rangeForAttributeIndex(v41, v42);
         v27 = v25 + v26;
-        if (v16 > v25 || v16 < v27)
+        if (range2 > v25 || range2 < v27)
         {
           break;
         }
       }
     }
 
-    if (v27 == v16)
+    if (v27 == range2)
     {
       v35 = 1;
     }
 
     else
     {
-      if (v25 != v16)
+      if (v25 != range2)
       {
 LABEL_40:
         v19 = 1;
@@ -120,20 +120,20 @@ LABEL_40:
       v35 = 2;
     }
 
-    TSWPChangeAttributeArray::setInsertionBehavior(v15, v35);
+    TSWPChangeAttributeArray::setInsertionBehavior(insertionChangesTable, v35);
     goto LABEL_40;
   }
 
 LABEL_8:
   v19 = 0;
 LABEL_9:
-  (*(a6 + 2))(a6, self->_selection, self->_string);
-  v20 = [(TSWPTrackedInsertion *)self insertedRange];
-  [a3 p_handleChangeSplittingForInsertedRange:v20 changeSession:v21 undoTransaction:{self->_changeSession, a5}];
+  (*(block + 2))(block, self->_selection, self->_string);
+  insertedRange = [(TSWPTrackedInsertion *)self insertedRange];
+  [storage p_handleChangeSplittingForInsertedRange:insertedRange changeSession:v21 undoTransaction:{self->_changeSession, transaction}];
   if (v19)
   {
-    TSWPChangeAttributeArray::setInsertionBehavior(v15, 0);
-    v22 = *(v15->var4 + 2 * TSWPAttributeArray::effectiveAttributeIndexForCharIndex(v15, v16) + 1);
+    TSWPChangeAttributeArray::setInsertionBehavior(insertionChangesTable, 0);
+    v22 = *(insertionChangesTable->var4 + 2 * TSWPAttributeArray::effectiveAttributeIndexForCharIndex(insertionChangesTable, range2) + 1);
     if (!v22)
     {
       return;
@@ -142,15 +142,15 @@ LABEL_9:
     goto LABEL_32;
   }
 
-  v29 = [(TSWPTrackedInsertion *)self insertedRange];
+  insertedRange2 = [(TSWPTrackedInsertion *)self insertedRange];
   v31 = v30;
-  if (v15)
+  if (insertionChangesTable)
   {
-    [a3 range];
+    [storage range];
     v43.location = NSExpandedRange();
     v43.length = v32;
-    TSWPAttributeArray::begin(v15, &v43, &v41);
-    TSWPAttributeArray::end(v15, &v43, &v39);
+    TSWPAttributeArray::begin(insertionChangesTable, &v43, &v41);
+    TSWPAttributeArray::end(insertionChangesTable, &v43, &v39);
     for (j = v42; j != v40; j = ++v42)
     {
       v34 = *(v41->var4 + 2 * j + 1);
@@ -173,20 +173,20 @@ LABEL_9:
     }
   }
 
-  v37 = -[TSWPChange initWithContext:kind:session:]([TSWPChange alloc], "initWithContext:kind:session:", [a3 context], 1, self->_changeSession);
+  v37 = -[TSWPChange initWithContext:kind:session:]([TSWPChange alloc], "initWithContext:kind:session:", [storage context], 1, self->_changeSession);
   v22 = 0;
 LABEL_31:
-  [a3 applyObject:v37 toCharRange:v29 forKind:v31 dolcContext:15 undoTransaction:{0, a5}];
+  [storage applyObject:v37 toCharRange:insertedRange2 forKind:v31 dolcContext:15 undoTransaction:{0, transaction}];
 
   if (v22)
   {
 LABEL_32:
-    if (a5)
+    if (transaction)
     {
-      if (v15)
+      if (insertionChangesTable)
       {
-        Object = TSWPAttributeArray::findObject(v15, v22, 0);
-        TSWPStorageTransaction::appendToTransaction(a5, 10, 15, Object, [(objc_object *)v22 date]);
+        Object = TSWPAttributeArray::findObject(insertionChangesTable, v22, 0);
+        TSWPStorageTransaction::appendToTransaction(transaction, 10, 15, Object, [(objc_object *)v22 date]);
       }
     }
 
@@ -204,9 +204,9 @@ LABEL_32:
 
 - (_NSRange)insertedRange
 {
-  v3 = [(TSWPSelection *)self->_selection range];
+  range = [(TSWPSelection *)self->_selection range];
   v4 = [(NSString *)self->_string length];
-  v5 = v3;
+  v5 = range;
   result.length = v4;
   result.location = v5;
   return result;

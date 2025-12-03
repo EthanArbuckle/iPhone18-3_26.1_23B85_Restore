@@ -1,7 +1,7 @@
 @interface ReservationLabelReusableView
-- (ReservationLabelReusableView)initWithFrame:(CGRect)a3;
+- (ReservationLabelReusableView)initWithFrame:(CGRect)frame;
 - (void)_updateConstraintsForMargins;
-- (void)setMarginsRequired:(BOOL)a3;
+- (void)setMarginsRequired:(BOOL)required;
 - (void)updateConstraints;
 @end
 
@@ -11,25 +11,25 @@
 {
   if ([(ReservationLabelReusableView *)self isMarginsRequired])
   {
-    v3 = [(ReservationLabelReusableView *)self leadingConstraintWithMargin];
-    v13 = v3;
+    leadingConstraintWithMargin = [(ReservationLabelReusableView *)self leadingConstraintWithMargin];
+    v13 = leadingConstraintWithMargin;
     v4 = [NSArray arrayWithObjects:&v13 count:1];
     [NSLayoutConstraint activateConstraints:v4];
 
-    v5 = [(ReservationLabelReusableView *)self leadingConstraintWithoutMargin];
-    v12 = v5;
+    leadingConstraintWithoutMargin = [(ReservationLabelReusableView *)self leadingConstraintWithoutMargin];
+    v12 = leadingConstraintWithoutMargin;
     v6 = &v12;
   }
 
   else
   {
-    v7 = [(ReservationLabelReusableView *)self leadingConstraintWithoutMargin];
-    v11 = v7;
+    leadingConstraintWithoutMargin2 = [(ReservationLabelReusableView *)self leadingConstraintWithoutMargin];
+    v11 = leadingConstraintWithoutMargin2;
     v8 = [NSArray arrayWithObjects:&v11 count:1];
     [NSLayoutConstraint activateConstraints:v8];
 
-    v5 = [(ReservationLabelReusableView *)self leadingConstraintWithMargin];
-    v10 = v5;
+    leadingConstraintWithoutMargin = [(ReservationLabelReusableView *)self leadingConstraintWithMargin];
+    v10 = leadingConstraintWithoutMargin;
     v6 = &v10;
   }
 
@@ -45,22 +45,22 @@
   [(ReservationLabelReusableView *)&v3 updateConstraints];
 }
 
-- (void)setMarginsRequired:(BOOL)a3
+- (void)setMarginsRequired:(BOOL)required
 {
-  if (self->_marginsRequired != a3)
+  if (self->_marginsRequired != required)
   {
-    self->_marginsRequired = a3;
+    self->_marginsRequired = required;
     [(ReservationLabelReusableView *)self _updateConstraintsForMargins];
 
     [(ReservationLabelReusableView *)self setNeedsLayout];
   }
 }
 
-- (ReservationLabelReusableView)initWithFrame:(CGRect)a3
+- (ReservationLabelReusableView)initWithFrame:(CGRect)frame
 {
   v26.receiver = self;
   v26.super_class = ReservationLabelReusableView;
-  v3 = [(ReservationLabelReusableView *)&v26 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(ReservationLabelReusableView *)&v26 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -75,27 +75,27 @@
 
     [(ReservationLabelReusableView *)v4 addSubview:v5];
     [(UILabel *)v5 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v8 = [(UILabel *)v5 leadingAnchor];
-    v9 = [(ReservationLabelReusableView *)v4 leadingAnchor];
-    v10 = [v8 constraintEqualToAnchor:v9];
+    leadingAnchor = [(UILabel *)v5 leadingAnchor];
+    leadingAnchor2 = [(ReservationLabelReusableView *)v4 leadingAnchor];
+    v10 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     leadingConstraintWithoutMargin = v4->_leadingConstraintWithoutMargin;
     v4->_leadingConstraintWithoutMargin = v10;
 
-    v12 = [(UILabel *)v5 leadingAnchor];
-    v13 = [(ReservationLabelReusableView *)v4 layoutMarginsGuide];
-    v14 = [v13 leadingAnchor];
-    v15 = [v12 constraintEqualToAnchor:v14];
+    leadingAnchor3 = [(UILabel *)v5 leadingAnchor];
+    layoutMarginsGuide = [(ReservationLabelReusableView *)v4 layoutMarginsGuide];
+    leadingAnchor4 = [layoutMarginsGuide leadingAnchor];
+    v15 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     leadingConstraintWithMargin = v4->_leadingConstraintWithMargin;
     v4->_leadingConstraintWithMargin = v15;
 
     v27[0] = v4->_leadingConstraintWithoutMargin;
-    v17 = [(UILabel *)v5 trailingAnchor];
-    v18 = [(ReservationLabelReusableView *)v4 trailingAnchor];
-    v19 = [v17 constraintEqualToAnchor:v18];
+    trailingAnchor = [(UILabel *)v5 trailingAnchor];
+    trailingAnchor2 = [(ReservationLabelReusableView *)v4 trailingAnchor];
+    v19 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v27[1] = v19;
-    v20 = [(UILabel *)v5 topAnchor];
-    v21 = [(ReservationLabelReusableView *)v4 topAnchor];
-    v22 = [v20 constraintEqualToAnchor:v21 constant:10.0];
+    topAnchor = [(UILabel *)v5 topAnchor];
+    topAnchor2 = [(ReservationLabelReusableView *)v4 topAnchor];
+    v22 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:10.0];
     v27[2] = v22;
     v23 = [NSArray arrayWithObjects:v27 count:3];
     [(ReservationLabelReusableView *)v4 addConstraints:v23];

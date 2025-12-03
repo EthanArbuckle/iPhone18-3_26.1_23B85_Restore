@@ -6,7 +6,7 @@
 
 - (id)loginDisplayString
 {
-  v1 = [a1 login];
+  login = [self login];
   v2 = MEMORY[0x245D4D030]();
 
   if ([v2 _appearsToBePhoneNumber])

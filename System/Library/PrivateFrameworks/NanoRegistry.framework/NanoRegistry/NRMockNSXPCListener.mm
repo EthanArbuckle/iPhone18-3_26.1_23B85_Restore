@@ -1,5 +1,5 @@
 @interface NRMockNSXPCListener
-- (NRMockNSXPCListener)initWithMachServiceName:(id)a3;
+- (NRMockNSXPCListener)initWithMachServiceName:(id)name;
 - (void)dealloc;
 - (void)invalidate;
 - (void)resume;
@@ -8,18 +8,18 @@
 
 @implementation NRMockNSXPCListener
 
-- (NRMockNSXPCListener)initWithMachServiceName:(id)a3
+- (NRMockNSXPCListener)initWithMachServiceName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   v20.receiver = self;
   v20.super_class = NRMockNSXPCListener;
   v6 = [(NRMockNSXPCListener *)&v20 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_name, a3);
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.nanoregistry.mockxpclistener.%@", v5];
-    v9 = dispatch_queue_create([v8 UTF8String], 0);
+    objc_storeStrong(&v6->_name, name);
+    nameCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.nanoregistry.mockxpclistener.%@", nameCopy];
+    v9 = dispatch_queue_create([nameCopy UTF8String], 0);
     queue = v7->_queue;
     v7->_queue = v9;
 
@@ -41,7 +41,7 @@
     block[2] = __47__NRMockNSXPCListener_initWithMachServiceName___block_invoke;
     block[3] = &unk_1E86DAEE8;
     v17 = v11;
-    v18 = v5;
+    v18 = nameCopy;
     v19 = v7;
     v14 = v12;
     dispatch_sync(v13, block);

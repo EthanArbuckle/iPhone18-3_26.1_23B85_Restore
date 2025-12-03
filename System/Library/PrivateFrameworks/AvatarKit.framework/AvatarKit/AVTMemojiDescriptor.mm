@@ -1,27 +1,27 @@
 @interface AVTMemojiDescriptor
-+ (id)colorPresetFromColorData:(id)a3 forCategory:(int64_t)a4 colorIndex:(unint64_t)a5 version:(unsigned __int16)a6 didFail:(BOOL *)a7 error:(id *)a8;
-+ (id)presetsDictionaryFromRecipe:(id)a3 didFail:(BOOL *)a4 error:(id *)a5;
++ (id)colorPresetFromColorData:(id)data forCategory:(int64_t)category colorIndex:(unint64_t)index version:(unsigned __int16)version didFail:(BOOL *)fail error:(id *)error;
++ (id)presetsDictionaryFromRecipe:(id)recipe didFail:(BOOL *)fail error:(id *)error;
 + (id)randomDescriptor;
-- (AVTMemojiDescriptor)initWithCoder:(id)a3;
-- (AVTMemojiDescriptor)initWithMemoji:(id)a3;
-- (id)colorPresetForCategory:(int64_t)a3 colorIndex:(unint64_t)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (AVTMemojiDescriptor)initWithCoder:(id)coder;
+- (AVTMemojiDescriptor)initWithMemoji:(id)memoji;
+- (id)colorPresetForCategory:(int64_t)category colorIndex:(unint64_t)index;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
 - (id)description;
-- (id)presetIdentifierForCategory:(int64_t)a3;
-- (void)_decode:(id)a3 isResettingToDefault:(BOOL)a4 error:(id *)a5;
-- (void)applyToMemoji:(id)a3;
-- (void)encodeInDictionaryRepresentation:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setColorPreset:(id)a3 forCategory:(int64_t)a4 colorIndex:(unint64_t)a5;
-- (void)setPresetIdentifier:(id)a3 forCategory:(int64_t)a4;
+- (id)presetIdentifierForCategory:(int64_t)category;
+- (void)_decode:(id)_decode isResettingToDefault:(BOOL)default error:(id *)error;
+- (void)applyToMemoji:(id)memoji;
+- (void)encodeInDictionaryRepresentation:(id)representation;
+- (void)encodeWithCoder:(id)coder;
+- (void)setColorPreset:(id)preset forCategory:(int64_t)category colorIndex:(unint64_t)index;
+- (void)setPresetIdentifier:(id)identifier forCategory:(int64_t)category;
 @end
 
 @implementation AVTMemojiDescriptor
 
-- (AVTMemojiDescriptor)initWithMemoji:(id)a3
+- (AVTMemojiDescriptor)initWithMemoji:(id)memoji
 {
-  v4 = a3;
+  memojiCopy = memoji;
   v16.receiver = self;
   v16.super_class = AVTMemojiDescriptor;
   v5 = [(AVTMemojiDescriptor *)&v16 init];
@@ -32,14 +32,14 @@
     v8 = v5;
     do
     {
-      v9 = [v4 presetForCategory:v7];
-      v10 = [v9 identifier];
+      v9 = [memojiCopy presetForCategory:v7];
+      identifier = [v9 identifier];
       v11 = v6->_presetIdentifiers[v7];
-      v6->_presetIdentifiers[v7] = v10;
+      v6->_presetIdentifiers[v7] = identifier;
 
       for (i = 0; i != 3; ++i)
       {
-        v13 = [v4 colorPresetForCategory:v7 colorIndex:i];
+        v13 = [memojiCopy colorPresetForCategory:v7 colorIndex:i];
         v14 = v8->_colorPresets[0][i];
         v8->_colorPresets[0][i] = v13;
       }
@@ -56,7 +56,7 @@
 
 + (id)randomDescriptor
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __39__AVTMemojiDescriptor_randomDescriptor__block_invoke;
@@ -82,9 +82,9 @@ void __39__AVTMemojiDescriptor_randomDescriptor__block_invoke(uint64_t a1, void 
   [v4 setPresetIdentifier:v5 forCategory:a3];
 }
 
-- (void)applyToMemoji:(id)a3
+- (void)applyToMemoji:(id)memoji
 {
-  v10 = a3;
+  memojiCopy = memoji;
   v4 = 0;
   presetIdentifiers = self->_presetIdentifiers;
   do
@@ -93,12 +93,12 @@ void __39__AVTMemojiDescriptor_randomDescriptor__block_invoke(uint64_t a1, void 
     if (v6)
     {
       v7 = [AVTPreset presetWithCategory:v4 identifier:v6];
-      [v10 setPreset:v7 forCategory:v4 animated:0];
+      [memojiCopy setPreset:v7 forCategory:v4 animated:0];
     }
 
     else
     {
-      [v10 setPreset:0 forCategory:v4 animated:0];
+      [memojiCopy setPreset:0 forCategory:v4 animated:0];
     }
 
     for (i = 0; i != 3; ++i)
@@ -106,7 +106,7 @@ void __39__AVTMemojiDescriptor_randomDescriptor__block_invoke(uint64_t a1, void 
       v9 = self->_colorPresets[0][i];
       if (v9)
       {
-        [v10 setColorPreset:v9 forCategory:v4 colorIndex:i];
+        [memojiCopy setColorPreset:v9 forCategory:v4 colorIndex:i];
       }
     }
 
@@ -117,11 +117,11 @@ void __39__AVTMemojiDescriptor_randomDescriptor__block_invoke(uint64_t a1, void 
   while (v4 != 40);
 }
 
-- (id)presetIdentifierForCategory:(int64_t)a3
+- (id)presetIdentifierForCategory:(int64_t)category
 {
-  if (a3 < 40)
+  if (category < 40)
   {
-    v4 = self->_presetIdentifiers[a3];
+    v4 = self->_presetIdentifiers[category];
   }
 
   else
@@ -138,15 +138,15 @@ void __39__AVTMemojiDescriptor_randomDescriptor__block_invoke(uint64_t a1, void 
   return v4;
 }
 
-- (void)setPresetIdentifier:(id)a3 forCategory:(int64_t)a4
+- (void)setPresetIdentifier:(id)identifier forCategory:(int64_t)category
 {
-  v6 = a3;
-  v7 = v6;
-  if (a4 < 40)
+  identifierCopy = identifier;
+  v7 = identifierCopy;
+  if (category < 40)
   {
-    if (v6)
+    if (identifierCopy)
     {
-      v9 = [AVTPreset presetWithCategory:a4 identifier:v6];
+      v9 = [AVTPreset presetWithCategory:category identifier:identifierCopy];
       if (!v9)
       {
         v10 = avt_default_log();
@@ -159,8 +159,8 @@ void __39__AVTMemojiDescriptor_randomDescriptor__block_invoke(uint64_t a1, void 
 
     presetIdentifiers = self->_presetIdentifiers;
     v12 = v7;
-    v8 = self->_presetIdentifiers[a4];
-    presetIdentifiers[a4] = v12;
+    v8 = self->_presetIdentifiers[category];
+    presetIdentifiers[category] = v12;
   }
 
   else
@@ -173,13 +173,13 @@ void __39__AVTMemojiDescriptor_randomDescriptor__block_invoke(uint64_t a1, void 
   }
 }
 
-- (void)setColorPreset:(id)a3 forCategory:(int64_t)a4 colorIndex:(unint64_t)a5
+- (void)setColorPreset:(id)preset forCategory:(int64_t)category colorIndex:(unint64_t)index
 {
-  v8 = a3;
-  v9 = v8;
-  if (a4 < 40)
+  presetCopy = preset;
+  v9 = presetCopy;
+  if (category < 40)
   {
-    if (v8 && [v8 category] != a4)
+    if (presetCopy && [presetCopy category] != category)
     {
       v11 = avt_default_log();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -188,15 +188,15 @@ void __39__AVTMemojiDescriptor_randomDescriptor__block_invoke(uint64_t a1, void 
       }
     }
 
-    if (a5 >= 3)
+    if (index >= 3)
     {
       [AVTMemojiDescriptor setColorPreset:forCategory:colorIndex:];
     }
 
-    v12 = self->_colorPresets[a4];
+    v12 = self->_colorPresets[category];
     v13 = v9;
-    p_super = &v12[a5]->super;
-    v12[a5] = v13;
+    p_super = &v12[index]->super;
+    v12[index] = v13;
   }
 
   else
@@ -209,16 +209,16 @@ void __39__AVTMemojiDescriptor_randomDescriptor__block_invoke(uint64_t a1, void 
   }
 }
 
-- (id)colorPresetForCategory:(int64_t)a3 colorIndex:(unint64_t)a4
+- (id)colorPresetForCategory:(int64_t)category colorIndex:(unint64_t)index
 {
-  if (a3 < 40)
+  if (category < 40)
   {
-    if (a4 >= 3)
+    if (index >= 3)
     {
       [AVTMemojiDescriptor colorPresetForCategory:colorIndex:];
     }
 
-    v5 = self->_colorPresets[a3][a4];
+    v5 = self->_colorPresets[category][index];
   }
 
   else
@@ -235,12 +235,12 @@ void __39__AVTMemojiDescriptor_randomDescriptor__block_invoke(uint64_t a1, void 
   return v5;
 }
 
-+ (id)presetsDictionaryFromRecipe:(id)a3 didFail:(BOOL *)a4 error:(id *)a5
++ (id)presetsDictionaryFromRecipe:(id)recipe didFail:(BOOL *)fail error:(id *)error
 {
-  v7 = a3;
-  v8 = [v7 avt_objectForKey:@"presets" ofClass:objc_opt_class() didFail:a4 error:a5];
+  recipeCopy = recipe;
+  v8 = [recipeCopy avt_objectForKey:@"presets" ofClass:objc_opt_class() didFail:fail error:error];
 
-  if (*a4)
+  if (*fail)
   {
     v9 = 0;
   }
@@ -256,15 +256,15 @@ void __39__AVTMemojiDescriptor_randomDescriptor__block_invoke(uint64_t a1, void 
   return v9;
 }
 
-+ (id)colorPresetFromColorData:(id)a3 forCategory:(int64_t)a4 colorIndex:(unint64_t)a5 version:(unsigned __int16)a6 didFail:(BOOL *)a7 error:(id *)a8
++ (id)colorPresetFromColorData:(id)data forCategory:(int64_t)category colorIndex:(unint64_t)index version:(unsigned __int16)version didFail:(BOOL *)fail error:(id *)error
 {
-  v10 = a6;
-  v13 = a3;
+  versionCopy = version;
+  dataCopy = data;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v14 = AVTUpgradeColorPresetIdentifierIfNeeded(a4, v13, v10);
-    v15 = [AVTColorPreset colorPresetWithName:v14 category:a4 colorIndex:a5 variation:0.0];
+    v14 = AVTUpgradeColorPresetIdentifierIfNeeded(category, dataCopy, versionCopy);
+    v15 = [AVTColorPreset colorPresetWithName:v14 category:category colorIndex:index variation:0.0];
 LABEL_3:
 
     goto LABEL_8;
@@ -273,9 +273,9 @@ LABEL_3:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v16 = [v13 avt_objectForKey:@"variation" ofClass:objc_opt_class() didFail:a7 error:a8];
+    v16 = [dataCopy avt_objectForKey:@"variation" ofClass:objc_opt_class() didFail:fail error:error];
     v14 = v16;
-    if (*a7)
+    if (*fail)
     {
       v15 = 0;
     }
@@ -284,23 +284,23 @@ LABEL_3:
     {
       [v16 floatValue];
       v19 = v18;
-      v20 = [v13 avt_objectForKey:@"name" ofClass:objc_opt_class() didFail:a7 error:a8];
-      if (*a7)
+      v20 = [dataCopy avt_objectForKey:@"name" ofClass:objc_opt_class() didFail:fail error:error];
+      if (*fail)
       {
         v15 = 0;
       }
 
       else
       {
-        if (v10 < 8 && a4 == 10)
+        if (versionCopy < 8 && category == 10)
         {
           v19 = -v19;
         }
 
-        v22 = AVTUpgradeColorPresetIdentifierIfNeeded(a4, v20, v10);
+        v22 = AVTUpgradeColorPresetIdentifierIfNeeded(category, v20, versionCopy);
 
         *&v23 = v19;
-        v15 = [AVTColorPreset colorPresetWithName:v22 category:a4 colorIndex:a5 variation:v23];
+        v15 = [AVTColorPreset colorPresetWithName:v22 category:category colorIndex:index variation:v23];
         v20 = v22;
       }
     }
@@ -314,15 +314,15 @@ LABEL_8:
   return v15;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v36.receiver = self;
   v36.super_class = AVTMemojiDescriptor;
-  [(AVTAvatarDescriptor *)&v36 encodeWithCoder:v4];
+  [(AVTAvatarDescriptor *)&v36 encodeWithCoder:coderCopy];
   v5 = 0;
   v6 = 0x1E696A000uLL;
-  v35 = self;
+  selfCopy = self;
   do
   {
     v7 = AVTPresetCategoryToString(v5);
@@ -330,56 +330,56 @@ LABEL_8:
     if (v8)
     {
       v9 = [*(v6 + 3776) stringWithFormat:@"%@-presetIdentifier", v7];
-      [v4 encodeObject:v8 forKey:v9];
+      [coderCopy encodeObject:v8 forKey:v9];
     }
 
     v10 = [(AVTMemojiDescriptor *)self colorPresetForCategory:v5 colorIndex:0];
     v11 = v10;
     if (v10)
     {
-      v12 = [v10 name];
+      name = [v10 name];
       v13 = [*(v6 + 3776) stringWithFormat:@"%@-primaryColorName", v7];
-      [v4 encodeObject:v12 forKey:v13];
+      [coderCopy encodeObject:name forKey:v13];
 
       [v11 variation];
       v15 = v14;
       v16 = [*(v6 + 3776) stringWithFormat:@"%@-primaryColorVariation", v7];
       LODWORD(v17) = v15;
-      [v4 encodeFloat:v16 forKey:v17];
+      [coderCopy encodeFloat:v16 forKey:v17];
     }
 
     v18 = [(AVTMemojiDescriptor *)self colorPresetForCategory:v5 colorIndex:1];
     v19 = v18;
     if (v18)
     {
-      v20 = [v18 name];
+      name2 = [v18 name];
       v21 = [*(v6 + 3776) stringWithFormat:@"%@-secondaryColorName", v7];
-      [v4 encodeObject:v20 forKey:v21];
+      [coderCopy encodeObject:name2 forKey:v21];
 
       [v19 variation];
       v23 = v22;
       v24 = [*(v6 + 3776) stringWithFormat:@"%@-secondaryColorVariation", v7];
       LODWORD(v25) = v23;
-      [v4 encodeFloat:v24 forKey:v25];
+      [coderCopy encodeFloat:v24 forKey:v25];
     }
 
     v26 = [(AVTMemojiDescriptor *)self colorPresetForCategory:v5 colorIndex:2];
     v27 = v26;
     if (v26)
     {
-      v28 = [v26 name];
+      name3 = [v26 name];
       [*(v6 + 3776) stringWithFormat:@"%@-tertiaryColorName", v7];
       v30 = v29 = v6;
-      [v4 encodeObject:v28 forKey:v30];
+      [coderCopy encodeObject:name3 forKey:v30];
 
       v6 = v29;
-      self = v35;
+      self = selfCopy;
 
       [v27 variation];
       v32 = v31;
       v33 = [*(v6 + 3776) stringWithFormat:@"%@-tertiaryColorVariation", v7];
       LODWORD(v34) = v32;
-      [v4 encodeFloat:v33 forKey:v34];
+      [coderCopy encodeFloat:v33 forKey:v34];
     }
 
     ++v5;
@@ -388,19 +388,19 @@ LABEL_8:
   while (v5 != 40);
 }
 
-- (AVTMemojiDescriptor)initWithCoder:(id)a3
+- (AVTMemojiDescriptor)initWithCoder:(id)coder
 {
   v70[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v64.receiver = self;
   v64.super_class = AVTMemojiDescriptor;
-  v5 = [(AVTAvatarDescriptor *)&v64 initWithCoder:v4];
+  v5 = [(AVTAvatarDescriptor *)&v64 initWithCoder:coderCopy];
   v6 = v5;
   if (v5)
   {
     v58 = v5;
     v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    v8 = [v4 decodeIntegerForKey:@"version"];
+    v8 = [coderCopy decodeIntegerForKey:@"version"];
     v9 = 0x1E696A000uLL;
     v10 = [MEMORY[0x1E696AD98] numberWithInteger:v8];
     v57 = v7;
@@ -418,7 +418,7 @@ LABEL_8:
       v15 = *(v13 + 3776);
       v16 = objc_opt_class();
       v17 = [*(v13 + 3776) stringWithFormat:@"%@-presetIdentifier", v14];
-      v18 = [v4 decodeObjectOfClass:v16 forKey:v17];
+      v18 = [coderCopy decodeObjectOfClass:v16 forKey:v17];
 
       if (v18)
       {
@@ -429,12 +429,12 @@ LABEL_8:
       v19 = *(v13 + 3776);
       v20 = objc_opt_class();
       v21 = [*(v13 + 3776) stringWithFormat:@"%@-primaryColorName", v14];
-      v22 = [v4 decodeObjectOfClass:v20 forKey:v21];
+      v22 = [coderCopy decodeObjectOfClass:v20 forKey:v21];
 
       if (v22)
       {
         v23 = [*(v13 + 3776) stringWithFormat:@"%@-primaryColorVariation", v14];
-        [v4 decodeFloatForKey:v23];
+        [coderCopy decodeFloatForKey:v23];
         v25 = v24;
 
         v70[0] = v22;
@@ -450,12 +450,12 @@ LABEL_8:
       v29 = *(v13 + 3776);
       v30 = objc_opt_class();
       v31 = [*(v13 + 3776) stringWithFormat:@"%@-secondaryColorName", v14];
-      v32 = [v4 decodeObjectOfClass:v30 forKey:v31];
+      v32 = [coderCopy decodeObjectOfClass:v30 forKey:v31];
 
       if (v32)
       {
         v33 = [*(v13 + 3776) stringWithFormat:@"%@-secondaryColorVariation", v14];
-        [v4 decodeFloatForKey:v33];
+        [coderCopy decodeFloatForKey:v33];
         v35 = v34;
 
         v67[0] = @"name";
@@ -471,12 +471,12 @@ LABEL_8:
       v39 = *(v13 + 3776);
       v40 = objc_opt_class();
       v41 = [*(v13 + 3776) stringWithFormat:@"%@-tertiaryColorName", v14];
-      v42 = [v4 decodeObjectOfClass:v40 forKey:v41];
+      v42 = [coderCopy decodeObjectOfClass:v40 forKey:v41];
 
       if (v42)
       {
         v43 = [*(v13 + 3776) stringWithFormat:@"%@-tertiaryColorVariation", v14];
-        [v4 decodeFloatForKey:v43];
+        [coderCopy decodeFloatForKey:v43];
         v45 = v44;
 
         v65[0] = @"name";
@@ -491,12 +491,12 @@ LABEL_8:
         v49 = v13;
         v50 = v22;
         v51 = v9;
-        v52 = v4;
+        v52 = coderCopy;
         v54 = v53 = v11;
         [v59 setObject:v54 forKeyedSubscript:v14];
 
         v11 = v53;
-        v4 = v52;
+        coderCopy = v52;
         v9 = v51;
         v22 = v50;
         v13 = v49;
@@ -528,10 +528,10 @@ LABEL_8:
   return v6;
 }
 
-- (void)encodeInDictionaryRepresentation:(id)a3
+- (void)encodeInDictionaryRepresentation:(id)representation
 {
   v47[2] = *MEMORY[0x1E69E9840];
-  v34 = a3;
+  representationCopy = representation;
   v37 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v36 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v38 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -550,13 +550,13 @@ LABEL_8:
     }
 
     v41 = v9;
-    v10 = [(AVTMemojiDescriptor *)self colorPresetForCategory:v4 colorIndex:0, v34];
-    v11 = v10;
-    if (v10)
+    representationCopy = [(AVTMemojiDescriptor *)self colorPresetForCategory:v4 colorIndex:0, representationCopy];
+    v11 = representationCopy;
+    if (representationCopy)
     {
       v46[0] = v5;
-      v12 = [v10 name];
-      v47[0] = v12;
+      name = [representationCopy name];
+      v47[0] = name;
       v46[1] = @"variation";
       v13 = *(v6 + 3480);
       [v11 variation];
@@ -573,9 +573,9 @@ LABEL_8:
     if (v17)
     {
       v44[0] = v5;
-      v19 = [v17 name];
+      name2 = [v17 name];
       v44[1] = @"variation";
-      v45[0] = v19;
+      v45[0] = name2;
       v20 = *(v6 + 3480);
       [v18 variation];
       v21 = [v20 numberWithFloat:?];
@@ -589,9 +589,9 @@ LABEL_8:
     if (v23)
     {
       v42[0] = v5;
-      v39 = [v23 name];
+      name3 = [v23 name];
       v42[1] = @"variation";
-      v43[0] = v39;
+      v43[0] = name3;
       v25 = *(v6 + 3480);
       [v24 variation];
       v26 = [v25 numberWithFloat:?];
@@ -600,12 +600,12 @@ LABEL_8:
       v27 = v7;
       v28 = v6;
       v29 = v5;
-      v30 = self;
+      selfCopy = self;
       v32 = v31 = v16;
       [v35 setObject:v32 forKeyedSubscript:v31];
 
       v16 = v31;
-      self = v30;
+      self = selfCopy;
       v5 = v29;
       v6 = v28;
       v7 = v27;
@@ -615,33 +615,33 @@ LABEL_8:
   }
 
   while (v4 != 40);
-  [v34 setObject:v37 forKeyedSubscript:@"presets"];
-  [v34 setObject:v36 forKeyedSubscript:@"colors"];
+  [representationCopy setObject:v37 forKeyedSubscript:@"presets"];
+  [representationCopy setObject:v36 forKeyedSubscript:@"colors"];
   if ([v38 count])
   {
-    [v34 setObject:v38 forKeyedSubscript:@"secondaryColors"];
+    [representationCopy setObject:v38 forKeyedSubscript:@"secondaryColors"];
   }
 
   if ([v35 count])
   {
-    [v34 setObject:v35 forKeyedSubscript:@"tertiaryColors"];
+    [representationCopy setObject:v35 forKeyedSubscript:@"tertiaryColors"];
   }
 
   v33 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_decode:(id)a3 isResettingToDefault:(BOOL)a4 error:(id *)a5
+- (void)_decode:(id)_decode isResettingToDefault:(BOOL)default error:(id *)error
 {
-  v71 = a4;
+  defaultCopy = default;
   v87 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  _decodeCopy = _decode;
   v85 = 0;
-  v8 = [v7 avt_objectForKey:@"version" ofClass:objc_opt_class() didFail:&v85 error:a5];
-  v75 = self;
-  v76 = [objc_opt_class() presetsDictionaryFromRecipe:v7 didFail:&v85 error:a5];
-  v9 = [v7 avt_objectForKey:@"colors" ofClass:objc_opt_class() didFail:&v85 error:a5];
-  v10 = [v7 avt_objectForKey:@"secondaryColors" ofClass:objc_opt_class() didFail:&v85 error:a5];
-  v11 = [v7 avt_objectForKey:@"tertiaryColors" ofClass:objc_opt_class() didFail:&v85 error:a5];
+  v8 = [_decodeCopy avt_objectForKey:@"version" ofClass:objc_opt_class() didFail:&v85 error:error];
+  selfCopy = self;
+  v76 = [objc_opt_class() presetsDictionaryFromRecipe:_decodeCopy didFail:&v85 error:error];
+  v9 = [_decodeCopy avt_objectForKey:@"colors" ofClass:objc_opt_class() didFail:&v85 error:error];
+  v10 = [_decodeCopy avt_objectForKey:@"secondaryColors" ofClass:objc_opt_class() didFail:&v85 error:error];
+  v11 = [_decodeCopy avt_objectForKey:@"tertiaryColors" ofClass:objc_opt_class() didFail:&v85 error:error];
   if (v85)
   {
     goto LABEL_76;
@@ -650,8 +650,8 @@ LABEL_8:
   v68 = v11;
   v69 = v10;
   v66 = v8;
-  v67 = v7;
-  v74 = [v8 intValue];
+  v67 = _decodeCopy;
+  intValue = [v8 intValue];
   v12 = MEMORY[0x1E695DFD8];
   v13 = objc_opt_class();
   v72 = [v12 setWithObjects:{v13, objc_opt_class(), 0}];
@@ -660,8 +660,8 @@ LABEL_8:
   while (1)
   {
     v73 = AVTPresetCategoryToString(v14);
-    v15 = [v76 avt_objectForKey:v73 ofClass:objc_opt_class() didFail:&v85 error:a5];
-    v16 = v15;
+    v15 = [v76 avt_objectForKey:v73 ofClass:objc_opt_class() didFail:&v85 error:error];
+    firstObject = v15;
     if (v85)
     {
       v17 = v15;
@@ -671,22 +671,22 @@ LABEL_8:
     if (v15)
     {
 LABEL_5:
-      v17 = AVTUpgradePresetIdentifierIfNeeded(v14, v16, v74);
-      if (v17 == v16)
+      v17 = AVTUpgradePresetIdentifierIfNeeded(v14, firstObject, intValue);
+      if (v17 == firstObject)
       {
         v18 = 0;
       }
 
       else
       {
-        v18 = [v16 isEqualToString:@"none"];
+        v18 = [firstObject isEqualToString:@"none"];
       }
 
-      [(AVTMemojiDescriptor *)v75 setPresetIdentifier:v17 forCategory:v14];
+      [(AVTMemojiDescriptor *)selfCopy setPresetIdentifier:v17 forCategory:v14];
       goto LABEL_20;
     }
 
-    v19 = AVTUpgradesForPresetCategory(v14, v74);
+    v19 = AVTUpgradesForPresetCategory(v14, intValue);
     v81 = 0u;
     v82 = 0u;
     v83 = 0u;
@@ -706,12 +706,12 @@ LABEL_5:
             objc_enumerationMutation(v20);
           }
 
-          v25 = [v76 avt_objectForKey:*(*(&v81 + 1) + 8 * i) ofClass:objc_opt_class() didFail:&v85 error:a5];
-          v16 = v25;
+          v25 = [v76 avt_objectForKey:*(*(&v81 + 1) + 8 * i) ofClass:objc_opt_class() didFail:&v85 error:error];
+          firstObject = v25;
           if (v85)
           {
 
-            v17 = v16;
+            v17 = firstObject;
             goto LABEL_73;
           }
 
@@ -734,13 +734,13 @@ LABEL_5:
       }
     }
 
-    if (v71)
+    if (defaultCopy)
     {
       v26 = [AVTPreset availablePresetsForCategory:v14];
-      v16 = [v26 firstObject];
+      firstObject = [v26 firstObject];
 
-      v27 = [v16 identifier];
-      [(AVTMemojiDescriptor *)v75 setPresetIdentifier:v27 forCategory:v14];
+      identifier = [firstObject identifier];
+      [(AVTMemojiDescriptor *)selfCopy setPresetIdentifier:identifier forCategory:v14];
 
       v17 = 0;
       v18 = 0;
@@ -753,17 +753,17 @@ LABEL_20:
     v18 = 0;
 LABEL_21:
     v80 = 0;
-    v28 = AVTIdentifierOfUpgradedColorPresetForAssetPresetIdentifier(v14, v17, 0, &v80, v74);
+    v28 = AVTIdentifierOfUpgradedColorPresetForAssetPresetIdentifier(v14, v17, 0, &v80, intValue);
     if (v28)
     {
       LODWORD(v29) = v80;
       v30 = [AVTColorPreset colorPresetWithName:v28 category:v14 colorIndex:0 variation:v29];
 LABEL_23:
-      [(AVTMemojiDescriptor *)v75 setColorPreset:v30 forCategory:v14 colorIndex:0];
+      [(AVTMemojiDescriptor *)selfCopy setColorPreset:v30 forCategory:v14 colorIndex:0];
       goto LABEL_37;
     }
 
-    v31 = [v9 avt_objectForKey:v73 ofClasses:v72 didFail:&v85 error:a5];
+    v31 = [v9 avt_objectForKey:v73 ofClasses:v72 didFail:&v85 error:error];
     v30 = v31;
     if (v85)
     {
@@ -775,10 +775,10 @@ LABEL_79:
     }
 
     v32 = v9;
-    if (v14 == 34 && !v31 && !v71)
+    if (v14 == 34 && !v31 && !defaultCopy)
     {
       v33 = AVTPresetCategoryToColorCategoryString(4uLL);
-      v30 = [v9 avt_objectForKey:v33 ofClasses:v72 didFail:&v85 error:a5];
+      v30 = [v9 avt_objectForKey:v33 ofClasses:v72 didFail:&v85 error:error];
       v34 = v85;
 
       v28 = 0;
@@ -800,13 +800,13 @@ LABEL_79:
 
     if ((v35 & 1) == 0)
     {
-      v36 = [objc_opt_class() colorPresetFromColorData:v30 forCategory:v14 colorIndex:0 version:v74 didFail:&v85 error:a5];
-      [(AVTMemojiDescriptor *)v75 setColorPreset:v36 forCategory:v14 colorIndex:0];
+      v36 = [objc_opt_class() colorPresetFromColorData:v30 forCategory:v14 colorIndex:0 version:intValue didFail:&v85 error:error];
+      [(AVTMemojiDescriptor *)selfCopy setColorPreset:v36 forCategory:v14 colorIndex:0];
 
       goto LABEL_37;
     }
 
-    if (!v71)
+    if (!defaultCopy)
     {
       goto LABEL_38;
     }
@@ -820,22 +820,22 @@ LABEL_79:
 LABEL_37:
 
 LABEL_38:
-    v37 = [(AVTMemojiDescriptor *)v75 colorPresetForCategory:v14 colorIndex:0];
+    v37 = [(AVTMemojiDescriptor *)selfCopy colorPresetForCategory:v14 colorIndex:0];
     v79[0] = MEMORY[0x1E69E9820];
     v79[1] = 3221225472;
     v79[2] = __58__AVTMemojiDescriptor__decode_isResettingToDefault_error___block_invoke;
     v79[3] = &unk_1E7F49B00;
-    v79[4] = v75;
+    v79[4] = selfCopy;
     [v37 enumerateDerivedColorPresetsUsingBlock:v79];
 
     v78 = 0;
-    v38 = AVTIdentifierOfUpgradedColorPresetForAssetPresetIdentifier(v14, v17, 1uLL, &v78, v74);
+    v38 = AVTIdentifierOfUpgradedColorPresetForAssetPresetIdentifier(v14, v17, 1uLL, &v78, intValue);
     v39 = v38;
     if (v38)
     {
       if ([v38 isEqualToString:@"$archived-primary"])
       {
-        v41 = [v9 avt_objectForKey:v73 ofClasses:v72 didFail:&v85 error:a5];
+        v41 = [v9 avt_objectForKey:v73 ofClasses:v72 didFail:&v85 error:error];
         v42 = v41;
         if (v85)
         {
@@ -844,7 +844,7 @@ LABEL_81:
           goto LABEL_74;
         }
 
-        v43 = [objc_opt_class() colorPresetFromColorData:v41 forCategory:v14 colorIndex:0 version:v74 didFail:&v85 error:a5];
+        v43 = [objc_opt_class() colorPresetFromColorData:v41 forCategory:v14 colorIndex:0 version:intValue didFail:&v85 error:error];
       }
 
       else
@@ -854,21 +854,21 @@ LABEL_81:
       }
 
 LABEL_51:
-      [(AVTMemojiDescriptor *)v75 setColorPreset:v43 forCategory:v14 colorIndex:1];
+      [(AVTMemojiDescriptor *)selfCopy setColorPreset:v43 forCategory:v14 colorIndex:1];
 LABEL_52:
 
       goto LABEL_53;
     }
 
-    v44 = [v69 avt_objectForKey:v73 ofClasses:v72 didFail:&v85 error:a5];
+    v44 = [v69 avt_objectForKey:v73 ofClasses:v72 didFail:&v85 error:error];
     v45 = v44;
     v46 = v85;
     if ((v85 & 1) == 0 && v44)
     {
-      [objc_opt_class() colorPresetFromColorData:v44 forCategory:v14 colorIndex:1 version:v74 didFail:&v85 error:a5];
+      [objc_opt_class() colorPresetFromColorData:v44 forCategory:v14 colorIndex:1 version:intValue didFail:&v85 error:error];
       v47 = v9;
       v49 = v48 = v28;
-      [(AVTMemojiDescriptor *)v75 setColorPreset:v49 forCategory:v14 colorIndex:1];
+      [(AVTMemojiDescriptor *)selfCopy setColorPreset:v49 forCategory:v14 colorIndex:1];
 
       v28 = v48;
       v9 = v47;
@@ -879,7 +879,7 @@ LABEL_52:
       goto LABEL_81;
     }
 
-    if (!v45 && v71)
+    if (!v45 && defaultCopy)
     {
       v43 = [AVTColorPreset fallbackColorPresetForNilPresetAndCategory:v14 colorIndex:1];
       if (!v43)
@@ -892,22 +892,22 @@ LABEL_52:
 
 LABEL_53:
     v77 = 0;
-    v50 = AVTIdentifierOfUpgradedColorPresetForAssetPresetIdentifier(v14, v17, 2uLL, &v77, v74);
+    v50 = AVTIdentifierOfUpgradedColorPresetForAssetPresetIdentifier(v14, v17, 2uLL, &v77, intValue);
     v51 = v50;
     if (v50)
     {
       break;
     }
 
-    v59 = [v68 avt_objectForKey:v73 ofClasses:v72 didFail:&v85 error:a5];
+    v59 = [v68 avt_objectForKey:v73 ofClasses:v72 didFail:&v85 error:error];
     v60 = v59;
     v61 = v85;
     if ((v85 & 1) == 0 && v59)
     {
-      [objc_opt_class() colorPresetFromColorData:v59 forCategory:v14 colorIndex:2 version:v74 didFail:&v85 error:a5];
+      [objc_opt_class() colorPresetFromColorData:v59 forCategory:v14 colorIndex:2 version:intValue didFail:&v85 error:error];
       v62 = v39;
       v64 = v63 = v28;
-      [(AVTMemojiDescriptor *)v75 setColorPreset:v64 forCategory:v14 colorIndex:2];
+      [(AVTMemojiDescriptor *)selfCopy setColorPreset:v64 forCategory:v14 colorIndex:2];
 
       v28 = v63;
       v39 = v62;
@@ -919,7 +919,7 @@ LABEL_53:
     }
 
     v9 = v70;
-    if (!v60 && v71)
+    if (!v60 && defaultCopy)
     {
       v58 = [AVTColorPreset fallbackColorPresetForNilPresetAndCategory:v14 colorIndex:2];
       if (!v58)
@@ -948,16 +948,16 @@ LABEL_68:
   v53 = v9;
   v54 = v28;
   v55 = v53;
-  v56 = [v53 avt_objectForKey:v73 ofClasses:v72 didFail:&v85 error:a5];
+  v56 = [v53 avt_objectForKey:v73 ofClasses:v72 didFail:&v85 error:error];
   v57 = v56;
   if ((v85 & 1) == 0)
   {
-    v58 = [objc_opt_class() colorPresetFromColorData:v56 forCategory:v14 colorIndex:0 version:v74 didFail:&v85 error:a5];
+    v58 = [objc_opt_class() colorPresetFromColorData:v56 forCategory:v14 colorIndex:0 version:intValue didFail:&v85 error:error];
 
     v28 = v54;
     v9 = v55;
 LABEL_66:
-    [(AVTMemojiDescriptor *)v75 setColorPreset:v58 forCategory:v14 colorIndex:2];
+    [(AVTMemojiDescriptor *)selfCopy setColorPreset:v58 forCategory:v14 colorIndex:2];
 LABEL_67:
 
     goto LABEL_68;
@@ -972,7 +972,7 @@ LABEL_74:
 
 LABEL_75:
   v8 = v66;
-  v7 = v67;
+  _decodeCopy = v67;
   v11 = v68;
   v10 = v69;
 LABEL_76:
@@ -980,7 +980,7 @@ LABEL_76:
   v65 = *MEMORY[0x1E69E9840];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(AVTMemojiDescriptor);
   v5 = 0;

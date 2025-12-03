@@ -15,10 +15,10 @@
 
 - (NSString)series_genre
 {
-  v2 = [(NSDictionary *)self series_genres];
-  v3 = [v2 firstObject];
+  series_genres = [(NSDictionary *)self series_genres];
+  firstObject = [series_genres firstObject];
 
-  return v3;
+  return firstObject;
 }
 
 - (NSArray)series_genres
@@ -37,9 +37,9 @@
   v2 = [(NSDictionary *)self objectForKeyedSubscript:@"id"];
   v3 = BUProtocolCast();
 
-  v4 = [v3 adamIDStringValue];
+  adamIDStringValue = [v3 adamIDStringValue];
 
-  return v4;
+  return adamIDStringValue;
 }
 
 - (NSString)series_title
@@ -129,7 +129,7 @@ LABEL_3:
   }
 
   objc_opt_class();
-  v5 = [v4 firstObject];
+  firstObject = [v4 firstObject];
   v6 = BUDynamicCast();
 
   if (v6)

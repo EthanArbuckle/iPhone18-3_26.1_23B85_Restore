@@ -1,12 +1,12 @@
 @interface HAPAccessCodeControlResponse
-+ (id)parsedFromData:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)parseFromData:(id)a3 error:(id *)a4;
++ (id)parsedFromData:(id)data error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)parseFromData:(id)data error:(id *)error;
 - (HAPAccessCodeControlResponse)init;
-- (HAPAccessCodeControlResponse)initWithIdentifier:(id)a3 accessCode:(id)a4 flags:(id)a5 statusCode:(id)a6;
+- (HAPAccessCodeControlResponse)initWithIdentifier:(id)identifier accessCode:(id)code flags:(id)flags statusCode:(id)statusCode;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializeWithError:(id *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializeWithError:(id *)error;
 @end
 
 @implementation HAPAccessCodeControlResponse
@@ -14,19 +14,19 @@
 - (NSString)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HAPAccessCodeControlResponse *)self identifier];
-  v5 = [(HAPAccessCodeControlResponse *)self accessCode];
-  v6 = [(HAPAccessCodeControlResponse *)self flags];
-  v7 = [(HAPAccessCodeControlResponse *)self statusCode];
-  v8 = [v3 stringWithFormat:@"<HAPAccessCodeControlResponse identifier=%@, accessCode=%@, flags=%@, statusCode=%@>", v4, v5, v6, v7];
+  identifier = [(HAPAccessCodeControlResponse *)self identifier];
+  accessCode = [(HAPAccessCodeControlResponse *)self accessCode];
+  flags = [(HAPAccessCodeControlResponse *)self flags];
+  statusCode = [(HAPAccessCodeControlResponse *)self statusCode];
+  v8 = [v3 stringWithFormat:@"<HAPAccessCodeControlResponse identifier=%@, accessCode=%@, flags=%@, statusCode=%@>", identifier, accessCode, flags, statusCode];
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -36,34 +36,34 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
-      v7 = [(HAPAccessCodeControlResponse *)self identifier];
-      v8 = [(HAPAccessCodeControlResponse *)v6 identifier];
-      if (v7 != v8)
+      v6 = equalCopy;
+      identifier = [(HAPAccessCodeControlResponse *)self identifier];
+      identifier2 = [(HAPAccessCodeControlResponse *)v6 identifier];
+      if (identifier != identifier2)
       {
-        v9 = [(HAPAccessCodeControlResponse *)self identifier];
+        identifier3 = [(HAPAccessCodeControlResponse *)self identifier];
         [(HAPAccessCodeControlResponse *)v6 identifier];
-        v33 = v32 = v9;
-        if (![v9 isEqual:?])
+        v33 = v32 = identifier3;
+        if (![identifier3 isEqual:?])
         {
           v10 = 0;
           goto LABEL_24;
         }
       }
 
-      v11 = [(HAPAccessCodeControlResponse *)self accessCode];
-      v12 = [(HAPAccessCodeControlResponse *)v6 accessCode];
-      if (v11 != v12)
+      accessCode = [(HAPAccessCodeControlResponse *)self accessCode];
+      accessCode2 = [(HAPAccessCodeControlResponse *)v6 accessCode];
+      if (accessCode != accessCode2)
       {
-        v3 = [(HAPAccessCodeControlResponse *)self accessCode];
-        v30 = [(HAPAccessCodeControlResponse *)v6 accessCode];
-        if (![v3 isEqual:?])
+        accessCode3 = [(HAPAccessCodeControlResponse *)self accessCode];
+        accessCode4 = [(HAPAccessCodeControlResponse *)v6 accessCode];
+        if (![accessCode3 isEqual:?])
         {
           v10 = 0;
 LABEL_22:
 
 LABEL_23:
-          if (v7 == v8)
+          if (identifier == identifier2)
           {
 LABEL_25:
 
@@ -76,38 +76,38 @@ LABEL_24:
         }
       }
 
-      v13 = [(HAPAccessCodeControlResponse *)self flags];
-      v14 = [(HAPAccessCodeControlResponse *)v6 flags];
-      v31 = v13;
-      v15 = v13 == v14;
-      v16 = v14;
+      flags = [(HAPAccessCodeControlResponse *)self flags];
+      flags2 = [(HAPAccessCodeControlResponse *)v6 flags];
+      v31 = flags;
+      v15 = flags == flags2;
+      v16 = flags2;
       if (v15)
       {
-        v28 = v3;
-        v29 = v12;
+        v28 = accessCode3;
+        v29 = accessCode2;
       }
 
       else
       {
-        v17 = [(HAPAccessCodeControlResponse *)self flags];
-        v25 = [(HAPAccessCodeControlResponse *)v6 flags];
-        v26 = v17;
-        if (![v17 isEqual:?])
+        flags3 = [(HAPAccessCodeControlResponse *)self flags];
+        flags4 = [(HAPAccessCodeControlResponse *)v6 flags];
+        v26 = flags3;
+        if (![flags3 isEqual:?])
         {
           v10 = 0;
           v23 = v31;
           goto LABEL_20;
         }
 
-        v28 = v3;
-        v29 = v12;
+        v28 = accessCode3;
+        v29 = accessCode2;
       }
 
       v27 = v16;
-      v18 = [(HAPAccessCodeControlResponse *)self statusCode];
-      v19 = [(HAPAccessCodeControlResponse *)v6 statusCode];
-      v20 = v19;
-      if (v18 == v19)
+      statusCode = [(HAPAccessCodeControlResponse *)self statusCode];
+      statusCode2 = [(HAPAccessCodeControlResponse *)v6 statusCode];
+      v20 = statusCode2;
+      if (statusCode == statusCode2)
       {
 
         v10 = 1;
@@ -115,20 +115,20 @@ LABEL_24:
 
       else
       {
-        v21 = [(HAPAccessCodeControlResponse *)self statusCode];
-        v22 = [(HAPAccessCodeControlResponse *)v6 statusCode];
-        v10 = [v21 isEqual:v22];
+        statusCode3 = [(HAPAccessCodeControlResponse *)self statusCode];
+        statusCode4 = [(HAPAccessCodeControlResponse *)v6 statusCode];
+        v10 = [statusCode3 isEqual:statusCode4];
       }
 
       v23 = v31;
       v16 = v27;
-      v3 = v28;
-      v12 = v29;
+      accessCode3 = v28;
+      accessCode2 = v29;
       if (v31 == v27)
       {
 LABEL_21:
 
-        if (v11 == v12)
+        if (accessCode == accessCode2)
         {
           goto LABEL_23;
         }
@@ -149,19 +149,19 @@ LABEL_26:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [HAPAccessCodeControlResponse allocWithZone:a3];
-  v5 = [(HAPAccessCodeControlResponse *)self identifier];
-  v6 = [(HAPAccessCodeControlResponse *)self accessCode];
-  v7 = [(HAPAccessCodeControlResponse *)self flags];
-  v8 = [(HAPAccessCodeControlResponse *)self statusCode];
-  v9 = [(HAPAccessCodeControlResponse *)v4 initWithIdentifier:v5 accessCode:v6 flags:v7 statusCode:v8];
+  v4 = [HAPAccessCodeControlResponse allocWithZone:zone];
+  identifier = [(HAPAccessCodeControlResponse *)self identifier];
+  accessCode = [(HAPAccessCodeControlResponse *)self accessCode];
+  flags = [(HAPAccessCodeControlResponse *)self flags];
+  statusCode = [(HAPAccessCodeControlResponse *)self statusCode];
+  v9 = [(HAPAccessCodeControlResponse *)v4 initWithIdentifier:identifier accessCode:accessCode flags:flags statusCode:statusCode];
 
   return v9;
 }
 
-- (id)serializeWithError:(id *)a3
+- (id)serializeWithError:(id *)error
 {
   v49 = *MEMORY[0x277D85DE8];
   v47 = 0u;
@@ -186,13 +186,13 @@ LABEL_26:
   v30 = 0u;
   v28 = 0u;
   TLV8BufferInit();
-  v5 = [(HAPAccessCodeControlResponse *)self identifier];
+  identifier = [(HAPAccessCodeControlResponse *)self identifier];
 
-  if (v5)
+  if (identifier)
   {
-    v6 = [(HAPAccessCodeControlResponse *)self identifier];
+    identifier2 = [(HAPAccessCodeControlResponse *)self identifier];
     v27 = 0;
-    v7 = [v6 serializeWithError:&v27];
+    v7 = [identifier2 serializeWithError:&v27];
     v8 = v27;
 
     if (v8)
@@ -209,11 +209,11 @@ LABEL_4:
       v10 = v9;
 
 LABEL_5:
-      if (a3)
+      if (error)
       {
         HMErrorFromOSStatus(v10);
         v8 = 0;
-        *a3 = v11 = 0;
+        *error = v11 = 0;
         goto LABEL_27;
       }
 
@@ -224,30 +224,30 @@ LABEL_26:
     }
   }
 
-  v12 = [(HAPAccessCodeControlResponse *)self accessCode];
+  accessCode = [(HAPAccessCodeControlResponse *)self accessCode];
 
-  if (v12)
+  if (accessCode)
   {
-    v13 = [(HAPAccessCodeControlResponse *)self accessCode];
+    accessCode2 = [(HAPAccessCodeControlResponse *)self accessCode];
     v26 = 0;
-    v7 = [v13 serializeWithError:&v26];
+    v7 = [accessCode2 serializeWithError:&v26];
     v8 = v26;
 
     if (!v8)
     {
-      v14 = [v7 bytes];
-      v15 = v14 + [v7 length];
+      bytes = [v7 bytes];
+      v15 = bytes + [v7 length];
       while (1)
       {
-        v16 = (v15 - v14) >= 255 ? 255 : v15 - v14;
+        v16 = (v15 - bytes) >= 255 ? 255 : v15 - bytes;
         v9 = TLV8BufferAppend();
         if (v9)
         {
           goto LABEL_4;
         }
 
-        v14 += v16;
-        if (v14 >= v15)
+        bytes += v16;
+        if (bytes >= v15)
         {
 
           goto LABEL_18;
@@ -257,11 +257,11 @@ LABEL_26:
 
 LABEL_24:
 
-    if (a3)
+    if (error)
     {
       v21 = v8;
       v11 = 0;
-      *a3 = v8;
+      *error = v8;
       goto LABEL_27;
     }
 
@@ -269,13 +269,13 @@ LABEL_24:
   }
 
 LABEL_18:
-  v17 = [(HAPAccessCodeControlResponse *)self flags];
+  flags = [(HAPAccessCodeControlResponse *)self flags];
 
-  if (v17)
+  if (flags)
   {
-    v18 = [(HAPAccessCodeControlResponse *)self flags];
+    flags2 = [(HAPAccessCodeControlResponse *)self flags];
     v25 = 0;
-    v7 = [v18 serializeWithError:&v25];
+    v7 = [flags2 serializeWithError:&v25];
     v8 = v25;
 
     if (v8)
@@ -292,13 +292,13 @@ LABEL_18:
     }
   }
 
-  v19 = [(HAPAccessCodeControlResponse *)self statusCode];
+  statusCode = [(HAPAccessCodeControlResponse *)self statusCode];
 
-  if (v19)
+  if (statusCode)
   {
-    v20 = [(HAPAccessCodeControlResponse *)self statusCode];
+    statusCode2 = [(HAPAccessCodeControlResponse *)self statusCode];
     v24 = 0;
-    v7 = [v20 serializeWithError:&v24];
+    v7 = [statusCode2 serializeWithError:&v24];
     v8 = v24;
 
     if (v8)
@@ -326,20 +326,20 @@ LABEL_27:
   return v11;
 }
 
-- (BOOL)parseFromData:(id)a3 error:(id *)a4
+- (BOOL)parseFromData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 bytes];
-  v8 = [v6 length];
+  dataCopy = data;
+  bytes = [dataCopy bytes];
+  v8 = [dataCopy length];
   if (v8 >= 1)
   {
-    v27 = a4;
+    errorCopy = error;
     v28 = 0;
     v9 = 0;
     v10 = 0;
     v11 = 0;
     v12 = 0;
-    v13 = v7 + v8;
+    v13 = bytes + v8;
     while (1)
     {
       v36 = 0;
@@ -349,10 +349,10 @@ LABEL_27:
       Next = TLV8GetNext();
       if (Next)
       {
-        if (v27)
+        if (errorCopy)
         {
           HMErrorFromOSStatus(Next);
-          *v27 = v24 = 0;
+          *errorCopy = v24 = 0;
         }
 
         else
@@ -425,7 +425,7 @@ LABEL_16:
         if (v36 == 2)
         {
           v32 = v9;
-          v15 = HAPTLVParseContiguousTlvs(2, v7, v13, v34, &v32);
+          v15 = HAPTLVParseContiguousTlvs(2, bytes, v13, v34, &v32);
           v16 = v32;
 
           if (!v16)
@@ -443,18 +443,18 @@ LABEL_16:
       }
 
 LABEL_17:
-      v7 = v34[0];
+      bytes = v34[0];
       if (v34[0] >= v13)
       {
         if (v9)
         {
 LABEL_19:
           v22 = v28;
-          if (v27)
+          if (errorCopy)
           {
             v23 = v9;
             v24 = 0;
-            *v27 = v9;
+            *errorCopy = v9;
           }
 
           else
@@ -488,22 +488,22 @@ LABEL_30:
   return v24;
 }
 
-- (HAPAccessCodeControlResponse)initWithIdentifier:(id)a3 accessCode:(id)a4 flags:(id)a5 statusCode:(id)a6
+- (HAPAccessCodeControlResponse)initWithIdentifier:(id)identifier accessCode:(id)code flags:(id)flags statusCode:(id)statusCode
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  identifierCopy = identifier;
+  codeCopy = code;
+  flagsCopy = flags;
+  statusCodeCopy = statusCode;
   v18.receiver = self;
   v18.super_class = HAPAccessCodeControlResponse;
   v15 = [(HAPAccessCodeControlResponse *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_identifier, a3);
-    objc_storeStrong(&v16->_accessCode, a4);
-    objc_storeStrong(&v16->_flags, a5);
-    objc_storeStrong(&v16->_statusCode, a6);
+    objc_storeStrong(&v15->_identifier, identifier);
+    objc_storeStrong(&v16->_accessCode, code);
+    objc_storeStrong(&v16->_flags, flags);
+    objc_storeStrong(&v16->_statusCode, statusCode);
   }
 
   return v16;
@@ -516,24 +516,24 @@ LABEL_30:
   return [(HAPAccessCodeControlResponse *)&v3 init];
 }
 
-+ (id)parsedFromData:(id)a3 error:(id *)a4
++ (id)parsedFromData:(id)data error:(id *)error
 {
-  v5 = a3;
+  dataCopy = data;
   v6 = objc_alloc_init(HAPAccessCodeControlResponse);
   v7 = v6;
   if (v6)
   {
     v11 = 0;
-    [(HAPAccessCodeControlResponse *)v6 parseFromData:v5 error:&v11];
+    [(HAPAccessCodeControlResponse *)v6 parseFromData:dataCopy error:&v11];
     v8 = v11;
     if (v8)
     {
 
-      if (a4)
+      if (error)
       {
         v9 = v8;
         v7 = 0;
-        *a4 = v8;
+        *error = v8;
       }
 
       else

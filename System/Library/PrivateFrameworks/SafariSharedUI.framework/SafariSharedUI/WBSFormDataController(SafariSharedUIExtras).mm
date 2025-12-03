@@ -14,7 +14,7 @@
   v15[1] = 3221225472;
   v15[2] = __120__WBSFormDataController_SafariSharedUIExtras__bestUsernameSuggestionForUsernamePromptOnURL_inContext_completionHandler___block_invoke;
   v15[3] = &unk_1E8284E40;
-  v15[4] = a1;
+  v15[4] = self;
   v16 = v8;
   v17 = v9;
   v18 = v10;

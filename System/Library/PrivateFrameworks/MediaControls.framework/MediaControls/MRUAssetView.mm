@@ -1,11 +1,11 @@
 @interface MRUAssetView
-- (MRUAssetView)initWithFrame:(CGRect)a3;
+- (MRUAssetView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setAsset:(id)a3;
-- (void)setGlyphState:(id)a3;
-- (void)setImageSymbolConfiguration:(id)a3;
-- (void)setStylingProvider:(id)a3;
-- (void)setTintColor:(id)a3;
+- (void)setAsset:(id)asset;
+- (void)setGlyphState:(id)state;
+- (void)setImageSymbolConfiguration:(id)configuration;
+- (void)setStylingProvider:(id)provider;
+- (void)setTintColor:(id)color;
 - (void)updateVisualStyling;
 @end
 
@@ -22,12 +22,12 @@
   [(MRUCAPackageView *)self->_packageView setCenter:?];
 }
 
-- (MRUAssetView)initWithFrame:(CGRect)a3
+- (MRUAssetView)initWithFrame:(CGRect)frame
 {
   v12[1] = *MEMORY[0x1E69E9840];
   v11.receiver = self;
   v11.super_class = MRUAssetView;
-  v3 = [(MRUAssetView *)&v11 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MRUAssetView *)&v11 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MRUCAPackageView);
@@ -50,16 +50,16 @@
   return v3;
 }
 
-- (void)setAsset:(id)a3
+- (void)setAsset:(id)asset
 {
-  v8 = a3;
-  objc_storeStrong(&self->_asset, a3);
-  v5 = [v8 packageAsset];
+  assetCopy = asset;
+  objc_storeStrong(&self->_asset, asset);
+  packageAsset = [assetCopy packageAsset];
 
-  if (v5)
+  if (packageAsset)
   {
-    v6 = [v8 packageAsset];
-    [(MRUCAPackageView *)self->_packageView setAsset:v6];
+    packageAsset2 = [assetCopy packageAsset];
+    [(MRUCAPackageView *)self->_packageView setAsset:packageAsset2];
 
     [(UIImageView *)self->_imageView setImage:0];
   }
@@ -67,60 +67,60 @@
   else
   {
     [(MRUCAPackageView *)self->_packageView clear];
-    v7 = [v8 image];
-    [(UIImageView *)self->_imageView setImage:v7];
+    image = [assetCopy image];
+    [(UIImageView *)self->_imageView setImage:image];
   }
 
   [(MRUAssetView *)self setNeedsLayout];
 }
 
-- (void)setGlyphState:(id)a3
+- (void)setGlyphState:(id)state
 {
-  objc_storeStrong(&self->_glyphState, a3);
-  v5 = a3;
-  [(MRUCAPackageView *)self->_packageView setGlyphState:v5];
+  objc_storeStrong(&self->_glyphState, state);
+  stateCopy = state;
+  [(MRUCAPackageView *)self->_packageView setGlyphState:stateCopy];
 }
 
-- (void)setStylingProvider:(id)a3
+- (void)setStylingProvider:(id)provider
 {
-  v5 = a3;
-  if (self->_stylingProvider != v5)
+  providerCopy = provider;
+  if (self->_stylingProvider != providerCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_stylingProvider, a3);
+    v6 = providerCopy;
+    objc_storeStrong(&self->_stylingProvider, provider);
     [(MRUAssetView *)self updateVisualStyling];
-    v5 = v6;
+    providerCopy = v6;
   }
 }
 
-- (void)setImageSymbolConfiguration:(id)a3
+- (void)setImageSymbolConfiguration:(id)configuration
 {
-  objc_storeStrong(&self->_imageSymbolConfiguration, a3);
-  v5 = a3;
-  [(UIImageView *)self->_imageView setPreferredSymbolConfiguration:v5];
+  objc_storeStrong(&self->_imageSymbolConfiguration, configuration);
+  configurationCopy = configuration;
+  [(UIImageView *)self->_imageView setPreferredSymbolConfiguration:configurationCopy];
 }
 
-- (void)setTintColor:(id)a3
+- (void)setTintColor:(id)color
 {
   v5.receiver = self;
   v5.super_class = MRUAssetView;
-  v4 = a3;
-  [(MRUAssetView *)&v5 setTintColor:v4];
-  [(UIImageView *)self->_imageView setTintColor:v4, v5.receiver, v5.super_class];
-  [(MRUCAPackageView *)self->_packageView setTintColor:v4];
+  colorCopy = color;
+  [(MRUAssetView *)&v5 setTintColor:colorCopy];
+  [(UIImageView *)self->_imageView setTintColor:colorCopy, v5.receiver, v5.super_class];
+  [(MRUCAPackageView *)self->_packageView setTintColor:colorCopy];
 }
 
 - (void)updateVisualStyling
 {
   stylingProvider = self->_stylingProvider;
   imageView = self->_imageView;
-  v5 = [(MRUAssetView *)self traitCollection];
-  [(MRUVisualStylingProvider *)stylingProvider applyStyle:0 toView:imageView traitCollection:v5];
+  traitCollection = [(MRUAssetView *)self traitCollection];
+  [(MRUVisualStylingProvider *)stylingProvider applyStyle:0 toView:imageView traitCollection:traitCollection];
 
   v6 = self->_stylingProvider;
   packageView = self->_packageView;
-  v8 = [(MRUAssetView *)self traitCollection];
-  [(MRUVisualStylingProvider *)v6 applyStyle:0 toView:packageView traitCollection:v8];
+  traitCollection2 = [(MRUAssetView *)self traitCollection];
+  [(MRUVisualStylingProvider *)v6 applyStyle:0 toView:packageView traitCollection:traitCollection2];
 }
 
 @end

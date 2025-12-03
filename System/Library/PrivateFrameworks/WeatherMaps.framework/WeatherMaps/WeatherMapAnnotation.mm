@@ -7,7 +7,7 @@
 
 - (NSString)title
 {
-  v2 = self;
+  selfCopy = self;
   sub_220FBF4D8();
   v4 = v3;
 
@@ -26,7 +26,7 @@
 
 - (CLLocationCoordinate2D)coordinate
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_220FBF640();
   v5 = v4;
 

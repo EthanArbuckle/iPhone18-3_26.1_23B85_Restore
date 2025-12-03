@@ -1,21 +1,21 @@
 @interface STSendDraftMessageRequest
-- (STSendDraftMessageRequest)initWithCoder:(id)a3;
-- (id)_initWithMessage:(id)a3;
+- (STSendDraftMessageRequest)initWithCoder:(id)coder;
+- (id)_initWithMessage:(id)message;
 - (id)createResponse;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation STSendDraftMessageRequest
 
-- (STSendDraftMessageRequest)initWithCoder:(id)a3
+- (STSendDraftMessageRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = STSendDraftMessageRequest;
-  v5 = [(AFSiriRequest *)&v9 initWithCoder:v4];
+  v5 = [(AFSiriRequest *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_message"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_message"];
     message = v5->_message;
     v5->_message = v6;
   }
@@ -23,13 +23,13 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = STSendDraftMessageRequest;
-  v4 = a3;
-  [(AFSiriRequest *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_message forKey:{@"_message", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(AFSiriRequest *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_message forKey:{@"_message", v5.receiver, v5.super_class}];
 }
 
 - (id)createResponse
@@ -39,16 +39,16 @@
   return v2;
 }
 
-- (id)_initWithMessage:(id)a3
+- (id)_initWithMessage:(id)message
 {
-  v5 = a3;
+  messageCopy = message;
   v9.receiver = self;
   v9.super_class = STSendDraftMessageRequest;
   v6 = [(AFSiriRequest *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_message, a3);
+    objc_storeStrong(&v6->_message, message);
   }
 
   return v7;

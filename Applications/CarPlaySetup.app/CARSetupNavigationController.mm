@@ -1,10 +1,10 @@
 @interface CARSetupNavigationController
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidDisappear:(BOOL)disappear;
 @end
 
 @implementation CARSetupNavigationController
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4 = CARSetupLogForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -13,12 +13,12 @@
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "CARSetupNavigationController didDisappear", v7, 2u);
   }
 
-  v5 = [(CARSetupNavigationController *)self dismissHandler];
+  dismissHandler = [(CARSetupNavigationController *)self dismissHandler];
 
-  if (v5)
+  if (dismissHandler)
   {
-    v6 = [(CARSetupNavigationController *)self dismissHandler];
-    v6[2]();
+    dismissHandler2 = [(CARSetupNavigationController *)self dismissHandler];
+    dismissHandler2[2]();
   }
 }
 

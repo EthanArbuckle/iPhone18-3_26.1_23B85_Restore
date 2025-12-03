@@ -4,7 +4,7 @@
 + (NSXPCConnection)sharedConnection;
 + (OS_dispatch_queue)sharedConnectionAccessQueue;
 + (id)_createXPCConnection;
-+ (void)setSharedConnection:(id)a3;
++ (void)setSharedConnection:(id)connection;
 @end
 
 @implementation AMSCommerceService
@@ -17,14 +17,14 @@
   v10 = __Block_byref_object_copy__17;
   v11 = __Block_byref_object_dispose__17;
   v12 = 0;
-  v3 = [a1 sharedConnectionAccessQueue];
+  sharedConnectionAccessQueue = [self sharedConnectionAccessQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __33__AMSCommerceService_proxyObject__block_invoke;
   v6[3] = &unk_1E73B5F60;
   v6[4] = &v7;
-  v6[5] = a1;
-  dispatch_sync(v3, v6);
+  v6[5] = self;
+  dispatch_sync(sharedConnectionAccessQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -68,14 +68,14 @@ void __33__AMSCommerceService_proxyObject__block_invoke_2(uint64_t a1, void *a2)
   v10 = __Block_byref_object_copy__17;
   v11 = __Block_byref_object_dispose__17;
   v12 = 0;
-  v3 = [a1 sharedConnectionAccessQueue];
+  sharedConnectionAccessQueue = [self sharedConnectionAccessQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __38__AMSCommerceService_proxyObjectAsync__block_invoke;
   v6[3] = &unk_1E73B5F60;
   v6[4] = &v7;
-  v6[5] = a1;
-  dispatch_sync(v3, v6);
+  v6[5] = self;
+  dispatch_sync(sharedConnectionAccessQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -111,27 +111,27 @@ void __38__AMSCommerceService_proxyObjectAsync__block_invoke_2(uint64_t a1, void
   }
 }
 
-+ (void)setSharedConnection:(id)a3
++ (void)setSharedConnection:(id)connection
 {
-  v4 = a3;
-  v5 = [a1 sharedConnectionAccessQueue];
-  dispatch_assert_queue_V2(v5);
+  connectionCopy = connection;
+  sharedConnectionAccessQueue = [self sharedConnectionAccessQueue];
+  dispatch_assert_queue_V2(sharedConnectionAccessQueue);
 
   v6 = kSharedConnection;
-  kSharedConnection = v4;
+  kSharedConnection = connectionCopy;
 }
 
 + (NSXPCConnection)sharedConnection
 {
-  v3 = [a1 sharedConnectionAccessQueue];
-  dispatch_assert_queue_V2(v3);
+  sharedConnectionAccessQueue = [self sharedConnectionAccessQueue];
+  dispatch_assert_queue_V2(sharedConnectionAccessQueue);
 
   v4 = kSharedConnection;
   if (!kSharedConnection)
   {
-    v5 = [a1 _createXPCConnection];
+    _createXPCConnection = [self _createXPCConnection];
     v6 = kSharedConnection;
-    kSharedConnection = v5;
+    kSharedConnection = _createXPCConnection;
 
     [kSharedConnection resume];
     v4 = kSharedConnection;
@@ -167,11 +167,11 @@ uint64_t __49__AMSCommerceService_sharedConnectionAccessQueue__block_invoke()
     v3 = +[AMSLogConfig sharedConfig];
   }
 
-  v4 = [v3 OSLogObject];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
+  oSLogObject = [v3 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
   {
     LOWORD(buf[0]) = 0;
-    _os_log_impl(&dword_192869000, v4, OS_LOG_TYPE_INFO, "AMSCommerceService: Initializing commerce xpc connection", buf, 2u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_INFO, "AMSCommerceService: Initializing commerce xpc connection", buf, 2u);
   }
 
   if (getuid() || +[AMSProcessInfo isBuddyRunning])
@@ -185,7 +185,7 @@ uint64_t __49__AMSCommerceService_sharedConnectionAccessQueue__block_invoke()
   }
 
   v6 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithMachServiceName:v5 options:0];
-  objc_initWeak(buf, a1);
+  objc_initWeak(buf, self);
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __42__AMSCommerceService__createXPCConnection__block_invoke;

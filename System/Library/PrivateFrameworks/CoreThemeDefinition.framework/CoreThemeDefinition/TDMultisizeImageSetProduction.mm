@@ -1,20 +1,20 @@
 @interface TDMultisizeImageSetProduction
-- (TDMultisizeImageSetProduction)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4;
-- (void)processRendition:(id)a3 withBackstop:(id)a4;
+- (TDMultisizeImageSetProduction)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context;
+- (void)processRendition:(id)rendition withBackstop:(id)backstop;
 @end
 
 @implementation TDMultisizeImageSetProduction
 
-- (TDMultisizeImageSetProduction)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4
+- (TDMultisizeImageSetProduction)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context
 {
   v6.receiver = self;
   v6.super_class = TDMultisizeImageSetProduction;
-  v4 = [(TDMultisizeImageSetProduction *)&v6 initWithEntity:a3 insertIntoManagedObjectContext:a4];
+  v4 = [(TDMultisizeImageSetProduction *)&v6 initWithEntity:entity insertIntoManagedObjectContext:context];
   [(TDMultisizeImageSetProduction *)v4 setMakeOpaqueIfPossible:1];
   return v4;
 }
 
-- (void)processRendition:(id)a3 withBackstop:(id)a4
+- (void)processRendition:(id)rendition withBackstop:(id)backstop
 {
   v8.receiver = self;
   v8.super_class = TDMultisizeImageSetProduction;
@@ -25,8 +25,8 @@
     [TDMultisizeImageSetProduction processRendition:a2 withBackstop:self];
   }
 
-  [a4 setSizeIndex:{objc_msgSend(a3, "sizeIndex")}];
-  [a4 setMultisizeImageSetRendition:{objc_msgSend(a3, "multisizeImageSetRendition")}];
+  [backstop setSizeIndex:{objc_msgSend(rendition, "sizeIndex")}];
+  [backstop setMultisizeImageSetRendition:{objc_msgSend(rendition, "multisizeImageSetRendition")}];
 }
 
 @end

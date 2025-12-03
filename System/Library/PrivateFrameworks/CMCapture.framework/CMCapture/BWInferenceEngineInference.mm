@@ -1,24 +1,24 @@
 @interface BWInferenceEngineInference
-- (BWInferenceEngineInference)initWithInferenceType:(int)a3 version:(id)a4 configuration:(id)a5;
+- (BWInferenceEngineInference)initWithInferenceType:(int)type version:(id)version configuration:(id)configuration;
 - (id)description;
 - (void)dealloc;
 @end
 
 @implementation BWInferenceEngineInference
 
-- (BWInferenceEngineInference)initWithInferenceType:(int)a3 version:(id)a4 configuration:(id)a5
+- (BWInferenceEngineInference)initWithInferenceType:(int)type version:(id)version configuration:(id)configuration
 {
-  v6 = *&a4.var0;
+  v6 = *&version.var0;
   v11.receiver = self;
   v11.super_class = BWInferenceEngineInference;
   v8 = [(BWInferenceEngineInference *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_inferenceType = a3;
+    v8->_inferenceType = type;
     *&v8->_version.major = v6;
     v8->_version.patch = WORD2(v6);
-    v8->_configuration = a5;
+    v8->_configuration = configuration;
   }
 
   return v9;

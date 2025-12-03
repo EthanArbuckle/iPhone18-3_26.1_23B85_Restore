@@ -1,23 +1,23 @@
 @interface CRLCanvasLayerAccessibility
-+ (id)crlaxCastFrom:(id)a3;
++ (id)crlaxCastFrom:(id)from;
 - (CGSize)crlaxUnscaledSize;
 @end
 
 @implementation CRLCanvasLayerAccessibility
 
-+ (id)crlaxCastFrom:(id)a3
++ (id)crlaxCastFrom:(id)from
 {
-  v3 = a3;
+  fromCopy = from;
   v4 = objc_opt_class();
-  v5 = __CRLAccessibilityCastAsSafeCategory(v4, v3, 0, 0);
+  v5 = __CRLAccessibilityCastAsSafeCategory(v4, fromCopy, 0, 0);
 
   return v5;
 }
 
 - (CGSize)crlaxUnscaledSize
 {
-  v2 = [(CRLCanvasLayerAccessibility *)self crlaxTarget];
-  [v2 unscaledSize];
+  crlaxTarget = [(CRLCanvasLayerAccessibility *)self crlaxTarget];
+  [crlaxTarget unscaledSize];
   v4 = v3;
   v6 = v5;
 

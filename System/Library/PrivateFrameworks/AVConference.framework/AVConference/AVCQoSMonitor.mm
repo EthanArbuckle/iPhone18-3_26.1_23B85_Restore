@@ -1,19 +1,19 @@
 @interface AVCQoSMonitor
-- (AVCQoSMonitor)initWithStreamToken:(int64_t)a3 queue:(id)a4 error:(id *)a5;
-- (BOOL)generateInvalidStreamTokenWithError:(id *)a3;
-- (id)registerStreamToken:(int64_t)a3;
-- (int64_t)reportingIntervalForStreamToken:(int64_t)a3;
+- (AVCQoSMonitor)initWithStreamToken:(int64_t)token queue:(id)queue error:(id *)error;
+- (BOOL)generateInvalidStreamTokenWithError:(id *)error;
+- (id)registerStreamToken:(int64_t)token;
+- (int64_t)reportingIntervalForStreamToken:(int64_t)token;
 - (void)dealloc;
 - (void)deregisterBlocksForNotifications;
 - (void)registerBlocksForNotifications;
 - (void)requestQoSReport;
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 - (void)terminateConnection;
 @end
 
 @implementation AVCQoSMonitor
 
-- (AVCQoSMonitor)initWithStreamToken:(int64_t)a3 queue:(id)a4 error:(id *)a5
+- (AVCQoSMonitor)initWithStreamToken:(int64_t)token queue:(id)queue error:(id *)error
 {
   v44 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 6)
@@ -22,7 +22,7 @@
     v10 = *MEMORY[0x1E6986650];
     if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
     {
-      v11 = *a5;
+      v11 = *error;
       *buf = 136316418;
       v33 = v9;
       v34 = 2080;
@@ -30,9 +30,9 @@
       v36 = 1024;
       v37 = 48;
       v38 = 2048;
-      v39 = a3;
+      tokenCopy = token;
       v40 = 2112;
-      v41 = a4;
+      selfCopy = queue;
       v42 = 2112;
       v43 = v11;
       _os_log_impl(&dword_1DB56E000, v10, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d streamToken=%ld, queue=%@, error=%@", buf, 0x3Au);
@@ -54,7 +54,7 @@
         v36 = 1024;
         v37 = 49;
         v38 = 1024;
-        LODWORD(v39) = a3;
+        LODWORD(tokenCopy) = token;
         v15 = " [%s] %s:%d streamToken[%u]";
         v16 = v14;
         v17 = 34;
@@ -89,11 +89,11 @@ LABEL_14:
         v36 = 1024;
         v37 = 49;
         v38 = 2112;
-        v39 = v12;
+        tokenCopy = v12;
         v40 = 2048;
-        v41 = self;
+        selfCopy = self;
         v42 = 1024;
-        LODWORD(v43) = a3;
+        LODWORD(v43) = token;
         v15 = " [%s] %s:%d %@(%p) streamToken[%u]";
         v16 = v19;
         v17 = 54;
@@ -109,16 +109,16 @@ LABEL_14:
   {
     v20->_connection = objc_alloc_init(AVConferenceXPCClient);
     v30 = @"conferenceCallID";
-    v31 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+    v31 = [MEMORY[0x1E696AD98] numberWithInteger:token];
     v21 = -[AVConferenceXPCClient sendMessageSync:arguments:](v20->_connection, "sendMessageSync:arguments:", "vcQosMonitorInitializForStreamToken", [MEMORY[0x1E695DF20] dictionaryWithObjects:&v31 forKeys:&v30 count:1]);
     if (v21)
     {
       v22 = v21;
       v23 = objc_alloc(MEMORY[0x1E695DF70]);
-      v20->_registeredStreamTokens = [v23 initWithObjects:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInteger:", a3), 0}];
+      v20->_registeredStreamTokens = [v23 initWithObjects:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInteger:", token), 0}];
       v24 = objc_alloc(MEMORY[0x1E695DF90]);
       v25 = [v22 objectForKeyedSubscript:@"vcQoSReportingInterval"];
-      v20->_reportingIntervals = [v24 initWithObjectsAndKeys:{v25, objc_msgSend(MEMORY[0x1E696AD98], "numberWithInteger:", a3), 0}];
+      v20->_reportingIntervals = [v24 initWithObjectsAndKeys:{v25, objc_msgSend(MEMORY[0x1E696AD98], "numberWithInteger:", token), 0}];
       [(AVCQoSMonitor *)v20 registerBlocksForNotifications];
       if (VRTraceGetErrorLogLevelForModule() >= 6)
       {
@@ -133,7 +133,7 @@ LABEL_14:
           v36 = 1024;
           v37 = 62;
           v38 = 1024;
-          LODWORD(v39) = a3;
+          LODWORD(tokenCopy) = token;
           _os_log_impl(&dword_1DB56E000, v27, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d success streamToken=%u", buf, 0x22u);
         }
       }
@@ -150,7 +150,7 @@ LABEL_14:
         }
       }
 
-      [(AVCQoSMonitor *)v20 generateInvalidStreamTokenWithError:a5];
+      [(AVCQoSMonitor *)v20 generateInvalidStreamTokenWithError:error];
 
       return 0;
     }
@@ -193,7 +193,7 @@ LABEL_14:
   [(AVCQoSMonitor *)&v6 dealloc];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v15 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 6)
@@ -209,12 +209,12 @@ LABEL_14:
       v11 = 1024;
       v12 = 90;
       v13 = 2112;
-      v14 = a3;
+      delegateCopy = delegate;
       _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d delegate=%@", &v7, 0x26u);
     }
   }
 
-  objc_storeWeak(&self->_delegate, a3);
+  objc_storeWeak(&self->_delegate, delegate);
 }
 
 - (void)requestQoSReport
@@ -224,7 +224,7 @@ LABEL_14:
   OUTLINED_FUNCTION_2_1(&dword_1DB56E000, v0, v1, " [%s] %s:%d NOT YET IMPLEMENTED", v2, v3, v4, v5, v6);
 }
 
-- (id)registerStreamToken:(int64_t)a3
+- (id)registerStreamToken:(int64_t)token
 {
   v32 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 6)
@@ -240,7 +240,7 @@ LABEL_14:
       v24 = 1024;
       v25 = 103;
       v26 = 2048;
-      v27 = a3;
+      tokenCopy = token;
       _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d streamToken=%ld", buf, 0x26u);
     }
   }
@@ -260,7 +260,7 @@ LABEL_14:
         v24 = 1024;
         v25 = 104;
         v26 = 1024;
-        LODWORD(v27) = a3;
+        LODWORD(tokenCopy) = token;
         v10 = " [%s] %s:%d streamToken[%u]";
         v11 = v9;
         v12 = 34;
@@ -295,11 +295,11 @@ LABEL_14:
         v24 = 1024;
         v25 = 104;
         v26 = 2112;
-        v27 = v7;
+        tokenCopy = v7;
         v28 = 2048;
-        v29 = self;
+        selfCopy = self;
         v30 = 1024;
-        v31 = a3;
+        tokenCopy2 = token;
         v10 = " [%s] %s:%d %@(%p) streamToken[%u]";
         v11 = v14;
         v12 = 54;
@@ -309,14 +309,14 @@ LABEL_14:
   }
 
   *buf = 0;
-  v20 = [MEMORY[0x1E696AD98] numberWithInteger:{a3, @"conferenceCallID"}];
+  v20 = [MEMORY[0x1E696AD98] numberWithInteger:{token, @"conferenceCallID"}];
   v15 = -[AVConferenceXPCClient sendMessageSync:arguments:](self->_connection, "sendMessageSync:arguments:", "vcQosMonitorRegisterStreamToken", [MEMORY[0x1E695DF20] dictionaryWithObjects:&v20 forKeys:&v19 count:1]);
   if (v15)
   {
     v16 = v15;
-    -[NSMutableArray addObject:](self->_registeredStreamTokens, "addObject:", [MEMORY[0x1E696AD98] numberWithInteger:a3]);
+    -[NSMutableArray addObject:](self->_registeredStreamTokens, "addObject:", [MEMORY[0x1E696AD98] numberWithInteger:token]);
     v17 = [v16 objectForKeyedSubscript:@"vcQoSReportingInterval"];
-    -[NSMutableDictionary setObject:forKeyedSubscript:](self->_reportingIntervals, "setObject:forKeyedSubscript:", v17, [MEMORY[0x1E696AD98] numberWithInteger:a3]);
+    -[NSMutableDictionary setObject:forKeyedSubscript:](self->_reportingIntervals, "setObject:forKeyedSubscript:", v17, [MEMORY[0x1E696AD98] numberWithInteger:token]);
     return 0;
   }
 
@@ -336,7 +336,7 @@ LABEL_14:
   }
 }
 
-- (int64_t)reportingIntervalForStreamToken:(int64_t)a3
+- (int64_t)reportingIntervalForStreamToken:(int64_t)token
 {
   v16 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 6)
@@ -352,12 +352,12 @@ LABEL_14:
       v12 = 1024;
       v13 = 124;
       v14 = 2048;
-      v15 = a3;
+      tokenCopy = token;
       _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d streamToken=%ld", &v8, 0x26u);
     }
   }
 
-  return [-[NSMutableDictionary objectForKeyedSubscript:](self->_reportingIntervals objectForKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInteger:", a3)), "integerValue"}];
+  return [-[NSMutableDictionary objectForKeyedSubscript:](self->_reportingIntervals objectForKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInteger:", token)), "integerValue"}];
 }
 
 - (void)terminateConnection
@@ -567,11 +567,11 @@ void __47__AVCQoSMonitor_registerBlocksForNotifications__block_invoke_61(uint64_
   }
 }
 
-- (BOOL)generateInvalidStreamTokenWithError:(id *)a3
+- (BOOL)generateInvalidStreamTokenWithError:(id *)error
 {
   v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s:%d", "/Library/Caches/com.apple.xbs/Sources/AVConference/AVConference.subproj/Sources/AVCQoSMonitor.m", 214];
 
-  return [GKVoiceChatError getNSError:a3 code:32016 detailedCode:0 filePath:v4 description:@"Could not register QoS Monitor" reason:@"Invalid Stream Token"];
+  return [GKVoiceChatError getNSError:error code:32016 detailedCode:0 filePath:v4 description:@"Could not register QoS Monitor" reason:@"Invalid Stream Token"];
 }
 
 - (void)initWithStreamToken:queue:error:.cold.1()

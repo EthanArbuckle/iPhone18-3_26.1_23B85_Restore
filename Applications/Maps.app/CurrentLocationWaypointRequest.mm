@@ -1,63 +1,63 @@
 @interface CurrentLocationWaypointRequest
 - (CLLocationCoordinate2D)coordinate;
 - (CurrentLocationWaypointRequest)init;
-- (CurrentLocationWaypointRequest)initWithCurrentLocationTicket:(id)a3;
+- (CurrentLocationWaypointRequest)initWithCurrentLocationTicket:(id)ticket;
 - (NSString)debugDescription;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)loadComposedWaypointWithTraits:(id)a3 clientResolvedCompletionHandler:(id)a4 completionHandler:(id)a5 networkActivityHandler:(id)a6;
-- (id)waypointIconWithScale:(double)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)loadComposedWaypointWithTraits:(id)traits clientResolvedCompletionHandler:(id)handler completionHandler:(id)completionHandler networkActivityHandler:(id)activityHandler;
+- (id)waypointIconWithScale:(double)scale;
 - (void)dealloc;
-- (void)recordRAPInformation:(id)a3;
+- (void)recordRAPInformation:(id)information;
 @end
 
 @implementation CurrentLocationWaypointRequest
 
-- (void)recordRAPInformation:(id)a3
+- (void)recordRAPInformation:(id)information
 {
-  v10 = a3;
-  [v10 setOrigin:2];
-  v4 = [(CurrentLocationWaypointRequest *)self ticket];
-  v5 = [v4 currentLocation];
+  informationCopy = information;
+  [informationCopy setOrigin:2];
+  ticket = [(CurrentLocationWaypointRequest *)self ticket];
+  currentLocation = [ticket currentLocation];
 
-  if (v5)
+  if (currentLocation)
   {
     v6 = [GEOLatLng alloc];
-    [v5 coordinate];
+    [currentLocation coordinate];
     v8 = v7;
-    [v5 coordinate];
+    [currentLocation coordinate];
     v9 = [v6 initWithLatitude:v8 longitude:?];
-    [v10 setCoordinate:v9];
+    [informationCopy setCoordinate:v9];
   }
 }
 
-- (id)loadComposedWaypointWithTraits:(id)a3 clientResolvedCompletionHandler:(id)a4 completionHandler:(id)a5 networkActivityHandler:(id)a6
+- (id)loadComposedWaypointWithTraits:(id)traits clientResolvedCompletionHandler:(id)handler completionHandler:(id)completionHandler networkActivityHandler:(id)activityHandler
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a3;
-  v12 = [(CurrentLocationWaypointRequest *)self ticket];
-  [v12 submitWithTraits:v11 completionHandler:v10 networkActivityHandler:v9];
+  activityHandlerCopy = activityHandler;
+  completionHandlerCopy = completionHandler;
+  traitsCopy = traits;
+  ticket = [(CurrentLocationWaypointRequest *)self ticket];
+  [ticket submitWithTraits:traitsCopy completionHandler:completionHandlerCopy networkActivityHandler:activityHandlerCopy];
 
   return [(CurrentLocationWaypointRequest *)self ticket];
 }
 
-- (id)waypointIconWithScale:(double)a3
+- (id)waypointIconWithScale:(double)scale
 {
   v4 = +[GEOFeatureStyleAttributes currentLocationStyleAttributes];
-  v5 = [MKIconManager imageForStyle:v4 size:0 forScale:0 format:a3];
+  v5 = [MKIconManager imageForStyle:v4 size:0 forScale:0 format:scale];
 
   return v5;
 }
 
 - (CLLocationCoordinate2D)coordinate
 {
-  v2 = [(CurrentLocationWaypointRequest *)self ticket];
-  v3 = [v2 currentLocation];
+  ticket = [(CurrentLocationWaypointRequest *)self ticket];
+  currentLocation = [ticket currentLocation];
 
-  if (v3)
+  if (currentLocation)
   {
-    [v3 coordinate];
+    [currentLocation coordinate];
     latitude = v4;
     longitude = v6;
   }
@@ -77,7 +77,7 @@
 
 - (NSString)debugDescription
 {
-  v2 = self;
+  selfCopy = self;
   v14 = _NSConcreteStackBlock;
   v15 = 3221225472;
   v16 = sub_1007B49F0;
@@ -85,8 +85,8 @@
   v3 = objc_alloc_init(NSMutableArray);
   v18 = v3;
   v4 = objc_retainBlock(&v14);
-  [(CurrentLocationWaypointRequest *)v2 _maps_buildDescriptionWithBlock:v4];
-  v5 = v2;
+  [(CurrentLocationWaypointRequest *)selfCopy _maps_buildDescriptionWithBlock:v4];
+  v5 = selfCopy;
   if (v5)
   {
     v6 = objc_opt_class();
@@ -120,7 +120,7 @@ LABEL_9:
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   v14 = _NSConcreteStackBlock;
   v15 = 3221225472;
   v16 = sub_1007B4C40;
@@ -128,8 +128,8 @@ LABEL_9:
   v3 = objc_alloc_init(NSMutableArray);
   v18 = v3;
   v4 = objc_retainBlock(&v14);
-  [(CurrentLocationWaypointRequest *)v2 _maps_buildDescriptionWithBlock:v4];
-  v5 = v2;
+  [(CurrentLocationWaypointRequest *)selfCopy _maps_buildDescriptionWithBlock:v4];
+  v5 = selfCopy;
   if (v5)
   {
     v6 = objc_opt_class();
@@ -161,14 +161,14 @@ LABEL_9:
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [CurrentLocationMapServiceTicket alloc];
-  v6 = [(CurrentLocationWaypointRequest *)self ticket];
-  v7 = [v6 locationManager];
-  v8 = [(CurrentLocationMapServiceTicket *)v5 initWithLocationManager:v7];
+  ticket = [(CurrentLocationWaypointRequest *)self ticket];
+  locationManager = [ticket locationManager];
+  v8 = [(CurrentLocationMapServiceTicket *)v5 initWithLocationManager:locationManager];
 
-  v9 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "initWithCurrentLocationTicket:", v8}];
+  v9 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "initWithCurrentLocationTicket:", v8}];
   return v9;
 }
 
@@ -178,7 +178,7 @@ LABEL_9:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     *buf = 134349056;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}p] Deallocating", buf, 0xCu);
   }
 
@@ -197,9 +197,9 @@ LABEL_9:
   return v6;
 }
 
-- (CurrentLocationWaypointRequest)initWithCurrentLocationTicket:(id)a3
+- (CurrentLocationWaypointRequest)initWithCurrentLocationTicket:(id)ticket
 {
-  v5 = a3;
+  ticketCopy = ticket;
   v9.receiver = self;
   v9.super_class = CurrentLocationWaypointRequest;
   v6 = [(CurrentLocationWaypointRequest *)&v9 init];
@@ -211,11 +211,11 @@ LABEL_9:
       *buf = 134349314;
       v11 = v6;
       v12 = 2112;
-      v13 = v5;
+      v13 = ticketCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "[%{public}p] Initiailizing with ticket: %@", buf, 0x16u);
     }
 
-    objc_storeStrong(&v6->_ticket, a3);
+    objc_storeStrong(&v6->_ticket, ticket);
   }
 
   return v6;

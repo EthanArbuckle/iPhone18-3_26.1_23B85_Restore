@@ -1,45 +1,45 @@
 @interface CLTileSyncDelegate
-- (BOOL)service:(id)a3 startSession:(id)a4 error:(id *)a5;
-- (BOOL)syncSession:(id)a3 resetDataStoreWithError:(id *)a4;
-- (CLTileSyncDelegate)initWithSyncManager:(void *)a3 silo:(id)a4;
-- (unsigned)syncSession:(id)a3 enqueueChanges:(id)a4 error:(id *)a5;
-- (void)initialSyncStateObserver:(id)a3 initialSyncDidCompleteForPairingIdentifier:(id)a4;
-- (void)initialSyncStateObserver:(id)a3 syncDidCompleteForPairingIdentifier:(id)a4;
-- (void)initialSyncStateObserver:(id)a3 syncDidResetForPairingIdentifier:(id)a4;
-- (void)initialSyncStateObserverClientCanRetryFailedRequests:(id)a3;
-- (void)service:(id)a3 didSwitchFromPairingID:(id)a4 toPairingID:(id)a5;
-- (void)service:(id)a3 encounteredError:(id)a4 context:(id)a5;
-- (void)service:(id)a3 sessionEnded:(id)a4 error:(id)a5;
-- (void)service:(id)a3 willSwitchFromPairingID:(id)a4 toPairingID:(id)a5;
-- (void)serviceDidPairDevice:(id)a3;
-- (void)serviceDidUnpairDevice:(id)a3;
-- (void)syncCoordinator:(id)a3 beginSyncSession:(id)a4;
-- (void)syncCoordinator:(id)a3 didInvalidateSyncSession:(id)a4;
-- (void)syncCoordinatorDidChangeSyncRestriction:(id)a3;
-- (void)syncSession:(id)a3 applyChanges:(id)a4 completion:(id)a5;
-- (void)syncSession:(id)a3 didEndWithError:(id)a4;
+- (BOOL)service:(id)service startSession:(id)session error:(id *)error;
+- (BOOL)syncSession:(id)session resetDataStoreWithError:(id *)error;
+- (CLTileSyncDelegate)initWithSyncManager:(void *)manager silo:(id)silo;
+- (unsigned)syncSession:(id)session enqueueChanges:(id)changes error:(id *)error;
+- (void)initialSyncStateObserver:(id)observer initialSyncDidCompleteForPairingIdentifier:(id)identifier;
+- (void)initialSyncStateObserver:(id)observer syncDidCompleteForPairingIdentifier:(id)identifier;
+- (void)initialSyncStateObserver:(id)observer syncDidResetForPairingIdentifier:(id)identifier;
+- (void)initialSyncStateObserverClientCanRetryFailedRequests:(id)requests;
+- (void)service:(id)service didSwitchFromPairingID:(id)d toPairingID:(id)iD;
+- (void)service:(id)service encounteredError:(id)error context:(id)context;
+- (void)service:(id)service sessionEnded:(id)ended error:(id)error;
+- (void)service:(id)service willSwitchFromPairingID:(id)d toPairingID:(id)iD;
+- (void)serviceDidPairDevice:(id)device;
+- (void)serviceDidUnpairDevice:(id)device;
+- (void)syncCoordinator:(id)coordinator beginSyncSession:(id)session;
+- (void)syncCoordinator:(id)coordinator didInvalidateSyncSession:(id)session;
+- (void)syncCoordinatorDidChangeSyncRestriction:(id)restriction;
+- (void)syncSession:(id)session applyChanges:(id)changes completion:(id)completion;
+- (void)syncSession:(id)session didEndWithError:(id)error;
 @end
 
 @implementation CLTileSyncDelegate
 
-- (CLTileSyncDelegate)initWithSyncManager:(void *)a3 silo:(id)a4
+- (CLTileSyncDelegate)initWithSyncManager:(void *)manager silo:(id)silo
 {
   v7.receiver = self;
   v7.super_class = CLTileSyncDelegate;
   result = [(CLTileSyncDelegate *)&v7 init];
   if (result)
   {
-    result->fManager = a3;
-    result->fSilo = a4;
+    result->fManager = manager;
+    result->fSilo = silo;
     result->fPsSession = 0;
   }
 
   return result;
 }
 
-- (BOOL)service:(id)a3 startSession:(id)a4 error:(id *)a5
+- (BOOL)service:(id)service startSession:(id)session error:(id *)error
 {
-  v7 = sub_100465BE8(self->fManager, [a4 sessionMetadata]);
+  v7 = sub_100465BE8(self->fManager, [session sessionMetadata]);
   v8 = *(self->fManager + 160);
   if (v8 == 82 || v8 == 73)
   {
@@ -51,13 +51,13 @@
     v10 = 900.0;
   }
 
-  [a4 setMaxConcurrentMessages:1];
-  [a4 setDelegate:self];
-  [a4 setSerializer:objc_alloc_init(CLTileSyncSySerializer)];
-  [a4 setTargetQueue:{-[CLSilo queue](self->fSilo, "queue")}];
-  [a4 setSessionMetadata:v7];
-  [a4 setPerMessageTimeout:450.0];
-  [a4 setFullSessionTimeout:v10];
+  [session setMaxConcurrentMessages:1];
+  [session setDelegate:self];
+  [session setSerializer:objc_alloc_init(CLTileSyncSySerializer)];
+  [session setTargetQueue:{-[CLSilo queue](self->fSilo, "queue")}];
+  [session setSessionMetadata:v7];
+  [session setPerMessageTimeout:450.0];
+  [session setFullSessionTimeout:v10];
   if (qword_1025D4630 != -1)
   {
     sub_101886EF8();
@@ -79,7 +79,7 @@
   return 1;
 }
 
-- (void)service:(id)a3 sessionEnded:(id)a4 error:(id)a5
+- (void)service:(id)service sessionEnded:(id)ended error:(id)error
 {
   if (qword_1025D4630 != -1)
   {
@@ -99,7 +99,7 @@
   }
 }
 
-- (void)serviceDidPairDevice:(id)a3
+- (void)serviceDidPairDevice:(id)device
 {
   if (qword_1025D4630 != -1)
   {
@@ -121,7 +121,7 @@
   }
 }
 
-- (void)serviceDidUnpairDevice:(id)a3
+- (void)serviceDidUnpairDevice:(id)device
 {
   if (qword_1025D4630 != -1)
   {
@@ -143,9 +143,9 @@
   }
 }
 
-- (void)service:(id)a3 encounteredError:(id)a4 context:(id)a5
+- (void)service:(id)service encounteredError:(id)error context:(id)context
 {
-  v7 = [objc_msgSend(a4 userInfo];
+  userInfo = [objc_msgSend(error userInfo];
   if (qword_1025D4630 != -1)
   {
     sub_101886EF8();
@@ -155,9 +155,9 @@
   if (os_log_type_enabled(qword_1025D4638, OS_LOG_TYPE_INFO))
   {
     v9 = 136446466;
-    v10 = [objc_msgSend(a4 "localizedDescription")];
+    v10 = [objc_msgSend(error "localizedDescription")];
     v11 = 2082;
-    v12 = [objc_msgSend(v7 "localizedDescription")];
+    v12 = [objc_msgSend(userInfo "localizedDescription")];
     _os_log_impl(dword_100000000, v8, OS_LOG_TYPE_INFO, "@GtsSync, CsError, 2, service, %{public}s, underlying, %{public}s", &v9, 0x16u);
   }
 
@@ -169,10 +169,10 @@
   sub_1004660C0(self->fManager);
 }
 
-- (unsigned)syncSession:(id)a3 enqueueChanges:(id)a4 error:(id *)a5
+- (unsigned)syncSession:(id)session enqueueChanges:(id)changes error:(id *)error
 {
-  v7 = sub_1004662F8(self->fManager, [a3 sessionMetadata]);
-  if (v7 & 1) == 0 || ((*(a4 + 2))(a4, *(self->fManager + 3)))
+  v7 = sub_1004662F8(self->fManager, [session sessionMetadata]);
+  if (v7 & 1) == 0 || ((*(changes + 2))(changes, *(self->fManager + 3)))
   {
     goto LABEL_8;
   }
@@ -228,7 +228,7 @@ LABEL_8:
   return v9;
 }
 
-- (void)syncSession:(id)a3 applyChanges:(id)a4 completion:(id)a5
+- (void)syncSession:(id)session applyChanges:(id)changes completion:(id)completion
 {
   if (qword_1025D4630 != -1)
   {
@@ -239,7 +239,7 @@ LABEL_8:
   if (os_log_type_enabled(qword_1025D4638, OS_LOG_TYPE_INFO))
   {
     v11 = 134349056;
-    v12 = [a4 count];
+    v12 = [changes count];
     _os_log_impl(dword_100000000, v8, OS_LOG_TYPE_INFO, "@GtsSync, CsSession, applyChanges, %{public}lu\n", &v11, 0xCu);
   }
 
@@ -248,7 +248,7 @@ LABEL_8:
     sub_101887A54();
   }
 
-  if ([a4 count] >= 2)
+  if ([changes count] >= 2)
   {
     if (qword_1025D4630 != -1)
     {
@@ -258,7 +258,7 @@ LABEL_8:
     v9 = qword_1025D4638;
     if (os_log_type_enabled(qword_1025D4638, OS_LOG_TYPE_ERROR))
     {
-      v10 = [a4 count];
+      v10 = [changes count];
       v11 = 134349056;
       v12 = v10;
       _os_log_impl(dword_100000000, v9, OS_LOG_TYPE_ERROR, "@GtsSync, CsSession, More than 1 incoming change, %{public}lu, #CloneMe", &v11, 0xCu);
@@ -270,16 +270,16 @@ LABEL_8:
     }
   }
 
-  sub_100466570(self->fManager, [a4 objectAtIndexedSubscript:0]);
-  (*(a5 + 2))(a5, 1, 0);
+  sub_100466570(self->fManager, [changes objectAtIndexedSubscript:0]);
+  (*(completion + 2))(completion, 1, 0);
 }
 
-- (void)syncSession:(id)a3 didEndWithError:(id)a4
+- (void)syncSession:(id)session didEndWithError:(id)error
 {
-  v6 = [objc_msgSend(a4 userInfo];
-  if (a4)
+  userInfo = [objc_msgSend(error userInfo];
+  if (error)
   {
-    v7 = v6;
+    v7 = userInfo;
     if (qword_1025D4630 != -1)
     {
       sub_101886EF8();
@@ -289,7 +289,7 @@ LABEL_8:
     if (os_log_type_enabled(qword_1025D4638, OS_LOG_TYPE_INFO))
     {
       v12 = 136446466;
-      *v13 = [objc_msgSend(a4 "localizedDescription")];
+      *v13 = [objc_msgSend(error "localizedDescription")];
       *&v13[8] = 2082;
       v14 = [objc_msgSend(v7 "localizedDescription")];
       _os_log_impl(dword_100000000, v8, OS_LOG_TYPE_INFO, "@GtsSync, CsError, 0, didEndWithError, %{public}s, underlying, %{public}s", &v12, 0x16u);
@@ -301,7 +301,7 @@ LABEL_8:
     }
   }
 
-  v9 = sub_100466B38(self->fManager, a4 != 0);
+  v9 = sub_100466B38(self->fManager, error != 0);
   if (qword_1025D4630 != -1)
   {
     sub_101887948();
@@ -311,7 +311,7 @@ LABEL_8:
   if (os_log_type_enabled(qword_1025D4638, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 67240448;
-    *v13 = a4 != 0;
+    *v13 = error != 0;
     *&v13[4] = 1026;
     *&v13[6] = v9;
     _os_log_impl(dword_100000000, v10, OS_LOG_TYPE_DEFAULT, "@GtsFlow, CS, sessionDidEnd, 5, error, %{public}d, synctrap, %{public}d", &v12, 0xEu);
@@ -319,7 +319,7 @@ LABEL_8:
 
   if (sub_10000A100(121, 2))
   {
-    sub_101888028((a4 != 0), v9);
+    sub_101888028((error != 0), v9);
     if (!v9)
     {
       return;
@@ -351,7 +351,7 @@ LABEL_8:
   [(PSYServiceSyncSession *)self->fPsSession syncDidComplete];
 }
 
-- (BOOL)syncSession:(id)a3 resetDataStoreWithError:(id *)a4
+- (BOOL)syncSession:(id)session resetDataStoreWithError:(id *)error
 {
   if (qword_1025D4630 != -1)
   {
@@ -373,7 +373,7 @@ LABEL_8:
   return 1;
 }
 
-- (void)service:(id)a3 willSwitchFromPairingID:(id)a4 toPairingID:(id)a5
+- (void)service:(id)service willSwitchFromPairingID:(id)d toPairingID:(id)iD
 {
   if (qword_1025D4630 != -1)
   {
@@ -384,9 +384,9 @@ LABEL_8:
   if (os_log_type_enabled(qword_1025D4638, OS_LOG_TYPE_INFO))
   {
     v9 = 136446466;
-    v10 = [objc_msgSend(a4 "UUIDString")];
+    v10 = [objc_msgSend(d "UUIDString")];
     v11 = 2082;
-    v12 = [objc_msgSend(a5 "UUIDString")];
+    v12 = [objc_msgSend(iD "UUIDString")];
     _os_log_impl(dword_100000000, v8, OS_LOG_TYPE_INFO, "@GtsSync, CsService, willSwitchPairing, old, %{public}s, new, %{public}s", &v9, 0x16u);
   }
 
@@ -395,10 +395,10 @@ LABEL_8:
     sub_1018882E4();
   }
 
-  sub_100467074(self->fManager, a5);
+  sub_100467074(self->fManager, iD);
 }
 
-- (void)service:(id)a3 didSwitchFromPairingID:(id)a4 toPairingID:(id)a5
+- (void)service:(id)service didSwitchFromPairingID:(id)d toPairingID:(id)iD
 {
   if (qword_1025D4630 != -1)
   {
@@ -409,9 +409,9 @@ LABEL_8:
   if (os_log_type_enabled(qword_1025D4638, OS_LOG_TYPE_INFO))
   {
     v9 = 136446466;
-    v10 = [objc_msgSend(a4 "UUIDString")];
+    v10 = [objc_msgSend(d "UUIDString")];
     v11 = 2082;
-    v12 = [objc_msgSend(a5 "UUIDString")];
+    v12 = [objc_msgSend(iD "UUIDString")];
     _os_log_impl(dword_100000000, v8, OS_LOG_TYPE_INFO, "@GtsSync, CsService, didSwitchPairing, old, %{public}s, new, %{public}s", &v9, 0x16u);
   }
 
@@ -420,14 +420,14 @@ LABEL_8:
     sub_10188852C();
   }
 
-  sub_1004672D8(self->fManager, a4 == 0, a5 == 0);
+  sub_1004672D8(self->fManager, d == 0, iD == 0);
 }
 
-- (void)syncCoordinator:(id)a3 beginSyncSession:(id)a4
+- (void)syncCoordinator:(id)coordinator beginSyncSession:(id)session
 {
-  v7 = a4;
+  sessionCopy = session;
 
-  self->fPsSession = a4;
+  self->fPsSession = session;
   if (qword_1025D4630 != -1)
   {
     sub_101886EF8();
@@ -437,7 +437,7 @@ LABEL_8:
   if (os_log_type_enabled(qword_1025D4638, OS_LOG_TYPE_INFO))
   {
     *buf = 134349056;
-    v12 = [objc_msgSend(a3 "activeSyncSession")];
+    v12 = [objc_msgSend(coordinator "activeSyncSession")];
     _os_log_impl(dword_100000000, v8, OS_LOG_TYPE_INFO, "@GtsSync, PsCoord, beginSyncSession, %{public}lu", buf, 0xCu);
   }
 
@@ -451,12 +451,12 @@ LABEL_8:
   v10[1] = 3221225472;
   v10[2] = sub_100467718;
   v10[3] = &unk_1024473F0;
-  v10[4] = a3;
+  v10[4] = coordinator;
   v10[5] = self;
   [(CLSilo *)fSilo sync:v10];
 }
 
-- (void)syncCoordinator:(id)a3 didInvalidateSyncSession:(id)a4
+- (void)syncCoordinator:(id)coordinator didInvalidateSyncSession:(id)session
 {
   if (qword_1025D4630 != -1)
   {
@@ -467,13 +467,13 @@ LABEL_8:
   if (os_log_type_enabled(qword_1025D4638, OS_LOG_TYPE_INFO))
   {
     v9 = 67240192;
-    v10 = [a4 syncSessionType];
+    syncSessionType = [session syncSessionType];
     _os_log_impl(dword_100000000, v6, OS_LOG_TYPE_INFO, "@GtsSync, PsCoord, didInvalidateSyncSession, %{public}d", &v9, 8u);
   }
 
   if (sub_10000A100(121, 2))
   {
-    sub_101888AEC(a4);
+    sub_101888AEC(session);
   }
 
   if (qword_1025D4630 != -1)
@@ -484,19 +484,19 @@ LABEL_8:
   v7 = qword_1025D4638;
   if (os_log_type_enabled(qword_1025D4638, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [a3 syncRestriction];
+    syncRestriction = [coordinator syncRestriction];
     v9 = 67240192;
-    v10 = v8;
+    syncSessionType = syncRestriction;
     _os_log_impl(dword_100000000, v7, OS_LOG_TYPE_DEFAULT, "@GtsFlow, PS, didInvalidateSession, 3, restriction, %{public}d", &v9, 8u);
   }
 
   if (sub_10000A100(121, 2))
   {
-    sub_101888BE4(a3);
+    sub_101888BE4(coordinator);
   }
 }
 
-- (void)syncCoordinatorDidChangeSyncRestriction:(id)a3
+- (void)syncCoordinatorDidChangeSyncRestriction:(id)restriction
 {
   if (qword_1025D4630 != -1)
   {
@@ -507,13 +507,13 @@ LABEL_8:
   if (os_log_type_enabled(qword_1025D4638, OS_LOG_TYPE_INFO))
   {
     *buf = 67240192;
-    v9 = [a3 syncRestriction];
+    syncRestriction = [restriction syncRestriction];
     _os_log_impl(dword_100000000, v5, OS_LOG_TYPE_INFO, "@GtsSync, PsCoord, syncCoordinatorDidChangeSyncRestriction, %{public}d", buf, 8u);
   }
 
   if (sub_10000A100(121, 2))
   {
-    sub_101888CDC(a3);
+    sub_101888CDC(restriction);
   }
 
   fSilo = self->fSilo;
@@ -521,12 +521,12 @@ LABEL_8:
   v7[1] = 3221225472;
   v7[2] = sub_1004680B0;
   v7[3] = &unk_1024473F0;
-  v7[4] = a3;
+  v7[4] = restriction;
   v7[5] = self;
   [(CLSilo *)fSilo sync:v7];
 }
 
-- (void)initialSyncStateObserver:(id)a3 initialSyncDidCompleteForPairingIdentifier:(id)a4
+- (void)initialSyncStateObserver:(id)observer initialSyncDidCompleteForPairingIdentifier:(id)identifier
 {
   if (qword_1025D4630 != -1)
   {
@@ -546,7 +546,7 @@ LABEL_8:
   }
 }
 
-- (void)initialSyncStateObserver:(id)a3 syncDidCompleteForPairingIdentifier:(id)a4
+- (void)initialSyncStateObserver:(id)observer syncDidCompleteForPairingIdentifier:(id)identifier
 {
   if (qword_1025D4630 != -1)
   {
@@ -591,7 +591,7 @@ LABEL_8:
   [(CLSilo *)fSilo sync:v8];
 }
 
-- (void)initialSyncStateObserver:(id)a3 syncDidResetForPairingIdentifier:(id)a4
+- (void)initialSyncStateObserver:(id)observer syncDidResetForPairingIdentifier:(id)identifier
 {
   if (qword_1025D4630 != -1)
   {
@@ -611,7 +611,7 @@ LABEL_8:
   }
 }
 
-- (void)initialSyncStateObserverClientCanRetryFailedRequests:(id)a3
+- (void)initialSyncStateObserverClientCanRetryFailedRequests:(id)requests
 {
   if (qword_1025D4630 != -1)
   {

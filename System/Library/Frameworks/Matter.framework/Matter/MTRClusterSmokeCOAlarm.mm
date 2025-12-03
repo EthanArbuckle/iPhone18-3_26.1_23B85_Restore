@@ -1,240 +1,240 @@
 @interface MTRClusterSmokeCOAlarm
-- (id)readAttributeAcceptedCommandListWithParams:(id)a3;
-- (id)readAttributeAttributeListWithParams:(id)a3;
-- (id)readAttributeBatteryAlertWithParams:(id)a3;
-- (id)readAttributeCOStateWithParams:(id)a3;
-- (id)readAttributeClusterRevisionWithParams:(id)a3;
-- (id)readAttributeContaminationStateWithParams:(id)a3;
-- (id)readAttributeDeviceMutedWithParams:(id)a3;
-- (id)readAttributeEndOfServiceAlertWithParams:(id)a3;
-- (id)readAttributeExpiryDateWithParams:(id)a3;
-- (id)readAttributeExpressedStateWithParams:(id)a3;
-- (id)readAttributeFeatureMapWithParams:(id)a3;
-- (id)readAttributeGeneratedCommandListWithParams:(id)a3;
-- (id)readAttributeHardwareFaultAlertWithParams:(id)a3;
-- (id)readAttributeInterconnectCOAlarmWithParams:(id)a3;
-- (id)readAttributeInterconnectSmokeAlarmWithParams:(id)a3;
-- (id)readAttributeSmokeSensitivityLevelWithParams:(id)a3;
-- (id)readAttributeSmokeStateWithParams:(id)a3;
-- (id)readAttributeTestInProgressWithParams:(id)a3;
-- (void)selfTestRequestWithParams:(id)a3 expectedValues:(id)a4 expectedValueInterval:(id)a5 completion:(id)a6;
-- (void)writeAttributeSmokeSensitivityLevelWithValue:(id)a3 expectedValueInterval:(id)a4 params:(id)a5;
+- (id)readAttributeAcceptedCommandListWithParams:(id)params;
+- (id)readAttributeAttributeListWithParams:(id)params;
+- (id)readAttributeBatteryAlertWithParams:(id)params;
+- (id)readAttributeCOStateWithParams:(id)params;
+- (id)readAttributeClusterRevisionWithParams:(id)params;
+- (id)readAttributeContaminationStateWithParams:(id)params;
+- (id)readAttributeDeviceMutedWithParams:(id)params;
+- (id)readAttributeEndOfServiceAlertWithParams:(id)params;
+- (id)readAttributeExpiryDateWithParams:(id)params;
+- (id)readAttributeExpressedStateWithParams:(id)params;
+- (id)readAttributeFeatureMapWithParams:(id)params;
+- (id)readAttributeGeneratedCommandListWithParams:(id)params;
+- (id)readAttributeHardwareFaultAlertWithParams:(id)params;
+- (id)readAttributeInterconnectCOAlarmWithParams:(id)params;
+- (id)readAttributeInterconnectSmokeAlarmWithParams:(id)params;
+- (id)readAttributeSmokeSensitivityLevelWithParams:(id)params;
+- (id)readAttributeSmokeStateWithParams:(id)params;
+- (id)readAttributeTestInProgressWithParams:(id)params;
+- (void)selfTestRequestWithParams:(id)params expectedValues:(id)values expectedValueInterval:(id)interval completion:(id)completion;
+- (void)writeAttributeSmokeSensitivityLevelWithValue:(id)value expectedValueInterval:(id)interval params:(id)params;
 @end
 
 @implementation MTRClusterSmokeCOAlarm
 
-- (void)selfTestRequestWithParams:(id)a3 expectedValues:(id)a4 expectedValueInterval:(id)a5 completion:(id)a6
+- (void)selfTestRequestWithParams:(id)params expectedValues:(id)values expectedValueInterval:(id)interval completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!v10)
+  paramsCopy = params;
+  valuesCopy = values;
+  intervalCopy = interval;
+  completionCopy = completion;
+  if (!paramsCopy)
   {
-    v10 = objc_alloc_init(MTRSmokeCOAlarmClusterSelfTestRequestParams);
+    paramsCopy = objc_alloc_init(MTRSmokeCOAlarmClusterSelfTestRequestParams);
   }
 
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = sub_2393113A0;
   v21[3] = &unk_278A73118;
-  v14 = v13;
+  v14 = completionCopy;
   v22 = v14;
   v15 = MEMORY[0x23EE78590](v21);
-  v16 = [(MTRSmokeCOAlarmClusterSelfTestRequestParams *)v10 timedInvokeTimeoutMs];
-  v17 = [(MTRGenericCluster *)self device];
-  v18 = [(MTRCluster *)self endpointID];
-  v19 = [(MTRSmokeCOAlarmClusterSelfTestRequestParams *)v10 serverSideProcessingTimeout];
-  v20 = [(MTRCluster *)self callbackQueue];
-  [v17 _invokeKnownCommandWithEndpointID:v18 clusterID:&unk_284C423B0 commandID:&unk_284C41660 commandPayload:v10 expectedValues:v11 expectedValueInterval:v12 timedInvokeTimeout:v16 serverSideProcessingTimeout:v19 responseClass:0 queue:v20 completion:v15];
+  timedInvokeTimeoutMs = [(MTRSmokeCOAlarmClusterSelfTestRequestParams *)paramsCopy timedInvokeTimeoutMs];
+  device = [(MTRGenericCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  serverSideProcessingTimeout = [(MTRSmokeCOAlarmClusterSelfTestRequestParams *)paramsCopy serverSideProcessingTimeout];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _invokeKnownCommandWithEndpointID:endpointID clusterID:&unk_284C423B0 commandID:&unk_284C41660 commandPayload:paramsCopy expectedValues:valuesCopy expectedValueInterval:intervalCopy timedInvokeTimeout:timedInvokeTimeoutMs serverSideProcessingTimeout:serverSideProcessingTimeout responseClass:0 queue:callbackQueue completion:v15];
 }
 
-- (id)readAttributeExpressedStateWithParams:(id)a3
+- (id)readAttributeExpressedStateWithParams:(id)params
 {
-  v4 = a3;
-  v5 = [(MTRGenericCluster *)self device];
-  v6 = [(MTRCluster *)self endpointID];
-  v7 = [v5 readAttributeWithEndpointID:v6 clusterID:&unk_284C423C8 attributeID:&unk_284C416A8 params:v4];
+  paramsCopy = params;
+  device = [(MTRGenericCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  v7 = [device readAttributeWithEndpointID:endpointID clusterID:&unk_284C423C8 attributeID:&unk_284C416A8 params:paramsCopy];
 
   return v7;
 }
 
-- (id)readAttributeSmokeStateWithParams:(id)a3
+- (id)readAttributeSmokeStateWithParams:(id)params
 {
-  v4 = a3;
-  v5 = [(MTRGenericCluster *)self device];
-  v6 = [(MTRCluster *)self endpointID];
-  v7 = [v5 readAttributeWithEndpointID:v6 clusterID:&unk_284C423C8 attributeID:&unk_284C416C0 params:v4];
+  paramsCopy = params;
+  device = [(MTRGenericCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  v7 = [device readAttributeWithEndpointID:endpointID clusterID:&unk_284C423C8 attributeID:&unk_284C416C0 params:paramsCopy];
 
   return v7;
 }
 
-- (id)readAttributeCOStateWithParams:(id)a3
+- (id)readAttributeCOStateWithParams:(id)params
 {
-  v4 = a3;
-  v5 = [(MTRGenericCluster *)self device];
-  v6 = [(MTRCluster *)self endpointID];
-  v7 = [v5 readAttributeWithEndpointID:v6 clusterID:&unk_284C423C8 attributeID:&unk_284C41930 params:v4];
+  paramsCopy = params;
+  device = [(MTRGenericCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  v7 = [device readAttributeWithEndpointID:endpointID clusterID:&unk_284C423C8 attributeID:&unk_284C41930 params:paramsCopy];
 
   return v7;
 }
 
-- (id)readAttributeBatteryAlertWithParams:(id)a3
+- (id)readAttributeBatteryAlertWithParams:(id)params
 {
-  v4 = a3;
-  v5 = [(MTRGenericCluster *)self device];
-  v6 = [(MTRCluster *)self endpointID];
-  v7 = [v5 readAttributeWithEndpointID:v6 clusterID:&unk_284C423C8 attributeID:&unk_284C41690 params:v4];
+  paramsCopy = params;
+  device = [(MTRGenericCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  v7 = [device readAttributeWithEndpointID:endpointID clusterID:&unk_284C423C8 attributeID:&unk_284C41690 params:paramsCopy];
 
   return v7;
 }
 
-- (id)readAttributeDeviceMutedWithParams:(id)a3
+- (id)readAttributeDeviceMutedWithParams:(id)params
 {
-  v4 = a3;
-  v5 = [(MTRGenericCluster *)self device];
-  v6 = [(MTRCluster *)self endpointID];
-  v7 = [v5 readAttributeWithEndpointID:v6 clusterID:&unk_284C423C8 attributeID:&unk_284C417E0 params:v4];
+  paramsCopy = params;
+  device = [(MTRGenericCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  v7 = [device readAttributeWithEndpointID:endpointID clusterID:&unk_284C423C8 attributeID:&unk_284C417E0 params:paramsCopy];
 
   return v7;
 }
 
-- (id)readAttributeTestInProgressWithParams:(id)a3
+- (id)readAttributeTestInProgressWithParams:(id)params
 {
-  v4 = a3;
-  v5 = [(MTRGenericCluster *)self device];
-  v6 = [(MTRCluster *)self endpointID];
-  v7 = [v5 readAttributeWithEndpointID:v6 clusterID:&unk_284C423C8 attributeID:&unk_284C41948 params:v4];
+  paramsCopy = params;
+  device = [(MTRGenericCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  v7 = [device readAttributeWithEndpointID:endpointID clusterID:&unk_284C423C8 attributeID:&unk_284C41948 params:paramsCopy];
 
   return v7;
 }
 
-- (id)readAttributeHardwareFaultAlertWithParams:(id)a3
+- (id)readAttributeHardwareFaultAlertWithParams:(id)params
 {
-  v4 = a3;
-  v5 = [(MTRGenericCluster *)self device];
-  v6 = [(MTRCluster *)self endpointID];
-  v7 = [v5 readAttributeWithEndpointID:v6 clusterID:&unk_284C423C8 attributeID:&unk_284C41840 params:v4];
+  paramsCopy = params;
+  device = [(MTRGenericCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  v7 = [device readAttributeWithEndpointID:endpointID clusterID:&unk_284C423C8 attributeID:&unk_284C41840 params:paramsCopy];
 
   return v7;
 }
 
-- (id)readAttributeEndOfServiceAlertWithParams:(id)a3
+- (id)readAttributeEndOfServiceAlertWithParams:(id)params
 {
-  v4 = a3;
-  v5 = [(MTRGenericCluster *)self device];
-  v6 = [(MTRCluster *)self endpointID];
-  v7 = [v5 readAttributeWithEndpointID:v6 clusterID:&unk_284C423C8 attributeID:&unk_284C41B10 params:v4];
+  paramsCopy = params;
+  device = [(MTRGenericCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  v7 = [device readAttributeWithEndpointID:endpointID clusterID:&unk_284C423C8 attributeID:&unk_284C41B10 params:paramsCopy];
 
   return v7;
 }
 
-- (id)readAttributeInterconnectSmokeAlarmWithParams:(id)a3
+- (id)readAttributeInterconnectSmokeAlarmWithParams:(id)params
 {
-  v4 = a3;
-  v5 = [(MTRGenericCluster *)self device];
-  v6 = [(MTRCluster *)self endpointID];
-  v7 = [v5 readAttributeWithEndpointID:v6 clusterID:&unk_284C423C8 attributeID:&unk_284C41918 params:v4];
+  paramsCopy = params;
+  device = [(MTRGenericCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  v7 = [device readAttributeWithEndpointID:endpointID clusterID:&unk_284C423C8 attributeID:&unk_284C41918 params:paramsCopy];
 
   return v7;
 }
 
-- (id)readAttributeInterconnectCOAlarmWithParams:(id)a3
+- (id)readAttributeInterconnectCOAlarmWithParams:(id)params
 {
-  v4 = a3;
-  v5 = [(MTRGenericCluster *)self device];
-  v6 = [(MTRCluster *)self endpointID];
-  v7 = [v5 readAttributeWithEndpointID:v6 clusterID:&unk_284C423C8 attributeID:&unk_284C41B28 params:v4];
+  paramsCopy = params;
+  device = [(MTRGenericCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  v7 = [device readAttributeWithEndpointID:endpointID clusterID:&unk_284C423C8 attributeID:&unk_284C41B28 params:paramsCopy];
 
   return v7;
 }
 
-- (id)readAttributeContaminationStateWithParams:(id)a3
+- (id)readAttributeContaminationStateWithParams:(id)params
 {
-  v4 = a3;
-  v5 = [(MTRGenericCluster *)self device];
-  v6 = [(MTRCluster *)self endpointID];
-  v7 = [v5 readAttributeWithEndpointID:v6 clusterID:&unk_284C423C8 attributeID:&unk_284C41B40 params:v4];
+  paramsCopy = params;
+  device = [(MTRGenericCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  v7 = [device readAttributeWithEndpointID:endpointID clusterID:&unk_284C423C8 attributeID:&unk_284C41B40 params:paramsCopy];
 
   return v7;
 }
 
-- (id)readAttributeSmokeSensitivityLevelWithParams:(id)a3
+- (id)readAttributeSmokeSensitivityLevelWithParams:(id)params
 {
-  v4 = a3;
-  v5 = [(MTRGenericCluster *)self device];
-  v6 = [(MTRCluster *)self endpointID];
-  v7 = [v5 readAttributeWithEndpointID:v6 clusterID:&unk_284C423C8 attributeID:&unk_284C41B58 params:v4];
+  paramsCopy = params;
+  device = [(MTRGenericCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  v7 = [device readAttributeWithEndpointID:endpointID clusterID:&unk_284C423C8 attributeID:&unk_284C41B58 params:paramsCopy];
 
   return v7;
 }
 
-- (void)writeAttributeSmokeSensitivityLevelWithValue:(id)a3 expectedValueInterval:(id)a4 params:(id)a5
+- (void)writeAttributeSmokeSensitivityLevelWithValue:(id)value expectedValueInterval:(id)interval params:(id)params
 {
-  v12 = a3;
-  v8 = a4;
-  v9 = [a5 timedWriteTimeout];
-  v10 = [(MTRGenericCluster *)self device];
-  v11 = [(MTRCluster *)self endpointID];
-  [v10 writeAttributeWithEndpointID:v11 clusterID:&unk_284C423C8 attributeID:&unk_284C41B58 value:v12 expectedValueInterval:v8 timedWriteTimeout:v9];
+  valueCopy = value;
+  intervalCopy = interval;
+  timedWriteTimeout = [params timedWriteTimeout];
+  device = [(MTRGenericCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  [device writeAttributeWithEndpointID:endpointID clusterID:&unk_284C423C8 attributeID:&unk_284C41B58 value:valueCopy expectedValueInterval:intervalCopy timedWriteTimeout:timedWriteTimeout];
 }
 
-- (id)readAttributeExpiryDateWithParams:(id)a3
+- (id)readAttributeExpiryDateWithParams:(id)params
 {
-  v4 = a3;
-  v5 = [(MTRGenericCluster *)self device];
-  v6 = [(MTRCluster *)self endpointID];
-  v7 = [v5 readAttributeWithEndpointID:v6 clusterID:&unk_284C423C8 attributeID:&unk_284C41B70 params:v4];
+  paramsCopy = params;
+  device = [(MTRGenericCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  v7 = [device readAttributeWithEndpointID:endpointID clusterID:&unk_284C423C8 attributeID:&unk_284C41B70 params:paramsCopy];
 
   return v7;
 }
 
-- (id)readAttributeGeneratedCommandListWithParams:(id)a3
+- (id)readAttributeGeneratedCommandListWithParams:(id)params
 {
-  v4 = a3;
-  v5 = [(MTRGenericCluster *)self device];
-  v6 = [(MTRCluster *)self endpointID];
-  v7 = [v5 readAttributeWithEndpointID:v6 clusterID:&unk_284C423C8 attributeID:&unk_284C416D8 params:v4];
+  paramsCopy = params;
+  device = [(MTRGenericCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  v7 = [device readAttributeWithEndpointID:endpointID clusterID:&unk_284C423C8 attributeID:&unk_284C416D8 params:paramsCopy];
 
   return v7;
 }
 
-- (id)readAttributeAcceptedCommandListWithParams:(id)a3
+- (id)readAttributeAcceptedCommandListWithParams:(id)params
 {
-  v4 = a3;
-  v5 = [(MTRGenericCluster *)self device];
-  v6 = [(MTRCluster *)self endpointID];
-  v7 = [v5 readAttributeWithEndpointID:v6 clusterID:&unk_284C423C8 attributeID:&unk_284C416F0 params:v4];
+  paramsCopy = params;
+  device = [(MTRGenericCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  v7 = [device readAttributeWithEndpointID:endpointID clusterID:&unk_284C423C8 attributeID:&unk_284C416F0 params:paramsCopy];
 
   return v7;
 }
 
-- (id)readAttributeAttributeListWithParams:(id)a3
+- (id)readAttributeAttributeListWithParams:(id)params
 {
-  v4 = a3;
-  v5 = [(MTRGenericCluster *)self device];
-  v6 = [(MTRCluster *)self endpointID];
-  v7 = [v5 readAttributeWithEndpointID:v6 clusterID:&unk_284C423C8 attributeID:&unk_284C41708 params:v4];
+  paramsCopy = params;
+  device = [(MTRGenericCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  v7 = [device readAttributeWithEndpointID:endpointID clusterID:&unk_284C423C8 attributeID:&unk_284C41708 params:paramsCopy];
 
   return v7;
 }
 
-- (id)readAttributeFeatureMapWithParams:(id)a3
+- (id)readAttributeFeatureMapWithParams:(id)params
 {
-  v4 = a3;
-  v5 = [(MTRGenericCluster *)self device];
-  v6 = [(MTRCluster *)self endpointID];
-  v7 = [v5 readAttributeWithEndpointID:v6 clusterID:&unk_284C423C8 attributeID:&unk_284C41720 params:v4];
+  paramsCopy = params;
+  device = [(MTRGenericCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  v7 = [device readAttributeWithEndpointID:endpointID clusterID:&unk_284C423C8 attributeID:&unk_284C41720 params:paramsCopy];
 
   return v7;
 }
 
-- (id)readAttributeClusterRevisionWithParams:(id)a3
+- (id)readAttributeClusterRevisionWithParams:(id)params
 {
-  v4 = a3;
-  v5 = [(MTRGenericCluster *)self device];
-  v6 = [(MTRCluster *)self endpointID];
-  v7 = [v5 readAttributeWithEndpointID:v6 clusterID:&unk_284C423C8 attributeID:&unk_284C41738 params:v4];
+  paramsCopy = params;
+  device = [(MTRGenericCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  v7 = [device readAttributeWithEndpointID:endpointID clusterID:&unk_284C423C8 attributeID:&unk_284C41738 params:paramsCopy];
 
   return v7;
 }

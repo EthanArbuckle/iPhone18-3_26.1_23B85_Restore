@@ -1,27 +1,27 @@
 @interface PRSiriSchemaPRClientEventMetadata
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (PRSiriSchemaPRClientEventMetadata)initWithDictionary:(id)a3;
-- (PRSiriSchemaPRClientEventMetadata)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (PRSiriSchemaPRClientEventMetadata)initWithDictionary:(id)dictionary;
+- (PRSiriSchemaPRClientEventMetadata)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasSpanId:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasSpanId:(BOOL)id;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PRSiriSchemaPRClientEventMetadata
 
-- (PRSiriSchemaPRClientEventMetadata)initWithDictionary:(id)a3
+- (PRSiriSchemaPRClientEventMetadata)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v16.receiver = self;
   v16.super_class = PRSiriSchemaPRClientEventMetadata;
   v5 = [(PRSiriSchemaPRClientEventMetadata *)&v16 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"ifRequestId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"ifRequestId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -29,14 +29,14 @@
       [(PRSiriSchemaPRClientEventMetadata *)v5 setIfRequestId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"postingSpanId"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"postingSpanId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PRSiriSchemaPRClientEventMetadata setPostingSpanId:](v5, "setPostingSpanId:", [v8 unsignedIntValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"pgId"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"pgId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -44,14 +44,14 @@
       [(PRSiriSchemaPRClientEventMetadata *)v5 setPgId:v10];
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"spanId"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"spanId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PRSiriSchemaPRClientEventMetadata setSpanId:](v5, "setSpanId:", [v11 unsignedLongLongValue]);
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"prId"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"prId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -65,30 +65,30 @@
   return v5;
 }
 
-- (PRSiriSchemaPRClientEventMetadata)initWithJSON:(id)a3
+- (PRSiriSchemaPRClientEventMetadata)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(PRSiriSchemaPRClientEventMetadata *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(PRSiriSchemaPRClientEventMetadata *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(PRSiriSchemaPRClientEventMetadata *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -101,70 +101,70 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_ifRequestId)
   {
-    v4 = [(PRSiriSchemaPRClientEventMetadata *)self ifRequestId];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    ifRequestId = [(PRSiriSchemaPRClientEventMetadata *)self ifRequestId];
+    dictionaryRepresentation = [ifRequestId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"ifRequestId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"ifRequestId"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"ifRequestId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"ifRequestId"];
     }
   }
 
   if (self->_pgId)
   {
-    v7 = [(PRSiriSchemaPRClientEventMetadata *)self pgId];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    pgId = [(PRSiriSchemaPRClientEventMetadata *)self pgId];
+    dictionaryRepresentation2 = [pgId dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"pgId"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"pgId"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"pgId"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"pgId"];
     }
   }
 
   if (*&self->_has)
   {
     v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[PRSiriSchemaPRClientEventMetadata postingSpanId](self, "postingSpanId")}];
-    [v3 setObject:v10 forKeyedSubscript:@"postingSpanId"];
+    [dictionary setObject:v10 forKeyedSubscript:@"postingSpanId"];
   }
 
   if (self->_prId)
   {
-    v11 = [(PRSiriSchemaPRClientEventMetadata *)self prId];
-    v12 = [v11 dictionaryRepresentation];
-    if (v12)
+    prId = [(PRSiriSchemaPRClientEventMetadata *)self prId];
+    dictionaryRepresentation3 = [prId dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v12 forKeyedSubscript:@"prId"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"prId"];
     }
 
     else
     {
-      v13 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v13 forKeyedSubscript:@"prId"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"prId"];
     }
   }
 
   if ((*&self->_has & 2) != 0)
   {
     v14 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[PRSiriSchemaPRClientEventMetadata spanId](self, "spanId")}];
-    [v3 setObject:v14 forKeyedSubscript:@"spanId"];
+    [dictionary setObject:v14 forKeyedSubscript:@"spanId"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -194,28 +194,28 @@
   return v4 ^ v3 ^ v5 ^ v6 ^ [(SISchemaUUID *)self->_prId hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_23;
   }
 
-  v5 = [(PRSiriSchemaPRClientEventMetadata *)self ifRequestId];
-  v6 = [v4 ifRequestId];
-  if ((v5 != 0) == (v6 == 0))
+  ifRequestId = [(PRSiriSchemaPRClientEventMetadata *)self ifRequestId];
+  ifRequestId2 = [equalCopy ifRequestId];
+  if ((ifRequestId != 0) == (ifRequestId2 == 0))
   {
     goto LABEL_22;
   }
 
-  v7 = [(PRSiriSchemaPRClientEventMetadata *)self ifRequestId];
-  if (v7)
+  ifRequestId3 = [(PRSiriSchemaPRClientEventMetadata *)self ifRequestId];
+  if (ifRequestId3)
   {
-    v8 = v7;
-    v9 = [(PRSiriSchemaPRClientEventMetadata *)self ifRequestId];
-    v10 = [v4 ifRequestId];
-    v11 = [v9 isEqual:v10];
+    v8 = ifRequestId3;
+    ifRequestId4 = [(PRSiriSchemaPRClientEventMetadata *)self ifRequestId];
+    ifRequestId5 = [equalCopy ifRequestId];
+    v11 = [ifRequestId4 isEqual:ifRequestId5];
 
     if (!v11)
     {
@@ -227,7 +227,7 @@
   {
   }
 
-  if ((*&self->_has & 1) != (v4[48] & 1))
+  if ((*&self->_has & 1) != (equalCopy[48] & 1))
   {
     goto LABEL_23;
   }
@@ -235,26 +235,26 @@
   if (*&self->_has)
   {
     postingSpanId = self->_postingSpanId;
-    if (postingSpanId != [v4 postingSpanId])
+    if (postingSpanId != [equalCopy postingSpanId])
     {
       goto LABEL_23;
     }
   }
 
-  v5 = [(PRSiriSchemaPRClientEventMetadata *)self pgId];
-  v6 = [v4 pgId];
-  if ((v5 != 0) == (v6 == 0))
+  ifRequestId = [(PRSiriSchemaPRClientEventMetadata *)self pgId];
+  ifRequestId2 = [equalCopy pgId];
+  if ((ifRequestId != 0) == (ifRequestId2 == 0))
   {
     goto LABEL_22;
   }
 
-  v13 = [(PRSiriSchemaPRClientEventMetadata *)self pgId];
-  if (v13)
+  pgId = [(PRSiriSchemaPRClientEventMetadata *)self pgId];
+  if (pgId)
   {
-    v14 = v13;
-    v15 = [(PRSiriSchemaPRClientEventMetadata *)self pgId];
-    v16 = [v4 pgId];
-    v17 = [v15 isEqual:v16];
+    v14 = pgId;
+    pgId2 = [(PRSiriSchemaPRClientEventMetadata *)self pgId];
+    pgId3 = [equalCopy pgId];
+    v17 = [pgId2 isEqual:pgId3];
 
     if (!v17)
     {
@@ -267,7 +267,7 @@
   }
 
   v18 = (*&self->_has >> 1) & 1;
-  if (v18 != ((v4[48] >> 1) & 1))
+  if (v18 != ((equalCopy[48] >> 1) & 1))
   {
     goto LABEL_23;
   }
@@ -275,18 +275,18 @@
   if (v18)
   {
     spanId = self->_spanId;
-    if (spanId != [v4 spanId])
+    if (spanId != [equalCopy spanId])
     {
       goto LABEL_23;
     }
   }
 
-  v5 = [(PRSiriSchemaPRClientEventMetadata *)self prId];
-  v6 = [v4 prId];
-  if ((v5 != 0) != (v6 == 0))
+  ifRequestId = [(PRSiriSchemaPRClientEventMetadata *)self prId];
+  ifRequestId2 = [equalCopy prId];
+  if ((ifRequestId != 0) != (ifRequestId2 == 0))
   {
-    v20 = [(PRSiriSchemaPRClientEventMetadata *)self prId];
-    if (!v20)
+    prId = [(PRSiriSchemaPRClientEventMetadata *)self prId];
+    if (!prId)
     {
 
 LABEL_26:
@@ -294,10 +294,10 @@ LABEL_26:
       goto LABEL_24;
     }
 
-    v21 = v20;
-    v22 = [(PRSiriSchemaPRClientEventMetadata *)self prId];
-    v23 = [v4 prId];
-    v24 = [v22 isEqual:v23];
+    v21 = prId;
+    prId2 = [(PRSiriSchemaPRClientEventMetadata *)self prId];
+    prId3 = [equalCopy prId];
+    v24 = [prId2 isEqual:prId3];
 
     if (v24)
     {
@@ -317,14 +317,14 @@ LABEL_24:
   return v25;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v11 = a3;
-  v4 = [(PRSiriSchemaPRClientEventMetadata *)self ifRequestId];
+  toCopy = to;
+  ifRequestId = [(PRSiriSchemaPRClientEventMetadata *)self ifRequestId];
 
-  if (v4)
+  if (ifRequestId)
   {
-    v5 = [(PRSiriSchemaPRClientEventMetadata *)self ifRequestId];
+    ifRequestId2 = [(PRSiriSchemaPRClientEventMetadata *)self ifRequestId];
     PBDataWriterWriteSubmessage();
   }
 
@@ -333,11 +333,11 @@ LABEL_24:
     PBDataWriterWriteUint32Field();
   }
 
-  v6 = [(PRSiriSchemaPRClientEventMetadata *)self pgId];
+  pgId = [(PRSiriSchemaPRClientEventMetadata *)self pgId];
 
-  if (v6)
+  if (pgId)
   {
-    v7 = [(PRSiriSchemaPRClientEventMetadata *)self pgId];
+    pgId2 = [(PRSiriSchemaPRClientEventMetadata *)self pgId];
     PBDataWriterWriteSubmessage();
   }
 
@@ -346,21 +346,21 @@ LABEL_24:
     PBDataWriterWriteUint64Field();
   }
 
-  v8 = [(PRSiriSchemaPRClientEventMetadata *)self prId];
+  prId = [(PRSiriSchemaPRClientEventMetadata *)self prId];
 
-  v9 = v11;
-  if (v8)
+  v9 = toCopy;
+  if (prId)
   {
-    v10 = [(PRSiriSchemaPRClientEventMetadata *)self prId];
+    prId2 = [(PRSiriSchemaPRClientEventMetadata *)self prId];
     PBDataWriterWriteSubmessage();
 
-    v9 = v11;
+    v9 = toCopy;
   }
 }
 
-- (void)setHasSpanId:(BOOL)a3
+- (void)setHasSpanId:(BOOL)id
 {
-  if (a3)
+  if (id)
   {
     v3 = 2;
   }
@@ -373,35 +373,35 @@ LABEL_24:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v16.receiver = self;
   v16.super_class = PRSiriSchemaPRClientEventMetadata;
-  v5 = [(SISchemaInstrumentationMessage *)&v16 applySensitiveConditionsPolicy:v4];
-  v6 = [(PRSiriSchemaPRClientEventMetadata *)self ifRequestId];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v16 applySensitiveConditionsPolicy:policyCopy];
+  ifRequestId = [(PRSiriSchemaPRClientEventMetadata *)self ifRequestId];
+  v7 = [ifRequestId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(PRSiriSchemaPRClientEventMetadata *)self deleteIfRequestId];
   }
 
-  v9 = [(PRSiriSchemaPRClientEventMetadata *)self pgId];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  pgId = [(PRSiriSchemaPRClientEventMetadata *)self pgId];
+  v10 = [pgId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(PRSiriSchemaPRClientEventMetadata *)self deletePgId];
   }
 
-  v12 = [(PRSiriSchemaPRClientEventMetadata *)self prId];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  prId = [(PRSiriSchemaPRClientEventMetadata *)self prId];
+  v13 = [prId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(PRSiriSchemaPRClientEventMetadata *)self deletePrId];
   }

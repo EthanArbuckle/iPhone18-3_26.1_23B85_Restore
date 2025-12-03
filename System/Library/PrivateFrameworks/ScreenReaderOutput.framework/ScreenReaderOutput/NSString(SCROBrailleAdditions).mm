@@ -27,7 +27,7 @@
   block[1] = 3221225472;
   block[2] = __53__NSString_SCROBrailleAdditions___legalWhiteSpaceSet__block_invoke;
   block[3] = &unk_279B73DD0;
-  block[4] = a1;
+  block[4] = self;
   if (_legalWhiteSpaceSet_onceToken != -1)
   {
     dispatch_once(&_legalWhiteSpaceSet_onceToken, block);
@@ -41,7 +41,7 @@
   v6 = a3;
   if (a3 != 0x7FFFFFFFFFFFFFFFLL && a4 != 0)
   {
-    v10 = [a1 _illegalCharacterSet];
+    _illegalCharacterSet = [self _illegalCharacterSet];
     if (a5)
     {
       v11 = 0;
@@ -52,7 +52,7 @@
       v11 = 4;
     }
 
-    v12 = [a1 rangeOfCharacterFromSet:v10 options:v11 range:{v6, a4}];
+    v12 = [self rangeOfCharacterFromSet:_illegalCharacterSet options:v11 range:{v6, a4}];
 
     if (v12 != 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -65,12 +65,12 @@
 
 - (uint64_t)rangeOfWordContainingIndex:()SCROBrailleAdditions
 {
-  v5 = [a1 length];
+  v5 = [self length];
   if (v5)
   {
-    v6 = [a1 _legalWhiteSpaceSet];
-    v7 = [a1 rangeOfCharacterFromSet:v6 options:0 range:{a3, v5 - a3}];
-    v8 = [a1 rangeOfCharacterFromSet:v6 options:4 range:{0, a3}];
+    _legalWhiteSpaceSet = [self _legalWhiteSpaceSet];
+    v7 = [self rangeOfCharacterFromSet:_legalWhiteSpaceSet options:0 range:{a3, v5 - a3}];
+    v8 = [self rangeOfCharacterFromSet:_legalWhiteSpaceSet options:4 range:{0, a3}];
     if (v8 == 0x7FFFFFFFFFFFFFFFLL)
     {
       v10 = 0;
@@ -116,7 +116,7 @@
 
       if (a3 != v14 || v14 >= v5)
       {
-        a3 = [a1 _rangeIsolatingIllegalCharacters:? forwards:?];
+        a3 = [self _rangeIsolatingIllegalCharacters:? forwards:?];
       }
 
       goto LABEL_38;
@@ -130,11 +130,11 @@ LABEL_38:
       return a3;
     }
 
-    v16 = [a1 _illegalCharacterSet];
+    _illegalCharacterSet = [self _illegalCharacterSet];
     v17 = 0x7FFFFFFFFFFFFFFFLL;
     if (v11 != a3)
     {
-      v18 = [a1 rangeOfCharacterFromSet:v16 options:0 range:{a3, v11 - a3}];
+      v18 = [self rangeOfCharacterFromSet:_illegalCharacterSet options:0 range:{a3, v11 - a3}];
       v17 = a3;
       if (v18 != 0x7FFFFFFFFFFFFFFFLL)
       {
@@ -149,7 +149,7 @@ LABEL_37:
       }
     }
 
-    if (a3 == v10 || (v19 = [a1 rangeOfCharacterFromSet:v16 options:4 range:{v10, a3 - v10}], v19 != 0x7FFFFFFFFFFFFFFFLL) && (v10 = v19 + v20, a3 == v19 + v20))
+    if (a3 == v10 || (v19 = [self rangeOfCharacterFromSet:_illegalCharacterSet options:4 range:{v10, a3 - v10}], v19 != 0x7FFFFFFFFFFFFFFFLL) && (v10 = v19 + v20, a3 == v19 + v20))
     {
       a3 = v17;
     }
@@ -172,18 +172,18 @@ LABEL_37:
 
 - (uint64_t)rangeOfWordBeforeWordAtIndex:()SCROBrailleAdditions
 {
-  if (![(__CFString *)a1 length])
+  if (![(__CFString *)self length])
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  Length = CFStringGetLength(a1);
-  v6 = [(__CFString *)a1 _legalWhiteSpaceSet];
+  Length = CFStringGetLength(self);
+  _legalWhiteSpaceSet = [(__CFString *)self _legalWhiteSpaceSet];
   v7 = 0;
   v8 = 0x7FFFFFFFFFFFFFFFLL;
   if ((a3 & 0x8000000000000000) == 0 && Length >= a3)
   {
-    v9 = [(__CFString *)a1 rangeOfCharacterFromSet:v6 options:4 range:0, a3];
+    v9 = [(__CFString *)self rangeOfCharacterFromSet:_legalWhiteSpaceSet options:4 range:0, a3];
     v11 = v9 + v10;
     v12 = a3 - (v9 + v10);
     if (a3 == v9 + v10)
@@ -213,28 +213,28 @@ LABEL_37:
     }
   }
 
-  v13 = [(__CFString *)a1 _rangeIsolatingIllegalCharacters:v8 forwards:v7, 0];
+  v13 = [(__CFString *)self _rangeIsolatingIllegalCharacters:v8 forwards:v7, 0];
 
   return v13;
 }
 
 - (uint64_t)rangeOfWordAfterWordAtIndex:()SCROBrailleAdditions
 {
-  if ([(__CFString *)a1 length]<= a3)
+  if ([(__CFString *)self length]<= a3)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  Length = CFStringGetLength(a1);
-  v6 = [(__CFString *)a1 _legalWhiteSpaceSet];
+  Length = CFStringGetLength(self);
+  _legalWhiteSpaceSet = [(__CFString *)self _legalWhiteSpaceSet];
   v7 = 0;
   v8 = 0x7FFFFFFFFFFFFFFFLL;
   if ((a3 & 0x8000000000000000) == 0 && Length >= a3)
   {
-    v9 = [(__CFString *)a1 rangeOfCharacterFromSet:v6 options:0 range:a3, [(__CFString *)a1 length:0x7FFFFFFFFFFFFFFFLL]- a3];
+    v9 = [(__CFString *)self rangeOfCharacterFromSet:_legalWhiteSpaceSet options:0 range:a3, [(__CFString *)self length:0x7FFFFFFFFFFFFFFFLL]- a3];
     if (v9 == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v7 = [(__CFString *)a1 length]- a3;
+      v7 = [(__CFString *)self length]- a3;
     }
 
     else if (v9 == a3)
@@ -250,7 +250,7 @@ LABEL_37:
     v8 = a3;
   }
 
-  v12 = [(__CFString *)a1 _rangeIsolatingIllegalCharacters:v8 forwards:v7, 1];
+  v12 = [(__CFString *)self _rangeIsolatingIllegalCharacters:v8 forwards:v7, 1];
 
   return v12;
 }

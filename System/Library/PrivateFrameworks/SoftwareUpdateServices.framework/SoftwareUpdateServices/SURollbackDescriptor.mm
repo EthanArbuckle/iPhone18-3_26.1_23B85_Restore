@@ -1,10 +1,10 @@
 @interface SURollbackDescriptor
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (SURollbackDescriptor)init;
-- (SURollbackDescriptor)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SURollbackDescriptor)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SURollbackDescriptor
@@ -33,60 +33,60 @@
   return v3;
 }
 
-- (SURollbackDescriptor)initWithCoder:(id)a3
+- (SURollbackDescriptor)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = SURollbackDescriptor;
   v5 = [(SURollbackDescriptor *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"restoreVersion"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"restoreVersion"];
     [(SURollbackDescriptor *)v5 setRestoreVersion:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"productVersion"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"productVersion"];
     [(SURollbackDescriptor *)v5 setProductVersion:v7];
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"productBuildVersion"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"productBuildVersion"];
     [(SURollbackDescriptor *)v5 setProductBuildVersion:v8];
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"releaseType"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"releaseType"];
     [(SURollbackDescriptor *)v5 setReleaseType:v9];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(SURollbackDescriptor *)self restoreVersion];
-  [v4 encodeObject:v5 forKey:@"restoreVersion"];
+  coderCopy = coder;
+  restoreVersion = [(SURollbackDescriptor *)self restoreVersion];
+  [coderCopy encodeObject:restoreVersion forKey:@"restoreVersion"];
 
-  v6 = [(SURollbackDescriptor *)self productVersion];
-  [v4 encodeObject:v6 forKey:@"productVersion"];
+  productVersion = [(SURollbackDescriptor *)self productVersion];
+  [coderCopy encodeObject:productVersion forKey:@"productVersion"];
 
-  v7 = [(SURollbackDescriptor *)self productBuildVersion];
-  [v4 encodeObject:v7 forKey:@"productBuildVersion"];
+  productBuildVersion = [(SURollbackDescriptor *)self productBuildVersion];
+  [coderCopy encodeObject:productBuildVersion forKey:@"productBuildVersion"];
 
-  v8 = [(SURollbackDescriptor *)self releaseType];
-  [v4 encodeObject:v8 forKey:@"releaseType"];
+  releaseType = [(SURollbackDescriptor *)self releaseType];
+  [coderCopy encodeObject:releaseType forKey:@"releaseType"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
-  v5 = [(SURollbackDescriptor *)self restoreVersion];
-  [v4 setRestoreVersion:v5];
+  restoreVersion = [(SURollbackDescriptor *)self restoreVersion];
+  [v4 setRestoreVersion:restoreVersion];
 
-  v6 = [(SURollbackDescriptor *)self productVersion];
-  [v4 setProductVersion:v6];
+  productVersion = [(SURollbackDescriptor *)self productVersion];
+  [v4 setProductVersion:productVersion];
 
-  v7 = [(SURollbackDescriptor *)self productBuildVersion];
-  [v4 setProductBuildVersion:v7];
+  productBuildVersion = [(SURollbackDescriptor *)self productBuildVersion];
+  [v4 setProductBuildVersion:productBuildVersion];
 
-  v8 = [(SURollbackDescriptor *)self releaseType];
-  [v4 setReleaseType:v8];
+  releaseType = [(SURollbackDescriptor *)self releaseType];
+  [v4 setReleaseType:releaseType];
 
   return v4;
 }
@@ -94,30 +94,30 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(SURollbackDescriptor *)self restoreVersion];
-  v5 = [(SURollbackDescriptor *)self productVersion];
-  v6 = [(SURollbackDescriptor *)self productBuildVersion];
-  v7 = [(SURollbackDescriptor *)self releaseType];
-  v8 = [v3 stringWithFormat:@"SURollbackDescriptor:\n              RestoreVersion: %@\n              ProductVersion: %@\n              ProductBuildVersion: %@\n              ReleaseType: %@\n", v4, v5, v6, v7];
+  restoreVersion = [(SURollbackDescriptor *)self restoreVersion];
+  productVersion = [(SURollbackDescriptor *)self productVersion];
+  productBuildVersion = [(SURollbackDescriptor *)self productBuildVersion];
+  releaseType = [(SURollbackDescriptor *)self releaseType];
+  v8 = [v3 stringWithFormat:@"SURollbackDescriptor:\n              RestoreVersion: %@\n              ProductVersion: %@\n              ProductBuildVersion: %@\n              ReleaseType: %@\n", restoreVersion, productVersion, productBuildVersion, releaseType];
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
-    v7 = [v6 restoreVersion];
-    if (v7 || ([(SURollbackDescriptor *)self restoreVersion], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+    v6 = equalCopy;
+    restoreVersion = [v6 restoreVersion];
+    if (restoreVersion || ([(SURollbackDescriptor *)self restoreVersion], (productBuildVersion2 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v8 = [v6 restoreVersion];
-      v9 = [(SURollbackDescriptor *)self restoreVersion];
-      v10 = [v8 isEqualToString:v9];
+      restoreVersion2 = [v6 restoreVersion];
+      restoreVersion3 = [(SURollbackDescriptor *)self restoreVersion];
+      v10 = [restoreVersion2 isEqualToString:restoreVersion3];
 
-      if (v7)
+      if (restoreVersion)
       {
 
         if (!v10)
@@ -136,14 +136,14 @@
       }
     }
 
-    v12 = [v6 productVersion];
-    if (v12 || ([(SURollbackDescriptor *)self productVersion], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+    productVersion = [v6 productVersion];
+    if (productVersion || ([(SURollbackDescriptor *)self productVersion], (productBuildVersion2 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v13 = [v6 productVersion];
-      v14 = [(SURollbackDescriptor *)self productVersion];
-      v15 = [v13 isEqualToString:v14];
+      productVersion2 = [v6 productVersion];
+      productVersion3 = [(SURollbackDescriptor *)self productVersion];
+      v15 = [productVersion2 isEqualToString:productVersion3];
 
-      if (v12)
+      if (productVersion)
       {
 
         if (!v15)
@@ -162,21 +162,21 @@
       }
     }
 
-    v16 = [v6 productBuildVersion];
-    if (!v16)
+    productBuildVersion = [v6 productBuildVersion];
+    if (!productBuildVersion)
     {
-      v3 = [(SURollbackDescriptor *)self productBuildVersion];
-      if (!v3)
+      productBuildVersion2 = [(SURollbackDescriptor *)self productBuildVersion];
+      if (!productBuildVersion2)
       {
 LABEL_19:
-        v20 = [v6 releaseType];
-        if (v20 || ([(SURollbackDescriptor *)self releaseType], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+        releaseType = [v6 releaseType];
+        if (releaseType || ([(SURollbackDescriptor *)self releaseType], (productBuildVersion2 = objc_claimAutoreleasedReturnValue()) != 0))
         {
-          v21 = [v6 releaseType];
-          v22 = [(SURollbackDescriptor *)self releaseType];
-          v11 = [v21 isEqualToString:v22];
+          releaseType2 = [v6 releaseType];
+          releaseType3 = [(SURollbackDescriptor *)self releaseType];
+          v11 = [releaseType2 isEqualToString:releaseType3];
 
-          if (v20)
+          if (releaseType)
           {
 LABEL_29:
 
@@ -193,11 +193,11 @@ LABEL_29:
       }
     }
 
-    v17 = [v6 productBuildVersion];
-    v18 = [(SURollbackDescriptor *)self productBuildVersion];
-    v19 = [v17 isEqualToString:v18];
+    productBuildVersion3 = [v6 productBuildVersion];
+    productBuildVersion4 = [(SURollbackDescriptor *)self productBuildVersion];
+    v19 = [productBuildVersion3 isEqualToString:productBuildVersion4];
 
-    if (v16)
+    if (productBuildVersion)
     {
 
       if (v19)

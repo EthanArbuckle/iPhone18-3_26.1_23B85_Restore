@@ -46,30 +46,30 @@ LABEL_8:
 + (id)createWithElevationMO:()RTCoreDataTransformable
 {
   v3 = a3;
-  v4 = [v3 startDate];
+  startDate = [v3 startDate];
 
-  if (v4)
+  if (startDate)
   {
-    v5 = [v3 startDate];
+    startDate2 = [v3 startDate];
   }
 
   else
   {
     v6 = MEMORY[0x277CBEAA8];
-    v7 = [v3 startDate];
-    v5 = [v6 dateWithTimeInterval:v7 sinceDate:-2.56];
+    startDate3 = [v3 startDate];
+    startDate2 = [v6 dateWithTimeInterval:startDate3 sinceDate:-2.56];
   }
 
   v8 = objc_alloc(MEMORY[0x277CCA970]);
-  v9 = [v3 endDate];
-  v10 = [v8 initWithStartDate:v5 endDate:v9];
+  endDate = [v3 endDate];
+  v10 = [v8 initWithStartDate:startDate2 endDate:endDate];
 
-  v11 = [v3 startDate];
+  startDate4 = [v3 startDate];
 
   v12 = objc_alloc(MEMORY[0x277D010E0]);
   [v3 elevation];
   v14 = v13;
-  if (v11)
+  if (startDate4)
   {
     [v3 elevationUncertainty];
     v16 = [v12 initWithElevation:v10 dateInterval:objc_msgSend(v3 elevationUncertainty:"estimationStatus") estimationStatus:{v14, v15}];
@@ -89,7 +89,7 @@ LABEL_8:
 {
   if (a3)
   {
-    v3 = [RTElevationMO managedObjectWithElevation:a1 inManagedObjectContext:a3];
+    v3 = [RTElevationMO managedObjectWithElevation:self inManagedObjectContext:a3];
   }
 
   else

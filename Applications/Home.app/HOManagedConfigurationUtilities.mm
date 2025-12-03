@@ -8,9 +8,9 @@
 + (BOOL)isProfileInstallationUIAllowed
 {
   v2 = +[MCProfileConnection sharedConnection];
-  v3 = [v2 isProfileUIInstallationAllowed];
+  isProfileUIInstallationAllowed = [v2 isProfileUIInstallationAllowed];
 
-  if ((v3 & 1) == 0)
+  if ((isProfileUIInstallationAllowed & 1) == 0)
   {
     v4 = HFLogForCategory();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -21,15 +21,15 @@
     }
   }
 
-  return v3;
+  return isProfileUIInstallationAllowed;
 }
 
 + (id)popProfileDataFromHeadOfInstallationQueue
 {
   v2 = +[MCProfileConnection sharedConnection];
-  v3 = [v2 popProfileDataFromHeadOfInstallationQueue];
+  popProfileDataFromHeadOfInstallationQueue = [v2 popProfileDataFromHeadOfInstallationQueue];
 
-  if (!v3)
+  if (!popProfileDataFromHeadOfInstallationQueue)
   {
     v4 = HFLogForCategory();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -38,7 +38,7 @@
     }
   }
 
-  return v3;
+  return popProfileDataFromHeadOfInstallationQueue;
 }
 
 @end

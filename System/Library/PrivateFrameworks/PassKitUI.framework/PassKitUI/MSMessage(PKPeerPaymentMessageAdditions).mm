@@ -6,7 +6,7 @@
 
 - (PKPeerPaymentMessage)peerPaymentMessage
 {
-  v1 = [[PKPeerPaymentMessage alloc] initWithUnderlyingMessage:a1];
+  v1 = [[PKPeerPaymentMessage alloc] initWithUnderlyingMessage:self];
 
   return v1;
 }

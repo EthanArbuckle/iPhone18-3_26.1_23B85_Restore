@@ -1,23 +1,23 @@
 @interface WFWidgetConfigurationCardViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_accessibilityAdditionalElements;
 - (id)_axClosePopupElement;
 @end
 
 @implementation WFWidgetConfigurationCardViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"WFWidgetConfigurationCardView" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
-  [v3 validateProtocol:@"WFWidgetConfigurationCardViewDelegate" hasMethod:@"widgetConfigurationCardViewDidRequestToClose:" isInstanceMethod:1 isRequired:1];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"WFWidgetConfigurationCardView" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
+  [validationsCopy validateProtocol:@"WFWidgetConfigurationCardViewDelegate" hasMethod:@"widgetConfigurationCardViewDidRequestToClose:" isInstanceMethod:1 isRequired:1];
 }
 
 - (id)_accessibilityAdditionalElements
 {
   v6[1] = *MEMORY[0x29EDCA608];
-  v2 = [(WFWidgetConfigurationCardViewAccessibility *)self _axClosePopupElement];
-  v6[0] = v2;
+  _axClosePopupElement = [(WFWidgetConfigurationCardViewAccessibility *)self _axClosePopupElement];
+  v6[0] = _axClosePopupElement;
   v3 = [MEMORY[0x29EDB8D80] arrayWithObjects:v6 count:1];
 
   v4 = *MEMORY[0x29EDCA608];
@@ -27,9 +27,9 @@
 
 - (id)_axClosePopupElement
 {
-  v3 = [(WFWidgetConfigurationCardViewAccessibility *)self __axClosePopupElement];
+  __axClosePopupElement = [(WFWidgetConfigurationCardViewAccessibility *)self __axClosePopupElement];
 
-  if (!v3)
+  if (!__axClosePopupElement)
   {
     v4 = [objc_alloc(MEMORY[0x29EDC78F8]) initWithAccessibilityContainer:self];
     v5 = accessibilityLocalizedString(@"dismiss.popup");
@@ -55,9 +55,9 @@
     objc_destroyWeak(&location);
   }
 
-  v6 = [(WFWidgetConfigurationCardViewAccessibility *)self __axClosePopupElement];
+  __axClosePopupElement2 = [(WFWidgetConfigurationCardViewAccessibility *)self __axClosePopupElement];
 
-  return v6;
+  return __axClosePopupElement2;
 }
 
 double __66__WFWidgetConfigurationCardViewAccessibility__axClosePopupElement__block_invoke(uint64_t a1)

@@ -1,16 +1,16 @@
 @interface SXPlaceholderArticleThumbnailComponentView
-- (SXPlaceholderArticleThumbnailComponentView)initWithDOMObjectProvider:(id)a3 viewport:(id)a4 presentationDelegate:(id)a5 componentStyleRendererFactory:(id)a6;
+- (SXPlaceholderArticleThumbnailComponentView)initWithDOMObjectProvider:(id)provider viewport:(id)viewport presentationDelegate:(id)delegate componentStyleRendererFactory:(id)factory;
 - (void)layoutSubviews;
-- (void)loadComponent:(id)a3;
+- (void)loadComponent:(id)component;
 @end
 
 @implementation SXPlaceholderArticleThumbnailComponentView
 
-- (SXPlaceholderArticleThumbnailComponentView)initWithDOMObjectProvider:(id)a3 viewport:(id)a4 presentationDelegate:(id)a5 componentStyleRendererFactory:(id)a6
+- (SXPlaceholderArticleThumbnailComponentView)initWithDOMObjectProvider:(id)provider viewport:(id)viewport presentationDelegate:(id)delegate componentStyleRendererFactory:(id)factory
 {
   v11.receiver = self;
   v11.super_class = SXPlaceholderArticleThumbnailComponentView;
-  v6 = [(SXComponentView *)&v11 initWithDOMObjectProvider:a3 viewport:a4 presentationDelegate:a5 componentStyleRendererFactory:a6];
+  v6 = [(SXComponentView *)&v11 initWithDOMObjectProvider:provider viewport:viewport presentationDelegate:delegate componentStyleRendererFactory:factory];
   if (v6)
   {
     v7 = objc_alloc_init(MEMORY[0x1E69DCC10]);
@@ -19,23 +19,23 @@
 
     [(UILabel *)v6->_label setNumberOfLines:0];
     [(UILabel *)v6->_label setTextAlignment:1];
-    v9 = [(SXComponentView *)v6 contentView];
-    [v9 addSubview:v6->_label];
+    contentView = [(SXComponentView *)v6 contentView];
+    [contentView addSubview:v6->_label];
   }
 
   return v6;
 }
 
-- (void)loadComponent:(id)a3
+- (void)loadComponent:(id)component
 {
   v7.receiver = self;
   v7.super_class = SXPlaceholderArticleThumbnailComponentView;
-  v4 = a3;
-  [(SXComponentView *)&v7 loadComponent:v4];
+  componentCopy = component;
+  [(SXComponentView *)&v7 loadComponent:componentCopy];
   label = self->_label;
-  v6 = [v4 identifier];
+  identifier = [componentCopy identifier];
 
-  [(UILabel *)label setText:v6];
+  [(UILabel *)label setText:identifier];
 }
 
 - (void)layoutSubviews

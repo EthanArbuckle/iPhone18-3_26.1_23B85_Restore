@@ -1,30 +1,30 @@
 @interface CRLPlatformControlState
-+ (id)stateWithUIMenuElementState:(int64_t)a3;
-+ (id)stateWithValue:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
-- (CRLPlatformControlState)initWithUIMenuElementState:(int64_t)a3;
-- (CRLPlatformControlState)initWithValue:(unint64_t)a3;
++ (id)stateWithUIMenuElementState:(int64_t)state;
++ (id)stateWithValue:(unint64_t)value;
+- (BOOL)isEqual:(id)equal;
+- (CRLPlatformControlState)initWithUIMenuElementState:(int64_t)state;
+- (CRLPlatformControlState)initWithValue:(unint64_t)value;
 - (unint64_t)hash;
 @end
 
 @implementation CRLPlatformControlState
 
-+ (id)stateWithValue:(unint64_t)a3
++ (id)stateWithValue:(unint64_t)value
 {
-  v3 = [[CRLPlatformControlState alloc] initWithValue:a3];
+  v3 = [[CRLPlatformControlState alloc] initWithValue:value];
 
   return v3;
 }
 
-- (CRLPlatformControlState)initWithValue:(unint64_t)a3
+- (CRLPlatformControlState)initWithValue:(unint64_t)value
 {
-  v3 = self;
-  if (a3 <= 2)
+  selfCopy = self;
+  if (value <= 2)
   {
-    v3 = [(CRLPlatformControlState *)self initWithUIMenuElementState:?];
+    selfCopy = [(CRLPlatformControlState *)self initWithUIMenuElementState:?];
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (unint64_t)hash
@@ -66,11 +66,11 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  v6 = sub_100014370(v5, v4);
+  v6 = sub_100014370(v5, equalCopy);
 
   if (v6)
   {
@@ -85,21 +85,21 @@
   return v7;
 }
 
-+ (id)stateWithUIMenuElementState:(int64_t)a3
++ (id)stateWithUIMenuElementState:(int64_t)state
 {
-  v3 = [[CRLPlatformControlState alloc] initWithUIMenuElementState:a3];
+  v3 = [[CRLPlatformControlState alloc] initWithUIMenuElementState:state];
 
   return v3;
 }
 
-- (CRLPlatformControlState)initWithUIMenuElementState:(int64_t)a3
+- (CRLPlatformControlState)initWithUIMenuElementState:(int64_t)state
 {
   v5.receiver = self;
   v5.super_class = CRLPlatformControlState;
   result = [(CRLPlatformControlState *)&v5 init];
   if (result)
   {
-    result->mStateValue = a3;
+    result->mStateValue = state;
   }
 
   return result;

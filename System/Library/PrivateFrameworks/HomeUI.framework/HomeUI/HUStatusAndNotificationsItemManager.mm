@@ -17,77 +17,77 @@
 - (BOOL)showsTriggerConditionSection;
 - (HFUserNotificationServiceSettings)notificationSettings;
 - (HFUserNotificationServiceSettingsProviding)notificationSettingsProvider;
-- (HUStatusAndNotificationsItemManager)initWithDelegate:(id)a3 sourceItem:(id)a4;
-- (HUStatusAndNotificationsItemManager)initWithServiceItem:(id)a3 delegate:(id)a4 home:(id)a5;
-- (id)_buildItemProvidersForHome:(id)a3;
-- (id)_buildSectionsWithDisplayedItems:(id)a3;
+- (HUStatusAndNotificationsItemManager)initWithDelegate:(id)delegate sourceItem:(id)item;
+- (HUStatusAndNotificationsItemManager)initWithServiceItem:(id)item delegate:(id)delegate home:(id)home;
+- (id)_buildItemProvidersForHome:(id)home;
+- (id)_buildSectionsWithDisplayedItems:(id)items;
 - (id)_homeFuture;
 - (id)_sourceItemAsHeaterCoolerServiceItem;
 - (id)_sourceItemAsMediaAccessoryItem;
 - (id)_sourceItemAsThermostatServiceItem;
-- (id)_updateConditionCollectionForAudioAnalysisNotification:(id)a3;
-- (id)_updateNotificationSettings:(id)a3;
-- (id)_updateNotificationSettings:(id)a3 notificationSettingsProvider:(id)a4;
+- (id)_updateConditionCollectionForAudioAnalysisNotification:(id)notification;
+- (id)_updateNotificationSettings:(id)settings;
+- (id)_updateNotificationSettings:(id)settings notificationSettingsProvider:(id)provider;
 - (id)homeStatusVisibleObject;
-- (id)updateAllowAudioNotifications:(BOOL)a3;
-- (id)updateAllowCameraReachabilityStatusChangeNotifications:(BOOL)a3;
-- (id)updateAllowCameraStatusChangeNotifications:(BOOL)a3;
-- (id)updateAllowChimeAnalogNotifications:(BOOL)a3;
-- (id)updateAllowDoorbellNotifications:(BOOL)a3;
-- (id)updateAllowMotionNotifications:(BOOL)a3;
-- (id)updateAllowNotifications:(BOOL)a3;
-- (id)updateAllowSmartActivityNotifications:(BOOL)a3;
-- (id)updateAllowSnapshotsInNotifications:(BOOL)a3;
-- (id)updateCameraSmartNotificationCondition:(id)a3;
-- (id)updateChimeOnAccessory:(BOOL)a3;
-- (id)updateNotificationCondition:(id)a3;
-- (void)setShowStatusSection:(BOOL)a3;
+- (id)updateAllowAudioNotifications:(BOOL)notifications;
+- (id)updateAllowCameraReachabilityStatusChangeNotifications:(BOOL)notifications;
+- (id)updateAllowCameraStatusChangeNotifications:(BOOL)notifications;
+- (id)updateAllowChimeAnalogNotifications:(BOOL)notifications;
+- (id)updateAllowDoorbellNotifications:(BOOL)notifications;
+- (id)updateAllowMotionNotifications:(BOOL)notifications;
+- (id)updateAllowNotifications:(BOOL)notifications;
+- (id)updateAllowSmartActivityNotifications:(BOOL)notifications;
+- (id)updateAllowSnapshotsInNotifications:(BOOL)notifications;
+- (id)updateCameraSmartNotificationCondition:(id)condition;
+- (id)updateChimeOnAccessory:(BOOL)accessory;
+- (id)updateNotificationCondition:(id)condition;
+- (void)setShowStatusSection:(BOOL)section;
 @end
 
 @implementation HUStatusAndNotificationsItemManager
 
-- (HUStatusAndNotificationsItemManager)initWithDelegate:(id)a3 sourceItem:(id)a4
+- (HUStatusAndNotificationsItemManager)initWithDelegate:(id)delegate sourceItem:(id)item
 {
-  v6 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v7 = NSStringFromSelector(sel_initWithServiceItem_delegate_home_);
-  [v6 handleFailureInMethod:a2 object:self file:@"HUStatusAndNotificationsItemManager.m" lineNumber:63 description:{@"%s is unavailable; use %@ instead", "-[HUStatusAndNotificationsItemManager initWithDelegate:sourceItem:]", v7}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUStatusAndNotificationsItemManager.m" lineNumber:63 description:{@"%s is unavailable; use %@ instead", "-[HUStatusAndNotificationsItemManager initWithDelegate:sourceItem:]", v7}];
 
   return 0;
 }
 
-- (HUStatusAndNotificationsItemManager)initWithServiceItem:(id)a3 delegate:(id)a4 home:(id)a5
+- (HUStatusAndNotificationsItemManager)initWithServiceItem:(id)item delegate:(id)delegate home:(id)home
 {
   v54 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a5;
-  v11 = a4;
-  v12 = [v9 copy];
+  itemCopy = item;
+  homeCopy = home;
+  delegateCopy = delegate;
+  v12 = [itemCopy copy];
   v47.receiver = self;
   v47.super_class = HUStatusAndNotificationsItemManager;
-  v13 = [(HFItemManager *)&v47 initWithDelegate:v11 sourceItem:v12];
+  v13 = [(HFItemManager *)&v47 initWithDelegate:delegateCopy sourceItem:v12];
 
   if (v13)
   {
-    objc_storeStrong(&v13->_serviceItem, a3);
-    objc_storeStrong(&v13->_overrideHome, a5);
-    v14 = [(HUStatusAndNotificationsItemManager *)v13 notificationSettings];
+    objc_storeStrong(&v13->_serviceItem, item);
+    objc_storeStrong(&v13->_overrideHome, home);
+    notificationSettings = [(HUStatusAndNotificationsItemManager *)v13 notificationSettings];
     v15 = HFLogForCategory();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 136315394;
       v49 = "[HUStatusAndNotificationsItemManager initWithServiceItem:delegate:home:]";
       v50 = 2112;
-      v51 = v14;
+      v51 = notificationSettings;
       _os_log_impl(&dword_20CEB6000, v15, OS_LOG_TYPE_DEFAULT, "%s notificationSettings: %@", buf, 0x16u);
     }
 
-    if (!v14)
+    if (!notificationSettings)
     {
       objc_opt_class();
-      v21 = [(HUStatusAndNotificationsItemManager *)v13 notificationSettingsProvider];
+      notificationSettingsProvider = [(HUStatusAndNotificationsItemManager *)v13 notificationSettingsProvider];
       if (objc_opt_isKindOfClass())
       {
-        v22 = v21;
+        v22 = notificationSettingsProvider;
       }
 
       else
@@ -108,17 +108,17 @@
 LABEL_29:
 
 LABEL_30:
-        v45 = [(HUStatusAndNotificationsItemManager *)v13 homeStatusVisibleObject];
-        v13->_showStatusSection = v45 != 0;
+        homeStatusVisibleObject = [(HUStatusAndNotificationsItemManager *)v13 homeStatusVisibleObject];
+        v13->_showStatusSection = homeStatusVisibleObject != 0;
 
         goto LABEL_31;
       }
 
-      v24 = [v17 bulletinBoardNotificationByEndpoint];
+      bulletinBoardNotificationByEndpoint = [v17 bulletinBoardNotificationByEndpoint];
       *buf = 136315650;
       v49 = "[HUStatusAndNotificationsItemManager initWithServiceItem:delegate:home:]";
       v50 = 2112;
-      v51 = v24;
+      v51 = bulletinBoardNotificationByEndpoint;
       v52 = 2112;
       v53 = v17;
       _os_log_impl(&dword_20CEB6000, v23, OS_LOG_TYPE_DEFAULT, "%s: bulletinBoardNotificationByEndpoint: %@ for accessory: %@", buf, 0x20u);
@@ -129,24 +129,24 @@ LABEL_28:
 
     v16 = objc_alloc(MEMORY[0x277D14598]);
     v17 = [v16 initWithConditions:MEMORY[0x277CBEBF8]];
-    v18 = [v14 smartCameraNotificationCondition];
+    smartCameraNotificationCondition = [notificationSettings smartCameraNotificationCondition];
 
-    if (v18)
+    if (smartCameraNotificationCondition)
     {
       v19 = MEMORY[0x277D14598];
-      v20 = [v14 smartCameraNotificationCondition];
+      smartCameraNotificationCondition2 = [notificationSettings smartCameraNotificationCondition];
     }
 
     else
     {
-      v25 = [v14 notificationCondition];
+      notificationCondition = [notificationSettings notificationCondition];
 
-      if (!v25)
+      if (!notificationCondition)
       {
 LABEL_16:
         v23 = [MEMORY[0x277CBEB98] set];
         objc_opt_class();
-        v28 = v9;
+        v28 = itemCopy;
         if (objc_opt_isKindOfClass())
         {
           v29 = v28;
@@ -157,40 +157,40 @@ LABEL_16:
           v29 = 0;
         }
 
-        v24 = v29;
+        bulletinBoardNotificationByEndpoint = v29;
 
-        if (v24 || [(HUStatusAndNotificationsItemManager *)v13 _isAudioAnalysisSupportedDevice])
+        if (bulletinBoardNotificationByEndpoint || [(HUStatusAndNotificationsItemManager *)v13 _isAudioAnalysisSupportedDevice])
         {
           v30 = [MEMORY[0x277CBEB98] setWithObject:&unk_2824910A0];
 
           v23 = v30;
         }
 
-        v31 = [[HUTriggerConditionEditorItemModule alloc] initWithItemUpdater:v13 home:v10 conditionCollection:v17 disallowedConditionTypes:v23];
+        v31 = [[HUTriggerConditionEditorItemModule alloc] initWithItemUpdater:v13 home:homeCopy conditionCollection:v17 disallowedConditionTypes:v23];
         conditionModule = v13->_conditionModule;
         v13->_conditionModule = v31;
 
         if ([(HUStatusAndNotificationsItemManager *)v13 _isAudioAnalysisSupportedDevice])
         {
-          v33 = [(HUStatusAndNotificationsItemManager *)v13 _sourceItemAsMediaAccessoryItem];
-          v34 = v33;
-          if (v33)
+          _sourceItemAsMediaAccessoryItem = [(HUStatusAndNotificationsItemManager *)v13 _sourceItemAsMediaAccessoryItem];
+          v34 = _sourceItemAsMediaAccessoryItem;
+          if (_sourceItemAsMediaAccessoryItem)
           {
-            v35 = [v33 accessories];
-            v36 = [v35 anyObject];
+            accessories = [_sourceItemAsMediaAccessoryItem accessories];
+            anyObject = [accessories anyObject];
 
-            v37 = [[HUAudioAnalysisDetectionSettingsModule alloc] initWithItemUpdater:v13 accessory:v36];
+            v37 = [[HUAudioAnalysisDetectionSettingsModule alloc] initWithItemUpdater:v13 accessory:anyObject];
             audioAnalysisDetectionSettingsModule = v13->_audioAnalysisDetectionSettingsModule;
             v13->_audioAnalysisDetectionSettingsModule = v37;
           }
         }
 
-        if (v24)
+        if (bulletinBoardNotificationByEndpoint)
         {
           v39 = [HUCameraSmartDetectionSettingsModule alloc];
           v40 = MEMORY[0x277CBEB98];
-          v41 = [v24 profile];
-          v42 = [v40 setWithObject:v41];
+          profile = [bulletinBoardNotificationByEndpoint profile];
+          v42 = [v40 setWithObject:profile];
           v43 = [(HUCameraSmartDetectionSettingsModule *)v39 initWithItemUpdater:v13 cameraProfiles:v42 conditionCollection:v17 settingsContext:1];
           cameraSmartDetectionSettingsModule = v13->_cameraSmartDetectionSettingsModule;
           v13->_cameraSmartDetectionSettingsModule = v43;
@@ -200,11 +200,11 @@ LABEL_16:
       }
 
       v19 = MEMORY[0x277D14598];
-      v20 = [v14 notificationCondition];
+      smartCameraNotificationCondition2 = [notificationSettings notificationCondition];
     }
 
-    v26 = v20;
-    v27 = [v19 conditionCollectionForPredicate:v20];
+    v26 = smartCameraNotificationCondition2;
+    v27 = [v19 conditionCollectionForPredicate:smartCameraNotificationCondition2];
 
     v17 = v27;
     goto LABEL_16;
@@ -215,17 +215,17 @@ LABEL_31:
   return v13;
 }
 
-- (void)setShowStatusSection:(BOOL)a3
+- (void)setShowStatusSection:(BOOL)section
 {
-  if (a3 && ([(HUStatusAndNotificationsItemManager *)self homeStatusVisibleObject], v5 = objc_claimAutoreleasedReturnValue(), v5, !v5))
+  if (section && ([(HUStatusAndNotificationsItemManager *)self homeStatusVisibleObject], v5 = objc_claimAutoreleasedReturnValue(), v5, !v5))
   {
-    v6 = [(HUStatusAndNotificationsItemManager *)self serviceItem];
-    NSLog(&cfstr_CannotShowStat.isa, v6);
+    serviceItem = [(HUStatusAndNotificationsItemManager *)self serviceItem];
+    NSLog(&cfstr_CannotShowStat.isa, serviceItem);
   }
 
   else
   {
-    self->_showStatusSection = a3;
+    self->_showStatusSection = section;
   }
 }
 
@@ -236,9 +236,9 @@ LABEL_31:
     return 0;
   }
 
-  v3 = [(HFItemManager *)self home];
-  v4 = [v3 hf_allHomePodsOrStereoPairsThatWillChime];
-  v5 = v4 != 0;
+  home = [(HFItemManager *)self home];
+  hf_allHomePodsOrStereoPairsThatWillChime = [home hf_allHomePodsOrStereoPairsThatWillChime];
+  v5 = hf_allHomePodsOrStereoPairsThatWillChime != 0;
 
   return v5;
 }
@@ -246,10 +246,10 @@ LABEL_31:
 - (BOOL)showsCameraSnapshotSection
 {
   objc_opt_class();
-  v3 = [(HUStatusAndNotificationsItemManager *)self serviceItem];
+  serviceItem = [(HUStatusAndNotificationsItemManager *)self serviceItem];
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = serviceItem;
   }
 
   else
@@ -261,9 +261,9 @@ LABEL_31:
 
   if (v5)
   {
-    v6 = [v5 profile];
-    v7 = [v6 userSettings];
-    v8 = ([v7 supportedFeatures] >> 5) & 1;
+    profile = [v5 profile];
+    userSettings = [profile userSettings];
+    v8 = ([userSettings supportedFeatures] >> 5) & 1;
   }
 
   else
@@ -278,27 +278,27 @@ LABEL_31:
 {
   if ([(HUStatusAndNotificationsItemManager *)self hasDoorbellCamera]&& [(HUStatusAndNotificationsItemManager *)self cameraProfileSupportsSmartNotifications])
   {
-    v3 = [(HUStatusAndNotificationsItemManager *)self notificationSettings];
-    v4 = [v3 areSmartDetectionNotificationsEnabled];
+    notificationSettings = [(HUStatusAndNotificationsItemManager *)self notificationSettings];
+    areSmartDetectionNotificationsEnabled = [notificationSettings areSmartDetectionNotificationsEnabled];
   }
 
   else
   {
-    v3 = [(HUStatusAndNotificationsItemManager *)self notificationSettings];
-    v4 = [v3 areNotificationsEnabled];
+    notificationSettings = [(HUStatusAndNotificationsItemManager *)self notificationSettings];
+    areSmartDetectionNotificationsEnabled = [notificationSettings areNotificationsEnabled];
   }
 
-  v5 = v4;
+  v5 = areSmartDetectionNotificationsEnabled;
 
   return v5;
 }
 
 - (BOOL)showsTriggerConditionSection
 {
-  v3 = [(HFItemManager *)self home];
-  v4 = [(HFItemManager *)self home];
-  v5 = [v4 currentUser];
-  v6 = [v3 hf_userIsRestrictedGuest:v5];
+  home = [(HFItemManager *)self home];
+  home2 = [(HFItemManager *)self home];
+  currentUser = [home2 currentUser];
+  v6 = [home hf_userIsRestrictedGuest:currentUser];
 
   if ((v6 & 1) != 0 || [(HUStatusAndNotificationsItemManager *)self _isAutoClimateCapableThermostat])
   {
@@ -306,10 +306,10 @@ LABEL_31:
   }
 
   objc_opt_class();
-  v9 = [(HUStatusAndNotificationsItemManager *)self serviceItem];
+  serviceItem = [(HUStatusAndNotificationsItemManager *)self serviceItem];
   if (objc_opt_isKindOfClass())
   {
-    v10 = v9;
+    v10 = serviceItem;
   }
 
   else
@@ -321,8 +321,8 @@ LABEL_31:
   {
     if (![(HUStatusAndNotificationsItemManager *)self _isSourceItemThermostatLikeItem])
     {
-      v13 = [(HUStatusAndNotificationsItemManager *)self notificationSettings];
-      if ([v13 areNotificationsEnabled])
+      notificationSettings = [(HUStatusAndNotificationsItemManager *)self notificationSettings];
+      if ([notificationSettings areNotificationsEnabled])
       {
         v7 = ![(HUStatusAndNotificationsItemManager *)self serviceItemBelongsToCamera];
       }
@@ -342,10 +342,10 @@ LABEL_3:
 
   if ([(HUStatusAndNotificationsItemManager *)self isNonHKSVCameraDoorbell])
   {
-    v11 = [(HUStatusAndNotificationsItemManager *)self notificationSettings];
-    v12 = [v11 areMotionNotificationsEnabled];
+    notificationSettings2 = [(HUStatusAndNotificationsItemManager *)self notificationSettings];
+    areMotionNotificationsEnabled = [notificationSettings2 areMotionNotificationsEnabled];
 
-    return v12;
+    return areMotionNotificationsEnabled;
   }
 
   else
@@ -357,14 +357,14 @@ LABEL_3:
 
 - (BOOL)showsActivityNotificationsSection
 {
-  v3 = [(HUStatusAndNotificationsItemManager *)self _sourceItemAsMediaAccessoryItem];
-  v4 = [v3 accessories];
-  v5 = [v4 anyObject];
+  _sourceItemAsMediaAccessoryItem = [(HUStatusAndNotificationsItemManager *)self _sourceItemAsMediaAccessoryItem];
+  accessories = [_sourceItemAsMediaAccessoryItem accessories];
+  anyObject = [accessories anyObject];
 
-  v6 = [(HUStatusAndNotificationsItemManager *)self notificationSettings];
-  if (v6 && ![(HUStatusAndNotificationsItemManager *)self serviceItemBelongsToCamera])
+  notificationSettings = [(HUStatusAndNotificationsItemManager *)self notificationSettings];
+  if (notificationSettings && ![(HUStatusAndNotificationsItemManager *)self serviceItemBelongsToCamera])
   {
-    v7 = [v5 hf_isHomePod] ^ 1;
+    v7 = [anyObject hf_isHomePod] ^ 1;
   }
 
   else
@@ -377,22 +377,22 @@ LABEL_3:
 
 - (BOOL)isNonHKSVCameraDoorbell
 {
-  v3 = [(HUStatusAndNotificationsItemManager *)self hasDoorbellCamera];
-  if (v3)
+  hasDoorbellCamera = [(HUStatusAndNotificationsItemManager *)self hasDoorbellCamera];
+  if (hasDoorbellCamera)
   {
-    LOBYTE(v3) = ![(HUStatusAndNotificationsItemManager *)self cameraProfileSupportsSmartNotifications];
+    LOBYTE(hasDoorbellCamera) = ![(HUStatusAndNotificationsItemManager *)self cameraProfileSupportsSmartNotifications];
   }
 
-  return v3;
+  return hasDoorbellCamera;
 }
 
 - (BOOL)cameraProfileSupportsSmartNotifications
 {
   objc_opt_class();
-  v3 = [(HUStatusAndNotificationsItemManager *)self serviceItem];
+  serviceItem = [(HUStatusAndNotificationsItemManager *)self serviceItem];
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = serviceItem;
   }
 
   else
@@ -402,25 +402,25 @@ LABEL_3:
 
   v5 = v4;
 
-  v6 = [v5 profile];
-  v7 = [v6 hf_supportsRecordingEvents];
+  profile = [v5 profile];
+  hf_supportsRecordingEvents = [profile hf_supportsRecordingEvents];
 
-  v8 = [v5 accessory];
+  accessory = [v5 accessory];
 
-  v9 = [v8 home];
-  v10 = [v9 hf_hasCameraRecordingResident];
+  home = [accessory home];
+  hf_hasCameraRecordingResident = [home hf_hasCameraRecordingResident];
 
-  return (v5 != 0) & v7 & v10;
+  return (v5 != 0) & hf_supportsRecordingEvents & hf_hasCameraRecordingResident;
 }
 
 - (BOOL)showsCameraSmartNotificationSection
 {
   v31 = *MEMORY[0x277D85DE8];
   objc_opt_class();
-  v3 = [(HUStatusAndNotificationsItemManager *)self serviceItem];
+  serviceItem = [(HUStatusAndNotificationsItemManager *)self serviceItem];
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = serviceItem;
   }
 
   else
@@ -430,38 +430,38 @@ LABEL_3:
 
   v5 = v4;
 
-  v6 = [(HUStatusAndNotificationsItemManager *)self hasDoorbellCamera];
-  v7 = [(HUStatusAndNotificationsItemManager *)self notificationSettings];
-  v8 = v7;
-  if (v6)
+  hasDoorbellCamera = [(HUStatusAndNotificationsItemManager *)self hasDoorbellCamera];
+  notificationSettings = [(HUStatusAndNotificationsItemManager *)self notificationSettings];
+  v8 = notificationSettings;
+  if (hasDoorbellCamera)
   {
-    v9 = [v7 areSmartDetectionNotificationsEnabled];
+    areSmartDetectionNotificationsEnabled = [notificationSettings areSmartDetectionNotificationsEnabled];
   }
 
   else
   {
-    v9 = [v7 areNotificationsEnabled];
+    areSmartDetectionNotificationsEnabled = [notificationSettings areNotificationsEnabled];
   }
 
-  v10 = v9;
+  v10 = areSmartDetectionNotificationsEnabled;
 
-  v11 = [v5 profile];
-  v12 = [v11 hf_supportsRecordingEvents];
+  profile = [v5 profile];
+  hf_supportsRecordingEvents = [profile hf_supportsRecordingEvents];
 
-  v13 = [v5 accessory];
-  v14 = [v13 home];
-  v15 = [v14 hf_hasCameraRecordingResident];
+  accessory = [v5 accessory];
+  home = [accessory home];
+  hf_hasCameraRecordingResident = [home hf_hasCameraRecordingResident];
 
   v16 = HFLogForCategory();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
   {
-    v17 = [v5 accessory];
-    v18 = [v17 home];
+    accessory2 = [v5 accessory];
+    home2 = [accessory2 home];
     v19 = NSStringFromBOOL();
     v20 = NSStringFromBOOL();
     v21 = NSStringFromBOOL();
     v23 = 138413058;
-    v24 = v18;
+    v24 = home2;
     v25 = 2112;
     v26 = v19;
     v27 = 2112;
@@ -471,16 +471,16 @@ LABEL_3:
     _os_log_impl(&dword_20CEB6000, v16, OS_LOG_TYPE_INFO, "Performing check for show camera smart notification section. home: %@, notificationsEnabled: %@, camera supports recording: %@, home has recording resident: %@", &v23, 0x2Au);
   }
 
-  return (v5 != 0) & v10 & v12 & v15;
+  return (v5 != 0) & v10 & hf_supportsRecordingEvents & hf_hasCameraRecordingResident;
 }
 
 - (BOOL)hasDoorbellCamera
 {
   objc_opt_class();
-  v3 = [(HUStatusAndNotificationsItemManager *)self serviceItem];
+  serviceItem = [(HUStatusAndNotificationsItemManager *)self serviceItem];
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = serviceItem;
   }
 
   else
@@ -492,8 +492,8 @@ LABEL_3:
 
   if (v5)
   {
-    v6 = [v5 accessory];
-    v7 = [v6 hf_serviceOfType:*MEMORY[0x277CD0E38]];
+    accessory = [v5 accessory];
+    v7 = [accessory hf_serviceOfType:*MEMORY[0x277CD0E38]];
     v8 = v7 != 0;
   }
 
@@ -508,10 +508,10 @@ LABEL_3:
 - (BOOL)showsCameraStatusChangeSection
 {
   objc_opt_class();
-  v3 = [(HUStatusAndNotificationsItemManager *)self serviceItem];
+  serviceItem = [(HUStatusAndNotificationsItemManager *)self serviceItem];
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = serviceItem;
   }
 
   else
@@ -521,19 +521,19 @@ LABEL_3:
 
   v5 = v4;
 
-  v6 = [v5 profile];
+  profile = [v5 profile];
 
-  LOBYTE(v5) = [v6 hf_supportsRecordingEvents];
+  LOBYTE(v5) = [profile hf_supportsRecordingEvents];
   return v5;
 }
 
 - (BOOL)showsSmartActivitySection
 {
   objc_opt_class();
-  v3 = [(HUStatusAndNotificationsItemManager *)self serviceItem];
+  serviceItem = [(HUStatusAndNotificationsItemManager *)self serviceItem];
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = serviceItem;
   }
 
   else
@@ -543,60 +543,60 @@ LABEL_3:
 
   v5 = v4;
 
-  v6 = [v5 profile];
-  if ([v6 hf_supportsRecordingEvents])
+  profile = [v5 profile];
+  if ([profile hf_supportsRecordingEvents])
   {
-    v7 = [v5 accessory];
-    v8 = [v7 home];
-    v9 = [v8 hf_hasCameraRecordingResident];
+    accessory = [v5 accessory];
+    home = [accessory home];
+    hf_hasCameraRecordingResident = [home hf_hasCameraRecordingResident];
   }
 
   else
   {
-    v9 = 0;
+    hf_hasCameraRecordingResident = 0;
   }
 
-  return v9;
+  return hf_hasCameraRecordingResident;
 }
 
 - (BOOL)showsAudioNotificationSection
 {
-  v3 = [(HUStatusAndNotificationsItemManager *)self notificationSettings];
-  if (v3)
+  notificationSettings = [(HUStatusAndNotificationsItemManager *)self notificationSettings];
+  if (notificationSettings)
   {
-    v4 = [(HUStatusAndNotificationsItemManager *)self _isAudioAnalysisSupportedDevice];
+    _isAudioAnalysisSupportedDevice = [(HUStatusAndNotificationsItemManager *)self _isAudioAnalysisSupportedDevice];
   }
 
   else
   {
-    v4 = 0;
+    _isAudioAnalysisSupportedDevice = 0;
   }
 
-  return v4;
+  return _isAudioAnalysisSupportedDevice;
 }
 
 - (BOOL)serviceItemBelongsToCamera
 {
   v2 = MEMORY[0x277D144A0];
-  v3 = [(HUStatusAndNotificationsItemManager *)self serviceItem];
-  LOBYTE(v2) = [v2 cameraContainsMotionServiceItem:v3];
+  serviceItem = [(HUStatusAndNotificationsItemManager *)self serviceItem];
+  LOBYTE(v2) = [v2 cameraContainsMotionServiceItem:serviceItem];
 
   return v2;
 }
 
-- (id)_buildItemProvidersForHome:(id)a3
+- (id)_buildItemProvidersForHome:(id)home
 {
   v109[11] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v73 = [MEMORY[0x277CBEB18] array];
+  homeCopy = home;
+  array = [MEMORY[0x277CBEB18] array];
   objc_initWeak(&location, self);
-  v5 = [v4 areBulletinNotificationsSupported];
+  areBulletinNotificationsSupported = [homeCopy areBulletinNotificationsSupported];
   v6 = MEMORY[0x277CBEB58];
-  v7 = [(HUStatusAndNotificationsItemManager *)self serviceItem];
-  v8 = [v7 homeKitObject];
-  v9 = [v6 na_setWithSafeObject:v8];
+  serviceItem = [(HUStatusAndNotificationsItemManager *)self serviceItem];
+  homeKitObject = [serviceItem homeKitObject];
+  v9 = [v6 na_setWithSafeObject:homeKitObject];
 
-  [v9 addObject:v4];
+  [v9 addObject:homeCopy];
   v10 = objc_alloc(MEMORY[0x277D14B38]);
   v105[0] = MEMORY[0x277D85DD0];
   v105[1] = 3221225472;
@@ -609,15 +609,15 @@ LABEL_3:
   [(HUStatusAndNotificationsItemManager *)self setIncludeInStatusItem:v12];
 
   v13 = [HUChimeOnAccessoriesListItem alloc];
-  v14 = [(HFItemManager *)self home];
-  v15 = [(HUChimeOnAccessoriesListItem *)v13 initWithHome:v14];
+  home = [(HFItemManager *)self home];
+  v15 = [(HUChimeOnAccessoriesListItem *)v13 initWithHome:home];
   [(HUStatusAndNotificationsItemManager *)self setChimeOnAccessoriesListItem:v15];
 
-  v16 = [(HUStatusAndNotificationsItemManager *)self notificationSettings];
+  notificationSettings = [(HUStatusAndNotificationsItemManager *)self notificationSettings];
 
   v17 = [HUServiceDetailsCameraAllowSnapshotsItem alloc];
-  v18 = [(HUStatusAndNotificationsItemManager *)self serviceItem];
-  v19 = [(HUServiceDetailsCameraAllowSnapshotsItem *)v17 initWithSourceServiceItem:v18 home:v4 shouldBeHidden:v16 == 0];
+  serviceItem2 = [(HUStatusAndNotificationsItemManager *)self serviceItem];
+  v19 = [(HUServiceDetailsCameraAllowSnapshotsItem *)v17 initWithSourceServiceItem:serviceItem2 home:homeCopy shouldBeHidden:notificationSettings == 0];
   [(HUStatusAndNotificationsItemManager *)self setAllowCameraSnapshotsItem:v19];
 
   v20 = objc_alloc(MEMORY[0x277D14B38]);
@@ -626,7 +626,7 @@ LABEL_3:
   v101[2] = __66__HUStatusAndNotificationsItemManager__buildItemProvidersForHome___block_invoke_2;
   v101[3] = &unk_277DBB2A8;
   objc_copyWeak(&v103, &location);
-  v104 = v5;
+  v104 = areBulletinNotificationsSupported;
   v21 = v11;
   v102 = v21;
   v22 = [v20 initWithResultsBlock:v101];
@@ -638,7 +638,7 @@ LABEL_3:
   v97[2] = __66__HUStatusAndNotificationsItemManager__buildItemProvidersForHome___block_invoke_3;
   v97[3] = &unk_277DBB2A8;
   objc_copyWeak(&v99, &location);
-  v100 = v5;
+  v100 = areBulletinNotificationsSupported;
   v24 = v21;
   v98 = v24;
   v25 = [v23 initWithResultsBlock:v97];
@@ -650,7 +650,7 @@ LABEL_3:
   v93[2] = __66__HUStatusAndNotificationsItemManager__buildItemProvidersForHome___block_invoke_4;
   v93[3] = &unk_277DBB2A8;
   objc_copyWeak(&v95, &location);
-  v96 = v5;
+  v96 = areBulletinNotificationsSupported;
   v27 = v24;
   v94 = v27;
   v28 = [v26 initWithResultsBlock:v93];
@@ -662,8 +662,8 @@ LABEL_3:
   v88[2] = __66__HUStatusAndNotificationsItemManager__buildItemProvidersForHome___block_invoke_5;
   v88[3] = &unk_277DBB2D0;
   objc_copyWeak(&v91, &location);
-  v92 = v5;
-  v69 = v4;
+  v92 = areBulletinNotificationsSupported;
+  v69 = homeCopy;
   v89 = v69;
   v30 = v27;
   v90 = v30;
@@ -676,7 +676,7 @@ LABEL_3:
   v84[2] = __66__HUStatusAndNotificationsItemManager__buildItemProvidersForHome___block_invoke_6;
   v84[3] = &unk_277DBB2A8;
   objc_copyWeak(&v86, &location);
-  v87 = v5;
+  v87 = areBulletinNotificationsSupported;
   v33 = v30;
   v85 = v33;
   v34 = [v32 initWithResultsBlock:v84];
@@ -688,7 +688,7 @@ LABEL_3:
   v80[2] = __66__HUStatusAndNotificationsItemManager__buildItemProvidersForHome___block_invoke_7;
   v80[3] = &unk_277DBB2A8;
   objc_copyWeak(&v82, &location);
-  v83 = v5;
+  v83 = areBulletinNotificationsSupported;
   v36 = v33;
   v81 = v36;
   v37 = [v35 initWithResultsBlock:v80];
@@ -700,7 +700,7 @@ LABEL_3:
   v76[2] = __66__HUStatusAndNotificationsItemManager__buildItemProvidersForHome___block_invoke_8;
   v76[3] = &unk_277DBB2A8;
   objc_copyWeak(&v78, &location);
-  v79 = v5;
+  v79 = areBulletinNotificationsSupported;
   v68 = v36;
   v77 = v68;
   v39 = [v38 initWithResultsBlock:v76];
@@ -715,65 +715,65 @@ LABEL_3:
   v41 = [v40 initWithResultsBlock:v74];
   [(HUStatusAndNotificationsItemManager *)self setAllowAudioNotificationsItem:v41];
 
-  v72 = [(HUStatusAndNotificationsItemManager *)self includeInStatusItem];
-  v109[0] = v72;
-  v71 = [(HUStatusAndNotificationsItemManager *)self chimeOnAccessoriesListItem];
-  v109[1] = v71;
-  v70 = [(HUStatusAndNotificationsItemManager *)self allowCameraSnapshotsItem];
-  v109[2] = v70;
-  v42 = [(HUStatusAndNotificationsItemManager *)self allowCameraStatusChangesItem];
-  v109[3] = v42;
-  v43 = [(HUStatusAndNotificationsItemManager *)self allowCameraReachabilityChangeNotificationsItem];
-  v109[4] = v43;
-  v44 = [(HUStatusAndNotificationsItemManager *)self allowNotificationsItem];
-  v109[5] = v44;
-  v45 = [(HUStatusAndNotificationsItemManager *)self allowAudioNotificationsItem];
-  v109[6] = v45;
-  v46 = [(HUStatusAndNotificationsItemManager *)self allowMotionNotificationsItem];
-  v109[7] = v46;
-  v47 = [(HUStatusAndNotificationsItemManager *)self allowAnalogChimeNotificationItem];
-  v109[8] = v47;
-  v48 = [(HUStatusAndNotificationsItemManager *)self allowDoorbellNotificationsItem];
-  v109[9] = v48;
-  v49 = [(HUStatusAndNotificationsItemManager *)self allowActivityNotificationsItem];
-  v109[10] = v49;
+  includeInStatusItem = [(HUStatusAndNotificationsItemManager *)self includeInStatusItem];
+  v109[0] = includeInStatusItem;
+  chimeOnAccessoriesListItem = [(HUStatusAndNotificationsItemManager *)self chimeOnAccessoriesListItem];
+  v109[1] = chimeOnAccessoriesListItem;
+  allowCameraSnapshotsItem = [(HUStatusAndNotificationsItemManager *)self allowCameraSnapshotsItem];
+  v109[2] = allowCameraSnapshotsItem;
+  allowCameraStatusChangesItem = [(HUStatusAndNotificationsItemManager *)self allowCameraStatusChangesItem];
+  v109[3] = allowCameraStatusChangesItem;
+  allowCameraReachabilityChangeNotificationsItem = [(HUStatusAndNotificationsItemManager *)self allowCameraReachabilityChangeNotificationsItem];
+  v109[4] = allowCameraReachabilityChangeNotificationsItem;
+  allowNotificationsItem = [(HUStatusAndNotificationsItemManager *)self allowNotificationsItem];
+  v109[5] = allowNotificationsItem;
+  allowAudioNotificationsItem = [(HUStatusAndNotificationsItemManager *)self allowAudioNotificationsItem];
+  v109[6] = allowAudioNotificationsItem;
+  allowMotionNotificationsItem = [(HUStatusAndNotificationsItemManager *)self allowMotionNotificationsItem];
+  v109[7] = allowMotionNotificationsItem;
+  allowAnalogChimeNotificationItem = [(HUStatusAndNotificationsItemManager *)self allowAnalogChimeNotificationItem];
+  v109[8] = allowAnalogChimeNotificationItem;
+  allowDoorbellNotificationsItem = [(HUStatusAndNotificationsItemManager *)self allowDoorbellNotificationsItem];
+  v109[9] = allowDoorbellNotificationsItem;
+  allowActivityNotificationsItem = [(HUStatusAndNotificationsItemManager *)self allowActivityNotificationsItem];
+  v109[10] = allowActivityNotificationsItem;
   v50 = [MEMORY[0x277CBEA60] arrayWithObjects:v109 count:11];
-  [v73 addObjectsFromArray:v50];
+  [array addObjectsFromArray:v50];
 
-  v51 = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   v52 = objc_alloc(MEMORY[0x277D14B40]);
-  v53 = [MEMORY[0x277CBEB98] setWithArray:v73];
+  v53 = [MEMORY[0x277CBEB98] setWithArray:array];
   v54 = [v52 initWithItems:v53];
-  [v51 addObject:v54];
+  [array2 addObject:v54];
 
-  v55 = [(HUStatusAndNotificationsItemManager *)self conditionModule];
+  conditionModule = [(HUStatusAndNotificationsItemManager *)self conditionModule];
 
-  if (v55)
+  if (conditionModule)
   {
-    v56 = [(HUStatusAndNotificationsItemManager *)self conditionModule];
-    v57 = [v56 itemProviders];
-    v58 = [v57 allObjects];
-    [v51 addObjectsFromArray:v58];
+    conditionModule2 = [(HUStatusAndNotificationsItemManager *)self conditionModule];
+    itemProviders = [conditionModule2 itemProviders];
+    allObjects = [itemProviders allObjects];
+    [array2 addObjectsFromArray:allObjects];
   }
 
-  v59 = [(HUStatusAndNotificationsItemManager *)self cameraSmartDetectionSettingsModule];
+  cameraSmartDetectionSettingsModule = [(HUStatusAndNotificationsItemManager *)self cameraSmartDetectionSettingsModule];
 
-  if (v59)
+  if (cameraSmartDetectionSettingsModule)
   {
-    v60 = [(HUStatusAndNotificationsItemManager *)self cameraSmartDetectionSettingsModule];
-    v61 = [v60 itemProviders];
-    v62 = [v61 allObjects];
-    [v51 addObjectsFromArray:v62];
+    cameraSmartDetectionSettingsModule2 = [(HUStatusAndNotificationsItemManager *)self cameraSmartDetectionSettingsModule];
+    itemProviders2 = [cameraSmartDetectionSettingsModule2 itemProviders];
+    allObjects2 = [itemProviders2 allObjects];
+    [array2 addObjectsFromArray:allObjects2];
   }
 
-  v63 = [(HUStatusAndNotificationsItemManager *)self audioAnalysisDetectionSettingsModule];
+  audioAnalysisDetectionSettingsModule = [(HUStatusAndNotificationsItemManager *)self audioAnalysisDetectionSettingsModule];
 
-  if (v63)
+  if (audioAnalysisDetectionSettingsModule)
   {
-    v64 = [(HUStatusAndNotificationsItemManager *)self audioAnalysisDetectionSettingsModule];
-    v65 = [v64 itemProviders];
-    v66 = [v65 allObjects];
-    [v51 addObjectsFromArray:v66];
+    audioAnalysisDetectionSettingsModule2 = [(HUStatusAndNotificationsItemManager *)self audioAnalysisDetectionSettingsModule];
+    itemProviders3 = [audioAnalysisDetectionSettingsModule2 itemProviders];
+    allObjects3 = [itemProviders3 allObjects];
+    [array2 addObjectsFromArray:allObjects3];
   }
 
   objc_destroyWeak(&v75);
@@ -792,7 +792,7 @@ LABEL_3:
 
   objc_destroyWeak(&location);
 
-  return v51;
+  return array2;
 }
 
 id __66__HUStatusAndNotificationsItemManager__buildItemProvidersForHome___block_invoke(uint64_t a1)
@@ -1217,30 +1217,30 @@ id __66__HUStatusAndNotificationsItemManager__buildItemProvidersForHome___block_
   return v10;
 }
 
-- (id)_buildSectionsWithDisplayedItems:(id)a3
+- (id)_buildSectionsWithDisplayedItems:(id)items
 {
   v89 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] array];
-  v6 = [(HUStatusAndNotificationsItemManager *)self _sourceItemAsMediaAccessoryItem];
-  v7 = [v6 accessories];
-  v72 = [v7 anyObject];
+  itemsCopy = items;
+  array = [MEMORY[0x277CBEB18] array];
+  _sourceItemAsMediaAccessoryItem = [(HUStatusAndNotificationsItemManager *)self _sourceItemAsMediaAccessoryItem];
+  accessories = [_sourceItemAsMediaAccessoryItem accessories];
+  anyObject = [accessories anyObject];
 
-  v8 = [MEMORY[0x277D146E8] sharedDispatcher];
-  v9 = [v8 homeManager];
-  v10 = [v9 hasOptedToHH2];
+  mEMORY[0x277D146E8] = [MEMORY[0x277D146E8] sharedDispatcher];
+  homeManager = [mEMORY[0x277D146E8] homeManager];
+  hasOptedToHH2 = [homeManager hasOptedToHH2];
 
-  v11 = [(HFItemManager *)self home];
-  v12 = [v11 residentDevices];
+  home = [(HFItemManager *)self home];
+  residentDevices = [home residentDevices];
 
-  if (v10 && [v12 count])
+  if (hasOptedToHH2 && [residentDevices count])
   {
     v13 = 1;
   }
 
   else
   {
-    v13 = v10 ^ 1;
+    v13 = hasOptedToHH2 ^ 1;
   }
 
   v14 = HFLogForCategory();
@@ -1249,22 +1249,22 @@ id __66__HUStatusAndNotificationsItemManager__buildItemProvidersForHome___block_
     *buf = 136315650;
     v84 = "[HUStatusAndNotificationsItemManager _buildSectionsWithDisplayedItems:]";
     v85 = 1024;
-    v86 = v10;
+    v86 = hasOptedToHH2;
     v87 = 2048;
-    v88 = [v12 count];
+    v88 = [residentDevices count];
     _os_log_impl(&dword_20CEB6000, v14, OS_LOG_TYPE_DEFAULT, "%s hasOptedToHH2 = %{BOOL}d residents = %lu", buf, 0x1Cu);
   }
 
   if ([(HUStatusAndNotificationsItemManager *)self showStatusSection])
   {
     v15 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"HUStatusAndNotificationsIncludeInStatusSectionIdentifier"];
-    v16 = [(HUStatusAndNotificationsItemManager *)self includeInStatusItem];
-    v82 = v16;
+    includeInStatusItem = [(HUStatusAndNotificationsItemManager *)self includeInStatusItem];
+    v82 = includeInStatusItem;
     v17 = [MEMORY[0x277CBEA60] arrayWithObjects:&v82 count:1];
     [v15 setItems:v17];
 
-    v18 = [(HUStatusAndNotificationsItemManager *)self homeStatusVisibleObject];
-    LODWORD(v17) = [v18 hf_isForcedVisibleInHomeStatus];
+    homeStatusVisibleObject = [(HUStatusAndNotificationsItemManager *)self homeStatusVisibleObject];
+    LODWORD(v17) = [homeStatusVisibleObject hf_isForcedVisibleInHomeStatus];
 
     if (v17)
     {
@@ -1279,14 +1279,14 @@ id __66__HUStatusAndNotificationsItemManager__buildItemProvidersForHome___block_
     v20 = _HULocalizedStringWithDefaultValue(v19, v19, 1);
     [v15 setFooterTitle:v20];
 
-    [v5 addObject:v15];
+    [array addObject:v15];
   }
 
   if (v13)
   {
     v21 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"Activity"];
-    v22 = [(HUStatusAndNotificationsItemManager *)self allowActivityNotificationsItem];
-    v81 = v22;
+    allowActivityNotificationsItem = [(HUStatusAndNotificationsItemManager *)self allowActivityNotificationsItem];
+    v81 = allowActivityNotificationsItem;
     v23 = [MEMORY[0x277CBEA60] arrayWithObjects:&v81 count:1];
     [v21 setItems:v23];
 
@@ -1300,7 +1300,7 @@ id __66__HUStatusAndNotificationsItemManager__buildItemProvidersForHome___block_
       if (![(HUStatusAndNotificationsItemManager *)self _isSourceItemThermostatLikeItem])
       {
 LABEL_18:
-        [v5 addObject:{v21, v72}];
+        [array addObject:{v21, anyObject}];
 
         goto LABEL_19;
       }
@@ -1309,7 +1309,7 @@ LABEL_18:
     }
 
     v25 = v24;
-    [v21 setFooterTitle:{v24, v72}];
+    [v21 setFooterTitle:{v24, anyObject}];
 
     goto LABEL_18;
   }
@@ -1318,12 +1318,12 @@ LABEL_19:
   if ([(HUStatusAndNotificationsItemManager *)self showsAudioNotificationSection])
   {
     v26 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"HUStatusAndNotificationsAllowAudioNotificationsSectionIdentifier"];
-    v27 = [(HUStatusAndNotificationsItemManager *)self allowAudioNotificationsItem];
-    v80 = v27;
+    allowAudioNotificationsItem = [(HUStatusAndNotificationsItemManager *)self allowAudioNotificationsItem];
+    v80 = allowAudioNotificationsItem;
     v28 = [MEMORY[0x277CBEA60] arrayWithObjects:&v80 count:1];
     [v26 setItems:v28];
 
-    [v5 addObject:v26];
+    [array addObject:v26];
   }
 
   if ((-[HUStatusAndNotificationsItemManager showsTriggerConditionSection](self, "showsTriggerConditionSection") & v13) == 1 && ([v73 hf_isHomePod] && -[HUStatusAndNotificationsItemManager showsAudioNotificationSection](self, "showsAudioNotificationSection") || (objc_msgSend(v73, "hf_isHomePod") & 1) == 0))
@@ -1343,43 +1343,43 @@ LABEL_19:
     [v29 setHeaderTitle:v31];
 
     v32 = objc_opt_new();
-    v33 = [(HUStatusAndNotificationsItemManager *)self conditionModule];
-    v34 = [v33 buildSectionsWithDisplayedItems:v4];
+    conditionModule = [(HUStatusAndNotificationsItemManager *)self conditionModule];
+    v34 = [conditionModule buildSectionsWithDisplayedItems:itemsCopy];
 
     v35 = [v34 na_flatMap:&__block_literal_global_64];
     [v32 addObjectsFromArray:v35];
 
     [v29 setItems:v32];
-    [v5 addObject:v29];
+    [array addObject:v29];
   }
 
   if (([(HUStatusAndNotificationsItemManager *)self showsCameraSmartNotificationSection]& v13) == 1)
   {
-    v36 = [(HUStatusAndNotificationsItemManager *)self cameraSmartDetectionSettingsModule];
-    v37 = [v36 buildSectionsWithDisplayedItems:v4];
+    cameraSmartDetectionSettingsModule = [(HUStatusAndNotificationsItemManager *)self cameraSmartDetectionSettingsModule];
+    v37 = [cameraSmartDetectionSettingsModule buildSectionsWithDisplayedItems:itemsCopy];
 
-    [v5 addObjectsFromArray:v37];
+    [array addObjectsFromArray:v37];
   }
 
   if (([(HUStatusAndNotificationsItemManager *)self showsCameraStatusChangeSection]& v13) == 1)
   {
     v38 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"CameraStatusChange"];
-    v39 = [(HUStatusAndNotificationsItemManager *)self allowCameraStatusChangesItem];
-    v79 = v39;
+    allowCameraStatusChangesItem = [(HUStatusAndNotificationsItemManager *)self allowCameraStatusChangesItem];
+    v79 = allowCameraStatusChangesItem;
     v40 = [MEMORY[0x277CBEA60] arrayWithObjects:&v79 count:1];
     [v38 setItems:v40];
 
     v41 = _HULocalizedStringWithDefaultValue(@"HUStatusAndNotificationsCameraStatusChangesFooter", @"HUStatusAndNotificationsCameraStatusChangesFooter", 1);
     [v38 setFooterTitle:v41];
 
-    [v5 addObject:v38];
+    [array addObject:v38];
   }
 
   objc_opt_class();
-  v42 = [(HUStatusAndNotificationsItemManager *)self serviceItem];
+  serviceItem = [(HUStatusAndNotificationsItemManager *)self serviceItem];
   if (objc_opt_isKindOfClass())
   {
-    v43 = v42;
+    v43 = serviceItem;
   }
 
   else
@@ -1389,72 +1389,72 @@ LABEL_19:
 
   v44 = v43;
 
-  v45 = [v44 profile];
+  profile = [v44 profile];
 
-  LODWORD(v44) = [v45 hf_supportsReachabilityNotifications] & v13;
+  LODWORD(v44) = [profile hf_supportsReachabilityNotifications] & v13;
   if (v44 == 1)
   {
     v46 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"CameraReachabilityStatusChange"];
-    v47 = [(HUStatusAndNotificationsItemManager *)self allowCameraReachabilityChangeNotificationsItem];
-    v78 = v47;
+    allowCameraReachabilityChangeNotificationsItem = [(HUStatusAndNotificationsItemManager *)self allowCameraReachabilityChangeNotificationsItem];
+    v78 = allowCameraReachabilityChangeNotificationsItem;
     v48 = [MEMORY[0x277CBEA60] arrayWithObjects:&v78 count:1];
     [v46 setItems:v48];
 
     v49 = _HULocalizedStringWithDefaultValue(@"HUStatusAndNotificationsCameraReachabilityChangesFooter", @"HUStatusAndNotificationsCameraReachabilityChangesFooter", 1);
     [v46 setFooterTitle:v49];
 
-    [v5 addObject:v46];
+    [array addObject:v46];
   }
 
   if (([(HUStatusAndNotificationsItemManager *)self showsCameraSnapshotSection]& v13) == 1)
   {
     v50 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"HUStatusAndNotificationsCameraSnapshotSectionIdentifier"];
-    v51 = [(HUStatusAndNotificationsItemManager *)self allowCameraSnapshotsItem];
-    v77 = v51;
+    allowCameraSnapshotsItem = [(HUStatusAndNotificationsItemManager *)self allowCameraSnapshotsItem];
+    v77 = allowCameraSnapshotsItem;
     v52 = [MEMORY[0x277CBEA60] arrayWithObjects:&v77 count:1];
     [v50 setItems:v52];
 
     v53 = _HULocalizedStringWithDefaultValue(@"HUStatusAndNotificationCameraSnapshotFooter", @"HUStatusAndNotificationCameraSnapshotFooter", 1);
     [v50 setFooterTitle:v53];
 
-    [v5 addObject:v50];
+    [array addObject:v50];
   }
 
   if (([(HUStatusAndNotificationsItemManager *)self hasDoorbellCamera]& v13) == 1)
   {
     v54 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"Doorbell"];
-    v55 = [(HUStatusAndNotificationsItemManager *)self allowDoorbellNotificationsItem];
-    v76 = v55;
+    allowDoorbellNotificationsItem = [(HUStatusAndNotificationsItemManager *)self allowDoorbellNotificationsItem];
+    v76 = allowDoorbellNotificationsItem;
     v56 = [MEMORY[0x277CBEA60] arrayWithObjects:&v76 count:1];
     [v54 setItems:v56];
 
     v57 = _HULocalizedStringWithDefaultValue(@"HUStatusAndNotificationsDoorbellNotificationsFooter", @"HUStatusAndNotificationsDoorbellNotificationsFooter", 1);
     [v54 setFooterTitle:v57];
 
-    [v5 addObject:v54];
+    [array addObject:v54];
     v58 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"analogChimeSection"];
-    v59 = [(HUStatusAndNotificationsItemManager *)self allowAnalogChimeNotificationItem];
-    v75 = v59;
+    allowAnalogChimeNotificationItem = [(HUStatusAndNotificationsItemManager *)self allowAnalogChimeNotificationItem];
+    v75 = allowAnalogChimeNotificationItem;
     v60 = [MEMORY[0x277CBEA60] arrayWithObjects:&v75 count:1];
     [v58 setItems:v60];
 
     v61 = _HULocalizedStringWithDefaultValue(@"HUCameraDoorbellChimeMuteSwitchFooter", @"HUCameraDoorbellChimeMuteSwitchFooter", 1);
     [v58 setFooterTitle:v61];
 
-    [v5 addObject:v58];
+    [array addObject:v58];
   }
 
   if ([(HUStatusAndNotificationsItemManager *)self showsDoorbellChimeSection])
   {
     v62 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"HUStatusAndNotificationsChimeOnHomePodSectionIdentifier"];
-    v63 = [(HUStatusAndNotificationsItemManager *)self chimeOnAccessoriesListItem];
-    v74 = v63;
+    chimeOnAccessoriesListItem = [(HUStatusAndNotificationsItemManager *)self chimeOnAccessoriesListItem];
+    v74 = chimeOnAccessoriesListItem;
     v64 = [MEMORY[0x277CBEA60] arrayWithObjects:&v74 count:1];
     [v62 setItems:v64];
 
-    v65 = [(HFItemManager *)self home];
-    v66 = [v65 hf_allHomePodsOrStereoPairs];
-    v67 = [v66 count];
+    home2 = [(HFItemManager *)self home];
+    hf_allHomePodsOrStereoPairs = [home2 hf_allHomePodsOrStereoPairs];
+    v67 = [hf_allHomePodsOrStereoPairs count];
 
     if (v67 <= 1)
     {
@@ -1469,57 +1469,57 @@ LABEL_19:
     v69 = _HULocalizedStringWithDefaultValue(v68, v68, 1);
     [v62 setFooterTitle:v69];
 
-    [v5 addObject:v62];
+    [array addObject:v62];
   }
 
-  v70 = [MEMORY[0x277D14778] filterSections:v5 toDisplayedItems:v4];
+  v70 = [MEMORY[0x277D14778] filterSections:array toDisplayedItems:itemsCopy];
 
   return v70;
 }
 
-- (id)updateAllowNotifications:(BOOL)a3
+- (id)updateAllowNotifications:(BOOL)notifications
 {
-  v3 = a3;
-  v5 = [(HUStatusAndNotificationsItemManager *)self notificationSettings];
-  v6 = [v5 mutableCopy];
+  notificationsCopy = notifications;
+  notificationSettings = [(HUStatusAndNotificationsItemManager *)self notificationSettings];
+  v6 = [notificationSettings mutableCopy];
 
-  [v6 setNotificationsEnabled:v3];
-  [v6 setDoorbellNotificationsEnabled:v3];
-  [v6 setSmartDetectionNotificationsEnabled:v3];
-  [v6 setMotionNotificationsEnabled:v3];
+  [v6 setNotificationsEnabled:notificationsCopy];
+  [v6 setDoorbellNotificationsEnabled:notificationsCopy];
+  [v6 setSmartDetectionNotificationsEnabled:notificationsCopy];
+  [v6 setMotionNotificationsEnabled:notificationsCopy];
   v7 = [(HUStatusAndNotificationsItemManager *)self _updateNotificationSettings:v6];
 
   return v7;
 }
 
-- (id)updateAllowAudioNotifications:(BOOL)a3
+- (id)updateAllowAudioNotifications:(BOOL)notifications
 {
-  v30 = a3;
+  notificationsCopy = notifications;
   v40 = *MEMORY[0x277D85DE8];
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v5 = [(HUStatusAndNotificationsItemManager *)self _sourceItemAsMediaAccessoryItem];
-  v6 = [v5 mediaProfileContainer];
-  v7 = [v6 accessories];
+  _sourceItemAsMediaAccessoryItem = [(HUStatusAndNotificationsItemManager *)self _sourceItemAsMediaAccessoryItem];
+  mediaProfileContainer = [_sourceItemAsMediaAccessoryItem mediaProfileContainer];
+  accessories = [mediaProfileContainer accessories];
 
   v8 = HFLogForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109378;
-    *v39 = [v5 isHomePodMediaSystem];
+    *v39 = [_sourceItemAsMediaAccessoryItem isHomePodMediaSystem];
     *&v39[4] = 2112;
-    *&v39[6] = v7;
+    *&v39[6] = accessories;
     _os_log_impl(&dword_20CEB6000, v8, OS_LOG_TYPE_DEFAULT, "Is this a HomePod media system? %{BOOL}d Updating audio analysis notification settings for accessories: %@", buf, 0x12u);
   }
 
-  v29 = v5;
+  v29 = _sourceItemAsMediaAccessoryItem;
 
   v35 = 0u;
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  obj = v7;
+  obj = accessories;
   v9 = [obj countByEnumeratingWithState:&v33 objects:v37 count:16];
-  v10 = v30;
+  v10 = notificationsCopy;
   if (v9)
   {
     v11 = v9;
@@ -1547,8 +1547,8 @@ LABEL_19:
 
         v16 = v15;
 
-        v17 = [v16 hf_userNotificationSettings];
-        v18 = [v17 mutableCopy];
+        hf_userNotificationSettings = [v16 hf_userNotificationSettings];
+        v18 = [hf_userNotificationSettings mutableCopy];
 
         [v18 setNotificationsEnabled:v10];
         if (-[HUStatusAndNotificationsItemManager _isAudioAnalysisSupportedDevice](self, "_isAudioAnalysisSupportedDevice") && [v18 areNotificationsEnabled])
@@ -1559,11 +1559,11 @@ LABEL_19:
           v22 = [v19 conditionCollectionForPredicate:v21];
 
           v23 = [(HUStatusAndNotificationsItemManager *)self _updateConditionCollectionForAudioAnalysisNotification:v22];
-          v24 = [v23 predicate];
-          [v18 setNotificationCondition:v24];
+          predicate = [v23 predicate];
+          [v18 setNotificationCondition:predicate];
 
           v4 = v20;
-          v10 = v30;
+          v10 = notificationsCopy;
         }
 
         v25 = HFLogForCategory();
@@ -1589,36 +1589,36 @@ LABEL_19:
   return v27;
 }
 
-- (id)updateAllowMotionNotifications:(BOOL)a3
+- (id)updateAllowMotionNotifications:(BOOL)notifications
 {
-  v3 = a3;
-  v5 = [(HUStatusAndNotificationsItemManager *)self notificationSettings];
-  v6 = [v5 mutableCopy];
+  notificationsCopy = notifications;
+  notificationSettings = [(HUStatusAndNotificationsItemManager *)self notificationSettings];
+  v6 = [notificationSettings mutableCopy];
 
-  [v6 setMotionNotificationsEnabled:v3];
-  [v6 setNotificationsEnabled:{objc_msgSend(v6, "areDoorbellNotificationsEnabled") | v3}];
+  [v6 setMotionNotificationsEnabled:notificationsCopy];
+  [v6 setNotificationsEnabled:{objc_msgSend(v6, "areDoorbellNotificationsEnabled") | notificationsCopy}];
   v7 = [(HUStatusAndNotificationsItemManager *)self _updateNotificationSettings:v6];
 
   return v7;
 }
 
-- (id)updateChimeOnAccessory:(BOOL)a3
+- (id)updateChimeOnAccessory:(BOOL)accessory
 {
-  v5 = [MEMORY[0x277CBEB18] array];
-  v6 = [(HFItemManager *)self home];
-  v7 = [v6 hf_allHomePodsOrStereoPairs];
+  array = [MEMORY[0x277CBEB18] array];
+  home = [(HFItemManager *)self home];
+  hf_allHomePodsOrStereoPairs = [home hf_allHomePodsOrStereoPairs];
 
   v13 = MEMORY[0x277D85DD0];
   v14 = 3221225472;
   v15 = __62__HUStatusAndNotificationsItemManager_updateChimeOnAccessory___block_invoke;
   v16 = &unk_277DBB2F8;
-  v17 = v5;
-  v18 = a3;
-  v8 = v5;
-  [v7 na_each:&v13];
+  v17 = array;
+  accessoryCopy = accessory;
+  v8 = array;
+  [hf_allHomePodsOrStereoPairs na_each:&v13];
   v9 = MEMORY[0x277D2C900];
-  v10 = [MEMORY[0x277D2C938] mainThreadScheduler];
-  v11 = [v9 combineAllFutures:v8 ignoringErrors:0 scheduler:v10];
+  mainThreadScheduler = [MEMORY[0x277D2C938] mainThreadScheduler];
+  v11 = [v9 combineAllFutures:v8 ignoringErrors:0 scheduler:mainThreadScheduler];
 
   return v11;
 }
@@ -1637,18 +1637,18 @@ void __62__HUStatusAndNotificationsItemManager_updateChimeOnAccessory___block_in
   [v6 addObject:v8];
 }
 
-- (id)updateAllowDoorbellNotifications:(BOOL)a3
+- (id)updateAllowDoorbellNotifications:(BOOL)notifications
 {
-  v3 = a3;
-  v5 = [(HUStatusAndNotificationsItemManager *)self notificationSettings];
-  v6 = [v5 mutableCopy];
+  notificationsCopy = notifications;
+  notificationSettings = [(HUStatusAndNotificationsItemManager *)self notificationSettings];
+  v6 = [notificationSettings mutableCopy];
 
-  [v6 setDoorbellNotificationsEnabled:v3];
+  [v6 setDoorbellNotificationsEnabled:notificationsCopy];
   objc_opt_class();
-  v7 = [(HUStatusAndNotificationsItemManager *)self serviceItem];
+  serviceItem = [(HUStatusAndNotificationsItemManager *)self serviceItem];
   if (objc_opt_isKindOfClass())
   {
-    v8 = v7;
+    v8 = serviceItem;
   }
 
   else
@@ -1658,14 +1658,14 @@ void __62__HUStatusAndNotificationsItemManager_updateChimeOnAccessory___block_in
 
   v9 = v8;
 
-  v10 = [v9 profile];
+  profile = [v9 profile];
 
-  LODWORD(v9) = [v10 hf_supportsRecordingEvents];
+  LODWORD(v9) = [profile hf_supportsRecordingEvents];
   if (!v9)
   {
-    if (!v3)
+    if (!notificationsCopy)
     {
-      v11 = [v6 areMotionNotificationsEnabled];
+      areMotionNotificationsEnabled = [v6 areMotionNotificationsEnabled];
       goto LABEL_10;
     }
 
@@ -1674,14 +1674,14 @@ LABEL_8:
     goto LABEL_11;
   }
 
-  if (v3)
+  if (notificationsCopy)
   {
     goto LABEL_8;
   }
 
-  v11 = [v6 areSmartDetectionNotificationsEnabled];
+  areMotionNotificationsEnabled = [v6 areSmartDetectionNotificationsEnabled];
 LABEL_10:
-  v12 = v11;
+  v12 = areMotionNotificationsEnabled;
 LABEL_11:
   [v6 setNotificationsEnabled:v12];
   v13 = [(HUStatusAndNotificationsItemManager *)self _updateNotificationSettings:v6];
@@ -1689,18 +1689,18 @@ LABEL_11:
   return v13;
 }
 
-- (id)updateAllowChimeAnalogNotifications:(BOOL)a3
+- (id)updateAllowChimeAnalogNotifications:(BOOL)notifications
 {
-  v3 = a3;
-  v5 = [(HUStatusAndNotificationsItemManager *)self notificationSettings];
-  v6 = [v5 mutableCopy];
+  notificationsCopy = notifications;
+  notificationSettings = [(HUStatusAndNotificationsItemManager *)self notificationSettings];
+  v6 = [notificationSettings mutableCopy];
 
-  [v6 setDoorbellNotificationsEnabled:v3];
+  [v6 setDoorbellNotificationsEnabled:notificationsCopy];
   objc_opt_class();
-  v7 = [(HUStatusAndNotificationsItemManager *)self serviceItem];
+  serviceItem = [(HUStatusAndNotificationsItemManager *)self serviceItem];
   if (objc_opt_isKindOfClass())
   {
-    v8 = v7;
+    v8 = serviceItem;
   }
 
   else
@@ -1710,54 +1710,54 @@ LABEL_11:
 
   v9 = v8;
 
-  v10 = [v9 profile];
+  profile = [v9 profile];
 
-  [v10 hf_updateDoorbellChime:v3];
-  v11 = [MEMORY[0x277D2C900] futureWithNoResult];
+  [profile hf_updateDoorbellChime:notificationsCopy];
+  futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
 
-  return v11;
+  return futureWithNoResult;
 }
 
-- (id)updateAllowSnapshotsInNotifications:(BOOL)a3
+- (id)updateAllowSnapshotsInNotifications:(BOOL)notifications
 {
-  v3 = a3;
-  v4 = [(HUStatusAndNotificationsItemManager *)self allowCameraSnapshotsItem];
-  v5 = [v4 updateUserSettingsWithValue:v3];
+  notificationsCopy = notifications;
+  allowCameraSnapshotsItem = [(HUStatusAndNotificationsItemManager *)self allowCameraSnapshotsItem];
+  v5 = [allowCameraSnapshotsItem updateUserSettingsWithValue:notificationsCopy];
 
   return v5;
 }
 
-- (id)updateAllowSmartActivityNotifications:(BOOL)a3
+- (id)updateAllowSmartActivityNotifications:(BOOL)notifications
 {
-  v3 = a3;
-  v5 = [(HUStatusAndNotificationsItemManager *)self notificationSettings];
-  v6 = [v5 mutableCopy];
+  notificationsCopy = notifications;
+  notificationSettings = [(HUStatusAndNotificationsItemManager *)self notificationSettings];
+  v6 = [notificationSettings mutableCopy];
 
-  [v6 setSmartDetectionNotificationsEnabled:v3];
-  [v6 setMotionNotificationsEnabled:v3];
+  [v6 setSmartDetectionNotificationsEnabled:notificationsCopy];
+  [v6 setMotionNotificationsEnabled:notificationsCopy];
   if ([v6 areDoorbellNotificationsEnabled])
   {
-    v7 = 1;
+    areSmartDetectionNotificationsEnabled = 1;
   }
 
   else
   {
-    v7 = [v6 areSmartDetectionNotificationsEnabled];
+    areSmartDetectionNotificationsEnabled = [v6 areSmartDetectionNotificationsEnabled];
   }
 
-  [v6 setNotificationsEnabled:v7];
+  [v6 setNotificationsEnabled:areSmartDetectionNotificationsEnabled];
   v8 = [(HUStatusAndNotificationsItemManager *)self _updateNotificationSettings:v6];
 
   return v8;
 }
 
-- (id)updateAllowCameraStatusChangeNotifications:(BOOL)a3
+- (id)updateAllowCameraStatusChangeNotifications:(BOOL)notifications
 {
   objc_opt_class();
-  v5 = [(HUStatusAndNotificationsItemManager *)self serviceItem];
+  serviceItem = [(HUStatusAndNotificationsItemManager *)self serviceItem];
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = serviceItem;
   }
 
   else
@@ -1769,24 +1769,24 @@ LABEL_11:
 
   if (v7)
   {
-    v8 = [v7 profile];
-    v9 = [v8 hf_supportsRecordingEvents];
+    profile = [v7 profile];
+    hf_supportsRecordingEvents = [profile hf_supportsRecordingEvents];
 
     v10 = MEMORY[0x277D2C900];
-    if (v9)
+    if (hf_supportsRecordingEvents)
     {
       v15[0] = MEMORY[0x277D85DD0];
       v15[1] = 3221225472;
       v15[2] = __82__HUStatusAndNotificationsItemManager_updateAllowCameraStatusChangeNotifications___block_invoke;
       v15[3] = &unk_277DBB320;
       v16 = v7;
-      v17 = a3;
-      v11 = [v10 futureWithBlock:v15];
+      notificationsCopy = notifications;
+      futureWithNoResult = [v10 futureWithBlock:v15];
     }
 
     else
     {
-      v11 = [MEMORY[0x277D2C900] futureWithNoResult];
+      futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
     }
   }
 
@@ -1794,10 +1794,10 @@ LABEL_11:
   {
     v12 = MEMORY[0x277D2C900];
     v13 = [MEMORY[0x277CCA9B8] hf_errorWithCode:30];
-    v11 = [v12 futureWithError:v13];
+    futureWithNoResult = [v12 futureWithError:v13];
   }
 
-  return v11;
+  return futureWithNoResult;
 }
 
 void __82__HUStatusAndNotificationsItemManager_updateAllowCameraStatusChangeNotifications___block_invoke(uint64_t a1, void *a2)
@@ -1829,13 +1829,13 @@ uint64_t __82__HUStatusAndNotificationsItemManager_updateAllowCameraStatusChange
   }
 }
 
-- (id)updateAllowCameraReachabilityStatusChangeNotifications:(BOOL)a3
+- (id)updateAllowCameraReachabilityStatusChangeNotifications:(BOOL)notifications
 {
   objc_opt_class();
-  v5 = [(HUStatusAndNotificationsItemManager *)self serviceItem];
+  serviceItem = [(HUStatusAndNotificationsItemManager *)self serviceItem];
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = serviceItem;
   }
 
   else
@@ -1853,7 +1853,7 @@ uint64_t __82__HUStatusAndNotificationsItemManager_updateAllowCameraStatusChange
     v13[2] = __94__HUStatusAndNotificationsItemManager_updateAllowCameraReachabilityStatusChangeNotifications___block_invoke;
     v13[3] = &unk_277DBB320;
     v14 = v7;
-    v15 = a3;
+    notificationsCopy = notifications;
     v9 = [v8 futureWithBlock:v13];
   }
 
@@ -1898,10 +1898,10 @@ uint64_t __94__HUStatusAndNotificationsItemManager_updateAllowCameraReachability
   }
 }
 
-- (id)updateNotificationCondition:(id)a3
+- (id)updateNotificationCondition:(id)condition
 {
   v53 = *MEMORY[0x277D85DE8];
-  v40 = a3;
+  conditionCopy = condition;
   v5 = HFLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1911,36 +1911,36 @@ uint64_t __94__HUStatusAndNotificationsItemManager_updateAllowCameraReachability
     *&v50[8] = 2112;
     *&v50[10] = v6;
     v51 = 2112;
-    v52 = v40;
+    v52 = conditionCopy;
     _os_log_impl(&dword_20CEB6000, v5, OS_LOG_TYPE_DEFAULT, "%@:%@ Updating notification condition to %@", buf, 0x20u);
   }
 
   if ([(HUStatusAndNotificationsItemManager *)self showsAudioNotificationSection])
   {
     v41 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v7 = [(HUStatusAndNotificationsItemManager *)self _sourceItemAsMediaAccessoryItem];
-    v8 = [v7 mediaProfileContainer];
-    v9 = [v8 accessories];
+    _sourceItemAsMediaAccessoryItem = [(HUStatusAndNotificationsItemManager *)self _sourceItemAsMediaAccessoryItem];
+    mediaProfileContainer = [_sourceItemAsMediaAccessoryItem mediaProfileContainer];
+    accessories = [mediaProfileContainer accessories];
 
     v10 = HFLogForCategory();
-    v11 = v40;
+    v11 = conditionCopy;
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [v7 isHomePodMediaSystem];
+      isHomePodMediaSystem = [_sourceItemAsMediaAccessoryItem isHomePodMediaSystem];
       *buf = 67109378;
-      *v50 = v12;
+      *v50 = isHomePodMediaSystem;
       *&v50[4] = 2112;
-      *&v50[6] = v9;
+      *&v50[6] = accessories;
       _os_log_impl(&dword_20CEB6000, v10, OS_LOG_TYPE_DEFAULT, "Is this a HomePod media system? %{BOOL}d Updating audio analysis notification settings for accessories: %@", buf, 0x12u);
     }
 
-    v39 = v7;
+    v39 = _sourceItemAsMediaAccessoryItem;
 
     v46 = 0u;
     v47 = 0u;
     v44 = 0u;
     v45 = 0u;
-    obj = v9;
+    obj = accessories;
     v13 = [obj countByEnumeratingWithState:&v44 objects:v48 count:16];
     if (v13)
     {
@@ -1973,35 +1973,35 @@ uint64_t __94__HUStatusAndNotificationsItemManager_updateAllowCameraReachability
 
           v22 = v21;
 
-          v23 = [v22 hf_userNotificationSettings];
-          v24 = [v23 mutableCopy];
+          hf_userNotificationSettings = [v22 hf_userNotificationSettings];
+          v24 = [hf_userNotificationSettings mutableCopy];
 
           if ([v24 areNotificationsEnabled])
           {
             v25 = v15;
             v26 = [MEMORY[0x277D14598] conditionCollectionForPredicate:v11];
-            v27 = self;
+            selfCopy = self;
             v28 = [(HUStatusAndNotificationsItemManager *)self _updateConditionCollectionForAudioAnalysisNotification:v26];
-            v29 = [v28 predicate];
-            [v24 setNotificationCondition:v29];
+            predicate = [v28 predicate];
+            [v24 setNotificationCondition:predicate];
 
             v30 = HFLogForCategory();
             if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
             {
-              v31 = [v24 notificationCondition];
+              notificationCondition = [v24 notificationCondition];
               *buf = 138412546;
               *v50 = v19;
               *&v50[8] = 2112;
-              *&v50[10] = v31;
+              *&v50[10] = notificationCondition;
               _os_log_impl(&dword_20CEB6000, v30, OS_LOG_TYPE_DEFAULT, "Updating audio analysis notification settings for accessory: %@ with condition %@", buf, 0x16u);
 
-              v11 = v40;
+              v11 = conditionCopy;
             }
 
-            v32 = [(HUStatusAndNotificationsItemManager *)v27 _updateNotificationSettings:v24 notificationSettingsProvider:v22];
+            v32 = [(HUStatusAndNotificationsItemManager *)selfCopy _updateNotificationSettings:v24 notificationSettingsProvider:v22];
             [v41 na_safeAddObject:v32];
 
-            self = v27;
+            self = selfCopy;
             v15 = v25;
             v16 = &protocolRef_NSCopying_0;
             v14 = v42;
@@ -2023,32 +2023,32 @@ uint64_t __94__HUStatusAndNotificationsItemManager_updateAllowCameraReachability
 
   else
   {
-    v35 = [(HUStatusAndNotificationsItemManager *)self notificationSettings];
-    v33 = [v35 mutableCopy];
+    notificationSettings = [(HUStatusAndNotificationsItemManager *)self notificationSettings];
+    v33 = [notificationSettings mutableCopy];
 
-    [v33 setNotificationCondition:v40];
-    v36 = [(HUStatusAndNotificationsItemManager *)self notificationSettings];
-    v37 = [v36 smartCameraNotificationCondition];
-    [v33 setSmartCameraNotificationCondition:v37];
+    [v33 setNotificationCondition:conditionCopy];
+    notificationSettings2 = [(HUStatusAndNotificationsItemManager *)self notificationSettings];
+    smartCameraNotificationCondition = [notificationSettings2 smartCameraNotificationCondition];
+    [v33 setSmartCameraNotificationCondition:smartCameraNotificationCondition];
 
-    v11 = v40;
+    v11 = conditionCopy;
     v34 = [(HUStatusAndNotificationsItemManager *)self _updateNotificationSettings:v33];
   }
 
   return v34;
 }
 
-- (id)updateCameraSmartNotificationCondition:(id)a3
+- (id)updateCameraSmartNotificationCondition:(id)condition
 {
-  v4 = a3;
-  v5 = [(HUStatusAndNotificationsItemManager *)self notificationSettings];
-  v6 = [v5 mutableCopy];
+  conditionCopy = condition;
+  notificationSettings = [(HUStatusAndNotificationsItemManager *)self notificationSettings];
+  v6 = [notificationSettings mutableCopy];
 
-  v7 = [(HUStatusAndNotificationsItemManager *)self notificationSettings];
-  v8 = [v7 notificationCondition];
-  [v6 setNotificationCondition:v8];
+  notificationSettings2 = [(HUStatusAndNotificationsItemManager *)self notificationSettings];
+  notificationCondition = [notificationSettings2 notificationCondition];
+  [v6 setNotificationCondition:notificationCondition];
 
-  [v6 setSmartCameraNotificationCondition:v4];
+  [v6 setSmartCameraNotificationCondition:conditionCopy];
   v9 = [(HUStatusAndNotificationsItemManager *)self _updateNotificationSettings:v6];
 
   return v9;
@@ -2056,16 +2056,16 @@ uint64_t __94__HUStatusAndNotificationsItemManager_updateAllowCameraReachability
 
 - (BOOL)_isSourceItemThermostatLikeItem
 {
-  v3 = [(HUStatusAndNotificationsItemManager *)self _sourceItemAsThermostatServiceItem];
-  if (v3)
+  _sourceItemAsThermostatServiceItem = [(HUStatusAndNotificationsItemManager *)self _sourceItemAsThermostatServiceItem];
+  if (_sourceItemAsThermostatServiceItem)
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(HUStatusAndNotificationsItemManager *)self _sourceItemAsHeaterCoolerServiceItem];
-    v4 = v5 != 0;
+    _sourceItemAsHeaterCoolerServiceItem = [(HUStatusAndNotificationsItemManager *)self _sourceItemAsHeaterCoolerServiceItem];
+    v4 = _sourceItemAsHeaterCoolerServiceItem != 0;
   }
 
   return v4;
@@ -2074,10 +2074,10 @@ uint64_t __94__HUStatusAndNotificationsItemManager_updateAllowCameraReachability
 - (id)_sourceItemAsThermostatServiceItem
 {
   objc_opt_class();
-  v3 = [(HUStatusAndNotificationsItemManager *)self serviceItem];
+  serviceItem = [(HUStatusAndNotificationsItemManager *)self serviceItem];
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = serviceItem;
   }
 
   else
@@ -2093,10 +2093,10 @@ uint64_t __94__HUStatusAndNotificationsItemManager_updateAllowCameraReachability
 - (id)_sourceItemAsHeaterCoolerServiceItem
 {
   objc_opt_class();
-  v3 = [(HUStatusAndNotificationsItemManager *)self serviceItem];
+  serviceItem = [(HUStatusAndNotificationsItemManager *)self serviceItem];
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = serviceItem;
   }
 
   else
@@ -2112,10 +2112,10 @@ uint64_t __94__HUStatusAndNotificationsItemManager_updateAllowCameraReachability
 - (id)_sourceItemAsMediaAccessoryItem
 {
   objc_opt_class();
-  v3 = [(HUStatusAndNotificationsItemManager *)self serviceItem];
+  serviceItem = [(HUStatusAndNotificationsItemManager *)self serviceItem];
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = serviceItem;
   }
 
   else
@@ -2131,17 +2131,17 @@ uint64_t __94__HUStatusAndNotificationsItemManager_updateAllowCameraReachability
 - (BOOL)_isAudioAnalysisSupportedDevice
 {
   v2 = MEMORY[0x277D14810];
-  v3 = [(HUStatusAndNotificationsItemManager *)self _sourceItemAsMediaAccessoryItem];
-  v4 = [v3 mediaProfileContainer];
-  LOBYTE(v2) = [v2 isAudioAnalysisSupportedDevice:v4];
+  _sourceItemAsMediaAccessoryItem = [(HUStatusAndNotificationsItemManager *)self _sourceItemAsMediaAccessoryItem];
+  mediaProfileContainer = [_sourceItemAsMediaAccessoryItem mediaProfileContainer];
+  LOBYTE(v2) = [v2 isAudioAnalysisSupportedDevice:mediaProfileContainer];
 
   return v2;
 }
 
-- (id)_updateConditionCollectionForAudioAnalysisNotification:(id)a3
+- (id)_updateConditionCollectionForAudioAnalysisNotification:(id)notification
 {
-  v3 = a3;
-  if (!v3)
+  notificationCopy = notification;
+  if (!notificationCopy)
   {
     v4 = HFLogForCategory();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -2151,8 +2151,8 @@ uint64_t __94__HUStatusAndNotificationsItemManager_updateAllowCameraReachability
     }
   }
 
-  v5 = [v3 conditions];
-  v6 = [v5 na_filter:&__block_literal_global_199_0];
+  conditions = [notificationCopy conditions];
+  v6 = [conditions na_filter:&__block_literal_global_199_0];
 
   v7 = [objc_alloc(MEMORY[0x277D14598]) initWithConditions:v6];
   v8 = [MEMORY[0x277CD1858] predicateForAudioAnalysisOptions:3];
@@ -2171,32 +2171,32 @@ BOOL __94__HUStatusAndNotificationsItemManager__updateConditionCollectionForAudi
   return (isKindOfClass & 1) == 0;
 }
 
-- (id)_updateNotificationSettings:(id)a3
+- (id)_updateNotificationSettings:(id)settings
 {
-  v4 = a3;
-  v5 = [(HUStatusAndNotificationsItemManager *)self notificationSettingsProvider];
-  v6 = [(HUStatusAndNotificationsItemManager *)self _updateNotificationSettings:v4 notificationSettingsProvider:v5];
+  settingsCopy = settings;
+  notificationSettingsProvider = [(HUStatusAndNotificationsItemManager *)self notificationSettingsProvider];
+  v6 = [(HUStatusAndNotificationsItemManager *)self _updateNotificationSettings:settingsCopy notificationSettingsProvider:notificationSettingsProvider];
 
   return v6;
 }
 
-- (id)_updateNotificationSettings:(id)a3 notificationSettingsProvider:(id)a4
+- (id)_updateNotificationSettings:(id)settings notificationSettingsProvider:(id)provider
 {
   v23 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  settingsCopy = settings;
+  providerCopy = provider;
   v9 = HFLogForCategory();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v20 = v7;
+    v20 = settingsCopy;
     v21 = 2112;
-    v22 = v8;
+    v22 = providerCopy;
     _os_log_impl(&dword_20CEB6000, v9, OS_LOG_TYPE_DEFAULT, "Updating notification settings to: %@ for object: %@", buf, 0x16u);
   }
 
   objc_initWeak(buf, self);
-  v10 = [v8 hf_updateUserNotificationSettings:v7];
+  v10 = [providerCopy hf_updateUserNotificationSettings:settingsCopy];
   v14 = MEMORY[0x277D85DD0];
   v15 = 3221225472;
   v16 = __96__HUStatusAndNotificationsItemManager__updateNotificationSettings_notificationSettingsProvider___block_invoke;
@@ -2262,40 +2262,40 @@ void __96__HUStatusAndNotificationsItemManager__updateNotificationSettings_notif
 
 - (HFUserNotificationServiceSettingsProviding)notificationSettingsProvider
 {
-  v3 = [(HUStatusAndNotificationsItemManager *)self _sourceItemAsMediaAccessoryItem];
-  v4 = v3;
-  if (!v3)
+  _sourceItemAsMediaAccessoryItem = [(HUStatusAndNotificationsItemManager *)self _sourceItemAsMediaAccessoryItem];
+  v4 = _sourceItemAsMediaAccessoryItem;
+  if (!_sourceItemAsMediaAccessoryItem)
   {
     if ([(HUStatusAndNotificationsItemManager *)self _isSourceItemThermostatLikeItem])
     {
-      v11 = [(HUStatusAndNotificationsItemManager *)self _sourceItemAsThermostatServiceItem];
-      v10 = v11;
-      if (v11)
+      _sourceItemAsThermostatServiceItem = [(HUStatusAndNotificationsItemManager *)self _sourceItemAsThermostatServiceItem];
+      serviceItem = _sourceItemAsThermostatServiceItem;
+      if (_sourceItemAsThermostatServiceItem)
       {
-        v12 = [v11 accessories];
-        v13 = [v12 anyObject];
+        accessories = [_sourceItemAsThermostatServiceItem accessories];
+        anyObject = [accessories anyObject];
       }
 
       else
       {
-        v12 = [(HUStatusAndNotificationsItemManager *)self _sourceItemAsHeaterCoolerServiceItem];
-        v14 = [v12 accessories];
-        v13 = [v14 anyObject];
+        accessories = [(HUStatusAndNotificationsItemManager *)self _sourceItemAsHeaterCoolerServiceItem];
+        v12Accessories = [accessories accessories];
+        anyObject = [v12Accessories anyObject];
       }
 
       if (_os_feature_enabled_impl())
       {
-        v15 = [v13 home];
-        if ([v15 hf_hasResidentCapableOfSupportingHomeActivityState])
+        home = [anyObject home];
+        if ([home hf_hasResidentCapableOfSupportingHomeActivityState])
         {
-          v16 = [v13 supportsAdaptiveTemperatureAutomations];
+          supportsAdaptiveTemperatureAutomations = [anyObject supportsAdaptiveTemperatureAutomations];
 
-          if (v16)
+          if (supportsAdaptiveTemperatureAutomations)
           {
-            v7 = v13;
-            if ([v7 conformsToProtocol:&unk_2825BD420])
+            homeKitObject = anyObject;
+            if ([homeKitObject conformsToProtocol:&unk_2825BD420])
             {
-              v17 = v7;
+              v17 = homeKitObject;
             }
 
             else
@@ -2315,11 +2315,11 @@ void __96__HUStatusAndNotificationsItemManager__updateNotificationSettings_notif
       }
     }
 
-    v10 = [(HUStatusAndNotificationsItemManager *)self serviceItem];
-    v7 = [v10 homeKitObject];
-    if ([v7 conformsToProtocol:&unk_2825BD420])
+    serviceItem = [(HUStatusAndNotificationsItemManager *)self serviceItem];
+    homeKitObject = [serviceItem homeKitObject];
+    if ([homeKitObject conformsToProtocol:&unk_2825BD420])
     {
-      v18 = v7;
+      v18 = homeKitObject;
     }
 
     else
@@ -2331,13 +2331,13 @@ void __96__HUStatusAndNotificationsItemManager__updateNotificationSettings_notif
     goto LABEL_23;
   }
 
-  v5 = [v3 accessories];
-  v6 = [v5 anyObject];
+  accessories2 = [_sourceItemAsMediaAccessoryItem accessories];
+  anyObject2 = [accessories2 anyObject];
 
-  v7 = v6;
-  if ([v7 conformsToProtocol:&unk_2825BD420])
+  homeKitObject = anyObject2;
+  if ([homeKitObject conformsToProtocol:&unk_2825BD420])
   {
-    v8 = v7;
+    v8 = homeKitObject;
   }
 
   else
@@ -2346,7 +2346,7 @@ void __96__HUStatusAndNotificationsItemManager__updateNotificationSettings_notif
   }
 
   v9 = v8;
-  v10 = v7;
+  serviceItem = homeKitObject;
 LABEL_23:
 
   return v9;
@@ -2359,39 +2359,39 @@ LABEL_23:
     return 0;
   }
 
-  v3 = [(HUStatusAndNotificationsItemManager *)self serviceItem];
-  v4 = [v3 accessories];
-  v5 = [v4 na_firstObjectPassingTest:&__block_literal_global_210];
+  serviceItem = [(HUStatusAndNotificationsItemManager *)self serviceItem];
+  accessories = [serviceItem accessories];
+  v5 = [accessories na_firstObjectPassingTest:&__block_literal_global_210];
 
   if (v5)
   {
-    v6 = [v5 home];
-    v7 = v6;
-    if (v6 && [v6 hf_hasResidentCapableOfSupportingHomeActivityState])
+    home = [v5 home];
+    v7 = home;
+    if (home && [home hf_hasResidentCapableOfSupportingHomeActivityState])
     {
       if ([v5 supportsAdaptiveTemperatureAutomations])
       {
-        v8 = 1;
+        supportsCleanEnergyAutomation = 1;
       }
 
       else
       {
-        v8 = [v5 supportsCleanEnergyAutomation];
+        supportsCleanEnergyAutomation = [v5 supportsCleanEnergyAutomation];
       }
     }
 
     else
     {
-      v8 = 0;
+      supportsCleanEnergyAutomation = 0;
     }
   }
 
   else
   {
-    v8 = 0;
+    supportsCleanEnergyAutomation = 0;
   }
 
-  return v8;
+  return supportsCleanEnergyAutomation;
 }
 
 uint64_t __70__HUStatusAndNotificationsItemManager__isAutoClimateCapableThermostat__block_invoke(uint64_t a1, void *a2)
@@ -2422,19 +2422,19 @@ uint64_t __70__HUStatusAndNotificationsItemManager__isAutoClimateCapableThermost
 
 - (HFUserNotificationServiceSettings)notificationSettings
 {
-  v2 = [(HUStatusAndNotificationsItemManager *)self notificationSettingsProvider];
-  v3 = [v2 hf_userNotificationSettings];
+  notificationSettingsProvider = [(HUStatusAndNotificationsItemManager *)self notificationSettingsProvider];
+  hf_userNotificationSettings = [notificationSettingsProvider hf_userNotificationSettings];
 
-  return v3;
+  return hf_userNotificationSettings;
 }
 
 - (id)homeStatusVisibleObject
 {
-  v2 = [(HUStatusAndNotificationsItemManager *)self serviceItem];
-  v3 = [v2 homeKitObject];
-  if ([v3 conformsToProtocol:&unk_28259DE80])
+  serviceItem = [(HUStatusAndNotificationsItemManager *)self serviceItem];
+  homeKitObject = [serviceItem homeKitObject];
+  if ([homeKitObject conformsToProtocol:&unk_28259DE80])
   {
-    v4 = v3;
+    v4 = homeKitObject;
   }
 
   else
@@ -2450,8 +2450,8 @@ uint64_t __70__HUStatusAndNotificationsItemManager__isAutoClimateCapableThermost
 - (id)_homeFuture
 {
   v2 = MEMORY[0x277D2C900];
-  v3 = [(HUStatusAndNotificationsItemManager *)self overrideHome];
-  v4 = [v2 futureWithResult:v3];
+  overrideHome = [(HUStatusAndNotificationsItemManager *)self overrideHome];
+  v4 = [v2 futureWithResult:overrideHome];
 
   return v4;
 }

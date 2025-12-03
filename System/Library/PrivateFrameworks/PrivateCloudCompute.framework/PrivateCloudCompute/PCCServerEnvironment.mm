@@ -1,6 +1,6 @@
 @interface PCCServerEnvironment
 - (PCCServerEnvironment)init;
-- (void)selectedEnvironmentNameWithCompletionHandler:(id)a3;
+- (void)selectedEnvironmentNameWithCompletionHandler:(id)handler;
 @end
 
 @implementation PCCServerEnvironment
@@ -12,13 +12,13 @@
   return [(PCCServerEnvironment *)&v3 init];
 }
 
-- (void)selectedEnvironmentNameWithCompletionHandler:(id)a3
+- (void)selectedEnvironmentNameWithCompletionHandler:(id)handler
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EC4A8F18, &qword_1CEFAC050);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x1EEE9AC00](v5 - 8);
   v8 = &v15 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -34,7 +34,7 @@
   v13[3] = 0;
   v13[4] = &unk_1CEFA9850;
   v13[5] = v12;
-  v14 = self;
+  selfCopy = self;
   sub_1CEF3C270(0, 0, v8, &unk_1CEFA9860, v13);
 }
 

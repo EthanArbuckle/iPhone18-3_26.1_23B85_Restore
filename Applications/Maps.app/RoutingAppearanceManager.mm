@@ -1,23 +1,23 @@
 @interface RoutingAppearanceManager
-+ (id)backgroundViewWithLightMaterial:(int64_t)a3 darkColor:(id)a4;
++ (id)backgroundViewWithLightMaterial:(int64_t)material darkColor:(id)color;
 + (id)customGrayBlurCellBackgroundView;
 + (id)customGrayBlurCellSelectedBackgroundView;
-+ (void)_getBackgroundView:(id *)a3 selectedBackgroundView:(id *)a4 forCell:(id)a5;
-+ (void)configureBackgroundViewForCell:(id)a3;
-+ (void)configureBackgroundViewForStepCell:(id)a3;
-+ (void)configureBackgroundViewsForOptionsCollectionViewCell:(id)a3;
-+ (void)configureBackgroundViewsForOptionsTableViewCell:(id)a3;
++ (void)_getBackgroundView:(id *)view selectedBackgroundView:(id *)backgroundView forCell:(id)cell;
++ (void)configureBackgroundViewForCell:(id)cell;
++ (void)configureBackgroundViewForStepCell:(id)cell;
++ (void)configureBackgroundViewsForOptionsCollectionViewCell:(id)cell;
++ (void)configureBackgroundViewsForOptionsTableViewCell:(id)cell;
 @end
 
 @implementation RoutingAppearanceManager
 
-+ (void)_getBackgroundView:(id *)a3 selectedBackgroundView:(id *)a4 forCell:(id)a5
++ (void)_getBackgroundView:(id *)view selectedBackgroundView:(id *)backgroundView forCell:(id)cell
 {
-  v31 = a5;
-  if (a3)
+  cellCopy = cell;
+  if (view)
   {
     v7 = [RoutePlanningOptionsCellBackgroundView alloc];
-    [v31 bounds];
+    [cellCopy bounds];
     v9 = v8;
     v11 = v10;
     v13 = v12;
@@ -27,13 +27,13 @@
 
     [(RoutePlanningOptionsCellBackgroundView *)v17 setAutoresizingMask:18];
     v18 = v17;
-    *a3 = v17;
+    *view = v17;
   }
 
-  if (a4)
+  if (backgroundView)
   {
     v19 = [RoutePlanningOptionsCellBackgroundView alloc];
-    [v31 bounds];
+    [cellCopy bounds];
     v21 = v20;
     v23 = v22;
     v25 = v24;
@@ -43,16 +43,16 @@
 
     [(RoutePlanningOptionsCellBackgroundView *)v29 setAutoresizingMask:18];
     v30 = v29;
-    *a4 = v29;
+    *backgroundView = v29;
   }
 }
 
-+ (void)configureBackgroundViewsForOptionsCollectionViewCell:(id)a3
++ (void)configureBackgroundViewsForOptionsCollectionViewCell:(id)cell
 {
-  v4 = a3;
-  if (sub_10000FA08(v4) != 5)
+  cellCopy = cell;
+  if (sub_10000FA08(cellCopy) != 5)
   {
-    v5 = [v4 backgroundView];
+    backgroundView = [cellCopy backgroundView];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -60,21 +60,21 @@
     {
       v9 = 0;
       v10 = 0;
-      [a1 _getBackgroundView:&v10 selectedBackgroundView:&v9 forCell:v4];
+      [self _getBackgroundView:&v10 selectedBackgroundView:&v9 forCell:cellCopy];
       v7 = v10;
       v8 = v9;
-      [v4 setBackgroundView:v7];
-      [v4 setSelectedBackgroundView:v8];
+      [cellCopy setBackgroundView:v7];
+      [cellCopy setSelectedBackgroundView:v8];
     }
   }
 }
 
-+ (void)configureBackgroundViewsForOptionsTableViewCell:(id)a3
++ (void)configureBackgroundViewsForOptionsTableViewCell:(id)cell
 {
-  v4 = a3;
-  if (sub_10000FA08(v4) != 5)
+  cellCopy = cell;
+  if (sub_10000FA08(cellCopy) != 5)
   {
-    v5 = [v4 backgroundView];
+    backgroundView = [cellCopy backgroundView];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -82,20 +82,20 @@
     {
       v9 = 0;
       v10 = 0;
-      [a1 _getBackgroundView:&v10 selectedBackgroundView:&v9 forCell:v4];
+      [self _getBackgroundView:&v10 selectedBackgroundView:&v9 forCell:cellCopy];
       v7 = v10;
       v8 = v9;
-      [v4 setBackgroundView:v7];
-      [v4 setSelectedBackgroundView:v8];
+      [cellCopy setBackgroundView:v7];
+      [cellCopy setSelectedBackgroundView:v8];
     }
   }
 }
 
-+ (void)configureBackgroundViewForStepCell:(id)a3
++ (void)configureBackgroundViewForStepCell:(id)cell
 {
-  v3 = a3;
-  objc_initWeak(&location, v3);
-  if (sub_10000FA08(v3) == 5)
+  cellCopy = cell;
+  objc_initWeak(&location, cellCopy);
+  if (sub_10000FA08(cellCopy) == 5)
   {
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
@@ -103,7 +103,7 @@
     v7[3] = &unk_1016618D8;
     v4 = &v8;
     objc_copyWeak(&v8, &location);
-    [v3 _setBackgroundViewConfigurationProvider:v7];
+    [cellCopy _setBackgroundViewConfigurationProvider:v7];
   }
 
   else
@@ -114,34 +114,34 @@
     v5[3] = &unk_1016618D8;
     v4 = &v6;
     objc_copyWeak(&v6, &location);
-    [v3 _setBackgroundViewConfigurationProvider:v5];
+    [cellCopy _setBackgroundViewConfigurationProvider:v5];
   }
 
   objc_destroyWeak(v4);
   objc_destroyWeak(&location);
 }
 
-+ (void)configureBackgroundViewForCell:(id)a3
++ (void)configureBackgroundViewForCell:(id)cell
 {
-  v3 = a3;
-  if (sub_10000FA08(v3) == 5)
+  cellCopy = cell;
+  if (sub_10000FA08(cellCopy) == 5)
   {
-    objc_initWeak(&location, v3);
+    objc_initWeak(&location, cellCopy);
     v4[0] = _NSConcreteStackBlock;
     v4[1] = 3221225472;
     v4[2] = sub_10072239C;
     v4[3] = &unk_1016618D8;
     objc_copyWeak(&v5, &location);
-    [v3 _setBackgroundViewConfigurationProvider:v4];
+    [cellCopy _setBackgroundViewConfigurationProvider:v4];
     objc_destroyWeak(&v5);
     objc_destroyWeak(&location);
   }
 }
 
-+ (id)backgroundViewWithLightMaterial:(int64_t)a3 darkColor:(id)a4
++ (id)backgroundViewWithLightMaterial:(int64_t)material darkColor:(id)color
 {
-  v5 = a4;
-  v6 = [[RoutingMaterialColorSwitchingView alloc] initWithLightMaterial:a3 darkColor:v5];
+  colorCopy = color;
+  v6 = [[RoutingMaterialColorSwitchingView alloc] initWithLightMaterial:material darkColor:colorCopy];
 
   return v6;
 }

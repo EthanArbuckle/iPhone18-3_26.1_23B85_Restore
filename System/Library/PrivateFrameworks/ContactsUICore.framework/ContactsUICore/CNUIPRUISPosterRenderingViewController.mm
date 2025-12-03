@@ -1,33 +1,33 @@
 @interface CNUIPRUISPosterRenderingViewController
 - (CGRect)salientContentRectangle;
-- (CNUIPRUISPosterRenderingViewController)initWithConfiguration:(id)a3 context:(id)a4 boundingShape:(int64_t)a5 salientContentRectangle:(CGRect)a6;
-- (CNUIPRUISPosterRenderingViewController)initWithWallpaper:(id)a3;
+- (CNUIPRUISPosterRenderingViewController)initWithConfiguration:(id)configuration context:(id)context boundingShape:(int64_t)shape salientContentRectangle:(CGRect)rectangle;
+- (CNUIPRUISPosterRenderingViewController)initWithWallpaper:(id)wallpaper;
 - (CNUIPRUISPosterRenderingViewControllerDelegate)delegate;
-- (void)registerLabel:(id)a3;
-- (void)renderingViewControllerDidFinishShowingContent:(id)a3;
-- (void)snapshotWithCompletionBlock:(id)a3;
+- (void)registerLabel:(id)label;
+- (void)renderingViewControllerDidFinishShowingContent:(id)content;
+- (void)snapshotWithCompletionBlock:(id)block;
 - (void)viewDidLoad;
 @end
 
 @implementation CNUIPRUISPosterRenderingViewController
 
-- (CNUIPRUISPosterRenderingViewController)initWithConfiguration:(id)a3 context:(id)a4 boundingShape:(int64_t)a5 salientContentRectangle:(CGRect)a6
+- (CNUIPRUISPosterRenderingViewController)initWithConfiguration:(id)configuration context:(id)context boundingShape:(int64_t)shape salientContentRectangle:(CGRect)rectangle
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v13 = a3;
-  v14 = a4;
+  height = rectangle.size.height;
+  width = rectangle.size.width;
+  y = rectangle.origin.y;
+  x = rectangle.origin.x;
+  configurationCopy = configuration;
+  contextCopy = context;
   v23.receiver = self;
   v23.super_class = CNUIPRUISPosterRenderingViewController;
   v15 = [(CNUIPRUISPosterRenderingViewController *)&v23 init];
   if (v15)
   {
-    v16 = [v13 wrappedPosterConfiguration];
+    wrappedPosterConfiguration = [configurationCopy wrappedPosterConfiguration];
     v17 = objc_alloc(getPRUISPosterRenderingViewControllerClass());
-    v18 = [v14 wrappedIncomingCallPosterContext];
-    v19 = [v17 initWithConfiguration:v16 context:v18 boundingShape:a5];
+    wrappedIncomingCallPosterContext = [contextCopy wrappedIncomingCallPosterContext];
+    v19 = [v17 initWithConfiguration:wrappedPosterConfiguration context:wrappedIncomingCallPosterContext boundingShape:shape];
     wrappedPosterRenderingViewController = v15->_wrappedPosterRenderingViewController;
     v15->_wrappedPosterRenderingViewController = v19;
 
@@ -45,32 +45,32 @@
   v23.receiver = self;
   v23.super_class = CNUIPRUISPosterRenderingViewController;
   [(CNUIPRUISPosterRenderingViewController *)&v23 viewDidLoad];
-  v3 = [(PRUISPosterRenderingViewController *)self->_wrappedPosterRenderingViewController view];
-  [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
+  view = [(PRUISPosterRenderingViewController *)self->_wrappedPosterRenderingViewController view];
+  [view setTranslatesAutoresizingMaskIntoConstraints:0];
   [(CNUIPRUISPosterRenderingViewController *)self addChildViewController:self->_wrappedPosterRenderingViewController];
-  v4 = [(CNUIPRUISPosterRenderingViewController *)self view];
-  [v4 addSubview:v3];
+  view2 = [(CNUIPRUISPosterRenderingViewController *)self view];
+  [view2 addSubview:view];
 
   v15 = MEMORY[0x1E696ACD8];
-  v21 = [v3 topAnchor];
-  v22 = [(CNUIPRUISPosterRenderingViewController *)self view];
-  v20 = [v22 topAnchor];
-  v19 = [v21 constraintEqualToAnchor:v20];
+  topAnchor = [view topAnchor];
+  view3 = [(CNUIPRUISPosterRenderingViewController *)self view];
+  topAnchor2 = [view3 topAnchor];
+  v19 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v24[0] = v19;
-  v17 = [v3 bottomAnchor];
-  v18 = [(CNUIPRUISPosterRenderingViewController *)self view];
-  v16 = [v18 bottomAnchor];
-  v14 = [v17 constraintEqualToAnchor:v16];
+  bottomAnchor = [view bottomAnchor];
+  view4 = [(CNUIPRUISPosterRenderingViewController *)self view];
+  bottomAnchor2 = [view4 bottomAnchor];
+  v14 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v24[1] = v14;
-  v13 = [v3 leadingAnchor];
-  v5 = [(CNUIPRUISPosterRenderingViewController *)self view];
-  v6 = [v5 leadingAnchor];
-  v7 = [v13 constraintEqualToAnchor:v6];
+  leadingAnchor = [view leadingAnchor];
+  view5 = [(CNUIPRUISPosterRenderingViewController *)self view];
+  leadingAnchor2 = [view5 leadingAnchor];
+  v7 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v24[2] = v7;
-  v8 = [v3 trailingAnchor];
-  v9 = [(CNUIPRUISPosterRenderingViewController *)self view];
-  v10 = [v9 trailingAnchor];
-  v11 = [v8 constraintEqualToAnchor:v10];
+  trailingAnchor = [view trailingAnchor];
+  view6 = [(CNUIPRUISPosterRenderingViewController *)self view];
+  trailingAnchor2 = [view6 trailingAnchor];
+  v11 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v24[3] = v11;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:4];
   [v15 activateConstraints:v12];
@@ -78,16 +78,16 @@
   [(PRUISPosterRenderingViewController *)self->_wrappedPosterRenderingViewController didMoveToParentViewController:self];
 }
 
-- (CNUIPRUISPosterRenderingViewController)initWithWallpaper:(id)a3
+- (CNUIPRUISPosterRenderingViewController)initWithWallpaper:(id)wallpaper
 {
-  v4 = [a3 posterArchiveData];
-  v5 = [CNUIPRSPosterArchiver unarchiveCNConfigurationFromData:v4 error:0];
+  posterArchiveData = [wallpaper posterArchiveData];
+  v5 = [CNUIPRSPosterArchiver unarchiveCNConfigurationFromData:posterArchiveData error:0];
 
   if (v5)
   {
     v6 = objc_alloc(MEMORY[0x1E69DD2E8]);
-    v7 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v7 bounds];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen bounds];
     v8 = [v6 initWithFrame:?];
 
     [getTPIncomingCallMetricsProviderClass() horizontalNameLabelBoundingRectForName:&stru_1F162C170 window:v8];
@@ -104,15 +104,15 @@
     v26 = [[CNUIPRUISIncomingCallPosterContext alloc] initWithNameVariations:v25 preferredNameStyle:0 horizontalTitleBoundingRect:0 verticalTitleBoundingRect:0 imageAssetID:v10 personalPoster:v12, v14, v16, v18, v20, v22, v24];
     self = [(CNUIPRUISPosterRenderingViewController *)self initWithConfiguration:v5 context:v26];
 
-    v27 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v27 = 0;
+    selfCopy = 0;
   }
 
-  return v27;
+  return selfCopy;
 }
 
 - (CGRect)salientContentRectangle
@@ -125,19 +125,19 @@
   return result;
 }
 
-- (void)renderingViewControllerDidFinishShowingContent:(id)a3
+- (void)renderingViewControllerDidFinishShowingContent:(id)content
 {
-  v4 = [(CNUIPRUISPosterRenderingViewController *)self delegate];
-  [v4 renderingViewControllerDidFinishShowingContent:self];
+  delegate = [(CNUIPRUISPosterRenderingViewController *)self delegate];
+  [delegate renderingViewControllerDidFinishShowingContent:self];
 }
 
-- (void)registerLabel:(id)a3
+- (void)registerLabel:(id)label
 {
-  v4 = a3;
-  v5 = [(PRUISPosterRenderingViewController *)self->_wrappedPosterRenderingViewController obscurableContentView];
-  [v5 addSubview:v4];
+  labelCopy = label;
+  obscurableContentView = [(PRUISPosterRenderingViewController *)self->_wrappedPosterRenderingViewController obscurableContentView];
+  [obscurableContentView addSubview:labelCopy];
 
-  v8 = v4;
+  v8 = labelCopy;
   if ([v8 conformsToProtocol:&unk_1F1665C68])
   {
     v6 = v8;
@@ -153,17 +153,17 @@
   [(PRUISPosterRenderingViewController *)self->_wrappedPosterRenderingViewController registerPosterAppearanceObserver:v7];
 }
 
-- (void)snapshotWithCompletionBlock:(id)a3
+- (void)snapshotWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   if (objc_opt_respondsToSelector())
   {
-    [(PRUISPosterRenderingViewController *)self->_wrappedPosterRenderingViewController snapshotWithOptions:2 forScreen:0 completionBlock:v4];
+    [(PRUISPosterRenderingViewController *)self->_wrappedPosterRenderingViewController snapshotWithOptions:2 forScreen:0 completionBlock:blockCopy];
   }
 
   else
   {
-    (*(v4 + 2))(v4, 0, 0);
+    (*(blockCopy + 2))(blockCopy, 0, 0);
   }
 }
 

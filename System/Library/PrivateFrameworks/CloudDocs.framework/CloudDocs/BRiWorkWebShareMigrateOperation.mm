@@ -1,17 +1,17 @@
 @interface BRiWorkWebShareMigrateOperation
-- (BRiWorkWebShareMigrateOperation)initWithURL:(id)a3;
+- (BRiWorkWebShareMigrateOperation)initWithURL:(id)l;
 - (void)_copyShare;
 - (void)_migrateShare;
-- (void)_startSharingReadWrite:(BOOL)a3;
-- (void)finishWithResult:(id)a3 error:(id)a4;
+- (void)_startSharingReadWrite:(BOOL)write;
+- (void)finishWithResult:(id)result error:(id)error;
 - (void)main;
 @end
 
 @implementation BRiWorkWebShareMigrateOperation
 
-- (BRiWorkWebShareMigrateOperation)initWithURL:(id)a3
+- (BRiWorkWebShareMigrateOperation)initWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v8.receiver = self;
   v8.super_class = BRiWorkWebShareMigrateOperation;
   v5 = [(BROperation *)&v8 init];
@@ -20,7 +20,7 @@
     v6 = objc_alloc_init(MEMORY[0x1E696ADC8]);
     [(BRiWorkWebShareMigrateOperation *)v5 setOperationQueue:v6];
 
-    [(BRiWorkWebShareMigrateOperation *)v5 setUrl:v4];
+    [(BRiWorkWebShareMigrateOperation *)v5 setUrl:lCopy];
   }
 
   return v5;
@@ -42,9 +42,9 @@
   [(BROperation *)self completedWithResult:0 error:v6];
 }
 
-- (void)_startSharingReadWrite:(BOOL)a3
+- (void)_startSharingReadWrite:(BOOL)write
 {
-  v3 = a3;
+  writeCopy = write;
   url = self->_url;
   v17 = 0;
   v6 = BRSharingCreateShareForItemAtURL(url, &v17);
@@ -65,7 +65,7 @@
     [(BROperation *)self completedWithResult:0 error:v7];
   }
 
-  if (v3)
+  if (writeCopy)
   {
     v10 = 3;
   }
@@ -80,9 +80,9 @@
   v12 = [(BRiWorkWebShareMigrateOperation *)self url];
   v13 = [(BRShareSaveOperation *)v11 initWithShare:v6 fileURL:v12];
 
-  v14 = [(BROperation *)v13 callbackQueue];
-  v15 = [(BROperation *)self callbackQueue];
-  dispatch_set_target_queue(v14, v15);
+  callbackQueue = [(BROperation *)v13 callbackQueue];
+  callbackQueue2 = [(BROperation *)self callbackQueue];
+  dispatch_set_target_queue(callbackQueue, callbackQueue2);
 
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
@@ -112,28 +112,28 @@
   OUTLINED_FUNCTION_6_1();
   v11 = *MEMORY[0x1E69E9840];
   v1 = [v0 url];
-  v2 = [v1 path];
+  path = [v1 path];
   OUTLINED_FUNCTION_0_0();
   OUTLINED_FUNCTION_2_0(&dword_1AE2A9000, v3, v4, "[DEBUG] migrating share for '%@'%@", v5, v6, v7, v8, v10);
 
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)finishWithResult:(id)a3 error:(id)a4
+- (void)finishWithResult:(id)result error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BRiWorkWebShareMigrateOperation *)self shareMigrationCompletionBlock];
-  v9 = v8;
-  if (v8)
+  resultCopy = result;
+  errorCopy = error;
+  shareMigrationCompletionBlock = [(BRiWorkWebShareMigrateOperation *)self shareMigrationCompletionBlock];
+  v9 = shareMigrationCompletionBlock;
+  if (shareMigrationCompletionBlock)
   {
-    (*(v8 + 16))(v8, v6, v7);
+    (*(shareMigrationCompletionBlock + 16))(shareMigrationCompletionBlock, resultCopy, errorCopy);
     [(BRiWorkWebShareMigrateOperation *)self setShareMigrationCompletionBlock:0];
   }
 
   v10.receiver = self;
   v10.super_class = BRiWorkWebShareMigrateOperation;
-  [(BROperation *)&v10 finishWithResult:v6 error:v7];
+  [(BROperation *)&v10 finishWithResult:resultCopy error:errorCopy];
 }
 
 @end

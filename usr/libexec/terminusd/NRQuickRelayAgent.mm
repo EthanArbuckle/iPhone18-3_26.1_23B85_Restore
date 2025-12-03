@@ -1,18 +1,18 @@
 @interface NRQuickRelayAgent
 + (id)agentDomain;
 + (id)agentType;
-- (BOOL)assertAgentWithOptions:(id)a3;
+- (BOOL)assertAgentWithOptions:(id)options;
 - (id)copyAgentData;
 - (id)description;
 - (void)dealloc;
-- (void)unassertAgentWithOptions:(id)a3;
+- (void)unassertAgentWithOptions:(id)options;
 @end
 
 @implementation NRQuickRelayAgent
 
-- (void)unassertAgentWithOptions:(id)a3
+- (void)unassertAgentWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   if (self)
   {
     queue = self->_queue;
@@ -28,14 +28,14 @@
   v7[2] = sub_10003E818;
   v7[3] = &unk_1001FD060;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = optionsCopy;
+  v6 = optionsCopy;
   dispatch_async(queue, v7);
 }
 
-- (BOOL)assertAgentWithOptions:(id)a3
+- (BOOL)assertAgentWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   if (self)
   {
     queue = self->_queue;
@@ -51,8 +51,8 @@
   v8[2] = sub_10003ED0C;
   v8[3] = &unk_1001FD060;
   v8[4] = self;
-  v9 = v4;
-  v6 = v4;
+  v9 = optionsCopy;
+  v6 = optionsCopy;
   dispatch_async(queue, v8);
 
   return 1;
@@ -88,9 +88,9 @@
 - (id)description
 {
   v3 = objc_alloc_init(NSMutableString);
-  v4 = [(NRQuickRelayAgent *)self agentUUID];
-  v5 = [v4 UUIDString];
-  [v3 appendFormat:@"agent-uuid: %@", v5];
+  agentUUID = [(NRQuickRelayAgent *)self agentUUID];
+  uUIDString = [agentUUID UUIDString];
+  [v3 appendFormat:@"agent-uuid: %@", uUIDString];
 
   if (self)
   {
@@ -143,8 +143,8 @@
     v7 = v6;
     v8 = _NRCopyLogObjectForNRUUID();
     v16 = 74;
-    v17 = self;
-    v14 = "";
+    selfCopy = self;
+    selfCopy2 = "";
     v15 = "[NRQuickRelayAgent dealloc]";
     _NRLogWithArgs();
   }
@@ -161,7 +161,7 @@
       {
         v12 = self->_nrUUID;
         v13 = _NRCopyLogObjectForNRUUID();
-        v14 = self;
+        selfCopy2 = self;
         _NRLogWithArgs();
       }
     }
@@ -169,7 +169,7 @@
 
   v18.receiver = self;
   v18.super_class = NRQuickRelayAgent;
-  [(NRQuickRelayAgent *)&v18 dealloc:v14];
+  [(NRQuickRelayAgent *)&v18 dealloc:selfCopy2];
 }
 
 + (id)agentDomain

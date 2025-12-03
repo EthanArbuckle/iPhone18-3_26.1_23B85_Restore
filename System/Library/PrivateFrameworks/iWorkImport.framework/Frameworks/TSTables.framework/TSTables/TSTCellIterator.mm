@@ -1,27 +1,27 @@
 @interface TSTCellIterator
-- (BOOL)getNextCellData:(id *)a3;
-- (TSTCellIterator)initWithTableInfo:(id)a3 flags:(unint64_t)a4 searchFlags:(unint64_t)a5;
-- (TSTCellIterator)initWithTableInfo:(id)a3 range:(TSUCellRect)a4 flags:(unint64_t)a5 searchFlags:(unint64_t)a6;
-- (TSTCellIterator)initWithTableInfo:(id)a3 region:(id)a4 flags:(unint64_t)a5 searchFlags:(unint64_t)a6;
-- (TSTCellIterator)initWithTableInfo:(id)a3 region:(id)a4 flags:(unint64_t)a5 searchFlags:(unint64_t)a6 clampingRange:(TSUCellRect)a7;
-- (TSTCellIterator)initWithTableInfo:(id)a3 tableModel:(id)a4 region:(id)a5 flags:(unint64_t)a6 searchFlags:(unint64_t)a7 clampingRange:(TSUCellRect)a8;
+- (BOOL)getNextCellData:(id *)data;
+- (TSTCellIterator)initWithTableInfo:(id)info flags:(unint64_t)flags searchFlags:(unint64_t)searchFlags;
+- (TSTCellIterator)initWithTableInfo:(id)info range:(TSUCellRect)range flags:(unint64_t)flags searchFlags:(unint64_t)searchFlags;
+- (TSTCellIterator)initWithTableInfo:(id)info region:(id)region flags:(unint64_t)flags searchFlags:(unint64_t)searchFlags;
+- (TSTCellIterator)initWithTableInfo:(id)info region:(id)region flags:(unint64_t)flags searchFlags:(unint64_t)searchFlags clampingRange:(TSUCellRect)range;
+- (TSTCellIterator)initWithTableInfo:(id)info tableModel:(id)model region:(id)region flags:(unint64_t)flags searchFlags:(unint64_t)searchFlags clampingRange:(TSUCellRect)range;
 - (TSUCellCoord)p_getNextCellID;
 - (id).cxx_construct;
 - (id)nextCellData;
-- (void)iterateCellsUsingBlock:(id)a3;
-- (void)p_updateDataForCellID:(TSUCellCoord)a3;
-- (void)p_updateDataForMergeAtCellID:(TSUCellCoord)a3;
+- (void)iterateCellsUsingBlock:(id)block;
+- (void)p_updateDataForCellID:(TSUCellCoord)d;
+- (void)p_updateDataForMergeAtCellID:(TSUCellCoord)d;
 - (void)terminate;
 @end
 
 @implementation TSTCellIterator
 
-- (TSTCellIterator)initWithTableInfo:(id)a3 tableModel:(id)a4 region:(id)a5 flags:(unint64_t)a6 searchFlags:(unint64_t)a7 clampingRange:(TSUCellRect)a8
+- (TSTCellIterator)initWithTableInfo:(id)info tableModel:(id)model region:(id)region flags:(unint64_t)flags searchFlags:(unint64_t)searchFlags clampingRange:(TSUCellRect)range
 {
-  v287 = a3;
-  v286 = a4;
-  v18 = a5;
-  if (!v18)
+  infoCopy = info;
+  modelCopy = model;
+  regionCopy = region;
+  if (!regionCopy)
   {
     v62 = MEMORY[0x277D81150];
     v63 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v14, "[TSTCellIterator initWithTableInfo:tableModel:region:flags:searchFlags:clampingRange:]", v16, v17);
@@ -29,31 +29,31 @@
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v62, v68, v63, v67, 74, 0, "caller should pass in region pointer");
 
     objc_msgSend_logFullBacktrace(MEMORY[0x277D81150], v69, v70, v71, v72);
-    v18 = objc_msgSend_invalidRegion(TSTCellRegion, v73, v74, v75, v76);
-    if ((a6 & 1) == 0)
+    regionCopy = objc_msgSend_invalidRegion(TSTCellRegion, v73, v74, v75, v76);
+    if ((flags & 1) == 0)
     {
       goto LABEL_3;
     }
 
 LABEL_22:
-    a6 &= ~1uLL;
+    flags &= ~1uLL;
     goto LABEL_23;
   }
 
-  if (a6)
+  if (flags)
   {
     goto LABEL_22;
   }
 
 LABEL_3:
   v19 = objc_msgSend_sharedTableConfiguration(TSTConfiguration, v14, v15, v16, v17);
-  v24 = objc_msgSend_boundingCellRange(v18, v20, v21, v22, v23);
+  v24 = objc_msgSend_boundingCellRange(regionCopy, v20, v21, v22, v23);
   v29 = WORD2(v24);
   if (v24 == 0x7FFFFFFF || (v24 & 0xFFFF00000000) == 0x7FFF00000000 || (v30 = v25, !(v25 >> 32)) || !v25 || (v31 = v24 + HIDWORD(v25) - 1, v31 >= objc_msgSend_maxNumberOfRows(v19, v25, v26, v27, v28)) || (v30 ? (v32 = v29 == 0x7FFF) : (v32 = 1), !v32 ? (v33 = (v30 + v29 - 1)) : (v33 = 0x7FFF), objc_msgSend_maxNumberOfColumns(v19, v25, v26, v27, v28) <= v33))
   {
     v61 = objc_msgSend_invalidRegion(TSTCellRegion, v25, v26, v27, v28);
 
-    v18 = v61;
+    regionCopy = v61;
   }
 
   else
@@ -90,8 +90,8 @@ LABEL_23:
     goto LABEL_76;
   }
 
-  objc_storeStrong(&v77->_tableInfo, a3);
-  objc_storeStrong(p_isa + 9, a4);
+  objc_storeStrong(&v77->_tableInfo, info);
+  objc_storeStrong(p_isa + 9, model);
   v80 = objc_alloc_init(TSTMutableCellIteratorData);
   cellData = v79->_cellData;
   v79->_cellData = v80;
@@ -99,11 +99,11 @@ LABEL_23:
   v86 = objc_msgSend_newCell(v79->_tableModel, v82, v83, v84, v85);
   objc_msgSend_setCell_(v79->_cellData, v87, v86, v88, v89);
 
-  v92 = objc_msgSend_regionByIntersectingRange_(v18, v90, *&a8.origin, *&a8.size, v91);
+  v92 = objc_msgSend_regionByIntersectingRange_(regionCopy, v90, *&range.origin, *&range.size, v91);
 
-  if ((a6 & 2) != 0)
+  if ((flags & 2) != 0)
   {
-    a6 &= 0xFFFFFFFFFFFFFFFCLL;
+    flags &= 0xFFFFFFFFFFFFFFFCLL;
   }
 
   else
@@ -168,61 +168,61 @@ LABEL_23:
   v166 = p_isa[8];
   if (!v166)
   {
-    a6 &= 0xFFFFFFFFFFFFFFE5;
+    flags &= 0xFFFFFFFFFFFFFFE5;
     goto LABEL_43;
   }
 
-  if ((a6 & 0x18) == 0)
+  if ((flags & 0x18) == 0)
   {
 LABEL_43:
-    v18 = v92;
+    regionCopy = v92;
     goto LABEL_46;
   }
 
   v167 = objc_msgSend_indexesForSummaryRowsInRegion_(v166, v93, v92, v95, v96);
   v175 = objc_msgSend_indexesForCategoryColumnsInRegion_(p_isa[8], v168, v92, v169, v170);
-  if ((a6 & 8) != 0)
+  if ((flags & 8) != 0)
   {
     v180 = objc_msgSend_indexesForLabelRows(p_isa[8], v171, v172, v173, v174);
     v184 = objc_msgSend_regionBySubtractingRowIndexes_(v92, v181, v180, v182, v183);
 
     v188 = objc_msgSend_regionBySubtractingRowIndexes_(v184, v185, v167, v186, v187);
 
-    v18 = objc_msgSend_regionBySubtractingColumnIndexes_(v188, v189, v175, v190, v191);
+    regionCopy = objc_msgSend_regionBySubtractingColumnIndexes_(v188, v189, v175, v190, v191);
 
-    a6 &= 0xFFFFFFFFFFFFFFF5;
+    flags &= 0xFFFFFFFFFFFFFFF5;
   }
 
   else
   {
     v176 = objc_msgSend_regionByIntersectingRowIndices_(v92, v171, v167, v173, v174);
 
-    v18 = objc_msgSend_regionBySubtractingColumnIndexes_(v176, v177, v175, v178, v179);
+    regionCopy = objc_msgSend_regionBySubtractingColumnIndexes_(v176, v177, v175, v178, v179);
 
-    a6 &= 0xFFFFFFFFFFFFFFE5;
+    flags &= 0xFFFFFFFFFFFFFFE5;
   }
 
 LABEL_46:
-  objc_storeStrong(p_isa + 10, v18);
-  if ((a7 & 0x40000000) != 0)
+  objc_storeStrong(p_isa + 10, regionCopy);
+  if ((searchFlags & 0x40000000) != 0)
   {
     v196 = 50;
   }
 
   else
   {
-    if ((a7 & 0x20000000) == 0)
+    if ((searchFlags & 0x20000000) == 0)
     {
       goto LABEL_51;
     }
 
-    a7 &= 0xFFFFFFFF9FFFFFFFLL;
+    searchFlags &= 0xFFFFFFFF9FFFFFFFLL;
     v196 = 49;
   }
 
   *(&v79->super.isa + v196) = 1;
 LABEL_51:
-  if ((a7 & 0x3EFF800) != 0 && (v79->_returnEmptyCells || v79->_returnOneEmptyCell))
+  if ((searchFlags & 0x3EFF800) != 0 && (v79->_returnEmptyCells || v79->_returnOneEmptyCell))
   {
     v197 = MEMORY[0x277D81150];
     v198 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v192, "[TSTCellIterator initWithTableInfo:tableModel:region:flags:searchFlags:clampingRange:]", v194, v195);
@@ -236,21 +236,21 @@ LABEL_51:
   if (v208)
   {
     v209 = objc_alloc(objc_msgSend_iteratorClass(v208, v192, v193, v194, v195));
-    v211 = objc_msgSend_initWithInfo_region_flags_searchMask_(v209, v210, p_isa[8], p_isa[10], a6 & 0x204, a7 & 0x3EFF800);
+    v211 = objc_msgSend_initWithInfo_region_flags_searchMask_(v209, v210, p_isa[8], p_isa[10], flags & 0x204, searchFlags & 0x3EFF800);
   }
 
   else
   {
     v212 = [TSTDataStoreIterator alloc];
-    v211 = objc_msgSend_initWithModel_region_flags_searchMask_(v212, v213, p_isa[9], p_isa[10], a6 & 0x204, a7 & 0x3EFF800);
+    v211 = objc_msgSend_initWithModel_region_flags_searchMask_(v212, v213, p_isa[9], p_isa[10], flags & 0x204, searchFlags & 0x3EFF800);
   }
 
   dataStoreIterator = v79->_dataStoreIterator;
   v79->_dataStoreIterator = v211;
 
-  if ((a7 & 0x400) != 0)
+  if ((searchFlags & 0x400) != 0)
   {
-    if ((a6 & 0x80) == 0)
+    if ((flags & 0x80) == 0)
     {
       v220 = MEMORY[0x277D81150];
       v221 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v215, "[TSTCellIterator initWithTableInfo:tableModel:region:flags:searchFlags:clampingRange:]", v216, v217);
@@ -267,7 +267,7 @@ LABEL_51:
     v239 = objc_alloc_init(TSTContentComposingIterator);
     objc_msgSend_addIterator_(v239, v240, v79->_dataStoreIterator, v241, v242);
     objc_msgSend_addIterator_(v239, v243, v219, v244, v245);
-    a6 &= ~0x80uLL;
+    flags &= ~0x80uLL;
     contentIterator = v79->_contentIterator;
     v79->_contentIterator = v239;
   }
@@ -282,7 +282,7 @@ LABEL_51:
   if (v79->_returnOneEmptyCell || v79->_returnEmptyCells)
   {
     v251 = p_isa[10];
-    if ((a6 & 4) != 0)
+    if ((flags & 4) != 0)
     {
       v252 = objc_msgSend_newRightToLeftIterator(v251, v247, v248, v249, v250);
     }
@@ -298,7 +298,7 @@ LABEL_51:
     objc_msgSend_getNext(v79->_contentIterator, v254, v255, v256, v257);
   }
 
-  if ((a6 & 0x40) != 0)
+  if ((flags & 0x40) != 0)
   {
     v79->_rowForColumnIndexesWithMerges = 0x7FFFFFFF;
     v258 = 1;
@@ -310,10 +310,10 @@ LABEL_51:
   }
 
   v79->_returnMergeRanges = v258;
-  v79->_returnCellContents = (a6 & 0x120) == 0;
-  v79->_returnOnlyFormulas = BYTE1(a6) & 1;
-  v259 = a6 & 0xFFFFFFFFFFFFFC9BLL;
-  if ((a6 & 0xFFFFFFFFFFFFFC9BLL) != 0)
+  v79->_returnCellContents = (flags & 0x120) == 0;
+  v79->_returnOnlyFormulas = BYTE1(flags) & 1;
+  v259 = flags & 0xFFFFFFFFFFFFFC9BLL;
+  if ((flags & 0xFFFFFFFFFFFFFC9BLL) != 0)
   {
     v260 = MEMORY[0x277D81150];
     v261 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v247, "[TSTCellIterator initWithTableInfo:tableModel:region:flags:searchFlags:clampingRange:]", v249, v250);
@@ -323,8 +323,8 @@ LABEL_51:
     objc_msgSend_logFullBacktrace(MEMORY[0x277D81150], v267, v268, v269, v270);
   }
 
-  v271 = a7 & 0xFFFFFFFFBC1003FFLL;
-  if ((a7 & 0xFFFFFFFFBC1003FFLL) != 0)
+  v271 = searchFlags & 0xFFFFFFFFBC1003FFLL;
+  if ((searchFlags & 0xFFFFFFFFBC1003FFLL) != 0)
   {
     v272 = MEMORY[0x277D81150];
     v273 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v247, "[TSTCellIterator initWithTableInfo:tableModel:region:flags:searchFlags:clampingRange:]", v249, v250);
@@ -339,57 +339,57 @@ LABEL_76:
   return v79;
 }
 
-- (TSTCellIterator)initWithTableInfo:(id)a3 region:(id)a4 flags:(unint64_t)a5 searchFlags:(unint64_t)a6 clampingRange:(TSUCellRect)a7
+- (TSTCellIterator)initWithTableInfo:(id)info region:(id)region flags:(unint64_t)flags searchFlags:(unint64_t)searchFlags clampingRange:(TSUCellRect)range
 {
-  size = a7.size;
-  origin = a7.origin;
-  v13 = a3;
-  v14 = a4;
-  v19 = objc_msgSend_baseTableModel(v13, v15, v16, v17, v18);
-  v21 = objc_msgSend_initWithTableInfo_tableModel_region_flags_searchFlags_clampingRange_(self, v20, v13, v19, v14, a5, a6, origin, size);
+  size = range.size;
+  origin = range.origin;
+  infoCopy = info;
+  regionCopy = region;
+  v19 = objc_msgSend_baseTableModel(infoCopy, v15, v16, v17, v18);
+  v21 = objc_msgSend_initWithTableInfo_tableModel_region_flags_searchFlags_clampingRange_(self, v20, infoCopy, v19, regionCopy, flags, searchFlags, origin, size);
 
   return v21;
 }
 
-- (TSTCellIterator)initWithTableInfo:(id)a3 flags:(unint64_t)a4 searchFlags:(unint64_t)a5
+- (TSTCellIterator)initWithTableInfo:(id)info flags:(unint64_t)flags searchFlags:(unint64_t)searchFlags
 {
-  v8 = a3;
-  v13 = objc_msgSend_baseTableModel(v8, v9, v10, v11, v12);
-  v18 = objc_msgSend_range(v8, v14, v15, v16, v17);
+  infoCopy = info;
+  v13 = objc_msgSend_baseTableModel(infoCopy, v9, v10, v11, v12);
+  v18 = objc_msgSend_range(infoCopy, v14, v15, v16, v17);
   v21 = objc_msgSend_regionFromRange_(TSTCellRegion, v19, v18, v19, v20);
-  v26 = objc_msgSend_range(v8, v22, v23, v24, v25);
-  v28 = objc_msgSend_initWithTableInfo_tableModel_region_flags_searchFlags_clampingRange_(self, v27, v8, v13, v21, a4, a5, v26, v27);
+  v26 = objc_msgSend_range(infoCopy, v22, v23, v24, v25);
+  v28 = objc_msgSend_initWithTableInfo_tableModel_region_flags_searchFlags_clampingRange_(self, v27, infoCopy, v13, v21, flags, searchFlags, v26, v27);
 
   return v28;
 }
 
-- (TSTCellIterator)initWithTableInfo:(id)a3 range:(TSUCellRect)a4 flags:(unint64_t)a5 searchFlags:(unint64_t)a6
+- (TSTCellIterator)initWithTableInfo:(id)info range:(TSUCellRect)range flags:(unint64_t)flags searchFlags:(unint64_t)searchFlags
 {
-  size = a4.size;
-  origin = a4.origin;
-  v11 = a3;
-  v16 = objc_msgSend_baseTableModel(v11, v12, v13, v14, v15);
+  size = range.size;
+  origin = range.origin;
+  infoCopy = info;
+  v16 = objc_msgSend_baseTableModel(infoCopy, v12, v13, v14, v15);
   v19 = objc_msgSend_regionFromRange_(TSTCellRegion, v17, origin, size, v18);
-  v24 = objc_msgSend_range(v11, v20, v21, v22, v23);
-  v26 = objc_msgSend_initWithTableInfo_tableModel_region_flags_searchFlags_clampingRange_(self, v25, v11, v16, v19, a5, a6, v24, v25);
+  v24 = objc_msgSend_range(infoCopy, v20, v21, v22, v23);
+  v26 = objc_msgSend_initWithTableInfo_tableModel_region_flags_searchFlags_clampingRange_(self, v25, infoCopy, v16, v19, flags, searchFlags, v24, v25);
 
   return v26;
 }
 
-- (TSTCellIterator)initWithTableInfo:(id)a3 region:(id)a4 flags:(unint64_t)a5 searchFlags:(unint64_t)a6
+- (TSTCellIterator)initWithTableInfo:(id)info region:(id)region flags:(unint64_t)flags searchFlags:(unint64_t)searchFlags
 {
-  v10 = a3;
-  v11 = a4;
-  v16 = objc_msgSend_baseTableModel(v10, v12, v13, v14, v15);
-  v21 = objc_msgSend_range(v10, v17, v18, v19, v20);
-  v23 = objc_msgSend_initWithTableInfo_tableModel_region_flags_searchFlags_clampingRange_(self, v22, v10, v16, v11, a5, a6, v21, v22);
+  infoCopy = info;
+  regionCopy = region;
+  v16 = objc_msgSend_baseTableModel(infoCopy, v12, v13, v14, v15);
+  v21 = objc_msgSend_range(infoCopy, v17, v18, v19, v20);
+  v23 = objc_msgSend_initWithTableInfo_tableModel_region_flags_searchFlags_clampingRange_(self, v22, infoCopy, v16, regionCopy, flags, searchFlags, v21, v22);
 
   return v23;
 }
 
-- (void)iterateCellsUsingBlock:(id)a3
+- (void)iterateCellsUsingBlock:(id)block
 {
-  v7 = a3;
+  blockCopy = block;
   v8 = 0;
   v14 = 0;
   do
@@ -404,7 +404,7 @@ LABEL_76:
     }
 
     v12 = objc_autoreleasePoolPush();
-    v7[2](v7, v10, &v14);
+    blockCopy[2](blockCopy, v10, &v14);
     objc_autoreleasePoolPop(v12);
     v8 = v10;
   }
@@ -428,17 +428,17 @@ LABEL_76:
   return v7;
 }
 
-- (BOOL)getNextCellData:(id *)a3
+- (BOOL)getNextCellData:(id *)data
 {
-  NextCellID = objc_msgSend_p_getNextCellID(self, a2, a3, v3, v4);
+  NextCellID = objc_msgSend_p_getNextCellID(self, a2, data, v3, v4);
   v11 = NextCellID == 0x7FFFFFFF || (NextCellID & 0xFFFF00000000) == 0x7FFF00000000;
   v12 = !v11;
   if (!v11)
   {
     objc_msgSend_p_updateDataForCellID_(self, v7, NextCellID, v9, v10);
-    if (a3)
+    if (data)
     {
-      *a3 = self->_cellData;
+      *data = self->_cellData;
     }
   }
 
@@ -522,13 +522,13 @@ LABEL_6:
   return (v18 & 0xFFFF0000FFFFFFFFLL | (v19 << 32));
 }
 
-- (void)p_updateDataForMergeAtCellID:(TSUCellCoord)a3
+- (void)p_updateDataForMergeAtCellID:(TSUCellCoord)d
 {
-  row = a3.row;
-  v50 = a3;
-  if (self->_rowForColumnIndexesWithMerges != a3.row)
+  row = d.row;
+  dCopy = d;
+  if (self->_rowForColumnIndexesWithMerges != d.row)
   {
-    self->_rowForColumnIndexesWithMerges = a3.row;
+    self->_rowForColumnIndexesWithMerges = d.row;
     sub_2210BE918(&self->_columnIndexToMergeRangeMap.__table_.__bucket_list_.__ptr_);
     v13 = objc_msgSend_boundingCellRange(self->_region, v5, v6, v7, v8);
     v14 = v9 | 0x100000000;
@@ -600,7 +600,7 @@ LABEL_6:
     }
   }
 
-  v26 = sub_2210C3024(&self->_columnIndexToMergeRangeMap.__table_.__bucket_list_.__ptr_, &v50.column);
+  v26 = sub_2210C3024(&self->_columnIndexToMergeRangeMap.__table_.__bucket_list_.__ptr_, &dCopy.column);
   if (!v26)
   {
     goto LABEL_29;
@@ -624,11 +624,11 @@ LABEL_29:
   objc_msgSend_setMergeRange_(self->_cellData, v27, v30, v28, v29);
 }
 
-- (void)p_updateDataForCellID:(TSUCellCoord)a3
+- (void)p_updateDataForCellID:(TSUCellCoord)d
 {
-  objc_msgSend_setCellID_(self->_cellData, a2, *&a3, v3, v4);
+  objc_msgSend_setCellID_(self->_cellData, a2, *&d, v3, v4);
   objc_msgSend_setMergeRange_(self->_cellData, v7, 0x7FFF7FFFFFFFLL, 0, v8);
-  if ((*&a3 & 0xFFF800000000) > 0x3E700000000 || a3.row >= 0xF4240)
+  if ((*&d & 0xFFF800000000) > 0x3E700000000 || d.row >= 0xF4240)
   {
     v12 = MEMORY[0x277D81150];
     v13 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v9, "[TSTCellIterator p_updateDataForCellID:]", v10, v11);
@@ -652,7 +652,7 @@ LABEL_29:
   if (self->_returnMergeRanges)
   {
 
-    (MEMORY[0x2821F9670])(self, sel_p_updateDataForMergeAtCellID_, a3, v10, v11);
+    (MEMORY[0x2821F9670])(self, sel_p_updateDataForMergeAtCellID_, d, v10, v11);
   }
 }
 

@@ -10,7 +10,7 @@
 {
   v7 = a2;
   *&a2 = a6;
-  [a1 _solveForInput:a2];
+  [self _solveForInput:a2];
   return v7 + (a4 - v7) * v8;
 }
 
@@ -20,10 +20,10 @@
   v12 = *MEMORY[0x277CBF348];
   v13 = *(MEMORY[0x277CBF348] + 8);
   v14 = (a9 + 1.0) / a8;
-  [a1 rcp_solveForStart:*MEMORY[0x277CBF348] end:v13 at:{a2, a3, a6}];
+  [self rcp_solveForStart:*MEMORY[0x277CBF348] end:v13 at:{a2, a3, a6}];
   v16 = v15;
   *&v17 = v14;
-  [a1 rcp_solveForStart:v12 end:v13 at:{a2, a3, v17}];
+  [self rcp_solveForStart:v12 end:v13 at:{a2, a3, v17}];
   return v18 - v16;
 }
 
@@ -31,7 +31,7 @@
 {
   v7[1] = *MEMORY[0x277D85DE8];
   v7[0] = 0;
-  [a1 getControlPointAtIndex:1 values:v7];
+  [self getControlPointAtIndex:1 values:v7];
   LODWORD(v2) = HIDWORD(v7[0]);
   LODWORD(v1) = v7[0];
   LODWORD(v3) = 1.0;

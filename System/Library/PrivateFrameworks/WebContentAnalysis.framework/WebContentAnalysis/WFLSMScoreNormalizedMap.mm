@@ -1,25 +1,25 @@
 @interface WFLSMScoreNormalizedMap
-- (WFLSMScoreNormalizedMap)initWithMap:(__LSMMap *)a3;
-- (id)evaluate:(id)a3;
+- (WFLSMScoreNormalizedMap)initWithMap:(__LSMMap *)map;
+- (id)evaluate:(id)evaluate;
 - (void)dealloc;
 @end
 
 @implementation WFLSMScoreNormalizedMap
 
-- (WFLSMScoreNormalizedMap)initWithMap:(__LSMMap *)a3
+- (WFLSMScoreNormalizedMap)initWithMap:(__LSMMap *)map
 {
   *&v42[5] = *MEMORY[0x277D85DE8];
   v30.receiver = self;
   v30.super_class = WFLSMScoreNormalizedMap;
-  v3 = [(WFLSMMap *)&v30 initWithMap:a3];
+  v3 = [(WFLSMMap *)&v30 initWithMap:map];
   v4 = v3;
   if (v3)
   {
-    v5 = [(WFLSMMap *)v3 numberOfCategories];
-    v4->maxScore = malloc_type_malloc(4 * v5 + 4, 0x100004052888210uLL);
-    v6 = malloc_type_malloc(4 * v5 + 4, 0x100004052888210uLL);
+    numberOfCategories = [(WFLSMMap *)v3 numberOfCategories];
+    v4->maxScore = malloc_type_malloc(4 * numberOfCategories + 4, 0x100004052888210uLL);
+    v6 = malloc_type_malloc(4 * numberOfCategories + 4, 0x100004052888210uLL);
     v4->minScore = v6;
-    if ((v5 & 0x8000000000000000) == 0)
+    if ((numberOfCategories & 0x8000000000000000) == 0)
     {
       v7 = 0;
       maxScore = v4->maxScore;
@@ -29,8 +29,8 @@
         v6[v7++] = -1.0;
       }
 
-      while (v5 + 1 != v7);
-      if (v5)
+      while (numberOfCategories + 1 != v7);
+      if (numberOfCategories)
       {
         v9 = 0;
         v10 = 1;
@@ -44,7 +44,7 @@
           {
             [v12 scoreForCategory:v10];
             v4->maxScore[v10] = v13;
-            v14 = v5;
+            v14 = numberOfCategories;
             v15 = 1;
             do
             {
@@ -76,7 +76,7 @@
           }
 
           --v9;
-          v21 = v5 <= v10++;
+          v21 = numberOfCategories <= v10++;
         }
 
         while (!v21);
@@ -102,7 +102,7 @@
             _os_log_impl(&dword_272D73000, v23, OS_LOG_TYPE_INFO, "%@ category:%d min:%f max:%f scope:%f", buf, 0x30u);
           }
 
-          v21 = v5 <= v22++;
+          v21 = numberOfCategories <= v22++;
         }
 
         while (!v21);
@@ -114,17 +114,17 @@
   return v4;
 }
 
-- (id)evaluate:(id)a3
+- (id)evaluate:(id)evaluate
 {
   v18.receiver = self;
   v18.super_class = WFLSMScoreNormalizedMap;
-  v4 = [(WFLSMMap *)&v18 evaluate:a3];
-  v5 = [(WFLSMMap *)self numberOfCategories];
-  if (v5 >= 1)
+  v4 = [(WFLSMMap *)&v18 evaluate:evaluate];
+  numberOfCategories = [(WFLSMMap *)self numberOfCategories];
+  if (numberOfCategories >= 1)
   {
-    v6 = v5;
+    v6 = numberOfCategories;
     v7 = 1;
-    v8 = v5;
+    v8 = numberOfCategories;
     v9 = 0.0;
     do
     {

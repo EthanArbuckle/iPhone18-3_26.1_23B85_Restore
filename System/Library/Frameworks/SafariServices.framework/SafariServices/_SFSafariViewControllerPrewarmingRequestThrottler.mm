@@ -1,16 +1,16 @@
 @interface _SFSafariViewControllerPrewarmingRequestThrottler
 - (_SFSafariViewControllerPrewarmingRequestThrottler)init;
-- (id)_URLsToPrewarmForToken:(id)a3;
+- (id)_URLsToPrewarmForToken:(id)token;
 - (id)_nextTokenToPrewarm;
 - (id)_prewarmedURLsWithValidTokens;
-- (void)_didPrewarmToken:(id)a3;
+- (void)_didPrewarmToken:(id)token;
 - (void)_performNextRequest;
-- (void)_prewarmURLs:(id)a3;
+- (void)_prewarmURLs:(id)ls;
 - (void)_startRequestTimer;
 - (void)_stopRequestTimer;
 - (void)dealloc;
-- (void)invalidateTokenWithID:(unint64_t)a3;
-- (void)requestToken:(id)a3;
+- (void)invalidateTokenWithID:(unint64_t)d;
+- (void)requestToken:(id)token;
 @end
 
 @implementation _SFSafariViewControllerPrewarmingRequestThrottler
@@ -22,21 +22,21 @@
   v2 = [(_SFSafariViewControllerPrewarmingRequestThrottler *)&v13 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     requestedTokens = v2->_requestedTokens;
-    v2->_requestedTokens = v3;
+    v2->_requestedTokens = weakObjectsHashTable;
 
-    v5 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable2 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     prewarmedTokens = v2->_prewarmedTokens;
-    v2->_prewarmedTokens = v5;
+    v2->_prewarmedTokens = weakObjectsHashTable2;
 
     v7 = [MEMORY[0x1E695DFA8] set];
     prewarmedURLs = v2->_prewarmedURLs;
     v2->_prewarmedURLs = v7;
 
-    v9 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     tokensByID = v2->_tokensByID;
-    v2->_tokensByID = v9;
+    v2->_tokensByID = dictionary;
 
     v11 = v2;
   }
@@ -44,21 +44,21 @@
   return v2;
 }
 
-- (void)requestToken:(id)a3
+- (void)requestToken:(id)token
 {
-  v8 = a3;
-  if ([v8 isValid])
+  tokenCopy = token;
+  if ([tokenCopy isValid])
   {
     tokensByID = self->_tokensByID;
-    v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v8, "requestID")}];
-    [(NSMutableDictionary *)tokensByID setObject:v8 forKeyedSubscript:v5];
+    v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(tokenCopy, "requestID")}];
+    [(NSMutableDictionary *)tokensByID setObject:tokenCopy forKeyedSubscript:v5];
 
-    v6 = [(_SFSafariViewControllerPrewarmingRequestThrottler *)self _URLsToPrewarmForToken:v8];
+    v6 = [(_SFSafariViewControllerPrewarmingRequestThrottler *)self _URLsToPrewarmForToken:tokenCopy];
     v7 = [v6 count];
 
     if (v7)
     {
-      [(NSHashTable *)self->_requestedTokens addObject:v8];
+      [(NSHashTable *)self->_requestedTokens addObject:tokenCopy];
       if (!self->_suspended)
       {
         [(_SFSafariViewControllerPrewarmingRequestThrottler *)self _stopRequestTimer];
@@ -68,14 +68,14 @@
 
     else
     {
-      [(_SFSafariViewControllerPrewarmingRequestThrottler *)self _didPrewarmToken:v8];
+      [(_SFSafariViewControllerPrewarmingRequestThrottler *)self _didPrewarmToken:tokenCopy];
     }
   }
 }
 
-- (void)invalidateTokenWithID:(unint64_t)a3
+- (void)invalidateTokenWithID:(unint64_t)d
 {
-  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:d];
   v4 = [(NSMutableDictionary *)self->_tokensByID objectForKeyedSubscript:v5];
   [v4 invalidate];
 
@@ -123,8 +123,8 @@
     requestDelayTimer = self->_requestDelayTimer;
     self->_requestDelayTimer = v5;
 
-    v7 = [MEMORY[0x1E695DFD0] mainRunLoop];
-    [v7 addTimer:self->_requestDelayTimer forMode:*MEMORY[0x1E695DA28]];
+    mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
+    [mainRunLoop addTimer:self->_requestDelayTimer forMode:*MEMORY[0x1E695DA28]];
 
     objc_destroyWeak(&v12);
     objc_destroyWeak(&location);
@@ -133,16 +133,16 @@
 
 - (void)_performNextRequest
 {
-  v3 = [(_SFSafariViewControllerPrewarmingRequestThrottler *)self _nextTokenToPrewarm];
-  if (v3)
+  _nextTokenToPrewarm = [(_SFSafariViewControllerPrewarmingRequestThrottler *)self _nextTokenToPrewarm];
+  if (_nextTokenToPrewarm)
   {
-    v12 = v3;
-    v4 = [(_SFSafariViewControllerPrewarmingRequestThrottler *)self _URLsToPrewarmForToken:v3];
+    v12 = _nextTokenToPrewarm;
+    v4 = [(_SFSafariViewControllerPrewarmingRequestThrottler *)self _URLsToPrewarmForToken:_nextTokenToPrewarm];
     if ([v4 count])
     {
       maximumValidConnectionCount = self->_maximumValidConnectionCount;
-      v6 = [(_SFSafariViewControllerPrewarmingRequestThrottler *)self _prewarmedURLsWithValidTokens];
-      v7 = [v6 count];
+      _prewarmedURLsWithValidTokens = [(_SFSafariViewControllerPrewarmingRequestThrottler *)self _prewarmedURLsWithValidTokens];
+      v7 = [_prewarmedURLsWithValidTokens count];
 
       if (self->_maximumValidConnectionCount)
       {
@@ -153,8 +153,8 @@
           {
             v9 = [v4 mutableCopy];
             [v9 removeObjectsInRange:{v8, objc_msgSend(v4, "count") - v8}];
-            v10 = [v9 array];
-            [(_SFSafariViewControllerPrewarmingRequestThrottler *)self _prewarmURLs:v10];
+            array = [v9 array];
+            [(_SFSafariViewControllerPrewarmingRequestThrottler *)self _prewarmURLs:array];
 
             [(_SFSafariViewControllerPrewarmingRequestThrottler *)self _didPartiallyPrewarmToken:v12];
           }
@@ -163,26 +163,26 @@
         }
       }
 
-      v11 = [v4 array];
-      [(_SFSafariViewControllerPrewarmingRequestThrottler *)self _prewarmURLs:v11];
+      array2 = [v4 array];
+      [(_SFSafariViewControllerPrewarmingRequestThrottler *)self _prewarmURLs:array2];
     }
 
     [(_SFSafariViewControllerPrewarmingRequestThrottler *)self _didPrewarmToken:v12];
     [(_SFSafariViewControllerPrewarmingRequestThrottler *)self _performNextRequest];
 LABEL_9:
 
-    v3 = v12;
+    _nextTokenToPrewarm = v12;
   }
 }
 
-- (void)_prewarmURLs:(id)a3
+- (void)_prewarmURLs:(id)ls
 {
-  v5 = a3;
+  lsCopy = ls;
   [(NSMutableSet *)self->_prewarmedURLs addObjectsFromArray:?];
   connectionHandler = self->_connectionHandler;
   if (connectionHandler)
   {
-    connectionHandler[2](connectionHandler, v5);
+    connectionHandler[2](connectionHandler, lsCopy);
   }
 }
 
@@ -235,10 +235,10 @@ LABEL_9:
   return v5;
 }
 
-- (id)_URLsToPrewarmForToken:(id)a3
+- (id)_URLsToPrewarmForToken:(id)token
 {
-  v4 = [a3 URLs];
-  v5 = [v4 mutableCopy];
+  uRLs = [token URLs];
+  v5 = [uRLs mutableCopy];
 
   [v5 minusSet:self->_prewarmedURLs];
 
@@ -271,9 +271,9 @@ LABEL_9:
         v9 = *(*(&v13 + 1) + 8 * i);
         if ([v9 isValid])
         {
-          v10 = [v9 URLs];
-          v11 = [v10 array];
-          [v3 addObjectsFromArray:v11];
+          uRLs = [v9 URLs];
+          array = [uRLs array];
+          [v3 addObjectsFromArray:array];
         }
       }
 
@@ -288,12 +288,12 @@ LABEL_9:
   return v3;
 }
 
-- (void)_didPrewarmToken:(id)a3
+- (void)_didPrewarmToken:(id)token
 {
   requestedTokens = self->_requestedTokens;
-  v5 = a3;
-  [(NSHashTable *)requestedTokens removeObject:v5];
-  [(NSHashTable *)self->_prewarmedTokens addObject:v5];
+  tokenCopy = token;
+  [(NSHashTable *)requestedTokens removeObject:tokenCopy];
+  [(NSHashTable *)self->_prewarmedTokens addObject:tokenCopy];
 }
 
 @end

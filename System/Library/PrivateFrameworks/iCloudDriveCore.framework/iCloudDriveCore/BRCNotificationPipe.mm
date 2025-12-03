@@ -1,31 +1,31 @@
 @interface BRCNotificationPipe
-- (BRCNotificationPipe)initWithReceiver:(id)a3 manager:(id)a4 startingRank:(unint64_t)a5;
-- (BRCNotificationPipe)initWithXPCReceiver:(id)a3 client:(id)a4 manager:(id)a5 startingRank:(unint64_t)a6;
+- (BRCNotificationPipe)initWithReceiver:(id)receiver manager:(id)manager startingRank:(unint64_t)rank;
+- (BRCNotificationPipe)initWithXPCReceiver:(id)receiver client:(id)client manager:(id)manager startingRank:(unint64_t)rank;
 - (BRCNotificationPipeDelegate)delegate;
 - (NSString)description;
-- (id)_initWithManager:(id)a3 startingRank:(unint64_t)a4;
-- (int)_isInterestingUpdate:(id)a3;
+- (id)_initWithManager:(id)manager startingRank:(unint64_t)rank;
+- (int)_isInterestingUpdate:(id)update;
 - (void)__flush;
-- (void)__performBlockafterDBAndNotifFlush:(id)a3 session:(id)a4 description:(id)a5 error:(id)a6;
-- (void)_addIntraContainerUpdatesFromInterContainerUpdate:(id)a3 toArray:(id)a4;
+- (void)__performBlockafterDBAndNotifFlush:(id)flush session:(id)session description:(id)description error:(id)error;
+- (void)_addIntraContainerUpdatesFromInterContainerUpdate:(id)update toArray:(id)array;
 - (void)_gatherIfNeededAndFlushAsync;
-- (void)_performBlock:(id)a3 whenNotifsAreFullyFlushedInAppLibrary:(id)a4 description:(id)a5;
-- (void)_performBlock:(id)a3 whenNotifsAreFullyFlushedInClientZone:(id)a4 description:(id)a5;
-- (void)_prepareForSecondGatherWithRank:(unint64_t)a3;
+- (void)_performBlock:(id)block whenNotifsAreFullyFlushedInAppLibrary:(id)library description:(id)description;
+- (void)_performBlock:(id)block whenNotifsAreFullyFlushedInClientZone:(id)zone description:(id)description;
+- (void)_prepareForSecondGatherWithRank:(unint64_t)rank;
 - (void)_registerAsWatcherIfNeeded;
 - (void)_stopWatchingItems;
-- (void)_watchItem:(id)a3 options:(unsigned __int16)a4 gatherReply:(id)a5;
-- (void)addDequeueCallback:(id)a3;
-- (void)boostPriority:(id)a3;
+- (void)_watchItem:(id)item options:(unsigned __int16)options gatherReply:(id)reply;
+- (void)addDequeueCallback:(id)callback;
+- (void)boostPriority:(id)priority;
 - (void)close;
 - (void)dealloc;
 - (void)invalidate;
-- (void)invalidateIfWatchingAppLibraryIDs:(id)a3;
-- (void)invalidateReceiverIfWatchingAppLibraryIDs:(id)a3;
-- (void)listOperation:(id)a3 wasReplacedByOperation:(id)a4;
-- (void)processUpdates:(id)a3 withRank:(unint64_t)a4;
-- (void)watchItemWithFileObjectID:(id)a3 options:(unsigned __int16)a4 request:(id)a5 gatherReply:(id)a6;
-- (void)watchScopes:(unsigned __int16)a3 trustedAppLibraryIDs:(id)a4 gatherReply:(id)a5;
+- (void)invalidateIfWatchingAppLibraryIDs:(id)ds;
+- (void)invalidateReceiverIfWatchingAppLibraryIDs:(id)ds;
+- (void)listOperation:(id)operation wasReplacedByOperation:(id)byOperation;
+- (void)processUpdates:(id)updates withRank:(unint64_t)rank;
+- (void)watchItemWithFileObjectID:(id)d options:(unsigned __int16)options request:(id)request gatherReply:(id)reply;
+- (void)watchScopes:(unsigned __int16)scopes trustedAppLibraryIDs:(id)ds gatherReply:(id)reply;
 @end
 
 @implementation BRCNotificationPipe
@@ -43,10 +43,10 @@
 {
   dispatch_assert_queue_V2(self->_queue);
   v3 = [BRCUserDefaults defaultsForMangledID:0];
-  v4 = [v3 notifBatchSize];
+  notifBatchSize = [v3 notifBatchSize];
   if (!self->_hasUpdatesInFlight)
   {
-    v5 = v4;
+    v5 = notifBatchSize;
     if ([(BRNotificationQueue *)self->_notifs count])
     {
       notifs = self->_notifs;
@@ -78,31 +78,31 @@
 
 - (void)_registerAsWatcherIfNeeded
 {
-  v3 = [(BRCNotificationPipe *)self watchedAncestorFilenameToItem];
+  watchedAncestorFilenameToItem = [(BRCNotificationPipe *)self watchedAncestorFilenameToItem];
 
-  if (!v3)
+  if (!watchedAncestorFilenameToItem)
   {
-    v4 = [(BRCNotificationPipe *)self watchedAncestorFileObjectID];
-    if (v4)
+    watchedAncestorFileObjectID = [(BRCNotificationPipe *)self watchedAncestorFileObjectID];
+    if (watchedAncestorFileObjectID)
     {
-      [(BRCNotificationManager *)self->_manager registerPipe:self asWatcherForFileObjectID:v4];
+      [(BRCNotificationManager *)self->_manager registerPipe:self asWatcherForFileObjectID:watchedAncestorFileObjectID];
     }
 
     MEMORY[0x2821F96F8]();
   }
 }
 
-- (void)addDequeueCallback:(id)a3
+- (void)addDequeueCallback:(id)callback
 {
   queue = self->_queue;
-  v5 = a3;
+  callbackCopy = callback;
   dispatch_assert_queue_V2(queue);
-  [(BRNotificationQueue *)self->_notifs addDequeueCallback:v5];
+  [(BRNotificationQueue *)self->_notifs addDequeueCallback:callbackCopy];
 }
 
-- (id)_initWithManager:(id)a3 startingRank:(unint64_t)a4
+- (id)_initWithManager:(id)manager startingRank:(unint64_t)rank
 {
-  v7 = a3;
+  managerCopy = manager;
   v14.receiver = self;
   v14.super_class = BRCNotificationPipe;
   v8 = [(BRCNotificationPipe *)&v14 init];
@@ -112,39 +112,39 @@
     notifs = v8->_notifs;
     v8->_notifs = v9;
 
-    objc_storeStrong(&v8->_manager, a3);
-    v8->_initialGatherMaxRank = a4;
-    v11 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    objc_storeStrong(&v8->_manager, manager);
+    v8->_initialGatherMaxRank = rank;
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     recursiveScopeListOps = v8->_recursiveScopeListOps;
-    v8->_recursiveScopeListOps = v11;
+    v8->_recursiveScopeListOps = weakObjectsHashTable;
   }
 
   return v8;
 }
 
-- (BRCNotificationPipe)initWithXPCReceiver:(id)a3 client:(id)a4 manager:(id)a5 startingRank:(unint64_t)a6
+- (BRCNotificationPipe)initWithXPCReceiver:(id)receiver client:(id)client manager:(id)manager startingRank:(unint64_t)rank
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = [(BRCNotificationPipe *)self _initWithManager:a5 startingRank:a6];
+  receiverCopy = receiver;
+  clientCopy = client;
+  v12 = [(BRCNotificationPipe *)self _initWithManager:manager startingRank:rank];
   if (v12)
   {
-    v13 = [v11 connection];
+    connection = [clientCopy connection];
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __71__BRCNotificationPipe_initWithXPCReceiver_client_manager_startingRank___block_invoke;
     v20[3] = &unk_2784FF540;
     v14 = v12;
     v21 = v14;
-    v15 = [v10 remoteObjectProxyWithErrorHandler:v20];
+    v15 = [receiverCopy remoteObjectProxyWithErrorHandler:v20];
     receiver = v14->_receiver;
     v14->_receiver = v15;
 
-    v17 = [v13 _queue];
+    _queue = [connection _queue];
     queue = v14->_queue;
-    v14->_queue = v17;
+    v14->_queue = _queue;
 
-    objc_storeStrong(&v14->_client, a4);
+    objc_storeStrong(&v14->_client, client);
   }
 
   return v12;
@@ -178,14 +178,14 @@ void __71__BRCNotificationPipe_initWithXPCReceiver_client_manager_startingRank__
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (BRCNotificationPipe)initWithReceiver:(id)a3 manager:(id)a4 startingRank:(unint64_t)a5
+- (BRCNotificationPipe)initWithReceiver:(id)receiver manager:(id)manager startingRank:(unint64_t)rank
 {
-  v9 = a3;
-  v10 = [(BRCNotificationPipe *)self _initWithManager:a4 startingRank:a5];
+  receiverCopy = receiver;
+  v10 = [(BRCNotificationPipe *)self _initWithManager:manager startingRank:rank];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(v10 + 1, a3);
+    objc_storeStrong(v10 + 1, receiver);
     v12 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_UNSPECIFIED, 0);
     v13 = dispatch_queue_attr_make_with_autorelease_frequency(v12, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v14 = dispatch_queue_create("com.apple.brc.pipe", v13);
@@ -215,8 +215,8 @@ void __71__BRCNotificationPipe_initWithXPCReceiver_client_manager_startingRank__
 
   if ([(NSSet *)self->_watchedAppLibraryIDs count])
   {
-    v5 = [(NSSet *)self->_watchedAppLibraryIDs allObjects];
-    v6 = [v5 componentsJoinedByString:{@", "}];
+    allObjects = [(NSSet *)self->_watchedAppLibraryIDs allObjects];
+    v6 = [allObjects componentsJoinedByString:{@", "}];
     [v3 appendFormat:@" {%@}", v6];
   }
 
@@ -241,32 +241,32 @@ void __71__BRCNotificationPipe_initWithXPCReceiver_client_manager_startingRank__
     }
 
     [v3 appendString:v13];
-    v14 = [(BRCNotificationPipe *)self watchedAncestorItemGlobalID];
+    watchedAncestorItemGlobalID = [(BRCNotificationPipe *)self watchedAncestorItemGlobalID];
 
-    if (v14)
+    if (watchedAncestorItemGlobalID)
     {
-      v15 = [(BRCNotificationPipe *)self watchedAncestorItemGlobalID];
-      v16 = [v15 description];
+      watchedAncestorItemGlobalID2 = [(BRCNotificationPipe *)self watchedAncestorItemGlobalID];
+      v16 = [watchedAncestorItemGlobalID2 description];
       [v3 appendString:v16];
 
-      v17 = [(BRCNotificationPipe *)self watchedAncestorFileObjectID];
+      watchedAncestorFileObjectID = [(BRCNotificationPipe *)self watchedAncestorFileObjectID];
     }
 
     else
     {
-      v18 = [(BRCNotificationPipe *)self watchedAncestorFilenameToItem];
+      watchedAncestorFilenameToItem = [(BRCNotificationPipe *)self watchedAncestorFilenameToItem];
 
-      v17 = [(BRCNotificationPipe *)self watchedAncestorFileObjectID];
-      if (v18)
+      watchedAncestorFileObjectID = [(BRCNotificationPipe *)self watchedAncestorFileObjectID];
+      if (watchedAncestorFilenameToItem)
       {
-        v19 = [(BRCNotificationPipe *)self watchedAncestorFilenameToItem];
-        [v3 appendFormat:@"[fid:%@ n:%@]", v17, v19];
+        watchedAncestorFilenameToItem2 = [(BRCNotificationPipe *)self watchedAncestorFilenameToItem];
+        [v3 appendFormat:@"[fid:%@ n:%@]", watchedAncestorFileObjectID, watchedAncestorFilenameToItem2];
 
         goto LABEL_32;
       }
     }
 
-    if (!v17)
+    if (!watchedAncestorFileObjectID)
     {
 LABEL_33:
       v20 = self->_watchItemOptions;
@@ -287,8 +287,8 @@ LABEL_33:
       goto LABEL_37;
     }
 
-    v17 = [(BRCNotificationPipe *)self watchedAncestorFileObjectID];
-    [v3 appendFormat:@"[fid:%@]", v17];
+    watchedAncestorFileObjectID = [(BRCNotificationPipe *)self watchedAncestorFileObjectID];
+    [v3 appendFormat:@"[fid:%@]", watchedAncestorFileObjectID];
 LABEL_32:
 
     goto LABEL_33;
@@ -385,22 +385,22 @@ LABEL_37:
   return v3;
 }
 
-- (int)_isInterestingUpdate:(id)a3
+- (int)_isInterestingUpdate:(id)update
 {
   v80 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  updateCopy = update;
   dispatch_assert_queue_V2(self->_queue);
-  v5 = [(BRCNotificationPipe *)self watchedAncestorFilenameToItem];
+  watchedAncestorFilenameToItem = [(BRCNotificationPipe *)self watchedAncestorFilenameToItem];
 
-  if (v5)
+  if (watchedAncestorFilenameToItem)
   {
-    v6 = [(BRCNotificationPipe *)self watchedAncestorFileObjectID];
+    watchedAncestorFileObjectID = [(BRCNotificationPipe *)self watchedAncestorFileObjectID];
 
-    if (v6)
+    if (watchedAncestorFileObjectID)
     {
-      v7 = [v4 parentFileObjectID];
-      v8 = [(BRCNotificationPipe *)self watchedAncestorFileObjectID];
-      v9 = [v7 isEqualToFileObjectID:v8];
+      parentFileObjectID = [updateCopy parentFileObjectID];
+      watchedAncestorFileObjectID2 = [(BRCNotificationPipe *)self watchedAncestorFileObjectID];
+      v9 = [parentFileObjectID isEqualToFileObjectID:watchedAncestorFileObjectID2];
     }
 
     else
@@ -408,10 +408,10 @@ LABEL_37:
       v9 = 0;
     }
 
-    v10 = [(BRCNotificationPipe *)self watchedAncestorFilenameToItem];
-    if (!v9 || ([v4 logicalName], v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "br_isEqualToStringForHFS:isCaseSensitive:", v10, 1), v11, !v12))
+    watchedAncestorFilenameToItem2 = [(BRCNotificationPipe *)self watchedAncestorFilenameToItem];
+    if (!v9 || ([updateCopy logicalName], v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "br_isEqualToStringForHFS:isCaseSensitive:", watchedAncestorFilenameToItem2, 1), v11, !v12))
     {
-      v27 = brc_bread_crumbs();
+      watchedAncestorFileObjectID7 = brc_bread_crumbs();
       v28 = brc_notifications_log();
       if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
       {
@@ -423,41 +423,41 @@ LABEL_37:
     }
 
     [(BRCNotificationPipe *)self setWatchedAncestorFilenameToItem:0];
-    v13 = [v4 fileObjectID];
-    [(BRCNotificationPipe *)self setWatchedAncestorFileObjectID:v13];
+    fileObjectID = [updateCopy fileObjectID];
+    [(BRCNotificationPipe *)self setWatchedAncestorFileObjectID:fileObjectID];
 
     [(BRCNotificationPipe *)self _registerAsWatcherIfNeeded];
   }
 
-  v14 = [(BRCNotificationPipe *)self watchedAncestorFileObjectID];
-  if (!v14)
+  watchedAncestorFileObjectID3 = [(BRCNotificationPipe *)self watchedAncestorFileObjectID];
+  if (!watchedAncestorFileObjectID3)
   {
     goto LABEL_17;
   }
 
-  v15 = v14;
-  v16 = [v4 fileObjectID];
-  v17 = [(BRCNotificationPipe *)self watchedAncestorFileObjectID];
-  v18 = [v16 isEqualToFileObjectID:v17];
+  v15 = watchedAncestorFileObjectID3;
+  fileObjectID2 = [updateCopy fileObjectID];
+  watchedAncestorFileObjectID4 = [(BRCNotificationPipe *)self watchedAncestorFileObjectID];
+  v18 = [fileObjectID2 isEqualToFileObjectID:watchedAncestorFileObjectID4];
 
   if (v18)
   {
-    v19 = [(BRCNotificationPipe *)self watchedAncestorItemGlobalID];
-    v20 = [v4 itemGlobalID];
-    v21 = [v19 isEqualToItemGlobalID:v20];
+    watchedAncestorItemGlobalID = [(BRCNotificationPipe *)self watchedAncestorItemGlobalID];
+    itemGlobalID = [updateCopy itemGlobalID];
+    v21 = [watchedAncestorItemGlobalID isEqualToItemGlobalID:itemGlobalID];
 
     if ((v21 & 1) == 0)
     {
-      v22 = [(BRCNotificationPipe *)self watchedAncestorItemGlobalID];
-      [(BRCNotificationPipe *)self setOldWatchedAncestorItemGlobalID:v22];
+      watchedAncestorItemGlobalID2 = [(BRCNotificationPipe *)self watchedAncestorItemGlobalID];
+      [(BRCNotificationPipe *)self setOldWatchedAncestorItemGlobalID:watchedAncestorItemGlobalID2];
 
-      v23 = [v4 itemGlobalID];
-      [(BRCNotificationPipe *)self setWatchedAncestorItemGlobalID:v23];
+      itemGlobalID2 = [updateCopy itemGlobalID];
+      [(BRCNotificationPipe *)self setWatchedAncestorItemGlobalID:itemGlobalID2];
 
       [(BRCNotificationPipe *)self _registerAsWatcherIfNeeded];
-      v24 = [(BRCNotificationPipe *)self oldWatchedAncestorItemGlobalID];
+      oldWatchedAncestorItemGlobalID = [(BRCNotificationPipe *)self oldWatchedAncestorItemGlobalID];
 
-      if (v24)
+      if (oldWatchedAncestorItemGlobalID)
       {
         v25 = brc_bread_crumbs();
         v26 = brc_notifications_log();
@@ -482,19 +482,19 @@ LABEL_37:
   else
   {
 LABEL_17:
-    v30 = [(BRCNotificationPipe *)self watchedAncestorItemGlobalID];
-    if (v30)
+    watchedAncestorItemGlobalID3 = [(BRCNotificationPipe *)self watchedAncestorItemGlobalID];
+    if (watchedAncestorItemGlobalID3)
     {
-      v31 = v30;
-      v32 = [v4 itemGlobalID];
-      v33 = [(BRCNotificationPipe *)self watchedAncestorItemGlobalID];
-      v34 = [v32 isEqualToItemGlobalID:v33];
+      v31 = watchedAncestorItemGlobalID3;
+      itemGlobalID3 = [updateCopy itemGlobalID];
+      watchedAncestorItemGlobalID4 = [(BRCNotificationPipe *)self watchedAncestorItemGlobalID];
+      v34 = [itemGlobalID3 isEqualToItemGlobalID:watchedAncestorItemGlobalID4];
 
       if (v34)
       {
-        v35 = [(BRCNotificationPipe *)self watchedAncestorFileObjectID];
-        v36 = [v4 fileObjectID];
-        v37 = [v35 isEqualToFileObjectID:v36];
+        watchedAncestorFileObjectID5 = [(BRCNotificationPipe *)self watchedAncestorFileObjectID];
+        fileObjectID3 = [updateCopy fileObjectID];
+        v37 = [watchedAncestorFileObjectID5 isEqualToFileObjectID:fileObjectID3];
 
         if ((v37 & 1) == 0)
         {
@@ -502,22 +502,22 @@ LABEL_17:
           v39 = brc_notifications_log();
           if (os_log_type_enabled(v39, OS_LOG_TYPE_DEBUG))
           {
-            v62 = [(BRCNotificationPipe *)self watchedAncestorItemGlobalID];
-            v63 = [v4 fileObjectID];
-            v64 = [(BRCNotificationPipe *)self watchedAncestorFileObjectID];
+            watchedAncestorItemGlobalID5 = [(BRCNotificationPipe *)self watchedAncestorItemGlobalID];
+            fileObjectID4 = [updateCopy fileObjectID];
+            watchedAncestorFileObjectID6 = [(BRCNotificationPipe *)self watchedAncestorFileObjectID];
             v72 = 138413058;
-            v73 = v62;
+            v73 = watchedAncestorItemGlobalID5;
             v74 = 2112;
-            v75 = v63;
+            v75 = fileObjectID4;
             v76 = 2112;
-            v77 = v64;
+            v77 = watchedAncestorFileObjectID6;
             v78 = 2112;
             v79 = v38;
             _os_log_debug_impl(&dword_223E7A000, v39, OS_LOG_TYPE_DEBUG, "[NOTIF] Learning new fileObjectID for %@: %@ (was %@)%@", &v72, 0x2Au);
           }
 
-          v40 = [v4 fileObjectID];
-          [(BRCNotificationPipe *)self setWatchedAncestorFileObjectID:v40];
+          fileObjectID5 = [updateCopy fileObjectID];
+          [(BRCNotificationPipe *)self setWatchedAncestorFileObjectID:fileObjectID5];
 
           [(BRCNotificationPipe *)self _registerAsWatcherIfNeeded];
         }
@@ -525,16 +525,16 @@ LABEL_17:
     }
   }
 
-  v10 = [(BRCNotificationPipe *)self watchedAncestorItemGlobalID];
-  v27 = [(BRCNotificationPipe *)self watchedAncestorFileObjectID];
+  watchedAncestorFilenameToItem2 = [(BRCNotificationPipe *)self watchedAncestorItemGlobalID];
+  watchedAncestorFileObjectID7 = [(BRCNotificationPipe *)self watchedAncestorFileObjectID];
   watchKind = self->_watchKind;
   if ((watchKind & 6) != 0)
   {
-    v42 = [v4 appLibrary];
-    v43 = [v42 includesDataScope];
+    appLibrary = [updateCopy appLibrary];
+    includesDataScope = [appLibrary includesDataScope];
 
     v44 = self->_watchKind;
-    if ([v4 isDirectory] && (self->_watchKind & 8) == 0)
+    if ([updateCopy isDirectory] && (self->_watchKind & 8) == 0)
     {
       v28 = brc_bread_crumbs();
       v45 = brc_notifications_log();
@@ -553,9 +553,9 @@ LABEL_30:
       goto LABEL_40;
     }
 
-    if ((((v44 & 6) != 6) & v43) != 1)
+    if ((((v44 & 6) != 6) & includesDataScope) != 1)
     {
-      if ([v4 isInTrashScope] && (self->_watchKind & 0x40) == 0)
+      if ([updateCopy isInTrashScope] && (self->_watchKind & 0x40) == 0)
       {
         v28 = brc_bread_crumbs();
         v45 = brc_notifications_log();
@@ -568,8 +568,8 @@ LABEL_30:
       }
 
       watchedAppLibraryIDs = self->_watchedAppLibraryIDs;
-      v50 = [v4 appLibraryID];
-      LOBYTE(watchedAppLibraryIDs) = [(NSSet *)watchedAppLibraryIDs containsObject:v50];
+      appLibraryID = [updateCopy appLibraryID];
+      LOBYTE(watchedAppLibraryIDs) = [(NSSet *)watchedAppLibraryIDs containsObject:appLibraryID];
 
       if (watchedAppLibraryIDs)
       {
@@ -605,10 +605,10 @@ LABEL_107:
   {
     if (self->_watchItemOptions)
     {
-      if (v27)
+      if (watchedAncestorFileObjectID7)
       {
-        v47 = [v4 fileObjectID];
-        v48 = [v47 isEqualToFileObjectID:v27];
+        fileObjectID6 = [updateCopy fileObjectID];
+        v48 = [fileObjectID6 isEqualToFileObjectID:watchedAncestorFileObjectID7];
 
         if (v48)
         {
@@ -624,10 +624,10 @@ LABEL_107:
         }
       }
 
-      if (v10)
+      if (watchedAncestorFilenameToItem2)
       {
-        v51 = [v4 itemGlobalID];
-        v52 = [v51 isEqualToItemGlobalID:v10];
+        itemGlobalID4 = [updateCopy itemGlobalID];
+        v52 = [itemGlobalID4 isEqualToItemGlobalID:watchedAncestorFilenameToItem2];
 
         if (v52)
         {
@@ -644,10 +644,10 @@ LABEL_107:
       }
     }
 
-    if ((self->_watchItemOptions & 2) != 0 && v27)
+    if ((self->_watchItemOptions & 2) != 0 && watchedAncestorFileObjectID7)
     {
-      v53 = [v4 parentFileObjectID];
-      v54 = [v53 isEqualToFileObjectID:v27];
+      parentFileObjectID2 = [updateCopy parentFileObjectID];
+      v54 = [parentFileObjectID2 isEqualToFileObjectID:watchedAncestorFileObjectID7];
 
       if (v54)
       {
@@ -662,8 +662,8 @@ LABEL_107:
         goto LABEL_108;
       }
 
-      v58 = [v4 oldParentFileObjectID];
-      v59 = [v58 isEqualToFileObjectID:v27];
+      oldParentFileObjectID = [updateCopy oldParentFileObjectID];
+      v59 = [oldParentFileObjectID isEqualToFileObjectID:watchedAncestorFileObjectID7];
 
       if (v59)
       {
@@ -679,13 +679,13 @@ LABEL_107:
     }
   }
 
-  v46 = [v4 isDocumentsFolder];
+  isDocumentsFolder = [updateCopy isDocumentsFolder];
   if ((self->_watchKind & 0x46) == 0 && (self->_watchItemOptions & 4) == 0)
   {
     goto LABEL_36;
   }
 
-  if (v46)
+  if (isDocumentsFolder)
   {
     v28 = brc_bread_crumbs();
     v45 = brc_notifications_log();
@@ -697,7 +697,7 @@ LABEL_107:
     goto LABEL_40;
   }
 
-  if ([v4 isDirectory] && (self->_watchKind & 8) == 0)
+  if ([updateCopy isDirectory] && (self->_watchKind & 8) == 0)
   {
     v28 = brc_bread_crumbs();
     v45 = brc_notifications_log();
@@ -709,7 +709,7 @@ LABEL_107:
     goto LABEL_30;
   }
 
-  if ([v4 br_downloadStatus] == 1 && (self->_watchKind & 0x10) == 0)
+  if ([updateCopy br_downloadStatus] == 1 && (self->_watchKind & 0x10) == 0)
   {
     v28 = brc_bread_crumbs();
     v45 = brc_notifications_log();
@@ -722,8 +722,8 @@ LABEL_107:
   }
 
   v55 = self->_watchedAppLibraryIDs;
-  v56 = [v4 appLibraryID];
-  LOBYTE(v55) = [(NSSet *)v55 containsObject:v56];
+  appLibraryID2 = [updateCopy appLibraryID];
+  LOBYTE(v55) = [(NSSet *)v55 containsObject:appLibraryID2];
 
   if ((v55 & 1) == 0)
   {
@@ -740,7 +740,7 @@ LABEL_107:
   v57 = self->_watchKind;
   if ((v57 & 0x46) == 0)
   {
-    if (!v10)
+    if (!watchedAncestorFilenameToItem2)
     {
       goto LABEL_101;
     }
@@ -750,8 +750,8 @@ LABEL_107:
       [BRCNotificationPipe _isInterestingUpdate:];
     }
 
-    v60 = [v4 parentGlobalIDs];
-    v61 = [v60 containsObject:v10];
+    parentGlobalIDs = [updateCopy parentGlobalIDs];
+    v61 = [parentGlobalIDs containsObject:watchedAncestorFilenameToItem2];
 
     if (v61)
     {
@@ -766,16 +766,16 @@ LABEL_107:
 
     else
     {
-      v65 = [(BRCNotificationPipe *)self oldWatchedAncestorItemGlobalID];
-      if (!v65)
+      oldWatchedAncestorItemGlobalID2 = [(BRCNotificationPipe *)self oldWatchedAncestorItemGlobalID];
+      if (!oldWatchedAncestorItemGlobalID2)
       {
         goto LABEL_101;
       }
 
-      v66 = v65;
-      v67 = [v4 parentGlobalIDs];
-      v68 = [(BRCNotificationPipe *)self oldWatchedAncestorItemGlobalID];
-      v69 = [v67 containsObject:v68];
+      v66 = oldWatchedAncestorItemGlobalID2;
+      parentGlobalIDs2 = [updateCopy parentGlobalIDs];
+      oldWatchedAncestorItemGlobalID3 = [(BRCNotificationPipe *)self oldWatchedAncestorItemGlobalID];
+      v69 = [parentGlobalIDs2 containsObject:oldWatchedAncestorItemGlobalID3];
 
       if (!v69)
       {
@@ -796,7 +796,7 @@ LABEL_100:
     goto LABEL_108;
   }
 
-  if ([v4 isInDocumentScope])
+  if ([updateCopy isInDocumentScope])
   {
     if ((self->_watchKind & 2) != 0)
     {
@@ -812,7 +812,7 @@ LABEL_100:
     }
   }
 
-  else if ([v4 isInDataScope])
+  else if ([updateCopy isInDataScope])
   {
     if ((self->_watchKind & 4) != 0)
     {
@@ -828,7 +828,7 @@ LABEL_100:
     }
   }
 
-  else if ([v4 isInTrashScope] && (self->_watchKind & 0x40) != 0)
+  else if ([updateCopy isInTrashScope] && (self->_watchKind & 0x40) != 0)
   {
     v28 = brc_bread_crumbs();
     v45 = brc_notifications_log();
@@ -842,7 +842,7 @@ LABEL_100:
   }
 
 LABEL_101:
-  if (([v4 diffs] & 0xC010) != 0)
+  if (([updateCopy diffs] & 0xC010) != 0)
   {
     v28 = brc_bread_crumbs();
     v45 = brc_notifications_log();
@@ -854,7 +854,7 @@ LABEL_101:
     goto LABEL_107;
   }
 
-  if ([v4 isDead])
+  if ([updateCopy isDead])
   {
     v28 = brc_bread_crumbs();
     v45 = brc_notifications_log();
@@ -874,11 +874,11 @@ LABEL_110:
   return v29;
 }
 
-- (void)_addIntraContainerUpdatesFromInterContainerUpdate:(id)a3 toArray:(id)a4
+- (void)_addIntraContainerUpdatesFromInterContainerUpdate:(id)update toArray:(id)array
 {
-  v15 = a3;
-  v6 = a4;
-  if ([v15 isBRAlias])
+  updateCopy = update;
+  arrayCopy = array;
+  if ([updateCopy isBRAlias])
   {
     if ((self->_watchKind & 0x20) == 0)
     {
@@ -886,8 +886,8 @@ LABEL_110:
     }
 
     watchedAppLibraryIDs = self->_watchedAppLibraryIDs;
-    v8 = [v15 aliasSourceAppLibraryID];
-    LOBYTE(watchedAppLibraryIDs) = [(NSSet *)watchedAppLibraryIDs containsObject:v8];
+    aliasSourceAppLibraryID = [updateCopy aliasSourceAppLibraryID];
+    LOBYTE(watchedAppLibraryIDs) = [(NSSet *)watchedAppLibraryIDs containsObject:aliasSourceAppLibraryID];
 
     if ((watchedAppLibraryIDs & 1) == 0)
     {
@@ -895,26 +895,26 @@ LABEL_110:
     }
 
 LABEL_8:
-    [v6 addObject:v15];
+    [arrayCopy addObject:updateCopy];
     goto LABEL_9;
   }
 
   v9 = self->_watchedAppLibraryIDs;
-  v10 = [v15 appLibraryID];
-  LOBYTE(v9) = [(NSSet *)v9 containsObject:v10];
+  appLibraryID = [updateCopy appLibraryID];
+  LOBYTE(v9) = [(NSSet *)v9 containsObject:appLibraryID];
 
   if (v9)
   {
     goto LABEL_8;
   }
 
-  v11 = [v15 oldAppLibraryID];
-  if (v11)
+  oldAppLibraryID = [updateCopy oldAppLibraryID];
+  if (oldAppLibraryID)
   {
-    v12 = v11;
+    v12 = oldAppLibraryID;
     v13 = self->_watchedAppLibraryIDs;
-    v14 = [v15 oldAppLibraryID];
-    LODWORD(v13) = [(NSSet *)v13 containsObject:v14];
+    oldAppLibraryID2 = [updateCopy oldAppLibraryID];
+    LODWORD(v13) = [(NSSet *)v13 containsObject:oldAppLibraryID2];
 
     if (v13)
     {
@@ -925,7 +925,7 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)_prepareForSecondGatherWithRank:(unint64_t)a3
+- (void)_prepareForSecondGatherWithRank:(unint64_t)rank
 {
   dispatch_assert_queue_V2(self->_queue);
   if (self->_receiver)
@@ -944,14 +944,14 @@ LABEL_9:
     }
 
     v7 = [BRCDataOrDocsScopeGatherer alloc];
-    v8 = [(NSSet *)self->_watchedAppLibraries allObjects];
+    allObjects = [(NSSet *)self->_watchedAppLibraries allObjects];
     initialGatherMaxRank = self->_initialGatherMaxRank;
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __55__BRCNotificationPipe__prepareForSecondGatherWithRank___block_invoke;
     v12[3] = &unk_2784FF540;
     v12[4] = self;
-    v10 = [(BRCDataOrDocsScopeGatherer *)v7 initWithNotificationPipe:self appLibraries:v8 startingRank:initialGatherMaxRank maxRank:a3 + 1 withDeadItems:1 gatherReply:v12];
+    v10 = [(BRCDataOrDocsScopeGatherer *)v7 initWithNotificationPipe:self appLibraries:allObjects startingRank:initialGatherMaxRank maxRank:rank + 1 withDeadItems:1 gatherReply:v12];
     gatherer = self->_gatherer;
     self->_gatherer = v10;
 
@@ -971,10 +971,10 @@ void __55__BRCNotificationPipe__prepareForSecondGatherWithRank___block_invoke(ui
   dispatch_group_leave(*(*(a1 + 32) + 80));
 }
 
-- (void)processUpdates:(id)a3 withRank:(unint64_t)a4
+- (void)processUpdates:(id)updates withRank:(unint64_t)rank
 {
   v39 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  updatesCopy = updates;
   if (self->_receiver)
   {
     if (self->_watchKind)
@@ -990,9 +990,9 @@ void __55__BRCNotificationPipe__prepareForSecondGatherWithRank___block_invoke(ui
         *&buf[12] = 2112;
         *&buf[14] = self;
         *&buf[22] = 2112;
-        v34 = v6;
+        v34 = updatesCopy;
         v35 = 2048;
-        v36 = a4;
+        rankCopy = rank;
         v37 = 2112;
         v38 = v7;
         _os_log_debug_impl(&dword_223E7A000, v8, OS_LOG_TYPE_DEBUG, "[NOTIF] ┏%llx %@: processing updates %@ [rank:%lld]%@", buf, 0x34u);
@@ -1008,15 +1008,15 @@ void __55__BRCNotificationPipe__prepareForSecondGatherWithRank___block_invoke(ui
       block[2] = __47__BRCNotificationPipe_processUpdates_withRank___block_invoke;
       block[3] = &unk_278501570;
       block[5] = buf;
-      block[6] = a4;
+      block[6] = rank;
       block[4] = self;
       dispatch_sync(queue, block);
-      v10 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v6, "count")}];
+      v10 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(updatesCopy, "count")}];
       v28 = 0u;
       v29 = 0u;
       v26 = 0u;
       v27 = 0u;
-      v11 = v6;
+      v11 = updatesCopy;
       v12 = [v11 countByEnumeratingWithState:&v26 objects:v32 count:16];
       if (v12)
       {
@@ -1077,7 +1077,7 @@ void __55__BRCNotificationPipe__prepareForSecondGatherWithRank___block_invoke(ui
         v23[2] = __47__BRCNotificationPipe_processUpdates_withRank___block_invoke_138;
         v23[3] = &unk_2784FF478;
         v24 = v10;
-        v25 = self;
+        selfCopy = self;
         dispatch_sync(v21, v23);
       }
 
@@ -1088,9 +1088,9 @@ void __55__BRCNotificationPipe__prepareForSecondGatherWithRank___block_invoke(ui
     else
     {
       initialGatherMaxRank = self->_initialGatherMaxRank;
-      if (initialGatherMaxRank && initialGatherMaxRank < a4 && !self->_secondaryGatherMaxRank)
+      if (initialGatherMaxRank && initialGatherMaxRank < rank && !self->_secondaryGatherMaxRank)
       {
-        self->_secondaryGatherMaxRank = a4;
+        self->_secondaryGatherMaxRank = rank;
       }
     }
   }
@@ -1411,7 +1411,7 @@ LABEL_6:
   }
 
   [(BRCNotificationManager *)self->_manager unregisterPipeAsWatcher:self];
-  v3 = [(BRCNotificationPipe *)self delegate];
+  delegate = [(BRCNotificationPipe *)self delegate];
   v34 = 0u;
   v35 = 0u;
   v32 = 0u;
@@ -1431,7 +1431,7 @@ LABEL_6:
           objc_enumerationMutation(v4);
         }
 
-        [v3 notificationPipe:self didObserveAppLibrary:*(*(&v32 + 1) + 8 * v7++)];
+        [delegate notificationPipe:self didObserveAppLibrary:*(*(&v32 + 1) + 8 * v7++)];
       }
 
       while (v5 != v7);
@@ -1460,7 +1460,7 @@ LABEL_6:
           objc_enumerationMutation(v8);
         }
 
-        [v3 notificationPipe:self didObserveAppLibrary:*(*(&v28 + 1) + 8 * v11++)];
+        [delegate notificationPipe:self didObserveAppLibrary:*(*(&v28 + 1) + 8 * v11++)];
       }
 
       while (v9 != v11);
@@ -1488,13 +1488,13 @@ LABEL_6:
     objc_storeWeak(&self->_listOp, 0);
   }
 
-  v16 = self;
-  objc_sync_enter(v16);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v17 = v16->_recursiveScopeListOps;
+  v17 = selfCopy->_recursiveScopeListOps;
   v18 = [(NSHashTable *)v17 countByEnumeratingWithState:&v24 objects:v36 count:16];
   if (v18)
   {
@@ -1519,27 +1519,27 @@ LABEL_6:
     while (v18);
   }
 
-  [(NSHashTable *)v16->_recursiveScopeListOps removeAllObjects];
-  objc_sync_exit(v16);
+  [(NSHashTable *)selfCopy->_recursiveScopeListOps removeAllObjects];
+  objc_sync_exit(selfCopy);
 
-  boostReply = v16->_boostReply;
+  boostReply = selfCopy->_boostReply;
   if (boostReply)
   {
     boostReply[2]();
-    v22 = v16->_boostReply;
-    v16->_boostReply = 0;
+    v22 = selfCopy->_boostReply;
+    selfCopy->_boostReply = 0;
   }
 
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)listOperation:(id)a3 wasReplacedByOperation:(id)a4
+- (void)listOperation:(id)operation wasReplacedByOperation:(id)byOperation
 {
-  obj = a4;
-  v6 = a3;
+  obj = byOperation;
+  operationCopy = operation;
   WeakRetained = objc_loadWeakRetained(&self->_listOp);
 
-  if (WeakRetained == v6)
+  if (WeakRetained == operationCopy)
   {
     objc_storeWeak(&self->_listOp, obj);
   }
@@ -1556,41 +1556,41 @@ LABEL_6:
   dispatch_sync(queue, block);
 }
 
-- (void)__performBlockafterDBAndNotifFlush:(id)a3 session:(id)a4 description:(id)a5 error:(id)a6
+- (void)__performBlockafterDBAndNotifFlush:(id)flush session:(id)session description:(id)description error:(id)error
 {
   v34 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  flushCopy = flush;
+  sessionCopy = session;
+  descriptionCopy = description;
+  errorCopy = error;
   v14 = brc_bread_crumbs();
   v15 = brc_notifications_log();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412802;
-    v29 = v12;
+    v29 = descriptionCopy;
     v30 = 2112;
-    v31 = self;
+    selfCopy = self;
     v32 = 2112;
     v33 = v14;
     _os_log_debug_impl(&dword_223E7A000, v15, OS_LOG_TYPE_DEBUG, "[NOTIF] Waiting for db flush for %@ in %@%@", buf, 0x20u);
   }
 
-  v16 = [v11 clientTruthWorkloop];
+  clientTruthWorkloop = [sessionCopy clientTruthWorkloop];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __84__BRCNotificationPipe___performBlockafterDBAndNotifFlush_session_description_error___block_invoke;
   block[3] = &unk_278501638;
-  v23 = v11;
-  v24 = v12;
-  v26 = v13;
-  v27 = v10;
-  v25 = self;
-  v17 = v13;
-  v18 = v10;
-  v19 = v12;
-  v20 = v11;
-  dispatch_async(v16, block);
+  v23 = sessionCopy;
+  v24 = descriptionCopy;
+  v26 = errorCopy;
+  v27 = flushCopy;
+  selfCopy2 = self;
+  v17 = errorCopy;
+  v18 = flushCopy;
+  v19 = descriptionCopy;
+  v20 = sessionCopy;
+  dispatch_async(clientTruthWorkloop, block);
 
   v21 = *MEMORY[0x277D85DE8];
 }
@@ -1692,21 +1692,21 @@ void __84__BRCNotificationPipe___performBlockafterDBAndNotifFlush_session_descri
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_performBlock:(id)a3 whenNotifsAreFullyFlushedInClientZone:(id)a4 description:(id)a5
+- (void)_performBlock:(id)block whenNotifsAreFullyFlushedInClientZone:(id)zone description:(id)description
 {
   v28 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  v11 = [v10 session];
+  blockCopy = block;
+  descriptionCopy = description;
+  zoneCopy = zone;
+  session = [zoneCopy session];
   v12 = brc_bread_crumbs();
   v13 = brc_notifications_log();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412802;
-    v23 = v9;
+    v23 = descriptionCopy;
     v24 = 2112;
-    v25 = self;
+    selfCopy = self;
     v26 = 2112;
     v27 = v12;
     _os_log_debug_impl(&dword_223E7A000, v13, OS_LOG_TYPE_DEBUG, "[NOTIF] Waiting for faulting for %@ in %@%@", buf, 0x20u);
@@ -1717,13 +1717,13 @@ void __84__BRCNotificationPipe___performBlockafterDBAndNotifFlush_session_descri
   v18[2] = __87__BRCNotificationPipe__performBlock_whenNotifsAreFullyFlushedInClientZone_description___block_invoke;
   v18[3] = &unk_278501660;
   v18[4] = self;
-  v19 = v11;
-  v20 = v9;
-  v21 = v8;
-  v14 = v9;
-  v15 = v11;
-  v16 = v8;
-  [v10 notifyClient:@"nsmdq" whenFaultingIsDone:v18];
+  v19 = session;
+  v20 = descriptionCopy;
+  v21 = blockCopy;
+  v14 = descriptionCopy;
+  v15 = session;
+  v16 = blockCopy;
+  [zoneCopy notifyClient:@"nsmdq" whenFaultingIsDone:v18];
 
   v17 = *MEMORY[0x277D85DE8];
 }
@@ -1744,40 +1744,40 @@ void __87__BRCNotificationPipe__performBlock_whenNotifsAreFullyFlushedInClientZo
   [*(a1 + 32) __performBlockafterDBAndNotifFlush:*(a1 + 56) session:*(a1 + 40) description:*(a1 + 48) error:v3];
 }
 
-- (void)_performBlock:(id)a3 whenNotifsAreFullyFlushedInAppLibrary:(id)a4 description:(id)a5
+- (void)_performBlock:(id)block whenNotifsAreFullyFlushedInAppLibrary:(id)library description:(id)description
 {
   v29 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  v11 = [v10 session];
+  blockCopy = block;
+  descriptionCopy = description;
+  libraryCopy = library;
+  session = [libraryCopy session];
   v12 = brc_bread_crumbs();
   v13 = brc_notifications_log();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412802;
-    v24 = v9;
+    v24 = descriptionCopy;
     v25 = 2112;
-    v26 = self;
+    selfCopy = self;
     v27 = 2112;
     v28 = v12;
     _os_log_debug_impl(&dword_223E7A000, v13, OS_LOG_TYPE_DEBUG, "[NOTIF] Waiting for faulting for %@ in %@%@", buf, 0x20u);
   }
 
-  v14 = [v10 defaultClientZone];
+  defaultClientZone = [libraryCopy defaultClientZone];
 
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __87__BRCNotificationPipe__performBlock_whenNotifsAreFullyFlushedInAppLibrary_description___block_invoke;
   v19[3] = &unk_278501660;
   v19[4] = self;
-  v20 = v11;
-  v21 = v9;
-  v22 = v8;
-  v15 = v9;
-  v16 = v11;
-  v17 = v8;
-  [v14 notifyClient:@"extension" whenFaultingIsDone:v19];
+  v20 = session;
+  v21 = descriptionCopy;
+  v22 = blockCopy;
+  v15 = descriptionCopy;
+  v16 = session;
+  v17 = blockCopy;
+  [defaultClientZone notifyClient:@"extension" whenFaultingIsDone:v19];
 
   v18 = *MEMORY[0x277D85DE8];
 }
@@ -1798,12 +1798,12 @@ void __87__BRCNotificationPipe__performBlock_whenNotifsAreFullyFlushedInAppLibra
   [*(a1 + 32) __performBlockafterDBAndNotifFlush:*(a1 + 56) session:*(a1 + 40) description:*(a1 + 48) error:v3];
 }
 
-- (void)watchScopes:(unsigned __int16)a3 trustedAppLibraryIDs:(id)a4 gatherReply:(id)a5
+- (void)watchScopes:(unsigned __int16)scopes trustedAppLibraryIDs:(id)ds gatherReply:(id)reply
 {
-  v56 = a3;
+  scopesCopy = scopes;
   v94 = *MEMORY[0x277D85DE8];
-  v50 = a4;
-  v51 = a5;
+  dsCopy = ds;
+  replyCopy = reply;
   memset(v82, 0, sizeof(v82));
   __brc_create_section(0, "[BRCNotificationPipe watchScopes:trustedAppLibraryIDs:gatherReply:]", 1099, 0, v82);
   v7 = brc_bread_crumbs();
@@ -1815,19 +1815,19 @@ void __87__BRCNotificationPipe__performBlock_whenNotifsAreFullyFlushedInAppLibra
     *&buf[12] = 2112;
     *&buf[14] = self;
     *&buf[22] = 1024;
-    *&buf[24] = v56 & 1;
+    *&buf[24] = scopesCopy & 1;
     *&buf[28] = 1024;
-    *&buf[30] = (v56 >> 1) & 1;
+    *&buf[30] = (scopesCopy >> 1) & 1;
     *&buf[34] = 1024;
-    *&buf[36] = (v56 >> 2) & 1;
+    *&buf[36] = (scopesCopy >> 2) & 1;
     LOWORD(v86) = 1024;
-    *(&v86 + 2) = (v56 >> 3) & 1;
+    *(&v86 + 2) = (scopesCopy >> 3) & 1;
     HIWORD(v86) = 1024;
-    v87 = (v56 >> 4) & 1;
+    v87 = (scopesCopy >> 4) & 1;
     v88 = 1024;
     v89 = 0;
     v90 = 2112;
-    v91 = v50;
+    v91 = dsCopy;
     v92 = 2112;
     v93 = v7;
     _os_log_debug_impl(&dword_223E7A000, v8, OS_LOG_TYPE_DEBUG, "[NOTIF] ┏%llx %@: starting watching ubiquitous scope (docs:%d data:%d ext:%d dirs:%d faults:%d trash:%d) for %@%@", buf, 0x4Eu);
@@ -1850,19 +1850,19 @@ void __87__BRCNotificationPipe__performBlock_whenNotifsAreFullyFlushedInAppLibra
     }
 
     v11 = [MEMORY[0x277CCA9B8] br_errorWithPOSIXCode:37];
-    v51[2](v51, v11);
+    replyCopy[2](replyCopy, v11);
   }
 
-  else if ((8 * v56) & 0x20 | (2 * (v56 & 3)))
+  else if ((8 * scopesCopy) & 0x20 | (2 * (scopesCopy & 3)))
   {
-    v55 = [(BRCNotificationManager *)self->_manager session];
-    v53 = [MEMORY[0x277CBEB58] setWithArray:v50];
-    obj = [objc_alloc(MEMORY[0x277CBEB58]) initWithCapacity:{objc_msgSend(v50, "count")}];
+    session = [(BRCNotificationManager *)self->_manager session];
+    v53 = [MEMORY[0x277CBEB58] setWithArray:dsCopy];
+    obj = [objc_alloc(MEMORY[0x277CBEB58]) initWithCapacity:{objc_msgSend(dsCopy, "count")}];
     v80 = 0u;
     v81 = 0u;
     v78 = 0u;
     v79 = 0u;
-    v12 = v50;
+    v12 = dsCopy;
     v13 = [v12 countByEnumeratingWithState:&v78 objects:v84 count:16];
     if (v13)
     {
@@ -1877,7 +1877,7 @@ void __87__BRCNotificationPipe__performBlock_whenNotifsAreFullyFlushedInAppLibra
           }
 
           v16 = *(*(&v78 + 1) + 8 * i);
-          v17 = [v55 appLibraryByID:v16];
+          v17 = [session appLibraryByID:v16];
           if (v17)
           {
             [obj addObject:v17];
@@ -1943,49 +1943,49 @@ void __87__BRCNotificationPipe__performBlock_whenNotifsAreFullyFlushedInAppLibra
             }
 
             v25 = *(*(&v73 + 1) + 8 * j);
-            v26 = [(BRCNotificationPipe *)self delegate];
-            [v26 notificationPipe:self willObserveAppLibrary:v25];
+            delegate = [(BRCNotificationPipe *)self delegate];
+            [delegate notificationPipe:self willObserveAppLibrary:v25];
 
-            if (v56)
+            if (scopesCopy)
             {
-              v27 = [v25 dbRowID];
-              v28 = [BRCItemID documentsItemIDWithAppLibraryRowID:v27];
+              dbRowID = [v25 dbRowID];
+              v28 = [BRCItemID documentsItemIDWithAppLibraryRowID:dbRowID];
 
               dispatch_group_enter(self->_gatherGroup);
               v29 = [v25 db];
-              v30 = [v29 serialQueue];
+              serialQueue = [v29 serialQueue];
               block[0] = MEMORY[0x277D85DD0];
               block[1] = 3221225472;
               block[2] = __68__BRCNotificationPipe_watchScopes_trustedAppLibraryIDs_gatherReply___block_invoke;
               block[3] = &unk_2785016B0;
               block[4] = v25;
               v69 = v28;
-              v70 = self;
+              selfCopy = self;
               v31 = v28;
               objc_copyWeak(&v72, &location);
               v71 = buf;
-              dispatch_async(v30, block);
+              dispatch_async(serialQueue, block);
 
               objc_destroyWeak(&v72);
             }
 
-            if ((v56 & 2) != 0)
+            if ((scopesCopy & 2) != 0)
             {
-              v32 = [v25 rootItemID];
+              rootItemID = [v25 rootItemID];
               dispatch_group_enter(self->_gatherGroup);
               v33 = [v25 db];
-              v34 = [v33 serialQueue];
+              serialQueue2 = [v33 serialQueue];
               v63[0] = MEMORY[0x277D85DD0];
               v63[1] = 3221225472;
               v63[2] = __68__BRCNotificationPipe_watchScopes_trustedAppLibraryIDs_gatherReply___block_invoke_3;
               v63[3] = &unk_2785016B0;
               v63[4] = v25;
-              v64 = v32;
-              v65 = self;
-              v35 = v32;
+              v64 = rootItemID;
+              selfCopy2 = self;
+              v35 = rootItemID;
               objc_copyWeak(&v67, &location);
               v66 = buf;
-              dispatch_async(v34, v63);
+              dispatch_async(serialQueue2, v63);
 
               objc_destroyWeak(&v67);
             }
@@ -2000,7 +2000,7 @@ void __87__BRCNotificationPipe__performBlock_whenNotifsAreFullyFlushedInAppLibra
       [(BRCNotificationManager *)self->_manager registerAppLibraries:self->_watchedAppLibraries forFlags:self->_watchedAppLibrariesFlags];
       dispatch_group_enter(self->_gatherGroup);
       v36 = [BRCDataOrDocsScopeGatherer alloc];
-      v37 = [obj allObjects];
+      allObjects = [obj allObjects];
       initialGatherMaxRank = self->_initialGatherMaxRank;
       v61[0] = MEMORY[0x277D85DD0];
       v61[1] = 3221225472;
@@ -2008,21 +2008,21 @@ void __87__BRCNotificationPipe__performBlock_whenNotifsAreFullyFlushedInAppLibra
       v61[3] = &unk_2785016D8;
       objc_copyWeak(&v62, &location);
       v61[4] = buf;
-      v39 = [(BRCDataOrDocsScopeGatherer *)v36 initWithNotificationPipe:self appLibraries:v37 startingRank:1 maxRank:initialGatherMaxRank withDeadItems:0 gatherReply:v61];
+      v39 = [(BRCDataOrDocsScopeGatherer *)v36 initWithNotificationPipe:self appLibraries:allObjects startingRank:1 maxRank:initialGatherMaxRank withDeadItems:0 gatherReply:v61];
       gatherer = self->_gatherer;
       self->_gatherer = v39;
 
-      self->_watchKind = (2 * v56) & 0x80 | v56 & 0x18 | (8 * v56) & 0x20 | (2 * (v56 & 3));
+      self->_watchKind = (2 * scopesCopy) & 0x80 | scopesCopy & 0x18 | (8 * scopesCopy) & 0x20 | (2 * (scopesCopy & 3));
       v41 = self->_gatherGroup;
-      v42 = [(BRCNotificationPipe *)self queue];
+      queue = [(BRCNotificationPipe *)self queue];
       v57[0] = MEMORY[0x277D85DD0];
       v57[1] = 3221225472;
       v57[2] = __68__BRCNotificationPipe_watchScopes_trustedAppLibraryIDs_gatherReply___block_invoke_159;
       v57[3] = &unk_278501700;
       objc_copyWeak(&v60, &location);
-      v58 = v51;
+      v58 = replyCopy;
       v59 = buf;
-      dispatch_group_notify(v41, v42, v57);
+      dispatch_group_notify(v41, queue, v57);
 
       [(BRCNotificationPipe *)self _gatherIfNeededAndFlushAsync];
       objc_destroyWeak(&v60);
@@ -2041,10 +2041,10 @@ void __87__BRCNotificationPipe__performBlock_whenNotifsAreFullyFlushedInAppLibra
       }
 
       v47 = [MEMORY[0x277CCA9B8] br_errorWithPOSIXCode:2];
-      v51[2](v51, v47);
+      replyCopy[2](replyCopy, v47);
     }
 
-    v11 = v55;
+    v11 = session;
   }
 
   else
@@ -2061,7 +2061,7 @@ void __87__BRCNotificationPipe__performBlock_whenNotifsAreFullyFlushedInAppLibra
     }
 
     v11 = [MEMORY[0x277CCA9B8] br_errorWithPOSIXCode:22];
-    v51[2](v51, v11);
+    replyCopy[2](replyCopy, v11);
   }
 
   __brc_leave_section(v82);
@@ -2336,11 +2336,11 @@ void __68__BRCNotificationPipe_watchScopes_trustedAppLibraryIDs_gatherReply___bl
   (*(v5 + 16))(v5, v6);
 }
 
-- (void)_watchItem:(id)a3 options:(unsigned __int16)a4 gatherReply:(id)a5
+- (void)_watchItem:(id)item options:(unsigned __int16)options gatherReply:(id)reply
 {
   v90 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  itemCopy = item;
+  replyCopy = reply;
   if (self->_watchKind)
   {
     v10 = brc_bread_crumbs();
@@ -2358,32 +2358,32 @@ void __68__BRCNotificationPipe_watchScopes_trustedAppLibraryIDs_gatherReply___bl
     }
 
     v12 = [MEMORY[0x277CCA9B8] br_errorWithPOSIXCode:37];
-    v9[2](v9, v12);
+    replyCopy[2](replyCopy, v12);
 
     goto LABEL_35;
   }
 
-  if (v8)
+  if (itemCopy)
   {
     [(BRCNotificationPipe *)self setWatchedAncestorFilenameToItem:0];
-    v13 = [v8 fileObjectID];
-    [(BRCNotificationPipe *)self setWatchedAncestorFileObjectID:v13];
+    fileObjectID = [itemCopy fileObjectID];
+    [(BRCNotificationPipe *)self setWatchedAncestorFileObjectID:fileObjectID];
 
-    v14 = [v8 itemGlobalID];
-    [(BRCNotificationPipe *)self setWatchedAncestorItemGlobalID:v14];
+    itemGlobalID = [itemCopy itemGlobalID];
+    [(BRCNotificationPipe *)self setWatchedAncestorItemGlobalID:itemGlobalID];
 
     v15 = objc_alloc(MEMORY[0x277CBEB98]);
-    v16 = [v8 appLibrary];
-    v86 = v16;
+    appLibrary = [itemCopy appLibrary];
+    v86 = appLibrary;
     v17 = [MEMORY[0x277CBEA60] arrayWithObjects:&v86 count:1];
     v18 = [v15 initWithArray:v17];
     watchedAppLibraries = self->_watchedAppLibraries;
     self->_watchedAppLibraries = v18;
 
     v20 = objc_alloc(MEMORY[0x277CBEB98]);
-    v21 = [v8 appLibrary];
-    v22 = [v21 appLibraryID];
-    v85 = v22;
+    appLibrary2 = [itemCopy appLibrary];
+    appLibraryID = [appLibrary2 appLibraryID];
+    v85 = appLibraryID;
     v23 = [MEMORY[0x277CBEA60] arrayWithObjects:&v85 count:1];
     v24 = [v20 initWithArray:v23];
     watchedAppLibraryIDs = self->_watchedAppLibraryIDs;
@@ -2391,7 +2391,7 @@ void __68__BRCNotificationPipe_watchScopes_trustedAppLibraryIDs_gatherReply___bl
 
 LABEL_8:
     [(BRCNotificationPipe *)self _registerAsWatcherIfNeeded];
-    self->_watchItemOptions = a4;
+    self->_watchItemOptions = options;
     v27 = dispatch_group_create();
     gatherGroup = self->_gatherGroup;
     self->_gatherGroup = v27;
@@ -2403,10 +2403,10 @@ LABEL_8:
     v83 = __Block_byref_object_dispose__10;
     v84 = 0;
     objc_initWeak(&location, self);
-    if (!self->_watchedAncestorFileObjectID || ![v8 isDirectory])
+    if (!self->_watchedAncestorFileObjectID || ![itemCopy isDirectory])
     {
 LABEL_28:
-      if ((a4 & 4) != 0)
+      if ((options & 4) != 0)
       {
         v44 = 3;
       }
@@ -2428,7 +2428,7 @@ LABEL_28:
       }
 
       v45 = [BRCDataOrDocsScopeGatherer alloc];
-      v46 = [(NSSet *)self->_watchedAppLibraries allObjects];
+      allObjects = [(NSSet *)self->_watchedAppLibraries allObjects];
       initialGatherMaxRank = self->_initialGatherMaxRank;
       v70[0] = MEMORY[0x277D85DD0];
       v70[1] = 3221225472;
@@ -2436,26 +2436,26 @@ LABEL_28:
       v70[3] = &unk_2785016D8;
       objc_copyWeak(&v71, &location);
       v70[4] = buf;
-      v48 = [(BRCDataOrDocsScopeGatherer *)v45 initWithNotificationPipe:self appLibraries:v46 startingRank:1 maxRank:initialGatherMaxRank withDeadItems:0 gatherReply:v70];
+      v48 = [(BRCDataOrDocsScopeGatherer *)v45 initWithNotificationPipe:self appLibraries:allObjects startingRank:1 maxRank:initialGatherMaxRank withDeadItems:0 gatherReply:v70];
       gatherer = self->_gatherer;
       self->_gatherer = v48;
 
       self->_watchKind = 1;
       v50 = self->_gatherGroup;
-      v51 = [(BRCNotificationPipe *)self queue];
+      queue = [(BRCNotificationPipe *)self queue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __54__BRCNotificationPipe__watchItem_options_gatherReply___block_invoke_167;
       block[3] = &unk_278501700;
       objc_copyWeak(&v69, &location);
-      v67 = v9;
+      v67 = replyCopy;
       v68 = buf;
-      dispatch_group_notify(v50, v51, block);
+      dispatch_group_notify(v50, queue, block);
 
-      if ((a4 & 8) != 0)
+      if ((options & 8) != 0)
       {
-        v52 = [(BRCNotificationPipe *)self watchedAncestorItemGlobalID];
-        [(BRCDataOrDocsScopeGatherer *)self->_gatherer setGatheredChildrenItemGlobalID:v52];
+        watchedAncestorItemGlobalID = [(BRCNotificationPipe *)self watchedAncestorItemGlobalID];
+        [(BRCDataOrDocsScopeGatherer *)self->_gatherer setGatheredChildrenItemGlobalID:watchedAncestorItemGlobalID];
       }
 
       queue = self->_queue;
@@ -2466,7 +2466,7 @@ LABEL_28:
       v62[4] = self;
       v64 = buf;
       v65 = v44;
-      v63 = v8;
+      v63 = itemCopy;
       v54 = v62;
       *from = MEMORY[0x277D85DD0];
       *&from[8] = 3221225472;
@@ -2484,12 +2484,12 @@ LABEL_28:
       goto LABEL_35;
     }
 
-    v29 = [v8 clientZone];
-    v30 = [v8 appLibrary];
-    if ((a4 & 4) != 0)
+    clientZone = [itemCopy clientZone];
+    appLibrary3 = [itemCopy appLibrary];
+    if ((options & 4) != 0)
     {
-      v40 = [v8 itemID];
-      v32 = [v29 fetchRecursiveDirectoryContentsIfNecessary:v40 isUserWaiting:1 rescheduleApply:1];
+      itemID = [itemCopy itemID];
+      v32 = [clientZone fetchRecursiveDirectoryContentsIfNecessary:itemID isUserWaiting:1 rescheduleApply:1];
 
       if (v32)
       {
@@ -2510,10 +2510,10 @@ LABEL_28:
       }
 
       [v32 beginObservingChanges];
-      v43 = self;
-      objc_sync_enter(v43);
-      [(NSHashTable *)v43->_recursiveScopeListOps addObject:v32];
-      objc_sync_exit(v43);
+      selfCopy = self;
+      objc_sync_enter(selfCopy);
+      [(NSHashTable *)selfCopy->_recursiveScopeListOps addObject:v32];
+      objc_sync_exit(selfCopy);
 
       objc_initWeak(from, v32);
       v76[0] = MEMORY[0x277D85DD0];
@@ -2523,7 +2523,7 @@ LABEL_28:
       objc_copyWeak(&v79, &location);
       objc_copyWeak(&v80, from);
       v78 = buf;
-      v77 = v29;
+      v77 = clientZone;
       [v32 addRecursiveDirectoryListCompletionBlock:v76];
 
       objc_destroyWeak(&v80);
@@ -2533,15 +2533,15 @@ LABEL_28:
 
     else
     {
-      if ((a4 & 2) == 0)
+      if ((options & 2) == 0)
       {
 LABEL_27:
 
         goto LABEL_28;
       }
 
-      v31 = [(BRCItemGlobalID *)self->_watchedAncestorItemGlobalID itemID];
-      v32 = [v29 fetchDirectoryContentsIfNecessary:v31 isUserWaiting:1 rescheduleApplyScheduler:1];
+      itemID2 = [(BRCItemGlobalID *)self->_watchedAncestorItemGlobalID itemID];
+      v32 = [clientZone fetchDirectoryContentsIfNecessary:itemID2 isUserWaiting:1 rescheduleApplyScheduler:1];
 
       [v32 beginObservingChangesWithDelegate:self];
       if (v32)
@@ -2583,7 +2583,7 @@ LABEL_27:
       objc_copyWeak(&v75, &location);
       v72[4] = self;
       v74 = buf;
-      v73 = v29;
+      v73 = clientZone;
       [v32 addDirectoryListCompletionBlock:v72];
 
       objc_destroyWeak(&v75);
@@ -2592,9 +2592,9 @@ LABEL_27:
     goto LABEL_27;
   }
 
-  v26 = [(BRCNotificationPipe *)self watchedAncestorFilenameToItem];
+  watchedAncestorFilenameToItem = [(BRCNotificationPipe *)self watchedAncestorFilenameToItem];
 
-  if (v26)
+  if (watchedAncestorFilenameToItem)
   {
     goto LABEL_8;
   }
@@ -2607,7 +2607,7 @@ LABEL_27:
   }
 
   v39 = [MEMORY[0x277CCA9B8] br_errorWithDomain:*MEMORY[0x277CFACB0] code:15 description:@"unreachable: Invalid notification pipe setup"];
-  v9[2](v9, v39);
+  replyCopy[2](replyCopy, v39);
 
 LABEL_35:
   v56 = *MEMORY[0x277D85DE8];
@@ -2904,18 +2904,18 @@ void __54__BRCNotificationPipe__watchItem_options_gatherReply___block_invoke_168
   }
 }
 
-- (void)invalidateIfWatchingAppLibraryIDs:(id)a3
+- (void)invalidateIfWatchingAppLibraryIDs:(id)ds
 {
-  if ([(NSSet *)self->_watchedAppLibraryIDs intersectsSet:a3])
+  if ([(NSSet *)self->_watchedAppLibraryIDs intersectsSet:ds])
   {
 
     [(BRCNotificationPipe *)self close];
   }
 }
 
-- (void)invalidateReceiverIfWatchingAppLibraryIDs:(id)a3
+- (void)invalidateReceiverIfWatchingAppLibraryIDs:(id)ds
 {
-  if ([(NSSet *)self->_watchedAppLibraryIDs intersectsSet:a3])
+  if ([(NSSet *)self->_watchedAppLibraryIDs intersectsSet:ds])
   {
     receiver = self->_receiver;
 
@@ -3027,10 +3027,10 @@ void __53__BRCNotificationPipe_IPCs__watchScopes_gatherReply___block_invoke(uint
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)boostPriority:(id)a3
+- (void)boostPriority:(id)priority
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  priorityCopy = priority;
   memset(v14, 0, sizeof(v14));
   __brc_create_section(1, "[BRCNotificationPipe(IPCs) boostPriority:]", 1495, 0, v14);
   v5 = brc_bread_crumbs();
@@ -3043,7 +3043,7 @@ void __53__BRCNotificationPipe_IPCs__watchScopes_gatherReply___block_invoke(uint
     *buf = 134219010;
     v16 = v7;
     v17 = 2112;
-    v18 = self;
+    selfCopy = self;
     v19 = 2112;
     v20 = v9;
     v21 = 2080;
@@ -3059,7 +3059,7 @@ void __53__BRCNotificationPipe_IPCs__watchScopes_gatherReply___block_invoke(uint
     boostReply[2]();
   }
 
-  v11 = MEMORY[0x22AA4A310](v4);
+  v11 = MEMORY[0x22AA4A310](priorityCopy);
   v12 = self->_boostReply;
   self->_boostReply = v11;
 
@@ -3067,13 +3067,13 @@ void __53__BRCNotificationPipe_IPCs__watchScopes_gatherReply___block_invoke(uint
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)watchItemWithFileObjectID:(id)a3 options:(unsigned __int16)a4 request:(id)a5 gatherReply:(id)a6
+- (void)watchItemWithFileObjectID:(id)d options:(unsigned __int16)options request:(id)request gatherReply:(id)reply
 {
   v46 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = [(BRCNotificationManager *)self->_manager session];
+  dCopy = d;
+  requestCopy = request;
+  replyCopy = reply;
+  session = [(BRCNotificationManager *)self->_manager session];
   v14 = brc_bread_crumbs();
   v15 = brc_notifications_log();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
@@ -3081,22 +3081,22 @@ void __53__BRCNotificationPipe_IPCs__watchScopes_gatherReply___block_invoke(uint
     [BRCNotificationPipe(IPCs) watchItemWithFileObjectID:options:request:gatherReply:];
   }
 
-  v16 = [v13 clientTruthWorkloop];
+  clientTruthWorkloop = [session clientTruthWorkloop];
   v31[0] = MEMORY[0x277D85DD0];
   v31[1] = 3221225472;
   v31[2] = __83__BRCNotificationPipe_IPCs__watchItemWithFileObjectID_options_request_gatherReply___block_invoke;
   v31[3] = &unk_2785017A0;
-  v17 = v10;
+  v17 = dCopy;
   v32 = v17;
-  v18 = v12;
+  v18 = replyCopy;
   v36 = v18;
-  v19 = v13;
+  v19 = session;
   v33 = v19;
-  v20 = v11;
+  v20 = requestCopy;
   v34 = v20;
-  v35 = self;
-  v37 = a4;
-  v21 = v16;
+  selfCopy = self;
+  optionsCopy = options;
+  v21 = clientTruthWorkloop;
   v22 = v31;
   v23 = objc_autoreleasePoolPush();
   v38 = 0uLL;
@@ -3269,7 +3269,7 @@ void __83__BRCNotificationPipe_IPCs__watchItemWithFileObjectID_options_request_g
     *buf = 134219010;
     v16 = v5;
     v17 = 2112;
-    v18 = self;
+    selfCopy2 = self;
     v19 = 2112;
     v20 = v7;
     v21 = 2080;
@@ -3290,7 +3290,7 @@ void __83__BRCNotificationPipe_IPCs__watchItemWithFileObjectID_options_request_g
       *buf = 134218498;
       v16 = v13[0];
       v17 = 2112;
-      v18 = self;
+      selfCopy2 = self;
       v19 = 2112;
       v20 = v8;
       _os_log_debug_impl(&dword_223E7A000, v9, OS_LOG_TYPE_DEBUG, "[NOTIF] ┏%llx invalidating %@%@", buf, 0x20u);

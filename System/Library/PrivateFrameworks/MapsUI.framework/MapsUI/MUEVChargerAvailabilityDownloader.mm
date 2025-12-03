@@ -1,7 +1,7 @@
 @interface MUEVChargerAvailabilityDownloader
-- (MUEVChargerAvailabilityDownloader)initWithMapItemIdentifier:(id)a3;
+- (MUEVChargerAvailabilityDownloader)initWithMapItemIdentifier:(id)identifier;
 - (MUEVChargerAvailabilityDownloaderDelegate)delegate;
-- (void)didDownloadEVChargerAvailabilityWithEvCharger:(id)a3;
+- (void)didDownloadEVChargerAvailabilityWithEvCharger:(id)charger;
 @end
 
 @implementation MUEVChargerAvailabilityDownloader
@@ -13,33 +13,33 @@
   return WeakRetained;
 }
 
-- (void)didDownloadEVChargerAvailabilityWithEvCharger:(id)a3
+- (void)didDownloadEVChargerAvailabilityWithEvCharger:(id)charger
 {
-  v8 = a3;
-  v4 = [(MUEVChargerAvailabilityDownloader *)self delegate];
+  chargerCopy = charger;
+  delegate = [(MUEVChargerAvailabilityDownloader *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(MUEVChargerAvailabilityDownloader *)self delegate];
-    v7 = [v8 plugs];
-    [v6 evChargerAvailabilityDownloader:self didDownloadAvailabilityWithPlugs:v7];
+    delegate2 = [(MUEVChargerAvailabilityDownloader *)self delegate];
+    plugs = [chargerCopy plugs];
+    [delegate2 evChargerAvailabilityDownloader:self didDownloadAvailabilityWithPlugs:plugs];
   }
 }
 
-- (MUEVChargerAvailabilityDownloader)initWithMapItemIdentifier:(id)a3
+- (MUEVChargerAvailabilityDownloader)initWithMapItemIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = MUEVChargerAvailabilityDownloader;
   v5 = [(MUEVChargerAvailabilityDownloader *)&v9 init];
   if (v5)
   {
-    v6 = [[_TtC6MapsUI31EVChargerAvailabilityDownloader alloc] initWithMapItemIdentifier:v4];
+    v6 = [[_TtC6MapsUI31EVChargerAvailabilityDownloader alloc] initWithMapItemIdentifier:identifierCopy];
     [(MUEVChargerAvailabilityDownloader *)v5 setDownloader:v6];
 
-    v7 = [(MUEVChargerAvailabilityDownloader *)v5 downloader];
-    [v7 setDelegate:v5];
+    downloader = [(MUEVChargerAvailabilityDownloader *)v5 downloader];
+    [downloader setDelegate:v5];
   }
 
   return v5;

@@ -1,7 +1,7 @@
 @interface AEGridOverlayLayoutInfo
-- (AEGridOverlayLayoutInfo)initWithGradientImageSize:(CGSize)a3;
+- (AEGridOverlayLayoutInfo)initWithGradientImageSize:(CGSize)size;
 - (CGSize)_gradientImageSize;
-- (CGSize)tileSystemLayoutSizeFittingSize:(CGSize)a3;
+- (CGSize)tileSystemLayoutSizeFittingSize:(CGSize)size;
 @end
 
 @implementation AEGridOverlayLayoutInfo
@@ -15,10 +15,10 @@
   return result;
 }
 
-- (CGSize)tileSystemLayoutSizeFittingSize:(CGSize)a3
+- (CGSize)tileSystemLayoutSizeFittingSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(AEGridOverlayLayoutInfo *)self _gradientImageSize];
   if (v5 >= height)
   {
@@ -31,10 +31,10 @@
   return result;
 }
 
-- (AEGridOverlayLayoutInfo)initWithGradientImageSize:(CGSize)a3
+- (AEGridOverlayLayoutInfo)initWithGradientImageSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v6.receiver = self;
   v6.super_class = AEGridOverlayLayoutInfo;
   result = [(AEGridOverlayLayoutInfo *)&v6 init];

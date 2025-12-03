@@ -1,18 +1,18 @@
 @interface TSUDatabase
-- (BOOL)_upgradeSchemaWithError:(id *)a3;
-- (BOOL)beginTransactionWithError:(id *)a3;
-- (BOOL)closeWithError:(id *)a3;
-- (BOOL)commitTransactionWithError:(id *)a3;
-- (BOOL)endSingleResultQuery:(sqlite3_stmt *)a3 shouldFinalize:(BOOL)a4 error:(id *)a5;
-- (BOOL)executeUpdate:(sqlite3_stmt *)a3 shouldFinalize:(BOOL)a4 error:(id *)a5;
-- (BOOL)executeUpdateWithSql:(const char *)a3 error:(id *)a4;
-- (BOOL)needsUpgradeFromSchemaVersion:(int)a3;
-- (BOOL)prepareStatement:(sqlite3_stmt *)a3 sql:(const char *)a4 error:(id *)a5;
-- (BOOL)rollbackTransactionWithError:(id *)a3;
-- (BOOL)setSchemaVersion:(int)a3 error:(id *)a4;
-- (BOOL)startSingleResultQuery:(sqlite3_stmt *)a3 shouldLogErrors:(BOOL)a4 error:(id *)a5;
-- (BOOL)upgradeFromSchemaVersion:(int)a3 error:(id *)a4;
-- (id)_initWithPath:(id)a3 readonly:(BOOL)a4 error:(id *)a5;
+- (BOOL)_upgradeSchemaWithError:(id *)error;
+- (BOOL)beginTransactionWithError:(id *)error;
+- (BOOL)closeWithError:(id *)error;
+- (BOOL)commitTransactionWithError:(id *)error;
+- (BOOL)endSingleResultQuery:(sqlite3_stmt *)query shouldFinalize:(BOOL)finalize error:(id *)error;
+- (BOOL)executeUpdate:(sqlite3_stmt *)update shouldFinalize:(BOOL)finalize error:(id *)error;
+- (BOOL)executeUpdateWithSql:(const char *)sql error:(id *)error;
+- (BOOL)needsUpgradeFromSchemaVersion:(int)version;
+- (BOOL)prepareStatement:(sqlite3_stmt *)statement sql:(const char *)sql error:(id *)error;
+- (BOOL)rollbackTransactionWithError:(id *)error;
+- (BOOL)setSchemaVersion:(int)version error:(id *)error;
+- (BOOL)startSingleResultQuery:(sqlite3_stmt *)query shouldLogErrors:(BOOL)errors error:(id *)error;
+- (BOOL)upgradeFromSchemaVersion:(int)version error:(id *)error;
+- (id)_initWithPath:(id)path readonly:(BOOL)readonly error:(id *)error;
 - (void)dealloc;
 @end
 
@@ -33,7 +33,7 @@
   [(TSUDatabase *)&v4 dealloc];
 }
 
-- (BOOL)closeWithError:(id *)a3
+- (BOOL)closeWithError:(id *)error
 {
   if (!self->_db)
   {
@@ -52,9 +52,9 @@
     v7 = sqlite3_finalize(stmt);
   }
 
-  while (TSUHandleSqlite(v7, a3, 1, self, v8, v9, @"Finalizing statement", v10, v16));
+  while (TSUHandleSqlite(v7, error, 1, self, v8, v9, @"Finalizing statement", v10, v16));
   v11 = sqlite3_close(self->_db);
-  result = TSUHandleSqlite(v11, a3, 1, self, v12, v13, @"Closing database", v14, v16);
+  result = TSUHandleSqlite(v11, error, 1, self, v12, v13, @"Closing database", v14, v16);
   if (v6)
   {
     result = 0;
@@ -64,46 +64,46 @@
   return result;
 }
 
-- (BOOL)beginTransactionWithError:(id *)a3
+- (BOOL)beginTransactionWithError:(id *)error
 {
-  v5 = [(TSUDatabase *)self prepareStatement:&self->_beginTransactionStatement sql:"begin exclusive" error:a3];
+  v5 = [(TSUDatabase *)self prepareStatement:&self->_beginTransactionStatement sql:"begin exclusive" error:error];
   if (v5)
   {
     beginTransactionStatement = self->_beginTransactionStatement;
 
-    LOBYTE(v5) = [(TSUDatabase *)self executeUpdate:beginTransactionStatement shouldFinalize:0 error:a3];
+    LOBYTE(v5) = [(TSUDatabase *)self executeUpdate:beginTransactionStatement shouldFinalize:0 error:error];
   }
 
   return v5;
 }
 
-- (BOOL)commitTransactionWithError:(id *)a3
+- (BOOL)commitTransactionWithError:(id *)error
 {
-  v5 = [(TSUDatabase *)self prepareStatement:&self->_commitTransactionStatement sql:"commit" error:a3];
+  v5 = [(TSUDatabase *)self prepareStatement:&self->_commitTransactionStatement sql:"commit" error:error];
   if (v5)
   {
     commitTransactionStatement = self->_commitTransactionStatement;
 
-    LOBYTE(v5) = [(TSUDatabase *)self executeUpdate:commitTransactionStatement shouldFinalize:0 error:a3];
+    LOBYTE(v5) = [(TSUDatabase *)self executeUpdate:commitTransactionStatement shouldFinalize:0 error:error];
   }
 
   return v5;
 }
 
-- (BOOL)rollbackTransactionWithError:(id *)a3
+- (BOOL)rollbackTransactionWithError:(id *)error
 {
-  v5 = [(TSUDatabase *)self prepareStatement:&self->_rollbackTransactionStatement sql:"rollback" error:a3];
+  v5 = [(TSUDatabase *)self prepareStatement:&self->_rollbackTransactionStatement sql:"rollback" error:error];
   if (v5)
   {
     rollbackTransactionStatement = self->_rollbackTransactionStatement;
 
-    LOBYTE(v5) = [(TSUDatabase *)self executeUpdate:rollbackTransactionStatement shouldFinalize:0 error:a3];
+    LOBYTE(v5) = [(TSUDatabase *)self executeUpdate:rollbackTransactionStatement shouldFinalize:0 error:error];
   }
 
   return v5;
 }
 
-- (BOOL)needsUpgradeFromSchemaVersion:(int)a3
+- (BOOL)needsUpgradeFromSchemaVersion:(int)version
 {
   v3 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSUDatabase needsUpgradeFromSchemaVersion:]"];
   +[TSUAssertionHandler handleFailureInFunction:file:lineNumber:isFatal:description:](TSUAssertionHandler, "handleFailureInFunction:file:lineNumber:isFatal:description:", v3, [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/utility/TSUDatabase.m"], 124, 0, "Abstract method");
@@ -111,18 +111,18 @@
   return 0;
 }
 
-- (BOOL)upgradeFromSchemaVersion:(int)a3 error:(id *)a4
+- (BOOL)upgradeFromSchemaVersion:(int)version error:(id *)error
 {
-  v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"-[TSUDatabase upgradeFromSchemaVersion:error:]", a4}];
+  v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"-[TSUDatabase upgradeFromSchemaVersion:error:]", error}];
   +[TSUAssertionHandler handleFailureInFunction:file:lineNumber:isFatal:description:](TSUAssertionHandler, "handleFailureInFunction:file:lineNumber:isFatal:description:", v4, [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/utility/TSUDatabase.m"], 129, 0, "Abstract method");
   +[TSUAssertionHandler logBacktraceThrottled];
   return 0;
 }
 
-- (BOOL)setSchemaVersion:(int)a3 error:(id *)a4
+- (BOOL)setSchemaVersion:(int)version error:(id *)error
 {
-  v5 = *&a3;
-  if (a3 <= 0)
+  v5 = *&version;
+  if (version <= 0)
   {
     v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSUDatabase setSchemaVersion:error:]"];
     +[TSUAssertionHandler handleFailureInFunction:file:lineNumber:isFatal:description:](TSUAssertionHandler, "handleFailureInFunction:file:lineNumber:isFatal:description:", v7, [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/utility/TSUDatabase.m"], 134, 0, "Use a positive version");
@@ -131,10 +131,10 @@
 
   v8 = [objc_msgSend(MEMORY[0x277CCACA8] stringWithFormat:@"pragma user_version = %d", v5), "UTF8String"];
 
-  return [(TSUDatabase *)self executeUpdateWithSql:v8 error:a4];
+  return [(TSUDatabase *)self executeUpdateWithSql:v8 error:error];
 }
 
-- (BOOL)prepareStatement:(sqlite3_stmt *)a3 sql:(const char *)a4 error:(id *)a5
+- (BOOL)prepareStatement:(sqlite3_stmt *)statement sql:(const char *)sql error:(id *)error
 {
   if (!self->_db)
   {
@@ -143,28 +143,28 @@
     +[TSUAssertionHandler logBacktraceThrottled];
   }
 
-  if (*a3)
+  if (*statement)
   {
     return 1;
   }
 
-  v11 = sqlite3_prepare_v2(self->_db, a4, -1, a3, 0);
-  v16 = a4;
+  v11 = sqlite3_prepare_v2(self->_db, sql, -1, statement, 0);
+  sqlCopy = sql;
   v10 = 1;
-  if (!TSUHandleSqlite(v11, a5, 1, self, v12, v13, @"Preparing SQL %s", v14, v16))
+  if (!TSUHandleSqlite(v11, error, 1, self, v12, v13, @"Preparing SQL %s", v14, sqlCopy))
   {
-    sqlite3_finalize(*a3);
+    sqlite3_finalize(*statement);
     v10 = 0;
-    *a3 = 0;
+    *statement = 0;
   }
 
   return v10;
 }
 
-- (BOOL)executeUpdate:(sqlite3_stmt *)a3 shouldFinalize:(BOOL)a4 error:(id *)a5
+- (BOOL)executeUpdate:(sqlite3_stmt *)update shouldFinalize:(BOOL)finalize error:(id *)error
 {
-  v6 = a4;
-  if (!a3)
+  finalizeCopy = finalize;
+  if (!update)
   {
     v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSUDatabase executeUpdate:shouldFinalize:error:]"];
     v22 = "statement != NULL";
@@ -179,7 +179,7 @@
 
   else
   {
-    v10 = sqlite3_step(a3);
+    v10 = sqlite3_step(update);
     if (v10 == 101)
     {
       v11 = 1;
@@ -187,61 +187,61 @@
     }
   }
 
-  v12 = sqlite3_sql(a3);
-  TSUHandleSqlite(v10, a5, 1, self, v13, v14, @"Executing statement %s", v15, v12);
+  v12 = sqlite3_sql(update);
+  TSUHandleSqlite(v10, error, 1, self, v13, v14, @"Executing statement %s", v15, v12);
   v11 = 0;
 LABEL_8:
-  if (v6)
+  if (finalizeCopy)
   {
-    v16 = sqlite3_finalize(a3);
+    v16 = sqlite3_finalize(update);
     v20 = @"Finalizing statement";
   }
 
   else
   {
-    v16 = sqlite3_reset(a3);
+    v16 = sqlite3_reset(update);
     v20 = @"Resetting statement";
   }
 
-  return v11 & TSUHandleSqlite(v16, a5, 1, self, v17, v18, v20, v19, v22);
+  return v11 & TSUHandleSqlite(v16, error, 1, self, v17, v18, v20, v19, v22);
 }
 
-- (BOOL)executeUpdateWithSql:(const char *)a3 error:(id *)a4
+- (BOOL)executeUpdateWithSql:(const char *)sql error:(id *)error
 {
   v8 = 0;
-  v6 = [(TSUDatabase *)self prepareStatement:&v8 sql:a3 error:a4];
+  v6 = [(TSUDatabase *)self prepareStatement:&v8 sql:sql error:error];
   if (v6)
   {
-    LOBYTE(v6) = [(TSUDatabase *)self executeUpdate:v8 shouldFinalize:1 error:a4];
+    LOBYTE(v6) = [(TSUDatabase *)self executeUpdate:v8 shouldFinalize:1 error:error];
   }
 
   return v6;
 }
 
-- (BOOL)startSingleResultQuery:(sqlite3_stmt *)a3 shouldLogErrors:(BOOL)a4 error:(id *)a5
+- (BOOL)startSingleResultQuery:(sqlite3_stmt *)query shouldLogErrors:(BOOL)errors error:(id *)error
 {
-  v6 = a4;
-  if (!a3)
+  errorsCopy = errors;
+  if (!query)
   {
     v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSUDatabase startSingleResultQuery:shouldLogErrors:error:]"];
     +[TSUAssertionHandler handleFailureInFunction:file:lineNumber:isFatal:description:](TSUAssertionHandler, "handleFailureInFunction:file:lineNumber:isFatal:description:", v9, [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/utility/TSUDatabase.m"], 199, 0, "Invalid parameter not satisfying: %{public}s", "statement != NULL");
     +[TSUAssertionHandler logBacktraceThrottled];
   }
 
-  v10 = sqlite3_step(a3);
+  v10 = sqlite3_step(query);
   if (v10 != 100)
   {
-    v11 = sqlite3_sql(a3);
-    TSUHandleSqlite(v10, a5, v6, self, v12, v13, @"Executing query and expecting exactly one row: %s", v14, v11);
+    v11 = sqlite3_sql(query);
+    TSUHandleSqlite(v10, error, errorsCopy, self, v12, v13, @"Executing query and expecting exactly one row: %s", v14, v11);
   }
 
   return v10 == 100;
 }
 
-- (BOOL)endSingleResultQuery:(sqlite3_stmt *)a3 shouldFinalize:(BOOL)a4 error:(id *)a5
+- (BOOL)endSingleResultQuery:(sqlite3_stmt *)query shouldFinalize:(BOOL)finalize error:(id *)error
 {
-  v6 = a4;
-  if (!a3)
+  finalizeCopy = finalize;
+  if (!query)
   {
     v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSUDatabase endSingleResultQuery:shouldFinalize:error:]"];
     v21 = "statement != NULL";
@@ -249,26 +249,26 @@ LABEL_8:
     +[TSUAssertionHandler logBacktraceThrottled];
   }
 
-  v10 = sqlite3_step(a3);
+  v10 = sqlite3_step(query);
   if (v10 != 101)
   {
-    v11 = sqlite3_sql(a3);
-    TSUHandleSqlite(v10, a5, 1, self, v12, v13, @"Executing statement %s", v14, v11);
+    v11 = sqlite3_sql(query);
+    TSUHandleSqlite(v10, error, 1, self, v12, v13, @"Executing statement %s", v14, v11);
   }
 
-  if (v6)
+  if (finalizeCopy)
   {
-    v15 = sqlite3_finalize(a3);
+    v15 = sqlite3_finalize(query);
     v19 = @"Finalizing statement";
   }
 
   else
   {
-    v15 = sqlite3_reset(a3);
+    v15 = sqlite3_reset(query);
     v19 = @"Resetting statement";
   }
 
-  result = TSUHandleSqlite(v15, a5, 1, self, v16, v17, v19, v18, v21);
+  result = TSUHandleSqlite(v15, error, 1, self, v16, v17, v19, v18, v21);
   if (v10 != 101)
   {
     return 0;
@@ -277,12 +277,12 @@ LABEL_8:
   return result;
 }
 
-- (id)_initWithPath:(id)a3 readonly:(BOOL)a4 error:(id *)a5
+- (id)_initWithPath:(id)path readonly:(BOOL)readonly error:(id *)error
 {
-  v5 = self;
-  if (!a3)
+  selfCopy = self;
+  if (!path)
   {
-    v22 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"-[TSUDatabase _initWithPath:readonly:error:]", a4, a5}];
+    v22 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"-[TSUDatabase _initWithPath:readonly:error:]", readonly, error}];
     +[TSUAssertionHandler handleFailureInFunction:file:lineNumber:isFatal:description:](TSUAssertionHandler, "handleFailureInFunction:file:lineNumber:isFatal:description:", v22, [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/utility/TSUDatabase.m"], 247, 0, "No path");
     +[TSUAssertionHandler logBacktraceThrottled];
 LABEL_16:
@@ -290,18 +290,18 @@ LABEL_16:
     return 0;
   }
 
-  v7 = a4;
+  readonlyCopy = readonly;
   v24.receiver = self;
   v24.super_class = TSUDatabase;
   v9 = [(TSUDatabase *)&v24 init];
-  v5 = v9;
+  selfCopy = v9;
   if (!v9)
   {
-    return v5;
+    return selfCopy;
   }
 
-  v9->_readonly = v7;
-  if (v7)
+  v9->_readonly = readonlyCopy;
+  if (readonlyCopy)
   {
     v10 = 1;
   }
@@ -311,50 +311,50 @@ LABEL_16:
     v10 = 6;
   }
 
-  v11 = sqlite3_open_v2([a3 fileSystemRepresentation], &v9->_db, v10, 0);
-  v15 = TSUHandleSqlite(v11, a5, 0, v5, v12, v13, @"Opening database", v14, v24.receiver);
-  db = v5->_db;
+  v11 = sqlite3_open_v2([path fileSystemRepresentation], &v9->_db, v10, 0);
+  v15 = TSUHandleSqlite(v11, error, 0, selfCopy, v12, v13, @"Opening database", v14, v24.receiver);
+  db = selfCopy->_db;
   if (!v15)
   {
     sqlite3_close(db);
-    v5->_db = 0;
+    selfCopy->_db = 0;
     goto LABEL_16;
   }
 
   v17 = sqlite3_extended_result_codes(db, 1);
-  if (!TSUHandleSqlite(v17, a5, 0, v5, v18, v19, 0, v20, v24.receiver))
+  if (!TSUHandleSqlite(v17, error, 0, selfCopy, v18, v19, 0, v20, v24.receiver))
   {
     goto LABEL_15;
   }
 
-  v21 = [(TSUDatabase *)v5 _upgradeSchemaWithError:a5];
-  if (!v7 && v21)
+  v21 = [(TSUDatabase *)selfCopy _upgradeSchemaWithError:error];
+  if (!readonlyCopy && v21)
   {
-    if ([(TSUDatabase *)v5 executeUpdateWithSql:"pragma fullfsync = true" error:a5])
+    if ([(TSUDatabase *)selfCopy executeUpdateWithSql:"pragma fullfsync = true" error:error])
     {
-      return v5;
+      return selfCopy;
     }
 
     goto LABEL_15;
   }
 
-  if (!v7 || !v21)
+  if (!readonlyCopy || !v21)
   {
 LABEL_15:
-    [(TSUDatabase *)v5 closeWithError:0];
+    [(TSUDatabase *)selfCopy closeWithError:0];
     goto LABEL_16;
   }
 
-  return v5;
+  return selfCopy;
 }
 
-- (BOOL)_upgradeSchemaWithError:(id *)a3
+- (BOOL)_upgradeSchemaWithError:(id *)error
 {
   v13 = 0;
-  v5 = [(TSUDatabase *)self prepareStatement:&v13 sql:"pragma user_version" error:a3];
+  v5 = [(TSUDatabase *)self prepareStatement:&v13 sql:"pragma user_version" error:error];
   if (v5)
   {
-    v5 = [(TSUDatabase *)self startSingleResultQuery:v13 error:a3];
+    v5 = [(TSUDatabase *)self startSingleResultQuery:v13 error:error];
     if (v5)
     {
       v6 = sqlite3_column_int(v13, 0);
@@ -363,16 +363,16 @@ LABEL_15:
         v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSUDatabase _upgradeSchemaWithError:]"];
         +[TSUAssertionHandler handleFailureInFunction:file:lineNumber:isFatal:description:](TSUAssertionHandler, "handleFailureInFunction:file:lineNumber:isFatal:description:", v7, [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/utility/TSUDatabase.m"], 302, 0, "Readonly database needs schema upgrade.");
         +[TSUAssertionHandler logBacktraceThrottled];
-        TSUHandleSqlite(8, a3, 1, self, v8, v9, @"Readonly database needs schema upgrade.", v10, v12);
+        TSUHandleSqlite(8, error, 1, self, v8, v9, @"Readonly database needs schema upgrade.", v10, v12);
         LOBYTE(v5) = 0;
       }
 
       else
       {
-        v5 = [(TSUDatabase *)self endSingleResultQuery:v13 shouldFinalize:1 error:a3];
+        v5 = [(TSUDatabase *)self endSingleResultQuery:v13 shouldFinalize:1 error:error];
         if (v5)
         {
-          LOBYTE(v5) = [(TSUDatabase *)self upgradeFromSchemaVersion:v6 error:a3];
+          LOBYTE(v5) = [(TSUDatabase *)self upgradeFromSchemaVersion:v6 error:error];
         }
       }
     }

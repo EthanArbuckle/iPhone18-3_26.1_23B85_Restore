@@ -1,23 +1,23 @@
 @interface DNDModeAssertionDetails
-+ (DNDModeAssertionDetails)detailsWithIdentifier:(id)a3 modeIdentifier:(id)a4 lifetime:(id)a5 reason:(unint64_t)a6;
-+ (id)userRequestedAssertionDetailsWithIdentifier:(id)a3 modeIdentifier:(id)a4 lifetime:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (DNDModeAssertionDetails)initWithCoder:(id)a3;
-- (id)_initWithDetails:(id)a3;
-- (id)_initWithIdentifier:(id)a3 modeIdentifier:(id)a4 modeConfigurationModifiedDate:(id)a5 lifetime:(id)a6 reason:(unint64_t)a7 userVisibleEndDate:(id)a8;
++ (DNDModeAssertionDetails)detailsWithIdentifier:(id)identifier modeIdentifier:(id)modeIdentifier lifetime:(id)lifetime reason:(unint64_t)reason;
++ (id)userRequestedAssertionDetailsWithIdentifier:(id)identifier modeIdentifier:(id)modeIdentifier lifetime:(id)lifetime;
+- (BOOL)isEqual:(id)equal;
+- (DNDModeAssertionDetails)initWithCoder:(id)coder;
+- (id)_initWithDetails:(id)details;
+- (id)_initWithIdentifier:(id)identifier modeIdentifier:(id)modeIdentifier modeConfigurationModifiedDate:(id)date lifetime:(id)lifetime reason:(unint64_t)reason userVisibleEndDate:(id)endDate;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DNDModeAssertionDetails
 
-+ (DNDModeAssertionDetails)detailsWithIdentifier:(id)a3 modeIdentifier:(id)a4 lifetime:(id)a5 reason:(unint64_t)a6
++ (DNDModeAssertionDetails)detailsWithIdentifier:(id)identifier modeIdentifier:(id)modeIdentifier lifetime:(id)lifetime reason:(unint64_t)reason
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  lifetimeCopy = lifetime;
+  modeIdentifierCopy = modeIdentifier;
+  identifierCopy = identifier;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -26,43 +26,43 @@
 
   else
   {
-    v13 = v10;
+    v13 = lifetimeCopy;
   }
 
   v14 = v13;
 
-  v15 = [[a1 alloc] _initWithIdentifier:v12 modeIdentifier:v11 modeConfigurationModifiedDate:0 lifetime:v14 reason:a6 userVisibleEndDate:0];
+  v15 = [[self alloc] _initWithIdentifier:identifierCopy modeIdentifier:modeIdentifierCopy modeConfigurationModifiedDate:0 lifetime:v14 reason:reason userVisibleEndDate:0];
 
   return v15;
 }
 
-- (id)_initWithDetails:(id)a3
+- (id)_initWithDetails:(id)details
 {
-  v4 = a3;
-  v5 = [v4 identifier];
-  v6 = [v4 modeIdentifier];
-  v7 = [v4 modeConfigurationModifiedDate];
-  v8 = [v4 lifetime];
-  v9 = [v4 reason];
-  v10 = [v4 userVisibleEndDate];
+  detailsCopy = details;
+  identifier = [detailsCopy identifier];
+  modeIdentifier = [detailsCopy modeIdentifier];
+  modeConfigurationModifiedDate = [detailsCopy modeConfigurationModifiedDate];
+  lifetime = [detailsCopy lifetime];
+  reason = [detailsCopy reason];
+  userVisibleEndDate = [detailsCopy userVisibleEndDate];
 
-  v11 = [(DNDModeAssertionDetails *)self _initWithIdentifier:v5 modeIdentifier:v6 modeConfigurationModifiedDate:v7 lifetime:v8 reason:v9 userVisibleEndDate:v10];
+  v11 = [(DNDModeAssertionDetails *)self _initWithIdentifier:identifier modeIdentifier:modeIdentifier modeConfigurationModifiedDate:modeConfigurationModifiedDate lifetime:lifetime reason:reason userVisibleEndDate:userVisibleEndDate];
   return v11;
 }
 
-- (id)_initWithIdentifier:(id)a3 modeIdentifier:(id)a4 modeConfigurationModifiedDate:(id)a5 lifetime:(id)a6 reason:(unint64_t)a7 userVisibleEndDate:(id)a8
+- (id)_initWithIdentifier:(id)identifier modeIdentifier:(id)modeIdentifier modeConfigurationModifiedDate:(id)date lifetime:(id)lifetime reason:(unint64_t)reason userVisibleEndDate:(id)endDate
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a8;
+  identifierCopy = identifier;
+  modeIdentifierCopy = modeIdentifier;
+  dateCopy = date;
+  lifetimeCopy = lifetime;
+  endDateCopy = endDate;
   v33.receiver = self;
   v33.super_class = DNDModeAssertionDetails;
   v19 = [(DNDModeAssertionDetails *)&v33 init];
   if (v19)
   {
-    v20 = [v14 copy];
+    v20 = [identifierCopy copy];
     v21 = v20;
     if (v20)
     {
@@ -76,7 +76,7 @@
 
     objc_storeStrong(&v19->_identifier, v22);
 
-    v23 = [v15 copy];
+    v23 = [modeIdentifierCopy copy];
     v24 = v23;
     if (v23)
     {
@@ -90,16 +90,16 @@
 
     objc_storeStrong(&v19->_modeIdentifier, v25);
 
-    v26 = [v16 copy];
+    v26 = [dateCopy copy];
     modeConfigurationModifiedDate = v19->_modeConfigurationModifiedDate;
     v19->_modeConfigurationModifiedDate = v26;
 
-    v28 = [v17 copy];
+    v28 = [lifetimeCopy copy];
     lifetime = v19->_lifetime;
     v19->_lifetime = v28;
 
-    v19->_reason = a7;
-    v30 = [v18 copy];
+    v19->_reason = reason;
+    v30 = [endDateCopy copy];
     userVisibleEndDate = v19->_userVisibleEndDate;
     v19->_userVisibleEndDate = v30;
   }
@@ -109,25 +109,25 @@
 
 - (unint64_t)hash
 {
-  v3 = [(DNDModeAssertionDetails *)self identifier];
-  v4 = [v3 hash];
-  v5 = [(DNDModeAssertionDetails *)self modeIdentifier];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(DNDModeAssertionDetails *)self modeConfigurationModifiedDate];
-  v8 = [v7 hash];
-  v9 = [(DNDModeAssertionDetails *)self lifetime];
-  v10 = v6 ^ v8 ^ [v9 hash];
-  v11 = [(DNDModeAssertionDetails *)self reason];
-  v12 = [(DNDModeAssertionDetails *)self userVisibleEndDate];
-  v13 = v11 ^ [v12 hash];
+  identifier = [(DNDModeAssertionDetails *)self identifier];
+  v4 = [identifier hash];
+  modeIdentifier = [(DNDModeAssertionDetails *)self modeIdentifier];
+  v6 = [modeIdentifier hash] ^ v4;
+  modeConfigurationModifiedDate = [(DNDModeAssertionDetails *)self modeConfigurationModifiedDate];
+  v8 = [modeConfigurationModifiedDate hash];
+  lifetime = [(DNDModeAssertionDetails *)self lifetime];
+  v10 = v6 ^ v8 ^ [lifetime hash];
+  reason = [(DNDModeAssertionDetails *)self reason];
+  userVisibleEndDate = [(DNDModeAssertionDetails *)self userVisibleEndDate];
+  v13 = reason ^ [userVisibleEndDate hash];
 
   return v10 ^ v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v13 = 1;
   }
@@ -137,21 +137,21 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
-      v7 = [(DNDModeAssertionDetails *)self identifier];
-      v8 = [(DNDModeAssertionDetails *)v6 identifier];
-      if (v7 != v8)
+      v6 = equalCopy;
+      identifier = [(DNDModeAssertionDetails *)self identifier];
+      identifier2 = [(DNDModeAssertionDetails *)v6 identifier];
+      if (identifier != identifier2)
       {
-        v9 = [(DNDModeAssertionDetails *)self identifier];
-        if (!v9)
+        identifier3 = [(DNDModeAssertionDetails *)self identifier];
+        if (!identifier3)
         {
           v13 = 0;
           goto LABEL_67;
         }
 
-        v3 = v9;
-        v10 = [(DNDModeAssertionDetails *)v6 identifier];
-        if (!v10)
+        v3 = identifier3;
+        identifier4 = [(DNDModeAssertionDetails *)v6 identifier];
+        if (!identifier4)
         {
           v13 = 0;
 LABEL_66:
@@ -159,9 +159,9 @@ LABEL_66:
           goto LABEL_67;
         }
 
-        v11 = [(DNDModeAssertionDetails *)self identifier];
-        v12 = [(DNDModeAssertionDetails *)v6 identifier];
-        if (![v11 isEqual:v12])
+        identifier5 = [(DNDModeAssertionDetails *)self identifier];
+        identifier6 = [(DNDModeAssertionDetails *)v6 identifier];
+        if (![identifier5 isEqual:identifier6])
         {
           v13 = 0;
 LABEL_65:
@@ -169,65 +169,65 @@ LABEL_65:
           goto LABEL_66;
         }
 
-        v69 = v12;
-        v70 = v11;
-        v71 = v10;
+        v69 = identifier6;
+        v70 = identifier5;
+        v71 = identifier4;
       }
 
-      v14 = [(DNDModeAssertionDetails *)self modeIdentifier];
-      v15 = [(DNDModeAssertionDetails *)v6 modeIdentifier];
-      v16 = v15;
-      if (v14 != v15)
+      modeIdentifier = [(DNDModeAssertionDetails *)self modeIdentifier];
+      modeIdentifier2 = [(DNDModeAssertionDetails *)v6 modeIdentifier];
+      v16 = modeIdentifier2;
+      if (modeIdentifier != modeIdentifier2)
       {
-        v17 = [(DNDModeAssertionDetails *)self modeIdentifier];
-        if (v17)
+        modeIdentifier3 = [(DNDModeAssertionDetails *)self modeIdentifier];
+        if (modeIdentifier3)
         {
-          v18 = v17;
+          v18 = modeIdentifier3;
           v72 = v16;
-          v19 = [(DNDModeAssertionDetails *)v6 modeIdentifier];
-          if (v19)
+          modeIdentifier4 = [(DNDModeAssertionDetails *)v6 modeIdentifier];
+          if (modeIdentifier4)
           {
-            v20 = v19;
+            v20 = modeIdentifier4;
             v68 = v3;
-            v21 = [(DNDModeAssertionDetails *)self modeIdentifier];
-            v22 = [(DNDModeAssertionDetails *)v6 modeIdentifier];
-            if (([v21 isEqual:v22] & 1) == 0)
+            modeIdentifier5 = [(DNDModeAssertionDetails *)self modeIdentifier];
+            modeIdentifier6 = [(DNDModeAssertionDetails *)v6 modeIdentifier];
+            if (([modeIdentifier5 isEqual:modeIdentifier6] & 1) == 0)
             {
 
               goto LABEL_64;
             }
 
-            v61 = v22;
-            v62 = v21;
+            v61 = modeIdentifier6;
+            v62 = modeIdentifier5;
             v59 = v20;
             v60 = v18;
             v3 = v68;
 LABEL_17:
-            v23 = [(DNDModeAssertionDetails *)self modeConfigurationModifiedDate];
-            v24 = [(DNDModeAssertionDetails *)v6 modeConfigurationModifiedDate];
-            v25 = v24;
-            if (v23 == v24)
+            modeConfigurationModifiedDate = [(DNDModeAssertionDetails *)self modeConfigurationModifiedDate];
+            modeConfigurationModifiedDate2 = [(DNDModeAssertionDetails *)v6 modeConfigurationModifiedDate];
+            v25 = modeConfigurationModifiedDate2;
+            if (modeConfigurationModifiedDate == modeConfigurationModifiedDate2)
             {
-              v65 = v14;
-              v67 = v23;
-              v30 = v24;
+              v65 = modeIdentifier;
+              v67 = modeConfigurationModifiedDate;
+              v30 = modeConfigurationModifiedDate2;
 LABEL_26:
-              v31 = [(DNDModeAssertionDetails *)self lifetime];
+              lifetime = [(DNDModeAssertionDetails *)self lifetime];
               [(DNDModeAssertionDetails *)v6 lifetime];
-              v32 = v64 = v31;
+              v32 = v64 = lifetime;
               v68 = v3;
-              if (v31 == v32)
+              if (lifetime == v32)
               {
                 v35 = v30;
 LABEL_34:
                 v38 = v65;
-                v39 = [(DNDModeAssertionDetails *)self reason];
-                if (v39 == [(DNDModeAssertionDetails *)v6 reason])
+                reason = [(DNDModeAssertionDetails *)self reason];
+                if (reason == [(DNDModeAssertionDetails *)v6 reason])
                 {
-                  v40 = [(DNDModeAssertionDetails *)self userVisibleEndDate];
-                  v41 = [(DNDModeAssertionDetails *)v6 userVisibleEndDate];
+                  userVisibleEndDate = [(DNDModeAssertionDetails *)self userVisibleEndDate];
+                  userVisibleEndDate2 = [(DNDModeAssertionDetails *)v6 userVisibleEndDate];
                   v3 = v68;
-                  if (v40 == v41)
+                  if (userVisibleEndDate == userVisibleEndDate2)
                   {
 
                     v13 = 1;
@@ -235,21 +235,21 @@ LABEL_34:
 
                   else
                   {
-                    v66 = v41;
-                    v42 = [(DNDModeAssertionDetails *)self userVisibleEndDate];
-                    if (v42)
+                    v66 = userVisibleEndDate2;
+                    userVisibleEndDate3 = [(DNDModeAssertionDetails *)self userVisibleEndDate];
+                    if (userVisibleEndDate3)
                     {
-                      v51 = v42;
-                      v43 = [(DNDModeAssertionDetails *)v6 userVisibleEndDate];
-                      if (v43)
+                      v51 = userVisibleEndDate3;
+                      userVisibleEndDate4 = [(DNDModeAssertionDetails *)v6 userVisibleEndDate];
+                      if (userVisibleEndDate4)
                       {
-                        v50 = v43;
-                        v49 = [(DNDModeAssertionDetails *)self userVisibleEndDate];
-                        v44 = [(DNDModeAssertionDetails *)v6 userVisibleEndDate];
-                        v13 = [v49 isEqual:v44];
+                        v50 = userVisibleEndDate4;
+                        userVisibleEndDate5 = [(DNDModeAssertionDetails *)self userVisibleEndDate];
+                        userVisibleEndDate6 = [(DNDModeAssertionDetails *)v6 userVisibleEndDate];
+                        v13 = [userVisibleEndDate5 isEqual:userVisibleEndDate6];
 
                         v3 = v68;
-                        v43 = v50;
+                        userVisibleEndDate4 = v50;
                       }
 
                       else
@@ -290,10 +290,10 @@ LABEL_43:
                     }
 
 LABEL_53:
-                    v11 = v70;
-                    v10 = v71;
-                    v12 = v69;
-                    if (v7 == v8)
+                    identifier5 = v70;
+                    identifier4 = v71;
+                    identifier6 = v69;
+                    if (identifier == identifier2)
                     {
                       goto LABEL_67;
                     }
@@ -305,27 +305,27 @@ LABEL_53:
                 goto LABEL_43;
               }
 
-              v33 = [(DNDModeAssertionDetails *)self lifetime];
-              if (v33)
+              lifetime2 = [(DNDModeAssertionDetails *)self lifetime];
+              if (lifetime2)
               {
-                v57 = v33;
-                v34 = [(DNDModeAssertionDetails *)v6 lifetime];
+                v57 = lifetime2;
+                lifetime3 = [(DNDModeAssertionDetails *)v6 lifetime];
                 v35 = v30;
-                v14 = v65;
-                if (v34)
+                modeIdentifier = v65;
+                if (lifetime3)
                 {
-                  v54 = v34;
-                  v36 = [(DNDModeAssertionDetails *)self lifetime];
-                  v37 = [(DNDModeAssertionDetails *)v6 lifetime];
-                  if ([v36 isEqual:v37])
+                  v54 = lifetime3;
+                  lifetime4 = [(DNDModeAssertionDetails *)self lifetime];
+                  lifetime5 = [(DNDModeAssertionDetails *)v6 lifetime];
+                  if ([lifetime4 isEqual:lifetime5])
                   {
-                    v52 = v37;
-                    v53 = v36;
+                    v52 = lifetime5;
+                    v53 = lifetime4;
                     goto LABEL_34;
                   }
 
-                  v34 = v54;
-                  v14 = v65;
+                  lifetime3 = v54;
+                  modeIdentifier = v65;
                 }
 
                 v46 = v67;
@@ -341,7 +341,7 @@ LABEL_53:
                 v46 = v67;
                 v35 = v30;
                 v47 = v67 == v30;
-                v14 = v65;
+                modeIdentifier = v65;
                 if (v47)
                 {
                   goto LABEL_61;
@@ -349,17 +349,17 @@ LABEL_53:
               }
 
 LABEL_61:
-              if (v14 != v72)
+              if (modeIdentifier != v72)
               {
               }
 
 LABEL_64:
               v13 = 0;
-              v11 = v70;
-              v10 = v71;
+              identifier5 = v70;
+              identifier4 = v71;
               v3 = v68;
-              v12 = v69;
-              if (v7 != v8)
+              identifier6 = v69;
+              if (identifier != identifier2)
               {
                 goto LABEL_65;
               }
@@ -369,23 +369,23 @@ LABEL_67:
               goto LABEL_68;
             }
 
-            v26 = [(DNDModeAssertionDetails *)self modeConfigurationModifiedDate];
-            if (v26)
+            modeConfigurationModifiedDate3 = [(DNDModeAssertionDetails *)self modeConfigurationModifiedDate];
+            if (modeConfigurationModifiedDate3)
             {
-              v63 = v26;
-              v27 = [(DNDModeAssertionDetails *)v6 modeConfigurationModifiedDate];
-              if (v27)
+              v63 = modeConfigurationModifiedDate3;
+              modeConfigurationModifiedDate4 = [(DNDModeAssertionDetails *)v6 modeConfigurationModifiedDate];
+              if (modeConfigurationModifiedDate4)
               {
-                v67 = v23;
-                v58 = v27;
-                v28 = [(DNDModeAssertionDetails *)self modeConfigurationModifiedDate];
-                v29 = [(DNDModeAssertionDetails *)v6 modeConfigurationModifiedDate];
-                if ([v28 isEqual:v29])
+                v67 = modeConfigurationModifiedDate;
+                v58 = modeConfigurationModifiedDate4;
+                modeConfigurationModifiedDate5 = [(DNDModeAssertionDetails *)self modeConfigurationModifiedDate];
+                modeConfigurationModifiedDate6 = [(DNDModeAssertionDetails *)v6 modeConfigurationModifiedDate];
+                if ([modeConfigurationModifiedDate5 isEqual:modeConfigurationModifiedDate6])
                 {
-                  v65 = v14;
+                  v65 = modeIdentifier;
                   v30 = v25;
-                  v55 = v29;
-                  v56 = v28;
+                  v55 = modeConfigurationModifiedDate6;
+                  v56 = modeConfigurationModifiedDate5;
                   goto LABEL_26;
                 }
 
@@ -394,7 +394,7 @@ LABEL_67:
             }
 
 LABEL_49:
-            if (v14 != v72)
+            if (modeIdentifier != v72)
             {
             }
 
@@ -412,7 +412,7 @@ LABEL_52:
         goto LABEL_53;
       }
 
-      v72 = v15;
+      v72 = modeIdentifier2;
       goto LABEL_17;
     }
 
@@ -428,65 +428,65 @@ LABEL_68:
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(DNDModeAssertionDetails *)self identifier];
-  v6 = [(DNDModeAssertionDetails *)self modeIdentifier];
-  v7 = [(DNDModeAssertionDetails *)self modeConfigurationModifiedDate];
-  v8 = [(DNDModeAssertionDetails *)self lifetime];
+  identifier = [(DNDModeAssertionDetails *)self identifier];
+  modeIdentifier = [(DNDModeAssertionDetails *)self modeIdentifier];
+  modeConfigurationModifiedDate = [(DNDModeAssertionDetails *)self modeConfigurationModifiedDate];
+  lifetime = [(DNDModeAssertionDetails *)self lifetime];
   v9 = DNDModeAssertionReasonToString([(DNDModeAssertionDetails *)self reason]);
-  v10 = [(DNDModeAssertionDetails *)self userVisibleEndDate];
-  v11 = [v3 stringWithFormat:@"<%@: %p identifier: '%@'; modeIdentifier: '%@'; modeConfigurationModifiedDate: %@; lifetime: %@; reason: %@; userVisibleEndDate: %@>", v4, self, v5, v6, v7, v8, v9, v10];;
+  userVisibleEndDate = [(DNDModeAssertionDetails *)self userVisibleEndDate];
+  v11 = [v3 stringWithFormat:@"<%@: %p identifier: '%@'; modeIdentifier: '%@'; modeConfigurationModifiedDate: %@; lifetime: %@; reason: %@; userVisibleEndDate: %@>", v4, self, identifier, modeIdentifier, modeConfigurationModifiedDate, lifetime, v9, userVisibleEndDate];;
 
   return v11;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [DNDMutableModeAssertionDetails alloc];
 
   return [(DNDModeAssertionDetails *)v4 _initWithDetails:self];
 }
 
-- (DNDModeAssertionDetails)initWithCoder:(id)a3
+- (DNDModeAssertionDetails)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"modeIdentifier"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"modeConfigurationModifiedDate"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"modeIdentifier"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"modeConfigurationModifiedDate"];
   v8 = +[DNDModeAssertionLifetime _secureCodingLifetimeClasses];
-  v9 = [v4 decodeObjectOfClasses:v8 forKey:@"lifetime"];
+  v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"lifetime"];
 
-  v10 = [v4 decodeIntegerForKey:@"reason"];
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"userVisibleEndDate"];
+  v10 = [coderCopy decodeIntegerForKey:@"reason"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"userVisibleEndDate"];
 
   v12 = [(DNDModeAssertionDetails *)self _initWithIdentifier:v5 modeIdentifier:v6 modeConfigurationModifiedDate:v7 lifetime:v9 reason:v10 userVisibleEndDate:v11];
   return v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(DNDModeAssertionDetails *)self identifier];
-  [v4 encodeObject:v5 forKey:@"identifier"];
+  coderCopy = coder;
+  identifier = [(DNDModeAssertionDetails *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 
-  v6 = [(DNDModeAssertionDetails *)self modeIdentifier];
-  [v4 encodeObject:v6 forKey:@"modeIdentifier"];
+  modeIdentifier = [(DNDModeAssertionDetails *)self modeIdentifier];
+  [coderCopy encodeObject:modeIdentifier forKey:@"modeIdentifier"];
 
-  v7 = [(DNDModeAssertionDetails *)self modeConfigurationModifiedDate];
-  [v4 encodeObject:v7 forKey:@"modeConfigurationModifiedDate"];
+  modeConfigurationModifiedDate = [(DNDModeAssertionDetails *)self modeConfigurationModifiedDate];
+  [coderCopy encodeObject:modeConfigurationModifiedDate forKey:@"modeConfigurationModifiedDate"];
 
-  v8 = [(DNDModeAssertionDetails *)self lifetime];
-  [v4 encodeObject:v8 forKey:@"lifetime"];
+  lifetime = [(DNDModeAssertionDetails *)self lifetime];
+  [coderCopy encodeObject:lifetime forKey:@"lifetime"];
 
-  [v4 encodeInteger:-[DNDModeAssertionDetails reason](self forKey:{"reason"), @"reason"}];
-  v9 = [(DNDModeAssertionDetails *)self userVisibleEndDate];
-  [v4 encodeObject:v9 forKey:@"userVisibleEndDate"];
+  [coderCopy encodeInteger:-[DNDModeAssertionDetails reason](self forKey:{"reason"), @"reason"}];
+  userVisibleEndDate = [(DNDModeAssertionDetails *)self userVisibleEndDate];
+  [coderCopy encodeObject:userVisibleEndDate forKey:@"userVisibleEndDate"];
 }
 
-+ (id)userRequestedAssertionDetailsWithIdentifier:(id)a3 modeIdentifier:(id)a4 lifetime:(id)a5
++ (id)userRequestedAssertionDetailsWithIdentifier:(id)identifier modeIdentifier:(id)modeIdentifier lifetime:(id)lifetime
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  lifetimeCopy = lifetime;
+  modeIdentifierCopy = modeIdentifier;
+  identifierCopy = identifier;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -495,14 +495,14 @@ LABEL_68:
 
   else
   {
-    v10 = v7;
+    v10 = lifetimeCopy;
   }
 
   v11 = v10;
 
   if (v11)
   {
-    v12 = v7;
+    v12 = lifetimeCopy;
   }
 
   else
@@ -510,7 +510,7 @@ LABEL_68:
     v12 = [DNDModeAssertionLifetime lifetimeUntilEndOfScheduleWithIdentifier:@"com.apple.donotdisturb.schedule.default"];
   }
 
-  v13 = [DNDModeAssertionDetails detailsWithIdentifier:v9 modeIdentifier:v8 lifetime:v12];
+  v13 = [DNDModeAssertionDetails detailsWithIdentifier:identifierCopy modeIdentifier:modeIdentifierCopy lifetime:v12];
 
   return v13;
 }

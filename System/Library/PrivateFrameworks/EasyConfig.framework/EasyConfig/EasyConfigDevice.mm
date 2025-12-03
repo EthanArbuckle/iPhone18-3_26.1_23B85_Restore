@@ -1,50 +1,50 @@
 @interface EasyConfigDevice
-+ (BOOL)supportedScanRecord:(id)a3;
-+ (id)deviceWithInfo:(id)a3;
-+ (id)deviceWithScanRecord:(id)a3;
-- (BOOL)removed:(id)a3;
-- (BOOL)updated:(id)a3;
++ (BOOL)supportedScanRecord:(id)record;
++ (id)deviceWithInfo:(id)info;
++ (id)deviceWithScanRecord:(id)record;
+- (BOOL)removed:(id)removed;
+- (BOOL)updated:(id)updated;
 - (EasyConfigDevice)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (int)_applyConfigStart;
-- (int)_configureStart:(id)a3;
+- (int)_configureStart:(id)start;
 - (int)_findDevicePostConfigStart;
 - (int)_findDevicePreConfigStart;
-- (int)_mfiSAPNext:(HTTPMessagePrivate *)a3;
+- (int)_mfiSAPNext:(HTTPMessagePrivate *)next;
 - (int)_mfiSAPStart;
-- (int)_pairSetupNext:(HTTPMessagePrivate *)a3;
+- (int)_pairSetupNext:(HTTPMessagePrivate *)next;
 - (int)_pairSetupStart;
-- (int)_pairVerifyNext:(HTTPMessagePrivate *)a3;
+- (int)_pairVerifyNext:(HTTPMessagePrivate *)next;
 - (int)_pairVerifyStart;
-- (int)_setupClient:(id)a3;
-- (int)_timeoutTimerStart:(int)a3 block:(id)a4;
-- (void)_applyConfigCompletion:(HTTPMessagePrivate *)a3;
-- (void)_findDevicePostConfigEvent:(unsigned int)a3 info:(id)a4;
-- (void)_findDevicePreConfigEvent:(unsigned int)a3 info:(id)a4;
+- (int)_setupClient:(id)client;
+- (int)_timeoutTimerStart:(int)start block:(id)block;
+- (void)_applyConfigCompletion:(HTTPMessagePrivate *)completion;
+- (void)_findDevicePostConfigEvent:(unsigned int)event info:(id)info;
+- (void)_findDevicePreConfigEvent:(unsigned int)event info:(id)info;
 - (void)_logEnded;
-- (void)_postConfigCheckCompletion:(HTTPMessagePrivate *)a3;
-- (void)_postConfigCheckStart:(id)a3;
-- (void)_postNote:(id)a3 info:(id)a4;
-- (void)_postProgress:(int)a3 info:(id)a4;
-- (void)_postProgress:(int)a3 withResponse:(id)a4;
+- (void)_postConfigCheckCompletion:(HTTPMessagePrivate *)completion;
+- (void)_postConfigCheckStart:(id)start;
+- (void)_postNote:(id)note info:(id)info;
+- (void)_postProgress:(int)progress info:(id)info;
+- (void)_postProgress:(int)progress withResponse:(id)response;
 - (void)_start;
-- (void)_trySetupCode:(id)a3;
+- (void)_trySetupCode:(id)code;
 - (void)dealloc;
 - (void)resumePostConfig;
-- (void)setPairingDelegate:(const void *)a3;
-- (void)setPostConfigMetrics:(id *)a3;
-- (void)setPreConfigMetrics:(id *)a3;
-- (void)setPromptForSetupCodeHandler:(id)a3;
+- (void)setPairingDelegate:(const void *)delegate;
+- (void)setPostConfigMetrics:(id *)metrics;
+- (void)setPreConfigMetrics:(id *)metrics;
+- (void)setPromptForSetupCodeHandler:(id)handler;
 - (void)start;
 - (void)stop;
-- (void)trySetupCode:(id)a3;
+- (void)trySetupCode:(id)code;
 @end
 
 @implementation EasyConfigDevice
 
-- (int)_timeoutTimerStart:(int)a3 block:(id)a4
+- (int)_timeoutTimerStart:(int)start block:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   timeoutTimer = self->_timeoutTimer;
   if (timeoutTimer)
   {
@@ -60,8 +60,8 @@
 
   if (v10)
   {
-    dispatch_source_set_event_handler(v10, v6);
-    v12 = dispatch_time(0, 1000000000 * a3);
+    dispatch_source_set_event_handler(v10, blockCopy);
+    v12 = dispatch_time(0, 1000000000 * start);
     dispatch_source_set_timer(v10, v12, 0xFFFFFFFFFFFFFFFFLL, 0x3B9ACA00uLL);
     dispatch_resume(v10);
     v13 = 0;
@@ -75,10 +75,10 @@
   return v13;
 }
 
-- (int)_setupClient:(id)a3
+- (int)_setupClient:(id)client
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  clientCopy = client;
   p_httpClient = &self->_httpClient;
   if (self->_httpClient)
   {
@@ -130,18 +130,18 @@ LABEL_8:
   return v11;
 }
 
-- (void)_postProgress:(int)a3 withResponse:(id)a4
+- (void)_postProgress:(int)progress withResponse:(id)response
 {
-  v6 = a4;
+  responseCopy = response;
   userQueue = self->_userQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __47__EasyConfigDevice__postProgress_withResponse___block_invoke;
   block[3] = &unk_278FBEC80;
-  v11 = a3;
+  progressCopy = progress;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = responseCopy;
+  v8 = responseCopy;
   dispatch_async(userQueue, block);
 }
 
@@ -179,18 +179,18 @@ void __47__EasyConfigDevice__postProgress_withResponse___block_invoke(uint64_t a
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_postProgress:(int)a3 info:(id)a4
+- (void)_postProgress:(int)progress info:(id)info
 {
-  v6 = a4;
+  infoCopy = info;
   userQueue = self->_userQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __39__EasyConfigDevice__postProgress_info___block_invoke;
   block[3] = &unk_278FBEC80;
-  v11 = a3;
+  progressCopy = progress;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = infoCopy;
+  v8 = infoCopy;
   dispatch_async(userQueue, block);
 }
 
@@ -221,20 +221,20 @@ void __39__EasyConfigDevice__postProgress_info___block_invoke(uint64_t a1)
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_postNote:(id)a3 info:(id)a4
+- (void)_postNote:(id)note info:(id)info
 {
-  v6 = a3;
-  v7 = a4;
+  noteCopy = note;
+  infoCopy = info;
   userQueue = self->_userQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __35__EasyConfigDevice__postNote_info___block_invoke;
   block[3] = &unk_278FBEC58;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = noteCopy;
+  selfCopy = self;
+  v14 = infoCopy;
+  v9 = infoCopy;
+  v10 = noteCopy;
   dispatch_async(userQueue, block);
 }
 
@@ -272,13 +272,13 @@ void __35__EasyConfigDevice__postNote_info___block_invoke(void *a1)
   }
 }
 
-- (void)_postConfigCheckCompletion:(HTTPMessagePrivate *)a3
+- (void)_postConfigCheckCompletion:(HTTPMessagePrivate *)completion
 {
   self->_postConfigCheckFinishTime = CFAbsoluteTimeGetCurrent();
-  var21 = a3->var21;
+  var21 = completion->var21;
   if (!var21)
   {
-    var12 = a3->var2.var12;
+    var12 = completion->var2.var12;
     if ((var12 - 300) >= 0xFFFFFF9C)
     {
       if (gLogCategory_EasyConfigDevice <= 30 && (gLogCategory_EasyConfigDevice != -1 || _LogCategory_Initialize()))
@@ -310,10 +310,10 @@ void __35__EasyConfigDevice__postNote_info___block_invoke(void *a1)
   [(EasyConfigDevice *)self _handleError:var21];
 }
 
-- (void)_postConfigCheckStart:(id)a3
+- (void)_postConfigCheckStart:(id)start
 {
   v14 = 0;
-  v4 = a3;
+  startCopy = start;
   Current = CFAbsoluteTimeGetCurrent();
   self->_postConfigCheckStartTime = Current;
   self->_postConfigCheckFinishTime = Current;
@@ -324,7 +324,7 @@ void __35__EasyConfigDevice__postNote_info___block_invoke(void *a1)
   }
 
   [(EasyConfigDevice *)self _postProgress:60 info:0, deviceIdentifier];
-  v6 = [(EasyConfigDevice *)self _setupClient:v4];
+  v6 = [(EasyConfigDevice *)self _setupClient:startCopy];
 
   if (!v6)
   {
@@ -377,10 +377,10 @@ void __35__EasyConfigDevice__postNote_info___block_invoke(void *a1)
   }
 }
 
-- (void)_findDevicePostConfigEvent:(unsigned int)a3 info:(id)a4
+- (void)_findDevicePostConfigEvent:(unsigned int)event info:(id)info
 {
-  v6 = a4;
-  if (a3 != 1 || !self->_started || !self->_airplayBrowser && !self->_raopBrowser && !self->_mfiConfigBrowser && !self->_hapBrowser || BonjourDevice_GetDeviceID() != self->_deviceIdentifier)
+  infoCopy = info;
+  if (event != 1 || !self->_started || !self->_airplayBrowser && !self->_raopBrowser && !self->_mfiConfigBrowser && !self->_hapBrowser || BonjourDevice_GetDeviceID() != self->_deviceIdentifier)
   {
     goto LABEL_34;
   }
@@ -441,12 +441,12 @@ LABEL_21:
         configSeed = self->_configSeed;
         v12 = self->_deviceIdentifier;
         LogPrintF();
-        [(EasyConfigDevice *)self _postConfigCheckStart:v6, v12, configSeed, Int64];
+        [(EasyConfigDevice *)self _postConfigCheckStart:infoCopy, v12, configSeed, Int64];
       }
 
       else
       {
-        [(EasyConfigDevice *)self _postConfigCheckStart:v6, deviceIdentifier, v13, v15];
+        [(EasyConfigDevice *)self _postConfigCheckStart:infoCopy, deviceIdentifier, v13, v15];
       }
 
       goto LABEL_34;
@@ -501,10 +501,10 @@ LABEL_34:
   return v4;
 }
 
-- (void)_applyConfigCompletion:(HTTPMessagePrivate *)a3
+- (void)_applyConfigCompletion:(HTTPMessagePrivate *)completion
 {
   v22 = 0;
-  var21 = a3->var21;
+  var21 = completion->var21;
   if (var21)
   {
     v22 = var21;
@@ -512,7 +512,7 @@ LABEL_34:
 
   else
   {
-    var12 = a3->var2.var12;
+    var12 = completion->var2.var12;
     if ((var12 - 300) <= 0xFFFFFF9B)
     {
       v17 = var12 + 196608;
@@ -524,15 +524,15 @@ LABEL_34:
       }
     }
 
-    else if (!self->_mfiSAP || (v7 = a3->var6, v8 = a3->var7, var21 = MFiSAP_Decrypt(), (v22 = var21) == 0))
+    else if (!self->_mfiSAP || (v7 = completion->var6, v8 = completion->var7, var21 = MFiSAP_Decrypt(), (v22 = var21) == 0))
     {
-      var6 = a3->var6;
-      var7 = a3->var7;
+      var6 = completion->var6;
+      var7 = completion->var7;
       CFDictionaryGetTypeID();
       DictionaryFromTLV = CFCreateWithPlistBytes();
       if (!DictionaryFromTLV)
       {
-        DictionaryFromTLV = EasyConfigCreateDictionaryFromTLV(a3->var6, a3->var7, &v22);
+        DictionaryFromTLV = EasyConfigCreateDictionaryFromTLV(completion->var6, completion->var7, &v22);
         if (!DictionaryFromTLV)
         {
           goto LABEL_20;
@@ -733,26 +733,26 @@ LABEL_10:
   return v9;
 }
 
-- (int)_pairVerifyNext:(HTTPMessagePrivate *)a3
+- (int)_pairVerifyNext:(HTTPMessagePrivate *)next
 {
   v16 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (next)
   {
-    var21 = a3->var21;
+    var21 = next->var21;
     if (var21)
     {
       goto LABEL_7;
     }
 
-    var12 = a3->var2.var12;
+    var12 = next->var2.var12;
     if ((var12 - 300) <= 0xFFFFFF9B)
     {
       var21 = (var12 + 200000);
       goto LABEL_7;
     }
 
-    var6 = a3->var6;
-    var7 = a3->var7;
+    var6 = next->var6;
+    var7 = next->var7;
   }
 
   pairingSession = self->_pairingSession;
@@ -881,29 +881,29 @@ LABEL_17:
   return v9;
 }
 
-- (int)_pairSetupNext:(HTTPMessagePrivate *)a3
+- (int)_pairSetupNext:(HTTPMessagePrivate *)next
 {
   v19 = 0;
   v20 = 0;
   v18 = 0;
   v17 = 0;
-  if (a3)
+  if (next)
   {
-    var21 = a3->var21;
+    var21 = next->var21;
     if (var21)
     {
       goto LABEL_12;
     }
 
-    var12 = a3->var2.var12;
+    var12 = next->var2.var12;
     if ((var12 - 300) <= 0xFFFFFF9B)
     {
       var21 = (var12 + 200000);
       goto LABEL_12;
     }
 
-    var6 = a3->var6;
-    var7 = a3->var7;
+    var6 = next->var6;
+    var7 = next->var7;
   }
 
   pairingSession = self->_pairingSession;
@@ -1057,25 +1057,25 @@ LABEL_18:
   return v6;
 }
 
-- (int)_mfiSAPNext:(HTTPMessagePrivate *)a3
+- (int)_mfiSAPNext:(HTTPMessagePrivate *)next
 {
-  if (a3)
+  if (next)
   {
-    var21 = a3->var21;
+    var21 = next->var21;
     if (var21)
     {
       goto LABEL_9;
     }
 
-    var12 = a3->var2.var12;
+    var12 = next->var2.var12;
     if ((var12 - 300) <= 0xFFFFFF9B)
     {
       var21 = (var12 + 200000);
       goto LABEL_9;
     }
 
-    var6 = a3->var6;
-    var7 = a3->var7;
+    var6 = next->var6;
+    var7 = next->var7;
   }
 
   mfiSAP = self->_mfiSAP;
@@ -1167,9 +1167,9 @@ LABEL_9:
   return v4;
 }
 
-- (int)_configureStart:(id)a3
+- (int)_configureStart:(id)start
 {
-  v4 = a3;
+  startCopy = start;
   self->_state = 2;
   v5 = gLogCategory_EasyConfigDevice;
   if (gLogCategory_EasyConfigDevice <= 30)
@@ -1218,7 +1218,7 @@ LABEL_8:
     }
 
     v24 = v8;
-    v25 = v4;
+    v25 = startCopy;
     v22 = deviceIdentifier;
     v23 = v7;
     LogPrintF();
@@ -1258,7 +1258,7 @@ LABEL_16:
   v10 = TypedValue;
   if (CFStringCompare(TypedValue, @"_airplay._tcp.", 1uLL) == kCFCompareEqualTo || CFStringCompare(v10, @"_raop._tcp.", 1uLL) == kCFCompareEqualTo)
   {
-    Value = CFDictionaryGetValue(v4, @"txt");
+    Value = CFDictionaryGetValue(startCopy, @"txt");
     if (Value)
     {
       v13 = Value;
@@ -1296,24 +1296,24 @@ LABEL_53:
   }
 
 LABEL_35:
-  v16 = [(EasyConfigDevice *)self _setupClient:v4, v22, v23, v24, v25];
+  v16 = [(EasyConfigDevice *)self _setupClient:startCopy, v22, v23, v24, v25];
   v27 = v16;
   if (!v16)
   {
     deviceInfo = self->_deviceInfo;
     if (CFDictionaryGetInt64() && (self->_supportsHAP2 || self->_supportsPairSetup || !self->_supportsMFi))
     {
-      v18 = self->_skipPairSetup ? [(EasyConfigDevice *)self _pairVerifyStart]: [(EasyConfigDevice *)self _pairSetupStart];
+      _mfiSAPStart = self->_skipPairSetup ? [(EasyConfigDevice *)self _pairVerifyStart]: [(EasyConfigDevice *)self _pairSetupStart];
     }
 
     else
     {
-      v18 = [(EasyConfigDevice *)self _mfiSAPStart];
+      _mfiSAPStart = [(EasyConfigDevice *)self _mfiSAPStart];
     }
 
-    v16 = v18;
-    v27 = v18;
-    if (!v18)
+    v16 = _mfiSAPStart;
+    v27 = _mfiSAPStart;
+    if (!_mfiSAPStart)
     {
       v20 = 0;
       goto LABEL_51;
@@ -1339,14 +1339,14 @@ LABEL_51:
   return v20;
 }
 
-- (void)_findDevicePreConfigEvent:(unsigned int)a3 info:(id)a4
+- (void)_findDevicePreConfigEvent:(unsigned int)event info:(id)info
 {
-  v6 = a4;
-  if (a3 == 1 && self->_started && (self->_airplayBrowser || self->_raopBrowser || self->_mfiConfigBrowser || self->_hapBrowser))
+  infoCopy = info;
+  if (event == 1 && self->_started && (self->_airplayBrowser || self->_raopBrowser || self->_mfiConfigBrowser || self->_hapBrowser))
   {
-    v11 = v6;
+    v11 = infoCopy;
     v7 = BonjourDevice_GetDeviceID() == self->_deviceIdentifier;
-    v6 = v11;
+    infoCopy = v11;
     if (v7)
     {
       self->_findPreConfigFoundTime = CFAbsoluteTimeGetCurrent();
@@ -1389,7 +1389,7 @@ LABEL_51:
       }
 
       [(EasyConfigDevice *)self _configureStart:v11];
-      v6 = v11;
+      infoCopy = v11;
     }
   }
 }
@@ -1433,9 +1433,9 @@ LABEL_51:
   return v4;
 }
 
-- (void)_trySetupCode:(id)a3
+- (void)_trySetupCode:(id)code
 {
-  v6 = a3;
+  codeCopy = code;
   self->_enterSetupCodeMs = ((CFAbsoluteTimeGetCurrent() - self->_promptForSetupCodeTime) * 1000.0);
   if (!self->_pairingSession)
   {
@@ -1443,7 +1443,7 @@ LABEL_51:
     goto LABEL_5;
   }
 
-  [v6 UTF8String];
+  [codeCopy UTF8String];
   v4 = PairingSessionSetSetupCode();
   if (v4 || (v4 = [(EasyConfigDevice *)self _pairSetupNext:0], v4))
   {
@@ -1453,23 +1453,23 @@ LABEL_5:
   }
 }
 
-- (void)trySetupCode:(id)a3
+- (void)trySetupCode:(id)code
 {
-  v4 = a3;
+  codeCopy = code;
   internalQueue = self->_internalQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __33__EasyConfigDevice_trySetupCode___block_invoke;
   v7[3] = &unk_278FBEBE0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = codeCopy;
+  v6 = codeCopy;
   dispatch_async(internalQueue, v7);
 }
 
-- (void)setPromptForSetupCodeHandler:(id)a3
+- (void)setPromptForSetupCodeHandler:(id)handler
 {
-  v4 = MEMORY[0x24C209090](a3, a2);
+  v4 = MEMORY[0x24C209090](handler, a2);
   if (v4)
   {
     v5 = v4;
@@ -1486,33 +1486,33 @@ LABEL_5:
   self->_promptForSetupCodeBlock = v6;
 }
 
-- (void)setPostConfigMetrics:(id *)a3
+- (void)setPostConfigMetrics:(id *)metrics
 {
-  v3 = *&a3->var4;
-  *&self->_postConfigMetrics.secondsToGetLinkUpOnDestination = *&a3->var0;
+  v3 = *&metrics->var4;
+  *&self->_postConfigMetrics.secondsToGetLinkUpOnDestination = *&metrics->var0;
   *&self->_postConfigMetrics.rssiOfDestinationAP = v3;
   self->_postConfigMetricsSet = 1;
 }
 
-- (void)setPreConfigMetrics:(id *)a3
+- (void)setPreConfigMetrics:(id *)metrics
 {
-  v3 = *&a3->var0;
-  v4 = *&a3->var8;
-  *&self->_preConfigMetrics.secondsToGetLinkUpOnSWAP = *&a3->var5;
+  v3 = *&metrics->var0;
+  v4 = *&metrics->var8;
+  *&self->_preConfigMetrics.secondsToGetLinkUpOnSWAP = *&metrics->var5;
   *&self->_preConfigMetrics.rssiOfSWAP = v4;
   *&self->_preConfigMetrics.startTime = v3;
   self->_preConfigMetricsSet = 1;
 }
 
-- (void)setPairingDelegate:(const void *)a3
+- (void)setPairingDelegate:(const void *)delegate
 {
-  if (a3)
+  if (delegate)
   {
-    *&self->_pairingDelegate.context = *a3;
-    v3 = *(a3 + 1);
-    v4 = *(a3 + 2);
-    v5 = *(a3 + 3);
-    self->_pairingDelegate.resumeResponse_f = *(a3 + 8);
+    *&self->_pairingDelegate.context = *delegate;
+    v3 = *(delegate + 1);
+    v4 = *(delegate + 2);
+    v5 = *(delegate + 3);
+    self->_pairingDelegate.resumeResponse_f = *(delegate + 8);
     *&self->_pairingDelegate.copyIdentity_f = v4;
     *&self->_pairingDelegate.savePeer_f = v5;
     *&self->_pairingDelegate.hideSetupCode_f = v3;
@@ -1695,9 +1695,9 @@ LABEL_26:
   dispatch_async(internalQueue, block);
 }
 
-- (BOOL)removed:(id)a3
+- (BOOL)removed:(id)removed
 {
-  v4 = [a3 objectForKey:@"serviceType"];
+  v4 = [removed objectForKey:@"serviceType"];
   if ([v4 isEqual:@"_airplay._tcp."])
   {
     v5 = 48;
@@ -1732,10 +1732,10 @@ LABEL_10:
   return v7;
 }
 
-- (BOOL)updated:(id)a3
+- (BOOL)updated:(id)updated
 {
-  v5 = a3;
-  v6 = [v5 objectForKey:@"name"];
+  updatedCopy = updated;
+  v6 = [updatedCopy objectForKey:@"name"];
   v7 = [(NSString *)self->_name isEqual:v6];
   if ((v7 & 1) == 0)
   {
@@ -1754,7 +1754,7 @@ LABEL_10:
     v9 = 1;
   }
 
-  v10 = [v5 objectForKey:@"serviceType"];
+  v10 = [updatedCopy objectForKey:@"serviceType"];
   if ([v10 isEqual:@"_airplay._tcp."])
   {
     airplayBonjourInfo = self->_airplayBonjourInfo;
@@ -1788,10 +1788,10 @@ LABEL_10:
     v11 = hapBonjourInfo;
   }
 
-  if (([(NSDictionary *)v11 isEqual:v5]& 1) == 0)
+  if (([(NSDictionary *)v11 isEqual:updatedCopy]& 1) == 0)
   {
 
-    objc_storeStrong(p_airplayBonjourInfo, a3);
+    objc_storeStrong(p_airplayBonjourInfo, updated);
     v9 = 1;
   }
 
@@ -1800,9 +1800,9 @@ LABEL_16:
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = [(NSDictionary *)self->_scanRecord copy];
   v6 = *(v4 + 24);
   *(v4 + 24) = v5;
@@ -1906,29 +1906,29 @@ LABEL_16:
   return v5;
 }
 
-+ (id)deviceWithScanRecord:(id)a3
++ (id)deviceWithScanRecord:(id)record
 {
-  v3 = a3;
+  recordCopy = record;
   v4 = objc_alloc_init(EasyConfigDevice);
   scanRecord = v4->_scanRecord;
-  v4->_scanRecord = v3;
+  v4->_scanRecord = recordCopy;
 
   return v4;
 }
 
-+ (id)deviceWithInfo:(id)a3
++ (id)deviceWithInfo:(id)info
 {
-  v3 = a3;
+  infoCopy = info;
   v4 = objc_alloc_init(EasyConfigDevice);
   deviceInfo = v4->_deviceInfo;
-  v4->_deviceInfo = v3;
+  v4->_deviceInfo = infoCopy;
 
   return v4;
 }
 
-+ (BOOL)supportedScanRecord:(id)a3
++ (BOOL)supportedScanRecord:(id)record
 {
-  v3 = [a3 objectForKey:@"IE"];
+  v3 = [record objectForKey:@"IE"];
   v4 = v3;
   if (!v3)
   {

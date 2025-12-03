@@ -1,5 +1,5 @@
 @interface AVTimeRange
-+ (AVTimeRange)timeRangeWithInterstice:(id)a3;
++ (AVTimeRange)timeRangeWithInterstice:(id)interstice;
 + (id)timeRangeZero;
 + (void)initialize;
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)endCMTime;
@@ -7,107 +7,107 @@
 - ($DAC8C9F726BD0D1F2E1B8C1A0D399779)cmTimeRange;
 - (AVInterstitialDateRange)dateBasedInterstice;
 - (AVInterstitialTimeRange)interstice;
-- (AVTimeRange)initWithAVTimedMetadataGroup:(id)a3;
-- (AVTimeRange)initWithCMTimeRange:(id *)a3;
-- (AVTimeRange)initWithStartTime:(double)a3 duration:(double)a4 insertedDuration:(double)a5;
-- (AVTimeRange)initWithUnionOfCMTimeRanges:(id)a3;
-- (BOOL)containsDate:(id)a3;
-- (BOOL)containsTime:(double)a3;
+- (AVTimeRange)initWithAVTimedMetadataGroup:(id)group;
+- (AVTimeRange)initWithCMTimeRange:(id *)range;
+- (AVTimeRange)initWithStartTime:(double)time duration:(double)duration insertedDuration:(double)insertedDuration;
+- (AVTimeRange)initWithUnionOfCMTimeRanges:(id)ranges;
+- (BOOL)containsDate:(id)date;
+- (BOOL)containsTime:(double)time;
 - (BOOL)isCollapsedInTimeLine;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToTimeRange:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToTimeRange:(id)range;
 - (BOOL)isExpandedInTimeLine;
 - (BOOL)isHidden;
 - (BOOL)isSkippable;
 - (BOOL)isSkipped;
 - (BOOL)isUnmarked;
-- (BOOL)requiresLinearPlaybackForTime:(double)a3;
+- (BOOL)requiresLinearPlaybackForTime:(double)time;
 - (BOOL)supplementsPrimaryContent;
-- (double)deltaTimeFromOutsideTime:(double)a3;
+- (double)deltaTimeFromOutsideTime:(double)time;
 - (double)endTime;
 - (double)expandedDuration;
-- (double)timeForDate:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)dateForTime:(double)a3;
+- (double)timeForDate:(id)date;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)dateForTime:(double)time;
 - (id)description;
 - (id)endDate;
-- (id)timeRangeByAddingTimeInterval:(double)a3 shiftingDates:(BOOL)a4;
-- (id)timeRangeExcludingTimeRange:(id)a3;
-- (id)timeRangeIntersectingWithTimeRange:(id)a3;
-- (int64_t)compare:(id)a3;
+- (id)timeRangeByAddingTimeInterval:(double)interval shiftingDates:(BOOL)dates;
+- (id)timeRangeExcludingTimeRange:(id)range;
+- (id)timeRangeIntersectingWithTimeRange:(id)range;
+- (int64_t)compare:(id)compare;
 - (unint64_t)hash;
-- (void)setMapDate:(id)a3 toTime:(double)a4;
-- (void)setMapTime:(double)a3 toDate:(id)a4;
+- (void)setMapDate:(id)date toTime:(double)time;
+- (void)setMapTime:(double)time toDate:(id)date;
 @end
 
 @implementation AVTimeRange
 
-- (BOOL)requiresLinearPlaybackForTime:(double)a3
+- (BOOL)requiresLinearPlaybackForTime:(double)time
 {
-  v4 = self;
-  v5 = [(AVTimeRange *)self interstice];
-  v6 = [v5 playerInterstitialEvent];
-  v7 = v6;
-  if (v6)
+  selfCopy = self;
+  interstice = [(AVTimeRange *)self interstice];
+  playerInterstitialEvent = [interstice playerInterstitialEvent];
+  v7 = playerInterstitialEvent;
+  if (playerInterstitialEvent)
   {
-    v4 = (([v6 restrictions] >> 2) & 1);
+    selfCopy = (([playerInterstitialEvent restrictions] >> 2) & 1);
   }
 
-  else if (v5 && [v4 containsTime:a3])
+  else if (interstice && [selfCopy containsTime:time])
   {
-    [v4 startTime];
+    [selfCopy startTime];
     v9 = v8;
-    [v5 linearPlaybackRequirementDuration];
-    LOBYTE(v4) = v9 + v10 > a3;
+    [interstice linearPlaybackRequirementDuration];
+    LOBYTE(selfCopy) = v9 + v10 > time;
   }
 
   else
   {
-    LOBYTE(v4) = 0;
+    LOBYTE(selfCopy) = 0;
   }
 
-  return v4;
+  return selfCopy;
 }
 
 - (BOOL)supplementsPrimaryContent
 {
-  v2 = [(AVTimeRange *)self interstice];
-  v3 = [v2 supplementsPrimaryContent];
+  interstice = [(AVTimeRange *)self interstice];
+  supplementsPrimaryContent = [interstice supplementsPrimaryContent];
 
-  return v3;
+  return supplementsPrimaryContent;
 }
 
 - (BOOL)isUnmarked
 {
-  v3 = [(AVTimeRange *)self interstice];
-  if (v3)
+  interstice = [(AVTimeRange *)self interstice];
+  if (interstice)
   {
-    v4 = [(AVTimeRange *)self interstice];
-    v5 = [v4 isUnmarked];
+    interstice2 = [(AVTimeRange *)self interstice];
+    isUnmarked = [interstice2 isUnmarked];
   }
 
   else
   {
-    v5 = 0;
+    isUnmarked = 0;
   }
 
-  return v5;
+  return isUnmarked;
 }
 
 - (BOOL)isExpandedInTimeLine
 {
-  v3 = [(AVTimeRange *)self interstice];
-  if (v3)
+  interstice = [(AVTimeRange *)self interstice];
+  if (interstice)
   {
-    v4 = [(AVTimeRange *)self interstice];
-    if (([v4 isCollapsedInTimeLine] & 1) != 0 || (-[AVTimeRange duration](self, "duration"), v5 != 0.0))
+    interstice2 = [(AVTimeRange *)self interstice];
+    if (([interstice2 isCollapsedInTimeLine] & 1) != 0 || (-[AVTimeRange duration](self, "duration"), v5 != 0.0))
     {
       v7 = 0;
     }
 
     else
     {
-      [v3 playingDuration];
+      [interstice playingDuration];
       v7 = v6 > 0.0;
     }
   }
@@ -122,10 +122,10 @@
 
 - (double)expandedDuration
 {
-  v2 = [(AVTimeRange *)self interstice];
-  v3 = v2;
+  interstice = [(AVTimeRange *)self interstice];
+  v3 = interstice;
   v4 = 0.0;
-  if (v2 && ([v2 isCollapsedInTimeLine] & 1) == 0)
+  if (interstice && ([interstice isCollapsedInTimeLine] & 1) == 0)
   {
     [v3 playingDuration];
     v4 = v5;
@@ -136,49 +136,49 @@
 
 - (BOOL)isCollapsedInTimeLine
 {
-  v3 = [(AVTimeRange *)self interstice];
-  if (v3)
+  interstice = [(AVTimeRange *)self interstice];
+  if (interstice)
   {
-    v4 = [(AVTimeRange *)self interstice];
-    v5 = [v4 isCollapsedInTimeLine];
+    interstice2 = [(AVTimeRange *)self interstice];
+    isCollapsedInTimeLine = [interstice2 isCollapsedInTimeLine];
   }
 
   else
   {
-    v5 = 0;
+    isCollapsedInTimeLine = 0;
   }
 
-  return v5;
+  return isCollapsedInTimeLine;
 }
 
 - (BOOL)isSkipped
 {
-  v3 = [(AVTimeRange *)self interstice];
-  if (v3)
+  interstice = [(AVTimeRange *)self interstice];
+  if (interstice)
   {
-    v4 = [(AVTimeRange *)self interstice];
-    v5 = [v4 isSkipped];
+    interstice2 = [(AVTimeRange *)self interstice];
+    isSkipped = [interstice2 isSkipped];
   }
 
   else
   {
-    v5 = 0;
+    isSkipped = 0;
   }
 
-  return v5;
+  return isSkipped;
 }
 
 - (BOOL)isSkippable
 {
-  v2 = [(AVTimeRange *)self interstice];
-  v3 = [v2 playerInterstitialEvent];
+  interstice = [(AVTimeRange *)self interstice];
+  playerInterstitialEvent = [interstice playerInterstitialEvent];
 
-  if (v3)
+  if (playerInterstitialEvent)
   {
-    [v3 skipControlTimeRange];
-    if (v9 & 1) != 0 && ([v3 skipControlTimeRange], (v8) && (objc_msgSend(v3, "skipControlTimeRange"), !v7))
+    [playerInterstitialEvent skipControlTimeRange];
+    if (v9 & 1) != 0 && ([playerInterstitialEvent skipControlTimeRange], (v8) && (objc_msgSend(playerInterstitialEvent, "skipControlTimeRange"), !v7))
     {
-      [v3 skipControlTimeRange];
+      [playerInterstitialEvent skipControlTimeRange];
       v4 = v6 >= 0;
     }
 
@@ -198,28 +198,28 @@
 
 - (BOOL)isHidden
 {
-  v3 = [(AVTimeRange *)self interstice];
-  if (v3)
+  interstice = [(AVTimeRange *)self interstice];
+  if (interstice)
   {
-    v4 = [(AVTimeRange *)self interstice];
-    v5 = [v4 isHidden];
+    interstice2 = [(AVTimeRange *)self interstice];
+    isHidden = [interstice2 isHidden];
   }
 
   else
   {
-    v5 = 0;
+    isHidden = 0;
   }
 
-  return v5;
+  return isHidden;
 }
 
 - (AVInterstitialDateRange)dateBasedInterstice
 {
-  v2 = [(AVTimeRange *)self interstice];
+  interstice = [(AVTimeRange *)self interstice];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = interstice;
   }
 
   else
@@ -237,21 +237,21 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
-  return [(AVTimeRange *)v3 interstice];
+  return [(AVTimeRange *)selfCopy interstice];
 }
 
-+ (AVTimeRange)timeRangeWithInterstice:(id)a3
++ (AVTimeRange)timeRangeWithInterstice:(id)interstice
 {
-  v3 = a3;
-  v4 = [[AVTimeRangeForInterstitial alloc] initWithInterstice:v3];
+  intersticeCopy = interstice;
+  v4 = [[AVTimeRangeForInterstitial alloc] initWithInterstice:intersticeCopy];
 
   return v4;
 }
@@ -278,15 +278,15 @@
     v7 = v10;
   }
 
-  v11 = [(AVTimeRange *)self startDate];
-  if (v11)
+  startDate = [(AVTimeRange *)self startDate];
+  if (startDate)
   {
     v12 = objc_alloc_init(MEMORY[0x1E696AB78]);
     [v12 setDateStyle:0];
     [v12 setTimeStyle:2];
     [(AVTimeRange *)self duration];
-    v13 = [v11 dateByAddingTimeInterval:?];
-    v14 = [v12 stringFromDate:v11];
+    v13 = [startDate dateByAddingTimeInterval:?];
+    v14 = [v12 stringFromDate:startDate];
     v15 = [v12 stringFromDate:v13];
     v16 = [v7 stringByAppendingFormat:@" (-> [%@...%@])", v14, v15];
   }
@@ -299,17 +299,17 @@
   return v16;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
+  compareCopy = compare;
   [(AVTimeRange *)self startTime];
   v6 = v5;
-  [v4 startTime];
+  [compareCopy startTime];
   if (vabdd_f64(v6, v7) <= 0.0000001)
   {
     [(AVTimeRange *)self duration];
     v12 = v11;
-    [v4 duration];
+    [compareCopy duration];
     if (vabdd_f64(v12, v13) <= 0.0000001)
     {
       v15 = 0;
@@ -318,14 +318,14 @@
 
     [(AVTimeRange *)self duration];
     v9 = v14;
-    [v4 duration];
+    [compareCopy duration];
   }
 
   else
   {
     [(AVTimeRange *)self startTime];
     v9 = v8;
-    [v4 startTime];
+    [compareCopy startTime];
   }
 
   if (v9 >= v10)
@@ -343,20 +343,20 @@ LABEL_9:
   return v15;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(AVTimeRange *)self isEqualToTimeRange:v4];
+    v5 = [(AVTimeRange *)self isEqualToTimeRange:equalCopy];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = AVTimeRange;
-    v5 = [(AVTimeRange *)&v8 isEqual:v4];
+    v5 = [(AVTimeRange *)&v8 isEqual:equalCopy];
   }
 
   v6 = v5;
@@ -364,19 +364,19 @@ LABEL_9:
   return v6;
 }
 
-- (BOOL)isEqualToTimeRange:(id)a3
+- (BOOL)isEqualToTimeRange:(id)range
 {
-  v4 = a3;
-  if (!v4)
+  rangeCopy = range;
+  if (!rangeCopy)
   {
     goto LABEL_9;
   }
 
-  v5 = [(AVTimeRange *)self startDate];
-  if (v5)
+  startDate = [(AVTimeRange *)self startDate];
+  if (startDate)
   {
-    v6 = [v4 startDate];
-    v7 = v6 == 0;
+    startDate2 = [rangeCopy startDate];
+    v7 = startDate2 == 0;
   }
 
   else
@@ -386,19 +386,19 @@ LABEL_9:
 
   [(AVTimeRange *)self startTime];
   v9 = v8;
-  [v4 startTime];
-  if (vabdd_f64(v9, v10) < 0.0000001 && (-[AVTimeRange duration](self, "duration"), v12 = v11, [v4 duration], vabdd_f64(v12, v13) < 0.0000001))
+  [rangeCopy startTime];
+  if (vabdd_f64(v9, v10) < 0.0000001 && (-[AVTimeRange duration](self, "duration"), v12 = v11, [rangeCopy duration], vabdd_f64(v12, v13) < 0.0000001))
   {
     [(AVTimeRange *)self insertedDuration];
     v15 = v14;
-    [v4 insertedDuration];
+    [rangeCopy insertedDuration];
     v17 = vabdd_f64(v15, v16);
     v18 = v17 < 0.0000001;
     if (v17 < 0.0000001 && !v7)
     {
-      v19 = [(AVTimeRange *)self startDate];
-      v20 = [v4 startDate];
-      v18 = [v19 isEqualToDate:v20];
+      startDate3 = [(AVTimeRange *)self startDate];
+      startDate4 = [rangeCopy startDate];
+      v18 = [startDate3 isEqualToDate:startDate4];
     }
   }
 
@@ -421,9 +421,9 @@ LABEL_9:
   return v6 ^ vcvtd_n_u64_f64(v7, 0x14uLL);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [AVTimeRange allocWithZone:a3];
+  v4 = [AVTimeRange allocWithZone:zone];
   [(AVTimeRange *)self startTime];
   v6 = v5;
   [(AVTimeRange *)self duration];
@@ -433,50 +433,50 @@ LABEL_9:
   return [(AVTimeRange *)v4 initWithStartTime:v6 duration:v8 insertedDuration:v9];
 }
 
-- (id)timeRangeByAddingTimeInterval:(double)a3 shiftingDates:(BOOL)a4
+- (id)timeRangeByAddingTimeInterval:(double)interval shiftingDates:(BOOL)dates
 {
-  v4 = a4;
+  datesCopy = dates;
   v7 = [AVTimeRange alloc];
   [(AVTimeRange *)self startTime];
-  v9 = v8 + a3;
+  v9 = v8 + interval;
   [(AVTimeRange *)self duration];
-  v11 = [(AVTimeRange *)v7 initWithStartTime:v9 duration:v10];
-  v12 = v11;
-  if (v4)
+  selfCopy = [(AVTimeRange *)v7 initWithStartTime:v9 duration:v10];
+  v12 = selfCopy;
+  if (datesCopy)
   {
-    v11 = self;
+    selfCopy = self;
   }
 
-  [(AVTimeRange *)v11 startTime];
+  [(AVTimeRange *)selfCopy startTime];
   v14 = v13;
-  v15 = [(AVTimeRange *)self startDate];
-  [(AVTimeRange *)v12 setMapTime:v15 toDate:v14];
+  startDate = [(AVTimeRange *)self startDate];
+  [(AVTimeRange *)v12 setMapTime:startDate toDate:v14];
 
   return v12;
 }
 
-- (id)timeRangeExcludingTimeRange:(id)a3
+- (id)timeRangeExcludingTimeRange:(id)range
 {
-  v4 = a3;
-  [v4 startTime];
+  rangeCopy = range;
+  [rangeCopy startTime];
   v6 = v5;
   [(AVTimeRange *)self endTime];
-  if (v6 >= v7 || ([v4 endTime], v9 = v8, -[AVTimeRange startTime](self, "startTime"), v9 <= v10))
+  if (v6 >= v7 || ([rangeCopy endTime], v9 = v8, -[AVTimeRange startTime](self, "startTime"), v9 <= v10))
   {
-    v25 = self;
+    selfCopy = self;
   }
 
   else
   {
     [(AVTimeRange *)self startTime];
     v12 = v11;
-    [v4 startTime];
+    [rangeCopy startTime];
     v14 = v13;
     [(AVTimeRange *)self startTime];
     v16 = v15;
     if (v12 > v14)
     {
-      [v4 endTime];
+      [rangeCopy endTime];
       if (v16 < v17)
       {
         v16 = v17;
@@ -485,13 +485,13 @@ LABEL_9:
 
     [(AVTimeRange *)self endTime];
     v19 = v18;
-    [v4 endTime];
+    [rangeCopy endTime];
     v21 = v20;
     [(AVTimeRange *)self endTime];
     v23 = v22;
     if (v19 < v21)
     {
-      [v4 startTime];
+      [rangeCopy startTime];
       if (v23 >= v24)
       {
         v23 = v24;
@@ -500,28 +500,28 @@ LABEL_9:
 
     if (v23 <= v16)
     {
-      v25 = +[AVTimeRange timeRangeZero];
+      selfCopy = +[AVTimeRange timeRangeZero];
     }
 
     else
     {
-      v25 = [[AVTimeRange alloc] initWithStartTime:v16 endTime:v23];
+      selfCopy = [[AVTimeRange alloc] initWithStartTime:v16 endTime:v23];
     }
   }
 
-  v26 = v25;
+  v26 = selfCopy;
 
   return v26;
 }
 
-- (id)timeRangeIntersectingWithTimeRange:(id)a3
+- (id)timeRangeIntersectingWithTimeRange:(id)range
 {
-  v4 = a3;
-  if (v4)
+  rangeCopy = range;
+  if (rangeCopy)
   {
     [(AVTimeRange *)self startTime];
     v6 = v5;
-    [v4 startTime];
+    [rangeCopy startTime];
     if (v6 < v7)
     {
       v6 = v7;
@@ -529,7 +529,7 @@ LABEL_9:
 
     [(AVTimeRange *)self endTime];
     v9 = v8;
-    [v4 endTime];
+    [rangeCopy endTime];
     if (v9 >= v10)
     {
       v9 = v10;
@@ -543,14 +543,14 @@ LABEL_9:
     else
     {
       v11 = [[AVTimeRange alloc] initWithStartTime:v6 endTime:v9];
-      v12 = [(AVTimeRange *)self startDate];
+      startDate = [(AVTimeRange *)self startDate];
 
-      if (v12)
+      if (startDate)
       {
         [(AVTimeRange *)self startTime];
         v14 = v13;
-        v15 = [(AVTimeRange *)self startDate];
-        [(AVTimeRange *)v11 setMapTime:v15 toDate:v14];
+        startDate2 = [(AVTimeRange *)self startDate];
+        [(AVTimeRange *)v11 setMapTime:startDate2 toDate:v14];
       }
     }
   }
@@ -563,12 +563,12 @@ LABEL_9:
   return v11;
 }
 
-- (double)deltaTimeFromOutsideTime:(double)a3
+- (double)deltaTimeFromOutsideTime:(double)time
 {
   [(AVTimeRange *)self startTime];
-  v6 = a3 - v5;
+  v6 = time - v5;
   [(AVTimeRange *)self endTime];
-  result = a3 - v7;
+  result = time - v7;
   if (result < 0.0)
   {
     result = 0.0;
@@ -582,15 +582,15 @@ LABEL_9:
   return result;
 }
 
-- (BOOL)containsDate:(id)a3
+- (BOOL)containsDate:(id)date
 {
-  v4 = a3;
-  v5 = [(AVTimeRange *)self startDate];
+  dateCopy = date;
+  startDate = [(AVTimeRange *)self startDate];
 
-  if (v5 && (-[AVTimeRange startDate](self, "startDate"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 compare:v4], v6, (v7 + 1) <= 1))
+  if (startDate && (-[AVTimeRange startDate](self, "startDate"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 compare:dateCopy], v6, (v7 + 1) <= 1))
   {
-    v8 = [(AVTimeRange *)self endDate];
-    v9 = [v4 compare:v8] == -1;
+    endDate = [(AVTimeRange *)self endDate];
+    v9 = [dateCopy compare:endDate] == -1;
   }
 
   else
@@ -601,23 +601,23 @@ LABEL_9:
   return v9;
 }
 
-- (BOOL)containsTime:(double)a3
+- (BOOL)containsTime:(double)time
 {
   [(AVTimeRange *)self startTime];
-  if (v5 > a3)
+  if (v5 > time)
   {
     return 0;
   }
 
   [(AVTimeRange *)self endTime];
-  return v7 > a3;
+  return v7 > time;
 }
 
 - (id)endDate
 {
-  v3 = [(AVTimeRange *)self startDate];
+  startDate = [(AVTimeRange *)self startDate];
   [(AVTimeRange *)self duration];
-  v4 = [v3 dateByAddingTimeInterval:?];
+  v4 = [startDate dateByAddingTimeInterval:?];
 
   return v4;
 }
@@ -665,13 +665,13 @@ LABEL_9:
   return v4 + v5;
 }
 
-- (double)timeForDate:(id)a3
+- (double)timeForDate:(id)date
 {
-  v4 = a3;
-  v5 = [(AVTimeRange *)self startDate];
-  if (v5)
+  dateCopy = date;
+  startDate = [(AVTimeRange *)self startDate];
+  if (startDate)
   {
-    [v4 timeIntervalSinceDate:v5];
+    [dateCopy timeIntervalSinceDate:startDate];
     v7 = v6;
     [(AVTimeRange *)self startTime];
     v9 = v7 + v8;
@@ -685,20 +685,20 @@ LABEL_9:
   return v9;
 }
 
-- (id)dateForTime:(double)a3
+- (id)dateForTime:(double)time
 {
-  v5 = [(AVTimeRange *)self startDate];
+  startDate = [(AVTimeRange *)self startDate];
   [(AVTimeRange *)self startTime];
-  v7 = [v5 dateByAddingTimeInterval:a3 - v6];
+  v7 = [startDate dateByAddingTimeInterval:time - v6];
 
   return v7;
 }
 
-- (void)setMapDate:(id)a3 toTime:(double)a4
+- (void)setMapDate:(id)date toTime:(double)time
 {
-  v6 = a3;
-  v7 = [(AVTimeRange *)self startDate];
-  if (!v7)
+  dateCopy = date;
+  startDate = [(AVTimeRange *)self startDate];
+  if (!startDate)
   {
     v8 = _AVLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -708,26 +708,26 @@ LABEL_9:
     }
   }
 
-  [v6 timeIntervalSinceDate:v7];
-  v10 = v9 + a4;
+  [dateCopy timeIntervalSinceDate:startDate];
+  v10 = v9 + time;
   [(AVTimeRange *)self willChangeValueForKey:@"startTime"];
   self->_startTime = v10;
   [(AVTimeRange *)self didChangeValueForKey:@"startTime"];
 }
 
-- (void)setMapTime:(double)a3 toDate:(id)a4
+- (void)setMapTime:(double)time toDate:(id)date
 {
-  v6 = a4;
+  dateCopy = date;
   [(AVTimeRange *)self startTime];
-  v8 = [v6 dateByAddingTimeInterval:v7 - a3];
+  time = [dateCopy dateByAddingTimeInterval:v7 - time];
 
-  [(AVTimeRange *)self setStartDate:v8];
+  [(AVTimeRange *)self setStartDate:time];
 }
 
-- (AVTimeRange)initWithUnionOfCMTimeRanges:(id)a3
+- (AVTimeRange)initWithUnionOfCMTimeRanges:(id)ranges
 {
   v40 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  rangesCopy = ranges;
   value = *MEMORY[0x1E6960C98];
   flags = *(MEMORY[0x1E6960C98] + 12);
   timescale = *(MEMORY[0x1E6960C98] + 8);
@@ -740,8 +740,8 @@ LABEL_9:
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  obj = v3;
-  v9 = [v3 countByEnumeratingWithState:&v32 objects:v37 count:16];
+  obj = rangesCopy;
+  v9 = [rangesCopy countByEnumeratingWithState:&v32 objects:v37 count:16];
   if (v9)
   {
     v10 = v9;
@@ -862,11 +862,11 @@ LABEL_9:
   return v22;
 }
 
-- (AVTimeRange)initWithAVTimedMetadataGroup:(id)a3
+- (AVTimeRange)initWithAVTimedMetadataGroup:(id)group
 {
-  if (a3)
+  if (group)
   {
-    [a3 timeRange];
+    [group timeRange];
   }
 
   else
@@ -877,16 +877,16 @@ LABEL_9:
   return [(AVTimeRange *)self initWithCMTimeRange:v5];
 }
 
-- (AVTimeRange)initWithCMTimeRange:(id *)a3
+- (AVTimeRange)initWithCMTimeRange:(id *)range
 {
   Seconds = 0.0;
-  if (a3->var0.var2 & 1) != 0 && (var2 = a3->var1.var2, (var2) && !a3->var1.var3 && (a3->var0.var2 & 0x1D) == 1 && (a3->var1.var0 & 0x8000000000000000) == 0)
+  if (range->var0.var2 & 1) != 0 && (var2 = range->var1.var2, (var2) && !range->var1.var3 && (range->var0.var2 & 0x1D) == 1 && (range->var1.var0 & 0x8000000000000000) == 0)
   {
-    if ((a3->var1.var2 & 0x1D) == 1 || (v7 = 0.0, (var2 & 0x10) != 0))
+    if ((range->var1.var2 & 0x1D) == 1 || (v7 = 0.0, (var2 & 0x10) != 0))
     {
-      var0 = a3->var0;
+      var0 = range->var0;
       Seconds = CMTimeGetSeconds(&var0);
-      var0 = a3->var1;
+      var0 = range->var1;
       v7 = CMTimeGetSeconds(&var0);
     }
   }
@@ -899,16 +899,16 @@ LABEL_9:
   return [(AVTimeRange *)self initWithStartTime:Seconds duration:v7];
 }
 
-- (AVTimeRange)initWithStartTime:(double)a3 duration:(double)a4 insertedDuration:(double)a5
+- (AVTimeRange)initWithStartTime:(double)time duration:(double)duration insertedDuration:(double)insertedDuration
 {
   v9.receiver = self;
   v9.super_class = AVTimeRange;
   result = [(AVTimeRange *)&v9 init];
   if (result)
   {
-    result->_startTime = a3;
-    result->_duration = a4;
-    result->_insertedDuration = a5;
+    result->_startTime = time;
+    result->_duration = duration;
+    result->_insertedDuration = insertedDuration;
   }
 
   return result;
@@ -944,7 +944,7 @@ uint64_t __28__AVTimeRange_timeRangeZero__block_invoke()
     IsPrerollSupportEnabled = [v4 isIntegratedTimelineEnabled];
   }
 
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS___AVTimeRange;
   objc_msgSendSuper2(&v5, sel_initialize);
 }

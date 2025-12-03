@@ -1,16 +1,16 @@
 @interface INSearchForMediaIntentResponse
-+ (int)_typeFromCode:(int64_t)a3;
-+ (int64_t)_codeFromType:(int)a3 errorCode:(int)a4 appLaunchRequested:(BOOL)a5;
-- (INSearchForMediaIntentResponse)initWithBackingStore:(id)a3;
++ (int)_typeFromCode:(int64_t)code;
++ (int64_t)_codeFromType:(int)type errorCode:(int)code appLaunchRequested:(BOOL)requested;
+- (INSearchForMediaIntentResponse)initWithBackingStore:(id)store;
 - (INSearchForMediaIntentResponse)initWithCode:(INSearchForMediaIntentResponseCode)code userActivity:(NSUserActivity *)userActivity;
-- (INSearchForMediaIntentResponse)initWithCoder:(id)a3;
+- (INSearchForMediaIntentResponse)initWithCoder:(id)coder;
 - (INSearchForMediaIntentResponseCode)code;
 - (NSArray)mediaItems;
 - (id)_dictionaryRepresentation;
-- (id)_initWithCode:(int64_t)a3 userActivity:(id)a4;
-- (int64_t)_codeWithName:(id)a3;
+- (id)_initWithCode:(int64_t)code userActivity:(id)activity;
+- (int64_t)_codeWithName:(id)name;
 - (int64_t)_intentResponseCode;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)setMediaItems:(NSArray *)mediaItems;
 @end
 
@@ -20,32 +20,32 @@
 {
   v13[2] = *MEMORY[0x1E69E9840];
   v12[0] = @"code";
-  v3 = [(INSearchForMediaIntentResponse *)self code];
-  v4 = v3;
-  if (v3 < (INSearchForMediaIntentResponseCodeFailureRequiringAppLaunch|INSearchForMediaIntentResponseCodeReady))
+  code = [(INSearchForMediaIntentResponse *)self code];
+  v4 = code;
+  if (code < (INSearchForMediaIntentResponseCodeFailureRequiringAppLaunch|INSearchForMediaIntentResponseCodeReady))
   {
-    v5 = off_1E7286800[v3];
-    v6 = v5;
+    null = off_1E7286800[code];
+    v6 = null;
   }
 
   else
   {
-    v5 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
     v6 = 0;
   }
 
   v12[1] = @"mediaItems";
-  v13[0] = v5;
-  v7 = [(INSearchForMediaIntentResponse *)self mediaItems];
-  v8 = v7;
-  if (!v7)
+  v13[0] = null;
+  mediaItems = [(INSearchForMediaIntentResponse *)self mediaItems];
+  null2 = mediaItems;
+  if (!mediaItems)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13[1] = v8;
+  v13[1] = null2;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:v12 count:2];
-  if (!v7)
+  if (!mediaItems)
   {
   }
 
@@ -61,45 +61,45 @@
 - (void)setMediaItems:(NSArray *)mediaItems
 {
   v4 = mediaItems;
-  v5 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
   v6 = INIntentSlotValueTransformToMediaItemValues(v4);
 
-  [v5 setMediaItems:v6];
-  v8 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v7 = [v8 data];
-  [(INIntentResponse *)self _setPayloadResponseMessageData:v7];
+  [_responseMessagePBRepresentation setMediaItems:v6];
+  _responseMessagePBRepresentation2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  data = [_responseMessagePBRepresentation2 data];
+  [(INIntentResponse *)self _setPayloadResponseMessageData:data];
 }
 
 - (NSArray)mediaItems
 {
-  v2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v3 = [v2 mediaItems];
-  v4 = INIntentSlotValueTransformFromMediaItemValues(v3);
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  mediaItems = [_responseMessagePBRepresentation mediaItems];
+  v4 = INIntentSlotValueTransformFromMediaItemValues(mediaItems);
 
   return v4;
 }
 
-- (int64_t)_codeWithName:(id)a3
+- (int64_t)_codeWithName:(id)name
 {
-  v3 = a3;
-  [v3 isEqualToString:@"INSearchForMediaIntentResponseCodeUnspecified"];
-  v4 = [v3 isEqualToString:@"INSearchForMediaIntentResponseCodeReady"];
-  if ([v3 isEqualToString:@"INSearchForMediaIntentResponseCodeContinueInApp"])
+  nameCopy = name;
+  [nameCopy isEqualToString:@"INSearchForMediaIntentResponseCodeUnspecified"];
+  v4 = [nameCopy isEqualToString:@"INSearchForMediaIntentResponseCodeReady"];
+  if ([nameCopy isEqualToString:@"INSearchForMediaIntentResponseCodeContinueInApp"])
   {
     v4 = 2;
   }
 
-  if ([v3 isEqualToString:@"INSearchForMediaIntentResponseCodeInProgress"])
+  if ([nameCopy isEqualToString:@"INSearchForMediaIntentResponseCodeInProgress"])
   {
     v4 = 3;
   }
 
-  if ([v3 isEqualToString:@"INSearchForMediaIntentResponseCodeSuccess"])
+  if ([nameCopy isEqualToString:@"INSearchForMediaIntentResponseCodeSuccess"])
   {
     v4 = 4;
   }
 
-  if ([v3 isEqualToString:@"INSearchForMediaIntentResponseCodeFailure"])
+  if ([nameCopy isEqualToString:@"INSearchForMediaIntentResponseCodeFailure"])
   {
     v5 = 5;
   }
@@ -109,7 +109,7 @@
     v5 = v4;
   }
 
-  v6 = [v3 isEqualToString:@"INSearchForMediaIntentResponseCodeFailureRequiringAppLaunch"];
+  v6 = [nameCopy isEqualToString:@"INSearchForMediaIntentResponseCodeFailureRequiringAppLaunch"];
 
   if (v6)
   {
@@ -133,18 +133,18 @@
   return result;
 }
 
-- (INSearchForMediaIntentResponse)initWithCoder:(id)a3
+- (INSearchForMediaIntentResponse)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = INSearchForMediaIntentResponse;
-  return [(INIntentResponse *)&v4 initWithCoder:a3];
+  return [(INIntentResponse *)&v4 initWithCoder:coder];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = INSearchForMediaIntentResponse;
-  [(INIntentResponse *)&v3 encodeWithCoder:a3];
+  [(INIntentResponse *)&v3 encodeWithCoder:coder];
 }
 
 - (INSearchForMediaIntentResponseCode)code
@@ -154,18 +154,18 @@
   return [(INIntentResponse *)&v3 code];
 }
 
-- (INSearchForMediaIntentResponse)initWithBackingStore:(id)a3
+- (INSearchForMediaIntentResponse)initWithBackingStore:(id)store
 {
   v4.receiver = self;
   v4.super_class = INSearchForMediaIntentResponse;
-  return [(INIntentResponse *)&v4 initWithBackingStore:a3];
+  return [(INIntentResponse *)&v4 initWithBackingStore:store];
 }
 
-- (id)_initWithCode:(int64_t)a3 userActivity:(id)a4
+- (id)_initWithCode:(int64_t)code userActivity:(id)activity
 {
   v5.receiver = self;
   v5.super_class = INSearchForMediaIntentResponse;
-  return [(INIntentResponse *)&v5 _initWithCode:a3 userActivity:a4];
+  return [(INIntentResponse *)&v5 _initWithCode:code userActivity:activity];
 }
 
 - (INSearchForMediaIntentResponse)initWithCode:(INSearchForMediaIntentResponseCode)code userActivity:(NSUserActivity *)userActivity
@@ -206,51 +206,51 @@
   return v11;
 }
 
-+ (int)_typeFromCode:(int64_t)a3
++ (int)_typeFromCode:(int64_t)code
 {
-  if ((a3 - 1) > 5)
+  if ((code - 1) > 5)
   {
     return 3;
   }
 
   else
   {
-    return dword_18EE5FD98[a3 - 1];
+    return dword_18EE5FD98[code - 1];
   }
 }
 
-+ (int64_t)_codeFromType:(int)a3 errorCode:(int)a4 appLaunchRequested:(BOOL)a5
++ (int64_t)_codeFromType:(int)type errorCode:(int)code appLaunchRequested:(BOOL)requested
 {
   v5 = 3;
   v6 = 2;
-  if (a3 != 4)
+  if (type != 4)
   {
-    v6 = a3 == 5;
+    v6 = type == 5;
   }
 
-  if (a3 != 2)
+  if (type != 2)
   {
     v5 = v6;
   }
 
   v7 = 4;
   v8 = 5;
-  if (a5)
+  if (requested)
   {
     v8 = 6;
   }
 
-  if (a3 != 1)
+  if (type != 1)
   {
     v8 = 0;
   }
 
-  if (a3)
+  if (type)
   {
     v7 = v8;
   }
 
-  if (a3 <= 1)
+  if (type <= 1)
   {
     return v7;
   }

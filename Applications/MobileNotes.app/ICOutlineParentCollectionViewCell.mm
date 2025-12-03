@@ -1,32 +1,32 @@
 @interface ICOutlineParentCollectionViewCell
 - (BOOL)_accessibilityOverridesInstructionsHint;
 - (BOOL)isInsetGroupedList;
-- (ICOutlineParentCollectionViewCell)initWithFrame:(CGRect)a3;
+- (ICOutlineParentCollectionViewCell)initWithFrame:(CGRect)frame;
 - (id)accessibilityHint;
 - (id)accessibilityValue;
 - (id)headerContentConfiguration;
 - (unint64_t)accessibilityTraits;
-- (void)applyLayoutAttributes:(id)a3;
+- (void)applyLayoutAttributes:(id)attributes;
 - (void)dealloc;
 - (void)fixupMasking;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setEditing:(BOOL)a3;
-- (void)setFolderListSectionIdentifier:(id)a3;
-- (void)setNoteSectionIdentifier:(id)a3;
-- (void)setTagSelection:(id)a3;
+- (void)setEditing:(BOOL)editing;
+- (void)setFolderListSectionIdentifier:(id)identifier;
+- (void)setNoteSectionIdentifier:(id)identifier;
+- (void)setTagSelection:(id)selection;
 - (void)updateAccessories;
-- (void)updateConfigurationUsingState:(id)a3;
+- (void)updateConfigurationUsingState:(id)state;
 - (void)updateSyncActivityIndicator;
 @end
 
 @implementation ICOutlineParentCollectionViewCell
 
-- (ICOutlineParentCollectionViewCell)initWithFrame:(CGRect)a3
+- (ICOutlineParentCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v19.receiver = self;
   v19.super_class = ICOutlineParentCollectionViewCell;
-  v3 = [(ICOutlineParentCollectionViewCell *)&v19 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(ICOutlineParentCollectionViewCell *)&v19 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -73,33 +73,33 @@
   v4.receiver = self;
   v4.super_class = ICOutlineParentCollectionViewCell;
   [(ICOutlineParentCollectionViewCell *)&v4 prepareForReuse];
-  v3 = [(ICOutlineParentCollectionViewCell *)self progressIndicatorTracker];
-  [v3 invalidate];
+  progressIndicatorTracker = [(ICOutlineParentCollectionViewCell *)self progressIndicatorTracker];
+  [progressIndicatorTracker invalidate];
 
   [(ICOutlineParentCollectionViewCell *)self setProgressIndicatorTracker:0];
 }
 
 - (void)dealloc
 {
-  v3 = [(ICOutlineParentCollectionViewCell *)self progressIndicatorTracker];
-  [v3 invalidate];
+  progressIndicatorTracker = [(ICOutlineParentCollectionViewCell *)self progressIndicatorTracker];
+  [progressIndicatorTracker invalidate];
 
   v4.receiver = self;
   v4.super_class = ICOutlineParentCollectionViewCell;
   [(ICOutlineParentCollectionViewCell *)&v4 dealloc];
 }
 
-- (void)setEditing:(BOOL)a3
+- (void)setEditing:(BOOL)editing
 {
   v4.receiver = self;
   v4.super_class = ICOutlineParentCollectionViewCell;
-  [(ICOutlineParentCollectionViewCell *)&v4 setEditing:a3];
+  [(ICOutlineParentCollectionViewCell *)&v4 setEditing:editing];
   [(ICOutlineParentCollectionViewCell *)self updateAccessories];
 }
 
-- (void)setTagSelection:(id)a3
+- (void)setTagSelection:(id)selection
 {
-  objc_storeStrong(&self->_tagSelection, a3);
+  objc_storeStrong(&self->_tagSelection, selection);
 
   [(ICOutlineParentCollectionViewCell *)self setNeedsUpdateConfiguration];
 }
@@ -107,26 +107,26 @@
 - (void)updateAccessories
 {
   v3 = +[NSMutableArray array];
-  v4 = [(ICOutlineParentCollectionViewCell *)self folderListSectionIdentifier];
+  folderListSectionIdentifier = [(ICOutlineParentCollectionViewCell *)self folderListSectionIdentifier];
 
-  if (v4)
+  if (folderListSectionIdentifier)
   {
-    v5 = [(ICOutlineParentCollectionViewCell *)self activityIndicatorView];
-    v6 = [v5 isAnimating];
+    activityIndicatorView = [(ICOutlineParentCollectionViewCell *)self activityIndicatorView];
+    isAnimating = [activityIndicatorView isAnimating];
 
-    if (v6)
+    if (isAnimating)
     {
       v7 = [UICellAccessoryCustomView alloc];
-      v8 = [(ICOutlineParentCollectionViewCell *)self activityIndicatorView];
-      v9 = [v7 initWithCustomView:v8 placement:1];
+      activityIndicatorView2 = [(ICOutlineParentCollectionViewCell *)self activityIndicatorView];
+      v9 = [v7 initWithCustomView:activityIndicatorView2 placement:1];
 
       [v9 setDisplayedState:2];
       [v3 addObject:v9];
     }
 
-    v10 = [(ICOutlineParentCollectionViewCell *)self upgradeButtonTapHandler];
+    upgradeButtonTapHandler = [(ICOutlineParentCollectionViewCell *)self upgradeButtonTapHandler];
 
-    if (v10)
+    if (upgradeButtonTapHandler)
     {
       v11 = +[UIButtonConfiguration borderlessButtonConfiguration];
       [v11 setButtonSize:2];
@@ -156,12 +156,12 @@
     v19 = objc_alloc_init(UICellAccessoryOutlineDisclosure);
     [v19 setDisplayedState:0];
     [v19 setStyle:1];
-    v20 = [(ICOutlineParentCollectionViewCell *)self traitCollection];
-    if ([v20 listEnvironment] == 6)
+    traitCollection = [(ICOutlineParentCollectionViewCell *)self traitCollection];
+    if ([traitCollection listEnvironment] == 6)
     {
-      v21 = [(ICOutlineParentCollectionViewCell *)self ic_behavior];
+      ic_behavior = [(ICOutlineParentCollectionViewCell *)self ic_behavior];
 
-      if (v21 == 3)
+      if (ic_behavior == 3)
       {
 LABEL_11:
         [v3 addObject:v19];
@@ -169,8 +169,8 @@ LABEL_11:
         goto LABEL_12;
       }
 
-      v20 = +[UIColor labelColor];
-      [v19 setTintColor:v20];
+      traitCollection = +[UIColor labelColor];
+      [v19 setTintColor:traitCollection];
     }
 
     goto LABEL_11;
@@ -187,25 +187,25 @@ LABEL_12:
   [UIView performWithoutAnimation:v23];
 }
 
-- (void)setFolderListSectionIdentifier:(id)a3
+- (void)setFolderListSectionIdentifier:(id)identifier
 {
-  v10 = a3;
-  objc_storeStrong(&self->_folderListSectionIdentifier, a3);
-  if (v10)
+  identifierCopy = identifier;
+  objc_storeStrong(&self->_folderListSectionIdentifier, identifier);
+  if (identifierCopy)
   {
     noteSectionIdentifier = self->_noteSectionIdentifier;
     self->_noteSectionIdentifier = 0;
   }
 
-  v6 = [(ICOutlineParentCollectionViewCell *)self activityIndicatorView];
+  activityIndicatorView = [(ICOutlineParentCollectionViewCell *)self activityIndicatorView];
 
-  if (!v6)
+  if (!activityIndicatorView)
   {
     v7 = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:100];
     [(ICOutlineParentCollectionViewCell *)self setActivityIndicatorView:v7];
   }
 
-  if ([v10 sectionType] == 2 || objc_msgSend(v10, "sectionType") == 3)
+  if ([identifierCopy sectionType] == 2 || objc_msgSend(identifierCopy, "sectionType") == 3)
   {
     v8 = [(ICOutlineParentCollectionViewCell *)self displayGenericTitle]^ 1;
   }
@@ -227,11 +227,11 @@ LABEL_12:
   [(ICOutlineParentCollectionViewCell *)self setNeedsUpdateConfiguration];
 }
 
-- (void)setNoteSectionIdentifier:(id)a3
+- (void)setNoteSectionIdentifier:(id)identifier
 {
-  v6 = a3;
-  objc_storeStrong(&self->_noteSectionIdentifier, a3);
-  if (v6)
+  identifierCopy = identifier;
+  objc_storeStrong(&self->_noteSectionIdentifier, identifier);
+  if (identifierCopy)
   {
     folderListSectionIdentifier = self->_folderListSectionIdentifier;
     self->_folderListSectionIdentifier = 0;
@@ -257,138 +257,138 @@ LABEL_12:
   return v2;
 }
 
-- (void)updateConfigurationUsingState:(id)a3
+- (void)updateConfigurationUsingState:(id)state
 {
-  v4 = a3;
-  v5 = [(ICOutlineParentCollectionViewCell *)self ic_behavior];
-  v6 = [(ICOutlineParentCollectionViewCell *)self traitCollection];
-  v7 = [v6 splitViewControllerLayoutEnvironment];
+  stateCopy = state;
+  ic_behavior = [(ICOutlineParentCollectionViewCell *)self ic_behavior];
+  traitCollection = [(ICOutlineParentCollectionViewCell *)self traitCollection];
+  splitViewControllerLayoutEnvironment = [traitCollection splitViewControllerLayoutEnvironment];
 
-  v8 = [(ICOutlineParentCollectionViewCell *)self traitCollection];
-  if ([v8 listEnvironment] == 5)
+  traitCollection2 = [(ICOutlineParentCollectionViewCell *)self traitCollection];
+  if ([traitCollection2 listEnvironment] == 5)
   {
   }
 
   else
   {
-    v9 = [(ICOutlineParentCollectionViewCell *)self traitCollection];
-    v10 = [v9 listEnvironment];
+    traitCollection3 = [(ICOutlineParentCollectionViewCell *)self traitCollection];
+    listEnvironment = [traitCollection3 listEnvironment];
 
-    if (v10 != 6)
+    if (listEnvironment != 6)
     {
-      v11 = +[UIBackgroundConfiguration clearConfiguration];
-      [(ICOutlineParentCollectionViewCell *)self setBackgroundConfiguration:v11];
+      defaultBackgroundConfiguration = +[UIBackgroundConfiguration clearConfiguration];
+      [(ICOutlineParentCollectionViewCell *)self setBackgroundConfiguration:defaultBackgroundConfiguration];
       goto LABEL_6;
     }
   }
 
-  v11 = [(ICOutlineParentCollectionViewCell *)self defaultBackgroundConfiguration];
-  v12 = [v11 updatedConfigurationForState:v4];
+  defaultBackgroundConfiguration = [(ICOutlineParentCollectionViewCell *)self defaultBackgroundConfiguration];
+  v12 = [defaultBackgroundConfiguration updatedConfigurationForState:stateCopy];
   [(ICOutlineParentCollectionViewCell *)self setBackgroundConfiguration:v12];
 
 LABEL_6:
-  v13 = [(ICOutlineParentCollectionViewCell *)self headerContentConfiguration];
-  v14 = [v13 updatedConfigurationForState:v4];
+  headerContentConfiguration = [(ICOutlineParentCollectionViewCell *)self headerContentConfiguration];
+  v14 = [headerContentConfiguration updatedConfigurationForState:stateCopy];
 
   v15 = ICAccessibilityAccessibilityLargerTextSizesEnabled() ^ 1;
-  v16 = [v14 textProperties];
-  [v16 setNumberOfLines:v15];
+  textProperties = [v14 textProperties];
+  [textProperties setNumberOfLines:v15];
 
-  if (![(ICOutlineParentCollectionViewCell *)self usesSidebarHeaderConfiguration]|| v5 == 1)
+  if (![(ICOutlineParentCollectionViewCell *)self usesSidebarHeaderConfiguration]|| ic_behavior == 1)
   {
     v17 = +[UIColor labelColor];
-    v18 = [v14 textProperties];
-    [v18 setColor:v17];
+    textProperties2 = [v14 textProperties];
+    [textProperties2 setColor:v17];
   }
 
-  v19 = [(ICOutlineParentCollectionViewCell *)self folderListSectionIdentifier];
+  folderListSectionIdentifier = [(ICOutlineParentCollectionViewCell *)self folderListSectionIdentifier];
 
-  if (v19)
+  if (folderListSectionIdentifier)
   {
     if ([(ICOutlineParentCollectionViewCell *)self displayGenericTitle])
     {
-      v20 = +[NSBundle mainBundle];
-      [v20 localizedStringForKey:@"Folders" value:&stru_100661CF0 table:0];
+      folderListSectionIdentifier2 = +[NSBundle mainBundle];
+      [folderListSectionIdentifier2 localizedStringForKey:@"Folders" value:&stru_100661CF0 table:0];
     }
 
     else
     {
-      v20 = [(ICOutlineParentCollectionViewCell *)self folderListSectionIdentifier];
-      [v20 title];
+      folderListSectionIdentifier2 = [(ICOutlineParentCollectionViewCell *)self folderListSectionIdentifier];
+      [folderListSectionIdentifier2 title];
     }
-    v21 = ;
+    noteSectionIdentifier = ;
 
-    v22 = [v14 textProperties];
-    v23 = [v22 font];
-    v24 = [v23 ic_fontWithSingleLineA];
-    v25 = [v14 textProperties];
-    [v25 setFont:v24];
+    textProperties3 = [v14 textProperties];
+    font = [textProperties3 font];
+    ic_fontWithSingleLineA = [font ic_fontWithSingleLineA];
+    textProperties4 = [v14 textProperties];
+    [textProperties4 setFont:ic_fontWithSingleLineA];
 
     goto LABEL_16;
   }
 
-  v21 = [(ICOutlineParentCollectionViewCell *)self noteSectionIdentifier];
+  noteSectionIdentifier = [(ICOutlineParentCollectionViewCell *)self noteSectionIdentifier];
 
-  if (v21)
+  if (noteSectionIdentifier)
   {
-    v22 = [(ICOutlineParentCollectionViewCell *)self noteSectionIdentifier];
-    v21 = [v22 title];
+    textProperties3 = [(ICOutlineParentCollectionViewCell *)self noteSectionIdentifier];
+    noteSectionIdentifier = [textProperties3 title];
 LABEL_16:
   }
 
-  [v14 setText:v21];
-  [(ICOutlineParentCollectionViewCell *)self setAccessibilityLabel:v21];
+  [v14 setText:noteSectionIdentifier];
+  [(ICOutlineParentCollectionViewCell *)self setAccessibilityLabel:noteSectionIdentifier];
   if ([(ICOutlineParentCollectionViewCell *)self shouldDisplayTagSelectionOperator])
   {
-    v26 = [(ICOutlineParentCollectionViewCell *)self tagSelection];
-    if (v26)
+    tagSelection = [(ICOutlineParentCollectionViewCell *)self tagSelection];
+    if (tagSelection)
     {
-      v27 = v26;
-      v28 = [(ICOutlineParentCollectionViewCell *)self tagSelection];
-      if ([v28 selectedTagCount] <= 1)
+      v27 = tagSelection;
+      tagSelection2 = [(ICOutlineParentCollectionViewCell *)self tagSelection];
+      if ([tagSelection2 selectedTagCount] <= 1)
       {
       }
 
       else
       {
-        v29 = [v4 isEditing];
+        isEditing = [stateCopy isEditing];
 
-        if ((v29 & 1) == 0)
+        if ((isEditing & 1) == 0)
         {
-          v30 = [(ICOutlineParentCollectionViewCell *)self tagSelection];
-          v31 = [v30 tagOperator] == 2;
-          v32 = [(ICOutlineParentCollectionViewCell *)self tagAnyAction];
-          [v32 setState:v31];
+          tagSelection3 = [(ICOutlineParentCollectionViewCell *)self tagSelection];
+          v31 = [tagSelection3 tagOperator] == 2;
+          tagAnyAction = [(ICOutlineParentCollectionViewCell *)self tagAnyAction];
+          [tagAnyAction setState:v31];
 
-          v33 = [(ICOutlineParentCollectionViewCell *)self tagSelection];
-          v34 = [v33 tagOperator] == 1;
-          v35 = [(ICOutlineParentCollectionViewCell *)self tagAllAction];
-          [v35 setState:v34];
+          tagSelection4 = [(ICOutlineParentCollectionViewCell *)self tagSelection];
+          v34 = [tagSelection4 tagOperator] == 1;
+          tagAllAction = [(ICOutlineParentCollectionViewCell *)self tagAllAction];
+          [tagAllAction setState:v34];
 
-          v36 = [(ICOutlineParentCollectionViewCell *)self listContentView];
+          listContentView = [(ICOutlineParentCollectionViewCell *)self listContentView];
 
-          if (!v36)
+          if (!listContentView)
           {
             v37 = [UIListContentView alloc];
-            v38 = [(ICOutlineParentCollectionViewCell *)self defaultContentConfiguration];
-            v39 = [v37 initWithConfiguration:v38];
+            defaultContentConfiguration = [(ICOutlineParentCollectionViewCell *)self defaultContentConfiguration];
+            v39 = [v37 initWithConfiguration:defaultContentConfiguration];
             [(ICOutlineParentCollectionViewCell *)self setListContentView:v39];
 
-            v40 = [(ICOutlineParentCollectionViewCell *)self listContentView];
-            [v40 setTranslatesAutoresizingMaskIntoConstraints:0];
+            listContentView2 = [(ICOutlineParentCollectionViewCell *)self listContentView];
+            [listContentView2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-            v41 = [(ICOutlineParentCollectionViewCell *)self listContentView];
+            listContentView3 = [(ICOutlineParentCollectionViewCell *)self listContentView];
             LODWORD(v42) = 1148846080;
-            [v41 setContentHuggingPriority:0 forAxis:v42];
+            [listContentView3 setContentHuggingPriority:0 forAxis:v42];
 
-            v43 = [(ICOutlineParentCollectionViewCell *)self listContentView];
+            listContentView4 = [(ICOutlineParentCollectionViewCell *)self listContentView];
             LODWORD(v44) = 1148846080;
-            [v43 setContentCompressionResistancePriority:0 forAxis:v44];
+            [listContentView4 setContentCompressionResistancePriority:0 forAxis:v44];
           }
 
-          v45 = [(ICOutlineParentCollectionViewCell *)self tagOperatorButton];
+          tagOperatorButton = [(ICOutlineParentCollectionViewCell *)self tagOperatorButton];
 
-          if (!v45)
+          if (!tagOperatorButton)
           {
             v46 = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
             v47 = +[UIButtonConfiguration plainButtonConfiguration];
@@ -407,30 +407,30 @@ LABEL_16:
             v50 = [UIButton buttonWithConfiguration:v47 primaryAction:0];
             [(ICOutlineParentCollectionViewCell *)self setTagOperatorButton:v50];
 
-            v51 = [(ICOutlineParentCollectionViewCell *)self tagOperatorButton];
-            [v51 setTranslatesAutoresizingMaskIntoConstraints:0];
+            tagOperatorButton2 = [(ICOutlineParentCollectionViewCell *)self tagOperatorButton];
+            [tagOperatorButton2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-            v52 = [(ICOutlineParentCollectionViewCell *)self tagOperatorButton];
-            [v52 setShowsMenuAsPrimaryAction:1];
+            tagOperatorButton3 = [(ICOutlineParentCollectionViewCell *)self tagOperatorButton];
+            [tagOperatorButton3 setShowsMenuAsPrimaryAction:1];
 
-            v53 = [(ICOutlineParentCollectionViewCell *)self tagOperatorButton];
-            [v53 setChangesSelectionAsPrimaryAction:1];
+            tagOperatorButton4 = [(ICOutlineParentCollectionViewCell *)self tagOperatorButton];
+            [tagOperatorButton4 setChangesSelectionAsPrimaryAction:1];
 
-            v54 = [(ICOutlineParentCollectionViewCell *)self tagOperatorButton];
-            [v54 setContentHorizontalAlignment:5];
+            tagOperatorButton5 = [(ICOutlineParentCollectionViewCell *)self tagOperatorButton];
+            [tagOperatorButton5 setContentHorizontalAlignment:5];
 
-            v55 = [(ICOutlineParentCollectionViewCell *)self tagOperatorButton];
+            tagOperatorButton6 = [(ICOutlineParentCollectionViewCell *)self tagOperatorButton];
             LODWORD(v56) = 1148846080;
-            [v55 setContentHuggingPriority:0 forAxis:v56];
+            [tagOperatorButton6 setContentHuggingPriority:0 forAxis:v56];
 
-            v57 = [(ICOutlineParentCollectionViewCell *)self tagOperatorButton];
+            tagOperatorButton7 = [(ICOutlineParentCollectionViewCell *)self tagOperatorButton];
             LODWORD(v58) = 1148846080;
-            [v57 setContentCompressionResistancePriority:0 forAxis:v58];
+            [tagOperatorButton7 setContentCompressionResistancePriority:0 forAxis:v58];
           }
 
-          v59 = [(ICOutlineParentCollectionViewCell *)self horizontalStackView];
+          horizontalStackView = [(ICOutlineParentCollectionViewCell *)self horizontalStackView];
 
-          if (!v59)
+          if (!horizontalStackView)
           {
             v60 = [[UIView alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
             LODWORD(v61) = 1132068864;
@@ -438,35 +438,35 @@ LABEL_16:
             LODWORD(v62) = 1132068864;
             [v60 setContentCompressionResistancePriority:0 forAxis:v62];
             v63 = [UIStackView alloc];
-            v64 = [(ICOutlineParentCollectionViewCell *)self listContentView];
-            v127[0] = v64;
-            v65 = [(ICOutlineParentCollectionViewCell *)self tagOperatorButton];
-            v127[1] = v65;
+            listContentView5 = [(ICOutlineParentCollectionViewCell *)self listContentView];
+            v127[0] = listContentView5;
+            tagOperatorButton8 = [(ICOutlineParentCollectionViewCell *)self tagOperatorButton];
+            v127[1] = tagOperatorButton8;
             v127[2] = v60;
             v66 = [NSArray arrayWithObjects:v127 count:3];
             v67 = [v63 initWithArrangedSubviews:v66];
             [(ICOutlineParentCollectionViewCell *)self setHorizontalStackView:v67];
 
-            v68 = [(ICOutlineParentCollectionViewCell *)self horizontalStackView];
-            [v68 setAxis:0];
+            horizontalStackView2 = [(ICOutlineParentCollectionViewCell *)self horizontalStackView];
+            [horizontalStackView2 setAxis:0];
 
-            v69 = [(ICOutlineParentCollectionViewCell *)self horizontalStackView];
-            [v69 setSpacing:0.0];
+            horizontalStackView3 = [(ICOutlineParentCollectionViewCell *)self horizontalStackView];
+            [horizontalStackView3 setSpacing:0.0];
 
-            v70 = [(ICOutlineParentCollectionViewCell *)self horizontalStackView];
-            [v70 setAlignment:3];
+            horizontalStackView4 = [(ICOutlineParentCollectionViewCell *)self horizontalStackView];
+            [horizontalStackView4 setAlignment:3];
 
-            v71 = [(ICOutlineParentCollectionViewCell *)self tagOperatorButton];
-            v72 = [v71 heightAnchor];
-            v73 = [v72 constraintEqualToConstant:26.0];
+            tagOperatorButton9 = [(ICOutlineParentCollectionViewCell *)self tagOperatorButton];
+            heightAnchor = [tagOperatorButton9 heightAnchor];
+            v73 = [heightAnchor constraintEqualToConstant:26.0];
             [v73 setActive:1];
 
-            v74 = [(ICOutlineParentCollectionViewCell *)self contentView];
-            v75 = [(ICOutlineParentCollectionViewCell *)self horizontalStackView];
-            [v74 addSubview:v75];
+            contentView = [(ICOutlineParentCollectionViewCell *)self contentView];
+            horizontalStackView5 = [(ICOutlineParentCollectionViewCell *)self horizontalStackView];
+            [contentView addSubview:horizontalStackView5];
 
-            v76 = [(ICOutlineParentCollectionViewCell *)self horizontalStackView];
-            [v76 ic_addAnchorsToFillSuperview];
+            horizontalStackView6 = [(ICOutlineParentCollectionViewCell *)self horizontalStackView];
+            [horizontalStackView6 ic_addAnchorsToFillSuperview];
           }
 
           [v14 directionalLayoutMargins];
@@ -483,21 +483,21 @@ LABEL_16:
           [(ICOutlineParentCollectionViewCell *)self directionalLayoutMargins];
           v86 = v85 + -8.0;
           v87 = +[UIColor clearColor];
-          v88 = [v14 textProperties];
-          [v88 setColor:v87];
+          textProperties5 = [v14 textProperties];
+          [textProperties5 setColor:v87];
 
           [v14 setDirectionalLayoutMargins:{v78, v80, v82, v86}];
-          v89 = [(ICOutlineParentCollectionViewCell *)self listContentView];
-          [v89 setConfiguration:v14];
+          listContentView6 = [(ICOutlineParentCollectionViewCell *)self listContentView];
+          [listContentView6 setConfiguration:v14];
 
-          v90 = [(ICOutlineParentCollectionViewCell *)self tagAllAction];
-          v126[0] = v90;
-          v91 = [(ICOutlineParentCollectionViewCell *)self tagAnyAction];
-          v126[1] = v91;
+          tagAllAction2 = [(ICOutlineParentCollectionViewCell *)self tagAllAction];
+          v126[0] = tagAllAction2;
+          tagAnyAction2 = [(ICOutlineParentCollectionViewCell *)self tagAnyAction];
+          v126[1] = tagAnyAction2;
           v92 = [NSArray arrayWithObjects:v126 count:2];
           v93 = [UIMenu menuWithChildren:v92];
-          v94 = [(ICOutlineParentCollectionViewCell *)self tagOperatorButton];
-          [v94 setMenu:v93];
+          tagOperatorButton10 = [(ICOutlineParentCollectionViewCell *)self tagOperatorButton];
+          [tagOperatorButton10 setMenu:v93];
 
           goto LABEL_37;
         }
@@ -505,16 +505,16 @@ LABEL_16:
     }
   }
 
-  v95 = [(ICOutlineParentCollectionViewCell *)self horizontalStackView];
-  [v95 removeFromSuperview];
+  horizontalStackView7 = [(ICOutlineParentCollectionViewCell *)self horizontalStackView];
+  [horizontalStackView7 removeFromSuperview];
 
   [(ICOutlineParentCollectionViewCell *)self setHorizontalStackView:0];
-  v96 = [(ICOutlineParentCollectionViewCell *)self tagOperatorButton];
-  [v96 removeFromSuperview];
+  tagOperatorButton11 = [(ICOutlineParentCollectionViewCell *)self tagOperatorButton];
+  [tagOperatorButton11 removeFromSuperview];
 
   [(ICOutlineParentCollectionViewCell *)self setTagOperatorButton:0];
-  v97 = [(ICOutlineParentCollectionViewCell *)self listContentView];
-  [v97 removeFromSuperview];
+  listContentView7 = [(ICOutlineParentCollectionViewCell *)self listContentView];
+  [listContentView7 removeFromSuperview];
 
   [(ICOutlineParentCollectionViewCell *)self setListContentView:0];
   [(ICOutlineParentCollectionViewCell *)self horizontalInsetsOverride];
@@ -522,11 +522,11 @@ LABEL_16:
   if ((v98 != 2.22507386e-308 || (v100 = 0.0, !-[ICOutlineParentCollectionViewCell isInsetGroupedList](self, "isInsetGroupedList")) && (-[ICOutlineParentCollectionViewCell traitCollection](self, "traitCollection"), v101 = objc_claimAutoreleasedReturnValue(), v102 = [v101 listEnvironment], v101, v102)) && (v100 = v99, v99 == 2.22507386e-308))
   {
     v107 = ICInternalSettingsAlignHeadersWithNavTitle();
-    v109 = v5 != 1 || v7 != 2;
+    v109 = ic_behavior != 1 || splitViewControllerLayoutEnvironment != 2;
     if (v107 || !v109)
     {
       objc_opt_class();
-      v110 = [(ICOutlineParentCollectionViewCell *)self superview];
+      superview = [(ICOutlineParentCollectionViewCell *)self superview];
       v111 = ICDynamicCast();
 
       [v111 directionalLayoutMargins];
@@ -560,17 +560,17 @@ LABEL_37:
 
 - (BOOL)isInsetGroupedList
 {
-  v2 = [(ICOutlineParentCollectionViewCell *)self traitCollection];
-  v3 = [v2 listEnvironment] == 4;
+  traitCollection = [(ICOutlineParentCollectionViewCell *)self traitCollection];
+  v3 = [traitCollection listEnvironment] == 4;
 
   return v3;
 }
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
   v4.receiver = self;
   v4.super_class = ICOutlineParentCollectionViewCell;
-  [(ICOutlineParentCollectionViewCell *)&v4 applyLayoutAttributes:a3];
+  [(ICOutlineParentCollectionViewCell *)&v4 applyLayoutAttributes:attributes];
   [(ICOutlineParentCollectionViewCell *)self fixupMasking];
 }
 
@@ -586,17 +586,17 @@ LABEL_37:
 {
   if ([(ICOutlineParentCollectionViewCell *)self isInsetGroupedList])
   {
-    v3 = [(ICOutlineParentCollectionViewCell *)self layer];
-    [v3 setCornerRadius:0.0];
+    layer = [(ICOutlineParentCollectionViewCell *)self layer];
+    [layer setCornerRadius:0.0];
   }
 }
 
 - (id)accessibilityValue
 {
-  v2 = [(ICOutlineParentCollectionViewCell *)self activityIndicatorView];
-  v3 = [v2 isAnimating];
+  activityIndicatorView = [(ICOutlineParentCollectionViewCell *)self activityIndicatorView];
+  isAnimating = [activityIndicatorView isAnimating];
 
-  if (v3)
+  if (isAnimating)
   {
     v4 = +[NSBundle mainBundle];
     v5 = [v4 localizedStringForKey:@"Syncing" value:&stru_100661CF0 table:0];
@@ -619,44 +619,44 @@ LABEL_37:
 
 - (BOOL)_accessibilityOverridesInstructionsHint
 {
-  v2 = [(ICOutlineParentCollectionViewCell *)self tagOperatorButton];
-  v3 = v2 != 0;
+  tagOperatorButton = [(ICOutlineParentCollectionViewCell *)self tagOperatorButton];
+  v3 = tagOperatorButton != 0;
 
   return v3;
 }
 
 - (id)accessibilityHint
 {
-  v3 = [(ICOutlineParentCollectionViewCell *)self tagOperatorButton];
+  tagOperatorButton = [(ICOutlineParentCollectionViewCell *)self tagOperatorButton];
 
-  if (v3)
+  if (tagOperatorButton)
   {
     v4 = +[NSBundle mainBundle];
-    v5 = [v4 localizedStringForKey:@"Double tap to modify selection" value:&stru_100661CF0 table:0];
+    accessibilityHint = [v4 localizedStringForKey:@"Double tap to modify selection" value:&stru_100661CF0 table:0];
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = ICOutlineParentCollectionViewCell;
-    v5 = [(ICOutlineParentCollectionViewCell *)&v7 accessibilityHint];
+    accessibilityHint = [(ICOutlineParentCollectionViewCell *)&v7 accessibilityHint];
   }
 
-  return v5;
+  return accessibilityHint;
 }
 
 - (void)updateSyncActivityIndicator
 {
   if (-[ICOutlineParentCollectionViewCell isSyncActivityVisible](self, "isSyncActivityVisible") && (-[ICOutlineParentCollectionViewCell progressIndicatorTracker](self, "progressIndicatorTracker"), v3 = objc_claimAutoreleasedReturnValue(), v4 = [v3 progressIndicatorShouldAnimate], v3, v4))
   {
-    v5 = [(ICOutlineParentCollectionViewCell *)self activityIndicatorView];
-    [v5 startAnimating];
+    activityIndicatorView = [(ICOutlineParentCollectionViewCell *)self activityIndicatorView];
+    [activityIndicatorView startAnimating];
   }
 
   else
   {
-    v5 = [(ICOutlineParentCollectionViewCell *)self activityIndicatorView];
-    [v5 stopAnimating];
+    activityIndicatorView = [(ICOutlineParentCollectionViewCell *)self activityIndicatorView];
+    [activityIndicatorView stopAnimating];
   }
 
   [(ICOutlineParentCollectionViewCell *)self updateAccessories];

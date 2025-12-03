@@ -1,34 +1,34 @@
 @interface MOTimeContextAnnotationManager
-- (MOTimeContextAnnotationManager)initWithUniverse:(id)a3;
-- (double)overlapsIndexOfBaseEvents:(id)a3 contextEvents:(id)a4;
-- (id)annotateBaseEvents:(id)a3 contextEvents:(id)a4;
-- (id)buildPromptDescriptionForEventBundle:(id)a3;
-- (id)getBaseEvents:(id)a3;
-- (id)getContextEventsForBaseEvents:(id)a3 events:(id)a4 withPatternEvents:(id)a5;
-- (id)groupBaseEvents:(id)a3;
-- (id)intervalsFromEvents:(id)a3 boundaryInterval:(id)a4;
-- (id)timespanFromEvents:(id)a3 boundaryInterval:(id)a4;
-- (void)_performAnnotationWithEvents:(id)a3 withPatternEvents:(id)a4 handler:(id)a5;
-- (void)addPeopleDensityContextForEventBundle:(id)a3 sortedBaseEvents:(id)a4 contextEvents:(id)a5;
-- (void)addSocialContextForEventBundle:(id)a3 sortedBaseEvents:(id)a4 contextEvents:(id)a5;
-- (void)addTimeOverlapsScoreForEventBundle:(id)a3 baseEvents:(id)a4 contextEvents:(id)a5;
-- (void)performAnnotationWithEvents:(id)a3 withPatternEvents:(id)a4 handler:(id)a5;
+- (MOTimeContextAnnotationManager)initWithUniverse:(id)universe;
+- (double)overlapsIndexOfBaseEvents:(id)events contextEvents:(id)contextEvents;
+- (id)annotateBaseEvents:(id)events contextEvents:(id)contextEvents;
+- (id)buildPromptDescriptionForEventBundle:(id)bundle;
+- (id)getBaseEvents:(id)events;
+- (id)getContextEventsForBaseEvents:(id)events events:(id)a4 withPatternEvents:(id)patternEvents;
+- (id)groupBaseEvents:(id)events;
+- (id)intervalsFromEvents:(id)events boundaryInterval:(id)interval;
+- (id)timespanFromEvents:(id)events boundaryInterval:(id)interval;
+- (void)_performAnnotationWithEvents:(id)events withPatternEvents:(id)patternEvents handler:(id)handler;
+- (void)addPeopleDensityContextForEventBundle:(id)bundle sortedBaseEvents:(id)events contextEvents:(id)contextEvents;
+- (void)addSocialContextForEventBundle:(id)bundle sortedBaseEvents:(id)events contextEvents:(id)contextEvents;
+- (void)addTimeOverlapsScoreForEventBundle:(id)bundle baseEvents:(id)events contextEvents:(id)contextEvents;
+- (void)performAnnotationWithEvents:(id)events withPatternEvents:(id)patternEvents handler:(id)handler;
 @end
 
 @implementation MOTimeContextAnnotationManager
 
-- (MOTimeContextAnnotationManager)initWithUniverse:(id)a3
+- (MOTimeContextAnnotationManager)initWithUniverse:(id)universe
 {
   v11.receiver = self;
   v11.super_class = MOTimeContextAnnotationManager;
-  v3 = [(MOAnnotationManager *)&v11 initWithUniverse:a3];
+  v3 = [(MOAnnotationManager *)&v11 initWithUniverse:universe];
   if (v3)
   {
     v4 = objc_opt_class();
     v5 = NSStringFromClass(v4);
-    v6 = [v5 UTF8String];
+    uTF8String = [v5 UTF8String];
     v7 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v8 = dispatch_queue_create(v6, v7);
+    v8 = dispatch_queue_create(uTF8String, v7);
     queue = v3->_queue;
     v3->_queue = v8;
   }
@@ -36,24 +36,24 @@
   return v3;
 }
 
-- (void)performAnnotationWithEvents:(id)a3 withPatternEvents:(id)a4 handler:(id)a5
+- (void)performAnnotationWithEvents:(id)events withPatternEvents:(id)patternEvents handler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(MOTimeContextAnnotationManager *)self queue];
+  eventsCopy = events;
+  patternEventsCopy = patternEvents;
+  handlerCopy = handler;
+  queue = [(MOTimeContextAnnotationManager *)self queue];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = __88__MOTimeContextAnnotationManager_performAnnotationWithEvents_withPatternEvents_handler___block_invoke;
   v15[3] = &unk_1003361C0;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  dispatch_async(v11, v15);
+  v16 = eventsCopy;
+  v17 = patternEventsCopy;
+  v18 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = patternEventsCopy;
+  v14 = eventsCopy;
+  dispatch_async(queue, v15);
 }
 
 void __88__MOTimeContextAnnotationManager_performAnnotationWithEvents_withPatternEvents_handler___block_invoke(uint64_t a1)
@@ -80,52 +80,52 @@ uint64_t __88__MOTimeContextAnnotationManager_performAnnotationWithEvents_withPa
   return result;
 }
 
-- (void)_performAnnotationWithEvents:(id)a3 withPatternEvents:(id)a4 handler:(id)a5
+- (void)_performAnnotationWithEvents:(id)events withPatternEvents:(id)patternEvents handler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
+  patternEventsCopy = patternEvents;
+  handlerCopy = handler;
+  eventsCopy = events;
   v11 = [[NSSortDescriptor alloc] initWithKey:@"startDate" ascending:1];
   v89 = v11;
   v12 = [NSArray arrayWithObjects:&v89 count:1];
-  v13 = [v10 sortedArrayUsingDescriptors:v12];
+  v13 = [eventsCopy sortedArrayUsingDescriptors:v12];
 
   v71 = v13;
   v14 = [(MOTimeContextAnnotationManager *)self getBaseEvents:v13];
   v15 = _mo_log_facility_get_os_log(&MOLogFacilityEventBundleManager);
   v66 = v11;
-  v70 = self;
+  selfCopy = self;
   if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
   {
     v16 = objc_opt_class();
     v17 = NSStringFromClass(v16);
     v18 = [v14 count];
     [v14 firstObject];
-    v20 = v19 = v9;
-    v21 = [v20 startDate];
+    v20 = v19 = handlerCopy;
+    startDate = [v20 startDate];
     [v14 lastObject];
     v23 = v22 = v14;
-    v24 = [v23 endDate];
+    endDate = [v23 endDate];
     *buf = 138413058;
     v82 = v17;
     v83 = 2048;
     v84 = v18;
     v85 = 2112;
-    v86 = v21;
+    v86 = startDate;
     v87 = 2112;
-    v88 = v24;
+    v88 = endDate;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "TimeContext(%@): Base Events, %lu, startDate, %@, endDate, %@", buf, 0x2Au);
 
     v14 = v22;
-    self = v70;
+    self = selfCopy;
 
-    v9 = v19;
+    handlerCopy = v19;
     v11 = v66;
   }
 
   if ([v14 count])
   {
-    v65 = v9;
+    v65 = handlerCopy;
     v25 = [(MOTimeContextAnnotationManager *)self groupBaseEvents:v14];
     v26 = _mo_log_facility_get_os_log(&MOLogFacilityEventBundleManager);
     if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
@@ -177,27 +177,27 @@ uint64_t __88__MOTimeContextAnnotationManager_performAnnotationWithEvents_withPa
             v36 = objc_opt_class();
             v37 = NSStringFromClass(v36);
             v38 = [v34 count];
-            v39 = [v34 firstObject];
-            v40 = [v39 startDate];
+            firstObject = [v34 firstObject];
+            startDate2 = [firstObject startDate];
             [v34 lastObject];
-            v42 = v41 = v8;
-            v43 = [v42 endDate];
+            v42 = v41 = patternEventsCopy;
+            endDate2 = [v42 endDate];
             *buf = 138413058;
             v82 = v37;
             v83 = 2048;
             v84 = v38;
             v85 = 2112;
-            v86 = v40;
+            v86 = startDate2;
             v87 = 2112;
-            v88 = v43;
+            v88 = endDate2;
             _os_log_impl(&_mh_execute_header, v35, OS_LOG_TYPE_INFO, "TimeContext(%@): Base Events, %lu, first.date, %@, last.date, %@", buf, 0x2Au);
 
-            self = v70;
-            v8 = v41;
+            self = selfCopy;
+            patternEventsCopy = v41;
             v11 = v66;
           }
 
-          v44 = [(MOTimeContextAnnotationManager *)self getContextEventsForBaseEvents:v34 events:v71 withPatternEvents:v8];
+          v44 = [(MOTimeContextAnnotationManager *)self getContextEventsForBaseEvents:v34 events:v71 withPatternEvents:patternEventsCopy];
           v45 = _mo_log_facility_get_os_log(&MOLogFacilityEventBundleManager);
           if (os_log_type_enabled(v45, OS_LOG_TYPE_INFO))
           {
@@ -232,15 +232,15 @@ uint64_t __88__MOTimeContextAnnotationManager_performAnnotationWithEvents_withPa
           {
             v55 = objc_opt_class();
             v56 = NSStringFromClass(v55);
-            v57 = [v49 promptLanguage];
-            v58 = [v57 mask];
+            promptLanguage = [v49 promptLanguage];
+            mask = [promptLanguage mask];
             *buf = 138412546;
             v82 = v56;
             v83 = 2112;
-            v84 = v58;
+            v84 = mask;
             _os_log_impl(&_mh_execute_header, v54, OS_LOG_TYPE_INFO, "TimeContext(%@): Prompt Lang., %@", buf, 0x16u);
 
-            self = v70;
+            self = selfCopy;
           }
 
           [(MOTimeContextAnnotationManager *)self addTimeOverlapsScoreForEventBundle:v49 baseEvents:v73 contextEvents:v44];
@@ -274,7 +274,7 @@ uint64_t __88__MOTimeContextAnnotationManager_performAnnotationWithEvents_withPa
     }
 
     v63 = [v68 copy];
-    v9 = v65;
+    handlerCopy = v65;
     v65[2](v65, v63, 0);
 
     v14 = v64;
@@ -282,21 +282,21 @@ uint64_t __88__MOTimeContextAnnotationManager_performAnnotationWithEvents_withPa
 
   else
   {
-    v9[2](v9, &__NSArray0__struct, 0);
+    handlerCopy[2](handlerCopy, &__NSArray0__struct, 0);
   }
 }
 
-- (id)groupBaseEvents:(id)a3
+- (id)groupBaseEvents:(id)events
 {
-  v3 = a3;
-  if ([v3 count])
+  eventsCopy = events;
+  if ([eventsCopy count])
   {
     v4 = objc_opt_new();
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v5 = v3;
+    v5 = eventsCopy;
     v6 = [v5 countByEnumeratingWithState:&v15 objects:v20 count:16];
     if (v6)
     {
@@ -335,7 +335,7 @@ uint64_t __88__MOTimeContextAnnotationManager_performAnnotationWithEvents_withPa
       *buf = 138412546;
       v22 = v13;
       v23 = 2048;
-      v24 = [v3 count];
+      v24 = [eventsCopy count];
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "TimeContext(%@): No grouping is applied, %lu", buf, 0x16u);
     }
 
@@ -345,7 +345,7 @@ uint64_t __88__MOTimeContextAnnotationManager_performAnnotationWithEvents_withPa
   return v11;
 }
 
-- (id)getBaseEvents:(id)a3
+- (id)getBaseEvents:(id)events
 {
   v5 = _mo_log_facility_get_os_log(&MOLogFacilityGeneral);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -359,7 +359,7 @@ uint64_t __88__MOTimeContextAnnotationManager_performAnnotationWithEvents_withPa
   return 0;
 }
 
-- (id)getContextEventsForBaseEvents:(id)a3 events:(id)a4 withPatternEvents:(id)a5
+- (id)getContextEventsForBaseEvents:(id)events events:(id)a4 withPatternEvents:(id)patternEvents
 {
   v7 = _mo_log_facility_get_os_log(&MOLogFacilityGeneral);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -373,7 +373,7 @@ uint64_t __88__MOTimeContextAnnotationManager_performAnnotationWithEvents_withPa
   return 0;
 }
 
-- (id)annotateBaseEvents:(id)a3 contextEvents:(id)a4
+- (id)annotateBaseEvents:(id)events contextEvents:(id)contextEvents
 {
   v6 = _mo_log_facility_get_os_log(&MOLogFacilityGeneral);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -387,7 +387,7 @@ uint64_t __88__MOTimeContextAnnotationManager_performAnnotationWithEvents_withPa
   return 0;
 }
 
-- (id)buildPromptDescriptionForEventBundle:(id)a3
+- (id)buildPromptDescriptionForEventBundle:(id)bundle
 {
   v5 = _mo_log_facility_get_os_log(&MOLogFacilityGeneral);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -401,10 +401,10 @@ uint64_t __88__MOTimeContextAnnotationManager_performAnnotationWithEvents_withPa
   return 0;
 }
 
-- (void)addTimeOverlapsScoreForEventBundle:(id)a3 baseEvents:(id)a4 contextEvents:(id)a5
+- (void)addTimeOverlapsScoreForEventBundle:(id)bundle baseEvents:(id)events contextEvents:(id)contextEvents
 {
-  v8 = a3;
-  [(MOTimeContextAnnotationManager *)self overlapsIndexOfBaseEvents:a4 contextEvents:a5];
+  bundleCopy = bundle;
+  [(MOTimeContextAnnotationManager *)self overlapsIndexOfBaseEvents:events contextEvents:contextEvents];
   v10 = v9;
   v11 = _mo_log_facility_get_os_log(&MOLogFacilityEventBundleManager);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
@@ -416,48 +416,48 @@ uint64_t __88__MOTimeContextAnnotationManager_performAnnotationWithEvents_withPa
     v17 = 2048;
     v18 = v10;
     v19 = 2112;
-    v20 = v8;
+    v20 = bundleCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "TimeContext(%@): overlaps score, %f, bundle, %@", &v15, 0x20u);
   }
 
   v14 = [NSNumber numberWithDouble:v10];
-  [v8 addMetaDataForRankForKey:@"TimeCorrelationScore" value:v14];
+  [bundleCopy addMetaDataForRankForKey:@"TimeCorrelationScore" value:v14];
 }
 
-- (double)overlapsIndexOfBaseEvents:(id)a3 contextEvents:(id)a4
+- (double)overlapsIndexOfBaseEvents:(id)events contextEvents:(id)contextEvents
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  eventsCopy = events;
+  contextEventsCopy = contextEvents;
+  if ([eventsCopy count])
   {
-    if ([v7 count])
+    if ([contextEventsCopy count])
     {
       v8 = [NSDateInterval alloc];
-      v9 = [v6 firstObject];
-      v10 = [v9 startDate];
-      v11 = [v6 lastObject];
-      v12 = [v11 endDate];
-      v13 = [v8 initWithStartDate:v10 endDate:v12];
+      firstObject = [eventsCopy firstObject];
+      startDate = [firstObject startDate];
+      lastObject = [eventsCopy lastObject];
+      endDate = [lastObject endDate];
+      v13 = [v8 initWithStartDate:startDate endDate:endDate];
 
-      v14 = [(MOTimeContextAnnotationManager *)self timespanFromEvents:v6 boundaryInterval:0];
+      v14 = [(MOTimeContextAnnotationManager *)self timespanFromEvents:eventsCopy boundaryInterval:0];
       v53 = v13;
-      v15 = [(MOTimeContextAnnotationManager *)self timespanFromEvents:v7 boundaryInterval:v13];
-      v52 = [v6 arrayByAddingObjectsFromArray:v7];
+      v15 = [(MOTimeContextAnnotationManager *)self timespanFromEvents:contextEventsCopy boundaryInterval:v13];
+      v52 = [eventsCopy arrayByAddingObjectsFromArray:contextEventsCopy];
       v50 = [MOTimeContextAnnotationManager timespanFromEvents:"timespanFromEvents:boundaryInterval:" boundaryInterval:?];
       v55 = v14;
-      v16 = [v14 objectEnumerator];
+      objectEnumerator = [v14 objectEnumerator];
       v54 = v15;
-      v17 = [v15 objectEnumerator];
-      v18 = [v16 nextObject];
-      v19 = [v17 nextObject];
-      v20 = v19;
+      objectEnumerator2 = [v15 objectEnumerator];
+      nextObject = [objectEnumerator nextObject];
+      nextObject2 = [objectEnumerator2 nextObject];
+      v20 = nextObject2;
       v21 = 0.0;
-      if (v18 && v19)
+      if (nextObject && nextObject2)
       {
         v22 = 0.0;
         do
         {
-          v23 = [v18 intersectionWithDateInterval:v20];
+          v23 = [nextObject intersectionWithDateInterval:v20];
           v24 = v23;
           if (v23)
           {
@@ -465,26 +465,26 @@ uint64_t __88__MOTimeContextAnnotationManager_performAnnotationWithEvents_withPa
             v22 = v22 + v25;
           }
 
-          v26 = [v18 endDate];
-          v27 = [v20 endDate];
-          v28 = [v26 isBeforeDate:v27];
+          endDate2 = [nextObject endDate];
+          endDate3 = [v20 endDate];
+          v28 = [endDate2 isBeforeDate:endDate3];
 
           if (v28)
           {
-            v29 = [v16 nextObject];
-            v30 = v18;
-            v18 = v29;
+            nextObject3 = [objectEnumerator nextObject];
+            v30 = nextObject;
+            nextObject = nextObject3;
           }
 
           else
           {
-            v31 = [v17 nextObject];
+            nextObject4 = [objectEnumerator2 nextObject];
             v30 = v20;
-            v20 = v31;
+            v20 = nextObject4;
           }
         }
 
-        while (v18 && v20);
+        while (nextObject && v20);
       }
 
       else
@@ -540,12 +540,12 @@ uint64_t __88__MOTimeContextAnnotationManager_performAnnotationWithEvents_withPa
       {
         v41 = objc_opt_class();
         v51 = NSStringFromClass(v41);
-        v47 = [v6 count];
-        v49 = [v6 firstObject];
-        v42 = [v49 startDate];
-        v48 = [v6 lastObject];
-        v43 = [v48 endDate];
-        v46 = [v7 count];
+        v47 = [eventsCopy count];
+        firstObject2 = [eventsCopy firstObject];
+        startDate2 = [firstObject2 startDate];
+        lastObject2 = [eventsCopy lastObject];
+        endDate4 = [lastObject2 endDate];
+        v46 = [contextEventsCopy count];
         v45 = [v55 count];
         v44 = [v54 count];
         *buf = 138414594;
@@ -553,9 +553,9 @@ uint64_t __88__MOTimeContextAnnotationManager_performAnnotationWithEvents_withPa
         v62 = 2048;
         v63 = v47;
         v64 = 2112;
-        v65 = v42;
+        v65 = startDate2;
         v66 = 2112;
-        v67 = v43;
+        v67 = endDate4;
         v68 = 2048;
         v69 = v46;
         v70 = 2048;
@@ -586,15 +586,15 @@ uint64_t __88__MOTimeContextAnnotationManager_performAnnotationWithEvents_withPa
   return v32;
 }
 
-- (id)timespanFromEvents:(id)a3 boundaryInterval:(id)a4
+- (id)timespanFromEvents:(id)events boundaryInterval:(id)interval
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6 && [v6 count])
+  eventsCopy = events;
+  intervalCopy = interval;
+  if (eventsCopy && [eventsCopy count])
   {
-    v36 = v7;
-    v37 = v6;
-    v8 = [(MOTimeContextAnnotationManager *)self intervalsFromEvents:v6 boundaryInterval:v7];
+    v36 = intervalCopy;
+    v37 = eventsCopy;
+    v8 = [(MOTimeContextAnnotationManager *)self intervalsFromEvents:eventsCopy boundaryInterval:intervalCopy];
     v34 = [NSSortDescriptor sortDescriptorWithKey:@"startDate" ascending:1];
     v44 = v34;
     v9 = [NSArray arrayWithObjects:&v44 count:1];
@@ -602,13 +602,13 @@ uint64_t __88__MOTimeContextAnnotationManager_performAnnotationWithEvents_withPa
     v10 = [v8 sortedArrayUsingDescriptors:v9];
 
     v38 = objc_opt_new();
-    v11 = [v10 firstObject];
-    v12 = [v11 startDate];
+    firstObject = [v10 firstObject];
+    startDate = [firstObject startDate];
 
-    v13 = [v10 firstObject];
-    v14 = [v13 endDate];
+    firstObject2 = [v10 firstObject];
+    endDate = [firstObject2 endDate];
 
-    v15 = [v12 dateByAddingTimeInterval:300.0];
+    v15 = [startDate dateByAddingTimeInterval:300.0];
     v39 = 0u;
     v40 = 0u;
     v41 = 0u;
@@ -629,26 +629,26 @@ uint64_t __88__MOTimeContextAnnotationManager_performAnnotationWithEvents_withPa
           }
 
           v21 = *(*(&v39 + 1) + 8 * i);
-          v22 = [v21 startDate];
-          v23 = [v22 isAfterDate:v15];
+          startDate2 = [v21 startDate];
+          v23 = [startDate2 isAfterDate:v15];
 
           if (v23)
           {
-            if ([v12 isBeforeDate:v14])
+            if ([startDate isBeforeDate:endDate])
             {
-              v24 = [[NSDateInterval alloc] initWithStartDate:v12 endDate:v14];
+              v24 = [[NSDateInterval alloc] initWithStartDate:startDate endDate:endDate];
               [v38 addObject:v24];
             }
 
-            v25 = [v21 startDate];
+            startDate3 = [v21 startDate];
 
-            v12 = v25;
+            startDate = startDate3;
           }
 
           else
           {
-            v26 = [v21 endDate];
-            v27 = [v26 isAfterDate:v15];
+            endDate2 = [v21 endDate];
+            v27 = [endDate2 isAfterDate:v15];
 
             if (!v27)
             {
@@ -656,12 +656,12 @@ uint64_t __88__MOTimeContextAnnotationManager_performAnnotationWithEvents_withPa
             }
           }
 
-          v28 = [v21 endDate];
+          endDate3 = [v21 endDate];
 
-          v29 = [v21 endDate];
-          v30 = [v29 dateByAddingTimeInterval:300.0];
+          endDate4 = [v21 endDate];
+          v30 = [endDate4 dateByAddingTimeInterval:300.0];
 
-          v14 = v28;
+          endDate = endDate3;
           v15 = v30;
         }
 
@@ -671,16 +671,16 @@ uint64_t __88__MOTimeContextAnnotationManager_performAnnotationWithEvents_withPa
       while (v18);
     }
 
-    if (v12 && v14 && [v12 isBeforeDate:v14])
+    if (startDate && endDate && [startDate isBeforeDate:endDate])
     {
-      v31 = [[NSDateInterval alloc] initWithStartDate:v12 endDate:v14];
+      v31 = [[NSDateInterval alloc] initWithStartDate:startDate endDate:endDate];
       [v38 addObject:v31];
     }
 
     v32 = [v38 copy];
 
-    v7 = v36;
-    v6 = v37;
+    intervalCopy = v36;
+    eventsCopy = v37;
   }
 
   else
@@ -691,16 +691,16 @@ uint64_t __88__MOTimeContextAnnotationManager_performAnnotationWithEvents_withPa
   return v32;
 }
 
-- (id)intervalsFromEvents:(id)a3 boundaryInterval:(id)a4
+- (id)intervalsFromEvents:(id)events boundaryInterval:(id)interval
 {
-  v7 = a3;
-  v56 = a4;
+  eventsCopy = events;
+  intervalCopy = interval;
   v55 = objc_opt_new();
   v61 = 0u;
   v62 = 0u;
   v63 = 0u;
   v64 = 0u;
-  v8 = v7;
+  v8 = eventsCopy;
   v9 = [v8 countByEnumeratingWithState:&v61 objects:v72 count:16];
   if (v9)
   {
@@ -721,9 +721,9 @@ uint64_t __88__MOTimeContextAnnotationManager_performAnnotationWithEvents_withPa
 
         v54 = v12;
         v13 = *(*(&v61 + 1) + 8 * v12);
-        v14 = [v13 startDate];
+        startDate = [v13 startDate];
 
-        if (!v14)
+        if (!startDate)
         {
           v15 = _mo_log_facility_get_os_log(&MOLogFacilityGeneral);
           if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -741,9 +741,9 @@ uint64_t __88__MOTimeContextAnnotationManager_performAnnotationWithEvents_withPa
           [v16 handleFailureInMethod:a2 object:self file:@"MOTimeContextAnnotationManager.m" lineNumber:245 description:{@"Event.startDate is nil, event, %@ (in %s:%d)", v13, "-[MOTimeContextAnnotationManager intervalsFromEvents:boundaryInterval:]", 245}];
         }
 
-        v17 = [v13 endDate];
+        endDate = [v13 endDate];
 
-        if (!v17)
+        if (!endDate)
         {
           v18 = _mo_log_facility_get_os_log(&MOLogFacilityGeneral);
           if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -761,13 +761,13 @@ uint64_t __88__MOTimeContextAnnotationManager_performAnnotationWithEvents_withPa
           [v19 handleFailureInMethod:a2 object:self file:@"MOTimeContextAnnotationManager.m" lineNumber:246 description:{@"Event.endDate is nil, event, %@ (in %s:%d)", v13, "-[MOTimeContextAnnotationManager intervalsFromEvents:boundaryInterval:]", 246}];
         }
 
-        v20 = [v13 startDate];
-        if (v20)
+        startDate2 = [v13 startDate];
+        if (startDate2)
         {
-          v21 = v20;
-          v22 = [v13 endDate];
+          v21 = startDate2;
+          endDate2 = [v13 endDate];
 
-          if (v22)
+          if (endDate2)
           {
             if ([v13 category] == 6)
             {
@@ -775,8 +775,8 @@ uint64_t __88__MOTimeContextAnnotationManager_performAnnotationWithEvents_withPa
               v60 = 0u;
               v57 = 0u;
               v58 = 0u;
-              v23 = [v13 mediaPlaySessions];
-              v24 = [v23 countByEnumeratingWithState:&v57 objects:v65 count:16];
+              mediaPlaySessions = [v13 mediaPlaySessions];
+              v24 = [mediaPlaySessions countByEnumeratingWithState:&v57 objects:v65 count:16];
               if (v24)
               {
                 v25 = v24;
@@ -787,13 +787,13 @@ uint64_t __88__MOTimeContextAnnotationManager_performAnnotationWithEvents_withPa
                   {
                     if (*v58 != v26)
                     {
-                      objc_enumerationMutation(v23);
+                      objc_enumerationMutation(mediaPlaySessions);
                     }
 
                     v28 = *(*(&v57 + 1) + 8 * i);
-                    v29 = [v28 startDate];
+                    startDate3 = [v28 startDate];
 
-                    if (!v29)
+                    if (!startDate3)
                     {
                       v30 = _mo_log_facility_get_os_log(&MOLogFacilityGeneral);
                       if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
@@ -811,9 +811,9 @@ uint64_t __88__MOTimeContextAnnotationManager_performAnnotationWithEvents_withPa
                       [v31 handleFailureInMethod:a2 object:self file:@"MOTimeContextAnnotationManager.m" lineNumber:252 description:{@"mediaPlaySession.startDate is nil, mediaPlaySession, %@ (in %s:%d)", v28, "-[MOTimeContextAnnotationManager intervalsFromEvents:boundaryInterval:]", 252}];
                     }
 
-                    v32 = [v28 endDate];
+                    endDate3 = [v28 endDate];
 
-                    if (!v32)
+                    if (!endDate3)
                     {
                       v33 = _mo_log_facility_get_os_log(&MOLogFacilityGeneral);
                       if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
@@ -831,20 +831,20 @@ uint64_t __88__MOTimeContextAnnotationManager_performAnnotationWithEvents_withPa
                       [v34 handleFailureInMethod:a2 object:self file:@"MOTimeContextAnnotationManager.m" lineNumber:253 description:{@"mediaPlaySession.endDate is nil, mediaPlaySession, %@ (in %s:%d)", v28, "-[MOTimeContextAnnotationManager intervalsFromEvents:boundaryInterval:]", 253}];
                     }
 
-                    v35 = [v28 startDate];
-                    if (v35)
+                    startDate4 = [v28 startDate];
+                    if (startDate4)
                     {
-                      v36 = v35;
-                      v37 = [v28 endDate];
+                      v36 = startDate4;
+                      endDate4 = [v28 endDate];
 
-                      if (v37)
+                      if (endDate4)
                       {
                         v38 = [NSDateInterval alloc];
-                        v39 = [v28 startDate];
-                        v40 = [v28 endDate];
-                        v41 = [v38 initWithStartDate:v39 endDate:v40];
+                        startDate5 = [v28 startDate];
+                        endDate5 = [v28 endDate];
+                        v41 = [v38 initWithStartDate:startDate5 endDate:endDate5];
 
-                        if (!v56 || [v56 intersectsDateInterval:v41])
+                        if (!intervalCopy || [intervalCopy intersectsDateInterval:v41])
                         {
                           [v55 addObject:v41];
                         }
@@ -852,7 +852,7 @@ uint64_t __88__MOTimeContextAnnotationManager_performAnnotationWithEvents_withPa
                     }
                   }
 
-                  v25 = [v23 countByEnumeratingWithState:&v57 objects:v65 count:16];
+                  v25 = [mediaPlaySessions countByEnumeratingWithState:&v57 objects:v65 count:16];
                 }
 
                 while (v25);
@@ -864,31 +864,31 @@ uint64_t __88__MOTimeContextAnnotationManager_performAnnotationWithEvents_withPa
 
             else
             {
-              v42 = [v13 startDate];
-              v43 = [v13 endDate];
-              v44 = [v42 isBeforeDate:v43];
+              startDate6 = [v13 startDate];
+              endDate6 = [v13 endDate];
+              v44 = [startDate6 isBeforeDate:endDate6];
 
               if (v44)
               {
                 v45 = [NSDateInterval alloc];
-                v46 = [v13 startDate];
-                v47 = [v13 endDate];
-                v23 = [v45 initWithStartDate:v46 endDate:v47];
+                startDate7 = [v13 startDate];
+                endDate7 = [v13 endDate];
+                mediaPlaySessions = [v45 initWithStartDate:startDate7 endDate:endDate7];
 
-                [v55 addObject:v23];
+                [v55 addObject:mediaPlaySessions];
               }
 
               else
               {
-                v23 = _mo_log_facility_get_os_log(&MOLogFacilityEventBundleManager);
-                if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
+                mediaPlaySessions = _mo_log_facility_get_os_log(&MOLogFacilityEventBundleManager);
+                if (os_log_type_enabled(mediaPlaySessions, OS_LOG_TYPE_ERROR))
                 {
                   v48 = NSStringFromSelector(a2);
                   *buf = 138412546;
                   v67 = v48;
                   v68 = 2112;
                   v69 = v13;
-                  _os_log_error_impl(&_mh_execute_header, v23, OS_LOG_TYPE_ERROR, "%@, discard event with wrong start/end date, event, %@ ", buf, 0x16u);
+                  _os_log_error_impl(&_mh_execute_header, mediaPlaySessions, OS_LOG_TYPE_ERROR, "%@, discard event with wrong start/end date, event, %@ ", buf, 0x16u);
                 }
               }
             }
@@ -910,17 +910,17 @@ uint64_t __88__MOTimeContextAnnotationManager_performAnnotationWithEvents_withPa
   return v49;
 }
 
-- (void)addSocialContextForEventBundle:(id)a3 sortedBaseEvents:(id)a4 contextEvents:(id)a5
+- (void)addSocialContextForEventBundle:(id)bundle sortedBaseEvents:(id)events contextEvents:(id)contextEvents
 {
-  v52 = a3;
-  v7 = a4;
-  v8 = a5;
-  v9 = [v7 firstObject];
-  v10 = [v9 startDate];
+  bundleCopy = bundle;
+  eventsCopy = events;
+  contextEventsCopy = contextEvents;
+  firstObject = [eventsCopy firstObject];
+  startDate = [firstObject startDate];
 
-  v51 = v7;
-  v11 = [v7 lastObject];
-  v12 = [v11 endDate];
+  v51 = eventsCopy;
+  lastObject = [eventsCopy lastObject];
+  endDate = [lastObject endDate];
 
   v13 = _mo_log_facility_get_os_log(&MOLogFacilityEventBundleManager);
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
@@ -930,9 +930,9 @@ uint64_t __88__MOTimeContextAnnotationManager_performAnnotationWithEvents_withPa
     *buf = 138412802;
     v64 = v15;
     v65 = 2112;
-    v66 = *&v10;
+    v66 = *&startDate;
     v67 = 2112;
-    v68 = *&v12;
+    v68 = *&endDate;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "TimeContext(%@): bundle startDate, %@, endDate, %@", buf, 0x20u);
   }
 
@@ -940,7 +940,7 @@ uint64_t __88__MOTimeContextAnnotationManager_performAnnotationWithEvents_withPa
   v62 = 0u;
   v59 = 0u;
   v60 = 0u;
-  v16 = v8;
+  v16 = contextEventsCopy;
   v17 = [v16 countByEnumeratingWithState:&v59 objects:v79 count:16];
   if (v17)
   {
@@ -950,7 +950,7 @@ uint64_t __88__MOTimeContextAnnotationManager_performAnnotationWithEvents_withPa
     v21 = 0.0;
     v22 = 0.0;
     v54 = v16;
-    v55 = v10;
+    v55 = startDate;
     v53 = *v60;
     do
     {
@@ -966,31 +966,31 @@ uint64_t __88__MOTimeContextAnnotationManager_performAnnotationWithEvents_withPa
         v24 = *(*(&v59 + 1) + 8 * v23);
         if ([v24 category] == 15)
         {
-          v25 = [v24 startDate];
-          if ([v25 isAfterDate:v10])
+          startDate2 = [v24 startDate];
+          if ([startDate2 isAfterDate:startDate])
           {
-            v26 = [v24 startDate];
+            startDate3 = [v24 startDate];
           }
 
           else
           {
-            v26 = v10;
+            startDate3 = startDate;
           }
 
-          v27 = v26;
+          v27 = startDate3;
 
-          v28 = [v24 endDate];
-          if ([v28 isBeforeDate:v12])
+          endDate2 = [v24 endDate];
+          if ([endDate2 isBeforeDate:endDate])
           {
-            v29 = [v24 endDate];
+            endDate3 = [v24 endDate];
           }
 
           else
           {
-            v29 = v12;
+            endDate3 = endDate;
           }
 
-          v30 = v29;
+          v30 = endDate3;
 
           [v30 timeIntervalSinceDate:v27];
           v32 = v31;
@@ -1000,20 +1000,20 @@ uint64_t __88__MOTimeContextAnnotationManager_performAnnotationWithEvents_withPa
           {
             v34 = objc_opt_class();
             v35 = NSStringFromClass(v34);
-            v36 = [v24 eventIdentifier];
-            v37 = [v24 startDate];
-            v38 = [v24 endDate];
+            eventIdentifier = [v24 eventIdentifier];
+            startDate4 = [v24 startDate];
+            endDate4 = [v24 endDate];
             [v24 pCount];
             v56 = v19;
-            v40 = v39 = v12;
+            v40 = v39 = endDate;
             *buf = 138414082;
             v64 = v35;
             v65 = 2112;
-            v66 = *&v36;
+            v66 = *&eventIdentifier;
             v67 = 2112;
-            v68 = *&v37;
+            v68 = *&startDate4;
             v69 = 2112;
-            v70 = v38;
+            v70 = endDate4;
             v71 = 2112;
             v72 = v40;
             v73 = 2112;
@@ -1024,24 +1024,24 @@ uint64_t __88__MOTimeContextAnnotationManager_performAnnotationWithEvents_withPa
             v78 = v32;
             _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_INFO, "TimeContext(%@): social context event identifier, %@, startDate, %@, endDate, %@, p count, %@, overlap startDate, %@, endDate %@, overlap interval, %.1f", buf, 0x52u);
 
-            v12 = v39;
+            endDate = v39;
             v19 = v56;
 
             v20 = v53;
-            v10 = v55;
+            startDate = v55;
 
             v16 = v54;
           }
 
-          v41 = [v24 pCount];
-          v22 = v22 + [v41 unsignedIntValue] * v32;
+          pCount = [v24 pCount];
+          v22 = v22 + [pCount unsignedIntValue] * v32;
 
-          v42 = [v24 pCount];
-          v43 = [v42 unsignedIntValue];
+          pCount2 = [v24 pCount];
+          unsignedIntValue = [pCount2 unsignedIntValue];
 
-          if (v19 <= v43)
+          if (v19 <= unsignedIntValue)
           {
-            v19 = v43;
+            v19 = unsignedIntValue;
           }
 
           v21 = v21 + v32;
@@ -1093,28 +1093,28 @@ uint64_t __88__MOTimeContextAnnotationManager_performAnnotationWithEvents_withPa
   }
 
   v48 = [NSNumber numberWithDouble:v22];
-  [v52 addMetaDataForRankForKey:@"PeopleCountWeightedSum" value:v48];
+  [bundleCopy addMetaDataForRankForKey:@"PeopleCountWeightedSum" value:v48];
 
   v49 = [NSNumber numberWithDouble:v44];
-  [v52 addMetaDataForRankForKey:@"PeopleCountWeightedAverage" value:v49];
+  [bundleCopy addMetaDataForRankForKey:@"PeopleCountWeightedAverage" value:v49];
 
   v50 = [NSNumber numberWithUnsignedInteger:v19];
-  [v52 addMetaDataForRankForKey:@"PeopleCountMax" value:v50];
+  [bundleCopy addMetaDataForRankForKey:@"PeopleCountMax" value:v50];
 }
 
-- (void)addPeopleDensityContextForEventBundle:(id)a3 sortedBaseEvents:(id)a4 contextEvents:(id)a5
+- (void)addPeopleDensityContextForEventBundle:(id)bundle sortedBaseEvents:(id)events contextEvents:(id)contextEvents
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v8 firstObject];
-  v11 = [v10 startDate];
+  bundleCopy = bundle;
+  eventsCopy = events;
+  contextEventsCopy = contextEvents;
+  firstObject = [eventsCopy firstObject];
+  startDate = [firstObject startDate];
 
-  v12 = [v8 lastObject];
-  v13 = [v12 endDate];
+  lastObject = [eventsCopy lastObject];
+  endDate = [lastObject endDate];
 
   v14 = _mo_log_facility_get_os_log(&MOLogFacilityEventBundleManager);
-  v69 = v13;
+  v69 = endDate;
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
     v15 = objc_opt_class();
@@ -1122,31 +1122,31 @@ uint64_t __88__MOTimeContextAnnotationManager_performAnnotationWithEvents_withPa
     *buf = 138412802;
     v78 = v16;
     v79 = 2112;
-    v80 = *&v11;
+    v80 = *&startDate;
     v81 = 2112;
     v82 = *&v69;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "TimeContext(%@): bundle startDate, %@, endDate, %@", buf, 0x20u);
 
-    v13 = v69;
+    endDate = v69;
   }
 
   v75 = 0u;
   v76 = 0u;
   v73 = 0u;
   v74 = 0u;
-  v17 = v9;
+  v17 = contextEventsCopy;
   v18 = [v17 countByEnumeratingWithState:&v73 objects:v93 count:16];
   if (v18)
   {
     v19 = v18;
-    v66 = v8;
-    v67 = v7;
+    v66 = eventsCopy;
+    v67 = bundleCopy;
     v20 = *v74;
     v21 = 0.0;
     v22 = 0.0;
     v23 = 0.0;
     v24 = 0.0;
-    v68 = v11;
+    v68 = startDate;
     v70 = *v74;
     v71 = v17;
     do
@@ -1163,31 +1163,31 @@ uint64_t __88__MOTimeContextAnnotationManager_performAnnotationWithEvents_withPa
         v26 = *(*(&v73 + 1) + 8 * v25);
         if ([v26 category] == 23)
         {
-          v27 = [v26 startDate];
-          if ([v27 isAfterDate:v11])
+          startDate2 = [v26 startDate];
+          if ([startDate2 isAfterDate:startDate])
           {
-            v28 = [v26 startDate];
+            startDate3 = [v26 startDate];
           }
 
           else
           {
-            v28 = v11;
+            startDate3 = startDate;
           }
 
-          v29 = v28;
+          v29 = startDate3;
 
-          v30 = [v26 endDate];
-          if ([v30 isBeforeDate:v13])
+          endDate2 = [v26 endDate];
+          if ([endDate2 isBeforeDate:endDate])
           {
-            v31 = [v26 endDate];
+            endDate3 = [v26 endDate];
           }
 
           else
           {
-            v31 = v13;
+            endDate3 = endDate;
           }
 
-          v32 = v31;
+          v32 = endDate3;
 
           [v32 timeIntervalSinceDate:v29];
           v34 = v33;
@@ -1196,20 +1196,20 @@ uint64_t __88__MOTimeContextAnnotationManager_performAnnotationWithEvents_withPa
           {
             v36 = objc_opt_class();
             v37 = NSStringFromClass(v36);
-            v38 = [v26 eventIdentifier];
-            v39 = [v26 startDate];
-            v40 = [v26 endDate];
-            v41 = [v26 densityScore];
+            eventIdentifier = [v26 eventIdentifier];
+            startDate4 = [v26 startDate];
+            endDate4 = [v26 endDate];
+            densityScore = [v26 densityScore];
             *buf = 138414082;
             v78 = v37;
             v79 = 2112;
-            v80 = *&v38;
+            v80 = *&eventIdentifier;
             v81 = 2112;
-            v82 = *&v39;
+            v82 = *&startDate4;
             v83 = 2112;
-            v84 = *&v40;
+            v84 = *&endDate4;
             v85 = 2112;
-            v86 = *&v41;
+            v86 = *&densityScore;
             v87 = 2112;
             v88 = *&v29;
             v89 = 2112;
@@ -1218,29 +1218,29 @@ uint64_t __88__MOTimeContextAnnotationManager_performAnnotationWithEvents_withPa
             v92 = v34;
             _os_log_impl(&_mh_execute_header, v35, OS_LOG_TYPE_INFO, "TimeContext(%@): people density event identifier, %@, startDate, %@, endDate, %@, p count, %@, overlap startDate, %@, endDate %@, overlap interval, %.1f", buf, 0x52u);
 
-            v13 = v69;
-            v11 = v68;
+            endDate = v69;
+            startDate = v68;
           }
 
-          v42 = [v26 densityScore];
-          [v42 doubleValue];
+          densityScore2 = [v26 densityScore];
+          [densityScore2 doubleValue];
           v24 = v24 + v43 * v34;
 
-          v44 = [v26 endDate];
-          v45 = [v26 startDate];
-          [v44 timeIntervalSinceDate:v45];
+          endDate5 = [v26 endDate];
+          startDate5 = [v26 startDate];
+          [endDate5 timeIntervalSinceDate:startDate5];
           v47 = v46;
 
-          v48 = [v26 densityScanDuration];
-          [v48 doubleValue];
+          densityScanDuration = [v26 densityScanDuration];
+          [densityScanDuration doubleValue];
           v50 = v49 / v47;
 
-          v51 = [v26 densityScore];
-          [v51 doubleValue];
+          densityScore3 = [v26 densityScore];
+          [densityScore3 doubleValue];
           v23 = v23 + v50 * v52 * v34;
 
-          v53 = [v26 densityScore];
-          [v53 doubleValue];
+          densityScore4 = [v26 densityScore];
+          [densityScore4 doubleValue];
           v55 = v54;
 
           if (v21 < v55)
@@ -1284,8 +1284,8 @@ uint64_t __88__MOTimeContextAnnotationManager_performAnnotationWithEvents_withPa
       v57 = 0.0;
     }
 
-    v8 = v66;
-    v7 = v67;
+    eventsCopy = v66;
+    bundleCopy = v67;
   }
 
   else
@@ -1319,19 +1319,19 @@ uint64_t __88__MOTimeContextAnnotationManager_performAnnotationWithEvents_withPa
   }
 
   v61 = [NSNumber numberWithDouble:v24];
-  [v7 addMetaDataForRankForKey:@"PeopleDensityWeightedSum" value:v61];
+  [bundleCopy addMetaDataForRankForKey:@"PeopleDensityWeightedSum" value:v61];
 
   v62 = [NSNumber numberWithDouble:v56];
-  [v7 addMetaDataForRankForKey:@"PeopleDensityWeightedAverage" value:v62];
+  [bundleCopy addMetaDataForRankForKey:@"PeopleDensityWeightedAverage" value:v62];
 
   v63 = [NSNumber numberWithDouble:v21];
-  [v7 addMetaDataForRankForKey:@"PeopleDensityMax" value:v63];
+  [bundleCopy addMetaDataForRankForKey:@"PeopleDensityMax" value:v63];
 
   v64 = [NSNumber numberWithDouble:v23];
-  [v7 addMetaDataForRankForKey:@"PeopleDensityWeightedConfidenceSum" value:v64];
+  [bundleCopy addMetaDataForRankForKey:@"PeopleDensityWeightedConfidenceSum" value:v64];
 
   v65 = [NSNumber numberWithDouble:v57];
-  [v7 addMetaDataForRankForKey:@"PeopleDensityWeightedConfidenceAverage" value:v65];
+  [bundleCopy addMetaDataForRankForKey:@"PeopleDensityWeightedConfidenceAverage" value:v65];
 }
 
 @end

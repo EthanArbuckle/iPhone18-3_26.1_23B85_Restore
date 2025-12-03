@@ -1,26 +1,26 @@
 @interface ICChangeDatesActivity
-- (ICChangeDatesActivity)initWithObject:(id)a3 activityType:(unsigned __int8)a4;
+- (ICChangeDatesActivity)initWithObject:(id)object activityType:(unsigned __int8)type;
 - (id)activityViewController;
-- (void)setCreationDateForAttachmentObject:(id)a3;
-- (void)setCreationDateForNoteObject:(id)a3;
-- (void)setModificationDateForAttachmentObject:(id)a3;
-- (void)setModificationDateForNoteObject:(id)a3;
+- (void)setCreationDateForAttachmentObject:(id)object;
+- (void)setCreationDateForNoteObject:(id)object;
+- (void)setModificationDateForAttachmentObject:(id)object;
+- (void)setModificationDateForNoteObject:(id)object;
 @end
 
 @implementation ICChangeDatesActivity
 
-- (ICChangeDatesActivity)initWithObject:(id)a3 activityType:(unsigned __int8)a4
+- (ICChangeDatesActivity)initWithObject:(id)object activityType:(unsigned __int8)type
 {
-  v4 = a4;
-  v6 = a3;
+  typeCopy = type;
+  objectCopy = object;
   v10.receiver = self;
   v10.super_class = ICChangeDatesActivity;
   v7 = [(UIActivity *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    [(ICChangeDatesActivity *)v7 setRepresentedObject:v6];
-    [(ICChangeDatesActivity *)v8 setType:v4];
+    [(ICChangeDatesActivity *)v7 setRepresentedObject:objectCopy];
+    [(ICChangeDatesActivity *)v8 setType:typeCopy];
   }
 
   return v8;
@@ -31,8 +31,8 @@
   v3 = [MEMORY[0x1E69DC650] alertControllerWithTitle:@"\n\n\n\n\n\n\n\n\n\n\n\nChange Dates" message:@"Change Modification Date or Creation Date" preferredStyle:0];
   v4 = objc_alloc_init(MEMORY[0x1E69DC920]);
   [v4 setDatePickerMode:2];
-  v5 = [v3 view];
-  [v5 addSubview:v4];
+  view = [v3 view];
+  [view addSubview:v4];
 
   v6 = MEMORY[0x1E69DC648];
   v19[0] = MEMORY[0x1E69E9820];
@@ -50,11 +50,11 @@
   v14 = 3221225472;
   v15 = __47__ICChangeDatesActivity_activityViewController__block_invoke_2;
   v16 = &unk_1E846D5C0;
-  v17 = self;
+  selfCopy = self;
   v18 = v7;
   v10 = v7;
   v11 = [v9 actionWithTitle:@"Set Creation Date" style:0 handler:&v13];
-  [v3 addAction:{v11, v13, v14, v15, v16, v17}];
+  [v3 addAction:{v11, v13, v14, v15, v16, selfCopy}];
 
   return v3;
 }
@@ -105,32 +105,32 @@ void __47__ICChangeDatesActivity_activityViewController__block_invoke_2(uint64_t
   }
 }
 
-- (void)setModificationDateForNoteObject:(id)a3
+- (void)setModificationDateForNoteObject:(id)object
 {
-  v14 = a3;
-  v4 = [(ICChangeDatesActivity *)self representedObject];
+  objectCopy = object;
+  representedObject = [(ICChangeDatesActivity *)self representedObject];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  v6 = [(ICChangeDatesActivity *)self representedObject];
-  v7 = v6;
+  representedObject2 = [(ICChangeDatesActivity *)self representedObject];
+  representedObject3 = representedObject2;
   if (isKindOfClass)
   {
-    [v6 setModificationDate:v14];
-    v8 = [v7 creationDate];
-    v9 = [v8 ic_isLaterThanDate:v14];
+    [representedObject2 setModificationDate:objectCopy];
+    creationDate = [representedObject3 creationDate];
+    v9 = [creationDate ic_isLaterThanDate:objectCopy];
 
     if ((v9 & 1) == 0)
     {
 LABEL_4:
-      v10 = [v7 managedObjectContext];
-      [v10 ic_save];
+      managedObjectContext = [representedObject3 managedObjectContext];
+      [managedObjectContext ic_save];
 
       goto LABEL_8;
     }
 
 LABEL_3:
-    [v7 setCreationDate:v14];
+    [representedObject3 setCreationDate:objectCopy];
     goto LABEL_4;
   }
 
@@ -139,10 +139,10 @@ LABEL_3:
 
   if (v11)
   {
-    v7 = [(ICChangeDatesActivity *)self representedObject];
-    [v7 setModificationDate:v14];
-    v12 = [v7 creationDate];
-    v13 = [v12 ic_isLaterThanDate:v14];
+    representedObject3 = [(ICChangeDatesActivity *)self representedObject];
+    [representedObject3 setModificationDate:objectCopy];
+    creationDate2 = [representedObject3 creationDate];
+    v13 = [creationDate2 ic_isLaterThanDate:objectCopy];
 
     if (!v13)
     {
@@ -155,32 +155,32 @@ LABEL_3:
 LABEL_8:
 }
 
-- (void)setCreationDateForNoteObject:(id)a3
+- (void)setCreationDateForNoteObject:(id)object
 {
-  v14 = a3;
-  v4 = [(ICChangeDatesActivity *)self representedObject];
+  objectCopy = object;
+  representedObject = [(ICChangeDatesActivity *)self representedObject];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  v6 = [(ICChangeDatesActivity *)self representedObject];
-  v7 = v6;
+  representedObject2 = [(ICChangeDatesActivity *)self representedObject];
+  representedObject3 = representedObject2;
   if (isKindOfClass)
   {
-    [v6 setCreationDate:v14];
-    v8 = [v7 modificationDate];
-    v9 = [v8 ic_isEarlierThanDate:v14];
+    [representedObject2 setCreationDate:objectCopy];
+    modificationDate = [representedObject3 modificationDate];
+    v9 = [modificationDate ic_isEarlierThanDate:objectCopy];
 
     if ((v9 & 1) == 0)
     {
 LABEL_4:
-      v10 = [v7 managedObjectContext];
-      [v10 ic_save];
+      managedObjectContext = [representedObject3 managedObjectContext];
+      [managedObjectContext ic_save];
 
       goto LABEL_8;
     }
 
 LABEL_3:
-    [v7 setModificationDate:v14];
+    [representedObject3 setModificationDate:objectCopy];
     goto LABEL_4;
   }
 
@@ -189,10 +189,10 @@ LABEL_3:
 
   if (v11)
   {
-    v7 = [(ICChangeDatesActivity *)self representedObject];
-    [v7 setCreationDate:v14];
-    v12 = [v7 modificationDate];
-    v13 = [v12 ic_isEarlierThanDate:v14];
+    representedObject3 = [(ICChangeDatesActivity *)self representedObject];
+    [representedObject3 setCreationDate:objectCopy];
+    modificationDate2 = [representedObject3 modificationDate];
+    v13 = [modificationDate2 ic_isEarlierThanDate:objectCopy];
 
     if (!v13)
     {
@@ -205,51 +205,51 @@ LABEL_3:
 LABEL_8:
 }
 
-- (void)setModificationDateForAttachmentObject:(id)a3
+- (void)setModificationDateForAttachmentObject:(id)object
 {
-  v10 = a3;
-  v4 = [(ICChangeDatesActivity *)self representedObject];
+  objectCopy = object;
+  representedObject = [(ICChangeDatesActivity *)self representedObject];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v6 = [(ICChangeDatesActivity *)self representedObject];
-    [v6 setModificationDate:v10];
-    v7 = [v6 creationDate];
-    v8 = [v7 ic_isLaterThanDate:v10];
+    representedObject2 = [(ICChangeDatesActivity *)self representedObject];
+    [representedObject2 setModificationDate:objectCopy];
+    creationDate = [representedObject2 creationDate];
+    v8 = [creationDate ic_isLaterThanDate:objectCopy];
 
     if (v8)
     {
-      [v6 setCreationDate:v10];
+      [representedObject2 setCreationDate:objectCopy];
     }
 
-    v9 = [v6 managedObjectContext];
-    [v9 ic_save];
+    managedObjectContext = [representedObject2 managedObjectContext];
+    [managedObjectContext ic_save];
   }
 }
 
-- (void)setCreationDateForAttachmentObject:(id)a3
+- (void)setCreationDateForAttachmentObject:(id)object
 {
-  v10 = a3;
-  v4 = [(ICChangeDatesActivity *)self representedObject];
+  objectCopy = object;
+  representedObject = [(ICChangeDatesActivity *)self representedObject];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v6 = [(ICChangeDatesActivity *)self representedObject];
-    [v6 setCreationDate:v10];
-    v7 = [v6 modificationDate];
-    v8 = [v7 ic_isEarlierThanDate:v10];
+    representedObject2 = [(ICChangeDatesActivity *)self representedObject];
+    [representedObject2 setCreationDate:objectCopy];
+    modificationDate = [representedObject2 modificationDate];
+    v8 = [modificationDate ic_isEarlierThanDate:objectCopy];
 
     if (v8)
     {
-      [v6 setModificationDate:v10];
+      [representedObject2 setModificationDate:objectCopy];
     }
 
-    v9 = [v6 managedObjectContext];
-    [v9 ic_save];
+    managedObjectContext = [representedObject2 managedObjectContext];
+    [managedObjectContext ic_save];
   }
 }
 

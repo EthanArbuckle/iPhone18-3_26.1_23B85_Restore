@@ -1,7 +1,7 @@
 @interface UIPDFViewManager
 + (id)sharedViewManager;
-- (void)makeViewActive:(id)a3;
-- (void)viewReleased:(id)a3;
+- (void)makeViewActive:(id)active;
+- (void)viewReleased:(id)released;
 @end
 
 @implementation UIPDFViewManager
@@ -23,29 +23,29 @@ UIPDFViewManager *__37__UIPDFViewManager_sharedViewManager__block_invoke()
   return result;
 }
 
-- (void)makeViewActive:(id)a3
+- (void)makeViewActive:(id)active
 {
   activeView = self->_activeView;
   objc_sync_enter(activeView);
   v6 = self->_activeView;
-  if (v6 != a3)
+  if (v6 != active)
   {
     if (v6)
     {
       [(UIView *)v6 clearSelection];
     }
 
-    self->_activeView = a3;
+    self->_activeView = active;
   }
 
   objc_sync_exit(activeView);
 }
 
-- (void)viewReleased:(id)a3
+- (void)viewReleased:(id)released
 {
   activeView = self->_activeView;
   objc_sync_enter(activeView);
-  if (self->_activeView == a3)
+  if (self->_activeView == released)
   {
     self->_activeView = 0;
   }

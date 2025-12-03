@@ -1,30 +1,30 @@
 @interface NRRegistry
-+ (id)getReferencedSecureProperties:(id)a3 fromDiff:(id)a4;
-+ (id)getReferencedSecurePropertyIDsFromDiff:(id)a3;
-+ (int)registerNotifyTokenWithName:(id)a3 withQueue:(id)a4 withBlock:(id)a5;
-+ (unint64_t)readNotifyToken:(int)a3;
-+ (void)fixSecurePropertiesWithCollection:(id)a3 secureProperties:(id)a4 insecurePropertyNames:(id)a5;
-- (BOOL)enqueueUnlessSuspended:(id)a3;
++ (id)getReferencedSecureProperties:(id)properties fromDiff:(id)diff;
++ (id)getReferencedSecurePropertyIDsFromDiff:(id)diff;
++ (int)registerNotifyTokenWithName:(id)name withQueue:(id)queue withBlock:(id)block;
++ (unint64_t)readNotifyToken:(int)token;
++ (void)fixSecurePropertiesWithCollection:(id)collection secureProperties:(id)properties insecurePropertyNames:(id)names;
+- (BOOL)enqueueUnlessSuspended:(id)suspended;
 - (NRMutableDeviceCollection)collection;
-- (NRRegistry)initWithParameters:(id)a3;
+- (NRRegistry)initWithParameters:(id)parameters;
 - (NRSecureDevicePropertyStore)secureProperties;
-- (id)addDiffObserverWithWriteBlock:(id)a3;
-- (id)addSecurePropertiesObserverWithReadBlock:(id)a3;
-- (void)_notifyDiffObserversWithDiff:(id)a3 deviceCollection:(id)a4 secureProperties:(id)a5;
-- (void)_notifyObserversSecurePropertiesAreAvailableWithCollection:(id)a3 secureProperties:(id)a4;
+- (id)addDiffObserverWithWriteBlock:(id)block;
+- (id)addSecurePropertiesObserverWithReadBlock:(id)block;
+- (void)_notifyDiffObserversWithDiff:(id)diff deviceCollection:(id)collection secureProperties:(id)properties;
+- (void)_notifyObserversSecurePropertiesAreAvailableWithCollection:(id)collection secureProperties:(id)properties;
 - (void)_startQueue;
-- (void)deasyncGrabRegistryWithReadBlock:(id)a3;
-- (void)deasyncGrabRegistryWithWriteBlock:(id)a3;
-- (void)grabRegistryWithReadBlock:(id)a3;
-- (void)grabRegistryWithReadBlockAsync:(id)a3;
-- (void)grabRegistryWithWriteBlockAsync:(id)a3;
+- (void)deasyncGrabRegistryWithReadBlock:(id)block;
+- (void)deasyncGrabRegistryWithWriteBlock:(id)block;
+- (void)grabRegistryWithReadBlock:(id)block;
+- (void)grabRegistryWithReadBlockAsync:(id)async;
+- (void)grabRegistryWithWriteBlockAsync:(id)async;
 - (void)invalidate;
-- (void)performUnderCollectionLock:(id)a3;
-- (void)removeDiffObserver:(id)a3;
-- (void)removeSecurePropertiesObserver:(id)a3;
-- (void)setCollection:(id)a3;
-- (void)setQueueCollection:(id)a3;
-- (void)setSecureProperties:(id)a3;
+- (void)performUnderCollectionLock:(id)lock;
+- (void)removeDiffObserver:(id)observer;
+- (void)removeSecurePropertiesObserver:(id)observer;
+- (void)setCollection:(id)collection;
+- (void)setQueueCollection:(id)collection;
+- (void)setSecureProperties:(id)properties;
 @end
 
 @implementation NRRegistry
@@ -107,18 +107,18 @@ void __28__NRRegistry__supportsWatch__block_invoke()
   }
 }
 
-- (void)deasyncGrabRegistryWithReadBlock:(id)a3
+- (void)deasyncGrabRegistryWithReadBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = dispatch_semaphore_create(0);
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __53__NRRegistry_sync__deasyncGrabRegistryWithReadBlock___block_invoke;
   v8[3] = &unk_1E86DB3C8;
   v9 = v5;
-  v10 = v4;
+  v10 = blockCopy;
   v6 = v5;
-  v7 = v4;
+  v7 = blockCopy;
   [(NRRegistry *)self grabRegistryWithReadBlockAsync:v8];
   dispatch_semaphore_wait(v6, 0xFFFFFFFFFFFFFFFFLL);
 }
@@ -131,18 +131,18 @@ intptr_t __53__NRRegistry_sync__deasyncGrabRegistryWithReadBlock___block_invoke(
   return dispatch_semaphore_signal(v2);
 }
 
-- (void)deasyncGrabRegistryWithWriteBlock:(id)a3
+- (void)deasyncGrabRegistryWithWriteBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = dispatch_semaphore_create(0);
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __54__NRRegistry_sync__deasyncGrabRegistryWithWriteBlock___block_invoke;
   v8[3] = &unk_1E86DB3F0;
   v9 = v5;
-  v10 = v4;
+  v10 = blockCopy;
   v6 = v5;
-  v7 = v4;
+  v7 = blockCopy;
   [(NRRegistry *)self grabRegistryWithWriteBlockAsync:v8];
   dispatch_semaphore_wait(v6, 0xFFFFFFFFFFFFFFFFLL);
 }
@@ -157,19 +157,19 @@ id __54__NRRegistry_sync__deasyncGrabRegistryWithWriteBlock___block_invoke(uint6
   return v4;
 }
 
-- (NRRegistry)initWithParameters:(id)a3
+- (NRRegistry)initWithParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   v18.receiver = self;
   v18.super_class = NRRegistry;
   v5 = [(NRRegistry *)&v18 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"NRRegistryPlatformSupportsWatch"];
+    v6 = [parametersCopy objectForKeyedSubscript:@"NRRegistryPlatformSupportsWatch"];
     v7 = v6;
     if (v6)
     {
-      v8 = [v6 BOOLValue];
+      bOOLValue = [v6 BOOLValue];
     }
 
     else
@@ -180,10 +180,10 @@ id __54__NRRegistry_sync__deasyncGrabRegistryWithWriteBlock___block_invoke(uint6
         dispatch_once(&qword_1ED6F0B08, &__block_literal_global_7);
       }
 
-      v8 = _MergedGlobals_10;
+      bOOLValue = _MergedGlobals_10;
     }
 
-    v5->_supportsWatch = v8 & 1;
+    v5->_supportsWatch = bOOLValue & 1;
     v9 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v10 = dispatch_queue_create("com.apple.nanoregistry.registry.managementqueue", v9);
     managementQueue = v5->_managementQueue;
@@ -194,7 +194,7 @@ id __54__NRRegistry_sync__deasyncGrabRegistryWithWriteBlock___block_invoke(uint6
     v5->_accessQueue = v12;
 
     [(NRBypassQueue *)v5->_accessQueue suspend];
-    v14 = [v4 objectForKeyedSubscript:@"NRRegistryShouldCreateCollection"];
+    v14 = [parametersCopy objectForKeyedSubscript:@"NRRegistryShouldCreateCollection"];
     v15 = v14;
     if (!v14 || [v14 BOOLValue])
     {
@@ -206,40 +206,40 @@ id __54__NRRegistry_sync__deasyncGrabRegistryWithWriteBlock___block_invoke(uint6
   return v5;
 }
 
-- (void)performUnderCollectionLock:(id)a3
+- (void)performUnderCollectionLock:(id)lock
 {
-  v4 = a3;
+  lockCopy = lock;
   os_unfair_lock_lock(&self->_collectionLock);
-  v4[2](v4);
+  lockCopy[2](lockCopy);
 
   os_unfair_lock_unlock(&self->_collectionLock);
 }
 
-- (void)setCollection:(id)a3
+- (void)setCollection:(id)collection
 {
-  v4 = a3;
+  collectionCopy = collection;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __28__NRRegistry_setCollection___block_invoke;
   v6[3] = &unk_1E86DAF10;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = collectionCopy;
+  v5 = collectionCopy;
   [(NRRegistry *)self performUnderCollectionLock:v6];
 }
 
-- (void)setQueueCollection:(id)a3
+- (void)setQueueCollection:(id)collection
 {
-  v5 = a3;
-  [v5 setParentDelegate:self];
+  collectionCopy = collection;
+  [collectionCopy setParentDelegate:self];
   objc_initWeak(&location, self);
   v7 = MEMORY[0x1E69E9820];
   v8 = 3221225472;
   v9 = __33__NRRegistry_setQueueCollection___block_invoke;
   v10 = &unk_1E86DC758;
   objc_copyWeak(&v11, &location);
-  v6 = [v5 addObserverQueue:0 withBlock:&v7];
-  objc_storeStrong(&self->_collection, a3);
+  v6 = [collectionCopy addObserverQueue:0 withBlock:&v7];
+  objc_storeStrong(&self->_collection, collection);
   [(NRRegistry *)self _startQueue:v7];
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
@@ -256,16 +256,16 @@ void __33__NRRegistry_setQueueCollection___block_invoke(uint64_t a1, void *a2)
   [WeakRetained _notifyObserversSecurePropertiesAreAvailableWithCollection:v4 secureProperties:v5];
 }
 
-- (void)setSecureProperties:(id)a3
+- (void)setSecureProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __34__NRRegistry_setSecureProperties___block_invoke;
   v6[3] = &unk_1E86DAF10;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = propertiesCopy;
+  v5 = propertiesCopy;
   [(NRRegistry *)self performUnderCollectionLock:v6];
 }
 
@@ -281,27 +281,27 @@ uint64_t __34__NRRegistry_setSecureProperties___block_invoke(uint64_t a1)
   return [v2 grabRegistryWithReadBlockAsync:v4];
 }
 
-- (BOOL)enqueueUnlessSuspended:(id)a3
+- (BOOL)enqueueUnlessSuspended:(id)suspended
 {
   queueRunning = self->_queueRunning;
   if (queueRunning)
   {
-    [(NRBypassQueue *)self->_accessQueue enqueueBlock:a3];
+    [(NRBypassQueue *)self->_accessQueue enqueueBlock:suspended];
   }
 
   return queueRunning;
 }
 
-- (void)grabRegistryWithReadBlock:(id)a3
+- (void)grabRegistryWithReadBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __40__NRRegistry_grabRegistryWithReadBlock___block_invoke;
   v6[3] = &unk_1E86DACC0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = blockCopy;
+  v5 = blockCopy;
   [(NRRegistry *)self enqueue:v6];
 }
 
@@ -313,16 +313,16 @@ void __40__NRRegistry_grabRegistryWithReadBlock___block_invoke(uint64_t a1)
   (*(v2 + 16))(v2, v4, v3);
 }
 
-- (void)grabRegistryWithReadBlockAsync:(id)a3
+- (void)grabRegistryWithReadBlockAsync:(id)async
 {
-  v4 = a3;
+  asyncCopy = async;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __45__NRRegistry_grabRegistryWithReadBlockAsync___block_invoke;
   v6[3] = &unk_1E86DACC0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = asyncCopy;
+  v5 = asyncCopy;
   [(NRRegistry *)self enqueueAsync:v6];
 }
 
@@ -334,9 +334,9 @@ void __45__NRRegistry_grabRegistryWithReadBlockAsync___block_invoke(uint64_t a1)
   (*(v2 + 16))(v2, v4, v3);
 }
 
-- (void)grabRegistryWithWriteBlockAsync:(id)a3
+- (void)grabRegistryWithWriteBlockAsync:(id)async
 {
-  v4 = a3;
+  asyncCopy = async;
   v9[0] = 0;
   v9[1] = v9;
   v9[2] = 0x3032000000;
@@ -347,7 +347,7 @@ void __45__NRRegistry_grabRegistryWithReadBlockAsync___block_invoke(uint64_t a1)
   v6[1] = 3221225472;
   v6[2] = __46__NRRegistry_grabRegistryWithWriteBlockAsync___block_invoke;
   v6[3] = &unk_1E86DB878;
-  v5 = v4;
+  v5 = asyncCopy;
   v6[4] = self;
   v7 = v5;
   v8 = v9;
@@ -374,9 +374,9 @@ void __46__NRRegistry_grabRegistryWithWriteBlockAsync___block_invoke(uint64_t a1
   *(v7 + 40) = 0;
 }
 
-- (id)addDiffObserverWithWriteBlock:(id)a3
+- (id)addDiffObserverWithWriteBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -389,7 +389,7 @@ void __46__NRRegistry_grabRegistryWithWriteBlockAsync___block_invoke(uint64_t a1
   v8[3] = &unk_1E86DB8C8;
   v10 = &v11;
   v8[4] = self;
-  v5 = v4;
+  v5 = blockCopy;
   v9 = v5;
   [(NRRegistry *)self performUnderCollectionLock:v8];
   v6 = v12[5];
@@ -420,25 +420,25 @@ void __44__NRRegistry_addDiffObserverWithWriteBlock___block_invoke(uint64_t a1)
   [*(*(a1 + 32) + 8) setObject:v9 forKeyedSubscript:*(*(*(a1 + 48) + 8) + 40)];
 }
 
-- (void)removeDiffObserver:(id)a3
+- (void)removeDiffObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __33__NRRegistry_removeDiffObserver___block_invoke;
   v6[3] = &unk_1E86DAF10;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = observerCopy;
+  v5 = observerCopy;
   [(NRRegistry *)self performUnderCollectionLock:v6];
 }
 
-- (void)_notifyDiffObserversWithDiff:(id)a3 deviceCollection:(id)a4 secureProperties:(id)a5
+- (void)_notifyDiffObserversWithDiff:(id)diff deviceCollection:(id)collection secureProperties:(id)properties
 {
   v30 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  diffCopy = diff;
+  collectionCopy = collection;
+  propertiesCopy = properties;
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
@@ -472,7 +472,7 @@ void __44__NRRegistry_addDiffObserverWithWriteBlock___block_invoke(uint64_t a1)
 
         v15 = *(*(&v18 + 1) + 8 * i);
         v16 = [v24[5] objectForKeyedSubscript:{v15, v18}];
-        (v16)[2](v16, v8, v9, v10, v15);
+        (v16)[2](v16, diffCopy, collectionCopy, propertiesCopy, v15);
       }
 
       v12 = [v11 countByEnumeratingWithState:&v18 objects:v29 count:16];
@@ -495,9 +495,9 @@ uint64_t __77__NRRegistry__notifyDiffObserversWithDiff_deviceCollection_securePr
   return MEMORY[0x1EEE66BB8](v2, v4);
 }
 
-- (id)addSecurePropertiesObserverWithReadBlock:(id)a3
+- (id)addSecurePropertiesObserverWithReadBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -510,7 +510,7 @@ uint64_t __77__NRRegistry__notifyDiffObserversWithDiff_deviceCollection_securePr
   v9[3] = &unk_1E86DB8C8;
   v11 = &v12;
   v9[4] = self;
-  v5 = v4;
+  v5 = blockCopy;
   v10 = v5;
   [(NRRegistry *)self performUnderCollectionLock:v9];
   v8[0] = MEMORY[0x1E69E9820];
@@ -547,28 +547,28 @@ void __55__NRRegistry_addSecurePropertiesObserverWithReadBlock___block_invoke(ui
   [*(*(a1 + 32) + 16) setObject:v9 forKeyedSubscript:*(*(*(a1 + 48) + 8) + 40)];
 }
 
-- (void)removeSecurePropertiesObserver:(id)a3
+- (void)removeSecurePropertiesObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __45__NRRegistry_removeSecurePropertiesObserver___block_invoke;
   v6[3] = &unk_1E86DAF10;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = observerCopy;
+  v5 = observerCopy;
   [(NRRegistry *)self performUnderCollectionLock:v6];
 }
 
 - (void)invalidate
 {
-  v3 = [(NRRegistry *)self managementQueue];
+  managementQueue = [(NRRegistry *)self managementQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __24__NRRegistry_invalidate__block_invoke;
   block[3] = &unk_1E86DAE98;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(managementQueue, block);
 
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
@@ -599,14 +599,14 @@ uint64_t __24__NRRegistry_invalidate__block_invoke_3(uint64_t a1)
   return [v2 removeAllObjects];
 }
 
-- (void)_notifyObserversSecurePropertiesAreAvailableWithCollection:(id)a3 secureProperties:(id)a4
+- (void)_notifyObserversSecurePropertiesAreAvailableWithCollection:(id)collection secureProperties:(id)properties
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NRRegistry *)self secureProperties];
+  collectionCopy = collection;
+  propertiesCopy = properties;
+  secureProperties = [(NRRegistry *)self secureProperties];
 
-  if (v8)
+  if (secureProperties)
   {
     v21 = 0;
     v22 = &v21;
@@ -641,7 +641,7 @@ uint64_t __24__NRRegistry_invalidate__block_invoke_3(uint64_t a1)
 
           v13 = *(*(&v16 + 1) + 8 * i);
           v14 = [v22[5] objectForKeyedSubscript:{v13, v16}];
-          (v14)[2](v14, v6, v7, v13);
+          (v14)[2](v14, collectionCopy, propertiesCopy, v13);
         }
 
         v10 = [v9 countByEnumeratingWithState:&v16 objects:v27 count:16];
@@ -664,22 +664,22 @@ void __90__NRRegistry__notifyObserversSecurePropertiesAreAvailableWithCollection
   *(v2 + 16) = 0;
 }
 
-+ (id)getReferencedSecurePropertyIDsFromDiff:(id)a3
++ (id)getReferencedSecurePropertyIDsFromDiff:(id)diff
 {
   v36 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  diffCopy = diff;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v30 objects:v35 count:16];
+  v4 = [diffCopy countByEnumeratingWithState:&v30 objects:v35 count:16];
   if (v4)
   {
     v5 = v4;
-    v6 = 0;
+    array = 0;
     v7 = *v31;
     v22 = *v31;
-    v23 = v3;
+    v23 = diffCopy;
     do
     {
       v8 = 0;
@@ -688,10 +688,10 @@ void __90__NRRegistry__notifyObserversSecurePropertiesAreAvailableWithCollection
       {
         if (*v31 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(diffCopy);
         }
 
-        v9 = [v3 objectForKeyedSubscript:{*(*(&v30 + 1) + 8 * v8), v22, v23}];
+        v9 = [diffCopy objectForKeyedSubscript:{*(*(&v30 + 1) + 8 * v8), v22, v23}];
         if ([v9 changeType] != 2)
         {
           v25 = v8;
@@ -699,8 +699,8 @@ void __90__NRRegistry__notifyObserversSecurePropertiesAreAvailableWithCollection
           v29 = 0u;
           v26 = 0u;
           v27 = 0u;
-          v10 = [v9 diff];
-          v11 = [v10 countByEnumeratingWithState:&v26 objects:v34 count:16];
+          diff = [v9 diff];
+          v11 = [diff countByEnumeratingWithState:&v26 objects:v34 count:16];
           if (v11)
           {
             v12 = v11;
@@ -711,39 +711,39 @@ void __90__NRRegistry__notifyObserversSecurePropertiesAreAvailableWithCollection
               {
                 if (*v27 != v13)
                 {
-                  objc_enumerationMutation(v10);
+                  objc_enumerationMutation(diff);
                 }
 
                 v15 = *(*(&v26 + 1) + 8 * i);
-                v16 = [v9 diff];
-                v17 = [v16 objectForKeyedSubscript:v15];
+                diff2 = [v9 diff];
+                v17 = [diff2 objectForKeyedSubscript:v15];
 
                 if ([v17 changeType] != 2)
                 {
-                  v18 = [v17 diff];
-                  v19 = [v18 value];
+                  diff3 = [v17 diff];
+                  value = [diff3 value];
 
                   objc_opt_class();
                   if (objc_opt_isKindOfClass())
                   {
-                    if (!v6)
+                    if (!array)
                     {
-                      v6 = [MEMORY[0x1E695DF70] array];
+                      array = [MEMORY[0x1E695DF70] array];
                     }
 
-                    [v6 addObject:v19];
+                    [array addObject:value];
                   }
                 }
               }
 
-              v12 = [v10 countByEnumeratingWithState:&v26 objects:v34 count:16];
+              v12 = [diff countByEnumeratingWithState:&v26 objects:v34 count:16];
             }
 
             while (v12);
           }
 
           v7 = v22;
-          v3 = v23;
+          diffCopy = v23;
           v5 = v24;
           v8 = v25;
         }
@@ -752,7 +752,7 @@ void __90__NRRegistry__notifyObserversSecurePropertiesAreAvailableWithCollection
       }
 
       while (v8 != v5);
-      v5 = [v3 countByEnumeratingWithState:&v30 objects:v35 count:16];
+      v5 = [diffCopy countByEnumeratingWithState:&v30 objects:v35 count:16];
     }
 
     while (v5);
@@ -760,20 +760,20 @@ void __90__NRRegistry__notifyObserversSecurePropertiesAreAvailableWithCollection
 
   else
   {
-    v6 = 0;
+    array = 0;
   }
 
   v20 = *MEMORY[0x1E69E9840];
 
-  return v6;
+  return array;
 }
 
-+ (id)getReferencedSecureProperties:(id)a3 fromDiff:(id)a4
++ (id)getReferencedSecureProperties:(id)properties fromDiff:(id)diff
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [a1 getReferencedSecurePropertyIDsFromDiff:v7];
+  propertiesCopy = properties;
+  diffCopy = diff;
+  v8 = [self getReferencedSecurePropertyIDsFromDiff:diffCopy];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
@@ -794,7 +794,7 @@ void __90__NRRegistry__notifyObserversSecurePropertiesAreAvailableWithCollection
         }
 
         v14 = *(*(&v18 + 1) + 8 * i);
-        v15 = [v6 objectForKeyedSubscript:v14];
+        v15 = [propertiesCopy objectForKeyedSubscript:v14];
         if (v15)
         {
           if (!v11)
@@ -822,12 +822,12 @@ void __90__NRRegistry__notifyObserversSecurePropertiesAreAvailableWithCollection
   return v11;
 }
 
-+ (void)fixSecurePropertiesWithCollection:(id)a3 secureProperties:(id)a4 insecurePropertyNames:(id)a5
++ (void)fixSecurePropertiesWithCollection:(id)collection secureProperties:(id)properties insecurePropertyNames:(id)names
 {
   v71 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v58 = a4;
-  v8 = a5;
+  collectionCopy = collection;
+  propertiesCopy = properties;
+  namesCopy = names;
   v9 = nr_daemon_log();
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
 
@@ -842,12 +842,12 @@ void __90__NRRegistry__notifyObserversSecurePropertiesAreAvailableWithCollection
     }
   }
 
-  v51 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v63 = 0u;
   v64 = 0u;
   v65 = 0u;
   v66 = 0u;
-  obj = v7;
+  obj = collectionCopy;
   v53 = [obj countByEnumeratingWithState:&v63 objects:v68 count:16];
   if (v53)
   {
@@ -865,8 +865,8 @@ void __90__NRRegistry__notifyObserversSecurePropertiesAreAvailableWithCollection
 
         v55 = *(*(&v63 + 1) + 8 * v13);
         v56 = v13;
-        v14 = [obj objectForKeyedSubscript:v51];
-        v57 = [MEMORY[0x1E695DF90] dictionary];
+        v14 = [obj objectForKeyedSubscript:dictionary];
+        dictionary2 = [MEMORY[0x1E695DF90] dictionary];
         v59 = 0u;
         v60 = 0u;
         v61 = 0u;
@@ -887,13 +887,13 @@ void __90__NRRegistry__notifyObserversSecurePropertiesAreAvailableWithCollection
               }
 
               v20 = *(*(&v59 + 1) + 8 * i);
-              if (![v8 containsObject:v20])
+              if (![namesCopy containsObject:v20])
               {
                 goto LABEL_51;
               }
 
               v21 = [v15 objectForKeyedSubscript:v20];
-              v22 = [v21 value];
+              value = [v21 value];
               v23 = *(v12 + 2712);
               objc_opt_class();
               isKindOfClass = objc_opt_isKindOfClass();
@@ -915,21 +915,21 @@ void __90__NRRegistry__notifyObserversSecurePropertiesAreAvailableWithCollection
                 }
 
                 v28 = [v15 objectForKeyedSubscript:v20];
-                v29 = [v28 value];
+                value2 = [v28 value];
 
-                v30 = [v58 securePropertyForID:v29];
+                v30 = [propertiesCopy securePropertyForID:value2];
               }
 
               else
               {
 LABEL_51:
-                if ([v8 containsObject:v20])
+                if ([namesCopy containsObject:v20])
                 {
                   continue;
                 }
 
                 v31 = [v15 objectForKeyedSubscript:v20];
-                v32 = [v31 value];
+                value3 = [v31 value];
                 v33 = *(v12 + 2712);
                 objc_opt_class();
                 v34 = objc_opt_isKindOfClass();
@@ -954,9 +954,9 @@ LABEL_51:
                 }
 
                 v38 = [v15 objectForKeyedSubscript:v20];
-                v29 = [v38 value];
+                value2 = [v38 value];
 
-                v30 = [v58 storeSecureProperty:v29];
+                v30 = [propertiesCopy storeSecureProperty:value2];
               }
 
               v39 = v30;
@@ -964,7 +964,7 @@ LABEL_51:
               {
                 v40 = [[NRDevicePropertyDiff alloc] initWithValue:v30];
                 v41 = [[NRDevicePropertyDiffType alloc] initWithDiff:v40 andChangeType:1];
-                [v57 setObject:v41 forKeyedSubscript:v20];
+                [dictionary2 setObject:v41 forKeyedSubscript:v20];
 
                 v12 = 0x1E86DA000;
               }
@@ -976,11 +976,11 @@ LABEL_51:
           while (v17);
         }
 
-        if ([v57 count])
+        if ([dictionary2 count])
         {
-          v42 = [[NRDeviceDiff alloc] initWithDiffPropertyDiffs:v57];
+          v42 = [[NRDeviceDiff alloc] initWithDiffPropertyDiffs:dictionary2];
           v43 = [[NRDeviceDiffType alloc] initWithDiff:v42 andChangeType:1];
-          [v51 setObject:v43 forKeyedSubscript:v55];
+          [dictionary setObject:v43 forKeyedSubscript:v55];
         }
 
         v13 = v56 + 1;
@@ -993,7 +993,7 @@ LABEL_51:
     while (v53);
   }
 
-  v44 = [v51 count];
+  v44 = [dictionary count];
   v45 = nr_daemon_log();
   v46 = os_log_type_enabled(v45, OS_LOG_TYPE_DEFAULT);
 
@@ -1010,7 +1010,7 @@ LABEL_51:
       }
     }
 
-    v48 = [[NRDeviceCollectionDiff alloc] initWithDeviceCollectionDiffDeviceDiffs:v51];
+    v48 = [[NRDeviceCollectionDiff alloc] initWithDeviceCollectionDiffDeviceDiffs:dictionary];
     v49 = [obj applyDiff:v48];
   }
 
@@ -1034,15 +1034,15 @@ LABEL_45:
   v50 = *MEMORY[0x1E69E9840];
 }
 
-+ (unint64_t)readNotifyToken:(int)a3
++ (unint64_t)readNotifyToken:(int)token
 {
-  if (a3 == -1)
+  if (token == -1)
   {
     return 0;
   }
 
   state64 = 0;
-  if (notify_get_state(a3, &state64))
+  if (notify_get_state(token, &state64))
   {
     return 0;
   }
@@ -1053,23 +1053,23 @@ LABEL_45:
   }
 }
 
-+ (int)registerNotifyTokenWithName:(id)a3 withQueue:(id)a4 withBlock:(id)a5
++ (int)registerNotifyTokenWithName:(id)name withQueue:(id)queue withBlock:(id)block
 {
   v20 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  nameCopy = name;
+  queueCopy = queue;
+  blockCopy = block;
   out_token = -1;
-  v10 = [v7 UTF8String];
-  if (v9)
+  uTF8String = [nameCopy UTF8String];
+  if (blockCopy)
   {
-    if (!notify_register_dispatch(v10, &out_token, v8, v9))
+    if (!notify_register_dispatch(uTF8String, &out_token, queueCopy, blockCopy))
     {
       goto LABEL_9;
     }
   }
 
-  else if (!notify_register_check(v10, &out_token))
+  else if (!notify_register_check(uTF8String, &out_token))
   {
     goto LABEL_9;
   }
@@ -1083,7 +1083,7 @@ LABEL_45:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v19 = v7;
+      v19 = nameCopy;
       _os_log_error_impl(&dword_1E0ADF000, v13, OS_LOG_TYPE_ERROR, "Failed to register block and get notify token for %@", buf, 0xCu);
     }
   }

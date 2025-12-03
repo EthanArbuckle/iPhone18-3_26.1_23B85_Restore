@@ -1,17 +1,17 @@
 @interface SBTraitsPipelineManager
-- (SBTraitsPipelineManager)initWithArbiter:(id)a3 sceneDelegate:(id)a4 userInterfaceStyleProvider:(id)a5;
+- (SBTraitsPipelineManager)initWithArbiter:(id)arbiter sceneDelegate:(id)delegate userInterfaceStyleProvider:(id)provider;
 - (SBWindowSceneDelegate)sceneDelegate;
 - (TRAArbiter)arbiter;
 - (TRAArbitrationInputs)inputs;
 - (id)ambientPresentationStageRoles;
-- (id)defaultOrientationAnimationSettingsAnimatable:(BOOL)a3;
-- (id)newBlockBasedOrientationPolicySpecifier:(id)a3 forParticipant:(id)a4;
-- (id)newBlockBasedOrientationPolicySpecifier:(id)a3 forRole:(id)a4;
+- (id)defaultOrientationAnimationSettingsAnimatable:(BOOL)animatable;
+- (id)newBlockBasedOrientationPolicySpecifier:(id)specifier forParticipant:(id)participant;
+- (id)newBlockBasedOrientationPolicySpecifier:(id)specifier forRole:(id)role;
 - (id)orientationStageRoles;
 - (id)userInterfaceStyleStageRoles;
 - (id)zOrderStageRoles;
-- (void)setupDefaultPipelineForArbiter:(id)a3;
-- (void)userInterfaceStyleDidUpdateWithAnimationSettings:(id)a3 fence:(id)a4;
+- (void)setupDefaultPipelineForArbiter:(id)arbiter;
+- (void)userInterfaceStyleDidUpdateWithAnimationSettings:(id)settings fence:(id)fence;
 @end
 
 @implementation SBTraitsPipelineManager
@@ -30,12 +30,12 @@
   return WeakRetained;
 }
 
-- (SBTraitsPipelineManager)initWithArbiter:(id)a3 sceneDelegate:(id)a4 userInterfaceStyleProvider:(id)a5
+- (SBTraitsPipelineManager)initWithArbiter:(id)arbiter sceneDelegate:(id)delegate userInterfaceStyleProvider:(id)provider
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v10)
+  arbiterCopy = arbiter;
+  delegateCopy = delegate;
+  providerCopy = provider;
+  if (!providerCopy)
   {
     [SBTraitsPipelineManager initWithArbiter:sceneDelegate:userInterfaceStyleProvider:];
   }
@@ -46,60 +46,60 @@
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_arbiter, v8);
-    objc_storeWeak(&v12->_sceneDelegate, v9);
-    objc_storeStrong(&v12->_userInterfaceStyleProvider, a5);
+    objc_storeWeak(&v11->_arbiter, arbiterCopy);
+    objc_storeWeak(&v12->_sceneDelegate, delegateCopy);
+    objc_storeStrong(&v12->_userInterfaceStyleProvider, provider);
   }
 
   return v12;
 }
 
-- (id)newBlockBasedOrientationPolicySpecifier:(id)a3 forRole:(id)a4
+- (id)newBlockBasedOrientationPolicySpecifier:(id)specifier forRole:(id)role
 {
-  v6 = a4;
-  v7 = a3;
+  roleCopy = role;
+  specifierCopy = specifier;
   v8 = [SBTraitsPipelineBlockBasedPolicySpecifier alloc];
   WeakRetained = objc_loadWeakRetained(&self->_arbiter);
-  v10 = [(SBTraitsPipelineBlockBasedPolicySpecifier *)v8 initWithPolicySpecifierBlock:v7 specifierDescription:v6 componentOrder:&unk_283370A18 arbiter:WeakRetained];
+  v10 = [(SBTraitsPipelineBlockBasedPolicySpecifier *)v8 initWithPolicySpecifierBlock:specifierCopy specifierDescription:roleCopy componentOrder:&unk_283370A18 arbiter:WeakRetained];
 
   return v10;
 }
 
-- (id)newBlockBasedOrientationPolicySpecifier:(id)a3 forParticipant:(id)a4
+- (id)newBlockBasedOrientationPolicySpecifier:(id)specifier forParticipant:(id)participant
 {
-  v6 = a4;
-  v7 = a3;
+  participantCopy = participant;
+  specifierCopy = specifier;
   v8 = [SBTraitsPipelineBlockBasedPolicySpecifier alloc];
-  v9 = [v6 role];
+  role = [participantCopy role];
   v10 = MEMORY[0x277CCABB0];
-  [v6 currentZOrderLevel];
+  [participantCopy currentZOrderLevel];
   v12 = v11;
 
   v13 = [v10 numberWithDouble:v12];
   WeakRetained = objc_loadWeakRetained(&self->_arbiter);
-  v15 = [(SBTraitsPipelineBlockBasedPolicySpecifier *)v8 initWithPolicySpecifierBlock:v7 specifierDescription:v9 componentOrder:v13 arbiter:WeakRetained];
+  v15 = [(SBTraitsPipelineBlockBasedPolicySpecifier *)v8 initWithPolicySpecifierBlock:specifierCopy specifierDescription:role componentOrder:v13 arbiter:WeakRetained];
 
   return v15;
 }
 
-- (id)defaultOrientationAnimationSettingsAnimatable:(BOOL)a3
+- (id)defaultOrientationAnimationSettingsAnimatable:(BOOL)animatable
 {
-  v3 = a3;
+  animatableCopy = animatable;
   if (!self->_medusaSettings)
   {
     v5 = +[SBMedusaDomain rootSettings];
-    v6 = [v5 medusa1oSettings];
+    medusa1oSettings = [v5 medusa1oSettings];
     medusaSettings = self->_medusaSettings;
-    self->_medusaSettings = v6;
+    self->_medusaSettings = medusa1oSettings;
   }
 
-  v8 = [MEMORY[0x277D75418] currentDevice];
-  v9 = [v8 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  v10 = dbl_21F8A6790[(v9 & 0xFFFFFFFFFFFFFFFBLL) == 1];
+  v10 = dbl_21F8A6790[(userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1];
   [(SBMedusa1oSettings *)self->_medusaSettings rotationSlowdownFactor];
   v12 = v10 * v11;
-  if (v3)
+  if (animatableCopy)
   {
     v13 = v12;
   }
@@ -116,7 +116,7 @@
   return v16;
 }
 
-- (void)setupDefaultPipelineForArbiter:(id)a3
+- (void)setupDefaultPipelineForArbiter:(id)arbiter
 {
   OUTLINED_FUNCTION_1_2();
   objc_opt_class();
@@ -125,7 +125,7 @@
   NSRequestConcreteImplementation();
 }
 
-- (void)userInterfaceStyleDidUpdateWithAnimationSettings:(id)a3 fence:(id)a4
+- (void)userInterfaceStyleDidUpdateWithAnimationSettings:(id)settings fence:(id)fence
 {
   OUTLINED_FUNCTION_1_2();
   objc_opt_class();

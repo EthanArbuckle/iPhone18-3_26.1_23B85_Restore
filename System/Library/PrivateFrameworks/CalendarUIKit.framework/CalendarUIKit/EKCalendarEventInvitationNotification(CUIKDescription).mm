@@ -15,32 +15,32 @@
 
 - (uint64_t)supportsDisplay
 {
-  if (![a1 type])
+  if (![self type])
   {
     return 1;
   }
 
-  result = [a1 type];
+  result = [self type];
   if (result == 1)
   {
     return result;
   }
 
-  return [a1 type] == 2 || objc_msgSend(a1, "type") == 3;
+  return [self type] == 2 || objc_msgSend(self, "type") == 3;
 }
 
 - (void)_populateDescriptionStringsArray:()CUIKDescription dictionary:options:
 {
   v26 = a3;
   v8 = a4;
-  if (![a1 type] || objc_msgSend(a1, "type") == 1 || objc_msgSend(a1, "type") == 2)
+  if (![self type] || objc_msgSend(self, "type") == 1 || objc_msgSend(self, "type") == 2)
   {
-    if ([a1 type] == 2)
+    if ([self type] == 2)
     {
       [v8 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"Cancelled"];
     }
 
-    v9 = [a1 _organizerString:a5];
+    v9 = [self _organizerString:a5];
     v10 = v9;
     if ((a5 & 0x200) == 0 && v9)
     {
@@ -50,7 +50,7 @@
 
     if ((a5 & 4) != 0)
     {
-      v11 = [a1 _attendeeString:a5];
+      v11 = [self _attendeeString:a5];
       if (v11)
       {
         [v8 setObject:v11 forKeyedSubscript:@"2ndPerson"];
@@ -58,38 +58,38 @@
       }
     }
 
-    v12 = [a1 _dateString:a5];
+    v12 = [self _dateString:a5];
     if (v12)
     {
       [v8 setObject:v12 forKeyedSubscript:@"Date"];
       [v26 addObject:v12];
     }
 
-    v13 = [a1 _locationString:a5];
+    v13 = [self _locationString:a5];
     if (v13)
     {
       [v8 setObject:v13 forKeyedSubscript:@"Action"];
       [v26 addObject:v13];
     }
 
-    v14 = [a1 _recurrenceChangedString];
-    if (v14)
+    _recurrenceChangedString = [self _recurrenceChangedString];
+    if (_recurrenceChangedString)
     {
-      [v8 setObject:v14 forKeyedSubscript:@"Action"];
-      [v26 addObject:v14];
+      [v8 setObject:_recurrenceChangedString forKeyedSubscript:@"Action"];
+      [v26 addObject:_recurrenceChangedString];
     }
 
     goto LABEL_20;
   }
 
-  if ([a1 type] == 3)
+  if ([self type] == 3)
   {
-    if ([a1 expanded] && objc_msgSend(a1, "isProposedNewTime"))
+    if ([self expanded] && objc_msgSend(self, "isProposedNewTime"))
     {
-      v10 = [a1 _identityStringWithOptions:a5];
-      v22 = [a1 expandedProposedTimeAttendee];
-      v23 = [v22 proposedStartDate];
-      v12 = [CUIKAvailabilityDescriptionGenerator attendeeProposedANewTime:v23 attendeeName:v10];
+      v10 = [self _identityStringWithOptions:a5];
+      expandedProposedTimeAttendee = [self expandedProposedTimeAttendee];
+      proposedStartDate = [expandedProposedTimeAttendee proposedStartDate];
+      v12 = [CUIKAvailabilityDescriptionGenerator attendeeProposedANewTime:proposedStartDate attendeeName:v10];
 
       if (v12)
       {
@@ -102,9 +102,9 @@ LABEL_42:
 
     else
     {
-      if ([a1 isLocationDecline])
+      if ([self isLocationDecline])
       {
-        v10 = [a1 _locationString:a5];
+        v10 = [self _locationString:a5];
         if (v10)
         {
           [v8 setObject:v10 forKeyedSubscript:@"Action"];
@@ -114,14 +114,14 @@ LABEL_42:
         goto LABEL_21;
       }
 
-      v10 = [a1 _attendeeReplyStringWithOptions:a5 descriptions:v8];
+      v10 = [self _attendeeReplyStringWithOptions:a5 descriptions:v8];
       if (v10)
       {
         [v26 addObject:v10];
-        v25 = [a1 _attendeeReplyStringWithOptions:a5 descriptions:v8];
+        v25 = [self _attendeeReplyStringWithOptions:a5 descriptions:v8];
       }
 
-      v12 = [a1 _dateString:a5];
+      v12 = [self _dateString:a5];
       if (v12)
       {
         v24 = @"Date";
@@ -134,36 +134,36 @@ LABEL_20:
 LABEL_21:
   }
 
-  v15 = [a1 recurrenceRule];
-  if (v15)
+  recurrenceRule = [self recurrenceRule];
+  if (recurrenceRule)
   {
     v16 = objc_opt_new();
-    v17 = [a1 startDateForNextOccurrence];
-    if (v17)
+    startDateForNextOccurrence = [self startDateForNextOccurrence];
+    if (startDateForNextOccurrence)
     {
-      v18 = [v16 naturalLanguageDescriptionForRecurrenceRule:v15 withStartDate:v17];
+      v18 = [v16 naturalLanguageDescriptionForRecurrenceRule:recurrenceRule withStartDate:startDateForNextOccurrence];
     }
 
     else
     {
-      v19 = [a1 startDate];
-      v18 = [v16 naturalLanguageDescriptionForRecurrenceRule:v15 withStartDate:v19];
+      startDate = [self startDate];
+      v18 = [v16 naturalLanguageDescriptionForRecurrenceRule:recurrenceRule withStartDate:startDate];
     }
 
     [v8 setObject:v18 forKeyedSubscript:@"Recurrence"];
   }
 
-  v20 = [a1 timeSensitiveDescriptionString];
-  [v8 setObject:v20 forKeyedSubscript:@"TimeSensitive"];
+  timeSensitiveDescriptionString = [self timeSensitiveDescriptionString];
+  [v8 setObject:timeSensitiveDescriptionString forKeyedSubscript:@"TimeSensitive"];
 
-  v21 = [a1 blockedDescriptionString:(a5 >> 10) & 1];
+  v21 = [self blockedDescriptionString:(a5 >> 10) & 1];
   [v8 setObject:v21 forKeyedSubscript:@"Blocked"];
 }
 
 - (id)descriptionStrings:()CUIKDescription
 {
   v5 = objc_opt_new();
-  [a1 _populateDescriptionStringsArray:0 dictionary:v5 options:a3];
+  [self _populateDescriptionStringsArray:0 dictionary:v5 options:a3];
   v6 = [v5 copy];
 
   return v6;
@@ -172,7 +172,7 @@ LABEL_21:
 - (id)allDescriptionStringsWithOptions:()CUIKDescription
 {
   v5 = objc_opt_new();
-  [a1 _populateDescriptionStringsArray:v5 dictionary:0 options:a3];
+  [self _populateDescriptionStringsArray:v5 dictionary:0 options:a3];
   v6 = [v5 copy];
 
   return v6;
@@ -180,15 +180,15 @@ LABEL_21:
 
 - (id)_identityStringWithOptions:()CUIKDescription
 {
-  if ([a1 isProposedNewTime])
+  if ([self isProposedNewTime])
   {
-    v5 = [a1 expandedProposedTimeAttendee];
-    v6 = [a1 _identityStringForIdentity:v5 withOptions:a3];
+    expandedProposedTimeAttendee = [self expandedProposedTimeAttendee];
+    v6 = [self _identityStringForIdentity:expandedProposedTimeAttendee withOptions:a3];
   }
 
   else
   {
-    v6 = [a1 _identityStringForIdentity:a1 withOptions:a3];
+    v6 = [self _identityStringForIdentity:self withOptions:a3];
   }
 
   return v6;
@@ -196,7 +196,7 @@ LABEL_21:
 
 - (id)_organizerString:()CUIKDescription
 {
-  if ([a1 type] == 2)
+  if ([self type] == 2)
   {
     v5 = CUIKBundle();
     v6 = v5;
@@ -230,7 +230,7 @@ LABEL_21:
 
   v9 = [v5 localizedStringForKey:v7 value:&stru_1F4AA8958 table:0];
 
-  v10 = [a1 _identityStringWithOptions:a3];
+  v10 = [self _identityStringWithOptions:a3];
   v11 = [MEMORY[0x1E696AEC0] localizedStringWithValidatedFormat:v9 validFormatSpecifiers:@"%@" error:0, v10];
 
   return v11;
@@ -277,7 +277,7 @@ LABEL_21:
   v64 = __Block_byref_object_copy__10;
   v65 = __Block_byref_object_dispose__10;
   v66 = objc_opt_new();
-  v6 = [a1 attendees];
+  attendees = [self attendees];
   v51[0] = MEMORY[0x1E69E9820];
   v51[1] = 3221225472;
   v51[2] = __103__EKCalendarEventInvitationNotification_CUIKDescription___attendeeReplyStringWithOptions_descriptions___block_invoke;
@@ -292,7 +292,7 @@ LABEL_21:
   v58 = &v61;
   v59 = &v73;
   v60 = &v83;
-  [v6 enumerateObjectsUsingBlock:v51];
+  [attendees enumerateObjectsUsingBlock:v51];
 
   v8 = v92[3];
   v9 = v8 > 1 || v96[3] > 1 || v88[3] > 1;
@@ -300,12 +300,12 @@ LABEL_21:
   *(v84 + 24) = v10;
   if (*(v80 + 24) == 1)
   {
-    v11 = [a1 owner];
-    v12 = CalShortDisplayStringForNotificationIdentity(v11, 1, 0);
+    owner = [self owner];
+    v12 = CalShortDisplayStringForNotificationIdentity(owner, 1, 0);
 
-    v13 = [a1 owner];
+    owner2 = [self owner];
     v14 = v74[5];
-    v74[5] = v13;
+    v74[5] = owner2;
 
     v15 = MEMORY[0x1E696AEC0];
     v16 = CUIKBundle();
@@ -465,13 +465,13 @@ LABEL_33:
 
 - (id)_dateString:()CUIKDescription
 {
-  if ([a1 timeChanged])
+  if ([self timeChanged])
   {
     v5 = @"Time changed to %@";
     goto LABEL_5;
   }
 
-  if ([a1 dateChanged])
+  if ([self dateChanged])
   {
     v5 = @"Date changed to %@";
 LABEL_5:
@@ -482,12 +482,12 @@ LABEL_5:
     {
       v8 = 0;
 LABEL_9:
-      v9 = [a1 isAllDay];
-      v10 = [a1 startDateForNextOccurrence];
-      if (v10)
+      isAllDay = [self isAllDay];
+      startDateForNextOccurrence = [self startDateForNextOccurrence];
+      if (startDateForNextOccurrence)
       {
         v11 = +[CUIKDateDescriptionGenerator sharedGenerator];
-        v12 = [v11 dateStringForDate:v10 allDay:v9 standalone:v8 shortFormat:0];
+        v12 = [v11 dateStringForDate:startDateForNextOccurrence allDay:isAllDay standalone:v8 shortFormat:0];
 
         v13 = [MEMORY[0x1E696AEC0] localizedStringWithValidatedFormat:v7 validFormatSpecifiers:@"%@" error:0, v12];
       }
@@ -519,19 +519,19 @@ LABEL_14:
 
 - (id)_locationString:()CUIKDescription
 {
-  if (![a1 isLocationDecline])
+  if (![self isLocationDecline])
   {
-    if ([a1 type] == 3)
+    if ([self type] == 3)
     {
 LABEL_4:
       v6 = 0;
       goto LABEL_13;
     }
 
-    v7 = [a1 locationChanged];
-    v8 = [a1 videoConferenceChanged];
-    v9 = v8;
-    if (v7)
+    locationChanged = [self locationChanged];
+    videoConferenceChanged = [self videoConferenceChanged];
+    v9 = videoConferenceChanged;
+    if (locationChanged)
     {
       v10 = CUIKBundle();
       v3 = v10;
@@ -548,7 +548,7 @@ LABEL_4:
 
     else
     {
-      if (!v8)
+      if (!videoConferenceChanged)
       {
         goto LABEL_4;
       }
@@ -565,8 +565,8 @@ LABEL_4:
   v2 = MEMORY[0x1E696AEC0];
   v3 = CUIKBundle();
   v4 = [v3 localizedStringForKey:@"%@ is unavailable" value:&stru_1F4AA8958 table:0];
-  v5 = [a1 name];
-  v6 = [v2 localizedStringWithFormat:v4, v5];
+  name = [self name];
+  v6 = [v2 localizedStringWithFormat:v4, name];
 
 LABEL_12:
 LABEL_13:
@@ -576,7 +576,7 @@ LABEL_13:
 
 - (id)_recurrenceChangedString
 {
-  if ([a1 recurrenceChanged])
+  if ([self recurrenceChanged])
   {
     v1 = CUIKBundle();
     v2 = [v1 localizedStringForKey:@"Repeat frequency or end date changed" value:&stru_1F4AA8958 table:0];

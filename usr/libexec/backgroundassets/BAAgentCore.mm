@@ -1,44 +1,44 @@
 @interface BAAgentCore
 + (id)sharedCore;
 - (BAAgentCore)init;
-- (BOOL)__schedulingPermittedWithIdentifier:(id)a3 downloadQueue:(id *)a4 appInfo:(id *)a5 error:(id *)a6;
-- (BOOL)_applicationIdentifierAllowsBackgroundActivity:(id)a3;
-- (BOOL)_checkConnection:(id)a3 hasAllowedTeamIDForIdentifier:(id)a4;
-- (BOOL)_checkIdentifierHasExtension:(id)a3;
-- (BOOL)downloadQueue:(id)a3 permittedToStartDownloadsWithNecessity:(int64_t)a4;
-- (BOOL)listener:(id)a3 shouldAcceptNewClientConnection:(id)a4;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (BOOL)listener:(id)a3 shouldAcceptNewSPIConnection:(id)a4;
-- (BOOL)removeAppWithAppInfo:(id)a3 error:(id *)a4;
-- (id)_appReviewManifestDownloadForApplicationRecord:(id)a3 applicationEvent:(int64_t)a4 applicationGroupIdentifier:(id)a5 applicationInfo:(id)a6;
-- (id)_appStoreManifestDownloadForApplicationRecord:(id)a3 applicationEvent:(int64_t)a4 applicationGroupIdentifier:(id)a5 applicationInfo:(id)a6;
-- (id)_connectionReplyQueueForIdentifier:(id)a3;
-- (id)_connectionsForApplicationIdentifier:(id)a3;
-- (id)_developmentOverrideManifestDownloadForApplicationRecord:(id)a3 applicationEvent:(int64_t)a4 applicationGroupIdentifier:(id)a5 applicationInfo:(id)a6;
-- (id)_downloadQueueForIdentifier:(id)a3 create:(BOOL)a4 error:(id *)a5;
-- (id)_downloaderExtensionForApplicationIdentifier:(id)a3 cacheOnly:(BOOL)a4;
-- (id)_essentialAssetsProgressDescriptorWithAppInfo:(id)a3 essentialAssetState:(int64_t)a4 sizeDownloaded:(int64_t)a5 totalDownloadSize:(int64_t)a6;
-- (id)_localCacheManifestDownloadForApplicationRecord:(id)a3 applicationEvent:(int64_t)a4 applicationGroupIdentifier:(id)a5 applicationInfo:(id)a6;
+- (BOOL)__schedulingPermittedWithIdentifier:(id)identifier downloadQueue:(id *)queue appInfo:(id *)info error:(id *)error;
+- (BOOL)_applicationIdentifierAllowsBackgroundActivity:(id)activity;
+- (BOOL)_checkConnection:(id)connection hasAllowedTeamIDForIdentifier:(id)identifier;
+- (BOOL)_checkIdentifierHasExtension:(id)extension;
+- (BOOL)downloadQueue:(id)queue permittedToStartDownloadsWithNecessity:(int64_t)necessity;
+- (BOOL)listener:(id)listener shouldAcceptNewClientConnection:(id)connection;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (BOOL)listener:(id)listener shouldAcceptNewSPIConnection:(id)connection;
+- (BOOL)removeAppWithAppInfo:(id)info error:(id *)error;
+- (id)_appReviewManifestDownloadForApplicationRecord:(id)record applicationEvent:(int64_t)event applicationGroupIdentifier:(id)identifier applicationInfo:(id)info;
+- (id)_appStoreManifestDownloadForApplicationRecord:(id)record applicationEvent:(int64_t)event applicationGroupIdentifier:(id)identifier applicationInfo:(id)info;
+- (id)_connectionReplyQueueForIdentifier:(id)identifier;
+- (id)_connectionsForApplicationIdentifier:(id)identifier;
+- (id)_developmentOverrideManifestDownloadForApplicationRecord:(id)record applicationEvent:(int64_t)event applicationGroupIdentifier:(id)identifier applicationInfo:(id)info;
+- (id)_downloadQueueForIdentifier:(id)identifier create:(BOOL)create error:(id *)error;
+- (id)_downloaderExtensionForApplicationIdentifier:(id)identifier cacheOnly:(BOOL)only;
+- (id)_essentialAssetsProgressDescriptorWithAppInfo:(id)info essentialAssetState:(int64_t)state sizeDownloaded:(int64_t)downloaded totalDownloadSize:(int64_t)size;
+- (id)_localCacheManifestDownloadForApplicationRecord:(id)record applicationEvent:(int64_t)event applicationGroupIdentifier:(id)identifier applicationInfo:(id)info;
 - (id)_systemConnections;
-- (id)_testFlightManifestDownloadForApplicationRecord:(id)a3 applicationEvent:(int64_t)a4 applicationGroupIdentifier:(id)a5 applicationInfo:(id)a6;
-- (id)applicationInfoForIdentifier:(id)a3;
-- (id)applicationInfoIfExistsForIdentifier:(id)a3;
-- (id)downloadForIdentifier:(id)a3 forClientIdentifier:(id)a4;
-- (id)downloaderExtensionForApplicationIdentifier:(id)a3 cacheOnly:(BOOL)a4;
-- (id)downloadsForIdentifier:(id)a3;
-- (id)essentialAssetsProgressDescriptorWithIdentifier:(id)a3;
-- (id)updateApplicationInformationForIdentifier:(id)a3 bundleURLPath:(id)a4;
-- (int64_t)applicationExtensionStateForIdentifier:(id)a3;
-- (int64_t)applicationStateForIdentifier:(id)a3;
+- (id)_testFlightManifestDownloadForApplicationRecord:(id)record applicationEvent:(int64_t)event applicationGroupIdentifier:(id)identifier applicationInfo:(id)info;
+- (id)applicationInfoForIdentifier:(id)identifier;
+- (id)applicationInfoIfExistsForIdentifier:(id)identifier;
+- (id)downloadForIdentifier:(id)identifier forClientIdentifier:(id)clientIdentifier;
+- (id)downloaderExtensionForApplicationIdentifier:(id)identifier cacheOnly:(BOOL)only;
+- (id)downloadsForIdentifier:(id)identifier;
+- (id)essentialAssetsProgressDescriptorWithIdentifier:(id)identifier;
+- (id)updateApplicationInformationForIdentifier:(id)identifier bundleURLPath:(id)path;
+- (int64_t)applicationExtensionStateForIdentifier:(id)identifier;
+- (int64_t)applicationStateForIdentifier:(id)identifier;
 - (unint64_t)_downloadsInProgress;
-- (unint64_t)_downloadsInProgressForIdentifier:(id)a3;
-- (void)__handleApplicationLaunchedWithInfo:(id)a3;
-- (void)_asyncAwaitLockdownClientMessage:(_lockdown_connection *)a3 waitQueue:(id)a4;
+- (unint64_t)_downloadsInProgressForIdentifier:(id)identifier;
+- (void)__handleApplicationLaunchedWithInfo:(id)info;
+- (void)_asyncAwaitLockdownClientMessage:(_lockdown_connection *)message waitQueue:(id)queue;
 - (void)_backgroundActivityStateDidChange;
 - (void)_clearState;
-- (void)_debugDownloadTime:(BOOL)a3 clear:(BOOL)a4;
+- (void)_debugDownloadTime:(BOOL)time clear:(BOOL)clear;
 - (void)_debugShutdown;
-- (void)_deleteDownloadQueueForIdentifier:(id)a3;
+- (void)_deleteDownloadQueueForIdentifier:(id)identifier;
 - (void)_deserializeApplicationList;
 - (void)_deserializeDownloadQueues;
 - (void)_deserializeState;
@@ -46,9 +46,9 @@
 - (void)_pauseDownloads;
 - (void)_pokeScheduler;
 - (void)_printDebugState;
-- (void)_processLockdownClientMessage:(id)a3 withConnection:(_lockdown_connection *)a4 withQueue:(id)a5;
-- (void)_processRunningBoardStateUpdate:(id)a3 forProcess:(id)a4;
-- (void)_requestNetworkConsentWithApplication:(id)a3 userInitiated:(BOOL)a4;
+- (void)_processLockdownClientMessage:(id)message withConnection:(_lockdown_connection *)connection withQueue:(id)queue;
+- (void)_processRunningBoardStateUpdate:(id)update forProcess:(id)process;
+- (void)_requestNetworkConsentWithApplication:(id)application userInitiated:(BOOL)initiated;
 - (void)_scheduleDownloads;
 - (void)_serializeApplicationState;
 - (void)_serializeDownloadQueues;
@@ -56,33 +56,33 @@
 - (void)_serializeUndeliveredEvents;
 - (void)_shutdownAgent;
 - (void)_updateProcessMonitor;
-- (void)_updateStateForAppBundleIdentifier:(id)a3 state:(int64_t)a4;
-- (void)_updateStateForAppExtensionBundleIdentifier:(id)a3 appBundleIdentifier:(id)a4 state:(int64_t)a5;
-- (void)applicationInstallCanceledWithIdentifier:(id)a3 userInitiated:(BOOL)a4;
-- (void)applicationPlaceholderReadyWithIdentifier:(id)a3 placeholderBundleURL:(id)a4 userInitiated:(BOOL)a5;
-- (void)applicationPrepareWithDescriptor:(id)a3;
-- (void)cancelDownload:(id)a3 forClientIdentifier:(id)a4 completionBlock:(id)a5;
-- (void)connectionDisconnected:(id)a3;
+- (void)_updateStateForAppBundleIdentifier:(id)identifier state:(int64_t)state;
+- (void)_updateStateForAppExtensionBundleIdentifier:(id)identifier appBundleIdentifier:(id)bundleIdentifier state:(int64_t)state;
+- (void)applicationInstallCanceledWithIdentifier:(id)identifier userInitiated:(BOOL)initiated;
+- (void)applicationPlaceholderReadyWithIdentifier:(id)identifier placeholderBundleURL:(id)l userInitiated:(BOOL)initiated;
+- (void)applicationPrepareWithDescriptor:(id)descriptor;
+- (void)cancelDownload:(id)download forClientIdentifier:(id)identifier completionBlock:(id)block;
+- (void)connectionDisconnected:(id)disconnected;
 - (void)doPeriodicUpdateCheck;
-- (void)download:(id)a3 didReceiveChallenge:(id)a4 completionHandler:(id)a5;
-- (void)download:(id)a3 didWriteBytes:(int64_t)a4 totalBytesWritten:(int64_t)a5 totalBytesExpectedToWrite:(int64_t)a6;
-- (void)download:(id)a3 failedWithError:(id)a4;
-- (void)download:(id)a3 finishedWithFileURL:(id)a4;
-- (void)downloadDidBegin:(id)a3;
-- (void)downloadDidPause:(id)a3;
-- (void)downloadQueue:(id)a3 essentialAssetState:(int64_t)a4 bytesWritten:(int64_t)a5 totalBytes:(int64_t)a6;
-- (void)downloadQueue:(id)a3 manifest:(id)a4 finishedWithFileURL:(id)a5;
+- (void)download:(id)download didReceiveChallenge:(id)challenge completionHandler:(id)handler;
+- (void)download:(id)download didWriteBytes:(int64_t)bytes totalBytesWritten:(int64_t)written totalBytesExpectedToWrite:(int64_t)write;
+- (void)download:(id)download failedWithError:(id)error;
+- (void)download:(id)download finishedWithFileURL:(id)l;
+- (void)downloadDidBegin:(id)begin;
+- (void)downloadDidPause:(id)pause;
+- (void)downloadQueue:(id)queue essentialAssetState:(int64_t)state bytesWritten:(int64_t)written totalBytes:(int64_t)bytes;
+- (void)downloadQueue:(id)queue manifest:(id)manifest finishedWithFileURL:(id)l;
 - (void)downloadTimeValidityDidChange;
-- (void)extensionDisconnectedWithIdentifier:(id)a3 connectionProxy:(id)a4;
-- (void)handleApplicationLaunched:(id)a3;
-- (void)invalidateExtensionWithAppInfo:(id)a3;
-- (void)pauseQueueWithIdentifier:(id)a3 completionBlock:(id)a4;
-- (void)resumeQueueWithIdentifier:(id)a3 completionBlock:(id)a4;
+- (void)extensionDisconnectedWithIdentifier:(id)identifier connectionProxy:(id)proxy;
+- (void)handleApplicationLaunched:(id)launched;
+- (void)invalidateExtensionWithAppInfo:(id)info;
+- (void)pauseQueueWithIdentifier:(id)identifier completionBlock:(id)block;
+- (void)resumeQueueWithIdentifier:(id)identifier completionBlock:(id)block;
 - (void)saveApplicationState;
-- (void)scheduleDownload:(id)a3 forClientIdentifier:(id)a4 notifyQueue:(id)a5 completionBlock:(id)a6;
-- (void)setContentRequestTelemetry:(id)a3 forDownloads:(id)a4;
-- (void)startForegroundDownload:(id)a3 forClientIdentifier:(id)a4 completionBlock:(id)a5;
-- (void)updateContentRequestTelemetryForCompletedDownload:(id)a3 error:(id)a4;
+- (void)scheduleDownload:(id)download forClientIdentifier:(id)identifier notifyQueue:(id)queue completionBlock:(id)block;
+- (void)setContentRequestTelemetry:(id)telemetry forDownloads:(id)downloads;
+- (void)startForegroundDownload:(id)download forClientIdentifier:(id)identifier completionBlock:(id)block;
+- (void)updateContentRequestTelemetryForCompletedDownload:(id)download error:(id)error;
 @end
 
 @implementation BAAgentCore
@@ -148,14 +148,14 @@
     v16 = [[CoreTelephonyClient alloc] initWithQueue:0];
     [(BAAgentCore *)v2 setTelephonyClient:v16];
 
-    v17 = [(BAAgentCore *)v2 workQueue];
+    workQueue = [(BAAgentCore *)v2 workQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100017024;
     block[3] = &unk_100079260;
     v18 = v2;
     v45 = v18;
-    dispatch_async(v17, block);
+    dispatch_async(workQueue, block);
 
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
     CFNotificationCenterAddObserver(DarwinNotifyCenter, 0, sub_100017060, @"kKeepAppsUpToDateEnabledChangedNotification", 0, CFNotificationSuspensionBehaviorCoalesce);
@@ -166,29 +166,29 @@
     v22 = [v21 initWithMachServiceName:off_100089350[0]];
     [(BAAgentCore *)v18 setListener:v22];
 
-    v23 = [(BAAgentCore *)v18 listener];
-    v24 = [(BAAgentCore *)v18 connectionQueue];
-    [v23 _setQueue:v24];
+    listener = [(BAAgentCore *)v18 listener];
+    connectionQueue = [(BAAgentCore *)v18 connectionQueue];
+    [listener _setQueue:connectionQueue];
 
-    v25 = [(BAAgentCore *)v18 listener];
-    [v25 setDelegate:v18];
+    listener2 = [(BAAgentCore *)v18 listener];
+    [listener2 setDelegate:v18];
 
-    v26 = [(BAAgentCore *)v18 listener];
-    [v26 resume];
+    listener3 = [(BAAgentCore *)v18 listener];
+    [listener3 resume];
 
     v27 = [NSXPCListener alloc];
     v28 = [v27 initWithMachServiceName:off_100089348[0]];
     [(BAAgentCore *)v18 setSpiListener:v28];
 
-    v29 = [(BAAgentCore *)v18 spiListener];
-    v30 = [(BAAgentCore *)v18 connectionQueue];
-    [v29 _setQueue:v30];
+    spiListener = [(BAAgentCore *)v18 spiListener];
+    connectionQueue2 = [(BAAgentCore *)v18 connectionQueue];
+    [spiListener _setQueue:connectionQueue2];
 
-    v31 = [(BAAgentCore *)v18 spiListener];
-    [v31 setDelegate:v18];
+    spiListener2 = [(BAAgentCore *)v18 spiListener];
+    [spiListener2 setDelegate:v18];
 
-    v32 = [(BAAgentCore *)v18 spiListener];
-    [v32 resume];
+    spiListener3 = [(BAAgentCore *)v18 spiListener];
+    [spiListener3 resume];
 
     v33 = sub_1000104FC();
     if (os_log_type_enabled(v33, OS_LOG_TYPE_INFO))
@@ -197,7 +197,7 @@
       _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_INFO, "Started listening for clients.", buf, 2u);
     }
 
-    v34 = [(BAAgentCore *)v18 lockDownQueue];
+    lockDownQueue = [(BAAgentCore *)v18 lockDownQueue];
     v35 = v18;
     v42 = v35;
     v36 = lockdown_checkin_xpc();
@@ -218,8 +218,8 @@
       _os_log_impl(&_mh_execute_header, v38, OS_LOG_TYPE_INFO, "Started listening for lockdown clients.", buf, 2u);
     }
 
-    v39 = [(BAAgentCore *)v35 rulesEngine];
-    [v39 resume];
+    rulesEngine = [(BAAgentCore *)v35 rulesEngine];
+    [rulesEngine resume];
 
     v40 = sub_1000104FC();
     if (os_log_type_enabled(v40, OS_LOG_TYPE_INFO))
@@ -232,34 +232,34 @@
   return v2;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 serviceName];
-  v9 = [v8 isEqualToString:off_100089350[0]];
+  listenerCopy = listener;
+  connectionCopy = connection;
+  serviceName = [listenerCopy serviceName];
+  v9 = [serviceName isEqualToString:off_100089350[0]];
 
   if (v9)
   {
-    v10 = [(BAAgentCore *)self listener:v6 shouldAcceptNewClientConnection:v7];
+    v10 = [(BAAgentCore *)self listener:listenerCopy shouldAcceptNewClientConnection:connectionCopy];
 LABEL_5:
     v13 = v10;
     goto LABEL_9;
   }
 
-  v11 = [v6 serviceName];
-  v12 = [v11 isEqualToString:off_100089348[0]];
+  serviceName2 = [listenerCopy serviceName];
+  v12 = [serviceName2 isEqualToString:off_100089348[0]];
 
   if (v12)
   {
-    v10 = [(BAAgentCore *)self listener:v6 shouldAcceptNewSPIConnection:v7];
+    v10 = [(BAAgentCore *)self listener:listenerCopy shouldAcceptNewSPIConnection:connectionCopy];
     goto LABEL_5;
   }
 
   v14 = sub_10001060C();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
   {
-    sub_1000496AC(v7, v14);
+    sub_1000496AC(connectionCopy, v14);
   }
 
   v13 = 0;
@@ -268,67 +268,67 @@ LABEL_9:
   return v13;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewClientConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewClientConnection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
   v16 = 0;
-  v6 = [[BAAgentClientConnection alloc] initWithNSXPCConnection:v5 error:&v16];
+  v6 = [[BAAgentClientConnection alloc] initWithNSXPCConnection:connectionCopy error:&v16];
   v7 = v16;
-  v8 = [(BAAgentCore *)self workQueue];
+  workQueue = [(BAAgentCore *)self workQueue];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_1000173A8;
   v12[3] = &unk_100079720;
   v13 = v6;
-  v14 = v5;
-  v15 = self;
-  v9 = v5;
+  v14 = connectionCopy;
+  selfCopy = self;
+  v9 = connectionCopy;
   v10 = v6;
-  dispatch_async(v8, v12);
+  dispatch_async(workQueue, v12);
 
   return v10 != 0;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewSPIConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewSPIConnection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
   v6 = sub_10001060C();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67240192;
-    v24 = [v5 processIdentifier];
+    processIdentifier = [connectionCopy processIdentifier];
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "New SPI connection from pid:%{public}d", buf, 8u);
   }
 
-  v7 = [v5 valueForEntitlement:@"com.apple.backgroundassets.system"];
+  v7 = [connectionCopy valueForEntitlement:@"com.apple.backgroundassets.system"];
   if ([v7 BOOLValue])
   {
 
 LABEL_6:
     v22 = 0;
-    v10 = [[BAAgentSystemConnection alloc] initWithNSXPCConnection:v5 error:&v22];
+    v10 = [[BAAgentSystemConnection alloc] initWithNSXPCConnection:connectionCopy error:&v22];
     v11 = v22;
-    v12 = [(BAAgentCore *)self workQueue];
+    workQueue = [(BAAgentCore *)self workQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_10001786C;
     block[3] = &unk_100079940;
     v18 = v10;
-    v19 = self;
-    v20 = v5;
+    selfCopy = self;
+    v20 = connectionCopy;
     v21 = v11;
     v13 = v11;
     v14 = v10;
-    dispatch_async(v12, block);
+    dispatch_async(workQueue, block);
 
     v15 = v14 != 0;
     goto LABEL_10;
   }
 
-  v8 = [v5 valueForEntitlement:@"com.apple.backgroundassets.appstore"];
-  v9 = [v8 BOOLValue];
+  v8 = [connectionCopy valueForEntitlement:@"com.apple.backgroundassets.appstore"];
+  bOOLValue = [v8 BOOLValue];
 
-  if (v9)
+  if (bOOLValue)
   {
     goto LABEL_6;
   }
@@ -336,7 +336,7 @@ LABEL_6:
   v14 = sub_10001060C();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
   {
-    sub_10004978C(v5);
+    sub_10004978C(connectionCopy);
   }
 
   v15 = 0;
@@ -345,50 +345,50 @@ LABEL_10:
   return v15;
 }
 
-- (void)connectionDisconnected:(id)a3
+- (void)connectionDisconnected:(id)disconnected
 {
-  v4 = a3;
-  if (v4)
+  disconnectedCopy = disconnected;
+  if (disconnectedCopy)
   {
-    v5 = [(BAAgentCore *)self workQueue];
+    workQueue = [(BAAgentCore *)self workQueue];
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_100017A34;
     v6[3] = &unk_100079300;
     v6[4] = self;
-    v7 = v4;
-    dispatch_async(v5, v6);
+    v7 = disconnectedCopy;
+    dispatch_async(workQueue, v6);
   }
 }
 
-- (void)extensionDisconnectedWithIdentifier:(id)a3 connectionProxy:(id)a4
+- (void)extensionDisconnectedWithIdentifier:(id)identifier connectionProxy:(id)proxy
 {
-  v12 = a3;
-  v6 = a4;
-  if (v12)
+  identifierCopy = identifier;
+  proxyCopy = proxy;
+  if (identifierCopy)
   {
     v7 = [(BAAgentCore *)self applicationInfoForIdentifier:?];
-    v8 = [(BAAgentCore *)self extensionConnections];
-    objc_sync_enter(v8);
-    v9 = [(BAAgentCore *)self extensionConnections];
-    v10 = [v9 objectForKey:v12];
+    extensionConnections = [(BAAgentCore *)self extensionConnections];
+    objc_sync_enter(extensionConnections);
+    extensionConnections2 = [(BAAgentCore *)self extensionConnections];
+    v10 = [extensionConnections2 objectForKey:identifierCopy];
 
-    if (v10 == v6)
+    if (v10 == proxyCopy)
     {
-      v11 = [(BAAgentCore *)self extensionConnections];
-      [v11 removeObjectForKey:v12];
+      extensionConnections3 = [(BAAgentCore *)self extensionConnections];
+      [extensionConnections3 removeObjectForKey:identifierCopy];
 
       [v7 extensionExited];
     }
 
-    objc_sync_exit(v8);
+    objc_sync_exit(extensionConnections);
   }
 }
 
-- (id)downloaderExtensionForApplicationIdentifier:(id)a3 cacheOnly:(BOOL)a4
+- (id)downloaderExtensionForApplicationIdentifier:(id)identifier cacheOnly:(BOOL)only
 {
-  v6 = a3;
-  v7 = [(BAAgentCore *)self _connectionReplyQueueForIdentifier:v6];
+  identifierCopy = identifier;
+  v7 = [(BAAgentCore *)self _connectionReplyQueueForIdentifier:identifierCopy];
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -399,11 +399,11 @@ LABEL_10:
   v11[1] = 3221225472;
   v11[2] = sub_100017E4C;
   v11[3] = &unk_100079968;
-  v12 = v6;
+  v12 = identifierCopy;
   v13 = &v15;
   v11[4] = self;
-  v14 = a4;
-  v8 = v6;
+  onlyCopy = only;
+  v8 = identifierCopy;
   dispatch_sync(v7, v11);
   v9 = v16[5];
 
@@ -412,10 +412,10 @@ LABEL_10:
   return v9;
 }
 
-- (id)_downloaderExtensionForApplicationIdentifier:(id)a3 cacheOnly:(BOOL)a4
+- (id)_downloaderExtensionForApplicationIdentifier:(id)identifier cacheOnly:(BOOL)only
 {
-  v6 = a3;
-  v7 = [(BAAgentCore *)self applicationInfoForIdentifier:v6];
+  identifierCopy = identifier;
+  v7 = [(BAAgentCore *)self applicationInfoForIdentifier:identifierCopy];
   if (([v7 allowsBackgroundActivity] & 1) == 0)
   {
     v11 = sub_100010584();
@@ -429,15 +429,15 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v8 = [(BAAgentCore *)self extensionConnections];
-  objc_sync_enter(v8);
-  v9 = [(BAAgentCore *)self extensionConnections];
-  v10 = [v9 objectForKey:v6];
+  extensionConnections = [(BAAgentCore *)self extensionConnections];
+  objc_sync_enter(extensionConnections);
+  extensionConnections2 = [(BAAgentCore *)self extensionConnections];
+  v10 = [extensionConnections2 objectForKey:identifierCopy];
 
   if (v10)
   {
     v11 = v10;
-    objc_sync_exit(v8);
+    objc_sync_exit(extensionConnections);
 
     v12 = v11;
 LABEL_7:
@@ -445,9 +445,9 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  objc_sync_exit(v8);
+  objc_sync_exit(extensionConnections);
 
-  if (!a4)
+  if (!only)
   {
     if ([v7 shouldLaunchExtension])
     {
@@ -472,13 +472,13 @@ LABEL_7:
           if (v20)
           {
             v21 = [[BADownloaderExtensionProxy alloc] initWithExtension:v17 xpcConnection:v20 parentAppRecord:v28 applicationInfo:v7];
-            v22 = [(BAAgentCore *)self _checkConnection:v20 hasAllowedTeamIDForIdentifier:v6];
+            v22 = [(BAAgentCore *)self _checkConnection:v20 hasAllowedTeamIDForIdentifier:identifierCopy];
             if (v21 && v22)
             {
               p_super = [(BAAgentCore *)self extensionConnections];
               objc_sync_enter(p_super);
-              v24 = [(BAAgentCore *)self extensionConnections];
-              [v24 setObject:v21 forKey:v6];
+              extensionConnections3 = [(BAAgentCore *)self extensionConnections];
+              [extensionConnections3 setObject:v21 forKey:identifierCopy];
 
               objc_sync_exit(p_super);
             }
@@ -583,82 +583,82 @@ LABEL_8:
   return v12;
 }
 
-- (int64_t)applicationExtensionStateForIdentifier:(id)a3
+- (int64_t)applicationExtensionStateForIdentifier:(id)identifier
 {
-  v3 = [(BAAgentCore *)self applicationInfoForIdentifier:a3];
-  v4 = [v3 applicationExtensionState];
+  v3 = [(BAAgentCore *)self applicationInfoForIdentifier:identifier];
+  applicationExtensionState = [v3 applicationExtensionState];
 
-  return v4;
+  return applicationExtensionState;
 }
 
-- (int64_t)applicationStateForIdentifier:(id)a3
+- (int64_t)applicationStateForIdentifier:(id)identifier
 {
-  v3 = [(BAAgentCore *)self applicationInfoForIdentifier:a3];
-  v4 = [v3 applicationState];
+  v3 = [(BAAgentCore *)self applicationInfoForIdentifier:identifier];
+  applicationState = [v3 applicationState];
 
-  return v4;
+  return applicationState;
 }
 
 - (void)saveApplicationState
 {
-  v3 = [(BAAgentCore *)self workQueue];
-  dispatch_assert_queue_not_V2(v3);
+  workQueue = [(BAAgentCore *)self workQueue];
+  dispatch_assert_queue_not_V2(workQueue);
 
-  v4 = [(BAAgentCore *)self workQueue];
+  workQueue2 = [(BAAgentCore *)self workQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100018388;
   block[3] = &unk_100079260;
   block[4] = self;
-  dispatch_sync(v4, block);
+  dispatch_sync(workQueue2, block);
 }
 
-- (void)_deleteDownloadQueueForIdentifier:(id)a3
+- (void)_deleteDownloadQueueForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(BAAgentCore *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  identifierCopy = identifier;
+  workQueue = [(BAAgentCore *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v6 = [(BAAgentCore *)self downloadQueuesByClientIdentifier];
-  [v6 removeObjectForKey:v4];
+  downloadQueuesByClientIdentifier = [(BAAgentCore *)self downloadQueuesByClientIdentifier];
+  [downloadQueuesByClientIdentifier removeObjectForKey:identifierCopy];
 }
 
-- (id)_downloadQueueForIdentifier:(id)a3 create:(BOOL)a4 error:(id *)a5
+- (id)_downloadQueueForIdentifier:(id)identifier create:(BOOL)create error:(id *)error
 {
-  v8 = a3;
-  v9 = [(BAAgentCore *)self workQueue];
-  dispatch_assert_queue_V2(v9);
+  identifierCopy = identifier;
+  workQueue = [(BAAgentCore *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v10 = [(BAAgentCore *)self downloadQueuesByClientIdentifier];
-  v11 = [v10 objectForKey:v8];
+  downloadQueuesByClientIdentifier = [(BAAgentCore *)self downloadQueuesByClientIdentifier];
+  v11 = [downloadQueuesByClientIdentifier objectForKey:identifierCopy];
 
   if (!v11)
   {
-    if (a4)
+    if (create)
     {
-      v12 = [[BADownloadQueue alloc] initWithApplicationIdentifier:v8 delegate:self];
+      v12 = [[BADownloadQueue alloc] initWithApplicationIdentifier:identifierCopy delegate:self];
       if (v12)
       {
         v11 = v12;
-        v13 = [(BAAgentCore *)self downloadQueuesByClientIdentifier];
-        [v13 setObject:v11 forKey:v8];
+        downloadQueuesByClientIdentifier2 = [(BAAgentCore *)self downloadQueuesByClientIdentifier];
+        [downloadQueuesByClientIdentifier2 setObject:v11 forKey:identifierCopy];
 
         goto LABEL_11;
       }
 
-      if (a5)
+      if (error)
       {
         v14 = -104;
         goto LABEL_9;
       }
     }
 
-    else if (a5)
+    else if (error)
     {
       v14 = -105;
 LABEL_9:
       sub_100027BE4(v14);
-      *a5 = v11 = 0;
+      *error = v11 = 0;
       goto LABEL_11;
     }
 
@@ -670,17 +670,17 @@ LABEL_11:
   return v11;
 }
 
-- (id)applicationInfoForIdentifier:(id)a3
+- (id)applicationInfoForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(BAAgentCore *)self applicationState];
-  objc_sync_enter(v5);
+  identifierCopy = identifier;
+  applicationState = [(BAAgentCore *)self applicationState];
+  objc_sync_enter(applicationState);
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = [(BAAgentCore *)self applicationState];
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  applicationState2 = [(BAAgentCore *)self applicationState];
+  v7 = [applicationState2 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
     v8 = *v17;
@@ -690,12 +690,12 @@ LABEL_3:
     {
       if (*v17 != v8)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(applicationState2);
       }
 
       v10 = *(*(&v16 + 1) + 8 * v9);
-      v11 = [v10 applicationIdentifier];
-      v12 = [v11 isEqualToString:v4];
+      applicationIdentifier = [v10 applicationIdentifier];
+      v12 = [applicationIdentifier isEqualToString:identifierCopy];
 
       if (v12)
       {
@@ -704,7 +704,7 @@ LABEL_3:
 
       if (v7 == ++v9)
       {
-        v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v7 = [applicationState2 countByEnumeratingWithState:&v16 objects:v20 count:16];
         if (v7)
         {
           goto LABEL_3;
@@ -727,29 +727,29 @@ LABEL_3:
 LABEL_9:
   }
 
-  v13 = [[BAApplicationInfo alloc] initWithIdentifier:v4];
-  v14 = [(BAAgentCore *)self applicationState];
-  [v14 addObject:v13];
+  v13 = [[BAApplicationInfo alloc] initWithIdentifier:identifierCopy];
+  applicationState3 = [(BAAgentCore *)self applicationState];
+  [applicationState3 addObject:v13];
 
   [(BAAgentCore *)self _updateProcessMonitor];
   [(BAAgentCore *)self _serializeApplicationState];
 LABEL_12:
-  objc_sync_exit(v5);
+  objc_sync_exit(applicationState);
 
   return v13;
 }
 
-- (id)applicationInfoIfExistsForIdentifier:(id)a3
+- (id)applicationInfoIfExistsForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(BAAgentCore *)self applicationState];
-  objc_sync_enter(v5);
+  identifierCopy = identifier;
+  applicationState = [(BAAgentCore *)self applicationState];
+  objc_sync_enter(applicationState);
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [(BAAgentCore *)self applicationState];
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  applicationState2 = [(BAAgentCore *)self applicationState];
+  v7 = [applicationState2 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = *v15;
@@ -759,12 +759,12 @@ LABEL_12:
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(applicationState2);
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
-        v11 = [v10 applicationIdentifier];
-        v12 = [v11 isEqualToString:v4];
+        applicationIdentifier = [v10 applicationIdentifier];
+        v12 = [applicationIdentifier isEqualToString:identifierCopy];
 
         if (v12)
         {
@@ -773,7 +773,7 @@ LABEL_12:
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [applicationState2 countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v7)
       {
         continue;
@@ -785,55 +785,55 @@ LABEL_12:
 
 LABEL_11:
 
-  objc_sync_exit(v5);
+  objc_sync_exit(applicationState);
 
   return v7;
 }
 
-- (void)applicationPrepareWithDescriptor:(id)a3
+- (void)applicationPrepareWithDescriptor:(id)descriptor
 {
-  v4 = a3;
-  v5 = [(BAAgentCore *)self workQueue];
+  descriptorCopy = descriptor;
+  workQueue = [(BAAgentCore *)self workQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10001894C;
   v7[3] = &unk_100079300;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = descriptorCopy;
+  v6 = descriptorCopy;
+  dispatch_async(workQueue, v7);
 }
 
-- (void)applicationPlaceholderReadyWithIdentifier:(id)a3 placeholderBundleURL:(id)a4 userInitiated:(BOOL)a5
+- (void)applicationPlaceholderReadyWithIdentifier:(id)identifier placeholderBundleURL:(id)l userInitiated:(BOOL)initiated
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(BAAgentCore *)self workQueue];
+  identifierCopy = identifier;
+  lCopy = l;
+  workQueue = [(BAAgentCore *)self workQueue];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100018ADC;
   v13[3] = &unk_100079990;
-  v17 = a5;
-  v14 = v8;
-  v15 = v9;
-  v16 = self;
-  v11 = v9;
-  v12 = v8;
-  dispatch_async(v10, v13);
+  initiatedCopy = initiated;
+  v14 = identifierCopy;
+  v15 = lCopy;
+  selfCopy = self;
+  v11 = lCopy;
+  v12 = identifierCopy;
+  dispatch_async(workQueue, v13);
 }
 
-- (void)applicationInstallCanceledWithIdentifier:(id)a3 userInitiated:(BOOL)a4
+- (void)applicationInstallCanceledWithIdentifier:(id)identifier userInitiated:(BOOL)initiated
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v6 = sub_100010584();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446210;
-    v16 = [v5 UTF8String];
+    uTF8String = [identifierCopy UTF8String];
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Event (Canceled) received for client (%{public}s)", buf, 0xCu);
   }
 
-  v7 = [(BAAgentCore *)self applicationInfoIfExistsForIdentifier:v5];
+  v7 = [(BAAgentCore *)self applicationInfoIfExistsForIdentifier:identifierCopy];
   if (v7)
   {
     v14 = 0;
@@ -842,13 +842,13 @@ LABEL_11:
     if (v8)
     {
       v10 = dispatch_time(0, 5000000000);
-      v11 = [(BAAgentCore *)self workQueue];
+      workQueue = [(BAAgentCore *)self workQueue];
       v13[0] = _NSConcreteStackBlock;
       v13[1] = 3221225472;
       v13[2] = sub_100018E5C;
       v13[3] = &unk_100079260;
       v13[4] = self;
-      dispatch_after(v10, v11, v13);
+      dispatch_after(v10, workQueue, v13);
     }
 
     else
@@ -871,51 +871,51 @@ LABEL_11:
   }
 }
 
-- (void)_requestNetworkConsentWithApplication:(id)a3 userInitiated:(BOOL)a4
+- (void)_requestNetworkConsentWithApplication:(id)application userInitiated:(BOOL)initiated
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = v6;
-  if (v4)
+  initiatedCopy = initiated;
+  applicationCopy = application;
+  v7 = applicationCopy;
+  if (initiatedCopy)
   {
-    v8 = [v6 applicationIdentifier];
+    applicationIdentifier = [applicationCopy applicationIdentifier];
     if ([v7 setAwaitingNetworkConsent:1])
     {
-      v9 = [(BAAgentCore *)self telephonyClient];
+      telephonyClient = [(BAAgentCore *)self telephonyClient];
       v10[0] = _NSConcreteStackBlock;
       v10[1] = 3221225472;
       v10[2] = sub_100018F5C;
       v10[3] = &unk_1000799B8;
-      v11 = v8;
+      v11 = applicationIdentifier;
       v12 = v7;
-      [v9 performNetworkAccessFlowIfAllowed:v11 ignoreForeground:1 completion:v10];
+      [telephonyClient performNetworkAccessFlowIfAllowed:v11 ignoreForeground:1 completion:v10];
     }
   }
 }
 
-- (id)updateApplicationInformationForIdentifier:(id)a3 bundleURLPath:(id)a4
+- (id)updateApplicationInformationForIdentifier:(id)identifier bundleURLPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  identifierCopy = identifier;
+  pathCopy = path;
+  if (pathCopy)
   {
-    v8 = [[NSBundle alloc] _initUniqueWithURL:v7];
+    v8 = [[NSBundle alloc] _initUniqueWithURL:pathCopy];
     v9 = v8;
     if (v8)
     {
-      v10 = [v8 infoDictionary];
-      if (v10)
+      infoDictionary = [v8 infoDictionary];
+      if (infoDictionary)
       {
-        v11 = v10;
+        v11 = infoDictionary;
         v12 = [LSApplicationRecord alloc];
-        v13 = [v9 bundleURL];
+        bundleURL = [v9 bundleURL];
         v33 = 0;
-        v14 = [v12 initWithURL:v13 allowPlaceholder:1 error:&v33];
+        persistentIdentifier = [v12 initWithURL:bundleURL allowPlaceholder:1 error:&v33];
         v15 = v33;
 
-        if (v14)
+        if (persistentIdentifier)
         {
-          [(BAAgentCore *)self applicationInfoForIdentifier:v6];
+          [(BAAgentCore *)self applicationInfoForIdentifier:identifierCopy];
           v11 = v16 = v11;
 LABEL_15:
 
@@ -923,20 +923,20 @@ LABEL_15:
           if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
           {
             v24 = @"N/A";
-            if (v7)
+            if (pathCopy)
             {
-              v24 = v7;
+              v24 = pathCopy;
             }
 
             *buf = 138543618;
-            v35 = v6;
+            v35 = identifierCopy;
             v36 = 2114;
             v37 = v24;
             _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "Application info for (%{public}@) is being updated based on URL:(%{public}@)", buf, 0x16u);
           }
 
-          v25 = [BAApplicationConfigurationOverrides overridesForAppBundleIdentifier:v6];
-          [v11 updateApplicationWithInfoDictionary:v16 applicationRecord:v14 overrides:v25];
+          v25 = [BAApplicationConfigurationOverrides overridesForAppBundleIdentifier:identifierCopy];
+          [v11 updateApplicationWithInfoDictionary:v16 applicationRecord:persistentIdentifier overrides:v25];
           [(BAAgentCore *)self _serializeApplicationState];
           v11 = v11;
 
@@ -947,23 +947,23 @@ LABEL_15:
         v27 = sub_100010584();
         if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
         {
-          v31 = [v9 bundleURL];
+          bundleURL2 = [v9 bundleURL];
           *buf = 138543874;
-          v35 = v6;
+          v35 = identifierCopy;
           v36 = 2114;
-          v37 = v31;
+          v37 = bundleURL2;
           v38 = 2114;
           v39 = v15;
           _os_log_error_impl(&_mh_execute_header, v27, OS_LOG_TYPE_ERROR, "Unable to update application info. LSApplicationRecord from URL failed (bundle identifier: %{public}@, URL: %{public}@) %{public}@", buf, 0x20u);
         }
 
         v26 = 0;
-        v14 = v9;
+        persistentIdentifier = v9;
         goto LABEL_36;
       }
 
-      v14 = sub_100010584();
-      if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+      persistentIdentifier = sub_100010584();
+      if (os_log_type_enabled(persistentIdentifier, OS_LOG_TYPE_ERROR))
       {
         sub_100049D84();
       }
@@ -971,8 +971,8 @@ LABEL_15:
 
     else
     {
-      v14 = sub_100010584();
-      if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+      persistentIdentifier = sub_100010584();
+      if (os_log_type_enabled(persistentIdentifier, OS_LOG_TYPE_ERROR))
       {
         sub_100049DF0();
       }
@@ -983,20 +983,20 @@ LABEL_15:
     goto LABEL_36;
   }
 
-  v11 = [(BAAgentCore *)self applicationInfoForIdentifier:v6];
-  v14 = [v11 persistentIdentifier];
-  if (!v14 || (v17 = [[LSApplicationRecord alloc] initWithPersistentIdentifier:v14]) == 0)
+  v11 = [(BAAgentCore *)self applicationInfoForIdentifier:identifierCopy];
+  persistentIdentifier = [v11 persistentIdentifier];
+  if (!persistentIdentifier || (v17 = [[LSApplicationRecord alloc] initWithPersistentIdentifier:persistentIdentifier]) == 0)
   {
     v18 = sub_100010584();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
     {
       *buf = 138543362;
-      v35 = v6;
+      v35 = identifierCopy;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_INFO, "Unable to use persistent identifier to update application info. Falling back to bundle identifier lookup. (bundle identifier: %{public}@)", buf, 0xCu);
     }
 
     v32 = 0;
-    v17 = [LSBundleRecord bundleRecordWithBundleIdentifier:v6 allowPlaceholder:0 error:&v32];
+    v17 = [LSBundleRecord bundleRecordWithBundleIdentifier:identifierCopy allowPlaceholder:0 error:&v32];
     v19 = v32;
     if (v17)
     {
@@ -1032,12 +1032,12 @@ LABEL_13:
   v21 = [v17 URL];
   v15 = [v20 _initUniqueWithURL:v21];
 
-  v22 = [v15 infoDictionary];
-  if (v22)
+  infoDictionary2 = [v15 infoDictionary];
+  if (infoDictionary2)
   {
-    v16 = v22;
-    v9 = v14;
-    v14 = v17;
+    v16 = infoDictionary2;
+    v9 = persistentIdentifier;
+    persistentIdentifier = v17;
     goto LABEL_15;
   }
 
@@ -1048,35 +1048,35 @@ LABEL_13:
   }
 
   v26 = 0;
-  v14 = v17;
+  persistentIdentifier = v17;
 LABEL_36:
 
   return v26;
 }
 
-- (id)_appStoreManifestDownloadForApplicationRecord:(id)a3 applicationEvent:(int64_t)a4 applicationGroupIdentifier:(id)a5 applicationInfo:(id)a6
+- (id)_appStoreManifestDownloadForApplicationRecord:(id)record applicationEvent:(int64_t)event applicationGroupIdentifier:(id)identifier applicationInfo:(id)info
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
+  recordCopy = record;
+  identifierCopy = identifier;
+  infoCopy = info;
   v12 = sub_1000104FC();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [v9 bundleIdentifier];
+    bundleIdentifier = [recordCopy bundleIdentifier];
     *buf = 138543362;
-    v24 = v13;
+    v24 = bundleIdentifier;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Using an App Store manifest request for the application with the bundle identifier “%{public}@”…", buf, 0xCu);
   }
 
   v14 = +[BAManagedBackgroundAssetsInterface sharedInterface];
-  v15 = [v9 bundleIdentifier];
+  bundleIdentifier2 = [recordCopy bundleIdentifier];
   v22 = 0;
-  v16 = [v14 manifestRequestForAppStoreApplicationWithBundleIdentifier:v15 error:&v22];
+  v16 = [v14 manifestRequestForAppStoreApplicationWithBundleIdentifier:bundleIdentifier2 error:&v22];
   v17 = v22;
 
   if (v16)
   {
-    v18 = sub_100048254([BAManifestDownload alloc], v16, a4, v10, v11);
+    v18 = sub_100048254([BAManifestDownload alloc], v16, event, identifierCopy, infoCopy);
   }
 
   else
@@ -1093,7 +1093,7 @@ LABEL_36:
 
     else if (v20)
     {
-      sub_10004A5CC(v9);
+      sub_10004A5CC(recordCopy);
     }
 
     v18 = 0;
@@ -1102,22 +1102,22 @@ LABEL_36:
   return v18;
 }
 
-- (id)_testFlightManifestDownloadForApplicationRecord:(id)a3 applicationEvent:(int64_t)a4 applicationGroupIdentifier:(id)a5 applicationInfo:(id)a6
+- (id)_testFlightManifestDownloadForApplicationRecord:(id)record applicationEvent:(int64_t)event applicationGroupIdentifier:(id)identifier applicationInfo:(id)info
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
+  recordCopy = record;
+  identifierCopy = identifier;
+  infoCopy = info;
   v12 = sub_1000104FC();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [v9 bundleIdentifier];
+    bundleIdentifier = [recordCopy bundleIdentifier];
     LODWORD(buf) = 138543362;
-    *(&buf + 4) = v13;
+    *(&buf + 4) = bundleIdentifier;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Using a TestFlight manifest request for the application with the bundle identifier “%{public}@”…", &buf, 0xCu);
   }
 
-  v14 = [v9 iTunesMetadata];
-  v15 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v14 storeItemIdentifier]);
+  iTunesMetadata = [recordCopy iTunesMetadata];
+  v15 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [iTunesMetadata storeItemIdentifier]);
 
   v27 = 0;
   v28 = &v27;
@@ -1138,14 +1138,14 @@ LABEL_36:
   v17 = v16;
   _Block_object_dispose(&v27, 8);
   v18 = objc_opt_class();
-  v19 = [v9 bundleIdentifier];
+  bundleIdentifier2 = [recordCopy bundleIdentifier];
   v26 = 0;
-  v20 = [v18 testFlightDownloadManifestRequestForStoreItemIdentifier:v15 bundleIdentifier:v19 error:&v26];
+  v20 = [v18 testFlightDownloadManifestRequestForStoreItemIdentifier:v15 bundleIdentifier:bundleIdentifier2 error:&v26];
   v21 = v26;
 
   if (v20)
   {
-    v22 = sub_100048254([BAManifestDownload alloc], v20, a4, v10, v11);
+    v22 = sub_100048254([BAManifestDownload alloc], v20, event, identifierCopy, infoCopy);
   }
 
   else
@@ -1156,13 +1156,13 @@ LABEL_36:
     {
       if (v24)
       {
-        sub_10004A658(v9);
+        sub_10004A658(recordCopy);
       }
     }
 
     else if (v24)
     {
-      sub_10004A6F8(v9);
+      sub_10004A6F8(recordCopy);
     }
 
     v22 = 0;
@@ -1171,56 +1171,56 @@ LABEL_36:
   return v22;
 }
 
-- (id)_localCacheManifestDownloadForApplicationRecord:(id)a3 applicationEvent:(int64_t)a4 applicationGroupIdentifier:(id)a5 applicationInfo:(id)a6
+- (id)_localCacheManifestDownloadForApplicationRecord:(id)record applicationEvent:(int64_t)event applicationGroupIdentifier:(id)identifier applicationInfo:(id)info
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
+  recordCopy = record;
+  identifierCopy = identifier;
+  infoCopy = info;
   v12 = sub_1000104FC();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [v9 bundleIdentifier];
+    bundleIdentifier = [recordCopy bundleIdentifier];
     *buf = 138543362;
-    v37 = v13;
+    v37 = bundleIdentifier;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Using a local-cache manifest URL for the application with the bundle identifier “%{public}@”…", buf, 0xCu);
   }
 
   v14 = +[BAManagedBackgroundAssetsInterface sharedInterface];
-  v15 = [v9 bundleIdentifier];
+  bundleIdentifier2 = [recordCopy bundleIdentifier];
   v35 = 0;
-  v16 = [v14 manifestDataFromLocalCacheForApplicationWithBundleIdentifier:v15 error:&v35];
+  v16 = [v14 manifestDataFromLocalCacheForApplicationWithBundleIdentifier:bundleIdentifier2 error:&v35];
   v17 = v35;
 
   if (v16)
   {
-    v31 = a4;
-    v32 = v11;
-    v33 = v10;
-    v18 = [UTTypeJSON preferredFilenameExtension];
+    eventCopy = event;
+    v32 = infoCopy;
+    v33 = identifierCopy;
+    preferredFilenameExtension = [UTTypeJSON preferredFilenameExtension];
     v19 = +[NSFileManager defaultManager];
-    v20 = [v19 temporaryDirectory];
+    temporaryDirectory = [v19 temporaryDirectory];
     v21 = +[NSUUID UUID];
-    v22 = [v21 UUIDString];
-    v23 = [v20 URLByAppendingPathComponent:v22 isDirectory:0];
-    v24 = [v23 URLByAppendingPathExtension:v18];
+    uUIDString = [v21 UUIDString];
+    v23 = [temporaryDirectory URLByAppendingPathComponent:uUIDString isDirectory:0];
+    v24 = [v23 URLByAppendingPathExtension:preferredFilenameExtension];
 
     v34 = v17;
-    LOBYTE(v22) = [v16 writeToURL:v24 options:0 error:&v34];
+    LOBYTE(uUIDString) = [v16 writeToURL:v24 options:0 error:&v34];
     v25 = v34;
 
-    if (v22)
+    if (uUIDString)
     {
       v26 = [NSURLRequest requestWithURL:v24 cachePolicy:4 timeoutInterval:60.0];
-      v11 = v32;
-      v10 = v33;
-      v27 = sub_100048254([BAManifestDownload alloc], v26, v31, v33, v32);
+      infoCopy = v32;
+      identifierCopy = v33;
+      v27 = sub_100048254([BAManifestDownload alloc], v26, eventCopy, v33, v32);
     }
 
     else
     {
       v26 = sub_1000104FC();
       v29 = os_log_type_enabled(v26, OS_LOG_TYPE_ERROR);
-      v11 = v32;
+      infoCopy = v32;
       if (v25)
       {
         if (v29)
@@ -1235,7 +1235,7 @@ LABEL_36:
       }
 
       v27 = 0;
-      v10 = v33;
+      identifierCopy = v33;
     }
   }
 
@@ -1258,7 +1258,7 @@ LABEL_36:
     {
       if (v28)
       {
-        sub_10004A8F0(v9);
+        sub_10004A8F0(recordCopy);
       }
 
       v27 = 0;
@@ -1268,56 +1268,56 @@ LABEL_36:
   return v27;
 }
 
-- (id)_appReviewManifestDownloadForApplicationRecord:(id)a3 applicationEvent:(int64_t)a4 applicationGroupIdentifier:(id)a5 applicationInfo:(id)a6
+- (id)_appReviewManifestDownloadForApplicationRecord:(id)record applicationEvent:(int64_t)event applicationGroupIdentifier:(id)identifier applicationInfo:(id)info
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
+  recordCopy = record;
+  identifierCopy = identifier;
+  infoCopy = info;
   v12 = sub_1000104FC();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [v9 bundleIdentifier];
+    bundleIdentifier = [recordCopy bundleIdentifier];
     *buf = 138543362;
-    v37 = v13;
+    v37 = bundleIdentifier;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Using an App Review manifest URL for the application with the bundle identifier “%{public}@”…", buf, 0xCu);
   }
 
   v14 = +[BAManagedBackgroundAssetsInterface sharedInterface];
-  v15 = [v9 bundleIdentifier];
+  bundleIdentifier2 = [recordCopy bundleIdentifier];
   v35 = 0;
-  v16 = [v14 manifestDataFromLocalCacheForApplicationWithBundleIdentifier:v15 error:&v35];
+  v16 = [v14 manifestDataFromLocalCacheForApplicationWithBundleIdentifier:bundleIdentifier2 error:&v35];
   v17 = v35;
 
   if (v16)
   {
-    v31 = a4;
-    v32 = v11;
-    v33 = v10;
-    v18 = [UTTypeJSON preferredFilenameExtension];
+    eventCopy = event;
+    v32 = infoCopy;
+    v33 = identifierCopy;
+    preferredFilenameExtension = [UTTypeJSON preferredFilenameExtension];
     v19 = +[NSFileManager defaultManager];
-    v20 = [v19 temporaryDirectory];
+    temporaryDirectory = [v19 temporaryDirectory];
     v21 = +[NSUUID UUID];
-    v22 = [v21 UUIDString];
-    v23 = [v20 URLByAppendingPathComponent:v22 isDirectory:0];
-    v24 = [v23 URLByAppendingPathExtension:v18];
+    uUIDString = [v21 UUIDString];
+    v23 = [temporaryDirectory URLByAppendingPathComponent:uUIDString isDirectory:0];
+    v24 = [v23 URLByAppendingPathExtension:preferredFilenameExtension];
 
     v34 = v17;
-    LOBYTE(v22) = [v16 writeToURL:v24 options:0 error:&v34];
+    LOBYTE(uUIDString) = [v16 writeToURL:v24 options:0 error:&v34];
     v25 = v34;
 
-    if (v22)
+    if (uUIDString)
     {
       v26 = [NSURLRequest requestWithURL:v24 cachePolicy:4 timeoutInterval:60.0];
-      v11 = v32;
-      v10 = v33;
-      v27 = sub_100048254([BAManifestDownload alloc], v26, v31, v33, v32);
+      infoCopy = v32;
+      identifierCopy = v33;
+      v27 = sub_100048254([BAManifestDownload alloc], v26, eventCopy, v33, v32);
     }
 
     else
     {
       v26 = sub_1000104FC();
       v29 = os_log_type_enabled(v26, OS_LOG_TYPE_ERROR);
-      v11 = v32;
+      infoCopy = v32;
       if (v25)
       {
         if (v29)
@@ -1332,7 +1332,7 @@ LABEL_36:
       }
 
       v27 = 0;
-      v10 = v33;
+      identifierCopy = v33;
     }
   }
 
@@ -1355,7 +1355,7 @@ LABEL_36:
     {
       if (v28)
       {
-        sub_10004AAE4(v9);
+        sub_10004AAE4(recordCopy);
       }
 
       v27 = 0;
@@ -1365,25 +1365,25 @@ LABEL_36:
   return v27;
 }
 
-- (id)_developmentOverrideManifestDownloadForApplicationRecord:(id)a3 applicationEvent:(int64_t)a4 applicationGroupIdentifier:(id)a5 applicationInfo:(id)a6
+- (id)_developmentOverrideManifestDownloadForApplicationRecord:(id)record applicationEvent:(int64_t)event applicationGroupIdentifier:(id)identifier applicationInfo:(id)info
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
+  recordCopy = record;
+  identifierCopy = identifier;
+  infoCopy = info;
   v12 = sub_1000104FC();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [v9 bundleIdentifier];
+    bundleIdentifier = [recordCopy bundleIdentifier];
     v19 = 138543362;
-    v20 = v13;
+    v20 = bundleIdentifier;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Using a development-override manifest request for the application with the bundle identifier “%{public}@”…", &v19, 0xCu);
   }
 
-  v14 = [BADevelopmentOverrides URLForApplicationRecord:v9];
+  v14 = [BADevelopmentOverrides URLForApplicationRecord:recordCopy];
   if (v14)
   {
     v15 = [NSURLRequest requestWithURL:v14 cachePolicy:4 timeoutInterval:60.0];
-    v16 = sub_100048254([BAManifestDownload alloc], v15, a4, v10, v11);
+    v16 = sub_100048254([BAManifestDownload alloc], v15, event, identifierCopy, infoCopy);
   }
 
   else
@@ -1391,9 +1391,9 @@ LABEL_36:
     v15 = sub_1000104FC();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [v9 bundleIdentifier];
+      bundleIdentifier2 = [recordCopy bundleIdentifier];
       v19 = 138543362;
-      v20 = v17;
+      v20 = bundleIdentifier2;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "No development-override URL was found for the application with the bundle identifier “%{public}@”.", &v19, 0xCu);
     }
 
@@ -1403,28 +1403,28 @@ LABEL_36:
   return v16;
 }
 
-- (BOOL)__schedulingPermittedWithIdentifier:(id)a3 downloadQueue:(id *)a4 appInfo:(id *)a5 error:(id *)a6
+- (BOOL)__schedulingPermittedWithIdentifier:(id)identifier downloadQueue:(id *)queue appInfo:(id *)info error:(id *)error
 {
-  v10 = a3;
-  v11 = [(BAAgentCore *)self workQueue];
-  dispatch_assert_queue_V2(v11);
+  identifierCopy = identifier;
+  workQueue = [(BAAgentCore *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v12 = [(BAAgentCore *)self _downloadQueueForIdentifier:v10 create:1 error:a6];
+  v12 = [(BAAgentCore *)self _downloadQueueForIdentifier:identifierCopy create:1 error:error];
   v13 = v12;
   if (v12)
   {
-    if (a4)
+    if (queue)
     {
       v14 = v12;
-      *a4 = v13;
+      *queue = v13;
     }
 
-    v15 = [(BAAgentCore *)self applicationInfoForIdentifier:v10];
+    v15 = [(BAAgentCore *)self applicationInfoForIdentifier:identifierCopy];
     v16 = v15;
-    if (a5)
+    if (info)
     {
       v17 = v15;
-      *a5 = v16;
+      *info = v16;
     }
 
     if ([v16 hasLaunchedApplication] & 1) != 0 || (objc_msgSend(v16, "permittedForInitialBackgroundActivity"))
@@ -1432,10 +1432,10 @@ LABEL_36:
       v18 = 1;
     }
 
-    else if (a6)
+    else if (error)
     {
       sub_100027BE4(206);
-      *a6 = v18 = 0;
+      *error = v18 = 0;
     }
 
     else
@@ -1446,103 +1446,103 @@ LABEL_36:
 
   else
   {
-    if (a4)
+    if (queue)
     {
-      *a4 = 0;
+      *queue = 0;
     }
 
     v18 = 0;
-    if (a5)
+    if (info)
     {
-      *a5 = 0;
+      *info = 0;
     }
   }
 
   return v18;
 }
 
-- (void)scheduleDownload:(id)a3 forClientIdentifier:(id)a4 notifyQueue:(id)a5 completionBlock:(id)a6
+- (void)scheduleDownload:(id)download forClientIdentifier:(id)identifier notifyQueue:(id)queue completionBlock:(id)block
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(BAAgentCore *)self workQueue];
+  downloadCopy = download;
+  identifierCopy = identifier;
+  queueCopy = queue;
+  blockCopy = block;
+  workQueue = [(BAAgentCore *)self workQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10001B364;
   block[3] = &unk_100079A58;
   block[4] = self;
-  v20 = v11;
-  v22 = v10;
-  v23 = v13;
-  v21 = v12;
-  v15 = v10;
-  v16 = v13;
-  v17 = v12;
-  v18 = v11;
-  dispatch_async(v14, block);
+  v20 = identifierCopy;
+  v22 = downloadCopy;
+  v23 = blockCopy;
+  v21 = queueCopy;
+  v15 = downloadCopy;
+  v16 = blockCopy;
+  v17 = queueCopy;
+  v18 = identifierCopy;
+  dispatch_async(workQueue, block);
 }
 
-- (void)startForegroundDownload:(id)a3 forClientIdentifier:(id)a4 completionBlock:(id)a5
+- (void)startForegroundDownload:(id)download forClientIdentifier:(id)identifier completionBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(BAAgentCore *)self workQueue];
+  downloadCopy = download;
+  identifierCopy = identifier;
+  blockCopy = block;
+  workQueue = [(BAAgentCore *)self workQueue];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_10001B960;
   v15[3] = &unk_100079AF8;
   v15[4] = self;
-  v16 = v9;
-  v17 = v8;
-  v18 = v10;
-  v12 = v8;
-  v13 = v10;
-  v14 = v9;
-  dispatch_async(v11, v15);
+  v16 = identifierCopy;
+  v17 = downloadCopy;
+  v18 = blockCopy;
+  v12 = downloadCopy;
+  v13 = blockCopy;
+  v14 = identifierCopy;
+  dispatch_async(workQueue, v15);
 }
 
-- (void)pauseQueueWithIdentifier:(id)a3 completionBlock:(id)a4
+- (void)pauseQueueWithIdentifier:(id)identifier completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BAAgentCore *)self workQueue];
+  identifierCopy = identifier;
+  blockCopy = block;
+  workQueue = [(BAAgentCore *)self workQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10001BE7C;
   block[3] = &unk_100079AA8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = identifierCopy;
+  v13 = blockCopy;
+  v9 = blockCopy;
+  v10 = identifierCopy;
+  dispatch_async(workQueue, block);
 }
 
-- (void)resumeQueueWithIdentifier:(id)a3 completionBlock:(id)a4
+- (void)resumeQueueWithIdentifier:(id)identifier completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BAAgentCore *)self workQueue];
+  identifierCopy = identifier;
+  blockCopy = block;
+  workQueue = [(BAAgentCore *)self workQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10001BFFC;
   block[3] = &unk_100079AA8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = identifierCopy;
+  v13 = blockCopy;
+  v9 = blockCopy;
+  v10 = identifierCopy;
+  dispatch_async(workQueue, block);
 }
 
-- (BOOL)removeAppWithAppInfo:(id)a3 error:(id *)a4
+- (BOOL)removeAppWithAppInfo:(id)info error:(id *)error
 {
-  v6 = a3;
-  v7 = [(BAAgentCore *)self workQueue];
-  dispatch_assert_queue_not_V2(v7);
+  infoCopy = info;
+  workQueue = [(BAAgentCore *)self workQueue];
+  dispatch_assert_queue_not_V2(workQueue);
 
   v26 = 0;
   v27 = &v26;
@@ -1554,22 +1554,22 @@ LABEL_36:
   v23 = sub_100017E34;
   v24 = sub_100017E44;
   v25 = 0;
-  v8 = [(BAAgentCore *)self workQueue];
+  workQueue2 = [(BAAgentCore *)self workQueue];
   v12 = _NSConcreteStackBlock;
   v13 = 3221225472;
   v14 = sub_10001C24C;
   v15 = &unk_100079B20;
-  v9 = v6;
+  v9 = infoCopy;
   v16 = v9;
-  v17 = self;
+  selfCopy = self;
   v18 = &v20;
   v19 = &v26;
-  dispatch_async_and_wait(v8, &v12);
+  dispatch_async_and_wait(workQueue2, &v12);
 
   [(BAAgentCore *)self invalidateExtensionWithAppInfo:v9, v12, v13, v14, v15];
-  if (a4)
+  if (error)
   {
-    *a4 = v21[5];
+    *error = v21[5];
   }
 
   v10 = *(v27 + 24);
@@ -1580,51 +1580,51 @@ LABEL_36:
   return v10;
 }
 
-- (void)cancelDownload:(id)a3 forClientIdentifier:(id)a4 completionBlock:(id)a5
+- (void)cancelDownload:(id)download forClientIdentifier:(id)identifier completionBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(BAAgentCore *)self workQueue];
+  downloadCopy = download;
+  identifierCopy = identifier;
+  blockCopy = block;
+  workQueue = [(BAAgentCore *)self workQueue];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_10001C5B0;
   v15[3] = &unk_100079AF8;
   v15[4] = self;
-  v16 = v9;
-  v17 = v8;
-  v18 = v10;
-  v12 = v8;
-  v13 = v10;
-  v14 = v9;
-  dispatch_sync(v11, v15);
+  v16 = identifierCopy;
+  v17 = downloadCopy;
+  v18 = blockCopy;
+  v12 = downloadCopy;
+  v13 = blockCopy;
+  v14 = identifierCopy;
+  dispatch_sync(workQueue, v15);
 }
 
-- (id)downloadForIdentifier:(id)a3 forClientIdentifier:(id)a4
+- (id)downloadForIdentifier:(id)identifier forClientIdentifier:(id)clientIdentifier
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  clientIdentifierCopy = clientIdentifier;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
   v19 = sub_100017E34;
   v20 = sub_100017E44;
   v21 = 0;
-  v8 = [(BAAgentCore *)self workQueue];
+  workQueue = [(BAAgentCore *)self workQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10001C800;
   block[3] = &unk_100079B48;
   v15 = &v16;
   block[4] = self;
-  v9 = v7;
+  v9 = clientIdentifierCopy;
   v14 = v9;
-  dispatch_sync(v8, block);
+  dispatch_sync(workQueue, block);
 
   v10 = v17[5];
   if (v10)
   {
-    v11 = [v10 downloadWithUniqueIdentifier:v6];
+    v11 = [v10 downloadWithUniqueIdentifier:identifierCopy];
   }
 
   else
@@ -1637,25 +1637,25 @@ LABEL_36:
   return v11;
 }
 
-- (id)downloadsForIdentifier:(id)a3
+- (id)downloadsForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = sub_100017E34;
   v16 = sub_100017E44;
   v17 = &__NSArray0__struct;
-  v5 = [(BAAgentCore *)self workQueue];
+  workQueue = [(BAAgentCore *)self workQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10001C9A4;
   block[3] = &unk_100079B70;
   block[4] = self;
-  v10 = v4;
+  v10 = identifierCopy;
   v11 = &v12;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = identifierCopy;
+  dispatch_sync(workQueue, block);
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -1676,14 +1676,14 @@ LABEL_36:
   }
 
   v3 = +[NSMutableSet set];
-  v4 = [(BAAgentCore *)self applicationState];
-  objc_sync_enter(v4);
+  applicationState = [(BAAgentCore *)self applicationState];
+  objc_sync_enter(applicationState);
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v5 = [(BAAgentCore *)self applicationState];
-  v6 = [v5 countByEnumeratingWithState:&v36 objects:v48 count:16];
+  applicationState2 = [(BAAgentCore *)self applicationState];
+  v6 = [applicationState2 countByEnumeratingWithState:&v36 objects:v48 count:16];
   if (v6)
   {
     v7 = *v37;
@@ -1693,19 +1693,19 @@ LABEL_36:
       {
         if (*v37 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(applicationState2);
         }
 
         [v3 addObject:*(*(&v36 + 1) + 8 * i)];
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v36 objects:v48 count:16];
+      v6 = [applicationState2 countByEnumeratingWithState:&v36 objects:v48 count:16];
     }
 
     while (v6);
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(applicationState);
   v9 = +[NSMutableArray array];
   v34 = 0u;
   v35 = 0u;
@@ -1728,24 +1728,24 @@ LABEL_36:
         }
 
         v14 = *(*(&v32 + 1) + 8 * j);
-        v15 = [v14 applicationIdentifier];
+        applicationIdentifier = [v14 applicationIdentifier];
         v31 = 0;
-        v16 = [LSBundleRecord bundleRecordWithBundleIdentifier:v15 allowPlaceholder:1 error:&v31];
+        v16 = [LSBundleRecord bundleRecordWithBundleIdentifier:applicationIdentifier allowPlaceholder:1 error:&v31];
         v17 = v31;
 
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v18 = [v14 applicationIdentifier];
-          v19 = [RBSProcessPredicate predicateMatchingBundleIdentifier:v18];
+          applicationIdentifier2 = [v14 applicationIdentifier];
+          v19 = [RBSProcessPredicate predicateMatchingBundleIdentifier:applicationIdentifier2];
 
           [v9 addObject:v19];
-          v20 = [v14 extensionIdentity];
-          v21 = v20;
-          if (v20)
+          extensionIdentity = [v14 extensionIdentity];
+          v21 = extensionIdentity;
+          if (extensionIdentity)
           {
-            v22 = [v20 bundleIdentifier];
-            v23 = [RBSProcessPredicate predicateMatchingBundleIdentifier:v22];
+            bundleIdentifier = [extensionIdentity bundleIdentifier];
+            v23 = [RBSProcessPredicate predicateMatchingBundleIdentifier:bundleIdentifier];
 
             [v9 addObject:v23];
           }
@@ -1765,9 +1765,9 @@ LABEL_36:
           v19 = sub_1000104FC();
           if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
           {
-            v24 = [v14 applicationIdentifier];
+            applicationIdentifier3 = [v14 applicationIdentifier];
             *buf = v27;
-            v44 = v24;
+            v44 = applicationIdentifier3;
             v45 = 2112;
             v46 = v17;
             _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_INFO, "Cannot observe app with identifier (%{public}@), because the app is not installed. %@", buf, 0x16u);
@@ -1791,29 +1791,29 @@ LABEL_36:
   [v25 updateConfiguration:v29];
 }
 
-- (void)_processRunningBoardStateUpdate:(id)a3 forProcess:(id)a4
+- (void)_processRunningBoardStateUpdate:(id)update forProcess:(id)process
 {
-  v6 = a3;
-  v7 = [a4 bundle];
-  if (v7)
+  updateCopy = update;
+  bundle = [process bundle];
+  if (bundle)
   {
-    v8 = [v6 state];
-    v9 = v8;
-    if (v8)
+    state = [updateCopy state];
+    v9 = state;
+    if (state)
     {
-      v10 = [v8 endowmentNamespaces];
-      v11 = [v10 containsObject:@"com.apple.frontboard.visibility"];
+      endowmentNamespaces = [state endowmentNamespaces];
+      v11 = [endowmentNamespaces containsObject:@"com.apple.frontboard.visibility"];
 
-      v12 = [v9 taskState];
+      taskState = [v9 taskState];
       v13 = 0;
-      if (v12 > 2)
+      if (taskState > 2)
       {
-        if (v12 == 3)
+        if (taskState == 3)
         {
           v13 = 3;
         }
 
-        else if (v12 == 4)
+        else if (taskState == 4)
         {
           goto LABEL_11;
         }
@@ -1821,9 +1821,9 @@ LABEL_36:
 
       else
       {
-        if (v12 != 1)
+        if (taskState != 1)
         {
-          if (v12 != 2)
+          if (taskState != 2)
           {
             goto LABEL_16;
           }
@@ -1848,12 +1848,12 @@ LABEL_11:
 
     else
     {
-      v14 = [v6 exitEvent];
-      v15 = [v14 context];
-      v16 = [v15 status];
-      v17 = [v16 code];
+      exitEvent = [updateCopy exitEvent];
+      context = [exitEvent context];
+      status = [context status];
+      code = [status code];
 
-      if (v17 != 3735943697)
+      if (code != 3735943697)
       {
 LABEL_29:
 
@@ -1864,9 +1864,9 @@ LABEL_29:
     }
 
 LABEL_16:
-    v18 = [v7 identifier];
+    identifier = [bundle identifier];
     v33 = 0;
-    v19 = [LSBundleRecord bundleRecordWithBundleIdentifier:v18 allowPlaceholder:0 error:&v33];
+    v19 = [LSBundleRecord bundleRecordWithBundleIdentifier:identifier allowPlaceholder:0 error:&v33];
     v20 = v33;
 
     if (v19)
@@ -1874,20 +1874,20 @@ LABEL_16:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v21 = [v19 containingBundleRecord];
+        containingBundleRecord = [v19 containingBundleRecord];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v22 = [(BAAgentCore *)self workQueue];
+          workQueue = [(BAAgentCore *)self workQueue];
           block[0] = _NSConcreteStackBlock;
           block[1] = 3221225472;
           block[2] = sub_10001D3AC;
           block[3] = &unk_100079538;
           block[4] = self;
-          v30 = v7;
-          v31 = v21;
+          v30 = bundle;
+          v31 = containingBundleRecord;
           v32 = v13;
-          dispatch_async(v22, block);
+          dispatch_async(workQueue, block);
         }
 
         else
@@ -1902,15 +1902,15 @@ LABEL_16:
 
       else
       {
-        v24 = [(BAAgentCore *)self workQueue];
+        workQueue2 = [(BAAgentCore *)self workQueue];
         v26[0] = _NSConcreteStackBlock;
         v26[1] = 3221225472;
         v26[2] = sub_10001D428;
         v26[3] = &unk_100079BE8;
         v26[4] = self;
-        v27 = v7;
+        v27 = bundle;
         v28 = v13;
-        dispatch_async(v24, v26);
+        dispatch_async(workQueue2, v26);
       }
     }
 
@@ -1929,40 +1929,40 @@ LABEL_16:
 LABEL_30:
 }
 
-- (void)_updateStateForAppExtensionBundleIdentifier:(id)a3 appBundleIdentifier:(id)a4 state:(int64_t)a5
+- (void)_updateStateForAppExtensionBundleIdentifier:(id)identifier appBundleIdentifier:(id)bundleIdentifier state:(int64_t)state
 {
-  v6 = [(BAAgentCore *)self applicationInfoForIdentifier:a4];
-  [v6 setApplicationExtensionState:a5];
+  v6 = [(BAAgentCore *)self applicationInfoForIdentifier:bundleIdentifier];
+  [v6 setApplicationExtensionState:state];
 }
 
-- (void)_updateStateForAppBundleIdentifier:(id)a3 state:(int64_t)a4
+- (void)_updateStateForAppBundleIdentifier:(id)identifier state:(int64_t)state
 {
-  v6 = a3;
-  v7 = [(BAAgentCore *)self applicationInfoForIdentifier:v6];
-  v8 = [v7 applicationState];
-  [v7 setApplicationState:a4];
-  if (v8 != a4)
+  identifierCopy = identifier;
+  v7 = [(BAAgentCore *)self applicationInfoForIdentifier:identifierCopy];
+  applicationState = [v7 applicationState];
+  [v7 setApplicationState:state];
+  if (applicationState != state)
   {
-    if ((a4 - 1) > 1)
+    if ((state - 1) > 1)
     {
-      if (a4 == 3)
+      if (state == 3)
       {
-        if (v8)
+        if (applicationState)
         {
           v11 = sub_1000104FC();
           if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
           {
             v22 = 138543362;
-            v23 = v6;
+            v23 = identifierCopy;
             _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Application (%{public}@) is backgrounded.", &v22, 0xCu);
           }
 
-          v12 = [v7 allowsBackgroundActivity];
-          v13 = [(BAAgentCore *)self _downloadQueueForIdentifier:v6 create:0 error:0];
-          v14 = [v13 allDownloads];
-          v15 = [v14 count];
+          allowsBackgroundActivity = [v7 allowsBackgroundActivity];
+          v13 = [(BAAgentCore *)self _downloadQueueForIdentifier:identifierCopy create:0 error:0];
+          allDownloads = [v13 allDownloads];
+          v15 = [allDownloads count];
 
-          if (v12)
+          if (allowsBackgroundActivity)
           {
             if (v15)
             {
@@ -1970,7 +1970,7 @@ LABEL_30:
               if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
               {
                 v22 = 138543362;
-                v23 = v6;
+                v23 = identifierCopy;
                 _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Application (%{public}@) allows BG activity, pausing any foreground downloads for background demotion.", &v22, 0xCu);
               }
 
@@ -1997,26 +1997,26 @@ LABEL_34:
           }
 
           v22 = 138543362;
-          v23 = v6;
+          v23 = identifierCopy;
 LABEL_33:
           _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "Application (%{public}@) does NOT allow BG activity, canceling all active downloads.", &v22, 0xCu);
           goto LABEL_34;
         }
       }
 
-      else if ((a4 & 0xFFFFFFFFFFFFFFFELL) == 4)
+      else if ((state & 0xFFFFFFFFFFFFFFFELL) == 4)
       {
         v17 = sub_1000104FC();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
         {
           v18 = @"NO";
-          if (a4 == 5)
+          if (state == 5)
           {
             v18 = @"YES";
           }
 
           v22 = 138543618;
-          v23 = v6;
+          v23 = identifierCopy;
           v24 = 2114;
           v25 = v18;
           _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Application (%{public}@) is active. (Foreground = %{public}@)", &v22, 0x16u);
@@ -2026,16 +2026,16 @@ LABEL_33:
       }
     }
 
-    else if (v8)
+    else if (applicationState)
     {
       v9 = sub_1000104FC();
       v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
-      if (a4 == 2)
+      if (state == 2)
       {
         if (v10)
         {
           v22 = 138543362;
-          v23 = v6;
+          v23 = identifierCopy;
           _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Application (%{public}@) was quit by the user.", &v22, 0xCu);
         }
 
@@ -2047,14 +2047,14 @@ LABEL_33:
         if (v10)
         {
           v22 = 138543362;
-          v23 = v6;
+          v23 = identifierCopy;
           _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Application (%{public}@) has terminated.", &v22, 0xCu);
         }
       }
 
-      v13 = [(BAAgentCore *)self _downloadQueueForIdentifier:v6 create:0 error:0];
-      v19 = [v13 allDownloads];
-      v20 = [v19 count];
+      v13 = [(BAAgentCore *)self _downloadQueueForIdentifier:identifierCopy create:0 error:0];
+      allDownloads2 = [v13 allDownloads];
+      v20 = [allDownloads2 count];
 
       if (!v20 || ([v7 allowsBackgroundActivity] & 1) != 0)
       {
@@ -2068,7 +2068,7 @@ LABEL_33:
       }
 
       v22 = 138543362;
-      v23 = v6;
+      v23 = identifierCopy;
       goto LABEL_33;
     }
   }
@@ -2076,36 +2076,36 @@ LABEL_33:
 LABEL_36:
 }
 
-- (void)handleApplicationLaunched:(id)a3
+- (void)handleApplicationLaunched:(id)launched
 {
-  v4 = a3;
-  v5 = [(BAAgentCore *)self workQueue];
+  launchedCopy = launched;
+  workQueue = [(BAAgentCore *)self workQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10001D958;
   v7[3] = &unk_100079300;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = launchedCopy;
+  v6 = launchedCopy;
+  dispatch_async(workQueue, v7);
 }
 
-- (void)__handleApplicationLaunchedWithInfo:(id)a3
+- (void)__handleApplicationLaunchedWithInfo:(id)info
 {
-  [a3 applicationLaunched];
+  [info applicationLaunched];
 
   [(BAAgentCore *)self _serializeApplicationState];
 }
 
 - (void)_pokeScheduler
 {
-  v3 = [(BAAgentCore *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(BAAgentCore *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v31 = os_transaction_create();
   [(BAAgentCore *)self _scheduleDownloads];
-  v4 = [(BAAgentCore *)self unhandledDownloadEvents];
-  v34 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v4 count]);
+  unhandledDownloadEvents = [(BAAgentCore *)self unhandledDownloadEvents];
+  v34 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [unhandledDownloadEvents count]);
 
   v46 = 0u;
   v47 = 0u;
@@ -2127,9 +2127,9 @@ LABEL_36:
         }
 
         v8 = *(*(&v44 + 1) + 8 * i);
-        v9 = [v8 download];
-        v10 = [v9 applicationIdentifier];
-        v11 = [(BAAgentCore *)self _connectionsForApplicationIdentifier:v10];
+        download = [v8 download];
+        applicationIdentifier = [download applicationIdentifier];
+        v11 = [(BAAgentCore *)self _connectionsForApplicationIdentifier:applicationIdentifier];
         v40 = 0u;
         v41 = 0u;
         v42 = 0u;
@@ -2169,10 +2169,10 @@ LABEL_36:
         v17 = 0;
 LABEL_16:
 
-        v18 = [(BAAgentCore *)self applicationInfoIfExistsForIdentifier:v10];
+        v18 = [(BAAgentCore *)self applicationInfoIfExistsForIdentifier:applicationIdentifier];
         if (([v18 receivedInstalledNotification] & 1) != 0 || (objc_msgSend(v18, "receivedInstallingNotification") & 1) == 0)
         {
-          if ((v17 & 1) != 0 || ([(BAAgentCore *)self _downloaderExtensionForApplicationIdentifier:v10 cacheOnly:0], v19 = objc_claimAutoreleasedReturnValue(), v19, v19))
+          if ((v17 & 1) != 0 || ([(BAAgentCore *)self _downloaderExtensionForApplicationIdentifier:applicationIdentifier cacheOnly:0], v19 = objc_claimAutoreleasedReturnValue(), v19, v19))
           {
             [v34 addObject:v8];
           }
@@ -2188,8 +2188,8 @@ LABEL_16:
   obja = [v34 count];
   if (obja)
   {
-    v20 = [(BAAgentCore *)self unhandledDownloadEvents];
-    [v20 removeObjectsInArray:v34];
+    unhandledDownloadEvents2 = [(BAAgentCore *)self unhandledDownloadEvents];
+    [unhandledDownloadEvents2 removeObjectsInArray:v34];
   }
 
   v38 = 0u;
@@ -2214,10 +2214,10 @@ LABEL_16:
         v26 = *(*(&v36 + 1) + 8 * k);
         if ([v26 type] == 1)
         {
-          v27 = [v26 download];
-          v28 = [v26 download];
-          v30 = sub_10004C614(v28, v29);
-          [(BAAgentCore *)self download:v27 finishedWithFileURL:v30];
+          download2 = [v26 download];
+          download3 = [v26 download];
+          v30 = sub_10004C614(download3, v29);
+          [(BAAgentCore *)self download:download2 finishedWithFileURL:v30];
 
 LABEL_34:
           goto LABEL_37;
@@ -2225,18 +2225,18 @@ LABEL_34:
 
         if ([v26 type] == 2)
         {
-          v27 = [v26 download];
-          v28 = [v26 eventError];
-          [(BAAgentCore *)self download:v27 failedWithError:v28];
+          download2 = [v26 download];
+          download3 = [v26 eventError];
+          [(BAAgentCore *)self download:download2 failedWithError:download3];
           goto LABEL_34;
         }
 
-        v27 = sub_1000104FC();
-        if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
+        download2 = sub_1000104FC();
+        if (os_log_type_enabled(download2, OS_LOG_TYPE_ERROR))
         {
           *buf = 138543362;
           v49 = v26;
-          _os_log_error_impl(&_mh_execute_header, v27, OS_LOG_TYPE_ERROR, "Dropping unknown unhandled event type in list: %{public}@", buf, 0xCu);
+          _os_log_error_impl(&_mh_execute_header, download2, OS_LOG_TYPE_ERROR, "Dropping unknown unhandled event type in list: %{public}@", buf, 0xCu);
         }
 
 LABEL_37:
@@ -2256,11 +2256,11 @@ LABEL_37:
 
 - (void)_scheduleDownloads
 {
-  v3 = [(BAAgentCore *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(BAAgentCore *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v4 = [(BAAgentCore *)self downloadQueuesByClientIdentifier];
-  v5 = [v4 count];
+  downloadQueuesByClientIdentifier = [(BAAgentCore *)self downloadQueuesByClientIdentifier];
+  v5 = [downloadQueuesByClientIdentifier count];
 
   if (!v5)
   {
@@ -2268,14 +2268,14 @@ LABEL_37:
   }
 
   v22 = os_transaction_create();
-  v6 = [(BAAgentCore *)self _downloadsInProgress];
-  if (v6 >= 0x32)
+  _downloadsInProgress = [(BAAgentCore *)self _downloadsInProgress];
+  if (_downloadsInProgress >= 0x32)
   {
     v7 = sub_1000104FC();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218240;
-      v30 = v6;
+      v30 = _downloadsInProgress;
       v31 = 2048;
       v32 = 50;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Daemon has reached maximum active download limit. (Active Downloads: %lu, Daemon Limit: %lu)", buf, 0x16u);
@@ -2284,9 +2284,9 @@ LABEL_37:
     goto LABEL_23;
   }
 
-  v8 = [(BAAgentCore *)self downloadQueuesByClientIdentifier];
-  v9 = [v8 allValues];
-  v23 = [v9 sortedArrayUsingComparator:&stru_100079C28];
+  downloadQueuesByClientIdentifier2 = [(BAAgentCore *)self downloadQueuesByClientIdentifier];
+  allValues = [downloadQueuesByClientIdentifier2 allValues];
+  v23 = [allValues sortedArrayUsingComparator:&stru_100079C28];
 
   v10 = 0;
   while (2)
@@ -2322,16 +2322,16 @@ LABEL_8:
         goto LABEL_17;
       }
 
-      v16 = [v15 numberOfActiveDownloads];
-      if (v16 >= 0x19)
+      numberOfActiveDownloads = [v15 numberOfActiveDownloads];
+      if (numberOfActiveDownloads >= 0x19)
       {
-        v17 = v16;
+        v17 = numberOfActiveDownloads;
         v18 = sub_1000104FC();
         if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
         {
-          v19 = [v15 identifier];
+          identifier = [v15 identifier];
           *buf = 138543874;
-          v30 = v19;
+          v30 = identifier;
           v31 = 2048;
           v32 = v17;
           v33 = 2048;
@@ -2343,9 +2343,9 @@ LABEL_8:
       }
 
       v20 = objc_autoreleasePoolPush();
-      v21 = [v15 startNextDownload];
+      startNextDownload = [v15 startNextDownload];
       objc_autoreleasePoolPop(v20);
-      if (v21)
+      if (startNextDownload)
       {
         break;
       }
@@ -2365,7 +2365,7 @@ LABEL_17:
 
     v10 = v24 + 1;
 
-    if (v24 + 1 < 50 - v6)
+    if (v24 + 1 < 50 - _downloadsInProgress)
     {
       continue;
     }
@@ -2376,89 +2376,89 @@ LABEL_17:
 LABEL_23:
 }
 
-- (void)downloadDidBegin:(id)a3
+- (void)downloadDidBegin:(id)begin
 {
-  v4 = a3;
-  v5 = [v4 applicationIdentifier];
-  v6 = [(BAAgentCore *)self _connectionReplyQueueForIdentifier:v5];
+  beginCopy = begin;
+  applicationIdentifier = [beginCopy applicationIdentifier];
+  v6 = [(BAAgentCore *)self _connectionReplyQueueForIdentifier:applicationIdentifier];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10001E324;
   v10[3] = &unk_100079940;
-  v11 = v4;
-  v12 = self;
-  v13 = v5;
+  v11 = beginCopy;
+  selfCopy = self;
+  v13 = applicationIdentifier;
   v14 = os_transaction_create();
   v7 = v14;
-  v8 = v5;
-  v9 = v4;
+  v8 = applicationIdentifier;
+  v9 = beginCopy;
   dispatch_async(v6, v10);
 }
 
-- (void)downloadDidPause:(id)a3
+- (void)downloadDidPause:(id)pause
 {
-  v4 = a3;
-  v5 = [v4 applicationIdentifier];
-  v6 = [(BAAgentCore *)self _connectionReplyQueueForIdentifier:v5];
+  pauseCopy = pause;
+  applicationIdentifier = [pauseCopy applicationIdentifier];
+  v6 = [(BAAgentCore *)self _connectionReplyQueueForIdentifier:applicationIdentifier];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10001E7EC;
   v10[3] = &unk_100079940;
-  v11 = v4;
-  v12 = self;
-  v13 = v5;
+  v11 = pauseCopy;
+  selfCopy = self;
+  v13 = applicationIdentifier;
   v14 = os_transaction_create();
   v7 = v14;
-  v8 = v5;
-  v9 = v4;
+  v8 = applicationIdentifier;
+  v9 = pauseCopy;
   dispatch_async(v6, v10);
 }
 
-- (void)download:(id)a3 didReceiveChallenge:(id)a4 completionHandler:(id)a5
+- (void)download:(id)download didReceiveChallenge:(id)challenge completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 applicationIdentifier];
-  v12 = [(BAAgentCore *)self _connectionReplyQueueForIdentifier:v11];
+  downloadCopy = download;
+  challengeCopy = challenge;
+  handlerCopy = handler;
+  applicationIdentifier = [downloadCopy applicationIdentifier];
+  v12 = [(BAAgentCore *)self _connectionReplyQueueForIdentifier:applicationIdentifier];
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_10001ED10;
   v18[3] = &unk_100079CA0;
   v18[4] = self;
-  v19 = v11;
-  v20 = v8;
-  v21 = v9;
+  v19 = applicationIdentifier;
+  v20 = downloadCopy;
+  v21 = challengeCopy;
   v22 = os_transaction_create();
-  v23 = v10;
-  v13 = v10;
+  v23 = handlerCopy;
+  v13 = handlerCopy;
   v14 = v22;
-  v15 = v9;
-  v16 = v8;
-  v17 = v11;
+  v15 = challengeCopy;
+  v16 = downloadCopy;
+  v17 = applicationIdentifier;
   dispatch_async(v12, v18);
 }
 
-- (void)download:(id)a3 didWriteBytes:(int64_t)a4 totalBytesWritten:(int64_t)a5 totalBytesExpectedToWrite:(int64_t)a6
+- (void)download:(id)download didWriteBytes:(int64_t)bytes totalBytesWritten:(int64_t)written totalBytesExpectedToWrite:(int64_t)write
 {
-  v10 = a3;
-  v11 = [v10 applicationIdentifier];
+  downloadCopy = download;
+  applicationIdentifier = [downloadCopy applicationIdentifier];
   v28[0] = 0;
   v28[1] = v28;
   v28[2] = 0x3032000000;
   v28[3] = sub_100017E34;
   v28[4] = sub_100017E44;
   v29 = 0;
-  v12 = [(BAAgentCore *)self workQueue];
+  workQueue = [(BAAgentCore *)self workQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10001F748;
   block[3] = &unk_100079B48;
   v27 = v28;
   block[4] = self;
-  v13 = v11;
+  v13 = applicationIdentifier;
   v26 = v13;
-  dispatch_async_and_wait(v12, block);
+  dispatch_async_and_wait(workQueue, block);
 
   v14 = os_transaction_create();
   v15 = [(BAAgentCore *)self _connectionReplyQueueForIdentifier:v13];
@@ -2467,54 +2467,54 @@ LABEL_23:
   v18[2] = sub_10001F798;
   v18[3] = &unk_100079CC8;
   v21 = v28;
-  v22 = a4;
-  v23 = a5;
-  v24 = a6;
-  v19 = v10;
+  bytesCopy = bytes;
+  writtenCopy = written;
+  writeCopy = write;
+  v19 = downloadCopy;
   v20 = v14;
   v16 = v14;
-  v17 = v10;
+  v17 = downloadCopy;
   dispatch_async(v15, v18);
 
   _Block_object_dispose(v28, 8);
 }
 
-- (void)download:(id)a3 failedWithError:(id)a4
+- (void)download:(id)download failedWithError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BAAgentCore *)self telemetryQueue];
+  downloadCopy = download;
+  errorCopy = error;
+  telemetryQueue = [(BAAgentCore *)self telemetryQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10001FB7C;
   block[3] = &unk_100079720;
   block[4] = self;
-  v9 = v6;
+  v9 = downloadCopy;
   v35 = v9;
-  v10 = v7;
+  v10 = errorCopy;
   v36 = v10;
-  dispatch_async(v8, block);
+  dispatch_async(telemetryQueue, block);
 
-  v11 = [v9 applicationIdentifier];
-  v12 = [(BAAgentCore *)self _connectionReplyQueueForIdentifier:v11];
-  v13 = [(BAAgentCore *)self applicationInfoForIdentifier:v11];
+  applicationIdentifier = [v9 applicationIdentifier];
+  v12 = [(BAAgentCore *)self _connectionReplyQueueForIdentifier:applicationIdentifier];
+  v13 = [(BAAgentCore *)self applicationInfoForIdentifier:applicationIdentifier];
   v14 = os_transaction_create();
   if ([v13 receivedInstallingNotification] && (objc_msgSend(v13, "receivedInstalledNotification") & 1) == 0)
   {
     v18 = [[BAUnhandledDownloadEvent alloc] initWithEventType:2 download:v9 error:v10];
-    v19 = [(BAAgentCore *)self workQueue];
+    workQueue = [(BAAgentCore *)self workQueue];
     v29[0] = _NSConcreteStackBlock;
     v29[1] = 3221225472;
     v29[2] = sub_10001FB8C;
     v29[3] = &unk_100079940;
-    v30 = v11;
+    v30 = applicationIdentifier;
     v31 = v18;
-    v32 = self;
+    selfCopy = self;
     v33 = v14;
     v20 = v14;
     v17 = v18;
-    v21 = v11;
-    dispatch_async(v19, v29);
+    v21 = applicationIdentifier;
+    dispatch_async(workQueue, v29);
   }
 
   else
@@ -2525,22 +2525,22 @@ LABEL_23:
     v22[3] = &unk_100079560;
     v23 = v9;
     v24 = v10;
-    v25 = self;
-    v26 = v11;
+    selfCopy2 = self;
+    v26 = applicationIdentifier;
     v27 = v14;
     v28 = v13;
     v15 = v14;
-    v16 = v11;
+    v16 = applicationIdentifier;
     dispatch_async(v12, v22);
 
     v17 = v23;
   }
 }
 
-- (void)download:(id)a3 finishedWithFileURL:(id)a4
+- (void)download:(id)download finishedWithFileURL:(id)l
 {
-  v6 = a3;
-  v7 = a4;
+  downloadCopy = download;
+  lCopy = l;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -2555,24 +2555,24 @@ LABEL_23:
 
   else
   {
-    v8 = [(BAAgentCore *)self telemetryQueue];
+    telemetryQueue = [(BAAgentCore *)self telemetryQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100020928;
     block[3] = &unk_100079300;
     block[4] = self;
-    v9 = v6;
+    v9 = downloadCopy;
     v32 = v9;
-    dispatch_async(v8, block);
+    dispatch_async(telemetryQueue, block);
 
     v10 = os_transaction_create();
-    v11 = [v9 applicationIdentifier];
-    v12 = [(BAAgentCore *)self applicationInfoForIdentifier:v11];
+    applicationIdentifier = [v9 applicationIdentifier];
+    v12 = [(BAAgentCore *)self applicationInfoForIdentifier:applicationIdentifier];
 
     if ([(BAUnhandledDownloadEvent *)v12 receivedInstallingNotification]&& ([(BAUnhandledDownloadEvent *)v12 receivedInstalledNotification]& 1) == 0)
     {
       v19 = [[BAUnhandledDownloadEvent alloc] initWithEventType:1 download:v9 error:0];
-      v20 = [(BAAgentCore *)self workQueue];
+      workQueue = [(BAAgentCore *)self workQueue];
       v26[0] = _NSConcreteStackBlock;
       v26[1] = 3221225472;
       v26[2] = sub_100020938;
@@ -2580,20 +2580,20 @@ LABEL_23:
       v15 = &v27;
       v27 = v12;
       v28 = v19;
-      v29 = self;
+      selfCopy = self;
       v30 = v10;
       v21 = v10;
       v17 = v19;
       v14 = v12;
-      dispatch_async(v20, v26);
+      dispatch_async(workQueue, v26);
 
       v18 = v28;
     }
 
     else
     {
-      v13 = [(BAUnhandledDownloadEvent *)v12 applicationIdentifier];
-      v14 = [(BAAgentCore *)self _connectionReplyQueueForIdentifier:v13];
+      applicationIdentifier2 = [(BAUnhandledDownloadEvent *)v12 applicationIdentifier];
+      v14 = [(BAAgentCore *)self _connectionReplyQueueForIdentifier:applicationIdentifier2];
 
       v22[0] = _NSConcreteStackBlock;
       v22[1] = 3221225472;
@@ -2613,59 +2613,59 @@ LABEL_23:
   }
 }
 
-- (id)_essentialAssetsProgressDescriptorWithAppInfo:(id)a3 essentialAssetState:(int64_t)a4 sizeDownloaded:(int64_t)a5 totalDownloadSize:(int64_t)a6
+- (id)_essentialAssetsProgressDescriptorWithAppInfo:(id)info essentialAssetState:(int64_t)state sizeDownloaded:(int64_t)downloaded totalDownloadSize:(int64_t)size
 {
-  v9 = a3;
-  v10 = v9;
-  v11 = -1;
+  infoCopy = info;
+  v10 = infoCopy;
+  essentialAssetDownloadAllowance = -1;
   v12 = 1;
-  if (a4 > 2)
+  if (state > 2)
   {
     v13 = 5;
     v14 = 6;
-    if (a4 == 5)
+    if (state == 5)
     {
-      v15 = a6;
+      sizeCopy = size;
     }
 
     else
     {
       v14 = 1;
-      v15 = -1;
+      sizeCopy = -1;
     }
 
-    if (a4 == 5)
+    if (state == 5)
     {
-      v16 = a5;
+      downloadedCopy = downloaded;
     }
 
     else
     {
-      v16 = -1;
+      downloadedCopy = -1;
     }
 
-    if (a4 == 4)
+    if (state == 4)
     {
-      v17 = a6;
+      sizeCopy2 = size;
     }
 
     else
     {
       v13 = v14;
-      v17 = v15;
+      sizeCopy2 = sizeCopy;
     }
 
-    if (a4 == 4)
+    if (state == 4)
     {
-      v18 = a5;
+      downloadedCopy2 = downloaded;
     }
 
     else
     {
-      v18 = v16;
+      downloadedCopy2 = downloadedCopy;
     }
 
-    if (a4 == 3)
+    if (state == 3)
     {
       v12 = 4;
     }
@@ -2675,70 +2675,70 @@ LABEL_23:
       v12 = v13;
     }
 
-    if (a4 == 3)
+    if (state == 3)
     {
-      v11 = -1;
+      essentialAssetDownloadAllowance = -1;
     }
 
     else
     {
-      v11 = v17;
+      essentialAssetDownloadAllowance = sizeCopy2;
     }
 
-    if (a4 != 3)
+    if (state != 3)
     {
-      a5 = v18;
+      downloaded = downloadedCopy2;
     }
 
     goto LABEL_30;
   }
 
-  if (a4 == 1)
+  if (state == 1)
   {
     v12 = 2;
     goto LABEL_29;
   }
 
-  if (a4 != 2)
+  if (state != 2)
   {
 LABEL_29:
-    a5 = -1;
+    downloaded = -1;
     goto LABEL_30;
   }
 
-  v11 = [v9 essentialAssetDownloadAllowance];
-  v19 = [v10 optionalAssetDownloadAllowance];
-  if (v19 > v11)
+  essentialAssetDownloadAllowance = [infoCopy essentialAssetDownloadAllowance];
+  optionalAssetDownloadAllowance = [v10 optionalAssetDownloadAllowance];
+  if (optionalAssetDownloadAllowance > essentialAssetDownloadAllowance)
   {
-    v11 = v19;
+    essentialAssetDownloadAllowance = optionalAssetDownloadAllowance;
   }
 
   v12 = 3;
 LABEL_30:
-  v20 = sub_1000484F4([BAAppStoreProgressInfoDescriptor alloc], v12, a5, v11);
+  v20 = sub_1000484F4([BAAppStoreProgressInfoDescriptor alloc], v12, downloaded, essentialAssetDownloadAllowance);
 
   return v20;
 }
 
-- (id)essentialAssetsProgressDescriptorWithIdentifier:(id)a3
+- (id)essentialAssetsProgressDescriptorWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = sub_100017E34;
   v16 = sub_100017E44;
   v17 = 0;
-  v5 = [(BAAgentCore *)self workQueue];
+  workQueue = [(BAAgentCore *)self workQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100021C70;
   block[3] = &unk_100079B70;
   block[4] = self;
-  v10 = v4;
+  v10 = identifierCopy;
   v11 = &v12;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = identifierCopy;
+  dispatch_sync(workQueue, block);
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -2746,74 +2746,74 @@ LABEL_30:
   return v7;
 }
 
-- (void)downloadQueue:(id)a3 manifest:(id)a4 finishedWithFileURL:(id)a5
+- (void)downloadQueue:(id)queue manifest:(id)manifest finishedWithFileURL:(id)l
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 identifier];
-  v10 = [(BAAgentCore *)self applicationInfoForIdentifier:v9];
+  queueCopy = queue;
+  manifestCopy = manifest;
+  identifier = [queueCopy identifier];
+  v10 = [(BAAgentCore *)self applicationInfoForIdentifier:identifier];
 
-  v11 = [v7 identifier];
-  v12 = [(BAAgentCore *)self _connectionReplyQueueForIdentifier:v11];
+  identifier2 = [queueCopy identifier];
+  v12 = [(BAAgentCore *)self _connectionReplyQueueForIdentifier:identifier2];
 
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_100021EDC;
   v18[3] = &unk_100079560;
-  v19 = v8;
-  v20 = v7;
-  v21 = self;
+  v19 = manifestCopy;
+  v20 = queueCopy;
+  selfCopy = self;
   v22 = os_transaction_create();
   v23 = v10;
   v24 = v12;
   v13 = v12;
   v14 = v10;
   v15 = v22;
-  v16 = v7;
-  v17 = v8;
+  v16 = queueCopy;
+  v17 = manifestCopy;
   dispatch_async(v13, v18);
 }
 
-- (void)downloadQueue:(id)a3 essentialAssetState:(int64_t)a4 bytesWritten:(int64_t)a5 totalBytes:(int64_t)a6
+- (void)downloadQueue:(id)queue essentialAssetState:(int64_t)state bytesWritten:(int64_t)written totalBytes:(int64_t)bytes
 {
-  v10 = a3;
+  queueCopy = queue;
   v11 = os_transaction_create();
-  v12 = [(BAAgentCore *)self workQueue];
+  workQueue = [(BAAgentCore *)self workQueue];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100023368;
   v15[3] = &unk_100079E80;
   v15[4] = self;
-  v16 = v10;
-  v19 = a5;
-  v20 = a6;
+  v16 = queueCopy;
+  writtenCopy = written;
+  bytesCopy = bytes;
   v17 = v11;
-  v18 = a4;
+  stateCopy = state;
   v13 = v11;
-  v14 = v10;
-  dispatch_async(v12, v15);
+  v14 = queueCopy;
+  dispatch_async(workQueue, v15);
 }
 
-- (BOOL)downloadQueue:(id)a3 permittedToStartDownloadsWithNecessity:(int64_t)a4
+- (BOOL)downloadQueue:(id)queue permittedToStartDownloadsWithNecessity:(int64_t)necessity
 {
-  v6 = [a3 identifier];
-  v7 = [(BAAgentCore *)self applicationInfoIfExistsForIdentifier:v6];
+  identifier = [queue identifier];
+  v7 = [(BAAgentCore *)self applicationInfoIfExistsForIdentifier:identifier];
 
   if (v7 && ([v7 awaitingNetworkConsent] & 1) == 0)
   {
     if (([v7 receivedInstallingNotification] & 1) != 0 || objc_msgSend(v7, "receivedInstalledNotification"))
     {
-      if (a4 == 1)
+      if (necessity == 1)
       {
-        v9 = [v7 receivedInstallingNotification];
+        receivedInstallingNotification = [v7 receivedInstallingNotification];
       }
 
       else
       {
-        v9 = [v7 receivedInstalledNotification];
+        receivedInstallingNotification = [v7 receivedInstalledNotification];
       }
 
-      v8 = v9;
+      v8 = receivedInstallingNotification;
     }
 
     else
@@ -2830,18 +2830,18 @@ LABEL_30:
   return v8;
 }
 
-- (void)setContentRequestTelemetry:(id)a3 forDownloads:(id)a4
+- (void)setContentRequestTelemetry:(id)telemetry forDownloads:(id)downloads
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BAAgentCore *)self telemetryQueue];
-  dispatch_assert_queue_V2(v8);
+  telemetryCopy = telemetry;
+  downloadsCopy = downloads;
+  telemetryQueue = [(BAAgentCore *)self telemetryQueue];
+  dispatch_assert_queue_V2(telemetryQueue);
 
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v9 = v7;
+  v9 = downloadsCopy;
   v10 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v10)
   {
@@ -2858,9 +2858,9 @@ LABEL_30:
         }
 
         v14 = *(*(&v17 + 1) + 8 * v13);
-        v15 = [(BAAgentCore *)self telemetryByDownloadUniqueIdentifier];
-        v16 = [v14 uniqueIdentifier];
-        [v15 setObject:v6 forKey:v16];
+        telemetryByDownloadUniqueIdentifier = [(BAAgentCore *)self telemetryByDownloadUniqueIdentifier];
+        uniqueIdentifier = [v14 uniqueIdentifier];
+        [telemetryByDownloadUniqueIdentifier setObject:telemetryCopy forKey:uniqueIdentifier];
 
         v13 = v13 + 1;
       }
@@ -2873,50 +2873,50 @@ LABEL_30:
   }
 }
 
-- (void)updateContentRequestTelemetryForCompletedDownload:(id)a3 error:(id)a4
+- (void)updateContentRequestTelemetryForCompletedDownload:(id)download error:(id)error
 {
-  v13 = a3;
-  v6 = a4;
-  v7 = [(BAAgentCore *)self telemetryQueue];
-  dispatch_assert_queue_V2(v7);
+  downloadCopy = download;
+  errorCopy = error;
+  telemetryQueue = [(BAAgentCore *)self telemetryQueue];
+  dispatch_assert_queue_V2(telemetryQueue);
 
-  v8 = [(BAAgentCore *)self telemetryByDownloadUniqueIdentifier];
-  v9 = [v13 uniqueIdentifier];
-  v10 = [v8 objectForKey:v9];
+  telemetryByDownloadUniqueIdentifier = [(BAAgentCore *)self telemetryByDownloadUniqueIdentifier];
+  uniqueIdentifier = [downloadCopy uniqueIdentifier];
+  v10 = [telemetryByDownloadUniqueIdentifier objectForKey:uniqueIdentifier];
 
   if (v10)
   {
-    [v10 recordDownloadCompletion:v13 error:v6];
+    [v10 recordDownloadCompletion:downloadCopy error:errorCopy];
     if ([v10 allDownloadsCompleted])
     {
       [BATelemetrySender sendContentRequestTelemetryEvent:v10];
     }
 
-    v11 = [(BAAgentCore *)self telemetryByDownloadUniqueIdentifier];
-    v12 = [v13 uniqueIdentifier];
-    [v11 removeObjectForKey:v12];
+    telemetryByDownloadUniqueIdentifier2 = [(BAAgentCore *)self telemetryByDownloadUniqueIdentifier];
+    uniqueIdentifier2 = [downloadCopy uniqueIdentifier];
+    [telemetryByDownloadUniqueIdentifier2 removeObjectForKey:uniqueIdentifier2];
   }
 }
 
 - (void)downloadTimeValidityDidChange
 {
-  v3 = [(BAAgentCore *)self connectionQueue];
+  connectionQueue = [(BAAgentCore *)self connectionQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000238CC;
   block[3] = &unk_100079260;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(connectionQueue, block);
 }
 
 - (void)doPeriodicUpdateCheck
 {
-  v3 = [(BAAgentCore *)self applicationState];
-  objc_sync_enter(v3);
-  v4 = [(BAAgentCore *)self applicationState];
-  v5 = [v4 copy];
+  applicationState = [(BAAgentCore *)self applicationState];
+  objc_sync_enter(applicationState);
+  applicationState2 = [(BAAgentCore *)self applicationState];
+  v5 = [applicationState2 copy];
 
-  objc_sync_exit(v3);
+  objc_sync_exit(applicationState);
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
@@ -2938,8 +2938,8 @@ LABEL_30:
         v10 = *(*(&v12 + 1) + 8 * i);
         if ([v10 shouldDoPeriodicCheck])
         {
-          v11 = [v10 applicationIdentifier];
-          [(BAAgentCore *)self handleApplicationEvent:7 identifier:v11 bundleURLPath:0 userInitiated:0];
+          applicationIdentifier = [v10 applicationIdentifier];
+          [(BAAgentCore *)self handleApplicationEvent:7 identifier:applicationIdentifier bundleURLPath:0 userInitiated:0];
         }
       }
 
@@ -2950,28 +2950,28 @@ LABEL_30:
   }
 }
 
-- (BOOL)_checkIdentifierHasExtension:(id)a3
+- (BOOL)_checkIdentifierHasExtension:(id)extension
 {
-  v3 = a3;
+  extensionCopy = extension;
   v26 = 0;
-  v4 = [LSBundleRecord bundleRecordWithBundleIdentifier:v3 allowPlaceholder:0 error:&v26];
+  v4 = [LSBundleRecord bundleRecordWithBundleIdentifier:extensionCopy allowPlaceholder:0 error:&v26];
   v5 = v26;
   if (v4)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [v4 applicationExtensionRecords];
-      if ([v6 count])
+      applicationExtensionRecords = [v4 applicationExtensionRecords];
+      if ([applicationExtensionRecords count])
       {
         v20 = v5;
-        v21 = v3;
+        v21 = extensionCopy;
         v24 = 0u;
         v25 = 0u;
         v22 = 0u;
         v23 = 0u;
-        v7 = v6;
-        v8 = [v7 countByEnumeratingWithState:&v22 objects:v27 count:16];
+        identifier2 = applicationExtensionRecords;
+        v8 = [identifier2 countByEnumeratingWithState:&v22 objects:v27 count:16];
         if (v8)
         {
           v9 = v8;
@@ -2982,12 +2982,12 @@ LABEL_30:
             {
               if (*v23 != v10)
               {
-                objc_enumerationMutation(v7);
+                objc_enumerationMutation(identifier2);
               }
 
-              v12 = [*(*(&v22 + 1) + 8 * i) extensionPointRecord];
-              v13 = [v12 identifier];
-              v14 = [v13 isEqualToString:@"com.apple.background-asset-downloader-extension"];
+              extensionPointRecord = [*(*(&v22 + 1) + 8 * i) extensionPointRecord];
+              identifier = [extensionPointRecord identifier];
+              v14 = [identifier isEqualToString:@"com.apple.background-asset-downloader-extension"];
 
               if (v14)
               {
@@ -2996,7 +2996,7 @@ LABEL_30:
               }
             }
 
-            v9 = [v7 countByEnumeratingWithState:&v22 objects:v27 count:16];
+            v9 = [identifier2 countByEnumeratingWithState:&v22 objects:v27 count:16];
             if (v9)
             {
               continue;
@@ -3006,13 +3006,13 @@ LABEL_30:
           }
         }
 
-        v7 = sub_1000104FC();
-        if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+        identifier2 = sub_1000104FC();
+        if (os_log_type_enabled(identifier2, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543362;
-          v3 = v21;
+          extensionCopy = v21;
           v29 = v21;
-          _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Bundle for %{public}@ does not have a downloader extension. Blocking.", buf, 0xCu);
+          _os_log_impl(&_mh_execute_header, identifier2, OS_LOG_TYPE_DEFAULT, "Bundle for %{public}@ does not have a downloader extension. Blocking.", buf, 0xCu);
           v15 = 0;
         }
 
@@ -3020,7 +3020,7 @@ LABEL_30:
         {
           v15 = 0;
 LABEL_27:
-          v3 = v21;
+          extensionCopy = v21;
         }
 
         v5 = v20;
@@ -3028,12 +3028,12 @@ LABEL_27:
 
       else
       {
-        v7 = sub_1000104FC();
-        if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+        identifier2 = sub_1000104FC();
+        if (os_log_type_enabled(identifier2, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543362;
-          v29 = v3;
-          _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Bundle for %{public}@ does not have a extension record. Blocking.", buf, 0xCu);
+          v29 = extensionCopy;
+          _os_log_impl(&_mh_execute_header, identifier2, OS_LOG_TYPE_DEFAULT, "Bundle for %{public}@ does not have a extension record. Blocking.", buf, 0xCu);
         }
 
         v15 = 0;
@@ -3045,21 +3045,21 @@ LABEL_27:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [v4 extensionPointRecord];
-      v7 = [v6 identifier];
-      v15 = [v7 isEqualToString:@"com.apple.background-asset-downloader-extension"];
+      applicationExtensionRecords = [v4 extensionPointRecord];
+      identifier2 = [applicationExtensionRecords identifier];
+      v15 = [identifier2 isEqualToString:@"com.apple.background-asset-downloader-extension"];
 LABEL_29:
 
       goto LABEL_30;
     }
 
-    v6 = sub_1000104FC();
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+    applicationExtensionRecords = sub_1000104FC();
+    if (os_log_type_enabled(applicationExtensionRecords, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v29 = v3;
+      v29 = extensionCopy;
       v16 = "Bundle for %{public}@ is not application or extension. Blocking.";
-      v17 = v6;
+      v17 = applicationExtensionRecords;
       v18 = 12;
       goto LABEL_20;
     }
@@ -3067,15 +3067,15 @@ LABEL_29:
 
   else
   {
-    v6 = sub_1000104FC();
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+    applicationExtensionRecords = sub_1000104FC();
+    if (os_log_type_enabled(applicationExtensionRecords, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v29 = v3;
+      v29 = extensionCopy;
       v30 = 2114;
       v31 = v5;
       v16 = "Failed to get bundle record for identifier: %{public}@ error: %{public}@";
-      v17 = v6;
+      v17 = applicationExtensionRecords;
       v18 = 22;
 LABEL_20:
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, v16, buf, v18);
@@ -3088,11 +3088,11 @@ LABEL_30:
   return v15;
 }
 
-- (BOOL)_checkConnection:(id)a3 hasAllowedTeamIDForIdentifier:(id)a4
+- (BOOL)_checkConnection:(id)connection hasAllowedTeamIDForIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 valueForEntitlement:off_100089360[0]];
+  connectionCopy = connection;
+  identifierCopy = identifier;
+  v8 = [connectionCopy valueForEntitlement:off_100089360[0]];
 
   if (os_variant_has_internal_content() && v8)
   {
@@ -3102,17 +3102,17 @@ LABEL_30:
 
   else
   {
-    v10 = [(BAAgentCore *)self applicationInfoForIdentifier:v7];
-    v11 = [v6 valueForEntitlement:off_100089358[0]];
+    v10 = [(BAAgentCore *)self applicationInfoForIdentifier:identifierCopy];
+    v11 = [connectionCopy valueForEntitlement:off_100089358[0]];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v12 = [v10 applicationTeamIdentifier];
+      applicationTeamIdentifier = [v10 applicationTeamIdentifier];
 
-      if (v12)
+      if (applicationTeamIdentifier)
       {
-        v13 = [v10 applicationTeamIdentifier];
-        v9 = [v13 isEqualToString:v11];
+        applicationTeamIdentifier2 = [v10 applicationTeamIdentifier];
+        v9 = [applicationTeamIdentifier2 isEqualToString:v11];
       }
 
       else
@@ -3177,13 +3177,13 @@ LABEL_30:
 
 - (void)_printDebugState
 {
-  v3 = [(BAAgentCore *)self workQueue];
+  workQueue = [(BAAgentCore *)self workQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100024284;
   block[3] = &unk_100079260;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(workQueue, block);
 }
 
 - (id)_systemConnections
@@ -3193,8 +3193,8 @@ LABEL_30:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(BAAgentCore *)self connections];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  connections = [(BAAgentCore *)self connections];
+  v5 = [connections countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -3205,7 +3205,7 @@ LABEL_30:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(connections);
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
@@ -3216,7 +3216,7 @@ LABEL_30:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [connections countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -3225,34 +3225,34 @@ LABEL_30:
   return v3;
 }
 
-- (void)invalidateExtensionWithAppInfo:(id)a3
+- (void)invalidateExtensionWithAppInfo:(id)info
 {
-  v4 = a3;
-  v5 = [(BAAgentCore *)self workQueue];
-  dispatch_assert_queue_not_V2(v5);
+  infoCopy = info;
+  workQueue = [(BAAgentCore *)self workQueue];
+  dispatch_assert_queue_not_V2(workQueue);
 
-  v6 = [v4 applicationIdentifier];
-  v7 = [(BAAgentCore *)self downloaderExtensionForApplicationIdentifier:v6 cacheOnly:1];
+  applicationIdentifier = [infoCopy applicationIdentifier];
+  v7 = [(BAAgentCore *)self downloaderExtensionForApplicationIdentifier:applicationIdentifier cacheOnly:1];
   v8 = v7;
   if (v7)
   {
     [v7 extensionWillTerminate];
     [v8 invalidate];
-    [(BAAgentCore *)self extensionDisconnectedWithIdentifier:v6 connectionProxy:v8];
+    [(BAAgentCore *)self extensionDisconnectedWithIdentifier:applicationIdentifier connectionProxy:v8];
   }
 
-  v9 = [v4 extensionIdentity];
-  v10 = v9;
+  extensionIdentity = [infoCopy extensionIdentity];
+  v10 = extensionIdentity;
   v11 = &off_100059000;
-  if (v9)
+  if (extensionIdentity)
   {
-    v12 = [v9 bundleIdentifier];
-    v13 = [[BATerminationAssertion alloc] initWithBundleIdentifier:v12];
+    bundleIdentifier = [extensionIdentity bundleIdentifier];
+    v13 = [[BATerminationAssertion alloc] initWithBundleIdentifier:bundleIdentifier];
     v14 = sub_1000104FC();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v35 = v12;
+      v35 = bundleIdentifier;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Acquiring termination assertion for extension: %{public}@", buf, 0xCu);
     }
 
@@ -3272,15 +3272,15 @@ LABEL_30:
     v18 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v19 = dispatch_queue_create("com.apple.BackgroundAssets.launch_removal_queue", v18);
 
-    [v12 UTF8String];
+    [bundleIdentifier UTF8String];
     v27 = _NSConcreteStackBlock;
     v28 = 3221225472;
     v29 = sub_10002515C;
     v30 = &unk_100079EA8;
-    v31 = v12;
+    v31 = bundleIdentifier;
     v32 = v17;
     v20 = v17;
-    v21 = v12;
+    v21 = bundleIdentifier;
     launch_remove_external_service();
     dispatch_semaphore_wait(v20, 0xFFFFFFFFFFFFFFFFLL);
     [(BATerminationAssertion *)v13 invalidate];
@@ -3288,30 +3288,30 @@ LABEL_30:
     v11 = &off_100059000;
   }
 
-  v22 = [(BAAgentCore *)self workQueue];
+  workQueue2 = [(BAAgentCore *)self workQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = *(v11 + 135);
   block[2] = sub_100025244;
   block[3] = &unk_100079300;
   block[4] = self;
-  v26 = v6;
-  v23 = v6;
-  dispatch_async(v22, block);
+  v26 = applicationIdentifier;
+  v23 = applicationIdentifier;
+  dispatch_async(workQueue2, block);
 }
 
-- (id)_connectionsForApplicationIdentifier:(id)a3
+- (id)_connectionsForApplicationIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(BAAgentCore *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  identifierCopy = identifier;
+  workQueue = [(BAAgentCore *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v6 = [NSMutableArray arrayWithCapacity:1];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v7 = [(BAAgentCore *)self connections];
-  v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  connections = [(BAAgentCore *)self connections];
+  v8 = [connections countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v8)
   {
     v9 = v8;
@@ -3322,15 +3322,15 @@ LABEL_30:
       {
         if (*v17 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(connections);
         }
 
         v12 = *(*(&v16 + 1) + 8 * i);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v13 = [v12 applicationBundleIdentifier];
-          v14 = [v13 isEqual:v4];
+          applicationBundleIdentifier = [v12 applicationBundleIdentifier];
+          v14 = [applicationBundleIdentifier isEqual:identifierCopy];
 
           if (v14)
           {
@@ -3339,7 +3339,7 @@ LABEL_30:
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v9 = [connections countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v9);
@@ -3352,14 +3352,14 @@ LABEL_30:
 
 - (void)_pauseDownloads
 {
-  v2 = [(BAAgentCore *)self downloadQueuesByClientIdentifier];
-  v3 = [v2 allValues];
+  downloadQueuesByClientIdentifier = [(BAAgentCore *)self downloadQueuesByClientIdentifier];
+  allValues = [downloadQueuesByClientIdentifier allValues];
 
   v11 = 0u;
   v12 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v4 = v3;
+  v4 = allValues;
   v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
@@ -3444,8 +3444,8 @@ LABEL_36:
 
   obj = [(BAAgentCore *)self applicationState];
   objc_sync_enter(obj);
-  v5 = [(BAAgentCore *)self applicationState];
-  [v5 removeAllObjects];
+  applicationState = [(BAAgentCore *)self applicationState];
+  [applicationState removeAllObjects];
 
   if (v41)
   {
@@ -3473,8 +3473,8 @@ LABEL_36:
           v49 = 0u;
           v50 = 0u;
           v51 = 0u;
-          v9 = v41;
-          v10 = [v9 countByEnumeratingWithState:&v48 objects:v60 count:16];
+          applicationState3 = v41;
+          v10 = [applicationState3 countByEnumeratingWithState:&v48 objects:v60 count:16];
           if (v10)
           {
             v11 = *v49;
@@ -3484,24 +3484,24 @@ LABEL_36:
               {
                 if (*v49 != v11)
                 {
-                  objc_enumerationMutation(v9);
+                  objc_enumerationMutation(applicationState3);
                 }
 
                 v13 = *(*(&v48 + 1) + 8 * j);
-                v14 = [v8 applicationIdentifier];
-                v15 = [v13 applicationIdentifier];
-                v16 = [v14 isEqualToString:v15];
+                applicationIdentifier = [v8 applicationIdentifier];
+                applicationIdentifier2 = [v13 applicationIdentifier];
+                v16 = [applicationIdentifier isEqualToString:applicationIdentifier2];
 
                 if (v16)
                 {
-                  v17 = [(BAAgentCore *)self applicationState];
-                  [v17 addObject:v13];
+                  applicationState2 = [(BAAgentCore *)self applicationState];
+                  [applicationState2 addObject:v13];
 
                   goto LABEL_19;
                 }
               }
 
-              v10 = [v9 countByEnumeratingWithState:&v48 objects:v60 count:16];
+              v10 = [applicationState3 countByEnumeratingWithState:&v48 objects:v60 count:16];
               if (v10)
               {
                 continue;
@@ -3511,8 +3511,8 @@ LABEL_36:
             }
           }
 
-          v9 = [(BAAgentCore *)self applicationState];
-          [v9 addObject:v8];
+          applicationState3 = [(BAAgentCore *)self applicationState];
+          [applicationState3 addObject:v8];
 LABEL_19:
         }
 
@@ -3526,8 +3526,8 @@ LABEL_19:
     v47 = 0u;
     v44 = 0u;
     v45 = 0u;
-    v18 = v41;
-    v19 = [v18 countByEnumeratingWithState:&v44 objects:v59 count:16];
+    applicationState6 = v41;
+    v19 = [applicationState6 countByEnumeratingWithState:&v44 objects:v59 count:16];
     if (v19)
     {
       v20 = *v45;
@@ -3537,24 +3537,24 @@ LABEL_19:
         {
           if (*v45 != v20)
           {
-            objc_enumerationMutation(v18);
+            objc_enumerationMutation(applicationState6);
           }
 
           v22 = *(*(&v44 + 1) + 8 * k);
           if (([v22 receivedInstallingNotification] & 1) == 0)
           {
-            v23 = [(BAAgentCore *)self applicationState];
-            v24 = [v23 containsObject:v22];
+            applicationState4 = [(BAAgentCore *)self applicationState];
+            v24 = [applicationState4 containsObject:v22];
 
             if ((v24 & 1) == 0)
             {
-              v25 = [(BAAgentCore *)self applicationState];
-              [v25 addObject:v22];
+              applicationState5 = [(BAAgentCore *)self applicationState];
+              [applicationState5 addObject:v22];
             }
           }
         }
 
-        v19 = [v18 countByEnumeratingWithState:&v44 objects:v59 count:16];
+        v19 = [applicationState6 countByEnumeratingWithState:&v44 objects:v59 count:16];
       }
 
       while (v19);
@@ -3566,13 +3566,13 @@ LABEL_19:
     v28 = sub_1000104FC();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
     {
-      v29 = [v33 error];
-      sub_10004B4F0(v29, buf, v28);
+      error = [v33 error];
+      sub_10004B4F0(error, buf, v28);
     }
 
-    v18 = [(BAAgentCore *)self applicationState];
+    applicationState6 = [(BAAgentCore *)self applicationState];
     v30 = [v35 mutableCopy];
-    [v18 addObjectsFromArray:v30];
+    [applicationState6 addObjectsFromArray:v30];
   }
 
   objc_sync_exit(obj);
@@ -3585,8 +3585,8 @@ LABEL_41:
 
 - (void)_deserializeDownloadQueues
 {
-  v3 = [(BAAgentCore *)self downloadQueuesByClientIdentifier];
-  [v3 removeAllObjects];
+  downloadQueuesByClientIdentifier = [(BAAgentCore *)self downloadQueuesByClientIdentifier];
+  [downloadQueuesByClientIdentifier removeAllObjects];
 
   v4 = +[NSFileManager defaultManager];
   v28 = 0;
@@ -3618,8 +3618,8 @@ LABEL_41:
         v26 = 0u;
         v23 = 0u;
         v24 = 0u;
-        v15 = [v14 allValues];
-        v16 = [v15 countByEnumeratingWithState:&v23 objects:v29 count:16];
+        allValues = [v14 allValues];
+        v16 = [allValues countByEnumeratingWithState:&v23 objects:v29 count:16];
         if (v16)
         {
           v17 = v16;
@@ -3630,28 +3630,28 @@ LABEL_41:
             {
               if (*v24 != v18)
               {
-                objc_enumerationMutation(v15);
+                objc_enumerationMutation(allValues);
               }
 
               [*(*(&v23 + 1) + 8 * i) setDelegate:self];
             }
 
-            v17 = [v15 countByEnumeratingWithState:&v23 objects:v29 count:16];
+            v17 = [allValues countByEnumeratingWithState:&v23 objects:v29 count:16];
           }
 
           while (v17);
         }
 
-        v20 = [(BAAgentCore *)self downloadQueuesByClientIdentifier];
-        [v20 addEntriesFromDictionary:v14];
+        downloadQueuesByClientIdentifier2 = [(BAAgentCore *)self downloadQueuesByClientIdentifier];
+        [downloadQueuesByClientIdentifier2 addEntriesFromDictionary:v14];
         v12 = v21;
         v5 = v22;
       }
 
       else
       {
-        v20 = sub_1000104FC();
-        if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
+        downloadQueuesByClientIdentifier2 = sub_1000104FC();
+        if (os_log_type_enabled(downloadQueuesByClientIdentifier2, OS_LOG_TYPE_ERROR))
         {
           sub_10004B618(v11);
         }
@@ -3682,8 +3682,8 @@ LABEL_41:
 
 - (void)_deserializeUndeliveredEvents
 {
-  v3 = [(BAAgentCore *)self unhandledDownloadEvents];
-  [v3 removeAllObjects];
+  unhandledDownloadEvents = [(BAAgentCore *)self unhandledDownloadEvents];
+  [unhandledDownloadEvents removeAllObjects];
 
   v4 = +[NSFileManager defaultManager];
   v19 = 0;
@@ -3711,14 +3711,14 @@ LABEL_41:
       v16 = [v11 decodeObjectOfClasses:v15 forKey:@"Undelivered Events"];
       if (v16)
       {
-        v17 = [(BAAgentCore *)self unhandledDownloadEvents];
-        [v17 addObjectsFromArray:v16];
+        unhandledDownloadEvents2 = [(BAAgentCore *)self unhandledDownloadEvents];
+        [unhandledDownloadEvents2 addObjectsFromArray:v16];
       }
 
       else
       {
-        v17 = sub_1000104FC();
-        if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+        unhandledDownloadEvents2 = sub_1000104FC();
+        if (os_log_type_enabled(unhandledDownloadEvents2, OS_LOG_TYPE_ERROR))
         {
           sub_10004B774(v11);
         }
@@ -3758,13 +3758,13 @@ LABEL_41:
 - (void)_serializeDownloadQueues
 {
   v3 = os_transaction_create();
-  v4 = [(BAAgentCore *)self downloadQueuesByClientIdentifier];
+  downloadQueuesByClientIdentifier = [(BAAgentCore *)self downloadQueuesByClientIdentifier];
 
-  if (v4)
+  if (downloadQueuesByClientIdentifier)
   {
     v5 = [[BAAgentKeyedArchiver alloc] initRequiringSecureCoding:1];
-    v6 = [(BAAgentCore *)self downloadQueuesByClientIdentifier];
-    [v5 encodeObject:v6 forKey:@"Queues"];
+    downloadQueuesByClientIdentifier2 = [(BAAgentCore *)self downloadQueuesByClientIdentifier];
+    [v5 encodeObject:downloadQueuesByClientIdentifier2 forKey:@"Queues"];
 
     v7 = +[NSFileManager defaultManager];
     v20 = 0;
@@ -3778,9 +3778,9 @@ LABEL_41:
     v12 = v19;
 
     v13 = [v10 URLByAppendingPathComponent:@"DownloadQueues.bin"];
-    v14 = [v5 encodedData];
+    encodedData = [v5 encodedData];
     v18 = v12;
-    v15 = [v14 writeToURL:v13 options:1 error:&v18];
+    v15 = [encodedData writeToURL:v13 options:1 error:&v18];
     v16 = v18;
 
     if ((v15 & 1) == 0)
@@ -3800,16 +3800,16 @@ LABEL_41:
 {
   v3 = os_transaction_create();
   v4 = [[BAAgentKeyedArchiver alloc] initRequiringSecureCoding:1];
-  v5 = [(BAAgentCore *)self applicationState];
-  objc_sync_enter(v5);
-  v6 = [(BAAgentCore *)self applicationState];
+  applicationState = [(BAAgentCore *)self applicationState];
+  objc_sync_enter(applicationState);
+  applicationState2 = [(BAAgentCore *)self applicationState];
 
-  if (v6)
+  if (applicationState2)
   {
-    v7 = [(BAAgentCore *)self applicationState];
-    [v4 encodeObject:v7 forKey:@"Application State"];
+    applicationState3 = [(BAAgentCore *)self applicationState];
+    [v4 encodeObject:applicationState3 forKey:@"Application State"];
 
-    objc_sync_exit(v5);
+    objc_sync_exit(applicationState);
     v8 = +[NSFileManager defaultManager];
     v21 = 0;
     v9 = [v8 URLForDirectory:14 inDomain:1 appropriateForURL:0 create:1 error:&v21];
@@ -3822,9 +3822,9 @@ LABEL_41:
     v13 = v20;
 
     v14 = [v11 URLByAppendingPathComponent:@"ApplicationState.bin"];
-    v15 = [v4 encodedData];
+    encodedData = [v4 encodedData];
     v19 = v13;
-    v16 = [v15 writeToURL:v14 options:1 error:&v19];
+    v16 = [encodedData writeToURL:v14 options:1 error:&v19];
     v17 = v19;
 
     if ((v16 & 1) == 0)
@@ -3840,24 +3840,24 @@ LABEL_41:
   else
   {
 
-    objc_sync_exit(v5);
+    objc_sync_exit(applicationState);
   }
 }
 
 - (void)_serializeUndeliveredEvents
 {
-  v3 = [(BAAgentCore *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(BAAgentCore *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v19 = os_transaction_create();
-  v4 = [(BAAgentCore *)self unhandledDownloadEvents];
+  unhandledDownloadEvents = [(BAAgentCore *)self unhandledDownloadEvents];
 
-  if (v4)
+  if (unhandledDownloadEvents)
   {
     v5 = objc_autoreleasePoolPush();
     v6 = [[BAAgentKeyedArchiver alloc] initRequiringSecureCoding:1];
-    v7 = [(BAAgentCore *)self unhandledDownloadEvents];
-    [v6 encodeObject:v7 forKey:@"Undelivered Events"];
+    unhandledDownloadEvents2 = [(BAAgentCore *)self unhandledDownloadEvents];
+    [v6 encodeObject:unhandledDownloadEvents2 forKey:@"Undelivered Events"];
 
     v8 = +[NSFileManager defaultManager];
     v22 = 0;
@@ -3871,9 +3871,9 @@ LABEL_41:
     v13 = v21;
 
     v14 = [v11 URLByAppendingPathComponent:@"UndeliveredEvents.bin"];
-    v15 = [v6 encodedData];
+    encodedData = [v6 encodedData];
     v20 = v13;
-    v16 = [v15 writeToURL:v14 options:1 error:&v20];
+    v16 = [encodedData writeToURL:v14 options:1 error:&v20];
     v17 = v20;
 
     if ((v16 & 1) == 0)
@@ -3893,43 +3893,43 @@ LABEL_41:
   }
 }
 
-- (void)_asyncAwaitLockdownClientMessage:(_lockdown_connection *)a3 waitQueue:(id)a4
+- (void)_asyncAwaitLockdownClientMessage:(_lockdown_connection *)message waitQueue:(id)queue
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100026960;
   block[3] = &unk_100079BE8;
-  v8 = a4;
-  v9 = a3;
+  queueCopy = queue;
+  messageCopy = message;
   block[4] = self;
-  v6 = v8;
+  v6 = queueCopy;
   dispatch_async(v6, block);
 }
 
-- (void)_processLockdownClientMessage:(id)a3 withConnection:(_lockdown_connection *)a4 withQueue:(id)a5
+- (void)_processLockdownClientMessage:(id)message withConnection:(_lockdown_connection *)connection withQueue:(id)queue
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [v8 messageOperation];
-  if (v10 > 2)
+  messageCopy = message;
+  queueCopy = queue;
+  messageOperation = [messageCopy messageOperation];
+  if (messageOperation > 2)
   {
-    if (v10 == 3)
+    if (messageOperation == 3)
     {
-      v11 = v8;
+      v11 = messageCopy;
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v26 = [(BADeveloperDebugServerMessageVersionCheck *)v11 appBundleIdentifier];
-        v13 = [BAAppStorePrepareDescriptor descriptorWithAppBundleIdentifier:v26 appStoreMetadata:&__NSDictionary0__struct client:3];
+        appBundleIdentifier = [(BADeveloperDebugServerMessageVersionCheck *)v11 appBundleIdentifier];
+        v13 = [BAAppStorePrepareDescriptor descriptorWithAppBundleIdentifier:appBundleIdentifier appStoreMetadata:&__NSDictionary0__struct client:3];
 
         [v13 setCellularPolicy:3];
-        v27 = [v13 appBundleIdentifier];
-        v15 = [(BAAgentCore *)self applicationInfoForIdentifier:v27];
+        appBundleIdentifier2 = [v13 appBundleIdentifier];
+        v15 = [(BAAgentCore *)self applicationInfoForIdentifier:appBundleIdentifier2];
 
         [v15 applicationPrepareWithDescriptor:v13];
         [v15 resetExtensionRuntime];
-        v16 = [(BADeveloperDebugServerMessageVersionCheck *)v11 appBundleIdentifier];
-        v17 = self;
+        appBundleIdentifier3 = [(BADeveloperDebugServerMessageVersionCheck *)v11 appBundleIdentifier];
+        selfCopy2 = self;
         v18 = 2;
         goto LABEL_15;
       }
@@ -3937,18 +3937,18 @@ LABEL_41:
       goto LABEL_19;
     }
 
-    if (v10 == 4)
+    if (messageOperation == 4)
     {
-      v11 = v8;
+      v11 = messageCopy;
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v19 = [(BADeveloperDebugServerMessageVersionCheck *)v11 appBundleIdentifier];
-        v20 = [(BAAgentCore *)self applicationInfoForIdentifier:v19];
+        appBundleIdentifier4 = [(BADeveloperDebugServerMessageVersionCheck *)v11 appBundleIdentifier];
+        v20 = [(BAAgentCore *)self applicationInfoForIdentifier:appBundleIdentifier4];
 
         [v20 resetExtensionRuntime];
-        v21 = [(BADeveloperDebugServerMessageVersionCheck *)v11 appBundleIdentifier];
-        [(BAAgentCore *)self handleApplicationEvent:7 identifier:v21 bundleURLPath:0 userInitiated:1];
+        appBundleIdentifier5 = [(BADeveloperDebugServerMessageVersionCheck *)v11 appBundleIdentifier];
+        [(BAAgentCore *)self handleApplicationEvent:7 identifier:appBundleIdentifier5 bundleURLPath:0 userInitiated:1];
 
 LABEL_17:
         goto LABEL_18;
@@ -3962,11 +3962,11 @@ LABEL_19:
 
   else
   {
-    if (v10 == 1)
+    if (messageOperation == 1)
     {
-      v22 = [v8 messageVersion];
+      messageVersion = [messageCopy messageVersion];
       v23 = [BADeveloperDebugServerMessageVersionCheck alloc];
-      if (v22 < 2)
+      if (messageVersion < 2)
       {
         v25 = 1;
         v24 = 0;
@@ -4013,29 +4013,29 @@ LABEL_29:
       goto LABEL_30;
     }
 
-    if (v10 == 2)
+    if (messageOperation == 2)
     {
-      v11 = v8;
+      v11 = messageCopy;
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v12 = [(BADeveloperDebugServerMessageVersionCheck *)v11 appBundleIdentifier];
-        v13 = [BAAppStorePrepareDescriptor descriptorWithAppBundleIdentifier:v12 appStoreMetadata:&__NSDictionary0__struct client:3];
+        appBundleIdentifier6 = [(BADeveloperDebugServerMessageVersionCheck *)v11 appBundleIdentifier];
+        v13 = [BAAppStorePrepareDescriptor descriptorWithAppBundleIdentifier:appBundleIdentifier6 appStoreMetadata:&__NSDictionary0__struct client:3];
 
         [v13 setCellularPolicy:3];
-        v14 = [v13 appBundleIdentifier];
-        v15 = [(BAAgentCore *)self applicationInfoForIdentifier:v14];
+        appBundleIdentifier7 = [v13 appBundleIdentifier];
+        v15 = [(BAAgentCore *)self applicationInfoForIdentifier:appBundleIdentifier7];
 
         [v15 applicationPrepareWithDescriptor:v13];
         [v15 resetExtensionRuntime];
-        v16 = [(BADeveloperDebugServerMessageVersionCheck *)v11 appBundleIdentifier];
-        v17 = self;
+        appBundleIdentifier3 = [(BADeveloperDebugServerMessageVersionCheck *)v11 appBundleIdentifier];
+        selfCopy2 = self;
         v18 = 1;
 LABEL_15:
-        [(BAAgentCore *)v17 handleApplicationEvent:v18 identifier:v16 bundleURLPath:0 userInitiated:1];
+        [(BAAgentCore *)selfCopy2 handleApplicationEvent:v18 identifier:appBundleIdentifier3 bundleURLPath:0 userInitiated:1];
 
-        v28 = [(BADeveloperDebugServerMessageVersionCheck *)v11 appBundleIdentifier];
-        [(BAAgentCore *)self handleApplicationEvent:6 identifier:v28 bundleURLPath:0 userInitiated:1];
+        appBundleIdentifier8 = [(BADeveloperDebugServerMessageVersionCheck *)v11 appBundleIdentifier];
+        [(BAAgentCore *)self handleApplicationEvent:6 identifier:appBundleIdentifier8 bundleURLPath:0 userInitiated:1];
 
 LABEL_16:
         goto LABEL_17;
@@ -4047,7 +4047,7 @@ LABEL_16:
 
   lockdown_disconnect();
 LABEL_18:
-  [(BAAgentCore *)self _asyncAwaitLockdownClientMessage:a4 waitQueue:v9];
+  [(BAAgentCore *)self _asyncAwaitLockdownClientMessage:connection waitQueue:queueCopy];
 LABEL_30:
 }
 
@@ -4060,13 +4060,13 @@ LABEL_30:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "Serializing state and shutting down.", buf, 2u);
   }
 
-  v4 = [(BAAgentCore *)self workQueue];
+  workQueue = [(BAAgentCore *)self workQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100026F50;
   block[3] = &unk_100079260;
   block[4] = self;
-  dispatch_sync(v4, block);
+  dispatch_sync(workQueue, block);
 
   if ([(BAAgentCore *)self debugClearState])
   {
@@ -4083,9 +4083,9 @@ LABEL_30:
   exit(0);
 }
 
-- (void)_debugDownloadTime:(BOOL)a3 clear:(BOOL)a4
+- (void)_debugDownloadTime:(BOOL)time clear:(BOOL)clear
 {
-  if (a3)
+  if (time)
   {
     v4 = 1;
   }
@@ -4095,7 +4095,7 @@ LABEL_30:
     v4 = 2;
   }
 
-  if (a4)
+  if (clear)
   {
     v5 = 0;
   }
@@ -4105,53 +4105,53 @@ LABEL_30:
     v5 = v4;
   }
 
-  v6 = [(BAAgentCore *)self rulesEngine];
-  [v6 setDebugValidityTimeOverride:v5];
+  rulesEngine = [(BAAgentCore *)self rulesEngine];
+  [rulesEngine setDebugValidityTimeOverride:v5];
 }
 
 - (void)_backgroundActivityStateDidChange
 {
-  v3 = [(BAAgentCore *)self workQueue];
+  workQueue = [(BAAgentCore *)self workQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100027040;
   block[3] = &unk_100079260;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(workQueue, block);
 }
 
-- (id)_connectionReplyQueueForIdentifier:(id)a3
+- (id)_connectionReplyQueueForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(BAAgentCore *)self connections];
-  objc_sync_enter(v5);
-  v6 = [(BAAgentCore *)self connectionReplyQueue];
-  v7 = [v6 objectForKey:v4];
+  identifierCopy = identifier;
+  connections = [(BAAgentCore *)self connections];
+  objc_sync_enter(connections);
+  connectionReplyQueue = [(BAAgentCore *)self connectionReplyQueue];
+  v7 = [connectionReplyQueue objectForKey:identifierCopy];
 
   if (!v7)
   {
-    v8 = [NSString stringWithFormat:@"com.apple.backgroundassets.%@.reply", v4];
-    v7 = dispatch_queue_create([v8 UTF8String], 0);
-    v9 = [(BAAgentCore *)self connectionReplyQueue];
-    [v9 setObject:v7 forKey:v4];
+    identifierCopy = [NSString stringWithFormat:@"com.apple.backgroundassets.%@.reply", identifierCopy];
+    v7 = dispatch_queue_create([identifierCopy UTF8String], 0);
+    connectionReplyQueue2 = [(BAAgentCore *)self connectionReplyQueue];
+    [connectionReplyQueue2 setObject:v7 forKey:identifierCopy];
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(connections);
 
   return v7;
 }
 
-- (BOOL)_applicationIdentifierAllowsBackgroundActivity:(id)a3
+- (BOOL)_applicationIdentifierAllowsBackgroundActivity:(id)activity
 {
-  v4 = a3;
-  v5 = [(BAAgentCore *)self applicationState];
-  objc_sync_enter(v5);
+  activityCopy = activity;
+  applicationState = [(BAAgentCore *)self applicationState];
+  objc_sync_enter(applicationState);
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = [(BAAgentCore *)self applicationState];
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  applicationState2 = [(BAAgentCore *)self applicationState];
+  v7 = [applicationState2 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
     v8 = *v17;
@@ -4161,12 +4161,12 @@ LABEL_30:
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(applicationState2);
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
-        v11 = [v10 applicationIdentifier];
-        v12 = [v11 isEqualToString:v4];
+        applicationIdentifier = [v10 applicationIdentifier];
+        v12 = [applicationIdentifier isEqualToString:activityCopy];
 
         if (v12)
         {
@@ -4176,7 +4176,7 @@ LABEL_30:
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v7 = [applicationState2 countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v7)
       {
         continue;
@@ -4189,7 +4189,7 @@ LABEL_30:
   v13 = 1;
 LABEL_11:
 
-  objc_sync_exit(v5);
+  objc_sync_exit(applicationState);
   if (v13)
   {
     v14 = sub_1000104FC();
@@ -4206,15 +4206,15 @@ LABEL_11:
 
 - (unint64_t)_downloadsInProgress
 {
-  v3 = [(BAAgentCore *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(BAAgentCore *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(BAAgentCore *)self downloadQueuesByClientIdentifier];
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  downloadQueuesByClientIdentifier = [(BAAgentCore *)self downloadQueuesByClientIdentifier];
+  v5 = [downloadQueuesByClientIdentifier countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -4226,12 +4226,12 @@ LABEL_11:
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(downloadQueuesByClientIdentifier);
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
-        v11 = [(BAAgentCore *)self downloadQueuesByClientIdentifier];
-        v12 = [v11 objectForKey:v10];
+        downloadQueuesByClientIdentifier2 = [(BAAgentCore *)self downloadQueuesByClientIdentifier];
+        v12 = [downloadQueuesByClientIdentifier2 objectForKey:v10];
 
         if (v12)
         {
@@ -4239,7 +4239,7 @@ LABEL_11:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [downloadQueuesByClientIdentifier countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v6);
@@ -4253,26 +4253,26 @@ LABEL_11:
   return v7;
 }
 
-- (unint64_t)_downloadsInProgressForIdentifier:(id)a3
+- (unint64_t)_downloadsInProgressForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(BAAgentCore *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  identifierCopy = identifier;
+  workQueue = [(BAAgentCore *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v6 = [(BAAgentCore *)self downloadQueuesByClientIdentifier];
-  v7 = [v6 objectForKey:v4];
+  downloadQueuesByClientIdentifier = [(BAAgentCore *)self downloadQueuesByClientIdentifier];
+  v7 = [downloadQueuesByClientIdentifier objectForKey:identifierCopy];
 
   if (v7)
   {
-    v8 = [v7 numberOfActiveDownloads];
+    numberOfActiveDownloads = [v7 numberOfActiveDownloads];
   }
 
   else
   {
-    v8 = 0;
+    numberOfActiveDownloads = 0;
   }
 
-  return v8;
+  return numberOfActiveDownloads;
 }
 
 @end

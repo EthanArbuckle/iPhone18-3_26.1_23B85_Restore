@@ -1,33 +1,33 @@
 @interface ICMainSplitViewController
 + (UICommand)openInNewWindowCommand;
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
-- (BOOL)requiresNotificationForSecondaryColumnSize:(CGSize)a3;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
+- (BOOL)requiresNotificationForSecondaryColumnSize:(CGSize)size;
 - (BOOL)shouldDisplaceColumn;
-- (ICMainSplitViewController)initWithStyle:(int64_t)a3 viewControllerManager:(id)a4;
+- (ICMainSplitViewController)initWithStyle:(int64_t)style viewControllerManager:(id)manager;
 - (ICViewControllerManager)viewControllerManager;
 - (double)nonDisplacedColumnWidth;
 - (double)preferredDisplacedColumnWidth;
 - (id)selectedLegacyNote;
 - (id)selectedNote;
 - (int64_t)preferredDisplacedColumn;
-- (void)openInNewWindow:(id)a3;
+- (void)openInNewWindow:(id)window;
 - (void)registerForTraitChanges;
-- (void)updateStateForTrailingSidebarVisible:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)updateStateForTrailingSidebarVisible:(BOOL)visible;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation ICMainSplitViewController
 
 - (void)registerForTraitChanges
 {
-  v3 = [(ICMainSplitViewController *)self viewControllerManager];
-  v4 = [v3 behavior];
+  viewControllerManager = [(ICMainSplitViewController *)self viewControllerManager];
+  behavior = [viewControllerManager behavior];
 
-  if (v4 == 1)
+  if (behavior == 1)
   {
     objc_initWeak(&location, self);
-    v5 = [(ICMainSplitViewController *)self viewControllerManager];
-    v6 = [v5 noteEditorViewController];
+    viewControllerManager2 = [(ICMainSplitViewController *)self viewControllerManager];
+    noteEditorViewController = [viewControllerManager2 noteEditorViewController];
     v12 = objc_opt_class();
     v7 = [NSArray arrayWithObjects:&v12 count:1];
     v9[0] = _NSConcreteStackBlock;
@@ -35,7 +35,7 @@
     v9[2] = sub_100156830;
     v9[3] = &unk_100646240;
     objc_copyWeak(&v10, &location);
-    v8 = [v6 registerForTraitChanges:v7 withHandler:v9];
+    v8 = [noteEditorViewController registerForTraitChanges:v7 withHandler:v9];
 
     objc_destroyWeak(&v10);
     objc_destroyWeak(&location);
@@ -51,10 +51,10 @@
 
 - (int64_t)preferredDisplacedColumn
 {
-  v3 = [(ICMainSplitViewController *)self viewControllerManager];
-  v4 = [v3 noteContainerViewMode];
+  viewControllerManager = [(ICMainSplitViewController *)self viewControllerManager];
+  noteContainerViewMode = [viewControllerManager noteContainerViewMode];
 
-  if (v4 == -1)
+  if (noteContainerViewMode == -1)
   {
     v7 = os_log_create("com.apple.notes", "UI");
     if (os_log_type_enabled(v7, OS_LOG_TYPE_FAULT))
@@ -65,39 +65,39 @@
     return 0;
   }
 
-  if (v4)
+  if (noteContainerViewMode)
   {
     return 0;
   }
 
-  v5 = [(ICMainSplitViewController *)self viewControllerManager];
-  v6 = ([v5 canTilePrimaryContent] & 1) == 0 && -[ICMainSplitViewController style](self, "style") != 1;
+  viewControllerManager2 = [(ICMainSplitViewController *)self viewControllerManager];
+  v6 = ([viewControllerManager2 canTilePrimaryContent] & 1) == 0 && -[ICMainSplitViewController style](self, "style") != 1;
 
   return v6;
 }
 
-- (ICMainSplitViewController)initWithStyle:(int64_t)a3 viewControllerManager:(id)a4
+- (ICMainSplitViewController)initWithStyle:(int64_t)style viewControllerManager:(id)manager
 {
-  v6 = a4;
+  managerCopy = manager;
   v10.receiver = self;
   v10.super_class = ICMainSplitViewController;
-  v7 = [(ICMainSplitViewController *)&v10 initWithStyle:a3];
+  v7 = [(ICMainSplitViewController *)&v10 initWithStyle:style];
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->_viewControllerManager, v6);
+    objc_storeWeak(&v7->_viewControllerManager, managerCopy);
     [(ICMainSplitViewController *)v8 registerForTraitChanges];
   }
 
   return v8;
 }
 
-- (void)updateStateForTrailingSidebarVisible:(BOOL)a3
+- (void)updateStateForTrailingSidebarVisible:(BOOL)visible
 {
-  v3 = a3;
+  visibleCopy = visible;
   objc_opt_class();
-  v5 = [(ICMainSplitViewController *)self viewControllerManager];
-  v6 = [v5 trailingSidebarViewController];
+  viewControllerManager = [(ICMainSplitViewController *)self viewControllerManager];
+  trailingSidebarViewController = [viewControllerManager trailingSidebarViewController];
   v7 = ICDynamicCast();
 
   if (v7)
@@ -106,13 +106,13 @@
     v11[1] = 3221225472;
     v11[2] = sub_100156A0C;
     v11[3] = &unk_1006462D8;
-    v13 = v3;
+    v13 = visibleCopy;
     v11[4] = self;
     v8 = v7;
     v12 = v8;
     v9 = objc_retainBlock(v11);
     v10 = v9;
-    if (v3)
+    if (visibleCopy)
     {
       (v9[2])(v9);
     }
@@ -127,20 +127,20 @@
 - (BOOL)shouldDisplaceColumn
 {
   v2 = [(ICMainSplitViewController *)self viewControllerForColumn:[(ICMainSplitViewController *)self preferredDisplacedColumn]];
-  v3 = [v2 ic_isViewVisible];
+  ic_isViewVisible = [v2 ic_isViewVisible];
 
-  return v3;
+  return ic_isViewVisible;
 }
 
 - (double)preferredDisplacedColumnWidth
 {
   if (![(ICMainSplitViewController *)self isDisplacingColumn]&& [(ICMainSplitViewController *)self displayMode]== 1)
   {
-    v3 = [(ICMainSplitViewController *)self view];
-    [v3 frame];
+    view = [(ICMainSplitViewController *)self view];
+    [view frame];
     v5 = v4;
-    v6 = [(ICMainSplitViewController *)self view];
-    [v6 frame];
+    view2 = [(ICMainSplitViewController *)self view];
+    [view2 frame];
     v8 = v7;
 
     if (v5 < v8)
@@ -172,9 +172,9 @@
   }
 
   v3 = [(ICMainSplitViewController *)self viewControllerForColumn:1];
-  v4 = [v3 ic_isViewVisible];
+  ic_isViewVisible = [v3 ic_isViewVisible];
 
-  if (!v4)
+  if (!ic_isViewVisible)
   {
     return 0.0;
   }
@@ -183,29 +183,29 @@
   return result;
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
-  v8 = [(ICMainSplitViewController *)self viewControllerManager];
-  v9 = [v8 trailingSidebarViewController];
-  v10 = [v9 isTransitioning];
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
+  viewControllerManager = [(ICMainSplitViewController *)self viewControllerManager];
+  trailingSidebarViewController = [viewControllerManager trailingSidebarViewController];
+  isTransitioning = [trailingSidebarViewController isTransitioning];
 
-  if ((v10 & 1) == 0)
+  if ((isTransitioning & 1) == 0)
   {
     v11.receiver = self;
     v11.super_class = ICMainSplitViewController;
-    [(ICSplitViewController *)&v11 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+    [(ICSplitViewController *)&v11 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   }
 }
 
-- (BOOL)requiresNotificationForSecondaryColumnSize:(CGSize)a3
+- (BOOL)requiresNotificationForSecondaryColumnSize:(CGSize)size
 {
-  width = a3.width;
-  v4 = [(ICMainSplitViewController *)self viewControllerForColumn:2, a3.width, a3.height];
-  v5 = [v4 view];
-  [v5 frame];
+  width = size.width;
+  v4 = [(ICMainSplitViewController *)self viewControllerForColumn:2, size.width, size.height];
+  view = [v4 view];
+  [view frame];
   v7 = v6 - width;
 
   v8 = -v7;
@@ -229,20 +229,20 @@
   return v5;
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  if ("openInNewWindow:" == a3)
+  if ("openInNewWindow:" == action)
   {
-    v6 = [(ICMainSplitViewController *)self selectedNote];
-    if (v6)
+    selectedNote = [(ICMainSplitViewController *)self selectedNote];
+    if (selectedNote)
     {
       v5 = 1;
     }
 
     else
     {
-      v7 = [(ICMainSplitViewController *)self selectedLegacyNote];
-      v5 = v7 != 0;
+      selectedLegacyNote = [(ICMainSplitViewController *)self selectedLegacyNote];
+      v5 = selectedLegacyNote != 0;
     }
   }
 
@@ -258,42 +258,42 @@
 
 - (id)selectedNote
 {
-  v2 = [(ICMainSplitViewController *)self viewControllerManager];
-  v3 = [v2 noteEditorViewController];
-  v4 = [v3 note];
+  viewControllerManager = [(ICMainSplitViewController *)self viewControllerManager];
+  noteEditorViewController = [viewControllerManager noteEditorViewController];
+  note = [noteEditorViewController note];
 
-  return v4;
+  return note;
 }
 
 - (id)selectedLegacyNote
 {
-  v2 = [(ICMainSplitViewController *)self viewControllerManager];
-  v3 = [v2 legacyNoteEditorViewController];
-  v4 = [v3 note];
+  viewControllerManager = [(ICMainSplitViewController *)self viewControllerManager];
+  legacyNoteEditorViewController = [viewControllerManager legacyNoteEditorViewController];
+  note = [legacyNoteEditorViewController note];
 
-  return v4;
+  return note;
 }
 
-- (void)openInNewWindow:(id)a3
+- (void)openInNewWindow:(id)window
 {
-  v4 = [(ICMainSplitViewController *)self selectedNote];
+  selectedNote = [(ICMainSplitViewController *)self selectedNote];
 
-  if (v4)
+  if (selectedNote)
   {
-    v5 = [(ICMainSplitViewController *)self selectedNote];
-    v6 = [ICAppURLUtilities appURLForNote:v5];
+    selectedNote2 = [(ICMainSplitViewController *)self selectedNote];
+    v6 = [ICAppURLUtilities appURLForNote:selectedNote2];
   }
 
   else
   {
-    v7 = [(ICMainSplitViewController *)self selectedLegacyNote];
+    selectedLegacyNote = [(ICMainSplitViewController *)self selectedLegacyNote];
 
-    if (!v7)
+    if (!selectedLegacyNote)
     {
       return;
     }
 
-    v5 = [(ICMainSplitViewController *)self selectedLegacyNote];
+    selectedNote2 = [(ICMainSplitViewController *)self selectedLegacyNote];
     v6 = NotesAppURLForNote();
   }
 
@@ -302,8 +302,8 @@
   if (v11)
   {
     v8 = [[NSUserActivity alloc] initWithActivityType:@"com.apple.notes.open.object"];
-    v9 = [v11 absoluteString];
-    [v8 setTargetContentIdentifier:v9];
+    absoluteString = [v11 absoluteString];
+    [v8 setTargetContentIdentifier:absoluteString];
 
     [v8 setUserInfo:&off_10066E470];
     v10 = +[UIApplication sharedApplication];

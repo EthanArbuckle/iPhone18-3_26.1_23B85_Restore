@@ -1,155 +1,155 @@
 @interface ADPearlColorInFieldCalibrationPipeline
-+ (BOOL)isColorFrameValid:(__CVBuffer *)a3 withMetadata:(id)a4;
-+ (BOOL)isPearlFrameValid:(__CVBuffer *)a3 withMetadata:(id)a4;
-+ (BOOL)isPearlFrameValid:(__CVBuffer *)a3 withMetadata:(id)a4 andPipelineParameters:(id)a5;
-+ (BOOL)isValidDepthAboveThreshold:(__CVBuffer *)a3 threshold:(float)a4 invalid:(unsigned __int16)a5 validDepthPercentage:(float *)a6;
++ (BOOL)isColorFrameValid:(__CVBuffer *)valid withMetadata:(id)metadata;
++ (BOOL)isPearlFrameValid:(__CVBuffer *)valid withMetadata:(id)metadata;
++ (BOOL)isPearlFrameValid:(__CVBuffer *)valid withMetadata:(id)metadata andPipelineParameters:(id)parameters;
++ (BOOL)isValidDepthAboveThreshold:(__CVBuffer *)threshold threshold:(float)a4 invalid:(unsigned __int16)invalid validDepthPercentage:(float *)percentage;
 + (id)defaults;
-- (ADPearlColorInFieldCalibrationInterSessionData)createInterSessionDataWithFactoryPearlToColorTransform:(double)a3 currentPearlToColorTransform:(double)a4;
+- (ADPearlColorInFieldCalibrationInterSessionData)createInterSessionDataWithFactoryPearlToColorTransform:(double)transform currentPearlToColorTransform:(double)colorTransform;
 - (ADPearlColorInFieldCalibrationPipeline)init;
-- (ADPearlColorInFieldCalibrationPipeline)initWithParameters:(id)a3 espressoEngine:(unint64_t)a4;
-- (BOOL)isPearlFrameValid:(__CVBuffer *)a3;
-- (__n128)setPearlToColorCurrentTransform:(__n128)a3;
+- (ADPearlColorInFieldCalibrationPipeline)initWithParameters:(id)parameters espressoEngine:(unint64_t)engine;
+- (BOOL)isPearlFrameValid:(__CVBuffer *)valid;
+- (__n128)setPearlToColorCurrentTransform:(__n128)transform;
 - (float)claculateWeightedStd:(ADPearlColorInFieldCalibrationPipeline *)self;
-- (id)createInterSessionDataWithDictionaryRepresentation:(id)a3;
-- (id)createReferenceCameraForColor:(__n128)a3 withExtrinsics:(__n128)a4;
-- (int64_t)postProcessFrontendOutputX:(void *)a3 frontendOutputY:(void *)a4 frontendOutputZ:(void *)a5 frontendOutputErrorX:(void *)a6 frontendOutputErrorY:(void *)a7 frontendOutputErrorZ:(void *)a8 interSessionData:(id)a9 pearlColorInFieldCalibrationResult:(id)a10;
-- (int64_t)preProcessColor:(__CVBuffer *)a3 processedColor:(__CVBuffer *)a4 referenceCameraCalibration:(id)a5 colorCameraCalibration:(id)a6;
-- (int64_t)preProcessPearl:(__CVBuffer *)a3 referenceCameraCalibration:(id)a4 pearlCameraCalibration:(id)a5 reprojectedPointsBuffer:(__CVBuffer *)a6 reprojectedPointsMaskBuffer:(__CVBuffer *)a7;
-- (int64_t)processIntermediateResultsWithBackendFeaturesOutputVector:(const void *)a3 frontendEspressoFeaturesInput:(void *)a4 dimensions:(id)a5;
+- (id)createInterSessionDataWithDictionaryRepresentation:(id)representation;
+- (id)createReferenceCameraForColor:(__n128)color withExtrinsics:(__n128)extrinsics;
+- (int64_t)postProcessFrontendOutputX:(void *)x frontendOutputY:(void *)y frontendOutputZ:(void *)z frontendOutputErrorX:(void *)errorX frontendOutputErrorY:(void *)errorY frontendOutputErrorZ:(void *)errorZ interSessionData:(id)data pearlColorInFieldCalibrationResult:(id)self0;
+- (int64_t)preProcessColor:(__CVBuffer *)color processedColor:(__CVBuffer *)processedColor referenceCameraCalibration:(id)calibration colorCameraCalibration:(id)cameraCalibration;
+- (int64_t)preProcessPearl:(__CVBuffer *)pearl referenceCameraCalibration:(id)calibration pearlCameraCalibration:(id)cameraCalibration reprojectedPointsBuffer:(__CVBuffer *)buffer reprojectedPointsMaskBuffer:(__CVBuffer *)maskBuffer;
+- (int64_t)processIntermediateResultsWithBackendFeaturesOutputVector:(const void *)vector frontendEspressoFeaturesInput:(void *)input dimensions:(id)dimensions;
 - (void)dealloc;
 - (void)deallocMemory;
-- (void)reportTelemetry:(id)a3 withInterSessionData:(id)a4;
-- (void)updatePearlCamera:(id)a3;
+- (void)reportTelemetry:(id)telemetry withInterSessionData:(id)data;
+- (void)updatePearlCamera:(id)camera;
 @end
 
 @implementation ADPearlColorInFieldCalibrationPipeline
 
-- (__n128)setPearlToColorCurrentTransform:(__n128)a3
+- (__n128)setPearlToColorCurrentTransform:(__n128)transform
 {
   result[19] = a2;
-  result[20] = a3;
+  result[20] = transform;
   result[21] = a4;
   result[22] = a5;
   return result;
 }
 
-- (void)reportTelemetry:(id)a3 withInterSessionData:(id)a4
+- (void)reportTelemetry:(id)telemetry withInterSessionData:(id)data
 {
   v62[20] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v56 = a4;
-  v58 = [v56 inFieldCalibrationTelemetryData];
-  v57 = [v58 firedEventTimestampsArray];
-  if ([v5 executed])
+  telemetryCopy = telemetry;
+  dataCopy = data;
+  inFieldCalibrationTelemetryData = [dataCopy inFieldCalibrationTelemetryData];
+  firedEventTimestampsArray = [inFieldCalibrationTelemetryData firedEventTimestampsArray];
+  if ([telemetryCopy executed])
   {
-    [v5 postRelative2FactoryX];
+    [telemetryCopy postRelative2FactoryX];
     v7 = v6;
-    [v5 postRelative2FactoryY];
+    [telemetryCopy postRelative2FactoryY];
     v9 = v8;
-    [v5 postRelative2FactoryZ];
-    analyzeOneShotExtremeRotation(v7, v9, v10, &cfstr_ComAppleApplec_2.isa, v57);
+    [telemetryCopy postRelative2FactoryZ];
+    analyzeOneShotExtremeRotation(v7, v9, v10, &cfstr_ComAppleApplec_2.isa, firedEventTimestampsArray);
   }
 
   v61[0] = @"MaxBackendRunTime";
   v11 = MEMORY[0x277CCABB0];
-  v12 = [v58 maxBackendRunTime] / 1000.0;
+  v12 = [inFieldCalibrationTelemetryData maxBackendRunTime] / 1000.0;
   *&v12 = v12;
   v55 = [v11 numberWithFloat:v12];
   v62[0] = v55;
   v61[1] = @"MinBackendRunTime";
   v13 = MEMORY[0x277CCABB0];
-  v14 = [v58 minBackendRunTime] / 1000.0;
+  v14 = [inFieldCalibrationTelemetryData minBackendRunTime] / 1000.0;
   *&v14 = v14;
   v54 = [v13 numberWithFloat:v14];
   v62[1] = v54;
   v61[2] = @"TimeSincePrevRun";
   v15 = MEMORY[0x277CCABB0];
-  v16 = [v58 timeSincePrevRun] / 1000.0;
+  v16 = [inFieldCalibrationTelemetryData timeSincePrevRun] / 1000.0;
   *&v16 = v16;
   v53 = [v15 numberWithFloat:v16];
   v62[2] = v53;
   v61[3] = @"TotalBackendTime";
   v17 = MEMORY[0x277CCABB0];
-  v18 = [v58 totalBackendTime] / 1000.0;
+  v18 = [inFieldCalibrationTelemetryData totalBackendTime] / 1000.0;
   *&v18 = v18;
   v52 = [v17 numberWithFloat:v18];
   v62[3] = v52;
   v61[4] = @"TotalFrontEndTime";
   v19 = MEMORY[0x277CCABB0];
-  v20 = [v58 frontEndTime] / 1000.0;
+  v20 = [inFieldCalibrationTelemetryData frontEndTime] / 1000.0;
   *&v20 = v20;
   v51 = [v19 numberWithFloat:v20];
   v62[4] = v51;
   v61[5] = @"TotalNumRuns";
-  v50 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v58, "totalNumRuns")}];
+  v50 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(inFieldCalibrationTelemetryData, "totalNumRuns")}];
   v62[5] = v50;
   v61[6] = @"Confidence";
   v21 = MEMORY[0x277CCABB0];
-  [v5 confidence];
+  [telemetryCopy confidence];
   v49 = [v21 numberWithFloat:?];
   v62[6] = v49;
   v61[7] = @"FilteredRotXComparedToFactory";
   v22 = MEMORY[0x277CCABB0];
-  [v5 postRelative2FactoryX];
+  [telemetryCopy postRelative2FactoryX];
   v48 = [v22 numberWithFloat:?];
   v62[7] = v48;
   v61[8] = @"FilteredRotXComparedToPrev";
   v23 = MEMORY[0x277CCABB0];
-  [v5 postRelative2PrevX];
+  [telemetryCopy postRelative2PrevX];
   v47 = [v23 numberWithFloat:?];
   v62[8] = v47;
   v61[9] = @"FilteredRotYComparedToFactory";
   v24 = MEMORY[0x277CCABB0];
-  [v5 postRelative2FactoryY];
+  [telemetryCopy postRelative2FactoryY];
   v46 = [v24 numberWithFloat:?];
   v62[9] = v46;
   v61[10] = @"FilteredRotYComparedToPrev";
   v25 = MEMORY[0x277CCABB0];
-  [v5 postRelative2PrevY];
+  [telemetryCopy postRelative2PrevY];
   v45 = [v25 numberWithFloat:?];
   v62[10] = v45;
   v61[11] = @"FilteredRotZComparedToFactory";
   v26 = MEMORY[0x277CCABB0];
-  [v5 postRelative2FactoryZ];
+  [telemetryCopy postRelative2FactoryZ];
   v44 = [v26 numberWithFloat:?];
   v62[11] = v44;
   v61[12] = @"FilteredRotZComparedToPrev";
   v27 = MEMORY[0x277CCABB0];
-  [v5 postRelative2PrevZ];
+  [telemetryCopy postRelative2PrevZ];
   v28 = [v27 numberWithFloat:?];
   v62[12] = v28;
   v61[13] = @"RotXComparedToFactory";
   v29 = MEMORY[0x277CCABB0];
-  [v5 preRelative2FactoryX];
+  [telemetryCopy preRelative2FactoryX];
   v30 = [v29 numberWithFloat:?];
   v62[13] = v30;
   v61[14] = @"RotXComparedToPrev";
   v31 = MEMORY[0x277CCABB0];
-  [v5 deltaRotationX];
+  [telemetryCopy deltaRotationX];
   v32 = [v31 numberWithFloat:?];
   v62[14] = v32;
   v61[15] = @"RotYComparedToFactory";
   v33 = MEMORY[0x277CCABB0];
-  [v5 preRelative2FactoryY];
+  [telemetryCopy preRelative2FactoryY];
   v34 = [v33 numberWithFloat:?];
   v62[15] = v34;
   v61[16] = @"RotYComparedToPrev";
   v35 = MEMORY[0x277CCABB0];
-  [v5 deltaRotationY];
+  [telemetryCopy deltaRotationY];
   v36 = [v35 numberWithFloat:?];
   v62[16] = v36;
   v61[17] = @"RotZComparedToFactory";
   v37 = MEMORY[0x277CCABB0];
-  [v5 preRelative2FactoryZ];
+  [telemetryCopy preRelative2FactoryZ];
   v38 = [v37 numberWithFloat:?];
   v62[17] = v38;
   v61[18] = @"RotZComparedToPrev";
   v39 = MEMORY[0x277CCABB0];
-  [v5 deltaRotationZ];
+  [telemetryCopy deltaRotationZ];
   v40 = [v39 numberWithFloat:?];
   v62[18] = v40;
   v61[19] = @"Succeeded";
-  v41 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v5, "executed")}];
+  v41 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(telemetryCopy, "executed")}];
   v62[19] = v41;
   v42 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v62 forKeys:v61 count:20];
 
@@ -199,25 +199,25 @@
   return _S9 / (v14 + v15);
 }
 
-- (int64_t)postProcessFrontendOutputX:(void *)a3 frontendOutputY:(void *)a4 frontendOutputZ:(void *)a5 frontendOutputErrorX:(void *)a6 frontendOutputErrorY:(void *)a7 frontendOutputErrorZ:(void *)a8 interSessionData:(id)a9 pearlColorInFieldCalibrationResult:(id)a10
+- (int64_t)postProcessFrontendOutputX:(void *)x frontendOutputY:(void *)y frontendOutputZ:(void *)z frontendOutputErrorX:(void *)errorX frontendOutputErrorY:(void *)errorY frontendOutputErrorZ:(void *)errorZ interSessionData:(id)data pearlColorInFieldCalibrationResult:(id)self0
 {
-  v12 = a9;
-  v13 = a10;
-  v14 = [(ADEspressoPearlColorInFieldCalibrationFrontendInferenceDescriptor *)self->_frontendInferenceDesc rotationXOutput];
-  v15 = [v14 imageDescriptor];
-  v16 = PixelBufferUtils::pixelSizeForPixelFormat([v15 pixelFormat], 0);
+  dataCopy = data;
+  resultCopy = result;
+  rotationXOutput = [(ADEspressoPearlColorInFieldCalibrationFrontendInferenceDescriptor *)self->_frontendInferenceDesc rotationXOutput];
+  imageDescriptor = [rotationXOutput imageDescriptor];
+  v16 = PixelBufferUtils::pixelSizeForPixelFormat([imageDescriptor pixelFormat], 0);
 
-  v17 = [(ADEspressoPearlColorInFieldCalibrationFrontendInferenceDescriptor *)self->_frontendInferenceDesc rotationYOutput];
-  v18 = [v17 imageDescriptor];
-  v19 = PixelBufferUtils::pixelSizeForPixelFormat([v18 pixelFormat], 0);
+  rotationYOutput = [(ADEspressoPearlColorInFieldCalibrationFrontendInferenceDescriptor *)self->_frontendInferenceDesc rotationYOutput];
+  imageDescriptor2 = [rotationYOutput imageDescriptor];
+  v19 = PixelBufferUtils::pixelSizeForPixelFormat([imageDescriptor2 pixelFormat], 0);
 
-  v20 = [(ADEspressoPearlColorInFieldCalibrationFrontendInferenceDescriptor *)self->_frontendInferenceDesc rotationZOutput];
+  rotationZOutput = [(ADEspressoPearlColorInFieldCalibrationFrontendInferenceDescriptor *)self->_frontendInferenceDesc rotationZOutput];
 
-  if (v20)
+  if (rotationZOutput)
   {
-    v21 = [(ADEspressoPearlColorInFieldCalibrationFrontendInferenceDescriptor *)self->_frontendInferenceDesc rotationZOutput];
-    v22 = [v21 imageDescriptor];
-    v23 = PixelBufferUtils::pixelSizeForPixelFormat([v22 pixelFormat], 0);
+    rotationZOutput2 = [(ADEspressoPearlColorInFieldCalibrationFrontendInferenceDescriptor *)self->_frontendInferenceDesc rotationZOutput];
+    imageDescriptor3 = [rotationZOutput2 imageDescriptor];
+    v23 = PixelBufferUtils::pixelSizeForPixelFormat([imageDescriptor3 pixelFormat], 0);
 
     v180 = v23 == 2;
   }
@@ -227,32 +227,32 @@
     v180 = 0;
   }
 
-  v24 = [(ADEspressoPearlColorInFieldCalibrationFrontendInferenceDescriptor *)self->_frontendInferenceDesc errorXOutput];
-  v25 = [v24 imageDescriptor];
-  v26 = PixelBufferUtils::pixelSizeForPixelFormat([v25 pixelFormat], 0);
+  errorXOutput = [(ADEspressoPearlColorInFieldCalibrationFrontendInferenceDescriptor *)self->_frontendInferenceDesc errorXOutput];
+  imageDescriptor4 = [errorXOutput imageDescriptor];
+  v26 = PixelBufferUtils::pixelSizeForPixelFormat([imageDescriptor4 pixelFormat], 0);
 
-  v27 = [(ADEspressoPearlColorInFieldCalibrationFrontendInferenceDescriptor *)self->_frontendInferenceDesc errorYOutput];
-  v28 = [v27 imageDescriptor];
-  v29 = PixelBufferUtils::pixelSizeForPixelFormat([v28 pixelFormat], 0);
+  errorYOutput = [(ADEspressoPearlColorInFieldCalibrationFrontendInferenceDescriptor *)self->_frontendInferenceDesc errorYOutput];
+  imageDescriptor5 = [errorYOutput imageDescriptor];
+  v29 = PixelBufferUtils::pixelSizeForPixelFormat([imageDescriptor5 pixelFormat], 0);
 
-  v30 = [(ADEspressoPearlColorInFieldCalibrationFrontendInferenceDescriptor *)self->_frontendInferenceDesc errorZOutput];
+  errorZOutput = [(ADEspressoPearlColorInFieldCalibrationFrontendInferenceDescriptor *)self->_frontendInferenceDesc errorZOutput];
 
-  if (v30)
+  if (errorZOutput)
   {
-    v31 = [(ADEspressoPearlColorInFieldCalibrationFrontendInferenceDescriptor *)self->_frontendInferenceDesc errorZOutput];
-    v187 = v12;
-    v30 = [v31 imageDescriptor];
-    v32 = PixelBufferUtils::pixelSizeForPixelFormat([v30 pixelFormat], 0);
+    errorZOutput2 = [(ADEspressoPearlColorInFieldCalibrationFrontendInferenceDescriptor *)self->_frontendInferenceDesc errorZOutput];
+    v187 = dataCopy;
+    errorZOutput = [errorZOutput2 imageDescriptor];
+    v32 = PixelBufferUtils::pixelSizeForPixelFormat([errorZOutput pixelFormat], 0);
 
-    LODWORD(v30) = v32 == 2;
-    v12 = v187;
+    LODWORD(errorZOutput) = v32 == 2;
+    dataCopy = v187;
   }
 
-  [v13 setExecuted:0];
+  [resultCopy setExecuted:0];
   v225 = 0u;
   v226 = 0u;
   v224 = 0u;
-  [v12 pearlToColorRotationAngles];
+  [dataCopy pearlToColorRotationAngles];
   v188 = v33;
   [ADUtils calcRotationMatrix:?];
   v171 = v34;
@@ -290,67 +290,67 @@
   v38 = v37 / self->_colorCameraEfl;
   if (v16 == 2)
   {
-    _H1 = *a3;
+    _H1 = *x;
     __asm { FCVT            S1, H1 }
   }
 
   else
   {
-    _S1 = *a3;
+    _S1 = *x;
   }
 
   v45 = v38 * _S1;
   if (v19 == 2)
   {
-    _H1 = *a4;
+    _H1 = *y;
     __asm { FCVT            S1, H1 }
   }
 
   else
   {
-    _S1 = *a4;
+    _S1 = *y;
   }
 
   v48 = v38 * _S1;
   if (v26 == 2)
   {
-    _H3 = *a6;
+    _H3 = *errorX;
     __asm { FCVT            S3, H3 }
   }
 
   else
   {
-    _S3 = *a6;
+    _S3 = *errorX;
   }
 
   v51 = 0u;
   *&v51 = v45;
   if (v29 == 2)
   {
-    _H2 = *a7;
+    _H2 = *errorY;
     __asm { FCVT            S2, H2 }
   }
 
   else
   {
-    _S2 = *a7;
+    _S2 = *errorY;
   }
 
   *(&v51 + 1) = v48;
   v197 = v51;
   v54 = __PAIR64__(_S2, _S3);
-  if (a5 && a8)
+  if (z && errorZ)
   {
     if (v180)
     {
-      _H1 = *a5;
+      _H1 = *z;
       __asm { FCVT            S1, H1 }
 
       v57 = v38 * _S1;
-      if (!v30)
+      if (!errorZOutput)
       {
 LABEL_25:
-        _S1 = *a8;
+        _S1 = *errorZ;
 LABEL_28:
         v60 = v197;
         *(&v60 + 2) = v57;
@@ -362,14 +362,14 @@ LABEL_28:
 
     else
     {
-      v57 = v38 * *a5;
-      if (!v30)
+      v57 = v38 * *z;
+      if (!errorZOutput)
       {
         goto LABEL_25;
       }
     }
 
-    _H1 = *a8;
+    _H1 = *errorZ;
     __asm { FCVT            S1, H1 }
 
     goto LABEL_28;
@@ -388,50 +388,50 @@ LABEL_29:
     v183 = 0u;
     v185 = 0u;
 LABEL_45:
-    [v13 setDeltaRotationX:*&v197];
+    [resultCopy setDeltaRotationX:*&v197];
     HIDWORD(v149) = DWORD1(v197);
     LODWORD(v149) = DWORD1(v197);
-    [v13 setDeltaRotationY:v149];
-    [v13 setDeltaRotationZ:{COERCE_DOUBLE(__PAIR64__(DWORD1(v197), DWORD2(v197)))}];
-    [v13 setStdX:*v195.i64];
+    [resultCopy setDeltaRotationY:v149];
+    [resultCopy setDeltaRotationZ:{COERCE_DOUBLE(__PAIR64__(DWORD1(v197), DWORD2(v197)))}];
+    [resultCopy setStdX:*v195.i64];
     HIDWORD(v150) = v195.i32[1];
     LODWORD(v150) = v195.i32[1];
-    [v13 setStdY:v150];
-    [v13 setStdZ:{COERCE_DOUBLE(__PAIR64__(v195.u32[1], v195.u32[2]))}];
-    [v13 setAbsoluteRotationX:*&v183];
+    [resultCopy setStdY:v150];
+    [resultCopy setStdZ:{COERCE_DOUBLE(__PAIR64__(v195.u32[1], v195.u32[2]))}];
+    [resultCopy setAbsoluteRotationX:*&v183];
     HIDWORD(v151) = DWORD1(v183);
     LODWORD(v151) = DWORD1(v183);
-    [v13 setAbsoluteRotationY:v151];
-    [v13 setAbsoluteRotationZ:{COERCE_DOUBLE(__PAIR64__(DWORD1(v183), DWORD2(v183)))}];
-    [v13 setFactoryRotationX:*&v188];
+    [resultCopy setAbsoluteRotationY:v151];
+    [resultCopy setAbsoluteRotationZ:{COERCE_DOUBLE(__PAIR64__(DWORD1(v183), DWORD2(v183)))}];
+    [resultCopy setFactoryRotationX:*&v188];
     HIDWORD(v152) = DWORD1(v188);
     LODWORD(v152) = DWORD1(v188);
-    [v13 setFactoryRotationY:v152];
-    [v13 setFactoryRotationZ:{COERCE_DOUBLE(__PAIR64__(DWORD1(v188), DWORD2(v188)))}];
-    [v13 setAbsoluteRotationPostISFX:*&v178];
+    [resultCopy setFactoryRotationY:v152];
+    [resultCopy setFactoryRotationZ:{COERCE_DOUBLE(__PAIR64__(DWORD1(v188), DWORD2(v188)))}];
+    [resultCopy setAbsoluteRotationPostISFX:*&v178];
     HIDWORD(v153) = DWORD1(v178);
     LODWORD(v153) = DWORD1(v178);
-    [v13 setAbsoluteRotationPostISFY:v153];
-    [v13 setAbsoluteRotationPostISFZ:{COERCE_DOUBLE(__PAIR64__(DWORD1(v178), DWORD2(v178)))}];
+    [resultCopy setAbsoluteRotationPostISFY:v153];
+    [resultCopy setAbsoluteRotationPostISFZ:{COERCE_DOUBLE(__PAIR64__(DWORD1(v178), DWORD2(v178)))}];
     *&v154 = v62;
-    [v13 setConfidence:v154];
-    [v13 setPreRelative2FactoryX:*v185.i64];
+    [resultCopy setConfidence:v154];
+    [resultCopy setPreRelative2FactoryX:*v185.i64];
     HIDWORD(v155) = v185.i32[1];
     LODWORD(v155) = v185.i32[1];
-    [v13 setPreRelative2FactoryY:v155];
-    [v13 setPreRelative2FactoryZ:{COERCE_DOUBLE(__PAIR64__(v185.u32[1], v185.u32[2]))}];
-    [v13 setPostRelative2FactoryX:*&v181];
+    [resultCopy setPreRelative2FactoryY:v155];
+    [resultCopy setPreRelative2FactoryZ:{COERCE_DOUBLE(__PAIR64__(v185.u32[1], v185.u32[2]))}];
+    [resultCopy setPostRelative2FactoryX:*&v181];
     HIDWORD(v156) = DWORD1(v181);
     LODWORD(v156) = DWORD1(v181);
-    [v13 setPostRelative2FactoryY:v156];
-    [v13 setPostRelative2FactoryZ:{COERCE_DOUBLE(__PAIR64__(DWORD1(v181), DWORD2(v181)))}];
-    [v13 setPostRelative2PrevX:*&v190];
+    [resultCopy setPostRelative2FactoryY:v156];
+    [resultCopy setPostRelative2FactoryZ:{COERCE_DOUBLE(__PAIR64__(DWORD1(v181), DWORD2(v181)))}];
+    [resultCopy setPostRelative2PrevX:*&v190];
     HIDWORD(v157) = DWORD1(v190);
     LODWORD(v157) = DWORD1(v190);
-    [v13 setPostRelative2PrevY:v157];
-    [v13 setPostRelative2PrevZ:{COERCE_DOUBLE(__PAIR64__(DWORD1(v190), DWORD2(v190)))}];
+    [resultCopy setPostRelative2PrevY:v157];
+    [resultCopy setPostRelative2PrevZ:{COERCE_DOUBLE(__PAIR64__(DWORD1(v190), DWORD2(v190)))}];
     *&v158 = self->_validDepthPercentage;
-    [v13 setValidDepthPercentage:v158];
+    [resultCopy setValidDepthPercentage:v158];
     v67 = 0;
     goto LABEL_46;
   }
@@ -507,16 +507,16 @@ LABEL_45:
       *&v223 = v90.i64[0];
       [ADUtils calcRotationAngle:&v221];
       v91.i64[0] = 0;
-      v92.i64[0] = a5;
+      v92.i64[0] = z;
       v93 = vdupq_lane_s64(vceqq_s64(v92, v91).i64[0], 0);
       v95 = v94;
       v95.i32[2] = 0;
       v96 = vbslq_s8(v93, v95, v94);
       v96.i32[3] = v94.i32[3];
       v185 = v96;
-      v97 = [v12 convertExtrinsicsAnglesToDict:*v96.i64];
+      v97 = [dataCopy convertExtrinsicsAnglesToDict:*v96.i64];
       v217 = 0;
-      v98 = [v12 insertEntryAndCalculate:v97 withWeight:&v217 toResult:v65];
+      v98 = [dataCopy insertEntryAndCalculate:v97 withWeight:&v217 toResult:v65];
       v99 = v217;
       if (v98)
       {
@@ -526,7 +526,7 @@ LABEL_42:
         goto LABEL_46;
       }
 
-      [v12 convertDictToExtrinsicsAngles:v99];
+      [dataCopy convertDictToExtrinsicsAngles:v99];
       v181 = v100;
       [ADUtils calcRotationMatrix:*&v100];
       v104 = vmlaq_f32(vmlaq_f32(vmulq_n_f32(v101, v171.f32[0]), vdupq_lane_s32(*v171.f32, 1), v102), vdupq_laneq_s32(v171, 2), v103);
@@ -540,8 +540,8 @@ LABEL_42:
       v226.i64[0] = v106.i64[0];
       [ADUtils calcRotationAngle:&v224];
       v178 = v107;
-      [v13 setPearlToColorExtrinsics:{*v224.i64, *v225.i64, *v226.i64, *vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(v191, v162.f32[0]), v161, *v162.f32, 1), v160, v162, 2).i64}];
-      [v13 setExecuted:1];
+      [resultCopy setPearlToColorExtrinsics:{*v224.i64, *v225.i64, *v226.i64, *vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(v191, v162.f32[0]), v161, *v162.f32, 1), v160, v162, 2).i64}];
+      [resultCopy setExecuted:1];
       v108 = vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(v191, v167.f32[0]), v161, *v167.f32, 1), v160, v167, 2);
       v109 = vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(v191, v169.f32[0]), v161, *v169.f32, 1), v160, v169, 2);
       v110 = vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(v191, v170.f32[0]), v161, *v170.f32, 1), v160, v170, 2);
@@ -614,16 +614,16 @@ LABEL_41:
       v212 = v231.columns[1].i64[0];
       [ADUtils calcRotationAngle:&v208];
       v185 = v136;
-      v97 = [v12 convertExtrinsicsAnglesToDict:?];
+      v97 = [dataCopy convertExtrinsicsAnglesToDict:?];
       v207 = 0;
-      v137 = [v12 insertEntryAndCalculate:v97 withWeight:&v207 toResult:v65];
+      v137 = [dataCopy insertEntryAndCalculate:v97 withWeight:&v207 toResult:v65];
       v99 = v207;
       if (v137)
       {
         goto LABEL_42;
       }
 
-      [v12 convertDictToExtrinsicsAngles:v99];
+      [dataCopy convertDictToExtrinsicsAngles:v99];
       v181 = v138;
       [ADUtils calcRotationMatrix:?];
       v142 = vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(v139, v179.f32[0]), v140, *v179.f32, 1), v141, v179, 2);
@@ -635,8 +635,8 @@ LABEL_41:
       v205.i64[0] = v143.i64[0];
       v206.i32[2] = v144.i32[2];
       v206.i64[0] = v144.i64[0];
-      [v13 setPearlToColorExtrinsics:{*vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(v204, v168.columns[0].f32[0]), v205, *v168.columns[0].f32, 1), v206, v168.columns[0], 2).i64, *vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(v204, v168.columns[1].f32[0]), v205, *v168.columns[1].f32, 1), v206, v168.columns[1], 2).i64, *vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(v204, v168.columns[2].f32[0]), v205, *v168.columns[2].f32, 1), v206, v168.columns[2], 2).i64, *&v166}];
-      [v13 setExecuted:1];
+      [resultCopy setPearlToColorExtrinsics:{*vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(v204, v168.columns[0].f32[0]), v205, *v168.columns[0].f32, 1), v206, v168.columns[0], 2).i64, *vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(v204, v168.columns[1].f32[0]), v205, *v168.columns[1].f32, 1), v206, v168.columns[1], 2).i64, *vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(v204, v168.columns[2].f32[0]), v205, *v168.columns[2].f32, 1), v206, v168.columns[2], 2).i64, *&v166}];
+      [resultCopy setExecuted:1];
       [ADUtils calcRotationAngle:&v214];
       v183 = v145;
       [ADUtils calcRotationAngle:&v204];
@@ -668,38 +668,38 @@ LABEL_46:
   return v67;
 }
 
-- (ADPearlColorInFieldCalibrationInterSessionData)createInterSessionDataWithFactoryPearlToColorTransform:(double)a3 currentPearlToColorTransform:(double)a4
+- (ADPearlColorInFieldCalibrationInterSessionData)createInterSessionDataWithFactoryPearlToColorTransform:(double)transform currentPearlToColorTransform:(double)colorTransform
 {
-  v9 = [[ADPearlColorInFieldCalibrationInterSessionData alloc] initWithFactoryPearlToColorTransform:*(a1 + 40) currentPearlToColorTransform:a2 andFlowType:a3, a4, a5, a6, a7, a8, a9];
+  v9 = [[ADPearlColorInFieldCalibrationInterSessionData alloc] initWithFactoryPearlToColorTransform:*(self + 40) currentPearlToColorTransform:a2 andFlowType:transform, colorTransform, a5, a6, a7, a8, a9];
 
   return v9;
 }
 
-- (id)createInterSessionDataWithDictionaryRepresentation:(id)a3
+- (id)createInterSessionDataWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v5 = [ADPearlColorInFieldCalibrationInterSessionData alloc];
-  v6 = [(ADPipelineParameters *)self->_pipelineParameters deviceName];
-  v7 = [(ADPearlColorInFieldCalibrationInterSessionData *)v5 initWithDictionaryRepresentation:v4 andDeviceName:v6];
+  deviceName = [(ADPipelineParameters *)self->_pipelineParameters deviceName];
+  v7 = [(ADPearlColorInFieldCalibrationInterSessionData *)v5 initWithDictionaryRepresentation:representationCopy andDeviceName:deviceName];
 
   return v7;
 }
 
-- (int64_t)processIntermediateResultsWithBackendFeaturesOutputVector:(const void *)a3 frontendEspressoFeaturesInput:(void *)a4 dimensions:(id)a5
+- (int64_t)processIntermediateResultsWithBackendFeaturesOutputVector:(const void *)vector frontendEspressoFeaturesInput:(void *)input dimensions:(id)dimensions
 {
-  v8 = a5;
-  v9 = [(ADEspressoPearlColorInFieldCalibrationBackendInferenceDescriptor *)self->_backendInferenceDesc featuresOutput];
-  v10 = [v9 imageDescriptor];
-  v11 = PixelBufferUtils::pixelSizeForPixelFormat([v10 pixelFormat], 0);
+  dimensionsCopy = dimensions;
+  featuresOutput = [(ADEspressoPearlColorInFieldCalibrationBackendInferenceDescriptor *)self->_backendInferenceDesc featuresOutput];
+  imageDescriptor = [featuresOutput imageDescriptor];
+  v11 = PixelBufferUtils::pixelSizeForPixelFormat([imageDescriptor pixelFormat], 0);
 
-  v12 = [(ADEspressoPearlColorInFieldCalibrationFrontendInferenceDescriptor *)self->_frontendInferenceDesc featuresInput];
-  v13 = [v12 imageDescriptor];
-  v14 = PixelBufferUtils::pixelSizeForPixelFormat([v13 pixelFormat], 0);
+  featuresInput = [(ADEspressoPearlColorInFieldCalibrationFrontendInferenceDescriptor *)self->_frontendInferenceDesc featuresInput];
+  imageDescriptor2 = [featuresInput imageDescriptor];
+  v14 = PixelBufferUtils::pixelSizeForPixelFormat([imageDescriptor2 pixelFormat], 0);
 
   if (v11 == 2 && v14 == 2)
   {
-    v15 = [(ADPearlColorInFieldCalibrationPipelineParameters *)self->_pipelineParameters featuresVectorAggregationSize];
-    v16 = v8;
+    featuresVectorAggregationSize = [(ADPearlColorInFieldCalibrationPipelineParameters *)self->_pipelineParameters featuresVectorAggregationSize];
+    v16 = dimensionsCopy;
     v17 = 0;
     v18 = 1;
     while ([v16 count] > v17)
@@ -715,18 +715,18 @@ LABEL_46:
       goto LABEL_108;
     }
 
-    v27 = v15;
-    if (v15)
+    v27 = featuresVectorAggregationSize;
+    if (featuresVectorAggregationSize)
     {
       v28 = 0;
-      v29 = v15 & 0xFFFFFFFC;
+      v29 = featuresVectorAggregationSize & 0xFFFFFFFC;
       while (1)
       {
         v35 = 0;
         v36 = 0.0;
-        if (v15 >= 4 && v18 == 1 && -v15 >= v28)
+        if (featuresVectorAggregationSize >= 4 && v18 == 1 && -featuresVectorAggregationSize >= v28)
         {
-          if (v15 < 0x10)
+          if (featuresVectorAggregationSize < 0x10)
           {
             v37 = 0;
 LABEL_24:
@@ -734,15 +734,15 @@ LABEL_24:
             v47 = v37 - v29;
             do
             {
-              v48 = vcvtq_f32_f16(*(a3 + 2 * v46));
+              v48 = vcvtq_f32_f16(*(vector + 2 * v46));
               v36 = (((v36 + v48.f32[0]) + v48.f32[1]) + v48.f32[2]) + v48.f32[3];
               v46 += 4;
               v47 += 4;
             }
 
             while (v47);
-            v35 = v15 & 0xFFFFFFFC;
-            if (v29 == v15)
+            v35 = featuresVectorAggregationSize & 0xFFFFFFFC;
+            if (v29 == featuresVectorAggregationSize)
             {
               goto LABEL_14;
             }
@@ -750,11 +750,11 @@ LABEL_24:
             goto LABEL_27;
           }
 
-          v38 = v15 & 0xFFFFFFF0;
+          v38 = featuresVectorAggregationSize & 0xFFFFFFF0;
           v39 = v28;
           do
           {
-            v40 = (a3 + 2 * v39);
+            v40 = (vector + 2 * v39);
             v41 = v40[1];
             v42 = vcvt_hight_f32_f16(*v40);
             v43 = vcvtq_f32_f16(*v40->i8);
@@ -766,25 +766,25 @@ LABEL_24:
           }
 
           while (v38);
-          if ((v15 & 0xFFFFFFF0) == v15)
+          if ((featuresVectorAggregationSize & 0xFFFFFFF0) == featuresVectorAggregationSize)
           {
             goto LABEL_14;
           }
 
-          v37 = v15 & 0xFFFFFFF0;
+          v37 = featuresVectorAggregationSize & 0xFFFFFFF0;
           v35 = v37;
-          if ((v15 & 0xC) != 0)
+          if ((featuresVectorAggregationSize & 0xC) != 0)
           {
             goto LABEL_24;
           }
         }
 
 LABEL_27:
-        v49 = v15 - v35;
+        v49 = featuresVectorAggregationSize - v35;
         v50 = v28 + v18 * v35;
         do
         {
-          _H2 = *(a3 + v50);
+          _H2 = *(vector + v50);
           __asm { FCVT            S2, H2 }
 
           v36 = v36 + _S2;
@@ -797,7 +797,7 @@ LABEL_14:
         _S1 = v36 / v27;
         __asm { FCVT            H1, S1 }
 
-        *(a4 + v28++) = LOWORD(_S1);
+        *(input + v28++) = LOWORD(_S1);
         if (v28 == v18)
         {
           goto LABEL_108;
@@ -813,7 +813,7 @@ LABEL_14:
       v97 = 0;
 LABEL_106:
       v121 = v18 - v97;
-      v122 = a4 + 2 * v97;
+      v122 = input + 2 * v97;
       do
       {
         *v122++ = _D0.i16[0];
@@ -828,7 +828,7 @@ LABEL_106:
     {
       v97 = v18 & 0xFFFFFFF0;
       v114 = vdupq_lane_s16(_D0, 0);
-      v115 = (a4 + 16);
+      v115 = (input + 16);
       v116 = v97;
       do
       {
@@ -859,7 +859,7 @@ LABEL_106:
     v97 = v18 & 0xFFFFFFFC;
     v118 = vdup_lane_s16(_D0, 0);
     v119 = v117 - v97;
-    v120 = (a4 + 2 * v117);
+    v120 = (input + 2 * v117);
     do
     {
       *v120++ = v118;
@@ -877,8 +877,8 @@ LABEL_106:
 
   if (v11 == 2 && v14 == 4)
   {
-    v21 = [(ADPearlColorInFieldCalibrationPipelineParameters *)self->_pipelineParameters featuresVectorAggregationSize];
-    v22 = v8;
+    featuresVectorAggregationSize2 = [(ADPearlColorInFieldCalibrationPipelineParameters *)self->_pipelineParameters featuresVectorAggregationSize];
+    v22 = dimensionsCopy;
     v23 = 0;
     v24 = 1;
     while ([v22 count] > v23)
@@ -894,18 +894,18 @@ LABEL_106:
       goto LABEL_108;
     }
 
-    v59 = v21;
-    if (v21)
+    v59 = featuresVectorAggregationSize2;
+    if (featuresVectorAggregationSize2)
     {
       v60 = 0;
-      v61 = v21 & 0xFFFFFFFC;
+      v61 = featuresVectorAggregationSize2 & 0xFFFFFFFC;
       while (1)
       {
         v62 = 0;
         v63 = 0.0;
-        if (v21 >= 4 && v24 == 1 && -v21 >= v60)
+        if (featuresVectorAggregationSize2 >= 4 && v24 == 1 && -featuresVectorAggregationSize2 >= v60)
         {
-          if (v21 < 0x10)
+          if (featuresVectorAggregationSize2 < 0x10)
           {
             v64 = 0;
 LABEL_48:
@@ -913,15 +913,15 @@ LABEL_48:
             v74 = v64 - v61;
             do
             {
-              v75 = vcvtq_f32_f16(*(a3 + 2 * v73));
+              v75 = vcvtq_f32_f16(*(vector + 2 * v73));
               v63 = (((v63 + v75.f32[0]) + v75.f32[1]) + v75.f32[2]) + v75.f32[3];
               v73 += 4;
               v74 += 4;
             }
 
             while (v74);
-            v62 = v21 & 0xFFFFFFFC;
-            if (v61 == v21)
+            v62 = featuresVectorAggregationSize2 & 0xFFFFFFFC;
+            if (v61 == featuresVectorAggregationSize2)
             {
               goto LABEL_38;
             }
@@ -929,11 +929,11 @@ LABEL_48:
             goto LABEL_51;
           }
 
-          v65 = v21 & 0xFFFFFFF0;
+          v65 = featuresVectorAggregationSize2 & 0xFFFFFFF0;
           v66 = v60;
           do
           {
-            v67 = (a3 + 2 * v66);
+            v67 = (vector + 2 * v66);
             v68 = v67[1];
             v69 = vcvt_hight_f32_f16(*v67);
             v70 = vcvtq_f32_f16(*v67->i8);
@@ -945,25 +945,25 @@ LABEL_48:
           }
 
           while (v65);
-          if ((v21 & 0xFFFFFFF0) == v21)
+          if ((featuresVectorAggregationSize2 & 0xFFFFFFF0) == featuresVectorAggregationSize2)
           {
             goto LABEL_38;
           }
 
-          v64 = v21 & 0xFFFFFFF0;
+          v64 = featuresVectorAggregationSize2 & 0xFFFFFFF0;
           v62 = v64;
-          if ((v21 & 0xC) != 0)
+          if ((featuresVectorAggregationSize2 & 0xC) != 0)
           {
             goto LABEL_48;
           }
         }
 
 LABEL_51:
-        v76 = v21 - v62;
+        v76 = featuresVectorAggregationSize2 - v62;
         v77 = v60 + v24 * v62;
         do
         {
-          _H2 = *(a3 + v77);
+          _H2 = *(vector + v77);
           __asm { FCVT            S2, H2 }
 
           v63 = v63 + _S2;
@@ -973,7 +973,7 @@ LABEL_51:
 
         while (v76);
 LABEL_38:
-        *(a4 + v60++) = v63 / v59;
+        *(input + v60++) = v63 / v59;
         if (v60 == v24)
         {
           goto LABEL_108;
@@ -986,7 +986,7 @@ LABEL_38:
     {
       v107 = v24 & 0xFFFFFFF8;
       v109 = vdupq_lane_s32(v25, 0);
-      v110 = (a4 + 16);
+      v110 = (input + 16);
       v111 = v107;
       do
       {
@@ -1009,7 +1009,7 @@ LABEL_38:
     }
 
     v112 = v24 - v107;
-    v113 = a4 + 4 * v107;
+    v113 = input + 4 * v107;
     do
     {
       *v113++ = v25.i32[0];
@@ -1025,8 +1025,8 @@ LABEL_108:
 
   if (v11 == 4 && v14 == 2)
   {
-    v53 = [(ADPearlColorInFieldCalibrationPipelineParameters *)self->_pipelineParameters featuresVectorAggregationSize];
-    v54 = v8;
+    featuresVectorAggregationSize3 = [(ADPearlColorInFieldCalibrationPipelineParameters *)self->_pipelineParameters featuresVectorAggregationSize];
+    v54 = dimensionsCopy;
     v55 = 0;
     v56 = 1;
     while ([v54 count] > v55)
@@ -1042,14 +1042,14 @@ LABEL_108:
       goto LABEL_108;
     }
 
-    v87 = v53;
-    if (v53)
+    v87 = featuresVectorAggregationSize3;
+    if (featuresVectorAggregationSize3)
     {
-      for (i = 0; i != v56; *(a4 + i++) = LOWORD(_S1))
+      for (i = 0; i != v56; *(input + i++) = LOWORD(_S1))
       {
         v90 = 0;
         v91 = 0.0;
-        if (v53 < 0xC)
+        if (featuresVectorAggregationSize3 < 0xC)
         {
           goto LABEL_69;
         }
@@ -1059,31 +1059,31 @@ LABEL_108:
           goto LABEL_69;
         }
 
-        if (-v53 < i)
+        if (-featuresVectorAggregationSize3 < i)
         {
           goto LABEL_69;
         }
 
-        v92 = v53 & 0xFFFFFFF8;
+        v92 = featuresVectorAggregationSize3 & 0xFFFFFFF8;
         v93 = i;
         do
         {
-          v94 = a3 + 4 * v93;
+          v94 = vector + 4 * v93;
           v91 = (((((((v91 + COERCE_FLOAT(*v94)) + COERCE_FLOAT(HIDWORD(*v94))) + COERCE_FLOAT(*(v94 + 1))) + COERCE_FLOAT(HIDWORD(*v94))) + COERCE_FLOAT(*(v94 + 1))) + COERCE_FLOAT(HIDWORD(*(v94 + 2)))) + COERCE_FLOAT(*(v94 + 3))) + COERCE_FLOAT(HIDWORD(*(v94 + 1)));
           v93 += 8;
           v92 -= 8;
         }
 
         while (v92);
-        v90 = v53 & 0xFFFFFFF8;
-        if (v90 != v53)
+        v90 = featuresVectorAggregationSize3 & 0xFFFFFFF8;
+        if (v90 != featuresVectorAggregationSize3)
         {
 LABEL_69:
-          v95 = v53 - v90;
+          v95 = featuresVectorAggregationSize3 - v90;
           v96 = i + v56 * v90;
           do
           {
-            v91 = v91 + *(a3 + v96);
+            v91 = v91 + *(vector + v96);
             v96 += v56;
             --v95;
           }
@@ -1106,7 +1106,7 @@ LABEL_69:
       v108 = 0;
 LABEL_127:
       v137 = v56 - v108;
-      v138 = a4 + 2 * v108;
+      v138 = input + 2 * v108;
       do
       {
         *v138++ = _D0.i16[0];
@@ -1121,7 +1121,7 @@ LABEL_127:
     {
       v108 = v56 & 0xFFFFFFF0;
       v130 = vdupq_lane_s16(_D0, 0);
-      v131 = (a4 + 16);
+      v131 = (input + 16);
       v132 = v108;
       do
       {
@@ -1152,7 +1152,7 @@ LABEL_127:
     v108 = v56 & 0xFFFFFFFC;
     v134 = vdup_lane_s16(_D0, 0);
     v135 = v133 - v108;
-    v136 = (a4 + 2 * v133);
+    v136 = (input + 2 * v133);
     do
     {
       *v136++ = v134;
@@ -1171,8 +1171,8 @@ LABEL_127:
   v80 = -22950;
   if (v11 == 4 && v14 == 4)
   {
-    v81 = [(ADPearlColorInFieldCalibrationPipelineParameters *)self->_pipelineParameters featuresVectorAggregationSize];
-    v82 = v8;
+    featuresVectorAggregationSize4 = [(ADPearlColorInFieldCalibrationPipelineParameters *)self->_pipelineParameters featuresVectorAggregationSize];
+    v82 = dimensionsCopy;
     v83 = 0;
     v84 = 1;
     while ([v82 count] > v83)
@@ -1188,14 +1188,14 @@ LABEL_127:
       goto LABEL_108;
     }
 
-    v98 = v81;
-    if (v81)
+    v98 = featuresVectorAggregationSize4;
+    if (featuresVectorAggregationSize4)
     {
-      for (j = 0; j != v84; *(a4 + j++) = v101 / v98)
+      for (j = 0; j != v84; *(input + j++) = v101 / v98)
       {
         v100 = 0;
         v101 = 0.0;
-        if (v81 < 0xC)
+        if (featuresVectorAggregationSize4 < 0xC)
         {
           goto LABEL_84;
         }
@@ -1205,31 +1205,31 @@ LABEL_127:
           goto LABEL_84;
         }
 
-        if (-v81 < j)
+        if (-featuresVectorAggregationSize4 < j)
         {
           goto LABEL_84;
         }
 
-        v102 = v81 & 0xFFFFFFF8;
+        v102 = featuresVectorAggregationSize4 & 0xFFFFFFF8;
         v103 = j;
         do
         {
-          v104 = a3 + 4 * v103;
+          v104 = vector + 4 * v103;
           v101 = (((((((v101 + COERCE_FLOAT(*v104)) + COERCE_FLOAT(HIDWORD(*v104))) + COERCE_FLOAT(*(v104 + 1))) + COERCE_FLOAT(HIDWORD(*v104))) + COERCE_FLOAT(*(v104 + 1))) + COERCE_FLOAT(HIDWORD(*(v104 + 2)))) + COERCE_FLOAT(*(v104 + 3))) + COERCE_FLOAT(HIDWORD(*(v104 + 1)));
           v103 += 8;
           v102 -= 8;
         }
 
         while (v102);
-        v100 = v81 & 0xFFFFFFF8;
-        if (v100 != v81)
+        v100 = featuresVectorAggregationSize4 & 0xFFFFFFF8;
+        if (v100 != featuresVectorAggregationSize4)
         {
 LABEL_84:
-          v105 = v81 - v100;
+          v105 = featuresVectorAggregationSize4 - v100;
           v106 = j + v84 * v100;
           do
           {
-            v101 = v101 + *(a3 + v106);
+            v101 = v101 + *(vector + v106);
             v106 += v84;
             --v105;
           }
@@ -1246,7 +1246,7 @@ LABEL_84:
     {
       v124 = v84 & 0xFFFFFFF8;
       v125 = vdupq_lane_s32(v85, 0);
-      v126 = (a4 + 16);
+      v126 = (input + 16);
       v127 = v124;
       do
       {
@@ -1269,7 +1269,7 @@ LABEL_84:
     }
 
     v128 = v84 - v124;
-    v129 = a4 + 4 * v124;
+    v129 = input + 4 * v124;
     do
     {
       *v129++ = v85.i32[0];
@@ -1285,10 +1285,10 @@ LABEL_109:
   return v80;
 }
 
-- (BOOL)isPearlFrameValid:(__CVBuffer *)a3
+- (BOOL)isPearlFrameValid:(__CVBuffer *)valid
 {
   [(ADPearlColorInFieldCalibrationControllerParameters *)self->_controllerParameters thresholdPrecOfValidDepth];
-  v5 = [ADPearlColorInFieldCalibrationPipeline isValidDepthAboveThreshold:a3 threshold:0 invalid:&self->_validDepthPercentage validDepthPercentage:?];
+  v5 = [ADPearlColorInFieldCalibrationPipeline isValidDepthAboveThreshold:valid threshold:0 invalid:&self->_validDepthPercentage validDepthPercentage:?];
   if (!v5 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     *v7 = 0;
@@ -1298,14 +1298,14 @@ LABEL_109:
   return v5;
 }
 
-- (int64_t)preProcessPearl:(__CVBuffer *)a3 referenceCameraCalibration:(id)a4 pearlCameraCalibration:(id)a5 reprojectedPointsBuffer:(__CVBuffer *)a6 reprojectedPointsMaskBuffer:(__CVBuffer *)a7
+- (int64_t)preProcessPearl:(__CVBuffer *)pearl referenceCameraCalibration:(id)calibration pearlCameraCalibration:(id)cameraCalibration reprojectedPointsBuffer:(__CVBuffer *)buffer reprojectedPointsMaskBuffer:(__CVBuffer *)maskBuffer
 {
   v174 = *MEMORY[0x277D85DE8];
-  v164 = a4;
-  v165 = a5;
-  LODWORD(a5) = [(ADPearlColorInFieldCalibrationPipeline *)self isPearlFrameValid:a3];
+  calibrationCopy = calibration;
+  cameraCalibrationCopy = cameraCalibration;
+  LODWORD(cameraCalibration) = [(ADPearlColorInFieldCalibrationPipeline *)self isPearlFrameValid:pearl];
   v12 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT);
-  if (a5)
+  if (cameraCalibration)
   {
     if (v12)
     {
@@ -1313,12 +1313,12 @@ LABEL_109:
       _os_log_impl(&dword_2402F6000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "ADPearlColorInFieldCalibration pearl controller pass", buf, 2u);
     }
 
-    if (CVPixelBufferGetPixelFormatType(a3) == 825437747)
+    if (CVPixelBufferGetPixelFormatType(pearl) == 825437747)
     {
-      pixelBuffer = a7;
-      v13 = [(ADEspressoPearlColorInFieldCalibrationBackendInferenceDescriptor *)self->_backendInferenceDesc colorInput];
-      v14 = [v13 imageDescriptor];
-      [v14 sizeForLayout:255];
+      pixelBuffer = maskBuffer;
+      colorInput = [(ADEspressoPearlColorInFieldCalibrationBackendInferenceDescriptor *)self->_backendInferenceDesc colorInput];
+      imageDescriptor = [colorInput imageDescriptor];
+      [imageDescriptor sizeForLayout:255];
       v16 = v15;
 
       networkFlowType = self->_networkFlowType;
@@ -1328,21 +1328,21 @@ LABEL_109:
         {
           if (networkFlowType == 3)
           {
-            Width = CVPixelBufferGetWidth(a3);
-            Height = CVPixelBufferGetHeight(a3);
-            BytesPerRow = CVPixelBufferGetBytesPerRow(a3);
-            v19 = CVPixelBufferGetWidth(a6);
-            v20 = CVPixelBufferGetHeight(a6);
-            v21 = CVPixelBufferGetBytesPerRow(a6);
-            CVPixelBufferLockBaseAddress(a3, 1uLL);
-            CVPixelBufferLockBaseAddress(a6, 0);
+            Width = CVPixelBufferGetWidth(pearl);
+            Height = CVPixelBufferGetHeight(pearl);
+            BytesPerRow = CVPixelBufferGetBytesPerRow(pearl);
+            v19 = CVPixelBufferGetWidth(buffer);
+            v20 = CVPixelBufferGetHeight(buffer);
+            v21 = CVPixelBufferGetBytesPerRow(buffer);
+            CVPixelBufferLockBaseAddress(pearl, 1uLL);
+            CVPixelBufferLockBaseAddress(buffer, 0);
             if (pixelBuffer)
             {
               CVPixelBufferLockBaseAddress(pixelBuffer, 0);
             }
 
-            BaseAddress = CVPixelBufferGetBaseAddress(a3);
-            v23 = CVPixelBufferGetBaseAddress(a6);
+            BaseAddress = CVPixelBufferGetBaseAddress(pearl);
+            v23 = CVPixelBufferGetBaseAddress(buffer);
             v24 = v21 >> 1;
             v25 = 2 * v20 * (v21 >> 1);
             bzero(v23, v25);
@@ -1538,22 +1538,22 @@ LABEL_120:
             }
           }
 
-          [v165 referenceDimensions];
+          [cameraCalibrationCopy referenceDimensions];
           if (v16 <= v38)
           {
-            v27 = [(ADReprojection *)self->_pearlReprojector warpDepth:a3 srcCalibration:v165 dstCalibration:v164 poseTransform:a6 warpedDepth:*MEMORY[0x277D860B8], *(MEMORY[0x277D860B8] + 16), *(MEMORY[0x277D860B8] + 32), *(MEMORY[0x277D860B8] + 48)];
+            v27 = [(ADReprojection *)self->_pearlReprojector warpDepth:pearl srcCalibration:cameraCalibrationCopy dstCalibration:calibrationCopy poseTransform:buffer warpedDepth:*MEMORY[0x277D860B8], *(MEMORY[0x277D860B8] + 16), *(MEMORY[0x277D860B8] + 32), *(MEMORY[0x277D860B8] + 48)];
             goto LABEL_146;
           }
 
           pixelBuffer = 0;
         }
 
-        v39 = CVPixelBufferGetWidth(a3);
-        v40 = CVPixelBufferGetHeight(a3);
-        v41 = CVPixelBufferGetBytesPerRow(a3);
-        v42 = CVPixelBufferGetWidth(a6);
-        v43 = CVPixelBufferGetHeight(a6);
-        v44 = CVPixelBufferGetBytesPerRow(a6);
+        v39 = CVPixelBufferGetWidth(pearl);
+        v40 = CVPixelBufferGetHeight(pearl);
+        v41 = CVPixelBufferGetBytesPerRow(pearl);
+        v42 = CVPixelBufferGetWidth(buffer);
+        v43 = CVPixelBufferGetHeight(buffer);
+        v44 = CVPixelBufferGetBytesPerRow(buffer);
         v45 = v42 / v40;
         if (vabdd_f64(v45, v43 / v39) > 0.01)
         {
@@ -1575,15 +1575,15 @@ LABEL_120:
         }
 
         v46 = v44;
-        CVPixelBufferLockBaseAddress(a3, 1uLL);
-        CVPixelBufferLockBaseAddress(a6, 0);
+        CVPixelBufferLockBaseAddress(pearl, 1uLL);
+        CVPixelBufferLockBaseAddress(buffer, 0);
         if (pixelBuffer)
         {
           CVPixelBufferLockBaseAddress(pixelBuffer, 0);
         }
 
-        v47 = CVPixelBufferGetBaseAddress(a3);
-        v48 = CVPixelBufferGetBaseAddress(a6);
+        v47 = CVPixelBufferGetBaseAddress(pearl);
+        v48 = CVPixelBufferGetBaseAddress(buffer);
         v49 = v41 >> 1;
         v50 = v46 >> 1;
         v51 = pixelBuffer;
@@ -1745,8 +1745,8 @@ LABEL_120:
         if (!v51)
         {
 LABEL_145:
-          CVPixelBufferUnlockBaseAddress(a6, 0);
-          CVPixelBufferUnlockBaseAddress(a3, 1uLL);
+          CVPixelBufferUnlockBaseAddress(buffer, 0);
+          CVPixelBufferUnlockBaseAddress(pearl, 1uLL);
           v27 = 0;
           goto LABEL_146;
         }
@@ -1756,12 +1756,12 @@ LABEL_144:
         goto LABEL_145;
       }
 
-      v28 = CVPixelBufferGetWidth(a3);
-      v29 = CVPixelBufferGetHeight(a3);
-      v162 = CVPixelBufferGetBytesPerRow(a3);
-      v30 = CVPixelBufferGetWidth(a6);
-      v31 = CVPixelBufferGetHeight(a6);
-      v32 = CVPixelBufferGetBytesPerRow(a6);
+      v28 = CVPixelBufferGetWidth(pearl);
+      v29 = CVPixelBufferGetHeight(pearl);
+      v162 = CVPixelBufferGetBytesPerRow(pearl);
+      v30 = CVPixelBufferGetWidth(buffer);
+      v31 = CVPixelBufferGetHeight(buffer);
+      v32 = CVPixelBufferGetBytesPerRow(buffer);
       v33 = CVPixelBufferGetWidth(pixelBuffer);
       v34 = CVPixelBufferGetHeight(pixelBuffer);
       v35 = CVPixelBufferGetBytesPerRow(pixelBuffer);
@@ -1825,11 +1825,11 @@ LABEL_144:
         v31 = v87;
       }
 
-      CVPixelBufferLockBaseAddress(a3, 1uLL);
-      CVPixelBufferLockBaseAddress(a6, 0);
+      CVPixelBufferLockBaseAddress(pearl, 1uLL);
+      CVPixelBufferLockBaseAddress(buffer, 0);
       CVPixelBufferLockBaseAddress(pixelBuffer, 0);
-      v91 = CVPixelBufferGetBaseAddress(a3);
-      v92 = CVPixelBufferGetBaseAddress(a6);
+      v91 = CVPixelBufferGetBaseAddress(pearl);
+      v92 = CVPixelBufferGetBaseAddress(buffer);
       v93 = CVPixelBufferGetBaseAddress(pixelBuffer);
       if (!v31 || !v30)
       {
@@ -2002,14 +2002,14 @@ LABEL_146:
   return v27;
 }
 
-- (int64_t)preProcessColor:(__CVBuffer *)a3 processedColor:(__CVBuffer *)a4 referenceCameraCalibration:(id)a5 colorCameraCalibration:(id)a6
+- (int64_t)preProcessColor:(__CVBuffer *)color processedColor:(__CVBuffer *)processedColor referenceCameraCalibration:(id)calibration colorCameraCalibration:(id)cameraCalibration
 {
   v31 = *MEMORY[0x277D85DE8];
-  v10 = a5;
-  v11 = a6;
+  calibrationCopy = calibration;
+  cameraCalibrationCopy = cameraCalibration;
   kdebug_trace();
-  PixelFormatType = CVPixelBufferGetPixelFormatType(a4);
-  if (PixelFormatType == CVPixelBufferGetPixelFormatType(a3))
+  PixelFormatType = CVPixelBufferGetPixelFormatType(processedColor);
+  if (PixelFormatType == CVPixelBufferGetPixelFormatType(color))
   {
     goto LABEL_2;
   }
@@ -2017,32 +2017,32 @@ LABEL_146:
   colorInputProcessingSession = self->_colorInputProcessingSession;
   if (!colorInputProcessingSession)
   {
-    CVPixelBufferGetPixelFormatType(a3);
-    Width = CVPixelBufferGetWidth(a3);
-    Height = CVPixelBufferGetHeight(a3);
-    CVPixelBufferGetPixelFormatType(a4);
+    CVPixelBufferGetPixelFormatType(color);
+    Width = CVPixelBufferGetWidth(color);
+    Height = CVPixelBufferGetHeight(color);
+    CVPixelBufferGetPixelFormatType(processedColor);
     networkFlowType = self->_networkFlowType;
     if (networkFlowType < 3)
     {
-      CVPixelBufferGetWidth(a4);
-      CVPixelBufferGetHeight(a4);
-      v18 = [(ADEspressoPearlColorInFieldCalibrationBackendInferenceDescriptor *)self->_backendInferenceDesc colorInput];
-      v19 = [v18 imageDescriptor];
-      [v19 sizeForLayout:255];
+      CVPixelBufferGetWidth(processedColor);
+      CVPixelBufferGetHeight(processedColor);
+      colorInput = [(ADEspressoPearlColorInFieldCalibrationBackendInferenceDescriptor *)self->_backendInferenceDesc colorInput];
+      imageDescriptor = [colorInput imageDescriptor];
+      [imageDescriptor sizeForLayout:255];
 
       PixelBufferUtilsSession::createCropScaleConvertRotateSession();
     }
 
     if (networkFlowType == 3)
     {
-      CVPixelBufferGetWidth(a4);
-      CVPixelBufferGetHeight(a4);
+      CVPixelBufferGetWidth(processedColor);
+      CVPixelBufferGetHeight(processedColor);
       v20 = Width / Height;
       if (fabs(v20 + -0.75) < 0.01 || fabs(v20 + -0.5625) < 0.01)
       {
-        v21 = [(ADEspressoPearlColorInFieldCalibrationBackendInferenceDescriptor *)self->_backendInferenceDesc colorInput];
-        v22 = [v21 imageDescriptor];
-        [v22 sizeForLayout:255];
+        colorInput2 = [(ADEspressoPearlColorInFieldCalibrationBackendInferenceDescriptor *)self->_backendInferenceDesc colorInput];
+        imageDescriptor2 = [colorInput2 imageDescriptor];
+        [imageDescriptor2 sizeForLayout:255];
 
         PixelBufferUtilsSession::createCropScaleConvertRotateSession();
       }
@@ -2082,7 +2082,7 @@ LABEL_20:
     }
   }
 
-  if (self->_networkFlowType > 3u || (PixelBufferUtilsSession::run(colorInputProcessingSession, a3, a4) & 1) == 0)
+  if (self->_networkFlowType > 3u || (PixelBufferUtilsSession::run(colorInputProcessingSession, color, processedColor) & 1) == 0)
   {
     goto LABEL_15;
   }
@@ -2095,16 +2095,16 @@ LABEL_16:
   return v13;
 }
 
-- (id)createReferenceCameraForColor:(__n128)a3 withExtrinsics:(__n128)a4
+- (id)createReferenceCameraForColor:(__n128)color withExtrinsics:(__n128)extrinsics
 {
   v8 = a7;
   v9 = v8;
-  if (v8 && *(a1 + 40) <= 3u)
+  if (v8 && *(self + 40) <= 3u)
   {
     v10 = [v8 mutableCopy];
-    v11 = [*(a1 + 24) colorInput];
-    v12 = [v11 imageDescriptor];
-    [v12 sizeForLayout:255];
+    colorInput = [*(self + 24) colorInput];
+    imageDescriptor = [colorInput imageDescriptor];
+    [imageDescriptor sizeForLayout:255];
     v14 = v13;
     v16 = v15;
 
@@ -2115,23 +2115,23 @@ LABEL_16:
       v19 = v17;
     }
 
-    [v10 crop:{(v17 - v19) * 0.5, (v18 - v16 / v14 * v19) * 0.5, *&a2, *&a3, *&a4, *&a5}];
+    [v10 crop:{(v17 - v19) * 0.5, (v18 - v16 / v14 * v19) * 0.5, *&a2, *&color, *&extrinsics, *&a5}];
     [v10 scale:{v14, v16}];
-    *(a1 + 224) = v31;
-    *(a1 + 240) = v33;
-    *(a1 + 256) = v35;
-    *(a1 + 272) = v37;
+    *(self + 224) = v31;
+    *(self + 240) = v33;
+    *(self + 256) = v35;
+    *(self + 272) = v37;
     [v10 intrinsicMatrix];
-    *(a1 + 44) = v20;
+    *(self + 44) = v20;
     [v9 cameraToPlatformTransform];
-    *(a1 + 56) = v21;
-    *(a1 + 48) = v22;
-    *(a1 + 72) = v23;
-    *(a1 + 88) = v24;
-    *(a1 + 64) = v25;
-    *(a1 + 80) = v26;
-    *(a1 + 104) = v27;
-    *(a1 + 96) = v28;
+    *(self + 56) = v21;
+    *(self + 48) = v22;
+    *(self + 72) = v23;
+    *(self + 88) = v24;
+    *(self + 64) = v25;
+    *(self + 80) = v26;
+    *(self + 104) = v27;
+    *(self + 96) = v28;
   }
 
   else
@@ -2142,11 +2142,11 @@ LABEL_16:
   return v10;
 }
 
-- (void)updatePearlCamera:(id)a3
+- (void)updatePearlCamera:(id)camera
 {
-  objc_storeStrong(&self->_pearlCalib, a3);
-  v5 = a3;
-  [v5 cameraToPlatformTransform];
+  objc_storeStrong(&self->_pearlCalib, camera);
+  cameraCopy = camera;
+  [cameraCopy cameraToPlatformTransform];
   v10 = v6;
   v11 = v7;
   v12 = v8;
@@ -2182,9 +2182,9 @@ LABEL_16:
   self->_colorInputProcessingSession = 0;
 }
 
-- (ADPearlColorInFieldCalibrationPipeline)initWithParameters:(id)a3 espressoEngine:(unint64_t)a4
+- (ADPearlColorInFieldCalibrationPipeline)initWithParameters:(id)parameters espressoEngine:(unint64_t)engine
 {
-  v7 = a3;
+  parametersCopy = parameters;
   v34 = 335685188;
   v35 = 0u;
   v36 = 0u;
@@ -2224,24 +2224,24 @@ LABEL_7:
     goto LABEL_27;
   }
 
-  objc_storeStrong(&v10->_pipelineParameters, a3);
-  v12 = [(ADPipelineParameters *)v11->_pipelineParameters deviceName];
-  if ([v12 hasPrefix:@"J7"] & 1) != 0 || (objc_msgSend(v12, "hasPrefix:", @"J8"))
+  objc_storeStrong(&v10->_pipelineParameters, parameters);
+  deviceName = [(ADPipelineParameters *)v11->_pipelineParameters deviceName];
+  if ([deviceName hasPrefix:@"J7"] & 1) != 0 || (objc_msgSend(deviceName, "hasPrefix:", @"J8"))
   {
     v13 = 1;
   }
 
-  else if ([v12 hasPrefix:@"V59"])
+  else if ([deviceName hasPrefix:@"V59"])
   {
     v13 = 2;
   }
 
-  else if ([v12 hasPrefix:@"V5"])
+  else if ([deviceName hasPrefix:@"V5"])
   {
     v13 = 3;
   }
 
-  else if ([v12 hasPrefix:@"D23"])
+  else if ([deviceName hasPrefix:@"D23"])
   {
     v13 = 3;
   }
@@ -2282,11 +2282,11 @@ LABEL_7:
         goto LABEL_24;
       }
 
-      v15 = [ADNetworkProvider providerForNetwork:@"NuCoReNetBackend" espressoEngine:a4];
+      v15 = [ADNetworkProvider providerForNetwork:@"NuCoReNetBackend" espressoEngine:engine];
       backendNetworkProvider = v11->_backendNetworkProvider;
       v11->_backendNetworkProvider = v15;
 
-      v17 = [ADNetworkProvider providerForNetwork:@"NuCoReNetFrontend" espressoEngine:a4];
+      v17 = [ADNetworkProvider providerForNetwork:@"NuCoReNetFrontend" espressoEngine:engine];
       goto LABEL_23;
     }
 
@@ -2309,11 +2309,11 @@ LABEL_24:
     goto LABEL_29;
   }
 
-  v22 = [[ADEspressoPearlColorInFieldCalibrationBackendInferenceDescriptor alloc] initWithNetworkProvider:v11->_backendNetworkProvider espressoEngine:a4 networkFlowType:v11->_networkFlowType];
+  v22 = [[ADEspressoPearlColorInFieldCalibrationBackendInferenceDescriptor alloc] initWithNetworkProvider:v11->_backendNetworkProvider espressoEngine:engine networkFlowType:v11->_networkFlowType];
   backendInferenceDesc = v11->_backendInferenceDesc;
   v11->_backendInferenceDesc = v22;
 
-  v24 = [[ADEspressoPearlColorInFieldCalibrationFrontendInferenceDescriptor alloc] initWithNetworkProvider:v11->_frontendNetworkProvider espressoEngine:a4 networkFlowType:v11->_networkFlowType];
+  v24 = [[ADEspressoPearlColorInFieldCalibrationFrontendInferenceDescriptor alloc] initWithNetworkProvider:v11->_frontendNetworkProvider espressoEngine:engine networkFlowType:v11->_networkFlowType];
   frontendInferenceDesc = v11->_frontendInferenceDesc;
   v11->_frontendInferenceDesc = v24;
 
@@ -2343,15 +2343,15 @@ LABEL_29:
   return v4;
 }
 
-+ (BOOL)isColorFrameValid:(__CVBuffer *)a3 withMetadata:(id)a4
++ (BOOL)isColorFrameValid:(__CVBuffer *)valid withMetadata:(id)metadata
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a4;
-  v5 = [objc_opt_class() defaults];
-  v6 = [v5 integerForKey:kADDeviceConfigurationKeyPearlColorMinimumLuxLevel];
+  metadataCopy = metadata;
+  defaults = [objc_opt_class() defaults];
+  v6 = [defaults integerForKey:kADDeviceConfigurationKeyPearlColorMinimumLuxLevel];
 
-  v7 = [v4 valueForKey:@"AEStable"];
-  v8 = [v4 valueForKey:@"LuxLevel"];
+  v7 = [metadataCopy valueForKey:@"AEStable"];
+  v8 = [metadataCopy valueForKey:@"LuxLevel"];
   v9 = v8;
   if (!v7)
   {
@@ -2384,7 +2384,7 @@ LABEL_29:
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
       v21 = 67109120;
-      v22 = [v7 intValue];
+      intValue = [v7 intValue];
       _os_log_impl(&dword_2402F6000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "ADPearlColorInfieldCalibration: AE is stable: %d", &v21, 8u);
     }
   }
@@ -2392,7 +2392,7 @@ LABEL_29:
   else if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     v21 = 67109120;
-    v22 = [v7 intValue];
+    intValue = [v7 intValue];
     _os_log_debug_impl(&dword_2402F6000, MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG, "ADPearlColorInfieldCalibration: AE is stable: %d", &v21, 8u);
   }
 
@@ -2400,18 +2400,18 @@ LABEL_29:
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [v9 intValue];
+      intValue2 = [v9 intValue];
       v21 = 67109120;
-      v22 = v12;
+      intValue = intValue2;
       _os_log_impl(&dword_2402F6000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "ADPearlColorInfieldCalibration: Lux level: %d", &v21, 8u);
     }
   }
 
   else if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
-    v20 = [v9 intValue];
+    intValue3 = [v9 intValue];
     v21 = 67109120;
-    v22 = v20;
+    intValue = intValue3;
     _os_log_debug_impl(&dword_2402F6000, MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG, "ADPearlColorInfieldCalibration: Lux level: %d", &v21, 8u);
   }
 
@@ -2421,9 +2421,9 @@ LABEL_29:
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
       {
-        v13 = [v9 intValue];
+        intValue4 = [v9 intValue];
         v21 = 67109376;
-        v22 = v13;
+        intValue = intValue4;
         v23 = 2048;
         v24 = v6;
         _os_log_impl(&dword_2402F6000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "ADPearlColorInFieldCalibration: color buffer not valid for algorithm: Lux level too low (%d < %ld)", &v21, 0x12u);
@@ -2434,9 +2434,9 @@ LABEL_29:
 
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
     {
-      v15 = [v9 intValue];
+      intValue5 = [v9 intValue];
       v21 = 67109376;
-      v22 = v15;
+      intValue = intValue5;
       v23 = 2048;
       v24 = v6;
       v16 = MEMORY[0x277D86220];
@@ -2487,21 +2487,21 @@ LABEL_31:
   return v14;
 }
 
-+ (BOOL)isPearlFrameValid:(__CVBuffer *)a3 withMetadata:(id)a4
++ (BOOL)isPearlFrameValid:(__CVBuffer *)valid withMetadata:(id)metadata
 {
-  v5 = a4;
+  metadataCopy = metadata;
   v6 = objc_alloc_init(ADPearlColorInFieldCalibrationControllerParameters);
-  LOBYTE(a3) = [ADPearlColorInFieldCalibrationPipeline isPearlFrameValid:a3 withMetadata:v5 andPipelineParameters:v6];
+  LOBYTE(valid) = [ADPearlColorInFieldCalibrationPipeline isPearlFrameValid:valid withMetadata:metadataCopy andPipelineParameters:v6];
 
-  return a3;
+  return valid;
 }
 
-+ (BOOL)isPearlFrameValid:(__CVBuffer *)a3 withMetadata:(id)a4 andPipelineParameters:(id)a5
++ (BOOL)isPearlFrameValid:(__CVBuffer *)valid withMetadata:(id)metadata andPipelineParameters:(id)parameters
 {
   v23 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
-  v9 = [v7 valueForKey:@"RegType"];
+  metadataCopy = metadata;
+  parametersCopy = parameters;
+  v9 = [metadataCopy valueForKey:@"RegType"];
   v10 = v9;
   if (!v9)
   {
@@ -2520,10 +2520,10 @@ LABEL_11:
     goto LABEL_17;
   }
 
-  v11 = [v9 intValue];
-  if (v11 != 3 && v11 != 27)
+  intValue = [v9 intValue];
+  if (intValue != 3 && intValue != 27)
   {
-    v19 = v11;
+    v19 = intValue;
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
       v22[0] = 67109120;
@@ -2542,16 +2542,16 @@ LABEL_11:
   v14 = v13;
   if (v13)
   {
-    v15 = [v13 intValue];
+    intValue2 = [v13 intValue];
   }
 
   else
   {
-    v15 = 0;
+    intValue2 = 0;
   }
 
-  [v8 thresholdPrecOfValidDepth];
-  v20 = [ADPearlColorInFieldCalibrationPipeline isValidDepthAboveThreshold:a3 threshold:v15 invalid:0 validDepthPercentage:?];
+  [parametersCopy thresholdPrecOfValidDepth];
+  v20 = [ADPearlColorInFieldCalibrationPipeline isValidDepthAboveThreshold:valid threshold:intValue2 invalid:0 validDepthPercentage:?];
   if (!v20 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     LOWORD(v22[0]) = 0;
@@ -2562,24 +2562,24 @@ LABEL_17:
   return v20;
 }
 
-+ (BOOL)isValidDepthAboveThreshold:(__CVBuffer *)a3 threshold:(float)a4 invalid:(unsigned __int16)a5 validDepthPercentage:(float *)a6
++ (BOOL)isValidDepthAboveThreshold:(__CVBuffer *)threshold threshold:(float)a4 invalid:(unsigned __int16)invalid validDepthPercentage:(float *)percentage
 {
-  v7 = a5;
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
-  BytesPerRow = CVPixelBufferGetBytesPerRow(a3);
-  CVPixelBufferLockBaseAddress(a3, 1uLL);
+  invalidCopy = invalid;
+  Width = CVPixelBufferGetWidth(threshold);
+  Height = CVPixelBufferGetHeight(threshold);
+  BytesPerRow = CVPixelBufferGetBytesPerRow(threshold);
+  CVPixelBufferLockBaseAddress(threshold, 1uLL);
   v110 = ((Height * Width) * a4);
   if (Height)
   {
     if (Width)
     {
       v106 = Width & 0xFFFFFFFFFFFFFFF0;
-      v111 = vdupq_n_s16(v7);
-      v105 = a6;
+      v111 = vdupq_n_s16(invalidCopy);
+      percentageCopy3 = percentage;
       v109 = Width & 0xFFFFFFFFFFFFFFFCLL;
       v104 = Height * Width;
-      if (a6)
+      if (percentage)
       {
         v13 = 0;
         v14 = 0;
@@ -2590,7 +2590,7 @@ LABEL_17:
           v107 = vdupq_n_s64(1uLL);
           while (1)
           {
-            BaseAddress = CVPixelBufferGetBaseAddress(a3);
+            BaseAddress = CVPixelBufferGetBaseAddress(threshold);
             if (Width >= 0x10)
             {
               v22 = 0uLL;
@@ -2699,7 +2699,7 @@ LABEL_26:
               v57 = &BaseAddress[2 * v25];
               do
               {
-                if (*&v57[v13] != v7)
+                if (*&v57[v13] != invalidCopy)
                 {
                   ++v14;
                 }
@@ -2724,20 +2724,20 @@ LABEL_16:
 
         do
         {
-          v17 = CVPixelBufferGetBaseAddress(a3);
-          if (*&v17[v13] != v7)
+          v17 = CVPixelBufferGetBaseAddress(threshold);
+          if (*&v17[v13] != invalidCopy)
           {
             ++v14;
           }
 
           if (Width != 1)
           {
-            if (*&v17[v13 + 2] != v7)
+            if (*&v17[v13 + 2] != invalidCopy)
             {
               ++v14;
             }
 
-            if (Width != 2 && *&v17[v13 + 4] != v7)
+            if (Width != 2 && *&v17[v13 + 4] != invalidCopy)
             {
               ++v14;
             }
@@ -2765,7 +2765,7 @@ LABEL_16:
             goto LABEL_35;
           }
 
-          v62 = CVPixelBufferGetBaseAddress(a3);
+          v62 = CVPixelBufferGetBaseAddress(threshold);
           if (Width >= 0x10)
           {
             v66 = 0uLL;
@@ -2874,7 +2874,7 @@ LABEL_60:
             v101 = &v62[2 * v69];
             do
             {
-              if (*&v101[v58] != v7)
+              if (*&v101[v58] != invalidCopy)
               {
                 ++v14;
               }
@@ -2899,20 +2899,20 @@ LABEL_49:
 
       while (v14 < v110)
       {
-        v61 = CVPixelBufferGetBaseAddress(a3);
-        if (*&v61[v58] != v7)
+        v61 = CVPixelBufferGetBaseAddress(threshold);
+        if (*&v61[v58] != invalidCopy)
         {
           ++v14;
         }
 
         if (Width != 1)
         {
-          if (*&v61[v58 + 2] != v7)
+          if (*&v61[v58 + 2] != invalidCopy)
           {
             ++v14;
           }
 
-          if (Width != 2 && *&v61[v58 + 4] != v7)
+          if (Width != 2 && *&v61[v58 + 4] != invalidCopy)
           {
             ++v14;
           }
@@ -2926,21 +2926,21 @@ LABEL_49:
       }
 
 LABEL_35:
-      CVPixelBufferUnlockBaseAddress(a3, 0);
+      CVPixelBufferUnlockBaseAddress(threshold, 0);
       return v14 >= v110;
     }
 
-    if (!a6 && !v110)
+    if (!percentage && !v110)
     {
       v14 = 0;
       goto LABEL_35;
     }
 
     v104 = 0;
-    v105 = a6;
+    percentageCopy3 = percentage;
     do
     {
-      CVPixelBufferGetBaseAddress(a3);
+      CVPixelBufferGetBaseAddress(threshold);
       --Height;
     }
 
@@ -2950,16 +2950,16 @@ LABEL_35:
   else
   {
     v104 = 0;
-    v105 = a6;
+    percentageCopy3 = percentage;
   }
 
   v14 = 0;
 LABEL_68:
-  CVPixelBufferUnlockBaseAddress(a3, 0);
-  if (v105)
+  CVPixelBufferUnlockBaseAddress(threshold, 0);
+  if (percentageCopy3)
   {
     v102 = v14 * 100.0 / v104;
-    *v105 = v102;
+    *percentageCopy3 = v102;
   }
 
   return v14 >= v110;

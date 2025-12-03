@@ -2,37 +2,37 @@
 + (id)sharedManager;
 - (NSDictionary)metaInfo;
 - (SDAppleIDDatabaseManager)init;
-- (id)_accountForAppleID:(id)a3;
-- (id)_cachedPersonInfoWithEmailOrPhone:(id)a3;
-- (id)_identityForAppleID:(id)a3;
+- (id)_accountForAppleID:(id)d;
+- (id)_cachedPersonInfoWithEmailOrPhone:(id)phone;
+- (id)_identityForAppleID:(id)d;
 - (id)_statusInfo;
-- (id)accountForAppleID:(id)a3;
-- (id)cachedPersonInfoWithEmailOrPhone:(id)a3;
-- (id)identityForAppleID:(id)a3;
+- (id)accountForAppleID:(id)d;
+- (id)cachedPersonInfoWithEmailOrPhone:(id)phone;
+- (id)identityForAppleID:(id)d;
 - (id)statusInfo;
-- (void)_addAppleID:(id)a3;
-- (void)_addPersonInfoToCache:(id)a3;
+- (void)_addAppleID:(id)d;
+- (void)_addPersonInfoToCache:(id)cache;
 - (void)_clearLegacyPreferencesIfNeeded;
 - (void)_clearPersonInfoCache;
-- (void)_postNotificationWithName:(id)a3;
+- (void)_postNotificationWithName:(id)name;
 - (void)_readPrefs;
-- (void)_removeAppleID:(id)a3;
-- (void)_setAccount:(id)a3;
-- (void)_setIdentity:(id)a3 forAppleID:(id)a4;
-- (void)_setMetaInfo:(id)a3;
+- (void)_removeAppleID:(id)d;
+- (void)_setAccount:(id)account;
+- (void)_setIdentity:(id)identity forAppleID:(id)d;
+- (void)_setMetaInfo:(id)info;
 - (void)_updateAccountInfoPrefs;
 - (void)_updateMetaInfoPrefs;
 - (void)_updatePersonInfoCachePrefs;
-- (void)addAppleID:(id)a3;
-- (void)addPersonInfoToCache:(id)a3;
+- (void)addAppleID:(id)d;
+- (void)addPersonInfoToCache:(id)cache;
 - (void)clearPersonInfoCache;
-- (void)removeAppleID:(id)a3;
-- (void)setCertificateToken:(id)a3 privateKeyPersistentReference:(id)a4 forAppleID:(id)a5;
-- (void)setContactInfo:(id)a3 validationRecord:(id)a4 forAppleID:(id)a5;
-- (void)setIdentity:(id)a3 forAppleID:(id)a4;
-- (void)setLastConnectionDate:(id)a3;
-- (void)setLastSuccessfulConnectionDate:(id)a3;
-- (void)setMetaInfo:(id)a3;
+- (void)removeAppleID:(id)d;
+- (void)setCertificateToken:(id)token privateKeyPersistentReference:(id)reference forAppleID:(id)d;
+- (void)setContactInfo:(id)info validationRecord:(id)record forAppleID:(id)d;
+- (void)setIdentity:(id)identity forAppleID:(id)d;
+- (void)setLastConnectionDate:(id)date;
+- (void)setLastSuccessfulConnectionDate:(id)date;
+- (void)setMetaInfo:(id)info;
 @end
 
 @implementation SDAppleIDDatabaseManager
@@ -72,7 +72,7 @@
 
 - (void)_readPrefs
 {
-  v2 = self;
+  selfCopy = self;
   accountInfoStore = self->_accountInfoStore;
   p_opt_inst_meths = &OBJC_PROTOCOL___SDAirDropServerDelegate.opt_inst_meths;
   if (dword_100971348 <= 30 && (dword_100971348 != -1 || _LogCategory_Initialize()))
@@ -85,7 +85,7 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v2;
+    v7 = selfCopy;
     v8 = accountInfoStore;
     v9 = objc_opt_class();
     v10 = objc_opt_class();
@@ -101,7 +101,7 @@
       accountInfoStore = v8;
       if (dword_100971348 <= 30 && (dword_100971348 != -1 || _LogCategory_Initialize()))
       {
-        v2 = v7;
+        selfCopy = v7;
         sub_100139180(&v7->_metaInfo);
         goto LABEL_18;
       }
@@ -112,7 +112,7 @@
       accountInfoStore = v8;
       if (dword_100971348 <= 60)
       {
-        v2 = v7;
+        selfCopy = v7;
         if (dword_100971348 != -1 || _LogCategory_Initialize())
         {
           sub_1001391C4();
@@ -132,7 +132,7 @@ LABEL_18:
       v35 = 0;
     }
 
-    v2 = v7;
+    selfCopy = v7;
     goto LABEL_18;
   }
 
@@ -145,33 +145,33 @@ LABEL_18:
   }
 
 LABEL_19:
-  if (([(SDAppleIDPlatformAccountInfoStore *)v2->_accountInfoStore storeExists]& 1) != 0)
+  if (([(SDAppleIDPlatformAccountInfoStore *)selfCopy->_accountInfoStore storeExists]& 1) != 0)
   {
     v14 = 0;
     v15 = 0;
 LABEL_47:
-    if (([(SDAppleIDPlatformAccountInfoStore *)v2->_accountInfoStore storeExists]& 1) != 0)
+    if (([(SDAppleIDPlatformAccountInfoStore *)selfCopy->_accountInfoStore storeExists]& 1) != 0)
     {
-      v21 = [(SDAppleIDPlatformAccountInfoStore *)v2->_accountInfoStore read];
-      v22 = v21;
-      if (v21)
+      read = [(SDAppleIDPlatformAccountInfoStore *)selfCopy->_accountInfoStore read];
+      v22 = read;
+      if (read)
       {
-        v23 = [v21 account];
+        account = [read account];
 
-        if (v23)
+        if (account)
         {
-          v24 = [v22 account];
-          [(SDAppleIDDatabaseManager *)v2 _setAccount:v24];
+          account2 = [v22 account];
+          [(SDAppleIDDatabaseManager *)selfCopy _setAccount:account2];
         }
 
-        v25 = [v22 personInfo];
-        v26 = [v25 mutableCopy];
+        personInfo = [v22 personInfo];
+        v26 = [personInfo mutableCopy];
 
         if (v26)
         {
-          v27 = [v22 personInfo];
-          v28 = [v27 mutableCopy];
-          [(SDAppleIDDatabaseManager *)v2 setPersonInfoCache:v28];
+          personInfo2 = [v22 personInfo];
+          v28 = [personInfo2 mutableCopy];
+          [(SDAppleIDDatabaseManager *)selfCopy setPersonInfoCache:v28];
         }
       }
 
@@ -184,7 +184,7 @@ LABEL_47:
         }
       }
 
-      [(SDAppleIDDatabaseManager *)v2 _clearLegacyPreferencesIfNeeded];
+      [(SDAppleIDDatabaseManager *)selfCopy _clearLegacyPreferencesIfNeeded];
     }
 
     else
@@ -195,14 +195,14 @@ LABEL_47:
         sub_100139384();
       }
 
-      v30 = v2->_accountInfoStore;
-      v31 = [(SDAppleIDDatabaseManager *)v2 account];
-      v32 = [(SDAppleIDDatabaseManager *)v2 personInfoCache];
-      LODWORD(v30) = [(SDAppleIDPlatformAccountInfoStore *)v30 storeWithAccount:v31 personInfo:v32];
+      v30 = selfCopy->_accountInfoStore;
+      account3 = [(SDAppleIDDatabaseManager *)selfCopy account];
+      personInfoCache = [(SDAppleIDDatabaseManager *)selfCopy personInfoCache];
+      LODWORD(v30) = [(SDAppleIDPlatformAccountInfoStore *)v30 storeWithAccount:account3 personInfo:personInfoCache];
 
       if (v30)
       {
-        [(SDAppleIDDatabaseManager *)v2 _clearLegacyPreferencesIfNeeded];
+        [(SDAppleIDDatabaseManager *)selfCopy _clearLegacyPreferencesIfNeeded];
       }
     }
 
@@ -238,10 +238,10 @@ LABEL_30:
     goto LABEL_31;
   }
 
-  [(SDAppleIDDatabaseManager *)v2 _setAccount:v15];
+  [(SDAppleIDDatabaseManager *)selfCopy _setAccount:v15];
   if (dword_100971348 <= 30 && (dword_100971348 != -1 || _LogCategory_Initialize()))
   {
-    sub_100139240(v2);
+    sub_100139240(selfCopy);
   }
 
 LABEL_31:
@@ -262,11 +262,11 @@ LABEL_31:
     if (v14)
     {
       v20 = [NSMutableDictionary dictionaryWithDictionary:v14];
-      [(SDAppleIDDatabaseManager *)v2 setPersonInfoCache:v20];
+      [(SDAppleIDDatabaseManager *)selfCopy setPersonInfoCache:v20];
 
       if (dword_100971348 <= 30 && (dword_100971348 != -1 || _LogCategory_Initialize()))
       {
-        sub_1001392E0(v2);
+        sub_1001392E0(selfCopy);
       }
     }
 
@@ -300,10 +300,10 @@ LABEL_62:
 - (void)_clearLegacyPreferencesIfNeeded
 {
   accountInfoStore = self->_accountInfoStore;
-  v3 = [(SDAppleIDPlatformAccountInfoStore *)accountInfoStore storeExists];
+  storeExists = [(SDAppleIDPlatformAccountInfoStore *)accountInfoStore storeExists];
   if (accountInfoStore)
   {
-    v4 = v3 == 0;
+    v4 = storeExists == 0;
   }
 
   else
@@ -325,61 +325,61 @@ LABEL_62:
   }
 }
 
-- (id)accountForAppleID:(id)a3
+- (id)accountForAppleID:(id)d
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(SDAppleIDDatabaseManager *)v5 _accountForAppleID:v4];
+  dCopy = d;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [(SDAppleIDDatabaseManager *)selfCopy _accountForAppleID:dCopy];
   v7 = [v6 copy];
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v7;
 }
 
-- (id)identityForAppleID:(id)a3
+- (id)identityForAppleID:(id)d
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(SDAppleIDDatabaseManager *)v5 _identityForAppleID:v4];
+  dCopy = d;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [(SDAppleIDDatabaseManager *)selfCopy _identityForAppleID:dCopy];
   v7 = [v6 copy];
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v7;
 }
 
 - (id)statusInfo
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(SDAppleIDDatabaseManager *)v2 _statusInfo];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  _statusInfo = [(SDAppleIDDatabaseManager *)selfCopy _statusInfo];
+  objc_sync_exit(selfCopy);
 
-  return v3;
+  return _statusInfo;
 }
 
 - (void)_updateAccountInfoPrefs
 {
   accountInfoStore = self->_accountInfoStore;
-  v4 = [(SDAppleIDDatabaseManager *)self account];
-  v5 = v4;
+  account = [(SDAppleIDDatabaseManager *)self account];
+  v5 = account;
   if (accountInfoStore)
   {
-    v6 = [(SDAppleIDDatabaseManager *)self personInfoCache];
-    [(SDAppleIDPlatformAccountInfoStore *)accountInfoStore storeWithAccount:v5 personInfo:v6];
+    personInfoCache = [(SDAppleIDDatabaseManager *)self personInfoCache];
+    [(SDAppleIDPlatformAccountInfoStore *)accountInfoStore storeWithAccount:v5 personInfo:personInfoCache];
 
     v7 = v5;
   }
 
   else
   {
-    if (v4)
+    if (account)
     {
-      v8 = [(SDAppleIDDatabaseManager *)self account];
-      value = [NSKeyedArchiver archivedDataWithRootObject:v8 requiringSecureCoding:1 error:0];
+      account2 = [(SDAppleIDDatabaseManager *)self account];
+      value = [NSKeyedArchiver archivedDataWithRootObject:account2 requiringSecureCoding:1 error:0];
     }
 
     else
@@ -415,14 +415,14 @@ LABEL_62:
   if (accountInfoStore)
   {
     value = [(SDAppleIDDatabaseManager *)self account];
-    v4 = [(SDAppleIDDatabaseManager *)self personInfoCache];
-    [(SDAppleIDPlatformAccountInfoStore *)accountInfoStore storeWithAccount:value personInfo:v4];
+    personInfoCache = [(SDAppleIDDatabaseManager *)self personInfoCache];
+    [(SDAppleIDPlatformAccountInfoStore *)accountInfoStore storeWithAccount:value personInfo:personInfoCache];
   }
 
   else
   {
-    v5 = [(SDAppleIDDatabaseManager *)self personInfoCache];
-    value = [NSKeyedArchiver archivedDataWithRootObject:v5 requiringSecureCoding:1 error:0];
+    personInfoCache2 = [(SDAppleIDDatabaseManager *)self personInfoCache];
+    value = [NSKeyedArchiver archivedDataWithRootObject:personInfoCache2 requiringSecureCoding:1 error:0];
 
     CFPreferencesSetValue(@"PersonInfoCache", value, @"com.apple.sharingd", kCFPreferencesCurrentUser, kCFPreferencesCurrentHost);
     CFPreferencesAppSynchronize(@"com.apple.sharingd");
@@ -433,101 +433,101 @@ LABEL_62:
   }
 }
 
-- (void)_setAccount:(id)a3
+- (void)_setAccount:(id)account
 {
-  v23 = a3;
-  v4 = [(SDAppleIDDatabaseManager *)self account];
-  v5 = [v23 isEqual:v4];
+  accountCopy = account;
+  account = [(SDAppleIDDatabaseManager *)self account];
+  v5 = [accountCopy isEqual:account];
 
-  v6 = v23;
+  v6 = accountCopy;
   if ((v5 & 1) == 0)
   {
-    v7 = [v23 identity];
-    v8 = [(SDAppleIDDatabaseManager *)self account];
-    v9 = [v8 identity];
-    if (v7 == v9)
+    identity = [accountCopy identity];
+    account2 = [(SDAppleIDDatabaseManager *)self account];
+    identity2 = [account2 identity];
+    if (identity == identity2)
     {
       v13 = 0;
     }
 
     else
     {
-      v10 = [v23 identity];
-      v11 = [(SDAppleIDDatabaseManager *)self account];
-      v12 = [v11 identity];
-      v13 = [v10 isEqual:v12] ^ 1;
+      identity3 = [accountCopy identity];
+      account3 = [(SDAppleIDDatabaseManager *)self account];
+      identity4 = [account3 identity];
+      v13 = [identity3 isEqual:identity4] ^ 1;
     }
 
-    v14 = [v23 validationRecord];
-    v15 = [(SDAppleIDDatabaseManager *)self account];
-    v16 = [v15 validationRecord];
-    if (v14 == v16)
+    validationRecord = [accountCopy validationRecord];
+    account4 = [(SDAppleIDDatabaseManager *)self account];
+    validationRecord2 = [account4 validationRecord];
+    if (validationRecord == validationRecord2)
     {
       v20 = 0;
     }
 
     else
     {
-      v17 = [v23 validationRecord];
-      v18 = [(SDAppleIDDatabaseManager *)self account];
-      v19 = [v18 validationRecord];
-      v20 = [v17 isEqual:v19] ^ 1;
+      validationRecord3 = [accountCopy validationRecord];
+      account5 = [(SDAppleIDDatabaseManager *)self account];
+      validationRecord4 = [account5 validationRecord];
+      v20 = [validationRecord3 isEqual:validationRecord4] ^ 1;
     }
 
-    v21 = [(SDAppleIDDatabaseManager *)self account];
-    v22 = [v21 identity];
-    [v22 removeFromKeychain];
+    account6 = [(SDAppleIDDatabaseManager *)self account];
+    identity5 = [account6 identity];
+    [identity5 removeFromKeychain];
 
-    [(SDAppleIDDatabaseManager *)self setAccount:v23];
+    [(SDAppleIDDatabaseManager *)self setAccount:accountCopy];
     [(SDAppleIDDatabaseManager *)self _updateAccountInfoPrefs];
     if (v13)
     {
       [(SDAppleIDDatabaseManager *)self _postNotificationWithName:SFAppleIDIdentityDidChangeNotification];
     }
 
-    v6 = v23;
+    v6 = accountCopy;
     if (v20)
     {
       [(SDAppleIDDatabaseManager *)self _postNotificationWithName:SFAppleIDValidationRecordDidChangeNotification];
-      v6 = v23;
+      v6 = accountCopy;
     }
   }
 }
 
-- (void)addAppleID:(id)a3
+- (void)addAppleID:(id)d
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [(SDAppleIDDatabaseManager *)v4 _addAppleID:v5];
-  objc_sync_exit(v4);
+  dCopy = d;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(SDAppleIDDatabaseManager *)selfCopy _addAppleID:dCopy];
+  objc_sync_exit(selfCopy);
 }
 
-- (void)removeAppleID:(id)a3
+- (void)removeAppleID:(id)d
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [(SDAppleIDDatabaseManager *)v4 _removeAppleID:v5];
-  objc_sync_exit(v4);
+  dCopy = d;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(SDAppleIDDatabaseManager *)selfCopy _removeAppleID:dCopy];
+  objc_sync_exit(selfCopy);
 }
 
-- (void)addPersonInfoToCache:(id)a3
+- (void)addPersonInfoToCache:(id)cache
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [(SDAppleIDDatabaseManager *)v4 _addPersonInfoToCache:v5];
-  objc_sync_exit(v4);
+  cacheCopy = cache;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(SDAppleIDDatabaseManager *)selfCopy _addPersonInfoToCache:cacheCopy];
+  objc_sync_exit(selfCopy);
 }
 
-- (id)cachedPersonInfoWithEmailOrPhone:(id)a3
+- (id)cachedPersonInfoWithEmailOrPhone:(id)phone
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(SDAppleIDDatabaseManager *)v5 _cachedPersonInfoWithEmailOrPhone:v4];
-  objc_sync_exit(v5);
+  phoneCopy = phone;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [(SDAppleIDDatabaseManager *)selfCopy _cachedPersonInfoWithEmailOrPhone:phoneCopy];
+  objc_sync_exit(selfCopy);
 
   if (dword_100971348 <= 30 && (dword_100971348 != -1 || _LogCategory_Initialize()))
   {
@@ -540,14 +540,14 @@ LABEL_62:
 - (void)_clearPersonInfoCache
 {
   accountInfoStore = self->_accountInfoStore;
-  v4 = [(SDAppleIDDatabaseManager *)self personInfoCache];
-  [v4 removeAllObjects];
+  personInfoCache = [(SDAppleIDDatabaseManager *)self personInfoCache];
+  [personInfoCache removeAllObjects];
 
   if (accountInfoStore)
   {
     v5 = self->_accountInfoStore;
-    v6 = [(SDAppleIDDatabaseManager *)self account];
-    [(SDAppleIDPlatformAccountInfoStore *)v5 deletePersonInfoCacheWithAccount:v6];
+    account = [(SDAppleIDDatabaseManager *)self account];
+    [(SDAppleIDPlatformAccountInfoStore *)v5 deletePersonInfoCacheWithAccount:account];
   }
 
   else
@@ -565,68 +565,68 @@ LABEL_62:
   objc_sync_exit(obj);
 }
 
-- (void)setLastConnectionDate:(id)a3
+- (void)setLastConnectionDate:(id)date
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [(SDAppleIDDatabaseManager *)v4 _setLastConnectionDate:v5];
-  objc_sync_exit(v4);
+  dateCopy = date;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(SDAppleIDDatabaseManager *)selfCopy _setLastConnectionDate:dateCopy];
+  objc_sync_exit(selfCopy);
 }
 
-- (void)setLastSuccessfulConnectionDate:(id)a3
+- (void)setLastSuccessfulConnectionDate:(id)date
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [(SDAppleIDDatabaseManager *)v4 _setLastSuccessfulConnectionDate:v5];
-  objc_sync_exit(v4);
+  dateCopy = date;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(SDAppleIDDatabaseManager *)selfCopy _setLastSuccessfulConnectionDate:dateCopy];
+  objc_sync_exit(selfCopy);
 }
 
-- (void)setIdentity:(id)a3 forAppleID:(id)a4
+- (void)setIdentity:(id)identity forAppleID:(id)d
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [v9 copy];
-  v8 = self;
-  objc_sync_enter(v8);
-  [(SDAppleIDDatabaseManager *)v8 _setIdentity:v7 forAppleID:v6];
-  objc_sync_exit(v8);
+  identityCopy = identity;
+  dCopy = d;
+  v7 = [identityCopy copy];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(SDAppleIDDatabaseManager *)selfCopy _setIdentity:v7 forAppleID:dCopy];
+  objc_sync_exit(selfCopy);
 }
 
-- (void)setCertificateToken:(id)a3 privateKeyPersistentReference:(id)a4 forAppleID:(id)a5
+- (void)setCertificateToken:(id)token privateKeyPersistentReference:(id)reference forAppleID:(id)d
 {
-  v11 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = self;
-  objc_sync_enter(v10);
-  [(SDAppleIDDatabaseManager *)v10 _setCertificateToken:v11 privateKeyPersistentReference:v8 forAppleID:v9];
-  objc_sync_exit(v10);
+  tokenCopy = token;
+  referenceCopy = reference;
+  dCopy = d;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(SDAppleIDDatabaseManager *)selfCopy _setCertificateToken:tokenCopy privateKeyPersistentReference:referenceCopy forAppleID:dCopy];
+  objc_sync_exit(selfCopy);
 }
 
-- (void)setContactInfo:(id)a3 validationRecord:(id)a4 forAppleID:(id)a5
+- (void)setContactInfo:(id)info validationRecord:(id)record forAppleID:(id)d
 {
-  v13 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v13 copy];
-  v11 = [v8 copy];
-  v12 = self;
-  objc_sync_enter(v12);
-  [(SDAppleIDDatabaseManager *)v12 _setContactInfo:v10 validationRecord:v11 forAppleID:v9];
-  objc_sync_exit(v12);
+  infoCopy = info;
+  recordCopy = record;
+  dCopy = d;
+  v10 = [infoCopy copy];
+  v11 = [recordCopy copy];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(SDAppleIDDatabaseManager *)selfCopy _setContactInfo:v10 validationRecord:v11 forAppleID:dCopy];
+  objc_sync_exit(selfCopy);
 }
 
-- (void)_setMetaInfo:(id)a3
+- (void)_setMetaInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   metaInfo = self->_metaInfo;
-  if (metaInfo != v4)
+  if (metaInfo != infoCopy)
   {
-    v9 = v4;
-    v6 = [(NSDictionary *)metaInfo isEqual:v4];
-    v4 = v9;
+    v9 = infoCopy;
+    v6 = [(NSDictionary *)metaInfo isEqual:infoCopy];
+    infoCopy = v9;
     if ((v6 & 1) == 0)
     {
       v7 = [(NSDictionary *)v9 copy];
@@ -634,75 +634,75 @@ LABEL_62:
       self->_metaInfo = v7;
 
       [(SDAppleIDDatabaseManager *)self _updateMetaInfoPrefs];
-      v4 = v9;
+      infoCopy = v9;
     }
   }
 }
 
-- (void)setMetaInfo:(id)a3
+- (void)setMetaInfo:(id)info
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [(SDAppleIDDatabaseManager *)v4 _setMetaInfo:v5];
-  objc_sync_exit(v4);
+  infoCopy = info;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(SDAppleIDDatabaseManager *)selfCopy _setMetaInfo:infoCopy];
+  objc_sync_exit(selfCopy);
 }
 
 - (NSDictionary)metaInfo
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_metaInfo;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_metaInfo;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)_postNotificationWithName:(id)a3
+- (void)_postNotificationWithName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v4 = SFMainQueue();
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001380C4;
   block[3] = &unk_1008CDEA0;
-  v7 = v3;
-  v5 = v3;
+  v7 = nameCopy;
+  v5 = nameCopy;
   dispatch_async(v4, block);
 }
 
-- (id)_identityForAppleID:(id)a3
+- (id)_identityForAppleID:(id)d
 {
-  v4 = a3;
-  if (v4 && (-[SDAppleIDDatabaseManager account](self, "account"), v5 = objc_claimAutoreleasedReturnValue(), [v5 appleID], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "isEqualToString:", v4), v6, v5, v7))
+  dCopy = d;
+  if (dCopy && (-[SDAppleIDDatabaseManager account](self, "account"), v5 = objc_claimAutoreleasedReturnValue(), [v5 appleID], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "isEqualToString:", dCopy), v6, v5, v7))
   {
-    v8 = [(SDAppleIDDatabaseManager *)self account];
+    account = [(SDAppleIDDatabaseManager *)self account];
   }
 
   else
   {
-    v8 = 0;
+    account = 0;
   }
 
-  v9 = [v8 identity];
+  identity = [account identity];
 
-  return v9;
+  return identity;
 }
 
-- (id)_accountForAppleID:(id)a3
+- (id)_accountForAppleID:(id)d
 {
-  v4 = a3;
-  if (v4 && (-[SDAppleIDDatabaseManager account](self, "account"), v5 = objc_claimAutoreleasedReturnValue(), [v5 appleID], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "isEqualToString:", v4), v6, v5, v7))
+  dCopy = d;
+  if (dCopy && (-[SDAppleIDDatabaseManager account](self, "account"), v5 = objc_claimAutoreleasedReturnValue(), [v5 appleID], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "isEqualToString:", dCopy), v6, v5, v7))
   {
-    v8 = [(SDAppleIDDatabaseManager *)self account];
+    account = [(SDAppleIDDatabaseManager *)self account];
   }
 
   else
   {
-    v8 = 0;
+    account = 0;
   }
 
-  return v8;
+  return account;
 }
 
 - (id)_statusInfo
@@ -725,13 +725,13 @@ LABEL_62:
   return v3;
 }
 
-- (void)_addAppleID:(id)a3
+- (void)_addAppleID:(id)d
 {
-  v4 = a3;
-  v7 = v4;
-  if (v4)
+  dCopy = d;
+  v7 = dCopy;
+  if (dCopy)
   {
-    v5 = [(SDAppleIDDatabaseManager *)self _accountForAppleID:v4];
+    v5 = [(SDAppleIDDatabaseManager *)self _accountForAppleID:dCopy];
     if (v5)
     {
       v6 = v5;
@@ -755,14 +755,14 @@ LABEL_62:
   }
 }
 
-- (void)_removeAppleID:(id)a3
+- (void)_removeAppleID:(id)d
 {
-  v7 = a3;
-  if (v7)
+  dCopy = d;
+  if (dCopy)
   {
-    v4 = [(SDAppleIDDatabaseManager *)self account];
-    v5 = [v4 appleID];
-    v6 = [v5 isEqualToString:v7];
+    account = [(SDAppleIDDatabaseManager *)self account];
+    appleID = [account appleID];
+    v6 = [appleID isEqualToString:dCopy];
 
     if (v6)
     {
@@ -775,36 +775,36 @@ LABEL_62:
   }
 }
 
-- (void)_addPersonInfoToCache:(id)a3
+- (void)_addPersonInfoToCache:(id)cache
 {
-  v8 = a3;
-  if (v8)
+  cacheCopy = cache;
+  if (cacheCopy)
   {
-    v4 = [v8 matchedValue];
+    matchedValue = [cacheCopy matchedValue];
 
-    if (v4)
+    if (matchedValue)
     {
-      v5 = [(SDAppleIDDatabaseManager *)self personInfoCache];
-      v6 = [v8 matchedValue];
-      [v5 setObject:v8 forKeyedSubscript:v6];
+      personInfoCache = [(SDAppleIDDatabaseManager *)self personInfoCache];
+      matchedValue2 = [cacheCopy matchedValue];
+      [personInfoCache setObject:cacheCopy forKeyedSubscript:matchedValue2];
 
       [(SDAppleIDDatabaseManager *)self _updatePersonInfoCachePrefs];
       if (dword_100971348 <= 30 && (dword_100971348 != -1 || _LogCategory_Initialize()))
       {
-        v7 = [v8 matchedValue];
+        matchedValue3 = [cacheCopy matchedValue];
         LogPrintF();
       }
     }
   }
 }
 
-- (id)_cachedPersonInfoWithEmailOrPhone:(id)a3
+- (id)_cachedPersonInfoWithEmailOrPhone:(id)phone
 {
-  v4 = a3;
-  if (v4)
+  phoneCopy = phone;
+  if (phoneCopy)
   {
-    v5 = [(SDAppleIDDatabaseManager *)self personInfoCache];
-    v6 = [v5 objectForKeyedSubscript:v4];
+    personInfoCache = [(SDAppleIDDatabaseManager *)self personInfoCache];
+    v6 = [personInfoCache objectForKeyedSubscript:phoneCopy];
 
     if (v6 && ([v6 isStale] & 1) == 0)
     {
@@ -827,7 +827,7 @@ LABEL_62:
   return v7;
 }
 
-- (void)_setIdentity:(id)a3 forAppleID:(id)a4
+- (void)_setIdentity:(id)identity forAppleID:(id)d
 {
   sub_100021EA0();
   v5 = v4;
@@ -837,8 +837,8 @@ LABEL_62:
   if (!v9)
   {
 LABEL_31:
-    v12 = 0;
-    v16 = 0;
+    identity = 0;
+    altDSID = 0;
     v11 = 0;
     goto LABEL_24;
   }
@@ -855,24 +855,24 @@ LABEL_31:
   }
 
   v11 = v10;
-  v12 = [v10 identity];
+  identity = [v10 identity];
   v13 = v23;
-  if (v12 == v23)
+  if (identity == v23)
   {
     v14 = 0;
   }
 
   else
   {
-    if ([v23 isEqual:v12])
+    if ([v23 isEqual:identity])
     {
       v14 = 0;
     }
 
     else
     {
-      v15 = [v11 identity];
-      [v15 removeFromKeychain];
+      identity2 = [v11 identity];
+      [identity2 removeFromKeychain];
 
       [v11 setIdentity:v23];
       if (dword_100971348 <= 30 && (dword_100971348 != -1 || _LogCategory_Initialize()))
@@ -887,13 +887,13 @@ LABEL_31:
     v13 = v23;
   }
 
-  v16 = [v13 altDSID];
-  v17 = [v11 altDSID];
-  v18 = v17;
-  if (v16 != v17)
+  altDSID = [v13 altDSID];
+  altDSID2 = [v11 altDSID];
+  v18 = altDSID2;
+  if (altDSID != altDSID2)
   {
-    v19 = [v11 altDSID];
-    v20 = [v16 isEqual:v19];
+    altDSID3 = [v11 altDSID];
+    v20 = [altDSID isEqual:altDSID3];
 
     if (v20)
     {
@@ -905,7 +905,7 @@ LABEL_31:
 
     else
     {
-      [v11 setAltDSID:v16];
+      [v11 setAltDSID:altDSID];
       if (dword_100971348 <= 30 && (dword_100971348 != -1 || _LogCategory_Initialize()))
       {
         LogPrintF();

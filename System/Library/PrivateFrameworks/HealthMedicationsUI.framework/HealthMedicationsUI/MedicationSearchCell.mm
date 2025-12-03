@@ -1,10 +1,10 @@
 @interface MedicationSearchCell
-- (_TtC19HealthMedicationsUI20MedicationSearchCell)initWithCoder:(id)a3;
+- (_TtC19HealthMedicationsUI20MedicationSearchCell)initWithCoder:(id)coder;
 @end
 
 @implementation MedicationSearchCell
 
-- (_TtC19HealthMedicationsUI20MedicationSearchCell)initWithCoder:(id)a3
+- (_TtC19HealthMedicationsUI20MedicationSearchCell)initWithCoder:(id)coder
 {
   v4 = (self + OBJC_IVAR____TtC19HealthMedicationsUI20MedicationSearchCell_baseIdentifier);
   v5 = *MEMORY[0x277D12788];

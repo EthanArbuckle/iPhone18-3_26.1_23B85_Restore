@@ -1,8 +1,8 @@
 @interface SLPlace
 - (CLLocationCoordinate2D)coordinate;
 - (NSString)description;
-- (SLPlace)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (SLPlace)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SLPlace
@@ -21,27 +21,27 @@
   return result;
 }
 
-- (SLPlace)initWithCoder:(id)a3
+- (SLPlace)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = SLPlace;
   v5 = [(SLPlace *)&v16 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
     name = v5->_name;
     v5->_name = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pictureURL"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pictureURL"];
     pictureURL = v5->_pictureURL;
     v5->_pictureURL = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"category"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"category"];
     category = v5->_category;
     v5->_category = v12;
 
@@ -51,16 +51,16 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [(SLPlace *)self encodableProperties];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  encodableProperties = [(SLPlace *)self encodableProperties];
+  v6 = [encodableProperties countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -71,15 +71,15 @@
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(encodableProperties);
         }
 
         v10 = *(*(&v12 + 1) + 8 * i);
         v11 = [(SLPlace *)self valueForKey:v10];
-        [v4 encodeObject:v11 forKey:v10];
+        [coderCopy encodeObject:v11 forKey:v10];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [encodableProperties countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
@@ -89,9 +89,9 @@
 - (NSString)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(SLPlace *)self name];
-  v5 = [(SLPlace *)self identifier];
-  v6 = [v3 stringWithFormat:@"SLPlace name=%@ identifier=%@", v4, v5];
+  name = [(SLPlace *)self name];
+  identifier = [(SLPlace *)self identifier];
+  v6 = [v3 stringWithFormat:@"SLPlace name=%@ identifier=%@", name, identifier];
 
   return v6;
 }

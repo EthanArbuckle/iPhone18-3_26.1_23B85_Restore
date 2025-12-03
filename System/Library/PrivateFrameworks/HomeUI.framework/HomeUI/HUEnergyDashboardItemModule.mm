@@ -1,26 +1,26 @@
 @interface HUEnergyDashboardItemModule
-- (HUEnergyDashboardItemModule)initWithItemUpdater:(id)a3;
-- (HUEnergyDashboardItemModule)initWithItemUpdater:(id)a3 dashboardContext:(id)a4 home:(id)a5;
+- (HUEnergyDashboardItemModule)initWithItemUpdater:(id)updater;
+- (HUEnergyDashboardItemModule)initWithItemUpdater:(id)updater dashboardContext:(id)context home:(id)home;
 - (id)buildItemProviders;
-- (id)buildSectionsWithDisplayedItems:(id)a3;
+- (id)buildSectionsWithDisplayedItems:(id)items;
 @end
 
 @implementation HUEnergyDashboardItemModule
 
-- (HUEnergyDashboardItemModule)initWithItemUpdater:(id)a3 dashboardContext:(id)a4 home:(id)a5
+- (HUEnergyDashboardItemModule)initWithItemUpdater:(id)updater dashboardContext:(id)context home:(id)home
 {
-  *(&self->super.super.isa + OBJC_IVAR___HUEnergyDashboardItemModule_dashboardContext) = a4;
-  *(&self->super.super.isa + OBJC_IVAR___HUEnergyDashboardItemModule_home) = a5;
+  *(&self->super.super.isa + OBJC_IVAR___HUEnergyDashboardItemModule_dashboardContext) = context;
+  *(&self->super.super.isa + OBJC_IVAR___HUEnergyDashboardItemModule_home) = home;
   v11.receiver = self;
   v11.super_class = type metadata accessor for EnergyDashboardItemModule();
-  v8 = a4;
-  v9 = a5;
-  return [(HFItemModule *)&v11 initWithItemUpdater:a3];
+  contextCopy = context;
+  homeCopy = home;
+  return [(HFItemModule *)&v11 initWithItemUpdater:updater];
 }
 
 - (id)buildItemProviders
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_20CFCF468();
 
   if (v3)
@@ -38,12 +38,12 @@
   return v4;
 }
 
-- (id)buildSectionsWithDisplayedItems:(id)a3
+- (id)buildSectionsWithDisplayedItems:(id)items
 {
   sub_20CECF940(0, &qword_281120AC0);
   sub_20CEF99B4();
   sub_20D567D08();
-  v4 = self;
+  selfCopy = self;
   sub_20CFCF96C();
 
   sub_20CECF940(0, &unk_28111FFD0);
@@ -52,7 +52,7 @@
   return v5;
 }
 
-- (HUEnergyDashboardItemModule)initWithItemUpdater:(id)a3
+- (HUEnergyDashboardItemModule)initWithItemUpdater:(id)updater
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

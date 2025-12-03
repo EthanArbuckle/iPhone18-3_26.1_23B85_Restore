@@ -1,29 +1,29 @@
 @interface NoteAttachmentPresentation
-+ (id)attachmentPresentationsForAttachments:(id)a3;
-+ (void)prepareDocumentForPresentationWithAttachmentContentIDs:(id)a3 withAttachmentPresentations:(id)a4 occurences:(id *)a5;
-+ (void)prepareDocumentForSerializationWithAttachmentContentIDs:(id)a3 withAttachmentPresentations:(id)a4 newPresentationProvider:(id)a5 leftoverPresentations:(id *)a6;
-- (BOOL)getPresentationData:(id *)a3 mimeType:(id *)a4 error:(id *)a5;
++ (id)attachmentPresentationsForAttachments:(id)attachments;
++ (void)prepareDocumentForPresentationWithAttachmentContentIDs:(id)ds withAttachmentPresentations:(id)presentations occurences:(id *)occurences;
++ (void)prepareDocumentForSerializationWithAttachmentContentIDs:(id)ds withAttachmentPresentations:(id)presentations newPresentationProvider:(id)provider leftoverPresentations:(id *)leftoverPresentations;
+- (BOOL)getPresentationData:(id *)data mimeType:(id *)type error:(id *)error;
 - (CGSize)iconSize;
 - (NSNumber)dataSizeNumber;
-- (NoteAttachmentPresentation)initWithData:(id)a3 contentID:(id)a4 mimeType:(id)a5 filename:(id)a6;
-- (NoteAttachmentPresentation)initWithNoteAttachmentObject:(id)a3;
-- (void)setContentID:(id)a3;
-- (void)setContentIDURL:(id)a3;
+- (NoteAttachmentPresentation)initWithData:(id)data contentID:(id)d mimeType:(id)type filename:(id)filename;
+- (NoteAttachmentPresentation)initWithNoteAttachmentObject:(id)object;
+- (void)setContentID:(id)d;
+- (void)setContentIDURL:(id)l;
 - (void)updateContentIDURL;
 @end
 
 @implementation NoteAttachmentPresentation
 
-+ (id)attachmentPresentationsForAttachments:(id)a3
++ (id)attachmentPresentationsForAttachments:(id)attachments
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
+  attachmentsCopy = attachments;
+  array = [MEMORY[0x1E695DF70] array];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = v4;
+  v6 = attachmentsCopy;
   v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
@@ -39,9 +39,9 @@
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
-        v12 = [a1 alloc];
+        v12 = [self alloc];
         v13 = [v12 initWithNoteAttachmentObject:{v11, v16}];
-        [v5 addObject:v13];
+        [array addObject:v13];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -50,27 +50,27 @@
     while (v8);
   }
 
-  v14 = [v5 copy];
+  v14 = [array copy];
 
   return v14;
 }
 
-- (NoteAttachmentPresentation)initWithNoteAttachmentObject:(id)a3
+- (NoteAttachmentPresentation)initWithNoteAttachmentObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v28.receiver = self;
   v28.super_class = NoteAttachmentPresentation;
   v5 = [(NoteAttachmentPresentation *)&v28 init];
   if (v5)
   {
-    v6 = [v4 contentID];
-    v7 = [v6 copy];
+    contentID = [objectCopy contentID];
+    v7 = [contentID copy];
     contentID = v5->_contentID;
     v5->_contentID = v7;
 
     [(NoteAttachmentPresentation *)v5 updateContentIDURL];
     v27 = 0;
-    v9 = [v4 attachmentDataFileURLWithError:&v27];
+    v9 = [objectCopy attachmentDataFileURLWithError:&v27];
     v10 = v27;
     v11 = v27;
     v12 = [v9 copy];
@@ -86,82 +86,82 @@
 
       if (v15)
       {
-        v17 = [MEMORY[0x1E69DCAB8] ic_imageWithData:v15];
-        v5->_image = v17 != 0;
+        path = [MEMORY[0x1E69DCAB8] ic_imageWithData:v15];
+        v5->_image = path != 0;
       }
 
       else
       {
-        v17 = [(NSURL *)v5->_dataFileURL path];
-        NSLog(&cfstr_UnableToReadDa.isa, v17, v16);
+        path = [(NSURL *)v5->_dataFileURL path];
+        NSLog(&cfstr_UnableToReadDa.isa, path, v16);
       }
     }
 
     else
     {
       objc_storeStrong(&v5->_dataFileURLError, v10);
-      NSLog(&cfstr_CanTFindDataFo.isa, v4, v11);
+      NSLog(&cfstr_CanTFindDataFo.isa, objectCopy, v11);
       v16 = v11;
     }
 
-    v18 = [v4 mimeType];
+    mimeType = [objectCopy mimeType];
     mimeType = v5->_mimeType;
-    v5->_mimeType = v18;
+    v5->_mimeType = mimeType;
 
-    v20 = [v4 filename];
+    filename = [objectCopy filename];
     filename = v5->_filename;
-    v5->_filename = v20;
+    v5->_filename = filename;
 
-    v22 = [v4 note];
-    v23 = [v22 store];
-    v24 = [v23 account];
-    v5->_sourceIsManaged = [v24 isManaged];
+    note = [objectCopy note];
+    store = [note store];
+    account = [store account];
+    v5->_sourceIsManaged = [account isManaged];
   }
 
   return v5;
 }
 
-- (NoteAttachmentPresentation)initWithData:(id)a3 contentID:(id)a4 mimeType:(id)a5 filename:(id)a6
+- (NoteAttachmentPresentation)initWithData:(id)data contentID:(id)d mimeType:(id)type filename:(id)filename
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  dataCopy = data;
+  dCopy = d;
+  typeCopy = type;
+  filenameCopy = filename;
   v30.receiver = self;
   v30.super_class = NoteAttachmentPresentation;
   v15 = [(NoteAttachmentPresentation *)&v30 init];
   if (v15)
   {
-    v16 = [v12 copy];
+    v16 = [dCopy copy];
     contentID = v15->_contentID;
     v15->_contentID = v16;
 
     [(NoteAttachmentPresentation *)v15 updateContentIDURL];
-    v18 = [v13 copy];
+    v18 = [typeCopy copy];
     mimeType = v15->_mimeType;
     v15->_mimeType = v18;
 
-    objc_storeStrong(&v15->_data, a3);
-    v20 = [MEMORY[0x1E69DCAB8] ic_imageWithData:v11];
+    objc_storeStrong(&v15->_data, data);
+    v20 = [MEMORY[0x1E69DCAB8] ic_imageWithData:dataCopy];
     v15->_image = v20 != 0;
-    v21 = [v14 pathExtension];
-    v22 = [v21 length];
+    pathExtension = [filenameCopy pathExtension];
+    v22 = [pathExtension length];
 
     if (!v22)
     {
-      v23 = [MEMORY[0x1E6982C40] typeWithMIMEType:v13];
-      v24 = [v23 preferredFilenameExtension];
+      v23 = [MEMORY[0x1E6982C40] typeWithMIMEType:typeCopy];
+      preferredFilenameExtension = [v23 preferredFilenameExtension];
 
-      if (v24)
+      if (preferredFilenameExtension)
       {
-        v25 = [v23 preferredFilenameExtension];
-        v26 = [v14 stringByAppendingPathExtension:v25];
+        preferredFilenameExtension2 = [v23 preferredFilenameExtension];
+        v26 = [filenameCopy stringByAppendingPathExtension:preferredFilenameExtension2];
 
-        v14 = v26;
+        filenameCopy = v26;
       }
     }
 
-    v27 = [v14 copy];
+    v27 = [filenameCopy copy];
     filename = v15->_filename;
     v15->_filename = v27;
   }
@@ -171,25 +171,25 @@
 
 - (NSNumber)dataSizeNumber
 {
-  v3 = [(NoteAttachmentPresentation *)self dataFileURL];
+  dataFileURL = [(NoteAttachmentPresentation *)self dataFileURL];
 
-  if (v3)
+  if (dataFileURL)
   {
-    v4 = [(NoteAttachmentPresentation *)self dataFileURL];
+    dataFileURL2 = [(NoteAttachmentPresentation *)self dataFileURL];
     v10 = 0;
-    [v4 getResourceValue:&v10 forKey:*MEMORY[0x1E695DB50] error:0];
+    [dataFileURL2 getResourceValue:&v10 forKey:*MEMORY[0x1E695DB50] error:0];
     v5 = v10;
   }
 
   else
   {
-    v6 = [(NoteAttachmentPresentation *)self data];
+    data = [(NoteAttachmentPresentation *)self data];
 
-    if (v6)
+    if (data)
     {
       v7 = MEMORY[0x1E696AD98];
-      v8 = [(NoteAttachmentPresentation *)self data];
-      v5 = [v7 numberWithUnsignedInteger:{objc_msgSend(v8, "length")}];
+      data2 = [(NoteAttachmentPresentation *)self data];
+      v5 = [v7 numberWithUnsignedInteger:{objc_msgSend(data2, "length")}];
     }
 
     else
@@ -201,67 +201,67 @@
   return v5;
 }
 
-- (BOOL)getPresentationData:(id *)a3 mimeType:(id *)a4 error:(id *)a5
+- (BOOL)getPresentationData:(id *)data mimeType:(id *)type error:(id *)error
 {
-  v9 = [(NoteAttachmentPresentation *)self dataFileURL];
+  dataFileURL = [(NoteAttachmentPresentation *)self dataFileURL];
 
-  if (v9)
+  if (dataFileURL)
   {
     v10 = MEMORY[0x1E695DEF0];
-    v11 = [(NoteAttachmentPresentation *)self dataFileURL];
-    v12 = [v11 path];
-    v13 = [v10 dataWithContentsOfFile:v12 options:0 error:a5];
+    dataFileURL2 = [(NoteAttachmentPresentation *)self dataFileURL];
+    path = [dataFileURL2 path];
+    v13 = [v10 dataWithContentsOfFile:path options:0 error:error];
 
     v14 = v13 != 0;
     if (v13)
     {
-      if (a3)
+      if (data)
       {
         v15 = v13;
-        *a3 = v13;
+        *data = v13;
       }
 
-      if (a4)
+      if (type)
       {
-        *a4 = [(NoteAttachmentPresentation *)self mimeType];
+        *type = [(NoteAttachmentPresentation *)self mimeType];
       }
     }
   }
 
   else
   {
-    v16 = [(NoteAttachmentPresentation *)self dataFileURL];
-    if (v16)
+    dataFileURL3 = [(NoteAttachmentPresentation *)self dataFileURL];
+    if (dataFileURL3)
     {
     }
 
     else
     {
-      v20 = [(NoteAttachmentPresentation *)self dataFileURLError];
+      dataFileURLError = [(NoteAttachmentPresentation *)self dataFileURLError];
 
-      if (v20)
+      if (dataFileURLError)
       {
-        if (!a5)
+        if (!error)
         {
           return 0;
         }
 
         [(NoteAttachmentPresentation *)self dataFileURLError];
-        *a5 = v14 = 0;
+        *error = v14 = 0;
         return v14;
       }
     }
 
-    v17 = [(NoteAttachmentPresentation *)self mimeType];
-    if (a3)
+    mimeType = [(NoteAttachmentPresentation *)self mimeType];
+    if (data)
     {
-      *a3 = [(NoteAttachmentPresentation *)self data];
+      *data = [(NoteAttachmentPresentation *)self data];
     }
 
-    if (a4)
+    if (type)
     {
-      v18 = v17;
-      *a4 = v17;
+      v18 = mimeType;
+      *type = mimeType;
     }
 
     return 1;
@@ -270,9 +270,9 @@
   return v14;
 }
 
-- (void)setContentID:(id)a3
+- (void)setContentID:(id)d
 {
-  objc_storeStrong(&self->_contentID, a3);
+  objc_storeStrong(&self->_contentID, d);
 
   [(NoteAttachmentPresentation *)self updateContentIDURL];
 }
@@ -283,26 +283,26 @@
   [(NoteAttachmentPresentation *)self setContentIDURL:v3];
 }
 
-- (void)setContentIDURL:(id)a3
+- (void)setContentIDURL:(id)l
 {
-  objc_storeStrong(&self->_contentIDURL, a3);
-  v5 = a3;
-  v6 = [v5 absoluteString];
+  objc_storeStrong(&self->_contentIDURL, l);
+  lCopy = l;
+  absoluteString = [lCopy absoluteString];
 
-  [(NoteAttachmentPresentation *)self setContentIDURLAbsoluteString:v6];
+  [(NoteAttachmentPresentation *)self setContentIDURLAbsoluteString:absoluteString];
 }
 
-+ (void)prepareDocumentForPresentationWithAttachmentContentIDs:(id)a3 withAttachmentPresentations:(id)a4 occurences:(id *)a5
++ (void)prepareDocumentForPresentationWithAttachmentContentIDs:(id)ds withAttachmentPresentations:(id)presentations occurences:(id *)occurences
 {
   v22 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = [a4 ic_dictionaryByHashingContentWithFunction:&__block_literal_global_60];
-  v9 = [MEMORY[0x1E695DF70] array];
+  dsCopy = ds;
+  v8 = [presentations ic_dictionaryByHashingContentWithFunction:&__block_literal_global_60];
+  array = [MEMORY[0x1E695DF70] array];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v10 = v7;
+  v10 = dsCopy;
   v11 = [v10 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v11)
   {
@@ -324,7 +324,7 @@
           if (v15)
           {
             v16 = [[NoteAttachmentPresentationOccurence alloc] initWithPresentation:v15 element:0];
-            [v9 addObject:v16];
+            [array addObject:v16];
           }
         }
 
@@ -338,28 +338,28 @@
     while (v12);
   }
 
-  if (a5)
+  if (occurences)
   {
-    *a5 = [v9 copy];
+    *occurences = [array copy];
   }
 }
 
-+ (void)prepareDocumentForSerializationWithAttachmentContentIDs:(id)a3 withAttachmentPresentations:(id)a4 newPresentationProvider:(id)a5 leftoverPresentations:(id *)a6
++ (void)prepareDocumentForSerializationWithAttachmentContentIDs:(id)ds withAttachmentPresentations:(id)presentations newPresentationProvider:(id)provider leftoverPresentations:(id *)leftoverPresentations
 {
   v30 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [MEMORY[0x1E695DFA0] orderedSetWithArray:v9];
-  v24 = v9;
-  v12 = [v9 ic_dictionaryByHashingContentWithFunction:&__block_literal_global_25];
+  dsCopy = ds;
+  presentationsCopy = presentations;
+  providerCopy = provider;
+  v11 = [MEMORY[0x1E695DFA0] orderedSetWithArray:presentationsCopy];
+  v24 = presentationsCopy;
+  v12 = [presentationsCopy ic_dictionaryByHashingContentWithFunction:&__block_literal_global_25];
   v13 = [v12 mutableCopy];
 
   v27 = 0u;
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v14 = v8;
+  v14 = dsCopy;
   v15 = [v14 countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v15)
   {
@@ -386,13 +386,13 @@
 
           else
           {
-            if (!v10)
+            if (!providerCopy)
             {
               continue;
             }
 
             v22 = [MEMORY[0x1E696AEC0] ic_newURLForContentID:v19 percentEscaped:0];
-            v21 = v10[2](v10, v22);
+            v21 = providerCopy[2](providerCopy, v22);
             if (v21)
             {
               [v13 setObject:v21 forKey:v19];
@@ -407,9 +407,9 @@
     while (v16);
   }
 
-  if (a6)
+  if (leftoverPresentations)
   {
-    *a6 = [v11 array];
+    *leftoverPresentations = [v11 array];
   }
 }
 

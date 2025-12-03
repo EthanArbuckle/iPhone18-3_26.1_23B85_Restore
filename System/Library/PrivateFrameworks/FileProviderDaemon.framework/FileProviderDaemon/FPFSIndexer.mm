@@ -1,72 +1,72 @@
 @interface FPFSIndexer
 - (_TtC18FileProviderDaemon11FPFSIndexer)init;
-- (_TtC18FileProviderDaemon11FPFSIndexer)initWithExtension:(id)a3 domain:(id)a4 enabled:(BOOL)a5 supportingIndexAll:(BOOL)a6;
-- (void)didDropIndexWithDropReason:(unint64_t)a3;
-- (void)dumpStateTo:(id)a3;
-- (void)dumpStateTo:(id)a3 withName:(id)a4;
-- (void)indexOneBatchWithCompletionHandler:(id)a3;
-- (void)pauseIndexingWithCompletionHandler:(id)a3;
-- (void)resumeIndexingWithCompletionHandler:(id)a3;
-- (void)signalNeedsReindexFromScratchWithDropReason:(unint64_t)a3 completionHandler:(id)a4;
+- (_TtC18FileProviderDaemon11FPFSIndexer)initWithExtension:(id)extension domain:(id)domain enabled:(BOOL)enabled supportingIndexAll:(BOOL)all;
+- (void)didDropIndexWithDropReason:(unint64_t)reason;
+- (void)dumpStateTo:(id)to;
+- (void)dumpStateTo:(id)to withName:(id)name;
+- (void)indexOneBatchWithCompletionHandler:(id)handler;
+- (void)pauseIndexingWithCompletionHandler:(id)handler;
+- (void)resumeIndexingWithCompletionHandler:(id)handler;
+- (void)signalNeedsReindexFromScratchWithDropReason:(unint64_t)reason completionHandler:(id)handler;
 @end
 
 @implementation FPFSIndexer
 
-- (void)signalNeedsReindexFromScratchWithDropReason:(unint64_t)a3 completionHandler:(id)a4
+- (void)signalNeedsReindexFromScratchWithDropReason:(unint64_t)reason completionHandler:(id)handler
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(handler);
   _Block_copy(v6);
-  v7 = self;
-  sub_1CF757690(a3, v7, v6);
+  selfCopy = self;
+  sub_1CF757690(reason, selfCopy, v6);
   _Block_release(v6);
   _Block_release(v6);
 }
 
-- (void)indexOneBatchWithCompletionHandler:(id)a3
+- (void)indexOneBatchWithCompletionHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   _Block_copy(v4);
-  v5 = self;
-  sub_1CF75A564(v5, v4);
+  selfCopy = self;
+  sub_1CF75A564(selfCopy, v4);
   _Block_release(v4);
   _Block_release(v4);
 }
 
-- (void)dumpStateTo:(id)a3 withName:(id)a4
+- (void)dumpStateTo:(id)to withName:(id)name
 {
   _sSo28NSFileProviderItemIdentifiera04FileB6DaemonE15parseableStringSSvg_0();
-  v6 = a3;
-  v7 = self;
-  sub_1CF74C2D0(v6);
+  toCopy = to;
+  selfCopy = self;
+  sub_1CF74C2D0(toCopy);
 }
 
-- (void)dumpStateTo:(id)a3
+- (void)dumpStateTo:(id)to
 {
-  v4 = a3;
-  v6 = self;
+  toCopy = to;
+  selfCopy = self;
   v5 = sub_1CF9E6888();
-  [(FPFSIndexer *)v6 dumpStateTo:v4 withName:v5];
+  [(FPFSIndexer *)selfCopy dumpStateTo:toCopy withName:v5];
 }
 
-- (void)pauseIndexingWithCompletionHandler:(id)a3
+- (void)pauseIndexingWithCompletionHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
-  v6 = self;
+  selfCopy = self;
   sub_1CF74C5C8(sub_1CF067718, v5, &unk_1F4C13058, sub_1CF757EE0, &block_descriptor_68_0);
 }
 
-- (void)resumeIndexingWithCompletionHandler:(id)a3
+- (void)resumeIndexingWithCompletionHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
-  v6 = self;
+  selfCopy = self;
   sub_1CF74C5C8(sub_1CF067710, v5, &unk_1F4C12FE0, sub_1CF757ED4, &block_descriptor_58_0);
 }
 
-- (_TtC18FileProviderDaemon11FPFSIndexer)initWithExtension:(id)a3 domain:(id)a4 enabled:(BOOL)a5 supportingIndexAll:(BOOL)a6
+- (_TtC18FileProviderDaemon11FPFSIndexer)initWithExtension:(id)extension domain:(id)domain enabled:(BOOL)enabled supportingIndexAll:(BOOL)all
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
@@ -80,11 +80,11 @@
   return result;
 }
 
-- (void)didDropIndexWithDropReason:(unint64_t)a3
+- (void)didDropIndexWithDropReason:(unint64_t)reason
 {
-  v5 = self;
-  v4 = [(FPDDomainIndexer *)v5 state];
-  [(FPDDomainIndexerState *)v4 recordIndexDropReason:a3];
+  selfCopy = self;
+  state = [(FPDDomainIndexer *)selfCopy state];
+  [(FPDDomainIndexerState *)state recordIndexDropReason:reason];
 }
 
 @end

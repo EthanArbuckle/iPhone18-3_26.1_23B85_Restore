@@ -1,30 +1,30 @@
 @interface NavDrivingSignLayout
 + (id)sharedDrivingSignLayout;
-- (double)shieldViewTopMarginForSign:(id)a3;
-- (double)textBottomMarginForSign:(id)a3;
+- (double)shieldViewTopMarginForSign:(id)sign;
+- (double)textBottomMarginForSign:(id)sign;
 @end
 
 @implementation NavDrivingSignLayout
 
-- (double)shieldViewTopMarginForSign:(id)a3
+- (double)shieldViewTopMarginForSign:(id)sign
 {
   v4.receiver = self;
   v4.super_class = NavDrivingSignLayout;
-  [(NavManeverSignLayoutBase *)&v4 shieldViewTopMarginForSign:a3];
+  [(NavManeverSignLayoutBase *)&v4 shieldViewTopMarginForSign:sign];
   return result;
 }
 
-- (double)textBottomMarginForSign:(id)a3
+- (double)textBottomMarginForSign:(id)sign
 {
-  v4 = a3;
-  v5 = [v4 maneuverSign];
-  v6 = [v5 maneuverSignType];
+  signCopy = sign;
+  maneuverSign = [signCopy maneuverSign];
+  maneuverSignType = [maneuverSign maneuverSignType];
 
-  if (v6)
+  if (maneuverSignType)
   {
     v10.receiver = self;
     v10.super_class = NavDrivingSignLayout;
-    [(NavManeverSignLayoutBase *)&v10 textBottomMarginForSign:v4];
+    [(NavManeverSignLayoutBase *)&v10 textBottomMarginForSign:signCopy];
     v8 = v7;
   }
 

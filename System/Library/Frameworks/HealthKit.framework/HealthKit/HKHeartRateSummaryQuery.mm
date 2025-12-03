@@ -1,22 +1,22 @@
 @interface HKHeartRateSummaryQuery
-- (HKHeartRateSummaryQuery)initWithUpdateHandler:(id)a3;
-- (void)client_deliverSummary:(id)a3 queryUUID:(id)a4;
-- (void)queue_deliverError:(id)a3;
-- (void)queue_queryDidDeactivate:(id)a3;
+- (HKHeartRateSummaryQuery)initWithUpdateHandler:(id)handler;
+- (void)client_deliverSummary:(id)summary queryUUID:(id)d;
+- (void)queue_deliverError:(id)error;
+- (void)queue_queryDidDeactivate:(id)deactivate;
 - (void)queue_validate;
 @end
 
 @implementation HKHeartRateSummaryQuery
 
-- (HKHeartRateSummaryQuery)initWithUpdateHandler:(id)a3
+- (HKHeartRateSummaryQuery)initWithUpdateHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v9.receiver = self;
   v9.super_class = HKHeartRateSummaryQuery;
   v5 = [(HKQuery *)&v9 _initWithObjectType:0 predicate:0];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [handlerCopy copy];
     updateHandler = v5->_updateHandler;
     v5->_updateHandler = v6;
   }
@@ -24,21 +24,21 @@
   return v5;
 }
 
-- (void)client_deliverSummary:(id)a3 queryUUID:(id)a4
+- (void)client_deliverSummary:(id)summary queryUUID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HKQuery *)self queue];
+  summaryCopy = summary;
+  dCopy = d;
+  queue = [(HKQuery *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __59__HKHeartRateSummaryQuery_client_deliverSummary_queryUUID___block_invoke;
   block[3] = &unk_1E7376640;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
-  dispatch_async(v8, block);
+  v12 = dCopy;
+  v13 = summaryCopy;
+  v9 = summaryCopy;
+  v10 = dCopy;
+  dispatch_async(queue, block);
 }
 
 void __59__HKHeartRateSummaryQuery_client_deliverSummary_queryUUID___block_invoke(uint64_t a1)
@@ -74,21 +74,21 @@ uint64_t __59__HKHeartRateSummaryQuery_client_deliverSummary_queryUUID___block_i
   return (*(a1[6] + 16))();
 }
 
-- (void)queue_deliverError:(id)a3
+- (void)queue_deliverError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = _Block_copy(self->_updateHandler);
   if (v5)
   {
-    v6 = [(HKQuery *)self clientQueue];
+    clientQueue = [(HKQuery *)self clientQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __46__HKHeartRateSummaryQuery_queue_deliverError___block_invoke;
     block[3] = &unk_1E7376618;
     v9 = v5;
     block[4] = self;
-    v8 = v4;
-    dispatch_async(v6, block);
+    v8 = errorCopy;
+    dispatch_async(clientQueue, block);
   }
 }
 
@@ -103,7 +103,7 @@ uint64_t __59__HKHeartRateSummaryQuery_client_deliverSummary_queryUUID___block_i
   }
 }
 
-- (void)queue_queryDidDeactivate:(id)a3
+- (void)queue_queryDidDeactivate:(id)deactivate
 {
   updateHandler = self->_updateHandler;
   self->_updateHandler = 0;

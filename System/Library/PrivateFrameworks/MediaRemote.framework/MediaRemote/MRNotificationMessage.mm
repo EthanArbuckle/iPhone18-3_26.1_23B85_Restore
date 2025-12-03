@@ -1,5 +1,5 @@
 @interface MRNotificationMessage
-- (MRNotificationMessage)initWithNotification:(id)a3;
+- (MRNotificationMessage)initWithNotification:(id)notification;
 - (MRPlayerPath)playerPath;
 - (NSDictionary)userInfo;
 - (NSString)notification;
@@ -7,20 +7,20 @@
 
 @implementation MRNotificationMessage
 
-- (MRNotificationMessage)initWithNotification:(id)a3
+- (MRNotificationMessage)initWithNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v16.receiver = self;
   v16.super_class = MRNotificationMessage;
   v5 = [(MRProtocolMessage *)&v16 init];
   if (v5)
   {
     v6 = objc_alloc_init(_MRNotificationMessageProtobuf);
-    v7 = [v4 name];
-    [(_MRNotificationMessageProtobuf *)v6 addNotification:v7];
+    name = [notificationCopy name];
+    [(_MRNotificationMessageProtobuf *)v6 addNotification:name];
 
-    v8 = [v4 userInfo];
-    v9 = [v8 mutableCopy];
+    userInfo = [notificationCopy userInfo];
+    v9 = [userInfo mutableCopy];
 
     v11 = MRGetPlayerPathFromUserInfo(v9, v10);
     if (v11)
@@ -29,8 +29,8 @@
       [v9 removeObjectForKey:@"kMRNowPlayingPlayerUserInfoKey"];
       [v9 removeObjectForKey:@"kMRNowPlayingClientUserInfoKey"];
       [v9 removeObjectForKey:@"kMRMediaRemoteOriginUserInfoKey"];
-      v12 = [v11 protobuf];
-      [(_MRNotificationMessageProtobuf *)v6 addPlayerPath:v12];
+      protobuf = [v11 protobuf];
+      [(_MRNotificationMessageProtobuf *)v6 addPlayerPath:protobuf];
     }
 
     if ([v9 count])
@@ -48,21 +48,21 @@
 
 - (NSString)notification
 {
-  v2 = [(MRProtocolMessage *)self underlyingCodableMessage];
-  v3 = [v2 notifications];
-  v4 = [v3 firstObject];
+  underlyingCodableMessage = [(MRProtocolMessage *)self underlyingCodableMessage];
+  notifications = [underlyingCodableMessage notifications];
+  firstObject = [notifications firstObject];
 
-  return v4;
+  return firstObject;
 }
 
 - (NSDictionary)userInfo
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v3 = [(MRProtocolMessage *)self underlyingCodableMessage];
-  v4 = [v3 userInfos];
-  v5 = [v4 firstObject];
+  underlyingCodableMessage = [(MRProtocolMessage *)self underlyingCodableMessage];
+  userInfos = [underlyingCodableMessage userInfos];
+  firstObject = [userInfos firstObject];
 
-  if (v5)
+  if (firstObject)
   {
     v6 = MSVPropertyListDataClasses();
     v7 = MSVUnarchivedObjectOfClasses();
@@ -73,9 +73,9 @@
     v7 = 0;
   }
 
-  v8 = [(MRNotificationMessage *)self playerPath];
-  v9 = v8;
-  if (v8)
+  playerPath = [(MRNotificationMessage *)self playerPath];
+  v9 = playerPath;
+  if (playerPath)
   {
     if (v7)
     {
@@ -88,7 +88,7 @@
     else
     {
       v14 = @"kMRNowPlayingPlayerPathUserInfoKey";
-      v15[0] = v8;
+      v15[0] = playerPath;
       v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:&v14 count:1];
     }
   }
@@ -103,10 +103,10 @@
 - (MRPlayerPath)playerPath
 {
   v3 = [MRPlayerPath alloc];
-  v4 = [(MRProtocolMessage *)self underlyingCodableMessage];
-  v5 = [v4 playerPaths];
-  v6 = [v5 firstObject];
-  v7 = [(MRPlayerPath *)v3 initWithProtobuf:v6];
+  underlyingCodableMessage = [(MRProtocolMessage *)self underlyingCodableMessage];
+  playerPaths = [underlyingCodableMessage playerPaths];
+  firstObject = [playerPaths firstObject];
+  v7 = [(MRPlayerPath *)v3 initWithProtobuf:firstObject];
 
   return v7;
 }

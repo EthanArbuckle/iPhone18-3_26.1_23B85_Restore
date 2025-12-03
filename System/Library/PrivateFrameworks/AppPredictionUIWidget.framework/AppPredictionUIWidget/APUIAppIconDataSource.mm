@@ -1,27 +1,27 @@
 @interface APUIAppIconDataSource
-+ (id)_appClipIconForIdentifier:(id)a3;
-+ (id)_appClipIconTreatmentForCGImage:(CGImage *)a3;
-+ (void)openApplication:(id)a3 completion:(id)a4;
++ (id)_appClipIconForIdentifier:(id)identifier;
++ (id)_appClipIconTreatmentForCGImage:(CGImage *)image;
++ (void)openApplication:(id)application completion:(id)completion;
 - (APUIAppIconDataSourceDelegate)delegate;
-- (BOOL)icon:(id)a3 launchFromLocation:(id)a4 context:(id)a5;
-- (id)icon:(id)a3 displayNameForLocation:(id)a4;
-- (id)icon:(id)a3 imageWithInfo:(SBIconImageInfo *)a4;
-- (id)icon:(id)a3 unmaskedImageWithInfo:(SBIconImageInfo *)a4;
+- (BOOL)icon:(id)icon launchFromLocation:(id)location context:(id)context;
+- (id)icon:(id)icon displayNameForLocation:(id)location;
+- (id)icon:(id)icon imageWithInfo:(SBIconImageInfo *)info;
+- (id)icon:(id)icon unmaskedImageWithInfo:(SBIconImageInfo *)info;
 @end
 
 @implementation APUIAppIconDataSource
 
-+ (id)_appClipIconForIdentifier:(id)a3
++ (id)_appClipIconForIdentifier:(id)identifier
 {
-  v4 = [MEMORY[0x277D75D70] webClipWithIdentifier:a3];
+  v4 = [MEMORY[0x277D75D70] webClipWithIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 iconImage];
-    v7 = v6;
-    if (v6)
+    iconImage = [v4 iconImage];
+    v7 = iconImage;
+    if (iconImage)
     {
-      v8 = [a1 _appClipIconTreatmentForCGImage:{objc_msgSend(v6, "CGImage")}];
+      v8 = [self _appClipIconTreatmentForCGImage:{objc_msgSend(iconImage, "CGImage")}];
     }
 
     else
@@ -38,14 +38,14 @@
   return v8;
 }
 
-+ (id)_appClipIconTreatmentForCGImage:(CGImage *)a3
++ (id)_appClipIconTreatmentForCGImage:(CGImage *)image
 {
   v19[1] = *MEMORY[0x277D85DE8];
-  v4 = [MEMORY[0x277D759A0] mainScreen];
-  [v4 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v6 = v5;
 
-  v7 = [objc_alloc(MEMORY[0x277D1B160]) initWithCGImage:a3 scale:v6];
+  v7 = [objc_alloc(MEMORY[0x277D1B160]) initWithCGImage:image scale:v6];
   v8 = objc_alloc(MEMORY[0x277D1B1A8]);
   v19[0] = v7;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v19 count:1];
@@ -58,9 +58,9 @@
   if (v12)
   {
     v14 = MEMORY[0x277D755B8];
-    v15 = [v12 CGImage];
+    cGImage = [v12 CGImage];
     [v13 scale];
-    v16 = [v14 imageWithCGImage:v15 scale:0 orientation:?];
+    v16 = [v14 imageWithCGImage:cGImage scale:0 orientation:?];
   }
 
   else
@@ -73,37 +73,37 @@
   return v16;
 }
 
-- (id)icon:(id)a3 displayNameForLocation:(id)a4
+- (id)icon:(id)icon displayNameForLocation:(id)location
 {
-  v4 = [a3 applicationBundleID];
-  if ([v4 length])
+  applicationBundleID = [icon applicationBundleID];
+  if ([applicationBundleID length])
   {
-    if ([MEMORY[0x277CEB3B8] isAppClipWebClipBundleId:v4])
+    if ([MEMORY[0x277CEB3B8] isAppClipWebClipBundleId:applicationBundleID])
     {
-      v5 = [MEMORY[0x277D75D70] webClipWithIdentifier:v4];
-      v6 = [v5 title];
+      v5 = [MEMORY[0x277D75D70] webClipWithIdentifier:applicationBundleID];
+      title = [v5 title];
     }
 
     else
     {
-      v6 = [MEMORY[0x277CEB3B8] localizedNameForBundle:v4];
+      title = [MEMORY[0x277CEB3B8] localizedNameForBundle:applicationBundleID];
     }
   }
 
   else
   {
-    v6 = 0;
+    title = 0;
   }
 
-  return v6;
+  return title;
 }
 
-- (id)icon:(id)a3 imageWithInfo:(SBIconImageInfo *)a4
+- (id)icon:(id)icon imageWithInfo:(SBIconImageInfo *)info
 {
-  v4 = [a3 applicationBundleID];
-  if ([v4 length] && objc_msgSend(MEMORY[0x277CEB3B8], "isAppClipWebClipBundleId:", v4))
+  applicationBundleID = [icon applicationBundleID];
+  if ([applicationBundleID length] && objc_msgSend(MEMORY[0x277CEB3B8], "isAppClipWebClipBundleId:", applicationBundleID))
   {
-    v5 = [objc_opt_class() _appClipIconForIdentifier:v4];
+    v5 = [objc_opt_class() _appClipIconForIdentifier:applicationBundleID];
   }
 
   else
@@ -114,12 +114,12 @@
   return v5;
 }
 
-- (id)icon:(id)a3 unmaskedImageWithInfo:(SBIconImageInfo *)a4
+- (id)icon:(id)icon unmaskedImageWithInfo:(SBIconImageInfo *)info
 {
-  v4 = [a3 applicationBundleID];
-  if ([v4 length])
+  applicationBundleID = [icon applicationBundleID];
+  if ([applicationBundleID length])
   {
-    v5 = [objc_opt_class() iconForBundleIdentifier:v4 shouldApplyMask:0];
+    v5 = [objc_opt_class() iconForBundleIdentifier:applicationBundleID shouldApplyMask:0];
   }
 
   else
@@ -130,11 +130,11 @@
   return v5;
 }
 
-- (BOOL)icon:(id)a3 launchFromLocation:(id)a4 context:(id)a5
+- (BOOL)icon:(id)icon launchFromLocation:(id)location context:(id)context
 {
-  v6 = a3;
+  iconCopy = icon;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v8 = [WeakRetained appIconDataSource:self launchAppFromIcon:v6];
+  v8 = [WeakRetained appIconDataSource:self launchAppFromIcon:iconCopy];
 
   if (v8)
   {
@@ -143,12 +143,12 @@
 
   else
   {
-    v10 = [v6 applicationBundleID];
-    v11 = [v10 length];
+    applicationBundleID = [iconCopy applicationBundleID];
+    v11 = [applicationBundleID length];
     v9 = v11 != 0;
     if (v11)
     {
-      [objc_opt_class() openApplication:v10 completion:0];
+      [objc_opt_class() openApplication:applicationBundleID completion:0];
     }
 
     else
@@ -164,33 +164,33 @@
   return v9;
 }
 
-+ (void)openApplication:(id)a3 completion:(id)a4
++ (void)openApplication:(id)application completion:(id)completion
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  if ([v5 length])
+  applicationCopy = application;
+  completionCopy = completion;
+  if ([applicationCopy length])
   {
-    if ([MEMORY[0x277CEB3B8] isAppClipWebClipBundleId:v5])
+    if ([MEMORY[0x277CEB3B8] isAppClipWebClipBundleId:applicationCopy])
     {
       v7 = __atxlog_handle_ui();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v17 = v5;
+        v17 = applicationCopy;
         _os_log_impl(&dword_240036000, v7, OS_LOG_TYPE_DEFAULT, "AppIconDataSource: +openApplication asked to open clip: %@", buf, 0xCu);
       }
 
-      [MEMORY[0x277D66CE8] launchWebClipWithIdentifier:v5];
-      if (v6)
+      [MEMORY[0x277D66CE8] launchWebClipWithIdentifier:applicationCopy];
+      if (completionCopy)
       {
-        v6[2](v6, 1, 0);
+        completionCopy[2](completionCopy, 1, 0);
       }
     }
 
     else
     {
-      v9 = [v5 copy];
+      v9 = [applicationCopy copy];
 
       v10 = __atxlog_handle_ui();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -205,9 +205,9 @@
       v13[1] = 3221225472;
       v13[2] = __52__APUIAppIconDataSource_openApplication_completion___block_invoke;
       v13[3] = &unk_278C90D88;
-      v5 = v9;
-      v14 = v5;
-      v15 = v6;
+      applicationCopy = v9;
+      v14 = applicationCopy;
+      v15 = completionCopy;
       dispatch_async(v11, v13);
     }
   }
@@ -220,9 +220,9 @@
       [APUIAppIconDataSource icon:v8 launchFromLocation:? context:?];
     }
 
-    if (v6)
+    if (completionCopy)
     {
-      v6[2](v6, 0, 0);
+      completionCopy[2](completionCopy, 0, 0);
     }
   }
 

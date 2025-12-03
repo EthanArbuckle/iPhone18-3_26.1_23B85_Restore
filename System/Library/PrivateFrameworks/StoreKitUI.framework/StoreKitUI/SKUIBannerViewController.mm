@@ -4,32 +4,32 @@
 - (id)_iconImage;
 - (id)_itemArtworkContext;
 - (id)_itemState;
-- (void)_bannerViewAction:(id)a3;
-- (void)_closeButtonAction:(id)a3;
-- (void)_finishWithResponse:(id)a3 error:(id)a4;
+- (void)_bannerViewAction:(id)action;
+- (void)_closeButtonAction:(id)action;
+- (void)_finishWithResponse:(id)response error:(id)error;
 - (void)_launchApp;
-- (void)_launchURL:(id)a3 withBundleIdentifier:(id)a4;
+- (void)_launchURL:(id)l withBundleIdentifier:(id)identifier;
 - (void)_loadImages;
 - (void)_reloadBannerView;
-- (void)_setIcon:(id)a3 error:(id)a4;
-- (void)_setScreenshot:(id)a3 forIndex:(int64_t)a4 error:(id)a5;
+- (void)_setIcon:(id)icon error:(id)error;
+- (void)_setScreenshot:(id)screenshot forIndex:(int64_t)index error:(id)error;
 - (void)_warmItemStateCenter;
 - (void)dealloc;
-- (void)itemStateCenter:(id)a3 itemStatesChanged:(id)a4;
+- (void)itemStateCenter:(id)center itemStatesChanged:(id)changed;
 - (void)loadView;
-- (void)loadWithProductParameters:(id)a3 mainDocumentURL:(id)a4;
-- (void)setClientContext:(id)a3;
+- (void)loadWithProductParameters:(id)parameters mainDocumentURL:(id)l;
+- (void)setClientContext:(id)context;
 @end
 
 @implementation SKUIBannerViewController
 
 - (void)dealloc
 {
-  v3 = [(SKUIBannerView *)self->_bannerView closeButton];
-  [v3 removeTarget:self action:0 forControlEvents:0xFFFFFFFFLL];
+  closeButton = [(SKUIBannerView *)self->_bannerView closeButton];
+  [closeButton removeTarget:self action:0 forControlEvents:0xFFFFFFFFLL];
 
-  v4 = [(SKUIBannerView *)self->_bannerView itemOfferButton];
-  [v4 removeTarget:self action:0 forControlEvents:0xFFFFFFFFLL];
+  itemOfferButton = [(SKUIBannerView *)self->_bannerView itemOfferButton];
+  [itemOfferButton removeTarget:self action:0 forControlEvents:0xFFFFFFFFLL];
 
   [(SKUIItemStateCenter *)self->_itemStateCenter removeObserver:self];
   v5.receiver = self;
@@ -37,25 +37,25 @@
   [(SKUIBannerViewController *)&v5 dealloc];
 }
 
-- (void)loadWithProductParameters:(id)a3 mainDocumentURL:(id)a4
+- (void)loadWithProductParameters:(id)parameters mainDocumentURL:(id)l
 {
   v25[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  parametersCopy = parameters;
+  lCopy = l;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     [SKUIBannerViewController loadWithProductParameters:mainDocumentURL:];
   }
 
   v8 = objc_alloc(MEMORY[0x277D69CF0]);
-  v9 = [(SKUIClientContext *)self->_clientContext platformContext];
-  v10 = [v8 initWithPlatformContext:v9];
+  platformContext = [(SKUIClientContext *)self->_clientContext platformContext];
+  v10 = [v8 initWithPlatformContext:platformContext];
 
   v11 = [(SKUIClientContext *)self->_clientContext valueForConfigurationKey:@"sfsuffix"];
   [v10 setStoreFrontSuffix:v11];
 
-  v12 = [MEMORY[0x277D75418] currentDevice];
-  v13 = [v12 userInterfaceIdiom] == 1;
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  v13 = [currentDevice userInterfaceIdiom] == 1;
 
   v14 = MEMORY[0x277D6A2D0];
   if (!v13)
@@ -64,16 +64,16 @@
   }
 
   [v10 setKeyProfile:*v14];
-  [v10 setMainDocumentURL:v7];
+  [v10 setMainDocumentURL:lCopy];
   [v10 setShouldSuppressUserInfo:1];
   [v10 setAttribution:1];
-  v15 = [v6 objectForKey:*MEMORY[0x277CDD450]];
+  v15 = [parametersCopy objectForKey:*MEMORY[0x277CDD450]];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v16 = [v15 stringValue];
+    stringValue = [v15 stringValue];
 
-    v15 = v16;
+    v15 = stringValue;
   }
 
   objc_opt_class();
@@ -141,15 +141,15 @@ void __70__SKUIBannerViewController_loadWithProductParameters_mainDocumentURL___
   return resourceOperationQueue;
 }
 
-- (void)setClientContext:(id)a3
+- (void)setClientContext:(id)context
 {
-  v5 = a3;
-  if (self->_clientContext != v5)
+  contextCopy = context;
+  if (self->_clientContext != contextCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_clientContext, a3);
+    v6 = contextCopy;
+    objc_storeStrong(&self->_clientContext, context);
     [(SKUIBannerView *)self->_bannerView setClientContext:self->_clientContext];
-    v5 = v6;
+    contextCopy = v6;
   }
 }
 
@@ -160,16 +160,16 @@ void __70__SKUIBannerViewController_loadWithProductParameters_mainDocumentURL___
   v1 = "[SKUIBannerViewController loadView]";
 }
 
-- (void)itemStateCenter:(id)a3 itemStatesChanged:(id)a4
+- (void)itemStateCenter:(id)center itemStatesChanged:(id)changed
 {
-  v5 = a4;
+  changedCopy = changed;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __62__SKUIBannerViewController_itemStateCenter_itemStatesChanged___block_invoke;
   v7[3] = &unk_2781F80C8;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
+  v8 = changedCopy;
+  v6 = changedCopy;
   dispatch_async(MEMORY[0x277D85CD0], v7);
 }
 
@@ -223,13 +223,13 @@ LABEL_12:
   }
 }
 
-- (void)_bannerViewAction:(id)a3
+- (void)_bannerViewAction:(id)action
 {
-  v4 = a3;
-  v5 = [(SKUIBannerViewController *)self _itemState];
-  v6 = [v5 state];
+  actionCopy = action;
+  _itemState = [(SKUIBannerViewController *)self _itemState];
+  state = [_itemState state];
 
-  if ((v6 & 4) != 0)
+  if ((state & 4) != 0)
   {
     [(SKUIBannerViewController *)self _launchApp];
   }
@@ -241,7 +241,7 @@ LABEL_12:
     v13 = 0x3032000000;
     v14 = __Block_byref_object_copy__6;
     v15 = __Block_byref_object_dispose__6;
-    v16 = [(SSLookupItem *)self->_item productPageURL];
+    productPageURL = [(SSLookupItem *)self->_item productPageURL];
     if (v12[5])
     {
       v7 = [(NSDictionary *)self->_scriptContextDictionary objectForKey:@"affiliateData"];
@@ -257,8 +257,8 @@ LABEL_12:
         [v8 enumerateKeysAndObjectsUsingBlock:v10];
       }
 
-      v9 = [MEMORY[0x277D75128] sharedApplication];
-      [v9 openURL:v12[5] options:MEMORY[0x277CBEC10] completionHandler:0];
+      mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+      [mEMORY[0x277D75128] openURL:v12[5] options:MEMORY[0x277CBEC10] completionHandler:0];
     }
 
     _Block_object_dispose(&v11, 8);
@@ -275,7 +275,7 @@ uint64_t __46__SKUIBannerViewController__bannerViewAction___block_invoke(uint64_
   return MEMORY[0x2821F96F8](v4, v6);
 }
 
-- (void)_closeButtonAction:(id)a3
+- (void)_closeButtonAction:(id)action
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = objc_opt_respondsToSelector();
@@ -287,16 +287,16 @@ uint64_t __46__SKUIBannerViewController__bannerViewAction___block_invoke(uint64_
   }
 }
 
-- (void)_finishWithResponse:(id)a3 error:(id)a4
+- (void)_finishWithResponse:(id)response error:(id)error
 {
-  v12 = a3;
-  v6 = a4;
-  if (v12)
+  responseCopy = response;
+  errorCopy = error;
+  if (responseCopy)
   {
-    v7 = [v12 allItems];
-    if ([v7 count] == 1)
+    allItems = [responseCopy allItems];
+    if ([allItems count] == 1)
     {
-      v8 = [v7 objectAtIndex:0];
+      v8 = [allItems objectAtIndex:0];
     }
 
     else
@@ -321,7 +321,7 @@ uint64_t __46__SKUIBannerViewController__bannerViewAction___block_invoke(uint64_
     if (v10)
     {
       v11 = objc_loadWeakRetained(&self->_delegate);
-      [v11 bannerView:self didFailWithError:v6];
+      [v11 bannerView:self didFailWithError:errorCopy];
     }
   }
 }
@@ -331,11 +331,11 @@ uint64_t __46__SKUIBannerViewController__bannerViewAction___block_invoke(uint64_
   v3 = self->_iconImage;
   if (!v3)
   {
-    v4 = [(SKUIBannerViewController *)self _itemArtworkContext];
+    _itemArtworkContext = [(SKUIBannerViewController *)self _itemArtworkContext];
     v5 = [SKUIItem alloc];
-    v6 = [(SSLookupItem *)self->_item lookupDictionary];
-    v7 = [(SKUIItem *)v5 initWithLookupDictionary:v6];
-    v3 = [v4 placeholderImageForItem:v7];
+    lookupDictionary = [(SSLookupItem *)self->_item lookupDictionary];
+    v7 = [(SKUIItem *)v5 initWithLookupDictionary:lookupDictionary];
+    v3 = [_itemArtworkContext placeholderImageForItem:v7];
   }
 
   return v3;
@@ -414,17 +414,17 @@ void __38__SKUIBannerViewController__launchApp__block_invoke(uint64_t a1, void *
   [*(a1 + 32) _launchURL:*(a1 + 40) withBundleIdentifier:v4];
 }
 
-- (void)_launchURL:(id)a3 withBundleIdentifier:(id)a4
+- (void)_launchURL:(id)l withBundleIdentifier:(id)identifier
 {
-  v9 = a3;
-  v5 = a4;
-  v6 = v5;
-  if (v5)
+  lCopy = l;
+  identifierCopy = identifier;
+  v6 = identifierCopy;
+  if (identifierCopy)
   {
-    v7 = v5;
-    if (v9)
+    v7 = identifierCopy;
+    if (lCopy)
     {
-      v8 = v9;
+      v8 = lCopy;
       SKUIMetricsLaunchApplicationWithIdentifierAndURLAndLaunchOptions(v7, v8, 0, 0, 0);
       CFRelease(v8);
     }
@@ -439,17 +439,17 @@ void __38__SKUIBannerViewController__launchApp__block_invoke(uint64_t a1, void *
 
   else
   {
-    SKUIMetricsOpenURL(v9);
+    SKUIMetricsOpenURL(lCopy);
   }
 }
 
 - (void)_loadImages
 {
   v87 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277D75418] currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v3 == 1)
+  if (userInterfaceIdiom == 1)
   {
     v4 = 75.0;
   }
@@ -459,8 +459,8 @@ void __38__SKUIBannerViewController__launchApp__block_invoke(uint64_t a1, void *
     v4 = 64.0;
   }
 
-  v5 = [MEMORY[0x277D759A0] mainScreen];
-  [v5 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v7 = v6;
 
   [(SSLookupItem *)self->_item artwork];
@@ -515,11 +515,11 @@ LABEL_12:
   if ([obj count] && (objc_msgSend(obj, "objectAtIndex:", 0), (v57 = objc_claimAutoreleasedReturnValue()) != 0))
   {
 LABEL_16:
-    v12 = [(SKUIBannerViewController *)self _itemArtworkContext];
+    _itemArtworkContext = [(SKUIBannerViewController *)self _itemArtworkContext];
     v13 = [SKUIItem alloc];
-    v14 = [(SSLookupItem *)self->_item lookupDictionary];
-    v15 = [(SKUIItem *)v13 initWithLookupDictionary:v14];
-    v16 = [v12 dataConsumerForItem:v15];
+    lookupDictionary = [(SSLookupItem *)self->_item lookupDictionary];
+    v15 = [(SKUIItem *)v13 initWithLookupDictionary:lookupDictionary];
+    v16 = [_itemArtworkContext dataConsumerForItem:v15];
 
     v17 = objc_alloc(MEMORY[0x277D69CD8]);
     v18 = [v57 URL];
@@ -537,8 +537,8 @@ LABEL_16:
     v78[3] = &unk_2781FA1F8;
     objc_copyWeak(&v79, location);
     [v19 setOutputBlock:v78];
-    v21 = [(SKUIBannerViewController *)self resourceOperationQueue];
-    [v21 addOperation:v19];
+    resourceOperationQueue = [(SKUIBannerViewController *)self resourceOperationQueue];
+    [resourceOperationQueue addOperation:v19];
 
     objc_destroyWeak(&v79);
     objc_destroyWeak(location);
@@ -549,8 +549,8 @@ LABEL_16:
     v57 = 0;
   }
 
-  v22 = [MEMORY[0x277D75418] currentDevice];
-  v23 = [v22 userInterfaceIdiom] == 1;
+  currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+  v23 = [currentDevice2 userInterfaceIdiom] == 1;
 
   if (v23)
   {
@@ -559,8 +559,8 @@ LABEL_16:
     screenshotImages = self->_screenshotImages;
     self->_screenshotImages = v25;
 
-    v27 = [(SSLookupItem *)self->_item lookupDictionary];
-    v56 = [v27 objectForKey:*MEMORY[0x277D6A3D0]];
+    lookupDictionary2 = [(SSLookupItem *)self->_item lookupDictionary];
+    v56 = [lookupDictionary2 objectForKey:*MEMORY[0x277D6A3D0]];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -591,8 +591,8 @@ LABEL_16:
               objc_opt_class();
               if (objc_opt_isKindOfClass())
               {
-                v31 = [MEMORY[0x277D759A0] mainScreen];
-                [v31 scale];
+                mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+                [mainScreen2 scale];
                 v33 = v32 == 2.0;
 
                 if (v33)
@@ -654,10 +654,10 @@ LABEL_16:
                       }
 
                       v42 = [[SKUIArtwork alloc] initWithArtworkDictionary:*(*(&v70 + 1) + 8 * j)];
-                      v43 = [(SKUIArtwork *)v42 width];
-                      v44 = [(SKUIArtwork *)v42 height];
-                      v45 = v34 == v43 && v35 == v44;
-                      if (v45 || (v36 == v43 ? (v46 = v37 == v44) : (v46 = 0), v46))
+                      width = [(SKUIArtwork *)v42 width];
+                      height = [(SKUIArtwork *)v42 height];
+                      v45 = v34 == width && v35 == height;
+                      if (v45 || (v36 == width ? (v46 = v37 == height) : (v46 = 0), v46))
                       {
                         [v24 addObject:{v42, v55}];
                       }
@@ -679,7 +679,7 @@ LABEL_16:
       }
     }
 
-    v47 = [(SKUIBannerViewController *)self resourceOperationQueue];
+    resourceOperationQueue2 = [(SKUIBannerViewController *)self resourceOperationQueue];
     v48 = [(SKUIBannerViewController *)self _screenshotConsumerWithSize:100.0, 75.0];
     v49 = [(SKUIBannerViewController *)self _screenshotConsumerWithSize:56.0, 75.0];
     v50 = [(SKUIClientContext *)self->_clientContext valueForConfigurationKey:@"sfsuffix"];
@@ -698,8 +698,8 @@ LABEL_16:
     v68 = location;
     v53 = v50;
     v65 = v53;
-    v66 = self;
-    v54 = v47;
+    selfCopy = self;
+    v54 = resourceOperationQueue2;
     v67 = v54;
     [v24 enumerateObjectsUsingBlock:v62];
     [(SKUIBannerView *)self->_bannerView setScreenshotImages:self->_screenshotImages];
@@ -810,28 +810,28 @@ void __39__SKUIBannerViewController__loadImages__block_invoke_5(uint64_t a1)
   if (item)
   {
     bannerView = self->_bannerView;
-    v5 = [(SSLookupItem *)item artistName];
-    [(SKUIBannerView *)bannerView setArtistName:v5];
+    artistName = [(SSLookupItem *)item artistName];
+    [(SKUIBannerView *)bannerView setArtistName:artistName];
 
     v6 = self->_bannerView;
-    v7 = [(SKUIBannerViewController *)self _iconImage];
-    [(SKUIBannerView *)v6 setIconImage:v7];
+    _iconImage = [(SKUIBannerViewController *)self _iconImage];
+    [(SKUIBannerView *)v6 setIconImage:_iconImage];
 
     [(SKUIBannerView *)self->_bannerView setScreenshotImages:self->_screenshotImages];
     v8 = self->_bannerView;
-    v9 = [(SSLookupItem *)self->_item displayName];
-    [(SKUIBannerView *)v8 setTitle:v9];
+    displayName = [(SSLookupItem *)self->_item displayName];
+    [(SKUIBannerView *)v8 setTitle:displayName];
 
     v10 = self->_bannerView;
     [(SSLookupItem *)self->_item userRating];
     *&v12 = v11 / 5.0;
     [(SKUIBannerView *)v10 setUserRating:v12];
-    v19 = [(SSLookupItem *)self->_item offers];
-    v13 = [v19 count];
+    offers = [(SSLookupItem *)self->_item offers];
+    v13 = [offers count];
     v14 = self->_bannerView;
     if (v13)
     {
-      v15 = [v19 objectAtIndex:0];
+      v15 = [offers objectAtIndex:0];
       [(SKUIBannerView *)v14 setItemOffer:v15];
     }
 
@@ -840,31 +840,31 @@ void __39__SKUIBannerViewController__loadImages__block_invoke_5(uint64_t a1)
       [(SKUIBannerView *)self->_bannerView setItemOffer:0];
     }
 
-    v16 = [(SSLookupItem *)self->_item ITunesStoreIdentifier];
-    self->_itemIdentifier = [v16 longLongValue];
+    iTunesStoreIdentifier = [(SSLookupItem *)self->_item ITunesStoreIdentifier];
+    self->_itemIdentifier = [iTunesStoreIdentifier longLongValue];
 
     v17 = self->_bannerView;
-    v18 = [(SKUIBannerViewController *)self _itemState];
-    [(SKUIBannerView *)v17 setItemState:v18];
+    _itemState = [(SKUIBannerViewController *)self _itemState];
+    [(SKUIBannerView *)v17 setItemState:_itemState];
   }
 }
 
-- (void)_setIcon:(id)a3 error:(id)a4
+- (void)_setIcon:(id)icon error:(id)error
 {
-  objc_storeStrong(&self->_iconImage, a3);
-  v6 = a3;
+  objc_storeStrong(&self->_iconImage, icon);
+  iconCopy = icon;
   bannerView = self->_bannerView;
-  v8 = [(SKUIBannerViewController *)self _iconImage];
-  [(SKUIBannerView *)bannerView setIconImage:v8];
+  _iconImage = [(SKUIBannerViewController *)self _iconImage];
+  [(SKUIBannerView *)bannerView setIconImage:_iconImage];
 }
 
-- (void)_setScreenshot:(id)a3 forIndex:(int64_t)a4 error:(id)a5
+- (void)_setScreenshot:(id)screenshot forIndex:(int64_t)index error:(id)error
 {
-  v9 = a3;
-  v8 = a5;
-  if (v9 && [(NSMutableArray *)self->_screenshotImages count]> a4)
+  screenshotCopy = screenshot;
+  errorCopy = error;
+  if (screenshotCopy && [(NSMutableArray *)self->_screenshotImages count]> index)
   {
-    [(NSMutableArray *)self->_screenshotImages replaceObjectAtIndex:a4 withObject:v9];
+    [(NSMutableArray *)self->_screenshotImages replaceObjectAtIndex:index withObject:screenshotCopy];
     [(SKUIBannerView *)self->_bannerView setScreenshotImages:self->_screenshotImages];
   }
 }

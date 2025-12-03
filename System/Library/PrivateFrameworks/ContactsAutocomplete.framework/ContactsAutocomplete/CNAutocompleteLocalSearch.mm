@@ -1,10 +1,10 @@
 @interface CNAutocompleteLocalSearch
-+ (BOOL)shouldIncludeGroupResultsForRequest:(id)a3;
++ (BOOL)shouldIncludeGroupResultsForRequest:(id)request;
 - (CNAutocompleteLocalSearch)init;
-- (CNAutocompleteLocalSearch)initWithContactStore:(id)a3 contactFetcherStore:(id)a4;
-- (id)executeRequest:(id)a3 completionHandler:(id)a4;
-- (id)groupsForRequest:(id)a3 contactStore:(id)a4 contactFetcherStore:(id)a5;
-- (id)peopleForRequest:(id)a3 contactStore:(id)a4 contactFetcherStore:(id)a5;
+- (CNAutocompleteLocalSearch)initWithContactStore:(id)store contactFetcherStore:(id)fetcherStore;
+- (id)executeRequest:(id)request completionHandler:(id)handler;
+- (id)groupsForRequest:(id)request contactStore:(id)store contactFetcherStore:(id)fetcherStore;
+- (id)peopleForRequest:(id)request contactStore:(id)store contactFetcherStore:(id)fetcherStore;
 @end
 
 @implementation CNAutocompleteLocalSearch
@@ -21,41 +21,41 @@
   return v6;
 }
 
-- (CNAutocompleteLocalSearch)initWithContactStore:(id)a3 contactFetcherStore:(id)a4
+- (CNAutocompleteLocalSearch)initWithContactStore:(id)store contactFetcherStore:(id)fetcherStore
 {
-  v7 = a3;
-  v8 = a4;
+  storeCopy = store;
+  fetcherStoreCopy = fetcherStore;
   v13.receiver = self;
   v13.super_class = CNAutocompleteLocalSearch;
   v9 = [(CNAutocompleteLocalSearch *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_contactStore, a3);
-    objc_storeStrong(&v10->_contactFetcherStore, a4);
+    objc_storeStrong(&v9->_contactStore, store);
+    objc_storeStrong(&v10->_contactFetcherStore, fetcherStore);
     v11 = v10;
   }
 
   return v10;
 }
 
-- (id)executeRequest:(id)a3 completionHandler:(id)a4
+- (id)executeRequest:(id)request completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CFBE10] currentEnvironment];
-  v9 = [v8 schedulerProvider];
-  v10 = [v9 backgroundScheduler];
+  requestCopy = request;
+  handlerCopy = handler;
+  currentEnvironment = [MEMORY[0x277CFBE10] currentEnvironment];
+  schedulerProvider = [currentEnvironment schedulerProvider];
+  backgroundScheduler = [schedulerProvider backgroundScheduler];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __62__CNAutocompleteLocalSearch_executeRequest_completionHandler___block_invoke;
   v15[3] = &unk_2781C4630;
-  v16 = v6;
-  v17 = self;
-  v18 = v7;
-  v11 = v7;
-  v12 = v6;
-  v13 = [v10 performCancelableBlock:v15];
+  v16 = requestCopy;
+  selfCopy = self;
+  v18 = handlerCopy;
+  v11 = handlerCopy;
+  v12 = requestCopy;
+  v13 = [backgroundScheduler performCancelableBlock:v15];
 
   return v13;
 }
@@ -118,33 +118,33 @@ void __62__CNAutocompleteLocalSearch_executeRequest_completionHandler___block_in
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (id)peopleForRequest:(id)a3 contactStore:(id)a4 contactFetcherStore:(id)a5
+- (id)peopleForRequest:(id)request contactStore:(id)store contactFetcherStore:(id)fetcherStore
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  fetcherStoreCopy = fetcherStore;
+  storeCopy = store;
+  requestCopy = request;
   v10 = +[CNAutocompleteLocalQuery peopleQuery];
-  [v10 setRequest:v9];
+  [v10 setRequest:requestCopy];
 
-  [v10 setContactStore:v8];
-  [v10 setContactFetcherStore:v7];
+  [v10 setContactStore:storeCopy];
+  [v10 setContactFetcherStore:fetcherStoreCopy];
 
   v11 = [v10 run];
 
   return v11;
 }
 
-- (id)groupsForRequest:(id)a3 contactStore:(id)a4 contactFetcherStore:(id)a5
+- (id)groupsForRequest:(id)request contactStore:(id)store contactFetcherStore:(id)fetcherStore
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([objc_opt_class() shouldIncludeGroupResultsForRequest:v7])
+  requestCopy = request;
+  storeCopy = store;
+  fetcherStoreCopy = fetcherStore;
+  if ([objc_opt_class() shouldIncludeGroupResultsForRequest:requestCopy])
   {
     v10 = +[CNAutocompleteLocalQuery groupsQuery];
-    [v10 setRequest:v7];
-    [v10 setContactStore:v8];
-    [v10 setContactFetcherStore:v9];
+    [v10 setRequest:requestCopy];
+    [v10 setContactStore:storeCopy];
+    [v10 setContactFetcherStore:fetcherStoreCopy];
     v11 = [v10 run];
   }
 
@@ -156,20 +156,20 @@ void __62__CNAutocompleteLocalSearch_executeRequest_completionHandler___block_in
   return v11;
 }
 
-+ (BOOL)shouldIncludeGroupResultsForRequest:(id)a3
++ (BOOL)shouldIncludeGroupResultsForRequest:(id)request
 {
-  v3 = a3;
-  if ([v3 searchType] == 1 || objc_msgSend(v3, "searchType") == 2)
+  requestCopy = request;
+  if ([requestCopy searchType] == 1 || objc_msgSend(requestCopy, "searchType") == 2)
   {
-    v4 = 0;
+    shouldIncludeGroupResults = 0;
   }
 
   else
   {
-    v4 = [v3 shouldIncludeGroupResults];
+    shouldIncludeGroupResults = [requestCopy shouldIncludeGroupResults];
   }
 
-  return v4;
+  return shouldIncludeGroupResults;
 }
 
 @end

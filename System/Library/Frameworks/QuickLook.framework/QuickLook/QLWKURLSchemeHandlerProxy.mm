@@ -1,41 +1,41 @@
 @interface QLWKURLSchemeHandlerProxy
-- (QLWKURLSchemeHandlerProxy)initWithHandler:(id)a3;
+- (QLWKURLSchemeHandlerProxy)initWithHandler:(id)handler;
 - (WKURLSchemeHandler)handler;
-- (void)webView:(id)a3 startURLSchemeTask:(id)a4;
-- (void)webView:(id)a3 stopURLSchemeTask:(id)a4;
+- (void)webView:(id)view startURLSchemeTask:(id)task;
+- (void)webView:(id)view stopURLSchemeTask:(id)task;
 @end
 
 @implementation QLWKURLSchemeHandlerProxy
 
-- (QLWKURLSchemeHandlerProxy)initWithHandler:(id)a3
+- (QLWKURLSchemeHandlerProxy)initWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v8.receiver = self;
   v8.super_class = QLWKURLSchemeHandlerProxy;
   v5 = [(QLWKURLSchemeHandlerProxy *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(QLWKURLSchemeHandlerProxy *)v5 setHandler:v4];
+    [(QLWKURLSchemeHandlerProxy *)v5 setHandler:handlerCopy];
   }
 
   return v6;
 }
 
-- (void)webView:(id)a3 startURLSchemeTask:(id)a4
+- (void)webView:(id)view startURLSchemeTask:(id)task
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(QLWKURLSchemeHandlerProxy *)self handler];
-  [v8 webView:v7 startURLSchemeTask:v6];
+  taskCopy = task;
+  viewCopy = view;
+  handler = [(QLWKURLSchemeHandlerProxy *)self handler];
+  [handler webView:viewCopy startURLSchemeTask:taskCopy];
 }
 
-- (void)webView:(id)a3 stopURLSchemeTask:(id)a4
+- (void)webView:(id)view stopURLSchemeTask:(id)task
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(QLWKURLSchemeHandlerProxy *)self handler];
-  [v8 webView:v7 stopURLSchemeTask:v6];
+  taskCopy = task;
+  viewCopy = view;
+  handler = [(QLWKURLSchemeHandlerProxy *)self handler];
+  [handler webView:viewCopy stopURLSchemeTask:taskCopy];
 }
 
 - (WKURLSchemeHandler)handler

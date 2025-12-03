@@ -1,6 +1,6 @@
 @interface PerAppUISettingsViewController
 - (id)specifiers;
-- (void)setSpecifier:(id)a3;
+- (void)setSpecifier:(id)specifier;
 @end
 
 @implementation PerAppUISettingsViewController
@@ -13,8 +13,8 @@
     helper = self->_helper;
     self->_helper = v3;
 
-    v5 = [(PerAppUISettingsViewController *)self appID];
-    [(AXDisplayTextMotionSpecifiersHelper *)self->_helper setAppID:v5];
+    appID = [(PerAppUISettingsViewController *)self appID];
+    [(AXDisplayTextMotionSpecifiersHelper *)self->_helper setAppID:appID];
 
     [(AXDisplayTextMotionSpecifiersHelper *)self->_helper setSettingsController:self];
   }
@@ -29,8 +29,8 @@
 
     if (![(NSString *)self->_appID isEqualToString:AX_LiveTranscriptionBundleName])
     {
-      v10 = [(AXDisplayTextMotionSpecifiersHelper *)self->_helper motionSpecifiers];
-      [v8 axSafelyAddObjectsFromArray:v10];
+      motionSpecifiers = [(AXDisplayTextMotionSpecifiersHelper *)self->_helper motionSpecifiers];
+      [v8 axSafelyAddObjectsFromArray:motionSpecifiers];
     }
 
     v11 = [v8 copy];
@@ -43,13 +43,13 @@
   return v7;
 }
 
-- (void)setSpecifier:(id)a3
+- (void)setSpecifier:(id)specifier
 {
   v7.receiver = self;
   v7.super_class = PerAppUISettingsViewController;
-  v4 = a3;
-  [(PerAppUISettingsViewController *)&v7 setSpecifier:v4];
-  v5 = [v4 propertyForKey:{@"BundleIdentifier", v7.receiver, v7.super_class}];
+  specifierCopy = specifier;
+  [(PerAppUISettingsViewController *)&v7 setSpecifier:specifierCopy];
+  v5 = [specifierCopy propertyForKey:{@"BundleIdentifier", v7.receiver, v7.super_class}];
 
   appID = self->_appID;
   self->_appID = v5;

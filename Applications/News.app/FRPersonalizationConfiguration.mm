@@ -8,18 +8,18 @@
 - (FCPersonalizationURLMapping)urlMapping;
 - (FCPersonalizationWhitelist)whitelist;
 - (FRPersonalizationAutoFavorites)autoFavorites;
-- (FRPersonalizationConfiguration)initWithKeyValueStore:(id)a3;
+- (FRPersonalizationConfiguration)initWithKeyValueStore:(id)store;
 - (NSDate)coreDuetLastQueryDate;
 - (NSDate)portraitLastQueryDate;
 - (id)jsonEncodableObject;
-- (void)setAutoFavorites:(id)a3;
-- (void)setBundleIDMappingData:(id)a3;
-- (void)setCoreDuetLastQueryDate:(id)a3;
-- (void)setFavorabilityScoresData:(id)a3;
-- (void)setPortraitLastQueryDate:(id)a3;
-- (void)setTodaySectionMapping:(id)a3;
-- (void)setURLMappingData:(id)a3;
-- (void)setWhitelistData:(id)a3;
+- (void)setAutoFavorites:(id)favorites;
+- (void)setBundleIDMappingData:(id)data;
+- (void)setCoreDuetLastQueryDate:(id)date;
+- (void)setFavorabilityScoresData:(id)data;
+- (void)setPortraitLastQueryDate:(id)date;
+- (void)setTodaySectionMapping:(id)mapping;
+- (void)setURLMappingData:(id)data;
+- (void)setWhitelistData:(id)data;
 @end
 
 @implementation FRPersonalizationConfiguration
@@ -27,8 +27,8 @@
 - (NSDate)coreDuetLastQueryDate
 {
   objc_opt_class();
-  v3 = [(FRPersonalizationConfiguration *)self keyValueStore];
-  v4 = [v3 objectForKey:@"core_duet_last_query_date"];
+  keyValueStore = [(FRPersonalizationConfiguration *)self keyValueStore];
+  v4 = [keyValueStore objectForKey:@"core_duet_last_query_date"];
   v5 = FCDynamicCast();
 
   return v5;
@@ -37,8 +37,8 @@
 - (NSDate)portraitLastQueryDate
 {
   objc_opt_class();
-  v3 = [(FRPersonalizationConfiguration *)self keyValueStore];
-  v4 = [v3 objectForKey:@"portrait_last_query_date"];
+  keyValueStore = [(FRPersonalizationConfiguration *)self keyValueStore];
+  v4 = [keyValueStore objectForKey:@"portrait_last_query_date"];
   v5 = FCDynamicCast();
 
   return v5;
@@ -47,8 +47,8 @@
 - (FRPersonalizationAutoFavorites)autoFavorites
 {
   objc_opt_class();
-  v3 = [(FRPersonalizationConfiguration *)self keyValueStore];
-  v4 = [v3 objectForKey:@"auto_favorites"];
+  keyValueStore = [(FRPersonalizationConfiguration *)self keyValueStore];
+  v4 = [keyValueStore objectForKey:@"auto_favorites"];
   v5 = FCDynamicCast();
 
   if (v5)
@@ -70,22 +70,22 @@
   return v6;
 }
 
-- (FRPersonalizationConfiguration)initWithKeyValueStore:(id)a3
+- (FRPersonalizationConfiguration)initWithKeyValueStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v32.receiver = self;
   v32.super_class = FRPersonalizationConfiguration;
   v6 = [(FRPersonalizationConfiguration *)&v32 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_keyValueStore, a3);
+    objc_storeStrong(&v6->_keyValueStore, store);
     v8 = [NFLazy alloc];
     v30[0] = _NSConcreteStackBlock;
     v30[1] = 3221225472;
     v30[2] = sub_10005A1C0;
     v30[3] = &unk_1000C3B88;
-    v9 = v5;
+    v9 = storeCopy;
     v31 = v9;
     v10 = [v8 initWithConstructor:v30];
     lazyURLMapping = v7->_lazyURLMapping;
@@ -129,80 +129,80 @@
 
 - (FCPersonalizationURLMapping)urlMapping
 {
-  v2 = [(FRPersonalizationConfiguration *)self lazyURLMapping];
-  v3 = [v2 value];
+  lazyURLMapping = [(FRPersonalizationConfiguration *)self lazyURLMapping];
+  value = [lazyURLMapping value];
 
-  return v3;
+  return value;
 }
 
-- (void)setURLMappingData:(id)a3
+- (void)setURLMappingData:(id)data
 {
-  v4 = a3;
-  v5 = [(FRPersonalizationConfiguration *)self keyValueStore];
-  [v5 setObject:v4 forKeyedSubscript:@"url_mapping"];
+  dataCopy = data;
+  keyValueStore = [(FRPersonalizationConfiguration *)self keyValueStore];
+  [keyValueStore setObject:dataCopy forKeyedSubscript:@"url_mapping"];
 
-  v6 = [(FRPersonalizationConfiguration *)self lazyURLMapping];
-  [v6 reset];
+  lazyURLMapping = [(FRPersonalizationConfiguration *)self lazyURLMapping];
+  [lazyURLMapping reset];
 }
 
 - (BOOL)hasUrlMapping
 {
-  v2 = [(FRPersonalizationConfiguration *)self keyValueStore];
-  v3 = [v2 containsObjectForKey:@"url_mapping"];
+  keyValueStore = [(FRPersonalizationConfiguration *)self keyValueStore];
+  v3 = [keyValueStore containsObjectForKey:@"url_mapping"];
 
   return v3;
 }
 
 - (BOOL)hasAutoFavorites
 {
-  v2 = [(FRPersonalizationConfiguration *)self keyValueStore];
-  v3 = [v2 containsObjectForKey:@"auto_favorites"];
+  keyValueStore = [(FRPersonalizationConfiguration *)self keyValueStore];
+  v3 = [keyValueStore containsObjectForKey:@"auto_favorites"];
 
   return v3;
 }
 
 - (FCPersonalizationBundleIDMapping)bundleIDMapping
 {
-  v2 = [(FRPersonalizationConfiguration *)self lazyBundleIDMapping];
-  v3 = [v2 value];
+  lazyBundleIDMapping = [(FRPersonalizationConfiguration *)self lazyBundleIDMapping];
+  value = [lazyBundleIDMapping value];
 
-  return v3;
+  return value;
 }
 
-- (void)setBundleIDMappingData:(id)a3
+- (void)setBundleIDMappingData:(id)data
 {
-  v4 = a3;
-  v5 = [(FRPersonalizationConfiguration *)self keyValueStore];
-  [v5 setObject:v4 forKeyedSubscript:@"bundle_id_mapping"];
+  dataCopy = data;
+  keyValueStore = [(FRPersonalizationConfiguration *)self keyValueStore];
+  [keyValueStore setObject:dataCopy forKeyedSubscript:@"bundle_id_mapping"];
 
-  v6 = [(FRPersonalizationConfiguration *)self lazyBundleIDMapping];
-  [v6 reset];
+  lazyBundleIDMapping = [(FRPersonalizationConfiguration *)self lazyBundleIDMapping];
+  [lazyBundleIDMapping reset];
 }
 
 - (BOOL)hasBundleIDMapping
 {
-  v2 = [(FRPersonalizationConfiguration *)self keyValueStore];
-  v3 = [v2 containsObjectForKey:@"bundle_id_mapping"];
+  keyValueStore = [(FRPersonalizationConfiguration *)self keyValueStore];
+  v3 = [keyValueStore containsObjectForKey:@"bundle_id_mapping"];
 
   return v3;
 }
 
 - (FCPersonalizationFavorabilityScores)favorabilityScores
 {
-  v2 = [(FRPersonalizationConfiguration *)self lazyFavorabilityScores];
-  v3 = [v2 value];
+  lazyFavorabilityScores = [(FRPersonalizationConfiguration *)self lazyFavorabilityScores];
+  value = [lazyFavorabilityScores value];
 
-  return v3;
+  return value;
 }
 
-- (void)setFavorabilityScoresData:(id)a3
+- (void)setFavorabilityScoresData:(id)data
 {
-  v4 = a3;
-  v5 = [(FRPersonalizationConfiguration *)self keyValueStore];
-  [v5 setObject:v4 forKeyedSubscript:@"favorability_scores"];
+  dataCopy = data;
+  keyValueStore = [(FRPersonalizationConfiguration *)self keyValueStore];
+  [keyValueStore setObject:dataCopy forKeyedSubscript:@"favorability_scores"];
 
-  v6 = [(FRPersonalizationConfiguration *)self lazyFavorabilityScores];
-  [v6 reset];
+  lazyFavorabilityScores = [(FRPersonalizationConfiguration *)self lazyFavorabilityScores];
+  [lazyFavorabilityScores reset];
 }
 
 - (FCPersonalizationTodaySectionMapping)todaySectionMapping
@@ -211,8 +211,8 @@
   if (!todaySectionMapping)
   {
     objc_opt_class();
-    v4 = [(FRPersonalizationConfiguration *)self keyValueStore];
-    v5 = [v4 objectForKey:@"today_section_mapping"];
+    keyValueStore = [(FRPersonalizationConfiguration *)self keyValueStore];
+    v5 = [keyValueStore objectForKey:@"today_section_mapping"];
     v6 = FCDynamicCast();
 
     if (v6)
@@ -240,15 +240,15 @@
   return todaySectionMapping;
 }
 
-- (void)setTodaySectionMapping:(id)a3
+- (void)setTodaySectionMapping:(id)mapping
 {
-  v5 = a3;
-  objc_storeStrong(&self->_todaySectionMapping, a3);
-  v6 = [(FRPersonalizationConfiguration *)self keyValueStore];
+  mappingCopy = mapping;
+  objc_storeStrong(&self->_todaySectionMapping, mapping);
+  keyValueStore = [(FRPersonalizationConfiguration *)self keyValueStore];
   v9 = 0;
-  v7 = [NSKeyedArchiver archivedDataWithRootObject:v5 requiringSecureCoding:1 error:&v9];
+  v7 = [NSKeyedArchiver archivedDataWithRootObject:mappingCopy requiringSecureCoding:1 error:&v9];
   v8 = v9;
-  [v6 setObject:v7 forKey:@"today_section_mapping"];
+  [keyValueStore setObject:v7 forKey:@"today_section_mapping"];
 
   if (v8 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
@@ -258,45 +258,45 @@
 
 - (FCPersonalizationWhitelist)whitelist
 {
-  v2 = [(FRPersonalizationConfiguration *)self lazyWhitelist];
-  v3 = [v2 value];
+  lazyWhitelist = [(FRPersonalizationConfiguration *)self lazyWhitelist];
+  value = [lazyWhitelist value];
 
-  return v3;
+  return value;
 }
 
-- (void)setWhitelistData:(id)a3
+- (void)setWhitelistData:(id)data
 {
-  v4 = a3;
-  v5 = [(FRPersonalizationConfiguration *)self keyValueStore];
-  [v5 setObject:v4 forKeyedSubscript:@"whitelist"];
+  dataCopy = data;
+  keyValueStore = [(FRPersonalizationConfiguration *)self keyValueStore];
+  [keyValueStore setObject:dataCopy forKeyedSubscript:@"whitelist"];
 
-  v6 = [(FRPersonalizationConfiguration *)self lazyWhitelist];
-  [v6 reset];
+  lazyWhitelist = [(FRPersonalizationConfiguration *)self lazyWhitelist];
+  [lazyWhitelist reset];
 }
 
-- (void)setCoreDuetLastQueryDate:(id)a3
+- (void)setCoreDuetLastQueryDate:(id)date
 {
-  v4 = a3;
-  v5 = [(FRPersonalizationConfiguration *)self keyValueStore];
-  [v5 setObject:v4 forKey:@"core_duet_last_query_date"];
+  dateCopy = date;
+  keyValueStore = [(FRPersonalizationConfiguration *)self keyValueStore];
+  [keyValueStore setObject:dateCopy forKey:@"core_duet_last_query_date"];
 }
 
-- (void)setPortraitLastQueryDate:(id)a3
+- (void)setPortraitLastQueryDate:(id)date
 {
-  v4 = a3;
-  v5 = [(FRPersonalizationConfiguration *)self keyValueStore];
-  [v5 setObject:v4 forKey:@"portrait_last_query_date"];
+  dateCopy = date;
+  keyValueStore = [(FRPersonalizationConfiguration *)self keyValueStore];
+  [keyValueStore setObject:dateCopy forKey:@"portrait_last_query_date"];
 }
 
-- (void)setAutoFavorites:(id)a3
+- (void)setAutoFavorites:(id)favorites
 {
-  v4 = a3;
-  v5 = [(FRPersonalizationConfiguration *)self keyValueStore];
-  v6 = v5;
-  if (v4)
+  favoritesCopy = favorites;
+  keyValueStore = [(FRPersonalizationConfiguration *)self keyValueStore];
+  v6 = keyValueStore;
+  if (favoritesCopy)
   {
     v9 = 0;
-    v7 = [NSKeyedArchiver archivedDataWithRootObject:v4 requiringSecureCoding:1 error:&v9];
+    v7 = [NSKeyedArchiver archivedDataWithRootObject:favoritesCopy requiringSecureCoding:1 error:&v9];
     v8 = v9;
     [v6 setObject:v7 forKey:@"auto_favorites"];
 
@@ -308,7 +308,7 @@
 
   else
   {
-    [v5 removeObjectForKey:@"auto_favorites"];
+    [keyValueStore removeObjectForKey:@"auto_favorites"];
   }
 }
 

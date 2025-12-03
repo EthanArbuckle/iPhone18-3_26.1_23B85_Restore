@@ -96,11 +96,11 @@ void __63__MPModelMovie_MPModelObjectMediaItem__mediaItemPropertyValues__block_i
 
 - (id)editorialArtworkCatalog
 {
-  v3 = [(MPModelMovie *)self editorialArtworkCatalogBlock];
-  v4 = v3;
-  if (v3)
+  editorialArtworkCatalogBlock = [(MPModelMovie *)self editorialArtworkCatalogBlock];
+  v4 = editorialArtworkCatalogBlock;
+  if (editorialArtworkCatalogBlock)
   {
-    v5 = (*(v3 + 16))(v3, self);
+    v5 = (*(editorialArtworkCatalogBlock + 16))(editorialArtworkCatalogBlock, self);
   }
 
   else
@@ -113,11 +113,11 @@ void __63__MPModelMovie_MPModelObjectMediaItem__mediaItemPropertyValues__block_i
 
 - (id)artworkCatalog
 {
-  v3 = [(MPModelMovie *)self artworkCatalogBlock];
-  v4 = v3;
-  if (v3)
+  artworkCatalogBlock = [(MPModelMovie *)self artworkCatalogBlock];
+  v4 = artworkCatalogBlock;
+  if (artworkCatalogBlock)
   {
-    v5 = (*(v3 + 16))(v3, self);
+    v5 = (*(artworkCatalogBlock + 16))(artworkCatalogBlock, self);
   }
 
   else
@@ -131,15 +131,15 @@ void __63__MPModelMovie_MPModelObjectMediaItem__mediaItemPropertyValues__block_i
 - (id)humanDescription
 {
   v3 = MEMORY[0x1E696AD60];
-  v4 = [(MPModelObject *)self identifiers];
-  v5 = [v4 humanDescription];
-  v6 = [v3 stringWithFormat:@"mediaClip %@", v5];
+  identifiers = [(MPModelObject *)self identifiers];
+  humanDescription = [identifiers humanDescription];
+  v6 = [v3 stringWithFormat:@"mediaClip %@", humanDescription];
 
   if ([(MPModelObject *)self hasLoadedValueForKey:@"MPModelPropertyMovieTitle"])
   {
     v7 = MEMORY[0x1E696AEC0];
-    v8 = [(MPModelMovie *)self title];
-    v9 = [v7 stringWithFormat:@"“%@” ", v8];
+    title = [(MPModelMovie *)self title];
+    v9 = [v7 stringWithFormat:@"“%@” ", title];
 
     [v6 insertString:v9 atIndex:0];
   }
@@ -149,146 +149,146 @@ void __63__MPModelMovie_MPModelObjectMediaItem__mediaItemPropertyValues__block_i
 
 + (void)__MPModelPropertyMovieStoreCanonicalID__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelMovie.m" lineNumber:162 description:@"Translator was missing mapping for MPModelPropertyMovieStoreCanonicalID"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelMovie.m" lineNumber:162 description:@"Translator was missing mapping for MPModelPropertyMovieStoreCanonicalID"];
 }
 
 + (void)__MPModelPropertyMovieDownloadedDate__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelMovie.m" lineNumber:161 description:@"Translator was missing mapping for MPModelPropertyMovieDownloadedDate"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelMovie.m" lineNumber:161 description:@"Translator was missing mapping for MPModelPropertyMovieDownloadedDate"];
 }
 
 + (void)__MPModelPropertyMovieKeepLocalConstraints__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelMovie.m" lineNumber:160 description:@"Translator was missing mapping for MPModelPropertyMovieKeepLocalConstraints"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelMovie.m" lineNumber:160 description:@"Translator was missing mapping for MPModelPropertyMovieKeepLocalConstraints"];
 }
 
 + (void)__MPModelPropertyMovieKeepLocalManagedStatusReason__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelMovie.m" lineNumber:159 description:@"Translator was missing mapping for MPModelPropertyMovieKeepLocalManagedStatusReason"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelMovie.m" lineNumber:159 description:@"Translator was missing mapping for MPModelPropertyMovieKeepLocalManagedStatusReason"];
 }
 
 + (void)__MPModelPropertyMovieKeepLocalManagedStatus__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelMovie.m" lineNumber:158 description:@"Translator was missing mapping for MPModelPropertyMovieKeepLocalManagedStatus"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelMovie.m" lineNumber:158 description:@"Translator was missing mapping for MPModelPropertyMovieKeepLocalManagedStatus"];
 }
 
 + (void)__MPModelPropertyMovieKeepLocalEnableState__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelMovie.m" lineNumber:157 description:@"Translator was missing mapping for MPModelPropertyMovieKeepLocalEnableState"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelMovie.m" lineNumber:157 description:@"Translator was missing mapping for MPModelPropertyMovieKeepLocalEnableState"];
 }
 
 + (void)__MPModelPropertyMovieLibraryAddEligible__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelMovie.m" lineNumber:156 description:@"Translator was missing mapping for MPModelPropertyMovieLibraryAddEligible"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelMovie.m" lineNumber:156 description:@"Translator was missing mapping for MPModelPropertyMovieLibraryAddEligible"];
 }
 
 + (void)__MPModelPropertyMovieLastDevicePlaybackDate__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelMovie.m" lineNumber:155 description:@"Translator was missing mapping for MPModelPropertyMovieLastDevicePlaybackDate"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelMovie.m" lineNumber:155 description:@"Translator was missing mapping for MPModelPropertyMovieLastDevicePlaybackDate"];
 }
 
 + (void)__MPModelPropertyMovieLibraryAddedDate__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelMovie.m" lineNumber:154 description:@"Translator was missing mapping for MPModelPropertyMovieLibraryAddedDate"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelMovie.m" lineNumber:154 description:@"Translator was missing mapping for MPModelPropertyMovieLibraryAddedDate"];
 }
 
 + (void)__MPModelPropertyMovieLibraryAdded__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelMovie.m" lineNumber:153 description:@"Translator was missing mapping for MPModelPropertyMovieLibraryAdded"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelMovie.m" lineNumber:153 description:@"Translator was missing mapping for MPModelPropertyMovieLibraryAdded"];
 }
 
 + (void)__MPModelPropertyMovieHasCloudSyncSource__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelMovie.m" lineNumber:152 description:@"Translator was missing mapping for MPModelPropertyMovieHasCloudSyncSource"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelMovie.m" lineNumber:152 description:@"Translator was missing mapping for MPModelPropertyMovieHasCloudSyncSource"];
 }
 
 + (void)__MPModelPropertyMovieDuration__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelMovie.m" lineNumber:151 description:@"Translator was missing mapping for MPModelPropertyMovieDuration"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelMovie.m" lineNumber:151 description:@"Translator was missing mapping for MPModelPropertyMovieDuration"];
 }
 
 + (void)__MPModelPropertyMovieEditorialArtwork__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelMovie.m" lineNumber:150 description:@"Translator was missing mapping for MPModelPropertyMovieEditorialArtwork"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelMovie.m" lineNumber:150 description:@"Translator was missing mapping for MPModelPropertyMovieEditorialArtwork"];
 }
 
 + (void)__MPModelPropertyMovieArtwork__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelMovie.m" lineNumber:149 description:@"Translator was missing mapping for MPModelPropertyMovieArtwork"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelMovie.m" lineNumber:149 description:@"Translator was missing mapping for MPModelPropertyMovieArtwork"];
 }
 
 + (void)__MPModelRelationshipMovieStoreAsset__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelMovie.m" lineNumber:148 description:@"Translator was missing mapping for MPModelRelationshipMovieStoreAsset"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelMovie.m" lineNumber:148 description:@"Translator was missing mapping for MPModelRelationshipMovieStoreAsset"];
 }
 
 + (void)__MPModelRelationshipMoviePlaybackPosition__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelMovie.m" lineNumber:147 description:@"Translator was missing mapping for MPModelRelationshipMoviePlaybackPosition"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelMovie.m" lineNumber:147 description:@"Translator was missing mapping for MPModelRelationshipMoviePlaybackPosition"];
 }
 
 + (void)__MPModelRelationshipMovieLocalFileAsset__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelMovie.m" lineNumber:146 description:@"Translator was missing mapping for MPModelRelationshipMovieLocalFileAsset"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelMovie.m" lineNumber:146 description:@"Translator was missing mapping for MPModelRelationshipMovieLocalFileAsset"];
 }
 
 + (void)__MPModelPropertyMovieReleaseDate__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelMovie.m" lineNumber:145 description:@"Translator was missing mapping for MPModelPropertyMovieReleaseDate"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelMovie.m" lineNumber:145 description:@"Translator was missing mapping for MPModelPropertyMovieReleaseDate"];
 }
 
 + (void)__MPModelRelationshipMovieClips__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelMovie.m" lineNumber:144 description:@"Translator was missing mapping for MPModelRelationshipMovieClips"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelMovie.m" lineNumber:144 description:@"Translator was missing mapping for MPModelRelationshipMovieClips"];
 }
 
 + (void)__MPModelPropertyMovieInfoDictionary__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelMovie.m" lineNumber:143 description:@"Translator was missing mapping for MPModelPropertyMovieInfoDictionary"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelMovie.m" lineNumber:143 description:@"Translator was missing mapping for MPModelPropertyMovieInfoDictionary"];
 }
 
 + (void)__MPModelPropertyMovieTagline__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelMovie.m" lineNumber:142 description:@"Translator was missing mapping for MPModelPropertyMovieTagline"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelMovie.m" lineNumber:142 description:@"Translator was missing mapping for MPModelPropertyMovieTagline"];
 }
 
 + (void)__MPModelPropertyMovieExplicitRating__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelMovie.m" lineNumber:141 description:@"Translator was missing mapping for MPModelPropertyMovieExplicitRating"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelMovie.m" lineNumber:141 description:@"Translator was missing mapping for MPModelPropertyMovieExplicitRating"];
 }
 
 + (void)__MPModelPropertyMovieDescriptionText__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelMovie.m" lineNumber:140 description:@"Translator was missing mapping for MPModelPropertyMovieDescriptionText"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelMovie.m" lineNumber:140 description:@"Translator was missing mapping for MPModelPropertyMovieDescriptionText"];
 }
 
 + (void)__MPModelPropertyMovieTitle__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelMovie.m" lineNumber:139 description:@"Translator was missing mapping for MPModelPropertyMovieTitle"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelMovie.m" lineNumber:139 description:@"Translator was missing mapping for MPModelPropertyMovieTitle"];
 }
 
 + (id)classesForSecureCoding
@@ -309,16 +309,16 @@ void __63__MPModelMovie_MPModelObjectMediaItem__mediaItemPropertyValues__block_i
 - (MPLibraryAddStatusObserverConfiguration)libraryAddStatusObserverConfiguration
 {
   IsRestricted = MPModelMovieIsRestricted(self);
-  v4 = [(MPModelMovie *)self isLibraryAdded];
-  v5 = [(MPModelMovie *)self isLibraryAddEligible];
+  isLibraryAdded = [(MPModelMovie *)self isLibraryAdded];
+  isLibraryAddEligible = [(MPModelMovie *)self isLibraryAddEligible];
   v6 = 0x100000000;
-  if (!v5)
+  if (!isLibraryAddEligible)
   {
     v6 = 0;
   }
 
   v7 = 256;
-  if (!v4)
+  if (!isLibraryAdded)
   {
     v7 = 0;
   }
@@ -347,13 +347,13 @@ void __63__MPModelMovie_MPModelObjectMediaItem__mediaItemPropertyValues__block_i
 - (id)newKeepLocalStatusObserverConfiguration
 {
   v3 = objc_alloc_init(MPLibraryKeepLocalStatusObserverIndividualEntityConfiguration);
-  v4 = [(MPModelMovie *)self localFileAsset];
-  -[MPLibraryKeepLocalStatusObserverIndividualEntityConfiguration setHasNonPurgeableAsset:](v3, "setHasNonPurgeableAsset:", [v4 isNonPurgeable]);
+  localFileAsset = [(MPModelMovie *)self localFileAsset];
+  -[MPLibraryKeepLocalStatusObserverIndividualEntityConfiguration setHasNonPurgeableAsset:](v3, "setHasNonPurgeableAsset:", [localFileAsset isNonPurgeable]);
   [(MPLibraryKeepLocalStatusObserverConfiguration *)v3 setIdentifyingModelObject:self];
   [(MPLibraryKeepLocalStatusObserverConfiguration *)v3 setEnableState:[(MPModelMovie *)self keepLocalEnableState]];
   [(MPLibraryKeepLocalStatusObserverIndividualEntityConfiguration *)v3 setManagedStatus:[(MPModelMovie *)self keepLocalManagedStatus]];
-  v5 = [(MPModelMovie *)self storeAsset];
-  -[MPLibraryKeepLocalStatusObserverIndividualEntityConfiguration setStoreRedownloadable:](v3, "setStoreRedownloadable:", [v5 isRedownloadable]);
+  storeAsset = [(MPModelMovie *)self storeAsset];
+  -[MPLibraryKeepLocalStatusObserverIndividualEntityConfiguration setStoreRedownloadable:](v3, "setStoreRedownloadable:", [storeAsset isRedownloadable]);
 
   return v3;
 }
@@ -385,11 +385,11 @@ void __63__MPModelMovie_MPModelObjectMediaItem__mediaItemPropertyValues__block_i
 
 - (int64_t)libraryRemovalSupportedOptions
 {
-  v3 = [(MPModelMovie *)self keepLocalManagedStatus];
-  v4 = [(MPModelMovie *)self isLibraryAdded];
-  v5 = [(MPModelMovie *)self localFileAsset];
-  v6 = [(MPModelMovie *)self storeAsset];
-  v7 = _MPModelLibraryRemovalSupportedOptionsForIndividualItemProperties(v3, v4, v5, v6);
+  keepLocalManagedStatus = [(MPModelMovie *)self keepLocalManagedStatus];
+  isLibraryAdded = [(MPModelMovie *)self isLibraryAdded];
+  localFileAsset = [(MPModelMovie *)self localFileAsset];
+  storeAsset = [(MPModelMovie *)self storeAsset];
+  v7 = _MPModelLibraryRemovalSupportedOptionsForIndividualItemProperties(keepLocalManagedStatus, isLibraryAdded, localFileAsset, storeAsset);
 
   return v7;
 }

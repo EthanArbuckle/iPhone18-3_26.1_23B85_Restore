@@ -1,24 +1,24 @@
 @interface RTMapItemProviderReverseGeocode
-- (RTMapItemProviderReverseGeocode)initWithDefaultsManager:(id)a3 mapServiceManager:(id)a4;
-- (RTMapItemProviderReverseGeocode)initWithMapServiceManager:(id)a3 parameters:(id)a4;
-- (double)_confidenceForSource:(unint64_t)a3;
-- (id)_filterRelatedPlacesMapItems:(id)a3;
-- (id)_selectMapItemsFromFetchedMapItems:(id)a3 relatedPlacesMapItems:(id)a4 options:(id)a5 error:(id *)a6;
-- (id)mapItemsWithOptions:(id)a3 error:(id *)a4;
+- (RTMapItemProviderReverseGeocode)initWithDefaultsManager:(id)manager mapServiceManager:(id)serviceManager;
+- (RTMapItemProviderReverseGeocode)initWithMapServiceManager:(id)manager parameters:(id)parameters;
+- (double)_confidenceForSource:(unint64_t)source;
+- (id)_filterRelatedPlacesMapItems:(id)items;
+- (id)_selectMapItemsFromFetchedMapItems:(id)items relatedPlacesMapItems:(id)mapItems options:(id)options error:(id *)error;
+- (id)mapItemsWithOptions:(id)options error:(id *)error;
 @end
 
 @implementation RTMapItemProviderReverseGeocode
 
-- (RTMapItemProviderReverseGeocode)initWithDefaultsManager:(id)a3 mapServiceManager:(id)a4
+- (RTMapItemProviderReverseGeocode)initWithDefaultsManager:(id)manager mapServiceManager:(id)serviceManager
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  managerCopy = manager;
+  serviceManagerCopy = serviceManager;
+  if (managerCopy)
   {
-    v8 = [[RTMapItemProviderReverseGeocodeParameters alloc] initWithDefaultsManager:v6];
-    self = [(RTMapItemProviderReverseGeocode *)self initWithMapServiceManager:v7 parameters:v8];
+    v8 = [[RTMapItemProviderReverseGeocodeParameters alloc] initWithDefaultsManager:managerCopy];
+    self = [(RTMapItemProviderReverseGeocode *)self initWithMapServiceManager:serviceManagerCopy parameters:v8];
 
-    v9 = self;
+    selfCopy = self;
   }
 
   else
@@ -30,26 +30,26 @@
       _os_log_error_impl(&dword_2304B3000, v10, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: defaultsManager", v12, 2u);
     }
 
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
-- (RTMapItemProviderReverseGeocode)initWithMapServiceManager:(id)a3 parameters:(id)a4
+- (RTMapItemProviderReverseGeocode)initWithMapServiceManager:(id)manager parameters:(id)parameters
 {
   v21 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (!v7)
+  managerCopy = manager;
+  parametersCopy = parameters;
+  v9 = parametersCopy;
+  if (!managerCopy)
   {
     v15 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
 LABEL_12:
 
-      v14 = 0;
+      selfCopy = 0;
       goto LABEL_13;
     }
 
@@ -60,7 +60,7 @@ LABEL_15:
     goto LABEL_12;
   }
 
-  if (!v8)
+  if (!parametersCopy)
   {
     v15 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -79,8 +79,8 @@ LABEL_15:
   p_isa = &v10->super.isa;
   if (v10)
   {
-    objc_storeStrong(&v10->_mapServiceManager, a3);
-    objc_storeStrong(p_isa + 2, a4);
+    objc_storeStrong(&v10->_mapServiceManager, manager);
+    objc_storeStrong(p_isa + 2, parameters);
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       v12 = _rt_log_facility_get_os_log(RTLogFacilityLearnedLocation);
@@ -95,17 +95,17 @@ LABEL_15:
   }
 
   self = p_isa;
-  v14 = self;
+  selfCopy = self;
 LABEL_13:
 
-  return v14;
+  return selfCopy;
 }
 
-- (id)mapItemsWithOptions:(id)a3 error:(id *)a4
+- (id)mapItemsWithOptions:(id)options error:(id *)error
 {
   aSelector = a2;
   v90[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  optionsCopy = options;
   v79 = 0;
   v80 = &v79;
   v81 = 0x3032000000;
@@ -124,16 +124,16 @@ LABEL_13:
   v70 = __Block_byref_object_copy__21;
   v71 = __Block_byref_object_dispose__21;
   v72 = 0;
-  v57 = [v5 location];
+  location = [optionsCopy location];
   v6 = objc_alloc(MEMORY[0x277D011B0]);
-  v7 = [v5 useBackground];
+  useBackground = [optionsCopy useBackground];
   v8 = objc_opt_class();
   v9 = NSStringFromClass(v8);
-  v10 = [v5 clientIdentifier];
-  v59 = [v6 initWithUseBackgroundTraits:v7 analyticsIdentifier:v9 clientIdentifier:v10];
+  clientIdentifier = [optionsCopy clientIdentifier];
+  v59 = [v6 initWithUseBackgroundTraits:useBackground analyticsIdentifier:v9 clientIdentifier:clientIdentifier];
 
   v11 = dispatch_semaphore_create(0);
-  v12 = [(RTMapItemProviderReverseGeocode *)self mapServiceManager];
+  mapServiceManager = [(RTMapItemProviderReverseGeocode *)self mapServiceManager];
   v62[0] = MEMORY[0x277D85DD0];
   v62[1] = 3221225472;
   v62[2] = __61__RTMapItemProviderReverseGeocode_mapItemsWithOptions_error___block_invoke;
@@ -143,7 +143,7 @@ LABEL_13:
   v66 = &v67;
   v13 = v11;
   v63 = v13;
-  [v12 fetchMapItemsRelatedPlacesFromLocation:v57 options:v59 handler:v62];
+  [mapServiceManager fetchMapItemsRelatedPlacesFromLocation:location options:v59 handler:v62];
 
   v14 = v13;
   v15 = [MEMORY[0x277CBEAA8] now];
@@ -155,11 +155,11 @@ LABEL_13:
     v19 = v18;
     v20 = objc_opt_new();
     v21 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_17];
-    v22 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v23 = [v22 filteredArrayUsingPredicate:v21];
-    v24 = [v23 firstObject];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    v23 = [callStackSymbols filteredArrayUsingPredicate:v21];
+    firstObject = [v23 firstObject];
 
-    [v20 submitToCoreAnalytics:v24 type:1 duration:v19];
+    [v20 submitToCoreAnalytics:firstObject type:1 duration:v19];
     v25 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v25, OS_LOG_TYPE_FAULT))
     {
@@ -186,7 +186,7 @@ LABEL_13:
 
   v30 = v28;
   v31 = v30;
-  if (a4 && v30)
+  if (error && v30)
   {
     v32 = _rt_log_facility_get_os_log(RTLogFacilityLearnedLocation);
     if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
@@ -205,10 +205,10 @@ LABEL_13:
 
     v33 = v31;
     v34 = 0;
-    *a4 = v31;
+    *error = v31;
   }
 
-  else if (a4 && v68[5])
+  else if (error && v68[5])
   {
     v35 = _rt_log_facility_get_os_log(RTLogFacilityLearnedLocation);
     if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
@@ -227,7 +227,7 @@ LABEL_13:
     }
 
     v34 = 0;
-    *a4 = v68[5];
+    *error = v68[5];
   }
 
   else
@@ -235,10 +235,10 @@ LABEL_13:
     v36 = v80[5];
     v37 = v74[5];
     v61 = 0;
-    v38 = [(RTMapItemProviderReverseGeocode *)self _selectMapItemsFromFetchedMapItems:v36 relatedPlacesMapItems:v37 options:v59 error:&v61, aSelector];
+    aSelector = [(RTMapItemProviderReverseGeocode *)self _selectMapItemsFromFetchedMapItems:v36 relatedPlacesMapItems:v37 options:v59 error:&v61, aSelector];
     v39 = v61;
     v40 = v80[5];
-    v80[5] = v38;
+    v80[5] = aSelector;
 
     if (v39)
     {
@@ -310,16 +310,16 @@ id __61__RTMapItemProviderReverseGeocode_mapItemsWithOptions_error___block_invok
   return v7;
 }
 
-- (id)_filterRelatedPlacesMapItems:(id)a3
+- (id)_filterRelatedPlacesMapItems:(id)items
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v16 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v3, "count")}];
+  itemsCopy = items;
+  v16 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(itemsCopy, "count")}];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v4 = v3;
+  v4 = itemsCopy;
   v5 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v5)
   {
@@ -335,13 +335,13 @@ id __61__RTMapItemProviderReverseGeocode_mapItemsWithOptions_error___block_invok
         }
 
         v9 = *(*(&v17 + 1) + 8 * i);
-        v10 = [v9 address];
-        v11 = [v10 geoAddressObject];
-        v12 = [v11 address];
-        v13 = [v12 structuredAddress];
-        v14 = [v13 subPremisesCount];
+        address = [v9 address];
+        geoAddressObject = [address geoAddressObject];
+        address2 = [geoAddressObject address];
+        structuredAddress = [address2 structuredAddress];
+        subPremisesCount = [structuredAddress subPremisesCount];
 
-        if (!v14)
+        if (!subPremisesCount)
         {
           [v16 addObject:v9];
         }
@@ -356,18 +356,18 @@ id __61__RTMapItemProviderReverseGeocode_mapItemsWithOptions_error___block_invok
   return v16;
 }
 
-- (id)_selectMapItemsFromFetchedMapItems:(id)a3 relatedPlacesMapItems:(id)a4 options:(id)a5 error:(id *)a6
+- (id)_selectMapItemsFromFetchedMapItems:(id)items relatedPlacesMapItems:(id)mapItems options:(id)options error:(id *)error
 {
   v55 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  itemsCopy = items;
+  mapItemsCopy = mapItems;
+  optionsCopy = options;
   v47 = 0;
   v48 = &v47;
   v49 = 0x3032000000;
   v50 = __Block_byref_object_copy__21;
   v51 = __Block_byref_object_dispose__21;
-  v13 = v10;
+  v13 = itemsCopy;
   v52 = v13;
   v41 = 0;
   v42 = &v41;
@@ -375,13 +375,13 @@ id __61__RTMapItemProviderReverseGeocode_mapItemsWithOptions_error___block_invok
   v44 = __Block_byref_object_copy__21;
   v45 = __Block_byref_object_dispose__21;
   v46 = 0;
-  if ([v13 count] != 1 || objc_msgSend(v11, "count") != 1)
+  if ([v13 count] != 1 || objc_msgSend(mapItemsCopy, "count") != 1)
   {
     goto LABEL_13;
   }
 
   v14 = dispatch_semaphore_create(0);
-  v15 = [(RTMapItemProviderReverseGeocode *)self mapServiceManager];
+  mapServiceManager = [(RTMapItemProviderReverseGeocode *)self mapServiceManager];
   v37[0] = MEMORY[0x277D85DD0];
   v37[1] = 3221225472;
   v37[2] = __106__RTMapItemProviderReverseGeocode__selectMapItemsFromFetchedMapItems_relatedPlacesMapItems_options_error___block_invoke;
@@ -391,7 +391,7 @@ id __61__RTMapItemProviderReverseGeocode_mapItemsWithOptions_error___block_invok
   v40 = &v41;
   v16 = v14;
   v38 = v16;
-  [v15 fetchMapItemsFromIdentifiers:v11 options:v12 source:0x40000 handler:v37];
+  [mapServiceManager fetchMapItemsFromIdentifiers:mapItemsCopy options:optionsCopy source:0x40000 handler:v37];
 
   v17 = v16;
   v36 = [MEMORY[0x277CBEAA8] now];
@@ -409,11 +409,11 @@ LABEL_9:
   v20 = v19;
   v21 = objc_opt_new();
   v22 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_17];
-  v23 = [MEMORY[0x277CCACC8] callStackSymbols];
-  v24 = [v23 filteredArrayUsingPredicate:v22];
-  v25 = [v24 firstObject];
+  callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+  v24 = [callStackSymbols filteredArrayUsingPredicate:v22];
+  firstObject = [v24 firstObject];
 
-  [v21 submitToCoreAnalytics:v25 type:1 duration:v20];
+  [v21 submitToCoreAnalytics:firstObject type:1 duration:v20];
   v26 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
   if (os_log_type_enabled(v26, OS_LOG_TYPE_FAULT))
   {
@@ -444,9 +444,9 @@ LABEL_10:
   }
 
 LABEL_13:
-  if (a6)
+  if (error)
   {
-    *a6 = v42[5];
+    *error = v42[5];
   }
 
   v33 = v48[5];
@@ -474,17 +474,17 @@ void __106__RTMapItemProviderReverseGeocode__selectMapItemsFromFetchedMapItems_r
   dispatch_semaphore_signal(*(a1 + 40));
 }
 
-- (double)_confidenceForSource:(unint64_t)a3
+- (double)_confidenceForSource:(unint64_t)source
 {
   v12 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (source)
   {
     parameters = self->_parameters;
 
     [(RTMapItemProviderReverseGeocodeParameters *)parameters confidence];
   }
 
-  else if ((a3 & 0x40000) != 0)
+  else if ((source & 0x40000) != 0)
   {
     v8 = self->_parameters;
 
@@ -496,7 +496,7 @@ void __106__RTMapItemProviderReverseGeocode__selectMapItemsFromFetchedMapItems_r
     v5 = _rt_log_facility_get_os_log(RTLogFacilityLearnedLocation);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
-      v9 = [MEMORY[0x277D011A0] sourceToString:a3];
+      v9 = [MEMORY[0x277D011A0] sourceToString:source];
       v10 = 138412290;
       v11 = v9;
       _os_log_error_impl(&dword_2304B3000, v5, OS_LOG_TYPE_ERROR, "Invalid source %@, falling back to revgeo confidence.", &v10, 0xCu);

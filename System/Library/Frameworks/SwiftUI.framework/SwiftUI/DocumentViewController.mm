@@ -1,19 +1,19 @@
 @interface DocumentViewController
 - (UIDocument)document;
-- (_TtC7SwiftUI22DocumentViewController)initWithCoder:(id)a3;
-- (_TtC7SwiftUI22DocumentViewController)initWithDocument:(id)a3;
-- (_TtC7SwiftUI22DocumentViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC7SwiftUI22DocumentViewController)initWithCoder:(id)coder;
+- (_TtC7SwiftUI22DocumentViewController)initWithDocument:(id)document;
+- (_TtC7SwiftUI22DocumentViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)documentDidOpen;
 - (void)loadView;
 - (void)navigationItemDidUpdate;
-- (void)presentationController:(id)a3 willPresentWithAdaptiveStyle:(int64_t)a4 transitionCoordinator:(id)a5;
-- (void)presentationControllerWillDismiss:(id)a3;
-- (void)setDocument:(id)a3;
+- (void)presentationController:(id)controller willPresentWithAdaptiveStyle:(int64_t)style transitionCoordinator:(id)coordinator;
+- (void)presentationControllerWillDismiss:(id)dismiss;
+- (void)setDocument:(id)document;
 @end
 
 @implementation DocumentViewController
 
-- (_TtC7SwiftUI22DocumentViewController)initWithCoder:(id)a3
+- (_TtC7SwiftUI22DocumentViewController)initWithCoder:(id)coder
 {
   swift_unknownObjectWeakInit();
   v4 = OBJC_IVAR____TtC7SwiftUI22DocumentViewController_lastNavigationItemDescription;
@@ -41,23 +41,23 @@
 {
   v4.receiver = self;
   v4.super_class = type metadata accessor for DocumentViewController(0);
-  v2 = [(UIDocumentViewController *)&v4 document];
+  document = [(UIDocumentViewController *)&v4 document];
 
-  return v2;
+  return document;
 }
 
-- (void)setDocument:(id)a3
+- (void)setDocument:(id)document
 {
   v5 = type metadata accessor for DocumentViewController(0);
   v10.receiver = self;
   v10.super_class = v5;
-  v6 = a3;
-  v7 = self;
-  v8 = [(UIDocumentViewController *)&v10 document];
-  v9.receiver = v7;
+  documentCopy = document;
+  selfCopy = self;
+  document = [(UIDocumentViewController *)&v10 document];
+  v9.receiver = selfCopy;
   v9.super_class = v5;
-  [(UIDocumentViewController *)&v9 setDocument:v6];
-  DocumentViewController.document.didset(v8);
+  [(UIDocumentViewController *)&v9 setDocument:documentCopy];
+  DocumentViewController.document.didset(document);
 }
 
 - (void)loadView
@@ -65,51 +65,51 @@
   v4.receiver = self;
   v4.super_class = type metadata accessor for DocumentViewController(0);
   v2 = v4.receiver;
-  v3 = [(UIDocumentViewController *)&v4 loadView];
-  (*((*MEMORY[0x1E69E7D40] & *v2) + 0x100))(v3);
+  loadView = [(UIDocumentViewController *)&v4 loadView];
+  (*((*MEMORY[0x1E69E7D40] & *v2) + 0x100))(loadView);
 }
 
 - (void)documentDidOpen
 {
-  v2 = self;
+  selfCopy = self;
   DocumentViewController.presentDocument()();
 }
 
 - (void)navigationItemDidUpdate
 {
-  v2 = self;
+  selfCopy = self;
   DocumentViewController.navigationItemDidUpdate()();
 }
 
-- (_TtC7SwiftUI22DocumentViewController)initWithDocument:(id)a3
+- (_TtC7SwiftUI22DocumentViewController)initWithDocument:(id)document
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC7SwiftUI22DocumentViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC7SwiftUI22DocumentViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)presentationController:(id)a3 willPresentWithAdaptiveStyle:(int64_t)a4 transitionCoordinator:(id)a5
+- (void)presentationController:(id)controller willPresentWithAdaptiveStyle:(int64_t)style transitionCoordinator:(id)coordinator
 {
-  v7 = a3;
+  controllerCopy = controller;
   swift_unknownObjectRetain();
-  v8 = self;
-  specialized DocumentViewController.presentationController(_:willPresentWithAdaptiveStyle:transitionCoordinator:)(a5);
+  selfCopy = self;
+  specialized DocumentViewController.presentationController(_:willPresentWithAdaptiveStyle:transitionCoordinator:)(coordinator);
 
   swift_unknownObjectRelease();
 }
 
-- (void)presentationControllerWillDismiss:(id)a3
+- (void)presentationControllerWillDismiss:(id)dismiss
 {
-  v4 = a3;
-  v5 = self;
-  DocumentViewController.presentationControllerWillDismiss(_:)(v4);
+  dismissCopy = dismiss;
+  selfCopy = self;
+  DocumentViewController.presentationControllerWillDismiss(_:)(dismissCopy);
 }
 
 @end

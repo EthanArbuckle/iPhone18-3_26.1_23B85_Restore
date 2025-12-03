@@ -1,25 +1,25 @@
 @interface ATXDeviceUsageEvents
-- (ATXDeviceUsageEvents)initWithCoder:(id)a3;
-- (ATXDeviceUsageEvents)initWithContinuousDeviceUsageEvent:(id)a3 mindlessCyclingEvents:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (ATXDeviceUsageEvents)initWithCoder:(id)coder;
+- (ATXDeviceUsageEvents)initWithContinuousDeviceUsageEvent:(id)event mindlessCyclingEvents:(id)events;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATXDeviceUsageEvents
 
-- (ATXDeviceUsageEvents)initWithContinuousDeviceUsageEvent:(id)a3 mindlessCyclingEvents:(id)a4
+- (ATXDeviceUsageEvents)initWithContinuousDeviceUsageEvent:(id)event mindlessCyclingEvents:(id)events
 {
-  v6 = a3;
-  v7 = a4;
+  eventCopy = event;
+  eventsCopy = events;
   v14.receiver = self;
   v14.super_class = ATXDeviceUsageEvents;
   v8 = [(ATXDeviceUsageEvents *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [eventCopy copy];
     continuousDeviceUsageEvents = v8->_continuousDeviceUsageEvents;
     v8->_continuousDeviceUsageEvents = v9;
 
-    v11 = [v7 copy];
+    v11 = [eventsCopy copy];
     mindlessCyclingEvents = v8->_mindlessCyclingEvents;
     v8->_mindlessCyclingEvents = v11;
   }
@@ -27,20 +27,20 @@
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(ATXDeviceUsageEvents *)self continuousDeviceUsageEvents];
-  [v4 encodeObject:v5 forKey:@"continuousDeviceUsageEvents"];
+  coderCopy = coder;
+  continuousDeviceUsageEvents = [(ATXDeviceUsageEvents *)self continuousDeviceUsageEvents];
+  [coderCopy encodeObject:continuousDeviceUsageEvents forKey:@"continuousDeviceUsageEvents"];
 
-  v6 = [(ATXDeviceUsageEvents *)self mindlessCyclingEvents];
-  [v4 encodeObject:v6 forKey:@"mindlessCyclingEvents"];
+  mindlessCyclingEvents = [(ATXDeviceUsageEvents *)self mindlessCyclingEvents];
+  [coderCopy encodeObject:mindlessCyclingEvents forKey:@"mindlessCyclingEvents"];
 }
 
-- (ATXDeviceUsageEvents)initWithCoder:(id)a3
+- (ATXDeviceUsageEvents)initWithCoder:(id)coder
 {
   v22[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v5 = MEMORY[0x1E69C5D78];
   v6 = MEMORY[0x1E695DFD8];
   v22[0] = objc_opt_class();
@@ -48,13 +48,13 @@
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:2];
   v8 = [v6 setWithArray:v7];
   v9 = __atxlog_handle_usage_insights();
-  v10 = [v5 robustDecodeObjectOfClasses:v8 forKey:@"continuousDeviceUsageEvents" withCoder:v4 expectNonNull:0 errorDomain:@"com.apple.proactive.UsageInsights" errorCode:-1 logHandle:v9];
+  v10 = [v5 robustDecodeObjectOfClasses:v8 forKey:@"continuousDeviceUsageEvents" withCoder:coderCopy expectNonNull:0 errorDomain:@"com.apple.proactive.UsageInsights" errorCode:-1 logHandle:v9];
 
-  v11 = [v4 error];
+  error = [coderCopy error];
 
-  if (v11)
+  if (error)
   {
-    v12 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -66,23 +66,23 @@
     v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:2];
     v16 = [v14 setWithArray:v15];
     v17 = __atxlog_handle_usage_insights();
-    v18 = [v13 robustDecodeObjectOfClasses:v16 forKey:@"mindlessCyclingEvents" withCoder:v4 expectNonNull:0 errorDomain:@"com.apple.proactive.UsageInsights" errorCode:-1 logHandle:{v17, v21[0]}];
+    v18 = [v13 robustDecodeObjectOfClasses:v16 forKey:@"mindlessCyclingEvents" withCoder:coderCopy expectNonNull:0 errorDomain:@"com.apple.proactive.UsageInsights" errorCode:-1 logHandle:{v17, v21[0]}];
 
-    v19 = [v4 error];
+    error2 = [coderCopy error];
 
-    if (v19)
+    if (error2)
     {
-      v12 = 0;
+      selfCopy = 0;
     }
 
     else
     {
       self = [(ATXDeviceUsageEvents *)self initWithContinuousDeviceUsageEvent:v10 mindlessCyclingEvents:v18];
-      v12 = self;
+      selfCopy = self;
     }
   }
 
-  return v12;
+  return selfCopy;
 }
 
 @end

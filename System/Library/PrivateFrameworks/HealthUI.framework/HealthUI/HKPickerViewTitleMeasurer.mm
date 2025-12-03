@@ -1,43 +1,43 @@
 @interface HKPickerViewTitleMeasurer
-+ (double)pickerView:(id)a3 maxWidthForComponent:(int64_t)a4;
++ (double)pickerView:(id)view maxWidthForComponent:(int64_t)component;
 @end
 
 @implementation HKPickerViewTitleMeasurer
 
-+ (double)pickerView:(id)a3 maxWidthForComponent:(int64_t)a4
++ (double)pickerView:(id)view maxWidthForComponent:(int64_t)component
 {
   v33[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = [v7 delegate];
+  viewCopy = view;
+  delegate = [viewCopy delegate];
   v9 = 0.0;
-  if (v8)
+  if (delegate)
   {
-    v10 = v8;
-    v11 = [v7 dataSource];
-    if (v11)
+    v10 = delegate;
+    dataSource = [viewCopy dataSource];
+    if (dataSource)
     {
-      v12 = v11;
-      v13 = [v7 dataSource];
-      v14 = [v13 numberOfComponentsInPickerView:v7];
+      v12 = dataSource;
+      dataSource2 = [viewCopy dataSource];
+      v14 = [dataSource2 numberOfComponentsInPickerView:viewCopy];
 
-      if (v14 > a4)
+      if (v14 > component)
       {
-        v15 = [v7 delegate];
+        delegate2 = [viewCopy delegate];
         v16 = objc_opt_respondsToSelector();
 
-        v17 = [v7 delegate];
+        delegate3 = [viewCopy delegate];
         v18 = objc_opt_respondsToSelector();
 
-        v19 = [v7 delegate];
+        delegate4 = [viewCopy delegate];
         v20 = objc_opt_respondsToSelector();
 
         if (v16 & 1) == 0 || (v18 & 1) != 0 || (v20)
         {
-          [HKPickerViewTitleMeasurer pickerView:a2 maxWidthForComponent:a1];
+          [HKPickerViewTitleMeasurer pickerView:a2 maxWidthForComponent:self];
         }
 
-        v21 = [v7 dataSource];
-        v22 = [v21 pickerView:v7 numberOfRowsInComponent:a4];
+        dataSource3 = [viewCopy dataSource];
+        v22 = [dataSource3 pickerView:viewCopy numberOfRowsInComponent:component];
 
         if (v22 >= 1)
         {
@@ -45,12 +45,12 @@
           v24 = *MEMORY[0x1E69DB648];
           do
           {
-            v25 = [v7 delegate];
-            v26 = [v25 pickerView:v7 titleForRow:v23 forComponent:a4];
+            delegate5 = [viewCopy delegate];
+            v26 = [delegate5 pickerView:viewCopy titleForRow:v23 forComponent:component];
 
             v32 = v24;
-            v27 = [a1 _pickerTitleFont];
-            v33[0] = v27;
+            _pickerTitleFont = [self _pickerTitleFont];
+            v33[0] = _pickerTitleFont;
             v28 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v33 forKeys:&v32 count:1];
             [v26 sizeWithAttributes:v28];
             v30 = v29 + 20.0;

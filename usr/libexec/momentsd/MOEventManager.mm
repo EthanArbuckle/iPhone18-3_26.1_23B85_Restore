@@ -1,5 +1,5 @@
 @interface MOEventManager
-- (MOEventManager)initWithUniverse:(id)a3;
+- (MOEventManager)initWithUniverse:(id)universe;
 - (MOHealthKitManager)healthKitManager;
 - (MOLifeEventManager)lifeEventManager;
 - (MOMotionManager)motionManager;
@@ -14,35 +14,35 @@
 - (MOSpotlightManager)spotlightManager;
 - (MOSuggestedEventManager)suggestedEventManager;
 - (MOWeatherManager)weatherManager;
-- (id)_getEarliestDateForCategory_postlaunch:(unint64_t)a3;
-- (id)_getEarliestDateForCategory_prelaunch:(unint64_t)a3;
-- (id)mergeEventArraysFromDict:(id)a3;
-- (id)splitEventArrayByCategory:(id)a3;
-- (void)_cleanUpEventsWithRefreshVariant:(unint64_t)a3 andHandler:(id)a4;
+- (id)_getEarliestDateForCategory_postlaunch:(unint64_t)category_postlaunch;
+- (id)_getEarliestDateForCategory_prelaunch:(unint64_t)category_prelaunch;
+- (id)mergeEventArraysFromDict:(id)dict;
+- (id)splitEventArrayByCategory:(id)category;
+- (void)_cleanUpEventsWithRefreshVariant:(unint64_t)variant andHandler:(id)handler;
 - (void)_clearEvents;
-- (void)_collectCompleteEventsBetweenStartDate:(id)a3 endDate:(id)a4 refreshVariant:(unint64_t)a5 withStoredEvents:(id)a6 handler:(id)a7;
-- (void)_collectEventsWithRefreshVariant:(unint64_t)a3 andHandler:(id)a4;
-- (void)_fetchEventsFromCacheWithOptions:(id)a3 CompletionHandler:(id)a4;
-- (void)_fetchEventsFromDBAndRehydrateEventsWithOptions:(id)a3 CompletionHandler:(id)a4;
-- (void)_fetchEventsWithOptions:(id)a3 CompletionHandler:(id)a4;
-- (void)_rehydrateEvents:(id)a3 withHandler:(id)a4;
-- (void)_rehydrateEventsBySingleSource:(id)a3 handler:(id)a4;
-- (void)cleanUpEventsWithRefreshVariant:(unint64_t)a3 andHandler:(id)a4;
+- (void)_collectCompleteEventsBetweenStartDate:(id)date endDate:(id)endDate refreshVariant:(unint64_t)variant withStoredEvents:(id)events handler:(id)handler;
+- (void)_collectEventsWithRefreshVariant:(unint64_t)variant andHandler:(id)handler;
+- (void)_fetchEventsFromCacheWithOptions:(id)options CompletionHandler:(id)handler;
+- (void)_fetchEventsFromDBAndRehydrateEventsWithOptions:(id)options CompletionHandler:(id)handler;
+- (void)_fetchEventsWithOptions:(id)options CompletionHandler:(id)handler;
+- (void)_rehydrateEvents:(id)events withHandler:(id)handler;
+- (void)_rehydrateEventsBySingleSource:(id)source handler:(id)handler;
+- (void)cleanUpEventsWithRefreshVariant:(unint64_t)variant andHandler:(id)handler;
 - (void)clearCache;
-- (void)clearEventsWithRefreshVariant:(unint64_t)a3 andHandler:(id)a4;
-- (void)collectEventsWithRefreshVariant:(unint64_t)a3 andHandler:(id)a4;
-- (void)fetchEventsWithOptions:(id)a3 CompletionHandler:(id)a4;
-- (void)rehydrateEvents:(id)a3 withHandler:(id)a4;
-- (void)runAnalyticsWithRefreshVariant:(unint64_t)a3 andHandler:(id)a4;
-- (void)storeEvents:(id)a3 handler:(id)a4;
+- (void)clearEventsWithRefreshVariant:(unint64_t)variant andHandler:(id)handler;
+- (void)collectEventsWithRefreshVariant:(unint64_t)variant andHandler:(id)handler;
+- (void)fetchEventsWithOptions:(id)options CompletionHandler:(id)handler;
+- (void)rehydrateEvents:(id)events withHandler:(id)handler;
+- (void)runAnalyticsWithRefreshVariant:(unint64_t)variant andHandler:(id)handler;
+- (void)storeEvents:(id)events handler:(id)handler;
 @end
 
 @implementation MOEventManager
 
-- (MOEventManager)initWithUniverse:(id)a3
+- (MOEventManager)initWithUniverse:(id)universe
 {
-  v6 = a3;
-  objc_storeStrong(&self->fUniverse, a3);
+  universeCopy = universe;
+  objc_storeStrong(&self->fUniverse, universe);
   v7 = dispatch_queue_attr_make_with_autorelease_frequency(&_dispatch_queue_attr_concurrent, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
   v8 = dispatch_queue_create("collect", v7);
   collectQueue = self->collectQueue;
@@ -50,23 +50,23 @@
 
   v10 = objc_opt_class();
   v11 = NSStringFromClass(v10);
-  v12 = [v6 getService:v11];
+  v12 = [universeCopy getService:v11];
 
   v13 = objc_opt_class();
   v14 = NSStringFromClass(v13);
-  v15 = [v6 getService:v14];
+  v15 = [universeCopy getService:v14];
 
   v16 = objc_opt_class();
   v17 = NSStringFromClass(v16);
-  v18 = [v6 getService:v17];
+  v18 = [universeCopy getService:v17];
 
   v19 = objc_opt_class();
   v20 = NSStringFromClass(v19);
-  v21 = [v6 getService:v20];
+  v21 = [universeCopy getService:v20];
 
   v22 = objc_opt_class();
   v23 = NSStringFromClass(v22);
-  v24 = [v6 getService:v23];
+  v24 = [universeCopy getService:v23];
 
   if (!v18)
   {
@@ -80,7 +80,7 @@
     v32 = v31;
     v33 = @"Invalid parameter not satisfying: eventStore";
     v34 = a2;
-    v35 = self;
+    selfCopy4 = self;
     v36 = 125;
     goto LABEL_20;
   }
@@ -97,7 +97,7 @@
     v32 = v31;
     v33 = @"Invalid parameter not satisfying: defaultsManager";
     v34 = a2;
-    v35 = self;
+    selfCopy4 = self;
     v36 = 127;
     goto LABEL_20;
   }
@@ -114,7 +114,7 @@
     v32 = v31;
     v33 = @"Invalid parameter not satisfying: configurationManager";
     v34 = a2;
-    v35 = self;
+    selfCopy4 = self;
     v36 = 128;
     goto LABEL_20;
   }
@@ -131,12 +131,12 @@
     v32 = v31;
     v33 = @"Invalid parameter not satisfying: patternManager";
     v34 = a2;
-    v35 = self;
+    selfCopy4 = self;
     v36 = 129;
 LABEL_20:
-    [v31 handleFailureInMethod:v34 object:v35 file:@"MOEventManager.m" lineNumber:v36 description:v33];
+    [v31 handleFailureInMethod:v34 object:selfCopy4 file:@"MOEventManager.m" lineNumber:v36 description:v33];
 
-    v29 = 0;
+    selfCopy5 = 0;
     goto LABEL_21;
   }
 
@@ -158,10 +158,10 @@ LABEL_20:
   }
 
   self = v25;
-  v29 = self;
+  selfCopy5 = self;
 LABEL_21:
 
-  return v29;
+  return selfCopy5;
 }
 
 - (MOPhotoManager)photoManager
@@ -416,7 +416,7 @@ LABEL_21:
   return spotlightManager;
 }
 
-- (id)_getEarliestDateForCategory_prelaunch:(unint64_t)a3
+- (id)_getEarliestDateForCategory_prelaunch:(unint64_t)category_prelaunch
 {
   v3 = +[NSDate date];
   v4 = [NSDate dateWithTimeInterval:v3 sinceDate:-2419200.0];
@@ -424,14 +424,14 @@ LABEL_21:
   return v4;
 }
 
-- (id)_getEarliestDateForCategory_postlaunch:(unint64_t)a3
+- (id)_getEarliestDateForCategory_postlaunch:(unint64_t)category_postlaunch
 {
-  v3 = a3 - 1;
-  if (a3 - 1 <= 0x18 && ((0x1F7F33Fu >> v3) & 1) != 0)
+  v3 = category_postlaunch - 1;
+  if (category_postlaunch - 1 <= 0x18 && ((0x1F7F33Fu >> v3) & 1) != 0)
   {
     v4 = off_10033FC80[v3];
-    v5 = [(MOEventManager *)self defaultsManager];
-    v6 = [v5 objectForKey:v4];
+    defaultsManager = [(MOEventManager *)self defaultsManager];
+    v6 = [defaultsManager objectForKey:v4];
   }
 
   else
@@ -442,32 +442,32 @@ LABEL_21:
   return v6;
 }
 
-- (void)clearEventsWithRefreshVariant:(unint64_t)a3 andHandler:(id)a4
+- (void)clearEventsWithRefreshVariant:(unint64_t)variant andHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v7 = _mo_log_facility_get_os_log(&MOLogFacilityPerformance);
   v8 = v7;
-  if (a3 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v7))
+  if (variant - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v7))
   {
     *v20 = 0;
-    _os_signpost_emit_with_name_impl(&_mh_execute_header, v8, OS_SIGNPOST_INTERVAL_BEGIN, a3, "EventManagerClearEvents", "", v20, 2u);
+    _os_signpost_emit_with_name_impl(&_mh_execute_header, v8, OS_SIGNPOST_INTERVAL_BEGIN, variant, "EventManagerClearEvents", "", v20, 2u);
   }
 
   v9 = [[MOPerformanceMeasurement alloc] initWithName:@"ClearEvents" measureRecentPeak:0];
   [(MOPerformanceMeasurement *)v9 startSession];
-  if (a3 == 0xFFFF)
+  if (variant == 0xFFFF)
   {
-    v10 = [(MOEventManager *)self photoManager];
-    [v10 deletePhotoMemoryPlistFile];
+    photoManager = [(MOEventManager *)self photoManager];
+    [photoManager deletePhotoMemoryPlistFile];
   }
 
-  v11 = [(MOEventManager *)self eventStore];
-  v12 = [v11 persistenceManager];
-  v13 = [v12 availability];
+  eventStore = [(MOEventManager *)self eventStore];
+  persistenceManager = [eventStore persistenceManager];
+  availability = [persistenceManager availability];
 
   v14 = _mo_log_facility_get_os_log(&MOLogFacilityEventManager);
   v15 = v14;
-  if (v13 == 2)
+  if (availability == 2)
   {
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
@@ -476,9 +476,9 @@ LABEL_21:
     }
 
     [(MOEventManager *)self _clearEvents];
-    if (v6)
+    if (handlerCopy)
     {
-      v6[2](v6, 0, &__NSDictionary0__struct);
+      handlerCopy[2](handlerCopy, 0, &__NSDictionary0__struct);
     }
   }
 
@@ -489,23 +489,23 @@ LABEL_21:
       [MOEventManager clearEventsWithRefreshVariant:andHandler:];
     }
 
-    if (v6)
+    if (handlerCopy)
     {
       v21 = NSLocalizedDescriptionKey;
       v22 = @"[clearEventsWithRefreshVariant] database is not available";
       v16 = [NSDictionary dictionaryWithObjects:&v22 forKeys:&v21 count:1];
       v17 = [NSError errorWithDomain:@"MOErrorDomain" code:16 userInfo:v16];
 
-      (v6)[2](v6, v17, &__NSDictionary0__struct);
+      (handlerCopy)[2](handlerCopy, v17, &__NSDictionary0__struct);
     }
   }
 
   v18 = _mo_log_facility_get_os_log(&MOLogFacilityPerformance);
   v19 = v18;
-  if (a3 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v18))
+  if (variant - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v18))
   {
     *v20 = 0;
-    _os_signpost_emit_with_name_impl(&_mh_execute_header, v19, OS_SIGNPOST_INTERVAL_END, a3, "EventManagerClearEvents", "", v20, 2u);
+    _os_signpost_emit_with_name_impl(&_mh_execute_header, v19, OS_SIGNPOST_INTERVAL_END, variant, "EventManagerClearEvents", "", v20, 2u);
   }
 
   [(MOPerformanceMeasurement *)v9 endSession];
@@ -513,8 +513,8 @@ LABEL_21:
 
 - (void)_clearEvents
 {
-  v2 = [(MOEventManager *)self eventStore];
-  [v2 removeAllEventsWithCompletionHandler:&__block_literal_global_57];
+  eventStore = [(MOEventManager *)self eventStore];
+  [eventStore removeAllEventsWithCompletionHandler:&__block_literal_global_57];
 }
 
 void __30__MOEventManager__clearEvents__block_invoke(id a1, NSError *a2)
@@ -527,26 +527,26 @@ void __30__MOEventManager__clearEvents__block_invoke(id a1, NSError *a2)
   }
 }
 
-- (void)collectEventsWithRefreshVariant:(unint64_t)a3 andHandler:(id)a4
+- (void)collectEventsWithRefreshVariant:(unint64_t)variant andHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v7 = _mo_log_facility_get_os_log(&MOLogFacilityPerformance);
   v8 = v7;
-  if (a3 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v7))
+  if (variant - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v7))
   {
     *buf = 0;
-    _os_signpost_emit_with_name_impl(&_mh_execute_header, v8, OS_SIGNPOST_INTERVAL_BEGIN, a3, "EventManagerCollectEventsWrapper", "", buf, 2u);
+    _os_signpost_emit_with_name_impl(&_mh_execute_header, v8, OS_SIGNPOST_INTERVAL_BEGIN, variant, "EventManagerCollectEventsWrapper", "", buf, 2u);
   }
 
   v9 = [[MOPerformanceMeasurement alloc] initWithName:@"CollectEvents" measureRecentPeak:0];
   [(MOPerformanceMeasurement *)v9 startSession];
-  v10 = [(MOEventManager *)self eventStore];
-  v11 = [v10 persistenceManager];
-  v12 = [v11 availability];
+  eventStore = [(MOEventManager *)self eventStore];
+  persistenceManager = [eventStore persistenceManager];
+  availability = [persistenceManager availability];
 
   v13 = _mo_log_facility_get_os_log(&MOLogFacilityEventManager);
   v14 = v13;
-  if (v12 == 2)
+  if (availability == 2)
   {
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
@@ -559,10 +559,10 @@ void __30__MOEventManager__clearEvents__block_invoke(id a1, NSError *a2)
     v20[1] = 3221225472;
     v20[2] = __61__MOEventManager_collectEventsWithRefreshVariant_andHandler___block_invoke;
     v20[3] = &unk_10033BFD0;
-    v22 = v6;
-    v23 = a3;
+    v22 = handlerCopy;
+    variantCopy = variant;
     v21 = v9;
-    [(MOEventManager *)self _collectEventsWithRefreshVariant:a3 andHandler:v20];
+    [(MOEventManager *)self _collectEventsWithRefreshVariant:variant andHandler:v20];
   }
 
   else
@@ -572,7 +572,7 @@ void __30__MOEventManager__clearEvents__block_invoke(id a1, NSError *a2)
       [MOEventManager collectEventsWithRefreshVariant:andHandler:];
     }
 
-    if (v6)
+    if (handlerCopy)
     {
       v27 = NSLocalizedDescriptionKey;
       v28 = @"[collectEventsWithRefreshVariant] database is not available";
@@ -582,15 +582,15 @@ void __30__MOEventManager__clearEvents__block_invoke(id a1, NSError *a2)
       v25 = @"stateDatabaseAvailable";
       v26 = &__kCFBooleanFalse;
       v17 = [NSDictionary dictionaryWithObjects:&v26 forKeys:&v25 count:1];
-      (*(v6 + 2))(v6, v16, v17);
+      (*(handlerCopy + 2))(handlerCopy, v16, v17);
     }
 
     v18 = _mo_log_facility_get_os_log(&MOLogFacilityPerformance);
     v19 = v18;
-    if (a3 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v18))
+    if (variant - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v18))
     {
       *buf = 0;
-      _os_signpost_emit_with_name_impl(&_mh_execute_header, v19, OS_SIGNPOST_INTERVAL_END, a3, "EventManagerCollectEventsWrapper", "", buf, 2u);
+      _os_signpost_emit_with_name_impl(&_mh_execute_header, v19, OS_SIGNPOST_INTERVAL_END, variant, "EventManagerCollectEventsWrapper", "", buf, 2u);
     }
 
     [(MOPerformanceMeasurement *)v9 endSession];
@@ -620,9 +620,9 @@ void __61__MOEventManager_collectEventsWithRefreshVariant_andHandler___block_inv
   [*(a1 + 32) endSession];
 }
 
-- (void)_collectEventsWithRefreshVariant:(unint64_t)a3 andHandler:(id)a4
+- (void)_collectEventsWithRefreshVariant:(unint64_t)variant andHandler:(id)handler
 {
-  v7 = a4;
+  handlerCopy = handler;
   v33 = 0;
   v34 = &v33;
   v35 = 0x3032000000;
@@ -642,7 +642,7 @@ void __61__MOEventManager_collectEventsWithRefreshVariant_andHandler___block_inv
   v26[3] = &unk_10033BA20;
   v26[4] = &v33;
   v26[5] = &v27;
-  [(MOEventRefreshHelper *)v8 getCollectDatesForVariant:a3 withHandler:v26];
+  [(MOEventRefreshHelper *)v8 getCollectDatesForVariant:variant withHandler:v26];
   if (v34[5] && v28[5])
   {
     v9 = _mo_log_facility_get_os_log(&MOLogFacilityEventManager);
@@ -651,7 +651,7 @@ void __61__MOEventManager_collectEventsWithRefreshVariant_andHandler___block_inv
       v10 = NSStringFromSelector(a2);
       v11 = v34[5];
       v12 = v28[5];
-      v13 = [NSNumber numberWithUnsignedInteger:a3];
+      v13 = [NSNumber numberWithUnsignedInteger:variant];
       *buf = 138413058;
       v40 = v10;
       v41 = 2112;
@@ -668,18 +668,18 @@ void __61__MOEventManager_collectEventsWithRefreshVariant_andHandler___block_inv
     v16 = [v15 initWithStartDate:v34[5] endDate:v28[5]];
     v17 = [(MOEventBundleFetchOptions *)v14 initWithDateInterval:v16 ascending:1 limit:&off_10036C1A8 includeDeletedBundles:0 skipRanking:1 interfaceType:13];
 
-    v18 = [(MOEventManager *)self eventBundleStore];
+    eventBundleStore = [(MOEventManager *)self eventBundleStore];
     v20[0] = _NSConcreteStackBlock;
     v20[1] = 3221225472;
     v20[2] = __62__MOEventManager__collectEventsWithRefreshVariant_andHandler___block_invoke_200;
     v20[3] = &unk_10033F710;
     v23 = &v27;
     v24 = a2;
-    v25 = a3;
+    variantCopy = variant;
     v22 = &v33;
     v20[4] = self;
-    v21 = v7;
-    [v18 fetchEventBundleWithOptions:v17 CompletionHandler:v20];
+    v21 = handlerCopy;
+    [eventBundleStore fetchEventBundleWithOptions:v17 CompletionHandler:v20];
   }
 
   else
@@ -689,9 +689,9 @@ void __61__MOEventManager_collectEventsWithRefreshVariant_andHandler___block_inv
     v19 = [NSDictionary dictionaryWithObjects:&v48 forKeys:&v47 count:1];
     v17 = [NSError errorWithDomain:@"MOErrorDomain" code:7 userInfo:v19];
 
-    if (v7)
+    if (handlerCopy)
     {
-      (*(v7 + 2))(v7, v17, &__NSDictionary0__struct);
+      (*(handlerCopy + 2))(handlerCopy, v17, &__NSDictionary0__struct);
     }
   }
 
@@ -820,12 +820,12 @@ void __62__MOEventManager__collectEventsWithRefreshVariant_andHandler___block_in
   }
 }
 
-- (void)_collectCompleteEventsBetweenStartDate:(id)a3 endDate:(id)a4 refreshVariant:(unint64_t)a5 withStoredEvents:(id)a6 handler:(id)a7
+- (void)_collectCompleteEventsBetweenStartDate:(id)date endDate:(id)endDate refreshVariant:(unint64_t)variant withStoredEvents:(id)events handler:(id)handler
 {
-  v11 = a3;
-  v119 = a4;
-  v118 = a6;
-  v12 = a7;
+  dateCopy = date;
+  endDateCopy = endDate;
+  eventsCopy = events;
+  handlerCopy = handler;
   v13 = _mo_log_facility_get_os_log(&MOLogFacilityPerformance);
   if (os_signpost_enabled(v13))
   {
@@ -838,12 +838,12 @@ void __62__MOEventManager__collectEventsWithRefreshVariant_andHandler___block_in
   v15 = _mo_log_facility_get_os_log(&MOLogFacilityEventManager);
   if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
   {
-    v16 = [v11 stringFromDate];
-    v17 = [v119 stringFromDate];
+    stringFromDate = [dateCopy stringFromDate];
+    stringFromDate2 = [endDateCopy stringFromDate];
     *buf = 138412546;
-    *&buf[4] = v16;
+    *&buf[4] = stringFromDate;
     *&buf[12] = 2112;
-    *&buf[14] = v17;
+    *&buf[14] = stringFromDate2;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "start collecting events, start date, %@, end date, %@", buf, 0x16u);
   }
 
@@ -868,7 +868,7 @@ void __62__MOEventManager__collectEventsWithRefreshVariant_andHandler___block_in
   v361[3] = &unk_10033F760;
   v361[4] = self;
   v364 = v366;
-  v111 = v12;
+  v111 = handlerCopy;
   v363 = v111;
   v365 = buf;
   v112 = v14;
@@ -974,11 +974,11 @@ void __62__MOEventManager__collectEventsWithRefreshVariant_andHandler___block_in
     block[2] = __105__MOEventManager__collectCompleteEventsBetweenStartDate_endDate_refreshVariant_withStoredEvents_handler___block_invoke_222;
     block[3] = &unk_10033F7D8;
     block[4] = self;
-    v277 = v11;
+    v277 = dateCopy;
     v25 = v20;
     v278 = v25;
-    v279 = v119;
-    v280 = v118;
+    v279 = endDateCopy;
+    v280 = eventsCopy;
     v281 = v117;
     v282 = v18;
     v283 = v116;
@@ -1028,11 +1028,11 @@ void __62__MOEventManager__collectEventsWithRefreshVariant_andHandler___block_in
     v263[2] = __105__MOEventManager__collectCompleteEventsBetweenStartDate_endDate_refreshVariant_withStoredEvents_handler___block_invoke_239;
     v263[3] = &unk_10033F7D8;
     v263[4] = self;
-    v264 = v11;
+    v264 = dateCopy;
     v32 = v27;
     v265 = v32;
-    v266 = v119;
-    v267 = v118;
+    v266 = endDateCopy;
+    v267 = eventsCopy;
     v268 = v117;
     v269 = v18;
     v270 = v116;
@@ -1082,11 +1082,11 @@ void __62__MOEventManager__collectEventsWithRefreshVariant_andHandler___block_in
     v251[2] = __105__MOEventManager__collectCompleteEventsBetweenStartDate_endDate_refreshVariant_withStoredEvents_handler___block_invoke_249;
     v251[3] = &unk_10033F850;
     v251[4] = self;
-    v252 = v11;
+    v252 = dateCopy;
     v39 = v34;
     v253 = v39;
-    v254 = v119;
-    v255 = v118;
+    v254 = endDateCopy;
+    v255 = eventsCopy;
     v256 = v117;
     v257 = v18;
     v258 = v116;
@@ -1135,11 +1135,11 @@ void __62__MOEventManager__collectEventsWithRefreshVariant_andHandler___block_in
     v239[2] = __105__MOEventManager__collectCompleteEventsBetweenStartDate_endDate_refreshVariant_withStoredEvents_handler___block_invoke_259;
     v239[3] = &unk_10033F850;
     v239[4] = self;
-    v240 = v11;
+    v240 = dateCopy;
     v46 = v41;
     v241 = v46;
-    v242 = v119;
-    v243 = v118;
+    v242 = endDateCopy;
+    v243 = eventsCopy;
     v244 = v117;
     v245 = v18;
     v246 = v116;
@@ -1188,11 +1188,11 @@ void __62__MOEventManager__collectEventsWithRefreshVariant_andHandler___block_in
     v227[2] = __105__MOEventManager__collectCompleteEventsBetweenStartDate_endDate_refreshVariant_withStoredEvents_handler___block_invoke_269;
     v227[3] = &unk_10033F8C8;
     v227[4] = self;
-    v228 = v11;
+    v228 = dateCopy;
     v53 = v48;
     v229 = v53;
-    v230 = v119;
-    v231 = v118;
+    v230 = endDateCopy;
+    v231 = eventsCopy;
     v232 = v117;
     v233 = v18;
     v237 = &v331;
@@ -1241,11 +1241,11 @@ void __62__MOEventManager__collectEventsWithRefreshVariant_andHandler___block_in
     v215[2] = __105__MOEventManager__collectCompleteEventsBetweenStartDate_endDate_refreshVariant_withStoredEvents_handler___block_invoke_279;
     v215[3] = &unk_10033F8C8;
     v215[4] = self;
-    v216 = v11;
+    v216 = dateCopy;
     v60 = v55;
     v217 = v60;
-    v218 = v119;
-    v219 = v118;
+    v218 = endDateCopy;
+    v219 = eventsCopy;
     v220 = v117;
     v221 = v18;
     v225 = &v325;
@@ -1294,11 +1294,11 @@ void __62__MOEventManager__collectEventsWithRefreshVariant_andHandler___block_in
     v204[2] = __105__MOEventManager__collectCompleteEventsBetweenStartDate_endDate_refreshVariant_withStoredEvents_handler___block_invoke_289;
     v204[3] = &unk_10033F940;
     v204[4] = self;
-    v205 = v11;
+    v205 = dateCopy;
     v67 = v62;
     v206 = v67;
-    v207 = v119;
-    v208 = v118;
+    v207 = endDateCopy;
+    v208 = eventsCopy;
     v209 = v117;
     v210 = v18;
     v214 = &v319;
@@ -1351,10 +1351,10 @@ void __62__MOEventManager__collectEventsWithRefreshVariant_andHandler___block_in
     v203 = buf;
     v201 = v19;
     v193 = group;
-    v194 = v11;
+    v194 = dateCopy;
     v74 = v69;
     v195 = v74;
-    v196 = v118;
+    v196 = eventsCopy;
     v197 = v117;
     v198 = v115;
     v199 = v18;
@@ -1400,11 +1400,11 @@ void __62__MOEventManager__collectEventsWithRefreshVariant_andHandler___block_in
     v180[2] = __105__MOEventManager__collectCompleteEventsBetweenStartDate_endDate_refreshVariant_withStoredEvents_handler___block_invoke_323;
     v180[3] = &unk_10033F850;
     v180[4] = self;
-    v181 = v11;
+    v181 = dateCopy;
     v81 = v76;
     v182 = v81;
-    v183 = v119;
-    v184 = v118;
+    v183 = endDateCopy;
+    v184 = eventsCopy;
     v185 = v117;
     v186 = v18;
     v187 = v116;
@@ -1453,11 +1453,11 @@ void __62__MOEventManager__collectEventsWithRefreshVariant_andHandler___block_in
     v168[2] = __105__MOEventManager__collectCompleteEventsBetweenStartDate_endDate_refreshVariant_withStoredEvents_handler___block_invoke_333;
     v168[3] = &unk_10033F8C8;
     v168[4] = self;
-    v169 = v11;
+    v169 = dateCopy;
     v88 = v83;
     v170 = v88;
-    v171 = v119;
-    v172 = v118;
+    v171 = endDateCopy;
+    v172 = eventsCopy;
     v173 = v117;
     v174 = v18;
     v178 = &v301;
@@ -1505,9 +1505,9 @@ void __62__MOEventManager__collectEventsWithRefreshVariant_andHandler___block_in
     v157[2] = __105__MOEventManager__collectCompleteEventsBetweenStartDate_endDate_refreshVariant_withStoredEvents_handler___block_invoke_343;
     v157[3] = &unk_10033FA30;
     v157[4] = self;
-    v158 = v11;
-    v159 = v119;
-    v160 = v118;
+    v158 = dateCopy;
+    v159 = endDateCopy;
+    v160 = eventsCopy;
     v161 = v117;
     v162 = v18;
     v166 = &v295;
@@ -1556,9 +1556,9 @@ void __62__MOEventManager__collectEventsWithRefreshVariant_andHandler___block_in
     v146[2] = __105__MOEventManager__collectCompleteEventsBetweenStartDate_endDate_refreshVariant_withStoredEvents_handler___block_invoke_353;
     v146[3] = &unk_10033FA30;
     v146[4] = self;
-    v147 = v11;
-    v148 = v119;
-    v149 = v118;
+    v147 = dateCopy;
+    v148 = endDateCopy;
+    v149 = eventsCopy;
     v150 = v117;
     v151 = v18;
     v155 = &v289;
@@ -1588,7 +1588,7 @@ void __62__MOEventManager__collectEventsWithRefreshVariant_andHandler___block_in
     }
   }
 
-  v102 = [(MOEventManager *)self queue];
+  queue = [(MOEventManager *)self queue];
   v121[0] = _NSConcreteStackBlock;
   v121[1] = 3221225472;
   v121[2] = __105__MOEventManager__collectCompleteEventsBetweenStartDate_endDate_refreshVariant_withStoredEvents_handler___block_invoke_360;
@@ -1615,18 +1615,18 @@ void __62__MOEventManager__collectEventsWithRefreshVariant_andHandler___block_in
   v105 = v117;
   v125 = v105;
   v145 = buf;
-  v106 = v11;
+  v106 = dateCopy;
   v126 = v106;
-  v107 = v119;
+  v107 = endDateCopy;
   v127 = v107;
-  v108 = v118;
+  v108 = eventsCopy;
   v128 = v108;
-  v129 = self;
+  selfCopy = self;
   v109 = v115;
   v130 = v109;
   v110 = v19;
   v131 = v110;
-  dispatch_group_notify(group, v102, v121);
+  dispatch_group_notify(group, queue, v121);
 
   _Block_object_dispose(&v289, 8);
   _Block_object_dispose(&v295, 8);
@@ -4134,10 +4134,10 @@ void __105__MOEventManager__collectCompleteEventsBetweenStartDate_endDate_refres
   v7();
 }
 
-- (void)storeEvents:(id)a3 handler:(id)a4
+- (void)storeEvents:(id)events handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  eventsCopy = events;
+  handlerCopy = handler;
   v8 = _mo_log_facility_get_os_log(&MOLogFacilityPerformance);
   if (os_signpost_enabled(v8))
   {
@@ -4147,13 +4147,13 @@ void __105__MOEventManager__collectCompleteEventsBetweenStartDate_endDate_refres
 
   v9 = [[MOPerformanceMeasurement alloc] initWithName:@"StoreEvents" measureRecentPeak:0];
   [(MOPerformanceMeasurement *)v9 startSession];
-  v10 = [(MOEventManager *)self eventStore];
-  v11 = [v10 persistenceManager];
-  v12 = [v11 availability];
+  eventStore = [(MOEventManager *)self eventStore];
+  persistenceManager = [eventStore persistenceManager];
+  availability = [persistenceManager availability];
 
   v13 = _mo_log_facility_get_os_log(&MOLogFacilityEventManager);
   v14 = v13;
-  if (v12 == 2)
+  if (availability == 2)
   {
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
@@ -4161,14 +4161,14 @@ void __105__MOEventManager__collectCompleteEventsBetweenStartDate_endDate_refres
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "store events since datastore is available", buf, 2u);
     }
 
-    v15 = [(MOEventManager *)self eventStore];
+    eventStore2 = [(MOEventManager *)self eventStore];
     v19[0] = _NSConcreteStackBlock;
     v19[1] = 3221225472;
     v19[2] = __38__MOEventManager_storeEvents_handler___block_invoke;
     v19[3] = &unk_10033C170;
-    v21 = v7;
+    v21 = handlerCopy;
     v20 = v9;
-    [v15 storeEvents:v6 CompletionHandler:v19];
+    [eventStore2 storeEvents:eventsCopy CompletionHandler:v19];
 
     v16 = v21;
   }
@@ -4185,9 +4185,9 @@ void __105__MOEventManager__collectCompleteEventsBetweenStartDate_endDate_refres
     v17 = [NSDictionary dictionaryWithObjects:&v24 forKeys:&v23 count:1];
     v16 = [NSError errorWithDomain:@"MOErrorDomain" code:16 userInfo:v17];
 
-    if (v7)
+    if (handlerCopy)
     {
-      (*(v7 + 2))(v7, v16, &__NSDictionary0__struct);
+      (*(handlerCopy + 2))(handlerCopy, v16, &__NSDictionary0__struct);
     }
 
     v18 = _mo_log_facility_get_os_log(&MOLogFacilityPerformance);
@@ -4221,10 +4221,10 @@ void __38__MOEventManager_storeEvents_handler___block_invoke(uint64_t a1, void *
   [*(a1 + 32) endSession];
 }
 
-- (void)fetchEventsWithOptions:(id)a3 CompletionHandler:(id)a4
+- (void)fetchEventsWithOptions:(id)options CompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  optionsCopy = options;
+  handlerCopy = handler;
   v8 = _mo_log_facility_get_os_log(&MOLogFacilityPerformance);
   if (os_signpost_enabled(v8))
   {
@@ -4234,13 +4234,13 @@ void __38__MOEventManager_storeEvents_handler___block_invoke(uint64_t a1, void *
 
   v9 = [[MOPerformanceMeasurement alloc] initWithName:@"FetchEvents" measureRecentPeak:0];
   [(MOPerformanceMeasurement *)v9 startSession];
-  v10 = [(MOEventManager *)self eventStore];
-  v11 = [v10 persistenceManager];
-  v12 = [v11 availability];
+  eventStore = [(MOEventManager *)self eventStore];
+  persistenceManager = [eventStore persistenceManager];
+  availability = [persistenceManager availability];
 
   v13 = _mo_log_facility_get_os_log(&MOLogFacilityEventManager);
   v14 = v13;
-  if (v12 == 2)
+  if (availability == 2)
   {
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
@@ -4252,9 +4252,9 @@ void __38__MOEventManager_storeEvents_handler___block_invoke(uint64_t a1, void *
     v18[1] = 3221225472;
     v18[2] = __59__MOEventManager_fetchEventsWithOptions_CompletionHandler___block_invoke;
     v18[3] = &unk_100337850;
-    v20 = v7;
+    v20 = handlerCopy;
     v19 = v9;
-    [(MOEventManager *)self _fetchEventsWithOptions:v6 CompletionHandler:v18];
+    [(MOEventManager *)self _fetchEventsWithOptions:optionsCopy CompletionHandler:v18];
 
     v15 = v20;
   }
@@ -4271,9 +4271,9 @@ void __38__MOEventManager_storeEvents_handler___block_invoke(uint64_t a1, void *
     v16 = [NSDictionary dictionaryWithObjects:&v23 forKeys:&v22 count:1];
     v15 = [NSError errorWithDomain:@"MOErrorDomain" code:16 userInfo:v16];
 
-    if (v7)
+    if (handlerCopy)
     {
-      (*(v7 + 2))(v7, &__NSArray0__struct, v15);
+      (*(handlerCopy + 2))(handlerCopy, &__NSArray0__struct, v15);
     }
 
     v17 = _mo_log_facility_get_os_log(&MOLogFacilityPerformance);
@@ -4307,42 +4307,42 @@ void __59__MOEventManager_fetchEventsWithOptions_CompletionHandler___block_invok
   [*(a1 + 32) endSession];
 }
 
-- (void)_fetchEventsWithOptions:(id)a3 CompletionHandler:(id)a4
+- (void)_fetchEventsWithOptions:(id)options CompletionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(MOEventManager *)self cachedEvents];
-  v11 = [v10 count];
+  optionsCopy = options;
+  handlerCopy = handler;
+  cachedEvents = [(MOEventManager *)self cachedEvents];
+  cacheStartDate = [cachedEvents count];
 
-  if (v11)
+  if (cacheStartDate)
   {
-    v12 = [v8 dateInterval];
-    if (v12)
+    dateInterval = [optionsCopy dateInterval];
+    if (dateInterval)
     {
-      v11 = [(MOEventManager *)self cacheStartDate];
-      v4 = [v8 dateInterval];
-      v5 = [v4 startDate];
-      if ([v11 isOnOrBefore:v5])
+      cacheStartDate = [(MOEventManager *)self cacheStartDate];
+      dateInterval2 = [optionsCopy dateInterval];
+      startDate = [dateInterval2 startDate];
+      if ([cacheStartDate isOnOrBefore:startDate])
       {
 
 LABEL_11:
         v19 = _mo_log_facility_get_os_log(&MOLogFacilityEventManager);
         if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
         {
-          v20 = [(MOEventManager *)self cacheStartDate];
-          v21 = [(MOEventManager *)self cacheEndDate];
-          v22 = [v8 dateInterval];
-          v23 = [v22 startDate];
-          v24 = [v8 dateInterval];
-          v25 = [v24 endDate];
+          cacheStartDate2 = [(MOEventManager *)self cacheStartDate];
+          cacheEndDate = [(MOEventManager *)self cacheEndDate];
+          dateInterval3 = [optionsCopy dateInterval];
+          startDate2 = [dateInterval3 startDate];
+          dateInterval4 = [optionsCopy dateInterval];
+          endDate = [dateInterval4 endDate];
           *buf = 138413058;
-          v42 = v20;
+          v42 = cacheStartDate2;
           v43 = 2112;
-          v44 = v21;
+          v44 = cacheEndDate;
           v45 = 2112;
-          v46 = v23;
+          v46 = startDate2;
           v47 = 2112;
-          v48 = v25;
+          v48 = endDate;
           _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_INFO, "cached events time window covers the query time window, so fetch data from cache, cache start date, %@, end date, %@, query start date, %@, end date, %@", buf, 0x2Au);
         }
 
@@ -4350,19 +4350,19 @@ LABEL_11:
         v37[1] = 3221225472;
         v37[2] = __60__MOEventManager__fetchEventsWithOptions_CompletionHandler___block_invoke_378;
         v37[3] = &unk_1003369E0;
-        v38 = v9;
-        [(MOEventManager *)self _fetchEventsFromCacheWithOptions:v8 CompletionHandler:v37];
+        v38 = handlerCopy;
+        [(MOEventManager *)self _fetchEventsFromCacheWithOptions:optionsCopy CompletionHandler:v37];
         v14 = v38;
         goto LABEL_17;
       }
     }
 
-    v15 = [(MOEventManager *)self cacheEndDate];
-    v16 = [(MOEventManager *)self cacheStartDate];
-    [v15 timeIntervalSinceDate:v16];
+    cacheEndDate2 = [(MOEventManager *)self cacheEndDate];
+    cacheStartDate3 = [(MOEventManager *)self cacheStartDate];
+    [cacheEndDate2 timeIntervalSinceDate:cacheStartDate3];
     v18 = v17;
 
-    if (v12)
+    if (dateInterval)
     {
     }
 
@@ -4374,20 +4374,20 @@ LABEL_11:
     v26 = _mo_log_facility_get_os_log(&MOLogFacilityEventManager);
     if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
     {
-      v27 = [(MOEventManager *)self cacheStartDate];
-      v28 = [(MOEventManager *)self cacheEndDate];
-      v29 = [v8 dateInterval];
-      v30 = [v29 startDate];
-      v31 = [v8 dateInterval];
-      v32 = [v31 endDate];
+      cacheStartDate4 = [(MOEventManager *)self cacheStartDate];
+      cacheEndDate3 = [(MOEventManager *)self cacheEndDate];
+      dateInterval5 = [optionsCopy dateInterval];
+      startDate3 = [dateInterval5 startDate];
+      dateInterval6 = [optionsCopy dateInterval];
+      endDate2 = [dateInterval6 endDate];
       *buf = 138413058;
-      v42 = v27;
+      v42 = cacheStartDate4;
       v43 = 2112;
-      v44 = v28;
+      v44 = cacheEndDate3;
       v45 = 2112;
-      v46 = v30;
+      v46 = startDate3;
       v47 = 2112;
-      v48 = v32;
+      v48 = endDate2;
       _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_INFO, "cached events time window does not cover the query time window, so fetch part from cache and rehydrate rest, cache start date, %@, end date, %@, query start date, %@, end date, %@", buf, 0x2Au);
     }
 
@@ -4397,8 +4397,8 @@ LABEL_11:
     v34[2] = __60__MOEventManager__fetchEventsWithOptions_CompletionHandler___block_invoke_379;
     v34[3] = &unk_10033FAD0;
     v34[4] = self;
-    v36 = v9;
-    v35 = v8;
+    v36 = handlerCopy;
+    v35 = optionsCopy;
     [(MOEventStore *)eventStore fetchEventsWithOptions:v35 CompletionHandler:v34];
 
     v14 = v36;
@@ -4417,8 +4417,8 @@ LABEL_11:
     v39[1] = 3221225472;
     v39[2] = __60__MOEventManager__fetchEventsWithOptions_CompletionHandler___block_invoke;
     v39[3] = &unk_1003369E0;
-    v40 = v9;
-    [(MOEventManager *)self _fetchEventsFromDBAndRehydrateEventsWithOptions:v8 CompletionHandler:v39];
+    v40 = handlerCopy;
+    [(MOEventManager *)self _fetchEventsFromDBAndRehydrateEventsWithOptions:optionsCopy CompletionHandler:v39];
     v14 = v40;
   }
 
@@ -4633,18 +4633,18 @@ void __60__MOEventManager__fetchEventsWithOptions_CompletionHandler___block_invo
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)_fetchEventsFromDBAndRehydrateEventsWithOptions:(id)a3 CompletionHandler:(id)a4
+- (void)_fetchEventsFromDBAndRehydrateEventsWithOptions:(id)options CompletionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   eventStore = self->_eventStore;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = __84__MOEventManager__fetchEventsFromDBAndRehydrateEventsWithOptions_CompletionHandler___block_invoke;
   v9[3] = &unk_10033BEE0;
   v9[4] = self;
-  v10 = v6;
-  v8 = v6;
-  [(MOEventStore *)eventStore fetchEventsWithOptions:a3 CompletionHandler:v9];
+  v10 = handlerCopy;
+  v8 = handlerCopy;
+  [(MOEventStore *)eventStore fetchEventsWithOptions:options CompletionHandler:v9];
 }
 
 void __84__MOEventManager__fetchEventsFromDBAndRehydrateEventsWithOptions_CompletionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -4784,12 +4784,12 @@ void __84__MOEventManager__fetchEventsFromDBAndRehydrateEventsWithOptions_Comple
   }
 }
 
-- (void)_fetchEventsFromCacheWithOptions:(id)a3 CompletionHandler:(id)a4
+- (void)_fetchEventsFromCacheWithOptions:(id)options CompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MOEventManager *)self cachedEvents];
-  v9 = [v8 count];
+  optionsCopy = options;
+  handlerCopy = handler;
+  cachedEvents = [(MOEventManager *)self cachedEvents];
+  v9 = [cachedEvents count];
 
   if (v9)
   {
@@ -4798,8 +4798,8 @@ void __84__MOEventManager__fetchEventsFromDBAndRehydrateEventsWithOptions_Comple
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v11 = [(MOEventManager *)self cachedEvents];
-    v12 = [v11 countByEnumeratingWithState:&v31 objects:v35 count:16];
+    cachedEvents2 = [(MOEventManager *)self cachedEvents];
+    v12 = [cachedEvents2 countByEnumeratingWithState:&v31 objects:v35 count:16];
     if (v12)
     {
       v13 = v12;
@@ -4810,7 +4810,7 @@ void __84__MOEventManager__fetchEventsFromDBAndRehydrateEventsWithOptions_Comple
         {
           if (*v32 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(cachedEvents2);
           }
 
           v16 = *(*(&v31 + 1) + 8 * i);
@@ -4820,18 +4820,18 @@ void __84__MOEventManager__fetchEventsFromDBAndRehydrateEventsWithOptions_Comple
           }
         }
 
-        v13 = [v11 countByEnumeratingWithState:&v31 objects:v35 count:16];
+        v13 = [cachedEvents2 countByEnumeratingWithState:&v31 objects:v35 count:16];
       }
 
       while (v13);
     }
 
     v17 = [MOEventFetchOptions alloc];
-    v18 = [v6 dateInterval];
-    v19 = [v6 ascending];
-    v20 = [v6 categories];
-    v21 = [v6 limit];
-    v22 = [(MOEventFetchOptions *)v17 initWithDateInterval:v18 ascending:v19 categories:v20 limit:v21];
+    dateInterval = [optionsCopy dateInterval];
+    ascending = [optionsCopy ascending];
+    categories = [optionsCopy categories];
+    limit = [optionsCopy limit];
+    v22 = [(MOEventFetchOptions *)v17 initWithDateInterval:dateInterval ascending:ascending categories:categories limit:limit];
 
     eventStore = self->_eventStore;
     v27[0] = _NSConcreteStackBlock;
@@ -4840,8 +4840,8 @@ void __84__MOEventManager__fetchEventsFromDBAndRehydrateEventsWithOptions_Comple
     v27[3] = &unk_10033BC50;
     v27[4] = self;
     v28 = v10;
-    v29 = v6;
-    v30 = v7;
+    v29 = optionsCopy;
+    v30 = handlerCopy;
     v24 = v10;
     [(MOEventStore *)eventStore fetchAnalyticsEventsWithOptions:v22 CompletionHandler:v27];
   }
@@ -4859,7 +4859,7 @@ void __84__MOEventManager__fetchEventsFromDBAndRehydrateEventsWithOptions_Comple
       [MOEventManager _fetchEventsFromCacheWithOptions:CompletionHandler:];
     }
 
-    (*(v7 + 2))(v7, &__NSArray0__struct, v22);
+    (*(handlerCopy + 2))(handlerCopy, &__NSArray0__struct, v22);
   }
 }
 
@@ -4947,21 +4947,21 @@ void __69__MOEventManager__fetchEventsFromCacheWithOptions_CompletionHandler___b
   (*(*(a1 + 56) + 16))();
 }
 
-- (void)rehydrateEvents:(id)a3 withHandler:(id)a4
+- (void)rehydrateEvents:(id)events withHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MOEventManager *)self queue];
+  eventsCopy = events;
+  handlerCopy = handler;
+  queue = [(MOEventManager *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __46__MOEventManager_rehydrateEvents_withHandler___block_invoke;
   block[3] = &unk_100336A58;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = eventsCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = eventsCopy;
+  dispatch_async(queue, block);
 }
 
 void __46__MOEventManager_rehydrateEvents_withHandler___block_invoke(uint64_t a1)
@@ -5142,14 +5142,14 @@ void __46__MOEventManager_rehydrateEvents_withHandler___block_invoke_3(uint64_t 
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)_rehydrateEvents:(id)a3 withHandler:(id)a4
+- (void)_rehydrateEvents:(id)events withHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v23 = v6;
-  if ([v6 count])
+  eventsCopy = events;
+  handlerCopy = handler;
+  v23 = eventsCopy;
+  if ([eventsCopy count])
   {
-    v21 = v7;
+    v21 = handlerCopy;
     v8 = _mo_log_facility_get_os_log(&MOLogFacilityPerformance);
     if (os_signpost_enabled(v8))
     {
@@ -5172,7 +5172,7 @@ void __46__MOEventManager_rehydrateEvents_withHandler___block_invoke_3(uint64_t 
     v39[4] = __Block_byref_object_dispose__43;
     v40 = 0;
     v9 = dispatch_group_create();
-    [(MOEventManager *)self splitEventArrayByCategory:v6];
+    [(MOEventManager *)self splitEventArrayByCategory:eventsCopy];
     v37 = 0u;
     v38 = 0u;
     v35 = 0u;
@@ -5227,7 +5227,7 @@ void __46__MOEventManager_rehydrateEvents_withHandler___block_invoke_3(uint64_t 
       while (v11);
     }
 
-    v19 = [(MOEventManager *)self queue];
+    queue = [(MOEventManager *)self queue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = __47__MOEventManager__rehydrateEvents_withHandler___block_invoke_409;
@@ -5239,17 +5239,17 @@ void __46__MOEventManager_rehydrateEvents_withHandler___block_invoke_3(uint64_t 
     v25 = v23;
     v26 = v22;
     v20 = v22;
-    dispatch_group_notify(v9, v19, block);
+    dispatch_group_notify(v9, queue, block);
 
     _Block_object_dispose(v39, 8);
     _Block_object_dispose(buf, 8);
 
-    v7 = v21;
+    handlerCopy = v21;
   }
 
-  else if (v7)
+  else if (handlerCopy)
   {
-    (*(v7 + 2))(v7, &__NSArray0__struct, 0);
+    (*(handlerCopy + 2))(handlerCopy, &__NSArray0__struct, 0);
   }
 }
 
@@ -5384,30 +5384,30 @@ id __47__MOEventManager__rehydrateEvents_withHandler___block_invoke_409(uint64_t
   return [*(a1 + 48) endSession];
 }
 
-- (void)_rehydrateEventsBySingleSource:(id)a3 handler:(id)a4
+- (void)_rehydrateEventsBySingleSource:(id)source handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  sourceCopy = source;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    if ([v6 count])
+    if ([sourceCopy count])
     {
-      v8 = [v6 firstObject];
-      v9 = [v8 provider];
+      firstObject = [sourceCopy firstObject];
+      provider = [firstObject provider];
 
-      if (v9 == 5)
+      if (provider == 5)
       {
 LABEL_4:
-        v7[2](v7, v6, 0);
+        handlerCopy[2](handlerCopy, sourceCopy, 0);
         goto LABEL_78;
       }
 
-      v10 = [v6 firstObject];
-      v11 = [v10 category];
+      firstObject2 = [sourceCopy firstObject];
+      category = [firstObject2 category];
 
-      if ([(MOConfigurationManager *)self->_configurationManager isAllowedToProcessEventCategory:v11])
+      if ([(MOConfigurationManager *)self->_configurationManager isAllowedToProcessEventCategory:category])
       {
-        switch(v11)
+        switch(category)
         {
           case 0uLL:
             v49 = _mo_log_facility_get_os_log(&MOLogFacilityEventManager);
@@ -5427,16 +5427,16 @@ LABEL_4:
 
             v51 = [[MOPerformanceMeasurement alloc] initWithName:@"RehydrateVisits" measureRecentPeak:0];
             [(MOPerformanceMeasurement *)v51 startSession];
-            v52 = [(MOEventManager *)self routineServiceManager];
+            routineServiceManager = [(MOEventManager *)self routineServiceManager];
             v111[0] = _NSConcreteStackBlock;
             v111[1] = 3221225472;
             v111[2] = __57__MOEventManager__rehydrateEventsBySingleSource_handler___block_invoke;
             v111[3] = &unk_10033FAD0;
             v111[4] = self;
             v112 = v51;
-            v113 = v7;
+            v113 = handlerCopy;
             v53 = v51;
-            [v52 rehydrateVisits:v6 handler:v111];
+            [routineServiceManager rehydrateVisits:sourceCopy handler:v111];
 
             goto LABEL_78;
           case 2uLL:
@@ -5450,15 +5450,15 @@ LABEL_4:
 
             v13 = [[MOPerformanceMeasurement alloc] initWithName:@"RehydrateWorkouts" measureRecentPeak:0];
             [(MOPerformanceMeasurement *)v13 startSession];
-            v14 = [(MOEventManager *)self healthKitManager];
+            healthKitManager = [(MOEventManager *)self healthKitManager];
             v108[0] = _NSConcreteStackBlock;
             v108[1] = 3221225472;
             v108[2] = __57__MOEventManager__rehydrateEventsBySingleSource_handler___block_invoke_416;
             v108[3] = &unk_100337850;
             v109 = v13;
-            v110 = v7;
+            v110 = handlerCopy;
             v15 = v13;
-            [v14 rehydrateWorkouts:v6 handler:v108];
+            [healthKitManager rehydrateWorkouts:sourceCopy handler:v108];
 
             v16 = v110;
             goto LABEL_70;
@@ -5472,15 +5472,15 @@ LABEL_4:
 
             v29 = [[MOPerformanceMeasurement alloc] initWithName:@"RehydrateLeisureMedia" measureRecentPeak:0];
             [(MOPerformanceMeasurement *)v29 startSession];
-            v30 = [(MOEventManager *)self nowPlayingMediaManager];
+            nowPlayingMediaManager = [(MOEventManager *)self nowPlayingMediaManager];
             v102[0] = _NSConcreteStackBlock;
             v102[1] = 3221225472;
             v102[2] = __57__MOEventManager__rehydrateEventsBySingleSource_handler___block_invoke_424;
             v102[3] = &unk_100337850;
-            v104 = v7;
+            v104 = handlerCopy;
             v103 = v29;
             v15 = v29;
-            [v30 rehydratedMediaPlayEvents:v6 handler:v102];
+            [nowPlayingMediaManager rehydratedMediaPlayEvents:sourceCopy handler:v102];
 
             v16 = v104;
             goto LABEL_70;
@@ -5498,15 +5498,15 @@ LABEL_4:
 
             v61 = [[MOPerformanceMeasurement alloc] initWithName:@"RehydrateMediaPlaySessions" measureRecentPeak:0];
             [(MOPerformanceMeasurement *)v61 startSession];
-            v62 = [(MOEventManager *)self nowPlayingMediaManager];
+            nowPlayingMediaManager2 = [(MOEventManager *)self nowPlayingMediaManager];
             v105[0] = _NSConcreteStackBlock;
             v105[1] = 3221225472;
             v105[2] = __57__MOEventManager__rehydrateEventsBySingleSource_handler___block_invoke_420;
             v105[3] = &unk_100337850;
             v106 = v61;
-            v107 = v7;
+            v107 = handlerCopy;
             v15 = v61;
-            [v62 rehydratedMediaPlayEvents:v6 handler:v105];
+            [nowPlayingMediaManager2 rehydratedMediaPlayEvents:sourceCopy handler:v105];
 
             v16 = v107;
             goto LABEL_70;
@@ -5522,9 +5522,9 @@ LABEL_4:
 
             v15 = [[MOPerformanceMeasurement alloc] initWithName:@"RehydrateTrips" measureRecentPeak:0];
             [(MOPerformanceMeasurement *)v15 startSession];
-            v35 = [(MOEventManager *)self proactiveTravelManager];
-            v36 = [v35 rehydratedTripEvents:v6];
-            v7[2](v7, v36, 0);
+            proactiveTravelManager = [(MOEventManager *)self proactiveTravelManager];
+            v36 = [proactiveTravelManager rehydratedTripEvents:sourceCopy];
+            handlerCopy[2](handlerCopy, v36, 0);
 
             v26 = _mo_log_facility_get_os_log(&MOLogFacilityPerformance);
             if (!os_signpost_enabled(v26))
@@ -5545,9 +5545,9 @@ LABEL_4:
 
             v15 = [[MOPerformanceMeasurement alloc] initWithName:@"RehydrateSharedWithYou" measureRecentPeak:0];
             [(MOPerformanceMeasurement *)v15 startSession];
-            v47 = [(MOEventManager *)self sharedWithYouManager];
-            v48 = [v47 rehydratedSharedContentEvents:v6];
-            v7[2](v7, v48, 0);
+            sharedWithYouManager = [(MOEventManager *)self sharedWithYouManager];
+            v48 = [sharedWithYouManager rehydratedSharedContentEvents:sourceCopy];
+            handlerCopy[2](handlerCopy, v48, 0);
 
             v26 = _mo_log_facility_get_os_log(&MOLogFacilityPerformance);
             if (!os_signpost_enabled(v26))
@@ -5568,15 +5568,15 @@ LABEL_4:
 
             v41 = [[MOPerformanceMeasurement alloc] initWithName:@"RehydrateSignificantContact" measureRecentPeak:0];
             [(MOPerformanceMeasurement *)v41 startSession];
-            v42 = [(MOEventManager *)self significantContactManager];
+            significantContactManager = [(MOEventManager *)self significantContactManager];
             v99[0] = _NSConcreteStackBlock;
             v99[1] = 3221225472;
             v99[2] = __57__MOEventManager__rehydrateEventsBySingleSource_handler___block_invoke_434;
             v99[3] = &unk_100337850;
             v100 = v41;
-            v101 = v7;
+            v101 = handlerCopy;
             v15 = v41;
-            [v42 rehydrateConversations:v6 handler:v99];
+            [significantContactManager rehydrateConversations:sourceCopy handler:v99];
 
             v16 = v101;
             goto LABEL_70;
@@ -5590,9 +5590,9 @@ LABEL_4:
 
             v15 = [[MOPerformanceMeasurement alloc] initWithName:@"RehydrateStructuredEvent" measureRecentPeak:0];
             [(MOPerformanceMeasurement *)v15 startSession];
-            v24 = [(MOEventManager *)self suggestedEventManager];
-            v25 = [v24 rehydratedSuggestedEvents:v6];
-            v7[2](v7, v25, 0);
+            suggestedEventManager = [(MOEventManager *)self suggestedEventManager];
+            v25 = [suggestedEventManager rehydratedSuggestedEvents:sourceCopy];
+            handlerCopy[2](handlerCopy, v25, 0);
 
             v26 = _mo_log_facility_get_os_log(&MOLogFacilityPerformance);
             if (!os_signpost_enabled(v26))
@@ -5613,9 +5613,9 @@ LABEL_4:
 
             v15 = [[MOPerformanceMeasurement alloc] initWithName:@"RehydrateNLEvent" measureRecentPeak:0];
             [(MOPerformanceMeasurement *)v15 startSession];
-            v55 = [(MOEventManager *)self suggestedEventManager];
-            v56 = [v55 rehydratedSuggestedEvents:v6];
-            v7[2](v7, v56, 0);
+            suggestedEventManager2 = [(MOEventManager *)self suggestedEventManager];
+            v56 = [suggestedEventManager2 rehydratedSuggestedEvents:sourceCopy];
+            handlerCopy[2](handlerCopy, v56, 0);
 
             v26 = _mo_log_facility_get_os_log(&MOLogFacilityPerformance);
             if (!os_signpost_enabled(v26))
@@ -5641,15 +5641,15 @@ LABEL_53:
 
             v58 = [[MOPerformanceMeasurement alloc] initWithName:@"RehydrateSharedPhoto" measureRecentPeak:0];
             [(MOPerformanceMeasurement *)v58 startSession];
-            v59 = [(MOEventManager *)self photoManager];
+            photoManager = [(MOEventManager *)self photoManager];
             v96[0] = _NSConcreteStackBlock;
             v96[1] = 3221225472;
             v96[2] = __57__MOEventManager__rehydrateEventsBySingleSource_handler___block_invoke_444;
             v96[3] = &unk_100337850;
             v97 = v58;
-            v98 = v7;
+            v98 = handlerCopy;
             v15 = v58;
-            [v59 rehydrateSharedPhotos:v6 handler:v96];
+            [photoManager rehydrateSharedPhotos:sourceCopy handler:v96];
 
             v16 = v98;
             goto LABEL_70;
@@ -5663,15 +5663,15 @@ LABEL_53:
 
             v67 = [[MOPerformanceMeasurement alloc] initWithName:@"RehydrateProximity" measureRecentPeak:0];
             [(MOPerformanceMeasurement *)v67 startSession];
-            v68 = [(MOEventManager *)self peopleDiscoveryManager];
+            peopleDiscoveryManager = [(MOEventManager *)self peopleDiscoveryManager];
             v87[0] = _NSConcreteStackBlock;
             v87[1] = 3221225472;
             v87[2] = __57__MOEventManager__rehydrateEventsBySingleSource_handler___block_invoke_456;
             v87[3] = &unk_100337850;
             v88 = v67;
-            v89 = v7;
+            v89 = handlerCopy;
             v15 = v67;
-            [v68 rehydrateProx:v6 handler:v87];
+            [peopleDiscoveryManager rehydrateProx:sourceCopy handler:v87];
 
             v16 = v89;
             goto LABEL_70;
@@ -5687,15 +5687,15 @@ LABEL_53:
 
               v64 = [[MOPerformanceMeasurement alloc] initWithName:@"RehydrateMotionActivity" measureRecentPeak:0];
               [(MOPerformanceMeasurement *)v64 startSession];
-              v65 = [(MOEventManager *)self motionManager];
+              motionManager = [(MOEventManager *)self motionManager];
               v93[0] = _NSConcreteStackBlock;
               v93[1] = 3221225472;
               v93[2] = __57__MOEventManager__rehydrateEventsBySingleSource_handler___block_invoke_448;
               v93[3] = &unk_100337850;
               v94 = v64;
-              v95 = v7;
+              v95 = handlerCopy;
               v15 = v64;
-              [v65 rehydrateMotionActivity:v6 handler:v93];
+              [motionManager rehydrateMotionActivity:sourceCopy handler:v93];
 
               v16 = v95;
 LABEL_70:
@@ -5724,15 +5724,15 @@ LABEL_76:
 
             v18 = [[MOPerformanceMeasurement alloc] initWithName:@"RehydratePhotoMemory" measureRecentPeak:0];
             [(MOPerformanceMeasurement *)v18 startSession];
-            v19 = [(MOEventManager *)self photoManager];
+            photoManager2 = [(MOEventManager *)self photoManager];
             v90[0] = _NSConcreteStackBlock;
             v90[1] = 3221225472;
             v90[2] = __57__MOEventManager__rehydrateEventsBySingleSource_handler___block_invoke_452;
             v90[3] = &unk_100337850;
             v91 = v18;
-            v92 = v7;
+            v92 = handlerCopy;
             v15 = v18;
-            [v19 rehydratePhotoMemories:v6 handler:v90];
+            [photoManager2 rehydratePhotoMemories:sourceCopy handler:v90];
 
             v16 = v92;
             goto LABEL_70;
@@ -5746,15 +5746,15 @@ LABEL_76:
 
             v44 = [[MOPerformanceMeasurement alloc] initWithName:@"RehydrateScreenTime" measureRecentPeak:0];
             [(MOPerformanceMeasurement *)v44 startSession];
-            v45 = [(MOEventManager *)self screenTimeManager];
+            screenTimeManager = [(MOEventManager *)self screenTimeManager];
             v75[0] = _NSConcreteStackBlock;
             v75[1] = 3221225472;
             v75[2] = __57__MOEventManager__rehydrateEventsBySingleSource_handler___block_invoke_472;
             v75[3] = &unk_100337850;
             v76 = v44;
-            v77 = v7;
+            v77 = handlerCopy;
             v15 = v44;
-            [v45 rehydrateScreenTimeEvents:v6 handler:v75];
+            [screenTimeManager rehydrateScreenTimeEvents:sourceCopy handler:v75];
 
             v16 = v77;
             goto LABEL_70;
@@ -5768,15 +5768,15 @@ LABEL_76:
 
             v70 = [[MOPerformanceMeasurement alloc] initWithName:@"RehydrateLifeEvent" measureRecentPeak:0];
             [(MOPerformanceMeasurement *)v70 startSession];
-            v71 = [(MOEventManager *)self lifeEventManager];
+            lifeEventManager = [(MOEventManager *)self lifeEventManager];
             v81[0] = _NSConcreteStackBlock;
             v81[1] = 3221225472;
             v81[2] = __57__MOEventManager__rehydrateEventsBySingleSource_handler___block_invoke_464;
             v81[3] = &unk_100337850;
             v82 = v70;
-            v83 = v7;
+            v83 = handlerCopy;
             v15 = v70;
-            [v71 rehydrateLifeEvents:v6 handler:v81];
+            [lifeEventManager rehydrateLifeEvents:sourceCopy handler:v81];
 
             v16 = v83;
             goto LABEL_70;
@@ -5790,15 +5790,15 @@ LABEL_76:
 
             v21 = [[MOPerformanceMeasurement alloc] initWithName:@"RehydratePeopleDensity" measureRecentPeak:0];
             [(MOPerformanceMeasurement *)v21 startSession];
-            v22 = [(MOEventManager *)self peopleDiscoveryManager];
+            peopleDiscoveryManager2 = [(MOEventManager *)self peopleDiscoveryManager];
             v84[0] = _NSConcreteStackBlock;
             v84[1] = 3221225472;
             v84[2] = __57__MOEventManager__rehydrateEventsBySingleSource_handler___block_invoke_460;
             v84[3] = &unk_100337850;
             v85 = v21;
-            v86 = v7;
+            v86 = handlerCopy;
             v15 = v21;
-            [v22 rehydratePeopleDensityEvents:v6 handler:v84];
+            [peopleDiscoveryManager2 rehydratePeopleDensityEvents:sourceCopy handler:v84];
 
             v16 = v86;
             goto LABEL_70;
@@ -5812,15 +5812,15 @@ LABEL_76:
 
             v38 = [[MOPerformanceMeasurement alloc] initWithName:@"RehydrateStateOfMind" measureRecentPeak:0];
             [(MOPerformanceMeasurement *)v38 startSession];
-            v39 = [(MOEventManager *)self healthKitManager];
+            healthKitManager2 = [(MOEventManager *)self healthKitManager];
             v78[0] = _NSConcreteStackBlock;
             v78[1] = 3221225472;
             v78[2] = __57__MOEventManager__rehydrateEventsBySingleSource_handler___block_invoke_468;
             v78[3] = &unk_100337850;
             v79 = v38;
-            v80 = v7;
+            v80 = handlerCopy;
             v15 = v38;
-            [v39 rehydrateStateOfMind:v6 handler:v78];
+            [healthKitManager2 rehydrateStateOfMind:sourceCopy handler:v78];
 
             v16 = v80;
             goto LABEL_70;
@@ -5834,15 +5834,15 @@ LABEL_76:
 
             v32 = [[MOPerformanceMeasurement alloc] initWithName:@"RehydrateSpotlight" measureRecentPeak:0];
             [(MOPerformanceMeasurement *)v32 startSession];
-            v33 = [(MOEventManager *)self spotlightManager];
+            spotlightManager = [(MOEventManager *)self spotlightManager];
             v72[0] = _NSConcreteStackBlock;
             v72[1] = 3221225472;
             v72[2] = __57__MOEventManager__rehydrateEventsBySingleSource_handler___block_invoke_476;
             v72[3] = &unk_100337850;
             v73 = v32;
-            v74 = v7;
+            v74 = handlerCopy;
             v15 = v32;
-            [v33 rehydrateInviteEvents:v6 handler:v72];
+            [spotlightManager rehydrateInviteEvents:sourceCopy handler:v72];
 
             v16 = v74;
             goto LABEL_70;
@@ -5859,7 +5859,7 @@ LABEL_44:
       }
     }
 
-    v7[2](v7, &__NSArray0__struct, 0);
+    handlerCopy[2](handlerCopy, &__NSArray0__struct, 0);
   }
 
 LABEL_78:
@@ -6081,9 +6081,9 @@ id __57__MOEventManager__rehydrateEventsBySingleSource_handler___block_invoke_47
   return [*(a1 + 32) endSession];
 }
 
-- (void)cleanUpEventsWithRefreshVariant:(unint64_t)a3 andHandler:(id)a4
+- (void)cleanUpEventsWithRefreshVariant:(unint64_t)variant andHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v7 = _mo_log_facility_get_os_log(&MOLogFacilityPerformance);
   if (os_signpost_enabled(v7))
   {
@@ -6093,13 +6093,13 @@ id __57__MOEventManager__rehydrateEventsBySingleSource_handler___block_invoke_47
 
   v8 = [[MOPerformanceMeasurement alloc] initWithName:@"Cleanup" measureRecentPeak:0];
   [(MOPerformanceMeasurement *)v8 startSession];
-  v9 = [(MOEventManager *)self eventStore];
-  v10 = [v9 persistenceManager];
-  v11 = [v10 availability];
+  eventStore = [(MOEventManager *)self eventStore];
+  persistenceManager = [eventStore persistenceManager];
+  availability = [persistenceManager availability];
 
   v12 = _mo_log_facility_get_os_log(&MOLogFacilityEventManager);
   v13 = v12;
-  if (v11 == 2)
+  if (availability == 2)
   {
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
@@ -6111,9 +6111,9 @@ id __57__MOEventManager__rehydrateEventsBySingleSource_handler___block_invoke_47
     v18[1] = 3221225472;
     v18[2] = __61__MOEventManager_cleanUpEventsWithRefreshVariant_andHandler___block_invoke;
     v18[3] = &unk_10033C170;
-    v20 = v6;
+    v20 = handlerCopy;
     v19 = v8;
-    [(MOEventManager *)self _cleanUpEventsWithRefreshVariant:a3 andHandler:v18];
+    [(MOEventManager *)self _cleanUpEventsWithRefreshVariant:variant andHandler:v18];
   }
 
   else
@@ -6123,7 +6123,7 @@ id __57__MOEventManager__rehydrateEventsBySingleSource_handler___block_invoke_47
       [MOEventManager cleanUpEventsWithRefreshVariant:andHandler:];
     }
 
-    if (v6)
+    if (handlerCopy)
     {
       v24 = NSLocalizedDescriptionKey;
       v25 = @"[cleanUpEventsWithRefreshVariant] database is not available";
@@ -6133,7 +6133,7 @@ id __57__MOEventManager__rehydrateEventsBySingleSource_handler___block_invoke_47
       v22 = @"stateDatabaseAvailable";
       v23 = &__kCFBooleanFalse;
       v16 = [NSDictionary dictionaryWithObjects:&v23 forKeys:&v22 count:1];
-      (*(v6 + 2))(v6, v15, v16);
+      (*(handlerCopy + 2))(handlerCopy, v15, v16);
     }
 
     v17 = _mo_log_facility_get_os_log(&MOLogFacilityPerformance);
@@ -6168,9 +6168,9 @@ void __61__MOEventManager_cleanUpEventsWithRefreshVariant_andHandler___block_inv
   [*(a1 + 32) endSession];
 }
 
-- (void)_cleanUpEventsWithRefreshVariant:(unint64_t)a3 andHandler:(id)a4
+- (void)_cleanUpEventsWithRefreshVariant:(unint64_t)variant andHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v102[0] = 0;
   v102[1] = v102;
   v102[2] = 0x3032000000;
@@ -6190,12 +6190,12 @@ void __61__MOEventManager_cleanUpEventsWithRefreshVariant_andHandler___block_inv
   v7 = dispatch_group_create();
   v8 = _mo_log_facility_get_os_log(&MOLogFacilityPerformance);
   v9 = v8;
-  v56 = v6;
-  v10 = a3 - 1;
-  if (a3 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v8))
+  v56 = handlerCopy;
+  v10 = variant - 1;
+  if (variant - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v8))
   {
     *buf = 0;
-    _os_signpost_emit_with_name_impl(&_mh_execute_header, v9, OS_SIGNPOST_INTERVAL_BEGIN, a3, "EventManagerCleanUpEventsWrapper", "", buf, 2u);
+    _os_signpost_emit_with_name_impl(&_mh_execute_header, v9, OS_SIGNPOST_INTERVAL_BEGIN, variant, "EventManagerCleanUpEventsWrapper", "", buf, 2u);
   }
 
   v11 = [[MOPerformanceMeasurement alloc] initWithName:@"CleanupWrapper" measureRecentPeak:0];
@@ -6206,7 +6206,7 @@ void __61__MOEventManager_cleanUpEventsWithRefreshVariant_andHandler___block_inv
   if (v10 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v12))
   {
     *buf = 0;
-    _os_signpost_emit_with_name_impl(&_mh_execute_header, v13, OS_SIGNPOST_INTERVAL_BEGIN, a3, "EventManagerCleanUpEventsExpiredEvents", "", buf, 2u);
+    _os_signpost_emit_with_name_impl(&_mh_execute_header, v13, OS_SIGNPOST_INTERVAL_BEGIN, variant, "EventManagerCleanUpEventsExpiredEvents", "", buf, 2u);
   }
 
   v14 = [[MOPerformanceMeasurement alloc] initWithName:@"CleanupExpiredEvents" measureRecentPeak:0];
@@ -6221,7 +6221,7 @@ void __61__MOEventManager_cleanUpEventsWithRefreshVariant_andHandler___block_inv
   v95 = v100;
   v16 = v7;
   v92 = v16;
-  v96 = a3;
+  variantCopy = variant;
   v54 = v14;
   v93 = v54;
   [(MOEventStore *)eventStore purgeExpiredEventsWithCompletionHandler:v91];
@@ -6230,7 +6230,7 @@ void __61__MOEventManager_cleanUpEventsWithRefreshVariant_andHandler___block_inv
   if (v10 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v17))
   {
     *buf = 0;
-    _os_signpost_emit_with_name_impl(&_mh_execute_header, v18, OS_SIGNPOST_INTERVAL_BEGIN, a3, "EventManagerCleanUpEventsUnknownEvents", "", buf, 2u);
+    _os_signpost_emit_with_name_impl(&_mh_execute_header, v18, OS_SIGNPOST_INTERVAL_BEGIN, variant, "EventManagerCleanUpEventsUnknownEvents", "", buf, 2u);
   }
 
   v19 = [[MOPerformanceMeasurement alloc] initWithName:@"CleanupUnknownEvents" measureRecentPeak:0];
@@ -6245,7 +6245,7 @@ void __61__MOEventManager_cleanUpEventsWithRefreshVariant_andHandler___block_inv
   v89 = v100;
   v21 = v16;
   v86 = v21;
-  v90 = a3;
+  variantCopy2 = variant;
   v53 = v19;
   v87 = v53;
   [(MOEventStore *)v20 purgeUnknownEventsWithCompletionHandler:v85];
@@ -6254,14 +6254,14 @@ void __61__MOEventManager_cleanUpEventsWithRefreshVariant_andHandler___block_inv
   if (v10 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v22))
   {
     *buf = 0;
-    _os_signpost_emit_with_name_impl(&_mh_execute_header, v23, OS_SIGNPOST_INTERVAL_BEGIN, a3, "EventManagerCleanUpEventsDeletedPatternEvents", "", buf, 2u);
+    _os_signpost_emit_with_name_impl(&_mh_execute_header, v23, OS_SIGNPOST_INTERVAL_BEGIN, variant, "EventManagerCleanUpEventsDeletedPatternEvents", "", buf, 2u);
   }
 
   v24 = [[MOPerformanceMeasurement alloc] initWithName:@"CleanupPatternDeletedEvents" measureRecentPeak:0];
   [(MOPerformanceMeasurement *)v24 startSession];
   dispatch_group_enter(v21);
-  v25 = [(MOEventManager *)self configurationManager];
-  v26 = [v25 getIntegerSettingForKey:@"EventManagerOverridePatternRehydrationFailureCountThreshold" withFallback:10];
+  configurationManager = [(MOEventManager *)self configurationManager];
+  v26 = [configurationManager getIntegerSettingForKey:@"EventManagerOverridePatternRehydrationFailureCountThreshold" withFallback:10];
 
   v27 = self->_eventStore;
   v79[0] = _NSConcreteStackBlock;
@@ -6272,7 +6272,7 @@ void __61__MOEventManager_cleanUpEventsWithRefreshVariant_andHandler___block_inv
   v83 = v100;
   v28 = v21;
   v80 = v28;
-  v84 = a3;
+  variantCopy3 = variant;
   v29 = v24;
   v81 = v29;
   [(MOEventStore *)v27 purgeRehydrationFailedEventsForType:@"Pattern_event" rehydrationFailCount:v26 CompletionHandler:v79];
@@ -6281,14 +6281,14 @@ void __61__MOEventManager_cleanUpEventsWithRefreshVariant_andHandler___block_inv
   if (v10 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v30))
   {
     *buf = 0;
-    _os_signpost_emit_with_name_impl(&_mh_execute_header, v31, OS_SIGNPOST_INTERVAL_BEGIN, a3, "EventManagerCleanUpEventsDeletedEvents", "", buf, 2u);
+    _os_signpost_emit_with_name_impl(&_mh_execute_header, v31, OS_SIGNPOST_INTERVAL_BEGIN, variant, "EventManagerCleanUpEventsDeletedEvents", "", buf, 2u);
   }
 
   v32 = [[MOPerformanceMeasurement alloc] initWithName:@"CleanupDeletedEvents" measureRecentPeak:0];
   [(MOPerformanceMeasurement *)v32 startSession];
   dispatch_group_enter(v28);
-  v33 = [(MOEventManager *)self configurationManager];
-  v34 = [v33 getIntegerSettingForKey:@"EventManagerOverrideEventsRehydrationFailureCountThreshold" withFallback:10];
+  configurationManager2 = [(MOEventManager *)self configurationManager];
+  v34 = [configurationManager2 getIntegerSettingForKey:@"EventManagerOverrideEventsRehydrationFailureCountThreshold" withFallback:10];
 
   v35 = self->_eventStore;
   v73[0] = _NSConcreteStackBlock;
@@ -6299,7 +6299,7 @@ void __61__MOEventManager_cleanUpEventsWithRefreshVariant_andHandler___block_inv
   v77 = v100;
   v36 = v28;
   v74 = v36;
-  v78 = a3;
+  variantCopy4 = variant;
   v37 = v32;
   v75 = v37;
   [(MOEventStore *)v35 purgeRehydrationFailedEventsForType:@"Sensed_event" rehydrationFailCount:v34 CompletionHandler:v73];
@@ -6308,14 +6308,14 @@ void __61__MOEventManager_cleanUpEventsWithRefreshVariant_andHandler___block_inv
   if (v10 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v38))
   {
     *buf = 0;
-    _os_signpost_emit_with_name_impl(&_mh_execute_header, v39, OS_SIGNPOST_INTERVAL_BEGIN, a3, "EventManagerCleanUpEventsRemoveVisitsClearedInRoutine", "", buf, 2u);
+    _os_signpost_emit_with_name_impl(&_mh_execute_header, v39, OS_SIGNPOST_INTERVAL_BEGIN, variant, "EventManagerCleanUpEventsRemoveVisitsClearedInRoutine", "", buf, 2u);
   }
 
   v40 = [[MOPerformanceMeasurement alloc] initWithName:@"CleanupVisitEventsClearedInRoutine" measureRecentPeak:0];
   [(MOPerformanceMeasurement *)v40 startSession];
   dispatch_group_enter(v36);
   v41 = dispatch_semaphore_create(0);
-  v42 = [(MOEventManager *)self routineServiceManager];
+  routineServiceManager = [(MOEventManager *)self routineServiceManager];
   v65[0] = _NSConcreteStackBlock;
   v65[1] = 3221225472;
   v65[2] = __62__MOEventManager__cleanUpEventsWithRefreshVariant_andHandler___block_invoke_510;
@@ -6324,13 +6324,13 @@ void __61__MOEventManager_cleanUpEventsWithRefreshVariant_andHandler___block_inv
   v66 = v43;
   v44 = v36;
   v67 = v44;
-  v72 = a3;
+  variantCopy5 = variant;
   v45 = v40;
   v68 = v45;
-  v69 = self;
+  selfCopy = self;
   v70 = v98;
   v71 = v100;
-  [v42 fetchEarliestVisitDateInRoutineWithHandler:v65];
+  [routineServiceManager fetchEarliestVisitDateInRoutineWithHandler:v65];
 
   v46 = [NSString stringWithFormat:@"%@ - [%s] - %d - %s", @"MOSemaphoreWait", "/Library/Caches/com.apple.xbs/Sources/Moments/momentsd/PromptEngine/PromptProvider/MOEventManager.m", 1964, "[MOEventManager _cleanUpEventsWithRefreshVariant:andHandler:]"];
   v64 = 0;
@@ -6345,7 +6345,7 @@ void __61__MOEventManager_cleanUpEventsWithRefreshVariant_andHandler___block_inv
     }
   }
 
-  v50 = [(MOEventManager *)self queue];
+  queue = [(MOEventManager *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __62__MOEventManager__cleanUpEventsWithRefreshVariant_andHandler___block_invoke_513;
@@ -6353,12 +6353,12 @@ void __61__MOEventManager_cleanUpEventsWithRefreshVariant_andHandler___block_inv
   v60 = v102;
   v61 = v100;
   v62 = v98;
-  v63 = a3;
+  variantCopy6 = variant;
   v58 = v55;
   v59 = v56;
   v51 = v55;
   v52 = v56;
-  dispatch_group_notify(v44, v50, block);
+  dispatch_group_notify(v44, queue, block);
 
   _Block_object_dispose(v98, 8);
   _Block_object_dispose(v100, 8);
@@ -6691,15 +6691,15 @@ id __62__MOEventManager__cleanUpEventsWithRefreshVariant_andHandler___block_invo
   return [*(a1 + 32) endSession];
 }
 
-- (id)splitEventArrayByCategory:(id)a3
+- (id)splitEventArrayByCategory:(id)category
 {
-  v3 = a3;
+  categoryCopy = category;
   v4 = objc_opt_new();
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  obj = v3;
+  obj = categoryCopy;
   v5 = [obj countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v5)
   {
@@ -6715,14 +6715,14 @@ id __62__MOEventManager__cleanUpEventsWithRefreshVariant_andHandler___block_invo
         }
 
         v9 = *(*(&v18 + 1) + 8 * i);
-        v10 = [v9 describeCategory];
-        v11 = [v9 describeProvider];
-        v12 = [NSString stringWithFormat:@"%@:%@", v10, v11];
+        describeCategory = [v9 describeCategory];
+        describeProvider = [v9 describeProvider];
+        v12 = [NSString stringWithFormat:@"%@:%@", describeCategory, describeProvider];
 
-        v13 = [v4 allKeys];
-        LOBYTE(v11) = [v13 containsObject:v12];
+        allKeys = [v4 allKeys];
+        LOBYTE(describeProvider) = [allKeys containsObject:v12];
 
-        if (v11)
+        if (describeProvider)
         {
           v14 = [v4 objectForKey:v12];
           [v14 addObject:v9];
@@ -6747,16 +6747,16 @@ id __62__MOEventManager__cleanUpEventsWithRefreshVariant_andHandler___block_invo
   return v15;
 }
 
-- (id)mergeEventArraysFromDict:(id)a3
+- (id)mergeEventArraysFromDict:(id)dict
 {
-  v3 = a3;
+  dictCopy = dict;
   v4 = objc_opt_new();
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [v3 allValues];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  allValues = [dictCopy allValues];
+  v6 = [allValues countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -6767,7 +6767,7 @@ id __62__MOEventManager__cleanUpEventsWithRefreshVariant_andHandler___block_invo
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allValues);
         }
 
         v10 = *(*(&v12 + 1) + 8 * i);
@@ -6777,7 +6777,7 @@ id __62__MOEventManager__cleanUpEventsWithRefreshVariant_andHandler___block_invo
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [allValues countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
@@ -6786,9 +6786,9 @@ id __62__MOEventManager__cleanUpEventsWithRefreshVariant_andHandler___block_invo
   return v4;
 }
 
-- (void)runAnalyticsWithRefreshVariant:(unint64_t)a3 andHandler:(id)a4
+- (void)runAnalyticsWithRefreshVariant:(unint64_t)variant andHandler:(id)handler
 {
-  v7 = a4;
+  handlerCopy = handler;
   v8 = _mo_log_facility_get_os_log(&MOLogFacilityEventManager);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -6798,10 +6798,10 @@ id __62__MOEventManager__cleanUpEventsWithRefreshVariant_andHandler___block_invo
 
   v9 = _mo_log_facility_get_os_log(&MOLogFacilityPerformance);
   v10 = v9;
-  if (a3 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v9))
+  if (variant - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v9))
   {
     *buf = 0;
-    _os_signpost_emit_with_name_impl(&_mh_execute_header, v10, OS_SIGNPOST_INTERVAL_BEGIN, a3, "EventManagerAnalytics", "", buf, 2u);
+    _os_signpost_emit_with_name_impl(&_mh_execute_header, v10, OS_SIGNPOST_INTERVAL_BEGIN, variant, "EventManagerAnalytics", "", buf, 2u);
   }
 
   v11 = [[MOPerformanceMeasurement alloc] initWithName:@"Analytics" measureRecentPeak:0];
@@ -6825,7 +6825,7 @@ id __62__MOEventManager__cleanUpEventsWithRefreshVariant_andHandler___block_invo
   v30[3] = &unk_10033BA20;
   v30[4] = buf;
   v30[5] = &v31;
-  [(MOEventRefreshHelper *)v12 getPatternDetectorDatesForVariant:a3 withHandler:v30];
+  [(MOEventRefreshHelper *)v12 getPatternDetectorDatesForVariant:variant withHandler:v30];
   if (*(v38 + 5) && v32[5])
   {
     v13 = _mo_log_facility_get_os_log(&MOLogFacilityEventManager);
@@ -6834,7 +6834,7 @@ id __62__MOEventManager__cleanUpEventsWithRefreshVariant_andHandler___block_invo
       v14 = NSStringFromSelector(a2);
       v15 = *(v38 + 5);
       v16 = v32[5];
-      v17 = [NSNumber numberWithUnsignedInteger:a3];
+      v17 = [NSNumber numberWithUnsignedInteger:variant];
       *v43 = 138413058;
       v44 = v14;
       v45 = 2112;
@@ -6855,12 +6855,12 @@ id __62__MOEventManager__cleanUpEventsWithRefreshVariant_andHandler___block_invo
     v23[1] = 3221225472;
     v23[2] = __60__MOEventManager_runAnalyticsWithRefreshVariant_andHandler___block_invoke_523;
     v23[3] = &unk_10033FC60;
-    v26 = v7;
-    v29 = a3;
+    v26 = handlerCopy;
+    variantCopy = variant;
     v27 = buf;
     v28 = &v31;
     v24 = v11;
-    v25 = self;
+    selfCopy = self;
     [(MOEventManager *)self fetchEventsWithOptions:v21 CompletionHandler:v23];
   }
 
@@ -6871,9 +6871,9 @@ id __62__MOEventManager__cleanUpEventsWithRefreshVariant_andHandler___block_invo
     v22 = [NSDictionary dictionaryWithObjects:&v52 forKeys:&v51 count:1];
     v21 = [NSError errorWithDomain:@"MOErrorDomain" code:7 userInfo:v22];
 
-    if (v7)
+    if (handlerCopy)
     {
-      (*(v7 + 2))(v7, v21, &__NSDictionary0__struct);
+      (*(handlerCopy + 2))(handlerCopy, v21, &__NSDictionary0__struct);
     }
   }
 

@@ -2,20 +2,20 @@
 + (CGColorSpace)sRGB;
 + (id)sharedInstance;
 - (TUIEmojiUpscaler)init;
-- (id)imageFromEmoji:(id)a3;
-- (void)generateEmoji:(id)a3 completion:(id)a4;
-- (void)generateEmoji:(id)a3 forImage:(id)a4 completion:(id)a5;
+- (id)imageFromEmoji:(id)emoji;
+- (void)generateEmoji:(id)emoji completion:(id)completion;
+- (void)generateEmoji:(id)emoji forImage:(id)image completion:(id)completion;
 @end
 
 @implementation TUIEmojiUpscaler
 
-- (void)generateEmoji:(id)a3 forImage:(id)a4 completion:(id)a5
+- (void)generateEmoji:(id)emoji forImage:(id)image completion:(id)completion
 {
   v53 = *MEMORY[0x1E69E9840];
-  v40 = a3;
-  v8 = a4;
-  v39 = a5;
-  v9 = [MEMORY[0x1E695F658] imageWithCGImage:{objc_msgSend(v8, "CGImage")}];
+  emojiCopy = emoji;
+  imageCopy = image;
+  completionCopy = completion;
+  v9 = [MEMORY[0x1E695F658] imageWithCGImage:{objc_msgSend(imageCopy, "CGImage")}];
   [v9 extent];
   v10 = MEMORY[0x1E695F620];
   v47 = *MEMORY[0x1E695F840];
@@ -27,9 +27,9 @@
   v38 = v12;
   v17 = [v12 createCGImage:v9 fromRect:*MEMORY[0x1E695F910] format:objc_msgSend(objc_opt_class() colorSpace:{"sRGB"), v13, v14, v15, v16}];
 
-  v18 = [objc_opt_class() sRGB];
-  DeviceRGB = v18;
-  if (!v18)
+  sRGB = [objc_opt_class() sRGB];
+  DeviceRGB = sRGB;
+  if (!sRGB)
   {
     DeviceRGB = CGColorSpaceCreateDeviceRGB();
   }
@@ -79,7 +79,7 @@ LABEL_8:
 LABEL_9:
   v25 = pixelBufferOut;
 
-  if (!v18)
+  if (!sRGB)
   {
     CGColorSpaceRelease(DeviceRGB);
   }
@@ -97,13 +97,13 @@ LABEL_9:
     v41[2] = __54__TUIEmojiUpscaler_generateEmoji_forImage_completion___block_invoke;
     v41[3] = &unk_1E72D7EC8;
     v42 = v27;
-    v30 = v39;
-    v44 = v39;
-    v43 = v8;
+    v30 = completionCopy;
+    v44 = completionCopy;
+    v43 = imageCopy;
     v31 = v27;
     v32 = madService;
-    v33 = v40;
-    [(MADService *)v32 performRequests:v29 onPixelBuffer:v25 withOrientation:1 andIdentifier:v40 completionHandler:v41];
+    v33 = emojiCopy;
+    [(MADService *)v32 performRequests:v29 onPixelBuffer:v25 withOrientation:1 andIdentifier:emojiCopy completionHandler:v41];
 
     CVPixelBufferRelease(v25);
   }
@@ -117,9 +117,9 @@ LABEL_9:
       _os_log_impl(&dword_18FFDC000, v34, OS_LOG_TYPE_DEFAULT, "Failed to load MADMLScalingRequest class", buf, 2u);
     }
 
-    v30 = v39;
-    (*(v39 + 2))(v39, v8, v8, 0);
-    v33 = v40;
+    v30 = completionCopy;
+    (*(completionCopy + 2))(completionCopy, imageCopy, imageCopy, 0);
+    v33 = emojiCopy;
     if (v25)
     {
       CVPixelBufferRelease(v25);
@@ -182,10 +182,10 @@ void __54__TUIEmojiUpscaler_generateEmoji_forImage_completion___block_invoke_2(u
   }
 }
 
-- (void)generateEmoji:(id)a3 completion:(id)a4
+- (void)generateEmoji:(id)emoji completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  emojiCopy = emoji;
+  completionCopy = completion;
   v8 = TUIEmojiUpscalerLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -193,32 +193,32 @@ void __54__TUIEmojiUpscaler_generateEmoji_forImage_completion___block_invoke_2(u
     _os_log_impl(&dword_18FFDC000, v8, OS_LOG_TYPE_DEFAULT, "Generating emoji", v10, 2u);
   }
 
-  v9 = [(TUIEmojiUpscaler *)self imageFromEmoji:v6];
+  v9 = [(TUIEmojiUpscaler *)self imageFromEmoji:emojiCopy];
   if (v9)
   {
-    [(TUIEmojiUpscaler *)self generateEmoji:v6 forImage:v9 completion:v7];
+    [(TUIEmojiUpscaler *)self generateEmoji:emojiCopy forImage:v9 completion:completionCopy];
   }
 }
 
-- (id)imageFromEmoji:(id)a3
+- (id)imageFromEmoji:(id)emoji
 {
   v17[1] = *MEMORY[0x1E69E9840];
   v16 = *MEMORY[0x1E69DB648];
   v3 = MEMORY[0x1E69DB878];
-  v4 = a3;
+  emojiCopy = emoji;
   v5 = [v3 systemFontOfSize:160.0];
   v17[0] = v5;
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:&v16 count:1];
 
-  [v4 sizeWithAttributes:v6];
+  [emojiCopy sizeWithAttributes:v6];
   v8 = v7;
   v10 = v9;
-  v11 = [objc_opt_class() sRGB];
-  v12 = CGBitmapContextCreate(0, 0xA0uLL, 0xA0uLL, 8uLL, 0, v11, 1u);
+  sRGB = [objc_opt_class() sRGB];
+  v12 = CGBitmapContextCreate(0, 0xA0uLL, 0xA0uLL, 8uLL, 0, sRGB, 1u);
   UIGraphicsPushContext(v12);
   CGContextScaleCTM(v12, 1.0, -1.0);
   CGContextTranslateCTM(v12, 0.0, -160.0);
-  [v4 drawAtPoint:v6 withAttributes:{(160.0 - v8) * 0.5, (160.0 - v10) * 0.5}];
+  [emojiCopy drawAtPoint:v6 withAttributes:{(160.0 - v8) * 0.5, (160.0 - v10) * 0.5}];
 
   UIGraphicsPopContext();
   Image = CGBitmapContextCreateImage(v12);
@@ -244,9 +244,9 @@ void __54__TUIEmojiUpscaler_generateEmoji_forImage_completion___block_invoke_2(u
   v2 = [(TUIEmojiUpscaler *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E69AE3E0] service];
+    service = [MEMORY[0x1E69AE3E0] service];
     madService = v2->_madService;
-    v2->_madService = v3;
+    v2->_madService = service;
   }
 
   return v2;

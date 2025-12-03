@@ -1,19 +1,19 @@
 @interface CLEEDUploadRequest
-- (CLEEDUploadRequest)initWithCoder:(id)a3;
-- (CLEEDUploadRequest)initWithDictionary:(id)a3 decryptedRequestData:(id)a4 baseURL:(id)a5 error:(int64_t *)a6;
-- (CLEEDUploadRequest)initWithDictionary:(id)a3 error:(int64_t *)a4;
-- (CLEEDUploadRequest)initWithID:(id)a3 psapID:(id)a4 partnerID:(id)a5 geofenceID:(id)a6 requestDate:(id)a7 state:(int64_t)a8 baseURL:(id)a9 relativePath:(id)a10 token:(id)a11 sessionID:(id)a12 combinedSecret:(id)a13 mediaList:(id)a14;
+- (CLEEDUploadRequest)initWithCoder:(id)coder;
+- (CLEEDUploadRequest)initWithDictionary:(id)dictionary decryptedRequestData:(id)data baseURL:(id)l error:(int64_t *)error;
+- (CLEEDUploadRequest)initWithDictionary:(id)dictionary error:(int64_t *)error;
+- (CLEEDUploadRequest)initWithID:(id)d psapID:(id)iD partnerID:(id)partnerID geofenceID:(id)geofenceID requestDate:(id)date state:(int64_t)state baseURL:(id)l relativePath:(id)self0 token:(id)self1 sessionID:(id)self2 combinedSecret:(id)self3 mediaList:(id)self4;
 - (id)description;
 - (id)getRequestDict;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)setUploadURL:(id)a3;
-- (void)updateRequestWithMediaItemList:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setUploadURL:(id)l;
+- (void)updateRequestWithMediaItemList:(id)list;
 @end
 
 @implementation CLEEDUploadRequest
 
-- (CLEEDUploadRequest)initWithID:(id)a3 psapID:(id)a4 partnerID:(id)a5 geofenceID:(id)a6 requestDate:(id)a7 state:(int64_t)a8 baseURL:(id)a9 relativePath:(id)a10 token:(id)a11 sessionID:(id)a12 combinedSecret:(id)a13 mediaList:(id)a14
+- (CLEEDUploadRequest)initWithID:(id)d psapID:(id)iD partnerID:(id)partnerID geofenceID:(id)geofenceID requestDate:(id)date state:(int64_t)state baseURL:(id)l relativePath:(id)self0 token:(id)self1 sessionID:(id)self2 combinedSecret:(id)self3 mediaList:(id)self4
 {
   v81 = *MEMORY[0x1E69E9840];
   if (qword_1EAFE46E0 != -1)
@@ -27,29 +27,29 @@
     *buf = 136449283;
     v56 = "[CLEEDUploadRequest initWithID:psapID:partnerID:geofenceID:requestDate:state:baseURL:relativePath:token:sessionID:combinedSecret:mediaList:]";
     v57 = 2114;
-    v58 = a3;
+    dCopy = d;
     v59 = 2114;
-    v60 = a4;
+    iDCopy = iD;
     v61 = 2114;
-    v62 = a5;
+    partnerIDCopy = partnerID;
     v63 = 2114;
-    v64 = a6;
+    geofenceIDCopy = geofenceID;
     v65 = 2114;
-    v66 = a7;
+    dateCopy = date;
     v67 = 2050;
-    v68 = a8;
+    stateCopy = state;
     v69 = 2114;
-    v70 = a9;
+    lCopy = l;
     v71 = 2114;
-    v72 = a10;
+    pathCopy = path;
     v73 = 2113;
-    v74 = a11;
+    tokenCopy = token;
     v75 = 2113;
-    v76 = a12;
+    sessionIDCopy = sessionID;
     v77 = 2113;
-    v78 = a13;
+    secretCopy = secret;
     v79 = 2114;
-    v80 = a14;
+    listCopy = list;
     _os_log_impl(&dword_19B873000, v20, OS_LOG_TYPE_DEBUG, "#EED2FWK,%{public}s[ID:%{public}@,psapID:%{public}@,partnerID:%{public}@,geofenceID:%{public}@,requestDate:%{public}@,state:%{public}lu,baseURL:%{public}@,relativePath:%{public}@,token:%{private}@,sessionID:%{private}@,combinedSecret:%{private}@,mediaList:%{public}@]", buf, 0x84u);
   }
 
@@ -65,29 +65,29 @@
     v29 = 136449283;
     v30 = "[CLEEDUploadRequest initWithID:psapID:partnerID:geofenceID:requestDate:state:baseURL:relativePath:token:sessionID:combinedSecret:mediaList:]";
     v31 = 2114;
-    v32 = a3;
+    dCopy2 = d;
     v33 = 2114;
-    v34 = a4;
+    iDCopy2 = iD;
     v35 = 2114;
-    v36 = a5;
+    partnerIDCopy2 = partnerID;
     v37 = 2114;
-    v38 = a6;
+    geofenceIDCopy2 = geofenceID;
     v39 = 2114;
-    v40 = a7;
+    dateCopy2 = date;
     v41 = 2050;
-    v42 = a8;
+    stateCopy2 = state;
     v43 = 2114;
-    v44 = a9;
+    lCopy2 = l;
     v45 = 2114;
-    v46 = a10;
+    pathCopy2 = path;
     v47 = 2113;
-    v48 = a11;
+    tokenCopy2 = token;
     v49 = 2113;
-    v50 = a12;
+    sessionIDCopy2 = sessionID;
     v51 = 2113;
-    v52 = a13;
+    secretCopy2 = secret;
     v53 = 2114;
-    v54 = a14;
+    listCopy2 = list;
     v26 = 132;
     v22 = _os_log_send_and_compose_impl();
     sub_19B885924("Generic", 1, 0, 2, "[CLEEDUploadRequest initWithID:psapID:partnerID:geofenceID:requestDate:state:baseURL:relativePath:token:sessionID:combinedSecret:mediaList:]", "CoreLocation: %s\n", v22);
@@ -99,15 +99,15 @@
 
   v28.receiver = self;
   v28.super_class = CLEEDUploadRequest;
-  v23 = [(CLEEDRequest *)&v28 initWithID:a3 psapID:a4 partnerID:a5 geofenceID:a6 requestDate:a7 requestType:2 state:a8, v26];
+  v23 = [(CLEEDRequest *)&v28 initWithID:d psapID:iD partnerID:partnerID geofenceID:geofenceID requestDate:date requestType:2 state:state, v26];
   if (v23)
   {
-    v23->_baseURL = a9;
-    v23->_relativePath = a10;
-    v23->_token = a11;
-    v23->_sessionID = a12;
-    v23->_combinedSecret = a13;
-    v23->_mediaList = [MEMORY[0x1E695DFA8] setWithSet:a14];
+    v23->_baseURL = l;
+    v23->_relativePath = path;
+    v23->_token = token;
+    v23->_sessionID = sessionID;
+    v23->_combinedSecret = secret;
+    v23->_mediaList = [MEMORY[0x1E695DFA8] setWithSet:list];
     v23->_numDuplicateMediaSelections = 0;
   }
 
@@ -132,8 +132,8 @@
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(CLEEDUploadRequest *)self mediaList];
-  v5 = [(NSMutableSet *)v4 countByEnumeratingWithState:&v12 objects:v17 count:16];
+  mediaList = [(CLEEDUploadRequest *)self mediaList];
+  v5 = [(NSMutableSet *)mediaList countByEnumeratingWithState:&v12 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -145,13 +145,13 @@
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(mediaList);
         }
 
         v8 = -[__CFString stringByAppendingString:](v8, "stringByAppendingString:", [*(*(&v12 + 1) + 8 * i) description]);
       }
 
-      v6 = [(NSMutableSet *)v4 countByEnumeratingWithState:&v12 objects:v17 count:16];
+      v6 = [(NSMutableSet *)mediaList countByEnumeratingWithState:&v12 objects:v17 count:16];
     }
 
     while (v6);
@@ -167,50 +167,50 @@
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeObject:-[CLEEDUploadRequest uploadURL](self forKey:{"uploadURL"), @"uploadURL"}];
-  [a3 encodeObject:self->_token forKey:@"token"];
-  [a3 encodeObject:self->_sessionID forKey:@"sessionID"];
-  [a3 encodeObject:self->_combinedSecret forKey:@"combinedSecret"];
-  [a3 encodeObject:self->_mediaList forKey:@"mediaList"];
+  [coder encodeObject:-[CLEEDUploadRequest uploadURL](self forKey:{"uploadURL"), @"uploadURL"}];
+  [coder encodeObject:self->_token forKey:@"token"];
+  [coder encodeObject:self->_sessionID forKey:@"sessionID"];
+  [coder encodeObject:self->_combinedSecret forKey:@"combinedSecret"];
+  [coder encodeObject:self->_mediaList forKey:@"mediaList"];
   v5.receiver = self;
   v5.super_class = CLEEDUploadRequest;
-  [(CLEEDRequest *)&v5 encodeWithCoder:a3];
+  [(CLEEDRequest *)&v5 encodeWithCoder:coder];
 }
 
-- (CLEEDUploadRequest)initWithCoder:(id)a3
+- (CLEEDUploadRequest)initWithCoder:(id)coder
 {
   v8.receiver = self;
   v8.super_class = CLEEDUploadRequest;
   v4 = [(CLEEDRequest *)&v8 initWithCoder:?];
   if (v4)
   {
-    -[CLEEDUploadRequest setUploadURL:](v4, "setUploadURL:", [a3 decodeObjectOfClass:objc_opt_class() forKey:@"uploadURL"]);
-    v4->_token = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"token"];
-    v4->_sessionID = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"sessionID"];
-    v4->_combinedSecret = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"combinedSecret"];
+    -[CLEEDUploadRequest setUploadURL:](v4, "setUploadURL:", [coder decodeObjectOfClass:objc_opt_class() forKey:@"uploadURL"]);
+    v4->_token = [coder decodeObjectOfClass:objc_opt_class() forKey:@"token"];
+    v4->_sessionID = [coder decodeObjectOfClass:objc_opt_class() forKey:@"sessionID"];
+    v4->_combinedSecret = [coder decodeObjectOfClass:objc_opt_class() forKey:@"combinedSecret"];
     v5 = MEMORY[0x1E695DFD8];
     v6 = objc_opt_class();
-    v4->_mediaList = [a3 decodeObjectOfClasses:objc_msgSend(v5 forKey:{"setWithObjects:", v6, objc_opt_class(), 0), @"mediaList"}];
+    v4->_mediaList = [coder decodeObjectOfClasses:objc_msgSend(v5 forKey:{"setWithObjects:", v6, objc_opt_class(), 0), @"mediaList"}];
   }
 
   return v4;
 }
 
-- (CLEEDUploadRequest)initWithDictionary:(id)a3 decryptedRequestData:(id)a4 baseURL:(id)a5 error:(int64_t *)a6
+- (CLEEDUploadRequest)initWithDictionary:(id)dictionary decryptedRequestData:(id)data baseURL:(id)l error:(int64_t *)error
 {
   v65 = *MEMORY[0x1E69E9840];
-  *a6 = 0;
-  v9 = [a3 objectForKey:@"request_ID"];
-  v46 = [a3 objectForKey:@"partner_ID"];
-  v45 = [a3 objectForKey:@"psap_ID"];
-  v44 = [a3 objectForKey:@"geofence_ID"];
-  v10 = [a3 valueForKey:@"timestamp"];
-  v11 = [CLEEDRequest getSessionStartTimeFromDict:a3];
-  v12 = [CLEEDRequest getCallIDFromDict:a3];
+  *error = 0;
+  v9 = [dictionary objectForKey:@"request_ID"];
+  v46 = [dictionary objectForKey:@"partner_ID"];
+  v45 = [dictionary objectForKey:@"psap_ID"];
+  v44 = [dictionary objectForKey:@"geofence_ID"];
+  v10 = [dictionary valueForKey:@"timestamp"];
+  v11 = [CLEEDRequest getSessionStartTimeFromDict:dictionary];
+  v12 = [CLEEDRequest getCallIDFromDict:dictionary];
   v43 = [CLEEDCryptoUtilities getSessionIDWithPhoneNumber:v12 sessionStartTime:v11];
-  v39 = a6;
+  errorCopy = error;
   if (qword_1EAFE46E0 != -1)
   {
     dispatch_once(&qword_1EAFE46E0, &unk_1F0E6B7E0);
@@ -230,11 +230,11 @@
     v55 = 2114;
     v56 = v44;
     v57 = 2050;
-    v58 = [v10 integerValue];
+    integerValue = [v10 integerValue];
     v59 = 2050;
     v60 = v11;
     v61 = 2081;
-    v62 = [v12 UTF8String];
+    uTF8String = [v12 UTF8String];
     v63 = 2081;
     v64 = [objc_msgSend(v43 base64EncodedStringWithOptions:{0), "UTF8String"}];
     _os_log_impl(&dword_19B873000, v13, OS_LOG_TYPE_DEFAULT, "#EED2FWK,%{public}s,requestID:%{public}@, partnerID:%{public}@, psapID:%{public}@, geofenceID:%{public}@, timestamp:%{public}ld, sessionStartTime:%{public}lld, receivedCallID:%{private}s, sessionID:%{private}s", buf, 0x5Cu);
@@ -260,10 +260,10 @@
     }
   }
 
-  v16 = [a4 objectForKey:@"request_type"];
+  v16 = [data objectForKey:@"request_type"];
   v17 = [CLEEDRequest toCLEEDRequestType:v16];
-  v18 = [a4 objectForKey:@"media_upload_path"];
-  v42 = [a4 objectForKey:@"authentication_token"];
+  v18 = [data objectForKey:@"media_upload_path"];
+  v42 = [data objectForKey:@"authentication_token"];
   if (qword_1EAFE46E0 != -1)
   {
     dispatch_once(&qword_1EAFE46E0, &unk_1F0E6B7E0);
@@ -334,31 +334,31 @@
       }
     }
 
-    *v39 = 1;
+    *errorCopy = 1;
   }
 
   if (v9)
   {
-    v25 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:v9];
+    uUID = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:v9];
   }
 
   else
   {
-    v25 = [MEMORY[0x1E696AFB0] UUID];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
   }
 
-  v26 = v25;
+  v26 = uUID;
   if (v10)
   {
-    v27 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSince1970:{objc_msgSend(v10, "integerValue")}];
+    date = [MEMORY[0x1E695DF00] dateWithTimeIntervalSince1970:{objc_msgSend(v10, "integerValue")}];
   }
 
   else
   {
-    v27 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
   }
 
-  v28 = v27;
+  v28 = date;
   if (qword_1EAFE46E0 != -1)
   {
     dispatch_once(&qword_1EAFE46E0, &unk_1F0E6B7E0);
@@ -423,7 +423,7 @@
     v34 = @"UnknownGeofenceID";
   }
 
-  if (*v39)
+  if (*errorCopy)
   {
     v35 = 7;
   }
@@ -439,15 +439,15 @@
     v36 = v42;
   }
 
-  result = [(CLEEDUploadRequest *)self initWithID:v26 psapID:v32 partnerID:v33 geofenceID:v34 requestDate:v28 state:v35 baseURL:a5 relativePath:v18 token:v36 sessionID:v43 combinedSecret:0 mediaList:0];
+  result = [(CLEEDUploadRequest *)self initWithID:v26 psapID:v32 partnerID:v33 geofenceID:v34 requestDate:v28 state:v35 baseURL:l relativePath:v18 token:v36 sessionID:v43 combinedSecret:0 mediaList:0];
   v38 = *MEMORY[0x1E69E9840];
   return result;
 }
 
-- (void)setUploadURL:(id)a3
+- (void)setUploadURL:(id)l
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = [MEMORY[0x1E695DFF8] URLWithString:a3];
+  v4 = [MEMORY[0x1E695DFF8] URLWithString:l];
   -[CLEEDUploadRequest setBaseURL:](self, "setBaseURL:", [v4 host]);
   -[CLEEDUploadRequest setRelativePath:](self, "setRelativePath:", [v4 relativePath]);
   if ([(NSString *)[(CLEEDUploadRequest *)self baseURL] hasSuffix:@"/"])
@@ -471,9 +471,9 @@
     *buf = 136446722;
     v10 = "[CLEEDUploadRequest setUploadURL:]";
     v11 = 2114;
-    v12 = [(CLEEDUploadRequest *)self baseURL];
+    baseURL = [(CLEEDUploadRequest *)self baseURL];
     v13 = 2114;
-    v14 = [(CLEEDUploadRequest *)self relativePath];
+    relativePath = [(CLEEDUploadRequest *)self relativePath];
     _os_log_impl(&dword_19B873000, v5, OS_LOG_TYPE_DEBUG, "#EED2FWK,%{public}s,baseURL:%{public}@,relativePath:%{public}@", buf, 0x20u);
   }
 
@@ -504,8 +504,8 @@
   v32 = *MEMORY[0x1E69E9840];
   v26.receiver = self;
   v26.super_class = CLEEDUploadRequest;
-  v3 = [(CLEEDRequest *)&v26 getRequestDict];
-  if (!v3)
+  getRequestDict = [(CLEEDRequest *)&v26 getRequestDict];
+  if (!getRequestDict)
   {
     if (qword_1EAFE46E0 != -1)
     {
@@ -545,7 +545,7 @@
     goto LABEL_36;
   }
 
-  v4 = v3;
+  v4 = getRequestDict;
   if (![(CLEEDUploadRequest *)self sessionID])
   {
     if (qword_1EAFE46E0 != -1)
@@ -607,8 +607,8 @@ LABEL_37:
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v6 = [(CLEEDUploadRequest *)self mediaList];
-    v7 = [(NSMutableSet *)v6 countByEnumeratingWithState:&v22 objects:v27 count:16];
+    mediaList = [(CLEEDUploadRequest *)self mediaList];
+    v7 = [(NSMutableSet *)mediaList countByEnumeratingWithState:&v22 objects:v27 count:16];
     if (v7)
     {
       v8 = v7;
@@ -619,15 +619,15 @@ LABEL_37:
         {
           if (*v23 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(mediaList);
           }
 
-          v11 = [*(*(&v22 + 1) + 8 * i) createMediaItemDict];
-          v12 = v11;
-          [v5 addObject:v11];
+          createMediaItemDict = [*(*(&v22 + 1) + 8 * i) createMediaItemDict];
+          v12 = createMediaItemDict;
+          [v5 addObject:createMediaItemDict];
         }
 
-        v8 = [(NSMutableSet *)v6 countByEnumeratingWithState:&v22 objects:v27 count:16];
+        v8 = [(NSMutableSet *)mediaList countByEnumeratingWithState:&v22 objects:v27 count:16];
       }
 
       while (v8);
@@ -641,18 +641,18 @@ LABEL_38:
   return v4;
 }
 
-- (CLEEDUploadRequest)initWithDictionary:(id)a3 error:(int64_t *)a4
+- (CLEEDUploadRequest)initWithDictionary:(id)dictionary error:(int64_t *)error
 {
   v101 = *MEMORY[0x1E69E9840];
-  if (a3 && a4)
+  if (dictionary && error)
   {
-    *a4 = 0;
-    v7 = [a3 objectForKey:@"request_ID"];
-    v71 = [a3 objectForKey:@"partner_ID"];
-    v70 = [a3 objectForKey:@"psap_ID"];
-    v69 = [a3 objectForKey:@"geofence_ID"];
-    v8 = [a3 objectForKey:@"timestamp"];
-    v64 = self;
+    *error = 0;
+    v7 = [dictionary objectForKey:@"request_ID"];
+    v71 = [dictionary objectForKey:@"partner_ID"];
+    v70 = [dictionary objectForKey:@"psap_ID"];
+    v69 = [dictionary objectForKey:@"geofence_ID"];
+    v8 = [dictionary objectForKey:@"timestamp"];
+    selfCopy = self;
     if (qword_1EAFE46E0 != -1)
     {
       dispatch_once(&qword_1EAFE46E0, &unk_1F0E6B7E0);
@@ -672,7 +672,7 @@ LABEL_38:
       v97 = 2114;
       v98 = v69;
       v99 = 2050;
-      v100 = [v8 integerValue];
+      integerValue = [v8 integerValue];
       _os_log_impl(&dword_19B873000, v9, OS_LOG_TYPE_DEFAULT, "#EED2FWK,%{public}s,requestID:%{public}@, partnerID:%{public}@, psapID:%{public}@, geofenceID:%{public}@, timestamp:%{public}ld", buf, 0x3Eu);
     }
 
@@ -696,7 +696,7 @@ LABEL_38:
       v85 = 2114;
       v86 = v69;
       v87 = 2050;
-      v88 = [v8 integerValue];
+      integerValue2 = [v8 integerValue];
       v11 = _os_log_send_and_compose_impl();
       sub_19B885924("Generic", 1, 0, 2, "[CLEEDUploadRequest initWithDictionary:error:]", "CoreLocation: %s\n", v11);
       if (v11 != buf)
@@ -705,12 +705,12 @@ LABEL_38:
       }
     }
 
-    v12 = [a3 objectForKey:@"request_type"];
+    v12 = [dictionary objectForKey:@"request_type"];
     v13 = [CLEEDRequest toCLEEDRequestType:v12];
-    v68 = [a3 objectForKey:@"media_upload_path"];
-    v67 = [a3 objectForKey:@"authentication_token"];
-    v65 = a4;
-    v66 = [a3 objectForKey:@"EEDRequestBaseURL"];
+    v68 = [dictionary objectForKey:@"media_upload_path"];
+    v67 = [dictionary objectForKey:@"authentication_token"];
+    errorCopy = error;
+    v66 = [dictionary objectForKey:@"EEDRequestBaseURL"];
     if (qword_1EAFE46E0 != -1)
     {
       dispatch_once(&qword_1EAFE46E0, &unk_1F0E6B7E0);
@@ -730,7 +730,7 @@ LABEL_38:
       v97 = 2113;
       v98 = v67;
       v99 = 2113;
-      v100 = v66;
+      integerValue = v66;
       _os_log_impl(&dword_19B873000, v14, OS_LOG_TYPE_DEFAULT, "#EED2FWK,%{public}s,requestTypeString:%{public}@, requestType:%{public}ld, relativeURL:%{private}@, authenticationToken:%{private}@, baseURL:%{private}@", buf, 0x3Eu);
     }
 
@@ -754,7 +754,7 @@ LABEL_38:
       v85 = 2113;
       v86 = v67;
       v87 = 2113;
-      v88 = v66;
+      integerValue2 = v66;
       v16 = _os_log_send_and_compose_impl();
       sub_19B885924("Generic", 1, 0, 2, "[CLEEDUploadRequest initWithDictionary:error:]", "CoreLocation: %s\n", v16);
       if (v16 != buf)
@@ -763,8 +763,8 @@ LABEL_38:
       }
     }
 
-    v17 = [a3 objectForKey:@"EEDSessionID"];
-    v18 = [a3 objectForKey:@"EEDCombinedSecret"];
+    v17 = [dictionary objectForKey:@"EEDSessionID"];
+    v18 = [dictionary objectForKey:@"EEDCombinedSecret"];
     if (qword_1EAFE46E0 != -1)
     {
       dispatch_once(&qword_1EAFE46E0, &unk_1F0E6B7E0);
@@ -853,7 +853,7 @@ LABEL_38:
       }
 
       v63 = v25;
-      v30 = [a3 valueForKey:@"EEDMediaItemSet"];
+      v30 = [dictionary valueForKey:@"EEDMediaItemSet"];
       if ([v30 count])
       {
         v31 = [MEMORY[0x1E695DFA8] set];
@@ -898,21 +898,21 @@ LABEL_38:
         v31 = 0;
       }
 
-      v45 = -[CLEEDUploadRequest initWithID:psapID:partnerID:geofenceID:requestDate:state:baseURL:relativePath:token:sessionID:combinedSecret:mediaList:](v64, "initWithID:psapID:partnerID:geofenceID:requestDate:state:baseURL:relativePath:token:sessionID:combinedSecret:mediaList:", v24, v70, v71, v69, v63, [objc_msgSend(a3 valueForKey:{@"EEDRequestState", "intValue"}], v66, v68, v67, v17, v18, v31);
+      v45 = -[CLEEDUploadRequest initWithID:psapID:partnerID:geofenceID:requestDate:state:baseURL:relativePath:token:sessionID:combinedSecret:mediaList:](selfCopy, "initWithID:psapID:partnerID:geofenceID:requestDate:state:baseURL:relativePath:token:sessionID:combinedSecret:mediaList:", v24, v70, v71, v69, v63, [objc_msgSend(dictionary valueForKey:{@"EEDRequestState", "intValue"}], v66, v68, v67, v17, v18, v31);
       if (v45)
       {
         v41 = v45;
-        -[CLEEDRequest setRequestStatusAtFirstUserResponse:](v45, "setRequestStatusAtFirstUserResponse:", [objc_msgSend(a3 valueForKey:{@"EEDRequestStatusAtFirstUserResponse", "intValue"}]);
-        -[CLEEDRequest setRequestTransmissionTime:](v41, "setRequestTransmissionTime:", [objc_msgSend(a3 objectForKey:{@"EEDRequestTransmissionTime", "integerValue"}]);
-        [objc_msgSend(a3 valueForKey:{@"EEDRequestReceivedTime", "doubleValue"}];
+        -[CLEEDRequest setRequestStatusAtFirstUserResponse:](v45, "setRequestStatusAtFirstUserResponse:", [objc_msgSend(dictionary valueForKey:{@"EEDRequestStatusAtFirstUserResponse", "intValue"}]);
+        -[CLEEDRequest setRequestTransmissionTime:](v41, "setRequestTransmissionTime:", [objc_msgSend(dictionary objectForKey:{@"EEDRequestTransmissionTime", "integerValue"}]);
+        [objc_msgSend(dictionary valueForKey:{@"EEDRequestReceivedTime", "doubleValue"}];
         [(CLEEDRequest *)v41 setRequestReceivedTime:?];
-        [objc_msgSend(a3 valueForKey:{@"EEDReceivedTimeToFirstUserResponse", "doubleValue"}];
+        [objc_msgSend(dictionary valueForKey:{@"EEDReceivedTimeToFirstUserResponse", "doubleValue"}];
         [(CLEEDRequest *)v41 setReceivedTimeToFirstUserResponse:?];
-        [objc_msgSend(a3 valueForKey:{@"EEDReceivedTimeToAcceptTime", "doubleValue"}];
+        [objc_msgSend(dictionary valueForKey:{@"EEDReceivedTimeToAcceptTime", "doubleValue"}];
         [(CLEEDRequest *)v41 setReceivedTimeToAcceptTime:?];
-        -[CLEEDRequest setNumMediaSelectIterations:](v41, "setNumMediaSelectIterations:", [objc_msgSend(a3 objectForKey:{@"EEDNumMediaSelectIterations", "integerValue"}]);
-        -[CLEEDUploadRequest setNumDuplicateMediaSelections:](v41, "setNumDuplicateMediaSelections:", [objc_msgSend(a3 objectForKey:{@"EEDNumDuplicateMediaSelections", "integerValue"}]);
-        -[CLEEDRequest setMetricSubmitted:](v41, "setMetricSubmitted:", [objc_msgSend(a3 objectForKey:{@"EEDRequestMetricSubmitted", "BOOLValue"}]);
+        -[CLEEDRequest setNumMediaSelectIterations:](v41, "setNumMediaSelectIterations:", [objc_msgSend(dictionary objectForKey:{@"EEDNumMediaSelectIterations", "integerValue"}]);
+        -[CLEEDUploadRequest setNumDuplicateMediaSelections:](v41, "setNumDuplicateMediaSelections:", [objc_msgSend(dictionary objectForKey:{@"EEDNumDuplicateMediaSelections", "integerValue"}]);
+        -[CLEEDRequest setMetricSubmitted:](v41, "setMetricSubmitted:", [objc_msgSend(dictionary objectForKey:{@"EEDRequestMetricSubmitted", "BOOLValue"}]);
         if (qword_1EAFE46E0 != -1)
         {
           dispatch_once(&qword_1EAFE46E0, &unk_1F0E6B7E0);
@@ -921,15 +921,15 @@ LABEL_38:
         v46 = *(v26 + 227);
         if (os_log_type_enabled(v46, OS_LOG_TYPE_DEFAULT))
         {
-          v47 = [(CLEEDRequest *)v41 state];
+          state = [(CLEEDRequest *)v41 state];
           v48 = [(NSMutableSet *)[(CLEEDUploadRequest *)v41 mediaList] count];
-          v49 = *v65;
+          v49 = *errorCopy;
           *buf = 136447235;
           v90 = "[CLEEDUploadRequest initWithDictionary:error:]";
           v91 = 2113;
           v92 = v41;
           v93 = 2050;
-          v94 = v47;
+          v94 = state;
           v95 = 2050;
           v96 = v48;
           v97 = 2050;
@@ -947,15 +947,15 @@ LABEL_38:
           }
 
           v51 = *(v26 + 227);
-          v52 = [(CLEEDRequest *)v41 state];
+          state2 = [(CLEEDRequest *)v41 state];
           v53 = [(NSMutableSet *)[(CLEEDUploadRequest *)v41 mediaList] count];
-          v54 = *v65;
+          v54 = *errorCopy;
           v77 = 136447235;
           v78 = "[CLEEDUploadRequest initWithDictionary:error:]";
           v79 = 2113;
           v80 = v41;
           v81 = 2050;
-          v82 = v52;
+          v82 = state2;
           v83 = 2050;
           v84 = v53;
           v85 = 2050;
@@ -1005,7 +1005,7 @@ LABEL_38:
         }
 
         v41 = 0;
-        *v65 = 1;
+        *errorCopy = 1;
       }
     }
 
@@ -1044,7 +1044,7 @@ LABEL_38:
       }
 
       v41 = 0;
-      *v65 = 1;
+      *errorCopy = 1;
     }
   }
 
@@ -1083,23 +1083,23 @@ LABEL_38:
     }
 
     v41 = 0;
-    *a4 = 1;
+    *error = 1;
   }
 
   v60 = *MEMORY[0x1E69E9840];
   return v41;
 }
 
-- (void)updateRequestWithMediaItemList:(id)a3
+- (void)updateRequestWithMediaItemList:(id)list
 {
   v25 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (list)
   {
     [(CLEEDRequest *)self setNumMediaSelectIterations:[(CLEEDRequest *)self numMediaSelectIterations]+ 1];
-    v5 = [a3 count];
-    [a3 minusSet:{-[CLEEDUploadRequest mediaList](self, "mediaList")}];
-    v6 = v5 - [a3 count];
-    [(NSMutableSet *)[(CLEEDUploadRequest *)self mediaList] unionSet:a3];
+    v5 = [list count];
+    [list minusSet:{-[CLEEDUploadRequest mediaList](self, "mediaList")}];
+    v6 = v5 - [list count];
+    [(NSMutableSet *)[(CLEEDUploadRequest *)self mediaList] unionSet:list];
     [(CLEEDUploadRequest *)self setNumDuplicateMediaSelections:v6 + [(CLEEDUploadRequest *)self numDuplicateMediaSelections]];
     if (qword_1EAFE46E0 != -1)
     {
@@ -1114,13 +1114,13 @@ LABEL_38:
       v15 = 2048;
       v16 = v5;
       v17 = 2048;
-      v18 = [a3 count];
+      v18 = [list count];
       v19 = 1024;
-      v20 = [(CLEEDUploadRequest *)self numDuplicateMediaSelections];
+      numDuplicateMediaSelections = [(CLEEDUploadRequest *)self numDuplicateMediaSelections];
       v21 = 2048;
       v22 = [(NSMutableSet *)[(CLEEDUploadRequest *)self mediaList] count];
       v23 = 1024;
-      v24 = [(CLEEDRequest *)self numMediaSelectIterations];
+      numMediaSelectIterations = [(CLEEDRequest *)self numMediaSelectIterations];
       _os_log_impl(&dword_19B873000, v7, OS_LOG_TYPE_DEFAULT, "#EED2FWK,%{public}s,itemsBeforeRemovingDuplicates:%lu, mediaItemList.count:%lu, numDuplicateMediaSelections:%d, totalItems:%ld, numMediaSelectIterations:%d", buf, 0x36u);
     }
 
@@ -1136,7 +1136,7 @@ LABEL_38:
       dispatch_once(&qword_1EAFE46E0, &unk_1F0E6B7E0);
     }
 
-    [a3 count];
+    [list count];
     [(CLEEDUploadRequest *)self numDuplicateMediaSelections];
     [(NSMutableSet *)[(CLEEDUploadRequest *)self mediaList] count];
     [(CLEEDRequest *)self numMediaSelectIterations];

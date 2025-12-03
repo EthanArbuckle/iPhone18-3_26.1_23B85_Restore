@@ -1,19 +1,19 @@
 @interface UserProfileSectionFooterViewModel
-- (UserProfileSectionFooterViewModel)initWithContentString:(id)a3;
+- (UserProfileSectionFooterViewModel)initWithContentString:(id)string;
 @end
 
 @implementation UserProfileSectionFooterViewModel
 
-- (UserProfileSectionFooterViewModel)initWithContentString:(id)a3
+- (UserProfileSectionFooterViewModel)initWithContentString:(id)string
 {
-  v5 = a3;
+  stringCopy = string;
   v9.receiver = self;
   v9.super_class = UserProfileSectionFooterViewModel;
   v6 = [(UserProfileSectionFooterViewModel *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_contentString, a3);
+    objc_storeStrong(&v6->_contentString, string);
   }
 
   return v7;

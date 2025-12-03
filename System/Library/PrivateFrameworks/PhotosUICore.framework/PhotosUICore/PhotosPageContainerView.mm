@@ -1,10 +1,10 @@
 @interface PhotosPageContainerView
 - (CGRect)clippingRect;
 - (NSCopying)userData;
-- (_TtC12PhotosUICore23PhotosPageContainerView)initWithFrame:(CGRect)a3;
+- (_TtC12PhotosUICore23PhotosPageContainerView)initWithFrame:(CGRect)frame;
 - (void)prepareForReuse;
-- (void)setClippingRect:(CGRect)a3;
-- (void)setUserData:(id)a3;
+- (void)setClippingRect:(CGRect)rect;
+- (void)setUserData:(id)data;
 @end
 
 @implementation PhotosPageContainerView
@@ -17,13 +17,13 @@
   return v2;
 }
 
-- (void)setUserData:(id)a3
+- (void)setUserData:(id)data
 {
   v5 = OBJC_IVAR____TtC12PhotosUICore23PhotosPageContainerView_userData;
   swift_beginAccess();
-  *(&self->super.super.super.isa + v5) = a3;
+  *(&self->super.super.super.isa + v5) = data;
   swift_unknownObjectRetain_n();
-  v6 = self;
+  selfCopy = self;
   swift_unknownObjectRelease();
   sub_1A42B29A0();
   swift_unknownObjectRelease();
@@ -44,12 +44,12 @@
   return result;
 }
 
-- (void)setClippingRect:(CGRect)a3
+- (void)setClippingRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v7 = (self + OBJC_IVAR____TtC12PhotosUICore23PhotosPageContainerView_clippingRect);
   swift_beginAccess();
   *v7 = x;
@@ -62,16 +62,16 @@
 {
   v3 = *(&self->super.super.super.isa + OBJC_IVAR____TtC12PhotosUICore23PhotosPageContainerView_configuration);
   *(&self->super.super.super.isa + OBJC_IVAR____TtC12PhotosUICore23PhotosPageContainerView_configuration) = 0;
-  v2 = self;
+  selfCopy = self;
   sub_1A42B23CC(v3);
 }
 
-- (_TtC12PhotosUICore23PhotosPageContainerView)initWithFrame:(CGRect)a3
+- (_TtC12PhotosUICore23PhotosPageContainerView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC12PhotosUICore23PhotosPageContainerView_configuration) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC12PhotosUICore23PhotosPageContainerView_contentView) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC12PhotosUICore23PhotosPageContainerView_userData) = 0;

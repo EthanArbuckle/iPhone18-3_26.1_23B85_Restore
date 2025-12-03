@@ -1,44 +1,44 @@
 @interface NCNotificationRequest
-+ (NCNotificationRequest)notificationRequestWithActionWithId:(id)a3 runner:(id)a4;
-+ (NCNotificationRequest)notificationRequestWithNotificationId:(id)a3;
-+ (NCNotificationRequest)notificationRequestWithNotificationId:(id)a3 lockScreenPriority:(unint64_t)a4 lockScreenPersistence:(unint64_t)a5;
-+ (NCNotificationRequest)notificationRequestWithNotificationId:(id)a3 requestDestinations:(id)a4 alertOptionsSuppression:(unint64_t)a5;
-+ (NCNotificationRequest)notificationRequestWithNotificationId:(id)a3 requestDestinations:(id)a4 isCritical:(BOOL)a5;
-+ (NCNotificationRequest)notificationRequestWithNotificationId:(id)a3 requestDestinations:(id)a4 lockScreenPersistence:(unint64_t)a5;
-+ (NCNotificationRequest)notificationRequestWithNotificationId:(id)a3 requestDestinations:(id)a4 lockScreenPersistence:(unint64_t)a5 alertOptionsSuppression:(unint64_t)a6;
-+ (NCNotificationRequest)notificationRequestWithNotificationId:(id)a3 sectionId:(id)a4 threadId:(id)a5;
-+ (NCNotificationRequest)notificationRequestWithNotificationId:(id)a3 threadId:(id)a4;
-+ (NCNotificationRequest)notificationRequestWithSectionId:(id)a3 notificationId:(id)a4;
-+ (NCNotificationRequest)notificationRequestWithSectionId:(id)a3 notificationId:(id)a4 requestDestination:(id)a5;
-+ (NCNotificationRequest)notificationRequestWithSectionId:(id)a3 notificationId:(id)a4 subSectionIds:(id)a5 requestDestinations:(id)a6;
-+ (NCNotificationRequest)notificationRequestWithSectionId:(id)a3 notificationId:(id)a4 threadId:(id)a5 subSectionIds:(id)a6 title:(id)a7 message:(id)a8 timestamp:(id)a9 destinations:(id)a10 options:(id)a11;
-+ (NCNotificationRequest)notificationRequestWithSectionId:(id)a3 notificationId:(id)a4 threadId:(id)a5 subSectionIds:(id)a6 title:(id)a7 message:(id)a8 timestamp:(id)a9 destinations:(id)a10 options:(id)a11 alertOptions:(id)a12 uuid:(id)a13;
-+ (NCNotificationRequest)notificationRequestWithSectionId:(id)a3 notificationId:(id)a4 threadId:(id)a5 subSectionIds:(id)a6 title:(id)a7 message:(id)a8 timestamp:(id)a9 destinations:(id)a10 options:(id)a11 uuid:(id)a12;
-+ (NCNotificationRequest)notificationRequestWithSectionId:(id)a3 notificationId:(id)a4 threadId:(id)a5 title:(id)a6 message:(id)a7 timestamp:(id)a8 destination:(id)a9;
-+ (NCNotificationRequest)notificationRequestWithSectionId:(id)a3 notificationId:(id)a4 threadId:(id)a5 title:(id)a6 message:(id)a7 timestamp:(id)a8 destination:(id)a9 uuid:(id)a10;
-+ (NCNotificationRequest)notificationRequestWithSectionId:(id)a3 notificationId:(id)a4 threadId:(id)a5 title:(id)a6 message:(id)a7 timestamp:(id)a8 destinations:(id)a9;
-+ (NCNotificationRequest)notificationRequestWithSectionId:(id)a3 subSectionIds:(id)a4;
-+ (NCNotificationRequest)notificationRequestWithSectionId:(id)a3 threadId:(id)a4;
-+ (NCNotificationRequest)notificationRequestWithSectionId:(id)a3 threadId:(id)a4 notificationId:(id)a5 requestDestination:(id)a6;
-+ (NCNotificationRequest)notificationRequestWithSectionId:(id)a3 threadId:(id)a4 notificationId:(id)a5 requestDestinations:(id)a6;
-+ (NCNotificationRequest)notificationRequestWithThreadId:(id)a3;
++ (NCNotificationRequest)notificationRequestWithActionWithId:(id)id runner:(id)runner;
++ (NCNotificationRequest)notificationRequestWithNotificationId:(id)id;
++ (NCNotificationRequest)notificationRequestWithNotificationId:(id)id lockScreenPriority:(unint64_t)priority lockScreenPersistence:(unint64_t)persistence;
++ (NCNotificationRequest)notificationRequestWithNotificationId:(id)id requestDestinations:(id)destinations alertOptionsSuppression:(unint64_t)suppression;
++ (NCNotificationRequest)notificationRequestWithNotificationId:(id)id requestDestinations:(id)destinations isCritical:(BOOL)critical;
++ (NCNotificationRequest)notificationRequestWithNotificationId:(id)id requestDestinations:(id)destinations lockScreenPersistence:(unint64_t)persistence;
++ (NCNotificationRequest)notificationRequestWithNotificationId:(id)id requestDestinations:(id)destinations lockScreenPersistence:(unint64_t)persistence alertOptionsSuppression:(unint64_t)suppression;
++ (NCNotificationRequest)notificationRequestWithNotificationId:(id)id sectionId:(id)sectionId threadId:(id)threadId;
++ (NCNotificationRequest)notificationRequestWithNotificationId:(id)id threadId:(id)threadId;
++ (NCNotificationRequest)notificationRequestWithSectionId:(id)id notificationId:(id)notificationId;
++ (NCNotificationRequest)notificationRequestWithSectionId:(id)id notificationId:(id)notificationId requestDestination:(id)destination;
++ (NCNotificationRequest)notificationRequestWithSectionId:(id)id notificationId:(id)notificationId subSectionIds:(id)ids requestDestinations:(id)destinations;
++ (NCNotificationRequest)notificationRequestWithSectionId:(id)id notificationId:(id)notificationId threadId:(id)threadId subSectionIds:(id)ids title:(id)title message:(id)message timestamp:(id)timestamp destinations:(id)self0 options:(id)self1;
++ (NCNotificationRequest)notificationRequestWithSectionId:(id)id notificationId:(id)notificationId threadId:(id)threadId subSectionIds:(id)ids title:(id)title message:(id)message timestamp:(id)timestamp destinations:(id)self0 options:(id)self1 alertOptions:(id)self2 uuid:(id)self3;
++ (NCNotificationRequest)notificationRequestWithSectionId:(id)id notificationId:(id)notificationId threadId:(id)threadId subSectionIds:(id)ids title:(id)title message:(id)message timestamp:(id)timestamp destinations:(id)self0 options:(id)self1 uuid:(id)self2;
++ (NCNotificationRequest)notificationRequestWithSectionId:(id)id notificationId:(id)notificationId threadId:(id)threadId title:(id)title message:(id)message timestamp:(id)timestamp destination:(id)destination;
++ (NCNotificationRequest)notificationRequestWithSectionId:(id)id notificationId:(id)notificationId threadId:(id)threadId title:(id)title message:(id)message timestamp:(id)timestamp destination:(id)destination uuid:(id)self0;
++ (NCNotificationRequest)notificationRequestWithSectionId:(id)id notificationId:(id)notificationId threadId:(id)threadId title:(id)title message:(id)message timestamp:(id)timestamp destinations:(id)destinations;
++ (NCNotificationRequest)notificationRequestWithSectionId:(id)id subSectionIds:(id)ids;
++ (NCNotificationRequest)notificationRequestWithSectionId:(id)id threadId:(id)threadId;
++ (NCNotificationRequest)notificationRequestWithSectionId:(id)id threadId:(id)threadId notificationId:(id)notificationId requestDestination:(id)destination;
++ (NCNotificationRequest)notificationRequestWithSectionId:(id)id threadId:(id)threadId notificationId:(id)notificationId requestDestinations:(id)destinations;
++ (NCNotificationRequest)notificationRequestWithThreadId:(id)id;
 + (id)notificationRequest;
-- (BOOL)isCollapsibleWithNotificationRequest:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)matchesRequest:(id)a3;
-- (BOOL)matchesThreadForRequest:(id)a3;
-- (NCNotificationRequest)initWithNotificationRequest:(id)a3;
+- (BOOL)isCollapsibleWithNotificationRequest:(id)request;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)matchesRequest:(id)request;
+- (BOOL)matchesThreadForRequest:(id)request;
+- (NCNotificationRequest)initWithNotificationRequest:(id)request;
 - (NSString)topLevelSectionIdentifier;
 - (NSString)uniqueThreadIdentifier;
-- (id)_actionsDescriptionForEnvironment:(id)a3;
+- (id)_actionsDescriptionForEnvironment:(id)environment;
 - (id)_actionsLoggingDescription;
 - (id)_interruptionLevelLoggingDescription;
 - (id)_priorityStatusLoggingDescription;
 - (id)_summaryStatusLoggingDescription;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)loggingDescription;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 - (unint64_t)hash;
@@ -49,19 +49,19 @@
 
 - (NSString)topLevelSectionIdentifier
 {
-  v3 = [(NCNotificationRequest *)self parentSectionIdentifier];
-  v4 = v3;
-  if (v3)
+  parentSectionIdentifier = [(NCNotificationRequest *)self parentSectionIdentifier];
+  v4 = parentSectionIdentifier;
+  if (parentSectionIdentifier)
   {
-    v5 = v3;
+    sectionIdentifier = parentSectionIdentifier;
   }
 
   else
   {
-    v5 = [(NCNotificationRequest *)self sectionIdentifier];
+    sectionIdentifier = [(NCNotificationRequest *)self sectionIdentifier];
   }
 
-  v6 = v5;
+  v6 = sectionIdentifier;
 
   return v6;
 }
@@ -69,22 +69,22 @@
 - (id)loggingDescription
 {
   v16 = MEMORY[0x277CCACA8];
-  v19 = [(NCNotificationRequest *)self notificationIdentifier];
-  v20 = [v19 un_logDigest];
-  v3 = [(NCNotificationRequest *)self sectionIdentifier];
-  v18 = [(NCNotificationRequest *)self threadIdentifier];
-  v4 = [v18 un_logDigest];
-  v5 = [(NCNotificationRequest *)self categoryIdentifier];
-  v6 = [(NCNotificationRequest *)self timestamp];
-  v7 = [(NCNotificationRequest *)self _interruptionLevelLoggingDescription];
-  v8 = [(NCNotificationRequest *)self _priorityStatusLoggingDescription];
-  v9 = [(NCNotificationRequest *)self _summaryStatusLoggingDescription];
+  notificationIdentifier = [(NCNotificationRequest *)self notificationIdentifier];
+  un_logDigest = [notificationIdentifier un_logDigest];
+  sectionIdentifier = [(NCNotificationRequest *)self sectionIdentifier];
+  threadIdentifier = [(NCNotificationRequest *)self threadIdentifier];
+  un_logDigest2 = [threadIdentifier un_logDigest];
+  categoryIdentifier = [(NCNotificationRequest *)self categoryIdentifier];
+  timestamp = [(NCNotificationRequest *)self timestamp];
+  _interruptionLevelLoggingDescription = [(NCNotificationRequest *)self _interruptionLevelLoggingDescription];
+  _priorityStatusLoggingDescription = [(NCNotificationRequest *)self _priorityStatusLoggingDescription];
+  _summaryStatusLoggingDescription = [(NCNotificationRequest *)self _summaryStatusLoggingDescription];
   [(NCNotificationRequest *)self relevanceScore];
   v11 = v10;
-  v12 = [(NCNotificationRequest *)self filterCriteria];
-  v13 = [(NCNotificationRequest *)self _actionsLoggingDescription];
-  v14 = [(NCNotificationRequest *)self requestDestinations];
-  v17 = [v16 stringWithFormat:@"id: %@ section: %@; thread: %@; category: %@; timestamp: %@; interruption-level: %@; priorityStatus: %@; summaryStatus: %@; relevance-score: %.2f; filter-criteria: %@; actions: [ %@ ]; destinations: [ %@ ]", v20, v3, v4, v5, v6, v7, v8, v9, *&v11, v12, v13, v14];;
+  filterCriteria = [(NCNotificationRequest *)self filterCriteria];
+  _actionsLoggingDescription = [(NCNotificationRequest *)self _actionsLoggingDescription];
+  requestDestinations = [(NCNotificationRequest *)self requestDestinations];
+  v17 = [v16 stringWithFormat:@"id: %@ section: %@; thread: %@; category: %@; timestamp: %@; interruption-level: %@; priorityStatus: %@; summaryStatus: %@; relevance-score: %.2f; filter-criteria: %@; actions: [ %@ ]; destinations: [ %@ ]", un_logDigest, sectionIdentifier, un_logDigest2, categoryIdentifier, timestamp, _interruptionLevelLoggingDescription, _priorityStatusLoggingDescription, _summaryStatusLoggingDescription, *&v11, filterCriteria, _actionsLoggingDescription, requestDestinations];;
 
   return v17;
 }
@@ -93,56 +93,56 @@
 {
   if ([(NCNotificationRequest *)self isUniqueThreadIdentifier])
   {
-    v3 = [(NCNotificationRequest *)self threadIdentifier];
+    threadIdentifier = [(NCNotificationRequest *)self threadIdentifier];
   }
 
   else
   {
-    v3 = 0;
+    threadIdentifier = 0;
   }
 
-  return v3;
+  return threadIdentifier;
 }
 
 - (id)_interruptionLevelLoggingDescription
 {
-  v2 = [(NCNotificationRequest *)self interruptionLevel];
-  if (v2 - 1 > 2)
+  interruptionLevel = [(NCNotificationRequest *)self interruptionLevel];
+  if (interruptionLevel - 1 > 2)
   {
     return @"passive";
   }
 
   else
   {
-    return off_279E0DC48[v2 - 1];
+    return off_279E0DC48[interruptionLevel - 1];
   }
 }
 
 - (id)_priorityStatusLoggingDescription
 {
-  v2 = [(NCNotificationRequest *)self priorityStatus];
-  if (v2 - 1 > 4)
+  priorityStatus = [(NCNotificationRequest *)self priorityStatus];
+  if (priorityStatus - 1 > 4)
   {
     return @"unknown";
   }
 
   else
   {
-    return off_279E0DC60[v2 - 1];
+    return off_279E0DC60[priorityStatus - 1];
   }
 }
 
 - (id)_summaryStatusLoggingDescription
 {
-  v2 = [(NCNotificationRequest *)self summaryStatus];
-  if (v2 - 1 > 3)
+  summaryStatus = [(NCNotificationRequest *)self summaryStatus];
+  if (summaryStatus - 1 > 3)
   {
     return @"unknown";
   }
 
   else
   {
-    return off_279E0DC88[v2 - 1];
+    return off_279E0DC88[summaryStatus - 1];
   }
 }
 
@@ -188,179 +188,179 @@
   return v23 + isHighlight;
 }
 
-- (BOOL)isCollapsibleWithNotificationRequest:(id)a3
+- (BOOL)isCollapsibleWithNotificationRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(NCNotificationRequest *)self sectionIdentifier];
-  v6 = [v4 sectionIdentifier];
+  requestCopy = request;
+  sectionIdentifier = [(NCNotificationRequest *)self sectionIdentifier];
+  sectionIdentifier2 = [requestCopy sectionIdentifier];
 
-  LOBYTE(v4) = [v5 isEqualToString:v6];
-  return v4;
+  LOBYTE(requestCopy) = [sectionIdentifier isEqualToString:sectionIdentifier2];
+  return requestCopy;
 }
 
-- (NCNotificationRequest)initWithNotificationRequest:(id)a3
+- (NCNotificationRequest)initWithNotificationRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = [(NCNotificationRequest *)self init];
   if (v5)
   {
-    v6 = [v4 sectionIdentifier];
-    v7 = [v6 copy];
+    sectionIdentifier = [requestCopy sectionIdentifier];
+    v7 = [sectionIdentifier copy];
     sectionIdentifier = v5->_sectionIdentifier;
     v5->_sectionIdentifier = v7;
 
-    v9 = [v4 notificationIdentifier];
-    v10 = [v9 copy];
+    notificationIdentifier = [requestCopy notificationIdentifier];
+    v10 = [notificationIdentifier copy];
     notificationIdentifier = v5->_notificationIdentifier;
     v5->_notificationIdentifier = v10;
 
-    v12 = [v4 threadIdentifier];
-    v13 = [v12 copy];
+    threadIdentifier = [requestCopy threadIdentifier];
+    v13 = [threadIdentifier copy];
     threadIdentifier = v5->_threadIdentifier;
     v5->_threadIdentifier = v13;
 
-    v15 = [v4 categoryIdentifier];
-    v16 = [v15 copy];
+    categoryIdentifier = [requestCopy categoryIdentifier];
+    v16 = [categoryIdentifier copy];
     categoryIdentifier = v5->_categoryIdentifier;
     v5->_categoryIdentifier = v16;
 
-    v18 = [v4 subSectionIdentifiers];
-    v19 = [v18 copy];
+    subSectionIdentifiers = [requestCopy subSectionIdentifiers];
+    v19 = [subSectionIdentifiers copy];
     subSectionIdentifiers = v5->_subSectionIdentifiers;
     v5->_subSectionIdentifiers = v19;
 
-    v21 = [v4 highestPrioritySubSectionIdentifier];
-    v22 = [v21 copy];
+    highestPrioritySubSectionIdentifier = [requestCopy highestPrioritySubSectionIdentifier];
+    v22 = [highestPrioritySubSectionIdentifier copy];
     highestPrioritySubSectionIdentifier = v5->_highestPrioritySubSectionIdentifier;
     v5->_highestPrioritySubSectionIdentifier = v22;
 
-    v24 = [v4 intentIdentifiers];
-    v25 = [v24 copy];
+    intentIdentifiers = [requestCopy intentIdentifiers];
+    v25 = [intentIdentifiers copy];
     intentIdentifiers = v5->_intentIdentifiers;
     v5->_intentIdentifiers = v25;
 
-    v27 = [v4 peopleIdentifiers];
-    v28 = [v27 copy];
+    peopleIdentifiers = [requestCopy peopleIdentifiers];
+    v28 = [peopleIdentifiers copy];
     peopleIdentifiers = v5->_peopleIdentifiers;
     v5->_peopleIdentifiers = v28;
 
-    v30 = [v4 parentSectionIdentifier];
-    v31 = [v30 copy];
+    parentSectionIdentifier = [requestCopy parentSectionIdentifier];
+    v31 = [parentSectionIdentifier copy];
     parentSectionIdentifier = v5->_parentSectionIdentifier;
     v5->_parentSectionIdentifier = v31;
 
-    v5->_threadIdentifierUnique = [v4 isUniqueThreadIdentifier];
-    v33 = [v4 eventBehavior];
-    v34 = [v33 copy];
+    v5->_threadIdentifierUnique = [requestCopy isUniqueThreadIdentifier];
+    eventBehavior = [requestCopy eventBehavior];
+    v34 = [eventBehavior copy];
     eventBehavior = v5->_eventBehavior;
     v5->_eventBehavior = v34;
 
-    v5->_isHighlight = [v4 isHighlight];
-    v36 = [v4 timestamp];
-    v37 = [v36 copy];
+    v5->_isHighlight = [requestCopy isHighlight];
+    timestamp = [requestCopy timestamp];
+    v37 = [timestamp copy];
     timestamp = v5->_timestamp;
     v5->_timestamp = v37;
 
-    v39 = [v4 requestDestinations];
-    v40 = [v39 copy];
+    requestDestinations = [requestCopy requestDestinations];
+    v40 = [requestDestinations copy];
     requestDestinations = v5->_requestDestinations;
     v5->_requestDestinations = v40;
 
-    v42 = [v4 content];
-    v43 = [v42 copy];
+    content = [requestCopy content];
+    v43 = [content copy];
     content = v5->_content;
     v5->_content = v43;
 
-    v45 = [v4 options];
-    v46 = [v45 copy];
+    options = [requestCopy options];
+    v46 = [options copy];
     options = v5->_options;
     v5->_options = v46;
 
-    v48 = [v4 alertOptions];
-    v49 = [v48 copy];
+    alertOptions = [requestCopy alertOptions];
+    v49 = [alertOptions copy];
     alertOptions = v5->_alertOptions;
     v5->_alertOptions = v49;
 
-    v51 = [v4 context];
-    v52 = [v51 copy];
+    context = [requestCopy context];
+    v52 = [context copy];
     context = v5->_context;
     v5->_context = v52;
 
-    v54 = [v4 settingsSections];
-    v55 = [v54 copy];
+    settingsSections = [requestCopy settingsSections];
+    v55 = [settingsSections copy];
     settingsSections = v5->_settingsSections;
     v5->_settingsSections = v55;
 
-    v57 = [v4 sound];
-    v58 = [v57 copy];
+    sound = [requestCopy sound];
+    v58 = [sound copy];
     sound = v5->_sound;
     v5->_sound = v58;
 
-    v60 = [v4 cancelAction];
+    cancelAction = [requestCopy cancelAction];
     cancelAction = v5->_cancelAction;
-    v5->_cancelAction = v60;
+    v5->_cancelAction = cancelAction;
 
-    v62 = [v4 clearAction];
+    clearAction = [requestCopy clearAction];
     clearAction = v5->_clearAction;
-    v5->_clearAction = v62;
+    v5->_clearAction = clearAction;
 
-    v64 = [v4 closeAction];
+    closeAction = [requestCopy closeAction];
     closeAction = v5->_closeAction;
-    v5->_closeAction = v64;
+    v5->_closeAction = closeAction;
 
-    v66 = [v4 defaultAction];
+    defaultAction = [requestCopy defaultAction];
     defaultAction = v5->_defaultAction;
-    v5->_defaultAction = v66;
+    v5->_defaultAction = defaultAction;
 
-    v68 = [v4 silenceAction];
+    silenceAction = [requestCopy silenceAction];
     silenceAction = v5->_silenceAction;
-    v5->_silenceAction = v68;
+    v5->_silenceAction = silenceAction;
 
-    v70 = [v4 inlineAction];
+    inlineAction = [requestCopy inlineAction];
     inlineAction = v5->_inlineAction;
-    v5->_inlineAction = v70;
+    v5->_inlineAction = inlineAction;
 
-    v72 = [v4 supplementaryActions];
-    v73 = [v72 copy];
+    supplementaryActions = [requestCopy supplementaryActions];
+    v73 = [supplementaryActions copy];
     supplementaryActions = v5->_supplementaryActions;
     v5->_supplementaryActions = v73;
 
-    v75 = [v4 userNotification];
+    userNotification = [requestCopy userNotification];
     userNotification = v5->_userNotification;
-    v5->_userNotification = v75;
+    v5->_userNotification = userNotification;
 
-    v5->_isCollapsedNotification = [v4 isCollapsedNotification];
-    v5->_collapsedNotificationsCount = [v4 collapsedNotificationsCount];
-    v77 = [v4 sourceInfo];
-    v78 = [v77 copy];
+    v5->_isCollapsedNotification = [requestCopy isCollapsedNotification];
+    v5->_collapsedNotificationsCount = [requestCopy collapsedNotificationsCount];
+    sourceInfo = [requestCopy sourceInfo];
+    v78 = [sourceInfo copy];
     sourceInfo = v5->_sourceInfo;
     v5->_sourceInfo = v78;
 
-    v5->_criticalAlert = [v4 isCriticalAlert];
-    v5->_interruptionLevel = [v4 interruptionLevel];
-    v5->_priorityStatus = [v4 priorityStatus];
-    v5->_summaryStatus = [v4 summaryStatus];
-    v80 = [v4 uuid];
+    v5->_criticalAlert = [requestCopy isCriticalAlert];
+    v5->_interruptionLevel = [requestCopy interruptionLevel];
+    v5->_priorityStatus = [requestCopy priorityStatus];
+    v5->_summaryStatus = [requestCopy summaryStatus];
+    uuid = [requestCopy uuid];
     uuid = v5->_uuid;
-    v5->_uuid = v80;
+    v5->_uuid = uuid;
 
-    [v4 relevanceScore];
+    [requestCopy relevanceScore];
     v5->_relevanceScore = v82;
-    v83 = [v4 filterCriteria];
+    filterCriteria = [requestCopy filterCriteria];
     filterCriteria = v5->_filterCriteria;
-    v5->_filterCriteria = v83;
+    v5->_filterCriteria = filterCriteria;
 
-    v5->_isPresentedAsBanner = [v4 isPresentedAsBanner];
-    v5->_isRemoved = [v4 isRemoved];
+    v5->_isPresentedAsBanner = [requestCopy isPresentedAsBanner];
+    v5->_isRemoved = [requestCopy isRemoved];
     [(NCNotificationRequest *)v5 _updateIdentifiersString];
   }
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -374,197 +374,197 @@ LABEL_31:
     }
   }
 
-  v5 = v4;
+  v5 = equalCopy;
   if (!v5)
   {
     goto LABEL_31;
   }
 
-  v6 = [(NCNotificationRequest *)self sectionIdentifier];
-  v7 = [v5 sectionIdentifier];
-  v8 = NCIsEqual(v6, v7);
+  sectionIdentifier = [(NCNotificationRequest *)self sectionIdentifier];
+  sectionIdentifier2 = [v5 sectionIdentifier];
+  v8 = NCIsEqual(sectionIdentifier, sectionIdentifier2);
 
   if (!v8)
   {
     goto LABEL_31;
   }
 
-  v9 = [(NCNotificationRequest *)self notificationIdentifier];
-  v10 = [v5 notificationIdentifier];
-  v11 = NCIsEqual(v9, v10);
+  notificationIdentifier = [(NCNotificationRequest *)self notificationIdentifier];
+  notificationIdentifier2 = [v5 notificationIdentifier];
+  v11 = NCIsEqual(notificationIdentifier, notificationIdentifier2);
 
   if (!v11)
   {
     goto LABEL_31;
   }
 
-  v12 = [(NCNotificationRequest *)self threadIdentifier];
-  v13 = [v5 threadIdentifier];
-  v14 = NCIsEqual(v12, v13);
+  threadIdentifier = [(NCNotificationRequest *)self threadIdentifier];
+  threadIdentifier2 = [v5 threadIdentifier];
+  v14 = NCIsEqual(threadIdentifier, threadIdentifier2);
 
   if (!v14)
   {
     goto LABEL_31;
   }
 
-  v15 = [(NCNotificationRequest *)self categoryIdentifier];
-  v16 = [v5 categoryIdentifier];
-  v17 = NCIsEqual(v15, v16);
+  categoryIdentifier = [(NCNotificationRequest *)self categoryIdentifier];
+  categoryIdentifier2 = [v5 categoryIdentifier];
+  v17 = NCIsEqual(categoryIdentifier, categoryIdentifier2);
 
   if (!v17)
   {
     goto LABEL_31;
   }
 
-  v18 = [(NCNotificationRequest *)self subSectionIdentifiers];
-  v19 = [v5 subSectionIdentifiers];
-  v20 = NCIsEqualToSet(v18, v19);
+  subSectionIdentifiers = [(NCNotificationRequest *)self subSectionIdentifiers];
+  subSectionIdentifiers2 = [v5 subSectionIdentifiers];
+  v20 = NCIsEqualToSet(subSectionIdentifiers, subSectionIdentifiers2);
 
   if (!v20)
   {
     goto LABEL_31;
   }
 
-  v21 = [(NCNotificationRequest *)self highestPrioritySubSectionIdentifier];
-  v22 = [v5 highestPrioritySubSectionIdentifier];
-  v23 = NCIsEqual(v21, v22);
+  highestPrioritySubSectionIdentifier = [(NCNotificationRequest *)self highestPrioritySubSectionIdentifier];
+  highestPrioritySubSectionIdentifier2 = [v5 highestPrioritySubSectionIdentifier];
+  v23 = NCIsEqual(highestPrioritySubSectionIdentifier, highestPrioritySubSectionIdentifier2);
 
   if (!v23)
   {
     goto LABEL_31;
   }
 
-  v24 = [(NCNotificationRequest *)self intentIdentifiers];
-  v25 = [v5 intentIdentifiers];
-  v26 = NCIsEqualToArray(v24, v25);
+  intentIdentifiers = [(NCNotificationRequest *)self intentIdentifiers];
+  intentIdentifiers2 = [v5 intentIdentifiers];
+  v26 = NCIsEqualToArray(intentIdentifiers, intentIdentifiers2);
 
   if (!v26)
   {
     goto LABEL_31;
   }
 
-  v27 = [(NCNotificationRequest *)self peopleIdentifiers];
-  v28 = [v5 peopleIdentifiers];
-  v29 = NCIsEqualToArray(v27, v28);
+  peopleIdentifiers = [(NCNotificationRequest *)self peopleIdentifiers];
+  peopleIdentifiers2 = [v5 peopleIdentifiers];
+  v29 = NCIsEqualToArray(peopleIdentifiers, peopleIdentifiers2);
 
   if (!v29)
   {
     goto LABEL_31;
   }
 
-  v30 = [(NCNotificationRequest *)self parentSectionIdentifier];
-  v31 = [v5 parentSectionIdentifier];
-  v32 = NCIsEqual(v30, v31);
+  parentSectionIdentifier = [(NCNotificationRequest *)self parentSectionIdentifier];
+  parentSectionIdentifier2 = [v5 parentSectionIdentifier];
+  v32 = NCIsEqual(parentSectionIdentifier, parentSectionIdentifier2);
 
   if (!v32)
   {
     goto LABEL_31;
   }
 
-  v33 = [(NCNotificationRequest *)self isUniqueThreadIdentifier];
-  if (v33 != [v5 isUniqueThreadIdentifier])
+  isUniqueThreadIdentifier = [(NCNotificationRequest *)self isUniqueThreadIdentifier];
+  if (isUniqueThreadIdentifier != [v5 isUniqueThreadIdentifier])
   {
     goto LABEL_31;
   }
 
-  v34 = [(NCNotificationRequest *)self eventBehavior];
-  v35 = [v5 eventBehavior];
+  eventBehavior = [(NCNotificationRequest *)self eventBehavior];
+  eventBehavior2 = [v5 eventBehavior];
 
-  if (v34 != v35)
+  if (eventBehavior != eventBehavior2)
   {
     goto LABEL_31;
   }
 
-  v36 = [(NCNotificationRequest *)self isHighlight];
-  if (v36 != [v5 isHighlight])
+  isHighlight = [(NCNotificationRequest *)self isHighlight];
+  if (isHighlight != [v5 isHighlight])
   {
     goto LABEL_31;
   }
 
-  v37 = [(NCNotificationRequest *)self timestamp];
-  v38 = [v5 timestamp];
-  v39 = NCIsEqual(v37, v38);
+  timestamp = [(NCNotificationRequest *)self timestamp];
+  timestamp2 = [v5 timestamp];
+  v39 = NCIsEqual(timestamp, timestamp2);
 
   if (!v39)
   {
     goto LABEL_31;
   }
 
-  v40 = [(NCNotificationRequest *)self content];
-  v41 = [v5 content];
-  v42 = NCIsEqual(v40, v41);
+  content = [(NCNotificationRequest *)self content];
+  content2 = [v5 content];
+  v42 = NCIsEqual(content, content2);
 
   if (!v42)
   {
     goto LABEL_31;
   }
 
-  v43 = [(NCNotificationRequest *)self context];
-  v44 = [v5 context];
-  v45 = NCIsEqual(v43, v44);
+  context = [(NCNotificationRequest *)self context];
+  context2 = [v5 context];
+  v45 = NCIsEqual(context, context2);
 
   if (!v45)
   {
     goto LABEL_31;
   }
 
-  v46 = [(NCNotificationRequest *)self settingsSections];
-  v47 = [v5 settingsSections];
-  v48 = NCIsEqual(v46, v47);
+  settingsSections = [(NCNotificationRequest *)self settingsSections];
+  settingsSections2 = [v5 settingsSections];
+  v48 = NCIsEqual(settingsSections, settingsSections2);
 
   if (!v48)
   {
     goto LABEL_31;
   }
 
-  v49 = [(NCNotificationRequest *)self sound];
-  v50 = [v5 sound];
-  v51 = NCIsEqual(v49, v50);
+  sound = [(NCNotificationRequest *)self sound];
+  sound2 = [v5 sound];
+  v51 = NCIsEqual(sound, sound2);
 
   if (!v51)
   {
     goto LABEL_31;
   }
 
-  v52 = [(NCNotificationRequest *)self isCollapsedNotification];
-  if (v52 != [v5 isCollapsedNotification])
+  isCollapsedNotification = [(NCNotificationRequest *)self isCollapsedNotification];
+  if (isCollapsedNotification != [v5 isCollapsedNotification])
   {
     goto LABEL_31;
   }
 
-  v53 = [(NCNotificationRequest *)self collapsedNotificationsCount];
-  if (v53 != [v5 collapsedNotificationsCount])
+  collapsedNotificationsCount = [(NCNotificationRequest *)self collapsedNotificationsCount];
+  if (collapsedNotificationsCount != [v5 collapsedNotificationsCount])
   {
     goto LABEL_31;
   }
 
-  v54 = [(NCNotificationRequest *)self isCriticalAlert];
-  if (v54 != [v5 isCriticalAlert])
+  isCriticalAlert = [(NCNotificationRequest *)self isCriticalAlert];
+  if (isCriticalAlert != [v5 isCriticalAlert])
   {
     goto LABEL_31;
   }
 
-  v55 = [(NCNotificationRequest *)self interruptionLevel];
-  if (v55 != [v5 interruptionLevel])
+  interruptionLevel = [(NCNotificationRequest *)self interruptionLevel];
+  if (interruptionLevel != [v5 interruptionLevel])
   {
     goto LABEL_31;
   }
 
-  v56 = [(NCNotificationRequest *)self priorityStatus];
-  if (v56 != [v5 priorityStatus])
+  priorityStatus = [(NCNotificationRequest *)self priorityStatus];
+  if (priorityStatus != [v5 priorityStatus])
   {
     goto LABEL_31;
   }
 
-  v57 = [(NCNotificationRequest *)self summaryStatus];
-  if (v57 != [v5 summaryStatus])
+  summaryStatus = [(NCNotificationRequest *)self summaryStatus];
+  if (summaryStatus != [v5 summaryStatus])
   {
     goto LABEL_31;
   }
 
-  v58 = [(NCNotificationRequest *)self uuid];
-  v59 = [v5 uuid];
-  v60 = NCIsEqual(v58, v59);
+  uuid = [(NCNotificationRequest *)self uuid];
+  uuid2 = [v5 uuid];
+  v60 = NCIsEqual(uuid, uuid2);
 
   if (!v60)
   {
@@ -579,28 +579,28 @@ LABEL_31:
     goto LABEL_31;
   }
 
-  v64 = [(NCNotificationRequest *)self filterCriteria];
-  v65 = [v5 filterCriteria];
-  v66 = NCIsEqual(v64, v65);
+  filterCriteria = [(NCNotificationRequest *)self filterCriteria];
+  filterCriteria2 = [v5 filterCriteria];
+  v66 = NCIsEqual(filterCriteria, filterCriteria2);
 
 LABEL_32:
   return v66;
 }
 
-- (BOOL)matchesRequest:(id)a3
+- (BOOL)matchesRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(NCNotificationRequest *)self notificationIdentifier];
-  v6 = [v4 notificationIdentifier];
-  if (NCIsEqual(v5, v6))
+  requestCopy = request;
+  notificationIdentifier = [(NCNotificationRequest *)self notificationIdentifier];
+  notificationIdentifier2 = [requestCopy notificationIdentifier];
+  if (NCIsEqual(notificationIdentifier, notificationIdentifier2))
   {
-    v7 = [(NCNotificationRequest *)self threadIdentifier];
-    v8 = [v4 threadIdentifier];
-    if (NCIsEqual(v7, v8))
+    threadIdentifier = [(NCNotificationRequest *)self threadIdentifier];
+    threadIdentifier2 = [requestCopy threadIdentifier];
+    if (NCIsEqual(threadIdentifier, threadIdentifier2))
     {
-      v9 = [(NCNotificationRequest *)self sectionIdentifier];
-      v10 = [v4 sectionIdentifier];
-      v11 = NCIsEqual(v9, v10);
+      sectionIdentifier = [(NCNotificationRequest *)self sectionIdentifier];
+      sectionIdentifier2 = [requestCopy sectionIdentifier];
+      v11 = NCIsEqual(sectionIdentifier, sectionIdentifier2);
     }
 
     else
@@ -617,16 +617,16 @@ LABEL_32:
   return v11;
 }
 
-- (BOOL)matchesThreadForRequest:(id)a3
+- (BOOL)matchesThreadForRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(NCNotificationRequest *)self threadIdentifier];
-  v6 = [v4 threadIdentifier];
-  if (NCIsEqual(v5, v6))
+  requestCopy = request;
+  threadIdentifier = [(NCNotificationRequest *)self threadIdentifier];
+  threadIdentifier2 = [requestCopy threadIdentifier];
+  if (NCIsEqual(threadIdentifier, threadIdentifier2))
   {
-    v7 = [(NCNotificationRequest *)self sectionIdentifier];
-    v8 = [v4 sectionIdentifier];
-    v9 = NCIsEqual(v7, v8);
+    sectionIdentifier = [(NCNotificationRequest *)self sectionIdentifier];
+    sectionIdentifier2 = [requestCopy sectionIdentifier];
+    v9 = NCIsEqual(sectionIdentifier, sectionIdentifier2);
   }
 
   else
@@ -637,25 +637,25 @@ LABEL_32:
   return v9;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [NCMutableNotificationRequest alloc];
 
   return [(NCNotificationRequest *)v4 initWithNotificationRequest:self];
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(NCNotificationRequest *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(NCNotificationRequest *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v4 = MEMORY[0x277CF0C00];
-  v5 = a3;
+  prefixCopy = prefix;
   v6 = [v4 builderWithObject:self];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
@@ -663,8 +663,8 @@ LABEL_32:
   v10[3] = &unk_279E0D9F0;
   v7 = v6;
   v11 = v7;
-  v12 = self;
-  [v7 appendBodySectionWithName:0 multilinePrefix:v5 block:v10];
+  selfCopy = self;
+  [v7 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v10];
 
   v8 = v7;
   return v7;
@@ -792,33 +792,33 @@ id __63__NCNotificationRequest_descriptionBuilderWithMultilinePrefix___block_inv
 
 - (id)succinctDescription
 {
-  v2 = [(NCNotificationRequest *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(NCNotificationRequest *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
 {
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
-  v4 = [(NCNotificationRequest *)self timestamp];
-  v5 = [v4 description];
+  timestamp = [(NCNotificationRequest *)self timestamp];
+  v5 = [timestamp description];
   v6 = [v3 appendObject:v5 withName:@"timestamp"];
 
-  v7 = [(NCNotificationRequest *)self sectionIdentifier];
-  v8 = [v3 appendObject:v7 withName:@"sectionId"];
+  sectionIdentifier = [(NCNotificationRequest *)self sectionIdentifier];
+  v8 = [v3 appendObject:sectionIdentifier withName:@"sectionId"];
 
-  v9 = [(NCNotificationRequest *)self threadIdentifier];
-  v10 = [v3 appendObject:v9 withName:@"threadId" skipIfNil:1];
+  threadIdentifier = [(NCNotificationRequest *)self threadIdentifier];
+  v10 = [v3 appendObject:threadIdentifier withName:@"threadId" skipIfNil:1];
 
-  v11 = [(NCNotificationRequest *)self notificationIdentifier];
-  v12 = [v3 appendObject:v11 withName:@"notificationId"];
+  notificationIdentifier = [(NCNotificationRequest *)self notificationIdentifier];
+  v12 = [v3 appendObject:notificationIdentifier withName:@"notificationId"];
 
-  v13 = [(NCNotificationRequest *)self categoryIdentifier];
-  v14 = [v3 appendObject:v13 withName:@"categoryId"];
+  categoryIdentifier = [(NCNotificationRequest *)self categoryIdentifier];
+  v14 = [v3 appendObject:categoryIdentifier withName:@"categoryId"];
 
-  v15 = [(NCNotificationRequest *)self uuid];
-  v16 = [v3 appendObject:v15 withName:@"uuid"];
+  uuid = [(NCNotificationRequest *)self uuid];
+  v16 = [v3 appendObject:uuid withName:@"uuid"];
 
   return v3;
 }
@@ -848,367 +848,367 @@ id __63__NCNotificationRequest_descriptionBuilderWithMultilinePrefix___block_inv
   MEMORY[0x2821F96F8]();
 }
 
-+ (NCNotificationRequest)notificationRequestWithSectionId:(id)a3 notificationId:(id)a4 threadId:(id)a5 title:(id)a6 message:(id)a7 timestamp:(id)a8 destination:(id)a9
++ (NCNotificationRequest)notificationRequestWithSectionId:(id)id notificationId:(id)notificationId threadId:(id)threadId title:(id)title message:(id)message timestamp:(id)timestamp destination:(id)destination
 {
   v15 = MEMORY[0x277CBEB98];
-  v16 = a8;
-  v17 = a7;
-  v18 = a6;
-  v19 = a5;
-  v20 = a4;
-  v21 = a3;
-  v22 = [v15 setWithObject:a9];
-  v23 = [a1 notificationRequestWithSectionId:v21 notificationId:v20 threadId:v19 title:v18 message:v17 timestamp:v16 destinations:v22];
+  timestampCopy = timestamp;
+  messageCopy = message;
+  titleCopy = title;
+  threadIdCopy = threadId;
+  notificationIdCopy = notificationId;
+  idCopy = id;
+  v22 = [v15 setWithObject:destination];
+  v23 = [self notificationRequestWithSectionId:idCopy notificationId:notificationIdCopy threadId:threadIdCopy title:titleCopy message:messageCopy timestamp:timestampCopy destinations:v22];
 
   return v23;
 }
 
-+ (NCNotificationRequest)notificationRequestWithSectionId:(id)a3 notificationId:(id)a4 threadId:(id)a5 title:(id)a6 message:(id)a7 timestamp:(id)a8 destination:(id)a9 uuid:(id)a10
++ (NCNotificationRequest)notificationRequestWithSectionId:(id)id notificationId:(id)notificationId threadId:(id)threadId title:(id)title message:(id)message timestamp:(id)timestamp destination:(id)destination uuid:(id)self0
 {
   v16 = MEMORY[0x277CBEB98];
-  v28 = a10;
-  v17 = a9;
-  v18 = a8;
-  v19 = a7;
-  v20 = a6;
-  v21 = a5;
-  v22 = a4;
-  v23 = a3;
+  uuidCopy = uuid;
+  destinationCopy = destination;
+  timestampCopy = timestamp;
+  messageCopy = message;
+  titleCopy = title;
+  threadIdCopy = threadId;
+  notificationIdCopy = notificationId;
+  idCopy = id;
   v24 = [v16 set];
-  v25 = [MEMORY[0x277CBEB98] setWithObject:v17];
+  v25 = [MEMORY[0x277CBEB98] setWithObject:destinationCopy];
 
   v26 = objc_opt_new();
-  v30 = [a1 notificationRequestWithSectionId:v23 notificationId:v22 threadId:v21 subSectionIds:v24 title:v20 message:v19 timestamp:v18 destinations:v25 options:v26 uuid:v28];
+  v30 = [self notificationRequestWithSectionId:idCopy notificationId:notificationIdCopy threadId:threadIdCopy subSectionIds:v24 title:titleCopy message:messageCopy timestamp:timestampCopy destinations:v25 options:v26 uuid:uuidCopy];
 
   return v30;
 }
 
-+ (NCNotificationRequest)notificationRequestWithSectionId:(id)a3 notificationId:(id)a4 threadId:(id)a5 title:(id)a6 message:(id)a7 timestamp:(id)a8 destinations:(id)a9
++ (NCNotificationRequest)notificationRequestWithSectionId:(id)id notificationId:(id)notificationId threadId:(id)threadId title:(id)title message:(id)message timestamp:(id)timestamp destinations:(id)destinations
 {
   v16 = MEMORY[0x277CBEB98];
-  v17 = a9;
-  v18 = a8;
-  v19 = a7;
-  v20 = a6;
-  v21 = a5;
-  v22 = a4;
-  v23 = a3;
+  destinationsCopy = destinations;
+  timestampCopy = timestamp;
+  messageCopy = message;
+  titleCopy = title;
+  threadIdCopy = threadId;
+  notificationIdCopy = notificationId;
+  idCopy = id;
   v24 = [v16 set];
   v25 = objc_opt_new();
-  v26 = [a1 notificationRequestWithSectionId:v23 notificationId:v22 threadId:v21 subSectionIds:v24 title:v20 message:v19 timestamp:v18 destinations:v17 options:v25];
+  v26 = [self notificationRequestWithSectionId:idCopy notificationId:notificationIdCopy threadId:threadIdCopy subSectionIds:v24 title:titleCopy message:messageCopy timestamp:timestampCopy destinations:destinationsCopy options:v25];
 
   return v26;
 }
 
-+ (NCNotificationRequest)notificationRequestWithSectionId:(id)a3 notificationId:(id)a4 threadId:(id)a5 subSectionIds:(id)a6 title:(id)a7 message:(id)a8 timestamp:(id)a9 destinations:(id)a10 options:(id)a11
++ (NCNotificationRequest)notificationRequestWithSectionId:(id)id notificationId:(id)notificationId threadId:(id)threadId subSectionIds:(id)ids title:(id)title message:(id)message timestamp:(id)timestamp destinations:(id)self0 options:(id)self1
 {
   v26 = MEMORY[0x277CBEB98];
-  v16 = a11;
-  v17 = a10;
-  v27 = a9;
-  v28 = a8;
-  v18 = a7;
-  v19 = a5;
-  v20 = a4;
-  v25 = a3;
+  optionsCopy = options;
+  destinationsCopy = destinations;
+  timestampCopy = timestamp;
+  messageCopy = message;
+  titleCopy = title;
+  threadIdCopy = threadId;
+  notificationIdCopy = notificationId;
+  idCopy = id;
   v21 = [v26 set];
   v22 = objc_opt_new();
   v23 = objc_alloc_init(MEMORY[0x277CCAD78]);
-  v30 = [a1 notificationRequestWithSectionId:v25 notificationId:v20 threadId:v19 subSectionIds:v21 title:v18 message:v28 timestamp:v27 destinations:v17 options:v16 alertOptions:v22 uuid:v23];
+  v30 = [self notificationRequestWithSectionId:idCopy notificationId:notificationIdCopy threadId:threadIdCopy subSectionIds:v21 title:titleCopy message:messageCopy timestamp:timestampCopy destinations:destinationsCopy options:optionsCopy alertOptions:v22 uuid:v23];
 
   return v30;
 }
 
-+ (NCNotificationRequest)notificationRequestWithSectionId:(id)a3 notificationId:(id)a4 threadId:(id)a5 subSectionIds:(id)a6 title:(id)a7 message:(id)a8 timestamp:(id)a9 destinations:(id)a10 options:(id)a11 uuid:(id)a12
++ (NCNotificationRequest)notificationRequestWithSectionId:(id)id notificationId:(id)notificationId threadId:(id)threadId subSectionIds:(id)ids title:(id)title message:(id)message timestamp:(id)timestamp destinations:(id)self0 options:(id)self1 uuid:(id)self2
 {
   v27 = MEMORY[0x277CBEB98];
-  v17 = a12;
-  v18 = a10;
-  v28 = a9;
-  v29 = a8;
-  v19 = a7;
-  v20 = a5;
-  v21 = a4;
-  v26 = a3;
+  uuidCopy = uuid;
+  destinationsCopy = destinations;
+  timestampCopy = timestamp;
+  messageCopy = message;
+  titleCopy = title;
+  threadIdCopy = threadId;
+  notificationIdCopy = notificationId;
+  idCopy = id;
   v22 = [v27 set];
   v23 = objc_opt_new();
   v24 = objc_opt_new();
-  v31 = [a1 notificationRequestWithSectionId:v26 notificationId:v21 threadId:v20 subSectionIds:v22 title:v19 message:v29 timestamp:v28 destinations:v18 options:v23 alertOptions:v24 uuid:v17];
+  v31 = [self notificationRequestWithSectionId:idCopy notificationId:notificationIdCopy threadId:threadIdCopy subSectionIds:v22 title:titleCopy message:messageCopy timestamp:timestampCopy destinations:destinationsCopy options:v23 alertOptions:v24 uuid:uuidCopy];
 
   return v31;
 }
 
-+ (NCNotificationRequest)notificationRequestWithSectionId:(id)a3 notificationId:(id)a4 threadId:(id)a5 subSectionIds:(id)a6 title:(id)a7 message:(id)a8 timestamp:(id)a9 destinations:(id)a10 options:(id)a11 alertOptions:(id)a12 uuid:(id)a13
++ (NCNotificationRequest)notificationRequestWithSectionId:(id)id notificationId:(id)notificationId threadId:(id)threadId subSectionIds:(id)ids title:(id)title message:(id)message timestamp:(id)timestamp destinations:(id)self0 options:(id)self1 alertOptions:(id)self2 uuid:(id)self3
 {
-  v34 = a13;
-  v33 = a12;
-  v32 = a11;
-  v18 = a10;
-  v19 = a9;
-  v20 = a8;
-  v21 = a7;
-  v22 = a6;
-  v23 = a5;
-  v24 = a4;
-  v25 = a3;
+  uuidCopy = uuid;
+  alertOptionsCopy = alertOptions;
+  optionsCopy = options;
+  destinationsCopy = destinations;
+  timestampCopy = timestamp;
+  messageCopy = message;
+  titleCopy = title;
+  idsCopy = ids;
+  threadIdCopy = threadId;
+  notificationIdCopy = notificationId;
+  idCopy = id;
   v26 = objc_opt_new();
-  [v26 setSectionIdentifier:v25];
+  [v26 setSectionIdentifier:idCopy];
 
-  [v26 setNotificationIdentifier:v24];
-  [v26 setThreadIdentifier:v23];
+  [v26 setNotificationIdentifier:notificationIdCopy];
+  [v26 setThreadIdentifier:threadIdCopy];
 
-  [v26 setSubSectionIdentifiers:v22];
-  [v26 setTimestamp:v19];
-  [v26 setRequestDestinations:v18];
+  [v26 setSubSectionIdentifiers:idsCopy];
+  [v26 setTimestamp:timestampCopy];
+  [v26 setRequestDestinations:destinationsCopy];
 
   v27 = objc_opt_new();
-  [v27 setTitle:v21];
+  [v27 setTitle:titleCopy];
 
-  v28 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:v20];
+  v28 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:messageCopy];
   [v27 setAttributedMessage:v28];
-  [v27 setDate:v19];
+  [v27 setDate:timestampCopy];
 
   [v26 setContent:v27];
-  [v26 setOptions:v32];
+  [v26 setOptions:optionsCopy];
 
-  [v26 setAlertOptions:v33];
-  [v26 setUuid:v34];
+  [v26 setAlertOptions:alertOptionsCopy];
+  [v26 setUuid:uuidCopy];
 
   v29 = [v26 copy];
 
   return v29;
 }
 
-+ (NCNotificationRequest)notificationRequestWithSectionId:(id)a3 threadId:(id)a4 notificationId:(id)a5 requestDestination:(id)a6
++ (NCNotificationRequest)notificationRequestWithSectionId:(id)id threadId:(id)threadId notificationId:(id)notificationId requestDestination:(id)destination
 {
   v10 = MEMORY[0x277CBEAA8];
-  v11 = a6;
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
-  v15 = [v10 date];
-  v16 = [MEMORY[0x277CBEB98] setWithObject:v11];
+  destinationCopy = destination;
+  notificationIdCopy = notificationId;
+  threadIdCopy = threadId;
+  idCopy = id;
+  date = [v10 date];
+  v16 = [MEMORY[0x277CBEB98] setWithObject:destinationCopy];
 
-  v17 = [a1 notificationRequestWithSectionId:v14 notificationId:v12 threadId:v13 title:@"title" message:@"message" timestamp:v15 destinations:v16];
+  v17 = [self notificationRequestWithSectionId:idCopy notificationId:notificationIdCopy threadId:threadIdCopy title:@"title" message:@"message" timestamp:date destinations:v16];
 
   return v17;
 }
 
-+ (NCNotificationRequest)notificationRequestWithSectionId:(id)a3 threadId:(id)a4 notificationId:(id)a5 requestDestinations:(id)a6
++ (NCNotificationRequest)notificationRequestWithSectionId:(id)id threadId:(id)threadId notificationId:(id)notificationId requestDestinations:(id)destinations
 {
   v10 = MEMORY[0x277CBEAA8];
-  v11 = a6;
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
-  v15 = [v10 date];
-  v16 = [a1 notificationRequestWithSectionId:v14 notificationId:v12 threadId:v13 title:@"title" message:@"message" timestamp:v15 destinations:v11];
+  destinationsCopy = destinations;
+  notificationIdCopy = notificationId;
+  threadIdCopy = threadId;
+  idCopy = id;
+  date = [v10 date];
+  v16 = [self notificationRequestWithSectionId:idCopy notificationId:notificationIdCopy threadId:threadIdCopy title:@"title" message:@"message" timestamp:date destinations:destinationsCopy];
 
   return v16;
 }
 
-+ (NCNotificationRequest)notificationRequestWithSectionId:(id)a3 notificationId:(id)a4 requestDestination:(id)a5
++ (NCNotificationRequest)notificationRequestWithSectionId:(id)id notificationId:(id)notificationId requestDestination:(id)destination
 {
   v8 = MEMORY[0x277CBEB98];
-  v9 = a4;
-  v10 = a3;
-  v11 = [v8 setWithObject:a5];
-  v12 = [a1 notificationRequestWithSectionId:v10 threadId:@"threadId" notificationId:v9 requestDestinations:v11];
+  notificationIdCopy = notificationId;
+  idCopy = id;
+  v11 = [v8 setWithObject:destination];
+  v12 = [self notificationRequestWithSectionId:idCopy threadId:@"threadId" notificationId:notificationIdCopy requestDestinations:v11];
 
   return v12;
 }
 
-+ (NCNotificationRequest)notificationRequestWithSectionId:(id)a3 notificationId:(id)a4
++ (NCNotificationRequest)notificationRequestWithSectionId:(id)id notificationId:(id)notificationId
 {
   v6 = MEMORY[0x277CBEAA8];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 date];
-  v10 = [a1 notificationRequestWithSectionId:v8 notificationId:v7 threadId:@"threadId" timestamp:v9];
+  notificationIdCopy = notificationId;
+  idCopy = id;
+  date = [v6 date];
+  v10 = [self notificationRequestWithSectionId:idCopy notificationId:notificationIdCopy threadId:@"threadId" timestamp:date];
 
   return v10;
 }
 
-+ (NCNotificationRequest)notificationRequestWithSectionId:(id)a3 threadId:(id)a4
++ (NCNotificationRequest)notificationRequestWithSectionId:(id)id threadId:(id)threadId
 {
   v6 = MEMORY[0x277CBEAA8];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 date];
-  v10 = [a1 notificationRequestWithSectionId:v8 notificationId:@"notificationId" threadId:v7 timestamp:v9];
+  threadIdCopy = threadId;
+  idCopy = id;
+  date = [v6 date];
+  v10 = [self notificationRequestWithSectionId:idCopy notificationId:@"notificationId" threadId:threadIdCopy timestamp:date];
 
   return v10;
 }
 
-+ (NCNotificationRequest)notificationRequestWithNotificationId:(id)a3
++ (NCNotificationRequest)notificationRequestWithNotificationId:(id)id
 {
   v4 = MEMORY[0x277CBEAA8];
-  v5 = a3;
-  v6 = [v4 date];
-  v7 = [a1 notificationRequestWithSectionId:@"sectionId" notificationId:v5 timestamp:v6];
+  idCopy = id;
+  date = [v4 date];
+  v7 = [self notificationRequestWithSectionId:@"sectionId" notificationId:idCopy timestamp:date];
 
   return v7;
 }
 
-+ (NCNotificationRequest)notificationRequestWithThreadId:(id)a3
++ (NCNotificationRequest)notificationRequestWithThreadId:(id)id
 {
   v4 = MEMORY[0x277CBEAA8];
-  v5 = a3;
-  v6 = [v4 date];
-  v7 = [a1 notificationRequestWithThreadId:v5 timestamp:v6];
+  idCopy = id;
+  date = [v4 date];
+  v7 = [self notificationRequestWithThreadId:idCopy timestamp:date];
 
   return v7;
 }
 
-+ (NCNotificationRequest)notificationRequestWithNotificationId:(id)a3 sectionId:(id)a4 threadId:(id)a5
++ (NCNotificationRequest)notificationRequestWithNotificationId:(id)id sectionId:(id)sectionId threadId:(id)threadId
 {
   v8 = MEMORY[0x277CBEAA8];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [v8 date];
-  v13 = [a1 notificationRequestWithSectionId:v10 notificationId:v11 threadId:v9 timestamp:v12];
+  threadIdCopy = threadId;
+  sectionIdCopy = sectionId;
+  idCopy = id;
+  date = [v8 date];
+  v13 = [self notificationRequestWithSectionId:sectionIdCopy notificationId:idCopy threadId:threadIdCopy timestamp:date];
 
   return v13;
 }
 
-+ (NCNotificationRequest)notificationRequestWithNotificationId:(id)a3 threadId:(id)a4
++ (NCNotificationRequest)notificationRequestWithNotificationId:(id)id threadId:(id)threadId
 {
   v6 = MEMORY[0x277CBEAA8];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 date];
-  v10 = [a1 notificationRequestWithNotificationId:v8 threadId:v7 timestamp:v9];
+  threadIdCopy = threadId;
+  idCopy = id;
+  date = [v6 date];
+  v10 = [self notificationRequestWithNotificationId:idCopy threadId:threadIdCopy timestamp:date];
 
   return v10;
 }
 
 + (id)notificationRequest
 {
-  v3 = [MEMORY[0x277CBEAA8] date];
-  v4 = [a1 notificationRequestWithTimestamp:v3];
+  date = [MEMORY[0x277CBEAA8] date];
+  v4 = [self notificationRequestWithTimestamp:date];
 
   return v4;
 }
 
-+ (NCNotificationRequest)notificationRequestWithActionWithId:(id)a3 runner:(id)a4
++ (NCNotificationRequest)notificationRequestWithActionWithId:(id)id runner:(id)runner
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 notificationRequestWithNotificationId:@"action-notification"];
+  runnerCopy = runner;
+  idCopy = id;
+  v8 = [self notificationRequestWithNotificationId:@"action-notification"];
   v9 = [v8 mutableCopy];
 
   v10 = objc_alloc_init(NCMutableNotificationAction);
-  [(NCMutableNotificationAction *)v10 setIdentifier:v7];
+  [(NCMutableNotificationAction *)v10 setIdentifier:idCopy];
 
-  [(NCMutableNotificationAction *)v10 setActionRunner:v6];
+  [(NCMutableNotificationAction *)v10 setActionRunner:runnerCopy];
   [v9 setDefaultAction:v10];
 
   return v9;
 }
 
-+ (NCNotificationRequest)notificationRequestWithNotificationId:(id)a3 lockScreenPriority:(unint64_t)a4 lockScreenPersistence:(unint64_t)a5
++ (NCNotificationRequest)notificationRequestWithNotificationId:(id)id lockScreenPriority:(unint64_t)priority lockScreenPersistence:(unint64_t)persistence
 {
-  v8 = a3;
+  idCopy = id;
   v9 = objc_opt_new();
-  [v9 setLockScreenPriority:a4];
-  [v9 setLockScreenPersistence:a5];
+  [v9 setLockScreenPriority:priority];
+  [v9 setLockScreenPersistence:persistence];
   v10 = [MEMORY[0x277CBEB98] set];
-  v11 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   v12 = [MEMORY[0x277CBEB98] set];
-  v13 = [a1 notificationRequestWithSectionId:@"sectionId" notificationId:v8 threadId:@"threadId" subSectionIds:v10 title:@"title" message:@"message" timestamp:v11 destinations:v12 options:v9];
+  v13 = [self notificationRequestWithSectionId:@"sectionId" notificationId:idCopy threadId:@"threadId" subSectionIds:v10 title:@"title" message:@"message" timestamp:date destinations:v12 options:v9];
 
   return v13;
 }
 
-+ (NCNotificationRequest)notificationRequestWithNotificationId:(id)a3 requestDestinations:(id)a4 isCritical:(BOOL)a5
++ (NCNotificationRequest)notificationRequestWithNotificationId:(id)id requestDestinations:(id)destinations isCritical:(BOOL)critical
 {
-  v5 = a5;
-  v8 = a4;
-  v9 = a3;
+  criticalCopy = critical;
+  destinationsCopy = destinations;
+  idCopy = id;
   v10 = objc_opt_new();
-  [v10 setPreemptsPresentedNotification:v5];
-  [v10 setRevealsAdditionalContentOnPresentation:v5];
+  [v10 setPreemptsPresentedNotification:criticalCopy];
+  [v10 setRevealsAdditionalContentOnPresentation:criticalCopy];
   v11 = [MEMORY[0x277CBEB98] set];
-  v12 = [MEMORY[0x277CBEAA8] date];
-  v13 = [a1 notificationRequestWithSectionId:@"sectionId" notificationId:v9 threadId:@"threadId" subSectionIds:v11 title:@"title" message:@"message" timestamp:v12 destinations:v8 options:v10];
+  date = [MEMORY[0x277CBEAA8] date];
+  v13 = [self notificationRequestWithSectionId:@"sectionId" notificationId:idCopy threadId:@"threadId" subSectionIds:v11 title:@"title" message:@"message" timestamp:date destinations:destinationsCopy options:v10];
 
   return v13;
 }
 
-+ (NCNotificationRequest)notificationRequestWithSectionId:(id)a3 subSectionIds:(id)a4
++ (NCNotificationRequest)notificationRequestWithSectionId:(id)id subSectionIds:(id)ids
 {
   v6 = MEMORY[0x277CBEB98];
-  v7 = a4;
-  v8 = a3;
+  idsCopy = ids;
+  idCopy = id;
   v9 = [v6 set];
-  v10 = [a1 notificationRequestWithSectionId:v8 notificationId:@"notificationId" subSectionIds:v7 requestDestinations:v9];
+  v10 = [self notificationRequestWithSectionId:idCopy notificationId:@"notificationId" subSectionIds:idsCopy requestDestinations:v9];
 
   return v10;
 }
 
-+ (NCNotificationRequest)notificationRequestWithSectionId:(id)a3 notificationId:(id)a4 subSectionIds:(id)a5 requestDestinations:(id)a6
++ (NCNotificationRequest)notificationRequestWithSectionId:(id)id notificationId:(id)notificationId subSectionIds:(id)ids requestDestinations:(id)destinations
 {
   v10 = MEMORY[0x277CBEAA8];
-  v11 = a6;
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
-  v15 = [v10 date];
+  destinationsCopy = destinations;
+  idsCopy = ids;
+  notificationIdCopy = notificationId;
+  idCopy = id;
+  date = [v10 date];
   v16 = objc_opt_new();
-  v17 = [a1 notificationRequestWithSectionId:v14 notificationId:v13 threadId:@"threadId" subSectionIds:v12 title:@"title" message:@"message" timestamp:v15 destinations:v11 options:v16];
+  v17 = [self notificationRequestWithSectionId:idCopy notificationId:notificationIdCopy threadId:@"threadId" subSectionIds:idsCopy title:@"title" message:@"message" timestamp:date destinations:destinationsCopy options:v16];
 
   return v17;
 }
 
-+ (NCNotificationRequest)notificationRequestWithNotificationId:(id)a3 requestDestinations:(id)a4 lockScreenPersistence:(unint64_t)a5
++ (NCNotificationRequest)notificationRequestWithNotificationId:(id)id requestDestinations:(id)destinations lockScreenPersistence:(unint64_t)persistence
 {
-  v8 = a4;
-  v9 = a3;
+  destinationsCopy = destinations;
+  idCopy = id;
   v10 = objc_opt_new();
-  [v10 setLockScreenPersistence:a5];
+  [v10 setLockScreenPersistence:persistence];
   v11 = [MEMORY[0x277CBEB98] set];
-  v12 = [MEMORY[0x277CBEAA8] date];
-  v13 = [a1 notificationRequestWithSectionId:@"sectionId" notificationId:v9 threadId:@"threadId" subSectionIds:v11 title:@"title" message:@"message" timestamp:v12 destinations:v8 options:v10];
+  date = [MEMORY[0x277CBEAA8] date];
+  v13 = [self notificationRequestWithSectionId:@"sectionId" notificationId:idCopy threadId:@"threadId" subSectionIds:v11 title:@"title" message:@"message" timestamp:date destinations:destinationsCopy options:v10];
 
   return v13;
 }
 
-+ (NCNotificationRequest)notificationRequestWithNotificationId:(id)a3 requestDestinations:(id)a4 alertOptionsSuppression:(unint64_t)a5
++ (NCNotificationRequest)notificationRequestWithNotificationId:(id)id requestDestinations:(id)destinations alertOptionsSuppression:(unint64_t)suppression
 {
-  v8 = a4;
-  v9 = a3;
+  destinationsCopy = destinations;
+  idCopy = id;
   v10 = objc_alloc_init(NCMutableNotificationAlertOptions);
-  [(NCMutableNotificationAlertOptions *)v10 setSuppression:a5];
+  [(NCMutableNotificationAlertOptions *)v10 setSuppression:suppression];
   v11 = [MEMORY[0x277CBEB98] set];
-  v12 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   v13 = objc_opt_new();
   v14 = objc_alloc_init(MEMORY[0x277CCAD78]);
-  v15 = [a1 notificationRequestWithSectionId:@"sectionId" notificationId:v9 threadId:@"threadId" subSectionIds:v11 title:@"title" message:@"message" timestamp:v12 destinations:v8 options:v13 alertOptions:v10 uuid:v14];
+  v15 = [self notificationRequestWithSectionId:@"sectionId" notificationId:idCopy threadId:@"threadId" subSectionIds:v11 title:@"title" message:@"message" timestamp:date destinations:destinationsCopy options:v13 alertOptions:v10 uuid:v14];
 
   return v15;
 }
 
-+ (NCNotificationRequest)notificationRequestWithNotificationId:(id)a3 requestDestinations:(id)a4 lockScreenPersistence:(unint64_t)a5 alertOptionsSuppression:(unint64_t)a6
++ (NCNotificationRequest)notificationRequestWithNotificationId:(id)id requestDestinations:(id)destinations lockScreenPersistence:(unint64_t)persistence alertOptionsSuppression:(unint64_t)suppression
 {
-  v10 = a4;
-  v11 = a3;
+  destinationsCopy = destinations;
+  idCopy = id;
   v12 = objc_opt_new();
-  [v12 setLockScreenPersistence:a5];
+  [v12 setLockScreenPersistence:persistence];
   v13 = objc_alloc_init(NCMutableNotificationAlertOptions);
-  [(NCMutableNotificationAlertOptions *)v13 setSuppression:a6];
+  [(NCMutableNotificationAlertOptions *)v13 setSuppression:suppression];
   v14 = [MEMORY[0x277CBEB98] set];
-  v15 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   v16 = objc_alloc_init(MEMORY[0x277CCAD78]);
-  v17 = [a1 notificationRequestWithSectionId:@"sectionId" notificationId:v11 threadId:@"threadId" subSectionIds:v14 title:@"title" message:@"message" timestamp:v15 destinations:v10 options:v12 alertOptions:v13 uuid:v16];
+  v17 = [self notificationRequestWithSectionId:@"sectionId" notificationId:idCopy threadId:@"threadId" subSectionIds:v14 title:@"title" message:@"message" timestamp:date destinations:destinationsCopy options:v12 alertOptions:v13 uuid:v16];
 
   return v17;
 }
 
-- (id)_actionsDescriptionForEnvironment:(id)a3
+- (id)_actionsDescriptionForEnvironment:(id)environment
 {
-  v3 = [(NCNotificationRequest *)self supplementaryActions];
-  v4 = [v3 objectForKey:@"NCNotificationActionEnvironmentMinimal"];
+  supplementaryActions = [(NCNotificationRequest *)self supplementaryActions];
+  v4 = [supplementaryActions objectForKey:@"NCNotificationActionEnvironmentMinimal"];
   v5 = [v4 copy];
 
   v6 = [MEMORY[0x277CCAC30] predicateWithFormat:@"behavior == %d", 1];

@@ -32,28 +32,28 @@
 
 + (uint64_t)categoryForProductInfo:()HMDHAPMetadata
 {
-  v3 = [a3 productClass];
+  productClass = [a3 productClass];
   v4 = MEMORY[0x277CD1680];
 
-  return [v4 categoryForProductClass:v3];
+  return [v4 categoryForProductClass:productClass];
 }
 
 + (id)categoryWithCategoryIdentifier:()HMDHAPMetadata
 {
   v3 = a3;
   v4 = +[HMDHAPMetadata getSharedInstance];
-  v5 = [v4 categoryForIdentifier:v3];
+  categoryForOther = [v4 categoryForIdentifier:v3];
 
-  if (!v5)
+  if (!categoryForOther)
   {
     v6 = +[HMDHAPMetadata getSharedInstance];
-    v5 = [v6 categoryForOther];
+    categoryForOther = [v6 categoryForOther];
   }
 
   v7 = objc_alloc(MEMORY[0x277CD1680]);
-  v8 = [v5 uuidStr];
-  v9 = [v5 catDescription];
-  v10 = [v7 initWithType:v8 name:v9];
+  uuidStr = [categoryForOther uuidStr];
+  catDescription = [categoryForOther catDescription];
+  v10 = [v7 initWithType:uuidStr name:catDescription];
 
   v11 = [MEMORY[0x277CD1A18] cachedInstanceForHMAccessoryCategory:v10];
 
@@ -71,25 +71,25 @@
   v8 = v7;
   if (v6)
   {
-    v9 = [v7 categoryForType:*MEMORY[0x277CCE920]];
+    categoryForOther = [v7 categoryForType:*MEMORY[0x277CCE920]];
   }
 
   else
   {
-    v10 = [v3 UUIDString];
-    v9 = [v8 categoryForType:v10];
+    uUIDString = [v3 UUIDString];
+    categoryForOther = [v8 categoryForType:uUIDString];
   }
 
-  if (!v9)
+  if (!categoryForOther)
   {
     v11 = +[HMDHAPMetadata getSharedInstance];
-    v9 = [v11 categoryForOther];
+    categoryForOther = [v11 categoryForOther];
   }
 
   v12 = objc_alloc(MEMORY[0x277CD1680]);
-  v13 = [v3 UUIDString];
-  v14 = [v9 catDescription];
-  v15 = [v12 initWithType:v13 name:v14];
+  uUIDString2 = [v3 UUIDString];
+  catDescription = [categoryForOther catDescription];
+  v15 = [v12 initWithType:uUIDString2 name:catDescription];
 
   v16 = [MEMORY[0x277CD1A18] cachedInstanceForHMAccessoryCategory:v15];
 
@@ -100,23 +100,23 @@
 {
   v3 = a3;
   v4 = +[HMDHAPMetadata getSharedInstance];
-  v5 = [v3 categoryType];
+  categoryType = [v3 categoryType];
 
-  v6 = [v4 categoryForType:v5];
+  v6 = [v4 categoryForType:categoryType];
 
   if (v6)
   {
-    v7 = [v6 identifier];
+    identifier = [v6 identifier];
   }
 
   else
   {
     v8 = +[HMDHAPMetadata getSharedInstance];
-    v9 = [v8 categoryForOther];
-    v7 = [v9 identifier];
+    categoryForOther = [v8 categoryForOther];
+    identifier = [categoryForOther identifier];
   }
 
-  return v7;
+  return identifier;
 }
 
 @end

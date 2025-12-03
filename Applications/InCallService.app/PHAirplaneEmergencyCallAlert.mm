@@ -1,5 +1,5 @@
 @interface PHAirplaneEmergencyCallAlert
-- (PHAirplaneEmergencyCallAlert)initWithDialAction:(id)a3;
+- (PHAirplaneEmergencyCallAlert)initWithDialAction:(id)action;
 - (id)alternateButtonTitle;
 - (id)defaultButtonTitle;
 - (id)message;
@@ -12,16 +12,16 @@
 
 @implementation PHAirplaneEmergencyCallAlert
 
-- (PHAirplaneEmergencyCallAlert)initWithDialAction:(id)a3
+- (PHAirplaneEmergencyCallAlert)initWithDialAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   v8.receiver = self;
   v8.super_class = PHAirplaneEmergencyCallAlert;
   v5 = [(PHAirplaneEmergencyCallAlert *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(PHAirplaneEmergencyCallAlert *)v5 setDialAction:v4];
+    [(PHAirplaneEmergencyCallAlert *)v5 setDialAction:actionCopy];
   }
 
   return v6;
@@ -74,34 +74,34 @@
 {
   v5 = objc_alloc_init(RadiosPreferences);
   [v5 setAirplaneMode:0];
-  v3 = [(PHAirplaneEmergencyCallAlert *)self dialAction];
+  dialAction = [(PHAirplaneEmergencyCallAlert *)self dialAction];
 
-  if (v3)
+  if (dialAction)
   {
-    v4 = [(PHAirplaneEmergencyCallAlert *)self dialAction];
-    v4[2](v4, 0);
+    dialAction2 = [(PHAirplaneEmergencyCallAlert *)self dialAction];
+    dialAction2[2](dialAction2, 0);
   }
 }
 
 - (void)defaultResponse
 {
-  v3 = [(PHAirplaneEmergencyCallAlert *)self dialAction];
+  dialAction = [(PHAirplaneEmergencyCallAlert *)self dialAction];
 
-  if (v3)
+  if (dialAction)
   {
-    v4 = [(PHAirplaneEmergencyCallAlert *)self dialAction];
-    v4[2](v4, 0);
+    dialAction2 = [(PHAirplaneEmergencyCallAlert *)self dialAction];
+    dialAction2[2](dialAction2, 0);
   }
 }
 
 - (void)otherResponse
 {
-  v3 = [(PHAirplaneEmergencyCallAlert *)self dialAction];
+  dialAction = [(PHAirplaneEmergencyCallAlert *)self dialAction];
 
-  if (v3)
+  if (dialAction)
   {
-    v4 = [(PHAirplaneEmergencyCallAlert *)self dialAction];
-    v4[2](v4, 1);
+    dialAction2 = [(PHAirplaneEmergencyCallAlert *)self dialAction];
+    dialAction2[2](dialAction2, 1);
   }
 }
 

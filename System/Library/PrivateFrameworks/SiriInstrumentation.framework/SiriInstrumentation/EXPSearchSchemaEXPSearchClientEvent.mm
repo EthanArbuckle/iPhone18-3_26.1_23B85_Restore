@@ -1,31 +1,31 @@
 @interface EXPSearchSchemaEXPSearchClientEvent
-+ (id)getInnerTypeStringByTag:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
-- (EXPSearchSchemaEXPSearchClientEvent)initWithDictionary:(id)a3;
-- (EXPSearchSchemaEXPSearchClientEvent)initWithJSON:(id)a3;
++ (id)getInnerTypeStringByTag:(unint64_t)tag;
+- (BOOL)isEqual:(id)equal;
+- (EXPSearchSchemaEXPSearchClientEvent)initWithDictionary:(id)dictionary;
+- (EXPSearchSchemaEXPSearchClientEvent)initWithJSON:(id)n;
 - (EXPSearchSchemaEXPSearchSessionExperiments)sessionExperiments;
 - (NSData)jsonData;
 - (SISchemaInstrumentationMessage)innerEvent;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)qualifiedMessageName;
 - (id)suppressMessageUnderConditions;
 - (void)deleteSessionExperiments;
-- (void)setSessionExperiments:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setSessionExperiments:(id)experiments;
+- (void)writeTo:(id)to;
 @end
 
 @implementation EXPSearchSchemaEXPSearchClientEvent
 
-- (EXPSearchSchemaEXPSearchClientEvent)initWithDictionary:(id)a3
+- (EXPSearchSchemaEXPSearchClientEvent)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = EXPSearchSchemaEXPSearchClientEvent;
   v5 = [(EXPSearchSchemaEXPSearchClientEvent *)&v10 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"sessionExperiments"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"sessionExperiments"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -39,30 +39,30 @@
   return v5;
 }
 
-- (EXPSearchSchemaEXPSearchClientEvent)initWithJSON:(id)a3
+- (EXPSearchSchemaEXPSearchClientEvent)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(EXPSearchSchemaEXPSearchClientEvent *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(EXPSearchSchemaEXPSearchClientEvent *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(EXPSearchSchemaEXPSearchClientEvent *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -75,43 +75,43 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_sessionExperiments)
   {
-    v4 = [(EXPSearchSchemaEXPSearchClientEvent *)self sessionExperiments];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    sessionExperiments = [(EXPSearchSchemaEXPSearchClientEvent *)self sessionExperiments];
+    dictionaryRepresentation = [sessionExperiments dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"sessionExperiments"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"sessionExperiments"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"sessionExperiments"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"sessionExperiments"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     whichEvent_Type = self->_whichEvent_Type;
-    if (whichEvent_Type == [v4 whichEvent_Type])
+    if (whichEvent_Type == [equalCopy whichEvent_Type])
     {
-      v6 = [(EXPSearchSchemaEXPSearchClientEvent *)self sessionExperiments];
-      v7 = [v4 sessionExperiments];
-      v8 = v7;
-      if ((v6 != 0) != (v7 == 0))
+      sessionExperiments = [(EXPSearchSchemaEXPSearchClientEvent *)self sessionExperiments];
+      sessionExperiments2 = [equalCopy sessionExperiments];
+      v8 = sessionExperiments2;
+      if ((sessionExperiments != 0) != (sessionExperiments2 == 0))
       {
-        v9 = [(EXPSearchSchemaEXPSearchClientEvent *)self sessionExperiments];
-        if (!v9)
+        sessionExperiments3 = [(EXPSearchSchemaEXPSearchClientEvent *)self sessionExperiments];
+        if (!sessionExperiments3)
         {
 
 LABEL_11:
@@ -119,10 +119,10 @@ LABEL_11:
           goto LABEL_9;
         }
 
-        v10 = v9;
-        v11 = [(EXPSearchSchemaEXPSearchClientEvent *)self sessionExperiments];
-        v12 = [v4 sessionExperiments];
-        v13 = [v11 isEqual:v12];
+        v10 = sessionExperiments3;
+        sessionExperiments4 = [(EXPSearchSchemaEXPSearchClientEvent *)self sessionExperiments];
+        sessionExperiments5 = [equalCopy sessionExperiments];
+        v13 = [sessionExperiments4 isEqual:sessionExperiments5];
 
         if (v13)
         {
@@ -142,14 +142,14 @@ LABEL_9:
   return v14;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
-  v4 = [(EXPSearchSchemaEXPSearchClientEvent *)self sessionExperiments];
+  toCopy = to;
+  sessionExperiments = [(EXPSearchSchemaEXPSearchClientEvent *)self sessionExperiments];
 
-  if (v4)
+  if (sessionExperiments)
   {
-    v5 = [(EXPSearchSchemaEXPSearchClientEvent *)self sessionExperiments];
+    sessionExperiments2 = [(EXPSearchSchemaEXPSearchClientEvent *)self sessionExperiments];
     PBDataWriterWriteSubmessage();
   }
 }
@@ -179,16 +179,16 @@ LABEL_9:
   return v3;
 }
 
-- (void)setSessionExperiments:(id)a3
+- (void)setSessionExperiments:(id)experiments
 {
   v3 = 101;
-  if (!a3)
+  if (!experiments)
   {
     v3 = 0;
   }
 
   self->_whichEvent_Type = v3;
-  objc_storeStrong(&self->_sessionExperiments, a3);
+  objc_storeStrong(&self->_sessionExperiments, experiments);
 }
 
 - (id)qualifiedMessageName
@@ -204,17 +204,17 @@ LABEL_9:
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = EXPSearchSchemaEXPSearchClientEvent;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(EXPSearchSchemaEXPSearchClientEvent *)self sessionExperiments:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(EXPSearchSchemaEXPSearchClientEvent *)self deleteSessionExperiments];
   }
@@ -245,9 +245,9 @@ LABEL_9:
   return v3;
 }
 
-+ (id)getInnerTypeStringByTag:(unint64_t)a3
++ (id)getInnerTypeStringByTag:(unint64_t)tag
 {
-  if (a3 == 101)
+  if (tag == 101)
   {
     return @"sessionExperiments";
   }

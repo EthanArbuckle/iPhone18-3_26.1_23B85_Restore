@@ -1,14 +1,14 @@
 @interface CLUIServer
-+ (id)possibleRequiredEntitlementsForProcessingMessageWithIdentifier:(int64_t)a3;
++ (id)possibleRequiredEntitlementsForProcessingMessageWithIdentifier:(int64_t)identifier;
 + (id)sharedInstance;
 - (CLUIServer)init;
-- (id)processMessage:(id)a3 withIdentifier:(int64_t)a4 fromClientWithIdentifier:(id)a5 error:(id *)a6;
-- (int64_t)activeInterfaceOrientationForPasscodeViewController:(id)a3;
-- (void)handleRestrictionsPINNotification:(id)a3;
-- (void)passcodeViewController:(id)a3 isPasscode:(id)a4 correctWithCompletionHandler:(id)a5;
-- (void)passcodeViewController:(id)a3 passcodeViewIsVisible:(BOOL)a4;
-- (void)passcodeViewController:(id)a3 wasDismissedWithReason:(int64_t)a4;
-- (void)processMessageAsynchronously:(id)a3 withIdentifier:(int64_t)a4 fromClientWithIdentifier:(id)a5 completion:(id)a6;
+- (id)processMessage:(id)message withIdentifier:(int64_t)identifier fromClientWithIdentifier:(id)withIdentifier error:(id *)error;
+- (int64_t)activeInterfaceOrientationForPasscodeViewController:(id)controller;
+- (void)handleRestrictionsPINNotification:(id)notification;
+- (void)passcodeViewController:(id)controller isPasscode:(id)passcode correctWithCompletionHandler:(id)handler;
+- (void)passcodeViewController:(id)controller passcodeViewIsVisible:(BOOL)visible;
+- (void)passcodeViewController:(id)controller wasDismissedWithReason:(int64_t)reason;
+- (void)processMessageAsynchronously:(id)asynchronously withIdentifier:(int64_t)identifier fromClientWithIdentifier:(id)withIdentifier completion:(id)completion;
 @end
 
 @implementation CLUIServer
@@ -25,11 +25,11 @@
   return v3;
 }
 
-- (id)processMessage:(id)a3 withIdentifier:(int64_t)a4 fromClientWithIdentifier:(id)a5 error:(id *)a6
+- (id)processMessage:(id)message withIdentifier:(int64_t)identifier fromClientWithIdentifier:(id)withIdentifier error:(id *)error
 {
-  if (AXTripleClickAttemptToEnterClarityBoardMessageIdentifier == a4)
+  if (AXTripleClickAttemptToEnterClarityBoardMessageIdentifier == identifier)
   {
-    v6 = self;
+    selfCopy = self;
     sub_A358();
     sub_6C4C(&_swiftEmptyArrayStorage);
 
@@ -43,13 +43,13 @@
     sub_E144();
     swift_allocError();
     swift_willThrow();
-    if (a6)
+    if (error)
     {
       v10 = sub_E4BC();
 
       v11 = v10;
       v8 = 0;
-      *a6 = v10;
+      *error = v10;
     }
 
     else
@@ -62,15 +62,15 @@
   return v8;
 }
 
-- (void)processMessageAsynchronously:(id)a3 withIdentifier:(int64_t)a4 fromClientWithIdentifier:(id)a5 completion:(id)a6
+- (void)processMessageAsynchronously:(id)asynchronously withIdentifier:(int64_t)identifier fromClientWithIdentifier:(id)withIdentifier completion:(id)completion
 {
-  v8 = _Block_copy(a6);
+  v8 = _Block_copy(completion);
   v9 = v8;
-  if (CLFUpdateAppIconsMessageIdentifier == a4)
+  if (CLFUpdateAppIconsMessageIdentifier == identifier)
   {
     _Block_copy(v8);
-    v10 = self;
-    sub_7748(v10, v9);
+    selfCopy = self;
+    sub_7748(selfCopy, v9);
     _Block_release(v9);
 
     _Block_release(v9);
@@ -82,7 +82,7 @@
     swift_allocError();
     _Block_copy(v9);
     _Block_copy(v9);
-    v11 = self;
+    selfCopy2 = self;
     v12 = sub_E4BC();
     (v9)[2](v9, 0, v12);
 
@@ -92,9 +92,9 @@
   }
 }
 
-+ (id)possibleRequiredEntitlementsForProcessingMessageWithIdentifier:(int64_t)a3
++ (id)possibleRequiredEntitlementsForProcessingMessageWithIdentifier:(int64_t)identifier
 {
-  if (sub_D898(a3))
+  if (sub_D898(identifier))
   {
     v3.super.isa = sub_E80C().super.isa;
   }
@@ -107,7 +107,7 @@
   return v3.super.isa;
 }
 
-- (void)handleRestrictionsPINNotification:(id)a3
+- (void)handleRestrictionsPINNotification:(id)notification
 {
   v4 = sub_E46C();
   v5 = *(v4 - 8);
@@ -115,47 +115,47 @@
   __chkstk_darwin();
   v8 = &v10 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_E44C();
-  v9 = self;
+  selfCopy = self;
   sub_B510();
 
   (*(v5 + 8))(v8, v4);
 }
 
-- (void)passcodeViewController:(id)a3 passcodeViewIsVisible:(BOOL)a4
+- (void)passcodeViewController:(id)controller passcodeViewIsVisible:(BOOL)visible
 {
-  v6 = a3;
-  v7 = self;
-  sub_DBB8(a4);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_DBB8(visible);
 }
 
-- (void)passcodeViewController:(id)a3 wasDismissedWithReason:(int64_t)a4
+- (void)passcodeViewController:(id)controller wasDismissedWithReason:(int64_t)reason
 {
-  v6 = a3;
-  v7 = self;
-  sub_DDE4(a4);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_DDE4(reason);
 }
 
-- (void)passcodeViewController:(id)a3 isPasscode:(id)a4 correctWithCompletionHandler:(id)a5
+- (void)passcodeViewController:(id)controller isPasscode:(id)passcode correctWithCompletionHandler:(id)handler
 {
-  v7 = _Block_copy(a5);
+  v7 = _Block_copy(handler);
   v8 = sub_E72C();
   v10 = v9;
   v11 = swift_allocObject();
   *(v11 + 16) = v7;
-  v12 = a3;
-  v13 = self;
+  controllerCopy = controller;
+  selfCopy = self;
   sub_DF04(v8, v10, sub_CFE8, v11);
 }
 
-- (int64_t)activeInterfaceOrientationForPasscodeViewController:(id)a3
+- (int64_t)activeInterfaceOrientationForPasscodeViewController:(id)controller
 {
   result = [objc_opt_self() sharedDisplayManager];
   if (result)
   {
     v4 = result;
-    v5 = [result activeInterfaceOrientation];
+    activeInterfaceOrientation = [result activeInterfaceOrientation];
 
-    return v5;
+    return activeInterfaceOrientation;
   }
 
   else

@@ -23,7 +23,7 @@
       }
 
       v9 = 289;
-      v10 = self;
+      selfCopy = self;
       v7 = "";
       v8 = "[NRASMRequest dealloc]";
       _NRLogWithArgs();

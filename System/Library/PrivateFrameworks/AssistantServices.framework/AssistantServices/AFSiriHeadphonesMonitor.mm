@@ -5,30 +5,30 @@
 - (id)_settingsConnection;
 - (id)discoveryNotificationAssertion;
 - (unint64_t)_observerID;
-- (void)_audioRouteDidChange:(id)a3;
-- (void)_broadcastInEarDetectionStateChangesFrom:(id)a3 to:(id)a4;
-- (void)_fetchInEarDetectionStateAndStartObservingFromSourceForBTAddress:(id)a3 withCompletion:(id)a4;
+- (void)_audioRouteDidChange:(id)change;
+- (void)_broadcastInEarDetectionStateChangesFrom:(id)from to:(id)to;
+- (void)_fetchInEarDetectionStateAndStartObservingFromSourceForBTAddress:(id)address withCompletion:(id)completion;
 - (void)_fetchInitialState;
-- (void)_fetchWirelessSplitterSessionInfoAndStartObservingFromSourceWithCompletion:(id)a3;
-- (void)_handleJSDiscoveryNotificationForDevice:(id)a3;
-- (void)_postJSDiscoveryNotificationForBTDeviceWithInfo:(id)a3 scheduled:(BOOL)a4;
-- (void)_recomputePrivateSessionStateAndBroadcast:(BOOL)a3;
+- (void)_fetchWirelessSplitterSessionInfoAndStartObservingFromSourceWithCompletion:(id)completion;
+- (void)_handleJSDiscoveryNotificationForDevice:(id)device;
+- (void)_postJSDiscoveryNotificationForBTDeviceWithInfo:(id)info scheduled:(BOOL)scheduled;
+- (void)_recomputePrivateSessionStateAndBroadcast:(BOOL)broadcast;
 - (void)_settingsConnectionDidDisconnect;
 - (void)_stopObservingInEarDetectionStateFromSource;
 - (void)_updateAnnounceNotificationsOnHearingAidSupportedStatus;
-- (void)_updateAudioRouteFromRoute:(id)a3 toRoute:(id)a4 andBroadcast:(BOOL)a5;
+- (void)_updateAudioRouteFromRoute:(id)route toRoute:(id)toRoute andBroadcast:(BOOL)broadcast;
 - (void)_updateInEarDetectionStateAndObserve;
 - (void)_updateWirelessSplitterSessionInfoAndObserve;
-- (void)accesoryAACPCapabilitiesReceived:(id)a3;
-- (void)addDelegate:(id)a3;
-- (void)currentAudioRouteDidChangeFrom:(id)a3 to:(id)a4;
-- (void)fetchInEarDetctionStateForBTAddress:(id)a3 withCompletion:(id)a4;
-- (void)fetchPrivateSessionStateWithCompletion:(id)a3;
-- (void)invalidateDiscoveryNotificationAssertion:(id)a3;
-- (void)mockHeadGesture:(int64_t)a3 schedule:(BOOL)a4 withCompletion:(id)a5;
-- (void)notifyObserver:(id)a3 didChangeStateFrom:(unint64_t)a4 to:(unint64_t)a5;
-- (void)registerInternalGestureTestingHandler:(id)a3;
-- (void)removeDelegate:(id)a3;
+- (void)accesoryAACPCapabilitiesReceived:(id)received;
+- (void)addDelegate:(id)delegate;
+- (void)currentAudioRouteDidChangeFrom:(id)from to:(id)to;
+- (void)fetchInEarDetctionStateForBTAddress:(id)address withCompletion:(id)completion;
+- (void)fetchPrivateSessionStateWithCompletion:(id)completion;
+- (void)invalidateDiscoveryNotificationAssertion:(id)assertion;
+- (void)mockHeadGesture:(int64_t)gesture schedule:(BOOL)schedule withCompletion:(id)completion;
+- (void)notifyObserver:(id)observer didChangeStateFrom:(unint64_t)from to:(unint64_t)to;
+- (void)registerInternalGestureTestingHandler:(id)handler;
+- (void)removeDelegate:(id)delegate;
 - (void)startObservingBluetoothConnections;
 @end
 
@@ -40,7 +40,7 @@
   block[1] = 3221225472;
   block[2] = sub_1001216BC;
   block[3] = &unk_10051E200;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1005901B0 != -1)
   {
     dispatch_once(&qword_1005901B0, block);
@@ -92,66 +92,66 @@
   dispatch_async(queue, block);
 }
 
-- (void)mockHeadGesture:(int64_t)a3 schedule:(BOOL)a4 withCompletion:(id)a5
+- (void)mockHeadGesture:(int64_t)gesture schedule:(BOOL)schedule withCompletion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   queue = self->_queue;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10011CC98;
   v11[3] = &unk_100514BD8;
   v11[4] = self;
-  v12 = v8;
-  v13 = a3;
-  v14 = a4;
-  v10 = v8;
+  v12 = completionCopy;
+  gestureCopy = gesture;
+  scheduleCopy = schedule;
+  v10 = completionCopy;
   dispatch_async(queue, v11);
 }
 
-- (void)registerInternalGestureTestingHandler:(id)a3
+- (void)registerInternalGestureTestingHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10011D020;
   v7[3] = &unk_10051E038;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)_postJSDiscoveryNotificationForBTDeviceWithInfo:(id)a3 scheduled:(BOOL)a4
+- (void)_postJSDiscoveryNotificationForBTDeviceWithInfo:(id)info scheduled:(BOOL)scheduled
 {
-  v4 = a4;
-  v6 = a3;
+  scheduledCopy = scheduled;
+  infoCopy = info;
   dispatch_assert_queue_V2(self->_btQueue);
-  v7 = [v6 address];
-  v8 = [(AFSiriHeadphonesMonitor *)self currentAudioRoute];
-  v9 = [v8 btAddress];
+  address = [infoCopy address];
+  currentAudioRoute = [(AFSiriHeadphonesMonitor *)self currentAudioRoute];
+  btAddress = [currentAudioRoute btAddress];
 
-  if (v4 && ([v7 isEqualToString:v9] & 1) == 0)
+  if (scheduledCopy && ([address isEqualToString:btAddress] & 1) == 0)
   {
     v13 = AFSiriLogContextConnection;
     if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_ERROR))
     {
       v15 = v13;
-      v16 = [v6 name];
+      name = [infoCopy name];
       *buf = 136315650;
       v21 = "[AFSiriHeadphonesMonitor _postJSDiscoveryNotificationForBTDeviceWithInfo:scheduled:]";
       v22 = 2112;
-      v23 = v16;
+      v23 = name;
       v24 = 2112;
-      v25 = v7;
+      v25 = address;
       _os_log_error_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "%s Scheduled JS Discovery notification for %@(%@)", buf, 0x20u);
     }
 
-    v14 = [(NSMutableDictionary *)self->_devicesScheduledForJSNotification objectForKey:v7];
+    v14 = [(NSMutableDictionary *)self->_devicesScheduledForJSNotification objectForKey:address];
 
     if (!v14)
     {
-      [(NSMutableDictionary *)self->_devicesScheduledForJSNotification setObject:v6 forKey:v7];
+      [(NSMutableDictionary *)self->_devicesScheduledForJSNotification setObject:infoCopy forKey:address];
     }
   }
 
@@ -175,35 +175,35 @@
     block[2] = sub_10011D4E4;
     block[3] = &unk_10051DB68;
     block[4] = self;
-    v18 = v6;
-    v19 = v7;
+    v18 = infoCopy;
+    v19 = address;
     dispatch_after(v11, queue, block);
   }
 }
 
-- (void)_handleJSDiscoveryNotificationForDevice:(id)a3
+- (void)_handleJSDiscoveryNotificationForDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   dispatch_assert_queue_V2(self->_btQueue);
-  v5 = [v4 name];
-  v6 = [v4 address];
+  name = [deviceCopy name];
+  address = [deviceCopy address];
   v7 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO))
   {
     *buf = 136315650;
     v21 = "[AFSiriHeadphonesMonitor _handleJSDiscoveryNotificationForDevice:]";
     v22 = 2112;
-    v23 = v5;
+    v23 = name;
     v24 = 2112;
-    v25 = v6;
+    v25 = address;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "%s Received AACP capabilities for %@(%@)", buf, 0x20u);
   }
 
-  if (([(NSMutableSet *)self->_devicesAwaitingJSNotification containsObject:v6]& 1) == 0)
+  if (([(NSMutableSet *)self->_devicesAwaitingJSNotification containsObject:address]& 1) == 0)
   {
-    v8 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%u,%u", [v4 vendorId], objc_msgSend(v4, "productId"));
-    v9 = (AFIsH2Headset() & 1) != 0 || [v4 getAACPCapabilityInteger:96] != 0;
-    if ([v5 isEqualToString:v6])
+    v8 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%u,%u", [deviceCopy vendorId], objc_msgSend(deviceCopy, "productId"));
+    v9 = (AFIsH2Headset() & 1) != 0 || [deviceCopy getAACPCapabilityInteger:96] != 0;
+    if ([name isEqualToString:address])
     {
       v10 = AFSiriLogContextConnection;
       if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_ERROR))
@@ -211,19 +211,19 @@
         *buf = 136315650;
         v21 = "[AFSiriHeadphonesMonitor _handleJSDiscoveryNotificationForDevice:]";
         v22 = 2112;
-        v23 = v5;
+        v23 = name;
         v24 = 2112;
-        v25 = v6;
+        v25 = address;
         _os_log_error_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "%s Unable to fetch device name for %@(%@)", buf, 0x20u);
       }
     }
 
-    else if (!(v9 | (([v4 supportsHS] & 1) == 0)))
+    else if (!(v9 | (([deviceCopy supportsHS] & 1) == 0)))
     {
       v11 = +[AFPreferences sharedPreferences];
       if ([v11 deviceUsesCompactVoiceTrigger])
       {
-        if (([v11 hasPresentedCompactVoiceTriggerDiscoveryNotificationForBTDeviceWithAddress:v6] & 1) == 0)
+        if (([v11 hasPresentedCompactVoiceTriggerDiscoveryNotificationForBTDeviceWithAddress:address] & 1) == 0)
         {
           v12 = AFSiriLogContextConnection;
           if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO))
@@ -231,9 +231,9 @@
             *buf = 136315650;
             v21 = "[AFSiriHeadphonesMonitor _handleJSDiscoveryNotificationForDevice:]";
             v22 = 2112;
-            v23 = v5;
+            v23 = name;
             v24 = 2112;
-            v25 = v6;
+            v25 = address;
             _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "%s Trigger notification:%@(%@) doesn't support JS", buf, 0x20u);
           }
 
@@ -241,10 +241,10 @@
           v16[1] = 3221225472;
           v16[2] = sub_10011DBF8;
           v16[3] = &unk_1005125F0;
-          v17 = v5;
-          v13 = v6;
+          v17 = name;
+          v13 = address;
           v18 = v13;
-          v19 = v4;
+          v19 = deviceCopy;
           v14 = [AFBluetoothDeviceInfo newWithBuilder:v16];
           [(NSMutableSet *)self->_devicesAwaitingJSNotification addObject:v13];
           [(AFSiriHeadphonesMonitor *)self _postJSDiscoveryNotificationForBTDeviceWithInfo:v14 scheduled:1];
@@ -265,12 +265,12 @@
   }
 }
 
-- (void)accesoryAACPCapabilitiesReceived:(id)a3
+- (void)accesoryAACPCapabilitiesReceived:(id)received
 {
-  v4 = a3;
+  receivedCopy = received;
   objc_initWeak(&location, self);
-  v5 = [v4 object];
-  v6 = [v5 copy];
+  object = [receivedCopy object];
+  v6 = [object copy];
 
   btQueue = self->_btQueue;
   block[0] = _NSConcreteStackBlock;
@@ -328,15 +328,15 @@
   }
 }
 
-- (void)_audioRouteDidChange:(id)a3
+- (void)_audioRouteDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   dispatch_assert_queue_V2(self->_btQueue);
   devicesScheduledForJSNotification = self->_devicesScheduledForJSNotification;
   if (devicesScheduledForJSNotification)
   {
-    v6 = [v4 btAddress];
-    v7 = [(NSMutableDictionary *)devicesScheduledForJSNotification objectForKey:v6];
+    btAddress = [changeCopy btAddress];
+    v7 = [(NSMutableDictionary *)devicesScheduledForJSNotification objectForKey:btAddress];
 
     if (v7)
     {
@@ -344,50 +344,50 @@
       if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO))
       {
         v9 = v8;
-        v10 = [v4 name];
-        v11 = [v4 btAddress];
+        name = [changeCopy name];
+        btAddress2 = [changeCopy btAddress];
         v17 = 136315650;
         v18 = "[AFSiriHeadphonesMonitor _audioRouteDidChange:]";
         v19 = 2112;
-        v20 = v10;
+        v20 = name;
         v21 = 2112;
-        v22 = v11;
+        v22 = btAddress2;
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "%s %@(%@) Picked, posting notification now...", &v17, 0x20u);
       }
 
       v12 = self->_devicesScheduledForJSNotification;
-      v13 = [v4 btAddress];
-      v14 = [(NSMutableDictionary *)v12 objectForKey:v13];
+      btAddress3 = [changeCopy btAddress];
+      v14 = [(NSMutableDictionary *)v12 objectForKey:btAddress3];
 
       v15 = self->_devicesScheduledForJSNotification;
-      v16 = [v4 btAddress];
-      [(NSMutableDictionary *)v15 removeObjectForKey:v16];
+      btAddress4 = [changeCopy btAddress];
+      [(NSMutableDictionary *)v15 removeObjectForKey:btAddress4];
 
       [(AFSiriHeadphonesMonitor *)self _postJSDiscoveryNotificationForBTDeviceWithInfo:v14 scheduled:0];
     }
   }
 }
 
-- (void)fetchInEarDetctionStateForBTAddress:(id)a3 withCompletion:(id)a4
+- (void)fetchInEarDetctionStateForBTAddress:(id)address withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  addressCopy = address;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10011E520;
   block[3] = &unk_10051E088;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = addressCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = addressCopy;
   dispatch_async(queue, block);
 }
 
-- (void)fetchPrivateSessionStateWithCompletion:(id)a3
+- (void)fetchPrivateSessionStateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEBUG))
   {
@@ -406,7 +406,7 @@
       _os_log_debug_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEBUG, "%s Guest connections active", buf, 0xCu);
     }
 
-    v4[2](v4, 2, 0);
+    completionCopy[2](completionCopy, 2, 0);
   }
 
   else
@@ -417,12 +417,12 @@
     v8[2] = sub_10011E7D8;
     v8[3] = &unk_10051E038;
     v8[4] = self;
-    v9 = v4;
+    v9 = completionCopy;
     dispatch_async(queue, v8);
   }
 }
 
-- (void)_recomputePrivateSessionStateAndBroadcast:(BOOL)a3
+- (void)_recomputePrivateSessionStateAndBroadcast:(BOOL)broadcast
 {
   if (self->_wirelessSplitterSessionActive)
   {
@@ -439,7 +439,7 @@
   }
 
   self->_sessionState = v5;
-  if (a3)
+  if (broadcast)
   {
     block[5] = v3;
     block[6] = v4;
@@ -453,36 +453,36 @@
   }
 }
 
-- (void)_broadcastInEarDetectionStateChangesFrom:(id)a3 to:(id)a4
+- (void)_broadcastInEarDetectionStateChangesFrom:(id)from to:(id)to
 {
-  v6 = a3;
-  v7 = a4;
+  fromCopy = from;
+  toCopy = to;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10011EFBC;
   block[3] = &unk_10051DB68;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = toCopy;
+  v13 = fromCopy;
+  v9 = fromCopy;
+  v10 = toCopy;
   dispatch_async(queue, block);
 }
 
-- (void)notifyObserver:(id)a3 didChangeStateFrom:(unint64_t)a4 to:(unint64_t)a5
+- (void)notifyObserver:(id)observer didChangeStateFrom:(unint64_t)from to:(unint64_t)to
 {
-  v8 = a3;
+  observerCopy = observer;
   queue = self->_queue;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10011F2CC;
   v11[3] = &unk_10051D278;
-  v12 = v8;
-  v13 = self;
-  v14 = a4;
-  v15 = a5;
-  v10 = v8;
+  v12 = observerCopy;
+  selfCopy = self;
+  fromCopy = from;
+  toCopy = to;
+  v10 = observerCopy;
   dispatch_async(queue, v11);
 }
 
@@ -523,11 +523,11 @@
   return v6;
 }
 
-- (void)invalidateDiscoveryNotificationAssertion:(id)a3
+- (void)invalidateDiscoveryNotificationAssertion:(id)assertion
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  assertionCopy = assertion;
+  v5 = assertionCopy;
+  if (assertionCopy)
   {
     btQueue = self->_btQueue;
     v7[0] = _NSConcreteStackBlock;
@@ -535,7 +535,7 @@
     v7[2] = sub_10011FB30;
     v7[3] = &unk_10051E010;
     v7[4] = self;
-    v8 = v4;
+    v8 = assertionCopy;
     dispatch_async(btQueue, v7);
   }
 }
@@ -572,22 +572,22 @@
     _os_log_debug_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "%s Stop observing IED States for observerID: %@", &v7, 0x16u);
   }
 
-  v4 = [(AFSiriHeadphonesMonitor *)self _settingsConnection];
-  [v4 stopObservingBluetoothInEarDetectionStateForObserverID:{-[AFSiriHeadphonesMonitor _observerID](self, "_observerID")}];
+  _settingsConnection = [(AFSiriHeadphonesMonitor *)self _settingsConnection];
+  [_settingsConnection stopObservingBluetoothInEarDetectionStateForObserverID:{-[AFSiriHeadphonesMonitor _observerID](self, "_observerID")}];
 }
 
-- (void)_fetchInEarDetectionStateAndStartObservingFromSourceForBTAddress:(id)a3 withCompletion:(id)a4
+- (void)_fetchInEarDetectionStateAndStartObservingFromSourceForBTAddress:(id)address withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6 && [v6 length] == 17)
+  addressCopy = address;
+  completionCopy = completion;
+  if (addressCopy && [addressCopy length] == 17)
   {
     v16 = 0;
     v17 = &v16;
     v18 = 0x3032000000;
     v19 = sub_10011EC54;
     v20 = sub_10011EC64;
-    v21 = [(AFSiriHeadphonesMonitor *)self _settingsConnection];
+    _settingsConnection = [(AFSiriHeadphonesMonitor *)self _settingsConnection];
     v8 = AFSiriLogContextConnection;
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
@@ -595,22 +595,22 @@
       *buf = 136315650;
       v23 = "[AFSiriHeadphonesMonitor _fetchInEarDetectionStateAndStartObservingFromSourceForBTAddress:withCompletion:]";
       v24 = 2112;
-      v25 = v6;
+      v25 = addressCopy;
       v26 = 2112;
       v27 = v9;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%s Start observing IED States for %@ for observerID: %@", buf, 0x20u);
     }
 
-    [v17[5] startObservingBluetoothInEarDetectionStateForBTAddress:v6 forObserverID:{-[AFSiriHeadphonesMonitor _observerID](self, "_observerID")}];
+    [v17[5] startObservingBluetoothInEarDetectionStateForBTAddress:addressCopy forObserverID:{-[AFSiriHeadphonesMonitor _observerID](self, "_observerID")}];
     v10 = v17[5];
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_100120010;
     v13[3] = &unk_100512530;
     v13[4] = self;
-    v14 = v7;
+    v14 = completionCopy;
     v15 = &v16;
-    [v10 getInEarDetectionStateForBTAddress:v6 withCompletion:v13];
+    [v10 getInEarDetectionStateForBTAddress:addressCopy withCompletion:v13];
 
     _Block_object_dispose(&v16, 8);
   }
@@ -619,19 +619,19 @@
   {
     v11 = [NSError alloc];
     v12 = [v11 initWithDomain:kAFAssistantErrorDomain code:1803 userInfo:0];
-    (*(v7 + 2))(v7, 0, v12);
+    (*(completionCopy + 2))(completionCopy, 0, v12);
   }
 }
 
-- (void)_fetchWirelessSplitterSessionInfoAndStartObservingFromSourceWithCompletion:(id)a3
+- (void)_fetchWirelessSplitterSessionInfoAndStartObservingFromSourceWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v10 = 0;
   v11 = &v10;
   v12 = 0x3032000000;
   v13 = sub_10011EC54;
   v14 = sub_10011EC64;
-  v15 = [(AFSiriHeadphonesMonitor *)self _settingsConnection];
+  _settingsConnection = [(AFSiriHeadphonesMonitor *)self _settingsConnection];
   [v11[5] startObservingWirelessSplitterSession];
   v5 = v11[5];
   v7[0] = _NSConcreteStackBlock;
@@ -639,7 +639,7 @@
   v7[2] = sub_100120278;
   v7[3] = &unk_100512508;
   v7[4] = self;
-  v6 = v4;
+  v6 = completionCopy;
   v8 = v6;
   v9 = &v10;
   [v5 getBluetoothWirelessSplitterSessionInfoWithCompletion:v7];
@@ -647,34 +647,34 @@
   _Block_object_dispose(&v10, 8);
 }
 
-- (void)_updateAudioRouteFromRoute:(id)a3 toRoute:(id)a4 andBroadcast:(BOOL)a5
+- (void)_updateAudioRouteFromRoute:(id)route toRoute:(id)toRoute andBroadcast:(BOOL)broadcast
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  [(AFSiriHeadphonesMonitor *)self setCurrentAudioRoute:v9];
-  if (([v9 isEqualToRoute:v8] & 1) == 0)
+  broadcastCopy = broadcast;
+  routeCopy = route;
+  toRouteCopy = toRoute;
+  [(AFSiriHeadphonesMonitor *)self setCurrentAudioRoute:toRouteCopy];
+  if (([toRouteCopy isEqualToRoute:routeCopy] & 1) == 0)
   {
     v10 = AFSiriLogContextConnection;
     if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO))
     {
       v11 = v10;
-      v12 = [v8 name];
-      v13 = [v8 btAddress];
-      v14 = [v9 name];
-      v15 = [v9 btAddress];
+      name = [routeCopy name];
+      btAddress = [routeCopy btAddress];
+      name2 = [toRouteCopy name];
+      btAddress2 = [toRouteCopy btAddress];
       *buf = 136316418;
       v58 = "[AFSiriHeadphonesMonitor _updateAudioRouteFromRoute:toRoute:andBroadcast:]";
       v59 = 1024;
-      *v60 = v5;
+      *v60 = broadcastCopy;
       *&v60[4] = 2112;
-      *&v60[6] = v12;
+      *&v60[6] = name;
       *&v60[14] = 2112;
-      *&v60[16] = v13;
+      *&v60[16] = btAddress;
       *&v60[24] = 2112;
-      *&v60[26] = v14;
+      *&v60[26] = name2;
       *&v60[34] = 2112;
-      *&v60[36] = v15;
+      *&v60[36] = btAddress2;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "%s Notify: %d; route changed from %@(%@) to %@(%@)", buf, 0x3Au);
 
       v10 = AFSiriLogContextConnection;
@@ -683,21 +683,21 @@
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       v16 = v10;
-      v17 = [v9 avscRouteDescription];
+      avscRouteDescription = [toRouteCopy avscRouteDescription];
       *buf = 136315394;
       v58 = "[AFSiriHeadphonesMonitor _updateAudioRouteFromRoute:toRoute:andBroadcast:]";
       v59 = 2112;
-      *v60 = v17;
+      *v60 = avscRouteDescription;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "%s Currently picked - routeDescription %@", buf, 0x16u);
     }
 
-    v18 = [v9 btAddress];
+    btAddress3 = [toRouteCopy btAddress];
     btAddress = self->_btAddress;
-    self->_btAddress = v18;
+    self->_btAddress = btAddress3;
 
-    v20 = [v9 name];
+    name3 = [toRouteCopy name];
     routeName = self->_routeName;
-    self->_routeName = v20;
+    self->_routeName = name3;
 
     v22 = self->_btAddress;
     v55[0] = _NSConcreteStackBlock;
@@ -706,21 +706,21 @@
     v55[3] = &unk_1005124B8;
     v55[4] = self;
     [(AFSiriHeadphonesMonitor *)self _fetchInEarDetectionStateAndStartObservingFromSourceForBTAddress:v22 withCompletion:v55];
-    v23 = [v9 copy];
+    v23 = [toRouteCopy copy];
     btQueue = self->_btQueue;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100120A3C;
     block[3] = &unk_10051DB68;
-    v52 = v8;
+    v52 = routeCopy;
     v25 = v23;
     v53 = v25;
-    v54 = self;
+    selfCopy = self;
     dispatch_async(btQueue, block);
-    if (v5)
+    if (broadcastCopy)
     {
       v41 = v25;
-      v42 = v8;
+      v42 = routeCopy;
       v26 = [(NSHashTable *)self->_delegates copy];
       v47 = 0u;
       v48 = 0u;
@@ -732,7 +732,7 @@
       {
         v29 = v28;
         v30 = *v48;
-        v46 = self;
+        selfCopy2 = self;
         do
         {
           v31 = 0;
@@ -751,7 +751,7 @@
               {
                 v44 = self->_routeName;
                 v45 = self->_btAddress;
-                sessionState = v46->_sessionState;
+                sessionState = selfCopy2->_sessionState;
                 v35 = v33;
                 v36 = [NSNumber numberWithUnsignedInteger:sessionState];
                 *buf = 136316162;
@@ -766,10 +766,10 @@
                 *&v60[30] = v36;
                 _os_log_debug_impl(&_mh_execute_header, v35, OS_LOG_TYPE_DEBUG, "%s Telling %@ currentAudioRouteDidChange:to %@(%@) privateSessionState:%@", buf, 0x34u);
 
-                self = v46;
+                self = selfCopy2;
               }
 
-              [v32 currentAudioRouteDidChange:v9];
+              [v32 currentAudioRouteDidChange:toRouteCopy];
             }
 
             if (objc_opt_respondsToSelector())
@@ -778,9 +778,9 @@
               if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEBUG))
               {
                 v37 = v34;
-                v38 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v9 hasAuthenticationCapability]);
-                v39 = v46->_routeName;
-                v40 = v46->_btAddress;
+                v38 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [toRouteCopy hasAuthenticationCapability]);
+                v39 = selfCopy2->_routeName;
+                v40 = selfCopy2->_btAddress;
                 *buf = 136316162;
                 v58 = "[AFSiriHeadphonesMonitor _updateAudioRouteFromRoute:toRoute:andBroadcast:]";
                 v59 = 2112;
@@ -793,10 +793,10 @@
                 *&v60[30] = v40;
                 _os_log_debug_impl(&_mh_execute_header, v37, OS_LOG_TYPE_DEBUG, "%s Telling %@ authenticationCapabilityDidChange:%@ to %@(%@)", buf, 0x34u);
 
-                self = v46;
+                self = selfCopy2;
               }
 
-              [v32 authenticationCapabilityDidChange:objc_msgSend(v9 forBTAddress:{"hasAuthenticationCapability"), self->_btAddress}];
+              [v32 authenticationCapabilityDidChange:objc_msgSend(toRouteCopy forBTAddress:{"hasAuthenticationCapability"), self->_btAddress}];
             }
 
             v31 = v31 + 1;
@@ -810,52 +810,52 @@
       }
 
       v25 = v41;
-      v8 = v42;
+      routeCopy = v42;
     }
   }
 }
 
-- (void)removeDelegate:(id)a3
+- (void)removeDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100120C74;
   v7[3] = &unk_10051E010;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = delegateCopy;
+  v6 = delegateCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)addDelegate:(id)a3
+- (void)addDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100120D18;
   v7[3] = &unk_10051E010;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = delegateCopy;
+  v6 = delegateCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)currentAudioRouteDidChangeFrom:(id)a3 to:(id)a4
+- (void)currentAudioRouteDidChangeFrom:(id)from to:(id)to
 {
-  v6 = a3;
-  v7 = a4;
+  fromCopy = from;
+  toCopy = to;
   v8 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEBUG))
   {
     *buf = 136315650;
     v16 = "[AFSiriHeadphonesMonitor currentAudioRouteDidChangeFrom:to:]";
     v17 = 2112;
-    v18 = v6;
+    v18 = fromCopy;
     v19 = 2112;
-    v20 = v7;
+    v20 = toCopy;
     _os_log_debug_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "%s Updating route availability due to route change from: %@ to: %@", buf, 0x20u);
   }
 
@@ -865,18 +865,18 @@
   block[2] = sub_100120E88;
   block[3] = &unk_10051DB68;
   block[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
+  v13 = fromCopy;
+  v14 = toCopy;
+  v10 = toCopy;
+  v11 = fromCopy;
   dispatch_async(queue, block);
 }
 
 - (void)_updateAnnounceNotificationsOnHearingAidSupportedStatus
 {
-  v4 = [(AFSiriHeadphonesMonitor *)self _settingsConnection];
-  [v4 updateAnnounceNotificationsOnHearingAidSupportedStatus];
-  [v4 barrier];
+  _settingsConnection = [(AFSiriHeadphonesMonitor *)self _settingsConnection];
+  [_settingsConnection updateAnnounceNotificationsOnHearingAidSupportedStatus];
+  [_settingsConnection barrier];
   settingsConnection = self->_settingsConnection;
   self->_settingsConnection = 0;
 }
@@ -966,8 +966,8 @@
     v3->_delegates = v25;
 
     [(AFSiriHeadphonesMonitor *)v3 _fetchInitialState];
-    v27 = [(AFSiriHeadphonesMonitor *)v3 _audioRouteMonitor];
-    [v27 addDelegate:v3];
+    _audioRouteMonitor = [(AFSiriHeadphonesMonitor *)v3 _audioRouteMonitor];
+    [_audioRouteMonitor addDelegate:v3];
   }
 
   return v3;

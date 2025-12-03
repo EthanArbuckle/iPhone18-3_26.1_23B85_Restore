@@ -1,9 +1,9 @@
 @interface DSScanManager
 - (BOOL)_shouldUpdateDiscovery;
-- (void)_deviceFound:(id)a3;
-- (void)_deviceLost:(id)a3;
+- (void)_deviceFound:(id)found;
+- (void)_deviceLost:(id)lost;
 - (void)_updateBLEDiscoveryFlags;
-- (void)setDsScanFlags:(unint64_t)a3;
+- (void)setDsScanFlags:(unint64_t)flags;
 - (void)startScanning;
 - (void)stopScanning;
 @end
@@ -25,7 +25,7 @@
     v16[3] = &unk_278F85A28;
     v5 = v4;
     v17 = v5;
-    v18 = self;
+    selfCopy = self;
     [v5 setDeviceFoundHandler:v16];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
@@ -33,7 +33,7 @@
     v13[3] = &unk_278F85A28;
     v6 = v5;
     v14 = v6;
-    v15 = self;
+    selfCopy2 = self;
     [v6 setDeviceLostHandler:v13];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
@@ -41,7 +41,7 @@
     v10[3] = &unk_278F85A50;
     v3 = v6;
     v11 = v3;
-    v12 = self;
+    selfCopy3 = self;
     [(CBDiscovery *)v3 activateWithCompletion:v10];
     if (onceTokenDSScanManager != -1)
     {
@@ -140,11 +140,11 @@ void __30__DSScanManager_startScanning__block_invoke_3(uint64_t a1, void *a2)
   }
 }
 
-- (void)setDsScanFlags:(unint64_t)a3
+- (void)setDsScanFlags:(unint64_t)flags
 {
-  if (self->_dsScanFlags != a3)
+  if (self->_dsScanFlags != flags)
   {
-    self->_dsScanFlags = a3;
+    self->_dsScanFlags = flags;
     [(DSScanManager *)self _updateBLEDiscoveryFlags];
   }
 }
@@ -262,10 +262,10 @@ LABEL_14:
   self->_deviceFoundHandler = 0;
 }
 
-- (void)_deviceFound:(id)a3
+- (void)_deviceFound:(id)found
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  foundCopy = found;
   if (onceTokenDSScanManager != -1)
   {
     __30__DSScanManager_startScanning__block_invoke_3_cold_1();
@@ -275,23 +275,23 @@ LABEL_14:
   if (os_log_type_enabled(logObjDSScanManager, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = v4;
+    v9 = foundCopy;
     _os_log_impl(&dword_249027000, v5, OS_LOG_TYPE_DEFAULT, "Device found %@", &v8, 0xCu);
   }
 
   deviceFoundHandler = self->_deviceFoundHandler;
   if (deviceFoundHandler)
   {
-    deviceFoundHandler[2](deviceFoundHandler, v4);
+    deviceFoundHandler[2](deviceFoundHandler, foundCopy);
   }
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_deviceLost:(id)a3
+- (void)_deviceLost:(id)lost
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  lostCopy = lost;
   if (onceTokenDSScanManager != -1)
   {
     __30__DSScanManager_startScanning__block_invoke_3_cold_1();
@@ -301,14 +301,14 @@ LABEL_14:
   if (os_log_type_enabled(logObjDSScanManager, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = v4;
+    v9 = lostCopy;
     _os_log_impl(&dword_249027000, v5, OS_LOG_TYPE_DEFAULT, "Device lost %@", &v8, 0xCu);
   }
 
   deviceLostHandler = self->_deviceLostHandler;
   if (deviceLostHandler)
   {
-    deviceLostHandler[2](deviceLostHandler, v4);
+    deviceLostHandler[2](deviceLostHandler, lostCopy);
   }
 
   v7 = *MEMORY[0x277D85DE8];

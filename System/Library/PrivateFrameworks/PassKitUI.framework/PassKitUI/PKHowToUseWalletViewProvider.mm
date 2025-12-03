@@ -1,15 +1,15 @@
 @interface PKHowToUseWalletViewProvider
-+ (id)makeViewControllerWithModel:(id)a3 destinationCard:(id)a4;
++ (id)makeViewControllerWithModel:(id)model destinationCard:(id)card;
 - (PKHowToUseWalletViewProvider)init;
 @end
 
 @implementation PKHowToUseWalletViewProvider
 
-+ (id)makeViewControllerWithModel:(id)a3 destinationCard:(id)a4
++ (id)makeViewControllerWithModel:(id)model destinationCard:(id)card
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = _s9PassKitUI26HowToUseWalletViewProviderC04makeH10Controller5model15destinationCardSo06UIViewK0CSgSo05PKHowefG5ModelC_So0pefgN0CSgtFZ_0(v5, a4);
+  modelCopy = model;
+  cardCopy = card;
+  v7 = _s9PassKitUI26HowToUseWalletViewProviderC04makeH10Controller5model15destinationCardSo06UIViewK0CSgSo05PKHowefG5ModelC_So0pefgN0CSgtFZ_0(modelCopy, card);
 
   return v7;
 }

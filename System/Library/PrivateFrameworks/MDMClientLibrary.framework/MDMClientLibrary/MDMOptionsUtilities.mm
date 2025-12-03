@@ -1,16 +1,16 @@
 @interface MDMOptionsUtilities
 + (id)defaultMDMOptions;
-+ (id)validatedMDMOptionsFromOptionsDictionary:(id)a3;
-+ (void)setDefaultMDMOptions:(id)a3;
++ (id)validatedMDMOptionsFromOptionsDictionary:(id)dictionary;
++ (void)setDefaultMDMOptions:(id)options;
 @end
 
 @implementation MDMOptionsUtilities
 
-+ (id)validatedMDMOptionsFromOptionsDictionary:(id)a3
++ (id)validatedMDMOptionsFromOptionsDictionary:(id)dictionary
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v15 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(v3, "count")}];
+  dictionaryCopy = dictionary;
+  v15 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(dictionaryCopy, "count")}];
   if (validatedMDMOptionsFromOptionsDictionary__onceToken != -1)
   {
     +[MDMOptionsUtilities validatedMDMOptionsFromOptionsDictionary:];
@@ -36,7 +36,7 @@
         }
 
         v9 = *(*(&v16 + 1) + 8 * i);
-        v10 = [v3 objectForKeyedSubscript:v9];
+        v10 = [dictionaryCopy objectForKeyedSubscript:v9];
         if (v10)
         {
           v11 = [validatedMDMOptionsFromOptionsDictionary__validKeysAndClasses objectForKeyedSubscript:v9];
@@ -81,9 +81,9 @@ void __64__MDMOptionsUtilities_validatedMDMOptionsFromOptionsDictionary___block_
   return v2;
 }
 
-+ (void)setDefaultMDMOptions:(id)a3
++ (void)setDefaultMDMOptions:(id)options
 {
-  CFPreferencesSetAppValue(@"DefaultMDMOptions", a3, @"com.apple.devicemanagementclient.notbackedup");
+  CFPreferencesSetAppValue(@"DefaultMDMOptions", options, @"com.apple.devicemanagementclient.notbackedup");
 
   CFPreferencesAppSynchronize(@"com.apple.devicemanagementclient.notbackedup");
 }

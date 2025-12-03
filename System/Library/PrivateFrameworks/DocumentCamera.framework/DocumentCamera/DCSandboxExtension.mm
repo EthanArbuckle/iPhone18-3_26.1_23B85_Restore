@@ -1,16 +1,16 @@
 @interface DCSandboxExtension
-- (DCSandboxExtension)initWithCoder:(id)a3;
-- (DCSandboxExtension)initWithFileURL:(id)a3;
+- (DCSandboxExtension)initWithCoder:(id)coder;
+- (DCSandboxExtension)initWithFileURL:(id)l;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)relinquish;
 @end
 
 @implementation DCSandboxExtension
 
-- (DCSandboxExtension)initWithFileURL:(id)a3
+- (DCSandboxExtension)initWithFileURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v9.receiver = self;
   v9.super_class = DCSandboxExtension;
   v6 = [(DCSandboxExtension *)&v9 init];
@@ -18,7 +18,7 @@
   if (v6)
   {
     v6->_canAccessFileURL = 1;
-    objc_storeStrong(&v6->_fileURL, a3);
+    objc_storeStrong(&v6->_fileURL, l);
     v7->_shouldIssueSandboxExtensionWhenEncoding = 1;
     [(DCSandboxExtension *)v7 setSandboxExtensionHandle:-1];
   }
@@ -30,7 +30,7 @@
 {
   v4 = *MEMORY[0x277D85DE8];
   v2 = 138412290;
-  v3 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_249253000, a2, OS_LOG_TYPE_ERROR, "FAILED to release sandbox extension handle: %@", &v2, 0xCu);
 }
 
@@ -42,10 +42,10 @@
   [(DCSandboxExtension *)&v3 dealloc];
 }
 
-- (DCSandboxExtension)initWithCoder:(id)a3
+- (DCSandboxExtension)initWithCoder:(id)coder
 {
   v25[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v21.receiver = self;
   v21.super_class = DCSandboxExtension;
   v5 = [(DCSandboxExtension *)&v21 init];
@@ -53,12 +53,12 @@
   if (v5)
   {
     v5->_canAccessFileURL = 0;
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kFileURLFieldCodingKey"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kFileURLFieldCodingKey"];
     fileURL = v6->_fileURL;
     v6->_fileURL = v7;
 
     v6->_shouldIssueSandboxExtensionWhenEncoding = 0;
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kSandboxExtensionTokenCodingKey"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kSandboxExtensionTokenCodingKey"];
     v10 = [v9 mutableCopy];
 
     if (v10)
@@ -71,9 +71,9 @@
         v11 = os_log_create("com.apple.documentcamera", "");
         if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
         {
-          v12 = [(DCSandboxExtension *)v6 fileURL];
+          fileURL = [(DCSandboxExtension *)v6 fileURL];
           *buf = 138412290;
-          v23 = v12;
+          v23 = fileURL;
           _os_log_impl(&dword_249253000, v11, OS_LOG_TYPE_INFO, "Consumed sandbox extension for %@", buf, 0xCu);
         }
 
@@ -87,8 +87,8 @@
       v24[0] = @"sandboxExtensionToken";
       v24[1] = @"file";
       v25[0] = v10;
-      v17 = [(DCSandboxExtension *)v6 fileURL];
-      v25[1] = v17;
+      fileURL2 = [(DCSandboxExtension *)v6 fileURL];
+      v25[1] = fileURL2;
       v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v25 forKeys:v24 count:2];
       v13 = [v14 errorWithDomain:v15 code:v16 userInfo:v18];
 
@@ -114,15 +114,15 @@ LABEL_13:
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   if ([(DCSandboxExtension *)self shouldIssueSandboxExtensionWhenEncoding])
   {
-    v5 = [(DCSandboxExtension *)self fileURL];
-    v6 = [v5 path];
-    [v6 cStringUsingEncoding:4];
+    fileURL = [(DCSandboxExtension *)self fileURL];
+    path = [fileURL path];
+    [path cStringUsingEncoding:4];
 
     v7 = sandbox_extension_issue_file();
     if (v7)
@@ -133,9 +133,9 @@ LABEL_13:
       v10 = os_log_create("com.apple.documentcamera", "");
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
       {
-        v11 = [(DCSandboxExtension *)self fileURL];
+        fileURL2 = [(DCSandboxExtension *)self fileURL];
         v13 = 138412290;
-        v14 = v11;
+        v14 = fileURL2;
         _os_log_impl(&dword_249253000, v10, OS_LOG_TYPE_INFO, "Issued sandbox extension for %@", &v13, 0xCu);
       }
     }
@@ -151,16 +151,16 @@ LABEL_13:
       v9 = 0;
     }
 
-    [v4 encodeObject:v9 forKey:@"kSandboxExtensionTokenCodingKey"];
+    [coderCopy encodeObject:v9 forKey:@"kSandboxExtensionTokenCodingKey"];
   }
 
   else
   {
-    [v4 encodeObject:0 forKey:@"kSandboxExtensionTokenCodingKey"];
+    [coderCopy encodeObject:0 forKey:@"kSandboxExtensionTokenCodingKey"];
   }
 
-  v12 = [(DCSandboxExtension *)self fileURL];
-  [v4 encodeObject:v12 forKey:@"kFileURLFieldCodingKey"];
+  fileURL3 = [(DCSandboxExtension *)self fileURL];
+  [coderCopy encodeObject:fileURL3 forKey:@"kFileURLFieldCodingKey"];
 }
 
 - (void)initWithCoder:(uint64_t)a1 .cold.1(uint64_t a1, NSObject *a2)

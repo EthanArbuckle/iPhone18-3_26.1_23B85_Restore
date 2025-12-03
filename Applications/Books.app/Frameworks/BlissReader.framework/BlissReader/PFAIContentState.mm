@@ -1,37 +1,37 @@
 @interface PFAIContentState
 - (BOOL)setFlowAsCurrent;
 - (BOOL)setPaginatedAsCurrent;
-- (PFAIContentState)initWithDocumentRoot:(id)a3 contentNode:(id)a4 flowNodeBody:(id)a5 paginatedNodeBody:(id)a6 archive:(id)a7 documentEntryUri:(id)a8;
-- (id)hintCollectionWithUrl:(id)a3 data:(id)a4;
-- (id)hintCollectorForStorage:(id)a3;
-- (id)readerForCurrentMediaStateWithStackEntry:(id)a3;
-- (id)setUniqueIdForInfo:(id)a3 withPostfix:(id)a4 fromStackEntry:(id)a5;
-- (id)uniqueIdForInfo:(id)a3;
-- (int64_t)referenceAnchorStartForEntryOrientation:(id)a3;
-- (void)_setCfiPathForInfo:(id)a3 childIndex:(unint64_t)a4 fromStackEntry:(id)a5;
+- (PFAIContentState)initWithDocumentRoot:(id)root contentNode:(id)node flowNodeBody:(id)body paginatedNodeBody:(id)nodeBody archive:(id)archive documentEntryUri:(id)uri;
+- (id)hintCollectionWithUrl:(id)url data:(id)data;
+- (id)hintCollectorForStorage:(id)storage;
+- (id)readerForCurrentMediaStateWithStackEntry:(id)entry;
+- (id)setUniqueIdForInfo:(id)info withPostfix:(id)postfix fromStackEntry:(id)entry;
+- (id)uniqueIdForInfo:(id)info;
+- (int64_t)referenceAnchorStartForEntryOrientation:(id)orientation;
+- (void)_setCfiPathForInfo:(id)info childIndex:(unint64_t)index fromStackEntry:(id)entry;
 - (void)dealloc;
 - (void)popReader;
 - (void)processHints;
 - (void)setCfiPathForCurrentStorage;
-- (void)setCfiPathForTextRun:(unint64_t)a3;
-- (void)setCurrentReferenceAnchor:(id)a3 forEntryOrientation:(id)a4;
-- (void)setInTable:(BOOL)a3;
-- (void)setReferenceAnchorStart:(int64_t)a3 forEntryOrientation:(id)a4;
-- (void)setUniqueIdForTableCellStorage:(id)a3 withInfoId:(id)a4;
-- (void)switchToOrientation:(unint64_t)a3;
+- (void)setCfiPathForTextRun:(unint64_t)run;
+- (void)setCurrentReferenceAnchor:(id)anchor forEntryOrientation:(id)orientation;
+- (void)setInTable:(BOOL)table;
+- (void)setReferenceAnchorStart:(int64_t)start forEntryOrientation:(id)orientation;
+- (void)setUniqueIdForTableCellStorage:(id)storage withInfoId:(id)id;
+- (void)switchToOrientation:(unint64_t)orientation;
 @end
 
 @implementation PFAIContentState
 
-- (PFAIContentState)initWithDocumentRoot:(id)a3 contentNode:(id)a4 flowNodeBody:(id)a5 paginatedNodeBody:(id)a6 archive:(id)a7 documentEntryUri:(id)a8
+- (PFAIContentState)initWithDocumentRoot:(id)root contentNode:(id)node flowNodeBody:(id)body paginatedNodeBody:(id)nodeBody archive:(id)archive documentEntryUri:(id)uri
 {
   v12.receiver = self;
   v12.super_class = PFAIContentState;
-  v10 = [(PFXHtmlReaderState *)&v12 initWithDocumentRoot:a3 contentNode:a4 entry:a8 inArchive:a7];
+  v10 = [(PFXHtmlReaderState *)&v12 initWithDocumentRoot:root contentNode:node entry:uri inArchive:archive];
   if (v10)
   {
-    v10->mFlowState = [[PFAIDocOrientationState alloc] initWitContentNodeBody:a5 presentationType:[THPresentationType readerState:"flowPresentationTypeInContext:" flowPresentationTypeInContext:?], v10];
-    v10->mPaginatedState = [[PFAIDocOrientationState alloc] initWitContentNodeBody:a6 presentationType:[THPresentationType readerState:"paginatedPresentationTypeInContext:" paginatedPresentationTypeInContext:?], v10];
+    v10->mFlowState = [[PFAIDocOrientationState alloc] initWitContentNodeBody:body presentationType:[THPresentationType readerState:"flowPresentationTypeInContext:" flowPresentationTypeInContext:?], v10];
+    v10->mPaginatedState = [[PFAIDocOrientationState alloc] initWitContentNodeBody:nodeBody presentationType:[THPresentationType readerState:"paginatedPresentationTypeInContext:" paginatedPresentationTypeInContext:?], v10];
     v10->mCurrentReferenceAnchorForEntryOrientation = objc_alloc_init(TSUNoCopyDictionary);
     v10->mReferenceAnchorStartForEntryOrientation = objc_alloc_init(TSUNoCopyDictionary);
     v10->mHintCollectors = objc_alloc_init(TSURetainedPointerKeyDictionary);
@@ -49,53 +49,53 @@
   [(PFXHtmlReaderState *)&v3 dealloc];
 }
 
-- (void)setInTable:(BOOL)a3
+- (void)setInTable:(BOOL)table
 {
-  v3 = a3;
+  tableCopy = table;
   [PFAIReferenceAnchor endCurrentReferenceAnchorForEntryOrientation:[(PFXXmlStackEntry *)self->super.super.mCurrentEntry currentEntryOrientationState] contentState:self];
   v5.receiver = self;
   v5.super_class = PFAIContentState;
-  [(PFXHtmlReaderState *)&v5 setInTable:v3];
+  [(PFXHtmlReaderState *)&v5 setInTable:tableCopy];
 }
 
 - (BOOL)setPaginatedAsCurrent
 {
   self->mCurrentOrientationState = self->mPaginatedState;
-  v2 = [(PFXXmlStackEntry *)self->super.super.mCurrentEntry paginatedState];
+  paginatedState = [(PFXXmlStackEntry *)self->super.super.mCurrentEntry paginatedState];
 
-  return [v2 processOrientation];
+  return [paginatedState processOrientation];
 }
 
 - (BOOL)setFlowAsCurrent
 {
   self->mCurrentOrientationState = self->mFlowState;
-  v2 = [(PFXXmlStackEntry *)self->super.super.mCurrentEntry flowState];
+  flowState = [(PFXXmlStackEntry *)self->super.super.mCurrentEntry flowState];
 
-  return [v2 processOrientation];
+  return [flowState processOrientation];
 }
 
-- (void)switchToOrientation:(unint64_t)a3
+- (void)switchToOrientation:(unint64_t)orientation
 {
-  if (a3 == 1)
+  if (orientation == 1)
   {
     [(PFAIContentState *)self setFlowAsCurrent];
   }
 
-  else if (!a3)
+  else if (!orientation)
   {
     [(PFAIContentState *)self setPaginatedAsCurrent];
   }
 }
 
-- (id)hintCollectionWithUrl:(id)a3 data:(id)a4
+- (id)hintCollectionWithUrl:(id)url data:(id)data
 {
   v7 = [(NSMutableDictionary *)self->mHints objectForKey:?];
   if (!v7)
   {
-    v7 = [[TSWPLineHintCollection alloc] initWithApplePubData:a4 context:{-[THDocumentRoot context](-[PFXHtmlReaderState thDocumentRoot](self, "thDocumentRoot"), "context")}];
+    v7 = [[TSWPLineHintCollection alloc] initWithApplePubData:data context:{-[THDocumentRoot context](-[PFXHtmlReaderState thDocumentRoot](self, "thDocumentRoot"), "context")}];
     if (v7)
     {
-      [(NSMutableDictionary *)self->mHints setObject:v7 forKey:a3];
+      [(NSMutableDictionary *)self->mHints setObject:v7 forKey:url];
       v8 = v7;
     }
   }
@@ -103,13 +103,13 @@
   return v7;
 }
 
-- (id)hintCollectorForStorage:(id)a3
+- (id)hintCollectorForStorage:(id)storage
 {
   v5 = [(TSUNoCopyDictionary *)self->mHintCollectors objectForKey:?];
   if (!v5)
   {
-    v5 = [[PFAIHintCollector alloc] initWithStorage:a3];
-    [(TSUNoCopyDictionary *)self->mHintCollectors setObject:v5 forUncopiedKey:a3];
+    v5 = [[PFAIHintCollector alloc] initWithStorage:storage];
+    [(TSUNoCopyDictionary *)self->mHintCollectors setObject:v5 forUncopiedKey:storage];
     v6 = v5;
   }
 
@@ -122,8 +122,8 @@
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(TSUNoCopyDictionary *)self->mHintCollectors objectEnumerator];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  objectEnumerator = [(TSUNoCopyDictionary *)self->mHintCollectors objectEnumerator];
+  v3 = [objectEnumerator countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = v3;
@@ -135,7 +135,7 @@
       {
         if (*v8 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         [*(*(&v7 + 1) + 8 * v6) processHintCollections];
@@ -143,30 +143,30 @@
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v4 = [objectEnumerator countByEnumeratingWithState:&v7 objects:v11 count:16];
     }
 
     while (v4);
   }
 }
 
-- (void)setCurrentReferenceAnchor:(id)a3 forEntryOrientation:(id)a4
+- (void)setCurrentReferenceAnchor:(id)anchor forEntryOrientation:(id)orientation
 {
   mCurrentReferenceAnchorForEntryOrientation = self->mCurrentReferenceAnchorForEntryOrientation;
-  if (a3)
+  if (anchor)
   {
-    [(TSUNoCopyDictionary *)mCurrentReferenceAnchorForEntryOrientation setObject:a3 forUncopiedKey:a4];
+    [(TSUNoCopyDictionary *)mCurrentReferenceAnchorForEntryOrientation setObject:anchor forUncopiedKey:orientation];
   }
 
   else
   {
-    [(TSUNoCopyDictionary *)mCurrentReferenceAnchorForEntryOrientation removeObjectForKey:a4];
+    [(TSUNoCopyDictionary *)mCurrentReferenceAnchorForEntryOrientation removeObjectForKey:orientation];
   }
 }
 
-- (int64_t)referenceAnchorStartForEntryOrientation:(id)a3
+- (int64_t)referenceAnchorStartForEntryOrientation:(id)orientation
 {
-  v3 = [(TSUNoCopyDictionary *)self->mReferenceAnchorStartForEntryOrientation objectForKey:a3];
+  v3 = [(TSUNoCopyDictionary *)self->mReferenceAnchorStartForEntryOrientation objectForKey:orientation];
   if (!v3)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
@@ -175,63 +175,63 @@
   return [v3 integerValue];
 }
 
-- (void)setReferenceAnchorStart:(int64_t)a3 forEntryOrientation:(id)a4
+- (void)setReferenceAnchorStart:(int64_t)start forEntryOrientation:(id)orientation
 {
   mReferenceAnchorStartForEntryOrientation = self->mReferenceAnchorStartForEntryOrientation;
-  v6 = [NSNumber numberWithInteger:a3];
+  v6 = [NSNumber numberWithInteger:start];
 
-  [(TSUNoCopyDictionary *)mReferenceAnchorStartForEntryOrientation setObject:v6 forUncopiedKey:a4];
+  [(TSUNoCopyDictionary *)mReferenceAnchorStartForEntryOrientation setObject:v6 forUncopiedKey:orientation];
 }
 
-- (void)_setCfiPathForInfo:(id)a3 childIndex:(unint64_t)a4 fromStackEntry:(id)a5
+- (void)_setCfiPathForInfo:(id)info childIndex:(unint64_t)index fromStackEntry:(id)entry
 {
-  v9 = [(PFAIDocOrientationState *)[(PFAIContentState *)self currentDocOrientationState] contentNodeBody];
+  contentNodeBody = [(PFAIDocOrientationState *)[(PFAIContentState *)self currentDocOrientationState] contentNodeBody];
 
-  [(PFXHtmlReaderState *)self setCfiPathForInfo:a3 childIndex:a4 nodeBody:v9 fromStackEntry:a5];
+  [(PFXHtmlReaderState *)self setCfiPathForInfo:info childIndex:index nodeBody:contentNodeBody fromStackEntry:entry];
 }
 
 - (void)setCfiPathForCurrentStorage
 {
-  v3 = [(PFAIContentState *)self currentStackEntry];
-  v4 = [-[PFAIStackEntry currentEntryMediaState](v3 "currentEntryMediaState")];
+  currentStackEntry = [(PFAIContentState *)self currentStackEntry];
+  v4 = [-[PFAIStackEntry currentEntryMediaState](currentStackEntry "currentEntryMediaState")];
 
-  [(PFAIContentState *)self setCfiPathForInfo:v4 fromStackEntry:v3];
+  [(PFAIContentState *)self setCfiPathForInfo:v4 fromStackEntry:currentStackEntry];
 }
 
-- (void)setCfiPathForTextRun:(unint64_t)a3
+- (void)setCfiPathForTextRun:(unint64_t)run
 {
-  if (a3 >= 2)
+  if (run >= 2)
   {
-    v6 = [(PFAIContentState *)self currentStackEntry];
-    v7 = [-[PFAIStackEntry currentEntryMediaState](v6 "currentEntryMediaState")];
+    currentStackEntry = [(PFAIContentState *)self currentStackEntry];
+    v7 = [-[PFAIStackEntry currentEntryMediaState](currentStackEntry "currentEntryMediaState")];
 
-    [(PFAIContentState *)self _setCfiPathForInfo:v7 childIndex:a3 fromStackEntry:v6];
+    [(PFAIContentState *)self _setCfiPathForInfo:v7 childIndex:run fromStackEntry:currentStackEntry];
   }
 }
 
-- (void)setUniqueIdForTableCellStorage:(id)a3 withInfoId:(id)a4
+- (void)setUniqueIdForTableCellStorage:(id)storage withInfoId:(id)id
 {
-  v6 = [(PFAIDocOrientationState *)[(PFAIContentState *)self currentDocOrientationState] contentNodeBody];
-  if ([(THModelContentNodeBody *)v6 infoForNodeUniqueID:a4])
+  contentNodeBody = [(PFAIDocOrientationState *)[(PFAIContentState *)self currentDocOrientationState] contentNodeBody];
+  if ([(THModelContentNodeBody *)contentNodeBody infoForNodeUniqueID:id])
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
-  [(THModelContentNodeBody *)v6 setNodeUniqueID:a4 forInfo:a3];
+  [(THModelContentNodeBody *)contentNodeBody setNodeUniqueID:id forInfo:storage];
 }
 
-- (id)uniqueIdForInfo:(id)a3
+- (id)uniqueIdForInfo:(id)info
 {
-  v4 = [(PFAIDocOrientationState *)[(PFAIContentState *)self currentDocOrientationState] contentNodeBody];
+  contentNodeBody = [(PFAIDocOrientationState *)[(PFAIContentState *)self currentDocOrientationState] contentNodeBody];
 
-  return [(THModelContentNodeBody *)v4 nodeUniqueIDForInfo:a3];
+  return [(THModelContentNodeBody *)contentNodeBody nodeUniqueIDForInfo:info];
 }
 
-- (id)setUniqueIdForInfo:(id)a3 withPostfix:(id)a4 fromStackEntry:(id)a5
+- (id)setUniqueIdForInfo:(id)info withPostfix:(id)postfix fromStackEntry:(id)entry
 {
-  v9 = [(PFAIDocOrientationState *)[(PFAIContentState *)self currentDocOrientationState] contentNodeBody];
+  contentNodeBody = [(PFAIDocOrientationState *)[(PFAIContentState *)self currentDocOrientationState] contentNodeBody];
 
-  return [(PFXHtmlReaderState *)self setUniqueIdForInfo:a3 nodeBody:v9 withPostfix:a4 fromStackEntry:a5];
+  return [(PFXHtmlReaderState *)self setUniqueIdForInfo:info nodeBody:contentNodeBody withPostfix:postfix fromStackEntry:entry];
 }
 
 - (void)popReader
@@ -246,20 +246,20 @@
   [(PFXXmlStreamReaderState *)&v3 popReader];
 }
 
-- (id)readerForCurrentMediaStateWithStackEntry:(id)a3
+- (id)readerForCurrentMediaStateWithStackEntry:(id)entry
 {
-  v4 = [a3 reader];
+  reader = [entry reader];
   objc_opt_class();
   v5 = TSUDynamicCast();
   if (!v5)
   {
-    return v4;
+    return reader;
   }
 
   v6 = v5;
-  v7 = [a3 applePubReaderState];
+  applePubReaderState = [entry applePubReaderState];
 
-  return [v6 currentSubreaderWithState:v7];
+  return [v6 currentSubreaderWithState:applePubReaderState];
 }
 
 @end

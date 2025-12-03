@@ -1,8 +1,8 @@
 @interface TIMobileAssetMatch
 + (id)knownAssetRegionAttributes;
-+ (id)mobileAssetMatchWithTypes:(id)a3 inputModeLevels:(id)a4 regions:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (TIMobileAssetMatch)initWithTypes:(id)a3 inputModeLevels:(id)a4 regions:(id)a5;
++ (id)mobileAssetMatchWithTypes:(id)types inputModeLevels:(id)levels regions:(id)regions;
+- (BOOL)isEqual:(id)equal;
+- (TIMobileAssetMatch)initWithTypes:(id)types inputModeLevels:(id)levels regions:(id)regions;
 - (id)description;
 - (unint64_t)hash;
 @end
@@ -26,10 +26,10 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(TIMobileAssetMatch *)self types];
-  v7 = [(TIMobileAssetMatch *)self inputModeLevels];
-  v8 = [(TIMobileAssetMatch *)self regions];
-  v9 = [v3 stringWithFormat:@"<%@: types=%@, inputModeLevels=%@, regions=%@>", v5, v6, v7, v8];
+  types = [(TIMobileAssetMatch *)self types];
+  inputModeLevels = [(TIMobileAssetMatch *)self inputModeLevels];
+  regions = [(TIMobileAssetMatch *)self regions];
+  v9 = [v3 stringWithFormat:@"<%@: types=%@, inputModeLevels=%@, regions=%@>", v5, types, inputModeLevels, regions];
 
   return v9;
 }
@@ -41,12 +41,12 @@
   return v4 + [(NSArray *)self->_regions hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
+    v5 = equalCopy;
     types = self->_types;
     if ((types == v5[1] || [(NSArray *)types isEqual:?]) && ((inputModeLevels = self->_inputModeLevels, inputModeLevels == v5[2]) || [(NSArray *)inputModeLevels isEqual:?]))
     {
@@ -76,12 +76,12 @@
   return v9;
 }
 
-- (TIMobileAssetMatch)initWithTypes:(id)a3 inputModeLevels:(id)a4 regions:(id)a5
+- (TIMobileAssetMatch)initWithTypes:(id)types inputModeLevels:(id)levels regions:(id)regions
 {
   v81 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v56 = a5;
+  typesCopy = types;
+  levelsCopy = levels;
+  regionsCopy = regions;
   v76.receiver = self;
   v76.super_class = TIMobileAssetMatch;
   v10 = [(TIMobileAssetMatch *)&v76 init];
@@ -90,13 +90,13 @@
     goto LABEL_48;
   }
 
-  v55 = v8;
-  v11 = [v8 copy];
+  v55 = typesCopy;
+  v11 = [typesCopy copy];
   types = v10->_types;
   v10->_types = v11;
 
-  v54 = v9;
-  v13 = [v9 copy];
+  v54 = levelsCopy;
+  v13 = [levelsCopy copy];
   inputModeLevels = v10->_inputModeLevels;
   v10->_inputModeLevels = v13;
 
@@ -105,14 +105,14 @@
   v53 = v10;
   v10->_regions = v15;
 
-  v17 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   for (i = 0; i != 3; ++i)
   {
     v74 = 0u;
     v75 = 0u;
     v72 = 0u;
     v73 = 0u;
-    v19 = v56;
+    v19 = regionsCopy;
     v20 = [v19 countByEnumeratingWithState:&v72 objects:v80 count:16];
     if (v20)
     {
@@ -128,12 +128,12 @@ LABEL_5:
         }
 
         v24 = *(*(&v72 + 1) + 8 * v23);
-        if ([v17 count] > 1)
+        if ([array count] > 1)
         {
           break;
         }
 
-        v25 = [v17 count];
+        v25 = [array count];
         if (v25 == [v19 count])
         {
           break;
@@ -165,9 +165,9 @@ LABEL_5:
             {
 
 LABEL_19:
-              if (([v17 containsObject:v24] & 1) == 0)
+              if (([array containsObject:v24] & 1) == 0)
               {
-                [v17 addObject:v24];
+                [array addObject:v24];
               }
 
               goto LABEL_21;
@@ -197,12 +197,12 @@ LABEL_21:
     }
   }
 
-  v59 = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   v68 = 0u;
   v69 = 0u;
   v70 = 0u;
   v71 = 0u;
-  obj = v17;
+  obj = array;
   v31 = [obj countByEnumeratingWithState:&v68 objects:v79 count:16];
   if (v31)
   {
@@ -252,7 +252,7 @@ LABEL_21:
           while (v37);
         }
 
-        [v59 addObject:v34];
+        [array2 addObject:v34];
       }
 
       v32 = [obj countByEnumeratingWithState:&v68 objects:v79 count:16];
@@ -265,7 +265,7 @@ LABEL_21:
   v63 = 0u;
   v60 = 0u;
   v61 = 0u;
-  v42 = v59;
+  v42 = array2;
   v43 = [v42 countByEnumeratingWithState:&v60 objects:v77 count:16];
   v10 = v53;
   if (v43)
@@ -283,8 +283,8 @@ LABEL_21:
 
         v47 = *(*(&v60 + 1) + 8 * m);
         v48 = [v47 keysOfEntriesPassingTest:&__block_literal_global_48];
-        v49 = [v48 allObjects];
-        v50 = [v47 dictionaryWithValuesForKeys:v49];
+        allObjects = [v48 allObjects];
+        v50 = [v47 dictionaryWithValuesForKeys:allObjects];
 
         [(NSArray *)v53->_regions addObject:v50];
       }
@@ -295,8 +295,8 @@ LABEL_21:
     while (v44);
   }
 
-  v9 = v54;
-  v8 = v55;
+  levelsCopy = v54;
+  typesCopy = v55;
 LABEL_48:
 
   v51 = *MEMORY[0x277D85DE8];
@@ -312,12 +312,12 @@ uint64_t __60__TIMobileAssetMatch_initWithTypes_inputModeLevels_regions___block_
   return v4;
 }
 
-+ (id)mobileAssetMatchWithTypes:(id)a3 inputModeLevels:(id)a4 regions:(id)a5
++ (id)mobileAssetMatchWithTypes:(id)types inputModeLevels:(id)levels regions:(id)regions
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[a1 alloc] initWithTypes:v10 inputModeLevels:v9 regions:v8];
+  regionsCopy = regions;
+  levelsCopy = levels;
+  typesCopy = types;
+  v11 = [[self alloc] initWithTypes:typesCopy inputModeLevels:levelsCopy regions:regionsCopy];
 
   return v11;
 }

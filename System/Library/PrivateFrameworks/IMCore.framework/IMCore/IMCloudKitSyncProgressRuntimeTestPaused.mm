@@ -1,15 +1,15 @@
 @interface IMCloudKitSyncProgressRuntimeTestPaused
-- (void)willUpdateSyncState:(id)a3;
+- (void)willUpdateSyncState:(id)state;
 @end
 
 @implementation IMCloudKitSyncProgressRuntimeTestPaused
 
-- (void)willUpdateSyncState:(id)a3
+- (void)willUpdateSyncState:(id)state
 {
-  v6 = a3;
-  objc_msgSend_setIMCloudKitSyncDate_(v6, v3, 0);
-  objc_msgSend_setIMCloudKitSyncPaused_(v6, v4, 1);
-  objc_msgSend_setIMCloudKitIsSyncing_(v6, v5, 0);
+  stateCopy = state;
+  objc_msgSend_setIMCloudKitSyncDate_(stateCopy, v3, 0);
+  objc_msgSend_setIMCloudKitSyncPaused_(stateCopy, v4, 1);
+  objc_msgSend_setIMCloudKitIsSyncing_(stateCopy, v5, 0);
 }
 
 @end

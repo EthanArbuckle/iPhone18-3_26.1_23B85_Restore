@@ -1,14 +1,14 @@
 @interface CSDRecentCallReminderManager
-- (void)markRemindersAsCompleteFor:(id)a3;
+- (void)markRemindersAsCompleteFor:(id)for;
 @end
 
 @implementation CSDRecentCallReminderManager
 
-- (void)markRemindersAsCompleteFor:(id)a3
+- (void)markRemindersAsCompleteFor:(id)for
 {
-  v4 = a3;
-  v5 = self;
-  sub_1003ACEF4(v4);
+  forCopy = for;
+  selfCopy = self;
+  sub_1003ACEF4(forCopy);
 }
 
 @end

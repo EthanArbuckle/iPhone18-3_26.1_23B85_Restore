@@ -1,16 +1,16 @@
 @interface WFWebViewController
-- (WFWebViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (WFWebViewController)initWithWebView:(id)a3;
+- (WFWebViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (WFWebViewController)initWithWebView:(id)view;
 - (WFWebViewControllerDelegate)delegate;
 - (void)cancel;
 - (void)dealloc;
-- (void)didMoveToParentViewController:(id)a3;
+- (void)didMoveToParentViewController:(id)controller;
 - (void)done;
 - (void)loadView;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setDelegate:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setDelegate:(id)delegate;
 - (void)updateNavigationItems;
-- (void)webView:(id)a3 decidePolicyForNavigationAction:(id)a4 preferences:(id)a5 decisionHandler:(id)a6;
+- (void)webView:(id)view decidePolicyForNavigationAction:(id)action preferences:(id)preferences decisionHandler:(id)handler;
 @end
 
 @implementation WFWebViewController
@@ -24,25 +24,25 @@
 
 - (void)done
 {
-  v3 = [(WFWebViewController *)self delegate];
+  delegate = [(WFWebViewController *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(WFWebViewController *)self delegate];
-    [v5 webViewControllerDidFinish:self];
+    delegate2 = [(WFWebViewController *)self delegate];
+    [delegate2 webViewControllerDidFinish:self];
   }
 }
 
 - (void)cancel
 {
-  v3 = [(WFWebViewController *)self delegate];
+  delegate = [(WFWebViewController *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(WFWebViewController *)self delegate];
-    [v5 webViewControllerDidCancel:self];
+    delegate2 = [(WFWebViewController *)self delegate];
+    [delegate2 webViewControllerDidCancel:self];
   }
 }
 
@@ -52,38 +52,38 @@
   v28.receiver = self;
   v28.super_class = WFWebViewController;
   [(WFWebViewController *)&v28 loadView];
-  v3 = [(WFWebViewController *)self webView];
-  [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v4 = [(WFWebViewController *)self view];
-  [v4 addSubview:v3];
+  webView = [(WFWebViewController *)self webView];
+  [webView setTranslatesAutoresizingMaskIntoConstraints:0];
+  view = [(WFWebViewController *)self view];
+  [view addSubview:webView];
 
   v27 = objc_opt_new();
   [v27 configureWithOpaqueBackground];
-  v5 = [(WFWebViewController *)self navigationController];
-  v6 = [v5 navigationBar];
-  [v6 setScrollEdgeAppearance:v27];
+  navigationController = [(WFWebViewController *)self navigationController];
+  navigationBar = [navigationController navigationBar];
+  [navigationBar setScrollEdgeAppearance:v27];
 
   v18 = MEMORY[0x277CCAAD0];
-  v25 = [v3 topAnchor];
-  v26 = [(WFWebViewController *)self view];
-  v24 = [v26 safeAreaLayoutGuide];
-  v23 = [v24 topAnchor];
-  v22 = [v25 constraintEqualToAnchor:v23];
+  topAnchor = [webView topAnchor];
+  view2 = [(WFWebViewController *)self view];
+  safeAreaLayoutGuide = [view2 safeAreaLayoutGuide];
+  topAnchor2 = [safeAreaLayoutGuide topAnchor];
+  v22 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v29[0] = v22;
-  v20 = [v3 bottomAnchor];
-  v21 = [(WFWebViewController *)self view];
-  v19 = [v21 bottomAnchor];
-  v17 = [v20 constraintEqualToAnchor:v19];
+  bottomAnchor = [webView bottomAnchor];
+  view3 = [(WFWebViewController *)self view];
+  bottomAnchor2 = [view3 bottomAnchor];
+  v17 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v29[1] = v17;
-  v7 = [v3 leadingAnchor];
-  v8 = [(WFWebViewController *)self view];
-  v9 = [v8 leadingAnchor];
-  v10 = [v7 constraintEqualToAnchor:v9];
+  leadingAnchor = [webView leadingAnchor];
+  view4 = [(WFWebViewController *)self view];
+  leadingAnchor2 = [view4 leadingAnchor];
+  v10 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v29[2] = v10;
-  v11 = [v3 trailingAnchor];
-  v12 = [(WFWebViewController *)self view];
-  v13 = [v12 trailingAnchor];
-  v14 = [v11 constraintEqualToAnchor:v13];
+  trailingAnchor = [webView trailingAnchor];
+  view5 = [(WFWebViewController *)self view];
+  trailingAnchor2 = [view5 trailingAnchor];
+  v14 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v29[3] = v14;
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v29 count:4];
   [v18 activateConstraints:v15];
@@ -91,78 +91,78 @@
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (WFWebViewControllerTitleContext == a6)
+  if (WFWebViewControllerTitleContext == context)
   {
-    v8 = [(WFWebViewController *)self webView:a3];
-    v7 = [v8 title];
-    [(WFWebViewController *)self setTitle:v7];
+    v8 = [(WFWebViewController *)self webView:path];
+    title = [v8 title];
+    [(WFWebViewController *)self setTitle:title];
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = WFWebViewController;
-    [(WFWebViewController *)&v9 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(WFWebViewController *)&v9 observeValueForKeyPath:path ofObject:object change:change context:?];
   }
 }
 
 - (void)updateNavigationItems
 {
-  v3 = [(WFWebViewController *)self navigationController];
-  v4 = [v3 viewControllers];
-  v5 = [v4 firstObject];
-  v6 = [v5 isEqual:self];
+  navigationController = [(WFWebViewController *)self navigationController];
+  viewControllers = [navigationController viewControllers];
+  firstObject = [viewControllers firstObject];
+  v6 = [firstObject isEqual:self];
 
   if (!v6)
   {
-    v16 = [(WFWebViewController *)self navigationItem];
-    [v16 setLeftBarButtonItem:0];
+    navigationItem = [(WFWebViewController *)self navigationItem];
+    [navigationItem setLeftBarButtonItem:0];
 
-    v17 = [(WFWebViewController *)self navigationItem];
-    [v17 setRightBarButtonItem:0];
+    navigationItem2 = [(WFWebViewController *)self navigationItem];
+    [navigationItem2 setRightBarButtonItem:0];
     goto LABEL_7;
   }
 
-  v7 = [(WFWebViewController *)self delegate];
+  delegate = [(WFWebViewController *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
     v9 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:1 target:self action:sel_cancel];
-    v10 = [(WFWebViewController *)self navigationItem];
-    [v10 setLeftBarButtonItem:v9];
+    navigationItem3 = [(WFWebViewController *)self navigationItem];
+    [navigationItem3 setLeftBarButtonItem:v9];
   }
 
-  v11 = [(WFWebViewController *)self delegate];
+  delegate2 = [(WFWebViewController *)self delegate];
   v12 = objc_opt_respondsToSelector();
 
   if (v12)
   {
     v13 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:0 target:self action:sel_done];
-    v14 = [(WFWebViewController *)self navigationItem];
-    [v14 setRightBarButtonItem:v13];
+    navigationItem4 = [(WFWebViewController *)self navigationItem];
+    [navigationItem4 setRightBarButtonItem:v13];
 
-    v17 = [(WFWebViewController *)self navigationItem];
-    v15 = [v17 rightBarButtonItem];
-    [v15 setStyle:2];
+    navigationItem2 = [(WFWebViewController *)self navigationItem];
+    rightBarButtonItem = [navigationItem2 rightBarButtonItem];
+    [rightBarButtonItem setStyle:2];
 
 LABEL_7:
   }
 }
 
-- (void)didMoveToParentViewController:(id)a3
+- (void)didMoveToParentViewController:(id)controller
 {
   v4.receiver = self;
   v4.super_class = WFWebViewController;
-  [(WFWebViewController *)&v4 didMoveToParentViewController:a3];
+  [(WFWebViewController *)&v4 didMoveToParentViewController:controller];
   [(WFWebViewController *)self updateNavigationItems];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  objc_storeWeak(&self->_delegate, a3);
+  objc_storeWeak(&self->_delegate, delegate);
 
   [(WFWebViewController *)self updateNavigationItems];
 }
@@ -175,11 +175,11 @@ LABEL_7:
   [(WFWebViewController *)&v3 dealloc];
 }
 
-- (WFWebViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (WFWebViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v7.receiver = self;
   v7.super_class = WFWebViewController;
-  v4 = [(WFWebViewController *)&v7 initWithNibName:a3 bundle:a4];
+  v4 = [(WFWebViewController *)&v7 initWithNibName:name bundle:bundle];
   v5 = v4;
   if (v4)
   {
@@ -190,23 +190,23 @@ LABEL_7:
   return v5;
 }
 
-- (void)webView:(id)a3 decidePolicyForNavigationAction:(id)a4 preferences:(id)a5 decisionHandler:(id)a6
+- (void)webView:(id)view decidePolicyForNavigationAction:(id)action preferences:(id)preferences decisionHandler:(id)handler
 {
   v42 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
-  v10 = a6;
-  v11 = [v8 targetFrame];
-  v12 = [v11 isMainFrame];
+  actionCopy = action;
+  preferencesCopy = preferences;
+  handlerCopy = handler;
+  targetFrame = [actionCopy targetFrame];
+  isMainFrame = [targetFrame isMainFrame];
 
-  if ((v12 & 1) == 0)
+  if ((isMainFrame & 1) == 0)
   {
-    [v9 setAllowsContentJavaScript:0];
+    [preferencesCopy setAllowsContentJavaScript:0];
     v13 = getWFSecurityLogObject();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
     {
-      v14 = [v8 request];
-      v15 = [v14 URL];
+      request = [actionCopy request];
+      v15 = [request URL];
       *buf = 136315394;
       v39 = "[WFWebViewController webView:decidePolicyForNavigationAction:preferences:decisionHandler:]";
       v40 = 2112;
@@ -215,7 +215,7 @@ LABEL_7:
     }
   }
 
-  if ([v8 _wk_shouldAskAboutInsecureFormSubmission])
+  if ([actionCopy _wk_shouldAskAboutInsecureFormSubmission])
   {
     v16 = [MEMORY[0x277CFC218] alertWithPreferredStyle:0];
     v17 = WFLocalizedString(@"This is a non-secure form.");
@@ -233,9 +233,9 @@ LABEL_7:
     v35[1] = 3221225472;
     v35[2] = __91__WFWebViewController_webView_decidePolicyForNavigationAction_preferences_decisionHandler___block_invoke;
     v35[3] = &unk_278C375C8;
-    v22 = v10;
+    v22 = handlerCopy;
     v37 = v22;
-    v23 = v9;
+    v23 = preferencesCopy;
     v36 = v23;
     v24 = [v20 buttonWithTitle:v21 style:0 handler:v35];
     [v16 addButton:v24];
@@ -256,22 +256,22 @@ LABEL_7:
 
   else
   {
-    (*(v10 + 2))(v10, 1, v9);
+    (*(handlerCopy + 2))(handlerCopy, 1, preferencesCopy);
   }
 
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (WFWebViewController)initWithWebView:(id)a3
+- (WFWebViewController)initWithWebView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v5 = [(WFWebViewController *)self initWithNibName:0 bundle:0];
   v6 = v5;
   if (v5)
   {
-    [(WFWebViewController *)v5 setWebView:v4];
-    v7 = [(WFWebViewController *)v6 webView];
-    [v7 setNavigationDelegate:v6];
+    [(WFWebViewController *)v5 setWebView:viewCopy];
+    webView = [(WFWebViewController *)v6 webView];
+    [webView setNavigationDelegate:v6];
   }
 
   return v6;

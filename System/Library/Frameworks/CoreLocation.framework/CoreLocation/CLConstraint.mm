@@ -1,7 +1,7 @@
 @interface CLConstraint
-- (CLConstraint)initWithCoder:(id)a3;
+- (CLConstraint)initWithCoder:(id)coder;
 - (id)copy;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)initConstraint;
 - (void)dealloc;
 @end
@@ -29,18 +29,18 @@
   return [(CLCondition *)&v3 copy];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4.receiver = self;
   v4.super_class = CLConstraint;
   return [(CLCondition *)&v4 copy];
 }
 
-- (CLConstraint)initWithCoder:(id)a3
+- (CLConstraint)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = CLConstraint;
-  return [(CLCondition *)&v4 initWithCoder:a3];
+  return [(CLCondition *)&v4 initWithCoder:coder];
 }
 
 @end

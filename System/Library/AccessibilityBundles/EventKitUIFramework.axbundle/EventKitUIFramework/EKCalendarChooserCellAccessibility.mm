@@ -18,14 +18,14 @@
 
   v13.receiver = self;
   v13.super_class = EKCalendarChooserCellAccessibility;
-  v4 = [(EKCalendarChooserCellAccessibility *)&v13 accessibilityTraits];
+  accessibilityTraits = [(EKCalendarChooserCellAccessibility *)&v13 accessibilityTraits];
   v5 = *MEMORY[0x29EDC7FC0];
   if ((v3 & 1) == 0)
   {
     v5 = 0;
   }
 
-  v6 = v5 | v4;
+  v6 = v5 | accessibilityTraits;
   v7 = [(EKCalendarChooserCellAccessibility *)self safeValueForKey:@"textLabel"];
   v8 = [v7 safeValueForKey:@"alpha"];
   [v8 doubleValue];

@@ -1,31 +1,31 @@
 @interface PFPosterCollection
-+ (BOOL)validatePoster:(id)a3;
++ (BOOL)validatePoster:(id)poster;
 + (PFPosterCollection)new;
-+ (id)posterUUIDForPoster:(id)a3;
-+ (id)postersByDescriptorIdentifier:(id)a3;
-+ (id)postersByProvider:(id)a3;
-+ (id)postersByUUID:(id)a3;
-+ (id)providerForPoster:(id)a3;
++ (id)posterUUIDForPoster:(id)poster;
++ (id)postersByDescriptorIdentifier:(id)identifier;
++ (id)postersByProvider:(id)provider;
++ (id)postersByUUID:(id)d;
++ (id)providerForPoster:(id)poster;
 - (BOOL)isEmpty;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToCollection:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToCollection:(id)collection;
 - (NSDictionary)postersByDescriptorIdentifier;
 - (NSDictionary)postersByProvider;
 - (NSOrderedSet)postersOrderedByCreationDate;
 - (PFPosterCollection)init;
-- (PFPosterCollection)initWithArray:(id)a3;
-- (PFPosterCollection)initWithPosters:(id)a3;
-- (PFPosterCollection)initWithSet:(id)a3;
-- (id)collectionForPostersMatchingPredicate:(id)a3;
-- (id)collectionForPostersMatchingRoles:(id)a3;
-- (id)collectionForPostersPassingTest:(id)a3;
-- (id)collectionForProvider:(id)a3;
+- (PFPosterCollection)initWithArray:(id)array;
+- (PFPosterCollection)initWithPosters:(id)posters;
+- (PFPosterCollection)initWithSet:(id)set;
+- (id)collectionForPostersMatchingPredicate:(id)predicate;
+- (id)collectionForPostersMatchingRoles:(id)roles;
+- (id)collectionForPostersPassingTest:(id)test;
+- (id)collectionForProvider:(id)provider;
 - (id)description;
-- (id)posterForDescriptor:(id)a3;
-- (id)posterWithUUID:(id)a3;
-- (id)postersForProvider:(id)a3;
-- (id)postersMatchingRoles:(id)a3;
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5;
+- (id)posterForDescriptor:(id)descriptor;
+- (id)posterWithUUID:(id)d;
+- (id)postersForProvider:(id)provider;
+- (id)postersMatchingRoles:(id)roles;
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count;
 @end
 
 @implementation PFPosterCollection
@@ -40,85 +40,85 @@
 
 + (PFPosterCollection)new
 {
-  v2 = [a1 alloc];
+  v2 = [self alloc];
   v3 = [MEMORY[0x1E695DFD8] set];
   v4 = [v2 initWithSet:v3];
 
   return v4;
 }
 
-+ (BOOL)validatePoster:(id)a3
++ (BOOL)validatePoster:(id)poster
 {
-  v4 = a3;
-  if (!v4)
+  posterCopy = poster;
+  if (!posterCopy)
   {
     [PFPosterCollection validatePoster:a2];
   }
 
-  v5 = v4;
+  v5 = posterCopy;
   v6 = objc_opt_respondsToSelector();
 
   return v6 & 1;
 }
 
-+ (id)providerForPoster:(id)a3
++ (id)providerForPoster:(id)poster
 {
-  v4 = a3;
-  if (!v4)
+  posterCopy = poster;
+  if (!posterCopy)
   {
     [PFPosterCollection providerForPoster:a2];
   }
 
-  v5 = v4;
-  v6 = [v4 _path];
-  if ([v6 isServerPosterPath])
+  v5 = posterCopy;
+  _path = [posterCopy _path];
+  if ([_path isServerPosterPath])
   {
-    v7 = [v6 serverIdentity];
-    v8 = [v7 provider];
+    serverIdentity = [_path serverIdentity];
+    provider = [serverIdentity provider];
   }
 
   else
   {
-    v8 = 0;
+    provider = 0;
   }
 
-  return v8;
+  return provider;
 }
 
-+ (id)posterUUIDForPoster:(id)a3
++ (id)posterUUIDForPoster:(id)poster
 {
-  v4 = a3;
-  if (!v4)
+  posterCopy = poster;
+  if (!posterCopy)
   {
     [PFPosterCollection posterUUIDForPoster:a2];
   }
 
-  v5 = v4;
-  v6 = [v4 _path];
-  if ([v6 isServerPosterPath])
+  v5 = posterCopy;
+  _path = [posterCopy _path];
+  if ([_path isServerPosterPath])
   {
-    v7 = [v6 serverIdentity];
-    v8 = [v7 posterUUID];
+    serverIdentity = [_path serverIdentity];
+    posterUUID = [serverIdentity posterUUID];
   }
 
   else
   {
-    v8 = 0;
+    posterUUID = 0;
   }
 
-  return v8;
+  return posterUUID;
 }
 
-- (PFPosterCollection)initWithPosters:(id)a3
+- (PFPosterCollection)initWithPosters:(id)posters
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  postersCopy = posters;
   v5 = objc_opt_new();
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v4;
+  v6 = postersCopy;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -149,24 +149,24 @@
   return v11;
 }
 
-- (PFPosterCollection)initWithArray:(id)a3
+- (PFPosterCollection)initWithArray:(id)array
 {
-  v4 = [MEMORY[0x1E695DFD8] setWithArray:a3];
+  v4 = [MEMORY[0x1E695DFD8] setWithArray:array];
   v5 = [(PFPosterCollection *)self initWithSet:v4];
 
   return v5;
 }
 
-- (PFPosterCollection)initWithSet:(id)a3
+- (PFPosterCollection)initWithSet:(id)set
 {
   v27 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  setCopy = set;
+  if (!setCopy)
   {
     [PFPosterCollection initWithSet:a2];
   }
 
-  v6 = v5;
+  v6 = setCopy;
   v25.receiver = self;
   v25.super_class = PFPosterCollection;
   v7 = [(PFPosterCollection *)&v25 init];
@@ -222,16 +222,16 @@
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
 
-  else if (v4)
+  else if (equalCopy)
   {
     v6 = objc_opt_class();
     v7 = v5;
@@ -266,19 +266,19 @@
   return v9;
 }
 
-- (BOOL)isEqualToCollection:(id)a3
+- (BOOL)isEqualToCollection:(id)collection
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  collectionCopy = collection;
+  v5 = collectionCopy;
+  if (self == collectionCopy)
   {
     v8 = 1;
   }
 
-  else if (v4)
+  else if (collectionCopy)
   {
-    v6 = [(PFPosterCollection *)v4 posters];
-    v7 = [(PFPosterCollection *)self posters];
+    posters = [(PFPosterCollection *)collectionCopy posters];
+    posters2 = [(PFPosterCollection *)self posters];
     v8 = BSEqualObjects();
   }
 
@@ -290,15 +290,15 @@
   return v8;
 }
 
-- (id)postersMatchingRoles:(id)a3
+- (id)postersMatchingRoles:(id)roles
 {
-  v4 = a3;
+  rolesCopy = roles;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __43__PFPosterCollection_postersMatchingRoles___block_invoke;
   v8[3] = &unk_1E8189618;
-  v9 = v4;
-  v5 = v4;
+  v9 = rolesCopy;
+  v5 = rolesCopy;
   v6 = [(PFPosterCollection *)self postersPassingTest:v8];
 
   return v6;
@@ -313,11 +313,11 @@ uint64_t __43__PFPosterCollection_postersMatchingRoles___block_invoke(uint64_t a
   return v4;
 }
 
-- (id)postersForProvider:(id)a3
+- (id)postersForProvider:(id)provider
 {
-  v4 = a3;
-  v5 = [(PFPosterCollection *)self postersByProvider];
-  v6 = [v5 objectForKey:v4];
+  providerCopy = provider;
+  postersByProvider = [(PFPosterCollection *)self postersByProvider];
+  v6 = [postersByProvider objectForKey:providerCopy];
 
   if (v6)
   {
@@ -334,15 +334,15 @@ uint64_t __43__PFPosterCollection_postersMatchingRoles___block_invoke(uint64_t a
   return v8;
 }
 
-- (id)collectionForPostersMatchingRoles:(id)a3
+- (id)collectionForPostersMatchingRoles:(id)roles
 {
-  v4 = a3;
-  v5 = [v4 count];
+  rolesCopy = roles;
+  v5 = [rolesCopy count];
   v6 = objc_opt_class();
   if (v5)
   {
     v7 = [v6 alloc];
-    v8 = [(PFPosterCollection *)self postersMatchingRoles:v4];
+    v8 = [(PFPosterCollection *)self postersMatchingRoles:rolesCopy];
     v9 = [v7 initWithSet:v8];
   }
 
@@ -354,14 +354,14 @@ uint64_t __43__PFPosterCollection_postersMatchingRoles___block_invoke(uint64_t a
   return v9;
 }
 
-- (id)collectionForPostersMatchingPredicate:(id)a3
+- (id)collectionForPostersMatchingPredicate:(id)predicate
 {
-  v4 = a3;
+  predicateCopy = predicate;
   v5 = objc_opt_class();
-  if (v4)
+  if (predicateCopy)
   {
     v6 = [v5 alloc];
-    v7 = [(PFPosterCollection *)self postersMatchingPredicate:v4];
+    v7 = [(PFPosterCollection *)self postersMatchingPredicate:predicateCopy];
     v8 = [v6 initWithSet:v7];
   }
 
@@ -373,14 +373,14 @@ uint64_t __43__PFPosterCollection_postersMatchingRoles___block_invoke(uint64_t a
   return v8;
 }
 
-- (id)collectionForPostersPassingTest:(id)a3
+- (id)collectionForPostersPassingTest:(id)test
 {
-  v4 = a3;
+  testCopy = test;
   v5 = objc_opt_class();
-  if (v4)
+  if (testCopy)
   {
     v6 = [v5 alloc];
-    v7 = [(PFPosterCollection *)self postersPassingTest:v4];
+    v7 = [(PFPosterCollection *)self postersPassingTest:testCopy];
     v8 = [v6 initWithSet:v7];
   }
 
@@ -392,15 +392,15 @@ uint64_t __43__PFPosterCollection_postersMatchingRoles___block_invoke(uint64_t a
   return v8;
 }
 
-- (id)collectionForProvider:(id)a3
+- (id)collectionForProvider:(id)provider
 {
-  v4 = a3;
-  v5 = [v4 length];
+  providerCopy = provider;
+  v5 = [providerCopy length];
   v6 = objc_opt_class();
   if (v5)
   {
     v7 = [v6 alloc];
-    v8 = [(PFPosterCollection *)self postersForProvider:v4];
+    v8 = [(PFPosterCollection *)self postersForProvider:providerCopy];
     v9 = [v7 initWithSet:v8];
   }
 
@@ -414,35 +414,35 @@ uint64_t __43__PFPosterCollection_postersMatchingRoles___block_invoke(uint64_t a
 
 - (BOOL)isEmpty
 {
-  v2 = [(PFPosterCollection *)self posters];
-  v3 = [v2 count] == 0;
+  posters = [(PFPosterCollection *)self posters];
+  v3 = [posters count] == 0;
 
   return v3;
 }
 
-- (id)posterWithUUID:(id)a3
+- (id)posterWithUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(PFPosterCollection *)self postersByUUID];
-  v6 = [v5 objectForKey:v4];
+  dCopy = d;
+  postersByUUID = [(PFPosterCollection *)self postersByUUID];
+  v6 = [postersByUUID objectForKey:dCopy];
 
   return v6;
 }
 
-- (id)posterForDescriptor:(id)a3
+- (id)posterForDescriptor:(id)descriptor
 {
-  v4 = a3;
-  v5 = [(PFPosterCollection *)self postersByDescriptorIdentifier];
-  v6 = [v5 objectForKey:v4];
+  descriptorCopy = descriptor;
+  postersByDescriptorIdentifier = [(PFPosterCollection *)self postersByDescriptorIdentifier];
+  v6 = [postersByDescriptorIdentifier objectForKey:descriptorCopy];
 
   return v6;
 }
 
 - (NSOrderedSet)postersOrderedByCreationDate
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  postersOrderedByCreationDate = v2->_postersOrderedByCreationDate;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  postersOrderedByCreationDate = selfCopy->_postersOrderedByCreationDate;
   if (postersOrderedByCreationDate)
   {
     v4 = postersOrderedByCreationDate;
@@ -451,18 +451,18 @@ uint64_t __43__PFPosterCollection_postersMatchingRoles___block_invoke(uint64_t a
   else
   {
     v5 = MEMORY[0x1E695DFA0];
-    v6 = [(PFPosterCollection *)v2 posters];
-    v7 = [v5 orderedSetWithSet:v6];
+    posters = [(PFPosterCollection *)selfCopy posters];
+    v7 = [v5 orderedSetWithSet:posters];
 
     [v7 sortUsingComparator:&__block_literal_global_10];
     v8 = [v7 copy];
-    v9 = v2->_postersOrderedByCreationDate;
-    v2->_postersOrderedByCreationDate = v8;
+    v9 = selfCopy->_postersOrderedByCreationDate;
+    selfCopy->_postersOrderedByCreationDate = v8;
 
-    v4 = v2->_postersOrderedByCreationDate;
+    v4 = selfCopy->_postersOrderedByCreationDate;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v4;
 }
@@ -492,54 +492,54 @@ uint64_t __50__PFPosterCollection_postersOrderedByCreationDate__block_invoke(uin
 
 - (NSDictionary)postersByDescriptorIdentifier
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  postersByDescriptorIdentifier = v2->_postersByDescriptorIdentifier;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  postersByDescriptorIdentifier = selfCopy->_postersByDescriptorIdentifier;
   if (!postersByDescriptorIdentifier)
   {
-    v4 = [objc_opt_class() postersByDescriptorIdentifier:v2->_posters];
-    v5 = v2->_postersByDescriptorIdentifier;
-    v2->_postersByDescriptorIdentifier = v4;
+    v4 = [objc_opt_class() postersByDescriptorIdentifier:selfCopy->_posters];
+    v5 = selfCopy->_postersByDescriptorIdentifier;
+    selfCopy->_postersByDescriptorIdentifier = v4;
 
-    postersByDescriptorIdentifier = v2->_postersByDescriptorIdentifier;
+    postersByDescriptorIdentifier = selfCopy->_postersByDescriptorIdentifier;
   }
 
   v6 = postersByDescriptorIdentifier;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
 - (NSDictionary)postersByProvider
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  postersByProvider = v2->_postersByProvider;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  postersByProvider = selfCopy->_postersByProvider;
   if (!postersByProvider)
   {
-    v4 = [objc_opt_class() postersByProvider:v2->_posters];
-    v5 = v2->_postersByProvider;
-    v2->_postersByProvider = v4;
+    v4 = [objc_opt_class() postersByProvider:selfCopy->_posters];
+    v5 = selfCopy->_postersByProvider;
+    selfCopy->_postersByProvider = v4;
 
-    postersByProvider = v2->_postersByProvider;
+    postersByProvider = selfCopy->_postersByProvider;
   }
 
   v6 = postersByProvider;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
-+ (id)postersByUUID:(id)a3
++ (id)postersByUUID:(id)d
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  dCopy = d;
   v6 = objc_opt_new();
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v7 = v5;
+  v7 = dCopy;
   v8 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v8)
   {
@@ -555,7 +555,7 @@ uint64_t __50__PFPosterCollection_postersOrderedByCreationDate__block_invoke(uin
         }
 
         v12 = *(*(&v18 + 1) + 8 * i);
-        v13 = [a1 posterUUIDForPoster:{v12, v18}];
+        v13 = [self posterUUIDForPoster:{v12, v18}];
         if (v13)
         {
           v14 = [v6 objectForKey:v13];
@@ -581,16 +581,16 @@ uint64_t __50__PFPosterCollection_postersOrderedByCreationDate__block_invoke(uin
   return v15;
 }
 
-+ (id)postersByProvider:(id)a3
++ (id)postersByProvider:(id)provider
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  providerCopy = provider;
   v5 = objc_opt_new();
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = v4;
+  v6 = providerCopy;
   v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
@@ -606,7 +606,7 @@ uint64_t __50__PFPosterCollection_postersOrderedByCreationDate__block_invoke(uin
         }
 
         v11 = *(*(&v17 + 1) + 8 * i);
-        v12 = [a1 providerForPoster:{v11, v17}];
+        v12 = [self providerForPoster:{v11, v17}];
         if (v12)
         {
           v13 = [v5 objectForKey:v12];
@@ -632,16 +632,16 @@ uint64_t __50__PFPosterCollection_postersOrderedByCreationDate__block_invoke(uin
   return v14;
 }
 
-+ (id)postersByDescriptorIdentifier:(id)a3
++ (id)postersByDescriptorIdentifier:(id)identifier
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = objc_opt_new();
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = v3;
+  v5 = identifierCopy;
   v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
@@ -657,10 +657,10 @@ uint64_t __50__PFPosterCollection_postersOrderedByCreationDate__block_invoke(uin
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        v11 = [v10 descriptorIdentifier];
-        if (v11)
+        descriptorIdentifier = [v10 descriptorIdentifier];
+        if (descriptorIdentifier)
         {
-          [v4 setObject:v10 forKey:v11];
+          [v4 setObject:v10 forKey:descriptorIdentifier];
         }
       }
 
@@ -676,10 +676,10 @@ uint64_t __50__PFPosterCollection_postersOrderedByCreationDate__block_invoke(uin
   return v12;
 }
 
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count
 {
-  v8 = [(PFPosterCollection *)self posters];
-  v9 = [v8 countByEnumeratingWithState:a3 objects:a4 count:a5];
+  posters = [(PFPosterCollection *)self posters];
+  v9 = [posters countByEnumeratingWithState:state objects:objects count:count];
 
   return v9;
 }
@@ -687,13 +687,13 @@ uint64_t __50__PFPosterCollection_postersOrderedByCreationDate__block_invoke(uin
 - (id)description
 {
   v3 = [MEMORY[0x1E698E680] builderWithObject:self];
-  v4 = [(PFPosterCollection *)self posters];
-  v5 = [v4 bs_array];
-  [v3 appendArraySection:v5 withName:@"posters" skipIfEmpty:0];
+  posters = [(PFPosterCollection *)self posters];
+  bs_array = [posters bs_array];
+  [v3 appendArraySection:bs_array withName:@"posters" skipIfEmpty:0];
 
-  v6 = [v3 build];
+  build = [v3 build];
 
-  return v6;
+  return build;
 }
 
 + (void)validatePoster:(char *)a1 .cold.1(char *a1)

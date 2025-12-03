@@ -1,14 +1,14 @@
 @interface ATXAssetsPaths
-+ (id)decDirectoryFile:(id)a3;
++ (id)decDirectoryFile:(id)file;
 @end
 
 @implementation ATXAssetsPaths
 
-+ (id)decDirectoryFile:(id)a3
++ (id)decDirectoryFile:(id)file
 {
-  v4 = a3;
-  v5 = [a1 decDirectory];
-  v6 = [v5 stringByAppendingPathComponent:v4];
+  fileCopy = file;
+  decDirectory = [self decDirectory];
+  v6 = [decDirectory stringByAppendingPathComponent:fileCopy];
 
   return v6;
 }

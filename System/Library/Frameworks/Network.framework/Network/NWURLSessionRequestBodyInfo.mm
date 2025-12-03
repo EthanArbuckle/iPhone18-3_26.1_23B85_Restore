@@ -1,23 +1,23 @@
 @interface NWURLSessionRequestBodyInfo
-- (id)bodyProviderFromOffset:(void *)a1;
-- (id)initWithFileURL:(void *)a3 queue:;
-- (id)initWithRequest:(void *)a3 queue:;
-- (id)initWithStream:(id *)a1 queue:(void *)a2;
+- (id)bodyProviderFromOffset:(void *)offset;
+- (id)initWithFileURL:(void *)l queue:;
+- (id)initWithRequest:(void *)request queue:;
+- (id)initWithStream:(id *)stream queue:(void *)queue;
 @end
 
 @implementation NWURLSessionRequestBodyInfo
 
-- (id)initWithFileURL:(void *)a3 queue:
+- (id)initWithFileURL:(void *)l queue:
 {
   v22 = *MEMORY[0x1E69E9840];
   v6 = a2;
-  v7 = a3;
-  if (a1)
+  lCopy = l;
+  if (self)
   {
-    v17.receiver = a1;
+    v17.receiver = self;
     v17.super_class = NWURLSessionRequestBodyInfo;
     v8 = objc_msgSendSuper2(&v17, sel_init);
-    a1 = v8;
+    self = v8;
     if (v8)
     {
       objc_storeStrong(v8 + 3, a2);
@@ -29,12 +29,12 @@
       v12 = v15;
       if (v10)
       {
-        a1[1] = [v11 longLongValue];
+        self[1] = [v11 longLongValue];
       }
 
       else
       {
-        a1[1] = -1;
+        self[1] = -1;
         if (__nwlog_url_log::onceToken != -1)
         {
           dispatch_once(&__nwlog_url_log::onceToken, &__block_literal_global_72);
@@ -51,152 +51,152 @@
         }
       }
 
-      objc_storeStrong(a1 + 5, a3);
+      objc_storeStrong(self + 5, l);
     }
   }
 
-  return a1;
+  return self;
 }
 
-- (id)initWithStream:(id *)a1 queue:(void *)a2
+- (id)initWithStream:(id *)stream queue:(void *)queue
 {
-  v4 = a2;
-  if (a1)
+  queueCopy = queue;
+  if (stream)
   {
-    v7.receiver = a1;
+    v7.receiver = stream;
     v7.super_class = NWURLSessionRequestBodyInfo;
     v5 = objc_msgSendSuper2(&v7, sel_init);
-    a1 = v5;
+    stream = v5;
     if (v5)
     {
       objc_storeStrong(v5 + 4, 0);
-      a1[1] = -1;
-      objc_storeStrong(a1 + 5, a2);
+      stream[1] = -1;
+      objc_storeStrong(stream + 5, queue);
     }
   }
 
-  return a1;
+  return stream;
 }
 
-- (id)initWithRequest:(void *)a3 queue:
+- (id)initWithRequest:(void *)request queue:
 {
-  v6 = a3;
-  if (a1)
+  requestCopy = request;
+  if (self)
   {
     v7 = a2;
-    v8 = [v7 HTTPBody];
-    v9 = [v7 HTTPBodyStream];
+    hTTPBody = [v7 HTTPBody];
+    hTTPBodyStream = [v7 HTTPBodyStream];
 
-    if (v8 | v9)
+    if (hTTPBody | hTTPBodyStream)
     {
-      v16.receiver = a1;
+      v16.receiver = self;
       v16.super_class = NWURLSessionRequestBodyInfo;
       v11 = objc_msgSendSuper2(&v16, sel_init);
       if (v11)
       {
-        if (v8)
+        if (hTTPBody)
         {
-          v12 = [v8 _createDispatchData];
+          _createDispatchData = [hTTPBody _createDispatchData];
           v13 = *(v11 + 2);
-          *(v11 + 2) = v12;
+          *(v11 + 2) = _createDispatchData;
 
-          v14 = [v8 length];
+          v14 = [hTTPBody length];
         }
 
         else
         {
-          if (![v9 streamStatus])
+          if (![hTTPBodyStream streamStatus])
           {
-            objc_storeStrong(v11 + 4, v9);
+            objc_storeStrong(v11 + 4, hTTPBodyStream);
           }
 
           v14 = -1;
         }
 
         *(v11 + 1) = v14;
-        objc_storeStrong(v11 + 5, a3);
+        objc_storeStrong(v11 + 5, request);
       }
 
-      a1 = v11;
-      v10 = a1;
+      self = v11;
+      selfCopy = self;
     }
 
     else
     {
-      v10 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (id)bodyProviderFromOffset:(void *)a1
+- (id)bodyProviderFromOffset:(void *)offset
 {
-  v3 = a1;
-  if (!a1)
+  offsetCopy = offset;
+  if (!offset)
   {
     goto LABEL_22;
   }
 
   v4 = a2;
-  if (a1[2])
+  if (offset[2])
   {
     v5 = [NWURLSessionRequestBodyData alloc];
-    v6 = *(v3 + 2);
+    v6 = *(offsetCopy + 2);
     v7 = v6;
     if (v5)
     {
       cleanup_handler.receiver = v5;
       cleanup_handler.super_class = NWURLSessionRequestBodyData;
       v8 = objc_msgSendSuper2(&cleanup_handler, sel_init);
-      v3 = v8;
+      offsetCopy = v8;
       if (v8)
       {
         objc_storeStrong(v8 + 1, v6);
-        *(v3 + 2) = dispatch_data_get_size(v7);
-        *(v3 + 3) = v4;
+        *(offsetCopy + 2) = dispatch_data_get_size(v7);
+        *(offsetCopy + 3) = v4;
       }
 
       goto LABEL_6;
     }
 
 LABEL_28:
-    v3 = 0;
+    offsetCopy = 0;
 LABEL_6:
 
     goto LABEL_22;
   }
 
-  if (!a1[3])
+  if (!offset[3])
   {
-    v7 = a1[4];
+    v7 = offset[4];
     if (v7)
     {
-      if (a1[6] != a2)
+      if (offset[6] != a2)
       {
         _os_crash();
         __break(1u);
         goto LABEL_27;
       }
 
-      a1[4] = 0;
+      offset[4] = 0;
       v17 = v7;
 
       v18 = [NWURLSessionRequestBodyStream alloc];
-      v19 = *(v3 + 5);
+      v19 = *(offsetCopy + 5);
       v4 = v17;
       v2 = v19;
       if (v18)
       {
         cleanup_handler.receiver = v18;
         cleanup_handler.super_class = NWURLSessionRequestBodyStream;
-        v3 = objc_msgSendSuper2(&cleanup_handler, sel_init);
-        if (!v3)
+        offsetCopy = objc_msgSendSuper2(&cleanup_handler, sel_init);
+        if (!offsetCopy)
         {
 LABEL_21:
 
@@ -205,12 +205,12 @@ LABEL_21:
 
         if (![v4 streamStatus])
         {
-          objc_storeStrong(v3 + 2, v7);
-          *(v3 + 3) = 0;
-          objc_storeStrong(v3 + 4, v19);
+          objc_storeStrong(offsetCopy + 2, v7);
+          *(offsetCopy + 3) = 0;
+          objc_storeStrong(offsetCopy + 4, v19);
           v20 = objc_alloc_init(NWURLSessionReadRequest);
-          v21 = *(v3 + 5);
-          *(v3 + 5) = v20;
+          v21 = *(offsetCopy + 5);
+          *(offsetCopy + 5) = v20;
 
           goto LABEL_21;
         }
@@ -228,25 +228,25 @@ LABEL_27:
       __break(1u);
     }
 
-    v3 = 0;
+    offsetCopy = 0;
     goto LABEL_21;
   }
 
   v9 = [NWURLSessionRequestBodyFile alloc];
-  v10 = *(v3 + 5);
-  v11 = *(v3 + 3);
+  v10 = *(offsetCopy + 5);
+  v11 = *(offsetCopy + 3);
   v12 = v10;
   if (v9)
   {
     v27.receiver = v9;
     v27.super_class = NWURLSessionRequestBodyFile;
-    v3 = objc_msgSendSuper2(&v27, sel_init);
-    if (v3)
+    offsetCopy = objc_msgSendSuper2(&v27, sel_init);
+    if (offsetCopy)
     {
       v13 = open([v11 fileSystemRepresentation], 0);
       if (v13 < 0)
       {
-        *(v3 + 2) = **(_ReadStatusReg(ARM64_SYSREG(3, 3, 13, 0, 3)) + 8);
+        *(offsetCopy + 2) = **(_ReadStatusReg(ARM64_SYSREG(3, 3, 13, 0, 3)) + 8);
       }
 
       else
@@ -255,7 +255,7 @@ LABEL_27:
         if (v4)
         {
           lseek(v13, v4, 0);
-          *(v3 + 4) = v4;
+          *(offsetCopy + 4) = v4;
         }
 
         cleanup_handler.receiver = MEMORY[0x1E69E9820];
@@ -264,23 +264,23 @@ LABEL_27:
         v25 = &__block_descriptor_36_e8_v12__0i8l;
         v26 = v14;
         v15 = dispatch_io_create(0, v14, v12, &cleanup_handler);
-        v16 = *(v3 + 2);
-        *(v3 + 2) = v15;
+        v16 = *(offsetCopy + 2);
+        *(offsetCopy + 2) = v15;
 
-        dispatch_io_set_low_water(*(v3 + 2), 0xFFFFFFFFFFFFFFFFLL);
-        objc_storeStrong(v3 + 3, v10);
+        dispatch_io_set_low_water(*(offsetCopy + 2), 0xFFFFFFFFFFFFFFFFLL);
+        objc_storeStrong(offsetCopy + 3, v10);
       }
     }
   }
 
   else
   {
-    v3 = 0;
+    offsetCopy = 0;
   }
 
 LABEL_22:
 
-  return v3;
+  return offsetCopy;
 }
 
 @end

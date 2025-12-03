@@ -2,10 +2,10 @@
 + (id)allowedClasses;
 + (id)taskService;
 + (id)taskServiceClient;
-- (BOOL)cancelTask:(int)a3;
+- (BOOL)cancelTask:(int)task;
 - (id)initPrivate;
-- (int)submitTask:(id)a3 progressHandler:(id)a4 completionHander:(id)a5;
-- (int)submitTaskWithOptions:(id)a3 progressHandler:(id)a4 completionHandler:(id)a5;
+- (int)submitTask:(id)task progressHandler:(id)handler completionHander:(id)hander;
+- (int)submitTaskWithOptions:(id)options progressHandler:(id)handler completionHandler:(id)completionHandler;
 @end
 
 @implementation HMITaskService
@@ -16,7 +16,7 @@
   block[1] = 3221225472;
   block[2] = __29__HMITaskService_taskService__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (taskService_onceToken != -1)
   {
     dispatch_once(&taskService_onceToken, block);
@@ -57,7 +57,7 @@ void __29__HMITaskService_taskService__block_invoke(uint64_t a1)
   v7[2] = __35__HMITaskService_taskServiceClient__block_invoke;
   v7[3] = &__block_descriptor_41_e5_v8__0l;
   v8 = v4;
-  v7[4] = a1;
+  v7[4] = self;
   if (taskServiceClient_onceToken != -1)
   {
     dispatch_once(&taskServiceClient_onceToken, v7);
@@ -133,11 +133,11 @@ void __35__HMITaskService_taskServiceClient__block_invoke(uint64_t a1)
   return [(HMITaskService *)&v3 init];
 }
 
-- (int)submitTaskWithOptions:(id)a3 progressHandler:(id)a4 completionHandler:(id)a5
+- (int)submitTaskWithOptions:(id)options progressHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  optionsCopy = options;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
   v11 = MEMORY[0x277CBEAD8];
   v12 = *MEMORY[0x277CBE658];
   v13 = MEMORY[0x277CCACA8];
@@ -149,7 +149,7 @@ void __35__HMITaskService_taskServiceClient__block_invoke(uint64_t a1)
   objc_exception_throw(v16);
 }
 
-- (BOOL)cancelTask:(int)a3
+- (BOOL)cancelTask:(int)task
 {
   v3 = MEMORY[0x277CBEAD8];
   v4 = *MEMORY[0x277CBE658];
@@ -162,11 +162,11 @@ void __35__HMITaskService_taskServiceClient__block_invoke(uint64_t a1)
   objc_exception_throw(v8);
 }
 
-- (int)submitTask:(id)a3 progressHandler:(id)a4 completionHander:(id)a5
+- (int)submitTask:(id)task progressHandler:(id)handler completionHander:(id)hander
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  taskCopy = task;
+  handlerCopy = handler;
+  handerCopy = hander;
   v11 = MEMORY[0x277CBEAD8];
   v12 = *MEMORY[0x277CBE658];
   v13 = MEMORY[0x277CCACA8];

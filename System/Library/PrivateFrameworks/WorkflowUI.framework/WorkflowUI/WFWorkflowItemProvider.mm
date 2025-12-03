@@ -1,103 +1,103 @@
 @interface WFWorkflowItemProvider
 - (NSURL)workflowURL;
-- (WFWorkflowItemProvider)initWithWorkflow:(id)a3 userInterface:(id)a4 placeholderItem:(id)a5;
-- (id)activityViewController:(id)a3 subjectForActivityType:(id)a4;
-- (id)activityViewController:(id)a3 thumbnailImageForActivityType:(id)a4 suggestedSize:(CGSize)a5;
-- (id)activityViewControllerLinkMetadata:(id)a3;
+- (WFWorkflowItemProvider)initWithWorkflow:(id)workflow userInterface:(id)interface placeholderItem:(id)item;
+- (id)activityViewController:(id)controller subjectForActivityType:(id)type;
+- (id)activityViewController:(id)controller thumbnailImageForActivityType:(id)type suggestedSize:(CGSize)size;
+- (id)activityViewControllerLinkMetadata:(id)metadata;
 - (id)item;
-- (id)shareShortcutEventForActivityType:(id)a3;
+- (id)shareShortcutEventForActivityType:(id)type;
 - (void)generateItemURL;
 @end
 
 @implementation WFWorkflowItemProvider
 
-- (id)activityViewControllerLinkMetadata:(id)a3
+- (id)activityViewControllerLinkMetadata:(id)metadata
 {
   v4 = objc_alloc(MEMORY[0x277D7A1E8]);
-  v5 = [(WFWorkflowItemProvider *)self workflow];
-  v6 = [v5 icon];
-  v7 = [v4 initWithIcon:v6];
+  workflow = [(WFWorkflowItemProvider *)self workflow];
+  icon = [workflow icon];
+  v7 = [v4 initWithIcon:icon];
 
   [v7 setRounded:0];
   v8 = [v7 imageWithSize:{40.0, 40.0}];
-  v9 = [v8 UIImage];
+  uIImage = [v8 UIImage];
 
   v10 = objc_opt_new();
-  v11 = [(WFWorkflowItemProvider *)self workflow];
-  v12 = [v11 name];
-  [v10 setTitle:v12];
+  workflow2 = [(WFWorkflowItemProvider *)self workflow];
+  name = [workflow2 name];
+  [v10 setTitle:name];
 
-  v13 = [objc_alloc(MEMORY[0x277CCAA88]) initWithObject:v9];
+  v13 = [objc_alloc(MEMORY[0x277CCAA88]) initWithObject:uIImage];
   [v10 setIconProvider:v13];
 
   return v10;
 }
 
-- (id)activityViewController:(id)a3 subjectForActivityType:(id)a4
+- (id)activityViewController:(id)controller subjectForActivityType:(id)type
 {
   v5 = MEMORY[0x277CCACA8];
   v6 = WFLocalizedString(@"Shortcut: %@");
-  v7 = [(WFWorkflowItemProvider *)self workflow];
-  v8 = [v7 name];
-  v9 = [v5 localizedStringWithFormat:v6, v8];
+  workflow = [(WFWorkflowItemProvider *)self workflow];
+  name = [workflow name];
+  v9 = [v5 localizedStringWithFormat:v6, name];
 
   return v9;
 }
 
-- (id)activityViewController:(id)a3 thumbnailImageForActivityType:(id)a4 suggestedSize:(CGSize)a5
+- (id)activityViewController:(id)controller thumbnailImageForActivityType:(id)type suggestedSize:(CGSize)size
 {
-  if (a5.width >= a5.height)
+  if (size.width >= size.height)
   {
-    height = a5.height;
+    height = size.height;
   }
 
   else
   {
-    height = a5.width;
+    height = size.width;
   }
 
   v6 = MEMORY[0x277D7A1E8];
-  v7 = [(WFWorkflowItemProvider *)self workflow:a3];
-  v8 = [v7 icon];
-  v9 = [v6 imageWithIcon:v8 size:{height, height}];
-  v10 = [v9 UIImage];
+  v7 = [(WFWorkflowItemProvider *)self workflow:controller];
+  icon = [v7 icon];
+  v9 = [v6 imageWithIcon:icon size:{height, height}];
+  uIImage = [v9 UIImage];
 
-  return v10;
+  return uIImage;
 }
 
 - (id)item
 {
-  v3 = [(UIActivityItemProvider *)self activityType];
-  -[WFWorkflowItemProvider setShouldShowSuccessCheckmark:](self, "setShouldShowSuccessCheckmark:", [v3 isEqualToString:@"is.workflow.my.linkcopier"]);
-  v4 = [(WFWorkflowItemProvider *)self workflowURL];
-  if (v4)
+  activityType = [(UIActivityItemProvider *)self activityType];
+  -[WFWorkflowItemProvider setShouldShowSuccessCheckmark:](self, "setShouldShowSuccessCheckmark:", [activityType isEqualToString:@"is.workflow.my.linkcopier"]);
+  workflowURL = [(WFWorkflowItemProvider *)self workflowURL];
+  if (workflowURL)
   {
-    v5 = [(WFWorkflowItemProvider *)self shareShortcutEventForActivityType:v3];
+    v5 = [(WFWorkflowItemProvider *)self shareShortcutEventForActivityType:activityType];
     [v5 track];
-    v6 = v4;
+    v6 = workflowURL;
   }
 
-  return v4;
+  return workflowURL;
 }
 
-- (id)shareShortcutEventForActivityType:(id)a3
+- (id)shareShortcutEventForActivityType:(id)type
 {
   v4 = MEMORY[0x277D7C860];
-  v5 = a3;
+  typeCopy = type;
   v6 = objc_alloc_init(v4);
-  v7 = [(WFWorkflowItemProvider *)self workflow];
-  v8 = [v7 actions];
-  [v6 setActionCount:{objc_msgSend(v8, "count")}];
+  workflow = [(WFWorkflowItemProvider *)self workflow];
+  actions = [workflow actions];
+  [v6 setActionCount:{objc_msgSend(actions, "count")}];
 
-  v9 = [(WFWorkflowItemProvider *)self workflow];
-  v10 = [v9 associatedAppBundleIdentifier];
-  [v6 setAddToSiriBundleIdentifier:v10];
+  workflow2 = [(WFWorkflowItemProvider *)self workflow];
+  associatedAppBundleIdentifier = [workflow2 associatedAppBundleIdentifier];
+  [v6 setAddToSiriBundleIdentifier:associatedAppBundleIdentifier];
 
-  v11 = [(WFWorkflowItemProvider *)self workflow];
-  v12 = [v11 galleryIdentifier];
-  [v6 setGalleryIdentifier:v12];
+  workflow3 = [(WFWorkflowItemProvider *)self workflow];
+  galleryIdentifier = [workflow3 galleryIdentifier];
+  [v6 setGalleryIdentifier:galleryIdentifier];
 
-  [v6 setSharingDestinationBundleIdentifier:v5];
+  [v6 setSharingDestinationBundleIdentifier:typeCopy];
 
   return v6;
 }
@@ -123,7 +123,7 @@
   v16 = v5;
   dispatch_async(v3, block);
 
-  v6 = [(WFWorkflowItemProvider *)self shortcutExporter];
+  shortcutExporter = [(WFWorkflowItemProvider *)self shortcutExporter];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __41__WFWorkflowItemProvider_generateItemURL__block_invoke_4;
@@ -131,7 +131,7 @@
   v13[4] = self;
   v7 = v5;
   v14 = v7;
-  [v6 exportWorkflowWithCompletion:v13];
+  [shortcutExporter exportWorkflowWithCompletion:v13];
 
   dispatch_semaphore_wait(v7, 0xFFFFFFFFFFFFFFFFLL);
   if ([(WFWorkflowItemProvider *)self shouldShowSuccessCheckmark]&& self->_workflowURL)
@@ -311,18 +311,18 @@ intptr_t __41__WFWorkflowItemProvider_generateItemURL__block_invoke_2(uint64_t a
   return workflowURL;
 }
 
-- (WFWorkflowItemProvider)initWithWorkflow:(id)a3 userInterface:(id)a4 placeholderItem:(id)a5
+- (WFWorkflowItemProvider)initWithWorkflow:(id)workflow userInterface:(id)interface placeholderItem:(id)item
 {
-  v9 = a3;
-  v10 = a4;
+  workflowCopy = workflow;
+  interfaceCopy = interface;
   v15.receiver = self;
   v15.super_class = WFWorkflowItemProvider;
-  v11 = [(UIActivityItemProvider *)&v15 initWithPlaceholderItem:a5];
+  v11 = [(UIActivityItemProvider *)&v15 initWithPlaceholderItem:item];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_workflow, a3);
-    objc_storeStrong(&v12->_userInterface, a4);
+    objc_storeStrong(&v11->_workflow, workflow);
+    objc_storeStrong(&v12->_userInterface, interface);
     v13 = v12;
   }
 

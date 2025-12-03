@@ -1,24 +1,24 @@
 @interface FMInternalKeychainItem
-- (FMInternalKeychainItem)initWithResults:(id)a3;
+- (FMInternalKeychainItem)initWithResults:(id)results;
 @end
 
 @implementation FMInternalKeychainItem
 
-- (FMInternalKeychainItem)initWithResults:(id)a3
+- (FMInternalKeychainItem)initWithResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   v21.receiver = self;
   v21.super_class = FMInternalKeychainItem;
   v5 = [(FMInternalKeychainItem *)&v21 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:*MEMORY[0x277CDBFB8]];
+    v6 = [resultsCopy objectForKeyedSubscript:*MEMORY[0x277CDBFB8]];
     v7 = objc_opt_new();
     v8 = [v6 isEqualToData:v7];
 
     v9 = [v6 length];
     v10 = *MEMORY[0x277CDC5E8];
-    v11 = [v4 objectForKeyedSubscript:*MEMORY[0x277CDC5E8]];
+    v11 = [resultsCopy objectForKeyedSubscript:*MEMORY[0x277CDC5E8]];
     v12 = objc_opt_new();
     v13 = [v11 isEqualToData:v12];
 
@@ -28,17 +28,17 @@
       v15 = v6;
     }
 
-    else if ((v11 == 0) | v13 & 1 || !v14 || ([v4 objectForKeyedSubscript:v10], (v15 = objc_claimAutoreleasedReturnValue()) == 0))
+    else if ((v11 == 0) | v13 & 1 || !v14 || ([resultsCopy objectForKeyedSubscript:v10], (v15 = objc_claimAutoreleasedReturnValue()) == 0))
     {
 
       v19 = 0;
       goto LABEL_12;
     }
 
-    v16 = [v4 objectForKeyedSubscript:*MEMORY[0x277CDBF90]];
+    v16 = [resultsCopy objectForKeyedSubscript:*MEMORY[0x277CDBF90]];
     [(FMInternalKeychainItem *)v5 setCreationDate:v16];
 
-    v17 = [v4 objectForKeyedSubscript:*MEMORY[0x277CDC088]];
+    v17 = [resultsCopy objectForKeyedSubscript:*MEMORY[0x277CDC088]];
     [(FMInternalKeychainItem *)v5 setLastModifyDate:v17];
 
     [(FMInternalKeychainItem *)v5 setRawData:v15];

@@ -88,7 +88,7 @@
 
 + (uint64_t)bootstrapPresetsOfKind:()TSSAdditions inTheme:alternate:
 {
-  v7 = [a1 p_defaultPresetColors:a5];
+  v7 = [self p_defaultPresetColors:a5];
 
   return [a4 setPresets:v7 ofKind:a3];
 }

@@ -1,19 +1,19 @@
 @interface JavaUtilWeakHashMap
-- (BOOL)containsValueWithId:(id)a3;
+- (BOOL)containsValueWithId:(id)id;
 - (id)entrySet;
-- (id)getEntryWithId:(id)a3;
-- (id)getWithId:(id)a3;
+- (id)getEntryWithId:(id)id;
+- (id)getWithId:(id)id;
 - (id)keySet;
-- (id)putWithId:(id)a3 withId:(id)a4;
+- (id)putWithId:(id)id withId:(id)withId;
 - (id)rehash;
-- (id)removeWithId:(id)a3;
+- (id)removeWithId:(id)id;
 - (id)values;
 - (void)clear;
 - (void)computeMaxSize;
 - (void)dealloc;
 - (void)poll;
-- (void)putAllImplWithJavaUtilMap:(id)a3;
-- (void)removeEntryWithJavaUtilWeakHashMap_Entry:(id)a3;
+- (void)putAllImplWithJavaUtilMap:(id)map;
+- (void)removeEntryWithJavaUtilWeakHashMap_Entry:(id)entry;
 @end
 
 @implementation JavaUtilWeakHashMap
@@ -92,10 +92,10 @@
   return result;
 }
 
-- (id)getWithId:(id)a3
+- (id)getWithId:(id)id
 {
   [(JavaUtilWeakHashMap *)self poll];
-  if (!a3)
+  if (!id)
   {
     elementData = self->elementData_;
     if (elementData)
@@ -128,7 +128,7 @@ LABEL_15:
     JreThrowNullPointerException();
   }
 
-  v5 = JavaUtilCollections_secondaryHashWithId_(a3);
+  v5 = JavaUtilCollections_secondaryHashWithId_(id);
   v6 = self->elementData_;
   if (!v6)
   {
@@ -148,7 +148,7 @@ LABEL_15:
     return 0;
   }
 
-  while (([a3 isEqual:{-[IOSClass get](elementType, "get")}] & 1) == 0)
+  while (([id isEqual:{-[IOSClass get](elementType, "get")}] & 1) == 0)
   {
     elementType = elementType[7].super.isa;
     if (!elementType)
@@ -160,12 +160,12 @@ LABEL_15:
   return elementType[6].super.isa;
 }
 
-- (id)getEntryWithId:(id)a3
+- (id)getEntryWithId:(id)id
 {
   [(JavaUtilWeakHashMap *)self poll];
-  if (a3)
+  if (id)
   {
-    v5 = JavaUtilCollections_secondaryHashWithId_(a3);
+    v5 = JavaUtilCollections_secondaryHashWithId_(id);
     elementData = self->elementData_;
     if (elementData)
     {
@@ -178,7 +178,7 @@ LABEL_15:
 
       for (i = (&elementData->elementType_)[v7 % size]; i; i = i[7].super.isa)
       {
-        if ([a3 isEqual:{-[IOSClass get](i, "get")}])
+        if ([id isEqual:{-[IOSClass get](i, "get")}])
         {
           break;
         }
@@ -214,11 +214,11 @@ LABEL_14:
   return i;
 }
 
-- (BOOL)containsValueWithId:(id)a3
+- (BOOL)containsValueWithId:(id)id
 {
   [(JavaUtilWeakHashMap *)self poll];
   elementData = self->elementData_;
-  if (a3)
+  if (id)
   {
     if (elementData)
     {
@@ -249,7 +249,7 @@ LABEL_10:
           }
         }
 
-        while (!-[IOSClass get](isa, "get") && BYTE4(isa[5].super.isa) != 1 || ([a3 isEqual:isa[6].super.isa] & 1) == 0)
+        while (!-[IOSClass get](isa, "get") && BYTE4(isa[5].super.isa) != 1 || ([id isEqual:isa[6].super.isa] & 1) == 0)
         {
           isa = isa[7].super.isa;
           if (!isa)
@@ -327,9 +327,9 @@ LABEL_5:
 
   while (1)
   {
-    v4 = [(JavaLangRefReferenceQueue *)referenceQueue poll];
+    poll = [(JavaLangRefReferenceQueue *)referenceQueue poll];
     objc_opt_class();
-    if (!v4)
+    if (!poll)
     {
       break;
     }
@@ -339,7 +339,7 @@ LABEL_5:
       JreThrowClassCastException();
     }
 
-    [(JavaUtilWeakHashMap *)self removeEntryWithJavaUtilWeakHashMap_Entry:v4];
+    [(JavaUtilWeakHashMap *)self removeEntryWithJavaUtilWeakHashMap_Entry:poll];
     referenceQueue = self->referenceQueue_;
     if (!referenceQueue)
     {
@@ -348,14 +348,14 @@ LABEL_5:
   }
 }
 
-- (void)removeEntryWithJavaUtilWeakHashMap_Entry:(id)a3
+- (void)removeEntryWithJavaUtilWeakHashMap_Entry:(id)entry
 {
-  if (!a3 || (elementData = self->elementData_) == 0)
+  if (!entry || (elementData = self->elementData_) == 0)
   {
     JreThrowNullPointerException();
   }
 
-  v5 = *(a3 + 10) & 0x7FFFFFFF;
+  v5 = *(entry + 10) & 0x7FFFFFFF;
   size = elementData->super.size_;
   v7 = (v5 % size);
   if ((size & 0x80000000) != 0)
@@ -366,7 +366,7 @@ LABEL_5:
   p_isa = &(&elementData->elementType_)[v7]->super.isa;
   if (p_isa)
   {
-    if (p_isa == a3)
+    if (p_isa == entry)
     {
       v10 = 0;
 LABEL_11:
@@ -397,7 +397,7 @@ LABEL_11:
 
         v10 = isa;
         isa = isa[7].super.isa;
-        if (p_isa == a3)
+        if (p_isa == entry)
         {
           goto LABEL_11;
         }
@@ -406,12 +406,12 @@ LABEL_11:
   }
 }
 
-- (id)putWithId:(id)a3 withId:(id)a4
+- (id)putWithId:(id)id withId:(id)withId
 {
   [(JavaUtilWeakHashMap *)self poll];
-  if (a3)
+  if (id)
   {
-    v7 = JavaUtilCollections_secondaryHashWithId_(a3);
+    v7 = JavaUtilCollections_secondaryHashWithId_(id);
     elementData = self->elementData_;
     if (!elementData)
     {
@@ -429,7 +429,7 @@ LABEL_11:
     isa = (&elementData->elementType_)[v11];
     if (isa)
     {
-      while (([a3 isEqual:{-[IOSClass get](isa, "get")}] & 1) == 0)
+      while (([id isEqual:{-[IOSClass get](isa, "get")}] & 1) == 0)
       {
         isa = isa[7].super.isa;
         if (!isa)
@@ -440,7 +440,7 @@ LABEL_11:
 
 LABEL_18:
       v18 = isa[6].super.isa;
-      JreStrongAssign(&isa[6].super.isa, a4);
+      JreStrongAssign(&isa[6].super.isa, withId);
       return v18;
     }
   }
@@ -485,9 +485,9 @@ LABEL_14:
   if (v15 > self->threshold_)
   {
     [JavaUtilWeakHashMap rehash]_0(self);
-    if (a3)
+    if (id)
     {
-      v16 = JavaUtilCollections_secondaryHashWithId_(a3);
+      v16 = JavaUtilCollections_secondaryHashWithId_(id);
       v17 = self->elementData_;
       if (!v17)
       {
@@ -505,7 +505,7 @@ LABEL_14:
 
   referenceQueue = self->referenceQueue_;
   v20 = [JavaUtilWeakHashMap_Entry alloc];
-  JavaUtilWeakHashMap_Entry_initWithId_withId_withJavaLangRefReferenceQueue_(v20, a3, a4, referenceQueue);
+  JavaUtilWeakHashMap_Entry_initWithId_withId_withJavaLangRefReferenceQueue_(v20, id, withId, referenceQueue);
   v21 = v20;
   v22 = self->elementData_;
   if (!v22)
@@ -528,13 +528,13 @@ LABEL_24:
 
 - (id)rehash
 {
-  v1 = *(a1 + 32);
+  v1 = *(self + 32);
   if (!v1)
   {
     goto LABEL_19;
   }
 
-  v2 = a1;
+  selfCopy = self;
   v3 = 2 * *(v1 + 8);
   if (v3 <= 1)
   {
@@ -547,11 +547,11 @@ LABEL_24:
   }
 
   v5 = sub_10015A254(v4);
-  v6 = *(v2 + 32);
+  v6 = *(selfCopy + 32);
   if (*(v6 + 8) >= 1)
   {
     v7 = 0;
-    v15 = v2;
+    v15 = selfCopy;
     do
     {
       v16 = v7;
@@ -591,35 +591,35 @@ LABEL_24:
         }
 
         while (v10);
-        v2 = v15;
+        selfCopy = v15;
       }
 
       v7 = v16 + 1;
-      v6 = *(v2 + 32);
+      v6 = *(selfCopy + 32);
     }
 
     while (v16 + 1 < *(v6 + 8));
   }
 
-  result = JreStrongAssign((v2 + 32), v5);
-  v13 = *(v2 + 32);
+  result = JreStrongAssign((selfCopy + 32), v5);
+  v13 = *(selfCopy + 32);
   if (!v13)
   {
 LABEL_19:
     JreThrowNullPointerException();
   }
 
-  v14 = (*(v2 + 56) * *(v13 + 8) * 0x346DC5D63886594BLL) >> 64;
-  *(v2 + 60) = (v14 >> 11) + (v14 >> 63);
+  v14 = (*(selfCopy + 56) * *(v13 + 8) * 0x346DC5D63886594BLL) >> 64;
+  *(selfCopy + 60) = (v14 >> 11) + (v14 >> 63);
   return result;
 }
 
-- (id)removeWithId:(id)a3
+- (id)removeWithId:(id)id
 {
   [(JavaUtilWeakHashMap *)self poll];
-  if (a3)
+  if (id)
   {
-    v5 = JavaUtilCollections_secondaryHashWithId_(a3);
+    v5 = JavaUtilCollections_secondaryHashWithId_(id);
     elementData = self->elementData_;
     if (!elementData)
     {
@@ -637,7 +637,7 @@ LABEL_19:
     isa = (&elementData->elementType_)[v9];
     if (isa)
     {
-      if ([a3 isEqual:{-[IOSClass get](isa, "get")}])
+      if ([id isEqual:{-[IOSClass get](isa, "get")}])
       {
         v11 = 0;
         goto LABEL_18;
@@ -652,7 +652,7 @@ LABEL_19:
           break;
         }
 
-        if ([a3 isEqual:{-[IOSClass get](isa, "get")}])
+        if ([id isEqual:{-[IOSClass get](isa, "get")}])
         {
           goto LABEL_18;
         }
@@ -723,18 +723,18 @@ LABEL_23:
   return isa[6].super.isa;
 }
 
-- (void)putAllImplWithJavaUtilMap:(id)a3
+- (void)putAllImplWithJavaUtilMap:(id)map
 {
-  if (!a3)
+  if (!map)
   {
     JreThrowNullPointerException();
   }
 
-  if ([a3 entrySet])
+  if ([map entrySet])
   {
     v5.receiver = self;
     v5.super_class = JavaUtilWeakHashMap;
-    [(JavaUtilAbstractMap *)&v5 putAllWithJavaUtilMap:a3];
+    [(JavaUtilAbstractMap *)&v5 putAllWithJavaUtilMap:map];
   }
 }
 

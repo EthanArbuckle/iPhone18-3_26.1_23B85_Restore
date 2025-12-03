@@ -1,30 +1,30 @@
 @interface CKTranscriptSMSSpamCell
-- (CKTranscriptSMSSpamCell)initWithFrame:(CGRect)a3;
-- (void)addFilter:(id)a3;
+- (CKTranscriptSMSSpamCell)initWithFrame:(CGRect)frame;
+- (void)addFilter:(id)filter;
 - (void)clearFilters;
-- (void)configureForChatItem:(id)a3 context:(id)a4 animated:(BOOL)a5 animationDuration:(double)a6 animationCurve:(int64_t)a7;
+- (void)configureForChatItem:(id)item context:(id)context animated:(BOOL)animated animationDuration:(double)duration animationCurve:(int64_t)curve;
 - (void)layoutSubviewsForAlignmentContents;
 @end
 
 @implementation CKTranscriptSMSSpamCell
 
-- (void)configureForChatItem:(id)a3 context:(id)a4 animated:(BOOL)a5 animationDuration:(double)a6 animationCurve:(int64_t)a7
+- (void)configureForChatItem:(id)item context:(id)context animated:(BOOL)animated animationDuration:(double)duration animationCurve:(int64_t)curve
 {
-  v9 = a5;
+  animatedCopy = animated;
   v14.receiver = self;
   v14.super_class = CKTranscriptSMSSpamCell;
-  v12 = a3;
-  [(CKTranscriptStampCell *)&v14 configureForChatItem:v12 context:a4 animated:v9 animationDuration:a7 animationCurve:a6];
-  v13 = [v12 transcriptText];
+  itemCopy = item;
+  [(CKTranscriptStampCell *)&v14 configureForChatItem:itemCopy context:context animated:animatedCopy animationDuration:curve animationCurve:duration];
+  transcriptText = [itemCopy transcriptText];
 
-  [(CKTranscriptLabelCell *)self setAttributedText:v13];
+  [(CKTranscriptLabelCell *)self setAttributedText:transcriptText];
 }
 
-- (CKTranscriptSMSSpamCell)initWithFrame:(CGRect)a3
+- (CKTranscriptSMSSpamCell)initWithFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = CKTranscriptSMSSpamCell;
-  return [(CKTranscriptLabelCell *)&v4 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  return [(CKTranscriptLabelCell *)&v4 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
 }
 
 - (void)layoutSubviewsForAlignmentContents
@@ -35,36 +35,36 @@
   v3 = +[CKUIBehavior sharedBehaviors];
   [v3 transcriptBoldTextHeight];
   v5 = v4;
-  v6 = [(CKTranscriptLabelCell *)self label];
-  [v6 setNumberOfLines:0];
+  label = [(CKTranscriptLabelCell *)self label];
+  [label setNumberOfLines:0];
   [(CKTranscriptStampCell *)self contentAlignmentRect];
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [(CKTranscriptLabelCell *)self label];
-  if (v13)
+  label2 = [(CKTranscriptLabelCell *)self label];
+  if (label2)
   {
-    v14 = v13;
-    v15 = [(CKTranscriptLabelCell *)self label];
-    v16 = [v15 attributedText];
+    v14 = label2;
+    label3 = [(CKTranscriptLabelCell *)self label];
+    attributedText = [label3 attributedText];
 
-    if (v16)
+    if (attributedText)
     {
-      v17 = [(CKTranscriptLabelCell *)self label];
-      v18 = [v17 attributedText];
-      [v18 boundingRectWithSize:1 options:0 context:{v12, 1.79769313e308}];
+      label4 = [(CKTranscriptLabelCell *)self label];
+      attributedText2 = [label4 attributedText];
+      [attributedText2 boundingRectWithSize:1 options:0 context:{v12, 1.79769313e308}];
       v5 = v19;
     }
   }
 
-  [v6 setFrame:{v8, v10, v12, v5}];
+  [label setFrame:{v8, v10, v12, v5}];
 }
 
-- (void)addFilter:(id)a3
+- (void)addFilter:(id)filter
 {
   v3.receiver = self;
   v3.super_class = CKTranscriptSMSSpamCell;
-  [(CKTranscriptStampCell *)&v3 addFilter:a3];
+  [(CKTranscriptStampCell *)&v3 addFilter:filter];
 }
 
 - (void)clearFilters

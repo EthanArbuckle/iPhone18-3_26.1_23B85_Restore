@@ -8,8 +8,8 @@
 - (id)shortDesc
 {
   v2 = objc_alloc(MEMORY[0x277CCACA8]);
-  v3 = [a1 experimentId];
-  v4 = [v2 initWithFormat:@"%@.%d", v3, objc_msgSend(a1, "deploymentId")];
+  experimentId = [self experimentId];
+  v4 = [v2 initWithFormat:@"%@.%d", experimentId, objc_msgSend(self, "deploymentId")];
 
   return v4;
 }
@@ -17,16 +17,16 @@
 - (id)taskTag
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [a1 experimentId];
-  if ([a1 hasDeploymentId])
+  experimentId = [self experimentId];
+  if ([self hasDeploymentId])
   {
-    v4 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(a1, "deploymentId")}];
-    v5 = [v2 stringWithFormat:@"%@.%@", v3, v4];
+    v4 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(self, "deploymentId")}];
+    v5 = [v2 stringWithFormat:@"%@.%@", experimentId, v4];
   }
 
   else
   {
-    v5 = [v2 stringWithFormat:@"%@.%@", v3, @"_"];
+    v5 = [v2 stringWithFormat:@"%@.%@", experimentId, @"_"];
   }
 
   return v5;

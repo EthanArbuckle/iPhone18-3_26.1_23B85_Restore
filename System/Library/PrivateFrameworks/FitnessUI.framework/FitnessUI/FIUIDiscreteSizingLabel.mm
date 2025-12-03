@@ -1,17 +1,17 @@
 @interface FIUIDiscreteSizingLabel
 - (FIUIDiscreteSizingLabelDelegate)delegate;
-- (void)setText:(id)a3;
+- (void)setText:(id)text;
 @end
 
 @implementation FIUIDiscreteSizingLabel
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
   v5.receiver = self;
   v5.super_class = FIUIDiscreteSizingLabel;
-  [(FIUIDiscreteSizingLabel *)&v5 setText:a3];
-  v4 = [(FIUIDiscreteSizingLabel *)self delegate];
-  [v4 discreteSizingLabelDidChangeText:self];
+  [(FIUIDiscreteSizingLabel *)&v5 setText:text];
+  delegate = [(FIUIDiscreteSizingLabel *)self delegate];
+  [delegate discreteSizingLabelDidChangeText:self];
 }
 
 - (FIUIDiscreteSizingLabelDelegate)delegate

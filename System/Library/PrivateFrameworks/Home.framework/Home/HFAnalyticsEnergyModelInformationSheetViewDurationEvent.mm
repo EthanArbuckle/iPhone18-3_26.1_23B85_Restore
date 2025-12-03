@@ -1,13 +1,13 @@
 @interface HFAnalyticsEnergyModelInformationSheetViewDurationEvent
-- (HFAnalyticsEnergyModelInformationSheetViewDurationEvent)initWithData:(id)a3;
+- (HFAnalyticsEnergyModelInformationSheetViewDurationEvent)initWithData:(id)data;
 - (id)payload;
 @end
 
 @implementation HFAnalyticsEnergyModelInformationSheetViewDurationEvent
 
-- (HFAnalyticsEnergyModelInformationSheetViewDurationEvent)initWithData:(id)a3
+- (HFAnalyticsEnergyModelInformationSheetViewDurationEvent)initWithData:(id)data
 {
-  v4 = [a3 objectForKeyedSubscript:@"energyModelInformationSheetViewDuration"];
+  v4 = [data objectForKeyedSubscript:@"energyModelInformationSheetViewDuration"];
   if (!v4)
   {
     NSLog(&cfstr_Hfanalyticsene_7.isa);
@@ -36,11 +36,11 @@
   {
     v7.receiver = self;
     v7.super_class = HFAnalyticsEnergyModelInformationSheetViewDurationEvent;
-    v3 = [(HFAnalyticsEvent *)&v7 payload];
-    v4 = [v3 mutableCopy];
+    payload = [(HFAnalyticsEvent *)&v7 payload];
+    v4 = [payload mutableCopy];
 
-    v5 = [(HFAnalyticsEnergyModelInformationSheetViewDurationEvent *)self modelInformationSheetViewDuration];
-    [v4 setObject:v5 forKeyedSubscript:@"energyModelInformationSheetViewDuration"];
+    modelInformationSheetViewDuration = [(HFAnalyticsEnergyModelInformationSheetViewDurationEvent *)self modelInformationSheetViewDuration];
+    [v4 setObject:modelInformationSheetViewDuration forKeyedSubscript:@"energyModelInformationSheetViewDuration"];
 
     [v4 na_safeSetObject:&unk_2825251E8 forKey:@"homeAppEventCount"];
   }

@@ -1,41 +1,41 @@
 @interface HMDCameraRecordingGeneralConfiguration
 - (BOOL)_parseFromTLVData;
-- (HMDCameraRecordingGeneralConfiguration)initWithCoder:(id)a3;
-- (HMDCameraRecordingGeneralConfiguration)initWithPrebufferLength:(id)a3 eventTriggerOptions:(unint64_t)a4 mediaContainerConfigurations:(id)a5;
+- (HMDCameraRecordingGeneralConfiguration)initWithCoder:(id)coder;
+- (HMDCameraRecordingGeneralConfiguration)initWithPrebufferLength:(id)length eventTriggerOptions:(unint64_t)options mediaContainerConfigurations:(id)configurations;
 - (NSData)tlvData;
-- (void)description:(id)a3 indent:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (void)description:(id)description indent:(id)indent;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMDCameraRecordingGeneralConfiguration
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HMDCameraRecordingGeneralConfiguration *)self prebufferLength];
-  [v4 encodeObject:v5 forKey:@"kGeneralConfigurationPrebufferLength"];
+  coderCopy = coder;
+  prebufferLength = [(HMDCameraRecordingGeneralConfiguration *)self prebufferLength];
+  [coderCopy encodeObject:prebufferLength forKey:@"kGeneralConfigurationPrebufferLength"];
 
   v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{-[HMDCameraRecordingGeneralConfiguration eventTriggerOptions](self, "eventTriggerOptions")}];
-  [v4 encodeObject:v6 forKey:@"kGeneralConfigurationEventTriggerOptions"];
+  [coderCopy encodeObject:v6 forKey:@"kGeneralConfigurationEventTriggerOptions"];
 
-  v7 = [(HMDCameraRecordingGeneralConfiguration *)self mediaContainerConfigurations];
-  [v4 encodeObject:v7 forKey:@"kGeneralConfigurationMediaContainerConfigurations"];
+  mediaContainerConfigurations = [(HMDCameraRecordingGeneralConfiguration *)self mediaContainerConfigurations];
+  [coderCopy encodeObject:mediaContainerConfigurations forKey:@"kGeneralConfigurationMediaContainerConfigurations"];
 }
 
-- (HMDCameraRecordingGeneralConfiguration)initWithCoder:(id)a3
+- (HMDCameraRecordingGeneralConfiguration)initWithCoder:(id)coder
 {
   v17[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = HMDCameraRecordingGeneralConfiguration;
   v5 = [(HMDCameraRecordingGeneralConfiguration *)&v16 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kGeneralConfigurationPrebufferLength"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kGeneralConfigurationPrebufferLength"];
     prebufferLength = v5->_prebufferLength;
     v5->_prebufferLength = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kGeneralConfigurationEventTriggerOptions"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kGeneralConfigurationEventTriggerOptions"];
     v5->_eventTriggerOptions = [v8 unsignedLongLongValue];
 
     v9 = MEMORY[0x277CBEB98];
@@ -43,7 +43,7 @@
     v17[1] = objc_opt_class();
     v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:2];
     v11 = [v9 setWithArray:v10];
-    v12 = [v4 decodeObjectOfClasses:v11 forKey:@"kGeneralConfigurationMediaContainerConfigurations"];
+    v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"kGeneralConfigurationMediaContainerConfigurations"];
     mediaContainerConfigurations = v5->_mediaContainerConfigurations;
     v5->_mediaContainerConfigurations = v12;
   }
@@ -52,41 +52,41 @@
   return v5;
 }
 
-- (void)description:(id)a3 indent:(id)a4
+- (void)description:(id)description indent:(id)indent
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HAPTLVBase *)self tlvDatablob];
-  [v7 appendFormat:@"\n%@tlvDatablob = %@ ", v6, v8];
+  indentCopy = indent;
+  descriptionCopy = description;
+  tlvDatablob = [(HAPTLVBase *)self tlvDatablob];
+  [descriptionCopy appendFormat:@"\n%@tlvDatablob = %@ ", indentCopy, tlvDatablob];
 
-  v9 = [(HMDCameraRecordingGeneralConfiguration *)self prebufferLength];
-  [v7 appendFormat:@"\n%@prebufferLength = %@ ", v6, v9];
+  prebufferLength = [(HMDCameraRecordingGeneralConfiguration *)self prebufferLength];
+  [descriptionCopy appendFormat:@"\n%@prebufferLength = %@ ", indentCopy, prebufferLength];
 
   v10 = HMDCameraRecordingEventTriggerOptionsAsString([(HMDCameraRecordingGeneralConfiguration *)self eventTriggerOptions]);
-  [v7 appendFormat:@"\n%@eventTriggerOptions = %@ ", v6, v10];
+  [descriptionCopy appendFormat:@"\n%@eventTriggerOptions = %@ ", indentCopy, v10];
 
-  v12 = [(HMDCameraRecordingGeneralConfiguration *)self mediaContainerConfigurations];
+  mediaContainerConfigurations = [(HMDCameraRecordingGeneralConfiguration *)self mediaContainerConfigurations];
   v11 = HAPTLVCreateParseArrayToString();
-  [v7 appendFormat:@"\n%@containerConfigurations = %@ ", v6, v11];
+  [descriptionCopy appendFormat:@"\n%@containerConfigurations = %@ ", indentCopy, v11];
 }
 
 - (NSData)tlvData
 {
-  v3 = [MEMORY[0x277CFEC80] creator];
-  v4 = [(HMDCameraRecordingGeneralConfiguration *)self prebufferLength];
-  [v3 addTLV:1 length:4 number:v4];
+  creator = [MEMORY[0x277CFEC80] creator];
+  prebufferLength = [(HMDCameraRecordingGeneralConfiguration *)self prebufferLength];
+  [creator addTLV:1 length:4 number:prebufferLength];
 
   v5 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{-[HMDCameraRecordingGeneralConfiguration eventTriggerOptions](self, "eventTriggerOptions")}];
-  [v3 addTLV:2 length:8 number:v5];
+  [creator addTLV:2 length:8 number:v5];
 
-  v6 = [(HMDCameraRecordingGeneralConfiguration *)self mediaContainerConfigurations];
-  v7 = [v6 firstObject];
-  v8 = [v7 tlvData];
+  mediaContainerConfigurations = [(HMDCameraRecordingGeneralConfiguration *)self mediaContainerConfigurations];
+  firstObject = [mediaContainerConfigurations firstObject];
+  tlvData = [firstObject tlvData];
 
-  [v3 addTLV:3 data:v8];
-  v9 = [v3 serialize];
+  [creator addTLV:3 data:tlvData];
+  serialize = [creator serialize];
 
-  return v9;
+  return serialize;
 }
 
 - (BOOL)_parseFromTLVData
@@ -102,16 +102,16 @@
   v7 = [(HAPTLVBase *)self _parse:v6];
   if (v7)
   {
-    v8 = [v3 field];
+    field = [v3 field];
     prebufferLength = self->_prebufferLength;
-    self->_prebufferLength = v8;
+    self->_prebufferLength = field;
 
-    v10 = [v4 field];
-    self->_eventTriggerOptions = [v10 unsignedLongLongValue];
+    field2 = [v4 field];
+    self->_eventTriggerOptions = [field2 unsignedLongLongValue];
 
-    v11 = [v5 field];
+    field3 = [v5 field];
     mediaContainerConfigurations = self->_mediaContainerConfigurations;
-    self->_mediaContainerConfigurations = v11;
+    self->_mediaContainerConfigurations = field3;
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -126,19 +126,19 @@ HMDCameraRecordingMediaContainerConfiguration *__59__HMDCameraRecordingGeneralCo
   return v3;
 }
 
-- (HMDCameraRecordingGeneralConfiguration)initWithPrebufferLength:(id)a3 eventTriggerOptions:(unint64_t)a4 mediaContainerConfigurations:(id)a5
+- (HMDCameraRecordingGeneralConfiguration)initWithPrebufferLength:(id)length eventTriggerOptions:(unint64_t)options mediaContainerConfigurations:(id)configurations
 {
-  v9 = a3;
-  v10 = a5;
+  lengthCopy = length;
+  configurationsCopy = configurations;
   v14.receiver = self;
   v14.super_class = HMDCameraRecordingGeneralConfiguration;
   v11 = [(HMDCameraRecordingGeneralConfiguration *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_prebufferLength, a3);
-    v12->_eventTriggerOptions = a4;
-    objc_storeStrong(&v12->_mediaContainerConfigurations, a5);
+    objc_storeStrong(&v11->_prebufferLength, length);
+    v12->_eventTriggerOptions = options;
+    objc_storeStrong(&v12->_mediaContainerConfigurations, configurations);
   }
 
   return v12;

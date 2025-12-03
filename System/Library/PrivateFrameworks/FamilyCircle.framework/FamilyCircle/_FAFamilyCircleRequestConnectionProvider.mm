@@ -1,11 +1,11 @@
 @interface _FAFamilyCircleRequestConnectionProvider
-+ (id)createResumedConnectionWithFactory:(id)a3 provider:(id)a4;
++ (id)createResumedConnectionWithFactory:(id)factory provider:(id)provider;
 + (id)sharedInstance;
 - (_FAFamilyCircleRequestConnectionProvider)init;
-- (_FAFamilyCircleRequestConnectionProvider)initWithConnectionFactory:(id)a3;
+- (_FAFamilyCircleRequestConnectionProvider)initWithConnectionFactory:(id)factory;
 - (id)serviceConnection;
-- (void)connectionWasInterrupted:(id)a3;
-- (void)connectionWasInvalidated:(id)a3;
+- (void)connectionWasInterrupted:(id)interrupted;
+- (void)connectionWasInvalidated:(id)invalidated;
 - (void)dealloc;
 @end
 
@@ -33,37 +33,37 @@
 
 - (id)serviceConnection
 {
-  v3 = [(_FAFamilyCircleRequestConnectionProvider *)self lock];
-  [v3 lock];
+  lock = [(_FAFamilyCircleRequestConnectionProvider *)self lock];
+  [lock lock];
 
-  v4 = [(_FAFamilyCircleRequestConnectionProvider *)self connection];
+  connection = [(_FAFamilyCircleRequestConnectionProvider *)self connection];
 
-  if (!v4)
+  if (!connection)
   {
     v5 = objc_opt_class();
-    v6 = [(_FAFamilyCircleRequestConnectionProvider *)self factory];
-    v7 = [v5 createResumedConnectionWithFactory:v6 provider:self];
+    factory = [(_FAFamilyCircleRequestConnectionProvider *)self factory];
+    v7 = [v5 createResumedConnectionWithFactory:factory provider:self];
     [(_FAFamilyCircleRequestConnectionProvider *)self setConnection:v7];
   }
 
-  v8 = [(_FAFamilyCircleRequestConnectionProvider *)self connection];
-  v9 = [(_FAFamilyCircleRequestConnectionProvider *)self lock];
-  [v9 unlock];
+  connection2 = [(_FAFamilyCircleRequestConnectionProvider *)self connection];
+  lock2 = [(_FAFamilyCircleRequestConnectionProvider *)self lock];
+  [lock2 unlock];
 
-  return v8;
+  return connection2;
 }
 
-+ (id)createResumedConnectionWithFactory:(id)a3 provider:(id)a4
++ (id)createResumedConnectionWithFactory:(id)factory provider:(id)provider
 {
-  v5 = a3;
-  v6 = a4;
+  factoryCopy = factory;
+  providerCopy = provider;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
   v19 = __Block_byref_object_copy_;
   v20 = __Block_byref_object_dispose_;
   v21 = 0;
-  objc_initWeak(&location, v6);
+  objc_initWeak(&location, providerCopy);
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __88___FAFamilyCircleRequestConnectionProvider_createResumedConnectionWithFactory_provider___block_invoke;
@@ -76,7 +76,7 @@
   v11[3] = &unk_1E7CA46B0;
   objc_copyWeak(&v12, &location);
   v11[4] = &v16;
-  v7 = [v5 createServiceConnectionWithInterruptionHandler:v13 invalidationHandler:v11];
+  v7 = [factoryCopy createServiceConnectionWithInterruptionHandler:v13 invalidationHandler:v11];
   v8 = v17[5];
   v17[5] = v7;
 
@@ -90,16 +90,16 @@
   return v9;
 }
 
-- (_FAFamilyCircleRequestConnectionProvider)initWithConnectionFactory:(id)a3
+- (_FAFamilyCircleRequestConnectionProvider)initWithConnectionFactory:(id)factory
 {
-  v5 = a3;
+  factoryCopy = factory;
   v11.receiver = self;
   v11.super_class = _FAFamilyCircleRequestConnectionProvider;
   v6 = [(_FAFamilyCircleRequestConnectionProvider *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_factory, a3);
+    objc_storeStrong(&v6->_factory, factory);
     v8 = objc_alloc_init(MEMORY[0x1E696AD10]);
     lock = v7->_lock;
     v7->_lock = v8;
@@ -110,23 +110,23 @@
 
 - (void)dealloc
 {
-  v3 = [(_FAFamilyCircleRequestConnectionProvider *)self connection];
-  v4 = [(_FAFamilyCircleRequestConnectionProvider *)self lock];
-  [v4 lock];
+  connection = [(_FAFamilyCircleRequestConnectionProvider *)self connection];
+  lock = [(_FAFamilyCircleRequestConnectionProvider *)self lock];
+  [lock lock];
 
   [(_FAFamilyCircleRequestConnectionProvider *)self setConnection:0];
-  v5 = [(_FAFamilyCircleRequestConnectionProvider *)self lock];
-  [v5 unlock];
+  lock2 = [(_FAFamilyCircleRequestConnectionProvider *)self lock];
+  [lock2 unlock];
 
-  [v3 invalidate];
+  [connection invalidate];
   v6.receiver = self;
   v6.super_class = _FAFamilyCircleRequestConnectionProvider;
   [(_FAFamilyCircleRequestConnectionProvider *)&v6 dealloc];
 }
 
-- (void)connectionWasInterrupted:(id)a3
+- (void)connectionWasInterrupted:(id)interrupted
 {
-  v4 = a3;
+  interruptedCopy = interrupted;
   v5 = _FALogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -134,31 +134,31 @@
     _os_log_impl(&dword_1B70B0000, v5, OS_LOG_TYPE_DEFAULT, "FAFamilyCircleRequest: FamilyCircleService XPC Connection interrupted.", v10, 2u);
   }
 
-  v6 = [(_FAFamilyCircleRequestConnectionProvider *)self lock];
-  [v6 lock];
+  lock = [(_FAFamilyCircleRequestConnectionProvider *)self lock];
+  [lock lock];
 
-  v7 = [(_FAFamilyCircleRequestConnectionProvider *)self connection];
+  connection = [(_FAFamilyCircleRequestConnectionProvider *)self connection];
 
-  if (v7 == v4)
+  if (connection == interruptedCopy)
   {
-    v8 = [(_FAFamilyCircleRequestConnectionProvider *)self connection];
+    connection2 = [(_FAFamilyCircleRequestConnectionProvider *)self connection];
     [(_FAFamilyCircleRequestConnectionProvider *)self setConnection:0];
   }
 
   else
   {
-    v8 = 0;
+    connection2 = 0;
   }
 
-  v9 = [(_FAFamilyCircleRequestConnectionProvider *)self lock];
-  [v9 unlock];
+  lock2 = [(_FAFamilyCircleRequestConnectionProvider *)self lock];
+  [lock2 unlock];
 
-  [v8 invalidate];
+  [connection2 invalidate];
 }
 
-- (void)connectionWasInvalidated:(id)a3
+- (void)connectionWasInvalidated:(id)invalidated
 {
-  v4 = a3;
+  invalidatedCopy = invalidated;
   v5 = _FALogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -166,18 +166,18 @@
     _os_log_impl(&dword_1B70B0000, v5, OS_LOG_TYPE_DEFAULT, "FAFamilyCircleRequest: FamilyCircleService XPC Connection invalidated.", v9, 2u);
   }
 
-  v6 = [(_FAFamilyCircleRequestConnectionProvider *)self lock];
-  [v6 lock];
+  lock = [(_FAFamilyCircleRequestConnectionProvider *)self lock];
+  [lock lock];
 
-  v7 = [(_FAFamilyCircleRequestConnectionProvider *)self connection];
+  connection = [(_FAFamilyCircleRequestConnectionProvider *)self connection];
 
-  if (v7 == v4)
+  if (connection == invalidatedCopy)
   {
     [(_FAFamilyCircleRequestConnectionProvider *)self setConnection:0];
   }
 
-  v8 = [(_FAFamilyCircleRequestConnectionProvider *)self lock];
-  [v8 unlock];
+  lock2 = [(_FAFamilyCircleRequestConnectionProvider *)self lock];
+  [lock2 unlock];
 }
 
 @end

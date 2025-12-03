@@ -1,26 +1,26 @@
 @interface _UIAlertControllerVisualStyleAlertTVCustomCurveFactory
-- (_UIAlertControllerVisualStyleAlertTVCustomCurveFactory)initWithCustomCurve:(unint64_t)a3;
-- (id)_timingFunctionForAnimationInView:(id)a3 withKeyPath:(id)a4;
+- (_UIAlertControllerVisualStyleAlertTVCustomCurveFactory)initWithCustomCurve:(unint64_t)curve;
+- (id)_timingFunctionForAnimationInView:(id)view withKeyPath:(id)path;
 @end
 
 @implementation _UIAlertControllerVisualStyleAlertTVCustomCurveFactory
 
-- (_UIAlertControllerVisualStyleAlertTVCustomCurveFactory)initWithCustomCurve:(unint64_t)a3
+- (_UIAlertControllerVisualStyleAlertTVCustomCurveFactory)initWithCustomCurve:(unint64_t)curve
 {
   v5.receiver = self;
   v5.super_class = _UIAlertControllerVisualStyleAlertTVCustomCurveFactory;
   result = [(_UIAlertControllerVisualStyleAlertTVCustomCurveFactory *)&v5 init];
   if (result)
   {
-    result->_curve = a3;
+    result->_curve = curve;
   }
 
   return result;
 }
 
-- (id)_timingFunctionForAnimationInView:(id)a3 withKeyPath:(id)a4
+- (id)_timingFunctionForAnimationInView:(id)view withKeyPath:(id)path
 {
-  v4 = [(_UIAlertControllerVisualStyleAlertTVCustomCurveFactory *)self curve:a3];
+  v4 = [(_UIAlertControllerVisualStyleAlertTVCustomCurveFactory *)self curve:view];
   if (v4 == 1)
   {
     LODWORD(v5) = 1040522936;

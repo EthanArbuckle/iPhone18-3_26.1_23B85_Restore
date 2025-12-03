@@ -1,42 +1,42 @@
 @interface PKApplePayTrustKeyRequest
-- (PKApplePayTrustKeyRequest)initWithCoder:(id)a3;
-- (PKApplePayTrustKeyRequest)initWithKeyIdentifier:(id)a3 subjectIdentifier:(id)a4;
+- (PKApplePayTrustKeyRequest)initWithCoder:(id)coder;
+- (PKApplePayTrustKeyRequest)initWithKeyIdentifier:(id)identifier subjectIdentifier:(id)subjectIdentifier;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKApplePayTrustKeyRequest
 
-- (PKApplePayTrustKeyRequest)initWithKeyIdentifier:(id)a3 subjectIdentifier:(id)a4
+- (PKApplePayTrustKeyRequest)initWithKeyIdentifier:(id)identifier subjectIdentifier:(id)subjectIdentifier
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  subjectIdentifierCopy = subjectIdentifier;
   v12.receiver = self;
   v12.super_class = PKApplePayTrustKeyRequest;
   v9 = [(PKApplePayTrustKeyRequest *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_keyIdentifier, a3);
-    objc_storeStrong(&v10->_subjectIdentifier, a4);
+    objc_storeStrong(&v9->_keyIdentifier, identifier);
+    objc_storeStrong(&v10->_subjectIdentifier, subjectIdentifier);
   }
 
   return v10;
 }
 
-- (PKApplePayTrustKeyRequest)initWithCoder:(id)a3
+- (PKApplePayTrustKeyRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = PKApplePayTrustKeyRequest;
   v5 = [(PKApplePayTrustKeyRequest *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"keyIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"keyIdentifier"];
     keyIdentifier = v5->_keyIdentifier;
     v5->_keyIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"subjectIdentifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"subjectIdentifier"];
     subjectIdentifier = v5->_subjectIdentifier;
     v5->_subjectIdentifier = v8;
   }
@@ -44,12 +44,12 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   keyIdentifier = self->_keyIdentifier;
-  v5 = a3;
-  [v5 encodeObject:keyIdentifier forKey:@"keyIdentifier"];
-  [v5 encodeObject:self->_subjectIdentifier forKey:@"subjectIdentifier"];
+  coderCopy = coder;
+  [coderCopy encodeObject:keyIdentifier forKey:@"keyIdentifier"];
+  [coderCopy encodeObject:self->_subjectIdentifier forKey:@"subjectIdentifier"];
 }
 
 - (id)description

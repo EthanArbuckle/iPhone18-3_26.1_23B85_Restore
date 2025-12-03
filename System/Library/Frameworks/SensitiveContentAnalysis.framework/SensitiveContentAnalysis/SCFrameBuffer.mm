@@ -1,25 +1,25 @@
 @interface SCFrameBuffer
-- (SCFrameBuffer)initWithInterval:(double)a3 maxFrames:(unint64_t)a4;
-- (void)bufferFrame:(__CVBuffer *)a3 timestamp:(id *)a4 orientation:(unsigned int)a5;
+- (SCFrameBuffer)initWithInterval:(double)interval maxFrames:(unint64_t)frames;
+- (void)bufferFrame:(__CVBuffer *)frame timestamp:(id *)timestamp orientation:(unsigned int)orientation;
 - (void)dealloc;
-- (void)dumpFramesWithCompletionHandler:(id)a3;
+- (void)dumpFramesWithCompletionHandler:(id)handler;
 @end
 
 @implementation SCFrameBuffer
 
-- (SCFrameBuffer)initWithInterval:(double)a3 maxFrames:(unint64_t)a4
+- (SCFrameBuffer)initWithInterval:(double)interval maxFrames:(unint64_t)frames
 {
   v10.receiver = self;
   v10.super_class = SCFrameBuffer;
   v6 = [(SCFrameBuffer *)&v10 init];
   if (v6)
   {
-    v7 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     frames = v6->_frames;
-    v6->_frames = v7;
+    v6->_frames = array;
 
-    v6->_maxFrames = a4;
-    v6->_bufferInterval = a3;
+    v6->_maxFrames = frames;
+    v6->_bufferInterval = interval;
     v6->_frameLock._os_unfair_lock_opaque = 0;
   }
 
@@ -45,21 +45,21 @@
   [(SCFrameBuffer *)&v5 dealloc];
 }
 
-- (void)bufferFrame:(__CVBuffer *)a3 timestamp:(id *)a4 orientation:(unsigned int)a5
+- (void)bufferFrame:(__CVBuffer *)frame timestamp:(id *)timestamp orientation:(unsigned int)orientation
 {
-  v5 = *&a5;
+  v5 = *&orientation;
   v27[4] = *MEMORY[0x1E69E9840];
   p_pixelBufferPool = &self->_pixelBufferPool;
   if (!self->_pixelBufferPool)
   {
     v26[0] = *MEMORY[0x1E6966130];
-    v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:CVPixelBufferGetPixelFormatType(a3)];
+    v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:CVPixelBufferGetPixelFormatType(frame)];
     v27[0] = v10;
     v26[1] = *MEMORY[0x1E6966208];
-    v11 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:CVPixelBufferGetWidth(a3)];
+    v11 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:CVPixelBufferGetWidth(frame)];
     v27[1] = v11;
     v26[2] = *MEMORY[0x1E69660B8];
-    v12 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:CVPixelBufferGetHeight(a3)];
+    v12 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:CVPixelBufferGetHeight(frame)];
     v26[3] = *MEMORY[0x1E69660D8];
     v27[2] = v12;
     v27[3] = MEMORY[0x1E695E0F8];
@@ -82,10 +82,10 @@
       pixelBufferOut = 0;
       if (!CVPixelBufferPoolCreatePixelBuffer(0, v15, &pixelBufferOut))
       {
-        if (!VTPixelTransferSessionTransferImage(*p_transferSession, a3, pixelBufferOut))
+        if (!VTPixelTransferSessionTransferImage(*p_transferSession, frame, pixelBufferOut))
         {
           v16 = [SCMADVideoSessionTTRFrame alloc];
-          v24 = *a4;
+          v24 = *timestamp;
           v17 = [(SCMADVideoSessionTTRFrame *)v16 initWithPixelBuffer:pixelBufferOut timestamp:&v24 orientation:v5];
           os_unfair_lock_lock(&self->_frameLock);
           if ([(NSMutableArray *)self->_frames count]>= self->_maxFrames)
@@ -93,11 +93,11 @@
             [(NSMutableArray *)self->_frames removeObjectAtIndex:0];
           }
 
-          v24 = *a4;
-          v18 = [(NSMutableArray *)self->_frames firstObject];
-          if (v18)
+          v24 = *timestamp;
+          firstObject = [(NSMutableArray *)self->_frames firstObject];
+          if (firstObject)
           {
-            v19 = v18;
+            v19 = firstObject;
             do
             {
               [v19 timestamp];
@@ -109,12 +109,12 @@
               }
 
               [(NSMutableArray *)self->_frames removeObjectAtIndex:0];
-              v20 = [(NSMutableArray *)self->_frames firstObject];
+              firstObject2 = [(NSMutableArray *)self->_frames firstObject];
 
-              v19 = v20;
+              v19 = firstObject2;
             }
 
-            while (v20);
+            while (firstObject2);
           }
 
           [(NSMutableArray *)self->_frames addObject:v17];
@@ -127,9 +127,9 @@
   }
 }
 
-- (void)dumpFramesWithCompletionHandler:(id)a3
+- (void)dumpFramesWithCompletionHandler:(id)handler
 {
-  v7 = a3;
+  handlerCopy = handler;
   os_unfair_lock_lock(&self->_frameLock);
   v4 = self->_frames;
   v5 = objc_opt_new();
@@ -137,7 +137,7 @@
   self->_frames = v5;
 
   os_unfair_lock_unlock(&self->_frameLock);
-  v7[2](v7, v4);
+  handlerCopy[2](handlerCopy, v4);
 }
 
 @end

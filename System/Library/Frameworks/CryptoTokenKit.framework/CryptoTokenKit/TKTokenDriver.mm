@@ -5,15 +5,15 @@
 - (NSString)classID;
 - (TKTokenDriver)init;
 - (TKTokenDriverContext)context;
-- (id)createTokenWithSlot:(id)a3 AID:(id)a4 proprietaryCardUsage:(BOOL)a5 error:(id *)a6;
+- (id)createTokenWithSlot:(id)slot AID:(id)d proprietaryCardUsage:(BOOL)usage error:(id *)error;
 - (id)delegate;
-- (id)endpointForToken:(id)a3;
+- (id)endpointForToken:(id)token;
 - (id)keepAlive;
-- (void)acquireTokenWithInstanceID:(id)a3 reply:(id)a4;
-- (void)configureWithReply:(id)a3;
+- (void)acquireTokenWithInstanceID:(id)d reply:(id)reply;
+- (void)configureWithReply:(id)reply;
 - (void)dealloc;
-- (void)getTokenWithAttributes:(id)a3 reply:(id)a4;
-- (void)releaseTokenWithInstanceID:(id)a3;
+- (void)getTokenWithAttributes:(id)attributes reply:(id)reply;
+- (void)releaseTokenWithInstanceID:(id)d;
 - (void)terminate;
 @end
 
@@ -29,17 +29,17 @@
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"Token plugins are not supported without PlugInKit"];
   }
 
-  v7 = [*(v2 + 2728) defaultService];
-  v8 = [v7 solePersonality];
+  defaultService = [*(v2 + 2728) defaultService];
+  solePersonality = [defaultService solePersonality];
 
-  v9 = [v8 plugInDictionary];
-  v10 = [v9 objectForKey:@"NSExtensionAttributes"];
+  plugInDictionary = [solePersonality plugInDictionary];
+  v10 = [plugInDictionary objectForKey:@"NSExtensionAttributes"];
 
   v11 = [v10 objectForKeyedSubscript:@"com.apple.ctk.driver-class"];
   v12 = TK_LOG_token();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
-    +[(TKTokenDriver *)v8];
+    +[(TKTokenDriver *)solePersonality];
   }
 
   v13 = -[objc_class init](-[objc_class alloc](objc_getClass([v11 UTF8String]), "alloc"), "init");
@@ -49,9 +49,9 @@
     v14 = TK_LOG_token();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_FAULT))
     {
-      v18 = [v8 identifier];
+      identifier = [solePersonality identifier];
       *buf = 138543874;
-      v22 = v18;
+      v22 = identifier;
       v23 = 2114;
       v24 = v11;
       v25 = 2048;
@@ -63,9 +63,9 @@
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    v20 = [v8 identifier];
-    [v19 handleFailureInMethod:a2 object:a1 file:@"TKToken.m" lineNumber:112 description:{@"extension %@: cannot instantiate TKTokenDriver-based class '%@' (%p)", v20, v11, v13}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    identifier2 = [solePersonality identifier];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TKToken.m" lineNumber:112 description:{@"extension %@: cannot instantiate TKTokenDriver-based class '%@' (%p)", identifier2, v11, v13}];
   }
 
   [(objc_class *)v13 setExtensionAttributes:v10];
@@ -102,9 +102,9 @@
       objc_storeWeak(&v3->_delegate, v3);
     }
 
-    v4 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     tokenConnections = v3->_tokenConnections;
-    v3->_tokenConnections = v4;
+    v3->_tokenConnections = dictionary;
   }
 
   return v3;
@@ -112,8 +112,8 @@
 
 - (NSString)classID
 {
-  v2 = [(TKTokenDriver *)self extensionAttributes];
-  v3 = [v2 objectForKeyedSubscript:@"com.apple.ctk.class-id"];
+  extensionAttributes = [(TKTokenDriver *)self extensionAttributes];
+  v3 = [extensionAttributes objectForKeyedSubscript:@"com.apple.ctk.class-id"];
 
   return v3;
 }
@@ -134,16 +134,16 @@
   return v3;
 }
 
-- (id)endpointForToken:(id)a3
+- (id)endpointForToken:(id)token
 {
-  v4 = a3;
-  v5 = [v4 tokenID];
-  v6 = [v5 instanceID];
+  tokenCopy = token;
+  tokenID = [tokenCopy tokenID];
+  instanceID = [tokenID instanceID];
 
-  v7 = [(TKTokenDriver *)self tokenConnections];
-  objc_sync_enter(v7);
-  v8 = [(TKTokenDriver *)self tokenConnections];
-  v9 = [v8 objectForKeyedSubscript:v6];
+  tokenConnections = [(TKTokenDriver *)self tokenConnections];
+  objc_sync_enter(tokenConnections);
+  tokenConnections2 = [(TKTokenDriver *)self tokenConnections];
+  v9 = [tokenConnections2 objectForKeyedSubscript:instanceID];
 
   if (v9)
   {
@@ -156,49 +156,49 @@
     [v9 invalidate];
   }
 
-  v11 = [[TKTokenConnection alloc] initWithToken:v4];
+  v11 = [[TKTokenConnection alloc] initWithToken:tokenCopy];
 
-  v12 = [(TKTokenDriver *)self tokenConnections];
-  [v12 setObject:v11 forKeyedSubscript:v6];
+  tokenConnections3 = [(TKTokenDriver *)self tokenConnections];
+  [tokenConnections3 setObject:v11 forKeyedSubscript:instanceID];
 
-  v13 = [(TKTokenConnection *)v11 listener];
-  v14 = [v13 endpoint];
+  listener = [(TKTokenConnection *)v11 listener];
+  endpoint = [listener endpoint];
 
-  objc_sync_exit(v7);
+  objc_sync_exit(tokenConnections);
 
-  return v14;
+  return endpoint;
 }
 
-- (void)acquireTokenWithInstanceID:(id)a3 reply:(id)a4
+- (void)acquireTokenWithInstanceID:(id)d reply:(id)reply
 {
   v30[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  replyCopy = reply;
   v8 = [TKTokenID alloc];
-  v9 = [(TKTokenDriver *)self classID];
-  v10 = [(TKTokenID *)v8 initWithClassID:v9 instanceID:v6];
+  classID = [(TKTokenDriver *)self classID];
+  v10 = [(TKTokenID *)v8 initWithClassID:classID instanceID:dCopy];
 
-  v11 = [(TKTokenDriver *)self delegate];
+  delegate = [(TKTokenDriver *)self delegate];
   v12 = objc_opt_respondsToSelector();
 
   if (v12)
   {
     v13 = [TKTokenConfiguration alloc];
-    v14 = [(TKTokenDriver *)self context];
-    v15 = [v14 configurationConnection];
-    v16 = [(TKTokenConfiguration *)v13 initWithTokenID:v10 configurationConnection:v15];
+    context = [(TKTokenDriver *)self context];
+    configurationConnection = [context configurationConnection];
+    v16 = [(TKTokenConfiguration *)v13 initWithTokenID:v10 configurationConnection:configurationConnection];
 
-    v17 = [(TKTokenConfiguration *)v16 beginTransaction];
-    v18 = [(TKTokenDriver *)self delegate];
+    beginTransaction = [(TKTokenConfiguration *)v16 beginTransaction];
+    delegate2 = [(TKTokenDriver *)self delegate];
     v28 = 0;
-    v19 = [v18 tokenDriver:self tokenForConfiguration:v16 error:&v28];
+    v19 = [delegate2 tokenDriver:self tokenForConfiguration:v16 error:&v28];
     v20 = v28;
 
     if (v19)
     {
-      [v17 commit];
+      [beginTransaction commit];
       v21 = [(TKTokenDriver *)self endpointForToken:v19];
-      v7[2](v7, v21, 0);
+      replyCopy[2](replyCopy, v21, 0);
     }
 
     else
@@ -209,23 +209,23 @@
         [TKTokenDriver acquireTokenWithInstanceID:reply:];
       }
 
-      [v17 commit];
-      (v7)[2](v7, 0, v20);
+      [beginTransaction commit];
+      (replyCopy)[2](replyCopy, 0, v20);
     }
   }
 
   else
   {
     v29 = *MEMORY[0x1E697AEC8];
-    v22 = [(TKTokenID *)v10 stringRepresentation];
-    v30[0] = v22;
+    stringRepresentation = [(TKTokenID *)v10 stringRepresentation];
+    v30[0] = stringRepresentation;
     v23 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v30 forKeys:&v29 count:1];
     v26[0] = MEMORY[0x1E69E9820];
     v26[1] = 3221225472;
     v26[2] = __50__TKTokenDriver_acquireTokenWithInstanceID_reply___block_invoke;
     v26[3] = &unk_1E86B6E30;
     v26[4] = self;
-    v27 = v7;
+    v27 = replyCopy;
     [(TKTokenDriver *)self getTokenWithAttributes:v23 reply:v26];
 
     v20 = v27;
@@ -252,84 +252,84 @@ void __50__TKTokenDriver_acquireTokenWithInstanceID_reply___block_invoke(uint64_
   }
 }
 
-- (void)releaseTokenWithInstanceID:(id)a3
+- (void)releaseTokenWithInstanceID:(id)d
 {
-  v4 = a3;
-  v5 = [(TKTokenDriver *)self tokenConnections];
-  objc_sync_enter(v5);
-  v6 = [(TKTokenDriver *)self tokenConnections];
-  v7 = [v6 objectForKeyedSubscript:v4];
+  dCopy = d;
+  tokenConnections = [(TKTokenDriver *)self tokenConnections];
+  objc_sync_enter(tokenConnections);
+  tokenConnections2 = [(TKTokenDriver *)self tokenConnections];
+  v7 = [tokenConnections2 objectForKeyedSubscript:dCopy];
 
   if (v7)
   {
-    v8 = [(TKTokenDriver *)self tokenConnections];
-    v9 = [v8 objectForKeyedSubscript:v4];
+    tokenConnections3 = [(TKTokenDriver *)self tokenConnections];
+    v9 = [tokenConnections3 objectForKeyedSubscript:dCopy];
     [v9 invalidate];
 
-    v10 = [(TKTokenDriver *)self tokenConnections];
-    [v10 removeObjectForKey:v4];
+    tokenConnections4 = [(TKTokenDriver *)self tokenConnections];
+    [tokenConnections4 removeObjectForKey:dCopy];
   }
 
   else
   {
-    v10 = TK_LOG_token();
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    tokenConnections4 = TK_LOG_token();
+    if (os_log_type_enabled(tokenConnections4, OS_LOG_TYPE_ERROR))
     {
       [TKTokenDriver releaseTokenWithInstanceID:];
     }
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(tokenConnections);
 }
 
-- (void)configureWithReply:(id)a3
+- (void)configureWithReply:(id)reply
 {
-  v12 = a3;
-  v4 = [(TKTokenDriver *)self delegate];
+  replyCopy = reply;
+  delegate = [(TKTokenDriver *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
     v6 = [TKTokenDriverConfiguration alloc];
-    v7 = [(TKTokenDriver *)self classID];
-    v8 = [(TKTokenDriver *)self context];
-    v9 = [v8 configurationConnection];
-    v10 = [(TKTokenDriverConfiguration *)v6 initWithClassID:v7 configurationConnection:v9];
+    classID = [(TKTokenDriver *)self classID];
+    context = [(TKTokenDriver *)self context];
+    configurationConnection = [context configurationConnection];
+    v10 = [(TKTokenDriverConfiguration *)v6 initWithClassID:classID configurationConnection:configurationConnection];
 
-    v11 = [(TKTokenDriver *)self delegate];
-    [v11 tokenDriver:self configure:v10];
+    delegate2 = [(TKTokenDriver *)self delegate];
+    [delegate2 tokenDriver:self configure:v10];
   }
 
-  v12[2](v12, 1, 0);
+  replyCopy[2](replyCopy, 1, 0);
 }
 
-- (id)createTokenWithSlot:(id)a3 AID:(id)a4 proprietaryCardUsage:(BOOL)a5 error:(id *)a6
+- (id)createTokenWithSlot:(id)slot AID:(id)d proprietaryCardUsage:(BOOL)usage error:(id *)error
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  if (a6)
+  if (error)
   {
     v7 = MEMORY[0x1E696ABC0];
     v11 = *MEMORY[0x1E696A578];
     v12[0] = @"token driver does not implement any way to create new slot-based token instances";
     v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:&v11 count:1];
-    *a6 = [v7 errorWithDomain:@"CryptoTokenKit" code:-7 userInfo:v8];
+    *error = [v7 errorWithDomain:@"CryptoTokenKit" code:-7 userInfo:v8];
   }
 
   v9 = *MEMORY[0x1E69E9840];
   return 0;
 }
 
-- (void)getTokenWithAttributes:(id)a3 reply:(id)a4
+- (void)getTokenWithAttributes:(id)attributes reply:(id)reply
 {
   v12[1] = *MEMORY[0x1E69E9840];
   v5 = MEMORY[0x1E696ABC0];
   v11 = *MEMORY[0x1E696A578];
   v12[0] = @"token driver does not implement any way to create new token instances";
   v6 = MEMORY[0x1E695DF20];
-  v7 = a4;
+  replyCopy = reply;
   v8 = [v6 dictionaryWithObjects:v12 forKeys:&v11 count:1];
   v9 = [v5 errorWithDomain:@"CryptoTokenKit" code:-7 userInfo:v8];
-  (*(a4 + 2))(v7, 0, v9);
+  (*(reply + 2))(replyCopy, 0, v9);
 
   v10 = *MEMORY[0x1E69E9840];
 }
@@ -337,16 +337,16 @@ void __50__TKTokenDriver_acquireTokenWithInstanceID_reply___block_invoke(uint64_
 - (void)terminate
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = [(TKTokenDriver *)self tokenConnections];
-  objc_sync_enter(v3);
+  tokenConnections = [(TKTokenDriver *)self tokenConnections];
+  objc_sync_enter(tokenConnections);
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(TKTokenDriver *)self tokenConnections];
-  v5 = [v4 allValues];
+  tokenConnections2 = [(TKTokenDriver *)self tokenConnections];
+  allValues = [tokenConnections2 allValues];
 
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v6 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = *v12;
@@ -357,23 +357,23 @@ void __50__TKTokenDriver_acquireTokenWithInstanceID_reply___block_invoke(uint64_
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allValues);
         }
 
         [*(*(&v11 + 1) + 8 * v8++) invalidate];
       }
 
       while (v6 != v8);
-      v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
   }
 
-  v9 = [(TKTokenDriver *)self tokenConnections];
-  [v9 removeAllObjects];
+  tokenConnections3 = [(TKTokenDriver *)self tokenConnections];
+  [tokenConnections3 removeAllObjects];
 
-  objc_sync_exit(v3);
+  objc_sync_exit(tokenConnections);
   v10 = *MEMORY[0x1E69E9840];
 }
 
@@ -387,13 +387,13 @@ void __50__TKTokenDriver_acquireTokenWithInstanceID_reply___block_invoke(uint64_
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v4 = [(TKTokenDriver *)self tokenConnections];
-  v5 = [v4 allValues];
+  tokenConnections = [(TKTokenDriver *)self tokenConnections];
+  allValues = [tokenConnections allValues];
 
-  v6 = [v5 countByEnumeratingWithState:&v26 objects:v31 count:16];
+  v6 = [allValues countByEnumeratingWithState:&v26 objects:v31 count:16];
   if (v6)
   {
-    v20 = v5;
+    v20 = allValues;
     v21 = *v27;
     do
     {
@@ -409,8 +409,8 @@ void __50__TKTokenDriver_acquireTokenWithInstanceID_reply___block_invoke(uint64_
         v23 = 0u;
         v24 = 0u;
         v25 = 0u;
-        v9 = [v8 sessions];
-        v10 = [v9 countByEnumeratingWithState:&v22 objects:v30 count:16];
+        sessions = [v8 sessions];
+        v10 = [sessions countByEnumeratingWithState:&v22 objects:v30 count:16];
         if (v10)
         {
           v11 = *v23;
@@ -420,23 +420,23 @@ void __50__TKTokenDriver_acquireTokenWithInstanceID_reply___block_invoke(uint64_
             {
               if (*v23 != v11)
               {
-                objc_enumerationMutation(v9);
+                objc_enumerationMutation(sessions);
               }
 
               v13 = *(*(&v22 + 1) + 8 * j);
-              v14 = [v8 sessions];
-              v15 = [v14 objectForKey:v13];
+              sessions2 = [v8 sessions];
+              v15 = [sessions2 objectForKey:v13];
               [v3 addObject:v15];
             }
 
-            v10 = [v9 countByEnumeratingWithState:&v22 objects:v30 count:16];
+            v10 = [sessions countByEnumeratingWithState:&v22 objects:v30 count:16];
           }
 
           while (v10);
         }
       }
 
-      v5 = v20;
+      allValues = v20;
       v6 = [v20 countByEnumeratingWithState:&v26 objects:v31 count:16];
     }
 

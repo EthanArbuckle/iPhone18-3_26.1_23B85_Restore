@@ -1,46 +1,46 @@
 @interface GKSQLRunner
-+ (id)runnerWithConnection:(id)a3;
-- (GKSQLRunner)initWithConnection:(id)a3;
-- (int)runSQL:(id)a3;
-- (int)runSQLFromFileAtPath:(id)a3;
++ (id)runnerWithConnection:(id)connection;
+- (GKSQLRunner)initWithConnection:(id)connection;
+- (int)runSQL:(id)l;
+- (int)runSQLFromFileAtPath:(id)path;
 @end
 
 @implementation GKSQLRunner
 
-+ (id)runnerWithConnection:(id)a3
++ (id)runnerWithConnection:(id)connection
 {
-  v3 = a3;
-  v4 = [[GKSQLRunner alloc] initWithConnection:v3];
+  connectionCopy = connection;
+  v4 = [[GKSQLRunner alloc] initWithConnection:connectionCopy];
 
   return v4;
 }
 
-- (GKSQLRunner)initWithConnection:(id)a3
+- (GKSQLRunner)initWithConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v8.receiver = self;
   v8.super_class = GKSQLRunner;
   v5 = [(GKSQLRunner *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(GKSQLRunner *)v5 setConnection:v4];
+    [(GKSQLRunner *)v5 setConnection:connectionCopy];
   }
 
   return v6;
 }
 
-- (int)runSQLFromFileAtPath:(id)a3
+- (int)runSQLFromFileAtPath:(id)path
 {
-  v4 = [NSString stringWithContentsOfFile:a3 encoding:4 error:0];
+  v4 = [NSString stringWithContentsOfFile:path encoding:4 error:0];
   LODWORD(self) = [(GKSQLRunner *)self runSQL:v4];
 
   return self;
 }
 
-- (int)runSQL:(id)a3
+- (int)runSQL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -51,7 +51,7 @@
   v8[2] = sub_10011A1AC;
   v8[3] = &unk_100367420;
   v10 = &v11;
-  v6 = v4;
+  v6 = lCopy;
   v9 = v6;
   [(GKDatabaseConnection *)connection performSync:v8];
   LODWORD(connection) = *(v12 + 6);

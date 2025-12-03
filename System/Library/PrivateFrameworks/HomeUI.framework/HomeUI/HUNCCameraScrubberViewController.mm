@@ -1,6 +1,6 @@
 @interface HUNCCameraScrubberViewController
 - (HFCameraPlaybackEngine)playbackEngine;
-- (HUNCCameraScrubberViewController)initWithPlaybackEngine:(id)a3 currentClip:(id)a4 startDate:(id)a5;
+- (HUNCCameraScrubberViewController)initWithPlaybackEngine:(id)engine currentClip:(id)clip startDate:(id)date;
 - (UIButton)playPauseButton;
 - (UIProgressView)progressSlider;
 - (UIView)panTrackingView;
@@ -8,48 +8,48 @@
 - (double)_playbackLength;
 - (double)currentScrubberResolution;
 - (void)_createAndStartDisplayLink;
-- (void)_displayLinkUpdated:(id)a3;
+- (void)_displayLinkUpdated:(id)updated;
 - (void)_loopPlaybackIfNeeded;
 - (void)_removeDisplayLink;
 - (void)_seekToCurrentScrubberValue;
 - (void)_updateScrubberDisplayLinkState;
 - (void)_updateSliderPosition;
 - (void)dealloc;
-- (void)didMoveToParentViewController:(id)a3;
-- (void)playPauseButtonPressed:(id)a3;
-- (void)playbackEngine:(id)a3 didUpdateTimeControlStatus:(unint64_t)a4;
+- (void)didMoveToParentViewController:(id)controller;
+- (void)playPauseButtonPressed:(id)pressed;
+- (void)playbackEngine:(id)engine didUpdateTimeControlStatus:(unint64_t)status;
 - (void)showClipScrubber;
 - (void)toggleLive;
-- (void)userDidPan:(id)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)userDidPan:(id)pan;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation HUNCCameraScrubberViewController
 
-- (HUNCCameraScrubberViewController)initWithPlaybackEngine:(id)a3 currentClip:(id)a4 startDate:(id)a5
+- (HUNCCameraScrubberViewController)initWithPlaybackEngine:(id)engine currentClip:(id)clip startDate:(id)date
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  engineCopy = engine;
+  clipCopy = clip;
+  dateCopy = date;
   v17.receiver = self;
   v17.super_class = HUNCCameraScrubberViewController;
   v11 = [(HUNCCameraScrubberViewController *)&v17 initWithNibName:0 bundle:0];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_playbackEngine, v8);
-    objc_storeStrong(&v12->_currentClip, a4);
-    v13 = v10;
-    if (!v10)
+    objc_storeWeak(&v11->_playbackEngine, engineCopy);
+    objc_storeStrong(&v12->_currentClip, clip);
+    dateOfOccurrence = dateCopy;
+    if (!dateCopy)
     {
-      v13 = [(HMCameraClip *)v12->_currentClip dateOfOccurrence];
+      dateOfOccurrence = [(HMCameraClip *)v12->_currentClip dateOfOccurrence];
     }
 
-    objc_storeStrong(&v12->_clipStartDate, v13);
-    if (!v10)
+    objc_storeStrong(&v12->_clipStartDate, dateOfOccurrence);
+    if (!dateCopy)
     {
     }
 
@@ -67,123 +67,123 @@
   v84.receiver = self;
   v84.super_class = HUNCCameraScrubberViewController;
   [(HUNCCameraScrubberViewController *)&v84 viewDidLoad];
-  v3 = [(HUNCCameraScrubberViewController *)self view];
-  v4 = [(HUNCCameraScrubberViewController *)self playPauseBackgroundView];
-  [v3 addSubview:v4];
+  view = [(HUNCCameraScrubberViewController *)self view];
+  playPauseBackgroundView = [(HUNCCameraScrubberViewController *)self playPauseBackgroundView];
+  [view addSubview:playPauseBackgroundView];
 
-  v5 = [(HUNCCameraScrubberViewController *)self view];
-  v6 = [(HUNCCameraScrubberViewController *)self playPauseButton];
-  [v5 addSubview:v6];
+  view2 = [(HUNCCameraScrubberViewController *)self view];
+  playPauseButton = [(HUNCCameraScrubberViewController *)self playPauseButton];
+  [view2 addSubview:playPauseButton];
 
-  v7 = [(HUNCCameraScrubberViewController *)self view];
-  v8 = [(HUNCCameraScrubberViewController *)self progressSlider];
-  [v7 addSubview:v8];
+  view3 = [(HUNCCameraScrubberViewController *)self view];
+  progressSlider = [(HUNCCameraScrubberViewController *)self progressSlider];
+  [view3 addSubview:progressSlider];
 
-  v9 = [(HUNCCameraScrubberViewController *)self view];
-  v10 = [(HUNCCameraScrubberViewController *)self panTrackingView];
-  [v9 addSubview:v10];
+  view4 = [(HUNCCameraScrubberViewController *)self view];
+  panTrackingView = [(HUNCCameraScrubberViewController *)self panTrackingView];
+  [view4 addSubview:panTrackingView];
 
   v57 = MEMORY[0x277CCAAD0];
-  v83 = [(HUNCCameraScrubberViewController *)self playPauseBackgroundView];
-  v81 = [v83 leftAnchor];
-  v82 = [(HUNCCameraScrubberViewController *)self view];
-  v80 = [v82 leftAnchor];
-  v79 = [v81 constraintEqualToAnchor:v80];
+  playPauseBackgroundView2 = [(HUNCCameraScrubberViewController *)self playPauseBackgroundView];
+  leftAnchor = [playPauseBackgroundView2 leftAnchor];
+  view5 = [(HUNCCameraScrubberViewController *)self view];
+  leftAnchor2 = [view5 leftAnchor];
+  v79 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
   v85[0] = v79;
-  v78 = [(HUNCCameraScrubberViewController *)self playPauseBackgroundView];
-  v77 = [v78 widthAnchor];
-  v76 = [v77 constraintEqualToConstant:45.0];
+  playPauseBackgroundView3 = [(HUNCCameraScrubberViewController *)self playPauseBackgroundView];
+  widthAnchor = [playPauseBackgroundView3 widthAnchor];
+  v76 = [widthAnchor constraintEqualToConstant:45.0];
   v85[1] = v76;
-  v75 = [(HUNCCameraScrubberViewController *)self playPauseBackgroundView];
-  v74 = [v75 heightAnchor];
-  v73 = [v74 constraintEqualToConstant:44.0];
+  playPauseBackgroundView4 = [(HUNCCameraScrubberViewController *)self playPauseBackgroundView];
+  heightAnchor = [playPauseBackgroundView4 heightAnchor];
+  v73 = [heightAnchor constraintEqualToConstant:44.0];
   v85[2] = v73;
-  v72 = [(HUNCCameraScrubberViewController *)self playPauseBackgroundView];
-  v70 = [v72 centerYAnchor];
-  v71 = [(HUNCCameraScrubberViewController *)self view];
-  v69 = [v71 centerYAnchor];
-  v68 = [v70 constraintEqualToAnchor:v69];
+  playPauseBackgroundView5 = [(HUNCCameraScrubberViewController *)self playPauseBackgroundView];
+  centerYAnchor = [playPauseBackgroundView5 centerYAnchor];
+  view6 = [(HUNCCameraScrubberViewController *)self view];
+  centerYAnchor2 = [view6 centerYAnchor];
+  v68 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v85[3] = v68;
-  v67 = [(HUNCCameraScrubberViewController *)self playPauseButton];
-  v65 = [v67 leftAnchor];
-  v66 = [(HUNCCameraScrubberViewController *)self view];
-  v64 = [v66 leftAnchor];
-  v63 = [v65 constraintEqualToAnchor:v64];
+  playPauseButton2 = [(HUNCCameraScrubberViewController *)self playPauseButton];
+  leftAnchor3 = [playPauseButton2 leftAnchor];
+  view7 = [(HUNCCameraScrubberViewController *)self view];
+  leftAnchor4 = [view7 leftAnchor];
+  v63 = [leftAnchor3 constraintEqualToAnchor:leftAnchor4];
   v85[4] = v63;
-  v62 = [(HUNCCameraScrubberViewController *)self playPauseButton];
-  v61 = [v62 widthAnchor];
-  v60 = [v61 constraintEqualToConstant:45.0];
+  playPauseButton3 = [(HUNCCameraScrubberViewController *)self playPauseButton];
+  widthAnchor2 = [playPauseButton3 widthAnchor];
+  v60 = [widthAnchor2 constraintEqualToConstant:45.0];
   v85[5] = v60;
-  v59 = [(HUNCCameraScrubberViewController *)self playPauseButton];
-  v58 = [v59 heightAnchor];
-  v56 = [v58 constraintEqualToConstant:44.0];
+  playPauseButton4 = [(HUNCCameraScrubberViewController *)self playPauseButton];
+  heightAnchor2 = [playPauseButton4 heightAnchor];
+  v56 = [heightAnchor2 constraintEqualToConstant:44.0];
   v85[6] = v56;
-  v55 = [(HUNCCameraScrubberViewController *)self playPauseButton];
-  v53 = [v55 centerYAnchor];
-  v54 = [(HUNCCameraScrubberViewController *)self view];
-  v52 = [v54 centerYAnchor];
-  v51 = [v53 constraintEqualToAnchor:v52];
+  playPauseButton5 = [(HUNCCameraScrubberViewController *)self playPauseButton];
+  centerYAnchor3 = [playPauseButton5 centerYAnchor];
+  view8 = [(HUNCCameraScrubberViewController *)self view];
+  centerYAnchor4 = [view8 centerYAnchor];
+  v51 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
   v85[7] = v51;
-  v50 = [(HUNCCameraScrubberViewController *)self progressSlider];
-  v48 = [v50 leftAnchor];
-  v49 = [(HUNCCameraScrubberViewController *)self playPauseBackgroundView];
-  v47 = [v49 rightAnchor];
-  v46 = [v48 constraintEqualToAnchor:v47 constant:12.0];
+  progressSlider2 = [(HUNCCameraScrubberViewController *)self progressSlider];
+  leftAnchor5 = [progressSlider2 leftAnchor];
+  playPauseBackgroundView6 = [(HUNCCameraScrubberViewController *)self playPauseBackgroundView];
+  rightAnchor = [playPauseBackgroundView6 rightAnchor];
+  v46 = [leftAnchor5 constraintEqualToAnchor:rightAnchor constant:12.0];
   v85[8] = v46;
-  v45 = [(HUNCCameraScrubberViewController *)self progressSlider];
-  v43 = [v45 rightAnchor];
-  v44 = [(HUNCCameraScrubberViewController *)self view];
-  v42 = [v44 rightAnchor];
-  v41 = [v43 constraintEqualToAnchor:v42 constant:-12.0];
+  progressSlider3 = [(HUNCCameraScrubberViewController *)self progressSlider];
+  rightAnchor2 = [progressSlider3 rightAnchor];
+  view9 = [(HUNCCameraScrubberViewController *)self view];
+  rightAnchor3 = [view9 rightAnchor];
+  v41 = [rightAnchor2 constraintEqualToAnchor:rightAnchor3 constant:-12.0];
   v85[9] = v41;
-  v40 = [(HUNCCameraScrubberViewController *)self progressSlider];
-  v38 = [v40 centerYAnchor];
-  v39 = [(HUNCCameraScrubberViewController *)self view];
-  v37 = [v39 centerYAnchor];
-  v36 = [v38 constraintEqualToAnchor:v37];
+  progressSlider4 = [(HUNCCameraScrubberViewController *)self progressSlider];
+  centerYAnchor5 = [progressSlider4 centerYAnchor];
+  view10 = [(HUNCCameraScrubberViewController *)self view];
+  centerYAnchor6 = [view10 centerYAnchor];
+  v36 = [centerYAnchor5 constraintEqualToAnchor:centerYAnchor6];
   v85[10] = v36;
-  v35 = [(HUNCCameraScrubberViewController *)self panTrackingView];
-  v33 = [v35 leftAnchor];
-  v34 = [(HUNCCameraScrubberViewController *)self playPauseBackgroundView];
-  v32 = [v34 rightAnchor];
-  v31 = [v33 constraintEqualToAnchor:v32 constant:12.0];
+  panTrackingView2 = [(HUNCCameraScrubberViewController *)self panTrackingView];
+  leftAnchor6 = [panTrackingView2 leftAnchor];
+  playPauseBackgroundView7 = [(HUNCCameraScrubberViewController *)self playPauseBackgroundView];
+  rightAnchor4 = [playPauseBackgroundView7 rightAnchor];
+  v31 = [leftAnchor6 constraintEqualToAnchor:rightAnchor4 constant:12.0];
   v85[11] = v31;
-  v30 = [(HUNCCameraScrubberViewController *)self panTrackingView];
-  v29 = [v30 rightAnchor];
-  v11 = [(HUNCCameraScrubberViewController *)self view];
-  v12 = [v11 rightAnchor];
-  v13 = [v29 constraintEqualToAnchor:v12 constant:-12.0];
+  panTrackingView3 = [(HUNCCameraScrubberViewController *)self panTrackingView];
+  rightAnchor5 = [panTrackingView3 rightAnchor];
+  view11 = [(HUNCCameraScrubberViewController *)self view];
+  rightAnchor6 = [view11 rightAnchor];
+  v13 = [rightAnchor5 constraintEqualToAnchor:rightAnchor6 constant:-12.0];
   v85[12] = v13;
-  v14 = [(HUNCCameraScrubberViewController *)self panTrackingView];
-  v15 = [v14 heightAnchor];
-  v16 = [(HUNCCameraScrubberViewController *)self view];
-  v17 = [v16 heightAnchor];
-  v18 = [v15 constraintEqualToAnchor:v17];
+  panTrackingView4 = [(HUNCCameraScrubberViewController *)self panTrackingView];
+  heightAnchor3 = [panTrackingView4 heightAnchor];
+  view12 = [(HUNCCameraScrubberViewController *)self view];
+  heightAnchor4 = [view12 heightAnchor];
+  v18 = [heightAnchor3 constraintEqualToAnchor:heightAnchor4];
   v85[13] = v18;
   v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v85 count:14];
   [v57 activateConstraints:v19];
 
-  v20 = [(HUNCCameraScrubberViewController *)self currentClip];
+  currentClip = [(HUNCCameraScrubberViewController *)self currentClip];
 
-  if (v20)
+  if (currentClip)
   {
     v21 = MEMORY[0x277D144D0];
-    v22 = [(HUNCCameraScrubberViewController *)self clipStartDate];
-    v23 = [v21 clipPositionWithDate:v22];
-    v24 = [(HUNCCameraScrubberViewController *)self playbackEngine];
-    [v24 setPlaybackPosition:v23];
+    clipStartDate = [(HUNCCameraScrubberViewController *)self clipStartDate];
+    v23 = [v21 clipPositionWithDate:clipStartDate];
+    playbackEngine = [(HUNCCameraScrubberViewController *)self playbackEngine];
+    [playbackEngine setPlaybackPosition:v23];
 
-    v25 = [(HUNCCameraScrubberViewController *)self playbackEngine];
-    [v25 pause];
+    playbackEngine2 = [(HUNCCameraScrubberViewController *)self playbackEngine];
+    [playbackEngine2 pause];
 
-    v26 = [(HUNCCameraScrubberViewController *)self playbackEngine];
-    v27 = [MEMORY[0x277D144C8] defaultOptions];
-    [v26 addObserver:self withOptions:v27];
+    playbackEngine3 = [(HUNCCameraScrubberViewController *)self playbackEngine];
+    defaultOptions = [MEMORY[0x277D144C8] defaultOptions];
+    [playbackEngine3 addObserver:self withOptions:defaultOptions];
 
-    v28 = [(HUNCCameraScrubberViewController *)self currentClip];
-    LOBYTE(v27) = [v28 isComplete];
+    currentClip2 = [(HUNCCameraScrubberViewController *)self currentClip];
+    LOBYTE(defaultOptions) = [currentClip2 isComplete];
 
-    if ((v27 & 1) == 0)
+    if ((defaultOptions & 1) == 0)
     {
       [(HUNCCameraScrubberViewController *)self toggleLive];
     }
@@ -192,110 +192,110 @@
   [(HUNCCameraScrubberViewController *)self setIsVisible:1];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = HUNCCameraScrubberViewController;
-  [(HUNCCameraScrubberViewController *)&v5 viewWillAppear:a3];
-  v4 = [(HUNCCameraScrubberViewController *)self playbackEngine];
-  [v4 play];
+  [(HUNCCameraScrubberViewController *)&v5 viewWillAppear:appear];
+  playbackEngine = [(HUNCCameraScrubberViewController *)self playbackEngine];
+  [playbackEngine play];
 
   [(HUNCCameraScrubberViewController *)self setIsVisible:1];
   [(HUNCCameraScrubberViewController *)self _createAndStartDisplayLink];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v13 = *MEMORY[0x277D85DE8];
   v8.receiver = self;
   v8.super_class = HUNCCameraScrubberViewController;
-  [(HUNCCameraScrubberViewController *)&v8 viewDidDisappear:a3];
+  [(HUNCCameraScrubberViewController *)&v8 viewDidDisappear:disappear];
   [(HUNCCameraScrubberViewController *)self setIsVisible:0];
   v5 = HFLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = NSStringFromSelector(a2);
     *buf = 138412546;
-    v10 = self;
+    selfCopy = self;
     v11 = 2112;
     v12 = v6;
     _os_log_impl(&dword_20CEB6000, v5, OS_LOG_TYPE_DEFAULT, "%@ : %@", buf, 0x16u);
   }
 
   [(HUNCCameraScrubberViewController *)self _removeDisplayLink];
-  v7 = [(HUNCCameraScrubberViewController *)self playbackEngine];
-  [v7 removeObserver:self];
+  playbackEngine = [(HUNCCameraScrubberViewController *)self playbackEngine];
+  [playbackEngine removeObserver:self];
 
   [(HUNCCameraScrubberViewController *)self setPlaybackEngine:0];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = HUNCCameraScrubberViewController;
-  [(HUNCCameraScrubberViewController *)&v5 viewWillDisappear:a3];
-  v4 = [(HUNCCameraScrubberViewController *)self displayLink];
-  [v4 invalidate];
+  [(HUNCCameraScrubberViewController *)&v5 viewWillDisappear:disappear];
+  displayLink = [(HUNCCameraScrubberViewController *)self displayLink];
+  [displayLink invalidate];
 }
 
 - (void)_createAndStartDisplayLink
 {
-  v3 = [(HUNCCameraScrubberViewController *)self displayLink];
+  displayLink = [(HUNCCameraScrubberViewController *)self displayLink];
 
-  if (v3)
+  if (displayLink)
   {
-    v4 = [(HUNCCameraScrubberViewController *)self displayLink];
-    [v4 invalidate];
+    displayLink2 = [(HUNCCameraScrubberViewController *)self displayLink];
+    [displayLink2 invalidate];
   }
 
   v5 = [MEMORY[0x277CD9E48] displayLinkWithTarget:self selector:sel__displayLinkUpdated_];
   [(HUNCCameraScrubberViewController *)self setDisplayLink:v5];
 
-  v6 = [(HUNCCameraScrubberViewController *)self displayLink];
-  [v6 setPaused:1];
+  displayLink3 = [(HUNCCameraScrubberViewController *)self displayLink];
+  [displayLink3 setPaused:1];
 
-  v7 = [(HUNCCameraScrubberViewController *)self displayLink];
-  v8 = [MEMORY[0x277CBEB88] mainRunLoop];
-  [v7 addToRunLoop:v8 forMode:*MEMORY[0x277CBE738]];
+  displayLink4 = [(HUNCCameraScrubberViewController *)self displayLink];
+  mainRunLoop = [MEMORY[0x277CBEB88] mainRunLoop];
+  [displayLink4 addToRunLoop:mainRunLoop forMode:*MEMORY[0x277CBE738]];
 
   [(HUNCCameraScrubberViewController *)self _updateScrubberDisplayLinkState];
 }
 
 - (void)_removeDisplayLink
 {
-  v2 = [(HUNCCameraScrubberViewController *)self displayLink];
-  [v2 invalidate];
+  displayLink = [(HUNCCameraScrubberViewController *)self displayLink];
+  [displayLink invalidate];
 }
 
-- (void)playPauseButtonPressed:(id)a3
+- (void)playPauseButtonPressed:(id)pressed
 {
-  v4 = a3;
-  [v4 setSelected:{objc_msgSend(v4, "isSelected") ^ 1}];
+  pressedCopy = pressed;
+  [pressedCopy setSelected:{objc_msgSend(pressedCopy, "isSelected") ^ 1}];
 
-  v5 = [(HUNCCameraScrubberViewController *)self playbackEngine];
-  v6 = [v5 playbackPosition];
-  v7 = [v6 contentType];
+  playbackEngine = [(HUNCCameraScrubberViewController *)self playbackEngine];
+  playbackPosition = [playbackEngine playbackPosition];
+  contentType = [playbackPosition contentType];
 
-  if (v7)
+  if (contentType)
   {
-    v8 = [(HUNCCameraScrubberViewController *)self playbackEngine];
-    v9 = [v8 timeControlStatus];
+    playbackEngine2 = [(HUNCCameraScrubberViewController *)self playbackEngine];
+    timeControlStatus = [playbackEngine2 timeControlStatus];
 
-    if ((v9 - 1) >= 2)
+    if ((timeControlStatus - 1) >= 2)
     {
-      if (v9)
+      if (timeControlStatus)
       {
         return;
       }
 
-      v10 = [(HUNCCameraScrubberViewController *)self playbackEngine];
-      [v10 play];
+      playbackEngine3 = [(HUNCCameraScrubberViewController *)self playbackEngine];
+      [playbackEngine3 play];
     }
 
     else
     {
-      v10 = [(HUNCCameraScrubberViewController *)self playbackEngine];
-      [v10 pause];
+      playbackEngine3 = [(HUNCCameraScrubberViewController *)self playbackEngine];
+      [playbackEngine3 pause];
     }
 
     [(HUNCCameraScrubberViewController *)self _updateScrubberDisplayLinkState];
@@ -308,15 +308,15 @@
   }
 }
 
-- (void)userDidPan:(id)a3
+- (void)userDidPan:(id)pan
 {
-  v22 = a3;
-  v4 = [v22 state];
-  if ((v4 - 3) < 2)
+  panCopy = pan;
+  state = [panCopy state];
+  if ((state - 3) < 2)
   {
     [(HUNCCameraScrubberViewController *)self _seekToCurrentScrubberValue];
-    v6 = [(HUNCCameraScrubberViewController *)self playbackEngine];
-    [v6 endScrubbing];
+    playbackEngine = [(HUNCCameraScrubberViewController *)self playbackEngine];
+    [playbackEngine endScrubbing];
 
     [(HUNCCameraScrubberViewController *)self setIsScrubbing:0];
 LABEL_6:
@@ -324,25 +324,25 @@ LABEL_6:
     goto LABEL_10;
   }
 
-  if (v4 != 2)
+  if (state != 2)
   {
-    if (v4 != 1)
+    if (state != 1)
     {
       goto LABEL_10;
     }
 
     [(HUNCCameraScrubberViewController *)self setIsScrubbing:1];
-    v5 = [(HUNCCameraScrubberViewController *)self playbackEngine];
-    [v5 beginScrubbing];
+    playbackEngine2 = [(HUNCCameraScrubberViewController *)self playbackEngine];
+    [playbackEngine2 beginScrubbing];
 
     goto LABEL_6;
   }
 
-  v7 = [(HUNCCameraScrubberViewController *)self panTrackingView];
-  [v22 locationInView:v7];
+  panTrackingView = [(HUNCCameraScrubberViewController *)self panTrackingView];
+  [panCopy locationInView:panTrackingView];
   v9 = v8;
-  v10 = [(HUNCCameraScrubberViewController *)self progressSlider];
-  [v10 frame];
+  progressSlider = [(HUNCCameraScrubberViewController *)self progressSlider];
+  [progressSlider frame];
   v12 = v11;
 
   v13 = 1.0;
@@ -352,17 +352,17 @@ LABEL_6:
   }
 
   v14 = v9 / v13;
-  v15 = [(HUNCCameraScrubberViewController *)self progressSlider];
+  progressSlider2 = [(HUNCCameraScrubberViewController *)self progressSlider];
   *&v16 = v14;
-  [v15 setProgress:v16];
+  [progressSlider2 setProgress:v16];
 
-  v17 = [(HUNCCameraScrubberViewController *)self progressSlider];
-  [v17 progress];
+  progressSlider3 = [(HUNCCameraScrubberViewController *)self progressSlider];
+  [progressSlider3 progress];
   v19 = v18;
 
-  v20 = [(HUNCCameraScrubberViewController *)self progressSlider];
+  progressSlider4 = [(HUNCCameraScrubberViewController *)self progressSlider];
   LODWORD(v21) = fminf(fmaxf(v19, 0.0), 100.0);
-  [v20 setProgress:v21];
+  [progressSlider4 setProgress:v21];
 
   [(HUNCCameraScrubberViewController *)self _seekToCurrentScrubberValue];
 LABEL_10:
@@ -370,33 +370,33 @@ LABEL_10:
 
 - (void)toggleLive
 {
-  v3 = [(HUNCCameraScrubberViewController *)self playbackEngine];
-  v4 = [v3 playbackPosition];
-  v5 = [v4 contentType];
+  playbackEngine = [(HUNCCameraScrubberViewController *)self playbackEngine];
+  playbackPosition = [playbackEngine playbackPosition];
+  contentType = [playbackPosition contentType];
 
-  if (v5)
+  if (contentType)
   {
-    v6 = [(HUNCCameraScrubberViewController *)self playPauseButton];
-    [v6 setSelected:0];
+    playPauseButton = [(HUNCCameraScrubberViewController *)self playPauseButton];
+    [playPauseButton setSelected:0];
 
-    v7 = [(HUNCCameraScrubberViewController *)self displayLink];
-    [v7 setPaused:1];
+    displayLink = [(HUNCCameraScrubberViewController *)self displayLink];
+    [displayLink setPaused:1];
 
-    v8 = [MEMORY[0x277D144D0] livePosition];
-    v9 = [(HUNCCameraScrubberViewController *)self playbackEngine];
-    [v9 setPlaybackPosition:v8];
+    livePosition = [MEMORY[0x277D144D0] livePosition];
+    playbackEngine2 = [(HUNCCameraScrubberViewController *)self playbackEngine];
+    [playbackEngine2 setPlaybackPosition:livePosition];
 
-    v10 = [(HUNCCameraScrubberViewController *)self playbackEngine];
-    [v10 play];
+    playbackEngine3 = [(HUNCCameraScrubberViewController *)self playbackEngine];
+    [playbackEngine3 play];
 
-    v11 = [(HUNCCameraScrubberViewController *)self playPauseButton];
-    [v11 setHidden:1];
+    playPauseButton2 = [(HUNCCameraScrubberViewController *)self playPauseButton];
+    [playPauseButton2 setHidden:1];
 
-    v12 = [(HUNCCameraScrubberViewController *)self playPauseBackgroundView];
-    [v12 setHidden:1];
+    playPauseBackgroundView = [(HUNCCameraScrubberViewController *)self playPauseBackgroundView];
+    [playPauseBackgroundView setHidden:1];
 
-    v13 = [(HUNCCameraScrubberViewController *)self progressSlider];
-    [v13 setHidden:1];
+    progressSlider = [(HUNCCameraScrubberViewController *)self progressSlider];
+    [progressSlider setHidden:1];
   }
 
   else
@@ -408,20 +408,20 @@ LABEL_10:
 
 - (void)_seekToCurrentScrubberValue
 {
-  v3 = [(HUNCCameraScrubberViewController *)self progressSlider];
-  [v3 progress];
+  progressSlider = [(HUNCCameraScrubberViewController *)self progressSlider];
+  [progressSlider progress];
   v5 = v4;
   [(HUNCCameraScrubberViewController *)self _playbackLength];
   v7 = v6 * v5;
 
-  v8 = [(HUNCCameraScrubberViewController *)self clipStartDate];
+  clipStartDate = [(HUNCCameraScrubberViewController *)self clipStartDate];
   [(HUNCCameraScrubberViewController *)self _playbackLength];
-  v10 = [v8 dateByAddingTimeInterval:v9 + -0.1];
+  v10 = [clipStartDate dateByAddingTimeInterval:v9 + -0.1];
 
-  v11 = [(HUNCCameraScrubberViewController *)self clipStartDate];
-  v12 = [v11 dateByAddingTimeInterval:v7];
+  clipStartDate2 = [(HUNCCameraScrubberViewController *)self clipStartDate];
+  v12 = [clipStartDate2 dateByAddingTimeInterval:v7];
 
-  v13 = [(HUNCCameraScrubberViewController *)self playbackEngine];
+  playbackEngine = [(HUNCCameraScrubberViewController *)self playbackEngine];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __63__HUNCCameraScrubberViewController__seekToCurrentScrubberValue__block_invoke;
@@ -431,7 +431,7 @@ LABEL_10:
   v18 = v12;
   v14 = v12;
   v15 = v10;
-  [v13 modifyPlaybackFromSender:self usingBlock:v16];
+  [playbackEngine modifyPlaybackFromSender:self usingBlock:v16];
 }
 
 void __63__HUNCCameraScrubberViewController__seekToCurrentScrubberValue__block_invoke(uint64_t a1)
@@ -447,46 +447,46 @@ void __63__HUNCCameraScrubberViewController__seekToCurrentScrubberValue__block_i
 {
   if (![(HUNCCameraScrubberViewController *)self isScrubbing])
   {
-    v3 = [(HUNCCameraScrubberViewController *)self playbackEngine];
-    v4 = [v3 timeControlStatus] == 2;
-    v5 = [(HUNCCameraScrubberViewController *)self playPauseButton];
-    [v5 setSelected:v4];
+    playbackEngine = [(HUNCCameraScrubberViewController *)self playbackEngine];
+    v4 = [playbackEngine timeControlStatus] == 2;
+    playPauseButton = [(HUNCCameraScrubberViewController *)self playPauseButton];
+    [playPauseButton setSelected:v4];
 
-    v6 = [(HUNCCameraScrubberViewController *)self playbackEngine];
-    v14 = [v6 playbackPosition];
+    playbackEngine2 = [(HUNCCameraScrubberViewController *)self playbackEngine];
+    playbackPosition = [playbackEngine2 playbackPosition];
 
-    v7 = [v14 clipPlaybackDate];
-    v8 = [(HUNCCameraScrubberViewController *)self clipStartDate];
-    [v7 timeIntervalSinceDate:v8];
+    clipPlaybackDate = [playbackPosition clipPlaybackDate];
+    clipStartDate = [(HUNCCameraScrubberViewController *)self clipStartDate];
+    [clipPlaybackDate timeIntervalSinceDate:clipStartDate];
     v10 = v9;
     [(HUNCCameraScrubberViewController *)self _playbackLength];
     *&v10 = v10 / v11;
-    v12 = [(HUNCCameraScrubberViewController *)self progressSlider];
+    progressSlider = [(HUNCCameraScrubberViewController *)self progressSlider];
     LODWORD(v13) = LODWORD(v10);
-    [v12 setProgress:v13];
+    [progressSlider setProgress:v13];
   }
 }
 
 - (void)_loopPlaybackIfNeeded
 {
-  v3 = [(HUNCCameraScrubberViewController *)self clipStartDate];
+  clipStartDate = [(HUNCCameraScrubberViewController *)self clipStartDate];
   [(HUNCCameraScrubberViewController *)self _playbackLength];
-  v14 = [v3 dateByAddingTimeInterval:v4 + -0.1];
+  v14 = [clipStartDate dateByAddingTimeInterval:v4 + -0.1];
 
-  v5 = [(HUNCCameraScrubberViewController *)self playbackEngine];
-  v6 = [v5 playbackPosition];
-  v7 = [v6 clipPlaybackDate];
-  v8 = [v7 earlierDate:v14];
+  playbackEngine = [(HUNCCameraScrubberViewController *)self playbackEngine];
+  playbackPosition = [playbackEngine playbackPosition];
+  clipPlaybackDate = [playbackPosition clipPlaybackDate];
+  v8 = [clipPlaybackDate earlierDate:v14];
   if ([v8 isEqualToDate:v14])
   {
   }
 
   else
   {
-    v9 = [(HUNCCameraScrubberViewController *)self playbackEngine];
-    v10 = [v9 playbackPosition];
-    v11 = [v10 clipPlaybackDate];
-    v12 = [v11 isEqualToDate:v14];
+    playbackEngine2 = [(HUNCCameraScrubberViewController *)self playbackEngine];
+    playbackPosition2 = [playbackEngine2 playbackPosition];
+    clipPlaybackDate2 = [playbackPosition2 clipPlaybackDate];
+    v12 = [clipPlaybackDate2 isEqualToDate:v14];
 
     if ((v12 & 1) == 0)
     {
@@ -494,8 +494,8 @@ void __63__HUNCCameraScrubberViewController__seekToCurrentScrubberValue__block_i
     }
   }
 
-  v13 = [(HUNCCameraScrubberViewController *)self progressSlider];
-  [v13 setProgress:0.0];
+  progressSlider = [(HUNCCameraScrubberViewController *)self progressSlider];
+  [progressSlider setProgress:0.0];
 
   [(HUNCCameraScrubberViewController *)self _seekToCurrentScrubberValue];
 LABEL_5:
@@ -503,8 +503,8 @@ LABEL_5:
 
 - (double)_playbackLength
 {
-  v2 = [(HUNCCameraScrubberViewController *)self currentClip];
-  [v2 hf_duration];
+  currentClip = [(HUNCCameraScrubberViewController *)self currentClip];
+  [currentClip hf_duration];
   v4 = v3;
 
   result = 300.0;
@@ -518,13 +518,13 @@ LABEL_5:
 
 - (void)_updateScrubberDisplayLinkState
 {
-  v5 = [(HUNCCameraScrubberViewController *)self playbackEngine];
-  v3 = [v5 timeControlStatus] != 2 || !-[HUNCCameraScrubberViewController isVisible](self, "isVisible") || -[HUNCCameraScrubberViewController isScrubbing](self, "isScrubbing");
-  v4 = [(HUNCCameraScrubberViewController *)self displayLink];
-  [v4 setPaused:v3];
+  playbackEngine = [(HUNCCameraScrubberViewController *)self playbackEngine];
+  v3 = [playbackEngine timeControlStatus] != 2 || !-[HUNCCameraScrubberViewController isVisible](self, "isVisible") || -[HUNCCameraScrubberViewController isScrubbing](self, "isScrubbing");
+  displayLink = [(HUNCCameraScrubberViewController *)self displayLink];
+  [displayLink setPaused:v3];
 }
 
-- (void)_displayLinkUpdated:(id)a3
+- (void)_displayLinkUpdated:(id)updated
 {
   [(HUNCCameraScrubberViewController *)self _loopPlaybackIfNeeded];
 
@@ -533,25 +533,25 @@ LABEL_5:
 
 - (double)currentScrubberResolution
 {
-  v3 = [(HUNCCameraScrubberViewController *)self progressSlider];
-  [v3 bounds];
+  progressSlider = [(HUNCCameraScrubberViewController *)self progressSlider];
+  [progressSlider bounds];
   v5 = v4;
-  v6 = [(HUNCCameraScrubberViewController *)self progressSlider];
-  [v6 contentScaleFactor];
+  progressSlider2 = [(HUNCCameraScrubberViewController *)self progressSlider];
+  [progressSlider2 contentScaleFactor];
   v8 = v5 * v7;
 
   return v8;
 }
 
-- (void)playbackEngine:(id)a3 didUpdateTimeControlStatus:(unint64_t)a4
+- (void)playbackEngine:(id)engine didUpdateTimeControlStatus:(unint64_t)status
 {
-  if (![(HUNCCameraScrubberViewController *)self isScrubbing:a3])
+  if (![(HUNCCameraScrubberViewController *)self isScrubbing:engine])
   {
-    v5 = [(HUNCCameraScrubberViewController *)self playbackEngine];
-    v6 = [v5 playbackPosition];
-    v7 = [v6 contentType];
+    playbackEngine = [(HUNCCameraScrubberViewController *)self playbackEngine];
+    playbackPosition = [playbackEngine playbackPosition];
+    contentType = [playbackPosition contentType];
 
-    if (v7)
+    if (contentType)
     {
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
@@ -577,26 +577,26 @@ uint64_t __78__HUNCCameraScrubberViewController_playbackEngine_didUpdateTimeCont
 
 - (void)showClipScrubber
 {
-  v3 = [(HUNCCameraScrubberViewController *)self displayLink];
-  [v3 setPaused:0];
+  displayLink = [(HUNCCameraScrubberViewController *)self displayLink];
+  [displayLink setPaused:0];
 
   v4 = MEMORY[0x277D144D0];
-  v5 = [(HUNCCameraScrubberViewController *)self clipStartDate];
-  v6 = [v4 clipPositionWithDate:v5];
-  v7 = [(HUNCCameraScrubberViewController *)self playbackEngine];
-  [v7 setPlaybackPosition:v6];
+  clipStartDate = [(HUNCCameraScrubberViewController *)self clipStartDate];
+  v6 = [v4 clipPositionWithDate:clipStartDate];
+  playbackEngine = [(HUNCCameraScrubberViewController *)self playbackEngine];
+  [playbackEngine setPlaybackPosition:v6];
 
-  v8 = [(HUNCCameraScrubberViewController *)self playPauseButton];
-  [v8 setHidden:0];
+  playPauseButton = [(HUNCCameraScrubberViewController *)self playPauseButton];
+  [playPauseButton setHidden:0];
 
-  v9 = [(HUNCCameraScrubberViewController *)self playPauseBackgroundView];
-  [v9 setHidden:0];
+  playPauseBackgroundView = [(HUNCCameraScrubberViewController *)self playPauseBackgroundView];
+  [playPauseBackgroundView setHidden:0];
 
-  v10 = [(HUNCCameraScrubberViewController *)self progressSlider];
-  [v10 setHidden:0];
+  progressSlider = [(HUNCCameraScrubberViewController *)self progressSlider];
+  [progressSlider setHidden:0];
 }
 
-- (void)didMoveToParentViewController:(id)a3
+- (void)didMoveToParentViewController:(id)controller
 {
   v14 = *MEMORY[0x277D85DE8];
   v9.receiver = self;
@@ -607,16 +607,16 @@ uint64_t __78__HUNCCameraScrubberViewController_playbackEngine_didUpdateTimeCont
   {
     v7 = NSStringFromSelector(a2);
     *buf = 138412546;
-    v11 = self;
+    selfCopy = self;
     v12 = 2112;
     v13 = v7;
     _os_log_impl(&dword_20CEB6000, v6, OS_LOG_TYPE_DEFAULT, "%@ : %@", buf, 0x16u);
   }
 
-  if (!a3)
+  if (!controller)
   {
-    v8 = [(HUNCCameraScrubberViewController *)self displayLink];
-    [v8 invalidate];
+    displayLink = [(HUNCCameraScrubberViewController *)self displayLink];
+    [displayLink invalidate];
 
     [(HUNCCameraScrubberViewController *)self setDisplayLink:0];
   }
@@ -628,11 +628,11 @@ uint64_t __78__HUNCCameraScrubberViewController_playbackEngine_didUpdateTimeCont
   if (!progressSlider)
   {
     v4 = [objc_alloc(MEMORY[0x277D758F0]) initWithProgressViewStyle:0];
-    v5 = [MEMORY[0x277D75348] systemOrangeColor];
-    [(UIProgressView *)v4 setProgressTintColor:v5];
+    systemOrangeColor = [MEMORY[0x277D75348] systemOrangeColor];
+    [(UIProgressView *)v4 setProgressTintColor:systemOrangeColor];
 
-    v6 = [MEMORY[0x277D75348] systemGrayColor];
-    [(UIProgressView *)v4 setTrackTintColor:v6];
+    systemGrayColor = [MEMORY[0x277D75348] systemGrayColor];
+    [(UIProgressView *)v4 setTrackTintColor:systemGrayColor];
 
     [(UIProgressView *)v4 setTranslatesAutoresizingMaskIntoConstraints:0];
     v7 = self->_progressSlider;
@@ -670,8 +670,8 @@ uint64_t __78__HUNCCameraScrubberViewController_playbackEngine_didUpdateTimeCont
   {
     v4 = [MEMORY[0x277D75220] buttonWithType:0];
     [(UIButton *)v4 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v5 = [MEMORY[0x277D75348] clearColor];
-    [(UIButton *)v4 setBackgroundColor:v5];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(UIButton *)v4 setBackgroundColor:clearColor];
 
     v6 = HUImageNamed(@"Play");
     v7 = [v6 imageWithRenderingMode:2];
@@ -681,8 +681,8 @@ uint64_t __78__HUNCCameraScrubberViewController_playbackEngine_didUpdateTimeCont
 
     [(UIButton *)v4 setImage:v7 forState:0];
     [(UIButton *)v4 setImage:v9 forState:4];
-    v10 = [MEMORY[0x277D75348] systemWhiteColor];
-    [(UIButton *)v4 setTintColor:v10];
+    systemWhiteColor = [MEMORY[0x277D75348] systemWhiteColor];
+    [(UIButton *)v4 setTintColor:systemWhiteColor];
 
     [(UIButton *)v4 addTarget:self action:sel_playPauseButtonPressed_ forControlEvents:64];
     v11 = self->_playPauseButton;
@@ -719,14 +719,14 @@ uint64_t __78__HUNCCameraScrubberViewController_playbackEngine_didUpdateTimeCont
   {
     v5 = NSStringFromSelector(a2);
     *buf = 138412546;
-    v9 = self;
+    selfCopy = self;
     v10 = 2112;
     v11 = v5;
     _os_log_impl(&dword_20CEB6000, v4, OS_LOG_TYPE_DEFAULT, "%@ : %@", buf, 0x16u);
   }
 
-  v6 = [(HUNCCameraScrubberViewController *)self displayLink];
-  [v6 invalidate];
+  displayLink = [(HUNCCameraScrubberViewController *)self displayLink];
+  [displayLink invalidate];
 
   v7.receiver = self;
   v7.super_class = HUNCCameraScrubberViewController;

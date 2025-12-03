@@ -27,8 +27,8 @@
           objc_enumerationMutation(v3);
         }
 
-        v8 = [*(*(&v35 + 1) + 8 * i) application];
-        [v2 addObject:v8];
+        application = [*(*(&v35 + 1) + 8 * i) application];
+        [v2 addObject:application];
       }
 
       v5 = [v3 countByEnumeratingWithState:&v35 objects:v43 count:16];
@@ -44,9 +44,9 @@
     v31 = 0u;
     v32 = 0u;
     v9 = +[SBMainSwitcherControllerCoordinator sharedInstance];
-    v10 = [v9 recentAppLayouts];
+    recentAppLayouts = [v9 recentAppLayouts];
 
-    v11 = [v10 countByEnumeratingWithState:&v31 objects:v42 count:16];
+    v11 = [recentAppLayouts countByEnumeratingWithState:&v31 objects:v42 count:16];
     if (v11)
     {
       v12 = v11;
@@ -57,7 +57,7 @@
         {
           if (*v32 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(recentAppLayouts);
           }
 
           v15 = *(*(&v31 + 1) + 8 * j);
@@ -69,7 +69,7 @@
           [v15 enumerate:v29];
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v31 objects:v42 count:16];
+        v12 = [recentAppLayouts countByEnumeratingWithState:&v31 objects:v42 count:16];
       }
 
       while (v12);
@@ -99,14 +99,14 @@
         v22 = SBLogCommon();
         if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
         {
-          v23 = [v21 bundleIdentifier];
+          bundleIdentifier = [v21 bundleIdentifier];
           *buf = 138543362;
-          v40 = v23;
+          v40 = bundleIdentifier;
           _os_log_impl(&dword_21ED4E000, v22, OS_LOG_TYPE_INFO, "[%{public}@] Wiping snapshot manifest...", buf, 0xCu);
         }
 
-        v24 = [v21 _snapshotManifest];
-        [v24 deleteAllSnapshots];
+        _snapshotManifest = [v21 _snapshotManifest];
+        [_snapshotManifest deleteAllSnapshots];
 
         [v21 _reingestStaticDefaultImagesInSnapshotManifest];
       }

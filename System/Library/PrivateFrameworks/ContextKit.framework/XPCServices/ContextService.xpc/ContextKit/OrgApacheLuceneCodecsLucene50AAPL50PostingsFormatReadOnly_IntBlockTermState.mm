@@ -2,7 +2,7 @@
 - (OrgApacheLuceneCodecsLucene50AAPL50PostingsFormatReadOnly_IntBlockTermState)init;
 - (id)clone;
 - (id)description;
-- (void)copyFromWithOrgApacheLuceneIndexTermState:(id)a3;
+- (void)copyFromWithOrgApacheLuceneIndexTermState:(id)state;
 @end
 
 @implementation OrgApacheLuceneCodecsLucene50AAPL50PostingsFormatReadOnly_IntBlockTermState
@@ -14,13 +14,13 @@
   return v3;
 }
 
-- (void)copyFromWithOrgApacheLuceneIndexTermState:(id)a3
+- (void)copyFromWithOrgApacheLuceneIndexTermState:(id)state
 {
   v5.receiver = self;
   v5.super_class = OrgApacheLuceneCodecsLucene50AAPL50PostingsFormatReadOnly_IntBlockTermState;
   [(OrgApacheLuceneCodecsBlockTermState *)&v5 copyFromWithOrgApacheLuceneIndexTermState:?];
   objc_opt_class();
-  if (!a3)
+  if (!state)
   {
     JreThrowNullPointerException();
   }
@@ -30,12 +30,12 @@
     JreThrowClassCastException();
   }
 
-  self->docStartFP_ = *(a3 + 7);
-  self->posStartFP_ = *(a3 + 8);
-  self->payStartFP_ = *(a3 + 9);
-  self->lastPosBlockOffset_ = *(a3 + 11);
-  self->skipOffset_ = *(a3 + 10);
-  self->singletonDocID_ = *(a3 + 24);
+  self->docStartFP_ = *(state + 7);
+  self->posStartFP_ = *(state + 8);
+  self->payStartFP_ = *(state + 9);
+  self->lastPosBlockOffset_ = *(state + 11);
+  self->skipOffset_ = *(state + 10);
+  self->singletonDocID_ = *(state + 24);
 }
 
 - (id)description

@@ -10,12 +10,12 @@
   objc_opt_class();
   v2 = __UIAccessibilityCastAsClass();
   objc_opt_class();
-  v3 = [v2 contentConfiguration];
+  contentConfiguration = [v2 contentConfiguration];
   v4 = __UIAccessibilityCastAsClass();
 
-  v5 = [v4 text];
+  text = [v4 text];
 
-  return v5;
+  return text;
 }
 
 - (unint64_t)accessibilityTraits

@@ -18,7 +18,7 @@
   v8 = v4;
   v9 = [v5 actionWithTitle:v7 style:1 handler:v10];
 
-  [a1 addAction:v9];
+  [self addAction:v9];
 }
 
 @end

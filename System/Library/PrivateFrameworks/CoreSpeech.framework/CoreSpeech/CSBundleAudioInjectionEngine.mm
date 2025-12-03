@@ -1,14 +1,14 @@
 @interface CSBundleAudioInjectionEngine
 - (AudioStreamBasicDescription)_defaultOutASBD;
-- (BOOL)attachDevice:(id)a3 withOutError:(id *)a4;
-- (BOOL)setPluginBundleWithPath:(id)a3 withOutError:(id *)a4;
-- (BOOL)startAudioStreamWithOption:(id)a3 withOutError:(id *)a4;
-- (BOOL)stopAudioStreamWithOutError:(id *)a3;
+- (BOOL)attachDevice:(id)device withOutError:(id *)error;
+- (BOOL)setPluginBundleWithPath:(id)path withOutError:(id *)error;
+- (BOOL)startAudioStreamWithOption:(id)option withOutError:(id *)error;
+- (BOOL)stopAudioStreamWithOutError:(id *)error;
 - (CSAudioInjectionEngineDelegate)delegate;
-- (CSBundleAudioInjectionEngine)initWithStreamHandleId:(unint64_t)a3;
-- (id)_compensateChannelDataIfNeeded:(id)a3 receivedNumChannels:(unsigned int)a4;
-- (void)audioBufferAvailable:(id)a3;
-- (void)audioStreamDidStopSuccessfully:(BOOL)a3 error:(id)a4;
+- (CSBundleAudioInjectionEngine)initWithStreamHandleId:(unint64_t)id;
+- (id)_compensateChannelDataIfNeeded:(id)needed receivedNumChannels:(unsigned int)channels;
+- (void)audioBufferAvailable:(id)available;
+- (void)audioStreamDidStopSuccessfully:(BOOL)successfully error:(id)error;
 - (void)start;
 - (void)stop;
 @end
@@ -22,17 +22,17 @@
   return WeakRetained;
 }
 
-- (id)_compensateChannelDataIfNeeded:(id)a3 receivedNumChannels:(unsigned int)a4
+- (id)_compensateChannelDataIfNeeded:(id)needed receivedNumChannels:(unsigned int)channels
 {
-  v5 = a3;
-  if (+[CSConfig inputRecordingNumberOfChannels]<= a4)
+  neededCopy = needed;
+  if (+[CSConfig inputRecordingNumberOfChannels]<= channels)
   {
-    v6 = v5;
+    v6 = neededCopy;
   }
 
   else
   {
-    v6 = [[NSMutableData alloc] initWithLength:{objc_msgSend(v5, "length") / a4 * +[CSConfig inputRecordingNumberOfChannels](CSConfig, "inputRecordingNumberOfChannels")}];
+    v6 = [[NSMutableData alloc] initWithLength:{objc_msgSend(neededCopy, "length") / channels * +[CSConfig inputRecordingNumberOfChannels](CSConfig, "inputRecordingNumberOfChannels")}];
     v7 = +[CSConfig inputRecordingNumberOfChannels];
     v8 = qword_10029DF60;
     if (!(v8 % +[CSUtils loggingHeartbeatRate]))
@@ -43,7 +43,7 @@
         v11 = 136315650;
         v12 = "[CSBundleAudioInjectionEngine _compensateChannelDataIfNeeded:receivedNumChannels:]";
         v13 = 1026;
-        v14 = v7 - a4;
+        v14 = v7 - channels;
         v15 = 2050;
         v16 = qword_10029DF60;
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%s Compensating %{public}u channel(s), heartbeat = %{public}lld", &v11, 0x1Cu);
@@ -51,7 +51,7 @@
     }
 
     ++qword_10029DF60;
-    [v6 replaceBytesInRange:0 withBytes:{objc_msgSend(v5, "length"), objc_msgSend(v5, "bytes")}];
+    [v6 replaceBytesInRange:0 withBytes:{objc_msgSend(neededCopy, "length"), objc_msgSend(neededCopy, "bytes")}];
   }
 
   return v6;
@@ -75,23 +75,23 @@
   }
 }
 
-- (void)audioBufferAvailable:(id)a3
+- (void)audioBufferAvailable:(id)available
 {
-  v4 = a3;
+  availableCopy = available;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100019898;
   v7[3] = &unk_100253C48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = availableCopy;
+  v6 = availableCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)audioStreamDidStopSuccessfully:(BOOL)a3 error:(id)a4
+- (void)audioStreamDidStopSuccessfully:(BOOL)successfully error:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   v6 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
@@ -110,7 +110,7 @@
   }
 }
 
-- (BOOL)stopAudioStreamWithOutError:(id *)a3
+- (BOOL)stopAudioStreamWithOutError:(id *)error
 {
   v13 = 0;
   v14 = &v13;
@@ -134,7 +134,7 @@
   v5 = v14[5];
   if (v5)
   {
-    *a3 = v5;
+    *error = v5;
   }
 
   v6 = *(v10 + 24);
@@ -144,7 +144,7 @@
   return v6;
 }
 
-- (BOOL)startAudioStreamWithOption:(id)a3 withOutError:(id *)a4
+- (BOOL)startAudioStreamWithOption:(id)option withOutError:(id *)error
 {
   v14 = 0;
   v15 = &v14;
@@ -168,7 +168,7 @@
   v6 = v15[5];
   if (v6)
   {
-    *a4 = v6;
+    *error = v6;
   }
 
   v7 = *(v11 + 24);
@@ -200,10 +200,10 @@
   dispatch_sync(queue, block);
 }
 
-- (BOOL)setPluginBundleWithPath:(id)a3 withOutError:(id *)a4
+- (BOOL)setPluginBundleWithPath:(id)path withOutError:(id *)error
 {
-  v6 = a3;
-  if (!v6)
+  pathCopy = path;
+  if (!pathCopy)
   {
     v7 = CSLogContextFacilityCoreSpeech;
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_ERROR))
@@ -214,12 +214,12 @@
     }
   }
 
-  v8 = [NSBundle bundleWithPath:v6];
+  v8 = [NSBundle bundleWithPath:pathCopy];
   if (([v8 load] & 1) == 0)
   {
-    if (a4)
+    if (error)
     {
-      *a4 = [NSError errorWithDomain:CSErrorDomain code:1506 userInfo:0];
+      *error = [NSError errorWithDomain:CSErrorDomain code:1506 userInfo:0];
     }
 
     v19 = CSLogContextFacilityCoreSpeech;
@@ -231,17 +231,17 @@
     v30 = 136315394;
     v31 = "[CSBundleAudioInjectionEngine setPluginBundleWithPath:withOutError:]";
     v32 = 2112;
-    v33 = v6;
+    v33 = pathCopy;
     v20 = "%s Failed to load bundle: %@";
     v21 = v19;
     v22 = 22;
     goto LABEL_24;
   }
 
-  v9 = [v8 principalClass];
-  if (!v9 || (v10 = v9, ([(objc_class *)v9 conformsToProtocol:&OBJC_PROTOCOL___CSBundleAudioProviding]& 1) == 0))
+  principalClass = [v8 principalClass];
+  if (!principalClass || (v10 = principalClass, ([(objc_class *)principalClass conformsToProtocol:&OBJC_PROTOCOL___CSBundleAudioProviding]& 1) == 0))
   {
-    *a4 = [NSError errorWithDomain:CSErrorDomain code:1506 userInfo:0];
+    *error = [NSError errorWithDomain:CSErrorDomain code:1506 userInfo:0];
     v23 = CSLogContextFacilityCoreSpeech;
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_ERROR))
     {
@@ -262,7 +262,7 @@ LABEL_15:
 
   if (!self->_audioPlugin)
   {
-    *a4 = [NSError errorWithDomain:CSErrorDomain code:1506 userInfo:0];
+    *error = [NSError errorWithDomain:CSErrorDomain code:1506 userInfo:0];
     v23 = CSLogContextFacilityCoreSpeech;
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_ERROR))
     {
@@ -287,12 +287,12 @@ LABEL_24:
   [(CSBundleAudioProviding *)self->_audioPlugin setDelegate:self];
   v17 = self->_audioPlugin;
   [(CSBundleAudioInjectionEngine *)self _defaultOutASBD];
-  if (([(CSBundleAudioProviding *)v17 setupAudioFormatWithBlockSize:v16 audioFormat:&v30 outError:a4]& 1) == 0)
+  if (([(CSBundleAudioProviding *)v17 setupAudioFormatWithBlockSize:v16 audioFormat:&v30 outError:error]& 1) == 0)
   {
     v25 = CSLogContextFacilityCoreSpeech;
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_ERROR))
     {
-      v27 = *a4;
+      v27 = *error;
       v28 = v25;
       v29 = [v27 description];
       v30 = 136315394;
@@ -314,15 +314,15 @@ LABEL_16:
   return v18;
 }
 
-- (BOOL)attachDevice:(id)a3 withOutError:(id *)a4
+- (BOOL)attachDevice:(id)device withOutError:(id *)error
 {
-  v6 = [a3 bundlePath];
-  LOBYTE(a4) = [(CSBundleAudioInjectionEngine *)self setPluginBundleWithPath:v6 withOutError:a4];
+  bundlePath = [device bundlePath];
+  LOBYTE(error) = [(CSBundleAudioInjectionEngine *)self setPluginBundleWithPath:bundlePath withOutError:error];
 
-  return a4;
+  return error;
 }
 
-- (CSBundleAudioInjectionEngine)initWithStreamHandleId:(unint64_t)a3
+- (CSBundleAudioInjectionEngine)initWithStreamHandleId:(unint64_t)id
 {
   v13.receiver = self;
   v13.super_class = CSBundleAudioInjectionEngine;
@@ -330,7 +330,7 @@ LABEL_16:
   v5 = v4;
   if (v4)
   {
-    v4->_audioStreamHandleId = a3;
+    v4->_audioStreamHandleId = id;
     v6 = dispatch_queue_create("CSBundleAudioInjectionEngine", 0);
     queue = v5->_queue;
     v5->_queue = v6;

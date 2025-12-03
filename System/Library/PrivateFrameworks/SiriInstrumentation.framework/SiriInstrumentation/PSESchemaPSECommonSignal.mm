@@ -1,30 +1,30 @@
 @interface PSESchemaPSECommonSignal
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (PSESchemaPSECommonSignal)initWithDictionary:(id)a3;
-- (PSESchemaPSECommonSignal)initWithJSON:(id)a3;
+- (PSESchemaPSECommonSignal)initWithDictionary:(id)dictionary;
+- (PSESchemaPSECommonSignal)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasAppFollowup:(BOOL)a3;
-- (void)setHasAppLaunchReason:(BOOL)a3;
-- (void)setHasAppLaunchTimeInSecondsSince2001:(BOOL)a3;
-- (void)setHasHasUserInitiatedFollowup:(BOOL)a3;
-- (void)setHasIsDonatedBySiri:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasAppFollowup:(BOOL)followup;
+- (void)setHasAppLaunchReason:(BOOL)reason;
+- (void)setHasAppLaunchTimeInSecondsSince2001:(BOOL)since2001;
+- (void)setHasHasUserInitiatedFollowup:(BOOL)followup;
+- (void)setHasIsDonatedBySiri:(BOOL)siri;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PSESchemaPSECommonSignal
 
-- (PSESchemaPSECommonSignal)initWithDictionary:(id)a3
+- (PSESchemaPSECommonSignal)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v19.receiver = self;
   v19.super_class = PSESchemaPSECommonSignal;
   v5 = [(PSESchemaPSECommonSignal *)&v19 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"eventDonationTimeInSecondsSince2001"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"eventDonationTimeInSecondsSince2001"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -33,7 +33,7 @@
     }
 
     v18 = v6;
-    v7 = [v4 objectForKeyedSubscript:@"domain"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"domain"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -41,7 +41,7 @@
       [(PSESchemaPSECommonSignal *)v5 setDomain:v8];
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"action"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"action"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -49,28 +49,28 @@
       [(PSESchemaPSECommonSignal *)v5 setAction:v10];
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"isDonatedBySiri"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"isDonatedBySiri"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PSESchemaPSECommonSignal setIsDonatedBySiri:](v5, "setIsDonatedBySiri:", [v11 intValue]);
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"hasUserInitiatedFollowup"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"hasUserInitiatedFollowup"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PSESchemaPSECommonSignal setHasUserInitiatedFollowup:](v5, "setHasUserInitiatedFollowup:", [v12 BOOLValue]);
     }
 
-    v13 = [v4 objectForKeyedSubscript:@"appFollowup"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"appFollowup"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PSESchemaPSECommonSignal setAppFollowup:](v5, "setAppFollowup:", [v13 intValue]);
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"appLaunchTimeInSecondsSince2001"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"appLaunchTimeInSecondsSince2001"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -78,7 +78,7 @@
       [(PSESchemaPSECommonSignal *)v5 setAppLaunchTimeInSecondsSince2001:?];
     }
 
-    v15 = [v4 objectForKeyedSubscript:@"appLaunchReason"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"appLaunchReason"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -91,30 +91,30 @@
   return v5;
 }
 
-- (PSESchemaPSECommonSignal)initWithJSON:(id)a3
+- (PSESchemaPSECommonSignal)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(PSESchemaPSECommonSignal *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(PSESchemaPSECommonSignal *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(PSESchemaPSECommonSignal *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -127,12 +127,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_action)
   {
-    v4 = [(PSESchemaPSECommonSignal *)self action];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"action"];
+    action = [(PSESchemaPSECommonSignal *)self action];
+    v5 = [action copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"action"];
   }
 
   has = self->_has;
@@ -149,7 +149,7 @@
       v8 = off_1E78E13D8[v7];
     }
 
-    [v3 setObject:v8 forKeyedSubscript:@"appFollowup"];
+    [dictionary setObject:v8 forKeyedSubscript:@"appFollowup"];
     has = self->_has;
   }
 
@@ -166,7 +166,7 @@
       v10 = off_1E78E13F8[v9];
     }
 
-    [v3 setObject:v10 forKeyedSubscript:@"appLaunchReason"];
+    [dictionary setObject:v10 forKeyedSubscript:@"appLaunchReason"];
     has = self->_has;
   }
 
@@ -175,14 +175,14 @@
     v11 = MEMORY[0x1E696AD98];
     [(PSESchemaPSECommonSignal *)self appLaunchTimeInSecondsSince2001];
     v12 = [v11 numberWithDouble:?];
-    [v3 setObject:v12 forKeyedSubscript:@"appLaunchTimeInSecondsSince2001"];
+    [dictionary setObject:v12 forKeyedSubscript:@"appLaunchTimeInSecondsSince2001"];
   }
 
   if (self->_domain)
   {
-    v13 = [(PSESchemaPSECommonSignal *)self domain];
-    v14 = [v13 copy];
-    [v3 setObject:v14 forKeyedSubscript:@"domain"];
+    domain = [(PSESchemaPSECommonSignal *)self domain];
+    v14 = [domain copy];
+    [dictionary setObject:v14 forKeyedSubscript:@"domain"];
   }
 
   v15 = self->_has;
@@ -195,7 +195,7 @@
 
 LABEL_22:
     v18 = [MEMORY[0x1E696AD98] numberWithBool:{-[PSESchemaPSECommonSignal hasUserInitiatedFollowup](self, "hasUserInitiatedFollowup")}];
-    [v3 setObject:v18 forKeyedSubscript:@"hasUserInitiatedFollowup"];
+    [dictionary setObject:v18 forKeyedSubscript:@"hasUserInitiatedFollowup"];
 
     if ((*&self->_has & 2) == 0)
     {
@@ -214,14 +214,14 @@ LABEL_23:
       v20 = off_1E78E1418[v19];
     }
 
-    [v3 setObject:v20 forKeyedSubscript:@"isDonatedBySiri"];
+    [dictionary setObject:v20 forKeyedSubscript:@"isDonatedBySiri"];
     goto LABEL_27;
   }
 
   v16 = MEMORY[0x1E696AD98];
   [(PSESchemaPSECommonSignal *)self eventDonationTimeInSecondsSince2001];
   v17 = [v16 numberWithDouble:?];
-  [v3 setObject:v17 forKeyedSubscript:@"eventDonationTimeInSecondsSince2001"];
+  [dictionary setObject:v17 forKeyedSubscript:@"eventDonationTimeInSecondsSince2001"];
 
   v15 = self->_has;
   if ((v15 & 4) != 0)
@@ -236,9 +236,9 @@ LABEL_19:
   }
 
 LABEL_27:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -365,15 +365,15 @@ LABEL_21:
   return v9 ^ v5 ^ v10 ^ v13 ^ v14 ^ v15 ^ v19 ^ v20;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_15;
   }
 
-  if ((*&self->_has & 1) != (v4[60] & 1))
+  if ((*&self->_has & 1) != (equalCopy[60] & 1))
   {
     goto LABEL_15;
   }
@@ -381,27 +381,27 @@ LABEL_21:
   if (*&self->_has)
   {
     eventDonationTimeInSecondsSince2001 = self->_eventDonationTimeInSecondsSince2001;
-    [v4 eventDonationTimeInSecondsSince2001];
+    [equalCopy eventDonationTimeInSecondsSince2001];
     if (eventDonationTimeInSecondsSince2001 != v6)
     {
       goto LABEL_15;
     }
   }
 
-  v7 = [(PSESchemaPSECommonSignal *)self domain];
-  v8 = [v4 domain];
-  if ((v7 != 0) == (v8 == 0))
+  domain = [(PSESchemaPSECommonSignal *)self domain];
+  domain2 = [equalCopy domain];
+  if ((domain != 0) == (domain2 == 0))
   {
     goto LABEL_14;
   }
 
-  v9 = [(PSESchemaPSECommonSignal *)self domain];
-  if (v9)
+  domain3 = [(PSESchemaPSECommonSignal *)self domain];
+  if (domain3)
   {
-    v10 = v9;
-    v11 = [(PSESchemaPSECommonSignal *)self domain];
-    v12 = [v4 domain];
-    v13 = [v11 isEqual:v12];
+    v10 = domain3;
+    domain4 = [(PSESchemaPSECommonSignal *)self domain];
+    domain5 = [equalCopy domain];
+    v13 = [domain4 isEqual:domain5];
 
     if (!v13)
     {
@@ -413,22 +413,22 @@ LABEL_21:
   {
   }
 
-  v7 = [(PSESchemaPSECommonSignal *)self action];
-  v8 = [v4 action];
-  if ((v7 != 0) == (v8 == 0))
+  domain = [(PSESchemaPSECommonSignal *)self action];
+  domain2 = [equalCopy action];
+  if ((domain != 0) == (domain2 == 0))
   {
 LABEL_14:
 
     goto LABEL_15;
   }
 
-  v14 = [(PSESchemaPSECommonSignal *)self action];
-  if (v14)
+  action = [(PSESchemaPSECommonSignal *)self action];
+  if (action)
   {
-    v15 = v14;
-    v16 = [(PSESchemaPSECommonSignal *)self action];
-    v17 = [v4 action];
-    v18 = [v16 isEqual:v17];
+    v15 = action;
+    action2 = [(PSESchemaPSECommonSignal *)self action];
+    action3 = [equalCopy action];
+    v18 = [action2 isEqual:action3];
 
     if (!v18)
     {
@@ -442,19 +442,19 @@ LABEL_14:
 
   has = self->_has;
   v22 = (*&has >> 1) & 1;
-  v23 = v4[60];
+  v23 = equalCopy[60];
   if (v22 == ((v23 >> 1) & 1))
   {
     if (v22)
     {
       isDonatedBySiri = self->_isDonatedBySiri;
-      if (isDonatedBySiri != [v4 isDonatedBySiri])
+      if (isDonatedBySiri != [equalCopy isDonatedBySiri])
       {
         goto LABEL_15;
       }
 
       has = self->_has;
-      v23 = v4[60];
+      v23 = equalCopy[60];
     }
 
     v25 = (*&has >> 2) & 1;
@@ -463,13 +463,13 @@ LABEL_14:
       if (v25)
       {
         hasUserInitiatedFollowup = self->_hasUserInitiatedFollowup;
-        if (hasUserInitiatedFollowup != [v4 hasUserInitiatedFollowup])
+        if (hasUserInitiatedFollowup != [equalCopy hasUserInitiatedFollowup])
         {
           goto LABEL_15;
         }
 
         has = self->_has;
-        v23 = v4[60];
+        v23 = equalCopy[60];
       }
 
       v27 = (*&has >> 3) & 1;
@@ -478,13 +478,13 @@ LABEL_14:
         if (v27)
         {
           appFollowup = self->_appFollowup;
-          if (appFollowup != [v4 appFollowup])
+          if (appFollowup != [equalCopy appFollowup])
           {
             goto LABEL_15;
           }
 
           has = self->_has;
-          v23 = v4[60];
+          v23 = equalCopy[60];
         }
 
         v29 = (*&has >> 4) & 1;
@@ -493,20 +493,20 @@ LABEL_14:
           if (v29)
           {
             appLaunchTimeInSecondsSince2001 = self->_appLaunchTimeInSecondsSince2001;
-            [v4 appLaunchTimeInSecondsSince2001];
+            [equalCopy appLaunchTimeInSecondsSince2001];
             if (appLaunchTimeInSecondsSince2001 != v31)
             {
               goto LABEL_15;
             }
 
             has = self->_has;
-            v23 = v4[60];
+            v23 = equalCopy[60];
           }
 
           v32 = (*&has >> 5) & 1;
           if (v32 == ((v23 >> 5) & 1))
           {
-            if (!v32 || (appLaunchReason = self->_appLaunchReason, appLaunchReason == [v4 appLaunchReason]))
+            if (!v32 || (appLaunchReason = self->_appLaunchReason, appLaunchReason == [equalCopy appLaunchReason]))
             {
               v19 = 1;
               goto LABEL_16;
@@ -524,24 +524,24 @@ LABEL_16:
   return v19;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v7 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     PBDataWriterWriteDoubleField();
   }
 
-  v4 = [(PSESchemaPSECommonSignal *)self domain];
+  domain = [(PSESchemaPSECommonSignal *)self domain];
 
-  if (v4)
+  if (domain)
   {
     PBDataWriterWriteStringField();
   }
 
-  v5 = [(PSESchemaPSECommonSignal *)self action];
+  action = [(PSESchemaPSECommonSignal *)self action];
 
-  if (v5)
+  if (action)
   {
     PBDataWriterWriteStringField();
   }
@@ -606,9 +606,9 @@ LABEL_12:
 LABEL_13:
 }
 
-- (void)setHasAppLaunchReason:(BOOL)a3
+- (void)setHasAppLaunchReason:(BOOL)reason
 {
-  if (a3)
+  if (reason)
   {
     v3 = 32;
   }
@@ -621,9 +621,9 @@ LABEL_13:
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasAppLaunchTimeInSecondsSince2001:(BOOL)a3
+- (void)setHasAppLaunchTimeInSecondsSince2001:(BOOL)since2001
 {
-  if (a3)
+  if (since2001)
   {
     v3 = 16;
   }
@@ -636,9 +636,9 @@ LABEL_13:
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasAppFollowup:(BOOL)a3
+- (void)setHasAppFollowup:(BOOL)followup
 {
-  if (a3)
+  if (followup)
   {
     v3 = 8;
   }
@@ -651,9 +651,9 @@ LABEL_13:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasHasUserInitiatedFollowup:(BOOL)a3
+- (void)setHasHasUserInitiatedFollowup:(BOOL)followup
 {
-  if (a3)
+  if (followup)
   {
     v3 = 4;
   }
@@ -666,9 +666,9 @@ LABEL_13:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasIsDonatedBySiri:(BOOL)a3
+- (void)setHasIsDonatedBySiri:(BOOL)siri
 {
-  if (a3)
+  if (siri)
   {
     v3 = 2;
   }

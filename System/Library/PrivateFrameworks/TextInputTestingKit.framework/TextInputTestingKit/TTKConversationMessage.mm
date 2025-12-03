@@ -1,6 +1,6 @@
 @interface TTKConversationMessage
-+ (id)fromJsonDict:(id)a3;
-+ (id)messageWithText:(id)a3 senderId:(id)a4;
++ (id)fromJsonDict:(id)dict;
++ (id)messageWithText:(id)text senderId:(id)id;
 - (id)toJsonDict;
 @end
 
@@ -19,27 +19,27 @@
   return v3;
 }
 
-+ (id)fromJsonDict:(id)a3
++ (id)fromJsonDict:(id)dict
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"text"];
-  v5 = [v3 objectForKeyedSubscript:@"senderId"];
+  dictCopy = dict;
+  v4 = [dictCopy objectForKeyedSubscript:@"text"];
+  v5 = [dictCopy objectForKeyedSubscript:@"senderId"];
 
   v6 = [TTKConversationMessage messageWithText:v4 senderId:v5];
 
   return v6;
 }
 
-+ (id)messageWithText:(id)a3 senderId:(id)a4
++ (id)messageWithText:(id)text senderId:(id)id
 {
-  v6 = a3;
-  v7 = a4;
+  textCopy = text;
+  idCopy = id;
   v8 = objc_alloc_init(TTKConversationMessage);
   p_isa = &v8->super.isa;
   if (v8)
   {
-    objc_storeStrong(&v8->_text, a3);
-    objc_storeStrong(p_isa + 2, a4);
+    objc_storeStrong(&v8->_text, text);
+    objc_storeStrong(p_isa + 2, id);
   }
 
   return p_isa;

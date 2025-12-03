@@ -1,25 +1,25 @@
 @interface NEKPBICSWrapper
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addMetadataKeys:(id)a3;
-- (void)addMetadataValues:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasCalendarItemCount:(BOOL)a3;
-- (void)setHasNekChangeType:(BOOL)a3;
-- (void)setHasNekStoreType:(BOOL)a3;
-- (void)setHasTaskCompletionDate:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addMetadataKeys:(id)keys;
+- (void)addMetadataValues:(id)values;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasCalendarItemCount:(BOOL)count;
+- (void)setHasNekChangeType:(BOOL)type;
+- (void)setHasNekStoreType:(BOOL)type;
+- (void)setHasTaskCompletionDate:(BOOL)date;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NEKPBICSWrapper
 
-- (void)setHasCalendarItemCount:(BOOL)a3
+- (void)setHasCalendarItemCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 4;
   }
@@ -32,45 +32,45 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)addMetadataKeys:(id)a3
+- (void)addMetadataKeys:(id)keys
 {
-  v4 = a3;
+  keysCopy = keys;
   metadataKeys = self->_metadataKeys;
-  v8 = v4;
+  v8 = keysCopy;
   if (!metadataKeys)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_metadataKeys;
     self->_metadataKeys = v6;
 
-    v4 = v8;
+    keysCopy = v8;
     metadataKeys = self->_metadataKeys;
   }
 
-  [(NSMutableArray *)metadataKeys addObject:v4];
+  [(NSMutableArray *)metadataKeys addObject:keysCopy];
 }
 
-- (void)addMetadataValues:(id)a3
+- (void)addMetadataValues:(id)values
 {
-  v4 = a3;
+  valuesCopy = values;
   metadataValues = self->_metadataValues;
-  v8 = v4;
+  v8 = valuesCopy;
   if (!metadataValues)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_metadataValues;
     self->_metadataValues = v6;
 
-    v4 = v8;
+    valuesCopy = v8;
     metadataValues = self->_metadataValues;
   }
 
-  [(NSMutableArray *)metadataValues addObject:v4];
+  [(NSMutableArray *)metadataValues addObject:valuesCopy];
 }
 
-- (void)setHasTaskCompletionDate:(BOOL)a3
+- (void)setHasTaskCompletionDate:(BOOL)date
 {
-  if (a3)
+  if (date)
   {
     v3 = 2;
   }
@@ -83,9 +83,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasNekChangeType:(BOOL)a3
+- (void)setHasNekChangeType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 8;
   }
@@ -98,9 +98,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasNekStoreType:(BOOL)a3
+- (void)setHasNekStoreType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 16;
   }
@@ -118,8 +118,8 @@
   v7.receiver = self;
   v7.super_class = NEKPBICSWrapper;
   v3 = [(NEKPBICSWrapper *)&v7 description];
-  v4 = [(NEKPBICSWrapper *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(NEKPBICSWrapper *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -137,8 +137,8 @@
   calendarIdentifier = self->_calendarIdentifier;
   if (calendarIdentifier)
   {
-    v7 = [(NEKPBCalendarIdentifier *)calendarIdentifier dictionaryRepresentation];
-    [v4 setObject:v7 forKey:@"calendarIdentifier"];
+    dictionaryRepresentation = [(NEKPBCalendarIdentifier *)calendarIdentifier dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"calendarIdentifier"];
   }
 
   if ((*&self->_has & 4) != 0)
@@ -175,8 +175,8 @@
             objc_enumerationMutation(v11);
           }
 
-          v16 = [*(*(&v28 + 1) + 8 * i) dictionaryRepresentation];
-          [v10 addObject:v16];
+          dictionaryRepresentation2 = [*(*(&v28 + 1) + 8 * i) dictionaryRepresentation];
+          [v10 addObject:dictionaryRepresentation2];
         }
 
         v13 = [(NSMutableArray *)v11 countByEnumeratingWithState:&v28 objects:v32 count:16];
@@ -248,9 +248,9 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_iCSData)
   {
     PBDataWriterWriteDataField();
@@ -377,35 +377,35 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v15 = v4;
+  toCopy = to;
+  v15 = toCopy;
   if (self->_iCSData)
   {
-    [v4 setICSData:?];
-    v4 = v15;
+    [toCopy setICSData:?];
+    toCopy = v15;
   }
 
   if (self->_calendarIdentifier)
   {
     [v15 setCalendarIdentifier:?];
-    v4 = v15;
+    toCopy = v15;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    *(v4 + 8) = self->_calendarItemCount;
-    *(v4 + 112) |= 4u;
+    *(toCopy + 8) = self->_calendarItemCount;
+    *(toCopy + 112) |= 4u;
   }
 
   if ([(NEKPBICSWrapper *)self metadataKeysCount])
   {
     [v15 clearMetadataKeys];
-    v5 = [(NEKPBICSWrapper *)self metadataKeysCount];
-    if (v5)
+    metadataKeysCount = [(NEKPBICSWrapper *)self metadataKeysCount];
+    if (metadataKeysCount)
     {
-      v6 = v5;
+      v6 = metadataKeysCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(NEKPBICSWrapper *)self metadataKeysAtIndex:i];
@@ -417,10 +417,10 @@
   if ([(NEKPBICSWrapper *)self metadataValuesCount])
   {
     [v15 clearMetadataValues];
-    v9 = [(NEKPBICSWrapper *)self metadataValuesCount];
-    if (v9)
+    metadataValuesCount = [(NEKPBICSWrapper *)self metadataValuesCount];
+    if (metadataValuesCount)
     {
-      v10 = v9;
+      v10 = metadataValuesCount;
       for (j = 0; j != v10; ++j)
       {
         v12 = [(NEKPBICSWrapper *)self metadataValuesAtIndex:j];
@@ -486,14 +486,14 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSData *)self->_iCSData copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSData *)self->_iCSData copyWithZone:zone];
   v7 = v5[5];
   v5[5] = v6;
 
-  v8 = [(NEKPBCalendarIdentifier *)self->_calendarIdentifier copyWithZone:a3];
+  v8 = [(NEKPBCalendarIdentifier *)self->_calendarIdentifier copyWithZone:zone];
   v9 = v5[3];
   v5[3] = v8;
 
@@ -522,7 +522,7 @@
           objc_enumerationMutation(v10);
         }
 
-        v15 = [*(*(&v38 + 1) + 8 * i) copyWithZone:a3];
+        v15 = [*(*(&v38 + 1) + 8 * i) copyWithZone:zone];
         [v5 addMetadataKeys:v15];
       }
 
@@ -551,7 +551,7 @@
           objc_enumerationMutation(v16);
         }
 
-        v21 = [*(*(&v34 + 1) + 8 * j) copyWithZone:{a3, v34}];
+        v21 = [*(*(&v34 + 1) + 8 * j) copyWithZone:{zone, v34}];
         [v5 addMetadataValues:v21];
       }
 
@@ -561,11 +561,11 @@
     while (v18);
   }
 
-  v22 = [(NSString *)self->_syncID copyWithZone:a3];
+  v22 = [(NSString *)self->_syncID copyWithZone:zone];
   v23 = v5[13];
   v5[13] = v22;
 
-  v24 = [(NSString *)self->_oldCalendarIdentifier copyWithZone:a3];
+  v24 = [(NSString *)self->_oldCalendarIdentifier copyWithZone:zone];
   v25 = v5[11];
   v5[11] = v24;
 
@@ -575,11 +575,11 @@
     *(v5 + 112) |= 2u;
   }
 
-  v26 = [(NSString *)self->_oldIdentifier copyWithZone:a3, v34];
+  v26 = [(NSString *)self->_oldIdentifier copyWithZone:zone, v34];
   v27 = v5[12];
   v5[12] = v26;
 
-  v28 = [(NSString *)self->_nuevoIdentifier copyWithZone:a3];
+  v28 = [(NSString *)self->_nuevoIdentifier copyWithZone:zone];
   v29 = v5[10];
   v5[10] = v28;
 
@@ -589,7 +589,7 @@
     *(v5 + 112) |= 1u;
   }
 
-  v30 = [(NSData *)self->_lzfseICSData copyWithZone:a3];
+  v30 = [(NSData *)self->_lzfseICSData copyWithZone:zone];
   v31 = v5[6];
   v5[6] = v30;
 
@@ -610,16 +610,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_45;
   }
 
   iCSData = self->_iCSData;
-  if (iCSData | *(v4 + 5))
+  if (iCSData | *(equalCopy + 5))
   {
     if (![(NSData *)iCSData isEqual:?])
     {
@@ -628,7 +628,7 @@
   }
 
   calendarIdentifier = self->_calendarIdentifier;
-  if (calendarIdentifier | *(v4 + 3))
+  if (calendarIdentifier | *(equalCopy + 3))
   {
     if (![(NEKPBCalendarIdentifier *)calendarIdentifier isEqual:?])
     {
@@ -636,28 +636,28 @@
     }
   }
 
-  v7 = *(v4 + 112);
+  v7 = *(equalCopy + 112);
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 112) & 4) == 0 || self->_calendarItemCount != *(v4 + 8))
+    if ((*(equalCopy + 112) & 4) == 0 || self->_calendarItemCount != *(equalCopy + 8))
     {
       goto LABEL_45;
     }
   }
 
-  else if ((*(v4 + 112) & 4) != 0)
+  else if ((*(equalCopy + 112) & 4) != 0)
   {
     goto LABEL_45;
   }
 
   metadataKeys = self->_metadataKeys;
-  if (metadataKeys | *(v4 + 7) && ![(NSMutableArray *)metadataKeys isEqual:?])
+  if (metadataKeys | *(equalCopy + 7) && ![(NSMutableArray *)metadataKeys isEqual:?])
   {
     goto LABEL_45;
   }
 
   metadataValues = self->_metadataValues;
-  if (metadataValues | *(v4 + 8))
+  if (metadataValues | *(equalCopy + 8))
   {
     if (![(NSMutableArray *)metadataValues isEqual:?])
     {
@@ -666,7 +666,7 @@
   }
 
   syncID = self->_syncID;
-  if (syncID | *(v4 + 13))
+  if (syncID | *(equalCopy + 13))
   {
     if (![(NSString *)syncID isEqual:?])
     {
@@ -675,7 +675,7 @@
   }
 
   oldCalendarIdentifier = self->_oldCalendarIdentifier;
-  if (oldCalendarIdentifier | *(v4 + 11))
+  if (oldCalendarIdentifier | *(equalCopy + 11))
   {
     if (![(NSString *)oldCalendarIdentifier isEqual:?])
     {
@@ -683,28 +683,28 @@
     }
   }
 
-  v12 = *(v4 + 112);
+  v12 = *(equalCopy + 112);
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 112) & 2) == 0 || self->_taskCompletionDate != *(v4 + 2))
+    if ((*(equalCopy + 112) & 2) == 0 || self->_taskCompletionDate != *(equalCopy + 2))
     {
       goto LABEL_45;
     }
   }
 
-  else if ((*(v4 + 112) & 2) != 0)
+  else if ((*(equalCopy + 112) & 2) != 0)
   {
     goto LABEL_45;
   }
 
   oldIdentifier = self->_oldIdentifier;
-  if (oldIdentifier | *(v4 + 12) && ![(NSString *)oldIdentifier isEqual:?])
+  if (oldIdentifier | *(equalCopy + 12) && ![(NSString *)oldIdentifier isEqual:?])
   {
     goto LABEL_45;
   }
 
   nuevoIdentifier = self->_nuevoIdentifier;
-  if (nuevoIdentifier | *(v4 + 10))
+  if (nuevoIdentifier | *(equalCopy + 10))
   {
     if (![(NSString *)nuevoIdentifier isEqual:?])
     {
@@ -713,22 +713,22 @@
   }
 
   has = self->_has;
-  v16 = *(v4 + 112);
+  v16 = *(equalCopy + 112);
   if (has)
   {
-    if ((*(v4 + 112) & 1) == 0 || self->_displayOrder != *(v4 + 1))
+    if ((*(equalCopy + 112) & 1) == 0 || self->_displayOrder != *(equalCopy + 1))
     {
       goto LABEL_45;
     }
   }
 
-  else if (*(v4 + 112))
+  else if (*(equalCopy + 112))
   {
     goto LABEL_45;
   }
 
   lzfseICSData = self->_lzfseICSData;
-  if (lzfseICSData | *(v4 + 6))
+  if (lzfseICSData | *(equalCopy + 6))
   {
     if (![(NSData *)lzfseICSData isEqual:?])
     {
@@ -742,21 +742,21 @@ LABEL_45:
 
   if ((has & 8) != 0)
   {
-    if ((*(v4 + 112) & 8) == 0 || self->_nekChangeType != *(v4 + 18))
+    if ((*(equalCopy + 112) & 8) == 0 || self->_nekChangeType != *(equalCopy + 18))
     {
       goto LABEL_45;
     }
   }
 
-  else if ((*(v4 + 112) & 8) != 0)
+  else if ((*(equalCopy + 112) & 8) != 0)
   {
     goto LABEL_45;
   }
 
-  v18 = (*(v4 + 112) & 0x10) == 0;
+  v18 = (*(equalCopy + 112) & 0x10) == 0;
   if ((has & 0x10) != 0)
   {
-    if ((*(v4 + 112) & 0x10) == 0 || self->_nekStoreType != *(v4 + 19))
+    if ((*(equalCopy + 112) & 0x10) == 0 || self->_nekStoreType != *(equalCopy + 19))
     {
       goto LABEL_45;
     }
@@ -857,16 +857,16 @@ LABEL_17:
   return v21 ^ v22 ^ v20 ^ v19 ^ v3 ^ v4 ^ v5 ^ v8 ^ v12 ^ v13 ^ v14 ^ v15 ^ v16 ^ v17;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 5))
+  fromCopy = from;
+  if (*(fromCopy + 5))
   {
     [(NEKPBICSWrapper *)self setICSData:?];
   }
 
   calendarIdentifier = self->_calendarIdentifier;
-  v6 = *(v4 + 3);
+  v6 = *(fromCopy + 3);
   if (calendarIdentifier)
   {
     if (v6)
@@ -880,9 +880,9 @@ LABEL_17:
     [(NEKPBICSWrapper *)self setCalendarIdentifier:?];
   }
 
-  if ((*(v4 + 112) & 4) != 0)
+  if ((*(fromCopy + 112) & 4) != 0)
   {
-    self->_calendarItemCount = *(v4 + 8);
+    self->_calendarItemCount = *(fromCopy + 8);
     *&self->_has |= 4u;
   }
 
@@ -890,7 +890,7 @@ LABEL_17:
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v7 = *(v4 + 7);
+  v7 = *(fromCopy + 7);
   v8 = [v7 countByEnumeratingWithState:&v22 objects:v27 count:16];
   if (v8)
   {
@@ -918,7 +918,7 @@ LABEL_17:
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v12 = *(v4 + 8);
+  v12 = *(fromCopy + 8);
   v13 = [v12 countByEnumeratingWithState:&v18 objects:v26 count:16];
   if (v13)
   {
@@ -942,54 +942,54 @@ LABEL_17:
     while (v14);
   }
 
-  if (*(v4 + 13))
+  if (*(fromCopy + 13))
   {
     [(NEKPBICSWrapper *)self setSyncID:?];
   }
 
-  if (*(v4 + 11))
+  if (*(fromCopy + 11))
   {
     [(NEKPBICSWrapper *)self setOldCalendarIdentifier:?];
   }
 
-  if ((*(v4 + 112) & 2) != 0)
+  if ((*(fromCopy + 112) & 2) != 0)
   {
-    self->_taskCompletionDate = *(v4 + 2);
+    self->_taskCompletionDate = *(fromCopy + 2);
     *&self->_has |= 2u;
   }
 
-  if (*(v4 + 12))
+  if (*(fromCopy + 12))
   {
     [(NEKPBICSWrapper *)self setOldIdentifier:?];
   }
 
-  if (*(v4 + 10))
+  if (*(fromCopy + 10))
   {
     [(NEKPBICSWrapper *)self setNuevoIdentifier:?];
   }
 
-  if (*(v4 + 112))
+  if (*(fromCopy + 112))
   {
-    self->_displayOrder = *(v4 + 1);
+    self->_displayOrder = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(NEKPBICSWrapper *)self setLzfseICSData:?];
   }
 
-  v17 = *(v4 + 112);
+  v17 = *(fromCopy + 112);
   if ((v17 & 8) != 0)
   {
-    self->_nekChangeType = *(v4 + 18);
+    self->_nekChangeType = *(fromCopy + 18);
     *&self->_has |= 8u;
-    v17 = *(v4 + 112);
+    v17 = *(fromCopy + 112);
   }
 
   if ((v17 & 0x10) != 0)
   {
-    self->_nekStoreType = *(v4 + 19);
+    self->_nekStoreType = *(fromCopy + 19);
     *&self->_has |= 0x10u;
   }
 }

@@ -1,28 +1,28 @@
 @interface APSigningQueueItem
-+ (id)createItemWithRequest:(id)a3 requestTimestamp:(id)a4 interval:(unint64_t)a5 jsonBody:(id)a6 startDate:(id)a7 deliveryStartDate:(id)a8 completionHandler:(id)a9;
++ (id)createItemWithRequest:(id)request requestTimestamp:(id)timestamp interval:(unint64_t)interval jsonBody:(id)body startDate:(id)date deliveryStartDate:(id)startDate completionHandler:(id)handler;
 @end
 
 @implementation APSigningQueueItem
 
-+ (id)createItemWithRequest:(id)a3 requestTimestamp:(id)a4 interval:(unint64_t)a5 jsonBody:(id)a6 startDate:(id)a7 deliveryStartDate:(id)a8 completionHandler:(id)a9
++ (id)createItemWithRequest:(id)request requestTimestamp:(id)timestamp interval:(unint64_t)interval jsonBody:(id)body startDate:(id)date deliveryStartDate:(id)startDate completionHandler:(id)handler
 {
-  v15 = a9;
-  v16 = a8;
-  v17 = a7;
-  v18 = a6;
-  v19 = a4;
-  v20 = a3;
+  handlerCopy = handler;
+  startDateCopy = startDate;
+  dateCopy = date;
+  bodyCopy = body;
+  timestampCopy = timestamp;
+  requestCopy = request;
   v21 = objc_alloc_init(APSigningQueueItem);
-  [(APSigningQueueItem *)v21 setRequest:v20];
+  [(APSigningQueueItem *)v21 setRequest:requestCopy];
 
-  [(APSigningQueueItem *)v21 setRequestTimestamp:v19];
-  [(APSigningQueueItem *)v21 setIntervalId:a5];
-  [(APSigningQueueItem *)v21 setJsonBody:v18];
+  [(APSigningQueueItem *)v21 setRequestTimestamp:timestampCopy];
+  [(APSigningQueueItem *)v21 setIntervalId:interval];
+  [(APSigningQueueItem *)v21 setJsonBody:bodyCopy];
 
-  [(APSigningQueueItem *)v21 setStartDate:v17];
-  [(APSigningQueueItem *)v21 setHandler:v15];
+  [(APSigningQueueItem *)v21 setStartDate:dateCopy];
+  [(APSigningQueueItem *)v21 setHandler:handlerCopy];
 
-  [(APSigningQueueItem *)v21 setDeliveryStartDate:v16];
+  [(APSigningQueueItem *)v21 setDeliveryStartDate:startDateCopy];
 
   return v21;
 }

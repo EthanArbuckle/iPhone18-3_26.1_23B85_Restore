@@ -1,7 +1,7 @@
 @interface VNFaceAnalyzerCompoundRequestConfigurationGroups
 - (VNFaceAnalyzerCompoundRequestConfigurationGroups)init;
 - (id)allConfigurations;
-- (id)configurationForRequest:(id)a3 withObservationGroup:(id)a4 compoundRequestRevision:(unint64_t)a5;
+- (id)configurationForRequest:(id)request withObservationGroup:(id)group compoundRequestRevision:(unint64_t)revision;
 @end
 
 @implementation VNFaceAnalyzerCompoundRequestConfigurationGroups
@@ -9,65 +9,65 @@
 - (id)allConfigurations
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v4 = [(NSMutableDictionary *)self->_generalConfigurations allValues];
-  [v3 addObjectsFromArray:v4];
+  allValues = [(NSMutableDictionary *)self->_generalConfigurations allValues];
+  [v3 addObjectsFromArray:allValues];
 
-  v5 = [(NSMutableDictionary *)self->_observationGroupConfigurations allValues];
-  [v3 addObjectsFromArray:v5];
+  allValues2 = [(NSMutableDictionary *)self->_observationGroupConfigurations allValues];
+  [v3 addObjectsFromArray:allValues2];
 
   return v3;
 }
 
-- (id)configurationForRequest:(id)a3 withObservationGroup:(id)a4 compoundRequestRevision:(unint64_t)a5
+- (id)configurationForRequest:(id)request withObservationGroup:(id)group compoundRequestRevision:(unint64_t)revision
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 detectionLevel];
+  requestCopy = request;
+  groupCopy = group;
+  detectionLevel = [requestCopy detectionLevel];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = [v8 forceFaceprintCreation];
+    forceFaceprintCreation = [requestCopy forceFaceprintCreation];
   }
 
   else
   {
-    v11 = 0;
+    forceFaceprintCreation = 0;
   }
 
   objc_opt_class();
   [VNError VNAssert:objc_opt_isKindOfClass() & 1 log:@"Request object must be of type VNImageBasedRequest"];
-  [v8 regionOfInterest];
+  [requestCopy regionOfInterest];
   v13 = v12;
   v15 = v14;
   v17 = v16;
   v19 = v18;
-  if (v9 && [v9 count])
+  if (groupCopy && [groupCopy count])
   {
     v20 = objc_alloc(MEMORY[0x1E696AEC0]);
-    v21 = [v9 description];
-    v22 = [v20 initWithFormat:@"%@:%u:%u:%lu", v21, v10, v11, a5];
+    v21 = [groupCopy description];
+    revision = [v20 initWithFormat:@"%@:%u:%u:%lu", v21, detectionLevel, forceFaceprintCreation, revision];
 
-    v23 = [(NSMutableDictionary *)self->_observationGroupConfigurations objectForKeyedSubscript:v22];
+    v23 = [(NSMutableDictionary *)self->_observationGroupConfigurations objectForKeyedSubscript:revision];
     if (!v23)
     {
       v23 = [[VNFaceAnalyzerCompoundRequestConfiguration alloc] initWithRequestClass:objc_opt_class()];
-      [(NSMutableDictionary *)self->_observationGroupConfigurations setObject:v23 forKeyedSubscript:v22];
+      [(NSMutableDictionary *)self->_observationGroupConfigurations setObject:v23 forKeyedSubscript:revision];
     }
   }
 
   else
   {
-    v22 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%f, %f, %f, %f:%u:%u:%lu", v13, v15, v17, v19, v10, v11, a5];
-    v23 = [(NSMutableDictionary *)self->_generalConfigurations objectForKeyedSubscript:v22];
+    revision = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%f, %f, %f, %f:%u:%u:%lu", v13, v15, v17, v19, detectionLevel, forceFaceprintCreation, revision];
+    v23 = [(NSMutableDictionary *)self->_generalConfigurations objectForKeyedSubscript:revision];
     if (!v23)
     {
       v23 = [[VNFaceAnalyzerCompoundRequestConfiguration alloc] initWithRequestClass:objc_opt_class()];
-      [(NSMutableDictionary *)self->_generalConfigurations setObject:v23 forKeyedSubscript:v22];
+      [(NSMutableDictionary *)self->_generalConfigurations setObject:v23 forKeyedSubscript:revision];
     }
   }
 
-  v24 = [(VNFaceAnalyzerCompoundRequestConfiguration *)v23 originalRequests];
-  [v24 addObject:v8];
+  originalRequests = [(VNFaceAnalyzerCompoundRequestConfiguration *)v23 originalRequests];
+  [originalRequests addObject:requestCopy];
 
   return v23;
 }

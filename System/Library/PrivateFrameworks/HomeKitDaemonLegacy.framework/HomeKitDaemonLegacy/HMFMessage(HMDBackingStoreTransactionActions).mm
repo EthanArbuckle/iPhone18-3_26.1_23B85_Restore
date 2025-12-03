@@ -6,8 +6,8 @@
 
 - (void)transactionResult
 {
-  v1 = [a1 userInfo];
-  v2 = [v1 objectForKey:@"_reserved_BackingStoreTransactionResult"];
+  userInfo = [self userInfo];
+  v2 = [userInfo objectForKey:@"_reserved_BackingStoreTransactionResult"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())

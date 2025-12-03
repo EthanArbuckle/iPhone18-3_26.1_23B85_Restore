@@ -1,63 +1,63 @@
 @interface CIRedEyeRepair
-+ (CGRect)supportRectangleWithFaceArray:(id)a3 imageSize:(CGSize)a4;
-+ (CGRect)supportRectangleWithPoint:(CGPoint)a3 imageSize:(CGSize)a4 IOD:(float)a5;
-+ (CGRect)supportRectangleWithRepair:(id)a3 imageSize:(CGSize)a4;
-+ (float)upperRepairDistance:(float)a3;
-+ (float)upperRepairDistanceFraction:(float)a3;
-- ($989D4B698364BD1E7054E5BF7672D090)repairDecisionWithFaceRecord:(SEL)a3 left:(id *)a4 redHopper:(BOOL)a5 whiteHopper:(id *)a6;
++ (CGRect)supportRectangleWithFaceArray:(id)array imageSize:(CGSize)size;
++ (CGRect)supportRectangleWithPoint:(CGPoint)point imageSize:(CGSize)size IOD:(float)d;
++ (CGRect)supportRectangleWithRepair:(id)repair imageSize:(CGSize)size;
++ (float)upperRepairDistance:(float)distance;
++ (float)upperRepairDistanceFraction:(float)fraction;
+- ($989D4B698364BD1E7054E5BF7672D090)repairDecisionWithFaceRecord:(SEL)record left:(id *)left redHopper:(BOOL)hopper whiteHopper:(id *)whiteHopper;
 - ($A3B2E143E1A03423F9FC703C010436DC)standardTemplate;
-- (BOOL)computeTrimmedBitmaps:(id *)a3 newY:(id *)a4 newCbCr:(id *)a5 IR:(id)a6 newTrimY:(id *)a7 newTrimCbCr:(id *)a8 returningYR:(id *)a9 andCbCrR:(id *)a10;
-- (BOOL)extractAndGatherProminencesWithRect:(id)a3 face:(id *)a4 faceIndex:(int)a5 left:(BOOL)a6 maxwindowsize:(float)a7 repairsize:(float)a8 returningRedHopper:(id *)a9 whiteHopper:(id *)a10 redChannel:(id *)a11 redChannelMask:(id *)a12;
-- (BOOL)extractReusableAlignedBitmapsAroundPoint:(id *)a3 YR:(id)a4 subYBitmap:(id *)a5 subCbCrBitmap:(id *)a6;
-- (BOOL)gatherProminencesWithC:(id *)a3 MC:(id *)a4 altC:(id *)a5 altMC:(id *)a6 maxwindowsize:(int)a7 repairsize:(int)a8 IR:(id)a9 fr:(id *)a10 intoHopper:(id *)a11 faceIndex:(int)a12 left:(BOOL)a13;
-- (BOOL)gatherProminencesWithC:(id *)a3 MC:(id *)a4 maxwindowsize:(int)a5 repairsize:(int)a6 IR:(id)a7 fr:(id *)a8 intoHopper:(id *)a9 faceIndex:(int)a10 left:(BOOL)a11 coss:(float)a12[10] sins:(float)a13[10] bitmapName:(char *)a14;
-- (BOOL)getBlockSetWithImage:(CGImage *)a3 into:(id *)a4 width:(unint64_t)a5 height:(unint64_t)a6;
-- (BOOL)getBool:(BOOL *)a3 d:(id)a4 s:(id)a5;
-- (BOOL)getDataProviderBytePtrWithImage:(CGImage *)a3 into:(id *)a4 width:(unint64_t)a5 height:(unint64_t)a6;
-- (BOOL)getDataProviderCopyWithImage:(CGImage *)a3 into:(id *)a4;
-- (BOOL)getFloat:(float *)a3 d:(id)a4 s:(id)a5;
-- (BOOL)getInt:(int *)a3 d:(id)a4 s:(id)a5;
+- (BOOL)computeTrimmedBitmaps:(id *)bitmaps newY:(id *)y newCbCr:(id *)cr IR:(id)r newTrimY:(id *)trimY newTrimCbCr:(id *)cbCr returningYR:(id *)yR andCbCrR:(id *)self0;
+- (BOOL)extractAndGatherProminencesWithRect:(id)rect face:(id *)face faceIndex:(int)index left:(BOOL)left maxwindowsize:(float)maxwindowsize repairsize:(float)repairsize returningRedHopper:(id *)hopper whiteHopper:(id *)self0 redChannel:(id *)self1 redChannelMask:(id *)self2;
+- (BOOL)extractReusableAlignedBitmapsAroundPoint:(id *)point YR:(id)r subYBitmap:(id *)bitmap subCbCrBitmap:(id *)crBitmap;
+- (BOOL)gatherProminencesWithC:(id *)c MC:(id *)mC altC:(id *)altC altMC:(id *)altMC maxwindowsize:(int)maxwindowsize repairsize:(int)repairsize IR:(id)r fr:(id *)self0 intoHopper:(id *)self1 faceIndex:(int)self2 left:(BOOL)self3;
+- (BOOL)gatherProminencesWithC:(id *)c MC:(id *)mC maxwindowsize:(int)maxwindowsize repairsize:(int)repairsize IR:(id)r fr:(id *)fr intoHopper:(id *)hopper faceIndex:(int)self0 left:(BOOL)self1 coss:(float)self2[10] sins:(float)self3[10] bitmapName:(char *)self4;
+- (BOOL)getBlockSetWithImage:(CGImage *)image into:(id *)into width:(unint64_t)width height:(unint64_t)height;
+- (BOOL)getBool:(BOOL *)bool d:(id)d s:(id)s;
+- (BOOL)getDataProviderBytePtrWithImage:(CGImage *)image into:(id *)into width:(unint64_t)width height:(unint64_t)height;
+- (BOOL)getDataProviderCopyWithImage:(CGImage *)image into:(id *)into;
+- (BOOL)getFloat:(float *)float d:(id)d s:(id)s;
+- (BOOL)getInt:(int *)int d:(id)d s:(id)s;
 - (CGImage)createRepairedImage;
-- (CIRedEyeRepair)initWithCGImage:(CGImage *)a3 cameraModel:(id)a4;
-- (CIRedEyeRepair)initWithDeskView:(id)a3 andFrame:(id *)a4;
-- (CIRedEyeRepair)initWithExternalBuffer:(char *)a3 size:(CGSize)a4 rowBytes:(unint64_t)a5;
-- (CIRedEyeRepair)initWithExternalBuffer:(char *)a3 subRectangle:(CGRect)a4 fullSize:(CGSize)a5 rowBytes:(unint64_t)a6 cameraModel:(id)a7;
-- (CIRedEyeRepair)initWithFrameExternalBuffer:(id *)a3;
-- (CIRedEyeRepair)initWithIOSurface:(__IOSurface *)a3 format:(int)a4 colorSpace:(CGColorSpace *)a5 cameraModel:(id)a6;
-- (CIRedEyeRepair)repairWithTag:(int)a3;
-- (float)confidenceWithIOD:(float)a3 repair:(int)a4 andProminenceDifference:(int)a5;
-- (float)extractAverageFaceY:(id *)a3 contrast:(float *)a4 faceIndex:(int)a5;
-- (float)lowerRepairSizeFraction:(float)a3;
-- (float)upperRepairSizeFraction:(float)a3;
+- (CIRedEyeRepair)initWithCGImage:(CGImage *)image cameraModel:(id)model;
+- (CIRedEyeRepair)initWithDeskView:(id)view andFrame:(id *)frame;
+- (CIRedEyeRepair)initWithExternalBuffer:(char *)buffer size:(CGSize)size rowBytes:(unint64_t)bytes;
+- (CIRedEyeRepair)initWithExternalBuffer:(char *)buffer subRectangle:(CGRect)rectangle fullSize:(CGSize)size rowBytes:(unint64_t)bytes cameraModel:(id)model;
+- (CIRedEyeRepair)initWithFrameExternalBuffer:(id *)buffer;
+- (CIRedEyeRepair)initWithIOSurface:(__IOSurface *)surface format:(int)format colorSpace:(CGColorSpace *)space cameraModel:(id)model;
+- (CIRedEyeRepair)repairWithTag:(int)tag;
+- (float)confidenceWithIOD:(float)d repair:(int)repair andProminenceDifference:(int)difference;
+- (float)extractAverageFaceY:(id *)y contrast:(float *)contrast faceIndex:(int)index;
+- (float)lowerRepairSizeFraction:(float)fraction;
+- (float)upperRepairSizeFraction:(float)fraction;
 - (id)repairArray;
-- (int)applyEyeRepairWithEye:(id *)a3 left:(BOOL)a4 IOD:(float)a5 autoPupilTonality:(BOOL)a6 match:(id *)a7 faceIndex:(int)a8 whiteHopper:(id *)a9;
-- (int)averageValueFromY:(id *)a3 withinSkinMask:(id *)a4 butOutsideAlpha:(id *)a5;
-- (int)distanceMaskFromPolyToCb:(int)a3 Cr:(int)a4;
-- (int)redEyeRemovalWithData:(id *)a3;
-- (int)redEyeRemovalWithPoint:(CGPoint)a3 alignPupilShades:(BOOL)a4 matching:(id)a5 force:(int)a6 IOD:(float)a7 tap:(BOOL)a8;
-- (int)redoRepairWithTag:(int)a3 IOD:(float)a4;
-- (void)autoRepairExtractAndSearchLeft:(id)a3 right:(id)a4 data:(id *)a5 repairSize:(float)a6 autoPupilTonality:(BOOL)a7 faceIndex:(int)a8;
-- (void)autoRepairWithFaceArray:(id)a3;
+- (int)applyEyeRepairWithEye:(id *)eye left:(BOOL)left IOD:(float)d autoPupilTonality:(BOOL)tonality match:(id *)match faceIndex:(int)index whiteHopper:(id *)hopper;
+- (int)averageValueFromY:(id *)y withinSkinMask:(id *)mask butOutsideAlpha:(id *)alpha;
+- (int)distanceMaskFromPolyToCb:(int)cb Cr:(int)cr;
+- (int)redEyeRemovalWithData:(id *)data;
+- (int)redEyeRemovalWithPoint:(CGPoint)point alignPupilShades:(BOOL)shades matching:(id)matching force:(int)force IOD:(float)d tap:(BOOL)tap;
+- (int)redoRepairWithTag:(int)tag IOD:(float)d;
+- (void)autoRepairExtractAndSearchLeft:(id)left right:(id)right data:(id *)data repairSize:(float)size autoPupilTonality:(BOOL)tonality faceIndex:(int)index;
+- (void)autoRepairWithFaceArray:(id)array;
 - (void)dealloc;
-- (void)executeRepair:(id)a3;
-- (void)executeRepairArray:(id)a3;
+- (void)executeRepair:(id)repair;
+- (void)executeRepairArray:(id)array;
 - (void)initializeNonDebugVariables;
-- (void)insertIntoProminenceVettingHopper:(id *)a3 max:(int)a4 outside:(int)a5 confidence:(float)a6 distance:(float)a7 row:(int)a8 column:(int)a9 IOD:(float)a10;
-- (void)orientPointX:(float *)a3 Y:(float *)a4;
-- (void)orientRectangleMinX:(float *)a3 maxX:(float *)a4 minY:(float *)a5 maxY:(float *)a6;
+- (void)insertIntoProminenceVettingHopper:(id *)hopper max:(int)max outside:(int)outside confidence:(float)confidence distance:(float)distance row:(int)row column:(int)column IOD:(float)self0;
+- (void)orientPointX:(float *)x Y:(float *)y;
+- (void)orientRectangleMinX:(float *)x maxX:(float *)maxX minY:(float *)y maxY:(float *)maxY;
 - (void)prepareLineFunctions;
 - (void)repairExternalBuffer;
 - (void)skinInit;
-- (void)undoRepair:(int)a3;
+- (void)undoRepair:(int)repair;
 @end
 
 @implementation CIRedEyeRepair
 
-- (BOOL)getBlockSetWithImage:(CGImage *)a3 into:(id *)a4 width:(unint64_t)a5 height:(unint64_t)a6
+- (BOOL)getBlockSetWithImage:(CGImage *)image into:(id *)into width:(unint64_t)width height:(unint64_t)height
 {
   CGImageGetImageProvider();
-  CGImageGetWidth(a3);
-  CGImageGetHeight(a3);
+  CGImageGetWidth(image);
+  CGImageGetHeight(image);
   Mutable = CFDictionaryCreateMutable(0, 1, MEMORY[0x1E695E9D8], MEMORY[0x1E695E9E8]);
   CFDictionaryAddValue(Mutable, *MEMORY[0x1E695F298], *MEMORY[0x1E695E4D0]);
   v12 = CGImageProviderCopyImageBlockSetWithOptions();
@@ -75,7 +75,7 @@
   }
 
   CGImageBlockGetRect();
-  v16 = v15 == a5 && v14 == a6;
+  v16 = v15 == width && v14 == height;
   if (!v16 || (BytesPerRow = CGImageBlockGetBytesPerRow(), (Data = CGImageBlockGetData()) == 0))
   {
     CGImageBlockSetRelease();
@@ -85,46 +85,46 @@ LABEL_11:
   }
 
   LOBYTE(ImageBlock) = 1;
-  constructBitmap(a4, Data, a5, a6, 4, 1, BytesPerRow, 100.0);
+  constructBitmap(into, Data, width, height, 4, 1, BytesPerRow, 100.0);
   self->blockSet = v12;
   self->imageSourceType = 0;
   return ImageBlock;
 }
 
-- (BOOL)getDataProviderBytePtrWithImage:(CGImage *)a3 into:(id *)a4 width:(unint64_t)a5 height:(unint64_t)a6
+- (BOOL)getDataProviderBytePtrWithImage:(CGImage *)image into:(id *)into width:(unint64_t)width height:(unint64_t)height
 {
-  v6 = a6;
-  v7 = a5;
-  DataProvider = CGImageGetDataProvider(a3);
+  heightCopy = height;
+  widthCopy = width;
+  DataProvider = CGImageGetDataProvider(image);
   v12 = CGDataProviderRetainBytePtr();
   if (v12)
   {
-    BytesPerRow = CGImageGetBytesPerRow(a3);
+    BytesPerRow = CGImageGetBytesPerRow(image);
     self->releaseMe = CFRetain(DataProvider);
-    constructBitmap(a4, v12, v7, v6, 4, 1, BytesPerRow, 100.0);
+    constructBitmap(into, v12, widthCopy, heightCopy, 4, 1, BytesPerRow, 100.0);
     self->imageSourceType = 1;
   }
 
   return v12 != 0;
 }
 
-- (BOOL)getDataProviderCopyWithImage:(CGImage *)a3 into:(id *)a4
+- (BOOL)getDataProviderCopyWithImage:(CGImage *)image into:(id *)into
 {
-  DataProvider = CGImageGetDataProvider(a3);
+  DataProvider = CGImageGetDataProvider(image);
   v8 = CGDataProviderCopyData(DataProvider);
   BytePtr = CFDataGetBytePtr(v8);
-  Width = CGImageGetWidth(a3);
-  Height = CGImageGetHeight(a3);
-  BytesPerRow = CGImageGetBytesPerRow(a3);
-  constructBitmap(a4, BytePtr, Width, Height, 4, 1, BytesPerRow, 100.0);
+  Width = CGImageGetWidth(image);
+  Height = CGImageGetHeight(image);
+  BytesPerRow = CGImageGetBytesPerRow(image);
+  constructBitmap(into, BytePtr, Width, Height, 4, 1, BytesPerRow, 100.0);
   self->dataRef = v8;
   self->imageSourceType = 2;
   return 1;
 }
 
-- (CIRedEyeRepair)initWithCGImage:(CGImage *)a3 cameraModel:(id)a4
+- (CIRedEyeRepair)initWithCGImage:(CGImage *)image cameraModel:(id)model
 {
-  if (CGImageGetBitsPerComponent(a3) != 8)
+  if (CGImageGetBitsPerComponent(image) != 8)
   {
     return 0;
   }
@@ -132,17 +132,17 @@ LABEL_11:
   v7 = malloc_type_calloc(1uLL, 0x180uLL, 0x1030040C7AB5F0AuLL);
   v7[92] = 1;
   *(v7 + 372) = 0;
-  if ([a4 hasPrefix:@"iPhone"])
+  if ([model hasPrefix:@"iPhone"])
   {
     *(v7 + 372) = 1;
   }
 
   v7[94] = 1101004800;
-  Width = CGImageGetWidth(a3);
-  Height = CGImageGetHeight(a3);
-  if (![(CIRedEyeRepair *)self getBlockSetWithImage:a3 into:v7 + 72 width:Width height:Height]&& ![(CIRedEyeRepair *)self getDataProviderBytePtrWithImage:a3 into:v7 + 72 width:Width height:Height])
+  Width = CGImageGetWidth(image);
+  Height = CGImageGetHeight(image);
+  if (![(CIRedEyeRepair *)self getBlockSetWithImage:image into:v7 + 72 width:Width height:Height]&& ![(CIRedEyeRepair *)self getDataProviderBytePtrWithImage:image into:v7 + 72 width:Width height:Height])
   {
-    [(CIRedEyeRepair *)self getDataProviderCopyWithImage:a3 into:v7 + 72];
+    [(CIRedEyeRepair *)self getDataProviderCopyWithImage:image into:v7 + 72];
   }
 
   v10 = v7[74];
@@ -151,16 +151,16 @@ LABEL_11:
   v7[83] = v11;
   *(v7 + 42) = makeBitmapRect(0, 0, v10, v11);
   *(v7 + 43) = v12;
-  ColorSpace = CGImageGetColorSpace(a3);
+  ColorSpace = CGImageGetColorSpace(image);
   *(v7 + 44) = CGColorSpaceRetain(ColorSpace);
-  if (!a3)
+  if (!image)
   {
     v7[90] = CGImageGetBitmapInfo(0);
     goto LABEL_16;
   }
 
-  BitsPerComponent = CGImageGetBitsPerComponent(a3);
-  v7[90] = CGImageGetBitmapInfo(a3);
+  BitsPerComponent = CGImageGetBitsPerComponent(image);
+  v7[90] = CGImageGetBitmapInfo(image);
   if (BitsPerComponent != 8)
   {
 LABEL_16:
@@ -168,7 +168,7 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  v15 = CGImageGetBitmapInfo(a3) & 0xFFFFBFFF;
+  v15 = CGImageGetBitmapInfo(image) & 0xFFFFBFFF;
   if (v15 > 0x2000)
   {
     if (v15 <= 8195)
@@ -296,21 +296,21 @@ LABEL_18:
   }
 }
 
-- (CIRedEyeRepair)initWithIOSurface:(__IOSurface *)a3 format:(int)a4 colorSpace:(CGColorSpace *)a5 cameraModel:(id)a6
+- (CIRedEyeRepair)initWithIOSurface:(__IOSurface *)surface format:(int)format colorSpace:(CGColorSpace *)space cameraModel:(id)model
 {
   v11 = malloc_type_calloc(1uLL, 0x180uLL, 0x1030040C7AB5F0AuLL);
-  Width = IOSurfaceGetWidth(a3);
-  Height = IOSurfaceGetHeight(a3);
-  BytesPerRow = IOSurfaceGetBytesPerRow(a3);
-  BaseAddress = IOSurfaceGetBaseAddress(a3);
-  if (a4 == 266)
+  Width = IOSurfaceGetWidth(surface);
+  Height = IOSurfaceGetHeight(surface);
+  BytesPerRow = IOSurfaceGetBytesPerRow(surface);
+  BaseAddress = IOSurfaceGetBaseAddress(surface);
+  if (format == 266)
   {
     v16 = 2;
   }
 
   else
   {
-    if (a4 != 264)
+    if (format != 264)
     {
       goto LABEL_6;
     }
@@ -322,7 +322,7 @@ LABEL_18:
 LABEL_6:
   v11[92] = 1;
   *(v11 + 372) = 0;
-  if ([a6 hasPrefix:@"iPhone"])
+  if ([model hasPrefix:@"iPhone"])
   {
     *(v11 + 372) = 1;
   }
@@ -335,7 +335,7 @@ LABEL_6:
   v11[83] = v18;
   *(v11 + 42) = makeBitmapRect(0, 0, v17, v18);
   *(v11 + 43) = v19;
-  *(v11 + 44) = CGColorSpaceRetain(a5);
+  *(v11 + 44) = CGColorSpaceRetain(space);
   v11[90] = 8194;
   self->imageSourceType = 4;
   result = [(CIRedEyeRepair *)self initWithDeskView:0 andFrame:v11];
@@ -359,9 +359,9 @@ LABEL_6:
   [(CIRedEyeRepair *)self skinInit];
 }
 
-- (CIRedEyeRepair)initWithDeskView:(id)a3 andFrame:(id *)a4
+- (CIRedEyeRepair)initWithDeskView:(id)view andFrame:(id *)frame
 {
-  self->lf = a4;
+  self->lf = frame;
   self->ownLF = 0;
   [(CIRedEyeRepair *)self initializeNonDebugVariables];
   v6.receiver = self;
@@ -369,9 +369,9 @@ LABEL_6:
   return [(CIRedEyeRepair *)&v6 init];
 }
 
-- (CIRedEyeRepair)initWithFrameExternalBuffer:(id *)a3
+- (CIRedEyeRepair)initWithFrameExternalBuffer:(id *)buffer
 {
-  self->lf = a3;
+  self->lf = buffer;
   self->ownLF = 1;
   self->imageSourceType = 3;
   [(CIRedEyeRepair *)self initializeNonDebugVariables];
@@ -380,17 +380,17 @@ LABEL_6:
   return [(CIRedEyeRepair *)&v5 init];
 }
 
-- (CIRedEyeRepair)initWithExternalBuffer:(char *)a3 size:(CGSize)a4 rowBytes:(unint64_t)a5
+- (CIRedEyeRepair)initWithExternalBuffer:(char *)buffer size:(CGSize)size rowBytes:(unint64_t)bytes
 {
-  v5 = a5;
-  height = a4.height;
-  width = a4.width;
+  bytesCopy = bytes;
+  height = size.height;
+  width = size.width;
   v10 = malloc_type_calloc(1uLL, 0x180uLL, 0x1030040C7AB5F0AuLL);
   v11 = width;
   v12 = rintf(v11);
   v13 = height;
   v14 = rintf(v13);
-  constructBitmap((v10 + 72), a3, v12, v14, 4, 1, v5, 100.0);
+  constructBitmap((v10 + 72), buffer, v12, v14, 4, 1, bytesCopy, 100.0);
   v10[82] = v12;
   v10[83] = v14;
   *(v10 + 42) = makeBitmapRect(0, 0, v12, v14);
@@ -404,15 +404,15 @@ LABEL_6:
   return [(CIRedEyeRepair *)self initWithFrameExternalBuffer:v10];
 }
 
-- (CIRedEyeRepair)initWithExternalBuffer:(char *)a3 subRectangle:(CGRect)a4 fullSize:(CGSize)a5 rowBytes:(unint64_t)a6 cameraModel:(id)a7
+- (CIRedEyeRepair)initWithExternalBuffer:(char *)buffer subRectangle:(CGRect)rectangle fullSize:(CGSize)size rowBytes:(unint64_t)bytes cameraModel:(id)model
 {
-  v8 = a6;
-  height = a5.height;
-  width = a5.width;
-  v11 = a4.size.height;
-  v12 = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  bytesCopy = bytes;
+  height = size.height;
+  width = size.width;
+  v11 = rectangle.size.height;
+  v12 = rectangle.size.width;
+  y = rectangle.origin.y;
+  x = rectangle.origin.x;
   v17 = malloc_type_calloc(1uLL, 0x180uLL, 0x1030040C7AB5F0AuLL);
   v18 = v12;
   v19 = rintf(v18);
@@ -429,11 +429,11 @@ LABEL_6:
   *(v17 + 83) = v28;
   *(v17 + 42) = makeBitmapRect(v23, v28 - (v25 + v21), (v23 + v19), v28 - v25);
   *(v17 + 43) = v29;
-  constructBitmap((v17 + 288), a3, v19, v21, 4, 1, v8, 100.0);
+  constructBitmap((v17 + 288), buffer, v19, v21, 4, 1, bytesCopy, 100.0);
   *(v17 + 44) = 0;
   *(v17 + 90) = 0;
   v17[372] = 0;
-  if ([a7 hasPrefix:@"iPhone"])
+  if ([model hasPrefix:@"iPhone"])
   {
     v17[372] = 1;
   }
@@ -522,9 +522,9 @@ LABEL_6:
   return result;
 }
 
-- (void)undoRepair:(int)a3
+- (void)undoRepair:(int)repair
 {
-  v4 = [(CIRedEyeRepair *)self repairWithTag:*&a3];
+  v4 = [(CIRedEyeRepair *)self repairWithTag:*&repair];
   if (v4)
   {
     v5 = v4;
@@ -578,9 +578,9 @@ LABEL_6:
   }
 }
 
-- (int)averageValueFromY:(id *)a3 withinSkinMask:(id *)a4 butOutsideAlpha:(id *)a5
+- (int)averageValueFromY:(id *)y withinSkinMask:(id *)mask butOutsideAlpha:(id *)alpha
 {
-  var2 = a3->var2;
+  var2 = y->var2;
   if (var2 < 1)
   {
     goto LABEL_15;
@@ -588,17 +588,17 @@ LABEL_6:
 
   v7 = 0;
   v8 = 0;
-  var0 = a5->var0;
-  v10 = a4->var0;
-  v11 = a3->var0;
-  var6 = a5->var6;
-  var3 = a5->var3;
-  v14 = a4->var6;
-  v15 = a4->var3;
-  v16 = a3->var6;
-  v17 = a3->var3;
+  var0 = alpha->var0;
+  v10 = mask->var0;
+  v11 = y->var0;
+  var6 = alpha->var6;
+  var3 = alpha->var3;
+  v14 = mask->var6;
+  v15 = mask->var3;
+  v16 = y->var6;
+  v17 = y->var3;
   v18 = 0.0;
-  var1 = a3->var1;
+  var1 = y->var1;
   do
   {
     if (var1 >= 1)
@@ -647,7 +647,7 @@ LABEL_15:
   return v25;
 }
 
-- (float)upperRepairSizeFraction:(float)a3
+- (float)upperRepairSizeFraction:(float)fraction
 {
   if (self->lf->var10)
   {
@@ -656,11 +656,11 @@ LABEL_15:
 
   else
   {
-    return 25.0 / (a3 + 20.0) + 0.13;
+    return 25.0 / (fraction + 20.0) + 0.13;
   }
 }
 
-- (float)lowerRepairSizeFraction:(float)a3
+- (float)lowerRepairSizeFraction:(float)fraction
 {
   if (self->lf->var10)
   {
@@ -668,17 +668,17 @@ LABEL_15:
 
   else
   {
-    return 1.0 / (a3 + -20.0) + 0.08;
+    return 1.0 / (fraction + -20.0) + 0.08;
   }
 }
 
-+ (float)upperRepairDistanceFraction:(float)a3
++ (float)upperRepairDistanceFraction:(float)fraction
 {
   v4 = CI_DISABLE_REDEYE_SEARCH();
   result = 0.0;
   if (v4 != 1)
   {
-    v6 = 50.0 / (a3 + 150.0) + 0.08;
+    v6 = 50.0 / (fraction + 150.0) + 0.08;
     v7 = CI_DISABLE_REDEYE_SEARCH();
     result = v6 * 0.5;
     if (v7 != 2)
@@ -690,13 +690,13 @@ LABEL_15:
   return result;
 }
 
-+ (float)upperRepairDistance:(float)a3
++ (float)upperRepairDistance:(float)distance
 {
   v4 = CI_DISABLE_REDEYE_SEARCH();
   result = 0.0;
   if (v4 != 1)
   {
-    v6 = (50.0 / (a3 + 150.0) + 0.08) * a3;
+    v6 = (50.0 / (distance + 150.0) + 0.08) * distance;
     v7 = CI_DISABLE_REDEYE_SEARCH();
     result = v6 * 0.5;
     if (v7 != 2)
@@ -708,13 +708,13 @@ LABEL_15:
   return result;
 }
 
-+ (CGRect)supportRectangleWithPoint:(CGPoint)a3 imageSize:(CGSize)a4 IOD:(float)a5
++ (CGRect)supportRectangleWithPoint:(CGPoint)point imageSize:(CGSize)size IOD:(float)d
 {
-  height = a4.height;
-  width = a4.width;
-  x = a3.x;
+  height = size.height;
+  width = size.width;
+  x = point.x;
   v8 = rintf(x);
-  y = a3.y;
+  y = point.y;
   v10 = alignedBitmapRectAroundPoint(v8, rintf(y), 42);
   v12 = HIDWORD(v10);
   v13 = width;
@@ -754,19 +754,19 @@ LABEL_15:
   return result;
 }
 
-+ (CGRect)supportRectangleWithRepair:(id)a3 imageSize:(CGSize)a4
++ (CGRect)supportRectangleWithRepair:(id)repair imageSize:(CGSize)size
 {
-  height = a4.height;
+  height = size.height;
   v6 = rintf(height);
-  width = a4.width;
+  width = size.width;
   v8 = rintf(width);
-  [objc_msgSend(a3 valueForKey:{@"searchRectangleMinimumY", "floatValue"}];
+  [objc_msgSend(repair valueForKey:{@"searchRectangleMinimumY", "floatValue"}];
   v10 = rintf(v9 * v6);
-  [objc_msgSend(a3 valueForKey:{@"searchRectangleMaximumY", "floatValue"}];
+  [objc_msgSend(repair valueForKey:{@"searchRectangleMaximumY", "floatValue"}];
   v12 = rintf(v11 * v6);
-  [objc_msgSend(a3 valueForKey:{@"searchRectangleMinimumX", "floatValue"}];
+  [objc_msgSend(repair valueForKey:{@"searchRectangleMinimumX", "floatValue"}];
   v14 = rintf(v13 * v8);
-  [objc_msgSend(a3 valueForKey:{@"searchRectangleMaximumX", "floatValue"}];
+  [objc_msgSend(repair valueForKey:{@"searchRectangleMaximumX", "floatValue"}];
   v16 = rintf(v15 * v8);
   v17 = v14;
   v18 = (v12 + 1);
@@ -779,11 +779,11 @@ LABEL_15:
   return result;
 }
 
-+ (CGRect)supportRectangleWithFaceArray:(id)a3 imageSize:(CGSize)a4
++ (CGRect)supportRectangleWithFaceArray:(id)array imageSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = [a3 count];
+  height = size.height;
+  width = size.width;
+  v7 = [array count];
   v103 = [MEMORY[0x1E695DF70] arrayWithCapacity:v7];
   if (v7 < 1)
   {
@@ -822,23 +822,23 @@ LABEL_70:
         v101 = v32;
         v44 = [v41 valueForKey:@"leftEyeX"];
         v45 = [v43 valueForKey:@"leftEyeY"];
-        v46 = 0;
+        intValue2 = 0;
         v42 = 1;
         if (v44)
         {
           v47 = v45;
-          v48 = 0;
+          intValue = 0;
           if (v45)
           {
-            v48 = [v44 intValue];
-            v46 = [v47 intValue];
+            intValue = [v44 intValue];
+            intValue2 = [v47 intValue];
             v42 = v37;
           }
         }
 
         else
         {
-          v48 = 0;
+          intValue = 0;
         }
 
         v49 = [v43 valueForKey:@"rightEyeX"];
@@ -854,51 +854,51 @@ LABEL_70:
           goto LABEL_40;
         }
 
-        v52 = [v49 intValue];
-        v53 = [v51 intValue];
+        intValue3 = [v49 intValue];
+        intValue4 = [v51 intValue];
         if (((v42 | v38) & 1) == 0)
         {
           [objc_msgSend(v43 valueForKey:{@"mouthCenterX", "intValue"}];
           v96 = [objc_msgSend(v43 valueForKey:{@"mouthCenterY", "intValue"}];
           [objc_msgSend(v43 valueForKey:{@"centerX", "intValue"}];
           v93 = [objc_msgSend(v43 valueForKey:{@"centerY", "intValue"}];
-          if (v46 >= v53)
+          if (intValue2 >= intValue4)
           {
-            v58 = v53;
+            v58 = intValue4;
           }
 
           else
           {
-            v58 = v46;
+            v58 = intValue2;
           }
 
-          if (v46 <= v53)
+          if (intValue2 <= intValue4)
           {
-            v59 = v53;
+            v59 = intValue4;
           }
 
           else
           {
-            v59 = v46;
+            v59 = intValue2;
           }
 
           v94 = v58;
           v95 = v59;
-          *&v57 = sqrtf(((v48 - v52) * (v48 - v52) + (v46 - v53) * (v46 - v53)));
+          *&v57 = sqrtf(((intValue - intValue3) * (intValue - intValue3) + (intValue2 - intValue4) * (intValue2 - intValue4)));
           [CIRedEyeRepair upperRepairDistance:v57];
           v61 = rintf(v60);
-          v62 = alignedBitmapRectAroundPoint(v48, v46, v61);
+          v62 = alignedBitmapRectAroundPoint(intValue, intValue2, v61);
           v64 = clipBitmapRectToWidthAndHeight(v62, v63, v91, v92);
           v65 = evenBitmapRect(v64);
           v66 = unionBitmapRects(v33 | (v98 << 32), v101, (v65 & 0xFFFFFFFF00000000 | (v65 - 84)) + 0x5600000000);
           v99 = v67;
           v102 = v66;
-          v68 = alignedBitmapRectAroundPoint(v52, v53, v61);
+          v68 = alignedBitmapRectAroundPoint(intValue3, intValue4, v61);
           v70 = clipBitmapRectToWidthAndHeight(v68, v69, v91, v92);
           v71 = evenBitmapRect(v70);
           v72 = unionBitmapRects(v102, v99, (v71 & 0xFFFFFFFF00000000 | (v71 - 84)) + 0x5600000000);
-          v74 = (v53 - v46);
-          v75 = sqrtf((v74 * v74) + ((v52 - v48) * (v52 - v48)));
+          v74 = (intValue4 - intValue2);
+          v75 = sqrtf((v74 * v74) + ((intValue3 - intValue) * (intValue3 - intValue)));
           v76 = (v93 + v96);
           v77 = v75 * 0.5 * (v74 / v75);
           v78 = (v77 + v76 * 0.5);
@@ -955,14 +955,14 @@ LABEL_70:
 
         if ((v38 & 1) == 0)
         {
-          v54 = alignedBitmapRectAroundPoint(v52, v53, 85);
+          v54 = alignedBitmapRectAroundPoint(intValue3, intValue4, 85);
           v38 = 0;
         }
 
         else
         {
 LABEL_40:
-          v54 = alignedBitmapRectAroundPoint(v48, v46, 85);
+          v54 = alignedBitmapRectAroundPoint(intValue, intValue2, 85);
           v38 = 1;
         }
 
@@ -992,7 +992,7 @@ LABEL_67:
   v100 = v7 & 0x7FFFFFFF;
   while (1)
   {
-    v9 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:{objc_msgSend(a3, "objectAtIndex:", v8)}];
+    v9 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:{objc_msgSend(array, "objectAtIndex:", v8)}];
     [v103 addObject:v9];
     v10 = [v9 valueForKey:@"leftEyeX"];
     v11 = [v9 valueForKey:@"leftEyeY"];
@@ -1009,15 +1009,15 @@ LABEL_67:
     v13 = !v12;
     if (v12)
     {
-      v16 = 0;
-      v15 = 0;
+      intValue6 = 0;
+      intValue5 = 0;
     }
 
     else
     {
       v14 = v11;
-      v15 = [v10 intValue];
-      v16 = [v14 intValue];
+      intValue5 = [v10 intValue];
+      intValue6 = [v14 intValue];
     }
 
     v17 = [v9 valueForKey:@"rightEyeX"];
@@ -1035,11 +1035,11 @@ LABEL_67:
     if (!v19)
     {
       v20 = v18;
-      v21 = [v17 intValue];
-      v22 = [v20 intValue];
+      intValue7 = [v17 intValue];
+      intValue8 = [v20 intValue];
       if (v13)
       {
-        v23 = v22;
+        v23 = intValue8;
         v24 = [v9 valueForKey:@"centerX"];
         v25 = [v9 valueForKey:@"centerY"];
         if (v24 && (v26 = v25) != 0)
@@ -1050,8 +1050,8 @@ LABEL_67:
 
         else
         {
-          v24 = rintf(vcvts_n_f32_s32(v21 + v15, 1uLL) - vcvts_n_f32_s32(v23 - v16, 1uLL));
-          v26 = rintf(vcvts_n_f32_s32(v21 - v15, 1uLL) + vcvts_n_f32_s32(v23 + v16, 1uLL));
+          v24 = rintf(vcvts_n_f32_s32(intValue7 + intValue5, 1uLL) - vcvts_n_f32_s32(v23 - intValue6, 1uLL));
+          v26 = rintf(vcvts_n_f32_s32(intValue7 - intValue5, 1uLL) + vcvts_n_f32_s32(v23 + intValue6, 1uLL));
           [v9 setValue:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithInt:", v24), @"centerX"}];
           [v9 setValue:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithInt:", v26), @"centerY"}];
         }
@@ -1060,8 +1060,8 @@ LABEL_67:
         v28 = [v9 valueForKey:@"mouthCenterY"];
         if (!v27 || !v28)
         {
-          [v9 setValue:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithInt:", rintf(v24 - vcvts_n_f32_s32(v23 - v16, 1uLL))), @"mouthCenterX"}];
-          [v9 setValue:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithInt:", rintf(vcvts_n_f32_s32(v21 - v15, 1uLL) + v26)), @"mouthCenterY"}];
+          [v9 setValue:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithInt:", rintf(v24 - vcvts_n_f32_s32(v23 - intValue6, 1uLL))), @"mouthCenterX"}];
+          [v9 setValue:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithInt:", rintf(vcvts_n_f32_s32(intValue7 - intValue5, 1uLL) + v26)), @"mouthCenterY"}];
         }
       }
 
@@ -1092,15 +1092,15 @@ LABEL_71:
   return result;
 }
 
-- (BOOL)computeTrimmedBitmaps:(id *)a3 newY:(id *)a4 newCbCr:(id *)a5 IR:(id)a6 newTrimY:(id *)a7 newTrimCbCr:(id *)a8 returningYR:(id *)a9 andCbCrR:(id *)a10
+- (BOOL)computeTrimmedBitmaps:(id *)bitmaps newY:(id *)y newCbCr:(id *)cr IR:(id)r newTrimY:(id *)trimY newTrimCbCr:(id *)cbCr returningYR:(id *)yR andCbCrR:(id *)self0
 {
-  v10 = *&a6.var2;
-  v11 = *&a6.var0;
-  v12 = a5;
+  v10 = *&r.var2;
+  v11 = *&r.var0;
+  crCopy2 = cr;
   v80 = 0;
   memset(v79, 0, sizeof(v79));
-  var1 = a6.var1;
-  var3 = a6.var3;
+  var1 = r.var1;
+  var3 = r.var3;
   v78 = 0;
   memset(v77, 0, sizeof(v77));
   v76 = 0;
@@ -1111,8 +1111,8 @@ LABEL_71:
   {
 LABEL_9:
     v25 = v75;
-    v24 = a3;
-    constructSliceBitmap(a3, v75, v11, v10);
+    bitmapsCopy3 = bitmaps;
+    constructSliceBitmap(bitmaps, v75, v11, v10);
     v26 = 0;
     v22 = var3 - v10;
     v23 = var1 - v11;
@@ -1139,11 +1139,11 @@ LABEL_9:
 
     v22 = var3 - v10;
     v23 = var1 - v11;
-    v24 = a3;
+    bitmapsCopy3 = bitmaps;
     v25 = v73;
     v26 = 1;
-    initBitmap(v73, v22, var1 - v11, 4, 1, a3->var8);
-    copySliceOfBitmapToBitmap(a3, v73, v11, v10);
+    initBitmap(v73, v22, var1 - v11, 4, 1, bitmaps->var8);
+    copySliceOfBitmapToBitmap(bitmaps, v73, v11, v10);
     if (self->nRepairs >= 1)
     {
       v68 = v22;
@@ -1169,22 +1169,22 @@ LABEL_9:
       while (v27 < self->nRepairs);
       v25 = v73;
       v26 = 1;
-      v12 = a5;
-      v24 = a3;
+      crCopy2 = cr;
+      bitmapsCopy3 = bitmaps;
       v22 = v68;
     }
   }
 
-  initBitmap(v79, v22, v23, 1, 1, v24->var8);
-  initBitmap(v77, v22 / 2, v23 / 2, 2, 1, v24->var8);
+  initBitmap(v79, v22, v23, 1, 1, bitmapsCopy3->var8);
+  initBitmap(v77, v22 / 2, v23 / 2, 2, 1, bitmapsCopy3->var8);
   ConvertREDEYEFORMATtoYCbCr(v25, v79, v77, self->lf->var8);
   if (v26)
   {
     termBitmap(v73);
   }
 
-  v43 = bitmapToBitmapDifferenceBitmapRect(a4, v79, v38, v39, v40, v41, v42);
-  v49 = bitmapToBitmapDifferenceBitmapRect(v12, v77, v44, v45, v46, v47, v48);
+  v43 = bitmapToBitmapDifferenceBitmapRect(y, v79, v38, v39, v40, v41, v42);
+  v49 = bitmapToBitmapDifferenceBitmapRect(crCopy2, v77, v44, v45, v46, v47, v48);
   termBitmap(v79);
   termBitmap(v77);
   v50 = twiceBitmapRect(v49);
@@ -1212,30 +1212,30 @@ LABEL_27:
     v60 = v59;
     v61 = v53 - v50;
     v56 = 1;
-    initBitmap(a7, HIDWORD(v52) - v52, v61, 1, 1, 100.0);
-    initBitmap(a8, HIDWORD(v60) - v60, HIDWORD(v58) - v58, 2, 1, 50.0);
-    copySliceOfBitmapToBitmap(a4, &a7->var0, v57, v52);
-    copySliceOfBitmapToBitmap(a5, &a8->var0, v58, v60);
+    initBitmap(trimY, HIDWORD(v52) - v52, v61, 1, 1, 100.0);
+    initBitmap(cbCr, HIDWORD(v60) - v60, HIDWORD(v58) - v58, 2, 1, 50.0);
+    copySliceOfBitmapToBitmap(y, &trimY->var0, v57, v52);
+    copySliceOfBitmapToBitmap(cr, &cbCr->var0, v58, v60);
     v62 = offsetBitmapRect(v57, v52, v10, v11);
     v64 = v63;
     v65 = offsetBitmapRect(v58, v60, (v10 / 2), v11 / 2);
-    *&a9->var0 = v62;
-    *&a9->var2 = v64;
-    *&a10->var0 = v65;
-    *&a10->var2 = v66;
+    *&yR->var0 = v62;
+    *&yR->var2 = v64;
+    *&crR->var0 = v65;
+    *&crR->var2 = v66;
     return v56;
   }
 
   return 0;
 }
 
-- (BOOL)extractReusableAlignedBitmapsAroundPoint:(id *)a3 YR:(id)a4 subYBitmap:(id *)a5 subCbCrBitmap:(id *)a6
+- (BOOL)extractReusableAlignedBitmapsAroundPoint:(id *)point YR:(id)r subYBitmap:(id *)bitmap subCbCrBitmap:(id *)crBitmap
 {
-  v8 = *&a4.var2;
-  v9 = *&a4.var0;
-  var1 = a4.var1;
-  var3 = a4.var3;
-  v14 = halfBitmapRect(*&a4.var0);
+  v8 = *&r.var2;
+  v9 = *&r.var0;
+  var1 = r.var1;
+  var3 = r.var3;
+  v14 = halfBitmapRect(*&r.var0);
   v15 = var3 - v8;
   v17 = var3 > v8 && var1 > v9;
   if (!v17)
@@ -1244,19 +1244,19 @@ LABEL_27:
   }
 
   v18 = v13;
-  if (!a5->var0 || a5->var1 != v15 || a5->var2 != var1 - v9)
+  if (!bitmap->var0 || bitmap->var1 != v15 || bitmap->var2 != var1 - v9)
   {
-    termBitmap(&a5->var0);
-    initBitmap(a5, v15, var1 - v9, 1, 1, 100.0);
+    termBitmap(&bitmap->var0);
+    initBitmap(bitmap, v15, var1 - v9, 1, 1, 100.0);
   }
 
-  v40 = a6;
-  if (a6->var0)
+  crBitmapCopy = crBitmap;
+  if (crBitmap->var0)
   {
-    v19 = a6->var1;
-    v20 = a6;
+    v19 = crBitmap->var1;
+    crBitmapCopy2 = crBitmap;
     v21 = HIDWORD(v18) - v18;
-    if (__PAIR64__(v20->var2, v19) == __PAIR64__(HIDWORD(v14) - v14, HIDWORD(v18) - v18))
+    if (__PAIR64__(crBitmapCopy2->var2, v19) == __PAIR64__(HIDWORD(v14) - v14, HIDWORD(v18) - v18))
     {
       goto LABEL_17;
     }
@@ -1267,8 +1267,8 @@ LABEL_27:
     v21 = HIDWORD(v18) - v18;
   }
 
-  termBitmap(&v40->var0);
-  initBitmap(v40, v21, HIDWORD(v14) - v14, 2, 1, 50.0);
+  termBitmap(&crBitmapCopy->var0);
+  initBitmap(crBitmapCopy, v21, HIDWORD(v14) - v14, 2, 1, 50.0);
 LABEL_17:
   v45 = 0;
   memset(v44, 0, sizeof(v44));
@@ -1277,8 +1277,8 @@ LABEL_17:
   if (self->nRepairs < 1)
   {
 LABEL_25:
-    constructSliceBitmap(a3, v42, v9, v8);
-    ConvertREDEYEFORMATtoYCbCr(v42, a5, v40, self->lf->var8);
+    constructSliceBitmap(point, v42, v9, v8);
+    ConvertREDEYEFORMATtoYCbCr(v42, bitmap, crBitmapCopy, self->lf->var8);
   }
 
   else
@@ -1300,8 +1300,8 @@ LABEL_25:
       }
     }
 
-    initBitmap(v44, v15, var1 - v9, 4, 1, a3->var8);
-    copySliceOfBitmapToBitmap(a3, v44, v9, v8);
+    initBitmap(v44, v15, var1 - v9, 4, 1, point->var8);
+    copySliceOfBitmapToBitmap(point, v44, v9, v8);
     if (self->nRepairs >= 1)
     {
       v28 = 0;
@@ -1326,7 +1326,7 @@ LABEL_25:
       while (v28 < self->nRepairs);
     }
 
-    ConvertREDEYEFORMATtoYCbCr(v44, a5, v40, self->lf->var8);
+    ConvertREDEYEFORMATtoYCbCr(v44, bitmap, crBitmapCopy, self->lf->var8);
     termBitmap(v44);
   }
 
@@ -1334,9 +1334,9 @@ LABEL_25:
   return v17;
 }
 
-- (int)redEyeRemovalWithPoint:(CGPoint)a3 alignPupilShades:(BOOL)a4 matching:(id)a5 force:(int)a6 IOD:(float)a7 tap:(BOOL)a8
+- (int)redEyeRemovalWithPoint:(CGPoint)point alignPupilShades:(BOOL)shades matching:(id)matching force:(int)force IOD:(float)d tap:(BOOL)tap
 {
-  v8 = MEMORY[0x1EEE9AC00](self, a2, a4, *&a5.var0, *&a5.var2, *&a6);
+  v8 = MEMORY[0x1EEE9AC00](self, a2, shades, *&matching.var0, *&matching.var2, *&force);
   v12 = v11;
   v14 = v13;
   v16 = v15;
@@ -2031,9 +2031,9 @@ LABEL_108:
   return -1;
 }
 
-- (CIRedEyeRepair)repairWithTag:(int)a3
+- (CIRedEyeRepair)repairWithTag:(int)tag
 {
-  if (a3 == -1)
+  if (tag == -1)
   {
     return 0;
   }
@@ -2044,7 +2044,7 @@ LABEL_108:
     return 0;
   }
 
-  for (result = self->repairs; LODWORD(result->super.isa) != a3; result = (result + 400))
+  for (result = self->repairs; LODWORD(result->super.isa) != tag; result = (result + 400))
   {
     if (!--nRepairs)
     {
@@ -2055,9 +2055,9 @@ LABEL_108:
   return result;
 }
 
-- (int)redoRepairWithTag:(int)a3 IOD:(float)a4
+- (int)redoRepairWithTag:(int)tag IOD:(float)d
 {
-  v5 = *&a3;
+  v5 = *&tag;
   v7 = [(CIRedEyeRepair *)self repairWithTag:?];
   if (!v7)
   {
@@ -2073,19 +2073,19 @@ LABEL_108:
   self->iLeft = v7->repairs[0].fullNew.size;
   [(CIRedEyeRepair *)self undoRepair:v5];
   pupilShadeAlignment = self->pupilShadeAlignment;
-  *&v14 = a4;
+  *&v14 = d;
 
   return [(CIRedEyeRepair *)self redEyeRemovalWithPoint:pupilShadeAlignment alignPupilShades:v11 matching:v12 force:imageSourceType IOD:0 tap:v8, v9, v14];
 }
 
-- (float)extractAverageFaceY:(id *)a3 contrast:(float *)a4 faceIndex:(int)a5
+- (float)extractAverageFaceY:(id *)y contrast:(float *)contrast faceIndex:(int)index
 {
   v49 = 0;
   v50 = 0;
-  v6 = *&a3->var13;
-  v7 = *&a3->var11;
-  v8 = *&a3->var5;
-  v9 = *&a3->var7;
+  v6 = *&y->var13;
+  v7 = *&y->var11;
+  v8 = *&y->var5;
+  v9 = *&y->var7;
   lf = self->lf;
   v11 = malloc_type_calloc(0x100uLL, 4uLL, 0x100004052888210uLL);
   if (!v11)
@@ -2185,16 +2185,16 @@ LABEL_108:
 
   free(v12);
   result = v37 / 10000.0;
-  *a4 = (i - v41);
+  *contrast = (i - v41);
   return result;
 }
 
-- (float)confidenceWithIOD:(float)a3 repair:(int)a4 andProminenceDifference:(int)a5
+- (float)confidenceWithIOD:(float)d repair:(int)repair andProminenceDifference:(int)difference
 {
-  v6 = *&a4;
+  v6 = *&repair;
   [(CIRedEyeRepair *)self upperRepairSize:?];
   v10 = v9;
-  *&v11 = a3;
+  *&v11 = d;
   [(CIRedEyeRepair *)self lowerRepairSize:v11];
   v13 = v12;
   v14 = [(CIRedEyeRepair *)self repairWithTag:v6];
@@ -2203,7 +2203,7 @@ LABEL_108:
     return 0.0;
   }
 
-  v15 = vcvts_n_f32_s32(a5, 8uLL);
+  v15 = vcvts_n_f32_s32(difference, 8uLL);
   imageSourceType = v14->imageSourceType;
   v17 = v15 * 1.5;
   if (imageSourceType)
@@ -2266,41 +2266,41 @@ LABEL_19:
   return v18 * v26;
 }
 
-- (void)insertIntoProminenceVettingHopper:(id *)a3 max:(int)a4 outside:(int)a5 confidence:(float)a6 distance:(float)a7 row:(int)a8 column:(int)a9 IOD:(float)a10
+- (void)insertIntoProminenceVettingHopper:(id *)hopper max:(int)max outside:(int)outside confidence:(float)confidence distance:(float)distance row:(int)row column:(int)column IOD:(float)self0
 {
-  *&v17 = a10;
+  *&v17 = d;
   [CIRedEyeRepair upperRepairDistanceFraction:v17];
-  v19 = (a6 * 0.5 + 1.0) * v18;
+  v19 = (confidence * 0.5 + 1.0) * v18;
   v20 = 1.0;
-  if (v19 <= a7)
+  if (v19 <= distance)
   {
     v21 = v19;
     v20 = 0.0;
-    if (v21 * 1.25 > a7)
+    if (v21 * 1.25 > distance)
     {
-      v20 = a7 * -4.0 / v21 + 5.0;
+      v20 = distance * -4.0 / v21 + 5.0;
     }
   }
 
-  v22 = v20 * a6;
-  var0 = a3->var0;
+  v22 = v20 * confidence;
+  var0 = hopper->var0;
   if (var0 < 1)
   {
     LODWORD(v24) = 0;
 LABEL_16:
-    v28 = &a3->var1[v24];
+    v28 = &hopper->var1[v24];
     v28->var0 = v22;
-    v28->var1 = a4;
-    v28->var2 = a5;
-    v28->var3 = a6;
+    v28->var1 = max;
+    v28->var2 = outside;
+    v28->var3 = confidence;
     v28->var4 = 0.0;
-    v28->var5 = a7;
-    v28->var6 = a8;
-    v28->var7 = a9;
+    v28->var5 = distance;
+    v28->var6 = row;
+    v28->var7 = column;
     v28->var8 = v20;
-    if (a3->var0 < 4)
+    if (hopper->var0 < 4)
     {
-      v29 = a3->var0 + 1;
+      v29 = hopper->var0 + 1;
     }
 
     else
@@ -2308,26 +2308,26 @@ LABEL_16:
       v29 = 4;
     }
 
-    a3->var0 = v29;
+    hopper->var0 = v29;
     return;
   }
 
   v24 = 0;
-  var1 = a3->var1;
+  var1 = hopper->var1;
   while (var1->var0 >= v22)
   {
     ++v24;
     ++var1;
     if (var0 == v24)
     {
-      LODWORD(v24) = a3->var0;
+      LODWORD(v24) = hopper->var0;
       goto LABEL_15;
     }
   }
 
   if (var0 > v24)
   {
-    v26 = &a3->var1[var0];
+    v26 = &hopper->var1[var0];
     do
     {
       if (var0 <= 3)
@@ -2352,27 +2352,27 @@ LABEL_15:
   }
 }
 
-- (BOOL)gatherProminencesWithC:(id *)a3 MC:(id *)a4 maxwindowsize:(int)a5 repairsize:(int)a6 IR:(id)a7 fr:(id *)a8 intoHopper:(id *)a9 faceIndex:(int)a10 left:(BOOL)a11 coss:(float)a12[10] sins:(float)a13[10] bitmapName:(char *)a14
+- (BOOL)gatherProminencesWithC:(id *)c MC:(id *)mC maxwindowsize:(int)maxwindowsize repairsize:(int)repairsize IR:(id)r fr:(id *)fr intoHopper:(id *)hopper faceIndex:(int)self0 left:(BOOL)self1 coss:(float)self2[10] sins:(float)self3[10] bitmapName:(char *)self4
 {
-  var0 = a7.var0;
-  var2 = a7.var2;
-  v17 = a9;
+  var0 = r.var0;
+  var2 = r.var2;
+  hopperCopy3 = hopper;
   *v111 = 0;
   memset(&v110[4], 0, 144);
-  var1 = a3->var1;
-  v19 = a3->var2;
-  var3 = a3->var3;
-  var6 = a3->var6;
-  memmove(a4->var0, a3->var0, a3->var5);
-  applyMaxFilter8(&a4->var0, a5);
+  var1 = c->var1;
+  v19 = c->var2;
+  var3 = c->var3;
+  var6 = c->var6;
+  memmove(mC->var0, c->var0, c->var5);
+  applyMaxFilter8(&mC->var0, maxwindowsize);
   inited = initBitmask(var1, v19);
   v23 = initBitmask(var1, v19);
   v24 = v23;
-  v100 = a3;
-  v25 = a3->var0;
+  cCopy = c;
+  v25 = c->var0;
   if (v19 <= 0)
   {
-    a9->var0 = 0;
+    hopper->var0 = 0;
     v101 = 1;
   }
 
@@ -2381,7 +2381,7 @@ LABEL_15:
     v109 = inited;
     v104 = v23;
     v26 = 0;
-    v27 = a4->var0;
+    v27 = mC->var0;
     do
     {
       if (var1 >= 1)
@@ -2406,7 +2406,7 @@ LABEL_15:
     while (v26 != v19);
     v30 = 0;
     v108 = 0;
-    if (a11)
+    if (left)
     {
       v31 = 44;
     }
@@ -2417,19 +2417,19 @@ LABEL_15:
     }
 
     v32 = 56;
-    if (a11)
+    if (left)
     {
       v32 = 48;
     }
 
     v102 = v32;
     v103 = v31;
-    v25 = v100->var0;
+    v25 = cCopy->var0;
     v24 = v104;
-    v17 = a9;
-    a9->var0 = 0;
-    v33 = vcvtd_n_f64_s32(a6, 2uLL);
-    v34 = vcvtd_n_f64_s32(a6, 1uLL);
+    hopperCopy3 = hopper;
+    hopper->var0 = 0;
+    v33 = vcvtd_n_f64_s32(repairsize, 2uLL);
+    v34 = vcvtd_n_f64_s32(repairsize, 1uLL);
     inited = v109;
     do
     {
@@ -2451,7 +2451,7 @@ LABEL_15:
             v38 = v37;
             v39 = bitmaskCentroidUsingBoundingRect(v24, v36, v37);
             v40 = v36;
-            v17 = a9;
+            hopperCopy3 = hopper;
             v41 = v38;
             inited = v109;
             closestSetBitInBitmaskUsingBoundingRect(v24, v40, v41, &v111[1], v111, v39, v42);
@@ -2463,12 +2463,12 @@ LABEL_15:
             v48 = -1;
             do
             {
-              v49 = a12[v43];
+              v49 = coss[v43];
               v50 = v33 * v49;
               v51 = v111[1] + rintf(v50);
               if (v51 >= 0)
               {
-                v52 = a13[v43];
+                v52 = sins[v43];
                 v53 = v33 * v52;
                 v54 = v111[0] + rintf(v53);
                 if ((v54 & 0x80000000) == 0 && v51 < var1 && v54 < v19)
@@ -2523,9 +2523,9 @@ LABEL_15:
 
             v65 = v62 + v64 * -0.5;
             *&v65 = v65;
-            v66 = sqrt(((v111[1] + var2 - *(&a8->var0 + v103)) * (v111[1] + var2 - *(&a8->var0 + v103)) + (v111[0] + var0 - *(&a8->var0 + v102)) * (v111[0] + var0 - *(&a8->var0 + v102))));
-            *&v66 = v66 / a8->var4;
-            [CIRedEyeRepair insertIntoProminenceVettingHopper:"insertIntoProminenceVettingHopper:max:outside:confidence:distance:row:column:IOD:" max:a9 outside:v65 confidence:v66 distance:? row:? column:? IOD:?];
+            v66 = sqrt(((v111[1] + var2 - *(&fr->var0 + v103)) * (v111[1] + var2 - *(&fr->var0 + v103)) + (v111[0] + var0 - *(&fr->var0 + v102)) * (v111[0] + var0 - *(&fr->var0 + v102))));
+            *&v66 = v66 / fr->var4;
+            [CIRedEyeRepair insertIntoProminenceVettingHopper:"insertIntoProminenceVettingHopper:max:outside:confidence:distance:row:column:IOD:" max:hopper outside:v65 confidence:v66 distance:? row:? column:? IOD:?];
             v24 = v104;
             bitmaskMinus(v109, v104);
           }
@@ -2542,10 +2542,10 @@ LABEL_15:
   termBitmask(inited);
   termBitmask(v24);
   *v110 = 0;
-  if (v17->var0 >= 1)
+  if (hopperCopy3->var0 >= 1)
   {
     v68 = 0;
-    v69 = vcvtd_n_f64_s32(a6, 1uLL);
+    v69 = vcvtd_n_f64_s32(repairsize, 1uLL);
     v70 = rintf(v69);
     if (v70 <= 1)
     {
@@ -2562,7 +2562,7 @@ LABEL_15:
       v72 = 0;
       v73 = 0;
       v74 = 0;
-      p_var0 = &v17->var1[v68].var0;
+      p_var0 = &hopperCopy3->var1[v68].var0;
       v76 = p_var0[6] - var0;
       v77 = p_var0[7] - var2;
       *v111 = __PAIR64__(v77, v76);
@@ -2576,10 +2576,10 @@ LABEL_15:
         v83 = p_var0[1];
         do
         {
-          v84 = v77 + rintf(v81 * a12[v72]);
+          v84 = v77 + rintf(v81 * coss[v72]);
           if (v84 >= 0)
           {
-            v85 = v76 + rintf(v81 * a13[v72]);
+            v85 = v76 + rintf(v81 * sins[v72]);
             if ((v85 & 0x80000000) == 0 && v84 < var1 && v85 < v19)
             {
               v87 = v25[v84 * var6 + v85 * var3];
@@ -2642,32 +2642,32 @@ LABEL_15:
       v93 = v91 + v92 * -0.5;
       *&v93 = v93;
       LODWORD(v92) = p_var0[5];
-      *&v67 = a8->var4;
+      *&v67 = fr->var4;
       [CIRedEyeRepair insertIntoProminenceVettingHopper:"insertIntoProminenceVettingHopper:max:outside:confidence:distance:row:column:IOD:" max:v110 outside:v93 confidence:v92 distance:v67 row:? column:? IOD:?];
       ++v68;
     }
 
-    while (v68 < v17->var0);
+    while (v68 < hopperCopy3->var0);
   }
 
   v94 = *&v110[112];
-  *&v17->var1[2].var5 = *&v110[96];
-  *&v17->var1[3].var0 = v94;
-  *&v17->var1[3].var4 = *&v110[128];
-  v17->var1[3].var8 = *&v110[144];
+  *&hopperCopy3->var1[2].var5 = *&v110[96];
+  *&hopperCopy3->var1[3].var0 = v94;
+  *&hopperCopy3->var1[3].var4 = *&v110[128];
+  hopperCopy3->var1[3].var8 = *&v110[144];
   v95 = *&v110[48];
-  *&v17->var1[0].var7 = *&v110[32];
-  *&v17->var1[1].var2 = v95;
+  *&hopperCopy3->var1[0].var7 = *&v110[32];
+  *&hopperCopy3->var1[1].var2 = v95;
   v96 = *&v110[80];
-  *&v17->var1[1].var6 = *&v110[64];
-  *&v17->var1[2].var1 = v96;
+  *&hopperCopy3->var1[1].var6 = *&v110[64];
+  *&hopperCopy3->var1[2].var1 = v96;
   v97 = *&v110[16];
-  *&v17->var0 = *v110;
-  *&v17->var1[0].var3 = v97;
+  *&hopperCopy3->var0 = *v110;
+  *&hopperCopy3->var1[0].var3 = v97;
   return v101;
 }
 
-- (BOOL)gatherProminencesWithC:(id *)a3 MC:(id *)a4 altC:(id *)a5 altMC:(id *)a6 maxwindowsize:(int)a7 repairsize:(int)a8 IR:(id)a9 fr:(id *)a10 intoHopper:(id *)a11 faceIndex:(int)a12 left:(BOOL)a13
+- (BOOL)gatherProminencesWithC:(id *)c MC:(id *)mC altC:(id *)altC altMC:(id *)altMC maxwindowsize:(int)maxwindowsize repairsize:(int)repairsize IR:(id)r fr:(id *)self0 intoHopper:(id *)self1 faceIndex:(int)self2 left:(BOOL)self3
 {
   v15 = 0;
   v54 = *MEMORY[0x1E69E9840];
@@ -2687,24 +2687,24 @@ LABEL_15:
   while (v15 != 40);
   memset(v51, 0, sizeof(v51));
   v50 = 0;
-  if (a5)
+  if (altC)
   {
-    BYTE4(v43) = a13;
-    LODWORD(v43) = a12;
-    v21 = [(CIRedEyeRepair *)self gatherProminencesWithC:a5 MC:a6 maxwindowsize:a7 repairsize:a8 IR:*&a9.var0 fr:*&a9.var2 intoHopper:a10 faceIndex:&v50 left:v43 coss:v53 sins:v52 bitmapName:"RC5"];
+    BYTE4(v43) = left;
+    LODWORD(v43) = index;
+    v21 = [(CIRedEyeRepair *)self gatherProminencesWithC:altC MC:altMC maxwindowsize:maxwindowsize repairsize:repairsize IR:*&r.var0 fr:*&r.var2 intoHopper:fr faceIndex:&v50 left:v43 coss:v53 sins:v52 bitmapName:"RC5"];
     if (v21)
     {
-      BYTE4(v44) = a13;
-      LODWORD(v44) = a12;
-      v21 = [(CIRedEyeRepair *)self gatherProminencesWithC:a3 MC:a4 maxwindowsize:a7 repairsize:a8 IR:*&a9.var0 fr:*&a9.var2 intoHopper:a10 faceIndex:a11 left:v44 coss:v53 sins:v52 bitmapName:"RC2"];
+      BYTE4(v44) = left;
+      LODWORD(v44) = index;
+      v21 = [(CIRedEyeRepair *)self gatherProminencesWithC:c MC:mC maxwindowsize:maxwindowsize repairsize:repairsize IR:*&r.var0 fr:*&r.var2 intoHopper:fr faceIndex:hopper left:v44 coss:v53 sins:v52 bitmapName:"RC2"];
       if (v21)
       {
         v22 = 1000000;
-        var1 = a11->var1;
-        if (a11->var1[0].var3 <= *&v51[1].i32[1])
+        var1 = hopper->var1;
+        if (hopper->var1[0].var3 <= *&v51[1].i32[1])
         {
-          var0 = a11->var0;
-          if (a11->var0 < 1)
+          var0 = hopper->var0;
+          if (hopper->var0 < 1)
           {
             v32 = 0;
           }
@@ -2712,7 +2712,7 @@ LABEL_15:
           else
           {
             v32 = 0;
-            p_var6 = &a11->var1[0].var6;
+            p_var6 = &hopper->var1[0].var6;
             do
             {
               v34 = (p_var6 - 6);
@@ -2751,7 +2751,7 @@ LABEL_15:
               v26 = v25 - 3;
               v27 = *v25;
               v25 = (v25 + 36);
-              v28 = vsub_s32(*&a11->var1[0].var6, v27);
+              v28 = vsub_s32(*&hopper->var1[0].var6, v27);
               v29 = vmul_s32(v28, v28);
               v30 = vadd_s32(v29, vdup_lane_s32(v29, 1)).u32[0];
               if (v30 < v22)
@@ -2766,10 +2766,10 @@ LABEL_15:
             while (v24);
           }
 
-          v32 = a11->var1;
+          v32 = hopper->var1;
         }
 
-        if (vcvtd_n_f64_u32(a8 * a8, 2uLL) > v22)
+        if (vcvtd_n_f64_u32(repairsize * repairsize, 2uLL) > v22)
         {
           v39 = *&v16[1].i32[1];
           v32->var4 = v39;
@@ -2783,9 +2783,9 @@ LABEL_15:
           {
             v40 = *&v32->var0;
             v41 = *&v32->var4;
-            a11->var1[0].var8 = v32->var8;
+            hopper->var1[0].var8 = v32->var8;
             *&var1->var0 = v40;
-            *&a11->var1[0].var4 = v41;
+            *&hopper->var1[0].var4 = v41;
           }
         }
 
@@ -2796,25 +2796,25 @@ LABEL_15:
 
   else
   {
-    BYTE4(v43) = a13;
-    LODWORD(v43) = a12;
-    LOBYTE(v21) = [(CIRedEyeRepair *)self gatherProminencesWithC:a3 MC:a4 maxwindowsize:a7 repairsize:a8 IR:*&a9.var0 fr:*&a9.var2 intoHopper:a10 faceIndex:a11 left:v43 coss:v53 sins:v52 bitmapName:"RC2"];
+    BYTE4(v43) = left;
+    LODWORD(v43) = index;
+    LOBYTE(v21) = [(CIRedEyeRepair *)self gatherProminencesWithC:c MC:mC maxwindowsize:maxwindowsize repairsize:repairsize IR:*&r.var0 fr:*&r.var2 intoHopper:fr faceIndex:hopper left:v43 coss:v53 sins:v52 bitmapName:"RC2"];
   }
 
   return v21;
 }
 
-- (BOOL)extractAndGatherProminencesWithRect:(id)a3 face:(id *)a4 faceIndex:(int)a5 left:(BOOL)a6 maxwindowsize:(float)a7 repairsize:(float)a8 returningRedHopper:(id *)a9 whiteHopper:(id *)a10 redChannel:(id *)a11 redChannelMask:(id *)a12
+- (BOOL)extractAndGatherProminencesWithRect:(id)rect face:(id *)face faceIndex:(int)index left:(BOOL)left maxwindowsize:(float)maxwindowsize repairsize:(float)repairsize returningRedHopper:(id *)hopper whiteHopper:(id *)self0 redChannel:(id *)self1 redChannelMask:(id *)self2
 {
-  v12 = a3.var3 - ((LOBYTE(a3.var3) - LOBYTE(a3.var2)) & 1);
-  v13 = a3.var1 - ((LOBYTE(a3.var1) - LOBYTE(a3.var0)) & 1);
-  v14 = v12 - a3.var2;
-  if (v12 <= a3.var2 || v13 <= a3.var0)
+  v12 = rect.var3 - ((LOBYTE(rect.var3) - LOBYTE(rect.var2)) & 1);
+  v13 = rect.var1 - ((LOBYTE(rect.var1) - LOBYTE(rect.var0)) & 1);
+  v14 = v12 - rect.var2;
+  if (v12 <= rect.var2 || v13 <= rect.var0)
   {
     return 0;
   }
 
-  var0 = a3.var0;
+  var0 = rect.var0;
   v49 = 0;
   memset(v48, 0, sizeof(v48));
   memset(v46, 0, sizeof(v46));
@@ -2826,11 +2826,11 @@ LABEL_15:
   memset(v40, 0, sizeof(v40));
   v41 = 0;
   v39 = 0;
-  v23 = a3.var0 | (v13 << 32);
-  v24 = a3.var2 | (v12 << 32);
+  v23 = rect.var0 | (v13 << 32);
+  v24 = rect.var2 | (v12 << 32);
   memset(v38, 0, sizeof(v38));
   v25 = halfBitmapRect(v23);
-  v37 = a4;
+  faceCopy = face;
   v26 = v25;
   v28 = v27;
   v29 = HIDWORD(v25);
@@ -2838,29 +2838,29 @@ LABEL_15:
   initBitmap(v48, v14, v30, 1, 1, self->lf->var2.var8);
   initBitmap(v46, v14, v30, 1, 1, self->lf->var2.var8);
   initBitmap(v44, HIDWORD(v28) - v28, v29 - v26, 2, 1, self->lf->var2.var8);
-  initBitmap(a11, v14, v30, 1, 1, self->lf->var2.var8);
-  initBitmap(a12, v14, v30, 1, 1, self->lf->var2.var8);
+  initBitmap(channel, v14, v30, 1, 1, self->lf->var2.var8);
+  initBitmap(mask, v14, v30, 1, 1, self->lf->var2.var8);
   initBitmap(v40, v14, v30, 1, 1, self->lf->var2.var8);
   initBitmap(v38, v14, v30, 1, 1, self->lf->var2.var8);
   constructSliceBitmap(&self->lf->var2, v42, v23, v24);
   ConvertREDEYEFORMATtoYCbCr(v42, v48, v44, self->lf->var8);
-  ConvertRedChannel2toY(v48, v44, a11);
+  ConvertRedChannel2toY(v48, v44, channel);
   ConvertRedChannel5toY(v48, v44, v40);
   termBitmap(v44);
-  BYTE4(v33) = a6;
-  LODWORD(v33) = a5;
-  v31 = [(CIRedEyeRepair *)self gatherProminencesWithC:a11 MC:a12 altC:v40 altMC:v38 maxwindowsize:a7 repairsize:a8 IR:v23 fr:v24 intoHopper:v37 faceIndex:a9 left:v33];
+  BYTE4(v33) = left;
+  LODWORD(v33) = index;
+  v31 = [(CIRedEyeRepair *)self gatherProminencesWithC:channel MC:mask altC:v40 altMC:v38 maxwindowsize:maxwindowsize repairsize:repairsize IR:v23 fr:v24 intoHopper:faceCopy faceIndex:hopper left:v33];
   v16 = 0;
   if (v31)
   {
-    if (!self->lf->var10 || (BYTE4(v34) = a6, LODWORD(v34) = a5, [(CIRedEyeRepair *)self gatherProminencesWithC:v48 MC:v46 altC:0 altMC:0 maxwindowsize:a7 repairsize:a8 IR:v23 fr:v24 intoHopper:v37 faceIndex:a10 left:v34]))
+    if (!self->lf->var10 || (BYTE4(v34) = left, LODWORD(v34) = index, [(CIRedEyeRepair *)self gatherProminencesWithC:v48 MC:v46 altC:0 altMC:0 maxwindowsize:maxwindowsize repairsize:repairsize IR:v23 fr:v24 intoHopper:faceCopy faceIndex:whiteHopper left:v34]))
     {
       v16 = 1;
     }
   }
 
-  termBitmap(&a11->var0);
-  termBitmap(&a12->var0);
+  termBitmap(&channel->var0);
+  termBitmap(&mask->var0);
   termBitmap(v40);
   termBitmap(v38);
   termBitmap(v48);
@@ -2868,28 +2868,28 @@ LABEL_15:
   return v16;
 }
 
-- ($989D4B698364BD1E7054E5BF7672D090)repairDecisionWithFaceRecord:(SEL)a3 left:(id *)a4 redHopper:(BOOL)a5 whiteHopper:(id *)a6
+- ($989D4B698364BD1E7054E5BF7672D090)repairDecisionWithFaceRecord:(SEL)record left:(id *)left redHopper:(BOOL)hopper whiteHopper:(id *)whiteHopper
 {
   *&retstr->var0 = 0u;
   *&retstr->var5 = 0u;
-  if (a6->var0 < 1 || a6->var1[0].var3 <= 0.08)
+  if (whiteHopper->var0 < 1 || whiteHopper->var1[0].var3 <= 0.08)
   {
     if (*(*&self->var5 + 372) == 1 && a7->var0 >= 1 && a7->var1[0].var3 > 0.08)
     {
       v11 = 52;
-      if (a5)
+      if (hopper)
       {
         v11 = 44;
       }
 
       v12 = 56;
-      if (a5)
+      if (hopper)
       {
         v12 = 48;
       }
 
-      v13 = *(&a4->var0 + v12);
-      retstr->var0 = *(&a4->var0 + v11);
+      v13 = *(&left->var0 + v12);
+      retstr->var0 = *(&left->var0 + v11);
       retstr->var1 = v13;
       retstr->var4 = a7->var1[0].var5;
       v14 = *&a7->var1[0].var1;
@@ -2902,23 +2902,23 @@ LABEL_15:
   else
   {
     v7 = 52;
-    if (a5)
+    if (hopper)
     {
       v7 = 44;
     }
 
     v8 = 56;
-    if (a5)
+    if (hopper)
     {
       v8 = 48;
     }
 
-    v9 = *(&a4->var0 + v8);
-    retstr->var0 = *(&a4->var0 + v7);
+    v9 = *(&left->var0 + v8);
+    retstr->var0 = *(&left->var0 + v7);
     retstr->var1 = v9;
-    retstr->var4 = a6->var1[0].var5;
-    v10 = *&a6->var1[0].var1;
-    *&retstr->var5 = vrev64_s32(*&a6->var1[0].var6);
+    retstr->var4 = whiteHopper->var1[0].var5;
+    v10 = *&whiteHopper->var1[0].var1;
+    *&retstr->var5 = vrev64_s32(*&whiteHopper->var1[0].var6);
     *&retstr->var7 = v10;
     *&retstr->var2 = 257;
   }
@@ -2926,17 +2926,17 @@ LABEL_15:
   return self;
 }
 
-- (int)applyEyeRepairWithEye:(id *)a3 left:(BOOL)a4 IOD:(float)a5 autoPupilTonality:(BOOL)a6 match:(id *)a7 faceIndex:(int)a8 whiteHopper:(id *)a9
+- (int)applyEyeRepairWithEye:(id *)eye left:(BOOL)left IOD:(float)d autoPupilTonality:(BOOL)tonality match:(id *)match faceIndex:(int)index whiteHopper:(id *)hopper
 {
-  if (!a3->var2)
+  if (!eye->var2)
   {
     goto LABEL_22;
   }
 
-  v13 = a6;
-  self->iFaceIndex = a8;
-  self->iLeft = a4;
-  if (a3->var3)
+  tonalityCopy = tonality;
+  self->iFaceIndex = index;
+  self->iLeft = left;
+  if (eye->var3)
   {
     v18 = 0;
   }
@@ -2946,29 +2946,29 @@ LABEL_15:
     v18 = 2;
   }
 
-  *&v9 = a5;
-  v19 = [(CIRedEyeRepair *)self redEyeRemovalWithPoint:a6 alignPupilShades:*&a7->var0 matching:*&a7->var2 force:v18 IOD:0 tap:a3->var5, a3->var6, v9];
+  *&v9 = d;
+  v19 = [(CIRedEyeRepair *)self redEyeRemovalWithPoint:tonality alignPupilShades:*&match->var0 matching:*&match->var2 force:v18 IOD:0 tap:eye->var5, eye->var6, v9];
   if (v19 == -1)
   {
 LABEL_15:
-    if (self->lf->var10 && a3->var3 && a9->var0 >= 1 && a9->var1[0].var3 > 0.125)
+    if (self->lf->var10 && eye->var3 && hopper->var0 >= 1 && hopper->var1[0].var3 > 0.125)
     {
-      a3->var7 = a9->var1[0].var1;
-      a3->var4 = a9->var1[0].var5;
-      *&a3->var5 = vrev64_s32(*&a9->var1[0].var6);
-      a3->var8 = a9->var1[0].var2;
-      a3->var3 = 0;
-      self->iFaceIndex = a8;
-      self->iLeft = a4;
-      *&v20 = a5;
-      v21 = [(CIRedEyeRepair *)self redEyeRemovalWithPoint:v13 alignPupilShades:*&a7->var0 matching:*&a7->var2 force:2 IOD:0 tap:a3->var5, a3->var6, v20];
+      eye->var7 = hopper->var1[0].var1;
+      eye->var4 = hopper->var1[0].var5;
+      *&eye->var5 = vrev64_s32(*&hopper->var1[0].var6);
+      eye->var8 = hopper->var1[0].var2;
+      eye->var3 = 0;
+      self->iFaceIndex = index;
+      self->iLeft = left;
+      *&v20 = d;
+      v21 = [(CIRedEyeRepair *)self redEyeRemovalWithPoint:tonalityCopy alignPupilShades:*&match->var0 matching:*&match->var2 force:2 IOD:0 tap:eye->var5, eye->var6, v20];
       if (v21 == -1)
       {
         return v21;
       }
 
-      *&v29 = a5;
-      [(CIRedEyeRepair *)self confidenceWithIOD:v21 repair:(a3->var7 - a3->var8) andProminenceDifference:v29];
+      *&v29 = d;
+      [(CIRedEyeRepair *)self confidenceWithIOD:v21 repair:(eye->var7 - eye->var8) andProminenceDifference:v29];
       if (v30 >= 0.125)
       {
         return v21;
@@ -2988,18 +2988,18 @@ LABEL_22:
   {
     maxrow = v22->repairs[0].data.CR.maxrow;
     x_low = LODWORD(v22->repairs[0].BI.centroid.x);
-    a3->var7 = maxrow;
-    a3->var8 = x_low;
+    eye->var7 = maxrow;
+    eye->var8 = x_low;
   }
 
   else
   {
-    maxrow = a3->var7;
-    x_low = a3->var8;
+    maxrow = eye->var7;
+    x_low = eye->var8;
   }
 
-  v26 = ((*&v22->repairs[0].data.O.orientation / 255.0) * ((maxrow - x_low) / 255.0)) / fmaxf(a3->var4, 0.001);
-  *&v23 = a5;
+  v26 = ((*&v22->repairs[0].data.O.orientation / 255.0) * ((maxrow - x_low) / 255.0)) / fmaxf(eye->var4, 0.001);
+  *&v23 = d;
   [(CIRedEyeRepair *)self confidenceWithIOD:v21 repair:v23 andProminenceDifference:?];
   if (v26 < 0.135 || v27 < 0.125)
   {
@@ -3010,13 +3010,13 @@ LABEL_22:
   return v21;
 }
 
-- (void)autoRepairExtractAndSearchLeft:(id)a3 right:(id)a4 data:(id *)a5 repairSize:(float)a6 autoPupilTonality:(BOOL)a7 faceIndex:(int)a8
+- (void)autoRepairExtractAndSearchLeft:(id)left right:(id)right data:(id *)data repairSize:(float)size autoPupilTonality:(BOOL)tonality faceIndex:(int)index
 {
-  v8 = a7;
-  v10 = *&a4.var2;
-  v11 = *&a4.var0;
-  v12 = *&a3.var2;
-  v14 = *&a3.var0;
+  tonalityCopy = tonality;
+  v10 = *&right.var2;
+  v11 = *&right.var0;
+  v12 = *&left.var2;
+  v14 = *&left.var0;
   v101 = 0u;
   v100 = 0u;
   v99 = 0u;
@@ -3063,10 +3063,10 @@ LABEL_22:
   v54 = 0;
   memset(v53, 0, sizeof(v53));
   v102 = 0.0;
-  [(CIRedEyeRepair *)self upperRepairSize:COERCE_DOUBLE(LODWORD(a5->var4))];
-  v17 = rintf(v16 * a6);
+  [(CIRedEyeRepair *)self upperRepairSize:COERCE_DOUBLE(LODWORD(data->var4))];
+  v17 = rintf(v16 * size);
   HIDWORD(v18) = 1069757235;
-  v19 = a5->var4 * 0.15;
+  v19 = data->var4 * 0.15;
   v82 = 0;
   v92 = 0;
   v62 = 0;
@@ -3075,19 +3075,19 @@ LABEL_22:
   v21 = v17;
   *&v19 = v20;
   *&v18 = v17;
-  if ([(CIRedEyeRepair *)self extractAndGatherProminencesWithRect:v14 face:v12 faceIndex:a5 left:a8 maxwindowsize:1 repairsize:&v92 returningRedHopper:v19 whiteHopper:v18 redChannel:&v72 redChannelMask:v59, v57])
+  if ([(CIRedEyeRepair *)self extractAndGatherProminencesWithRect:v14 face:v12 faceIndex:data left:index maxwindowsize:1 repairsize:&v92 returningRedHopper:v19 whiteHopper:v18 redChannel:&v72 redChannelMask:v59, v57])
   {
     if (self)
     {
-      [(CIRedEyeRepair *)self repairDecisionWithFaceRecord:a5 left:1 redHopper:&v92 whiteHopper:&v72];
+      [(CIRedEyeRepair *)self repairDecisionWithFaceRecord:data left:1 redHopper:&v92 whiteHopper:&v72];
       v51 = v49;
       v52 = v50;
-      if (![(CIRedEyeRepair *)self extractAndGatherProminencesWithRect:v11 face:v10 faceIndex:a5 left:a8 maxwindowsize:0 repairsize:&v82 returningRedHopper:COERCE_DOUBLE(__PAIR64__(DWORD1(v49) whiteHopper:LODWORD(v20))) redChannel:COERCE_DOUBLE(__PAIR64__(DWORD1(v50) redChannelMask:LODWORD(v21))), &v62, v55, v53])
+      if (![(CIRedEyeRepair *)self extractAndGatherProminencesWithRect:v11 face:v10 faceIndex:data left:index maxwindowsize:0 repairsize:&v82 returningRedHopper:COERCE_DOUBLE(__PAIR64__(DWORD1(v49) whiteHopper:LODWORD(v20))) redChannel:COERCE_DOUBLE(__PAIR64__(DWORD1(v50) redChannelMask:LODWORD(v21))), &v62, v55, v53])
       {
         return;
       }
 
-      [(CIRedEyeRepair *)self repairDecisionWithFaceRecord:a5 left:0 redHopper:&v82 whiteHopper:&v62];
+      [(CIRedEyeRepair *)self repairDecisionWithFaceRecord:data left:0 redHopper:&v82 whiteHopper:&v62];
     }
 
     else
@@ -3095,7 +3095,7 @@ LABEL_22:
       v51 = 0u;
       v52 = 0u;
       *&v22 = v21;
-      if (([0 extractAndGatherProminencesWithRect:v11 face:v10 faceIndex:a5 left:a8 maxwindowsize:0 repairsize:&v82 returningRedHopper:COERCE_DOUBLE(LODWORD(v20)) whiteHopper:v22 redChannel:&v62 redChannelMask:{v55, v53}] & 1) == 0)
+      if (([0 extractAndGatherProminencesWithRect:v11 face:v10 faceIndex:data left:index maxwindowsize:0 repairsize:&v82 returningRedHopper:COERCE_DOUBLE(LODWORD(v20)) whiteHopper:v22 redChannel:&v62 redChannelMask:{v55, v53}] & 1) == 0)
       {
         return;
       }
@@ -3106,8 +3106,8 @@ LABEL_22:
 
     v49 = v47;
     v50 = v48;
-    [(CIRedEyeRepair *)self extractAverageFaceY:a5 contrast:&v102 faceIndex:a8];
-    if (v23 == 0.0 || (v24 = v102, a5->var9 = v23, a5->var10 = v24, !v8))
+    [(CIRedEyeRepair *)self extractAverageFaceY:data contrast:&v102 faceIndex:index];
+    if (v23 == 0.0 || (v24 = v102, data->var9 = v23, data->var10 = v24, !tonalityCopy))
     {
       v33 = 0;
       standardTemplate = self->standardTemplate;
@@ -3137,14 +3137,14 @@ LABEL_22:
       v33 = 1;
     }
 
-    standardTemplate.lo = LODWORD(a5->var4);
-    v34 = [(CIRedEyeRepair *)self applyEyeRepairWithEye:&v51 left:1 IOD:v33 autoPupilTonality:&v61 match:a8 faceIndex:&v72 whiteHopper:*&standardTemplate.lo];
-    *&v35 = a5->var4;
-    v36 = [(CIRedEyeRepair *)self applyEyeRepairWithEye:&v49 left:0 IOD:v33 autoPupilTonality:&v61 match:a8 faceIndex:&v62 whiteHopper:v35];
+    standardTemplate.lo = LODWORD(data->var4);
+    v34 = [(CIRedEyeRepair *)self applyEyeRepairWithEye:&v51 left:1 IOD:v33 autoPupilTonality:&v61 match:index faceIndex:&v72 whiteHopper:*&standardTemplate.lo];
+    *&v35 = data->var4;
+    v36 = [(CIRedEyeRepair *)self applyEyeRepairWithEye:&v49 left:0 IOD:v33 autoPupilTonality:&v61 match:index faceIndex:&v62 whiteHopper:v35];
     v37 = v36;
     if (self->lf->var10 && v34 != -1 && v36 != -1)
     {
-      if ((BYTE9(v51) & 1) != 0 || (BYTE9(v49) & 1) != 0 || (v38 = [(CIRedEyeRepair *)self repairWithTag:v34], v39 = vcvts_n_f32_s32(HIDWORD(v38->repairs[0].pt2.y) + LODWORD(v38->repairs[0].pt2.y), 1uLL), v40 = vcvts_n_f32_s32(HIDWORD(v38->repairs[0].pt2.x) + LODWORD(v38->repairs[0].pt2.x), 1uLL), v41 = [(CIRedEyeRepair *)self repairWithTag:v37], v42 = vcvts_n_f32_s32(HIDWORD(v41->repairs[0].pt2.y) + LODWORD(v41->repairs[0].pt2.y), 1uLL), v43 = vcvts_n_f32_s32(HIDWORD(v41->repairs[0].pt2.x) + LODWORD(v41->repairs[0].pt2.x), 1uLL), (sqrt(((v39 - v42) * (v39 - v42) + (v40 - v43) * (v40 - v43))) / a5->var4) >= 0.8))
+      if ((BYTE9(v51) & 1) != 0 || (BYTE9(v49) & 1) != 0 || (v38 = [(CIRedEyeRepair *)self repairWithTag:v34], v39 = vcvts_n_f32_s32(HIDWORD(v38->repairs[0].pt2.y) + LODWORD(v38->repairs[0].pt2.y), 1uLL), v40 = vcvts_n_f32_s32(HIDWORD(v38->repairs[0].pt2.x) + LODWORD(v38->repairs[0].pt2.x), 1uLL), v41 = [(CIRedEyeRepair *)self repairWithTag:v37], v42 = vcvts_n_f32_s32(HIDWORD(v41->repairs[0].pt2.y) + LODWORD(v41->repairs[0].pt2.y), 1uLL), v43 = vcvts_n_f32_s32(HIDWORD(v41->repairs[0].pt2.x) + LODWORD(v41->repairs[0].pt2.x), 1uLL), (sqrt(((v39 - v42) * (v39 - v42) + (v40 - v43) * (v40 - v43))) / data->var4) >= 0.8))
       {
         v44 = 1;
         goto LABEL_26;
@@ -3168,17 +3168,17 @@ LABEL_22:
 
 LABEL_27:
         v46 = [(CIRedEyeRepair *)self repairWithTag:v37];
-        v46->repairs[0].fullNew.rowBytes = a8;
+        v46->repairs[0].fullNew.rowBytes = index;
         LOBYTE(v46->repairs[0].fullNew.size) = 0;
-        v46->repairs[0].fullNew.samplesPerPixel = LODWORD(a5->var4);
+        v46->repairs[0].fullNew.samplesPerPixel = LODWORD(data->var4);
         return;
       }
 
 LABEL_26:
       v45 = [(CIRedEyeRepair *)self repairWithTag:v34];
-      v45->repairs[0].fullNew.rowBytes = a8;
+      v45->repairs[0].fullNew.rowBytes = index;
       LOBYTE(v45->repairs[0].fullNew.size) = 1;
-      v45->repairs[0].fullNew.samplesPerPixel = LODWORD(a5->var4);
+      v45->repairs[0].fullNew.samplesPerPixel = LODWORD(data->var4);
       if (!v44)
       {
         return;
@@ -3189,7 +3189,7 @@ LABEL_26:
   }
 }
 
-- (int)distanceMaskFromPolyToCb:(int)a3 Cr:(int)a4
+- (int)distanceMaskFromPolyToCb:(int)cb Cr:(int)cr
 {
   if (!self->polyClosed)
   {
@@ -3208,7 +3208,7 @@ LABEL_26:
     v6 = 256;
     do
     {
-      v7 = *(v5 - 2) * (a3 - 128) + *(v5 - 1) * (a4 - 128);
+      v7 = *(v5 - 2) * (cb - 128) + *(v5 - 1) * (cr - 128);
       v8 = *v5;
       v5 += 3;
       v9 = v7 + v8;
@@ -3449,15 +3449,15 @@ LABEL_24:
   [(CIRedEyeRepair *)self prepareLineFunctions];
 }
 
-- (int)redEyeRemovalWithData:(id *)a3
+- (int)redEyeRemovalWithData:(id *)data
 {
   v89 = *MEMORY[0x1E69E9840];
-  v3 = *&a3->var17.var2;
-  v79[0] = *&a3->var17.var0;
+  v3 = *&data->var17.var2;
+  v79[0] = *&data->var17.var0;
   v79[1] = v3;
-  v79[2] = *&a3->var17.var6;
-  v5 = *&a3->var18.var0;
-  v4 = *&a3->var18.var2;
+  v79[2] = *&data->var17.var6;
+  v5 = *&data->var18.var0;
+  v4 = *&data->var18.var2;
   if ((BYTE4(v4) - v4))
   {
     v6 = v4 - 0x100000000;
@@ -3465,7 +3465,7 @@ LABEL_24:
 
   else
   {
-    v6 = *&a3->var18.var2;
+    v6 = *&data->var18.var2;
   }
 
   v7 = HIDWORD(v5) - ((BYTE4(v5) - v5) & 1);
@@ -3474,9 +3474,9 @@ LABEL_24:
     return -1;
   }
 
-  v11 = *&a3->var18.var0;
-  v12 = *&a3->var11.var0;
-  v13 = *&a3->var11.var2;
+  v11 = *&data->var18.var0;
+  v12 = *&data->var11.var0;
+  v13 = *&data->var11.var2;
   p_lastClickYBitmap = &self->lastClickYBitmap;
   v15 = v11 | (v7 << 32);
   if (![(CIRedEyeRepair *)self extractReusableAlignedBitmapsAroundPoint:&self->lf->var2 YR:v15 subYBitmap:v6 subCbCrBitmap:&self->lastClickYBitmap, &self->lastClickCbCrBitmap])
@@ -3486,7 +3486,7 @@ LABEL_24:
 
   v66 = p_lastClickYBitmap;
   v16 = p_lastClickYBitmap;
-  if (a3->var14 != 2)
+  if (data->var14 != 2)
   {
     v17 = malloc_type_malloc(0x28uLL, 0x1010040829CE571uLL);
     if (!v17)
@@ -3495,7 +3495,7 @@ LABEL_24:
     }
 
     v18 = v17;
-    var14 = a3->var14;
+    var14 = data->var14;
     v16 = v66;
     if (var14 != 2)
     {
@@ -3549,7 +3549,7 @@ LABEL_18:
   v70 = 0;
   memset(v69, 0, sizeof(v69));
   v64 = v16;
-  v65 = recomputeBitmask(v16, a3->var4 - v6, (a3->var5 - v11), a3->var6, &v80);
+  v65 = recomputeBitmask(v16, data->var4 - v6, (data->var5 - v11), data->var6, &v80);
   if (!v65)
   {
     v80 = 0uLL;
@@ -3558,13 +3558,13 @@ LABEL_18:
     *(v82 + 12) = v24;
   }
 
-  v25 = a3->var14;
+  v25 = data->var14;
   if (!v25)
   {
-    var9 = a3->var9;
+    var9 = data->var9;
     if (var9)
     {
-      v27 = recomputeBitmask(v66, a3->var7 - v6, (a3->var8 - v11), var9, 0);
+      v27 = recomputeBitmask(v66, data->var7 - v6, (data->var8 - v11), var9, 0);
     }
 
     else
@@ -3628,18 +3628,18 @@ LABEL_18:
   }
 
   HIDWORD(v86) = 0;
-  var15 = a3->var15;
-  v39 = *&a3->var12.var0;
-  v67 = *&a3->var12.var2;
+  var15 = data->var15;
+  v39 = *&data->var12.var0;
+  v67 = *&data->var12.var2;
   if (var15 == 2)
   {
     v42 = &v68;
-    if (!a3->var10)
+    if (!data->var10)
     {
       v42 = 0;
     }
 
-    v41 = whiteEyeCancellation(v37, &self->lastClickCbCrBitmap, a3->var16, v15, v6, Alpha, v88, v85, v65, &v80, __dst, v73, v79, v42, &v86 + 1);
+    v41 = whiteEyeCancellation(v37, &self->lastClickCbCrBitmap, data->var16, v15, v6, Alpha, v88, v85, v65, &v80, __dst, v73, v79, v42, &v86 + 1);
   }
 
   else
@@ -3650,14 +3650,14 @@ LABEL_18:
       goto LABEL_44;
     }
 
-    if (a3->var10 || a3->var14 == 1)
+    if (data->var10 || data->var14 == 1)
     {
       buildTransferTable(v39, v67, v63 | (rintf(v63 + ((v62 - v63) * ((HIDWORD(v39) - v39) / (v67 - v39)))) << 32), v62, v87);
     }
 
     else
     {
-      var13 = a3->var13;
+      var13 = data->var13;
       if (var13 == -1)
       {
         LODWORD(v54) = 40;
@@ -3732,7 +3732,7 @@ LABEL_44:
     termBitmask(v65);
   }
 
-  if (a3->var14 != 2)
+  if (data->var14 != 2)
   {
     termBitmap(v64);
     free(v64);
@@ -3761,13 +3761,13 @@ LABEL_60:
     self->lastRepairTag = nextRepairTag;
     *(v44 + 18) = nextRepairTag;
     v46 = v44 + 72;
-    self->lastRepairIOD = a3->var16;
+    self->lastRepairIOD = data->var16;
     self->nRepairs = nRepairs + 1;
     self->nextRepairTag = nextRepairTag + 1;
-    v47.i64[0] = *&a3->var0;
-    v47.i64[1] = HIDWORD(*&a3->var0);
+    v47.i64[0] = *&data->var0;
+    v47.i64[1] = HIDWORD(*&data->var0);
     *(v46 + 8) = vcvtq_f64_s64(v47);
-    v48 = a3->var14;
+    v48 = data->var14;
     *(v46 + 6) = var15;
     *(v46 + 7) = v48;
     v49 = HIDWORD(v86);
@@ -3778,7 +3778,7 @@ LABEL_60:
     ConvertYCbCrtoREDEYEFORMAT(v71, v69, (v46 + 40), self->lf->var8);
     *(v46 + 12) = v39;
     *(v46 + 13) = v67;
-    v46[112] = a3->var10;
+    v46[112] = data->var10;
     *(v46 + 116) = v63;
     *(v46 + 124) = v62;
   }
@@ -3797,10 +3797,10 @@ LABEL_60:
   return -1;
 }
 
-- (void)autoRepairWithFaceArray:(id)a3
+- (void)autoRepairWithFaceArray:(id)array
 {
   *&v90[1892] = *MEMORY[0x1E69E9840];
-  v3 = [a3 count];
+  v3 = [array count];
   v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:v3];
   if (v3 >= 1)
   {
@@ -3808,7 +3808,7 @@ LABEL_60:
     v84 = v3 & 0x7FFFFFFF;
     do
     {
-      v6 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:{objc_msgSend(a3, "objectAtIndex:", v5)}];
+      v6 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:{objc_msgSend(array, "objectAtIndex:", v5)}];
       [v4 addObject:v6];
       v7 = [v6 valueForKey:@"leftEyeX"];
       v8 = [v6 valueForKey:@"leftEyeY"];
@@ -3825,15 +3825,15 @@ LABEL_60:
       v10 = !v9;
       if (v9)
       {
-        v13 = 0;
-        v12 = 0;
+        intValue2 = 0;
+        intValue = 0;
       }
 
       else
       {
         v11 = v8;
-        v12 = [v7 intValue];
-        v13 = [v11 intValue];
+        intValue = [v7 intValue];
+        intValue2 = [v11 intValue];
       }
 
       v14 = [v6 valueForKey:@"rightEyeX"];
@@ -3859,11 +3859,11 @@ LABEL_60:
       else
       {
         v17 = v15;
-        v18 = [v14 intValue];
-        v19 = [v17 intValue];
+        intValue3 = [v14 intValue];
+        intValue4 = [v17 intValue];
         if (v10)
         {
-          v20 = v19;
+          v20 = intValue4;
           v21 = [v6 valueForKey:@"centerX"];
           v22 = [v6 valueForKey:@"centerY"];
           if (v21 && (v23 = v22) != 0)
@@ -3874,8 +3874,8 @@ LABEL_60:
 
           else
           {
-            v21 = rintf(vcvts_n_f32_s32(v18 + v12, 1uLL) - vcvts_n_f32_s32(v20 - v13, 1uLL));
-            v23 = rintf(vcvts_n_f32_s32(v18 - v12, 1uLL) + vcvts_n_f32_s32(v20 + v13, 1uLL));
+            v21 = rintf(vcvts_n_f32_s32(intValue3 + intValue, 1uLL) - vcvts_n_f32_s32(v20 - intValue2, 1uLL));
+            v23 = rintf(vcvts_n_f32_s32(intValue3 - intValue, 1uLL) + vcvts_n_f32_s32(v20 + intValue2, 1uLL));
             [v6 setValue:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithInt:", v21), @"centerX"}];
             [v6 setValue:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithInt:", v23), @"centerY"}];
           }
@@ -3884,8 +3884,8 @@ LABEL_60:
           v25 = [v6 valueForKey:@"mouthCenterY"];
           if (!v24 || !v25)
           {
-            [v6 setValue:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithInt:", rintf(v21 - vcvts_n_f32_s32(v20 - v13, 1uLL))), @"mouthCenterX"}];
-            [v6 setValue:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithInt:", rintf(vcvts_n_f32_s32(v18 - v12, 1uLL) + v23)), @"mouthCenterY"}];
+            [v6 setValue:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithInt:", rintf(v21 - vcvts_n_f32_s32(v20 - intValue2, 1uLL))), @"mouthCenterX"}];
+            [v6 setValue:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithInt:", rintf(vcvts_n_f32_s32(intValue3 - intValue, 1uLL) + v23)), @"mouthCenterY"}];
           }
         }
       }
@@ -3932,16 +3932,16 @@ LABEL_60:
 
         if (v40)
         {
-          v83 = 0;
-          v85 = 0;
+          intValue6 = 0;
+          intValue5 = 0;
           v87 = 1;
         }
 
         else
         {
           v41 = v39;
-          v85 = [v38 intValue];
-          v83 = [v41 intValue];
+          intValue5 = [v38 intValue];
+          intValue6 = [v41 intValue];
         }
 
         v42 = [v37 valueForKey:@"leftEyeSize"];
@@ -3958,23 +3958,23 @@ LABEL_60:
 
         v45 = [v37 valueForKey:@"rightEyeX"];
         v46 = [v37 valueForKey:@"rightEyeY"];
-        v47 = 0;
+        intValue8 = 0;
         v36 = 1;
         if (v45)
         {
           v48 = v46;
-          v49 = 0;
+          intValue7 = 0;
           if (v46)
           {
-            v49 = [v45 intValue];
-            v47 = [v48 intValue];
+            intValue7 = [v45 intValue];
+            intValue8 = [v48 intValue];
             v36 = v29;
           }
         }
 
         else
         {
-          v49 = 0;
+          intValue7 = 0;
         }
 
         v50 = [v37 valueForKey:@"rightEyeSize"];
@@ -3991,8 +3991,8 @@ LABEL_60:
         if ((v87 | v36))
         {
           *(v34 - 28) = 1;
-          v53 = v83;
-          v52 = v85;
+          v53 = intValue6;
+          v52 = intValue5;
           if (v36)
           {
             *&v51 = v44;
@@ -4000,8 +4000,8 @@ LABEL_60:
 
           else
           {
-            v52 = v49;
-            v53 = v47;
+            v52 = intValue7;
+            v53 = intValue8;
           }
 
           *(v34 - 6) = v52 - var2;
@@ -4018,16 +4018,16 @@ LABEL_60:
           v57 = [objc_msgSend(v37 valueForKey:{@"centerY", "intValue"}];
           v36 = 0;
           v87 = 0;
-          v34[4] = v85 - var2;
-          v34[5] = v83 - var0;
-          v34[6] = v49 - var2;
-          v34[7] = v47 - var0;
+          v34[4] = intValue5 - var2;
+          v34[5] = intValue6 - var0;
+          v34[6] = intValue7 - var2;
+          v34[7] = intValue8 - var0;
           *(v34 - 28) = 0;
           *(v34 - 2) = v54 - var2;
           *(v34 - 1) = v55 - var0;
           *v34 = v56 - var2;
           v34[1] = v57 - var0;
-          *(v34 - 3) = sqrtf(((v83 - v47) * (v83 - v47) + (v85 - v49) * (v85 - v49)));
+          *(v34 - 3) = sqrtf(((intValue6 - intValue8) * (intValue6 - intValue8) + (intValue5 - intValue7) * (intValue5 - intValue7)));
           v31 = v30 + 1;
         }
 
@@ -4231,67 +4231,67 @@ LABEL_60:
   return v3;
 }
 
-- (BOOL)getFloat:(float *)a3 d:(id)a4 s:(id)a5
+- (BOOL)getFloat:(float *)float d:(id)d s:(id)s
 {
-  v6 = [a4 valueForKey:a5];
+  v6 = [d valueForKey:s];
   if (v6)
   {
     [v6 floatValue];
-    *a3 = v7;
+    *float = v7;
     LOBYTE(v6) = 1;
   }
 
   return v6;
 }
 
-- (BOOL)getInt:(int *)a3 d:(id)a4 s:(id)a5
+- (BOOL)getInt:(int *)int d:(id)d s:(id)s
 {
-  v6 = [a4 valueForKey:a5];
+  v6 = [d valueForKey:s];
   v7 = v6;
   if (v6)
   {
-    *a3 = [v6 intValue];
+    *int = [v6 intValue];
   }
 
   return v7 != 0;
 }
 
-- (BOOL)getBool:(BOOL *)a3 d:(id)a4 s:(id)a5
+- (BOOL)getBool:(BOOL *)bool d:(id)d s:(id)s
 {
-  v6 = [a4 valueForKey:a5];
+  v6 = [d valueForKey:s];
   v7 = v6;
   if (v6)
   {
-    *a3 = [v6 BOOLValue];
+    *bool = [v6 BOOLValue];
   }
 
   return v7 != 0;
 }
 
-- (void)orientRectangleMinX:(float *)a3 maxX:(float *)a4 minY:(float *)a5 maxY:(float *)a6
+- (void)orientRectangleMinX:(float *)x maxX:(float *)maxX minY:(float *)y maxY:(float *)maxY
 {
   if (self->lf->var9 == 6)
   {
-    v6 = *a3;
-    v7 = *a4;
-    *a3 = *a6;
-    *a4 = *a5;
-    *a5 = 1.0 - v6;
-    *a6 = 1.0 - v7;
+    v6 = *x;
+    v7 = *maxX;
+    *x = *maxY;
+    *maxX = *y;
+    *y = 1.0 - v6;
+    *maxY = 1.0 - v7;
   }
 }
 
-- (void)orientPointX:(float *)a3 Y:(float *)a4
+- (void)orientPointX:(float *)x Y:(float *)y
 {
   if (self->lf->var9 == 6)
   {
-    v4 = *a3;
-    *a3 = *a4;
-    *a4 = 1.0 - v4;
+    v4 = *x;
+    *x = *y;
+    *y = 1.0 - v4;
   }
 }
 
-- (void)executeRepair:(id)a3
+- (void)executeRepair:(id)repair
 {
   v126[0] = 0;
   v125 = 0;
@@ -4307,95 +4307,95 @@ LABEL_60:
   var3 = lf->var3;
   var2 = lf->var5.var2;
   var0 = lf->var5.var0;
-  if ([(CIRedEyeRepair *)self getFloat:&v123 d:a3 s:@"pointX"])
+  if ([(CIRedEyeRepair *)self getFloat:&v123 d:repair s:@"pointX"])
   {
-    if ([(CIRedEyeRepair *)self getFloat:&v122 + 4 d:a3 s:@"pointY"])
+    if ([(CIRedEyeRepair *)self getFloat:&v122 + 4 d:repair s:@"pointY"])
     {
       [(CIRedEyeRepair *)self orientPointX:&v123 Y:&v122 + 4];
       v10 = *(&v122 + 1);
       v11 = *&v123;
-      if ([(CIRedEyeRepair *)self getInt:&v125 + 4 d:a3 s:@"forceCase"])
+      if ([(CIRedEyeRepair *)self getInt:&v125 + 4 d:repair s:@"forceCase"])
       {
         v12 = HIDWORD(v125);
-        if ([(CIRedEyeRepair *)self getBool:v126 d:a3 s:@"pupilShadeAlignment"])
+        if ([(CIRedEyeRepair *)self getBool:v126 d:repair s:@"pupilShadeAlignment"])
         {
           v13 = v126[0];
-          if ([(CIRedEyeRepair *)self getFloat:&v124 d:a3 s:@"pupilShadeLow"])
+          if ([(CIRedEyeRepair *)self getFloat:&v124 d:repair s:@"pupilShadeLow"])
           {
             v14 = *&v124;
-            if ([(CIRedEyeRepair *)self getFloat:&v124 d:a3 s:@"pupilShadeMedium"])
+            if ([(CIRedEyeRepair *)self getFloat:&v124 d:repair s:@"pupilShadeMedium"])
             {
               v15 = *&v124;
-              if ([(CIRedEyeRepair *)self getFloat:&v124 d:a3 s:@"pupilShadeHigh"])
+              if ([(CIRedEyeRepair *)self getFloat:&v124 d:repair s:@"pupilShadeHigh"])
               {
                 v16 = *&v124;
-                if ([(CIRedEyeRepair *)self getFloat:&v124 d:a3 s:@"interocularDistance"])
+                if ([(CIRedEyeRepair *)self getFloat:&v124 d:repair s:@"interocularDistance"])
                 {
                   v17 = *&v124;
-                  if ([(CIRedEyeRepair *)self getFloat:&v123 d:a3 s:@"snappedX"])
+                  if ([(CIRedEyeRepair *)self getFloat:&v123 d:repair s:@"snappedX"])
                   {
-                    if ([(CIRedEyeRepair *)self getFloat:&v122 + 4 d:a3 s:@"snappedY"])
+                    if ([(CIRedEyeRepair *)self getFloat:&v122 + 4 d:repair s:@"snappedY"])
                     {
                       [(CIRedEyeRepair *)self orientPointX:&v123 Y:&v122 + 4];
                       v19 = *(&v122 + 1);
                       v18 = *&v123;
-                      if ([(CIRedEyeRepair *)self getFloat:&v123 d:a3 s:@"bitmaskX"])
+                      if ([(CIRedEyeRepair *)self getFloat:&v123 d:repair s:@"bitmaskX"])
                       {
-                        if ([(CIRedEyeRepair *)self getFloat:&v122 + 4 d:a3 s:@"bitmaskY"])
+                        if ([(CIRedEyeRepair *)self getFloat:&v122 + 4 d:repair s:@"bitmaskY"])
                         {
                           [(CIRedEyeRepair *)self orientPointX:&v123 Y:&v122 + 4];
                           v84 = *&v123;
                           v86 = *(&v122 + 1);
-                          if ([(CIRedEyeRepair *)self getFloat:&v124 d:a3 s:@"bitmaskThreshold"])
+                          if ([(CIRedEyeRepair *)self getFloat:&v124 d:repair s:@"bitmaskThreshold"])
                           {
                             v82 = *&v124;
-                            if ([(CIRedEyeRepair *)self getFloat:&v123 d:a3 s:@"cornealReflectionX"])
+                            if ([(CIRedEyeRepair *)self getFloat:&v123 d:repair s:@"cornealReflectionX"])
                             {
-                              if ([(CIRedEyeRepair *)self getFloat:&v122 + 4 d:a3 s:@"cornealReflectionY"])
+                              if ([(CIRedEyeRepair *)self getFloat:&v122 + 4 d:repair s:@"cornealReflectionY"])
                               {
                                 [(CIRedEyeRepair *)self orientPointX:&v123 Y:&v122 + 4];
                                 v78 = *&v123;
                                 v80 = *(&v122 + 1);
-                                if ([(CIRedEyeRepair *)self getFloat:&v124 d:a3 s:@"cornealReflectionThreshold"])
+                                if ([(CIRedEyeRepair *)self getFloat:&v124 d:repair s:@"cornealReflectionThreshold"])
                                 {
                                   v76 = *&v124;
-                                  if ([(CIRedEyeRepair *)self getFloat:&v124 d:a3 s:@"pupilShadeAverage"])
+                                  if ([(CIRedEyeRepair *)self getFloat:&v124 d:repair s:@"pupilShadeAverage"])
                                   {
                                     v74 = *&v124;
-                                    if ([(CIRedEyeRepair *)self getFloat:&v124 d:a3 s:@"existingPupilLow"])
+                                    if ([(CIRedEyeRepair *)self getFloat:&v124 d:repair s:@"existingPupilLow"])
                                     {
                                       v72 = *&v124;
-                                      if ([(CIRedEyeRepair *)self getFloat:&v124 d:a3 s:@"existingPupilMedium"])
+                                      if ([(CIRedEyeRepair *)self getFloat:&v124 d:repair s:@"existingPupilMedium"])
                                       {
                                         v70 = *&v124;
-                                        if ([(CIRedEyeRepair *)self getFloat:&v124 d:a3 s:@"existingPupilHigh"])
+                                        if ([(CIRedEyeRepair *)self getFloat:&v124 d:repair s:@"existingPupilHigh"])
                                         {
                                           v68 = *&v124;
-                                          if ([(CIRedEyeRepair *)self getFloat:&v124 d:a3 s:@"existingPupilAverage"])
+                                          if ([(CIRedEyeRepair *)self getFloat:&v124 d:repair s:@"existingPupilAverage"])
                                           {
                                             v67 = *&v124;
-                                            if ([(CIRedEyeRepair *)self getFloat:&v124 d:a3 s:@"averageSkinLuminance"])
+                                            if ([(CIRedEyeRepair *)self getFloat:&v124 d:repair s:@"averageSkinLuminance"])
                                             {
                                               v66 = *&v124;
-                                              if ([(CIRedEyeRepair *)self getInt:&v125 + 4 d:a3 s:@"finalEyeCase"])
+                                              if ([(CIRedEyeRepair *)self getInt:&v125 + 4 d:repair s:@"finalEyeCase"])
                                               {
                                                 v20 = HIDWORD(v125);
-                                                if ([(CIRedEyeRepair *)self getInt:&v125 + 4 d:a3 s:@"imageOrientation"])
+                                                if ([(CIRedEyeRepair *)self getInt:&v125 + 4 d:repair s:@"imageOrientation"])
                                                 {
                                                   v21 = HIDWORD(v125);
-                                                  if ([(CIRedEyeRepair *)self getFloat:&v124 d:a3 s:@"imageSignalToNoiseRatio"])
+                                                  if ([(CIRedEyeRepair *)self getFloat:&v124 d:repair s:@"imageSignalToNoiseRatio"])
                                                   {
                                                     v65 = *&v124;
-                                                    if ([(CIRedEyeRepair *)self getBool:v126 d:a3 s:@"imageSpecialValue"])
+                                                    if ([(CIRedEyeRepair *)self getBool:v126 d:repair s:@"imageSpecialValue"])
                                                     {
                                                       v64 = v126[0];
-                                                      if ([(CIRedEyeRepair *)self getFloat:&v121 d:a3 s:@"searchRectangleMinimumY"])
+                                                      if ([(CIRedEyeRepair *)self getFloat:&v121 d:repair s:@"searchRectangleMinimumY"])
                                                       {
-                                                        if ([(CIRedEyeRepair *)self getFloat:&v120 d:a3 s:@"searchRectangleMaximumY"])
+                                                        if ([(CIRedEyeRepair *)self getFloat:&v120 d:repair s:@"searchRectangleMaximumY"])
                                                         {
-                                                          if ([(CIRedEyeRepair *)self getFloat:&v122 d:a3 s:@"searchRectangleMinimumX"])
+                                                          if ([(CIRedEyeRepair *)self getFloat:&v122 d:repair s:@"searchRectangleMinimumX"])
                                                           {
-                                                            if ([(CIRedEyeRepair *)self getFloat:&v121 + 4 d:a3 s:@"searchRectangleMaximumX"])
+                                                            if ([(CIRedEyeRepair *)self getFloat:&v121 + 4 d:repair s:@"searchRectangleMaximumX"])
                                                             {
                                                               v63 = var4;
                                                               [(CIRedEyeRepair *)self orientRectangleMinX:&v122 maxX:&v121 + 4 minY:&v121 maxY:&v120];
@@ -4493,16 +4493,16 @@ LABEL_60:
                                                                                                           v39.i32[0] = v29->var5.var2;
                                                                                                           v39.i32[1] = v29->var5.var0;
                                                                                                           v69 = v39;
-                                                                                                          if ([(CIRedEyeRepair *)self getInt:&v125 d:a3 s:@"fullImageWidth"]&& [(CIRedEyeRepair *)self getInt:&v124 + 4 d:a3 s:@"fullImageHeight"])
+                                                                                                          if ([(CIRedEyeRepair *)self getInt:&v125 d:repair s:@"fullImageWidth"]&& [(CIRedEyeRepair *)self getInt:&v124 + 4 d:repair s:@"fullImageHeight"])
                                                                                                           {
                                                                                                             v40 = self->lf;
                                                                                                             if (v125 > 4 * v40->var3 || SHIDWORD(v124) > 4 * v40->var4)
                                                                                                             {
-                                                                                                              if ([(CIRedEyeRepair *)self getFloat:&v124 d:a3 s:@"repairRectangleMinimumY"]&& [(CIRedEyeRepair *)self getFloat:&v124 d:a3 s:@"repairRectangleMaximumY"]&& [(CIRedEyeRepair *)self getFloat:&v124 d:a3 s:@"repairRectangleMinimumX"])
+                                                                                                              if ([(CIRedEyeRepair *)self getFloat:&v124 d:repair s:@"repairRectangleMinimumY"]&& [(CIRedEyeRepair *)self getFloat:&v124 d:repair s:@"repairRectangleMaximumY"]&& [(CIRedEyeRepair *)self getFloat:&v124 d:repair s:@"repairRectangleMinimumX"])
                                                                                                               {
-                                                                                                                if ([(CIRedEyeRepair *)self getFloat:&v124 d:a3 s:@"repairRectangleMaximumX"])
+                                                                                                                if ([(CIRedEyeRepair *)self getFloat:&v124 d:repair s:@"repairRectangleMaximumX"])
                                                                                                                 {
-                                                                                                                  [(CIRedEyeRepair *)self getFloat:&v123 + 4 d:a3 s:@"size"];
+                                                                                                                  [(CIRedEyeRepair *)self getFloat:&v123 + 4 d:repair s:@"size"];
                                                                                                                 }
                                                                                                               }
 
@@ -4558,7 +4558,7 @@ LABEL_60:
                                                                                                           v116 = v60;
                                                                                                           v117 = v59;
                                                                                                           v47 = [(CIRedEyeRepair *)self redEyeRemovalWithData:v88];
-                                                                                                          if (v47 == -1 || (v49 = [(CIRedEyeRepair *)self repairWithTag:v47], [(CIRedEyeRepair *)self getFloat:&v123 + 4 d:a3 s:@"size"]) && ((v50 = sqrt(SLODWORD(v49->blockSet) / 3.14159265) / v32, v51 = v50, v48 = *(&v123 + 1) * 1.1, v48 < v51) || (HIDWORD(v48) = 1072483532, *(&v123 + 1) * 0.9 > v51)))
+                                                                                                          if (v47 == -1 || (v49 = [(CIRedEyeRepair *)self repairWithTag:v47], [(CIRedEyeRepair *)self getFloat:&v123 + 4 d:repair s:@"size"]) && ((v50 = sqrt(SLODWORD(v49->blockSet) / 3.14159265) / v32, v51 = v50, v48 = *(&v123 + 1) * 1.1, v48 < v51) || (HIDWORD(v48) = 1072483532, *(&v123 + 1) * 0.9 > v51)))
                                                                                                           {
                                                                                                             self->iFaceIndex = 0;
                                                                                                             self->iLeft = 1;
@@ -4619,16 +4619,16 @@ LABEL_60:
   }
 }
 
-- (void)executeRepairArray:(id)a3
+- (void)executeRepairArray:(id)array
 {
-  v5 = [a3 count];
+  v5 = [array count];
   if (v5 >= 1)
   {
     v6 = 0;
     v7 = v5 & 0x7FFFFFFF;
     do
     {
-      -[CIRedEyeRepair executeRepair:](self, "executeRepair:", [a3 objectAtIndex:v6++]);
+      -[CIRedEyeRepair executeRepair:](self, "executeRepair:", [array objectAtIndex:v6++]);
     }
 
     while (v7 != v6);

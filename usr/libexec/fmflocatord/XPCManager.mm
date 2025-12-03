@@ -1,6 +1,6 @@
 @interface XPCManager
 + (id)sharedInstance;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (XPCManager)init;
 - (id)initSingleton;
 - (void)dealloc;
@@ -91,31 +91,31 @@
   v5 = [v4 initWithMachServiceName:off_10006FAE8];
   [(XPCManager *)self setNsxpcListener:v5];
 
-  v6 = [(XPCManager *)self nsxpcListener];
-  [v6 setDelegate:self];
+  nsxpcListener = [(XPCManager *)self nsxpcListener];
+  [nsxpcListener setDelegate:self];
 
-  v7 = [(XPCManager *)self nsxpcListener];
-  [v7 resume];
+  nsxpcListener2 = [(XPCManager *)self nsxpcListener];
+  [nsxpcListener2 resume];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v4 = a4;
+  connectionCopy = connection;
   v5 = sub_100002830();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v10 = 138412290;
-    v11 = v4;
+    v11 = connectionCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Received new XPC connection %@", &v10, 0xCu);
   }
 
   v6 = &OBJC_PROTOCOL___XPCServerProtocol;
   v7 = objc_opt_new();
   v8 = [NSXPCInterface interfaceWithProtocol:v6];
-  [v4 setExportedInterface:v8];
+  [connectionCopy setExportedInterface:v8];
 
-  [v4 setExportedObject:v7];
-  [v4 resume];
+  [connectionCopy setExportedObject:v7];
+  [connectionCopy resume];
 
   return 1;
 }

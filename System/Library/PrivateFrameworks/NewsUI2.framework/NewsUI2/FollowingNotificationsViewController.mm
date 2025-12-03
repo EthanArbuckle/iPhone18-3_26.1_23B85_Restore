@@ -1,15 +1,15 @@
 @interface FollowingNotificationsViewController
-- (_TtC7NewsUI236FollowingNotificationsViewController)initWithCoder:(id)a3;
-- (_TtC7NewsUI236FollowingNotificationsViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (_TtC7NewsUI236FollowingNotificationsViewController)initWithCoder:(id)coder;
+- (_TtC7NewsUI236FollowingNotificationsViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)traitCollectionDidChange:(id)change;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation FollowingNotificationsViewController
 
-- (_TtC7NewsUI236FollowingNotificationsViewController)initWithCoder:(id)a3
+- (_TtC7NewsUI236FollowingNotificationsViewController)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC7NewsUI236FollowingNotificationsViewController_blueprintReadableContentGuide;
   *(&self->super.super.super.isa + v4) = [objc_allocWithZone(MEMORY[0x277D756D0]) init];
@@ -19,7 +19,7 @@
   return result;
 }
 
-- (_TtC7NewsUI236FollowingNotificationsViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC7NewsUI236FollowingNotificationsViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
@@ -28,14 +28,14 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_218A8CF28();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_218A8D268(a3);
+  selfCopy = self;
+  sub_218A8D268(appear);
 }
 
 - (void)viewWillLayoutSubviews
@@ -44,15 +44,15 @@
   v15.super_class = swift_getObjectType();
   v2 = v15.receiver;
   [(FollowingNotificationsViewController *)&v15 viewWillLayoutSubviews];
-  v3 = [*&v2[OBJC_IVAR____TtC7NewsUI236FollowingNotificationsViewController_blueprintViewController] view];
-  if (v3)
+  view = [*&v2[OBJC_IVAR____TtC7NewsUI236FollowingNotificationsViewController_blueprintViewController] view];
+  if (view)
   {
-    v4 = v3;
-    v5 = [v2 view];
-    if (v5)
+    v4 = view;
+    view2 = [v2 view];
+    if (view2)
     {
-      v6 = v5;
-      [v5 bounds];
+      v6 = view2;
+      [view2 bounds];
       v8 = v7;
       v10 = v9;
       v12 = v11;
@@ -71,14 +71,14 @@
   __break(1u);
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
-  v4 = a3;
+  changeCopy = change;
   v5 = v7.receiver;
-  [(FollowingNotificationsViewController *)&v7 traitCollectionDidChange:v4];
-  v6 = [v5 traitCollection];
+  [(FollowingNotificationsViewController *)&v7 traitCollectionDidChange:changeCopy];
+  traitCollection = [v5 traitCollection];
   sub_218A8E7B4();
 }
 

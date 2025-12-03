@@ -1,39 +1,39 @@
 @interface TSTRefParser
-+ (RefTypeHolder<TSCERangeRef,)p_baseRangeRefForChromeRangeRef:(id)a2 calcEngine:(SEL)a3;
-+ (RefTypeHolder<TSCERangeRef,)p_chromeRangeRefForBaseRangeRef:(id)a2 calcEngine:(SEL)a3;
-+ (id)p_baseReferenceForChromeReference:(id)a3 calcEngine:(id)a4;
-+ (id)p_baseReferencesForChromeReferences:(id)a3 calcEngine:(id)a4;
-+ (id)p_chromeReferenceForBaseReference:(id)a3 calcEngine:(id)a4;
-+ (id)p_chromeReferencesForMixedReferences:(id)a3 calcEngine:(id)a4;
-- (BOOL)p_parseComponentsOfReference:(id)a3 gettingSheetName:(id *)a4 gettingTableName:(id *)a5 gettingRest:(id *)a6;
-- (RefTypeHolder<TSCERangeRef,)p_parseStringAsReferenceComponentIntersection:(TSTRefParser *)self inResolver:(SEL)a3 inTableNamed:(id)a4 preferredGeometricResolver:(id)a5 withParsingContext:(id)a6;
-- (RefTypeHolder<TSCERangeRef,)parseStringAsBaseReference:(TSTRefParser *)self withParsingContext:(SEL)a3;
-- (RefTypeHolder<TSCERangeRef,)parseStringAsChromeReference:(TSTRefParser *)self withParsingContext:(SEL)a3;
++ (RefTypeHolder<TSCERangeRef,)p_baseRangeRefForChromeRangeRef:(id)ref calcEngine:(SEL)engine;
++ (RefTypeHolder<TSCERangeRef,)p_chromeRangeRefForBaseRangeRef:(id)ref calcEngine:(SEL)engine;
++ (id)p_baseReferenceForChromeReference:(id)reference calcEngine:(id)engine;
++ (id)p_baseReferencesForChromeReferences:(id)references calcEngine:(id)engine;
++ (id)p_chromeReferenceForBaseReference:(id)reference calcEngine:(id)engine;
++ (id)p_chromeReferencesForMixedReferences:(id)references calcEngine:(id)engine;
+- (BOOL)p_parseComponentsOfReference:(id)reference gettingSheetName:(id *)name gettingTableName:(id *)tableName gettingRest:(id *)rest;
+- (RefTypeHolder<TSCERangeRef,)p_parseStringAsReferenceComponentIntersection:(TSTRefParser *)self inResolver:(SEL)resolver inTableNamed:(id)named preferredGeometricResolver:(id)geometricResolver withParsingContext:(id)context;
+- (RefTypeHolder<TSCERangeRef,)parseStringAsBaseReference:(TSTRefParser *)self withParsingContext:(SEL)context;
+- (RefTypeHolder<TSCERangeRef,)parseStringAsChromeReference:(TSTRefParser *)self withParsingContext:(SEL)context;
 - (TSCECalculationEngine)calcEngine;
-- (TSCERangeRef)parseR1C1Reference:(SEL)a3 containingCell:(id)a4 preserveFlagsOut:(const TSCECellRef *)a5;
-- (TSKUIDStruct)p_findFirstColumnNameInComponent:(id)a3 tableName:(id)a4 refResolver:(id)a5 calcEngine:(id)a6 outPreserveFlags:(TSUPreserveFlags *)a7 usedWordCount:(unint64_t *)a8;
-- (TSTRefParser)initWithCalcEngine:(id)a3;
-- (TSUCellCoord)parseR1C1Coord:(id)a3 containingCell:(const TSCECellRef *)a4 preserveFlagsOut:(TSUPreserveFlags *)a5;
-- (TSUChromeCellCoord)p_parseStringAsGeometricReferenceComponent:(id)a3 inResolver:(id)a4 outPreserveFlags:(TSUPreserveFlags *)a5 gettingReferencesMatchingInputAsPrefix:(id *)a6;
-- (id)p_parseAsCategoryRefWithSheet:(id)a3 tableName:(id)a4 columnNameAndGroupValuesStartAt:(unint64_t)a5 withParsingContext:(id)a6;
-- (id)parseAsCategoryRefWithParsingContext:(id)a3;
-- (id)parseAsChromeRefWithParsingContext:(id)a3;
-- (id)parseAsTractRefWithParsingContext:(id)a3;
-- (id)parseStringAsCategoryRef:(id)a3 withParsingContext:(id)a4;
+- (TSCERangeRef)parseR1C1Reference:(SEL)reference containingCell:(id)cell preserveFlagsOut:(const TSCECellRef *)out;
+- (TSKUIDStruct)p_findFirstColumnNameInComponent:(id)component tableName:(id)name refResolver:(id)resolver calcEngine:(id)engine outPreserveFlags:(TSUPreserveFlags *)flags usedWordCount:(unint64_t *)count;
+- (TSTRefParser)initWithCalcEngine:(id)engine;
+- (TSUCellCoord)parseR1C1Coord:(id)coord containingCell:(const TSCECellRef *)cell preserveFlagsOut:(TSUPreserveFlags *)out;
+- (TSUChromeCellCoord)p_parseStringAsGeometricReferenceComponent:(id)component inResolver:(id)resolver outPreserveFlags:(TSUPreserveFlags *)flags gettingReferencesMatchingInputAsPrefix:(id *)prefix;
+- (id)p_parseAsCategoryRefWithSheet:(id)sheet tableName:(id)name columnNameAndGroupValuesStartAt:(unint64_t)at withParsingContext:(id)context;
+- (id)parseAsCategoryRefWithParsingContext:(id)context;
+- (id)parseAsChromeRefWithParsingContext:(id)context;
+- (id)parseAsTractRefWithParsingContext:(id)context;
+- (id)parseStringAsCategoryRef:(id)ref withParsingContext:(id)context;
 @end
 
 @implementation TSTRefParser
 
-- (TSTRefParser)initWithCalcEngine:(id)a3
+- (TSTRefParser)initWithCalcEngine:(id)engine
 {
-  v4 = a3;
+  engineCopy = engine;
   v16.receiver = self;
   v16.super_class = TSTRefParser;
   v5 = [(TSTRefParser *)&v16 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_calcEngine, v4);
+    objc_storeWeak(&v5->_calcEngine, engineCopy);
     v11 = objc_msgSend_whitespaceCharacterSet(MEMORY[0x277CCA900], v7, v8, v9, v10);
     whitespaceCharSet = v6->_whitespaceCharSet;
     v6->_whitespaceCharSet = v11;
@@ -46,15 +46,15 @@
   return v6;
 }
 
-- (TSUChromeCellCoord)p_parseStringAsGeometricReferenceComponent:(id)a3 inResolver:(id)a4 outPreserveFlags:(TSUPreserveFlags *)a5 gettingReferencesMatchingInputAsPrefix:(id *)a6
+- (TSUChromeCellCoord)p_parseStringAsGeometricReferenceComponent:(id)component inResolver:(id)resolver outPreserveFlags:(TSUPreserveFlags *)flags gettingReferencesMatchingInputAsPrefix:(id *)prefix
 {
-  v9 = a3;
-  v10 = a4;
-  v15 = v10;
-  v100 = a6;
-  if (v10)
+  componentCopy = component;
+  resolverCopy = resolver;
+  v15 = resolverCopy;
+  prefixCopy = prefix;
+  if (resolverCopy)
   {
-    if (objc_msgSend_isPivotTable(v10, v11, v12, v13, v14))
+    if (objc_msgSend_isPivotTable(resolverCopy, v11, v12, v13, v14))
     {
       v20 = objc_msgSend_tableInfo(v15, v16, v17, v18, v19);
       v25 = objc_msgSend_range(v20, v21, v22, v23, v24);
@@ -86,8 +86,8 @@
     v30 = 0x7FFF7FFFFFFFLL;
   }
 
-  a5->_flags = 0;
-  v45 = TSUCellCoord::coordFromString(v9, 0x3E8);
+  flags->_flags = 0;
+  v45 = TSUCellCoord::coordFromString(componentCopy, 0x3E8);
   v50 = v45;
   v51 = HIWORD(v45);
   v52 = HIBYTE(v45);
@@ -101,11 +101,11 @@
     v53 = 0;
   }
 
-  a5->_flags |= v53 | HIBYTE(v45) & 1;
-  if ((v45 == 0x7FFFFFFF || (v45 & 0xFFFF00000000) == 0x7FFF00000000) && objc_msgSend_length(v9, v46, v47, v48, v49, a6) >= 2 && (v54 = objc_msgSend_length(v9, v46, v47, v48, v49), objc_msgSend_characterAtIndex_(v9, v55, v54 - 1, v56, v57) == 36))
+  flags->_flags |= v53 | HIBYTE(v45) & 1;
+  if ((v45 == 0x7FFFFFFF || (v45 & 0xFFFF00000000) == 0x7FFF00000000) && objc_msgSend_length(componentCopy, v46, v47, v48, v49, prefix) >= 2 && (v54 = objc_msgSend_length(componentCopy, v46, v47, v48, v49), objc_msgSend_characterAtIndex_(componentCopy, v55, v54 - 1, v56, v57) == 36))
   {
-    v58 = objc_msgSend_length(v9, v46, v47, v48, v49);
-    v62 = objc_msgSend_substringToIndex_(v9, v59, v58 - 1, v60, v61);
+    v58 = objc_msgSend_length(componentCopy, v46, v47, v48, v49);
+    v62 = objc_msgSend_substringToIndex_(componentCopy, v59, v58 - 1, v60, v61);
     v50 = TSUCellCoord::coordFromString(v62, 0x3E8);
     v51 = HIWORD(v50);
     v52 = HIBYTE(v50);
@@ -119,7 +119,7 @@
       v63 = 0;
     }
 
-    a5->_flags |= v63 | HIBYTE(v50) & 1;
+    flags->_flags |= v63 | HIBYTE(v50) & 1;
 
     v64 = 1;
   }
@@ -140,7 +140,7 @@
       goto LABEL_47;
     }
 
-    v69 = a5->_flags & 3 | (4 * (a5->_flags & 3));
+    v69 = flags->_flags & 3 | (4 * (flags->_flags & 3));
     goto LABEL_39;
   }
 
@@ -153,8 +153,8 @@
       goto LABEL_47;
     }
 
-    v71 = a5->_flags & 3 | (4 * (a5->_flags & 3));
-    a5->_flags = v71;
+    v71 = flags->_flags & 3 | (4 * (flags->_flags & 3));
+    flags->_flags = v71;
     if (v31 <= WORD2(v50) && WORD2(v50) <= WORD2(v30))
     {
       v68 = v65;
@@ -169,10 +169,10 @@
     {
       v69 = v71 | 0xA;
 LABEL_39:
-      v72 = v100;
-      a5->_flags = v69;
+      v72 = prefixCopy;
+      flags->_flags = v69;
       v68 = v65;
-      if (!v100)
+      if (!prefixCopy)
       {
         goto LABEL_47;
       }
@@ -183,8 +183,8 @@ LABEL_39:
 
   else
   {
-    v70 = a5->_flags & 3 | (4 * (a5->_flags & 3));
-    a5->_flags = v70;
+    v70 = flags->_flags & 3 | (4 * (flags->_flags & 3));
+    flags->_flags = v70;
     if (v28 <= v50 && v50 <= v30)
     {
       v68 = v65;
@@ -202,8 +202,8 @@ LABEL_39:
     }
   }
 
-  v72 = v100;
-  if (!v100)
+  v72 = prefixCopy;
+  if (!prefixCopy)
   {
     goto LABEL_47;
   }
@@ -229,10 +229,10 @@ LABEL_42:
     v101[2] = v75;
     v80 = objc_msgSend_initWithCellRef_(v76, v77, v101, v78, v79);
     objc_msgSend_setWasConstructedViaNames_(v80, v81, 0, v82, v83);
-    v88 = objc_msgSend_uppercaseString(v9, v84, v85, v86, v87);
+    v88 = objc_msgSend_uppercaseString(componentCopy, v84, v85, v86, v87);
     objc_msgSend_setOverrideText_(v80, v89, v88, v90, v91);
 
-    objc_msgSend_setPreserveFlags_(v80, v92, a5->_flags, v93, v94);
+    objc_msgSend_setPreserveFlags_(v80, v92, flags->_flags, v93, v94);
     v98 = objc_msgSend_arrayWithObject_(MEMORY[0x277CBEA60], v95, v80, v96, v97);
     *v72 = v98;
   }
@@ -246,19 +246,19 @@ LABEL_47:
   return v67;
 }
 
-- (RefTypeHolder<TSCERangeRef,)p_parseStringAsReferenceComponentIntersection:(TSTRefParser *)self inResolver:(SEL)a3 inTableNamed:(id)a4 preferredGeometricResolver:(id)a5 withParsingContext:(id)a6
+- (RefTypeHolder<TSCERangeRef,)p_parseStringAsReferenceComponentIntersection:(TSTRefParser *)self inResolver:(SEL)resolver inTableNamed:(id)named preferredGeometricResolver:(id)geometricResolver withParsingContext:(id)context
 {
   v408 = *MEMORY[0x277D85DE8];
-  v319 = a4;
-  v12 = a5;
-  v317 = a6;
+  namedCopy = named;
+  geometricResolverCopy = geometricResolver;
+  contextCopy = context;
   v321 = a7;
   v325 = a8;
   v406 = 0uLL;
-  v311 = v12;
-  if (v12)
+  v311 = geometricResolverCopy;
+  if (geometricResolverCopy)
   {
-    *&v406 = objc_msgSend_tableUID(v12, v13, v14, v15, v16);
+    *&v406 = objc_msgSend_tableUID(geometricResolverCopy, v13, v14, v15, v16);
     *(&v406 + 1) = v13;
   }
 
@@ -292,7 +292,7 @@ LABEL_47:
   v404[3] = sub_221094B70;
   v404[4] = sub_221094B80;
   v405 = 0;
-  v324 = v319;
+  v324 = namedCopy;
   if (objc_msgSend_length(v324, v32, v33, v34, v35) && objc_msgSend_hasPrefix_(v324, v36, @"$", v38, v39))
   {
     v40 = objc_msgSend_length(@"$", v36, v37, v38, v39);
@@ -382,7 +382,7 @@ LABEL_47:
   v363[1] = 3221225472;
   v363[2] = sub_221094B88;
   v363[3] = &unk_27845DB48;
-  v329 = v317;
+  v329 = contextCopy;
   v364 = v329;
   v374 = v385;
   v330 = v314;
@@ -394,7 +394,7 @@ LABEL_47:
   v381 = v406;
   v326 = v75;
   v367 = v75;
-  v368 = self;
+  selfCopy = self;
   v336 = v325;
   v369 = v336;
   v331 = v74;
@@ -802,25 +802,25 @@ LABEL_102:
   return result;
 }
 
-- (id)parseAsTractRefWithParsingContext:(id)a3
+- (id)parseAsTractRefWithParsingContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   stringManipulator = self->_stringManipulator;
-  v10 = objc_msgSend_sheetName(v4, v6, v7, v8, v9);
+  v10 = objc_msgSend_sheetName(contextCopy, v6, v7, v8, v9);
   v11 = sub_221140460(stringManipulator, v10);
-  objc_msgSend_setSheetNameUnquoted_(v4, v12, v11, v13, v14);
+  objc_msgSend_setSheetNameUnquoted_(contextCopy, v12, v11, v13, v14);
 
   v15 = self->_stringManipulator;
-  v20 = objc_msgSend_tableName(v4, v16, v17, v18, v19);
+  v20 = objc_msgSend_tableName(contextCopy, v16, v17, v18, v19);
   v21 = sub_221140460(v15, v20);
-  objc_msgSend_setTableNameUnquoted_(v4, v22, v21, v23, v24);
+  objc_msgSend_setTableNameUnquoted_(contextCopy, v22, v21, v23, v24);
 
-  v29 = objc_msgSend_sheetNameUnquoted(v4, v25, v26, v27, v28);
-  v34 = objc_msgSend_tableNameUnquoted(v4, v30, v31, v32, v33);
+  v29 = objc_msgSend_sheetNameUnquoted(contextCopy, v25, v26, v27, v28);
+  v34 = objc_msgSend_tableNameUnquoted(contextCopy, v30, v31, v32, v33);
   v134 = v34;
   v39 = objc_msgSend_calcEngine(self, v35, v36, v37, v38);
   v133 = v39;
-  v44 = objc_msgSend_contextResolver(v4, v40, v41, v42, v43);
+  v44 = objc_msgSend_contextResolver(contextCopy, v40, v41, v42, v43);
   v48 = v44;
   v135 = v44;
   if (v29)
@@ -865,11 +865,11 @@ LABEL_12:
 
   if (!v44)
   {
-    v75 = objc_msgSend_contextSheetName(v4, v45, v46, 0, v47);
+    v75 = objc_msgSend_contextSheetName(contextCopy, v45, v46, 0, v47);
 
     if (v75)
     {
-      v76 = objc_msgSend_contextSheetName(v4, v55, v56, v57, v58);
+      v76 = objc_msgSend_contextSheetName(contextCopy, v55, v56, v57, v58);
       v59 = objc_msgSend_resolverMatchingNameWithContextContainer_contextContainerName_(v39, v77, v34, v76, v78);
 
       v53 = 0;
@@ -916,16 +916,16 @@ LABEL_13:
   v53 = v60;
 LABEL_26:
   v79 = self->_stringManipulator;
-  v80 = objc_msgSend_rest(v4, v55, v56, v57, v58);
+  v80 = objc_msgSend_rest(contextCopy, v55, v56, v57, v58);
   v81 = sub_221140460(v79, v80);
 
   v86 = objc_msgSend_length(v81, v82, v83, v84, v85);
-  v91 = objc_msgSend_rest(v4, v87, v88, v89, v90);
+  v91 = objc_msgSend_rest(contextCopy, v87, v88, v89, v90);
   v96 = objc_msgSend_length(v91, v92, v93, v94, v95);
 
   if (v86 == v96)
   {
-    v101 = objc_msgSend_rest(v4, v97, v98, v99, v100);
+    v101 = objc_msgSend_rest(contextCopy, v97, v98, v99, v100);
     v62 = sub_2210F05E8(v101);
 
     if (v63)
@@ -955,7 +955,7 @@ LABEL_26:
 LABEL_31:
   if ((objc_msgSend_isValid(v62, v97, v98, v99, v100) & 1) == 0)
   {
-    v112 = objc_msgSend_parseAsChromeRefWithParsingContext_(self, v109, v4, v110, v111);
+    v112 = objc_msgSend_parseAsChromeRefWithParsingContext_(self, v109, contextCopy, v110, v111);
     if (objc_msgSend_isValid(v112, v113, v114, v115, v116))
     {
       v121 = [TSCECellTractRef alloc];
@@ -988,16 +988,16 @@ LABEL_43:
   return v62;
 }
 
-- (id)parseAsChromeRefWithParsingContext:(id)a3
+- (id)parseAsChromeRefWithParsingContext:(id)context
 {
   v551 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v522 = v3;
-  v499 = objc_msgSend_sheetNameUnquoted(v3, v4, v5, v6, v7);
-  v12 = objc_msgSend_tableNameUnquoted(v3, v8, v9, v10, v11);
-  v497 = objc_msgSend_rest(v3, v13, v14, v15, v16);
+  contextCopy = context;
+  v522 = contextCopy;
+  v499 = objc_msgSend_sheetNameUnquoted(contextCopy, v4, v5, v6, v7);
+  v12 = objc_msgSend_tableNameUnquoted(contextCopy, v8, v9, v10, v11);
+  v497 = objc_msgSend_rest(contextCopy, v13, v14, v15, v16);
   v519 = objc_msgSend_calcEngine(self, v17, v18, v19, v20);
-  v25 = objc_msgSend_contextTableResolver(v3, v21, v22, v23, v24);
+  v25 = objc_msgSend_contextTableResolver(contextCopy, v21, v22, v23, v24);
   v548 = 0;
   v547 = 0;
   v510 = v25;
@@ -1022,11 +1022,11 @@ LABEL_43:
     {
       if (!v510)
       {
-        v425 = objc_msgSend_contextSheetName(v3, v32, 0, v33, v34);
+        v425 = objc_msgSend_contextSheetName(contextCopy, v32, 0, v33, v34);
 
         if (v425)
         {
-          v430 = objc_msgSend_contextSheetName(v3, v426, v427, v428, v429);
+          v430 = objc_msgSend_contextSheetName(contextCopy, v426, v427, v428, v429);
           v433 = objc_msgSend_resolverMatchingNameWithContextContainer_contextContainerName_(v519, v431, v35, v430, v432);
           v44 = objc_msgSend_tableResolverForRefResolver_(v519, v434, v433, v435, v436);
 
@@ -1928,9 +1928,9 @@ LABEL_272:
   return v57;
 }
 
-- (BOOL)p_parseComponentsOfReference:(id)a3 gettingSheetName:(id *)a4 gettingTableName:(id *)a5 gettingRest:(id *)a6
+- (BOOL)p_parseComponentsOfReference:(id)reference gettingSheetName:(id *)name gettingTableName:(id *)tableName gettingRest:(id *)rest
 {
-  v9 = sub_221140BD4(self->_stringManipulator, a3);
+  v9 = sub_221140BD4(self->_stringManipulator, reference);
   v17 = objc_msgSend_count(v9, v10, v11, v12, v13);
   v18 = v17 - 1;
   if ((v17 - 1) >= 3)
@@ -1956,10 +1956,10 @@ LABEL_272:
       {
         v27 = objc_msgSend_objectAtIndex_(v9, v23, 0, v24, v25);
         v28 = v27;
-        if (a4 && v27)
+        if (name && v27)
         {
           v29 = v27;
-          *a4 = v28;
+          *name = v28;
         }
       }
 
@@ -1968,24 +1968,24 @@ LABEL_272:
         v28 = 0;
       }
 
-      if (a5 && v26)
+      if (tableName && v26)
       {
         v30 = v26;
-        *a5 = v26;
+        *tableName = v26;
       }
     }
 
-    if (a6 && v22)
+    if (rest && v22)
     {
       v31 = v22;
-      *a6 = v22;
+      *rest = v22;
     }
   }
 
   return v18 < 3;
 }
 
-- (RefTypeHolder<TSCERangeRef,)parseStringAsChromeReference:(TSTRefParser *)self withParsingContext:(SEL)a3
+- (RefTypeHolder<TSCERangeRef,)parseStringAsChromeReference:(TSTRefParser *)self withParsingContext:(SEL)context
 {
   v8 = a4;
   v9 = a5;
@@ -2050,7 +2050,7 @@ LABEL_272:
   return result;
 }
 
-- (RefTypeHolder<TSCERangeRef,)parseStringAsBaseReference:(TSTRefParser *)self withParsingContext:(SEL)a3
+- (RefTypeHolder<TSCERangeRef,)parseStringAsBaseReference:(TSTRefParser *)self withParsingContext:(SEL)context
 {
   v8 = a5;
   objc_msgSend_parseStringAsChromeReference_withParsingContext_(self, v9, a4, v8, v10);
@@ -2094,14 +2094,14 @@ LABEL_272:
   return result;
 }
 
-- (TSCERangeRef)parseR1C1Reference:(SEL)a3 containingCell:(id)a4 preserveFlagsOut:(const TSCECellRef *)a5
+- (TSCERangeRef)parseR1C1Reference:(SEL)reference containingCell:(id)cell preserveFlagsOut:(const TSCECellRef *)out
 {
-  v88 = a4;
+  cellCopy = cell;
   objc_msgSend_calcEngine(self, v10, v11, v12, v13);
   v92 = 0;
   v93 = 0;
   v89 = v91 = 0;
-  v15 = objc_msgSend_p_parseComponentsOfReference_gettingSheetName_gettingTableName_gettingRest_(self, v14, v88, &v93, &v92, &v91);
+  v15 = objc_msgSend_p_parseComponentsOfReference_gettingSheetName_gettingTableName_gettingRest_(self, v14, cellCopy, &v93, &v92, &v91);
   v16 = v93;
   v17 = v92;
   v18 = v91;
@@ -2120,7 +2120,7 @@ LABEL_272:
 
     v37 = sub_221140460(self->_stringManipulator, v27);
 
-    v43 = objc_msgSend_resolverForTableUID_(v89, v38, a5->_tableUID._lower, a5->_tableUID._upper, v39);
+    v43 = objc_msgSend_resolverForTableUID_(v89, v38, out->_tableUID._lower, out->_tableUID._upper, v39);
     if (v36)
     {
       v44 = objc_msgSend_resolverContainerMatchingName_(v89, v40, v36, v41, v42);
@@ -2153,10 +2153,10 @@ LABEL_14:
         {
           v90 = 0;
           v71 = objc_msgSend_objectAtIndex_(v52, v58, 0, v59, v60);
-          v73 = objc_msgSend_parseR1C1Coord_containingCell_preserveFlagsOut_(self, v72, v71, a5, &v90 + 1);
+          v73 = objc_msgSend_parseR1C1Coord_containingCell_preserveFlagsOut_(self, v72, v71, out, &v90 + 1);
 
           v77 = objc_msgSend_objectAtIndex_(v52, v74, 1, v75, v76);
-          v79 = objc_msgSend_parseR1C1Coord_containingCell_preserveFlagsOut_(self, v78, v77, a5, &v90);
+          v79 = objc_msgSend_parseR1C1Coord_containingCell_preserveFlagsOut_(self, v78, v77, out, &v90);
 
           v85->_flags = HIBYTE(v90) & 3 | (4 * (v90 & 3));
           v68 = 0x7FFF7FFFFFFFLL;
@@ -2223,7 +2223,7 @@ LABEL_14:
           }
 
           v61 = objc_msgSend_objectAtIndex_(v52, v58, 0, v59, v60);
-          v63 = objc_msgSend_parseR1C1Coord_containingCell_preserveFlagsOut_(self, v62, v61, a5, v85);
+          v63 = objc_msgSend_parseR1C1Coord_containingCell_preserveFlagsOut_(self, v62, v61, out, v85);
 
           v68 = v63;
         }
@@ -2238,7 +2238,7 @@ LABEL_35:
         goto LABEL_36;
       }
 
-      v49 = objc_msgSend_resolverForTableUID_(v89, v40, a5->_tableUID._lower, a5->_tableUID._upper, v42);
+      v49 = objc_msgSend_resolverForTableUID_(v89, v40, out->_tableUID._lower, out->_tableUID._upper, v42);
       v48 = objc_msgSend_resolverMatchingName_contextResolver_(v89, v50, v37, v49, v51);
 
       v86 = 0;
@@ -2271,12 +2271,12 @@ LABEL_37:
   return result;
 }
 
-- (TSUCellCoord)parseR1C1Coord:(id)a3 containingCell:(const TSCECellRef *)a4 preserveFlagsOut:(TSUPreserveFlags *)a5
+- (TSUCellCoord)parseR1C1Coord:(id)coord containingCell:(const TSCECellRef *)cell preserveFlagsOut:(TSUPreserveFlags *)out
 {
-  v7 = a3;
-  v10 = objc_msgSend_rangeOfString_options_(v7, v8, @"R", 1, v9);
+  coordCopy = coord;
+  v10 = objc_msgSend_rangeOfString_options_(coordCopy, v8, @"R", 1, v9);
   v12 = v11;
-  v14 = objc_msgSend_rangeOfString_options_(v7, v11, @"C", 1, v13);
+  v14 = objc_msgSend_rangeOfString_options_(coordCopy, v11, @"C", 1, v13);
   v18 = v14;
   v19 = v15;
   v20 = 0x7FFF7FFFFFFFLL;
@@ -2289,7 +2289,7 @@ LABEL_37:
   {
     if (v14 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v25 = objc_msgSend_substringFromIndex_(v7, v15, 1, v16, v17);
+      v25 = objc_msgSend_substringFromIndex_(coordCopy, v15, 1, v16, v17);
       v26 = 0;
       goto LABEL_13;
     }
@@ -2302,8 +2302,8 @@ LABEL_37:
   {
     if (v14 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v21 = objc_msgSend_substringWithRange_(v7, v15, &v12[v10], v14 - 1, v17);
-      v25 = objc_msgSend_substringFromIndex_(v7, v22, &v19[v18], v23, v24);
+      v21 = objc_msgSend_substringWithRange_(coordCopy, v15, &v12[v10], v14 - 1, v17);
+      v25 = objc_msgSend_substringFromIndex_(coordCopy, v22, &v19[v18], v23, v24);
       v26 = v21;
 LABEL_13:
       v27 = v25;
@@ -2311,16 +2311,16 @@ LABEL_13:
     }
 
     v27 = 0;
-    v26 = objc_msgSend_substringFromIndex_(v7, v15, 1, v16, v17);
+    v26 = objc_msgSend_substringFromIndex_(coordCopy, v15, 1, v16, v17);
   }
 
 LABEL_16:
   if (v26 | v27)
   {
-    a5->_flags = a5->_flags & 0xF0 | 3;
+    out->_flags = out->_flags & 0xF0 | 3;
     if (objc_msgSend_hasPrefix_(v26, v15, @"[", v16, v17) && objc_msgSend_hasSuffix_(v26, v28, @"]", v29, v30))
     {
-      a5->_flags &= ~2u;
+      out->_flags &= ~2u;
       v32 = objc_msgSend_length(v26, v28, v31, v29, v30);
       v35 = objc_msgSend_substringWithRange_(v26, v33, 1, v32 - 2, v34);
 
@@ -2329,7 +2329,7 @@ LABEL_16:
 
     if (objc_msgSend_hasPrefix_(v27, v28, @"[", v29, v30) && objc_msgSend_hasSuffix_(v27, v36, @"]", v38, v39))
     {
-      a5->_flags &= ~1u;
+      out->_flags &= ~1u;
       v40 = objc_msgSend_length(v27, v36, v37, v38, v39);
       v43 = objc_msgSend_substringWithRange_(v27, v41, 1, v40 - 2, v42);
 
@@ -2338,7 +2338,7 @@ LABEL_16:
 
     if (v26)
     {
-      row = a4->coordinate.row;
+      row = cell->coordinate.row;
     }
 
     else
@@ -2369,7 +2369,7 @@ LABEL_16:
         goto LABEL_52;
       }
 
-      if ((a5->_flags & 2) != 0)
+      if ((out->_flags & 2) != 0)
       {
         row = v86 - 1;
         if ((v86 - 1) >= 0xF4240)
@@ -2380,7 +2380,7 @@ LABEL_16:
 
       else
       {
-        if (v86 < -a4->coordinate.row || v86 > (999999 - a4->coordinate.row))
+        if (v86 < -cell->coordinate.row || v86 > (999999 - cell->coordinate.row))
         {
           goto LABEL_52;
         }
@@ -2391,7 +2391,7 @@ LABEL_16:
 
     if (v27)
     {
-      column = a4->coordinate.column;
+      column = cell->coordinate.column;
     }
 
     else
@@ -2422,7 +2422,7 @@ LABEL_16:
 
     if (v82)
     {
-      if (a5->_flags)
+      if (out->_flags)
       {
         column = v85 - 1;
         if (v85 >= 1 && v85 <= 0x3E8u)
@@ -2433,7 +2433,7 @@ LABEL_16:
 
       else
       {
-        v83 = a4->coordinate.column;
+        v83 = cell->coordinate.column;
         if (v85 + v83 < 0 == __OFADD__(v85, v83) && v85 <= 999 - v83)
         {
           column += v85;
@@ -2458,12 +2458,12 @@ LABEL_54:
   return v20;
 }
 
-- (TSKUIDStruct)p_findFirstColumnNameInComponent:(id)a3 tableName:(id)a4 refResolver:(id)a5 calcEngine:(id)a6 outPreserveFlags:(TSUPreserveFlags *)a7 usedWordCount:(unint64_t *)a8
+- (TSKUIDStruct)p_findFirstColumnNameInComponent:(id)component tableName:(id)name refResolver:(id)resolver calcEngine:(id)engine outPreserveFlags:(TSUPreserveFlags *)flags usedWordCount:(unint64_t *)count
 {
-  v13 = a3;
-  v90 = a4;
-  v89 = a5;
-  v91 = a6;
+  componentCopy = component;
+  nameCopy = name;
+  resolverCopy = resolver;
+  engineCopy = engine;
   v100 = 0;
   v101 = &v100;
   v102 = 0x4012000000;
@@ -2472,23 +2472,23 @@ LABEL_54:
   v105 = &unk_22188E88F;
   v106 = 0;
   v107 = 0;
-  v17 = objc_msgSend_wordAtIndex_(v13, v14, 0, v15, v16);
+  v17 = objc_msgSend_wordAtIndex_(componentCopy, v14, 0, v15, v16);
   v22 = objc_msgSend_trimmedString(v17, v18, v19, v20, v21);
-  v27 = objc_msgSend_numWords(v13, v23, v24, v25, v26);
+  v27 = objc_msgSend_numWords(componentCopy, v23, v24, v25, v26);
   if (objc_msgSend_hasPreserveFlag(v17, v28, v29, v30, v31))
   {
-    a7->_flags |= 1u;
+    flags->_flags |= 1u;
   }
 
-  v40 = objc_msgSend_headerNameMgr(v91, v32, v33, v34, v35);
+  v40 = objc_msgSend_headerNameMgr(engineCopy, v32, v33, v34, v35);
   v99 = 0uLL;
-  if (v90 && v89)
+  if (nameCopy && resolverCopy)
   {
-    *&v99 = objc_msgSend_resolverUID(v89, v36, v37, v38, v39);
+    *&v99 = objc_msgSend_resolverUID(resolverCopy, v36, v37, v38, v39);
     *(&v99 + 1) = v36;
   }
 
-  v88 = a8;
+  countCopy = count;
   v41 = 0;
   v42 = v27 - 1;
   if (v27 != 1 && v17)
@@ -2503,9 +2503,9 @@ LABEL_9:
       v92[2] = sub_221099038;
       v92[3] = &unk_27845DB70;
       v93 = v40;
-      v94 = v90;
+      v94 = nameCopy;
       v97 = v99;
-      v95 = v91;
+      v95 = engineCopy;
       v96 = &v100;
       TSCECellRefSet::enumerateCellRefsUsingBlock(v98, v92);
 
@@ -2524,7 +2524,7 @@ LABEL_10:
           v44 = WORD2(v43);
           if (WORD2(v43) != 0x7FFFLL)
           {
-            v45 = objc_msgSend_tableInfo(v89, v36, v37, v38, v39);
+            v45 = objc_msgSend_tableInfo(resolverCopy, v36, v37, v38, v39);
             v50 = v45;
             if (v45)
             {
@@ -2545,7 +2545,7 @@ LABEL_10:
         break;
       }
 
-      v65 = objc_msgSend_wordAtIndex_(v13, v62, v41, v63, v64);
+      v65 = objc_msgSend_wordAtIndex_(componentCopy, v62, v41, v63, v64);
 
       if (!v65)
       {
@@ -2582,7 +2582,7 @@ LABEL_10:
 
   else
   {
-    *v88 = v41;
+    *countCopy = v41;
   }
 
   _Block_object_dispose(&v100, 8);
@@ -2593,20 +2593,20 @@ LABEL_10:
   return result;
 }
 
-- (id)p_parseAsCategoryRefWithSheet:(id)a3 tableName:(id)a4 columnNameAndGroupValuesStartAt:(unint64_t)a5 withParsingContext:(id)a6
+- (id)p_parseAsCategoryRefWithSheet:(id)sheet tableName:(id)name columnNameAndGroupValuesStartAt:(unint64_t)at withParsingContext:(id)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  sheetCopy = sheet;
+  nameCopy = name;
+  contextCopy = context;
   v13 = objc_opt_new();
-  v18 = objc_msgSend_refPathSplitter(v12, v14, v15, v16, v17);
-  if (objc_msgSend_numComponents(v18, v19, v20, v21, v22) > a5)
+  v18 = objc_msgSend_refPathSplitter(contextCopy, v14, v15, v16, v17);
+  if (objc_msgSend_numComponents(v18, v19, v20, v21, v22) > at)
   {
     v244 = objc_msgSend_calcEngine(self, v23, v24, v25, v26);
-    if (v10)
+    if (sheetCopy)
     {
-      v242 = objc_msgSend_resolverContainerMatchingName_(v244, v27, v10, v29, v30);
-      if (!v11)
+      v242 = objc_msgSend_resolverContainerMatchingName_(v244, v27, sheetCopy, v29, v30);
+      if (!nameCopy)
       {
         v241 = 0;
         v243 = 0;
@@ -2616,7 +2616,7 @@ LABEL_10:
 
       if (v242)
       {
-        v32 = objc_msgSend_resolverMatchingName_(v242, v27, v11, v29, v30);
+        v32 = objc_msgSend_resolverMatchingName_(v242, v27, nameCopy, v29, v30);
         if (!v32)
         {
           goto LABEL_13;
@@ -2626,9 +2626,9 @@ LABEL_10:
       }
     }
 
-    else if (!v11)
+    else if (!nameCopy)
     {
-      v42 = objc_msgSend_contextResolver(v12, v27, v28, v29, v30);
+      v42 = objc_msgSend_contextResolver(contextCopy, v27, v28, v29, v30);
       v242 = 0;
       if (!v42)
       {
@@ -2645,7 +2645,7 @@ LABEL_16:
       v243 = objc_msgSend_groupBy(v239, v43, v44, v45, v46);
       if (v243)
       {
-        v51 = objc_msgSend_aggregateFunction(v12, v47, v48, v49, v50);
+        v51 = objc_msgSend_aggregateFunction(contextCopy, v47, v48, v49, v50);
 
         if (!v51)
         {
@@ -2671,7 +2671,7 @@ LABEL_16:
 
               else
               {
-                objc_msgSend_setAggregateFunction_(v12, v97, v93, v98, v99);
+                objc_msgSend_setAggregateFunction_(contextCopy, v97, v93, v98, v99);
                 v104 = objc_msgSend_numWords(v237, v100, v101, v102, v103);
                 objc_msgSend_removeRefPathWordAtIndex_(v237, v105, v104 - 1, v106, v107);
               }
@@ -2691,7 +2691,7 @@ LABEL_16:
           goto LABEL_33;
         }
 
-        v56 = objc_msgSend_aggregateFunction(v12, v52, v53, v54, v55);
+        v56 = objc_msgSend_aggregateFunction(contextCopy, v52, v53, v54, v55);
         v60 = objc_msgSend_aggregateTypeForAggregateLabel_(v243, v57, v56, v58, v59);
 
         if (v60 == 255)
@@ -2714,15 +2714,15 @@ LABEL_16:
 LABEL_33:
 
 LABEL_34:
-      v240 = objc_msgSend_componentAtIndex_(v18, v27, a5, v29, v30);
+      v240 = objc_msgSend_componentAtIndex_(v18, v27, at, v29, v30);
       v249 = 1;
       v248 = objc_msgSend_preserveFlags(v13, v108, v109, v110, v111);
-      *&v247 = objc_msgSend_p_findFirstColumnNameInComponent_tableName_refResolver_calcEngine_outPreserveFlags_usedWordCount_(self, v112, v240, v11, v241, v244, &v248, &v249);
+      *&v247 = objc_msgSend_p_findFirstColumnNameInComponent_tableName_refResolver_calcEngine_outPreserveFlags_usedWordCount_(self, v112, v240, nameCopy, v241, v244, &v248, &v249);
       *(&v247 + 1) = v113;
       objc_msgSend_setPreserveFlags_(v13, v113, v248, v114, v115);
       if (v243 && v247 != 0)
       {
-        v233 = v10;
+        v233 = sheetCopy;
         v120 = objc_msgSend_tableInfo(v243, v116, v117, v118, v119);
         v232 = v120;
         v235 = objc_msgSend_tableModel(v243, v121, v122, v123, v124);
@@ -2765,7 +2765,7 @@ LABEL_34:
         v198 = objc_msgSend_normalizedStringForCompare_(TSTGroupNode, v195, v194, v196, v197);
         objc_msgSend_setLocalizedFalseGroupNameForColumn_(v18, v199, v198, v200, v201);
 
-        v203 = objc_msgSend_groupNodeForGroupValueHierarchyFromSplitter_startAtComponent_startAtWord_preserveFlags_(v243, v202, v18, a5, v249, &v248);
+        v203 = objc_msgSend_groupNodeForGroupValueHierarchyFromSplitter_startAtComponent_startAtWord_preserveFlags_(v243, v202, v18, at, v249, &v248);
         v208 = v203;
         if (v203)
         {
@@ -2785,20 +2785,20 @@ LABEL_34:
           objc_msgSend_setPreserveFlags_(v211, v212, v248, v213, v214);
         }
 
-        v10 = v233;
+        sheetCopy = v233;
       }
 
       v215 = v243;
       v216 = objc_msgSend_groupByUid(v13, v116, v117, v118, v119);
       if (v216 | v217)
       {
-        objc_msgSend_setSheetName_(v12, v217, v10, v218, v219);
-        objc_msgSend_setTableName_(v12, v220, v11, v221, v222);
-        v223 = sub_221140460(self->_stringManipulator, v10);
-        objc_msgSend_setSheetNameUnquoted_(v12, v224, v223, v225, v226);
+        objc_msgSend_setSheetName_(contextCopy, v217, sheetCopy, v218, v219);
+        objc_msgSend_setTableName_(contextCopy, v220, nameCopy, v221, v222);
+        v223 = sub_221140460(self->_stringManipulator, sheetCopy);
+        objc_msgSend_setSheetNameUnquoted_(contextCopy, v224, v223, v225, v226);
 
-        v227 = sub_221140460(self->_stringManipulator, v11);
-        objc_msgSend_setTableNameUnquoted_(v12, v228, v227, v229, v230);
+        v227 = sub_221140460(self->_stringManipulator, nameCopy);
+        objc_msgSend_setTableNameUnquoted_(contextCopy, v228, v227, v229, v230);
 
         v215 = v243;
       }
@@ -2806,7 +2806,7 @@ LABEL_34:
       goto LABEL_48;
     }
 
-    v33 = objc_msgSend_contextResolver(v12, v27, v28, v29, v30);
+    v33 = objc_msgSend_contextResolver(contextCopy, v27, v28, v29, v30);
 
     if (!v33)
     {
@@ -2817,8 +2817,8 @@ LABEL_13:
       goto LABEL_49;
     }
 
-    v38 = objc_msgSend_contextResolver(v12, v34, v35, v36, v37);
-    v32 = objc_msgSend_resolverMatchingName_contextResolver_(v244, v39, v11, v38, v40);
+    v38 = objc_msgSend_contextResolver(contextCopy, v34, v35, v36, v37);
+    v32 = objc_msgSend_resolverMatchingName_contextResolver_(v244, v39, nameCopy, v38, v40);
 
     v242 = 0;
     if (!v32)
@@ -2837,23 +2837,23 @@ LABEL_49:
   return v41;
 }
 
-- (id)parseStringAsCategoryRef:(id)a3 withParsingContext:(id)a4
+- (id)parseStringAsCategoryRef:(id)ref withParsingContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  refCopy = ref;
+  contextCopy = context;
   v8 = [TSCEQuotedRefPathSplitter alloc];
-  v12 = objc_msgSend_initWithReferenceString_(v8, v9, v6, v10, v11);
-  objc_msgSend_setRefPathSplitter_(v7, v13, v12, v14, v15);
+  v12 = objc_msgSend_initWithReferenceString_(v8, v9, refCopy, v10, v11);
+  objc_msgSend_setRefPathSplitter_(contextCopy, v13, v12, v14, v15);
 
-  v19 = objc_msgSend_parseAsCategoryRefWithParsingContext_(self, v16, v7, v17, v18);
+  v19 = objc_msgSend_parseAsCategoryRefWithParsingContext_(self, v16, contextCopy, v17, v18);
 
   return v19;
 }
 
-- (id)parseAsCategoryRefWithParsingContext:(id)a3
+- (id)parseAsCategoryRefWithParsingContext:(id)context
 {
-  v4 = a3;
-  v9 = objc_msgSend_refPathSplitter(v4, v5, v6, v7, v8);
+  contextCopy = context;
+  v9 = objc_msgSend_refPathSplitter(contextCopy, v5, v6, v7, v8);
   if (objc_msgSend_numComponents(v9, v10, v11, v12, v13))
   {
     v17 = objc_msgSend_componentAtIndex_(v9, v14, 0, v15, v16);
@@ -2886,7 +2886,7 @@ LABEL_49:
       else
       {
         v60 = objc_msgSend_trimmedStringStartingAtWord_(v47, v57, 0, v58, v59);
-        v32 = objc_msgSend_p_parseAsCategoryRefWithSheet_tableName_columnNameAndGroupValuesStartAt_withParsingContext_(self, v61, v43, v60, 2, v4);
+        v32 = objc_msgSend_p_parseAsCategoryRefWithSheet_tableName_columnNameAndGroupValuesStartAt_withParsingContext_(self, v61, v43, v60, 2, contextCopy);
       }
 
       v33 = 0;
@@ -2896,14 +2896,14 @@ LABEL_49:
     if (((v33 | isValid) & 1) == 0 && objc_msgSend_numComponents(v9, v35, v36, v37, v38) >= 2)
     {
       v66 = objc_msgSend_trimmedStringStartingAtWord_(v17, v35, 0, v37, v38);
-      v68 = objc_msgSend_p_parseAsCategoryRefWithSheet_tableName_columnNameAndGroupValuesStartAt_withParsingContext_(self, v67, 0, v66, 1, v4);
+      v68 = objc_msgSend_p_parseAsCategoryRefWithSheet_tableName_columnNameAndGroupValuesStartAt_withParsingContext_(self, v67, 0, v66, 1, contextCopy);
 
       v32 = v68;
     }
 
     if ((objc_msgSend_isValid(v32, v35, v36, v37, v38) & 1) == 0 && objc_msgSend_numComponents(v9, v69, v70, v71, v72))
     {
-      v74 = objc_msgSend_p_parseAsCategoryRefWithSheet_tableName_columnNameAndGroupValuesStartAt_withParsingContext_(self, v73, 0, 0, 0, v4);
+      v74 = objc_msgSend_p_parseAsCategoryRefWithSheet_tableName_columnNameAndGroupValuesStartAt_withParsingContext_(self, v73, 0, 0, 0, contextCopy);
 
       v32 = v74;
     }
@@ -2917,17 +2917,17 @@ LABEL_49:
   return v32;
 }
 
-+ (id)p_baseReferencesForChromeReferences:(id)a3 calcEngine:(id)a4
++ (id)p_baseReferencesForChromeReferences:(id)references calcEngine:(id)engine
 {
   v64 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  referencesCopy = references;
+  engineCopy = engine;
   v11 = objc_msgSend_array(MEMORY[0x277CBEB18], v7, v8, v9, v10);
   v61 = 0u;
   v62 = 0u;
   v59 = 0u;
   v60 = 0u;
-  v12 = v5;
+  v12 = referencesCopy;
   v14 = objc_msgSend_countByEnumeratingWithState_objects_count_(v12, v13, &v59, v63, 16);
   if (v14)
   {
@@ -2943,7 +2943,7 @@ LABEL_49:
 
         v17 = *(*(&v59 + 1) + 8 * i);
         v18 = objc_opt_class();
-        v21 = objc_msgSend_p_baseReferenceForChromeReference_calcEngine_(v18, v19, v17, v6, v20);
+        v21 = objc_msgSend_p_baseReferenceForChromeReference_calcEngine_(v18, v19, v17, engineCopy, v20);
         v26 = objc_msgSend_preserveFlags(v17, v22, v23, v24, v25);
         objc_msgSend_setPreserveFlags_(v21, v27, v26, v28, v29);
         v34 = objc_msgSend_wasConstructedViaNames(v17, v30, v31, v32, v33);
@@ -2966,17 +2966,17 @@ LABEL_49:
   return v11;
 }
 
-+ (id)p_chromeReferencesForMixedReferences:(id)a3 calcEngine:(id)a4
++ (id)p_chromeReferencesForMixedReferences:(id)references calcEngine:(id)engine
 {
   v70 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  referencesCopy = references;
+  engineCopy = engine;
   v11 = objc_msgSend_array(MEMORY[0x277CBEB18], v7, v8, v9, v10);
   v67 = 0u;
   v68 = 0u;
   v65 = 0u;
   v66 = 0u;
-  v12 = v5;
+  v12 = referencesCopy;
   v18 = objc_msgSend_countByEnumeratingWithState_objects_count_(v12, v13, &v65, v69, 16);
   if (v18)
   {
@@ -2994,7 +2994,7 @@ LABEL_49:
         if (objc_msgSend_wasConstructedViaNames(v21, v14, v15, v16, v17))
         {
           v25 = objc_opt_class();
-          v28 = objc_msgSend_p_chromeReferenceForBaseReference_calcEngine_(v25, v26, v21, v6, v27);
+          v28 = objc_msgSend_p_chromeReferenceForBaseReference_calcEngine_(v25, v26, v21, engineCopy, v27);
           v33 = objc_msgSend_preserveFlags(v21, v29, v30, v31, v32);
           objc_msgSend_setPreserveFlags_(v28, v34, v33, v35, v36);
           v41 = objc_msgSend_wasConstructedViaNames(v21, v37, v38, v39, v40);
@@ -3023,13 +3023,13 @@ LABEL_49:
   return v11;
 }
 
-+ (id)p_baseReferenceForChromeReference:(id)a3 calcEngine:(id)a4
++ (id)p_baseReferenceForChromeReference:(id)reference calcEngine:(id)engine
 {
-  v5 = a3;
-  v10 = a4;
-  if (v5)
+  referenceCopy = reference;
+  engineCopy = engine;
+  if (referenceCopy)
   {
-    objc_msgSend_rangeRef(v5, v6, v7, v8, v9);
+    objc_msgSend_rangeRef(referenceCopy, v6, v7, v8, v9);
     v11 = *(&v25 + 1);
     v12 = v25;
   }
@@ -3049,7 +3049,7 @@ LABEL_49:
   v24 = v26;
   if (v13)
   {
-    objc_msgSend_p_baseRangeRefForChromeRangeRef_calcEngine_(v13, v14, &v22, v10, v15);
+    objc_msgSend_p_baseRangeRefForChromeRangeRef_calcEngine_(v13, v14, &v22, engineCopy, v15);
   }
 
   else
@@ -3064,13 +3064,13 @@ LABEL_49:
   return v20;
 }
 
-+ (id)p_chromeReferenceForBaseReference:(id)a3 calcEngine:(id)a4
++ (id)p_chromeReferenceForBaseReference:(id)reference calcEngine:(id)engine
 {
-  v5 = a3;
-  v10 = a4;
-  if (v5)
+  referenceCopy = reference;
+  engineCopy = engine;
+  if (referenceCopy)
   {
-    objc_msgSend_rangeRef(v5, v6, v7, v8, v9);
+    objc_msgSend_rangeRef(referenceCopy, v6, v7, v8, v9);
     v11 = *(&v25 + 1);
     v12 = v25;
   }
@@ -3090,7 +3090,7 @@ LABEL_49:
   v24 = v26;
   if (v13)
   {
-    objc_msgSend_p_chromeRangeRefForBaseRangeRef_calcEngine_(v13, v14, &v22, v10, v15);
+    objc_msgSend_p_chromeRangeRefForBaseRangeRef_calcEngine_(v13, v14, &v22, engineCopy, v15);
   }
 
   else
@@ -3105,9 +3105,9 @@ LABEL_49:
   return v20;
 }
 
-+ (RefTypeHolder<TSCERangeRef,)p_baseRangeRefForChromeRangeRef:(id)a2 calcEngine:(SEL)a3
++ (RefTypeHolder<TSCERangeRef,)p_baseRangeRefForChromeRangeRef:(id)ref calcEngine:(SEL)engine
 {
-  v7 = objc_msgSend_tableInfoForTableUID_withCalcEngine_(TSTTableInfo, a3, a4->var0._tableUID._lower, a4->var0._tableUID._upper, a5);
+  v7 = objc_msgSend_tableInfoForTableUID_withCalcEngine_(TSTTableInfo, engine, a4->var0._tableUID._lower, a4->var0._tableUID._upper, a5);
   v8 = [TSCECellTractRef alloc];
   v12 = objc_msgSend_initWithRangeRef_(v8, v9, a4, v10, v11);
   v17 = objc_msgSend_translator(v7, v13, v14, v15, v16);
@@ -3132,9 +3132,9 @@ LABEL_49:
   return result;
 }
 
-+ (RefTypeHolder<TSCERangeRef,)p_chromeRangeRefForBaseRangeRef:(id)a2 calcEngine:(SEL)a3
++ (RefTypeHolder<TSCERangeRef,)p_chromeRangeRefForBaseRangeRef:(id)ref calcEngine:(SEL)engine
 {
-  v7 = objc_msgSend_tableInfoForTableUID_withCalcEngine_(TSTTableInfo, a3, a4->var0._tableUID._lower, a4->var0._tableUID._upper, a5);
+  v7 = objc_msgSend_tableInfoForTableUID_withCalcEngine_(TSTTableInfo, engine, a4->var0._tableUID._lower, a4->var0._tableUID._upper, a5);
   v8 = [TSCECellTractRef alloc];
   v12 = objc_msgSend_initWithRangeRef_(v8, v9, a4, v10, v11);
   v17 = objc_msgSend_translator(v7, v13, v14, v15, v16);

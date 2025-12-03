@@ -1,41 +1,41 @@
 @interface _HKEmergencyContactWrapper
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (unint64_t)hash;
 @end
 
 @implementation _HKEmergencyContactWrapper
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(_HKEmergencyContactWrapper *)self contact];
-    v6 = [v5 phoneNumber];
-    v7 = [v4 contact];
-    v8 = [v7 phoneNumber];
-    if (v6 == v8)
+    contact = [(_HKEmergencyContactWrapper *)self contact];
+    phoneNumber = [contact phoneNumber];
+    contact2 = [equalCopy contact];
+    phoneNumber2 = [contact2 phoneNumber];
+    if (phoneNumber == phoneNumber2)
     {
       v15 = 1;
     }
 
     else
     {
-      v9 = [v4 contact];
-      v10 = [v9 phoneNumber];
-      if (v10)
+      contact3 = [equalCopy contact];
+      phoneNumber3 = [contact3 phoneNumber];
+      if (phoneNumber3)
       {
-        v17 = [(_HKEmergencyContactWrapper *)self contact];
-        v11 = [v17 phoneNumber];
-        v12 = [v4 contact];
-        [v12 phoneNumber];
-        v18 = v5;
-        v14 = v13 = v9;
-        v15 = [v11 isEqual:v14];
+        contact4 = [(_HKEmergencyContactWrapper *)self contact];
+        phoneNumber4 = [contact4 phoneNumber];
+        contact5 = [equalCopy contact];
+        [contact5 phoneNumber];
+        v18 = contact;
+        v14 = v13 = contact3;
+        v15 = [phoneNumber4 isEqual:v14];
 
-        v9 = v13;
-        v5 = v18;
+        contact3 = v13;
+        contact = v18;
       }
 
       else
@@ -55,8 +55,8 @@
 
 - (unint64_t)hash
 {
-  v2 = [(_HKEmergencyContact *)self->_contact phoneNumber];
-  v3 = [v2 hash];
+  phoneNumber = [(_HKEmergencyContact *)self->_contact phoneNumber];
+  v3 = [phoneNumber hash];
 
   return v3;
 }

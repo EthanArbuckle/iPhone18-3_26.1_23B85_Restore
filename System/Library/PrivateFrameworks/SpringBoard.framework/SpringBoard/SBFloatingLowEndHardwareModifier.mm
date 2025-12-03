@@ -1,71 +1,71 @@
 @interface SBFloatingLowEndHardwareModifier
 - (BOOL)_shouldDimAndBlockTouchesToAppsUnderFloating;
 - (BOOL)switcherDimmingViewBlocksTouches;
-- (SBFloatingLowEndHardwareModifier)initWithOptions:(unint64_t)a3;
+- (SBFloatingLowEndHardwareModifier)initWithOptions:(unint64_t)options;
 - (double)switcherDimmingAlpha;
-- (id)handleTapOutsideToDismissEvent:(id)a3;
-- (id)handleTransitionEvent:(id)a3;
-- (int64_t)_stashedFloatingConfigurationForFloatingConfiguration:(int64_t)a3;
+- (id)handleTapOutsideToDismissEvent:(id)event;
+- (id)handleTransitionEvent:(id)event;
+- (int64_t)_stashedFloatingConfigurationForFloatingConfiguration:(int64_t)configuration;
 @end
 
 @implementation SBFloatingLowEndHardwareModifier
 
-- (SBFloatingLowEndHardwareModifier)initWithOptions:(unint64_t)a3
+- (SBFloatingLowEndHardwareModifier)initWithOptions:(unint64_t)options
 {
   v5.receiver = self;
   v5.super_class = SBFloatingLowEndHardwareModifier;
   result = [(SBSwitcherModifier *)&v5 init];
   if (result)
   {
-    result->_options = a3;
+    result->_options = options;
   }
 
   return result;
 }
 
-- (id)handleTransitionEvent:(id)a3
+- (id)handleTransitionEvent:(id)event
 {
-  v4 = a3;
-  v5 = [v4 toFloatingAppLayout];
-  v6 = [v4 toFloatingSwitcherVisible];
-  v7 = [v4 toEnvironmentMode];
-  v8 = [v4 toAppLayout];
-  self->_floatingSwitcherVisible = v6;
-  self->_floatingConfiguration = [v4 toFloatingConfiguration];
-  if (v7 == 3 && (v5 != 0) | v6 & 1)
+  eventCopy = event;
+  toFloatingAppLayout = [eventCopy toFloatingAppLayout];
+  toFloatingSwitcherVisible = [eventCopy toFloatingSwitcherVisible];
+  toEnvironmentMode = [eventCopy toEnvironmentMode];
+  toAppLayout = [eventCopy toAppLayout];
+  self->_floatingSwitcherVisible = toFloatingSwitcherVisible;
+  self->_floatingConfiguration = [eventCopy toFloatingConfiguration];
+  if (toEnvironmentMode == 3 && (toFloatingAppLayout != 0) | toFloatingSwitcherVisible & 1)
   {
-    v9 = [v8 allItems];
-    self->_floatingAppVisibleOverSplitView = [v9 count] > 1;
+    allItems = [toAppLayout allItems];
+    self->_floatingAppVisibleOverSplitView = [allItems count] > 1;
 
-    v10 = [v4 toAppLayoutWantsExclusiveForeground];
+    toAppLayoutWantsExclusiveForeground = [eventCopy toAppLayoutWantsExclusiveForeground];
   }
 
   else
   {
-    v10 = 0;
+    toAppLayoutWantsExclusiveForeground = 0;
     self->_floatingAppVisibleOverSplitView = 0;
   }
 
-  self->_floatingAppVisibleOverExclusiveForegroundApp = v10;
-  if ([v4 phase] >= 2)
+  self->_floatingAppVisibleOverExclusiveForegroundApp = toAppLayoutWantsExclusiveForeground;
+  if ([eventCopy phase] >= 2)
   {
     self->_shouldDimAndBlockTouches = [(SBFloatingLowEndHardwareModifier *)self _shouldDimAndBlockTouchesToAppsUnderFloating];
   }
 
   v13.receiver = self;
   v13.super_class = SBFloatingLowEndHardwareModifier;
-  v11 = [(SBSwitcherModifier *)&v13 handleTransitionEvent:v4];
+  v11 = [(SBSwitcherModifier *)&v13 handleTransitionEvent:eventCopy];
 
   return v11;
 }
 
-- (id)handleTapOutsideToDismissEvent:(id)a3
+- (id)handleTapOutsideToDismissEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v16.receiver = self;
   v16.super_class = SBFloatingLowEndHardwareModifier;
-  v5 = [(SBSwitcherModifier *)&v16 handleTapOutsideToDismissEvent:v4];
-  if (([v4 isHandled] & 1) == 0 && -[SBFloatingLowEndHardwareModifier _shouldDimAndBlockTouchesToAppsUnderFloating](self, "_shouldDimAndBlockTouchesToAppsUnderFloating") && !self->_floatingSwitcherVisible)
+  v5 = [(SBSwitcherModifier *)&v16 handleTapOutsideToDismissEvent:eventCopy];
+  if (([eventCopy isHandled] & 1) == 0 && -[SBFloatingLowEndHardwareModifier _shouldDimAndBlockTouchesToAppsUnderFloating](self, "_shouldDimAndBlockTouchesToAppsUnderFloating") && !self->_floatingSwitcherVisible)
   {
     v6 = [(SBFloatingLowEndHardwareModifier *)self _stashedFloatingConfigurationForFloatingConfiguration:self->_floatingConfiguration];
     v7 = [SBPerformTransitionSwitcherEventResponse alloc];
@@ -78,7 +78,7 @@
     v12 = objc_opt_class();
     v13 = NSStringFromClass(v12);
     v14 = [v11 stringWithFormat:@"%@ handling tap outside by dismissing floating app.", v13];
-    [v4 handleWithReason:v14];
+    [eventCopy handleWithReason:v14];
 
     v5 = v10;
   }
@@ -128,16 +128,16 @@
   return v2 & 1;
 }
 
-- (int64_t)_stashedFloatingConfigurationForFloatingConfiguration:(int64_t)a3
+- (int64_t)_stashedFloatingConfigurationForFloatingConfiguration:(int64_t)configuration
 {
-  if (a3 > 4)
+  if (configuration > 4)
   {
     return 3;
   }
 
   else
   {
-    return qword_21F8A77D8[a3];
+    return qword_21F8A77D8[configuration];
   }
 }
 

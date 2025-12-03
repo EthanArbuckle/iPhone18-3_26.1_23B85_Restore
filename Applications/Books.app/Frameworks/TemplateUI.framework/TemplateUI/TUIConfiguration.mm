@@ -1,24 +1,24 @@
 @interface TUIConfiguration
-- (BOOL)BOOLForKey:(id)a3;
-- (CGSize)sizeForKey:(id)a3;
-- (TUIConfiguration)initWithData:(id)a3;
-- (UIEdgeInsets)insetsForKey:(id)a3;
-- (double)floatForKey:(id)a3;
-- (id)sectionForKey:(id)a3;
-- (int64_t)integerForKey:(id)a3;
+- (BOOL)BOOLForKey:(id)key;
+- (CGSize)sizeForKey:(id)key;
+- (TUIConfiguration)initWithData:(id)data;
+- (UIEdgeInsets)insetsForKey:(id)key;
+- (double)floatForKey:(id)key;
+- (id)sectionForKey:(id)key;
+- (int64_t)integerForKey:(id)key;
 @end
 
 @implementation TUIConfiguration
 
-- (TUIConfiguration)initWithData:(id)a3
+- (TUIConfiguration)initWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v9.receiver = self;
   v9.super_class = TUIConfiguration;
   v5 = [(TUIConfiguration *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dataCopy copy];
     data = v5->_data;
     v5->_data = v6;
   }
@@ -26,9 +26,9 @@
   return v5;
 }
 
-- (id)sectionForKey:(id)a3
+- (id)sectionForKey:(id)key
 {
-  v3 = [(NSDictionary *)self->_data objectForKeyedSubscript:a3];
+  v3 = [(NSDictionary *)self->_data objectForKeyedSubscript:key];
   if (v3)
   {
     v4 = [[TUIConfiguration alloc] initWithData:v3];
@@ -42,34 +42,34 @@
   return v4;
 }
 
-- (double)floatForKey:(id)a3
+- (double)floatForKey:(id)key
 {
-  v3 = [(NSDictionary *)self->_data objectForKeyedSubscript:a3];
+  v3 = [(NSDictionary *)self->_data objectForKeyedSubscript:key];
   [v3 doubleValue];
   v5 = v4;
 
   return v5;
 }
 
-- (int64_t)integerForKey:(id)a3
+- (int64_t)integerForKey:(id)key
 {
-  v3 = [(NSDictionary *)self->_data objectForKeyedSubscript:a3];
-  v4 = [v3 integerValue];
+  v3 = [(NSDictionary *)self->_data objectForKeyedSubscript:key];
+  integerValue = [v3 integerValue];
 
-  return v4;
+  return integerValue;
 }
 
-- (BOOL)BOOLForKey:(id)a3
+- (BOOL)BOOLForKey:(id)key
 {
-  v3 = [(NSDictionary *)self->_data objectForKeyedSubscript:a3];
-  v4 = [v3 BOOLValue];
+  v3 = [(NSDictionary *)self->_data objectForKeyedSubscript:key];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
-- (CGSize)sizeForKey:(id)a3
+- (CGSize)sizeForKey:(id)key
 {
-  v3 = [(NSDictionary *)self->_data objectForKeyedSubscript:a3];
+  v3 = [(NSDictionary *)self->_data objectForKeyedSubscript:key];
   v4 = v3;
   if (v3)
   {
@@ -91,9 +91,9 @@
   return result;
 }
 
-- (UIEdgeInsets)insetsForKey:(id)a3
+- (UIEdgeInsets)insetsForKey:(id)key
 {
-  v3 = [(NSDictionary *)self->_data objectForKeyedSubscript:a3];
+  v3 = [(NSDictionary *)self->_data objectForKeyedSubscript:key];
   v4 = v3;
   if (v3)
   {

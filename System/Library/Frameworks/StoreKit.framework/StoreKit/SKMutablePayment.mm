@@ -1,13 +1,13 @@
 @interface SKMutablePayment
-- (void)setAppleIDAuthorizationClientInfo:(id)a3;
+- (void)setAppleIDAuthorizationClientInfo:(id)info;
 - (void)setApplicationUsername:(NSString *)applicationUsername;
-- (void)setMetricsOverlay:(id)a3;
-- (void)setPartnerIdentifier:(id)a3;
-- (void)setPartnerTransactionIdentifier:(id)a3;
+- (void)setMetricsOverlay:(id)overlay;
+- (void)setPartnerIdentifier:(id)identifier;
+- (void)setPartnerTransactionIdentifier:(id)identifier;
 - (void)setPaymentDiscount:(SKPaymentDiscount *)paymentDiscount;
 - (void)setProductIdentifier:(NSString *)productIdentifier;
 - (void)setRequestData:(NSData *)requestData;
-- (void)setRequestParameters:(id)a3;
+- (void)setRequestParameters:(id)parameters;
 @end
 
 @implementation SKMutablePayment
@@ -121,61 +121,61 @@ LABEL_19:
   v4 = paymentDiscount;
 }
 
-- (void)setPartnerIdentifier:(id)a3
+- (void)setPartnerIdentifier:(id)identifier
 {
   internal = self->super._internal;
-  if (internal[2] != a3)
+  if (internal[2] != identifier)
   {
     v7 = internal;
-    v5 = [a3 copy];
+    v5 = [identifier copy];
     v6 = internal[2];
     internal[2] = v5;
   }
 }
 
-- (void)setPartnerTransactionIdentifier:(id)a3
+- (void)setPartnerTransactionIdentifier:(id)identifier
 {
   internal = self->super._internal;
-  if (internal[3] != a3)
+  if (internal[3] != identifier)
   {
     v7 = internal;
-    v5 = [a3 copy];
+    v5 = [identifier copy];
     v6 = internal[3];
     internal[3] = v5;
   }
 }
 
-- (void)setRequestParameters:(id)a3
+- (void)setRequestParameters:(id)parameters
 {
   internal = self->super._internal;
-  if (internal[8] != a3)
+  if (internal[8] != parameters)
   {
     v7 = internal;
-    v5 = [a3 copy];
+    v5 = [parameters copy];
     v6 = internal[8];
     internal[8] = v5;
   }
 }
 
-- (void)setAppleIDAuthorizationClientInfo:(id)a3
+- (void)setAppleIDAuthorizationClientInfo:(id)info
 {
   internal = self->super._internal;
-  if (internal[13] != a3)
+  if (internal[13] != info)
   {
     v7 = internal;
-    v5 = [a3 copy];
+    v5 = [info copy];
     v6 = internal[13];
     internal[13] = v5;
   }
 }
 
-- (void)setMetricsOverlay:(id)a3
+- (void)setMetricsOverlay:(id)overlay
 {
   internal = self->super._internal;
-  if (internal[14] != a3)
+  if (internal[14] != overlay)
   {
     v7 = internal;
-    v5 = [a3 copy];
+    v5 = [overlay copy];
     v6 = internal[14];
     internal[14] = v5;
   }

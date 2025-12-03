@@ -1,40 +1,40 @@
 @interface TUIVideoPlayerManager
 - (BOOL)captionsEnabledForActivePlayer;
-- (BOOL)playerWithVideoIdIsPlaying:(id)a3;
+- (BOOL)playerWithVideoIdIsPlaying:(id)playing;
 - (TUIVideoPlayerManager)init;
 - (_TUISharableVideoPlayer)activeVideoPlayer;
-- (unint64_t)stateForPlayerWithVideoId:(id)a3;
+- (unint64_t)stateForPlayerWithVideoId:(id)id;
 - (void)_addAudioSessionObservers;
 - (void)_addNotificationObservers;
 - (void)_determineSystemAutoPlay;
-- (void)_handleDidEnterBackgroundNotification:(id)a3;
-- (void)_handlePowerStateDidChange:(id)a3;
-- (void)_handleWillEnterForegroundNotification:(id)a3;
+- (void)_handleDidEnterBackgroundNotification:(id)notification;
+- (void)_handlePowerStateDidChange:(id)change;
+- (void)_handleWillEnterForegroundNotification:(id)notification;
 - (void)_removeAudioSessionObservers;
-- (void)addObserver:(id)a3;
-- (void)configureHostWithPlayerForURL:(id)a3 videoId:(id)a4 host:(id)a5 options:(unint64_t)a6;
+- (void)addObserver:(id)observer;
+- (void)configureHostWithPlayerForURL:(id)l videoId:(id)id host:(id)host options:(unint64_t)options;
 - (void)dealloc;
-- (void)endHostingForVideoId:(id)a3 forHost:(id)a4;
-- (void)hostWantsToPausePlayerWithVideoId:(id)a3 requestingHost:(id)a4 isTriggerInitiated:(BOOL)a5;
-- (void)hostWantsToPlayVideoWithVideoId:(id)a3 requestingHost:(id)a4 isTriggerInitiated:(BOOL)a5;
-- (void)hostWantsToSetPlayerIsWithinVisibleBoundsForPlayerWithVideoId:(id)a3 requestingHost:(id)a4 isWithinVisibleBounds:(BOOL)a5;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)player:(id)a3 didChangeState:(unint64_t)a4;
-- (void)player:(id)a3 didPlayToTime:(double)a4;
-- (void)player:(id)a3 didSetCaptionsEnabled:(BOOL)a4;
-- (void)player:(id)a3 didSetFailureReason:(unint64_t)a4 mediaTimePlayed:(double)a5;
-- (void)player:(id)a3 didSetMuted:(BOOL)a4 mediaTimePlayed:(double)a5;
-- (void)player:(id)a3 didStallPlaybackAtTime:(double)a4;
-- (void)playerDidLoadPlayerItem:(id)a3;
-- (void)playerDidPause:(id)a3 mediaTimePlayed:(double)a4;
-- (void)playerDidPlay:(id)a3 mediaTimePlayed:(double)a4;
-- (void)playerDidPlayToEnd:(id)a3 mediaTimePlayed:(double)a4;
-- (void)removeObserver:(id)a3;
-- (void)setActiveHostOfPlayerForVideoId:(id)a3 videoUrl:(id)a4 host:(id)a5;
-- (void)setActiveVideoPlayer:(id)a3;
-- (void)setLoopingStateForPlayerWithVideoId:(id)a3 loop:(BOOL)a4 requestingHost:(id)a5;
-- (void)setMuteStateForPlayerWithVideoId:(id)a3 muted:(BOOL)a4 requestingHost:(id)a5 isTriggerInitiated:(BOOL)a6;
-- (void)setSystemAutoPlayEnabled:(BOOL)a3;
+- (void)endHostingForVideoId:(id)id forHost:(id)host;
+- (void)hostWantsToPausePlayerWithVideoId:(id)id requestingHost:(id)host isTriggerInitiated:(BOOL)initiated;
+- (void)hostWantsToPlayVideoWithVideoId:(id)id requestingHost:(id)host isTriggerInitiated:(BOOL)initiated;
+- (void)hostWantsToSetPlayerIsWithinVisibleBoundsForPlayerWithVideoId:(id)id requestingHost:(id)host isWithinVisibleBounds:(BOOL)bounds;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)player:(id)player didChangeState:(unint64_t)state;
+- (void)player:(id)player didPlayToTime:(double)time;
+- (void)player:(id)player didSetCaptionsEnabled:(BOOL)enabled;
+- (void)player:(id)player didSetFailureReason:(unint64_t)reason mediaTimePlayed:(double)played;
+- (void)player:(id)player didSetMuted:(BOOL)muted mediaTimePlayed:(double)played;
+- (void)player:(id)player didStallPlaybackAtTime:(double)time;
+- (void)playerDidLoadPlayerItem:(id)item;
+- (void)playerDidPause:(id)pause mediaTimePlayed:(double)played;
+- (void)playerDidPlay:(id)play mediaTimePlayed:(double)played;
+- (void)playerDidPlayToEnd:(id)end mediaTimePlayed:(double)played;
+- (void)removeObserver:(id)observer;
+- (void)setActiveHostOfPlayerForVideoId:(id)id videoUrl:(id)url host:(id)host;
+- (void)setActiveVideoPlayer:(id)player;
+- (void)setLoopingStateForPlayerWithVideoId:(id)id loop:(BOOL)loop requestingHost:(id)host;
+- (void)setMuteStateForPlayerWithVideoId:(id)id muted:(BOOL)muted requestingHost:(id)host isTriggerInitiated:(BOOL)initiated;
+- (void)setSystemAutoPlayEnabled:(BOOL)enabled;
 @end
 
 @implementation TUIVideoPlayerManager
@@ -72,31 +72,31 @@
   [(TUIVideoPlayerManager *)&v3 dealloc];
 }
 
-- (void)setSystemAutoPlayEnabled:(BOOL)a3
+- (void)setSystemAutoPlayEnabled:(BOOL)enabled
 {
-  if (self->_systemAutoPlayEnabled != a3)
+  if (self->_systemAutoPlayEnabled != enabled)
   {
-    v3 = a3;
+    enabledCopy = enabled;
     v5 = TUIVideoLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       WeakRetained = objc_loadWeakRetained(&self->_activeVideoPlayer);
       v17 = 67109378;
-      LODWORD(v18[0]) = v3;
+      LODWORD(v18[0]) = enabledCopy;
       WORD2(v18[0]) = 2112;
       *(v18 + 6) = WeakRetained;
       _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "Setting systemAutoPlayEnabled: %i, activeVideoPlayer: %@", &v17, 0x12u);
     }
 
-    self->_systemAutoPlayEnabled = v3;
+    self->_systemAutoPlayEnabled = enabledCopy;
     v7 = objc_loadWeakRetained(&self->_activeVideoPlayer);
     v8 = v7;
     if (v7 && self->_systemAutoPlayEnabled)
     {
       v9 = objc_loadWeakRetained(&self->_activeVideoPlayer);
-      v10 = [v9 isWithinVisibleBounds];
+      isWithinVisibleBounds = [v9 isWithinVisibleBounds];
 
-      if (v10)
+      if (isWithinVisibleBounds)
       {
         v11 = TUIVideoLog();
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -108,8 +108,8 @@
         }
 
         v13 = objc_loadWeakRetained(&self->_activeVideoPlayer);
-        v14 = [v13 player];
-        [v14 play];
+        player = [v13 player];
+        [player play];
 LABEL_14:
 
         return;
@@ -130,20 +130,20 @@ LABEL_14:
     }
 
     v13 = objc_loadWeakRetained(&self->_activeVideoPlayer);
-    v14 = [v13 player];
-    [v14 pause];
+    player = [v13 player];
+    [player pause];
     goto LABEL_14;
   }
 }
 
-- (void)setActiveVideoPlayer:(id)a3
+- (void)setActiveVideoPlayer:(id)player
 {
-  v4 = a3;
+  playerCopy = player;
   WeakRetained = objc_loadWeakRetained(&self->_activeVideoPlayer);
 
-  if (WeakRetained != v4)
+  if (WeakRetained != playerCopy)
   {
-    objc_storeWeak(&self->_activeVideoPlayer, v4);
+    objc_storeWeak(&self->_activeVideoPlayer, playerCopy);
     v6 = TUIVideoLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
@@ -157,27 +157,27 @@ LABEL_14:
 
 - (BOOL)captionsEnabledForActivePlayer
 {
-  v3 = [(TUIVideoPlayerManager *)self activeVideoPlayer];
+  activeVideoPlayer = [(TUIVideoPlayerManager *)self activeVideoPlayer];
 
-  if (!v3)
+  if (!activeVideoPlayer)
   {
     return 0;
   }
 
-  v4 = [(TUIVideoPlayerManager *)self activeVideoPlayer];
-  v5 = [v4 player];
-  v6 = [v5 captionsEnabled];
+  activeVideoPlayer2 = [(TUIVideoPlayerManager *)self activeVideoPlayer];
+  player = [activeVideoPlayer2 player];
+  captionsEnabled = [player captionsEnabled];
 
-  return v6;
+  return captionsEnabled;
 }
 
-- (void)configureHostWithPlayerForURL:(id)a3 videoId:(id)a4 host:(id)a5 options:(unint64_t)a6
+- (void)configureHostWithPlayerForURL:(id)l videoId:(id)id host:(id)host options:(unint64_t)options
 {
-  v28 = a3;
-  v10 = a4;
-  v11 = a5;
+  lCopy = l;
+  idCopy = id;
+  hostCopy = host;
   dispatch_assert_queue_V2(&_dispatch_main_q);
-  v12 = [(NSMutableDictionary *)self->_players objectForKey:v10];
+  v12 = [(NSMutableDictionary *)self->_players objectForKey:idCopy];
   if (v12)
   {
     v13 = v12;
@@ -186,47 +186,47 @@ LABEL_14:
 
   else
   {
-    v13 = [[_TUISharableVideoPlayer alloc] initWithURL:v28 videoId:v10];
-    v14 = [(_TUISharableVideoPlayer *)v13 player];
-    [v14 beginLoadingResources];
+    v13 = [[_TUISharableVideoPlayer alloc] initWithURL:lCopy videoId:idCopy];
+    player = [(_TUISharableVideoPlayer *)v13 player];
+    [player beginLoadingResources];
 
-    [(_TUISharableVideoPlayer *)v13 setTriggerPlaybackEnabled:(a6 >> 1) & 1];
-    v15 = [(_TUISharableVideoPlayer *)v13 player];
-    [v15 setShouldLoop:a6 & 1];
+    [(_TUISharableVideoPlayer *)v13 setTriggerPlaybackEnabled:(options >> 1) & 1];
+    player2 = [(_TUISharableVideoPlayer *)v13 player];
+    [player2 setShouldLoop:options & 1];
 
-    v16 = [(_TUISharableVideoPlayer *)v13 player];
-    [v16 setMuted:(a6 >> 2) & 1];
+    player3 = [(_TUISharableVideoPlayer *)v13 player];
+    [player3 setMuted:(options >> 2) & 1];
 
-    [(NSMutableDictionary *)self->_players setObject:v13 forKey:v10];
+    [(NSMutableDictionary *)self->_players setObject:v13 forKey:idCopy];
   }
 
-  v17 = [(_TUISharableVideoPlayer *)v13 player];
-  v18 = [v17 videoUrl];
-  v19 = [v18 isEqual:v28];
+  player4 = [(_TUISharableVideoPlayer *)v13 player];
+  videoUrl = [player4 videoUrl];
+  v19 = [videoUrl isEqual:lCopy];
 
   if ((v19 & 1) == 0)
   {
-    v20 = [(_TUISharableVideoPlayer *)v13 player];
-    [v20 reloadWithNewURL:v28];
+    player5 = [(_TUISharableVideoPlayer *)v13 player];
+    [player5 reloadWithNewURL:lCopy];
   }
 
-  v21 = [(_TUISharableVideoPlayer *)v13 activeHost];
+  activeHost = [(_TUISharableVideoPlayer *)v13 activeHost];
 
-  if (v21 != v11)
+  if (activeHost != hostCopy)
   {
-    v22 = [(_TUISharableVideoPlayer *)v13 activeHost];
+    activeHost2 = [(_TUISharableVideoPlayer *)v13 activeHost];
 
-    if (v22)
+    if (activeHost2)
     {
-      v23 = [(_TUISharableVideoPlayer *)v13 activeHost];
-      [v23 willBecomeInactiveHost];
+      activeHost3 = [(_TUISharableVideoPlayer *)v13 activeHost];
+      [activeHost3 willBecomeInactiveHost];
     }
 
-    v24 = [(_TUISharableVideoPlayer *)v13 player];
-    [v24 setDelegate:self];
+    player6 = [(_TUISharableVideoPlayer *)v13 player];
+    [player6 setDelegate:self];
 
-    [(_TUISharableVideoPlayer *)v13 setActiveHost:v11];
-    [v11 didBecomeActiveHost];
+    [(_TUISharableVideoPlayer *)v13 setActiveHost:hostCopy];
+    [hostCopy didBecomeActiveHost];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_activeVideoPlayer);
@@ -236,87 +236,87 @@ LABEL_14:
     [(TUIVideoPlayerManager *)self setActiveVideoPlayer:v13];
   }
 
-  v26 = [(_TUISharableVideoPlayer *)v13 player];
-  v27 = [v11 videoViewController];
-  [v27 setPlayer:v26];
+  player7 = [(_TUISharableVideoPlayer *)v13 player];
+  videoViewController = [hostCopy videoViewController];
+  [videoViewController setPlayer:player7];
 }
 
-- (void)endHostingForVideoId:(id)a3 forHost:(id)a4
+- (void)endHostingForVideoId:(id)id forHost:(id)host
 {
-  v11 = a3;
-  v6 = a4;
+  idCopy = id;
+  hostCopy = host;
   dispatch_assert_queue_V2(&_dispatch_main_q);
-  v7 = [(NSMutableDictionary *)self->_players objectForKey:v11];
+  v7 = [(NSMutableDictionary *)self->_players objectForKey:idCopy];
   v8 = v7;
   if (v7)
   {
     [v7 decrementHostCount];
-    v9 = [v8 activeHost];
+    activeHost = [v8 activeHost];
 
-    if (v9 == v6)
+    if (activeHost == hostCopy)
     {
       [v8 setActiveHost:0];
     }
 
     if ([v8 shouldRelease])
     {
-      v10 = [v8 player];
-      [v10 releaseResources];
+      player = [v8 player];
+      [player releaseResources];
 
-      [(NSMutableDictionary *)self->_players removeObjectForKey:v11];
+      [(NSMutableDictionary *)self->_players removeObjectForKey:idCopy];
     }
   }
 }
 
-- (void)setActiveHostOfPlayerForVideoId:(id)a3 videoUrl:(id)a4 host:(id)a5
+- (void)setActiveHostOfPlayerForVideoId:(id)id videoUrl:(id)url host:(id)host
 {
-  v18 = a4;
-  v8 = a5;
-  v9 = a3;
+  urlCopy = url;
+  hostCopy = host;
+  idCopy = id;
   dispatch_assert_queue_V2(&_dispatch_main_q);
-  v10 = [(NSMutableDictionary *)self->_players objectForKey:v9];
+  v10 = [(NSMutableDictionary *)self->_players objectForKey:idCopy];
 
   if (v10)
   {
-    v11 = [v10 activeHost];
+    activeHost = [v10 activeHost];
 
-    if (v11 != v8)
+    if (activeHost != hostCopy)
     {
-      v12 = [v10 activeHost];
+      activeHost2 = [v10 activeHost];
 
-      if (v12)
+      if (activeHost2)
       {
-        v13 = [v10 activeHost];
-        [v13 willBecomeInactiveHost];
+        activeHost3 = [v10 activeHost];
+        [activeHost3 willBecomeInactiveHost];
       }
 
-      [v10 setActiveHost:v8];
-      [v8 didBecomeActiveHost];
-      v14 = [v10 player];
-      v15 = [v14 videoUrl];
-      v16 = [v15 isEqual:v18];
+      [v10 setActiveHost:hostCopy];
+      [hostCopy didBecomeActiveHost];
+      player = [v10 player];
+      videoUrl = [player videoUrl];
+      v16 = [videoUrl isEqual:urlCopy];
 
       if ((v16 & 1) == 0)
       {
-        v17 = [v10 player];
-        [v17 reloadWithNewURL:v18];
+        player2 = [v10 player];
+        [player2 reloadWithNewURL:urlCopy];
       }
     }
   }
 }
 
-- (void)hostWantsToPlayVideoWithVideoId:(id)a3 requestingHost:(id)a4 isTriggerInitiated:(BOOL)a5
+- (void)hostWantsToPlayVideoWithVideoId:(id)id requestingHost:(id)host isTriggerInitiated:(BOOL)initiated
 {
-  v5 = a5;
-  v24 = a4;
-  v8 = a3;
+  initiatedCopy = initiated;
+  hostCopy = host;
+  idCopy = id;
   dispatch_assert_queue_V2(&_dispatch_main_q);
-  v9 = [(NSMutableDictionary *)self->_players objectForKey:v8];
+  v9 = [(NSMutableDictionary *)self->_players objectForKey:idCopy];
 
   waitingOnPlaybackToBegin = self->_waitingOnPlaybackToBegin;
   if ([v9 triggerPlaybackEnabled])
   {
-    v11 = self->_systemAutoPlayEnabled & v5 & ~waitingOnPlaybackToBegin;
+    v11 = self->_systemAutoPlayEnabled & initiatedCopy & ~waitingOnPlaybackToBegin;
   }
 
   else
@@ -324,10 +324,10 @@ LABEL_14:
     v11 = 0;
   }
 
-  v12 = !v5;
+  v12 = !initiatedCopy;
   WeakRetained = objc_loadWeakRetained(&self->_activeVideoPlayer);
-  v14 = [WeakRetained player];
-  if ([v14 isPlaying])
+  player = [WeakRetained player];
+  if ([player isPlaying])
   {
     v15 = objc_loadWeakRetained(&self->_activeVideoPlayer);
     v16 = v12 | [v15 isWithinVisibleBounds] ^ 1;
@@ -340,31 +340,31 @@ LABEL_14:
 
   if (v16 && v9 && ((v11 | v12) & 1) != 0)
   {
-    v17 = [v9 activeHost];
-    if (v17 != v24)
+    activeHost = [v9 activeHost];
+    if (activeHost != hostCopy)
     {
 LABEL_13:
 
       goto LABEL_19;
     }
 
-    v18 = [v9 player];
-    if ([v18 isPlaying])
+    player2 = [v9 player];
+    if ([player2 isPlaying])
     {
 
       goto LABEL_13;
     }
 
-    v20 = [v9 player];
-    v21 = [v20 state];
+    player3 = [v9 player];
+    state = [player3 state];
 
-    if (v21 != &dword_8 + 1)
+    if (state != &dword_8 + 1)
     {
-      v22 = [v9 activeHost];
-      [v22 managerAttemptingActionWithOrigin:v5 actionCase:0];
+      activeHost2 = [v9 activeHost];
+      [activeHost2 managerAttemptingActionWithOrigin:initiatedCopy actionCase:0];
 
-      v23 = [v9 player];
-      [v23 play];
+      player4 = [v9 player];
+      [player4 play];
 
       self->_waitingOnPlaybackToBegin = 1;
     }
@@ -391,32 +391,32 @@ LABEL_13:
 LABEL_19:
 }
 
-- (void)hostWantsToPausePlayerWithVideoId:(id)a3 requestingHost:(id)a4 isTriggerInitiated:(BOOL)a5
+- (void)hostWantsToPausePlayerWithVideoId:(id)id requestingHost:(id)host isTriggerInitiated:(BOOL)initiated
 {
-  v5 = a5;
-  v16 = a4;
-  v8 = a3;
+  initiatedCopy = initiated;
+  hostCopy = host;
+  idCopy = id;
   dispatch_assert_queue_V2(&_dispatch_main_q);
-  v9 = [(NSMutableDictionary *)self->_players objectForKey:v8];
+  v9 = [(NSMutableDictionary *)self->_players objectForKey:idCopy];
 
   WeakRetained = objc_loadWeakRetained(&self->_activeVideoPlayer);
   if (v9 == WeakRetained)
   {
-    v11 = [v9 activeHost];
-    if (v11 == v16)
+    activeHost = [v9 activeHost];
+    if (activeHost == hostCopy)
     {
-      v12 = [v9 player];
-      v13 = [v12 isPlaying];
+      player = [v9 player];
+      isPlaying = [player isPlaying];
 
-      if (v13)
+      if (isPlaying)
       {
-        v14 = [v9 activeHost];
-        [v14 managerAttemptingActionWithOrigin:v5 actionCase:1];
+        activeHost2 = [v9 activeHost];
+        [activeHost2 managerAttemptingActionWithOrigin:initiatedCopy actionCase:1];
 
-        v15 = [v9 player];
-        [v15 pause];
+        player2 = [v9 player];
+        [player2 pause];
 
-        [v9 setTriggerPlaybackEnabled:v5];
+        [v9 setTriggerPlaybackEnabled:initiatedCopy];
       }
     }
 
@@ -426,64 +426,64 @@ LABEL_19:
   }
 }
 
-- (void)hostWantsToSetPlayerIsWithinVisibleBoundsForPlayerWithVideoId:(id)a3 requestingHost:(id)a4 isWithinVisibleBounds:(BOOL)a5
+- (void)hostWantsToSetPlayerIsWithinVisibleBoundsForPlayerWithVideoId:(id)id requestingHost:(id)host isWithinVisibleBounds:(BOOL)bounds
 {
-  v5 = a5;
-  v7 = a3;
+  boundsCopy = bounds;
+  idCopy = id;
   dispatch_assert_queue_V2(&_dispatch_main_q);
-  v8 = [(NSMutableDictionary *)self->_players objectForKey:v7];
+  v8 = [(NSMutableDictionary *)self->_players objectForKey:idCopy];
 
-  if (v8 && [v8 isWithinVisibleBounds] != v5)
+  if (v8 && [v8 isWithinVisibleBounds] != boundsCopy)
   {
     v9 = TUIVideoLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [v8 isWithinVisibleBounds];
-      v11 = [v8 player];
+      isWithinVisibleBounds = [v8 isWithinVisibleBounds];
+      player = [v8 player];
       v12[0] = 67109634;
-      v12[1] = v10;
+      v12[1] = isWithinVisibleBounds;
       v13 = 1024;
-      v14 = v5;
+      v14 = boundsCopy;
       v15 = 2112;
-      v16 = v11;
+      v16 = player;
       _os_log_impl(&dword_0, v9, OS_LOG_TYPE_DEFAULT, "Updating isWithinVisibleBounds from %i to %i for %@", v12, 0x18u);
     }
 
-    [v8 setIsWithinVisibleBounds:v5];
+    [v8 setIsWithinVisibleBounds:boundsCopy];
   }
 }
 
-- (void)setLoopingStateForPlayerWithVideoId:(id)a3 loop:(BOOL)a4 requestingHost:(id)a5
+- (void)setLoopingStateForPlayerWithVideoId:(id)id loop:(BOOL)loop requestingHost:(id)host
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = a3;
+  loopCopy = loop;
+  hostCopy = host;
+  idCopy = id;
   dispatch_assert_queue_V2(&_dispatch_main_q);
-  v12 = [(NSMutableDictionary *)self->_players objectForKey:v9];
+  v12 = [(NSMutableDictionary *)self->_players objectForKey:idCopy];
 
-  v10 = [v12 activeHost];
+  activeHost = [v12 activeHost];
 
-  if (v10 == v8)
+  if (activeHost == hostCopy)
   {
-    v11 = [v12 player];
-    [v11 setShouldLoop:v5];
+    player = [v12 player];
+    [player setShouldLoop:loopCopy];
   }
 }
 
-- (void)setMuteStateForPlayerWithVideoId:(id)a3 muted:(BOOL)a4 requestingHost:(id)a5 isTriggerInitiated:(BOOL)a6
+- (void)setMuteStateForPlayerWithVideoId:(id)id muted:(BOOL)muted requestingHost:(id)host isTriggerInitiated:(BOOL)initiated
 {
-  v6 = a6;
-  v7 = a4;
-  v10 = a5;
-  v11 = a3;
+  initiatedCopy = initiated;
+  mutedCopy = muted;
+  hostCopy = host;
+  idCopy = id;
   dispatch_assert_queue_V2(&_dispatch_main_q);
-  v16 = [(NSMutableDictionary *)self->_players objectForKey:v11];
+  v16 = [(NSMutableDictionary *)self->_players objectForKey:idCopy];
 
-  v12 = [v16 activeHost];
+  activeHost = [v16 activeHost];
 
-  if (v12 == v10)
+  if (activeHost == hostCopy)
   {
-    if (v7)
+    if (mutedCopy)
     {
       v13 = 2;
     }
@@ -493,70 +493,70 @@ LABEL_19:
       v13 = 3;
     }
 
-    v14 = [v16 activeHost];
-    [v14 managerAttemptingActionWithOrigin:v6 actionCase:v13];
+    activeHost2 = [v16 activeHost];
+    [activeHost2 managerAttemptingActionWithOrigin:initiatedCopy actionCase:v13];
 
-    v15 = [v16 player];
-    [v15 setMuted:v7];
+    player = [v16 player];
+    [player setMuted:mutedCopy];
   }
 }
 
-- (unint64_t)stateForPlayerWithVideoId:(id)a3
+- (unint64_t)stateForPlayerWithVideoId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   dispatch_assert_queue_V2(&_dispatch_main_q);
-  v5 = [(NSMutableDictionary *)self->_players objectForKey:v4];
+  v5 = [(NSMutableDictionary *)self->_players objectForKey:idCopy];
 
   if (v5)
   {
-    v6 = [v5 player];
-    v7 = [v6 state];
+    player = [v5 player];
+    state = [player state];
   }
 
   else
   {
-    v7 = 0;
+    state = 0;
   }
 
-  return v7;
+  return state;
 }
 
-- (BOOL)playerWithVideoIdIsPlaying:(id)a3
+- (BOOL)playerWithVideoIdIsPlaying:(id)playing
 {
-  v4 = a3;
+  playingCopy = playing;
   dispatch_assert_queue_V2(&_dispatch_main_q);
-  v5 = [(NSMutableDictionary *)self->_players objectForKey:v4];
+  v5 = [(NSMutableDictionary *)self->_players objectForKey:playingCopy];
 
   if (v5)
   {
-    v6 = [v5 player];
-    v7 = [v6 isPlaying];
+    player = [v5 player];
+    isPlaying = [player isPlaying];
   }
 
   else
   {
-    v7 = 0;
+    isPlaying = 0;
   }
 
-  return v7;
+  return isPlaying;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_observerAccessLock);
-  v5 = [(TUIVideoPlayerManager *)self observers];
-  [v5 addObject:v4];
+  observers = [(TUIVideoPlayerManager *)self observers];
+  [observers addObject:observerCopy];
 
   os_unfair_lock_unlock(&self->_observerAccessLock);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_observerAccessLock);
-  v5 = [(TUIVideoPlayerManager *)self observers];
-  [v5 removeObject:v4];
+  observers = [(TUIVideoPlayerManager *)self observers];
+  [observers removeObject:observerCopy];
 
   os_unfair_lock_unlock(&self->_observerAccessLock);
 }
@@ -601,7 +601,7 @@ LABEL_19:
   [v7 addObserver:self selector:"_handlePowerStateDidChange:" name:NSProcessInfoPowerStateDidChangeNotification object:0];
 }
 
-- (void)_handleWillEnterForegroundNotification:(id)a3
+- (void)_handleWillEnterForegroundNotification:(id)notification
 {
   WeakRetained = objc_loadWeakRetained(&self->_activeVideoPlayer);
   if (WeakRetained)
@@ -635,39 +635,39 @@ LABEL_19:
     }
 
     v9 = objc_loadWeakRetained(&self->_activeVideoPlayer);
-    v10 = [v9 player];
-    [v10 play];
+    player = [v9 player];
+    [player play];
   }
 
   self->_isInForeground = 1;
   [(TUIVideoPlayerManager *)self _determineSystemAutoPlay];
 }
 
-- (void)_handleDidEnterBackgroundNotification:(id)a3
+- (void)_handleDidEnterBackgroundNotification:(id)notification
 {
   WeakRetained = objc_loadWeakRetained(&self->_activeVideoPlayer);
   if (WeakRetained)
   {
     v5 = objc_loadWeakRetained(&self->_activeVideoPlayer);
-    v6 = [v5 player];
-    v7 = [v6 isPlaying];
+    player = [v5 player];
+    isPlaying = [player isPlaying];
   }
 
   else
   {
-    v7 = 0;
+    isPlaying = 0;
   }
 
   v8 = TUIVideoLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v12[0] = 67109120;
-    v12[1] = v7;
+    v12[1] = isPlaying;
     _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "Video did enter background, isPlaying: %i", v12, 8u);
   }
 
-  self->_activePlayerWasPlayingWhenEnteringBackground = v7;
-  if (v7)
+  self->_activePlayerWasPlayingWhenEnteringBackground = isPlaying;
+  if (isPlaying)
   {
     v9 = TUIVideoLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -677,14 +677,14 @@ LABEL_19:
     }
 
     v10 = objc_loadWeakRetained(&self->_activeVideoPlayer);
-    v11 = [v10 player];
-    [v11 pause];
+    player2 = [v10 player];
+    [player2 pause];
   }
 
   self->_isInForeground = 0;
 }
 
-- (void)_handlePowerStateDidChange:(id)a3
+- (void)_handlePowerStateDidChange:(id)change
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -701,7 +701,7 @@ LABEL_19:
     IsReduceMotionEnabled = UIAccessibilityIsReduceMotionEnabled();
     IsVideoAutoplayEnabled = UIAccessibilityIsVideoAutoplayEnabled();
     v5 = +[NSProcessInfo processInfo];
-    v6 = [v5 isLowPowerModeEnabled];
+    isLowPowerModeEnabled = [v5 isLowPowerModeEnabled];
 
     v7 = TUIVideoLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -711,7 +711,7 @@ LABEL_19:
       v10 = 1024;
       v11 = IsVideoAutoplayEnabled;
       v12 = 1024;
-      v13 = v6;
+      v13 = isLowPowerModeEnabled;
       _os_log_impl(&dword_0, v7, OS_LOG_TYPE_DEFAULT, "Setting systemAutoPlay: reducedMotion: %i, videoAutoPlayEnabled: %i, lowPowerModeEnabled: %i", v9, 0x14u);
     }
 
@@ -722,35 +722,35 @@ LABEL_19:
 
     else
     {
-      v8 = IsVideoAutoplayEnabled & (v6 ^ 1);
+      v8 = IsVideoAutoplayEnabled & (isLowPowerModeEnabled ^ 1);
     }
 
     [(TUIVideoPlayerManager *)self setSystemAutoPlayEnabled:v8];
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = v12;
-  if (a6 == &off_2619C8)
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  v13 = changeCopy;
+  if (context == &off_2619C8)
   {
-    if (v10 && v12 && [v10 isEqualToString:@"outputVolume"])
+    if (pathCopy && changeCopy && [pathCopy isEqualToString:@"outputVolume"])
     {
       WeakRetained = objc_loadWeakRetained(&self->_activeVideoPlayer);
-      v15 = [WeakRetained player];
+      player = [WeakRetained player];
 
-      if (v15 && [v15 isPlaying] && objc_msgSend(v15, "isMuted"))
+      if (player && [player isPlaying] && objc_msgSend(player, "isMuted"))
       {
         v16 = objc_loadWeakRetained(&self->_activeVideoPlayer);
-        v17 = [v16 activeHost];
-        [v17 managerAttemptingActionWithOrigin:0 actionCase:3];
+        activeHost = [v16 activeHost];
+        [activeHost managerAttemptingActionWithOrigin:0 actionCase:3];
 
         v18 = objc_loadWeakRetained(&self->_activeVideoPlayer);
-        v19 = [v18 player];
-        [v19 setMuted:0];
+        player2 = [v18 player];
+        [player2 setMuted:0];
       }
     }
   }
@@ -759,97 +759,97 @@ LABEL_19:
   {
     v20.receiver = self;
     v20.super_class = TUIVideoPlayerManager;
-    [(TUIVideoPlayerManager *)&v20 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(TUIVideoPlayerManager *)&v20 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 
-- (void)player:(id)a3 didChangeState:(unint64_t)a4
+- (void)player:(id)player didChangeState:(unint64_t)state
 {
-  v6 = a3;
+  playerCopy = player;
   players = self->_players;
-  v12 = v6;
-  v8 = [v6 videoId];
-  v9 = [(NSMutableDictionary *)players objectForKey:v8];
+  v12 = playerCopy;
+  videoId = [playerCopy videoId];
+  v9 = [(NSMutableDictionary *)players objectForKey:videoId];
 
   if (v9)
   {
-    v10 = [v9 activeHost];
-    v11 = [v12 videoId];
-    [v10 playerWithVideoId:v11 didChangeState:a4];
+    activeHost = [v9 activeHost];
+    videoId2 = [v12 videoId];
+    [activeHost playerWithVideoId:videoId2 didChangeState:state];
   }
 }
 
-- (void)playerDidPlayToEnd:(id)a3 mediaTimePlayed:(double)a4
+- (void)playerDidPlayToEnd:(id)end mediaTimePlayed:(double)played
 {
-  v6 = a3;
+  endCopy = end;
   players = self->_players;
-  v12 = v6;
-  v8 = [v6 videoId];
-  v9 = [(NSMutableDictionary *)players objectForKey:v8];
+  v12 = endCopy;
+  videoId = [endCopy videoId];
+  v9 = [(NSMutableDictionary *)players objectForKey:videoId];
 
   if (v9)
   {
-    v10 = [v9 activeHost];
-    v11 = [v12 videoId];
-    [v10 playerWithVideoIdDidPlayToEnd:v11 mediaTimePlayed:a4];
+    activeHost = [v9 activeHost];
+    videoId2 = [v12 videoId];
+    [activeHost playerWithVideoIdDidPlayToEnd:videoId2 mediaTimePlayed:played];
   }
 }
 
-- (void)player:(id)a3 didPlayToTime:(double)a4
+- (void)player:(id)player didPlayToTime:(double)time
 {
-  v6 = a3;
+  playerCopy = player;
   players = self->_players;
-  v12 = v6;
-  v8 = [v6 videoId];
-  v9 = [(NSMutableDictionary *)players objectForKey:v8];
+  v12 = playerCopy;
+  videoId = [playerCopy videoId];
+  v9 = [(NSMutableDictionary *)players objectForKey:videoId];
 
   if (v9)
   {
-    v10 = [v9 activeHost];
-    v11 = [v12 videoId];
-    [v10 playerWithVideoId:v11 didPlayToTime:a4];
+    activeHost = [v9 activeHost];
+    videoId2 = [v12 videoId];
+    [activeHost playerWithVideoId:videoId2 didPlayToTime:time];
   }
 }
 
-- (void)player:(id)a3 didStallPlaybackAtTime:(double)a4
+- (void)player:(id)player didStallPlaybackAtTime:(double)time
 {
-  v6 = a3;
+  playerCopy = player;
   players = self->_players;
-  v12 = v6;
-  v8 = [v6 videoId];
-  v9 = [(NSMutableDictionary *)players objectForKey:v8];
+  v12 = playerCopy;
+  videoId = [playerCopy videoId];
+  v9 = [(NSMutableDictionary *)players objectForKey:videoId];
 
   if (v9)
   {
-    v10 = [v9 activeHost];
-    v11 = [v12 videoId];
-    [v10 playerWithVideoId:v11 didStallPlaybackAtTime:a4];
+    activeHost = [v9 activeHost];
+    videoId2 = [v12 videoId];
+    [activeHost playerWithVideoId:videoId2 didStallPlaybackAtTime:time];
   }
 }
 
-- (void)playerDidLoadPlayerItem:(id)a3
+- (void)playerDidLoadPlayerItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   players = self->_players;
-  v10 = v4;
-  v6 = [v4 videoId];
-  v7 = [(NSMutableDictionary *)players objectForKey:v6];
+  v10 = itemCopy;
+  videoId = [itemCopy videoId];
+  v7 = [(NSMutableDictionary *)players objectForKey:videoId];
 
   if (v7)
   {
-    v8 = [v7 activeHost];
-    v9 = [v10 videoId];
-    [v8 playerWithVideoIdDidLoadPlayerItem:v9];
+    activeHost = [v7 activeHost];
+    videoId2 = [v10 videoId];
+    [activeHost playerWithVideoIdDidLoadPlayerItem:videoId2];
   }
 }
 
-- (void)playerDidPlay:(id)a3 mediaTimePlayed:(double)a4
+- (void)playerDidPlay:(id)play mediaTimePlayed:(double)played
 {
-  v6 = a3;
+  playCopy = play;
   players = self->_players;
-  v15 = v6;
-  v8 = [v6 videoId];
-  v9 = [(NSMutableDictionary *)players objectForKey:v8];
+  v15 = playCopy;
+  videoId = [playCopy videoId];
+  v9 = [(NSMutableDictionary *)players objectForKey:videoId];
 
   if (v9)
   {
@@ -858,76 +858,76 @@ LABEL_19:
     if (WeakRetained != v9)
     {
       v11 = objc_loadWeakRetained(&self->_activeVideoPlayer);
-      v12 = [v11 player];
-      [v12 pause];
+      player = [v11 player];
+      [player pause];
 
       [(TUIVideoPlayerManager *)self setActiveVideoPlayer:v9];
     }
 
-    v13 = [v9 activeHost];
-    v14 = [v15 videoId];
-    [v13 playerWithVideoIdDidPlay:v14 mediaTimePlayed:a4];
+    activeHost = [v9 activeHost];
+    videoId2 = [v15 videoId];
+    [activeHost playerWithVideoIdDidPlay:videoId2 mediaTimePlayed:played];
   }
 
   self->_waitingOnPlaybackToBegin = 0;
 }
 
-- (void)playerDidPause:(id)a3 mediaTimePlayed:(double)a4
+- (void)playerDidPause:(id)pause mediaTimePlayed:(double)played
 {
-  v6 = a3;
+  pauseCopy = pause;
   players = self->_players;
-  v12 = v6;
-  v8 = [v6 videoId];
-  v9 = [(NSMutableDictionary *)players objectForKey:v8];
+  v12 = pauseCopy;
+  videoId = [pauseCopy videoId];
+  v9 = [(NSMutableDictionary *)players objectForKey:videoId];
 
   if (v9)
   {
     [v9 setTriggerPlaybackEnabled:0];
-    v10 = [v9 activeHost];
-    v11 = [v12 videoId];
-    [v10 playerWithVideoIdDidPause:v11 mediaTimePlayed:a4];
+    activeHost = [v9 activeHost];
+    videoId2 = [v12 videoId];
+    [activeHost playerWithVideoIdDidPause:videoId2 mediaTimePlayed:played];
   }
 }
 
-- (void)player:(id)a3 didSetMuted:(BOOL)a4 mediaTimePlayed:(double)a5
+- (void)player:(id)player didSetMuted:(BOOL)muted mediaTimePlayed:(double)played
 {
-  v6 = a4;
-  v8 = a3;
+  mutedCopy = muted;
+  playerCopy = player;
   players = self->_players;
-  v14 = v8;
-  v10 = [v8 videoId];
-  v11 = [(NSMutableDictionary *)players objectForKey:v10];
+  v14 = playerCopy;
+  videoId = [playerCopy videoId];
+  v11 = [(NSMutableDictionary *)players objectForKey:videoId];
 
   if (v11)
   {
-    v12 = [v11 activeHost];
-    v13 = [v14 videoId];
-    [v12 playerWithVideoId:v13 didSetMuted:v6 mediaTimePlayed:a5];
+    activeHost = [v11 activeHost];
+    videoId2 = [v14 videoId];
+    [activeHost playerWithVideoId:videoId2 didSetMuted:mutedCopy mediaTimePlayed:played];
   }
 }
 
-- (void)player:(id)a3 didSetFailureReason:(unint64_t)a4 mediaTimePlayed:(double)a5
+- (void)player:(id)player didSetFailureReason:(unint64_t)reason mediaTimePlayed:(double)played
 {
-  v8 = a3;
+  playerCopy = player;
   players = self->_players;
-  v14 = v8;
-  v10 = [v8 videoId];
-  v11 = [(NSMutableDictionary *)players objectForKey:v10];
+  v14 = playerCopy;
+  videoId = [playerCopy videoId];
+  v11 = [(NSMutableDictionary *)players objectForKey:videoId];
 
   if (v11)
   {
-    v12 = [v11 activeHost];
-    v13 = [v14 videoId];
-    [v12 playerWithVideoId:v13 didSetFailureReason:a4 mediaTimePlayed:a5];
+    activeHost = [v11 activeHost];
+    videoId2 = [v14 videoId];
+    [activeHost playerWithVideoId:videoId2 didSetFailureReason:reason mediaTimePlayed:played];
   }
 }
 
-- (void)player:(id)a3 didSetCaptionsEnabled:(BOOL)a4
+- (void)player:(id)player didSetCaptionsEnabled:(BOOL)enabled
 {
-  v4 = a4;
+  enabledCopy = enabled;
   os_unfair_lock_lock(&self->_observerAccessLock);
-  v6 = [(TUIVideoPlayerManager *)self observers];
-  v7 = [v6 copy];
+  observers = [(TUIVideoPlayerManager *)self observers];
+  v7 = [observers copy];
 
   os_unfair_lock_unlock(&self->_observerAccessLock);
   v15 = 0u;
@@ -950,7 +950,7 @@ LABEL_19:
           objc_enumerationMutation(v8);
         }
 
-        [*(*(&v13 + 1) + 8 * v12) manager:self didSetCaptions:{v4, v13}];
+        [*(*(&v13 + 1) + 8 * v12) manager:self didSetCaptions:{enabledCopy, v13}];
         v12 = v12 + 1;
       }
 

@@ -1,16 +1,16 @@
 @interface AWDMETRICSKCellularPowerLogXOShutdownMBin
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsBinId:(id)a3;
+- (int)StringAsBinId:(id)id;
 - (int)binId;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasCount:(BOOL)a3;
-- (void)setHasDurationMs:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasCount:(BOOL)count;
+- (void)setHasDurationMs:(BOOL)ms;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDMETRICSKCellularPowerLogXOShutdownMBin
@@ -28,25 +28,25 @@
   }
 }
 
-- (int)StringAsBinId:(id)a3
+- (int)StringAsBinId:(id)id
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"SOCSLP_AWAKE"])
+  idCopy = id;
+  if ([idCopy isEqualToString:@"SOCSLP_AWAKE"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"SOCSLP_SLP_VCXO"])
+  else if ([idCopy isEqualToString:@"SOCSLP_SLP_VCXO"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"SOCSLP_SLP_SOC"])
+  else if ([idCopy isEqualToString:@"SOCSLP_SLP_SOC"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"SOCSLP_SLP_S2R"])
+  else if ([idCopy isEqualToString:@"SOCSLP_SLP_S2R"])
   {
     v4 = 3;
   }
@@ -59,9 +59,9 @@
   return v4;
 }
 
-- (void)setHasDurationMs:(BOOL)a3
+- (void)setHasDurationMs:(BOOL)ms
 {
-  if (a3)
+  if (ms)
   {
     v3 = 4;
   }
@@ -74,9 +74,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasCount:(BOOL)a3
+- (void)setHasCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 2;
   }
@@ -95,15 +95,15 @@
   v8.receiver = self;
   v8.super_class = AWDMETRICSKCellularPowerLogXOShutdownMBin;
   v4 = [(AWDMETRICSKCellularPowerLogXOShutdownMBin *)&v8 description];
-  v5 = [(AWDMETRICSKCellularPowerLogXOShutdownMBin *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(AWDMETRICSKCellularPowerLogXOShutdownMBin *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if (has)
   {
@@ -118,7 +118,7 @@
       v6 = off_27825A180[binId];
     }
 
-    [v3 setObject:v6 forKey:@"bin_id"];
+    [dictionary setObject:v6 forKey:@"bin_id"];
 
     has = self->_has;
   }
@@ -126,7 +126,7 @@
   if ((has & 4) != 0)
   {
     v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_durationMs];
-    [v3 setObject:v7 forKey:@"duration_ms"];
+    [dictionary setObject:v7 forKey:@"duration_ms"];
 
     has = self->_has;
   }
@@ -134,22 +134,22 @@
   if ((has & 2) != 0)
   {
     v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_count];
-    [v3 setObject:v8 forKey:@"count"];
+    [dictionary setObject:v8 forKey:@"count"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v9 = v4;
+  v9 = toCopy;
   if (has)
   {
     binId = self->_binId;
     PBDataWriterWriteInt32Field();
-    v4 = v9;
+    toCopy = v9;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -170,26 +170,26 @@ LABEL_3:
 
   durationMs = self->_durationMs;
   PBDataWriterWriteUint32Field();
-  v4 = v9;
+  toCopy = v9;
   if ((*&self->_has & 2) != 0)
   {
 LABEL_4:
     count = self->_count;
     PBDataWriterWriteUint32Field();
-    v4 = v9;
+    toCopy = v9;
   }
 
 LABEL_5:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[2] = self->_binId;
-    *(v4 + 20) |= 1u;
+    toCopy[2] = self->_binId;
+    *(toCopy + 20) |= 1u;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -208,21 +208,21 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[4] = self->_durationMs;
-  *(v4 + 20) |= 4u;
+  toCopy[4] = self->_durationMs;
+  *(toCopy + 20) |= 4u;
   if ((*&self->_has & 2) != 0)
   {
 LABEL_4:
-    v4[3] = self->_count;
-    *(v4 + 20) |= 2u;
+    toCopy[3] = self->_count;
+    *(toCopy + 20) |= 2u;
   }
 
 LABEL_5:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if (has)
   {
@@ -259,23 +259,23 @@ LABEL_4:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_16;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 20) & 1) == 0 || self->_binId != *(v4 + 2))
+    if ((*(equalCopy + 20) & 1) == 0 || self->_binId != *(equalCopy + 2))
     {
       goto LABEL_16;
     }
   }
 
-  else if (*(v4 + 20))
+  else if (*(equalCopy + 20))
   {
 LABEL_16:
     v5 = 0;
@@ -284,21 +284,21 @@ LABEL_16:
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 20) & 4) == 0 || self->_durationMs != *(v4 + 4))
+    if ((*(equalCopy + 20) & 4) == 0 || self->_durationMs != *(equalCopy + 4))
     {
       goto LABEL_16;
     }
   }
 
-  else if ((*(v4 + 20) & 4) != 0)
+  else if ((*(equalCopy + 20) & 4) != 0)
   {
     goto LABEL_16;
   }
 
-  v5 = (*(v4 + 20) & 2) == 0;
+  v5 = (*(equalCopy + 20) & 2) == 0;
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 20) & 2) == 0 || self->_count != *(v4 + 3))
+    if ((*(equalCopy + 20) & 2) == 0 || self->_count != *(equalCopy + 3))
     {
       goto LABEL_16;
     }
@@ -351,15 +351,15 @@ LABEL_4:
   return v3 ^ v2 ^ v4;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 20);
+  fromCopy = from;
+  v5 = *(fromCopy + 20);
   if (v5)
   {
-    self->_binId = *(v4 + 2);
+    self->_binId = *(fromCopy + 2);
     *&self->_has |= 1u;
-    v5 = *(v4 + 20);
+    v5 = *(fromCopy + 20);
     if ((v5 & 4) == 0)
     {
 LABEL_3:
@@ -372,17 +372,17 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 20) & 4) == 0)
+  else if ((*(fromCopy + 20) & 4) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_durationMs = *(v4 + 4);
+  self->_durationMs = *(fromCopy + 4);
   *&self->_has |= 4u;
-  if ((*(v4 + 20) & 2) != 0)
+  if ((*(fromCopy + 20) & 2) != 0)
   {
 LABEL_4:
-    self->_count = *(v4 + 3);
+    self->_count = *(fromCopy + 3);
     *&self->_has |= 2u;
   }
 

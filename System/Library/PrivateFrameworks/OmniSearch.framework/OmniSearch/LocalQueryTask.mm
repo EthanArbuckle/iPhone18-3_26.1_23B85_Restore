@@ -1,22 +1,22 @@
 @interface LocalQueryTask
-- (void)didReceiveResponse:(id)a3;
-- (void)resultsDidBecomeInvalid:(id)a3;
+- (void)didReceiveResponse:(id)response;
+- (void)resultsDidBecomeInvalid:(id)invalid;
 @end
 
 @implementation LocalQueryTask
 
-- (void)resultsDidBecomeInvalid:(id)a3
+- (void)resultsDidBecomeInvalid:(id)invalid
 {
-  v4 = a3;
-  v5 = self;
+  invalidCopy = invalid;
+  selfCopy = self;
   LocalQueryTask.resultsDidBecomeInvalid(_:)();
 }
 
-- (void)didReceiveResponse:(id)a3
+- (void)didReceiveResponse:(id)response
 {
-  v4 = a3;
-  v5 = self;
-  LocalQueryTask.didReceive(_:)(v4);
+  responseCopy = response;
+  selfCopy = self;
+  LocalQueryTask.didReceive(_:)(responseCopy);
 }
 
 @end

@@ -1,5 +1,5 @@
 @interface ThermalLevelCC
-- (ThermalLevelCC)initWithProduct:(id)a3;
+- (ThermalLevelCC)initWithProduct:(id)product;
 - (void)defaultAction;
 - (void)refreshFunctionalTelemetry;
 @end
@@ -22,7 +22,7 @@
   HIDWORD(self->product) = v3;
 }
 
-- (ThermalLevelCC)initWithProduct:(id)a3
+- (ThermalLevelCC)initWithProduct:(id)product
 {
   v7.receiver = self;
   v7.super_class = ThermalLevelCC;
@@ -31,7 +31,7 @@
   if (v4)
   {
     *(v4 + 18) = 100;
-    *(v4 + 140) = a3;
+    *(v4 + 140) = product;
     *(v4 + 22) = 2;
     *(v4 + 37) = 0;
     *(v4 + 38) = 0;

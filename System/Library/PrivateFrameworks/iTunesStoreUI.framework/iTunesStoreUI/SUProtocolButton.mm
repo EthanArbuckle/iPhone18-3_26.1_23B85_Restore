@@ -3,16 +3,16 @@
 - (NSString)buttonTarget;
 - (NSString)buttonTitle;
 - (NSURL)URL;
-- (SUProtocolButton)initWithButtonDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SUProtocolButton)initWithButtonDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
 @end
 
 @implementation SUProtocolButton
 
-- (SUProtocolButton)initWithButtonDictionary:(id)a3
+- (SUProtocolButton)initWithButtonDictionary:(id)dictionary
 {
-  if (!a3)
+  if (!dictionary)
   {
     [(SUProtocolButton *)a2 initWithButtonDictionary:?];
   }
@@ -22,7 +22,7 @@
   v5 = [(SUProtocolButton *)&v7 init];
   if (v5)
   {
-    v5->_buttonDictionary = [a3 copy];
+    v5->_buttonDictionary = [dictionary copy];
     if (![(SUProtocolButton *)v5 buttonTitle]|| ![(SUProtocolButton *)v5 URL])
     {
 
@@ -40,10 +40,10 @@
   [(SUProtocolButton *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_opt_class() allocWithZone:a3];
-  v5[1] = [(NSDictionary *)self->_buttonDictionary copyWithZone:a3];
+  v5 = [objc_opt_class() allocWithZone:zone];
+  v5[1] = [(NSDictionary *)self->_buttonDictionary copyWithZone:zone];
   return v5;
 }
 

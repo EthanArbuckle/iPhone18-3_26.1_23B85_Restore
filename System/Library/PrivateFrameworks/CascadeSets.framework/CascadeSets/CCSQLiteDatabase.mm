@@ -1,16 +1,16 @@
 @interface CCSQLiteDatabase
-- (BOOL)_prepareSqliteStatement:(sqlite3_stmt *)a3 usingCommand:(id)a4 outError:(id *)a5;
-- (BOOL)_validateAndBindSqliteStatementParameters:(sqlite3_stmt *)a3 usingCommand:(id)a4 outError:(id *)a5;
-- (BOOL)_validateCommand:(id)a3 outError:(id *)a4;
-- (BOOL)closeWithError:(id *)a3;
-- (BOOL)executeCommand:(id)a3 options:(unint64_t)a4 error:(id *)a5 returningRowBlock:(id)a6;
-- (BOOL)executeCommandString:(id)a3 error:(id *)a4;
-- (BOOL)openWithError:(id *)a3;
+- (BOOL)_prepareSqliteStatement:(sqlite3_stmt *)statement usingCommand:(id)command outError:(id *)error;
+- (BOOL)_validateAndBindSqliteStatementParameters:(sqlite3_stmt *)parameters usingCommand:(id)command outError:(id *)error;
+- (BOOL)_validateCommand:(id)command outError:(id *)error;
+- (BOOL)closeWithError:(id *)error;
+- (BOOL)executeCommand:(id)command options:(unint64_t)options error:(id *)error returningRowBlock:(id)block;
+- (BOOL)executeCommandString:(id)string error:(id *)error;
+- (BOOL)openWithError:(id *)error;
 - (CCSQLiteDatabase)init;
-- (CCSQLiteDatabase)initWithPath:(id)a3 accessPermission:(int64_t)a4 threadingMode:(int64_t)a5 dataProtectionClass:(int)a6 databaseOptions:(int64_t)a7;
-- (id)_cachedOrPreparedStatementFromCommand:(id)a3 options:(unint64_t)a4 error:(id *)a5;
-- (id)enumerateCommand:(id)a3 options:(unint64_t)a4;
-- (int)rowsModified:(id *)a3;
+- (CCSQLiteDatabase)initWithPath:(id)path accessPermission:(int64_t)permission threadingMode:(int64_t)mode dataProtectionClass:(int)class databaseOptions:(int64_t)options;
+- (id)_cachedOrPreparedStatementFromCommand:(id)command options:(unint64_t)options error:(id *)error;
+- (id)enumerateCommand:(id)command options:(unint64_t)options;
+- (int)rowsModified:(id *)modified;
 @end
 
 @implementation CCSQLiteDatabase
@@ -21,9 +21,9 @@
   objc_exception_throw(v2);
 }
 
-- (CCSQLiteDatabase)initWithPath:(id)a3 accessPermission:(int64_t)a4 threadingMode:(int64_t)a5 dataProtectionClass:(int)a6 databaseOptions:(int64_t)a7
+- (CCSQLiteDatabase)initWithPath:(id)path accessPermission:(int64_t)permission threadingMode:(int64_t)mode dataProtectionClass:(int)class databaseOptions:(int64_t)options
 {
-  v12 = a3;
+  pathCopy = path;
   v22.receiver = self;
   v22.super_class = CCSQLiteDatabase;
   v13 = [(CCSQLiteDatabase *)&v22 init];
@@ -32,17 +32,17 @@
     goto LABEL_4;
   }
 
-  v14 = [v12 stringByStandardizingPath];
-  v15 = [v14 copy];
+  stringByStandardizingPath = [pathCopy stringByStandardizingPath];
+  v15 = [stringByStandardizingPath copy];
   path = v13->_path;
   v13->_path = v15;
 
   if ([(NSString *)v13->_path length])
   {
-    v13->_accessPermission = a4;
-    v13->_threadingMode = a5;
-    v13->_dataProtectionClass = a6;
-    v13->_databaseOptions = a7;
+    v13->_accessPermission = permission;
+    v13->_threadingMode = mode;
+    v13->_dataProtectionClass = class;
+    v13->_databaseOptions = options;
     v17 = objc_alloc_init(MEMORY[0x1E695DF90]);
     cachedSQLiteStatements = v13->_cachedSQLiteStatements;
     v13->_cachedSQLiteStatements = v17;
@@ -64,7 +64,7 @@ LABEL_8:
   return v19;
 }
 
-- (BOOL)openWithError:(id *)a3
+- (BOOL)openWithError:(id *)error
 {
   v79[1] = *MEMORY[0x1E69E9840];
   p_handle = &self->_handle;
@@ -86,23 +86,23 @@ LABEL_8:
     v16 = MEMORY[0x1E696ABC0];
     v78 = *MEMORY[0x1E696A578];
     v79[0] = v8;
-    v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v79 forKeys:&v78 count:1];
-    v18 = [v16 errorWithDomain:@"com.apple.CascadeSets.CCDatabase" code:3 userInfo:v17];
-    CCSetAndReportError(a3, v18);
+    stringByDeletingLastPathComponent = [MEMORY[0x1E695DF20] dictionaryWithObjects:v79 forKeys:&v78 count:1];
+    v18 = [v16 errorWithDomain:@"com.apple.CascadeSets.CCDatabase" code:3 userInfo:stringByDeletingLastPathComponent];
+    CCSetAndReportError(error, v18);
 
 LABEL_39:
     goto LABEL_40;
   }
 
   v67 = 0;
-  v9 = [MEMORY[0x1E696AC08] defaultManager];
-  v10 = [v9 fileExistsAtPath:self->_path isDirectory:&v67];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v10 = [defaultManager fileExistsAtPath:self->_path isDirectory:&v67];
 
   if (!v10)
   {
-    v17 = [(NSString *)self->_path stringByDeletingLastPathComponent];
-    v19 = [MEMORY[0x1E696AC08] defaultManager];
-    v20 = [v19 fileExistsAtPath:v17 isDirectory:&v67];
+    stringByDeletingLastPathComponent = [(NSString *)self->_path stringByDeletingLastPathComponent];
+    defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+    v20 = [defaultManager2 fileExistsAtPath:stringByDeletingLastPathComponent isDirectory:&v67];
 
     if (v20)
     {
@@ -112,11 +112,11 @@ LABEL_39:
         v22 = *MEMORY[0x1E696A578];
         v74[0] = *MEMORY[0x1E696A368];
         v74[1] = v22;
-        v75[0] = v17;
+        v75[0] = stringByDeletingLastPathComponent;
         v75[1] = v4;
         v23 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v75 forKeys:v74 count:2];
         v24 = [v21 errorWithDomain:@"com.apple.CascadeSets.CCDatabase" code:5 userInfo:v23];
-        CCSetAndReportError(a3, v24);
+        CCSetAndReportError(error, v24);
 LABEL_38:
 
         goto LABEL_39;
@@ -125,9 +125,9 @@ LABEL_38:
 
     else
     {
-      v25 = [MEMORY[0x1E696AC08] defaultManager];
+      defaultManager3 = [MEMORY[0x1E696AC08] defaultManager];
       v66 = 0;
-      v26 = [v25 createDirectoryAtPath:v17 withIntermediateDirectories:1 attributes:0 error:&v66];
+      v26 = [defaultManager3 createDirectoryAtPath:stringByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:&v66];
       v23 = v66;
 
       if ((v26 & 1) == 0)
@@ -144,7 +144,7 @@ LABEL_38:
         v73[2] = v4;
         v55 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v73 forKeys:v72 count:3];
         v56 = [v52 errorWithDomain:@"com.apple.CascadeSets.CCDatabase" code:1 userInfo:v55];
-        CCSetAndReportError(a3, v56);
+        CCSetAndReportError(error, v56);
 
         goto LABEL_38;
       }
@@ -164,7 +164,7 @@ LABEL_38:
     v77[1] = v4;
     v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v77 forKeys:v76 count:2];
     v15 = [v11 errorWithDomain:@"com.apple.CascadeSets.CCDatabase" code:4 userInfo:v14];
-    CCSetAndReportError(a3, v15);
+    CCSetAndReportError(error, v15);
 
 LABEL_40:
     v5 = 0;
@@ -223,7 +223,7 @@ LABEL_16:
     v71[2] = v4;
     v41 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v71 forKeys:v70 count:3];
     v42 = [v37 errorWithDomain:@"com.apple.CascadeSets.CCDatabase" code:2 userInfo:v41];
-    CCSetAndReportError(a3, v42);
+    CCSetAndReportError(error, v42);
 
     v5 = 0;
     self->_handle = 0;
@@ -270,7 +270,7 @@ LABEL_16:
         v69[2] = v4;
         v63 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v69 forKeys:v68 count:3];
         v64 = [v59 errorWithDomain:@"com.apple.CascadeSets.CCDatabase" code:1 userInfo:v63];
-        CCSetAndReportError(a3, v64);
+        CCSetAndReportError(error, v64);
 
         sqlite3_close_v2(self->_handle);
         self->_handle = 0;
@@ -289,7 +289,7 @@ LABEL_41:
   return v5;
 }
 
-- (BOOL)closeWithError:(id *)a3
+- (BOOL)closeWithError:(id *)error
 {
   v19[3] = *MEMORY[0x1E69E9840];
   if (self->_handle)
@@ -314,7 +314,7 @@ LABEL_41:
       v19[2] = v9;
       v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v19 forKeys:v18 count:3];
       v15 = [v10 errorWithDomain:@"com.apple.CascadeSets.CCDatabase" code:2 userInfo:v14];
-      CCSetAndReportError(a3, v15);
+      CCSetAndReportError(error, v15);
     }
 
     self->_handle = 0;
@@ -329,14 +329,14 @@ LABEL_41:
   return v6;
 }
 
-- (BOOL)_validateCommand:(id)a3 outError:(id *)a4
+- (BOOL)_validateCommand:(id)command outError:(id *)error
 {
   v30[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = v6;
+  commandCopy = command;
+  v7 = commandCopy;
   if (!self->_handle)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_12;
     }
@@ -356,15 +356,15 @@ LABEL_41:
     v16 = v12;
     v17 = 6;
 LABEL_11:
-    *a4 = [v16 initWithDomain:@"com.apple.CascadeSets.CCDatabase" code:v17 userInfo:v15];
+    *error = [v16 initWithDomain:@"com.apple.CascadeSets.CCDatabase" code:v17 userInfo:v15];
 
-    LOBYTE(a4) = 0;
+    LOBYTE(error) = 0;
     goto LABEL_12;
   }
 
-  if (!v6)
+  if (!commandCopy)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_12;
     }
@@ -383,11 +383,11 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  v8 = [v6 commandString];
+  commandString = [commandCopy commandString];
 
-  if (!v8)
+  if (!commandString)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_12;
     }
@@ -407,30 +407,30 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  LOBYTE(a4) = 1;
+  LOBYTE(error) = 1;
 LABEL_12:
 
   v23 = *MEMORY[0x1E69E9840];
-  return a4;
+  return error;
 }
 
-- (BOOL)_prepareSqliteStatement:(sqlite3_stmt *)a3 usingCommand:(id)a4 outError:(id *)a5
+- (BOOL)_prepareSqliteStatement:(sqlite3_stmt *)statement usingCommand:(id)command outError:(id *)error
 {
   v21[4] = *MEMORY[0x1E69E9840];
-  v8 = a4;
+  commandCopy = command;
   handle = self->_handle;
-  v10 = [v8 commandString];
-  v11 = sqlite3_prepare_v2(handle, [v10 UTF8String], 0x80000000, a3, 0);
+  commandString = [commandCopy commandString];
+  v11 = sqlite3_prepare_v2(handle, [commandString UTF8String], 0x80000000, statement, 0);
 
   if (v11)
   {
     v12 = sqlite3_extended_errcode(self->_handle);
-    if (a3)
+    if (statement)
     {
-      sqlite3_finalize(*a3);
+      sqlite3_finalize(*statement);
     }
 
-    if (a5)
+    if (error)
     {
       v13 = _errorDescriptionForCommand();
       v14 = objc_alloc(MEMORY[0x1E696ABC0]);
@@ -438,14 +438,14 @@ LABEL_12:
       v20[0] = *MEMORY[0x1E696A368];
       v20[1] = @"command";
       v21[0] = path;
-      v21[1] = v8;
+      v21[1] = commandCopy;
       v20[2] = *MEMORY[0x1E696AA08];
       v16 = _createSQLiteAPIErrorFromResultCode(v11, v12);
       v20[3] = *MEMORY[0x1E696A578];
       v21[2] = v16;
       v21[3] = v13;
       v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v21 forKeys:v20 count:4];
-      *a5 = [v14 initWithDomain:@"com.apple.CascadeSets.CCDatabase" code:2 userInfo:v17];
+      *error = [v14 initWithDomain:@"com.apple.CascadeSets.CCDatabase" code:2 userInfo:v17];
     }
   }
 
@@ -453,16 +453,16 @@ LABEL_12:
   return v11 == 0;
 }
 
-- (BOOL)_validateAndBindSqliteStatementParameters:(sqlite3_stmt *)a3 usingCommand:(id)a4 outError:(id *)a5
+- (BOOL)_validateAndBindSqliteStatementParameters:(sqlite3_stmt *)parameters usingCommand:(id)command outError:(id *)error
 {
   v42 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = [v8 parameters];
-  v10 = [v9 count];
-  v11 = sqlite3_bind_parameter_count(a3);
+  commandCopy = command;
+  parameters = [commandCopy parameters];
+  v10 = [parameters count];
+  v11 = sqlite3_bind_parameter_count(parameters);
   if ((v11 & 0x80000000) == 0 && v11 != v10)
   {
-    if (a5)
+    if (error)
     {
       v12 = _errorDescriptionForCommand();
       v13 = objc_alloc(MEMORY[0x1E696ABC0]);
@@ -470,11 +470,11 @@ LABEL_12:
       v35[0] = *MEMORY[0x1E696A368];
       v35[1] = @"command";
       v36[0] = path;
-      v36[1] = v8;
+      v36[1] = commandCopy;
       v35[2] = *MEMORY[0x1E696A578];
       v36[2] = v12;
       v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v36 forKeys:v35 count:3];
-      *a5 = [v13 initWithDomain:@"com.apple.CascadeSets.CCDatabase" code:9 userInfo:v15];
+      *error = [v13 initWithDomain:@"com.apple.CascadeSets.CCDatabase" code:9 userInfo:v15];
       goto LABEL_31;
     }
 
@@ -484,30 +484,30 @@ LABEL_12:
   if (!v10)
   {
 LABEL_28:
-    LOBYTE(a5) = 1;
+    LOBYTE(error) = 1;
     goto LABEL_33;
   }
 
   v16 = 0;
   while (1)
   {
-    v12 = [v9 objectAtIndex:{v16++, v31}];
-    v17 = [v12 databaseValue_type];
-    if (v17 <= 2)
+    v12 = [parameters objectAtIndex:{v16++, v31}];
+    databaseValue_type = [v12 databaseValue_type];
+    if (databaseValue_type <= 2)
     {
       break;
     }
 
-    switch(v17)
+    switch(databaseValue_type)
     {
       case 3:
-        v19 = sqlite3_bind_int64(a3, v16, [v12 databaseValue_integerRepresentation]);
+        v19 = sqlite3_bind_int64(parameters, v16, [v12 databaseValue_integerRepresentation]);
         goto LABEL_25;
       case 4:
-        v19 = sqlite3_bind_null(a3, v16);
+        v19 = sqlite3_bind_null(parameters, v16);
         goto LABEL_25;
       case 5:
-        v19 = sqlite3_bind_text(a3, v16, [v12 databaseValue_textRepresentation], -1, 0);
+        v19 = sqlite3_bind_text(parameters, v16, [v12 databaseValue_textRepresentation], -1, 0);
         goto LABEL_25;
     }
 
@@ -520,29 +520,29 @@ LABEL_27:
     }
   }
 
-  if (v17)
+  if (databaseValue_type)
   {
-    if (v17 == 1)
+    if (databaseValue_type == 1)
     {
       *buf = 0;
       v23 = [v12 databaseValue_blobRepresentationWithLength:buf];
       if (*buf)
       {
-        v19 = sqlite3_bind_blob64(a3, v16, v23, *buf, 0);
+        v19 = sqlite3_bind_blob64(parameters, v16, v23, *buf, 0);
       }
 
       else
       {
-        v19 = sqlite3_bind_zeroblob(a3, v16, 0);
+        v19 = sqlite3_bind_zeroblob(parameters, v16, 0);
       }
 
       goto LABEL_25;
     }
 
-    if (v17 == 2)
+    if (databaseValue_type == 2)
     {
       [v12 databaseValue_doubleRepresentation];
-      v19 = sqlite3_bind_double(a3, v16, v18);
+      v19 = sqlite3_bind_double(parameters, v16, v18);
 LABEL_25:
       v21 = v19;
       goto LABEL_26;
@@ -552,7 +552,7 @@ LABEL_25:
   }
 
   v20 = [v12 description];
-  v21 = sqlite3_bind_text(a3, v16, [v20 UTF8String], -1, 0);
+  v21 = sqlite3_bind_text(parameters, v16, [v20 UTF8String], -1, 0);
 
   v22 = __biome_log_for_category();
   if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -574,7 +574,7 @@ LABEL_26:
     goto LABEL_27;
   }
 
-  if (a5)
+  if (error)
   {
     v24 = sqlite3_extended_errcode(self->_handle);
     v15 = _errorDescriptionForCommand();
@@ -583,43 +583,43 @@ LABEL_26:
     v33[0] = *MEMORY[0x1E696A368];
     v33[1] = @"command";
     v34[0] = v26;
-    v34[1] = v8;
+    v34[1] = commandCopy;
     v33[2] = *MEMORY[0x1E696AA08];
     v27 = _createSQLiteAPIErrorFromResultCode(v21, v24);
     v33[3] = *MEMORY[0x1E696A578];
     v34[2] = v27;
     v34[3] = v15;
     v28 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v34 forKeys:v33 count:4];
-    *a5 = [v25 initWithDomain:@"com.apple.CascadeSets.CCDatabase" code:2 userInfo:v28];
+    *error = [v25 initWithDomain:@"com.apple.CascadeSets.CCDatabase" code:2 userInfo:v28];
 
 LABEL_31:
   }
 
-  LOBYTE(a5) = 0;
+  LOBYTE(error) = 0;
 LABEL_33:
 
   v29 = *MEMORY[0x1E69E9840];
-  return a5;
+  return error;
 }
 
-- (id)_cachedOrPreparedStatementFromCommand:(id)a3 options:(unint64_t)a4 error:(id *)a5
+- (id)_cachedOrPreparedStatementFromCommand:(id)command options:(unint64_t)options error:(id *)error
 {
-  v6 = a4;
-  v8 = a3;
+  optionsCopy = options;
+  commandCopy = command;
   v24 = 0;
   v9 = 0;
-  if ([(CCSQLiteDatabase *)self _validateCommand:v8 outError:a5])
+  if ([(CCSQLiteDatabase *)self _validateCommand:commandCopy outError:error])
   {
-    if ((v6 & 2) != 0)
+    if ((optionsCopy & 2) != 0)
     {
       cachedSQLiteStatements = self->_cachedSQLiteStatements;
-      v11 = [v8 commandString];
-      v12 = [(NSMutableDictionary *)cachedSQLiteStatements objectForKey:v11];
+      commandString = [commandCopy commandString];
+      v12 = [(NSMutableDictionary *)cachedSQLiteStatements objectForKey:commandString];
 
       if (v12)
       {
-        v13 = [v12 stmt];
-        if (!v13 || (v14 = v13, sqlite3_reset(v13)) || (v15 = sqlite3_clear_bindings(v14), v16 = v12, v15))
+        stmt = [v12 stmt];
+        if (!stmt || (v14 = stmt, sqlite3_reset(stmt)) || (v15 = sqlite3_clear_bindings(v14), v16 = v12, v15))
         {
           v16 = 0;
           v14 = 0;
@@ -648,7 +648,7 @@ LABEL_33:
       v17 = 0;
     }
 
-    if (![(CCSQLiteDatabase *)self _prepareSqliteStatement:&v24 usingCommand:v8 outError:a5])
+    if (![(CCSQLiteDatabase *)self _prepareSqliteStatement:&v24 usingCommand:commandCopy outError:error])
     {
       v9 = 0;
       v18 = 0;
@@ -661,13 +661,13 @@ LABEL_25:
     v18 = [(CCSQLitePreparedStatement *)v19 initWithStmt:v24];
     v14 = v24;
 LABEL_15:
-    if ([(CCSQLiteDatabase *)self _validateAndBindSqliteStatementParameters:v14 usingCommand:v8 outError:a5])
+    if ([(CCSQLiteDatabase *)self _validateAndBindSqliteStatementParameters:v14 usingCommand:commandCopy outError:error])
     {
-      if ((v6 & 2) != 0 && v18)
+      if ((optionsCopy & 2) != 0 && v18)
       {
         v20 = self->_cachedSQLiteStatements;
-        v21 = [v8 commandString];
-        [(NSMutableDictionary *)v20 setObject:v18 forKey:v21];
+        commandString2 = [commandCopy commandString];
+        [(NSMutableDictionary *)v20 setObject:v18 forKey:commandString2];
       }
 
       if (v18)
@@ -696,48 +696,48 @@ LABEL_26:
   return v9;
 }
 
-- (id)enumerateCommand:(id)a3 options:(unint64_t)a4
+- (id)enumerateCommand:(id)command options:(unint64_t)options
 {
   v11 = 0;
-  v6 = a3;
-  v7 = [(CCSQLiteDatabase *)self _cachedOrPreparedStatementFromCommand:v6 options:a4 error:&v11];
+  commandCopy = command;
+  v7 = [(CCSQLiteDatabase *)self _cachedOrPreparedStatementFromCommand:commandCopy options:options error:&v11];
   v8 = v11;
-  v9 = [[CCDatabaseEnumerationResult alloc] initWithStatement:v7 database:self command:v6 error:v8];
+  v9 = [[CCDatabaseEnumerationResult alloc] initWithStatement:v7 database:self command:commandCopy error:v8];
 
   return v9;
 }
 
-- (BOOL)executeCommand:(id)a3 options:(unint64_t)a4 error:(id *)a5 returningRowBlock:(id)a6
+- (BOOL)executeCommand:(id)command options:(unint64_t)options error:(id *)error returningRowBlock:(id)block
 {
-  v10 = a6;
-  v11 = [(CCSQLiteDatabase *)self enumerateCommand:a3 options:a4];
-  v12 = [v11 nextRow];
-  v13 = [v11 error];
+  blockCopy = block;
+  v11 = [(CCSQLiteDatabase *)self enumerateCommand:command options:options];
+  nextRow = [v11 nextRow];
+  error = [v11 error];
 
-  if (v13)
+  if (error)
   {
-    v14 = [v11 error];
-    CCSetError(a5, v14);
+    error2 = [v11 error];
+    CCSetError(error, error2);
   }
 
-  else if (v10)
+  else if (blockCopy)
   {
-    v10[2](v10, v12);
+    blockCopy[2](blockCopy, nextRow);
   }
 
-  return v13 == 0;
+  return error == 0;
 }
 
-- (BOOL)executeCommandString:(id)a3 error:(id *)a4
+- (BOOL)executeCommandString:(id)string error:(id *)error
 {
-  v6 = a3;
-  v7 = [[CCDatabaseCommand alloc] initWithCommandString:v6 parameters:0];
+  stringCopy = string;
+  v7 = [[CCDatabaseCommand alloc] initWithCommandString:stringCopy parameters:0];
 
-  LOBYTE(a4) = [(CCSQLiteDatabase *)self executeCommand:v7 options:0 error:a4 returningRowBlock:0];
-  return a4;
+  LOBYTE(error) = [(CCSQLiteDatabase *)self executeCommand:v7 options:0 error:error returningRowBlock:0];
+  return error;
 }
 
-- (int)rowsModified:(id *)a3
+- (int)rowsModified:(id *)modified
 {
   v12[1] = *MEMORY[0x1E69E9840];
   handle = self->_handle;
@@ -756,7 +756,7 @@ LABEL_26:
     v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:&v11 count:1];
     v9 = [v7 initWithDomain:@"com.apple.CascadeSets.CCDatabase" code:6 userInfo:v8];
 
-    CCSetError(a3, v9);
+    CCSetError(modified, v9);
     v10 = *MEMORY[0x1E69E9840];
     return -1;
   }

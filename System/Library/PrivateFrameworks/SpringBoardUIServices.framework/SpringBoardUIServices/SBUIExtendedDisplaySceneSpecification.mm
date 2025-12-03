@@ -21,8 +21,8 @@
 {
   v5.receiver = self;
   v5.super_class = SBUIExtendedDisplaySceneSpecification;
-  v2 = [(UIApplicationSceneSpecification *)&v5 baseSceneComponentClassDictionary];
-  v3 = [v2 mutableCopy];
+  baseSceneComponentClassDictionary = [(UIApplicationSceneSpecification *)&v5 baseSceneComponentClassDictionary];
+  v3 = [baseSceneComponentClassDictionary mutableCopy];
 
   [v3 setObject:NSClassFromString(&cfstr_Sbwindowscenes.isa) forKey:*MEMORY[0x1E69DEA70]];
 

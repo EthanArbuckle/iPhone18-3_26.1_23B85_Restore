@@ -1,52 +1,52 @@
 @interface EnvironmentInfoViewController
-- (EnvironmentInfoViewController)initWithStyle:(int64_t)a3 environment:(id)a4 editable:(BOOL)a5;
-- (double)tableView:(id)a3 estimatedHeightForRowAtIndexPath:(id)a4;
-- (id)_urlStringForIndexPath:(id)a3 isFromManifest:(BOOL *)a4 isFromOverrides:(BOOL *)a5;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)_beginEditing:(id)a3;
-- (void)_endEditing:(id)a3;
-- (void)_titleTapGestureRecognizerFired:(id)a3;
+- (EnvironmentInfoViewController)initWithStyle:(int64_t)style environment:(id)environment editable:(BOOL)editable;
+- (double)tableView:(id)view estimatedHeightForRowAtIndexPath:(id)path;
+- (id)_urlStringForIndexPath:(id)path isFromManifest:(BOOL *)manifest isFromOverrides:(BOOL *)overrides;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)_beginEditing:(id)editing;
+- (void)_endEditing:(id)editing;
+- (void)_titleTapGestureRecognizerFired:(id)fired;
 - (void)_updateNavigationItem;
 - (void)_updateTitleLabel;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)urlCell:(id)a3 didChangeURLString:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)urlCell:(id)cell didChangeURLString:(id)string;
 @end
 
 @implementation EnvironmentInfoViewController
 
-- (void)urlCell:(id)a3 didChangeURLString:(id)a4
+- (void)urlCell:(id)cell didChangeURLString:(id)string
 {
-  v6 = a4;
-  v7 = [a3 urlType];
+  stringCopy = string;
+  urlType = [cell urlType];
   overrideURLs = self->_overrideURLs;
-  v9 = [NSNumber numberWithUnsignedInteger:v7];
-  [(NSMapTable *)overrideURLs setObject:v6 forKey:v9];
+  v9 = [NSNumber numberWithUnsignedInteger:urlType];
+  [(NSMapTable *)overrideURLs setObject:stringCopy forKey:v9];
 
-  v10 = [(EnvironmentInfoViewController *)self tableView];
-  [v10 reloadData];
+  tableView = [(EnvironmentInfoViewController *)self tableView];
+  [tableView reloadData];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 section];
-  if (v8 < [(NSArray *)self->_urlTypes count])
+  viewCopy = view;
+  pathCopy = path;
+  section = [pathCopy section];
+  if (section < [(NSArray *)self->_urlTypes count])
   {
-    v9 = -[NSArray objectAtIndexedSubscript:](self->_urlTypes, "objectAtIndexedSubscript:", [v7 section]);
-    v10 = [v9 integerValue];
+    v9 = -[NSArray objectAtIndexedSubscript:](self->_urlTypes, "objectAtIndexedSubscript:", [pathCopy section]);
+    integerValue = [v9 integerValue];
 
-    if (v10 == 1 && [v7 row] == 1)
+    if (integerValue == 1 && [pathCopy row] == 1)
     {
       v11 = [ActiveTileGroupDebugController alloc];
-      v12 = [(GEOEnvironmentInfo *)self->_environment resourceManifest];
-      v13 = [(ActiveTileGroupDebugController *)v11 initWithResourceManifest:v12];
+      resourceManifest = [(GEOEnvironmentInfo *)self->_environment resourceManifest];
+      v13 = [(ActiveTileGroupDebugController *)v11 initWithResourceManifest:resourceManifest];
 
-      v14 = [(EnvironmentInfoViewController *)self navigationController];
-      [v14 pushViewController:v13 animated:1];
+      navigationController = [(EnvironmentInfoViewController *)self navigationController];
+      [navigationController pushViewController:v13 animated:1];
 
 LABEL_9:
       goto LABEL_10;
@@ -55,8 +55,8 @@ LABEL_9:
 
   if (self->_editing)
   {
-    v15 = [v7 section];
-    if (v15 == [(NSArray *)self->_urlTypes count])
+    section2 = [pathCopy section];
+    if (section2 == [(NSArray *)self->_urlTypes count])
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -74,7 +74,7 @@ LABEL_9:
         [(ActiveTileGroupDebugController *)v13 addAction:v17];
 
         [(EnvironmentInfoViewController *)self presentViewController:v13 animated:1 completion:0];
-        [v6 deselectRowAtIndexPath:v7 animated:1];
+        [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
         goto LABEL_9;
       }
     }
@@ -83,15 +83,15 @@ LABEL_9:
 LABEL_10:
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  viewCopy = view;
+  pathCopy = path;
+  v8 = pathCopy;
   if (self->_editing)
   {
-    v9 = [v7 section];
-    if (v9 == [(NSArray *)self->_urlTypes count])
+    section = [pathCopy section];
+    if (section == [(NSArray *)self->_urlTypes count])
     {
       v10 = [[UITableViewCell alloc] initWithStyle:0 reuseIdentifier:0];
       v11 = +[UIColor systemRedColor];
@@ -102,14 +102,14 @@ LABEL_10:
       [(_EnvironmentURLTableViewCell *)v10 setSelectionTintColor:v13];
 
       v14 = +[UIColor whiteColor];
-      v15 = [(_EnvironmentURLTableViewCell *)v10 textLabel];
-      [v15 setTextColor:v14];
+      textLabel = [(_EnvironmentURLTableViewCell *)v10 textLabel];
+      [textLabel setTextColor:v14];
 
-      v16 = [(_EnvironmentURLTableViewCell *)v10 textLabel];
-      [v16 setText:@"Delete Environment"];
+      textLabel2 = [(_EnvironmentURLTableViewCell *)v10 textLabel];
+      [textLabel2 setText:@"Delete Environment"];
 
-      v17 = [(_EnvironmentURLTableViewCell *)v10 textLabel];
-      [v17 setTextAlignment:1];
+      textLabel3 = [(_EnvironmentURLTableViewCell *)v10 textLabel];
+      [textLabel3 setTextAlignment:1];
 LABEL_21:
 
       goto LABEL_22;
@@ -117,11 +117,11 @@ LABEL_21:
   }
 
   v18 = -[NSArray objectAtIndexedSubscript:](self->_urlTypes, "objectAtIndexedSubscript:", [v8 section]);
-  v19 = [v18 integerValue];
+  integerValue = [v18 integerValue];
 
   if (self->_editing)
   {
-    v10 = [v6 dequeueReusableCellWithIdentifier:@"EnvironmentInfoServiceURLEditingCell"];
+    v10 = [viewCopy dequeueReusableCellWithIdentifier:@"EnvironmentInfoServiceURLEditingCell"];
     if (!v10)
     {
       v10 = [[_EnvironmentURLTableViewCell alloc] initWithReuseIdentifier:@"EnvironmentInfoServiceURLEditingCell"];
@@ -130,41 +130,41 @@ LABEL_21:
     [(_EnvironmentURLTableViewCell *)v10 setDelegate:self];
     v36 = 0;
     v20 = [(EnvironmentInfoViewController *)self _urlStringForIndexPath:v8 isFromManifest:&v36 + 1 isFromOverrides:&v36];
-    v21 = [(_EnvironmentURLTableViewCell *)v10 editableTextField];
-    [v21 setText:v20];
+    editableTextField = [(_EnvironmentURLTableViewCell *)v10 editableTextField];
+    [editableTextField setText:v20];
 
-    [(_EnvironmentURLTableViewCell *)v10 setUrlType:v19];
+    [(_EnvironmentURLTableViewCell *)v10 setUrlType:integerValue];
   }
 
   else
   {
-    if (v19 == 1 && [v8 row] == 1)
+    if (integerValue == 1 && [v8 row] == 1)
     {
       v10 = [[UITableViewCell alloc] initWithStyle:0 reuseIdentifier:0];
-      v22 = [(_EnvironmentURLTableViewCell *)v10 textLabel];
-      [v22 setText:@"Tile Groups"];
+      textLabel4 = [(_EnvironmentURLTableViewCell *)v10 textLabel];
+      [textLabel4 setText:@"Tile Groups"];
 
       [(_EnvironmentURLTableViewCell *)v10 setAccessoryType:1];
       goto LABEL_22;
     }
 
-    v10 = [v6 dequeueReusableCellWithIdentifier:@"EnvironmentInfoServiceURLCell"];
+    v10 = [viewCopy dequeueReusableCellWithIdentifier:@"EnvironmentInfoServiceURLCell"];
     if (!v10)
     {
       v10 = [[UITableViewCell alloc] initWithStyle:0 reuseIdentifier:@"EnvironmentInfoServiceURLCell"];
-      v23 = [(_EnvironmentURLTableViewCell *)v10 textLabel];
-      [v23 setLineBreakMode:1];
+      textLabel5 = [(_EnvironmentURLTableViewCell *)v10 textLabel];
+      [textLabel5 setLineBreakMode:1];
 
-      v24 = [(_EnvironmentURLTableViewCell *)v10 textLabel];
-      [v24 setNumberOfLines:0];
+      textLabel6 = [(_EnvironmentURLTableViewCell *)v10 textLabel];
+      [textLabel6 setNumberOfLines:0];
 
       [(_EnvironmentURLTableViewCell *)v10 setSelectionStyle:0];
     }
 
     v35 = 0;
     v25 = [(EnvironmentInfoViewController *)self _urlStringForIndexPath:v8 isFromManifest:&v35 + 1 isFromOverrides:&v35];
-    v26 = [(_EnvironmentURLTableViewCell *)v10 textLabel];
-    [v26 setText:v25];
+    textLabel7 = [(_EnvironmentURLTableViewCell *)v10 textLabel];
+    [textLabel7 setText:v25];
 
     if (v35 == 1)
     {
@@ -186,20 +186,20 @@ LABEL_21:
     }
 
     v28 = v27;
-    v29 = [(_EnvironmentURLTableViewCell *)v10 textLabel];
-    [v29 setTextColor:v28];
+    textLabel8 = [(_EnvironmentURLTableViewCell *)v10 textLabel];
+    [textLabel8 setTextColor:v28];
 
-    v30 = [(_EnvironmentURLTableViewCell *)v10 textLabel];
-    v31 = [v30 text];
+    textLabel9 = [(_EnvironmentURLTableViewCell *)v10 textLabel];
+    text = [textLabel9 text];
 
-    if (!v31)
+    if (!text)
     {
-      v32 = [(_EnvironmentURLTableViewCell *)v10 textLabel];
-      [v32 setText:@"(none)"];
+      textLabel10 = [(_EnvironmentURLTableViewCell *)v10 textLabel];
+      [textLabel10 setText:@"(none)"];
 
-      v17 = +[UIColor secondaryLabelColor];
-      v33 = [(_EnvironmentURLTableViewCell *)v10 textLabel];
-      [v33 setTextColor:v17];
+      textLabel3 = +[UIColor secondaryLabelColor];
+      textLabel11 = [(_EnvironmentURLTableViewCell *)v10 textLabel];
+      [textLabel11 setTextColor:textLabel3];
 
       goto LABEL_21;
     }
@@ -210,16 +210,16 @@ LABEL_22:
   return v10;
 }
 
-- (double)tableView:(id)a3 estimatedHeightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view estimatedHeightForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (self->_editing || (-[NSArray objectAtIndexedSubscript:](self->_urlTypes, "objectAtIndexedSubscript:", [v7 section]), v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "integerValue"), v13, v14 == 1) && objc_msgSend(v8, "row") == 1)
+  viewCopy = view;
+  pathCopy = path;
+  v8 = pathCopy;
+  if (self->_editing || (-[NSArray objectAtIndexedSubscript:](self->_urlTypes, "objectAtIndexedSubscript:", [pathCopy section]), v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "integerValue"), v13, v14 == 1) && objc_msgSend(v8, "row") == 1)
   {
     v9 = +[UIListContentConfiguration cellConfiguration];
-    v10 = [v6 traitCollection];
-    [(__CFString *)v9 _minimumHeightForTraitCollection:v10];
+    traitCollection = [viewCopy traitCollection];
+    [(__CFString *)v9 _minimumHeightForTraitCollection:traitCollection];
     v12 = v11;
   }
 
@@ -237,18 +237,18 @@ LABEL_22:
     }
 
     v16 = +[NSParagraphStyle defaultParagraphStyle];
-    v10 = [v16 mutableCopy];
+    traitCollection = [v16 mutableCopy];
 
-    [v10 setLineBreakMode:1];
-    v17 = [(EnvironmentInfoViewController *)self tableView];
-    [v17 bounds];
+    [traitCollection setLineBreakMode:1];
+    tableView = [(EnvironmentInfoViewController *)self tableView];
+    [tableView bounds];
     v19 = v18 + -40.0;
     v31[0] = NSFontAttributeName;
     +[UIFont labelFontSize];
     v20 = [UIFont systemFontOfSize:?];
     v31[1] = NSParagraphStyleAttributeName;
     v32[0] = v20;
-    v32[1] = v10;
+    v32[1] = traitCollection;
     v21 = [NSDictionary dictionaryWithObjects:v32 forKeys:v31 count:2];
     [(__CFString *)v9 boundingRectWithSize:1 options:v21 attributes:0 context:v19, 1.79769313e308];
     v23 = v22;
@@ -266,36 +266,36 @@ LABEL_22:
   return v12;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
-  if (self->_editing && [(NSDictionary *)self->_urlStrings count]== a4)
+  viewCopy = view;
+  if (self->_editing && [(NSDictionary *)self->_urlStrings count]== section)
   {
     v7 = 0;
   }
 
   else
   {
-    v8 = [(NSArray *)self->_urlTypes objectAtIndexedSubscript:a4];
-    v9 = [v8 integerValue];
+    v8 = [(NSArray *)self->_urlTypes objectAtIndexedSubscript:section];
+    integerValue = [v8 integerValue];
 
-    if (v9 > 0x42)
+    if (integerValue > 0x42)
     {
       v10 = 0;
     }
 
     else
     {
-      v10 = off_10165EF88[v9];
+      v10 = off_10165EF88[integerValue];
     }
 
     proxyRequirements = self->_proxyRequirements;
-    v12 = [NSNumber numberWithUnsignedInteger:v9];
+    v12 = [NSNumber numberWithUnsignedInteger:integerValue];
     v13 = [(NSDictionary *)proxyRequirements objectForKeyedSubscript:v12];
-    v14 = [v13 BOOLValue];
+    bOOLValue = [v13 BOOLValue];
 
     v15 = "NO";
-    if (v14)
+    if (bOOLValue)
     {
       v15 = "YES";
     }
@@ -306,20 +306,20 @@ LABEL_22:
   return v7;
 }
 
-- (id)_urlStringForIndexPath:(id)a3 isFromManifest:(BOOL *)a4 isFromOverrides:(BOOL *)a5
+- (id)_urlStringForIndexPath:(id)path isFromManifest:(BOOL *)manifest isFromOverrides:(BOOL *)overrides
 {
-  v8 = a3;
-  if (([v8 section] & 0x8000000000000000) != 0 || (v9 = objc_msgSend(v8, "section"), v9 >= -[NSDictionary count](self->_urlStrings, "count")))
+  pathCopy = path;
+  if (([pathCopy section] & 0x8000000000000000) != 0 || (v9 = objc_msgSend(pathCopy, "section"), v9 >= -[NSDictionary count](self->_urlStrings, "count")))
   {
     v14 = 0;
     goto LABEL_12;
   }
 
-  v10 = -[NSArray objectAtIndexedSubscript:](self->_urlTypes, "objectAtIndexedSubscript:", [v8 section]);
-  v11 = [v10 integerValue];
+  v10 = -[NSArray objectAtIndexedSubscript:](self->_urlTypes, "objectAtIndexedSubscript:", [pathCopy section]);
+  integerValue = [v10 integerValue];
 
   overrideURLs = self->_overrideURLs;
-  v13 = [NSNumber numberWithUnsignedInteger:v11];
+  v13 = [NSNumber numberWithUnsignedInteger:integerValue];
   v14 = [(NSMapTable *)overrideURLs objectForKey:v13];
 
   v15 = [v14 length];
@@ -327,7 +327,7 @@ LABEL_22:
   {
 LABEL_7:
     v19 = 0;
-    if (!a4)
+    if (!manifest)
     {
       goto LABEL_9;
     }
@@ -336,7 +336,7 @@ LABEL_7:
   }
 
   urlStrings = self->_urlStrings;
-  v17 = [NSNumber numberWithUnsignedInteger:v11];
+  v17 = [NSNumber numberWithUnsignedInteger:integerValue];
   v18 = [(NSDictionary *)urlStrings objectForKeyedSubscript:v17];
 
   objc_opt_class();
@@ -349,16 +349,16 @@ LABEL_7:
 
   v19 = 1;
   v14 = v18;
-  if (a4)
+  if (manifest)
   {
 LABEL_8:
-    *a4 = v19;
+    *manifest = v19;
   }
 
 LABEL_9:
-  if (a5)
+  if (overrides)
   {
-    *a5 = v15 != 0;
+    *overrides = v15 != 0;
   }
 
 LABEL_12:
@@ -366,9 +366,9 @@ LABEL_12:
   return v14;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  if (a4 == 1 && !self->_editing)
+  if (section == 1 && !self->_editing)
   {
     return 2;
   }
@@ -379,7 +379,7 @@ LABEL_12:
   }
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
   if (self->_urlStrings)
   {
@@ -392,12 +392,12 @@ LABEL_12:
   }
 }
 
-- (void)_endEditing:(id)a3
+- (void)_endEditing:(id)editing
 {
   self->_editing = 0;
   [(EnvironmentInfoViewController *)self _updateNavigationItem];
-  v4 = [(EnvironmentInfoViewController *)self tableView];
-  [v4 reloadData];
+  tableView = [(EnvironmentInfoViewController *)self tableView];
+  [tableView reloadData];
 
   environment = self->_environment;
   overrideURLs = self->_overrideURLs;
@@ -405,12 +405,12 @@ LABEL_12:
   [(GEOEnvironmentInfo *)environment updateWithURLs:overrideURLs];
 }
 
-- (void)_beginEditing:(id)a3
+- (void)_beginEditing:(id)editing
 {
   self->_editing = 1;
   [(EnvironmentInfoViewController *)self _updateNavigationItem];
-  v4 = [(EnvironmentInfoViewController *)self tableView];
-  [v4 reloadData];
+  tableView = [(EnvironmentInfoViewController *)self tableView];
+  [tableView reloadData];
 }
 
 - (void)_updateNavigationItem
@@ -443,8 +443,8 @@ LABEL_12:
     v9 = 0;
   }
 
-  v7 = [(EnvironmentInfoViewController *)self navigationItem];
-  [v7 setRightBarButtonItem:v9];
+  navigationItem = [(EnvironmentInfoViewController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:v9];
 
   v8 = self->_editable && self->_editing;
   [(UILabel *)self->_titleLabel setUserInteractionEnabled:v8];
@@ -461,12 +461,12 @@ LABEL_12:
 
   v6 = self->_editable && self->_editing;
   [(UILabel *)self->_titleLabel setUserInteractionEnabled:v6];
-  v7 = [(GEOEnvironmentInfo *)self->_environment displayName];
-  [(UILabel *)self->_titleLabel setText:v7];
+  displayName = [(GEOEnvironmentInfo *)self->_environment displayName];
+  [(UILabel *)self->_titleLabel setText:displayName];
 
   v8 = self->_titleLabel;
-  v9 = [(EnvironmentInfoViewController *)self navigationItem];
-  [v9 setTitleView:v8];
+  navigationItem = [(EnvironmentInfoViewController *)self navigationItem];
+  [navigationItem setTitleView:v8];
 
   if (self->_editable)
   {
@@ -476,61 +476,61 @@ LABEL_12:
   }
 }
 
-- (void)_titleTapGestureRecognizerFired:(id)a3
+- (void)_titleTapGestureRecognizerFired:(id)fired
 {
-  v4 = a3;
+  firedCopy = fired;
   objc_initWeak(&location, self);
-  v5 = [(GEOEnvironmentInfo *)self->_environment displayName];
+  displayName = [(GEOEnvironmentInfo *)self->_environment displayName];
   v7 = _NSConcreteStackBlock;
   v8 = 3221225472;
   v9 = sub_100F7E644;
   v10 = &unk_10165EF68;
   objc_copyWeak(&v11, &location);
-  v6 = [EnvironmentsCreationAlertController alertControllerWithTitle:@"Rename environment" message:@"What would you like to change the display name to?" confirmActionTitle:@"Confirm" placeholderText:v5 nameSelectionHandler:&v7];
+  v6 = [EnvironmentsCreationAlertController alertControllerWithTitle:@"Rename environment" message:@"What would you like to change the display name to?" confirmActionTitle:@"Confirm" placeholderText:displayName nameSelectionHandler:&v7];
 
   [(EnvironmentInfoViewController *)self presentViewController:v6 animated:1 completion:0, v7, v8, v9, v10];
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
 }
 
-- (EnvironmentInfoViewController)initWithStyle:(int64_t)a3 environment:(id)a4 editable:(BOOL)a5
+- (EnvironmentInfoViewController)initWithStyle:(int64_t)style environment:(id)environment editable:(BOOL)editable
 {
-  v9 = a4;
+  environmentCopy = environment;
   v28.receiver = self;
   v28.super_class = EnvironmentInfoViewController;
-  v10 = [(EnvironmentInfoViewController *)&v28 initWithStyle:a3];
+  v10 = [(EnvironmentInfoViewController *)&v28 initWithStyle:style];
   v11 = v10;
   if (v10)
   {
-    v12 = [(EnvironmentInfoViewController *)v10 tableView];
-    [v12 setRowHeight:UITableViewAutomaticDimension];
+    tableView = [(EnvironmentInfoViewController *)v10 tableView];
+    [tableView setRowHeight:UITableViewAutomaticDimension];
 
-    v13 = [(EnvironmentInfoViewController *)v11 tableView];
-    [v13 setSectionFooterHeight:UITableViewAutomaticDimension];
+    tableView2 = [(EnvironmentInfoViewController *)v11 tableView];
+    [tableView2 setSectionFooterHeight:UITableViewAutomaticDimension];
 
-    v14 = [(EnvironmentInfoViewController *)v11 tableView];
-    [v14 setSectionHeaderHeight:UITableViewAutomaticDimension];
+    tableView3 = [(EnvironmentInfoViewController *)v11 tableView];
+    [tableView3 setSectionHeaderHeight:UITableViewAutomaticDimension];
 
-    objc_storeStrong(&v11->_environment, a4);
-    v11->_editable = a5;
-    v15 = [(GEOEnvironmentInfo *)v11->_environment displayName];
-    [(EnvironmentInfoViewController *)v11 setTitle:v15];
+    objc_storeStrong(&v11->_environment, environment);
+    v11->_editable = editable;
+    displayName = [(GEOEnvironmentInfo *)v11->_environment displayName];
+    [(EnvironmentInfoViewController *)v11 setTitle:displayName];
 
-    v16 = [(GEOEnvironmentInfo *)v11->_environment serviceURLs];
+    serviceURLs = [(GEOEnvironmentInfo *)v11->_environment serviceURLs];
     urlStrings = v11->_urlStrings;
-    v11->_urlStrings = v16;
+    v11->_urlStrings = serviceURLs;
 
-    v18 = [(GEOEnvironmentInfo *)v11->_environment useProxyAuth];
+    useProxyAuth = [(GEOEnvironmentInfo *)v11->_environment useProxyAuth];
     proxyRequirements = v11->_proxyRequirements;
-    v11->_proxyRequirements = v18;
+    v11->_proxyRequirements = useProxyAuth;
 
-    v20 = [(NSDictionary *)v11->_urlStrings allKeys];
-    v21 = [v20 sortedArrayUsingComparator:&stru_10165EF40];
+    allKeys = [(NSDictionary *)v11->_urlStrings allKeys];
+    v21 = [allKeys sortedArrayUsingComparator:&stru_10165EF40];
     urlTypes = v11->_urlTypes;
     v11->_urlTypes = v21;
 
-    v23 = [v9 overrideURLs];
-    v24 = [v23 copy];
+    overrideURLs = [environmentCopy overrideURLs];
+    v24 = [overrideURLs copy];
     overrideURLs = v11->_overrideURLs;
     v11->_overrideURLs = v24;
 

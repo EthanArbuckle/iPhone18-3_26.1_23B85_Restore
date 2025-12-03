@@ -9,55 +9,55 @@
 {
   v18.receiver = self;
   v18.super_class = HMDTimerTriggerModel;
-  v3 = [(HMDTriggerModel *)&v18 createPayload];
-  v4 = [v3 mutableCopy];
+  createPayload = [(HMDTriggerModel *)&v18 createPayload];
+  v4 = [createPayload mutableCopy];
 
-  v5 = [(HMDTimerTriggerModel *)self fireDate];
+  fireDate = [(HMDTimerTriggerModel *)self fireDate];
 
-  if (v5)
+  if (fireDate)
   {
-    v6 = [(HMDTimerTriggerModel *)self fireDate];
-    [v4 setObject:v6 forKeyedSubscript:*MEMORY[0x277CD26C8]];
+    fireDate2 = [(HMDTimerTriggerModel *)self fireDate];
+    [v4 setObject:fireDate2 forKeyedSubscript:*MEMORY[0x277CD26C8]];
   }
 
-  v7 = [(HMDTimerTriggerModel *)self fireDateTimeZone];
+  fireDateTimeZone = [(HMDTimerTriggerModel *)self fireDateTimeZone];
 
-  if (v7)
+  if (fireDateTimeZone)
   {
-    v8 = [(HMDTimerTriggerModel *)self fireDateTimeZone];
-    [v4 setObject:v8 forKeyedSubscript:*MEMORY[0x277CD2718]];
+    fireDateTimeZone2 = [(HMDTimerTriggerModel *)self fireDateTimeZone];
+    [v4 setObject:fireDateTimeZone2 forKeyedSubscript:*MEMORY[0x277CD2718]];
   }
 
-  v9 = [(HMDTimerTriggerModel *)self fireRepeatInterval];
+  fireRepeatInterval = [(HMDTimerTriggerModel *)self fireRepeatInterval];
 
-  if (v9)
+  if (fireRepeatInterval)
   {
-    v10 = [(HMDTimerTriggerModel *)self fireRepeatInterval];
-    [v4 setObject:v10 forKeyedSubscript:*MEMORY[0x277CD26D0]];
+    fireRepeatInterval2 = [(HMDTimerTriggerModel *)self fireRepeatInterval];
+    [v4 setObject:fireRepeatInterval2 forKeyedSubscript:*MEMORY[0x277CD26D0]];
   }
 
-  v11 = [(HMDTimerTriggerModel *)self recurrences];
+  recurrences = [(HMDTimerTriggerModel *)self recurrences];
 
-  if (v11)
+  if (recurrences)
   {
-    v12 = [(HMDTimerTriggerModel *)self recurrences];
-    [v4 setObject:v12 forKeyedSubscript:*MEMORY[0x277CD26D8]];
+    recurrences2 = [(HMDTimerTriggerModel *)self recurrences];
+    [v4 setObject:recurrences2 forKeyedSubscript:*MEMORY[0x277CD26D8]];
   }
 
-  v13 = [(HMDTimerTriggerModel *)self significantEvent];
+  significantEvent = [(HMDTimerTriggerModel *)self significantEvent];
 
-  if (v13)
+  if (significantEvent)
   {
-    v14 = [(HMDTimerTriggerModel *)self significantEvent];
-    [v4 setObject:v14 forKeyedSubscript:*MEMORY[0x277CD2708]];
+    significantEvent2 = [(HMDTimerTriggerModel *)self significantEvent];
+    [v4 setObject:significantEvent2 forKeyedSubscript:*MEMORY[0x277CD2708]];
   }
 
-  v15 = [(HMDTimerTriggerModel *)self significantEventOffset];
+  significantEventOffset = [(HMDTimerTriggerModel *)self significantEventOffset];
 
-  if (v15)
+  if (significantEventOffset)
   {
-    v16 = [(HMDTimerTriggerModel *)self significantEventOffset];
-    [v4 setObject:v16 forKeyedSubscript:*MEMORY[0x277CD2710]];
+    significantEventOffset2 = [(HMDTimerTriggerModel *)self significantEventOffset];
+    [v4 setObject:significantEventOffset2 forKeyedSubscript:*MEMORY[0x277CD2710]];
   }
 
   return v4;
@@ -69,7 +69,7 @@
   block[1] = 3221225472;
   block[2] = __34__HMDTimerTriggerModel_properties__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (properties_onceToken_27944 != -1)
   {
     dispatch_once(&properties_onceToken_27944, block);

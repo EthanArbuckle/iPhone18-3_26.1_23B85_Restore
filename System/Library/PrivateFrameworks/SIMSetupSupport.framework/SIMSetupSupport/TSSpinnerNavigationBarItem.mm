@@ -17,21 +17,21 @@
     [(TSSpinnerNavigationBarItem *)v2 setActivityIndicator:v3];
 
     v4 = objc_alloc(MEMORY[0x277D75D18]);
-    v5 = [(TSSpinnerNavigationBarItem *)v2 activityIndicator];
-    [v5 frame];
+    activityIndicator = [(TSSpinnerNavigationBarItem *)v2 activityIndicator];
+    [activityIndicator frame];
     v7 = v6;
-    v8 = [(TSSpinnerNavigationBarItem *)v2 activityIndicator];
-    [v8 frame];
+    activityIndicator2 = [(TSSpinnerNavigationBarItem *)v2 activityIndicator];
+    [activityIndicator2 frame];
     v9 = [v4 initWithFrame:{0.0, 0.0, v7}];
 
-    v10 = [(TSSpinnerNavigationBarItem *)v2 activityIndicator];
-    [v9 addSubview:v10];
+    activityIndicator3 = [(TSSpinnerNavigationBarItem *)v2 activityIndicator];
+    [v9 addSubview:activityIndicator3];
 
-    v11 = [(TSSpinnerNavigationBarItem *)v2 activityIndicator];
-    [v11 setTranslatesAutoresizingMaskIntoConstraints:0];
+    activityIndicator4 = [(TSSpinnerNavigationBarItem *)v2 activityIndicator];
+    [activityIndicator4 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v12 = [(TSSpinnerNavigationBarItem *)v2 activityIndicator];
-    [v12 pinToEdges:v9];
+    activityIndicator5 = [(TSSpinnerNavigationBarItem *)v2 activityIndicator];
+    [activityIndicator5 pinToEdges:v9];
 
     [(TSSpinnerNavigationBarItem *)v2 setCustomView:v9];
   }
@@ -41,14 +41,14 @@
 
 - (void)startAnimating
 {
-  v2 = [(TSSpinnerNavigationBarItem *)self activityIndicator];
-  [v2 startAnimating];
+  activityIndicator = [(TSSpinnerNavigationBarItem *)self activityIndicator];
+  [activityIndicator startAnimating];
 }
 
 - (void)stopAnimating
 {
-  v2 = [(TSSpinnerNavigationBarItem *)self activityIndicator];
-  [v2 stopAnimating];
+  activityIndicator = [(TSSpinnerNavigationBarItem *)self activityIndicator];
+  [activityIndicator stopAnimating];
 }
 
 @end

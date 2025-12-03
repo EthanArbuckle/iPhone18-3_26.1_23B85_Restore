@@ -1,26 +1,26 @@
 @interface DNDSettingsService
-+ (id)serviceForClientIdentifier:(id)a3;
++ (id)serviceForClientIdentifier:(id)identifier;
 - (BOOL)_queue_registerForSettingsUpdatesIfRequired;
-- (BOOL)setBehaviorSettings:(id)a3 error:(id *)a4;
-- (BOOL)setConfiguration:(id)a3 forModeIdentifier:(id)a4 error:(id *)a5;
-- (BOOL)setScheduleSettings:(id)a3 error:(id *)a4;
-- (id)_initWithClientIdentifier:(id)a3;
-- (id)behaviorSettingsReturningError:(id *)a3;
-- (id)configurationForModeIdentifier:(id)a3 error:(id *)a4;
-- (id)scheduleSettingsReturningError:(id *)a3;
+- (BOOL)setBehaviorSettings:(id)settings error:(id *)error;
+- (BOOL)setConfiguration:(id)configuration forModeIdentifier:(id)identifier error:(id *)error;
+- (BOOL)setScheduleSettings:(id)settings error:(id *)error;
+- (id)_initWithClientIdentifier:(id)identifier;
+- (id)behaviorSettingsReturningError:(id *)error;
+- (id)configurationForModeIdentifier:(id)identifier error:(id *)error;
+- (id)scheduleSettingsReturningError:(id *)error;
 - (void)_queue_registerForSettingsUpdatesIfRequired;
-- (void)addSettingsUpdateListener:(id)a3 withCompletionHandler:(id)a4;
-- (void)remoteService:(id)a3 didReceiveUpdatedBehaviorSettings:(id)a4;
-- (void)remoteService:(id)a3 didReceiveUpdatedPhoneCallBypassSettings:(id)a4;
-- (void)remoteService:(id)a3 didReceiveUpdatedScheduleSettings:(id)a4;
-- (void)removeSettingsUpdateListener:(id)a3;
+- (void)addSettingsUpdateListener:(id)listener withCompletionHandler:(id)handler;
+- (void)remoteService:(id)service didReceiveUpdatedBehaviorSettings:(id)settings;
+- (void)remoteService:(id)service didReceiveUpdatedPhoneCallBypassSettings:(id)settings;
+- (void)remoteService:(id)service didReceiveUpdatedScheduleSettings:(id)settings;
+- (void)removeSettingsUpdateListener:(id)listener;
 @end
 
 @implementation DNDSettingsService
 
-+ (id)serviceForClientIdentifier:(id)a3
++ (id)serviceForClientIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   if (serviceForClientIdentifier__onceToken_11 != -1)
   {
     +[DNDSettingsService serviceForClientIdentifier:];
@@ -37,10 +37,10 @@
   block[1] = 3221225472;
   block[2] = __49__DNDSettingsService_serviceForClientIdentifier___block_invoke_2;
   block[3] = &unk_27843A080;
-  v10 = v4;
+  v10 = identifierCopy;
   v11 = &v13;
-  v12 = a1;
-  v6 = v4;
+  selfCopy = self;
+  v6 = identifierCopy;
   dispatch_sync(v5, block);
   v7 = v14[5];
 
@@ -85,9 +85,9 @@ void __49__DNDSettingsService_serviceForClientIdentifier___block_invoke_2(uint64
   }
 }
 
-- (id)_initWithClientIdentifier:(id)a3
+- (id)_initWithClientIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v22.receiver = self;
   v22.super_class = DNDSettingsService;
   v5 = [(DNDSettingsService *)&v22 init];
@@ -103,7 +103,7 @@ void __49__DNDSettingsService_serviceForClientIdentifier___block_invoke_2(uint64
     calloutQueue = v5->_calloutQueue;
     v5->_calloutQueue = v10;
 
-    v12 = [v4 copy];
+    v12 = [identifierCopy copy];
     clientIdentifier = v5->_clientIdentifier;
     v5->_clientIdentifier = v12;
 
@@ -111,11 +111,11 @@ void __49__DNDSettingsService_serviceForClientIdentifier___block_invoke_2(uint64
     settingsUpdateListeners = v5->_settingsUpdateListeners;
     v5->_settingsUpdateListeners = v14;
 
-    v16 = [DNDModeConfigurationService serviceForClientIdentifier:v4];
+    v16 = [DNDModeConfigurationService serviceForClientIdentifier:identifierCopy];
     modeConfigurationService = v5->_modeConfigurationService;
     v5->_modeConfigurationService = v16;
 
-    v18 = [DNDGlobalConfigurationService serviceForClientIdentifier:v4];
+    v18 = [DNDGlobalConfigurationService serviceForClientIdentifier:identifierCopy];
     globalConfigurationService = v5->_globalConfigurationService;
     v5->_globalConfigurationService = v18;
 
@@ -126,7 +126,7 @@ void __49__DNDSettingsService_serviceForClientIdentifier___block_invoke_2(uint64
   return v5;
 }
 
-- (id)behaviorSettingsReturningError:(id *)a3
+- (id)behaviorSettingsReturningError:(id *)error
 {
   v29 = *MEMORY[0x277D85DE8];
   v5 = _os_activity_create(&dword_22002F000, "com.apple.donotdisturb.DNDSettingsService.behaviorSettings", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
@@ -160,12 +160,12 @@ void __49__DNDSettingsService_serviceForClientIdentifier___block_invoke_2(uint64
     [(DNDSettingsService *)v6 behaviorSettingsReturningError:v16];
   }
 
-  if (a3)
+  if (error)
   {
     v8 = *(v16[0] + 40);
     if (v8)
     {
-      *a3 = v8;
+      *error = v8;
     }
   }
 
@@ -205,10 +205,10 @@ void __53__DNDSettingsService_behaviorSettingsReturningError___block_invoke(uint
   *(v9 + 40) = v6;
 }
 
-- (BOOL)setBehaviorSettings:(id)a3 error:(id *)a4
+- (BOOL)setBehaviorSettings:(id)settings error:(id *)error
 {
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  settingsCopy = settings;
   v7 = _os_activity_create(&dword_22002F000, "com.apple.donotdisturb.DNDSettingsService.setBehaviorSettings", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -231,7 +231,7 @@ void __53__DNDSettingsService_behaviorSettingsReturningError___block_invoke(uint
   v16[3] = &unk_27843A0A8;
   v16[4] = &v23;
   v16[5] = &v17;
-  [v9 setBehaviorSettings:v6 withRequestDetails:v8 completionHandler:v16];
+  [v9 setBehaviorSettings:settingsCopy withRequestDetails:v8 completionHandler:v16];
 
   v10 = DNDLogSettings;
   if (*(v24 + 24) == 1)
@@ -241,9 +241,9 @@ void __53__DNDSettingsService_behaviorSettingsReturningError___block_invoke(uint
       *buf = 138543618;
       v29 = v8;
       v30 = 2114;
-      v31 = v6;
+      v31 = settingsCopy;
       _os_log_impl(&dword_22002F000, v10, OS_LOG_TYPE_DEFAULT, "[%{public}@] Set behavior settings, settings=%{public}@", buf, 0x16u);
-      if (!a4)
+      if (!error)
       {
         goto LABEL_9;
       }
@@ -252,7 +252,7 @@ void __53__DNDSettingsService_behaviorSettingsReturningError___block_invoke(uint
     }
 
 LABEL_6:
-    if (!a4)
+    if (!error)
     {
       goto LABEL_9;
     }
@@ -269,11 +269,11 @@ LABEL_6:
   *buf = 138543874;
   v29 = v8;
   v30 = 2114;
-  v31 = v6;
+  v31 = settingsCopy;
   v32 = 2114;
   v33 = v15;
   _os_log_error_impl(&dword_22002F000, v10, OS_LOG_TYPE_ERROR, "[%{public}@] Error setting behavior settings, settings=%{public}@, error='%{public}@'", buf, 0x20u);
-  if (!a4)
+  if (!error)
   {
     goto LABEL_9;
   }
@@ -282,7 +282,7 @@ LABEL_7:
   v11 = v18[5];
   if (v11)
   {
-    *a4 = v11;
+    *error = v11;
   }
 
 LABEL_9:
@@ -305,7 +305,7 @@ void __48__DNDSettingsService_setBehaviorSettings_error___block_invoke(uint64_t 
   *(v6 + 40) = v5;
 }
 
-- (id)scheduleSettingsReturningError:(id *)a3
+- (id)scheduleSettingsReturningError:(id *)error
 {
   v29 = *MEMORY[0x277D85DE8];
   v5 = _os_activity_create(&dword_22002F000, "com.apple.donotdisturb.DNDSettingsService.scheduleSettings", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
@@ -339,12 +339,12 @@ void __48__DNDSettingsService_setBehaviorSettings_error___block_invoke(uint64_t 
     [(DNDSettingsService *)v6 scheduleSettingsReturningError:v16];
   }
 
-  if (a3)
+  if (error)
   {
     v8 = *(v16[0] + 40);
     if (v8)
     {
-      *a3 = v8;
+      *error = v8;
     }
   }
 
@@ -384,10 +384,10 @@ void __53__DNDSettingsService_scheduleSettingsReturningError___block_invoke(uint
   *(v9 + 40) = v6;
 }
 
-- (BOOL)setScheduleSettings:(id)a3 error:(id *)a4
+- (BOOL)setScheduleSettings:(id)settings error:(id *)error
 {
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  settingsCopy = settings;
   v7 = _os_activity_create(&dword_22002F000, "com.apple.donotdisturb.DNDSettingsService.setScheduleSettings", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -410,7 +410,7 @@ void __53__DNDSettingsService_scheduleSettingsReturningError___block_invoke(uint
   v16[3] = &unk_27843A0A8;
   v16[4] = &v23;
   v16[5] = &v17;
-  [v9 setScheduleSettings:v6 withRequestDetails:v8 completionHandler:v16];
+  [v9 setScheduleSettings:settingsCopy withRequestDetails:v8 completionHandler:v16];
 
   v10 = DNDLogSettings;
   if (*(v24 + 24) == 1)
@@ -420,9 +420,9 @@ void __53__DNDSettingsService_scheduleSettingsReturningError___block_invoke(uint
       *buf = 138543618;
       v29 = v8;
       v30 = 2114;
-      v31 = v6;
+      v31 = settingsCopy;
       _os_log_impl(&dword_22002F000, v10, OS_LOG_TYPE_DEFAULT, "[%{public}@] Set schedule settings, settings=%{public}@", buf, 0x16u);
-      if (!a4)
+      if (!error)
       {
         goto LABEL_9;
       }
@@ -431,7 +431,7 @@ void __53__DNDSettingsService_scheduleSettingsReturningError___block_invoke(uint
     }
 
 LABEL_6:
-    if (!a4)
+    if (!error)
     {
       goto LABEL_9;
     }
@@ -448,11 +448,11 @@ LABEL_6:
   *buf = 138543874;
   v29 = v8;
   v30 = 2114;
-  v31 = v6;
+  v31 = settingsCopy;
   v32 = 2114;
   v33 = v15;
   _os_log_error_impl(&dword_22002F000, v10, OS_LOG_TYPE_ERROR, "[%{public}@] Error setting schedule settings, settings=%{public}@, error='%{public}@'", buf, 0x20u);
-  if (!a4)
+  if (!error)
   {
     goto LABEL_9;
   }
@@ -461,7 +461,7 @@ LABEL_7:
   v11 = v18[5];
   if (v11)
   {
-    *a4 = v11;
+    *error = v11;
   }
 
 LABEL_9:
@@ -484,34 +484,34 @@ void __48__DNDSettingsService_setScheduleSettings_error___block_invoke(uint64_t 
   *(v6 + 40) = v5;
 }
 
-- (id)configurationForModeIdentifier:(id)a3 error:(id *)a4
+- (id)configurationForModeIdentifier:(id)identifier error:(id *)error
 {
-  v4 = [(DNDModeConfigurationService *)self->_modeConfigurationService modeConfigurationForModeIdentifier:a3 error:a4];
-  v5 = [v4 configuration];
+  v4 = [(DNDModeConfigurationService *)self->_modeConfigurationService modeConfigurationForModeIdentifier:identifier error:error];
+  configuration = [v4 configuration];
 
-  return v5;
+  return configuration;
 }
 
-- (BOOL)setConfiguration:(id)a3 forModeIdentifier:(id)a4 error:(id *)a5
+- (BOOL)setConfiguration:(id)configuration forModeIdentifier:(id)identifier error:(id *)error
 {
-  v8 = a3;
-  v9 = [(DNDModeConfigurationService *)self->_modeConfigurationService modeConfigurationForModeIdentifier:a4 error:a5];
+  configurationCopy = configuration;
+  v9 = [(DNDModeConfigurationService *)self->_modeConfigurationService modeConfigurationForModeIdentifier:identifier error:error];
   v10 = v9;
   v11 = 0;
-  if (!a5 && v9)
+  if (!error && v9)
   {
     v12 = [v9 mutableCopy];
-    [v12 setConfiguration:v8];
+    [v12 setConfiguration:configurationCopy];
     v11 = [(DNDModeConfigurationService *)self->_modeConfigurationService setModeConfiguration:v12 error:0];
   }
 
   return v11;
 }
 
-- (void)addSettingsUpdateListener:(id)a3 withCompletionHandler:(id)a4
+- (void)addSettingsUpdateListener:(id)listener withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  handlerCopy = handler;
   v8 = _os_activity_create(&dword_22002F000, "com.apple.donotdisturb.DNDSettingsService.addSettingsUpdateListener", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -521,11 +521,11 @@ void __48__DNDSettingsService_setScheduleSettings_error___block_invoke(uint64_t 
   block[1] = 3221225472;
   block[2] = __70__DNDSettingsService_addSettingsUpdateListener_withCompletionHandler___block_invoke;
   block[3] = &unk_27843A198;
-  v13 = v6;
-  v14 = self;
-  v15 = v7;
-  v10 = v7;
-  v11 = v6;
+  v13 = listenerCopy;
+  selfCopy = self;
+  v15 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = listenerCopy;
   dispatch_sync(queue, block);
 
   os_activity_scope_leave(&state);
@@ -584,9 +584,9 @@ void __70__DNDSettingsService_addSettingsUpdateListener_withCompletionHandler___
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeSettingsUpdateListener:(id)a3
+- (void)removeSettingsUpdateListener:(id)listener
 {
-  v4 = a3;
+  listenerCopy = listener;
   v5 = _os_activity_create(&dword_22002F000, "com.apple.donotdisturb.DNDSettingsService.removeSettingsUpdateListener", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -596,9 +596,9 @@ void __70__DNDSettingsService_addSettingsUpdateListener_withCompletionHandler___
   v8[1] = 3221225472;
   v8[2] = __51__DNDSettingsService_removeSettingsUpdateListener___block_invoke;
   v8[3] = &unk_27843A1E8;
-  v9 = v4;
-  v10 = self;
-  v7 = v4;
+  v9 = listenerCopy;
+  selfCopy = self;
+  v7 = listenerCopy;
   dispatch_sync(queue, v8);
 
   os_activity_scope_leave(&state);
@@ -621,17 +621,17 @@ uint64_t __51__DNDSettingsService_removeSettingsUpdateListener___block_invoke(ui
   return result;
 }
 
-- (void)remoteService:(id)a3 didReceiveUpdatedBehaviorSettings:(id)a4
+- (void)remoteService:(id)service didReceiveUpdatedBehaviorSettings:(id)settings
 {
-  v5 = a4;
+  settingsCopy = settings;
   queue = self->_queue;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __70__DNDSettingsService_remoteService_didReceiveUpdatedBehaviorSettings___block_invoke;
   v8[3] = &unk_27843A1E8;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = settingsCopy;
+  v7 = settingsCopy;
   dispatch_sync(queue, v8);
 }
 
@@ -694,17 +694,17 @@ void __70__DNDSettingsService_remoteService_didReceiveUpdatedBehaviorSettings___
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)remoteService:(id)a3 didReceiveUpdatedPhoneCallBypassSettings:(id)a4
+- (void)remoteService:(id)service didReceiveUpdatedPhoneCallBypassSettings:(id)settings
 {
-  v5 = a4;
+  settingsCopy = settings;
   queue = self->_queue;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __77__DNDSettingsService_remoteService_didReceiveUpdatedPhoneCallBypassSettings___block_invoke;
   v8[3] = &unk_27843A1E8;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = settingsCopy;
+  v7 = settingsCopy;
   dispatch_sync(queue, v8);
 }
 
@@ -767,17 +767,17 @@ void __77__DNDSettingsService_remoteService_didReceiveUpdatedPhoneCallBypassSett
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)remoteService:(id)a3 didReceiveUpdatedScheduleSettings:(id)a4
+- (void)remoteService:(id)service didReceiveUpdatedScheduleSettings:(id)settings
 {
-  v5 = a4;
+  settingsCopy = settings;
   queue = self->_queue;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __70__DNDSettingsService_remoteService_didReceiveUpdatedScheduleSettings___block_invoke;
   v8[3] = &unk_27843A1E8;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = settingsCopy;
+  v7 = settingsCopy;
   dispatch_sync(queue, v8);
 }
 

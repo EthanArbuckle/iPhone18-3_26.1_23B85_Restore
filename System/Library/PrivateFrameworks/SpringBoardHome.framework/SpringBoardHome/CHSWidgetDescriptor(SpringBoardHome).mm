@@ -19,30 +19,30 @@
 
 - (id)sbh_appName
 {
-  v2 = [a1 extensionBundleIdentifier];
-  v3 = SBHContainingBundleRecordForWidgetWithBundleIdentifier(v2);
+  extensionBundleIdentifier = [self extensionBundleIdentifier];
+  v3 = SBHContainingBundleRecordForWidgetWithBundleIdentifier(extensionBundleIdentifier);
 
-  v4 = [v3 localizedName];
-  v5 = v4;
-  if (v4)
+  localizedName = [v3 localizedName];
+  v5 = localizedName;
+  if (localizedName)
   {
-    v6 = v4;
+    displayName = localizedName;
   }
 
   else
   {
-    v7 = [v3 localizedShortName];
-    v8 = v7;
-    if (v7)
+    localizedShortName = [v3 localizedShortName];
+    v8 = localizedShortName;
+    if (localizedShortName)
     {
-      v6 = v7;
+      displayName = localizedShortName;
     }
 
     else
     {
-      v9 = [a1 sbh_iconDataSource];
+      sbh_iconDataSource = [self sbh_iconDataSource];
       v10 = objc_opt_class();
-      v11 = v9;
+      v11 = sbh_iconDataSource;
       if (v10)
       {
         if (objc_opt_isKindOfClass())
@@ -63,18 +63,18 @@
 
       v13 = v12;
 
-      v6 = [v13 displayName];
+      displayName = [v13 displayName];
     }
   }
 
-  return v6;
+  return displayName;
 }
 
 - (uint64_t)sbh_disfavoredSizeClassesForAddWidgetSheetLocation:()SpringBoardHome
 {
-  v2 = [a1 _widgetLocationStyleForAddWidgetSheetLocation:?];
+  v2 = [self _widgetLocationStyleForAddWidgetSheetLocation:?];
 
-  return [a1 disfavoredFamiliesForLocation:v2];
+  return [self disfavoredFamiliesForLocation:v2];
 }
 
 - (uint64_t)_widgetLocationStyleForAddWidgetSheetLocation:()SpringBoardHome
@@ -92,18 +92,18 @@
 
 - (uint64_t)sbh_supportsRemovableBackgroundOrAccessoryFamilies
 {
-  if (([a1 supportedFamilies] & 0x1C00) != 0)
+  if (([self supportedFamilies] & 0x1C00) != 0)
   {
     return 1;
   }
 
-  return [a1 sbh_supportsRemovableBackground];
+  return [self sbh_supportsRemovableBackground];
 }
 
 - (id)sbh_iconDataSource
 {
   v2 = +[SBHIconGridSizeClassDomain globalDomain];
-  v3 = [a1 sbh_iconDataSourceInDomain:v2];
+  v3 = [self sbh_iconDataSourceInDomain:v2];
 
   return v3;
 }
@@ -116,12 +116,12 @@
   if (objc_opt_isKindOfClass())
   {
     v5 = objc_opt_class();
-    v6 = a1;
+    selfCopy = self;
     if (v5)
     {
       if (objc_opt_isKindOfClass())
       {
-        v7 = v6;
+        v7 = selfCopy;
       }
 
       else
@@ -137,10 +137,10 @@
 
     v18 = v7;
 
-    v19 = [v18 type];
-    if (v19 > 3)
+    type = [v18 type];
+    if (type > 3)
     {
-      switch(v19)
+      switch(type)
       {
         case 4:
           v20 = SBHAppPredictionsElement;
@@ -156,7 +156,7 @@
 
     else
     {
-      switch(v19)
+      switch(type)
       {
         case 1:
           v20 = SBHSiriSuggestionsElement;
@@ -176,23 +176,23 @@ LABEL_23:
     objc_exception_throw(v22);
   }
 
-  v8 = [a1 extensionIdentity];
-  v9 = -[SBHIconGridSizeClassSet initWithCHSWidgetFamilyMask:inDomain:]([SBHIconGridSizeClassSet alloc], "initWithCHSWidgetFamilyMask:inDomain:", [a1 supportedFamilies], v4);
+  extensionIdentity = [self extensionIdentity];
+  v9 = -[SBHIconGridSizeClassSet initWithCHSWidgetFamilyMask:inDomain:]([SBHIconGridSizeClassSet alloc], "initWithCHSWidgetFamilyMask:inDomain:", [self supportedFamilies], v4);
   v10 = [SBHWidget alloc];
-  v11 = [a1 kind];
-  v12 = [v8 extensionBundleIdentifier];
-  v13 = [v8 containerBundleIdentifier];
-  v14 = [(SBHWidget *)v10 initWithKind:v11 extensionBundleIdentifier:v12 containerBundleIdentifier:v13 supportedGridSizeClasses:v9];
+  kind = [self kind];
+  extensionBundleIdentifier = [extensionIdentity extensionBundleIdentifier];
+  containerBundleIdentifier = [extensionIdentity containerBundleIdentifier];
+  v14 = [(SBHWidget *)v10 initWithKind:kind extensionBundleIdentifier:extensionBundleIdentifier containerBundleIdentifier:containerBundleIdentifier supportedGridSizeClasses:v9];
 
   v15 = SBLogWidgets();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
-    v16 = [(SBHWidget *)v14 extensionBundleIdentifier];
-    v17 = [(SBHWidget *)v14 uniqueIdentifier];
+    extensionBundleIdentifier2 = [(SBHWidget *)v14 extensionBundleIdentifier];
+    uniqueIdentifier = [(SBHWidget *)v14 uniqueIdentifier];
     v23 = 138543618;
-    v24 = v16;
+    v24 = extensionBundleIdentifier2;
     v25 = 2114;
-    v26 = v17;
+    v26 = uniqueIdentifier;
     _os_log_impl(&dword_1BEB18000, v15, OS_LOG_TYPE_DEFAULT, "Widget %{public}@ %{public}@ created from CHS widget descriptor.", &v23, 0x16u);
   }
 
@@ -203,24 +203,24 @@ LABEL_24:
 
 - (id)sbh_galleryItemIdentifier
 {
-  v2 = objc_getAssociatedObject(a1, &SBHAvocadoDescriptorGalleryItemIdentifierKey);
+  v2 = objc_getAssociatedObject(self, &SBHAvocadoDescriptorGalleryItemIdentifierKey);
   if (!v2)
   {
-    v3 = [a1 extensionIdentity];
+    extensionIdentity = [self extensionIdentity];
     v15 = MEMORY[0x1E696AEC0];
-    v4 = [v3 extensionBundleIdentifier];
-    v5 = [a1 kind];
-    v6 = [v3 containerBundleIdentifier];
-    v7 = [a1 sbh_supportedSizeClasses];
-    v8 = [a1 supportedFamilies];
-    v9 = [a1 displayName];
-    v10 = [a1 widgetDescription];
-    v11 = [a1 intentType];
-    v14 = v7;
-    v12 = v4;
-    v2 = [v15 stringWithFormat:@"AVO_DESCRIPTOR:%@-%@-%@-%lu-%lu-%@-%@-%@", v4, v5, v6, v14, v8, v9, v10, v11];
+    extensionBundleIdentifier = [extensionIdentity extensionBundleIdentifier];
+    kind = [self kind];
+    containerBundleIdentifier = [extensionIdentity containerBundleIdentifier];
+    sbh_supportedSizeClasses = [self sbh_supportedSizeClasses];
+    supportedFamilies = [self supportedFamilies];
+    displayName = [self displayName];
+    widgetDescription = [self widgetDescription];
+    intentType = [self intentType];
+    v14 = sbh_supportedSizeClasses;
+    v12 = extensionBundleIdentifier;
+    v2 = [v15 stringWithFormat:@"AVO_DESCRIPTOR:%@-%@-%@-%lu-%lu-%@-%@-%@", extensionBundleIdentifier, kind, containerBundleIdentifier, v14, supportedFamilies, displayName, widgetDescription, intentType];
 
-    objc_setAssociatedObject(a1, &SBHAvocadoDescriptorGalleryItemIdentifierKey, v2, 1);
+    objc_setAssociatedObject(self, &SBHAvocadoDescriptorGalleryItemIdentifierKey, v2, 1);
   }
 
   return v2;
@@ -230,7 +230,7 @@ LABEL_24:
 {
   if (a3 == 1)
   {
-    return [a1 isLinkedOnOrAfter:0];
+    return [self isLinkedOnOrAfter:0];
   }
 
   else
@@ -241,11 +241,11 @@ LABEL_24:
 
 - (id)backgroundColor
 {
-  v2 = objc_getAssociatedObject(a1, &SBHAvocadoDescriptorBackgroundColorKey);
+  v2 = objc_getAssociatedObject(self, &SBHAvocadoDescriptorBackgroundColorKey);
   if (!v2)
   {
     v4 = 0;
-    [a1 _loadColorsBackgroundColor:&v4 accentColor:0];
+    [self _loadColorsBackgroundColor:&v4 accentColor:0];
     v2 = v4;
   }
 
@@ -254,11 +254,11 @@ LABEL_24:
 
 - (id)accentColor
 {
-  v2 = objc_getAssociatedObject(a1, &SBHAvocadoDescriptorAccentColorKey);
+  v2 = objc_getAssociatedObject(self, &SBHAvocadoDescriptorAccentColorKey);
   if (!v2)
   {
     v4 = 0;
-    [a1 _loadColorsBackgroundColor:0 accentColor:&v4];
+    [self _loadColorsBackgroundColor:0 accentColor:&v4];
     v2 = v4;
   }
 
@@ -267,18 +267,18 @@ LABEL_24:
 
 - (id)mostInterestingColor
 {
-  v2 = [a1 accentColor];
-  v3 = [a1 backgroundColor];
-  v4 = v3;
-  if (v3 | v2)
+  accentColor = [self accentColor];
+  backgroundColor = [self backgroundColor];
+  v4 = backgroundColor;
+  if (backgroundColor | accentColor)
   {
     v5 = MEMORY[0x1E69DC888];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __60__CHSWidgetDescriptor_SpringBoardHome__mostInterestingColor__block_invoke;
     v8[3] = &unk_1E808A738;
-    v9 = v3;
-    v10 = v2;
+    v9 = backgroundColor;
+    v10 = accentColor;
     v6 = [v5 colorWithDynamicProvider:v8];
   }
 
@@ -292,20 +292,20 @@ LABEL_24:
 
 - (void)_loadColorsBackgroundColor:()SpringBoardHome accentColor:
 {
-  v7 = [a1 extensionBundleIdentifier];
+  extensionBundleIdentifier = [self extensionBundleIdentifier];
   v16 = 0;
   v17 = 0;
-  [a1 _loadColorsFromExtensionForBundleIdentifier:v7 backgroundColor:&v17 accentColor:&v16];
+  [self _loadColorsFromExtensionForBundleIdentifier:extensionBundleIdentifier backgroundColor:&v17 accentColor:&v16];
   v8 = v17;
   v9 = v16;
   v14 = v9;
   v15 = v8;
-  [a1 _loadColorsFromShortcutsForBundleIdentifier:v7 backgroundColor:&v15 accentColor:&v14];
+  [self _loadColorsFromShortcutsForBundleIdentifier:extensionBundleIdentifier backgroundColor:&v15 accentColor:&v14];
   v10 = v15;
 
   v11 = v14;
-  objc_setAssociatedObject(a1, &SBHAvocadoDescriptorBackgroundColorKey, v10, 1);
-  objc_setAssociatedObject(a1, &SBHAvocadoDescriptorAccentColorKey, v11, 1);
+  objc_setAssociatedObject(self, &SBHAvocadoDescriptorBackgroundColorKey, v10, 1);
+  objc_setAssociatedObject(self, &SBHAvocadoDescriptorAccentColorKey, v11, 1);
   if (a3 && !*a3)
   {
     v12 = v10;
@@ -327,17 +327,17 @@ LABEL_24:
     v27 = a5;
     v28 = v7;
     v8 = [objc_alloc(MEMORY[0x1E69635D0]) initWithBundleIdentifier:v7 error:0];
-    v9 = [v8 compatibilityObject];
-    v10 = [v9 bundleURL];
+    compatibilityObject = [v8 compatibilityObject];
+    bundleURL = [compatibilityObject bundleURL];
 
-    v11 = [objc_alloc(MEMORY[0x1E698E640]) initWithURL:v10];
-    v12 = [v11 infoDictionary];
-    v13 = [v12 objectForKey:@"NSWidgetBackgroundColorName"];
-    v14 = [v12 objectForKey:@"NSAccentColorName"];
+    v11 = [objc_alloc(MEMORY[0x1E698E640]) initWithURL:bundleURL];
+    infoDictionary = [v11 infoDictionary];
+    v13 = [infoDictionary objectForKey:@"NSWidgetBackgroundColorName"];
+    v14 = [infoDictionary objectForKey:@"NSAccentColorName"];
     v15 = objc_alloc(MEMORY[0x1E69DD368]);
-    v16 = [MEMORY[0x1E69DC938] currentDevice];
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
     v29 = 0;
-    v17 = [v15 initWithURL:v10 idiom:objc_msgSend(v16 error:{"userInterfaceIdiom"), &v29}];
+    v17 = [v15 initWithURL:bundleURL idiom:objc_msgSend(currentDevice error:{"userInterfaceIdiom"), &v29}];
     v18 = v29;
 
     if (v18)

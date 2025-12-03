@@ -1,16 +1,16 @@
 @interface PXGCombinedShaderSource
-- (BOOL)isValidForEffects:(id)a3;
-- (PXGCombinedShaderSource)initWithEffects:(id)a3;
-- (id)aliasedUniformsForEffects:(id)a3;
+- (BOOL)isValidForEffects:(id)effects;
+- (PXGCombinedShaderSource)initWithEffects:(id)effects;
+- (id)aliasedUniformsForEffects:(id)effects;
 - (id)description;
 @end
 
 @implementation PXGCombinedShaderSource
 
-- (id)aliasedUniformsForEffects:(id)a3
+- (id)aliasedUniformsForEffects:(id)effects
 {
   v3 = MEMORY[0x277CBEB18];
-  v4 = a3;
+  effectsCopy = effects;
   v5 = objc_alloc_init(v3);
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
@@ -18,7 +18,7 @@
   v8[3] = &unk_2782AC458;
   v6 = v5;
   v9 = v6;
-  [v4 enumerateObjectsUsingBlock:v8];
+  [effectsCopy enumerateObjectsUsingBlock:v8];
 
   return v6;
 }
@@ -63,24 +63,24 @@ void __53__PXGCombinedShaderSource_aliasedUniformsForEffects___block_invoke(uint
   }
 }
 
-- (BOOL)isValidForEffects:(id)a3
+- (BOOL)isValidForEffects:(id)effects
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  effectsCopy = effects;
   v5 = self->_combinedShaderSources;
-  v6 = [v4 count];
+  v6 = [effectsCopy count];
   if (v6 == [(NSArray *)v5 count])
   {
     v23 = 0u;
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v7 = v4;
+    v7 = effectsCopy;
     v8 = [v7 countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v8)
     {
       v9 = v8;
-      v20 = v4;
+      v20 = effectsCopy;
       v10 = 0;
       v11 = *v22;
       do
@@ -92,17 +92,17 @@ void __53__PXGCombinedShaderSource_aliasedUniformsForEffects___block_invoke(uint
             objc_enumerationMutation(v7);
           }
 
-          v13 = [*(*(&v21 + 1) + 8 * i) shader];
-          v14 = [v13 source];
+          shader = [*(*(&v21 + 1) + 8 * i) shader];
+          source = [shader source];
           v15 = [(NSArray *)v5 objectAtIndexedSubscript:v10];
           v16 = v15;
-          if (v14 == v15)
+          if (source == v15)
           {
           }
 
           else
           {
-            v17 = [v14 isEqual:v15];
+            v17 = [source isEqual:v15];
 
             if ((v17 & 1) == 0)
             {
@@ -120,7 +120,7 @@ void __53__PXGCombinedShaderSource_aliasedUniformsForEffects___block_invoke(uint
       while (v9);
       v18 = 1;
 LABEL_15:
-      v4 = v20;
+      effectsCopy = v20;
     }
 
     else
@@ -147,10 +147,10 @@ LABEL_15:
   return v6;
 }
 
-- (PXGCombinedShaderSource)initWithEffects:(id)a3
+- (PXGCombinedShaderSource)initWithEffects:(id)effects
 {
   v72 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  effectsCopy = effects;
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v45 = objc_alloc_init(MEMORY[0x277CBEB38]);
@@ -159,7 +159,7 @@ LABEL_15:
   v66 = 0u;
   v67 = 0u;
   v68 = 0u;
-  obj = v3;
+  obj = effectsCopy;
   v38 = [obj countByEnumeratingWithState:&v65 objects:v71 count:16];
   if (v38)
   {
@@ -176,14 +176,14 @@ LABEL_15:
           objc_enumerationMutation(obj);
         }
 
-        v8 = [*(*(&v65 + 1) + 8 * i) shader];
-        v9 = [v8 source];
-        if (v9)
+        shader = [*(*(&v65 + 1) + 8 * i) shader];
+        source = [shader source];
+        if (source)
         {
           v40 = i;
-          [v4 addObject:v9];
-          v39 = v8;
-          v10 = [v8 uniforms];
+          [v4 addObject:source];
+          v39 = shader;
+          uniforms = [shader uniforms];
           v60 = MEMORY[0x277D85DD0];
           v61 = 3221225472;
           v62 = __43__PXGCombinedShaderSource_initWithEffects___block_invoke;
@@ -203,7 +203,7 @@ LABEL_15:
           if (v47)
           {
             v46 = *v57;
-            v43 = v9;
+            v43 = source;
             do
             {
               for (j = 0; j != v47; ++j)
@@ -214,7 +214,7 @@ LABEL_15:
                 }
 
                 v13 = *(*(&v56 + 1) + 8 * j);
-                v14 = [v9 sourceForShaderFunction:v13];
+                v14 = [source sourceForShaderFunction:v13];
                 v15 = v14;
                 if (v14)
                 {
@@ -247,10 +247,10 @@ LABEL_15:
                         }
 
                         v22 = *(*(&v52 + 1) + 8 * k);
-                        v23 = [v22 original];
-                        v24 = [v23 declaration];
-                        v25 = [v22 name];
-                        [v16 appendFormat:@"%@ = %@;\n", v24, v25];
+                        original = [v22 original];
+                        declaration = [original declaration];
+                        name = [v22 name];
+                        [v16 appendFormat:@"%@ = %@;\n", declaration, name];
                       }
 
                       v19 = [v17 countByEnumeratingWithState:&v52 objects:v69 count:16];
@@ -263,7 +263,7 @@ LABEL_15:
                   [v16 appendString:v48];
                   [v16 appendString:@"\n}\n"];
 
-                  v9 = v43;
+                  source = v43;
                 }
               }
 
@@ -273,10 +273,10 @@ LABEL_15:
             while (v47);
           }
 
-          v8 = v39;
-          v26 = [v39 source];
-          v27 = [v26 otherSource];
-          [v36 appendString:v27];
+          shader = v39;
+          source2 = [v39 source];
+          otherSource = [source2 otherSource];
+          [v36 appendString:otherSource];
 
           v6 = v41 + 1;
           v5 = v34;

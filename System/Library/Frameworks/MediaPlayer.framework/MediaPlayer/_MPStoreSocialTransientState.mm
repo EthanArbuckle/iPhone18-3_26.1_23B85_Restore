@@ -1,8 +1,8 @@
 @interface _MPStoreSocialTransientState
-- (BOOL)isEqual:(id)a3;
-- (_MPStoreSocialTransientState)initWithPerson:(id)a3;
-- (id)newOperationForTransientFollowPendingRequestState:(int64_t)a3 completion:(id)a4;
-- (id)newOperationForTransientFollowState:(int64_t)a3 completion:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (_MPStoreSocialTransientState)initWithPerson:(id)person;
+- (id)newOperationForTransientFollowPendingRequestState:(int64_t)state completion:(id)completion;
+- (id)newOperationForTransientFollowState:(int64_t)state completion:(id)completion;
 - (int64_t)followPendingRequestState;
 - (int64_t)followState;
 - (unint64_t)hash;
@@ -13,28 +13,28 @@
 
 - (unint64_t)hash
 {
-  v2 = [(MPModelObject *)self->_person identifiers];
-  v3 = [v2 universalStore];
-  v4 = [v3 socialProfileID];
-  v5 = [v4 hash];
+  identifiers = [(MPModelObject *)self->_person identifiers];
+  universalStore = [identifiers universalStore];
+  socialProfileID = [universalStore socialProfileID];
+  v5 = [socialProfileID hash];
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 person];
-    v6 = [v5 identifiers];
-    v7 = [v6 universalStore];
-    v8 = [v7 socialProfileID];
-    v9 = [(MPModelObject *)self->_person identifiers];
-    v10 = [v9 universalStore];
-    v11 = [v10 socialProfileID];
-    v12 = [v8 isEqualToString:v11];
+    person = [equalCopy person];
+    identifiers = [person identifiers];
+    universalStore = [identifiers universalStore];
+    socialProfileID = [universalStore socialProfileID];
+    identifiers2 = [(MPModelObject *)self->_person identifiers];
+    universalStore2 = [identifiers2 universalStore];
+    socialProfileID2 = [universalStore2 socialProfileID];
+    v12 = [socialProfileID isEqualToString:socialProfileID2];
   }
 
   else
@@ -76,13 +76,13 @@
   _Block_object_dispose(&v10, 8);
 }
 
-- (id)newOperationForTransientFollowPendingRequestState:(int64_t)a3 completion:(id)a4
+- (id)newOperationForTransientFollowPendingRequestState:(int64_t)state completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  if (a3 != 1)
+  completionCopy = completion;
+  stateCopy = state;
+  if (state != 1)
   {
-    if (a3 != 2)
+    if (state != 2)
     {
 LABEL_8:
       [(_MPStoreSocialTransientState *)self _endIfNeeded];
@@ -90,10 +90,10 @@ LABEL_8:
       goto LABEL_9;
     }
 
-    v7 = 3;
+    stateCopy = 3;
   }
 
-  v8 = [[MPStoreSocialPendingFollowRequestOperationDataSource alloc] initWithAction:v7];
+  v8 = [[MPStoreSocialPendingFollowRequestOperationDataSource alloc] initWithAction:stateCopy];
   if (!v8)
   {
     goto LABEL_8;
@@ -124,8 +124,8 @@ LABEL_8:
   objc_copyWeak(v35, &from);
   v33 = v39;
   v31[4] = self;
-  v32 = v6;
-  v35[1] = a3;
+  v32 = completionCopy;
+  v35[1] = state;
   [(MPStoreSocialRequestOperation *)v11 setResponseHandler:v31];
   v28[0] = MEMORY[0x1E69E9820];
   v28[1] = 3221225472;
@@ -159,7 +159,7 @@ LABEL_8:
   v18[2] = __93___MPStoreSocialTransientState_newOperationForTransientFollowPendingRequestState_completion___block_invoke_9;
   v18[3] = &unk_1E767D490;
   v18[4] = self;
-  v20 = a3;
+  stateCopy2 = state;
   v14 = v11;
   v19 = v14;
   dispatch_barrier_async(v13, v18);
@@ -199,12 +199,12 @@ LABEL_9:
   return v3;
 }
 
-- (id)newOperationForTransientFollowState:(int64_t)a3 completion:(id)a4
+- (id)newOperationForTransientFollowState:(int64_t)state completion:(id)completion
 {
-  v6 = a4;
-  if (a3 > 3)
+  completionCopy = completion;
+  if (state > 3)
   {
-    switch(a3)
+    switch(state)
     {
       case 4:
         v7 = MPStoreSocialUnfollowOperationDataSource;
@@ -223,15 +223,15 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  if (a3 != 1)
+  if (state != 1)
   {
-    if (a3 == 2)
+    if (state == 2)
     {
       v8 = [[MPStoreSocialPendingFollowRequestOperationDataSource alloc] initWithAction:2];
       goto LABEL_14;
     }
 
-    if (a3 != 3)
+    if (state != 3)
     {
       goto LABEL_18;
     }
@@ -271,8 +271,8 @@ LABEL_14:
   objc_copyWeak(v35, &from);
   v33 = v39;
   v31[4] = self;
-  v32 = v6;
-  v35[1] = a3;
+  v32 = completionCopy;
+  v35[1] = state;
   [(MPStoreSocialRequestOperation *)v11 setResponseHandler:v31];
   v28[0] = MEMORY[0x1E69E9820];
   v28[1] = 3221225472;
@@ -306,7 +306,7 @@ LABEL_14:
   v18[2] = __79___MPStoreSocialTransientState_newOperationForTransientFollowState_completion___block_invoke_9;
   v18[3] = &unk_1E767D490;
   v18[4] = self;
-  v20 = a3;
+  stateCopy = state;
   v14 = v11;
   v19 = v14;
   dispatch_barrier_async(v13, v18);
@@ -346,16 +346,16 @@ LABEL_19:
   return v3;
 }
 
-- (_MPStoreSocialTransientState)initWithPerson:(id)a3
+- (_MPStoreSocialTransientState)initWithPerson:(id)person
 {
-  v4 = a3;
+  personCopy = person;
   v14.receiver = self;
   v14.super_class = _MPStoreSocialTransientState;
   v5 = [(_MPStoreSocialTransientState *)&v14 init];
   if (v5)
   {
-    v6 = [v4 identifiers];
-    v7 = [v4 copyWithIdentifiers:v6 block:&__block_literal_global_41073];
+    identifiers = [personCopy identifiers];
+    v7 = [personCopy copyWithIdentifiers:identifiers block:&__block_literal_global_41073];
     person = v5->_person;
     v5->_person = v7;
 

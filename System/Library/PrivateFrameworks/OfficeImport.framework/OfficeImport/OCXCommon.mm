@@ -6,7 +6,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = [[CXNamespace alloc] initWithUri:"http://schemas.openxmlformats.org/markup-compatibility/2006"];
     v3 = OCXMarkupCompatibilityNamespace;

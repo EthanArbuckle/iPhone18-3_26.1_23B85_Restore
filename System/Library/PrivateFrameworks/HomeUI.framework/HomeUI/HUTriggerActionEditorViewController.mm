@@ -1,44 +1,44 @@
 @interface HUTriggerActionEditorViewController
-+ (id)createTriggerActionEditorViewControllerForHome:(id)a3 withTriggerActionSetBuilder:(id)a4 andTriggerActionBuilderEditorDelegate:(id)a5;
++ (id)createTriggerActionEditorViewControllerForHome:(id)home withTriggerActionSetBuilder:(id)builder andTriggerActionBuilderEditorDelegate:(id)delegate;
 - (HFTriggerBuilder)triggerBuilder;
 - (HUTriggerActionEditorContentViewController)actionEditorContentViewController;
-- (HUTriggerActionEditorViewController)initWithInstructionsItem:(id)a3 contentViewController:(id)a4;
-- (HUTriggerActionEditorViewController)initWithTriggerBuilder:(id)a3 flow:(id)a4 delegate:(id)a5;
-- (HUTriggerActionEditorViewController)initWithTriggerBuilder:(id)a3 mode:(unint64_t)a4 delegate:(id)a5;
+- (HUTriggerActionEditorViewController)initWithInstructionsItem:(id)item contentViewController:(id)controller;
+- (HUTriggerActionEditorViewController)initWithTriggerBuilder:(id)builder flow:(id)flow delegate:(id)delegate;
+- (HUTriggerActionEditorViewController)initWithTriggerBuilder:(id)builder mode:(unint64_t)mode delegate:(id)delegate;
 - (HUTriggerEditorDelegate)delegate;
 - (void)_informUserShortcutsAreNotSupportedInThisHome;
 - (void)_showShortcutsEditor;
 - (void)_showShortcutsEditorIfPossible;
-- (void)homeWorkflowEditorViewController:(id)a3 didFinishWithHomeWorkflow:(id)a4 includesSecureAccessory:(BOOL)a5;
-- (void)setDelegate:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)updateCell:(id)a3 forItem:(id)a4 indexPath:(id)a5 animated:(BOOL)a6;
+- (void)homeWorkflowEditorViewController:(id)controller didFinishWithHomeWorkflow:(id)workflow includesSecureAccessory:(BOOL)accessory;
+- (void)setDelegate:(id)delegate;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)updateCell:(id)cell forItem:(id)item indexPath:(id)path animated:(BOOL)animated;
 - (void)viewDidLoad;
 @end
 
 @implementation HUTriggerActionEditorViewController
 
-+ (id)createTriggerActionEditorViewControllerForHome:(id)a3 withTriggerActionSetBuilder:(id)a4 andTriggerActionBuilderEditorDelegate:(id)a5
++ (id)createTriggerActionEditorViewControllerForHome:(id)home withTriggerActionSetBuilder:(id)builder andTriggerActionBuilderEditorDelegate:(id)delegate
 {
   v7 = MEMORY[0x277D146E8];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v7 sharedDispatcher];
-  [v11 setOverrideHome:v10];
+  delegateCopy = delegate;
+  builderCopy = builder;
+  homeCopy = home;
+  sharedDispatcher = [v7 sharedDispatcher];
+  [sharedDispatcher setOverrideHome:homeCopy];
 
   v12 = MEMORY[0x277D14940];
   v13 = objc_opt_new();
-  v14 = [v12 createPlaceholderTriggerForHome:v10 withTriggerActionSetBuilder:v9 context:v13];
+  v14 = [v12 createPlaceholderTriggerForHome:homeCopy withTriggerActionSetBuilder:builderCopy context:v13];
 
-  v15 = [[HUForwardingTriggerActionBuilderDelegate alloc] initWithTriggerActionBuilderEditorDelegate:v8];
+  v15 = [[HUForwardingTriggerActionBuilderDelegate alloc] initWithTriggerActionBuilderEditorDelegate:delegateCopy];
   v16 = [[HUTriggerActionFlow alloc] initWithFlowState:4];
   v17 = [[HUTriggerActionEditorViewController alloc] initWithTriggerBuilder:v14 flow:v16 delegate:0];
   [(HUTriggerActionEditorViewController *)v17 setForwardingTriggerActionBuilderDelegate:v15];
-  v18 = [(HUTriggerActionEditorViewController *)v17 forwardingTriggerActionBuilderDelegate];
-  if ([v18 conformsToProtocol:&unk_2824F8AF0])
+  forwardingTriggerActionBuilderDelegate = [(HUTriggerActionEditorViewController *)v17 forwardingTriggerActionBuilderDelegate];
+  if ([forwardingTriggerActionBuilderDelegate conformsToProtocol:&unk_2824F8AF0])
   {
-    v19 = v18;
+    v19 = forwardingTriggerActionBuilderDelegate;
   }
 
   else
@@ -52,38 +52,38 @@
   return v17;
 }
 
-- (HUTriggerActionEditorViewController)initWithInstructionsItem:(id)a3 contentViewController:(id)a4
+- (HUTriggerActionEditorViewController)initWithInstructionsItem:(id)item contentViewController:(id)controller
 {
-  v6 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v7 = NSStringFromSelector(sel_initWithTriggerBuilder_mode_delegate_);
-  [v6 handleFailureInMethod:a2 object:self file:@"HUTriggerActionEditorViewController.m" lineNumber:81 description:{@"%s is unavailable; use %@ instead", "-[HUTriggerActionEditorViewController initWithInstructionsItem:contentViewController:]", v7}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUTriggerActionEditorViewController.m" lineNumber:81 description:{@"%s is unavailable; use %@ instead", "-[HUTriggerActionEditorViewController initWithInstructionsItem:contentViewController:]", v7}];
 
   return 0;
 }
 
-- (HUTriggerActionEditorViewController)initWithTriggerBuilder:(id)a3 mode:(unint64_t)a4 delegate:(id)a5
+- (HUTriggerActionEditorViewController)initWithTriggerBuilder:(id)builder mode:(unint64_t)mode delegate:(id)delegate
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [[HUTriggerActionFlow alloc] initWithEditorMode:a4];
-  v11 = [(HUTriggerActionEditorViewController *)self initWithTriggerBuilder:v9 flow:v10 delegate:v8];
+  delegateCopy = delegate;
+  builderCopy = builder;
+  v10 = [[HUTriggerActionFlow alloc] initWithEditorMode:mode];
+  v11 = [(HUTriggerActionEditorViewController *)self initWithTriggerBuilder:builderCopy flow:v10 delegate:delegateCopy];
 
   return v11;
 }
 
-- (HUTriggerActionEditorViewController)initWithTriggerBuilder:(id)a3 flow:(id)a4 delegate:(id)a5
+- (HUTriggerActionEditorViewController)initWithTriggerBuilder:(id)builder flow:(id)flow delegate:(id)delegate
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  builderCopy = builder;
+  flowCopy = flow;
+  delegateCopy = delegate;
   v11 = [HUTriggerActionEditorContentViewController alloc];
-  v12 = [(HUTriggerActionEditorViewController *)self navigationItem];
-  v13 = [(HUTriggerActionEditorContentViewController *)v11 initWithTriggerBuilder:v8 flow:v9 effectiveNavigationItem:v12 delegate:v10];
+  navigationItem = [(HUTriggerActionEditorViewController *)self navigationItem];
+  v13 = [(HUTriggerActionEditorContentViewController *)v11 initWithTriggerBuilder:builderCopy flow:flowCopy effectiveNavigationItem:navigationItem delegate:delegateCopy];
 
   v14 = 1;
   [(HUTriggerActionEditorViewController *)self setModalInPresentation:1];
   objc_opt_class();
-  v15 = v8;
+  v15 = builderCopy;
   if (objc_opt_isKindOfClass())
   {
     v16 = v15;
@@ -98,11 +98,11 @@
 
   if (v17)
   {
-    v18 = [v17 locationInterface];
-    v14 = [v18 isCustomLocationTrigger] ^ 1;
+    locationInterface = [v17 locationInterface];
+    v14 = [locationInterface isCustomLocationTrigger] ^ 1;
   }
 
-  v19 = -[HUTriggerActionEditorItemManager initWithDelegate:showShortcutItem:]([HUTriggerActionEditorItemManager alloc], "initWithDelegate:showShortcutItem:", self, ([v9 isStandalone] ^ 1) & v14);
+  v19 = -[HUTriggerActionEditorItemManager initWithDelegate:showShortcutItem:]([HUTriggerActionEditorItemManager alloc], "initWithDelegate:showShortcutItem:", self, ([flowCopy isStandalone] ^ 1) & v14);
   [(HUServiceGridViewController *)v13 setContentMargins:1];
   +[HUTriggerUtilities preloadShortcutHomeManager];
   v22.receiver = self;
@@ -117,28 +117,28 @@
   v15.receiver = self;
   v15.super_class = HUTriggerActionEditorViewController;
   [(HUInstructionsTableViewController *)&v15 viewDidLoad];
-  v3 = [(HUTriggerActionEditorViewController *)self triggerBuilder];
-  v4 = [v3 context];
-  v5 = [v4 triggerContextAwareTitle];
-  if (v5)
+  triggerBuilder = [(HUTriggerActionEditorViewController *)self triggerBuilder];
+  context = [triggerBuilder context];
+  triggerContextAwareTitle = [context triggerContextAwareTitle];
+  if (triggerContextAwareTitle)
   {
-    [(HUTriggerActionEditorViewController *)self setTitle:v5];
+    [(HUTriggerActionEditorViewController *)self setTitle:triggerContextAwareTitle];
   }
 
   else
   {
-    v6 = [(HUTriggerActionEditorViewController *)self triggerBuilder];
-    v7 = [v6 naturalLanguageNameOfType:2];
+    triggerBuilder2 = [(HUTriggerActionEditorViewController *)self triggerBuilder];
+    v7 = [triggerBuilder2 naturalLanguageNameOfType:2];
     [(HUTriggerActionEditorViewController *)self setTitle:v7];
   }
 
-  v8 = [(HUTriggerActionEditorViewController *)self triggerBuilder];
-  v9 = [v8 context];
-  v10 = [v9 actionEditorInstructionsDescription];
-  v11 = v10;
-  if (v10)
+  triggerBuilder3 = [(HUTriggerActionEditorViewController *)self triggerBuilder];
+  context2 = [triggerBuilder3 context];
+  actionEditorInstructionsDescription = [context2 actionEditorInstructionsDescription];
+  v11 = actionEditorInstructionsDescription;
+  if (actionEditorInstructionsDescription)
   {
-    v12 = v10;
+    v12 = actionEditorInstructionsDescription;
   }
 
   else
@@ -148,36 +148,36 @@
 
   v13 = v12;
 
-  v14 = [(HUTriggerActionEditorViewController *)self navigationItem];
-  [v14 setPrompt:v13];
+  navigationItem = [(HUTriggerActionEditorViewController *)self navigationItem];
+  [navigationItem setPrompt:v13];
 }
 
-- (void)updateCell:(id)a3 forItem:(id)a4 indexPath:(id)a5 animated:(BOOL)a6
+- (void)updateCell:(id)cell forItem:(id)item indexPath:(id)path animated:(BOOL)animated
 {
-  v6 = a6;
-  v10 = a3;
+  animatedCopy = animated;
+  cellCopy = cell;
   v11.receiver = self;
   v11.super_class = HUTriggerActionEditorViewController;
-  [(HUInstructionsTableViewController *)&v11 updateCell:v10 forItem:a4 indexPath:a5 animated:v6];
+  [(HUInstructionsTableViewController *)&v11 updateCell:cellCopy forItem:item indexPath:path animated:animatedCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v10 removeMargins];
+    [cellCopy removeMargins];
   }
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(HUItemTableViewController *)self itemManager];
-  v10 = [v9 displayedItemAtIndexPath:v8];
+  viewCopy = view;
+  pathCopy = path;
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  v10 = [itemManager displayedItemAtIndexPath:pathCopy];
 
   objc_opt_class();
-  v11 = [(HUItemTableViewController *)self itemManager];
+  itemManager2 = [(HUItemTableViewController *)self itemManager];
   if (objc_opt_isKindOfClass())
   {
-    v12 = v11;
+    v12 = itemManager2;
   }
 
   else
@@ -187,11 +187,11 @@
 
   v13 = v12;
 
-  v14 = [v13 addShortcutItem];
+  addShortcutItem = [v13 addShortcutItem];
 
-  if (v10 == v14)
+  if (v10 == addShortcutItem)
   {
-    [v7 deselectRowAtIndexPath:v8 animated:1];
+    [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
     [(HUTriggerActionEditorViewController *)self _showShortcutsEditorIfPossible];
   }
 
@@ -199,16 +199,16 @@
   {
     v15.receiver = self;
     v15.super_class = HUTriggerActionEditorViewController;
-    [(HUItemTableViewController *)&v15 tableView:v7 didSelectRowAtIndexPath:v8];
+    [(HUItemTableViewController *)&v15 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
   }
 }
 
 - (void)_showShortcutsEditorIfPossible
 {
   v3 = MEMORY[0x277CD1DF8];
-  v4 = [(HUTriggerActionEditorViewController *)self triggerBuilder];
-  v5 = [v4 home];
-  LODWORD(v3) = [v3 isSupportedForHome:v5];
+  triggerBuilder = [(HUTriggerActionEditorViewController *)self triggerBuilder];
+  home = [triggerBuilder home];
+  LODWORD(v3) = [v3 isSupportedForHome:home];
 
   if (v3)
   {
@@ -240,8 +240,8 @@
 
 - (void)_showShortcutsEditor
 {
-  v3 = [(HUTriggerActionEditorViewController *)self actionEditorContentViewController];
-  v4 = [v3 triggerBuilderFutureWithLatestUIChanges];
+  actionEditorContentViewController = [(HUTriggerActionEditorViewController *)self actionEditorContentViewController];
+  triggerBuilderFutureWithLatestUIChanges = [actionEditorContentViewController triggerBuilderFutureWithLatestUIChanges];
 
   objc_initWeak(&location, self);
   v9[0] = MEMORY[0x277D85DD0];
@@ -249,13 +249,13 @@
   v9[2] = __59__HUTriggerActionEditorViewController__showShortcutsEditor__block_invoke;
   v9[3] = &unk_277DB94D0;
   objc_copyWeak(&v10, &location);
-  v5 = [v4 addFailureBlock:v9];
+  v5 = [triggerBuilderFutureWithLatestUIChanges addFailureBlock:v9];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __59__HUTriggerActionEditorViewController__showShortcutsEditor__block_invoke_3;
   v7[3] = &unk_277DB99B8;
   objc_copyWeak(&v8, &location);
-  v6 = [v4 addSuccessBlock:v7];
+  v6 = [triggerBuilderFutureWithLatestUIChanges addSuccessBlock:v7];
   objc_destroyWeak(&v8);
   objc_destroyWeak(&v10);
   objc_destroyWeak(&location);
@@ -296,10 +296,10 @@ void __59__HUTriggerActionEditorViewController__showShortcutsEditor__block_invok
 - (HUTriggerActionEditorContentViewController)actionEditorContentViewController
 {
   objc_opt_class();
-  v3 = [(HUInstructionsTableViewController *)self contentViewController];
+  contentViewController = [(HUInstructionsTableViewController *)self contentViewController];
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = contentViewController;
   }
 
   else
@@ -314,36 +314,36 @@ void __59__HUTriggerActionEditorViewController__showShortcutsEditor__block_invok
 
 - (HFTriggerBuilder)triggerBuilder
 {
-  v2 = [(HUTriggerActionEditorViewController *)self actionEditorContentViewController];
-  v3 = [v2 triggerBuilder];
+  actionEditorContentViewController = [(HUTriggerActionEditorViewController *)self actionEditorContentViewController];
+  triggerBuilder = [actionEditorContentViewController triggerBuilder];
 
-  return v3;
+  return triggerBuilder;
 }
 
 - (HUTriggerEditorDelegate)delegate
 {
-  v2 = [(HUTriggerActionEditorViewController *)self actionEditorContentViewController];
-  v3 = [v2 delegate];
+  actionEditorContentViewController = [(HUTriggerActionEditorViewController *)self actionEditorContentViewController];
+  delegate = [actionEditorContentViewController delegate];
 
-  return v3;
+  return delegate;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(HUTriggerActionEditorViewController *)self actionEditorContentViewController];
-  [v5 setDelegate:v4];
+  delegateCopy = delegate;
+  actionEditorContentViewController = [(HUTriggerActionEditorViewController *)self actionEditorContentViewController];
+  [actionEditorContentViewController setDelegate:delegateCopy];
 }
 
-- (void)homeWorkflowEditorViewController:(id)a3 didFinishWithHomeWorkflow:(id)a4 includesSecureAccessory:(BOOL)a5
+- (void)homeWorkflowEditorViewController:(id)controller didFinishWithHomeWorkflow:(id)workflow includesSecureAccessory:(BOOL)accessory
 {
-  v6 = a4;
-  v7 = [(HUTriggerActionEditorViewController *)self triggerBuilder];
-  v8 = [v7 triggerActionSets];
-  [v8 setHomeWorkflow:v6];
+  workflowCopy = workflow;
+  triggerBuilder = [(HUTriggerActionEditorViewController *)self triggerBuilder];
+  triggerActionSets = [triggerBuilder triggerActionSets];
+  [triggerActionSets setHomeWorkflow:workflowCopy];
 
-  v9 = [(HUTriggerActionEditorViewController *)self actionEditorContentViewController];
-  [v9 goToSummaryScreen];
+  actionEditorContentViewController = [(HUTriggerActionEditorViewController *)self actionEditorContentViewController];
+  [actionEditorContentViewController goToSummaryScreen];
 }
 
 @end

@@ -1,19 +1,19 @@
 @interface HKUserNotificationsDataSource
-- (BOOL)areNotificationsAuthorizedWithBundleIdentifier:(id)a3;
+- (BOOL)areNotificationsAuthorizedWithBundleIdentifier:(id)identifier;
 @end
 
 @implementation HKUserNotificationsDataSource
 
-- (BOOL)areNotificationsAuthorizedWithBundleIdentifier:(id)a3
+- (BOOL)areNotificationsAuthorizedWithBundleIdentifier:(id)identifier
 {
   v3 = MEMORY[0x1E6983308];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithBundleIdentifier:v4];
+  identifierCopy = identifier;
+  v5 = [[v3 alloc] initWithBundleIdentifier:identifierCopy];
 
-  v6 = [v5 notificationSettings];
-  v7 = [v6 authorizationStatus];
+  notificationSettings = [v5 notificationSettings];
+  authorizationStatus = [notificationSettings authorizationStatus];
 
-  v9 = v7 == 4 || (v7 & 0xFFFFFFFFFFFFFFFELL) == 2;
+  v9 = authorizationStatus == 4 || (authorizationStatus & 0xFFFFFFFFFFFFFFFELL) == 2;
   return v9;
 }
 

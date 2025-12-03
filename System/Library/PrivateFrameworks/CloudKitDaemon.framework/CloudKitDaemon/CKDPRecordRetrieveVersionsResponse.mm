@@ -1,33 +1,33 @@
 @interface CKDPRecordRetrieveVersionsResponse
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addRecordVersions:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addRecordVersions:(id)versions;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CKDPRecordRetrieveVersionsResponse
 
-- (void)addRecordVersions:(id)a3
+- (void)addRecordVersions:(id)versions
 {
-  v4 = a3;
+  versionsCopy = versions;
   recordVersions = self->_recordVersions;
-  v8 = v4;
+  v8 = versionsCopy;
   if (!recordVersions)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_recordVersions;
     self->_recordVersions = v6;
 
-    v4 = v8;
+    versionsCopy = v8;
     recordVersions = self->_recordVersions;
   }
 
-  objc_msgSend_addObject_(recordVersions, v4, v4);
+  objc_msgSend_addObject_(recordVersions, versionsCopy, versionsCopy);
 }
 
 - (id)description
@@ -94,10 +94,10 @@
   return v6;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     isDeleted = self->_isDeleted;
@@ -139,16 +139,16 @@
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[16] = self->_isDeleted;
-    v4[20] |= 1u;
+    toCopy[16] = self->_isDeleted;
+    toCopy[20] |= 1u;
   }
 
-  v17 = v4;
+  v17 = toCopy;
   if (objc_msgSend_recordVersionsCount(self, v5, v6))
   {
     objc_msgSend_clearRecordVersions(v17, v7, v8);
@@ -165,11 +165,11 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v28 = *MEMORY[0x277D85DE8];
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_init(v7, v8, v9);
   v11 = v10;
   if (*&self->_has)
@@ -198,7 +198,7 @@
           objc_enumerationMutation(v12);
         }
 
-        v19 = objc_msgSend_copyWithZone_(*(*(&v23 + 1) + 8 * v18), v15, a3, v23);
+        v19 = objc_msgSend_copyWithZone_(*(*(&v23 + 1) + 8 * v18), v15, zone, v23);
         objc_msgSend_addRecordVersions_(v11, v20, v19);
 
         ++v18;
@@ -215,27 +215,27 @@
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (!objc_msgSend_isMemberOfClass_(v4, v6, v5))
+  if (!objc_msgSend_isMemberOfClass_(equalCopy, v6, v5))
   {
     goto LABEL_7;
   }
 
-  v8 = *(v4 + 20);
+  v8 = *(equalCopy + 20);
   if ((*&self->_has & 1) == 0)
   {
     goto LABEL_3;
   }
 
-  if ((*(v4 + 20) & 1) == 0)
+  if ((*(equalCopy + 20) & 1) == 0)
   {
     goto LABEL_7;
   }
 
-  v8 = *(v4 + 16);
+  v8 = *(equalCopy + 16);
   if (!self->_isDeleted)
   {
 LABEL_3:
@@ -249,14 +249,14 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if ((v4[2] & 1) == 0)
+  if ((equalCopy[2] & 1) == 0)
   {
     goto LABEL_7;
   }
 
 LABEL_4:
   recordVersions = self->_recordVersions;
-  v10 = v4[1];
+  v10 = equalCopy[1];
   if (recordVersions | v10)
   {
     isEqual = objc_msgSend_isEqual_(recordVersions, v7, v10);
@@ -287,14 +287,14 @@ LABEL_8:
   return objc_msgSend_hash(self->_recordVersions, a2, v2) ^ v3;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 20))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 20))
   {
-    self->_isDeleted = *(v4 + 16);
+    self->_isDeleted = *(fromCopy + 16);
     *&self->_has |= 1u;
   }
 
@@ -302,7 +302,7 @@ LABEL_8:
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = *(v4 + 1);
+  v6 = *(fromCopy + 1);
   v8 = objc_msgSend_countByEnumeratingWithState_objects_count_(v6, v7, &v14, v18, 16);
   if (v8)
   {

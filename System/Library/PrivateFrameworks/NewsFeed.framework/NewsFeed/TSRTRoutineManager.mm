@@ -1,20 +1,20 @@
 @interface TSRTRoutineManager
-+ (id)parseLocation:(id)a3;
-+ (void)fetchMostFrequentLocationWithCompletion:(id)a3;
++ (id)parseLocation:(id)location;
++ (void)fetchMostFrequentLocationWithCompletion:(id)completion;
 @end
 
 @implementation TSRTRoutineManager
 
-+ (id)parseLocation:(id)a3
++ (id)parseLocation:(id)location
 {
-  if (a3)
+  if (location)
   {
     v4 = MEMORY[0x1E6985C40];
-    v5 = a3;
+    locationCopy = location;
     v6 = [v4 alloc];
-    [v5 latitude];
+    [locationCopy latitude];
     v8 = v7;
-    [v5 longitude];
+    [locationCopy longitude];
     v10 = v9;
 
     v11 = [v6 initWithLatitude:v8 longitude:v10];
@@ -28,18 +28,18 @@
   return v11;
 }
 
-+ (void)fetchMostFrequentLocationWithCompletion:(id)a3
++ (void)fetchMostFrequentLocationWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E6999090] defaultManager];
+  completionCopy = completion;
+  defaultManager = [MEMORY[0x1E6999090] defaultManager];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __62__TSRTRoutineManager_fetchMostFrequentLocationWithCompletion___block_invoke;
   v7[3] = &unk_1E84CD170;
-  v8 = v4;
-  v9 = a1;
-  v6 = v4;
-  [v5 fetchLocationsOfInterestOfType:0 withHandler:v7];
+  v8 = completionCopy;
+  selfCopy = self;
+  v6 = completionCopy;
+  [defaultManager fetchLocationsOfInterestOfType:0 withHandler:v7];
 }
 
 void __62__TSRTRoutineManager_fetchMostFrequentLocationWithCompletion___block_invoke(uint64_t a1, void *a2, void *a3)

@@ -1,6 +1,6 @@
 @interface HostedSpecifierViewController
-- (_TtC18HealthExperienceUI29HostedSpecifierViewController)initWithCoder:(id)a3;
-- (_TtC18HealthExperienceUI29HostedSpecifierViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC18HealthExperienceUI29HostedSpecifierViewController)initWithCoder:(id)coder;
+- (_TtC18HealthExperienceUI29HostedSpecifierViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewControllerDidLeaveAdaptiveModal;
 - (void)viewControllerWillEnterAdaptiveModal;
 - (void)viewDidLoad;
@@ -8,7 +8,7 @@
 
 @implementation HostedSpecifierViewController
 
-- (_TtC18HealthExperienceUI29HostedSpecifierViewController)initWithCoder:(id)a3
+- (_TtC18HealthExperienceUI29HostedSpecifierViewController)initWithCoder:(id)coder
 {
   result = sub_1BA4A8018();
   __break(1u);
@@ -24,7 +24,7 @@
   sub_1BA039794();
 }
 
-- (_TtC18HealthExperienceUI29HostedSpecifierViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC18HealthExperienceUI29HostedSpecifierViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
@@ -34,7 +34,7 @@
 - (void)viewControllerWillEnterAdaptiveModal
 {
   v2 = *(&self->super.super.super.isa + OBJC_IVAR____TtC18HealthExperienceUI29HostedSpecifierViewController_specifierViewController);
-  v4 = self;
+  selfCopy = self;
   v3 = v2;
   sub_1B9FCE184();
 
@@ -43,7 +43,7 @@
 
 - (void)viewControllerDidLeaveAdaptiveModal
 {
-  v2 = self;
+  selfCopy = self;
   HostedSpecifierViewController.viewControllerDidLeaveAdaptiveModal()();
 }
 

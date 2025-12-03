@@ -1,16 +1,16 @@
 @interface PHRecentsPhoneHeaderSummaryView
 - (CGSize)intrinsicContentSize;
-- (PHRecentsPhoneHeaderSummaryView)initWithFrame:(CGRect)a3 recentCall:(id)a4 occurrenceDate:(id)a5 status:(unsigned int)a6 duration:(double)a7 type:(unsigned int)a8;
+- (PHRecentsPhoneHeaderSummaryView)initWithFrame:(CGRect)frame recentCall:(id)call occurrenceDate:(id)date status:(unsigned int)status duration:(double)duration type:(unsigned int)type;
 @end
 
 @implementation PHRecentsPhoneHeaderSummaryView
 
-- (PHRecentsPhoneHeaderSummaryView)initWithFrame:(CGRect)a3 recentCall:(id)a4 occurrenceDate:(id)a5 status:(unsigned int)a6 duration:(double)a7 type:(unsigned int)a8
+- (PHRecentsPhoneHeaderSummaryView)initWithFrame:(CGRect)frame recentCall:(id)call occurrenceDate:(id)date status:(unsigned int)status duration:(double)duration type:(unsigned int)type
 {
-  v8 = *&a8;
+  v8 = *&type;
   v50.receiver = self;
   v50.super_class = PHRecentsPhoneHeaderSummaryView;
-  v12 = [(PHRecentsPhoneHeaderSummaryView *)&v50 initWithFrame:a4, a5, a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v12 = [(PHRecentsPhoneHeaderSummaryView *)&v50 initWithFrame:call, date, frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (!v12)
   {
     return v12;
@@ -46,35 +46,35 @@
   [v18 setContentHuggingPriority:0 forAxis:v23];
   LODWORD(v24) = 1148846080;
   [v18 setContentHuggingPriority:1 forAxis:v24];
-  if (kCHCallStatusMissed == a6)
+  if (kCHCallStatusMissed == status)
   {
     v25 = 0;
     v26 = @"MISSED";
     goto LABEL_15;
   }
 
-  if (kCHCallStatusCancelled == a6)
+  if (kCHCallStatusCancelled == status)
   {
     v25 = 0;
     v26 = @"CANCELLED";
     goto LABEL_15;
   }
 
-  if (kCHCallStatusAnsweredElsewhere == a6)
+  if (kCHCallStatusAnsweredElsewhere == status)
   {
     v25 = 0;
     v26 = @"ANSWERED_ELSEWHERE";
     goto LABEL_15;
   }
 
-  if (kCHCallStatusConnectedOutgoing == a6)
+  if (kCHCallStatusConnectedOutgoing == status)
   {
     v25 = 1;
     v26 = @"OUTGOING";
     goto LABEL_15;
   }
 
-  if (kCHCallStatusConnectedIncoming == a6)
+  if (kCHCallStatusConnectedIncoming == status)
   {
     v25 = 1;
     v26 = @"INCOMING";
@@ -119,7 +119,7 @@ LABEL_19:
   [v33 setFont:v34];
 
   [v33 setTextColor:v13];
-  v35 = sub_100036F4C(a7);
+  v35 = sub_100036F4C(duration);
   [v33 setText:v35];
 
   [(PHRecentsPhoneHeaderSummaryView *)v12 addSubview:v33];

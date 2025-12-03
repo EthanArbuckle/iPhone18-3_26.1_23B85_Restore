@@ -1,20 +1,20 @@
 @interface MainWindowControlHeaderView
-+ (CGImage)imageForString:(id)a3 atRect:(CGRect)a4 withSize:(CGSize)a5;
-+ (CGImage)maskImageForImage:(id)a3 atPoint:(CGPoint)a4 withSize:(CGSize)a5;
-+ (double)spacerWidthForWindowWidth:(double)a3;
-+ (id)badgedCalendarIcon:(BOOL)a3;
-+ (id)customBadgedButtonWithImage:(id)a3 target:(id)a4 selected:(BOOL)a5 insets:(UIEdgeInsets)a6 action:(SEL)a7;
-+ (id)inboxBadgeForCount:(unint64_t)a3;
-+ (id)inboxImageForCount:(unint64_t)a3 selected:(BOOL)a4 forToolbar:(BOOL)a5 bold:(BOOL)a6;
++ (CGImage)imageForString:(id)string atRect:(CGRect)rect withSize:(CGSize)size;
++ (CGImage)maskImageForImage:(id)image atPoint:(CGPoint)point withSize:(CGSize)size;
++ (double)spacerWidthForWindowWidth:(double)width;
++ (id)badgedCalendarIcon:(BOOL)icon;
++ (id)customBadgedButtonWithImage:(id)image target:(id)target selected:(BOOL)selected insets:(UIEdgeInsets)insets action:(SEL)action;
++ (id)inboxBadgeForCount:(unint64_t)count;
++ (id)inboxImageForCount:(unint64_t)count selected:(BOOL)selected forToolbar:(BOOL)toolbar bold:(BOOL)bold;
 + (id)spacer;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (MainWindowControlHeaderView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (MainWindowControlHeaderView)initWithFrame:(CGRect)frame;
 - (id)calendarBarButtonItem;
 - (id)inboxBarButtonItem;
-- (void)layoutForWidth:(double)a3;
-- (void)updateButtonStateForSidebar:(unint64_t)a3;
-- (void)updateErrorState:(BOOL)a3;
-- (void)updateInboxCount:(unint64_t)a3;
+- (void)layoutForWidth:(double)width;
+- (void)updateButtonStateForSidebar:(unint64_t)sidebar;
+- (void)updateErrorState:(BOOL)state;
+- (void)updateInboxCount:(unint64_t)count;
 - (void)updateToolbarItems;
 @end
 
@@ -24,26 +24,26 @@
 {
   if (CalUIKitNavBarEnabled() && ([(MainWindowControlHeaderView *)self delegate], v3 = objc_claimAutoreleasedReturnValue(), v4 = objc_opt_respondsToSelector(), v3, (v4 & 1) != 0))
   {
-    v5 = [(MainWindowControlHeaderView *)self delegate];
-    v6 = [(MainWindowControlHeaderView *)self calendarBarButtonItem];
-    v16[0] = v6;
-    v7 = [(MainWindowControlHeaderView *)self inboxBarButtonItem];
+    delegate = [(MainWindowControlHeaderView *)self delegate];
+    calendarBarButtonItem = [(MainWindowControlHeaderView *)self calendarBarButtonItem];
+    v16[0] = calendarBarButtonItem;
+    inboxBarButtonItem = [(MainWindowControlHeaderView *)self inboxBarButtonItem];
     listViewBarButton = self->_listViewBarButton;
-    v16[1] = v7;
+    v16[1] = inboxBarButtonItem;
     v16[2] = listViewBarButton;
     v9 = [NSArray arrayWithObjects:v16 count:3];
     newEventBarButton = self->_newEventBarButton;
     v10 = [NSArray arrayWithObjects:&newEventBarButton count:1];
-    [v5 setNavigationItems:v9 additionalItems:v10];
+    [delegate setNavigationItems:v9 additionalItems:v10];
   }
 
   else
   {
-    v5 = [(MainWindowControlHeaderView *)self calendarBarButtonItem];
-    v6 = [(NSArray *)self->_spacers objectAtIndexedSubscript:0, v5];
-    v14[1] = v6;
-    v7 = [(MainWindowControlHeaderView *)self inboxBarButtonItem];
-    v14[2] = v7;
+    delegate = [(MainWindowControlHeaderView *)self calendarBarButtonItem];
+    calendarBarButtonItem = [(NSArray *)self->_spacers objectAtIndexedSubscript:0, delegate];
+    v14[1] = calendarBarButtonItem;
+    inboxBarButtonItem = [(MainWindowControlHeaderView *)self inboxBarButtonItem];
+    v14[2] = inboxBarButtonItem;
     v9 = [(NSArray *)self->_spacers objectAtIndexedSubscript:1];
     v11 = self->_listViewBarButton;
     v14[3] = v9;
@@ -65,15 +65,15 @@
   return v2;
 }
 
-+ (CGImage)imageForString:(id)a3 atRect:(CGRect)a4 withSize:(CGSize)a5
++ (CGImage)imageForString:(id)string atRect:(CGRect)rect withSize:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
-  v7 = a4.size.height;
-  v8 = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v11 = a3;
+  height = size.height;
+  width = size.width;
+  v7 = rect.size.height;
+  v8 = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  stringCopy = string;
   v12 = +[UIScreen mainScreen];
   [v12 scale];
   v14 = v13;
@@ -103,7 +103,7 @@
     v25.size.width = width;
     v25.size.height = height;
     CGContextFillRect(v19, v25);
-    [v11 drawInRect:{x, y, v8, v7}];
+    [stringCopy drawInRect:{x, y, v8, v7}];
     Image = CGBitmapContextCreateImage(v19);
     UIGraphicsPopContext();
     CGContextRelease(v19);
@@ -117,13 +117,13 @@
   return Image;
 }
 
-+ (CGImage)maskImageForImage:(id)a3 atPoint:(CGPoint)a4 withSize:(CGSize)a5
++ (CGImage)maskImageForImage:(id)image atPoint:(CGPoint)point withSize:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
-  y = a4.y;
-  x = a4.x;
-  v9 = a3;
+  height = size.height;
+  width = size.width;
+  y = point.y;
+  x = point.x;
+  imageCopy = image;
   v10 = +[UIScreen mainScreen];
   [v10 scale];
   v12 = v11;
@@ -153,7 +153,7 @@
     v23.size.width = width;
     v23.size.height = height;
     CGContextFillRect(v17, v23);
-    [v9 drawAtPoint:{x, y}];
+    [imageCopy drawAtPoint:{x, y}];
     Image = CGBitmapContextCreateImage(v17);
     UIGraphicsPopContext();
     CGContextRelease(v17);
@@ -167,12 +167,12 @@
   return Image;
 }
 
-+ (id)inboxImageForCount:(unint64_t)a3 selected:(BOOL)a4 forToolbar:(BOOL)a5 bold:(BOOL)a6
++ (id)inboxImageForCount:(unint64_t)count selected:(BOOL)selected forToolbar:(BOOL)toolbar bold:(BOOL)bold
 {
-  v6 = a6;
-  v7 = a5;
-  v8 = a4;
-  if (a6)
+  boldCopy = bold;
+  toolbarCopy = toolbar;
+  selectedCopy = selected;
+  if (bold)
   {
     v11 = 6;
   }
@@ -184,11 +184,11 @@
 
   v12 = [UIImageSymbolConfiguration configurationWithPointSize:v11 weight:3 scale:17.0];
   v13 = [UIImage systemImageNamed:@"tray" withConfiguration:v12];
-  v14 = [v13 imageFlippedForRightToLeftLayoutDirection];
+  imageFlippedForRightToLeftLayoutDirection = [v13 imageFlippedForRightToLeftLayoutDirection];
 
-  if (!a3)
+  if (!count)
   {
-    v16 = v14;
+    v16 = imageFlippedForRightToLeftLayoutDirection;
     goto LABEL_60;
   }
 
@@ -197,42 +197,42 @@
     sub_1001703B4();
   }
 
-  if (a3 <= 0x63)
+  if (count <= 0x63)
   {
     v17 = @"unselected";
-    if (v8)
+    if (selectedCopy)
     {
       v17 = @"selected";
     }
 
-    v15 = [NSString stringWithFormat:@"%tu-%@-%i", a3, v17, v6];
+    boldCopy = [NSString stringWithFormat:@"%tu-%@-%i", count, v17, boldCopy];
   }
 
   else
   {
-    v15 = @"over-max";
+    boldCopy = @"over-max";
   }
 
-  v16 = [qword_100251A08 objectForKey:v15];
+  v16 = [qword_100251A08 objectForKey:boldCopy];
   if (!v16)
   {
-    v95 = v7;
-    v89 = a1;
-    if (a3 >= 0x63)
+    v95 = toolbarCopy;
+    selfCopy = self;
+    if (count >= 0x63)
     {
-      v18 = 99;
+      countCopy = 99;
     }
 
     else
     {
-      v18 = a3;
+      countCopy = count;
     }
 
-    v19 = [NSNumber numberWithUnsignedInteger:v18];
+    v19 = [NSNumber numberWithUnsignedInteger:countCopy];
     v20 = [NSNumberFormatter localizedStringFromNumber:v19 numberStyle:1];
 
     v90 = v20;
-    if (a3 <= 0x63)
+    if (count <= 0x63)
     {
       v87 = v20;
     }
@@ -252,7 +252,7 @@
     {
       v100[0] = NSFontAttributeName;
       v25 = &UIFontWeightMedium;
-      if (v6)
+      if (boldCopy)
       {
         v25 = &UIFontWeightSemibold;
       }
@@ -304,7 +304,7 @@
     }
 
     v94 = v39;
-    [v14 size];
+    [imageFlippedForRightToLeftLayoutDirection size];
     rect = v41;
     v42 = v40;
     v43 = 0.0;
@@ -334,7 +334,7 @@
     }
 
     v51 = 0.0;
-    if (a3 > 0x63)
+    if (count > 0x63)
     {
       v51 = 1.0;
     }
@@ -364,7 +364,7 @@
     CurrentContext = UIGraphicsGetCurrentContext();
     v55 = v52;
     v56 = v92;
-    if (!v8)
+    if (!selectedCopy)
     {
       v57 = CalInterfaceIsLeftToRight();
       v58 = -1.0;
@@ -385,7 +385,7 @@
     v62 = v44;
     v63 = rect;
     v64 = v42;
-    if (v8)
+    if (selectedCopy)
     {
       v61 = v91 + -1.0;
       v62 = v44 + -2.0;
@@ -394,7 +394,7 @@
       if (v95)
       {
 LABEL_45:
-        if (v8)
+        if (selectedCopy)
         {
           goto LABEL_46;
         }
@@ -416,11 +416,11 @@ LABEL_45:
     CGContextAddRect(CurrentContext, v107);
     CGContextAddPath(CurrentContext, [v59 CGPath]);
     CGContextEOClip(CurrentContext);
-    if (v8)
+    if (selectedCopy)
     {
 LABEL_46:
       v65 = v33;
-      v66 = [v89 maskImageForImage:v14 atPoint:v91 withSize:{v44, v93, v86}];
+      v66 = [selfCopy maskImageForImage:imageFlippedForRightToLeftLayoutDirection atPoint:v91 withSize:{v44, v93, v86}];
       v105.origin.x = 0.0;
       v105.origin.y = 0.0;
       v105.size.width = v93;
@@ -451,7 +451,7 @@ LABEL_46:
     }
 
 LABEL_54:
-    [v14 drawInRect:{v91, v44, rect, v42}];
+    [imageFlippedForRightToLeftLayoutDirection drawInRect:{v91, v44, rect, v42}];
     if (!v95)
     {
 LABEL_49:
@@ -460,8 +460,8 @@ LABEL_49:
       v70 = 0.0;
       v71 = [UIBezierPath bezierPathWithRoundedRect:v83 cornerRadius:0.0, v94, v53, v92 * 0.5];
       v72 = v33;
-      v73 = [v89 imageForString:v33 atRect:v83 withSize:{2.0, v94, v53 + -4.0, v93, v86}];
-      if (a3 >= 0x64)
+      v73 = [selfCopy imageForString:v33 atRect:v83 withSize:{2.0, v94, v53 + -4.0, v93, v86}];
+      if (count >= 0x64)
       {
         CalOnePixelInPoints();
         v70 = v74 + 0.0;
@@ -487,7 +487,7 @@ LABEL_49:
       v33 = v72;
       v59 = recta;
 LABEL_58:
-      [qword_100251A08 setObject:v16 forKey:v15];
+      [qword_100251A08 setObject:v16 forKey:boldCopy];
 
       goto LABEL_59;
     }
@@ -528,11 +528,11 @@ LABEL_60:
   return v16;
 }
 
-+ (id)badgedCalendarIcon:(BOOL)a3
++ (id)badgedCalendarIcon:(BOOL)icon
 {
-  v3 = a3;
+  iconCopy = icon;
   v5 = &unk_100251A20;
-  if (!a3)
+  if (!icon)
   {
     v5 = &unk_100251A18;
   }
@@ -542,7 +542,7 @@ LABEL_60:
   {
     v7 = [UIImageSymbolConfiguration configurationWithPointSize:5 weight:3 scale:17.0];
     v8 = [UIImage systemImageNamed:@"calendar.badge.exclamationmark" withConfiguration:v7];
-    v9 = [v8 imageFlippedForRightToLeftLayoutDirection];
+    imageFlippedForRightToLeftLayoutDirection = [v8 imageFlippedForRightToLeftLayoutDirection];
 
     IsLeftToRight = CalInterfaceIsLeftToRight();
     v11 = 0.0;
@@ -567,7 +567,7 @@ LABEL_60:
     }
 
     v14 = CalSystemSolariumEnabled();
-    [v9 size];
+    [imageFlippedForRightToLeftLayoutDirection size];
     if (v14)
     {
       v17 = 6.0;
@@ -620,20 +620,20 @@ LABEL_60:
     v49.height = v22;
     UIGraphicsBeginImageContextWithOptions(v49, 0, 0.0);
     CurrentContext = UIGraphicsGetCurrentContext();
-    if (v3)
+    if (iconCopy)
     {
       v25 = CurrentContext;
       CGContextSaveGState(CurrentContext);
       v26 = [UIImage systemImageNamed:@"calendar" withConfiguration:v7];
-      v27 = [v26 imageFlippedForRightToLeftLayoutDirection];
+      imageFlippedForRightToLeftLayoutDirection2 = [v26 imageFlippedForRightToLeftLayoutDirection];
 
-      [v27 size];
+      [imageFlippedForRightToLeftLayoutDirection2 size];
       v47 = v17 + v18 + v28;
-      [v27 size];
+      [imageFlippedForRightToLeftLayoutDirection2 size];
       v30 = v19 + v19 + v29;
-      [v9 size];
+      [imageFlippedForRightToLeftLayoutDirection size];
       v32 = v18 + v31 + -13.0 + -0.5;
-      [v9 size];
+      [imageFlippedForRightToLeftLayoutDirection size];
       v34 = v19 + v33 + -13.0 + -2.0;
       v35 = CalInterfaceIsLeftToRight();
       v36 = v18 + 0.5;
@@ -663,7 +663,7 @@ LABEL_60:
         v39 = v18;
       }
 
-      v40 = [a1 maskImageForImage:v27 atPoint:v39 withSize:{v19, v23, v22}];
+      v40 = [self maskImageForImage:imageFlippedForRightToLeftLayoutDirection2 atPoint:v39 withSize:{v19, v23, v22}];
       v51.origin.x = 0.0;
       v51.origin.y = 0.0;
       v51.size.width = v23;
@@ -686,14 +686,14 @@ LABEL_60:
       CGContextBeginPath(v25);
       CGContextAddPath(v25, [v37 CGPath]);
       CGContextClip(v25);
-      [v9 drawAtPoint:{v18, v19}];
+      [imageFlippedForRightToLeftLayoutDirection drawAtPoint:{v18, v19}];
 
       v44 = &unk_100251A20;
     }
 
     else
     {
-      [v9 drawAtPoint:{v18, v19}];
+      [imageFlippedForRightToLeftLayoutDirection drawAtPoint:{v18, v19}];
       v44 = &unk_100251A18;
     }
 
@@ -707,10 +707,10 @@ LABEL_60:
   return v6;
 }
 
-+ (double)spacerWidthForWindowWidth:(double)a3
++ (double)spacerWidthForWindowWidth:(double)width
 {
   +[MainWindowRootViewController minimumStandardWindowWidth];
-  v5 = v4 <= a3;
+  v5 = v4 <= width;
   result = 15.0;
   if (!v5)
   {
@@ -720,12 +720,12 @@ LABEL_60:
   return result;
 }
 
-- (MainWindowControlHeaderView)initWithFrame:(CGRect)a3
+- (MainWindowControlHeaderView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v42.receiver = self;
   v42.super_class = MainWindowControlHeaderView;
   v7 = [(MainWindowControlHeaderView *)&v42 initWithFrame:?];
@@ -745,8 +745,8 @@ LABEL_60:
     v12 = [UIImageSymbolConfiguration configurationWithPointSize:4 weight:3 scale:17.0];
     v13 = [UIBarButtonItem alloc];
     v14 = [UIImage systemImageNamed:@"calendar" withConfiguration:v12];
-    v15 = [v14 imageFlippedForRightToLeftLayoutDirection];
-    v16 = [v13 initWithImage:v15 style:0 target:v7 action:"calendarButtonTapped"];
+    imageFlippedForRightToLeftLayoutDirection = [v14 imageFlippedForRightToLeftLayoutDirection];
+    v16 = [v13 initWithImage:imageFlippedForRightToLeftLayoutDirection style:0 target:v7 action:"calendarButtonTapped"];
     calendarBarButton = v7->_calendarBarButton;
     v7->_calendarBarButton = v16;
 
@@ -759,8 +759,8 @@ LABEL_60:
     v18 = CalendarAppBarButtonItemTintColor();
     [(UIBarButtonItem *)v7->_calendarBarButton setTintColor:v18];
 
-    v19 = [(MainWindowControlHeaderView *)v7 traitCollection];
-    v20 = [v19 legibilityWeight] == 1;
+    traitCollection = [(MainWindowControlHeaderView *)v7 traitCollection];
+    v20 = [traitCollection legibilityWeight] == 1;
 
     v21 = [UIBarButtonItem alloc];
     v22 = [MainWindowControlHeaderView inboxImageForCount:0 selected:0 forToolbar:0 bold:v20];
@@ -779,8 +779,8 @@ LABEL_60:
 
     v26 = [UIBarButtonItem alloc];
     v27 = [UIImage systemImageNamed:@"list.bullet" withConfiguration:v12];
-    v28 = [v27 imageFlippedForRightToLeftLayoutDirection];
-    v29 = [v26 initWithImage:v28 style:0 target:v7 action:"listButtonTapped"];
+    imageFlippedForRightToLeftLayoutDirection2 = [v27 imageFlippedForRightToLeftLayoutDirection];
+    v29 = [v26 initWithImage:imageFlippedForRightToLeftLayoutDirection2 style:0 target:v7 action:"listButtonTapped"];
     listViewBarButton = v7->_listViewBarButton;
     v7->_listViewBarButton = v29;
 
@@ -817,17 +817,17 @@ LABEL_60:
   return v7;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(UIToolbar *)self->_toolbar sizeThatFits:a3.width, a3.height];
+  [(UIToolbar *)self->_toolbar sizeThatFits:fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (void)layoutForWidth:(double)a3
+- (void)layoutForWidth:(double)width
 {
-  [MainWindowControlHeaderView spacerWidthForWindowWidth:a3];
+  [MainWindowControlHeaderView spacerWidthForWindowWidth:width];
   v5 = v4;
   v11 = 0u;
   v12 = 0u;
@@ -887,12 +887,12 @@ LABEL_60:
   return v4;
 }
 
-- (void)updateButtonStateForSidebar:(unint64_t)a3
+- (void)updateButtonStateForSidebar:(unint64_t)sidebar
 {
-  v5 = [(MainWindowControlHeaderView *)self calendarBarButtonItem];
-  v6 = [(MainWindowControlHeaderView *)self inboxBarButtonItem];
-  v14[0] = v5;
-  v14[1] = v6;
+  calendarBarButtonItem = [(MainWindowControlHeaderView *)self calendarBarButtonItem];
+  inboxBarButtonItem = [(MainWindowControlHeaderView *)self inboxBarButtonItem];
+  v14[0] = calendarBarButtonItem;
+  v14[1] = inboxBarButtonItem;
   v14[2] = self->_listViewBarButton;
   v7 = [NSArray arrayWithObjects:v14 count:3];
   if (CalSystemSolariumEnabled())
@@ -901,7 +901,7 @@ LABEL_60:
     v13[1] = 3221225472;
     v13[2] = sub_10009F288;
     v13[3] = &unk_1002102C8;
-    v13[4] = a3;
+    v13[4] = sidebar;
     [v7 enumerateObjectsUsingBlock:v13];
   }
 
@@ -911,19 +911,19 @@ LABEL_60:
     v8[1] = 3221225472;
     v8[2] = sub_10009F304;
     v8[3] = &unk_1002102F0;
-    v12 = a3;
-    v9 = v6;
-    v10 = self;
-    v11 = v5;
+    sidebarCopy = sidebar;
+    v9 = inboxBarButtonItem;
+    selfCopy = self;
+    v11 = calendarBarButtonItem;
     [v7 enumerateObjectsUsingBlock:v8];
   }
 }
 
-+ (id)inboxBadgeForCount:(unint64_t)a3
++ (id)inboxBadgeForCount:(unint64_t)count
 {
-  if (a3)
+  if (count)
   {
-    if (a3 < 0x64)
+    if (count < 0x64)
     {
       v6 = [_UIBarButtonItemBadge _badgeWithCount:?];
     }
@@ -946,9 +946,9 @@ LABEL_60:
   return v6;
 }
 
-- (void)updateInboxCount:(unint64_t)a3
+- (void)updateInboxCount:(unint64_t)count
 {
-  if (self->_inboxCount == a3)
+  if (self->_inboxCount == count)
   {
     return;
   }
@@ -966,7 +966,7 @@ LABEL_60:
     }
 
     v21 = *(&self->super.super.super.isa + *v5);
-    if (a3)
+    if (count)
     {
       v6 = &OBJC_IVAR___MainWindowControlHeaderView__badgedInboxBarButton;
     }
@@ -977,7 +977,7 @@ LABEL_60:
     }
 
     v7 = *(&self->super.super.super.isa + *v6);
-    self->_inboxCount = a3;
+    self->_inboxCount = count;
     v8 = self->_inboxBarButton;
     p_info = (_CalendarEventsRow + 32);
     if (self->_inboxCount)
@@ -986,8 +986,8 @@ LABEL_60:
       if (!badgedInboxBarButton)
       {
         v11 = [UIBarButtonItem alloc];
-        v12 = [(UIBarButtonItem *)self->_inboxBarButton image];
-        v13 = [MainWindowControlHeaderView customBadgedButtonWithImage:v12 target:self selected:self->_inboxSelected insets:"inboxButtonTapped" action:-4.0, -10.0, -2.0, -10.0];
+        image = [(UIBarButtonItem *)self->_inboxBarButton image];
+        v13 = [MainWindowControlHeaderView customBadgedButtonWithImage:image target:self selected:self->_inboxSelected insets:"inboxButtonTapped" action:-4.0, -10.0, -2.0, -10.0];
         v14 = [v11 initWithCustomView:v13];
         v15 = self->_badgedInboxBarButton;
         self->_badgedInboxBarButton = v14;
@@ -1005,7 +1005,7 @@ LABEL_60:
       v8 = v17;
     }
 
-    v18 = [p_info + 321 inboxImageForCount:a3 selected:self->_inboxSelected forToolbar:0 bold:0];
+    v18 = [p_info + 321 inboxImageForCount:count selected:self->_inboxSelected forToolbar:0 bold:0];
     if (v8 == self->_inboxBarButton)
     {
       [(UIBarButtonItem *)v8 setImage:v18];
@@ -1013,8 +1013,8 @@ LABEL_60:
 
     else
     {
-      v19 = [(UIBarButtonItem *)v8 customView];
-      [v19 setImage:v18 forState:0];
+      customView = [(UIBarButtonItem *)v8 customView];
+      [customView setImage:v18 forState:0];
     }
 
     [(MainWindowControlHeaderView *)self updateToolbarItems];
@@ -1026,10 +1026,10 @@ LABEL_60:
     goto LABEL_25;
   }
 
-  self->_inboxCount = a3;
-  if (a3)
+  self->_inboxCount = count;
+  if (count)
   {
-    v21 = [MainWindowControlHeaderView inboxBadgeForCount:a3];
+    v21 = [MainWindowControlHeaderView inboxBadgeForCount:count];
     [(UIBarButtonItem *)self->_inboxBarButton set_badge:v21];
 LABEL_25:
 
@@ -1041,16 +1041,16 @@ LABEL_25:
   [(UIBarButtonItem *)inboxBarButton set_badge:0];
 }
 
-- (void)updateErrorState:(BOOL)a3
+- (void)updateErrorState:(BOOL)state
 {
-  if (self->_hasError != a3)
+  if (self->_hasError != state)
   {
-    v3 = a3;
+    stateCopy = state;
     if (CalSystemSolariumEnabled())
     {
       v5 = [UIImageSymbolConfiguration configurationWithPointSize:4 weight:3 scale:17.0];
       v18 = v5;
-      if (v3)
+      if (stateCopy)
       {
         v6 = @"calendar.badge.exclamationmark";
       }
@@ -1061,11 +1061,11 @@ LABEL_25:
       }
 
       v7 = [UIImage systemImageNamed:v6 withConfiguration:v5];
-      v8 = [v7 imageFlippedForRightToLeftLayoutDirection];
+      imageFlippedForRightToLeftLayoutDirection = [v7 imageFlippedForRightToLeftLayoutDirection];
 
-      [(UIBarButtonItem *)self->_calendarBarButton setImage:v8];
+      [(UIBarButtonItem *)self->_calendarBarButton setImage:imageFlippedForRightToLeftLayoutDirection];
       v9 = v18;
-      self->_hasError = v3;
+      self->_hasError = stateCopy;
     }
 
     else
@@ -1081,7 +1081,7 @@ LABEL_25:
       }
 
       v19 = *(&self->super.super.super.isa + *v10);
-      if (v3)
+      if (stateCopy)
       {
         v11 = &OBJC_IVAR___MainWindowControlHeaderView__badgedCalendarBarButton;
       }
@@ -1092,8 +1092,8 @@ LABEL_25:
       }
 
       v12 = *(&self->super.super.super.isa + *v11);
-      self->_hasError = v3;
-      if (v3 && !self->_badgedCalendarBarButton)
+      self->_hasError = stateCopy;
+      if (stateCopy && !self->_badgedCalendarBarButton)
       {
         v13 = [MainWindowControlHeaderView badgedCalendarIcon:self->_calendarSelected];
         v14 = [UIBarButtonItem alloc];
@@ -1116,25 +1116,25 @@ LABEL_25:
   }
 }
 
-+ (id)customBadgedButtonWithImage:(id)a3 target:(id)a4 selected:(BOOL)a5 insets:(UIEdgeInsets)a6 action:(SEL)a7
++ (id)customBadgedButtonWithImage:(id)image target:(id)target selected:(BOOL)selected insets:(UIEdgeInsets)insets action:(SEL)action
 {
-  right = a6.right;
-  bottom = a6.bottom;
-  left = a6.left;
-  top = a6.top;
-  v14 = a3;
-  v15 = a4;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  imageCopy = image;
+  targetCopy = target;
   v16 = [UIButton buttonWithType:1];
   if (CalSolariumEnabled())
   {
     v17 = +[UIButtonConfiguration plainButtonConfiguration];
-    [v17 setImage:v14];
+    [v17 setImage:imageCopy];
     [v16 setConfiguration:v17];
   }
 
   else
   {
-    [v16 setImage:v14 forState:0];
+    [v16 setImage:imageCopy forState:0];
   }
 
   if (CalSystemSolariumEnabled())
@@ -1143,14 +1143,14 @@ LABEL_25:
     [v16 setTintColor:v18];
   }
 
-  [v16 addTarget:v15 action:a7 forControlEvents:64];
+  [v16 addTarget:targetCopy action:action forControlEvents:64];
   objc_initWeak(&location, v16);
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_10009FD90;
   v20[3] = &unk_100210318;
   objc_copyWeak(v21, &location);
-  v22 = a5;
+  selectedCopy = selected;
   v21[1] = *&top;
   v21[2] = *&left;
   v21[3] = *&bottom;

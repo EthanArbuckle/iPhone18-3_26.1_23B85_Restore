@@ -1,9 +1,9 @@
 @interface PEAdjustmentDataCacheEntry
 + (id)_resultHandlingQueue;
 - (CGSize)inputSize;
-- (PEAdjustmentDataCacheEntry)initWithAsset:(id)a3 networkAccessAllowed:(BOOL)a4 originalAdjustmentData:(BOOL)a5;
-- (void)_load:(id)a3 networkAccessAllowed:(BOOL)a4 originalAdjustmentData:(BOOL)a5;
-- (void)deliverOn:(id)a3 completion:(id)a4;
+- (PEAdjustmentDataCacheEntry)initWithAsset:(id)asset networkAccessAllowed:(BOOL)allowed originalAdjustmentData:(BOOL)data;
+- (void)_load:(id)_load networkAccessAllowed:(BOOL)allowed originalAdjustmentData:(BOOL)data;
+- (void)deliverOn:(id)on completion:(id)completion;
 - (void)waitForResultsWithTimeout;
 @end
 
@@ -27,26 +27,26 @@
   dispatch_group_wait(timeoutGroup, v3);
 }
 
-- (void)deliverOn:(id)a3 completion:(id)a4
+- (void)deliverOn:(id)on completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   group = self->_group;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __51__PEAdjustmentDataCacheEntry_deliverOn_completion___block_invoke;
   v9[3] = &unk_279A30B18;
   v9[4] = self;
-  v10 = v6;
-  v8 = v6;
-  dispatch_group_notify(group, a3, v9);
+  v10 = completionCopy;
+  v8 = completionCopy;
+  dispatch_group_notify(group, on, v9);
 }
 
-- (void)_load:(id)a3 networkAccessAllowed:(BOOL)a4 originalAdjustmentData:(BOOL)a5
+- (void)_load:(id)_load networkAccessAllowed:(BOOL)allowed originalAdjustmentData:(BOOL)data
 {
-  v5 = a5;
-  v6 = a4;
-  v8 = a3;
-  if ([v8 hasAdjustments])
+  dataCopy = data;
+  allowedCopy = allowed;
+  _loadCopy = _load;
+  if ([_loadCopy hasAdjustments])
   {
     [(PEAdjustmentDataCacheEntry *)self setDisposition:0];
     dispatch_group_enter(self->_group);
@@ -61,7 +61,7 @@
     v30 = 0;
     v9 = objc_alloc_init(MEMORY[0x277CD98A0]);
     v10 = v9;
-    if (v5)
+    if (dataCopy)
     {
       v11 = 17;
     }
@@ -72,22 +72,22 @@
     }
 
     [v9 setVersion:v11];
-    [v10 setNetworkAccessAllowed:v6];
-    v12 = [objc_opt_class() _resultHandlingQueue];
-    [v10 setResultHandlerQueue:v12];
+    [v10 setNetworkAccessAllowed:allowedCopy];
+    _resultHandlingQueue = [objc_opt_class() _resultHandlingQueue];
+    [v10 setResultHandlerQueue:_resultHandlingQueue];
 
-    v13 = [MEMORY[0x277CD9898] defaultManager];
+    defaultManager = [MEMORY[0x277CD9898] defaultManager];
     v24[0] = MEMORY[0x277D85DD0];
     v24[1] = 3221225472;
     v24[2] = __80__PEAdjustmentDataCacheEntry__load_networkAccessAllowed_originalAdjustmentData___block_invoke;
     v24[3] = &unk_279A30AC8;
     v26 = v31;
     v24[4] = self;
-    v14 = v8;
-    v28 = v5;
+    v14 = _loadCopy;
+    v28 = dataCopy;
     v25 = v14;
     v27 = v29;
-    [v13 requestImageForAsset:v14 targetSize:0 contentMode:v10 options:v24 resultHandler:{0.0, 0.0}];
+    [defaultManager requestImageForAsset:v14 targetSize:0 contentMode:v10 options:v24 resultHandler:{0.0, 0.0}];
 
     v15 = dispatch_time(0, 1500000000);
     v16 = +[PEAdjustmentDataCacheEntry _resultHandlingQueue];
@@ -96,10 +96,10 @@
     v18[2] = __80__PEAdjustmentDataCacheEntry__load_networkAccessAllowed_originalAdjustmentData___block_invoke_82;
     v18[3] = &unk_279A30AF0;
     v21 = v31;
-    v23 = v5;
+    v23 = dataCopy;
     v22 = v29;
     v19 = v14;
-    v20 = self;
+    selfCopy = self;
     dispatch_after(v15, v16, v18);
 
     _Block_object_dispose(v29, 8);
@@ -109,9 +109,9 @@
   else
   {
     [(PEAdjustmentDataCacheEntry *)self setDisposition:1];
-    [v8 fetchPropertySetsIfNeeded];
-    v17 = [v8 originalMetadataProperties];
-    -[PEAdjustmentDataCacheEntry setInputSize:](self, "setInputSize:", [v17 originalWidth], objc_msgSend(v17, "originalHeight"));
+    [_loadCopy fetchPropertySetsIfNeeded];
+    originalMetadataProperties = [_loadCopy originalMetadataProperties];
+    -[PEAdjustmentDataCacheEntry setInputSize:](self, "setInputSize:", [originalMetadataProperties originalWidth], objc_msgSend(originalMetadataProperties, "originalHeight"));
   }
 }
 
@@ -284,13 +284,13 @@ void __80__PEAdjustmentDataCacheEntry__load_networkAccessAllowed_originalAdjustm
   }
 }
 
-- (PEAdjustmentDataCacheEntry)initWithAsset:(id)a3 networkAccessAllowed:(BOOL)a4 originalAdjustmentData:(BOOL)a5
+- (PEAdjustmentDataCacheEntry)initWithAsset:(id)asset networkAccessAllowed:(BOOL)allowed originalAdjustmentData:(BOOL)data
 {
-  v5 = a5;
-  v6 = a4;
+  dataCopy = data;
+  allowedCopy = allowed;
   v14.receiver = self;
   v14.super_class = PEAdjustmentDataCacheEntry;
-  v7 = a3;
+  assetCopy = asset;
   v8 = [(PEAdjustmentDataCacheEntry *)&v14 init];
   v9 = dispatch_group_create();
   group = v8->_group;
@@ -301,7 +301,7 @@ void __80__PEAdjustmentDataCacheEntry__load_networkAccessAllowed_originalAdjustm
   v8->_timeoutGroup = v11;
 
   v8->_disposition = 0;
-  [(PEAdjustmentDataCacheEntry *)v8 _load:v7 networkAccessAllowed:v6 originalAdjustmentData:v5, v14.receiver, v14.super_class];
+  [(PEAdjustmentDataCacheEntry *)v8 _load:assetCopy networkAccessAllowed:allowedCopy originalAdjustmentData:dataCopy, v14.receiver, v14.super_class];
 
   return v8;
 }

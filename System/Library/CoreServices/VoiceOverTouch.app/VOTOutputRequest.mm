@@ -1,46 +1,46 @@
 @interface VOTOutputRequest
-+ (BOOL)setCopyLastOutputRequestEnabled:(BOOL)a3;
++ (BOOL)setCopyLastOutputRequestEnabled:(BOOL)enabled;
 + (id)createRequest;
 + (id)lastRequest;
 + (id)previousRequests;
-+ (id)stringShouldSeparateDueToLanguage:(id)a3 language:(id)a4 keyboardLanguageHint:(id)a5;
-+ (void)addPreviousRequests:(id)a3;
++ (id)stringShouldSeparateDueToLanguage:(id)language language:(id)a4 keyboardLanguageHint:(id)hint;
++ (void)addPreviousRequests:(id)requests;
 + (void)clearPreviousRequests;
 + (void)initialize;
-+ (void)sendRequestWithString:(id)a3 shouldQueue:(BOOL)a4;
-+ (void)setRequestEnqueuedBlock:(id)a3;
-- (BOOL)hasSameOutputAs:(id)a3;
++ (void)sendRequestWithString:(id)string shouldQueue:(BOOL)queue;
++ (void)setRequestEnqueuedBlock:(id)block;
+- (BOOL)hasSameOutputAs:(id)as;
 - (NSNumber)brailleAlertTimeout;
 - (VOTOutputRequest)init;
 - (VOTOutputRequestCompletionProtocol)completionDelegate;
 - (_NSRange)brailleLineRange;
-- (id)_addAXOutputActions:(id)a3 atIndex:(unint64_t)a4;
-- (id)actionStringAtIndex:(int64_t)a3;
-- (id)addAttributedString:(id)a3 withLanguage:(id)a4 category:(id)a5;
-- (id)addString:(id)a3;
-- (id)addString:(id)a3 brailleString:(id)a4 breakWords:(BOOL)a5 withLanguage:(id)a6 atIndex:(int64_t)a7 category:(id)a8;
-- (id)addString:(id)a3 brailleString:(id)a4 withLanguage:(id)a5;
-- (id)addString:(id)a3 category:(id)a4;
-- (id)addString:(id)a3 withLanguage:(id)a4;
-- (id)addString:(id)a3 withLanguage:(id)a4 category:(id)a5;
+- (id)_addAXOutputActions:(id)actions atIndex:(unint64_t)index;
+- (id)actionStringAtIndex:(int64_t)index;
+- (id)addAttributedString:(id)string withLanguage:(id)language category:(id)category;
+- (id)addString:(id)string;
+- (id)addString:(id)string brailleString:(id)brailleString breakWords:(BOOL)words withLanguage:(id)language atIndex:(int64_t)index category:(id)category;
+- (id)addString:(id)string brailleString:(id)brailleString withLanguage:(id)language;
+- (id)addString:(id)string category:(id)category;
+- (id)addString:(id)string withLanguage:(id)language;
+- (id)addString:(id)string withLanguage:(id)language category:(id)category;
 - (id)combinedActionString;
 - (id)combinedOriginalString;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (unint64_t)numberOfActionsWithString:(id)a3;
-- (void)_handleAttachmentInRequest:(__AXUIElement *)a3;
-- (void)_mergeActionsStartingAtIndex:(unint64_t)a3;
-- (void)addNotificationEvent:(unsigned int)a3 forDelegate:(id)a4;
-- (void)addOutputEvent:(id)a3 toFirstActionMatchingCategory:(id)a4;
-- (void)addPause:(float)a3;
-- (void)addSound:(id)a3;
-- (void)addTVElement:(id)a3 servesAsHeader:(BOOL)a4 filterWithAspectMask:(BOOL)a5;
+- (unint64_t)numberOfActionsWithString:(id)string;
+- (void)_handleAttachmentInRequest:(__AXUIElement *)request;
+- (void)_mergeActionsStartingAtIndex:(unint64_t)index;
+- (void)addNotificationEvent:(unsigned int)event forDelegate:(id)delegate;
+- (void)addOutputEvent:(id)event toFirstActionMatchingCategory:(id)category;
+- (void)addPause:(float)pause;
+- (void)addSound:(id)sound;
+- (void)addTVElement:(id)element servesAsHeader:(BOOL)header filterWithAspectMask:(BOOL)mask;
 - (void)removeActions;
-- (void)removeActionsWithHelper:(id)a3;
-- (void)removeLastActionWithString:(id)a3;
+- (void)removeActionsWithHelper:(id)helper;
+- (void)removeLastActionWithString:(id)string;
 - (void)send;
-- (void)setCannotBeInterrupted:(BOOL)a3;
+- (void)setCannotBeInterrupted:(BOOL)interrupted;
 @end
 
 @implementation VOTOutputRequest
@@ -73,7 +73,7 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(VOTOutputRequest);
   v5 = objc_opt_new();
@@ -136,17 +136,17 @@
   return [v2 init];
 }
 
-+ (void)setRequestEnqueuedBlock:(id)a3
++ (void)setRequestEnqueuedBlock:(id)block
 {
   v3 = qword_1001FE9A0;
-  v4 = a3;
+  blockCopy = block;
   if (v3 != -1)
   {
     sub_100127A94();
   }
 
   [qword_1001FE990 lock];
-  v5 = objc_retainBlock(v4);
+  v5 = objc_retainBlock(blockCopy);
 
   v6 = qword_1001FE998;
   qword_1001FE998 = v5;
@@ -156,18 +156,18 @@
   [v7 unlock];
 }
 
-+ (void)sendRequestWithString:(id)a3 shouldQueue:(BOOL)a4
++ (void)sendRequestWithString:(id)string shouldQueue:(BOOL)queue
 {
-  v4 = a4;
-  v8 = a3;
+  queueCopy = queue;
+  stringCopy = string;
   v5 = [objc_allocWithZone(VOTOutputRequest) init];
   v6 = v5;
-  if (v4)
+  if (queueCopy)
   {
     [v5 setDoesNotInterrupt:1];
   }
 
-  v7 = [v6 addString:v8];
+  v7 = [v6 addString:stringCopy];
   [v6 send];
 }
 
@@ -183,31 +183,31 @@
 + (id)previousRequests
 {
   [qword_1001FE978 lock];
-  v2 = [qword_1001FE980 reverseObjectEnumerator];
-  v3 = [v2 allObjects];
+  reverseObjectEnumerator = [qword_1001FE980 reverseObjectEnumerator];
+  allObjects = [reverseObjectEnumerator allObjects];
 
   [qword_1001FE978 unlock];
 
-  return v3;
+  return allObjects;
 }
 
 + (id)lastRequest
 {
   [qword_1001FE978 lock];
-  v2 = [qword_1001FE980 reverseObjectEnumerator];
-  v3 = [v2 nextObject];
+  reverseObjectEnumerator = [qword_1001FE980 reverseObjectEnumerator];
+  nextObject = [reverseObjectEnumerator nextObject];
 
   [qword_1001FE978 unlock];
 
-  return v3;
+  return nextObject;
 }
 
-+ (void)addPreviousRequests:(id)a3
++ (void)addPreviousRequests:(id)requests
 {
   v3 = qword_1001FE978;
-  v4 = a3;
+  requestsCopy = requests;
   [v3 lock];
-  [qword_1001FE980 axSafelyAddObjectsFromArray:v4];
+  [qword_1001FE980 axSafelyAddObjectsFromArray:requestsCopy];
 
   v5 = qword_1001FE978;
 
@@ -250,33 +250,33 @@
   [(NSMutableArray *)self->_outputActions removeAllObjects];
 }
 
-- (void)removeActionsWithHelper:(id)a3
+- (void)removeActionsWithHelper:(id)helper
 {
-  v4 = a3;
-  v5 = [(VOTOutputRequest *)self outputActions];
-  v6 = [v5 mutableCopy];
+  helperCopy = helper;
+  outputActions = [(VOTOutputRequest *)self outputActions];
+  v6 = [outputActions mutableCopy];
 
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100004ACC;
   v9[3] = &unk_1001C7598;
-  v10 = v4;
-  v7 = v4;
+  v10 = helperCopy;
+  v7 = helperCopy;
   v8 = [v6 indexesOfObjectsPassingTest:v9];
   [v6 removeObjectsAtIndexes:v8];
 
   [(NSMutableArray *)self->_outputActions setArray:v6];
 }
 
-- (void)removeLastActionWithString:(id)a3
+- (void)removeLastActionWithString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(NSMutableArray *)self->_outputActions reverseObjectEnumerator];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  reverseObjectEnumerator = [(NSMutableArray *)self->_outputActions reverseObjectEnumerator];
+  v6 = [reverseObjectEnumerator countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -287,12 +287,12 @@ LABEL_3:
     {
       if (*v15 != v8)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(reverseObjectEnumerator);
       }
 
       v10 = *(*(&v14 + 1) + 8 * v9);
-      v11 = [v10 string];
-      v12 = [v11 isEqualToString:v4];
+      string = [v10 string];
+      v12 = [string isEqualToString:stringCopy];
 
       if (v12)
       {
@@ -301,7 +301,7 @@ LABEL_3:
 
       if (v7 == ++v9)
       {
-        v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v7 = [reverseObjectEnumerator countByEnumeratingWithState:&v14 objects:v18 count:16];
         if (v7)
         {
           goto LABEL_3;
@@ -320,7 +320,7 @@ LABEL_3:
 
     [v13 setOutputRequest:0];
     [(NSMutableArray *)self->_outputActions removeObject:v13];
-    v5 = v13;
+    reverseObjectEnumerator = v13;
   }
 
 LABEL_12:
@@ -328,9 +328,9 @@ LABEL_12:
 LABEL_13:
 }
 
-- (unint64_t)numberOfActionsWithString:(id)a3
+- (unint64_t)numberOfActionsWithString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -351,8 +351,8 @@ LABEL_13:
           objc_enumerationMutation(v5);
         }
 
-        v11 = [*(*(&v14 + 1) + 8 * i) string];
-        v12 = [v11 isEqualToString:v4];
+        string = [*(*(&v14 + 1) + 8 * i) string];
+        v12 = [string isEqualToString:stringCopy];
 
         v8 += v12;
       }
@@ -378,10 +378,10 @@ LABEL_13:
   return WeakRetained;
 }
 
-+ (BOOL)setCopyLastOutputRequestEnabled:(BOOL)a3
++ (BOOL)setCopyLastOutputRequestEnabled:(BOOL)enabled
 {
   result = byte_1001FE9A8;
-  byte_1001FE9A8 = a3;
+  byte_1001FE9A8 = enabled;
   return result;
 }
 
@@ -438,8 +438,8 @@ LABEL_13:
 
           v15 = *(*(&v51 + 1) + 8 * i);
           [v15 setFinishedSuccessfully:0];
-          v16 = [v15 completionDelegate];
-          [v16 outputRequestFinished:v15];
+          completionDelegate = [v15 completionDelegate];
+          [completionDelegate outputRequestFinished:v15];
         }
 
         v12 = [v10 countByEnumeratingWithState:&v51 objects:v56 count:16];
@@ -509,29 +509,29 @@ LABEL_13:
               {
                 if (self->_generatesBraille && [v24 generatesBraille])
                 {
-                  v25 = [v24 brailleString];
-                  v26 = v25;
-                  if (v25)
+                  brailleString = [v24 brailleString];
+                  v26 = brailleString;
+                  if (brailleString)
                   {
-                    v27 = v25;
+                    string = brailleString;
                   }
 
                   else
                   {
-                    v27 = [v24 string];
+                    string = [v24 string];
                   }
 
-                  v28 = v27;
+                  v28 = string;
 
                   [v45 appendFormat:@"%@ ", v28];
                 }
 
                 if ([v24 performPunctuationTranslation])
                 {
-                  v29 = [v24 string];
-                  v30 = [v24 replaceCommas];
+                  string2 = [v24 string];
+                  replaceCommas = [v24 replaceCommas];
                   v31 = [v24 objectForVariant:15];
-                  v32 = sub_100052340(v29, v30, v31);
+                  v32 = sub_100052340(string2, replaceCommas, v31);
                   [v24 setString:v32];
                 }
               }
@@ -600,15 +600,15 @@ LABEL_13:
     else
     {
       [(VOTOutputRequest *)self setFinishedSuccessfully:1];
-      v42 = [(VOTOutputRequest *)self completionDelegate];
-      [v42 outputRequestFinished:self];
+      completionDelegate2 = [(VOTOutputRequest *)self completionDelegate];
+      [completionDelegate2 outputRequestFinished:self];
 
-      v43 = [(VOTOutputRequest *)self completionBlock];
+      completionBlock = [(VOTOutputRequest *)self completionBlock];
 
-      if (v43)
+      if (completionBlock)
       {
-        v44 = [(VOTOutputRequest *)self completionBlock];
-        (v44)[2](v44, self);
+        completionBlock2 = [(VOTOutputRequest *)self completionBlock];
+        (completionBlock2)[2](completionBlock2, self);
       }
     }
   }
@@ -619,26 +619,26 @@ LABEL_13:
   }
 }
 
-- (BOOL)hasSameOutputAs:(id)a3
+- (BOOL)hasSameOutputAs:(id)as
 {
-  v4 = a3;
-  v5 = [(VOTOutputRequest *)self outputActions];
-  v6 = [v4 outputActions];
-  v7 = [v5 count];
-  if (v7 == [v6 count])
+  asCopy = as;
+  outputActions = [(VOTOutputRequest *)self outputActions];
+  outputActions2 = [asCopy outputActions];
+  v7 = [outputActions count];
+  if (v7 == [outputActions2 count])
   {
     v30 = 0u;
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    obj = v5;
+    obj = outputActions;
     v8 = [obj countByEnumeratingWithState:&v28 objects:v33 count:16];
     if (v8)
     {
       v9 = v8;
       v10 = *v29;
-      v21 = v5;
-      v22 = v4;
+      v21 = outputActions;
+      v22 = asCopy;
       while (2)
       {
         for (i = 0; i != v9; i = i + 1)
@@ -653,15 +653,15 @@ LABEL_13:
           v25 = 0u;
           v26 = 0u;
           v27 = 0u;
-          v13 = v6;
+          v13 = outputActions2;
           v14 = [v13 countByEnumeratingWithState:&v24 objects:v32 count:16];
           if (!v14)
           {
 
 LABEL_21:
             v19 = 0;
-            v5 = v21;
-            v4 = v22;
+            outputActions = v21;
+            asCopy = v22;
             goto LABEL_22;
           }
 
@@ -693,8 +693,8 @@ LABEL_21:
 
         v9 = [obj countByEnumeratingWithState:&v28 objects:v33 count:16];
         v19 = 1;
-        v5 = v21;
-        v4 = v22;
+        outputActions = v21;
+        asCopy = v22;
         if (v9)
         {
           continue;
@@ -720,10 +720,10 @@ LABEL_22:
   return v19;
 }
 
-- (void)addOutputEvent:(id)a3 toFirstActionMatchingCategory:(id)a4
+- (void)addOutputEvent:(id)event toFirstActionMatchingCategory:(id)category
 {
-  v6 = a3;
-  v7 = a4;
+  eventCopy = event;
+  categoryCopy = category;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -745,9 +745,9 @@ LABEL_22:
 
         v13 = *(*(&v15 + 1) + 8 * i);
         v14 = [v13 objectForVariant:{86, v15}];
-        if ([v7 isEqual:v14])
+        if ([categoryCopy isEqual:v14])
         {
-          [v13 addOutputEvent:v6];
+          [v13 addOutputEvent:eventCopy];
 
           goto LABEL_11;
         }
@@ -766,12 +766,12 @@ LABEL_22:
 LABEL_11:
 }
 
-- (id)actionStringAtIndex:(int64_t)a3
+- (id)actionStringAtIndex:(int64_t)index
 {
-  v3 = [(NSMutableArray *)self->_outputActions objectAtIndex:a3];
-  v4 = [v3 string];
+  v3 = [(NSMutableArray *)self->_outputActions objectAtIndex:index];
+  string = [v3 string];
 
-  return v4;
+  return string;
 }
 
 - (id)combinedActionString
@@ -816,14 +816,14 @@ LABEL_11:
   return v3;
 }
 
-- (void)_handleAttachmentInRequest:(__AXUIElement *)a3
+- (void)_handleAttachmentInRequest:(__AXUIElement *)request
 {
   if ([VOTSharedWorkspace inUnitTestMode])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [VOTElement elementWithUIElement:a3];
+      [VOTElement elementWithUIElement:request];
     }
 
     else
@@ -836,32 +836,32 @@ LABEL_11:
 
   else
   {
-    v5 = [AXUIElement uiElementWithAXElement:a3];
+    v5 = [AXUIElement uiElementWithAXElement:request];
     v6 = [VOTElement elementWithUIElement:v5];
   }
 
   [v6 addTextualInformationToRequest:self options:0xC11004000 dataPackage:0];
 }
 
-- (id)addAttributedString:(id)a3 withLanguage:(id)a4 category:(id)a5
+- (id)addAttributedString:(id)string withLanguage:(id)language category:(id)category
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  stringCopy = string;
+  languageCopy = language;
+  categoryCopy = category;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v108 = [(VOTOutputRequest *)self addString:v8 withLanguage:v9 category:v10];
+    v108 = [(VOTOutputRequest *)self addString:stringCopy withLanguage:languageCopy category:categoryCopy];
     goto LABEL_97;
   }
 
-  if (![v8 length])
+  if (![stringCopy length])
   {
     v108 = 0;
     goto LABEL_97;
   }
 
-  v11 = [v8 copy];
+  v11 = [stringCopy copy];
 
   v12 = +[NSMutableDictionary dictionary];
   v13 = AXUIAccessibilitySpeechAttributePhonemeSubstitution;
@@ -872,34 +872,34 @@ LABEL_11:
   v121[3] = &unk_1001C7610;
   v15 = v12;
   v122 = v15;
-  v8 = v11;
-  v123 = v8;
-  [v8 enumerateAttribute:v13 inRange:0 options:v14 usingBlock:{0, v121}];
+  stringCopy = v11;
+  v123 = stringCopy;
+  [stringCopy enumerateAttribute:v13 inRange:0 options:v14 usingBlock:{0, v121}];
   v127 = v13;
   v16 = [NSArray arrayWithObjects:&v127 count:1];
-  [v8 removeAttributes:v16];
+  [stringCopy removeAttributes:v16];
 
   if ([v15 count])
   {
-    [v8 setAttribute:v15 forKey:v13];
+    [stringCopy setAttribute:v15 forKey:v13];
   }
 
   v102 = v15;
-  v17 = [(VOTOutputRequest *)self outputActions];
-  v101 = [v17 count];
+  outputActions = [(VOTOutputRequest *)self outputActions];
+  v101 = [outputActions count];
 
   v119 = 0;
   v120 = 0;
-  v103 = [v8 length];
+  v103 = [stringCopy length];
   v108 = +[NSMutableArray array];
   v18 = 0;
   v104 = UIAccessibilityTokenBrailleOverride;
   v19 = 0;
-  v105 = v8;
-  v106 = v10;
+  v105 = stringCopy;
+  v106 = categoryCopy;
   while (1)
   {
-    v20 = [v8 attributesAtIndex:v19 effectiveRange:&v119];
+    v20 = [stringCopy attributesAtIndex:v19 effectiveRange:&v119];
     v21 = v20;
     if (v119 == 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -908,11 +908,11 @@ LABEL_11:
     }
 
     v112 = v18;
-    v22 = [v8 substringWithRange:{v119, v120}];
+    v22 = [stringCopy substringWithRange:{v119, v120}];
     v23 = +[AXSubsystemVoiceOver sharedInstance];
-    v24 = [v23 ignoreLogging];
+    ignoreLogging = [v23 ignoreLogging];
 
-    if ((v24 & 1) == 0)
+    if ((ignoreLogging & 1) == 0)
     {
       v25 = +[AXSubsystemVoiceOver identifier];
       v26 = AXLoggerForFacility();
@@ -933,7 +933,7 @@ LABEL_11:
           _os_log_impl(&_mh_execute_header, v26, v27, "%{public}@", buf, 0xCu);
         }
 
-        v10 = v106;
+        categoryCopy = v106;
       }
     }
 
@@ -941,7 +941,7 @@ LABEL_11:
     v31 = [v21 objectForKey:{UIAccessibilityTokenLiteralTextRanges, v97, v98, v99, v100}];
     v32 = v31;
     v111 = v31;
-    if (v9)
+    if (languageCopy)
     {
       if (v31)
       {
@@ -956,7 +956,7 @@ LABEL_11:
       {
 
 LABEL_20:
-        v9 = &stru_1001CBF90;
+        languageCopy = &stru_1001CBF90;
         goto LABEL_21;
       }
 
@@ -965,12 +965,12 @@ LABEL_20:
         goto LABEL_20;
       }
 
-      v9 = 0;
+      languageCopy = 0;
     }
 
 LABEL_21:
-    v34 = [(VOTOutputRequest *)self outputActions];
-    v35 = [v34 count];
+    outputActions2 = [(VOTOutputRequest *)self outputActions];
+    v35 = [outputActions2 count];
 
     v113 = v22;
     v36 = [v113 rangeOfString:v113];
@@ -989,15 +989,15 @@ LABEL_21:
     if (v38 && &v37[v30] != 0x7FFFFFFFFFFFFFFFLL && v119 == &v37[v30])
     {
       v39 = [v21 objectForKey:UIAccessibilityTokenListItemIdentifier];
-      v40 = [v39 unsignedIntegerValue];
-      if (v40 != [v112 unsignedIntegerValue])
+      unsignedIntegerValue = [v39 unsignedIntegerValue];
+      if (unsignedIntegerValue != [v112 unsignedIntegerValue])
       {
         v41 = v39;
 
         v42 = [v21 objectForKey:UIAccessibilityTokenListItemLabel];
         v43 = [AXAttributedString axAttributedStringWithString:v42];
 
-        v10 = v106;
+        categoryCopy = v106;
         [v43 setAttribute:kCFBooleanTrue forKey:UIAccessibilityTokenLowPitch];
         v44 = [(VOTOutputRequest *)self addAttributedString:v43 withLanguage:0 category:v106];
 
@@ -1006,20 +1006,20 @@ LABEL_21:
     }
 
     v45 = [v21 objectForKeyedSubscript:v104];
-    v46 = [v21 allKeys];
-    [v113 removeAttributes:v46];
+    allKeys = [v21 allKeys];
+    [v113 removeAttributes:allKeys];
 
     v110 = v45;
-    v109 = [(VOTOutputRequest *)self addString:v113 brailleString:v45 breakWords:0 withLanguage:v9 atIndex:0x7FFFFFFFFFFFFFFFLL category:v10];
+    v109 = [(VOTOutputRequest *)self addString:v113 brailleString:v45 breakWords:0 withLanguage:languageCopy atIndex:0x7FFFFFFFFFFFFFFFLL category:categoryCopy];
     [v108 axSafelyAddObjectsFromArray:?];
-    v47 = [(VOTOutputRequest *)self outputActions];
-    v48 = [v47 count];
+    outputActions3 = [(VOTOutputRequest *)self outputActions];
+    v48 = [outputActions3 count];
 
     if ([v21 count])
     {
-      v107 = v9;
-      v49 = [(VOTOutputRequest *)self outputActions];
-      v50 = [v49 subarrayWithRange:{v35, v48 - v35}];
+      v107 = languageCopy;
+      outputActions4 = [(VOTOutputRequest *)self outputActions];
+      v50 = [outputActions4 subarrayWithRange:{v35, v48 - v35}];
 
       v117 = 0u;
       v118 = 0u;
@@ -1064,27 +1064,27 @@ LABEL_21:
             v63 = [AXAttributedString axAttributedStringWithString:v62];
 
             v64 = +[AXSettings sharedInstance];
-            v65 = [v64 voiceOverLinkFeedback];
+            voiceOverLinkFeedback = [v64 voiceOverLinkFeedback];
 
-            if ((v65 & 2) != 0)
+            if ((voiceOverLinkFeedback & 2) != 0)
             {
               v66 = [(VOTOutputRequest *)self addAttributedString:v63 withLanguage:0];
-              v67 = [(VOTOutputRequest *)self lastAction];
-              [v67 setIsVoiceOverGeneratedContent:1];
+              lastAction = [(VOTOutputRequest *)self lastAction];
+              [lastAction setIsVoiceOverGeneratedContent:1];
 
-              if ((v65 & 8) != 0)
+              if ((voiceOverLinkFeedback & 8) != 0)
               {
                 [v55 setObject:&off_1001D9910 forVariant:32];
               }
 
-              v68 = [(VOTOutputRequest *)self lastAction];
-              [v68 setGeneratesBraille:(v65 >> 4) & 1];
+              lastAction2 = [(VOTOutputRequest *)self lastAction];
+              [lastAction2 setGeneratesBraille:(voiceOverLinkFeedback >> 4) & 1];
             }
 
-            if ((v65 & 4) != 0)
+            if ((voiceOverLinkFeedback & 4) != 0)
             {
-              v69 = [(VOTOutputRequest *)self lastAction];
-              [v69 setObject:@"Sounds/LinkBegin.aiff" forVariant:75];
+              lastAction3 = [(VOTOutputRequest *)self lastAction];
+              [lastAction3 setObject:@"Sounds/LinkBegin.aiff" forVariant:75];
             }
           }
 
@@ -1131,11 +1131,11 @@ LABEL_49:
           if (v78)
           {
             v79 = +[AXSettings sharedInstance];
-            v80 = [v79 voiceOverInlineTextCompletionAppearanceFeedback];
+            voiceOverInlineTextCompletionAppearanceFeedback = [v79 voiceOverInlineTextCompletionAppearanceFeedback];
 
             if ([VOTSharedWorkspace typingPitchChangeEnabled])
             {
-              if ((v80 & 8) != 0)
+              if ((voiceOverInlineTextCompletionAppearanceFeedback & 8) != 0)
               {
                 [v55 setObject:UIAccessibilityTokenLowPitch forVariant:32];
               }
@@ -1233,8 +1233,8 @@ LABEL_84:
         {
 LABEL_86:
 
-          v10 = v106;
-          v9 = v107;
+          categoryCopy = v106;
+          languageCopy = v107;
           break;
         }
       }
@@ -1248,7 +1248,7 @@ LABEL_86:
       break;
     }
 
-    v8 = v105;
+    stringCopy = v105;
     v18 = v112;
     if (v119 >= v103)
     {
@@ -1256,7 +1256,7 @@ LABEL_86:
     }
   }
 
-  v8 = v105;
+  stringCopy = v105;
   v18 = v112;
 LABEL_96:
   [(VOTOutputRequest *)self _mergeActionsStartingAtIndex:&v101[-(v101 > 0)]];
@@ -1266,16 +1266,16 @@ LABEL_97:
   return v108;
 }
 
-- (id)_addAXOutputActions:(id)a3 atIndex:(unint64_t)a4
+- (id)_addAXOutputActions:(id)actions atIndex:(unint64_t)index
 {
-  v6 = a3;
+  actionsCopy = actions;
   v7 = objc_opt_new();
   v8 = [(NSMutableArray *)self->_outputActions count];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  obj = v6;
+  obj = actionsCopy;
   v9 = [obj countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v9)
   {
@@ -1292,24 +1292,24 @@ LABEL_97:
 
         v13 = [[VOTOutputAction alloc] initWithAXAction:*(*(&v20 + 1) + 8 * i)];
         [(VOTOutputAction *)v13 setOutputRequest:self];
-        v14 = [VOTSharedWorkspace applicationForCurrentElement];
-        v15 = [v14 bundleIdentifier];
-        [(VOTOutputAction *)v13 setObject:v15 forVariant:43];
+        applicationForCurrentElement = [VOTSharedWorkspace applicationForCurrentElement];
+        bundleIdentifier = [applicationForCurrentElement bundleIdentifier];
+        [(VOTOutputAction *)v13 setObject:bundleIdentifier forVariant:43];
 
         [v7 addObject:v13];
         v16 = [(NSMutableArray *)self->_outputActions count];
         outputActions = self->_outputActions;
-        if (a4 >= v16)
+        if (index >= v16)
         {
           [(NSMutableArray *)outputActions addObject:v13];
         }
 
         else
         {
-          [(NSMutableArray *)outputActions insertObject:v13 atIndex:a4];
+          [(NSMutableArray *)outputActions insertObject:v13 atIndex:index];
         }
 
-        a4 += [(NSMutableArray *)self->_outputActions count]- v8;
+        index += [(NSMutableArray *)self->_outputActions count]- v8;
       }
 
       v10 = [obj countByEnumeratingWithState:&v20 objects:v24 count:16];
@@ -1321,15 +1321,15 @@ LABEL_97:
   return v7;
 }
 
-- (void)_mergeActionsStartingAtIndex:(unint64_t)a3
+- (void)_mergeActionsStartingAtIndex:(unint64_t)index
 {
-  v43 = a3;
-  v4 = a3 + 1;
-  if (a3 + 1 <= [(NSMutableArray *)self->_outputActions count])
+  indexCopy = index;
+  v4 = index + 1;
+  if (index + 1 <= [(NSMutableArray *)self->_outputActions count])
   {
-    v38 = self;
-    v44 = [(VOTOutputRequest *)self outputActions];
-    v40 = [v44 count];
+    selfCopy = self;
+    outputActions = [(VOTOutputRequest *)self outputActions];
+    v40 = [outputActions count];
     v5 = objc_alloc_init(NSMutableIndexSet);
     v6 = 0;
     do
@@ -1344,21 +1344,21 @@ LABEL_97:
     {
       do
       {
-        v7 = [v44 objectAtIndexedSubscript:v43];
-        v8 = [v7 outputVariants];
+        v7 = [outputActions objectAtIndexedSubscript:indexCopy];
+        outputVariants = [v7 outputVariants];
 
-        v9 = [v44 objectAtIndexedSubscript:v4];
-        v10 = [v9 outputVariants];
+        v9 = [outputActions objectAtIndexedSubscript:v4];
+        outputVariants2 = [v9 outputVariants];
 
-        if (v8)
+        if (outputVariants)
         {
-          v42 = [v8 copy];
-          [v42 addObjectsFromIndexMap:v10];
+          v42 = [outputVariants copy];
+          [v42 addObjectsFromIndexMap:outputVariants2];
         }
 
         else
         {
-          v42 = [v10 copy];
+          v42 = [outputVariants2 copy];
         }
 
         v50 = 0;
@@ -1366,28 +1366,28 @@ LABEL_97:
         v52 = 0x2020000000;
         v53 = 1;
         v11 = +[NSMutableSet set];
-        v12 = [v42 indexes];
+        indexes = [v42 indexes];
         v45[0] = _NSConcreteStackBlock;
         v45[1] = 3221225472;
         v45[2] = sub_100007230;
         v45[3] = &unk_1001C7638;
-        v13 = v8;
+        v13 = outputVariants;
         v46 = v13;
-        v14 = v10;
+        v14 = outputVariants2;
         v47 = v14;
         v15 = v11;
         v48 = v15;
         v49 = &v50;
-        [v12 enumerateIndexesUsingBlock:v45];
+        [indexes enumerateIndexesUsingBlock:v45];
 
-        v16 = [v44 objectAtIndexedSubscript:v43];
-        v17 = [v16 string];
-        v18 = [v17 stringByTrimmingCharactersInSet:v41];
+        v16 = [outputActions objectAtIndexedSubscript:indexCopy];
+        string = [v16 string];
+        v18 = [string stringByTrimmingCharactersInSet:v41];
         v19 = [v18 length];
 
-        v20 = [v44 objectAtIndexedSubscript:v4];
-        v21 = [v20 string];
-        v22 = [v21 stringByTrimmingCharactersInSet:v41];
+        v20 = [outputActions objectAtIndexedSubscript:v4];
+        string2 = [v20 string];
+        v22 = [string2 stringByTrimmingCharactersInSet:v41];
 
         v23 = [v22 length];
         v24 = [v15 ax_filteredSetUsingBlock:&stru_1001C7678];
@@ -1396,12 +1396,12 @@ LABEL_97:
         {
           if ([v22 length])
           {
-            v26 = [v44 objectAtIndexedSubscript:v43];
-            v27 = [v26 string];
+            v26 = [outputActions objectAtIndexedSubscript:indexCopy];
+            string3 = [v26 string];
 
-            if ([v27 length])
+            if ([string3 length])
             {
-              v28 = [v41 characterIsMember:{objc_msgSend(v27, "characterAtIndex:", objc_msgSend(v27, "length") - 1)}];
+              v28 = [v41 characterIsMember:{objc_msgSend(string3, "characterAtIndex:", objc_msgSend(string3, "length") - 1)}];
               v29 = @" ";
               if (v28)
               {
@@ -1415,7 +1415,7 @@ LABEL_97:
             }
 
             v30 = [NSString stringWithFormat:@"%@%@", v29, v22];
-            v31 = [v44 objectAtIndexedSubscript:v43];
+            v31 = [outputActions objectAtIndexedSubscript:indexCopy];
             v32 = [v31 objectForVariant:54];
 
             if (v32)
@@ -1425,8 +1425,8 @@ LABEL_97:
               v30 = v33;
             }
 
-            v34 = [v27 stringByAppendingString:v30];
-            v35 = [v44 objectAtIndexedSubscript:v43];
+            v34 = [string3 stringByAppendingString:v30];
+            v35 = [outputActions objectAtIndexedSubscript:indexCopy];
             [v35 setString:v34 overrideOriginalString:1];
           }
         }
@@ -1434,7 +1434,7 @@ LABEL_97:
         else
         {
           [v39 addIndex:v4];
-          v43 = v4;
+          indexCopy = v4;
         }
 
         ++v4;
@@ -1445,118 +1445,118 @@ LABEL_97:
       while (v40 != v4);
     }
 
-    v36 = [v44 objectsAtIndexes:v39];
+    v36 = [outputActions objectsAtIndexes:v39];
     v37 = [v36 count];
-    if (v37 < [v44 count])
+    if (v37 < [outputActions count])
     {
-      [(VOTOutputRequest *)v38 removeActions];
-      [(NSMutableArray *)v38->_outputActions addObjectsFromArray:v36];
+      [(VOTOutputRequest *)selfCopy removeActions];
+      [(NSMutableArray *)selfCopy->_outputActions addObjectsFromArray:v36];
     }
   }
 }
 
-- (id)addString:(id)a3
+- (id)addString:(id)string
 {
-  v4 = a3;
-  if ([v4 isAXAttributedString])
+  stringCopy = string;
+  if ([stringCopy isAXAttributedString])
   {
-    [(VOTOutputRequest *)self addAttributedString:v4];
+    [(VOTOutputRequest *)self addAttributedString:stringCopy];
   }
 
   else
   {
-    [(VOTOutputRequest *)self addString:v4 breakWords:0 withLanguage:0 atIndex:0x7FFFFFFFFFFFFFFFLL];
+    [(VOTOutputRequest *)self addString:stringCopy breakWords:0 withLanguage:0 atIndex:0x7FFFFFFFFFFFFFFFLL];
   }
   v5 = ;
 
   return v5;
 }
 
-- (id)addString:(id)a3 withLanguage:(id)a4
+- (id)addString:(id)string withLanguage:(id)language
 {
-  v6 = a4;
-  v7 = a3;
-  if ([v7 isAXAttributedString])
+  languageCopy = language;
+  stringCopy = string;
+  if ([stringCopy isAXAttributedString])
   {
-    [(VOTOutputRequest *)self addAttributedString:v7 withLanguage:v6];
+    [(VOTOutputRequest *)self addAttributedString:stringCopy withLanguage:languageCopy];
   }
 
   else
   {
-    [(VOTOutputRequest *)self addString:v7 breakWords:0 withLanguage:v6 atIndex:0x7FFFFFFFFFFFFFFFLL];
+    [(VOTOutputRequest *)self addString:stringCopy breakWords:0 withLanguage:languageCopy atIndex:0x7FFFFFFFFFFFFFFFLL];
   }
   v8 = ;
 
   return v8;
 }
 
-- (id)addString:(id)a3 brailleString:(id)a4 withLanguage:(id)a5
+- (id)addString:(id)string brailleString:(id)brailleString withLanguage:(id)language
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  if ([v8 isAXAttributedString])
+  stringCopy = string;
+  languageCopy = language;
+  brailleStringCopy = brailleString;
+  if ([stringCopy isAXAttributedString])
   {
     v11 = UIAccessibilityTokenBrailleOverride;
-    v12 = v8;
-    [v12 setAttribute:v10 forKey:v11];
+    v12 = stringCopy;
+    [v12 setAttribute:brailleStringCopy forKey:v11];
 
-    v13 = [(VOTOutputRequest *)self addAttributedString:v12 withLanguage:v9];
-    v10 = v12;
+    v13 = [(VOTOutputRequest *)self addAttributedString:v12 withLanguage:languageCopy];
+    brailleStringCopy = v12;
   }
 
   else
   {
-    v13 = [(VOTOutputRequest *)self addString:v8 brailleString:v10 breakWords:0 withLanguage:v9 atIndex:0x7FFFFFFFFFFFFFFFLL];
+    v13 = [(VOTOutputRequest *)self addString:stringCopy brailleString:brailleStringCopy breakWords:0 withLanguage:languageCopy atIndex:0x7FFFFFFFFFFFFFFFLL];
   }
 
   return v13;
 }
 
-- (id)addString:(id)a3 category:(id)a4
+- (id)addString:(id)string category:(id)category
 {
-  v6 = a4;
-  v7 = a3;
-  if ([v7 isAXAttributedString])
+  categoryCopy = category;
+  stringCopy = string;
+  if ([stringCopy isAXAttributedString])
   {
-    [(VOTOutputRequest *)self addAttributedString:v7 withLanguage:0 category:v6];
+    [(VOTOutputRequest *)self addAttributedString:stringCopy withLanguage:0 category:categoryCopy];
   }
 
   else
   {
-    [(VOTOutputRequest *)self addString:v7 breakWords:0 withLanguage:0 atIndex:0x7FFFFFFFFFFFFFFFLL category:v6];
+    [(VOTOutputRequest *)self addString:stringCopy breakWords:0 withLanguage:0 atIndex:0x7FFFFFFFFFFFFFFFLL category:categoryCopy];
   }
   v8 = ;
 
   return v8;
 }
 
-- (id)addString:(id)a3 withLanguage:(id)a4 category:(id)a5
+- (id)addString:(id)string withLanguage:(id)language category:(id)category
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  if ([v10 isAXAttributedString])
+  categoryCopy = category;
+  languageCopy = language;
+  stringCopy = string;
+  if ([stringCopy isAXAttributedString])
   {
-    [(VOTOutputRequest *)self addAttributedString:v10 withLanguage:v9 category:v8];
+    [(VOTOutputRequest *)self addAttributedString:stringCopy withLanguage:languageCopy category:categoryCopy];
   }
 
   else
   {
-    [(VOTOutputRequest *)self addString:v10 breakWords:0 withLanguage:v9 atIndex:0x7FFFFFFFFFFFFFFFLL category:v8];
+    [(VOTOutputRequest *)self addString:stringCopy breakWords:0 withLanguage:languageCopy atIndex:0x7FFFFFFFFFFFFFFFLL category:categoryCopy];
   }
   v11 = ;
 
   return v11;
 }
 
-+ (id)stringShouldSeparateDueToLanguage:(id)a3 language:(id)a4 keyboardLanguageHint:(id)a5
++ (id)stringShouldSeparateDueToLanguage:(id)language language:(id)a4 keyboardLanguageHint:(id)hint
 {
-  v7 = a3;
+  languageCopy = language;
   v8 = a4;
-  v9 = a5;
+  hintCopy = hint;
   v10 = objc_opt_new();
-  v11 = [v7 length];
+  v11 = [languageCopy length];
   v136 = +[NSCharacterSet whitespaceAndNewlineCharacterSet];
   v129 = +[NSMutableCharacterSet punctuationCharacterSet];
   v125 = +[NSCharacterSet decimalDigitCharacterSet];
@@ -1564,48 +1564,48 @@ LABEL_97:
   if (v8)
   {
     v12 = +[AXLanguageManager sharedInstance];
-    v13 = [v12 dialectForLanguageID:v8];
+    currentLanguageMap = [v12 dialectForLanguageID:v8];
 
-    v133 = v8;
+    systemSpokenLanguage = v8;
   }
 
   else
   {
-    v14 = [VOTSharedWorkspace selectedLanguage];
+    selectedLanguage = [VOTSharedWorkspace selectedLanguage];
 
-    if (v14)
+    if (selectedLanguage)
     {
       v15 = +[AXLanguageManager sharedInstance];
-      v16 = [VOTSharedWorkspace selectedLanguage];
-      v13 = [v15 dialectForLanguageID:v16];
+      selectedLanguage2 = [VOTSharedWorkspace selectedLanguage];
+      currentLanguageMap = [v15 dialectForLanguageID:selectedLanguage2];
     }
 
     else
     {
       v15 = +[VOTOutputManager outputManager];
-      v13 = [v15 currentLanguageMap];
+      currentLanguageMap = [v15 currentLanguageMap];
     }
 
-    v17 = [VOTSharedWorkspace selectedLanguage];
-    v18 = v17;
-    if (v17)
+    selectedLanguage3 = [VOTSharedWorkspace selectedLanguage];
+    v18 = selectedLanguage3;
+    if (selectedLanguage3)
     {
-      v133 = v17;
+      systemSpokenLanguage = selectedLanguage3;
     }
 
     else
     {
-      v133 = [VOTSharedWorkspace systemSpokenLanguage];
+      systemSpokenLanguage = [VOTSharedWorkspace systemSpokenLanguage];
     }
   }
 
   v130 = +[AXLanguageManager sharedInstance];
-  v145 = v13;
-  v19 = [v13 specificLanguageID];
-  v128 = sub_1000379BC(v19);
+  v145 = currentLanguageMap;
+  specificLanguageID = [currentLanguageMap specificLanguageID];
+  v128 = sub_1000379BC(specificLanguageID);
   v126 = sub_100037A14();
-  v123 = v19;
-  if ([v19 hasPrefix:@"he"])
+  v123 = specificLanguageID;
+  if ([specificLanguageID hasPrefix:@"he"])
   {
     [v129 removeCharactersInString:@"-"];
   }
@@ -1616,18 +1616,18 @@ LABEL_97:
   if (v11 >= 1)
   {
     v149 = 0;
-    v137 = v7;
+    v137 = languageCopy;
     v138 = 0;
     BYTE4(v134) = 0;
     v20 = 0;
     v21 = 0;
-    v22 = v13;
+    v22 = currentLanguageMap;
     v132 = v11;
     while (1)
     {
       v146 = v20;
-      v23 = [v7 rangeOfComposedCharacterSequenceAtIndex:v21];
-      v20 = [v7 substringWithRange:{v23, v24}];
+      v23 = [languageCopy rangeOfComposedCharacterSequenceAtIndex:v21];
+      v20 = [languageCopy substringWithRange:{v23, v24}];
       v25 = [v20 characterAtIndex:0];
       if ([v20 length] == 1)
       {
@@ -1655,7 +1655,7 @@ LABEL_18:
       v31 = [v30 characterIsMember:v25];
 
       v139 = v20;
-      if ((sub_1000511D4(v22, v133, v20) & 1) != 0 || (v29 & 1) != 0 || v31)
+      if ((sub_1000511D4(v22, systemSpokenLanguage, v20) & 1) != 0 || (v29 & 1) != 0 || v31)
       {
         if ((v128 & v29 & 1) != 0 || v126 && v31)
         {
@@ -1691,7 +1691,7 @@ LABEL_18:
             v38 = 0;
             while (1)
             {
-              v39 = [v7 characterAtIndex:v37];
+              v39 = [languageCopy characterAtIndex:v37];
               v40 = [v136 characterIsMember:v39];
               if (v40)
               {
@@ -1743,7 +1743,7 @@ LABEL_18:
 
             if (v150 >= 1)
             {
-              v141 = [v7 substringWithRange:{v138, v150 - v138}];
+              v141 = [languageCopy substringWithRange:{v138, v150 - v138}];
               v181[0] = @"string";
               v181[1] = @"language";
               v182[0] = v141;
@@ -1776,12 +1776,12 @@ LABEL_18:
 
           v22 = v145;
 LABEL_61:
-          v46 = [VOTSharedWorkspace languageRotorItems];
+          languageRotorItems = [VOTSharedWorkspace languageRotorItems];
           v165 = 0u;
           v166 = 0u;
           v167 = 0u;
           v168 = 0u;
-          v36 = v46;
+          v36 = languageRotorItems;
           v47 = [v36 countByEnumeratingWithState:&v165 objects:v180 count:16];
           if (v47)
           {
@@ -1819,7 +1819,7 @@ LABEL_61:
 
             v38 = @"en-US";
 LABEL_71:
-            v7 = v137;
+            languageCopy = v137;
             v22 = v145;
             v11 = v132;
           }
@@ -1869,15 +1869,15 @@ LABEL_76:
       [v135 setObject:v57 forIndex:v150];
 
       v58 = v20;
-      if ((v32 | v55) & 1) == 0 && (AXLanguageIsSpeakableEmojiString() & 1) == 0 && !sub_100051A24(v150, v7) || ([v131 characterIsMember:v151])
+      if ((v32 | v55) & 1) == 0 && (AXLanguageIsSpeakableEmojiString() & 1) == 0 && !sub_100051A24(v150, languageCopy) || ([v131 characterIsMember:v151])
       {
         v59 = +[NSMutableArray array];
-        v60 = [VOTSharedWorkspace languageRotorItems];
+        languageRotorItems2 = [VOTSharedWorkspace languageRotorItems];
         v161 = 0u;
         v162 = 0u;
         v163 = 0u;
         v164 = 0u;
-        v61 = v60;
+        v61 = languageRotorItems2;
         v62 = [v61 countByEnumeratingWithState:&v161 objects:v175 count:16];
         if (v62)
         {
@@ -1894,9 +1894,9 @@ LABEL_76:
 
               v66 = *(*(&v161 + 1) + 8 * j);
               v67 = [v66 objectForKeyedSubscript:@"Enabled"];
-              v68 = [v67 BOOLValue];
+              bOOLValue = [v67 BOOLValue];
 
-              if (v68)
+              if (bOOLValue)
               {
                 v69 = [v66 objectForKeyedSubscript:@"RotorItem"];
                 if (v69)
@@ -1912,9 +1912,9 @@ LABEL_76:
           while (v63);
         }
 
-        v70 = v140;
+        firstObject = v140;
 
-        if (!(v9 | v140))
+        if (!(hintCopy | v140))
         {
           v71 = v151;
           v72 = [v130 dialectsThatCanSpeakCharacter:v151 overridePreferredLanguages:v59];
@@ -1942,35 +1942,35 @@ LABEL_76:
                 v78 = *(*(&v157 + 1) + 8 * v77);
                 if (([v78 isDialectSecondaryForCharacter:v71] & 1) == 0)
                 {
-                  v79 = [v78 langMap];
-                  if (![v79 isWestern])
+                  langMap = [v78 langMap];
+                  if (![langMap isWestern])
                   {
                     goto LABEL_131;
                   }
 
                   v80 = v73;
-                  v81 = [v145 langMap];
-                  if (![v81 isWestern] || v150 <= 0)
+                  langMap2 = [v145 langMap];
+                  if (![langMap2 isWestern] || v150 <= 0)
                   {
 
                     v73 = v80;
 LABEL_131:
 
 LABEL_132:
-                    v70 = v78;
+                    firstObject = v78;
 LABEL_133:
 
 LABEL_134:
                     v22 = v145;
 
-                    if (!v70)
+                    if (!firstObject)
                     {
                       goto LABEL_167;
                     }
 
 LABEL_135:
-                    v96 = [v70 specificLanguageID];
-                    if ([v149 isEqualToString:v96])
+                    specificLanguageID2 = [firstObject specificLanguageID];
+                    if ([v149 isEqualToString:specificLanguageID2])
                     {
                       v21 = v138;
                       goto LABEL_163;
@@ -1982,7 +1982,7 @@ LABEL_135:
 
                     else
                     {
-                      v97 = [v22 isEqual:v70];
+                      v97 = [v22 isEqual:firstObject];
 
                       if (v97)
                       {
@@ -1998,7 +1998,7 @@ LABEL_135:
                     }
 
                     v98 = v138;
-                    v144 = v70;
+                    v144 = firstObject;
                     if (v150 <= v138)
                     {
                       goto LABEL_156;
@@ -2009,9 +2009,9 @@ LABEL_135:
                     while (1)
                     {
                       v101 = [v135 objectForIndex:--v100];
-                      v102 = [v101 BOOLValue];
+                      bOOLValue2 = [v101 BOOLValue];
 
-                      if (!v102)
+                      if (!bOOLValue2)
                       {
                         v21 = v99;
                         v98 = v138;
@@ -2021,8 +2021,8 @@ LABEL_135:
                       v152 = [v137 rangeOfComposedCharacterSequenceAtIndex:v100];
                       v103 = [v137 substringWithRange:?];
                       v104 = [v103 characterAtIndex:0];
-                      [v70 speakableCharacters];
-                      v106 = v105 = v70;
+                      [firstObject speakableCharacters];
+                      v106 = v105 = firstObject;
                       if (v106 && ([v105 canSpeakCharacter:v104] & 1) == 0)
                       {
                         v107 = [v105 canSpeakString:v103];
@@ -2032,7 +2032,7 @@ LABEL_135:
 
                           v21 = v99;
                           v98 = v138;
-                          v70 = v144;
+                          firstObject = v144;
 LABEL_156:
                           if (v21 == v98)
                           {
@@ -2040,8 +2040,8 @@ LABEL_156:
                             goto LABEL_164;
                           }
 
-                          v96 = [v137 substringWithRange:?];
-                          v172[0] = v96;
+                          specificLanguageID2 = [v137 substringWithRange:?];
+                          v172[0] = specificLanguageID2;
                           v171[0] = @"string";
                           v171[1] = @"language";
                           v108 = v149;
@@ -2060,18 +2060,18 @@ LABEL_156:
                           {
                           }
 
-                          v70 = v144;
+                          firstObject = v144;
 LABEL_163:
 
                           v138 = v21;
 LABEL_164:
                           v21 = v150;
 LABEL_165:
-                          if (([v70 isEqual:v22] & 1) == 0)
+                          if (([firstObject isEqual:v22] & 1) == 0)
                           {
-                            v110 = [v70 specificLanguageID];
+                            specificLanguageID3 = [firstObject specificLanguageID];
 
-                            v149 = v110;
+                            v149 = specificLanguageID3;
 LABEL_167:
                             v21 = v150;
                           }
@@ -2081,8 +2081,8 @@ LABEL_168:
                           v20 = v139;
 LABEL_169:
 
-                          v27 = v70;
-                          v7 = v137;
+                          v27 = firstObject;
+                          languageCopy = v137;
                           v11 = v132;
                           goto LABEL_170;
                         }
@@ -2095,7 +2095,7 @@ LABEL_169:
                       v21 = v152;
                       v99 = v152;
                       v98 = v138;
-                      v70 = v144;
+                      firstObject = v144;
                       if (v100 <= v138)
                       {
                         goto LABEL_156;
@@ -2127,7 +2127,7 @@ LABEL_169:
             while (v75);
           }
 
-          v70 = 0;
+          firstObject = 0;
           goto LABEL_133;
         }
 
@@ -2162,27 +2162,27 @@ LABEL_169:
               if (([v89 isDialectSecondaryForCharacter:v85] & 1) == 0)
               {
                 v90 = v73;
-                v91 = [v89 langMap];
-                v92 = [v91 generalLanguageID];
-                if ([v92 isEqual:v9])
+                langMap3 = [v89 langMap];
+                generalLanguageID = [langMap3 generalLanguageID];
+                if ([generalLanguageID isEqual:hintCopy])
                 {
 
                   v73 = v90;
 LABEL_152:
-                  v70 = v89;
+                  firstObject = v89;
 
-                  if (v70)
+                  if (firstObject)
                   {
                     goto LABEL_134;
                   }
 
 LABEL_153:
-                  v70 = [v73 firstObject];
+                  firstObject = [v73 firstObject];
                   goto LABEL_134;
                 }
 
-                v93 = [v89 specificLanguageID];
-                v94 = [v93 isEqualToString:v9];
+                specificLanguageID4 = [v89 specificLanguageID];
+                v94 = [specificLanguageID4 isEqualToString:hintCopy];
 
                 v85 = v151;
                 v73 = v90;
@@ -2207,7 +2207,7 @@ LABEL_153:
       {
         v84 = [v130 dialectForLanguageID:?];
         v59 = v84;
-        v70 = v140;
+        firstObject = v140;
         if (((v32 ^ 1) & v55) == 0 || ([v84 canSpeakCharacter:v151] & 1) == 0 && (objc_msgSend(v59, "canSpeakString:", v58) & 1) == 0)
         {
           v61 = [v137 substringWithRange:{v138, v150 - v138}];
@@ -2231,7 +2231,7 @@ LABEL_153:
       if (v134)
       {
         v21 = v150;
-        v59 = [v7 substringWithRange:{v138, v150 - v138}];
+        v59 = [languageCopy substringWithRange:{v138, v150 - v138}];
         v176[0] = @"string";
         v176[1] = @"skipsUnpronounceable";
         v177[0] = v59;
@@ -2240,7 +2240,7 @@ LABEL_153:
         [v127 addObject:v61];
         v149 = 0;
         v138 = v150;
-        v70 = v140;
+        firstObject = v140;
         goto LABEL_168;
       }
 
@@ -2263,11 +2263,11 @@ LABEL_173:
   if (v149 | v127)
   {
     v111 = v124;
-    v112 = v9;
+    v112 = hintCopy;
     if (v11 == 1)
     {
-      v113 = sub_100051298([v7 characterAtIndex:0]);
-      if (!v9 && v113)
+      v113 = sub_100051298([languageCopy characterAtIndex:0]);
+      if (!hintCopy && v113)
       {
 
         v149 = 0;
@@ -2281,7 +2281,7 @@ LABEL_173:
 
     else
     {
-      v116 = [v7 substringWithRange:{v138, v11 - v138}];
+      v116 = [languageCopy substringWithRange:{v138, v11 - v138}];
       v169[0] = @"string";
       v169[1] = @"language";
       v170[0] = v116;
@@ -2309,7 +2309,7 @@ LABEL_173:
     v115 = 0;
     v114 = v123;
     v111 = v124;
-    v112 = v9;
+    v112 = hintCopy;
   }
 
   v119 = v127;
@@ -2317,10 +2317,10 @@ LABEL_173:
   return v127;
 }
 
-- (void)addPause:(float)a3
+- (void)addPause:(float)pause
 {
   v7 = [objc_allocWithZone(VOTOutputAction) initWithString:&stru_1001CBF90];
-  *&v5 = a3;
+  *&v5 = pause;
   v6 = [NSNumber numberWithFloat:v5];
   [v7 setObject:v6 forVariant:38];
 
@@ -2328,29 +2328,29 @@ LABEL_173:
   [(NSMutableArray *)self->_outputActions addObject:v7];
 }
 
-- (id)addString:(id)a3 brailleString:(id)a4 breakWords:(BOOL)a5 withLanguage:(id)a6 atIndex:(int64_t)a7 category:(id)a8
+- (id)addString:(id)string brailleString:(id)brailleString breakWords:(BOOL)words withLanguage:(id)language atIndex:(int64_t)index category:(id)category
 {
-  v11 = a5;
-  v14 = a3;
-  v15 = a4;
-  v16 = a6;
-  v17 = a8;
-  if (!v14)
+  wordsCopy = words;
+  stringCopy = string;
+  brailleStringCopy = brailleString;
+  languageCopy = language;
+  categoryCopy = category;
+  if (!stringCopy)
   {
     v23 = 0;
     goto LABEL_43;
   }
 
-  if (v16)
+  if (languageCopy)
   {
     goto LABEL_8;
   }
 
   v18 = objc_opt_class();
-  v19 = [(VOTOutputRequest *)self keyboardLanguageHint];
-  v20 = [v18 stringShouldSeparateDueToLanguage:v14 language:0 keyboardLanguageHint:v19];
+  keyboardLanguageHint = [(VOTOutputRequest *)self keyboardLanguageHint];
+  v20 = [v18 stringShouldSeparateDueToLanguage:stringCopy language:0 keyboardLanguageHint:keyboardLanguageHint];
 
-  v21 = [AXOutputRequest processStringsAndLanguages:v20 brailleString:v15 breakWords:v11 withLanguage:0 atIndex:a7 category:v17];
+  v21 = [AXOutputRequest processStringsAndLanguages:v20 brailleString:brailleStringCopy breakWords:wordsCopy withLanguage:0 atIndex:index category:categoryCopy];
   v22 = v21;
   if (!v21 || ![v21 count])
   {
@@ -2358,21 +2358,21 @@ LABEL_173:
 LABEL_8:
     if (self->_sendsToDisplay)
     {
-      v24 = [objc_allocWithZone(VOTOutputAction) initWithTextDisplay:v14];
+      v24 = [objc_allocWithZone(VOTOutputAction) initWithTextDisplay:stringCopy];
       [v24 setOutputRequest:self];
-      [v24 setObject:v17 forVariant:86];
+      [v24 setObject:categoryCopy forVariant:86];
       v25 = [NSNumber numberWithInteger:self->_textDisplayDirection];
       [v24 setObject:v25 forVariant:11];
       v26 = [(NSMutableArray *)self->_outputActions count];
       outputActions = self->_outputActions;
-      if (v26 <= a7)
+      if (v26 <= index)
       {
         [(NSMutableArray *)outputActions addObject:v24];
       }
 
       else
       {
-        [(NSMutableArray *)outputActions insertObject:v24 atIndex:a7];
+        [(NSMutableArray *)outputActions insertObject:v24 atIndex:index];
       }
     }
 
@@ -2381,12 +2381,12 @@ LABEL_8:
       v24 = 0;
     }
 
-    if ([v14 length] >= 0x3E9 && v11)
+    if ([stringCopy length] >= 0x3E9 && wordsCopy)
     {
-      v41 = v15;
+      v41 = brailleStringCopy;
       v28 = +[NSCharacterSet whitespaceAndNewlineCharacterSet];
       v23 = objc_opt_new();
-      if ([v14 length] < 0x3E9)
+      if ([stringCopy length] < 0x3E9)
       {
 LABEL_34:
         v32 = v24;
@@ -2394,7 +2394,7 @@ LABEL_34:
 
       else
       {
-        v29 = v14;
+        v29 = stringCopy;
         while (2)
         {
           v30 = 1000;
@@ -2405,7 +2405,7 @@ LABEL_34:
               v30 = [v29 length];
               if (v30 < 0)
               {
-                v14 = v29;
+                stringCopy = v29;
                 goto LABEL_34;
               }
 
@@ -2416,26 +2416,26 @@ LABEL_34:
           v31 = [v29 substringToIndex:v30];
           v32 = [objc_allocWithZone(VOTOutputAction) initWithString:v31];
 
-          [v32 setObject:v17 forVariant:86];
+          [v32 setObject:categoryCopy forVariant:86];
           [v32 setOutputRequest:self];
           [v32 setWasDivided:1];
-          [v32 setObject:v16 forVariant:15];
+          [v32 setObject:languageCopy forVariant:15];
           [(NSMutableArray *)self->_outputActions addObject:v32];
           [v23 addObject:v32];
           v33 = v30 + 1;
           if (v33 >= [v29 length])
           {
 
-            v14 = v29;
+            stringCopy = v29;
           }
 
           else
           {
-            v14 = [v29 substringFromIndex:v33];
+            stringCopy = [v29 substringFromIndex:v33];
 
-            v29 = v14;
+            v29 = stringCopy;
             v24 = v32;
-            if ([v14 length] > 0x3E8)
+            if ([stringCopy length] > 0x3E8)
             {
               continue;
             }
@@ -2445,16 +2445,16 @@ LABEL_34:
         }
       }
 
-      if ([v14 length])
+      if ([stringCopy length])
       {
-        v34 = [objc_allocWithZone(VOTOutputAction) initWithString:v14];
+        v34 = [objc_allocWithZone(VOTOutputAction) initWithString:stringCopy];
 
-        [v34 setObject:v17 forVariant:86];
+        [v34 setObject:categoryCopy forVariant:86];
         [v34 setOutputRequest:self];
         [v34 setWasDivided:1];
-        if ([v16 length])
+        if ([languageCopy length])
         {
-          [v34 setObject:v16 forVariant:15];
+          [v34 setObject:languageCopy forVariant:15];
         }
 
         [(NSMutableArray *)self->_outputActions addObject:v34];
@@ -2466,17 +2466,17 @@ LABEL_34:
         v34 = v32;
       }
 
-      v15 = v41;
+      brailleStringCopy = v41;
     }
 
     else
     {
-      v34 = [objc_allocWithZone(VOTOutputAction) initWithString:v14 brailleString:v15];
+      v34 = [objc_allocWithZone(VOTOutputAction) initWithString:stringCopy brailleString:brailleStringCopy];
 
-      [v34 setObject:v17 forVariant:86];
-      if ([v16 length])
+      [v34 setObject:categoryCopy forVariant:86];
+      if ([languageCopy length])
       {
-        v35 = v16;
+        v35 = languageCopy;
       }
 
       else
@@ -2485,21 +2485,21 @@ LABEL_34:
       }
 
       [v34 setObject:v35 forVariant:15];
-      v36 = [VOTSharedWorkspace applicationForCurrentElement];
-      v37 = [v36 bundleIdentifier];
-      [v34 setObject:v37 forVariant:43];
+      applicationForCurrentElement = [VOTSharedWorkspace applicationForCurrentElement];
+      bundleIdentifier = [applicationForCurrentElement bundleIdentifier];
+      [v34 setObject:bundleIdentifier forVariant:43];
 
       [v34 setOutputRequest:self];
       v38 = [(NSMutableArray *)self->_outputActions count];
       v39 = self->_outputActions;
-      if (v38 <= a7)
+      if (v38 <= index)
       {
         [(NSMutableArray *)v39 addObject:v34];
       }
 
       else
       {
-        [(NSMutableArray *)v39 insertObject:v34 atIndex:a7];
+        [(NSMutableArray *)v39 insertObject:v34 atIndex:index];
       }
 
       v42 = v34;
@@ -2509,7 +2509,7 @@ LABEL_34:
     goto LABEL_42;
   }
 
-  v23 = [(VOTOutputRequest *)self _addAXOutputActions:v22 atIndex:a7];
+  v23 = [(VOTOutputRequest *)self _addAXOutputActions:v22 atIndex:index];
 
 LABEL_42:
 LABEL_43:
@@ -2517,29 +2517,29 @@ LABEL_43:
   return v23;
 }
 
-- (void)addSound:(id)a3
+- (void)addSound:(id)sound
 {
-  v4 = a3;
-  v5 = [objc_allocWithZone(VOTOutputAction) initWithSoundPath:v4];
+  soundCopy = sound;
+  v5 = [objc_allocWithZone(VOTOutputAction) initWithSoundPath:soundCopy];
 
   [v5 setOutputRequest:self];
   [(NSMutableArray *)self->_outputActions addObject:v5];
 }
 
-- (void)addNotificationEvent:(unsigned int)a3 forDelegate:(id)a4
+- (void)addNotificationEvent:(unsigned int)event forDelegate:(id)delegate
 {
-  if (a4)
+  if (delegate)
   {
     outputActions = self->_outputActions;
-    v6 = a4;
-    v7 = [(NSMutableArray *)outputActions lastObject];
-    [v7 setObject:v6 forVariant:a3];
+    delegateCopy = delegate;
+    lastObject = [(NSMutableArray *)outputActions lastObject];
+    [lastObject setObject:delegateCopy forVariant:event];
   }
 }
 
-- (void)setCannotBeInterrupted:(BOOL)a3
+- (void)setCannotBeInterrupted:(BOOL)interrupted
 {
-  self->_cannotBeInterrupted = a3;
+  self->_cannotBeInterrupted = interrupted;
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
@@ -2579,7 +2579,7 @@ LABEL_43:
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v16 = self;
+  selfCopy = self;
   v4 = self->_outputActions;
   v5 = [(NSMutableArray *)v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v5)
@@ -2597,12 +2597,12 @@ LABEL_43:
 
         v9 = *(*(&v17 + 1) + 8 * i);
         [v3 appendString:@"Action: "];
-        v10 = [v9 string];
+        string = [v9 string];
 
-        if (v10)
+        if (string)
         {
-          v11 = [v9 string];
-          [v3 appendFormat:@"'%@'", v11];
+          string2 = [v9 string];
+          [v3 appendFormat:@"'%@'", string2];
         }
 
         else
@@ -2621,17 +2621,17 @@ LABEL_43:
 
   v12 = +[NSMutableArray array];
   v13 = v12;
-  if (v16->_cannotBeInterrupted)
+  if (selfCopy->_cannotBeInterrupted)
   {
     [v12 addObject:@"Cannot be interrupted"];
   }
 
-  if (v16->_doesNotInterrupt)
+  if (selfCopy->_doesNotInterrupt)
   {
     [v13 addObject:@"Does not interrupt"];
   }
 
-  if (v16->_interruptsEverything)
+  if (selfCopy->_interruptsEverything)
   {
     [v13 addObject:@"Interrupts everything"];
   }
@@ -2648,16 +2648,16 @@ LABEL_43:
 - (id)dictionaryRepresentation
 {
   v3 = +[NSMutableDictionary dictionary];
-  v4 = [(VOTOutputRequest *)self combinedActionString];
-  if (v4)
+  combinedActionString = [(VOTOutputRequest *)self combinedActionString];
+  if (combinedActionString)
   {
-    [v3 setObject:v4 forKeyedSubscript:@"combinedActionString"];
+    [v3 setObject:combinedActionString forKeyedSubscript:@"combinedActionString"];
   }
 
-  v5 = [(VOTOutputRequest *)self combinedOriginalString];
-  if (v5)
+  combinedOriginalString = [(VOTOutputRequest *)self combinedOriginalString];
+  if (combinedOriginalString)
   {
-    [v3 setObject:v5 forKeyedSubscript:@"combinedOriginalString"];
+    [v3 setObject:combinedOriginalString forKeyedSubscript:@"combinedOriginalString"];
   }
 
   v6 = [NSNumber numberWithBool:[(VOTOutputRequest *)self finishedSuccessfully]];
@@ -2682,15 +2682,15 @@ LABEL_43:
   return result;
 }
 
-- (void)addTVElement:(id)a3 servesAsHeader:(BOOL)a4 filterWithAspectMask:(BOOL)a5
+- (void)addTVElement:(id)element servesAsHeader:(BOOL)header filterWithAspectMask:(BOOL)mask
 {
-  v5 = a5;
-  v23 = a3;
-  if (a4 || (v8 = [v23 traits], (kAXHeaderTrait & v8) != 0))
+  maskCopy = mask;
+  elementCopy = element;
+  if (header || (v8 = [elementCopy traits], (kAXHeaderTrait & v8) != 0))
   {
-    if (v5 && ([v23 aspectMask] & 1) == 0 || (v9 = [AXAttributedString alloc], objc_msgSend(v23, "label"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v9, "initWithString:", v10), v10, v12 = AXUIAccessibilitySpeechAttributePitch, objc_msgSend(v11, "setAttribute:forKey:", &off_1001D9980, AXUIAccessibilitySpeechAttributePitch), objc_msgSend(v23, "language"), v13 = objc_claimAutoreleasedReturnValue(), v14 = -[VOTOutputRequest addAttributedString:withLanguage:](self, "addAttributedString:withLanguage:", v11, v13), v13, v11, v5))
+    if (maskCopy && ([elementCopy aspectMask] & 1) == 0 || (v9 = [AXAttributedString alloc], objc_msgSend(elementCopy, "label"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v9, "initWithString:", v10), v10, v12 = AXUIAccessibilitySpeechAttributePitch, objc_msgSend(v11, "setAttribute:forKey:", &off_1001D9980, AXUIAccessibilitySpeechAttributePitch), objc_msgSend(elementCopy, "language"), v13 = objc_claimAutoreleasedReturnValue(), v14 = -[VOTOutputRequest addAttributedString:withLanguage:](self, "addAttributedString:withLanguage:", v11, v13), v13, v11, maskCopy))
     {
-      if (([v23 aspectMask] & 2) == 0)
+      if (([elementCopy aspectMask] & 2) == 0)
       {
         goto LABEL_11;
       }
@@ -2699,17 +2699,17 @@ LABEL_43:
     }
 
     v15 = [AXAttributedString alloc];
-    v16 = [v23 value];
-    v17 = [v15 initWithString:v16];
+    value = [elementCopy value];
+    label = [v15 initWithString:value];
 
-    [v17 setAttribute:&off_1001D9980 forKey:v12];
-    v18 = [v23 language];
-    v19 = [(VOTOutputRequest *)self addAttributedString:v17 withLanguage:v18];
+    [label setAttribute:&off_1001D9980 forKey:v12];
+    language = [elementCopy language];
+    v19 = [(VOTOutputRequest *)self addAttributedString:label withLanguage:language];
   }
 
   else
   {
-    if (v5)
+    if (maskCopy)
     {
       v20 = 17827842;
     }
@@ -2719,24 +2719,24 @@ LABEL_43:
       v20 = 16779266;
     }
 
-    [v23 addTextualInformationToRequest:self options:v20 dataPackage:0];
-    if (![v23 doesHaveTraits:kAXKeyboardKeyTrait] || !objc_msgSend(v23, "aspectMask"))
+    [elementCopy addTextualInformationToRequest:self options:v20 dataPackage:0];
+    if (![elementCopy doesHaveTraits:kAXKeyboardKeyTrait] || !objc_msgSend(elementCopy, "aspectMask"))
     {
       goto LABEL_11;
     }
 
-    v17 = [v23 label];
-    if ([v17 length] != 1)
+    label = [elementCopy label];
+    if ([label length] != 1)
     {
       goto LABEL_10;
     }
 
-    v18 = sub_100052450(v17, 0, 0);
-    if ([v18 length])
+    language = sub_100052450(label, 0, 0);
+    if ([language length])
     {
       LODWORD(v21) = 0.75;
       [(VOTOutputRequest *)self addPause:v21];
-      v22 = [(VOTOutputRequest *)self addString:v18];
+      v22 = [(VOTOutputRequest *)self addString:language];
     }
   }
 

@@ -1,28 +1,28 @@
 @interface HidSensors
 + (id)sharedInstance;
-- (BOOL)isTempSensorDataValid:(__CFString *)a3 value:(int)a4;
-- (BOOL)readFailuresExpected:(__CFString *)a3;
-- (BOOL)staleValueExpected:(__CFString *)a3;
+- (BOOL)isTempSensorDataValid:(__CFString *)valid value:(int)value;
+- (BOOL)readFailuresExpected:(__CFString *)expected;
+- (BOOL)staleValueExpected:(__CFString *)expected;
 - (HidSensors)init;
 - (__CFArray)copySensorArray;
 - (__CFDictionary)getHIDSensorDict;
-- (__CFString)getSensor4CCFromIndex:(int64_t)a3;
+- (__CFString)getSensor4CCFromIndex:(int64_t)index;
 - (char)readHIDDebugDictionaryAndReturnErrorCode;
-- (int)callbackSensorInterval:(__CFString *)a3;
-- (int)getFilterTimeConstantForSensor:(int64_t)a3;
-- (int)getPowerSensorIndex:(__CFString *)a3;
-- (int)indexForTempSensorKey:(__CFString *)a3;
-- (int)sendToService:(__CFString *)a3 value:(void *)a4;
-- (int)temperatureForKey:(__CFString *)a3;
-- (unsigned)getSensorIndexFrom4CC:(__CFString *)a3;
+- (int)callbackSensorInterval:(__CFString *)interval;
+- (int)getFilterTimeConstantForSensor:(int64_t)sensor;
+- (int)getPowerSensorIndex:(__CFString *)index;
+- (int)indexForTempSensorKey:(__CFString *)key;
+- (int)sendToService:(__CFString *)service value:(void *)value;
+- (int)temperatureForKey:(__CFString *)key;
+- (unsigned)getSensorIndexFrom4CC:(__CFString *)c;
 - (void)createHIDEventSystemObject;
 - (void)dealloc;
-- (void)handleTemperatureEvent:(int)a3 service:(__IOHIDServiceClient *)a4;
+- (void)handleTemperatureEvent:(int)event service:(__IOHIDServiceClient *)service;
 - (void)initLocationStrings;
-- (void)loadProductPowerParameters:(__CFArray *)a3;
-- (void)loadProductTemperatureParameters:(__CFArray *)a3;
+- (void)loadProductPowerParameters:(__CFArray *)parameters;
+- (void)loadProductTemperatureParameters:(__CFArray *)parameters;
 - (void)resetHIDSensorDictionary;
-- (void)sendVirtualTemp:(int)a3 temperature:(int)a4;
+- (void)sendVirtualTemp:(int)temp temperature:(int)temperature;
 @end
 
 @implementation HidSensors
@@ -45,12 +45,12 @@
   {
     if (self->_hidEventSystem || ([(HidSensors *)self createHIDEventSystemObject], self->_hidEventSystem))
     {
-      v30 = [(HidSensors *)self copySensorArray];
-      self->_tempSensors = v30;
-      if (v30)
+      copySensorArray = [(HidSensors *)self copySensorArray];
+      self->_tempSensors = copySensorArray;
+      if (copySensorArray)
       {
 LABEL_69:
-        Count = CFArrayGetCount(v30);
+        Count = CFArrayGetCount(copySensorArray);
         self->_count = Count;
         if (Count <= 0)
         {
@@ -74,14 +74,14 @@ LABEL_69:
 
         self->_sensorDict = CFDictionaryCreateMutable(kCFAllocatorDefault, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
         self->_serviceToName = CFDictionaryCreateMutable(kCFAllocatorDefault, 0, 0, &kCFTypeDictionaryValueCallBacks);
-        v33 = [+[HidSensors sharedInstance](HidSensors hidSensorKeys];
+        hidSensorKeys = [+[HidSensors sharedInstance](HidSensors hidSensorKeys];
         tempSensors = self->_tempSensors;
         v48[0] = _NSConcreteStackBlock;
         v48[1] = 3221225472;
         v48[2] = sub_10000DB94;
         v48[3] = &unk_1000851C8;
         v48[4] = v3;
-        v48[5] = v33;
+        v48[5] = hidSensorKeys;
         v48[6] = self;
         v35 = [(__CFArray *)tempSensors filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:v48]];
         CFRelease(self->_tempSensors);
@@ -110,8 +110,8 @@ LABEL_69:
 
     else
     {
-      v30 = self->_tempSensors;
-      if (v30)
+      copySensorArray = self->_tempSensors;
+      if (copySensorArray)
       {
         goto LABEL_69;
       }
@@ -219,16 +219,16 @@ LABEL_2:
         goto LABEL_35;
       }
 
-      v14 = [+[SensorDispatcherHelper sharedInstance](SensorDispatcherHelper getTemperatureFromSMCForKey:"getTemperatureFromSMCForKey:", Value];
-      v47 = v14;
-      if (v14 == -12800)
+      value = [+[SensorDispatcherHelper sharedInstance](SensorDispatcherHelper getTemperatureFromSMCForKey:"getTemperatureFromSMCForKey:", Value];
+      v47 = value;
+      if (value == -12800)
       {
         break;
       }
 
-      if (v14 != -1)
+      if (value != -1)
       {
-        v19 = [(HidSensors *)self isTempSensorDataValid:Value value:v14];
+        v19 = [(HidSensors *)self isTempSensorDataValid:Value value:value];
         v20 = self->_sensorDict;
         if (v19)
         {
@@ -242,13 +242,13 @@ LABEL_34:
         goto LABEL_35;
       }
 
-      v15 = [+[HidSensors sharedInstance](HidSensors isPowerSensor:"isPowerSensor:", Value];
+      value2 = [+[HidSensors sharedInstance](HidSensors isPowerSensor:"isPowerSensor:", Value];
       v16 = IOHIDServiceClientCopyEvent();
       if (v16)
       {
         IOHIDEventGetFloatValue();
         valuePtr = v17;
-        if (!v15)
+        if (!value2)
         {
           v44 = (v17 * 100.0);
           v43 = 0;
@@ -463,7 +463,7 @@ LABEL_28:
   [(HidSensors *)&v10 dealloc];
 }
 
-- (unsigned)getSensorIndexFrom4CC:(__CFString *)a3
+- (unsigned)getSensorIndexFrom4CC:(__CFString *)c
 {
   sensorFourCharCode = self->sensorFourCharCode;
   if (sensorFourCharCode)
@@ -477,7 +477,7 @@ LABEL_28:
         ValueAtIndex = CFArrayGetValueAtIndex(self->sensorFourCharCode, i);
         if (ValueAtIndex && (v10 = ValueAtIndex, v11 = CFGetTypeID(ValueAtIndex), v11 == CFStringGetTypeID()))
         {
-          if (CFStringCompare(a3, v10, 0) == kCFCompareEqualTo)
+          if (CFStringCompare(c, v10, 0) == kCFCompareEqualTo)
           {
             return i;
           }
@@ -500,9 +500,9 @@ LABEL_28:
   return i;
 }
 
-- (__CFString)getSensor4CCFromIndex:(int64_t)a3
+- (__CFString)getSensor4CCFromIndex:(int64_t)index
 {
-  if (a3 < 0)
+  if (index < 0)
   {
     return 0;
   }
@@ -515,11 +515,11 @@ LABEL_28:
 
   else
   {
-    return CFArrayGetValueAtIndex(sensorFourCharCode, a3);
+    return CFArrayGetValueAtIndex(sensorFourCharCode, index);
   }
 }
 
-- (void)loadProductTemperatureParameters:(__CFArray *)a3
+- (void)loadProductTemperatureParameters:(__CFArray *)parameters
 {
   Mutable = CFDictionaryCreateMutable(kCFAllocatorDefault, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
   v6 = CFDictionaryCreateMutable(kCFAllocatorDefault, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
@@ -548,13 +548,13 @@ LABEL_28:
   {
     theDict = v8;
     v25 = v9;
-    if (CFArrayGetCount(a3) >= 1)
+    if (CFArrayGetCount(parameters) >= 1)
     {
       v12 = 0;
       p_last = &self->filterParams[0].last;
       do
       {
-        ValueAtIndex = CFArrayGetValueAtIndex(a3, v12);
+        ValueAtIndex = CFArrayGetValueAtIndex(parameters, v12);
         if (ValueAtIndex && (v15 = ValueAtIndex, v16 = CFGetTypeID(ValueAtIndex), v16 == CFDictionaryGetTypeID()))
         {
           value = 0;
@@ -678,7 +678,7 @@ LABEL_28:
         p_last += 2;
       }
 
-      while (CFArrayGetCount(a3) > v12);
+      while (CFArrayGetCount(parameters) > v12);
     }
 
     if (CFDictionaryGetCount(Mutable) >= 1)
@@ -732,18 +732,18 @@ LABEL_28:
   }
 }
 
-- (void)loadProductPowerParameters:(__CFArray *)a3
+- (void)loadProductPowerParameters:(__CFArray *)parameters
 {
   Mutable = CFDictionaryCreateMutable(kCFAllocatorDefault, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
   if (Mutable)
   {
     v6 = Mutable;
     LODWORD(idx) = 0;
-    if (CFArrayGetCount(a3) >= 1)
+    if (CFArrayGetCount(parameters) >= 1)
     {
       do
       {
-        ValueAtIndex = CFArrayGetValueAtIndex(a3, idx);
+        ValueAtIndex = CFArrayGetValueAtIndex(parameters, idx);
         if (ValueAtIndex)
         {
           v8 = ValueAtIndex;
@@ -781,7 +781,7 @@ LABEL_28:
         LODWORD(idx) = idx + 1;
       }
 
-      while (CFArrayGetCount(a3) > v12);
+      while (CFArrayGetCount(parameters) > v12);
     }
 
     if (CFDictionaryGetCount(v6) > 0)
@@ -838,11 +838,11 @@ LABEL_28:
   self->_serviceToName = 0;
 }
 
-- (int)sendToService:(__CFString *)a3 value:(void *)a4
+- (int)sendToService:(__CFString *)service value:(void *)value
 {
   if (qword_1000A2490 == -1)
   {
-    if (!a3)
+    if (!service)
     {
       return 5;
     }
@@ -851,7 +851,7 @@ LABEL_28:
   else
   {
     sub_100050CBC();
-    if (!a3)
+    if (!service)
     {
       return 5;
     }
@@ -863,15 +863,15 @@ LABEL_28:
     return 5;
   }
 
-  return IORegistryEntrySetCFProperty(v6, a3, a4);
+  return IORegistryEntrySetCFProperty(v6, service, value);
 }
 
-- (void)sendVirtualTemp:(int)a3 temperature:(int)a4
+- (void)sendVirtualTemp:(int)temp temperature:(int)temperature
 {
   if ([+[HidSensors isVirtualTempDispatchEnabled] sharedInstance]
   {
-    v7 = [+[HidSensors sharedInstance](HidSensors getSensor4CCFromIndex:"getSensor4CCFromIndex:", a3];
-    v8 = a4 / 100.0;
+    temp = [+[HidSensors sharedInstance](HidSensors getSensor4CCFromIndex:"getSensor4CCFromIndex:", temp];
+    v8 = temperature / 100.0;
     if (v8 >= 0.0)
     {
       v9 = v8 * 65536.0 + 0.5;
@@ -887,7 +887,7 @@ LABEL_28:
     if (v10)
     {
       v11 = v10;
-      v12 = [(HidSensors *)self sendToService:v7 value:v10];
+      v12 = [(HidSensors *)self sendToService:temp value:v10];
       CFRelease(v11);
       if (!v12)
       {
@@ -928,46 +928,46 @@ LABEL_28:
   }
 }
 
-- (BOOL)readFailuresExpected:(__CFString *)a3
+- (BOOL)readFailuresExpected:(__CFString *)expected
 {
   readFailuresExpected = self->_readFailuresExpected;
   if (readFailuresExpected)
   {
-    LODWORD(readFailuresExpected) = CFDictionaryContainsKey(readFailuresExpected, a3);
+    LODWORD(readFailuresExpected) = CFDictionaryContainsKey(readFailuresExpected, expected);
     if (readFailuresExpected)
     {
-      LOBYTE(readFailuresExpected) = CFDictionaryGetValue(self->_readFailuresExpected, a3) != 0;
+      LOBYTE(readFailuresExpected) = CFDictionaryGetValue(self->_readFailuresExpected, expected) != 0;
     }
   }
 
   return readFailuresExpected;
 }
 
-- (BOOL)staleValueExpected:(__CFString *)a3
+- (BOOL)staleValueExpected:(__CFString *)expected
 {
   potentiallyStaleSensorDefaults = self->_potentiallyStaleSensorDefaults;
   if (potentiallyStaleSensorDefaults)
   {
-    LODWORD(potentiallyStaleSensorDefaults) = CFDictionaryContainsKey(potentiallyStaleSensorDefaults, a3);
+    LODWORD(potentiallyStaleSensorDefaults) = CFDictionaryContainsKey(potentiallyStaleSensorDefaults, expected);
     if (potentiallyStaleSensorDefaults)
     {
-      LOBYTE(potentiallyStaleSensorDefaults) = CFDictionaryGetValue(self->_potentiallyStaleSensorDefaults, a3) != 0;
+      LOBYTE(potentiallyStaleSensorDefaults) = CFDictionaryGetValue(self->_potentiallyStaleSensorDefaults, expected) != 0;
     }
   }
 
   return potentiallyStaleSensorDefaults;
 }
 
-- (int)getPowerSensorIndex:(__CFString *)a3
+- (int)getPowerSensorIndex:(__CFString *)index
 {
   v9 = 0;
   powerSensors = self->_powerSensors;
-  if (!powerSensors || !CFDictionaryContainsKey(powerSensors, a3))
+  if (!powerSensors || !CFDictionaryContainsKey(powerSensors, index))
   {
     return 0;
   }
 
-  sub_100002A20(self->_powerSensors, a3, kCFNumberIntType, &v9);
+  sub_100002A20(self->_powerSensors, index, kCFNumberIntType, &v9);
   v6 = v9;
   if (v9 >= 11)
   {
@@ -975,7 +975,7 @@ LABEL_28:
     if (os_log_type_enabled(qword_1000AB718, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v11 = a3;
+      indexCopy = index;
       _os_log_error_impl(&_mh_execute_header, v7, OS_LOG_TYPE_ERROR, "<Error> Could not get the index for power sensor %@", buf, 0xCu);
       return v9;
     }
@@ -984,20 +984,20 @@ LABEL_28:
   return v6;
 }
 
-- (int)callbackSensorInterval:(__CFString *)a3
+- (int)callbackSensorInterval:(__CFString *)interval
 {
   callbackSensorIntervals = self->_callbackSensorIntervals;
   if (callbackSensorIntervals)
   {
     v5 = 0;
-    sub_100002A20(callbackSensorIntervals, a3, kCFNumberIntType, &v5);
+    sub_100002A20(callbackSensorIntervals, interval, kCFNumberIntType, &v5);
     LODWORD(callbackSensorIntervals) = 1000000 * v5;
   }
 
   return callbackSensorIntervals;
 }
 
-- (int)indexForTempSensorKey:(__CFString *)a3
+- (int)indexForTempSensorKey:(__CFString *)key
 {
   tempSensors = self->_tempSensors;
   if (tempSensors)
@@ -1015,7 +1015,7 @@ LABEL_28:
           Value = CFDictionaryGetValue(self->_serviceToName, ValueAtIndex);
           if (Value)
           {
-            if (CFStringCompare(Value, a3, 0) == kCFCompareEqualTo)
+            if (CFStringCompare(Value, key, 0) == kCFCompareEqualTo)
             {
               return v7;
             }
@@ -1051,14 +1051,14 @@ LABEL_28:
   return v7;
 }
 
-- (int)temperatureForKey:(__CFString *)a3
+- (int)temperatureForKey:(__CFString *)key
 {
   if (!self->_tempSensors)
   {
     return -32768;
   }
 
-  v4 = [(HidSensors *)self indexForTempSensorKey:a3];
+  v4 = [(HidSensors *)self indexForTempSensorKey:key];
   if ((v4 & 0x80000000) != 0)
   {
     if (os_log_type_enabled(qword_1000AB718, OS_LOG_TYPE_ERROR))
@@ -1097,11 +1097,11 @@ LABEL_28:
   return v8;
 }
 
-- (int)getFilterTimeConstantForSensor:(int64_t)a3
+- (int)getFilterTimeConstantForSensor:(int64_t)sensor
 {
-  if (a3 <= 63)
+  if (sensor <= 63)
   {
-    return self->filterParams[a3].time_constant;
+    return self->filterParams[sensor].time_constant;
   }
 
   result = os_log_type_enabled(qword_1000AB718, OS_LOG_TYPE_ERROR);
@@ -1114,15 +1114,15 @@ LABEL_28:
   return result;
 }
 
-- (BOOL)isTempSensorDataValid:(__CFString *)a3 value:(int)a4
+- (BOOL)isTempSensorDataValid:(__CFString *)valid value:(int)value
 {
-  v4 = a4 + 3999;
-  if ((a4 + 3999) >= 0x4A37)
+  v4 = value + 3999;
+  if ((value + 3999) >= 0x4A37)
   {
     v7 = qword_1000AB718;
     if (os_log_type_enabled(qword_1000AB718, OS_LOG_TYPE_ERROR))
     {
-      sub_100051070(a3, a4, v7);
+      sub_100051070(valid, value, v7);
     }
   }
 
@@ -1255,7 +1255,7 @@ LABEL_25:
   return Mutable;
 }
 
-- (void)handleTemperatureEvent:(int)a3 service:(__IOHIDServiceClient *)a4
+- (void)handleTemperatureEvent:(int)event service:(__IOHIDServiceClient *)service
 {
   callbackTemperaturesQueue = self->_callbackTemperaturesQueue;
   if (callbackTemperaturesQueue)
@@ -1267,8 +1267,8 @@ LABEL_25:
       block[2] = sub_10000E354;
       block[3] = &unk_100085218;
       block[4] = self;
-      block[5] = a4;
-      v7 = a3;
+      block[5] = service;
+      eventCopy = event;
       dispatch_async(callbackTemperaturesQueue, block);
     }
   }

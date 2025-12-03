@@ -1,5 +1,5 @@
 @interface VideosDetailViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_updateContentInsets;
 - (void)viewDidLoad;
@@ -7,15 +7,15 @@
 
 @implementation VideosDetailViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"VideosDetailViewController" hasInstanceMethod:@"viewDidLoad" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"VideosDetailViewController" hasInstanceMethod:@"artworkView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"VideosDetailViewController" hasInstanceMethod:@"_updateContentInsets" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"VideosDetailViewController" hasInstanceMethod:@"shouldFloatHeader" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"VideosDetailViewController" hasInstanceMethod:@"childContentScrollView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"VideosDetailViewController" hasInstanceMethod:@"headerContainmentView" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"VideosDetailViewController" hasInstanceMethod:@"viewDidLoad" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"VideosDetailViewController" hasInstanceMethod:@"artworkView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"VideosDetailViewController" hasInstanceMethod:@"_updateContentInsets" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"VideosDetailViewController" hasInstanceMethod:@"shouldFloatHeader" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"VideosDetailViewController" hasInstanceMethod:@"childContentScrollView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"VideosDetailViewController" hasInstanceMethod:@"headerContainmentView" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -88,8 +88,8 @@
     }
 
     v29 = v28;
-    v30 = [v28 topLayoutGuide];
-    [v30 length];
+    topLayoutGuide = [v28 topLayoutGuide];
+    [topLayoutGuide length];
     v27 = v31;
   }
 
@@ -105,8 +105,8 @@ LABEL_21:
   v33 = v32;
   v34 = v26[1];
   v35 = v26[3];
-  v36 = [v32 bottomLayoutGuide];
-  [v36 length];
+  bottomLayoutGuide = [v32 bottomLayoutGuide];
+  [bottomLayoutGuide length];
   v38 = v37;
 
   [v4 _accessibilitySetVisibleContentInset:{v27, v34, v38, v35}];

@@ -1,9 +1,9 @@
 @interface BatteryIconView
-+ (id)batteryIconWithLevel:(unint64_t)a3;
-- (BatteryIconView)initWithFrame:(CGRect)a3;
++ (id)batteryIconWithLevel:(unint64_t)level;
+- (BatteryIconView)initWithFrame:(CGRect)frame;
 - (CGSize)intrinsicContentSize;
 - (void)_setupConstraints;
-- (void)setLevel:(unint64_t)a3;
+- (void)setLevel:(unint64_t)level;
 @end
 
 @implementation BatteryIconView
@@ -17,23 +17,23 @@
   return result;
 }
 
-- (void)setLevel:(unint64_t)a3
+- (void)setLevel:(unint64_t)level
 {
-  v3 = a3;
-  if (a3 == 0x7FFFFFFFFFFFFFFFLL || a3 < 0x65)
+  levelCopy = level;
+  if (level == 0x7FFFFFFFFFFFFFFFLL || level < 0x65)
   {
-    if (self->_level != a3)
+    if (self->_level != level)
     {
-      self->_level = a3;
-      v6 = fmax(a3 * 0.17, 4.0);
-      if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+      self->_level = level;
+      v6 = fmax(level * 0.17, 4.0);
+      if (level == 0x7FFFFFFFFFFFFFFFLL)
       {
         v6 = 17.0;
-        v3 = 100;
+        levelCopy = 100;
       }
 
       [(NSLayoutConstraint *)self->_fillWidthConstraint setConstant:v6];
-      v7 = [VehicleBatteryView colorForBatteryLevel:v3];
+      v7 = [VehicleBatteryView colorForBatteryLevel:levelCopy];
       [(UIImageView *)self->_levelView setTintColor:v7];
       [(UIImageView *)self->_outlineView setTintColor:v7];
       [(BatteryIconView *)self setNeedsLayout];
@@ -46,7 +46,7 @@
     if (os_log_type_enabled(v5, OS_LOG_TYPE_FAULT))
     {
       *buf = 134217984;
-      v9 = v3;
+      v9 = levelCopy;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_FAULT, "Tried to set %lu level on the battery view.", buf, 0xCu);
     }
   }
@@ -58,22 +58,22 @@
   v4 = [(UIImageView *)self->_outlineView _maps_constraintsForCenteringInView:self];
   [v3 addObjectsFromArray:v4];
 
-  v5 = [(UIImageView *)self->_levelView widthAnchor];
-  v6 = [v5 constraintEqualToConstant:17.0];
+  widthAnchor = [(UIImageView *)self->_levelView widthAnchor];
+  v6 = [widthAnchor constraintEqualToConstant:17.0];
   fillWidthConstraint = self->_fillWidthConstraint;
   self->_fillWidthConstraint = v6;
 
-  v18 = [(UIImageView *)self->_levelView topAnchor];
-  v17 = [(UIImageView *)self->_outlineView topAnchor];
-  v8 = [v18 constraintEqualToAnchor:v17 constant:2.0];
+  topAnchor = [(UIImageView *)self->_levelView topAnchor];
+  topAnchor2 = [(UIImageView *)self->_outlineView topAnchor];
+  v8 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:2.0];
   v19[0] = v8;
-  v9 = [(UIImageView *)self->_levelView leftAnchor];
-  v10 = [(UIImageView *)self->_outlineView leftAnchor];
-  v11 = [v9 constraintEqualToAnchor:v10 constant:2.0];
+  leftAnchor = [(UIImageView *)self->_levelView leftAnchor];
+  leftAnchor2 = [(UIImageView *)self->_outlineView leftAnchor];
+  v11 = [leftAnchor constraintEqualToAnchor:leftAnchor2 constant:2.0];
   v19[1] = v11;
-  v12 = [(UIImageView *)self->_outlineView bottomAnchor];
-  v13 = [(UIImageView *)self->_levelView bottomAnchor];
-  v14 = [v12 constraintEqualToAnchor:v13 constant:2.0];
+  bottomAnchor = [(UIImageView *)self->_outlineView bottomAnchor];
+  bottomAnchor2 = [(UIImageView *)self->_levelView bottomAnchor];
+  v14 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:2.0];
   v15 = self->_fillWidthConstraint;
   v19[2] = v14;
   v19[3] = v15;
@@ -83,7 +83,7 @@
   [NSLayoutConstraint activateConstraints:v3];
 }
 
-- (BatteryIconView)initWithFrame:(CGRect)a3
+- (BatteryIconView)initWithFrame:(CGRect)frame
 {
   v15.receiver = self;
   v15.super_class = BatteryIconView;
@@ -115,23 +115,23 @@
   return v3;
 }
 
-+ (id)batteryIconWithLevel:(unint64_t)a3
++ (id)batteryIconWithLevel:(unint64_t)level
 {
   v4 = [[BatteryIconView alloc] initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
   [(BatteryIconView *)v4 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [(BatteryIconView *)v4 setLevel:a3];
-  v5 = [(BatteryIconView *)v4 widthAnchor];
-  v6 = [v5 constraintEqualToConstant:24.0];
+  [(BatteryIconView *)v4 setLevel:level];
+  widthAnchor = [(BatteryIconView *)v4 widthAnchor];
+  v6 = [widthAnchor constraintEqualToConstant:24.0];
   [(BatteryIconView *)v4 addConstraint:v6];
 
-  v7 = [(BatteryIconView *)v4 heightAnchor];
-  v8 = [v7 constraintEqualToConstant:11.0];
+  heightAnchor = [(BatteryIconView *)v4 heightAnchor];
+  v8 = [heightAnchor constraintEqualToConstant:11.0];
   [(BatteryIconView *)v4 addConstraint:v8];
 
   [(BatteryIconView *)v4 setNeedsLayout];
   [(BatteryIconView *)v4 layoutIfNeeded];
-  v9 = [(BatteryIconView *)v4 traitCollection];
-  [v9 displayScale];
+  traitCollection = [(BatteryIconView *)v4 traitCollection];
+  [traitCollection displayScale];
   v11 = v10;
   v15.width = 24.0;
   v15.height = 11.0;

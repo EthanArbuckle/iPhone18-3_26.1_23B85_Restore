@@ -1,52 +1,52 @@
 @interface SISchemaVoiceTriggerMetrics
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (SISchemaVoiceTriggerMetrics)initWithDictionary:(id)a3;
-- (SISchemaVoiceTriggerMetrics)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (SISchemaVoiceTriggerMetrics)initWithDictionary:(id)dictionary;
+- (SISchemaVoiceTriggerMetrics)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addFirstPassStatistics:(id)a3;
-- (void)setHasExplicitUtterances:(BOOL)a3;
-- (void)setHasFirstPassTriggers:(BOOL)a3;
-- (void)setHasIsJSEnabled:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addFirstPassStatistics:(id)statistics;
+- (void)setHasExplicitUtterances:(BOOL)utterances;
+- (void)setHasFirstPassTriggers:(BOOL)triggers;
+- (void)setHasIsJSEnabled:(BOOL)enabled;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SISchemaVoiceTriggerMetrics
 
-- (SISchemaVoiceTriggerMetrics)initWithDictionary:(id)a3
+- (SISchemaVoiceTriggerMetrics)initWithDictionary:(id)dictionary
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v28.receiver = self;
   v28.super_class = SISchemaVoiceTriggerMetrics;
   v5 = [(SISchemaVoiceTriggerMetrics *)&v28 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"implicitUtterances"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"implicitUtterances"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SISchemaVoiceTriggerMetrics setImplicitUtterances:](v5, "setImplicitUtterances:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"explicitUtterances"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"explicitUtterances"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SISchemaVoiceTriggerMetrics setExplicitUtterances:](v5, "setExplicitUtterances:", [v7 intValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"firstPassTriggers"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"firstPassTriggers"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SISchemaVoiceTriggerMetrics setFirstPassTriggers:](v5, "setFirstPassTriggers:", [v8 intValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"firstPassStatistics"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"firstPassStatistics"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -90,7 +90,7 @@
       v8 = v22;
     }
 
-    v17 = [v4 objectForKeyedSubscript:@"firstPassMetadata"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"firstPassMetadata"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -98,7 +98,7 @@
       [(SISchemaVoiceTriggerMetrics *)v5 setFirstPassMetadata:v18];
     }
 
-    v19 = [v4 objectForKeyedSubscript:@"isJSEnabled"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"isJSEnabled"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -111,30 +111,30 @@
   return v5;
 }
 
-- (SISchemaVoiceTriggerMetrics)initWithJSON:(id)a3
+- (SISchemaVoiceTriggerMetrics)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SISchemaVoiceTriggerMetrics *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(SISchemaVoiceTriggerMetrics *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(SISchemaVoiceTriggerMetrics *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -148,32 +148,32 @@
 - (id)dictionaryRepresentation
 {
   v26 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ((*(&self->_isJSEnabled + 1) & 2) != 0)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithInt:{-[SISchemaVoiceTriggerMetrics explicitUtterances](self, "explicitUtterances")}];
-    [v3 setObject:v4 forKeyedSubscript:@"explicitUtterances"];
+    [dictionary setObject:v4 forKeyedSubscript:@"explicitUtterances"];
   }
 
   if (self->_firstPassMetadata)
   {
-    v5 = [(SISchemaVoiceTriggerMetrics *)self firstPassMetadata];
-    v6 = [v5 dictionaryRepresentation];
-    if (v6)
+    firstPassMetadata = [(SISchemaVoiceTriggerMetrics *)self firstPassMetadata];
+    dictionaryRepresentation = [firstPassMetadata dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v6 forKeyedSubscript:@"firstPassMetadata"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"firstPassMetadata"];
     }
 
     else
     {
-      v7 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v7 forKeyedSubscript:@"firstPassMetadata"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"firstPassMetadata"];
     }
   }
 
   if ([(NSArray *)self->_firstPassStatistics count])
   {
-    v8 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
@@ -193,16 +193,16 @@
             objc_enumerationMutation(v9);
           }
 
-          v14 = [*(*(&v21 + 1) + 8 * i) dictionaryRepresentation];
-          if (v14)
+          dictionaryRepresentation2 = [*(*(&v21 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation2)
           {
-            [v8 addObject:v14];
+            [array addObject:dictionaryRepresentation2];
           }
 
           else
           {
-            v15 = [MEMORY[0x1E695DFB0] null];
-            [v8 addObject:v15];
+            null2 = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null2];
           }
         }
 
@@ -212,14 +212,14 @@
       while (v11);
     }
 
-    [v3 setObject:v8 forKeyedSubscript:@"firstPassStatistics"];
+    [dictionary setObject:array forKeyedSubscript:@"firstPassStatistics"];
   }
 
   v16 = *(&self->_isJSEnabled + 1);
   if ((v16 & 4) != 0)
   {
     v19 = [MEMORY[0x1E696AD98] numberWithInt:{-[SISchemaVoiceTriggerMetrics firstPassTriggers](self, "firstPassTriggers")}];
-    [v3 setObject:v19 forKeyedSubscript:@"firstPassTriggers"];
+    [dictionary setObject:v19 forKeyedSubscript:@"firstPassTriggers"];
 
     v16 = *(&self->_isJSEnabled + 1);
     if ((v16 & 1) == 0)
@@ -240,19 +240,19 @@ LABEL_22:
   }
 
   v20 = [MEMORY[0x1E696AD98] numberWithInt:{-[SISchemaVoiceTriggerMetrics implicitUtterances](self, "implicitUtterances")}];
-  [v3 setObject:v20 forKeyedSubscript:@"implicitUtterances"];
+  [dictionary setObject:v20 forKeyedSubscript:@"implicitUtterances"];
 
   if ((*(&self->_isJSEnabled + 1) & 8) != 0)
   {
 LABEL_23:
     v17 = [MEMORY[0x1E696AD98] numberWithBool:{-[SISchemaVoiceTriggerMetrics isJSEnabled](self, "isJSEnabled")}];
-    [v3 setObject:v17 forKeyedSubscript:@"isJSEnabled"];
+    [dictionary setObject:v17 forKeyedSubscript:@"isJSEnabled"];
   }
 
 LABEL_24:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -308,16 +308,16 @@ LABEL_8:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_23;
   }
 
   v5 = *(&self->_isJSEnabled + 1);
-  v6 = v4[41];
+  v6 = equalCopy[41];
   if ((v5 & 1) != (v6 & 1))
   {
     goto LABEL_23;
@@ -326,13 +326,13 @@ LABEL_8:
   if (v5)
   {
     implicitUtterances = self->_implicitUtterances;
-    if (implicitUtterances != [v4 implicitUtterances])
+    if (implicitUtterances != [equalCopy implicitUtterances])
     {
       goto LABEL_23;
     }
 
     v5 = *(&self->_isJSEnabled + 1);
-    v6 = v4[41];
+    v6 = equalCopy[41];
   }
 
   v8 = (v5 >> 1) & 1;
@@ -341,13 +341,13 @@ LABEL_8:
     if (v8)
     {
       explicitUtterances = self->_explicitUtterances;
-      if (explicitUtterances != [v4 explicitUtterances])
+      if (explicitUtterances != [equalCopy explicitUtterances])
       {
         goto LABEL_23;
       }
 
       v5 = *(&self->_isJSEnabled + 1);
-      v6 = v4[41];
+      v6 = equalCopy[41];
     }
 
     v10 = (v5 >> 2) & 1;
@@ -359,26 +359,26 @@ LABEL_8:
     if (v10)
     {
       firstPassTriggers = self->_firstPassTriggers;
-      if (firstPassTriggers != [v4 firstPassTriggers])
+      if (firstPassTriggers != [equalCopy firstPassTriggers])
       {
         goto LABEL_23;
       }
     }
 
-    v12 = [(SISchemaVoiceTriggerMetrics *)self firstPassStatistics];
-    v13 = [v4 firstPassStatistics];
-    if ((v12 != 0) == (v13 == 0))
+    firstPassStatistics = [(SISchemaVoiceTriggerMetrics *)self firstPassStatistics];
+    firstPassStatistics2 = [equalCopy firstPassStatistics];
+    if ((firstPassStatistics != 0) == (firstPassStatistics2 == 0))
     {
       goto LABEL_22;
     }
 
-    v14 = [(SISchemaVoiceTriggerMetrics *)self firstPassStatistics];
-    if (v14)
+    firstPassStatistics3 = [(SISchemaVoiceTriggerMetrics *)self firstPassStatistics];
+    if (firstPassStatistics3)
     {
-      v15 = v14;
-      v16 = [(SISchemaVoiceTriggerMetrics *)self firstPassStatistics];
-      v17 = [v4 firstPassStatistics];
-      v18 = [v16 isEqual:v17];
+      v15 = firstPassStatistics3;
+      firstPassStatistics4 = [(SISchemaVoiceTriggerMetrics *)self firstPassStatistics];
+      firstPassStatistics5 = [equalCopy firstPassStatistics];
+      v18 = [firstPassStatistics4 isEqual:firstPassStatistics5];
 
       if (!v18)
       {
@@ -390,22 +390,22 @@ LABEL_8:
     {
     }
 
-    v12 = [(SISchemaVoiceTriggerMetrics *)self firstPassMetadata];
-    v13 = [v4 firstPassMetadata];
-    if ((v12 != 0) == (v13 == 0))
+    firstPassStatistics = [(SISchemaVoiceTriggerMetrics *)self firstPassMetadata];
+    firstPassStatistics2 = [equalCopy firstPassMetadata];
+    if ((firstPassStatistics != 0) == (firstPassStatistics2 == 0))
     {
 LABEL_22:
 
       goto LABEL_23;
     }
 
-    v19 = [(SISchemaVoiceTriggerMetrics *)self firstPassMetadata];
-    if (v19)
+    firstPassMetadata = [(SISchemaVoiceTriggerMetrics *)self firstPassMetadata];
+    if (firstPassMetadata)
     {
-      v20 = v19;
-      v21 = [(SISchemaVoiceTriggerMetrics *)self firstPassMetadata];
-      v22 = [v4 firstPassMetadata];
-      v23 = [v21 isEqual:v22];
+      v20 = firstPassMetadata;
+      firstPassMetadata2 = [(SISchemaVoiceTriggerMetrics *)self firstPassMetadata];
+      firstPassMetadata3 = [equalCopy firstPassMetadata];
+      v23 = [firstPassMetadata2 isEqual:firstPassMetadata3];
 
       if (!v23)
       {
@@ -418,9 +418,9 @@ LABEL_22:
     }
 
     v26 = (*(&self->_isJSEnabled + 1) >> 3) & 1;
-    if (v26 == ((v4[41] >> 3) & 1))
+    if (v26 == ((equalCopy[41] >> 3) & 1))
     {
-      if (!v26 || (isJSEnabled = self->_isJSEnabled, isJSEnabled == [v4 isJSEnabled]))
+      if (!v26 || (isJSEnabled = self->_isJSEnabled, isJSEnabled == [equalCopy isJSEnabled]))
       {
         v24 = 1;
         goto LABEL_24;
@@ -435,10 +435,10 @@ LABEL_24:
   return v24;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v5 = *(&self->_isJSEnabled + 1);
   if (v5)
   {
@@ -497,11 +497,11 @@ LABEL_5:
     while (v8);
   }
 
-  v11 = [(SISchemaVoiceTriggerMetrics *)self firstPassMetadata];
+  firstPassMetadata = [(SISchemaVoiceTriggerMetrics *)self firstPassMetadata];
 
-  if (v11)
+  if (firstPassMetadata)
   {
-    v12 = [(SISchemaVoiceTriggerMetrics *)self firstPassMetadata];
+    firstPassMetadata2 = [(SISchemaVoiceTriggerMetrics *)self firstPassMetadata];
     PBDataWriterWriteSubmessage();
   }
 
@@ -511,9 +511,9 @@ LABEL_5:
   }
 }
 
-- (void)setHasIsJSEnabled:(BOOL)a3
+- (void)setHasIsJSEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 8;
   }
@@ -526,27 +526,27 @@ LABEL_5:
   *(&self->_isJSEnabled + 1) = *(&self->_isJSEnabled + 1) & 0xF7 | v3;
 }
 
-- (void)addFirstPassStatistics:(id)a3
+- (void)addFirstPassStatistics:(id)statistics
 {
-  v4 = a3;
+  statisticsCopy = statistics;
   firstPassStatistics = self->_firstPassStatistics;
-  v8 = v4;
+  v8 = statisticsCopy;
   if (!firstPassStatistics)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_firstPassStatistics;
-    self->_firstPassStatistics = v6;
+    self->_firstPassStatistics = array;
 
-    v4 = v8;
+    statisticsCopy = v8;
     firstPassStatistics = self->_firstPassStatistics;
   }
 
-  [(NSArray *)firstPassStatistics addObject:v4];
+  [(NSArray *)firstPassStatistics addObject:statisticsCopy];
 }
 
-- (void)setHasFirstPassTriggers:(BOOL)a3
+- (void)setHasFirstPassTriggers:(BOOL)triggers
 {
-  if (a3)
+  if (triggers)
   {
     v3 = 4;
   }
@@ -559,9 +559,9 @@ LABEL_5:
   *(&self->_isJSEnabled + 1) = *(&self->_isJSEnabled + 1) & 0xFB | v3;
 }
 
-- (void)setHasExplicitUtterances:(BOOL)a3
+- (void)setHasExplicitUtterances:(BOOL)utterances
 {
-  if (a3)
+  if (utterances)
   {
     v3 = 2;
   }
@@ -574,21 +574,21 @@ LABEL_5:
   *(&self->_isJSEnabled + 1) = *(&self->_isJSEnabled + 1) & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v11.receiver = self;
   v11.super_class = SISchemaVoiceTriggerMetrics;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v11 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v11 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(SISchemaVoiceTriggerMetrics *)self firstPassStatistics:v11.receiver];
-  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:v4];
+  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:policyCopy];
   [(SISchemaVoiceTriggerMetrics *)self setFirstPassStatistics:v7];
 
-  v8 = [(SISchemaVoiceTriggerMetrics *)self firstPassMetadata];
-  v9 = [v8 applySensitiveConditionsPolicy:v4];
+  firstPassMetadata = [(SISchemaVoiceTriggerMetrics *)self firstPassMetadata];
+  v9 = [firstPassMetadata applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v9 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v9 suppressMessage];
+  if (policyCopy)
   {
     [(SISchemaVoiceTriggerMetrics *)self deleteFirstPassMetadata];
   }

@@ -22,7 +22,7 @@
   v12 = *MEMORY[0x277CCA450];
   v13[0] = v7;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:&v12 count:1];
-  v9 = [a1 initWithDomain:@"com.apple.ap.adcore" code:a3 userInfo:v8];
+  v9 = [self initWithDomain:@"com.apple.ap.adcore" code:a3 userInfo:v8];
 
   v10 = *MEMORY[0x277D85DE8];
   return v9;
@@ -32,8 +32,8 @@
 {
   v4 = MEMORY[0x277CCACA8];
   v5 = a3;
-  v7 = [a1 localizedDescription];
-  v6 = [v4 stringWithFormat:@"%@", v7];
+  localizedDescription = [self localizedDescription];
+  v6 = [v4 stringWithFormat:@"%@", localizedDescription];
   _ADLog(v5, v6, 0);
 }
 

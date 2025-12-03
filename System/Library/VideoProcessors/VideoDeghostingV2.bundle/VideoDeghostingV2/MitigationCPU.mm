@@ -1,30 +1,30 @@
 @interface MitigationCPU
-- (MitigationCPU)initWithMetalToolBox:(id)a3;
-- (MitigationCPU)initWithMetalToolBox:(id)a3 mitigationGPU:(id)a4;
+- (MitigationCPU)initWithMetalToolBox:(id)box;
+- (MitigationCPU)initWithMetalToolBox:(id)box mitigationGPU:(id)u;
 @end
 
 @implementation MitigationCPU
 
-- (MitigationCPU)initWithMetalToolBox:(id)a3 mitigationGPU:(id)a4
+- (MitigationCPU)initWithMetalToolBox:(id)box mitigationGPU:(id)u
 {
-  objc_storeStrong(&self->_mitigationGPU, a4);
-  v6 = a3;
-  v7 = [(MitigationCPU *)self initWithMetalToolBox:v6];
+  objc_storeStrong(&self->_mitigationGPU, u);
+  boxCopy = box;
+  v7 = [(MitigationCPU *)self initWithMetalToolBox:boxCopy];
 
   return v7;
 }
 
-- (MitigationCPU)initWithMetalToolBox:(id)a3
+- (MitigationCPU)initWithMetalToolBox:(id)box
 {
-  v4 = a3;
+  boxCopy = box;
   v12.receiver = self;
   v12.super_class = MitigationCPU;
   v5 = [(MitigationCPU *)&v12 init];
   if (v5)
   {
-    if (v4)
+    if (boxCopy)
     {
-      v6 = v4;
+      v6 = boxCopy;
     }
 
     else

@@ -1,12 +1,12 @@
 @interface NSPPrivacyTokenManager
 + (id)sharedTokenManager;
-- (void)checkCostQuotaForIssuerName:(id)a3 quotaService:(id)a4 auditToken:(id)a5 bundleID:(id)a6 accessToken:(id)a7 completionHandler:(id)a8;
-- (void)copyTokenInfo:(id)a3;
-- (void)fetchPairedPrivateAccessTokensForChallenge:(id)a3 overrideAttester:(id)a4 configurationFetchDate:(id)a5 configurationETag:(id)a6 tokenKey:(id)a7 originNameKey:(id)a8 selectedOrigin:(id)a9 pairedChallenge:(id)a10 overridePairedAttester:(id)a11 pairedTokenKey:(id)a12 auditToken:(id)a13 bundleID:(id)a14 allowTools:(BOOL)a15 systemTokenClient:(BOOL)a16 accessToken:(id)a17 completionHandler:(id)a18;
-- (void)fetchPrivacyTokensOnInterface:(id)a3 tierType:(id)a4 proxyURL:(id)a5 tokenVendor:(id)a6 tokenIssuancePublicKey:(id)a7 tokenChallenge:(id)a8 tokenCount:(unint64_t)a9 accessToken:(id)a10 retryAttempt:(unint64_t)a11 completionHandler:(id)a12;
-- (void)fetchPrivateAccessTokenForChallenge:(id)a3 overrideAttester:(id)a4 supportsTokenUsageFeedback:(BOOL)a5 customAttester:(id)a6 customAttesterHeaders:(id)a7 tokenKey:(id)a8 originNameKey:(id)a9 selectedOrigin:(id)a10 auxiliaryAuthChallenge:(id)a11 auxiliaryAuthKey:(id)a12 auxiliaryAuthLabel:(id)a13 auxiliaryAuthInfoCacheKey:(id)a14 rateLimit:(unsigned int)a15 auditToken:(id)a16 bundleID:(id)a17 accessToken:(id)a18 completionHandler:(id)a19;
-- (void)fetchPrivateAccessTokenForChallenge:(id)a3 overrideAttester:(id)a4 supportsTokenUsageFeedback:(BOOL)a5 customAttester:(id)a6 customAttesterHeaders:(id)a7 tokenKey:(id)a8 originNameKey:(id)a9 selectedOrigin:(id)a10 auxiliaryAuthInfoCacheKey:(id)a11 rateLimit:(unsigned int)a12 auditToken:(id)a13 bundleID:(id)a14 allowTools:(BOOL)a15 systemTokenClient:(BOOL)a16 accessToken:(id)a17 completionHandler:(id)a18;
-- (void)getTokenServerIPWithInterface:(id)a3 completionHandler:(id)a4;
+- (void)checkCostQuotaForIssuerName:(id)name quotaService:(id)service auditToken:(id)token bundleID:(id)d accessToken:(id)accessToken completionHandler:(id)handler;
+- (void)copyTokenInfo:(id)info;
+- (void)fetchPairedPrivateAccessTokensForChallenge:(id)challenge overrideAttester:(id)attester configurationFetchDate:(id)date configurationETag:(id)tag tokenKey:(id)key originNameKey:(id)nameKey selectedOrigin:(id)origin pairedChallenge:(id)self0 overridePairedAttester:(id)self1 pairedTokenKey:(id)self2 auditToken:(id)self3 bundleID:(id)self4 allowTools:(BOOL)self5 systemTokenClient:(BOOL)self6 accessToken:(id)self7 completionHandler:(id)self8;
+- (void)fetchPrivacyTokensOnInterface:(id)interface tierType:(id)type proxyURL:(id)l tokenVendor:(id)vendor tokenIssuancePublicKey:(id)key tokenChallenge:(id)challenge tokenCount:(unint64_t)count accessToken:(id)self0 retryAttempt:(unint64_t)self1 completionHandler:(id)self2;
+- (void)fetchPrivateAccessTokenForChallenge:(id)challenge overrideAttester:(id)attester supportsTokenUsageFeedback:(BOOL)feedback customAttester:(id)customAttester customAttesterHeaders:(id)headers tokenKey:(id)key originNameKey:(id)nameKey selectedOrigin:(id)self0 auxiliaryAuthChallenge:(id)self1 auxiliaryAuthKey:(id)self2 auxiliaryAuthLabel:(id)self3 auxiliaryAuthInfoCacheKey:(id)self4 rateLimit:(unsigned int)self5 auditToken:(id)self6 bundleID:(id)self7 accessToken:(id)self8 completionHandler:(id)self9;
+- (void)fetchPrivateAccessTokenForChallenge:(id)challenge overrideAttester:(id)attester supportsTokenUsageFeedback:(BOOL)feedback customAttester:(id)customAttester customAttesterHeaders:(id)headers tokenKey:(id)key originNameKey:(id)nameKey selectedOrigin:(id)self0 auxiliaryAuthInfoCacheKey:(id)self1 rateLimit:(unsigned int)self2 auditToken:(id)self3 bundleID:(id)self4 allowTools:(BOOL)self5 systemTokenClient:(BOOL)self6 accessToken:(id)self7 completionHandler:(id)self8;
+- (void)getTokenServerIPWithInterface:(id)interface completionHandler:(id)handler;
 @end
 
 @implementation NSPPrivacyTokenManager
@@ -23,21 +23,21 @@
   return v3;
 }
 
-- (void)fetchPrivacyTokensOnInterface:(id)a3 tierType:(id)a4 proxyURL:(id)a5 tokenVendor:(id)a6 tokenIssuancePublicKey:(id)a7 tokenChallenge:(id)a8 tokenCount:(unint64_t)a9 accessToken:(id)a10 retryAttempt:(unint64_t)a11 completionHandler:(id)a12
+- (void)fetchPrivacyTokensOnInterface:(id)interface tierType:(id)type proxyURL:(id)l tokenVendor:(id)vendor tokenIssuancePublicKey:(id)key tokenChallenge:(id)challenge tokenCount:(unint64_t)count accessToken:(id)self0 retryAttempt:(unint64_t)self1 completionHandler:(id)self2
 {
-  v17 = a10;
-  v90 = a3;
-  v93 = a4;
-  v96 = a5;
-  v92 = a6;
-  v18 = a7;
-  v94 = a8;
-  v91 = a10;
-  v95 = a12;
+  tokenCopy = token;
+  interfaceCopy = interface;
+  typeCopy = type;
+  lCopy = l;
+  vendorCopy = vendor;
+  keyCopy = key;
+  challengeCopy = challenge;
+  tokenCopy2 = token;
+  handlerCopy = handler;
   v19 = NPGetInternalQueue();
   dispatch_assert_queue_V2(v19);
 
-  if (!v96)
+  if (!lCopy)
   {
     v78 = nplog_obj();
     if (os_log_type_enabled(v78, OS_LOG_TYPE_FAULT))
@@ -50,7 +50,7 @@
     goto LABEL_107;
   }
 
-  if (!a9)
+  if (!count)
   {
     v78 = nplog_obj();
     if (os_log_type_enabled(v78, OS_LOG_TYPE_FAULT))
@@ -63,7 +63,7 @@
     goto LABEL_107;
   }
 
-  if (!v18)
+  if (!keyCopy)
   {
     v78 = nplog_obj();
     if (os_log_type_enabled(v78, OS_LOG_TYPE_FAULT))
@@ -75,23 +75,23 @@
 
 LABEL_107:
 
-    (*(v95 + 2))(v95, 0, 0, 0, 0, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, 0, 0, 0, 0);
     goto LABEL_90;
   }
 
-  if (!v94)
+  if (!challengeCopy)
   {
     v20 = 0;
-    v21 = self;
+    selfCopy2 = self;
 LABEL_10:
-    if (v21)
+    if (selfCopy2)
     {
-      v21->_totalRequestedTokenCount += a9;
+      selfCopy2->_totalRequestedTokenCount += count;
     }
 
     v23 = objc_alloc_init(NSPPrivacyProxyTokenInfo);
     v123 = 0;
-    v89 = [[RSABSSATokenBlinder alloc] initWithPublicKey:v18 error:&v123];
+    v89 = [[RSABSSATokenBlinder alloc] initWithPublicKey:keyCopy error:&v123];
     v88 = v123;
     if (v88)
     {
@@ -101,13 +101,13 @@ LABEL_10:
         *buf = 138412546;
         v128 = v88;
         v129 = 2112;
-        v130 = v96;
+        v130 = lCopy;
         _os_log_error_impl(&_mh_execute_header, v24, OS_LOG_TYPE_ERROR, "RSABSSATokenBlinder initWithPublicKey failed with error %@ for %@", buf, 0x16u);
       }
 
 LABEL_15:
 
-      (*(v95 + 2))(v95, 0, 0, 0, 0, 0, 1);
+      (*(handlerCopy + 2))(handlerCopy, 0, 0, 0, 0, 0, 1);
 LABEL_89:
 
       goto LABEL_90;
@@ -130,7 +130,7 @@ LABEL_89:
     {
       v102 = objc_alloc_init(NSMutableArray);
       v100 = objc_alloc_init(NSMutableArray);
-      v25 = a9;
+      countCopy = count;
       while (1)
       {
         v26 = sub_1000B4FC8();
@@ -139,7 +139,7 @@ LABEL_89:
           break;
         }
 
-        v27 = sub_1000B5184(NSPPrivateAccessTokenRequest, v20, v26, v18);
+        v27 = sub_1000B5184(NSPPrivateAccessTokenRequest, v20, v26, keyCopy);
         if (!v27)
         {
           v77 = nplog_obj();
@@ -150,14 +150,14 @@ LABEL_89:
             _os_log_fault_impl(&_mh_execute_header, v77, OS_LOG_TYPE_FAULT, "%s called with null messageToBlind", buf, 0xCu);
           }
 
-          (*(v95 + 2))(v95, 0, 0, 0, 0, 0, 1);
+          (*(handlerCopy + 2))(handlerCopy, 0, 0, 0, 0, 0, 1);
           goto LABEL_88;
         }
 
         [v102 addObject:v27];
         [v100 addObject:v26];
 
-        if (!--v25)
+        if (!--countCopy)
         {
           goto LABEL_24;
         }
@@ -171,7 +171,7 @@ LABEL_89:
         _os_log_fault_impl(&_mh_execute_header, v76, OS_LOG_TYPE_FAULT, "%s called with null clientNonce", buf, 0xCu);
       }
 
-      (*(v95 + 2))(v95, 0, 0, 0, 0, 0, 1);
+      (*(handlerCopy + 2))(handlerCopy, 0, 0, 0, 0, 0, 1);
       goto LABEL_88;
     }
 
@@ -202,7 +202,7 @@ LABEL_43:
           *buf = 134218242;
           v128 = v37;
           v129 = 2112;
-          v130 = v92;
+          v130 = vendorCopy;
           _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_DEFAULT, "generated %lu unactivated tokens for %@", buf, 0x16u);
         }
 
@@ -228,8 +228,8 @@ LABEL_43:
 
                 v42 = *(*(&v115 + 1) + 8 * i);
                 v43 = [NSPPrivateAccessTokenRequest alloc];
-                v44 = [v42 blindedMessage];
-                v45 = sub_1000B54C4(&v43->super, v20, v18, 0, 0, 0, v44);
+                blindedMessage = [v42 blindedMessage];
+                v45 = sub_1000B54C4(&v43->super, v20, keyCopy, 0, 0, 0, blindedMessage);
 
                 if (!v45 || (v47 = objc_getProperty(v45, v46, 24, 1)) == 0)
                 {
@@ -241,7 +241,7 @@ LABEL_43:
                     _os_log_fault_impl(&_mh_execute_header, v81, OS_LOG_TYPE_FAULT, "%s called with null requestData", buf, 0xCu);
                   }
 
-                  (*(v95 + 2))(v95, 0, 0, 0, 0, 0, 1);
+                  (*(handlerCopy + 2))(handlerCopy, 0, 0, 0, 0, 0, 1);
                   goto LABEL_87;
                 }
 
@@ -280,8 +280,8 @@ LABEL_43:
                   objc_enumerationMutation(v49);
                 }
 
-                v53 = [*(*(&v119 + 1) + 8 * j) blindedMessage];
-                [v23 addUnactivatedTokenList:v53];
+                blindedMessage2 = [*(*(&v119 + 1) + 8 * j) blindedMessage];
+                [v23 addUnactivatedTokenList:blindedMessage2];
               }
 
               v50 = [v49 countByEnumeratingWithState:&v119 objects:v126 count:16];
@@ -291,40 +291,40 @@ LABEL_43:
           }
         }
 
-        v54 = [v98 keyId];
-        [v23 setTokenKeyID:v54];
+        keyId = [v98 keyId];
+        [v23 setTokenKeyID:keyId];
 
-        [v23 setProxyURL:v96];
-        [v23 setVendor:v92];
+        [v23 setProxyURL:lCopy];
+        [v23 setVendor:vendorCopy];
         v86 = objc_alloc_init(NSPPrivacyProxyTokenActivationQuery);
         [v86 setTokenInfo:v23];
         v82 = mach_absolute_time();
-        v55 = [(NSPPrivacyTokenManager *)self tokenFetchURL];
-        v87 = sub_1000A17F4(self, v55, v90, 0, 0, a11 != 0);
+        tokenFetchURL = [(NSPPrivacyTokenManager *)self tokenFetchURL];
+        v87 = sub_1000A17F4(self, tokenFetchURL, interfaceCopy, 0, 0, attempt != 0);
 
-        if (v93)
+        if (typeCopy)
         {
-          [v87 setValue:v93 forHTTPHeaderField:@"X-Mask-User-Tier"];
+          [v87 setValue:typeCopy forHTTPHeaderField:@"X-Mask-User-Tier"];
         }
 
-        if (v91)
+        if (tokenCopy2)
         {
-          [v87 setValue:v91 forHTTPHeaderField:@"X-Mask-Subscription-Token"];
+          [v87 setValue:tokenCopy2 forHTTPHeaderField:@"X-Mask-Subscription-Token"];
         }
 
-        v84 = [NSString stringWithFormat:@"%lu", a11];
-        if (v84)
+        attempt = [NSString stringWithFormat:@"%lu", attempt];
+        if (attempt)
         {
-          [v87 setValue:v84 forHTTPHeaderField:@"Retry-Attempt"];
+          [v87 setValue:attempt forHTTPHeaderField:@"Retry-Attempt"];
         }
 
         v99 = objc_alloc_init(NSURLSessionDelegate);
         v56 = +[NSURLSessionConfiguration ephemeralSessionConfiguration];
-        v57 = [v56 _socketStreamProperties];
-        if (v57)
+        _socketStreamProperties = [v56 _socketStreamProperties];
+        if (_socketStreamProperties)
         {
-          v58 = [v56 _socketStreamProperties];
-          v85 = [NSMutableDictionary dictionaryWithDictionary:v58];
+          _socketStreamProperties2 = [v56 _socketStreamProperties];
+          v85 = [NSMutableDictionary dictionaryWithDictionary:_socketStreamProperties2];
         }
 
         else
@@ -336,11 +336,11 @@ LABEL_43:
         [v56 set_socketStreamProperties:v85];
         [v56 setTimeoutIntervalForRequest:60.0];
         [v56 set_loggingPrivacyLevel:1];
-        v59 = [(NSPPrivacyTokenManager *)self tokenFetchURL];
-        v83 = [NSURL URLWithString:v59];
+        tokenFetchURL2 = [(NSPPrivacyTokenManager *)self tokenFetchURL];
+        v83 = [NSURL URLWithString:tokenFetchURL2];
 
-        v60 = [v83 host];
-        [v99 setValidationHostname:v60];
+        host = [v83 host];
+        [v99 setValidationHostname:host];
 
         if (self)
         {
@@ -375,14 +375,14 @@ LABEL_43:
 
           if (v67)
           {
-            v68 = [v67 configServerHeaders];
-            v69 = v68 == 0;
+            configServerHeaders = [v67 configServerHeaders];
+            v69 = configServerHeaders == 0;
 
             if (!v69)
             {
-              v70 = [v87 allHTTPHeaderFields];
-              v71 = [v67 configServerHeaders];
-              v72 = [NPUtilities mergeHTTPHeaders:v70 headerOverrides:v71];
+              allHTTPHeaderFields = [v87 allHTTPHeaderFields];
+              configServerHeaders2 = [v67 configServerHeaders];
+              v72 = [NPUtilities mergeHTTPHeaders:allHTTPHeaderFields headerOverrides:configServerHeaders2];
               [v87 setAllHTTPHeaderFields:v72];
             }
           }
@@ -408,15 +408,15 @@ LABEL_43:
         v104 = v74;
         v75 = v87;
         v105 = v75;
-        v113 = v95;
-        v106 = v18;
+        v113 = handlerCopy;
+        v106 = keyCopy;
         v107 = v101;
         v108 = v20;
         v109 = v100;
-        v110 = v92;
-        v111 = v96;
-        v112 = v93;
-        v114[1] = a9;
+        v110 = vendorCopy;
+        v111 = lCopy;
+        v112 = typeCopy;
+        v114[1] = count;
         v114[2] = v82;
         [(objc_class *)authenticationClass sendRequestForTokens:v75 tokenFetchURLSession:v74 tokenActivationQuery:v86 completionHandler:v103];
 
@@ -434,7 +434,7 @@ LABEL_43:
           _os_log_fault_impl(&_mh_execute_header, v80, OS_LOG_TYPE_FAULT, "%s called with null (tokenWaitingActivationList.count > 0)", buf, 0xCu);
         }
 
-        (*(v95 + 2))(v95, 0, 0, 0, 0, 0, 1);
+        (*(handlerCopy + 2))(handlerCopy, 0, 0, 0, 0, 0, 1);
       }
 
 LABEL_87:
@@ -445,15 +445,15 @@ LABEL_88:
 
     if (v101)
     {
-      if (!v29 || [v29 count] == a9)
+      if (!v29 || [v29 count] == count)
       {
         v30 = 0;
         while (1)
         {
           if (v29)
           {
-            v17 = [v29 objectAtIndexedSubscript:v30];
-            v31 = v17;
+            tokenCopy = [v29 objectAtIndexedSubscript:v30];
+            v31 = tokenCopy;
             v29 = v102;
           }
 
@@ -491,7 +491,7 @@ LABEL_88:
 
           ++v30;
           v29 = v102;
-          if (a9 == v30)
+          if (count == v30)
           {
             goto LABEL_43;
           }
@@ -537,8 +537,8 @@ LABEL_42:
     goto LABEL_43;
   }
 
-  v20 = [[NSPPrivateAccessTokenChallenge alloc] initWithData:v94];
-  v21 = self;
+  v20 = [[NSPPrivateAccessTokenChallenge alloc] initWithData:challengeCopy];
+  selfCopy2 = self;
   if (v20)
   {
     goto LABEL_10;
@@ -548,34 +548,34 @@ LABEL_42:
   if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412290;
-    v128 = v96;
+    v128 = lCopy;
     _os_log_error_impl(&_mh_execute_header, v22, OS_LOG_TYPE_ERROR, "Failed to parse token challenge for %@", buf, 0xCu);
   }
 
-  (*(v95 + 2))(v95, 0, 0, 0, 0, 0, 1);
+  (*(handlerCopy + 2))(handlerCopy, 0, 0, 0, 0, 0, 1);
 LABEL_90:
 }
 
-- (void)fetchPrivateAccessTokenForChallenge:(id)a3 overrideAttester:(id)a4 supportsTokenUsageFeedback:(BOOL)a5 customAttester:(id)a6 customAttesterHeaders:(id)a7 tokenKey:(id)a8 originNameKey:(id)a9 selectedOrigin:(id)a10 auxiliaryAuthInfoCacheKey:(id)a11 rateLimit:(unsigned int)a12 auditToken:(id)a13 bundleID:(id)a14 allowTools:(BOOL)a15 systemTokenClient:(BOOL)a16 accessToken:(id)a17 completionHandler:(id)a18
+- (void)fetchPrivateAccessTokenForChallenge:(id)challenge overrideAttester:(id)attester supportsTokenUsageFeedback:(BOOL)feedback customAttester:(id)customAttester customAttesterHeaders:(id)headers tokenKey:(id)key originNameKey:(id)nameKey selectedOrigin:(id)self0 auxiliaryAuthInfoCacheKey:(id)self1 rateLimit:(unsigned int)self2 auditToken:(id)self3 bundleID:(id)self4 allowTools:(BOOL)self5 systemTokenClient:(BOOL)self6 accessToken:(id)self7 completionHandler:(id)self8
 {
-  v92 = a5;
-  v23 = a3;
-  v24 = a4;
-  v103 = a6;
-  v97 = a7;
-  v101 = a8;
-  v98 = a9;
-  v102 = a10;
-  v25 = self;
-  v99 = a11;
-  v96 = a13;
-  v100 = a14;
-  v104 = a17;
-  v26 = a18;
+  feedbackCopy = feedback;
+  challengeCopy = challenge;
+  attesterCopy = attester;
+  customAttesterCopy = customAttester;
+  headersCopy = headers;
+  keyCopy = key;
+  nameKeyCopy = nameKey;
+  originCopy = origin;
+  selfCopy = self;
+  cacheKeyCopy = cacheKey;
+  tokenCopy = token;
+  dCopy = d;
+  accessTokenCopy = accessToken;
+  handlerCopy = handler;
   v27 = NPGetInternalQueue();
   dispatch_assert_queue_V2(v27);
 
-  if (!v23)
+  if (!challengeCopy)
   {
     v88 = nplog_obj();
     if (os_log_type_enabled(v88, OS_LOG_TYPE_FAULT))
@@ -585,11 +585,11 @@ LABEL_90:
       _os_log_fault_impl(&_mh_execute_header, v88, OS_LOG_TYPE_FAULT, "%s called with null challenge", &buf, 0xCu);
     }
 
-    (*(v26 + 2))(v26, 0, 1004, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 1004, 0, 0);
     goto LABEL_112;
   }
 
-  if (!v26)
+  if (!handlerCopy)
   {
     v89 = nplog_obj();
     if (os_log_type_enabled(v89, OS_LOG_TYPE_FAULT))
@@ -604,11 +604,11 @@ LABEL_90:
   }
 
   v28 = sub_1000A149C(&self->super.isa);
-  if (v24 | v28)
+  if (attesterCopy | v28)
   {
   }
 
-  else if (!v103)
+  else if (!customAttesterCopy)
   {
     v29 = nplog_obj();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
@@ -617,15 +617,15 @@ LABEL_90:
       _os_log_error_impl(&_mh_execute_header, v29, OS_LOG_TYPE_ERROR, "Cannot fetch private access token, no attester URL", &buf, 2u);
     }
 
-    (*(v26 + 2))(v26, 0, 1005, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 1005, 0, 0);
     goto LABEL_112;
   }
 
-  v30 = [v23 issuerName];
-  if (![v30 hasSuffix:@"corp.apple.com"])
+  issuerName = [challengeCopy issuerName];
+  if (![issuerName hasSuffix:@"corp.apple.com"])
   {
 
-    if (v104 || a16)
+    if (accessTokenCopy || client)
     {
       goto LABEL_24;
     }
@@ -638,27 +638,27 @@ LABEL_21:
       _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_INFO, "No eligible account found, cannot request token", &buf, 2u);
     }
 
-    (*(v26 + 2))(v26, 0, 1003, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 1003, 0, 0);
     goto LABEL_112;
   }
 
-  v31 = [v23 issuerName];
-  v32 = [v31 containsString:@"idms"];
+  issuerName2 = [challengeCopy issuerName];
+  v32 = [issuerName2 containsString:@"idms"];
 
-  if (!v104 && (v32 & 1) == 0 && !a16)
+  if (!accessTokenCopy && (v32 & 1) == 0 && !client)
   {
     goto LABEL_21;
   }
 
   if (v32)
   {
-    v33 = v102;
-    if (!v33)
+    originName = originCopy;
+    if (!originName)
     {
-      v33 = [v23 originName];
+      originName = [challengeCopy originName];
     }
 
-    if (([v33 hasSuffix:@".apple.com"] & 1) == 0 && (objc_msgSend(v33, "hasSuffix:", @".apple") & 1) == 0)
+    if (([originName hasSuffix:@".apple.com"] & 1) == 0 && (objc_msgSend(originName, "hasSuffix:", @".apple") & 1) == 0)
     {
       v63 = nplog_obj();
       if (os_log_type_enabled(v63, OS_LOG_TYPE_INFO))
@@ -667,13 +667,13 @@ LABEL_21:
         _os_log_impl(&_mh_execute_header, v63, OS_LOG_TYPE_INFO, "Bad origin name for IDMS issuer", &buf, 2u);
       }
 
-      (*(v26 + 2))(v26, 0, 1001, 0, 0);
+      (*(handlerCopy + 2))(handlerCopy, 0, 1001, 0, 0);
       goto LABEL_112;
     }
   }
 
 LABEL_24:
-  if (!v24)
+  if (!attesterCopy)
   {
     if (self)
     {
@@ -698,8 +698,8 @@ LABEL_24:
                 objc_enumerationMutation(v41);
               }
 
-              v45 = [*(*(&v142 + 1) + 8 * i) unsignedShortValue];
-              if (v45 == [v23 tokenType])
+              unsignedShortValue = [*(*(&v142 + 1) + 8 * i) unsignedShortValue];
+              if (unsignedShortValue == [challengeCopy tokenType])
               {
 
                 goto LABEL_57;
@@ -719,9 +719,9 @@ LABEL_24:
         v46 = nplog_obj();
         if (os_log_type_enabled(v46, OS_LOG_TYPE_DEFAULT))
         {
-          v47 = [v23 tokenType];
+          tokenType = [challengeCopy tokenType];
           LODWORD(buf) = 67109120;
-          DWORD1(buf) = v47;
+          DWORD1(buf) = tokenType;
           _os_log_impl(&_mh_execute_header, v46, OS_LOG_TYPE_DEFAULT, "Cannot fetch token type %u, not in allowed type list", &buf, 8u);
         }
 
@@ -729,7 +729,7 @@ LABEL_24:
       }
 
 LABEL_57:
-      accessTokenBlockedIssuers = v25->_accessTokenBlockedIssuers;
+      accessTokenBlockedIssuers = selfCopy->_accessTokenBlockedIssuers;
     }
 
     else
@@ -742,11 +742,11 @@ LABEL_57:
       goto LABEL_25;
     }
 
-    v57 = v25 ? v25->_accessTokenBlockedIssuers : 0;
+    v57 = selfCopy ? selfCopy->_accessTokenBlockedIssuers : 0;
     v58 = v57;
-    v59 = [v23 issuerName];
-    v60 = [v59 lowercaseString];
-    v61 = [(NSArray *)v58 containsObject:v60];
+    issuerName3 = [challengeCopy issuerName];
+    lowercaseString = [issuerName3 lowercaseString];
+    v61 = [(NSArray *)v58 containsObject:lowercaseString];
 
     if (!v61)
     {
@@ -756,32 +756,32 @@ LABEL_57:
     v46 = nplog_obj();
     if (os_log_type_enabled(v46, OS_LOG_TYPE_DEFAULT))
     {
-      v62 = [v23 issuerName];
+      issuerName4 = [challengeCopy issuerName];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v62;
+      *(&buf + 4) = issuerName4;
       _os_log_impl(&_mh_execute_header, v46, OS_LOG_TYPE_DEFAULT, "Cannot fetch token from issuer %@, not allowed", &buf, 0xCu);
     }
 
 LABEL_48:
 
-    (*(v26 + 2))(v26, 0, 1008, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 1008, 0, 0);
     goto LABEL_112;
   }
 
 LABEL_25:
-  v35 = a15;
-  if (a16)
+  toolsCopy2 = tools;
+  if (client)
   {
 LABEL_26:
-    v94 = v35;
+    v94 = toolsCopy2;
     *&buf = 0;
     *(&buf + 1) = &buf;
     v150 = 0x3032000000;
     v151 = sub_100001FA4;
     v152 = sub_1000A962C;
     v153 = os_transaction_create();
-    v36 = [v23 tokenType];
-    if (!a12 && v36 == 58796)
+    tokenType2 = [challengeCopy tokenType];
+    if (!limit && tokenType2 == 58796)
     {
       v37 = nplog_obj();
       if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
@@ -790,24 +790,24 @@ LABEL_26:
         _os_log_error_impl(&_mh_execute_header, v37, OS_LOG_TYPE_ERROR, "Invalid rate limit for ARC credential, cannot be 0", v146, 2u);
       }
 
-      (*(v26 + 2))(v26, 0, 1004, @"Invalid ARC rate limit", 0);
+      (*(handlerCopy + 2))(handlerCopy, 0, 1004, @"Invalid ARC rate limit", 0);
       goto LABEL_111;
     }
 
-    if (sub_1000B37E0(v23, a16))
+    if (sub_1000B37E0(challengeCopy, client))
     {
-      if ([v23 tokenType] != 58796)
+      if ([challengeCopy tokenType] != 58796)
       {
         v50 = 0;
-        if (v24 && v92)
+        if (attesterCopy && feedbackCopy)
         {
-          v64 = [v23 issuerName];
-          v50 = sub_1000A819C(v25, v64, v24);
+          issuerName5 = [challengeCopy issuerName];
+          v50 = sub_1000A819C(selfCopy, issuerName5, attesterCopy);
         }
 
         if (![v50 count])
         {
-          v65 = [v101 key];
+          v65 = [keyCopy key];
           v148 = v65;
           v66 = [NSArray arrayWithObjects:&v148 count:1];
 
@@ -815,11 +815,11 @@ LABEL_26:
         }
 
         *v146 = 0;
-        v67 = sub_10003CAD4(NSPPrivateAccessTokenCache, v23, v50, v146);
+        v67 = sub_10003CAD4(NSPPrivateAccessTokenCache, challengeCopy, v50, v146);
         v91 = v67 == 0;
         if (v67)
         {
-          (*(v26 + 2))(v26, v67, 0, 0, 0);
+          (*(handlerCopy + 2))(handlerCopy, v67, 0, 0, 0);
         }
 
         if (*v146 < 2u || v67 == 0)
@@ -852,8 +852,8 @@ LABEL_82:
         }
 
 LABEL_88:
-        v71 = [v23 issuerName];
-        v70 = sub_1000A418C(v25, v71);
+        issuerName6 = [challengeCopy issuerName];
+        v70 = sub_1000A418C(selfCopy, issuerName6);
 
         if (v70)
         {
@@ -862,9 +862,9 @@ LABEL_88:
             v72 = nplog_obj();
             if (os_log_type_enabled(v72, OS_LOG_TYPE_INFO))
             {
-              v73 = [v23 issuerName];
+              issuerName7 = [challengeCopy issuerName];
               *v146 = 138412290;
-              v147 = v73;
+              v147 = issuerName7;
               _os_log_impl(&_mh_execute_header, v72, OS_LOG_TYPE_INFO, "Waiting for ongoing call to fetch token for %@", v146, 0xCu);
             }
 
@@ -872,23 +872,23 @@ LABEL_88:
             block[1] = 3221225472;
             block[2] = sub_1000A9634;
             block[3] = &unk_10010AE08;
-            v125 = v23;
-            v126 = v25;
-            v127 = v24;
-            v139 = v92;
-            v128 = v103;
-            v129 = v97;
-            v130 = v101;
-            v131 = v98;
-            v132 = v102;
-            v133 = v99;
-            v138 = a12;
-            v134 = v96;
-            v135 = v100;
+            v125 = challengeCopy;
+            v126 = selfCopy;
+            v127 = attesterCopy;
+            v139 = feedbackCopy;
+            v128 = customAttesterCopy;
+            v129 = headersCopy;
+            v130 = keyCopy;
+            v131 = nameKeyCopy;
+            v132 = originCopy;
+            v133 = cacheKeyCopy;
+            limitCopy = limit;
+            v134 = tokenCopy;
+            v135 = dCopy;
             v140 = v94;
-            v141 = a16;
-            v136 = v104;
-            v137 = v26;
+            clientCopy = client;
+            v136 = accessTokenCopy;
+            v137 = handlerCopy;
             dispatch_async(v70, block);
 
             v74 = v125;
@@ -899,9 +899,9 @@ LABEL_88:
             v74 = nplog_obj();
             if (os_log_type_enabled(v74, OS_LOG_TYPE_INFO))
             {
-              v78 = [v23 issuerName];
+              issuerName8 = [challengeCopy issuerName];
               *v146 = 138412290;
-              v147 = v78;
+              v147 = issuerName8;
               _os_log_impl(&_mh_execute_header, v74, OS_LOG_TYPE_INFO, "Not waiting for ongoing call to fetch token for %@, returned from cache", v146, 0xCu);
             }
           }
@@ -911,11 +911,11 @@ LABEL_88:
 
         v70 = dispatch_group_create();
         v75 = +[NSURLSessionConfiguration ephemeralSessionConfiguration];
-        v76 = [v75 _socketStreamProperties];
-        if (v76)
+        _socketStreamProperties = [v75 _socketStreamProperties];
+        if (_socketStreamProperties)
         {
-          v77 = [v75 _socketStreamProperties];
-          v93 = [NSMutableDictionary dictionaryWithDictionary:v77];
+          _socketStreamProperties2 = [v75 _socketStreamProperties];
+          v93 = [NSMutableDictionary dictionaryWithDictionary:_socketStreamProperties2];
         }
 
         else
@@ -926,8 +926,8 @@ LABEL_88:
         [v93 setObject:&__kCFBooleanTrue forKeyedSubscript:_kCFStreamPropertyPrefersNoProxy];
         [v75 set_socketStreamProperties:v93];
         [v75 setTimeoutIntervalForRequest:60.0];
-        [v75 set_sourceApplicationAuditTokenData:v96];
-        [v75 set_sourceApplicationBundleIdentifier:v100];
+        [v75 set_sourceApplicationAuditTokenData:tokenCopy];
+        [v75 set_sourceApplicationBundleIdentifier:dCopy];
         [v75 setUsesClassicLoadingMode:0];
         v79 = [NSURLSession sessionWithConfiguration:v75];
         [v79 setSessionDescription:@"PrivateAccessTokenFetch"];
@@ -936,18 +936,18 @@ LABEL_88:
         if (v91)
         {
           dispatch_group_enter(v70);
-          if (v24)
+          if (attesterCopy)
           {
-            v80 = [v23 issuerName];
-            sub_1000A3F04(v25, v80);
+            issuerName9 = [challengeCopy issuerName];
+            sub_1000A3F04(selfCopy, issuerName9);
 
-            v81 = v23;
+            v81 = challengeCopy;
             v82 = v54 + 1;
           }
 
           else
           {
-            v81 = v23;
+            v81 = challengeCopy;
             v82 = 1;
           }
 
@@ -957,31 +957,31 @@ LABEL_88:
           v117[3] = &unk_10010AE30;
           v83 = v81;
           v118 = v81;
-          v119 = v101;
-          v120 = v25;
-          v123 = a12;
-          v122 = v26;
+          v119 = keyCopy;
+          v120 = selfCopy;
+          limitCopy2 = limit;
+          v122 = handlerCopy;
           v121 = v70;
-          v23 = v83;
-          sub_1000A4BD4(v25, v118, v24, v103, v97, v119, v82, v98, v102, v99, 0, v100, v104, 0, v95, 0, v117);
+          challengeCopy = v83;
+          sub_1000A4BD4(selfCopy, v118, attesterCopy, customAttesterCopy, headersCopy, v119, v82, nameKeyCopy, originCopy, cacheKeyCopy, 0, dCopy, accessTokenCopy, 0, v95, 0, v117);
         }
 
-        if (v24)
+        if (attesterCopy)
         {
           if ((v90 & (v91 ^ 1)) == 1)
           {
             dispatch_group_enter(v70);
-            v84 = [v23 issuerName];
-            sub_1000A3F04(v25, v84);
+            issuerName10 = [challengeCopy issuerName];
+            sub_1000A3F04(selfCopy, issuerName10);
 
             v111[0] = _NSConcreteStackBlock;
             v111[1] = 3221225472;
             v111[2] = sub_1000A9AF4;
             v111[3] = &unk_10010AE58;
-            v112 = v23;
+            v112 = challengeCopy;
             v70 = v70;
             v113 = v70;
-            sub_1000A4BD4(v25, v112, v24, v103, v97, v101, v54, v98, v102, v99, 0, v100, v104, 0, v95, 0, v111);
+            sub_1000A4BD4(selfCopy, v112, attesterCopy, customAttesterCopy, headersCopy, keyCopy, v54, nameKeyCopy, originCopy, cacheKeyCopy, 0, dCopy, accessTokenCopy, 0, v95, 0, v111);
           }
         }
 
@@ -994,11 +994,11 @@ LABEL_88:
             v114[1] = 3221225472;
             v114[2] = sub_1000A99D4;
             v114[3] = &unk_10010AE58;
-            v85 = v23;
+            v85 = challengeCopy;
             v115 = v85;
             v86 = v70;
             v116 = v86;
-            sub_1000A4BD4(v25, v85, 0, v103, v97, v101, 1, v98, v102, v99, 0, v100, v104, 0, v95, 0, v114);
+            sub_1000A4BD4(selfCopy, v85, 0, customAttesterCopy, headersCopy, keyCopy, 1, nameKeyCopy, originCopy, cacheKeyCopy, 0, dCopy, accessTokenCopy, 0, v95, 0, v114);
 
             --v54;
           }
@@ -1013,9 +1013,9 @@ LABEL_109:
         v105[1] = 3221225472;
         v105[2] = sub_1000A9C14;
         v105[3] = &unk_10010AE80;
-        v106 = v24;
-        v107 = v25;
-        v108 = v23;
+        v106 = attesterCopy;
+        v107 = selfCopy;
+        v108 = challengeCopy;
         v109 = v95;
         p_buf = &buf;
         v74 = v95;
@@ -1028,15 +1028,15 @@ LABEL_111:
         goto LABEL_112;
       }
 
-      v48 = [v101 key];
+      v48 = [keyCopy key];
       v49 = sub_1000B50B8(NSPPrivateAccessTokenRequest, v48);
-      v50 = sub_10003ED70(NSPPrivateAccessTokenCache, v23, v49);
+      v50 = sub_10003ED70(NSPPrivateAccessTokenCache, challengeCopy, v49);
 
       if (v50)
       {
         v51 = v50[2];
         v52 = v50[1];
-        v53 = sub_1000A7CE0(v25, v51, v23, a12, v101, v52, v26);
+        v53 = sub_1000A7CE0(selfCopy, v51, challengeCopy, limit, keyCopy, v52, handlerCopy);
 
         v54 = 0;
         v91 = v53 ^ 1;
@@ -1050,10 +1050,10 @@ LABEL_111:
     goto LABEL_88;
   }
 
-  if (sub_1000A7990(v25, v96, v23, v102, a15))
+  if (sub_1000A7990(selfCopy, tokenCopy, challengeCopy, originCopy, tools))
   {
-    v38 = sub_100040090(NSPPrivateAccessTokenCache, v23, v102);
-    v35 = a15;
+    v38 = sub_100040090(NSPPrivateAccessTokenCache, challengeCopy, originCopy);
+    toolsCopy2 = tools;
     if (v38)
     {
       goto LABEL_26;
@@ -1066,7 +1066,7 @@ LABEL_111:
       _os_log_impl(&_mh_execute_header, v39, OS_LOG_TYPE_INFO, "Not allowed to fetch private access token, rate limited", &buf, 2u);
     }
 
-    (*(v26 + 2))(v26, 0, 1009, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 1009, 0, 0);
   }
 
   else
@@ -1078,34 +1078,34 @@ LABEL_111:
       _os_log_impl(&_mh_execute_header, v55, OS_LOG_TYPE_INFO, "Not allowed to fetch private access token for origin", &buf, 2u);
     }
 
-    (*(v26 + 2))(v26, 0, 1001, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 1001, 0, 0);
   }
 
 LABEL_112:
 }
 
-- (void)fetchPrivateAccessTokenForChallenge:(id)a3 overrideAttester:(id)a4 supportsTokenUsageFeedback:(BOOL)a5 customAttester:(id)a6 customAttesterHeaders:(id)a7 tokenKey:(id)a8 originNameKey:(id)a9 selectedOrigin:(id)a10 auxiliaryAuthChallenge:(id)a11 auxiliaryAuthKey:(id)a12 auxiliaryAuthLabel:(id)a13 auxiliaryAuthInfoCacheKey:(id)a14 rateLimit:(unsigned int)a15 auditToken:(id)a16 bundleID:(id)a17 accessToken:(id)a18 completionHandler:(id)a19
+- (void)fetchPrivateAccessTokenForChallenge:(id)challenge overrideAttester:(id)attester supportsTokenUsageFeedback:(BOOL)feedback customAttester:(id)customAttester customAttesterHeaders:(id)headers tokenKey:(id)key originNameKey:(id)nameKey selectedOrigin:(id)self0 auxiliaryAuthChallenge:(id)self1 auxiliaryAuthKey:(id)self2 auxiliaryAuthLabel:(id)self3 auxiliaryAuthInfoCacheKey:(id)self4 rateLimit:(unsigned int)self5 auditToken:(id)self6 bundleID:(id)self7 accessToken:(id)self8 completionHandler:(id)self9
 {
-  v24 = a3;
-  v25 = a4;
-  v72 = a6;
-  v62 = a7;
-  v63 = a8;
-  v64 = a9;
-  v26 = self;
-  v65 = a10;
-  v27 = a11;
-  v70 = a12;
-  v66 = a13;
-  v67 = a14;
-  v69 = a16;
-  v71 = a17;
-  v68 = a18;
-  v28 = a19;
+  challengeCopy = challenge;
+  attesterCopy = attester;
+  customAttesterCopy = customAttester;
+  headersCopy = headers;
+  keyCopy = key;
+  nameKeyCopy = nameKey;
+  selfCopy = self;
+  originCopy = origin;
+  authChallengeCopy = authChallenge;
+  authKeyCopy = authKey;
+  labelCopy = label;
+  cacheKeyCopy = cacheKey;
+  tokenCopy = token;
+  dCopy = d;
+  accessTokenCopy = accessToken;
+  handlerCopy = handler;
   v29 = NPGetInternalQueue();
   dispatch_assert_queue_V2(v29);
 
-  if (!v24)
+  if (!challengeCopy)
   {
     v52 = nplog_obj();
     if (os_log_type_enabled(v52, OS_LOG_TYPE_FAULT))
@@ -1118,7 +1118,7 @@ LABEL_112:
     goto LABEL_41;
   }
 
-  if (!v27)
+  if (!authChallengeCopy)
   {
     v52 = nplog_obj();
     if (os_log_type_enabled(v52, OS_LOG_TYPE_FAULT))
@@ -1130,18 +1130,18 @@ LABEL_112:
 
 LABEL_41:
 
-    (*(v28 + 2))(v28, 0, 0, 1004, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, 1004, 0, 0);
     goto LABEL_38;
   }
 
-  if (v28)
+  if (handlerCopy)
   {
     v30 = sub_1000A149C(&self->super.isa);
-    if (v25 | v30)
+    if (attesterCopy | v30)
     {
     }
 
-    else if (!v72)
+    else if (!customAttesterCopy)
     {
       v31 = nplog_obj();
       if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
@@ -1150,7 +1150,7 @@ LABEL_41:
         _os_log_error_impl(&_mh_execute_header, v31, OS_LOG_TYPE_ERROR, "Cannot fetch private access token, no attester URL", &v107, 2u);
       }
 
-      (*(v28 + 2))(v28, 0, 0, 1005, 0, 0);
+      (*(handlerCopy + 2))(handlerCopy, 0, 0, 1005, 0, 0);
       goto LABEL_38;
     }
 
@@ -1160,7 +1160,7 @@ LABEL_41:
     v109 = sub_100001FA4;
     v110 = sub_1000A962C;
     v111 = os_transaction_create();
-    if ([v24 tokenType] == 58796)
+    if ([challengeCopy tokenType] == 58796)
     {
       v32 = nplog_obj();
       if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
@@ -1174,19 +1174,19 @@ LABEL_41:
 
     else
     {
-      if ([v27 tokenType] == 49278)
+      if ([authChallengeCopy tokenType] == 49278)
       {
-        v34 = [v24 issuerName];
-        queue = sub_1000A418C(self, v34);
+        issuerName = [challengeCopy issuerName];
+        queue = sub_1000A418C(self, issuerName);
 
         if (queue)
         {
           v35 = nplog_obj();
           if (os_log_type_enabled(v35, OS_LOG_TYPE_INFO))
           {
-            v36 = [v24 issuerName];
+            issuerName2 = [challengeCopy issuerName];
             *buf = 138412290;
-            v106 = v36;
+            v106 = issuerName2;
             _os_log_impl(&_mh_execute_header, v35, OS_LOG_TYPE_INFO, "Waiting for ongoing call to fetch token for %@", buf, 0xCu);
           }
 
@@ -1194,24 +1194,24 @@ LABEL_41:
           block[1] = 3221225472;
           block[2] = sub_1000AA88C;
           block[3] = &unk_10010AEA8;
-          v87 = v24;
-          v88 = self;
-          v89 = v25;
-          v104 = a5;
-          v90 = v72;
-          v91 = v62;
-          v92 = v63;
-          v93 = v64;
-          v94 = v65;
-          v95 = v27;
-          v96 = v70;
-          v97 = v66;
-          v98 = v67;
-          v103 = a15;
-          v99 = v69;
-          v100 = v71;
-          v101 = v68;
-          v102 = v28;
+          v87 = challengeCopy;
+          selfCopy2 = self;
+          v89 = attesterCopy;
+          feedbackCopy = feedback;
+          v90 = customAttesterCopy;
+          v91 = headersCopy;
+          v92 = keyCopy;
+          v93 = nameKeyCopy;
+          v94 = originCopy;
+          v95 = authChallengeCopy;
+          v96 = authKeyCopy;
+          v97 = labelCopy;
+          v98 = cacheKeyCopy;
+          limitCopy = limit;
+          v99 = tokenCopy;
+          v100 = dCopy;
+          v101 = accessTokenCopy;
+          v102 = handlerCopy;
           dispatch_async(queue, block);
 
           v37 = v87;
@@ -1221,11 +1221,11 @@ LABEL_41:
         {
           v37 = dispatch_group_create();
           v38 = +[NSURLSessionConfiguration ephemeralSessionConfiguration];
-          v39 = [v38 _socketStreamProperties];
-          if (v39)
+          _socketStreamProperties = [v38 _socketStreamProperties];
+          if (_socketStreamProperties)
           {
-            v40 = [v38 _socketStreamProperties];
-            v60 = [NSMutableDictionary dictionaryWithDictionary:v40];
+            _socketStreamProperties2 = [v38 _socketStreamProperties];
+            v60 = [NSMutableDictionary dictionaryWithDictionary:_socketStreamProperties2];
           }
 
           else
@@ -1236,25 +1236,25 @@ LABEL_41:
           [v60 setObject:&__kCFBooleanTrue forKeyedSubscript:_kCFStreamPropertyPrefersNoProxy];
           [v38 set_socketStreamProperties:v60];
           [v38 setTimeoutIntervalForRequest:60.0];
-          [v38 set_sourceApplicationAuditTokenData:v69];
-          [v38 set_sourceApplicationBundleIdentifier:v71];
+          [v38 set_sourceApplicationAuditTokenData:tokenCopy];
+          [v38 set_sourceApplicationBundleIdentifier:dCopy];
           [v38 setUsesClassicLoadingMode:0];
           v41 = [NSURLSession sessionWithConfiguration:v38];
           [v41 setSessionDescription:@"PrivateAccessTokenFetch"];
           v57 = objc_alloc_init(NSMutableArray);
           v55 = objc_alloc_init(NSMutableArray);
-          v58 = sub_1000B9830(NSPPrivateAccessTokenFetcher, v27, v70, 1u, 0, 0, v57, v55, 0, 0);
+          v58 = sub_1000B9830(NSPPrivateAccessTokenFetcher, authChallengeCopy, authKeyCopy, 1u, 0, 0, v57, v55, 0, 0);
           if ([v58 count] == 1)
           {
             v54 = v41;
             v56 = objc_alloc_init(NSPPrivacyProxyAuxiliaryAuthInfo);
             [v56 setAuthType:2];
-            [v56 setLabel:v66];
-            v42 = [v58 firstObject];
-            v44 = v42;
-            if (v42)
+            [v56 setLabel:labelCopy];
+            firstObject = [v58 firstObject];
+            v44 = firstObject;
+            if (firstObject)
             {
-              Property = objc_getProperty(v42, v43, 24, 1);
+              Property = objc_getProperty(firstObject, v43, 24, 1);
             }
 
             else
@@ -1266,32 +1266,32 @@ LABEL_41:
             [v56 addContentList:v46];
 
             dispatch_group_enter(v37);
-            if (v25)
+            if (attesterCopy)
             {
-              v47 = [v24 issuerName];
-              sub_1000A3F04(v26, v47);
+              issuerName3 = [challengeCopy issuerName];
+              sub_1000A3F04(selfCopy, issuerName3);
             }
 
             v79[0] = _NSConcreteStackBlock;
             v79[1] = 3221225472;
             v79[2] = sub_1000AA988;
             v79[3] = &unk_10010AED0;
-            v85 = v28;
+            v85 = handlerCopy;
             v80 = v57;
-            v81 = v27;
-            v82 = v70;
+            v81 = authChallengeCopy;
+            v82 = authKeyCopy;
             v83 = v55;
             v48 = v37;
             v84 = v48;
-            sub_1000A4BD4(v26, v24, v25, v72, v62, v63, 1, v64, v65, v67, v56, v71, v68, 0, v54, 0, v79);
+            sub_1000A4BD4(selfCopy, challengeCopy, attesterCopy, customAttesterCopy, headersCopy, keyCopy, 1, nameKeyCopy, originCopy, cacheKeyCopy, v56, dCopy, accessTokenCopy, 0, v54, 0, v79);
             v49 = NPGetInternalQueue();
             v73[0] = _NSConcreteStackBlock;
             v73[1] = 3221225472;
             v73[2] = sub_1000AABB4;
             v73[3] = &unk_10010AE80;
-            v74 = v25;
-            v75 = v26;
-            v76 = v24;
+            v74 = attesterCopy;
+            v75 = selfCopy;
+            v76 = challengeCopy;
             v77 = v54;
             v78 = &v107;
             v50 = v48;
@@ -1308,7 +1308,7 @@ LABEL_41:
               _os_log_error_impl(&_mh_execute_header, v51, OS_LOG_TYPE_ERROR, "Failed to create auxiliary auth request", buf, 2u);
             }
 
-            (*(v28 + 2))(v28, 0, 0, 1004, @"Failed to create auxiliary auth request", 0);
+            (*(handlerCopy + 2))(handlerCopy, 0, 0, 1004, @"Failed to create auxiliary auth request", 0);
           }
         }
 
@@ -1325,7 +1325,7 @@ LABEL_41:
       v33 = @"Invalid auxiliary auth type";
     }
 
-    (*(v28 + 2))(v28, 0, 0, 1004, v33, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, 1004, v33, 0);
 LABEL_37:
     _Block_object_dispose(&v107, 8);
 
@@ -1344,26 +1344,26 @@ LABEL_37:
 LABEL_38:
 }
 
-- (void)fetchPairedPrivateAccessTokensForChallenge:(id)a3 overrideAttester:(id)a4 configurationFetchDate:(id)a5 configurationETag:(id)a6 tokenKey:(id)a7 originNameKey:(id)a8 selectedOrigin:(id)a9 pairedChallenge:(id)a10 overridePairedAttester:(id)a11 pairedTokenKey:(id)a12 auditToken:(id)a13 bundleID:(id)a14 allowTools:(BOOL)a15 systemTokenClient:(BOOL)a16 accessToken:(id)a17 completionHandler:(id)a18
+- (void)fetchPairedPrivateAccessTokensForChallenge:(id)challenge overrideAttester:(id)attester configurationFetchDate:(id)date configurationETag:(id)tag tokenKey:(id)key originNameKey:(id)nameKey selectedOrigin:(id)origin pairedChallenge:(id)self0 overridePairedAttester:(id)self1 pairedTokenKey:(id)self2 auditToken:(id)self3 bundleID:(id)self4 allowTools:(BOOL)self5 systemTokenClient:(BOOL)self6 accessToken:(id)self7 completionHandler:(id)self8
 {
-  v23 = a3;
-  v73 = a4;
-  v64 = a5;
-  v65 = a6;
-  v69 = a7;
-  v63 = a8;
-  v71 = a9;
-  v24 = a10;
-  v72 = a11;
-  v68 = a12;
-  v70 = a13;
-  v67 = a14;
-  v66 = a17;
-  v25 = a18;
+  challengeCopy = challenge;
+  attesterCopy = attester;
+  dateCopy = date;
+  tagCopy = tag;
+  keyCopy = key;
+  nameKeyCopy = nameKey;
+  originCopy = origin;
+  pairedChallengeCopy = pairedChallenge;
+  pairedAttesterCopy = pairedAttester;
+  tokenKeyCopy = tokenKey;
+  tokenCopy = token;
+  dCopy = d;
+  accessTokenCopy = accessToken;
+  handlerCopy = handler;
   v26 = NPGetInternalQueue();
   dispatch_assert_queue_V2(v26);
 
-  if (!v23)
+  if (!challengeCopy)
   {
     v39 = nplog_obj();
     if (os_log_type_enabled(v39, OS_LOG_TYPE_FAULT))
@@ -1376,7 +1376,7 @@ LABEL_38:
     goto LABEL_58;
   }
 
-  if (!v24)
+  if (!pairedChallengeCopy)
   {
     v39 = nplog_obj();
     if (os_log_type_enabled(v39, OS_LOG_TYPE_FAULT))
@@ -1389,37 +1389,37 @@ LABEL_38:
     goto LABEL_58;
   }
 
-  if (v25)
+  if (handlerCopy)
   {
-    if (v73 && v72)
+    if (attesterCopy && pairedAttesterCopy)
     {
-      if (a16)
+      if (client)
       {
 LABEL_7:
-        if (sub_1000B37E0(v23, a16))
+        if (sub_1000B37E0(challengeCopy, client))
         {
           *&buf = 0;
           *(&buf + 1) = &buf;
           v146 = 0x3032000000;
           v147 = sub_100001FA4;
           v148 = sub_1000A962C;
-          v27 = [v69 key];
-          v149 = sub_10003E848(NSPPrivateAccessTokenCache, v23, v27);
+          v27 = [keyCopy key];
+          v149 = sub_10003E848(NSPPrivateAccessTokenCache, challengeCopy, v27);
 
           v28 = *(*(&buf + 1) + 40);
           if (v28)
           {
             LODWORD(v140) = 0;
-            v29 = [v68 key];
+            v29 = [tokenKeyCopy key];
             v30 = *(*(&buf + 1) + 40);
             v121 = 0;
-            v31 = sub_10003F3C4(NSPPrivateAccessTokenCache, v24, v29, v23, v30, &v140, &v121);
+            v31 = sub_10003F3C4(NSPPrivateAccessTokenCache, pairedChallengeCopy, v29, challengeCopy, v30, &v140, &v121);
             v32 = v121;
 
             queue = v31 == 0;
             if (v31)
             {
-              (*(v25 + 2))(v25, *(*(&buf + 1) + 40), v31, v32, 0, 0, 0);
+              (*(handlerCopy + 2))(handlerCopy, *(*(&buf + 1) + 40), v31, v32, 0, 0, 0);
               v33 = v140 >= 0xD;
             }
 
@@ -1441,17 +1441,17 @@ LABEL_7:
 
           else
           {
-            v41 = [v23 issuerName];
-            queuea = sub_1000A418C(self, v41);
+            issuerName = [challengeCopy issuerName];
+            queuea = sub_1000A418C(self, issuerName);
 
             if (queuea)
             {
               v42 = nplog_obj();
               if (os_log_type_enabled(v42, OS_LOG_TYPE_INFO))
               {
-                v43 = [v23 issuerName];
+                issuerName2 = [challengeCopy issuerName];
                 LODWORD(v140) = 138412290;
-                *(&v140 + 4) = v43;
+                *(&v140 + 4) = issuerName2;
                 _os_log_impl(&_mh_execute_header, v42, OS_LOG_TYPE_INFO, "Waiting for ongoing call to fetch long-lived token for %@", &v140, 0xCu);
               }
 
@@ -1459,34 +1459,34 @@ LABEL_7:
               block[1] = 3221225472;
               block[2] = sub_1000ABC0C;
               block[3] = &unk_10010AEF8;
-              v123 = v23;
-              v124 = self;
-              v125 = v73;
-              v126 = v64;
-              v127 = v65;
-              v128 = v69;
-              v129 = v63;
-              v130 = v71;
-              v131 = v24;
-              v132 = v72;
-              v133 = v68;
-              v134 = v70;
-              v135 = v67;
-              v138 = a15;
-              v139 = a16;
-              v136 = v66;
-              v137 = v25;
+              v123 = challengeCopy;
+              selfCopy = self;
+              v125 = attesterCopy;
+              v126 = dateCopy;
+              v127 = tagCopy;
+              v128 = keyCopy;
+              v129 = nameKeyCopy;
+              v130 = originCopy;
+              v131 = pairedChallengeCopy;
+              v132 = pairedAttesterCopy;
+              v133 = tokenKeyCopy;
+              v134 = tokenCopy;
+              v135 = dCopy;
+              toolsCopy = tools;
+              clientCopy = client;
+              v136 = accessTokenCopy;
+              v137 = handlerCopy;
               dispatch_async(queuea, block);
 
               goto LABEL_51;
             }
 
-            sub_10004001C(NSPPrivateAccessTokenCache, v24);
+            sub_10004001C(NSPPrivateAccessTokenCache, pairedChallengeCopy);
             queue = 1;
           }
 
-          v44 = [v24 issuerName];
-          v45 = sub_1000A418C(self, v44);
+          issuerName3 = [pairedChallengeCopy issuerName];
+          v45 = sub_1000A418C(self, issuerName3);
 
           if (v45)
           {
@@ -1495,9 +1495,9 @@ LABEL_7:
               v46 = nplog_obj();
               if (os_log_type_enabled(v46, OS_LOG_TYPE_INFO))
               {
-                v47 = [v24 issuerName];
+                issuerName4 = [pairedChallengeCopy issuerName];
                 LODWORD(v140) = 138412290;
-                *(&v140 + 4) = v47;
+                *(&v140 + 4) = issuerName4;
                 _os_log_impl(&_mh_execute_header, v46, OS_LOG_TYPE_INFO, "Waiting for ongoing call to fetch one-time token for %@", &v140, 0xCu);
               }
 
@@ -1505,23 +1505,23 @@ LABEL_7:
               v103[1] = 3221225472;
               v103[2] = sub_1000ABD04;
               v103[3] = &unk_10010AEF8;
-              v104 = v24;
-              v105 = self;
-              v106 = v23;
-              v107 = v73;
-              v108 = v64;
-              v109 = v65;
-              v110 = v69;
-              v111 = v63;
-              v112 = v71;
-              v113 = v72;
-              v114 = v68;
-              v115 = v70;
-              v116 = v67;
-              v119 = a15;
-              v120 = a16;
-              v117 = v66;
-              v118 = v25;
+              v104 = pairedChallengeCopy;
+              selfCopy2 = self;
+              v106 = challengeCopy;
+              v107 = attesterCopy;
+              v108 = dateCopy;
+              v109 = tagCopy;
+              v110 = keyCopy;
+              v111 = nameKeyCopy;
+              v112 = originCopy;
+              v113 = pairedAttesterCopy;
+              v114 = tokenKeyCopy;
+              v115 = tokenCopy;
+              v116 = dCopy;
+              toolsCopy2 = tools;
+              clientCopy2 = client;
+              v117 = accessTokenCopy;
+              v118 = handlerCopy;
               dispatch_async(v45, v103);
 
               v48 = v104;
@@ -1532,9 +1532,9 @@ LABEL_7:
               v48 = nplog_obj();
               if (os_log_type_enabled(v48, OS_LOG_TYPE_INFO))
               {
-                v53 = [v24 issuerName];
+                issuerName5 = [pairedChallengeCopy issuerName];
                 LODWORD(v140) = 138412290;
-                *(&v140 + 4) = v53;
+                *(&v140 + 4) = issuerName5;
                 _os_log_impl(&_mh_execute_header, v48, OS_LOG_TYPE_INFO, "Not waiting for ongoing call to fetch one-time token for %@, returned from cache", &v140, 0xCu);
               }
             }
@@ -1543,11 +1543,11 @@ LABEL_7:
           }
 
           v49 = +[NSURLSessionConfiguration ephemeralSessionConfiguration];
-          v50 = [v49 _socketStreamProperties];
-          if (v50)
+          _socketStreamProperties = [v49 _socketStreamProperties];
+          if (_socketStreamProperties)
           {
-            v51 = [v49 _socketStreamProperties];
-            v52 = [NSMutableDictionary dictionaryWithDictionary:v51];
+            _socketStreamProperties2 = [v49 _socketStreamProperties];
+            v52 = [NSMutableDictionary dictionaryWithDictionary:_socketStreamProperties2];
           }
 
           else
@@ -1558,8 +1558,8 @@ LABEL_7:
           [v52 setObject:&__kCFBooleanTrue forKeyedSubscript:_kCFStreamPropertyPrefersNoProxy];
           [v49 set_socketStreamProperties:v52];
           [v49 setTimeoutIntervalForRequest:60.0];
-          [v49 set_sourceApplicationAuditTokenData:v70];
-          [v49 set_sourceApplicationBundleIdentifier:v67];
+          [v49 set_sourceApplicationAuditTokenData:tokenCopy];
+          [v49 set_sourceApplicationBundleIdentifier:dCopy];
           [v49 setUsesClassicLoadingMode:0];
           v36 = [NSURLSession sessionWithConfiguration:v49];
           [v36 setSessionDescription:@"PrivateAccessTokenFetch"];
@@ -1573,28 +1573,28 @@ LABEL_48:
           v143 = sub_1000A962C;
           v144 = os_transaction_create();
           v54 = dispatch_group_create();
-          v55 = [v23 issuerName];
+          issuerName6 = [challengeCopy issuerName];
           if (!v28)
           {
             dispatch_group_enter(v54);
-            sub_1000A3F04(self, v55);
+            sub_1000A3F04(self, issuerName6);
             v90[0] = _NSConcreteStackBlock;
             v90[1] = 3221225472;
             v90[2] = sub_1000ABE00;
             v90[3] = &unk_10010AF48;
-            v101 = v25;
+            v101 = handlerCopy;
             v91 = v54;
-            v92 = self;
-            v93 = v23;
-            v94 = v73;
-            v95 = v69;
-            v96 = v63;
-            v97 = v71;
-            v98 = v67;
-            v99 = v66;
+            selfCopy3 = self;
+            v93 = challengeCopy;
+            v94 = attesterCopy;
+            v95 = keyCopy;
+            v96 = nameKeyCopy;
+            v97 = originCopy;
+            v98 = dCopy;
+            v99 = accessTokenCopy;
             v100 = v36;
             p_buf = &buf;
-            sub_1000A3548(self, v95, v94, v64, v65, v90);
+            sub_1000A3548(self, v95, v94, dateCopy, tagCopy, v90);
           }
 
           v56 = NPGetInternalQueue();
@@ -1603,23 +1603,23 @@ LABEL_48:
           v74[2] = sub_1000AC0B8;
           v74[3] = &unk_10010B010;
           v74[4] = self;
-          v75 = v55;
-          v76 = v24;
+          v75 = issuerName6;
+          v76 = pairedChallengeCopy;
           v86 = &buf;
           v89 = queue;
           v88 = v35;
-          v77 = v68;
-          v78 = v72;
-          v79 = v64;
-          v80 = v65;
-          v85 = v25;
-          v81 = v67;
-          v82 = v66;
+          v77 = tokenKeyCopy;
+          v78 = pairedAttesterCopy;
+          v79 = dateCopy;
+          v80 = tagCopy;
+          v85 = handlerCopy;
+          v81 = dCopy;
+          v82 = accessTokenCopy;
           v83 = v36;
-          v84 = v23;
+          v84 = challengeCopy;
           v87 = &v140;
           v57 = v36;
-          v58 = v55;
+          v58 = issuerName6;
           dispatch_group_notify(v54, v56, v74);
 
           _Block_object_dispose(&v140, 8);
@@ -1638,13 +1638,13 @@ LABEL_51:
 
 LABEL_58:
 
-        (*(v25 + 2))(v25, 0, 0, 0, 1004, 0, 0);
+        (*(handlerCopy + 2))(handlerCopy, 0, 0, 0, 1004, 0, 0);
         goto LABEL_52;
       }
 
-      if (sub_1000A7990(self, v70, v23, v71, a15))
+      if (sub_1000A7990(self, tokenCopy, challengeCopy, originCopy, tools))
       {
-        if (sub_100040090(NSPPrivateAccessTokenCache, v23, v71))
+        if (sub_100040090(NSPPrivateAccessTokenCache, challengeCopy, originCopy))
         {
           goto LABEL_7;
         }
@@ -1656,7 +1656,7 @@ LABEL_58:
           _os_log_impl(&_mh_execute_header, v38, OS_LOG_TYPE_INFO, "Not allowed to fetch private access token, rate limited", &buf, 2u);
         }
 
-        (*(v25 + 2))(v25, 0, 0, 0, 1009, 0, 0);
+        (*(handlerCopy + 2))(handlerCopy, 0, 0, 0, 1009, 0, 0);
       }
 
       else
@@ -1668,7 +1668,7 @@ LABEL_58:
           _os_log_impl(&_mh_execute_header, v40, OS_LOG_TYPE_INFO, "Not allowed to fetch private access token for origin", &buf, 2u);
         }
 
-        (*(v25 + 2))(v25, 0, 0, 0, 1001, 0, 0);
+        (*(handlerCopy + 2))(handlerCopy, 0, 0, 0, 1001, 0, 0);
       }
     }
 
@@ -1681,7 +1681,7 @@ LABEL_58:
         _os_log_error_impl(&_mh_execute_header, v37, OS_LOG_TYPE_ERROR, "Cannot fetch private access token, no attester URLs", &buf, 2u);
       }
 
-      (*(v25 + 2))(v25, 0, 0, 0, 1005, 0, 0);
+      (*(handlerCopy + 2))(handlerCopy, 0, 0, 0, 1005, 0, 0);
     }
   }
 
@@ -1701,13 +1701,13 @@ LABEL_58:
 LABEL_52:
 }
 
-- (void)copyTokenInfo:(id)a3
+- (void)copyTokenInfo:(id)info
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  infoCopy = info;
+  v5 = infoCopy;
+  if (infoCopy)
   {
-    [v4 setDeviceIdentityValidationCount:dword_1001298BC];
+    [infoCopy setDeviceIdentityValidationCount:dword_1001298BC];
     [v5 setAnisetteValidationCount:dword_1001298B8];
     if (self)
     {
@@ -1738,30 +1738,30 @@ LABEL_52:
   }
 }
 
-- (void)getTokenServerIPWithInterface:(id)a3 completionHandler:(id)a4
+- (void)getTokenServerIPWithInterface:(id)interface completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  interfaceCopy = interface;
+  handlerCopy = handler;
+  v8 = handlerCopy;
+  if (interfaceCopy)
   {
     if (self && self->_tokenEndpointResolver)
     {
-      (*(v7 + 2))(v7, 0);
+      (*(handlerCopy + 2))(handlerCopy, 0);
     }
 
     else
     {
-      v9 = [(NSPPrivacyTokenManager *)self tokenFetchURL];
-      v10 = [NSURL URLWithString:v9];
+      tokenFetchURL = [(NSPPrivacyTokenManager *)self tokenFetchURL];
+      v10 = [NSURL URLWithString:tokenFetchURL];
 
       if (v10)
       {
-        v11 = [v10 host];
-        host = nw_endpoint_create_host([v11 UTF8String], "443");
+        host = [v10 host];
+        host = nw_endpoint_create_host([host UTF8String], "443");
         v13 = nw_parameters_create();
-        v14 = [v6 cInterface];
-        nw_parameters_require_interface(v13, v14);
+        cInterface = [interfaceCopy cInterface];
+        nw_parameters_require_interface(v13, cInterface);
 
         v15 = nw_resolver_create_with_endpoint();
         v16 = v15;
@@ -1819,33 +1819,33 @@ LABEL_52:
   }
 }
 
-- (void)checkCostQuotaForIssuerName:(id)a3 quotaService:(id)a4 auditToken:(id)a5 bundleID:(id)a6 accessToken:(id)a7 completionHandler:(id)a8
+- (void)checkCostQuotaForIssuerName:(id)name quotaService:(id)service auditToken:(id)token bundleID:(id)d accessToken:(id)accessToken completionHandler:(id)handler
 {
-  v14 = a3;
-  v15 = a4;
-  v45 = a5;
-  v46 = a6;
-  v16 = a7;
-  v17 = a8;
+  nameCopy = name;
+  serviceCopy = service;
+  tokenCopy = token;
+  dCopy = d;
+  accessTokenCopy = accessToken;
+  handlerCopy = handler;
   v18 = NPGetInternalQueue();
   dispatch_assert_queue_V2(v18);
 
-  if (v14 && ([v15 serviceURL], v19 = objc_claimAutoreleasedReturnValue(), v19, v19))
+  if (nameCopy && ([serviceCopy serviceURL], v19 = objc_claimAutoreleasedReturnValue(), v19, v19))
   {
     v20 = nplog_obj();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v53 = v14;
+      v53 = nameCopy;
       _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_INFO, "Checking cost quota for %@", buf, 0xCu);
     }
 
     v21 = +[NSURLSessionConfiguration ephemeralSessionConfiguration];
-    v22 = [v21 _socketStreamProperties];
-    if (v22)
+    _socketStreamProperties = [v21 _socketStreamProperties];
+    if (_socketStreamProperties)
     {
-      v23 = [v21 _socketStreamProperties];
-      v44 = [NSMutableDictionary dictionaryWithDictionary:v23];
+      _socketStreamProperties2 = [v21 _socketStreamProperties];
+      v44 = [NSMutableDictionary dictionaryWithDictionary:_socketStreamProperties2];
     }
 
     else
@@ -1856,24 +1856,24 @@ LABEL_52:
     [v44 setObject:&__kCFBooleanTrue forKeyedSubscript:_kCFStreamPropertyPrefersNoProxy];
     [v21 set_socketStreamProperties:v44];
     [v21 setTimeoutIntervalForRequest:60.0];
-    [v21 set_sourceApplicationAuditTokenData:v45];
-    [v21 set_sourceApplicationBundleIdentifier:v46];
+    [v21 set_sourceApplicationAuditTokenData:tokenCopy];
+    [v21 set_sourceApplicationBundleIdentifier:dCopy];
     [v21 setUsesClassicLoadingMode:0];
     v43 = [NSURLSession sessionWithConfiguration:v21];
     [v43 setSessionDescription:@"CostQuotaFetch"];
-    v42 = [v15 serviceURL];
-    v24 = [[NSURLComponents alloc] initWithString:v42];
+    serviceURL = [serviceCopy serviceURL];
+    v24 = [[NSURLComponents alloc] initWithString:serviceURL];
     v41 = v24;
     if (v24)
     {
-      v25 = [v24 string];
-      v26 = sub_1000A17F4(self, v25, 0, 0, 0, 0);
+      string = [v24 string];
+      v26 = sub_1000A17F4(self, string, 0, 0, 0, 0);
 
       if (v26)
       {
-        if (v16)
+        if (accessTokenCopy)
         {
-          [v26 setValue:v16 forHTTPHeaderField:@"X-Mask-Subscription-Token"];
+          [v26 setValue:accessTokenCopy forHTTPHeaderField:@"X-Mask-Subscription-Token"];
         }
 
         if (os_variant_has_internal_diagnostics())
@@ -1894,14 +1894,14 @@ LABEL_52:
 
           if (v30)
           {
-            v31 = [v30 configServerHeaders];
-            v32 = v31 == 0;
+            configServerHeaders = [v30 configServerHeaders];
+            v32 = configServerHeaders == 0;
 
             if (!v32)
             {
-              v40 = [v26 allHTTPHeaderFields];
-              v33 = [v30 configServerHeaders];
-              v34 = [NPUtilities mergeHTTPHeaders:v40 headerOverrides:v33];
+              allHTTPHeaderFields = [v26 allHTTPHeaderFields];
+              configServerHeaders2 = [v30 configServerHeaders];
+              v34 = [NPUtilities mergeHTTPHeaders:allHTTPHeaderFields headerOverrides:configServerHeaders2];
               [v26 setAllHTTPHeaderFields:v34];
             }
           }
@@ -1911,8 +1911,8 @@ LABEL_52:
         v36 = objc_alloc_init(NSPPrivacyProxyGetQuotaRequest);
         [v35 setRequest:v36];
 
-        v37 = [v35 request];
-        [v37 setUseCaseIdentifier:v14];
+        request = [v35 request];
+        [request setUseCaseIdentifier:nameCopy];
 
         objc_initWeak(buf, self);
         v47[0] = _NSConcreteStackBlock;
@@ -1921,8 +1921,8 @@ LABEL_52:
         v47[3] = &unk_10010B088;
         objc_copyWeak(&v51, buf);
         v48 = v26;
-        v50 = v17;
-        v49 = v14;
+        v50 = handlerCopy;
+        v49 = nameCopy;
         [NSPBAA sendRequestForQuota:v48 urlSession:v43 quotaServiceRequest:v35 completionHandler:v47];
 
         objc_destroyWeak(&v51);
@@ -1939,7 +1939,7 @@ LABEL_52:
           _os_log_fault_impl(&_mh_execute_header, v39, OS_LOG_TYPE_FAULT, "%s called with null urlRequest", buf, 0xCu);
         }
 
-        (*(v17 + 2))(v17, 0, 1004, 0, 0, 0.0, 0.0);
+        (*(handlerCopy + 2))(handlerCopy, 0, 1004, 0, 0, 0.0, 0.0);
       }
     }
 
@@ -1953,13 +1953,13 @@ LABEL_52:
         _os_log_fault_impl(&_mh_execute_header, v38, OS_LOG_TYPE_FAULT, "%s called with null serviceURLComponents", buf, 0xCu);
       }
 
-      (*(v17 + 2))(v17, 0, 1004, 0, 0, 0.0, 0.0);
+      (*(handlerCopy + 2))(handlerCopy, 0, 1004, 0, 0, 0.0, 0.0);
     }
   }
 
   else
   {
-    (*(v17 + 2))(v17, 0, 1004, 0, 0, 0.0, 0.0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 1004, 0, 0, 0.0, 0.0);
   }
 }
 

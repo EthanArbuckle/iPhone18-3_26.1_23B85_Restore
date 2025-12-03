@@ -1,5 +1,5 @@
 @interface AMSDeallocGuard
-- (AMSDeallocGuard)initWithDeallocGuardBlock:(id)a3;
+- (AMSDeallocGuard)initWithDeallocGuardBlock:(id)block;
 - (void)dealloc;
 - (void)invalidate;
 @end
@@ -13,8 +13,8 @@
   os_unfair_lock_unlock(&self->_invalidationLock);
   if (!invalidated)
   {
-    v4 = [(AMSDeallocGuard *)self block];
-    v4[2]();
+    block = [(AMSDeallocGuard *)self block];
+    block[2]();
   }
 
   v5.receiver = self;
@@ -22,15 +22,15 @@
   [(AMSDeallocGuard *)&v5 dealloc];
 }
 
-- (AMSDeallocGuard)initWithDeallocGuardBlock:(id)a3
+- (AMSDeallocGuard)initWithDeallocGuardBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v9.receiver = self;
   v9.super_class = AMSDeallocGuard;
   v5 = [(AMSDeallocGuard *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [blockCopy copy];
     block = v5->_block;
     v5->_block = v6;
 

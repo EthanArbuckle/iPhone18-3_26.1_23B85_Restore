@@ -1,6 +1,6 @@
 @interface TURecentsResults
 - (id)allSearchItems;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation TURecentsResults
@@ -9,35 +9,35 @@
 {
   if ([(TUSearchResults *)self numberOfSections]< 1)
   {
-    v5 = 0;
+    results = 0;
   }
 
   else
   {
-    v3 = [(TUSearchResults *)self resultGroups];
-    v4 = [v3 objectAtIndex:0];
+    resultGroups = [(TUSearchResults *)self resultGroups];
+    v4 = [resultGroups objectAtIndex:0];
 
-    v5 = [v4 results];
-    v6 = [v5 firstObject];
+    results = [v4 results];
+    firstObject = [results firstObject];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if ((isKindOfClass & 1) == 0)
     {
 
-      v5 = 0;
+      results = 0;
     }
   }
 
-  return v5;
+  return results;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v8.receiver = self;
   v8.super_class = TURecentsResults;
-  v6 = [(TUSearchResults *)&v8 copyWithZone:a3];
+  v6 = [(TUSearchResults *)&v8 copyWithZone:zone];
   if (v6)
   {
     [v5 addSearchResults:v6];

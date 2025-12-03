@@ -1,16 +1,16 @@
 @interface CKDeviceCapability
-+ (id)fromSqliteRepresentation:(id)a3;
-+ (id)fromSqliteRepresentations:(id)a3;
-+ (id)pruneAndSort:(id)a3;
-+ (id)sqliteRepresentations:(id)a3;
-- (CKDeviceCapability)initWithLevel:(int)a3 name:(id)a4 value:(id)a5;
++ (id)fromSqliteRepresentation:(id)representation;
++ (id)fromSqliteRepresentations:(id)representations;
++ (id)pruneAndSort:(id)sort;
++ (id)sqliteRepresentations:(id)representations;
+- (CKDeviceCapability)initWithLevel:(int)level name:(id)name value:(id)value;
 - (int64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CKDeviceCapability
 
-+ (id)fromSqliteRepresentations:(id)a3
++ (id)fromSqliteRepresentations:(id)representations
 {
   v3 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   swift_getObjCClassMetadata();
@@ -22,7 +22,7 @@
   return v5.super.isa;
 }
 
-+ (id)fromSqliteRepresentation:(id)a3
++ (id)fromSqliteRepresentation:(id)representation
 {
   static String._unconditionallyBridgeFromObjectiveC(_:)();
   static CKDeviceCapability.fromSqliteRepresentation(_:)();
@@ -31,16 +31,16 @@
   return v4;
 }
 
-- (CKDeviceCapability)initWithLevel:(int)a3 name:(id)a4 value:(id)a5
+- (CKDeviceCapability)initWithLevel:(int)level name:(id)name value:(id)value
 {
   static String._unconditionallyBridgeFromObjectiveC(_:)();
   static String._unconditionallyBridgeFromObjectiveC(_:)();
   return CKDeviceCapability.init(level:name:value:)();
 }
 
-+ (id)sqliteRepresentations:(id)a3
++ (id)sqliteRepresentations:(id)representations
 {
-  type metadata accessor for CKDeviceCapability(a1);
+  type metadata accessor for CKDeviceCapability(self);
   v3 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   static CKDeviceCapability.sqliteRepresentations(_:)(v3);
 
@@ -49,9 +49,9 @@
   return v4.super.isa;
 }
 
-+ (id)pruneAndSort:(id)a3
++ (id)pruneAndSort:(id)sort
 {
-  type metadata accessor for CKDeviceCapability(a1);
+  type metadata accessor for CKDeviceCapability(self);
   v3 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   static CKDeviceCapability.pruneAndSort(_:)(v3);
 
@@ -60,16 +60,16 @@
   return v4.super.isa;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  CKDeviceCapability.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  CKDeviceCapability.encode(with:)(coderCopy);
 }
 
 - (int64_t)hash
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CKDeviceCapability.hash.getter();
 
   return v3;

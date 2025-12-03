@@ -1,55 +1,55 @@
 @interface _SFPageLoadErrorController
 + (void)clearOldCertificateBypasses;
-- (BOOL)updateCrashesAndShowCrashError:(id)a3 URLString:(id)a4;
+- (BOOL)updateCrashesAndShowCrashError:(id)error URLString:(id)string;
 - (SFDialogPresenting)dialogPresenter;
-- (_SFPageLoadErrorController)initWithWebView:(id)a3 secIdentitiesCache:(id)a4;
+- (_SFPageLoadErrorController)initWithWebView:(id)view secIdentitiesCache:(id)cache;
 - (_SFPageLoadErrorControllerDelegate)delegate;
 - (id)_certificateWarningPagePresenterProxy;
-- (id)_errorMessageForNSURLErrorDomain:(id)a3 url:(id)a4;
-- (id)_firstItemWithUniqueURLInBackListFromURL:(id)a3;
-- (id)_genericMessageForError:(id)a3;
-- (id)_titleForError:(id)a3;
+- (id)_errorMessageForNSURLErrorDomain:(id)domain url:(id)url;
+- (id)_firstItemWithUniqueURLInBackListFromURL:(id)l;
+- (id)_genericMessageForError:(id)error;
+- (id)_titleForError:(id)error;
 - (void)_clearCertificateWarningPageHandlerInterface;
-- (void)_continueAfterCertificateAlertWithURL:(id)a3 trust:(__SecTrust *)a4 recoveryAttempter:(id)a5;
-- (void)_continueWithoutCredentialsUsingAlertContext:(id)a3;
+- (void)_continueAfterCertificateAlertWithURL:(id)l trust:(__SecTrust *)trust recoveryAttempter:(id)attempter;
+- (void)_continueWithoutCredentialsUsingAlertContext:(id)context;
 - (void)_dismissCertificateViewButtonTapped;
-- (void)_fetchSpecializedMessageForError:(id)a3 URL:(id)a4 completionHandler:(id)a5;
-- (void)_handleCertificateError:(id)a3 forURL:(id)a4 isMainFrame:(BOOL)a5 recoveryAttempter:(id)a6 completionHandler:(id)a7;
-- (void)_handleFrameLoadError:(id)a3 forURL:(id)a4 recoveryAttempter:(id)a5;
-- (void)_loadCertificateWarningPageForContext:(id)a3;
-- (void)_reachabilityChanged:(id)a3;
+- (void)_fetchSpecializedMessageForError:(id)error URL:(id)l completionHandler:(id)handler;
+- (void)_handleCertificateError:(id)error forURL:(id)l isMainFrame:(BOOL)frame recoveryAttempter:(id)attempter completionHandler:(id)handler;
+- (void)_handleFrameLoadError:(id)error forURL:(id)l recoveryAttempter:(id)attempter;
+- (void)_loadCertificateWarningPageForContext:(id)context;
+- (void)_reachabilityChanged:(id)changed;
 - (void)_resetCrashCountNow;
 - (void)_resetCrashCountSoon;
-- (void)_setFailedRequest:(id)a3;
+- (void)_setFailedRequest:(id)request;
 - (void)_setUpCertificateWarningPageHandlerInterface;
-- (void)_showRepeatedWebProcessCrashError:(id)a3 URLString:(id)a4;
-- (void)addAlert:(id)a3;
-- (void)addAlertWithTitle:(id)a3 bodyText:(id)a4;
-- (void)addDialog:(id)a3;
+- (void)_showRepeatedWebProcessCrashError:(id)error URLString:(id)string;
+- (void)addAlert:(id)alert;
+- (void)addAlertWithTitle:(id)title bodyText:(id)text;
+- (void)addDialog:(id)dialog;
 - (void)addDisallowedFileURLAlert;
 - (void)addDisallowedUseOfJavaScriptAlert;
-- (void)addDownloadFailedAlertWithDescription:(id)a3;
-- (void)addFormAlertWithTitle:(id)a3 decisionHandler:(id)a4;
+- (void)addDownloadFailedAlertWithDescription:(id)description;
+- (void)addFormAlertWithTitle:(id)title decisionHandler:(id)handler;
 - (void)addInvalidProfileAlert;
 - (void)addInvalidURLAlert;
 - (void)clearCrashCountResetTimer;
 - (void)dealloc;
 - (void)goBackButtonClicked;
-- (void)handleClientCertificateAuthenticationChallenge:(id)a3 completionHandler:(id)a4;
-- (void)handleFrameLoadError:(id)a3;
-- (void)handleLegacyTLSWithFailingURL:(id)a3 clickThroughURL:(id)a4 authenticationChallenge:(id)a5;
-- (void)handleSubframeCertificateError:(id)a3;
+- (void)handleClientCertificateAuthenticationChallenge:(id)challenge completionHandler:(id)handler;
+- (void)handleFrameLoadError:(id)error;
+- (void)handleLegacyTLSWithFailingURL:(id)l clickThroughURL:(id)rL authenticationChallenge:(id)challenge;
+- (void)handleSubframeCertificateError:(id)error;
 - (void)invalidate;
 - (void)openClockSettings;
-- (void)performAction:(int)a3 forAlert:(id)a4;
+- (void)performAction:(int)action forAlert:(id)alert;
 - (void)reloadAfterError;
 - (void)scheduleResetCrashCount;
 - (void)showCertificateInformation;
-- (void)showErrorPageWithTitle:(id)a3 bodyText:(id)a4 learnMoreLink:(id)a5 forError:(id)a6;
+- (void)showErrorPageWithTitle:(id)title bodyText:(id)text learnMoreLink:(id)link forError:(id)error;
 - (void)visitInsecureWebsite;
 - (void)visitInsecureWebsiteWithTemporaryBypass;
 - (void)visitWebsiteWithoutPrivateRelay;
-- (void)webViewDidCommitErrorPagePreview:(id)a3;
+- (void)webViewDidCommitErrorPagePreview:(id)preview;
 @end
 
 @implementation _SFPageLoadErrorController
@@ -61,8 +61,8 @@
   self->_certificateWarningPageHandlerInterface = v3;
 
   WeakRetained = objc_loadWeakRetained(&self->_webView);
-  v5 = [WeakRetained _remoteObjectRegistry];
-  [v5 registerExportedObject:self interface:self->_certificateWarningPageHandlerInterface];
+  _remoteObjectRegistry = [WeakRetained _remoteObjectRegistry];
+  [_remoteObjectRegistry registerExportedObject:self interface:self->_certificateWarningPageHandlerInterface];
 }
 
 - (void)invalidate
@@ -92,8 +92,8 @@
     }
   }
 
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [(_SFPageLoadErrorController *)self clearFailedRequest];
   certificateTrust = self->_certificateTrust;
@@ -107,22 +107,22 @@
   [(_SFPageLoadErrorController *)&v6 dealloc];
 }
 
-- (_SFPageLoadErrorController)initWithWebView:(id)a3 secIdentitiesCache:(id)a4
+- (_SFPageLoadErrorController)initWithWebView:(id)view secIdentitiesCache:(id)cache
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  cacheCopy = cache;
   v13.receiver = self;
   v13.super_class = _SFPageLoadErrorController;
   v8 = [(_SFPageLoadErrorController *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_webView, v6);
-    objc_storeStrong(&v9->_secIdentitiesCache, a4);
+    objc_storeWeak(&v8->_webView, viewCopy);
+    objc_storeStrong(&v9->_secIdentitiesCache, cache);
     [(_SFPageLoadErrorController *)v9 _setUpCertificateWarningPageHandlerInterface];
-    v10 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v10 addObserver:v9 selector:sel__resetCrashCountDueToSuspendOrResume_ name:*MEMORY[0x1E69DE360] object:0];
-    [v10 addObserver:v9 selector:sel__resetCrashCountDueToSuspendOrResume_ name:*MEMORY[0x1E69DE348] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v9 selector:sel__resetCrashCountDueToSuspendOrResume_ name:*MEMORY[0x1E69DE360] object:0];
+    [defaultCenter addObserver:v9 selector:sel__resetCrashCountDueToSuspendOrResume_ name:*MEMORY[0x1E69DE348] object:0];
     v11 = v9;
   }
 
@@ -134,90 +134,90 @@
   if (self->_certificateWarningPageHandlerInterface)
   {
     WeakRetained = objc_loadWeakRetained(&self->_webView);
-    v5 = [WeakRetained _remoteObjectRegistry];
+    _remoteObjectRegistry = [WeakRetained _remoteObjectRegistry];
 
-    [v5 unregisterExportedObject:self interface:self->_certificateWarningPageHandlerInterface];
+    [_remoteObjectRegistry unregisterExportedObject:self interface:self->_certificateWarningPageHandlerInterface];
     certificateWarningPageHandlerInterface = self->_certificateWarningPageHandlerInterface;
     self->_certificateWarningPageHandlerInterface = 0;
   }
 }
 
-- (void)_fetchSpecializedMessageForError:(id)a3 URL:(id)a4 completionHandler:(id)a5
+- (void)_fetchSpecializedMessageForError:(id)error URL:(id)l completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 failingURL];
-  if (!v11)
+  errorCopy = error;
+  lCopy = l;
+  handlerCopy = handler;
+  failingURL = [errorCopy failingURL];
+  if (!failingURL)
   {
-    v11 = v9;
+    failingURL = lCopy;
     v12 = WBS_LOG_CHANNEL_PREFIXPageLoading();
     if (!os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      if (v11)
+      if (failingURL)
       {
         goto LABEL_4;
       }
 
 LABEL_18:
-      v10[2](v10, 0);
+      handlerCopy[2](handlerCopy, 0);
       goto LABEL_11;
     }
 
-    [_SFPageLoadErrorController _fetchSpecializedMessageForError:v12 URL:v8 completionHandler:?];
-    if (!v11)
+    [_SFPageLoadErrorController _fetchSpecializedMessageForError:v12 URL:errorCopy completionHandler:?];
+    if (!failingURL)
     {
       goto LABEL_18;
     }
   }
 
 LABEL_4:
-  if (![v8 safari_isPrivacyProxyError])
+  if (![errorCopy safari_isPrivacyProxyError])
   {
-    if ([v8 safari_isLocalNetworkContentFilteringError])
+    if ([errorCopy safari_isLocalNetworkContentFilteringError])
     {
-      v14 = [v11 host];
-      [v8 fetchLocalNetworkContentFilteringErrorMessageForFailingURLString:v14 withCompletionHandler:v10];
+      host = [failingURL host];
+      [errorCopy fetchLocalNetworkContentFilteringErrorMessageForFailingURLString:host withCompletionHandler:handlerCopy];
       goto LABEL_9;
     }
 
-    if ([v8 _web_errorIsInDomain:*MEMORY[0x1E696A978]])
+    if ([errorCopy _web_errorIsInDomain:*MEMORY[0x1E696A978]])
     {
-      v13 = [(_SFPageLoadErrorController *)self _errorMessageForNSURLErrorDomain:v8 url:v11];
+      v13 = [(_SFPageLoadErrorController *)self _errorMessageForNSURLErrorDomain:errorCopy url:failingURL];
       goto LABEL_6;
     }
 
-    if (![v8 _web_errorIsInDomain:*MEMORY[0x1E696A798]] || objc_msgSend(v8, "code") != 54)
+    if (![errorCopy _web_errorIsInDomain:*MEMORY[0x1E696A798]] || objc_msgSend(errorCopy, "code") != 54)
     {
-      v10[2](v10, 0);
+      handlerCopy[2](handlerCopy, 0);
       goto LABEL_10;
     }
   }
 
   v13 = _WBSLocalizedString();
 LABEL_6:
-  v14 = v13;
-  v10[2](v10, v13);
+  host = v13;
+  handlerCopy[2](handlerCopy, v13);
 LABEL_9:
 
 LABEL_10:
 LABEL_11:
 }
 
-- (id)_errorMessageForNSURLErrorDomain:(id)a3 url:(id)a4
+- (id)_errorMessageForNSURLErrorDomain:(id)domain url:(id)url
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 userInfo];
-  v8 = [v7 safari_URLForKey:*MEMORY[0x1E696A980]];
-  v9 = [v8 absoluteString];
-  v10 = [v9 stringByRemovingPercentEncoding];
+  domainCopy = domain;
+  urlCopy = url;
+  userInfo = [domainCopy userInfo];
+  v8 = [userInfo safari_URLForKey:*MEMORY[0x1E696A980]];
+  absoluteString = [v8 absoluteString];
+  stringByRemovingPercentEncoding = [absoluteString stringByRemovingPercentEncoding];
 
-  v11 = [v5 code];
+  code = [domainCopy code];
   v12 = 0;
-  if (v11 > -1103)
+  if (code > -1103)
   {
-    switch(v11)
+    switch(code)
     {
       case -1018:
       case -1014:
@@ -243,77 +243,77 @@ LABEL_11:
       case -1002:
         v17 = MEMORY[0x1E696AEC0];
         v16 = _WBSLocalizedString();
-        v18 = [v6 safari_userVisibleScheme];
+        safari_userVisibleScheme = [urlCopy safari_userVisibleScheme];
         goto LABEL_19;
       default:
-        if (v11 == -1102)
+        if (code == -1102)
         {
           v20 = MEMORY[0x1E696AEC0];
           v16 = _WBSLocalizedString();
-          v19 = [MEMORY[0x1E696AC08] defaultManager];
-          v21 = [v6 path];
-          v22 = [v19 displayNameAtPath:v21];
+          defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+          path = [urlCopy path];
+          v22 = [defaultManager displayNameAtPath:path];
           v12 = [v20 stringWithFormat:v16, v22];
 
           goto LABEL_21;
         }
 
-        if (v11 != -1100)
+        if (code != -1100)
         {
           goto LABEL_24;
         }
 
         v17 = MEMORY[0x1E696AEC0];
         v16 = _WBSLocalizedString();
-        v18 = [v6 path];
+        safari_userVisibleScheme = [urlCopy path];
         break;
     }
 
     goto LABEL_19;
   }
 
-  if (v11 > -1201)
+  if (code > -1201)
   {
-    if (v11 == -1200)
+    if (code == -1200)
     {
-      if (isDiffieHellmanError(v5))
+      if (isDiffieHellmanError(domainCopy))
       {
         v17 = MEMORY[0x1E696AEC0];
         v16 = _WBSLocalizedString();
-        v18 = [v6 host];
+        safari_userVisibleScheme = [urlCopy host];
 LABEL_19:
-        v19 = v18;
-        v12 = [v17 stringWithFormat:v16, v18];
+        defaultManager = safari_userVisibleScheme;
+        v12 = [v17 stringWithFormat:v16, safari_userVisibleScheme];
 LABEL_21:
 
         goto LABEL_22;
       }
     }
 
-    else if (v11 != -1103)
+    else if (code != -1103)
     {
       goto LABEL_24;
     }
   }
 
-  else if (v11 == -2000)
+  else if (code == -2000)
   {
 LABEL_10:
-    v13 = [MEMORY[0x1E69C8860] currentDevice];
-    v14 = [v13 deviceClass];
+    currentDevice = [MEMORY[0x1E69C8860] currentDevice];
+    deviceClass = [currentDevice deviceClass];
 
-    if (v14 == 3 && [v10 length])
+    if (deviceClass == 3 && [stringByRemovingPercentEncoding length])
     {
       v15 = MEMORY[0x1E696AEC0];
       v16 = _WBSLocalizedString();
-      v12 = [v15 stringWithFormat:v16, v10];
+      v12 = [v15 stringWithFormat:v16, stringByRemovingPercentEncoding];
 LABEL_22:
 
       goto LABEL_24;
     }
   }
 
-  else if (v11 != -1205)
+  else if (code != -1205)
   {
     goto LABEL_24;
   }
@@ -325,26 +325,26 @@ LABEL_24:
   return v12;
 }
 
-- (id)_genericMessageForError:(id)a3
+- (id)_genericMessageForError:(id)error
 {
-  v3 = [a3 _web_localizedDescription];
-  if (!v3)
+  _web_localizedDescription = [error _web_localizedDescription];
+  if (!_web_localizedDescription)
   {
-    v3 = _WBSLocalizedString();
+    _web_localizedDescription = _WBSLocalizedString();
   }
 
   v4 = MEMORY[0x1E696AEC0];
   v5 = _WBSLocalizedString();
-  v6 = [v4 stringWithFormat:v5, v3];
+  v6 = [v4 stringWithFormat:v5, _web_localizedDescription];
 
   return v6;
 }
 
-- (void)addDialog:(id)a3
+- (void)addDialog:(id)dialog
 {
-  v4 = a3;
+  dialogCopy = dialog;
   WeakRetained = objc_loadWeakRetained(&self->_dialogPresenter);
-  [WeakRetained presentDialog:v4 sender:self];
+  [WeakRetained presentDialog:dialogCopy sender:self];
 
   v5 = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
@@ -353,58 +353,58 @@ LABEL_24:
   }
 }
 
-- (void)addAlert:(id)a3
+- (void)addAlert:(id)alert
 {
-  v4 = a3;
+  alertCopy = alert;
   v5 = MEMORY[0x1E69B1B00];
   v8 = MEMORY[0x1E69E9820];
   v9 = 3221225472;
   v10 = __39___SFPageLoadErrorController_addAlert___block_invoke;
   v11 = &unk_1E848FA28;
-  v12 = v4;
-  v13 = self;
-  v6 = v4;
+  v12 = alertCopy;
+  selfCopy = self;
+  v6 = alertCopy;
   v7 = [v5 dialogWithWebUIAlert:v6 completionHandler:&v8];
   [(_SFPageLoadErrorController *)self addDialog:v7, v8, v9, v10, v11];
 }
 
-- (void)_continueAfterCertificateAlertWithURL:(id)a3 trust:(__SecTrust *)a4 recoveryAttempter:(id)a5
+- (void)_continueAfterCertificateAlertWithURL:(id)l trust:(__SecTrust *)trust recoveryAttempter:(id)attempter
 {
-  v11 = a5;
-  v6 = [MEMORY[0x1E695DF70] array];
-  if (a4)
+  attempterCopy = attempter;
+  array = [MEMORY[0x1E695DF70] array];
+  if (trust)
   {
-    CertificateCount = SecTrustGetCertificateCount(a4);
+    CertificateCount = SecTrustGetCertificateCount(trust);
     if (CertificateCount >= 1)
     {
       v8 = CertificateCount;
       for (i = 0; i != v8; ++i)
       {
-        CertificateAtIndex = SecTrustGetCertificateAtIndex(a4, i);
+        CertificateAtIndex = SecTrustGetCertificateAtIndex(trust, i);
         if (CertificateAtIndex)
         {
-          [v6 addObject:CertificateAtIndex];
+          [array addObject:CertificateAtIndex];
         }
       }
     }
   }
 
-  if (v11)
+  if (attempterCopy)
   {
-    v11[2]();
+    attempterCopy[2]();
   }
 }
 
-- (void)_continueWithoutCredentialsUsingAlertContext:(id)a3
+- (void)_continueWithoutCredentialsUsingAlertContext:(id)context
 {
-  v3 = a3;
-  if (v3)
+  contextCopy = context;
+  if (contextCopy)
   {
-    v8 = v3;
-    v4 = [v3 objectForKey:@"reason"];
+    v8 = contextCopy;
+    v4 = [contextCopy objectForKey:@"reason"];
     v5 = [v4 isEqualToString:@"reasonAuthenticationChallenge"];
 
-    v3 = v8;
+    contextCopy = v8;
     if (v5)
     {
       v6 = [v8 objectForKey:@"completionHandler"];
@@ -414,57 +414,57 @@ LABEL_24:
         (*(v6 + 16))(v6, 3, 0);
       }
 
-      v3 = v8;
+      contextCopy = v8;
     }
   }
 }
 
-- (void)performAction:(int)a3 forAlert:(id)a4
+- (void)performAction:(int)action forAlert:(id)alert
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [v6 type];
-  if (v7 == 4)
+  alertCopy = alert;
+  type = [alertCopy type];
+  if (type == 4)
   {
-    if (a3 != 4)
+    if (action != 4)
     {
-      if (a3 != 5)
+      if (action != 5)
       {
         goto LABEL_19;
       }
 
-      v10 = [v6 context];
-      v11 = [v6 selectedIdentity];
-      if (v11)
+      context = [alertCopy context];
+      selectedIdentity = [alertCopy selectedIdentity];
+      if (selectedIdentity)
       {
         v12 = WBS_LOG_CHANNEL_PREFIXClientAuthentication();
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
         {
           v13 = v12;
-          v14 = [v6 identities];
+          identities = [alertCopy identities];
           v26 = 134217984;
-          v27 = [v14 count];
+          v27 = [identities count];
           _os_log_impl(&dword_1D4644000, v13, OS_LOG_TYPE_DEFAULT, "User has selected an identity out of %lu", &v26, 0xCu);
         }
 
-        v15 = [v10 objectForKey:@"authenticationChallenge"];
-        v16 = [v15 protectionSpace];
-        v17 = [v16 safari_identityPreferenceDomain];
-        [(_SFPageLoadErrorController *)self _cacheSecIdentityIfNeeded:v11 forIdentityDomain:v17];
+        v15 = [context objectForKey:@"authenticationChallenge"];
+        protectionSpace = [v15 protectionSpace];
+        safari_identityPreferenceDomain = [protectionSpace safari_identityPreferenceDomain];
+        [(_SFPageLoadErrorController *)self _cacheSecIdentityIfNeeded:selectedIdentity forIdentityDomain:safari_identityPreferenceDomain];
 
-        proceedWithClientCertificateIdentity(v11, v10);
-        v18 = [v6 identities];
-        v19 = [v18 count];
+        proceedWithClientCertificateIdentity(selectedIdentity, context);
+        identities2 = [alertCopy identities];
+        v19 = [identities2 count];
 
         if (v19 == 1)
         {
           WeakRetained = objc_loadWeakRetained(&self->_delegate);
           v21 = [WeakRetained pageLoadErrorControllerGetSecIdentityPreferencesController:self];
 
-          v22 = [v10 objectForKeyedSubscript:@"authenticationChallenge"];
-          v23 = [v22 protectionSpace];
-          v24 = [v23 _sf_highLevelDomainAndPort];
-          [v21 saveShouldUseOnlyAvailableIdentityWithoutPrompting:1 forDomainAndPort:v24];
+          v22 = [context objectForKeyedSubscript:@"authenticationChallenge"];
+          protectionSpace2 = [v22 protectionSpace];
+          _sf_highLevelDomainAndPort = [protectionSpace2 _sf_highLevelDomainAndPort];
+          [v21 saveShouldUseOnlyAvailableIdentityWithoutPrompting:1 forDomainAndPort:_sf_highLevelDomainAndPort];
         }
       }
 
@@ -480,25 +480,25 @@ LABEL_18:
     }
 
 LABEL_17:
-    v10 = [v6 context];
-    [(_SFPageLoadErrorController *)self _continueWithoutCredentialsUsingAlertContext:v10];
+    context = [alertCopy context];
+    [(_SFPageLoadErrorController *)self _continueWithoutCredentialsUsingAlertContext:context];
     goto LABEL_18;
   }
 
-  if (v7 != 3)
+  if (type != 3)
   {
     goto LABEL_19;
   }
 
-  if (a3 == 4)
+  if (action == 4)
   {
     goto LABEL_17;
   }
 
-  if (a3 == 5)
+  if (action == 5)
   {
-    v8 = [v6 context];
-    v9 = newAlertToListPossibleClientSideCertificatesWithContext(v8);
+    context2 = [alertCopy context];
+    v9 = newAlertToListPossibleClientSideCertificatesWithContext(context2);
 
     [(_SFPageLoadErrorController *)self addAlert:v9];
   }
@@ -506,33 +506,33 @@ LABEL_17:
 LABEL_19:
 }
 
-- (void)addFormAlertWithTitle:(id)a3 decisionHandler:(id)a4
+- (void)addFormAlertWithTitle:(id)title decisionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v7 = MEMORY[0x1E69B1B00];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __68___SFPageLoadErrorController_addFormAlertWithTitle_decisionHandler___block_invoke;
   v10[3] = &unk_1E848FA50;
-  v11 = v6;
-  v8 = v6;
-  v9 = [v7 formSubmissionDialogWithMessage:a3 completionHandler:v10];
+  v11 = handlerCopy;
+  v8 = handlerCopy;
+  v9 = [v7 formSubmissionDialogWithMessage:title completionHandler:v10];
   [(_SFPageLoadErrorController *)self addDialog:v9];
 }
 
-- (void)addAlertWithTitle:(id)a3 bodyText:(id)a4
+- (void)addAlertWithTitle:(id)title bodyText:(id)text
 {
-  v5 = [MEMORY[0x1E69B1B00] genericErrorDialogWithTitle:a3 message:a4 applicationModal:1];
+  v5 = [MEMORY[0x1E69B1B00] genericErrorDialogWithTitle:title message:text applicationModal:1];
   [(_SFPageLoadErrorController *)self addDialog:v5];
 }
 
-- (void)showErrorPageWithTitle:(id)a3 bodyText:(id)a4 learnMoreLink:(id)a5 forError:(id)a6
+- (void)showErrorPageWithTitle:(id)title bodyText:(id)text learnMoreLink:(id)link forError:(id)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [a6 failingURL];
-  if (v13)
+  titleCopy = title;
+  textCopy = text;
+  linkCopy = link;
+  failingURL = [error failingURL];
+  if (failingURL)
   {
     v14 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
     v15 = [v14 pathForResource:@"StandardError" ofType:@"html"];
@@ -542,10 +542,10 @@ LABEL_19:
       v16 = [MEMORY[0x1E696AEC0] stringWithContentsOfFile:v15 encoding:4 error:0];
       if (v16)
       {
-        v17 = [v11 safari_stringByReplacingMarkupCharactersWithHTMLEntities];
-        v18 = [v17 safari_stringByReplacingLastOccurrenceOfWhitespaceWithANonBreakingSpace];
+        safari_stringByReplacingMarkupCharactersWithHTMLEntities = [textCopy safari_stringByReplacingMarkupCharactersWithHTMLEntities];
+        safari_stringByReplacingLastOccurrenceOfWhitespaceWithANonBreakingSpace = [safari_stringByReplacingMarkupCharactersWithHTMLEntities safari_stringByReplacingLastOccurrenceOfWhitespaceWithANonBreakingSpace];
 
-        v19 = [v18 stringByReplacingOccurrencesOfString:@"\\n" withString:@"<br>"];
+        v19 = [safari_stringByReplacingLastOccurrenceOfWhitespaceWithANonBreakingSpace stringByReplacingOccurrencesOfString:@"\\n" withString:@"<br>"];
 
         v20 = [v19 stringByReplacingOccurrencesOfString:@"\n" withString:@"<br>"];
 
@@ -553,38 +553,38 @@ LABEL_19:
         if (v20)
         {
           v41 = v16;
-          if (v12)
+          if (linkCopy)
           {
             v21 = MEMORY[0x1E696AEC0];
             v22 = _WBSLocalizedString();
-            v23 = [v21 stringWithFormat:@" <a href=%@>%@</a>", v12, v22];
+            v23 = [v21 stringWithFormat:@" <a href=%@>%@</a>", linkCopy, v22];
             v24 = [v43 stringByAppendingString:v23];
 
             v43 = v24;
           }
 
-          v25 = [MEMORY[0x1E695DF58] preferredLanguages];
-          v26 = [v25 firstObject];
+          preferredLanguages = [MEMORY[0x1E695DF58] preferredLanguages];
+          firstObject = [preferredLanguages firstObject];
 
           v27 = &stru_1F4FE9E38;
-          v42 = v26;
-          if (v26 && [MEMORY[0x1E695DF58] characterDirectionForLanguage:v26] == 2)
+          v42 = firstObject;
+          if (firstObject && [MEMORY[0x1E695DF58] characterDirectionForLanguage:firstObject] == 2)
           {
             v27 = @"body { direction: rtl; }\n";
           }
 
           v28 = MEMORY[0x1E69C8860];
           v40 = v27;
-          v29 = [v28 currentDevice];
-          v30 = [v29 deviceClass];
+          currentDevice = [v28 currentDevice];
+          deviceClass = [currentDevice deviceClass];
 
           v31 = @"phone";
-          if (v30 == 6)
+          if (deviceClass == 6)
           {
             v31 = @"watch";
           }
 
-          if (v30 == 3)
+          if (deviceClass == 3)
           {
             v31 = @"pad";
           }
@@ -601,10 +601,10 @@ LABEL_19:
           }
 
           v36 = MEMORY[0x1E696AEC0];
-          v37 = [v10 safari_stringByReplacingMarkupCharactersWithHTMLEntities];
+          safari_stringByReplacingMarkupCharactersWithHTMLEntities2 = [titleCopy safari_stringByReplacingMarkupCharactersWithHTMLEntities];
           v38 = v36;
           v16 = v41;
-          v39 = [v38 stringWithFormat:v41, v42, v40, v37, v32, v43];
+          v39 = [v38 stringWithFormat:v41, v42, v40, safari_stringByReplacingMarkupCharactersWithHTMLEntities2, v32, v43];
 
           if (v39)
           {
@@ -614,7 +614,7 @@ LABEL_19:
             block[3] = &unk_1E848F6B0;
             block[4] = self;
             v45 = v39;
-            v46 = v13;
+            v46 = failingURL;
             dispatch_async(MEMORY[0x1E69E96A0], block);
           }
         }
@@ -629,9 +629,9 @@ LABEL_19:
   if (!certificateWarningPagePresenterProxy)
   {
     WeakRetained = objc_loadWeakRetained(&self->_webView);
-    v5 = [WeakRetained _remoteObjectRegistry];
+    _remoteObjectRegistry = [WeakRetained _remoteObjectRegistry];
     v6 = [MEMORY[0x1E69853F8] remoteObjectInterfaceWithProtocol:&unk_1F50A2AA0];
-    v7 = [v5 remoteObjectProxyWithInterface:v6];
+    v7 = [_remoteObjectRegistry remoteObjectProxyWithInterface:v6];
     v8 = self->_certificateWarningPagePresenterProxy;
     self->_certificateWarningPagePresenterProxy = v7;
 
@@ -641,16 +641,16 @@ LABEL_19:
   return certificateWarningPagePresenterProxy;
 }
 
-- (void)_loadCertificateWarningPageForContext:(id)a3
+- (void)_loadCertificateWarningPageForContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   if (!self->_certificateWarningPageHandlerInterfaceInvalidated)
   {
-    v5 = [(_SFPageLoadErrorController *)self _certificateWarningPagePresenterProxy];
-    [v5 prepareCertificateWarningPage:v4];
+    _certificateWarningPagePresenterProxy = [(_SFPageLoadErrorController *)self _certificateWarningPagePresenterProxy];
+    [_certificateWarningPagePresenterProxy prepareCertificateWarningPage:contextCopy];
 
-    v6 = [MEMORY[0x1E696AAE8] safari_safariSharedBundle];
-    v7 = [v6 URLForResource:@"CertificateWarningFall2023" withExtension:@"html"];
+    safari_safariSharedBundle = [MEMORY[0x1E696AAE8] safari_safariSharedBundle];
+    v7 = [safari_safariSharedBundle URLForResource:@"CertificateWarningFall2023" withExtension:@"html"];
 
     v8 = [MEMORY[0x1E696AEC0] stringWithContentsOfURL:v7 encoding:4 error:0];
     v11[0] = MEMORY[0x1E69E9820];
@@ -660,55 +660,55 @@ LABEL_19:
     v11[4] = self;
     v12 = v8;
     v13 = v7;
-    v14 = v4;
+    v14 = contextCopy;
     v9 = v7;
     v10 = v8;
     dispatch_async(MEMORY[0x1E69E96A0], v11);
   }
 }
 
-- (void)_handleCertificateError:(id)a3 forURL:(id)a4 isMainFrame:(BOOL)a5 recoveryAttempter:(id)a6 completionHandler:(id)a7
+- (void)_handleCertificateError:(id)error forURL:(id)l isMainFrame:(BOOL)frame recoveryAttempter:(id)attempter completionHandler:(id)handler
 {
-  v9 = a5;
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
+  frameCopy = frame;
+  errorCopy = error;
+  lCopy = l;
+  attempterCopy = attempter;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v17 = [WeakRetained pageLoadErrorControllerShouldHandleCertificateError:self];
 
   if (v17)
   {
-    if (v9 && [v12 safari_isPrivacyProxyFailClosedError])
+    if (frameCopy && [errorCopy safari_isPrivacyProxyFailClosedError])
     {
-      v18 = [MEMORY[0x1E69C9808] sharedManager];
-      v19 = [v18 isPrivacyProxySetToTrackersAndWebsites];
+      mEMORY[0x1E69C9808] = [MEMORY[0x1E69C9808] sharedManager];
+      isPrivacyProxySetToTrackersAndWebsites = [mEMORY[0x1E69C9808] isPrivacyProxySetToTrackersAndWebsites];
 
       v20 = objc_alloc(MEMORY[0x1E69C8EE8]);
-      v21 = [(_SFPageLoadErrorController *)self _firstItemWithUniqueURLInBackListFromURL:v13];
-      v22 = [v20 initPrivateRelayFailClosedNavigationWarningWithFailingURL:v13 isPrivateRelaySetToTrackersAndWebsites:v19 canGoBack:v21 != 0];
+      v21 = [(_SFPageLoadErrorController *)self _firstItemWithUniqueURLInBackListFromURL:lCopy];
+      v22 = [v20 initPrivateRelayFailClosedNavigationWarningWithFailingURL:lCopy isPrivateRelaySetToTrackersAndWebsites:isPrivacyProxySetToTrackersAndWebsites canGoBack:v21 != 0];
       [(_SFPageLoadErrorController *)self _loadCertificateWarningPageForContext:v22];
 
-      if (v15)
+      if (handlerCopy)
       {
-        v15[2](v15, 1);
+        handlerCopy[2](handlerCopy, 1);
       }
 
       goto LABEL_36;
     }
 
-    if ([v12 _web_errorIsInDomain:*MEMORY[0x1E696A978]])
+    if ([errorCopy _web_errorIsInDomain:*MEMORY[0x1E696A978]])
     {
-      v23 = [v12 failingURL];
-      v24 = [v23 host];
+      failingURL = [errorCopy failingURL];
+      host = [failingURL host];
 
-      v25 = [v12 code];
-      v26 = v25;
-      if ((v25 & 0xFFFFFFFFFFFFFFFCLL) != 0xFFFFFFFFFFFFFB4CLL && (v25 & 0xFFFFFFFFFFFFFFFELL) != 0xFFFFFFFFFFFFFB4ALL)
+      code = [errorCopy code];
+      v26 = code;
+      if ((code & 0xFFFFFFFFFFFFFFFCLL) != 0xFFFFFFFFFFFFFB4CLL && (code & 0xFFFFFFFFFFFFFFFELL) != 0xFFFFFFFFFFFFFB4ALL)
       {
-        if (v15)
+        if (handlerCopy)
         {
-          v15[2](v15, 0);
+          handlerCopy[2](handlerCopy, 0);
         }
 
         goto LABEL_35;
@@ -717,7 +717,7 @@ LABEL_19:
       v27 = WBS_LOG_CHANNEL_PREFIXCertificates();
       if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
       {
-        [_SFPageLoadErrorController _handleCertificateError:v27 forURL:v12 isMainFrame:? recoveryAttempter:? completionHandler:?];
+        [_SFPageLoadErrorController _handleCertificateError:v27 forURL:errorCopy isMainFrame:? recoveryAttempter:? completionHandler:?];
       }
 
       if ((v26 & 0xFFFFFFFFFFFFFB4ELL) == 0xFFFFFFFFFFFFFB4ALL)
@@ -730,23 +730,23 @@ LABEL_19:
           [(_SFPageLoadErrorController *)self addAlert:v29];
         }
 
-        if (v15)
+        if (handlerCopy)
         {
-          v15[2](v15, 1);
+          handlerCopy[2](handlerCopy, 1);
         }
 
         goto LABEL_35;
       }
 
-      hostname = v24;
-      v45 = [v12 userInfo];
-      v30 = [v45 objectForKeyedSubscript:*MEMORY[0x1E696AA08]];
-      v31 = [v12 userInfo];
-      v32 = [v31 objectForKeyedSubscript:@"NSErrorPeerCertificateChainKey"];
+      hostname = host;
+      userInfo = [errorCopy userInfo];
+      v30 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E696AA08]];
+      userInfo2 = [errorCopy userInfo];
+      v32 = [userInfo2 objectForKeyedSubscript:@"NSErrorPeerCertificateChainKey"];
 
       v44 = v30;
-      v33 = [v30 userInfo];
-      v34 = [v33 objectForKeyedSubscript:*MEMORY[0x1E695AE78]];
+      userInfo3 = [v30 userInfo];
+      v34 = [userInfo3 objectForKeyedSubscript:*MEMORY[0x1E695AE78]];
 
       trust = v34;
       certificates = v32;
@@ -761,26 +761,26 @@ LABEL_19:
 
       if (!v34)
       {
-        if (v15)
+        if (handlerCopy)
         {
-          v15[2](v15, 0);
+          handlerCopy[2](handlerCopy, 0);
         }
 
         goto LABEL_34;
       }
 
       v36 = objc_loadWeakRetained(&self->_delegate);
-      v37 = [MEMORY[0x1E69C8EE0] sharedManager];
+      mEMORY[0x1E69C8EE0] = [MEMORY[0x1E69C8EE0] sharedManager];
       v43 = v36;
-      v38 = [v37 didInvalidCertificateExceptionsApplySuccessfullyForProtectionSpace:self->_protectionSpaceForInvalidCertificateBypass inPrivateBrowsing:{objc_msgSend(v36, "pageLoadErrorControllerShouldPermanentlyAcceptCertificate:", self)}];
+      v38 = [mEMORY[0x1E69C8EE0] didInvalidCertificateExceptionsApplySuccessfullyForProtectionSpace:self->_protectionSpaceForInvalidCertificateBypass inPrivateBrowsing:{objc_msgSend(v36, "pageLoadErrorControllerShouldPermanentlyAcceptCertificate:", self)}];
 
       self->_certificateTrust = CFRetain(trust);
-      v39 = _Block_copy(v14);
+      v39 = _Block_copy(attempterCopy);
       certificateRecoveryAttempter = self->_certificateRecoveryAttempter;
       self->_certificateRecoveryAttempter = v39;
 
-      objc_storeStrong(&self->_certificateFailingURL, a4);
-      if (v9)
+      objc_storeStrong(&self->_certificateFailingURL, l);
+      if (frameCopy)
       {
         if (!v38)
         {
@@ -791,47 +791,47 @@ LABEL_19:
           v48[2] = __109___SFPageLoadErrorController__handleCertificateError_forURL_isMainFrame_recoveryAttempter_completionHandler___block_invoke;
           v48[3] = &unk_1E848FAA0;
           v48[4] = self;
-          v52 = v15;
-          v49 = v12;
+          v52 = handlerCopy;
+          v49 = errorCopy;
           v32 = certificates;
           v50 = certificates;
-          v51 = v13;
+          v51 = lCopy;
           [v41 safari_dateFromNTPServerWithTimeout:v48 completionHandler:v42];
 
 LABEL_33:
 LABEL_34:
 
-          v24 = hostname;
+          host = hostname;
 LABEL_35:
 
           goto LABEL_36;
         }
 
-        [(_SFPageLoadErrorController *)self _continueAfterCertificateAlertWithURL:v13 trust:self->_certificateTrust recoveryAttempter:v14];
+        [(_SFPageLoadErrorController *)self _continueAfterCertificateAlertWithURL:lCopy trust:self->_certificateTrust recoveryAttempter:attempterCopy];
       }
 
       v32 = certificates;
-      if (v15)
+      if (handlerCopy)
       {
-        v15[2](v15, 1);
+        handlerCopy[2](handlerCopy, 1);
       }
 
       goto LABEL_33;
     }
   }
 
-  if (v15)
+  if (handlerCopy)
   {
-    v15[2](v15, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 
 LABEL_36:
 }
 
-- (void)_reachabilityChanged:(id)a3
+- (void)_reachabilityChanged:(id)changed
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 safari_BOOLForKey:*MEMORY[0x1E698B610]];
+  userInfo = [changed userInfo];
+  v5 = [userInfo safari_BOOLForKey:*MEMORY[0x1E698B610]];
 
   if (v5)
   {
@@ -851,49 +851,49 @@ LABEL_36:
   }
 }
 
-- (void)_setFailedRequest:(id)a3
+- (void)_setFailedRequest:(id)request
 {
-  v5 = a3;
+  requestCopy = request;
   failedRequest = self->_failedRequest;
-  v14 = v5;
-  if (failedRequest != v5)
+  v14 = requestCopy;
+  if (failedRequest != requestCopy)
   {
     if (failedRequest)
     {
       v7 = [(NSURLRequest *)failedRequest URL];
-      v8 = [v7 host];
+      host = [v7 host];
 
-      if (v8)
+      if (host)
       {
-        v9 = [MEMORY[0x1E698B6A0] sharedNetworkObserver];
-        [v9 removeObserver:self forHostname:v8];
+        mEMORY[0x1E698B6A0] = [MEMORY[0x1E698B6A0] sharedNetworkObserver];
+        [mEMORY[0x1E698B6A0] removeObserver:self forHostname:host];
       }
     }
 
-    objc_storeStrong(&self->_failedRequest, a3);
+    objc_storeStrong(&self->_failedRequest, request);
     self->_reloadAfterResume = 0;
     v10 = self->_failedRequest;
     if (v10)
     {
       v11 = [(NSURLRequest *)v10 URL];
-      v12 = [v11 host];
+      host2 = [v11 host];
 
-      if (v12)
+      if (host2)
       {
-        v13 = [MEMORY[0x1E698B6A0] sharedNetworkObserver];
-        [v13 addObserver:self selector:sel__reachabilityChanged_ forHostname:v12];
+        mEMORY[0x1E698B6A0]2 = [MEMORY[0x1E698B6A0] sharedNetworkObserver];
+        [mEMORY[0x1E698B6A0]2 addObserver:self selector:sel__reachabilityChanged_ forHostname:host2];
       }
     }
   }
 }
 
-- (id)_titleForError:(id)a3
+- (id)_titleForError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 code];
-  if (v4 != -1205 && v4 != -1102 && v4 != -1100)
+  errorCopy = error;
+  code = [errorCopy code];
+  if (code != -1205 && code != -1102 && code != -1100)
   {
-    isDiffieHellmanError(v3);
+    isDiffieHellmanError(errorCopy);
   }
 
   v5 = _WBSLocalizedString();
@@ -901,23 +901,23 @@ LABEL_36:
   return v5;
 }
 
-- (void)_handleFrameLoadError:(id)a3 forURL:(id)a4 recoveryAttempter:(id)a5
+- (void)_handleFrameLoadError:(id)error forURL:(id)l recoveryAttempter:(id)attempter
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 code];
-  if ((![v8 _web_errorIsInDomain:*MEMORY[0x1E69E3000]] || v11 != 102) && (!objc_msgSend(v8, "_web_errorIsInDomain:", *MEMORY[0x1E696A978]) || v11 != -1012 && v11 != -999))
+  errorCopy = error;
+  lCopy = l;
+  attempterCopy = attempter;
+  code = [errorCopy code];
+  if ((![errorCopy _web_errorIsInDomain:*MEMORY[0x1E69E3000]] || code != 102) && (!objc_msgSend(errorCopy, "_web_errorIsInDomain:", *MEMORY[0x1E696A978]) || code != -1012 && code != -999))
   {
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __77___SFPageLoadErrorController__handleFrameLoadError_forURL_recoveryAttempter___block_invoke;
     v12[3] = &unk_1E848FB18;
     v12[4] = self;
-    v13 = v8;
-    v15 = v11;
-    v14 = v9;
-    [(_SFPageLoadErrorController *)self _handleCertificateError:v13 forURL:v14 isMainFrame:1 recoveryAttempter:v10 completionHandler:v12];
+    v13 = errorCopy;
+    v15 = code;
+    v14 = lCopy;
+    [(_SFPageLoadErrorController *)self _handleCertificateError:v13 forURL:v14 isMainFrame:1 recoveryAttempter:attempterCopy completionHandler:v12];
   }
 }
 
@@ -944,77 +944,77 @@ LABEL_36:
   [WeakRetained pageLoadErrorController:self loadFailedRequestAfterError:self->_failedRequest];
 }
 
-- (void)handleFrameLoadError:(id)a3
+- (void)handleFrameLoadError:(id)error
 {
-  v4 = a3;
-  v5 = [v4 failingURL];
+  errorCopy = error;
+  failingURL = [errorCopy failingURL];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __51___SFPageLoadErrorController_handleFrameLoadError___block_invoke;
   v7[3] = &unk_1E848FB40;
-  v8 = v4;
-  v6 = v4;
-  [(_SFPageLoadErrorController *)self _handleFrameLoadError:v6 forURL:v5 recoveryAttempter:v7];
+  v8 = errorCopy;
+  v6 = errorCopy;
+  [(_SFPageLoadErrorController *)self _handleFrameLoadError:v6 forURL:failingURL recoveryAttempter:v7];
 }
 
-- (void)handleSubframeCertificateError:(id)a3
+- (void)handleSubframeCertificateError:(id)error
 {
-  v4 = a3;
-  v5 = [v4 failingURL];
+  errorCopy = error;
+  failingURL = [errorCopy failingURL];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __61___SFPageLoadErrorController_handleSubframeCertificateError___block_invoke;
   v7[3] = &unk_1E848FB40;
-  v8 = v4;
-  v6 = v4;
-  [(_SFPageLoadErrorController *)self _handleCertificateError:v6 forURL:v5 isMainFrame:0 recoveryAttempter:v7 completionHandler:0];
+  v8 = errorCopy;
+  v6 = errorCopy;
+  [(_SFPageLoadErrorController *)self _handleCertificateError:v6 forURL:failingURL isMainFrame:0 recoveryAttempter:v7 completionHandler:0];
 }
 
-- (void)handleLegacyTLSWithFailingURL:(id)a3 clickThroughURL:(id)a4 authenticationChallenge:(id)a5
+- (void)handleLegacyTLSWithFailingURL:(id)l clickThroughURL:(id)rL authenticationChallenge:(id)challenge
 {
-  v7 = a3;
-  v8 = a4;
+  lCopy = l;
+  rLCopy = rL;
   objc_initWeak(&location, self);
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __100___SFPageLoadErrorController_handleLegacyTLSWithFailingURL_clickThroughURL_authenticationChallenge___block_invoke;
   v11[3] = &unk_1E848FB68;
   objc_copyWeak(&v14, &location);
-  v12 = v7;
-  v13 = v8;
-  v9 = v8;
-  v10 = v7;
+  v12 = lCopy;
+  v13 = rLCopy;
+  v9 = rLCopy;
+  v10 = lCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v11);
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
 }
 
-- (void)handleClientCertificateAuthenticationChallenge:(id)a3 completionHandler:(id)a4
+- (void)handleClientCertificateAuthenticationChallenge:(id)challenge completionHandler:(id)handler
 {
   v31 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  challengeCopy = challenge;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v9 = [WeakRetained pageLoadErrorControllerGetSecIdentityPreferencesController:self];
 
-  v10 = [v6 protectionSpace];
-  v11 = [v10 _sf_highLevelDomainAndPort];
+  protectionSpace = [challengeCopy protectionSpace];
+  _sf_highLevelDomainAndPort = [protectionSpace _sf_highLevelDomainAndPort];
 
-  v12 = [v9 shouldUseOnlyAvailableIdentityWithoutPromptingForDomainAndPort:v11];
+  v12 = [v9 shouldUseOnlyAvailableIdentityWithoutPromptingForDomainAndPort:_sf_highLevelDomainAndPort];
   v13 = WBS_LOG_CHANNEL_PREFIXClientAuthentication();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138740227;
-    v28 = v11;
+    v28 = _sf_highLevelDomainAndPort;
     v29 = 1024;
     v30 = v12;
     _os_log_impl(&dword_1D4644000, v13, OS_LOG_TYPE_DEFAULT, "Received challenge for domain: %{sensitive}@, use only available identity without prompt: %d", buf, 0x12u);
   }
 
-  v26[0] = v6;
+  v26[0] = challengeCopy;
   v26[1] = @"reasonAuthenticationChallenge";
-  v14 = [v7 copy];
+  v14 = [handlerCopy copy];
 
   v26[2] = v14;
   v25[3] = @"useOnlyAvailableIdentityWithoutPrompting";
@@ -1023,9 +1023,9 @@ LABEL_36:
   v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v26 forKeys:v25 count:4];
 
   secIdentitiesCache = self->_secIdentitiesCache;
-  v18 = [v6 protectionSpace];
-  v19 = [v18 safari_identityPreferenceDomain];
-  v20 = [(WBSSecIdentitiesCache *)secIdentitiesCache secIdentityForDomain:v19];
+  protectionSpace2 = [challengeCopy protectionSpace];
+  safari_identityPreferenceDomain = [protectionSpace2 safari_identityPreferenceDomain];
+  v20 = [(WBSSecIdentitiesCache *)secIdentitiesCache secIdentityForDomain:safari_identityPreferenceDomain];
 
   v21 = WBS_LOG_CHANNEL_PREFIXClientAuthentication();
   v22 = os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT);
@@ -1076,31 +1076,31 @@ LABEL_36:
   [(_SFPageLoadErrorController *)self addDialog:v5];
 }
 
-- (void)addDownloadFailedAlertWithDescription:(id)a3
+- (void)addDownloadFailedAlertWithDescription:(id)description
 {
-  v4 = a3;
-  if (!v4)
+  descriptionCopy = description;
+  if (!descriptionCopy)
   {
-    v4 = _WBSLocalizedString();
+    descriptionCopy = _WBSLocalizedString();
   }
 
-  v8 = v4;
+  v8 = descriptionCopy;
   v5 = MEMORY[0x1E69B1B00];
   v6 = _WBSLocalizedString();
   v7 = [v5 genericErrorDialogWithTitle:v6 message:v8 applicationModal:0];
   [(_SFPageLoadErrorController *)self addDialog:v7];
 }
 
-- (void)_showRepeatedWebProcessCrashError:(id)a3 URLString:(id)a4
+- (void)_showRepeatedWebProcessCrashError:(id)error URLString:(id)string
 {
-  v6 = a4;
-  v7 = a3;
+  stringCopy = string;
+  errorCopy = error;
   v11 = _WBSLocalizedString();
   v8 = MEMORY[0x1E696AEC0];
   v9 = _WBSLocalizedString();
-  v10 = [v8 stringWithFormat:v9, v6];
+  stringCopy = [v8 stringWithFormat:v9, stringCopy];
 
-  [(_SFPageLoadErrorController *)self showErrorPageWithTitle:v11 bodyText:v10 forError:v7];
+  [(_SFPageLoadErrorController *)self showErrorPageWithTitle:v11 bodyText:stringCopy forError:errorCopy];
 }
 
 - (void)_resetCrashCountSoon
@@ -1110,7 +1110,7 @@ LABEL_36:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 134217984;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1D4644000, v3, OS_LOG_TYPE_DEFAULT, "%p: resetting WebContent crash count soon", &v6, 0xCu);
   }
 
@@ -1120,14 +1120,14 @@ LABEL_36:
   self->_crashCountResetTimer = v4;
 }
 
-- (BOOL)updateCrashesAndShowCrashError:(id)a3 URLString:(id)a4
+- (BOOL)updateCrashesAndShowCrashError:(id)error URLString:(id)string
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E69C75D0] currentProcess];
-  v9 = [v8 activeLimitations];
-  [v9 runTime];
+  errorCopy = error;
+  stringCopy = string;
+  currentProcess = [MEMORY[0x1E69C75D0] currentProcess];
+  activeLimitations = [currentProcess activeLimitations];
+  [activeLimitations runTime];
   v11 = v10;
   v12 = *MEMORY[0x1E69C7698];
 
@@ -1137,9 +1137,9 @@ LABEL_36:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       v18 = 134218243;
-      v19 = self;
+      selfCopy2 = self;
       v20 = 2117;
-      v21 = v7;
+      v21 = stringCopy;
       _os_log_impl(&dword_1D4644000, v13, OS_LOG_TYPE_DEFAULT, "%p: ignoring WebContent crash for %{sensitive}@ since app is about to suspend", &v18, 0x16u);
     }
 
@@ -1154,9 +1154,9 @@ LABEL_8:
   {
     crashesSinceLastSuccessfulLoad = self->_crashesSinceLastSuccessfulLoad;
     v18 = 134218499;
-    v19 = self;
+    selfCopy2 = self;
     v20 = 2117;
-    v21 = v7;
+    v21 = stringCopy;
     v22 = 2048;
     v23 = crashesSinceLastSuccessfulLoad;
     _os_log_error_impl(&dword_1D4644000, v14, OS_LOG_TYPE_ERROR, "%p: WebContent for %{sensitive}@ crashed, crash count: %zu", &v18, 0x20u);
@@ -1168,7 +1168,7 @@ LABEL_8:
   }
 
   self->_crashesSinceLastSuccessfulLoad = 0;
-  [(_SFPageLoadErrorController *)self _showRepeatedWebProcessCrashError:v6 URLString:v7];
+  [(_SFPageLoadErrorController *)self _showRepeatedWebProcessCrashError:errorCopy URLString:stringCopy];
   v15 = 1;
 LABEL_9:
 
@@ -1183,12 +1183,12 @@ LABEL_9:
   }
 }
 
-- (void)webViewDidCommitErrorPagePreview:(id)a3
+- (void)webViewDidCommitErrorPagePreview:(id)preview
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = a3;
+  previewCopy = preview;
   v5 = [v3 stringWithFormat:@"document.body.classList.remove('%@')", @"preview"];
-  [v4 evaluateJavaScript:v5 completionHandler:0];
+  [previewCopy evaluateJavaScript:v5 completionHandler:0];
 }
 
 - (void)goBackButtonClicked
@@ -1198,13 +1198,13 @@ LABEL_9:
 
   WeakRetained = objc_loadWeakRetained(&self->_webView);
   v4 = objc_loadWeakRetained(&self->_delegate);
-  v5 = [WeakRetained backForwardList];
-  v6 = [v5 currentItem];
-  v7 = [v6 URL];
+  backForwardList = [WeakRetained backForwardList];
+  currentItem = [backForwardList currentItem];
+  v7 = [currentItem URL];
 
-  v8 = [WeakRetained backForwardList];
-  v9 = [v8 backItem];
-  v10 = [v9 URL];
+  backForwardList2 = [WeakRetained backForwardList];
+  backItem = [backForwardList2 backItem];
+  v10 = [backItem URL];
 
   if ([v7 safari_isEqualToURL:v10])
   {
@@ -1222,7 +1222,7 @@ LABEL_9:
 
   else if ([WeakRetained canGoBack])
   {
-    v13 = [WeakRetained goBack];
+    goBack = [WeakRetained goBack];
   }
 
   else
@@ -1231,30 +1231,30 @@ LABEL_9:
   }
 }
 
-- (id)_firstItemWithUniqueURLInBackListFromURL:(id)a3
+- (id)_firstItemWithUniqueURLInBackListFromURL:(id)l
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  lCopy = l;
   WeakRetained = objc_loadWeakRetained(&self->_webView);
-  v6 = [WeakRetained backForwardList];
-  v7 = [v6 backList];
+  backForwardList = [WeakRetained backForwardList];
+  backList = [backForwardList backList];
 
-  v8 = [WeakRetained backForwardList];
-  v9 = [v8 currentItem];
+  backForwardList2 = [WeakRetained backForwardList];
+  currentItem = [backForwardList2 currentItem];
 
-  v10 = [v9 URL];
-  v11 = [v4 safari_isEqualToURL:v10];
+  v10 = [currentItem URL];
+  v11 = [lCopy safari_isEqualToURL:v10];
 
   if (v11)
   {
-    v23 = v7;
-    v24 = v4;
+    v23 = backList;
+    v24 = lCopy;
     v27 = 0u;
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v12 = [v7 reverseObjectEnumerator];
-    v13 = [v12 countByEnumeratingWithState:&v25 objects:v29 count:16];
+    reverseObjectEnumerator = [backList reverseObjectEnumerator];
+    v13 = [reverseObjectEnumerator countByEnumeratingWithState:&v25 objects:v29 count:16];
     if (v13)
     {
       v14 = v13;
@@ -1265,11 +1265,11 @@ LABEL_9:
         {
           if (*v26 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(reverseObjectEnumerator);
           }
 
           v17 = *(*(&v25 + 1) + 8 * i);
-          v18 = [v9 URL];
+          v18 = [currentItem URL];
           v19 = [v17 URL];
           v20 = [v18 safari_isEqualToURL:v19];
 
@@ -1281,7 +1281,7 @@ LABEL_9:
           }
         }
 
-        v14 = [v12 countByEnumeratingWithState:&v25 objects:v29 count:16];
+        v14 = [reverseObjectEnumerator countByEnumeratingWithState:&v25 objects:v29 count:16];
         if (v14)
         {
           continue;
@@ -1293,13 +1293,13 @@ LABEL_9:
 
     v21 = 0;
 LABEL_13:
-    v7 = v23;
-    v4 = v24;
+    backList = v23;
+    lCopy = v24;
   }
 
   else
   {
-    v21 = v9;
+    v21 = currentItem;
   }
 
   return v21;
@@ -1307,8 +1307,8 @@ LABEL_13:
 
 - (void)visitInsecureWebsiteWithTemporaryBypass
 {
-  v3 = [MEMORY[0x1E69C8EE0] sharedManager];
-  [v3 rememberCertificateBypassForProtectionSpace:self->_protectionSpaceForInvalidCertificateBypass inPrivateBrowsing:1];
+  mEMORY[0x1E69C8EE0] = [MEMORY[0x1E69C8EE0] sharedManager];
+  [mEMORY[0x1E69C8EE0] rememberCertificateBypassForProtectionSpace:self->_protectionSpaceForInvalidCertificateBypass inPrivateBrowsing:1];
 
   [(_SFPageLoadErrorController *)self _continueAfterCertificateAlertWithURL:self->_certificateFailingURL trust:self->_certificateTrust recoveryAttempter:self->_certificateRecoveryAttempter];
   protectionSpaceForInvalidCertificateBypass = self->_protectionSpaceForInvalidCertificateBypass;
@@ -1321,8 +1321,8 @@ LABEL_13:
   legacyTLSWarningPageContext = self->_legacyTLSWarningPageContext;
   if (legacyTLSWarningPageContext)
   {
-    v5 = [(WBSCertificateWarningPageContext *)legacyTLSWarningPageContext failingURL];
-    [WeakRetained pageLoadErrorController:self allowLegacyTLSConnectionForURL:v5 navigateToURL:self->_clickThroughURL];
+    failingURL = [(WBSCertificateWarningPageContext *)legacyTLSWarningPageContext failingURL];
+    [WeakRetained pageLoadErrorController:self allowLegacyTLSConnectionForURL:failingURL navigateToURL:self->_clickThroughURL];
 
     v6 = self->_legacyTLSWarningPageContext;
     self->_legacyTLSWarningPageContext = 0;
@@ -1350,15 +1350,15 @@ LABEL_13:
 
 - (void)openClockSettings
 {
-  v3 = [MEMORY[0x1E6963608] defaultWorkspace];
+  defaultWorkspace = [MEMORY[0x1E6963608] defaultWorkspace];
   v2 = [MEMORY[0x1E695DFF8] URLWithString:@"prefs:root=General&path=DATE_AND_TIME"];
-  [v3 openSensitiveURL:v2 withOptions:0];
+  [defaultWorkspace openSensitiveURL:v2 withOptions:0];
 }
 
 + (void)clearOldCertificateBypasses
 {
-  v2 = [MEMORY[0x1E6993C28] defaultTrustManager];
-  [v2 removeAllTrusts];
+  defaultTrustManager = [MEMORY[0x1E6993C28] defaultTrustManager];
+  [defaultTrustManager removeAllTrusts];
 }
 
 - (void)showCertificateInformation
@@ -1388,8 +1388,8 @@ LABEL_13:
   v7 = objc_alloc(MEMORY[0x1E69DC708]);
   v8 = _WBSLocalizedString();
   v9 = [v7 initWithTitle:v8 style:2 target:self action:sel__dismissCertificateViewButtonTapped];
-  v10 = [v5 navigationItem];
-  [v10 setRightBarButtonItem:v9];
+  navigationItem = [v5 navigationItem];
+  [navigationItem setRightBarButtonItem:v9];
 
   v11 = [objc_alloc(MEMORY[0x1E69DCCD8]) initWithRootViewController:v5];
   certificateNavigationViewController = self->_certificateNavigationViewController;
@@ -1429,17 +1429,17 @@ LABEL_13:
 - (void)_resetCrashCountNow
 {
   v5 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     v2 = WBS_LOG_CHANNEL_PREFIXPageLoading();
     if (os_log_type_enabled(v2, OS_LOG_TYPE_DEFAULT))
     {
       v3 = 134217984;
-      v4 = a1;
+      selfCopy = self;
       _os_log_impl(&dword_1D4644000, v2, OS_LOG_TYPE_DEFAULT, "%p: reset WebContent crash count", &v3, 0xCu);
     }
 
-    *(a1 + 136) = 0;
+    *(self + 136) = 0;
   }
 }
 

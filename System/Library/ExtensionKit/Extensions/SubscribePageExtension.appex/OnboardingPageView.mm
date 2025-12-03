@@ -1,14 +1,14 @@
 @interface OnboardingPageView
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4;
-- (_TtC22SubscribePageExtension18OnboardingPageView)initWithCoder:(id)a3;
-- (_TtC22SubscribePageExtension18OnboardingPageView)initWithFrame:(CGRect)a3;
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in;
+- (_TtC22SubscribePageExtension18OnboardingPageView)initWithCoder:(id)coder;
+- (_TtC22SubscribePageExtension18OnboardingPageView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation OnboardingPageView
 
-- (_TtC22SubscribePageExtension18OnboardingPageView)initWithCoder:(id)a3
+- (_TtC22SubscribePageExtension18OnboardingPageView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC22SubscribePageExtension18OnboardingPageView_contentView) = 0;
   result = sub_100754644();
@@ -18,29 +18,29 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000DD384();
 }
 
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in
 {
   v4 = 0.0;
-  height = a3.height;
-  result.var1 = a3.height;
-  result.var0 = a3.width;
+  height = fitting.height;
+  result.var1 = fitting.height;
+  result.var0 = fitting.width;
   result.var3 = v4;
   result.var2 = height;
   return result;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_1000DD7AC(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_1000DD7AC(change);
 }
 
-- (_TtC22SubscribePageExtension18OnboardingPageView)initWithFrame:(CGRect)a3
+- (_TtC22SubscribePageExtension18OnboardingPageView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

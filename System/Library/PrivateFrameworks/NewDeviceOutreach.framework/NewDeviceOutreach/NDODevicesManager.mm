@@ -1,5 +1,5 @@
 @interface NDODevicesManager
-- (NDODevicesManager)initWithNanoRegistry:(id)a3;
+- (NDODevicesManager)initWithNanoRegistry:(id)registry;
 - (id)_pairedWatches;
 - (id)allFUPEligibleDevices;
 - (id)appleIDDevices;
@@ -12,16 +12,16 @@
 
 @implementation NDODevicesManager
 
-- (NDODevicesManager)initWithNanoRegistry:(id)a3
+- (NDODevicesManager)initWithNanoRegistry:(id)registry
 {
-  v5 = a3;
+  registryCopy = registry;
   v9.receiver = self;
   v9.super_class = NDODevicesManager;
   v6 = [(NDODevicesManager *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_nanoRegistry, a3);
+    objc_storeStrong(&v6->_nanoRegistry, registry);
   }
 
   return v7;
@@ -276,8 +276,8 @@ LABEL_5:
     goto LABEL_11;
   }
 
-  v5 = [v3 allValues];
-  if (!v5)
+  allValues = [v3 allValues];
+  if (!allValues)
   {
 
 LABEL_11:
@@ -332,13 +332,13 @@ LABEL_11:
           v21 = *(*(&v27 + 1) + 8 * i);
           if ([v21 deviceFlags])
           {
-            v22 = [v21 serialNumber];
+            serialNumber = [v21 serialNumber];
 
-            if (v22)
+            if (serialNumber)
             {
               v23 = [NDODevice deviceWithCBDevice:v21];
-              v24 = [v21 serialNumber];
-              [v10 setObject:v23 forKeyedSubscript:v24];
+              serialNumber2 = [v21 serialNumber];
+              [v10 setObject:v23 forKeyedSubscript:serialNumber2];
             }
 
             else
@@ -366,7 +366,7 @@ LABEL_11:
     goto LABEL_35;
   }
 
-  v6 = v5;
+  v6 = allValues;
   +[NSMutableDictionary dictionary];
   v32[0] = _NSConcreteStackBlock;
   v32[1] = 3221225472;
@@ -421,8 +421,8 @@ LABEL_35:
     goto LABEL_11;
   }
 
-  v5 = [v3 allValues];
-  if (!v5)
+  allValues = [v3 allValues];
+  if (!allValues)
   {
 
 LABEL_11:
@@ -477,13 +477,13 @@ LABEL_11:
           v21 = *(*(&v27 + 1) + 8 * i);
           if ([v21 proximityPairingSubType] == 3)
           {
-            v22 = [v21 serialNumber];
+            serialNumber = [v21 serialNumber];
 
-            if (v22)
+            if (serialNumber)
             {
               v23 = [NDODevice deviceWithCBDevice:v21 isVisibleInCC:0];
-              v24 = [v21 serialNumber];
-              [v10 setObject:v23 forKeyedSubscript:v24];
+              serialNumber2 = [v21 serialNumber];
+              [v10 setObject:v23 forKeyedSubscript:serialNumber2];
             }
 
             else
@@ -511,7 +511,7 @@ LABEL_11:
     goto LABEL_35;
   }
 
-  v6 = v5;
+  v6 = allValues;
   +[NSMutableDictionary dictionary];
   v32[0] = _NSConcreteStackBlock;
   v32[1] = 3221225472;
@@ -547,16 +547,16 @@ LABEL_35:
 
 - (id)primaryFUPEligibleDevices
 {
-  v3 = [(NDODevicesManager *)self defaultDevice];
-  v4 = [v3 serialNumber];
-  v11 = v4;
-  v5 = [(NDODevicesManager *)self defaultDevice];
-  v12 = v5;
+  defaultDevice = [(NDODevicesManager *)self defaultDevice];
+  serialNumber = [defaultDevice serialNumber];
+  v11 = serialNumber;
+  defaultDevice2 = [(NDODevicesManager *)self defaultDevice];
+  v12 = defaultDevice2;
   v6 = [NSDictionary dictionaryWithObjects:&v12 forKeys:&v11 count:1];
   v7 = [v6 mutableCopy];
 
-  v8 = [(NDODevicesManager *)self pairedWatches];
-  [v7 addEntriesFromDictionary:v8];
+  pairedWatches = [(NDODevicesManager *)self pairedWatches];
+  [v7 addEntriesFromDictionary:pairedWatches];
 
   v9 = [NSDictionary dictionaryWithDictionary:v7];
 
@@ -565,19 +565,19 @@ LABEL_35:
 
 - (id)allFUPEligibleDevices
 {
-  v3 = [(NDODevicesManager *)self defaultDevice];
-  v4 = [v3 serialNumber];
-  v12 = v4;
-  v5 = [(NDODevicesManager *)self defaultDevice];
-  v13 = v5;
+  defaultDevice = [(NDODevicesManager *)self defaultDevice];
+  serialNumber = [defaultDevice serialNumber];
+  v12 = serialNumber;
+  defaultDevice2 = [(NDODevicesManager *)self defaultDevice];
+  v13 = defaultDevice2;
   v6 = [NSDictionary dictionaryWithObjects:&v13 forKeys:&v12 count:1];
   v7 = [v6 mutableCopy];
 
-  v8 = [(NDODevicesManager *)self pairedWatches];
-  [v7 addEntriesFromDictionary:v8];
+  pairedWatches = [(NDODevicesManager *)self pairedWatches];
+  [v7 addEntriesFromDictionary:pairedWatches];
 
-  v9 = [(NDODevicesManager *)self pairedBTDevices];
-  [v7 addEntriesFromDictionary:v9];
+  pairedBTDevices = [(NDODevicesManager *)self pairedBTDevices];
+  [v7 addEntriesFromDictionary:pairedBTDevices];
 
   v10 = [NSDictionary dictionaryWithDictionary:v7];
 
@@ -607,8 +607,8 @@ LABEL_35:
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
-        v10 = [v9 serialNumber];
-        [v3 setObject:v9 forKeyedSubscript:v10];
+        serialNumber = [v9 serialNumber];
+        [v3 setObject:v9 forKeyedSubscript:serialNumber];
       }
 
       v6 = [(NSArray *)v4 countByEnumeratingWithState:&v12 objects:v16 count:16];

@@ -1,18 +1,18 @@
 @interface _UIFloatingTabBarPageButtonAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation _UIFloatingTabBarPageButtonAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v5 = location;
   obj = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   v3 = @"_UIFloatingTabBarPageButton";
   [location[0] validateClass:? isKindOfClass:?];
   [location[0] validateClass:@"_UIFloatingTabBarPageButton" hasInstanceMethod:@"direction" withFullSignature:{"q", 0}];
@@ -21,7 +21,7 @@
 
 - (id)accessibilityLabel
 {
-  v19 = self;
+  selfCopy = self;
   v18[1] = a2;
   v17 = 0;
   objc_opt_class();
@@ -30,7 +30,7 @@
   objc_storeStrong(&v16, 0);
   v18[0] = v15;
   v14 = [v15 effectiveUserInterfaceLayoutDirection] == 1;
-  if ([(_UIFloatingTabBarPageButtonAccessibility *)v19 safeIntegerForKey:@"direction"])
+  if ([(_UIFloatingTabBarPageButtonAccessibility *)selfCopy safeIntegerForKey:@"direction"])
   {
     v8 = 0;
     v6 = 0;

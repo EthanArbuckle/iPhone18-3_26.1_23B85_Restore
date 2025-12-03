@@ -1,37 +1,37 @@
 @interface PKPaymentSetupTableViewController
 - (NSAttributedString)footerAttributedText;
 - (PKPaymentSetupDockView)dockView;
-- (PKPaymentSetupTableViewController)initWithContext:(int64_t)a3;
-- (PKPaymentSetupTableViewController)initWithStyle:(int64_t)a3 context:(int64_t)a4;
-- (id)addFooterStyleAttributes:(id)a3;
-- (int64_t)visibilityBackdropView:(id)a3 preferredStyleForTraitCollection:(id)a4;
-- (void)_keyboardWillChange:(id)a3;
-- (void)_keyboardWillHide:(id)a3;
-- (void)_keyboardWillShow:(id)a3;
-- (void)_updateLayoutForKeyboardAction:(id)a3;
+- (PKPaymentSetupTableViewController)initWithContext:(int64_t)context;
+- (PKPaymentSetupTableViewController)initWithStyle:(int64_t)style context:(int64_t)context;
+- (id)addFooterStyleAttributes:(id)attributes;
+- (int64_t)visibilityBackdropView:(id)view preferredStyleForTraitCollection:(id)collection;
+- (void)_keyboardWillChange:(id)change;
+- (void)_keyboardWillHide:(id)hide;
+- (void)_keyboardWillShow:(id)show;
+- (void)_updateLayoutForKeyboardAction:(id)action;
 - (void)dealloc;
 - (void)loadView;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)setFooterAttributedText:(id)a3;
-- (void)setHideFooterBlurView:(BOOL)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableViewDidFinishReload:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)setFooterAttributedText:(id)text;
+- (void)setHideFooterBlurView:(BOOL)view;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableViewDidFinishReload:(id)reload;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation PKPaymentSetupTableViewController
 
-- (PKPaymentSetupTableViewController)initWithContext:(int64_t)a3
+- (PKPaymentSetupTableViewController)initWithContext:(int64_t)context
 {
   v5 = [MEMORY[0x1E69DD020] pkui_groupedStyleWithRoundedCorners:1];
 
-  return [(PKPaymentSetupTableViewController *)self initWithStyle:v5 context:a3];
+  return [(PKPaymentSetupTableViewController *)self initWithStyle:v5 context:context];
 }
 
-- (PKPaymentSetupTableViewController)initWithStyle:(int64_t)a3 context:(int64_t)a4
+- (PKPaymentSetupTableViewController)initWithStyle:(int64_t)style context:(int64_t)context
 {
   v13.receiver = self;
   v13.super_class = PKPaymentSetupTableViewController;
@@ -39,22 +39,22 @@
   v7 = v6;
   if (v6)
   {
-    v6->_context = a4;
-    v8 = [objc_alloc(MEMORY[0x1E69DD038]) initWithStyle:a3];
+    v6->_context = context;
+    v8 = [objc_alloc(MEMORY[0x1E69DD038]) initWithStyle:style];
     tableViewController = v7->_tableViewController;
     v7->_tableViewController = v8;
 
     if ((_UISolariumEnabled() & 1) == 0)
     {
-      v10 = [(PKPaymentSetupTableViewController *)v7 navigationItem];
-      [v10 pkui_setupScrollEdgeChromelessAppearance];
-      [v10 pkui_enableManualScrollEdgeAppearanceWithInitialProgress:0.0];
+      navigationItem = [(PKPaymentSetupTableViewController *)v7 navigationItem];
+      [navigationItem pkui_setupScrollEdgeChromelessAppearance];
+      [navigationItem pkui_enableManualScrollEdgeAppearanceWithInitialProgress:0.0];
     }
 
-    v11 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v11 addObserver:v7 selector:sel__keyboardWillShow_ name:*MEMORY[0x1E69DE080] object:0];
-    [v11 addObserver:v7 selector:sel__keyboardWillChange_ name:*MEMORY[0x1E69DE068] object:0];
-    [v11 addObserver:v7 selector:sel__keyboardWillHide_ name:*MEMORY[0x1E69DE078] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v7 selector:sel__keyboardWillShow_ name:*MEMORY[0x1E69DE080] object:0];
+    [defaultCenter addObserver:v7 selector:sel__keyboardWillChange_ name:*MEMORY[0x1E69DE068] object:0];
+    [defaultCenter addObserver:v7 selector:sel__keyboardWillHide_ name:*MEMORY[0x1E69DE078] object:0];
   }
 
   return v7;
@@ -78,9 +78,9 @@
   self->_containerView = v4;
 
   [(PKPaymentSetupTableViewController *)self setView:self->_containerView];
-  v6 = [(UITableViewController *)self->_tableViewController tableView];
+  tableView = [(UITableViewController *)self->_tableViewController tableView];
   tableView = self->_tableView;
-  self->_tableView = v6;
+  self->_tableView = tableView;
 
   v8 = self->_tableView;
   v9 = PKProvisioningBackgroundColor();
@@ -91,58 +91,58 @@
   [(UITableView *)self->_tableView setDelegate:self];
   v10 = *MEMORY[0x1E69B9A68];
   [(UITableView *)self->_tableView setAccessibilityIdentifier:*MEMORY[0x1E69B9A68]];
-  v14 = [(UITableView *)self->_tableView backgroundColor];
-  [(UIView *)self->_containerView setBackgroundColor:v14];
+  backgroundColor = [(UITableView *)self->_tableView backgroundColor];
+  [(UIView *)self->_containerView setBackgroundColor:backgroundColor];
   [(UIView *)self->_containerView addSubview:self->_tableView];
   [(UITableViewController *)self->_tableViewController didMoveToParentViewController:self];
   v11 = self->_containerView;
-  v12 = [(PKPaymentSetupTableViewController *)self footerTextView];
-  [(UIView *)v11 addSubview:v12];
+  footerTextView = [(PKPaymentSetupTableViewController *)self footerTextView];
+  [(UIView *)v11 addSubview:footerTextView];
 
-  v13 = [(PKPaymentSetupTableViewController *)self view];
-  [v13 setAccessibilityIdentifier:v10];
+  view = [(PKPaymentSetupTableViewController *)self view];
+  [view setAccessibilityIdentifier:v10];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v10.receiver = self;
   v10.super_class = PKPaymentSetupTableViewController;
   [(PKPaymentSetupTableViewController *)&v10 viewWillAppear:?];
   context = self->_context;
-  v6 = [(PKPaymentSetupTableViewController *)self view];
-  PKPaymentSetupApplyContextAppearance(context, v6);
+  view = [(PKPaymentSetupTableViewController *)self view];
+  PKPaymentSetupApplyContextAppearance(context, view);
 
-  v7 = [(PKPaymentSetupTableViewController *)self tableView];
-  if (([v7 allowsMultipleSelection] & 1) == 0)
+  tableView = [(PKPaymentSetupTableViewController *)self tableView];
+  if (([tableView allowsMultipleSelection] & 1) == 0)
   {
     selectedIndexPath = self->_selectedIndexPath;
-    v9 = [v7 indexPathForSelectedRow];
-    LODWORD(selectedIndexPath) = [(NSIndexPath *)selectedIndexPath isEqual:v9];
+    indexPathForSelectedRow = [tableView indexPathForSelectedRow];
+    LODWORD(selectedIndexPath) = [(NSIndexPath *)selectedIndexPath isEqual:indexPathForSelectedRow];
 
     if (selectedIndexPath)
     {
-      [v7 deselectRowAtIndexPath:self->_selectedIndexPath animated:v3];
+      [tableView deselectRowAtIndexPath:self->_selectedIndexPath animated:appearCopy];
     }
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = PKPaymentSetupTableViewController;
-  [(PKPaymentSetupTableViewController *)&v5 viewDidAppear:a3];
+  [(PKPaymentSetupTableViewController *)&v5 viewDidAppear:appear];
   selectedIndexPath = self->_selectedIndexPath;
   self->_selectedIndexPath = 0;
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   [(UITableView *)self->_tableView endEditing:1];
   v5.receiver = self;
   v5.super_class = PKPaymentSetupTableViewController;
-  [(PKPaymentSetupTableViewController *)&v5 viewWillDisappear:v3];
+  [(PKPaymentSetupTableViewController *)&v5 viewWillDisappear:disappearCopy];
 }
 
 - (void)viewWillLayoutSubviews
@@ -150,15 +150,15 @@
   v58.receiver = self;
   v58.super_class = PKPaymentSetupTableViewController;
   [(PKPaymentSetupTableViewController *)&v58 viewWillLayoutSubviews];
-  v3 = [(PKPaymentSetupTableViewController *)self view];
-  [v3 bounds];
+  view = [(PKPaymentSetupTableViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  [v3 safeAreaInsets];
+  [view safeAreaInsets];
   v53 = v12;
-  [v3 layoutMargins];
+  [view layoutMargins];
   v14 = v13;
   v16 = v15;
   rect_16 = v7;
@@ -179,8 +179,8 @@
 
       else
       {
-        v20 = [v3 readableContentGuide];
-        [v20 layoutFrame];
+        readableContentGuide = [view readableContentGuide];
+        [readableContentGuide layoutFrame];
         v19 = fmin(v21, 536.0);
       }
 
@@ -229,13 +229,13 @@
     v34 = v32;
     if (!CGRectIsNull(self->_keyboardFrame))
     {
-      v35 = [v3 window];
-      v36 = v35;
+      window = [view window];
+      v36 = window;
       v34 = v33;
-      if (v35)
+      if (window)
       {
-        [v35 convertRect:0 fromWindow:{self->_keyboardFrame.origin.x, self->_keyboardFrame.origin.y, self->_keyboardFrame.size.width, self->_keyboardFrame.size.height}];
-        [v3 convertRect:0 fromView:?];
+        [window convertRect:0 fromWindow:{self->_keyboardFrame.origin.x, self->_keyboardFrame.origin.y, self->_keyboardFrame.size.width, self->_keyboardFrame.size.height}];
+        [view convertRect:0 fromView:?];
         v38 = fmax(v33 - fmax(rect_16 + rect_24 - v37, 0.0), 0.0);
         if (v38 <= v53)
         {
@@ -271,8 +271,8 @@
   v60.size.height = rect_24;
   v60.size.width = v9;
   [(_PKVisibilityBackdropView *)self->_blurringView setFrame:rect, v39, v9, CGRectGetMaxY(v60) - v39];
-  v40 = [(_UIBackdropView *)self->_blurringView contentView];
-  [v40 bounds];
+  contentView = [(_UIBackdropView *)self->_blurringView contentView];
+  [contentView bounds];
 
   PKSizeAlignedInRect();
   [(PKPaymentSetupDockView *)self->_dockView setFrame:?];
@@ -309,22 +309,22 @@ LABEL_26:
   if ((_UISolariumEnabled() & 1) == 0)
   {
     v49 = self->_tableView;
-    v50 = [(PKPaymentSetupTableViewController *)self navigationItem];
-    [(UITableView *)v49 pkui_adjustManualScrollEdgeAppearanceProgressForNavigationItem:v50];
+    navigationItem = [(PKPaymentSetupTableViewController *)self navigationItem];
+    [(UITableView *)v49 pkui_adjustManualScrollEdgeAppearanceProgressForNavigationItem:navigationItem];
   }
 }
 
-- (void)setHideFooterBlurView:(BOOL)a3
+- (void)setHideFooterBlurView:(BOOL)view
 {
-  self->_hideFooterBlurView = a3;
-  v3 = [(PKPaymentSetupTableViewController *)self view];
-  [v3 setNeedsLayout];
+  self->_hideFooterBlurView = view;
+  view = [(PKPaymentSetupTableViewController *)self view];
+  [view setNeedsLayout];
 }
 
-- (void)_keyboardWillShow:(id)a3
+- (void)_keyboardWillShow:(id)show
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:*MEMORY[0x1E69DDFA0]];
+  userInfo = [show userInfo];
+  v5 = [userInfo objectForKey:*MEMORY[0x1E69DDFA0]];
 
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
@@ -370,14 +370,14 @@ BOOL __55__PKPaymentSetupTableViewController__keyboardWillShow___block_invoke(ui
   return !CGRectEqualToRect(*(*(a1 + 32) + 1048), v16);
 }
 
-- (void)_keyboardWillChange:(id)a3
+- (void)_keyboardWillChange:(id)change
 {
   if (self->_keyboardVisible)
   {
     v10 = v3;
     v11 = v4;
-    v6 = [a3 userInfo];
-    v7 = [v6 objectForKey:*MEMORY[0x1E69DDFA0]];
+    userInfo = [change userInfo];
+    v7 = [userInfo objectForKey:*MEMORY[0x1E69DDFA0]];
 
     if (v7)
     {
@@ -412,7 +412,7 @@ BOOL __57__PKPaymentSetupTableViewController__keyboardWillChange___block_invoke(
   return !CGRectEqualToRect(*(*(a1 + 32) + 1048), v13);
 }
 
-- (void)_keyboardWillHide:(id)a3
+- (void)_keyboardWillHide:(id)hide
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
@@ -438,17 +438,17 @@ BOOL __55__PKPaymentSetupTableViewController__keyboardWillHide___block_invoke(ui
   return !CGRectEqualToRect(*&v3, v8);
 }
 
-- (void)_updateLayoutForKeyboardAction:(id)a3
+- (void)_updateLayoutForKeyboardAction:(id)action
 {
-  v4 = a3;
-  if (v4)
+  actionCopy = action;
+  if (actionCopy)
   {
-    v5 = [(PKPaymentSetupTableViewController *)self viewIfLoaded];
-    v6 = v5;
-    if (v5)
+    viewIfLoaded = [(PKPaymentSetupTableViewController *)self viewIfLoaded];
+    v6 = viewIfLoaded;
+    if (viewIfLoaded)
     {
-      [v5 layoutIfNeeded];
-      if (v4[2](v4))
+      [viewIfLoaded layoutIfNeeded];
+      if (actionCopy[2](actionCopy))
       {
         [v6 setNeedsLayout];
         v7 = MEMORY[0x1E69DD250];
@@ -463,7 +463,7 @@ BOOL __55__PKPaymentSetupTableViewController__keyboardWillHide___block_invoke(ui
 
     else
     {
-      v4[2](v4);
+      actionCopy[2](actionCopy);
     }
   }
 }
@@ -485,12 +485,12 @@ BOOL __55__PKPaymentSetupTableViewController__keyboardWillHide___block_invoke(ui
     [(PKPaymentSetupDockView *)self->_dockView setPrimaryButton:0];
     if (_UISolariumEnabled())
     {
-      v11 = [(PKPaymentSetupTableViewController *)self view];
-      [v11 addSubview:self->_dockView];
-      v12 = [objc_alloc(MEMORY[0x1E69DD6C8]) initWithScrollView:self->_tableView edge:4 style:0];
-      [(PKPaymentSetupDockView *)self->_dockView addInteraction:v12];
-      v13 = [(PKPaymentSetupTableViewController *)self view];
-      [v13 addSubview:self->_dockView];
+      view = [(PKPaymentSetupTableViewController *)self view];
+      [view addSubview:self->_dockView];
+      view3 = [objc_alloc(MEMORY[0x1E69DD6C8]) initWithScrollView:self->_tableView edge:4 style:0];
+      [(PKPaymentSetupDockView *)self->_dockView addInteraction:view3];
+      view2 = [(PKPaymentSetupTableViewController *)self view];
+      [view2 addSubview:self->_dockView];
     }
 
     else
@@ -508,11 +508,11 @@ BOOL __55__PKPaymentSetupTableViewController__keyboardWillHide___block_invoke(ui
       }
 
       [(_PKVisibilityBackdropView *)self->_blurringView pkui_setVisibility:0 animated:backdropWeight];
-      v11 = [(_UIBackdropView *)self->_blurringView contentView];
-      [v11 addSubview:self->_dockView];
-      v12 = [(PKPaymentSetupTableViewController *)self view];
-      [v12 addSubview:self->_blurringView];
-      [v12 setNeedsLayout];
+      view = [(_UIBackdropView *)self->_blurringView contentView];
+      [view addSubview:self->_dockView];
+      view3 = [(PKPaymentSetupTableViewController *)self view];
+      [view3 addSubview:self->_blurringView];
+      [view3 setNeedsLayout];
     }
 
     dockView = self->_dockView;
@@ -523,38 +523,38 @@ BOOL __55__PKPaymentSetupTableViewController__keyboardWillHide___block_invoke(ui
 
 - (NSAttributedString)footerAttributedText
 {
-  v2 = [(PKPaymentSetupDockView *)self->_dockView additionalView];
-  if (v2 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  additionalView = [(PKPaymentSetupDockView *)self->_dockView additionalView];
+  if (additionalView && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v3 = [v2 attributedText];
+    attributedText = [additionalView attributedText];
   }
 
   else
   {
-    v3 = 0;
+    attributedText = 0;
   }
 
-  return v3;
+  return attributedText;
 }
 
-- (void)setFooterAttributedText:(id)a3
+- (void)setFooterAttributedText:(id)text
 {
-  if (a3)
+  if (text)
   {
-    v13 = [a3 copy];
+    v13 = [text copy];
     v4 = [(PKPaymentSetupTableViewController *)self addFooterStyleAttributes:v13];
     v5 = objc_alloc_init(PKHyperlinkTextView);
     v6 = PKGenericOnboardingPresenter(self, 0);
-    v7 = [(PKPaymentSetupTableViewController *)self context];
-    v8 = [(PKPaymentSetupTableViewController *)self navigationController];
-    v9 = PKOpenURLModallyHyperlinkAction(v7, v8);
+    context = [(PKPaymentSetupTableViewController *)self context];
+    navigationController = [(PKPaymentSetupTableViewController *)self navigationController];
+    v9 = PKOpenURLModallyHyperlinkAction(context, navigationController);
     v10 = PKGenericHyperlinkAction(v6, v9);
 
     [(PKHyperlinkTextView *)v5 setAction:v10];
     [(PKHyperlinkTextView *)v5 setAttributedText:v4];
-    v11 = [(PKPaymentSetupTableViewController *)self dockView];
-    [v11 setAdditionalView:v5];
-    [v11 setAdditionalViewBottomPadding:11.0];
+    dockView = [(PKPaymentSetupTableViewController *)self dockView];
+    [dockView setAdditionalView:v5];
+    [dockView setAdditionalViewBottomPadding:11.0];
   }
 
   else
@@ -565,13 +565,13 @@ BOOL __55__PKPaymentSetupTableViewController__keyboardWillHide___block_invoke(ui
   }
 }
 
-- (id)addFooterStyleAttributes:(id)a3
+- (id)addFooterStyleAttributes:(id)attributes
 {
   v13[3] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if ([v3 length])
+  attributesCopy = attributes;
+  if ([attributesCopy length])
   {
-    v4 = [v3 mutableCopy];
+    v4 = [attributesCopy mutableCopy];
     v5 = objc_alloc_init(MEMORY[0x1E69DB7C8]);
     [v5 setLineBreakMode:0];
     [v5 setAlignment:PKOBKTextAlignment()];
@@ -583,64 +583,64 @@ BOOL __55__PKPaymentSetupTableViewController__keyboardWillHide___block_invoke(ui
     v8 = *MEMORY[0x1E69DB650];
     v12[1] = v7;
     v12[2] = v8;
-    v9 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    v13[2] = v9;
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    v13[2] = secondaryLabelColor;
     v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:v12 count:3];
 
-    [v4 addAttributes:v10 range:{0, objc_msgSend(v3, "length")}];
+    [v4 addAttributes:v10 range:{0, objc_msgSend(attributesCopy, "length")}];
   }
 
   else
   {
-    v4 = v3;
+    v4 = attributesCopy;
   }
 
   return v4;
 }
 
-- (void)tableViewDidFinishReload:(id)a3
+- (void)tableViewDidFinishReload:(id)reload
 {
   if (self->_dockView)
   {
-    v3 = [(PKPaymentSetupTableViewController *)self view];
-    [v3 setNeedsLayout];
+    view = [(PKPaymentSetupTableViewController *)self view];
+    [view setNeedsLayout];
   }
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  if (self->_tableView == a3)
+  pathCopy = path;
+  if (self->_tableView == view)
   {
-    v10 = v6;
-    v7 = [a3 allowsMultipleSelection];
-    v6 = v10;
-    if ((v7 & 1) == 0)
+    v10 = pathCopy;
+    allowsMultipleSelection = [view allowsMultipleSelection];
+    pathCopy = v10;
+    if ((allowsMultipleSelection & 1) == 0)
     {
       v8 = [v10 copy];
       selectedIndexPath = self->_selectedIndexPath;
       self->_selectedIndexPath = v8;
 
-      v6 = v10;
+      pathCopy = v10;
     }
   }
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v3 = [(PKPaymentSetupTableViewController *)self view];
-  [v3 setNeedsLayout];
+  view = [(PKPaymentSetupTableViewController *)self view];
+  [view setNeedsLayout];
 }
 
-- (int64_t)visibilityBackdropView:(id)a3 preferredStyleForTraitCollection:(id)a4
+- (int64_t)visibilityBackdropView:(id)view preferredStyleForTraitCollection:(id)collection
 {
-  v4 = a4;
+  collectionCopy = collection;
   if (PKPaymentSetupForceBridgeAppearance() & 1) != 0 || (PKPaymentSetupContextIsBridge())
   {
     v5 = 2030;
   }
 
-  else if ([v4 userInterfaceStyle] == 2)
+  else if ([collectionCopy userInterfaceStyle] == 2)
   {
     v5 = 2030;
   }

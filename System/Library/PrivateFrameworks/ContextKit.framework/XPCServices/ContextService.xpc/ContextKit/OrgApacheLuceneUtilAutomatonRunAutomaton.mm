@@ -1,5 +1,5 @@
 @interface OrgApacheLuceneUtilAutomatonRunAutomaton
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 - (id)getCharIntervals;
 - (unint64_t)hash;
@@ -170,22 +170,22 @@ LABEL_35:
   return self->size_ - v4 + 32 * v4 + 923521;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     LOBYTE(v6) = 1;
   }
 
   else
   {
-    if (!a3)
+    if (!equal)
     {
       goto LABEL_13;
     }
 
-    v5 = [(OrgApacheLuceneUtilAutomatonRunAutomaton *)self getClass];
-    if (v5 != [a3 getClass])
+    getClass = [(OrgApacheLuceneUtilAutomatonRunAutomaton *)self getClass];
+    if (getClass != [equal getClass])
     {
       goto LABEL_13;
     }
@@ -196,16 +196,16 @@ LABEL_35:
       JreThrowClassCastException();
     }
 
-    if (self->initial_ == *(a3 + 8) && self->maxInterval_ == *(a3 + 4) && self->size_ == *(a3 + 5))
+    if (self->initial_ == *(equal + 8) && self->maxInterval_ == *(equal + 4) && self->size_ == *(equal + 5))
     {
-      v6 = JavaUtilArrays_equalsWithIntArray_withIntArray_(self->points_, *(a3 + 6));
+      v6 = JavaUtilArrays_equalsWithIntArray_withIntArray_(self->points_, *(equal + 6));
       if (v6)
       {
-        v6 = JavaUtilArrays_equalsWithBooleanArray_withBooleanArray_(self->accept_, *(a3 + 3));
+        v6 = JavaUtilArrays_equalsWithBooleanArray_withBooleanArray_(self->accept_, *(equal + 3));
         if (v6)
         {
           transitions = self->transitions_;
-          v8 = *(a3 + 5);
+          v8 = *(equal + 5);
 
           LOBYTE(v6) = JavaUtilArrays_equalsWithIntArray_withIntArray_(transitions, v8);
         }

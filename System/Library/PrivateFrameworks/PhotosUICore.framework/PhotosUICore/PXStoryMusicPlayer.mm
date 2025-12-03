@@ -1,20 +1,20 @@
 @interface PXStoryMusicPlayer
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)currentTime;
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)playbackStartTimeForIncomingSong:(SEL)a3;
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)playbackStartTimeForIncomingSong:(SEL)song;
 - (NSSet)failedAudioAssets;
 - (NSString)description;
 - (PXStoryMusicPlayer)init;
-- (PXStoryMusicPlayer)initWithModel:(id)a3 targetDurationMatchesTimeline:(BOOL)a4;
-- (id)AVAudioSessionForPlayer:(id)a3;
-- (id)diagnosticCueStringForSize:(CGSize)a3 withIndicatorTime:(id *)a4 rangeIndicatorTimeRange:(id *)a5;
-- (id)diagnosticErrorsByComponentForHUDType:(int64_t)a3;
-- (id)diagnosticTextForHUDType:(int64_t)a3;
-- (id)diagnosticTextForHUDType:(int64_t)a3 displaySize:(CGSize)a4;
+- (PXStoryMusicPlayer)initWithModel:(id)model targetDurationMatchesTimeline:(BOOL)timeline;
+- (id)AVAudioSessionForPlayer:(id)player;
+- (id)diagnosticCueStringForSize:(CGSize)size withIndicatorTime:(id *)time rangeIndicatorTimeRange:(id *)range;
+- (id)diagnosticErrorsByComponentForHUDType:(int64_t)type;
+- (id)diagnosticTextForHUDType:(int64_t)type;
+- (id)diagnosticTextForHUDType:(int64_t)type displaySize:(CGSize)size;
 - (id)windowSceneID;
-- (void)_handleAudioCues:(id)a3 asset:(id)a4 error:(id)a5 requestID:(int64_t)a6;
-- (void)_handleDuckingDelayPassedForTouchingBeganDate:(id)a3;
+- (void)_handleAudioCues:(id)cues asset:(id)asset error:(id)error requestID:(int64_t)d;
+- (void)_handleDuckingDelayPassedForTouchingBeganDate:(id)date;
 - (void)_handlePlaybackFailureIfNeeded;
-- (void)_handlePlaybackTimerFired:(id)a3;
+- (void)_handlePlaybackTimerFired:(id)fired;
 - (void)_invalidateCueSource;
 - (void)_invalidateCurrentAudioAsset;
 - (void)_invalidateCurrentSongResource;
@@ -54,41 +54,41 @@
 - (void)_updateTouchingBeganDate;
 - (void)_updateViewControllerTransitionVolumeAnimator;
 - (void)didPerformChanges;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)performChanges:(id)a3;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)performChanges:(id)changes;
 - (void)replay;
-- (void)setAudioDesiredPlayState:(int64_t)a3;
-- (void)setCurrentAudioAsset:(id)a3;
-- (void)setCurrentSongResource:(id)a3;
-- (void)setDuckedVolume:(float)a3;
-- (void)setIsActive:(BOOL)a3;
-- (void)setIsDucked:(BOOL)a3;
-- (void)setReadinessStatus:(int64_t)a3;
-- (void)setShouldDuckForCurrentTouch:(BOOL)a3;
-- (void)setTargetDuration:(id *)a3;
-- (void)setTouchingBeganDate:(id)a3;
-- (void)settings:(id)a3 changedValueForKey:(id)a4;
+- (void)setAudioDesiredPlayState:(int64_t)state;
+- (void)setCurrentAudioAsset:(id)asset;
+- (void)setCurrentSongResource:(id)resource;
+- (void)setDuckedVolume:(float)volume;
+- (void)setIsActive:(BOOL)active;
+- (void)setIsDucked:(BOOL)ducked;
+- (void)setReadinessStatus:(int64_t)status;
+- (void)setShouldDuckForCurrentTouch:(BOOL)touch;
+- (void)setTargetDuration:(id *)duration;
+- (void)setTouchingBeganDate:(id)date;
+- (void)settings:(id)settings changedValueForKey:(id)key;
 @end
 
 @implementation PXStoryMusicPlayer
 
 - (NSSet)failedAudioAssets
 {
-  v2 = [(PXStoryMusicPlayer *)self internalFailedAudioAssets];
-  v3 = [v2 copy];
+  internalFailedAudioAssets = [(PXStoryMusicPlayer *)self internalFailedAudioAssets];
+  v3 = [internalFailedAudioAssets copy];
 
   return v3;
 }
 
 - (void)_updateFailedAudioAssets
 {
-  v3 = [(PXStoryMusicPlayer *)self player];
-  v4 = [v3 state];
+  player = [(PXStoryMusicPlayer *)self player];
+  state = [player state];
 
-  if (v4 == 5)
+  if (state == 5)
   {
-    v5 = [(PXStoryMusicPlayer *)self player];
-    v11 = [v5 currentAsset];
+    player2 = [(PXStoryMusicPlayer *)self player];
+    currentAsset = [player2 currentAsset];
 
     if (!self->_internalFailedAudioAssets)
     {
@@ -97,13 +97,13 @@
       self->_internalFailedAudioAssets = v6;
     }
 
-    v8 = [(PXStoryMusicPlayer *)self internalFailedAudioAssets];
-    v9 = [v8 containsObject:v11];
+    internalFailedAudioAssets = [(PXStoryMusicPlayer *)self internalFailedAudioAssets];
+    v9 = [internalFailedAudioAssets containsObject:currentAsset];
 
     if ((v9 & 1) == 0)
     {
-      v10 = [(PXStoryMusicPlayer *)self internalFailedAudioAssets];
-      [v10 addObject:v11];
+      internalFailedAudioAssets2 = [(PXStoryMusicPlayer *)self internalFailedAudioAssets];
+      [internalFailedAudioAssets2 addObject:currentAsset];
 
       [(PXStoryMusicPlayer *)self signalChange:4];
     }
@@ -112,11 +112,11 @@
 
 - (void)_invalidateFailedAudioAssets
 {
-  v2 = [(PXStoryMusicPlayer *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateFailedAudioAssets];
+  updater = [(PXStoryMusicPlayer *)self updater];
+  [updater setNeedsUpdateOf:sel__updateFailedAudioAssets];
 }
 
-- (void)_handlePlaybackTimerFired:(id)a3
+- (void)_handlePlaybackTimerFired:(id)fired
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
@@ -126,11 +126,11 @@
   [(PXStoryMusicPlayer *)self performChanges:v3];
 }
 
-- (void)setAudioDesiredPlayState:(int64_t)a3
+- (void)setAudioDesiredPlayState:(int64_t)state
 {
-  if (self->_audioDesiredPlayState != a3)
+  if (self->_audioDesiredPlayState != state)
   {
-    self->_audioDesiredPlayState = a3;
+    self->_audioDesiredPlayState = state;
     [(PXStoryMusicPlayer *)self _invalidatePlayerDesiredPlayState];
 
     [(PXStoryMusicPlayer *)self _invalidatePlaybackTimer];
@@ -140,10 +140,10 @@
 - (void)_handlePlaybackFailureIfNeeded
 {
   v17[2] = *MEMORY[0x1E69E9840];
-  v3 = [(PXStoryMusicPlayer *)self player];
-  v4 = [v3 state];
+  player = [(PXStoryMusicPlayer *)self player];
+  state = [player state];
 
-  if (v4 == 5)
+  if (state == 5)
   {
     v5 = MEMORY[0x1E6991F28];
     v16[0] = *MEMORY[0x1E6991E20];
@@ -151,44 +151,44 @@
     v7 = NSStringFromClass(v6);
     v16[1] = @"interactiveMemoryMusicCatalog";
     v17[0] = v7;
-    v8 = [(PXStoryMusicPlayer *)self currentAudioAsset];
-    v9 = [v8 catalog];
-    if (v9 > 4)
+    currentAudioAsset = [(PXStoryMusicPlayer *)self currentAudioAsset];
+    catalog = [currentAudioAsset catalog];
+    if (catalog > 4)
     {
       v10 = @"Mock";
     }
 
     else
     {
-      v10 = off_1E773ED58[v9];
+      v10 = off_1E773ED58[catalog];
     }
 
     v11 = v10;
     v17[1] = v11;
     v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:v16 count:2];
-    v13 = [(PXStoryMusicPlayer *)self player];
-    v14 = [v13 error];
-    v15 = [v12 px_dictionaryBySettingObject:v14 forKey:*MEMORY[0x1E6991E28]];
+    player2 = [(PXStoryMusicPlayer *)self player];
+    error = [player2 error];
+    v15 = [v12 px_dictionaryBySettingObject:error forKey:*MEMORY[0x1E6991E28]];
     [v5 sendEvent:@"com.apple.photos.memory.interactiveMemoryMusicFailed" withPayload:v15];
 
     [(PXStoryMusicPlayer *)self _invalidateError];
   }
 }
 
-- (void)setShouldDuckForCurrentTouch:(BOOL)a3
+- (void)setShouldDuckForCurrentTouch:(BOOL)touch
 {
-  if (self->_shouldDuckForCurrentTouch != a3)
+  if (self->_shouldDuckForCurrentTouch != touch)
   {
-    self->_shouldDuckForCurrentTouch = a3;
+    self->_shouldDuckForCurrentTouch = touch;
     [(PXStoryMusicPlayer *)self _invalidateDucked];
   }
 }
 
-- (void)_handleDuckingDelayPassedForTouchingBeganDate:(id)a3
+- (void)_handleDuckingDelayPassedForTouchingBeganDate:(id)date
 {
-  v4 = a3;
-  v5 = [(PXStoryMusicPlayer *)self touchingBeganDate];
-  v6 = [v4 isEqualToDate:v5];
+  dateCopy = date;
+  touchingBeganDate = [(PXStoryMusicPlayer *)self touchingBeganDate];
+  v6 = [dateCopy isEqualToDate:touchingBeganDate];
 
   if (v6)
   {
@@ -201,13 +201,13 @@
   }
 }
 
-- (void)setTouchingBeganDate:(id)a3
+- (void)setTouchingBeganDate:(id)date
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_touchingBeganDate != v5 && ([(NSDate *)v5 isEqual:?]& 1) == 0)
+  dateCopy = date;
+  v6 = dateCopy;
+  if (self->_touchingBeganDate != dateCopy && ([(NSDate *)dateCopy isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_touchingBeganDate, a3);
+    objc_storeStrong(&self->_touchingBeganDate, date);
     if (v6)
     {
       v7 = +[PXStorySettings sharedInstance];
@@ -216,14 +216,14 @@
 
       objc_initWeak(&location, self);
       v10 = dispatch_time(0, (v9 * 1000000000.0));
-      v11 = [(PXStoryMusicPlayer *)self storyQueue];
+      storyQueue = [(PXStoryMusicPlayer *)self storyQueue];
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __43__PXStoryMusicPlayer_setTouchingBeganDate___block_invoke;
       block[3] = &unk_1E774B248;
       objc_copyWeak(&v15, &location);
       v14 = v6;
-      dispatch_after(v10, v11, block);
+      dispatch_after(v10, storyQueue, block);
 
       objc_destroyWeak(&v15);
       objc_destroyWeak(&location);
@@ -247,19 +247,19 @@ void __43__PXStoryMusicPlayer_setTouchingBeganDate___block_invoke(uint64_t a1)
   [WeakRetained _handleDuckingDelayPassedForTouchingBeganDate:*(a1 + 32)];
 }
 
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)playbackStartTimeForIncomingSong:(SEL)a3
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)playbackStartTimeForIncomingSong:(SEL)song
 {
   v6 = a4;
   *&retstr->var1 = 0;
   retstr->var3 = 0;
   retstr->var0 = 0;
-  v7 = [(PXStoryMusicPlayer *)self model];
+  model = [(PXStoryMusicPlayer *)self model];
   v13 = 0uLL;
-  v8 = [(PXStoryMusicPlayer *)self player];
-  v9 = v8;
-  if (v8)
+  player = [(PXStoryMusicPlayer *)self player];
+  v9 = player;
+  if (player)
   {
-    [v8 currentTime];
+    [player currentTime];
   }
 
   else
@@ -267,7 +267,7 @@ void __43__PXStoryMusicPlayer_setTouchingBeganDate___block_invoke(uint64_t a1)
     v13 = 0uLL;
   }
 
-  if ([v7 viewMode] == 4 && (objc_msgSend(v7, "isPresentingMusicEditor") & 1) == 0 && (BYTE12(v13) & 0x1D) == 1)
+  if ([model viewMode] == 4 && (objc_msgSend(model, "isPresentingMusicEditor") & 1) == 0 && (BYTE12(v13) & 0x1D) == 1)
   {
     *&retstr->var0 = v13;
     retstr->var3 = 0;
@@ -285,37 +285,37 @@ void __43__PXStoryMusicPlayer_setTouchingBeganDate___block_invoke(uint64_t a1)
 
 - (id)windowSceneID
 {
-  v2 = [(PXStoryMusicPlayer *)self model];
-  v3 = [v2 windowSceneID];
+  model = [(PXStoryMusicPlayer *)self model];
+  windowSceneID = [model windowSceneID];
 
-  return v3;
+  return windowSceneID;
 }
 
-- (id)AVAudioSessionForPlayer:(id)a3
+- (id)AVAudioSessionForPlayer:(id)player
 {
   v3 = [MEMORY[0x1E69C1B18] sharedInstanceWithKind:3];
-  v4 = [v3 audioSession];
+  audioSession = [v3 audioSession];
 
-  return v4;
+  return audioSession;
 }
 
-- (void)settings:(id)a3 changedValueForKey:(id)a4
+- (void)settings:(id)settings changedValueForKey:(id)key
 {
-  v8 = a4;
+  keyCopy = key;
   v5 = NSStringFromSelector(sel_musicTargetLoudnessLKFS);
-  if (v5 == v8)
+  if (v5 == keyCopy)
   {
 
     goto LABEL_5;
   }
 
-  v6 = [v8 isEqualToString:v5];
+  v6 = [keyCopy isEqualToString:v5];
 
   if (v6)
   {
 LABEL_5:
-    v7 = [(PXStoryMusicPlayer *)self player];
-    [v7 performChanges:&__block_literal_global_191_224728];
+    player = [(PXStoryMusicPlayer *)self player];
+    [player performChanges:&__block_literal_global_191_224728];
   }
 }
 
@@ -327,41 +327,41 @@ void __50__PXStoryMusicPlayer_settings_changedValueForKey___block_invoke(uint64_
   [v2 setTargetLoudnessInLKFS:?];
 }
 
-- (id)diagnosticErrorsByComponentForHUDType:(int64_t)a3
+- (id)diagnosticErrorsByComponentForHUDType:(int64_t)type
 {
   v4 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:1];
-  v5 = [(PXStoryMusicPlayer *)self player];
-  v6 = [v5 error];
-  [v4 setObject:v6 forKeyedSubscript:@"MusicPlayback"];
+  player = [(PXStoryMusicPlayer *)self player];
+  error = [player error];
+  [v4 setObject:error forKeyedSubscript:@"MusicPlayback"];
 
   v7 = [v4 copy];
 
   return v7;
 }
 
-- (id)diagnosticTextForHUDType:(int64_t)a3 displaySize:(CGSize)a4
+- (id)diagnosticTextForHUDType:(int64_t)type displaySize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v8 = objc_alloc_init(MEMORY[0x1E696AD60]);
-  v9 = [(PXStoryMusicPlayer *)self player];
-  v10 = [v9 desiredPlayState];
-  if (a3 == 2)
+  player = [(PXStoryMusicPlayer *)self player];
+  desiredPlayState = [player desiredPlayState];
+  if (type == 2)
   {
-    v11 = v10;
-    v12 = [(PXStoryMusicPlayer *)self currentSongResource];
-    [v8 appendFormat:@"Song Resource: %@\n", v12];
+    v11 = desiredPlayState;
+    currentSongResource = [(PXStoryMusicPlayer *)self currentSongResource];
+    [v8 appendFormat:@"Song Resource: %@\n", currentSongResource];
 
-    v13 = [(PXStoryMusicPlayer *)self currentSongResource];
-    v14 = [v13 px_storyResourceSongAsset];
-    v15 = PXAudioAssetDefaultEntryPoint(v14);
+    currentSongResource2 = [(PXStoryMusicPlayer *)self currentSongResource];
+    px_storyResourceSongAsset = [currentSongResource2 px_storyResourceSongAsset];
+    v15 = PXAudioAssetDefaultEntryPoint(px_storyResourceSongAsset);
     [v15 time];
     [v8 appendFormat:@"   Start Time: %.0f\n", v16];
 
-    v17 = [(PXStoryMusicPlayer *)self model];
-    v18 = [v17 configuration];
-    v19 = [v18 appleMusicStatusProvider];
-    v20 = [v19 statusForCapability:1];
+    model = [(PXStoryMusicPlayer *)self model];
+    configuration = [model configuration];
+    appleMusicStatusProvider = [configuration appleMusicStatusProvider];
+    v20 = [appleMusicStatusProvider statusForCapability:1];
     if ((v20 - 1) > 2)
     {
       v21 = @"Unknown";
@@ -375,8 +375,8 @@ void __50__PXStoryMusicPlayer_settings_changedValueForKey___block_invoke(uint64_
     v22 = v21;
     [v8 appendFormat:@"Music Status: %@\n", v22];
 
-    v23 = [(PXStoryMusicPlayer *)self duckingVolumeAnimator];
-    [v23 presentationValue];
+    duckingVolumeAnimator = [(PXStoryMusicPlayer *)self duckingVolumeAnimator];
+    [duckingVolumeAnimator presentationValue];
     if (v24 >= 1.0)
     {
       [v8 appendFormat:@"      Ducking: %@\n", @"Not Ducked"];
@@ -385,11 +385,11 @@ void __50__PXStoryMusicPlayer_settings_changedValueForKey___block_invoke(uint64_
     else
     {
       v25 = objc_alloc(MEMORY[0x1E696AEC0]);
-      v26 = [(PXStoryMusicPlayer *)self duckingReason];
-      v27 = v26;
-      if (v26)
+      duckingReason = [(PXStoryMusicPlayer *)self duckingReason];
+      v27 = duckingReason;
+      if (duckingReason)
       {
-        v28 = v26;
+        v28 = duckingReason;
       }
 
       else
@@ -397,14 +397,14 @@ void __50__PXStoryMusicPlayer_settings_changedValueForKey___block_invoke(uint64_
         v28 = @"Not Ducked";
       }
 
-      v29 = [(PXStoryMusicPlayer *)self duckingVolumeAnimator];
-      [v29 presentationValue];
+      duckingVolumeAnimator2 = [(PXStoryMusicPlayer *)self duckingVolumeAnimator];
+      [duckingVolumeAnimator2 presentationValue];
       v31 = [v25 initWithFormat:@"%@ (%.2f)", v28, v30];
       [v8 appendFormat:@"      Ducking: %@\n", v31];
     }
 
-    v32 = [(PXStoryMusicPlayer *)self fadeOutVolumeAnimator];
-    [v32 presentationValue];
+    fadeOutVolumeAnimator = [(PXStoryMusicPlayer *)self fadeOutVolumeAnimator];
+    [fadeOutVolumeAnimator presentationValue];
     if (v33 >= 1.0)
     {
       [v8 appendFormat:@"       Fading: %@\n", @"Not Fading"];
@@ -413,17 +413,17 @@ void __50__PXStoryMusicPlayer_settings_changedValueForKey___block_invoke(uint64_
     else
     {
       v34 = objc_alloc(MEMORY[0x1E696AEC0]);
-      v35 = [(PXStoryMusicPlayer *)self fadeOutVolumeAnimator];
-      [v35 presentationValue];
+      fadeOutVolumeAnimator2 = [(PXStoryMusicPlayer *)self fadeOutVolumeAnimator];
+      [fadeOutVolumeAnimator2 presentationValue];
       v37 = [v34 initWithFormat:@"Fading Out (%.2f)", v36];
       [v8 appendFormat:@"       Fading: %@\n", v37];
     }
 
-    v38 = [(PXStoryMusicPlayer *)self viewControllerTransitionVolumeAnimator];
-    [v38 presentationValue];
+    viewControllerTransitionVolumeAnimator = [(PXStoryMusicPlayer *)self viewControllerTransitionVolumeAnimator];
+    [viewControllerTransitionVolumeAnimator presentationValue];
     [v8 appendFormat:@" VCTransition: %0.2f\n", v39];
 
-    [v9 volume];
+    [player volume];
     [v8 appendFormat:@"       Volume: %.1f\n", v40];
     v41 = @"Paused";
     if (v11 == 1)
@@ -434,8 +434,8 @@ void __50__PXStoryMusicPlayer_settings_changedValueForKey___block_invoke(uint64_
     v42 = v41;
     [v8 appendFormat:@"Desired State: %@", v42];
 
-    v43 = [(PXStoryMusicPlayer *)self failedAudioAssets];
-    if ([v43 count])
+    failedAudioAssets = [(PXStoryMusicPlayer *)self failedAudioAssets];
+    if ([failedAudioAssets count])
     {
       [(PXStoryMusicPlayer *)self failedAudioAssets];
       objc_claimAutoreleasedReturnValue();
@@ -444,12 +444,12 @@ void __50__PXStoryMusicPlayer_settings_changedValueForKey___block_invoke(uint64_
 
     if (!v11)
     {
-      v44 = [(PXStoryMusicPlayer *)self pauseReason];
-      [v8 appendFormat:@"(%@)", v44];
+      pauseReason = [(PXStoryMusicPlayer *)self pauseReason];
+      [v8 appendFormat:@"(%@)", pauseReason];
     }
 
-    v45 = [(PXStoryMusicPlayer *)self cueSource];
-    if (v45)
+    cueSource = [(PXStoryMusicPlayer *)self cueSource];
+    if (cueSource)
     {
       [(PXStoryMusicPlayer *)self currentTime];
       CMTimeMake(&duration, 3, 1);
@@ -459,7 +459,7 @@ void __50__PXStoryMusicPlayer_settings_changedValueForKey___block_invoke(uint64_
       start[0] = *MEMORY[0x1E6960C98];
       start[1] = v46;
       start[2] = *(MEMORY[0x1E6960C98] + 32);
-      v47 = [v45 diagnosticStringForTimeRange:&v54 indicatorTime:&duration rangeIndicatorTimeRange:start stringLength:50];
+      v47 = [cueSource diagnosticStringForTimeRange:&v54 indicatorTime:&duration rangeIndicatorTimeRange:start stringLength:50];
       [v8 appendFormat:@"\nCues: \n%@", v47];
     }
 
@@ -470,8 +470,8 @@ void __50__PXStoryMusicPlayer_settings_changedValueForKey___block_invoke(uint64_
   }
 
   [v8 appendString:@"\n\nPXAudioPlayer\n"];
-  v48 = [(PXStoryMusicPlayer *)self player];
-  v49 = [v48 lcdStringForSize:{width, height}];
+  player2 = [(PXStoryMusicPlayer *)self player];
+  v49 = [player2 lcdStringForSize:{width, height}];
   [v8 appendString:v49];
 
   v50 = [v8 copy];
@@ -479,15 +479,15 @@ void __50__PXStoryMusicPlayer_settings_changedValueForKey___block_invoke(uint64_
   return v50;
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __51__PXStoryMusicPlayer_observable_didChange_context___block_invoke;
   v5[3] = &unk_1E7747A08;
   v5[4] = self;
-  v5[5] = a5;
-  v5[6] = a4;
+  v5[5] = context;
+  v5[6] = change;
   v5[7] = a2;
   [(PXStoryMusicPlayer *)self performChanges:v5];
 }
@@ -682,49 +682,49 @@ LABEL_39:
   v4.receiver = self;
   v4.super_class = PXStoryMusicPlayer;
   [(PXStoryMusicPlayer *)&v4 didPerformChanges];
-  v3 = [(PXStoryMusicPlayer *)self updater];
-  [v3 updateIfNeeded];
+  updater = [(PXStoryMusicPlayer *)self updater];
+  [updater updateIfNeeded];
 }
 
-- (void)performChanges:(id)a3
+- (void)performChanges:(id)changes
 {
   v3.receiver = self;
   v3.super_class = PXStoryMusicPlayer;
-  [(PXStoryMusicPlayer *)&v3 performChanges:a3];
+  [(PXStoryMusicPlayer *)&v3 performChanges:changes];
 }
 
-- (id)diagnosticCueStringForSize:(CGSize)a3 withIndicatorTime:(id *)a4 rangeIndicatorTimeRange:(id *)a5
+- (id)diagnosticCueStringForSize:(CGSize)size withIndicatorTime:(id *)time rangeIndicatorTimeRange:(id *)range
 {
   memset(&v16, 0, sizeof(v16));
   CMTimeMake(&v16, 3, 1);
-  v8 = [(PXStoryMusicPlayer *)self cueSource];
+  cueSource = [(PXStoryMusicPlayer *)self cueSource];
   [(PXStoryMusicPlayer *)self currentTime];
   duration = v16;
   CMTimeRangeMake(&v15, v13, &duration);
-  v9 = *&a4->var0;
-  duration.epoch = a4->var3;
-  v10 = *&a5->var0.var3;
-  v13[0] = *&a5->var0.var0;
+  v9 = *&time->var0;
+  duration.epoch = time->var3;
+  v10 = *&range->var0.var3;
+  v13[0] = *&range->var0.var0;
   v13[1] = v10;
-  v13[2] = *&a5->var1.var1;
+  v13[2] = *&range->var1.var1;
   *&duration.value = v9;
-  v11 = [v8 diagnosticStringForTimeRange:&v15 indicatorTime:&duration rangeIndicatorTimeRange:v13 stringLength:45];
+  v11 = [cueSource diagnosticStringForTimeRange:&v15 indicatorTime:&duration rangeIndicatorTimeRange:v13 stringLength:45];
 
   return v11;
 }
 
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)currentTime
 {
-  v5 = [(PXStoryMusicPlayer *)self currentSongResource];
+  currentSongResource = [(PXStoryMusicPlayer *)self currentSongResource];
 
-  if (v5)
+  if (currentSongResource)
   {
-    v7 = [(PXStoryMusicPlayer *)self player];
-    if (v7)
+    player = [(PXStoryMusicPlayer *)self player];
+    if (player)
     {
-      v9 = v7;
-      [v7 currentTime];
-      v7 = v9;
+      v9 = player;
+      [player currentTime];
+      player = v9;
     }
 
     else
@@ -747,14 +747,14 @@ LABEL_39:
 
 - (void)_updateError
 {
-  v3 = [(PXStoryMusicPlayer *)self player];
-  v4 = [v3 error];
+  player = [(PXStoryMusicPlayer *)self player];
+  error = [player error];
 
-  if (v4)
+  if (error)
   {
-    v14 = PXStoryErrorCreateWithCodeUnderlyingErrorDebugFormat(6, v4, @"Music playback failed.", v5, v6, v7, v8, v9, v13);
-    v10 = [(PXStoryMusicPlayer *)self model];
-    [v10 reportNetworkRelatedPlaybackFailure];
+    v14 = PXStoryErrorCreateWithCodeUnderlyingErrorDebugFormat(6, error, @"Music playback failed.", v5, v6, v7, v8, v9, v13);
+    model = [(PXStoryMusicPlayer *)self model];
+    [model reportNetworkRelatedPlaybackFailure];
   }
 
   else
@@ -762,21 +762,21 @@ LABEL_39:
     v14 = 0;
   }
 
-  v11 = [(PXStoryMusicPlayer *)self model];
-  v12 = [v11 errorReporter];
-  [v12 setError:v14 forComponent:@"MusicPlayback"];
+  model2 = [(PXStoryMusicPlayer *)self model];
+  errorReporter = [model2 errorReporter];
+  [errorReporter setError:v14 forComponent:@"MusicPlayback"];
 }
 
 - (void)_invalidateError
 {
-  v2 = [(PXStoryMusicPlayer *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateError];
+  updater = [(PXStoryMusicPlayer *)self updater];
+  [updater setNeedsUpdateOf:sel__updateError];
 }
 
 - (void)_updateViewControllerTransitionVolumeAnimator
 {
-  v3 = [(PXStoryMusicPlayer *)self model];
-  [v3 volumeDuringViewControllerTransition];
+  model = [(PXStoryMusicPlayer *)self model];
+  [model volumeDuringViewControllerTransition];
   v5 = v4;
 
   if (v5 >= 0.0)
@@ -789,40 +789,40 @@ LABEL_39:
     v6 = 0.0;
   }
 
-  v7 = [(PXStoryMusicPlayer *)self viewControllerTransitionVolumeAnimator];
-  [v7 value];
+  viewControllerTransitionVolumeAnimator = [(PXStoryMusicPlayer *)self viewControllerTransitionVolumeAnimator];
+  [viewControllerTransitionVolumeAnimator value];
   if (v6 != v8)
   {
-    [v7 presentationValue];
+    [viewControllerTransitionVolumeAnimator presentationValue];
     v10[1] = 3221225472;
     v10[0] = MEMORY[0x1E69E9820];
     v10[2] = __67__PXStoryMusicPlayer__updateViewControllerTransitionVolumeAnimator__block_invoke;
     v10[3] = &__block_descriptor_40_e35_v16__0___PXMutableNumberAnimator__8l;
     *&v10[4] = v6;
-    [v7 performChangesWithDuration:1 curve:v10 changes:{vabdd_f64(v6, v9) / 3.33333333}];
+    [viewControllerTransitionVolumeAnimator performChangesWithDuration:1 curve:v10 changes:{vabdd_f64(v6, v9) / 3.33333333}];
   }
 }
 
 - (void)_invalidateViewControllerTransitionVolumeAnimator
 {
-  v2 = [(PXStoryMusicPlayer *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateViewControllerTransitionVolumeAnimator];
+  updater = [(PXStoryMusicPlayer *)self updater];
+  [updater setNeedsUpdateOf:sel__updateViewControllerTransitionVolumeAnimator];
 }
 
 - (void)_updateFocusVolumeAnimator
 {
-  v3 = [(PXStoryMusicPlayer *)self model];
-  v4 = [v3 styleManager];
-  [v4 selectionFocus];
+  model = [(PXStoryMusicPlayer *)self model];
+  styleManager = [model styleManager];
+  [styleManager selectionFocus];
   v6 = v5;
 
   v7 = vabdd_f64(v6, round(v6)) * -2.0 + 1.0;
-  v8 = [(PXStoryMusicPlayer *)self focusVolumeAnimator];
-  [v8 value];
+  focusVolumeAnimator = [(PXStoryMusicPlayer *)self focusVolumeAnimator];
+  [focusVolumeAnimator value];
   v10 = v9;
 
-  v11 = [(PXStoryMusicPlayer *)self focusVolumeAnimator];
-  v12 = v11;
+  focusVolumeAnimator2 = [(PXStoryMusicPlayer *)self focusVolumeAnimator];
+  v12 = focusVolumeAnimator2;
   if (v10 >= v7)
   {
     v14[0] = MEMORY[0x1E69E9820];
@@ -830,7 +830,7 @@ LABEL_39:
     v14[2] = __48__PXStoryMusicPlayer__updateFocusVolumeAnimator__block_invoke_2;
     v14[3] = &__block_descriptor_36_e35_v16__0___PXMutableNumberAnimator__8l;
     v15 = v7;
-    [v11 performChangesWithoutAnimation:v14];
+    [focusVolumeAnimator2 performChangesWithoutAnimation:v14];
   }
 
   else
@@ -848,8 +848,8 @@ LABEL_39:
 
 - (void)_invalidateFocusVolumeAnimator
 {
-  v2 = [(PXStoryMusicPlayer *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateFocusVolumeAnimator];
+  updater = [(PXStoryMusicPlayer *)self updater];
+  [updater setNeedsUpdateOf:sel__updateFocusVolumeAnimator];
 }
 
 - (void)_updateDuckingVolumeAnimator
@@ -861,7 +861,7 @@ LABEL_39:
     v3 = v4;
   }
 
-  v5 = [(PXStoryMusicPlayer *)self duckingVolumeAnimator];
+  duckingVolumeAnimator = [(PXStoryMusicPlayer *)self duckingVolumeAnimator];
   v6 = +[PXStorySettings sharedInstance];
   [v6 duckingFadeDuration];
   v7[0] = MEMORY[0x1E69E9820];
@@ -869,34 +869,34 @@ LABEL_39:
   v7[2] = __50__PXStoryMusicPlayer__updateDuckingVolumeAnimator__block_invoke;
   v7[3] = &__block_descriptor_36_e35_v16__0___PXMutableNumberAnimator__8l;
   v8 = v3;
-  [v5 performChangesWithDuration:4 curve:v7 changes:?];
+  [duckingVolumeAnimator performChangesWithDuration:4 curve:v7 changes:?];
 }
 
 - (void)_invalidateDuckingVolumeAnimator
 {
-  v2 = [(PXStoryMusicPlayer *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateDuckingVolumeAnimator];
+  updater = [(PXStoryMusicPlayer *)self updater];
+  [updater setNeedsUpdateOf:sel__updateDuckingVolumeAnimator];
 }
 
 - (void)_updateFadeOutVolumeAnimator
 {
-  v3 = [(PXStoryMusicPlayer *)self model];
-  [v3 outroFractionCompleted];
+  model = [(PXStoryMusicPlayer *)self model];
+  [model outroFractionCompleted];
   v5 = v4;
 
-  v6 = [(PXStoryMusicPlayer *)self fadeOutVolumeAnimator];
-  v7 = v6;
+  fadeOutVolumeAnimator = [(PXStoryMusicPlayer *)self fadeOutVolumeAnimator];
+  v7 = fadeOutVolumeAnimator;
   if (v5 <= 0.0)
   {
-    [v6 performChangesWithDuration:4 curve:&__block_literal_global_224813 changes:0.3];
+    [fadeOutVolumeAnimator performChangesWithDuration:4 curve:&__block_literal_global_224813 changes:0.3];
   }
 
   else
   {
-    v8 = [(PXStoryMusicPlayer *)self model];
-    v9 = [v8 configuration];
+    model2 = [(PXStoryMusicPlayer *)self model];
+    configuration = [model2 configuration];
     v10 = 0.0;
-    if (([v9 isPresentedForAirPlay] & 1) == 0)
+    if (([configuration isPresentedForAirPlay] & 1) == 0)
     {
       v11 = +[PXStorySettings sharedInstance];
       [v11 musicFadeOutVolume];
@@ -915,18 +915,18 @@ LABEL_39:
 
 - (void)_invalidateFadeOutVolumeAnimator
 {
-  v2 = [(PXStoryMusicPlayer *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateFadeOutVolumeAnimator];
+  updater = [(PXStoryMusicPlayer *)self updater];
+  [updater setNeedsUpdateOf:sel__updateFadeOutVolumeAnimator];
 }
 
 - (void)_updateDucked
 {
-  v15 = [(PXStoryMusicPlayer *)self model];
-  v3 = [v15 viewMode];
-  v4 = [(PXStoryMusicPlayer *)self model];
-  v5 = [v4 isAtPlaybackEnd];
+  model = [(PXStoryMusicPlayer *)self model];
+  viewMode = [model viewMode];
+  model2 = [(PXStoryMusicPlayer *)self model];
+  isAtPlaybackEnd = [model2 isAtPlaybackEnd];
 
-  if (v5)
+  if (isAtPlaybackEnd)
   {
     v6 = +[PXStorySettings sharedInstance];
     [v6 musicFadeOutVolume];
@@ -938,7 +938,7 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if (v3 != 1 && v3 != 4)
+  if (viewMode != 1 && viewMode != 4)
   {
     v6 = +[PXStorySettings sharedInstance];
     [v6 musicBackgroundVolume];
@@ -947,7 +947,7 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  if ([(PXStoryMusicPlayer *)self shouldDuckForCurrentTouch]&& v3 == 1)
+  if ([(PXStoryMusicPlayer *)self shouldDuckForCurrentTouch]&& viewMode == 1)
   {
     v6 = +[PXStorySettings sharedInstance];
     [v6 musicBackgroundVolume];
@@ -956,7 +956,7 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  if ([v15 wantsMusicDucked])
+  if ([model wantsMusicDucked])
   {
     v6 = +[PXStorySettings sharedInstance];
     [v6 musicDuckedVolume];
@@ -977,17 +977,17 @@ LABEL_12:
 
 - (void)_invalidateDucked
 {
-  v2 = [(PXStoryMusicPlayer *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateDucked];
+  updater = [(PXStoryMusicPlayer *)self updater];
+  [updater setNeedsUpdateOf:sel__updateDucked];
 }
 
 - (void)_updateTouchingBeganDate
 {
-  v4 = [(PXStoryMusicPlayer *)self model];
-  if ([v4 isTouching])
+  model = [(PXStoryMusicPlayer *)self model];
+  if ([model isTouching])
   {
-    v3 = [MEMORY[0x1E695DF00] date];
-    [(PXStoryMusicPlayer *)self setTouchingBeganDate:v3];
+    date = [MEMORY[0x1E695DF00] date];
+    [(PXStoryMusicPlayer *)self setTouchingBeganDate:date];
   }
 
   else
@@ -998,22 +998,22 @@ LABEL_12:
 
 - (void)_invalidateTouchingBeganDate
 {
-  v2 = [(PXStoryMusicPlayer *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateTouchingBeganDate];
+  updater = [(PXStoryMusicPlayer *)self updater];
+  [updater setNeedsUpdateOf:sel__updateTouchingBeganDate];
 }
 
 - (void)_updatePlayerVolume
 {
-  v3 = [(PXStoryMusicPlayer *)self duckingVolumeAnimator];
-  [v3 presentationValue];
+  duckingVolumeAnimator = [(PXStoryMusicPlayer *)self duckingVolumeAnimator];
+  [duckingVolumeAnimator presentationValue];
   v5 = v4;
 
-  v6 = [(PXStoryMusicPlayer *)self focusVolumeAnimator];
-  [v6 presentationValue];
+  focusVolumeAnimator = [(PXStoryMusicPlayer *)self focusVolumeAnimator];
+  [focusVolumeAnimator presentationValue];
   v8 = v7;
 
-  v9 = [(PXStoryMusicPlayer *)self fadeOutVolumeAnimator];
-  [v9 presentationValue];
+  fadeOutVolumeAnimator = [(PXStoryMusicPlayer *)self fadeOutVolumeAnimator];
+  [fadeOutVolumeAnimator presentationValue];
   v11 = v10;
 
   if (v5 >= v11)
@@ -1028,14 +1028,14 @@ LABEL_12:
 
   v13 = v12 * v8;
   v14 = +[PXStorySettings sharedInstance];
-  v15 = [v14 musicDemoVolumeAdjustment];
+  musicDemoVolumeAdjustment = [v14 musicDemoVolumeAdjustment];
 
   memset(&v34, 0, sizeof(v34));
-  v16 = [(PXStoryMusicPlayer *)self player];
-  v17 = v16;
-  if (v16)
+  player = [(PXStoryMusicPlayer *)self player];
+  v17 = player;
+  if (player)
   {
-    [v16 currentTime];
+    [player currentTime];
   }
 
   else
@@ -1043,14 +1043,14 @@ LABEL_12:
     memset(&v34, 0, sizeof(v34));
   }
 
-  v18 = v13 * v15;
+  v18 = v13 * musicDemoVolumeAdjustment;
 
   if ((v34.flags & 0x1D) == 1)
   {
     time = v34;
     Seconds = CMTimeGetSeconds(&time);
-    v20 = [(PXStoryMusicPlayer *)self currentAudioAsset];
-    v21 = PXAudioAssetDefaultEntryPoint(v20);
+    currentAudioAsset = [(PXStoryMusicPlayer *)self currentAudioAsset];
+    v21 = PXAudioAssetDefaultEntryPoint(currentAudioAsset);
 
     if (v21)
     {
@@ -1060,43 +1060,43 @@ LABEL_12:
     }
   }
 
-  v24 = [(PXStoryMusicPlayer *)self viewControllerTransitionVolumeAnimator];
-  [v24 presentationValue];
+  viewControllerTransitionVolumeAnimator = [(PXStoryMusicPlayer *)self viewControllerTransitionVolumeAnimator];
+  [viewControllerTransitionVolumeAnimator presentationValue];
   v26 = v25 * v18;
 
-  v27 = [(PXStoryMusicPlayer *)self model];
-  [v27 volume];
+  model = [(PXStoryMusicPlayer *)self model];
+  [model volume];
   v29 = v28 * v26;
 
   self->_volume = v29;
-  v30 = [(PXStoryMusicPlayer *)self player];
+  player2 = [(PXStoryMusicPlayer *)self player];
   v31[0] = MEMORY[0x1E69E9820];
   v31[1] = 3221225472;
   v31[2] = __41__PXStoryMusicPlayer__updatePlayerVolume__block_invoke;
   v31[3] = &__block_descriptor_36_e32_v16__0___PXMutableAudioPlayer__8l;
   v32 = v29;
-  [v30 performChanges:v31];
+  [player2 performChanges:v31];
 }
 
 - (void)_invalidatePlayerVolume
 {
-  v2 = [(PXStoryMusicPlayer *)self updater];
-  [v2 setNeedsUpdateOf:sel__updatePlayerVolume];
+  updater = [(PXStoryMusicPlayer *)self updater];
+  [updater setNeedsUpdateOf:sel__updatePlayerVolume];
 }
 
 - (void)_updateModelProperties
 {
-  v3 = [(PXStoryMusicPlayer *)self readinessStatus];
-  v4 = [(PXStoryMusicPlayer *)self model];
-  v5 = [v4 storyQueue];
+  readinessStatus = [(PXStoryMusicPlayer *)self readinessStatus];
+  model = [(PXStoryMusicPlayer *)self model];
+  storyQueue = [model storyQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __44__PXStoryMusicPlayer__updateModelProperties__block_invoke;
   v7[3] = &unk_1E77498A0;
-  v8 = v4;
-  v9 = v3;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = model;
+  v9 = readinessStatus;
+  v6 = model;
+  dispatch_async(storyQueue, v7);
 }
 
 uint64_t __44__PXStoryMusicPlayer__updateModelProperties__block_invoke(uint64_t a1)
@@ -1112,31 +1112,31 @@ uint64_t __44__PXStoryMusicPlayer__updateModelProperties__block_invoke(uint64_t 
 
 - (void)_invalidateModelProperties
 {
-  v2 = [(PXStoryMusicPlayer *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateModelProperties];
+  updater = [(PXStoryMusicPlayer *)self updater];
+  [updater setNeedsUpdateOf:sel__updateModelProperties];
 }
 
 - (void)_updateReadinessStatus
 {
-  v6 = [(PXStoryMusicPlayer *)self currentSongResource];
-  if (PXStorySongResourceIsNullResource(v6))
+  currentSongResource = [(PXStoryMusicPlayer *)self currentSongResource];
+  if (PXStorySongResourceIsNullResource(currentSongResource))
   {
     v3 = 3;
   }
 
   else
   {
-    v4 = [(PXStoryMusicPlayer *)self player];
-    v5 = [v4 state];
+    player = [(PXStoryMusicPlayer *)self player];
+    state = [player state];
 
-    if ((v5 - 2) > 3)
+    if ((state - 2) > 3)
     {
       v3 = 0;
     }
 
     else
     {
-      v3 = qword_1A5383318[v5 - 2];
+      v3 = qword_1A5383318[state - 2];
     }
   }
 
@@ -1145,16 +1145,16 @@ uint64_t __44__PXStoryMusicPlayer__updateModelProperties__block_invoke(uint64_t 
 
 - (void)_invalidateReadinessStatus
 {
-  v2 = [(PXStoryMusicPlayer *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateReadinessStatus];
+  updater = [(PXStoryMusicPlayer *)self updater];
+  [updater setNeedsUpdateOf:sel__updateReadinessStatus];
 }
 
 - (void)_updatePlaybackTimer
 {
-  v3 = [(PXStoryMusicPlayer *)self audioDesiredPlayState];
-  v4 = [(PXStoryMusicPlayer *)self playbackTimer];
-  v5 = v4;
-  if (v3 == 1)
+  audioDesiredPlayState = [(PXStoryMusicPlayer *)self audioDesiredPlayState];
+  playbackTimer = [(PXStoryMusicPlayer *)self playbackTimer];
+  v5 = playbackTimer;
+  if (audioDesiredPlayState == 1)
   {
 
     if (!v5)
@@ -1166,7 +1166,7 @@ uint64_t __44__PXStoryMusicPlayer__updateModelProperties__block_invoke(uint64_t 
 
   else
   {
-    [v4 invalidate];
+    [playbackTimer invalidate];
 
     [(PXStoryMusicPlayer *)self setPlaybackTimer:0];
   }
@@ -1174,23 +1174,23 @@ uint64_t __44__PXStoryMusicPlayer__updateModelProperties__block_invoke(uint64_t 
 
 - (void)_invalidatePlaybackTimer
 {
-  v2 = [(PXStoryMusicPlayer *)self updater];
-  [v2 setNeedsUpdateOf:sel__updatePlaybackTimer];
+  updater = [(PXStoryMusicPlayer *)self updater];
+  [updater setNeedsUpdateOf:sel__updatePlaybackTimer];
 }
 
 - (void)_updatePlayerDesiredPlayState
 {
-  v3 = [(PXStoryMusicPlayer *)self audioDesiredPlayState];
-  v4 = [(PXStoryMusicPlayer *)self player];
-  if ([v4 state] != 5)
+  audioDesiredPlayState = [(PXStoryMusicPlayer *)self audioDesiredPlayState];
+  player = [(PXStoryMusicPlayer *)self player];
+  if ([player state] != 5)
   {
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __51__PXStoryMusicPlayer__updatePlayerDesiredPlayState__block_invoke;
     v5[3] = &unk_1E77479A0;
     v5[4] = self;
-    v5[5] = v3;
-    [v4 performChanges:v5];
+    v5[5] = audioDesiredPlayState;
+    [player performChanges:v5];
   }
 }
 
@@ -1233,26 +1233,26 @@ void __51__PXStoryMusicPlayer__updatePlayerDesiredPlayState__block_invoke(uint64
 
 - (void)_invalidatePlayerDesiredPlayState
 {
-  v2 = [(PXStoryMusicPlayer *)self updater];
-  [v2 setNeedsUpdateOf:sel__updatePlayerDesiredPlayState];
+  updater = [(PXStoryMusicPlayer *)self updater];
+  [updater setNeedsUpdateOf:sel__updatePlayerDesiredPlayState];
 }
 
 - (void)_updateDesiredPlayState
 {
-  v4 = [(PXStoryMusicPlayer *)self model];
-  v5 = [v4 viewMode];
+  model = [(PXStoryMusicPlayer *)self model];
+  viewMode = [model viewMode];
   v6 = 0;
-  if (v5 <= 5)
+  if (viewMode <= 5)
   {
-    if (((1 << v5) & 0x36) != 0)
+    if (((1 << viewMode) & 0x36) != 0)
     {
       v6 = 1;
     }
 
-    else if (!v5)
+    else if (!viewMode)
     {
-      v9 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v9 handleFailureInMethod:a2 object:self file:@"PXStoryMusicPlayer.m" lineNumber:333 description:@"Code which should be unreachable has been reached"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryMusicPlayer.m" lineNumber:333 description:@"Code which should be unreachable has been reached"];
 
       abort();
     }
@@ -1262,10 +1262,10 @@ void __51__PXStoryMusicPlayer__updatePlayerDesiredPlayState__block_invoke(uint64
   aBlock[1] = 3221225472;
   aBlock[2] = __45__PXStoryMusicPlayer__updateDesiredPlayState__block_invoke;
   aBlock[3] = &unk_1E7747978;
-  v11 = v4;
-  v12 = self;
+  v11 = model;
+  selfCopy = self;
   v13 = v6;
-  v7 = v4;
+  v7 = model;
   v8 = _Block_copy(aBlock);
   [(PXStoryMusicPlayer *)self setAudioDesiredPlayState:v8[2]() ^ 1];
 }
@@ -1330,26 +1330,26 @@ LABEL_13:
 
 - (void)_invalidateDesiredPlayState
 {
-  v2 = [(PXStoryMusicPlayer *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateDesiredPlayState];
+  updater = [(PXStoryMusicPlayer *)self updater];
+  [updater setNeedsUpdateOf:sel__updateDesiredPlayState];
 }
 
 - (void)_updatePlayerCurrentAsset
 {
-  v3 = [(PXStoryMusicPlayer *)self currentAudioAsset];
+  currentAudioAsset = [(PXStoryMusicPlayer *)self currentAudioAsset];
   v10 = 0uLL;
   v11 = 0;
-  [(PXStoryMusicPlayer *)self playbackStartTimeForIncomingSong:v3];
-  v4 = [(PXStoryMusicPlayer *)self player];
+  [(PXStoryMusicPlayer *)self playbackStartTimeForIncomingSong:currentAudioAsset];
+  player = [(PXStoryMusicPlayer *)self player];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __47__PXStoryMusicPlayer__updatePlayerCurrentAsset__block_invoke;
   v6[3] = &unk_1E7747950;
-  v7 = v3;
+  v7 = currentAudioAsset;
   v8 = v10;
   v9 = v11;
-  v5 = v3;
-  [v4 performChanges:v6];
+  v5 = currentAudioAsset;
+  [player performChanges:v6];
 }
 
 uint64_t __47__PXStoryMusicPlayer__updatePlayerCurrentAsset__block_invoke(uint64_t a1, void *a2)
@@ -1362,29 +1362,29 @@ uint64_t __47__PXStoryMusicPlayer__updatePlayerCurrentAsset__block_invoke(uint64
 
 - (void)_invalidatePlayerCurrentAsset
 {
-  v2 = [(PXStoryMusicPlayer *)self updater];
-  [v2 setNeedsUpdateOf:sel__updatePlayerCurrentAsset];
+  updater = [(PXStoryMusicPlayer *)self updater];
+  [updater setNeedsUpdateOf:sel__updatePlayerCurrentAsset];
 }
 
-- (void)_handleAudioCues:(id)a3 asset:(id)a4 error:(id)a5 requestID:(int64_t)a6
+- (void)_handleAudioCues:(id)cues asset:(id)asset error:(id)error requestID:(int64_t)d
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [(PXStoryMusicPlayer *)self storyQueue];
+  cuesCopy = cues;
+  assetCopy = asset;
+  errorCopy = error;
+  storyQueue = [(PXStoryMusicPlayer *)self storyQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __61__PXStoryMusicPlayer__handleAudioCues_asset_error_requestID___block_invoke;
   block[3] = &unk_1E7747928;
-  v20 = v12;
-  v21 = a6;
+  v20 = errorCopy;
+  dCopy = d;
   block[4] = self;
-  v18 = v10;
-  v19 = v11;
-  v14 = v12;
-  v15 = v11;
-  v16 = v10;
-  dispatch_async(v13, block);
+  v18 = cuesCopy;
+  v19 = assetCopy;
+  v14 = errorCopy;
+  v15 = assetCopy;
+  v16 = cuesCopy;
+  dispatch_async(storyQueue, block);
 }
 
 uint64_t __61__PXStoryMusicPlayer__handleAudioCues_asset_error_requestID___block_invoke(uint64_t a1)
@@ -1420,20 +1420,20 @@ uint64_t __61__PXStoryMusicPlayer__handleAudioCues_asset_error_requestID___block
 
 - (void)_updateCueSource
 {
-  v3 = [(PXStoryMusicPlayer *)self currentAudioAsset];
+  currentAudioAsset = [(PXStoryMusicPlayer *)self currentAudioAsset];
   objc_initWeak(&location, self);
   [(PXStoryMusicPlayer *)self setCueRequestID:[(PXStoryMusicPlayer *)self cueRequestID]+ 1];
-  v4 = [(PXStoryMusicPlayer *)self cueRequestID];
-  v5 = [(PXStoryMusicPlayer *)self cueProvider];
+  cueRequestID = [(PXStoryMusicPlayer *)self cueRequestID];
+  cueProvider = [(PXStoryMusicPlayer *)self cueProvider];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __38__PXStoryMusicPlayer__updateCueSource__block_invoke;
   v8[3] = &unk_1E7747900;
   objc_copyWeak(v10, &location);
-  v6 = v3;
+  v6 = currentAudioAsset;
   v9 = v6;
-  v10[1] = v4;
-  v7 = [v5 requestCuesForAudioAsset:v6 resultHandler:v8];
+  v10[1] = cueRequestID;
+  v7 = [cueProvider requestCuesForAudioAsset:v6 resultHandler:v8];
 
   objc_destroyWeak(v10);
   objc_destroyWeak(&location);
@@ -1450,35 +1450,35 @@ void __38__PXStoryMusicPlayer__updateCueSource__block_invoke(uint64_t a1, void *
 - (void)_invalidateCueSource
 {
   [(PXStoryMusicPlayer *)self setCueSource:0];
-  v3 = [(PXStoryMusicPlayer *)self updater];
-  [v3 setNeedsUpdateOf:sel__updateCueSource];
+  updater = [(PXStoryMusicPlayer *)self updater];
+  [updater setNeedsUpdateOf:sel__updateCueSource];
 }
 
 - (void)_updateCurrentAudioAsset
 {
-  v4 = [(PXStoryMusicPlayer *)self currentSongResource];
-  v3 = [v4 px_storyResourceSongAsset];
-  [(PXStoryMusicPlayer *)self setCurrentAudioAsset:v3];
+  currentSongResource = [(PXStoryMusicPlayer *)self currentSongResource];
+  px_storyResourceSongAsset = [currentSongResource px_storyResourceSongAsset];
+  [(PXStoryMusicPlayer *)self setCurrentAudioAsset:px_storyResourceSongAsset];
 }
 
 - (void)_invalidateCurrentAudioAsset
 {
-  v2 = [(PXStoryMusicPlayer *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateCurrentAudioAsset];
+  updater = [(PXStoryMusicPlayer *)self updater];
+  [updater setNeedsUpdateOf:sel__updateCurrentAudioAsset];
 }
 
 - (void)_updateCurrentSongResource
 {
-  v4 = [(PXStoryMusicPlayer *)self model];
-  v5 = [v4 activeSongResource];
+  model = [(PXStoryMusicPlayer *)self model];
+  activeSongResource = [model activeSongResource];
 
-  v6 = [v5 px_storyResourceSongAsset];
-  if ([v6 catalog] == 4)
+  px_storyResourceSongAsset = [activeSongResource px_storyResourceSongAsset];
+  if ([px_storyResourceSongAsset catalog] == 4)
   {
     [(PXStoryMusicPlayer *)self targetDuration];
     if ((v14[36] & 0x1D) == 1)
     {
-      v7 = v6;
+      v7 = px_storyResourceSongAsset;
       if (v7)
       {
         objc_opt_class();
@@ -1488,23 +1488,23 @@ LABEL_5:
           [(PXStoryMusicPlayer *)self targetDuration];
           v8 = [v7 assetWithTargetDuration:v14];
 
-          v5 = v8;
+          activeSongResource = v8;
           goto LABEL_6;
         }
 
-        v9 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
         v12 = objc_opt_class();
         v11 = NSStringFromClass(v12);
-        v13 = [v7 px_descriptionForAssertionMessage];
-        [v9 handleFailureInMethod:a2 object:self file:@"PXStoryMusicPlayer.m" lineNumber:268 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"asset", v11, v13}];
+        px_descriptionForAssertionMessage = [v7 px_descriptionForAssertionMessage];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryMusicPlayer.m" lineNumber:268 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"asset", v11, px_descriptionForAssertionMessage}];
       }
 
       else
       {
-        v9 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
         v10 = objc_opt_class();
         v11 = NSStringFromClass(v10);
-        [v9 handleFailureInMethod:a2 object:self file:@"PXStoryMusicPlayer.m" lineNumber:268 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"asset", v11}];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryMusicPlayer.m" lineNumber:268 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"asset", v11}];
       }
 
       goto LABEL_5;
@@ -1512,25 +1512,25 @@ LABEL_5:
   }
 
 LABEL_6:
-  [(PXStoryMusicPlayer *)self setCurrentSongResource:v5];
+  [(PXStoryMusicPlayer *)self setCurrentSongResource:activeSongResource];
 }
 
 - (void)_invalidateCurrentSongResource
 {
-  v2 = [(PXStoryMusicPlayer *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateCurrentSongResource];
+  updater = [(PXStoryMusicPlayer *)self updater];
+  [updater setNeedsUpdateOf:sel__updateCurrentSongResource];
 }
 
 - (void)_updateTargetDuration
 {
   if ([(PXStoryMusicPlayer *)self targetDurationMatchesTimeline])
   {
-    v3 = [(PXStoryMusicPlayer *)self model];
-    v4 = [v3 timeline];
-    v5 = v4;
-    if (v4)
+    model = [(PXStoryMusicPlayer *)self model];
+    timeline = [model timeline];
+    v5 = timeline;
+    if (timeline)
     {
-      [v4 timeRange];
+      [timeline timeRange];
     }
 
     else
@@ -1547,8 +1547,8 @@ LABEL_6:
 
 - (void)_invalidateTargetDuration
 {
-  v2 = [(PXStoryMusicPlayer *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateTargetDuration];
+  updater = [(PXStoryMusicPlayer *)self updater];
+  [updater setNeedsUpdateOf:sel__updateTargetDuration];
 }
 
 - (NSString)description
@@ -1556,29 +1556,29 @@ LABEL_6:
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(PXStoryMusicPlayer *)self model];
-  v7 = [v3 initWithFormat:@"<%@ %p; Model: %@>", v5, self, v6];
+  model = [(PXStoryMusicPlayer *)self model];
+  v7 = [v3 initWithFormat:@"<%@ %p; Model: %@>", v5, self, model];
 
   return v7;
 }
 
 - (void)replay
 {
-  v3 = [(PXStoryMusicPlayer *)self player];
-  v4 = [v3 currentAsset];
+  player = [(PXStoryMusicPlayer *)self player];
+  currentAsset = [player currentAsset];
 
   memset(&v10, 0, sizeof(v10));
-  v5 = PXAudioAssetDefaultEntryPoint(v4);
+  v5 = PXAudioAssetDefaultEntryPoint(currentAsset);
   [v5 time];
   CMTimeMakeWithSeconds(&v10, v6, 600);
 
-  v7 = [(PXStoryMusicPlayer *)self player];
+  player2 = [(PXStoryMusicPlayer *)self player];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __28__PXStoryMusicPlayer_replay__block_invoke;
   v8[3] = &__block_descriptor_56_e32_v16__0___PXMutableAudioPlayer__8l;
   v9 = v10;
-  [v7 performChanges:v8];
+  [player2 performChanges:v8];
 }
 
 uint64_t __28__PXStoryMusicPlayer_replay__block_invoke(uint64_t a1, void *a2)
@@ -1588,7 +1588,7 @@ uint64_t __28__PXStoryMusicPlayer_replay__block_invoke(uint64_t a1, void *a2)
   return [a2 replayFromTime:&v3];
 }
 
-- (id)diagnosticTextForHUDType:(int64_t)a3
+- (id)diagnosticTextForHUDType:(int64_t)type
 {
   v4 = objc_alloc(MEMORY[0x1E696AEC0]);
   [(PXStoryMusicPlayer *)self currentTime];
@@ -1598,34 +1598,34 @@ uint64_t __28__PXStoryMusicPlayer_replay__block_invoke(uint64_t a1, void *a2)
   return v6;
 }
 
-- (void)setDuckedVolume:(float)a3
+- (void)setDuckedVolume:(float)volume
 {
-  if (self->_duckedVolume != a3)
+  if (self->_duckedVolume != volume)
   {
-    self->_duckedVolume = a3;
+    self->_duckedVolume = volume;
     [(PXStoryMusicPlayer *)self _invalidateDuckingVolumeAnimator];
   }
 }
 
-- (void)setIsDucked:(BOOL)a3
+- (void)setIsDucked:(BOOL)ducked
 {
-  if (self->_isDucked != a3)
+  if (self->_isDucked != ducked)
   {
-    self->_isDucked = a3;
+    self->_isDucked = ducked;
     [(PXStoryMusicPlayer *)self _invalidateDuckingVolumeAnimator];
   }
 }
 
-- (void)setTargetDuration:(id *)a3
+- (void)setTargetDuration:(id *)duration
 {
   v23 = *MEMORY[0x1E69E9840];
   p_targetDuration = &self->_targetDuration;
-  time1 = *a3;
+  time1 = *duration;
   targetDuration = self->_targetDuration;
   if (CMTimeCompare(&time1, &targetDuration))
   {
-    v6 = *&a3->var0;
-    p_targetDuration->epoch = a3->var3;
+    v6 = *&duration->var0;
+    p_targetDuration->epoch = duration->var3;
     *&p_targetDuration->value = v6;
     v7 = [(PXStoryMusicPlayer *)self log];
     v8 = os_signpost_id_make_with_pointer(v7, self);
@@ -1634,9 +1634,9 @@ uint64_t __28__PXStoryMusicPlayer_replay__block_invoke(uint64_t a1, void *a2)
       v9 = v8;
       if (os_signpost_enabled(v7))
       {
-        v10 = [(PXStoryMusicPlayer *)self logContext];
+        logContext = [(PXStoryMusicPlayer *)self logContext];
         LODWORD(time1.value) = 134217984;
-        *(&time1.value + 4) = v10;
+        *(&time1.value + 4) = logContext;
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v7, OS_SIGNPOST_INTERVAL_END, v9, "PXStoryMusicPlayer.targetDuration", "Context=%{signpost.telemetry:string2}lu ", &time1, 0xCu);
       }
     }
@@ -1648,11 +1648,11 @@ uint64_t __28__PXStoryMusicPlayer_replay__block_invoke(uint64_t a1, void *a2)
       v13 = v12;
       if (os_signpost_enabled(v11))
       {
-        v14 = [(PXStoryMusicPlayer *)self logContext];
-        time1 = *a3;
+        logContext2 = [(PXStoryMusicPlayer *)self logContext];
+        time1 = *duration;
         v15 = PXStoryTimeDescription(&time1);
         LODWORD(time1.value) = 134218242;
-        *(&time1.value + 4) = v14;
+        *(&time1.value + 4) = logContext2;
         LOWORD(time1.flags) = 2114;
         *(&time1.flags + 2) = v15;
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v11, OS_SIGNPOST_EVENT, v13, "PXStoryMusicPlayer.targetDuration", "Context=%{signpost.telemetry:string2}lu %{public}@", &time1, 0x16u);
@@ -1666,11 +1666,11 @@ uint64_t __28__PXStoryMusicPlayer_replay__block_invoke(uint64_t a1, void *a2)
       v18 = v17;
       if (os_signpost_enabled(v16))
       {
-        v19 = [(PXStoryMusicPlayer *)self logContext];
-        time1 = *a3;
+        logContext3 = [(PXStoryMusicPlayer *)self logContext];
+        time1 = *duration;
         v20 = PXStoryTimeDescription(&time1);
         LODWORD(time1.value) = 134218242;
-        *(&time1.value + 4) = v19;
+        *(&time1.value + 4) = logContext3;
         LOWORD(time1.flags) = 2114;
         *(&time1.flags + 2) = v20;
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v16, OS_SIGNPOST_INTERVAL_BEGIN, v18, "PXStoryMusicPlayer.targetDuration", "Context=%{signpost.telemetry:string2}lu %{public}@", &time1, 0x16u);
@@ -1681,18 +1681,18 @@ uint64_t __28__PXStoryMusicPlayer_replay__block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (void)setCurrentAudioAsset:(id)a3
+- (void)setCurrentAudioAsset:(id)asset
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_currentAudioAsset != v5)
+  assetCopy = asset;
+  v6 = assetCopy;
+  if (self->_currentAudioAsset != assetCopy)
   {
-    v8 = v5;
-    v7 = [(PXAudioAsset *)v5 isEqual:?];
+    v8 = assetCopy;
+    v7 = [(PXAudioAsset *)assetCopy isEqual:?];
     v6 = v8;
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_currentAudioAsset, a3);
+      objc_storeStrong(&self->_currentAudioAsset, asset);
       [(PXStoryMusicPlayer *)self _invalidatePlayerCurrentAsset];
       [(PXStoryMusicPlayer *)self _invalidateCueSource];
       [(PXStoryMusicPlayer *)self _invalidatePlayerVolume];
@@ -1701,11 +1701,11 @@ uint64_t __28__PXStoryMusicPlayer_replay__block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (void)setCurrentSongResource:(id)a3
+- (void)setCurrentSongResource:(id)resource
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  objc_storeStrong(&self->_currentSongResource, a3);
+  resourceCopy = resource;
+  objc_storeStrong(&self->_currentSongResource, resource);
   v6 = [(PXStoryMusicPlayer *)self log];
   v7 = os_signpost_id_make_with_pointer(v6, self);
   if (v7 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
@@ -1714,7 +1714,7 @@ uint64_t __28__PXStoryMusicPlayer_replay__block_invoke(uint64_t a1, void *a2)
     if (os_signpost_enabled(v6))
     {
       v17 = 134217984;
-      v18 = [(PXStoryMusicPlayer *)self logContext];
+      logContext = [(PXStoryMusicPlayer *)self logContext];
       _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v6, OS_SIGNPOST_INTERVAL_END, v8, "PXStoryMusicPlayer.currentSongResource", "Context=%{signpost.telemetry:string2}lu ", &v17, 0xCu);
     }
   }
@@ -1726,11 +1726,11 @@ uint64_t __28__PXStoryMusicPlayer_replay__block_invoke(uint64_t a1, void *a2)
     v11 = v10;
     if (os_signpost_enabled(v9))
     {
-      v12 = [(PXStoryMusicPlayer *)self logContext];
+      logContext2 = [(PXStoryMusicPlayer *)self logContext];
       v17 = 134218242;
-      v18 = v12;
+      logContext = logContext2;
       v19 = 2114;
-      v20 = v5;
+      v20 = resourceCopy;
       _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v9, OS_SIGNPOST_EVENT, v11, "PXStoryMusicPlayer.currentSongResource", "Context=%{signpost.telemetry:string2}lu %{public}@", &v17, 0x16u);
     }
   }
@@ -1742,11 +1742,11 @@ uint64_t __28__PXStoryMusicPlayer_replay__block_invoke(uint64_t a1, void *a2)
     v15 = v14;
     if (os_signpost_enabled(v13))
     {
-      v16 = [(PXStoryMusicPlayer *)self logContext];
+      logContext3 = [(PXStoryMusicPlayer *)self logContext];
       v17 = 134218242;
-      v18 = v16;
+      logContext = logContext3;
       v19 = 2114;
-      v20 = v5;
+      v20 = resourceCopy;
       _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v13, OS_SIGNPOST_INTERVAL_BEGIN, v15, "PXStoryMusicPlayer.currentSongResource", "Context=%{signpost.telemetry:string2}lu %{public}@", &v17, 0x16u);
     }
   }
@@ -1757,16 +1757,16 @@ uint64_t __28__PXStoryMusicPlayer_replay__block_invoke(uint64_t a1, void *a2)
   [(PXStoryMusicPlayer *)self _invalidateDesiredPlayState];
 }
 
-- (void)setReadinessStatus:(int64_t)a3
+- (void)setReadinessStatus:(int64_t)status
 {
   v40 = *MEMORY[0x1E69E9840];
   readinessStatus = self->_readinessStatus;
-  if (readinessStatus == a3)
+  if (readinessStatus == status)
   {
     return;
   }
 
-  if (a3 == 1)
+  if (status == 1)
   {
     [(PXStoryMusicPlayer *)self setBufferingEvents:[(PXStoryMusicPlayer *)self bufferingEvents]+ 1];
     v6 = [(PXStoryMusicPlayer *)self log];
@@ -1776,12 +1776,12 @@ uint64_t __28__PXStoryMusicPlayer_replay__block_invoke(uint64_t a1, void *a2)
       v8 = v7;
       if (os_signpost_enabled(v6))
       {
-        v9 = [(PXStoryMusicPlayer *)self logContext];
-        v10 = [(PXStoryMusicPlayer *)self currentSongResource];
+        logContext = [(PXStoryMusicPlayer *)self logContext];
+        currentSongResource = [(PXStoryMusicPlayer *)self currentSongResource];
         *buf = 134218242;
-        v33 = v9;
+        v33 = logContext;
         v34 = 2112;
-        v35 = v10;
+        statusCopy2 = currentSongResource;
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v6, OS_SIGNPOST_INTERVAL_BEGIN, v8, "PXStoryMusicPlayer.Buffering", "Context=%{signpost.telemetry:string2}lu %@", buf, 0x16u);
       }
     }
@@ -1789,7 +1789,7 @@ uint64_t __28__PXStoryMusicPlayer_replay__block_invoke(uint64_t a1, void *a2)
 
   else
   {
-    if (a3 != 3 || readinessStatus != 1)
+    if (status != 3 || readinessStatus != 1)
     {
       goto LABEL_12;
     }
@@ -1801,19 +1801,19 @@ uint64_t __28__PXStoryMusicPlayer_replay__block_invoke(uint64_t a1, void *a2)
       v12 = v11;
       if (os_signpost_enabled(v6))
       {
-        v31 = [(PXStoryMusicPlayer *)self logContext];
+        logContext2 = [(PXStoryMusicPlayer *)self logContext];
         v13 = +[PXNetworkStatusMonitor sharedInstance];
-        v14 = [v13 bestAvailableNetworkType];
-        v15 = [(PXStoryMusicPlayer *)self bufferingEvents];
-        v16 = [(PXStoryMusicPlayer *)self currentSongResource];
+        bestAvailableNetworkType = [v13 bestAvailableNetworkType];
+        bufferingEvents = [(PXStoryMusicPlayer *)self bufferingEvents];
+        currentSongResource2 = [(PXStoryMusicPlayer *)self currentSongResource];
         v17 = objc_opt_class();
         v18 = NSStringFromClass(v17);
         *buf = 134218754;
-        v33 = v31;
+        v33 = logContext2;
         v34 = 2050;
-        v35 = v14;
+        statusCopy2 = bestAvailableNetworkType;
         v36 = 2050;
-        v37 = v15;
+        v37 = bufferingEvents;
         v38 = 2114;
         v39 = v18;
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v6, OS_SIGNPOST_INTERVAL_END, v12, "PXStoryMusicPlayer.Buffering", "Context=%{signpost.telemetry:string2}lu  enableTelemetry=YES networkType=%{signpost.telemetry:number1,public}lu bufferingEvents=%{signpost.telemetry:number2,public}lu assetType=%{signpost.telemetry:string1,public}@ ", buf, 0x2Au);
@@ -1822,7 +1822,7 @@ uint64_t __28__PXStoryMusicPlayer_replay__block_invoke(uint64_t a1, void *a2)
   }
 
 LABEL_12:
-  self->_readinessStatus = a3;
+  self->_readinessStatus = status;
   [(PXStoryMusicPlayer *)self signalChange:2];
   v19 = [(PXStoryMusicPlayer *)self log];
   v20 = os_signpost_id_make_with_pointer(v19, self);
@@ -1831,9 +1831,9 @@ LABEL_12:
     v21 = v20;
     if (os_signpost_enabled(v19))
     {
-      v22 = [(PXStoryMusicPlayer *)self logContext];
+      logContext3 = [(PXStoryMusicPlayer *)self logContext];
       *buf = 134217984;
-      v33 = v22;
+      v33 = logContext3;
       _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v19, OS_SIGNPOST_INTERVAL_END, v21, "PXStoryMusicPlayerChangedReadinessStatus", "Context=%{signpost.telemetry:string2}lu ", buf, 0xCu);
     }
   }
@@ -1845,11 +1845,11 @@ LABEL_12:
     v25 = v24;
     if (os_signpost_enabled(v23))
     {
-      v26 = [(PXStoryMusicPlayer *)self logContext];
+      logContext4 = [(PXStoryMusicPlayer *)self logContext];
       *buf = 134218240;
-      v33 = v26;
+      v33 = logContext4;
       v34 = 2048;
-      v35 = a3;
+      statusCopy2 = status;
       _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v23, OS_SIGNPOST_EVENT, v25, "PXStoryMusicPlayerChangedReadinessStatus", "Context=%{signpost.telemetry:string2}lu %ld", buf, 0x16u);
     }
   }
@@ -1861,11 +1861,11 @@ LABEL_12:
     v29 = v28;
     if (os_signpost_enabled(v27))
     {
-      v30 = [(PXStoryMusicPlayer *)self logContext];
+      logContext5 = [(PXStoryMusicPlayer *)self logContext];
       *buf = 134218240;
-      v33 = v30;
+      v33 = logContext5;
       v34 = 2048;
-      v35 = a3;
+      statusCopy2 = status;
       _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v27, OS_SIGNPOST_INTERVAL_BEGIN, v29, "PXStoryMusicPlayerChangedReadinessStatus", "Context=%{signpost.telemetry:string2}lu %ld", buf, 0x16u);
     }
   }
@@ -1873,11 +1873,11 @@ LABEL_12:
   [(PXStoryMusicPlayer *)self _invalidateModelProperties];
 }
 
-- (void)setIsActive:(BOOL)a3
+- (void)setIsActive:(BOOL)active
 {
-  if (self->_isActive != a3)
+  if (self->_isActive != active)
   {
-    self->_isActive = a3;
+    self->_isActive = active;
     [(PXStoryMusicPlayer *)self signalChange:1];
     [(PXStoryMusicPlayer *)self _invalidateDesiredPlayState];
 
@@ -1885,18 +1885,18 @@ LABEL_12:
   }
 }
 
-- (PXStoryMusicPlayer)initWithModel:(id)a3 targetDurationMatchesTimeline:(BOOL)a4
+- (PXStoryMusicPlayer)initWithModel:(id)model targetDurationMatchesTimeline:(BOOL)timeline
 {
-  v7 = a3;
+  modelCopy = model;
   v46.receiver = self;
   v46.super_class = PXStoryMusicPlayer;
   v8 = [(PXStoryMusicPlayer *)&v46 init];
   v9 = v8;
   if (v8)
   {
-    [(PXStoryMusicPlayer *)v8 copyLogConfigurationFrom:v7];
-    v9->_targetDurationMatchesTimeline = a4;
-    objc_storeStrong(&v9->_model, a3);
+    [(PXStoryMusicPlayer *)v8 copyLogConfigurationFrom:modelCopy];
+    v9->_targetDurationMatchesTimeline = timeline;
+    objc_storeStrong(&v9->_model, model);
     [(PXStoryModel *)v9->_model registerChangeObserver:v9 context:ModelContext_224793];
     model = v9->_model;
     v44[0] = MEMORY[0x1E69E9820];
@@ -1906,8 +1906,8 @@ LABEL_12:
     v11 = v9;
     v45 = v11;
     [(PXStoryModel *)model performChanges:v44];
-    v12 = [(PXStoryModel *)v9->_model styleManager];
-    [v12 registerChangeObserver:v11 context:StyleManagerContext_224792];
+    styleManager = [(PXStoryModel *)v9->_model styleManager];
+    [styleManager registerChangeObserver:v11 context:StyleManagerContext_224792];
 
     v13 = [PXAudioPlayer alloc];
     v14 = objc_alloc(MEMORY[0x1E696AEC0]);
@@ -1928,9 +1928,9 @@ LABEL_12:
     v21 = v11;
     v43 = v21;
     [v20 performChanges:v42];
-    v22 = [(PXStoryModel *)v9->_model storyQueue];
+    storyQueue = [(PXStoryModel *)v9->_model storyQueue];
     v23 = v21[14];
-    v21[14] = v22;
+    v21[14] = storyQueue;
 
     v24 = [[off_1E7721940 alloc] initWithTarget:v21];
     v25 = v21[18];
@@ -2015,8 +2015,8 @@ id __66__PXStoryMusicPlayer_initWithModel_targetDurationMatchesTimeline___block_
 
 - (PXStoryMusicPlayer)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXStoryMusicPlayer.m" lineNumber:87 description:{@"%s is not available as initializer", "-[PXStoryMusicPlayer init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryMusicPlayer.m" lineNumber:87 description:{@"%s is not available as initializer", "-[PXStoryMusicPlayer init]"}];
 
   abort();
 }

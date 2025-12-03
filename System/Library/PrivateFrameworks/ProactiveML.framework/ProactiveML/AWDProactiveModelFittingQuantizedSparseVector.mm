@@ -1,53 +1,53 @@
 @interface AWDProactiveModelFittingQuantizedSparseVector
-+ (id)quantizedSparseVectorFromDenseVector:(id)a3 numberOfBuckets:(unint64_t)a4;
-+ (id)quantizedSparseVectorFromSparseVector:(id)a3 numberOfBuckets:(unint64_t)a4;
-- (BOOL)isEqual:(id)a3;
-- (float)originalValueAtIndex:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)quantizedSparseVectorFromDenseVector:(id)vector numberOfBuckets:(unint64_t)buckets;
++ (id)quantizedSparseVectorFromSparseVector:(id)vector numberOfBuckets:(unint64_t)buckets;
+- (BOOL)isEqual:(id)equal;
+- (float)originalValueAtIndex:(unint64_t)index;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (unsigned)indicesAtIndex:(unint64_t)a3;
-- (unsigned)valuesAtIndex:(unint64_t)a3;
-- (void)copyTo:(id)a3;
+- (unsigned)indicesAtIndex:(unint64_t)index;
+- (unsigned)valuesAtIndex:(unint64_t)index;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasLength:(BOOL)a3;
-- (void)setHasMinValue:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasLength:(BOOL)length;
+- (void)setHasMinValue:(BOOL)value;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDProactiveModelFittingQuantizedSparseVector
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v11 = a3;
-  v4 = [v11 indicesCount];
-  if (v4)
+  fromCopy = from;
+  indicesCount = [fromCopy indicesCount];
+  if (indicesCount)
   {
-    v5 = v4;
+    v5 = indicesCount;
     for (i = 0; i != v5; ++i)
     {
-      -[AWDProactiveModelFittingQuantizedSparseVector addIndices:](self, "addIndices:", [v11 indicesAtIndex:i]);
+      -[AWDProactiveModelFittingQuantizedSparseVector addIndices:](self, "addIndices:", [fromCopy indicesAtIndex:i]);
     }
   }
 
-  v7 = [v11 valuesCount];
-  if (v7)
+  valuesCount = [fromCopy valuesCount];
+  if (valuesCount)
   {
-    v8 = v7;
+    v8 = valuesCount;
     for (j = 0; j != v8; ++j)
     {
-      -[AWDProactiveModelFittingQuantizedSparseVector addValues:](self, "addValues:", [v11 valuesAtIndex:j]);
+      -[AWDProactiveModelFittingQuantizedSparseVector addValues:](self, "addValues:", [fromCopy valuesAtIndex:j]);
     }
   }
 
-  v10 = *(v11 + 68);
+  v10 = *(fromCopy + 68);
   if ((v10 & 2) != 0)
   {
-    self->_length = *(v11 + 15);
+    self->_length = *(fromCopy + 15);
     *&self->_has |= 2u;
-    v10 = *(v11 + 68);
+    v10 = *(fromCopy + 68);
     if ((v10 & 4) == 0)
     {
 LABEL_9:
@@ -60,17 +60,17 @@ LABEL_9:
     }
   }
 
-  else if ((*(v11 + 68) & 4) == 0)
+  else if ((*(fromCopy + 68) & 4) == 0)
   {
     goto LABEL_9;
   }
 
-  self->_minValue = *(v11 + 16);
+  self->_minValue = *(fromCopy + 16);
   *&self->_has |= 4u;
-  if (*(v11 + 68))
+  if (*(fromCopy + 68))
   {
 LABEL_10:
-    self->_bucketSize = *(v11 + 14);
+    self->_bucketSize = *(fromCopy + 14);
     *&self->_has |= 1u;
   }
 
@@ -174,23 +174,23 @@ LABEL_10:
   return v4 ^ v3 ^ v7 ^ v12 ^ v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()] || !PBRepeatedUInt32IsEqual() || !PBRepeatedUInt32IsEqual())
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()] || !PBRepeatedUInt32IsEqual() || !PBRepeatedUInt32IsEqual())
   {
     goto LABEL_18;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 68) & 2) == 0 || self->_length != *(v4 + 15))
+    if ((*(equalCopy + 68) & 2) == 0 || self->_length != *(equalCopy + 15))
     {
       goto LABEL_18;
     }
   }
 
-  else if ((*(v4 + 68) & 2) != 0)
+  else if ((*(equalCopy + 68) & 2) != 0)
   {
 LABEL_18:
     v5 = 0;
@@ -199,21 +199,21 @@ LABEL_18:
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 68) & 4) == 0 || self->_minValue != *(v4 + 16))
+    if ((*(equalCopy + 68) & 4) == 0 || self->_minValue != *(equalCopy + 16))
     {
       goto LABEL_18;
     }
   }
 
-  else if ((*(v4 + 68) & 4) != 0)
+  else if ((*(equalCopy + 68) & 4) != 0)
   {
     goto LABEL_18;
   }
 
-  v5 = (*(v4 + 68) & 1) == 0;
+  v5 = (*(equalCopy + 68) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 68) & 1) == 0 || self->_bucketSize != *(v4 + 14))
+    if ((*(equalCopy + 68) & 1) == 0 || self->_bucketSize != *(equalCopy + 14))
     {
       goto LABEL_18;
     }
@@ -226,9 +226,9 @@ LABEL_19:
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   PBRepeatedUInt32Copy();
   PBRepeatedUInt32Copy();
   has = self->_has;
@@ -269,33 +269,33 @@ LABEL_4:
   return v4;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v11 = a3;
+  toCopy = to;
   if ([(AWDProactiveModelFittingQuantizedSparseVector *)self indicesCount])
   {
-    [v11 clearIndices];
-    v4 = [(AWDProactiveModelFittingQuantizedSparseVector *)self indicesCount];
-    if (v4)
+    [toCopy clearIndices];
+    indicesCount = [(AWDProactiveModelFittingQuantizedSparseVector *)self indicesCount];
+    if (indicesCount)
     {
-      v5 = v4;
+      v5 = indicesCount;
       for (i = 0; i != v5; ++i)
       {
-        [v11 addIndices:{-[AWDProactiveModelFittingQuantizedSparseVector indicesAtIndex:](self, "indicesAtIndex:", i)}];
+        [toCopy addIndices:{-[AWDProactiveModelFittingQuantizedSparseVector indicesAtIndex:](self, "indicesAtIndex:", i)}];
       }
     }
   }
 
   if ([(AWDProactiveModelFittingQuantizedSparseVector *)self valuesCount])
   {
-    [v11 clearValues];
-    v7 = [(AWDProactiveModelFittingQuantizedSparseVector *)self valuesCount];
-    if (v7)
+    [toCopy clearValues];
+    valuesCount = [(AWDProactiveModelFittingQuantizedSparseVector *)self valuesCount];
+    if (valuesCount)
     {
-      v8 = v7;
+      v8 = valuesCount;
       for (j = 0; j != v8; ++j)
       {
-        [v11 addValues:{-[AWDProactiveModelFittingQuantizedSparseVector valuesAtIndex:](self, "valuesAtIndex:", j)}];
+        [toCopy addValues:{-[AWDProactiveModelFittingQuantizedSparseVector valuesAtIndex:](self, "valuesAtIndex:", j)}];
       }
     }
   }
@@ -303,8 +303,8 @@ LABEL_4:
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(v11 + 15) = self->_length;
-    *(v11 + 68) |= 2u;
+    *(toCopy + 15) = self->_length;
+    *(toCopy + 68) |= 2u;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -323,21 +323,21 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  *(v11 + 16) = LODWORD(self->_minValue);
-  *(v11 + 68) |= 4u;
+  *(toCopy + 16) = LODWORD(self->_minValue);
+  *(toCopy + 68) |= 4u;
   if (*&self->_has)
   {
 LABEL_12:
-    *(v11 + 14) = LODWORD(self->_bucketSize);
-    *(v11 + 68) |= 1u;
+    *(toCopy + 14) = LODWORD(self->_bucketSize);
+    *(toCopy + 68) |= 1u;
   }
 
 LABEL_13:
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_indices.count)
   {
     PBDataWriterPlaceMark();
@@ -416,18 +416,18 @@ LABEL_15:
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v4 = PBRepeatedUInt32NSArray();
-  [v3 setObject:v4 forKey:@"indices"];
+  [dictionary setObject:v4 forKey:@"indices"];
 
   v5 = PBRepeatedUInt32NSArray();
-  [v3 setObject:v5 forKey:@"values"];
+  [dictionary setObject:v5 forKey:@"values"];
 
   has = self->_has;
   if ((has & 2) != 0)
   {
     v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_length];
-    [v3 setObject:v10 forKey:@"length"];
+    [dictionary setObject:v10 forKey:@"length"];
 
     has = self->_has;
     if ((has & 4) == 0)
@@ -449,19 +449,19 @@ LABEL_3:
 
   *&v6 = self->_minValue;
   v11 = [MEMORY[0x277CCABB0] numberWithFloat:v6];
-  [v3 setObject:v11 forKey:@"minValue"];
+  [dictionary setObject:v11 forKey:@"minValue"];
 
   if (*&self->_has)
   {
 LABEL_4:
     *&v6 = self->_bucketSize;
     v8 = [MEMORY[0x277CCABB0] numberWithFloat:v6];
-    [v3 setObject:v8 forKey:@"bucketSize"];
+    [dictionary setObject:v8 forKey:@"bucketSize"];
   }
 
 LABEL_5:
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -470,15 +470,15 @@ LABEL_5:
   v8.receiver = self;
   v8.super_class = AWDProactiveModelFittingQuantizedSparseVector;
   v4 = [(AWDProactiveModelFittingQuantizedSparseVector *)&v8 description];
-  v5 = [(AWDProactiveModelFittingQuantizedSparseVector *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(AWDProactiveModelFittingQuantizedSparseVector *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)setHasMinValue:(BOOL)a3
+- (void)setHasMinValue:(BOOL)value
 {
-  if (a3)
+  if (value)
   {
     v3 = 4;
   }
@@ -491,9 +491,9 @@ LABEL_5:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasLength:(BOOL)a3
+- (void)setHasLength:(BOOL)length
 {
-  if (a3)
+  if (length)
   {
     v3 = 2;
   }
@@ -506,36 +506,36 @@ LABEL_5:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (unsigned)valuesAtIndex:(unint64_t)a3
+- (unsigned)valuesAtIndex:(unint64_t)index
 {
   p_values = &self->_values;
   count = self->_values.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x277CBEAD8];
     v7 = *MEMORY[0x277CBE730];
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%tu) is out of range (%tu)", a3, count];
+    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%tu) is out of range (%tu)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_values->list[a3];
+  return p_values->list[index];
 }
 
-- (unsigned)indicesAtIndex:(unint64_t)a3
+- (unsigned)indicesAtIndex:(unint64_t)index
 {
   p_indices = &self->_indices;
   count = self->_indices.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x277CBEAD8];
     v7 = *MEMORY[0x277CBE730];
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%tu) is out of range (%tu)", a3, count];
+    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%tu) is out of range (%tu)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_indices->list[a3];
+  return p_indices->list[index];
 }
 
 - (void)dealloc
@@ -547,13 +547,13 @@ LABEL_5:
   [(AWDProactiveModelFittingQuantizedSparseVector *)&v3 dealloc];
 }
 
-- (float)originalValueAtIndex:(unint64_t)a3
+- (float)originalValueAtIndex:(unint64_t)index
 {
   v5 = 0.0;
   if ([(AWDProactiveModelFittingQuantizedSparseVector *)self valuesCount])
   {
     v6 = 0;
-    while ([(AWDProactiveModelFittingQuantizedSparseVector *)self indices][4 * v6] != a3)
+    while ([(AWDProactiveModelFittingQuantizedSparseVector *)self indices][4 * v6] != index)
     {
       if (++v6 >= [(AWDProactiveModelFittingQuantizedSparseVector *)self valuesCount])
       {
@@ -573,34 +573,34 @@ LABEL_5:
   return v5;
 }
 
-+ (id)quantizedSparseVectorFromSparseVector:(id)a3 numberOfBuckets:(unint64_t)a4
++ (id)quantizedSparseVectorFromSparseVector:(id)vector numberOfBuckets:(unint64_t)buckets
 {
-  v7 = a3;
-  if ([v7 length] >> 32)
+  vectorCopy = vector;
+  if ([vectorCopy length] >> 32)
   {
-    v17 = [MEMORY[0x277CCA890] currentHandler];
-    [v17 handleFailureInMethod:a2 object:a1 file:@"AWDProactiveModelFittingQuantizedSparseVector+PML.m" lineNumber:23 description:{@"Too big vector (length: %tu)", objc_msgSend(v7, "length")}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"AWDProactiveModelFittingQuantizedSparseVector+PML.m" lineNumber:23 description:{@"Too big vector (length: %tu)", objc_msgSend(vectorCopy, "length")}];
   }
 
   v8 = objc_opt_new();
-  [v7 minValue];
+  [vectorCopy minValue];
   v10 = v9;
-  [v7 maxValue];
+  [vectorCopy maxValue];
   v18[1] = 3221225472;
   v18[0] = MEMORY[0x277D85DD0];
   v18[2] = __108__AWDProactiveModelFittingQuantizedSparseVector_PML__quantizedSparseVectorFromSparseVector_numberOfBuckets___block_invoke;
   v18[3] = &unk_279AC0678;
-  v12 = (v11 - v10) / a4;
+  v12 = (v11 - v10) / buckets;
   v20 = v12;
   v21 = v10;
   v13 = v8;
   v19 = v13;
-  [v7 enumerateNonZeroValuesWithBlock:v18];
+  [vectorCopy enumerateNonZeroValuesWithBlock:v18];
   *&v14 = v12;
   [v13 setBucketSize:v14];
   *&v15 = v10;
   [v13 setMinValue:v15];
-  [v13 setLength:{objc_msgSend(v7, "length")}];
+  [v13 setLength:{objc_msgSend(vectorCopy, "length")}];
 
   return v13;
 }
@@ -624,10 +624,10 @@ uint64_t __108__AWDProactiveModelFittingQuantizedSparseVector_PML__quantizedSpar
   return [v6 addValues:v3];
 }
 
-+ (id)quantizedSparseVectorFromDenseVector:(id)a3 numberOfBuckets:(unint64_t)a4
++ (id)quantizedSparseVectorFromDenseVector:(id)vector numberOfBuckets:(unint64_t)buckets
 {
-  v6 = [PMLSparseVector sparseVectorFromDense:a3];
-  v7 = [a1 quantizedSparseVectorFromSparseVector:v6 numberOfBuckets:a4];
+  v6 = [PMLSparseVector sparseVectorFromDense:vector];
+  v7 = [self quantizedSparseVectorFromSparseVector:v6 numberOfBuckets:buckets];
 
   return v7;
 }

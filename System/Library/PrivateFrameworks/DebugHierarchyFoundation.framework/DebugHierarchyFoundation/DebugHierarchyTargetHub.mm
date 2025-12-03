@@ -1,15 +1,15 @@
 @interface DebugHierarchyTargetHub
-+ (id)performDebugRequest:(int64_t)a3;
++ (id)performDebugRequest:(int64_t)request;
 + (id)sharedHub;
-- (BOOL)performRequestInPlaceWithRequestInBase64:(id)a3;
+- (BOOL)performRequestInPlaceWithRequestInBase64:(id)base64;
 - (DebugHierarchyRuntimeInfo)runtimeInfo;
 - (DebugHierarchyTargetHub)init;
 - (NSMapTable)knownObjectsMap;
 - (NSMutableDictionary)additionalKnownObjects;
-- (id)performRequest:(id)a3 error:(id *)a4;
-- (id)performRequestWithRequestInBase64:(id)a3;
+- (id)performRequest:(id)request error:(id *)error;
+- (id)performRequestWithRequestInBase64:(id)base64;
 - (void)clearAllRequestsAndData;
-- (void)handleXPCEvent:(id)a3;
+- (void)handleXPCEvent:(id)event;
 - (void)openXPCConnection;
 - (void)registerForDarwinNotifications;
 @end
@@ -22,7 +22,7 @@
   block[1] = 3221225472;
   block[2] = __36__DebugHierarchyTargetHub_sharedHub__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedHub_onceToken_0 != -1)
   {
     dispatch_once(&sharedHub_onceToken_0, block);
@@ -125,11 +125,11 @@ uint64_t __36__DebugHierarchyTargetHub_sharedHub__block_invoke(uint64_t a1)
   return runtimeInfo;
 }
 
-- (id)performRequestWithRequestInBase64:(id)a3
+- (id)performRequestWithRequestInBase64:(id)base64
 {
-  v4 = a3;
+  base64Copy = base64;
   v15 = 0;
-  v5 = [DebugHierarchyRequest requestWithBase64Data:v4 error:&v15];
+  v5 = [DebugHierarchyRequest requestWithBase64Data:base64Copy error:&v15];
   v6 = v15;
   v7 = objc_autoreleasePoolPush();
   if (v6)
@@ -161,20 +161,20 @@ uint64_t __36__DebugHierarchyTargetHub_sharedHub__block_invoke(uint64_t a1)
   return v8;
 }
 
-- (id)performRequest:(id)a3 error:(id *)a4
+- (id)performRequest:(id)request error:(id *)error
 {
-  v4 = a3;
-  if (v4)
+  requestCopy = request;
+  if (requestCopy)
   {
     v5 = DebugHierarchyRequestsOSLog_0();
-    v6 = os_signpost_id_make_with_pointer(v5, v4);
+    v6 = os_signpost_id_make_with_pointer(v5, requestCopy);
     v7 = v5;
     v8 = v7;
     if (v6 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v7))
     {
-      v9 = [v4 name];
+      name = [requestCopy name];
       LODWORD(buf) = 138543362;
-      *(&buf + 4) = v9;
+      *(&buf + 4) = name;
       _os_signpost_emit_with_name_impl(&dword_0, v8, OS_SIGNPOST_INTERVAL_BEGIN, v6, "Perform Request", "(%{public}@)", &buf, 0xCu);
     }
 
@@ -188,7 +188,7 @@ uint64_t __36__DebugHierarchyTargetHub_sharedHub__block_invoke(uint64_t a1)
     v20 = 3221225472;
     v21 = __48__DebugHierarchyTargetHub_performRequest_error___block_invoke;
     v22 = &unk_24440;
-    v10 = v4;
+    v10 = requestCopy;
     v23 = v10;
     p_buf = &buf;
     v11 = objc_retainBlock(&v19);
@@ -237,9 +237,9 @@ void __48__DebugHierarchyTargetHub_performRequest_error___block_invoke(uint64_t 
   *(v5 + 40) = v3;
 }
 
-- (BOOL)performRequestInPlaceWithRequestInBase64:(id)a3
+- (BOOL)performRequestInPlaceWithRequestInBase64:(id)base64
 {
-  v4 = [(DebugHierarchyTargetHub *)self performRequestWithRequestInBase64:a3];
+  v4 = [(DebugHierarchyTargetHub *)self performRequestWithRequestInBase64:base64];
   response = self->_response;
   self->_response = v4;
 
@@ -283,7 +283,7 @@ void __48__DebugHierarchyTargetHub_performRequest_error___block_invoke(uint64_t 
   block[3] = &unk_244B8;
   v9 = mach_service;
   v10 = v5;
-  v11 = self;
+  selfCopy = self;
   v6 = v5;
   v7 = mach_service;
   dispatch_async(&_dispatch_main_q, block);
@@ -317,11 +317,11 @@ void __44__DebugHierarchyTargetHub_openXPCConnection__block_invoke_2(uint64_t a1
   [*(a1 + 48) clearAllRequestsAndData];
 }
 
-- (void)handleXPCEvent:(id)a3
+- (void)handleXPCEvent:(id)event
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && xpc_get_type(v4) == &_xpc_type_dictionary)
+  eventCopy = event;
+  v5 = eventCopy;
+  if (eventCopy && xpc_get_type(eventCopy) == &_xpc_type_dictionary)
   {
     length = 0;
     data = xpc_dictionary_get_data(v5, "request", &length);
@@ -347,9 +347,9 @@ void __44__DebugHierarchyTargetHub_openXPCConnection__block_invoke_2(uint64_t a1
   }
 }
 
-+ (id)performDebugRequest:(int64_t)a3
++ (id)performDebugRequest:(int64_t)request
 {
-  if (a3 > 1)
+  if (request > 1)
   {
     v8 = 0;
   }
@@ -366,7 +366,7 @@ void __44__DebugHierarchyTargetHub_openXPCConnection__block_invoke_2(uint64_t a1
     v7 = +[DebugHierarchyTargetHub sharedHub];
     v8 = [v7 performRequest:v6];
 
-    if (!a3)
+    if (!request)
     {
 
       v8 = 0;

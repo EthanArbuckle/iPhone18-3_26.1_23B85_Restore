@@ -1,20 +1,20 @@
 @interface REMSharee
 + (id)newObjectID;
 + (id)nullifiedAssignmentOriginatorID;
-+ (id)objectIDWithUUID:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToSharee:(id)a3;
++ (id)objectIDWithUUID:(id)d;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToSharee:(id)sharee;
 - (NSPersonNameComponents)personNameComponents;
 - (NSString)debugDescription;
 - (NSString)description;
-- (REMSharee)initWithCoder:(id)a3;
+- (REMSharee)initWithCoder:(id)coder;
 - (id)formattedName;
-- (id)formattedNameWithStyle:(int64_t)a3;
-- (id)initShareeWithObjectID:(id)a3 accountID:(id)a4 listID:(id)a5 displayName:(id)a6 firstName:(id)a7 middleName:(id)a8 lastName:(id)a9 namePrefix:(id)a10 nameSuffix:(id)a11 nickname:(id)a12 address:(id)a13 status:(int64_t)a14 accessLevel:(int64_t)a15;
-- (id)initShareeWithObjectID:(id)a3 accountID:(id)a4 listID:(id)a5 personNameComponents:(id)a6 address:(id)a7 status:(int64_t)a8 accessLevel:(int64_t)a9;
+- (id)formattedNameWithStyle:(int64_t)style;
+- (id)initShareeWithObjectID:(id)d accountID:(id)iD listID:(id)listID displayName:(id)name firstName:(id)firstName middleName:(id)middleName lastName:(id)lastName namePrefix:(id)self0 nameSuffix:(id)self1 nickname:(id)self2 address:(id)self3 status:(int64_t)self4 accessLevel:(int64_t)self5;
+- (id)initShareeWithObjectID:(id)d accountID:(id)iD listID:(id)listID personNameComponents:(id)components address:(id)address status:(int64_t)status accessLevel:(int64_t)level;
 - (id)shortName;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation REMSharee
@@ -39,36 +39,36 @@ REMDAShareeTombstone *__92__REMSharee_REMDAChangeTrackingHelper_PrivateAdditions
   return v3;
 }
 
-- (id)initShareeWithObjectID:(id)a3 accountID:(id)a4 listID:(id)a5 displayName:(id)a6 firstName:(id)a7 middleName:(id)a8 lastName:(id)a9 namePrefix:(id)a10 nameSuffix:(id)a11 nickname:(id)a12 address:(id)a13 status:(int64_t)a14 accessLevel:(int64_t)a15
+- (id)initShareeWithObjectID:(id)d accountID:(id)iD listID:(id)listID displayName:(id)name firstName:(id)firstName middleName:(id)middleName lastName:(id)lastName namePrefix:(id)self0 nameSuffix:(id)self1 nickname:(id)self2 address:(id)self3 status:(int64_t)self4 accessLevel:(int64_t)self5
 {
-  v53 = a3;
-  obj = a4;
-  v52 = a4;
-  v51 = a5;
-  v21 = a6;
-  v22 = a7;
-  v23 = a8;
-  v54 = a9;
-  v24 = v21;
-  v25 = a10;
-  v26 = a11;
-  v27 = v23;
-  v28 = a12;
-  v29 = a13;
+  dCopy = d;
+  obj = iD;
+  iDCopy = iD;
+  listIDCopy = listID;
+  nameCopy = name;
+  firstNameCopy = firstName;
+  middleNameCopy = middleName;
+  lastNameCopy = lastName;
+  v24 = nameCopy;
+  prefixCopy = prefix;
+  suffixCopy = suffix;
+  v27 = middleNameCopy;
+  nicknameCopy = nickname;
+  addressCopy = address;
   v55.receiver = self;
   v55.super_class = REMSharee;
   v30 = [(REMSharee *)&v55 init];
   v31 = v30;
   if (v30)
   {
-    objc_storeStrong(&v30->_objectID, a3);
+    objc_storeStrong(&v30->_objectID, d);
     objc_storeStrong(&v31->_accountID, obj);
-    objc_storeStrong(&v31->_listID, a5);
+    objc_storeStrong(&v31->_listID, listID);
     v32 = [v24 copy];
     displayName = v31->_displayName;
     v31->_displayName = v32;
 
-    v34 = [v22 copy];
+    v34 = [firstNameCopy copy];
     firstName = v31->_firstName;
     v31->_firstName = v34;
 
@@ -76,104 +76,104 @@ REMDAShareeTombstone *__92__REMSharee_REMDAChangeTrackingHelper_PrivateAdditions
     middleName = v31->_middleName;
     v31->_middleName = v36;
 
-    v38 = [v54 copy];
+    v38 = [lastNameCopy copy];
     lastName = v31->_lastName;
     v31->_lastName = v38;
 
-    v40 = [v25 copy];
+    v40 = [prefixCopy copy];
     namePrefix = v31->_namePrefix;
     v31->_namePrefix = v40;
 
-    v42 = [v26 copy];
+    v42 = [suffixCopy copy];
     nameSuffix = v31->_nameSuffix;
     v31->_nameSuffix = v42;
 
-    v44 = [v28 copy];
+    v44 = [nicknameCopy copy];
     nickname = v31->_nickname;
     v31->_nickname = v44;
 
-    v46 = [v29 copy];
+    v46 = [addressCopy copy];
     address = v31->_address;
     v31->_address = v46;
 
-    v31->_status = a14;
-    v31->_accessLevel = a15;
+    v31->_status = status;
+    v31->_accessLevel = level;
   }
 
   return v31;
 }
 
-- (id)initShareeWithObjectID:(id)a3 accountID:(id)a4 listID:(id)a5 personNameComponents:(id)a6 address:(id)a7 status:(int64_t)a8 accessLevel:(int64_t)a9
+- (id)initShareeWithObjectID:(id)d accountID:(id)iD listID:(id)listID personNameComponents:(id)components address:(id)address status:(int64_t)status accessLevel:(int64_t)level
 {
-  v24 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
-  v17 = [v13 givenName];
-  v18 = [v13 middleName];
-  v19 = [v13 familyName];
-  v20 = [v13 namePrefix];
-  v21 = [v13 nameSuffix];
-  v22 = [v13 nickname];
+  addressCopy = address;
+  componentsCopy = components;
+  listIDCopy = listID;
+  iDCopy = iD;
+  dCopy = d;
+  givenName = [componentsCopy givenName];
+  middleName = [componentsCopy middleName];
+  familyName = [componentsCopy familyName];
+  namePrefix = [componentsCopy namePrefix];
+  nameSuffix = [componentsCopy nameSuffix];
+  nickname = [componentsCopy nickname];
 
-  v27 = [(REMSharee *)self initShareeWithObjectID:v16 accountID:v15 listID:v14 displayName:0 firstName:v17 middleName:v18 lastName:v19 namePrefix:v20 nameSuffix:v21 nickname:v22 address:v24 status:a8 accessLevel:a9];
+  v27 = [(REMSharee *)self initShareeWithObjectID:dCopy accountID:iDCopy listID:listIDCopy displayName:0 firstName:givenName middleName:middleName lastName:familyName namePrefix:namePrefix nameSuffix:nameSuffix nickname:nickname address:addressCopy status:status accessLevel:level];
   return v27;
 }
 
-- (REMSharee)initWithCoder:(id)a3
+- (REMSharee)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v33.receiver = self;
   v33.super_class = REMSharee;
   v5 = [(REMSharee *)&v33 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"objectID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"objectID"];
     objectID = v5->_objectID;
     v5->_objectID = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"accountID"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accountID"];
     accountID = v5->_accountID;
     v5->_accountID = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"listID"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"listID"];
     listID = v5->_listID;
     v5->_listID = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"displayName"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"displayName"];
     displayName = v5->_displayName;
     v5->_displayName = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"firstName"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"firstName"];
     firstName = v5->_firstName;
     v5->_firstName = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"middleName"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"middleName"];
     middleName = v5->_middleName;
     v5->_middleName = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lastName"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastName"];
     lastName = v5->_lastName;
     v5->_lastName = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"namePrefix"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"namePrefix"];
     namePrefix = v5->_namePrefix;
     v5->_namePrefix = v20;
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"nameSuffix"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"nameSuffix"];
     nameSuffix = v5->_nameSuffix;
     v5->_nameSuffix = v22;
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"nickname"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"nickname"];
     nickname = v5->_nickname;
     v5->_nickname = v24;
 
-    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"address"];
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"address"];
     address = v5->_address;
     v5->_address = v26;
 
-    v28 = [v4 decodeIntegerForKey:@"status"];
+    v28 = [coderCopy decodeIntegerForKey:@"status"];
     if (v28 >= 6)
     {
       v29 = os_log_create("com.apple.reminderkit", "default");
@@ -186,7 +186,7 @@ REMDAShareeTombstone *__92__REMSharee_REMDAChangeTrackingHelper_PrivateAdditions
     }
 
     v5->_status = v28;
-    v30 = [v4 decodeIntegerForKey:@"accessLevel"];
+    v30 = [coderCopy decodeIntegerForKey:@"accessLevel"];
     if (v30 >= 4)
     {
       v31 = os_log_create("com.apple.reminderkit", "default");
@@ -204,51 +204,51 @@ REMDAShareeTombstone *__92__REMSharee_REMDAChangeTrackingHelper_PrivateAdditions
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v15 = a3;
-  v4 = [(REMSharee *)self objectID];
-  [v15 encodeObject:v4 forKey:@"objectID"];
+  coderCopy = coder;
+  objectID = [(REMSharee *)self objectID];
+  [coderCopy encodeObject:objectID forKey:@"objectID"];
 
-  v5 = [(REMSharee *)self accountID];
-  [v15 encodeObject:v5 forKey:@"accountID"];
+  accountID = [(REMSharee *)self accountID];
+  [coderCopy encodeObject:accountID forKey:@"accountID"];
 
-  v6 = [(REMSharee *)self listID];
-  [v15 encodeObject:v6 forKey:@"listID"];
+  listID = [(REMSharee *)self listID];
+  [coderCopy encodeObject:listID forKey:@"listID"];
 
-  v7 = [(REMSharee *)self displayName];
-  [v15 encodeObject:v7 forKey:@"displayName"];
+  displayName = [(REMSharee *)self displayName];
+  [coderCopy encodeObject:displayName forKey:@"displayName"];
 
-  v8 = [(REMSharee *)self firstName];
-  [v15 encodeObject:v8 forKey:@"firstName"];
+  firstName = [(REMSharee *)self firstName];
+  [coderCopy encodeObject:firstName forKey:@"firstName"];
 
-  v9 = [(REMSharee *)self middleName];
-  [v15 encodeObject:v9 forKey:@"middleName"];
+  middleName = [(REMSharee *)self middleName];
+  [coderCopy encodeObject:middleName forKey:@"middleName"];
 
-  v10 = [(REMSharee *)self lastName];
-  [v15 encodeObject:v10 forKey:@"lastName"];
+  lastName = [(REMSharee *)self lastName];
+  [coderCopy encodeObject:lastName forKey:@"lastName"];
 
-  v11 = [(REMSharee *)self namePrefix];
-  [v15 encodeObject:v11 forKey:@"namePrefix"];
+  namePrefix = [(REMSharee *)self namePrefix];
+  [coderCopy encodeObject:namePrefix forKey:@"namePrefix"];
 
-  v12 = [(REMSharee *)self nameSuffix];
-  [v15 encodeObject:v12 forKey:@"nameSuffix"];
+  nameSuffix = [(REMSharee *)self nameSuffix];
+  [coderCopy encodeObject:nameSuffix forKey:@"nameSuffix"];
 
-  v13 = [(REMSharee *)self nickname];
-  [v15 encodeObject:v13 forKey:@"nickname"];
+  nickname = [(REMSharee *)self nickname];
+  [coderCopy encodeObject:nickname forKey:@"nickname"];
 
-  v14 = [(REMSharee *)self address];
-  [v15 encodeObject:v14 forKey:@"address"];
+  address = [(REMSharee *)self address];
+  [coderCopy encodeObject:address forKey:@"address"];
 
-  [v15 encodeInteger:-[REMSharee status](self forKey:{"status"), @"status"}];
-  [v15 encodeInteger:-[REMSharee accessLevel](self forKey:{"accessLevel"), @"accessLevel"}];
+  [coderCopy encodeInteger:-[REMSharee status](self forKey:{"status"), @"status"}];
+  [coderCopy encodeInteger:-[REMSharee accessLevel](self forKey:{"accessLevel"), @"accessLevel"}];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  v6 = REMDynamicCast(v5, v4);
+  v6 = REMDynamicCast(v5, equalCopy);
 
   if (v6)
   {
@@ -263,43 +263,43 @@ REMDAShareeTombstone *__92__REMSharee_REMDAChangeTrackingHelper_PrivateAdditions
   return v7;
 }
 
-- (BOOL)isEqualToSharee:(id)a3
+- (BOOL)isEqualToSharee:(id)sharee
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 != self)
+  shareeCopy = sharee;
+  v5 = shareeCopy;
+  if (shareeCopy != self)
   {
-    v6 = v4;
+    v6 = shareeCopy;
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       goto LABEL_44;
     }
 
-    v7 = [(REMSharee *)self status];
-    if (v7 != [(REMSharee *)v6 status])
+    status = [(REMSharee *)self status];
+    if (status != [(REMSharee *)v6 status])
     {
       goto LABEL_44;
     }
 
-    v8 = [(REMSharee *)self accessLevel];
-    if (v8 != [(REMSharee *)v6 accessLevel])
+    accessLevel = [(REMSharee *)self accessLevel];
+    if (accessLevel != [(REMSharee *)v6 accessLevel])
     {
       goto LABEL_44;
     }
 
-    v9 = [(REMSharee *)self objectID];
-    v10 = [(REMSharee *)v6 objectID];
-    v11 = v10;
-    if (v9 == v10)
+    objectID = [(REMSharee *)self objectID];
+    objectID2 = [(REMSharee *)v6 objectID];
+    v11 = objectID2;
+    if (objectID == objectID2)
     {
     }
 
     else
     {
-      v12 = [(REMSharee *)self objectID];
-      v13 = [(REMSharee *)v6 objectID];
-      v14 = [v12 isEqual:v13];
+      objectID3 = [(REMSharee *)self objectID];
+      objectID4 = [(REMSharee *)v6 objectID];
+      v14 = [objectID3 isEqual:objectID4];
 
       if (!v14)
       {
@@ -307,18 +307,18 @@ REMDAShareeTombstone *__92__REMSharee_REMDAChangeTrackingHelper_PrivateAdditions
       }
     }
 
-    v16 = [(REMSharee *)self accountID];
-    v17 = [(REMSharee *)v6 accountID];
-    v18 = v17;
-    if (v16 == v17)
+    accountID = [(REMSharee *)self accountID];
+    accountID2 = [(REMSharee *)v6 accountID];
+    v18 = accountID2;
+    if (accountID == accountID2)
     {
     }
 
     else
     {
-      v19 = [(REMSharee *)self accountID];
-      v20 = [(REMSharee *)v6 accountID];
-      v21 = [v19 isEqual:v20];
+      accountID3 = [(REMSharee *)self accountID];
+      accountID4 = [(REMSharee *)v6 accountID];
+      v21 = [accountID3 isEqual:accountID4];
 
       if (!v21)
       {
@@ -326,18 +326,18 @@ REMDAShareeTombstone *__92__REMSharee_REMDAChangeTrackingHelper_PrivateAdditions
       }
     }
 
-    v22 = [(REMSharee *)self listID];
-    v23 = [(REMSharee *)v6 listID];
-    v24 = v23;
-    if (v22 == v23)
+    listID = [(REMSharee *)self listID];
+    listID2 = [(REMSharee *)v6 listID];
+    v24 = listID2;
+    if (listID == listID2)
     {
     }
 
     else
     {
-      v25 = [(REMSharee *)self listID];
-      v26 = [(REMSharee *)v6 listID];
-      v27 = [v25 isEqual:v26];
+      listID3 = [(REMSharee *)self listID];
+      listID4 = [(REMSharee *)v6 listID];
+      v27 = [listID3 isEqual:listID4];
 
       if (!v27)
       {
@@ -345,18 +345,18 @@ REMDAShareeTombstone *__92__REMSharee_REMDAChangeTrackingHelper_PrivateAdditions
       }
     }
 
-    v28 = [(REMSharee *)self displayName];
-    v29 = [(REMSharee *)v6 displayName];
-    v30 = v29;
-    if (v28 == v29)
+    displayName = [(REMSharee *)self displayName];
+    displayName2 = [(REMSharee *)v6 displayName];
+    v30 = displayName2;
+    if (displayName == displayName2)
     {
     }
 
     else
     {
-      v31 = [(REMSharee *)self displayName];
-      v32 = [(REMSharee *)v6 displayName];
-      v33 = [v31 isEqual:v32];
+      displayName3 = [(REMSharee *)self displayName];
+      displayName4 = [(REMSharee *)v6 displayName];
+      v33 = [displayName3 isEqual:displayName4];
 
       if (!v33)
       {
@@ -364,18 +364,18 @@ REMDAShareeTombstone *__92__REMSharee_REMDAChangeTrackingHelper_PrivateAdditions
       }
     }
 
-    v34 = [(REMSharee *)self firstName];
-    v35 = [(REMSharee *)v6 firstName];
-    v36 = v35;
-    if (v34 == v35)
+    firstName = [(REMSharee *)self firstName];
+    firstName2 = [(REMSharee *)v6 firstName];
+    v36 = firstName2;
+    if (firstName == firstName2)
     {
     }
 
     else
     {
-      v37 = [(REMSharee *)self firstName];
-      v38 = [(REMSharee *)v6 firstName];
-      v39 = [v37 isEqual:v38];
+      firstName3 = [(REMSharee *)self firstName];
+      firstName4 = [(REMSharee *)v6 firstName];
+      v39 = [firstName3 isEqual:firstName4];
 
       if (!v39)
       {
@@ -383,18 +383,18 @@ REMDAShareeTombstone *__92__REMSharee_REMDAChangeTrackingHelper_PrivateAdditions
       }
     }
 
-    v40 = [(REMSharee *)self middleName];
-    v41 = [(REMSharee *)v6 middleName];
-    v42 = v41;
-    if (v40 == v41)
+    middleName = [(REMSharee *)self middleName];
+    middleName2 = [(REMSharee *)v6 middleName];
+    v42 = middleName2;
+    if (middleName == middleName2)
     {
     }
 
     else
     {
-      v43 = [(REMSharee *)self middleName];
-      v44 = [(REMSharee *)v6 middleName];
-      v45 = [v43 isEqual:v44];
+      middleName3 = [(REMSharee *)self middleName];
+      middleName4 = [(REMSharee *)v6 middleName];
+      v45 = [middleName3 isEqual:middleName4];
 
       if (!v45)
       {
@@ -402,18 +402,18 @@ REMDAShareeTombstone *__92__REMSharee_REMDAChangeTrackingHelper_PrivateAdditions
       }
     }
 
-    v46 = [(REMSharee *)self lastName];
-    v47 = [(REMSharee *)v6 lastName];
-    v48 = v47;
-    if (v46 == v47)
+    lastName = [(REMSharee *)self lastName];
+    lastName2 = [(REMSharee *)v6 lastName];
+    v48 = lastName2;
+    if (lastName == lastName2)
     {
     }
 
     else
     {
-      v49 = [(REMSharee *)self lastName];
-      v50 = [(REMSharee *)v6 lastName];
-      v51 = [v49 isEqual:v50];
+      lastName3 = [(REMSharee *)self lastName];
+      lastName4 = [(REMSharee *)v6 lastName];
+      v51 = [lastName3 isEqual:lastName4];
 
       if (!v51)
       {
@@ -421,18 +421,18 @@ REMDAShareeTombstone *__92__REMSharee_REMDAChangeTrackingHelper_PrivateAdditions
       }
     }
 
-    v52 = [(REMSharee *)self namePrefix];
-    v53 = [(REMSharee *)v6 namePrefix];
-    v54 = v53;
-    if (v52 == v53)
+    namePrefix = [(REMSharee *)self namePrefix];
+    namePrefix2 = [(REMSharee *)v6 namePrefix];
+    v54 = namePrefix2;
+    if (namePrefix == namePrefix2)
     {
     }
 
     else
     {
-      v55 = [(REMSharee *)self namePrefix];
-      v56 = [(REMSharee *)v6 namePrefix];
-      v57 = [v55 isEqual:v56];
+      namePrefix3 = [(REMSharee *)self namePrefix];
+      namePrefix4 = [(REMSharee *)v6 namePrefix];
+      v57 = [namePrefix3 isEqual:namePrefix4];
 
       if (!v57)
       {
@@ -440,18 +440,18 @@ REMDAShareeTombstone *__92__REMSharee_REMDAChangeTrackingHelper_PrivateAdditions
       }
     }
 
-    v58 = [(REMSharee *)self nameSuffix];
-    v59 = [(REMSharee *)v6 nameSuffix];
-    v60 = v59;
-    if (v58 == v59)
+    nameSuffix = [(REMSharee *)self nameSuffix];
+    nameSuffix2 = [(REMSharee *)v6 nameSuffix];
+    v60 = nameSuffix2;
+    if (nameSuffix == nameSuffix2)
     {
     }
 
     else
     {
-      v61 = [(REMSharee *)self nameSuffix];
-      v62 = [(REMSharee *)v6 nameSuffix];
-      v63 = [v61 isEqual:v62];
+      nameSuffix3 = [(REMSharee *)self nameSuffix];
+      nameSuffix4 = [(REMSharee *)v6 nameSuffix];
+      v63 = [nameSuffix3 isEqual:nameSuffix4];
 
       if (!v63)
       {
@@ -459,18 +459,18 @@ REMDAShareeTombstone *__92__REMSharee_REMDAChangeTrackingHelper_PrivateAdditions
       }
     }
 
-    v64 = [(REMSharee *)self nickname];
-    v65 = [(REMSharee *)v6 nickname];
-    v66 = v65;
-    if (v64 == v65)
+    nickname = [(REMSharee *)self nickname];
+    nickname2 = [(REMSharee *)v6 nickname];
+    v66 = nickname2;
+    if (nickname == nickname2)
     {
     }
 
     else
     {
-      v67 = [(REMSharee *)self nickname];
-      v68 = [(REMSharee *)v6 nickname];
-      v69 = [v67 isEqual:v68];
+      nickname3 = [(REMSharee *)self nickname];
+      nickname4 = [(REMSharee *)v6 nickname];
+      v69 = [nickname3 isEqual:nickname4];
 
       if (!v69)
       {
@@ -482,18 +482,18 @@ LABEL_45:
       }
     }
 
-    v71 = [(REMSharee *)self address];
-    v72 = [(REMSharee *)v6 address];
-    if (v71 == v72)
+    address = [(REMSharee *)self address];
+    address2 = [(REMSharee *)v6 address];
+    if (address == address2)
     {
       v15 = 1;
     }
 
     else
     {
-      v73 = [(REMSharee *)self address];
-      v74 = [(REMSharee *)v6 address];
-      v15 = [v73 isEqual:v74];
+      address3 = [(REMSharee *)self address];
+      address4 = [(REMSharee *)v6 address];
+      v15 = [address3 isEqual:address4];
     }
 
     goto LABEL_45;
@@ -507,62 +507,62 @@ LABEL_46:
 
 - (unint64_t)hash
 {
-  v2 = [(REMSharee *)self objectID];
-  v3 = [v2 hash];
+  objectID = [(REMSharee *)self objectID];
+  v3 = [objectID hash];
 
   return v3;
 }
 
 - (NSPersonNameComponents)personNameComponents
 {
-  v3 = [(REMSharee *)self firstName];
-  if (v3 || ([(REMSharee *)self middleName], (v3 = objc_claimAutoreleasedReturnValue()) != 0) || ([(REMSharee *)self lastName], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+  firstName = [(REMSharee *)self firstName];
+  if (firstName || ([(REMSharee *)self middleName], (firstName = objc_claimAutoreleasedReturnValue()) != 0) || ([(REMSharee *)self lastName], (firstName = objc_claimAutoreleasedReturnValue()) != 0))
   {
 
 LABEL_5:
-    v4 = objc_alloc_init(MEMORY[0x1E696ADF0]);
-    v5 = [(REMSharee *)self firstName];
-    [v4 setGivenName:v5];
+    nickname2 = objc_alloc_init(MEMORY[0x1E696ADF0]);
+    firstName2 = [(REMSharee *)self firstName];
+    [nickname2 setGivenName:firstName2];
 
-    v6 = [(REMSharee *)self middleName];
-    [v4 setMiddleName:v6];
+    middleName = [(REMSharee *)self middleName];
+    [nickname2 setMiddleName:middleName];
 
-    v7 = [(REMSharee *)self lastName];
-    [v4 setFamilyName:v7];
+    lastName = [(REMSharee *)self lastName];
+    [nickname2 setFamilyName:lastName];
 
-    v8 = [(REMSharee *)self namePrefix];
-    [v4 setNamePrefix:v8];
+    namePrefix = [(REMSharee *)self namePrefix];
+    [nickname2 setNamePrefix:namePrefix];
 
-    v9 = [(REMSharee *)self nameSuffix];
-    [v4 setNameSuffix:v9];
+    nameSuffix = [(REMSharee *)self nameSuffix];
+    [nickname2 setNameSuffix:nameSuffix];
 
-    v10 = [(REMSharee *)self nickname];
-    [v4 setNickname:v10];
+    nickname = [(REMSharee *)self nickname];
+    [nickname2 setNickname:nickname];
 
     goto LABEL_6;
   }
 
-  v4 = [(REMSharee *)self nickname];
+  nickname2 = [(REMSharee *)self nickname];
 
-  if (v4)
+  if (nickname2)
   {
     goto LABEL_5;
   }
 
 LABEL_6:
 
-  return v4;
+  return nickname2;
 }
 
 - (NSString)description
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(REMSharee *)self objectID];
-  v6 = [(REMSharee *)self listID];
+  objectID = [(REMSharee *)self objectID];
+  listID = [(REMSharee *)self listID];
   v7 = [MEMORY[0x1E696AD98] numberWithInteger:{-[REMSharee status](self, "status")}];
   v8 = [MEMORY[0x1E696AD98] numberWithInteger:{-[REMSharee accessLevel](self, "accessLevel")}];
-  v9 = [v3 stringWithFormat:@"<%@: %p objectID: %@, listID: %@, status: %@, access: %@>", v4, self, v5, v6, v7, v8];
+  v9 = [v3 stringWithFormat:@"<%@: %p objectID: %@, listID: %@, status: %@, access: %@>", v4, self, objectID, listID, v7, v8];
 
   return v9;
 }
@@ -571,29 +571,29 @@ LABEL_6:
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(REMSharee *)self objectID];
-  v6 = [(REMSharee *)self listID];
+  objectID = [(REMSharee *)self objectID];
+  listID = [(REMSharee *)self listID];
   v7 = [MEMORY[0x1E696AD98] numberWithInteger:{-[REMSharee status](self, "status")}];
   v8 = [MEMORY[0x1E696AD98] numberWithInteger:{-[REMSharee accessLevel](self, "accessLevel")}];
-  v9 = [(REMSharee *)self address];
-  v10 = [v3 stringWithFormat:@"<%@: %p objectID: %@, listID: %@, status: %@, access: %@, address: %@>", v4, self, v5, v6, v7, v8, v9];
+  address = [(REMSharee *)self address];
+  v10 = [v3 stringWithFormat:@"<%@: %p objectID: %@, listID: %@, status: %@, access: %@, address: %@>", v4, self, objectID, listID, v7, v8, address];
 
   return v10;
 }
 
 + (id)newObjectID
 {
-  v3 = [MEMORY[0x1E696AFB0] UUID];
-  v4 = [a1 objectIDWithUUID:v3];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  v4 = [self objectIDWithUUID:uUID];
 
   return v4;
 }
 
-+ (id)objectIDWithUUID:(id)a3
++ (id)objectIDWithUUID:(id)d
 {
-  v4 = a3;
-  v5 = [a1 cdEntityName];
-  v6 = [REMObjectID objectIDWithUUID:v4 entityName:v5];
+  dCopy = d;
+  cdEntityName = [self cdEntityName];
+  v6 = [REMObjectID objectIDWithUUID:dCopy entityName:cdEntityName];
 
   return v6;
 }
@@ -608,81 +608,81 @@ LABEL_6:
 
 - (id)formattedName
 {
-  v3 = [(REMSharee *)self displayName];
-  v4 = [v3 rem_tidyFormattedNameString];
+  displayName = [(REMSharee *)self displayName];
+  rem_tidyFormattedNameString = [displayName rem_tidyFormattedNameString];
 
-  if (!v4)
+  if (!rem_tidyFormattedNameString)
   {
-    v4 = [(REMSharee *)self formattedNameWithStyle:2];
+    rem_tidyFormattedNameString = [(REMSharee *)self formattedNameWithStyle:2];
   }
 
-  return v4;
+  return rem_tidyFormattedNameString;
 }
 
 - (id)shortName
 {
-  v3 = [(REMSharee *)self formattedNameWithStyle:1];
-  if (!v3)
+  displayName = [(REMSharee *)self formattedNameWithStyle:1];
+  if (!displayName)
   {
-    v3 = [(REMSharee *)self displayName];
+    displayName = [(REMSharee *)self displayName];
   }
 
-  return v3;
+  return displayName;
 }
 
-- (id)formattedNameWithStyle:(int64_t)a3
+- (id)formattedNameWithStyle:(int64_t)style
 {
-  v5 = [(REMSharee *)self personNameComponents];
+  personNameComponents = [(REMSharee *)self personNameComponents];
 
-  if (!v5)
+  if (!personNameComponents)
   {
     goto LABEL_13;
   }
 
-  v6 = [(REMSharee *)self personNameComponents];
-  v7 = [MEMORY[0x1E696ADF8] localizedStringFromPersonNameComponents:v6 style:a3 options:0];
-  v8 = [v7 rem_tidyFormattedNameString];
+  personNameComponents2 = [(REMSharee *)self personNameComponents];
+  v7 = [MEMORY[0x1E696ADF8] localizedStringFromPersonNameComponents:personNameComponents2 style:style options:0];
+  rem_tidyFormattedNameString = [v7 rem_tidyFormattedNameString];
 
-  if (!v8)
+  if (!rem_tidyFormattedNameString)
   {
 LABEL_13:
-    v9 = [(REMSharee *)self address];
-    v10 = [v9 rem_hasMailto];
+    address = [(REMSharee *)self address];
+    rem_hasMailto = [address rem_hasMailto];
 
-    if (!v10)
+    if (!rem_hasMailto)
     {
       goto LABEL_5;
     }
 
-    v11 = [(REMSharee *)self address];
-    v12 = [v11 rem_removingMailto];
-    v8 = [v12 rem_tidyFormattedNameString];
+    address2 = [(REMSharee *)self address];
+    rem_removingMailto = [address2 rem_removingMailto];
+    rem_tidyFormattedNameString = [rem_removingMailto rem_tidyFormattedNameString];
 
-    if (!v8)
+    if (!rem_tidyFormattedNameString)
     {
 LABEL_5:
-      v13 = [(REMSharee *)self address];
-      v14 = [v13 rem_hasTel];
+      address3 = [(REMSharee *)self address];
+      rem_hasTel = [address3 rem_hasTel];
 
-      if (v14)
+      if (rem_hasTel)
       {
-        v15 = [(REMSharee *)self address];
+        address4 = [(REMSharee *)self address];
         v16 = objc_alloc(MEMORY[0x1E695CF50]);
-        v17 = [v15 rem_removingTel];
-        v18 = [v16 initWithStringValue:v17];
-        v19 = [v18 formattedStringValue];
+        rem_removingTel = [address4 rem_removingTel];
+        v18 = [v16 initWithStringValue:rem_removingTel];
+        formattedStringValue = [v18 formattedStringValue];
 
-        v8 = [v19 rem_tidyFormattedNameString];
+        rem_tidyFormattedNameString = [formattedStringValue rem_tidyFormattedNameString];
       }
 
       else
       {
-        v8 = 0;
+        rem_tidyFormattedNameString = 0;
       }
     }
   }
 
-  return v8;
+  return rem_tidyFormattedNameString;
 }
 
 - (void)initWithCoder:(uint64_t)a1 .cold.1(uint64_t a1, NSObject *a2)

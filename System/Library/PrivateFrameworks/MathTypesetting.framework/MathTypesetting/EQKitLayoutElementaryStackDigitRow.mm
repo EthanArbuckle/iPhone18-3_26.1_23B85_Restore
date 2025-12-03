@@ -1,24 +1,24 @@
 @interface EQKitLayoutElementaryStackDigitRow
-- (EQKitLayoutElementaryStackDigitRow)initWithChildren:(id)a3 decimalPoint:(unint64_t)a4 position:(int64_t)a5 followingSpace:(double)a6;
-- (id)newBoxWithStackWidth:(double)a3 columnWidthIter:(__wrap_iter<double *>)a4 iterMax:(__wrap_iter<double *>)a5 previousRow:(id)a6 layoutManager:(const void *)a7;
-- (id)p_crossoutDigitBox:(id)a3 crossout:(int)a4 layoutManager:(const void *)a5;
+- (EQKitLayoutElementaryStackDigitRow)initWithChildren:(id)children decimalPoint:(unint64_t)point position:(int64_t)position followingSpace:(double)space;
+- (id)newBoxWithStackWidth:(double)width columnWidthIter:(__wrap_iter<double *>)iter iterMax:(__wrap_iter<double *>)max previousRow:(id)row layoutManager:(const void *)manager;
+- (id)p_crossoutDigitBox:(id)box crossout:(int)crossout layoutManager:(const void *)manager;
 - (void)dealloc;
-- (void)populateMaxColumnWidths:(__wrap_iter<double *>)a3;
+- (void)populateMaxColumnWidths:(__wrap_iter<double *>)widths;
 @end
 
 @implementation EQKitLayoutElementaryStackDigitRow
 
-- (EQKitLayoutElementaryStackDigitRow)initWithChildren:(id)a3 decimalPoint:(unint64_t)a4 position:(int64_t)a5 followingSpace:(double)a6
+- (EQKitLayoutElementaryStackDigitRow)initWithChildren:(id)children decimalPoint:(unint64_t)point position:(int64_t)position followingSpace:(double)space
 {
   v14.receiver = self;
   v14.super_class = EQKitLayoutElementaryStackDigitRow;
   v10 = [(EQKitLayoutElementaryStackDigitRow *)&v14 init];
   if (v10)
   {
-    v11 = a3;
-    v10->mFollowingSpace = a6;
-    v12 = v10->mAlignmentShift - (a5 + a4);
-    v10->mColumnBoxes = v11;
+    childrenCopy = children;
+    v10->mFollowingSpace = space;
+    v12 = v10->mAlignmentShift - (position + point);
+    v10->mColumnBoxes = childrenCopy;
     v10->mAlignmentShift = v12;
   }
 
@@ -32,7 +32,7 @@
   [(EQKitLayoutElementaryStackDigitRow *)&v3 dealloc];
 }
 
-- (void)populateMaxColumnWidths:(__wrap_iter<double *>)a3
+- (void)populateMaxColumnWidths:(__wrap_iter<double *>)widths
 {
   v15 = *MEMORY[0x277D85DE8];
   v10 = 0u;
@@ -55,13 +55,13 @@
         }
 
         [*(*(&v10 + 1) + 8 * i) width];
-        if (*a3.var0 >= v9)
+        if (*widths.var0 >= v9)
         {
-          v9 = *a3.var0;
+          v9 = *widths.var0;
         }
 
-        *a3.var0 = v9;
-        a3.var0 += 8;
+        *widths.var0 = v9;
+        widths.var0 += 8;
       }
 
       v6 = [(NSArray *)mColumnBoxes countByEnumeratingWithState:&v10 objects:v14 count:16];
@@ -71,33 +71,33 @@
   }
 }
 
-- (id)p_crossoutDigitBox:(id)a3 crossout:(int)a4 layoutManager:(const void *)a5
+- (id)p_crossoutDigitBox:(id)box crossout:(int)crossout layoutManager:(const void *)manager
 {
-  v5 = a3;
-  if (a4)
+  boxCopy = box;
+  if (crossout)
   {
-    [a3 width];
+    [box width];
     if (v8 != 0.0)
     {
-      [(EQKitOverlayBox *)v5 height];
+      [(EQKitOverlayBox *)boxCopy height];
       if (v9 != 0.0)
       {
-        if ((a4 - 2) >= 3)
+        if ((crossout - 2) >= 3)
         {
-          v10 = 1;
+          crossoutCopy = 1;
         }
 
         else
         {
-          v10 = a4;
+          crossoutCopy = crossout;
         }
 
-        PathForNotation = EQKitLayoutManager::createPathForNotation(a5, v5, v10);
+        PathForNotation = EQKitLayoutManager::createPathForNotation(manager, boxCopy, crossoutCopy);
         v12 = [EQKitPathBox alloc];
-        [(EQKitOverlayBox *)v5 height];
+        [(EQKitOverlayBox *)boxCopy height];
         v14 = v13;
-        v15 = *(EQKitLayoutManager::layoutContext(a5) + 112);
-        v16 = EQKitLayoutManager::layoutContext(a5);
+        v15 = *(EQKitLayoutManager::layoutContext(manager) + 112);
+        v16 = EQKitLayoutManager::layoutContext(manager);
         v18 = v16;
         v19 = *(v16 + 88);
         if (*(v16 + 120))
@@ -111,39 +111,39 @@
         }
 
         v20 = [(EQKitPathBox *)v12 initWithCGPath:PathForNotation height:v15 cgColor:2 drawingMode:v14 lineWidth:(*(*v19 + 56))(v19, 23, v18 + 8, v17)];
-        v5 = [[EQKitOverlayBox alloc] initWithBox:v5 overlayBox:v20];
+        boxCopy = [[EQKitOverlayBox alloc] initWithBox:boxCopy overlayBox:v20];
 
         CGPathRelease(PathForNotation);
       }
     }
   }
 
-  return v5;
+  return boxCopy;
 }
 
-- (id)newBoxWithStackWidth:(double)a3 columnWidthIter:(__wrap_iter<double *>)a4 iterMax:(__wrap_iter<double *>)a5 previousRow:(id)a6 layoutManager:(const void *)a7
+- (id)newBoxWithStackWidth:(double)width columnWidthIter:(__wrap_iter<double *>)iter iterMax:(__wrap_iter<double *>)max previousRow:(id)row layoutManager:(const void *)manager
 {
   v36 = *MEMORY[0x277D85DE8];
   v10 = objc_alloc_init(MEMORY[0x277CBEB18]);
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    a6 = 0;
+    row = 0;
   }
 
   mFirstColumnIndex = self->mFirstColumnIndex;
-  v12 = [a6 firstColumnIndex];
+  firstColumnIndex = [row firstColumnIndex];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v27 = self;
+  selfCopy = self;
   obj = self->mColumnBoxes;
   v13 = [(NSArray *)obj countByEnumeratingWithState:&v31 objects:v35 count:16];
   if (v13)
   {
     v14 = v13;
-    v15 = mFirstColumnIndex - v12;
+    v15 = mFirstColumnIndex - firstColumnIndex;
     v30 = *v32;
     do
     {
@@ -155,10 +155,10 @@
         }
 
         v17 = *(*(&v31 + 1) + 8 * i);
-        v18 = *a4.var0;
-        if (a6 && (v15 & 0x8000000000000000) == 0)
+        v18 = *iter.var0;
+        if (row && (v15 & 0x8000000000000000) == 0)
         {
-          v17 = -[EQKitLayoutElementaryStackDigitRow p_crossoutDigitBox:crossout:layoutManager:](v27, "p_crossoutDigitBox:crossout:layoutManager:", v17, [a6 crossoutAtColumnIndex:v15], a7);
+          v17 = -[EQKitLayoutElementaryStackDigitRow p_crossoutDigitBox:crossout:layoutManager:](selfCopy, "p_crossoutDigitBox:crossout:layoutManager:", v17, [row crossoutAtColumnIndex:v15], manager);
         }
 
         v19 = [EQKitHSpace alloc];
@@ -171,7 +171,7 @@
         [v10 addObject:v17];
         [v10 addObject:v24];
 
-        a4.var0 += 8;
+        iter.var0 += 8;
         ++v15;
       }
 

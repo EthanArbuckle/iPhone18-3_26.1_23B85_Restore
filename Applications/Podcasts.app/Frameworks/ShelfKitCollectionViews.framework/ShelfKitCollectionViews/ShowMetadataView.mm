@@ -1,16 +1,16 @@
 @interface ShowMetadataView
 - (CGSize)intrinsicContentSize;
 - (void)layoutSubviews;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation ShowMetadataView
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_2CA2E4(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_2CA2E4(change);
 }
 
 - (void)layoutSubviews
@@ -26,7 +26,7 @@
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = self;
+  selfCopy = self;
   sub_2CA918();
   v4 = v3;
   v6 = v5;

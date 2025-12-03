@@ -1,24 +1,24 @@
 @interface CPLEngineChangePipe
-- (BOOL)appendChangeBatch:(id)a3 error:(id *)a4;
-- (BOOL)compactChangeBatchesWithError:(id *)a3;
-- (BOOL)deleteAllChangeBatchesWithError:(id *)a3;
-- (BOOL)deleteAllChangesWithScopeFilter:(id)a3 error:(id *)a4;
-- (BOOL)deleteRecordsForScopeIndex:(int64_t)a3 maxCount:(int64_t)a4 deletedCount:(int64_t *)a5 error:(id *)a6;
+- (BOOL)appendChangeBatch:(id)batch error:(id *)error;
+- (BOOL)compactChangeBatchesWithError:(id *)error;
+- (BOOL)deleteAllChangeBatchesWithError:(id *)error;
+- (BOOL)deleteAllChangesWithScopeFilter:(id)filter error:(id *)error;
+- (BOOL)deleteRecordsForScopeIndex:(int64_t)index maxCount:(int64_t)count deletedCount:(int64_t *)deletedCount error:(id *)error;
 - (BOOL)hasQueuedBatches;
-- (BOOL)hasSomeChangeInScopesWithIdentifiers:(id)a3;
-- (BOOL)hasSomeChangeWithScopeFilter:(id)a3;
-- (BOOL)hasSomeChangeWithScopedIdentifier:(id)a3;
+- (BOOL)hasSomeChangeInScopesWithIdentifiers:(id)identifiers;
+- (BOOL)hasSomeChangeWithScopeFilter:(id)filter;
+- (BOOL)hasSomeChangeWithScopedIdentifier:(id)identifier;
 - (BOOL)isEmpty;
-- (BOOL)popChangeBatch:(id *)a3 error:(id *)a4;
-- (BOOL)popNextBatchWithError:(id *)a3;
-- (id)addDequeueObserverWithDequeueSignalBlock:(id)a3;
+- (BOOL)popChangeBatch:(id *)batch error:(id *)error;
+- (BOOL)popNextBatchWithError:(id *)error;
+- (id)addDequeueObserverWithDequeueSignalBlock:(id)block;
 - (id)allChangeBatches;
 - (id)nextBatch;
 - (unint64_t)countOfQueuedBatches;
 - (void)_notifyQueueRemovedChanges;
-- (void)addDequeueObserver:(id)a3;
-- (void)notifyClientDidAcknowledgeBatch:(id)a3;
-- (void)notifyClientWillAcknowledgeBatch:(id)a3;
+- (void)addDequeueObserver:(id)observer;
+- (void)notifyClientDidAcknowledgeBatch:(id)batch;
+- (void)notifyClientWillAcknowledgeBatch:(id)batch;
 @end
 
 @implementation CPLEngineChangePipe
@@ -46,8 +46,8 @@
           objc_enumerationMutation(v3);
         }
 
-        v8 = [*(*(&v10 + 1) + 8 * v7) changePipeDidRemoveChanges];
-        (v8)[2](v8, self);
+        changePipeDidRemoveChanges = [*(*(&v10 + 1) + 8 * v7) changePipeDidRemoveChanges];
+        (changePipeDidRemoveChanges)[2](changePipeDidRemoveChanges, self);
 
         ++v7;
       }
@@ -62,10 +62,10 @@
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)notifyClientDidAcknowledgeBatch:(id)a3
+- (void)notifyClientDidAcknowledgeBatch:(id)batch
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  batchCopy = batch;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -86,8 +86,8 @@
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v12 + 1) + 8 * v9) clientDidAcknowledgeBatchBlock];
-        (v10)[2](v10, self, v4);
+        clientDidAcknowledgeBatchBlock = [*(*(&v12 + 1) + 8 * v9) clientDidAcknowledgeBatchBlock];
+        (clientDidAcknowledgeBatchBlock)[2](clientDidAcknowledgeBatchBlock, self, batchCopy);
 
         ++v9;
       }
@@ -102,10 +102,10 @@
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)notifyClientWillAcknowledgeBatch:(id)a3
+- (void)notifyClientWillAcknowledgeBatch:(id)batch
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  batchCopy = batch;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -126,8 +126,8 @@
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v12 + 1) + 8 * v9) clientWillAcknowledgeBatchBlock];
-        (v10)[2](v10, self, v4);
+        clientWillAcknowledgeBatchBlock = [*(*(&v12 + 1) + 8 * v9) clientWillAcknowledgeBatchBlock];
+        (clientWillAcknowledgeBatchBlock)[2](clientWillAcknowledgeBatchBlock, self, batchCopy);
 
         ++v9;
       }
@@ -142,43 +142,43 @@
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (id)addDequeueObserverWithDequeueSignalBlock:(id)a3
+- (id)addDequeueObserverWithDequeueSignalBlock:(id)block
 {
-  v4 = a3;
-  v5 = [[CPLEngineDequeueObserver alloc] initWithDequeueSignalBlock:v4];
+  blockCopy = block;
+  v5 = [[CPLEngineDequeueObserver alloc] initWithDequeueSignalBlock:blockCopy];
 
   [(CPLEngineChangePipe *)self addDequeueObserver:v5];
 
   return v5;
 }
 
-- (void)addDequeueObserver:(id)a3
+- (void)addDequeueObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   dequeueObservers = self->_dequeueObservers;
-  v8 = v4;
+  v8 = observerCopy;
   if (!dequeueObservers)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_dequeueObservers;
     self->_dequeueObservers = v6;
 
-    v4 = v8;
+    observerCopy = v8;
     dequeueObservers = self->_dequeueObservers;
   }
 
-  [(NSMutableArray *)dequeueObservers addObject:v4];
+  [(NSMutableArray *)dequeueObservers addObject:observerCopy];
 }
 
 - (id)allChangeBatches
 {
-  v2 = [(CPLEngineStorage *)self platformObject];
-  v3 = [v2 allChangeBatches];
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  allChangeBatches = [platformObject allChangeBatches];
 
-  return v3;
+  return allChangeBatches;
 }
 
-- (BOOL)compactChangeBatchesWithError:(id *)a3
+- (BOOL)compactChangeBatchesWithError:(id *)error
 {
   v12 = *MEMORY[0x1E69E9840];
   if ((_CPLSilentLogging & 1) == 0)
@@ -187,13 +187,13 @@
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
       v10 = 138412290;
-      v11 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1DC05A000, v5, OS_LOG_TYPE_DEBUG, "%@ compacting batches", &v10, 0xCu);
     }
   }
 
-  v6 = [(CPLEngineStorage *)self platformObject];
-  v7 = [v6 compactChangeBatchesWithError:a3];
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v7 = [platformObject compactChangeBatchesWithError:error];
 
   if (v7)
   {
@@ -204,11 +204,11 @@
   return v7;
 }
 
-- (BOOL)deleteAllChangesWithScopeFilter:(id)a3 error:(id *)a4
+- (BOOL)deleteAllChangesWithScopeFilter:(id)filter error:(id *)error
 {
-  v6 = a3;
-  v7 = [(CPLEngineStorage *)self platformObject];
-  v8 = [v7 deleteAllChangesWithScopeFilter:v6 error:a4];
+  filterCopy = filter;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v8 = [platformObject deleteAllChangesWithScopeFilter:filterCopy error:error];
 
   if (v8)
   {
@@ -218,7 +218,7 @@
   return v8;
 }
 
-- (BOOL)deleteAllChangeBatchesWithError:(id *)a3
+- (BOOL)deleteAllChangeBatchesWithError:(id *)error
 {
   v12 = *MEMORY[0x1E69E9840];
   if ((_CPLSilentLogging & 1) == 0)
@@ -227,13 +227,13 @@
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
       v10 = 138412290;
-      v11 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1DC05A000, v5, OS_LOG_TYPE_DEBUG, "%@ deleting all batches", &v10, 0xCu);
     }
   }
 
-  v6 = [(CPLEngineStorage *)self platformObject];
-  v7 = [v6 deleteAllChangeBatchesWithError:a3];
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v7 = [platformObject deleteAllChangeBatchesWithError:error];
 
   if (v7)
   {
@@ -244,38 +244,38 @@
   return v7;
 }
 
-- (BOOL)hasSomeChangeWithScopeFilter:(id)a3
+- (BOOL)hasSomeChangeWithScopeFilter:(id)filter
 {
-  v4 = a3;
-  v5 = [(CPLEngineStorage *)self platformObject];
-  v6 = [v5 hasSomeChangeWithScopeFilter:v4];
+  filterCopy = filter;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v6 = [platformObject hasSomeChangeWithScopeFilter:filterCopy];
 
   return v6;
 }
 
-- (BOOL)hasSomeChangeInScopesWithIdentifiers:(id)a3
+- (BOOL)hasSomeChangeInScopesWithIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  v5 = [(CPLEngineStorage *)self platformObject];
-  v6 = [v5 hasSomeChangeInScopesWithIdentifiers:v4];
+  identifiersCopy = identifiers;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v6 = [platformObject hasSomeChangeInScopesWithIdentifiers:identifiersCopy];
 
   return v6;
 }
 
-- (BOOL)hasSomeChangeWithScopedIdentifier:(id)a3
+- (BOOL)hasSomeChangeWithScopedIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CPLEngineStorage *)self platformObject];
-  v6 = [v5 hasSomeChangeWithScopedIdentifier:v4];
+  identifierCopy = identifier;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v6 = [platformObject hasSomeChangeWithScopedIdentifier:identifierCopy];
 
   return v6;
 }
 
-- (BOOL)popNextBatchWithError:(id *)a3
+- (BOOL)popNextBatchWithError:(id *)error
 {
   v12 = *MEMORY[0x1E69E9840];
-  v5 = [(CPLEngineStorage *)self platformObject];
-  v6 = [v5 popNextBatchWithError:a3];
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v6 = [platformObject popNextBatchWithError:error];
 
   if (v6 && (_CPLSilentLogging & 1) == 0)
   {
@@ -283,7 +283,7 @@
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
       v10 = 138412290;
-      v11 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1DC05A000, v7, OS_LOG_TYPE_DEBUG, "%@ popped next batch", &v10, 0xCu);
     }
   }
@@ -295,8 +295,8 @@
 - (id)nextBatch
 {
   v12 = *MEMORY[0x1E69E9840];
-  v3 = [(CPLEngineStorage *)self platformObject];
-  v4 = [v3 nextBatch];
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  nextBatch = [platformObject nextBatch];
 
   if ((_CPLSilentLogging & 1) == 0)
   {
@@ -304,32 +304,32 @@
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
       v8 = 138412546;
-      v9 = self;
+      selfCopy = self;
       v10 = 2048;
-      v11 = [v4 count];
+      v11 = [nextBatch count];
       _os_log_impl(&dword_1DC05A000, v5, OS_LOG_TYPE_DEBUG, "%@ getting %lu changes", &v8, 0x16u);
     }
   }
 
   v6 = *MEMORY[0x1E69E9840];
 
-  return v4;
+  return nextBatch;
 }
 
-- (BOOL)popChangeBatch:(id *)a3 error:(id *)a4
+- (BOOL)popChangeBatch:(id *)batch error:(id *)error
 {
   v17 = *MEMORY[0x1E69E9840];
-  v7 = [(CPLEngineStorage *)self platformObject];
-  v8 = [v7 popChangeBatch:a3 error:a4];
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v8 = [platformObject popChangeBatch:batch error:error];
 
   if (v8 && (_CPLSilentLogging & 1) == 0)
   {
     v9 = __CPLStorageOSLogDomain_9255();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
-      v10 = [*a3 count];
+      v10 = [*batch count];
       v13 = 138412546;
-      v14 = self;
+      selfCopy = self;
       v15 = 2048;
       v16 = v10;
       _os_log_impl(&dword_1DC05A000, v9, OS_LOG_TYPE_DEBUG, "%@ popped %lu changes", &v13, 0x16u);
@@ -340,25 +340,25 @@
   return v8;
 }
 
-- (BOOL)appendChangeBatch:(id)a3 error:(id *)a4
+- (BOOL)appendChangeBatch:(id)batch error:(id *)error
 {
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  batchCopy = batch;
   if ((_CPLSilentLogging & 1) == 0)
   {
     v7 = __CPLStorageOSLogDomain_9255();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
       v12 = 138412546;
-      v13 = self;
+      selfCopy = self;
       v14 = 2048;
-      v15 = [v6 count];
+      v15 = [batchCopy count];
       _os_log_impl(&dword_1DC05A000, v7, OS_LOG_TYPE_DEBUG, "%@ appending %lu changes", &v12, 0x16u);
     }
   }
 
-  v8 = [(CPLEngineStorage *)self platformObject];
-  v9 = [v8 appendChangeBatch:v6 error:a4];
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v9 = [platformObject appendChangeBatch:batchCopy error:error];
 
   v10 = *MEMORY[0x1E69E9840];
   return v9;
@@ -366,32 +366,32 @@
 
 - (BOOL)hasQueuedBatches
 {
-  v2 = [(CPLEngineStorage *)self platformObject];
-  v3 = [v2 hasQueuedBatches];
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  hasQueuedBatches = [platformObject hasQueuedBatches];
 
-  return v3;
+  return hasQueuedBatches;
 }
 
 - (BOOL)isEmpty
 {
-  v2 = [(CPLEngineStorage *)self platformObject];
-  v3 = [v2 hasQueuedBatches];
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  hasQueuedBatches = [platformObject hasQueuedBatches];
 
-  return v3 ^ 1;
+  return hasQueuedBatches ^ 1;
 }
 
 - (unint64_t)countOfQueuedBatches
 {
-  v2 = [(CPLEngineStorage *)self platformObject];
-  v3 = [v2 countOfQueuedBatches];
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  countOfQueuedBatches = [platformObject countOfQueuedBatches];
 
-  return v3;
+  return countOfQueuedBatches;
 }
 
-- (BOOL)deleteRecordsForScopeIndex:(int64_t)a3 maxCount:(int64_t)a4 deletedCount:(int64_t *)a5 error:(id *)a6
+- (BOOL)deleteRecordsForScopeIndex:(int64_t)index maxCount:(int64_t)count deletedCount:(int64_t *)deletedCount error:(id *)error
 {
-  v11 = [(CPLEngineStorage *)self platformObject];
-  v12 = [v11 deleteRecordsForScopeIndex:a3 maxCount:a4 deletedCount:a5 error:a6];
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v12 = [platformObject deleteRecordsForScopeIndex:index maxCount:count deletedCount:deletedCount error:error];
 
   if (v12)
   {

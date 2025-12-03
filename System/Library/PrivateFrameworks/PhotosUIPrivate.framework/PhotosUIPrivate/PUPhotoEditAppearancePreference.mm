@@ -1,20 +1,20 @@
 @interface PUPhotoEditAppearancePreference
-+ (id)_identifierForAppearance:(int64_t)a3;
++ (id)_identifierForAppearance:(int64_t)appearance;
 + (int64_t)preferredAppearance;
-+ (void)setPreferredAppearance:(int64_t)a3;
++ (void)setPreferredAppearance:(int64_t)appearance;
 @end
 
 @implementation PUPhotoEditAppearancePreference
 
-+ (id)_identifierForAppearance:(int64_t)a3
++ (id)_identifierForAppearance:(int64_t)appearance
 {
   v3 = @"PUPhotoEditAppearanceSystem";
-  if (a3 == 1)
+  if (appearance == 1)
   {
     v3 = @"PUPhotoEditAppearanceDark";
   }
 
-  if (a3 == 2)
+  if (appearance == 2)
   {
     return @"PUPhotoEditAppearanceLight";
   }
@@ -25,9 +25,9 @@
   }
 }
 
-+ (void)setPreferredAppearance:(int64_t)a3
++ (void)setPreferredAppearance:(int64_t)appearance
 {
-  v4 = [a1 _identifierForAppearance:a3];
+  v4 = [self _identifierForAppearance:appearance];
   v3 = +[PUPhotoEditAppearancePreference _userDefaults];
   [v3 setObject:v4 forKey:@"PUPhotoEditAppearanceKey"];
 }
@@ -40,13 +40,13 @@
 
   if (!v4)
   {
-    v4 = [a1 _identifierForAppearance:0];
+    v4 = [self _identifierForAppearance:0];
   }
 
   v5 = 0;
   while (1)
   {
-    v6 = [a1 _identifierForAppearance:v5];
+    v6 = [self _identifierForAppearance:v5];
     v7 = [v6 isEqualToString:v4];
 
     if (v7)

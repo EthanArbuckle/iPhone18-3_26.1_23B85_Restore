@@ -1,7 +1,7 @@
 @interface CKStampChatItem
 - (Class)cellClass;
 - (UIEdgeInsets)contentInsets;
-- (id)layoutItemSpacingWithEnvironment:(id)a3 datasourceItemIndex:(int64_t)a4 allDatasourceItems:(id)a5 supplementryItems:(id)a6 sizeOverride:(CGSize)a7;
+- (id)layoutItemSpacingWithEnvironment:(id)environment datasourceItemIndex:(int64_t)index allDatasourceItems:(id)items supplementryItems:(id)supplementryItems sizeOverride:(CGSize)override;
 @end
 
 @implementation CKStampChatItem
@@ -28,26 +28,26 @@
 
 - (Class)cellClass
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"CKStampChatItem.m" lineNumber:25 description:@"Subclasses must implement cellClass"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"CKStampChatItem.m" lineNumber:25 description:@"Subclasses must implement cellClass"];
 
   return 0;
 }
 
-- (id)layoutItemSpacingWithEnvironment:(id)a3 datasourceItemIndex:(int64_t)a4 allDatasourceItems:(id)a5 supplementryItems:(id)a6 sizeOverride:(CGSize)a7
+- (id)layoutItemSpacingWithEnvironment:(id)environment datasourceItemIndex:(int64_t)index allDatasourceItems:(id)items supplementryItems:(id)supplementryItems sizeOverride:(CGSize)override
 {
   v35 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  if (a4 < 1)
+  environmentCopy = environment;
+  itemsCopy = items;
+  supplementryItemsCopy = supplementryItems;
+  if (index < 1)
   {
     v14 = 0;
   }
 
   else
   {
-    v14 = [v12 objectAtIndex:a4 - 1];
+    v14 = [itemsCopy objectAtIndex:index - 1];
   }
 
   v15 = +[CKUIBehavior sharedBehaviors];

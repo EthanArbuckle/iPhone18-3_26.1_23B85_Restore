@@ -1,18 +1,18 @@
 @interface ADCloudKitShareeOperations
-- (ADCloudKitShareeOperations)initWithQueue:(id)a3 container:(id)a4 instanceContext:(id)a5;
+- (ADCloudKitShareeOperations)initWithQueue:(id)queue container:(id)container instanceContext:(id)context;
 - (id)serverChangeToken;
 - (void)_fetchSharedZonesIfAny;
-- (void)_setupMultiUserSharedZone:(id)a3;
+- (void)_setupMultiUserSharedZone:(id)zone;
 - (void)_setupSharedDatabase;
 - (void)_setupSharedDatabaseView;
 - (void)_synchronizeSharedZones;
 - (void)dealloc;
-- (void)deleteShareForUser:(id)a3 markForReinvitation:(BOOL)a4 completion:(id)a5;
-- (void)deleteZones:(id)a3;
+- (void)deleteShareForUser:(id)user markForReinvitation:(BOOL)reinvitation completion:(id)completion;
+- (void)deleteZones:(id)zones;
 - (void)fetchSharedZones;
-- (void)fetchZones:(id)a3;
+- (void)fetchZones:(id)zones;
 - (void)reset;
-- (void)setServerChangeToken:(id)a3;
+- (void)setServerChangeToken:(id)token;
 - (void)synchronizeSharedZones;
 @end
 
@@ -29,21 +29,21 @@
   dispatch_async(queue, block);
 }
 
-- (void)deleteShareForUser:(id)a3 markForReinvitation:(BOOL)a4 completion:(id)a5
+- (void)deleteShareForUser:(id)user markForReinvitation:(BOOL)reinvitation completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  userCopy = user;
+  completionCopy = completion;
   queue = self->_queue;
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10014BB9C;
   v13[3] = &unk_10051C6C8;
   v13[4] = self;
-  v14 = v8;
-  v16 = a4;
-  v15 = v9;
-  v11 = v9;
-  v12 = v8;
+  v14 = userCopy;
+  reinvitationCopy = reinvitation;
+  v15 = completionCopy;
+  v11 = completionCopy;
+  v12 = userCopy;
   dispatch_async(queue, v13);
 }
 
@@ -60,17 +60,17 @@
   dispatch_async(queue, block);
 }
 
-- (void)setServerChangeToken:(id)a3
+- (void)setServerChangeToken:(id)token
 {
-  v3 = a3;
-  v7 = v3;
-  if (!v3)
+  tokenCopy = token;
+  v7 = tokenCopy;
+  if (!tokenCopy)
   {
     v4 = 0;
     goto LABEL_5;
   }
 
-  v4 = [v3 ad_archiveTokenToDataWithExceptionBlock:&stru_100513258];
+  v4 = [tokenCopy ad_archiveTokenToDataWithExceptionBlock:&stru_100513258];
   if (v4)
   {
 LABEL_5:
@@ -85,9 +85,9 @@ LABEL_5:
 - (id)serverChangeToken
 {
   v2 = +[ADPreferences sharedPreferences];
-  v3 = [v2 cloudKitSharedDatabaseChangeToken];
+  cloudKitSharedDatabaseChangeToken = [v2 cloudKitSharedDatabaseChangeToken];
 
-  v4 = [CKServerChangeToken ad_unarchiveTokenFromData:v3 withExceptionBlock:&stru_100513238];
+  v4 = [CKServerChangeToken ad_unarchiveTokenFromData:cloudKitSharedDatabaseChangeToken withExceptionBlock:&stru_100513238];
 
   return v4;
 }
@@ -144,15 +144,15 @@ LABEL_5:
   }
 }
 
-- (void)deleteZones:(id)a3
+- (void)deleteZones:(id)zones
 {
-  v3 = a3;
+  zonesCopy = zones;
   v4 = objc_alloc_init(NSMutableArray);
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v3;
+  v5 = zonesCopy;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -168,8 +168,8 @@ LABEL_5:
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v14 + 1) + 8 * v9) ownerName];
-        [v4 addObject:v10];
+        ownerName = [*(*(&v14 + 1) + 8 * v9) ownerName];
+        [v4 addObject:ownerName];
 
         v9 = v9 + 1;
       }
@@ -193,9 +193,9 @@ LABEL_5:
   }
 }
 
-- (void)fetchZones:(id)a3
+- (void)fetchZones:(id)zones
 {
-  v4 = a3;
+  zonesCopy = zones;
   v5 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEFAULT))
   {
@@ -209,14 +209,14 @@ LABEL_5:
   v40 = 0u;
   v37 = 0u;
   v38 = 0u;
-  obj = v4;
+  obj = zonesCopy;
   v7 = [obj countByEnumeratingWithState:&v37 objects:v41 count:16];
   if (v7)
   {
     v8 = v7;
     v9 = *v38;
     v10 = &RPOptionStatusFlags_ptr;
-    v29 = self;
+    selfCopy = self;
     do
     {
       v11 = 0;
@@ -252,7 +252,7 @@ LABEL_5:
           v10 = v21;
           v9 = v20;
           v8 = v19;
-          self = v29;
+          self = selfCopy;
         }
 
         else
@@ -289,9 +289,9 @@ LABEL_5:
   dispatch_after(v27, v28, v31);
 }
 
-- (void)_setupMultiUserSharedZone:(id)a3
+- (void)_setupMultiUserSharedZone:(id)zone
 {
-  v4 = a3;
+  zoneCopy = zone;
   v5 = [NSString stringWithFormat:@"%@.%@.%@", @"com.apple.assistant.multiuser.shared", @"subscription", @"AssistantVoiceTriggerFileAssetRecord"];
   v6 = [NSString stringWithFormat:@"%@.%@.%@", @"com.apple.assistant.multiuser.shared", @"subscription", @"AssistantKeyValueRecord"];
   v7 = objc_alloc_init(ADCloudKitMultiUserSharedDataStore);
@@ -300,7 +300,7 @@ LABEL_5:
   v23[0] = v5;
   v23[1] = v6;
   v9 = [NSArray arrayWithObjects:v23 count:2];
-  v10 = [(ADCloudKitRecordZoneInfo *)v8 initWithZone:v4 dataStore:v7 subscriptionNames:v9];
+  v10 = [(ADCloudKitRecordZoneInfo *)v8 initWithZone:zoneCopy dataStore:v7 subscriptionNames:v9];
 
   v11 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
@@ -308,7 +308,7 @@ LABEL_5:
     *buf = 136315394;
     v20 = "[ADCloudKitShareeOperations _setupMultiUserSharedZone:]";
     v21 = 2112;
-    v22 = v4;
+    v22 = zoneCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "%s zone is (%@)", buf, 0x16u);
   }
 
@@ -323,9 +323,9 @@ LABEL_5:
     sharedZoneUpdaters = self->_sharedZoneUpdaters;
   }
 
-  v16 = [v4 zoneID];
-  v17 = [v16 ownerName];
-  [(NSMutableDictionary *)sharedZoneUpdaters setObject:v12 forKey:v17];
+  zoneID = [zoneCopy zoneID];
+  ownerName = [zoneID ownerName];
+  [(NSMutableDictionary *)sharedZoneUpdaters setObject:v12 forKey:ownerName];
 
   v18 = +[ADCloudKitManager sharedManager];
   [v18 fetchChangesWithZoneInfo:v10 useSharedDatabase:1];
@@ -377,8 +377,8 @@ LABEL_5:
   v5[6] = v11;
   [v3 setFetchDatabaseChangesCompletionBlock:v5];
   [v3 setQualityOfService:25];
-  v4 = [(CKContainer *)self->_container sharedCloudDatabase];
-  [v4 addOperation:v3];
+  sharedCloudDatabase = [(CKContainer *)self->_container sharedCloudDatabase];
+  [sharedCloudDatabase addOperation:v3];
 
   objc_destroyWeak(&v8);
   objc_destroyWeak(&v10);
@@ -425,8 +425,8 @@ LABEL_5:
   v10[4] = self;
   [v8 setModifySubscriptionsCompletionBlock:v10];
   [v8 setQualityOfService:17];
-  v9 = [(CKContainer *)self->_container sharedCloudDatabase];
-  [v9 addOperation:v8];
+  sharedCloudDatabase = [(CKContainer *)self->_container sharedCloudDatabase];
+  [sharedCloudDatabase addOperation:v8];
 }
 
 - (void)_setupSharedDatabase
@@ -450,11 +450,11 @@ LABEL_5:
   [(ADCloudKitShareeOperations *)&v4 dealloc];
 }
 
-- (ADCloudKitShareeOperations)initWithQueue:(id)a3 container:(id)a4 instanceContext:(id)a5
+- (ADCloudKitShareeOperations)initWithQueue:(id)queue container:(id)container instanceContext:(id)context
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  queueCopy = queue;
+  containerCopy = container;
+  contextCopy = context;
   if (AFSupportsMultiUser())
   {
     v18.receiver = self;
@@ -463,11 +463,11 @@ LABEL_5:
     v13 = v12;
     if (v12)
     {
-      objc_storeStrong(&v12->_queue, a3);
-      objc_storeStrong(&v13->_container, a4);
-      if (v11)
+      objc_storeStrong(&v12->_queue, queue);
+      objc_storeStrong(&v13->_container, container);
+      if (contextCopy)
       {
-        v14 = v11;
+        v14 = contextCopy;
       }
 
       else
@@ -482,15 +482,15 @@ LABEL_5:
     }
 
     self = v13;
-    v15 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v15 = 0;
+    selfCopy = 0;
   }
 
-  return v15;
+  return selfCopy;
 }
 
 @end

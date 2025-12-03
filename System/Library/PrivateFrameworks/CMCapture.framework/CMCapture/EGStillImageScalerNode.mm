@@ -1,26 +1,26 @@
 @interface EGStillImageScalerNode
-- ($2825F4736939C4A6D3AD43837233062D)processorController:(id)a3 outputPixelBufferDimensionsForProcessorInput:(id)a4 type:(unint64_t)a5 attachedMediaKey:(id)a6 pixelFormat:(unsigned int)a7 dimensions:(id)a8;
-- (EGStillImageScalerNode)initWithName:(id)a3 stillImageSettings:(id)a4 nodeConfiguration:(id)a5 resourceCoordinator:(id)a6 deepZoomEnabled:(BOOL)a7 inputImageBufferType:(unint64_t)a8 portType:(id)a9 delegate:(id)a10;
+- ($2825F4736939C4A6D3AD43837233062D)processorController:(id)controller outputPixelBufferDimensionsForProcessorInput:(id)input type:(unint64_t)type attachedMediaKey:(id)key pixelFormat:(unsigned int)format dimensions:(id)dimensions;
+- (EGStillImageScalerNode)initWithName:(id)name stillImageSettings:(id)settings nodeConfiguration:(id)configuration resourceCoordinator:(id)coordinator deepZoomEnabled:(BOOL)enabled inputImageBufferType:(unint64_t)type portType:(id)portType delegate:(id)self0;
 - (void)dealloc;
-- (void)processorController:(id)a3 didFinishProcessingSampleBuffer:(opaqueCMSampleBuffer *)a4 type:(unint64_t)a5 processorInput:(id)a6 err:(int)a7;
-- (void)queueManagedReceiveData:(id)a3 fromInputGroup:(id)a4;
+- (void)processorController:(id)controller didFinishProcessingSampleBuffer:(opaqueCMSampleBuffer *)buffer type:(unint64_t)type processorInput:(id)input err:(int)err;
+- (void)queueManagedReceiveData:(id)data fromInputGroup:(id)group;
 @end
 
 @implementation EGStillImageScalerNode
 
-- (EGStillImageScalerNode)initWithName:(id)a3 stillImageSettings:(id)a4 nodeConfiguration:(id)a5 resourceCoordinator:(id)a6 deepZoomEnabled:(BOOL)a7 inputImageBufferType:(unint64_t)a8 portType:(id)a9 delegate:(id)a10
+- (EGStillImageScalerNode)initWithName:(id)name stillImageSettings:(id)settings nodeConfiguration:(id)configuration resourceCoordinator:(id)coordinator deepZoomEnabled:(BOOL)enabled inputImageBufferType:(unint64_t)type portType:(id)portType delegate:(id)self0
 {
   v21.receiver = self;
   v21.super_class = EGStillImageScalerNode;
-  v15 = [(EGStillImageProcessorControllerDelegateNode *)&v21 initWithName:a3 delegate:a10];
+  v15 = [(EGStillImageProcessorControllerDelegateNode *)&v21 initWithName:name delegate:delegate];
   if (v15)
   {
-    v15->_stillImageSettings = a4;
-    v15->_nodeConfiguration = a5;
-    v15->_resourceCoordinator = a6;
-    v15->_deepZoomEnabled = a7;
-    v15->_inputImageBufferType = a8;
-    v15->_portType = a9;
+    v15->_stillImageSettings = settings;
+    v15->_nodeConfiguration = configuration;
+    v15->_resourceCoordinator = coordinator;
+    v15->_deepZoomEnabled = enabled;
+    v15->_inputImageBufferType = type;
+    v15->_portType = portType;
     v16 = [[EGInputGroup alloc] initWithName:@"mainInputGroup"];
     v17 = +[EGStillImageProcessorControllerDelegateNode newProcessorControllerInput];
     v15->_processorInput = v17;
@@ -44,10 +44,10 @@
   [(EGQueueManagementNode *)&v3 dealloc];
 }
 
-- (void)queueManagedReceiveData:(id)a3 fromInputGroup:(id)a4
+- (void)queueManagedReceiveData:(id)data fromInputGroup:(id)group
 {
-  v6 = [objc_msgSend(a3 objectForKeyedSubscript:{-[EGInput name](self->_sbufInput, "name", a3, a4)), "sampleBuffer"}];
-  if (!v6 || (v7 = v6, (v6 = [objc_msgSend(a3 objectForKeyedSubscript:{-[EGInput name](-[EGStillImageScalerNode processorInput](self, "processorInput"), "name")), "processorController"}]) == 0))
+  v6 = [objc_msgSend(data objectForKeyedSubscript:{-[EGInput name](self->_sbufInput, "name", data, group)), "sampleBuffer"}];
+  if (!v6 || (v7 = v6, (v6 = [objc_msgSend(data objectForKeyedSubscript:{-[EGInput name](-[EGStillImageScalerNode processorInput](self, "processorInput"), "name")), "processorController"}]) == 0))
   {
     v12 = 4294954516;
 LABEL_15:
@@ -89,28 +89,28 @@ LABEL_15:
   [(BWScalerProcessorControllerInput *)v13 addFrame:v7 bufferType:self->_inputImageBufferType];
 }
 
-- (void)processorController:(id)a3 didFinishProcessingSampleBuffer:(opaqueCMSampleBuffer *)a4 type:(unint64_t)a5 processorInput:(id)a6 err:(int)a7
+- (void)processorController:(id)controller didFinishProcessingSampleBuffer:(opaqueCMSampleBuffer *)buffer type:(unint64_t)type processorInput:(id)input err:(int)err
 {
-  if (a7)
+  if (err)
   {
     goto LABEL_7;
   }
 
-  if (!a4)
+  if (!buffer)
   {
-    *&a7 = 4294954516;
+    *&err = 4294954516;
 LABEL_7:
-    [EGStillImageScalerNode processorController:*&a7 didFinishProcessingSampleBuffer:? type:? processorInput:? err:?];
+    [EGStillImageScalerNode processorController:*&err didFinishProcessingSampleBuffer:? type:? processorInput:? err:?];
     return;
   }
 
-  v8 = [[EGStillImageGraphPayload alloc] initWithSampleBuffer:a4];
+  v8 = [[EGStillImageGraphPayload alloc] initWithSampleBuffer:buffer];
   [(EGStillImageOutput *)self->_sbufOutput emitPayload:v8];
 }
 
-- ($2825F4736939C4A6D3AD43837233062D)processorController:(id)a3 outputPixelBufferDimensionsForProcessorInput:(id)a4 type:(unint64_t)a5 attachedMediaKey:(id)a6 pixelFormat:(unsigned int)a7 dimensions:(id)a8
+- ($2825F4736939C4A6D3AD43837233062D)processorController:(id)controller outputPixelBufferDimensionsForProcessorInput:(id)input type:(unint64_t)type attachedMediaKey:(id)key pixelFormat:(unsigned int)format dimensions:(id)dimensions
 {
-  v8 = [(BWPhotonicEngineNodeResourceCoordinator *)self->_resourceCoordinator pixelBufferProviderForProcessorController:a3 processorInput:a4 type:a5 dimensions:a8 pixelFormat:*&a7 attachedMediaKey:a6];
+  v8 = [(BWPhotonicEngineNodeResourceCoordinator *)self->_resourceCoordinator pixelBufferProviderForProcessorController:controller processorInput:input type:type dimensions:dimensions pixelFormat:*&format attachedMediaKey:key];
 
   return [v8 dimensions];
 }

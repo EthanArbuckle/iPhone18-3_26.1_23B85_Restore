@@ -1,19 +1,19 @@
 @interface NESMIKEv2VPNSession
 - (BOOL)initializePlugins;
 - (BOOL)prepareConfigurationForStart;
-- (int)getVirtualInterfaceMTU:(id)a3;
-- (void)createConnectParametersWithStartMessage:(id)a3;
+- (int)getVirtualInterfaceMTU:(id)u;
+- (void)createConnectParametersWithStartMessage:(id)message;
 @end
 
 @implementation NESMIKEv2VPNSession
 
-- (int)getVirtualInterfaceMTU:(id)a3
+- (int)getVirtualInterfaceMTU:(id)u
 {
-  v4 = a3;
-  v5 = [(NESMVPNSession *)self protocol];
-  if ([v5 mtu] >= 0x3E8 && objc_msgSend(v5, "mtu") < 0x5DD)
+  uCopy = u;
+  protocol = [(NESMVPNSession *)self protocol];
+  if ([protocol mtu] >= 0x3E8 && objc_msgSend(protocol, "mtu") < 0x5DD)
   {
-    v8 = [v5 mtu];
+    intValue = [protocol mtu];
   }
 
   else
@@ -22,15 +22,15 @@
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       v10 = 134217984;
-      v11 = [v5 mtu];
+      v11 = [protocol mtu];
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "requested mtu size out of range %lu", &v10, 0xCu);
     }
 
-    v7 = [v4 MTU];
-    v8 = [v7 intValue];
+    v7 = [uCopy MTU];
+    intValue = [v7 intValue];
   }
 
-  return v8;
+  return intValue;
 }
 
 - (BOOL)prepareConfigurationForStart
@@ -40,58 +40,58 @@
     return 1;
   }
 
-  v3 = [(NESMVPNSession *)self parent];
-  v4 = [(NESMVPNSession *)self interfaceName];
-  v5 = sub_10000A780(v3, v4);
-  v6 = [(NESMSession *)self configuration];
-  v7 = [v6 alwaysOnVPN];
-  [v7 setActiveInterfaceProtocolKey:v5];
+  parent = [(NESMVPNSession *)self parent];
+  interfaceName = [(NESMVPNSession *)self interfaceName];
+  v5 = sub_10000A780(parent, interfaceName);
+  configuration = [(NESMSession *)self configuration];
+  alwaysOnVPN = [configuration alwaysOnVPN];
+  [alwaysOnVPN setActiveInterfaceProtocolKey:v5];
 
   v8 = ne_log_obj();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    v14 = [(NESMSession *)self configuration];
-    v15 = [v14 alwaysOnVPN];
-    v16 = [v15 activeInterfaceProtocolKey];
+    configuration2 = [(NESMSession *)self configuration];
+    alwaysOnVPN2 = [configuration2 alwaysOnVPN];
+    activeInterfaceProtocolKey = [alwaysOnVPN2 activeInterfaceProtocolKey];
     v17 = 138412546;
-    v18 = self;
+    selfCopy = self;
     v19 = 2112;
-    v20 = v16;
+    v20 = activeInterfaceProtocolKey;
     _os_log_debug_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "%@: prepareConfigurationForStart: activeInterfaceProtocolKey %@", &v17, 0x16u);
   }
 
-  v9 = [(NESMSession *)self configuration];
-  v10 = [v9 alwaysOnVPN];
-  v11 = [v10 activeInterfaceProtocolKey];
-  v12 = v11 != 0;
+  configuration3 = [(NESMSession *)self configuration];
+  alwaysOnVPN3 = [configuration3 alwaysOnVPN];
+  activeInterfaceProtocolKey2 = [alwaysOnVPN3 activeInterfaceProtocolKey];
+  v12 = activeInterfaceProtocolKey2 != 0;
 
   return v12;
 }
 
-- (void)createConnectParametersWithStartMessage:(id)a3
+- (void)createConnectParametersWithStartMessage:(id)message
 {
-  v4 = a3;
-  v5 = [(NESMVPNSession *)self protocol];
+  messageCopy = message;
+  protocol = [(NESMVPNSession *)self protocol];
   if ([(NESMVPNSession *)self sessionType]== 3)
   {
-    if (![v5 natKeepAliveOffloadEnable])
+    if (![protocol natKeepAliveOffloadEnable])
     {
-      [v5 setNatKeepAliveOffloadEnable:2];
+      [protocol setNatKeepAliveOffloadEnable:2];
     }
 
     buf[0] = 0;
     v29 = 0;
-    v6 = [(NESMVPNSession *)self interfaceName];
-    [v6 UTF8String];
+    interfaceName = [(NESMVPNSession *)self interfaceName];
+    [interfaceName UTF8String];
     NEGetInterfaceType();
 
-    if (![v5 natKeepAliveOffloadInterval] || objc_msgSend(v5, "natKeepAliveOffloadInterval") == 110)
+    if (![protocol natKeepAliveOffloadInterval] || objc_msgSend(protocol, "natKeepAliveOffloadInterval") == 110)
     {
-      v7 = [(NESMVPNSession *)self parent];
-      v8 = v7;
-      if (v7)
+      parent = [(NESMVPNSession *)self parent];
+      v8 = parent;
+      if (parent)
       {
-        v9 = *(v7 + 356);
+        v9 = *(parent + 356);
       }
 
       else
@@ -109,22 +109,22 @@
         v10 = v9;
       }
 
-      [v5 setNatKeepAliveOffloadInterval:v10];
+      [protocol setNatKeepAliveOffloadInterval:v10];
     }
 
-    [v5 setDisableMOBIKERetryOnWake:1];
+    [protocol setDisableMOBIKERetryOnWake:1];
   }
 
   if ([(NESMVPNSession *)self parentType]== 2)
   {
-    v11 = [(NESMVPNSession *)self parent];
-    v12 = self;
-    v14 = v12;
-    if (v11)
+    parent2 = [(NESMVPNSession *)self parent];
+    selfCopy = self;
+    v14 = selfCopy;
+    if (parent2)
     {
-      if (v12)
+      if (selfCopy)
       {
-        v15 = [objc_getProperty(v11 v13];
+        v15 = [objc_getProperty(parent2 v13];
         v17 = v15;
         if (v15)
         {
@@ -136,7 +136,7 @@
           Property = 0;
         }
 
-        v20 = objc_getProperty(v11, v19, 360, 1);
+        v20 = objc_getProperty(parent2, v19, 360, 1);
         if (Property == v14)
         {
           v25 = [v20 objectAtIndexedSubscript:1];
@@ -191,7 +191,7 @@ LABEL_28:
         v26 = v22 > 1;
 LABEL_29:
 
-        [v5 setDisableInitialContact:v26];
+        [protocol setDisableInitialContact:v26];
         goto LABEL_30;
       }
 
@@ -211,14 +211,14 @@ LABEL_29:
 LABEL_30:
   v28.receiver = self;
   v28.super_class = NESMIKEv2VPNSession;
-  [(NESMVPNSession *)&v28 createConnectParametersWithStartMessage:v4];
+  [(NESMVPNSession *)&v28 createConnectParametersWithStartMessage:messageCopy];
 }
 
 - (BOOL)initializePlugins
 {
-  v3 = [(NESMVPNSession *)self primaryTunnelPlugin];
+  primaryTunnelPlugin = [(NESMVPNSession *)self primaryTunnelPlugin];
 
-  if (v3)
+  if (primaryTunnelPlugin)
   {
     return 1;
   }
@@ -234,32 +234,32 @@ LABEL_30:
     if (v8)
     {
       v9 = [NEVPNTunnelPlugin alloc];
-      v10 = [(NESMSession *)self queue];
-      v11 = [(NEVPNTunnelPlugin *)v9 initWithAgent:v8 delegateQueue:v10 andDelegate:self];
+      queue = [(NESMSession *)self queue];
+      v11 = [(NEVPNTunnelPlugin *)v9 initWithAgent:v8 delegateQueue:queue andDelegate:self];
       [(NESMVPNSession *)self setPrimaryTunnelPlugin:v11];
     }
 
-    v12 = [(NESMVPNSession *)self extensibleSSOProvider];
+    extensibleSSOProvider = [(NESMVPNSession *)self extensibleSSOProvider];
 
-    if (v12)
+    if (extensibleSSOProvider)
     {
-      v13 = [(NESMVPNSession *)self extensibleSSOProvider];
-      v25 = v13;
+      extensibleSSOProvider2 = [(NESMVPNSession *)self extensibleSSOProvider];
+      v25 = extensibleSSOProvider2;
       v14 = [NSDictionary dictionaryWithObjects:&v25 forKeys:&v24 count:1];
 
       v15 = [NEAgent alloc];
-      v16 = [(NESMVPNSession *)self pluginType];
+      pluginType = [(NESMVPNSession *)self pluginType];
       v17 = [(NESMSession *)self uid];
-      v18 = [(NEAgent *)v15 initWithPluginType:v16 pluginVersion:0 pluginClass:8 pluginInfo:v14 userID:v17];
+      v18 = [(NEAgent *)v15 initWithPluginType:pluginType pluginVersion:0 pluginClass:8 pluginInfo:v14 userID:v17];
 
       v19 = [NEVPNAuthenticationPlugin alloc];
-      v20 = [(NESMSession *)self queue];
-      v21 = [(NEPlugin *)v19 initWithAgent:v18 delegateQueue:v20 andDelegate:self];
+      queue2 = [(NESMSession *)self queue];
+      v21 = [(NEPlugin *)v19 initWithAgent:v18 delegateQueue:queue2 andDelegate:self];
       [(NESMVPNSession *)self setAuthenticationPlugin:v21];
     }
 
-    v22 = [(NESMVPNSession *)self primaryTunnelPlugin];
-    v4 = v22 != 0;
+    primaryTunnelPlugin2 = [(NESMVPNSession *)self primaryTunnelPlugin];
+    v4 = primaryTunnelPlugin2 != 0;
   }
 
   else
@@ -268,7 +268,7 @@ LABEL_30:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v27 = self;
+      selfCopy = self;
       _os_log_error_impl(&_mh_execute_header, v8, OS_LOG_TYPE_ERROR, "%@: No UID available, cannot create plugin", buf, 0xCu);
     }
 

@@ -1,23 +1,23 @@
 @interface STAgeMigrationTipGroupSpecifierProvider
-+ (id)providerWithCoordinator:(id)a3 rootViewController:(id)a4;
++ (id)providerWithCoordinator:(id)coordinator rootViewController:(id)controller;
 - (STAgeMigrationTipGroupSpecifierProvider)init;
 - (UIViewController)rootViewController;
 - (void)_acknowledgeTip;
 - (void)_setAgeMigrationTip;
 - (void)_showAgeMigrationTipIfNeeded;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setCoordinator:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setCoordinator:(id)coordinator;
 @end
 
 @implementation STAgeMigrationTipGroupSpecifierProvider
 
-+ (id)providerWithCoordinator:(id)a3 rootViewController:(id)a4
++ (id)providerWithCoordinator:(id)coordinator rootViewController:(id)controller
 {
-  v8.receiver = a1;
+  v8.receiver = self;
   v8.super_class = &OBJC_METACLASS___STAgeMigrationTipGroupSpecifierProvider;
-  v5 = a4;
-  v6 = objc_msgSendSuper2(&v8, sel_providerWithCoordinator_, a3);
-  [v6 setRootViewController:{v5, v8.receiver, v8.super_class}];
+  controllerCopy = controller;
+  v6 = objc_msgSendSuper2(&v8, sel_providerWithCoordinator_, coordinator);
+  [v6 setRootViewController:{controllerCopy, v8.receiver, v8.super_class}];
 
   return v6;
 }
@@ -33,8 +33,8 @@
     [(STGroupSpecifierProvider *)v2 setIsHidden:1];
     v4 = MEMORY[0x277D3FAD8];
     v5 = objc_opt_new();
-    v6 = [v5 UUIDString];
-    v7 = [v4 groupSpecifierWithID:v6];
+    uUIDString = [v5 UUIDString];
+    v7 = [v4 groupSpecifierWithID:uUIDString];
 
     [(STGroupSpecifierProvider *)v3 setGroupSpecifier:v7];
   }
@@ -42,15 +42,15 @@
   return v3;
 }
 
-- (void)setCoordinator:(id)a3
+- (void)setCoordinator:(id)coordinator
 {
-  v4 = a3;
-  v5 = [(STRootGroupSpecifierProvider *)self coordinator];
-  [v5 removeObserver:self forKeyPath:@"viewModel.me.hasPasscode"];
+  coordinatorCopy = coordinator;
+  coordinator = [(STRootGroupSpecifierProvider *)self coordinator];
+  [coordinator removeObserver:self forKeyPath:@"viewModel.me.hasPasscode"];
   v11.receiver = self;
   v11.super_class = STAgeMigrationTipGroupSpecifierProvider;
-  [(STRootGroupSpecifierProvider *)&v11 setCoordinator:v4];
-  if (v4)
+  [(STRootGroupSpecifierProvider *)&v11 setCoordinator:coordinatorCopy];
+  if (coordinatorCopy)
   {
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
@@ -59,12 +59,12 @@
     aBlock[4] = self;
     v6 = _Block_copy(aBlock);
     v7 = objc_alloc_init(MEMORY[0x277CF0148]);
-    v8 = [v7 ageRangeCache];
-    v9 = [v8 ageRangeSettings];
+    ageRangeCache = [v7 ageRangeCache];
+    ageRangeSettings = [ageRangeCache ageRangeSettings];
 
-    if (v9)
+    if (ageRangeSettings)
     {
-      v6[2](v6, v9, 0);
+      v6[2](v6, ageRangeSettings, 0);
     }
 
     else
@@ -73,7 +73,7 @@
     }
   }
 
-  [v4 addObserver:self forKeyPath:@"viewModel.me.hasPasscode" options:5 context:"STAgeMigrationTipGroupSpecifierProviderObservationContext"];
+  [coordinatorCopy addObserver:self forKeyPath:@"viewModel.me.hasPasscode" options:5 context:"STAgeMigrationTipGroupSpecifierProviderObservationContext"];
 }
 
 void __58__STAgeMigrationTipGroupSpecifierProvider_setCoordinator___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -114,9 +114,9 @@ uint64_t __58__STAgeMigrationTipGroupSpecifierProvider_setCoordinator___block_in
   self->_ageMigrationTipSpecifer = v3;
 
   [(PSSpecifier *)self->_ageMigrationTipSpecifer setObject:objc_opt_class() forKeyedSubscript:*MEMORY[0x277D3FE58]];
-  v5 = [(STRootGroupSpecifierProvider *)self coordinator];
-  v6 = [v5 viewModel];
-  v7 = [v6 me];
+  coordinator = [(STRootGroupSpecifierProvider *)self coordinator];
+  viewModel = [coordinator viewModel];
+  v7 = [viewModel me];
   [(PSSpecifier *)self->_ageMigrationTipSpecifer setUserInfo:v7];
 
   [(PSSpecifier *)self->_ageMigrationTipSpecifer setObject:&__block_literal_global_9 forKeyedSubscript:*MEMORY[0x277D3FE10]];
@@ -150,12 +150,12 @@ uint64_t __62__STAgeMigrationTipGroupSpecifierProvider__setAgeMigrationTip__bloc
   return [*(a1 + 32) _acknowledgeTip];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (a6 == "STAgeMigrationTipGroupSpecifierProviderObservationContext")
+  if (context == "STAgeMigrationTipGroupSpecifierProviderObservationContext")
   {
 
-    [(STAgeMigrationTipGroupSpecifierProvider *)self _showAgeMigrationTipIfNeeded:a3];
+    [(STAgeMigrationTipGroupSpecifierProvider *)self _showAgeMigrationTipIfNeeded:path];
   }
 
   else
@@ -164,26 +164,26 @@ uint64_t __62__STAgeMigrationTipGroupSpecifierProvider__setAgeMigrationTip__bloc
     v10 = v7;
     v8.receiver = self;
     v8.super_class = STAgeMigrationTipGroupSpecifierProvider;
-    [(STAgeMigrationTipGroupSpecifierProvider *)&v8 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(STAgeMigrationTipGroupSpecifierProvider *)&v8 observeValueForKeyPath:path ofObject:object change:change context:?];
   }
 }
 
 - (void)_showAgeMigrationTipIfNeeded
 {
-  v3 = [(STRootGroupSpecifierProvider *)self coordinator];
-  v4 = [v3 viewModel];
-  v5 = [v4 me];
-  v6 = [v5 altDSID];
+  coordinator = [(STRootGroupSpecifierProvider *)self coordinator];
+  viewModel = [coordinator viewModel];
+  v5 = [viewModel me];
+  altDSID = [v5 altDSID];
 
-  v7 = [objc_alloc(MEMORY[0x277CEC770]) initWithAltDSID:v6 bundleID:@"com.apple.screentime.age.migration.tip"];
+  v7 = [objc_alloc(MEMORY[0x277CEC770]) initWithAltDSID:altDSID bundleID:@"com.apple.screentime.age.migration.tip"];
   v8 = objc_alloc_init(MEMORY[0x277CEC768]);
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __71__STAgeMigrationTipGroupSpecifierProvider__showAgeMigrationTipIfNeeded__block_invoke;
   v10[3] = &unk_279B7D7A8;
   v10[4] = self;
-  v11 = v3;
-  v9 = v3;
+  v11 = coordinator;
+  v9 = coordinator;
   [v8 didUserAcknowledgeMisconfiguredAgedPromptWithContext:v7 completion:v10];
 }
 
@@ -285,10 +285,10 @@ LABEL_20:
 - (void)_acknowledgeTip
 {
   [(STGroupSpecifierProvider *)self setIsHidden:1];
-  v3 = [(STRootGroupSpecifierProvider *)self coordinator];
-  v4 = [v3 viewModel];
-  v5 = [v4 me];
-  v6 = [v5 altDSID];
+  coordinator = [(STRootGroupSpecifierProvider *)self coordinator];
+  viewModel = [coordinator viewModel];
+  v5 = [viewModel me];
+  altDSID = [v5 altDSID];
 
   v7 = +[STUILog ageMigrationTip];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -296,14 +296,14 @@ LABEL_20:
     [STAgeMigrationTipGroupSpecifierProvider _acknowledgeTip];
   }
 
-  v8 = [objc_alloc(MEMORY[0x277CEC770]) initWithAltDSID:v6 bundleID:@"com.apple.screentime.age.migration.tip"];
+  v8 = [objc_alloc(MEMORY[0x277CEC770]) initWithAltDSID:altDSID bundleID:@"com.apple.screentime.age.migration.tip"];
   v9 = objc_alloc_init(MEMORY[0x277CEC768]);
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __58__STAgeMigrationTipGroupSpecifierProvider__acknowledgeTip__block_invoke;
   v11[3] = &unk_279B7CC18;
-  v12 = v6;
-  v10 = v6;
+  v12 = altDSID;
+  v10 = altDSID;
   [v9 saveUserAcknowledgeMisconfiguredAgedPromptWithContext:v8 action:3 completion:v11];
 }
 

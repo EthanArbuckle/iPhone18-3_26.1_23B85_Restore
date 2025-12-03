@@ -1,10 +1,10 @@
 @interface PXStoryViewAccessibilityHUDContentProvider
-- (PXStoryViewAccessibilityHUDContentProvider)initWithViewModel:(id)a3;
+- (PXStoryViewAccessibilityHUDContentProvider)initWithViewModel:(id)model;
 @end
 
 @implementation PXStoryViewAccessibilityHUDContentProvider
 
-- (PXStoryViewAccessibilityHUDContentProvider)initWithViewModel:(id)a3
+- (PXStoryViewAccessibilityHUDContentProvider)initWithViewModel:(id)model
 {
   v4.receiver = self;
   v4.super_class = PXStoryViewAccessibilityHUDContentProvider;

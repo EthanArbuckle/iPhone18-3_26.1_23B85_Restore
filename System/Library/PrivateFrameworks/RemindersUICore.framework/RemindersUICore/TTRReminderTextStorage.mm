@@ -1,12 +1,12 @@
 @interface TTRReminderTextStorage
 - (_TtC15RemindersUICore22TTRReminderTextStorage)init;
-- (_TtC15RemindersUICore22TTRReminderTextStorage)initWithCoder:(id)a3;
+- (_TtC15RemindersUICore22TTRReminderTextStorage)initWithCoder:(id)coder;
 - (void)processEditing;
 @end
 
 @implementation TTRReminderTextStorage
 
-- (_TtC15RemindersUICore22TTRReminderTextStorage)initWithCoder:(id)a3
+- (_TtC15RemindersUICore22TTRReminderTextStorage)initWithCoder:(id)coder
 {
   result = sub_21DBFC31C();
   __break(1u);
@@ -15,7 +15,7 @@
 
 - (void)processEditing
 {
-  v2 = self;
+  selfCopy = self;
   TTRReminderTextStorage.processEditing()();
 }
 

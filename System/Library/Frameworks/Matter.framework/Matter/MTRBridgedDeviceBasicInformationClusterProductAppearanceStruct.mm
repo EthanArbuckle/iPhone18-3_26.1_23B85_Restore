@@ -1,6 +1,6 @@
 @interface MTRBridgedDeviceBasicInformationClusterProductAppearanceStruct
 - (MTRBridgedDeviceBasicInformationClusterProductAppearanceStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -24,14 +24,14 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRBridgedDeviceBasicInformationClusterProductAppearanceStruct);
-  v5 = [(MTRBridgedDeviceBasicInformationClusterProductAppearanceStruct *)self finish];
-  [(MTRBridgedDeviceBasicInformationClusterProductAppearanceStruct *)v4 setFinish:v5];
+  finish = [(MTRBridgedDeviceBasicInformationClusterProductAppearanceStruct *)self finish];
+  [(MTRBridgedDeviceBasicInformationClusterProductAppearanceStruct *)v4 setFinish:finish];
 
-  v6 = [(MTRBridgedDeviceBasicInformationClusterProductAppearanceStruct *)self primaryColor];
-  [(MTRBridgedDeviceBasicInformationClusterProductAppearanceStruct *)v4 setPrimaryColor:v6];
+  primaryColor = [(MTRBridgedDeviceBasicInformationClusterProductAppearanceStruct *)self primaryColor];
+  [(MTRBridgedDeviceBasicInformationClusterProductAppearanceStruct *)v4 setPrimaryColor:primaryColor];
 
   return v4;
 }

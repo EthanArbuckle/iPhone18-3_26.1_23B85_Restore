@@ -1,14 +1,14 @@
 @interface SpatialPhoto.DisplayLinkTarget
-- (void)handleDisplayLink:(id)a3;
+- (void)handleDisplayLink:(id)link;
 @end
 
 @implementation SpatialPhoto.DisplayLinkTarget
 
-- (void)handleDisplayLink:(id)a3
+- (void)handleDisplayLink:(id)link
 {
-  v4 = a3;
-  v5 = self;
-  sub_25E6C4024(v4);
+  linkCopy = link;
+  selfCopy = self;
+  sub_25E6C4024(linkCopy);
 }
 
 @end

@@ -1,6 +1,6 @@
 @interface SummaryUserProfileProvider
 - (_TtC10FitnessApp26SummaryUserProfileProvider)init;
-- (void)wheelchairUseCharacteristicCache:(id)a3 wheelchairUsageDidChange:(BOOL)a4;
+- (void)wheelchairUseCharacteristicCache:(id)cache wheelchairUsageDidChange:(BOOL)change;
 @end
 
 @implementation SummaryUserProfileProvider
@@ -12,11 +12,11 @@
   return result;
 }
 
-- (void)wheelchairUseCharacteristicCache:(id)a3 wheelchairUsageDidChange:(BOOL)a4
+- (void)wheelchairUseCharacteristicCache:(id)cache wheelchairUsageDidChange:(BOOL)change
 {
-  v6 = a3;
-  v7 = self;
-  sub_1001B3E24(a4);
+  cacheCopy = cache;
+  selfCopy = self;
+  sub_1001B3E24(change);
 }
 
 @end

@@ -35,8 +35,8 @@
 - (uint64_t)hf_isServiceLikeItemInvolved:()HFAdditions
 {
   v4 = a3;
-  v5 = [v4 services];
-  v6 = [v5 na_flatMap:&__block_literal_global_10_10];
+  services = [v4 services];
+  v6 = [services na_flatMap:&__block_literal_global_10_10];
 
   objc_opt_class();
   v7 = v4;
@@ -52,8 +52,8 @@
 
   v9 = v8;
 
-  v10 = [v9 mediaProfileContainer];
-  v11 = [v10 mediaProfiles];
+  mediaProfileContainer = [v9 mediaProfileContainer];
+  mediaProfiles = [mediaProfileContainer mediaProfiles];
   objc_opt_class();
   v12 = v7;
   if (objc_opt_isKindOfClass())
@@ -69,12 +69,12 @@
   v14 = v13;
 
   v15 = MEMORY[0x277CBEB98];
-  v16 = [v14 accessory];
-  v17 = [v16 profiles];
-  v18 = v17;
-  if (v17)
+  accessory = [v14 accessory];
+  profiles = [accessory profiles];
+  v18 = profiles;
+  if (profiles)
   {
-    v19 = v17;
+    v19 = profiles;
   }
 
   else
@@ -84,16 +84,16 @@
 
   v20 = [v15 setWithArray:v19];
 
-  v21 = [a1 hf_affectedAccessoryProfiles];
-  v22 = [a1 hf_affectedCharacteristic];
-  if ([v6 containsObject:v22] & 1) != 0 || (objc_msgSend(v21, "intersectsSet:", v11))
+  hf_affectedAccessoryProfiles = [self hf_affectedAccessoryProfiles];
+  hf_affectedCharacteristic = [self hf_affectedCharacteristic];
+  if ([v6 containsObject:hf_affectedCharacteristic] & 1) != 0 || (objc_msgSend(hf_affectedAccessoryProfiles, "intersectsSet:", mediaProfiles))
   {
     v23 = 1;
   }
 
   else
   {
-    v23 = [v21 intersectsSet:v20];
+    v23 = [hf_affectedAccessoryProfiles intersectsSet:v20];
   }
 
   return v23;

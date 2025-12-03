@@ -67,7 +67,7 @@
   block[1] = 3221225472;
   block[2] = __62__NSLocale_AMPICUExtensions__ISO3CharacterTerritoryGroupCodes__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (+[NSLocale(AMPICUExtensions) ISO3CharacterTerritoryGroupCodes]::onceToken != -1)
   {
     dispatch_once(&+[NSLocale(AMPICUExtensions) ISO3CharacterTerritoryGroupCodes]::onceToken, block);
@@ -84,7 +84,7 @@
   block[1] = 3221225472;
   block[2] = __56__NSLocale_AMPICUExtensions__ISO3CharacterLanguageCodes__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (+[NSLocale(AMPICUExtensions) ISO3CharacterLanguageCodes]::onceToken != -1)
   {
     dispatch_once(&+[NSLocale(AMPICUExtensions) ISO3CharacterLanguageCodes]::onceToken, block);
@@ -101,7 +101,7 @@
   block[1] = 3221225472;
   block[2] = __54__NSLocale_AMPICUExtensions__ISO3CharacterRegionCodes__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (+[NSLocale(AMPICUExtensions) ISO3CharacterRegionCodes]::onceToken != -1)
   {
     dispatch_once(&+[NSLocale(AMPICUExtensions) ISO3CharacterRegionCodes]::onceToken, block);
@@ -174,11 +174,11 @@
 
 - (id)threeCharacterLanguageCode
 {
-  v1 = [a1 languageCode];
-  v2 = [MEMORY[0x277CBEAF8] threeCharacterLanguageCodeFromTwoCharacterCode:v1];
+  languageCode = [self languageCode];
+  v2 = [MEMORY[0x277CBEAF8] threeCharacterLanguageCodeFromTwoCharacterCode:languageCode];
   if (!v2)
   {
-    v2 = v1;
+    v2 = languageCode;
   }
 
   return v2;
@@ -186,11 +186,11 @@
 
 - (id)threeCharacterRegionCode
 {
-  v1 = [a1 countryCode];
-  v2 = [MEMORY[0x277CBEAF8] threeCharacterRegionCodeFromTwoCharacterCode:v1];
+  countryCode = [self countryCode];
+  v2 = [MEMORY[0x277CBEAF8] threeCharacterRegionCodeFromTwoCharacterCode:countryCode];
   if (!v2)
   {
-    v2 = v1;
+    v2 = countryCode;
   }
 
   return v2;
@@ -206,7 +206,7 @@
   v50 = a9;
   v48 = v15;
   v45 = v16;
-  v17 = [a1 localeIdentifier];
+  localeIdentifier = [self localeIdentifier];
   v18 = &stru_28623EE30;
   if (v15)
   {
@@ -216,17 +216,17 @@
   v46 = v18;
   v19 = [v16 stringByAppendingString:?];
   v20 = NSSelectorFromString(v19);
-  v21 = objc_getAssociatedObject(a1, v20);
+  v21 = objc_getAssociatedObject(self, v20);
   v22 = [v21 objectForKeyedSubscript:@"localeID"];
-  if (![v22 isEqual:v17])
+  if (![v22 isEqual:localeIdentifier])
   {
 
     if (!v21)
     {
 LABEL_10:
       v47 = objc_alloc_init(MEMORY[0x277CBEB38]);
-      v25 = [v17 UTF8String];
-      if (!v25 || !*v25)
+      uTF8String = [localeIdentifier UTF8String];
+      if (!uTF8String || !*uTF8String)
       {
 LABEL_45:
         v29 = [v47 copy];
@@ -234,7 +234,7 @@ LABEL_45:
         {
           v57 = @"localeID";
           v58 = v49;
-          v60 = v17;
+          v60 = localeIdentifier;
           v61 = v50;
           v40 = v62;
           v59 = v19;
@@ -243,7 +243,7 @@ LABEL_45:
         else
         {
           v62[2] = v19;
-          v62[3] = v17;
+          v62[3] = localeIdentifier;
           v62[1] = @"localeID";
           v40 = &v63;
         }
@@ -251,7 +251,7 @@ LABEL_45:
         *v40 = v29;
         v41 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:? forKeys:? count:?];
 
-        objc_setAssociatedObject(a1, v20, v41, 0x303);
+        objc_setAssociatedObject(self, v20, v41, 0x303);
         v21 = v41;
         goto LABEL_49;
       }
@@ -263,9 +263,9 @@ LABEL_45:
         strcpy(__dst, a6);
         *&__dst[strlen(__dst)] = 37;
         v26 = v48;
-        v27 = [(__CFString *)v48 UTF8String];
+        uTF8String2 = [(__CFString *)v48 UTF8String];
         v28 = strlen(__dst);
-        strncat(__dst, v27, 255 - v28);
+        strncat(__dst, uTF8String2, 255 - v28);
         ures_getByKey();
       }
 
@@ -380,7 +380,7 @@ LABEL_43:
     }
 
 LABEL_9:
-    objc_setAssociatedObject(a1, v20, 0, 0x303);
+    objc_setAssociatedObject(self, v20, 0, 0x303);
     goto LABEL_10;
   }
 
@@ -418,7 +418,7 @@ LABEL_49:
   }
 
   LOBYTE(v3) = 1;
-  return [a1 availableResourcesOfStyle:0 icuPath:icuDataLangPath(void)::sICUDataLangPath availableResourcesKeyPrefix:@"availableVariants" baseResourceKey:"Variants" resourceKeyPath:0 availableResourcesResourceKey:0 availableResourcesResourceValue:0 allowFallbackResources:v3];
+  return [self availableResourcesOfStyle:0 icuPath:icuDataLangPath(void)::sICUDataLangPath availableResourcesKeyPrefix:@"availableVariants" baseResourceKey:"Variants" resourceKeyPath:0 availableResourcesResourceKey:0 availableResourcesResourceValue:0 allowFallbackResources:v3];
 }
 
 - (id)availableCountriesOfLength:()AMPICUExtensions
@@ -430,7 +430,7 @@ LABEL_49:
   }
 
   LOBYTE(v7) = 1;
-  v5 = [a1 availableResourcesOfStyle:v4 icuPath:icuDataRegionPath(void)::sICUDataRegionPath availableResourcesKeyPrefix:@"availableCountries" baseResourceKey:"Countries" resourceKeyPath:0 availableResourcesResourceKey:0 availableResourcesResourceValue:0 allowFallbackResources:v7];
+  v5 = [self availableResourcesOfStyle:v4 icuPath:icuDataRegionPath(void)::sICUDataRegionPath availableResourcesKeyPrefix:@"availableCountries" baseResourceKey:"Countries" resourceKeyPath:0 availableResourcesResourceKey:0 availableResourcesResourceValue:0 allowFallbackResources:v7];
 
   return v5;
 }
@@ -444,7 +444,7 @@ LABEL_49:
   }
 
   LOBYTE(v7) = 1;
-  v5 = [a1 availableResourcesOfStyle:v4 icuPath:icuDataLangPath(void)::sICUDataLangPath availableResourcesKeyPrefix:@"availableLanguages" baseResourceKey:"Languages" resourceKeyPath:0 availableResourcesResourceKey:0 availableResourcesResourceValue:0 allowFallbackResources:v7];
+  v5 = [self availableResourcesOfStyle:v4 icuPath:icuDataLangPath(void)::sICUDataLangPath availableResourcesKeyPrefix:@"availableLanguages" baseResourceKey:"Languages" resourceKeyPath:0 availableResourcesResourceKey:0 availableResourcesResourceValue:0 allowFallbackResources:v7];
 
   return v5;
 }
@@ -458,7 +458,7 @@ LABEL_49:
   }
 
   LOBYTE(v7) = 1;
-  v5 = [a1 availableResourcesOfStyle:v4 icuPath:icuDataLangPath(void)::sICUDataLangPath availableResourcesKeyPrefix:@"availableScripts" baseResourceKey:"Scripts" resourceKeyPath:0 availableResourcesResourceKey:0 availableResourcesResourceValue:0 allowFallbackResources:v7];
+  v5 = [self availableResourcesOfStyle:v4 icuPath:icuDataLangPath(void)::sICUDataLangPath availableResourcesKeyPrefix:@"availableScripts" baseResourceKey:"Scripts" resourceKeyPath:0 availableResourcesResourceKey:0 availableResourcesResourceValue:0 allowFallbackResources:v7];
 
   return v5;
 }
@@ -466,10 +466,10 @@ LABEL_49:
 - (id)availableDateFormatTemplates
 {
   v9[2] = *MEMORY[0x277D85DE8];
-  v2 = [a1 calendarIdentifier];
-  if (v2)
+  calendarIdentifier = [self calendarIdentifier];
+  if (calendarIdentifier)
   {
-    v3 = v2;
+    v3 = calendarIdentifier;
   }
 
   else
@@ -483,7 +483,7 @@ LABEL_49:
   v5 = [v4 componentsJoinedByString:@"."];
 
   LOBYTE(v8) = 1;
-  v6 = [a1 availableResourcesOfStyle:0 icuPath:0 availableResourcesKeyPrefix:@"availableDateFormatTemplates" baseResourceKey:"calendar" resourceKeyPath:v5 availableResourcesResourceKey:@"calendarID" availableResourcesResourceValue:v3 allowFallbackResources:v8];
+  v6 = [self availableResourcesOfStyle:0 icuPath:0 availableResourcesKeyPrefix:@"availableDateFormatTemplates" baseResourceKey:"calendar" resourceKeyPath:v5 availableResourcesResourceKey:@"calendarID" availableResourcesResourceValue:v3 allowFallbackResources:v8];
 
   return v6;
 }
@@ -491,7 +491,7 @@ LABEL_49:
 - (id)localizedStringForNumberingSystem:()AMPICUExtensions
 {
   v2 = [@"@numbers=" stringByAppendingString:?];
-  v3 = [a1 localizedStringForLocaleIdentifier:v2];
+  v3 = [self localizedStringForLocaleIdentifier:v2];
   v4 = v3;
   if (v3 && (v5 = [v3 rangeOfString:@"="], v6))
   {
@@ -517,7 +517,7 @@ LABEL_49:
   {
     while ([v7 length] && !v9)
     {
-      v10 = [a1 availableLanguagesOfLength:v7];
+      v10 = [self availableLanguagesOfLength:v7];
       v9 = [v10 objectForKeyedSubscript:v8];
 
       if (!v9)
@@ -535,7 +535,7 @@ LABEL_49:
 
     if (!v9)
     {
-      v9 = [a1 localizedStringForLanguageCode:v8];
+      v9 = [self localizedStringForLanguageCode:v8];
     }
   }
 
@@ -547,15 +547,15 @@ LABEL_49:
   v6 = a3;
   v7 = a4;
   v8 = [[NSLocaleRegion alloc] initWithRegionIdentifier:v6];
-  v9 = [(NSLocaleRegion *)v8 twoCharacterCode];
+  twoCharacterCode = [(NSLocaleRegion *)v8 twoCharacterCode];
 
   v10 = 0;
-  if ([v9 length])
+  if ([twoCharacterCode length])
   {
     while ([v7 length] && !v10)
     {
-      v11 = [a1 availableCountriesOfLength:v7];
-      v10 = [v11 objectForKeyedSubscript:v9];
+      v11 = [self availableCountriesOfLength:v7];
+      v10 = [v11 objectForKeyedSubscript:twoCharacterCode];
 
       if (!v10)
       {
@@ -572,7 +572,7 @@ LABEL_49:
 
     if (!v10)
     {
-      v10 = [a1 localizedStringForCountryCode:v9];
+      v10 = [self localizedStringForCountryCode:twoCharacterCode];
     }
   }
 
@@ -588,7 +588,7 @@ LABEL_49:
   {
     while ([v7 length] && !v8)
     {
-      v9 = [a1 availableScriptsOfLength:v7];
+      v9 = [self availableScriptsOfLength:v7];
       v8 = [v9 objectForKeyedSubscript:v6];
 
       if (!v8)
@@ -606,7 +606,7 @@ LABEL_49:
 
     if (!v8)
     {
-      v8 = [a1 localizedStringForScriptCode:v6];
+      v8 = [self localizedStringForScriptCode:v6];
     }
   }
 

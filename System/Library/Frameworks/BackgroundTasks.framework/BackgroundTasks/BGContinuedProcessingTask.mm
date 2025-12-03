@@ -1,34 +1,34 @@
 @interface BGContinuedProcessingTask
 - (NSString)description;
-- (id)_initWithIdentifier:(id)a3 activity:(id)a4;
+- (id)_initWithIdentifier:(id)identifier activity:(id)activity;
 - (id)expirationHandler;
 - (id)expirationHandlerWithReason;
-- (void)_callExpirationHandlerWithReason:(int64_t)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setExpirationHandler:(id)a3;
-- (void)setExpirationHandlerWithReason:(id)a3;
-- (void)updateTitle:(id)a3 subtitle:(id)a4;
+- (void)_callExpirationHandlerWithReason:(int64_t)reason;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setExpirationHandler:(id)handler;
+- (void)setExpirationHandlerWithReason:(id)reason;
+- (void)updateTitle:(id)title subtitle:(id)subtitle;
 @end
 
 @implementation BGContinuedProcessingTask
 
-- (id)_initWithIdentifier:(id)a3 activity:(id)a4
+- (id)_initWithIdentifier:(id)identifier activity:(id)activity
 {
-  v6 = a4;
+  activityCopy = activity;
   v21.receiver = self;
   v21.super_class = BGContinuedProcessingTask;
-  v7 = [(BGTask *)&v21 _initWithIdentifier:a3 activity:v6];
+  v7 = [(BGTask *)&v21 _initWithIdentifier:identifier activity:activityCopy];
   if (v7)
   {
-    v8 = [v6 continuedProcessingWrapper];
-    v9 = [v8 title];
+    continuedProcessingWrapper = [activityCopy continuedProcessingWrapper];
+    title = [continuedProcessingWrapper title];
     v10 = v7[10];
-    v7[10] = v9;
+    v7[10] = title;
 
-    v11 = [v6 continuedProcessingWrapper];
-    v12 = [v11 subtitle];
+    continuedProcessingWrapper2 = [activityCopy continuedProcessingWrapper];
+    subtitle = [continuedProcessingWrapper2 subtitle];
     v13 = v7[11];
-    v7[11] = v12;
+    v7[11] = subtitle;
 
     v14 = objc_alloc_init(MEMORY[0x1E696AE38]);
     v15 = v7[8];
@@ -46,44 +46,44 @@
   return v7;
 }
 
-- (void)updateTitle:(id)a3 subtitle:(id)a4
+- (void)updateTitle:(id)title subtitle:(id)subtitle
 {
-  v6 = a3;
-  v7 = a4;
+  titleCopy = title;
+  subtitleCopy = subtitle;
   obj = self;
   objc_sync_enter(obj);
-  v8 = [(BGContinuedProcessingTask *)obj _descriptionUpdateHandler];
+  _descriptionUpdateHandler = [(BGContinuedProcessingTask *)obj _descriptionUpdateHandler];
 
-  if (v8)
+  if (_descriptionUpdateHandler)
   {
-    v9 = [(BGContinuedProcessingTask *)obj _descriptionUpdateHandler];
-    (v9)[2](v9, v6, v7);
+    _descriptionUpdateHandler2 = [(BGContinuedProcessingTask *)obj _descriptionUpdateHandler];
+    (_descriptionUpdateHandler2)[2](_descriptionUpdateHandler2, titleCopy, subtitleCopy);
   }
 
   title = obj->_title;
-  obj->_title = v6;
-  v11 = v6;
+  obj->_title = titleCopy;
+  v11 = titleCopy;
 
   subtitle = obj->_subtitle;
-  obj->_subtitle = v7;
+  obj->_subtitle = subtitleCopy;
 
   objc_sync_exit(obj);
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   v25 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (BGContinuedProcessingTaskProgressObserverContext == a6)
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (BGContinuedProcessingTaskProgressObserverContext == context)
   {
-    v16 = [(BGContinuedProcessingTask *)self _progressHandler];
+    _progressHandler = [(BGContinuedProcessingTask *)self _progressHandler];
 
-    if (v16)
+    if (_progressHandler)
     {
-      v17 = [(BGContinuedProcessingTask *)self _progressHandler];
-      (v17)[2](v17, self->_progress);
+      _progressHandler2 = [(BGContinuedProcessingTask *)self _progressHandler];
+      (_progressHandler2)[2](_progressHandler2, self->_progress);
     }
   }
 
@@ -93,13 +93,13 @@
     if (os_log_type_enabled(log, OS_LOG_TYPE_ERROR))
     {
       v14 = log;
-      v15 = [(BGTask *)self identifier];
+      identifier = [(BGTask *)self identifier];
       v19 = 138543874;
-      v20 = v15;
+      v20 = identifier;
       v21 = 2112;
-      v22 = v10;
+      v22 = pathCopy;
       v23 = 2112;
-      v24 = a6;
+      contextCopy = context;
       _os_log_error_impl(&dword_1AC80E000, v14, OS_LOG_TYPE_ERROR, "%{public}@ Received KVO update for unknown context: (key-path: %@, context: %@)", &v19, 0x20u);
     }
   }
@@ -107,32 +107,32 @@
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_callExpirationHandlerWithReason:(int64_t)a3
+- (void)_callExpirationHandlerWithReason:(int64_t)reason
 {
-  v5 = [(BGContinuedProcessingTask *)self expirationHandlerWithReason];
-  if (v5)
+  expirationHandlerWithReason = [(BGContinuedProcessingTask *)self expirationHandlerWithReason];
+  if (expirationHandlerWithReason)
   {
     [(BGContinuedProcessingTask *)self setExpirationHandlerWithReason:0];
-    v5[2](v5, a3);
+    expirationHandlerWithReason[2](expirationHandlerWithReason, reason);
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = BGContinuedProcessingTask;
-    [(BGTask *)&v6 _callExpirationHandlerWithReason:a3];
+    [(BGTask *)&v6 _callExpirationHandlerWithReason:reason];
   }
 }
 
-- (void)setExpirationHandler:(id)a3
+- (void)setExpirationHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   os_unfair_recursive_lock_lock_with_options();
-  if (v5)
+  if (handlerCopy)
   {
-    v6 = [(BGContinuedProcessingTask *)self expirationHandlerWithReason];
+    expirationHandlerWithReason = [(BGContinuedProcessingTask *)self expirationHandlerWithReason];
 
-    if (v6)
+    if (expirationHandlerWithReason)
     {
       [(BGContinuedProcessingTask *)a2 setExpirationHandler:?];
     }
@@ -140,7 +140,7 @@
 
   v7.receiver = self;
   v7.super_class = BGContinuedProcessingTask;
-  [(BGTask *)&v7 setExpirationHandler:v5];
+  [(BGTask *)&v7 setExpirationHandler:handlerCopy];
   os_unfair_recursive_lock_unlock();
 }
 
@@ -149,28 +149,28 @@
   os_unfair_recursive_lock_lock_with_options();
   v6.receiver = self;
   v6.super_class = BGContinuedProcessingTask;
-  v3 = [(BGTask *)&v6 expirationHandler];
+  expirationHandler = [(BGTask *)&v6 expirationHandler];
   os_unfair_recursive_lock_unlock();
-  v4 = MEMORY[0x1B26EAFA0](v3);
+  v4 = MEMORY[0x1B26EAFA0](expirationHandler);
 
   return v4;
 }
 
-- (void)setExpirationHandlerWithReason:(id)a3
+- (void)setExpirationHandlerWithReason:(id)reason
 {
-  v8 = a3;
+  reasonCopy = reason;
   os_unfair_recursive_lock_lock_with_options();
-  if (v8)
+  if (reasonCopy)
   {
-    v5 = [(BGContinuedProcessingTask *)self expirationHandler];
+    expirationHandler = [(BGContinuedProcessingTask *)self expirationHandler];
 
-    if (v5)
+    if (expirationHandler)
     {
       [(BGContinuedProcessingTask *)a2 setExpirationHandlerWithReason:?];
     }
   }
 
-  v6 = MEMORY[0x1B26EAFA0](v8);
+  v6 = MEMORY[0x1B26EAFA0](reasonCopy);
   expirationHandlerWithReason = self->_expirationHandlerWithReason;
   self->_expirationHandlerWithReason = v6;
 
@@ -190,9 +190,9 @@
 - (NSString)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(BGTask *)self identifier];
-  v5 = [(BGContinuedProcessingTask *)self title];
-  v6 = [v3 stringWithFormat:@"<BGContinuedProcessingTask: %@ (%@)>", v4, v5];
+  identifier = [(BGTask *)self identifier];
+  title = [(BGContinuedProcessingTask *)self title];
+  v6 = [v3 stringWithFormat:@"<BGContinuedProcessingTask: %@ (%@)>", identifier, title];
 
   return v6;
 }

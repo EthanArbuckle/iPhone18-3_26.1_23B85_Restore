@@ -1,33 +1,33 @@
 @interface NMAPIDefaultSectionedCollectionDataSource
-- (BOOL)_isSupportedItem:(id)a3;
-- (NMAPIDefaultSectionedCollectionDataSource)initWithRequest:(id)a3 results:(id)a4 storeURLBag:(id)a5;
-- (id)_musicURLWithPartialURLString:(id)a3;
-- (id)_storeBrowseSectionWithDictionary:(id)a3;
-- (id)itemAtIndexPath:(id)a3;
-- (id)sectionAtIndex:(unint64_t)a3;
-- (unint64_t)numberOfItemsInSection:(unint64_t)a3;
-- (void)_addItemsFromArray:(id)a3;
-- (void)_addSectionWithIdentifier:(id)a3 dictionary:(id)a4;
+- (BOOL)_isSupportedItem:(id)item;
+- (NMAPIDefaultSectionedCollectionDataSource)initWithRequest:(id)request results:(id)results storeURLBag:(id)bag;
+- (id)_musicURLWithPartialURLString:(id)string;
+- (id)_storeBrowseSectionWithDictionary:(id)dictionary;
+- (id)itemAtIndexPath:(id)path;
+- (id)sectionAtIndex:(unint64_t)index;
+- (unint64_t)numberOfItemsInSection:(unint64_t)section;
+- (void)_addItemsFromArray:(id)array;
+- (void)_addSectionWithIdentifier:(id)identifier dictionary:(id)dictionary;
 - (void)_parseResults;
-- (void)_updateImportedIdentifierSetsWithIdentifier:(id)a3 dictionary:(id)a4;
+- (void)_updateImportedIdentifierSetsWithIdentifier:(id)identifier dictionary:(id)dictionary;
 @end
 
 @implementation NMAPIDefaultSectionedCollectionDataSource
 
-- (NMAPIDefaultSectionedCollectionDataSource)initWithRequest:(id)a3 results:(id)a4 storeURLBag:(id)a5
+- (NMAPIDefaultSectionedCollectionDataSource)initWithRequest:(id)request results:(id)results storeURLBag:(id)bag
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  requestCopy = request;
+  resultsCopy = results;
+  bagCopy = bag;
   v19.receiver = self;
   v19.super_class = NMAPIDefaultSectionedCollectionDataSource;
   v12 = [(NMAPIDefaultSectionedCollectionDataSource *)&v19 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_request, a3);
-    objc_storeStrong(&v13->_results, a4);
-    objc_storeStrong(&v13->_storeURLBag, a5);
+    objc_storeStrong(&v12->_request, request);
+    objc_storeStrong(&v13->_results, results);
+    objc_storeStrong(&v13->_storeURLBag, bag);
     v14 = objc_alloc_init(MEMORY[0x277CBEA78]);
     cachedSections = v13->_cachedSections;
     v13->_cachedSections = v14;
@@ -42,92 +42,92 @@
   return v13;
 }
 
-- (id)sectionAtIndex:(unint64_t)a3
+- (id)sectionAtIndex:(unint64_t)index
 {
-  v4 = [(NSMutableArray *)self->_sectionResultIDs objectAtIndexedSubscript:a3];
-  v5 = [(NSCache *)self->_cachedSections objectForKey:v4];
-  if (!v5)
+  v4 = [(NSMutableArray *)self->_sectionResultIDs objectAtIndexedSubscript:index];
+  anyObject = [(NSCache *)self->_cachedSections objectForKey:v4];
+  if (!anyObject)
   {
     v6 = [(NSMutableDictionary *)self->_importedIdentifierSets objectForKey:v4];
     if (v6)
     {
-      v7 = [MEMORY[0x277CD6058] sharedServerObjectDatabase];
-      v8 = [(NMAPIRequest *)self->_request sectionProperties];
-      v9 = [v7 modelObjectMatchingIdentifierSet:v6 propertySet:v8];
-      v5 = [v9 anyObject];
+      mEMORY[0x277CD6058] = [MEMORY[0x277CD6058] sharedServerObjectDatabase];
+      sectionProperties = [(NMAPIRequest *)self->_request sectionProperties];
+      v9 = [mEMORY[0x277CD6058] modelObjectMatchingIdentifierSet:v6 propertySet:sectionProperties];
+      anyObject = [v9 anyObject];
     }
 
     else
     {
-      v7 = [(NSMutableDictionary *)self->_sectionResults objectForKey:v4];
-      if (v7)
+      mEMORY[0x277CD6058] = [(NSMutableDictionary *)self->_sectionResults objectForKey:v4];
+      if (mEMORY[0x277CD6058])
       {
-        v5 = [(NMAPIDefaultSectionedCollectionDataSource *)self _storeBrowseSectionWithDictionary:v7];
-        if (v5)
+        anyObject = [(NMAPIDefaultSectionedCollectionDataSource *)self _storeBrowseSectionWithDictionary:mEMORY[0x277CD6058]];
+        if (anyObject)
         {
-          [(NSCache *)self->_cachedSections setObject:v5 forKey:v4];
+          [(NSCache *)self->_cachedSections setObject:anyObject forKey:v4];
         }
       }
 
       else
       {
-        v5 = 0;
+        anyObject = 0;
       }
     }
   }
 
-  return v5;
+  return anyObject;
 }
 
-- (unint64_t)numberOfItemsInSection:(unint64_t)a3
+- (unint64_t)numberOfItemsInSection:(unint64_t)section
 {
-  v3 = [(NSMutableArray *)self->_sectionedItemResultIDs objectAtIndexedSubscript:a3];
+  v3 = [(NSMutableArray *)self->_sectionedItemResultIDs objectAtIndexedSubscript:section];
   v4 = [v3 count];
 
   return v4;
 }
 
-- (id)itemAtIndexPath:(id)a3
+- (id)itemAtIndexPath:(id)path
 {
   sectionedItemResultIDs = self->_sectionedItemResultIDs;
-  v5 = a3;
-  v6 = -[NSMutableArray objectAtIndexedSubscript:](sectionedItemResultIDs, "objectAtIndexedSubscript:", [v5 section]);
-  v7 = [v5 item];
+  pathCopy = path;
+  v6 = -[NSMutableArray objectAtIndexedSubscript:](sectionedItemResultIDs, "objectAtIndexedSubscript:", [pathCopy section]);
+  item = [pathCopy item];
 
-  v8 = [v6 objectAtIndexedSubscript:v7];
+  v8 = [v6 objectAtIndexedSubscript:item];
 
-  v9 = [(NSCache *)self->_cachedItems objectForKey:v8];
-  if (!v9)
+  anyObject = [(NSCache *)self->_cachedItems objectForKey:v8];
+  if (!anyObject)
   {
     v10 = [(NSMutableDictionary *)self->_importedIdentifierSets objectForKey:v8];
     if (v10)
     {
-      v11 = [MEMORY[0x277CD6058] sharedServerObjectDatabase];
-      v12 = [(NMAPIRequest *)self->_request itemProperties];
-      v13 = [v11 modelObjectMatchingIdentifierSet:v10 propertySet:v12];
-      v9 = [v13 anyObject];
+      mEMORY[0x277CD6058] = [MEMORY[0x277CD6058] sharedServerObjectDatabase];
+      itemProperties = [(NMAPIRequest *)self->_request itemProperties];
+      v13 = [mEMORY[0x277CD6058] modelObjectMatchingIdentifierSet:v10 propertySet:itemProperties];
+      anyObject = [v13 anyObject];
     }
 
     else
     {
-      v11 = [(NSMutableDictionary *)self->_itemResults objectForKey:v8];
-      if (v11)
+      mEMORY[0x277CD6058] = [(NSMutableDictionary *)self->_itemResults objectForKey:v8];
+      if (mEMORY[0x277CD6058])
       {
-        v9 = [(NMAPIDefaultSectionedCollectionDataSource *)self _storeBrowseSectionWithDictionary:v11];
-        if (v9)
+        anyObject = [(NMAPIDefaultSectionedCollectionDataSource *)self _storeBrowseSectionWithDictionary:mEMORY[0x277CD6058]];
+        if (anyObject)
         {
-          [(NSCache *)self->_cachedItems setObject:v9 forKey:v8];
+          [(NSCache *)self->_cachedItems setObject:anyObject forKey:v8];
         }
       }
 
       else
       {
-        v9 = 0;
+        anyObject = 0;
       }
     }
   }
 
-  return v9;
+  return anyObject;
 }
 
 - (void)_parseResults
@@ -173,20 +173,20 @@
         }
 
         v17 = *(*(&v31 + 1) + 8 * i);
-        v18 = [v17 itemsArray];
+        itemsArray = [v17 itemsArray];
         v30[0] = MEMORY[0x277D85DD0];
         v30[1] = 3221225472;
         v30[2] = __58__NMAPIDefaultSectionedCollectionDataSource__parseResults__block_invoke;
         v30[3] = &unk_27993AFD8;
         v30[4] = self;
         v19 = [MEMORY[0x277CCAC30] predicateWithBlock:v30];
-        v20 = [v18 filteredArrayUsingPredicate:v19];
+        v20 = [itemsArray filteredArrayUsingPredicate:v19];
 
         if ([v20 count])
         {
-          v21 = [v17 sectionIdentifier];
-          v22 = [v17 sectionDictionary];
-          [(NMAPIDefaultSectionedCollectionDataSource *)self _addSectionWithIdentifier:v21 dictionary:v22];
+          sectionIdentifier = [v17 sectionIdentifier];
+          sectionDictionary = [v17 sectionDictionary];
+          [(NMAPIDefaultSectionedCollectionDataSource *)self _addSectionWithIdentifier:sectionIdentifier dictionary:sectionDictionary];
 
           [(NMAPIDefaultSectionedCollectionDataSource *)self _addItemsFromArray:v20];
         }
@@ -219,29 +219,29 @@
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_addSectionWithIdentifier:(id)a3 dictionary:(id)a4
+- (void)_addSectionWithIdentifier:(id)identifier dictionary:(id)dictionary
 {
   sectionResultIDs = self->_sectionResultIDs;
-  v7 = a4;
-  v8 = a3;
-  [(NSMutableArray *)sectionResultIDs addObject:v8];
-  [(NSMutableDictionary *)self->_sectionResults setObject:v7 forKeyedSubscript:v8];
-  [(NMAPIDefaultSectionedCollectionDataSource *)self _updateImportedIdentifierSetsWithIdentifier:v8 dictionary:v7];
+  dictionaryCopy = dictionary;
+  identifierCopy = identifier;
+  [(NSMutableArray *)sectionResultIDs addObject:identifierCopy];
+  [(NSMutableDictionary *)self->_sectionResults setObject:dictionaryCopy forKeyedSubscript:identifierCopy];
+  [(NMAPIDefaultSectionedCollectionDataSource *)self _updateImportedIdentifierSetsWithIdentifier:identifierCopy dictionary:dictionaryCopy];
 }
 
-- (void)_addItemsFromArray:(id)a3
+- (void)_addItemsFromArray:(id)array
 {
   v4 = MEMORY[0x277CBEB18];
-  v5 = a3;
+  arrayCopy = array;
   v6 = objc_alloc_init(v4);
   v10 = MEMORY[0x277D85DD0];
   v11 = 3221225472;
   v12 = __64__NMAPIDefaultSectionedCollectionDataSource__addItemsFromArray___block_invoke;
   v13 = &unk_27993B000;
   v14 = v6;
-  v15 = self;
+  selfCopy = self;
   v7 = v6;
-  [v5 enumerateObjectsUsingBlock:&v10];
+  [arrayCopy enumerateObjectsUsingBlock:&v10];
 
   sectionedItemResultIDs = self->_sectionedItemResultIDs;
   v9 = [v7 copy];
@@ -279,50 +279,50 @@ void __64__NMAPIDefaultSectionedCollectionDataSource__addItemsFromArray___block_
   }
 }
 
-- (BOOL)_isSupportedItem:(id)a3
+- (BOOL)_isSupportedItem:(id)item
 {
-  v3 = a3;
-  v4 = [v3 valueForKeyPath:@"attributes.mediaKind"];
+  itemCopy = item;
+  v4 = [itemCopy valueForKeyPath:@"attributes.mediaKind"];
   v5 = [v4 isEqualToString:@"video"];
 
-  v6 = [v3 valueForKeyPath:@"type"];
+  v6 = [itemCopy valueForKeyPath:@"type"];
 
-  LODWORD(v3) = [v6 isEqualToString:@"music-movies"];
-  return ((v5 | v3) & 1) == 0;
+  LODWORD(itemCopy) = [v6 isEqualToString:@"music-movies"];
+  return ((v5 | itemCopy) & 1) == 0;
 }
 
-- (void)_updateImportedIdentifierSetsWithIdentifier:(id)a3 dictionary:(id)a4
+- (void)_updateImportedIdentifierSetsWithIdentifier:(id)identifier dictionary:(id)dictionary
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [v6 objectForKey:*MEMORY[0x277CD5CF8]];
+  identifierCopy = identifier;
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKey:*MEMORY[0x277CD5CF8]];
 
   if (v7)
   {
-    v8 = [v6 objectForKey:*MEMORY[0x277CD5D00]];
-    [(NSMutableDictionary *)self->_importedIdentifierSets setValue:v8 forKey:v9];
+    v8 = [dictionaryCopy objectForKey:*MEMORY[0x277CD5D00]];
+    [(NSMutableDictionary *)self->_importedIdentifierSets setValue:v8 forKey:identifierCopy];
   }
 }
 
-- (id)_musicURLWithPartialURLString:(id)a3
+- (id)_musicURLWithPartialURLString:(id)string
 {
-  v4 = [MEMORY[0x277CCACE0] componentsWithString:a3];
-  v5 = [v4 scheme];
+  v4 = [MEMORY[0x277CCACE0] componentsWithString:string];
+  scheme = [v4 scheme];
 
-  if (!v5)
+  if (!scheme)
   {
     v6 = MusicURLComponentsWithURLBag(self->_storeURLBag, 0);
-    v7 = [v6 scheme];
-    [v4 setScheme:v7];
+    scheme2 = [v6 scheme];
+    [v4 setScheme:scheme2];
   }
 
-  v8 = [v4 host];
+  host = [v4 host];
 
-  if (!v8)
+  if (!host)
   {
     v9 = MusicURLComponentsWithURLBag(self->_storeURLBag, 0);
-    v10 = [v9 host];
-    [v4 setHost:v10];
+    host2 = [v9 host];
+    [v4 setHost:host2];
   }
 
   v11 = [v4 URL];
@@ -330,19 +330,19 @@ void __64__NMAPIDefaultSectionedCollectionDataSource__addItemsFromArray___block_
   return v11;
 }
 
-- (id)_storeBrowseSectionWithDictionary:(id)a3
+- (id)_storeBrowseSectionWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = objc_alloc(MEMORY[0x277CD5F80]);
-  v6 = [MEMORY[0x277CD5DA0] emptyIdentifierSet];
+  emptyIdentifierSet = [MEMORY[0x277CD5DA0] emptyIdentifierSet];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __79__NMAPIDefaultSectionedCollectionDataSource__storeBrowseSectionWithDictionary___block_invoke;
   v10[3] = &unk_27993B028;
-  v11 = v4;
-  v12 = self;
-  v7 = v4;
-  v8 = [v5 initWithIdentifiers:v6 block:v10];
+  v11 = dictionaryCopy;
+  selfCopy = self;
+  v7 = dictionaryCopy;
+  v8 = [v5 initWithIdentifiers:emptyIdentifierSet block:v10];
 
   return v8;
 }

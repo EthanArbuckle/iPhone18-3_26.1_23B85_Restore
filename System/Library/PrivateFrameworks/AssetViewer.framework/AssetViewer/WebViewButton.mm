@@ -1,10 +1,10 @@
 @interface WebViewButton
 - (BOOL)isHighlighted;
-- (void)setHighlighted:(BOOL)a3;
-- (void)webView:(id)a3 didFailNavigation:(id)a4 withError:(id)a5;
-- (void)webView:(id)a3 didFailProvisionalNavigation:(id)a4 withError:(id)a5;
-- (void)webView:(id)a3 didFinishNavigation:(id)a4;
-- (void)webViewWebContentProcessDidTerminate:(id)a3;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)webView:(id)view didFailNavigation:(id)navigation withError:(id)error;
+- (void)webView:(id)view didFailProvisionalNavigation:(id)navigation withError:(id)error;
+- (void)webView:(id)view didFinishNavigation:(id)navigation;
+- (void)webViewWebContentProcessDidTerminate:(id)terminate;
 @end
 
 @implementation WebViewButton
@@ -16,47 +16,47 @@
   return [(WebViewButton *)&v3 isHighlighted];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v5.receiver = self;
   v5.super_class = type metadata accessor for WebViewButton();
   v4 = v5.receiver;
-  [(WebViewButton *)&v5 setHighlighted:v3];
+  [(WebViewButton *)&v5 setHighlighted:highlightedCopy];
   [*&v4[OBJC_IVAR____TtC11AssetViewer13WebViewButton_highlightedOverlayView] setHidden_];
 }
 
-- (void)webView:(id)a3 didFinishNavigation:(id)a4
+- (void)webView:(id)view didFinishNavigation:(id)navigation
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  viewCopy = view;
+  navigationCopy = navigation;
+  selfCopy = self;
   sub_24134F818(MEMORY[0x277D85B58], "webView:didFinish", 1);
 }
 
-- (void)webViewWebContentProcessDidTerminate:(id)a3
+- (void)webViewWebContentProcessDidTerminate:(id)terminate
 {
-  v4 = a3;
-  v5 = self;
+  terminateCopy = terminate;
+  selfCopy = self;
   sub_24134F818(MEMORY[0x277D85B48], "webViewWebContentProcessDidTerminate:", 0);
 }
 
-- (void)webView:(id)a3 didFailNavigation:(id)a4 withError:(id)a5
+- (void)webView:(id)view didFailNavigation:(id)navigation withError:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v11 = a5;
-  v10 = self;
-  sub_24134F964(v11, "webView:didFail:withError:%s");
+  viewCopy = view;
+  navigationCopy = navigation;
+  errorCopy = error;
+  selfCopy = self;
+  sub_24134F964(errorCopy, "webView:didFail:withError:%s");
 }
 
-- (void)webView:(id)a3 didFailProvisionalNavigation:(id)a4 withError:(id)a5
+- (void)webView:(id)view didFailProvisionalNavigation:(id)navigation withError:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v11 = a5;
-  v10 = self;
-  sub_24134F964(v11, "webView:didFailProvisionalNavigation:withError:%s");
+  viewCopy = view;
+  navigationCopy = navigation;
+  errorCopy = error;
+  selfCopy = self;
+  sub_24134F964(errorCopy, "webView:didFailProvisionalNavigation:withError:%s");
 }
 
 @end

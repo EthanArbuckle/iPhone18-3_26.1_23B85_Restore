@@ -6,10 +6,10 @@
 
 - (CTXPCServiceSubscriptionContext)subscriptionContext
 {
-  v2 = [(TPSDetailController *)self specifier];
-  v3 = [v2 tps_subscriptionContext];
+  specifier = [(TPSDetailController *)self specifier];
+  tps_subscriptionContext = [specifier tps_subscriptionContext];
 
-  return v3;
+  return tps_subscriptionContext;
 }
 
 @end

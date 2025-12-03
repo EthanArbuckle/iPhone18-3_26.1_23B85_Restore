@@ -1,15 +1,15 @@
 @interface SHLLocationTransformer
-+ (CLLocationCoordinate2D)coordinateFromLocation:(id)a3;
-+ (id)locationFromCoordinate:(CLLocationCoordinate2D)a3;
++ (CLLocationCoordinate2D)coordinateFromLocation:(id)location;
++ (id)locationFromCoordinate:(CLLocationCoordinate2D)coordinate;
 @end
 
 @implementation SHLLocationTransformer
 
-+ (id)locationFromCoordinate:(CLLocationCoordinate2D)a3
++ (id)locationFromCoordinate:(CLLocationCoordinate2D)coordinate
 {
-  longitude = a3.longitude;
-  latitude = a3.latitude;
-  if (CLLocationCoordinate2DIsValid(a3))
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
+  if (CLLocationCoordinate2DIsValid(coordinate))
   {
     v5 = [[CLLocation alloc] initWithLatitude:latitude longitude:longitude];
   }
@@ -22,14 +22,14 @@
   return v5;
 }
 
-+ (CLLocationCoordinate2D)coordinateFromLocation:(id)a3
++ (CLLocationCoordinate2D)coordinateFromLocation:(id)location
 {
-  if (a3)
+  if (location)
   {
-    v3 = a3;
-    [v3 coordinate];
+    locationCopy = location;
+    [locationCopy coordinate];
     v5 = v4;
-    [v3 coordinate];
+    [locationCopy coordinate];
     v7 = v6;
 
     v10 = CLLocationCoordinate2DMake(v5, v7);

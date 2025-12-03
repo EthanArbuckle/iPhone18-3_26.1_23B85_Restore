@@ -12,7 +12,7 @@
   v25 = a6.n128_u64[0];
   v20 = a7;
   v21 = a8;
-  v19 = a1;
+  selfCopy = self;
   v18 = a2;
   v14 = MEMORY[0x245D2A010](*&a3, a4, a5, a6);
   v15 = v8;

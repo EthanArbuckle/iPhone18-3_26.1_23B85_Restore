@@ -3,7 +3,7 @@
 - (BOOL)scatIsMemberOfGroup;
 - (BOOL)scatIsOnScreen;
 - (BOOL)scatIsValid;
-- (BOOL)scatPerformAction:(int)a3;
+- (BOOL)scatPerformAction:(int)action;
 - (BOOL)scatShouldActivateDirectly;
 - (CGPoint)scatCenterPoint;
 - (CGPoint)scatScreenPointForOperations;
@@ -13,20 +13,20 @@
 - (id)highestAncestorGroup;
 - (unint64_t)scatMenuItemStyle;
 - (unint64_t)scatTraits;
-- (void)_axPrintSubviews:(int64_t)a3 string:(id)a4;
-- (void)setScatMenuItemStyle:(unint64_t)a3;
-- (void)setScatShouldActivateDirectly:(BOOL)a3;
+- (void)_axPrintSubviews:(int64_t)subviews string:(id)string;
+- (void)setScatMenuItemStyle:(unint64_t)style;
+- (void)setScatShouldActivateDirectly:(BOOL)directly;
 @end
 
 @implementation UIView
 
-- (void)_axPrintSubviews:(int64_t)a3 string:(id)a4
+- (void)_axPrintSubviews:(int64_t)subviews string:(id)string
 {
-  v6 = a4;
-  if (!a3)
+  stringCopy = string;
+  if (!subviews)
   {
     v7 = [(UIView *)self description];
-    [v6 appendFormat:@"SELF: %@\n", v7];
+    [stringCopy appendFormat:@"SELF: %@\n", v7];
   }
 
   v20 = 0u;
@@ -50,27 +50,27 @@
         }
 
         v12 = *(*(&v18 + 1) + 8 * v11);
-        if (a3 >= 1)
+        if (subviews >= 1)
         {
-          v13 = a3;
+          subviewsCopy = subviews;
           do
           {
-            [v6 appendString:@"    "];
-            --v13;
+            [stringCopy appendString:@"    "];
+            --subviewsCopy;
           }
 
-          while (v13);
+          while (subviewsCopy);
         }
 
         v14 = [v12 description];
-        [v6 appendFormat:@"%@\n", v14];
+        [stringCopy appendFormat:@"%@\n", v14];
 
-        v15 = [v12 subviews];
-        v16 = [v15 count];
+        subviews = [v12 subviews];
+        v16 = [subviews count];
 
         if (v16)
         {
-          [v12 _axPrintSubviews:a3 + 1 string:v6];
+          [v12 _axPrintSubviews:subviews + 1 string:stringCopy];
         }
 
         v11 = v11 + 1;
@@ -98,20 +98,20 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 integerValue];
+    integerValue = [v2 integerValue];
   }
 
   else
   {
-    v4 = 0;
+    integerValue = 0;
   }
 
-  return v4;
+  return integerValue;
 }
 
-- (void)setScatMenuItemStyle:(unint64_t)a3
+- (void)setScatMenuItemStyle:(unint64_t)style
 {
-  v4 = [NSNumber numberWithUnsignedInteger:a3];
+  v4 = [NSNumber numberWithUnsignedInteger:style];
   objc_setAssociatedObject(self, &unk_100218B90, v4, 0x301);
 
   [(UIView *)self didUpdateScatMenuItemStyle];
@@ -177,8 +177,8 @@
 
 - (BOOL)scatIsValid
 {
-  v2 = [(UIView *)self window];
-  v3 = v2 != 0;
+  window = [(UIView *)self window];
+  v3 = window != 0;
 
   return v3;
 }
@@ -189,30 +189,30 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v4 = 1;
+    bOOLValue = 1;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
-- (void)setScatShouldActivateDirectly:(BOOL)a3
+- (void)setScatShouldActivateDirectly:(BOOL)directly
 {
-  v4 = [NSNumber numberWithBool:a3];
+  v4 = [NSNumber numberWithBool:directly];
   objc_setAssociatedObject(self, &unk_100218BD8, v4, 0x303);
 }
 
-- (BOOL)scatPerformAction:(int)a3
+- (BOOL)scatPerformAction:(int)action
 {
   NSClassFromString(@"UISegment");
   if (objc_opt_isKindOfClass())
   {
-    v7 = [(UIView *)self superview];
-    v4 = v7;
+    superview = [(UIView *)self superview];
+    v4 = superview;
     AXPerformSafeBlock();
 
     return 1;
@@ -233,16 +233,16 @@
 
 - (BOOL)scatIsMemberOfGroup
 {
-  v2 = [(UIView *)self parentGroup];
-  v3 = v2 != 0;
+  parentGroup = [(UIView *)self parentGroup];
+  v3 = parentGroup != 0;
 
   return v3;
 }
 
 - (BOOL)scatIsAuxiliaryElement
 {
-  v2 = [(UIView *)self scatAuxiliaryElementManager];
-  v3 = v2 != 0;
+  scatAuxiliaryElementManager = [(UIView *)self scatAuxiliaryElementManager];
+  v3 = scatAuxiliaryElementManager != 0;
 
   return v3;
 }
@@ -272,10 +272,10 @@
 
 - (id)highestAncestorGroup
 {
-  v2 = [(UIView *)self parentGroup];
-  v3 = [v2 highestAncestorGroup];
+  parentGroup = [(UIView *)self parentGroup];
+  highestAncestorGroup = [parentGroup highestAncestorGroup];
 
-  return v3;
+  return highestAncestorGroup;
 }
 
 @end

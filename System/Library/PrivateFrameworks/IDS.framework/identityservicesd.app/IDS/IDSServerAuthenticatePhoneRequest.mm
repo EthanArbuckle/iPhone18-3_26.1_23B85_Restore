@@ -1,25 +1,25 @@
 @interface IDSServerAuthenticatePhoneRequest
-- (IDSServerAuthenticatePhoneRequest)initWithUser:(id)a3 phoneSignature:(id)a4 certificateSigningRequest:(id)a5 pushToken:(id)a6;
+- (IDSServerAuthenticatePhoneRequest)initWithUser:(id)user phoneSignature:(id)signature certificateSigningRequest:(id)request pushToken:(id)token;
 @end
 
 @implementation IDSServerAuthenticatePhoneRequest
 
-- (IDSServerAuthenticatePhoneRequest)initWithUser:(id)a3 phoneSignature:(id)a4 certificateSigningRequest:(id)a5 pushToken:(id)a6
+- (IDSServerAuthenticatePhoneRequest)initWithUser:(id)user phoneSignature:(id)signature certificateSigningRequest:(id)request pushToken:(id)token
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  userCopy = user;
+  signatureCopy = signature;
+  requestCopy = request;
+  tokenCopy = token;
   v18.receiver = self;
   v18.super_class = IDSServerAuthenticatePhoneRequest;
   v15 = [(IDSServerAuthenticatePhoneRequest *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_user, a3);
-    objc_storeStrong(&v16->_phoneSignature, a4);
-    objc_storeStrong(&v16->_certificateSigningRequest, a5);
-    objc_storeStrong(&v16->_pushToken, a6);
+    objc_storeStrong(&v15->_user, user);
+    objc_storeStrong(&v16->_phoneSignature, signature);
+    objc_storeStrong(&v16->_certificateSigningRequest, request);
+    objc_storeStrong(&v16->_pushToken, token);
   }
 
   return v16;

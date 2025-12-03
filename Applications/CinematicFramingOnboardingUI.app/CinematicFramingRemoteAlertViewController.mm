@@ -1,14 +1,14 @@
 @interface CinematicFramingRemoteAlertViewController
 - (id)createWelcomeController;
-- (id)detailStringFromBundle:(id)a3 tableName:(id)a4;
-- (id)parameterForKey:(id)a3 fromUserInfo:(id)a4 requiredClass:(Class)a5;
-- (void)configureWithContext:(id)a3 completion:(id)a4;
+- (id)detailStringFromBundle:(id)bundle tableName:(id)name;
+- (id)parameterForKey:(id)key fromUserInfo:(id)info requiredClass:(Class)class;
+- (void)configureWithContext:(id)context completion:(id)completion;
 - (void)dismissRemoteAlert;
-- (void)handleControlCenterButton:(id)a3;
-- (void)prepareForActivationWithContext:(id)a3 completion:(id)a4;
+- (void)handleControlCenterButton:(id)button;
+- (void)prepareForActivationWithContext:(id)context completion:(id)completion;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)welcomeControllerDidDisappear:(id)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)welcomeControllerDidDisappear:(id)disappear;
 @end
 
 @implementation CinematicFramingRemoteAlertViewController
@@ -19,19 +19,19 @@
   v5.super_class = CinematicFramingRemoteAlertViewController;
   [(CinematicFramingRemoteAlertViewController *)&v5 viewDidLoad];
   v3 = [UIColor colorWithWhite:0.0 alpha:0.5];
-  v4 = [(CinematicFramingRemoteAlertViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  view = [(CinematicFramingRemoteAlertViewController *)self view];
+  [view setBackgroundColor:v3];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = CinematicFramingRemoteAlertViewController;
   [(CinematicFramingRemoteAlertViewController *)&v6 viewWillAppear:?];
-  if (!a3)
+  if (!appear)
   {
-    v5 = [(CinematicFramingRemoteAlertViewController *)self view];
-    [v5 setAlpha:0.0];
+    view = [(CinematicFramingRemoteAlertViewController *)self view];
+    [view setAlpha:0.0];
   }
 
   if ([(CinematicFramingRemoteAlertViewController *)self isStandaloneTestApp])
@@ -43,60 +43,60 @@
   }
 }
 
-- (void)configureWithContext:(id)a3 completion:(id)a4
+- (void)configureWithContext:(id)context completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v5 = [(CinematicFramingRemoteAlertViewController *)self _remoteViewControllerProxyWithErrorHandler:&stru_1000081A0];
   [v5 setReachabilityDisabled:1];
   [v5 setAllowsAlertStacking:1];
   [v5 setDismissalAnimationStyle:1];
-  if (v6)
+  if (completionCopy)
   {
-    v6[2]();
+    completionCopy[2]();
   }
 }
 
-- (void)prepareForActivationWithContext:(id)a3 completion:(id)a4
+- (void)prepareForActivationWithContext:(id)context completion:(id)completion
 {
-  v13 = a4;
-  v6 = [a3 userInfo];
-  v7 = [(CinematicFramingRemoteAlertViewController *)self parameterForKey:FigCaptureCinematicFramingRemoteAlertUserInfoBundleIdentifierKey fromUserInfo:v6 requiredClass:objc_opt_class()];
-  v8 = [(CinematicFramingRemoteAlertViewController *)self parameterForKey:FigCaptureCinematicFramingRemoteAlertUserInfoBundleDisplayNameKey fromUserInfo:v6 requiredClass:objc_opt_class()];
-  v9 = [(CinematicFramingRemoteAlertViewController *)self parameterForKey:FigCaptureCinematicFramingRemoteAlertUserInfoControlModeKey fromUserInfo:v6 requiredClass:objc_opt_class()];
-  v10 = [(CinematicFramingRemoteAlertViewController *)self parameterForKey:FigCaptureCinematicFramingRemoteAlertUserInfoFirstEverCinematicFramingAlertKey fromUserInfo:v6 requiredClass:objc_opt_class()];
+  completionCopy = completion;
+  userInfo = [context userInfo];
+  v7 = [(CinematicFramingRemoteAlertViewController *)self parameterForKey:FigCaptureCinematicFramingRemoteAlertUserInfoBundleIdentifierKey fromUserInfo:userInfo requiredClass:objc_opt_class()];
+  v8 = [(CinematicFramingRemoteAlertViewController *)self parameterForKey:FigCaptureCinematicFramingRemoteAlertUserInfoBundleDisplayNameKey fromUserInfo:userInfo requiredClass:objc_opt_class()];
+  v9 = [(CinematicFramingRemoteAlertViewController *)self parameterForKey:FigCaptureCinematicFramingRemoteAlertUserInfoControlModeKey fromUserInfo:userInfo requiredClass:objc_opt_class()];
+  v10 = [(CinematicFramingRemoteAlertViewController *)self parameterForKey:FigCaptureCinematicFramingRemoteAlertUserInfoFirstEverCinematicFramingAlertKey fromUserInfo:userInfo requiredClass:objc_opt_class()];
   [(CinematicFramingRemoteAlertViewController *)self setTargetBundleIdentifier:v7];
   [(CinematicFramingRemoteAlertViewController *)self setTargetBundleDisplayName:v8];
   if (v9)
   {
-    v11 = [v9 integerValue];
+    integerValue = [v9 integerValue];
   }
 
   else
   {
-    v11 = 0;
+    integerValue = 0;
   }
 
-  [(CinematicFramingRemoteAlertViewController *)self setCinematicFramingControlMode:v11];
+  [(CinematicFramingRemoteAlertViewController *)self setCinematicFramingControlMode:integerValue];
   if (v10)
   {
-    v12 = [v10 BOOLValue];
+    bOOLValue = [v10 BOOLValue];
   }
 
   else
   {
-    v12 = 1;
+    bOOLValue = 1;
   }
 
-  [(CinematicFramingRemoteAlertViewController *)self setFirstEverCinematicFramingAlert:v12];
-  if (v13)
+  [(CinematicFramingRemoteAlertViewController *)self setFirstEverCinematicFramingAlert:bOOLValue];
+  if (completionCopy)
   {
-    v13[2]();
+    completionCopy[2]();
   }
 }
 
-- (id)parameterForKey:(id)a3 fromUserInfo:(id)a4 requiredClass:(Class)a5
+- (id)parameterForKey:(id)key fromUserInfo:(id)info requiredClass:(Class)class
 {
-  v5 = [a4 objectForKeyedSubscript:a3];
+  v5 = [info objectForKeyedSubscript:key];
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
 
@@ -119,7 +119,7 @@
 - (id)createWelcomeController
 {
   v3 = [NSBundle bundleForClass:objc_opt_class()];
-  v4 = [(CinematicFramingRemoteAlertViewController *)self shouldShowControlCenterButton];
+  shouldShowControlCenterButton = [(CinematicFramingRemoteAlertViewController *)self shouldShowControlCenterButton];
   v5 = [v3 localizedStringForKey:@"TITLE" value:&stru_1000082A8 table:@"CinematicFramingRemoteAlert"];
   v6 = [(CinematicFramingRemoteAlertViewController *)self detailStringFromBundle:v3 tableName:@"CinematicFramingRemoteAlert"];
   v7 = [v3 localizedStringForKey:@"CONTINUE_BUTTON" value:&stru_1000082A8 table:@"CinematicFramingRemoteAlert"];
@@ -133,27 +133,27 @@
   [v10 addTarget:self action:"handleContinueButton:" forControlEvents:64];
   v11 = [OBPrivacyLinkController linkWithBundleIdentifier:@"com.apple.onboarding.camera"];
   [v11 setDisplayCaptionText:0];
-  v12 = [(CinematicFramingRemoteAlertOBWelcomeController *)v9 buttonTray];
+  buttonTray = [(CinematicFramingRemoteAlertOBWelcomeController *)v9 buttonTray];
   v36 = v10;
-  [v12 addButton:v10];
-  if (v4)
+  [buttonTray addButton:v10];
+  if (shouldShowControlCenterButton)
   {
     v13 = +[OBLinkTrayButton linkButton];
     [v13 setTitle:v8 forState:0];
     [v13 addTarget:self action:"handleControlCenterButton:" forControlEvents:64];
-    [v12 addButton:v13];
+    [buttonTray addButton:v13];
   }
 
   v37 = v8;
-  v34 = v12;
+  v34 = buttonTray;
   v35 = v11;
-  [v12 setPrivacyLinkController:v11];
+  [buttonTray setPrivacyLinkController:v11];
   v38 = v9;
-  v33 = [(CinematicFramingRemoteAlertOBWelcomeController *)v9 headerView];
-  v14 = [(CinematicFramingRemoteAlertViewController *)self traitCollection];
-  v15 = [v14 userInterfaceStyle];
+  headerView = [(CinematicFramingRemoteAlertOBWelcomeController *)v9 headerView];
+  traitCollection = [(CinematicFramingRemoteAlertViewController *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  if (v15 == 2)
+  if (userInterfaceStyle == 2)
   {
     v16 = @"CinematicFraming864x300Dark";
   }
@@ -190,45 +190,45 @@
 
   while (v26);
   v27 = [OBAnimationController alloc];
-  v28 = [v33 animationView];
-  v29 = [v25 firstObject];
-  v30 = [v27 initWithUrlToPackage:v32 animationView:v28 animatedStates:v25 startAtFirstState:v29];
+  animationView = [headerView animationView];
+  firstObject = [v25 firstObject];
+  v30 = [v27 initWithUrlToPackage:v32 animationView:animationView animatedStates:v25 startAtFirstState:firstObject];
   [(CinematicFramingRemoteAlertViewController *)self setAnimationController:v30];
 
   return v38;
 }
 
-- (id)detailStringFromBundle:(id)a3 tableName:(id)a4
+- (id)detailStringFromBundle:(id)bundle tableName:(id)name
 {
-  v6 = a4;
-  v7 = a3;
+  nameCopy = name;
+  bundleCopy = bundle;
   if ([(CinematicFramingRemoteAlertViewController *)self isFirstEverCinematicFramingAlert])
   {
-    v8 = [v7 localizedStringForKey:@"DETAIL" value:&stru_1000082A8 table:v6];
+    nameCopy = [bundleCopy localizedStringForKey:@"DETAIL" value:&stru_1000082A8 table:nameCopy];
   }
 
   else
   {
-    v9 = [v7 localizedStringForKey:@"DETAIL_APP_NAME" value:&stru_1000082A8 table:v6];
+    v9 = [bundleCopy localizedStringForKey:@"DETAIL_APP_NAME" value:&stru_1000082A8 table:nameCopy];
 
-    v6 = [(CinematicFramingRemoteAlertViewController *)self targetBundleDisplayName];
-    v8 = [NSString stringWithFormat:v9, v6];
-    v7 = v9;
+    nameCopy = [(CinematicFramingRemoteAlertViewController *)self targetBundleDisplayName];
+    nameCopy = [NSString stringWithFormat:v9, nameCopy];
+    bundleCopy = v9;
   }
 
-  return v8;
+  return nameCopy;
 }
 
-- (void)welcomeControllerDidDisappear:(id)a3
+- (void)welcomeControllerDidDisappear:(id)disappear
 {
   v3 = [(CinematicFramingRemoteAlertViewController *)self _remoteViewControllerProxyWithErrorHandler:&stru_100008208];
   [v3 invalidate];
 }
 
-- (void)handleControlCenterButton:(id)a3
+- (void)handleControlCenterButton:(id)button
 {
-  v5 = [(CinematicFramingRemoteAlertViewController *)self targetBundleIdentifier];
-  v4 = [(CinematicFramingRemoteAlertViewController *)self targetBundleDisplayName];
+  targetBundleIdentifier = [(CinematicFramingRemoteAlertViewController *)self targetBundleIdentifier];
+  targetBundleDisplayName = [(CinematicFramingRemoteAlertViewController *)self targetBundleDisplayName];
   FigCaptureSourceRemoteShowVideoEffectUserInterfaceForCinematicFramingOnboardingUI();
   [(CinematicFramingRemoteAlertViewController *)self dismissRemoteAlert];
 }

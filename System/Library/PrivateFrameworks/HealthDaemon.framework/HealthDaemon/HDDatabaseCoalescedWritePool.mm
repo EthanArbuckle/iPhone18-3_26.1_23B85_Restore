@@ -1,11 +1,11 @@
 @interface HDDatabaseCoalescedWritePool
 - (HDDatabaseCoalescedWritePool)init;
-- (HDDatabaseCoalescedWritePool)initWithProfile:(id)a3 name:(id)a4 loggingCategory:(id)a5;
+- (HDDatabaseCoalescedWritePool)initWithProfile:(id)profile name:(id)name loggingCategory:(id)category;
 - (HDProfile)profile;
-- (uint64_t)_performPendingWriteRecords:(void *)a3 transaction:(void *)a4 accessibilityError:(uint64_t)a5 error:;
-- (uint64_t)_queue_performPendingWriteOperationsWithError:(uint64_t)a1;
-- (void)flushPendingWriteQueueWithCompletion:(id)a3;
-- (void)performWriteWithMaximumLatency:(double)a3 block:(id)a4 completion:(id)a5;
+- (uint64_t)_performPendingWriteRecords:(void *)records transaction:(void *)transaction accessibilityError:(uint64_t)error error:;
+- (uint64_t)_queue_performPendingWriteOperationsWithError:(uint64_t)error;
+- (void)flushPendingWriteQueueWithCompletion:(id)completion;
+- (void)performWriteWithMaximumLatency:(double)latency block:(id)block completion:(id)completion;
 @end
 
 @implementation HDDatabaseCoalescedWritePool
@@ -20,23 +20,23 @@
   return 0;
 }
 
-- (HDDatabaseCoalescedWritePool)initWithProfile:(id)a3 name:(id)a4 loggingCategory:(id)a5
+- (HDDatabaseCoalescedWritePool)initWithProfile:(id)profile name:(id)name loggingCategory:(id)category
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  profileCopy = profile;
+  nameCopy = name;
+  categoryCopy = category;
   v27.receiver = self;
   v27.super_class = HDDatabaseCoalescedWritePool;
   v11 = [(HDDatabaseCoalescedWritePool *)&v27 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_profile, v8);
-    v13 = [v9 copy];
+    objc_storeWeak(&v11->_profile, profileCopy);
+    v13 = [nameCopy copy];
     name = v12->_name;
     v12->_name = v13;
 
-    objc_storeStrong(&v12->_loggingCategory, a5);
+    objc_storeStrong(&v12->_loggingCategory, category);
     v15 = HKCreateSerialDispatchQueue();
     writeQueue = v12->_writeQueue;
     v12->_writeQueue = v15;
@@ -107,24 +107,24 @@ LABEL_7:
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (uint64_t)_queue_performPendingWriteOperationsWithError:(uint64_t)a1
+- (uint64_t)_queue_performPendingWriteOperationsWithError:(uint64_t)error
 {
   v61 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (error)
   {
-    dispatch_assert_queue_V2(*(a1 + 24));
-    os_unfair_lock_lock((a1 + 32));
-    v4 = *(a1 + 48);
+    dispatch_assert_queue_V2(*(error + 24));
+    os_unfair_lock_lock((error + 32));
+    v4 = *(error + 48);
     v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v6 = *(a1 + 48);
-    *(a1 + 48) = v5;
+    v6 = *(error + 48);
+    *(error + 48) = v5;
 
     if ([v4 count])
     {
-      [*(a1 + 64) consumeQuota];
+      [*(error + 64) consumeQuota];
     }
 
-    os_unfair_lock_unlock((a1 + 32));
+    os_unfair_lock_unlock((error + 32));
     if ([v4 count])
     {
       v7 = MEMORY[0x277CCC298];
@@ -139,35 +139,35 @@ LABEL_7:
         if (v9 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v11))
         {
           *buf = 134217984;
-          v55 = [v4 count];
+          errorCopy = [v4 count];
           _os_signpost_emit_with_name_impl(&dword_228986000, v12, OS_SIGNPOST_INTERVAL_BEGIN, v9, "coalesced-write", "count=%ld", buf, 0xCu);
         }
       }
 
       v44 = a2;
-      v13 = [(HKDaemonTransaction *)HDDaemonTransaction transactionWithOwner:a1 activityName:*(a1 + 8), v9];
+      v13 = [(HKDaemonTransaction *)HDDaemonTransaction transactionWithOwner:error activityName:*(error + 8), v9];
       Current = CFAbsoluteTimeGetCurrent();
-      v15 = [a1 databaseAssertion];
-      v16 = [HDDatabaseTransactionContext contextForAccessibilityAssertion:v15];
+      databaseAssertion = [error databaseAssertion];
+      v16 = [HDDatabaseTransactionContext contextForAccessibilityAssertion:databaseAssertion];
 
-      v17 = [v16 copyForWritingProtectedData];
-      WeakRetained = objc_loadWeakRetained((a1 + 56));
-      v19 = [WeakRetained database];
+      copyForWritingProtectedData = [v16 copyForWritingProtectedData];
+      WeakRetained = objc_loadWeakRetained((error + 56));
+      database = [WeakRetained database];
       v53 = 0;
       v51[0] = MEMORY[0x277D85DD0];
       v51[1] = 3221225472;
       v51[2] = __78__HDDatabaseCoalescedWritePool__queue_performPendingWriteOperationsWithError___block_invoke;
       v51[3] = &unk_278613218;
-      v51[4] = a1;
+      v51[4] = error;
       v52 = v4;
       v49[0] = MEMORY[0x277D85DD0];
       v49[1] = 3221225472;
       v49[2] = __78__HDDatabaseCoalescedWritePool__queue_performPendingWriteOperationsWithError___block_invoke_2;
       v49[3] = &unk_278616F88;
-      v49[4] = a1;
+      v49[4] = error;
       v20 = v52;
       v50 = v20;
-      v21 = [v19 performTransactionWithContext:v17 error:&v53 block:v51 inaccessibilityHandler:v49];
+      v21 = [database performTransactionWithContext:copyForWritingProtectedData error:&v53 block:v51 inaccessibilityHandler:v49];
       v22 = v53;
 
       v47 = 0u;
@@ -227,14 +227,14 @@ LABEL_7:
       }
 
       _HKInitializeLogging();
-      v34 = *(a1 + 16);
+      v34 = *(error + 16);
       if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
       {
         v35 = v34;
         v36 = [v23 count];
         v37 = CFAbsoluteTimeGetCurrent();
         *buf = 138543874;
-        v55 = a1;
+        errorCopy = error;
         v56 = 2048;
         v57 = v36;
         v58 = 2048;
@@ -275,13 +275,13 @@ LABEL_7:
   return v21;
 }
 
-- (void)performWriteWithMaximumLatency:(double)a3 block:(id)a4 completion:(id)a5
+- (void)performWriteWithMaximumLatency:(double)latency block:(id)block completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
+  completionCopy = completion;
+  blockCopy = block;
   v10 = [_HDDatabasePendingWriteRecord alloc];
-  v11 = v9;
-  v12 = v8;
+  v11 = blockCopy;
+  v12 = completionCopy;
   if (v10)
   {
     v27.receiver = v10;
@@ -300,18 +300,18 @@ LABEL_7:
   }
 
   quota = self->_quota;
-  v18 = a3;
+  latencyCopy2 = latency;
   if (quota)
   {
     [(HDCoalescedTaskPoolQuota *)quota timeUntilNextAvailableTrigger];
-    if (v19 >= a3)
+    if (v19 >= latency)
     {
-      v18 = v19;
+      latencyCopy2 = v19;
     }
 
     else
     {
-      v18 = a3;
+      latencyCopy2 = latency;
     }
   }
 
@@ -324,8 +324,8 @@ LABEL_7:
   v23[1] = 3221225472;
   v23[2] = __80__HDDatabaseCoalescedWritePool_performWriteWithMaximumLatency_block_completion___block_invoke;
   v23[3] = &unk_278616F60;
-  v25 = a3;
-  v26 = v18;
+  latencyCopy3 = latency;
+  v26 = latencyCopy2;
   v23[4] = self;
   v24 = v20;
   v22 = v20;
@@ -364,17 +364,17 @@ uint64_t __80__HDDatabaseCoalescedWritePool_performWriteWithMaximumLatency_block
   return result;
 }
 
-- (void)flushPendingWriteQueueWithCompletion:(id)a3
+- (void)flushPendingWriteQueueWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   writeQueue = self->_writeQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __69__HDDatabaseCoalescedWritePool_flushPendingWriteQueueWithCompletion___block_invoke;
   v7[3] = &unk_278614E28;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(writeQueue, v7);
 }
 
@@ -387,13 +387,13 @@ void __69__HDDatabaseCoalescedWritePool_flushPendingWriteQueueWithCompletion___b
   (*(*(a1 + 40) + 16))();
 }
 
-- (uint64_t)_performPendingWriteRecords:(void *)a3 transaction:(void *)a4 accessibilityError:(uint64_t)a5 error:
+- (uint64_t)_performPendingWriteRecords:(void *)records transaction:(void *)transaction accessibilityError:(uint64_t)error error:
 {
   v28 = *MEMORY[0x277D85DE8];
   v9 = a2;
-  v10 = a3;
-  v11 = a4;
-  if (a1)
+  recordsCopy = records;
+  transactionCopy = transaction;
+  if (self)
   {
     v25 = 0u;
     v26 = 0u;
@@ -426,7 +426,7 @@ void __69__HDDatabaseCoalescedWritePool_flushPendingWriteQueueWithCompletion___b
             v18 = 0;
           }
 
-          if (!(*(v18 + 16))(v18, v10, v11, a5))
+          if (!(*(v18 + 16))(v18, recordsCopy, transactionCopy, error))
           {
             v20 = 0;
             goto LABEL_16;

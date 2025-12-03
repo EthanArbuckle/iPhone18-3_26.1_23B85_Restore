@@ -1,16 +1,16 @@
 @interface MRVirtualOutputContext
 - (BOOL)isVolumeControlAvailable;
-- (MRVirtualOutputContext)initWithUID:(id)a3;
+- (MRVirtualOutputContext)initWithUID:(id)d;
 - (float)volume;
 @end
 
 @implementation MRVirtualOutputContext
 
-- (MRVirtualOutputContext)initWithUID:(id)a3
+- (MRVirtualOutputContext)initWithUID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v6 = +[MRVirtualOutputContextManager sharedManager];
-  v7 = [v6 fetchForUID:v5];
+  v7 = [v6 fetchForUID:dCopy];
 
   if (v7)
   {
@@ -25,7 +25,7 @@
     v10 = v9;
     if (v9)
     {
-      objc_storeStrong(&v9->_uniqueIdentifier, a3);
+      objc_storeStrong(&v9->_uniqueIdentifier, d);
       v11 = +[MRVirtualOutputContextManager sharedManager];
       [v11 addOutputContext:v10];
     }
@@ -46,8 +46,8 @@
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(MRVirtualOutputContext *)self outputDevices];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  outputDevices = [(MRVirtualOutputContext *)self outputDevices];
+  v3 = [outputDevices countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = *v9;
@@ -57,7 +57,7 @@
       {
         if (*v9 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(outputDevices);
         }
 
         if ([*(*(&v8 + 1) + 8 * i) isVolumeControlAvailable])
@@ -67,7 +67,7 @@
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v3 = [outputDevices countByEnumeratingWithState:&v8 objects:v12 count:16];
       if (v3)
       {
         continue;
@@ -90,8 +90,8 @@ LABEL_11:
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v2 = [(MRVirtualOutputContext *)self outputDevices];
-  v3 = [v2 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  outputDevices = [(MRVirtualOutputContext *)self outputDevices];
+  v3 = [outputDevices countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v3)
   {
     v4 = v3;
@@ -103,7 +103,7 @@ LABEL_11:
       {
         if (*v14 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(outputDevices);
         }
 
         v8 = *(*(&v13 + 1) + 8 * i);
@@ -115,7 +115,7 @@ LABEL_11:
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v4 = [outputDevices countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v4);

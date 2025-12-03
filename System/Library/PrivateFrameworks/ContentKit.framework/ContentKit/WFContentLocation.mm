@@ -11,8 +11,8 @@
 + (WFContentLocation)javaScript;
 + (WFContentLocation)javaScriptForAutomationLocation;
 + (WFContentLocation)locationLocation;
-+ (WFContentLocation)locationWithCalendarSource:(id)a3;
-+ (WFContentLocation)locationWithNotesAccountIdentifier:(id)a3;
++ (WFContentLocation)locationWithCalendarSource:(id)source;
++ (WFContentLocation)locationWithNotesAccountIdentifier:(id)identifier;
 + (WFContentLocation)microphoneLocation;
 + (WFContentLocation)networkLocation;
 + (WFContentLocation)notificationLocation;
@@ -29,42 +29,42 @@
 + (WFContentLocation)webpagesLocation;
 + (WFContentLocation)windowsLocation;
 + (id)allContentLocationClasses;
-+ (id)appDescriptorForFileProviderHandlingURL:(id)a3 error:(id *)a4;
-+ (id)contentLocationForFile:(id)a3;
-+ (id)objectWithWFSerializedRepresentation:(id)a3;
-+ (void)getContentLocationFromFile:(id)a3 completionHandler:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)appDescriptorForFileProviderHandlingURL:(id)l error:(id *)error;
++ (id)contentLocationForFile:(id)file;
++ (id)objectWithWFSerializedRepresentation:(id)representation;
++ (void)getContentLocationFromFile:(id)file completionHandler:(id)handler;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (NSString)localizedTitle;
-- (WFContentLocation)initWithCoder:(id)a3;
-- (WFContentLocation)initWithIdentifier:(id)a3 promptingBehaviour:(unint64_t)a4;
+- (WFContentLocation)initWithCoder:(id)coder;
+- (WFContentLocation)initWithIdentifier:(id)identifier promptingBehaviour:(unint64_t)behaviour;
 - (id)wfSerializedRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFContentLocation
 
-+ (id)appDescriptorForFileProviderHandlingURL:(id)a3 error:(id *)a4
++ (id)appDescriptorForFileProviderHandlingURL:(id)l error:(id *)error
 {
   v30 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  if (!v7)
+  lCopy = l;
+  if (!lCopy)
   {
-    v22 = [MEMORY[0x277CCA890] currentHandler];
-    [v22 handleFailureInMethod:a2 object:a1 file:@"WFContentLocation+FileProviders.m" lineNumber:66 description:{@"Invalid parameter not satisfying: %@", @"URL"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFContentLocation+FileProviders.m" lineNumber:66 description:{@"Invalid parameter not satisfying: %@", @"URL"}];
   }
 
-  v8 = [v7 startAccessingSecurityScopedResource];
-  v9 = [MEMORY[0x277CC6408] defaultManager];
-  v10 = [v9 itemForURL:v7 error:a4];
+  startAccessingSecurityScopedResource = [lCopy startAccessingSecurityScopedResource];
+  defaultManager = [MEMORY[0x277CC6408] defaultManager];
+  v10 = [defaultManager itemForURL:lCopy error:error];
 
-  if (a4 && *a4)
+  if (error && *error)
   {
     v11 = getWFSecurityLogObject();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
-      v12 = *a4;
+      v12 = *error;
       *buf = 136315394;
       v25 = "+[WFContentLocation(FileProviders) appDescriptorForFileProviderHandlingURL:error:]";
       v26 = 2112;
@@ -77,9 +77,9 @@
 
   else
   {
-    if (v8)
+    if (startAccessingSecurityScopedResource)
     {
-      [v7 stopAccessingSecurityScopedResource];
+      [lCopy stopAccessingSecurityScopedResource];
     }
 
     if (!v10)
@@ -94,31 +94,31 @@
     v11 = v15;
     if (v14)
     {
-      v16 = [v14 topLevelBundleIdentifier];
-      v17 = [objc_alloc(MEMORY[0x277CD3A58]) initWithBundleIdentifier:v16];
-      v18 = [MEMORY[0x277CD3A88] sharedResolver];
-      v13 = [v18 resolvedAppMatchingDescriptor:v17];
+      topLevelBundleIdentifier = [v14 topLevelBundleIdentifier];
+      v17 = [objc_alloc(MEMORY[0x277CD3A58]) initWithBundleIdentifier:topLevelBundleIdentifier];
+      mEMORY[0x277CD3A88] = [MEMORY[0x277CD3A88] sharedResolver];
+      v13 = [mEMORY[0x277CD3A88] resolvedAppMatchingDescriptor:v17];
     }
 
     else
     {
-      if (a4)
+      if (error)
       {
         v19 = v15;
-        *a4 = v11;
+        *error = v11;
       }
 
-      v16 = getWFWorkflowExecutionLogObject();
-      if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+      topLevelBundleIdentifier = getWFWorkflowExecutionLogObject();
+      if (os_log_type_enabled(topLevelBundleIdentifier, OS_LOG_TYPE_ERROR))
       {
-        v20 = [v10 providerID];
+        providerID = [v10 providerID];
         *buf = 136315650;
         v25 = "+[WFContentLocation(FileProviders) appDescriptorForFileProviderHandlingURL:error:]";
         v26 = 2112;
-        v27 = v20;
+        v27 = providerID;
         v28 = 2112;
         v29 = v11;
-        _os_log_impl(&dword_21E1BD000, v16, OS_LOG_TYPE_ERROR, "%s Couldn't resolve file provider with id %@: %@", buf, 0x20u);
+        _os_log_impl(&dword_21E1BD000, topLevelBundleIdentifier, OS_LOG_TYPE_ERROR, "%s Couldn't resolve file provider with id %@: %@", buf, 0x20u);
       }
 
       v13 = 0;
@@ -130,15 +130,15 @@ LABEL_21:
   return v13;
 }
 
-+ (void)getContentLocationFromFile:(id)a3 completionHandler:(id)a4
++ (void)getContentLocationFromFile:(id)file completionHandler:(id)handler
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  fileCopy = file;
+  handlerCopy = handler;
+  v8 = handlerCopy;
+  if (fileCopy)
   {
-    if ([v6 numberOfItems] >= 2)
+    if ([fileCopy numberOfItems] >= 2)
     {
       v9 = getWFSecurityLogObject();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
@@ -154,13 +154,13 @@ LABEL_21:
     v10[2] = __81__WFContentLocation_FileProviders__getContentLocationFromFile_completionHandler___block_invoke;
     v10[3] = &unk_278347AE8;
     v11 = v8;
-    v12 = a1;
-    [v6 getFileRepresentation:v10 forType:0];
+    selfCopy = self;
+    [fileCopy getFileRepresentation:v10 forType:0];
   }
 
   else
   {
-    (*(v7 + 2))(v7, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
   }
 }
 
@@ -182,26 +182,26 @@ void __81__WFContentLocation_FileProviders__getContentLocationFromFile_completio
   }
 }
 
-+ (id)contentLocationForFile:(id)a3
++ (id)contentLocationForFile:(id)file
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 representationType])
+  fileCopy = file;
+  if ([fileCopy representationType])
   {
-    v5 = [v4 fileURL];
+    fileURL = [fileCopy fileURL];
     v14 = 0;
-    v6 = [a1 appDescriptorForFileProviderHandlingURL:v5 error:&v14];
+    v6 = [self appDescriptorForFileProviderHandlingURL:fileURL error:&v14];
     v7 = v14;
     if (v7)
     {
       v8 = getWFSecurityLogObject();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
       {
-        v9 = [v5 absoluteString];
+        absoluteString = [fileURL absoluteString];
         *buf = 136315651;
         v16 = "+[WFContentLocation(FileProviders) contentLocationForFile:]";
         v17 = 2113;
-        v18 = v9;
+        v18 = absoluteString;
         v19 = 2114;
         v20 = v7;
         _os_log_impl(&dword_21E1BD000, v8, OS_LOG_TYPE_DEBUG, "%s Could not determine appDescriptor managing path %{private}@: %{public}@", buf, 0x20u);
@@ -231,12 +231,12 @@ void __81__WFContentLocation_FileProviders__getContentLocationFromFile_completio
 
   else
   {
-    v5 = getWFFilesLogObject();
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_FAULT))
+    fileURL = getWFFilesLogObject();
+    if (os_log_type_enabled(fileURL, OS_LOG_TYPE_FAULT))
     {
       *buf = 136315138;
       v16 = "+[WFContentLocation(FileProviders) contentLocationForFile:]";
-      _os_log_impl(&dword_21E1BD000, v5, OS_LOG_TYPE_FAULT, "%s Should not get content origin for in-memory data blob", buf, 0xCu);
+      _os_log_impl(&dword_21E1BD000, fileURL, OS_LOG_TYPE_FAULT, "%s Should not get content origin for in-memory data blob", buf, 0xCu);
     }
 
     v11 = 0;
@@ -250,64 +250,64 @@ void __81__WFContentLocation_FileProviders__getContentLocationFromFile_completio
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(WFContentLocation *)self identifier];
-  v7 = [v3 stringWithFormat:@"<%@: %p, identifier: %@, promptingBehaviour: %tu>", v5, self, v6, -[WFContentLocation promptingBehaviour](self, "promptingBehaviour")];
+  identifier = [(WFContentLocation *)self identifier];
+  v7 = [v3 stringWithFormat:@"<%@: %p, identifier: %@, promptingBehaviour: %tu>", v5, self, identifier, -[WFContentLocation promptingBehaviour](self, "promptingBehaviour")];
 
   return v7;
 }
 
 - (id)wfSerializedRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = [(WFContentLocation *)self identifier];
-  [v3 setValue:v4 forKey:@"identifier"];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  identifier = [(WFContentLocation *)self identifier];
+  [dictionary setValue:identifier forKey:@"identifier"];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  v4 = [(WFContentLocation *)self identifier];
-  [v5 encodeObject:v4 forKey:@"identifier"];
+  coderCopy = coder;
+  identifier = [(WFContentLocation *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 
-  [v5 encodeInteger:-[WFContentLocation promptingBehaviour](self forKey:{"promptingBehaviour"), @"promptingBehaviour"}];
+  [coderCopy encodeInteger:-[WFContentLocation promptingBehaviour](self forKey:{"promptingBehaviour"), @"promptingBehaviour"}];
 }
 
-- (WFContentLocation)initWithCoder:(id)a3
+- (WFContentLocation)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
   if (v5)
   {
-    self = -[WFContentLocation initWithIdentifier:promptingBehaviour:](self, "initWithIdentifier:promptingBehaviour:", v5, [v4 decodeIntegerForKey:@"promptingBehaviour"]);
-    v6 = self;
+    self = -[WFContentLocation initWithIdentifier:promptingBehaviour:](self, "initWithIdentifier:promptingBehaviour:", v5, [coderCopy decodeIntegerForKey:@"promptingBehaviour"]);
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(WFContentLocation *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(WFContentLocation *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  equalCopy = equal;
+  if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = [(WFContentLocation *)self identifier];
-    v6 = [v4 identifier];
-    v7 = [v5 isEqual:v6];
+    identifier = [(WFContentLocation *)self identifier];
+    identifier2 = [equalCopy identifier];
+    v7 = [identifier isEqual:identifier2];
   }
 
   else
@@ -327,8 +327,8 @@ void __81__WFContentLocation_FileProviders__getContentLocationFromFile_completio
     goto LABEL_4;
   }
 
-  v4 = [(WFContentLocation *)self identifier];
-  v5 = [WFContentLocationLocalizations localizedTitleForContentLocationWithIdentifier:v4];
+  identifier = [(WFContentLocation *)self identifier];
+  v5 = [WFContentLocationLocalizations localizedTitleForContentLocationWithIdentifier:identifier];
 
   if (v5)
   {
@@ -345,11 +345,11 @@ LABEL_4:
   v10 = getWFWorkflowExecutionLogObject();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
   {
-    v11 = [(WFContentLocation *)self identifier];
+    identifier2 = [(WFContentLocation *)self identifier];
     v12 = 136315394;
     v13 = "[WFContentLocation localizedTitle]";
     v14 = 2114;
-    v15 = v11;
+    v15 = identifier2;
     _os_log_impl(&dword_21E1BD000, v10, OS_LOG_TYPE_FAULT, "%s Missing localization for content destination with identifier %{public}@", &v12, 0x16u);
   }
 
@@ -359,13 +359,13 @@ LABEL_5:
   return v8;
 }
 
-- (WFContentLocation)initWithIdentifier:(id)a3 promptingBehaviour:(unint64_t)a4
+- (WFContentLocation)initWithIdentifier:(id)identifier promptingBehaviour:(unint64_t)behaviour
 {
-  v8 = a3;
-  if (!v8)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
-    v13 = [MEMORY[0x277CCA890] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"WFContentLocation.m" lineNumber:37 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFContentLocation.m" lineNumber:37 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
   }
 
   v14.receiver = self;
@@ -374,8 +374,8 @@ LABEL_5:
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_identifier, a3);
-    v10->_promptingBehaviour = a4;
+    objc_storeStrong(&v9->_identifier, identifier);
+    v10->_promptingBehaviour = behaviour;
     v11 = v10;
   }
 
@@ -398,11 +398,11 @@ LABEL_5:
   return v4;
 }
 
-+ (id)objectWithWFSerializedRepresentation:(id)a3
++ (id)objectWithWFSerializedRepresentation:(id)representation
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 wfObjectOfClass:objc_opt_class() forKeyPath:@"identifier"];
+  representationCopy = representation;
+  v5 = [representationCopy wfObjectOfClass:objc_opt_class() forKeyPath:@"identifier"];
   v6 = v5;
   if (v5)
   {
@@ -410,7 +410,7 @@ LABEL_5:
     {
       v7 = WFAppContentLocation;
 LABEL_15:
-      v9 = [(__objc2_class *)v7 objectWithWFSerializedRepresentation:v4];
+      v9 = [(__objc2_class *)v7 objectWithWFSerializedRepresentation:representationCopy];
       goto LABEL_16;
     }
 
@@ -444,7 +444,7 @@ LABEL_15:
     v13 = [WFContentLocationLocalizations localizedTitleForContentLocationWithIdentifier:v6];
     if (v13)
     {
-      v14 = [[a1 alloc] initWithIdentifier:v6 promptingBehaviour:0];
+      v14 = [[self alloc] initWithIdentifier:v6 promptingBehaviour:0];
     }
 
     else
@@ -459,7 +459,7 @@ LABEL_15:
         _os_log_impl(&dword_21E1BD000, v15, OS_LOG_TYPE_ERROR, "%s Returning WFUnsupportedContentLocation with identifier %{public}@", &v16, 0x16u);
       }
 
-      v14 = [WFUnsupportedContentLocation locationWithIdentifier:v6 serializedRepresentation:v4];
+      v14 = [WFUnsupportedContentLocation locationWithIdentifier:v6 serializedRepresentation:representationCopy];
     }
 
     v9 = v14;
@@ -672,17 +672,17 @@ LABEL_16:
   return v2;
 }
 
-+ (WFContentLocation)locationWithNotesAccountIdentifier:(id)a3
++ (WFContentLocation)locationWithNotesAccountIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = objc_alloc(MEMORY[0x277CD3A58]);
   v5 = [v4 initWithBundleIdentifier:*MEMORY[0x277D7A2A0]];
-  v6 = [MEMORY[0x277CD3A88] sharedResolver];
-  v7 = [v6 resolvedAppMatchingDescriptor:v5];
+  mEMORY[0x277CD3A88] = [MEMORY[0x277CD3A88] sharedResolver];
+  v7 = [mEMORY[0x277CD3A88] resolvedAppMatchingDescriptor:v5];
 
-  if (v3 && ![v3 isEqualToString:@"LocalAccount"])
+  if (identifierCopy && ![identifierCopy isEqualToString:@"LocalAccount"])
   {
-    v8 = [WFAccountContentLocation locationWithAccountIdentifier:v3 appDescriptor:v7];
+    v8 = [WFAccountContentLocation locationWithAccountIdentifier:identifierCopy appDescriptor:v7];
   }
 
   else
@@ -695,19 +695,19 @@ LABEL_16:
   return v9;
 }
 
-+ (WFContentLocation)locationWithCalendarSource:(id)a3
++ (WFContentLocation)locationWithCalendarSource:(id)source
 {
-  v3 = a3;
+  sourceCopy = source;
   v4 = objc_alloc(MEMORY[0x277CD3A58]);
   v5 = [v4 initWithBundleIdentifier:*MEMORY[0x277D7A220]];
-  v6 = [MEMORY[0x277CD3A88] sharedResolver];
-  v7 = [v6 resolvedAppMatchingDescriptor:v5];
+  mEMORY[0x277CD3A88] = [MEMORY[0x277CD3A88] sharedResolver];
+  v7 = [mEMORY[0x277CD3A88] resolvedAppMatchingDescriptor:v5];
 
-  v8 = [v3 sourceType];
-  if (v8 != 5 && v8)
+  sourceType = [sourceCopy sourceType];
+  if (sourceType != 5 && sourceType)
   {
-    v10 = [v3 sourceIdentifier];
-    v9 = [WFAccountContentLocation locationWithAccountIdentifier:v10 appDescriptor:v7];
+    sourceIdentifier = [sourceCopy sourceIdentifier];
+    v9 = [WFAccountContentLocation locationWithAccountIdentifier:sourceIdentifier appDescriptor:v7];
   }
 
   else

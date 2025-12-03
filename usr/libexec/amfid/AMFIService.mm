@@ -1,28 +1,28 @@
 @interface AMFIService
-- (BOOL)verifyBoolEntitlement:(id)a3;
+- (BOOL)verifyBoolEntitlement:(id)entitlement;
 - (NSXPCConnection)connection;
-- (void)commitProfileForUuid:(id)a3 withReply:(id)a4;
-- (void)getSEPStateWithReply:(id)a3;
-- (void)getStagedProfileWithReply:(id)a3;
-- (void)initiateDataMigrationWithReply:(id)a3;
-- (void)initiateDeveloperModeDaemonsWithReply:(id)a3;
-- (void)removeManagedStateWithReply:(id)a3;
-- (void)removeTrustforTeamID:(id)a3 withReply:(id)a4;
-- (void)setDemoState:(unsigned int)a3 withReply:(id)a4;
-- (void)setManagedState:(id)a3 withReply:(id)a4;
-- (void)setSupervisedState:(unsigned int)a3 withReply:(id)a4;
-- (void)setTrustForTeamID:(id)a3 withSignature:(id)a4 withSignType:(unsigned int)a5 withReply:(id)a6;
-- (void)signTeamID:(id)a3 withSignType:(unsigned int)a4 withLAContext:(id)a5 withReply:(id)a6;
-- (void)stageProfileForUuid:(id)a3 withReply:(id)a4;
+- (void)commitProfileForUuid:(id)uuid withReply:(id)reply;
+- (void)getSEPStateWithReply:(id)reply;
+- (void)getStagedProfileWithReply:(id)reply;
+- (void)initiateDataMigrationWithReply:(id)reply;
+- (void)initiateDeveloperModeDaemonsWithReply:(id)reply;
+- (void)removeManagedStateWithReply:(id)reply;
+- (void)removeTrustforTeamID:(id)d withReply:(id)reply;
+- (void)setDemoState:(unsigned int)state withReply:(id)reply;
+- (void)setManagedState:(id)state withReply:(id)reply;
+- (void)setSupervisedState:(unsigned int)state withReply:(id)reply;
+- (void)setTrustForTeamID:(id)d withSignature:(id)signature withSignType:(unsigned int)type withReply:(id)reply;
+- (void)signTeamID:(id)d withSignType:(unsigned int)type withLAContext:(id)context withReply:(id)reply;
+- (void)stageProfileForUuid:(id)uuid withReply:(id)reply;
 @end
 
 @implementation AMFIService
 
-- (BOOL)verifyBoolEntitlement:(id)a3
+- (BOOL)verifyBoolEntitlement:(id)entitlement
 {
-  v4 = a3;
-  v5 = [(AMFIService *)self connection];
-  v6 = [v5 valueForEntitlement:v4];
+  entitlementCopy = entitlement;
+  connection = [(AMFIService *)self connection];
+  v6 = [connection valueForEntitlement:entitlementCopy];
 
   if (!v6)
   {
@@ -43,19 +43,19 @@
     }
 
 LABEL_8:
-    v7 = 0;
+    bOOLValue = 0;
     goto LABEL_9;
   }
 
-  v7 = [v6 BOOLValue];
+  bOOLValue = [v6 BOOLValue];
 LABEL_9:
 
-  return v7;
+  return bOOLValue;
 }
 
-- (void)getSEPStateWithReply:(id)a3
+- (void)getSEPStateWithReply:(id)reply
 {
-  v3 = a3;
+  replyCopy = reply;
   v18 = 0;
   v16 = 0u;
   v17 = 0u;
@@ -95,19 +95,19 @@ LABEL_9:
     v9 = 0;
   }
 
-  v10 = v3[2];
+  v10 = replyCopy[2];
   *buf = v15;
   *&buf[16] = v16;
   v13 = v17;
   v14 = v18;
-  v10(v3, buf, v9);
+  v10(replyCopy, buf, v9);
 }
 
-- (void)signTeamID:(id)a3 withSignType:(unsigned int)a4 withLAContext:(id)a5 withReply:(id)a6
+- (void)signTeamID:(id)d withSignType:(unsigned int)type withLAContext:(id)context withReply:(id)reply
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  dCopy = d;
+  contextCopy = context;
+  replyCopy = reply;
   v31 = 0u;
   v39 = 0u;
   v38 = 0u;
@@ -130,7 +130,7 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  if (!v10)
+  if (!dCopy)
   {
     if (os_log_type_enabled(off_100028C50, OS_LOG_TYPE_ERROR))
     {
@@ -140,7 +140,7 @@ LABEL_17:
     goto LABEL_16;
   }
 
-  v13 = [v10 lengthOfBytesUsingEncoding:4];
+  v13 = [dCopy lengthOfBytesUsingEncoding:4];
   v14 = v13;
   if (v13 >= 0x81)
   {
@@ -156,7 +156,7 @@ LABEL_16:
   }
 
   v17 = off_100028C50;
-  if (a4 - 1 >= 2)
+  if (type - 1 >= 2)
   {
     if (os_log_type_enabled(off_100028C50, OS_LOG_TYPE_ERROR))
     {
@@ -171,17 +171,17 @@ LABEL_16:
     *buf = 136315650;
     v25 = "[AMFIService signTeamID:withSignType:withLAContext:withReply:]";
     v26 = 2112;
-    v27 = v10;
+    v27 = dCopy;
     v28 = 1024;
-    v29 = a4;
+    typeCopy = type;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "[%s] creating auxiliary signature: %@ | %u", buf, 0x1Cu);
   }
 
-  DWORD2(v31) = a4;
+  DWORD2(v31) = type;
   HIDWORD(v39) = v14;
-  [v10 UTF8String];
+  [dCopy UTF8String];
   __memcpy_chk();
-  v18 = [[LAStorage alloc] initWithDomain:0 authenticationContext:v11];
+  v18 = [[LAStorage alloc] initWithDomain:0 authenticationContext:contextCopy];
   v19 = [NSData dataWithBytes:&v30 length:148];
   v23 = 0;
   v20 = [v18 exchangeData:v19 forKey:13 error:&v23];
@@ -198,12 +198,12 @@ LABEL_16:
   }
 
 LABEL_18:
-  v12[2](v12, v20, v22);
+  replyCopy[2](replyCopy, v20, v22);
 }
 
-- (void)setSupervisedState:(unsigned int)a3 withReply:(id)a4
+- (void)setSupervisedState:(unsigned int)state withReply:(id)reply
 {
-  v6 = a4;
+  replyCopy = reply;
   v19 = 0u;
   v27 = 0u;
   v26 = 0u;
@@ -215,14 +215,14 @@ LABEL_18:
   v20 = 0u;
   v18 = 2;
   DWORD1(v19) = 2;
-  DWORD2(v19) = a3;
+  DWORD2(v19) = state;
   v7 = off_100028C50;
   if (os_log_type_enabled(off_100028C50, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v15 = "[AMFIService setSupervisedState:withReply:]";
     v16 = 1024;
-    v17 = a3;
+    stateCopy = state;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "[%s] setting state: %u", buf, 0x12u);
   }
 
@@ -251,12 +251,12 @@ LABEL_18:
     v8 = 0;
   }
 
-  v6[2](v6, v12);
+  replyCopy[2](replyCopy, v12);
 }
 
-- (void)setDemoState:(unsigned int)a3 withReply:(id)a4
+- (void)setDemoState:(unsigned int)state withReply:(id)reply
 {
-  v6 = a4;
+  replyCopy = reply;
   v19 = 0u;
   v27 = 0u;
   v26 = 0u;
@@ -268,14 +268,14 @@ LABEL_18:
   v20 = 0u;
   v18 = 2;
   DWORD1(v19) = 3;
-  DWORD2(v19) = a3;
+  DWORD2(v19) = state;
   v7 = off_100028C50;
   if (os_log_type_enabled(off_100028C50, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v15 = "[AMFIService setDemoState:withReply:]";
     v16 = 1024;
-    v17 = a3;
+    stateCopy = state;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "[%s] setting state: %u", buf, 0x12u);
   }
 
@@ -304,13 +304,13 @@ LABEL_18:
     v8 = 0;
   }
 
-  v6[2](v6, v12);
+  replyCopy[2](replyCopy, v12);
 }
 
-- (void)setManagedState:(id)a3 withReply:(id)a4
+- (void)setManagedState:(id)state withReply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  stateCopy = state;
+  replyCopy = reply;
   memset(&v17[6], 170, 100);
   *v17 = xmmword_10001D888;
   memset(&v17[2], 0, 32);
@@ -324,7 +324,7 @@ LABEL_18:
 
   if ([(AMFIService *)self verifyBoolEntitlement:@"com.apple.private.amfi.set-managed"])
   {
-    v9 = [[LAStorage alloc] initWithDomain:0 authenticationContext:v6];
+    v9 = [[LAStorage alloc] initWithDomain:0 authenticationContext:stateCopy];
     v10 = [NSData dataWithBytes:v17 length:148];
     v14 = 0;
     v11 = [v9 exchangeData:v10 forKey:13 error:&v14];
@@ -347,12 +347,12 @@ LABEL_18:
     v9 = 0;
   }
 
-  v7[2](v7, v13);
+  replyCopy[2](replyCopy, v13);
 }
 
-- (void)removeManagedStateWithReply:(id)a3
+- (void)removeManagedStateWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   memset(&v14[6], 170, 100);
   *v14 = xmmword_10001D91C;
   memset(&v14[2], 0, 32);
@@ -389,12 +389,12 @@ LABEL_18:
     v6 = 0;
   }
 
-  v4[2](v4, v10);
+  replyCopy[2](replyCopy, v10);
 }
 
-- (void)initiateDataMigrationWithReply:(id)a3
+- (void)initiateDataMigrationWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   if ([(AMFIService *)self verifyBoolEntitlement:@"com.apple.private.amfi.data-migration"])
   {
     sub_10000ADC8();
@@ -407,12 +407,12 @@ LABEL_18:
   }
 
   v6 = v5;
-  v4[2](v4);
+  replyCopy[2](replyCopy);
 }
 
-- (void)initiateDeveloperModeDaemonsWithReply:(id)a3
+- (void)initiateDeveloperModeDaemonsWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   if ([(AMFIService *)self verifyBoolEntitlement:@"com.apple.private.amfi.developer-mode-control"])
   {
     v5 = off_100028C50;
@@ -432,13 +432,13 @@ LABEL_18:
     v6 = [[AMFIError alloc] initWithAMFIErrorCode:-440 withURL:0];
   }
 
-  v4[2](v4, v6);
+  replyCopy[2](replyCopy, v6);
 }
 
-- (void)stageProfileForUuid:(id)a3 withReply:(id)a4
+- (void)stageProfileForUuid:(id)uuid withReply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  uuidCopy = uuid;
+  replyCopy = reply;
   if (![(AMFIService *)self verifyBoolEntitlement:@"com.apple.private.amfi.schedule-profile"])
   {
     v11 = [AMFIError alloc];
@@ -449,7 +449,7 @@ LABEL_16:
   }
 
   v8 = off_100028C50;
-  if (!v6)
+  if (!uuidCopy)
   {
     if (os_log_type_enabled(off_100028C50, OS_LOG_TYPE_ERROR))
     {
@@ -466,12 +466,12 @@ LABEL_16:
     *buf = 136315394;
     v17 = "[AMFIService stageProfileForUuid:withReply:]";
     v18 = 2112;
-    v19 = v6;
+    v19 = uuidCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "[%s] attempting to stage: %@", buf, 0x16u);
   }
 
   v15 = 0;
-  [v6 writeToFile:@"/private/var/db/amfid/UPPStaging.plist" atomically:1 encoding:4 error:&v15];
+  [uuidCopy writeToFile:@"/private/var/db/amfid/UPPStaging.plist" atomically:1 encoding:4 error:&v15];
   v9 = v15;
   if (v9)
   {
@@ -503,18 +503,18 @@ LABEL_16:
     *buf = 136315394;
     v17 = "[AMFIService stageProfileForUuid:withReply:]";
     v18 = 2112;
-    v19 = v6;
+    v19 = uuidCopy;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "[%s] successfully staged UUID: %@", buf, 0x16u);
   }
 
   v10 = 0;
 LABEL_17:
-  v7[2](v7, v10);
+  replyCopy[2](replyCopy, v10);
 }
 
-- (void)getStagedProfileWithReply:(id)a3
+- (void)getStagedProfileWithReply:(id)reply
 {
-  v3 = a3;
+  replyCopy = reply;
   v4 = off_100028C50;
   if (os_log_type_enabled(off_100028C50, OS_LOG_TYPE_DEFAULT))
   {
@@ -531,19 +531,19 @@ LABEL_17:
     sub_100019AD4();
   }
 
-  v3[2](v3, v5, v6);
+  replyCopy[2](replyCopy, v5, v6);
 }
 
-- (void)commitProfileForUuid:(id)a3 withReply:(id)a4
+- (void)commitProfileForUuid:(id)uuid withReply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  uuidCopy = uuid;
+  replyCopy = reply;
   v31[0] = 0;
   v31[1] = v31;
   v31[2] = 0x3032000000;
   v31[3] = sub_100005D64;
   v31[4] = sub_100005D74;
-  v8 = v6;
+  v8 = uuidCopy;
   v32 = v8;
   if (![(AMFIService *)self verifyBoolEntitlement:@"com.apple.private.amfi.commit-profile"])
   {
@@ -679,15 +679,15 @@ LABEL_27:
 
   v15 = [[AMFIError alloc] initWithAMFIErrorCode:-407 withURL:0];
 LABEL_9:
-  v7[2](v7, v15);
+  replyCopy[2](replyCopy, v15);
   _Block_object_dispose(v31, 8);
 }
 
-- (void)setTrustForTeamID:(id)a3 withSignature:(id)a4 withSignType:(unsigned int)a5 withReply:(id)a6
+- (void)setTrustForTeamID:(id)d withSignature:(id)signature withSignType:(unsigned int)type withReply:(id)reply
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  dCopy = d;
+  signatureCopy = signature;
+  replyCopy = reply;
   if (![(AMFIService *)self verifyBoolEntitlement:@"com.apple.private.amfi.set-trust"])
   {
     v19 = [AMFIError alloc];
@@ -701,7 +701,7 @@ LABEL_12:
   }
 
   v13 = off_100028C50;
-  if (!v10)
+  if (!dCopy)
   {
     if (os_log_type_enabled(off_100028C50, OS_LOG_TYPE_ERROR))
     {
@@ -718,20 +718,20 @@ LABEL_12:
     *buf = 136315394;
     v25 = "[AMFIService setTrustForTeamID:withSignature:withSignType:withReply:]";
     v26 = 2112;
-    v27 = v10;
+    v27 = dCopy;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "[%s] attempting to set trust for team ID: %@", buf, 0x16u);
   }
 
   v14 = objc_opt_new();
   v23 = 0;
-  v15 = [v14 trustTeamID:v10 signature:v11 error:&v23];
+  v15 = [v14 trustTeamID:dCopy signature:signatureCopy error:&v23];
   v16 = v23;
   if (v15)
   {
-    if (a5 == 1)
+    if (type == 1)
     {
       v17 = objc_opt_new();
-      v18 = [v17 signingIdentitiesWithTeamID:v10];
+      v18 = [v17 signingIdentitiesWithTeamID:dCopy];
       sub_10000B874(v18);
     }
 
@@ -751,9 +751,9 @@ LABEL_12:
       *buf = 136315906;
       v25 = "[AMFIService setTrustForTeamID:withSignature:withSignType:withReply:]";
       v26 = 2112;
-      v27 = v10;
+      v27 = dCopy;
       v28 = 2112;
-      v29 = v11;
+      v29 = signatureCopy;
       v30 = 2112;
       v31 = v16;
       _os_log_error_impl(&_mh_execute_header, v22, OS_LOG_TYPE_ERROR, "[%s] failed to trust team ID %@ with signature %@: %@", buf, 0x2Au);
@@ -764,13 +764,13 @@ LABEL_12:
   }
 
 LABEL_13:
-  v12[2](v12, v21);
+  replyCopy[2](replyCopy, v21);
 }
 
-- (void)removeTrustforTeamID:(id)a3 withReply:(id)a4
+- (void)removeTrustforTeamID:(id)d withReply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  replyCopy = reply;
   if (![(AMFIService *)self verifyBoolEntitlement:@"com.apple.private.amfi.remove-trust"])
   {
     v13 = [AMFIError alloc];
@@ -783,7 +783,7 @@ LABEL_11:
   }
 
   v8 = off_100028C50;
-  if (!v6)
+  if (!dCopy)
   {
     if (os_log_type_enabled(off_100028C50, OS_LOG_TYPE_ERROR))
     {
@@ -800,13 +800,13 @@ LABEL_11:
     *buf = 136315394;
     v17 = "[AMFIService removeTrustforTeamID:withReply:]";
     v18 = 2112;
-    v19 = v6;
+    v19 = dCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "[%s] attempting to remove trust for team ID: %@", buf, 0x16u);
   }
 
   v9 = objc_opt_new();
   v15 = 0;
-  v10 = [v9 untrustTeamID:v6 error:&v15];
+  v10 = [v9 untrustTeamID:dCopy error:&v15];
   v11 = v15;
   if (v10)
   {
@@ -824,7 +824,7 @@ LABEL_11:
   }
 
 LABEL_12:
-  v7[2](v7, v12);
+  replyCopy[2](replyCopy, v12);
 }
 
 - (NSXPCConnection)connection

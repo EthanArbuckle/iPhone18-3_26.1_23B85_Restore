@@ -1,41 +1,41 @@
 @interface ICTableSelectionView
 - (BOOL)becomeFirstResponder;
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
 - (BOOL)resignFirstResponder;
 - (ICTableSelectionDelegate)delegate;
-- (ICTableSelectionView)initWithFrame:(CGRect)a3;
+- (ICTableSelectionView)initWithFrame:(CGRect)frame;
 - (id)keyCommands;
-- (void)addColumnLeft:(id)a3;
-- (void)addColumnRight:(id)a3;
-- (void)addRowDown:(id)a3;
-- (void)addRowUp:(id)a3;
-- (void)deletePressed:(id)a3;
+- (void)addColumnLeft:(id)left;
+- (void)addColumnRight:(id)right;
+- (void)addRowDown:(id)down;
+- (void)addRowUp:(id)up;
+- (void)deletePressed:(id)pressed;
 - (void)layoutSubviews;
-- (void)strikethrough:(id)a3;
-- (void)toggleBoldface:(id)a3;
-- (void)toggleItalics:(id)a3;
-- (void)toggleUnderline:(id)a3;
+- (void)strikethrough:(id)strikethrough;
+- (void)toggleBoldface:(id)boldface;
+- (void)toggleItalics:(id)italics;
+- (void)toggleUnderline:(id)underline;
 @end
 
 @implementation ICTableSelectionView
 
-- (ICTableSelectionView)initWithFrame:(CGRect)a3
+- (ICTableSelectionView)initWithFrame:(CGRect)frame
 {
   v10.receiver = self;
   v10.super_class = ICTableSelectionView;
-  v3 = [(ICTableSelectionView *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(ICTableSelectionView *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(ICTableSelectionView *)v3 layer];
-    [v5 setBorderWidth:2.0];
+    layer = [(ICTableSelectionView *)v3 layer];
+    [layer setBorderWidth:2.0];
 
     v6 = *MEMORY[0x277CDA138];
-    v7 = [(ICTableSelectionView *)v4 layer];
-    [v7 setCornerCurve:v6];
+    layer2 = [(ICTableSelectionView *)v4 layer];
+    [layer2 setCornerCurve:v6];
 
-    v8 = [(ICTableSelectionView *)v4 layer];
-    [v8 setCornerRadius:2.0];
+    layer3 = [(ICTableSelectionView *)v4 layer];
+    [layer3 setCornerRadius:2.0];
 
     [(ICTableSelectionView *)v4 setUserInteractionEnabled:0];
   }
@@ -48,48 +48,48 @@
   v6.receiver = self;
   v6.super_class = ICTableSelectionView;
   [(ICTableSelectionView *)&v6 layoutSubviews];
-  v3 = [(ICTableSelectionView *)self tintColor];
-  v4 = [v3 CGColor];
-  v5 = [(ICTableSelectionView *)self layer];
-  [v5 setBorderColor:v4];
+  tintColor = [(ICTableSelectionView *)self tintColor];
+  cGColor = [tintColor CGColor];
+  layer = [(ICTableSelectionView *)self layer];
+  [layer setBorderColor:cGColor];
 }
 
-- (void)toggleBoldface:(id)a3
+- (void)toggleBoldface:(id)boldface
 {
-  v4 = a3;
-  v6 = [(ICTableSelectionView *)self delegate];
-  v5 = [v6 auxiliaryStylingController];
-  [v5 toggleBoldface:v4];
+  boldfaceCopy = boldface;
+  delegate = [(ICTableSelectionView *)self delegate];
+  auxiliaryStylingController = [delegate auxiliaryStylingController];
+  [auxiliaryStylingController toggleBoldface:boldfaceCopy];
 }
 
-- (void)toggleItalics:(id)a3
+- (void)toggleItalics:(id)italics
 {
-  v4 = a3;
-  v6 = [(ICTableSelectionView *)self delegate];
-  v5 = [v6 auxiliaryStylingController];
-  [v5 toggleItalics:v4];
+  italicsCopy = italics;
+  delegate = [(ICTableSelectionView *)self delegate];
+  auxiliaryStylingController = [delegate auxiliaryStylingController];
+  [auxiliaryStylingController toggleItalics:italicsCopy];
 }
 
-- (void)toggleUnderline:(id)a3
+- (void)toggleUnderline:(id)underline
 {
-  v4 = a3;
-  v6 = [(ICTableSelectionView *)self delegate];
-  v5 = [v6 auxiliaryStylingController];
-  [v5 toggleUnderline:v4];
+  underlineCopy = underline;
+  delegate = [(ICTableSelectionView *)self delegate];
+  auxiliaryStylingController = [delegate auxiliaryStylingController];
+  [auxiliaryStylingController toggleUnderline:underlineCopy];
 }
 
-- (void)strikethrough:(id)a3
+- (void)strikethrough:(id)strikethrough
 {
-  v4 = a3;
-  v6 = [(ICTableSelectionView *)self delegate];
-  v5 = [v6 auxiliaryStylingController];
-  [v5 toggleStrikethrough:v4];
+  strikethroughCopy = strikethrough;
+  delegate = [(ICTableSelectionView *)self delegate];
+  auxiliaryStylingController = [delegate auxiliaryStylingController];
+  [auxiliaryStylingController toggleStrikethrough:strikethroughCopy];
 }
 
 - (BOOL)becomeFirstResponder
 {
-  v3 = [(ICTableSelectionView *)self delegate];
-  [v3 selectionWillBecomeFirstResponder:self];
+  delegate = [(ICTableSelectionView *)self delegate];
+  [delegate selectionWillBecomeFirstResponder:self];
 
   v5.receiver = self;
   v5.super_class = ICTableSelectionView;
@@ -100,27 +100,27 @@
 {
   v6.receiver = self;
   v6.super_class = ICTableSelectionView;
-  v3 = [(ICTableSelectionView *)&v6 resignFirstResponder];
-  if (v3)
+  resignFirstResponder = [(ICTableSelectionView *)&v6 resignFirstResponder];
+  if (resignFirstResponder)
   {
-    v4 = [(ICTableSelectionView *)self delegate];
-    [v4 selectionDidResignFirstResponder:self];
+    delegate = [(ICTableSelectionView *)self delegate];
+    [delegate selectionDidResignFirstResponder:self];
   }
 
-  return v3;
+  return resignFirstResponder;
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
   v11.receiver = self;
   v11.super_class = ICTableSelectionView;
-  v6 = [(ICTableSelectionView *)&v11 canPerformAction:a3 withSender:a4];
-  v7 = [(ICTableSelectionView *)self delegate];
-  v8 = [v7 isShowingTextStyleOptions];
+  v6 = [(ICTableSelectionView *)&v11 canPerformAction:action withSender:sender];
+  delegate = [(ICTableSelectionView *)self delegate];
+  isShowingTextStyleOptions = [delegate isShowingTextStyleOptions];
 
-  if (v8)
+  if (isShowingTextStyleOptions)
   {
-    return sel_toggleBoldface_ == a3 || sel_toggleItalics_ == a3 || sel_toggleUnderline_ == a3;
+    return sel_toggleBoldface_ == action || sel_toggleItalics_ == action || sel_toggleUnderline_ == action;
   }
 
   return v6;
@@ -146,59 +146,59 @@
   return v8;
 }
 
-- (void)addRowUp:(id)a3
+- (void)addRowUp:(id)up
 {
-  v4 = [(ICTableSelectionView *)self delegate];
+  delegate = [(ICTableSelectionView *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(ICTableSelectionView *)self delegate];
-    [v6 addRowAboveSelection:self];
+    delegate2 = [(ICTableSelectionView *)self delegate];
+    [delegate2 addRowAboveSelection:self];
   }
 }
 
-- (void)addRowDown:(id)a3
+- (void)addRowDown:(id)down
 {
-  v4 = [(ICTableSelectionView *)self delegate];
+  delegate = [(ICTableSelectionView *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(ICTableSelectionView *)self delegate];
-    [v6 addRowBelowSelection:self];
+    delegate2 = [(ICTableSelectionView *)self delegate];
+    [delegate2 addRowBelowSelection:self];
   }
 }
 
-- (void)addColumnLeft:(id)a3
+- (void)addColumnLeft:(id)left
 {
-  v4 = [(ICTableSelectionView *)self delegate];
+  delegate = [(ICTableSelectionView *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(ICTableSelectionView *)self delegate];
-    [v6 addColumnLeftOfSelection:self];
+    delegate2 = [(ICTableSelectionView *)self delegate];
+    [delegate2 addColumnLeftOfSelection:self];
   }
 }
 
-- (void)addColumnRight:(id)a3
+- (void)addColumnRight:(id)right
 {
-  v4 = [(ICTableSelectionView *)self delegate];
+  delegate = [(ICTableSelectionView *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(ICTableSelectionView *)self delegate];
-    [v6 addColumnRightOfSelection:self];
+    delegate2 = [(ICTableSelectionView *)self delegate];
+    [delegate2 addColumnRightOfSelection:self];
   }
 }
 
-- (void)deletePressed:(id)a3
+- (void)deletePressed:(id)pressed
 {
-  v4 = a3;
-  v5 = [(ICTableSelectionView *)self delegate];
-  [v5 deleteSelection:v4];
+  pressedCopy = pressed;
+  delegate = [(ICTableSelectionView *)self delegate];
+  [delegate deleteSelection:pressedCopy];
 }
 
 - (ICTableSelectionDelegate)delegate

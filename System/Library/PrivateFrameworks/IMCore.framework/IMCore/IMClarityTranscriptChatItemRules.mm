@@ -1,16 +1,16 @@
 @interface IMClarityTranscriptChatItemRules
-- (id)chatItemForIMChatItem:(id)a3;
+- (id)chatItemForIMChatItem:(id)item;
 @end
 
 @implementation IMClarityTranscriptChatItemRules
 
-- (id)chatItemForIMChatItem:(id)a3
+- (id)chatItemForIMChatItem:(id)item
 {
-  v3 = a3;
+  itemCopy = item;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    v4 = v3;
+    v4 = itemCopy;
   }
 
   else

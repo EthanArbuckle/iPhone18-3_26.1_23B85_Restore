@@ -1,15 +1,15 @@
 @interface CKDQueryURLRequest
 - (BOOL)requestGETPreAuth;
 - (BOOL)requiresCKAnonymousUserIDs;
-- (CKDQueryURLRequest)initWithOperation:(id)a3 query:(id)a4 cursor:(id)a5 limit:(unint64_t)a6 requestedFields:(id)a7 zoneID:(id)a8;
+- (CKDQueryURLRequest)initWithOperation:(id)operation query:(id)query cursor:(id)cursor limit:(unint64_t)limit requestedFields:(id)fields zoneID:(id)d;
 - (id)generateRequestOperations;
-- (id)requestDidParseProtobufObject:(id)a3;
+- (id)requestDidParseProtobufObject:(id)object;
 - (id)requestOperationClasses;
 - (id)zoneIDsToLock;
-- (void)fillOutEquivalencyPropertiesBuilder:(id)a3;
-- (void)fillOutRequestProperties:(id)a3;
+- (void)fillOutEquivalencyPropertiesBuilder:(id)builder;
+- (void)fillOutRequestProperties:(id)properties;
 - (void)requestDidComplete;
-- (void)requestDidParseNodeFailure:(id)a3;
+- (void)requestDidParseNodeFailure:(id)failure;
 @end
 
 @implementation CKDQueryURLRequest
@@ -317,26 +317,26 @@ LABEL_41:
   objc_autoreleasePoolPop(v3);
 }
 
-- (CKDQueryURLRequest)initWithOperation:(id)a3 query:(id)a4 cursor:(id)a5 limit:(unint64_t)a6 requestedFields:(id)a7 zoneID:(id)a8
+- (CKDQueryURLRequest)initWithOperation:(id)operation query:(id)query cursor:(id)cursor limit:(unint64_t)limit requestedFields:(id)fields zoneID:(id)d
 {
-  v28 = a4;
-  v15 = a5;
-  v16 = a7;
-  v17 = a8;
+  queryCopy = query;
+  cursorCopy = cursor;
+  fieldsCopy = fields;
+  dCopy = d;
   v29.receiver = self;
   v29.super_class = CKDQueryURLRequest;
-  v20 = [(CKDURLRequest *)&v29 initWithOperation:a3];
+  v20 = [(CKDURLRequest *)&v29 initWithOperation:operation];
   if (v20)
   {
     v21 = objc_msgSend_array(MEMORY[0x277CBEB18], v18, v19);
     queryResponses = v20->_queryResponses;
     v20->_queryResponses = v21;
 
-    objc_storeStrong(&v20->_query, a4);
-    objc_storeStrong(&v20->_cursor, a5);
-    v20->_limit = a6;
-    objc_storeStrong(&v20->_requestedFields, a7);
-    objc_storeStrong(&v20->_zoneID, a8);
+    objc_storeStrong(&v20->_query, query);
+    objc_storeStrong(&v20->_cursor, cursor);
+    v20->_limit = limit;
+    objc_storeStrong(&v20->_requestedFields, fields);
+    objc_storeStrong(&v20->_zoneID, d);
     v20->_shouldFetchAssetContent = 1;
     v25 = objc_msgSend_array(MEMORY[0x277CBEB18], v23, v24);
     recordResponses = v20->_recordResponses;
@@ -346,54 +346,54 @@ LABEL_41:
   return v20;
 }
 
-- (void)fillOutEquivalencyPropertiesBuilder:(id)a3
+- (void)fillOutEquivalencyPropertiesBuilder:(id)builder
 {
   v17.receiver = self;
   v17.super_class = CKDQueryURLRequest;
-  v4 = a3;
-  [(CKDURLRequest *)&v17 fillOutEquivalencyPropertiesBuilder:v4];
+  builderCopy = builder;
+  [(CKDURLRequest *)&v17 fillOutEquivalencyPropertiesBuilder:builderCopy];
   v7 = objc_msgSend_query(self, v5, v6, v17.receiver, v17.super_class);
-  objc_msgSend_setObject_forKeyedSubscript_(v4, v8, v7, @"query");
+  objc_msgSend_setObject_forKeyedSubscript_(builderCopy, v8, v7, @"query");
 
   v11 = objc_msgSend_cursor(self, v9, v10);
-  objc_msgSend_setObject_forKeyedSubscript_(v4, v12, v11, @"cursor");
+  objc_msgSend_setObject_forKeyedSubscript_(builderCopy, v12, v11, @"cursor");
 
   v15 = objc_msgSend_zoneID(self, v13, v14);
-  objc_msgSend_setObject_forKeyedSubscript_(v4, v16, v15, @"zoneID");
+  objc_msgSend_setObject_forKeyedSubscript_(builderCopy, v16, v15, @"zoneID");
 }
 
-- (void)fillOutRequestProperties:(id)a3
+- (void)fillOutRequestProperties:(id)properties
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  propertiesCopy = properties;
   v7 = objc_msgSend_zoneID(self, v5, v6);
   v9 = v7;
   if (v7)
   {
     v14[0] = v7;
     v10 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v8, v14, 1);
-    objc_msgSend_setFetchRecordZoneIDs_(v4, v11, v10);
+    objc_msgSend_setFetchRecordZoneIDs_(propertiesCopy, v11, v10);
   }
 
   v13.receiver = self;
   v13.super_class = CKDQueryURLRequest;
-  [(CKDURLRequest *)&v13 fillOutRequestProperties:v4];
+  [(CKDURLRequest *)&v13 fillOutRequestProperties:propertiesCopy];
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (id)requestDidParseProtobufObject:(id)a3
+- (id)requestDidParseProtobufObject:(id)object
 {
   v102 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (objc_msgSend_hasQueryRetrieveResponse(v4, v5, v6))
+  objectCopy = object;
+  if (objc_msgSend_hasQueryRetrieveResponse(objectCopy, v5, v6))
   {
     v97 = 0u;
     v98 = 0u;
     v95 = 0u;
     v96 = 0u;
-    v87 = v4;
-    v9 = objc_msgSend_queryRetrieveResponse(v4, v7, v8);
+    v87 = objectCopy;
+    v9 = objc_msgSend_queryRetrieveResponse(objectCopy, v7, v8);
     v12 = objc_msgSend_queryResults(v9, v10, v11);
 
     obj = v12;
@@ -402,7 +402,7 @@ LABEL_41:
     if (v91)
     {
       v90 = *v96;
-      v89 = self;
+      selfCopy = self;
       do
       {
         v15 = 0;
@@ -434,7 +434,7 @@ LABEL_41:
                 dispatch_once(MEMORY[0x277CBC880], *MEMORY[0x277CBC878]);
               }
 
-              self = v89;
+              self = selfCopy;
               v17 = v92;
               v58 = *MEMORY[0x277CBC830];
               if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_ERROR))
@@ -481,7 +481,7 @@ LABEL_41:
 
           if (v50)
           {
-            self = v89;
+            self = selfCopy;
             v17 = v92;
 LABEL_15:
             v51 = [CKDRecordResponse alloc];
@@ -497,7 +497,7 @@ LABEL_15:
             dispatch_once(MEMORY[0x277CBC880], *MEMORY[0x277CBC878]);
           }
 
-          self = v89;
+          self = selfCopy;
           v59 = *MEMORY[0x277CBC830];
           if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_ERROR))
           {
@@ -521,7 +521,7 @@ LABEL_26:
       while (v91);
     }
 
-    v4 = v87;
+    objectCopy = v87;
     v74 = objc_msgSend_queryRetrieveResponse(v87, v72, v73);
     hasContinuationMarker = objc_msgSend_hasContinuationMarker(v74, v75, v76);
 
@@ -543,11 +543,11 @@ LABEL_26:
   return v14;
 }
 
-- (void)requestDidParseNodeFailure:(id)a3
+- (void)requestDidParseNodeFailure:(id)failure
 {
   v50[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v7 = objc_msgSend_result(v4, v5, v6);
+  failureCopy = failure;
+  v7 = objc_msgSend_result(failureCopy, v5, v6);
   v10 = objc_msgSend_error(v7, v8, v9);
   if ((objc_msgSend_hasClientError(v10, v11, v12) & 1) == 0)
   {
@@ -555,7 +555,7 @@ LABEL_26:
     goto LABEL_6;
   }
 
-  v15 = objc_msgSend_result(v4, v13, v14);
+  v15 = objc_msgSend_result(failureCopy, v13, v14);
   v18 = objc_msgSend_error(v15, v16, v17);
   v21 = objc_msgSend_clientError(v18, v19, v20);
   v24 = objc_msgSend_type(v21, v22, v23);
@@ -565,18 +565,18 @@ LABEL_26:
 LABEL_6:
     v48.receiver = self;
     v48.super_class = CKDQueryURLRequest;
-    [(CKDURLRequest *)&v48 requestDidParseNodeFailure:v4];
+    [(CKDURLRequest *)&v48 requestDidParseNodeFailure:failureCopy];
     goto LABEL_9;
   }
 
-  v27 = objc_msgSend_result(v4, v25, v26);
+  v27 = objc_msgSend_result(failureCopy, v25, v26);
   v30 = objc_msgSend_error(v27, v28, v29);
   hasErrorDescription = objc_msgSend_hasErrorDescription(v30, v31, v32);
 
   if (hasErrorDescription)
   {
     v49 = *MEMORY[0x277CCA450];
-    v36 = objc_msgSend_result(v4, v34, v35);
+    v36 = objc_msgSend_result(failureCopy, v34, v35);
     v39 = objc_msgSend_error(v36, v37, v38);
     v42 = objc_msgSend_errorDescription(v39, v40, v41);
     v50[0] = v42;

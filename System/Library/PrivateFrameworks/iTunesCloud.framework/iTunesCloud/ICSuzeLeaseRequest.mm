@@ -1,24 +1,24 @@
 @interface ICSuzeLeaseRequest
-- (ICSuzeLeaseRequest)initWithRequestContext:(id)a3 requestType:(int64_t)a4 leaseID:(id)a5 mediaType:(int64_t)a6 clientData:(id)a7;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)performWithResponseHandler:(id)a3;
+- (ICSuzeLeaseRequest)initWithRequestContext:(id)context requestType:(int64_t)type leaseID:(id)d mediaType:(int64_t)mediaType clientData:(id)data;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)performWithResponseHandler:(id)handler;
 @end
 
 @implementation ICSuzeLeaseRequest
 
-- (void)performWithResponseHandler:(id)a3
+- (void)performWithResponseHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = [(ICSuzeLeaseRequest *)self copy];
   v6 = [ICAsyncBlockOperation alloc];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __49__ICSuzeLeaseRequest_performWithResponseHandler___block_invoke;
   v11[3] = &unk_1E7BF8BE8;
-  v13 = self;
-  v14 = v4;
+  selfCopy = self;
+  v14 = handlerCopy;
   v12 = v5;
-  v7 = v4;
+  v7 = handlerCopy;
   v8 = v5;
   v9 = [(ICAsyncBlockOperation *)v6 initWithStartHandler:v11];
   v10 = [MEMORY[0x1E696ADC8] ic_sharedRequestOperationQueueWithQualityOfService:{objc_msgSend(v8, "qualityOfService")}];
@@ -251,23 +251,23 @@ void __49__ICSuzeLeaseRequest_performWithResponseHandler___block_invoke_2_28(voi
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (v5)
   {
-    v6 = [(NSData *)self->_clientData copyWithZone:a3];
+    v6 = [(NSData *)self->_clientData copyWithZone:zone];
     v7 = v5[1];
     v5[1] = v6;
 
     v5[6] = self->_requestType;
-    v8 = [(NSString *)self->_leaseID copyWithZone:a3];
+    v8 = [(NSString *)self->_leaseID copyWithZone:zone];
     v9 = v5[2];
     v5[2] = v8;
 
     v5[3] = self->_mediaType;
     v5[4] = self->_qualityOfService;
-    v10 = [(ICRequestContext *)self->_requestContext copyWithZone:a3];
+    v10 = [(ICRequestContext *)self->_requestContext copyWithZone:zone];
     v11 = v5[5];
     v5[5] = v10;
   }
@@ -275,28 +275,28 @@ void __49__ICSuzeLeaseRequest_performWithResponseHandler___block_invoke_2_28(voi
   return v5;
 }
 
-- (ICSuzeLeaseRequest)initWithRequestContext:(id)a3 requestType:(int64_t)a4 leaseID:(id)a5 mediaType:(int64_t)a6 clientData:(id)a7
+- (ICSuzeLeaseRequest)initWithRequestContext:(id)context requestType:(int64_t)type leaseID:(id)d mediaType:(int64_t)mediaType clientData:(id)data
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a7;
+  contextCopy = context;
+  dCopy = d;
+  dataCopy = data;
   v23.receiver = self;
   v23.super_class = ICSuzeLeaseRequest;
   v15 = [(ICSuzeLeaseRequest *)&v23 init];
   if (v15)
   {
-    v16 = [v12 copy];
+    v16 = [contextCopy copy];
     requestContext = v15->_requestContext;
     v15->_requestContext = v16;
 
-    v15->_requestType = a4;
-    v18 = [v13 copy];
+    v15->_requestType = type;
+    v18 = [dCopy copy];
     leaseID = v15->_leaseID;
     v15->_leaseID = v18;
 
-    v15->_mediaType = a6;
+    v15->_mediaType = mediaType;
     v15->_qualityOfService = 25;
-    v20 = [v14 copy];
+    v20 = [dataCopy copy];
     clientData = v15->_clientData;
     v15->_clientData = v20;
   }

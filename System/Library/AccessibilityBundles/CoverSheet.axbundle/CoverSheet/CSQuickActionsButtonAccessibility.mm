@@ -1,5 +1,5 @@
 @interface CSQuickActionsButtonAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityIsPasscodeLockVisible;
 - (id)accessibilityLabel;
 - (id)accessibilityPath;
@@ -9,30 +9,30 @@
 
 @implementation CSQuickActionsButtonAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CSQuickActionsButton" hasInstanceMethod:@"action" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CSFlashlightQuickAction"];
-  [v3 validateClass:@"CSCameraQuickAction"];
-  [v3 validateClass:@"CSQuickAction" hasInstanceMethod:@"isSelected" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"CSAction"];
-  [v3 validateClass:@"CSQuickActionsButton" isKindOfClass:@"CSProminentButtonControl"];
-  [v3 validateClass:@"CSProminentButtonControl" hasInstanceVariable:@"_backgroundEffectView" withType:"UIVisualEffectView"];
-  [v3 validateClass:@"CSQuickActionsButton" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CSQuickActionsView" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CSQuickActionsViewController" hasInstanceMethod:@"coverSheetViewController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CSCoverSheetViewController" hasInstanceMethod:@"isPasscodeLockVisible" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"CSQuickActionsViewController" hasInstanceMethod:@"_resetIdleTimer" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"CSAction" hasClassMethod:@"actionWithType:" withFullSignature:{"@", "q", 0}];
-  [v3 validateClass:@"CSQuickActionsViewController" isKindOfClass:@"CSCoverSheetViewControllerBase"];
-  [v3 validateClass:@"CSCoverSheetViewControllerBase" hasInstanceMethod:@"sendAction:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"CSQuickActionsButton" isKindOfClass:@"CSProminentButtonControl"];
-  [v3 validateClass:@"CSProminentButtonControl" hasInstanceMethod:@"setSelected:" withFullSignature:{"v", "B", 0}];
-  [v3 validateClass:@"CSQuickAction" hasInstanceMethod:@"supportsSelection" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"CSQuickAction" hasInstanceMethod:@"fireAction" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"CSSystemQuickAction" hasInstanceMethod:@"viewModel" withFullSignature:{"@", 0}];
-  [v3 validateProtocol:@"CHUISControlViewModel" hasRequiredInstanceMethod:@"title"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CSQuickActionsButton" hasInstanceMethod:@"action" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CSFlashlightQuickAction"];
+  [validationsCopy validateClass:@"CSCameraQuickAction"];
+  [validationsCopy validateClass:@"CSQuickAction" hasInstanceMethod:@"isSelected" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"CSAction"];
+  [validationsCopy validateClass:@"CSQuickActionsButton" isKindOfClass:@"CSProminentButtonControl"];
+  [validationsCopy validateClass:@"CSProminentButtonControl" hasInstanceVariable:@"_backgroundEffectView" withType:"UIVisualEffectView"];
+  [validationsCopy validateClass:@"CSQuickActionsButton" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CSQuickActionsView" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CSQuickActionsViewController" hasInstanceMethod:@"coverSheetViewController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CSCoverSheetViewController" hasInstanceMethod:@"isPasscodeLockVisible" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"CSQuickActionsViewController" hasInstanceMethod:@"_resetIdleTimer" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"CSAction" hasClassMethod:@"actionWithType:" withFullSignature:{"@", "q", 0}];
+  [validationsCopy validateClass:@"CSQuickActionsViewController" isKindOfClass:@"CSCoverSheetViewControllerBase"];
+  [validationsCopy validateClass:@"CSCoverSheetViewControllerBase" hasInstanceMethod:@"sendAction:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"CSQuickActionsButton" isKindOfClass:@"CSProminentButtonControl"];
+  [validationsCopy validateClass:@"CSProminentButtonControl" hasInstanceMethod:@"setSelected:" withFullSignature:{"v", "B", 0}];
+  [validationsCopy validateClass:@"CSQuickAction" hasInstanceMethod:@"supportsSelection" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"CSQuickAction" hasInstanceMethod:@"fireAction" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"CSSystemQuickAction" hasInstanceMethod:@"viewModel" withFullSignature:{"@", 0}];
+  [validationsCopy validateProtocol:@"CHUISControlViewModel" hasRequiredInstanceMethod:@"title"];
 }
 
 - (id)accessibilityLabel
@@ -43,9 +43,9 @@
   {
     v4 = @"flashlight";
 LABEL_5:
-    v5 = accessibilitySBLocalizedString(v4);
+    accessibilityLabel = accessibilitySBLocalizedString(v4);
 LABEL_6:
-    v6 = v5;
+    v6 = accessibilityLabel;
     goto LABEL_7;
   }
 
@@ -61,7 +61,7 @@ LABEL_6:
   {
     v9.receiver = self;
     v9.super_class = CSQuickActionsButtonAccessibility;
-    v5 = [(CSQuickActionsButtonAccessibility *)&v9 accessibilityLabel];
+    accessibilityLabel = [(CSQuickActionsButtonAccessibility *)&v9 accessibilityLabel];
     goto LABEL_6;
   }
 
@@ -89,17 +89,17 @@ LABEL_7:
       v4 = @"quickaction.state.off";
     }
 
-    v5 = accessibilitySBLocalizedString(v4);
+    accessibilityValue = accessibilitySBLocalizedString(v4);
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = CSQuickActionsButtonAccessibility;
-    v5 = [(CSQuickActionsButtonAccessibility *)&v8 accessibilityValue];
+    accessibilityValue = [(CSQuickActionsButtonAccessibility *)&v8 accessibilityValue];
   }
 
-  v6 = v5;
+  v6 = accessibilityValue;
 
   return v6;
 }
@@ -131,15 +131,15 @@ void __58__CSQuickActionsButtonAccessibility_accessibilityActivate__block_invoke
 - (id)accessibilityPath
 {
   v2 = [(CSQuickActionsButtonAccessibility *)self safeValueForKey:@"_backgroundEffectView"];
-  v3 = [v2 _accessibilityCirclePathBasedOnBoundsWidth];
+  _accessibilityCirclePathBasedOnBoundsWidth = [v2 _accessibilityCirclePathBasedOnBoundsWidth];
 
-  return v3;
+  return _accessibilityCirclePathBasedOnBoundsWidth;
 }
 
 - (BOOL)_accessibilityIsPasscodeLockVisible
 {
-  v2 = [(CSQuickActionsButtonAccessibility *)self _axDelegate];
-  v3 = [v2 safeValueForKey:@"coverSheetViewController"];
+  _axDelegate = [(CSQuickActionsButtonAccessibility *)self _axDelegate];
+  v3 = [_axDelegate safeValueForKey:@"coverSheetViewController"];
   v4 = [v3 safeBoolForKey:@"isPasscodeLockVisible"];
 
   return v4;

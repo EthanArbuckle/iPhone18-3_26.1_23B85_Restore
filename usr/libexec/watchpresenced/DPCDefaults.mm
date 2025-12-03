@@ -1,7 +1,7 @@
 @interface DPCDefaults
 + (id)sharedInstance;
 - (DPCDefaults)init;
-- (id)NSNumberForDefault:(id)a3;
+- (id)NSNumberForDefault:(id)default;
 @end
 
 @implementation DPCDefaults
@@ -67,22 +67,22 @@
   return v2;
 }
 
-- (id)NSNumberForDefault:(id)a3
+- (id)NSNumberForDefault:(id)default
 {
   defaults = self->_defaults;
-  v5 = a3;
-  v6 = [(NSUserDefaults *)defaults objectForKey:v5];
+  defaultCopy = default;
+  v6 = [(NSUserDefaults *)defaults objectForKey:defaultCopy];
 
   if (v6)
   {
-    v7 = [(NSUserDefaults *)self->_defaults integerForKey:v5];
+    v7 = [(NSUserDefaults *)self->_defaults integerForKey:defaultCopy];
 
     v8 = [NSNumber numberWithInteger:v7];
   }
 
   else
   {
-    v8 = [(NSDictionary *)self->_defaultValues objectForKey:v5];
+    v8 = [(NSDictionary *)self->_defaultValues objectForKey:defaultCopy];
   }
 
   return v8;

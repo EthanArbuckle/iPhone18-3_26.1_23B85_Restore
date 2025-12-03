@@ -1,9 +1,9 @@
 @interface CATSharingServiceTransport
-- (CATSharingServiceTransport)initWithConnection:(id)a3;
+- (CATSharingServiceTransport)initWithConnection:(id)connection;
 - (id)name;
-- (id)operationToSendMessage:(id)a3;
-- (void)connection:(id)a3 receivedData:(id)a4;
-- (void)connectionClosed:(id)a3;
+- (id)operationToSendMessage:(id)message;
+- (void)connection:(id)connection receivedData:(id)data;
+- (void)connectionClosed:(id)closed;
 - (void)invalidateConnection;
 - (void)invalidateIfNeeded;
 - (void)processReceivedMessages;
@@ -13,9 +13,9 @@
 
 @implementation CATSharingServiceTransport
 
-- (CATSharingServiceTransport)initWithConnection:(id)a3
+- (CATSharingServiceTransport)initWithConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v13.receiver = self;
   v13.super_class = CATSharingServiceTransport;
   v6 = [(CATTransport *)&v13 init];
@@ -32,7 +32,7 @@
     mReceivedMessages = v6->mReceivedMessages;
     v6->mReceivedMessages = v10;
 
-    objc_storeStrong(&v6->mConnection, a3);
+    objc_storeStrong(&v6->mConnection, connection);
     [(CATSharingConnection *)v6->mConnection setDelegate:v6];
   }
 
@@ -46,11 +46,11 @@
 
   if ([(CATSharingConnection *)self->mConnection isClosed])
   {
-    v4 = [(CATSharingConnection *)self->mConnection closedError];
-    v5 = v4;
-    if (v4)
+    closedError = [(CATSharingConnection *)self->mConnection closedError];
+    v5 = closedError;
+    if (closedError)
     {
-      v6 = v4;
+      v6 = closedError;
     }
 
     else
@@ -95,27 +95,27 @@
   }
 }
 
-- (id)operationToSendMessage:(id)a3
+- (id)operationToSendMessage:(id)message
 {
-  v4 = a3;
-  v5 = [[CATSharingServiceTransportSendMessageOperation alloc] initWithConnection:self->mConnection message:v4];
+  messageCopy = message;
+  v5 = [[CATSharingServiceTransportSendMessageOperation alloc] initWithConnection:self->mConnection message:messageCopy];
 
   return v5;
 }
 
 - (id)name
 {
-  v2 = [(CATSharingConnection *)self->mConnection remoteDevice];
-  v3 = [v2 identifier];
-  v4 = [v3 UUIDString];
+  remoteDevice = [(CATSharingConnection *)self->mConnection remoteDevice];
+  identifier = [remoteDevice identifier];
+  uUIDString = [identifier UUIDString];
 
-  return v4;
+  return uUIDString;
 }
 
-- (void)connection:(id)a3 receivedData:(id)a4
+- (void)connection:(id)connection receivedData:(id)data
 {
-  v6 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  dataCopy = data;
   objc_initWeak(&location, self);
   mCatalystQueue = self->mCatalystQueue;
   v10[0] = MEMORY[0x277D85DD0];
@@ -123,7 +123,7 @@
   v10[2] = __54__CATSharingServiceTransport_connection_receivedData___block_invoke;
   v10[3] = &unk_278DA7530;
   objc_copyWeak(&v12, &location);
-  v9 = v7;
+  v9 = dataCopy;
   v11 = v9;
   [(CATOperationQueue *)mCatalystQueue addOperationWithBlock:v10];
 
@@ -163,19 +163,19 @@ void __54__CATSharingServiceTransport_connection_receivedData___block_invoke(uin
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)connectionClosed:(id)a3
+- (void)connectionClosed:(id)closed
 {
-  v4 = a3;
+  closedCopy = closed;
   v5 = CATGetCatalystQueue();
   CATAssertIsQueue(v5);
 
-  v6 = [v4 closedError];
+  closedError = [closedCopy closedError];
 
-  if (v6)
+  if (closedError)
   {
     if (self->mIsActive)
     {
-      [(CATTransport *)self didInterruptWithError:v6];
+      [(CATTransport *)self didInterruptWithError:closedError];
     }
   }
 
@@ -192,9 +192,9 @@ void __54__CATSharingServiceTransport_connection_receivedData___block_invoke(uin
 
   if (self->mIsActive && [(NSMutableArray *)self->mReceivedMessages count])
   {
-    v4 = [(NSMutableArray *)self->mReceivedMessages firstObject];
+    firstObject = [(NSMutableArray *)self->mReceivedMessages firstObject];
     [(NSMutableArray *)self->mReceivedMessages removeObjectAtIndex:0];
-    [(CATTransport *)self didReceiveMessage:v4];
+    [(CATTransport *)self didReceiveMessage:firstObject];
     [(CATSharingServiceTransport *)self processReceivedMessages];
   }
 }

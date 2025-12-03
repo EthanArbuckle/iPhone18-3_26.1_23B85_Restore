@@ -1,7 +1,7 @@
 @interface COSInternalSettingsViewController
 + (id)internalSettingsViewController;
 - (id)specifiers;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation COSInternalSettingsViewController
@@ -14,17 +14,17 @@
   return v3;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v7.receiver = self;
   v7.super_class = COSInternalSettingsViewController;
-  [(COSInternalSettingsViewController *)&v7 viewWillAppear:a3];
+  [(COSInternalSettingsViewController *)&v7 viewWillAppear:appear];
   [(COSInternalSettingsViewController *)self setTitle:@"Internal Settings"];
   v4 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:0 target:self action:"_dismiss"];
-  v5 = [(COSInternalSettingsViewController *)self navigationItem];
+  navigationItem = [(COSInternalSettingsViewController *)self navigationItem];
   v8 = v4;
   v6 = [NSArray arrayWithObjects:&v8 count:1];
-  [v5 setLeftBarButtonItems:v6 animated:1];
+  [navigationItem setLeftBarButtonItems:v6 animated:1];
 }
 
 - (id)specifiers
@@ -38,8 +38,8 @@
 
   v21.receiver = self;
   v21.super_class = COSInternalSettingsViewController;
-  v5 = [(COSInternalSettingsViewController *)&v21 specifiers];
-  v6 = [v5 mutableCopy];
+  specifiers = [(COSInternalSettingsViewController *)&v21 specifiers];
+  v6 = [specifiers mutableCopy];
   v7 = v6;
   if (v6)
   {

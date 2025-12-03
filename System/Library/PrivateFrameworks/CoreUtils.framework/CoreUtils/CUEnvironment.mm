@@ -1,38 +1,38 @@
 @interface CUEnvironment
 - (id)description;
-- (id)objectForKeyedSubscript:(id)a3;
-- (void)setObject:(id)a3 forKeyedSubscript:(id)a4;
+- (id)objectForKeyedSubscript:(id)subscript;
+- (void)setObject:(id)object forKeyedSubscript:(id)subscript;
 @end
 
 @implementation CUEnvironment
 
-- (void)setObject:(id)a3 forKeyedSubscript:(id)a4
+- (void)setObject:(id)object forKeyedSubscript:(id)subscript
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = self;
-  objc_sync_enter(v7);
-  v8 = v11;
-  if (v11 && !v7->_objects)
+  objectCopy = object;
+  subscriptCopy = subscript;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v8 = objectCopy;
+  if (objectCopy && !selfCopy->_objects)
   {
     v9 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    objects = v7->_objects;
-    v7->_objects = v9;
+    objects = selfCopy->_objects;
+    selfCopy->_objects = v9;
 
-    v8 = v11;
+    v8 = objectCopy;
   }
 
-  [(NSMutableDictionary *)v7->_objects setObject:v8 forKeyedSubscript:v6];
-  objc_sync_exit(v7);
+  [(NSMutableDictionary *)selfCopy->_objects setObject:v8 forKeyedSubscript:subscriptCopy];
+  objc_sync_exit(selfCopy);
 }
 
-- (id)objectForKeyedSubscript:(id)a3
+- (id)objectForKeyedSubscript:(id)subscript
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(NSMutableDictionary *)v5->_objects objectForKeyedSubscript:v4];
-  objc_sync_exit(v5);
+  subscriptCopy = subscript;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [(NSMutableDictionary *)selfCopy->_objects objectForKeyedSubscript:subscriptCopy];
+  objc_sync_exit(selfCopy);
 
   return v6;
 }

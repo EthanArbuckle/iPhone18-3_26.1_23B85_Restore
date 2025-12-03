@@ -2,33 +2,33 @@
 - (BOOL)isSIMPasscodeLockEnabled;
 - (NSString)SIMStatus;
 - (TPSSubscriberTelephonyController)init;
-- (TPSSubscriberTelephonyController)initWithSubscriptionContext:(id)a3;
+- (TPSSubscriberTelephonyController)initWithSubscriptionContext:(id)context;
 - (id)getSIMPasscodeLockEnabledValue;
-- (id)getSIMPasscodeLockEnabledValueWithError:(id *)a3;
+- (id)getSIMPasscodeLockEnabledValueWithError:(id *)error;
 - (id)getSIMPasscodeRemainingAttemptsValue;
-- (id)getSIMPasscodeRemainingAttemptsValueWithError:(id *)a3;
+- (id)getSIMPasscodeRemainingAttemptsValueWithError:(id *)error;
 - (id)getSIMStatus;
-- (id)getSIMStatusWithError:(id *)a3;
+- (id)getSIMStatusWithError:(id *)error;
 - (int64_t)SIMPasscodeRemainingAttempts;
-- (void)changePIN:(id)a3 newPin:(id)a4;
-- (void)changePIN:(id)a3 newPin:(id)a4 completion:(id)a5;
+- (void)changePIN:(id)n newPin:(id)pin;
+- (void)changePIN:(id)n newPin:(id)pin completion:(id)completion;
 - (void)fetchSIMPasscodeLockEnabled;
-- (void)fetchSIMPasscodeLockEnabledWithCompletion:(id)a3;
+- (void)fetchSIMPasscodeLockEnabledWithCompletion:(id)completion;
 - (void)fetchSIMPasscodeRemainingAttempts;
-- (void)fetchSIMPasscodeRemainingAttemptsWithCompletion:(id)a3;
+- (void)fetchSIMPasscodeRemainingAttemptsWithCompletion:(id)completion;
 - (void)fetchSIMStatus;
-- (void)fetchSIMStatusWithCompletion:(id)a3;
+- (void)fetchSIMStatusWithCompletion:(id)completion;
 - (void)getSIMPasscodeRemainingAttemptsValue;
 - (void)getSIMStatus;
 - (void)presentSIMPasscodeAlert;
-- (void)setSIMPasscodeLockEnabled:(BOOL)a3;
-- (void)setSIMPasscodeRemainingAttempts:(int64_t)a3;
-- (void)setSIMStatus:(id)a3;
-- (void)simLockSaveRequestDidComplete:(id)a3 success:(BOOL)a4;
-- (void)simPinChangeRequestDidComplete:(id)a3 success:(BOOL)a4;
-- (void)simPinEntryErrorDidOccur:(id)a3 status:(id)a4;
-- (void)simPukEntryErrorDidOccur:(id)a3 status:(id)a4;
-- (void)simStatusDidChange:(id)a3 status:(id)a4;
+- (void)setSIMPasscodeLockEnabled:(BOOL)enabled;
+- (void)setSIMPasscodeRemainingAttempts:(int64_t)attempts;
+- (void)setSIMStatus:(id)status;
+- (void)simLockSaveRequestDidComplete:(id)complete success:(BOOL)success;
+- (void)simPinChangeRequestDidComplete:(id)complete success:(BOOL)success;
+- (void)simPinEntryErrorDidOccur:(id)occur status:(id)status;
+- (void)simPukEntryErrorDidOccur:(id)occur status:(id)status;
+- (void)simStatusDidChange:(id)change status:(id)status;
 @end
 
 @implementation TPSSubscriberTelephonyController
@@ -40,19 +40,19 @@
   return 0;
 }
 
-- (TPSSubscriberTelephonyController)initWithSubscriptionContext:(id)a3
+- (TPSSubscriberTelephonyController)initWithSubscriptionContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v12.receiver = self;
   v12.super_class = TPSSubscriberTelephonyController;
   v6 = [(TPSTelephonyController *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_subscriptionContext, a3);
+    objc_storeStrong(&v6->_subscriptionContext, context);
     v7->_SIMPasscodeRemainingAttempts = 0x7FFFFFFFFFFFFFFFLL;
-    v8 = [(TPSSubscriberTelephonyController *)v7 getSIMStatus];
-    v9 = [v8 copy];
+    getSIMStatus = [(TPSSubscriberTelephonyController *)v7 getSIMStatus];
+    v9 = [getSIMStatus copy];
     SIMStatus = v7->_SIMStatus;
     v7->_SIMStatus = v9;
 
@@ -81,14 +81,14 @@
   return v2;
 }
 
-- (void)setSIMPasscodeLockEnabled:(BOOL)a3
+- (void)setSIMPasscodeLockEnabled:(BOOL)enabled
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __62__TPSSubscriberTelephonyController_setSIMPasscodeLockEnabled___block_invoke;
   v3[3] = &unk_2782E3D58;
   v3[4] = self;
-  v4 = a3;
+  enabledCopy = enabled;
   [(TPSTelephonyController *)self performAtomicAccessorBlock:v3];
 }
 
@@ -200,14 +200,14 @@ void __64__TPSSubscriberTelephonyController_SIMPasscodeRemainingAttempts__block_
   *(*(*(a1 + 40) + 8) + 24) = v3;
 }
 
-- (void)setSIMPasscodeRemainingAttempts:(int64_t)a3
+- (void)setSIMPasscodeRemainingAttempts:(int64_t)attempts
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __68__TPSSubscriberTelephonyController_setSIMPasscodeRemainingAttempts___block_invoke;
   v3[3] = &unk_2782E3B10;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = attempts;
   [(TPSTelephonyController *)self performAtomicAccessorBlock:v3];
 }
 
@@ -308,16 +308,16 @@ void __68__TPSSubscriberTelephonyController_setSIMPasscodeRemainingAttempts___bl
   return v2;
 }
 
-- (void)setSIMStatus:(id)a3
+- (void)setSIMStatus:(id)status
 {
-  v4 = a3;
+  statusCopy = status;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __49__TPSSubscriberTelephonyController_setSIMStatus___block_invoke;
   v6[3] = &unk_2782E39D0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = statusCopy;
+  v5 = statusCopy;
   [(TPSTelephonyController *)self performAtomicAccessorBlock:v6];
 }
 
@@ -397,14 +397,14 @@ void __49__TPSSubscriberTelephonyController_setSIMStatus___block_invoke_2(uint64
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)changePIN:(id)a3 newPin:(id)a4
+- (void)changePIN:(id)n newPin:(id)pin
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __53__TPSSubscriberTelephonyController_changePIN_newPin___block_invoke;
   v4[3] = &unk_2782E3A48;
   v4[4] = self;
-  [(TPSSubscriberTelephonyController *)self changePIN:a3 newPin:a4 completion:v4];
+  [(TPSSubscriberTelephonyController *)self changePIN:n newPin:pin completion:v4];
 }
 
 void __53__TPSSubscriberTelephonyController_changePIN_newPin___block_invoke(uint64_t a1, void *a2)
@@ -426,14 +426,14 @@ void __53__TPSSubscriberTelephonyController_changePIN_newPin___block_invoke(uint
   }
 }
 
-- (void)changePIN:(id)a3 newPin:(id)a4 completion:(id)a5
+- (void)changePIN:(id)n newPin:(id)pin completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v12 = [(TPSTelephonyController *)self telephonyClient];
-  v11 = [(TPSSubscriberTelephonyController *)self subscriptionContext];
-  [v12 changePIN:v11 oldPin:v10 newPin:v9 completion:v8];
+  completionCopy = completion;
+  pinCopy = pin;
+  nCopy = n;
+  telephonyClient = [(TPSTelephonyController *)self telephonyClient];
+  subscriptionContext = [(TPSSubscriberTelephonyController *)self subscriptionContext];
+  [telephonyClient changePIN:subscriptionContext oldPin:nCopy newPin:pinCopy completion:completionCopy];
 }
 
 void __58__TPSSubscriberTelephonyController_setSIMLockEnabled_pin___block_invoke(uint64_t a1, void *a2)
@@ -457,15 +457,15 @@ void __58__TPSSubscriberTelephonyController_setSIMLockEnabled_pin___block_invoke
 
 - (void)presentSIMPasscodeAlert
 {
-  v4 = [(TPSTelephonyController *)self telephonyClient];
-  v5 = [(TPSSubscriberTelephonyController *)self subscriptionContext];
+  telephonyClient = [(TPSTelephonyController *)self telephonyClient];
+  subscriptionContext = [(TPSSubscriberTelephonyController *)self subscriptionContext];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __59__TPSSubscriberTelephonyController_presentSIMPasscodeAlert__block_invoke;
   v6[3] = &unk_2782E3DA8;
   v6[4] = self;
   v6[5] = a2;
-  [v4 promptForSIMUnlock:v5 completion:v6];
+  [telephonyClient promptForSIMUnlock:subscriptionContext completion:v6];
 }
 
 void __59__TPSSubscriberTelephonyController_presentSIMPasscodeAlert__block_invoke(uint64_t a1, void *a2)
@@ -496,9 +496,9 @@ void __59__TPSSubscriberTelephonyController_presentSIMPasscodeAlert__block_invok
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 domain];
+    domain = [v4 domain];
 
-    if (v6)
+    if (domain)
     {
       v7 = TPSLog();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -522,11 +522,11 @@ void __59__TPSSubscriberTelephonyController_presentSIMPasscodeAlert__block_invok
   return v3;
 }
 
-- (id)getSIMPasscodeLockEnabledValueWithError:(id *)a3
+- (id)getSIMPasscodeLockEnabledValueWithError:(id *)error
 {
-  v5 = [(TPSTelephonyController *)self telephonyClient];
-  v6 = [(TPSSubscriberTelephonyController *)self subscriptionContext];
-  v7 = [v5 fetchSIMLockValue:v6 error:a3];
+  telephonyClient = [(TPSTelephonyController *)self telephonyClient];
+  subscriptionContext = [(TPSSubscriberTelephonyController *)self subscriptionContext];
+  v7 = [telephonyClient fetchSIMLockValue:subscriptionContext error:error];
 
   return v7;
 }
@@ -575,12 +575,12 @@ void __63__TPSSubscriberTelephonyController_fetchSIMPasscodeLockEnabled__block_i
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetchSIMPasscodeLockEnabledWithCompletion:(id)a3
+- (void)fetchSIMPasscodeLockEnabledWithCompletion:(id)completion
 {
-  v4 = a3;
-  v6 = [(TPSTelephonyController *)self telephonyClient];
-  v5 = [(TPSSubscriberTelephonyController *)self subscriptionContext];
-  [v6 fetchSIMLockValue:v5 completion:v4];
+  completionCopy = completion;
+  telephonyClient = [(TPSTelephonyController *)self telephonyClient];
+  subscriptionContext = [(TPSSubscriberTelephonyController *)self subscriptionContext];
+  [telephonyClient fetchSIMLockValue:subscriptionContext completion:completionCopy];
 }
 
 - (id)getSIMPasscodeRemainingAttemptsValue
@@ -591,9 +591,9 @@ void __63__TPSSubscriberTelephonyController_fetchSIMPasscodeLockEnabled__block_i
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 domain];
+    domain = [v3 domain];
 
-    if (v5)
+    if (domain)
     {
       v6 = TPSLog();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -606,11 +606,11 @@ void __63__TPSSubscriberTelephonyController_fetchSIMPasscodeLockEnabled__block_i
   return v2;
 }
 
-- (id)getSIMPasscodeRemainingAttemptsValueWithError:(id *)a3
+- (id)getSIMPasscodeRemainingAttemptsValueWithError:(id *)error
 {
-  v5 = [(TPSTelephonyController *)self telephonyClient];
-  v6 = [(TPSSubscriberTelephonyController *)self subscriptionContext];
-  v7 = [v5 getRemainingPINAttemptCount:v6 error:a3];
+  telephonyClient = [(TPSTelephonyController *)self telephonyClient];
+  subscriptionContext = [(TPSSubscriberTelephonyController *)self subscriptionContext];
+  v7 = [telephonyClient getRemainingPINAttemptCount:subscriptionContext error:error];
 
   return v7;
 }
@@ -659,12 +659,12 @@ void __69__TPSSubscriberTelephonyController_fetchSIMPasscodeRemainingAttempts__b
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetchSIMPasscodeRemainingAttemptsWithCompletion:(id)a3
+- (void)fetchSIMPasscodeRemainingAttemptsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v6 = [(TPSTelephonyController *)self telephonyClient];
-  v5 = [(TPSSubscriberTelephonyController *)self subscriptionContext];
-  [v6 getRemainingPINAttemptCount:v5 completion:v4];
+  completionCopy = completion;
+  telephonyClient = [(TPSTelephonyController *)self telephonyClient];
+  subscriptionContext = [(TPSSubscriberTelephonyController *)self subscriptionContext];
+  [telephonyClient getRemainingPINAttemptCount:subscriptionContext completion:completionCopy];
 }
 
 - (id)getSIMStatus
@@ -675,9 +675,9 @@ void __69__TPSSubscriberTelephonyController_fetchSIMPasscodeRemainingAttempts__b
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 domain];
+    domain = [v3 domain];
 
-    if (v5)
+    if (domain)
     {
       v6 = TPSLog();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -690,11 +690,11 @@ void __69__TPSSubscriberTelephonyController_fetchSIMPasscodeRemainingAttempts__b
   return v2;
 }
 
-- (id)getSIMStatusWithError:(id *)a3
+- (id)getSIMStatusWithError:(id *)error
 {
-  v5 = [(TPSTelephonyController *)self telephonyClient];
-  v6 = [(TPSSubscriberTelephonyController *)self subscriptionContext];
-  v7 = [v5 getSIMStatus:v6 error:a3];
+  telephonyClient = [(TPSTelephonyController *)self telephonyClient];
+  subscriptionContext = [(TPSSubscriberTelephonyController *)self subscriptionContext];
+  v7 = [telephonyClient getSIMStatus:subscriptionContext error:error];
 
   return v7;
 }
@@ -743,23 +743,23 @@ void __50__TPSSubscriberTelephonyController_fetchSIMStatus__block_invoke(uint64_
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetchSIMStatusWithCompletion:(id)a3
+- (void)fetchSIMStatusWithCompletion:(id)completion
 {
-  v4 = a3;
-  v6 = [(TPSTelephonyController *)self telephonyClient];
-  v5 = [(TPSSubscriberTelephonyController *)self subscriptionContext];
-  [v6 getSIMStatus:v5 completion:v4];
+  completionCopy = completion;
+  telephonyClient = [(TPSTelephonyController *)self telephonyClient];
+  subscriptionContext = [(TPSSubscriberTelephonyController *)self subscriptionContext];
+  [telephonyClient getSIMStatus:subscriptionContext completion:completionCopy];
 }
 
-- (void)simStatusDidChange:(id)a3 status:(id)a4
+- (void)simStatusDidChange:(id)change status:(id)status
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 uuid];
-  v9 = [(TPSSubscriberTelephonyController *)self subscriptionContext];
-  v10 = [v9 uuid];
-  v11 = [v8 isEqual:v10];
+  changeCopy = change;
+  statusCopy = status;
+  uuid = [changeCopy uuid];
+  subscriptionContext = [(TPSSubscriberTelephonyController *)self subscriptionContext];
+  uuid2 = [subscriptionContext uuid];
+  v11 = [uuid isEqual:uuid2];
 
   if (v11)
   {
@@ -767,33 +767,33 @@ void __50__TPSSubscriberTelephonyController_fetchSIMStatus__block_invoke(uint64_
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v16 = 138412546;
-      v17 = v7;
+      v17 = statusCopy;
       v18 = 2112;
-      v19 = v6;
+      v19 = changeCopy;
       _os_log_impl(&dword_21B8E9000, v12, OS_LOG_TYPE_DEFAULT, "SIM status changed to %@ for subscription context %@.", &v16, 0x16u);
     }
 
-    v13 = [(TPSSubscriberTelephonyController *)self getSIMPasscodeLockEnabledValue];
-    -[TPSSubscriberTelephonyController setSIMPasscodeLockEnabled:](self, "setSIMPasscodeLockEnabled:", [v13 BOOLValue]);
+    getSIMPasscodeLockEnabledValue = [(TPSSubscriberTelephonyController *)self getSIMPasscodeLockEnabledValue];
+    -[TPSSubscriberTelephonyController setSIMPasscodeLockEnabled:](self, "setSIMPasscodeLockEnabled:", [getSIMPasscodeLockEnabledValue BOOLValue]);
 
-    v14 = [(TPSSubscriberTelephonyController *)self getSIMPasscodeRemainingAttemptsValue];
-    -[TPSSubscriberTelephonyController setSIMPasscodeRemainingAttempts:](self, "setSIMPasscodeRemainingAttempts:", [v14 integerValue]);
+    getSIMPasscodeRemainingAttemptsValue = [(TPSSubscriberTelephonyController *)self getSIMPasscodeRemainingAttemptsValue];
+    -[TPSSubscriberTelephonyController setSIMPasscodeRemainingAttempts:](self, "setSIMPasscodeRemainingAttempts:", [getSIMPasscodeRemainingAttemptsValue integerValue]);
 
-    [(TPSSubscriberTelephonyController *)self setSIMStatus:v7];
+    [(TPSSubscriberTelephonyController *)self setSIMStatus:statusCopy];
   }
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)simLockSaveRequestDidComplete:(id)a3 success:(BOOL)a4
+- (void)simLockSaveRequestDidComplete:(id)complete success:(BOOL)success
 {
-  v4 = a4;
+  successCopy = success;
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [v6 uuid];
-  v8 = [(TPSSubscriberTelephonyController *)self subscriptionContext];
-  v9 = [v8 uuid];
-  v10 = [v7 isEqual:v9];
+  completeCopy = complete;
+  uuid = [completeCopy uuid];
+  subscriptionContext = [(TPSSubscriberTelephonyController *)self subscriptionContext];
+  uuid2 = [subscriptionContext uuid];
+  v10 = [uuid isEqual:uuid2];
 
   if (v10)
   {
@@ -801,7 +801,7 @@ void __50__TPSSubscriberTelephonyController_fetchSIMStatus__block_invoke(uint64_
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v12 = @"unsuccessful";
-      if (v4)
+      if (successCopy)
       {
         v12 = @"successful";
       }
@@ -809,22 +809,22 @@ void __50__TPSSubscriberTelephonyController_fetchSIMStatus__block_invoke(uint64_
       *buf = 138412546;
       v19 = v12;
       v20 = 2112;
-      v21 = v6;
+      v21 = completeCopy;
       _os_log_impl(&dword_21B8E9000, v11, OS_LOG_TYPE_DEFAULT, "SIM lock save request was %@ for subscription context %@.", buf, 0x16u);
     }
 
-    v13 = [(TPSSubscriberTelephonyController *)self getSIMPasscodeLockEnabledValue];
-    -[TPSSubscriberTelephonyController setSIMPasscodeLockEnabled:](self, "setSIMPasscodeLockEnabled:", [v13 BOOLValue]);
+    getSIMPasscodeLockEnabledValue = [(TPSSubscriberTelephonyController *)self getSIMPasscodeLockEnabledValue];
+    -[TPSSubscriberTelephonyController setSIMPasscodeLockEnabled:](self, "setSIMPasscodeLockEnabled:", [getSIMPasscodeLockEnabledValue BOOLValue]);
 
-    v14 = [(TPSSubscriberTelephonyController *)self getSIMPasscodeRemainingAttemptsValue];
-    -[TPSSubscriberTelephonyController setSIMPasscodeRemainingAttempts:](self, "setSIMPasscodeRemainingAttempts:", [v14 integerValue]);
+    getSIMPasscodeRemainingAttemptsValue = [(TPSSubscriberTelephonyController *)self getSIMPasscodeRemainingAttemptsValue];
+    -[TPSSubscriberTelephonyController setSIMPasscodeRemainingAttempts:](self, "setSIMPasscodeRemainingAttempts:", [getSIMPasscodeRemainingAttemptsValue integerValue]);
 
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __74__TPSSubscriberTelephonyController_simLockSaveRequestDidComplete_success___block_invoke;
     v16[3] = &unk_2782E3D58;
     v16[4] = self;
-    v17 = v4;
+    v17 = successCopy;
     [(TPSController *)self performAtomicDelegateBlock:v16];
   }
 
@@ -884,14 +884,14 @@ void __74__TPSSubscriberTelephonyController_simLockSaveRequestDidComplete_succes
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)simPinEntryErrorDidOccur:(id)a3 status:(id)a4
+- (void)simPinEntryErrorDidOccur:(id)occur status:(id)status
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [v5 uuid];
-  v7 = [(TPSSubscriberTelephonyController *)self subscriptionContext];
-  v8 = [v7 uuid];
-  v9 = [v6 isEqual:v8];
+  occurCopy = occur;
+  uuid = [occurCopy uuid];
+  subscriptionContext = [(TPSSubscriberTelephonyController *)self subscriptionContext];
+  uuid2 = [subscriptionContext uuid];
+  v9 = [uuid isEqual:uuid2];
 
   if (v9)
   {
@@ -899,12 +899,12 @@ void __74__TPSSubscriberTelephonyController_simLockSaveRequestDidComplete_succes
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v15 = v5;
+      v15 = occurCopy;
       _os_log_impl(&dword_21B8E9000, v10, OS_LOG_TYPE_DEFAULT, "SIM PIN entry attempt failed for subscription context %@.", buf, 0xCu);
     }
 
-    v11 = [(TPSSubscriberTelephonyController *)self getSIMPasscodeRemainingAttemptsValue];
-    -[TPSSubscriberTelephonyController setSIMPasscodeRemainingAttempts:](self, "setSIMPasscodeRemainingAttempts:", [v11 integerValue]);
+    getSIMPasscodeRemainingAttemptsValue = [(TPSSubscriberTelephonyController *)self getSIMPasscodeRemainingAttemptsValue];
+    -[TPSSubscriberTelephonyController setSIMPasscodeRemainingAttempts:](self, "setSIMPasscodeRemainingAttempts:", [getSIMPasscodeRemainingAttemptsValue integerValue]);
 
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
@@ -969,14 +969,14 @@ void __68__TPSSubscriberTelephonyController_simPinEntryErrorDidOccur_status___bl
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)simPukEntryErrorDidOccur:(id)a3 status:(id)a4
+- (void)simPukEntryErrorDidOccur:(id)occur status:(id)status
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [v5 uuid];
-  v7 = [(TPSSubscriberTelephonyController *)self subscriptionContext];
-  v8 = [v7 uuid];
-  v9 = [v6 isEqual:v8];
+  occurCopy = occur;
+  uuid = [occurCopy uuid];
+  subscriptionContext = [(TPSSubscriberTelephonyController *)self subscriptionContext];
+  uuid2 = [subscriptionContext uuid];
+  v9 = [uuid isEqual:uuid2];
 
   if (v9)
   {
@@ -984,7 +984,7 @@ void __68__TPSSubscriberTelephonyController_simPinEntryErrorDidOccur_status___bl
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v14 = v5;
+      v14 = occurCopy;
       _os_log_impl(&dword_21B8E9000, v10, OS_LOG_TYPE_DEFAULT, "SIM PUK entry attempt failed for subscription context %@.", buf, 0xCu);
     }
 
@@ -1051,15 +1051,15 @@ void __68__TPSSubscriberTelephonyController_simPukEntryErrorDidOccur_status___bl
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)simPinChangeRequestDidComplete:(id)a3 success:(BOOL)a4
+- (void)simPinChangeRequestDidComplete:(id)complete success:(BOOL)success
 {
-  v4 = a4;
+  successCopy = success;
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [v6 uuid];
-  v8 = [(TPSSubscriberTelephonyController *)self subscriptionContext];
-  v9 = [v8 uuid];
-  v10 = [v7 isEqual:v9];
+  completeCopy = complete;
+  uuid = [completeCopy uuid];
+  subscriptionContext = [(TPSSubscriberTelephonyController *)self subscriptionContext];
+  uuid2 = [subscriptionContext uuid];
+  v10 = [uuid isEqual:uuid2];
 
   if (v10)
   {
@@ -1067,7 +1067,7 @@ void __68__TPSSubscriberTelephonyController_simPukEntryErrorDidOccur_status___bl
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v12 = @"unsuccessful";
-      if (v4)
+      if (successCopy)
       {
         v12 = @"successful";
       }
@@ -1075,19 +1075,19 @@ void __68__TPSSubscriberTelephonyController_simPukEntryErrorDidOccur_status___bl
       *buf = 138412546;
       v18 = v12;
       v19 = 2112;
-      v20 = v6;
+      v20 = completeCopy;
       _os_log_impl(&dword_21B8E9000, v11, OS_LOG_TYPE_DEFAULT, "SIM PIN change was %@ for %@.", buf, 0x16u);
     }
 
-    v13 = [(TPSSubscriberTelephonyController *)self getSIMPasscodeRemainingAttemptsValue];
-    -[TPSSubscriberTelephonyController setSIMPasscodeRemainingAttempts:](self, "setSIMPasscodeRemainingAttempts:", [v13 integerValue]);
+    getSIMPasscodeRemainingAttemptsValue = [(TPSSubscriberTelephonyController *)self getSIMPasscodeRemainingAttemptsValue];
+    -[TPSSubscriberTelephonyController setSIMPasscodeRemainingAttempts:](self, "setSIMPasscodeRemainingAttempts:", [getSIMPasscodeRemainingAttemptsValue integerValue]);
 
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __75__TPSSubscriberTelephonyController_simPinChangeRequestDidComplete_success___block_invoke;
     v15[3] = &unk_2782E3D58;
     v15[4] = self;
-    v16 = v4;
+    v16 = successCopy;
     [(TPSController *)self performAtomicDelegateBlock:v15];
   }
 

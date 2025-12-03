@@ -1,27 +1,27 @@
 @interface VUICollectionViewFeaturedCell
-+ (double)_iOSLockupWidthWithWindowWidth:(double)result safeAreaInsets:(UIEdgeInsets)a4 showsPageControl:(BOOL)a5;
-- (VUICollectionViewFeaturedCell)initWithFrame:(CGRect)a3;
-- (void)_commonInitWithFrame:(CGRect)a3;
++ (double)_iOSLockupWidthWithWindowWidth:(double)result safeAreaInsets:(UIEdgeInsets)insets showsPageControl:(BOOL)control;
+- (VUICollectionViewFeaturedCell)initWithFrame:(CGRect)frame;
+- (void)_commonInitWithFrame:(CGRect)frame;
 @end
 
 @implementation VUICollectionViewFeaturedCell
 
-+ (double)_iOSLockupWidthWithWindowWidth:(double)result safeAreaInsets:(UIEdgeInsets)a4 showsPageControl:(BOOL)a5
++ (double)_iOSLockupWidthWithWindowWidth:(double)result safeAreaInsets:(UIEdgeInsets)insets showsPageControl:(BOOL)control
 {
-  if (!a5)
+  if (!control)
   {
-    return result - a4.left * 0.5 - a4.right * 0.5;
+    return result - insets.left * 0.5 - insets.right * 0.5;
   }
 
   return result;
 }
 
-- (VUICollectionViewFeaturedCell)initWithFrame:(CGRect)a3
+- (VUICollectionViewFeaturedCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v10.receiver = self;
   v10.super_class = VUICollectionViewFeaturedCell;
   v7 = [(VUIBaseCollectionViewCell *)&v10 initWithFrame:?];
@@ -34,12 +34,12 @@
   return v8;
 }
 
-- (void)_commonInitWithFrame:(CGRect)a3
+- (void)_commonInitWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8 = [VUICollectionViewFeaturedView alloc];
   v14.origin.x = x;
   v14.origin.y = y;
@@ -56,8 +56,8 @@
 
   [(VUICollectionViewFeaturedView *)self->_featuredView setTranslatesAutoresizingMaskIntoConstraints:1];
   [(VUICollectionViewFeaturedView *)self->_featuredView setAutoresizingMask:18];
-  v12 = [(VUIBaseCollectionViewCell *)self vuiContentView];
-  [v12 vui_addSubview:self->_featuredView oldView:0];
+  vuiContentView = [(VUIBaseCollectionViewCell *)self vuiContentView];
+  [vuiContentView vui_addSubview:self->_featuredView oldView:0];
 }
 
 @end

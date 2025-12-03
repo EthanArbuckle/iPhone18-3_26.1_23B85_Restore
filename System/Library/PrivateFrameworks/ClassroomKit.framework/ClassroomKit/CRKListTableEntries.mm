@@ -1,14 +1,14 @@
 @interface CRKListTableEntries
-- (CRKListTableEntries)initWithArray:(id)a3;
-- (id)entryAtRow:(unint64_t)a3 column:(unint64_t)a4;
+- (CRKListTableEntries)initWithArray:(id)array;
+- (id)entryAtRow:(unint64_t)row column:(unint64_t)column;
 @end
 
 @implementation CRKListTableEntries
 
-- (CRKListTableEntries)initWithArray:(id)a3
+- (CRKListTableEntries)initWithArray:(id)array
 {
-  v5 = a3;
-  if (!v5)
+  arrayCopy = array;
+  if (!arrayCopy)
   {
     [(CRKListTableEntries *)a2 initWithArray:?];
   }
@@ -18,7 +18,7 @@
   v6 = [(CRKListTableEntries *)&v10 init];
   if (v6)
   {
-    v7 = [v5 copy];
+    v7 = [arrayCopy copy];
     mArray = v6->mArray;
     v6->mArray = v7;
   }
@@ -26,10 +26,10 @@
   return v6;
 }
 
-- (id)entryAtRow:(unint64_t)a3 column:(unint64_t)a4
+- (id)entryAtRow:(unint64_t)row column:(unint64_t)column
 {
   v6 = [CRKRightPaddingTableEntry alloc];
-  v7 = [(NSArray *)self->mArray objectAtIndexedSubscript:a3];
+  v7 = [(NSArray *)self->mArray objectAtIndexedSubscript:row];
   v8 = [(CRKRightPaddingTableEntry *)v6 initWithObject:v7];
 
   return v8;

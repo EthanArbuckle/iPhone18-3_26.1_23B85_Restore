@@ -1,7 +1,7 @@
 @interface ICAudioTextAttachment
-- (ICAudioTextAttachment)initWithAttachment:(id)a3;
-- (ICAudioTextAttachment)initWithCoder:(id)a3;
-- (ICAudioTextAttachment)initWithData:(id)a3 ofType:(id)a4;
+- (ICAudioTextAttachment)initWithAttachment:(id)attachment;
+- (ICAudioTextAttachment)initWithCoder:(id)coder;
+- (ICAudioTextAttachment)initWithData:(id)data ofType:(id)type;
 - (NSArray)supportedPresentationSizes;
 @end
 
@@ -19,24 +19,24 @@
   return v3;
 }
 
-- (ICAudioTextAttachment)initWithAttachment:(id)a3
+- (ICAudioTextAttachment)initWithAttachment:(id)attachment
 {
   v4.receiver = self;
   v4.super_class = ICAudioTextAttachment;
-  return [(ICBaseTextAttachment *)&v4 initWithAttachment:a3];
+  return [(ICBaseTextAttachment *)&v4 initWithAttachment:attachment];
 }
 
-- (ICAudioTextAttachment)initWithData:(id)a3 ofType:(id)a4
+- (ICAudioTextAttachment)initWithData:(id)data ofType:(id)type
 {
-  v5 = a3;
-  if (a3)
+  dataCopy = data;
+  if (data)
   {
-    v7 = a4;
-    v8 = v5;
-    v5 = sub_1D4417264();
+    typeCopy = type;
+    v8 = dataCopy;
+    dataCopy = sub_1D4417264();
     v10 = v9;
 
-    if (a4)
+    if (type)
     {
 LABEL_3:
       sub_1D4419C54();
@@ -48,9 +48,9 @@ LABEL_3:
 
   else
   {
-    v13 = a4;
+    typeCopy2 = type;
     v10 = 0xF000000000000000;
-    if (a4)
+    if (type)
     {
       goto LABEL_3;
     }
@@ -84,17 +84,17 @@ LABEL_11:
   v18.receiver = self;
   v18.super_class = ICAudioTextAttachment;
   v16 = [(ICTextAttachment *)&v18 initWithData:v14 ofType:v15];
-  sub_1D4342800(v5, v10);
+  sub_1D4342800(dataCopy, v10);
 
   return v16;
 }
 
-- (ICAudioTextAttachment)initWithCoder:(id)a3
+- (ICAudioTextAttachment)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = ICAudioTextAttachment;
-  v3 = a3;
-  v4 = [(ICAudioTextAttachment *)&v6 initWithCoder:v3];
+  coderCopy = coder;
+  v4 = [(ICAudioTextAttachment *)&v6 initWithCoder:coderCopy];
 
   if (v4)
   {

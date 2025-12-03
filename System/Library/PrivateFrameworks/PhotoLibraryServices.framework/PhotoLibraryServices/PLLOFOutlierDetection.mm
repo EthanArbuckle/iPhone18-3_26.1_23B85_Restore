@@ -1,32 +1,32 @@
 @interface PLLOFOutlierDetection
 - (PLLOFOutlierDetection)init;
-- (double)createDistancesMatrixForDataset:(id)a3 distanceBlock:(id)a4;
-- (id)createKNNMatrixWithDistanceMatrix:(double *)a3 size:(unint64_t)a4;
-- (id)filteredObjectsWithDataset:(id)a3 distanceBlock:(id)a4;
-- (id)lofScoresWithDataset:(id)a3 distanceBlock:(id)a4;
-- (void)freeDistancesMatrix:(double *)a3 forDataset:(id)a4;
+- (double)createDistancesMatrixForDataset:(id)dataset distanceBlock:(id)block;
+- (id)createKNNMatrixWithDistanceMatrix:(double *)matrix size:(unint64_t)size;
+- (id)filteredObjectsWithDataset:(id)dataset distanceBlock:(id)block;
+- (id)lofScoresWithDataset:(id)dataset distanceBlock:(id)block;
+- (void)freeDistancesMatrix:(double *)matrix forDataset:(id)dataset;
 @end
 
 @implementation PLLOFOutlierDetection
 
-- (id)lofScoresWithDataset:(id)a3 distanceBlock:(id)a4
+- (id)lofScoresWithDataset:(id)dataset distanceBlock:(id)block
 {
   v70 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 count];
+  datasetCopy = dataset;
+  blockCopy = block;
+  v8 = [datasetCopy count];
   if (v8 > 2)
   {
     v9 = v8;
-    v48 = v7;
-    v10 = [(PLLOFOutlierDetection *)self createDistancesMatrixForDataset:v6 distanceBlock:v7];
-    v47 = self;
+    v48 = blockCopy;
+    v10 = [(PLLOFOutlierDetection *)self createDistancesMatrixForDataset:datasetCopy distanceBlock:blockCopy];
+    selfCopy = self;
     v50 = [(PLLOFOutlierDetection *)self createKNNMatrixWithDistanceMatrix:v10 size:v9];
-    v51 = [MEMORY[0x1E695DF70] array];
-    if ([v6 count])
+    array = [MEMORY[0x1E695DF70] array];
+    if ([datasetCopy count])
     {
       v11 = 0;
-      v49 = v6;
+      v49 = datasetCopy;
       do
       {
         v54 = v50;
@@ -54,9 +54,9 @@
               }
 
               v57 = v15;
-              v16 = [*(*(&v60 + 1) + 8 * v15) integerValue];
+              integerValue = [*(*(&v60 + 1) + 8 * v15) integerValue];
               v17 = v54;
-              v18 = [v17 objectAtIndexedSubscript:v16];
+              v18 = [v17 objectAtIndexedSubscript:integerValue];
               v64 = 0u;
               v65 = 0u;
               v66 = 0u;
@@ -77,13 +77,13 @@
                       objc_enumerationMutation(v58);
                     }
 
-                    v24 = [*(*(&v64 + 1) + 8 * i) integerValue];
-                    v25 = v10[v24];
-                    v26 = [v17 objectAtIndexedSubscript:v24];
-                    v27 = [v26 lastObject];
-                    v28 = v25[[v27 integerValue]];
+                    integerValue2 = [*(*(&v64 + 1) + 8 * i) integerValue];
+                    v25 = v10[integerValue2];
+                    v26 = [v17 objectAtIndexedSubscript:integerValue2];
+                    lastObject = [v26 lastObject];
+                    v28 = v25[[lastObject integerValue]];
 
-                    v29 = v10[v16][v24];
+                    v29 = v10[integerValue][integerValue2];
                     if (v28 >= v29)
                     {
                       v29 = v28;
@@ -139,14 +139,14 @@
                 objc_enumerationMutation(v33);
               }
 
-              v38 = [*(*(&v64 + 1) + 8 * j) integerValue];
-              v39 = v10[v38];
-              v40 = [v31 objectAtIndexedSubscript:v38];
-              v41 = [v40 lastObject];
-              v42 = v39[[v41 integerValue]];
+              integerValue3 = [*(*(&v64 + 1) + 8 * j) integerValue];
+              v39 = v10[integerValue3];
+              v40 = [v31 objectAtIndexedSubscript:integerValue3];
+              lastObject2 = [v40 lastObject];
+              v42 = v39[[lastObject2 integerValue]];
 
               v32 = v55;
-              v43 = v10[v55][v38];
+              v43 = v10[v55][integerValue3];
               if (v42 >= v43)
               {
                 v43 = v42;
@@ -164,50 +164,50 @@
         v44 = 1.0 / (v13 / [v33 count]);
 
         v45 = [MEMORY[0x1E696AD98] numberWithDouble:v14 / v59 / v44];
-        [v51 addObject:v45];
+        [array addObject:v45];
 
         v11 = v32 + 1;
-        v6 = v49;
+        datasetCopy = v49;
       }
 
       while (v11 < [v49 count]);
     }
 
-    [(PLLOFOutlierDetection *)v47 freeDistancesMatrix:v10 forDataset:v6];
+    [(PLLOFOutlierDetection *)selfCopy freeDistancesMatrix:v10 forDataset:datasetCopy];
 
-    v7 = v48;
+    blockCopy = v48;
   }
 
   else
   {
-    v51 = v6;
+    array = datasetCopy;
   }
 
-  return v51;
+  return array;
 }
 
-- (void)freeDistancesMatrix:(double *)a3 forDataset:(id)a4
+- (void)freeDistancesMatrix:(double *)matrix forDataset:(id)dataset
 {
-  v6 = a4;
-  if ([v6 count])
+  datasetCopy = dataset;
+  if ([datasetCopy count])
   {
     v5 = 0;
     do
     {
-      free(a3[v5++]);
+      free(matrix[v5++]);
     }
 
-    while (v5 < [v6 count]);
+    while (v5 < [datasetCopy count]);
   }
 
-  free(a3);
+  free(matrix);
 }
 
-- (double)createDistancesMatrixForDataset:(id)a3 distanceBlock:(id)a4
+- (double)createDistancesMatrixForDataset:(id)dataset distanceBlock:(id)block
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 count];
+  datasetCopy = dataset;
+  blockCopy = block;
+  v7 = [datasetCopy count];
   v8 = malloc_type_calloc(v7, 8uLL, 0x80040B8603338uLL);
   if (v7)
   {
@@ -230,9 +230,9 @@
       {
         if (v12)
         {
-          v15 = [v5 objectAtIndexedSubscript:v10];
-          v16 = [v5 objectAtIndexedSubscript:v13];
-          v17 = v6[2](v6, v15, v16);
+          v15 = [datasetCopy objectAtIndexedSubscript:v10];
+          v16 = [datasetCopy objectAtIndexedSubscript:v13];
+          v17 = blockCopy[2](blockCopy, v15, v16);
 
           (*v14)[v13] = v17;
           v18 = v11;
@@ -263,29 +263,29 @@
   return v8;
 }
 
-- (id)createKNNMatrixWithDistanceMatrix:(double *)a3 size:(unint64_t)a4
+- (id)createKNNMatrixWithDistanceMatrix:(double *)matrix size:(unint64_t)size
 {
-  v21 = [MEMORY[0x1E695DF70] arrayWithCapacity:a4];
-  if (a4)
+  v21 = [MEMORY[0x1E695DF70] arrayWithCapacity:size];
+  if (size)
   {
     v6 = 0;
     do
     {
       k = self->_k;
-      if (k + 1 < a4)
+      if (k + 1 < size)
       {
-        v8 = k + 1;
+        sizeCopy = k + 1;
       }
 
       else
       {
-        v8 = a4;
+        sizeCopy = size;
       }
 
-      v9 = [MEMORY[0x1E695DF70] arrayWithCapacity:v8];
+      v9 = [MEMORY[0x1E695DF70] arrayWithCapacity:sizeCopy];
       v10 = 0;
       v11 = 0;
-      v12 = a3[v6];
+      v12 = matrix[v6];
       do
       {
         if (v6 != v10)
@@ -317,13 +317,13 @@
         ++v10;
       }
 
-      while (a4 != v10);
+      while (size != v10);
       [v21 addObject:v9];
 
       ++v6;
     }
 
-    while (v6 != a4);
+    while (v6 != size);
   }
 
   return v21;
@@ -349,26 +349,26 @@ uint64_t __64__PLLOFOutlierDetection_createKNNMatrixWithDistanceMatrix_size___bl
   }
 }
 
-- (id)filteredObjectsWithDataset:(id)a3 distanceBlock:(id)a4
+- (id)filteredObjectsWithDataset:(id)dataset distanceBlock:(id)block
 {
   v82 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count] > 2)
+  datasetCopy = dataset;
+  blockCopy = block;
+  if ([datasetCopy count] > 2)
   {
-    v8 = [v6 count];
-    v45 = v7;
-    v47 = self;
-    v63 = [(PLLOFOutlierDetection *)self createDistancesMatrixForDataset:v6 distanceBlock:v7];
+    v8 = [datasetCopy count];
+    v45 = blockCopy;
+    selfCopy = self;
+    v63 = [(PLLOFOutlierDetection *)self createDistancesMatrixForDataset:datasetCopy distanceBlock:blockCopy];
     v44 = v8;
     v51 = [PLLOFOutlierDetection createKNNMatrixWithDistanceMatrix:"createKNNMatrixWithDistanceMatrix:size:" size:?];
-    v49 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v64 = 0u;
     v65 = 0u;
     v66 = 0u;
     v67 = 0u;
-    v46 = v6;
-    obj = v6;
+    v46 = datasetCopy;
+    obj = datasetCopy;
     v52 = [obj countByEnumeratingWithState:&v64 objects:v76 count:16];
     if (v52)
     {
@@ -410,9 +410,9 @@ uint64_t __64__PLLOFOutlierDetection_createKNNMatrixWithDistanceMatrix_size___bl
                 }
 
                 v60 = v13;
-                v14 = [*(*(&v68 + 1) + 8 * v13) integerValue];
+                integerValue = [*(*(&v68 + 1) + 8 * v13) integerValue];
                 v15 = v57;
-                v16 = [v15 objectAtIndexedSubscript:v14];
+                v16 = [v15 objectAtIndexedSubscript:integerValue];
                 v72 = 0u;
                 v73 = 0u;
                 v74 = 0u;
@@ -433,13 +433,13 @@ uint64_t __64__PLLOFOutlierDetection_createKNNMatrixWithDistanceMatrix_size___bl
                         objc_enumerationMutation(v61);
                       }
 
-                      v22 = [*(*(&v72 + 1) + 8 * i) integerValue];
-                      v23 = v63[v22];
-                      v24 = [v15 objectAtIndexedSubscript:v22];
-                      v25 = [v24 lastObject];
-                      v26 = v23[[v25 integerValue]];
+                      integerValue2 = [*(*(&v72 + 1) + 8 * i) integerValue];
+                      v23 = v63[integerValue2];
+                      v24 = [v15 objectAtIndexedSubscript:integerValue2];
+                      lastObject = [v24 lastObject];
+                      v26 = v23[[lastObject integerValue]];
 
-                      v27 = v63[v14][v22];
+                      v27 = v63[integerValue][integerValue2];
                       if (v26 >= v27)
                       {
                         v27 = v26;
@@ -494,13 +494,13 @@ uint64_t __64__PLLOFOutlierDetection_createKNNMatrixWithDistanceMatrix_size___bl
                   objc_enumerationMutation(v30);
                 }
 
-                v35 = [*(*(&v72 + 1) + 8 * j) integerValue];
-                v36 = v63[v35];
-                v37 = [v29 objectAtIndexedSubscript:v35];
-                v38 = [v37 lastObject];
-                v39 = v36[[v38 integerValue]];
+                integerValue3 = [*(*(&v72 + 1) + 8 * j) integerValue];
+                v36 = v63[integerValue3];
+                v37 = [v29 objectAtIndexedSubscript:integerValue3];
+                lastObject2 = [v37 lastObject];
+                v39 = v36[[lastObject2 integerValue]];
 
-                v40 = v63[v58][v35];
+                v40 = v63[v58][integerValue3];
                 if (v39 >= v40)
                 {
                   v40 = v39;
@@ -519,7 +519,7 @@ uint64_t __64__PLLOFOutlierDetection_createKNNMatrixWithDistanceMatrix_size___bl
 
           if (v12 / v62 / v41 <= 1.1)
           {
-            [v49 addObject:v53];
+            [array addObject:v53];
           }
 
           ++v58;
@@ -533,10 +533,10 @@ uint64_t __64__PLLOFOutlierDetection_createKNNMatrixWithDistanceMatrix_size___bl
       while (v52);
     }
 
-    [(PLLOFOutlierDetection *)v47 freeDistancesMatrix:v63 forDataset:obj];
+    [(PLLOFOutlierDetection *)selfCopy freeDistancesMatrix:v63 forDataset:obj];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
     {
-      v43 = [v49 count];
+      v43 = [array count];
       *buf = 134218240;
       v79 = v44 - v43;
       v80 = 2048;
@@ -544,16 +544,16 @@ uint64_t __64__PLLOFOutlierDetection_createKNNMatrixWithDistanceMatrix_size___bl
       _os_log_debug_impl(&dword_19BF1F000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "LOF Filtering: Filtered %ld outliers for %ld objects", buf, 0x16u);
     }
 
-    v7 = v45;
-    v6 = v46;
+    blockCopy = v45;
+    datasetCopy = v46;
   }
 
   else
   {
-    v49 = v6;
+    array = datasetCopy;
   }
 
-  return v49;
+  return array;
 }
 
 - (PLLOFOutlierDetection)init

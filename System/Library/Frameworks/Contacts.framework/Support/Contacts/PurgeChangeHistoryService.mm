@@ -1,5 +1,5 @@
 @interface PurgeChangeHistoryService
-+ (BOOL)purgeChangeHistoryWithError:(id *)a3;
++ (BOOL)purgeChangeHistoryWithError:(id *)error;
 + (void)run;
 @end
 
@@ -10,14 +10,14 @@
   v3 = +[CNContactsDaemonLogs purgeHistory];
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = +[NSString stringWithUTF8String:](NSString, "stringWithUTF8String:", [a1 activityIdentifier]);
+    v4 = +[NSString stringWithUTF8String:](NSString, "stringWithUTF8String:", [self activityIdentifier]);
     *buf = 138412290;
     v12 = v4;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%@ is running to purge change history.", buf, 0xCu);
   }
 
   v10 = 0;
-  v5 = [a1 purgeChangeHistoryWithError:&v10];
+  v5 = [self purgeChangeHistoryWithError:&v10];
   v6 = v10;
   v7 = +[CNContactsDaemonLogs purgeHistory];
   v8 = v7;
@@ -25,7 +25,7 @@
   {
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = +[NSString stringWithUTF8String:](NSString, "stringWithUTF8String:", [a1 activityIdentifier]);
+      v9 = +[NSString stringWithUTF8String:](NSString, "stringWithUTF8String:", [self activityIdentifier]);
       *buf = 138412290;
       v12 = v9;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%@ has finished purging change history.", buf, 0xCu);
@@ -34,11 +34,11 @@
 
   else if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
   {
-    sub_10002C4CC(a1, v6, v8);
+    sub_10002C4CC(self, v6, v8);
   }
 }
 
-+ (BOOL)purgeChangeHistoryWithError:(id *)a3
++ (BOOL)purgeChangeHistoryWithError:(id *)error
 {
   error = 0;
   v4 = ABAddressBookCreateWithOptions(0, &error);
@@ -79,17 +79,17 @@ LABEL_12:
     return v4 != 0;
   }
 
-  v11 = error;
-  if (a3)
+  errorCopy = error;
+  if (error)
   {
-    v12 = error;
-    *a3 = v11;
+    errorCopy2 = error;
+    *error = errorCopy;
   }
 
   v13 = +[CNContactsDaemonLogs purgeHistory];
   if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
   {
-    sub_10002C590(v11, v13);
+    sub_10002C590(errorCopy, v13);
   }
 
   return v4 != 0;

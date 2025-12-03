@@ -1,27 +1,27 @@
 @interface _BMXPCConnection
 - (id)_errorDescription;
-- (id)_initWithConnection:(id)a3 queue:(id)a4 flags:(unint64_t)a5;
+- (id)_initWithConnection:(id)connection queue:(id)queue flags:(unint64_t)flags;
 @end
 
 @implementation _BMXPCConnection
 
-- (id)_initWithConnection:(id)a3 queue:(id)a4 flags:(unint64_t)a5
+- (id)_initWithConnection:(id)connection queue:(id)queue flags:(unint64_t)flags
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [[_BMXPCTransport alloc] initWithConnection:v8];
+  connectionCopy = connection;
+  queueCopy = queue;
+  v10 = [[_BMXPCTransport alloc] initWithConnection:connectionCopy];
   v16.receiver = self;
   v16.super_class = _BMXPCConnection;
   v11 = [(_BMXPCConnection *)&v16 _initWithCustomTransport:v10];
   v12 = v11;
   if (v11)
   {
-    if (v9)
+    if (queueCopy)
     {
-      [v11 _setQueue:v9];
+      [v11 _setQueue:queueCopy];
     }
 
-    name = xpc_connection_get_name(v8);
+    name = xpc_connection_get_name(connectionCopy);
     if (name)
     {
       v14 = [MEMORY[0x1E696AEC0] stringWithUTF8String:name];
@@ -38,7 +38,7 @@
     }
 
     objc_storeStrong(v12 + 21, v10);
-    v12[22] = a5;
+    v12[22] = flags;
   }
 
   return v12;
@@ -46,12 +46,12 @@
 
 - (id)_errorDescription
 {
-  v3 = [(_BMXPCTransport *)self->_transport processIdentifier];
+  processIdentifier = [(_BMXPCTransport *)self->_transport processIdentifier];
   if (self->_flags)
   {
-    if (v3)
+    if (processIdentifier)
     {
-      v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@" from pid %d", v3];
+      v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@" from pid %d", processIdentifier];
     }
 
     else
@@ -83,9 +83,9 @@
 
   else
   {
-    if (v3)
+    if (processIdentifier)
     {
-      v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@" with pid %d", v3];
+      v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@" with pid %d", processIdentifier];
     }
 
     else

@@ -1,23 +1,23 @@
 @interface SYDocumentAttributes
-+ (BOOL)_removeDocumentAttributesForFileAtURL:(id)a3 keepDocumentRelatedUniqueIdentifierKey:(BOOL)a4 error:(id *)a5;
-+ (id)documentAttributesForFileAtURL:(id)a3 error:(id *)a4;
-+ (id)documentAttributesFromData:(id)a3 error:(id *)a4;
-+ (void)_removeDocumentAttributesForFileAtURL:(int)a3 keepDocumentRelatedUniqueIdentifierKey:(void *)a4 completion:;
-+ (void)fetchDocumentAttributesForFileAtURL:(id)a3 completion:(id)a4;
-- (BOOL)saveToFileURL:(id)a3 additionalAttributes:(id)a4 error:(id *)a5;
-- (SYDocumentAttributes)initWithCoder:(id)a3;
-- (SYDocumentAttributes)initWithSourceBundleIdentifier:(id)a3 indexKey:(id)a4 originalFileURL:(id)a5 receivedDate:(id)a6 sender:(id)a7;
-- (void)encodeWithCoder:(id)a3;
-- (void)initWithSourceBundleIdentifier:(uint64_t)a3 indexKey:(uint64_t)a4 fileURL:(uint64_t)a5 receivedDate:(uint64_t)a6 sender:;
-- (void)saveToFileURL:(id)a3 additionalAttributes:(id)a4 completion:(id)a5;
++ (BOOL)_removeDocumentAttributesForFileAtURL:(id)l keepDocumentRelatedUniqueIdentifierKey:(BOOL)key error:(id *)error;
++ (id)documentAttributesForFileAtURL:(id)l error:(id *)error;
++ (id)documentAttributesFromData:(id)data error:(id *)error;
++ (void)_removeDocumentAttributesForFileAtURL:(int)l keepDocumentRelatedUniqueIdentifierKey:(void *)key completion:;
++ (void)fetchDocumentAttributesForFileAtURL:(id)l completion:(id)completion;
+- (BOOL)saveToFileURL:(id)l additionalAttributes:(id)attributes error:(id *)error;
+- (SYDocumentAttributes)initWithCoder:(id)coder;
+- (SYDocumentAttributes)initWithSourceBundleIdentifier:(id)identifier indexKey:(id)key originalFileURL:(id)l receivedDate:(id)date sender:(id)sender;
+- (void)encodeWithCoder:(id)coder;
+- (void)initWithSourceBundleIdentifier:(uint64_t)identifier indexKey:(uint64_t)key fileURL:(uint64_t)l receivedDate:(uint64_t)date sender:;
+- (void)saveToFileURL:(id)l additionalAttributes:(id)attributes completion:(id)completion;
 @end
 
 @implementation SYDocumentAttributes
 
-- (BOOL)saveToFileURL:(id)a3 additionalAttributes:(id)a4 error:(id *)a5
+- (BOOL)saveToFileURL:(id)l additionalAttributes:(id)attributes error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  lCopy = l;
+  attributesCopy = attributes;
   v10 = dispatch_semaphore_create(0);
   v18 = 0;
   v19 = &v18;
@@ -32,12 +32,12 @@
   v17 = &v18;
   v11 = v10;
   v16 = v11;
-  [(SYDocumentAttributes *)self saveToFileURL:v8 additionalAttributes:v9 completion:v15];
+  [(SYDocumentAttributes *)self saveToFileURL:lCopy additionalAttributes:attributesCopy completion:v15];
   dispatch_semaphore_wait(v11, 0xFFFFFFFFFFFFFFFFLL);
   v12 = v19[5];
-  if (a5 && v12)
+  if (error && v12)
   {
-    *a5 = v12;
+    *error = v12;
     v12 = v19[5];
   }
 
@@ -54,13 +54,13 @@ void __74__SYDocumentAttributes_Writing__saveToFileURL_additionalAttributes_erro
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (void)saveToFileURL:(id)a3 additionalAttributes:(id)a4 completion:(id)a5
+- (void)saveToFileURL:(id)l additionalAttributes:(id)attributes completion:(id)completion
 {
   v29[2] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8)
+  lCopy = l;
+  attributesCopy = attributes;
+  completionCopy = completion;
+  if (!lCopy)
   {
     v21 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE658] reason:@"fileURL must not be nil" userInfo:0];
     objc_exception_throw(v21);
@@ -70,7 +70,7 @@ void __74__SYDocumentAttributes_Writing__saveToFileURL_additionalAttributes_erro
   v26[1] = 3221225472;
   v26[2] = __79__SYDocumentAttributes_Writing__saveToFileURL_additionalAttributes_completion___block_invoke;
   v26[3] = &unk_27856B4C0;
-  v11 = v10;
+  v11 = completionCopy;
   v27 = v11;
   v12 = MEMORY[0x22AA6A360](v26);
   v25 = 0;
@@ -81,14 +81,14 @@ void __74__SYDocumentAttributes_Writing__saveToFileURL_additionalAttributes_erro
     v28[0] = @"com.apple.synapse:DocumentAttributes";
     v28[1] = @"SYDocumentRelatedUniqueIdentifierKey";
     v29[0] = v13;
-    v15 = [(SYDocumentAttributes *)self indexKey];
-    v29[1] = v15;
+    indexKey = [(SYDocumentAttributes *)self indexKey];
+    v29[1] = indexKey;
     v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v29 forKeys:v28 count:2];
 
-    if (v9)
+    if (attributesCopy)
     {
       v17 = [v16 mutableCopy];
-      [v17 addEntriesFromDictionary:v9];
+      [v17 addEntriesFromDictionary:attributesCopy];
       v18 = [v17 copy];
 
       v16 = v18;
@@ -98,7 +98,7 @@ void __74__SYDocumentAttributes_Writing__saveToFileURL_additionalAttributes_erro
     v22[1] = 3221225472;
     v22[2] = __79__SYDocumentAttributes_Writing__saveToFileURL_additionalAttributes_completion___block_invoke_9;
     v22[3] = &unk_27856B6E8;
-    v23 = v8;
+    v23 = lCopy;
     v24 = v12;
     [SYFileExtendedAttributes setPrivateAttributes:v16 forFileURL:v23 completion:v22];
   }
@@ -143,11 +143,11 @@ void __79__SYDocumentAttributes_Writing__saveToFileURL_additionalAttributes_comp
   (*(*(a1 + 40) + 16))();
 }
 
-+ (BOOL)_removeDocumentAttributesForFileAtURL:(id)a3 keepDocumentRelatedUniqueIdentifierKey:(BOOL)a4 error:(id *)a5
++ (BOOL)_removeDocumentAttributesForFileAtURL:(id)l keepDocumentRelatedUniqueIdentifierKey:(BOOL)key error:(id *)error
 {
-  v6 = a4;
-  v8 = a3;
-  if (v8)
+  keyCopy = key;
+  lCopy = l;
+  if (lCopy)
   {
     v9 = dispatch_semaphore_create(0);
     v24 = 0;
@@ -168,14 +168,14 @@ void __79__SYDocumentAttributes_Writing__saveToFileURL_additionalAttributes_comp
     v17 = buf;
     v10 = v9;
     v15 = v10;
-    [(SYDocumentAttributes *)a1 _removeDocumentAttributesForFileAtURL:v8 keepDocumentRelatedUniqueIdentifierKey:v6 completion:v14];
+    [(SYDocumentAttributes *)self _removeDocumentAttributesForFileAtURL:lCopy keepDocumentRelatedUniqueIdentifierKey:keyCopy completion:v14];
     dispatch_semaphore_wait(v10, 0xFFFFFFFFFFFFFFFFLL);
-    if (a5)
+    if (error)
     {
       v11 = *(v19 + 5);
       if (v11)
       {
-        *a5 = v11;
+        *error = v11;
       }
     }
 
@@ -207,29 +207,29 @@ void __116__SYDocumentAttributes_Writing___removeDocumentAttributesForFileAtURL_
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-+ (void)_removeDocumentAttributesForFileAtURL:(int)a3 keepDocumentRelatedUniqueIdentifierKey:(void *)a4 completion:
++ (void)_removeDocumentAttributesForFileAtURL:(int)l keepDocumentRelatedUniqueIdentifierKey:(void *)key completion:
 {
   v29[2] = *MEMORY[0x277D85DE8];
   v6 = a2;
-  v7 = a4;
+  keyCopy = key;
   objc_opt_self();
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __121__SYDocumentAttributes_Writing___removeDocumentAttributesForFileAtURL_keepDocumentRelatedUniqueIdentifierKey_completion___block_invoke;
   v22[3] = &unk_27856B738;
-  v8 = v7;
+  v8 = keyCopy;
   v23 = v8;
   v9 = MEMORY[0x22AA6A360](v22);
   v10 = objc_alloc(MEMORY[0x277CBEB38]);
   v28[0] = @"com.apple.synapse:DocumentAttributes";
-  v11 = [MEMORY[0x277CBEA90] data];
+  data = [MEMORY[0x277CBEA90] data];
   v28[1] = @"SYDocumentRelatedUniqueIdentifierKey";
-  v29[0] = v11;
+  v29[0] = data;
   v29[1] = &stru_2838DFF18;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v29 forKeys:v28 count:2];
   v13 = [v10 initWithDictionary:v12];
 
-  if (a3)
+  if (l)
   {
     [v13 removeObjectForKey:@"SYDocumentRelatedUniqueIdentifierKey"];
   }
@@ -237,11 +237,11 @@ void __116__SYDocumentAttributes_Writing___removeDocumentAttributesForFileAtURL_
   v14 = os_log_create("com.apple.synapse", "DocumentWorkflows");
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
-    v15 = [v6 path];
+    path = [v6 path];
     *buf = 138478083;
-    v25 = v15;
+    v25 = path;
     v26 = 1024;
-    v27 = a3;
+    lCopy = l;
     _os_log_impl(&dword_225901000, v14, OS_LOG_TYPE_DEFAULT, "Removing document attributes from file path: %{private}@, keepRelatedUniqueId: %{BOOL}d", buf, 0x12u);
   }
 
@@ -284,60 +284,60 @@ void __121__SYDocumentAttributes_Writing___removeDocumentAttributesForFileAtURL_
   (*(*(a1 + 40) + 16))();
 }
 
-- (SYDocumentAttributes)initWithSourceBundleIdentifier:(id)a3 indexKey:(id)a4 originalFileURL:(id)a5 receivedDate:(id)a6 sender:(id)a7
+- (SYDocumentAttributes)initWithSourceBundleIdentifier:(id)identifier indexKey:(id)key originalFileURL:(id)l receivedDate:(id)date sender:(id)sender
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  identifierCopy = identifier;
+  keyCopy = key;
+  lCopy = l;
+  dateCopy = date;
+  senderCopy = sender;
   v23.receiver = self;
   v23.super_class = SYDocumentAttributes;
   v17 = [(SYDocumentAttributes *)&v23 init];
   if (v17)
   {
-    v18 = [v12 copy];
+    v18 = [identifierCopy copy];
     sourceBundleIdentifier = v17->_sourceBundleIdentifier;
     v17->_sourceBundleIdentifier = v18;
 
-    v20 = [v13 copy];
+    v20 = [keyCopy copy];
     indexKey = v17->_indexKey;
     v17->_indexKey = v20;
 
-    objc_storeStrong(&v17->_originalFileURL, a5);
-    objc_storeStrong(&v17->_receivedDate, a6);
-    objc_storeStrong(&v17->_sender, a7);
+    objc_storeStrong(&v17->_originalFileURL, l);
+    objc_storeStrong(&v17->_receivedDate, date);
+    objc_storeStrong(&v17->_sender, sender);
   }
 
   return v17;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(SYDocumentAttributes *)self sourceBundleIdentifier];
-  [v4 encodeObject:v5 forKey:@"SYDocumentAttributeSourceBundleIdentifierKey"];
+  coderCopy = coder;
+  sourceBundleIdentifier = [(SYDocumentAttributes *)self sourceBundleIdentifier];
+  [coderCopy encodeObject:sourceBundleIdentifier forKey:@"SYDocumentAttributeSourceBundleIdentifierKey"];
 
-  v6 = [(SYDocumentAttributes *)self indexKey];
-  [v4 encodeObject:v6 forKey:@"SYDocumentAttributeIndexKey"];
+  indexKey = [(SYDocumentAttributes *)self indexKey];
+  [coderCopy encodeObject:indexKey forKey:@"SYDocumentAttributeIndexKey"];
 
-  v7 = [(SYDocumentAttributes *)self originalFileURL];
-  [v4 encodeObject:v7 forKey:@"SYDocumentAttributeFileURLKey"];
+  originalFileURL = [(SYDocumentAttributes *)self originalFileURL];
+  [coderCopy encodeObject:originalFileURL forKey:@"SYDocumentAttributeFileURLKey"];
 
-  v8 = [(SYDocumentAttributes *)self receivedDate];
-  [v4 encodeObject:v8 forKey:@"SYDocumentAttributesReceivedDateKey"];
+  receivedDate = [(SYDocumentAttributes *)self receivedDate];
+  [coderCopy encodeObject:receivedDate forKey:@"SYDocumentAttributesReceivedDateKey"];
 
-  v9 = [(SYDocumentAttributes *)self sender];
-  [v4 encodeObject:v9 forKey:@"SYDocumentAttributeSenderKey"];
+  sender = [(SYDocumentAttributes *)self sender];
+  [coderCopy encodeObject:sender forKey:@"SYDocumentAttributeSenderKey"];
 }
 
-- (SYDocumentAttributes)initWithCoder:(id)a3
+- (SYDocumentAttributes)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SYDocumentAttributeSourceBundleIdentifierKey"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SYDocumentAttributeIndexKey"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SYDocumentAttributeFileURLKey"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SYDocumentAttributesReceivedDateKey"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SYDocumentAttributeSourceBundleIdentifierKey"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SYDocumentAttributeIndexKey"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SYDocumentAttributeFileURLKey"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SYDocumentAttributesReceivedDateKey"];
   v9 = v8;
   if (v8)
   {
@@ -351,23 +351,23 @@ void __121__SYDocumentAttributes_Writing___removeDocumentAttributesForFileAtURL_
 
   v11 = v10;
 
-  v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SYDocumentAttributeSenderKey"];
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SYDocumentAttributeSenderKey"];
   v13 = v12;
-  v14 = 0;
+  selfCopy = 0;
   if (v5 && v6 && v7 && v11 && v12)
   {
     self = [(SYDocumentAttributes *)self initWithSourceBundleIdentifier:v5 indexKey:v6 originalFileURL:v7 receivedDate:v11 sender:v12];
-    v14 = self;
+    selfCopy = self;
   }
 
-  return v14;
+  return selfCopy;
 }
 
-+ (id)documentAttributesFromData:(id)a3 error:(id *)a4
++ (id)documentAttributesFromData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = v6;
-  if (v6 && [v6 length])
+  dataCopy = data;
+  v7 = dataCopy;
+  if (dataCopy && [dataCopy length])
   {
     v13 = 0;
     v8 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:objc_opt_class() fromData:v7 error:&v13];
@@ -377,13 +377,13 @@ void __121__SYDocumentAttributes_Writing___removeDocumentAttributesForFileAtURL_
       v10 = os_log_create("com.apple.synapse", "DocumentWorkflows");
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
-        [(SYDocumentAttributes *)a1 documentAttributesFromData:v9 error:v10];
+        [(SYDocumentAttributes *)self documentAttributesFromData:v9 error:v10];
       }
 
-      if (a4 && v9)
+      if (error && v9)
       {
         v11 = v9;
-        *a4 = v9;
+        *error = v9;
       }
     }
   }
@@ -396,9 +396,9 @@ void __121__SYDocumentAttributes_Writing___removeDocumentAttributesForFileAtURL_
   return v8;
 }
 
-+ (id)documentAttributesForFileAtURL:(id)a3 error:(id *)a4
++ (id)documentAttributesForFileAtURL:(id)l error:(id *)error
 {
-  v6 = a3;
+  lCopy = l;
   v7 = dispatch_semaphore_create(0);
   v22 = 0;
   v23 = &v22;
@@ -420,14 +420,14 @@ void __121__SYDocumentAttributes_Writing___removeDocumentAttributesForFileAtURL_
   v15 = &v16;
   v8 = v7;
   v13 = v8;
-  [a1 fetchDocumentAttributesForFileAtURL:v6 completion:v12];
+  [self fetchDocumentAttributesForFileAtURL:lCopy completion:v12];
   dispatch_semaphore_wait(v8, 0xFFFFFFFFFFFFFFFFLL);
-  if (a4)
+  if (error)
   {
     v9 = v17[5];
     if (v9)
     {
-      *a4 = v9;
+      *error = v9;
     }
   }
 
@@ -456,11 +456,11 @@ void __70__SYDocumentAttributes_Reading__documentAttributesForFileAtURL_error___
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-+ (void)fetchDocumentAttributesForFileAtURL:(id)a3 completion:(id)a4
++ (void)fetchDocumentAttributesForFileAtURL:(id)l completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
-  if (!v5)
+  lCopy = l;
+  completionCopy = completion;
+  if (!lCopy)
   {
     v11 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE658] reason:@"fileURL must not be nil" userInfo:0];
     objc_exception_throw(v11);
@@ -470,16 +470,16 @@ void __70__SYDocumentAttributes_Reading__documentAttributesForFileAtURL_error___
   v15[1] = 3221225472;
   v15[2] = __80__SYDocumentAttributes_Reading__fetchDocumentAttributesForFileAtURL_completion___block_invoke;
   v15[3] = &unk_27856B8D8;
-  v16 = v6;
-  v7 = v6;
+  v16 = completionCopy;
+  v7 = completionCopy;
   v8 = MEMORY[0x22AA6A360](v15);
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __80__SYDocumentAttributes_Reading__fetchDocumentAttributesForFileAtURL_completion___block_invoke_2;
   v12[3] = &unk_27856B900;
-  v13 = v5;
+  v13 = lCopy;
   v14 = v8;
-  v9 = v5;
+  v9 = lCopy;
   v10 = v8;
   [SYFileExtendedAttributes fetchPrivateAttributesForFileURL:v9 completion:v12];
 }
@@ -593,14 +593,14 @@ void __121__SYDocumentAttributes_Writing___removeDocumentAttributesForFileAtURL_
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)initWithSourceBundleIdentifier:(uint64_t)a3 indexKey:(uint64_t)a4 fileURL:(uint64_t)a5 receivedDate:(uint64_t)a6 sender:
+- (void)initWithSourceBundleIdentifier:(uint64_t)identifier indexKey:(uint64_t)key fileURL:(uint64_t)l receivedDate:(uint64_t)date sender:
 {
-  if (a1)
+  if (self)
   {
-    return [a1 initWithSourceBundleIdentifier:a2 indexKey:a3 originalFileURL:a4 receivedDate:a5 sender:a6];
+    return [self initWithSourceBundleIdentifier:a2 indexKey:identifier originalFileURL:key receivedDate:l sender:date];
   }
 
-  return a1;
+  return self;
 }
 
 + (void)documentAttributesFromData:(NSObject *)a3 error:.cold.1(objc_class *a1, uint64_t a2, NSObject *a3)

@@ -1,53 +1,53 @@
 @interface HFSetDiff
-+ (id)diffFromSet:(id)a3 toSet:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (id)_initWithFromSet:(id)a3 toSet:(id)a4 additions:(id)a5 deletions:(id)a6 updates:(id)a7;
++ (id)diffFromSet:(id)set toSet:(id)toSet;
+- (BOOL)isEqual:(id)equal;
+- (id)_initWithFromSet:(id)set toSet:(id)toSet additions:(id)additions deletions:(id)deletions updates:(id)updates;
 - (id)description;
-- (id)diffByMergingDiff:(id)a3 keyGenerator:(id)a4;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)diffByMergingDiff:(id)diff keyGenerator:(id)generator;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
 @implementation HFSetDiff
 
-+ (id)diffFromSet:(id)a3 toSet:(id)a4
++ (id)diffFromSet:(id)set toSet:(id)toSet
 {
   v5 = MEMORY[0x277CBEB58];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v5 setWithSet:v6];
-  [v8 minusSet:v7];
-  v9 = [MEMORY[0x277CBEB58] setWithSet:v7];
-  [v9 minusSet:v6];
-  v10 = [MEMORY[0x277CBEB58] setWithSet:v6];
+  toSetCopy = toSet;
+  setCopy = set;
+  v8 = [v5 setWithSet:toSetCopy];
+  [v8 minusSet:setCopy];
+  v9 = [MEMORY[0x277CBEB58] setWithSet:setCopy];
+  [v9 minusSet:toSetCopy];
+  v10 = [MEMORY[0x277CBEB58] setWithSet:toSetCopy];
   [v10 minusSet:v8];
   [v10 minusSet:v9];
   v11 = [HFSetDiff alloc];
-  v12 = [v6 mutableCopy];
+  v12 = [toSetCopy mutableCopy];
 
-  v13 = [(HFSetDiff *)v11 _initWithFromSet:v7 toSet:v12 additions:v8 deletions:v9 updates:v10];
+  v13 = [(HFSetDiff *)v11 _initWithFromSet:setCopy toSet:v12 additions:v8 deletions:v9 updates:v10];
 
   return v13;
 }
 
-- (id)_initWithFromSet:(id)a3 toSet:(id)a4 additions:(id)a5 deletions:(id)a6 updates:(id)a7
+- (id)_initWithFromSet:(id)set toSet:(id)toSet additions:(id)additions deletions:(id)deletions updates:(id)updates
 {
-  v20 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  setCopy = set;
+  toSetCopy = toSet;
+  additionsCopy = additions;
+  deletionsCopy = deletions;
+  updatesCopy = updates;
   v21.receiver = self;
   v21.super_class = HFSetDiff;
   v17 = [(HFSetDiff *)&v21 init];
   p_isa = &v17->super.isa;
   if (v17)
   {
-    objc_storeStrong(&v17->_fromSet, a3);
-    objc_storeStrong(p_isa + 2, a4);
-    objc_storeStrong(p_isa + 3, a5);
-    objc_storeStrong(p_isa + 4, a6);
-    objc_storeStrong(p_isa + 5, a7);
+    objc_storeStrong(&v17->_fromSet, set);
+    objc_storeStrong(p_isa + 2, toSet);
+    objc_storeStrong(p_isa + 3, additions);
+    objc_storeStrong(p_isa + 4, deletions);
+    objc_storeStrong(p_isa + 5, updates);
   }
 
   return p_isa;
@@ -55,35 +55,35 @@
 
 - (unint64_t)hash
 {
-  v2 = [(HFSetDiff *)self fromSet];
-  v3 = [v2 hash];
+  fromSet = [(HFSetDiff *)self fromSet];
+  v3 = [fromSet hash];
 
   return v3;
 }
 
-- (id)diffByMergingDiff:(id)a3 keyGenerator:(id)a4
+- (id)diffByMergingDiff:(id)diff keyGenerator:(id)generator
 {
   v35[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HFSetDiff *)self toSet];
-  v9 = [(HFSetDiff *)self deletions];
-  v10 = [v8 setByAddingObjectsFromSet:v9];
-  v11 = [v10 na_dictionaryWithKeyGenerator:v7];
+  diffCopy = diff;
+  generatorCopy = generator;
+  toSet = [(HFSetDiff *)self toSet];
+  deletions = [(HFSetDiff *)self deletions];
+  v10 = [toSet setByAddingObjectsFromSet:deletions];
+  v11 = [v10 na_dictionaryWithKeyGenerator:generatorCopy];
 
-  v12 = [v6 toSet];
-  v13 = [v6 deletions];
-  v14 = [v12 setByAddingObjectsFromSet:v13];
-  v15 = [v14 na_dictionaryWithKeyGenerator:v7];
+  toSet2 = [diffCopy toSet];
+  deletions2 = [diffCopy deletions];
+  v14 = [toSet2 setByAddingObjectsFromSet:deletions2];
+  v15 = [v14 na_dictionaryWithKeyGenerator:generatorCopy];
 
   v16 = MEMORY[0x277CBEB98];
-  v17 = [v11 allKeys];
-  v35[0] = v17;
-  v18 = [v15 allKeys];
-  v35[1] = v18;
+  allKeys = [v11 allKeys];
+  v35[0] = allKeys;
+  allKeys2 = [v15 allKeys];
+  v35[1] = allKeys2;
   v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v35 count:2];
-  v20 = [v19 na_arrayByFlattening];
-  v21 = [v16 setWithArray:v20];
+  na_arrayByFlattening = [v19 na_arrayByFlattening];
+  v21 = [v16 setWithArray:na_arrayByFlattening];
 
   v22 = [(HFSetDiff *)self mutableCopy];
   v30[0] = MEMORY[0x277D85DD0];
@@ -92,10 +92,10 @@
   v30[3] = &unk_277E016D0;
   v31 = v11;
   v32 = v15;
-  v33 = v6;
+  v33 = diffCopy;
   v34 = v22;
   v23 = v22;
-  v24 = v6;
+  v24 = diffCopy;
   v25 = v15;
   v26 = v11;
   [v21 na_each:v30];
@@ -150,10 +150,10 @@ LABEL_13:
 LABEL_14:
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     LOBYTE(v10) = 1;
   }
@@ -163,28 +163,28 @@ LABEL_14:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(HFSetDiff *)v5 fromSet];
-      v7 = [(HFSetDiff *)self fromSet];
-      if (v6 == v7)
+      v5 = equalCopy;
+      fromSet = [(HFSetDiff *)v5 fromSet];
+      fromSet2 = [(HFSetDiff *)self fromSet];
+      if (fromSet == fromSet2)
       {
         v10 = 1;
       }
 
       else
       {
-        v8 = [(HFSetDiff *)v5 fromSet];
-        v9 = [(HFSetDiff *)self fromSet];
-        v10 = [v8 isEqual:v9];
+        fromSet3 = [(HFSetDiff *)v5 fromSet];
+        fromSet4 = [(HFSetDiff *)self fromSet];
+        v10 = [fromSet3 isEqual:fromSet4];
       }
 
-      v11 = [(HFSetDiff *)v5 toSet];
-      v12 = [(HFSetDiff *)self toSet];
-      if (v11 != v12)
+      toSet = [(HFSetDiff *)v5 toSet];
+      toSet2 = [(HFSetDiff *)self toSet];
+      if (toSet != toSet2)
       {
-        v13 = [(HFSetDiff *)v5 toSet];
-        v14 = [(HFSetDiff *)self toSet];
-        v10 &= [v13 isEqual:v14];
+        toSet3 = [(HFSetDiff *)v5 toSet];
+        toSet4 = [(HFSetDiff *)self toSet];
+        v10 &= [toSet3 isEqual:toSet4];
       }
     }
 
@@ -197,19 +197,19 @@ LABEL_14:
   return v10;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [HFMutableSetDiff alloc];
-  v16 = [(HFSetDiff *)self fromSet];
-  v5 = [v16 copy];
-  v6 = [(HFSetDiff *)self toSet];
-  v7 = [v6 mutableCopy];
-  v8 = [(HFSetDiff *)self additions];
-  v9 = [v8 mutableCopy];
-  v10 = [(HFSetDiff *)self deletions];
-  v11 = [v10 mutableCopy];
-  v12 = [(HFSetDiff *)self updates];
-  v13 = [v12 mutableCopy];
+  fromSet = [(HFSetDiff *)self fromSet];
+  v5 = [fromSet copy];
+  toSet = [(HFSetDiff *)self toSet];
+  v7 = [toSet mutableCopy];
+  additions = [(HFSetDiff *)self additions];
+  v9 = [additions mutableCopy];
+  deletions = [(HFSetDiff *)self deletions];
+  v11 = [deletions mutableCopy];
+  updates = [(HFSetDiff *)self updates];
+  v13 = [updates mutableCopy];
   v14 = [(HFSetDiff *)v4 _initWithFromSet:v5 toSet:v7 additions:v9 deletions:v11 updates:v13];
 
   return v14;
@@ -218,12 +218,12 @@ LABEL_14:
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HFSetDiff *)self fromSet];
-  v5 = [(HFSetDiff *)self toSet];
-  v6 = [(HFSetDiff *)self additions];
-  v7 = [(HFSetDiff *)self deletions];
-  v8 = [(HFSetDiff *)self updates];
-  v9 = [v3 stringWithFormat:@"From Set: %@\n To Set: %@\n Additions: %@\n Deletions: %@\n Updates:%@", v4, v5, v6, v7, v8];
+  fromSet = [(HFSetDiff *)self fromSet];
+  toSet = [(HFSetDiff *)self toSet];
+  additions = [(HFSetDiff *)self additions];
+  deletions = [(HFSetDiff *)self deletions];
+  updates = [(HFSetDiff *)self updates];
+  v9 = [v3 stringWithFormat:@"From Set: %@\n To Set: %@\n Additions: %@\n Deletions: %@\n Updates:%@", fromSet, toSet, additions, deletions, updates];
 
   return v9;
 }

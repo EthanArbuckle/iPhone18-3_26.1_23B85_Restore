@@ -1,20 +1,20 @@
 @interface MTManagedObjectContext
 - (BOOL)_isInternalCoreDataQueue;
-- (BOOL)handleError:(id *)a3 withCallback:(id)a4;
-- (MTManagedObjectContext)initWithConcurrencyType:(unint64_t)a3 name:(id)a4;
-- (id)executeFetchRequest:(id)a3 error:(id *)a4;
-- (id)existingObjectWithID:(id)a3 error:(id *)a4;
+- (BOOL)handleError:(id *)error withCallback:(id)callback;
+- (MTManagedObjectContext)initWithConcurrencyType:(unint64_t)type name:(id)name;
+- (id)executeFetchRequest:(id)request error:(id *)error;
+- (id)existingObjectWithID:(id)d error:(id *)error;
 - (id)name;
-- (id)objectRegisteredForID:(id)a3;
-- (id)objectWithID:(id)a3;
-- (unint64_t)countForFetchRequest:(id)a3 error:(id *)a4;
-- (void)deleteObject:(id)a3;
-- (void)insertObject:(id)a3;
-- (void)performBlock:(id)a3;
-- (void)performBlockAndWait:(id)a3;
+- (id)objectRegisteredForID:(id)d;
+- (id)objectWithID:(id)d;
+- (unint64_t)countForFetchRequest:(id)request error:(id *)error;
+- (void)deleteObject:(id)object;
+- (void)insertObject:(id)object;
+- (void)performBlock:(id)block;
+- (void)performBlockAndWait:(id)wait;
 - (void)reset;
 - (void)validateConcurencyType;
-- (void)validatePodcastDeletion:(id)a3;
+- (void)validatePodcastDeletion:(id)deletion;
 @end
 
 @implementation MTManagedObjectContext
@@ -32,10 +32,10 @@
 
   else
   {
-    v4 = [MEMORY[0x1E696AF00] isMainThread];
-    if (!+[PFClientUtil isRunningOnHomepod]|| (v4 & 1) != 0)
+    isMainThread = [MEMORY[0x1E696AF00] isMainThread];
+    if (!+[PFClientUtil isRunningOnHomepod]|| (isMainThread & 1) != 0)
     {
-      if (v4)
+      if (isMainThread)
       {
         return;
       }
@@ -75,8 +75,8 @@
 
     else
     {
-      v7 = [(MTManagedObjectContext *)self persistentStoreCoordinator];
-      v4 = v6 == v7;
+      persistentStoreCoordinator = [(MTManagedObjectContext *)self persistentStoreCoordinator];
+      v4 = v6 == persistentStoreCoordinator;
     }
   }
 
@@ -87,9 +87,9 @@
 {
   v7.receiver = self;
   v7.super_class = MTManagedObjectContext;
-  v3 = [(MTManagedObjectContext *)&v7 name];
-  mt_immutableName = v3;
-  if (!v3)
+  name = [(MTManagedObjectContext *)&v7 name];
+  mt_immutableName = name;
+  if (!name)
   {
     mt_immutableName = self->_mt_immutableName;
   }
@@ -99,19 +99,19 @@
   return mt_immutableName;
 }
 
-- (MTManagedObjectContext)initWithConcurrencyType:(unint64_t)a3 name:(id)a4
+- (MTManagedObjectContext)initWithConcurrencyType:(unint64_t)type name:(id)name
 {
-  v6 = a4;
+  nameCopy = name;
   v13.receiver = self;
   v13.super_class = MTManagedObjectContext;
-  v7 = [(MTManagedObjectContext *)&v13 initWithConcurrencyType:a3];
+  v7 = [(MTManagedObjectContext *)&v13 initWithConcurrencyType:type];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [nameCopy copy];
     mt_immutableName = v7->_mt_immutableName;
     v7->_mt_immutableName = v8;
 
-    if (a3 == 2)
+    if (type == 2)
     {
       v11[0] = MEMORY[0x1E69E9820];
       v11[1] = 3221225472;
@@ -130,52 +130,52 @@
   return v7;
 }
 
-- (void)deleteObject:(id)a3
+- (void)deleteObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   [(MTManagedObjectContext *)self validateConcurencyType];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(MTManagedObjectContext *)self validatePodcastDeletion:v4];
+    [(MTManagedObjectContext *)self validatePodcastDeletion:objectCopy];
   }
 
-  if (v4)
+  if (objectCopy)
   {
     v5.receiver = self;
     v5.super_class = MTManagedObjectContext;
-    [(MTManagedObjectContext *)&v5 deleteObject:v4];
+    [(MTManagedObjectContext *)&v5 deleteObject:objectCopy];
   }
 }
 
-- (void)validatePodcastDeletion:(id)a3
+- (void)validatePodcastDeletion:(id)deletion
 {
-  v3 = a3;
-  v4 = [v3 episodes];
-  v5 = [v4 count];
+  deletionCopy = deletion;
+  episodes = [deletionCopy episodes];
+  v5 = [episodes count];
 
   if (v5)
   {
     v6 = _MTLogCategoryDatabase();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_FAULT))
     {
-      [(MTManagedObjectContext *)v3 validatePodcastDeletion:v6];
+      [(MTManagedObjectContext *)deletionCopy validatePodcastDeletion:v6];
     }
   }
 }
 
-- (void)insertObject:(id)a3
+- (void)insertObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   [(MTManagedObjectContext *)self validateConcurencyType];
   v5.receiver = self;
   v5.super_class = MTManagedObjectContext;
-  [(MTManagedObjectContext *)&v5 insertObject:v4];
+  [(MTManagedObjectContext *)&v5 insertObject:objectCopy];
 }
 
-- (id)executeFetchRequest:(id)a3 error:(id *)a4
+- (id)executeFetchRequest:(id)request error:(id *)error
 {
-  v6 = a3;
+  requestCopy = request;
   [(MTManagedObjectContext *)self validateConcurencyType];
   v14 = 0;
   v15 = &v14;
@@ -188,10 +188,10 @@
   v10[2] = __52__MTManagedObjectContext_executeFetchRequest_error___block_invoke;
   v10[3] = &unk_1E856A048;
   v13 = &v14;
-  v7 = v6;
+  v7 = requestCopy;
   v11 = v7;
-  v12 = self;
-  [(MTManagedObjectContext *)self handleError:a4 withCallback:v10];
+  selfCopy = self;
+  [(MTManagedObjectContext *)self handleError:error withCallback:v10];
   v8 = v15[5];
 
   _Block_object_dispose(&v14, 8);
@@ -218,9 +218,9 @@ void __52__MTManagedObjectContext_executeFetchRequest_error___block_invoke(uint6
   [(MTManagedObjectContext *)&v3 reset];
 }
 
-- (unint64_t)countForFetchRequest:(id)a3 error:(id *)a4
+- (unint64_t)countForFetchRequest:(id)request error:(id *)error
 {
-  v6 = a3;
+  requestCopy = request;
   [(MTManagedObjectContext *)self validateConcurencyType];
   v14 = 0;
   v15 = &v14;
@@ -231,10 +231,10 @@ void __52__MTManagedObjectContext_executeFetchRequest_error___block_invoke(uint6
   v10[2] = __53__MTManagedObjectContext_countForFetchRequest_error___block_invoke;
   v10[3] = &unk_1E856A048;
   v13 = &v14;
-  v7 = v6;
+  v7 = requestCopy;
   v11 = v7;
-  v12 = self;
-  [(MTManagedObjectContext *)self handleError:a4 withCallback:v10];
+  selfCopy = self;
+  [(MTManagedObjectContext *)self handleError:error withCallback:v10];
   v8 = v15[3];
 
   _Block_object_dispose(&v14, 8);
@@ -251,31 +251,31 @@ id __53__MTManagedObjectContext_countForFetchRequest_error___block_invoke(uint64
   return result;
 }
 
-- (id)objectRegisteredForID:(id)a3
+- (id)objectRegisteredForID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   [(MTManagedObjectContext *)self validateConcurencyType];
   v7.receiver = self;
   v7.super_class = MTManagedObjectContext;
-  v5 = [(MTManagedObjectContext *)&v7 objectRegisteredForID:v4];
+  v5 = [(MTManagedObjectContext *)&v7 objectRegisteredForID:dCopy];
 
   return v5;
 }
 
-- (id)objectWithID:(id)a3
+- (id)objectWithID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   [(MTManagedObjectContext *)self validateConcurencyType];
   v7.receiver = self;
   v7.super_class = MTManagedObjectContext;
-  v5 = [(MTManagedObjectContext *)&v7 objectWithID:v4];
+  v5 = [(MTManagedObjectContext *)&v7 objectWithID:dCopy];
 
   return v5;
 }
 
-- (id)existingObjectWithID:(id)a3 error:(id *)a4
+- (id)existingObjectWithID:(id)d error:(id *)error
 {
-  v6 = a3;
+  dCopy = d;
   [(MTManagedObjectContext *)self validateConcurencyType];
   v14 = 0;
   v15 = &v14;
@@ -288,10 +288,10 @@ id __53__MTManagedObjectContext_countForFetchRequest_error___block_invoke(uint64
   v10[2] = __53__MTManagedObjectContext_existingObjectWithID_error___block_invoke;
   v10[3] = &unk_1E856A048;
   v13 = &v14;
-  v7 = v6;
+  v7 = dCopy;
   v11 = v7;
-  v12 = self;
-  [(MTManagedObjectContext *)self handleError:a4 withCallback:v10];
+  selfCopy = self;
+  [(MTManagedObjectContext *)self handleError:error withCallback:v10];
   v8 = v15[5];
 
   _Block_object_dispose(&v14, 8);
@@ -310,20 +310,20 @@ void __53__MTManagedObjectContext_existingObjectWithID_error___block_invoke(uint
   *(v5 + 40) = v4;
 }
 
-- (BOOL)handleError:(id *)a3 withCallback:(id)a4
+- (BOOL)handleError:(id *)error withCallback:(id)callback
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  callbackCopy = callback;
   v13 = 0;
-  v5[2](v5, &v13);
+  callbackCopy[2](callbackCopy, &v13);
   v6 = v13;
   if (v13)
   {
     v7 = v13;
-    if (a3)
+    if (error)
     {
       v8 = v13;
-      *a3 = v6;
+      *error = v6;
       v7 = v13;
     }
 
@@ -335,7 +335,7 @@ void __53__MTManagedObjectContext_existingObjectWithID_error___block_invoke(uint
         v11 = _MTLogCategoryDatabase();
         if (os_log_type_enabled(v11, OS_LOG_TYPE_FAULT))
         {
-          v12 = *a3;
+          v12 = *error;
           *buf = 138412290;
           v15 = v12;
           _os_log_impl(&dword_1D8CEC000, v11, OS_LOG_TYPE_FAULT, "Marking database as corrupt with error: %@", buf, 0xCu);
@@ -352,18 +352,18 @@ void __53__MTManagedObjectContext_existingObjectWithID_error___block_invoke(uint
   return v6 == 0;
 }
 
-- (void)performBlockAndWait:(id)a3
+- (void)performBlockAndWait:(id)wait
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  waitCopy = wait;
   if ([MEMORY[0x1E696AF00] isMainThread] && -[MTManagedObjectContext type](self, "type") == 1 && (isRunningUnitTests() & 1) == 0)
   {
     v5 = _MTLogCategoryDatabase();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
-      v6 = [MEMORY[0x1E696AF00] callStackSymbols];
+      callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
       *buf = 138412290;
-      v19 = v6;
+      v19 = callStackSymbols;
       _os_log_impl(&dword_1D8CEC000, v5, OS_LOG_TYPE_ERROR, "Blocking the main thread on a background queue is error prone:\n %@", buf, 0xCu);
     }
   }
@@ -385,12 +385,12 @@ void __53__MTManagedObjectContext_existingObjectWithID_error___block_invoke(uint
   v15[1] = 3221225472;
   v15[2] = __46__MTManagedObjectContext_performBlockAndWait___block_invoke;
   v15[3] = &unk_1E856A070;
-  v16 = v4;
+  v16 = waitCopy;
   v17 = v8;
   v15[4] = self;
   v14.receiver = self;
   v14.super_class = MTManagedObjectContext;
-  v12 = v4;
+  v12 = waitCopy;
   [(MTManagedObjectContext *)&v14 performBlockAndWait:v15];
 
   v13 = *MEMORY[0x1E69E9840];
@@ -433,18 +433,18 @@ void __46__MTManagedObjectContext_performBlockAndWait___block_invoke(void *a1)
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)performBlock:(id)a3
+- (void)performBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __39__MTManagedObjectContext_performBlock___block_invoke;
   v7[3] = &unk_1E85692C8;
   v7[4] = self;
-  v8 = v4;
+  v8 = blockCopy;
   v6.receiver = self;
   v6.super_class = MTManagedObjectContext;
-  v5 = v4;
+  v5 = blockCopy;
   [(MTManagedObjectContext *)&v6 performBlock:v7];
 }
 

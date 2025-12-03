@@ -1,29 +1,29 @@
 @interface DKInkThumbnailRenderer
-+ (BOOL)_drawDebugPatternInGLContext:(id)a3 inSize:(CGSize)a4;
-+ (CGPath)_newStrokedInterpolatedPathWithDrawing:(id)a3 inSize:(CGSize)a4 displayScale:(double)a5;
-+ (CGSize)sizeForDrawing:(id)a3 inSize:(CGSize)a4;
-+ (double)scaleToFitDrawing:(id)a3 inSize:(CGSize)a4;
-+ (id)_imageForDrawingUsingCG:(id)a3 fittingInSize:(CGSize)a4 displayScale:(double)a5 color:(id)a6;
-+ (id)_imageForDrawingUsingGL:(id)a3 fittingInSize:(CGSize)a4 displayScale:(double)a5 color:(id)a6;
-+ (id)imageForDrawing:(id)a3 fittingInSize:(CGSize)a4 backingScale:(double)a5 color:(id)a6 highFidelity:(BOOL)a7;
-+ (id)imageForDrawing:(id)a3 fittingInSize:(CGSize)a4 color:(id)a5 highFidelity:(BOOL)a6;
-+ (void)_drawPath:(id)a3 atScale:(double)a4 inRect:(CGRect)a5 inkColor:(id)a6 backgroundColor:(id)a7 inContext:(CGContext *)a8;
-+ (void)_interpolateDrawing:(id)a3 inSize:(CGSize)a4 displayScale:(double)a5 ellipseHandler:(id)a6;
++ (BOOL)_drawDebugPatternInGLContext:(id)context inSize:(CGSize)size;
++ (CGPath)_newStrokedInterpolatedPathWithDrawing:(id)drawing inSize:(CGSize)size displayScale:(double)scale;
++ (CGSize)sizeForDrawing:(id)drawing inSize:(CGSize)size;
++ (double)scaleToFitDrawing:(id)drawing inSize:(CGSize)size;
++ (id)_imageForDrawingUsingCG:(id)g fittingInSize:(CGSize)size displayScale:(double)scale color:(id)color;
++ (id)_imageForDrawingUsingGL:(id)l fittingInSize:(CGSize)size displayScale:(double)scale color:(id)color;
++ (id)imageForDrawing:(id)drawing fittingInSize:(CGSize)size backingScale:(double)scale color:(id)color highFidelity:(BOOL)fidelity;
++ (id)imageForDrawing:(id)drawing fittingInSize:(CGSize)size color:(id)color highFidelity:(BOOL)fidelity;
++ (void)_drawPath:(id)path atScale:(double)scale inRect:(CGRect)rect inkColor:(id)color backgroundColor:(id)backgroundColor inContext:(CGContext *)context;
++ (void)_interpolateDrawing:(id)drawing inSize:(CGSize)size displayScale:(double)scale ellipseHandler:(id)handler;
 @end
 
 @implementation DKInkThumbnailRenderer
 
-+ (CGSize)sizeForDrawing:(id)a3 inSize:(CGSize)a4
++ (CGSize)sizeForDrawing:(id)drawing inSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v6 = a3;
-  if (DKDrawingIsValid(v6))
+  height = size.height;
+  width = size.width;
+  drawingCopy = drawing;
+  if (DKDrawingIsValid(drawingCopy))
   {
-    [objc_opt_class() scaleToFitDrawing:v6 inSize:{width, height}];
+    [objc_opt_class() scaleToFitDrawing:drawingCopy inSize:{width, height}];
     memset(&v17, 0, sizeof(v17));
     CGAffineTransformMakeScale(&v17, v7, v7);
-    [v6 strokesFrame];
+    [drawingCopy strokesFrame];
     v16 = v17;
     v20 = CGRectApplyAffineTransform(v19, &v16);
     x = v20.origin.x;
@@ -51,41 +51,41 @@
   return result;
 }
 
-+ (id)imageForDrawing:(id)a3 fittingInSize:(CGSize)a4 color:(id)a5 highFidelity:(BOOL)a6
++ (id)imageForDrawing:(id)drawing fittingInSize:(CGSize)size color:(id)color highFidelity:(BOOL)fidelity
 {
-  v6 = a6;
-  height = a4.height;
-  width = a4.width;
-  v10 = a5;
-  v11 = a3;
-  v12 = [objc_opt_class() imageForDrawing:v11 fittingInSize:v10 backingScale:v6 color:width highFidelity:{height, 0.0}];
+  fidelityCopy = fidelity;
+  height = size.height;
+  width = size.width;
+  colorCopy = color;
+  drawingCopy = drawing;
+  v12 = [objc_opt_class() imageForDrawing:drawingCopy fittingInSize:colorCopy backingScale:fidelityCopy color:width highFidelity:{height, 0.0}];
 
   return v12;
 }
 
-+ (id)imageForDrawing:(id)a3 fittingInSize:(CGSize)a4 backingScale:(double)a5 color:(id)a6 highFidelity:(BOOL)a7
++ (id)imageForDrawing:(id)drawing fittingInSize:(CGSize)size backingScale:(double)scale color:(id)color highFidelity:(BOOL)fidelity
 {
-  v7 = a7;
-  height = a4.height;
-  width = a4.width;
-  v12 = a3;
-  v13 = a6;
-  if (a5 <= 0.0)
+  fidelityCopy = fidelity;
+  height = size.height;
+  width = size.width;
+  drawingCopy = drawing;
+  colorCopy = color;
+  if (scale <= 0.0)
   {
     [DKInkView windowBackingScaleFactor:0];
-    a5 = v14;
+    scale = v14;
   }
 
-  if (v7)
+  if (fidelityCopy)
   {
-    v15 = [MEMORY[0x277D75418] currentDevice];
-    if ([v15 dk_deviceSupportsGL])
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice dk_deviceSupportsGL])
     {
       v16 = +[DKInkView gpuAvailable];
 
       if (v16)
       {
-        v17 = [objc_opt_class() _imageForDrawingUsingGL:v12 fittingInSize:v13 displayScale:width color:{height, a5}];
+        v17 = [objc_opt_class() _imageForDrawingUsingGL:drawingCopy fittingInSize:colorCopy displayScale:width color:{height, scale}];
         goto LABEL_9;
       }
     }
@@ -95,28 +95,28 @@
     }
   }
 
-  v17 = [objc_opt_class() _imageForDrawingUsingCG:v12 fittingInSize:v13 displayScale:width color:{height, a5}];
+  v17 = [objc_opt_class() _imageForDrawingUsingCG:drawingCopy fittingInSize:colorCopy displayScale:width color:{height, scale}];
 LABEL_9:
   v18 = v17;
 
   return v18;
 }
 
-+ (double)scaleToFitDrawing:(id)a3 inSize:(CGSize)a4
++ (double)scaleToFitDrawing:(id)drawing inSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v6 = a3;
-  [v6 canvasBounds];
+  height = size.height;
+  width = size.width;
+  drawingCopy = drawing;
+  [drawingCopy canvasBounds];
   v8 = *MEMORY[0x277CBF3A8];
   v9 = *(MEMORY[0x277CBF3A8] + 8);
   v10 = 1.0;
   if (v11 != *MEMORY[0x277CBF3A8] || v7 != v9)
   {
-    [v6 strokesFrame];
+    [drawingCopy strokesFrame];
     if (v14 != v8 || v13 != v9)
     {
-      [v6 strokesFrame];
+      [drawingCopy strokesFrame];
       x = v23.origin.x;
       y = v23.origin.y;
       v18 = v23.size.width;
@@ -139,19 +139,19 @@ LABEL_9:
   return v10;
 }
 
-+ (id)_imageForDrawingUsingCG:(id)a3 fittingInSize:(CGSize)a4 displayScale:(double)a5 color:(id)a6
++ (id)_imageForDrawingUsingCG:(id)g fittingInSize:(CGSize)size displayScale:(double)scale color:(id)color
 {
-  height = a4.height;
-  width = a4.width;
-  v10 = a3;
-  v11 = a6;
-  if (DKDrawingIsValid(v10))
+  height = size.height;
+  width = size.width;
+  gCopy = g;
+  colorCopy = color;
+  if (DKDrawingIsValid(gCopy))
   {
-    [objc_opt_class() scaleToFitDrawing:v10 inSize:{width, height}];
+    [objc_opt_class() scaleToFitDrawing:gCopy inSize:{width, height}];
     v13 = v12;
     memset(&v28, 0, sizeof(v28));
     CGAffineTransformMakeScale(&v28, v12, v12);
-    [v10 strokesFrame];
+    [gCopy strokesFrame];
     v27 = v28;
     v32 = CGRectApplyAffineTransform(v31, &v27);
     x = v32.origin.x;
@@ -165,21 +165,21 @@ LABEL_9:
     v33.size.width = v16;
     v33.size.height = v17;
     v19 = ceil(CGRectGetHeight(v33));
-    v20 = [DKDrawing copyOfDrawing:v10 toFitInBounds:0.0, 0.0, v18, v19];
+    v20 = [DKDrawing copyOfDrawing:gCopy toFitInBounds:0.0, 0.0, v18, v19];
     v30.width = v18;
     v30.height = v19;
-    UIGraphicsBeginImageContextWithOptions(v30, 0, a5);
+    UIGraphicsBeginImageContextWithOptions(v30, 0, scale);
     CurrentContext = UIGraphicsGetCurrentContext();
-    CGContextSetFillColorWithColor(CurrentContext, [v11 CGColor]);
+    CGContextSetFillColorWithColor(CurrentContext, [colorCopy CGColor]);
     v22 = objc_opt_class();
     v26[0] = MEMORY[0x277D85DD0];
     v26[1] = 3221225472;
     v26[2] = __83__DKInkThumbnailRenderer__imageForDrawingUsingCG_fittingInSize_displayScale_color___block_invoke;
     v26[3] = &__block_descriptor_56_e7_v24__08l;
-    *&v26[4] = a5;
+    *&v26[4] = scale;
     *&v26[5] = v13;
     v26[6] = CurrentContext;
-    [v22 _interpolateDrawing:v20 inSize:v26 displayScale:width ellipseHandler:{v25, a5}];
+    [v22 _interpolateDrawing:v20 inSize:v26 displayScale:width ellipseHandler:{v25, scale}];
     v23 = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
   }
@@ -212,14 +212,14 @@ void __83__DKInkThumbnailRenderer__imageForDrawingUsingCG_fittingInSize_displayS
   CGContextFillEllipseInRect(v9, *(&v6 - 2));
 }
 
-+ (void)_interpolateDrawing:(id)a3 inSize:(CGSize)a4 displayScale:(double)a5 ellipseHandler:(id)a6
++ (void)_interpolateDrawing:(id)drawing inSize:(CGSize)size displayScale:(double)scale ellipseHandler:(id)handler
 {
   v60 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a6;
-  if ([v7 totalPoints] >= 1)
+  drawingCopy = drawing;
+  handlerCopy = handler;
+  if ([drawingCopy totalPoints] >= 1)
   {
-    [v7 strokes];
+    [drawingCopy strokes];
     v55 = 0u;
     v56 = 0u;
     v57 = 0u;
@@ -239,18 +239,18 @@ void __83__DKInkThumbnailRenderer__imageForDrawingUsingCG_fittingInSize_displayS
           }
 
           v40 = v9;
-          v10 = [*(*(&v55 + 1) + 8 * v9) strokePoints];
-          v11 = [v10 count];
+          strokePoints = [*(*(&v55 + 1) + 8 * v9) strokePoints];
+          v11 = [strokePoints count];
           v12 = v11 - 2;
           if (v11 != 2)
           {
             v13 = 0;
             do
             {
-              v14 = [v10 objectAtIndexedSubscript:v13];
+              v14 = [strokePoints objectAtIndexedSubscript:v13];
               v15 = v13 + 2;
-              v16 = [v10 objectAtIndexedSubscript:v13 + 2];
-              v17 = [v10 objectAtIndexedSubscript:v13 + 1];
+              v16 = [strokePoints objectAtIndexedSubscript:v13 + 2];
+              v17 = [strokePoints objectAtIndexedSubscript:v13 + 1];
               [v14 location];
               v51 = v18;
               [v14 location];
@@ -291,7 +291,7 @@ void __83__DKInkThumbnailRenderer__imageForDrawingUsingCG_fittingInSize_displayS
               v53[1] = 3221225472;
               v53[2] = __81__DKInkThumbnailRenderer__interpolateDrawing_inSize_displayScale_ellipseHandler___block_invoke;
               v53[3] = &unk_278FB7818;
-              v54 = v8;
+              v54 = handlerCopy;
               LODWORD(v36) = 1059761370;
               [DKPointSmoothing _interpolateFromPoint:v53 toPoint:v52 withControlPoint:v50 atUnitScale:v47 emissionHandler:v36];
 
@@ -337,20 +337,20 @@ uint64_t __81__DKInkThumbnailRenderer__interpolateDrawing_inSize_displayScale_el
   return result;
 }
 
-+ (CGPath)_newStrokedInterpolatedPathWithDrawing:(id)a3 inSize:(CGSize)a4 displayScale:(double)a5
++ (CGPath)_newStrokedInterpolatedPathWithDrawing:(id)drawing inSize:(CGSize)size displayScale:(double)scale
 {
-  height = a4.height;
-  width = a4.width;
-  v8 = a3;
+  height = size.height;
+  width = size.width;
+  drawingCopy = drawing;
   Mutable = CGPathCreateMutable();
   v10 = objc_opt_class();
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __85__DKInkThumbnailRenderer__newStrokedInterpolatedPathWithDrawing_inSize_displayScale___block_invoke;
   v12[3] = &__block_descriptor_48_e7_v24__08l;
-  *&v12[4] = a5;
+  *&v12[4] = scale;
   v12[5] = Mutable;
-  [v10 _interpolateDrawing:v8 inSize:v12 displayScale:width ellipseHandler:{height, a5}];
+  [v10 _interpolateDrawing:drawingCopy inSize:v12 displayScale:width ellipseHandler:{height, scale}];
 
   return Mutable;
 }
@@ -369,49 +369,49 @@ void __85__DKInkThumbnailRenderer__newStrokedInterpolatedPathWithDrawing_inSize_
   CGPathAddEllipseInRect(v7, 0, *&v8);
 }
 
-+ (void)_drawPath:(id)a3 atScale:(double)a4 inRect:(CGRect)a5 inkColor:(id)a6 backgroundColor:(id)a7 inContext:(CGContext *)a8
++ (void)_drawPath:(id)path atScale:(double)scale inRect:(CGRect)rect inkColor:(id)color backgroundColor:(id)backgroundColor inContext:(CGContext *)context
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v20 = a7;
-  v16 = a6;
-  v17 = a3;
-  CGContextSaveGState(a8);
-  if (v20)
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  backgroundColorCopy = backgroundColor;
+  colorCopy = color;
+  pathCopy = path;
+  CGContextSaveGState(context);
+  if (backgroundColorCopy)
   {
-    [v20 set];
+    [backgroundColorCopy set];
     v22.origin.x = x;
     v22.origin.y = y;
     v22.size.width = width;
     v22.size.height = height;
-    CGContextFillRect(a8, v22);
+    CGContextFillRect(context, v22);
   }
 
-  [v17 bounds];
+  [pathCopy bounds];
   v19 = v18;
-  CGContextScaleCTM(a8, a4, a4);
-  CGContextTranslateCTM(a8, -(v19 + -10.0), 0.0);
-  [v16 set];
+  CGContextScaleCTM(context, scale, scale);
+  CGContextTranslateCTM(context, -(v19 + -10.0), 0.0);
+  [colorCopy set];
 
-  [v17 fill];
-  CGContextRestoreGState(a8);
+  [pathCopy fill];
+  CGContextRestoreGState(context);
 }
 
-+ (id)_imageForDrawingUsingGL:(id)a3 fittingInSize:(CGSize)a4 displayScale:(double)a5 color:(id)a6
++ (id)_imageForDrawingUsingGL:(id)l fittingInSize:(CGSize)size displayScale:(double)scale color:(id)color
 {
-  height = a4.height;
-  width = a4.width;
-  v10 = a3;
-  v11 = a6;
-  if (+[DKGLUtilities gpuAvailable]&& DKDrawingIsValid(v10))
+  height = size.height;
+  width = size.width;
+  lCopy = l;
+  colorCopy = color;
+  if (+[DKGLUtilities gpuAvailable]&& DKDrawingIsValid(lCopy))
   {
-    [objc_opt_class() scaleToFitDrawing:v10 inSize:{width, height}];
+    [objc_opt_class() scaleToFitDrawing:lCopy inSize:{width, height}];
     v13 = v12;
     memset(&v32, 0, sizeof(v32));
     CGAffineTransformMakeScale(&v32, v12, v12);
-    [v10 strokesFrame];
+    [lCopy strokesFrame];
     v31 = v32;
     v35 = CGRectApplyAffineTransform(v34, &v31);
     x = v35.origin.x;
@@ -424,50 +424,50 @@ void __85__DKInkThumbnailRenderer__newStrokedInterpolatedPathWithDrawing_inSize_
     v36.size.width = v16;
     v36.size.height = v17;
     v19 = ceil(CGRectGetHeight(v36));
-    v20 = [MEMORY[0x277CD9388] currentContext];
+    currentContext = [MEMORY[0x277CD9388] currentContext];
     v21 = +[DKGLUtilities createSharedGLContext];
     if (v21)
     {
       [DKGLUtilities setCurrentGLContext:v21];
     }
 
-    v22 = [DKDrawing copyOfDrawing:v10 toFitInBounds:0.0, 0.0, v18, v19];
-    v23 = [MEMORY[0x277CBEB18] array];
+    v22 = [DKDrawing copyOfDrawing:lCopy toFitInBounds:0.0, 0.0, v18, v19];
+    array = [MEMORY[0x277CBEB18] array];
     v24 = objc_opt_class();
     v29[0] = MEMORY[0x277D85DD0];
     v29[1] = 3221225472;
     v29[2] = __83__DKInkThumbnailRenderer__imageForDrawingUsingGL_fittingInSize_displayScale_color___block_invoke;
     v29[3] = &unk_278FB7860;
-    v25 = v23;
+    v25 = array;
     v30 = v25;
-    [v24 _interpolateDrawing:v22 inSize:v29 displayScale:v18 ellipseHandler:{v19, a5}];
+    [v24 _interpolateDrawing:v22 inSize:v29 displayScale:v18 ellipseHandler:{v19, scale}];
 
     if (+[DKGLUtilities gpuAvailable])
     {
-      v26 = -[DKOpenGLRenderer initWithBounds:scale:bufferSize:sharedContext:]([DKOpenGLRenderer alloc], "initWithBounds:scale:bufferSize:sharedContext:", [v25 count], 1, 0.0, 0.0, v18, v19, a5);
+      v26 = -[DKOpenGLRenderer initWithBounds:scale:bufferSize:sharedContext:]([DKOpenGLRenderer alloc], "initWithBounds:scale:bufferSize:sharedContext:", [v25 count], 1, 0.0, 0.0, v18, v19, scale);
       [(DKOpenGLRenderer *)v26 setLineWidthScale:v13];
-      [(DKOpenGLRenderer *)v26 setInkColor:v11];
+      [(DKOpenGLRenderer *)v26 setInkColor:colorCopy];
       [(DKOpenGLRenderer *)v26 setDrawingEnabled:0];
       [(DKOpenGLRenderer *)v26 addPoints:v25 withSegmentLength:25];
       [(DKOpenGLRenderer *)v26 setDrawingEnabled:1];
       [(DKOpenGLRenderer *)v26 redrawEntireDrawingImmediatelyWithLayeredBlending:0];
-      v27 = [(DKOpenGLRenderer *)v26 snapshotImage];
+      snapshotImage = [(DKOpenGLRenderer *)v26 snapshotImage];
     }
 
     else
     {
-      v27 = 0;
+      snapshotImage = 0;
     }
 
-    [DKGLUtilities setCurrentGLContext:v20];
+    [DKGLUtilities setCurrentGLContext:currentContext];
   }
 
   else
   {
-    v27 = 0;
+    snapshotImage = 0;
   }
 
-  return v27;
+  return snapshotImage;
 }
 
 void __83__DKInkThumbnailRenderer__imageForDrawingUsingGL_fittingInSize_displayScale_color___block_invoke(uint64_t a1, int8x16_t a2)
@@ -482,11 +482,11 @@ void __83__DKInkThumbnailRenderer__imageForDrawingUsingGL_fittingInSize_displayS
   [*(a1 + 32) addObject:v5];
 }
 
-+ (BOOL)_drawDebugPatternInGLContext:(id)a3 inSize:(CGSize)a4
++ (BOOL)_drawDebugPatternInGLContext:(id)context inSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  glViewport(0, 0, a4.width, a4.height);
+  height = size.height;
+  width = size.width;
+  glViewport(0, 0, size.width, size.height);
   +[DKGLUtilities setCurrentClearColor];
   glClear(0x4000u);
   Program = glCreateProgram();

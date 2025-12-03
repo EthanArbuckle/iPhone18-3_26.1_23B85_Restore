@@ -16,7 +16,7 @@
 {
   if (objc_opt_respondsToSelector())
   {
-    v0 = [MEMORY[0x1E6959A48] defaultStore];
+    defaultStore = [MEMORY[0x1E6959A48] defaultStore];
   }
 
   else
@@ -26,16 +26,16 @@
       +[ACAccountStore(RemoteManagement) rm_defaultStore];
     }
 
-    v0 = rm_defaultStore_defaultStore;
+    defaultStore = rm_defaultStore_defaultStore;
   }
 
-  return v0;
+  return defaultStore;
 }
 
 - (id)rm_RemoteManagementAccounts
 {
-  v2 = [a1 rm_RemoteManagementAccountType];
-  v3 = [a1 accountsWithAccountType:v2];
+  rm_RemoteManagementAccountType = [self rm_RemoteManagementAccountType];
+  v3 = [self accountsWithAccountType:rm_RemoteManagementAccountType];
 
   return v3;
 }
@@ -43,13 +43,13 @@
 - (id)_rm_AccountAssociatedWithRemoteManagementWithAccountTypeIdentifier:()RemoteManagement
 {
   v4 = a3;
-  v5 = [a1 rm_RemoteManagementAccounts];
-  v6 = [v5 firstObject];
+  rm_RemoteManagementAccounts = [self rm_RemoteManagementAccounts];
+  firstObject = [rm_RemoteManagementAccounts firstObject];
 
-  if (v6)
+  if (firstObject)
   {
-    v7 = [v6 rm_altDSID];
-    v8 = [a1 _rm_AccountAssociatedWithRemoteManagementWithAccountTypeIdentifier:v4 altDSID:v7];
+    rm_altDSID = [firstObject rm_altDSID];
+    v8 = [self _rm_AccountAssociatedWithRemoteManagementWithAccountTypeIdentifier:v4 altDSID:rm_altDSID];
   }
 
   else
@@ -68,7 +68,7 @@
   v26[0] = v6;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:1];
   v24 = 0;
-  v9 = [a1 accountsWithAccountTypeIdentifiers:v8 preloadedProperties:0 error:&v24];
+  v9 = [self accountsWithAccountTypeIdentifiers:v8 preloadedProperties:0 error:&v24];
   v10 = v24;
 
   v22 = 0u;
@@ -90,8 +90,8 @@
         }
 
         v15 = *(*(&v20 + 1) + 8 * i);
-        v16 = [v15 aa_altDSID];
-        v17 = [v16 isEqualToString:v7];
+        aa_altDSID = [v15 aa_altDSID];
+        v17 = [aa_altDSID isEqualToString:v7];
 
         if (v17)
         {
@@ -121,7 +121,7 @@ LABEL_11:
 {
   v19 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  [a1 rm_RemoteManagementAccounts];
+  [self rm_RemoteManagementAccounts];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -140,8 +140,8 @@ LABEL_11:
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 rm_altDSID];
-        v11 = [v10 isEqualToString:v4];
+        rm_altDSID = [v9 rm_altDSID];
+        v11 = [rm_altDSID isEqualToString:v4];
 
         if (v11)
         {
@@ -171,7 +171,7 @@ LABEL_11:
 {
   v19 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  [a1 rm_RemoteManagementAccounts];
+  [self rm_RemoteManagementAccounts];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -190,8 +190,8 @@ LABEL_11:
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 rm_DSID];
-        v11 = [v10 isEqualToNumber:v4];
+        rm_DSID = [v9 rm_DSID];
+        v11 = [rm_DSID isEqualToNumber:v4];
 
         if (v11)
         {
@@ -221,7 +221,7 @@ LABEL_11:
 {
   v19 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  [a1 rm_RemoteManagementAccounts];
+  [self rm_RemoteManagementAccounts];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -240,8 +240,8 @@ LABEL_11:
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 identifier];
-        v11 = [v10 isEqualToString:v4];
+        identifier = [v9 identifier];
+        v11 = [identifier isEqualToString:v4];
 
         if (v11)
         {
@@ -271,7 +271,7 @@ LABEL_11:
 {
   v19 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  [a1 rm_RemoteManagementAccounts];
+  [self rm_RemoteManagementAccounts];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -290,8 +290,8 @@ LABEL_11:
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 rm_enrollmentURL];
-        v11 = [v10 isEqualToString:v4];
+        rm_enrollmentURL = [v9 rm_enrollmentURL];
+        v11 = [rm_enrollmentURL isEqualToString:v4];
 
         if (v11)
         {
@@ -321,7 +321,7 @@ LABEL_11:
 {
   v19 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  [a1 rm_RemoteManagementAccounts];
+  [self rm_RemoteManagementAccounts];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -340,8 +340,8 @@ LABEL_11:
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 rm_enrollmentURL];
-        v11 = [v10 isEqualToString:v4];
+        rm_enrollmentURL = [v9 rm_enrollmentURL];
+        v11 = [rm_enrollmentURL isEqualToString:v4];
 
         if (v11)
         {

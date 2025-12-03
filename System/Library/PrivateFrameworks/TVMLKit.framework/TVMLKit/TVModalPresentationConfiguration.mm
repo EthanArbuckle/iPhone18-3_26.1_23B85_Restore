@@ -2,8 +2,8 @@
 + (id)presentationTypeKeyMap;
 - (CGRect)popOverSourceRect;
 - (TVModalPresentationConfiguration)init;
-- (TVModalPresentationConfiguration)initWithOptions:(id)a3;
-- (void)_applyAlertActionsForController:(id)a3;
+- (TVModalPresentationConfiguration)initWithOptions:(id)options;
+- (void)_applyAlertActionsForController:(id)controller;
 @end
 
 @implementation TVModalPresentationConfiguration
@@ -80,15 +80,15 @@ void __58__TVModalPresentationConfiguration_presentationTypeKeyMap__block_invoke
   return v3;
 }
 
-- (TVModalPresentationConfiguration)initWithOptions:(id)a3
+- (TVModalPresentationConfiguration)initWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v5 = [(TVModalPresentationConfiguration *)self init];
   if (v5)
   {
-    v6 = [objc_opt_class() presentationTypeKeyMap];
-    v7 = [v4 objectForKey:@"presentationType"];
-    v8 = [v6 objectForKey:v7];
+    presentationTypeKeyMap = [objc_opt_class() presentationTypeKeyMap];
+    v7 = [optionsCopy objectForKey:@"presentationType"];
+    v8 = [presentationTypeKeyMap objectForKey:v7];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -107,11 +107,11 @@ void __58__TVModalPresentationConfiguration_presentationTypeKeyMap__block_invoke
   return v5;
 }
 
-- (void)_applyAlertActionsForController:(id)a3
+- (void)_applyAlertActionsForController:(id)controller
 {
-  v4 = a3;
-  v5 = [(TVModalPresentationConfiguration *)self alertActions];
-  [v4 _setActions:v5];
+  controllerCopy = controller;
+  alertActions = [(TVModalPresentationConfiguration *)self alertActions];
+  [controllerCopy _setActions:alertActions];
 }
 
 - (CGRect)popOverSourceRect

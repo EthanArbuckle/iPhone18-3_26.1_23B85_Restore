@@ -1,13 +1,13 @@
 @interface MBManagedPolicy
 + (MBManagedPolicy)sharedPolicy;
-- (BOOL)_checkBehaviorOption:(id)a3 description:(id)a4 allowedOut:(BOOL *)a5 error:(id *)a6;
-- (BOOL)_checkIfAnyBackupOrRestoreIsAllowed:(id)a3 error:(id *)a4;
-- (BOOL)checkIfCloudAccountModificationIsAllowed:(id *)a3;
-- (BOOL)checkIfCloudBackupIsAllowed:(id *)a3;
-- (BOOL)checkIfDiagnosticTelemetryIsAllowed:(id *)a3;
-- (BOOL)checkIfDriveBackupIsAllowed:(id *)a3;
-- (BOOL)checkIfDriveRestoreIsAllowed:(id *)a3;
-- (BOOL)checkIfEnablingCloudBackupIsAllowed:(id *)a3;
+- (BOOL)_checkBehaviorOption:(id)option description:(id)description allowedOut:(BOOL *)out error:(id *)error;
+- (BOOL)_checkIfAnyBackupOrRestoreIsAllowed:(id)allowed error:(id *)error;
+- (BOOL)checkIfCloudAccountModificationIsAllowed:(id *)allowed;
+- (BOOL)checkIfCloudBackupIsAllowed:(id *)allowed;
+- (BOOL)checkIfDiagnosticTelemetryIsAllowed:(id *)allowed;
+- (BOOL)checkIfDriveBackupIsAllowed:(id *)allowed;
+- (BOOL)checkIfDriveRestoreIsAllowed:(id *)allowed;
+- (BOOL)checkIfEnablingCloudBackupIsAllowed:(id *)allowed;
 - (id)_init;
 @end
 
@@ -43,52 +43,52 @@ uint64_t __31__MBManagedPolicy_sharedPolicy__block_invoke()
     behaviorOptions = v2->_behaviorOptions;
     v2->_behaviorOptions = v3;
 
-    v5 = [MEMORY[0x1E69ADFB8] sharedConnection];
+    mEMORY[0x1E69ADFB8] = [MEMORY[0x1E69ADFB8] sharedConnection];
     profileConnection = v2->_profileConnection;
-    v2->_profileConnection = v5;
+    v2->_profileConnection = mEMORY[0x1E69ADFB8];
   }
 
   return v2;
 }
 
-- (BOOL)checkIfDriveBackupIsAllowed:(id *)a3
+- (BOOL)checkIfDriveBackupIsAllowed:(id *)allowed
 {
   v8 = 1;
-  v5 = [(MBBehaviorOptions *)self->_behaviorOptions allowDriveBackup];
-  v6 = [(MBManagedPolicy *)self _checkBehaviorOption:v5 description:@"Drive backup" allowedOut:&v8 error:a3];
+  allowDriveBackup = [(MBBehaviorOptions *)self->_behaviorOptions allowDriveBackup];
+  v6 = [(MBManagedPolicy *)self _checkBehaviorOption:allowDriveBackup description:@"Drive backup" allowedOut:&v8 error:allowed];
 
   if (v6)
   {
-    [(MBManagedPolicy *)self _checkIfAnyBackupOrRestoreIsAllowed:@"Drive backup" error:a3];
+    [(MBManagedPolicy *)self _checkIfAnyBackupOrRestoreIsAllowed:@"Drive backup" error:allowed];
   }
 
   return v8;
 }
 
-- (BOOL)checkIfDriveRestoreIsAllowed:(id *)a3
+- (BOOL)checkIfDriveRestoreIsAllowed:(id *)allowed
 {
   v8 = 1;
-  v5 = [(MBBehaviorOptions *)self->_behaviorOptions allowDriveRestore];
-  v6 = [(MBManagedPolicy *)self _checkBehaviorOption:v5 description:@"Drive restore" allowedOut:&v8 error:a3];
+  allowDriveRestore = [(MBBehaviorOptions *)self->_behaviorOptions allowDriveRestore];
+  v6 = [(MBManagedPolicy *)self _checkBehaviorOption:allowDriveRestore description:@"Drive restore" allowedOut:&v8 error:allowed];
 
   if (v6)
   {
-    [(MBManagedPolicy *)self _checkIfAnyBackupOrRestoreIsAllowed:@"Drive restore" error:a3];
+    [(MBManagedPolicy *)self _checkIfAnyBackupOrRestoreIsAllowed:@"Drive restore" error:allowed];
   }
 
   return v8;
 }
 
-- (BOOL)checkIfCloudBackupIsAllowed:(id *)a3
+- (BOOL)checkIfCloudBackupIsAllowed:(id *)allowed
 {
   v24 = *MEMORY[0x1E69E9840];
   v21 = 1;
-  v5 = [(MBBehaviorOptions *)self->_behaviorOptions allowCloudBackup];
-  v6 = [(MBManagedPolicy *)self _checkBehaviorOption:v5 description:@"Cloud backup" allowedOut:&v21 error:a3];
+  allowCloudBackup = [(MBBehaviorOptions *)self->_behaviorOptions allowCloudBackup];
+  v6 = [(MBManagedPolicy *)self _checkBehaviorOption:allowCloudBackup description:@"Cloud backup" allowedOut:&v21 error:allowed];
 
   if (v6)
   {
-    if ([(MBManagedPolicy *)self _checkIfAnyBackupOrRestoreIsAllowed:@"Cloud backup" error:a3])
+    if ([(MBManagedPolicy *)self _checkIfAnyBackupOrRestoreIsAllowed:@"Cloud backup" error:allowed])
     {
       if ([(MCProfileConnection *)self->_profileConnection effectiveBoolValueForSetting:*MEMORY[0x1E69ADE20]]!= 2)
       {
@@ -109,10 +109,10 @@ uint64_t __31__MBManagedPolicy_sharedPolicy__block_invoke()
         _MBLog(@"Df", "=managed-policy= %@", v11, v12, v13, v14, v15, v16, v10);
       }
 
-      if (a3)
+      if (allowed)
       {
         v17 = v7;
-        *a3 = v7;
+        *allowed = v7;
       }
     }
 
@@ -129,12 +129,12 @@ LABEL_11:
   return v18 & 1;
 }
 
-- (BOOL)checkIfEnablingCloudBackupIsAllowed:(id *)a3
+- (BOOL)checkIfEnablingCloudBackupIsAllowed:(id *)allowed
 {
   v24 = *MEMORY[0x1E69E9840];
   v21 = 1;
-  v5 = [(MBBehaviorOptions *)self->_behaviorOptions allowEnablingCloudBackup];
-  v6 = [(MBManagedPolicy *)self _checkBehaviorOption:v5 description:@"Enabling cloud backup" allowedOut:&v21 error:a3];
+  allowEnablingCloudBackup = [(MBBehaviorOptions *)self->_behaviorOptions allowEnablingCloudBackup];
+  v6 = [(MBManagedPolicy *)self _checkBehaviorOption:allowEnablingCloudBackup description:@"Enabling cloud backup" allowedOut:&v21 error:allowed];
 
   if (v6)
   {
@@ -153,10 +153,10 @@ LABEL_11:
         _MBLog(@"Df", "=managed-policy= %@", v11, v12, v13, v14, v15, v16, v10);
       }
 
-      if (a3)
+      if (allowed)
       {
         v17 = v7;
-        *a3 = v7;
+        *allowed = v7;
       }
 
       v18 = 0;
@@ -177,12 +177,12 @@ LABEL_11:
   return v18 & 1;
 }
 
-- (BOOL)checkIfCloudAccountModificationIsAllowed:(id *)a3
+- (BOOL)checkIfCloudAccountModificationIsAllowed:(id *)allowed
 {
   v24 = *MEMORY[0x1E69E9840];
   v21 = 1;
-  v5 = [(MBBehaviorOptions *)self->_behaviorOptions allowCloudAccountModification];
-  v6 = [(MBManagedPolicy *)self _checkBehaviorOption:v5 description:@"Cloud account modification" allowedOut:&v21 error:a3];
+  allowCloudAccountModification = [(MBBehaviorOptions *)self->_behaviorOptions allowCloudAccountModification];
+  v6 = [(MBManagedPolicy *)self _checkBehaviorOption:allowCloudAccountModification description:@"Cloud account modification" allowedOut:&v21 error:allowed];
 
   if (v6)
   {
@@ -201,10 +201,10 @@ LABEL_11:
         _MBLog(@"Df", "=managed-policy= %@", v11, v12, v13, v14, v15, v16, v10);
       }
 
-      if (a3)
+      if (allowed)
       {
         v17 = v7;
-        *a3 = v7;
+        *allowed = v7;
       }
 
       v18 = 0;
@@ -225,11 +225,11 @@ LABEL_11:
   return v18 & 1;
 }
 
-- (BOOL)checkIfDiagnosticTelemetryIsAllowed:(id *)a3
+- (BOOL)checkIfDiagnosticTelemetryIsAllowed:(id *)allowed
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = [(MCProfileConnection *)self->_profileConnection isDiagnosticSubmissionAllowed];
-  if ((v4 & 1) == 0)
+  isDiagnosticSubmissionAllowed = [(MCProfileConnection *)self->_profileConnection isDiagnosticSubmissionAllowed];
+  if ((isDiagnosticSubmissionAllowed & 1) == 0)
   {
     v5 = [MBError errorWithCode:22 format:@"Diagnostic reporting is disabled by MDM"];
     v6 = MBGetDefaultLog();
@@ -244,27 +244,27 @@ LABEL_11:
       _MBLog(@"Df", "=managed-policy= %@", v9, v10, v11, v12, v13, v14, v8);
     }
 
-    if (a3)
+    if (allowed)
     {
       v15 = v5;
-      *a3 = v5;
+      *allowed = v5;
     }
   }
 
   v16 = *MEMORY[0x1E69E9840];
-  return v4;
+  return isDiagnosticSubmissionAllowed;
 }
 
-- (BOOL)_checkIfAnyBackupOrRestoreIsAllowed:(id)a3 error:(id *)a4
+- (BOOL)_checkIfAnyBackupOrRestoreIsAllowed:(id)allowed error:(id *)error
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (!v6)
+  allowedCopy = allowed;
+  if (!allowedCopy)
   {
     [MBManagedPolicy _checkIfAnyBackupOrRestoreIsAllowed:error:];
   }
 
-  v7 = v6;
+  v7 = allowedCopy;
   if ([(MCProfileConnection *)self->_profileConnection isEphemeralMultiUser])
   {
     v8 = [MBError errorWithCode:22 format:@"%@ is disabled for this device in EDU mode", v7];
@@ -296,10 +296,10 @@ LABEL_11:
       _MBLog(@"I ", "=managed-policy= %@", v13, v14, v15, v16, v17, v18, v12);
     }
 
-    if (a4)
+    if (error)
     {
       v19 = v8;
-      *a4 = v8;
+      *error = v8;
     }
   }
 
@@ -307,27 +307,27 @@ LABEL_11:
   return v8 == 0;
 }
 
-- (BOOL)_checkBehaviorOption:(id)a3 description:(id)a4 allowedOut:(BOOL *)a5 error:(id *)a6
+- (BOOL)_checkBehaviorOption:(id)option description:(id)description allowedOut:(BOOL *)out error:(id *)error
 {
   v33 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  if (!v10)
+  optionCopy = option;
+  descriptionCopy = description;
+  if (!descriptionCopy)
   {
     [MBManagedPolicy _checkBehaviorOption:description:allowedOut:error:];
   }
 
-  if (!a5)
+  if (!out)
   {
     [MBManagedPolicy _checkBehaviorOption:description:allowedOut:error:];
   }
 
-  v11 = v10;
-  if (v9)
+  v11 = descriptionCopy;
+  if (optionCopy)
   {
-    if ([v9 BOOLValue])
+    if ([optionCopy BOOLValue])
     {
-      *a5 = 1;
+      *out = 1;
       v12 = MBGetDefaultLog();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
       {
@@ -340,7 +340,7 @@ LABEL_11:
 
     else
     {
-      *a5 = 0;
+      *out = 0;
       v12 = [MBError errorWithCode:555 format:@"%@ force disallowed by behavior option", v11];
       v19 = MBGetDefaultLog();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
@@ -354,16 +354,16 @@ LABEL_11:
         _MBLog(@"I ", "=managed-policy= %@", v22, v23, v24, v25, v26, v27, v21);
       }
 
-      if (a6)
+      if (error)
       {
         v28 = v12;
-        *a6 = v12;
+        *error = v12;
       }
     }
   }
 
   v29 = *MEMORY[0x1E69E9840];
-  return v9 == 0;
+  return optionCopy == 0;
 }
 
 @end

@@ -1,25 +1,25 @@
 @interface TSCH3DSessionLock
-+ (void)performBlockWithSession:(id)a3 block:(id)a4;
-+ (void)performBlockWithSession:(id)a3 renderingContext:(id)a4 shouldUpdateContextVirtualScreen:(BOOL)a5 block:(id)a6;
++ (void)performBlockWithSession:(id)session block:(id)block;
++ (void)performBlockWithSession:(id)session renderingContext:(id)context shouldUpdateContextVirtualScreen:(BOOL)screen block:(id)block;
 @end
 
 @implementation TSCH3DSessionLock
 
-+ (void)performBlockWithSession:(id)a3 block:(id)a4
++ (void)performBlockWithSession:(id)session block:(id)block
 {
-  v16 = a3;
-  v6 = a4;
-  v11 = objc_msgSend_sharegroupContext(v16, v7, v8, v9, v10);
-  objc_msgSend_performBlockWithSession_renderingContext_shouldUpdateContextVirtualScreen_block_(a1, v12, v13, v14, v15, v16, v11, 1, v6);
+  sessionCopy = session;
+  blockCopy = block;
+  v11 = objc_msgSend_sharegroupContext(sessionCopy, v7, v8, v9, v10);
+  objc_msgSend_performBlockWithSession_renderingContext_shouldUpdateContextVirtualScreen_block_(self, v12, v13, v14, v15, sessionCopy, v11, 1, blockCopy);
 }
 
-+ (void)performBlockWithSession:(id)a3 renderingContext:(id)a4 shouldUpdateContextVirtualScreen:(BOOL)a5 block:(id)a6
++ (void)performBlockWithSession:(id)session renderingContext:(id)context shouldUpdateContextVirtualScreen:(BOOL)screen block:(id)block
 {
-  v7 = a5;
-  v9 = a3;
-  v10 = a4;
-  v12 = a6;
-  if (!v9)
+  screenCopy = screen;
+  sessionCopy = session;
+  contextCopy = context;
+  blockCopy = block;
+  if (!sessionCopy)
   {
     v16 = MEMORY[0x277D81150];
     v17 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v11, v13, v14, v15, "+[TSCH3DSessionLock performBlockWithSession:renderingContext:shouldUpdateContextVirtualScreen:block:]");
@@ -29,7 +29,7 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v27, v28, v29, v30);
   }
 
-  if (!v10)
+  if (!contextCopy)
   {
     v31 = MEMORY[0x277D81150];
     v32 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v11, v13, v14, v15, "+[TSCH3DSessionLock performBlockWithSession:renderingContext:shouldUpdateContextVirtualScreen:block:]");
@@ -39,20 +39,20 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v42, v43, v44, v45);
   }
 
-  v80 = v9;
+  v80 = sessionCopy;
   objc_msgSend_p_lock(v80, v46, v47, v48, v49);
   v54 = objc_msgSend_p_contextOrNil(v80, v50, v51, v52, v53);
-  objc_msgSend_p_setContext_(v80, v55, v56, v57, v58, v10);
-  if (v7)
+  objc_msgSend_p_setContext_(v80, v55, v56, v57, v58, contextCopy);
+  if (screenCopy)
   {
     v64 = objc_msgSend_virtualScreen(v80, v59, v60, v61, v62);
-    if (v64 != -1 && v64 != objc_msgSend_virtualScreen(v10, v63, v65, v66, v67))
+    if (v64 != -1 && v64 != objc_msgSend_virtualScreen(contextCopy, v63, v65, v66, v67))
     {
-      objc_msgSend_setVirtualScreen_(v10, v68, v69, v70, v71, v64);
+      objc_msgSend_setVirtualScreen_(contextCopy, v68, v69, v70, v71, v64);
     }
   }
 
-  v12[2](v12);
+  blockCopy[2](blockCopy);
   objc_msgSend_p_setContext_(v80, v72, v73, v74, v75, v54);
   objc_msgSend_p_unlock(v80, v76, v77, v78, v79);
 }

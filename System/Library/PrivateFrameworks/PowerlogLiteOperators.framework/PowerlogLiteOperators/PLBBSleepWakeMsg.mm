@@ -3,17 +3,17 @@
 + (id)entryEventPointDefinitionSleepWakeActivityMavABM;
 - (void)logEventPointSleepWakeABM;
 - (void)refreshSleepWakeActivity;
-- (void)sendAndLogPLEntry:(id)a3 withName:(id)a4 withType:(id)a5;
+- (void)sendAndLogPLEntry:(id)entry withName:(id)name withType:(id)type;
 @end
 
 @implementation PLBBSleepWakeMsg
 
-- (void)sendAndLogPLEntry:(id)a3 withName:(id)a4 withType:(id)a5
+- (void)sendAndLogPLEntry:(id)entry withName:(id)name withType:(id)type
 {
   v40 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  entryCopy = entry;
+  nameCopy = name;
+  typeCopy = type;
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
     v11 = objc_opt_class();
@@ -29,29 +29,29 @@
 
     if (_MergedGlobals_1_16 == 1)
     {
-      v35 = v9;
-      v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s Sending PLEntry: name=%@ type=%@", "-[PLBBSleepWakeMsg sendAndLogPLEntry:withName:withType:]", v9, v10];
+      v35 = nameCopy;
+      typeCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%s Sending PLEntry: name=%@ type=%@", "-[PLBBSleepWakeMsg sendAndLogPLEntry:withName:withType:]", nameCopy, typeCopy];
       v13 = MEMORY[0x277D3F178];
       v14 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBBSleepWakeMsg.m"];
-      v15 = [v14 lastPathComponent];
+      lastPathComponent = [v14 lastPathComponent];
       v16 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBSleepWakeMsg sendAndLogPLEntry:withName:withType:]"];
-      [v13 logMessage:v12 fromFile:v15 fromFunction:v16 fromLineNumber:43];
+      [v13 logMessage:typeCopy fromFile:lastPathComponent fromFunction:v16 fromLineNumber:43];
 
       v17 = PLLogCommon();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412290;
-        v39 = v12;
+        v39 = typeCopy;
         _os_log_debug_impl(&dword_21A4C6000, v17, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
       }
 
-      v9 = v35;
+      nameCopy = v35;
     }
   }
 
-  v18 = [(PLBBMsgRoot *)self agent];
+  agent = [(PLBBMsgRoot *)self agent];
 
-  if (!v18 && [MEMORY[0x277D3F180] debugEnabled])
+  if (!agent && [MEMORY[0x277D3F180] debugEnabled])
   {
     v19 = objc_opt_class();
     v36[0] = MEMORY[0x277D85DD0];
@@ -66,13 +66,13 @@
 
     if (byte_2811F4131 == 1)
     {
-      v20 = v9;
+      v20 = nameCopy;
       v21 = [MEMORY[0x277CCACA8] stringWithFormat:@"Bad agent"];
       v22 = MEMORY[0x277D3F178];
       v23 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBBSleepWakeMsg.m"];
-      v24 = [v23 lastPathComponent];
+      lastPathComponent2 = [v23 lastPathComponent];
       v25 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBSleepWakeMsg sendAndLogPLEntry:withName:withType:]"];
-      [v22 logMessage:v21 fromFile:v24 fromFunction:v25 fromLineNumber:46];
+      [v22 logMessage:v21 fromFile:lastPathComponent2 fromFunction:v25 fromLineNumber:46];
 
       v26 = PLLogCommon();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
@@ -82,30 +82,30 @@
         _os_log_debug_impl(&dword_21A4C6000, v26, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
       }
 
-      v9 = v20;
+      nameCopy = v20;
     }
   }
 
   if ([MEMORY[0x277D3F208] isBasebandProto])
   {
-    v27 = [(PLBBMsgRoot *)self agent];
-    v28 = [v8 dictionary];
-    v29 = [v8 entryDate];
-    [v27 logForSubsystem:@"BasebandMetrics" category:@"SleepWakeABM" data:v28 date:v29];
+    agent2 = [(PLBBMsgRoot *)self agent];
+    dictionary = [entryCopy dictionary];
+    entryDate = [entryCopy entryDate];
+    [agent2 logForSubsystem:@"BasebandMetrics" category:@"SleepWakeABM" data:dictionary date:entryDate];
   }
 
   if ([MEMORY[0x277D3F208] isBasebandDale])
   {
-    v30 = [(PLBBMsgRoot *)self agent];
-    v31 = [v8 dictionary];
-    v32 = [v8 entryDate];
-    [v30 logForSubsystem:@"BasebandMetrics" category:@"SleepWakeABM" data:v31 date:v32];
+    agent3 = [(PLBBMsgRoot *)self agent];
+    dictionary2 = [entryCopy dictionary];
+    entryDate2 = [entryCopy entryDate];
+    [agent3 logForSubsystem:@"BasebandMetrics" category:@"SleepWakeABM" data:dictionary2 date:entryDate2];
   }
 
   if (([MEMORY[0x277D3F208] isBasebandMav] & 1) != 0 || objc_msgSend(MEMORY[0x277D3F208], "isBasebandIce"))
   {
-    v33 = [(PLBBMsgRoot *)self agent];
-    [v33 logEntry:v8];
+    agent4 = [(PLBBMsgRoot *)self agent];
+    [agent4 logEntry:entryCopy];
   }
 
   v34 = *MEMORY[0x277D85DE8];
@@ -138,45 +138,45 @@ uint64_t __56__PLBBSleepWakeMsg_sendAndLogPLEntry_withName_withType___block_invo
   v33[0] = v27;
   v32[1] = *MEMORY[0x277D3F540];
   v28[0] = @"WakeChannel";
-  v26 = [MEMORY[0x277D3F198] sharedInstance];
-  v25 = [v26 commonTypeDict_IntegerFormat];
-  v29[0] = v25;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+  v29[0] = commonTypeDict_IntegerFormat;
   v28[1] = @"WakeData";
-  v24 = [MEMORY[0x277D3F198] sharedInstance];
-  v23 = [v24 commonTypeDict_StringFormat];
-  v29[1] = v23;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat = [mEMORY[0x277D3F198]2 commonTypeDict_StringFormat];
+  v29[1] = commonTypeDict_StringFormat;
   v28[2] = @"WakeDataParsed";
-  v22 = [MEMORY[0x277D3F198] sharedInstance];
-  v21 = [v22 commonTypeDict_StringFormat];
-  v29[2] = v21;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat2 = [mEMORY[0x277D3F198]3 commonTypeDict_StringFormat];
+  v29[2] = commonTypeDict_StringFormat2;
   v28[3] = @"WakeSubType";
-  v20 = [MEMORY[0x277D3F198] sharedInstance];
-  v19 = [v20 commonTypeDict_IntegerFormat];
-  v29[3] = v19;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]4 commonTypeDict_IntegerFormat];
+  v29[3] = commonTypeDict_IntegerFormat2;
   v28[4] = @"WakeType";
-  v18 = [MEMORY[0x277D3F198] sharedInstance];
-  v17 = [v18 commonTypeDict_IntegerFormat];
-  v29[4] = v17;
+  mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]5 commonTypeDict_IntegerFormat];
+  v29[4] = commonTypeDict_IntegerFormat3;
   v28[5] = @"QmiSvcType";
-  v16 = [MEMORY[0x277D3F198] sharedInstance];
-  v15 = [v16 commonTypeDict_IntegerFormat];
-  v29[5] = v15;
+  mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat4 = [mEMORY[0x277D3F198]6 commonTypeDict_IntegerFormat];
+  v29[5] = commonTypeDict_IntegerFormat4;
   v28[6] = @"QmiClientId";
-  v3 = [MEMORY[0x277D3F198] sharedInstance];
-  v4 = [v3 commonTypeDict_IntegerFormat];
-  v29[6] = v4;
+  mEMORY[0x277D3F198]7 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat5 = [mEMORY[0x277D3F198]7 commonTypeDict_IntegerFormat];
+  v29[6] = commonTypeDict_IntegerFormat5;
   v28[7] = @"QmiMsgId";
-  v5 = [MEMORY[0x277D3F198] sharedInstance];
-  v6 = [v5 commonTypeDict_IntegerFormat];
-  v29[7] = v6;
+  mEMORY[0x277D3F198]8 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat6 = [mEMORY[0x277D3F198]8 commonTypeDict_IntegerFormat];
+  v29[7] = commonTypeDict_IntegerFormat6;
   v28[8] = @"QmiLen";
-  v7 = [MEMORY[0x277D3F198] sharedInstance];
-  v8 = [v7 commonTypeDict_IntegerFormat];
-  v29[8] = v8;
+  mEMORY[0x277D3F198]9 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat7 = [mEMORY[0x277D3F198]9 commonTypeDict_IntegerFormat];
+  v29[8] = commonTypeDict_IntegerFormat7;
   v28[9] = @"IsCmas";
-  v9 = [MEMORY[0x277D3F198] sharedInstance];
-  v10 = [v9 commonTypeDict_BoolFormat];
-  v29[9] = v10;
+  mEMORY[0x277D3F198]10 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_BoolFormat = [mEMORY[0x277D3F198]10 commonTypeDict_BoolFormat];
+  v29[9] = commonTypeDict_BoolFormat;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v29 forKeys:v28 count:10];
   v33[1] = v11;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v33 forKeys:v32 count:2];
@@ -199,49 +199,49 @@ uint64_t __56__PLBBSleepWakeMsg_sendAndLogPLEntry_withName_withType___block_invo
   v35[0] = v29;
   v34[1] = *MEMORY[0x277D3F540];
   v30[0] = @"WakeChannel";
-  v28 = [MEMORY[0x277D3F198] sharedInstance];
-  v27 = [v28 commonTypeDict_IntegerFormat];
-  v31[0] = v27;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+  v31[0] = commonTypeDict_IntegerFormat;
   v30[1] = @"WakeData";
-  v26 = [MEMORY[0x277D3F198] sharedInstance];
-  v25 = [v26 commonTypeDict_StringFormat];
-  v31[1] = v25;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat = [mEMORY[0x277D3F198]2 commonTypeDict_StringFormat];
+  v31[1] = commonTypeDict_StringFormat;
   v30[2] = @"WakeDataParsed";
-  v24 = [MEMORY[0x277D3F198] sharedInstance];
-  v23 = [v24 commonTypeDict_StringFormat];
-  v31[2] = v23;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat2 = [mEMORY[0x277D3F198]3 commonTypeDict_StringFormat];
+  v31[2] = commonTypeDict_StringFormat2;
   v30[3] = @"WakeSubType";
-  v22 = [MEMORY[0x277D3F198] sharedInstance];
-  v21 = [v22 commonTypeDict_IntegerFormat];
-  v31[3] = v21;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]4 commonTypeDict_IntegerFormat];
+  v31[3] = commonTypeDict_IntegerFormat2;
   v30[4] = @"WakeType";
-  v20 = [MEMORY[0x277D3F198] sharedInstance];
-  v19 = [v20 commonTypeDict_IntegerFormat];
-  v31[4] = v19;
+  mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]5 commonTypeDict_IntegerFormat];
+  v31[4] = commonTypeDict_IntegerFormat3;
   v30[5] = @"AriGroupID";
-  v18 = [MEMORY[0x277D3F198] sharedInstance];
-  v17 = [v18 commonTypeDict_IntegerFormat];
-  v31[5] = v17;
+  mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat4 = [mEMORY[0x277D3F198]6 commonTypeDict_IntegerFormat];
+  v31[5] = commonTypeDict_IntegerFormat4;
   v30[6] = @"AriMsgID";
-  v16 = [MEMORY[0x277D3F198] sharedInstance];
-  v15 = [v16 commonTypeDict_IntegerFormat];
-  v31[6] = v15;
+  mEMORY[0x277D3F198]7 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat5 = [mEMORY[0x277D3F198]7 commonTypeDict_IntegerFormat];
+  v31[6] = commonTypeDict_IntegerFormat5;
   v30[7] = @"AriLength";
-  v3 = [MEMORY[0x277D3F198] sharedInstance];
-  v4 = [v3 commonTypeDict_IntegerFormat];
-  v31[7] = v4;
+  mEMORY[0x277D3F198]8 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat6 = [mEMORY[0x277D3F198]8 commonTypeDict_IntegerFormat];
+  v31[7] = commonTypeDict_IntegerFormat6;
   v30[8] = @"AriMsgName";
-  v5 = [MEMORY[0x277D3F198] sharedInstance];
-  v6 = [v5 commonTypeDict_StringFormat];
-  v31[8] = v6;
+  mEMORY[0x277D3F198]9 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat3 = [mEMORY[0x277D3F198]9 commonTypeDict_StringFormat];
+  v31[8] = commonTypeDict_StringFormat3;
   v30[9] = @"AriSeqNum";
-  v7 = [MEMORY[0x277D3F198] sharedInstance];
-  v8 = [v7 commonTypeDict_IntegerFormat];
-  v31[9] = v8;
+  mEMORY[0x277D3F198]10 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat7 = [mEMORY[0x277D3F198]10 commonTypeDict_IntegerFormat];
+  v31[9] = commonTypeDict_IntegerFormat7;
   v30[10] = @"IsCmas";
-  v9 = [MEMORY[0x277D3F198] sharedInstance];
-  v10 = [v9 commonTypeDict_BoolFormat];
-  v31[10] = v10;
+  mEMORY[0x277D3F198]11 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_BoolFormat = [mEMORY[0x277D3F198]11 commonTypeDict_BoolFormat];
+  v31[10] = commonTypeDict_BoolFormat;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v31 forKeys:v30 count:11];
   v35[1] = v11;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v35 forKeys:v34 count:2];
@@ -284,26 +284,26 @@ uint64_t __56__PLBBSleepWakeMsg_sendAndLogPLEntry_withName_withType___block_invo
 
     if (byte_2811F4132 == 1)
     {
-      v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBBSleepWakeMsg logEventPointSleepWakeABM]", block, v122, v123, v124, v125];
+      v125 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBBSleepWakeMsg logEventPointSleepWakeABM]", block, v122, v123, v124, v125];
       v6 = MEMORY[0x277D3F178];
       v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBBSleepWakeMsg.m"];
-      v8 = [v7 lastPathComponent];
+      lastPathComponent = [v7 lastPathComponent];
       v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBSleepWakeMsg logEventPointSleepWakeABM]"];
-      [v6 logMessage:v5 fromFile:v8 fromFunction:v9 fromLineNumber:170];
+      [v6 logMessage:v125 fromFile:lastPathComponent fromFunction:v9 fromLineNumber:170];
 
       v10 = PLLogCommon();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412290;
-        v127 = v5;
+        v127 = v125;
         _os_log_debug_impl(&dword_21A4C6000, v10, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
       }
     }
   }
 
-  v11 = [MEMORY[0x277D3F208] isBasebandIce];
+  isBasebandIce = [MEMORY[0x277D3F208] isBasebandIce];
   v12 = MEMORY[0x277D3F5E8];
-  if ((v11 & 1) != 0 || [MEMORY[0x277D3F208] isBasebandIBIS] || objc_msgSend(MEMORY[0x277D3F208], "isBasebandDale"))
+  if ((isBasebandIce & 1) != 0 || [MEMORY[0x277D3F208] isBasebandIBIS] || objc_msgSend(MEMORY[0x277D3F208], "isBasebandDale"))
   {
     v13 = *v12;
     v14 = @"SleepWakeActivityIceABM";
@@ -311,9 +311,9 @@ uint64_t __56__PLBBSleepWakeMsg_sendAndLogPLEntry_withName_withType___block_invo
 
   else
   {
-    v56 = [MEMORY[0x277D3F208] isBasebandProto];
+    isBasebandProto = [MEMORY[0x277D3F208] isBasebandProto];
     v13 = *v12;
-    if (v56)
+    if (isBasebandProto)
     {
       v14 = @"SleepWakeActivitySinopeABM";
     }
@@ -329,8 +329,8 @@ uint64_t __56__PLBBSleepWakeMsg_sendAndLogPLEntry_withName_withType___block_invo
   if (v16)
   {
     v17 = MEMORY[0x277CCABB0];
-    v18 = [(PLBBSleepWakeMsg *)self bbWakeChannel];
-    v19 = [v17 numberWithInt:{objc_msgSend(v18, "intValue")}];
+    bbWakeChannel = [(PLBBSleepWakeMsg *)self bbWakeChannel];
+    v19 = [v17 numberWithInt:{objc_msgSend(bbWakeChannel, "intValue")}];
     [v16 setObject:v19 forKeyedSubscript:@"WakeChannel"];
 
     if ([MEMORY[0x277D3F208] isBasebandIce])
@@ -359,12 +359,12 @@ uint64_t __56__PLBBSleepWakeMsg_sendAndLogPLEntry_withName_withType___block_invo
 LABEL_27:
     if ([MEMORY[0x277D3F180] fullMode])
     {
-      v29 = [(PLBBSleepWakeMsg *)self bbWakeDataParsed];
-      [v16 setObject:v29 forKeyedSubscript:@"WakeDataParsed"];
+      bbWakeDataParsed = [(PLBBSleepWakeMsg *)self bbWakeDataParsed];
+      [v16 setObject:bbWakeDataParsed forKeyedSubscript:@"WakeDataParsed"];
     }
 
-    v30 = [(PLBBSleepWakeMsg *)self bbWakeType];
-    v31 = [v30 isEqualToString:@"DATA"];
+    bbWakeType = [(PLBBSleepWakeMsg *)self bbWakeType];
+    v31 = [bbWakeType isEqualToString:@"DATA"];
 
     if (v31)
     {
@@ -376,8 +376,8 @@ LABEL_27:
       }
 
       [v16 setObject:&unk_282C103E0 forKeyedSubscript:@"WakeType"];
-      v33 = [(PLBBSleepWakeMsg *)self bbWakeSubType];
-      v34 = [v33 isEqualToString:@"IP"];
+      bbWakeSubType = [(PLBBSleepWakeMsg *)self bbWakeSubType];
+      v34 = [bbWakeSubType isEqualToString:@"IP"];
 
       if (v34)
       {
@@ -401,8 +401,8 @@ LABEL_27:
       goto LABEL_99;
     }
 
-    v39 = [(PLBBSleepWakeMsg *)self bbWakeType];
-    v40 = [v39 isEqualToString:@"CONTROL"];
+    bbWakeType2 = [(PLBBSleepWakeMsg *)self bbWakeType];
+    v40 = [bbWakeType2 isEqualToString:@"CONTROL"];
 
     if (v40)
     {
@@ -414,8 +414,8 @@ LABEL_27:
       }
 
       [v16 setObject:&unk_282C10428 forKeyedSubscript:@"WakeType"];
-      v42 = [(PLBBSleepWakeMsg *)self bbWakeSubType];
-      v43 = [v42 isEqualToString:@"ARI"];
+      bbWakeSubType2 = [(PLBBSleepWakeMsg *)self bbWakeSubType];
+      v43 = [bbWakeSubType2 isEqualToString:@"ARI"];
 
       if (v43)
       {
@@ -458,8 +458,8 @@ LABEL_103:
         goto LABEL_107;
       }
 
-      v57 = [(PLBBSleepWakeMsg *)self bbWakeSubType];
-      v58 = [v57 isEqualToString:@"QMI"];
+      bbWakeSubType3 = [(PLBBSleepWakeMsg *)self bbWakeSubType];
+      v58 = [bbWakeSubType3 isEqualToString:@"QMI"];
 
       if (v58)
       {
@@ -481,8 +481,8 @@ LABEL_103:
         goto LABEL_49;
       }
 
-      v69 = [(PLBBSleepWakeMsg *)self bbWakeSubType];
-      v70 = [v69 isEqualToString:@"MIPC"];
+      bbWakeSubType4 = [(PLBBSleepWakeMsg *)self bbWakeSubType];
+      v70 = [bbWakeSubType4 isEqualToString:@"MIPC"];
 
       if (v70)
       {
@@ -509,14 +509,14 @@ LABEL_99:
       goto LABEL_100;
     }
 
-    v52 = [(PLBBSleepWakeMsg *)self bbWakeType];
-    v53 = [v52 isEqualToString:@"TRACE"];
+    bbWakeType3 = [(PLBBSleepWakeMsg *)self bbWakeType];
+    v53 = [bbWakeType3 isEqualToString:@"TRACE"];
 
     if (v53)
     {
       [v16 setObject:&unk_282C10440 forKeyedSubscript:@"WakeType"];
-      v54 = [(PLBBSleepWakeMsg *)self bbWakeSubType];
-      v55 = [v54 isEqualToString:@"DIAG"];
+      bbWakeSubType5 = [(PLBBSleepWakeMsg *)self bbWakeSubType];
+      v55 = [bbWakeSubType5 isEqualToString:@"DIAG"];
 
       if (v55)
       {
@@ -525,8 +525,8 @@ LABEL_44:
         goto LABEL_100;
       }
 
-      v67 = [(PLBBSleepWakeMsg *)self bbWakeSubType];
-      v68 = [v67 isEqualToString:@"STT"];
+      bbWakeSubType6 = [(PLBBSleepWakeMsg *)self bbWakeSubType];
+      v68 = [bbWakeSubType6 isEqualToString:@"STT"];
 
       if (!v68)
       {
@@ -536,8 +536,8 @@ LABEL_44:
 
     else
     {
-      v63 = [(PLBBSleepWakeMsg *)self bbWakeType];
-      v64 = [v63 isEqualToString:@"OTHER"];
+      bbWakeType4 = [(PLBBSleepWakeMsg *)self bbWakeType];
+      v64 = [bbWakeType4 isEqualToString:@"OTHER"];
 
       if (!v64)
       {
@@ -551,8 +551,8 @@ LABEL_102:
       }
 
       [v16 setObject:&unk_282C104A0 forKeyedSubscript:@"WakeType"];
-      v65 = [(PLBBSleepWakeMsg *)self bbWakeSubType];
-      v66 = [v65 isEqualToString:@"QMI"];
+      bbWakeSubType7 = [(PLBBSleepWakeMsg *)self bbWakeSubType];
+      v66 = [bbWakeSubType7 isEqualToString:@"QMI"];
 
       if (v66)
       {
@@ -560,8 +560,8 @@ LABEL_102:
         goto LABEL_100;
       }
 
-      v75 = [(PLBBSleepWakeMsg *)self bbWakeSubType];
-      v76 = [v75 isEqualToString:@"ARI"];
+      bbWakeSubType8 = [(PLBBSleepWakeMsg *)self bbWakeSubType];
+      v76 = [bbWakeSubType8 isEqualToString:@"ARI"];
 
       if (v76)
       {
@@ -569,8 +569,8 @@ LABEL_102:
         goto LABEL_100;
       }
 
-      v77 = [(PLBBSleepWakeMsg *)self bbWakeSubType];
-      v78 = [v77 isEqualToString:@"CMAS"];
+      bbWakeSubType9 = [(PLBBSleepWakeMsg *)self bbWakeSubType];
+      v78 = [bbWakeSubType9 isEqualToString:@"CMAS"];
 
       if (v78)
       {
@@ -578,8 +578,8 @@ LABEL_102:
         goto LABEL_100;
       }
 
-      v80 = [(PLBBSleepWakeMsg *)self bbWakeSubType];
-      v81 = [v80 isEqualToString:@"PAGING"];
+      bbWakeSubType10 = [(PLBBSleepWakeMsg *)self bbWakeSubType];
+      v81 = [bbWakeSubType10 isEqualToString:@"PAGING"];
 
       if (v81)
       {
@@ -587,8 +587,8 @@ LABEL_102:
         goto LABEL_100;
       }
 
-      v82 = [(PLBBSleepWakeMsg *)self bbWakeSubType];
-      v83 = [v82 isEqualToString:@"SERIAL"];
+      bbWakeSubType11 = [(PLBBSleepWakeMsg *)self bbWakeSubType];
+      v83 = [bbWakeSubType11 isEqualToString:@"SERIAL"];
 
       if (v83)
       {
@@ -596,8 +596,8 @@ LABEL_102:
         goto LABEL_100;
       }
 
-      v84 = [(PLBBSleepWakeMsg *)self bbWakeSubType];
-      v85 = [v84 isEqualToString:@"HSIC"];
+      bbWakeSubType12 = [(PLBBSleepWakeMsg *)self bbWakeSubType];
+      v85 = [bbWakeSubType12 isEqualToString:@"HSIC"];
 
       if (v85)
       {
@@ -605,8 +605,8 @@ LABEL_102:
         goto LABEL_100;
       }
 
-      v86 = [(PLBBSleepWakeMsg *)self bbWakeSubType];
-      v87 = [v86 isEqualToString:@"PCI"];
+      bbWakeSubType13 = [(PLBBSleepWakeMsg *)self bbWakeSubType];
+      v87 = [bbWakeSubType13 isEqualToString:@"PCI"];
 
       if (v87)
       {
@@ -614,21 +614,21 @@ LABEL_102:
         goto LABEL_100;
       }
 
-      v88 = [(PLBBSleepWakeMsg *)self bbWakeSubType];
-      v89 = [v88 isEqualToString:@"DIAG"];
+      bbWakeSubType14 = [(PLBBSleepWakeMsg *)self bbWakeSubType];
+      v89 = [bbWakeSubType14 isEqualToString:@"DIAG"];
 
       if (v89)
       {
         goto LABEL_44;
       }
 
-      v90 = [(PLBBSleepWakeMsg *)self bbWakeSubType];
-      v91 = [v90 isEqualToString:@"STT"];
+      bbWakeSubType15 = [(PLBBSleepWakeMsg *)self bbWakeSubType];
+      v91 = [bbWakeSubType15 isEqualToString:@"STT"];
 
       if (!v91)
       {
-        v92 = [(PLBBSleepWakeMsg *)self bbWakeSubType];
-        v93 = [v92 isEqualToString:@"UART"];
+        bbWakeSubType16 = [(PLBBSleepWakeMsg *)self bbWakeSubType];
+        v93 = [bbWakeSubType16 isEqualToString:@"UART"];
 
         if (v93)
         {
@@ -637,8 +637,8 @@ LABEL_102:
 
         else
         {
-          v94 = [(PLBBSleepWakeMsg *)self bbWakeSubType];
-          v95 = [v94 isEqualToString:@"QMAP"];
+          bbWakeSubType17 = [(PLBBSleepWakeMsg *)self bbWakeSubType];
+          v95 = [bbWakeSubType17 isEqualToString:@"QMAP"];
 
           if (v95)
           {
@@ -647,8 +647,8 @@ LABEL_102:
 
           else
           {
-            v96 = [(PLBBSleepWakeMsg *)self bbWakeSubType];
-            v97 = [v96 isEqualToString:@"ADAM"];
+            bbWakeSubType18 = [(PLBBSleepWakeMsg *)self bbWakeSubType];
+            v97 = [bbWakeSubType18 isEqualToString:@"ADAM"];
 
             if (v97)
             {
@@ -657,8 +657,8 @@ LABEL_102:
 
             else
             {
-              v98 = [(PLBBSleepWakeMsg *)self bbWakeSubType];
-              v99 = [v98 isEqualToString:@"IP"];
+              bbWakeSubType19 = [(PLBBSleepWakeMsg *)self bbWakeSubType];
+              v99 = [bbWakeSubType19 isEqualToString:@"IP"];
 
               if (v99)
               {
@@ -667,8 +667,8 @@ LABEL_102:
 
               else
               {
-                v100 = [(PLBBSleepWakeMsg *)self bbWakeSubType];
-                v101 = [v100 isEqualToString:@"MIPC"];
+                bbWakeSubType20 = [(PLBBSleepWakeMsg *)self bbWakeSubType];
+                v101 = [bbWakeSubType20 isEqualToString:@"MIPC"];
 
                 if (v101)
                 {
@@ -677,8 +677,8 @@ LABEL_102:
 
                 else
                 {
-                  v102 = [(PLBBSleepWakeMsg *)self bbWakeSubType];
-                  v103 = [v102 isEqualToString:@"IQ"];
+                  bbWakeSubType21 = [(PLBBSleepWakeMsg *)self bbWakeSubType];
+                  v103 = [bbWakeSubType21 isEqualToString:@"IQ"];
 
                   if (v103)
                   {
@@ -687,8 +687,8 @@ LABEL_102:
 
                   else
                   {
-                    v104 = [(PLBBSleepWakeMsg *)self bbWakeSubType];
-                    v105 = [v104 isEqualToString:@"MD"];
+                    bbWakeSubType22 = [(PLBBSleepWakeMsg *)self bbWakeSubType];
+                    v105 = [bbWakeSubType22 isEqualToString:@"MD"];
 
                     if (v105)
                     {
@@ -697,8 +697,8 @@ LABEL_102:
 
                     else
                     {
-                      v106 = [(PLBBSleepWakeMsg *)self bbWakeSubType];
-                      v107 = [v106 isEqualToString:@"CCCI"];
+                      bbWakeSubType23 = [(PLBBSleepWakeMsg *)self bbWakeSubType];
+                      v107 = [bbWakeSubType23 isEqualToString:@"CCCI"];
 
                       if (v107)
                       {
@@ -707,8 +707,8 @@ LABEL_102:
 
                       else
                       {
-                        v108 = [(PLBBSleepWakeMsg *)self bbWakeSubType];
-                        v109 = [v108 isEqualToString:@"AT"];
+                        bbWakeSubType24 = [(PLBBSleepWakeMsg *)self bbWakeSubType];
+                        v109 = [bbWakeSubType24 isEqualToString:@"AT"];
 
                         if (v109)
                         {
@@ -717,8 +717,8 @@ LABEL_102:
 
                         else
                         {
-                          v110 = [(PLBBSleepWakeMsg *)self bbWakeSubType];
-                          v111 = [v110 isEqualToString:@"PASSTHROUGH"];
+                          bbWakeSubType25 = [(PLBBSleepWakeMsg *)self bbWakeSubType];
+                          v111 = [bbWakeSubType25 isEqualToString:@"PASSTHROUGH"];
 
                           if (v111)
                           {
@@ -727,8 +727,8 @@ LABEL_102:
 
                           else
                           {
-                            v112 = [(PLBBSleepWakeMsg *)self bbWakeSubType];
-                            v113 = [v112 isEqualToString:@"NVRAM"];
+                            bbWakeSubType26 = [(PLBBSleepWakeMsg *)self bbWakeSubType];
+                            v113 = [bbWakeSubType26 isEqualToString:@"NVRAM"];
 
                             if (v113)
                             {
@@ -737,8 +737,8 @@ LABEL_102:
 
                             else
                             {
-                              v114 = [(PLBBSleepWakeMsg *)self bbWakeSubType];
-                              v115 = [v114 isEqualToString:@"MCU"];
+                              bbWakeSubType27 = [(PLBBSleepWakeMsg *)self bbWakeSubType];
+                              v115 = [bbWakeSubType27 isEqualToString:@"MCU"];
 
                               if (v115)
                               {
@@ -747,8 +747,8 @@ LABEL_102:
 
                               else
                               {
-                                v116 = [(PLBBSleepWakeMsg *)self bbWakeSubType];
-                                v117 = [v116 isEqualToString:@"MUMTAS"];
+                                bbWakeSubType28 = [(PLBBSleepWakeMsg *)self bbWakeSubType];
+                                v117 = [bbWakeSubType28 isEqualToString:@"MUMTAS"];
 
                                 if (!v117)
                                 {
@@ -789,9 +789,9 @@ LABEL_100:
   v22 = [MEMORY[0x277CCACA8] stringWithFormat:@"*** Error *** unable to allocate PLEntry"];
   v23 = MEMORY[0x277D3F178];
   v24 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBBSleepWakeMsg.m"];
-  v25 = [v24 lastPathComponent];
+  lastPathComponent2 = [v24 lastPathComponent];
   v26 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBSleepWakeMsg logEventPointSleepWakeABM]"];
-  [v23 logMessage:v22 fromFile:v25 fromFunction:v26 fromLineNumber:199];
+  [v23 logMessage:v22 fromFile:lastPathComponent2 fromFunction:v26 fromLineNumber:199];
 
   v27 = PLLogCommon();
   if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))

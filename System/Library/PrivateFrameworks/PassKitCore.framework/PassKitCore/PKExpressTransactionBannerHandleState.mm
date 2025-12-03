@@ -1,21 +1,21 @@
 @interface PKExpressTransactionBannerHandleState
-+ (id)createForTransactionState:(id)a3;
-- (PKExpressTransactionBannerHandleState)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
++ (id)createForTransactionState:(id)state;
+- (PKExpressTransactionBannerHandleState)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKExpressTransactionBannerHandleState
 
-+ (id)createForTransactionState:(id)a3
++ (id)createForTransactionState:(id)state
 {
-  v4 = a3;
-  if (!v4)
+  stateCopy = state;
+  if (!stateCopy)
   {
     __break(1u);
     goto LABEL_7;
   }
 
-  v3 = v4;
+  v3 = stateCopy;
   v5 = [PKExpressTransactionBannerHandleState alloc];
   if (!v5)
   {
@@ -40,35 +40,35 @@ LABEL_5:
   return v7;
 }
 
-- (PKExpressTransactionBannerHandleState)initWithCoder:(id)a3
+- (PKExpressTransactionBannerHandleState)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = PKExpressTransactionBannerHandleState;
-  v5 = [(PKBannerHandleState *)&v10 initWithCoder:v4];
+  v5 = [(PKBannerHandleState *)&v10 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"transactionState"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"transactionState"];
     transactionState = v5->_transactionState;
     v5->_transactionState = v6;
 
     if (!v5->_transactionState)
     {
       v8 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"PKExpressTransactionBannerHandleState" code:0 userInfo:0];
-      [v4 failWithError:v8];
+      [coderCopy failWithError:v8];
     }
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = PKExpressTransactionBannerHandleState;
-  v4 = a3;
-  [(PKBannerHandleState *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_transactionState forKey:{@"transactionState", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(PKBannerHandleState *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_transactionState forKey:{@"transactionState", v5.receiver, v5.super_class}];
 }
 
 @end

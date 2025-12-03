@@ -1,57 +1,57 @@
 @interface UPQuiltViewPhone
 - (CGPath)bottomLeftQuiltPathRef;
 - (CGPath)topQuiltPathRef;
-- (UPQuiltViewPhone)initWithFrame:(CGRect)a3;
+- (UPQuiltViewPhone)initWithFrame:(CGRect)frame;
 - (uint64_t)bottomRightQuiltPathRef;
 - (uint64_t)intersectionPiecePathRef;
 - (void)cleanupQuiltPaths;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setBottomLeftQuiltColor:(id)a3;
-- (void)setBottomRightQuiltColor:(id)a3;
+- (void)setBottomLeftQuiltColor:(id)color;
+- (void)setBottomRightQuiltColor:(id)color;
 - (void)setColors;
-- (void)setConfiguration:(id)a3;
-- (void)setIntersectionPieceColor:(id)a3;
-- (void)setTopQuiltColor:(id)a3;
-- (void)updateQuiltsWithUnlockProgress:(double)a3 wakeProgress:(double)a4;
+- (void)setConfiguration:(id)configuration;
+- (void)setIntersectionPieceColor:(id)color;
+- (void)setTopQuiltColor:(id)color;
+- (void)updateQuiltsWithUnlockProgress:(double)progress wakeProgress:(double)wakeProgress;
 @end
 
 @implementation UPQuiltViewPhone
 
-- (UPQuiltViewPhone)initWithFrame:(CGRect)a3
+- (UPQuiltViewPhone)initWithFrame:(CGRect)frame
 {
   v17.receiver = self;
   v17.super_class = UPQuiltViewPhone;
-  v3 = [(UPQuiltViewPhone *)&v17 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UPQuiltViewPhone *)&v17 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x277CD9F90] layer];
+    layer = [MEMORY[0x277CD9F90] layer];
     topQuiltPieceLayer = v3->_topQuiltPieceLayer;
-    v3->_topQuiltPieceLayer = v4;
+    v3->_topQuiltPieceLayer = layer;
 
-    v6 = [MEMORY[0x277CD9F90] layer];
+    layer2 = [MEMORY[0x277CD9F90] layer];
     bottomLeftQuiltPieceLayer = v3->_bottomLeftQuiltPieceLayer;
-    v3->_bottomLeftQuiltPieceLayer = v6;
+    v3->_bottomLeftQuiltPieceLayer = layer2;
 
-    v8 = [MEMORY[0x277CD9F90] layer];
+    layer3 = [MEMORY[0x277CD9F90] layer];
     intersectionPieceLayer = v3->_intersectionPieceLayer;
-    v3->_intersectionPieceLayer = v8;
+    v3->_intersectionPieceLayer = layer3;
 
-    v10 = [MEMORY[0x277CD9F90] layer];
+    layer4 = [MEMORY[0x277CD9F90] layer];
     bottomRightQuiltPieceLayer = v3->_bottomRightQuiltPieceLayer;
-    v3->_bottomRightQuiltPieceLayer = v10;
+    v3->_bottomRightQuiltPieceLayer = layer4;
 
-    v12 = [(UPQuiltViewPhone *)v3 layer];
-    [v12 addSublayer:v3->_topQuiltPieceLayer];
+    layer5 = [(UPQuiltViewPhone *)v3 layer];
+    [layer5 addSublayer:v3->_topQuiltPieceLayer];
 
-    v13 = [(UPQuiltViewPhone *)v3 layer];
-    [v13 addSublayer:v3->_bottomLeftQuiltPieceLayer];
+    layer6 = [(UPQuiltViewPhone *)v3 layer];
+    [layer6 addSublayer:v3->_bottomLeftQuiltPieceLayer];
 
-    v14 = [(UPQuiltViewPhone *)v3 layer];
-    [v14 addSublayer:v3->_intersectionPieceLayer];
+    layer7 = [(UPQuiltViewPhone *)v3 layer];
+    [layer7 addSublayer:v3->_intersectionPieceLayer];
 
-    v15 = [(UPQuiltViewPhone *)v3 layer];
-    [v15 addSublayer:v3->_bottomRightQuiltPieceLayer];
+    layer8 = [(UPQuiltViewPhone *)v3 layer];
+    [layer8 addSublayer:v3->_bottomRightQuiltPieceLayer];
 
     [(UPQuiltViewPhone *)v3 setNeedsLayout];
   }
@@ -59,57 +59,57 @@
   return v3;
 }
 
-- (void)setTopQuiltColor:(id)a3
+- (void)setTopQuiltColor:(id)color
 {
-  v5 = a3;
-  [(CAShapeLayer *)self->_topQuiltPieceLayer setHidden:v5 == 0];
-  if (self->_topQuiltColor != v5)
+  colorCopy = color;
+  [(CAShapeLayer *)self->_topQuiltPieceLayer setHidden:colorCopy == 0];
+  if (self->_topQuiltColor != colorCopy)
   {
-    objc_storeStrong(&self->_topQuiltColor, a3);
-    [(CAShapeLayer *)self->_topQuiltPieceLayer setFillColor:[(UIColor *)v5 CGColor]];
+    objc_storeStrong(&self->_topQuiltColor, color);
+    [(CAShapeLayer *)self->_topQuiltPieceLayer setFillColor:[(UIColor *)colorCopy CGColor]];
   }
 }
 
-- (void)setBottomLeftQuiltColor:(id)a3
+- (void)setBottomLeftQuiltColor:(id)color
 {
-  v5 = a3;
-  [(CAShapeLayer *)self->_bottomLeftQuiltPieceLayer setHidden:v5 == 0];
-  if (self->_bottomLeftQuiltColor != v5)
+  colorCopy = color;
+  [(CAShapeLayer *)self->_bottomLeftQuiltPieceLayer setHidden:colorCopy == 0];
+  if (self->_bottomLeftQuiltColor != colorCopy)
   {
-    objc_storeStrong(&self->_bottomLeftQuiltColor, a3);
-    [(CAShapeLayer *)self->_bottomLeftQuiltPieceLayer setFillColor:[(UIColor *)v5 CGColor]];
+    objc_storeStrong(&self->_bottomLeftQuiltColor, color);
+    [(CAShapeLayer *)self->_bottomLeftQuiltPieceLayer setFillColor:[(UIColor *)colorCopy CGColor]];
   }
 }
 
-- (void)setIntersectionPieceColor:(id)a3
+- (void)setIntersectionPieceColor:(id)color
 {
-  v5 = a3;
-  [(CAShapeLayer *)self->_intersectionPieceLayer setHidden:v5 == 0];
-  if (self->_intersectionPieceColor != v5)
+  colorCopy = color;
+  [(CAShapeLayer *)self->_intersectionPieceLayer setHidden:colorCopy == 0];
+  if (self->_intersectionPieceColor != colorCopy)
   {
     [MEMORY[0x277CD9FF0] begin];
     [MEMORY[0x277CD9FF0] setDisableActions:1];
-    objc_storeStrong(&self->_intersectionPieceColor, a3);
-    [(CAShapeLayer *)self->_intersectionPieceLayer setFillColor:[(UIColor *)v5 CGColor]];
+    objc_storeStrong(&self->_intersectionPieceColor, color);
+    [(CAShapeLayer *)self->_intersectionPieceLayer setFillColor:[(UIColor *)colorCopy CGColor]];
     [MEMORY[0x277CD9FF0] commit];
   }
 }
 
-- (void)setBottomRightQuiltColor:(id)a3
+- (void)setBottomRightQuiltColor:(id)color
 {
-  v5 = a3;
-  [(CAShapeLayer *)self->_bottomRightQuiltPieceLayer setHidden:v5 == 0];
-  if (self->_bottomRightQuiltColor != v5)
+  colorCopy = color;
+  [(CAShapeLayer *)self->_bottomRightQuiltPieceLayer setHidden:colorCopy == 0];
+  if (self->_bottomRightQuiltColor != colorCopy)
   {
-    objc_storeStrong(&self->_bottomRightQuiltColor, a3);
-    [(CAShapeLayer *)self->_bottomRightQuiltPieceLayer setFillColor:[(UIColor *)v5 CGColor]];
+    objc_storeStrong(&self->_bottomRightQuiltColor, color);
+    [(CAShapeLayer *)self->_bottomRightQuiltPieceLayer setFillColor:[(UIColor *)colorCopy CGColor]];
   }
 }
 
 - (void)layoutSubviews
 {
-  v3 = [(UPQuiltView *)self quiltViewDelegate];
-  [v3 regenerateConfiguration];
+  quiltViewDelegate = [(UPQuiltView *)self quiltViewDelegate];
+  [quiltViewDelegate regenerateConfiguration];
 
   [(UPQuiltViewPhone *)self bounds];
   [(CAShapeLayer *)self->_topQuiltPieceLayer setFrame:?];
@@ -125,40 +125,40 @@
 
 - (CGPath)topQuiltPathRef
 {
-  v2 = [(CAShapeLayer *)self->_topQuiltPieceLayer presentationLayer];
-  v3 = [v2 path];
+  presentationLayer = [(CAShapeLayer *)self->_topQuiltPieceLayer presentationLayer];
+  path = [presentationLayer path];
 
-  return v3;
+  return path;
 }
 
 - (CGPath)bottomLeftQuiltPathRef
 {
-  v2 = [(CAShapeLayer *)self->_bottomLeftQuiltPieceLayer presentationLayer];
-  v3 = [v2 path];
+  presentationLayer = [(CAShapeLayer *)self->_bottomLeftQuiltPieceLayer presentationLayer];
+  path = [presentationLayer path];
 
-  return v3;
+  return path;
 }
 
-- (void)setConfiguration:(id)a3
+- (void)setConfiguration:(id)configuration
 {
-  v5 = a3;
-  if (self->_configuration != v5)
+  configurationCopy = configuration;
+  if (self->_configuration != configurationCopy)
   {
-    v10 = v5;
-    objc_storeStrong(&self->_configuration, a3);
-    v6 = [(UPQuiltConfigurationPhone *)v10 topQuiltAwakeLockedPath];
-    -[CAShapeLayer setPath:](self->_topQuiltPieceLayer, "setPath:", [v6 CGPath]);
+    v10 = configurationCopy;
+    objc_storeStrong(&self->_configuration, configuration);
+    topQuiltAwakeLockedPath = [(UPQuiltConfigurationPhone *)v10 topQuiltAwakeLockedPath];
+    -[CAShapeLayer setPath:](self->_topQuiltPieceLayer, "setPath:", [topQuiltAwakeLockedPath CGPath]);
 
-    v7 = [(UPQuiltConfigurationPhone *)v10 bottomLeftQuiltAwakeLockedPath];
-    -[CAShapeLayer setPath:](self->_bottomLeftQuiltPieceLayer, "setPath:", [v7 CGPath]);
+    bottomLeftQuiltAwakeLockedPath = [(UPQuiltConfigurationPhone *)v10 bottomLeftQuiltAwakeLockedPath];
+    -[CAShapeLayer setPath:](self->_bottomLeftQuiltPieceLayer, "setPath:", [bottomLeftQuiltAwakeLockedPath CGPath]);
 
-    v8 = [(UPQuiltConfigurationPhone *)v10 intersectionPieceAwakeLockedPath];
-    -[CAShapeLayer setPath:](self->_intersectionPieceLayer, "setPath:", [v8 CGPath]);
+    intersectionPieceAwakeLockedPath = [(UPQuiltConfigurationPhone *)v10 intersectionPieceAwakeLockedPath];
+    -[CAShapeLayer setPath:](self->_intersectionPieceLayer, "setPath:", [intersectionPieceAwakeLockedPath CGPath]);
 
-    v9 = [(UPQuiltConfigurationPhone *)v10 bottomRightQuiltAwakeLockedPath];
-    -[CAShapeLayer setPath:](self->_bottomRightQuiltPieceLayer, "setPath:", [v9 CGPath]);
+    bottomRightQuiltAwakeLockedPath = [(UPQuiltConfigurationPhone *)v10 bottomRightQuiltAwakeLockedPath];
+    -[CAShapeLayer setPath:](self->_bottomRightQuiltPieceLayer, "setPath:", [bottomRightQuiltAwakeLockedPath CGPath]);
 
-    v5 = v10;
+    configurationCopy = v10;
   }
 }
 
@@ -175,9 +175,9 @@
   -[CAShapeLayer setFillColor:](self->_intersectionPieceLayer, "setFillColor:", [v6 CGColor]);
 }
 
-- (void)updateQuiltsWithUnlockProgress:(double)a3 wakeProgress:(double)a4
+- (void)updateQuiltsWithUnlockProgress:(double)progress wakeProgress:(double)wakeProgress
 {
-  v5 = a4 * 5.0 + (1.0 - a4) * 0.0;
+  v5 = wakeProgress * 5.0 + (1.0 - wakeProgress) * 0.0;
   if (v5 <= 5.0)
   {
     v6 = v5;
@@ -188,7 +188,7 @@
     v6 = 5.0;
   }
 
-  v7 = a3 * 45.0 + (1.0 - a3) * 0.0;
+  v7 = progress * 45.0 + (1.0 - progress) * 0.0;
   if (v7 <= 45.0)
   {
     v8 = v7;
@@ -199,28 +199,28 @@
     v8 = 45.0;
   }
 
-  v9 = [(UPQuiltConfigurationPhone *)self->_configuration bottomLeftQuiltAsleepPath];
-  v10 = [(UPQuiltConfigurationPhone *)self->_configuration bottomLeftQuiltAwakeLockedPath];
+  bottomLeftQuiltAsleepPath = [(UPQuiltConfigurationPhone *)self->_configuration bottomLeftQuiltAsleepPath];
+  bottomLeftQuiltAwakeLockedPath = [(UPQuiltConfigurationPhone *)self->_configuration bottomLeftQuiltAwakeLockedPath];
   v11 = v6 / 5.0;
-  v12 = UPInterpolateBetweenBezierPaths(v9, v10, v11);
+  v12 = UPInterpolateBetweenBezierPaths(bottomLeftQuiltAsleepPath, bottomLeftQuiltAwakeLockedPath, v11);
 
-  v13 = [(UPQuiltConfigurationPhone *)self->_configuration bottomLeftQuiltUnlockedPath];
-  v28 = UPInterpolateBetweenBezierPaths(v12, v13, v8 / 45.0);
+  bottomLeftQuiltUnlockedPath = [(UPQuiltConfigurationPhone *)self->_configuration bottomLeftQuiltUnlockedPath];
+  v28 = UPInterpolateBetweenBezierPaths(v12, bottomLeftQuiltUnlockedPath, v8 / 45.0);
 
-  v14 = [(UPQuiltConfigurationPhone *)self->_configuration topQuiltAsleepPath];
-  v15 = [(UPQuiltConfigurationPhone *)self->_configuration topQuiltAwakeLockedPath];
-  v16 = UPInterpolateBetweenBezierPaths(v14, v15, v11);
+  topQuiltAsleepPath = [(UPQuiltConfigurationPhone *)self->_configuration topQuiltAsleepPath];
+  topQuiltAwakeLockedPath = [(UPQuiltConfigurationPhone *)self->_configuration topQuiltAwakeLockedPath];
+  v16 = UPInterpolateBetweenBezierPaths(topQuiltAsleepPath, topQuiltAwakeLockedPath, v11);
 
-  v17 = [(UPQuiltConfigurationPhone *)self->_configuration topQuiltUnlockedPath];
-  v18 = UPInterpolateBetweenBezierPaths(v16, v17, v8 / 45.0);
+  topQuiltUnlockedPath = [(UPQuiltConfigurationPhone *)self->_configuration topQuiltUnlockedPath];
+  v18 = UPInterpolateBetweenBezierPaths(v16, topQuiltUnlockedPath, v8 / 45.0);
 
-  v19 = [(UPQuiltConfigurationPhone *)self->_configuration bottomRightQuiltAwakeLockedPath];
-  v20 = [(UPQuiltConfigurationPhone *)self->_configuration bottomRightQuiltUnlockedPath];
-  v21 = UPInterpolateBetweenBezierPaths(v19, v20, v8 / 45.0);
+  bottomRightQuiltAwakeLockedPath = [(UPQuiltConfigurationPhone *)self->_configuration bottomRightQuiltAwakeLockedPath];
+  bottomRightQuiltUnlockedPath = [(UPQuiltConfigurationPhone *)self->_configuration bottomRightQuiltUnlockedPath];
+  v21 = UPInterpolateBetweenBezierPaths(bottomRightQuiltAwakeLockedPath, bottomRightQuiltUnlockedPath, v8 / 45.0);
 
-  v22 = [v18 CGPath];
+  cGPath = [v18 CGPath];
   v23 = v28;
-  CopyByIntersectingPath = CGPathCreateCopyByIntersectingPath(v22, [v28 CGPath], 0);
+  CopyByIntersectingPath = CGPathCreateCopyByIntersectingPath(cGPath, [v28 CGPath], 0);
   CopyBySubtractingPath = CGPathCreateCopyBySubtractingPath([v18 CGPath], CopyByIntersectingPath, 0);
   v26 = v28;
   v27 = CGPathCreateCopyBySubtractingPath([v28 CGPath], CopyByIntersectingPath, 0);
@@ -248,10 +248,10 @@
 {
   if (result)
   {
-    v1 = [*(result + 560) presentationLayer];
-    v2 = [v1 path];
+    presentationLayer = [*(result + 560) presentationLayer];
+    path = [presentationLayer path];
 
-    return v2;
+    return path;
   }
 
   return result;
@@ -261,10 +261,10 @@
 {
   if (result)
   {
-    v1 = [*(result + 576) presentationLayer];
-    v2 = [v1 path];
+    presentationLayer = [*(result + 576) presentationLayer];
+    path = [presentationLayer path];
 
-    return v2;
+    return path;
   }
 
   return result;
@@ -272,20 +272,20 @@
 
 - (void)cleanupQuiltPaths
 {
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 536);
+    v2 = *(self + 536);
     if (v2)
     {
       CGPathRelease(v2);
-      *(a1 + 536) = 0;
+      *(self + 536) = 0;
     }
 
-    v3 = *(a1 + 552);
+    v3 = *(self + 552);
     if (v3)
     {
       CGPathRelease(v3);
-      *(a1 + 552) = 0;
+      *(self + 552) = 0;
     }
   }
 }

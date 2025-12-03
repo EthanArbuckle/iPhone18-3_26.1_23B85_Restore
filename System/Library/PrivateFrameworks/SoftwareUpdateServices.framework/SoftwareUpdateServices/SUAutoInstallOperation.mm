@@ -1,23 +1,23 @@
 @interface SUAutoInstallOperation
-- (BOOL)_isDateExpired:(id)a3;
+- (BOOL)_isDateExpired:(id)expired;
 - (BOOL)_isEffectivelyScheduled;
 - (BOOL)_isValidForScheduling;
-- (BOOL)_isValidTillDate:(id)a3;
+- (BOOL)_isValidTillDate:(id)date;
 - (BOOL)isCanceled;
 - (BOOL)isExpired;
 - (NSString)description;
 - (SUAutoInstallOperation)init;
-- (SUAutoInstallOperation)initWithAutoInstallOperationModel:(id)a3 client:(id)a4;
+- (SUAutoInstallOperation)initWithAutoInstallOperationModel:(id)model client:(id)client;
 - (SUAutoInstallOperationDelegate)delegate;
 - (int)agreementStatus;
 - (void)_noteAutoInstallOperationDidConsent;
-- (void)_noteAutoInstallOperationDidExpireWithError:(id)a3;
-- (void)_noteAutoInstallOperationIsReadyToInstall:(id)a3;
-- (void)_noteAutoInstallOperationPasscodePolicyChanged:(unint64_t)a3;
+- (void)_noteAutoInstallOperationDidExpireWithError:(id)error;
+- (void)_noteAutoInstallOperationIsReadyToInstall:(id)install;
+- (void)_noteAutoInstallOperationPasscodePolicyChanged:(unint64_t)changed;
 - (void)_noteAutoInstallOperationWasCancelled;
 - (void)cancel;
 - (void)dealloc;
-- (void)setAgreementStatus:(int)a3;
+- (void)setAgreementStatus:(int)status;
 @end
 
 @implementation SUAutoInstallOperation
@@ -44,28 +44,28 @@
   return v3;
 }
 
-- (SUAutoInstallOperation)initWithAutoInstallOperationModel:(id)a3 client:(id)a4
+- (SUAutoInstallOperation)initWithAutoInstallOperationModel:(id)model client:(id)client
 {
-  v6 = a3;
-  v7 = a4;
+  modelCopy = model;
+  clientCopy = client;
   v15.receiver = self;
   v15.super_class = SUAutoInstallOperation;
   v8 = [(SUAutoInstallOperation *)&v15 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_client, v7);
-    v10 = [v6 id];
+    objc_storeWeak(&v8->_client, clientCopy);
+    v10 = [modelCopy id];
     id = v9->_id;
     v9->_id = v10;
 
-    v12 = [v6 forecast];
+    forecast = [modelCopy forecast];
     forecast = v9->_forecast;
-    v9->_forecast = v12;
+    v9->_forecast = forecast;
 
-    v9->_agreementStatus = [v6 agreementStatus];
+    v9->_agreementStatus = [modelCopy agreementStatus];
     *&v9->_expired = 0;
-    [v7 _registerAutoInstallOperationClientHandler:v9];
+    [clientCopy _registerAutoInstallOperationClientHandler:v9];
   }
 
   return v9;
@@ -80,40 +80,40 @@
   [(SUAutoInstallOperation *)&v3 dealloc];
 }
 
-- (void)setAgreementStatus:(int)a3
+- (void)setAgreementStatus:(int)status
 {
-  v4 = self;
-  objc_sync_enter(v4);
-  if (v4->_agreementStatus != a3)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_agreementStatus != status)
   {
-    v4->_agreementStatus = a3;
-    if (a3 == 1)
+    selfCopy->_agreementStatus = status;
+    if (status == 1)
     {
-      WeakRetained = objc_loadWeakRetained(&v4->_client);
+      WeakRetained = objc_loadWeakRetained(&selfCopy->_client);
       v11[0] = MEMORY[0x277D85DD0];
       v11[1] = 3221225472;
       v11[2] = __45__SUAutoInstallOperation_setAgreementStatus___block_invoke;
       v11[3] = &unk_279CAAEB8;
-      v11[4] = v4;
-      [WeakRetained _consentAutoInstallOperation:v4 withResult:v11];
+      v11[4] = selfCopy;
+      [WeakRetained _consentAutoInstallOperation:selfCopy withResult:v11];
 
-      v6 = objc_loadWeakRetained(&v4->_delegate);
+      v6 = objc_loadWeakRetained(&selfCopy->_delegate);
       if (v6)
       {
         v7 = v6;
-        v8 = objc_loadWeakRetained(&v4->_delegate);
+        v8 = objc_loadWeakRetained(&selfCopy->_delegate);
         v9 = objc_opt_respondsToSelector();
 
         if (v9)
         {
-          v10 = objc_loadWeakRetained(&v4->_delegate);
-          [v10 autoInstallOperationDidConsent:v4];
+          v10 = objc_loadWeakRetained(&selfCopy->_delegate);
+          [v10 autoInstallOperationDidConsent:selfCopy];
         }
       }
     }
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 void __45__SUAutoInstallOperation_setAgreementStatus___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -126,48 +126,48 @@ void __45__SUAutoInstallOperation_setAgreementStatus___block_invoke(uint64_t a1,
 
 - (int)agreementStatus
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  agreementStatus = v2->_agreementStatus;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  agreementStatus = selfCopy->_agreementStatus;
+  objc_sync_exit(selfCopy);
 
   return agreementStatus;
 }
 
 - (void)cancel
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_canceled)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_canceled)
   {
-    v2->_canceled = 1;
-    WeakRetained = objc_loadWeakRetained(&v2->_client);
+    selfCopy->_canceled = 1;
+    WeakRetained = objc_loadWeakRetained(&selfCopy->_client);
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __32__SUAutoInstallOperation_cancel__block_invoke;
     v10[3] = &unk_279CAAEB8;
-    v10[4] = v2;
-    [WeakRetained _cancelAutoInstallOperation:v2 withResult:v10];
+    v10[4] = selfCopy;
+    [WeakRetained _cancelAutoInstallOperation:selfCopy withResult:v10];
 
-    v4 = objc_loadWeakRetained(&v2->_delegate);
+    v4 = objc_loadWeakRetained(&selfCopy->_delegate);
     if (v4)
     {
       v5 = v4;
-      v6 = objc_loadWeakRetained(&v2->_delegate);
+      v6 = objc_loadWeakRetained(&selfCopy->_delegate);
       v7 = objc_opt_respondsToSelector();
 
       if (v7)
       {
-        v8 = objc_loadWeakRetained(&v2->_delegate);
-        [v8 autoInstallOperationWasCancelled:v2];
+        v8 = objc_loadWeakRetained(&selfCopy->_delegate);
+        [v8 autoInstallOperationWasCancelled:selfCopy];
       }
     }
   }
 
-  v9 = objc_loadWeakRetained(&v2->_client);
-  [v9 _unregisterAutoInstallOperationClientHandler:v2];
+  v9 = objc_loadWeakRetained(&selfCopy->_client);
+  [v9 _unregisterAutoInstallOperationClientHandler:selfCopy];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 void __32__SUAutoInstallOperation_cancel__block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -180,38 +180,38 @@ void __32__SUAutoInstallOperation_cancel__block_invoke(uint64_t a1, uint64_t a2,
 
 - (BOOL)isCanceled
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  canceled = v2->_canceled;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  canceled = selfCopy->_canceled;
+  objc_sync_exit(selfCopy);
 
   return canceled;
 }
 
 - (BOOL)isExpired
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  expired = v2->_expired;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  expired = selfCopy->_expired;
+  objc_sync_exit(selfCopy);
 
   return expired;
 }
 
 - (NSString)description
 {
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v3 = objc_alloc_init(MEMORY[0x277CCAB68]);
-  v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"[<%@:%p>", objc_opt_class(), v2];
-  [v3 appendString:v4];
+  selfCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"[<%@:%p>", objc_opt_class(), selfCopy];
+  [v3 appendString:selfCopy];
 
   v5 = MEMORY[0x277CCACA8];
-  v6 = [(NSUUID *)v2->_id UUIDString];
-  v7 = [v5 stringWithFormat:@"ID=%@|", v6];
+  uUIDString = [(NSUUID *)selfCopy->_id UUIDString];
+  v7 = [v5 stringWithFormat:@"ID=%@|", uUIDString];
   [v3 appendString:v7];
 
-  if (v2->_agreementStatus == 1)
+  if (selfCopy->_agreementStatus == 1)
   {
     v8 = @"Y";
   }
@@ -224,7 +224,7 @@ void __32__SUAutoInstallOperation_cancel__block_invoke(uint64_t a1, uint64_t a2,
   v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"AcceptedAgreementStatus=%@|", v8];
   [v3 appendString:v9];
 
-  if (v2->_expired)
+  if (selfCopy->_expired)
   {
     v10 = @"Y";
   }
@@ -238,7 +238,7 @@ void __32__SUAutoInstallOperation_cancel__block_invoke(uint64_t a1, uint64_t a2,
   [v3 appendString:v11];
 
   v12 = MEMORY[0x277CCACA8];
-  if ([(SUAutoInstallOperation *)v2 _isEffectivelyScheduled])
+  if ([(SUAutoInstallOperation *)selfCopy _isEffectivelyScheduled])
   {
     v13 = @"Y";
   }
@@ -251,7 +251,7 @@ void __32__SUAutoInstallOperation_cancel__block_invoke(uint64_t a1, uint64_t a2,
   v14 = [v12 stringWithFormat:@"isScheduled=%@|", v13];
   [v3 appendString:v14];
 
-  if (v2->_canceled)
+  if (selfCopy->_canceled)
   {
     v15 = @"Y";
   }
@@ -265,7 +265,7 @@ void __32__SUAutoInstallOperation_cancel__block_invoke(uint64_t a1, uint64_t a2,
   [v3 appendString:v16];
 
   v17 = MEMORY[0x277CCACA8];
-  if ([(SUAutoInstallOperation *)v2 _isValidForScheduling])
+  if ([(SUAutoInstallOperation *)selfCopy _isValidForScheduling])
   {
     v18 = @"Y";
   }
@@ -278,11 +278,11 @@ void __32__SUAutoInstallOperation_cancel__block_invoke(uint64_t a1, uint64_t a2,
   v19 = [v17 stringWithFormat:@"isValidForScheduling=%@|", v18];
   [v3 appendString:v19];
 
-  v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"ForecastDetails=%@", v2->_forecast];
+  v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"ForecastDetails=%@", selfCopy->_forecast];
   [v3 appendString:v20];
 
   [v3 appendString:@"]"];
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -319,26 +319,26 @@ void __32__SUAutoInstallOperation_cancel__block_invoke(uint64_t a1, uint64_t a2,
   objc_sync_exit(obj);
 }
 
-- (void)_noteAutoInstallOperationDidExpireWithError:(id)a3
+- (void)_noteAutoInstallOperationDidExpireWithError:(id)error
 {
-  v12 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  if (!v4->_expired)
+  errorCopy = error;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_expired)
   {
-    v4->_expired = 1;
-    WeakRetained = objc_loadWeakRetained(&v4->_delegate);
+    selfCopy->_expired = 1;
+    WeakRetained = objc_loadWeakRetained(&selfCopy->_delegate);
 
     if (WeakRetained)
     {
-      v6 = objc_loadWeakRetained(&v4->_delegate);
+      v6 = objc_loadWeakRetained(&selfCopy->_delegate);
       v7 = objc_opt_respondsToSelector();
 
-      v8 = objc_loadWeakRetained(&v4->_delegate);
+      v8 = objc_loadWeakRetained(&selfCopy->_delegate);
       v9 = v8;
       if (v7)
       {
-        [v8 autoInstallOperationDidExpire:v4 withError:v12];
+        [v8 autoInstallOperationDidExpire:selfCopy withError:errorCopy];
       }
 
       else
@@ -350,17 +350,17 @@ void __32__SUAutoInstallOperation_cancel__block_invoke(uint64_t a1, uint64_t a2,
           goto LABEL_8;
         }
 
-        v9 = objc_loadWeakRetained(&v4->_delegate);
-        [v9 autoInstallOperationDidExpire:v4];
+        v9 = objc_loadWeakRetained(&selfCopy->_delegate);
+        [v9 autoInstallOperationDidExpire:selfCopy];
       }
     }
   }
 
 LABEL_8:
-  v11 = objc_loadWeakRetained(&v4->_client);
-  [v11 _unregisterAutoInstallOperationClientHandler:v4];
+  v11 = objc_loadWeakRetained(&selfCopy->_client);
+  [v11 _unregisterAutoInstallOperationClientHandler:selfCopy];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)_noteAutoInstallOperationDidConsent
@@ -392,40 +392,40 @@ LABEL_8:
   objc_sync_exit(v2);
 }
 
-- (void)_noteAutoInstallOperationIsReadyToInstall:(id)a3
+- (void)_noteAutoInstallOperationIsReadyToInstall:(id)install
 {
-  v18 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  expired = v4->_expired;
-  if (v4->_canceled || v4->_expired)
+  installCopy = install;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  expired = selfCopy->_expired;
+  if (selfCopy->_canceled || selfCopy->_expired)
   {
-    v4->_canceled;
-    SULogInfo(@"auto install operation (%@) not ready: canceled: %@, expired: %@", v5, v6, v7, v8, v9, v10, v11, v4->_id);
+    selfCopy->_canceled;
+    SULogInfo(@"auto install operation (%@) not ready: canceled: %@, expired: %@", v5, v6, v7, v8, v9, v10, v11, selfCopy->_id);
     v17 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.softwareupdateservices.errors" code:49 userInfo:0];
-    v18[2](v18, 0, v17);
+    installCopy[2](installCopy, 0, v17);
     goto LABEL_7;
   }
 
-  WeakRetained = objc_loadWeakRetained(&v4->_delegate);
+  WeakRetained = objc_loadWeakRetained(&selfCopy->_delegate);
   if (WeakRetained)
   {
     v14 = WeakRetained;
-    v15 = objc_loadWeakRetained(&v4->_delegate);
+    v15 = objc_loadWeakRetained(&selfCopy->_delegate);
     v16 = objc_opt_respondsToSelector();
 
     if (v16)
     {
-      v17 = objc_loadWeakRetained(&v4->_delegate);
-      [v17 autoInstallOperationIsReadyToInstall:v4 withResponse:v18];
+      v17 = objc_loadWeakRetained(&selfCopy->_delegate);
+      [v17 autoInstallOperationIsReadyToInstall:selfCopy withResponse:installCopy];
 LABEL_7:
     }
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)_noteAutoInstallOperationPasscodePolicyChanged:(unint64_t)a3
+- (void)_noteAutoInstallOperationPasscodePolicyChanged:(unint64_t)changed
 {
   obj = self;
   objc_sync_enter(obj);
@@ -440,7 +440,7 @@ LABEL_7:
     if (v7)
     {
       v8 = objc_loadWeakRetained(&obj->_delegate);
-      [v8 autoInstallOperationPasscodePolicyDidChange:obj passcodePolicyType:a3];
+      [v8 autoInstallOperationPasscodePolicyDidChange:obj passcodePolicyType:changed];
 
       v5 = obj;
     }
@@ -451,56 +451,56 @@ LABEL_7:
 
 - (BOOL)_isEffectivelyScheduled
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(SUAutoInstallOperation *)v2 forecast];
-  v4 = [v3 suEndDate];
-  v5 = [(SUAutoInstallOperation *)v2 _isValidTillDate:v4];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  forecast = [(SUAutoInstallOperation *)selfCopy forecast];
+  suEndDate = [forecast suEndDate];
+  v5 = [(SUAutoInstallOperation *)selfCopy _isValidTillDate:suEndDate];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
   return v5;
 }
 
 - (BOOL)_isValidForScheduling
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(SUAutoInstallOperation *)v2 forecast];
-  v4 = [v3 suEndDate];
-  v5 = [(SUAutoInstallOperation *)v2 _isValidTillDate:v4];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  forecast = [(SUAutoInstallOperation *)selfCopy forecast];
+  suEndDate = [forecast suEndDate];
+  v5 = [(SUAutoInstallOperation *)selfCopy _isValidTillDate:suEndDate];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
   return v5;
 }
 
-- (BOOL)_isValidTillDate:(id)a3
+- (BOOL)_isValidTillDate:(id)date
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if ([(SUAutoInstallOperation *)v5 isExpired]|| [(SUAutoInstallOperation *)v5 isCanceled])
+  dateCopy = date;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([(SUAutoInstallOperation *)selfCopy isExpired]|| [(SUAutoInstallOperation *)selfCopy isCanceled])
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = [(SUAutoInstallOperation *)v5 _isDateExpired:v4];
+    v6 = [(SUAutoInstallOperation *)selfCopy _isDateExpired:dateCopy];
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v6 ^ 1;
 }
 
-- (BOOL)_isDateExpired:(id)a3
+- (BOOL)_isDateExpired:(id)expired
 {
   v3 = MEMORY[0x277CBEAA8];
-  v4 = a3;
-  v5 = [v3 date];
-  v6 = [v4 laterDate:v5];
+  expiredCopy = expired;
+  date = [v3 date];
+  v6 = [expiredCopy laterDate:date];
 
-  return v6 == v5;
+  return v6 == date;
 }
 
 - (SUAutoInstallOperationDelegate)delegate

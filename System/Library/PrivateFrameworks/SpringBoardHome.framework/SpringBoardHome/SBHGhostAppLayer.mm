@@ -1,6 +1,6 @@
 @interface SBHGhostAppLayer
 - (SBHGhostAppLayer)init;
-- (void)updateForUserInterfaceStyle:(int64_t)a3;
+- (void)updateForUserInterfaceStyle:(int64_t)style;
 @end
 
 @implementation SBHGhostAppLayer
@@ -19,9 +19,9 @@
   return v3;
 }
 
-- (void)updateForUserInterfaceStyle:(int64_t)a3
+- (void)updateForUserInterfaceStyle:(int64_t)style
 {
-  if (a3 == 1)
+  if (style == 1)
   {
     v4 = [MEMORY[0x1E69DC888] colorWithWhite:0.0 alpha:0.12];
     v5 = MEMORY[0x1E6979CE8];
@@ -29,7 +29,7 @@
 
   else
   {
-    if (a3 != 2)
+    if (style != 2)
     {
       return;
     }

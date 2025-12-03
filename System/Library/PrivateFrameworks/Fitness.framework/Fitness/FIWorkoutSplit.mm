@@ -1,15 +1,15 @@
 @interface FIWorkoutSplit
-- (FIWorkoutSplit)initWithCoder:(id)a3;
-- (FIWorkoutSplit)initWithDistance:(double)a3 duration:(double)a4;
-- (FIWorkoutSplit)initWithDistance:(double)a3 duration:(double)a4 dateInterval:(id)a5;
-- (FIWorkoutSplit)initWithEvent:(id)a3;
+- (FIWorkoutSplit)initWithCoder:(id)coder;
+- (FIWorkoutSplit)initWithDistance:(double)distance duration:(double)duration;
+- (FIWorkoutSplit)initWithDistance:(double)distance duration:(double)duration dateInterval:(id)interval;
+- (FIWorkoutSplit)initWithEvent:(id)event;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FIWorkoutSplit
 
-- (FIWorkoutSplit)initWithDistance:(double)a3 duration:(double)a4
+- (FIWorkoutSplit)initWithDistance:(double)distance duration:(double)duration
 {
   v9.receiver = self;
   v9.super_class = FIWorkoutSplit;
@@ -17,10 +17,10 @@
   v7 = v6;
   if (v6)
   {
-    [(FIWorkoutSplit *)v6 setDistanceInMeters:a3];
-    [(FIWorkoutSplit *)v7 setDuration:a4];
+    [(FIWorkoutSplit *)v6 setDistanceInMeters:distance];
+    [(FIWorkoutSplit *)v7 setDuration:duration];
     [(FIWorkoutSplit *)v7 setMeasurementSystem:1];
-    [(FIWorkoutSplit *)v7 setTotalDistanceUpToThisPointInMeters:a3];
+    [(FIWorkoutSplit *)v7 setTotalDistanceUpToThisPointInMeters:distance];
     [(FIWorkoutSplit *)v7 setIsPartialSplit:0];
     [(FIWorkoutSplit *)v7 setAveragePowerQuantityInWatts:0.0];
   }
@@ -28,20 +28,20 @@
   return v7;
 }
 
-- (FIWorkoutSplit)initWithDistance:(double)a3 duration:(double)a4 dateInterval:(id)a5
+- (FIWorkoutSplit)initWithDistance:(double)distance duration:(double)duration dateInterval:(id)interval
 {
-  v8 = a5;
+  intervalCopy = interval;
   v12.receiver = self;
   v12.super_class = FIWorkoutSplit;
   v9 = [(FIWorkoutSplit *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    [(FIWorkoutSplit *)v9 setDistanceInMeters:a3];
-    [(FIWorkoutSplit *)v10 setDuration:a4];
-    [(FIWorkoutSplit *)v10 setDateInterval:v8];
+    [(FIWorkoutSplit *)v9 setDistanceInMeters:distance];
+    [(FIWorkoutSplit *)v10 setDuration:duration];
+    [(FIWorkoutSplit *)v10 setDateInterval:intervalCopy];
     [(FIWorkoutSplit *)v10 setMeasurementSystem:1];
-    [(FIWorkoutSplit *)v10 setTotalDistanceUpToThisPointInMeters:a3];
+    [(FIWorkoutSplit *)v10 setTotalDistanceUpToThisPointInMeters:distance];
     [(FIWorkoutSplit *)v10 setIsPartialSplit:0];
     [(FIWorkoutSplit *)v10 setAveragePowerQuantityInWatts:0.0];
   }
@@ -49,47 +49,47 @@
   return v10;
 }
 
-- (FIWorkoutSplit)initWithEvent:(id)a3
+- (FIWorkoutSplit)initWithEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v24.receiver = self;
   v24.super_class = FIWorkoutSplit;
   v5 = [(FIWorkoutSplit *)&v24 init];
   if (v5)
   {
-    v6 = [v4 metadata];
-    v7 = [v6 objectForKeyedSubscript:@"_HKPrivateMetadataSplitDistanceQuantity"];
-    v8 = [MEMORY[0x277CCDAB0] meterUnit];
-    [v7 doubleValueForUnit:v8];
+    metadata = [eventCopy metadata];
+    v7 = [metadata objectForKeyedSubscript:@"_HKPrivateMetadataSplitDistanceQuantity"];
+    meterUnit = [MEMORY[0x277CCDAB0] meterUnit];
+    [v7 doubleValueForUnit:meterUnit];
     [(FIWorkoutSplit *)v5 setDistanceInMeters:?];
 
-    v9 = [v4 metadata];
-    v10 = [v9 objectForKeyedSubscript:@"_HKPrivateMetadataSplitActiveDurationQuantity"];
-    v11 = [MEMORY[0x277CCDAB0] secondUnit];
-    [v10 doubleValueForUnit:v11];
+    metadata2 = [eventCopy metadata];
+    v10 = [metadata2 objectForKeyedSubscript:@"_HKPrivateMetadataSplitActiveDurationQuantity"];
+    secondUnit = [MEMORY[0x277CCDAB0] secondUnit];
+    [v10 doubleValueForUnit:secondUnit];
     [(FIWorkoutSplit *)v5 setDuration:?];
 
-    v12 = [v4 dateInterval];
-    [(FIWorkoutSplit *)v5 setDateInterval:v12];
+    dateInterval = [eventCopy dateInterval];
+    [(FIWorkoutSplit *)v5 setDateInterval:dateInterval];
 
-    v13 = [v4 metadata];
-    v14 = [v13 objectForKeyedSubscript:@"_HKPrivateMetadataSplitMeasuringSystem"];
+    metadata3 = [eventCopy metadata];
+    v14 = [metadata3 objectForKeyedSubscript:@"_HKPrivateMetadataSplitMeasuringSystem"];
     -[FIWorkoutSplit setMeasurementSystem:](v5, "setMeasurementSystem:", [v14 integerValue]);
 
-    v15 = [v4 metadata];
-    v16 = [v15 objectForKeyedSubscript:@"_HKPrivateMetadataTotalDistanceQuantity"];
-    v17 = [MEMORY[0x277CCDAB0] meterUnit];
-    [v16 doubleValueForUnit:v17];
+    metadata4 = [eventCopy metadata];
+    v16 = [metadata4 objectForKeyedSubscript:@"_HKPrivateMetadataTotalDistanceQuantity"];
+    meterUnit2 = [MEMORY[0x277CCDAB0] meterUnit];
+    [v16 doubleValueForUnit:meterUnit2];
     [(FIWorkoutSplit *)v5 setTotalDistanceUpToThisPointInMeters:?];
 
-    v18 = [v4 metadata];
-    v19 = [v18 objectForKeyedSubscript:@"_HKPrivateMetadataIsPartialSplit"];
+    metadata5 = [eventCopy metadata];
+    v19 = [metadata5 objectForKeyedSubscript:@"_HKPrivateMetadataIsPartialSplit"];
     -[FIWorkoutSplit setIsPartialSplit:](v5, "setIsPartialSplit:", [v19 BOOLValue]);
 
-    v20 = [v4 metadata];
-    v21 = [v20 objectForKeyedSubscript:@"_HKPrivateMetadataSplitAveragePowerQuantity"];
-    v22 = [MEMORY[0x277CCDAB0] wattUnit];
-    [v21 doubleValueForUnit:v22];
+    metadata6 = [eventCopy metadata];
+    v21 = [metadata6 objectForKeyedSubscript:@"_HKPrivateMetadataSplitAveragePowerQuantity"];
+    wattUnit = [MEMORY[0x277CCDAB0] wattUnit];
+    [v21 doubleValueForUnit:wattUnit];
     [(FIWorkoutSplit *)v5 setAveragePowerQuantityInWatts:?];
   }
 
@@ -110,44 +110,44 @@
   return v8;
 }
 
-- (FIWorkoutSplit)initWithCoder:(id)a3
+- (FIWorkoutSplit)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = FIWorkoutSplit;
   v5 = [(FIWorkoutSplit *)&v13 init];
   if (v5)
   {
-    [v4 decodeDoubleForKey:@"distance"];
+    [coderCopy decodeDoubleForKey:@"distance"];
     v5->_distanceInMeters = v6;
-    [v4 decodeDoubleForKey:@"duration"];
+    [coderCopy decodeDoubleForKey:@"duration"];
     v5->_duration = v7;
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dateInterval"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dateInterval"];
     dateInterval = v5->_dateInterval;
     v5->_dateInterval = v8;
 
-    v5->_measurementSystem = [v4 decodeIntForKey:@"measurementSystem"];
-    [v4 decodeDoubleForKey:@"totalDistance"];
+    v5->_measurementSystem = [coderCopy decodeIntForKey:@"measurementSystem"];
+    [coderCopy decodeDoubleForKey:@"totalDistance"];
     v5->_totalDistanceUpToThisPointInMeters = v10;
-    v5->_isPartialSplit = [v4 decodeBoolForKey:@"isPartialSplit"];
-    [v4 decodeDoubleForKey:@"averagePower"];
+    v5->_isPartialSplit = [coderCopy decodeBoolForKey:@"isPartialSplit"];
+    [coderCopy decodeDoubleForKey:@"averagePower"];
     v5->_averagePowerQuantityInWatts = v11;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   distanceInMeters = self->_distanceInMeters;
-  v5 = a3;
-  [v5 encodeDouble:@"distance" forKey:distanceInMeters];
-  [v5 encodeDouble:@"duration" forKey:self->_duration];
-  [v5 encodeObject:self->_dateInterval forKey:@"dateInterval"];
-  [v5 encodeInt:LODWORD(self->_measurementSystem) forKey:@"measurementSystem"];
-  [v5 encodeDouble:@"totalDistance" forKey:self->_totalDistanceUpToThisPointInMeters];
-  [v5 encodeBool:self->_isPartialSplit forKey:@"isPartialSplit"];
-  [v5 encodeDouble:@"averagePower" forKey:self->_averagePowerQuantityInWatts];
+  coderCopy = coder;
+  [coderCopy encodeDouble:@"distance" forKey:distanceInMeters];
+  [coderCopy encodeDouble:@"duration" forKey:self->_duration];
+  [coderCopy encodeObject:self->_dateInterval forKey:@"dateInterval"];
+  [coderCopy encodeInt:LODWORD(self->_measurementSystem) forKey:@"measurementSystem"];
+  [coderCopy encodeDouble:@"totalDistance" forKey:self->_totalDistanceUpToThisPointInMeters];
+  [coderCopy encodeBool:self->_isPartialSplit forKey:@"isPartialSplit"];
+  [coderCopy encodeDouble:@"averagePower" forKey:self->_averagePowerQuantityInWatts];
 }
 
 @end

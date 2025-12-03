@@ -1,68 +1,68 @@
 @interface _EMKGlyphRenderingAttributes
-- (_EMKGlyphRenderingAttributes)initWithColor:(id)a3 shadowColor:(id)a4 scale:(double)a5;
-- (_EMKGlyphRenderingAttributes)initWithValuesFromRippler:(id)a3 timeIndex:(unint64_t)a4 glyphIndex:(unint64_t)a5 numberOfGlyphs:(unint64_t)a6;
-- (id)shadowIfNeededForFontPointSize:(double)a3;
-- (void)_applyInContext:(CGContext *)a3 fontPointSize:(double)a4;
+- (_EMKGlyphRenderingAttributes)initWithColor:(id)color shadowColor:(id)shadowColor scale:(double)scale;
+- (_EMKGlyphRenderingAttributes)initWithValuesFromRippler:(id)rippler timeIndex:(unint64_t)index glyphIndex:(unint64_t)glyphIndex numberOfGlyphs:(unint64_t)glyphs;
+- (id)shadowIfNeededForFontPointSize:(double)size;
+- (void)_applyInContext:(CGContext *)context fontPointSize:(double)size;
 @end
 
 @implementation _EMKGlyphRenderingAttributes
 
-- (_EMKGlyphRenderingAttributes)initWithColor:(id)a3 shadowColor:(id)a4 scale:(double)a5
+- (_EMKGlyphRenderingAttributes)initWithColor:(id)color shadowColor:(id)shadowColor scale:(double)scale
 {
-  v8 = a3;
-  v9 = a4;
+  colorCopy = color;
+  shadowColorCopy = shadowColor;
   v16.receiver = self;
   v16.super_class = _EMKGlyphRenderingAttributes;
   v10 = [(_EMKGlyphRenderingAttributes *)&v16 init];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [colorCopy copy];
     color = v10->_color;
     v10->_color = v11;
 
-    v13 = [v9 copy];
+    v13 = [shadowColorCopy copy];
     shadowColor = v10->_shadowColor;
     v10->_shadowColor = v13;
 
-    v10->_scale = a5;
+    v10->_scale = scale;
   }
 
   return v10;
 }
 
-- (_EMKGlyphRenderingAttributes)initWithValuesFromRippler:(id)a3 timeIndex:(unint64_t)a4 glyphIndex:(unint64_t)a5 numberOfGlyphs:(unint64_t)a6
+- (_EMKGlyphRenderingAttributes)initWithValuesFromRippler:(id)rippler timeIndex:(unint64_t)index glyphIndex:(unint64_t)glyphIndex numberOfGlyphs:(unint64_t)glyphs
 {
-  v10 = a3;
-  v11 = [v10 currentColorForGlyphIndex:a5 numberOfGlyphs:a6 timeIndex:a4];
-  v12 = [v10 currentShadowColorForGlyphIndex:a5 numberOfGlyphs:a6 timeIndex:a4];
-  [v10 currentScaleForGlyphIndex:a5 numberOfGlyphs:a6 timeIndex:a4];
+  ripplerCopy = rippler;
+  v11 = [ripplerCopy currentColorForGlyphIndex:glyphIndex numberOfGlyphs:glyphs timeIndex:index];
+  v12 = [ripplerCopy currentShadowColorForGlyphIndex:glyphIndex numberOfGlyphs:glyphs timeIndex:index];
+  [ripplerCopy currentScaleForGlyphIndex:glyphIndex numberOfGlyphs:glyphs timeIndex:index];
   v14 = v13;
 
   v15 = [(_EMKGlyphRenderingAttributes *)self initWithColor:v11 shadowColor:v12 scale:v14];
   return v15;
 }
 
-- (void)_applyInContext:(CGContext *)a3 fontPointSize:(double)a4
+- (void)_applyInContext:(CGContext *)context fontPointSize:(double)size
 {
-  v14 = [(_EMKGlyphRenderingAttributes *)self color];
+  color = [(_EMKGlyphRenderingAttributes *)self color];
   [(_EMKGlyphRenderingAttributes *)self scale];
-  v8 = v7 * a4;
-  CGContextSetFontSize(a3, v8);
-  v9 = v14;
-  ColorSpace = CGColorGetColorSpace([v14 CGColor]);
-  CGContextSetStrokeColorSpace(a3, ColorSpace);
-  CGContextSetFillColorSpace(a3, ColorSpace);
-  v11 = v14;
-  CGContextSetStrokeColorWithColor(a3, [v14 CGColor]);
-  v12 = v14;
-  CGContextSetFillColorWithColor(a3, [v14 CGColor]);
+  v8 = v7 * size;
+  CGContextSetFontSize(context, v8);
+  v9 = color;
+  ColorSpace = CGColorGetColorSpace([color CGColor]);
+  CGContextSetStrokeColorSpace(context, ColorSpace);
+  CGContextSetFillColorSpace(context, ColorSpace);
+  v11 = color;
+  CGContextSetStrokeColorWithColor(context, [color CGColor]);
+  v12 = color;
+  CGContextSetFillColorWithColor(context, [color CGColor]);
   v13 = [(_EMKGlyphRenderingAttributes *)self shadowIfNeededForFontPointSize:v8];
-  [v13 applyToGraphicsContext_emk:a3];
+  [v13 applyToGraphicsContext_emk:context];
 }
 
-- (id)shadowIfNeededForFontPointSize:(double)a3
+- (id)shadowIfNeededForFontPointSize:(double)size
 {
-  if (a3 >= 22.0)
+  if (size >= 22.0)
   {
     v4 = 0;
   }
@@ -72,8 +72,8 @@
     v4 = objc_alloc_init(MEMORY[0x277D74258]);
     [v4 setShadowOffset:{0.25, 0.0}];
     [v4 setShadowBlurRadius:0.0];
-    v5 = [(_EMKGlyphRenderingAttributes *)self shadowColor];
-    [v4 setShadowColor:v5];
+    shadowColor = [(_EMKGlyphRenderingAttributes *)self shadowColor];
+    [v4 setShadowColor:shadowColor];
   }
 
   return v4;

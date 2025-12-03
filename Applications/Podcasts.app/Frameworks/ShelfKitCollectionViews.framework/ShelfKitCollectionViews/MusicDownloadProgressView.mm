@@ -1,20 +1,20 @@
 @interface MusicDownloadProgressView
-- (MusicDownloadProgressView)initWithFrame:(CGRect)a3;
+- (MusicDownloadProgressView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setCenterImage:(id)a3;
-- (void)setDownloadProgress:(double)a3;
-- (void)setOuterRingColor:(id)a3;
+- (void)setCenterImage:(id)image;
+- (void)setDownloadProgress:(double)progress;
+- (void)setOuterRingColor:(id)color;
 - (void)tintColorDidChange;
 - (void)updateOuterRingColor;
 @end
 
 @implementation MusicDownloadProgressView
 
-- (MusicDownloadProgressView)initWithFrame:(CGRect)a3
+- (MusicDownloadProgressView)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = MusicDownloadProgressView;
-  v3 = [(MusicDownloadProgressView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MusicDownloadProgressView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [UIView alloc];
@@ -35,8 +35,8 @@
   v28.receiver = self;
   v28.super_class = MusicDownloadProgressView;
   [(MusicDownloadProgressView *)&v28 layoutSubviews];
-  v3 = [(MusicDownloadProgressView *)self traitCollection];
-  [v3 displayScale];
+  traitCollection = [(MusicDownloadProgressView *)self traitCollection];
+  [traitCollection displayScale];
   MTMPUFloatGetSafeScaleForValue();
   v5 = v4;
   v26 = v4;
@@ -70,9 +70,9 @@
   [(UIImage *)self->_centerImage alignmentRectInsets];
   [(UIImageView *)self->_centerImageView setFrame:v13 + v23, v15 + v20, v17 - (v23 + v21), v19 - (v20 + v22)];
   [(UIView *)self->_outerRingView setFrame:x, y, width, height];
-  v24 = [(UIView *)self->_outerRingView layer];
-  [v24 setCornerRadius:v27];
-  [v24 setBorderWidth:1.0 / v26 + 2.0];
+  layer = [(UIView *)self->_outerRingView layer];
+  [layer setCornerRadius:v27];
+  [layer setBorderWidth:1.0 / v26 + 2.0];
   [(MusicDownloadProgressView *)self updateOuterRingColor];
 }
 
@@ -84,13 +84,13 @@
   [(MusicDownloadProgressView *)self updateOuterRingColor];
 }
 
-- (void)setCenterImage:(id)a3
+- (void)setCenterImage:(id)image
 {
-  v5 = a3;
-  if (self->_centerImage != v5)
+  imageCopy = image;
+  if (self->_centerImage != imageCopy)
   {
-    v9 = v5;
-    objc_storeStrong(&self->_centerImage, a3);
+    v9 = imageCopy;
+    objc_storeStrong(&self->_centerImage, image);
     centerImageView = self->_centerImageView;
     if (self->_centerImage)
     {
@@ -114,15 +114,15 @@
     }
 
     [(MusicDownloadProgressView *)self setNeedsLayout];
-    v5 = v9;
+    imageCopy = v9;
   }
 }
 
-- (void)setDownloadProgress:(double)a3
+- (void)setDownloadProgress:(double)progress
 {
   if ((MTMPUFloatEqualToFloat() & 1) == 0)
   {
-    self->_downloadProgress = a3;
+    self->_downloadProgress = progress;
     v5 = MTMPUFloatLessThanOrEqualToFloat();
     progressView = self->_progressView;
     if (v5)
@@ -171,14 +171,14 @@ void __49__MusicDownloadProgressView_setDownloadProgress___block_invoke(uint64_t
   [(MusicDownloadProgressView *)self setOuterRingColor:v3];
 }
 
-- (void)setOuterRingColor:(id)a3
+- (void)setOuterRingColor:(id)color
 {
   outerRingView = self->_outerRingView;
-  v4 = a3;
-  v6 = [(UIView *)outerRingView layer];
-  v5 = [v4 CGColor];
+  colorCopy = color;
+  layer = [(UIView *)outerRingView layer];
+  cGColor = [colorCopy CGColor];
 
-  [v6 setBorderColor:v5];
+  [layer setBorderColor:cGColor];
 }
 
 @end

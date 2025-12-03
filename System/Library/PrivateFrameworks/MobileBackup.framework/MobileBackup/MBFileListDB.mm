@@ -1,49 +1,49 @@
 @interface MBFileListDB
-+ (id)_fileMetadataForPath:(id)a3 fetchXattrs:(BOOL)a4 db:(id)a5 error:(id *)a6;
-+ (id)openDatabaseIn:(id)a3 commitID:(id)a4 domainName:(id)a5 error:(id *)a6;
-+ (id)openOrCreateDatabaseIn:(id)a3 commitID:(id)a4 domainName:(id)a5 error:(id *)a6;
-- (BOOL)_adjustInodesForVolumeTransition:(id *)a3;
-- (BOOL)_fetchPropertyValue:(id *)a3 forKey:(id)a4 error:(id *)a5;
-- (BOOL)_fetchVolumeUUID:(id *)a3 error:(id *)a4;
-- (BOOL)_markAllFilesAsDeleted:(id *)a3;
-- (BOOL)_markInProgressVolumeTransition:(id *)a3;
-- (BOOL)_openOrCreateWithError:(id *)a3;
-- (BOOL)_openWithError:(id *)a3;
-- (BOOL)_removeHardLinkedFilesForVolumeTransition:(id *)a3;
-- (BOOL)_setVolumeUUID:(id)a3 error:(id *)a4;
-- (BOOL)_truncateDeletedFiles:(id *)a3;
-- (BOOL)beginTranscriptionForVolumeUUID:(id)a3 error:(id *)a4;
-- (BOOL)canReuseAssetsAcrossVolumeTransition:(BOOL *)a3 isResuming:(BOOL *)a4 error:(id *)a5;
-- (BOOL)close:(id *)a3;
-- (BOOL)computeAssetRecordIDChecksumWithPrefix:(id)a3 checksum:(int64_t *)a4 error:(id *)a5;
-- (BOOL)enumerateAssetRecordIdSuffixForNonEmptyFiles:(id *)a3 block:(id)a4;
-- (BOOL)enumerateFileMetadataWithError:(id *)a3 block:(id)a4;
-- (BOOL)enumerateFilesWithDomain:(id)a3 error:(id *)a4 block:(id)a5;
-- (BOOL)enumerateSymlinkTargets:(id *)a3 block:(id)a4;
-- (BOOL)fetchEncryptionKeyForInode:(unint64_t)a3 outEncryptionKey:(id *)a4 error:(id *)a5;
-- (BOOL)fetchFileListStats:(id *)a3 error:(id *)a4;
-- (BOOL)finishTranscription:(id *)a3;
++ (id)_fileMetadataForPath:(id)path fetchXattrs:(BOOL)xattrs db:(id)db error:(id *)error;
++ (id)openDatabaseIn:(id)in commitID:(id)d domainName:(id)name error:(id *)error;
++ (id)openOrCreateDatabaseIn:(id)in commitID:(id)d domainName:(id)name error:(id *)error;
+- (BOOL)_adjustInodesForVolumeTransition:(id *)transition;
+- (BOOL)_fetchPropertyValue:(id *)value forKey:(id)key error:(id *)error;
+- (BOOL)_fetchVolumeUUID:(id *)d error:(id *)error;
+- (BOOL)_markAllFilesAsDeleted:(id *)deleted;
+- (BOOL)_markInProgressVolumeTransition:(id *)transition;
+- (BOOL)_openOrCreateWithError:(id *)error;
+- (BOOL)_openWithError:(id *)error;
+- (BOOL)_removeHardLinkedFilesForVolumeTransition:(id *)transition;
+- (BOOL)_setVolumeUUID:(id)d error:(id *)error;
+- (BOOL)_truncateDeletedFiles:(id *)files;
+- (BOOL)beginTranscriptionForVolumeUUID:(id)d error:(id *)error;
+- (BOOL)canReuseAssetsAcrossVolumeTransition:(BOOL *)transition isResuming:(BOOL *)resuming error:(id *)error;
+- (BOOL)close:(id *)close;
+- (BOOL)computeAssetRecordIDChecksumWithPrefix:(id)prefix checksum:(int64_t *)checksum error:(id *)error;
+- (BOOL)enumerateAssetRecordIdSuffixForNonEmptyFiles:(id *)files block:(id)block;
+- (BOOL)enumerateFileMetadataWithError:(id *)error block:(id)block;
+- (BOOL)enumerateFilesWithDomain:(id)domain error:(id *)error block:(id)block;
+- (BOOL)enumerateSymlinkTargets:(id *)targets block:(id)block;
+- (BOOL)fetchEncryptionKeyForInode:(unint64_t)inode outEncryptionKey:(id *)key error:(id *)error;
+- (BOOL)fetchFileListStats:(id *)stats error:(id *)error;
+- (BOOL)finishTranscription:(id *)transcription;
 - (BOOL)isTransitioningVolumes;
-- (BOOL)markAllFilesAsDeleted:(id *)a3;
-- (BOOL)markFileAsPresent:(id)a3 error:(id *)a4;
-- (BOOL)setFileMetadata:(id)a3 forPath:(id)a4 error:(id *)a5;
-- (id)_initWithPath:(id)a3 domainName:(id)a4;
+- (BOOL)markAllFilesAsDeleted:(id *)deleted;
+- (BOOL)markFileAsPresent:(id)present error:(id *)error;
+- (BOOL)setFileMetadata:(id)metadata forPath:(id)path error:(id *)error;
+- (id)_initWithPath:(id)path domainName:(id)name;
 - (id)description;
-- (id)fileMetadataForPath:(id)a3 fetchXattrs:(BOOL)a4 error:(id *)a5;
+- (id)fileMetadataForPath:(id)path fetchXattrs:(BOOL)xattrs error:(id *)error;
 - (void)dealloc;
 @end
 
 @implementation MBFileListDB
 
-+ (id)openDatabaseIn:(id)a3 commitID:(id)a4 domainName:(id)a5 error:(id *)a6
++ (id)openDatabaseIn:(id)in commitID:(id)d domainName:(id)name error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  inCopy = in;
+  dCopy = d;
+  nameCopy = name;
   Current = CFAbsoluteTimeGetCurrent();
-  v14 = MBFileListDBPath(v10, v11, v12);
-  v15 = [[MBFileListDB alloc] _initWithPath:v14 domainName:v12];
-  if ([v15 _openWithError:a6])
+  v14 = MBFileListDBPath(inCopy, dCopy, nameCopy);
+  v15 = [[MBFileListDB alloc] _initWithPath:v14 domainName:nameCopy];
+  if ([v15 _openWithError:error])
   {
     v16 = v15;
   }
@@ -58,7 +58,7 @@
   if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v21 = a1;
+    selfCopy = self;
     v22 = 2048;
     v23 = v17 - Current;
     _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_INFO, "Opened %@ in %.3fs", buf, 0x16u);
@@ -68,14 +68,14 @@
   return v16;
 }
 
-+ (id)openOrCreateDatabaseIn:(id)a3 commitID:(id)a4 domainName:(id)a5 error:(id *)a6
++ (id)openOrCreateDatabaseIn:(id)in commitID:(id)d domainName:(id)name error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  inCopy = in;
+  dCopy = d;
+  nameCopy = name;
   Current = CFAbsoluteTimeGetCurrent();
-  v14 = MBFileListDBPath(v10, v11, v12);
-  v15 = [[MBFileListDB alloc] _initWithPath:v14 domainName:v12];
+  v14 = MBFileListDBPath(inCopy, dCopy, nameCopy);
+  v15 = [[MBFileListDB alloc] _initWithPath:v14 domainName:nameCopy];
   v28 = 0;
   v16 = [v15 _openOrCreateWithError:&v28];
   v17 = v28;
@@ -87,8 +87,8 @@ LABEL_2:
     goto LABEL_14;
   }
 
-  v20 = [v17 domain];
-  if ([v20 isEqualToString:PQLSqliteErrorDomain])
+  domain = [v17 domain];
+  if ([domain isEqualToString:PQLSqliteErrorDomain])
   {
     if ([v18 code] == 11)
     {
@@ -106,7 +106,7 @@ LABEL_10:
       if (os_log_type_enabled(v23, OS_LOG_TYPE_FAULT))
       {
         *buf = 138412546;
-        v30 = v14;
+        selfCopy = v14;
         v31 = 2112;
         v32 = *&v18;
         _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_FAULT, "Invalid FileList database at %@, deleting it and trying again: %@", buf, 0x16u);
@@ -115,7 +115,7 @@ LABEL_10:
 
       v24 = v14;
       unlink([v14 fileSystemRepresentation]);
-      if ([v15 _openOrCreateWithError:a6])
+      if ([v15 _openOrCreateWithError:error])
       {
         goto LABEL_2;
       }
@@ -128,11 +128,11 @@ LABEL_10:
   {
   }
 
-  if (a6)
+  if (error)
   {
     v21 = v18;
     v19 = 0;
-    *a6 = v18;
+    *error = v18;
     goto LABEL_14;
   }
 
@@ -145,7 +145,7 @@ LABEL_14:
   if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v30 = a1;
+    selfCopy = self;
     v31 = 2048;
     v32 = v25 - Current;
     _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_INFO, "Opened/created %@ in %.3fs", buf, 0x16u);
@@ -155,18 +155,18 @@ LABEL_14:
   return v19;
 }
 
-- (id)_initWithPath:(id)a3 domainName:(id)a4
+- (id)_initWithPath:(id)path domainName:(id)name
 {
-  v7 = a3;
-  v8 = a4;
+  pathCopy = path;
+  nameCopy = name;
   v13.receiver = self;
   v13.super_class = MBFileListDB;
   v9 = [(MBFileListDB *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_path, a3);
-    objc_storeStrong(&v10->_domainName, a4);
+    objc_storeStrong(&v9->_path, path);
+    objc_storeStrong(&v10->_domainName, name);
     db = v10->_db;
     v10->_db = 0;
   }
@@ -174,16 +174,16 @@ LABEL_14:
   return v10;
 }
 
-- (BOOL)_openWithError:(id *)a3
+- (BOOL)_openWithError:(id *)error
 {
   v5 = +[NSFileManager defaultManager];
-  v6 = [(MBFileListDB *)self path];
-  v7 = [v5 fileExistsAtPath:v6];
+  path = [(MBFileListDB *)self path];
+  v7 = [v5 fileExistsAtPath:path];
 
   if (v7)
   {
-    v8 = [(MBFileListDB *)self path];
-    v9 = [(MBFileListDB *)self _initializeDatabaseAt:v8 withFlags:2 error:a3];
+    path2 = [(MBFileListDB *)self path];
+    v9 = [(MBFileListDB *)self _initializeDatabaseAt:path2 withFlags:2 error:error];
     db = self->_db;
     self->_db = v9;
 
@@ -192,20 +192,20 @@ LABEL_14:
 
   else
   {
-    if (a3)
+    if (error)
     {
-      v12 = [(MBFileListDB *)self path];
-      *a3 = [MBError errorWithCode:4 path:v12 format:@"Database not found"];
+      path3 = [(MBFileListDB *)self path];
+      *error = [MBError errorWithCode:4 path:path3 format:@"Database not found"];
     }
 
     return 0;
   }
 }
 
-- (BOOL)_openOrCreateWithError:(id *)a3
+- (BOOL)_openOrCreateWithError:(id *)error
 {
-  v5 = [(MBFileListDB *)self path];
-  v6 = [v5 stringByDeletingLastPathComponent];
+  path = [(MBFileListDB *)self path];
+  stringByDeletingLastPathComponent = [path stringByDeletingLastPathComponent];
 
   v7 = +[NSFileManager defaultManager];
   v15[0] = NSFileOwnerAccountName;
@@ -213,12 +213,12 @@ LABEL_14:
   v16[0] = @"mobile";
   v16[1] = @"mobile";
   v8 = [NSDictionary dictionaryWithObjects:v16 forKeys:v15 count:2];
-  v9 = [v7 createDirectoryAtPath:v6 withIntermediateDirectories:1 attributes:v8 error:a3];
+  v9 = [v7 createDirectoryAtPath:stringByDeletingLastPathComponent withIntermediateDirectories:1 attributes:v8 error:error];
 
   if (v9)
   {
-    v10 = [(MBFileListDB *)self path];
-    v11 = [(MBFileListDB *)self _initializeDatabaseAt:v10 withFlags:6 error:a3];
+    path2 = [(MBFileListDB *)self path];
+    v11 = [(MBFileListDB *)self _initializeDatabaseAt:path2 withFlags:6 error:error];
     db = self->_db;
     self->_db = v11;
 
@@ -255,7 +255,7 @@ LABEL_14:
   [(MBFileListDB *)&v6 dealloc];
 }
 
-- (BOOL)close:(id *)a3
+- (BOOL)close:(id *)close
 {
   v5 = self->_db;
   if (v5)
@@ -273,17 +273,17 @@ LABEL_14:
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        v17 = self;
+        selfCopy2 = self;
         v18 = 2112;
         v19 = *&v9;
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "Failed to close %@: %@", buf, 0x16u);
         _MBLog();
       }
 
-      if (a3)
+      if (close)
       {
         v11 = v9;
-        *a3 = v9;
+        *close = v9;
       }
     }
 
@@ -292,7 +292,7 @@ LABEL_14:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v17 = self;
+      selfCopy2 = self;
       v18 = 2048;
       v19 = v12 - Current;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "Closed %@ in %.3fs", buf, 0x16u);
@@ -308,22 +308,22 @@ LABEL_14:
   return v8;
 }
 
-- (BOOL)_fetchPropertyValue:(id *)a3 forKey:(id)a4 error:(id *)a5
+- (BOOL)_fetchPropertyValue:(id *)value forKey:(id)key error:(id *)error
 {
-  v8 = a4;
+  keyCopy = key;
   v9 = [(MBFileListDB *)self db];
-  LOBYTE(a5) = [v9 fetchObjectOfClass:objc_opt_class() outObject:a3 error:a5 sql:{@"SELECT value FROM Properties WHERE key = %@", v8}];
+  LOBYTE(error) = [v9 fetchObjectOfClass:objc_opt_class() outObject:value error:error sql:{@"SELECT value FROM Properties WHERE key = %@", keyCopy}];
 
-  return a5;
+  return error;
 }
 
-+ (id)_fileMetadataForPath:(id)a3 fetchXattrs:(BOOL)a4 db:(id)a5 error:(id *)a6
++ (id)_fileMetadataForPath:(id)path fetchXattrs:(BOOL)xattrs db:(id)db error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = a5;
-  v11 = v10;
-  if (v8)
+  xattrsCopy = xattrs;
+  pathCopy = path;
+  dbCopy = db;
+  v11 = dbCopy;
+  if (xattrsCopy)
   {
     v12 = @"SELECT FileMetadata.inode, FileMetadata.size, FileMetadata.birth, FileMetadata.modified, FileMetadata.statusChanged, FileMetadata.userID, FileMetadata.groupID, FileMetadata.mode, FileMetadata.flags, FileMetadata.protectionClass, FileMetadata.xattrs, Assets.genCount, recordIDSuffix, encryptionKey, compressionMethod, assetType, assetSize, assetSignature FROM FileMetadata LEFT JOIN Assets ON FileMetadata.inode = Assets.inode WHERE relativePath = %@;";
   }
@@ -333,7 +333,7 @@ LABEL_14:
     v12 = @"SELECT FileMetadata.inode, FileMetadata.size, FileMetadata.birth, FileMetadata.modified, FileMetadata.statusChanged, FileMetadata.userID, FileMetadata.groupID, FileMetadata.mode, FileMetadata.flags, FileMetadata.protectionClass, IIF(FileMetadata.xattrs IS NULL, 0, 1), Assets.genCount, recordIDSuffix, encryptionKey, compressionMethod, assetType, assetSize, assetSignature FROM FileMetadata LEFT JOIN Assets ON FileMetadata.inode = Assets.inode WHERE relativePath = %@;";
   }
 
-  v13 = [v10 fetch:{v12, v9}];
+  v13 = [dbCopy fetch:{v12, pathCopy}];
   if ([v13 next])
   {
     v29 = 0;
@@ -341,7 +341,7 @@ LABEL_14:
     v27 = 0u;
     memset(v26, 0, sizeof(v26));
     [v13 getNode:v26 fromIndex:&v29];
-    if (v8)
+    if (xattrsCopy)
     {
       v14 = [v13 xattrsFromIndex:&v29];
       HIBYTE(v28) = HIBYTE(v28) & 0xFB | (4 * (v14 != 0));
@@ -368,7 +368,7 @@ LABEL_14:
     if (v20 == 40960)
     {
       v25 = 0;
-      v23 = [v11 fetchObjectOfClass:objc_opt_class() outObject:&v25 error:a6 sql:{@"SELECT targetPath FROM SymlinkTargets WHERE inode = %llu", v27}];
+      v23 = [v11 fetchObjectOfClass:objc_opt_class() outObject:&v25 error:error sql:{@"SELECT targetPath FROM SymlinkTargets WHERE inode = %llu", v27}];
       v22 = v25;
       v21 = 0;
       v18 = 0;
@@ -392,19 +392,19 @@ LABEL_14:
       v21 = 0;
     }
 
-    v18 = [MBFileMetadata fileMetadataFromNode:v26 xattrs:v14 linkTarget:v22 assetMetadata:v21 error:a6];
+    v18 = [MBFileMetadata fileMetadataFromNode:v26 xattrs:v14 linkTarget:v22 assetMetadata:v21 error:error];
 
 LABEL_21:
     goto LABEL_22;
   }
 
-  v15 = [v11 lastError];
-  v16 = [v15 excludingNotFound];
+  lastError = [v11 lastError];
+  excludingNotFound = [lastError excludingNotFound];
 
-  if (a6)
+  if (error)
   {
-    v17 = v16;
-    *a6 = v16;
+    v17 = excludingNotFound;
+    *error = excludingNotFound;
   }
 
   v18 = 0;
@@ -413,7 +413,7 @@ LABEL_22:
   return v18;
 }
 
-- (BOOL)fetchEncryptionKeyForInode:(unint64_t)a3 outEncryptionKey:(id *)a4 error:(id *)a5
+- (BOOL)fetchEncryptionKeyForInode:(unint64_t)inode outEncryptionKey:(id *)key error:(id *)error
 {
   v9 = self->_db;
   if (!v9)
@@ -421,46 +421,46 @@ LABEL_22:
     __assert_rtn("[MBFileListDB fetchEncryptionKeyForInode:outEncryptionKey:error:]", "MBFileListDB.m", 347, "db");
   }
 
-  if (!a4)
+  if (!key)
   {
     __assert_rtn("[MBFileListDB fetchEncryptionKeyForInode:outEncryptionKey:error:]", "MBFileListDB.m", 348, "outEncryptionKey");
   }
 
   v10 = v9;
-  v11 = [(PQLConnection *)self->_db fetch:@"SELECT encryptionKey FROM Assets WHERE inode = %llu", a3];
-  if ([v11 next])
+  inode = [(PQLConnection *)self->_db fetch:@"SELECT encryptionKey FROM Assets WHERE inode = %llu", inode];
+  if ([inode next])
   {
-    *a4 = [v11 dataAtIndex:0];
+    *key = [inode dataAtIndex:0];
     v12 = 1;
   }
 
   else
   {
-    v13 = [(PQLConnection *)v10 lastError];
-    v14 = [v13 excludingNotFound];
+    lastError = [(PQLConnection *)v10 lastError];
+    excludingNotFound = [lastError excludingNotFound];
 
-    v12 = v14 == 0;
-    if (v14)
+    v12 = excludingNotFound == 0;
+    if (excludingNotFound)
     {
-      if (a5)
+      if (error)
       {
-        v15 = v14;
-        *a5 = v14;
+        v15 = excludingNotFound;
+        *error = excludingNotFound;
       }
     }
 
     else
     {
-      *a4 = 0;
+      *key = 0;
     }
   }
 
   return v12;
 }
 
-- (id)fileMetadataForPath:(id)a3 fetchXattrs:(BOOL)a4 error:(id *)a5
+- (id)fileMetadataForPath:(id)path fetchXattrs:(BOOL)xattrs error:(id *)error
 {
-  v8 = a3;
+  pathCopy = path;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -474,12 +474,12 @@ LABEL_22:
   v13[3] = &unk_1003C1790;
   v15 = &v17;
   v13[4] = self;
-  v10 = v8;
+  v10 = pathCopy;
   v14 = v10;
-  v16 = a4;
-  LODWORD(a5) = [(PQLConnection *)db groupInTransaction:a5 transaction:v13];
+  xattrsCopy = xattrs;
+  LODWORD(error) = [(PQLConnection *)db groupInTransaction:error transaction:v13];
 
-  if (a5)
+  if (error)
   {
     v11 = v18[5];
   }
@@ -494,7 +494,7 @@ LABEL_22:
   return v11;
 }
 
-- (BOOL)_fetchVolumeUUID:(id *)a3 error:(id *)a4
+- (BOOL)_fetchVolumeUUID:(id *)d error:(id *)error
 {
   v10 = 0;
   v11 = &v10;
@@ -508,21 +508,21 @@ LABEL_22:
   v9[2] = sub_1001FE000;
   v9[3] = &unk_1003C17B8;
   v9[4] = &v10;
-  v7 = [v6 enumerateWithError:a4 block:v9];
+  v7 = [v6 enumerateWithError:error block:v9];
   if (v7)
   {
-    *a3 = v11[5];
+    *d = v11[5];
   }
 
   _Block_object_dispose(&v10, 8);
   return v7;
 }
 
-- (BOOL)_markInProgressVolumeTransition:(id *)a3
+- (BOOL)_markInProgressVolumeTransition:(id *)transition
 {
   v11 = 1;
   v5 = [NSData dataWithBytes:&v11 length:1];
-  v6 = [(MBFileListDB *)self _setPropertyValue:v5 forKey:@"volumeTransitionIsInProgress" error:a3];
+  v6 = [(MBFileListDB *)self _setPropertyValue:v5 forKey:@"volumeTransitionIsInProgress" error:transition];
   if (v6)
   {
     v7 = MBGetDefaultLog();
@@ -540,10 +540,10 @@ LABEL_22:
   return v6;
 }
 
-- (BOOL)_setVolumeUUID:(id)a3 error:(id *)a4
+- (BOOL)_setVolumeUUID:(id)d error:(id *)error
 {
-  v6 = a3;
-  if ([(MBFileListDB *)self _clearInProgressVolumeTransition:a4]&& [(PQLConnection *)self->_db executeWithError:a4 sql:@"INSERT OR REPLACE INTO Properties (key, value) VALUES (%@, %@)", @"volumeUUID", v6])
+  dCopy = d;
+  if ([(MBFileListDB *)self _clearInProgressVolumeTransition:error]&& [(PQLConnection *)self->_db executeWithError:error sql:@"INSERT OR REPLACE INTO Properties (key, value) VALUES (%@, %@)", @"volumeUUID", dCopy])
   {
     v7 = MBGetDefaultLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -552,7 +552,7 @@ LABEL_22:
       *buf = 138412546;
       v13 = domainName;
       v14 = 2112;
-      v15 = v6;
+      v15 = dCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Updated backupVolumeUUID for %@ to %@", buf, 0x16u);
       v11 = self->_domainName;
       _MBLog();
@@ -569,14 +569,14 @@ LABEL_22:
   return v9;
 }
 
-- (BOOL)canReuseAssetsAcrossVolumeTransition:(BOOL *)a3 isResuming:(BOOL *)a4 error:(id *)a5
+- (BOOL)canReuseAssetsAcrossVolumeTransition:(BOOL *)transition isResuming:(BOOL *)resuming error:(id *)error
 {
-  if (!a3)
+  if (!transition)
   {
     __assert_rtn("[MBFileListDB canReuseAssetsAcrossVolumeTransition:isResuming:error:]", "MBFileListDB.m", 419, "outCanReuseAssets");
   }
 
-  if (!a4)
+  if (!resuming)
   {
     __assert_rtn("[MBFileListDB canReuseAssetsAcrossVolumeTransition:isResuming:error:]", "MBFileListDB.m", 420, "outIsResuming");
   }
@@ -593,7 +593,7 @@ LABEL_22:
   if (!v10)
   {
     v18 = [(MBFileListDB *)self db];
-    v19 = [v18 fetchCountWithError:a5 sql:{@"SELECT COUNT(*) FROM FileMetadata WHERE (inode & %llu) != 0", 0x8000000000000000}];
+    v19 = [v18 fetchCountWithError:error sql:{@"SELECT COUNT(*) FROM FileMetadata WHERE (inode & %llu) != 0", 0x8000000000000000}];
 
     if (!v19)
     {
@@ -611,14 +611,14 @@ LABEL_22:
         goto LABEL_8;
       }
 
-      v21 = [(MBFileListDB *)self domainName];
+      domainName = [(MBFileListDB *)self domainName];
       *buf = 138412546;
-      v24 = v21;
+      v24 = domainName;
       v25 = 2048;
       v26 = v19;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "Cannot perform volume transition for %@ - found %llu unsupported inodes", buf, 0x16u);
 
-      v15 = [(MBFileListDB *)self domainName];
+      domainName2 = [(MBFileListDB *)self domainName];
       _MBLog();
       v13 = 0;
       goto LABEL_7;
@@ -633,12 +633,12 @@ LABEL_12:
   v13 = 1;
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
-    v14 = [(MBFileListDB *)self domainName];
+    domainName3 = [(MBFileListDB *)self domainName];
     *buf = 138412290;
-    v24 = v14;
+    v24 = domainName3;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "Can perform volume transition for %@ - in progress marker detected", buf, 0xCu);
 
-    v15 = [(MBFileListDB *)self domainName];
+    domainName2 = [(MBFileListDB *)self domainName];
     _MBLog();
 LABEL_7:
   }
@@ -647,40 +647,40 @@ LABEL_8:
 
   v16 = v13;
 LABEL_9:
-  *a4 = v13;
-  *a3 = v16;
+  *resuming = v13;
+  *transition = v16;
   v17 = 1;
 LABEL_13:
 
   return v17;
 }
 
-- (BOOL)_removeHardLinkedFilesForVolumeTransition:(id *)a3
+- (BOOL)_removeHardLinkedFilesForVolumeTransition:(id *)transition
 {
-  if (![(PQLConnection *)self->_db executeWithError:a3 sql:@"CREATE TEMPORARY TABLE IF NOT EXISTS HardlinkedInodes (inode INTEGER NOT NULL PRIMARY KEY) "]|| ![(PQLConnection *)self->_db executeWithError:a3 sql:@"INSERT OR REPLACE INTO HardlinkedInodes (inode) SELECT inode FROM FileMetadata GROUP BY inode HAVING COUNT(*) > 1"]|| ![(PQLConnection *)self->_db executeWithError:a3 sql:@"DELETE FROM Assets WHERE inode IN (SELECT inode FROM HardlinkedInodes)"]|| ![(PQLConnection *)self->_db executeWithError:a3 sql:@"DELETE FROM SymlinkTargets WHERE inode IN (SELECT inode FROM HardlinkedInodes)"]|| ![(PQLConnection *)self->_db executeWithError:a3 sql:@"DELETE FROM FileMetadata WHERE inode IN (SELECT inode FROM HardlinkedInodes)"])
+  if (![(PQLConnection *)self->_db executeWithError:transition sql:@"CREATE TEMPORARY TABLE IF NOT EXISTS HardlinkedInodes (inode INTEGER NOT NULL PRIMARY KEY) "]|| ![(PQLConnection *)self->_db executeWithError:transition sql:@"INSERT OR REPLACE INTO HardlinkedInodes (inode) SELECT inode FROM FileMetadata GROUP BY inode HAVING COUNT(*) > 1"]|| ![(PQLConnection *)self->_db executeWithError:transition sql:@"DELETE FROM Assets WHERE inode IN (SELECT inode FROM HardlinkedInodes)"]|| ![(PQLConnection *)self->_db executeWithError:transition sql:@"DELETE FROM SymlinkTargets WHERE inode IN (SELECT inode FROM HardlinkedInodes)"]|| ![(PQLConnection *)self->_db executeWithError:transition sql:@"DELETE FROM FileMetadata WHERE inode IN (SELECT inode FROM HardlinkedInodes)"])
   {
     return 0;
   }
 
   db = self->_db;
 
-  return [(PQLConnection *)db executeWithError:a3 sql:@"DROP TABLE IF EXISTS HardlinkedInodes"];
+  return [(PQLConnection *)db executeWithError:transition sql:@"DROP TABLE IF EXISTS HardlinkedInodes"];
 }
 
-- (BOOL)_adjustInodesForVolumeTransition:(id *)a3
+- (BOOL)_adjustInodesForVolumeTransition:(id *)transition
 {
-  if (![(PQLConnection *)self->_db executeWithError:a3 sql:@"UPDATE FileMetadata SET inode = (inode | %llu)", 0x8000000000000000]|| ![(PQLConnection *)self->_db executeWithError:a3 sql:@"UPDATE Assets SET inode = (inode | %llu)", 0x8000000000000000]|| ![(PQLConnection *)self->_db executeWithError:a3 sql:@"UPDATE SymlinkTargets SET inode = (inode | %llu)", 0x8000000000000000]|| ![(MBFileListDB *)self _removeHardLinkedFilesForVolumeTransition:a3])
+  if (![(PQLConnection *)self->_db executeWithError:transition sql:@"UPDATE FileMetadata SET inode = (inode | %llu)", 0x8000000000000000]|| ![(PQLConnection *)self->_db executeWithError:transition sql:@"UPDATE Assets SET inode = (inode | %llu)", 0x8000000000000000]|| ![(PQLConnection *)self->_db executeWithError:transition sql:@"UPDATE SymlinkTargets SET inode = (inode | %llu)", 0x8000000000000000]|| ![(MBFileListDB *)self _removeHardLinkedFilesForVolumeTransition:transition])
   {
     return 0;
   }
 
-  return [(MBFileListDB *)self _markInProgressVolumeTransition:a3];
+  return [(MBFileListDB *)self _markInProgressVolumeTransition:transition];
 }
 
-- (BOOL)beginTranscriptionForVolumeUUID:(id)a3 error:(id *)a4
+- (BOOL)beginTranscriptionForVolumeUUID:(id)d error:(id *)error
 {
-  v6 = a3;
-  if (!v6)
+  dCopy = d;
+  if (!dCopy)
   {
     __assert_rtn("[MBFileListDB beginTranscriptionForVolumeUUID:error:]", "MBFileListDB.m", 502, "volumeUUID");
   }
@@ -691,35 +691,35 @@ LABEL_13:
   v11[2] = sub_1001FE798;
   v11[3] = &unk_1003C17E0;
   v11[4] = self;
-  v12 = v6;
-  v8 = v6;
-  v9 = [(PQLConnection *)db groupInTransaction:a4 transaction:v11];
+  v12 = dCopy;
+  v8 = dCopy;
+  v9 = [(PQLConnection *)db groupInTransaction:error transaction:v11];
 
   return v9;
 }
 
 - (BOOL)isTransitioningVolumes
 {
-  v2 = [(MBFileListDB *)self volumeUUIDToUpdateAfterTranscription];
-  v3 = v2 != 0;
+  volumeUUIDToUpdateAfterTranscription = [(MBFileListDB *)self volumeUUIDToUpdateAfterTranscription];
+  v3 = volumeUUIDToUpdateAfterTranscription != 0;
 
   return v3;
 }
 
-- (BOOL)_markAllFilesAsDeleted:(id *)a3
+- (BOOL)_markAllFilesAsDeleted:(id *)deleted
 {
-  v5 = [(PQLConnection *)self->_db executeWithError:a3 sql:@"CREATE TEMPORARY TABLE MetadataToDelete (relativePath PRIMARY KEY);"];
+  v5 = [(PQLConnection *)self->_db executeWithError:deleted sql:@"CREATE TEMPORARY TABLE MetadataToDelete (relativePath PRIMARY KEY);"];
   if (v5)
   {
     db = self->_db;
 
-    LOBYTE(v5) = [(PQLConnection *)db executeWithError:a3 sql:@"INSERT OR IGNORE INTO MetadataToDelete (relativePath) SELECT relativePath FROM FileMetadata;"];
+    LOBYTE(v5) = [(PQLConnection *)db executeWithError:deleted sql:@"INSERT OR IGNORE INTO MetadataToDelete (relativePath) SELECT relativePath FROM FileMetadata;"];
   }
 
   return v5;
 }
 
-- (BOOL)markAllFilesAsDeleted:(id *)a3
+- (BOOL)markAllFilesAsDeleted:(id *)deleted
 {
   db = self->_db;
   v5[0] = _NSConcreteStackBlock;
@@ -727,45 +727,45 @@ LABEL_13:
   v5[2] = sub_1001FEBAC;
   v5[3] = &unk_1003C08F0;
   v5[4] = self;
-  return [(PQLConnection *)db groupInTransaction:a3 transaction:v5];
+  return [(PQLConnection *)db groupInTransaction:deleted transaction:v5];
 }
 
-- (BOOL)markFileAsPresent:(id)a3 error:(id *)a4
+- (BOOL)markFileAsPresent:(id)present error:(id *)error
 {
   v6 = self->_db;
-  v7 = [(PQLConnection *)v6 execute:@"DELETE FROM MetadataToDelete WHERE relativePath = %@;", a3];
-  v8 = v7;
-  if (a4 && (v7 & 1) == 0)
+  present = [(PQLConnection *)v6 execute:@"DELETE FROM MetadataToDelete WHERE relativePath = %@;", present];
+  v8 = present;
+  if (error && (present & 1) == 0)
   {
-    *a4 = [(PQLConnection *)v6 lastError];
+    *error = [(PQLConnection *)v6 lastError];
   }
 
   return v8;
 }
 
-- (BOOL)setFileMetadata:(id)a3 forPath:(id)a4 error:(id *)a5
+- (BOOL)setFileMetadata:(id)metadata forPath:(id)path error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  metadataCopy = metadata;
+  pathCopy = path;
   db = self->_db;
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_1001FECFC;
   v14[3] = &unk_1003C17E0;
-  v15 = v8;
-  v16 = v9;
-  v11 = v9;
-  v12 = v8;
-  LOBYTE(a5) = [(PQLConnection *)db groupInTransaction:a5 transaction:v14];
+  v15 = metadataCopy;
+  v16 = pathCopy;
+  v11 = pathCopy;
+  v12 = metadataCopy;
+  LOBYTE(error) = [(PQLConnection *)db groupInTransaction:error transaction:v14];
 
-  return a5;
+  return error;
 }
 
-- (BOOL)_truncateDeletedFiles:(id *)a3
+- (BOOL)_truncateDeletedFiles:(id *)files
 {
-  if ([(PQLConnection *)self->_db executeWithError:a3 sql:@"DELETE FROM FileMetadata WHERE relativePath IN (SELECT relativePath FROM MetadataToDelete);"]&& [(PQLConnection *)self->_db executeWithError:a3 sql:@"DELETE FROM SymlinkTargets WHERE inode NOT IN(SELECT inode FROM FileMetadata WHERE (mode & %d) == %d)", 61440, 40960])
+  if ([(PQLConnection *)self->_db executeWithError:files sql:@"DELETE FROM FileMetadata WHERE relativePath IN (SELECT relativePath FROM MetadataToDelete);"]&& [(PQLConnection *)self->_db executeWithError:files sql:@"DELETE FROM SymlinkTargets WHERE inode NOT IN(SELECT inode FROM FileMetadata WHERE (mode & %d) == %d)", 61440, 40960])
   {
-    return [(PQLConnection *)self->_db executeWithError:a3 sql:@"DELETE FROM Assets WHERE inode NOT IN(SELECT inode FROM FileMetadata WHERE (mode & %d) == %d)", 61440, 0x8000];
+    return [(PQLConnection *)self->_db executeWithError:files sql:@"DELETE FROM Assets WHERE inode NOT IN(SELECT inode FROM FileMetadata WHERE (mode & %d) == %d)", 61440, 0x8000];
   }
 
   else
@@ -774,7 +774,7 @@ LABEL_13:
   }
 }
 
-- (BOOL)finishTranscription:(id *)a3
+- (BOOL)finishTranscription:(id *)transcription
 {
   db = self->_db;
   v5[0] = _NSConcreteStackBlock;
@@ -782,45 +782,45 @@ LABEL_13:
   v5[2] = sub_1001FF13C;
   v5[3] = &unk_1003C08F0;
   v5[4] = self;
-  return [(PQLConnection *)db groupInTransaction:a3 transaction:v5];
+  return [(PQLConnection *)db groupInTransaction:transcription transaction:v5];
 }
 
-- (BOOL)enumerateSymlinkTargets:(id *)a3 block:(id)a4
+- (BOOL)enumerateSymlinkTargets:(id *)targets block:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v7 = [(PQLConnection *)self->_db fetch:@"SELECT inode, targetPath FROM SymlinkTargets;"];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1001FF28C;
   v10[3] = &unk_1003BE658;
-  v11 = v6;
-  v8 = v6;
-  LOBYTE(a3) = [v7 enumerateWithError:a3 block:v10];
+  v11 = blockCopy;
+  v8 = blockCopy;
+  LOBYTE(targets) = [v7 enumerateWithError:targets block:v10];
 
-  return a3;
+  return targets;
 }
 
-- (BOOL)enumerateFilesWithDomain:(id)a3 error:(id *)a4 block:(id)a5
+- (BOOL)enumerateFilesWithDomain:(id)domain error:(id *)error block:(id)block
 {
-  v8 = a3;
-  v9 = a5;
+  domainCopy = domain;
+  blockCopy = block;
   v10 = [(PQLConnection *)self->_db fetch:@"SELECT inode, size, birth, modified, statusChanged, userID, groupID, mode, flags, protectionClass, xattrs, relativePath FROM FileMetadata;"];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_1001FF3F4;
   v14[3] = &unk_1003C1808;
-  v15 = v8;
-  v16 = v9;
-  v11 = v9;
-  v12 = v8;
-  LOBYTE(a4) = [v10 enumerateWithError:a4 block:v14];
+  v15 = domainCopy;
+  v16 = blockCopy;
+  v11 = blockCopy;
+  v12 = domainCopy;
+  LOBYTE(error) = [v10 enumerateWithError:error block:v14];
 
-  return a4;
+  return error;
 }
 
-- (BOOL)enumerateFileMetadataWithError:(id *)a3 block:(id)a4
+- (BOOL)enumerateFileMetadataWithError:(id *)error block:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v7 = self->_db;
   v8 = [(PQLConnection *)v7 fetch:@"SELECT relativePath FROM FileMetadata ORDER BY relativePath ASC"];
   v12[0] = _NSConcreteStackBlock;
@@ -829,33 +829,33 @@ LABEL_13:
   v12[3] = &unk_1003C1830;
   v12[4] = self;
   v13 = v7;
-  v14 = v6;
-  v9 = v6;
+  v14 = blockCopy;
+  v9 = blockCopy;
   v10 = v7;
-  LOBYTE(a3) = [v8 enumerateWithError:a3 block:v12];
+  LOBYTE(error) = [v8 enumerateWithError:error block:v12];
 
-  return a3;
+  return error;
 }
 
-- (BOOL)enumerateAssetRecordIdSuffixForNonEmptyFiles:(id *)a3 block:(id)a4
+- (BOOL)enumerateAssetRecordIdSuffixForNonEmptyFiles:(id *)files block:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v7 = self->_db;
   v8 = [(PQLConnection *)v7 fetch:@"SELECT recordIDSuffix FROM FileMetadata INNER JOIN Assets ON FileMetadata.inode = Assets.inode WHERE assetType != %llu", 4];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1001FF6C4;
   v11[3] = &unk_1003BE658;
-  v12 = v6;
-  v9 = v6;
-  LOBYTE(a3) = [v8 enumerateWithError:a3 block:v11];
+  v12 = blockCopy;
+  v9 = blockCopy;
+  LOBYTE(files) = [v8 enumerateWithError:files block:v11];
 
-  return a3;
+  return files;
 }
 
-- (BOOL)computeAssetRecordIDChecksumWithPrefix:(id)a3 checksum:(int64_t *)a4 error:(id *)a5
+- (BOOL)computeAssetRecordIDChecksumWithPrefix:(id)prefix checksum:(int64_t *)checksum error:(id *)error
 {
-  v8 = a3;
+  prefixCopy = prefix;
   v18 = 0;
   v19 = &v18;
   v20 = 0x2020000000;
@@ -865,12 +865,12 @@ LABEL_13:
   v15[1] = 3221225472;
   v15[2] = sub_1001FF85C;
   v15[3] = &unk_1003C1858;
-  v10 = v8;
+  v10 = prefixCopy;
   v16 = v10;
   v17 = &v18;
-  v11 = [v9 enumerateWithError:a5 block:v15];
+  v11 = [v9 enumerateWithError:error block:v15];
   v12 = v11;
-  if (a4)
+  if (checksum)
   {
     v13 = v11;
   }
@@ -882,38 +882,38 @@ LABEL_13:
 
   if (v13)
   {
-    *a4 = v19[3];
+    *checksum = v19[3];
   }
 
   _Block_object_dispose(&v18, 8);
   return v12;
 }
 
-- (BOOL)fetchFileListStats:(id *)a3 error:(id *)a4
+- (BOOL)fetchFileListStats:(id *)stats error:(id *)error
 {
-  if (!a3)
+  if (!stats)
   {
     return 1;
   }
 
-  a3->var4 = 0;
-  *&a3->var0 = 0u;
-  *&a3->var2 = 0u;
+  stats->var4 = 0;
+  *&stats->var0 = 0u;
+  *&stats->var2 = 0u;
   db = self->_db;
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1001FF97C;
   v6[3] = &unk_1003C1898;
-  v6[4] = a3;
-  return [(PQLConnection *)db groupInTransaction:a4 transaction:v6];
+  v6[4] = stats;
+  return [(PQLConnection *)db groupInTransaction:error transaction:v6];
 }
 
 - (id)description
 {
   v3 = objc_opt_class();
   Name = class_getName(v3);
-  v5 = [(MBFileListDB *)self path];
-  v6 = [NSString stringWithFormat:@"<%s: %p path=%@>", Name, self, v5];;
+  path = [(MBFileListDB *)self path];
+  v6 = [NSString stringWithFormat:@"<%s: %p path=%@>", Name, self, path];;
 
   return v6;
 }

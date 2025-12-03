@@ -1,42 +1,42 @@
 @interface TSWPRangeArray
-+ (TSWPRangeArray)rangeArrayWithIndexSet:(id)a3;
-+ (TSWPRangeArray)rangeArrayWithRange:(_NSRange)a3;
++ (TSWPRangeArray)rangeArrayWithIndexSet:(id)set;
++ (TSWPRangeArray)rangeArrayWithRange:(_NSRange)range;
 + (id)rangeArray;
-- (BOOL)containsAllRanges:(id)a3;
-- (BOOL)containsCharacterAtIndex:(unint64_t)a3 inclusive:(BOOL)a4;
-- (BOOL)containsRange:(_NSRange)a3;
-- (BOOL)intersectsRange:(_NSRange)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToRangeArray:(id)a3;
+- (BOOL)containsAllRanges:(id)ranges;
+- (BOOL)containsCharacterAtIndex:(unint64_t)index inclusive:(BOOL)inclusive;
+- (BOOL)containsRange:(_NSRange)range;
+- (BOOL)intersectsRange:(_NSRange)range;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToRangeArray:(id)array;
 - (NSIndexSet)indexes;
 - (TSWPRangeArray)init;
-- (TSWPRangeArray)initWithIndexSet:(id)a3;
-- (TSWPRangeArray)initWithRange:(_NSRange)a3;
-- (TSWPRangeArray)initWithRangeVector:(const void *)a3;
+- (TSWPRangeArray)initWithIndexSet:(id)set;
+- (TSWPRangeArray)initWithRange:(_NSRange)range;
+- (TSWPRangeArray)initWithRangeVector:(const void *)vector;
 - (_NSRange)firstRange;
 - (_NSRange)lastRange;
-- (_NSRange)rangeAtIndex:(unint64_t)a3;
-- (_NSRange)rangeContainingPosition:(unint64_t)a3;
+- (_NSRange)rangeAtIndex:(unint64_t)index;
+- (_NSRange)rangeContainingPosition:(unint64_t)position;
 - (_NSRange)superRange;
 - (id).cxx_construct;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)intersection:(_NSRange)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)intersection:(_NSRange)intersection;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (id)rangesByCollapsingEmptyRanges;
-- (id)rangesByIntersectingWithRanges:(id)a3;
-- (id)rangesByRemovingRangesInIndexRange:(_NSRange)a3;
-- (id)rangesByXoringWithRanges:(id)a3;
-- (id)rangesIntersecting:(_NSRange)a3;
+- (id)rangesByIntersectingWithRanges:(id)ranges;
+- (id)rangesByRemovingRangesInIndexRange:(_NSRange)range;
+- (id)rangesByXoringWithRanges:(id)ranges;
+- (id)rangesIntersecting:(_NSRange)intersecting;
 - (unint64_t)hash;
 - (unint64_t)indexCount;
-- (unint64_t)indexForRange:(_NSRange)a3;
-- (unint64_t)indexOfRangeContainingPosition:(unint64_t)a3;
+- (unint64_t)indexForRange:(_NSRange)range;
+- (unint64_t)indexOfRangeContainingPosition:(unint64_t)position;
 - (unint64_t)p_finish;
 - (unint64_t)p_start;
 - (vector<_NSRange,)rangeVector;
-- (void)enumerateRanges:(id)a3;
-- (void)enumerateRangesInRange:(_NSRange)a3 usingBlock:(id)a4;
-- (void)reverseEnumerateRanges:(id)a3;
+- (void)enumerateRanges:(id)ranges;
+- (void)enumerateRangesInRange:(_NSRange)range usingBlock:(id)block;
+- (void)reverseEnumerateRanges:(id)ranges;
 @end
 
 @implementation TSWPRangeArray
@@ -48,21 +48,21 @@
   return v2;
 }
 
-+ (TSWPRangeArray)rangeArrayWithRange:(_NSRange)a3
++ (TSWPRangeArray)rangeArrayWithRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v5 = objc_alloc(objc_opt_class());
   v7 = objc_msgSend_initWithRange_(v5, v6, location, length);
 
   return v7;
 }
 
-+ (TSWPRangeArray)rangeArrayWithIndexSet:(id)a3
++ (TSWPRangeArray)rangeArrayWithIndexSet:(id)set
 {
-  v3 = a3;
+  setCopy = set;
   v4 = objc_alloc(objc_opt_class());
-  v6 = objc_msgSend_initWithIndexSet_(v4, v5, v3);
+  v6 = objc_msgSend_initWithIndexSet_(v4, v5, setCopy);
 
   return v6;
 }
@@ -74,9 +74,9 @@
   return [(TSWPRangeArray *)&v3 init];
 }
 
-- (TSWPRangeArray)initWithRange:(_NSRange)a3
+- (TSWPRangeArray)initWithRange:(_NSRange)range
 {
-  v3 = objc_msgSend_init(self, a2, a3.location, a3.location, a3.length);
+  v3 = objc_msgSend_init(self, a2, range.location, range.location, range.length);
   v4 = v3;
   if (v3)
   {
@@ -86,25 +86,25 @@
   return v4;
 }
 
-- (TSWPRangeArray)initWithRangeVector:(const void *)a3
+- (TSWPRangeArray)initWithRangeVector:(const void *)vector
 {
-  v4 = objc_msgSend_init(self, a2, a3);
+  v4 = objc_msgSend_init(self, a2, vector);
   v5 = v4;
   if (v4)
   {
     v6 = (v4 + 8);
-    if (&v5->_rangeVector != a3)
+    if (&v5->_rangeVector != vector)
     {
-      sub_276E17544(v6, *a3, *(a3 + 1), (*(a3 + 1) - *a3) >> 4);
+      sub_276E17544(v6, *vector, *(vector + 1), (*(vector + 1) - *vector) >> 4);
     }
   }
 
   return v5;
 }
 
-- (TSWPRangeArray)initWithIndexSet:(id)a3
+- (TSWPRangeArray)initWithIndexSet:(id)set
 {
-  v4 = a3;
+  setCopy = set;
   v7 = objc_msgSend_init(self, v5, v6);
   v8 = v7;
   if (v7)
@@ -114,13 +114,13 @@
     v11[2] = sub_276E1513C;
     v11[3] = &unk_27A6F4FB0;
     v12 = v7;
-    objc_msgSend_enumerateRangesUsingBlock_(v4, v9, v11);
+    objc_msgSend_enumerateRangesUsingBlock_(setCopy, v9, v11);
   }
 
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -137,17 +137,17 @@
   }
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [TSWPMutableRangeArray alloc];
 
   return objc_msgSend_initWithRangeVector_(v4, v5, &self->_rangeVector);
 }
 
-- (BOOL)isEqualToRangeArray:(id)a3
+- (BOOL)isEqualToRangeArray:(id)array
 {
-  v4 = a3;
-  if (v4 && (begin = self->_rangeVector.__begin_, end = self->_rangeVector.__end_, v7 = v4[1], end - begin == v4[2] - v7))
+  arrayCopy = array;
+  if (arrayCopy && (begin = self->_rangeVector.__begin_, end = self->_rangeVector.__end_, v7 = arrayCopy[1], end - begin == arrayCopy[2] - v7))
   {
     if (end == begin)
     {
@@ -185,10 +185,10 @@
   return v14 & 1;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     isEqualToRangeArray = 1;
   }
@@ -256,15 +256,15 @@
   return result;
 }
 
-- (_NSRange)rangeAtIndex:(unint64_t)a3
+- (_NSRange)rangeAtIndex:(unint64_t)index
 {
   begin = self->_rangeVector.__begin_;
-  if (a3 >= self->_rangeVector.__end_ - begin)
+  if (index >= self->_rangeVector.__end_ - begin)
   {
     v6 = MEMORY[0x277D81150];
     v7 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSWPRangeArray rangeAtIndex:]");
     v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v8, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/text/TSWPRangeArray.mm");
-    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v6, v10, v7, v9, 149, 0, "Illegal index %lu", a3);
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v6, v10, v7, v9, 149, 0, "Illegal index %lu", index);
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v11, v12);
     p_location = MEMORY[0x277D81490];
@@ -272,7 +272,7 @@
 
   else
   {
-    p_location = &begin[a3].location;
+    p_location = &begin[index].location;
   }
 
   v13 = *p_location;
@@ -319,9 +319,9 @@
   return result;
 }
 
-- (void)enumerateRanges:(id)a3
+- (void)enumerateRanges:(id)ranges
 {
-  v4 = a3;
+  rangesCopy = ranges;
   v11 = 0;
   v7 = objc_msgSend_rangeCount(self, v5, v6);
   if (v7 >= 1)
@@ -330,7 +330,7 @@
     v9 = 1;
     do
     {
-      v4[2](v4, self->_rangeVector.__begin_[v8].location, self->_rangeVector.__begin_[v8].length, v9 - 1, &v11);
+      rangesCopy[2](rangesCopy, self->_rangeVector.__begin_[v8].location, self->_rangeVector.__begin_[v8].length, v9 - 1, &v11);
       if (v11)
       {
         break;
@@ -343,24 +343,24 @@
   }
 }
 
-- (void)reverseEnumerateRanges:(id)a3
+- (void)reverseEnumerateRanges:(id)ranges
 {
-  v4 = a3;
+  rangesCopy = ranges;
   v7 = objc_msgSend_rangeCount(self, v5, v6);
   v8 = v7;
   for (i = v7 - 1; (i & 0x8000000000000000) == 0; i = v11)
   {
     v10 = &self->_rangeVector.__begin_[v8--];
     v11 = i - 1;
-    v4[2](v4, v10[-1].location, v10[-1].length);
+    rangesCopy[2](rangesCopy, v10[-1].location, v10[-1].length);
   }
 }
 
-- (void)enumerateRangesInRange:(_NSRange)a3 usingBlock:(id)a4
+- (void)enumerateRangesInRange:(_NSRange)range usingBlock:(id)block
 {
-  length = a3.length;
-  location = a3.location;
-  v7 = a4;
+  length = range.length;
+  location = range.location;
+  blockCopy = block;
   v18 = 0;
   v10 = objc_msgSend_rangeCount(self, v8, v9);
   if (v10 >= 1)
@@ -377,7 +377,7 @@
       v16 = NSIntersectionRange(v19, *v14);
       if (v16.length)
       {
-        v7[2](v7, v16.location, v16.length, &v18);
+        blockCopy[2](blockCopy, v16.location, v16.length, &v18);
         v12 = 1;
       }
 
@@ -437,7 +437,7 @@
   return v5;
 }
 
-- (BOOL)containsCharacterAtIndex:(unint64_t)a3 inclusive:(BOOL)a4
+- (BOOL)containsCharacterAtIndex:(unint64_t)index inclusive:(BOOL)inclusive
 {
   begin = self->_rangeVector.__begin_;
   end = self->_rangeVector.__end_;
@@ -452,7 +452,7 @@
       location = v8->location;
       v9 = v8 + 1;
       v6 += ~(v6 >> 1);
-      if (location > a3)
+      if (location > index)
       {
         v6 = v7;
       }
@@ -473,13 +473,13 @@
 
   v11 = end[-1].location;
   length = end[-1].length;
-  if (a3 >= v11 && a3 - v11 < length)
+  if (index >= v11 && index - v11 < length)
   {
     return 1;
   }
 
   result = 0;
-  if (a4 && length + v11 == a3)
+  if (inclusive && length + v11 == index)
   {
     return 1;
   }
@@ -487,11 +487,11 @@
   return result;
 }
 
-- (BOOL)containsRange:(_NSRange)a3
+- (BOOL)containsRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v5 = objc_msgSend_rangeContainingPosition_(self, a2, a3.location);
+  length = range.length;
+  location = range.location;
+  v5 = objc_msgSend_rangeContainingPosition_(self, a2, range.location);
   v7 = v5 + v6 >= location + length;
   if (v5 > location)
   {
@@ -501,7 +501,7 @@
   return v5 != 0x7FFFFFFFFFFFFFFFLL && v7;
 }
 
-- (BOOL)containsAllRanges:(id)a3
+- (BOOL)containsAllRanges:(id)ranges
 {
   v6 = 0;
   v7 = &v6;
@@ -513,13 +513,13 @@
   v5[3] = &unk_27A6F3B60;
   v5[4] = self;
   v5[5] = &v6;
-  objc_msgSend_enumerateRanges_(a3, a2, v5);
+  objc_msgSend_enumerateRanges_(ranges, a2, v5);
   v3 = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
   return v3;
 }
 
-- (_NSRange)rangeContainingPosition:(unint64_t)a3
+- (_NSRange)rangeContainingPosition:(unint64_t)position
 {
   begin = self->_rangeVector.__begin_;
   end = self->_rangeVector.__end_;
@@ -534,7 +534,7 @@
       location = v7->location;
       v8 = v7 + 1;
       v5 += ~(v5 >> 1);
-      if (location > a3)
+      if (location > position)
       {
         v5 = v6;
       }
@@ -550,7 +550,7 @@
 
   v10 = *MEMORY[0x277D81490];
   length = *(MEMORY[0x277D81490] + 8);
-  if (begin != end && a3 >= end[-1].location && a3 - end[-1].location < end[-1].length)
+  if (begin != end && position >= end[-1].location && position - end[-1].location < end[-1].length)
   {
     v10 = end[-1].location;
     length = end[-1].length;
@@ -561,7 +561,7 @@
   return result;
 }
 
-- (unint64_t)indexOfRangeContainingPosition:(unint64_t)a3
+- (unint64_t)indexOfRangeContainingPosition:(unint64_t)position
 {
   begin = self->_rangeVector.__begin_;
   end = self->_rangeVector.__end_;
@@ -576,7 +576,7 @@
       location = v7->location;
       v8 = v7 + 1;
       v5 += ~(v5 >> 1);
-      if (location > a3)
+      if (location > position)
       {
         v5 = v6;
       }
@@ -596,8 +596,8 @@
   }
 
   v10 = end[-1].location;
-  v12 = a3 >= v10;
-  v11 = a3 - v10;
+  v12 = position >= v10;
+  v11 = position - v10;
   v12 = !v12 || v11 >= end[-1].length;
   if (v12)
   {
@@ -610,10 +610,10 @@
   }
 }
 
-- (BOOL)intersectsRange:(_NSRange)a3
+- (BOOL)intersectsRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   begin = self->_rangeVector.__begin_;
   end = self->_rangeVector.__end_;
   if (end == begin)
@@ -632,7 +632,7 @@
       v12 = *p_location;
       v11 = (p_location + 2);
       v7 += ~(v7 >> 1);
-      if (a3.location < v12)
+      if (range.location < v12)
       {
         v7 = v9;
       }
@@ -644,7 +644,7 @@
     }
 
     while (v7);
-    if (v8 != end && NSIntersectionRange(a3, *v8).length)
+    if (v8 != end && NSIntersectionRange(range, *v8).length)
     {
       return 1;
     }
@@ -660,7 +660,7 @@
   return NSIntersectionRange(v14, *(v8 - 16)).length != 0;
 }
 
-- (unint64_t)indexForRange:(_NSRange)a3
+- (unint64_t)indexForRange:(_NSRange)range
 {
   begin = self->_rangeVector.__begin_;
   end = self->_rangeVector.__end_;
@@ -675,7 +675,7 @@
       location = v8->location;
       v9 = v8 + 1;
       v5 += ~(v5 >> 1);
-      if (location < a3.location)
+      if (location < range.location)
       {
         v6 = v9;
       }
@@ -689,9 +689,9 @@
     while (v5);
     if (v6 != end)
     {
-      if (v6->location == a3.location)
+      if (v6->location == range.location)
       {
-        end = &v6[a3.length < v6->length];
+        end = &v6[range.length < v6->length];
       }
 
       else
@@ -704,10 +704,10 @@
   return end - begin;
 }
 
-- (id)intersection:(_NSRange)a3
+- (id)intersection:(_NSRange)intersection
 {
-  length = a3.length;
-  location = a3.location;
+  length = intersection.length;
+  location = intersection.location;
   v6 = objc_opt_new();
   begin = self->_rangeVector.__begin_;
   end = self->_rangeVector.__end_;
@@ -736,10 +736,10 @@
   return v6;
 }
 
-- (id)rangesIntersecting:(_NSRange)a3
+- (id)rangesIntersecting:(_NSRange)intersecting
 {
-  length = a3.length;
-  location = a3.location;
+  length = intersecting.length;
+  location = intersecting.location;
   v6 = objc_opt_new();
   begin = self->_rangeVector.__begin_;
   end = self->_rangeVector.__end_;
@@ -768,21 +768,21 @@
   return v6;
 }
 
-- (id)rangesByIntersectingWithRanges:(id)a3
+- (id)rangesByIntersectingWithRanges:(id)ranges
 {
-  v4 = a3;
+  rangesCopy = ranges;
   v7 = objc_msgSend_mutableCopy(self, v5, v6);
-  objc_msgSend_intersectWithRanges_(v7, v8, v4);
+  objc_msgSend_intersectWithRanges_(v7, v8, rangesCopy);
   v11 = objc_msgSend_copy(v7, v9, v10);
 
   return v11;
 }
 
-- (id)rangesByXoringWithRanges:(id)a3
+- (id)rangesByXoringWithRanges:(id)ranges
 {
-  v4 = a3;
+  rangesCopy = ranges;
   v7 = objc_msgSend_mutableCopy(self, v5, v6);
-  objc_msgSend_xor_(v7, v8, v4);
+  objc_msgSend_xor_(v7, v8, rangesCopy);
   v11 = objc_msgSend_copy(v7, v9, v10);
 
   return v11;
@@ -849,10 +849,10 @@ LABEL_8:
   return v6;
 }
 
-- (id)rangesByRemovingRangesInIndexRange:(_NSRange)a3
+- (id)rangesByRemovingRangesInIndexRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   __p = 0;
   v26 = 0;
   v27 = 0;

@@ -1,51 +1,51 @@
 @interface ADAssistantDataManager
 + (id)sharedDataManager;
 - (ADAssistantDataManager)init;
-- (ADAssistantDataManager)initWithInstanceContext:(id)a3;
+- (ADAssistantDataManager)initWithInstanceContext:(id)context;
 - (id)_cachedAssistantData;
 - (id)_cachedRestrictions;
 - (id)_mcQueue;
-- (id)_redactedCopyMeCards:(id)a3;
+- (id)_redactedCopyMeCards:(id)cards;
 - (id)_unredactedMeCards;
 - (id)unredactedAnchor;
-- (void)_censorSpeechDidChange:(id)a3;
-- (void)_countryCodeDidChange:(id)a3;
-- (void)_currentLocaleDidChange:(id)a3;
-- (void)_fetchDictationAllowedStatus:(id)a3;
-- (void)_fetchDictationHIPAAMDMStatus:(id)a3;
+- (void)_censorSpeechDidChange:(id)change;
+- (void)_countryCodeDidChange:(id)change;
+- (void)_currentLocaleDidChange:(id)change;
+- (void)_fetchDictationAllowedStatus:(id)status;
+- (void)_fetchDictationHIPAAMDMStatus:(id)status;
 - (void)_generateAssistantData;
-- (void)_locationRestrictionDidChange:(id)a3;
+- (void)_locationRestrictionDidChange:(id)change;
 - (void)_notifyAnnouncementEligibilityObserverVoiceAssetsDidChange;
 - (void)_notifyObserversOfDictationHIPAAMDMStatus;
-- (void)_notifyObserversOfSAD:(id)a3;
-- (void)_onMainThreadUpdateCountryCodeWithCountryConfiguration:(id)a3 completion:(id)a4;
-- (void)_outputVoiceDidChange:(id)a3;
+- (void)_notifyObserversOfSAD:(id)d;
+- (void)_onMainThreadUpdateCountryCodeWithCountryConfiguration:(id)configuration completion:(id)completion;
+- (void)_outputVoiceDidChange:(id)change;
 - (void)_safeGenerateAssistantDataForVoiceTriggerEnabled;
 - (void)_safeUpdateVoiceOverStatus;
-- (void)_setAllowExplicitContent:(BOOL)a3;
-- (void)_setAllowExplicitContentAndCensorSpeech:(BOOL)a3;
-- (void)_storeFrontDidChange:(id)a3;
-- (void)_systemTimeZoneDidChange:(id)a3;
-- (void)_updateCallCapability:(id)a3;
+- (void)_setAllowExplicitContent:(BOOL)content;
+- (void)_setAllowExplicitContentAndCensorSpeech:(BOOL)speech;
+- (void)_storeFrontDidChange:(id)change;
+- (void)_systemTimeZoneDidChange:(id)change;
+- (void)_updateCallCapability:(id)capability;
 - (void)_updateDictationAllowedStatus;
-- (void)_updateItunesStoreIdentifier:(id)a3;
-- (void)_updateRestrictions:(id)a3;
-- (void)_updateVoice:(id)a3;
-- (void)_updateVoiceOverStatus:(id)a3;
-- (void)_voiceAssetsUpdated:(id)a3;
-- (void)addObserver:(id)a3;
-- (void)addressBookManagerDidUpdateData:(id)a3 meCard:(id)a4;
-- (void)contextCollector:(id)a3 didChangeDisplayScale:(double)a4;
+- (void)_updateItunesStoreIdentifier:(id)identifier;
+- (void)_updateRestrictions:(id)restrictions;
+- (void)_updateVoice:(id)voice;
+- (void)_updateVoiceOverStatus:(id)status;
+- (void)_voiceAssetsUpdated:(id)updated;
+- (void)addObserver:(id)observer;
+- (void)addressBookManagerDidUpdateData:(id)data meCard:(id)card;
+- (void)contextCollector:(id)collector didChangeDisplayScale:(double)scale;
 - (void)dealloc;
 - (void)didChangeTelephonyCallingSupport;
-- (void)getAssistantDataWithCompletion:(id)a3;
-- (void)getMeCardsWithCompletion:(id)a3;
-- (void)getiTunesStoreFrontIdentifierWithCompletion:(id)a3;
-- (void)localMeCardDidUpdate:(id)a3;
-- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)a3 userInfo:(id)a4;
-- (void)removeObserver:(id)a3;
-- (void)requestAssistantDataUpdateHighPriority:(BOOL)a3;
-- (void)setAllowExplicitContentAndCensorSpeech:(BOOL)a3;
+- (void)getAssistantDataWithCompletion:(id)completion;
+- (void)getMeCardsWithCompletion:(id)completion;
+- (void)getiTunesStoreFrontIdentifierWithCompletion:(id)completion;
+- (void)localMeCardDidUpdate:(id)update;
+- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)notification userInfo:(id)info;
+- (void)removeObserver:(id)observer;
+- (void)requestAssistantDataUpdateHighPriority:(BOOL)priority;
+- (void)setAllowExplicitContentAndCensorSpeech:(BOOL)speech;
 @end
 
 @implementation ADAssistantDataManager
@@ -62,23 +62,23 @@
   return v3;
 }
 
-- (void)localMeCardDidUpdate:(id)a3
+- (void)localMeCardDidUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100302F74;
   v7[3] = &unk_10051E010;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = updateCopy;
+  selfCopy = self;
+  v6 = updateCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)_updateVoiceOverStatus:(id)a3
+- (void)_updateVoiceOverStatus:(id)status
 {
-  v4 = a3;
+  statusCopy = status;
   v5 = AFSiriLogContextSession;
   if (os_log_type_enabled(AFSiriLogContextSession, OS_LOG_TYPE_INFO))
   {
@@ -90,12 +90,12 @@
   v6 = _AXSVoiceOverTouchEnabled() != 0;
   v7 = self->_voiceOverIsActive != v6;
   self->_voiceOverIsActive = v6;
-  v4[2](v4, v7);
+  statusCopy[2](statusCopy, v7);
 }
 
-- (void)_updateItunesStoreIdentifier:(id)a3
+- (void)_updateItunesStoreIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = self->_cachedStoreFrontId;
   v6 = +[ACAccountStore ams_sharedAccountStore];
   v7 = v6;
@@ -111,7 +111,7 @@
 
 LABEL_6:
     v12 = 0;
-    if (!v4)
+    if (!identifierCopy)
     {
       goto LABEL_17;
     }
@@ -119,11 +119,11 @@ LABEL_6:
     goto LABEL_16;
   }
 
-  v8 = [v6 ams_activeiTunesAccount];
-  v9 = [v8 ams_storefront];
-  if (v9)
+  ams_activeiTunesAccount = [v6 ams_activeiTunesAccount];
+  ams_storefront = [ams_activeiTunesAccount ams_storefront];
+  if (ams_storefront)
   {
-    v10 = v9;
+    v10 = ams_storefront;
     goto LABEL_15;
   }
 
@@ -135,8 +135,8 @@ LABEL_6:
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "%s Using local identifier", &v20, 0xCu);
   }
 
-  v14 = [v7 ams_localiTunesAccount];
-  if (!v14)
+  ams_localiTunesAccount = [v7 ams_localiTunesAccount];
+  if (!ams_localiTunesAccount)
   {
     v15 = AFSiriLogContextSession;
     if (os_log_type_enabled(AFSiriLogContextSession, OS_LOG_TYPE_ERROR))
@@ -147,8 +147,8 @@ LABEL_6:
     }
   }
 
-  v16 = [v14 ams_storefront];
-  if (!v16)
+  ams_storefront2 = [ams_localiTunesAccount ams_storefront];
+  if (!ams_storefront2)
   {
     v19 = AFSiriLogContextSession;
     if (os_log_type_enabled(AFSiriLogContextSession, OS_LOG_TYPE_INFO))
@@ -161,7 +161,7 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  v10 = v16;
+  v10 = ams_storefront2;
 
 LABEL_15:
   cachedStoreFrontId = self->_cachedStoreFrontId;
@@ -169,18 +169,18 @@ LABEL_15:
   v18 = v10;
 
   v12 = [(NSString *)self->_cachedStoreFrontId isEqualToString:v5]^ 1;
-  if (v4)
+  if (identifierCopy)
   {
 LABEL_16:
-    v4[2](v4, v12);
+    identifierCopy[2](identifierCopy, v12);
   }
 
 LABEL_17:
 }
 
-- (void)_updateCallCapability:(id)a3
+- (void)_updateCallCapability:(id)capability
 {
-  v4 = a3;
+  capabilityCopy = capability;
   if (qword_1005909C0 != -1)
   {
     dispatch_once(&qword_1005909C0, &stru_10051B8D0);
@@ -192,14 +192,14 @@ LABEL_17:
   v7[2] = sub_1003034EC;
   v7[3] = &unk_10051E038;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = capabilityCopy;
+  v6 = capabilityCopy;
   dispatch_async(v5, v7);
 }
 
-- (void)_updateVoice:(id)a3
+- (void)_updateVoice:(id)voice
 {
-  v4 = a3;
+  voiceCopy = voice;
   if (sub_100004988())
   {
     v28[0] = _NSConcreteStackBlock;
@@ -213,32 +213,32 @@ LABEL_17:
     v25[3] = &unk_10051C6F0;
     v5 = objc_retainBlock(v28);
     v26 = v5;
-    v6 = v4;
+    v6 = voiceCopy;
     v27 = v6;
     v7 = objc_retainBlock(v25);
     v8 = +[AFPreferences sharedPreferences];
-    v9 = [v8 inProgressOutputVoice];
+    inProgressOutputVoice = [v8 inProgressOutputVoice];
 
-    if (v9)
+    if (inProgressOutputVoice)
     {
-      v10 = [v9 languageCode];
-      v11 = [v9 name];
-      v12 = [[SiriTTSSynthesisVoice alloc] initWithLanguage:v10 name:v11];
+      languageCode = [inProgressOutputVoice languageCode];
+      name = [inProgressOutputVoice name];
+      v12 = [[SiriTTSSynthesisVoice alloc] initWithLanguage:languageCode name:name];
       v13 = +[SiriTTSDaemonSession afSharedSession];
       v17[0] = _NSConcreteStackBlock;
       v17[1] = 3221225472;
       v17[2] = sub_100303BAC;
       v17[3] = &unk_10051B8B0;
-      v18 = v9;
-      v19 = v10;
-      v20 = v11;
+      v18 = inProgressOutputVoice;
+      v19 = languageCode;
+      v20 = name;
       v21 = v12;
       v22 = v7;
       v23 = v5;
       v24 = v6;
       v14 = v12;
-      v15 = v11;
-      v16 = v10;
+      v15 = name;
+      v16 = languageCode;
       [v13 getSynthesisVoiceMatching:v14 reply:v17];
     }
 
@@ -248,9 +248,9 @@ LABEL_17:
     }
   }
 
-  else if (v4)
+  else if (voiceCopy)
   {
-    (*(v4 + 2))(v4, 0);
+    (*(voiceCopy + 2))(voiceCopy, 0);
   }
 }
 
@@ -265,9 +265,9 @@ LABEL_17:
   return cachedRestrictions;
 }
 
-- (void)_updateRestrictions:(id)a3
+- (void)_updateRestrictions:(id)restrictions
 {
-  v13 = a3;
+  restrictionsCopy = restrictions;
   v4 = objc_alloc_init(NSMutableArray);
   v48[0] = 0;
   v48[1] = v48;
@@ -300,7 +300,7 @@ LABEL_17:
   v39[4] = sub_100304604;
   v40 = 0;
   v5 = dispatch_group_create();
-  v6 = [(ADAssistantDataManager *)self _mcQueue];
+  _mcQueue = [(ADAssistantDataManager *)self _mcQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10030460C;
@@ -313,7 +313,7 @@ LABEL_17:
   v36 = v43;
   v37 = v42;
   v38 = v41;
-  dispatch_group_async(v5, v6, block);
+  dispatch_group_async(v5, _mcQueue, block);
 
   v29[0] = 0;
   v29[1] = v29;
@@ -336,7 +336,7 @@ LABEL_17:
   v14[2] = sub_1003048E0;
   v14[3] = &unk_10051B838;
   v15 = v7;
-  v16 = self;
+  selfCopy = self;
   v19 = v39;
   v20 = v48;
   v21 = v46;
@@ -345,8 +345,8 @@ LABEL_17:
   v24 = v42;
   v25 = v41;
   v18 = v29;
-  v17 = v13;
-  v11 = v13;
+  v17 = restrictionsCopy;
+  v11 = restrictionsCopy;
   v12 = v7;
   dispatch_group_notify(v9, queue, v14);
 
@@ -361,30 +361,30 @@ LABEL_17:
   _Block_object_dispose(v48, 8);
 }
 
-- (void)_fetchDictationAllowedStatus:(id)a3
+- (void)_fetchDictationAllowedStatus:(id)status
 {
-  v4 = a3;
-  v5 = [(ADAssistantDataManager *)self _mcQueue];
+  statusCopy = status;
+  _mcQueue = [(ADAssistantDataManager *)self _mcQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100304C28;
   block[3] = &unk_10051CF58;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v8 = statusCopy;
+  v6 = statusCopy;
+  dispatch_async(_mcQueue, block);
 }
 
-- (void)_fetchDictationHIPAAMDMStatus:(id)a3
+- (void)_fetchDictationHIPAAMDMStatus:(id)status
 {
-  v4 = a3;
-  v5 = [(ADAssistantDataManager *)self _mcQueue];
+  statusCopy = status;
+  _mcQueue = [(ADAssistantDataManager *)self _mcQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100304D2C;
   block[3] = &unk_10051CF58;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v8 = statusCopy;
+  v6 = statusCopy;
+  dispatch_async(_mcQueue, block);
 }
 
 - (id)_mcQueue
@@ -399,25 +399,25 @@ LABEL_17:
   return v3;
 }
 
-- (void)_setAllowExplicitContentAndCensorSpeech:(BOOL)a3
+- (void)_setAllowExplicitContentAndCensorSpeech:(BOOL)speech
 {
-  v3 = a3;
+  speechCopy = speech;
   v5 = +[ADPreferences sharedPreferences];
-  [v5 setAllowExplicitContent:v3];
+  [v5 setAllowExplicitContent:speechCopy];
 
-  self->_cachedAllowsExplicitContent = v3;
-  self->_cachedCensorSpeech = !v3;
+  self->_cachedAllowsExplicitContent = speechCopy;
+  self->_cachedCensorSpeech = !speechCopy;
 
   [(ADAssistantDataManager *)self _generateAssistantData];
 }
 
-- (void)_setAllowExplicitContent:(BOOL)a3
+- (void)_setAllowExplicitContent:(BOOL)content
 {
-  v3 = a3;
+  contentCopy = content;
   v5 = +[ADPreferences sharedPreferences];
-  [v5 setAllowExplicitContent:v3];
+  [v5 setAllowExplicitContent:contentCopy];
 
-  self->_cachedAllowsExplicitContent = v3;
+  self->_cachedAllowsExplicitContent = contentCopy;
 
   [(ADAssistantDataManager *)self _generateAssistantData];
 }
@@ -466,10 +466,10 @@ LABEL_17:
   return v3;
 }
 
-- (void)_onMainThreadUpdateCountryCodeWithCountryConfiguration:(id)a3 completion:(id)a4
+- (void)_onMainThreadUpdateCountryCodeWithCountryConfiguration:(id)configuration completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  configurationCopy = configuration;
+  completionCopy = completion;
   if (!+[NSThread isMainThread])
   {
     v14 = +[NSAssertionHandler currentHandler];
@@ -484,10 +484,10 @@ LABEL_17:
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "%s Updating country configuration for assistant data", buf, 0xCu);
   }
 
-  v10 = [v7 countryCode];
-  if (!v10)
+  countryCode = [configurationCopy countryCode];
+  if (!countryCode)
   {
-    [v7 updateProvidersForCurrentCountry];
+    [configurationCopy updateProvidersForCurrentCountry];
   }
 
   queue = self->_queue;
@@ -496,10 +496,10 @@ LABEL_17:
   block[2] = sub_100305308;
   block[3] = &unk_10051E088;
   block[4] = self;
-  v16 = v10;
-  v17 = v8;
-  v12 = v8;
-  v13 = v10;
+  v16 = countryCode;
+  v17 = completionCopy;
+  v12 = completionCopy;
+  v13 = countryCode;
   dispatch_async(queue, block);
 }
 
@@ -523,9 +523,9 @@ LABEL_17:
   [(ADAssistantDataManager *)self _fetchDictationHIPAAMDMStatus:v2];
 }
 
-- (void)_notifyObserversOfSAD:(id)a3
+- (void)_notifyObserversOfSAD:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -549,12 +549,12 @@ LABEL_17:
         v10 = *(*(&v11 + 1) + 8 * v9);
         if (objc_opt_respondsToSelector())
         {
-          [v10 assistantDataManager:self didUpdateAssistantData:v4 meCards:self->_cachedMeCards unredactedAnchor:self->_unredactedAnchor];
+          [v10 assistantDataManager:self didUpdateAssistantData:dCopy meCards:self->_cachedMeCards unredactedAnchor:self->_unredactedAnchor];
         }
 
         else
         {
-          [v10 assistantDataManager:self didUpdateAssistantData:{v4, v11}];
+          [v10 assistantDataManager:self didUpdateAssistantData:{dCopy, v11}];
         }
 
         v9 = v9 + 1;
@@ -575,11 +575,11 @@ LABEL_17:
     v3 = objc_alloc_init(SASetAssistantData);
     v4 = +[NSLocale currentLocale];
     v5 = +[NSTimeZone systemTimeZone];
-    v6 = [v5 name];
-    [v3 setTimeZoneId:v6];
+    name = [v5 name];
+    [v3 setTimeZoneId:name];
 
-    v7 = [v4 localeIdentifier];
-    [v3 setRegion:v7];
+    localeIdentifier = [v4 localeIdentifier];
+    [v3 setRegion:localeIdentifier];
 
     AppBooleanValue = CFPreferencesGetAppBooleanValue(@"AppleICUForce24HourTime", kCFPreferencesAnyApplication, 0);
     if (AppBooleanValue || CFPreferencesGetAppBooleanValue(@"AppleICUForce12HourTime", kCFPreferencesAnyApplication, 0))
@@ -594,8 +594,8 @@ LABEL_17:
 
     [v3 setTwentyFourHourTimeDisplay:v9];
 
-    v10 = [(ADAssistantDataManager *)self _cachedRestrictions];
-    [v3 setParentalRestrictions:v10];
+    _cachedRestrictions = [(ADAssistantDataManager *)self _cachedRestrictions];
+    [v3 setParentalRestrictions:_cachedRestrictions];
 
     [v3 setCensorSpeech:self->_cachedCensorSpeech];
     v11 = [NSNumber numberWithBool:self->_cachedAllowUserGeneratedContent];
@@ -618,8 +618,8 @@ LABEL_17:
 
     [v3 setInRetailStoreDemoMode:self->_cachedInRetailStoreDemoMode];
     v15 = +[NSLocale preferredLanguages];
-    v16 = [v15 firstObject];
-    [v3 setPreferredLanguage:v16];
+    firstObject = [v15 firstObject];
+    [v3 setPreferredLanguage:firstObject];
 
     [v3 setFullStorefrontId:self->_cachedStoreFrontId];
     v17 = [NSNumber numberWithBool:self->_cachedServerFlagsEnabled];
@@ -635,13 +635,13 @@ LABEL_17:
       [v3 setDeviceCapabilities:v19];
     }
 
-    v20 = [v4 af_aceTemperatureUnit];
-    [v3 setTemperatureUnit:v20];
+    af_aceTemperatureUnit = [v4 af_aceTemperatureUnit];
+    [v3 setTemperatureUnit:af_aceTemperatureUnit];
 
     [v3 setVoiceOver:self->_voiceOverIsActive];
     v21 = +[AFPreferences sharedPreferences];
-    v22 = [v21 manualEndpointingThreshold];
-    [v22 doubleValue];
+    manualEndpointingThreshold = [v21 manualEndpointingThreshold];
+    [manualEndpointingThreshold doubleValue];
     v24 = v23 * 1000.0;
 
     v25 = [NSNumber numberWithDouble:v24];
@@ -650,13 +650,13 @@ LABEL_17:
     v26 = AFCurrentUserInterfaceIdiom();
     [v3 setUserInterfaceIdiom:v26];
 
-    v27 = [v3 properties];
-    v28 = [v27 allKeys];
-    v29 = [v28 mutableCopy];
+    properties = [v3 properties];
+    allKeys = [properties allKeys];
+    v29 = [allKeys mutableCopy];
 
     [v29 removeObject:SASetAssistantDataAnchorPListKey];
     v30 = +[NSNull null];
-    v31 = [v27 objectsForKeys:v29 notFoundMarker:v30];
+    v31 = [properties objectsForKeys:v29 notFoundMarker:v30];
     v32 = sub_100215D9C(v31);
     unredactedAnchor = self->_unredactedAnchor;
     self->_unredactedAnchor = v32;
@@ -664,9 +664,9 @@ LABEL_17:
     v34 = [(ADAssistantDataManager *)self _redactedCopyMeCards:self->_cachedMeCards];
     [v3 setMeCards:v34];
 
-    v35 = [v3 properties];
+    properties2 = [v3 properties];
 
-    v36 = [v35 objectsForKeys:v29 notFoundMarker:v30];
+    v36 = [properties2 objectsForKeys:v29 notFoundMarker:v30];
 
     v37 = sub_100215D9C(v36);
     [v3 setAnchor:v37];
@@ -702,10 +702,10 @@ LABEL_17:
   }
 }
 
-- (id)_redactedCopyMeCards:(id)a3
+- (id)_redactedCopyMeCards:(id)cards
 {
-  v3 = a3;
-  v4 = [v3 count];
+  cardsCopy = cards;
+  v4 = [cardsCopy count];
   if (v4)
   {
     v5 = [[NSMutableArray alloc] initWithCapacity:v4];
@@ -713,7 +713,7 @@ LABEL_17:
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v6 = v3;
+    v6 = cardsCopy;
     v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v7)
     {
@@ -755,7 +755,7 @@ LABEL_17:
   CFNotificationCenterPostNotification(DarwinNotifyCenter, v3, 0, 0, 1u);
 }
 
-- (void)_censorSpeechDidChange:(id)a3
+- (void)_censorSpeechDidChange:(id)change
 {
   v4 = AFSiriLogContextSession;
   if (os_log_type_enabled(AFSiriLogContextSession, OS_LOG_TYPE_INFO))
@@ -796,7 +796,7 @@ LABEL_17:
   dispatch_async(queue, block);
 }
 
-- (void)_countryCodeDidChange:(id)a3
+- (void)_countryCodeDidChange:(id)change
 {
   v4 = AFSiriLogContextSession;
   if (os_log_type_enabled(AFSiriLogContextSession, OS_LOG_TYPE_INFO))
@@ -814,7 +814,7 @@ LABEL_17:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)_outputVoiceDidChange:(id)a3
+- (void)_outputVoiceDidChange:(id)change
 {
   v4 = AFSiriLogContextSession;
   if (os_log_type_enabled(AFSiriLogContextSession, OS_LOG_TYPE_INFO))
@@ -833,7 +833,7 @@ LABEL_17:
   dispatch_async(queue, block);
 }
 
-- (void)_systemTimeZoneDidChange:(id)a3
+- (void)_systemTimeZoneDidChange:(id)change
 {
   v4 = AFSiriLogContextSession;
   if (os_log_type_enabled(AFSiriLogContextSession, OS_LOG_TYPE_INFO))
@@ -852,9 +852,9 @@ LABEL_17:
   dispatch_async(queue, block);
 }
 
-- (void)_storeFrontDidChange:(id)a3
+- (void)_storeFrontDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v5 = AFSiriLogContextSession;
   if (os_log_type_enabled(AFSiriLogContextSession, OS_LOG_TYPE_INFO))
   {
@@ -887,7 +887,7 @@ LABEL_17:
   }
 }
 
-- (void)_locationRestrictionDidChange:(id)a3
+- (void)_locationRestrictionDidChange:(id)change
 {
   v4 = AFSiriLogContextSession;
   if (os_log_type_enabled(AFSiriLogContextSession, OS_LOG_TYPE_INFO))
@@ -906,7 +906,7 @@ LABEL_17:
   dispatch_async(queue, block);
 }
 
-- (void)_currentLocaleDidChange:(id)a3
+- (void)_currentLocaleDidChange:(id)change
 {
   v4 = AFSiriLogContextSession;
   if (os_log_type_enabled(AFSiriLogContextSession, OS_LOG_TYPE_INFO))
@@ -927,7 +927,7 @@ LABEL_17:
   [v6 postNotificationName:@"ADSharedDataDidChangeNotification" object:0];
 }
 
-- (void)_voiceAssetsUpdated:(id)a3
+- (void)_voiceAssetsUpdated:(id)updated
 {
   v4 = AFSiriLogContextSession;
   if (os_log_type_enabled(AFSiriLogContextSession, OS_LOG_TYPE_INFO))
@@ -946,13 +946,13 @@ LABEL_17:
   dispatch_async(queue, block);
 }
 
-- (void)contextCollector:(id)a3 didChangeDisplayScale:(double)a4
+- (void)contextCollector:(id)collector didChangeDisplayScale:(double)scale
 {
   v6 = AFSiriLogContextSession;
   if (os_log_type_enabled(AFSiriLogContextSession, OS_LOG_TYPE_INFO))
   {
     v7 = v6;
-    v8 = [NSNumber numberWithDouble:a4];
+    v8 = [NSNumber numberWithDouble:scale];
     *buf = 136315394;
     v12 = "[ADAssistantDataManager contextCollector:didChangeDisplayScale:]";
     v13 = 2112;
@@ -969,21 +969,21 @@ LABEL_17:
   dispatch_async(queue, block);
 }
 
-- (void)addressBookManagerDidUpdateData:(id)a3 meCard:(id)a4
+- (void)addressBookManagerDidUpdateData:(id)data meCard:(id)card
 {
-  v5 = a4;
+  cardCopy = card;
   queue = self->_queue;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100307474;
   v8[3] = &unk_10051E010;
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
+  v9 = cardCopy;
+  selfCopy = self;
+  v7 = cardCopy;
   dispatch_async(queue, v8);
 }
 
-- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)a3 userInfo:(id)a4
+- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)notification userInfo:(id)info
 {
   v5 = AFSiriLogContextSession;
   if (os_log_type_enabled(AFSiriLogContextSession, OS_LOG_TYPE_INFO))
@@ -1020,11 +1020,11 @@ LABEL_17:
   [(ADAssistantDataManager *)self _updateCallCapability:v4];
 }
 
-- (void)getAssistantDataWithCompletion:(id)a3
+- (void)getAssistantDataWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  completionCopy = completion;
+  v5 = completionCopy;
+  if (completionCopy)
   {
     queue = self->_queue;
     v7[0] = _NSConcreteStackBlock;
@@ -1032,12 +1032,12 @@ LABEL_17:
     v7[2] = sub_100307948;
     v7[3] = &unk_10051E038;
     v7[4] = self;
-    v8 = v4;
+    v8 = completionCopy;
     dispatch_async(queue, v7);
   }
 }
 
-- (void)setAllowExplicitContentAndCensorSpeech:(BOOL)a3
+- (void)setAllowExplicitContentAndCensorSpeech:(BOOL)speech
 {
   queue = self->_queue;
   v4[0] = _NSConcreteStackBlock;
@@ -1045,7 +1045,7 @@ LABEL_17:
   v4[2] = sub_100307ABC;
   v4[3] = &unk_10051CBD8;
   v4[4] = self;
-  v5 = a3;
+  speechCopy = speech;
   dispatch_async(queue, v4);
 }
 
@@ -1071,11 +1071,11 @@ LABEL_17:
   return v3;
 }
 
-- (void)getMeCardsWithCompletion:(id)a3
+- (void)getMeCardsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  completionCopy = completion;
+  v5 = completionCopy;
+  if (completionCopy)
   {
     queue = self->_queue;
     v7[0] = _NSConcreteStackBlock;
@@ -1083,16 +1083,16 @@ LABEL_17:
     v7[2] = sub_100307CB0;
     v7[3] = &unk_10051E038;
     v7[4] = self;
-    v8 = v4;
+    v8 = completionCopy;
     dispatch_async(queue, v7);
   }
 }
 
-- (void)getiTunesStoreFrontIdentifierWithCompletion:(id)a3
+- (void)getiTunesStoreFrontIdentifierWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  completionCopy = completion;
+  v5 = completionCopy;
+  if (completionCopy)
   {
     queue = self->_queue;
     v7[0] = _NSConcreteStackBlock;
@@ -1100,14 +1100,14 @@ LABEL_17:
     v7[2] = sub_10030825C;
     v7[3] = &unk_10051E038;
     v7[4] = self;
-    v8 = v4;
+    v8 = completionCopy;
     dispatch_async(queue, v7);
   }
 }
 
-- (void)requestAssistantDataUpdateHighPriority:(BOOL)a3
+- (void)requestAssistantDataUpdateHighPriority:(BOOL)priority
 {
-  v3 = a3;
+  priorityCopy = priority;
   v5 = qos_class_self();
   if (v5 <= QOS_CLASS_USER_INITIATED)
   {
@@ -1119,7 +1119,7 @@ LABEL_17:
     v6 = v5;
   }
 
-  if (v3)
+  if (priorityCopy)
   {
     v7 = v6;
   }
@@ -1139,7 +1139,7 @@ LABEL_17:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%s Manually requesting assistant data update at qos_class_t %#02X", buf, 0x12u);
   }
 
-  if (v3)
+  if (priorityCopy)
   {
     v9 = DISPATCH_BLOCK_ENFORCE_QOS_CLASS;
   }
@@ -1158,31 +1158,31 @@ LABEL_17:
   dispatch_async(self->_queue, v10);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1003085F0;
   v7[3] = &unk_10051E010;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100308694;
   v7[3] = &unk_10051E010;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_async(queue, v7);
 }
 
@@ -1202,9 +1202,9 @@ LABEL_17:
   [(ADAssistantDataManager *)&v6 dealloc];
 }
 
-- (ADAssistantDataManager)initWithInstanceContext:(id)a3
+- (ADAssistantDataManager)initWithInstanceContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v90.receiver = self;
   v90.super_class = ADAssistantDataManager;
   v5 = [(ADAssistantDataManager *)&v90 init];
@@ -1219,9 +1219,9 @@ LABEL_17:
 
     dispatch_set_qos_class_floor(*(v5 + 1), QOS_CLASS_DEFAULT, 0);
     dispatch_activate(*(v5 + 1));
-    if (v4)
+    if (contextCopy)
     {
-      v10 = v4;
+      v10 = contextCopy;
     }
 
     else
@@ -1343,9 +1343,9 @@ LABEL_17:
     v41 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_INHERIT_QOS_CLASS, v38, 0, v73);
     dispatch_async(*(v5 + 1), v41);
     v42 = +[ADPreferences sharedPreferences];
-    v43 = [v42 countryCode];
+    countryCode = [v42 countryCode];
     v44 = v39[8];
-    v39[8] = v43;
+    v39[8] = countryCode;
 
     dispatch_group_enter(v40);
     v70[0] = _NSConcreteStackBlock;

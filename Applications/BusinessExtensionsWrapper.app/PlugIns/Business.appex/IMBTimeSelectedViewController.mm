@@ -1,8 +1,8 @@
 @interface IMBTimeSelectedViewController
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -10,11 +10,11 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_100093808();
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
   v5 = OBJC_IVAR____TtC8Business29IMBTimeSelectedViewController_tableViewData;
   swift_beginAccess();
@@ -32,7 +32,7 @@
   return sub_1000AC65C();
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v6 = sub_1000AB97C();
   v7 = *(v6 - 8);
@@ -40,9 +40,9 @@
   __chkstk_darwin(v6, v9);
   v11 = &v17 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1000AB93C();
-  v12 = a3;
-  v13 = self;
-  sub_1000957F8(v12);
+  viewCopy = view;
+  selfCopy = self;
+  sub_1000957F8(viewCopy);
   v15 = v14;
 
   (*(v7 + 8))(v11, v6);
@@ -50,7 +50,7 @@
   return v15;
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
   v6 = sub_1000AB97C();
   v7 = *(v6 - 8);
@@ -58,8 +58,8 @@
   __chkstk_darwin(v6, v9);
   v11 = &v17 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1000AB93C();
-  v12 = a3;
-  v13 = self;
+  viewCopy = view;
+  selfCopy = self;
   sub_1000966C8();
   v15 = v14;
 
@@ -67,7 +67,7 @@
   return v15;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v6 = sub_1000AB97C();
   v7 = *(v6 - 8);
@@ -75,9 +75,9 @@
   __chkstk_darwin(v6, v9);
   v11 = &v14 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1000AB93C();
-  v12 = a3;
-  v13 = self;
-  sub_100095F74(v12);
+  viewCopy = view;
+  selfCopy = self;
+  sub_100095F74(viewCopy);
 
   (*(v7 + 8))(v11, v6);
 }

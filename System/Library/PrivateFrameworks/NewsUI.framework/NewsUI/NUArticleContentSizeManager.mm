@@ -1,46 +1,46 @@
 @interface NUArticleContentSizeManager
-- (NUArticleContentSizeManager)initWithTagSettings:(id)a3;
-- (id)contentSizeCategoryForArticle:(id)a3;
-- (id)contentSizeCategoryForSize:(int64_t)a3;
-- (int64_t)contentScaleForArticle:(id)a3;
-- (int64_t)textSizeForContentSizeCategory:(id)a3;
-- (void)updateContentScale:(int64_t)a3 forArticle:(id)a4;
-- (void)updateContentSizeCategory:(id)a3 forArticle:(id)a4;
+- (NUArticleContentSizeManager)initWithTagSettings:(id)settings;
+- (id)contentSizeCategoryForArticle:(id)article;
+- (id)contentSizeCategoryForSize:(int64_t)size;
+- (int64_t)contentScaleForArticle:(id)article;
+- (int64_t)textSizeForContentSizeCategory:(id)category;
+- (void)updateContentScale:(int64_t)scale forArticle:(id)article;
+- (void)updateContentSizeCategory:(id)category forArticle:(id)article;
 @end
 
 @implementation NUArticleContentSizeManager
 
-- (NUArticleContentSizeManager)initWithTagSettings:(id)a3
+- (NUArticleContentSizeManager)initWithTagSettings:(id)settings
 {
-  v5 = a3;
+  settingsCopy = settings;
   v9.receiver = self;
   v9.super_class = NUArticleContentSizeManager;
   v6 = [(NUArticleContentSizeManager *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_tagSettings, a3);
+    objc_storeStrong(&v6->_tagSettings, settings);
   }
 
   return v7;
 }
 
-- (id)contentSizeCategoryForArticle:(id)a3
+- (id)contentSizeCategoryForArticle:(id)article
 {
-  v4 = a3;
-  if ([v4 role] == 2)
+  articleCopy = article;
+  if ([articleCopy role] == 2)
   {
     v5 = 0;
   }
 
   else
   {
-    v6 = [v4 sourceChannel];
-    if (v6)
+    sourceChannel = [articleCopy sourceChannel];
+    if (sourceChannel)
     {
-      v7 = [(NUArticleContentSizeManager *)self tagSettings];
-      v8 = [v6 identifier];
-      v9 = [v7 fontSizeForTagID:v8];
+      tagSettings = [(NUArticleContentSizeManager *)self tagSettings];
+      identifier = [sourceChannel identifier];
+      v9 = [tagSettings fontSizeForTagID:identifier];
 
       if (v9)
       {
@@ -62,145 +62,145 @@
   return v5;
 }
 
-- (void)updateContentSizeCategory:(id)a3 forArticle:(id)a4
+- (void)updateContentSizeCategory:(id)category forArticle:(id)article
 {
-  v13 = a3;
-  v6 = [a4 sourceChannel];
-  if (v6)
+  categoryCopy = category;
+  sourceChannel = [article sourceChannel];
+  if (sourceChannel)
   {
-    v7 = [(NUArticleContentSizeManager *)self textSizeForContentSizeCategory:v13];
-    v8 = [(NUArticleContentSizeManager *)self tagSettings];
-    v9 = [v6 identifier];
+    v7 = [(NUArticleContentSizeManager *)self textSizeForContentSizeCategory:categoryCopy];
+    tagSettings = [(NUArticleContentSizeManager *)self tagSettings];
+    identifier = [sourceChannel identifier];
     v10 = [MEMORY[0x277CCABB0] numberWithInteger:v7];
-    [v8 setFontSizeForTagID:v9 fontSize:v10];
+    [tagSettings setFontSizeForTagID:identifier fontSize:v10];
 
-    v11 = [(NUArticleContentSizeManager *)self tagSettings];
-    v12 = [v6 identifier];
-    [v11 syncForTagID:v12];
+    tagSettings2 = [(NUArticleContentSizeManager *)self tagSettings];
+    identifier2 = [sourceChannel identifier];
+    [tagSettings2 syncForTagID:identifier2];
   }
 }
 
-- (int64_t)contentScaleForArticle:(id)a3
+- (int64_t)contentScaleForArticle:(id)article
 {
-  v4 = a3;
-  if ([v4 role] == 2)
+  articleCopy = article;
+  if ([articleCopy role] == 2)
   {
-    v5 = 0;
+    unsignedIntegerValue = 0;
   }
 
   else
   {
-    v6 = [v4 sourceChannel];
-    if (v6)
+    sourceChannel = [articleCopy sourceChannel];
+    if (sourceChannel)
     {
-      v7 = [(NUArticleContentSizeManager *)self tagSettings];
-      v8 = [v6 identifier];
-      v9 = [v7 contentScaleForTagID:v8];
-      v5 = [v9 unsignedIntegerValue];
+      tagSettings = [(NUArticleContentSizeManager *)self tagSettings];
+      identifier = [sourceChannel identifier];
+      v9 = [tagSettings contentScaleForTagID:identifier];
+      unsignedIntegerValue = [v9 unsignedIntegerValue];
     }
 
     else
     {
-      v5 = 0;
+      unsignedIntegerValue = 0;
     }
   }
 
-  return v5;
+  return unsignedIntegerValue;
 }
 
-- (void)updateContentScale:(int64_t)a3 forArticle:(id)a4
+- (void)updateContentScale:(int64_t)scale forArticle:(id)article
 {
-  v6 = [a4 sourceChannel];
-  if (v6)
+  sourceChannel = [article sourceChannel];
+  if (sourceChannel)
   {
-    v12 = v6;
-    v7 = [(NUArticleContentSizeManager *)self tagSettings];
-    v8 = [v12 identifier];
-    v9 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
-    [v7 setContentScaleForTagID:v8 contentScale:v9];
+    v12 = sourceChannel;
+    tagSettings = [(NUArticleContentSizeManager *)self tagSettings];
+    identifier = [v12 identifier];
+    v9 = [MEMORY[0x277CCABB0] numberWithInteger:scale];
+    [tagSettings setContentScaleForTagID:identifier contentScale:v9];
 
-    v10 = [(NUArticleContentSizeManager *)self tagSettings];
-    v11 = [v12 identifier];
-    [v10 syncForTagID:v11];
+    tagSettings2 = [(NUArticleContentSizeManager *)self tagSettings];
+    identifier2 = [v12 identifier];
+    [tagSettings2 syncForTagID:identifier2];
 
-    v6 = v12;
+    sourceChannel = v12;
   }
 }
 
-- (id)contentSizeCategoryForSize:(int64_t)a3
+- (id)contentSizeCategoryForSize:(int64_t)size
 {
-  if ((a3 - 1) > 0xB)
+  if ((size - 1) > 0xB)
   {
     v3 = MEMORY[0x277D76838];
   }
 
   else
   {
-    v3 = qword_2799A46A0[a3 - 1];
+    v3 = qword_2799A46A0[size - 1];
   }
 
   return *v3;
 }
 
-- (int64_t)textSizeForContentSizeCategory:(id)a3
+- (int64_t)textSizeForContentSizeCategory:(id)category
 {
-  v3 = a3;
-  if ([v3 isEqualToString:*MEMORY[0x277D76830]])
+  categoryCopy = category;
+  if ([categoryCopy isEqualToString:*MEMORY[0x277D76830]])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x277D76858]])
+  else if ([categoryCopy isEqualToString:*MEMORY[0x277D76858]])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x277D76840]])
+  else if ([categoryCopy isEqualToString:*MEMORY[0x277D76840]])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x277D76838]])
+  else if ([categoryCopy isEqualToString:*MEMORY[0x277D76838]])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x277D76828]])
+  else if ([categoryCopy isEqualToString:*MEMORY[0x277D76828]])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x277D76820]])
+  else if ([categoryCopy isEqualToString:*MEMORY[0x277D76820]])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x277D76818]])
+  else if ([categoryCopy isEqualToString:*MEMORY[0x277D76818]])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x277D76808]])
+  else if ([categoryCopy isEqualToString:*MEMORY[0x277D76808]])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x277D76800]])
+  else if ([categoryCopy isEqualToString:*MEMORY[0x277D76800]])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x277D767F8]])
+  else if ([categoryCopy isEqualToString:*MEMORY[0x277D767F8]])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x277D767F0]])
+  else if ([categoryCopy isEqualToString:*MEMORY[0x277D767F0]])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x277D767E8]])
+  else if ([categoryCopy isEqualToString:*MEMORY[0x277D767E8]])
   {
     v4 = 12;
   }

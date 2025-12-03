@@ -1,17 +1,17 @@
 @interface MSDFileArchiver
-- (BOOL)compressContent:(id)a3 toPath:(id)a4;
+- (BOOL)compressContent:(id)content toPath:(id)path;
 @end
 
 @implementation MSDFileArchiver
 
-- (BOOL)compressContent:(id)a3 toPath:(id)a4
+- (BOOL)compressContent:(id)content toPath:(id)path
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 path];
-  v8 = [v5 fileSystemRepresentation];
-  v9 = [v6 fileSystemRepresentation];
-  if (!v7 || !v8 || !v9)
+  contentCopy = content;
+  pathCopy = path;
+  path = [contentCopy path];
+  fileSystemRepresentation = [contentCopy fileSystemRepresentation];
+  fileSystemRepresentation2 = [pathCopy fileSystemRepresentation];
+  if (!path || !fileSystemRepresentation || !fileSystemRepresentation2)
   {
     sub_10002B934();
   }
@@ -27,7 +27,7 @@
 
   disk_new = archive_read_disk_new();
   archive_read_disk_set_standard_lookup();
-  v37[0] = v8;
+  v37[0] = fileSystemRepresentation;
   v37[1] = 0;
   v12 = fts_open(v37, 84, 0);
   if (!v12)
@@ -42,16 +42,16 @@
     goto LABEL_33;
   }
 
-  v33 = v7;
-  v34 = v6;
-  v13 = [v7 stringByDeletingLastPathComponent];
-  strlen([v13 fileSystemRepresentation]);
+  v33 = path;
+  v34 = pathCopy;
+  stringByDeletingLastPathComponent = [path stringByDeletingLastPathComponent];
+  strlen([stringByDeletingLastPathComponent fileSystemRepresentation]);
 
   v14 = fts_read(v12);
   v15 = 1;
   if (!v14)
   {
-    v6 = v34;
+    pathCopy = v34;
     if (v10)
     {
       goto LABEL_31;
@@ -61,7 +61,7 @@
   }
 
   v16 = v14;
-  v32 = v5;
+  v32 = contentCopy;
   while (1)
   {
     fts_info = v16->fts_info;
@@ -83,9 +83,9 @@
 
         v22 = 0;
 LABEL_27:
-        v5 = v32;
-        v7 = v33;
-        v6 = v34;
+        contentCopy = v32;
+        path = v33;
+        pathCopy = v34;
         goto LABEL_28;
       }
     }
@@ -124,7 +124,7 @@ LABEL_27:
       }
 
 LABEL_46:
-      v5 = v32;
+      contentCopy = v32;
       goto LABEL_47;
     }
 
@@ -163,15 +163,15 @@ LABEL_10:
     if (!v16)
     {
       v15 = 1;
-      v5 = v32;
-      v7 = v33;
-      v6 = v34;
+      contentCopy = v32;
+      path = v33;
+      pathCopy = v34;
       goto LABEL_30;
     }
   }
 
   v31 = sub_100021268();
-  v5 = v32;
+  contentCopy = v32;
   if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
   {
     sub_10002B8A8(&v35, v36);
@@ -179,8 +179,8 @@ LABEL_10:
 
   v22 = 0;
 LABEL_47:
-  v7 = v33;
-  v6 = v34;
+  path = v33;
+  pathCopy = v34;
 
 LABEL_28:
   v15 = 0;

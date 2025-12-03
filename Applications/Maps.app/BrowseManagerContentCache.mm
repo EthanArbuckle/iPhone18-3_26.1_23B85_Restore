@@ -1,17 +1,17 @@
 @interface BrowseManagerContentCache
 + (void)initialize;
-- (BOOL)_needsRefreshWithTraits:(id)a3;
-- (BOOL)_traitsAreValid:(id)a3;
+- (BOOL)_needsRefreshWithTraits:(id)traits;
+- (BOOL)_traitsAreValid:(id)valid;
 - (BrowseManagerContentCache)init;
 - (NSMapTable)categoryResultsCache;
 - (id)_diskCachedCategories;
 - (void)dealloc;
 - (void)didReceiveMemoryWarning;
 - (void)readCategoriesFromDiskIfNeeded;
-- (void)setGeoCategories:(id)a3;
-- (void)setLatestTraits:(id)a3;
-- (void)setWritesToDisk:(BOOL)a3;
-- (void)updateCacheWithBlock:(id)a3;
+- (void)setGeoCategories:(id)categories;
+- (void)setLatestTraits:(id)traits;
+- (void)setWritesToDisk:(BOOL)disk;
+- (void)updateCacheWithBlock:(id)block;
 - (void)writeCategories;
 @end
 
@@ -35,12 +35,12 @@
 
 - (void)readCategoriesFromDiskIfNeeded
 {
-  v3 = [(BrowseManagerContentCache *)self geoCategories];
+  geoCategories = [(BrowseManagerContentCache *)self geoCategories];
 
-  if (!v3)
+  if (!geoCategories)
   {
-    v4 = [(BrowseManagerContentCache *)self _diskCachedCategories];
-    [(BrowseManagerContentCache *)self setGeoCategories:v4];
+    _diskCachedCategories = [(BrowseManagerContentCache *)self _diskCachedCategories];
+    [(BrowseManagerContentCache *)self setGeoCategories:_diskCachedCategories];
   }
 }
 
@@ -55,25 +55,25 @@
     v6[2] = sub_100096A2C;
     v6[3] = &unk_101661A90;
     v7 = v3;
-    v8 = self;
+    selfCopy = self;
     v5 = v3;
     dispatch_async(v4, v6);
   }
 }
 
-- (void)setWritesToDisk:(BOOL)a3
+- (void)setWritesToDisk:(BOOL)disk
 {
-  if (self->_writesToDisk != a3)
+  if (self->_writesToDisk != disk)
   {
-    self->_writesToDisk = a3;
-    if (!a3)
+    self->_writesToDisk = disk;
+    if (!disk)
     {
       v8 = +[NSFileManager defaultManager];
-      v4 = [(BrowseManagerContentCache *)self diskCachingKey];
-      v5 = sub_1000925BC(v4);
+      diskCachingKey = [(BrowseManagerContentCache *)self diskCachingKey];
+      v5 = sub_1000925BC(diskCachingKey);
 
-      v6 = [v5 path];
-      v7 = [v8 fileExistsAtPath:v6];
+      path = [v5 path];
+      v7 = [v8 fileExistsAtPath:path];
 
       if (v7)
       {
@@ -85,8 +85,8 @@
 
 - (id)_diskCachedCategories
 {
-  v2 = [(BrowseManagerContentCache *)self diskCachingKey];
-  v3 = sub_1000925BC(v2);
+  diskCachingKey = [(BrowseManagerContentCache *)self diskCachingKey];
+  v3 = sub_1000925BC(diskCachingKey);
 
   if (v3 && (+[NSFileManager defaultManager](NSFileManager, "defaultManager"), v4 = objc_claimAutoreleasedReturnValue(), [v3 path], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v4, "fileExistsAtPath:", v5), v5, v4, v6))
   {
@@ -149,32 +149,32 @@
 
 - (void)didReceiveMemoryWarning
 {
-  v2 = [(BrowseManagerContentCache *)self categoryResultsCache];
-  [v2 removeAllObjects];
+  categoryResultsCache = [(BrowseManagerContentCache *)self categoryResultsCache];
+  [categoryResultsCache removeAllObjects];
 }
 
-- (void)updateCacheWithBlock:(id)a3
+- (void)updateCacheWithBlock:(id)block
 {
-  v4 = a3;
-  if (v4)
+  blockCopy = block;
+  if (blockCopy)
   {
-    v6 = v4;
-    v5 = self;
-    objc_sync_enter(v5);
-    v6[2](v6, v5);
-    objc_sync_exit(v5);
+    v6 = blockCopy;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v6[2](v6, selfCopy);
+    objc_sync_exit(selfCopy);
 
-    v4 = v6;
+    blockCopy = v6;
   }
 }
 
-- (BOOL)_needsRefreshWithTraits:(id)a3
+- (BOOL)_needsRefreshWithTraits:(id)traits
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  traitsCopy = traits;
+  v5 = traitsCopy;
+  if (traitsCopy)
   {
-    if ([v4 navigating])
+    if ([traitsCopy navigating])
     {
       v6 = sub_10008C23C();
       v7 = 1;
@@ -190,17 +190,17 @@ LABEL_20:
 
     else
     {
-      v10 = [(GEOMapServiceTraits *)self->_latestTraits mode];
-      if (v10 == [v5 mode])
+      mode = [(GEOMapServiceTraits *)self->_latestTraits mode];
+      if (mode == [v5 mode])
       {
-        v11 = [(GEOMapServiceTraits *)self->_latestTraits mapRegion];
+        mapRegion = [(GEOMapServiceTraits *)self->_latestTraits mapRegion];
         GEOMapRectForMapRegion();
         v13 = v12;
         v15 = v14;
         v17 = v16;
         v19 = v18;
 
-        v20 = [v5 mapRegion];
+        mapRegion2 = [v5 mapRegion];
         GEOMapRectForMapRegion();
         v22 = v21;
         v24 = v23;
@@ -264,28 +264,28 @@ LABEL_20:
   return v7;
 }
 
-- (BOOL)_traitsAreValid:(id)a3
+- (BOOL)_traitsAreValid:(id)valid
 {
-  v3 = a3;
-  if ([v3 hasDeviceLocation])
+  validCopy = valid;
+  if ([validCopy hasDeviceLocation])
   {
-    v4 = 1;
+    hasMapRegion = 1;
   }
 
   else
   {
-    v4 = [v3 hasMapRegion];
+    hasMapRegion = [validCopy hasMapRegion];
   }
 
-  return v4;
+  return hasMapRegion;
 }
 
-- (void)setLatestTraits:(id)a3
+- (void)setLatestTraits:(id)traits
 {
-  v7 = a3;
+  traitsCopy = traits;
   if ([(BrowseManagerContentCache *)self _traitsAreValid:?])
   {
-    v4 = v7;
+    v4 = traitsCopy;
   }
 
   else
@@ -303,16 +303,16 @@ LABEL_20:
   [(GEOMapServiceTraits *)self->_latestTraits setPhotosCount:1];
 }
 
-- (void)setGeoCategories:(id)a3
+- (void)setGeoCategories:(id)categories
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100B2C820;
   v4[3] = &unk_101638830;
-  v5 = self;
-  v6 = a3;
-  v3 = v6;
-  [(BrowseManagerContentCache *)v5 updateCacheWithBlock:v4];
+  selfCopy = self;
+  categoriesCopy = categories;
+  v3 = categoriesCopy;
+  [(BrowseManagerContentCache *)selfCopy updateCacheWithBlock:v4];
 }
 
 - (NSMapTable)categoryResultsCache
@@ -350,8 +350,8 @@ LABEL_20:
     v9 = [v3 URLByAppendingPathComponent:@"Maps"];
 
     v4 = +[NSFileManager defaultManager];
-    v5 = [v9 path];
-    v6 = [v4 fileExistsAtPath:v5];
+    path = [v9 path];
+    v6 = [v4 fileExistsAtPath:path];
 
     if (v6)
     {

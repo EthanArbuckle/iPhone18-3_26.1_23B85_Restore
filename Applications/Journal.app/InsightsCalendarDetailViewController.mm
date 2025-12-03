@@ -1,55 +1,55 @@
 @interface InsightsCalendarDetailViewController
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
 - (NSArray)preferredFocusEnvironments;
-- (_TtC7Journal36InsightsCalendarDetailViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)pageViewController:(id)a3 viewControllerAfterViewController:(id)a4;
-- (id)pageViewController:(id)a3 viewControllerBeforeViewController:(id)a4;
+- (_TtC7Journal36InsightsCalendarDetailViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)pageViewController:(id)controller viewControllerAfterViewController:(id)viewController;
+- (id)pageViewController:(id)controller viewControllerBeforeViewController:(id)viewController;
 - (void)composeButtonSelected;
 - (void)navigateToNextDay;
 - (void)navigateToPreviousDay;
-- (void)pageViewController:(id)a3 didFinishAnimating:(BOOL)a4 previousViewControllers:(id)a5 transitionCompleted:(BOOL)a6;
+- (void)pageViewController:(id)controller didFinishAnimating:(BOOL)animating previousViewControllers:(id)controllers transitionCompleted:(BOOL)completed;
 - (void)updateForSizeClass;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewIsAppearing:(BOOL)a3;
+- (void)viewIsAppearing:(BOOL)appearing;
 @end
 
 @implementation InsightsCalendarDetailViewController
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5.receiver = self;
   v5.super_class = type metadata accessor for InsightsCalendarDetailViewController();
   v4 = v5.receiver;
-  [(InsightsCalendarDetailViewController *)&v5 viewDidDisappear:v3];
+  [(InsightsCalendarDetailViewController *)&v5 viewDidDisappear:disappearCopy];
   sub_100137BA0(0);
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_100138070();
 }
 
 - (void)updateForSizeClass
 {
-  v2 = self;
+  selfCopy = self;
   sub_100139550(0);
   sub_10013973C();
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
-  v4 = self;
-  sub_10013A28C(a3);
+  selfCopy = self;
+  sub_10013A28C(appearing);
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  if (a4)
+  if (sender)
   {
-    v6 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -58,10 +58,10 @@
   else
   {
     memset(v10, 0, sizeof(v10));
-    v7 = self;
+    selfCopy2 = self;
   }
 
-  v8 = sub_10013A3E8(a3, v10);
+  v8 = sub_10013A3E8(action, v10);
 
   sub_100004F84(v10, &qword_100AD13D0);
   return v8 & 1;
@@ -69,7 +69,7 @@
 
 - (NSArray)preferredFocusEnvironments
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10013A18C();
   if (v3)
   {
@@ -86,7 +86,7 @@
   return v6.super.isa;
 }
 
-- (_TtC7Journal36InsightsCalendarDetailViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC7Journal36InsightsCalendarDetailViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
@@ -95,44 +95,44 @@
 
 - (void)navigateToPreviousDay
 {
-  v2 = self;
+  selfCopy = self;
   sub_10013BC90();
 }
 
 - (void)navigateToNextDay
 {
-  v2 = self;
+  selfCopy = self;
   sub_10013BDF4();
 }
 
-- (id)pageViewController:(id)a3 viewControllerBeforeViewController:(id)a4
+- (id)pageViewController:(id)controller viewControllerBeforeViewController:(id)viewController
 {
-  v5 = a4;
-  v6 = self;
-  v7 = sub_10013B7D0(v5, -1);
+  viewControllerCopy = viewController;
+  selfCopy = self;
+  v7 = sub_10013B7D0(viewControllerCopy, -1);
 
   return v7;
 }
 
-- (id)pageViewController:(id)a3 viewControllerAfterViewController:(id)a4
+- (id)pageViewController:(id)controller viewControllerAfterViewController:(id)viewController
 {
-  v5 = a4;
-  v6 = self;
-  v7 = sub_10013B7D0(v5, 1);
+  viewControllerCopy = viewController;
+  selfCopy = self;
+  v7 = sub_10013B7D0(viewControllerCopy, 1);
 
   return v7;
 }
 
-- (void)pageViewController:(id)a3 didFinishAnimating:(BOOL)a4 previousViewControllers:(id)a5 transitionCompleted:(BOOL)a6
+- (void)pageViewController:(id)controller didFinishAnimating:(BOOL)animating previousViewControllers:(id)controllers transitionCompleted:(BOOL)completed
 {
-  v8 = a3;
-  v9 = self;
-  sub_10013E2C0(a6);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_10013E2C0(completed);
 }
 
 - (void)composeButtonSelected
 {
-  v2 = self;
+  selfCopy = self;
   sub_10013C0A8();
 }
 

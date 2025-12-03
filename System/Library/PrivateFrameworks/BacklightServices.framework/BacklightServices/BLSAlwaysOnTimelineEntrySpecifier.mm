@@ -1,22 +1,22 @@
 @interface BLSAlwaysOnTimelineEntrySpecifier
-- (BLSAlwaysOnTimelineEntrySpecifier)initWithTimelineEntry:(id)a3 percentComplete:(double)a4 previousTimelineEntry:(id)a5 didChange:(BOOL)a6;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BLSAlwaysOnTimelineEntrySpecifier)initWithTimelineEntry:(id)entry percentComplete:(double)complete previousTimelineEntry:(id)timelineEntry didChange:(BOOL)change;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
 - (id)description;
-- (int64_t)compare:(id)a3;
+- (int64_t)compare:(id)compare;
 - (int64_t)requestedFidelity;
 - (unint64_t)hash;
-- (void)appendFidelityToTarget:(id)a3;
-- (void)setRequestedFidelity:(int64_t)a3;
+- (void)appendFidelityToTarget:(id)target;
+- (void)setRequestedFidelity:(int64_t)fidelity;
 @end
 
 @implementation BLSAlwaysOnTimelineEntrySpecifier
 
-- (BLSAlwaysOnTimelineEntrySpecifier)initWithTimelineEntry:(id)a3 percentComplete:(double)a4 previousTimelineEntry:(id)a5 didChange:(BOOL)a6
+- (BLSAlwaysOnTimelineEntrySpecifier)initWithTimelineEntry:(id)entry percentComplete:(double)complete previousTimelineEntry:(id)timelineEntry didChange:(BOOL)change
 {
-  v11 = a3;
-  v12 = a5;
+  entryCopy = entry;
+  timelineEntryCopy = timelineEntry;
   v16.receiver = self;
   v16.super_class = BLSAlwaysOnTimelineEntrySpecifier;
   v13 = [(BLSAlwaysOnTimelineEntrySpecifier *)&v16 init];
@@ -26,20 +26,20 @@
     v13->_lock._os_unfair_lock_opaque = 0;
     v13->_requestedFidelity = -1;
     v13->_grantedFidelity = -1;
-    objc_storeStrong(&v13->_timelineEntry, a3);
-    v14->_percentComplete = a4;
-    objc_storeStrong(&v14->_previousTimelineEntry, a5);
-    v14->_didChange = a6;
+    objc_storeStrong(&v13->_timelineEntry, entry);
+    v14->_percentComplete = complete;
+    objc_storeStrong(&v14->_previousTimelineEntry, timelineEntry);
+    v14->_didChange = change;
   }
 
   return v14;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
   timelineEntry = self->_timelineEntry;
-  v4 = [a3 timelineEntry];
-  v5 = [(BLSAlwaysOnTimelineEntry *)timelineEntry compare:v4];
+  timelineEntry = [compare timelineEntry];
+  v5 = [(BLSAlwaysOnTimelineEntry *)timelineEntry compare:timelineEntry];
 
   return v5;
 }
@@ -57,10 +57,10 @@
   return requestedFidelity;
 }
 
-- (void)setRequestedFidelity:(int64_t)a3
+- (void)setRequestedFidelity:(int64_t)fidelity
 {
   os_unfair_lock_lock(&self->_lock);
-  self->_requestedFidelity = a3;
+  self->_requestedFidelity = fidelity;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -72,7 +72,7 @@
   v8 = 3221225472;
   v9 = __48__BLSAlwaysOnTimelineEntrySpecifier_description__block_invoke;
   v10 = &unk_278428688;
-  v11 = self;
+  selfCopy = self;
   v12 = v3;
   v4 = v3;
   [v4 appendProem:self block:&v7];
@@ -154,40 +154,40 @@ void __48__BLSAlwaysOnTimelineEntrySpecifier_description__block_invoke_3(uint64_
   }
 }
 
-- (void)appendFidelityToTarget:(id)a3
+- (void)appendFidelityToTarget:(id)target
 {
-  v11 = a3;
-  v4 = [(BLSAlwaysOnTimelineEntrySpecifier *)self requestedFidelity];
-  v5 = [(BLSAlwaysOnTimelineEntrySpecifier *)self grantedFidelity];
-  if (v4 == v5)
+  targetCopy = target;
+  requestedFidelity = [(BLSAlwaysOnTimelineEntrySpecifier *)self requestedFidelity];
+  grantedFidelity = [(BLSAlwaysOnTimelineEntrySpecifier *)self grantedFidelity];
+  if (requestedFidelity == grantedFidelity)
   {
-    v6 = NSStringAbbreviatedFromBLSUpdateFidelity(v4);
-    [v11 appendString:v6];
+    v6 = NSStringAbbreviatedFromBLSUpdateFidelity(requestedFidelity);
+    [targetCopy appendString:v6];
   }
 
   else
   {
-    if (v5 == -1)
+    if (grantedFidelity == -1)
     {
-      v10 = NSStringAbbreviatedFromBLSUpdateFidelity(v4);
-      [v11 appendString:v10];
+      v10 = NSStringAbbreviatedFromBLSUpdateFidelity(requestedFidelity);
+      [targetCopy appendString:v10];
 
       v9 = @"(r)";
     }
 
     else
     {
-      v7 = NSStringAbbreviatedFromBLSUpdateFidelity(v5);
-      [v11 appendString:v7];
+      v7 = NSStringAbbreviatedFromBLSUpdateFidelity(grantedFidelity);
+      [targetCopy appendString:v7];
 
-      objc_msgSend(v11, "appendString:", @"(r:");
-      v8 = NSStringAbbreviatedFromBLSUpdateFidelity(v4);
-      [v11 appendString:v8];
+      objc_msgSend(targetCopy, "appendString:", @"(r:");
+      v8 = NSStringAbbreviatedFromBLSUpdateFidelity(requestedFidelity);
+      [targetCopy appendString:v8];
 
       v9 = @"");
     }
 
-    [v11 appendString:v9];
+    [targetCopy appendString:v9];
   }
 }
 
@@ -208,23 +208,23 @@ void __48__BLSAlwaysOnTimelineEntrySpecifier_description__block_invoke_3(uint64_
   v12 = [(BLSAlwaysOnTimelineEntry *)self->_previousTimelineEntry debugDescription];
   v13 = [v3 appendObject:v12 withName:@"previousEntry"];
 
-  v14 = [v3 build];
+  build = [v3 build];
 
-  return v14;
+  return build;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     timelineEntry = self->_timelineEntry;
-    v6 = [v4 timelineEntry];
-    if ([(BLSAlwaysOnTimelineEntry *)timelineEntry isEqual:v6])
+    timelineEntry = [equalCopy timelineEntry];
+    if ([(BLSAlwaysOnTimelineEntry *)timelineEntry isEqual:timelineEntry])
     {
       percentComplete = self->_percentComplete;
-      [v4 percentComplete];
+      [equalCopy percentComplete];
       v9 = percentComplete == v8;
     }
 
@@ -251,15 +251,15 @@ void __48__BLSAlwaysOnTimelineEntrySpecifier_description__block_invoke_3(uint64_
   return v5 ^ v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [BLSAlwaysOnTimelineEntrySpecifier alloc];
   timelineEntry = self->_timelineEntry;
   percentComplete = self->_percentComplete;
   previousTimelineEntry = self->_previousTimelineEntry;
-  v8 = [(BLSAlwaysOnTimelineEntrySpecifier *)self didChange];
+  didChange = [(BLSAlwaysOnTimelineEntrySpecifier *)self didChange];
 
-  return [(BLSAlwaysOnTimelineEntrySpecifier *)v4 initWithTimelineEntry:timelineEntry percentComplete:previousTimelineEntry previousTimelineEntry:v8 didChange:percentComplete];
+  return [(BLSAlwaysOnTimelineEntrySpecifier *)v4 initWithTimelineEntry:timelineEntry percentComplete:previousTimelineEntry previousTimelineEntry:didChange didChange:percentComplete];
 }
 
 @end

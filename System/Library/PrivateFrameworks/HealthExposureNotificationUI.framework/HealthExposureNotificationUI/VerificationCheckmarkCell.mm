@@ -1,11 +1,11 @@
 @interface VerificationCheckmarkCell
-- (_TtC28HealthExposureNotificationUI25VerificationCheckmarkCell)initWithCoder:(id)a3;
+- (_TtC28HealthExposureNotificationUI25VerificationCheckmarkCell)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 @end
 
 @implementation VerificationCheckmarkCell
 
-- (_TtC28HealthExposureNotificationUI25VerificationCheckmarkCell)initWithCoder:(id)a3
+- (_TtC28HealthExposureNotificationUI25VerificationCheckmarkCell)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC28HealthExposureNotificationUI25VerificationCheckmarkCell_label;
   *(&self->super.super.super.super.super.isa + v4) = [objc_allocWithZone(MEMORY[0x277D756B8]) init];
@@ -19,7 +19,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_2516FEB2C();
 }
 

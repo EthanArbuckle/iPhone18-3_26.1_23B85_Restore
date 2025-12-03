@@ -1,34 +1,34 @@
 @interface CAMTimelapseState
-+ (id)stateWithContentsOfFile:(id)a3;
-- (BOOL)_commonCAMTimelapseStateInitWithCoder:(id)a3;
-- (BOOL)addStopReasons:(int64_t)a3 stopTime:(id)a4;
++ (id)stateWithContentsOfFile:(id)file;
+- (BOOL)_commonCAMTimelapseStateInitWithCoder:(id)coder;
+- (BOOL)addStopReasons:(int64_t)reasons stopTime:(id)time;
 - (BOOL)canContinueCapture;
 - (BOOL)incrementFrameIndex;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToState:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToState:(id)state;
 - (BOOL)isReadyForWritingMovie;
-- (BOOL)mergeSecondaryState:(id)a3;
-- (BOOL)writeToFile:(id)a3 createDirectoryIfNeeded:(BOOL)a4;
+- (BOOL)mergeSecondaryState:(id)state;
+- (BOOL)writeToFile:(id)file createDirectoryIfNeeded:(BOOL)needed;
 - (CAMTimelapseState)init;
-- (CAMTimelapseState)initWithCoder:(id)a3;
+- (CAMTimelapseState)initWithCoder:(id)coder;
 - (CGSize)nominalIntermediateFrameSize;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)filePathForNextFrameIndex;
 - (id)fullDescription;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)forceCompleted;
 @end
 
 @implementation CAMTimelapseState
 
-- (BOOL)mergeSecondaryState:(id)a3
+- (BOOL)mergeSecondaryState:(id)state
 {
-  v4 = a3;
-  v5 = [v4 stopReasons];
-  v6 = [v4 stopTime];
+  stateCopy = state;
+  stopReasons = [stateCopy stopReasons];
+  stopTime = [stateCopy stopTime];
 
-  LOBYTE(self) = [(CAMTimelapseState *)self addStopReasons:v5 stopTime:v6];
+  LOBYTE(self) = [(CAMTimelapseState *)self addStopReasons:stopReasons stopTime:stopTime];
   return self;
 }
 
@@ -39,9 +39,9 @@
   v2 = [(CAMTimelapseState *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E69BF320] UUIDString];
+    uUIDString = [MEMORY[0x1E69BF320] UUIDString];
     timelapseUUID = v2->_timelapseUUID;
-    v2->_timelapseUUID = v3;
+    v2->_timelapseUUID = uUIDString;
 
     if (![(CAMTimelapseState *)v2 _commonCAMTimelapseStateInitWithCoder:0])
     {
@@ -53,14 +53,14 @@
   return v2;
 }
 
-- (CAMTimelapseState)initWithCoder:(id)a3
+- (CAMTimelapseState)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = CAMTimelapseState;
   v5 = [(CAMTimelapseState *)&v8 init];
   v6 = v5;
-  if (v5 && ![(CAMTimelapseState *)v5 _commonCAMTimelapseStateInitWithCoder:v4])
+  if (v5 && ![(CAMTimelapseState *)v5 _commonCAMTimelapseStateInitWithCoder:coderCopy])
   {
 
     v6 = 0;
@@ -69,12 +69,12 @@
   return v6;
 }
 
-- (BOOL)_commonCAMTimelapseStateInitWithCoder:(id)a3
+- (BOOL)_commonCAMTimelapseStateInitWithCoder:(id)coder
 {
-  v4 = a3;
-  if ([v4 containsValueForKey:@"timelapseUUID"])
+  coderCopy = coder;
+  if ([coderCopy containsValueForKey:@"timelapseUUID"])
   {
-    v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"timelapseUUID"];
+    v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"timelapseUUID"];
     timelapseUUID = self->_timelapseUUID;
     self->_timelapseUUID = v5;
   }
@@ -82,9 +82,9 @@
   v7 = [(NSString *)self->_timelapseUUID length];
   if (v7)
   {
-    if ([v4 containsValueForKey:@"captureDevice"])
+    if ([coderCopy containsValueForKey:@"captureDevice"])
     {
-      v8 = [v4 decodeIntegerForKey:@"captureDevice"];
+      v8 = [coderCopy decodeIntegerForKey:@"captureDevice"];
     }
 
     else
@@ -93,9 +93,9 @@
     }
 
     self->_captureDevice = v8;
-    if ([v4 containsValueForKey:@"captureOrientation"])
+    if ([coderCopy containsValueForKey:@"captureOrientation"])
     {
-      v9 = [v4 decodeIntegerForKey:@"captureOrientation"];
+      v9 = [coderCopy decodeIntegerForKey:@"captureOrientation"];
     }
 
     else
@@ -104,33 +104,33 @@
     }
 
     self->_captureOrientation = v9;
-    v10 = [v4 containsValueForKey:@"captureMirrored"];
+    v10 = [coderCopy containsValueForKey:@"captureMirrored"];
     if (v10)
     {
-      LOBYTE(v10) = [v4 decodeBoolForKey:@"captureMirrored"];
+      LOBYTE(v10) = [coderCopy decodeBoolForKey:@"captureMirrored"];
     }
 
     self->_captureMirrored = v10;
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"startTime"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"startTime"];
     startTime = self->_startTime;
     self->_startTime = v11;
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"startLocation"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"startLocation"];
     startLocation = self->_startLocation;
     self->_startLocation = v13;
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lastFrameResponseTime"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastFrameResponseTime"];
     lastFrameResponseTime = self->_lastFrameResponseTime;
     self->_lastFrameResponseTime = v15;
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"stopTime"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"stopTime"];
     stopTime = self->_stopTime;
     self->_stopTime = v17;
 
-    self->_preferHEVC = [v4 decodeBoolForKey:@"timelapsePreferHEVC"];
-    if ([v4 containsValueForKey:@"stopReasons"])
+    self->_preferHEVC = [coderCopy decodeBoolForKey:@"timelapsePreferHEVC"];
+    if ([coderCopy containsValueForKey:@"stopReasons"])
     {
-      v19 = [v4 decodeIntegerForKey:@"stopReasons"];
+      v19 = [coderCopy decodeIntegerForKey:@"stopReasons"];
     }
 
     else
@@ -139,10 +139,10 @@
     }
 
     self->_stopReasons = v19;
-    self->_allFramesWritten = [v4 decodeBoolForKey:@"allFramesWritten"];
-    if ([v4 containsValueForKey:@"captureTimeInterval"])
+    self->_allFramesWritten = [coderCopy decodeBoolForKey:@"allFramesWritten"];
+    if ([coderCopy containsValueForKey:@"captureTimeInterval"])
     {
-      [v4 decodeDoubleForKey:@"captureTimeInterval"];
+      [coderCopy decodeDoubleForKey:@"captureTimeInterval"];
       self->_captureTimeInterval = v20;
     }
 
@@ -153,7 +153,7 @@
       self->_captureTimeInterval = v22;
     }
 
-    v23 = [v4 decodeIntegerForKey:@"frameIndexStride"];
+    v23 = [coderCopy decodeIntegerForKey:@"frameIndexStride"];
     if (v23 <= 1)
     {
       v24 = 1;
@@ -165,10 +165,10 @@
     }
 
     self->_frameIndexStride = v24;
-    self->_nextFrameIndex = [v4 decodeIntegerForKey:@"nextFrameIndex"];
-    if ([v4 containsValueForKey:@"focusLensPosition"])
+    self->_nextFrameIndex = [coderCopy decodeIntegerForKey:@"nextFrameIndex"];
+    if ([coderCopy containsValueForKey:@"focusLensPosition"])
     {
-      [v4 decodeFloatForKey:@"focusLensPosition"];
+      [coderCopy decodeFloatForKey:@"focusLensPosition"];
     }
 
     else
@@ -177,9 +177,9 @@
     }
 
     self->_focusLensPosition = v25;
-    if ([v4 containsValueForKey:@"nominalIntermediateFrameSize"])
+    if ([coderCopy containsValueForKey:@"nominalIntermediateFrameSize"])
     {
-      [v4 decodeCGSizeForKey:@"nominalIntermediateFrameSize"];
+      [coderCopy decodeCGSizeForKey:@"nominalIntermediateFrameSize"];
       self->_nominalIntermediateFrameSize.width = v26;
       self->_nominalIntermediateFrameSize.height = v27;
     }
@@ -189,7 +189,7 @@
       self->_nominalIntermediateFrameSize = *MEMORY[0x1E695F060];
     }
 
-    v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localPrivateMetadataFileURL"];
+    v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localPrivateMetadataFileURL"];
     localPrivateMetadataFileURL = self->_localPrivateMetadataFileURL;
     self->_localPrivateMetadataFileURL = v28;
   }
@@ -197,28 +197,28 @@
   return v7 != 0;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   timelapseUUID = self->_timelapseUUID;
-  v6 = a3;
-  [v6 encodeObject:timelapseUUID forKey:@"timelapseUUID"];
-  [v6 encodeInteger:self->_captureDevice forKey:@"captureDevice"];
-  [v6 encodeInteger:self->_captureOrientation forKey:@"captureOrientation"];
-  [v6 encodeBool:self->_captureMirrored forKey:@"captureMirrored"];
-  [v6 encodeObject:self->_startTime forKey:@"startTime"];
-  [v6 encodeObject:self->_startLocation forKey:@"startLocation"];
-  [v6 encodeObject:self->_lastFrameResponseTime forKey:@"lastFrameResponseTime"];
-  [v6 encodeObject:self->_stopTime forKey:@"stopTime"];
-  [v6 encodeInteger:self->_stopReasons forKey:@"stopReasons"];
-  [v6 encodeBool:self->_allFramesWritten forKey:@"allFramesWritten"];
-  [v6 encodeDouble:@"captureTimeInterval" forKey:self->_captureTimeInterval];
-  [v6 encodeInteger:self->_frameIndexStride forKey:@"frameIndexStride"];
-  [v6 encodeInteger:self->_nextFrameIndex forKey:@"nextFrameIndex"];
+  coderCopy = coder;
+  [coderCopy encodeObject:timelapseUUID forKey:@"timelapseUUID"];
+  [coderCopy encodeInteger:self->_captureDevice forKey:@"captureDevice"];
+  [coderCopy encodeInteger:self->_captureOrientation forKey:@"captureOrientation"];
+  [coderCopy encodeBool:self->_captureMirrored forKey:@"captureMirrored"];
+  [coderCopy encodeObject:self->_startTime forKey:@"startTime"];
+  [coderCopy encodeObject:self->_startLocation forKey:@"startLocation"];
+  [coderCopy encodeObject:self->_lastFrameResponseTime forKey:@"lastFrameResponseTime"];
+  [coderCopy encodeObject:self->_stopTime forKey:@"stopTime"];
+  [coderCopy encodeInteger:self->_stopReasons forKey:@"stopReasons"];
+  [coderCopy encodeBool:self->_allFramesWritten forKey:@"allFramesWritten"];
+  [coderCopy encodeDouble:@"captureTimeInterval" forKey:self->_captureTimeInterval];
+  [coderCopy encodeInteger:self->_frameIndexStride forKey:@"frameIndexStride"];
+  [coderCopy encodeInteger:self->_nextFrameIndex forKey:@"nextFrameIndex"];
   *&v5 = self->_focusLensPosition;
-  [v6 encodeFloat:@"focusLensPosition" forKey:v5];
-  [v6 encodeCGSize:@"nominalIntermediateFrameSize" forKey:{self->_nominalIntermediateFrameSize.width, self->_nominalIntermediateFrameSize.height}];
-  [v6 encodeBool:self->_preferHEVC forKey:@"timelapsePreferHEVC"];
-  [v6 encodeObject:self->_localPrivateMetadataFileURL forKey:@"localPrivateMetadataFileURL"];
+  [coderCopy encodeFloat:@"focusLensPosition" forKey:v5];
+  [coderCopy encodeCGSize:@"nominalIntermediateFrameSize" forKey:{self->_nominalIntermediateFrameSize.width, self->_nominalIntermediateFrameSize.height}];
+  [coderCopy encodeBool:self->_preferHEVC forKey:@"timelapsePreferHEVC"];
+  [coderCopy encodeObject:self->_localPrivateMetadataFileURL forKey:@"localPrivateMetadataFileURL"];
 }
 
 - (id)description
@@ -261,7 +261,7 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v3 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:self requiringSecureCoding:1 error:0];
   v4 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:v3 error:0];
@@ -269,25 +269,25 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(CAMTimelapseState *)self isEqualToState:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(CAMTimelapseState *)self isEqualToState:equalCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToState:(id)a3
+- (BOOL)isEqualToState:(id)state
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  stateCopy = state;
+  v5 = stateCopy;
+  if (stateCopy == self)
   {
     v6 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (stateCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = 1;
     v7 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:self requiringSecureCoding:1 error:0];
@@ -313,44 +313,44 @@
   self->_nextFrameIndex = v4;
   v5 = v4 / frameIndexStride;
   v6 = +[CAMTimelapseSettings sharedInstance];
-  v7 = [v6 maxOutputFrames];
+  maxOutputFrames = [v6 maxOutputFrames];
 
-  if (v5 >= v7)
+  if (v5 >= maxOutputFrames)
   {
     self->_frameIndexStride *= 2;
     self->_captureTimeInterval = self->_captureTimeInterval + self->_captureTimeInterval;
   }
 
-  return v5 >= v7;
+  return v5 >= maxOutputFrames;
 }
 
 - (id)filePathForNextFrameIndex
 {
   v3 = [CAMTimelapseDiskUtilities fileNameForImageFrameIndex:[(CAMTimelapseState *)self nextFrameIndex]];
-  v4 = [(CAMTimelapseState *)self timelapseUUID];
-  v5 = [CAMTimelapseDiskUtilities directoryPathForTimelapseUUID:v4];
+  timelapseUUID = [(CAMTimelapseState *)self timelapseUUID];
+  v5 = [CAMTimelapseDiskUtilities directoryPathForTimelapseUUID:timelapseUUID];
 
   v6 = [v5 stringByAppendingPathComponent:v3];
 
   return v6;
 }
 
-- (BOOL)addStopReasons:(int64_t)a3 stopTime:(id)a4
+- (BOOL)addStopReasons:(int64_t)reasons stopTime:(id)time
 {
-  v6 = a4;
-  v7 = [(CAMTimelapseState *)self stopReasons];
-  v8 = (v7 | a3) == v7;
-  v9 = (v7 | a3) != v7;
+  timeCopy = time;
+  stopReasons = [(CAMTimelapseState *)self stopReasons];
+  v8 = (stopReasons | reasons) == stopReasons;
+  v9 = (stopReasons | reasons) != stopReasons;
   if (!v8)
   {
     [(CAMTimelapseState *)self setStopReasons:?];
   }
 
-  v10 = [(CAMTimelapseState *)self stopTime];
-  v11 = v10;
-  if (v6 && !v10)
+  stopTime = [(CAMTimelapseState *)self stopTime];
+  v11 = stopTime;
+  if (timeCopy && !stopTime)
   {
-    [(CAMTimelapseState *)self setStopTime:v6];
+    [(CAMTimelapseState *)self setStopTime:timeCopy];
     v9 = 1;
   }
 
@@ -359,11 +359,11 @@
 
 - (BOOL)canContinueCapture
 {
-  v2 = self;
-  v3 = [(CAMTimelapseState *)self stopTime];
-  LOBYTE(v2) = (v3 | [(CAMTimelapseState *)v2 stopReasons]) == 0;
+  selfCopy = self;
+  stopTime = [(CAMTimelapseState *)self stopTime];
+  LOBYTE(selfCopy) = (stopTime | [(CAMTimelapseState *)selfCopy stopReasons]) == 0;
 
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)isReadyForWritingMovie
@@ -378,8 +378,8 @@
     return 1;
   }
 
-  v4 = [(CAMTimelapseState *)self stopTime];
-  [v4 timeIntervalSinceNow];
+  stopTime = [(CAMTimelapseState *)self stopTime];
+  [stopTime timeIntervalSinceNow];
   v6 = -v5;
   [objc_opt_class() maxTimeToWaitForWrittenFrameAfterStop];
   v3 = v7 <= v6;
@@ -393,11 +393,11 @@
   v3 = os_log_create("com.apple.camera", "Nebula");
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(CAMTimelapseState *)self timelapseUUID];
+    timelapseUUID = [(CAMTimelapseState *)self timelapseUUID];
     v7 = 138543618;
-    v8 = v4;
+    v8 = timelapseUUID;
     v9 = 2048;
-    v10 = [(CAMTimelapseState *)self stopReasons];
+    stopReasons = [(CAMTimelapseState *)self stopReasons];
     _os_log_impl(&dword_1A3640000, v3, OS_LOG_TYPE_DEFAULT, "Forcing completion of timelapse %{public}@ with stopReasons %ld", &v7, 0x16u);
   }
 
@@ -407,20 +407,20 @@
   [(CAMTimelapseState *)self setAllFramesWritten:1];
 }
 
-- (BOOL)writeToFile:(id)a3 createDirectoryIfNeeded:(BOOL)a4
+- (BOOL)writeToFile:(id)file createDirectoryIfNeeded:(BOOL)needed
 {
-  v4 = a4;
-  v6 = a3;
-  if ([v6 length])
+  neededCopy = needed;
+  fileCopy = file;
+  if ([fileCopy length])
   {
-    v7 = [v6 stringByDeletingLastPathComponent];
-    if (v4)
+    stringByDeletingLastPathComponent = [fileCopy stringByDeletingLastPathComponent];
+    if (neededCopy)
     {
-      v8 = [MEMORY[0x1E696AC08] defaultManager];
-      if (![v8 fileExistsAtPath:v7])
+      defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+      if (![defaultManager fileExistsAtPath:stringByDeletingLastPathComponent])
       {
         v17 = 0;
-        v9 = [v8 createDirectoryAtPath:v7 withIntermediateDirectories:1 attributes:0 error:&v17];
+        v9 = [defaultManager createDirectoryAtPath:stringByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:&v17];
         v10 = v17;
         v11 = v10;
         if (!v9)
@@ -439,8 +439,8 @@
 
     v16 = 0;
     v11 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:self requiringSecureCoding:1 error:&v16];
-    v8 = v16;
-    if (v8)
+    defaultManager = v16;
+    if (defaultManager)
     {
       v12 = os_log_create("com.apple.camera", "Nebula");
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -450,7 +450,7 @@
     }
 
     v13 = 1;
-    if ([v11 writeToFile:v6 atomically:1])
+    if ([v11 writeToFile:fileCopy atomically:1])
     {
       goto LABEL_19;
     }
@@ -473,12 +473,12 @@ LABEL_20:
   return v13;
 }
 
-+ (id)stateWithContentsOfFile:(id)a3
++ (id)stateWithContentsOfFile:(id)file
 {
-  v3 = a3;
-  if ([v3 length])
+  fileCopy = file;
+  if ([fileCopy length])
   {
-    v4 = [MEMORY[0x1E695DEF0] dataWithContentsOfFile:v3];
+    v4 = [MEMORY[0x1E695DEF0] dataWithContentsOfFile:fileCopy];
     if (v4)
     {
       v9 = 0;

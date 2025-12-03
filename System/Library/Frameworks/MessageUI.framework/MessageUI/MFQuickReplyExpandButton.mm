@@ -1,16 +1,16 @@
 @interface MFQuickReplyExpandButton
-+ (id)buttonWithType:(int64_t)a3;
-- (id)_quickReplyExpandButtonPointerStyleInView:(id)a3;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
++ (id)buttonWithType:(int64_t)type;
+- (id)_quickReplyExpandButtonPointerStyleInView:(id)view;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
 @end
 
 @implementation MFQuickReplyExpandButton
 
-+ (id)buttonWithType:(int64_t)a3
++ (id)buttonWithType:(int64_t)type
 {
-  v8.receiver = a1;
+  v8.receiver = self;
   v8.super_class = &OBJC_METACLASS___MFQuickReplyExpandButton;
-  v3 = objc_msgSendSuper2(&v8, sel_buttonWithType_, a3);
+  v3 = objc_msgSendSuper2(&v8, sel_buttonWithType_, type);
   v4 = [MEMORY[0x1E69DCAB8] mf_symbolConfigurationForView:25];
   [v3 setPreferredSymbolConfiguration:v4 forImageInState:0];
 
@@ -25,21 +25,21 @@
   return v3;
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
-  v4 = [(MFQuickReplyExpandButton *)self _quickReplyExpandButtonPointerStyleInView:self, a4];
+  region = [(MFQuickReplyExpandButton *)self _quickReplyExpandButtonPointerStyleInView:self, region];
 
-  return v4;
+  return region;
 }
 
-- (id)_quickReplyExpandButtonPointerStyleInView:(id)a3
+- (id)_quickReplyExpandButtonPointerStyleInView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v5 = MEMORY[0x1E69DCD98];
   v6 = [objc_alloc(MEMORY[0x1E69DD070]) initWithView:self];
   v7 = [v5 effectWithPreview:v6];
 
-  [v4 frame];
+  [viewCopy frame];
   v8 = [MEMORY[0x1E69DCDC8] shapeWithRoundedRect:?];
   v9 = [MEMORY[0x1E69DCDD0] styleWithEffect:v7 shape:v8];
 

@@ -1,22 +1,22 @@
 @interface PXSuggestersDebugCollectionItem
-- (PXSuggestersDebugCollectionItem)initWithSuggesterInfo:(id)a3;
+- (PXSuggestersDebugCollectionItem)initWithSuggesterInfo:(id)info;
 @end
 
 @implementation PXSuggestersDebugCollectionItem
 
-- (PXSuggestersDebugCollectionItem)initWithSuggesterInfo:(id)a3
+- (PXSuggestersDebugCollectionItem)initWithSuggesterInfo:(id)info
 {
-  v5 = a3;
+  infoCopy = info;
   v10.receiver = self;
   v10.super_class = PXSuggestersDebugCollectionItem;
   v6 = [(PXSuggestersDebugCollectionItem *)&v10 init];
   if (v6)
   {
-    v7 = [v5 objectForKeyedSubscript:@"uuid"];
+    v7 = [infoCopy objectForKeyedSubscript:@"uuid"];
     name = v6->_name;
     v6->_name = v7;
 
-    objc_storeStrong(&v6->_info, a3);
+    objc_storeStrong(&v6->_info, info);
   }
 
   return v6;

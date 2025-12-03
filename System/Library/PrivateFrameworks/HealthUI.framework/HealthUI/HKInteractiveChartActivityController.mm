@@ -1,91 +1,91 @@
 @interface HKInteractiveChartActivityController
-+ (id)_activitySummariesFromCodableCollection:(id)a3;
-+ (id)_activitySummaryFromCodableSummaryEntry:(id)a3;
-+ (id)_codableActivitySummaryDataFromSummaries:(id)a3;
-+ (id)_codableActivitySummaryFromSummary:(id)a3;
-+ (id)firstActivitySeriesForGraphView:(id)a3;
-+ (void)encodeChartDataWithHealthStore:(id)a3 dateCache:(id)a4 displayTypeController:(id)a5 unitController:(id)a6 activityMoveMode:(int64_t)a7 monthDateInterval:(id)a8 sixMonthDateInterval:(id)a9 completion:(id)a10;
++ (id)_activitySummariesFromCodableCollection:(id)collection;
++ (id)_activitySummaryFromCodableSummaryEntry:(id)entry;
++ (id)_codableActivitySummaryDataFromSummaries:(id)summaries;
++ (id)_codableActivitySummaryFromSummary:(id)summary;
++ (id)firstActivitySeriesForGraphView:(id)view;
++ (void)encodeChartDataWithHealthStore:(id)store dateCache:(id)cache displayTypeController:(id)controller unitController:(id)unitController activityMoveMode:(int64_t)mode monthDateInterval:(id)interval sixMonthDateInterval:(id)dateInterval completion:(id)self0;
 - (BOOL)chartDataIsAvailable;
-- (HKInteractiveChartActivityController)initWithHealthStore:(id)a3 unitPreferenceController:(id)a4 dateCache:(id)a5 chartDataCacheController:(id)a6 selectedTimeScopeController:(id)a7 sampleTypeDateRangeController:(id)a8 wheelchairUseCharacteristicCache:(id)a9 initialXValue:(id)a10 activityMoveMode:(int64_t)a11 activityOptions:(unint64_t)a12 chartSharableModel:(id)a13;
+- (HKInteractiveChartActivityController)initWithHealthStore:(id)store unitPreferenceController:(id)controller dateCache:(id)cache chartDataCacheController:(id)cacheController selectedTimeScopeController:(id)scopeController sampleTypeDateRangeController:(id)rangeController wheelchairUseCharacteristicCache:(id)characteristicCache initialXValue:(id)self0 activityMoveMode:(int64_t)self1 activityOptions:(unint64_t)self2 chartSharableModel:(id)self3;
 - (HKInteractiveChartCurrentValueViewCallbacks)activityCurrentValueViewCallbacks;
 - (id)_activityLollipopBackgroundColor;
-- (id)_activitySeriesForActivityValue:(int64_t)a3 wheelchairUseCharacteristicCache:(id)a4 unitPreferenceController:(id)a5 displayTypeController:(id)a6 activityOptions:(unint64_t)a7;
-- (id)_activityYAxisForActivityValue:(int64_t)a3 zeroOnly:(BOOL)a4 stackOffset:(int64_t)a5 bottomLabelPadding:(double)a6 displayTypeController:(id)a7 unitPreferenceController:(id)a8;
-- (id)_buildSummariesTableFromSharableModel:(id)a3;
-- (id)_dayActivitySummaryForDateRange:(id)a3;
-- (id)_decodeActivitySummariesFromQueryData:(id)a3;
-- (id)_displayTypeForActivityValue:(int64_t)a3 yAxis:(id)a4 dataProvider:(id)a5 displayTypeController:(id)a6 unitPreferenceController:(id)a7 wheelchairUseCharacteristicCache:(id)a8 timescopeToSummariesTable:(id)a9 activityOptions:(unint64_t)a10;
-- (id)_displayTypeForUnits:(int64_t)a3 displayTypeController:(id)a4;
-- (id)_generateActivityBarSeriesWithColor:(id)a3 legendTitle:(id)a4 metGoalFillStyle:(id)a5 missedGoalFillStyle:(id)a6 pausedFillStyle:(id)a7 activityValue:(int64_t)a8 unitPreferenceController:(id)a9 displayTypeController:(id)a10 drawLegendsInsideSeries:(BOOL)a11;
-- (id)_generateActivityGoalLineSeriesWithColor:(id)a3;
-- (id)_lineColorForActivityValue:(int64_t)a3;
-- (id)_metGoalFillStyleForActivityValue:(int64_t)a3 useGradient:(BOOL)a4;
-- (id)_missedGoalFillStyleForActivityValue:(int64_t)a3 useGradient:(BOOL)a4;
-- (id)_pausedFillStyleForActivityValue:(int64_t)a3;
-- (id)_rangeValueAsNumber:(id)a3;
-- (id)_spanForValueDisplayType:(id)a3 timeScope:(int64_t)a4 title:(id)a5;
-- (id)_timeScopeRangesFromSharableModel:(id)a3;
-- (id)_titleForActivityValue:(int64_t)a3 wheelchairUseCharacteristicCache:(id)a4;
-- (id)_unitForActivityValue:(int64_t)a3 displayTypeController:(id)a4 unitPreferenceController:(id)a5;
-- (id)_zeroStringForActivityValue:(int64_t)a3 displayTypeController:(id)a4 unitPreferenceController:(id)a5;
+- (id)_activitySeriesForActivityValue:(int64_t)value wheelchairUseCharacteristicCache:(id)cache unitPreferenceController:(id)controller displayTypeController:(id)typeController activityOptions:(unint64_t)options;
+- (id)_activityYAxisForActivityValue:(int64_t)value zeroOnly:(BOOL)only stackOffset:(int64_t)offset bottomLabelPadding:(double)padding displayTypeController:(id)controller unitPreferenceController:(id)preferenceController;
+- (id)_buildSummariesTableFromSharableModel:(id)model;
+- (id)_dayActivitySummaryForDateRange:(id)range;
+- (id)_decodeActivitySummariesFromQueryData:(id)data;
+- (id)_displayTypeForActivityValue:(int64_t)value yAxis:(id)axis dataProvider:(id)provider displayTypeController:(id)controller unitPreferenceController:(id)preferenceController wheelchairUseCharacteristicCache:(id)cache timescopeToSummariesTable:(id)table activityOptions:(unint64_t)self0;
+- (id)_displayTypeForUnits:(int64_t)units displayTypeController:(id)controller;
+- (id)_generateActivityBarSeriesWithColor:(id)color legendTitle:(id)title metGoalFillStyle:(id)style missedGoalFillStyle:(id)fillStyle pausedFillStyle:(id)pausedFillStyle activityValue:(int64_t)value unitPreferenceController:(id)controller displayTypeController:(id)self0 drawLegendsInsideSeries:(BOOL)self1;
+- (id)_generateActivityGoalLineSeriesWithColor:(id)color;
+- (id)_lineColorForActivityValue:(int64_t)value;
+- (id)_metGoalFillStyleForActivityValue:(int64_t)value useGradient:(BOOL)gradient;
+- (id)_missedGoalFillStyleForActivityValue:(int64_t)value useGradient:(BOOL)gradient;
+- (id)_pausedFillStyleForActivityValue:(int64_t)value;
+- (id)_rangeValueAsNumber:(id)number;
+- (id)_spanForValueDisplayType:(id)type timeScope:(int64_t)scope title:(id)title;
+- (id)_timeScopeRangesFromSharableModel:(id)model;
+- (id)_titleForActivityValue:(int64_t)value wheelchairUseCharacteristicCache:(id)cache;
+- (id)_unitForActivityValue:(int64_t)value displayTypeController:(id)controller unitPreferenceController:(id)preferenceController;
+- (id)_zeroStringForActivityValue:(int64_t)value displayTypeController:(id)controller unitPreferenceController:(id)preferenceController;
 - (id)activitySummaryForCurrentRange;
-- (id)buildFactorContextForDisplayType:(id)a3 factorDisplayType:(id)a4 overlayChartController:(id)a5 currentCalendarOverride:(id)a6 applicationItems:(id)a7 overlayMode:(int64_t)a8;
+- (id)buildFactorContextForDisplayType:(id)type factorDisplayType:(id)displayType overlayChartController:(id)controller currentCalendarOverride:(id)override applicationItems:(id)items overlayMode:(int64_t)mode;
 - (id)calendarQueryDisplayType;
 - (id)dataSourceForCurrentValueViewString;
-- (id)descriptionForChartData:(id)a3 timeScope:(int64_t)a4;
-- (id)descriptionSeriesForGraphView:(id)a3;
-- (id)descriptionSpansForGraphView:(id)a3 timeScope:(int64_t)a4;
+- (id)descriptionForChartData:(id)data timeScope:(int64_t)scope;
+- (id)descriptionSeriesForGraphView:(id)view;
+- (id)descriptionSpansForGraphView:(id)view timeScope:(int64_t)scope;
 - (id)lollipopAnnotationColor;
 - (id)makeAnnotationDataSource;
 - (id)makeCurrentValueView;
-- (id)seriesSelectionLineColorForGraphView:(id)a3;
-- (int64_t)_countOfStackedChartsFromActivityOptions:(unint64_t)a3;
-- (int64_t)_findFirstWeekdayFromModel:(id)a3;
-- (int64_t)_representativeDataTypeForActivityValue:(int64_t)a3;
-- (void)_handleAlternateAnnotationDataViewDataSource:(id)a3;
-- (void)configureDisplayTypes:(id)a3 timeScope:(int64_t)a4 stackOffset:(int64_t)a5;
-- (void)setCurrentValueViewCallbacks:(id)a3;
-- (void)tappedOnCurrentValueView:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)updateCurrentValueView:(id)a3 graphView:(id)a4 timeScope:(int64_t)a5 showInfoButton:(BOOL)a6;
-- (void)updateSelectionAnnotationDataSourceForContext:(id)a3 displayType:(id)a4 timeScope:(int64_t)a5 resolution:(int64_t)a6;
+- (id)seriesSelectionLineColorForGraphView:(id)view;
+- (int64_t)_countOfStackedChartsFromActivityOptions:(unint64_t)options;
+- (int64_t)_findFirstWeekdayFromModel:(id)model;
+- (int64_t)_representativeDataTypeForActivityValue:(int64_t)value;
+- (void)_handleAlternateAnnotationDataViewDataSource:(id)source;
+- (void)configureDisplayTypes:(id)types timeScope:(int64_t)scope stackOffset:(int64_t)offset;
+- (void)setCurrentValueViewCallbacks:(id)callbacks;
+- (void)tappedOnCurrentValueView:(id)view;
+- (void)traitCollectionDidChange:(id)change;
+- (void)updateCurrentValueView:(id)view graphView:(id)graphView timeScope:(int64_t)scope showInfoButton:(BOOL)button;
+- (void)updateSelectionAnnotationDataSourceForContext:(id)context displayType:(id)type timeScope:(int64_t)scope resolution:(int64_t)resolution;
 @end
 
 @implementation HKInteractiveChartActivityController
 
-- (HKInteractiveChartActivityController)initWithHealthStore:(id)a3 unitPreferenceController:(id)a4 dateCache:(id)a5 chartDataCacheController:(id)a6 selectedTimeScopeController:(id)a7 sampleTypeDateRangeController:(id)a8 wheelchairUseCharacteristicCache:(id)a9 initialXValue:(id)a10 activityMoveMode:(int64_t)a11 activityOptions:(unint64_t)a12 chartSharableModel:(id)a13
+- (HKInteractiveChartActivityController)initWithHealthStore:(id)store unitPreferenceController:(id)controller dateCache:(id)cache chartDataCacheController:(id)cacheController selectedTimeScopeController:(id)scopeController sampleTypeDateRangeController:(id)rangeController wheelchairUseCharacteristicCache:(id)characteristicCache initialXValue:(id)self0 activityMoveMode:(int64_t)self1 activityOptions:(unint64_t)self2 chartSharableModel:(id)self3
 {
   v92[2] = *MEMORY[0x1E69E9840];
-  v19 = a3;
-  v20 = a4;
-  v87 = a5;
-  v83 = a9;
-  v21 = a13;
-  v76 = a10;
-  v75 = a8;
-  v74 = a7;
-  v72 = a6;
-  v22 = v21;
-  v88 = [HKDisplayTypeController sharedInstanceForHealthStore:v19];
-  if (v21)
+  storeCopy = store;
+  controllerCopy = controller;
+  cacheCopy = cache;
+  characteristicCacheCopy = characteristicCache;
+  modelCopy = model;
+  valueCopy = value;
+  rangeControllerCopy = rangeController;
+  scopeControllerCopy = scopeController;
+  cacheControllerCopy = cacheController;
+  v22 = modelCopy;
+  v88 = [HKDisplayTypeController sharedInstanceForHealthStore:storeCopy];
+  if (modelCopy)
   {
-    v23 = v19;
+    v23 = storeCopy;
     v24 = [(HKInteractiveChartActivityController *)self _buildSummariesTableFromSharableModel:v22];
     v82 = [(HKInteractiveChartActivityController *)self _timeScopeRangesFromSharableModel:v22];
     v84 = v24;
     v25 = [v24 objectForKeyedSubscript:&unk_1F4384390];
-    v26 = [v25 firstObject];
+    firstObject = [v25 firstObject];
 
-    v27 = a11;
-    if (v26)
+    modeCopy2 = mode;
+    if (firstObject)
     {
-      v27 = [v26 activityMoveMode];
+      modeCopy2 = [firstObject activityMoveMode];
     }
 
     v71 = [(HKInteractiveChartActivityController *)self _findFirstWeekdayFromModel:v22];
 
-    v19 = v23;
-    v28 = v87;
+    storeCopy = v23;
+    v28 = cacheCopy;
   }
 
   else
@@ -93,28 +93,28 @@
     v82 = 0;
     v84 = 0;
     v71 = -1;
-    v27 = a11;
-    v28 = v87;
+    modeCopy2 = mode;
+    v28 = cacheCopy;
   }
 
   v80 = v22;
-  v29 = [[HKActivitySummaryDataProvider alloc] initWithHealthStore:v19 dateCache:v28 displayTypeController:v88 unitController:v20 activityMoveMode:v27];
+  v29 = [[HKActivitySummaryDataProvider alloc] initWithHealthStore:storeCopy dateCache:v28 displayTypeController:v88 unitController:controllerCopy activityMoveMode:modeCopy2];
   v30 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v31 = a12;
-  v32 = [(HKInteractiveChartActivityController *)self _countOfStackedChartsFromActivityOptions:a12];
+  optionsCopy3 = options;
+  v32 = [(HKInteractiveChartActivityController *)self _countOfStackedChartsFromActivityOptions:options];
   v86 = v29;
   v77 = v32;
-  if (a12)
+  if (options)
   {
     v38 = 0;
     v39 = 0;
-    v37 = v83;
+    v37 = characteristicCacheCopy;
   }
 
   else
   {
-    v33 = v27 == 2;
-    if (v27 == 2)
+    v33 = modeCopy2 == 2;
+    if (modeCopy2 == 2)
     {
       v34 = 5;
     }
@@ -124,24 +124,24 @@
       v34 = 4;
     }
 
-    v35 = [(HKInteractiveChartActivityController *)self _activityYAxisForActivityValue:v27 == 2 zeroOnly:v32 > 1 stackOffset:0 bottomLabelPadding:v88 displayTypeController:v20 unitPreferenceController:0.0];
+    v35 = [(HKInteractiveChartActivityController *)self _activityYAxisForActivityValue:modeCopy2 == 2 zeroOnly:v32 > 1 stackOffset:0 bottomLabelPadding:v88 displayTypeController:controllerCopy unitPreferenceController:0.0];
     v36 = v33;
-    v37 = v83;
-    v38 = [(HKInteractiveChartActivityController *)self _displayTypeForActivityValue:v36 yAxis:v35 dataProvider:v29 displayTypeController:v88 unitPreferenceController:v20 wheelchairUseCharacteristicCache:v83 timescopeToSummariesTable:v84 activityOptions:a12];
-    v39 = [(HKInteractiveChartActivityController *)self _displayTypeForActivityValue:v34 yAxis:v35 dataProvider:v29 displayTypeController:v88 unitPreferenceController:v20 wheelchairUseCharacteristicCache:v83 timescopeToSummariesTable:v84 activityOptions:a12];
+    v37 = characteristicCacheCopy;
+    v38 = [(HKInteractiveChartActivityController *)self _displayTypeForActivityValue:v36 yAxis:v35 dataProvider:v29 displayTypeController:v88 unitPreferenceController:controllerCopy wheelchairUseCharacteristicCache:characteristicCacheCopy timescopeToSummariesTable:v84 activityOptions:options];
+    v39 = [(HKInteractiveChartActivityController *)self _displayTypeForActivityValue:v34 yAxis:v35 dataProvider:v29 displayTypeController:v88 unitPreferenceController:controllerCopy wheelchairUseCharacteristicCache:characteristicCacheCopy timescopeToSummariesTable:v84 activityOptions:options];
     v92[0] = v38;
     v92[1] = v39;
     v40 = [MEMORY[0x1E695DEC8] arrayWithObjects:v92 count:2];
     [v30 addObject:v40];
 
-    v31 = a12;
+    optionsCopy3 = options;
   }
 
   v41 = v30;
   v81 = v30;
   obj = v38;
   v79 = v39;
-  if ((v31 & 2) != 0)
+  if ((optionsCopy3 & 2) != 0)
   {
     v43 = 0;
     v44 = 0;
@@ -149,20 +149,20 @@
 
   else
   {
-    v42 = [(HKInteractiveChartActivityController *)self _activityYAxisForActivityValue:2 zeroOnly:v77 > 1 stackOffset:1 bottomLabelPadding:v88 displayTypeController:v20 unitPreferenceController:0.0];
-    v43 = [(HKInteractiveChartActivityController *)self _displayTypeForActivityValue:2 yAxis:v42 dataProvider:v86 displayTypeController:v88 unitPreferenceController:v20 wheelchairUseCharacteristicCache:v37 timescopeToSummariesTable:v84 activityOptions:v31];
+    v42 = [(HKInteractiveChartActivityController *)self _activityYAxisForActivityValue:2 zeroOnly:v77 > 1 stackOffset:1 bottomLabelPadding:v88 displayTypeController:controllerCopy unitPreferenceController:0.0];
+    v43 = [(HKInteractiveChartActivityController *)self _displayTypeForActivityValue:2 yAxis:v42 dataProvider:v86 displayTypeController:v88 unitPreferenceController:controllerCopy wheelchairUseCharacteristicCache:v37 timescopeToSummariesTable:v84 activityOptions:optionsCopy3];
     v41 = v81;
-    v44 = [(HKInteractiveChartActivityController *)self _displayTypeForActivityValue:6 yAxis:v42 dataProvider:v86 displayTypeController:v88 unitPreferenceController:v20 wheelchairUseCharacteristicCache:v37 timescopeToSummariesTable:v84 activityOptions:v31];
+    v44 = [(HKInteractiveChartActivityController *)self _displayTypeForActivityValue:6 yAxis:v42 dataProvider:v86 displayTypeController:v88 unitPreferenceController:controllerCopy wheelchairUseCharacteristicCache:v37 timescopeToSummariesTable:v84 activityOptions:optionsCopy3];
     v91[0] = v43;
     v91[1] = v44;
     v45 = [MEMORY[0x1E695DEC8] arrayWithObjects:v91 count:2];
     [v81 addObject:v45];
 
-    v31 = a12;
+    optionsCopy3 = options;
   }
 
-  v85 = v20;
-  if ((v31 & 4) != 0)
+  v85 = controllerCopy;
+  if ((optionsCopy3 & 4) != 0)
   {
     v48 = 0;
     v50 = 0;
@@ -170,12 +170,12 @@
 
   else
   {
-    [(HKInteractiveChartActivityController *)self _activityYAxisForActivityValue:3 zeroOnly:v77 > 1 stackOffset:2 bottomLabelPadding:v88 displayTypeController:v20 unitPreferenceController:5.0];
+    [(HKInteractiveChartActivityController *)self _activityYAxisForActivityValue:3 zeroOnly:v77 > 1 stackOffset:2 bottomLabelPadding:v88 displayTypeController:controllerCopy unitPreferenceController:5.0];
     v47 = v46 = v37;
-    v48 = [(HKInteractiveChartActivityController *)self _displayTypeForActivityValue:3 yAxis:v47 dataProvider:v86 displayTypeController:v88 unitPreferenceController:v20 wheelchairUseCharacteristicCache:v46 timescopeToSummariesTable:v84 activityOptions:v31];
+    v48 = [(HKInteractiveChartActivityController *)self _displayTypeForActivityValue:3 yAxis:v47 dataProvider:v86 displayTypeController:v88 unitPreferenceController:controllerCopy wheelchairUseCharacteristicCache:v46 timescopeToSummariesTable:v84 activityOptions:optionsCopy3];
     v49 = v46;
     v41 = v81;
-    v50 = [(HKInteractiveChartActivityController *)self _displayTypeForActivityValue:7 yAxis:v47 dataProvider:v86 displayTypeController:v88 unitPreferenceController:v20 wheelchairUseCharacteristicCache:v49 timescopeToSummariesTable:v84 activityOptions:v31];
+    v50 = [(HKInteractiveChartActivityController *)self _displayTypeForActivityValue:7 yAxis:v47 dataProvider:v86 displayTypeController:v88 unitPreferenceController:controllerCopy wheelchairUseCharacteristicCache:v49 timescopeToSummariesTable:v84 activityOptions:optionsCopy3];
     v90[0] = v48;
     v90[1] = v50;
     v51 = [MEMORY[0x1E695DEC8] arrayWithObjects:v90 count:2];
@@ -204,9 +204,9 @@
 
   v89.receiver = self;
   v89.super_class = HKInteractiveChartActivityController;
-  v56 = [(HKInteractiveChartOverlayViewController *)&v89 initWithStackedDisplayTypes:v41 primaryDisplayTypeStackIndex:0 stackedDisplayTypeHeights:0 healthStore:v19 unitPreferenceController:v85 dateCache:v87 chartDataCacheController:v72 selectedTimeScopeController:v74 sampleTypeDateRangeController:v75 initialXValue:v76 currentCalendarOverride:0 options:v55 timeScopeRanges:v82];
+  v56 = [(HKInteractiveChartOverlayViewController *)&v89 initWithStackedDisplayTypes:v41 primaryDisplayTypeStackIndex:0 stackedDisplayTypeHeights:0 healthStore:storeCopy unitPreferenceController:v85 dateCache:cacheCopy chartDataCacheController:cacheControllerCopy selectedTimeScopeController:scopeControllerCopy sampleTypeDateRangeController:rangeControllerCopy initialXValue:valueCopy currentCalendarOverride:0 options:v55 timeScopeRanges:v82];
 
-  v57 = v87;
+  v57 = cacheCopy;
   v58 = v86;
   v59 = obj;
   v60 = v53;
@@ -222,10 +222,10 @@
     objc_storeStrong(&v56->_activityDataProvider, v86);
     v56->_isChartSharingContext = v80 != 0;
     v62 = [HKActivitySummaryAnnotationViewDataSource alloc];
-    v63 = [(HKInteractiveChartViewController *)v56 displayTypeController];
-    v57 = v87;
+    displayTypeController = [(HKInteractiveChartViewController *)v56 displayTypeController];
+    v57 = cacheCopy;
     LOBYTE(v69) = v56->_isChartSharingContext;
-    v64 = [(HKActivitySummaryAnnotationViewDataSource *)v62 initWithDisplayTypeController:v63 unitController:v85 wheelchairUseCharacteristicCache:v83 dateCache:v87 currentValueViewContext:0 activityOptions:a12 firstWeekday:v71 isChartSharingContext:v69];
+    v64 = [(HKActivitySummaryAnnotationViewDataSource *)v62 initWithDisplayTypeController:displayTypeController unitController:v85 wheelchairUseCharacteristicCache:characteristicCacheCopy dateCache:cacheCopy currentValueViewContext:0 activityOptions:options firstWeekday:v71 isChartSharingContext:v69];
     activityAnnotationDataSource = v56->_activityAnnotationDataSource;
     v56->_activityAnnotationDataSource = v64;
 
@@ -234,12 +234,12 @@
     v61 = v44;
     [(HKActivitySummaryAnnotationViewDataSource *)v56->_activityAnnotationDataSource setActivitySummary:0];
     v56->_currentTimeScope = 2;
-    v66 = [MEMORY[0x1E696AD18] weakToWeakObjectsMapTable];
+    weakToWeakObjectsMapTable = [MEMORY[0x1E696AD18] weakToWeakObjectsMapTable];
     yAxisAccessoryViewsByGraphSeries = v56->_yAxisAccessoryViewsByGraphSeries;
-    v56->_yAxisAccessoryViewsByGraphSeries = v66;
+    v56->_yAxisAccessoryViewsByGraphSeries = weakToWeakObjectsMapTable;
 
-    objc_storeStrong(&v56->_wheelchairUseCharacteristicCache, a9);
-    v56->_activityOptions = a12;
+    objc_storeStrong(&v56->_wheelchairUseCharacteristicCache, characteristicCache);
+    v56->_activityOptions = options;
     v58 = v86;
     [(HKInteractiveChartViewController *)v56 addChartViewObserver:v56];
   }
@@ -247,91 +247,91 @@
   return v56;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v10.receiver = self;
   v10.super_class = HKInteractiveChartActivityController;
-  v4 = a3;
-  [(HKInteractiveChartViewController *)&v10 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(HKInteractiveChartViewController *)&v10 traitCollectionDidChange:changeCopy];
   v5 = [(HKInteractiveChartActivityController *)self traitCollection:v10.receiver];
-  v6 = [v5 userInterfaceStyle];
-  v7 = [v4 userInterfaceStyle];
+  userInterfaceStyle = [v5 userInterfaceStyle];
+  userInterfaceStyle2 = [changeCopy userInterfaceStyle];
 
-  if (v6 != v7)
+  if (userInterfaceStyle != userInterfaceStyle2)
   {
-    v8 = [(HKInteractiveChartViewController *)self primaryGraphViewController];
-    v9 = [v8 graphView];
-    [v9 resetAndRedraw];
+    primaryGraphViewController = [(HKInteractiveChartViewController *)self primaryGraphViewController];
+    graphView = [primaryGraphViewController graphView];
+    [graphView resetAndRedraw];
   }
 }
 
-- (id)buildFactorContextForDisplayType:(id)a3 factorDisplayType:(id)a4 overlayChartController:(id)a5 currentCalendarOverride:(id)a6 applicationItems:(id)a7 overlayMode:(int64_t)a8
+- (id)buildFactorContextForDisplayType:(id)type factorDisplayType:(id)displayType overlayChartController:(id)controller currentCalendarOverride:(id)override applicationItems:(id)items overlayMode:(int64_t)mode
 {
-  v14 = a7;
-  v15 = a6;
-  v16 = a5;
-  v17 = a4;
-  v18 = a3;
+  itemsCopy = items;
+  overrideCopy = override;
+  controllerCopy = controller;
+  displayTypeCopy = displayType;
+  typeCopy = type;
   v19 = [_ActivityFactorContext alloc];
-  v20 = [(HKInteractiveChartActivityController *)self activityCurrentValueView];
-  v21 = [(_ActivityFactorContext *)v19 initWithPrimaryDisplayType:v18 factorDisplayType:v17 overlayChartController:v16 currentCalendarOverride:v15 applicationItems:v14 overlayMode:a8 activityCurrentValueView:v20];
+  activityCurrentValueView = [(HKInteractiveChartActivityController *)self activityCurrentValueView];
+  v21 = [(_ActivityFactorContext *)v19 initWithPrimaryDisplayType:typeCopy factorDisplayType:displayTypeCopy overlayChartController:controllerCopy currentCalendarOverride:overrideCopy applicationItems:itemsCopy overlayMode:mode activityCurrentValueView:activityCurrentValueView];
 
   return v21;
 }
 
-- (id)_buildSummariesTableFromSharableModel:(id)a3
+- (id)_buildSummariesTableFromSharableModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  if ([v4 hasSixMonthData])
+  if ([modelCopy hasSixMonthData])
   {
-    v6 = [v4 sixMonthData];
-    v7 = [(HKInteractiveChartActivityController *)self _decodeActivitySummariesFromQueryData:v6];
+    sixMonthData = [modelCopy sixMonthData];
+    v7 = [(HKInteractiveChartActivityController *)self _decodeActivitySummariesFromQueryData:sixMonthData];
     [v5 setObject:v7 forKeyedSubscript:&unk_1F43843A8];
   }
 
-  if ([v4 hasMonthData])
+  if ([modelCopy hasMonthData])
   {
-    v8 = [v4 monthData];
-    v9 = [(HKInteractiveChartActivityController *)self _decodeActivitySummariesFromQueryData:v8];
+    monthData = [modelCopy monthData];
+    v9 = [(HKInteractiveChartActivityController *)self _decodeActivitySummariesFromQueryData:monthData];
     [v5 setObject:v9 forKeyedSubscript:&unk_1F4384390];
   }
 
   return v5;
 }
 
-- (id)_decodeActivitySummariesFromQueryData:(id)a3
+- (id)_decodeActivitySummariesFromQueryData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v4 = [HKCodableActivitySummaryCollection alloc];
-  v5 = [v3 queryDataObject];
+  queryDataObject = [dataCopy queryDataObject];
 
-  v6 = [(HKCodableActivitySummaryCollection *)v4 initWithData:v5];
+  v6 = [(HKCodableActivitySummaryCollection *)v4 initWithData:queryDataObject];
   v7 = [HKInteractiveChartActivityController _activitySummariesFromCodableCollection:v6];
 
   return v7;
 }
 
-- (id)_timeScopeRangesFromSharableModel:(id)a3
+- (id)_timeScopeRangesFromSharableModel:(id)model
 {
   v19[2] = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E696AB80];
-  v4 = a3;
-  v5 = [v4 monthDateInterval];
-  v6 = [v3 hk_dateIntervalWithCodableDateInterval:v5 sourceTimeZone:0];
+  modelCopy = model;
+  monthDateInterval = [modelCopy monthDateInterval];
+  v6 = [v3 hk_dateIntervalWithCodableDateInterval:monthDateInterval sourceTimeZone:0];
 
   v7 = MEMORY[0x1E696AB80];
-  v8 = [v4 sixMonthDateInterval];
+  sixMonthDateInterval = [modelCopy sixMonthDateInterval];
 
-  v9 = [v7 hk_dateIntervalWithCodableDateInterval:v8 sourceTimeZone:0];
+  v9 = [v7 hk_dateIntervalWithCodableDateInterval:sixMonthDateInterval sourceTimeZone:0];
 
-  v10 = [v6 startDate];
-  v11 = [v6 endDate];
-  v12 = [HKValueRange valueRangeWithMinValue:v10 maxValue:v11];
+  startDate = [v6 startDate];
+  endDate = [v6 endDate];
+  v12 = [HKValueRange valueRangeWithMinValue:startDate maxValue:endDate];
 
-  v13 = [v9 startDate];
-  v14 = [v9 endDate];
-  v15 = [HKValueRange valueRangeWithMinValue:v13 maxValue:v14];
+  startDate2 = [v9 startDate];
+  endDate2 = [v9 endDate];
+  v15 = [HKValueRange valueRangeWithMinValue:startDate2 maxValue:endDate2];
 
   v18[0] = &unk_1F4384390;
   v18[1] = &unk_1F43843A8;
@@ -342,85 +342,85 @@
   return v16;
 }
 
-- (int64_t)_findFirstWeekdayFromModel:(id)a3
+- (int64_t)_findFirstWeekdayFromModel:(id)model
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  modelCopy = model;
+  v4 = modelCopy;
+  if (!modelCopy)
   {
     goto LABEL_9;
   }
 
-  if (![v3 hasMonthData] || (objc_msgSend(v4, "monthData"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "hasFirstWeekday"), v5, !v6))
+  if (![modelCopy hasMonthData] || (objc_msgSend(v4, "monthData"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "hasFirstWeekday"), v5, !v6))
   {
     if ([v4 hasSixMonthData])
     {
-      v8 = [v4 sixMonthData];
-      v9 = [v8 hasFirstWeekday];
+      sixMonthData = [v4 sixMonthData];
+      hasFirstWeekday = [sixMonthData hasFirstWeekday];
 
-      if (v9)
+      if (hasFirstWeekday)
       {
-        v7 = [v4 sixMonthData];
+        sixMonthData2 = [v4 sixMonthData];
         goto LABEL_8;
       }
     }
 
 LABEL_9:
-    v11 = -1;
+    firstWeekday = -1;
     goto LABEL_10;
   }
 
-  v7 = [v4 monthData];
+  sixMonthData2 = [v4 monthData];
 LABEL_8:
-  v10 = v7;
-  v11 = [v7 firstWeekday];
+  v10 = sixMonthData2;
+  firstWeekday = [sixMonthData2 firstWeekday];
 
 LABEL_10:
-  return v11;
+  return firstWeekday;
 }
 
-+ (void)encodeChartDataWithHealthStore:(id)a3 dateCache:(id)a4 displayTypeController:(id)a5 unitController:(id)a6 activityMoveMode:(int64_t)a7 monthDateInterval:(id)a8 sixMonthDateInterval:(id)a9 completion:(id)a10
++ (void)encodeChartDataWithHealthStore:(id)store dateCache:(id)cache displayTypeController:(id)controller unitController:(id)unitController activityMoveMode:(int64_t)mode monthDateInterval:(id)interval sixMonthDateInterval:(id)dateInterval completion:(id)self0
 {
-  v16 = a10;
-  v17 = a9;
-  v18 = a8;
-  v19 = a6;
-  v20 = a5;
-  v21 = a4;
-  v22 = a3;
-  v23 = [[HKActivitySummaryDataProvider alloc] initWithHealthStore:v22 dateCache:v21 displayTypeController:v20 unitController:v19 activityMoveMode:a7];
+  completionCopy = completion;
+  dateIntervalCopy = dateInterval;
+  intervalCopy = interval;
+  unitControllerCopy = unitController;
+  controllerCopy = controller;
+  cacheCopy = cache;
+  storeCopy = store;
+  v23 = [[HKActivitySummaryDataProvider alloc] initWithHealthStore:storeCopy dateCache:cacheCopy displayTypeController:controllerCopy unitController:unitControllerCopy activityMoveMode:mode];
 
-  [_ActivityRemoteDataGathererManager gatherDataWithActivitySummaryDataProvider:v23 monthDateInterval:v18 sixMonthDateInterval:v17 completion:v16];
+  [_ActivityRemoteDataGathererManager gatherDataWithActivitySummaryDataProvider:v23 monthDateInterval:intervalCopy sixMonthDateInterval:dateIntervalCopy completion:completionCopy];
 }
 
-- (int64_t)_countOfStackedChartsFromActivityOptions:(unint64_t)a3
+- (int64_t)_countOfStackedChartsFromActivityOptions:(unint64_t)options
 {
-  v3 = 2 - (a3 & 1);
-  if ((a3 & 2) == 0)
+  v3 = 2 - (options & 1);
+  if ((options & 2) == 0)
   {
-    v3 = a3 & 1 ^ 3;
+    v3 = options & 1 ^ 3;
   }
 
-  return v3 + ((a3 << 61) >> 63);
+  return v3 + ((options << 61) >> 63);
 }
 
-- (id)_lineColorForActivityValue:(int64_t)a3
+- (id)_lineColorForActivityValue:(int64_t)value
 {
-  if (a3 > 7)
+  if (value > 7)
   {
-    v5 = 0;
+    hk_activityMoveGoalLineColor = 0;
   }
 
   else
   {
-    if (((1 << a3) & 0x33) != 0)
+    if (((1 << value) & 0x33) != 0)
     {
-      v5 = [MEMORY[0x1E69DC888] hk_activityMoveGoalLineColor];
+      hk_activityMoveGoalLineColor = [MEMORY[0x1E69DC888] hk_activityMoveGoalLineColor];
     }
 
     else
     {
-      if (((1 << a3) & 0x44) != 0)
+      if (((1 << value) & 0x44) != 0)
       {
         [MEMORY[0x1E69DC888] hk_activityExerciseGoalLineColor];
       }
@@ -429,58 +429,58 @@ LABEL_10:
       {
         [MEMORY[0x1E69DC888] hk_activityStandGoalLineColor];
       }
-      v5 = ;
+      hk_activityMoveGoalLineColor = ;
     }
   }
 
-  return v5;
+  return hk_activityMoveGoalLineColor;
 }
 
-- (id)_metGoalFillStyleForActivityValue:(int64_t)a3 useGradient:(BOOL)a4
+- (id)_metGoalFillStyleForActivityValue:(int64_t)value useGradient:(BOOL)gradient
 {
-  v4 = a4;
-  if (a3 > 7)
+  gradientCopy = gradient;
+  if (value > 7)
   {
-    v5 = 0;
-    v6 = 0;
+    hk_activityMoveGoalMetGradientTopColor = 0;
+    hk_activityMoveGoalMetGradientBottomColor = 0;
     v9 = 0;
-    if (a4)
+    if (gradient)
     {
 LABEL_9:
-      v10 = [[HKGradientFillStyle alloc] initWithFirstColor:v5 secondColor:v6];
+      v10 = [[HKGradientFillStyle alloc] initWithFirstColor:hk_activityMoveGoalMetGradientTopColor secondColor:hk_activityMoveGoalMetGradientBottomColor];
       goto LABEL_12;
     }
   }
 
   else
   {
-    if (((1 << a3) & 0x33) != 0)
+    if (((1 << value) & 0x33) != 0)
     {
-      v5 = [MEMORY[0x1E69DC888] hk_activityMoveGoalMetGradientTopColor];
-      v6 = [MEMORY[0x1E69DC888] hk_activityMoveGoalMetGradientBottomColor];
-      v7 = [MEMORY[0x1E69DC888] hk_activityMoveGoalMetNonGradientColor];
+      hk_activityMoveGoalMetGradientTopColor = [MEMORY[0x1E69DC888] hk_activityMoveGoalMetGradientTopColor];
+      hk_activityMoveGoalMetGradientBottomColor = [MEMORY[0x1E69DC888] hk_activityMoveGoalMetGradientBottomColor];
+      hk_activityMoveGoalMetNonGradientColor = [MEMORY[0x1E69DC888] hk_activityMoveGoalMetNonGradientColor];
     }
 
     else
     {
-      if (((1 << a3) & 0x44) != 0)
+      if (((1 << value) & 0x44) != 0)
       {
-        v8 = [MEMORY[0x1E69DC888] hk_activityExerciseGoalMetGradientTopColor];
+        hk_activityExerciseGoalMetGradientTopColor = [MEMORY[0x1E69DC888] hk_activityExerciseGoalMetGradientTopColor];
         [MEMORY[0x1E69DC888] hk_activityExerciseGoalMetGradientBottomColor];
       }
 
       else
       {
-        v8 = [MEMORY[0x1E69DC888] hk_activityStandGoalMetGradientTopColor];
+        hk_activityExerciseGoalMetGradientTopColor = [MEMORY[0x1E69DC888] hk_activityStandGoalMetGradientTopColor];
         [MEMORY[0x1E69DC888] hk_activityStandGoalMetGradientBottomColor];
       }
-      v6 = ;
-      v7 = v8;
-      v5 = v7;
+      hk_activityMoveGoalMetGradientBottomColor = ;
+      hk_activityMoveGoalMetNonGradientColor = hk_activityExerciseGoalMetGradientTopColor;
+      hk_activityMoveGoalMetGradientTopColor = hk_activityMoveGoalMetNonGradientColor;
     }
 
-    v9 = v7;
-    if (v4)
+    v9 = hk_activityMoveGoalMetNonGradientColor;
+    if (gradientCopy)
     {
       goto LABEL_9;
     }
@@ -493,51 +493,51 @@ LABEL_12:
   return v10;
 }
 
-- (id)_missedGoalFillStyleForActivityValue:(int64_t)a3 useGradient:(BOOL)a4
+- (id)_missedGoalFillStyleForActivityValue:(int64_t)value useGradient:(BOOL)gradient
 {
-  v4 = a4;
-  if (a3 > 7)
+  gradientCopy = gradient;
+  if (value > 7)
   {
-    v5 = 0;
-    v6 = 0;
+    hk_activityMoveGoalMissedGradientTopColor = 0;
+    hk_activityMoveGoalMissedGradientBottomColor = 0;
     v9 = 0;
-    if (a4)
+    if (gradient)
     {
 LABEL_9:
-      v10 = [[HKGradientFillStyle alloc] initWithFirstColor:v5 secondColor:v6];
+      v10 = [[HKGradientFillStyle alloc] initWithFirstColor:hk_activityMoveGoalMissedGradientTopColor secondColor:hk_activityMoveGoalMissedGradientBottomColor];
       goto LABEL_12;
     }
   }
 
   else
   {
-    if (((1 << a3) & 0x33) != 0)
+    if (((1 << value) & 0x33) != 0)
     {
-      v5 = [MEMORY[0x1E69DC888] hk_activityMoveGoalMissedGradientTopColor];
-      v6 = [MEMORY[0x1E69DC888] hk_activityMoveGoalMissedGradientBottomColor];
-      v7 = [MEMORY[0x1E69DC888] hk_activityMoveGoalMissedNonGradientColor];
+      hk_activityMoveGoalMissedGradientTopColor = [MEMORY[0x1E69DC888] hk_activityMoveGoalMissedGradientTopColor];
+      hk_activityMoveGoalMissedGradientBottomColor = [MEMORY[0x1E69DC888] hk_activityMoveGoalMissedGradientBottomColor];
+      hk_activityMoveGoalMissedNonGradientColor = [MEMORY[0x1E69DC888] hk_activityMoveGoalMissedNonGradientColor];
     }
 
     else
     {
-      if (((1 << a3) & 0x44) != 0)
+      if (((1 << value) & 0x44) != 0)
       {
-        v8 = [MEMORY[0x1E69DC888] hk_activityExerciseGoalMissedGradientTopColor];
+        hk_activityExerciseGoalMissedGradientTopColor = [MEMORY[0x1E69DC888] hk_activityExerciseGoalMissedGradientTopColor];
         [MEMORY[0x1E69DC888] hk_activityExerciseGoalMissedGradientBottomColor];
       }
 
       else
       {
-        v8 = [MEMORY[0x1E69DC888] hk_activityStandGoalMissedGradientTopColor];
+        hk_activityExerciseGoalMissedGradientTopColor = [MEMORY[0x1E69DC888] hk_activityStandGoalMissedGradientTopColor];
         [MEMORY[0x1E69DC888] hk_activityStandGoalMissedGradientBottomColor];
       }
-      v6 = ;
-      v7 = v8;
-      v5 = v7;
+      hk_activityMoveGoalMissedGradientBottomColor = ;
+      hk_activityMoveGoalMissedNonGradientColor = hk_activityExerciseGoalMissedGradientTopColor;
+      hk_activityMoveGoalMissedGradientTopColor = hk_activityMoveGoalMissedNonGradientColor;
     }
 
-    v9 = v7;
-    if (v4)
+    v9 = hk_activityMoveGoalMissedNonGradientColor;
+    if (gradientCopy)
     {
       goto LABEL_9;
     }
@@ -550,22 +550,22 @@ LABEL_12:
   return v10;
 }
 
-- (id)_pausedFillStyleForActivityValue:(int64_t)a3
+- (id)_pausedFillStyleForActivityValue:(int64_t)value
 {
   v3 = objc_alloc_init(HKSolidFillStyle);
-  v4 = [MEMORY[0x1E69DC888] hk_activityPausedColor];
-  [(HKSolidFillStyle *)v3 setColor:v4];
+  hk_activityPausedColor = [MEMORY[0x1E69DC888] hk_activityPausedColor];
+  [(HKSolidFillStyle *)v3 setColor:hk_activityPausedColor];
 
   return v3;
 }
 
-- (id)_titleForActivityValue:(int64_t)a3 wheelchairUseCharacteristicCache:(id)a4
+- (id)_titleForActivityValue:(int64_t)value wheelchairUseCharacteristicCache:(id)cache
 {
-  v5 = a4;
-  v6 = v5;
-  if (a3 <= 7)
+  cacheCopy = cache;
+  v6 = cacheCopy;
+  if (value <= 7)
   {
-    if (((1 << a3) & 0x33) != 0)
+    if (((1 << value) & 0x33) != 0)
     {
       v7 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
       v8 = v7;
@@ -574,9 +574,9 @@ LABEL_12:
 
     else
     {
-      if (((1 << a3) & 0x44) == 0)
+      if (((1 << value) & 0x44) == 0)
       {
-        v8 = [MEMORY[0x1E696C1C0] localizationStringSuffixForWheelchairUser:{objc_msgSend(v5, "isWheelchairUser")}];
+        v8 = [MEMORY[0x1E696C1C0] localizationStringSuffixForWheelchairUser:{objc_msgSend(cacheCopy, "isWheelchairUser")}];
         v11 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
         v12 = [@"STAND_CHART_TITLE" stringByAppendingString:v8];
         v10 = [v11 localizedStringForKey:v12 value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
@@ -601,80 +601,80 @@ LABEL_9:
   return v10;
 }
 
-- (int64_t)_representativeDataTypeForActivityValue:(int64_t)a3
+- (int64_t)_representativeDataTypeForActivityValue:(int64_t)value
 {
-  if (a3 > 7)
+  if (value > 7)
   {
     return 3;
   }
 
   else
   {
-    return qword_1C3D5D988[a3];
+    return qword_1C3D5D988[value];
   }
 }
 
-- (id)_unitForActivityValue:(int64_t)a3 displayTypeController:(id)a4 unitPreferenceController:(id)a5
+- (id)_unitForActivityValue:(int64_t)value displayTypeController:(id)controller unitPreferenceController:(id)preferenceController
 {
-  v7 = a5;
-  v8 = _DisplayTypeForActivityValue(a3, a4);
-  v9 = [v7 localizedDisplayNameForDisplayType:v8];
+  preferenceControllerCopy = preferenceController;
+  v8 = _DisplayTypeForActivityValue(value, controller);
+  v9 = [preferenceControllerCopy localizedDisplayNameForDisplayType:v8];
 
   return v9;
 }
 
-- (id)_displayTypeForActivityValue:(int64_t)a3 yAxis:(id)a4 dataProvider:(id)a5 displayTypeController:(id)a6 unitPreferenceController:(id)a7 wheelchairUseCharacteristicCache:(id)a8 timescopeToSummariesTable:(id)a9 activityOptions:(unint64_t)a10
+- (id)_displayTypeForActivityValue:(int64_t)value yAxis:(id)axis dataProvider:(id)provider displayTypeController:(id)controller unitPreferenceController:(id)preferenceController wheelchairUseCharacteristicCache:(id)cache timescopeToSummariesTable:(id)table activityOptions:(unint64_t)self0
 {
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a9;
-  v39 = v19;
-  v40 = v16;
-  if (v19)
+  providerCopy = provider;
+  controllerCopy = controller;
+  preferenceControllerCopy = preferenceController;
+  tableCopy = table;
+  v39 = tableCopy;
+  v40 = providerCopy;
+  if (tableCopy)
   {
-    v20 = v19;
+    v20 = tableCopy;
     v21 = MEMORY[0x1E695DEE8];
-    v22 = a8;
-    v23 = a4;
-    v24 = [v21 currentCalendar];
-    v25 = v17;
-    v26 = [[_ActivitySourceDelegateSharing alloc] initWithTimescopeToSummariesTable:v20 activityValue:a3 displayTypeController:v17 unitPreferenceController:v18 calendar:v24];
+    cacheCopy = cache;
+    axisCopy = axis;
+    currentCalendar = [v21 currentCalendar];
+    v25 = controllerCopy;
+    v26 = [[_ActivitySourceDelegateSharing alloc] initWithTimescopeToSummariesTable:v20 activityValue:value displayTypeController:controllerCopy unitPreferenceController:preferenceControllerCopy calendar:currentCalendar];
   }
 
   else
   {
-    v27 = a8;
-    v28 = a4;
-    v25 = v17;
-    v26 = [[_ActivitySourceDelegateProvider alloc] initWithDataProvider:v16 activityValue:a3 displayTypeController:v17 unitPreferenceController:v18];
+    cacheCopy2 = cache;
+    axisCopy2 = axis;
+    v25 = controllerCopy;
+    v26 = [[_ActivitySourceDelegateProvider alloc] initWithDataProvider:providerCopy activityValue:value displayTypeController:controllerCopy unitPreferenceController:preferenceControllerCopy];
   }
 
   v38 = v26;
   v29 = [[HKDateRangeDataSource alloc] initWithSourceDelegate:v26];
-  v30 = v18;
-  v31 = [(HKInteractiveChartActivityController *)self _activitySeriesForActivityValue:a3 wheelchairUseCharacteristicCache:a8 unitPreferenceController:v18 displayTypeController:v25 activityOptions:a10];
-  [v31 setYAxis:a4];
+  v30 = preferenceControllerCopy;
+  v31 = [(HKInteractiveChartActivityController *)self _activitySeriesForActivityValue:value wheelchairUseCharacteristicCache:cache unitPreferenceController:preferenceControllerCopy displayTypeController:v25 activityOptions:options];
+  [v31 setYAxis:axis];
 
   [v31 setDataSource:v29];
   v32 = objc_alloc_init(HKInteractiveChartGenericStatFormatter);
   [(HKInteractiveChartGenericStatFormatter *)v32 setOverrideStatFormatterItemOptions:&unk_1F4381A98];
-  v33 = [(HKInteractiveChartActivityController *)self _unitForActivityValue:a3 displayTypeController:v25 unitPreferenceController:v30];
-  v34 = [(HKInteractiveChartActivityController *)self _representativeDataTypeForActivityValue:a3];
-  v35 = [(HKInteractiveChartActivityController *)self _titleForActivityValue:a3 wheelchairUseCharacteristicCache:a8];
+  v33 = [(HKInteractiveChartActivityController *)self _unitForActivityValue:value displayTypeController:v25 unitPreferenceController:v30];
+  v34 = [(HKInteractiveChartActivityController *)self _representativeDataTypeForActivityValue:value];
+  v35 = [(HKInteractiveChartActivityController *)self _titleForActivityValue:value wheelchairUseCharacteristicCache:cache];
 
   v36 = [[HKInteractiveChartDisplayType alloc] initWithGraphSeries:v31 displayName:v35 unitName:v33 valueFormatter:v32 dataTypeCode:v34];
 
   return v36;
 }
 
-- (id)_activitySeriesForActivityValue:(int64_t)a3 wheelchairUseCharacteristicCache:(id)a4 unitPreferenceController:(id)a5 displayTypeController:(id)a6 activityOptions:(unint64_t)a7
+- (id)_activitySeriesForActivityValue:(int64_t)value wheelchairUseCharacteristicCache:(id)cache unitPreferenceController:(id)controller displayTypeController:(id)typeController activityOptions:(unint64_t)options
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = [(HKInteractiveChartActivityController *)self _lineColorForActivityValue:a3];
-  v16 = [(HKInteractiveChartActivityController *)self _countOfStackedChartsFromActivityOptions:a7];
+  cacheCopy = cache;
+  controllerCopy = controller;
+  typeControllerCopy = typeController;
+  v15 = [(HKInteractiveChartActivityController *)self _lineColorForActivityValue:value];
+  v16 = [(HKInteractiveChartActivityController *)self _countOfStackedChartsFromActivityOptions:options];
   if (v16 < 2)
   {
     v17 = &stru_1F42FFBE0;
@@ -682,61 +682,61 @@ LABEL_9:
 
   else
   {
-    v17 = [(HKInteractiveChartActivityController *)self _titleForActivityValue:a3 wheelchairUseCharacteristicCache:v12];
+    v17 = [(HKInteractiveChartActivityController *)self _titleForActivityValue:value wheelchairUseCharacteristicCache:cacheCopy];
   }
 
-  if ((a3 & 0xFFFFFFFFFFFFFFFCLL) == 4)
+  if ((value & 0xFFFFFFFFFFFFFFFCLL) == 4)
   {
     v18 = [(HKInteractiveChartActivityController *)self _generateActivityGoalLineSeriesWithColor:v15];
   }
 
   else
   {
-    v28 = v14;
-    v19 = v13;
-    v20 = v12;
+    v28 = typeControllerCopy;
+    v19 = controllerCopy;
+    v20 = cacheCopy;
     v21 = v16 < 2;
     v22 = v16 > 1;
-    v23 = [(HKInteractiveChartActivityController *)self _metGoalFillStyleForActivityValue:a3 useGradient:v22];
-    v24 = [(HKInteractiveChartActivityController *)self _missedGoalFillStyleForActivityValue:a3 useGradient:v22];
-    v25 = [(HKInteractiveChartActivityController *)self _pausedFillStyleForActivityValue:a3];
+    v23 = [(HKInteractiveChartActivityController *)self _metGoalFillStyleForActivityValue:value useGradient:v22];
+    v24 = [(HKInteractiveChartActivityController *)self _missedGoalFillStyleForActivityValue:value useGradient:v22];
+    v25 = [(HKInteractiveChartActivityController *)self _pausedFillStyleForActivityValue:value];
     LOBYTE(v27) = v21;
-    v12 = v20;
-    v13 = v19;
-    v14 = v28;
-    v18 = [(HKInteractiveChartActivityController *)self _generateActivityBarSeriesWithColor:v15 legendTitle:v17 metGoalFillStyle:v23 missedGoalFillStyle:v24 pausedFillStyle:v25 activityValue:a3 unitPreferenceController:v13 displayTypeController:v28 drawLegendsInsideSeries:v27];
+    cacheCopy = v20;
+    controllerCopy = v19;
+    typeControllerCopy = v28;
+    v18 = [(HKInteractiveChartActivityController *)self _generateActivityBarSeriesWithColor:v15 legendTitle:v17 metGoalFillStyle:v23 missedGoalFillStyle:v24 pausedFillStyle:v25 activityValue:value unitPreferenceController:controllerCopy displayTypeController:v28 drawLegendsInsideSeries:v27];
   }
 
   return v18;
 }
 
-- (id)_zeroStringForActivityValue:(int64_t)a3 displayTypeController:(id)a4 unitPreferenceController:(id)a5
+- (id)_zeroStringForActivityValue:(int64_t)value displayTypeController:(id)controller unitPreferenceController:(id)preferenceController
 {
-  v7 = a4;
-  v8 = a5;
-  if ((a3 - 1) < 2)
+  controllerCopy = controller;
+  preferenceControllerCopy = preferenceController;
+  if ((value - 1) < 2)
   {
-    v9 = [MEMORY[0x1E696C510] minuteUnit];
+    minuteUnit = [MEMORY[0x1E696C510] minuteUnit];
 LABEL_6:
-    v10 = v9;
-    v11 = [v8 localizedDisplayNameForUnit:v9 value:&unk_1F43843D8];
+    v10 = minuteUnit;
+    v11 = [preferenceControllerCopy localizedDisplayNameForUnit:minuteUnit value:&unk_1F43843D8];
     goto LABEL_8;
   }
 
-  if (a3)
+  if (value)
   {
-    if (a3 != 3)
+    if (value != 3)
     {
       goto LABEL_10;
     }
 
-    v9 = [MEMORY[0x1E696C510] hourUnit];
+    minuteUnit = [MEMORY[0x1E696C510] hourUnit];
     goto LABEL_6;
   }
 
-  v10 = _DisplayTypeForActivityValue(0, v7);
-  v12 = [v8 unitForDisplayType:v10];
-  v11 = [v8 localizedDisplayNameForUnit:v12 value:&unk_1F43843D8];
+  v10 = _DisplayTypeForActivityValue(0, controllerCopy);
+  v12 = [preferenceControllerCopy unitForDisplayType:v10];
+  v11 = [preferenceControllerCopy localizedDisplayNameForUnit:v12 value:&unk_1F43843D8];
 
 LABEL_8:
   if (v11)
@@ -753,47 +753,47 @@ LABEL_11:
   return v13;
 }
 
-- (id)_activityYAxisForActivityValue:(int64_t)a3 zeroOnly:(BOOL)a4 stackOffset:(int64_t)a5 bottomLabelPadding:(double)a6 displayTypeController:(id)a7 unitPreferenceController:(id)a8
+- (id)_activityYAxisForActivityValue:(int64_t)value zeroOnly:(BOOL)only stackOffset:(int64_t)offset bottomLabelPadding:(double)padding displayTypeController:(id)controller unitPreferenceController:(id)preferenceController
 {
-  v10 = a4;
-  v12 = a7;
-  v13 = a8;
+  onlyCopy = only;
+  controllerCopy = controller;
+  preferenceControllerCopy = preferenceController;
   v14 = objc_alloc_init(HKSolidFillStyle);
-  v15 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  [(HKSolidFillStyle *)v14 setColor:v15];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  [(HKSolidFillStyle *)v14 setColor:systemBackgroundColor];
 
   v16 = objc_alloc_init(HKAxisStyle);
   v17 = HKDefaultChartYAxisColor();
-  v18 = [MEMORY[0x1E69DB878] hk_chartAxisLabelFont];
-  v19 = [HKAxisLabelStyle labelStyleWithColor:v17 font:v18 horizontalAlignment:2 verticalAlignment:2];
+  hk_chartAxisLabelFont = [MEMORY[0x1E69DB878] hk_chartAxisLabelFont];
+  v19 = [HKAxisLabelStyle labelStyleWithColor:v17 font:hk_chartAxisLabelFont horizontalAlignment:2 verticalAlignment:2];
   [(HKAxisStyle *)v16 setLabelStyle:v19];
 
   [(HKAxisStyle *)v16 setTickPositions:1];
-  v20 = [MEMORY[0x1E69DC888] hk_chartGrayGraphColor];
-  v21 = [HKStrokeStyle strokeStyleWithColor:v20 lineWidth:2.0];
+  hk_chartGrayGraphColor = [MEMORY[0x1E69DC888] hk_chartGrayGraphColor];
+  v21 = [HKStrokeStyle strokeStyleWithColor:hk_chartGrayGraphColor lineWidth:2.0];
   [(HKAxisStyle *)v16 setAxisLineStyle:v21];
 
   [(HKAxisStyle *)v16 setFillStyle:v14];
-  v22 = [MEMORY[0x1E69DC888] hk_chartGrayGraphColor];
-  v23 = [HKStrokeStyle strokeStyleWithColor:v22 lineWidth:HKUIOnePixel()];
+  hk_chartGrayGraphColor2 = [MEMORY[0x1E69DC888] hk_chartGrayGraphColor];
+  v23 = [HKStrokeStyle strokeStyleWithColor:hk_chartGrayGraphColor2 lineWidth:HKUIOnePixel()];
 
   [(HKAxisStyle *)v16 setBorderStyleForFill:v23];
   [(HKAxisStyle *)v16 setFillInnerPadding:4.0];
   [(HKAxisStyle *)v16 setFillOuterPadding:4.0];
   [(HKAxisStyle *)v16 setLocation:1];
   [(HKAxisStyle *)v16 setShowGridLines:1];
-  v24 = [MEMORY[0x1E69DC888] hk_chartGrayGraphColor];
-  v25 = [v24 colorWithAlphaComponent:0.5];
+  hk_chartGrayGraphColor3 = [MEMORY[0x1E69DC888] hk_chartGrayGraphColor];
+  v25 = [hk_chartGrayGraphColor3 colorWithAlphaComponent:0.5];
   v26 = [HKStrokeStyle strokeStyleWithColor:v25 lineWidth:0.5];
   [(HKAxisStyle *)v16 setGridLineStyle:v26];
 
   v27 = objc_alloc_init(HKNumericAxisConfiguration);
   [(HKAxisConfiguration *)v27 setPreferredStyle:v16];
-  if (v10)
+  if (onlyCopy)
   {
-    v28 = [(HKInteractiveChartActivityController *)self _zeroStringForActivityValue:a3 displayTypeController:v12 unitPreferenceController:v13];
+    v28 = [(HKInteractiveChartActivityController *)self _zeroStringForActivityValue:value displayTypeController:controllerCopy unitPreferenceController:preferenceControllerCopy];
     [(HKNumericAxisConfiguration *)v27 setTopVerticalLabelPadding:0.0];
-    [(HKNumericAxisConfiguration *)v27 setBottomVerticalLabelPadding:a6];
+    [(HKNumericAxisConfiguration *)v27 setBottomVerticalLabelPadding:padding];
     [(HKAxisConfiguration *)v27 setMinLabels:2];
     [(HKAxisConfiguration *)v27 setMaxLabels:20];
     v29 = [[HKNumericAxisZeroOnly alloc] initWithZeroLabel:v28 axisConfiguration:v27];
@@ -802,13 +802,13 @@ LABEL_11:
   else
   {
     [(HKNumericAxisConfiguration *)v27 setTopVerticalLabelPadding:10.0];
-    [(HKNumericAxisConfiguration *)v27 setBottomVerticalLabelPadding:a6];
+    [(HKNumericAxisConfiguration *)v27 setBottomVerticalLabelPadding:padding];
     [(HKAxisConfiguration *)v27 setMinLabels:2];
     [(HKAxisConfiguration *)v27 setMaxLabels:3];
-    v28 = [(HKInteractiveChartActivityController *)self _displayTypeForUnits:a3 displayTypeController:v12];
+    v28 = [(HKInteractiveChartActivityController *)self _displayTypeForUnits:value displayTypeController:controllerCopy];
     if (v28)
     {
-      v30 = [[HKAxisLabelDimensionDisplayType alloc] initWithDisplayType:v28 unitPreferencesController:v13];
+      v30 = [[HKAxisLabelDimensionDisplayType alloc] initWithDisplayType:v28 unitPreferencesController:preferenceControllerCopy];
       [(HKNumericAxisConfiguration *)v27 setLabelDimension:v30];
     }
 
@@ -820,11 +820,11 @@ LABEL_11:
   return v31;
 }
 
-- (id)_displayTypeForUnits:(int64_t)a3 displayTypeController:(id)a4
+- (id)_displayTypeForUnits:(int64_t)units displayTypeController:(id)controller
 {
-  v5 = a4;
-  v6 = v5;
-  switch(a3)
+  controllerCopy = controller;
+  v6 = controllerCopy;
+  switch(units)
   {
     case 0:
       v7 = &unk_1F43843F0;
@@ -835,7 +835,7 @@ LABEL_11:
     case 2:
       v7 = &unk_1F4384408;
 LABEL_7:
-      v8 = [v5 displayTypeWithIdentifier:v7];
+      v8 = [controllerCopy displayTypeWithIdentifier:v7];
       goto LABEL_9;
   }
 
@@ -845,19 +845,19 @@ LABEL_9:
   return v8;
 }
 
-- (id)_generateActivityBarSeriesWithColor:(id)a3 legendTitle:(id)a4 metGoalFillStyle:(id)a5 missedGoalFillStyle:(id)a6 pausedFillStyle:(id)a7 activityValue:(int64_t)a8 unitPreferenceController:(id)a9 displayTypeController:(id)a10 drawLegendsInsideSeries:(BOOL)a11
+- (id)_generateActivityBarSeriesWithColor:(id)color legendTitle:(id)title metGoalFillStyle:(id)style missedGoalFillStyle:(id)fillStyle pausedFillStyle:(id)pausedFillStyle activityValue:(int64_t)value unitPreferenceController:(id)controller displayTypeController:(id)self0 drawLegendsInsideSeries:(BOOL)self1
 {
   v34[1] = *MEMORY[0x1E69E9840];
-  v16 = a3;
-  v17 = a4;
-  v18 = a10;
-  v19 = a9;
-  v20 = a7;
-  v21 = a6;
-  v22 = a5;
-  v23 = [[_ActivityBarSeries alloc] initWithUnitPreferenceController:v19 activityBarDelegate:self displayTypeController:v18];
+  colorCopy = color;
+  titleCopy = title;
+  typeControllerCopy = typeController;
+  controllerCopy = controller;
+  pausedFillStyleCopy = pausedFillStyle;
+  fillStyleCopy = fillStyle;
+  styleCopy = style;
+  v23 = [[_ActivityBarSeries alloc] initWithUnitPreferenceController:controllerCopy activityBarDelegate:self displayTypeController:typeControllerCopy];
 
-  [(_ActivityBarSeries *)v23 setActivityDisplayTypeIdentifier:_RepresentativeDisplayTypeIdentifierForActivityValue(a8)];
+  [(_ActivityBarSeries *)v23 setActivityDisplayTypeIdentifier:_RepresentativeDisplayTypeIdentifierForActivityValue(value)];
   v24 = objc_alloc_init(HKStrokeStyle);
   v25 = [MEMORY[0x1E69DC888] colorWithWhite:1.0 alpha:0.0];
   [(HKStrokeStyle *)v24 setStrokeColor:v25];
@@ -865,51 +865,51 @@ LABEL_9:
   [(HKStrokeStyle *)v24 setLineWidth:3.0];
   [(HKStrokeStyle *)v24 setBlendMode:22];
   [(HKBarSeries *)v23 setUnselectedStrokeStyle:v24];
-  [(HKBarSeries *)v23 setUnselectedFillStyle:v22];
+  [(HKBarSeries *)v23 setUnselectedFillStyle:styleCopy];
 
-  [(_ActivityBarSeries *)v23 setMissedGoalUnselectedFillStyle:v21];
-  [(_ActivityBarSeries *)v23 setPausedUnselectedFillStyle:v20];
+  [(_ActivityBarSeries *)v23 setMissedGoalUnselectedFillStyle:fillStyleCopy];
+  [(_ActivityBarSeries *)v23 setPausedUnselectedFillStyle:pausedFillStyleCopy];
 
   [(HKBarSeries *)v23 setSelectedFillStyle:0];
   [(HKBarSeries *)v23 setSelectedStrokeStyle:0];
   [(HKBarSeries *)v23 setCornerRadii:1.5, 1.5];
-  if (v17)
+  if (titleCopy)
   {
-    v26 = [HKLegendEntry legendEntryWithTitle:v17 labelColor:v16];
+    v26 = [HKLegendEntry legendEntryWithTitle:titleCopy labelColor:colorCopy];
     v34[0] = v26;
     v27 = [MEMORY[0x1E695DEC8] arrayWithObjects:v34 count:1];
     [(HKGraphSeries *)v23 setTitleLegendEntries:v27];
 
-    v28 = [MEMORY[0x1E69DC888] labelColor];
-    v29 = [HKLegendEntry legendEntryWithTitle:&stru_1F42FFBE0 labelColor:v28];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    v29 = [HKLegendEntry legendEntryWithTitle:&stru_1F42FFBE0 labelColor:labelColor];
 
     v33 = v29;
     v30 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v33 count:1];
     [(HKGraphSeries *)v23 setDetailLegendEntries:v30];
 
-    [(HKGraphSeries *)v23 setDrawLegendInsideSeries:a11];
+    [(HKGraphSeries *)v23 setDrawLegendInsideSeries:series];
   }
 
   return v23;
 }
 
-- (id)_generateActivityGoalLineSeriesWithColor:(id)a3
+- (id)_generateActivityGoalLineSeriesWithColor:(id)color
 {
-  v3 = a3;
-  v4 = [[_ActivityGoalLineSeries alloc] initWithColor:v3];
+  colorCopy = color;
+  v4 = [[_ActivityGoalLineSeries alloc] initWithColor:colorCopy];
 
   return v4;
 }
 
-+ (id)firstActivitySeriesForGraphView:(id)a3
++ (id)firstActivitySeriesForGraphView:(id)view
 {
   v14 = *MEMORY[0x1E69E9840];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [a3 allSeries];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  allSeries = [view allSeries];
+  v4 = [allSeries countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = *v10;
@@ -919,7 +919,7 @@ LABEL_9:
       {
         if (*v10 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allSeries);
         }
 
         v7 = *(*(&v9 + 1) + 8 * i);
@@ -931,7 +931,7 @@ LABEL_9:
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v4 = [allSeries countByEnumeratingWithState:&v9 objects:v13 count:16];
       if (v4)
       {
         continue;
@@ -946,71 +946,71 @@ LABEL_11:
   return v4;
 }
 
-- (void)configureDisplayTypes:(id)a3 timeScope:(int64_t)a4 stackOffset:(int64_t)a5
+- (void)configureDisplayTypes:(id)types timeScope:(int64_t)scope stackOffset:(int64_t)offset
 {
-  v5 = [(HKInteractiveChartViewController *)self primaryGraphViewController:a3];
-  v6 = [v5 graphView];
+  v5 = [(HKInteractiveChartViewController *)self primaryGraphViewController:types];
+  graphView = [v5 graphView];
 
-  [v6 setScrollingOptions:1];
+  [graphView setScrollingOptions:1];
 }
 
 - (id)makeAnnotationDataSource
 {
-  v3 = [(HKInteractiveChartActivityController *)self activityAnnotationDataSource];
-  [(HKInteractiveChartActivityController *)self _handleAlternateAnnotationDataViewDataSource:v3];
+  activityAnnotationDataSource = [(HKInteractiveChartActivityController *)self activityAnnotationDataSource];
+  [(HKInteractiveChartActivityController *)self _handleAlternateAnnotationDataViewDataSource:activityAnnotationDataSource];
 
   return [(HKInteractiveChartActivityController *)self activityAnnotationDataSource];
 }
 
-- (void)_handleAlternateAnnotationDataViewDataSource:(id)a3
+- (void)_handleAlternateAnnotationDataViewDataSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   v6.receiver = self;
   v6.super_class = HKInteractiveChartActivityController;
-  v5 = [(HKInteractiveChartViewController *)&v6 makeAnnotationDataSource];
+  makeAnnotationDataSource = [(HKInteractiveChartViewController *)&v6 makeAnnotationDataSource];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v4 setStandardAnnotationViewDataSource:v5];
+    [sourceCopy setStandardAnnotationViewDataSource:makeAnnotationDataSource];
   }
 }
 
-- (void)updateSelectionAnnotationDataSourceForContext:(id)a3 displayType:(id)a4 timeScope:(int64_t)a5 resolution:(int64_t)a6
+- (void)updateSelectionAnnotationDataSourceForContext:(id)context displayType:(id)type timeScope:(int64_t)scope resolution:(int64_t)resolution
 {
-  v19 = a3;
-  v10 = a4;
-  v11 = [v19 userInfo];
-  v12 = [v11 firstObject];
+  contextCopy = context;
+  typeCopy = type;
+  userInfo = [contextCopy userInfo];
+  firstObject = [userInfo firstObject];
 
-  if (v12 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  if (firstObject && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v13 = [(HKInteractiveChartActivityController *)self activityAnnotationDataSource];
-    [v13 useActivityAnnotationViewDataSource];
+    activityAnnotationDataSource = [(HKInteractiveChartActivityController *)self activityAnnotationDataSource];
+    [activityAnnotationDataSource useActivityAnnotationViewDataSource];
 
-    v14 = [v12 activitySummaryData];
-    v15 = [(HKInteractiveChartActivityController *)self activityAnnotationDataSource];
-    [v15 setActivitySummary:v14];
+    activitySummaryData = [firstObject activitySummaryData];
+    activityAnnotationDataSource2 = [(HKInteractiveChartActivityController *)self activityAnnotationDataSource];
+    [activityAnnotationDataSource2 setActivitySummary:activitySummaryData];
 
-    v16 = [(HKInteractiveChartViewController *)self primaryGraphViewController];
-    v17 = [v16 dateZoom];
-    v18 = [(HKInteractiveChartActivityController *)self activityAnnotationDataSource];
-    [v18 setTimeScope:v17];
+    primaryGraphViewController = [(HKInteractiveChartViewController *)self primaryGraphViewController];
+    dateZoom = [primaryGraphViewController dateZoom];
+    activityAnnotationDataSource3 = [(HKInteractiveChartActivityController *)self activityAnnotationDataSource];
+    [activityAnnotationDataSource3 setTimeScope:dateZoom];
   }
 
   else
   {
-    v14 = [(HKInteractiveChartActivityController *)self activityAnnotationDataSource];
-    v16 = [(HKInteractiveChartViewController *)self healthStore];
-    [v14 useStandardAnnotationViewDataSourceForContext:v19 displayType:v10 timeScope:a5 resolution:a6 healthStore:v16 viewController:self];
+    activitySummaryData = [(HKInteractiveChartActivityController *)self activityAnnotationDataSource];
+    primaryGraphViewController = [(HKInteractiveChartViewController *)self healthStore];
+    [activitySummaryData useStandardAnnotationViewDataSourceForContext:contextCopy displayType:typeCopy timeScope:scope resolution:resolution healthStore:primaryGraphViewController viewController:self];
   }
 }
 
 - (id)lollipopAnnotationColor
 {
-  v3 = [(HKInteractiveChartActivityController *)self activityAnnotationDataSource];
-  v4 = [v3 useStandardAnnotationDataSource];
+  activityAnnotationDataSource = [(HKInteractiveChartActivityController *)self activityAnnotationDataSource];
+  useStandardAnnotationDataSource = [activityAnnotationDataSource useStandardAnnotationDataSource];
 
-  if (v4)
+  if (useStandardAnnotationDataSource)
   {
     [MEMORY[0x1E69DC888] hk_chartLollipopBackgroundColor];
   }
@@ -1026,12 +1026,12 @@ LABEL_11:
 
 - (id)_activityLollipopBackgroundColor
 {
-  v2 = [(HKInteractiveChartActivityController *)self traitCollection];
-  v3 = [v2 userInterfaceStyle];
+  traitCollection = [(HKInteractiveChartActivityController *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  if (v3 >= 2)
+  if (userInterfaceStyle >= 2)
   {
-    if (v3 == 2)
+    if (userInterfaceStyle == 2)
     {
       [MEMORY[0x1E69DC888] tertiarySystemBackgroundColor];
     }
@@ -1040,85 +1040,85 @@ LABEL_11:
     {
       [MEMORY[0x1E69DC888] hk_chartLollipopBackgroundColor];
     }
-    v4 = ;
+    blackColor = ;
   }
 
   else
   {
-    v4 = [MEMORY[0x1E69DC888] blackColor];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
   }
 
-  return v4;
+  return blackColor;
 }
 
-- (id)descriptionSeriesForGraphView:(id)a3
+- (id)descriptionSeriesForGraphView:(id)view
 {
-  v3 = [a3 allSeries];
-  v4 = [v3 firstObject];
+  allSeries = [view allSeries];
+  firstObject = [allSeries firstObject];
 
-  return v4;
+  return firstObject;
 }
 
-- (id)descriptionSpansForGraphView:(id)a3 timeScope:(int64_t)a4
+- (id)descriptionSpansForGraphView:(id)view timeScope:(int64_t)scope
 {
   v24[3] = *MEMORY[0x1E69E9840];
-  v6 = [(HKInteractiveChartActivityController *)self moveValueDisplayType];
-  v7 = [(HKInteractiveChartActivityController *)self activityAnnotationDataSource];
-  v8 = [v7 activityMoveTitle];
-  v9 = [(HKInteractiveChartActivityController *)self _spanForValueDisplayType:v6 timeScope:a4 title:v8];
+  moveValueDisplayType = [(HKInteractiveChartActivityController *)self moveValueDisplayType];
+  activityAnnotationDataSource = [(HKInteractiveChartActivityController *)self activityAnnotationDataSource];
+  activityMoveTitle = [activityAnnotationDataSource activityMoveTitle];
+  v9 = [(HKInteractiveChartActivityController *)self _spanForValueDisplayType:moveValueDisplayType timeScope:scope title:activityMoveTitle];
 
-  v10 = [(HKInteractiveChartActivityController *)self exerciseValueDisplayType];
-  v11 = [(HKInteractiveChartActivityController *)self activityAnnotationDataSource];
-  v12 = [v11 activityExerciseTitle];
-  v13 = [(HKInteractiveChartActivityController *)self _spanForValueDisplayType:v10 timeScope:a4 title:v12];
+  exerciseValueDisplayType = [(HKInteractiveChartActivityController *)self exerciseValueDisplayType];
+  activityAnnotationDataSource2 = [(HKInteractiveChartActivityController *)self activityAnnotationDataSource];
+  activityExerciseTitle = [activityAnnotationDataSource2 activityExerciseTitle];
+  v13 = [(HKInteractiveChartActivityController *)self _spanForValueDisplayType:exerciseValueDisplayType timeScope:scope title:activityExerciseTitle];
 
-  v14 = [(HKInteractiveChartActivityController *)self standValueDisplayType];
-  v15 = [(HKInteractiveChartActivityController *)self activityAnnotationDataSource];
-  v16 = [v15 activityStandTitle];
-  v17 = [(HKInteractiveChartActivityController *)self _spanForValueDisplayType:v14 timeScope:a4 title:v16];
+  standValueDisplayType = [(HKInteractiveChartActivityController *)self standValueDisplayType];
+  activityAnnotationDataSource3 = [(HKInteractiveChartActivityController *)self activityAnnotationDataSource];
+  activityStandTitle = [activityAnnotationDataSource3 activityStandTitle];
+  v17 = [(HKInteractiveChartActivityController *)self _spanForValueDisplayType:standValueDisplayType timeScope:scope title:activityStandTitle];
 
-  v18 = [v9 dataSeriesTitle];
-  v23[0] = v18;
+  dataSeriesTitle = [v9 dataSeriesTitle];
+  v23[0] = dataSeriesTitle;
   v24[0] = v9;
-  v19 = [v13 dataSeriesTitle];
-  v23[1] = v19;
+  dataSeriesTitle2 = [v13 dataSeriesTitle];
+  v23[1] = dataSeriesTitle2;
   v24[1] = v13;
-  v20 = [v17 dataSeriesTitle];
-  v23[2] = v20;
+  dataSeriesTitle3 = [v17 dataSeriesTitle];
+  v23[2] = dataSeriesTitle3;
   v24[2] = v17;
   v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v24 forKeys:v23 count:3];
 
   return v21;
 }
 
-- (id)_spanForValueDisplayType:(id)a3 timeScope:(int64_t)a4 title:(id)a5
+- (id)_spanForValueDisplayType:(id)type timeScope:(int64_t)scope title:(id)title
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [v9 graphSeriesForTimeScope:a4];
-  v11 = [v10 visibleValueRange];
+  titleCopy = title;
+  typeCopy = type;
+  v10 = [typeCopy graphSeriesForTimeScope:scope];
+  visibleValueRange = [v10 visibleValueRange];
 
-  v12 = [v11 minValue];
-  v13 = [(HKInteractiveChartActivityController *)self _rangeValueAsNumber:v12];
+  minValue = [visibleValueRange minValue];
+  v13 = [(HKInteractiveChartActivityController *)self _rangeValueAsNumber:minValue];
 
-  v14 = [v11 maxValue];
-  v15 = [(HKInteractiveChartActivityController *)self _rangeValueAsNumber:v14];
+  maxValue = [visibleValueRange maxValue];
+  v15 = [(HKInteractiveChartActivityController *)self _rangeValueAsNumber:maxValue];
 
-  v16 = [(HKInteractiveChartViewController *)self unitPreferenceController];
-  v17 = [v16 localizedDisplayNameForDisplayType:v9];
+  unitPreferenceController = [(HKInteractiveChartViewController *)self unitPreferenceController];
+  v17 = [unitPreferenceController localizedDisplayNameForDisplayType:typeCopy];
 
-  v18 = [[HKAccessibilitySpan alloc] initWithTitle:v8 seriesType:2 dataComprehensionMinYValue:v13 dataComprehensionMaxYValue:v15 dataComprehensionUnitForChart:v17];
+  v18 = [[HKAccessibilitySpan alloc] initWithTitle:titleCopy seriesType:2 dataComprehensionMinYValue:v13 dataComprehensionMaxYValue:v15 dataComprehensionUnitForChart:v17];
 
   return v18;
 }
 
-- (id)_rangeValueAsNumber:(id)a3
+- (id)_rangeValueAsNumber:(id)number
 {
-  v3 = a3;
+  numberCopy = number;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = numberCopy;
   }
 
   else
@@ -1131,155 +1131,155 @@ LABEL_11:
   return v4;
 }
 
-- (id)descriptionForChartData:(id)a3 timeScope:(int64_t)a4
+- (id)descriptionForChartData:(id)data timeScope:(int64_t)scope
 {
-  v6 = a3;
+  dataCopy = data;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
+    v7 = dataCopy;
     v8 = [HKActivitySummaryAnnotationViewDataSource alloc];
-    v9 = [(HKInteractiveChartViewController *)self displayTypeController];
-    v10 = [(HKInteractiveChartViewController *)self unitPreferenceController];
-    v11 = [(HKInteractiveChartActivityController *)self wheelchairUseCharacteristicCache];
-    v12 = [(HKInteractiveChartViewController *)self dateCache];
-    v13 = [(HKInteractiveChartActivityController *)self activityOptions];
-    v20 = a4;
-    v14 = [(HKInteractiveChartViewController *)self annotationDataSourceFirstWeekday];
+    displayTypeController = [(HKInteractiveChartViewController *)self displayTypeController];
+    unitPreferenceController = [(HKInteractiveChartViewController *)self unitPreferenceController];
+    wheelchairUseCharacteristicCache = [(HKInteractiveChartActivityController *)self wheelchairUseCharacteristicCache];
+    dateCache = [(HKInteractiveChartViewController *)self dateCache];
+    activityOptions = [(HKInteractiveChartActivityController *)self activityOptions];
+    scopeCopy = scope;
+    annotationDataSourceFirstWeekday = [(HKInteractiveChartViewController *)self annotationDataSourceFirstWeekday];
     LOBYTE(v19) = [(HKInteractiveChartActivityController *)self isChartSharingContext];
-    v15 = [(HKActivitySummaryAnnotationViewDataSource *)v8 initWithDisplayTypeController:v9 unitController:v10 wheelchairUseCharacteristicCache:v11 dateCache:v12 currentValueViewContext:0 activityOptions:v13 firstWeekday:v14 isChartSharingContext:v19];
+    v15 = [(HKActivitySummaryAnnotationViewDataSource *)v8 initWithDisplayTypeController:displayTypeController unitController:unitPreferenceController wheelchairUseCharacteristicCache:wheelchairUseCharacteristicCache dateCache:dateCache currentValueViewContext:0 activityOptions:activityOptions firstWeekday:annotationDataSourceFirstWeekday isChartSharingContext:v19];
 
     [(HKInteractiveChartActivityController *)self _handleAlternateAnnotationDataViewDataSource:v15];
-    v16 = [v7 activitySummaryData];
+    activitySummaryData = [v7 activitySummaryData];
 
-    [(HKActivitySummaryAnnotationViewDataSource *)v15 setActivitySummary:v16];
-    [(HKActivitySummaryAnnotationViewDataSource *)v15 setTimeScope:v20];
-    v17 = [(HKActivitySummaryAnnotationViewDataSource *)v15 descriptionsForActivitySummary];
+    [(HKActivitySummaryAnnotationViewDataSource *)v15 setActivitySummary:activitySummaryData];
+    [(HKActivitySummaryAnnotationViewDataSource *)v15 setTimeScope:scopeCopy];
+    descriptionsForActivitySummary = [(HKActivitySummaryAnnotationViewDataSource *)v15 descriptionsForActivitySummary];
   }
 
   else
   {
-    v17 = MEMORY[0x1E695E0F0];
+    descriptionsForActivitySummary = MEMORY[0x1E695E0F0];
   }
 
-  return v17;
+  return descriptionsForActivitySummary;
 }
 
 - (BOOL)chartDataIsAvailable
 {
-  v2 = [(HKInteractiveChartActivityController *)self activityDataProvider];
-  v3 = [v2 activitySummariesAreLoading];
+  activityDataProvider = [(HKInteractiveChartActivityController *)self activityDataProvider];
+  activitySummariesAreLoading = [activityDataProvider activitySummariesAreLoading];
 
-  return v3 ^ 1;
+  return activitySummariesAreLoading ^ 1;
 }
 
 - (id)dataSourceForCurrentValueViewString
 {
-  v2 = [(HKInteractiveChartActivityController *)self activityCurrentValueView];
-  v3 = [v2 currentValueDataSource];
+  activityCurrentValueView = [(HKInteractiveChartActivityController *)self activityCurrentValueView];
+  currentValueDataSource = [activityCurrentValueView currentValueDataSource];
 
-  return v3;
+  return currentValueDataSource;
 }
 
 - (id)makeCurrentValueView
 {
   v3 = [_ActivityCurrentValueView alloc];
-  v4 = [(HKInteractiveChartViewController *)self displayTypeController];
-  v5 = [(HKInteractiveChartViewController *)self unitPreferenceController];
-  v6 = [(HKInteractiveChartActivityController *)self wheelchairUseCharacteristicCache];
-  v7 = [(HKInteractiveChartActivityController *)self activityDataProvider];
-  v8 = [(HKInteractiveChartActivityController *)self activityOptions];
-  v9 = [(HKInteractiveChartViewController *)self annotationDataSourceFirstWeekday];
+  displayTypeController = [(HKInteractiveChartViewController *)self displayTypeController];
+  unitPreferenceController = [(HKInteractiveChartViewController *)self unitPreferenceController];
+  wheelchairUseCharacteristicCache = [(HKInteractiveChartActivityController *)self wheelchairUseCharacteristicCache];
+  activityDataProvider = [(HKInteractiveChartActivityController *)self activityDataProvider];
+  activityOptions = [(HKInteractiveChartActivityController *)self activityOptions];
+  annotationDataSourceFirstWeekday = [(HKInteractiveChartViewController *)self annotationDataSourceFirstWeekday];
   LOBYTE(v12) = [(HKInteractiveChartActivityController *)self isChartSharingContext];
-  v10 = [(_ActivityCurrentValueView *)v3 initWithDisplayTypeController:v4 unitPreferenceController:v5 wheelchairUseCharacteristicCache:v6 currentValueViewCallbacks:self activitySummaryDataProvider:v7 activityOptions:v8 firstWeekday:v9 isChartSharingContext:v12];
+  v10 = [(_ActivityCurrentValueView *)v3 initWithDisplayTypeController:displayTypeController unitPreferenceController:unitPreferenceController wheelchairUseCharacteristicCache:wheelchairUseCharacteristicCache currentValueViewCallbacks:self activitySummaryDataProvider:activityDataProvider activityOptions:activityOptions firstWeekday:annotationDataSourceFirstWeekday isChartSharingContext:v12];
   [(HKInteractiveChartActivityController *)self setActivityCurrentValueView:v10];
 
   return [(HKInteractiveChartActivityController *)self activityCurrentValueView];
 }
 
-- (void)updateCurrentValueView:(id)a3 graphView:(id)a4 timeScope:(int64_t)a5 showInfoButton:(BOOL)a6
+- (void)updateCurrentValueView:(id)view graphView:(id)graphView timeScope:(int64_t)scope showInfoButton:(BOOL)button
 {
-  v12 = a4;
-  v9 = a3;
-  v10 = [(HKInteractiveChartActivityController *)self activityCurrentValueView];
+  graphViewCopy = graphView;
+  viewCopy = view;
+  activityCurrentValueView = [(HKInteractiveChartActivityController *)self activityCurrentValueView];
 
-  if (v10 == v9)
+  if (activityCurrentValueView == viewCopy)
   {
-    v11 = [(HKInteractiveChartActivityController *)self activityCurrentValueView];
-    [v11 updateWithGraphView:v12 timeScope:a5];
+    activityCurrentValueView2 = [(HKInteractiveChartActivityController *)self activityCurrentValueView];
+    [activityCurrentValueView2 updateWithGraphView:graphViewCopy timeScope:scope];
   }
 }
 
-- (void)setCurrentValueViewCallbacks:(id)a3
+- (void)setCurrentValueViewCallbacks:(id)callbacks
 {
-  [(HKInteractiveChartActivityController *)self setActivityCurrentValueViewCallbacks:a3];
+  [(HKInteractiveChartActivityController *)self setActivityCurrentValueViewCallbacks:callbacks];
   v6 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:self action:sel_tappedOnCurrentValueView_];
-  v4 = [(HKInteractiveChartActivityController *)self activityCurrentValueView];
-  [v4 addGestureRecognizer:v6];
+  activityCurrentValueView = [(HKInteractiveChartActivityController *)self activityCurrentValueView];
+  [activityCurrentValueView addGestureRecognizer:v6];
 
-  v5 = [(HKInteractiveChartActivityController *)self activityCurrentValueView];
-  [v5 setUserInteractionEnabled:1];
+  activityCurrentValueView2 = [(HKInteractiveChartActivityController *)self activityCurrentValueView];
+  [activityCurrentValueView2 setUserInteractionEnabled:1];
 }
 
-- (void)tappedOnCurrentValueView:(id)a3
+- (void)tappedOnCurrentValueView:(id)view
 {
-  v5 = [(HKInteractiveChartActivityController *)self activityCurrentValueViewCallbacks];
-  v4 = [(HKInteractiveChartActivityController *)self activityCurrentValueView];
-  [v5 didTapOnDateFromCurrentValueView:v4];
+  activityCurrentValueViewCallbacks = [(HKInteractiveChartActivityController *)self activityCurrentValueViewCallbacks];
+  activityCurrentValueView = [(HKInteractiveChartActivityController *)self activityCurrentValueView];
+  [activityCurrentValueViewCallbacks didTapOnDateFromCurrentValueView:activityCurrentValueView];
 }
 
 - (id)calendarQueryDisplayType
 {
-  v2 = [(HKInteractiveChartViewController *)self displayTypeController];
-  v3 = [v2 displayTypeWithIdentifier:&unk_1F4384438];
+  displayTypeController = [(HKInteractiveChartViewController *)self displayTypeController];
+  v3 = [displayTypeController displayTypeWithIdentifier:&unk_1F4384438];
 
   return v3;
 }
 
-- (id)seriesSelectionLineColorForGraphView:(id)a3
+- (id)seriesSelectionLineColorForGraphView:(id)view
 {
-  v3 = [(HKInteractiveChartActivityController *)self traitCollection];
-  v4 = [v3 userInterfaceStyle];
+  traitCollection = [(HKInteractiveChartActivityController *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  if (v4 >= 2)
+  if (userInterfaceStyle >= 2)
   {
-    if (v4 == 2)
+    if (userInterfaceStyle == 2)
     {
-      v5 = [MEMORY[0x1E69DC888] tertiarySystemBackgroundColor];
+      tertiarySystemBackgroundColor = [MEMORY[0x1E69DC888] tertiarySystemBackgroundColor];
     }
   }
 
   else
   {
-    v5 = [MEMORY[0x1E69DC888] blackColor];
+    tertiarySystemBackgroundColor = [MEMORY[0x1E69DC888] blackColor];
   }
 
-  return v5;
+  return tertiarySystemBackgroundColor;
 }
 
 - (id)activitySummaryForCurrentRange
 {
-  v3 = [(HKInteractiveChartViewController *)self primaryGraphViewController];
-  v4 = [v3 graphView];
-  v5 = [v4 effectiveVisibleRangeActive];
+  primaryGraphViewController = [(HKInteractiveChartViewController *)self primaryGraphViewController];
+  graphView = [primaryGraphViewController graphView];
+  effectiveVisibleRangeActive = [graphView effectiveVisibleRangeActive];
 
-  v6 = [(HKInteractiveChartActivityController *)self _dayActivitySummaryForDateRange:v5];
+  v6 = [(HKInteractiveChartActivityController *)self _dayActivitySummaryForDateRange:effectiveVisibleRangeActive];
 
   return v6;
 }
 
-- (id)_dayActivitySummaryForDateRange:(id)a3
+- (id)_dayActivitySummaryForDateRange:(id)range
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(HKInteractiveChartActivityController *)self activityDataProvider];
-  v6 = [v5 activitySummariesForDateRange:v4 timeScope:5];
+  rangeCopy = range;
+  activityDataProvider = [(HKInteractiveChartActivityController *)self activityDataProvider];
+  v6 = [activityDataProvider activitySummariesForDateRange:rangeCopy timeScope:5];
 
-  v7 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v8 = [v4 maxValue];
-  v9 = [v7 dateByAddingUnit:64 value:-1 toDate:v8 options:0];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  maxValue = [rangeCopy maxValue];
+  v9 = [currentCalendar dateByAddingUnit:64 value:-1 toDate:maxValue options:0];
 
-  v10 = [v7 hk_activitySummaryDateComponentsFromDate:v9];
+  v10 = [currentCalendar hk_activitySummaryDateComponentsFromDate:v9];
   [v10 setCalendar:0];
   v20 = 0u;
   v21 = 0u;
@@ -1300,7 +1300,7 @@ LABEL_11:
         }
 
         v15 = *(*(&v18 + 1) + 8 * i);
-        v16 = [v15 dateComponentsForCalendar:{v7, v18}];
+        v16 = [v15 dateComponentsForCalendar:{currentCalendar, v18}];
         [v16 setCalendar:0];
         if ([v16 isEqual:v10])
         {
@@ -1325,16 +1325,16 @@ LABEL_11:
   return v12;
 }
 
-+ (id)_codableActivitySummaryDataFromSummaries:(id)a3
++ (id)_codableActivitySummaryDataFromSummaries:(id)summaries
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  summariesCopy = summaries;
   v5 = objc_alloc_init(HKCodableActivitySummaryCollection);
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = v4;
+  v6 = summariesCopy;
   v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
@@ -1349,7 +1349,7 @@ LABEL_11:
           objc_enumerationMutation(v6);
         }
 
-        v11 = [a1 _codableActivitySummaryFromSummary:{*(*(&v13 + 1) + 8 * i), v13}];
+        v11 = [self _codableActivitySummaryFromSummary:{*(*(&v13 + 1) + 8 * i), v13}];
         [(HKCodableActivitySummaryCollection *)v5 addActivitySummaryEntry:v11];
       }
 
@@ -1362,128 +1362,128 @@ LABEL_11:
   return v5;
 }
 
-+ (id)_codableActivitySummaryFromSummary:(id)a3
++ (id)_codableActivitySummaryFromSummary:(id)summary
 {
-  v5 = a3;
+  summaryCopy = summary;
   v6 = objc_alloc_init(HKCodableActivitySummaryEntry);
-  v7 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v8 = [v5 dateComponentsForCalendar:v7];
-  v9 = [v8 hour];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  v8 = [summaryCopy dateComponentsForCalendar:currentCalendar];
+  hour = [v8 hour];
 
-  if (v9 == 0x7FFFFFFFFFFFFFFFLL)
+  if (hour == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v10 = [v5 _gregorianDateComponents];
-    v11 = [v10 calendar];
+    _gregorianDateComponents = [summaryCopy _gregorianDateComponents];
+    calendar = [_gregorianDateComponents calendar];
 
-    if (!v11)
+    if (!calendar)
     {
-      v12 = [v10 copy];
+      v12 = [_gregorianDateComponents copy];
 
-      v13 = [MEMORY[0x1E695DEE8] hk_gregorianCalendarWithUTCTimeZone];
-      [v12 setCalendar:v13];
+      hk_gregorianCalendarWithUTCTimeZone = [MEMORY[0x1E695DEE8] hk_gregorianCalendarWithUTCTimeZone];
+      [v12 setCalendar:hk_gregorianCalendarWithUTCTimeZone];
 
-      v10 = v12;
+      _gregorianDateComponents = v12;
     }
 
-    v14 = [v10 hkui_codableDateComponents];
-    [(HKCodableActivitySummaryEntry *)v6 setGregorianDateComponents:v14];
+    hkui_codableDateComponents = [_gregorianDateComponents hkui_codableDateComponents];
+    [(HKCodableActivitySummaryEntry *)v6 setGregorianDateComponents:hkui_codableDateComponents];
 
-    -[HKCodableActivitySummaryEntry setActivityMoveMode:](v6, "setActivityMoveMode:", [v5 activityMoveMode]);
-    v15 = [v5 activeEnergyBurned];
+    -[HKCodableActivitySummaryEntry setActivityMoveMode:](v6, "setActivityMoveMode:", [summaryCopy activityMoveMode]);
+    activeEnergyBurned = [summaryCopy activeEnergyBurned];
 
-    if (v15)
+    if (activeEnergyBurned)
     {
-      v16 = [v5 activeEnergyBurned];
-      v17 = [v16 codableRepresentation];
-      [(HKCodableActivitySummaryEntry *)v6 setActiveEnergyBurned:v17];
+      activeEnergyBurned2 = [summaryCopy activeEnergyBurned];
+      codableRepresentation = [activeEnergyBurned2 codableRepresentation];
+      [(HKCodableActivitySummaryEntry *)v6 setActiveEnergyBurned:codableRepresentation];
     }
 
-    v18 = [v5 appleMoveTime];
+    appleMoveTime = [summaryCopy appleMoveTime];
 
-    if (v18)
+    if (appleMoveTime)
     {
-      v19 = [v5 appleMoveTime];
-      v20 = [v19 codableRepresentation];
-      [(HKCodableActivitySummaryEntry *)v6 setAppleMoveTime:v20];
+      appleMoveTime2 = [summaryCopy appleMoveTime];
+      codableRepresentation2 = [appleMoveTime2 codableRepresentation];
+      [(HKCodableActivitySummaryEntry *)v6 setAppleMoveTime:codableRepresentation2];
     }
 
-    v21 = [v5 appleExerciseTime];
+    appleExerciseTime = [summaryCopy appleExerciseTime];
 
-    if (v21)
+    if (appleExerciseTime)
     {
-      v22 = [v5 appleExerciseTime];
-      v23 = [v22 codableRepresentation];
-      [(HKCodableActivitySummaryEntry *)v6 setAppleExerciseTime:v23];
+      appleExerciseTime2 = [summaryCopy appleExerciseTime];
+      codableRepresentation3 = [appleExerciseTime2 codableRepresentation];
+      [(HKCodableActivitySummaryEntry *)v6 setAppleExerciseTime:codableRepresentation3];
     }
 
-    v24 = [v5 appleStandHours];
+    appleStandHours = [summaryCopy appleStandHours];
 
-    if (v24)
+    if (appleStandHours)
     {
-      v25 = [v5 appleStandHours];
-      v26 = [v25 codableRepresentation];
-      [(HKCodableActivitySummaryEntry *)v6 setAppleStandHours:v26];
+      appleStandHours2 = [summaryCopy appleStandHours];
+      codableRepresentation4 = [appleStandHours2 codableRepresentation];
+      [(HKCodableActivitySummaryEntry *)v6 setAppleStandHours:codableRepresentation4];
     }
 
-    v27 = [v5 activeEnergyBurnedGoal];
+    activeEnergyBurnedGoal = [summaryCopy activeEnergyBurnedGoal];
 
-    if (v27)
+    if (activeEnergyBurnedGoal)
     {
-      v28 = [v5 activeEnergyBurnedGoal];
-      v29 = [v28 codableRepresentation];
-      [(HKCodableActivitySummaryEntry *)v6 setActiveEnergyBurnedGoal:v29];
+      activeEnergyBurnedGoal2 = [summaryCopy activeEnergyBurnedGoal];
+      codableRepresentation5 = [activeEnergyBurnedGoal2 codableRepresentation];
+      [(HKCodableActivitySummaryEntry *)v6 setActiveEnergyBurnedGoal:codableRepresentation5];
     }
 
-    v30 = [v5 appleMoveTimeGoal];
+    appleMoveTimeGoal = [summaryCopy appleMoveTimeGoal];
 
-    if (v30)
+    if (appleMoveTimeGoal)
     {
-      v31 = [v5 appleMoveTimeGoal];
-      v32 = [v31 codableRepresentation];
-      [(HKCodableActivitySummaryEntry *)v6 setAppleMoveTimeGoal:v32];
+      appleMoveTimeGoal2 = [summaryCopy appleMoveTimeGoal];
+      codableRepresentation6 = [appleMoveTimeGoal2 codableRepresentation];
+      [(HKCodableActivitySummaryEntry *)v6 setAppleMoveTimeGoal:codableRepresentation6];
     }
 
-    v33 = [v5 exerciseTimeGoal];
+    exerciseTimeGoal = [summaryCopy exerciseTimeGoal];
 
-    if (v33)
+    if (exerciseTimeGoal)
     {
-      v34 = [v5 exerciseTimeGoal];
-      v35 = [v34 codableRepresentation];
-      [(HKCodableActivitySummaryEntry *)v6 setAppleExerciseTimeGoal:v35];
+      exerciseTimeGoal2 = [summaryCopy exerciseTimeGoal];
+      codableRepresentation7 = [exerciseTimeGoal2 codableRepresentation];
+      [(HKCodableActivitySummaryEntry *)v6 setAppleExerciseTimeGoal:codableRepresentation7];
     }
 
-    v36 = [v5 standHoursGoal];
+    standHoursGoal = [summaryCopy standHoursGoal];
 
-    if (v36)
+    if (standHoursGoal)
     {
-      v37 = [v5 standHoursGoal];
-      v38 = [v37 codableRepresentation];
-      [(HKCodableActivitySummaryEntry *)v6 setAppleStandHoursGoal:v38];
+      standHoursGoal2 = [summaryCopy standHoursGoal];
+      codableRepresentation8 = [standHoursGoal2 codableRepresentation];
+      [(HKCodableActivitySummaryEntry *)v6 setAppleStandHoursGoal:codableRepresentation8];
     }
 
-    -[HKCodableActivitySummaryEntry setPaused:](v6, "setPaused:", [v5 isPaused]);
+    -[HKCodableActivitySummaryEntry setPaused:](v6, "setPaused:", [summaryCopy isPaused]);
   }
 
   else
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:a1 file:@"HKInteractiveChartActivityController.m" lineNumber:1298 description:@"There is no support for encoding hourly activity summaries"];
+    _gregorianDateComponents = [MEMORY[0x1E696AAA8] currentHandler];
+    [_gregorianDateComponents handleFailureInMethod:a2 object:self file:@"HKInteractiveChartActivityController.m" lineNumber:1298 description:@"There is no support for encoding hourly activity summaries"];
   }
 
   return v6;
 }
 
-+ (id)_activitySummariesFromCodableCollection:(id)a3
++ (id)_activitySummariesFromCodableCollection:(id)collection
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  collectionCopy = collection;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [v4 activitySummaryEntrys];
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  activitySummaryEntrys = [collectionCopy activitySummaryEntrys];
+  v7 = [activitySummaryEntrys countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1494,14 +1494,14 @@ LABEL_11:
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(activitySummaryEntrys);
         }
 
-        v11 = [a1 _activitySummaryFromCodableSummaryEntry:*(*(&v13 + 1) + 8 * i)];
+        v11 = [self _activitySummaryFromCodableSummaryEntry:*(*(&v13 + 1) + 8 * i)];
         [v5 addObject:v11];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v8 = [activitySummaryEntrys countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v8);
@@ -1510,100 +1510,100 @@ LABEL_11:
   return v5;
 }
 
-+ (id)_activitySummaryFromCodableSummaryEntry:(id)a3
++ (id)_activitySummaryFromCodableSummaryEntry:(id)entry
 {
-  v3 = a3;
+  entryCopy = entry;
   v4 = objc_alloc_init(MEMORY[0x1E696BEC8]);
-  if ([v3 hasGregorianDateComponents])
+  if ([entryCopy hasGregorianDateComponents])
   {
     v5 = MEMORY[0x1E695DF10];
-    v6 = [v3 gregorianDateComponents];
-    v7 = [v5 hkui_dateComponentsWithCodableDateComponents:v6];
+    gregorianDateComponents = [entryCopy gregorianDateComponents];
+    v7 = [v5 hkui_dateComponentsWithCodableDateComponents:gregorianDateComponents];
     [v4 _setGregorianDateComponents:v7];
   }
 
-  if ([v3 hasActivityMoveMode])
+  if ([entryCopy hasActivityMoveMode])
   {
-    [v4 setActivityMoveMode:{objc_msgSend(v3, "activityMoveMode")}];
+    [v4 setActivityMoveMode:{objc_msgSend(entryCopy, "activityMoveMode")}];
   }
 
-  if ([v3 hasActiveEnergyBurned])
+  if ([entryCopy hasActiveEnergyBurned])
   {
     v8 = MEMORY[0x1E696C348];
-    v9 = [v3 activeEnergyBurned];
-    v10 = [v8 createWithCodableQuantity:v9];
+    activeEnergyBurned = [entryCopy activeEnergyBurned];
+    v10 = [v8 createWithCodableQuantity:activeEnergyBurned];
     [v4 setActiveEnergyBurned:v10];
   }
 
-  if ([v3 hasAppleMoveTime])
+  if ([entryCopy hasAppleMoveTime])
   {
     v11 = MEMORY[0x1E696C348];
-    v12 = [v3 appleMoveTime];
-    v13 = [v11 createWithCodableQuantity:v12];
+    appleMoveTime = [entryCopy appleMoveTime];
+    v13 = [v11 createWithCodableQuantity:appleMoveTime];
     [v4 setAppleMoveTime:v13];
   }
 
-  if ([v3 hasAppleExerciseTime])
+  if ([entryCopy hasAppleExerciseTime])
   {
     v14 = MEMORY[0x1E696C348];
-    v15 = [v3 appleExerciseTime];
-    v16 = [v14 createWithCodableQuantity:v15];
+    appleExerciseTime = [entryCopy appleExerciseTime];
+    v16 = [v14 createWithCodableQuantity:appleExerciseTime];
     [v4 setAppleExerciseTime:v16];
   }
 
-  if ([v3 hasAppleStandHours])
+  if ([entryCopy hasAppleStandHours])
   {
     v17 = MEMORY[0x1E696C348];
-    v18 = [v3 appleStandHours];
-    v19 = [v17 createWithCodableQuantity:v18];
+    appleStandHours = [entryCopy appleStandHours];
+    v19 = [v17 createWithCodableQuantity:appleStandHours];
     [v4 setAppleStandHours:v19];
   }
 
-  if ([v3 hasActiveEnergyBurnedGoal])
+  if ([entryCopy hasActiveEnergyBurnedGoal])
   {
     v20 = MEMORY[0x1E696C348];
-    v21 = [v3 activeEnergyBurnedGoal];
-    v22 = [v20 createWithCodableQuantity:v21];
+    activeEnergyBurnedGoal = [entryCopy activeEnergyBurnedGoal];
+    v22 = [v20 createWithCodableQuantity:activeEnergyBurnedGoal];
     [v4 setActiveEnergyBurnedGoal:v22];
   }
 
-  v23 = [v3 appleMoveTimeGoal];
+  appleMoveTimeGoal = [entryCopy appleMoveTimeGoal];
 
-  if (v23)
+  if (appleMoveTimeGoal)
   {
     v24 = MEMORY[0x1E696C348];
-    v25 = [v3 appleMoveTimeGoal];
-    v26 = [v24 createWithCodableQuantity:v25];
+    appleMoveTimeGoal2 = [entryCopy appleMoveTimeGoal];
+    v26 = [v24 createWithCodableQuantity:appleMoveTimeGoal2];
     [v4 setAppleMoveTimeGoal:v26];
   }
 
-  if ([v3 hasAppleExerciseTimeGoal])
+  if ([entryCopy hasAppleExerciseTimeGoal])
   {
     v27 = MEMORY[0x1E696C348];
-    v28 = [v3 appleExerciseTimeGoal];
-    v29 = [v27 createWithCodableQuantity:v28];
+    appleExerciseTimeGoal = [entryCopy appleExerciseTimeGoal];
+    v29 = [v27 createWithCodableQuantity:appleExerciseTimeGoal];
     [v4 setExerciseTimeGoal:v29];
   }
 
-  if ([v3 hasAppleStandHoursGoal])
+  if ([entryCopy hasAppleStandHoursGoal])
   {
     v30 = MEMORY[0x1E696C348];
-    v31 = [v3 appleStandHoursGoal];
-    v32 = [v30 createWithCodableQuantity:v31];
+    appleStandHoursGoal = [entryCopy appleStandHoursGoal];
+    v32 = [v30 createWithCodableQuantity:appleStandHoursGoal];
     [v4 setStandHoursGoal:v32];
   }
 
-  if ([v3 hasPaused])
+  if ([entryCopy hasPaused])
   {
-    v33 = [v3 paused];
+    paused = [entryCopy paused];
   }
 
   else
   {
-    v33 = 0;
+    paused = 0;
   }
 
-  [v4 setPaused:v33];
+  [v4 setPaused:paused];
 
   return v4;
 }

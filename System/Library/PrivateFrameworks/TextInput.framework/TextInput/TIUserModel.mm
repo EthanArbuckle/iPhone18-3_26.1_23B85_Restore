@@ -1,22 +1,22 @@
 @interface TIUserModel
-- (BOOL)persistForDate:(id)a3;
+- (BOOL)persistForDate:(id)date;
 - (NSArray)contexts;
 - (NSDictionary)cachedSettingsDictionary;
-- (TIUserModel)initWithInputMode:(id)a3 userModelDataStore:(id)a4 weeklyMetricKeys:(id)a5 fromDate:(id)a6 explicitTearDown:(BOOL)a7;
+- (TIUserModel)initWithInputMode:(id)mode userModelDataStore:(id)store weeklyMetricKeys:(id)keys fromDate:(id)date explicitTearDown:(BOOL)down;
 - (TIUserModelConfigurationDelegate)configurationDelegate;
 - (id)populateSettingsDictionary;
-- (id)valuesFromContext:(id)a3;
-- (int)valueForDurableKey:(id)a3;
-- (void)addDoubleToTransientCounter:(double)a3 forKey:(id)a4 andCandidateLength:(int)a5 andContext:(id)a6;
-- (void)addIntegerToTransientCounter:(int)a3 forKey:(id)a4 andCandidateLength:(int)a5 andContext:(id)a6;
-- (void)addToDurableCounter:(int)a3 forKey:(id)a4;
-- (void)configureDurableCounterForName:(id)a3;
+- (id)valuesFromContext:(id)context;
+- (int)valueForDurableKey:(id)key;
+- (void)addDoubleToTransientCounter:(double)counter forKey:(id)key andCandidateLength:(int)length andContext:(id)context;
+- (void)addIntegerToTransientCounter:(int)counter forKey:(id)key andCandidateLength:(int)length andContext:(id)context;
+- (void)addToDurableCounter:(int)counter forKey:(id)key;
+- (void)configureDurableCounterForName:(id)name;
 - (void)configureDurableCounters;
 - (void)dealloc;
 - (void)doLoad;
 - (void)loadIfNecessary;
 - (void)loadSettings;
-- (void)resetDurableCounterForKey:(id)a3;
+- (void)resetDurableCounterForKey:(id)key;
 - (void)tearDown;
 @end
 
@@ -29,64 +29,64 @@
   return WeakRetained;
 }
 
-- (int)valueForDurableKey:(id)a3
+- (int)valueForDurableKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   [(TIUserModel *)self loadIfNecessary];
-  v5 = [(NSMutableDictionary *)self->_durableCounters objectForKey:v4];
+  v5 = [(NSMutableDictionary *)self->_durableCounters objectForKey:keyCopy];
 
   v6 = [v5 count];
-  v7 = [v6 intValue];
+  intValue = [v6 intValue];
 
-  return v7;
+  return intValue;
 }
 
-- (void)addDoubleToTransientCounter:(double)a3 forKey:(id)a4 andCandidateLength:(int)a5 andContext:(id)a6
+- (void)addDoubleToTransientCounter:(double)counter forKey:(id)key andCandidateLength:(int)length andContext:(id)context
 {
-  v6 = *&a5;
-  v10 = a6;
-  v11 = a4;
+  v6 = *&length;
+  contextCopy = context;
+  keyCopy = key;
   [(TIUserModel *)self loadIfNecessary];
-  v12 = [(TIUserModel *)self valuesFromContext:v10];
+  v12 = [(TIUserModel *)self valuesFromContext:contextCopy];
 
-  [v12 addDouble:v11 toCounterWithKey:v6 andCandidateLength:a3];
+  [v12 addDouble:keyCopy toCounterWithKey:v6 andCandidateLength:counter];
 }
 
-- (void)addIntegerToTransientCounter:(int)a3 forKey:(id)a4 andCandidateLength:(int)a5 andContext:(id)a6
+- (void)addIntegerToTransientCounter:(int)counter forKey:(id)key andCandidateLength:(int)length andContext:(id)context
 {
-  v6 = *&a5;
-  v8 = *&a3;
-  v10 = a6;
-  v11 = a4;
+  v6 = *&length;
+  v8 = *&counter;
+  contextCopy = context;
+  keyCopy = key;
   [(TIUserModel *)self loadIfNecessary];
-  v12 = [(TIUserModel *)self valuesFromContext:v10];
+  v12 = [(TIUserModel *)self valuesFromContext:contextCopy];
 
-  [v12 addInteger:v8 toCounterWithKey:v11 andCandidateLength:v6];
+  [v12 addInteger:v8 toCounterWithKey:keyCopy andCandidateLength:v6];
 }
 
-- (void)resetDurableCounterForKey:(id)a3
+- (void)resetDurableCounterForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   [(TIUserModel *)self loadIfNecessary];
-  v5 = [(NSMutableDictionary *)self->_durableCounters objectForKey:v4];
+  v5 = [(NSMutableDictionary *)self->_durableCounters objectForKey:keyCopy];
 
   [v5 reset];
 }
 
-- (void)addToDurableCounter:(int)a3 forKey:(id)a4
+- (void)addToDurableCounter:(int)counter forKey:(id)key
 {
-  v4 = *&a3;
-  v6 = a4;
+  v4 = *&counter;
+  keyCopy = key;
   [(TIUserModel *)self loadIfNecessary];
-  v7 = [(NSMutableDictionary *)self->_durableCounters objectForKey:v6];
+  v7 = [(NSMutableDictionary *)self->_durableCounters objectForKey:keyCopy];
 
   [v7 add:v4];
 }
 
-- (BOOL)persistForDate:(id)a3
+- (BOOL)persistForDate:(id)date
 {
   v42 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dateCopy = date;
   if (self->_loadedDate)
   {
     v5 = IXADefaultLogFacility();
@@ -98,8 +98,8 @@
       _os_log_impl(&dword_1863F7000, v5, OS_LOG_TYPE_INFO, "%@", buf, 0xCu);
     }
 
-    [v4 timeIntervalSince1970];
-    if (v4)
+    [dateCopy timeIntervalSince1970];
+    if (dateCopy)
     {
       if (v7 - self->_timeOfLastPersist < 600.0 && !self->_userModelRateLimitingDisabled)
       {
@@ -121,10 +121,10 @@ LABEL_32:
 
     else
     {
-      v4 = [MEMORY[0x1E695DF00] now];
+      dateCopy = [MEMORY[0x1E695DF00] now];
     }
 
-    [v4 timeIntervalSince1970];
+    [dateCopy timeIntervalSince1970];
     self->_timeOfLastPersist = v11;
     [(TIUserModel *)self trackPowerLogIfNecessary];
     v12 = IXADefaultLogFacility();
@@ -156,7 +156,7 @@ LABEL_32:
           }
 
           v19 = [(NSMutableDictionary *)self->_userModelValuesCollection objectForKey:*(*(&v34 + 1) + 8 * i)];
-          [v19 persistForDate:v4];
+          [v19 persistForDate:dateCopy];
         }
 
         v16 = [(NSMutableDictionary *)v14 countByEnumeratingWithState:&v34 objects:v39 count:16];
@@ -194,7 +194,7 @@ LABEL_32:
           }
 
           v27 = [(NSMutableDictionary *)self->_durableCounters objectForKey:*(*(&v30 + 1) + 8 * j)];
-          [v27 doPersist:self->_userModelStore forDate:v4];
+          [v27 doPersist:self->_userModelStore forDate:dateCopy];
         }
 
         v24 = [(NSMutableDictionary *)v22 countByEnumeratingWithState:&v30 objects:v38 count:16];
@@ -240,9 +240,9 @@ LABEL_33:
   v11 = 0;
   if (pthread_main_np())
   {
-    v3 = [(TIUserModel *)self populateSettingsDictionary];
+    populateSettingsDictionary = [(TIUserModel *)self populateSettingsDictionary];
     v4 = v7[5];
-    v7[5] = v3;
+    v7[5] = populateSettingsDictionary;
   }
 
   else
@@ -272,10 +272,10 @@ uint64_t __27__TIUserModel_loadSettings__block_invoke(uint64_t a1)
 
 - (id)populateSettingsDictionary
 {
-  v2 = [(TIUserModel *)self configurationDelegate];
-  v3 = [v2 settingsDictionary];
+  configurationDelegate = [(TIUserModel *)self configurationDelegate];
+  settingsDictionary = [configurationDelegate settingsDictionary];
 
-  return v3;
+  return settingsDictionary;
 }
 
 - (void)doLoad
@@ -331,12 +331,12 @@ uint64_t __27__TIUserModel_loadSettings__block_invoke(uint64_t a1)
   }
 
   v13 = v12;
-  v14 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v15 = [MEMORY[0x1E695DFE8] localTimeZone];
-  [v14 setTimeZone:v15];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  localTimeZone = [MEMORY[0x1E695DFE8] localTimeZone];
+  [currentCalendar setTimeZone:localTimeZone];
 
-  v34 = v14;
-  v33 = [v14 startOfDayForDate:v13];
+  v34 = currentCalendar;
+  v33 = [currentCalendar startOfDayForDate:v13];
   v32 = [MEMORY[0x1E695DF00] dateWithTimeInterval:kFeatureUsageQueryTimeFrame * -86400.0 sinceDate:?];
   v37 = v13;
   [(TIUserModelDataStoring *)self->_userModelStore getDailyAndWeeklyValuesForKeyPrefix:kUserModelDatabasePrefix forInputMode:self->_inputMode weeklyKeySuffixes:self->_weeklyMetricKeys endDate:v13];
@@ -349,7 +349,7 @@ uint64_t __27__TIUserModel_loadSettings__block_invoke(uint64_t a1)
   {
     v17 = v16;
     v18 = *v41;
-    v35 = self;
+    selfCopy = self;
     do
     {
       for (i = 0; i != v17; ++i)
@@ -362,9 +362,9 @@ uint64_t __27__TIUserModel_loadSettings__block_invoke(uint64_t a1)
         v20 = *(*(&v40 + 1) + 8 * i);
         v21 = MEMORY[0x1E696ACD0];
         v22 = objc_opt_class();
-        v23 = [v20 properties];
+        properties = [v20 properties];
         v39 = 0;
-        v24 = [v21 unarchivedObjectOfClass:v22 fromData:v23 error:&v39];
+        v24 = [v21 unarchivedObjectOfClass:v22 fromData:properties error:&v39];
         v25 = v39;
 
         if (v25)
@@ -373,14 +373,14 @@ uint64_t __27__TIUserModel_loadSettings__block_invoke(uint64_t a1)
           if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
           {
             v27 = MEMORY[0x1E696AEC0];
-            v36 = [v25 userInfo];
-            v28 = [v36 objectForKey:@"message"];
+            userInfo = [v25 userInfo];
+            v28 = [userInfo objectForKey:@"message"];
             v29 = [v27 stringWithFormat:@"%s   %@", "-[TIUserModel doLoad]", v28];
             *buf = 138412290;
             v46 = v29;
             _os_log_error_impl(&dword_1863F7000, v26, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
 
-            self = v35;
+            self = selfCopy;
           }
         }
 
@@ -417,30 +417,30 @@ uint64_t __27__TIUserModel_loadSettings__block_invoke(uint64_t a1)
   }
 }
 
-- (id)valuesFromContext:(id)a3
+- (id)valuesFromContext:(id)context
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_userModelValuesCollection objectForKey:v4];
+  contextCopy = context;
+  v5 = [(NSMutableDictionary *)self->_userModelValuesCollection objectForKey:contextCopy];
   if (!v5)
   {
     v6 = objc_opt_class();
-    v7 = [(TIUserModel *)self configurationDelegate];
+    configurationDelegate = [(TIUserModel *)self configurationDelegate];
     v8 = objc_opt_respondsToSelector();
 
     if (v8)
     {
-      v9 = [(TIUserModel *)self configurationDelegate];
-      v10 = [v9 userModelValuesClass];
+      configurationDelegate2 = [(TIUserModel *)self configurationDelegate];
+      userModelValuesClass = [configurationDelegate2 userModelValuesClass];
 
-      if ([(objc_class *)v10 isSubclassOfClass:objc_opt_class()])
+      if ([(objc_class *)userModelValuesClass isSubclassOfClass:objc_opt_class()])
       {
-        v6 = v10;
+        v6 = userModelValuesClass;
       }
     }
 
-    v5 = [[v6 alloc] initWithInputMode:self->_inputMode context:v4 userModelDataStore:self->_userModelStore durableCounters:self->_durableCounters settingsDictionary:self->_settingsDictionary];
+    v5 = [[v6 alloc] initWithInputMode:self->_inputMode context:contextCopy userModelDataStore:self->_userModelStore durableCounters:self->_durableCounters settingsDictionary:self->_settingsDictionary];
     [v5 extendCountersForWeeklyMetricKeys:self->_weeklyMetricKeys];
-    [(NSMutableDictionary *)self->_userModelValuesCollection setObject:v5 forKey:v4];
+    [(NSMutableDictionary *)self->_userModelValuesCollection setObject:v5 forKey:contextCopy];
   }
 
   return v5;
@@ -449,14 +449,14 @@ uint64_t __27__TIUserModel_loadSettings__block_invoke(uint64_t a1)
 - (void)configureDurableCounters
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = [(TIUserModel *)self configurationDelegate];
-  v4 = [v3 durableCounterKeys];
+  configurationDelegate = [(TIUserModel *)self configurationDelegate];
+  durableCounterKeys = [configurationDelegate durableCounterKeys];
 
   v12 = 0u;
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v5 = v4;
+  v5 = durableCounterKeys;
   v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
@@ -483,28 +483,28 @@ uint64_t __27__TIUserModel_loadSettings__block_invoke(uint64_t a1)
   }
 }
 
-- (void)configureDurableCounterForName:(id)a3
+- (void)configureDurableCounterForName:(id)name
 {
   v4 = kUserModelDatabasePrefix;
-  v5 = a3;
-  v13 = [v4 stringByAppendingString:v5];
+  nameCopy = name;
+  v13 = [v4 stringByAppendingString:nameCopy];
   v6 = [(TIUserModelDataStoring *)self->_userModelStore getDurableValueForKey:?];
   v7 = [TIUserModelCounter alloc];
   v8 = v7;
   if (v6)
   {
-    v9 = [v6 value];
-    v10 = [v6 creationDate];
-    v11 = [v6 lastUpdateDate];
-    v12 = [(TIUserModelCounter *)v8 initWithName:v5 initialCount:v9 creationDate:v10 lastUpdateDate:v11];
+    value = [v6 value];
+    creationDate = [v6 creationDate];
+    lastUpdateDate = [v6 lastUpdateDate];
+    v12 = [(TIUserModelCounter *)v8 initWithName:nameCopy initialCount:value creationDate:creationDate lastUpdateDate:lastUpdateDate];
   }
 
   else
   {
-    v12 = [(TIUserModelCounter *)v7 initWithName:v5];
+    v12 = [(TIUserModelCounter *)v7 initWithName:nameCopy];
   }
 
-  [(NSMutableDictionary *)self->_durableCounters setObject:v12 forKey:v5];
+  [(NSMutableDictionary *)self->_durableCounters setObject:v12 forKey:nameCopy];
 }
 
 - (NSArray)contexts
@@ -535,33 +535,33 @@ uint64_t __27__TIUserModel_loadSettings__block_invoke(uint64_t a1)
   [(TIUserModel *)&v3 dealloc];
 }
 
-- (TIUserModel)initWithInputMode:(id)a3 userModelDataStore:(id)a4 weeklyMetricKeys:(id)a5 fromDate:(id)a6 explicitTearDown:(BOOL)a7
+- (TIUserModel)initWithInputMode:(id)mode userModelDataStore:(id)store weeklyMetricKeys:(id)keys fromDate:(id)date explicitTearDown:(BOOL)down
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
+  modeCopy = mode;
+  storeCopy = store;
+  keysCopy = keys;
+  dateCopy = date;
   v28.receiver = self;
   v28.super_class = TIUserModel;
   v17 = [(TIUserModel *)&v28 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_inputMode, a3);
-    objc_storeStrong(&v18->_userModelStore, a4);
-    v19 = [v15 copy];
+    objc_storeStrong(&v17->_inputMode, mode);
+    objc_storeStrong(&v18->_userModelStore, store);
+    v19 = [keysCopy copy];
     weeklyMetricKeys = v18->_weeklyMetricKeys;
     v18->_weeklyMetricKeys = v19;
 
-    objc_storeStrong(&v18->_fromDate, a6);
-    v18->_explicitTearDown = a7;
-    v21 = [MEMORY[0x1E695DF90] dictionary];
+    objc_storeStrong(&v18->_fromDate, date);
+    v18->_explicitTearDown = down;
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     durableCounters = v18->_durableCounters;
-    v18->_durableCounters = v21;
+    v18->_durableCounters = dictionary;
 
-    v23 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     userModelValuesCollection = v18->_userModelValuesCollection;
-    v18->_userModelValuesCollection = v23;
+    v18->_userModelValuesCollection = dictionary2;
 
     loadedDate = v18->_loadedDate;
     v18->_loadedDate = 0;

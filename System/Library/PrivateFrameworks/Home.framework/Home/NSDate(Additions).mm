@@ -67,8 +67,8 @@
     v11 = v8;
     do
     {
-      v12 = [objc_opt_class() hf_sharedCalendar];
-      v10 = [v12 dateByAddingComponents:v7 toDate:v11 options:0];
+      hf_sharedCalendar = [objc_opt_class() hf_sharedCalendar];
+      v10 = [hf_sharedCalendar dateByAddingComponents:v7 toDate:v11 options:0];
 
       v11 = v10;
       --a5;
@@ -192,125 +192,125 @@
 
 - (id)hf_startOfDay
 {
-  v2 = [objc_opt_class() hf_sharedCalendar];
-  v3 = [objc_opt_class() hf_sharedTimeZone];
-  v4 = [v2 componentsInTimeZone:v3 fromDate:a1];
+  hf_sharedCalendar = [objc_opt_class() hf_sharedCalendar];
+  hf_sharedTimeZone = [objc_opt_class() hf_sharedTimeZone];
+  v4 = [hf_sharedCalendar componentsInTimeZone:hf_sharedTimeZone fromDate:self];
 
   [v4 setHour:0];
   [v4 setMinute:0];
   [v4 setSecond:0];
   [v4 setNanosecond:0];
-  v5 = [MEMORY[0x277CBEA80] currentCalendar];
-  v6 = [v5 dateFromComponents:v4];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  v6 = [currentCalendar dateFromComponents:v4];
 
   return v6;
 }
 
 - (id)hf_startOfNextDay
 {
-  v2 = [objc_opt_class() hf_sharedCalendar];
-  v3 = [v2 nextDateAfterDate:a1 matchingHour:0 minute:0 second:0 options:2];
+  hf_sharedCalendar = [objc_opt_class() hf_sharedCalendar];
+  v3 = [hf_sharedCalendar nextDateAfterDate:self matchingHour:0 minute:0 second:0 options:2];
 
   return v3;
 }
 
 - (id)hf_startOfHour
 {
-  v2 = [objc_opt_class() hf_sharedCalendar];
-  v3 = [objc_opt_class() hf_sharedTimeZone];
-  v4 = [v2 componentsInTimeZone:v3 fromDate:a1];
+  hf_sharedCalendar = [objc_opt_class() hf_sharedCalendar];
+  hf_sharedTimeZone = [objc_opt_class() hf_sharedTimeZone];
+  v4 = [hf_sharedCalendar componentsInTimeZone:hf_sharedTimeZone fromDate:self];
 
   [v4 setMinute:0];
   [v4 setSecond:0];
   [v4 setNanosecond:0];
-  v5 = [MEMORY[0x277CBEA80] currentCalendar];
-  v6 = [v5 dateFromComponents:v4];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  v6 = [currentCalendar dateFromComponents:v4];
 
   return v6;
 }
 
 - (id)hf_startOfMinute
 {
-  v2 = [objc_opt_class() hf_sharedCalendar];
-  v3 = [objc_opt_class() hf_sharedTimeZone];
-  v4 = [v2 componentsInTimeZone:v3 fromDate:a1];
+  hf_sharedCalendar = [objc_opt_class() hf_sharedCalendar];
+  hf_sharedTimeZone = [objc_opt_class() hf_sharedTimeZone];
+  v4 = [hf_sharedCalendar componentsInTimeZone:hf_sharedTimeZone fromDate:self];
 
   [v4 setSecond:0];
   [v4 setNanosecond:0];
-  v5 = [MEMORY[0x277CBEA80] currentCalendar];
-  v6 = [v5 dateFromComponents:v4];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  v6 = [currentCalendar dateFromComponents:v4];
 
   return v6;
 }
 
 - (id)hf_startOfSecond
 {
-  v2 = [objc_opt_class() hf_sharedCalendar];
-  v3 = [objc_opt_class() hf_sharedTimeZone];
-  v4 = [v2 componentsInTimeZone:v3 fromDate:a1];
+  hf_sharedCalendar = [objc_opt_class() hf_sharedCalendar];
+  hf_sharedTimeZone = [objc_opt_class() hf_sharedTimeZone];
+  v4 = [hf_sharedCalendar componentsInTimeZone:hf_sharedTimeZone fromDate:self];
 
   [v4 setNanosecond:0];
-  v5 = [MEMORY[0x277CBEA80] currentCalendar];
-  v6 = [v5 dateFromComponents:v4];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  v6 = [currentCalendar dateFromComponents:v4];
 
   return v6;
 }
 
 - (id)hf_startOfWeek
 {
-  v1 = a1;
-  v2 = [objc_opt_class() hf_sharedCalendar];
-  v3 = [v2 component:512 fromDate:v1];
-  v4 = [v2 firstWeekday];
-  if (v3 - v4 >= 1)
+  selfCopy = self;
+  hf_sharedCalendar = [objc_opt_class() hf_sharedCalendar];
+  v3 = [hf_sharedCalendar component:512 fromDate:selfCopy];
+  firstWeekday = [hf_sharedCalendar firstWeekday];
+  if (v3 - firstWeekday >= 1)
   {
-    v5 = [v2 dateByAddingUnit:16 value:v4 - v3 toDate:v1 options:0];
+    v5 = [hf_sharedCalendar dateByAddingUnit:16 value:firstWeekday - v3 toDate:selfCopy options:0];
 
-    v1 = v5;
+    selfCopy = v5;
   }
 
-  v6 = [v2 startOfDayForDate:v1];
+  v6 = [hf_sharedCalendar startOfDayForDate:selfCopy];
 
   return v6;
 }
 
 - (id)hf_endOfDay
 {
-  v2 = [objc_opt_class() hf_sharedCalendar];
-  v3 = [objc_opt_class() hf_sharedTimeZone];
-  v4 = [v2 componentsInTimeZone:v3 fromDate:a1];
+  hf_sharedCalendar = [objc_opt_class() hf_sharedCalendar];
+  hf_sharedTimeZone = [objc_opt_class() hf_sharedTimeZone];
+  v4 = [hf_sharedCalendar componentsInTimeZone:hf_sharedTimeZone fromDate:self];
 
   [v4 setHour:23];
   [v4 setMinute:59];
   [v4 setSecond:59];
   [v4 setNanosecond:0];
-  v5 = [MEMORY[0x277CBEA80] currentCalendar];
-  v6 = [v5 dateFromComponents:v4];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  v6 = [currentCalendar dateFromComponents:v4];
 
   return v6;
 }
 
 - (id)hf_endOfWeek
 {
-  v1 = a1;
-  v2 = [objc_opt_class() hf_sharedCalendar];
-  v3 = [v2 component:512 fromDate:v1];
+  selfCopy = self;
+  hf_sharedCalendar = [objc_opt_class() hf_sharedCalendar];
+  v3 = [hf_sharedCalendar component:512 fromDate:selfCopy];
   if (v3 <= 6)
   {
-    v4 = [v2 dateByAddingUnit:16 value:7 - v3 toDate:v1 options:0];
+    v4 = [hf_sharedCalendar dateByAddingUnit:16 value:7 - v3 toDate:selfCopy options:0];
 
-    v1 = v4;
+    selfCopy = v4;
   }
 
-  v5 = [v2 startOfDayForDate:v1];
+  v5 = [hf_sharedCalendar startOfDayForDate:selfCopy];
 
   return v5;
 }
 
 - (BOOL)hf_isFirstHourOfDay
 {
-  v2 = [objc_opt_class() hf_sharedCalendar];
-  v3 = [v2 components:32 fromDate:a1];
+  hf_sharedCalendar = [objc_opt_class() hf_sharedCalendar];
+  v3 = [hf_sharedCalendar components:32 fromDate:self];
 
   v4 = [v3 hour] == 0;
   return v4;
@@ -318,8 +318,8 @@
 
 - (BOOL)hf_isMidnight
 {
-  v2 = [objc_opt_class() hf_sharedCalendar];
-  v3 = [v2 components:224 fromDate:a1];
+  hf_sharedCalendar = [objc_opt_class() hf_sharedCalendar];
+  v3 = [hf_sharedCalendar components:224 fromDate:self];
 
   v4 = ![v3 hour] && !objc_msgSend(v3, "minute") && objc_msgSend(v3, "second") == 0;
   return v4;
@@ -327,8 +327,8 @@
 
 - (uint64_t)hf_isSingularHour
 {
-  v2 = [objc_opt_class() hf_sharedCalendar];
-  v3 = [v2 components:32 fromDate:a1];
+  hf_sharedCalendar = [objc_opt_class() hf_sharedCalendar];
+  v3 = [hf_sharedCalendar components:32 fromDate:self];
 
   if ([v3 hour] == 1)
   {
@@ -337,7 +337,7 @@
 
   else if ([v3 hour] == 13)
   {
-    v4 = [a1 _uses24HourTimeForLocale] ^ 1;
+    v4 = [self _uses24HourTimeForLocale] ^ 1;
   }
 
   else
@@ -352,12 +352,12 @@
 {
   v6 = a4;
   v7 = a3;
-  v8 = [a1 earlierDate:v7];
+  v8 = [self earlierDate:v7];
   v9 = [v8 isEqualToDate:v7];
 
   if (v9)
   {
-    v10 = [a1 laterDate:v6];
+    v10 = [self laterDate:v6];
     v11 = [v10 isEqualToDate:v6];
   }
 
@@ -373,13 +373,13 @@
 {
   v5 = a4;
   v6 = a3;
-  v7 = [objc_opt_class() hf_sharedCalendar];
-  v8 = [v7 startOfDayForDate:v6];
+  hf_sharedCalendar = [objc_opt_class() hf_sharedCalendar];
+  v8 = [hf_sharedCalendar startOfDayForDate:v6];
 
-  v9 = [v7 startOfDayForDate:v5];
+  v9 = [hf_sharedCalendar startOfDayForDate:v5];
 
-  v10 = [v7 ordinalityOfUnit:64 inUnit:2 forDate:v8];
-  v11 = [v7 ordinalityOfUnit:64 inUnit:2 forDate:v9] - v10;
+  v10 = [hf_sharedCalendar ordinalityOfUnit:64 inUnit:2 forDate:v8];
+  v11 = [hf_sharedCalendar ordinalityOfUnit:64 inUnit:2 forDate:v9] - v10;
 
   return v11;
 }
@@ -388,13 +388,13 @@
 {
   v5 = a4;
   v6 = a3;
-  v7 = [objc_opt_class() hf_sharedCalendar];
-  v8 = [v7 startOfDayForDate:v6];
+  hf_sharedCalendar = [objc_opt_class() hf_sharedCalendar];
+  v8 = [hf_sharedCalendar startOfDayForDate:v6];
 
-  v9 = [v7 startOfDayForDate:v5];
+  v9 = [hf_sharedCalendar startOfDayForDate:v5];
 
-  v10 = [v7 ordinalityOfUnit:16 inUnit:2 forDate:v8];
-  v11 = [v7 ordinalityOfUnit:16 inUnit:2 forDate:v9] - v10;
+  v10 = [hf_sharedCalendar ordinalityOfUnit:16 inUnit:2 forDate:v8];
+  v11 = [hf_sharedCalendar ordinalityOfUnit:16 inUnit:2 forDate:v9] - v10;
 
   return v11;
 }
@@ -412,8 +412,8 @@
   [v19 setMinute:a8];
   [v19 setSecond:a9];
   [v19 setNanosecond:a10];
-  v20 = [objc_opt_class() hf_sharedCalendar];
-  v21 = [v20 dateByAddingComponents:v19 toDate:v18 options:0];
+  hf_sharedCalendar = [objc_opt_class() hf_sharedCalendar];
+  v21 = [hf_sharedCalendar dateByAddingComponents:v19 toDate:v18 options:0];
 
   return v21;
 }
@@ -422,19 +422,19 @@
 {
   v0 = objc_alloc_init(MEMORY[0x277CCA968]);
   [v0 setLocalizedDateFormatFromTemplate:@"j"];
-  v1 = [MEMORY[0x277CBEAF8] currentLocale];
-  [v0 setLocale:v1];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  [v0 setLocale:currentLocale];
 
-  v2 = [v0 dateFormat];
-  v3 = [v2 rangeOfString:@"H"] != 0x7FFFFFFFFFFFFFFFLL || objc_msgSend(v2, "rangeOfString:", @"k") != 0x7FFFFFFFFFFFFFFFLL;
+  dateFormat = [v0 dateFormat];
+  v3 = [dateFormat rangeOfString:@"H"] != 0x7FFFFFFFFFFFFFFFLL || objc_msgSend(dateFormat, "rangeOfString:", @"k") != 0x7FFFFFFFFFFFFFFFLL;
 
   return v3;
 }
 
 - (__CFString)hf_hksvDescription
 {
-  v2 = [MEMORY[0x277CBEAA8] distantPast];
-  v3 = [a1 isEqualToDate:v2];
+  distantPast = [MEMORY[0x277CBEAA8] distantPast];
+  v3 = [self isEqualToDate:distantPast];
 
   if (v3)
   {
@@ -443,8 +443,8 @@
 
   else
   {
-    v5 = [MEMORY[0x277CBEAA8] distantFuture];
-    v6 = [a1 isEqualToDate:v5];
+    distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+    v6 = [self isEqualToDate:distantFuture];
 
     if (v6)
     {
@@ -454,8 +454,8 @@
     else
     {
       v7 = MEMORY[0x277CCACA8];
-      v8 = [HFCameraUtilities dayStringFromDate:a1];
-      v9 = [HFCameraUtilities fullTimeStringFromDate:a1];
+      v8 = [HFCameraUtilities dayStringFromDate:self];
+      v9 = [HFCameraUtilities fullTimeStringFromDate:self];
       v4 = [v7 stringWithFormat:@"%@ %@", v8, v9];
     }
   }

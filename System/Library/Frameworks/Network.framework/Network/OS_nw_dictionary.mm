@@ -63,14 +63,14 @@
 {
   if (nwlog_get_sensitive_redacted::onceToken != -1)
   {
-    v6 = self;
+    selfCopy = self;
     dispatch_once(&nwlog_get_sensitive_redacted::onceToken, &__block_literal_global_83);
-    self = v6;
+    self = selfCopy;
   }
 
   if (nwlog_get_sensitive_redacted::sensitiveRedacted)
   {
-    v2 = self;
+    selfCopy2 = self;
     if (nw_dictionary_get_count(self))
     {
       Mutable = CFStringCreateMutable(*MEMORY[0x1E695E480], 0);
@@ -84,7 +84,7 @@
         v7[4] = &v8;
         v7[5] = Mutable;
         v4 = Mutable;
-        nw_dictionary_apply(v2, v7);
+        nw_dictionary_apply(selfCopy2, v7);
         CFStringAppend(v4, @"}");
         Mutable = v4;
       }

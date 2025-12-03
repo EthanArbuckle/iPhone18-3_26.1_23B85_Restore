@@ -1,19 +1,19 @@
 @interface PLEntry
-+ (Class)classForEntryKey:(id)a3;
-+ (id)entryWithEntryKey:(id)a3 withData:(id)a4;
-+ (id)entryWithEntryKey:(id)a3 withRawData:(id)a4;
-+ (id)summarizeAggregateEntries:(id)a3;
-+ (id)summarizeAggregateEntries:(id)a3 withPrimaryKeys:(id)a4;
-+ (signed)dataFormatForMetric:(id)a3 auxiliaryMetrics:(id)a4;
++ (Class)classForEntryKey:(id)key;
++ (id)entryWithEntryKey:(id)key withData:(id)data;
++ (id)entryWithEntryKey:(id)key withRawData:(id)data;
++ (id)summarizeAggregateEntries:(id)entries;
++ (id)summarizeAggregateEntries:(id)entries withPrimaryKeys:(id)keys;
++ (signed)dataFormatForMetric:(id)metric auxiliaryMetrics:(id)metrics;
 + (void)load;
-+ (void)registerEntry:(Class)a3;
++ (void)registerEntry:(Class)entry;
 - (BOOL)filterEntryLogging;
 - (BOOL)hasAppIdentifierKeys;
 - (BOOL)hasArrayKeys;
 - (BOOL)hasDMAKeys;
 - (BOOL)hasDynamicKeys;
-- (BOOL)isKeyAggregateValue:(id)a3;
-- (BOOL)isKeyDynamic:(id)a3;
+- (BOOL)isKeyAggregateValue:(id)value;
+- (BOOL)isKeyDynamic:(id)dynamic;
 - (BOOL)isPPSEnabled;
 - (NSArray)DMAKeys;
 - (NSArray)arrayKeys;
@@ -23,32 +23,32 @@
 - (NSMutableArray)allValues;
 - (NSMutableArray)keys;
 - (OS_dispatch_semaphore)sem;
-- (PLEntry)initWithEntryDate:(id)a3;
-- (PLEntry)initWithEntryKey:(id)a3;
-- (PLEntry)initWithEntryKey:(id)a3 withData:(id)a4;
-- (PLEntry)initWithEntryKey:(id)a3 withDate:(id)a4;
-- (PLEntry)initWithEntryKey:(id)a3 withRawData:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)definitionForKey:(id)a3;
-- (id)initEntryWithData:(id)a3;
-- (id)initEntryWithRawData:(id)a3;
-- (id)keyValuePathForKey:(id)a3;
-- (id)objectForKey:(id)a3;
+- (PLEntry)initWithEntryDate:(id)date;
+- (PLEntry)initWithEntryKey:(id)key;
+- (PLEntry)initWithEntryKey:(id)key withData:(id)data;
+- (PLEntry)initWithEntryKey:(id)key withDate:(id)date;
+- (PLEntry)initWithEntryKey:(id)key withRawData:(id)data;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)definitionForKey:(id)key;
+- (id)initEntryWithData:(id)data;
+- (id)initEntryWithRawData:(id)data;
+- (id)keyValuePathForKey:(id)key;
+- (id)objectForKey:(id)key;
 - (id)serialized;
 - (id)serializedForJSON;
 - (id)subEntryKey;
-- (id)unitForKey:(id)a3;
-- (int)staticArraySizeForKey:(id)a3;
-- (int64_t)compare:(id)a3 options:(signed __int16)a4;
-- (signed)formaterForKey:(id)a3;
-- (void)checkOverridesEntryDateWithNowDate:(id)a3;
+- (id)unitForKey:(id)key;
+- (int)staticArraySizeForKey:(id)key;
+- (int64_t)compare:(id)compare options:(signed __int16)options;
+- (signed)formaterForKey:(id)key;
+- (void)checkOverridesEntryDateWithNowDate:(id)date;
 - (void)loadDynamicKeys;
-- (void)removeObjectForKey:(id)a3;
-- (void)setDynamicObjectsFromRawData:(id)a3;
-- (void)setObject:(id)a3 forKey:(id)a4;
-- (void)setObjectsFromData:(id)a3;
-- (void)setObjectsFromRawData:(id)a3;
-- (void)setObjectsUsingMetricsFromData:(id)a3;
+- (void)removeObjectForKey:(id)key;
+- (void)setDynamicObjectsFromRawData:(id)data;
+- (void)setObject:(id)object forKey:(id)key;
+- (void)setObjectsFromData:(id)data;
+- (void)setObjectsFromRawData:(id)data;
+- (void)setObjectsUsingMetricsFromData:(id)data;
 @end
 
 @implementation PLEntry
@@ -58,8 +58,8 @@
   entryDefinition = self->_entryDefinition;
   if (!entryDefinition)
   {
-    v4 = [(PLEntry *)self entryKey];
-    v5 = [PLEntryDefinition definitionForEntryKey:v4];
+    entryKey = [(PLEntry *)self entryKey];
+    v5 = [PLEntryDefinition definitionForEntryKey:entryKey];
     v6 = self->_entryDefinition;
     self->_entryDefinition = v5;
 
@@ -81,8 +81,8 @@
   if (!sem)
   {
     v4 = sem_entryKeyToSem;
-    v5 = [(PLEntry *)self entryKey];
-    v6 = [v4 objectForKeyedSubscript:v5];
+    entryKey = [(PLEntry *)self entryKey];
+    v6 = [v4 objectForKeyedSubscript:entryKey];
     v7 = self->_sem;
     self->_sem = v6;
 
@@ -95,8 +95,8 @@
 
       v10 = self->_sem;
       v11 = sem_entryKeyToSem;
-      v12 = [(PLEntry *)self entryKey];
-      [v11 setObject:v10 forKeyedSubscript:v12];
+      entryKey2 = [(PLEntry *)self entryKey];
+      [v11 setObject:v10 forKeyedSubscript:entryKey2];
 
       sem = self->_sem;
     }
@@ -110,19 +110,19 @@
 
 - (BOOL)filterEntryLogging
 {
-  v3 = [(PLEntry *)self entryKey];
-  v4 = [PPSEntryKey PPSEnabled:v3];
+  entryKey = [(PLEntry *)self entryKey];
+  v4 = [PPSEntryKey PPSEnabled:entryKey];
 
   if (v4)
   {
-    v5 = [(PLEntry *)self entryKey];
-    v6 = [PPSEntryKey filterEntryLoggingForEntryKey:v5];
+    entryKey2 = [(PLEntry *)self entryKey];
+    v6 = [PPSEntryKey filterEntryLoggingForEntryKey:entryKey2];
   }
 
   else
   {
-    v5 = [(PLEntry *)self entryDefinition];
-    v6 = [PLEntryDefinition filterEntryLoggingForEntryDefinition:v5];
+    entryKey2 = [(PLEntry *)self entryDefinition];
+    v6 = [PLEntryDefinition filterEntryLoggingForEntryDefinition:entryKey2];
   }
 
   v7 = v6;
@@ -132,19 +132,19 @@
 
 - (BOOL)hasDMAKeys
 {
-  v3 = [(PLEntry *)self entryKey];
-  v4 = [PPSEntryKey PPSEnabled:v3];
+  entryKey = [(PLEntry *)self entryKey];
+  v4 = [PPSEntryKey PPSEnabled:entryKey];
 
   if (v4)
   {
-    v5 = [(PLEntry *)self entryKey];
-    v6 = [PPSEntryKey hasDMAKeys:v5];
+    entryKey2 = [(PLEntry *)self entryKey];
+    v6 = [PPSEntryKey hasDMAKeys:entryKey2];
   }
 
   else
   {
-    v5 = [(PLEntry *)self entryDefinition];
-    v6 = [PLEntryDefinition hasDMAKeysForEntryDefinition:v5];
+    entryKey2 = [(PLEntry *)self entryDefinition];
+    v6 = [PLEntryDefinition hasDMAKeysForEntryDefinition:entryKey2];
   }
 
   v7 = v6;
@@ -154,8 +154,8 @@
 
 - (id)subEntryKey
 {
-  v3 = [(PLEntry *)self entryDefinition];
-  v4 = [PLEntryDefinition subEntryKeyKeyForEntryDefinition:v3];
+  entryDefinition = [(PLEntry *)self entryDefinition];
+  v4 = [PLEntryDefinition subEntryKeyKeyForEntryDefinition:entryDefinition];
 
   if (v4)
   {
@@ -172,19 +172,19 @@
 
 - (BOOL)hasDynamicKeys
 {
-  v3 = [(PLEntry *)self entryKey];
-  v4 = [PPSEntryKey PPSEnabled:v3];
+  entryKey = [(PLEntry *)self entryKey];
+  v4 = [PPSEntryKey PPSEnabled:entryKey];
 
   if (v4)
   {
-    v5 = [(PLEntry *)self entryKey];
-    v6 = [PPSEntryKey hasDynamicKeys:v5];
+    entryKey2 = [(PLEntry *)self entryKey];
+    v6 = [PPSEntryKey hasDynamicKeys:entryKey2];
   }
 
   else
   {
-    v5 = [(PLEntry *)self entryDefinition];
-    v6 = [PLEntryDefinition hasDynamicKeysForEntryDefinition:v5];
+    entryKey2 = [(PLEntry *)self entryDefinition];
+    v6 = [PLEntryDefinition hasDynamicKeysForEntryDefinition:entryKey2];
   }
 
   v7 = v6;
@@ -194,19 +194,19 @@
 
 - (NSArray)DMAKeys
 {
-  v3 = [(PLEntry *)self entryKey];
-  v4 = [PPSEntryKey PPSEnabled:v3];
+  entryKey = [(PLEntry *)self entryKey];
+  v4 = [PPSEntryKey PPSEnabled:entryKey];
 
   if (v4)
   {
-    v5 = [(PLEntry *)self entryKey];
-    [PPSEntryKey allDMAKeysForEntryKey:v5];
+    entryKey2 = [(PLEntry *)self entryKey];
+    [PPSEntryKey allDMAKeysForEntryKey:entryKey2];
   }
 
   else
   {
-    v5 = [(PLEntry *)self entryDefinition];
-    [PLEntryDefinition DMAKeysForEntryDefinition:v5];
+    entryKey2 = [(PLEntry *)self entryDefinition];
+    [PLEntryDefinition DMAKeysForEntryDefinition:entryKey2];
   }
   v6 = ;
 
@@ -215,27 +215,27 @@
 
 - (NSMutableArray)keys
 {
-  v2 = [(PLEntry *)self dictionary];
-  v3 = [v2 allKeys];
+  dictionary = [(PLEntry *)self dictionary];
+  allKeys = [dictionary allKeys];
 
-  return v3;
+  return allKeys;
 }
 
 - (NSArray)definedKeys
 {
-  v3 = [(PLEntry *)self entryKey];
-  v4 = [PPSEntryKey PPSEnabled:v3];
+  entryKey = [(PLEntry *)self entryKey];
+  v4 = [PPSEntryKey PPSEnabled:entryKey];
 
   if (v4)
   {
-    v5 = [(PLEntry *)self entryKey];
-    [PPSEntryKey allBaseKeysForEntryKey:v5];
+    entryKey2 = [(PLEntry *)self entryKey];
+    [PPSEntryKey allBaseKeysForEntryKey:entryKey2];
   }
 
   else
   {
-    v5 = [(PLEntry *)self entryDefinition];
-    [PLEntryDefinition allKeysForEntryDefinition:v5];
+    entryKey2 = [(PLEntry *)self entryDefinition];
+    [PLEntryDefinition allKeysForEntryDefinition:entryKey2];
   }
   v6 = ;
 
@@ -244,27 +244,27 @@
 
 - (BOOL)isPPSEnabled
 {
-  v2 = [(PLEntry *)self entryKey];
-  v3 = [PPSEntryKey PPSEnabled:v2];
+  entryKey = [(PLEntry *)self entryKey];
+  v3 = [PPSEntryKey PPSEnabled:entryKey];
 
   return v3;
 }
 
 - (BOOL)hasArrayKeys
 {
-  v3 = [(PLEntry *)self entryKey];
-  v4 = [PPSEntryKey PPSEnabled:v3];
+  entryKey = [(PLEntry *)self entryKey];
+  v4 = [PPSEntryKey PPSEnabled:entryKey];
 
   if (v4)
   {
-    v5 = [(PLEntry *)self entryKey];
-    v6 = [PPSEntryKey hasArrayKeys:v5];
+    entryKey2 = [(PLEntry *)self entryKey];
+    v6 = [PPSEntryKey hasArrayKeys:entryKey2];
   }
 
   else
   {
-    v5 = [(PLEntry *)self entryDefinition];
-    v6 = [PLEntryDefinition hasArrayKeysForEntryDefinition:v5];
+    entryKey2 = [(PLEntry *)self entryDefinition];
+    v6 = [PLEntryDefinition hasArrayKeysForEntryDefinition:entryKey2];
   }
 
   v7 = v6;
@@ -275,29 +275,29 @@
 - (void)loadDynamicKeys
 {
   v4 = +[PowerlogCore sharedCore];
-  v3 = [v4 storage];
-  [v3 loadDynamicValuesIntoEntry:self];
+  storage = [v4 storage];
+  [storage loadDynamicValuesIntoEntry:self];
 }
 
 - (NSArray)dynamicKeys
 {
-  v3 = [(PLEntry *)self entryKey];
-  v4 = [PPSEntryKey PPSEnabled:v3];
+  entryKey = [(PLEntry *)self entryKey];
+  v4 = [PPSEntryKey PPSEnabled:entryKey];
 
   if (v4)
   {
-    v5 = [(PLEntry *)self entryKey];
-    v6 = [PPSEntryKey allDynamicKeysForEntryKey:v5];
+    entryKey2 = [(PLEntry *)self entryKey];
+    v6 = [PPSEntryKey allDynamicKeysForEntryKey:entryKey2];
   }
 
   else
   {
     v7 = MEMORY[0x1E695DF70];
-    v8 = [(PLEntry *)self keys];
-    v6 = [v7 arrayWithArray:v8];
+    keys = [(PLEntry *)self keys];
+    v6 = [v7 arrayWithArray:keys];
 
-    v9 = [(PLEntry *)self definedKeys];
-    [v6 removeObjectsInArray:v9];
+    definedKeys = [(PLEntry *)self definedKeys];
+    [v6 removeObjectsInArray:definedKeys];
 
     if ([v6 containsObject:@"timestampLogged"])
     {
@@ -310,19 +310,19 @@
 
 - (NSArray)arrayKeys
 {
-  v3 = [(PLEntry *)self entryKey];
-  v4 = [PPSEntryKey PPSEnabled:v3];
+  entryKey = [(PLEntry *)self entryKey];
+  v4 = [PPSEntryKey PPSEnabled:entryKey];
 
   if (v4)
   {
-    v5 = [(PLEntry *)self entryKey];
-    [PPSEntryKey allArrayKeysForEntryKey:v5];
+    entryKey2 = [(PLEntry *)self entryKey];
+    [PPSEntryKey allArrayKeysForEntryKey:entryKey2];
   }
 
   else
   {
-    v5 = [(PLEntry *)self entryDefinition];
-    [PLEntryDefinition arrayKeysForEntryDefinition:v5];
+    entryKey2 = [(PLEntry *)self entryDefinition];
+    [PLEntryDefinition arrayKeysForEntryDefinition:entryKey2];
   }
   v6 = ;
 
@@ -331,10 +331,10 @@
 
 - (NSMutableArray)allValues
 {
-  v2 = [(PLEntry *)self dictionary];
-  v3 = [v2 allValues];
+  dictionary = [(PLEntry *)self dictionary];
+  allValues = [dictionary allValues];
 
-  return v3;
+  return allValues;
 }
 
 + (void)load
@@ -348,7 +348,7 @@
   }
 }
 
-+ (void)registerEntry:(Class)a3
++ (void)registerEntry:(Class)entry
 {
   if (registerEntry__onceToken != -1)
   {
@@ -358,12 +358,12 @@
   v4 = PLLogCommon();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
-    [(PLEntry *)a3 registerEntry:v4];
+    [(PLEntry *)entry registerEntry:v4];
   }
 
   v5 = _registeredEntries;
   objc_sync_enter(v5);
-  [_registeredEntries addObject:a3];
+  [_registeredEntries addObject:entry];
   objc_sync_exit(v5);
 }
 
@@ -375,19 +375,19 @@ uint64_t __25__PLEntry_registerEntry___block_invoke()
   return MEMORY[0x1EEE66BB8](v0);
 }
 
-+ (id)entryWithEntryKey:(id)a3 withRawData:(id)a4
++ (id)entryWithEntryKey:(id)key withRawData:(id)data
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [PLEntry classForEntryKey:v5];
+  keyCopy = key;
+  dataCopy = data;
+  v7 = [PLEntry classForEntryKey:keyCopy];
   if (v7 == objc_opt_class())
   {
-    v8 = [[PLEntry alloc] initWithEntryKey:v5 withRawData:v6];
+    v8 = [[PLEntry alloc] initWithEntryKey:keyCopy withRawData:dataCopy];
   }
 
   else
   {
-    v8 = [[v7 alloc] initEntryWithRawData:v6];
+    v8 = [[v7 alloc] initEntryWithRawData:dataCopy];
   }
 
   v9 = v8;
@@ -395,19 +395,19 @@ uint64_t __25__PLEntry_registerEntry___block_invoke()
   return v9;
 }
 
-+ (id)entryWithEntryKey:(id)a3 withData:(id)a4
++ (id)entryWithEntryKey:(id)key withData:(id)data
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [PLEntry classForEntryKey:v5];
+  keyCopy = key;
+  dataCopy = data;
+  v7 = [PLEntry classForEntryKey:keyCopy];
   if (v7 == objc_opt_class())
   {
-    v8 = [[PLEntry alloc] initWithEntryKey:v5 withData:v6];
+    v8 = [[PLEntry alloc] initWithEntryKey:keyCopy withData:dataCopy];
   }
 
   else
   {
-    v8 = [[v7 alloc] initEntryWithData:v6];
+    v8 = [[v7 alloc] initEntryWithData:dataCopy];
   }
 
   v9 = v8;
@@ -415,19 +415,19 @@ uint64_t __25__PLEntry_registerEntry___block_invoke()
   return v9;
 }
 
-+ (Class)classForEntryKey:(id)a3
++ (Class)classForEntryKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   if (classForEntryKey__onceToken != -1)
   {
     +[PLEntry classForEntryKey:];
   }
 
-  v4 = [_entryKeyToClass objectForKeyedSubscript:v3];
+  v4 = [_entryKeyToClass objectForKeyedSubscript:keyCopy];
 
   if (v4)
   {
-    [_entryKeyToClass objectForKeyedSubscript:v3];
+    [_entryKeyToClass objectForKeyedSubscript:keyCopy];
   }
 
   else
@@ -482,28 +482,28 @@ void __28__PLEntry_classForEntryKey___block_invoke()
 
 - (BOOL)hasAppIdentifierKeys
 {
-  v2 = [(PLEntry *)self entryDefinition];
-  v3 = [PLEntryDefinition hasAppIdentifierKeysForEntryDefinition:v2];
+  entryDefinition = [(PLEntry *)self entryDefinition];
+  v3 = [PLEntryDefinition hasAppIdentifierKeysForEntryDefinition:entryDefinition];
 
   return v3;
 }
 
-- (void)checkOverridesEntryDateWithNowDate:(id)a3
+- (void)checkOverridesEntryDateWithNowDate:(id)date
 {
-  v7 = a3;
-  v4 = [(PLEntry *)self entryDefinition];
-  v5 = [PLEntryDefinition overridesEntryDateForEntryDefinition:v4];
+  dateCopy = date;
+  entryDefinition = [(PLEntry *)self entryDefinition];
+  v5 = [PLEntryDefinition overridesEntryDateForEntryDefinition:entryDefinition];
 
   if (v5)
   {
-    v6 = v7;
-    if (!v7)
+    monotonicDate = dateCopy;
+    if (!dateCopy)
     {
-      v6 = [MEMORY[0x1E695DF00] monotonicDate];
+      monotonicDate = [MEMORY[0x1E695DF00] monotonicDate];
     }
 
-    v7 = v6;
-    [(PLEntry *)self setObject:v6 forKeyedSubscript:@"timestampLogged"];
+    dateCopy = monotonicDate;
+    [(PLEntry *)self setObject:monotonicDate forKeyedSubscript:@"timestampLogged"];
   }
 }
 
@@ -519,7 +519,7 @@ uint64_t __14__PLEntry_sem__block_invoke()
   return MEMORY[0x1EEE66BB8](v2);
 }
 
-- (PLEntry)initWithEntryDate:(id)a3
+- (PLEntry)initWithEntryDate:(id)date
 {
   v8.receiver = self;
   v8.super_class = PLEntry;
@@ -552,67 +552,67 @@ BOOL __29__PLEntry_initWithEntryDate___block_invoke()
   return result;
 }
 
-- (id)initEntryWithRawData:(id)a3
+- (id)initEntryWithRawData:(id)data
 {
-  v4 = a3;
-  v5 = [objc_opt_class() entryKey];
-  v6 = [(PLEntry *)self initWithEntryKey:v5 withRawData:v4];
+  dataCopy = data;
+  entryKey = [objc_opt_class() entryKey];
+  v6 = [(PLEntry *)self initWithEntryKey:entryKey withRawData:dataCopy];
 
   return v6;
 }
 
-- (id)initEntryWithData:(id)a3
+- (id)initEntryWithData:(id)data
 {
-  v4 = a3;
-  v5 = [objc_opt_class() entryKey];
-  v6 = [(PLEntry *)self initWithEntryKey:v5 withData:v4];
+  dataCopy = data;
+  entryKey = [objc_opt_class() entryKey];
+  v6 = [(PLEntry *)self initWithEntryKey:entryKey withData:dataCopy];
 
   return v6;
 }
 
-- (PLEntry)initWithEntryKey:(id)a3
+- (PLEntry)initWithEntryKey:(id)key
 {
-  v5 = a3;
+  keyCopy = key;
   v6 = [(PLEntry *)self init];
   if (v6)
   {
-    v7 = [MEMORY[0x1E695DF00] monotonicDate];
+    monotonicDate = [MEMORY[0x1E695DF00] monotonicDate];
     entryDate = v6->_entryDate;
-    v6->_entryDate = v7;
+    v6->_entryDate = monotonicDate;
 
-    objc_storeStrong(&v6->_entryKey, a3);
+    objc_storeStrong(&v6->_entryKey, key);
     [(PLEntry *)v6 checkOverridesEntryDateWithNowDate:v6->_entryDate];
   }
 
   return v6;
 }
 
-- (PLEntry)initWithEntryKey:(id)a3 withDate:(id)a4
+- (PLEntry)initWithEntryKey:(id)key withDate:(id)date
 {
-  v7 = a3;
-  v8 = a4;
+  keyCopy = key;
+  dateCopy = date;
   v9 = [(PLEntry *)self init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_entryDate, a4);
-    objc_storeStrong(&v10->_entryKey, a3);
+    objc_storeStrong(&v9->_entryDate, date);
+    objc_storeStrong(&v10->_entryKey, key);
     [(PLEntry *)v10 checkOverridesEntryDateWithNowDate:0];
   }
 
   return v10;
 }
 
-- (PLEntry)initWithEntryKey:(id)a3 withRawData:(id)a4
+- (PLEntry)initWithEntryKey:(id)key withRawData:(id)data
 {
-  v7 = a3;
-  v8 = a4;
+  keyCopy = key;
+  dataCopy = data;
   v9 = [(PLEntry *)self init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_entryKey, a3);
-    [(PLEntry *)v10 setObjectsFromRawData:v8];
+    objc_storeStrong(&v9->_entryKey, key);
+    [(PLEntry *)v10 setObjectsFromRawData:dataCopy];
     if (v10->_entryDate)
     {
       v11 = 0;
@@ -620,9 +620,9 @@ BOOL __29__PLEntry_initWithEntryDate___block_invoke()
 
     else
     {
-      v12 = [MEMORY[0x1E695DF00] monotonicDate];
+      monotonicDate = [MEMORY[0x1E695DF00] monotonicDate];
       entryDate = v10->_entryDate;
-      v10->_entryDate = v12;
+      v10->_entryDate = monotonicDate;
 
       v11 = v10->_entryDate;
     }
@@ -633,38 +633,38 @@ BOOL __29__PLEntry_initWithEntryDate___block_invoke()
   return v10;
 }
 
-- (PLEntry)initWithEntryKey:(id)a3 withData:(id)a4
+- (PLEntry)initWithEntryKey:(id)key withData:(id)data
 {
-  v7 = a3;
-  v8 = a4;
+  keyCopy = key;
+  dataCopy = data;
   v9 = [(PLEntry *)self init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_entryKey, a3);
-    [(PLEntry *)v10 setObjectsFromData:v8];
-    v11 = [v8 objectForKeyedSubscript:@"ID"];
+    objc_storeStrong(&v9->_entryKey, key);
+    [(PLEntry *)v10 setObjectsFromData:dataCopy];
+    v11 = [dataCopy objectForKeyedSubscript:@"ID"];
     v10->_entryID = [v11 longLongValue];
 
-    v12 = [v8 objectForKeyedSubscript:@"timestamp"];
+    v12 = [dataCopy objectForKeyedSubscript:@"timestamp"];
     if (!v12)
     {
       goto LABEL_5;
     }
 
     v13 = v12;
-    v14 = [v8 objectForKeyedSubscript:@"timestamp"];
-    v15 = [MEMORY[0x1E695DFB0] null];
+    v14 = [dataCopy objectForKeyedSubscript:@"timestamp"];
+    null = [MEMORY[0x1E695DFB0] null];
 
-    if (v14 == v15)
+    if (v14 == null)
     {
 LABEL_5:
-      v20 = [(PLEntry *)v10 entryDefinition];
-      v21 = [v20 objectForKeyedSubscript:@"Configs"];
+      entryDefinition = [(PLEntry *)v10 entryDefinition];
+      v21 = [entryDefinition objectForKeyedSubscript:@"Configs"];
       v22 = [v21 objectForKeyedSubscript:@"AllowNilTimestamp"];
-      v23 = [v22 BOOLValue];
+      bOOLValue = [v22 BOOLValue];
 
-      if (v23)
+      if (bOOLValue)
       {
         entryDate = v10->_entryDate;
         v10->_entryDate = 0;
@@ -672,11 +672,11 @@ LABEL_5:
 
       else if (+[PLDefaults debugEnabled])
       {
-        v25 = [MEMORY[0x1E696AEC0] stringWithFormat:@"*** ERROR *** missing timestamp from Database record entryKey=%@ data=%@", v7, v8];
+        dataCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"*** ERROR *** missing timestamp from Database record entryKey=%@ data=%@", keyCopy, dataCopy];
         v26 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Storage/PLEntry.m"];
-        v27 = [v26 lastPathComponent];
+        lastPathComponent = [v26 lastPathComponent];
         v28 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLEntry initWithEntryKey:withData:]"];
-        [PLCoreStorage logMessage:v25 fromFile:v27 fromFunction:v28 fromLineNumber:275];
+        [PLCoreStorage logMessage:dataCopy fromFile:lastPathComponent fromFunction:v28 fromLineNumber:275];
 
         v29 = PLLogCommon();
         if (os_log_type_enabled(v29, OS_LOG_TYPE_DEBUG))
@@ -689,25 +689,25 @@ LABEL_5:
     else
     {
       v16 = MEMORY[0x1E695DF00];
-      v17 = [v8 objectForKeyedSubscript:@"timestamp"];
+      v17 = [dataCopy objectForKeyedSubscript:@"timestamp"];
       [v17 doubleValue];
       v18 = [v16 dateWithTimeIntervalSince1970:?];
       v19 = v10->_entryDate;
       v10->_entryDate = v18;
     }
 
-    if ([PLEntryDefinition isAggregateForEntryKey:v7])
+    if ([PLEntryDefinition isAggregateForEntryKey:keyCopy])
     {
-      v30 = [v8 objectForKeyedSubscript:@"timeInterval"];
+      v30 = [dataCopy objectForKeyedSubscript:@"timeInterval"];
       if (v30)
       {
         v31 = v30;
-        v32 = [v8 objectForKeyedSubscript:@"timeInterval"];
-        v33 = [MEMORY[0x1E695DFB0] null];
+        v32 = [dataCopy objectForKeyedSubscript:@"timeInterval"];
+        null2 = [MEMORY[0x1E695DFB0] null];
 
-        if (v32 != v33)
+        if (v32 != null2)
         {
-          v34 = [v8 objectForKeyedSubscript:@"timeInterval"];
+          v34 = [dataCopy objectForKeyedSubscript:@"timeInterval"];
           [(PLEntry *)v10 setObject:v34 forKeyedSubscript:@"timeInterval"];
         }
       }
@@ -717,45 +717,45 @@ LABEL_5:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(PLEntry *)self entryKey];
-  v6 = [(PLEntry *)self entryDate];
-  v7 = [v4 initWithEntryKey:v5 withDate:v6];
+  entryKey = [(PLEntry *)self entryKey];
+  entryDate = [(PLEntry *)self entryDate];
+  v7 = [v4 initWithEntryKey:entryKey withDate:entryDate];
 
-  v8 = [(PLEntry *)self dictionary];
+  dictionary = [(PLEntry *)self dictionary];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __24__PLEntry_copyWithZone___block_invoke;
   v11[3] = &unk_1E8519700;
   v9 = v7;
   v12 = v9;
-  [v8 enumerateKeysAndObjectsUsingBlock:v11];
+  [dictionary enumerateKeysAndObjectsUsingBlock:v11];
 
   return v9;
 }
 
-- (void)setObjectsFromRawData:(id)a3
+- (void)setObjectsFromRawData:(id)data
 {
-  v4 = a3;
-  if (v4)
+  dataCopy = data;
+  if (dataCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v5 = [(PLEntry *)self entryDefinition];
-      v6 = [v5 objectForKeyedSubscript:@"Keys"];
+      entryDefinition = [(PLEntry *)self entryDefinition];
+      v6 = [entryDefinition objectForKeyedSubscript:@"Keys"];
 
       v14 = MEMORY[0x1E69E9820];
       v15 = 3221225472;
       v16 = __33__PLEntry_setObjectsFromRawData___block_invoke;
       v17 = &unk_1E8519948;
-      v18 = self;
-      v7 = v4;
+      selfCopy = self;
+      v7 = dataCopy;
       v19 = v7;
       [v6 enumerateKeysAndObjectsUsingBlock:&v14];
-      v8 = [v7 objectForKey:{@"entryDate", v14, v15, v16, v17, v18}];
+      v8 = [v7 objectForKey:{@"entryDate", v14, v15, v16, v17, selfCopy}];
 
       if (v8)
       {
@@ -776,9 +776,9 @@ LABEL_8:
         }
 
         entryDate = [v7 objectForKey:@"__pl_internal_timeSensitiveSystemDate"];
-        v12 = [entryDate convertFromSystemToMonotonic];
+        convertFromSystemToMonotonic = [entryDate convertFromSystemToMonotonic];
         v13 = self->_entryDate;
-        self->_entryDate = v12;
+        self->_entryDate = convertFromSystemToMonotonic;
       }
 
       goto LABEL_8;
@@ -854,22 +854,22 @@ void __33__PLEntry_setObjectsFromRawData___block_invoke(uint64_t a1, void *a2, v
 LABEL_16:
 }
 
-- (void)setDynamicObjectsFromRawData:(id)a3
+- (void)setDynamicObjectsFromRawData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   if ([(PLEntry *)self hasDynamicKeys])
   {
-    v5 = [(PLEntry *)self entryDefinition];
-    v6 = [v5 objectForKeyedSubscript:@"Keys"];
+    entryDefinition = [(PLEntry *)self entryDefinition];
+    v6 = [entryDefinition objectForKeyedSubscript:@"Keys"];
 
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __40__PLEntry_setDynamicObjectsFromRawData___block_invoke;
     v8[3] = &unk_1E8519948;
     v9 = v6;
-    v10 = self;
+    selfCopy = self;
     v7 = v6;
-    [v4 enumerateKeysAndObjectsUsingBlock:v8];
+    [dataCopy enumerateKeysAndObjectsUsingBlock:v8];
   }
 }
 
@@ -896,28 +896,28 @@ void __40__PLEntry_setDynamicObjectsFromRawData___block_invoke(uint64_t a1, void
   }
 }
 
-- (void)setObjectsFromData:(id)a3
+- (void)setObjectsFromData:(id)data
 {
-  v4 = a3;
-  v5 = [(PLEntry *)self entryKey];
-  v6 = [PPSEntryKey PPSEnabled:v5];
+  dataCopy = data;
+  entryKey = [(PLEntry *)self entryKey];
+  v6 = [PPSEntryKey PPSEnabled:entryKey];
 
   if (v6)
   {
-    [(PLEntry *)self setObjectsUsingMetricsFromData:v4];
+    [(PLEntry *)self setObjectsUsingMetricsFromData:dataCopy];
   }
 
   else
   {
-    v7 = [(PLEntry *)self entryDefinition];
-    v8 = [v7 objectForKeyedSubscript:@"Keys"];
+    entryDefinition = [(PLEntry *)self entryDefinition];
+    v8 = [entryDefinition objectForKeyedSubscript:@"Keys"];
 
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __30__PLEntry_setObjectsFromData___block_invoke;
     v9[3] = &unk_1E8519948;
-    v10 = v4;
-    v11 = self;
+    v10 = dataCopy;
+    selfCopy = self;
     [v8 enumerateKeysAndObjectsUsingBlock:v9];
   }
 }
@@ -977,19 +977,19 @@ void __30__PLEntry_setObjectsFromData___block_invoke(uint64_t a1, void *a2, void
   [*(a1 + 40) setObject:v7 forKeyedSubscript:v17];
 }
 
-- (void)setObjectsUsingMetricsFromData:(id)a3
+- (void)setObjectsUsingMetricsFromData:(id)data
 {
-  v4 = a3;
-  v5 = [(PLEntry *)self entryKey];
-  v6 = [PPSEntryKey metricsForEntryKey:v5];
+  dataCopy = data;
+  entryKey = [(PLEntry *)self entryKey];
+  v6 = [PPSEntryKey metricsForEntryKey:entryKey];
 
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __42__PLEntry_setObjectsUsingMetricsFromData___block_invoke;
   v8[3] = &unk_1E851B0C0;
-  v9 = v4;
-  v10 = self;
-  v7 = v4;
+  v9 = dataCopy;
+  selfCopy = self;
+  v7 = dataCopy;
   [v6 enumerateKeysAndObjectsUsingBlock:v8];
 }
 
@@ -1014,50 +1014,50 @@ void __42__PLEntry_setObjectsUsingMetricsFromData___block_invoke(uint64_t a1, vo
   [*(a1 + 40) setObject:v6 forKeyedSubscript:v9];
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
-  v10 = a3;
-  v6 = a4;
+  objectCopy = object;
+  keyCopy = key;
   v7 = [(PLEntry *)self sem];
   dispatch_semaphore_wait(v7, 0xFFFFFFFFFFFFFFFFLL);
 
-  if (!v10)
+  if (!objectCopy)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    objectCopy = [MEMORY[0x1E695DFB0] null];
   }
 
-  v8 = [(PLEntry *)self dictionary];
-  [v8 setObject:v10 forKeyedSubscript:v6];
+  dictionary = [(PLEntry *)self dictionary];
+  [dictionary setObject:objectCopy forKeyedSubscript:keyCopy];
 
   v9 = [(PLEntry *)self sem];
   dispatch_semaphore_signal(v9);
 }
 
-- (void)removeObjectForKey:(id)a3
+- (void)removeObjectForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = [(PLEntry *)self sem];
   dispatch_semaphore_wait(v5, 0xFFFFFFFFFFFFFFFFLL);
 
-  v6 = [(PLEntry *)self dictionary];
-  [v6 removeObjectForKey:v4];
+  dictionary = [(PLEntry *)self dictionary];
+  [dictionary removeObjectForKey:keyCopy];
 
   v7 = [(PLEntry *)self sem];
   dispatch_semaphore_signal(v7);
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = [(PLEntry *)self sem];
   dispatch_semaphore_wait(v5, 0xFFFFFFFFFFFFFFFFLL);
 
-  v6 = [(PLEntry *)self dictionary];
-  v7 = [v6 objectForKeyedSubscript:v4];
+  dictionary = [(PLEntry *)self dictionary];
+  v7 = [dictionary objectForKeyedSubscript:keyCopy];
 
-  v8 = [MEMORY[0x1E695DFB0] null];
+  null = [MEMORY[0x1E695DFB0] null];
 
-  if (v7 == v8)
+  if (v7 == null)
   {
 
     goto LABEL_6;
@@ -1068,21 +1068,21 @@ void __42__PLEntry_setObjectsUsingMetricsFromData___block_invoke(uint64_t a1, vo
     goto LABEL_13;
   }
 
-  if ([v4 isEqualToString:@"timestamp"])
+  if ([keyCopy isEqualToString:@"timestamp"])
   {
     v9 = MEMORY[0x1E696AD98];
-    v10 = [(PLEntry *)self entryDate];
-    [v10 timeIntervalSince1970];
+    entryDate = [(PLEntry *)self entryDate];
+    [entryDate timeIntervalSince1970];
     v7 = [v9 numberWithDouble:?];
 
     goto LABEL_13;
   }
 
-  if (![v4 isEqualToString:@"entryDate"])
+  if (![keyCopy isEqualToString:@"entryDate"])
   {
-    if (([v4 isEqualToString:@"ID"] & 1) != 0 || objc_msgSend(v4, "isEqualToString:", @"entryID"))
+    if (([keyCopy isEqualToString:@"ID"] & 1) != 0 || objc_msgSend(keyCopy, "isEqualToString:", @"entryID"))
     {
-      v11 = [MEMORY[0x1E696AD98] numberWithLongLong:{-[PLEntry entryID](self, "entryID")}];
+      entryDate2 = [MEMORY[0x1E696AD98] numberWithLongLong:{-[PLEntry entryID](self, "entryID")}];
       goto LABEL_12;
     }
 
@@ -1091,9 +1091,9 @@ LABEL_6:
     goto LABEL_13;
   }
 
-  v11 = [(PLEntry *)self entryDate];
+  entryDate2 = [(PLEntry *)self entryDate];
 LABEL_12:
-  v7 = v11;
+  v7 = entryDate2;
 LABEL_13:
   v12 = [(PLEntry *)self sem];
   dispatch_semaphore_signal(v12);
@@ -1101,22 +1101,22 @@ LABEL_13:
   return v7;
 }
 
-- (id)definitionForKey:(id)a3
+- (id)definitionForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(PLEntry *)self entryDefinition];
-  v6 = [v5 objectForKeyedSubscript:@"Keys"];
-  v7 = [v6 objectForKeyedSubscript:v4];
+  keyCopy = key;
+  entryDefinition = [(PLEntry *)self entryDefinition];
+  v6 = [entryDefinition objectForKeyedSubscript:@"Keys"];
+  v7 = [v6 objectForKeyedSubscript:keyCopy];
 
   return v7;
 }
 
-- (BOOL)isKeyDynamic:(id)a3
+- (BOOL)isKeyDynamic:(id)dynamic
 {
-  v4 = a3;
+  dynamicCopy = dynamic;
   if ([(PLEntry *)self hasDynamicKeys])
   {
-    v5 = [(PLEntry *)self definitionForKey:v4];
+    v5 = [(PLEntry *)self definitionForKey:dynamicCopy];
     v6 = v5 == 0;
   }
 
@@ -1128,165 +1128,165 @@ LABEL_13:
   return v6;
 }
 
-- (BOOL)isKeyAggregateValue:(id)a3
+- (BOOL)isKeyAggregateValue:(id)value
 {
-  v3 = [(PLEntry *)self definitionForKey:a3];
+  v3 = [(PLEntry *)self definitionForKey:value];
   v4 = [v3 objectForKeyedSubscript:@"IsAggregateValue"];
 
   if (v4)
   {
     v5 = [v3 objectForKeyedSubscript:@"IsAggregateValue"];
-    v6 = [v5 BOOLValue];
+    bOOLValue = [v5 BOOLValue];
   }
 
   else
   {
-    v6 = 0;
+    bOOLValue = 0;
   }
 
-  return v6;
+  return bOOLValue;
 }
 
-- (id)unitForKey:(id)a3
+- (id)unitForKey:(id)key
 {
-  v3 = [(PLEntry *)self definitionForKey:a3];
+  v3 = [(PLEntry *)self definitionForKey:key];
   v4 = [v3 objectForKeyedSubscript:@"Unit"];
 
   return v4;
 }
 
-- (signed)formaterForKey:(id)a3
+- (signed)formaterForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(PLEntry *)self entryKey];
-  v6 = [PPSEntryKey PPSEnabled:v5];
+  keyCopy = key;
+  entryKey = [(PLEntry *)self entryKey];
+  v6 = [PPSEntryKey PPSEnabled:entryKey];
 
   if (v6)
   {
-    v7 = [(PLEntry *)self entryKey];
-    v8 = [PPSEntryKey subsystemForEntryKey:v7];
+    entryKey2 = [(PLEntry *)self entryKey];
+    v8 = [PPSEntryKey subsystemForEntryKey:entryKey2];
 
-    v9 = [(PLEntry *)self entryKey];
-    v10 = [PPSEntryKey categoryForEntryKey:v9];
+    entryKey3 = [(PLEntry *)self entryKey];
+    v10 = [PPSEntryKey categoryForEntryKey:entryKey3];
 
-    v11 = [MEMORY[0x1E69BDC20] getMetadataForSubsystem:v8 category:v10 name:v4];
+    v11 = [MEMORY[0x1E69BDC20] getMetadataForSubsystem:v8 category:v10 name:keyCopy];
     v12 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v11, "datatype")}];
-    v13 = [PLValueUtilties formatterFromDataType:v12];
+    shortValue = [PLValueUtilties formatterFromDataType:v12];
   }
 
   else
   {
-    v14 = [(PLEntry *)self definitionForKey:v4];
+    v14 = [(PLEntry *)self definitionForKey:keyCopy];
     v8 = [v14 objectForKeyedSubscript:@"Type"];
 
     if (v8)
     {
-      v13 = [v8 shortValue];
+      shortValue = [v8 shortValue];
     }
 
     else
     {
-      v13 = 0x8000;
+      shortValue = 0x8000;
     }
   }
 
-  return v13;
+  return shortValue;
 }
 
-+ (signed)dataFormatForMetric:(id)a3 auxiliaryMetrics:(id)a4
++ (signed)dataFormatForMetric:(id)metric auxiliaryMetrics:(id)metrics
 {
-  if (!a3 || !a4)
+  if (!metric || !metrics)
   {
     return 0x8000;
   }
 
-  v4 = [a4 objectForKeyedSubscript:?];
+  v4 = [metrics objectForKeyedSubscript:?];
   v5 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v4, "datatype")}];
   v6 = [PLValueUtilties formatterFromDataType:v5];
 
   return v6;
 }
 
-- (int)staticArraySizeForKey:(id)a3
+- (int)staticArraySizeForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(PLEntry *)self entryKey];
-  v6 = [PPSEntryKey PPSEnabled:v5];
+  keyCopy = key;
+  entryKey = [(PLEntry *)self entryKey];
+  v6 = [PPSEntryKey PPSEnabled:entryKey];
 
   if (v6)
   {
-    v7 = [(PLEntry *)self entryKey];
-    v8 = [PPSEntryKey subsystemForEntryKey:v7];
+    entryKey2 = [(PLEntry *)self entryKey];
+    v8 = [PPSEntryKey subsystemForEntryKey:entryKey2];
 
-    v9 = [(PLEntry *)self entryKey];
-    v10 = [PPSEntryKey categoryForEntryKey:v9];
+    entryKey3 = [(PLEntry *)self entryKey];
+    v10 = [PPSEntryKey categoryForEntryKey:entryKey3];
 
-    v11 = [MEMORY[0x1E69BDC20] getMetadataForSubsystem:v8 category:v10 name:v4];
+    v11 = [MEMORY[0x1E69BDC20] getMetadataForSubsystem:v8 category:v10 name:keyCopy];
     v12 = v11;
     if (v11 && [v11 auxiliaryType] == 3 && objc_msgSend(v12, "fixedArraySize"))
     {
-      v13 = [v12 fixedArraySize];
+      fixedArraySize = [v12 fixedArraySize];
     }
 
     else
     {
-      v13 = -1;
+      fixedArraySize = -1;
     }
 
     goto LABEL_10;
   }
 
-  if (![(PLEntry *)self formaterForKey:v4])
+  if (![(PLEntry *)self formaterForKey:keyCopy])
   {
-    v15 = [(PLEntry *)self definitionForKey:v4];
+    v15 = [(PLEntry *)self definitionForKey:keyCopy];
     v16 = [v15 objectForKeyedSubscript:@"TypeArraySize"];
 
     if (v16)
     {
-      v8 = [(PLEntry *)self definitionForKey:v4];
+      v8 = [(PLEntry *)self definitionForKey:keyCopy];
       v10 = [v8 objectForKeyedSubscript:@"TypeArraySize"];
-      v13 = [v10 intValue];
+      fixedArraySize = [v10 intValue];
 LABEL_10:
 
       goto LABEL_11;
     }
   }
 
-  v13 = -1;
+  fixedArraySize = -1;
 LABEL_11:
 
-  return v13;
+  return fixedArraySize;
 }
 
-- (id)keyValuePathForKey:(id)a3
+- (id)keyValuePathForKey:(id)key
 {
-  v3 = [(PLEntry *)self definitionForKey:a3];
+  v3 = [(PLEntry *)self definitionForKey:key];
   v4 = [v3 objectForKeyedSubscript:@"KeyValuePath"];
   v5 = [v4 componentsJoinedByString:@"."];
 
   return v5;
 }
 
-- (int64_t)compare:(id)a3 options:(signed __int16)a4
+- (int64_t)compare:(id)compare options:(signed __int16)options
 {
-  v4 = a4;
+  optionsCopy = options;
   v214 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(PLEntry *)self entryDate];
-  v8 = [v6 entryDate];
-  v9 = [v7 compare:v8];
+  compareCopy = compare;
+  entryDate = [(PLEntry *)self entryDate];
+  entryDate2 = [compareCopy entryDate];
+  v9 = [entryDate compare:entryDate2];
 
   p_superclass = &OBJC_METACLASS___PLEntryDefinition.superclass;
-  v206 = v6;
-  if (v4 == 2)
+  v206 = compareCopy;
+  if (optionsCopy == 2)
   {
     if (PLEntryDebug == 1)
     {
       v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"tolerance in play"];
       v12 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Storage/PLEntry.m"];
-      v13 = [v12 lastPathComponent];
+      lastPathComponent = [v12 lastPathComponent];
       v14 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLEntry compare:options:]"];
-      [PLCoreStorage logMessage:v11 fromFile:v13 fromFunction:v14 fromLineNumber:547];
+      [PLCoreStorage logMessage:v11 fromFile:lastPathComponent fromFunction:v14 fromLineNumber:547];
 
       v15 = PLLogCommon();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
@@ -1294,12 +1294,12 @@ LABEL_11:
         [PLSubmissionFile logSubmissionResultToCAWithErrorType:withFileType:withOverrideKeys:];
       }
 
-      v6 = v206;
+      compareCopy = v206;
       p_superclass = (&OBJC_METACLASS___PLEntryDefinition + 8);
     }
   }
 
-  else if (v4 == 1)
+  else if (optionsCopy == 1)
   {
     if (PLEntryDebug != 1)
     {
@@ -1307,15 +1307,15 @@ LABEL_11:
     }
 
     v16 = MEMORY[0x1E696AEC0];
-    v17 = [(PLEntry *)self entryDate];
-    v18 = [v6 entryDate];
-    v19 = [v16 stringWithFormat:@"PLEntry.compare date: self.date=%@ other.date=%@", v17, v18];
+    entryDate3 = [(PLEntry *)self entryDate];
+    entryDate4 = [compareCopy entryDate];
+    v19 = [v16 stringWithFormat:@"PLEntry.compare date: self.date=%@ other.date=%@", entryDate3, entryDate4];
 
     v20 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Storage/PLEntry.m"];
-    v21 = [v20 lastPathComponent];
+    lastPathComponent2 = [v20 lastPathComponent];
     v22 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLEntry compare:options:]"];
     obj = v19;
-    [PLCoreStorage logMessage:v19 fromFile:v21 fromFunction:v22 fromLineNumber:550];
+    [PLCoreStorage logMessage:v19 fromFile:lastPathComponent2 fromFunction:v22 fromLineNumber:550];
 
     v23 = PLLogCommon();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
@@ -1329,10 +1329,10 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  v24 = [(PLEntry *)self keys];
-  v25 = [v24 count];
-  v26 = [v6 keys];
-  v27 = [v26 count];
+  keys = [(PLEntry *)self keys];
+  v25 = [keys count];
+  keys2 = [compareCopy keys];
+  v27 = [keys2 count];
 
   if (v25 != v27)
   {
@@ -1342,16 +1342,16 @@ LABEL_18:
     }
 
     v38 = MEMORY[0x1E696AEC0];
-    v39 = [(PLEntry *)self keys];
-    v40 = [v39 count];
-    v41 = [v6 keys];
-    v42 = [v38 stringWithFormat:@"PLEntry.compare key count: self.count=%lu other.count=%lu", v40, objc_msgSend(v41, "count")];
+    keys3 = [(PLEntry *)self keys];
+    v40 = [keys3 count];
+    keys4 = [compareCopy keys];
+    v42 = [v38 stringWithFormat:@"PLEntry.compare key count: self.count=%lu other.count=%lu", v40, objc_msgSend(keys4, "count")];
 
     v43 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Storage/PLEntry.m"];
-    v44 = [v43 lastPathComponent];
+    lastPathComponent3 = [v43 lastPathComponent];
     v45 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLEntry compare:options:]"];
     obj = v42;
-    [PLCoreStorage logMessage:v42 fromFile:v44 fromFunction:v45 fromLineNumber:555];
+    [PLCoreStorage logMessage:v42 fromFile:lastPathComponent3 fromFunction:v45 fromLineNumber:555];
 
     v23 = PLLogCommon();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
@@ -1362,9 +1362,9 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  v28 = [(PLEntry *)self entryKey];
-  v29 = [v6 entryKey];
-  v30 = [v28 caseInsensitiveCompare:v29];
+  entryKey = [(PLEntry *)self entryKey];
+  entryKey2 = [compareCopy entryKey];
+  v30 = [entryKey caseInsensitiveCompare:entryKey2];
 
   if (v30)
   {
@@ -1374,15 +1374,15 @@ LABEL_18:
     }
 
     v31 = MEMORY[0x1E696AEC0];
-    v32 = [(PLEntry *)self entryKey];
-    v33 = [v6 entryKey];
-    v34 = [v31 stringWithFormat:@"PLEntry.compare key: self.key=%@ other.key=%@", v32, v33];
+    entryKey3 = [(PLEntry *)self entryKey];
+    entryKey4 = [compareCopy entryKey];
+    v34 = [v31 stringWithFormat:@"PLEntry.compare key: self.key=%@ other.key=%@", entryKey3, entryKey4];
 
     v35 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Storage/PLEntry.m"];
-    v36 = [v35 lastPathComponent];
+    lastPathComponent4 = [v35 lastPathComponent];
     v37 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLEntry compare:options:]"];
     obj = v34;
-    [PLCoreStorage logMessage:v34 fromFile:v36 fromFunction:v37 fromLineNumber:560];
+    [PLCoreStorage logMessage:v34 fromFile:lastPathComponent4 fromFunction:v37 fromLineNumber:560];
 
     v23 = PLLogCommon();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
@@ -1393,7 +1393,7 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  v203 = v4;
+  v203 = optionsCopy;
   v199 = v9;
   v209 = 0u;
   v210 = 0u;
@@ -1409,9 +1409,9 @@ LABEL_110:
     {
       v46 = [MEMORY[0x1E696AEC0] stringWithFormat:@"PLEntry.compare NSOrderedSame!"];
       v153 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Storage/PLEntry.m"];
-      v154 = [v153 lastPathComponent];
+      lastPathComponent5 = [v153 lastPathComponent];
       v155 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLEntry compare:options:]"];
-      [PLCoreStorage logMessage:v46 fromFile:v154 fromFunction:v155 fromLineNumber:692];
+      [PLCoreStorage logMessage:v46 fromFile:lastPathComponent5 fromFunction:v155 fromLineNumber:692];
 
       v50 = PLLogCommon();
       if (os_log_type_enabled(v50, OS_LOG_TYPE_DEBUG))
@@ -1444,8 +1444,8 @@ LABEL_27:
     }
 
     v55 = *(*(&v207 + 1) + 8 * v54);
-    v56 = [(PLEntry *)self entryDefinition];
-    v57 = [PLEntryDefinition keyConfigsForEntryDefinition:v56];
+    entryDefinition = [(PLEntry *)self entryDefinition];
+    v57 = [PLEntryDefinition keyConfigsForEntryDefinition:entryDefinition];
     v58 = [v57 objectForKeyedSubscript:v55];
     v23 = [v58 objectForKeyedSubscript:@"FilterEntryLoggingTolerances"];
 
@@ -1455,9 +1455,9 @@ LABEL_27:
     {
       v62 = [MEMORY[0x1E696AEC0] stringWithFormat:@"key=%@ toleranceDefinition=%@", v55, v23];
       v63 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Storage/PLEntry.m"];
-      v64 = [v63 lastPathComponent];
+      lastPathComponent6 = [v63 lastPathComponent];
       v65 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLEntry compare:options:]"];
-      [PLCoreStorage logMessage:v62 fromFile:v64 fromFunction:v65 fromLineNumber:567];
+      [PLCoreStorage logMessage:v62 fromFile:lastPathComponent6 fromFunction:v65 fromLineNumber:567];
 
       v66 = PLLogCommon();
       if (os_log_type_enabled(v66, OS_LOG_TYPE_DEBUG))
@@ -1468,11 +1468,11 @@ LABEL_27:
       }
     }
 
-    v6 = v206;
+    compareCopy = v206;
     if (v61)
     {
       v67 = [v23 objectForKeyedSubscript:@"Ignore"];
-      v68 = v67;
+      v126 = v67;
       if (v67 && ([v67 BOOLValue] & 1) != 0)
       {
         goto LABEL_87;
@@ -1507,12 +1507,12 @@ LABEL_27:
       v156 = MEMORY[0x1E696AEC0];
       v157 = [(PLEntry *)self objectForKeyedSubscript:v55];
       v158 = [v206 objectForKeyedSubscript:v55];
-      v159 = [v156 stringWithFormat:@"PLEntry.compare(%@) nil value: self.value=%@ other.value=%@", v55, v157, v158];
+      v158 = [v156 stringWithFormat:@"PLEntry.compare(%@) nil value: self.value=%@ other.value=%@", v55, v157, v158];
 
       v160 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Storage/PLEntry.m"];
-      v161 = [v160 lastPathComponent];
+      lastPathComponent7 = [v160 lastPathComponent];
       v162 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLEntry compare:options:]"];
-      [PLCoreStorage logMessage:v159 fromFile:v161 fromFunction:v162 fromLineNumber:579];
+      [PLCoreStorage logMessage:v158 fromFile:lastPathComponent7 fromFunction:v162 fromLineNumber:579];
 
       v163 = PLLogCommon();
       if (os_log_type_enabled(v163, OS_LOG_TYPE_DEBUG))
@@ -1543,12 +1543,12 @@ LABEL_27:
       v168 = [v206 objectForKeyedSubscript:v55];
       v169 = objc_opt_class();
       v170 = NSStringFromClass(v169);
-      v159 = [v164 stringWithFormat:@"PLEntry.compare(%@) class value: self.value.class=%@ other.value.class=%@", v55, v167, v170];
+      v158 = [v164 stringWithFormat:@"PLEntry.compare(%@) class value: self.value.class=%@ other.value.class=%@", v55, v167, v170];
 
       v171 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Storage/PLEntry.m"];
-      v172 = [v171 lastPathComponent];
+      lastPathComponent8 = [v171 lastPathComponent];
       v173 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLEntry compare:options:]"];
-      [PLCoreStorage logMessage:v159 fromFile:v172 fromFunction:v173 fromLineNumber:584];
+      [PLCoreStorage logMessage:v158 fromFile:lastPathComponent8 fromFunction:v173 fromLineNumber:584];
 
       v163 = PLLogCommon();
       if (os_log_type_enabled(v163, OS_LOG_TYPE_DEBUG))
@@ -1556,7 +1556,7 @@ LABEL_27:
         [PLSubmissionFile logSubmissionResultToCAWithErrorType:withFileType:withOverrideKeys:];
       }
 
-      v6 = v206;
+      compareCopy = v206;
 LABEL_122:
       v9 = v199;
 LABEL_138:
@@ -1600,12 +1600,12 @@ LABEL_138:
           v124 = [(PLEntry *)self objectForKeyedSubscript:v55];
           v125 = objc_opt_class();
           v126 = NSStringFromClass(v125);
-          v68 = [v123 stringWithFormat:@"bailing on class %@", v126];
+          v126 = [v123 stringWithFormat:@"bailing on class %@", v126];
 
           v127 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Storage/PLEntry.m"];
-          v128 = [v127 lastPathComponent];
+          lastPathComponent9 = [v127 lastPathComponent];
           v129 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLEntry compare:options:]"];
-          [PLCoreStorage logMessage:v68 fromFile:v128 fromFunction:v129 fromLineNumber:603];
+          [PLCoreStorage logMessage:v126 fromFile:lastPathComponent9 fromFunction:v129 fromLineNumber:603];
 
           v122 = PLLogCommon();
           if (!os_log_type_enabled(v122, OS_LOG_TYPE_DEBUG))
@@ -1615,7 +1615,7 @@ LABEL_138:
 
 LABEL_99:
           *buf = 138412290;
-          v212 = v68;
+          v212 = v126;
           _os_log_debug_impl(&dword_1D8611000, v122, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
           goto LABEL_86;
         }
@@ -1641,9 +1641,9 @@ LABEL_99:
         {
           v97 = [MEMORY[0x1E696AEC0] stringWithFormat:@"specialCase! specialCase=%f thisValue=%f otherValue=%f", *&v96, *&v80, *&v83];
           v98 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Storage/PLEntry.m"];
-          v99 = [v98 lastPathComponent];
+          lastPathComponent10 = [v98 lastPathComponent];
           v100 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLEntry compare:options:]"];
-          [PLCoreStorage logMessage:v97 fromFile:v99 fromFunction:v100 fromLineNumber:608];
+          [PLCoreStorage logMessage:v97 fromFile:lastPathComponent10 fromFunction:v100 fromLineNumber:608];
 
           v101 = PLLogCommon();
           if (os_log_type_enabled(v101, OS_LOG_TYPE_DEBUG))
@@ -1653,7 +1653,7 @@ LABEL_99:
             _os_log_debug_impl(&dword_1D8611000, v101, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
           }
 
-          v6 = v206;
+          compareCopy = v206;
         }
 
         v102 = v83 == v96 || v80 == v96;
@@ -1664,11 +1664,11 @@ LABEL_99:
             goto LABEL_145;
           }
 
-          v159 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hit specialCase!"];
+          v158 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hit specialCase!"];
           v196 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Storage/PLEntry.m"];
-          v197 = [v196 lastPathComponent];
+          lastPathComponent11 = [v196 lastPathComponent];
           v198 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLEntry compare:options:]"];
-          [PLCoreStorage logMessage:v159 fromFile:v197 fromFunction:v198 fromLineNumber:610];
+          [PLCoreStorage logMessage:v158 fromFile:lastPathComponent11 fromFunction:v198 fromLineNumber:610];
 
           v163 = PLLogCommon();
           v9 = v199;
@@ -1782,9 +1782,9 @@ LABEL_75:
         {
           v113 = [MEMORY[0x1E696AEC0] stringWithFormat:@"key=%@ thisValue=%f otherValue=%f lowerBound=%f upperBound=%f", v55, *&v80, *&v83, *&v107, *&v108];
           v114 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Storage/PLEntry.m"];
-          v115 = [v114 lastPathComponent];
+          lastPathComponent12 = [v114 lastPathComponent];
           v116 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLEntry compare:options:]"];
-          [PLCoreStorage logMessage:v113 fromFile:v115 fromFunction:v116 fromLineNumber:661];
+          [PLCoreStorage logMessage:v113 fromFile:lastPathComponent12 fromFunction:v116 fromLineNumber:661];
 
           v117 = PLLogCommon();
           if (os_log_type_enabled(v117, OS_LOG_TYPE_DEBUG))
@@ -1794,7 +1794,7 @@ LABEL_75:
             _os_log_debug_impl(&dword_1D8611000, v117, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
           }
 
-          v6 = v206;
+          compareCopy = v206;
         }
 
         v118 = *(p_superclass + 3928);
@@ -1805,11 +1805,11 @@ LABEL_75:
             goto LABEL_88;
           }
 
-          v68 = [MEMORY[0x1E696AEC0] stringWithFormat:@"inside tolerance"];
+          v126 = [MEMORY[0x1E696AEC0] stringWithFormat:@"inside tolerance"];
           v119 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Storage/PLEntry.m"];
-          v120 = [v119 lastPathComponent];
+          lastPathComponent13 = [v119 lastPathComponent];
           v121 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLEntry compare:options:]"];
-          [PLCoreStorage logMessage:v68 fromFile:v120 fromFunction:v121 fromLineNumber:663];
+          [PLCoreStorage logMessage:v126 fromFile:lastPathComponent13 fromFunction:v121 fromLineNumber:663];
 
           v122 = PLLogCommon();
           if (!os_log_type_enabled(v122, OS_LOG_TYPE_DEBUG))
@@ -1825,11 +1825,11 @@ LABEL_75:
           goto LABEL_145;
         }
 
-        v159 = [MEMORY[0x1E696AEC0] stringWithFormat:@"outside tolerance"];
+        v158 = [MEMORY[0x1E696AEC0] stringWithFormat:@"outside tolerance"];
         v193 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Storage/PLEntry.m"];
-        v194 = [v193 lastPathComponent];
+        lastPathComponent14 = [v193 lastPathComponent];
         v195 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLEntry compare:options:]"];
-        [PLCoreStorage logMessage:v159 fromFile:v194 fromFunction:v195 fromLineNumber:666];
+        [PLCoreStorage logMessage:v158 fromFile:lastPathComponent14 fromFunction:v195 fromLineNumber:666];
 
         v163 = PLLogCommon();
         v9 = v199;
@@ -1852,11 +1852,11 @@ LABEL_141:
 
       if (*(p_superclass + 3928) == 1)
       {
-        v68 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Bailing on no matched tolerance..."];
+        v126 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Bailing on no matched tolerance..."];
         v149 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Storage/PLEntry.m"];
-        v150 = [v149 lastPathComponent];
+        lastPathComponent15 = [v149 lastPathComponent];
         v151 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLEntry compare:options:]"];
-        [PLCoreStorage logMessage:v68 fromFile:v150 fromFunction:v151 fromLineNumber:657];
+        [PLCoreStorage logMessage:v126 fromFile:lastPathComponent15 fromFunction:v151 fromLineNumber:657];
 
         v122 = PLLogCommon();
         if (os_log_type_enabled(v122, OS_LOG_TYPE_DEBUG))
@@ -1865,7 +1865,7 @@ LABEL_141:
         }
 
 LABEL_86:
-        v6 = v206;
+        compareCopy = v206;
 
 LABEL_87:
         goto LABEL_88;
@@ -1907,12 +1907,12 @@ LABEL_124:
         v178 = @"NO";
       }
 
-      v159 = [v174 stringWithFormat:@"PLEntry.compare(%@) respondsToSelector: self.respondsToSelector=%@ other.respondsToSelector=%@", v55, v176, v178];
+      v158 = [v174 stringWithFormat:@"PLEntry.compare(%@) respondsToSelector: self.respondsToSelector=%@ other.respondsToSelector=%@", v55, v176, v178];
 
       v179 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Storage/PLEntry.m"];
-      v180 = [v179 lastPathComponent];
+      lastPathComponent16 = [v179 lastPathComponent];
       v181 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLEntry compare:options:]"];
-      [PLCoreStorage logMessage:v159 fromFile:v180 fromFunction:v181 fromLineNumber:681];
+      [PLCoreStorage logMessage:v158 fromFile:lastPathComponent16 fromFunction:v181 fromLineNumber:681];
 
       v163 = PLLogCommon();
       if (os_log_type_enabled(v163, OS_LOG_TYPE_DEBUG))
@@ -1973,12 +1973,12 @@ LABEL_88:
     v187 = objc_opt_class();
     v188 = NSStringFromClass(v187);
     v189 = [v206 objectForKeyedSubscript:v55];
-    v159 = [v204 stringWithFormat:@"PLEntry.compare(%@) value: self.value(%@)=%@ other.value(%@)=%@", v55, v184, v185, v188, v189];
+    v158 = [v204 stringWithFormat:@"PLEntry.compare(%@) value: self.value(%@)=%@ other.value(%@)=%@", v55, v184, v185, v188, v189];
 
     v190 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Storage/PLEntry.m"];
-    v191 = [v190 lastPathComponent];
+    lastPathComponent17 = [v190 lastPathComponent];
     v192 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLEntry compare:options:]"];
-    [PLCoreStorage logMessage:v159 fromFile:v191 fromFunction:v192 fromLineNumber:673];
+    [PLCoreStorage logMessage:v158 fromFile:lastPathComponent17 fromFunction:v192 fromLineNumber:673];
 
     v163 = PLLogCommon();
     if (os_log_type_enabled(v163, OS_LOG_TYPE_DEBUG))
@@ -1986,7 +1986,7 @@ LABEL_88:
       [PLSubmissionFile logSubmissionResultToCAWithErrorType:withFileType:withOverrideKeys:];
     }
 
-    v6 = v206;
+    compareCopy = v206;
     goto LABEL_137;
   }
 
@@ -1999,9 +1999,9 @@ LABEL_20:
   {
     v46 = [MEMORY[0x1E696AEC0] stringWithFormat:@"PLEntry.compare notSame"];
     v47 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Storage/PLEntry.m"];
-    v48 = [v47 lastPathComponent];
+    lastPathComponent18 = [v47 lastPathComponent];
     v49 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLEntry compare:options:]"];
-    [PLCoreStorage logMessage:v46 fromFile:v48 fromFunction:v49 fromLineNumber:689];
+    [PLCoreStorage logMessage:v46 fromFile:lastPathComponent18 fromFunction:v49 fromLineNumber:689];
 
     v50 = PLLogCommon();
     if (os_log_type_enabled(v50, OS_LOG_TYPE_DEBUG))
@@ -2028,18 +2028,18 @@ BOOL __42__PLEntry_descriptionRespectingAllowlist___block_invoke(uint64_t a1)
 - (id)serialized
 {
   v3 = objc_opt_new();
-  v4 = [(PLEntry *)self dictionary];
+  dictionary = [(PLEntry *)self dictionary];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __21__PLEntry_serialized__block_invoke;
   v10[3] = &unk_1E8519700;
   v5 = v3;
   v11 = v5;
-  [v4 enumerateKeysAndObjectsUsingBlock:v10];
+  [dictionary enumerateKeysAndObjectsUsingBlock:v10];
 
-  v6 = [(PLEntry *)self entryDate];
+  entryDate = [(PLEntry *)self entryDate];
 
-  if (v6)
+  if (entryDate)
   {
     [(PLEntry *)self entryDate];
   }
@@ -2051,8 +2051,8 @@ BOOL __42__PLEntry_descriptionRespectingAllowlist___block_invoke(uint64_t a1)
   v7 = ;
   [v5 setObject:v7 forKeyedSubscript:@"timestamp"];
 
-  v8 = [(PLEntry *)self entryKey];
-  [v5 setObject:v8 forKeyedSubscript:@"EntryKey"];
+  entryKey = [(PLEntry *)self entryKey];
+  [v5 setObject:entryKey forKeyedSubscript:@"EntryKey"];
 
   return v5;
 }
@@ -2069,33 +2069,33 @@ void __21__PLEntry_serialized__block_invoke(uint64_t a1, void *a2, void *a3)
 
 - (id)serializedForJSON
 {
-  v3 = [(PLEntry *)self dictionary];
-  v4 = [PLUtilities JSONSanitizeDictionary:v3];
+  dictionary = [(PLEntry *)self dictionary];
+  v4 = [PLUtilities JSONSanitizeDictionary:dictionary];
   v5 = [v4 mutableCopy];
 
   v6 = MEMORY[0x1E696AD98];
-  v7 = [(PLEntry *)self entryDate];
-  [v7 timeIntervalSince1970];
+  entryDate = [(PLEntry *)self entryDate];
+  [entryDate timeIntervalSince1970];
   v8 = [v6 numberWithDouble:?];
   [v5 setObject:v8 forKeyedSubscript:@"timestamp"];
 
   return v5;
 }
 
-+ (id)summarizeAggregateEntries:(id)a3
++ (id)summarizeAggregateEntries:(id)entries
 {
-  v3 = a3;
-  if ([v3 count])
+  entriesCopy = entries;
+  if ([entriesCopy count])
   {
-    v4 = [v3 objectAtIndexedSubscript:0];
-    v5 = [v4 entryDefinition];
-    v6 = [v5 objectForKeyedSubscript:@"AggregateKeys"];
+    v4 = [entriesCopy objectAtIndexedSubscript:0];
+    entryDefinition = [v4 entryDefinition];
+    v6 = [entryDefinition objectForKeyedSubscript:@"AggregateKeys"];
 
-    v7 = [v3 objectAtIndexedSubscript:0];
-    v8 = [v7 definedKeys];
-    v9 = [v8 arrayByRemovingObjectsFromArray:v6];
+    v7 = [entriesCopy objectAtIndexedSubscript:0];
+    definedKeys = [v7 definedKeys];
+    v9 = [definedKeys arrayByRemovingObjectsFromArray:v6];
 
-    v10 = [PLEntry summarizeAggregateEntries:v3 withPrimaryKeys:v9];
+    v10 = [PLEntry summarizeAggregateEntries:entriesCopy withPrimaryKeys:v9];
   }
 
   else
@@ -2106,17 +2106,17 @@ void __21__PLEntry_serialized__block_invoke(uint64_t a1, void *a2, void *a3)
   return v10;
 }
 
-+ (id)summarizeAggregateEntries:(id)a3 withPrimaryKeys:(id)a4
++ (id)summarizeAggregateEntries:(id)entries withPrimaryKeys:(id)keys
 {
   v133 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v90 = v5;
-  v7 = [v5 count];
+  entriesCopy = entries;
+  keysCopy = keys;
+  v90 = entriesCopy;
+  v7 = [entriesCopy count];
   v104 = 0;
-  if (v6 && v7)
+  if (keysCopy && v7)
   {
-    if ([v6 count])
+    if ([keysCopy count])
     {
       v8 = objc_opt_class();
       block[0] = MEMORY[0x1E69E9820];
@@ -2134,18 +2134,18 @@ void __21__PLEntry_serialized__block_invoke(uint64_t a1, void *a2, void *a3)
 
       v10 = objc_opt_new();
       v98 = objc_opt_new();
-      v11 = [v5 objectAtIndexedSubscript:0];
-      v12 = [v11 entryDefinition];
-      v93 = [v12 objectForKeyedSubscript:@"AggregateKeys"];
+      v11 = [entriesCopy objectAtIndexedSubscript:0];
+      entryDefinition = [v11 entryDefinition];
+      v93 = [entryDefinition objectForKeyedSubscript:@"AggregateKeys"];
 
       v101 = objc_opt_new();
       if (v9 == 1)
       {
-        v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"primaryKeys=%@\naggregateKeys=%@", v6, v93];
+        v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"primaryKeys=%@\naggregateKeys=%@", keysCopy, v93];
         v14 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Storage/PLEntry.m"];
-        v15 = [v14 lastPathComponent];
+        lastPathComponent = [v14 lastPathComponent];
         v16 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"+[PLEntry summarizeAggregateEntries:withPrimaryKeys:]"];
-        [PLCoreStorage logMessage:v13 fromFile:v15 fromFunction:v16 fromLineNumber:803];
+        [PLCoreStorage logMessage:v13 fromFile:lastPathComponent fromFunction:v16 fromLineNumber:803];
 
         v17 = PLLogCommon();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
@@ -2160,7 +2160,7 @@ void __21__PLEntry_serialized__block_invoke(uint64_t a1, void *a2, void *a3)
       v121 = 0u;
       obj = v90;
       v91 = v10;
-      v92 = v6;
+      v92 = keysCopy;
       v96 = [obj countByEnumeratingWithState:&v120 objects:v132 count:16];
       if (v96)
       {
@@ -2182,22 +2182,22 @@ void __21__PLEntry_serialized__block_invoke(uint64_t a1, void *a2, void *a3)
             if (v9)
             {
               v100 = objc_opt_new();
-              if (![v6 count])
+              if (![keysCopy count])
               {
                 v20 = v19;
                 v105 = 0;
 LABEL_40:
-                v40 = [MEMORY[0x1E696AEC0] stringWithFormat:@"aggregating... for %@", v100];
+                v100 = [MEMORY[0x1E696AEC0] stringWithFormat:@"aggregating... for %@", v100];
                 v41 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Storage/PLEntry.m"];
-                v42 = [v41 lastPathComponent];
+                lastPathComponent2 = [v41 lastPathComponent];
                 v43 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"+[PLEntry summarizeAggregateEntries:withPrimaryKeys:]"];
-                [PLCoreStorage logMessage:v40 fromFile:v42 fromFunction:v43 fromLineNumber:842];
+                [PLCoreStorage logMessage:v100 fromFile:lastPathComponent2 fromFunction:v43 fromLineNumber:842];
 
                 v44 = PLLogCommon();
                 if (os_log_type_enabled(v44, OS_LOG_TYPE_DEBUG))
                 {
                   *buf = 138412290;
-                  v131 = v40;
+                  v131 = v100;
                   _os_log_debug_impl(&dword_1D8611000, v44, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
                 }
 
@@ -2233,9 +2233,9 @@ LABEL_49:
                     v50 = *(*(&v116 + 1) + 8 * v49);
                     v51 = [v48 definitionForKey:v50];
                     v52 = [v51 objectForKeyedSubscript:@"AggregateFunction"];
-                    v53 = [v52 shortValue];
+                    shortValue = [v52 shortValue];
 
-                    if (v53 <= 1)
+                    if (shortValue <= 1)
                     {
                       v54 = MEMORY[0x1E696AD98];
                       v55 = [v105 objectForKeyedSubscript:v50];
@@ -2247,7 +2247,7 @@ LABEL_49:
                       [v105 setObject:v60 forKeyedSubscript:v50];
 
                       v48 = v103;
-                      if (v53 == 1)
+                      if (shortValue == 1)
                       {
                         [v101 addObject:v50];
                       }
@@ -2261,7 +2261,7 @@ LABEL_58:
                         if (!v68)
                         {
                           v10 = v91;
-                          v6 = v92;
+                          keysCopy = v92;
                           v9 = v99;
                           v19 = v94;
                           goto LABEL_68;
@@ -2276,7 +2276,7 @@ LABEL_58:
                     break;
                   }
 
-                  if (v53 == 3)
+                  if (shortValue == 3)
                   {
                     v65 = [v105 objectForKeyedSubscript:v50];
                     v66 = [v48 objectForKeyedSubscript:v50];
@@ -2290,7 +2290,7 @@ LABEL_58:
 
                   else
                   {
-                    if (v53 != 2)
+                    if (shortValue != 2)
                     {
                       goto LABEL_58;
                     }
@@ -2313,10 +2313,10 @@ LABEL_58:
 
                 v69 = [MEMORY[0x1E696AEC0] stringWithFormat:@"We should not be here!"];
                 v70 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Storage/PLEntry.m"];
-                v71 = [v70 lastPathComponent];
+                lastPathComponent3 = [v70 lastPathComponent];
                 v72 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"+[PLEntry summarizeAggregateEntries:withPrimaryKeys:]"];
                 v102 = v69;
-                [PLCoreStorage logMessage:v69 fromFile:v71 fromFunction:v72 fromLineNumber:864];
+                [PLCoreStorage logMessage:v69 fromFile:lastPathComponent3 fromFunction:v72 fromLineNumber:864];
 
                 v39 = PLLogCommon();
                 v9 = v99;
@@ -2338,7 +2338,7 @@ LABEL_68:
             else
             {
               v100 = 0;
-              if (![v6 count])
+              if (![keysCopy count])
               {
                 v105 = 0;
                 goto LABEL_69;
@@ -2350,12 +2350,12 @@ LABEL_68:
             v22 = 0;
             do
             {
-              v23 = [v6 objectAtIndexedSubscript:v21];
+              v23 = [keysCopy objectAtIndexedSubscript:v21];
               v24 = [v103 objectForKeyedSubscript:v23];
 
               if (v9)
               {
-                v25 = [v6 objectAtIndexedSubscript:v21];
+                v25 = [keysCopy objectAtIndexedSubscript:v21];
                 [v100 setObject:v24 forKeyedSubscript:v25];
               }
 
@@ -2363,7 +2363,7 @@ LABEL_68:
 
               if (!v26)
               {
-                if (v21 == [v6 count] - 1)
+                if (v21 == [keysCopy count] - 1)
                 {
                   v27 = [v103 copy];
                   [v27 entryKey];
@@ -2385,7 +2385,7 @@ LABEL_68:
                 }
               }
 
-              v31 = [v6 count] - 1;
+              v31 = [keysCopy count] - 1;
               v32 = [v19 objectForKeyedSubscript:v24];
               v33 = v105;
               if (v21 == v31)
@@ -2413,7 +2413,7 @@ LABEL_68:
               ++v21;
             }
 
-            while ([v6 count] > v21);
+            while ([keysCopy count] > v21);
             if (v22)
             {
               if (!v9)
@@ -2421,18 +2421,18 @@ LABEL_68:
                 goto LABEL_69;
               }
 
-              v35 = [MEMORY[0x1E696AEC0] stringWithFormat:@"first hit for %@", v100];
+              v1002 = [MEMORY[0x1E696AEC0] stringWithFormat:@"first hit for %@", v100];
               v36 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Storage/PLEntry.m"];
-              v37 = [v36 lastPathComponent];
+              lastPathComponent4 = [v36 lastPathComponent];
               v38 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"+[PLEntry summarizeAggregateEntries:withPrimaryKeys:]"];
-              v102 = v35;
-              [PLCoreStorage logMessage:v35 fromFile:v37 fromFunction:v38 fromLineNumber:838];
+              v102 = v1002;
+              [PLCoreStorage logMessage:v1002 fromFile:lastPathComponent4 fromFunction:v38 fromLineNumber:838];
 
               v39 = PLLogCommon();
               if (os_log_type_enabled(v39, OS_LOG_TYPE_DEBUG))
               {
                 *buf = 138412290;
-                v131 = v35;
+                v131 = v1002;
                 _os_log_debug_impl(&dword_1D8611000, v39, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
               }
 
@@ -2524,7 +2524,7 @@ LABEL_69:
         while (v75);
       }
 
-      v6 = v92;
+      keysCopy = v92;
     }
 
     else

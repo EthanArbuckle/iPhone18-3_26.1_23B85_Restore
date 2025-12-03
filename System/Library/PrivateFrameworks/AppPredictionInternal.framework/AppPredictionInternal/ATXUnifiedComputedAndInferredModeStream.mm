@@ -1,61 +1,61 @@
 @interface ATXUnifiedComputedAndInferredModeStream
-+ (id)currentUnifiedModeEventAtGivenTime:(id)a3;
-- (ATXUnifiedComputedAndInferredModeStream)initWithComputedModePublisher:(id)a3 inferredModePublisher:(id)a4 startTime:(id)a5 endTime:(id)a6;
-- (ATXUnifiedComputedAndInferredModeStream)initWithStartTime:(id)a3 toEndTime:(id)a4;
-- (BOOL)checkForOverlappingTimeRanges:(id)a3;
-- (void)addComputedModeEventToArrayStream:(id)a3 withStartTime:(double)a4 endTime:(double)a5;
-- (void)addInferredModeEventToArrayStream:(id)a3 withStartTime:(double)a4 endTime:(double)a5;
-- (void)computeUnifiedModeEventsFromStartTime:(id)a3 toEndTime:(id)a4;
++ (id)currentUnifiedModeEventAtGivenTime:(id)time;
+- (ATXUnifiedComputedAndInferredModeStream)initWithComputedModePublisher:(id)publisher inferredModePublisher:(id)modePublisher startTime:(id)time endTime:(id)endTime;
+- (ATXUnifiedComputedAndInferredModeStream)initWithStartTime:(id)time toEndTime:(id)endTime;
+- (BOOL)checkForOverlappingTimeRanges:(id)ranges;
+- (void)addComputedModeEventToArrayStream:(id)stream withStartTime:(double)time endTime:(double)endTime;
+- (void)addInferredModeEventToArrayStream:(id)stream withStartTime:(double)time endTime:(double)endTime;
+- (void)computeUnifiedModeEventsFromStartTime:(id)time toEndTime:(id)endTime;
 @end
 
 @implementation ATXUnifiedComputedAndInferredModeStream
 
-- (ATXUnifiedComputedAndInferredModeStream)initWithStartTime:(id)a3 toEndTime:(id)a4
+- (ATXUnifiedComputedAndInferredModeStream)initWithStartTime:(id)time toEndTime:(id)endTime
 {
-  v6 = a4;
-  v7 = a3;
+  endTimeCopy = endTime;
+  timeCopy = time;
   v8 = BiomeLibrary();
-  v9 = [v8 UserFocus];
-  v10 = [v9 ComputedMode];
-  v11 = [v10 atx_publisherWithStartDate:v7 endDate:v6 maxEvents:0 lastN:0 reversed:0];
+  userFocus = [v8 UserFocus];
+  computedMode = [userFocus ComputedMode];
+  v11 = [computedMode atx_publisherWithStartDate:timeCopy endDate:endTimeCopy maxEvents:0 lastN:0 reversed:0];
 
   v12 = BiomeLibrary();
-  v13 = [v12 UserFocus];
-  v14 = [v13 InferredMode];
-  v15 = [v14 atx_publisherWithStartDate:v7 endDate:v6 maxEvents:0 lastN:0 reversed:0];
+  userFocus2 = [v12 UserFocus];
+  inferredMode = [userFocus2 InferredMode];
+  v15 = [inferredMode atx_publisherWithStartDate:timeCopy endDate:endTimeCopy maxEvents:0 lastN:0 reversed:0];
 
-  v16 = [(ATXUnifiedComputedAndInferredModeStream *)self initWithComputedModePublisher:v11 inferredModePublisher:v15 startTime:v7 endTime:v6];
+  v16 = [(ATXUnifiedComputedAndInferredModeStream *)self initWithComputedModePublisher:v11 inferredModePublisher:v15 startTime:timeCopy endTime:endTimeCopy];
   return v16;
 }
 
-- (ATXUnifiedComputedAndInferredModeStream)initWithComputedModePublisher:(id)a3 inferredModePublisher:(id)a4 startTime:(id)a5 endTime:(id)a6
+- (ATXUnifiedComputedAndInferredModeStream)initWithComputedModePublisher:(id)publisher inferredModePublisher:(id)modePublisher startTime:(id)time endTime:(id)endTime
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  publisherCopy = publisher;
+  modePublisherCopy = modePublisher;
+  timeCopy = time;
+  endTimeCopy = endTime;
   v20.receiver = self;
   v20.super_class = ATXUnifiedComputedAndInferredModeStream;
   v15 = [(ATXUnifiedComputedAndInferredModeStream *)&v20 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_computedModePublisher, a3);
-    objc_storeStrong(&v16->_inferredModePublisher, a4);
+    objc_storeStrong(&v15->_computedModePublisher, publisher);
+    objc_storeStrong(&v16->_inferredModePublisher, modePublisher);
     v17 = objc_opt_new();
     modeEvents = v16->_modeEvents;
     v16->_modeEvents = v17;
 
-    [(ATXUnifiedComputedAndInferredModeStream *)v16 computeUnifiedModeEventsFromStartTime:v13 toEndTime:v14];
+    [(ATXUnifiedComputedAndInferredModeStream *)v16 computeUnifiedModeEventsFromStartTime:timeCopy toEndTime:endTimeCopy];
   }
 
   return v16;
 }
 
-- (void)computeUnifiedModeEventsFromStartTime:(id)a3 toEndTime:(id)a4
+- (void)computeUnifiedModeEventsFromStartTime:(id)time toEndTime:(id)endTime
 {
-  v6 = a3;
-  v7 = a4;
+  timeCopy = time;
+  endTimeCopy = endTime;
   v19[0] = 0;
   v19[1] = v19;
   v19[2] = 0x3032000000;
@@ -75,7 +75,7 @@
   v13[3] = &unk_27859AB00;
   v15 = v19;
   v13[4] = self;
-  v9 = v7;
+  v9 = endTimeCopy;
   v14 = v9;
   v16 = v17;
   v12[0] = MEMORY[0x277D85DD0];
@@ -328,43 +328,43 @@ uint64_t __91__ATXUnifiedComputedAndInferredModeStream_computeUnifiedModeEventsF
   return v7;
 }
 
-- (void)addComputedModeEventToArrayStream:(id)a3 withStartTime:(double)a4 endTime:(double)a5
+- (void)addComputedModeEventToArrayStream:(id)stream withStartTime:(double)time endTime:(double)endTime
 {
-  v8 = [a3 eventBody];
-  v9 = [v8 atx_dndModeSemanticType];
+  eventBody = [stream eventBody];
+  atx_dndModeSemanticType = [eventBody atx_dndModeSemanticType];
 
-  v10 = [MEMORY[0x277CEB440] sharedInstance];
-  v11 = [v10 atxModeForDNDSemanticType:v9];
+  mEMORY[0x277CEB440] = [MEMORY[0x277CEB440] sharedInstance];
+  v11 = [mEMORY[0x277CEB440] atxModeForDNDSemanticType:atx_dndModeSemanticType];
 
-  v14 = [objc_alloc(MEMORY[0x277CBEAA8]) initWithTimeIntervalSinceReferenceDate:a4];
-  v12 = [objc_alloc(MEMORY[0x277CBEAA8]) initWithTimeIntervalSinceReferenceDate:a5];
+  v14 = [objc_alloc(MEMORY[0x277CBEAA8]) initWithTimeIntervalSinceReferenceDate:time];
+  v12 = [objc_alloc(MEMORY[0x277CBEAA8]) initWithTimeIntervalSinceReferenceDate:endTime];
   v13 = [[ATXUnifiedModeEvent alloc] initWithMode:v11 startTime:v14 endTime:v12];
   [(NSMutableArray *)self->_modeEvents addObject:v13];
 }
 
-- (void)addInferredModeEventToArrayStream:(id)a3 withStartTime:(double)a4 endTime:(double)a5
+- (void)addInferredModeEventToArrayStream:(id)stream withStartTime:(double)time endTime:(double)endTime
 {
-  v8 = [a3 eventBody];
-  [v8 modeType];
+  eventBody = [stream eventBody];
+  [eventBody modeType];
   BMUserFocusInferredModeTypeToActivity();
   v9 = ATXModeFromActivityType();
 
-  v12 = [objc_alloc(MEMORY[0x277CBEAA8]) initWithTimeIntervalSinceReferenceDate:a4];
-  v10 = [objc_alloc(MEMORY[0x277CBEAA8]) initWithTimeIntervalSinceReferenceDate:a5];
+  v12 = [objc_alloc(MEMORY[0x277CBEAA8]) initWithTimeIntervalSinceReferenceDate:time];
+  v10 = [objc_alloc(MEMORY[0x277CBEAA8]) initWithTimeIntervalSinceReferenceDate:endTime];
   v11 = [[ATXUnifiedModeEvent alloc] initWithMode:v9 startTime:v12 endTime:v10];
   [(NSMutableArray *)self->_modeEvents addObject:v11];
 }
 
-- (BOOL)checkForOverlappingTimeRanges:(id)a3
+- (BOOL)checkForOverlappingTimeRanges:(id)ranges
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEAA8] distantPast];
+  rangesCopy = ranges;
+  distantPast = [MEMORY[0x277CBEAA8] distantPast];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = v3;
+  v5 = rangesCopy;
   v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
@@ -372,7 +372,7 @@ uint64_t __91__ATXUnifiedComputedAndInferredModeStream_computeUnifiedModeEventsF
     do
     {
       v8 = 0;
-      v9 = v4;
+      v9 = distantPast;
       do
       {
         if (*v17 != v7)
@@ -381,28 +381,28 @@ uint64_t __91__ATXUnifiedComputedAndInferredModeStream_computeUnifiedModeEventsF
         }
 
         v10 = *(*(&v16 + 1) + 8 * v8);
-        v11 = [v10 startTime];
-        if ([v9 compare:v11] == -1)
+        startTime = [v10 startTime];
+        if ([v9 compare:startTime] == -1)
         {
         }
 
         else
         {
-          v12 = [v10 startTime];
-          v13 = [v9 compare:v12];
+          startTime2 = [v10 startTime];
+          v13 = [v9 compare:startTime2];
 
           if (v13)
           {
             LOBYTE(v6) = 1;
-            v4 = v9;
+            distantPast = v9;
             goto LABEL_12;
           }
         }
 
-        v4 = [v10 endTime];
+        distantPast = [v10 endTime];
 
         ++v8;
-        v9 = v4;
+        v9 = distantPast;
       }
 
       while (v6 != v8);
@@ -418,15 +418,15 @@ LABEL_12:
   return v6;
 }
 
-+ (id)currentUnifiedModeEventAtGivenTime:(id)a3
++ (id)currentUnifiedModeEventAtGivenTime:(id)time
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277D41C60] currrentModeEventAtGivenTime:v3];
+  timeCopy = time;
+  v4 = [MEMORY[0x277D41C60] currrentModeEventAtGivenTime:timeCopy];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 eventBody];
-    [v6 atx_dndModeSemanticType];
+    eventBody = [v4 eventBody];
+    [eventBody atx_dndModeSemanticType];
     v7 = ATXModeForDNDSemanticType();
 
     v8 = MEMORY[0x277CBEAA8];
@@ -437,9 +437,9 @@ LABEL_12:
 
   else
   {
-    v9 = [MEMORY[0x277D41C68] currentModeEventAtGivenTime:v3];
-    v11 = [v9 eventBody];
-    [v11 modeType];
+    v9 = [MEMORY[0x277D41C68] currentModeEventAtGivenTime:timeCopy];
+    eventBody2 = [v9 eventBody];
+    [eventBody2 modeType];
     BMUserFocusInferredModeTypeToActivity();
     v12 = ATXModeFromActivityType();
 

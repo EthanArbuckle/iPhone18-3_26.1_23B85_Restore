@@ -1,8 +1,8 @@
 @interface AssetMediaStreamLoader
 - (_TtC15SeymourServices22AssetMediaStreamLoader)init;
-- (void)URLSession:(id)a3 assetDownloadTask:(id)a4 didLoadTimeRange:(id *)a5 totalTimeRangesLoaded:(id)a6 timeRangeExpectedToLoad:(id *)a7;
-- (void)URLSession:(id)a3 assetDownloadTask:(id)a4 willDownloadToURL:(id)a5;
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5;
+- (void)URLSession:(id)session assetDownloadTask:(id)task didLoadTimeRange:(id *)range totalTimeRangesLoaded:(id)loaded timeRangeExpectedToLoad:(id *)load;
+- (void)URLSession:(id)session assetDownloadTask:(id)task willDownloadToURL:(id)l;
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error;
 @end
 
 @implementation AssetMediaStreamLoader
@@ -14,16 +14,16 @@
   return result;
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = self;
-  v11 = a5;
-  sub_22754F528(v8, v9, a5);
+  sessionCopy = session;
+  taskCopy = task;
+  selfCopy = self;
+  errorCopy = error;
+  sub_22754F528(sessionCopy, taskCopy, error);
 }
 
-- (void)URLSession:(id)a3 assetDownloadTask:(id)a4 willDownloadToURL:(id)a5
+- (void)URLSession:(id)session assetDownloadTask:(id)task willDownloadToURL:(id)l
 {
   v7 = sub_2276624A0();
   v8 = *(v7 - 8);
@@ -32,30 +32,30 @@
   v11 = &v15[-((v10 + 15) & 0xFFFFFFFFFFFFFFF0)];
   sub_227662430();
   v12 = *(&self->super.isa + OBJC_IVAR____TtC15SeymourServices22AssetMediaStreamLoader_lock);
-  v16 = self;
-  v17 = a4;
+  selfCopy = self;
+  taskCopy = task;
   v18 = v11;
-  v13 = a4;
-  v14 = self;
+  taskCopy2 = task;
+  selfCopy2 = self;
   sub_2276696A0();
 
   (*(v8 + 8))(v11, v7);
 }
 
-- (void)URLSession:(id)a3 assetDownloadTask:(id)a4 didLoadTimeRange:(id *)a5 totalTimeRangesLoaded:(id)a6 timeRangeExpectedToLoad:(id *)a7
+- (void)URLSession:(id)session assetDownloadTask:(id)task didLoadTimeRange:(id *)range totalTimeRangesLoaded:(id)loaded timeRangeExpectedToLoad:(id *)load
 {
-  var3 = a7->var1.var3;
-  v15[0] = a7->var0.var0;
-  v15[1] = *&a7->var0.var1;
-  v16 = *&a7->var0.var3;
-  v17 = *&a7->var1.var1;
+  var3 = load->var1.var3;
+  v15[0] = load->var0.var0;
+  v15[1] = *&load->var0.var1;
+  v16 = *&load->var0.var3;
+  v17 = *&load->var1.var1;
   v18 = var3;
   sub_226E99364(0, &qword_27D7BE738, 0x277CCAE60);
   v11 = sub_22766C2C0();
-  v12 = a3;
-  v13 = a4;
-  v14 = self;
-  sub_227595480(v13, v11, v15);
+  sessionCopy = session;
+  taskCopy = task;
+  selfCopy = self;
+  sub_227595480(taskCopy, v11, v15);
 }
 
 @end

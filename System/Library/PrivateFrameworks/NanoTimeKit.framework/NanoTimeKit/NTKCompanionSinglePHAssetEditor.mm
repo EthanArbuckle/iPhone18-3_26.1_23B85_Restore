@@ -1,31 +1,31 @@
 @interface NTKCompanionSinglePHAssetEditor
 - (NSString)albumName;
-- (NTKCompanionSinglePHAssetEditor)initWithResourceDirectory:(id)a3 forDevice:(id)a4 shouldFinalize:(BOOL)a5;
-- (id)_createResourceDirectoryForSinglePHAssetWithPreviewOnly:(BOOL)a3;
+- (NTKCompanionSinglePHAssetEditor)initWithResourceDirectory:(id)directory forDevice:(id)device shouldFinalize:(BOOL)finalize;
+- (id)_createResourceDirectoryForSinglePHAssetWithPreviewOnly:(BOOL)only;
 - (id)optionsForSingleAsset;
-- (void)finalizeWithCompletion:(id)a3;
-- (void)generateGalleryPreviewResourceDirectoryWithCompletion:(id)a3;
-- (void)setAlbumIdentifier:(id)a3;
-- (void)setShouldFinalize:(BOOL)a3;
+- (void)finalizeWithCompletion:(id)completion;
+- (void)generateGalleryPreviewResourceDirectoryWithCompletion:(id)completion;
+- (void)setAlbumIdentifier:(id)identifier;
+- (void)setShouldFinalize:(BOOL)finalize;
 @end
 
 @implementation NTKCompanionSinglePHAssetEditor
 
-- (NTKCompanionSinglePHAssetEditor)initWithResourceDirectory:(id)a3 forDevice:(id)a4 shouldFinalize:(BOOL)a5
+- (NTKCompanionSinglePHAssetEditor)initWithResourceDirectory:(id)directory forDevice:(id)device shouldFinalize:(BOOL)finalize
 {
-  v5 = a5;
-  v8 = a3;
+  finalizeCopy = finalize;
+  directoryCopy = directory;
   v16.receiver = self;
   v16.super_class = NTKCompanionSinglePHAssetEditor;
-  v9 = [(NTKCompanionResourceDirectoryEditor *)&v16 initWithResourceDirectory:v8 forDevice:a4];
+  v9 = [(NTKCompanionResourceDirectoryEditor *)&v16 initWithResourceDirectory:directoryCopy forDevice:device];
   v10 = v9;
   if (v9)
   {
-    [(NTKCompanionSinglePHAssetEditor *)v9 setShouldFinalize:v5];
-    v11 = [NTKPhotosReader readerForResourceDirectory:v8];
-    v12 = [v11 assetCollectionIdentifier];
+    [(NTKCompanionSinglePHAssetEditor *)v9 setShouldFinalize:finalizeCopy];
+    v11 = [NTKPhotosReader readerForResourceDirectory:directoryCopy];
+    assetCollectionIdentifier = [v11 assetCollectionIdentifier];
     albumIdentifier = v10->_albumIdentifier;
-    v10->_albumIdentifier = v12;
+    v10->_albumIdentifier = assetCollectionIdentifier;
 
     albumName = v10->_albumName;
     v10->_albumName = 0;
@@ -36,12 +36,12 @@
   return v10;
 }
 
-- (void)setShouldFinalize:(BOOL)a3
+- (void)setShouldFinalize:(BOOL)finalize
 {
-  v3 = a3;
+  finalizeCopy = finalize;
   if ([(NTKCompanionResourceDirectoryEditor *)self state]< 3)
   {
-    if (v3)
+    if (finalizeCopy)
     {
       v6 = 2;
     }
@@ -68,9 +68,9 @@
 {
   if (!self->_albumNameValid)
   {
-    v3 = [(NTKCompanionSinglePHAssetEditor *)self _fetchAlbumName];
+    _fetchAlbumName = [(NTKCompanionSinglePHAssetEditor *)self _fetchAlbumName];
     albumName = self->_albumName;
-    self->_albumName = v3;
+    self->_albumName = _fetchAlbumName;
 
     self->_albumNameValid = 1;
   }
@@ -80,9 +80,9 @@
   return v5;
 }
 
-- (void)setAlbumIdentifier:(id)a3
+- (void)setAlbumIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   if ([(NTKCompanionResourceDirectoryEditor *)self state]< 3)
   {
     albumIdentifier = self->_albumIdentifier;
@@ -95,9 +95,9 @@
       }
 
       objc_storeStrong(&self->_albumIdentifier, v4);
-      v8 = [(NTKCompanionSinglePHAssetEditor *)self _fetchAlbumName];
+      _fetchAlbumName = [(NTKCompanionSinglePHAssetEditor *)self _fetchAlbumName];
       albumName = self->_albumName;
-      self->_albumName = v8;
+      self->_albumName = _fetchAlbumName;
 
       self->_albumNameValid = 1;
       [(NTKCompanionResourceDirectoryEditor *)self setState:2];
@@ -114,10 +114,10 @@
   }
 }
 
-- (void)generateGalleryPreviewResourceDirectoryWithCompletion:(id)a3
+- (void)generateGalleryPreviewResourceDirectoryWithCompletion:(id)completion
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = _NTKLoggingObjectForDomain(6, "NTKLoggingDomainPhoto");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -133,15 +133,15 @@
   v23 = __Block_byref_object_copy__24;
   v24 = __Block_byref_object_dispose__24;
   v25 = 0;
-  v7 = [(NTKCompanionResourceDirectoryEditor *)self state];
+  state = [(NTKCompanionResourceDirectoryEditor *)self state];
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __89__NTKCompanionSinglePHAssetEditor_generateGalleryPreviewResourceDirectoryWithCompletion___block_invoke;
   aBlock[3] = &unk_278781B60;
   p_buf = &buf;
-  v20 = v7;
+  v20 = state;
   aBlock[4] = self;
-  v8 = v4;
+  v8 = completionCopy;
   v18 = v8;
   v9 = _Block_copy(aBlock);
   if ([(NTKCompanionResourceDirectoryEditor *)self state]&& [(NTKCompanionResourceDirectoryEditor *)self state]<= 2)
@@ -162,9 +162,9 @@
       goto LABEL_7;
     }
 
-    v11 = [(NTKCompanionResourceDirectoryEditor *)self resourceDirectory];
+    resourceDirectory = [(NTKCompanionResourceDirectoryEditor *)self resourceDirectory];
     v12 = *(*(&buf + 1) + 40);
-    *(*(&buf + 1) + 40) = v11;
+    *(*(&buf + 1) + 40) = resourceDirectory;
 
     v10 = 1;
   }
@@ -216,9 +216,9 @@ uint64_t __89__NTKCompanionSinglePHAssetEditor_generateGalleryPreviewResourceDir
   return v5();
 }
 
-- (void)finalizeWithCompletion:(id)a3
+- (void)finalizeWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ([(NTKCompanionResourceDirectoryEditor *)self state]&& [(NTKCompanionResourceDirectoryEditor *)self state]< 3)
   {
     if ([(NTKCompanionResourceDirectoryEditor *)self state]== 1)
@@ -228,7 +228,7 @@ uint64_t __89__NTKCompanionSinglePHAssetEditor_generateGalleryPreviewResourceDir
       v9[2] = __58__NTKCompanionSinglePHAssetEditor_finalizeWithCompletion___block_invoke_2;
       v9[3] = &unk_27877E570;
       v9[4] = self;
-      v10 = v4;
+      v10 = completionCopy;
       dispatch_async(MEMORY[0x277D85CD0], v9);
       v5 = v10;
     }
@@ -242,7 +242,7 @@ uint64_t __89__NTKCompanionSinglePHAssetEditor_generateGalleryPreviewResourceDir
       v7[2] = __58__NTKCompanionSinglePHAssetEditor_finalizeWithCompletion___block_invoke_3;
       v7[3] = &unk_27877FF60;
       v7[4] = self;
-      v8 = v4;
+      v8 = completionCopy;
       dispatch_async(v6, v7);
 
       v5 = v8;
@@ -255,7 +255,7 @@ uint64_t __89__NTKCompanionSinglePHAssetEditor_generateGalleryPreviewResourceDir
     block[1] = 3221225472;
     block[2] = __58__NTKCompanionSinglePHAssetEditor_finalizeWithCompletion___block_invoke;
     block[3] = &unk_27877E960;
-    v12 = v4;
+    v12 = completionCopy;
     dispatch_async(MEMORY[0x277D85CD0], block);
     v5 = v12;
   }
@@ -313,14 +313,14 @@ void __58__NTKCompanionSinglePHAssetEditor_finalizeWithCompletion___block_invoke
   return v2;
 }
 
-- (id)_createResourceDirectoryForSinglePHAssetWithPreviewOnly:(BOOL)a3
+- (id)_createResourceDirectoryForSinglePHAssetWithPreviewOnly:(BOOL)only
 {
-  v3 = a3;
-  v5 = [(NTKCompanionSinglePHAssetEditor *)self _fetchSingleAsset];
+  onlyCopy = only;
+  _fetchSingleAsset = [(NTKCompanionSinglePHAssetEditor *)self _fetchSingleAsset];
   v6 = objc_opt_class();
-  v7 = [(NTKCompanionSinglePHAssetEditor *)self albumIdentifier];
-  v8 = [(NTKCompanionResourceDirectoryEditor *)self device];
-  v9 = [v6 _createResourceDirectoryWithAsset:v5 assetCollection:v7 forDevice:v8 previewOnly:v3];
+  albumIdentifier = [(NTKCompanionSinglePHAssetEditor *)self albumIdentifier];
+  device = [(NTKCompanionResourceDirectoryEditor *)self device];
+  v9 = [v6 _createResourceDirectoryWithAsset:_fetchSingleAsset assetCollection:albumIdentifier forDevice:device previewOnly:onlyCopy];
 
   return v9;
 }

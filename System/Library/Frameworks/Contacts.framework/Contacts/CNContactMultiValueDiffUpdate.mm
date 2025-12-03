@@ -1,53 +1,53 @@
 @interface CNContactMultiValueDiffUpdate
-- (BOOL)applyToABPerson:(void *)a3 withPropertiesContext:(id)a4 logger:(id)a5 error:(id *)a6;
-- (CNContactMultiValueDiffUpdate)initWithProperty:(id)a3 diff:(id)a4;
-- (void)applyToMutableContact:(id)a3 withIdentifierMap:(id)a4;
+- (BOOL)applyToABPerson:(void *)person withPropertiesContext:(id)context logger:(id)logger error:(id *)error;
+- (CNContactMultiValueDiffUpdate)initWithProperty:(id)property diff:(id)diff;
+- (void)applyToMutableContact:(id)contact withIdentifierMap:(id)map;
 @end
 
 @implementation CNContactMultiValueDiffUpdate
 
-- (BOOL)applyToABPerson:(void *)a3 withPropertiesContext:(id)a4 logger:(id)a5 error:(id *)a6
+- (BOOL)applyToABPerson:(void *)person withPropertiesContext:(id)context logger:(id)logger error:(id *)error
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = [(CNContactMultiValueDiffUpdate *)self diff];
-  v13 = [(CNContactMultiValueDiffUpdate *)self property];
-  v14 = [v11 isUnifiedContact];
+  loggerCopy = logger;
+  contextCopy = context;
+  diff = [(CNContactMultiValueDiffUpdate *)self diff];
+  property = [(CNContactMultiValueDiffUpdate *)self property];
+  isUnifiedContact = [contextCopy isUnifiedContact];
 
-  LOBYTE(a6) = [v12 applyToABPerson:a3 propertyDescription:v13 isUnified:v14 logger:v10 error:a6];
-  return a6;
+  LOBYTE(error) = [diff applyToABPerson:person propertyDescription:property isUnified:isUnifiedContact logger:loggerCopy error:error];
+  return error;
 }
 
-- (CNContactMultiValueDiffUpdate)initWithProperty:(id)a3 diff:(id)a4
+- (CNContactMultiValueDiffUpdate)initWithProperty:(id)property diff:(id)diff
 {
-  v7 = a3;
-  v8 = a4;
+  propertyCopy = property;
+  diffCopy = diff;
   v13.receiver = self;
   v13.super_class = CNContactMultiValueDiffUpdate;
   v9 = [(CNContactMultiValueDiffUpdate *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_property, a3);
-    objc_storeStrong(&v10->_diff, a4);
+    objc_storeStrong(&v9->_property, property);
+    objc_storeStrong(&v10->_diff, diff);
     v11 = v10;
   }
 
   return v10;
 }
 
-- (void)applyToMutableContact:(id)a3 withIdentifierMap:(id)a4
+- (void)applyToMutableContact:(id)contact withIdentifierMap:(id)map
 {
   property = self->_property;
-  v7 = a4;
-  v8 = a3;
+  mapCopy = map;
+  contactCopy = contact;
   v9 = [(CNPropertyDescription *)property key];
-  v12 = [v8 valueForKey:v9];
+  v12 = [contactCopy valueForKey:v9];
 
-  v10 = [(CNMultiValueDiff *)self->_diff multiValueByApplyToMultiValue:v12 withIdentifierMap:v7];
+  v10 = [(CNMultiValueDiff *)self->_diff multiValueByApplyToMultiValue:v12 withIdentifierMap:mapCopy];
 
   v11 = [(CNPropertyDescription *)self->_property key];
-  [v8 setValue:v10 forKey:v11];
+  [contactCopy setValue:v10 forKey:v11];
 }
 
 @end

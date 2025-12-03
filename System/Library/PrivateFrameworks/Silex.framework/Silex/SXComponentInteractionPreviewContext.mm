@@ -1,24 +1,24 @@
 @interface SXComponentInteractionPreviewContext
 - (CGRect)sourceRect;
-- (SXComponentInteractionPreviewContext)initWithViewController:(id)a3 sourceRect:(CGRect)a4;
+- (SXComponentInteractionPreviewContext)initWithViewController:(id)controller sourceRect:(CGRect)rect;
 @end
 
 @implementation SXComponentInteractionPreviewContext
 
-- (SXComponentInteractionPreviewContext)initWithViewController:(id)a3 sourceRect:(CGRect)a4
+- (SXComponentInteractionPreviewContext)initWithViewController:(id)controller sourceRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v10 = a3;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  controllerCopy = controller;
   v14.receiver = self;
   v14.super_class = SXComponentInteractionPreviewContext;
   v11 = [(SXComponentInteractionPreviewContext *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_viewController, a3);
+    objc_storeStrong(&v11->_viewController, controller);
     v12->_sourceRect.origin.x = x;
     v12->_sourceRect.origin.y = y;
     v12->_sourceRect.size.width = width;

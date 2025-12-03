@@ -1,72 +1,72 @@
 @interface StocksAssistantStockSnippetController
-+ (unint64_t)infoTypeFromRequestType:(id)a3;
-- (StocksAssistantStockSnippetController)initWithAceObject:(id)a3;
++ (unint64_t)infoTypeFromRequestType:(id)type;
+- (StocksAssistantStockSnippetController)initWithAceObject:(id)object;
 - (double)rowHeight;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)dealloc;
 - (void)loadView;
-- (void)openStock:(id)a3;
-- (void)openStockWebsite:(id)a3;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
+- (void)openStock:(id)stock;
+- (void)openStockWebsite:(id)website;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
 @end
 
 @implementation StocksAssistantStockSnippetController
 
-+ (unint64_t)infoTypeFromRequestType:(id)a3
++ (unint64_t)infoTypeFromRequestType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:SAStockRequestTypeOPENValue])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:SAStockRequestTypeOPENValue])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:SAStockRequestTypeHIGHValue])
+  else if ([typeCopy isEqualToString:SAStockRequestTypeHIGHValue])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:SAStockRequestTypeLOWValue])
+  else if ([typeCopy isEqualToString:SAStockRequestTypeLOWValue])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:SAStockRequestTypeVOLUMEValue])
+  else if ([typeCopy isEqualToString:SAStockRequestTypeVOLUMEValue])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:SAStockRequestTypePE_RATIOValue])
+  else if ([typeCopy isEqualToString:SAStockRequestTypePE_RATIOValue])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:SAStockRequestTypeMARKET_CAPValue])
+  else if ([typeCopy isEqualToString:SAStockRequestTypeMARKET_CAPValue])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:SAStockRequestTypeLOW_52WEEKValue])
+  else if ([typeCopy isEqualToString:SAStockRequestTypeLOW_52WEEKValue])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:SAStockRequestTypeHIGH_52WEEKValue])
+  else if ([typeCopy isEqualToString:SAStockRequestTypeHIGH_52WEEKValue])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:SAStockRequestTypeRANGE_52WEEKValue])
+  else if ([typeCopy isEqualToString:SAStockRequestTypeRANGE_52WEEKValue])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:SAStockRequestTypeAVG_DAILY_VOLUMEValue])
+  else if ([typeCopy isEqualToString:SAStockRequestTypeAVG_DAILY_VOLUMEValue])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:SAStockRequestTypeDIVIDEND_YIELDValue])
+  else if ([typeCopy isEqualToString:SAStockRequestTypeDIVIDEND_YIELDValue])
   {
     v4 = 9;
   }
@@ -79,9 +79,9 @@
   return v4;
 }
 
-- (StocksAssistantStockSnippetController)initWithAceObject:(id)a3
+- (StocksAssistantStockSnippetController)initWithAceObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -91,20 +91,20 @@
   v38.receiver = self;
   v38.super_class = StocksAssistantStockSnippetController;
   v5 = [(StocksAssistantStockSnippetController *)&v38 init];
-  if (v5 && ([v4 stocks], v6 = objc_claimAutoreleasedReturnValue(), stocks = v5->_stocks, v5->_stocks = v6, stocks, -[NSArray count](v5->_stocks, "count")))
+  if (v5 && ([objectCopy stocks], v6 = objc_claimAutoreleasedReturnValue(), stocks = v5->_stocks, v5->_stocks = v6, stocks, -[NSArray count](v5->_stocks, "count")))
   {
     v8 = [(NSArray *)v5->_stocks objectAtIndex:0];
-    v9 = [v8 displayStyle];
-    v5->_isCompare = [v9 isEqualToString:SAStockDisplayStyleCOMPAREValue];
+    displayStyle = [v8 displayStyle];
+    v5->_isCompare = [displayStyle isEqualToString:SAStockDisplayStyleCOMPAREValue];
 
-    v10 = [v8 requests];
-    v11 = [v10 count];
+    requests = [v8 requests];
+    v11 = [requests count];
 
     if (v11)
     {
-      v12 = [v8 requests];
+      requests2 = [v8 requests];
       requestTypes = v5->_requestTypes;
-      v5->_requestTypes = v12;
+      v5->_requestTypes = requests2;
     }
 
     v36 = 0u;
@@ -129,8 +129,8 @@ LABEL_9:
 
         v20 = *(*(&v34 + 1) + 8 * v19);
         v21 = objc_opt_class();
-        v22 = [v20 requestType];
-        v23 = [v21 infoTypeFromRequestType:v22];
+        requestType = [v20 requestType];
+        v23 = [v21 infoTypeFromRequestType:requestType];
 
         if (v23 != -1)
         {
@@ -182,9 +182,9 @@ LABEL_9:
     v28 = SiriUIPlatterStyle[32];
     v29 = SiriUIPlatterStyle[34];
     v30 = +[UIDevice currentDevice];
-    v31 = [v30 userInterfaceIdiom];
+    userInterfaceIdiom = [v30 userInterfaceIdiom];
 
-    if (v31 == &dword_0 + 1)
+    if (userInterfaceIdiom == &dword_0 + 1)
     {
       [(StocksAssistantStockSnippetController *)v5 setIsFullPadWidth:1];
     }
@@ -214,7 +214,7 @@ LABEL_9:
 - (double)rowHeight
 {
   v3 = +[UIDevice currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  userInterfaceIdiom = [v3 userInterfaceIdiom];
 
   result = 316.5;
   if (self->_isCompare)
@@ -228,7 +228,7 @@ LABEL_9:
     v6 = 50.0;
   }
 
-  if (v4 != &dword_0 + 1)
+  if (userInterfaceIdiom != &dword_0 + 1)
   {
     return v6;
   }
@@ -269,13 +269,13 @@ LABEL_9:
   [(UITableView *)self->_tableView addGestureRecognizer:v9];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   if (self->_isCompare)
   {
-    v8 = [v6 dequeueReusableCellWithIdentifier:@"StocksCompare"];
+    v8 = [viewCopy dequeueReusableCellWithIdentifier:@"StocksCompare"];
     if (v8)
     {
       goto LABEL_8;
@@ -304,7 +304,7 @@ LABEL_8:
   stocks = self->_stocks;
   if (self->_isCompare)
   {
-    v14 = [v7 row];
+    v14 = [pathCopy row];
   }
 
   else
@@ -321,23 +321,23 @@ LABEL_8:
   return v8;
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
   if (self->_isCompare)
   {
-    [a4 _setShouldHaveFullLengthBottomSeparator:1];
+    [cell _setShouldHaveFullLengthBottomSeparator:1];
   }
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v6 = a3;
-  if (a4)
+  viewCopy = view;
+  if (section)
   {
     sub_5448();
   }
 
-  v7 = v6;
+  v7 = viewCopy;
   if (self->_isCompare)
   {
     v8 = [(NSArray *)self->_stocks count];
@@ -351,20 +351,20 @@ LABEL_8:
   return v8;
 }
 
-- (void)openStockWebsite:(id)a3
+- (void)openStockWebsite:(id)website
 {
-  v10 = a3;
-  if (!self->_singleStockCell || (+[NetPreferences sharedPreferences](NetPreferences, "sharedPreferences"), v4 = objc_claimAutoreleasedReturnValue(), -[StocksAssistantStockCell stock](self->_singleStockCell, "stock"), v5 = objc_claimAutoreleasedReturnValue(), [v4 fullQuoteURLOverrideForStock:v5], v6 = objc_claimAutoreleasedReturnValue(), v5, v4, !v6) && (-[StocksAssistantStockCell stock](self->_singleStockCell, "stock"), v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "infoURL"), v6 = objc_claimAutoreleasedReturnValue(), v7, !v6))
+  websiteCopy = website;
+  if (!self->_singleStockCell || (+[NetPreferences sharedPreferences](NetPreferences, "sharedPreferences"), v4 = objc_claimAutoreleasedReturnValue(), -[StocksAssistantStockCell stock](self->_singleStockCell, "stock"), v5 = objc_claimAutoreleasedReturnValue(), [v4 fullQuoteURLOverrideForStock:v5], backsideLogoURL = objc_claimAutoreleasedReturnValue(), v5, v4, !backsideLogoURL) && (-[StocksAssistantStockCell stock](self->_singleStockCell, "stock"), v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "infoURL"), backsideLogoURL = objc_claimAutoreleasedReturnValue(), v7, !backsideLogoURL))
   {
     v8 = +[NetPreferences sharedPreferences];
-    v6 = [v8 backsideLogoURL];
+    backsideLogoURL = [v8 backsideLogoURL];
   }
 
   v9 = +[UIApplication sharedApplication];
-  [v9 openURL:v6];
+  [v9 openURL:backsideLogoURL];
 }
 
-- (void)openStock:(id)a3
+- (void)openStock:(id)stock
 {
   if (self->_singleStockCell)
   {
@@ -374,7 +374,7 @@ LABEL_8:
   else
   {
     tableView = self->_tableView;
-    [a3 locationInView:tableView];
+    [stock locationInView:tableView];
     v6 = [(UITableView *)tableView indexPathForRowAtPoint:?];
     v10 = -[NSArray objectAtIndex:](self->_stocks, "objectAtIndex:", [v6 row]);
 
@@ -382,8 +382,8 @@ LABEL_8:
   }
 
   v11 = v4;
-  v7 = [v4 symbol];
-  v8 = [Stock urlForStockSymbol:v7];
+  symbol = [v4 symbol];
+  v8 = [Stock urlForStockSymbol:symbol];
 
   v9 = +[LSApplicationWorkspace defaultWorkspace];
   [v9 openSensitiveURL:v8 withOptions:0];

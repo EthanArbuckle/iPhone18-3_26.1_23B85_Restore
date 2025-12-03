@@ -1,27 +1,27 @@
 @interface TranslationCardAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_accessibilitySupplementaryFooterViews;
 - (id)accessibilityCustomActions;
 - (id)accessibilityLabel;
-- (void)senseTapped:(id)a3;
+- (void)senseTapped:(id)tapped;
 @end
 
 @implementation TranslationCardAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SequoiaTranslator.TranslationCard" hasInstanceMethod:@"_axSourceLanguage" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SequoiaTranslator.TranslationCard" hasInstanceMethod:@"_axSourceLanguageTranslationResult" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SequoiaTranslator.TranslationCard" hasInstanceMethod:@"_axTargetLanguage" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SequoiaTranslator.TranslationCard" hasInstanceMethod:@"_axTargetLanguageTranslationResult" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SequoiaTranslator.TranslationCard" hasInstanceMethod:@"_axTranslationIsFavorited" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"SequoiaTranslator.TranslationCard" hasInstanceMethod:@"_axCanPerformLookupAction" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"SequoiaTranslator.TranslationCard" hasInstanceMethod:@"_axPerformFavoriteAction" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"SequoiaTranslator.TranslationCard" hasInstanceMethod:@"_axPerformSpeakTranslationAction" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"SequoiaTranslator.TranslationCard" hasInstanceMethod:@"_axPerformLookupAction" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"SequoiaTranslator.TranslationCard" hasInstanceMethod:@"_axSenseHeader" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SequoiaTranslator.TranslationCard" hasInstanceMethod:@"senseTapped:" withFullSignature:{"v", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SequoiaTranslator.TranslationCard" hasInstanceMethod:@"_axSourceLanguage" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SequoiaTranslator.TranslationCard" hasInstanceMethod:@"_axSourceLanguageTranslationResult" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SequoiaTranslator.TranslationCard" hasInstanceMethod:@"_axTargetLanguage" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SequoiaTranslator.TranslationCard" hasInstanceMethod:@"_axTargetLanguageTranslationResult" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SequoiaTranslator.TranslationCard" hasInstanceMethod:@"_axTranslationIsFavorited" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"SequoiaTranslator.TranslationCard" hasInstanceMethod:@"_axCanPerformLookupAction" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"SequoiaTranslator.TranslationCard" hasInstanceMethod:@"_axPerformFavoriteAction" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"SequoiaTranslator.TranslationCard" hasInstanceMethod:@"_axPerformSpeakTranslationAction" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"SequoiaTranslator.TranslationCard" hasInstanceMethod:@"_axPerformLookupAction" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"SequoiaTranslator.TranslationCard" hasInstanceMethod:@"_axSenseHeader" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SequoiaTranslator.TranslationCard" hasInstanceMethod:@"senseTapped:" withFullSignature:{"v", "@", 0}];
 }
 
 - (id)accessibilityLabel
@@ -161,11 +161,11 @@ uint64_t __70__TranslationCardAccessibility__accessibilitySupplementaryFooterVie
   return isKindOfClass & 1;
 }
 
-- (void)senseTapped:(id)a3
+- (void)senseTapped:(id)tapped
 {
   v8.receiver = self;
   v8.super_class = TranslationCardAccessibility;
-  [(TranslationCardAccessibility *)&v8 senseTapped:a3];
+  [(TranslationCardAccessibility *)&v8 senseTapped:tapped];
   v4 = MEMORY[0x29EDBD7E8];
   v5 = [(TranslationCardAccessibility *)self safeValueForKey:@"_axTargetLanguageTranslationResult"];
   v6 = [v4 axAttributedStringWithString:v5];

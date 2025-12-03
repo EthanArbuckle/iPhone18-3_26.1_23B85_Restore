@@ -1,40 +1,40 @@
 @interface CRSUIClimateQuickControlRequestActionHandler
 - (CRSUIClimateQuickControlRequestActionDelegate)delegate;
-- (CRSUIClimateQuickControlRequestActionHandler)initWithDelegate:(id)a3;
-- (id)_respondToActions:(id)a3 forFBSScene:(id)a4 inUIScene:(id)a5 fromTransitionContext:(id)a6;
+- (CRSUIClimateQuickControlRequestActionHandler)initWithDelegate:(id)delegate;
+- (id)_respondToActions:(id)actions forFBSScene:(id)scene inUIScene:(id)iScene fromTransitionContext:(id)context;
 @end
 
 @implementation CRSUIClimateQuickControlRequestActionHandler
 
-- (CRSUIClimateQuickControlRequestActionHandler)initWithDelegate:(id)a3
+- (CRSUIClimateQuickControlRequestActionHandler)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8.receiver = self;
   v8.super_class = CRSUIClimateQuickControlRequestActionHandler;
   v5 = [(CRSUIClimateQuickControlRequestActionHandler *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
   }
 
   return v6;
 }
 
-- (id)_respondToActions:(id)a3 forFBSScene:(id)a4 inUIScene:(id)a5 fromTransitionContext:(id)a6
+- (id)_respondToActions:(id)actions forFBSScene:(id)scene inUIScene:(id)iScene fromTransitionContext:(id)context
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [v9 objectsPassingTest:&__block_literal_global_5];
+  iSceneCopy = iScene;
+  actionsCopy = actions;
+  v10 = [actionsCopy objectsPassingTest:&__block_literal_global_5];
   v14 = MEMORY[0x277D85DD0];
   v15 = 3221225472;
   v16 = __110__CRSUIClimateQuickControlRequestActionHandler__respondToActions_forFBSScene_inUIScene_fromTransitionContext___block_invoke_2;
   v17 = &unk_278DA0D60;
-  v18 = v8;
-  v19 = self;
-  v11 = v8;
+  v18 = iSceneCopy;
+  selfCopy = self;
+  v11 = iSceneCopy;
   [v10 enumerateObjectsUsingBlock:&v14];
-  v12 = [v9 mutableCopy];
+  v12 = [actionsCopy mutableCopy];
 
   [v12 minusSet:v10];
 

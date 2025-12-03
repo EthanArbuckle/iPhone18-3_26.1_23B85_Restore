@@ -1,22 +1,22 @@
 @interface SOUtils
-+ (BOOL)auditTokenFromData:(id)a3 auditToken:(id *)a4;
-+ (BOOL)checkEntitlementFromXPC:(id)a3 entitlement:(id)a4;
-+ (BOOL)checkSignatureOfFile:(id)a3 teamIdentifier:(id *)a4 trusted:(BOOL *)a5 signedBySet:(int64_t *)a6 certificates:(id *)a7 error:(id *)a8;
++ (BOOL)auditTokenFromData:(id)data auditToken:(id *)token;
++ (BOOL)checkEntitlementFromXPC:(id)c entitlement:(id)entitlement;
++ (BOOL)checkSignatureOfFile:(id)file teamIdentifier:(id *)identifier trusted:(BOOL *)trusted signedBySet:(int64_t *)set certificates:(id *)certificates error:(id *)error;
 + (BOOL)currentProcessIsSandboxed;
 + (BOOL)isAppSSOServiceAvailable;
 + (BOOL)isInternalBuild;
-+ (BOOL)sandboxAllowsXPC:(const char *)a3;
-+ (id)bundleIdentifierFromAuditToken:(id *)a3;
++ (BOOL)sandboxAllowsXPC:(const char *)c;
++ (id)bundleIdentifierFromAuditToken:(id *)token;
 + (id)currentProcessContainerPath;
 + (id)currentProcessName;
-+ (id)mapArray:(id)a3 usingBlock:(id)a4;
-+ (id)processNameForPID:(int)a3;
-+ (id)signatureSetToString:(int64_t)a3;
-+ (id)teamIdentifierFromAuditToken:(id *)a3;
-+ (int)mmapFile:(id)a3 mode:(int64_t)a4 mmapData:(id *)a5;
-+ (int)pidFromAuditToken:(id *)a3;
++ (id)mapArray:(id)array usingBlock:(id)block;
++ (id)processNameForPID:(int)d;
++ (id)signatureSetToString:(int64_t)string;
++ (id)teamIdentifierFromAuditToken:(id *)token;
++ (int)mmapFile:(id)file mode:(int64_t)mode mmapData:(id *)data;
++ (int)pidFromAuditToken:(id *)token;
 + (void)currentProcessIsSandboxed;
-+ (void)unmapFile:(int)a3 data:(id)a4;
++ (void)unmapFile:(int)file data:(id)data;
 @end
 
 @implementation SOUtils
@@ -25,7 +25,7 @@
 {
   v3 = getpid();
 
-  return [a1 processNameForPID:v3];
+  return [self processNameForPID:v3];
 }
 
 void __35__SOUtils_isAppSSOServiceAvailable__block_invoke()
@@ -133,11 +133,11 @@ LABEL_7:
   return v3 != 0;
 }
 
-+ (int)mmapFile:(id)a3 mode:(int64_t)a4 mmapData:(id *)a5
++ (int)mmapFile:(id)file mode:(int64_t)mode mmapData:(id *)data
 {
-  v7 = a3;
+  fileCopy = file;
   *__error() = 0;
-  if (a4 == 1)
+  if (mode == 1)
   {
     v8 = 514;
   }
@@ -147,7 +147,7 @@ LABEL_7:
     v8 = 0;
   }
 
-  v9 = shm_open([v7 UTF8String], v8, 511);
+  v9 = shm_open([fileCopy UTF8String], v8, 511);
   if (v9 == -1)
   {
     v13 = SO_LOG_SOUtils();
@@ -160,7 +160,7 @@ LABEL_7:
   }
 
   v10 = v9;
-  if (a4 == 1)
+  if (mode == 1)
   {
     v11 = 3;
   }
@@ -187,9 +187,9 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  if (a5)
+  if (data)
   {
-    *a5 = [MEMORY[0x1E695DEF0] dataWithBytesNoCopy:v12 length:4 freeWhenDone:0];
+    *data = [MEMORY[0x1E695DEF0] dataWithBytesNoCopy:v12 length:4 freeWhenDone:0];
   }
 
 LABEL_16:
@@ -197,13 +197,13 @@ LABEL_16:
   return v10;
 }
 
-+ (void)unmapFile:(int)a3 data:(id)a4
++ (void)unmapFile:(int)file data:(id)data
 {
-  v5 = a4;
-  v6 = [v5 bytes];
-  v7 = [v5 length];
+  dataCopy = data;
+  bytes = [dataCopy bytes];
+  v7 = [dataCopy length];
 
-  if (munmap(v6, v7) == -1)
+  if (munmap(bytes, v7) == -1)
   {
     v8 = SO_LOG_SOUtils();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -212,7 +212,7 @@ LABEL_16:
     }
   }
 
-  if (close(a3) == -1)
+  if (close(file) == -1)
   {
     v9 = SO_LOG_SOUtils();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -222,41 +222,41 @@ LABEL_16:
   }
 }
 
-+ (BOOL)checkEntitlementFromXPC:(id)a3 entitlement:(id)a4
++ (BOOL)checkEntitlementFromXPC:(id)c entitlement:(id)entitlement
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if (v5)
+  cCopy = c;
+  entitlementCopy = entitlement;
+  if (cCopy)
   {
-    v7 = [v5 valueForEntitlement:v6];
-    v8 = [v7 BOOLValue];
+    v7 = [cCopy valueForEntitlement:entitlementCopy];
+    bOOLValue = [v7 BOOLValue];
   }
 
   else
   {
-    v8 = 0;
+    bOOLValue = 0;
   }
 
   v9 = SO_LOG_SOUtils();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
     v12 = 138543874;
-    v13 = v5;
+    v13 = cCopy;
     v14 = 2114;
-    v15 = v6;
+    v15 = entitlementCopy;
     v16 = 1024;
-    v17 = v8;
+    v17 = bOOLValue;
     _os_log_debug_impl(&dword_1CA238000, v9, OS_LOG_TYPE_DEBUG, "checkEntitlementFromXPC: %{public}@, %{public}@ = %d", &v12, 0x1Cu);
   }
 
   v10 = *MEMORY[0x1E69E9840];
-  return v8;
+  return bOOLValue;
 }
 
-+ (BOOL)sandboxAllowsXPC:(const char *)a3
++ (BOOL)sandboxAllowsXPC:(const char *)c
 {
-  if (a3)
+  if (c)
   {
     getpid();
     v4 = *MEMORY[0x1E69E9BD0];
@@ -271,7 +271,7 @@ LABEL_16:
   v6 = SO_LOG_SOUtils();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    [(SOUtils *)a3 sandboxAllowsXPC:v5, v6];
+    [(SOUtils *)c sandboxAllowsXPC:v5, v6];
   }
 
   return v5;
@@ -297,17 +297,17 @@ void __26__SOUtils_isInternalBuild__block_invoke()
   }
 }
 
-+ (id)mapArray:(id)a3 usingBlock:(id)a4
++ (id)mapArray:(id)array usingBlock:(id)block
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x1E695DF70] array];
+  arrayCopy = array;
+  blockCopy = block;
+  array = [MEMORY[0x1E695DF70] array];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v8 = v5;
+  v8 = arrayCopy;
   v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v9)
   {
@@ -322,8 +322,8 @@ void __26__SOUtils_isInternalBuild__block_invoke()
           objc_enumerationMutation(v8);
         }
 
-        v13 = v6[2](v6, *(*(&v16 + 1) + 8 * i));
-        [v7 addObject:{v13, v16}];
+        v13 = blockCopy[2](blockCopy, *(*(&v16 + 1) + 8 * i));
+        [array addObject:{v13, v16}];
       }
 
       v10 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -334,21 +334,21 @@ void __26__SOUtils_isInternalBuild__block_invoke()
 
   v14 = *MEMORY[0x1E69E9840];
 
-  return v7;
+  return array;
 }
 
-+ (BOOL)auditTokenFromData:(id)a3 auditToken:(id *)a4
++ (BOOL)auditTokenFromData:(id)data auditToken:(id *)token
 {
-  v5 = a3;
-  v6 = v5;
-  if (!v5)
+  dataCopy = data;
+  v6 = dataCopy;
+  if (!dataCopy)
   {
 LABEL_9:
     v9 = 0;
     goto LABEL_10;
   }
 
-  if ([v5 length] != 32)
+  if ([dataCopy length] != 32)
   {
     v10 = SO_LOG_SOUtils();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -359,12 +359,12 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  if (a4)
+  if (token)
   {
-    v7 = [v6 bytes];
-    v8 = v7[1];
-    *a4->var0 = *v7;
-    *&a4->var0[4] = v8;
+    bytes = [v6 bytes];
+    v8 = bytes[1];
+    *token->var0 = *bytes;
+    *&token->var0[4] = v8;
   }
 
   v9 = 1;
@@ -373,19 +373,19 @@ LABEL_10:
   return v9;
 }
 
-+ (int)pidFromAuditToken:(id *)a3
++ (int)pidFromAuditToken:(id *)token
 {
-  v3 = *&a3->var0[4];
-  *v5.val = *a3->var0;
+  v3 = *&token->var0[4];
+  *v5.val = *token->var0;
   *&v5.val[4] = v3;
   return audit_token_to_pid(&v5);
 }
 
-+ (id)bundleIdentifierFromAuditToken:(id *)a3
++ (id)bundleIdentifierFromAuditToken:(id *)token
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = *&a3->var0[4];
-  *token.val = *a3->var0;
+  v4 = *&token->var0[4];
+  *token.val = *token->var0;
   *&token.val[4] = v4;
   v5 = SecTaskCreateWithAuditToken(0, &token);
   if (!v5)
@@ -405,8 +405,8 @@ LABEL_10:
   {
     CFRelease(v6);
     error = 0;
-    v12 = *&a3->var0[4];
-    *token.val = *a3->var0;
+    v12 = *&token->var0[4];
+    *token.val = *token->var0;
     *&token.val[4] = v12;
     if (CPCopyBundleIdentifierAndTeamFromAuditToken())
     {
@@ -480,19 +480,19 @@ LABEL_25:
   return v13;
 }
 
-+ (id)processNameForPID:(int)a3
++ (id)processNameForPID:(int)d
 {
   v12 = *MEMORY[0x1E69E9840];
   v4 = buffer;
   bzero(buffer, 0x400uLL);
-  v5 = proc_name(a3, buffer, 0x400u);
+  v5 = proc_name(d, buffer, 0x400u);
   if ((v5 & 0x80000000) == 0)
   {
     buffer[v5] = 0;
     if (v5 >= 0xF)
     {
       v4 = buffer;
-      v6 = proc_pidpath(a3, buffer, 0x400u);
+      v6 = proc_pidpath(d, buffer, 0x400u);
       if ((v6 & 0x80000000) == 0)
       {
         buffer[v6] = 0;
@@ -511,18 +511,18 @@ LABEL_25:
   return v8;
 }
 
-+ (id)signatureSetToString:(int64_t)a3
++ (id)signatureSetToString:(int64_t)string
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E696AD60] string];
-  v5 = v4;
-  if (v3)
+  stringCopy = string;
+  string = [MEMORY[0x1E696AD60] string];
+  v5 = string;
+  if (stringCopy)
   {
-    [v4 appendString:{@"by apple, "}];
-    if ((v3 & 2) == 0)
+    [string appendString:{@"by apple, "}];
+    if ((stringCopy & 2) == 0)
     {
 LABEL_3:
-      if ((v3 & 4) == 0)
+      if ((stringCopy & 4) == 0)
       {
         goto LABEL_4;
       }
@@ -531,16 +531,16 @@ LABEL_3:
     }
   }
 
-  else if ((v3 & 2) == 0)
+  else if ((stringCopy & 2) == 0)
   {
     goto LABEL_3;
   }
 
   [v5 appendString:{@"by mac app store, "}];
-  if ((v3 & 4) == 0)
+  if ((stringCopy & 4) == 0)
   {
 LABEL_4:
-    if ((v3 & 8) == 0)
+    if ((stringCopy & 8) == 0)
     {
       goto LABEL_5;
     }
@@ -550,10 +550,10 @@ LABEL_4:
 
 LABEL_13:
   [v5 appendString:{@"by identified developer, "}];
-  if ((v3 & 8) == 0)
+  if ((stringCopy & 8) == 0)
   {
 LABEL_5:
-    if ((v3 & 0x10) == 0)
+    if ((stringCopy & 0x10) == 0)
     {
       goto LABEL_6;
     }
@@ -563,10 +563,10 @@ LABEL_5:
 
 LABEL_14:
   [v5 appendString:{@"by distribution certificate, "}];
-  if ((v3 & 0x10) == 0)
+  if ((stringCopy & 0x10) == 0)
   {
 LABEL_6:
-    if ((v3 & 0x20) == 0)
+    if ((stringCopy & 0x20) == 0)
     {
       goto LABEL_8;
     }
@@ -576,7 +576,7 @@ LABEL_6:
 
 LABEL_15:
   [v5 appendString:{@"by iphone distribution certificate, "}];
-  if ((v3 & 0x20) != 0)
+  if ((stringCopy & 0x20) != 0)
   {
 LABEL_7:
     [v5 appendString:{@"by word wide developer certificate, "}];
@@ -587,33 +587,33 @@ LABEL_8:
   return v5;
 }
 
-+ (BOOL)checkSignatureOfFile:(id)a3 teamIdentifier:(id *)a4 trusted:(BOOL *)a5 signedBySet:(int64_t *)a6 certificates:(id *)a7 error:(id *)a8
++ (BOOL)checkSignatureOfFile:(id)file teamIdentifier:(id *)identifier trusted:(BOOL *)trusted signedBySet:(int64_t *)set certificates:(id *)certificates error:(id *)error
 {
   v37 = *MEMORY[0x1E69E9840];
-  v14 = a3;
+  fileCopy = file;
   v15 = SO_LOG_SOUtils();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315650;
     *&buf[4] = "+[SOUtils checkSignatureOfFile:teamIdentifier:trusted:signedBySet:certificates:error:]";
     v33 = 2114;
-    v34 = v14;
+    v34 = fileCopy;
     v35 = 2112;
-    v36 = a1;
+    selfCopy = self;
     _os_log_impl(&dword_1CA238000, v15, OS_LOG_TYPE_DEFAULT, "%s %{public}@ on %@", buf, 0x20u);
   }
 
   information = 0;
   *buf = 0;
   cf = 0;
-  if (!v14)
+  if (!fileCopy)
   {
-    if (a8)
+    if (error)
     {
       [SOErrorHelper parameterErrorWithMessage:@"no file"];
       v16 = 0;
       v18 = 0;
-      *a8 = v19 = 0;
+      *error = v19 = 0;
     }
 
     else
@@ -626,30 +626,30 @@ LABEL_8:
     goto LABEL_25;
   }
 
-  if (a5)
+  if (trusted)
   {
-    *a5 = 0;
+    *trusted = 0;
   }
 
-  if (a6)
+  if (set)
   {
-    *a6 = 0;
+    *set = 0;
   }
 
-  if (a8)
+  if (error)
   {
-    *a8 = 0;
+    *error = 0;
   }
 
-  v16 = [MEMORY[0x1E695DFF8] fileURLWithPath:v14];
+  v16 = [MEMORY[0x1E695DFF8] fileURLWithPath:fileCopy];
   v17 = SecStaticCodeCreateWithPath(v16, 0, buf);
   if (v17)
   {
-    if (a8)
+    if (error)
     {
       [MEMORY[0x1E696AEC0] stringWithFormat:@"SecStaticCodeCreateWithPathAndAttributes() failed with %d", v17];
       v21 = LABEL_18:;
-      *a8 = [SOErrorHelper internalErrorWithMessage:v21];
+      *error = [SOErrorHelper internalErrorWithMessage:v21];
     }
   }
 
@@ -660,46 +660,46 @@ LABEL_8:
     {
       v18 = information;
       information = 0;
-      if (a4)
+      if (identifier)
       {
-        *a4 = [(__CFDictionary *)v18 objectForKeyedSubscript:*MEMORY[0x1E697B080]];
+        *identifier = [(__CFDictionary *)v18 objectForKeyedSubscript:*MEMORY[0x1E697B080]];
       }
 
-      if (a7)
+      if (certificates)
       {
-        *a7 = [(__CFDictionary *)v18 objectForKeyedSubscript:*MEMORY[0x1E697B040]];
+        *certificates = [(__CFDictionary *)v18 objectForKeyedSubscript:*MEMORY[0x1E697B040]];
       }
 
-      if (a6)
+      if (set)
       {
-        if (_isStaticCodeSignedBy(*buf, 1, a8))
+        if (_isStaticCodeSignedBy(*buf, 1, error))
         {
-          *a6 |= 1uLL;
+          *set |= 1uLL;
         }
 
-        if (_isStaticCodeSignedBy(*buf, 2, a8))
+        if (_isStaticCodeSignedBy(*buf, 2, error))
         {
-          *a6 |= 2uLL;
+          *set |= 2uLL;
         }
 
-        if (_isStaticCodeSignedBy(*buf, 4, a8))
+        if (_isStaticCodeSignedBy(*buf, 4, error))
         {
-          *a6 |= 4uLL;
+          *set |= 4uLL;
         }
 
-        if (_isStaticCodeSignedBy(*buf, 8, a8))
+        if (_isStaticCodeSignedBy(*buf, 8, error))
         {
-          *a6 |= 8uLL;
+          *set |= 8uLL;
         }
 
-        if (_isStaticCodeSignedBy(*buf, 16, a8))
+        if (_isStaticCodeSignedBy(*buf, 16, error))
         {
-          *a6 |= 4uLL;
+          *set |= 4uLL;
         }
 
-        if (_isStaticCodeSignedBy(*buf, 32, a8))
+        if (_isStaticCodeSignedBy(*buf, 32, error))
         {
-          *a6 |= 0x20uLL;
+          *set |= 0x20uLL;
         }
       }
 
@@ -709,10 +709,10 @@ LABEL_8:
       {
         v26 = SecTrustEvaluateWithError(v25, &cf);
         v22 = cf;
-        if (a8 && cf)
+        if (error && cf)
         {
           v27 = [MEMORY[0x1E696AEC0] stringWithFormat:@"SecTrustEvaluateWithError(), trust: %@ failed with %@", v25, cf];
-          *a8 = [SOErrorHelper internalErrorWithMessage:v27];
+          *error = [SOErrorHelper internalErrorWithMessage:v27];
 
           v22 = cf;
         }
@@ -720,14 +720,14 @@ LABEL_8:
         v19 = v22 == 0;
       }
 
-      else if (a8)
+      else if (error)
       {
         v28 = [SOErrorHelper internalErrorWithMessage:@"no kSecCodeInfoTrust in signing information"];
         v29 = v28;
         v22 = 0;
         v26 = 0;
         v19 = 0;
-        *a8 = v28;
+        *error = v28;
       }
 
       else
@@ -737,15 +737,15 @@ LABEL_8:
         v19 = 0;
       }
 
-      if (a5)
+      if (trusted)
       {
-        *a5 = v26;
+        *trusted = v26;
       }
 
       goto LABEL_20;
     }
 
-    if (a8)
+    if (error)
     {
       [MEMORY[0x1E696AEC0] stringWithFormat:@"SecCodeCopySigningInformation() failed with %d", v20];
       goto LABEL_18;
@@ -773,11 +773,11 @@ LABEL_25:
   return v19;
 }
 
-+ (id)teamIdentifierFromAuditToken:(id *)a3
++ (id)teamIdentifierFromAuditToken:(id *)token
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = *&a3->var0[4];
-  *token.val = *a3->var0;
+  v4 = *&token->var0[4];
+  *token.val = *token->var0;
   *&token.val[4] = v4;
   v5 = SecTaskCreateWithAuditToken(0, &token);
   if (!v5)
@@ -830,8 +830,8 @@ LABEL_25:
     goto LABEL_8;
   }
 
-  v15 = *&a3->var0[4];
-  *token.val = *a3->var0;
+  v15 = *&token->var0[4];
+  *token.val = *token->var0;
   *&token.val[4] = v15;
   if (!CPCopyBundleIdentifierAndTeamFromAuditToken())
   {

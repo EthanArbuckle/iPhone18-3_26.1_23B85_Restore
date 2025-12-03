@@ -1,20 +1,20 @@
 @interface RGBJDKDiagnosticInputs
-- (BOOL)validateAndInitializeParameters:(id)a3;
+- (BOOL)validateAndInitializeParameters:(id)parameters;
 @end
 
 @implementation RGBJDKDiagnosticInputs
 
-- (BOOL)validateAndInitializeParameters:(id)a3
+- (BOOL)validateAndInitializeParameters:(id)parameters
 {
-  v4 = a3;
-  NSLog(@"validateAndInitializeParameters: key=%@", v4);
-  v5 = [v4 objectForKey:@"sessionTimeOut"];
+  parametersCopy = parameters;
+  NSLog(@"validateAndInitializeParameters: key=%@", parametersCopy);
+  v5 = [parametersCopy objectForKey:@"sessionTimeOut"];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 intValue];
-    self->_sessionTimeOut = v7;
-    NSLog(@"validateAndInitializeParameters: sessionTimeOut=%d", v7);
+    intValue = [v5 intValue];
+    self->_sessionTimeOut = intValue;
+    NSLog(@"validateAndInitializeParameters: sessionTimeOut=%d", intValue);
   }
 
   else
@@ -23,13 +23,13 @@
     NSLog(@"validateAndInitializeParameters: _sessionTimeOut is missing");
   }
 
-  v8 = [v4 objectForKey:@"sceneErrorTimeOut"];
+  v8 = [parametersCopy objectForKey:@"sceneErrorTimeOut"];
 
   if (v8)
   {
-    v9 = [v8 intValue];
-    self->_sceneErrorTimeOut = v9;
-    NSLog(@"validateAndInitializeParameters: _sceneErrorTimeOut=%d", v9);
+    intValue2 = [v8 intValue];
+    self->_sceneErrorTimeOut = intValue2;
+    NSLog(@"validateAndInitializeParameters: _sceneErrorTimeOut=%d", intValue2);
   }
 
   else
@@ -38,13 +38,13 @@
     NSLog(@"validateAndInitializeParameters: _sceneErrorTimeOut is missing");
   }
 
-  v10 = [v4 objectForKey:@"userNotMovingTimeout"];
+  v10 = [parametersCopy objectForKey:@"userNotMovingTimeout"];
 
   if (v10)
   {
-    v11 = [v10 intValue];
-    self->_userNotMovingTimeout = v11;
-    NSLog(@"validateAndInitializeParameters: _userNotMovingTimeout=%d", v11);
+    intValue3 = [v10 intValue];
+    self->_userNotMovingTimeout = intValue3;
+    NSLog(@"validateAndInitializeParameters: _userNotMovingTimeout=%d", intValue3);
   }
 
   else
@@ -53,7 +53,7 @@
     NSLog(@"validateAndInitializeParameters: _userNotMovingTimeout is missing");
   }
 
-  v12 = [v4 objectForKey:@"noMovementAttitudeChangeMinThreshold"];
+  v12 = [parametersCopy objectForKey:@"noMovementAttitudeChangeMinThreshold"];
 
   if (v12)
   {
@@ -68,7 +68,7 @@
     NSLog(@"validateAndInitializeParameters: _sceneErrorTimeOut is missing");
   }
 
-  v14 = [v4 objectForKey:@"skipSummaryScreen"];
+  v14 = [parametersCopy objectForKey:@"skipSummaryScreen"];
 
   if (v14)
   {

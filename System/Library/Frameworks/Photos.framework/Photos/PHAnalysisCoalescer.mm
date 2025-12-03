@@ -1,23 +1,23 @@
 @interface PHAnalysisCoalescer
-+ (void)_analyzeBufferedAssets:(id)a3 inLibrary:(id)a4;
-+ (void)_logFailureIfNeededForResult:(id)a3 andFeature:(unint64_t)a4;
-- (PHAnalysisCoalescer)initWithLibrary:(id)a3;
++ (void)_analyzeBufferedAssets:(id)assets inLibrary:(id)library;
++ (void)_logFailureIfNeededForResult:(id)result andFeature:(unint64_t)feature;
+- (PHAnalysisCoalescer)initWithLibrary:(id)library;
 - (id)_snapshotOfBufferedAssets;
-- (void)coalesceAndAnalyzeAssets:(id)a3 forFeature:(unint64_t)a4;
+- (void)coalesceAndAnalyzeAssets:(id)assets forFeature:(unint64_t)feature;
 @end
 
 @implementation PHAnalysisCoalescer
 
 - (id)_snapshotOfBufferedAssets
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   os_unfair_lock_lock(&self->_lock);
   lock_assetUUIDsByFeature = self->_lock_assetUUIDsByFeature;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __48__PHAnalysisCoalescer__snapshotOfBufferedAssets__block_invoke;
   v8[3] = &unk_1E75A7328;
-  v5 = v3;
+  v5 = dictionary;
   v9 = v5;
   [(NSMutableDictionary *)lock_assetUUIDsByFeature enumerateKeysAndObjectsUsingBlock:v8];
   [(NSMutableDictionary *)self->_lock_assetUUIDsByFeature removeAllObjects];
@@ -44,19 +44,19 @@ void __48__PHAnalysisCoalescer__snapshotOfBufferedAssets__block_invoke(uint64_t 
   [*(a1 + 32) setObject:v6 forKeyedSubscript:v8];
 }
 
-- (void)coalesceAndAnalyzeAssets:(id)a3 forFeature:(unint64_t)a4
+- (void)coalesceAndAnalyzeAssets:(id)assets forFeature:(unint64_t)feature
 {
-  v6 = a3;
-  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
+  assetsCopy = assets;
+  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:feature];
   os_unfair_lock_lock(&self->_lock);
-  v8 = [(NSMutableDictionary *)self->_lock_assetUUIDsByFeature objectForKeyedSubscript:v7];
-  if (!v8)
+  array = [(NSMutableDictionary *)self->_lock_assetUUIDsByFeature objectForKeyedSubscript:v7];
+  if (!array)
   {
-    v8 = [MEMORY[0x1E695DF70] array];
-    [(NSMutableDictionary *)self->_lock_assetUUIDsByFeature setObject:v8 forKeyedSubscript:v7];
+    array = [MEMORY[0x1E695DF70] array];
+    [(NSMutableDictionary *)self->_lock_assetUUIDsByFeature setObject:array forKeyedSubscript:v7];
   }
 
-  [v8 addObjectsFromArray:v6];
+  [array addObjectsFromArray:assetsCopy];
   lock_pendingBlock = self->_lock_pendingBlock;
   if (lock_pendingBlock)
   {
@@ -92,9 +92,9 @@ void __59__PHAnalysisCoalescer_coalesceAndAnalyzeAssets_forFeature___block_invok
   [PHAnalysisCoalescer _analyzeBufferedAssets:v4 inLibrary:v3];
 }
 
-- (PHAnalysisCoalescer)initWithLibrary:(id)a3
+- (PHAnalysisCoalescer)initWithLibrary:(id)library
 {
-  v4 = a3;
+  libraryCopy = library;
   v14.receiver = self;
   v14.super_class = PHAnalysisCoalescer;
   v5 = [(PHAnalysisCoalescer *)&v14 init];
@@ -105,52 +105,52 @@ void __59__PHAnalysisCoalescer_coalesceAndAnalyzeAssets_forFeature___block_invok
     queue = v5->_queue;
     v5->_queue = v7;
 
-    v9 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     lock_assetUUIDsByFeature = v5->_lock_assetUUIDsByFeature;
-    v5->_lock_assetUUIDsByFeature = v9;
+    v5->_lock_assetUUIDsByFeature = dictionary;
 
     lock_pendingBlock = v5->_lock_pendingBlock;
     v5->_lock_pendingBlock = 0;
 
     v5->_lock._os_unfair_lock_opaque = 0;
-    objc_storeWeak(&v5->_photoLibrary, v4);
+    objc_storeWeak(&v5->_photoLibrary, libraryCopy);
     v12 = v5;
   }
 
   return v5;
 }
 
-+ (void)_logFailureIfNeededForResult:(id)a3 andFeature:(unint64_t)a4
++ (void)_logFailureIfNeededForResult:(id)result andFeature:(unint64_t)feature
 {
   v12 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if ([v5 isFailure])
+  resultCopy = result;
+  if ([resultCopy isFailure])
   {
     v6 = PLBackendGetLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      v7 = [v5 error];
+      error = [resultCopy error];
       v8 = 134218242;
-      v9 = a4;
+      featureCopy = feature;
       v10 = 2112;
-      v11 = v7;
+      v11 = error;
       _os_log_impl(&dword_19C86F000, v6, OS_LOG_TYPE_ERROR, "Error analyzing assets for analysis coordinator feature: %lu error: %@", &v8, 0x16u);
     }
   }
 }
 
-+ (void)_analyzeBufferedAssets:(id)a3 inLibrary:(id)a4
++ (void)_analyzeBufferedAssets:(id)assets inLibrary:(id)library
 {
-  v5 = a4;
-  v6 = v5;
-  if (v5)
+  libraryCopy = library;
+  v6 = libraryCopy;
+  if (libraryCopy)
   {
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __56__PHAnalysisCoalescer__analyzeBufferedAssets_inLibrary___block_invoke;
     v8[3] = &unk_1E75A7328;
-    v9 = v5;
-    [a3 enumerateKeysAndObjectsUsingBlock:v8];
+    v9 = libraryCopy;
+    [assets enumerateKeysAndObjectsUsingBlock:v8];
     v7 = v9;
   }
 

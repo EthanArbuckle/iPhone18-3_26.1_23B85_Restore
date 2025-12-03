@@ -13,14 +13,14 @@
   {
     v4 = v3;
     v5 = MEMORY[0x277CCD198];
-    v6 = [v4 numerator];
-    v7 = [v5 createWithCodable:v6];
+    numerator = [v4 numerator];
+    v7 = [v5 createWithCodable:numerator];
 
     if (v7)
     {
       v8 = MEMORY[0x277CCD198];
-      v9 = [v4 denominator];
-      v10 = [v8 createWithCodable:v9];
+      denominator = [v4 denominator];
+      v10 = [v8 createWithCodable:denominator];
 
       if (v10)
       {
@@ -50,13 +50,13 @@
 - (HDCodableRatioValue)codableRepresentationForSync
 {
   v2 = objc_alloc_init(HDCodableRatioValue);
-  v3 = [a1 numerator];
-  v4 = [v3 codableRepresentationForSync];
-  [(HDCodableRatioValue *)v2 setNumerator:v4];
+  numerator = [self numerator];
+  codableRepresentationForSync = [numerator codableRepresentationForSync];
+  [(HDCodableRatioValue *)v2 setNumerator:codableRepresentationForSync];
 
-  v5 = [a1 denominator];
-  v6 = [v5 codableRepresentationForSync];
-  [(HDCodableRatioValue *)v2 setDenominator:v6];
+  denominator = [self denominator];
+  codableRepresentationForSync2 = [denominator codableRepresentationForSync];
+  [(HDCodableRatioValue *)v2 setDenominator:codableRepresentationForSync2];
 
   return v2;
 }

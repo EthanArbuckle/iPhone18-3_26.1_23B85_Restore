@@ -7,19 +7,19 @@
 
 - (id)identifier
 {
-  v1 = [a1 recommendation];
-  v2 = [v1 uniqueIdentifier];
+  recommendation = [self recommendation];
+  uniqueIdentifier = [recommendation uniqueIdentifier];
 
-  return v2;
+  return uniqueIdentifier;
 }
 
 - (id)trigger
 {
-  v1 = [a1 recommendation];
-  v2 = [v1 hu_triggerBuilderIfAny];
-  v3 = [v2 trigger];
+  recommendation = [self recommendation];
+  hu_triggerBuilderIfAny = [recommendation hu_triggerBuilderIfAny];
+  trigger = [hu_triggerBuilderIfAny trigger];
 
-  return v3;
+  return trigger;
 }
 
 @end

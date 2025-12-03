@@ -1,8 +1,8 @@
 @interface MFAttachmentPlaceholder
-+ (BOOL)isPlaceholderSerializedRepresentation:(id)a3;
++ (BOOL)isPlaceholderSerializedRepresentation:(id)representation;
 + (id)_placeholderMagic;
 + (id)placeholder;
-+ (id)placeholderFromSerializedRepresentation:(id)a3;
++ (id)placeholderFromSerializedRepresentation:(id)representation;
 - (BOOL)useMailDrop;
 - (MFAttachmentPlaceholder)init;
 - (id)description;
@@ -10,14 +10,14 @@
 - (id)serializedRepresentation;
 - (unint64_t)fileSize;
 - (void)dealloc;
-- (void)setFileSize:(unint64_t)a3;
+- (void)setFileSize:(unint64_t)size;
 @end
 
 @implementation MFAttachmentPlaceholder
 
 + (id)placeholder
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
@@ -47,19 +47,19 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(MFAttachmentPlaceholder *)self fileName];
-  v5 = [(MFAttachmentPlaceholder *)self fileSize];
-  v6 = [(MFAttachmentPlaceholder *)self mimeType];
-  v7 = [(MFAttachmentPlaceholder *)self fileURLString];
-  v8 = [(MFAttachmentPlaceholder *)self contentID];
-  v9 = [(MFAttachmentPlaceholder *)self useMailDrop];
+  fileName = [(MFAttachmentPlaceholder *)self fileName];
+  fileSize = [(MFAttachmentPlaceholder *)self fileSize];
+  mimeType = [(MFAttachmentPlaceholder *)self mimeType];
+  fileURLString = [(MFAttachmentPlaceholder *)self fileURLString];
+  contentID = [(MFAttachmentPlaceholder *)self contentID];
+  useMailDrop = [(MFAttachmentPlaceholder *)self useMailDrop];
   v10 = "SMTP";
-  if (v9)
+  if (useMailDrop)
   {
     v10 = "MailDrop";
   }
 
-  v11 = [v3 stringWithFormat:@"%@ %lu [%@] @ %@ : %@ [%s]", v4, v5, v6, v7, v8, v10];
+  v11 = [v3 stringWithFormat:@"%@ %lu [%@] @ %@ : %@ [%s]", fileName, fileSize, mimeType, fileURLString, contentID, v10];
 
   return v11;
 }
@@ -67,23 +67,23 @@
 - (unint64_t)fileSize
 {
   v2 = [(NSMutableDictionary *)self->_jsonDictionary objectForKeyedSubscript:@"fileSize"];
-  v3 = [v2 unsignedIntegerValue];
+  unsignedIntegerValue = [v2 unsignedIntegerValue];
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
-- (void)setFileSize:(unint64_t)a3
+- (void)setFileSize:(unint64_t)size
 {
   jsonDictionary = self->_jsonDictionary;
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:size];
   [(NSMutableDictionary *)jsonDictionary setValue:v4 forKey:@"fileSize"];
 }
 
 - (id)fileURL
 {
   v2 = MEMORY[0x277CBEBC0];
-  v3 = [(MFAttachmentPlaceholder *)self fileURLString];
-  v4 = [v2 URLWithString:v3];
+  fileURLString = [(MFAttachmentPlaceholder *)self fileURLString];
+  v4 = [v2 URLWithString:fileURLString];
 
   return v4;
 }
@@ -91,17 +91,17 @@
 - (BOOL)useMailDrop
 {
   v2 = [(NSMutableDictionary *)self->_jsonDictionary objectForKeyedSubscript:@"mailDrop"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-+ (id)placeholderFromSerializedRepresentation:(id)a3
++ (id)placeholderFromSerializedRepresentation:(id)representation
 {
-  v4 = a3;
-  if ([a1 isPlaceholderSerializedRepresentation:v4])
+  representationCopy = representation;
+  if ([self isPlaceholderSerializedRepresentation:representationCopy])
   {
-    v5 = [v4 subdataWithRange:{4, objc_msgSend(v4, "length") - 4}];
+    v5 = [representationCopy subdataWithRange:{4, objc_msgSend(representationCopy, "length") - 4}];
     if (v5)
     {
       v11 = 0;
@@ -157,18 +157,18 @@ uint64_t __44__MFAttachmentPlaceholder__placeholderMagic__block_invoke()
   return MEMORY[0x2821F96F8](v0, v1);
 }
 
-+ (BOOL)isPlaceholderSerializedRepresentation:(id)a3
++ (BOOL)isPlaceholderSerializedRepresentation:(id)representation
 {
-  v4 = a3;
-  if ([v4 length] < 0x35 || objc_msgSend(v4, "length") > 0x833)
+  representationCopy = representation;
+  if ([representationCopy length] < 0x35 || objc_msgSend(representationCopy, "length") > 0x833)
   {
     v7 = 0;
   }
 
   else
   {
-    v5 = [a1 _placeholderMagic];
-    v6 = [v4 rangeOfData:v5 options:2 range:{0, 4}];
+    _placeholderMagic = [self _placeholderMagic];
+    v6 = [representationCopy rangeOfData:_placeholderMagic options:2 range:{0, 4}];
 
     v7 = v6 != 0x7FFFFFFFFFFFFFFFLL;
   }

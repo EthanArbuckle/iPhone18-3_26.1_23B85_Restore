@@ -1,12 +1,12 @@
 @interface SearchResultsCuratedCollectionsAnalyticsManager
 - (SearchResultsCuratedCollectionsAnalyticsManager)init;
 - (id)eventDebugDescription;
-- (void)carouselCollectionTappedWithMuid:(unint64_t)a3 verticalIndex:(int64_t)a4 horizontalIndex:(int64_t)a5 isCurrentlySaved:(BOOL)a6;
-- (void)carouselScrolledBackwardAtVerticalIndex:(int64_t)a3;
-- (void)carouselScrolledForwardAtVerticalIndex:(int64_t)a3;
+- (void)carouselCollectionTappedWithMuid:(unint64_t)muid verticalIndex:(int64_t)index horizontalIndex:(int64_t)horizontalIndex isCurrentlySaved:(BOOL)saved;
+- (void)carouselScrolledBackwardAtVerticalIndex:(int64_t)index;
+- (void)carouselScrolledForwardAtVerticalIndex:(int64_t)index;
 - (void)cleanup;
-- (void)placeContextMultipleCollectionsTappedWithMuids:(id)a3 verticalIndex:(int64_t)a4;
-- (void)placeContextSingleCollectionTappedWithMuid:(unint64_t)a3 isCurrentlySaved:(BOOL)a4 verticalIndex:(int64_t)a5;
+- (void)placeContextMultipleCollectionsTappedWithMuids:(id)muids verticalIndex:(int64_t)index;
+- (void)placeContextSingleCollectionTappedWithMuid:(unint64_t)muid isCurrentlySaved:(BOOL)saved verticalIndex:(int64_t)index;
 @end
 
 @implementation SearchResultsCuratedCollectionsAnalyticsManager
@@ -7170,9 +7170,9 @@ LABEL_1995:
   self->_event.collectionCurrentlySaved = 0;
 }
 
-- (void)placeContextMultipleCollectionsTappedWithMuids:(id)a3 verticalIndex:(int64_t)a4
+- (void)placeContextMultipleCollectionsTappedWithMuids:(id)muids verticalIndex:(int64_t)index
 {
-  v6 = a3;
+  muidsCopy = muids;
   [(SearchResultsCuratedCollectionsAnalyticsManager *)self cleanup];
   v7 = objc_alloc_init(SearchSessionAnalytics);
   [(SearchSessionAnalytics *)v7 setAction:2100];
@@ -7181,12 +7181,12 @@ LABEL_1995:
   [v8 collectSearchSessionAnalytics:v7];
 
   self->_event.action = [(SearchSessionAnalytics *)v7 action];
-  v9 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v6, "count")}];
+  v9 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(muidsCopy, "count")}];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v10 = v6;
+  v10 = muidsCopy;
   v11 = [v10 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v11)
   {
@@ -7202,8 +7202,8 @@ LABEL_1995:
           objc_enumerationMutation(v10);
         }
 
-        v15 = [*(*(&v20 + 1) + 8 * v14) stringValue];
-        [v9 addObject:v15];
+        stringValue = [*(*(&v20 + 1) + 8 * v14) stringValue];
+        [v9 addObject:stringValue];
 
         v14 = v14 + 1;
       }
@@ -7219,16 +7219,16 @@ LABEL_1995:
   value = self->_event.value;
   self->_event.value = v16;
 
-  v18 = [NSNumber numberWithInteger:a4];
+  v18 = [NSNumber numberWithInteger:index];
   verticalIndex = self->_event.verticalIndex;
   self->_event.verticalIndex = v18;
 
   [(SearchResultsCuratedCollectionsAnalyticsManager *)self logEvent];
 }
 
-- (void)placeContextSingleCollectionTappedWithMuid:(unint64_t)a3 isCurrentlySaved:(BOOL)a4 verticalIndex:(int64_t)a5
+- (void)placeContextSingleCollectionTappedWithMuid:(unint64_t)muid isCurrentlySaved:(BOOL)saved verticalIndex:(int64_t)index
 {
-  v6 = a4;
+  savedCopy = saved;
   [(SearchResultsCuratedCollectionsAnalyticsManager *)self cleanup];
   v17 = objc_alloc_init(SearchSessionAnalytics);
   [(SearchSessionAnalytics *)v17 setAction:2099];
@@ -7237,27 +7237,27 @@ LABEL_1995:
   [v9 collectSearchSessionAnalytics:v17];
 
   self->_event.action = [(SearchSessionAnalytics *)v17 action];
-  v10 = [NSNumber numberWithUnsignedLongLong:a3];
+  v10 = [NSNumber numberWithUnsignedLongLong:muid];
   collectionId = self->_event.collectionId;
   self->_event.collectionId = v10;
 
   value = self->_event.value;
   self->_event.value = @"Hyperlink";
 
-  v13 = [NSNumber numberWithBool:v6];
+  v13 = [NSNumber numberWithBool:savedCopy];
   collectionCurrentlySaved = self->_event.collectionCurrentlySaved;
   self->_event.collectionCurrentlySaved = v13;
 
-  v15 = [NSNumber numberWithInteger:a5];
+  v15 = [NSNumber numberWithInteger:index];
   verticalIndex = self->_event.verticalIndex;
   self->_event.verticalIndex = v15;
 
   [(SearchResultsCuratedCollectionsAnalyticsManager *)self logEvent];
 }
 
-- (void)carouselCollectionTappedWithMuid:(unint64_t)a3 verticalIndex:(int64_t)a4 horizontalIndex:(int64_t)a5 isCurrentlySaved:(BOOL)a6
+- (void)carouselCollectionTappedWithMuid:(unint64_t)muid verticalIndex:(int64_t)index horizontalIndex:(int64_t)horizontalIndex isCurrentlySaved:(BOOL)saved
 {
-  v6 = a6;
+  savedCopy = saved;
   [(SearchResultsCuratedCollectionsAnalyticsManager *)self cleanup];
   v20 = objc_alloc_init(SearchSessionAnalytics);
   [(SearchSessionAnalytics *)v20 setAction:2099];
@@ -7266,41 +7266,41 @@ LABEL_1995:
   [v11 collectSearchSessionAnalytics:v20];
 
   self->_event.action = [(SearchSessionAnalytics *)v20 action];
-  v12 = [NSNumber numberWithUnsignedLongLong:a3];
+  v12 = [NSNumber numberWithUnsignedLongLong:muid];
   collectionId = self->_event.collectionId;
   self->_event.collectionId = v12;
 
-  v14 = [NSNumber numberWithInteger:a4];
+  v14 = [NSNumber numberWithInteger:index];
   verticalIndex = self->_event.verticalIndex;
   self->_event.verticalIndex = v14;
 
-  v16 = [NSNumber numberWithInteger:a5];
+  v16 = [NSNumber numberWithInteger:horizontalIndex];
   horizontalIndex = self->_event.horizontalIndex;
   self->_event.horizontalIndex = v16;
 
-  v18 = [NSNumber numberWithBool:v6];
+  v18 = [NSNumber numberWithBool:savedCopy];
   collectionCurrentlySaved = self->_event.collectionCurrentlySaved;
   self->_event.collectionCurrentlySaved = v18;
 
   [(SearchResultsCuratedCollectionsAnalyticsManager *)self logEvent];
 }
 
-- (void)carouselScrolledForwardAtVerticalIndex:(int64_t)a3
+- (void)carouselScrolledForwardAtVerticalIndex:(int64_t)index
 {
   [(SearchResultsCuratedCollectionsAnalyticsManager *)self cleanup];
   self->_event.action = 9036;
-  v5 = [NSNumber numberWithInteger:a3];
+  v5 = [NSNumber numberWithInteger:index];
   verticalIndex = self->_event.verticalIndex;
   self->_event.verticalIndex = v5;
 
   [(SearchResultsCuratedCollectionsAnalyticsManager *)self logEvent];
 }
 
-- (void)carouselScrolledBackwardAtVerticalIndex:(int64_t)a3
+- (void)carouselScrolledBackwardAtVerticalIndex:(int64_t)index
 {
   [(SearchResultsCuratedCollectionsAnalyticsManager *)self cleanup];
   self->_event.action = 9037;
-  v5 = [NSNumber numberWithInteger:a3];
+  v5 = [NSNumber numberWithInteger:index];
   verticalIndex = self->_event.verticalIndex;
   self->_event.verticalIndex = v5;
 

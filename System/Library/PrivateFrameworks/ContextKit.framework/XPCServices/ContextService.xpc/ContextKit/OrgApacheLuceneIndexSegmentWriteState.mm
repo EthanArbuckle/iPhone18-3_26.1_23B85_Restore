@@ -1,23 +1,23 @@
 @interface OrgApacheLuceneIndexSegmentWriteState
-- (BOOL)assertSegmentSuffixWithNSString:(id)a3;
+- (BOOL)assertSegmentSuffixWithNSString:(id)string;
 - (void)dealloc;
 @end
 
 @implementation OrgApacheLuceneIndexSegmentWriteState
 
-- (BOOL)assertSegmentSuffixWithNSString:(id)a3
+- (BOOL)assertSegmentSuffixWithNSString:(id)string
 {
-  if (!a3)
+  if (!string)
   {
     goto LABEL_9;
   }
 
-  if ([a3 isEmpty])
+  if ([string isEmpty])
   {
     return 1;
   }
 
-  v4 = [a3 split:@"_"];
+  v4 = [string split:@"_"];
   if (!v4)
   {
 LABEL_9:
@@ -32,7 +32,7 @@ LABEL_9:
 
   if (v11 == 1)
   {
-    JavaLangLong_parseLongWithNSString_withInt_(a3, 36, v5, v6, v7, v8, v9, v10);
+    JavaLangLong_parseLongWithNSString_withInt_(string, 36, v5, v6, v7, v8, v9, v10);
     return 1;
   }
 

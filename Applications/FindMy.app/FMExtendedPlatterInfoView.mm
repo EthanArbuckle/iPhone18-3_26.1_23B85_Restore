@@ -1,10 +1,10 @@
 @interface FMExtendedPlatterInfoView
-- (_TtC6FindMy25FMExtendedPlatterInfoView)initWithFrame:(CGRect)a3;
+- (_TtC6FindMy25FMExtendedPlatterInfoView)initWithFrame:(CGRect)frame;
 - (void)handleCloseAction;
 - (void)platterTapped;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation FMExtendedPlatterInfoView
@@ -16,7 +16,7 @@
   {
     v5[3] = swift_getObjectType();
     v5[0] = self;
-    v4 = self;
+    selfCopy = self;
     sub_100062900(v2);
     v2(v5);
 
@@ -38,62 +38,62 @@
 
   else
   {
-    v5 = self;
+    selfCopy = self;
   }
 
   [(FMExtendedPlatterInfoView *)self removeFromSuperview];
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   ObjectType = swift_getObjectType();
   sub_10000905C(0, &qword_1006B0C30);
   sub_1000D5BCC();
   static Set._unconditionallyBridgeFromObjectiveC(_:)();
-  v7 = a4;
-  v8 = self;
+  eventCopy = event;
+  selfCopy = self;
   isa = Set._bridgeToObjectiveC()().super.isa;
 
-  v11.receiver = v8;
+  v11.receiver = selfCopy;
   v11.super_class = ObjectType;
-  [(FMExtendedPlatterInfoView *)&v11 touchesBegan:isa withEvent:v7];
+  [(FMExtendedPlatterInfoView *)&v11 touchesBegan:isa withEvent:eventCopy];
 
-  if (*(&v8->super.super.super.isa + OBJC_IVAR____TtC6FindMy25FMExtendedPlatterInfoView_hasAction) == 1)
+  if (*(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC6FindMy25FMExtendedPlatterInfoView_hasAction) == 1)
   {
-    v10 = [objc_opt_self() secondarySystemFillColor];
-    [(FMExtendedPlatterInfoView *)v8 setBackgroundColor:v10];
+    secondarySystemFillColor = [objc_opt_self() secondarySystemFillColor];
+    [(FMExtendedPlatterInfoView *)selfCopy setBackgroundColor:secondarySystemFillColor];
   }
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
   sub_10000905C(0, &qword_1006B0C30);
   sub_1000D5BCC();
   v6 = static Set._unconditionallyBridgeFromObjectiveC(_:)();
-  v7 = a4;
-  v8 = self;
-  sub_10032E608(v6, a4);
+  eventCopy = event;
+  selfCopy = self;
+  sub_10032E608(v6, event);
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v8.receiver = self;
   v8.super_class = swift_getObjectType();
-  v4 = a3;
+  changeCopy = change;
   v5 = v8.receiver;
-  [(FMExtendedPlatterInfoView *)&v8 traitCollectionDidChange:v4];
+  [(FMExtendedPlatterInfoView *)&v8 traitCollectionDidChange:changeCopy];
   if (qword_1006AEC30 != -1)
   {
     swift_once();
   }
 
-  v6 = [v5 traitCollection];
-  v7 = sub_100356E0C(v6);
+  traitCollection = [v5 traitCollection];
+  v7 = sub_100356E0C(traitCollection);
 
   [v5 setBackgroundColor:v7];
 }
 
-- (_TtC6FindMy25FMExtendedPlatterInfoView)initWithFrame:(CGRect)a3
+- (_TtC6FindMy25FMExtendedPlatterInfoView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

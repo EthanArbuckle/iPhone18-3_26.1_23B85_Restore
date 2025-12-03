@@ -1,12 +1,12 @@
 @interface PXSharedLibraryReplyAssistantReviewViewController
 - (PXAssistantViewControllerDelegate)assistantViewControllerDelegate;
-- (PXSharedLibraryReplyAssistantReviewViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6;
-- (PXSharedLibraryReplyAssistantReviewViewController)initWithViewModel:(id)a3 sharedLibraryStatusProvider:(id)a4;
-- (void)_setIsProcessing:(BOOL)a3;
+- (PXSharedLibraryReplyAssistantReviewViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout;
+- (PXSharedLibraryReplyAssistantReviewViewController)initWithViewModel:(id)model sharedLibraryStatusProvider:(id)provider;
+- (void)_setIsProcessing:(BOOL)processing;
 - (void)_updateHeaderText;
 - (void)acceptInvitation;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)traitCollectionDidChange:(id)change;
 - (void)viewDidLoad;
 @end
 
@@ -19,18 +19,18 @@
   return WeakRetained;
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v10 = a3;
-  if (PXSharedLibraryAssistantViewModelObservationContext_134509 != a5)
+  observableCopy = observable;
+  if (PXSharedLibraryAssistantViewModelObservationContext_134509 != context)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryReplyAssistantReviewViewController+iOS.m" lineNumber:112 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSharedLibraryReplyAssistantReviewViewController+iOS.m" lineNumber:112 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  if ((+[PXSharedLibraryAssistantViewModel shareCountChangeDescriptors]& a4) != 0)
+  if ((+[PXSharedLibraryAssistantViewModel shareCountChangeDescriptors]& change) != 0)
   {
     [(PXSharedLibraryReplyAssistantReviewViewController *)self _updateHeaderText];
   }
@@ -38,14 +38,14 @@
 
 - (void)_updateHeaderText
 {
-  v3 = [(PXSharedLibraryReplyAssistantReviewViewController *)self headerView];
+  headerView = [(PXSharedLibraryReplyAssistantReviewViewController *)self headerView];
   v12 = 0uLL;
   v13 = 0;
-  v4 = [(PXSharedLibraryReplyAssistantReviewViewController *)self viewModel];
-  v5 = v4;
-  if (v4)
+  viewModel = [(PXSharedLibraryReplyAssistantReviewViewController *)self viewModel];
+  v5 = viewModel;
+  if (viewModel)
   {
-    [v4 shareCounts];
+    [viewModel shareCounts];
   }
 
   else
@@ -55,11 +55,11 @@
   }
 
   v6 = PXLocalizedSharedLibraryString(@"PXSharedLibraryReplyAssistant_Intro_ReviewTitle");
-  [v3 setTitle:v6];
+  [headerView setTitle:v6];
 
-  v7 = [(PXSharedLibraryReplyAssistantReviewViewController *)self viewModel];
-  v8 = [v7 sharedLibrary];
-  v9 = PXSharedLibraryGetCurrentUserParticipant(v8);
+  viewModel2 = [(PXSharedLibraryReplyAssistantReviewViewController *)self viewModel];
+  sharedLibrary = [viewModel2 sharedLibrary];
+  v9 = PXSharedLibraryGetCurrentUserParticipant(sharedLibrary);
 
   if (v9)
   {
@@ -69,17 +69,17 @@
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v8.receiver = self;
   v8.super_class = PXSharedLibraryReplyAssistantReviewViewController;
-  v4 = a3;
-  [(PXSharedLibraryReplyAssistantReviewViewController *)&v8 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(PXSharedLibraryReplyAssistantReviewViewController *)&v8 traitCollectionDidChange:changeCopy];
   v5 = [(PXSharedLibraryReplyAssistantReviewViewController *)self traitCollection:v8.receiver];
-  v6 = [v5 userInterfaceStyle];
-  v7 = [v4 userInterfaceStyle];
+  userInterfaceStyle = [v5 userInterfaceStyle];
+  userInterfaceStyle2 = [changeCopy userInterfaceStyle];
 
-  if (v6 != v7)
+  if (userInterfaceStyle != userInterfaceStyle2)
   {
     [(PXSharedLibraryReplyAssistantReviewViewController *)self _updateIcon];
   }
@@ -92,7 +92,7 @@
   [(OBBaseWelcomeController *)&v15 viewDidLoad];
   [(PXSharedLibraryReplyAssistantReviewViewController *)self _updateIcon];
   [(PXSharedLibraryReplyAssistantReviewViewController *)self _updateHeaderText];
-  v3 = [(PXSharedLibraryReplyAssistantReviewViewController *)self buttonTray];
+  buttonTray = [(PXSharedLibraryReplyAssistantReviewViewController *)self buttonTray];
   v4 = PXLocalizedSharedLibraryString(@"PXSharedLibrarySetupDataRetentionInfoParticipant");
   v5 = MEMORY[0x1E695DFF8];
   IsIPad = PLPhysicalDeviceIsIPad();
@@ -104,29 +104,29 @@
 
   v8 = v7;
   v9 = [v5 URLWithString:v8];
-  [v3 setCaptionText:v4 learnMoreURL:v9];
+  [buttonTray setCaptionText:v4 learnMoreURL:v9];
 
-  v10 = [MEMORY[0x1E69B7D00] boldButton];
+  boldButton = [MEMORY[0x1E69B7D00] boldButton];
   movePhotosButton = self->_movePhotosButton;
-  self->_movePhotosButton = v10;
+  self->_movePhotosButton = boldButton;
 
   v12 = self->_movePhotosButton;
   v13 = PXLocalizedSharedLibraryString(@"PXSharedLibraryReplyAssistant_Intro_ReviewButtonTitle_Join");
   [(OBBoldTrayButton *)v12 setTitle:v13 forState:0];
 
   [(OBBoldTrayButton *)self->_movePhotosButton addTarget:self action:sel_moveButtonTapped_ forControlEvents:0x2000];
-  v14 = [(PXSharedLibraryReplyAssistantReviewViewController *)self buttonTray];
-  [v14 addButton:self->_movePhotosButton];
+  buttonTray2 = [(PXSharedLibraryReplyAssistantReviewViewController *)self buttonTray];
+  [buttonTray2 addButton:self->_movePhotosButton];
 }
 
-- (PXSharedLibraryReplyAssistantReviewViewController)initWithViewModel:(id)a3 sharedLibraryStatusProvider:(id)a4
+- (PXSharedLibraryReplyAssistantReviewViewController)initWithViewModel:(id)model sharedLibraryStatusProvider:(id)provider
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (v8)
+  modelCopy = model;
+  providerCopy = provider;
+  v10 = providerCopy;
+  if (modelCopy)
   {
-    if (v9)
+    if (providerCopy)
     {
       goto LABEL_3;
     }
@@ -134,8 +134,8 @@
 
   else
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryReplyAssistantReviewViewController+iOS.m" lineNumber:36 description:{@"Invalid parameter not satisfying: %@", @"viewModel"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSharedLibraryReplyAssistantReviewViewController+iOS.m" lineNumber:36 description:{@"Invalid parameter not satisfying: %@", @"viewModel"}];
 
     if (v10)
     {
@@ -143,8 +143,8 @@
     }
   }
 
-  v15 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v15 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryReplyAssistantReviewViewController+iOS.m" lineNumber:37 description:{@"Invalid parameter not satisfying: %@", @"sharedLibraryStatusProvider"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryReplyAssistantReviewViewController+iOS.m" lineNumber:37 description:{@"Invalid parameter not satisfying: %@", @"sharedLibraryStatusProvider"}];
 
 LABEL_3:
   v16.receiver = self;
@@ -153,42 +153,42 @@ LABEL_3:
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_statusProvider, a4);
-    objc_storeStrong(&v12->_viewModel, a3);
+    objc_storeStrong(&v11->_statusProvider, provider);
+    objc_storeStrong(&v12->_viewModel, model);
     [(PXSharedLibraryAssistantViewModel *)v12->_viewModel registerChangeObserver:v12 context:PXSharedLibraryAssistantViewModelObservationContext_134509];
   }
 
   return v12;
 }
 
-- (PXSharedLibraryReplyAssistantReviewViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6
+- (PXSharedLibraryReplyAssistantReviewViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v13 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryReplyAssistantReviewViewController+iOS.m" lineNumber:32 description:{@"%s is not available as initializer", "-[PXSharedLibraryReplyAssistantReviewViewController initWithTitle:detailText:icon:contentLayout:]"}];
+  titleCopy = title;
+  textCopy = text;
+  iconCopy = icon;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXSharedLibraryReplyAssistantReviewViewController+iOS.m" lineNumber:32 description:{@"%s is not available as initializer", "-[PXSharedLibraryReplyAssistantReviewViewController initWithTitle:detailText:icon:contentLayout:]"}];
 
   abort();
 }
 
 - (void)acceptInvitation
 {
-  v4 = [(PXSharedLibraryReplyAssistantReviewViewController *)self viewModel];
-  v5 = [v4 sharedLibrary];
-  v6 = [v4 sharedLibraryRule];
-  v7 = [v4 autoSharePolicy];
+  viewModel = [(PXSharedLibraryReplyAssistantReviewViewController *)self viewModel];
+  sharedLibrary = [viewModel sharedLibrary];
+  sharedLibraryRule = [viewModel sharedLibraryRule];
+  autoSharePolicy = [viewModel autoSharePolicy];
   v8 = [off_1E7721960 defaultPresenterWithViewController:self];
   [(PXSharedLibraryReplyAssistantReviewViewController *)self _setIsProcessing:1];
-  v9 = [(PXSharedLibraryReplyAssistantReviewViewController *)self statusProvider];
-  v10 = [v4 previewIsOutdated];
+  statusProvider = [(PXSharedLibraryReplyAssistantReviewViewController *)self statusProvider];
+  previewIsOutdated = [viewModel previewIsOutdated];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __79__PXSharedLibraryReplyAssistantReviewViewController_Internal__acceptInvitation__block_invoke;
   v11[3] = &unk_1E7741CE0;
   v11[4] = self;
   v11[5] = a2;
-  PXSharedLibraryAcceptInvitation(v9, v5, v6, v7, v10, 0, v8, v11);
+  PXSharedLibraryAcceptInvitation(statusProvider, sharedLibrary, sharedLibraryRule, autoSharePolicy, previewIsOutdated, 0, v8, v11);
 }
 
 void __79__PXSharedLibraryReplyAssistantReviewViewController_Internal__acceptInvitation__block_invoke(uint64_t a1, int a2)
@@ -206,24 +206,24 @@ void __79__PXSharedLibraryReplyAssistantReviewViewController_Internal__acceptInv
   }
 }
 
-- (void)_setIsProcessing:(BOOL)a3
+- (void)_setIsProcessing:(BOOL)processing
 {
-  v3 = a3;
-  v6 = [(PXSharedLibraryReplyAssistantReviewViewController *)self movePhotosButton];
-  if (v3)
+  processingCopy = processing;
+  movePhotosButton = [(PXSharedLibraryReplyAssistantReviewViewController *)self movePhotosButton];
+  if (processingCopy)
   {
-    [v6 setEnabled:0];
-    [v6 showsBusyIndicator];
+    [movePhotosButton setEnabled:0];
+    [movePhotosButton showsBusyIndicator];
   }
 
   else
   {
-    [v6 setEnabled:1];
-    [v6 hidesBusyIndicator];
+    [movePhotosButton setEnabled:1];
+    [movePhotosButton hidesBusyIndicator];
   }
 
-  v5 = [(OBBaseWelcomeController *)self navigationItem];
-  [v5 setHidesBackButton:v3];
+  navigationItem = [(OBBaseWelcomeController *)self navigationItem];
+  [navigationItem setHidesBackButton:processingCopy];
 }
 
 @end

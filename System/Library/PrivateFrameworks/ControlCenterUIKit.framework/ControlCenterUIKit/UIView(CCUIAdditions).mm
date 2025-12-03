@@ -6,9 +6,9 @@
 
 - (void)controlCenterApplyPrimaryContentShadow
 {
-  [a1 _controlCenterApplyPrimaryContentShadow];
-  v2 = [a1 layer];
-  [v2 setShadowPathIsBounds:1];
+  [self _controlCenterApplyPrimaryContentShadow];
+  layer = [self layer];
+  [layer setShadowPathIsBounds:1];
 }
 
 @end

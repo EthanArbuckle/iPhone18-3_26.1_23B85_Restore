@@ -1,58 +1,58 @@
 @interface CKAnimatedImageMediaObject
 + (Class)__ck_attachmentItemClass;
-+ (double)maxPixelDimensionOfThumbnailWithImagePixelSize:(CGSize)a3 forWidth:(double)a4 isSticker:(BOOL)a5;
++ (double)maxPixelDimensionOfThumbnailWithImagePixelSize:(CGSize)size forWidth:(double)width isSticker:(BOOL)sticker;
 - (BOOL)canPerformQuickAction;
 - (BOOL)canUseAsBackground;
 - (BOOL)needsAnimation;
-- (BOOL)validPreviewExistsAtURL:(id)a3;
-- (CKAnimatedImageMediaObject)initWithCoder:(id)a3;
-- (CKAnimatedImageMediaObject)initWithTransfer:(id)a3 context:(id)a4 forceInlinePreview:(BOOL)a5;
-- (id)animatedImageForWidth:(double)a3;
-- (id)bbPreviewFillToSize:(CGSize)a3;
-- (id)generateAndPersistAnimatedPreviewFromImageData:(id)a3 forWidth:(double)a4 withTransferGUID:(id)a5 isSticker:(BOOL)a6;
-- (id)generateAndPersistAnimatedPreviewFromSourceURL:(id)a3 senderContext:(id)a4 forWidth:(double)a5 withTransferGUID:(id)a6 isSticker:(BOOL)a7;
-- (id)generateThumbnailsForWidth:(double)a3 isSticker:(BOOL)a4 orientation:(char)a5;
+- (BOOL)validPreviewExistsAtURL:(id)l;
+- (CKAnimatedImageMediaObject)initWithCoder:(id)coder;
+- (CKAnimatedImageMediaObject)initWithTransfer:(id)transfer context:(id)context forceInlinePreview:(BOOL)preview;
+- (id)animatedImageForWidth:(double)width;
+- (id)bbPreviewFillToSize:(CGSize)size;
+- (id)generateAndPersistAnimatedPreviewFromImageData:(id)data forWidth:(double)width withTransferGUID:(id)d isSticker:(BOOL)sticker;
+- (id)generateAndPersistAnimatedPreviewFromSourceURL:(id)l senderContext:(id)context forWidth:(double)width withTransferGUID:(id)d isSticker:(BOOL)sticker;
+- (id)generateThumbnailsForWidth:(double)width isSticker:(BOOL)sticker orientation:(char)orientation;
 - (id)metricsCollectorMediaType;
-- (id)previewForWidth:(double)a3 orientation:(char)a4;
-- (id)savedAnimatedPreviewFromURL:(id)a3 forOrientation:(char)a4;
-- (id)savedPreviewFromURL:(id)a3 forOrientation:(char)a4;
-- (id)scaledThumbnailFromThumbnail:(id)a3 forWidth:(double)a4 isSticker:(BOOL)a5;
-- (id)thumbnailAtIndex:(unint64_t)a3 forWidth:(double)a4 imageData:(id)a5 isSticker:(BOOL)a6 orientation:(char)a7;
-- (void)encodeWithCoder:(id)a3;
-- (void)prewarmPreviewForWidth:(double)a3 orientation:(char)a4;
-- (void)saveAnimatedPreview:(id)a3 toURL:(id)a4 forOrientation:(char)a5;
+- (id)previewForWidth:(double)width orientation:(char)orientation;
+- (id)savedAnimatedPreviewFromURL:(id)l forOrientation:(char)orientation;
+- (id)savedPreviewFromURL:(id)l forOrientation:(char)orientation;
+- (id)scaledThumbnailFromThumbnail:(id)thumbnail forWidth:(double)width isSticker:(BOOL)sticker;
+- (id)thumbnailAtIndex:(unint64_t)index forWidth:(double)width imageData:(id)data isSticker:(BOOL)sticker orientation:(char)orientation;
+- (void)encodeWithCoder:(id)coder;
+- (void)prewarmPreviewForWidth:(double)width orientation:(char)orientation;
+- (void)saveAnimatedPreview:(id)preview toURL:(id)l forOrientation:(char)orientation;
 @end
 
 @implementation CKAnimatedImageMediaObject
 
-- (CKAnimatedImageMediaObject)initWithTransfer:(id)a3 context:(id)a4 forceInlinePreview:(BOOL)a5
+- (CKAnimatedImageMediaObject)initWithTransfer:(id)transfer context:(id)context forceInlinePreview:(BOOL)preview
 {
-  v5 = a5;
+  previewCopy = preview;
   v40 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  transferCopy = transfer;
+  contextCopy = context;
   v37.receiver = self;
   v37.super_class = CKAnimatedImageMediaObject;
-  v10 = [(CKImageMediaObject *)&v37 initWithTransfer:v8 context:v9 forceInlinePreview:v5];
+  v10 = [(CKImageMediaObject *)&v37 initWithTransfer:transferCopy context:contextCopy forceInlinePreview:previewCopy];
   v11 = v10;
   if (v10)
   {
     v10->_stickerEffectType = 0;
-    v12 = [(CKMediaObject *)v10 transfer];
-    v13 = [v12 isSticker];
+    transfer = [(CKMediaObject *)v10 transfer];
+    isSticker = [transfer isSticker];
 
-    if (v13)
+    if (isSticker)
     {
-      v14 = [(CKMediaObject *)v11 previewFilenameExtension];
-      v15 = [(CKMediaObject *)v11 previewCachesFileURLWithOrientation:0 extension:v14 generateIntermediaries:0];
+      previewFilenameExtension = [(CKMediaObject *)v11 previewFilenameExtension];
+      v15 = [(CKMediaObject *)v11 previewCachesFileURLWithOrientation:0 extension:previewFilenameExtension generateIntermediaries:0];
 
-      v16 = [v15 URLByDeletingPathExtension];
-      v17 = [v16 URLByAppendingPathExtension:@"plist"];
+      uRLByDeletingPathExtension = [v15 URLByDeletingPathExtension];
+      v17 = [uRLByDeletingPathExtension URLByAppendingPathExtension:@"plist"];
 
       v18 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithContentsOfURL:v17];
       if (v18)
       {
-        v19 = [MEMORY[0x1E696AE40] propertyListWithData:v18 options:0 format:0 error:0];
+        stickerUserInfo2 = [MEMORY[0x1E696AE40] propertyListWithData:v18 options:0 format:0 error:0];
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
@@ -72,12 +72,12 @@
           goto LABEL_31;
         }
 
-        v20 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-        v21 = [v20 isClingEnabled];
+        mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+        isClingEnabled = [mEMORY[0x1E69A8070] isClingEnabled];
 
-        if (v21)
+        if (isClingEnabled)
         {
-          v22 = [v19 objectForKeyedSubscript:*MEMORY[0x1E69A7C88]];
+          v22 = [stickerUserInfo2 objectForKeyedSubscript:*MEMORY[0x1E69A7C88]];
           if ([v22 length])
           {
             if ([v22 containsString:@"none"])
@@ -111,25 +111,25 @@
             }
 
             v11->_stickerEffectType = v23;
-            v33 = [(CKImageMediaObject *)v11 sticker];
-            [v33 setStickerEffectType:v23];
+            sticker = [(CKImageMediaObject *)v11 sticker];
+            [sticker setStickerEffectType:v23];
           }
         }
 
-        v34 = [v8 stickerUserInfo];
-        v35 = [v34 objectForKeyedSubscript:*MEMORY[0x1E69A7CA8]];
-        v29 = [v35 BOOLValue];
+        stickerUserInfo = [transferCopy stickerUserInfo];
+        v35 = [stickerUserInfo objectForKeyedSubscript:*MEMORY[0x1E69A7CA8]];
+        bOOLValue = [v35 BOOLValue];
       }
 
       else
       {
-        v19 = [v8 stickerUserInfo];
-        v24 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-        v25 = [v24 isClingEnabled];
+        stickerUserInfo2 = [transferCopy stickerUserInfo];
+        mEMORY[0x1E69A8070]2 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+        isClingEnabled2 = [mEMORY[0x1E69A8070]2 isClingEnabled];
 
-        if (v25)
+        if (isClingEnabled2)
         {
-          v26 = [v19 valueForKey:*MEMORY[0x1E69A7C88]];
+          v26 = [stickerUserInfo2 valueForKey:*MEMORY[0x1E69A7C88]];
           v27 = v26;
           if (v26)
           {
@@ -137,11 +137,11 @@
           }
         }
 
-        v28 = [v19 objectForKeyedSubscript:*MEMORY[0x1E69A7CA8]];
-        v29 = [v28 BOOLValue];
+        v28 = [stickerUserInfo2 objectForKeyedSubscript:*MEMORY[0x1E69A7CA8]];
+        bOOLValue = [v28 BOOLValue];
       }
 
-      v11->_isReaction = v29;
+      v11->_isReaction = bOOLValue;
 LABEL_31:
     }
   }
@@ -149,14 +149,14 @@ LABEL_31:
   return v11;
 }
 
-- (id)animatedImageForWidth:(double)a3
+- (id)animatedImageForWidth:(double)width
 {
-  v5 = [(CKImageMediaObject *)self imageData];
-  v6 = [v5 durationsWithMaxCount:*MEMORY[0x1E69A70C0]];
+  imageData = [(CKImageMediaObject *)self imageData];
+  v6 = [imageData durationsWithMaxCount:*MEMORY[0x1E69A70C0]];
 
   v7 = [CKAnimatedImage alloc];
-  v8 = [(CKMediaObject *)self transfer];
-  v9 = -[CKAnimatedImageMediaObject generateThumbnailsForWidth:isSticker:orientation:](self, "generateThumbnailsForWidth:isSticker:orientation:", [v8 isSticker], 0, a3);
+  transfer = [(CKMediaObject *)self transfer];
+  v9 = -[CKAnimatedImageMediaObject generateThumbnailsForWidth:isSticker:orientation:](self, "generateThumbnailsForWidth:isSticker:orientation:", [transfer isSticker], 0, width);
   v10 = [(CKAnimatedImage *)v7 initWithImages:v9 durations:v6];
 
   return v10;
@@ -164,19 +164,19 @@ LABEL_31:
 
 - (id)metricsCollectorMediaType
 {
-  v3 = [(CKMediaObject *)self transfer];
-  v4 = [v3 isSticker];
+  transfer = [(CKMediaObject *)self transfer];
+  isSticker = [transfer isSticker];
 
-  if (v4)
+  if (isSticker)
   {
     v5 = MEMORY[0x1E69A74C0];
   }
 
   else
   {
-    v6 = [(CKAnimatedImageMediaObject *)self needsAnimation];
+    needsAnimation = [(CKAnimatedImageMediaObject *)self needsAnimation];
     v5 = MEMORY[0x1E69A7488];
-    if (!v6)
+    if (!needsAnimation)
     {
       v5 = MEMORY[0x1E69A74B8];
     }
@@ -191,24 +191,24 @@ LABEL_31:
 {
   v5.receiver = self;
   v5.super_class = CKAnimatedImageMediaObject;
-  v3 = [(CKMediaObject *)&v5 canPerformQuickAction];
-  if (v3)
+  canPerformQuickAction = [(CKMediaObject *)&v5 canPerformQuickAction];
+  if (canPerformQuickAction)
   {
-    LOBYTE(v3) = ![(CKAnimatedImageMediaObject *)self needsAnimation];
+    LOBYTE(canPerformQuickAction) = ![(CKAnimatedImageMediaObject *)self needsAnimation];
   }
 
-  return v3;
+  return canPerformQuickAction;
 }
 
-- (id)previewForWidth:(double)a3 orientation:(char)a4
+- (id)previewForWidth:(double)width orientation:(char)orientation
 {
-  v4 = a4;
+  orientationCopy = orientation;
   v52 = *MEMORY[0x1E69E9840];
   if (![(CKAnimatedImageMediaObject *)self needsAnimation])
   {
     v47.receiver = self;
     v47.super_class = CKAnimatedImageMediaObject;
-    v7 = [(CKMediaObject *)&v47 previewForWidth:v4 orientation:a3];
+    v7 = [(CKMediaObject *)&v47 previewForWidth:orientationCopy orientation:width];
     goto LABEL_64;
   }
 
@@ -218,7 +218,7 @@ LABEL_31:
     goto LABEL_64;
   }
 
-  v8 = [(CKMediaObject *)self previewCacheKeyWithOrientation:v4];
+  v8 = [(CKMediaObject *)self previewCacheKeyWithOrientation:orientationCopy];
   if (IMOSLoggingEnabled())
   {
     CKLogCStringForType(2);
@@ -228,19 +228,19 @@ LABEL_31:
       *buf = 138412546;
       *&buf[4] = self;
       *&buf[12] = 1024;
-      *&buf[14] = v4;
+      *&buf[14] = orientationCopy;
       _os_log_impl(&dword_19020E000, v9, OS_LOG_TYPE_DEBUG, "%@ previewForOrientation:%d", buf, 0x12u);
     }
   }
 
   if (os_log_shim_legacy_logging_enabled() && _CKShouldLog())
   {
-    v35 = self;
-    v36 = v4;
+    selfCopy = self;
+    v36 = orientationCopy;
     _CKLog();
   }
 
-  v10 = [(CKMediaObject *)self transfer:v35];
+  v10 = [(CKMediaObject *)self transfer:selfCopy];
   if (!-[CKMediaObject isPreviewable](self, "isPreviewable") || ([v10 isFileDataReady] & 1) == 0 && (objc_msgSend(v10, "isRestoring") & 1) == 0)
   {
     if (IMOSLoggingEnabled())
@@ -264,34 +264,34 @@ LABEL_31:
     goto LABEL_63;
   }
 
-  v11 = [(CKMediaObject *)self previewDispatchCache];
-  v12 = [v11 cachedPreviewForKey:v8];
+  previewDispatchCache = [(CKMediaObject *)self previewDispatchCache];
+  v12 = [previewDispatchCache cachedPreviewForKey:v8];
   if (!v12)
   {
 LABEL_30:
-    v15 = [(CKMediaObject *)self transfer];
-    if ([v15 isFileURLFinalized])
+    transfer = [(CKMediaObject *)self transfer];
+    if ([transfer isFileURLFinalized])
     {
     }
 
     else
     {
-      v16 = [(CKMediaObject *)self transfer];
-      v17 = [v16 isSticker];
+      transfer2 = [(CKMediaObject *)self transfer];
+      isSticker = [transfer2 isSticker];
 
-      if (!v17)
+      if (!isSticker)
       {
         goto LABEL_40;
       }
     }
 
-    v18 = [(CKMediaObject *)self previewFilenameExtension];
-    v19 = [(CKMediaObject *)self previewCachesFileURLWithOrientation:v4 extension:v18 generateIntermediaries:0];
+    previewFilenameExtension = [(CKMediaObject *)self previewFilenameExtension];
+    v19 = [(CKMediaObject *)self previewCachesFileURLWithOrientation:orientationCopy extension:previewFilenameExtension generateIntermediaries:0];
 
-    v20 = [(CKAnimatedImageMediaObject *)self savedAnimatedPreviewFromURL:v19 forOrientation:v4];
+    v20 = [(CKAnimatedImageMediaObject *)self savedAnimatedPreviewFromURL:v19 forOrientation:orientationCopy];
 
-    v21 = [MEMORY[0x1E69A8168] sharedInstance];
-    [v21 trackEvent:*MEMORY[0x1E69A7578]];
+    mEMORY[0x1E69A8168] = [MEMORY[0x1E69A8168] sharedInstance];
+    [mEMORY[0x1E69A8168] trackEvent:*MEMORY[0x1E69A7578]];
 
     if (v20)
     {
@@ -310,7 +310,7 @@ LABEL_30:
         }
       }
 
-      [v11 setCachedPreview:v20 key:v8];
+      [previewDispatchCache setCachedPreview:v20 key:v8];
       v12 = v20;
 
       goto LABEL_61;
@@ -318,17 +318,17 @@ LABEL_30:
 
     v12 = 0;
 LABEL_40:
-    v23 = [(CKMediaObject *)self transfer];
-    v24 = [v23 isSticker];
+    transfer3 = [(CKMediaObject *)self transfer];
+    isSticker2 = [transfer3 isSticker];
 
-    if (v24)
+    if (isSticker2)
     {
-      v25 = [(CKImageMediaObject *)self sticker];
-      v26 = [v25 animatedImageCacheURLFromExtension];
-      if (v26)
+      sticker = [(CKImageMediaObject *)self sticker];
+      animatedImageCacheURLFromExtension = [sticker animatedImageCacheURLFromExtension];
+      if (animatedImageCacheURLFromExtension)
       {
         v46 = 0;
-        v27 = [CKAnimatedImage animatedImageFromOptimizedBitmapAtFileURL:v26 error:&v46];
+        v27 = [CKAnimatedImage animatedImageFromOptimizedBitmapAtFileURL:animatedImageCacheURLFromExtension error:&v46];
         v37 = v46;
 
         if (v27)
@@ -343,12 +343,12 @@ LABEL_40:
               *&buf[12] = 2048;
               *&buf[14] = v27;
               *&buf[22] = 2112;
-              v49 = v26;
+              v49 = animatedImageCacheURLFromExtension;
               _os_log_impl(&dword_19020E000, v28, OS_LOG_TYPE_INFO, "%s Got animated image preview %p from sticker app cache @ %@", buf, 0x20u);
             }
           }
 
-          [v11 setCachedPreview:v27 key:v8];
+          [previewDispatchCache setCachedPreview:v27 key:v8];
           v12 = v27;
 
           goto LABEL_61;
@@ -360,7 +360,7 @@ LABEL_40:
 
     if ([(CKMediaObject *)self generatePreviewOutOfProcess])
     {
-      [(CKMediaObject *)self generateOOPPreviewForWidth:v4 orientation:a3];
+      [(CKMediaObject *)self generateOOPPreviewForWidth:orientationCopy orientation:width];
       v7 = 0;
       goto LABEL_62;
     }
@@ -376,7 +376,7 @@ LABEL_40:
       }
     }
 
-    if (([v11 isGeneratingPreviewForKey:v8] & 1) == 0)
+    if (([previewDispatchCache isGeneratingPreviewForKey:v8] & 1) == 0)
     {
       *buf = 0;
       *&buf[8] = buf;
@@ -390,15 +390,15 @@ LABEL_40:
       v45[3] = &unk_1E72EBC10;
       v45[4] = self;
       v45[5] = buf;
-      *&v45[6] = a3;
+      *&v45[6] = width;
       v39[0] = MEMORY[0x1E69E9820];
       v39[1] = 3221225472;
       v39[2] = __58__CKAnimatedImageMediaObject_previewForWidth_orientation___block_invoke_70;
       v39[3] = &unk_1E72F0B90;
-      v40 = v11;
+      v40 = previewDispatchCache;
       v41 = v8;
-      v42 = self;
-      v44 = v4;
+      selfCopy2 = self;
+      v44 = orientationCopy;
       v43 = buf;
       [v40 enqueueGenerationBlock:v45 completion:v39 withPriority:-1 forKey:v41];
 
@@ -407,13 +407,13 @@ LABEL_40:
 
     v38.receiver = self;
     v38.super_class = CKAnimatedImageMediaObject;
-    v30 = [(CKMediaObject *)&v38 previewForWidth:v4 orientation:a3];
+    v30 = [(CKMediaObject *)&v38 previewForWidth:orientationCopy orientation:width];
 
-    v31 = [(CKAnimatedImageMediaObject *)self imageEdgeEnhancementBlockIfNecessary];
-    v32 = v31;
-    if (v31)
+    imageEdgeEnhancementBlockIfNecessary = [(CKAnimatedImageMediaObject *)self imageEdgeEnhancementBlockIfNecessary];
+    v32 = imageEdgeEnhancementBlockIfNecessary;
+    if (imageEdgeEnhancementBlockIfNecessary)
     {
-      v33 = (*(v31 + 16))(v31, v30);
+      v33 = (*(imageEdgeEnhancementBlockIfNecessary + 16))(imageEdgeEnhancementBlockIfNecessary, v30);
 
       v30 = v33;
     }
@@ -583,18 +583,18 @@ void __58__CKAnimatedImageMediaObject_previewForWidth_orientation___block_invoke
   }
 }
 
-- (void)prewarmPreviewForWidth:(double)a3 orientation:(char)a4
+- (void)prewarmPreviewForWidth:(double)width orientation:(char)orientation
 {
-  v4 = a4;
+  orientationCopy = orientation;
   v41 = *MEMORY[0x1E69E9840];
   if (![(CKAnimatedImageMediaObject *)self needsAnimation])
   {
     v31.receiver = self;
     v31.super_class = CKAnimatedImageMediaObject;
-    [(CKMediaObject *)&v31 prewarmPreviewForWidth:v4 orientation:a3];
+    [(CKMediaObject *)&v31 prewarmPreviewForWidth:orientationCopy orientation:width];
   }
 
-  v7 = [(CKMediaObject *)self previewCacheKeyWithOrientation:v4];
+  v7 = [(CKMediaObject *)self previewCacheKeyWithOrientation:orientationCopy];
   if (IMOSLoggingEnabled())
   {
     v8 = OSLogHandleForIMFoundationCategory();
@@ -608,8 +608,8 @@ void __58__CKAnimatedImageMediaObject_previewForWidth_orientation___block_invoke
 
   if (![(CKMediaObject *)self transcoderPreviewGenerationFailed])
   {
-    v10 = [(CKMediaObject *)self transfer];
-    if (!-[CKMediaObject isPreviewable](self, "isPreviewable") || ([v10 isFileDataReady] & 1) == 0 && (objc_msgSend(v10, "isRestoring") & 1) == 0)
+    transfer = [(CKMediaObject *)self transfer];
+    if (!-[CKMediaObject isPreviewable](self, "isPreviewable") || ([transfer isFileDataReady] & 1) == 0 && (objc_msgSend(transfer, "isRestoring") & 1) == 0)
     {
       if (IMOSLoggingEnabled())
       {
@@ -631,8 +631,8 @@ void __58__CKAnimatedImageMediaObject_previewForWidth_orientation___block_invoke
     v38 = __Block_byref_object_copy__24;
     v39 = __Block_byref_object_dispose__24;
     v40 = 0;
-    v11 = [(CKMediaObject *)self previewDispatchCache];
-    v12 = [v11 cachedPreviewForKey:v7];
+    previewDispatchCache = [(CKMediaObject *)self previewDispatchCache];
+    v12 = [previewDispatchCache cachedPreviewForKey:v7];
     v13 = *(*(&buf + 1) + 40);
     *(*(&buf + 1) + 40) = v12;
 
@@ -652,17 +652,17 @@ void __58__CKAnimatedImageMediaObject_previewForWidth_orientation___block_invoke
       goto LABEL_32;
     }
 
-    v16 = [(CKMediaObject *)self transfer];
-    if ([v16 isFileURLFinalized])
+    transfer2 = [(CKMediaObject *)self transfer];
+    if ([transfer2 isFileURLFinalized])
     {
     }
 
     else
     {
-      v17 = [(CKMediaObject *)self transfer];
-      v18 = [v17 isSticker];
+      transfer3 = [(CKMediaObject *)self transfer];
+      isSticker = [transfer3 isSticker];
 
-      if (!v18)
+      if (!isSticker)
       {
 LABEL_32:
 
@@ -673,8 +673,8 @@ LABEL_33:
       }
     }
 
-    v19 = [(CKMediaObject *)self previewFilenameExtension];
-    v20 = [(CKMediaObject *)self previewCachesFileURLWithOrientation:v4 extension:v19 generateIntermediaries:0];
+    previewFilenameExtension = [(CKMediaObject *)self previewFilenameExtension];
+    v20 = [(CKMediaObject *)self previewCachesFileURLWithOrientation:orientationCopy extension:previewFilenameExtension generateIntermediaries:0];
 
     if (IMOSLoggingEnabled())
     {
@@ -698,8 +698,8 @@ LABEL_33:
     p_buf = &buf;
     objc_copyWeak(&v29, v32);
     v25 = v20;
-    v30 = v4;
-    v26 = v11;
+    v30 = orientationCopy;
+    v26 = previewDispatchCache;
     v27 = v7;
     v23 = v20;
     dispatch_async(v22, v24);
@@ -849,47 +849,47 @@ void __65__CKAnimatedImageMediaObject_prewarmPreviewForWidth_orientation___block
 LABEL_21:
 }
 
-- (id)generateAndPersistAnimatedPreviewFromImageData:(id)a3 forWidth:(double)a4 withTransferGUID:(id)a5 isSticker:(BOOL)a6
+- (id)generateAndPersistAnimatedPreviewFromImageData:(id)data forWidth:(double)width withTransferGUID:(id)d isSticker:(BOOL)sticker
 {
   v56[2] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v41 = a5;
+  dataCopy = data;
+  dCopy = d;
   if (IMOSLoggingEnabled())
   {
     v10 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v49 = self;
+      selfCopy = self;
       _os_log_impl(&dword_19020E000, v10, OS_LOG_TYPE_INFO, "%@ generate animated preview.", buf, 0xCu);
     }
   }
 
   v11 = MEMORY[0x1E695DFF8];
   v12 = IMSafeTemporaryDirectory();
-  v13 = [v12 path];
-  v56[0] = v13;
+  path = [v12 path];
+  v56[0] = path;
   v56[1] = @"CKAnimatedImageMediaObjectPreview";
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v56 count:2];
   v40 = [v11 fileURLWithPathComponents:v14];
 
-  v15 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v47 = 0;
-  LOBYTE(v13) = [v15 createDirectoryAtURL:v40 withIntermediateDirectories:1 attributes:0 error:&v47];
+  LOBYTE(path) = [defaultManager createDirectoryAtURL:v40 withIntermediateDirectories:1 attributes:0 error:&v47];
   v37 = v47;
 
-  if ((v13 & 1) == 0 && IMOSLoggingEnabled())
+  if ((path & 1) == 0 && IMOSLoggingEnabled())
   {
     v16 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v49 = v37;
+      selfCopy = v37;
       _os_log_impl(&dword_19020E000, v16, OS_LOG_TYPE_INFO, "Failed to create temporary preview directory with error: %@", buf, 0xCu);
     }
   }
 
-  if (!v41 || (-[CKAnimatedImageMediaObject im_lastPathComponent](v41, "im_lastPathComponent"), v17 = objc_claimAutoreleasedReturnValue(), [v40 URLByAppendingPathComponent:v17 isDirectory:0], v18 = objc_claimAutoreleasedReturnValue(), +[CKAnimatedImage filenameExtension](CKAnimatedImage, "filenameExtension"), v19 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v18, "URLByAppendingPathExtension:", v19), v20 = objc_claimAutoreleasedReturnValue(), v19, v18, v17, !v20))
+  if (!dCopy || (-[CKAnimatedImageMediaObject im_lastPathComponent](dCopy, "im_lastPathComponent"), v17 = objc_claimAutoreleasedReturnValue(), [v40 URLByAppendingPathComponent:v17 isDirectory:0], v18 = objc_claimAutoreleasedReturnValue(), +[CKAnimatedImage filenameExtension](CKAnimatedImage, "filenameExtension"), v19 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v18, "URLByAppendingPathExtension:", v19), v20 = objc_claimAutoreleasedReturnValue(), v19, v18, v17, !v20))
   {
     if (IMOSLoggingEnabled())
     {
@@ -897,7 +897,7 @@ LABEL_21:
       if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v49 = v41;
+        selfCopy = dCopy;
         _os_log_impl(&dword_19020E000, v21, OS_LOG_TYPE_INFO, "Failed to get a temporaryPreviewURL from transfer guid %@", buf, 0xCu);
       }
     }
@@ -907,17 +907,17 @@ LABEL_21:
 
   v22 = objc_alloc_init(MEMORY[0x1E69A6170]);
   [v22 startTimingForKey:@"CKAnimatedImageMediaObject_PreviewGenerationTime"];
-  v23 = [v9 durationsWithMaxCount:*MEMORY[0x1E69A70C0]];
+  v23 = [dataCopy durationsWithMaxCount:*MEMORY[0x1E69A70C0]];
   v24 = [v23 count];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __113__CKAnimatedImageMediaObject_generateAndPersistAnimatedPreviewFromImageData_forWidth_withTransferGUID_isSticker___block_invoke;
   aBlock[3] = &unk_1E72F0C08;
   aBlock[4] = self;
-  v45 = a4;
-  v25 = v9;
+  widthCopy = width;
+  v25 = dataCopy;
   v44 = v25;
-  v46 = a6;
+  stickerCopy = sticker;
   v26 = _Block_copy(aBlock);
   v27 = [[CKMultiFrameImage alloc] initWithFrameCount:v24 frameProvider:v26 frameDurations:v23];
   if (v27)
@@ -954,9 +954,9 @@ LABEL_21:
     v33 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v33, OS_LOG_TYPE_INFO))
     {
-      v34 = [(CKMediaObject *)self UTIType];
+      uTIType = [(CKMediaObject *)self UTIType];
       *buf = 138413058;
-      v49 = v34;
+      selfCopy = uTIType;
       v50 = 2112;
       v51 = v30;
       v52 = 2112;
@@ -967,8 +967,8 @@ LABEL_21:
     }
   }
 
-  v35 = [MEMORY[0x1E69A8168] sharedInstance];
-  [v35 trackEvent:*MEMORY[0x1E69A7580]];
+  mEMORY[0x1E69A8168] = [MEMORY[0x1E69A8168] sharedInstance];
+  [mEMORY[0x1E69A8168] trackEvent:*MEMORY[0x1E69A7580]];
 
   return v20;
 }
@@ -992,13 +992,13 @@ id __113__CKAnimatedImageMediaObject_generateAndPersistAnimatedPreviewFromImageD
   return v6;
 }
 
-- (id)generateAndPersistAnimatedPreviewFromSourceURL:(id)a3 senderContext:(id)a4 forWidth:(double)a5 withTransferGUID:(id)a6 isSticker:(BOOL)a7
+- (id)generateAndPersistAnimatedPreviewFromSourceURL:(id)l senderContext:(id)context forWidth:(double)width withTransferGUID:(id)d isSticker:(BOOL)sticker
 {
-  v7 = a7;
+  stickerCopy = sticker;
   v78[2] = *MEMORY[0x1E69E9840];
-  v52 = a3;
-  v53 = a4;
-  v11 = a6;
+  lCopy = l;
+  contextCopy = context;
+  dCopy = d;
   if (IMOSLoggingEnabled())
   {
     v12 = OSLogHandleForIMFoundationCategory();
@@ -1012,16 +1012,16 @@ id __113__CKAnimatedImageMediaObject_generateAndPersistAnimatedPreviewFromImageD
 
   v13 = MEMORY[0x1E695DFF8];
   v14 = IMSafeTemporaryDirectory();
-  v15 = [v14 path];
-  v78[0] = v15;
+  path = [v14 path];
+  v78[0] = path;
   v78[1] = @"CKAnimatedImageMediaObjectPreview";
   v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v78 count:2];
   v17 = [v13 fileURLWithPathComponents:v16];
 
-  v18 = [MEMORY[0x1E696AC08] defaultManager];
-  [v18 createDirectoryAtURL:v17 withIntermediateDirectories:1 attributes:0 error:0];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  [defaultManager createDirectoryAtURL:v17 withIntermediateDirectories:1 attributes:0 error:0];
 
-  if (!v11 || ([v11 im_lastPathComponent], v19 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v17, "URLByAppendingPathComponent:isDirectory:", v19, 0), v20 = objc_claimAutoreleasedReturnValue(), +[CKAnimatedImage filenameExtension](CKAnimatedImage, "filenameExtension"), v21 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v20, "URLByAppendingPathExtension:", v21), v22 = objc_claimAutoreleasedReturnValue(), v21, v20, v19, !v22))
+  if (!dCopy || ([dCopy im_lastPathComponent], v19 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v17, "URLByAppendingPathComponent:isDirectory:", v19, 0), v20 = objc_claimAutoreleasedReturnValue(), +[CKAnimatedImage filenameExtension](CKAnimatedImage, "filenameExtension"), v21 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v20, "URLByAppendingPathExtension:", v21), v22 = objc_claimAutoreleasedReturnValue(), v21, v20, v19, !v22))
   {
     if (IMOSLoggingEnabled())
     {
@@ -1029,7 +1029,7 @@ id __113__CKAnimatedImageMediaObject_generateAndPersistAnimatedPreviewFromImageD
       if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
       {
         LODWORD(buf) = 138412290;
-        *(&buf + 4) = v11;
+        *(&buf + 4) = dCopy;
         _os_log_impl(&dword_19020E000, v23, OS_LOG_TYPE_INFO, "Failed to get a temporaryPreviewURL from transfer guid %@", &buf, 0xCu);
       }
     }
@@ -1057,7 +1057,7 @@ id __113__CKAnimatedImageMediaObject_generateAndPersistAnimatedPreviewFromImageD
   p_buf = &buf;
   v28 = v25;
   v63 = v28;
-  [v26 getMetadataForAnimatedImage:v52 senderContext:v53 maxCount:v27 withCompletionBlock:v62];
+  [v26 getMetadataForAnimatedImage:lCopy senderContext:contextCopy maxCount:v27 withCompletionBlock:v62];
   v29 = dispatch_time(0, 1000000000);
   if (dispatch_group_wait(v28, v29))
   {
@@ -1123,9 +1123,9 @@ LABEL_21:
     v33 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v33, OS_LOG_TYPE_INFO))
     {
-      v34 = [(CKMediaObject *)self UTIType];
+      uTIType = [(CKMediaObject *)self UTIType];
       *v65 = 138412546;
-      v66 = v34;
+      v66 = uTIType;
       v67 = 2112;
       v68 = v24;
       _os_log_impl(&dword_19020E000, v33, OS_LOG_TYPE_INFO, "Cache miss on UTI type %@ generated metadata with timing: %@", v65, 0x16u);
@@ -1133,21 +1133,21 @@ LABEL_21:
   }
 
   [*(*(&buf + 1) + 40) pixelSize];
-  [CKAnimatedImageMediaObject maxPixelDimensionOfThumbnailWithImagePixelSize:"maxPixelDimensionOfThumbnailWithImagePixelSize:forWidth:isSticker:" forWidth:v7 isSticker:?];
+  [CKAnimatedImageMediaObject maxPixelDimensionOfThumbnailWithImagePixelSize:"maxPixelDimensionOfThumbnailWithImagePixelSize:forWidth:isSticker:" forWidth:stickerCopy isSticker:?];
   v36 = v35;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __127__CKAnimatedImageMediaObject_generateAndPersistAnimatedPreviewFromSourceURL_senderContext_forWidth_withTransferGUID_isSticker___block_invoke_111;
   aBlock[3] = &unk_1E72F0C80;
-  v56 = v52;
-  v57 = v53;
-  v58 = self;
+  v56 = lCopy;
+  v57 = contextCopy;
+  selfCopy = self;
   v59 = v36;
-  v60 = a5;
-  v61 = v7;
+  widthCopy = width;
+  v61 = stickerCopy;
   v50 = _Block_copy(aBlock);
-  v37 = [*(*(&buf + 1) + 40) durations];
-  v38 = -[CKMultiFrameImage initWithFrameCount:frameProvider:frameDurations:]([CKMultiFrameImage alloc], "initWithFrameCount:frameProvider:frameDurations:", [v37 count], v50, v37);
+  durations = [*(*(&buf + 1) + 40) durations];
+  v38 = -[CKMultiFrameImage initWithFrameCount:frameProvider:frameDurations:]([CKMultiFrameImage alloc], "initWithFrameCount:frameProvider:frameDurations:", [durations count], v50, durations);
   if (v38)
   {
     v39 = [[CKAnimatedImage alloc] initWithMultiFrameImage:v38];
@@ -1179,10 +1179,10 @@ LABEL_21:
     v43 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v43, OS_LOG_TYPE_INFO))
     {
-      v44 = [(CKMediaObject *)self UTIType];
+      uTIType2 = [(CKMediaObject *)self UTIType];
       v45 = @"NO";
       *v65 = 138413058;
-      v66 = v44;
+      v66 = uTIType2;
       if (v41)
       {
         v45 = @"YES";
@@ -1198,8 +1198,8 @@ LABEL_21:
     }
   }
 
-  v46 = [MEMORY[0x1E69A8168] sharedInstance];
-  [v46 trackEvent:*MEMORY[0x1E69A7580]];
+  mEMORY[0x1E69A8168] = [MEMORY[0x1E69A8168] sharedInstance];
+  [mEMORY[0x1E69A8168] trackEvent:*MEMORY[0x1E69A7580]];
 
   if (v41)
   {
@@ -1357,28 +1357,28 @@ void __127__CKAnimatedImageMediaObject_generateAndPersistAnimatedPreviewFromSour
   dispatch_group_leave(*(a1 + 40));
 }
 
-- (id)savedPreviewFromURL:(id)a3 forOrientation:(char)a4
+- (id)savedPreviewFromURL:(id)l forOrientation:(char)orientation
 {
-  v4 = a4;
-  v6 = a3;
+  orientationCopy = orientation;
+  lCopy = l;
   v10.receiver = self;
   v10.super_class = CKAnimatedImageMediaObject;
-  v7 = [(CKMediaObject *)&v10 savedPreviewFromURL:v6 forOrientation:v4];
-  if (!v7)
+  image = [(CKMediaObject *)&v10 savedPreviewFromURL:lCopy forOrientation:orientationCopy];
+  if (!image)
   {
-    v8 = [(CKAnimatedImageMediaObject *)self savedAnimatedPreviewFromURL:v6 forOrientation:v4];
-    v7 = [v8 image];
+    v8 = [(CKAnimatedImageMediaObject *)self savedAnimatedPreviewFromURL:lCopy forOrientation:orientationCopy];
+    image = [v8 image];
   }
 
-  return v7;
+  return image;
 }
 
-- (id)savedAnimatedPreviewFromURL:(id)a3 forOrientation:(char)a4
+- (id)savedAnimatedPreviewFromURL:(id)l forOrientation:(char)orientation
 {
-  if (a3)
+  if (l)
   {
     v7 = 0;
-    v5 = [CKAnimatedImage animatedImageFromOptimizedBitmapAtFileURL:a3 error:&v7];
+    v5 = [CKAnimatedImage animatedImageFromOptimizedBitmapAtFileURL:l error:&v7];
   }
 
   else
@@ -1389,19 +1389,19 @@ void __127__CKAnimatedImageMediaObject_generateAndPersistAnimatedPreviewFromSour
   return v5;
 }
 
-- (id)scaledThumbnailFromThumbnail:(id)a3 forWidth:(double)a4 isSticker:(BOOL)a5
+- (id)scaledThumbnailFromThumbnail:(id)thumbnail forWidth:(double)width isSticker:(BOOL)sticker
 {
   v42 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  [v7 size];
+  thumbnailCopy = thumbnail;
+  [thumbnailCopy size];
   v9 = v8;
   v11 = v10;
   v12 = +[CKUIBehavior sharedBehaviors];
-  [v12 thumbnailFillSizeForWidth:a4 imageSize:{v9, v11}];
+  [v12 thumbnailFillSizeForWidth:width imageSize:{v9, v11}];
   v14 = v13;
   v16 = v15;
 
-  if ([objc_opt_class() shouldScaleUpPreview] && !a5 && (v9 + 1.0 < v14 || v11 + 1.0 < v16))
+  if ([objc_opt_class() shouldScaleUpPreview] && !sticker && (v9 + 1.0 < v14 || v11 + 1.0 < v16))
   {
     if (v9 == 0.0)
     {
@@ -1423,13 +1423,13 @@ void __127__CKAnimatedImageMediaObject_generateAndPersistAnimatedPreviewFromSour
       v19 = v16 / v11;
     }
 
-    v20 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v20 scale];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen scale];
     v22 = v21;
 
-    v23 = [MEMORY[0x1E69DCEB0] mainScreen];
+    mainScreen2 = [MEMORY[0x1E69DCEB0] mainScreen];
     v24 = v22 / fmax(v18, v19);
-    [v23 scale];
+    [mainScreen2 scale];
     v26 = v25 * 0.5;
 
     if (v24 < v26)
@@ -1471,58 +1471,58 @@ void __127__CKAnimatedImageMediaObject_generateAndPersistAnimatedPreviewFromSour
     }
 
     v31 = objc_alloc(MEMORY[0x1E69DCAB8]);
-    v32 = v7;
-    v33 = [v31 initWithCGImage:objc_msgSend(v7 scale:"CGImage") orientation:{objc_msgSend(v7, "imageOrientation"), v24}];
+    v32 = thumbnailCopy;
+    v33 = [v31 initWithCGImage:objc_msgSend(thumbnailCopy scale:"CGImage") orientation:{objc_msgSend(thumbnailCopy, "imageOrientation"), v24}];
 
-    v7 = v33;
+    thumbnailCopy = v33;
   }
 
-  return v7;
+  return thumbnailCopy;
 }
 
-- (id)thumbnailAtIndex:(unint64_t)a3 forWidth:(double)a4 imageData:(id)a5 isSticker:(BOOL)a6 orientation:(char)a7
+- (id)thumbnailAtIndex:(unint64_t)index forWidth:(double)width imageData:(id)data isSticker:(BOOL)sticker orientation:(char)orientation
 {
-  v7 = a6;
-  if (a6)
+  stickerCopy = sticker;
+  if (sticker)
   {
-    [a5 ptSize];
+    [data ptSize];
     v13 = v12;
     v15 = v14;
   }
 
   else
   {
-    v16 = a5;
+    dataCopy = data;
     v17 = +[CKUIBehavior sharedBehaviors];
-    [v16 ptSize];
-    [v17 thumbnailFillSizeForWidth:a4 imageSize:{v18, v19}];
+    [dataCopy ptSize];
+    [v17 thumbnailFillSizeForWidth:width imageSize:{v18, v19}];
     v13 = v20;
     v15 = v21;
   }
 
-  v22 = [a5 thumbnailAtIndex:a3 fillToSize:*MEMORY[0x1E69A70C0] maxCount:{v13, v15}];
+  v22 = [data thumbnailAtIndex:index fillToSize:*MEMORY[0x1E69A70C0] maxCount:{v13, v15}];
 
-  v23 = [(CKAnimatedImageMediaObject *)self scaledThumbnailFromThumbnail:v22 forWidth:v7 isSticker:a4];
+  v23 = [(CKAnimatedImageMediaObject *)self scaledThumbnailFromThumbnail:v22 forWidth:stickerCopy isSticker:width];
 
   return v23;
 }
 
-+ (double)maxPixelDimensionOfThumbnailWithImagePixelSize:(CGSize)a3 forWidth:(double)a4 isSticker:(BOOL)a5
++ (double)maxPixelDimensionOfThumbnailWithImagePixelSize:(CGSize)size forWidth:(double)width isSticker:(BOOL)sticker
 {
-  height = a3.height;
-  width = a3.width;
-  v9 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v9 scale];
+  height = size.height;
+  width = size.width;
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
   v11 = v10;
 
   v12 = width / v11;
   v13 = height / v11;
   v14 = v13;
   v15 = v12;
-  if (!a5)
+  if (!sticker)
   {
     v16 = +[CKUIBehavior sharedBehaviors];
-    [v16 thumbnailFillSizeForWidth:a4 imageSize:{v12, v13}];
+    [v16 thumbnailFillSizeForWidth:width imageSize:{v12, v13}];
     v15 = v17;
     v14 = v18;
   }
@@ -1543,12 +1543,12 @@ void __127__CKAnimatedImageMediaObject_generateAndPersistAnimatedPreviewFromSour
   return v11 * fmax(floor(v12 * v21), floor(v13 * v21));
 }
 
-- (id)generateThumbnailsForWidth:(double)a3 isSticker:(BOOL)a4 orientation:(char)a5
+- (id)generateThumbnailsForWidth:(double)width isSticker:(BOOL)sticker orientation:(char)orientation
 {
-  v8 = [(CKImageMediaObject *)self imageData:a4];
+  v8 = [(CKImageMediaObject *)self imageData:sticker];
   v9 = +[CKUIBehavior sharedBehaviors];
   [v8 ptSize];
-  [v9 thumbnailFillSizeForWidth:a3 imageSize:{v10, v11}];
+  [v9 thumbnailFillSizeForWidth:width imageSize:{v10, v11}];
   v13 = v12;
   v15 = v14;
 
@@ -1560,9 +1560,9 @@ void __127__CKAnimatedImageMediaObject_generateAndPersistAnimatedPreviewFromSour
   v21[3] = &unk_1E72F0CA8;
   v18 = v17;
   v22 = v18;
-  v23 = self;
-  v24 = a3;
-  v25 = a4;
+  selfCopy = self;
+  widthCopy = width;
+  stickerCopy = sticker;
   [v16 enumerateObjectsUsingBlock:v21];
   v19 = v18;
 
@@ -1576,20 +1576,20 @@ void __79__CKAnimatedImageMediaObject_generateThumbnailsForWidth_isSticker_orien
   [v2 addObject:v3];
 }
 
-- (void)saveAnimatedPreview:(id)a3 toURL:(id)a4 forOrientation:(char)a5
+- (void)saveAnimatedPreview:(id)preview toURL:(id)l forOrientation:(char)orientation
 {
-  v7 = a3;
-  v8 = a4;
-  if (v8)
+  previewCopy = preview;
+  lCopy = l;
+  if (lCopy)
   {
-    v9 = [(CKMediaObject *)self fileManager];
-    v10 = [v8 path];
-    v11 = [v9 fileExistsAtPath:v10];
+    fileManager = [(CKMediaObject *)self fileManager];
+    path = [lCopy path];
+    v11 = [fileManager fileExistsAtPath:path];
 
     if ((v11 & 1) == 0)
     {
-      v12 = v7;
-      v13 = v8;
+      v12 = previewCopy;
+      v13 = lCopy;
       im_perform_with_task_assertion();
     }
   }
@@ -1655,25 +1655,25 @@ void __71__CKAnimatedImageMediaObject_saveAnimatedPreview_toURL_forOrientation__
 
 - (BOOL)needsAnimation
 {
-  v2 = [(CKMediaObject *)self transfer];
-  v3 = [v2 fileIsAnimated];
+  transfer = [(CKMediaObject *)self transfer];
+  fileIsAnimated = [transfer fileIsAnimated];
 
-  return v3;
+  return fileIsAnimated;
 }
 
-- (id)bbPreviewFillToSize:(CGSize)a3
+- (id)bbPreviewFillToSize:(CGSize)size
 {
   v14 = *MEMORY[0x1E69E9840];
-  if ([(CKMediaObject *)self transcoderPreviewGenerationFailed:a3.width])
+  if ([(CKMediaObject *)self transcoderPreviewGenerationFailed:size.width])
   {
     if (IMOSLoggingEnabled())
     {
       v4 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
       {
-        v5 = [(CKMediaObject *)self transferGUID];
+        transferGUID = [(CKMediaObject *)self transferGUID];
         v12 = 138412290;
-        v13 = v5;
+        v13 = transferGUID;
         _os_log_impl(&dword_19020E000, v4, OS_LOG_TYPE_INFO, "Transfer %@ was marked as failed for preview generation, not showing preview in notification", &v12, 0xCu);
       }
     }
@@ -1690,9 +1690,9 @@ void __71__CKAnimatedImageMediaObject_saveAnimatedPreview_toURL_forOrientation__
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = [v6 image];
+      image = [v6 image];
 
-      v6 = v9;
+      v6 = image;
     }
 
     if (!v6 && IMOSLoggingEnabled())
@@ -1710,9 +1710,9 @@ void __71__CKAnimatedImageMediaObject_saveAnimatedPreview_toURL_forOrientation__
   return v6;
 }
 
-- (BOOL)validPreviewExistsAtURL:(id)a3
+- (BOOL)validPreviewExistsAtURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   if ([(CKMediaObject *)self cachedValidPreviewExists])
   {
     LOBYTE(v5) = 1;
@@ -1720,9 +1720,9 @@ void __71__CKAnimatedImageMediaObject_saveAnimatedPreview_toURL_forOrientation__
 
   else
   {
-    v6 = [MEMORY[0x1E696AC08] defaultManager];
-    v7 = [v4 path];
-    v5 = [v6 fileExistsAtPath:v7];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    path = [lCopy path];
+    v5 = [defaultManager fileExistsAtPath:path];
 
     [(CKMediaObject *)self setCachedValidPreviewExists:v5];
   }
@@ -1730,29 +1730,29 @@ void __71__CKAnimatedImageMediaObject_saveAnimatedPreview_toURL_forOrientation__
   return v5;
 }
 
-- (CKAnimatedImageMediaObject)initWithCoder:(id)a3
+- (CKAnimatedImageMediaObject)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = CKAnimatedImageMediaObject;
-  v5 = [(CKImageMediaObject *)&v8 initWithCoder:v4];
+  v5 = [(CKImageMediaObject *)&v8 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"stickerEffectType"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"stickerEffectType"];
     -[CKAnimatedImageMediaObject setStickerEffectType:](v5, "setStickerEffectType:", [v6 intValue]);
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = CKAnimatedImageMediaObject;
-  v4 = a3;
-  [(CKImageMediaObject *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(CKImageMediaObject *)&v6 encodeWithCoder:coderCopy];
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[CKAnimatedImageMediaObject stickerEffectType](self, "stickerEffectType", v6.receiver, v6.super_class)}];
-  [v4 encodeObject:v5 forKey:@"stickerEffectType"];
+  [coderCopy encodeObject:v5 forKey:@"stickerEffectType"];
 }
 
 + (Class)__ck_attachmentItemClass
@@ -1767,8 +1767,8 @@ void __71__CKAnimatedImageMediaObject_saveAnimatedPreview_toURL_forOrientation__
 
 - (BOOL)canUseAsBackground
 {
-  v2 = self;
-  if ([(CKAnimatedImageMediaObject *)v2 needsAnimation])
+  selfCopy = self;
+  if ([(CKAnimatedImageMediaObject *)selfCopy needsAnimation])
   {
 
     return 0;
@@ -1776,11 +1776,11 @@ void __71__CKAnimatedImageMediaObject_saveAnimatedPreview_toURL_forOrientation__
 
   else
   {
-    v5.receiver = v2;
+    v5.receiver = selfCopy;
     v5.super_class = CKAnimatedImageMediaObject;
-    v4 = [(CKImageMediaObject *)&v5 canUseAsBackground];
+    canUseAsBackground = [(CKImageMediaObject *)&v5 canUseAsBackground];
 
-    return v4;
+    return canUseAsBackground;
   }
 }
 

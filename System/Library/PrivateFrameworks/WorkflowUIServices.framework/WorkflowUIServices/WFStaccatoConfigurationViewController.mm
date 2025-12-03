@@ -1,10 +1,10 @@
 @interface WFStaccatoConfigurationViewController
-- (WFStaccatoConfigurationViewController)initWithConfigurationContext:(id)a3;
+- (WFStaccatoConfigurationViewController)initWithConfigurationContext:(id)context;
 - (WFStaccatoConfigurationViewControllerDelegate)delegate;
-- (void)configurationController:(id)a3 didFinishWithAction:(id)a4 error:(id)a5;
+- (void)configurationController:(id)controller didFinishWithAction:(id)action error:(id)error;
 - (void)loadView;
-- (void)setSelectedAction:(id)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)setSelectedAction:(id)action;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation WFStaccatoConfigurationViewController
@@ -16,23 +16,23 @@
   return WeakRetained;
 }
 
-- (void)configurationController:(id)a3 didFinishWithAction:(id)a4 error:(id)a5
+- (void)configurationController:(id)controller didFinishWithAction:(id)action error:(id)error
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [(WFStaccatoConfigurationViewController *)self delegate];
-  [v9 configurationController:self didFinishWithAction:v8 error:v7];
+  errorCopy = error;
+  actionCopy = action;
+  delegate = [(WFStaccatoConfigurationViewController *)self delegate];
+  [delegate configurationController:self didFinishWithAction:actionCopy error:errorCopy];
 }
 
-- (void)setSelectedAction:(id)a3
+- (void)setSelectedAction:(id)action
 {
-  v7 = a3;
-  if (v7)
+  actionCopy = action;
+  if (actionCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = v7;
+      v4 = actionCopy;
     }
 
     else
@@ -48,21 +48,21 @@
 
   objc_storeStrong(&self->_selectedAction, v4);
   v5 = v4;
-  v6 = [(WFStaccatoConfigurationViewController *)self innerViewController];
-  [v6 setSelectedAction:v5];
+  innerViewController = [(WFStaccatoConfigurationViewController *)self innerViewController];
+  [innerViewController setSelectedAction:v5];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v7.receiver = self;
   v7.super_class = WFStaccatoConfigurationViewController;
-  [(WFStaccatoConfigurationViewController *)&v7 viewWillAppear:a3];
-  v4 = [(WFStaccatoConfigurationViewController *)self sheetPresentationController];
-  v5 = [v4 traitOverrides];
-  [v5 setUserInterfaceStyle:2];
+  [(WFStaccatoConfigurationViewController *)&v7 viewWillAppear:appear];
+  sheetPresentationController = [(WFStaccatoConfigurationViewController *)self sheetPresentationController];
+  traitOverrides = [sheetPresentationController traitOverrides];
+  [traitOverrides setUserInterfaceStyle:2];
 
-  v6 = [(WFStaccatoConfigurationViewController *)self sheetPresentationController];
-  [v6 setPrefersGrabberVisible:1];
+  sheetPresentationController2 = [(WFStaccatoConfigurationViewController *)self sheetPresentationController];
+  [sheetPresentationController2 setPrefersGrabberVisible:1];
 }
 
 - (void)loadView
@@ -72,51 +72,51 @@
   v41.super_class = WFStaccatoConfigurationViewController;
   [(WFStaccatoConfigurationViewController *)&v41 loadView];
   v3 = [WFSystemActionConfigurationViewController alloc];
-  v4 = [(WFStaccatoConfigurationViewController *)self configurationContext];
-  v5 = [(WFSystemActionConfigurationViewController *)v3 initWithConfigurationContext:v4];
+  configurationContext = [(WFStaccatoConfigurationViewController *)self configurationContext];
+  v5 = [(WFSystemActionConfigurationViewController *)v3 initWithConfigurationContext:configurationContext];
 
   [(WFSystemActionConfigurationViewController *)v5 setDelegate:self];
   [(WFStaccatoConfigurationViewController *)self addChildViewController:v5];
-  v6 = [(WFStaccatoConfigurationViewController *)self view];
-  [v6 bounds];
+  view = [(WFStaccatoConfigurationViewController *)self view];
+  [view bounds];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  v15 = [(WFSystemActionConfigurationViewController *)v5 view];
-  [v15 setFrame:{v8, v10, v12, v14}];
+  view2 = [(WFSystemActionConfigurationViewController *)v5 view];
+  [view2 setFrame:{v8, v10, v12, v14}];
 
-  v16 = [(WFSystemActionConfigurationViewController *)v5 view];
-  [v16 setTranslatesAutoresizingMaskIntoConstraints:0];
+  view3 = [(WFSystemActionConfigurationViewController *)v5 view];
+  [view3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v17 = [(WFStaccatoConfigurationViewController *)self view];
-  v18 = [(WFSystemActionConfigurationViewController *)v5 view];
-  [v17 addSubview:v18];
+  view4 = [(WFStaccatoConfigurationViewController *)self view];
+  view5 = [(WFSystemActionConfigurationViewController *)v5 view];
+  [view4 addSubview:view5];
 
   v31 = MEMORY[0x1E696ACD8];
-  v40 = [(WFSystemActionConfigurationViewController *)v5 view];
-  v38 = [v40 topAnchor];
-  v39 = [(WFStaccatoConfigurationViewController *)self view];
-  v37 = [v39 topAnchor];
-  v36 = [v38 constraintEqualToAnchor:v37];
+  view6 = [(WFSystemActionConfigurationViewController *)v5 view];
+  topAnchor = [view6 topAnchor];
+  view7 = [(WFStaccatoConfigurationViewController *)self view];
+  topAnchor2 = [view7 topAnchor];
+  v36 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v42[0] = v36;
-  v35 = [(WFSystemActionConfigurationViewController *)v5 view];
-  v33 = [v35 bottomAnchor];
-  v34 = [(WFStaccatoConfigurationViewController *)self view];
-  v32 = [v34 bottomAnchor];
-  v30 = [v33 constraintEqualToAnchor:v32];
+  view8 = [(WFSystemActionConfigurationViewController *)v5 view];
+  bottomAnchor = [view8 bottomAnchor];
+  view9 = [(WFStaccatoConfigurationViewController *)self view];
+  bottomAnchor2 = [view9 bottomAnchor];
+  v30 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v42[1] = v30;
-  v29 = [(WFSystemActionConfigurationViewController *)v5 view];
-  v27 = [v29 leadingAnchor];
-  v28 = [(WFStaccatoConfigurationViewController *)self view];
-  v19 = [v28 leadingAnchor];
-  v20 = [v27 constraintEqualToAnchor:v19];
+  view10 = [(WFSystemActionConfigurationViewController *)v5 view];
+  leadingAnchor = [view10 leadingAnchor];
+  view11 = [(WFStaccatoConfigurationViewController *)self view];
+  leadingAnchor2 = [view11 leadingAnchor];
+  v20 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v42[2] = v20;
-  v21 = [(WFSystemActionConfigurationViewController *)v5 view];
-  v22 = [v21 trailingAnchor];
-  v23 = [(WFStaccatoConfigurationViewController *)self view];
-  v24 = [v23 trailingAnchor];
-  v25 = [v22 constraintEqualToAnchor:v24];
+  view12 = [(WFSystemActionConfigurationViewController *)v5 view];
+  trailingAnchor = [view12 trailingAnchor];
+  view13 = [(WFStaccatoConfigurationViewController *)self view];
+  trailingAnchor2 = [view13 trailingAnchor];
+  v25 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v42[3] = v25;
   v26 = [MEMORY[0x1E695DEC8] arrayWithObjects:v42 count:4];
   [v31 activateConstraints:v26];
@@ -125,16 +125,16 @@
   [(WFStaccatoConfigurationViewController *)self setInnerViewController:v5];
 }
 
-- (WFStaccatoConfigurationViewController)initWithConfigurationContext:(id)a3
+- (WFStaccatoConfigurationViewController)initWithConfigurationContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v10.receiver = self;
   v10.super_class = WFStaccatoConfigurationViewController;
   v6 = [(WFStaccatoConfigurationViewController *)&v10 initWithNibName:0 bundle:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_configurationContext, a3);
+    objc_storeStrong(&v6->_configurationContext, context);
     v8 = v7;
   }
 

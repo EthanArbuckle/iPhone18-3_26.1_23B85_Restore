@@ -1,11 +1,11 @@
 @interface BCUImageRenderContext
-- (BCUImageRenderContext)initWithMode:(unint64_t)a3;
-- (void)filteredImageFromImage:(CGImage *)a3 filterInfo:(id)a4 size:(CGSize)a5 contentsScale:(double)a6 waitForCPUSynchronization:(BOOL)a7 logKey:(id)a8 completion:(id)a9;
+- (BCUImageRenderContext)initWithMode:(unint64_t)mode;
+- (void)filteredImageFromImage:(CGImage *)image filterInfo:(id)info size:(CGSize)size contentsScale:(double)scale waitForCPUSynchronization:(BOOL)synchronization logKey:(id)key completion:(id)completion;
 @end
 
 @implementation BCUImageRenderContext
 
-- (BCUImageRenderContext)initWithMode:(unint64_t)a3
+- (BCUImageRenderContext)initWithMode:(unint64_t)mode
 {
   v15.receiver = self;
   v15.super_class = BCUImageRenderContext;
@@ -17,7 +17,7 @@
     *(v4 + 2) = v5;
 
     v7 = [BCUCoverEffects alloc];
-    v9 = objc_msgSend_initWithRenderer_mode_(v7, v8, *(v4 + 2), a3);
+    v9 = objc_msgSend_initWithRenderer_mode_(v7, v8, *(v4 + 2), mode);
     v10 = *(v4 + 3);
     *(v4 + 3) = v9;
 
@@ -31,14 +31,14 @@
   return v4;
 }
 
-- (void)filteredImageFromImage:(CGImage *)a3 filterInfo:(id)a4 size:(CGSize)a5 contentsScale:(double)a6 waitForCPUSynchronization:(BOOL)a7 logKey:(id)a8 completion:(id)a9
+- (void)filteredImageFromImage:(CGImage *)image filterInfo:(id)info size:(CGSize)size contentsScale:(double)scale waitForCPUSynchronization:(BOOL)synchronization logKey:(id)key completion:(id)completion
 {
-  v10 = a7;
-  height = a5.height;
-  width = a5.width;
-  v17 = a8;
-  v18 = a9;
-  v22 = objc_msgSend_effectIdentifierForFilterInfo_(BCUCoverEffects, v19, a4);
+  synchronizationCopy = synchronization;
+  height = size.height;
+  width = size.width;
+  keyCopy = key;
+  completionCopy = completion;
+  v22 = objc_msgSend_effectIdentifierForFilterInfo_(BCUCoverEffects, v19, info);
   if (v22)
   {
     v23 = objc_msgSend_coverEffects(self, v20, v21);
@@ -49,14 +49,14 @@
     v38[2] = sub_241C856FC;
     v38[3] = &unk_278D141F8;
     v38[4] = self;
-    v39 = v18;
+    v39 = completionCopy;
     LODWORD(v26) = 1056964608;
-    v28 = objc_msgSend_newOperationWithImage_size_contentsScale_priority_options_waitForCPUSynchronization_logKey_completion_(v25, v27, a3, 0, v10, v17, v38, width, height, a6, v26);
+    v28 = objc_msgSend_newOperationWithImage_size_contentsScale_priority_options_waitForCPUSynchronization_logKey_completion_(v25, v27, image, 0, synchronizationCopy, keyCopy, v38, width, height, scale, v26);
     v32 = MEMORY[0x277D85DD0];
     v33 = 3221225472;
     v34 = sub_241C85870;
     v35 = &unk_278D141D0;
-    v36 = self;
+    selfCopy = self;
     v37 = v28;
     v29 = v28;
     os_unfair_lock_lock_with_options();
@@ -67,7 +67,7 @@
 
   else
   {
-    (*(v18 + 2))(v18, 0, 0.0, 0.0, 0.0, 0.0);
+    (*(completionCopy + 2))(completionCopy, 0, 0.0, 0.0, 0.0, 0.0);
   }
 }
 

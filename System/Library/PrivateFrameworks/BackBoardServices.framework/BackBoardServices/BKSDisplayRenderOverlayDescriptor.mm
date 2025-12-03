@@ -1,28 +1,28 @@
 @interface BKSDisplayRenderOverlayDescriptor
-+ (BKSDisplayRenderOverlayDescriptor)descriptorWithName:(id)a3 display:(id)a4;
++ (BKSDisplayRenderOverlayDescriptor)descriptorWithName:(id)name display:(id)display;
 + (id)_classesRequiredToDecode;
-- (BKSDisplayRenderOverlayDescriptor)initWithCoder:(id)a3;
-- (BKSDisplayRenderOverlayDescriptor)initWithName:(id)a3 display:(id)a4;
-- (BOOL)isEqual:(id)a3;
+- (BKSDisplayRenderOverlayDescriptor)initWithCoder:(id)coder;
+- (BKSDisplayRenderOverlayDescriptor)initWithName:(id)name display:(id)display;
+- (BOOL)isEqual:(id)equal;
 - (CADisplay)display;
-- (id)_initWithName:(id)a3 displayUUID:(id)a4;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)_initWithName:(id)name displayUUID:(id)d;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 - (unint64_t)hash;
-- (void)_appendDescriptionToFormatterCore:(id)a3;
-- (void)appendDescriptionToFormatter:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_appendDescriptionToFormatterCore:(id)core;
+- (void)appendDescriptionToFormatter:(id)formatter;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BKSDisplayRenderOverlayDescriptor
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(BKSDisplayRenderOverlayDescriptor *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(BKSDisplayRenderOverlayDescriptor *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -35,17 +35,17 @@
 
 - (id)succinctDescription
 {
-  v2 = [(BKSDisplayRenderOverlayDescriptor *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(BKSDisplayRenderOverlayDescriptor *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (void)appendDescriptionToFormatter:(id)a3
+- (void)appendDescriptionToFormatter:(id)formatter
 {
-  v4 = a3;
+  formatterCopy = formatter;
   v5 = objc_opt_class();
-  v6 = v4;
+  v6 = formatterCopy;
   if (v5)
   {
     if (objc_opt_isKindOfClass())
@@ -81,34 +81,34 @@
 - (unint64_t)hash
 {
   v3 = [(NSString *)self->_name hash];
-  v4 = [(BKSDisplayRenderOverlayDescriptor *)self display];
-  v5 = [v4 name];
-  v6 = [v5 hash] + self->_interfaceOrientation;
+  display = [(BKSDisplayRenderOverlayDescriptor *)self display];
+  name = [display name];
+  v6 = [name hash] + self->_interfaceOrientation;
 
   return v6 + v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v25 = [MEMORY[0x1E698E6A0] builderWithObject:self ofExpectedClass:objc_opt_class()];
   name = self->_name;
   v36[0] = MEMORY[0x1E69E9820];
   v36[1] = 3221225472;
   v36[2] = __45__BKSDisplayRenderOverlayDescriptor_isEqual___block_invoke;
   v36[3] = &unk_1E6F470D8;
-  v6 = v4;
+  v6 = equalCopy;
   v37 = v6;
   v24 = [v25 appendString:name counterpart:v36];
-  v7 = [(BKSDisplayRenderOverlayDescriptor *)self display];
-  v8 = [v7 name];
+  display = [(BKSDisplayRenderOverlayDescriptor *)self display];
+  name = [display name];
   v34[0] = MEMORY[0x1E69E9820];
   v34[1] = 3221225472;
   v34[2] = __45__BKSDisplayRenderOverlayDescriptor_isEqual___block_invoke_2;
   v34[3] = &unk_1E6F470D8;
   v9 = v6;
   v35 = v9;
-  v10 = [v24 appendString:v8 counterpart:v34];
+  v10 = [v24 appendString:name counterpart:v34];
   interfaceOrientation = self->_interfaceOrientation;
   v32[0] = MEMORY[0x1E69E9820];
   v32[1] = 3221225472;
@@ -154,15 +154,15 @@ id __45__BKSDisplayRenderOverlayDescriptor_isEqual___block_invoke_2(uint64_t a1)
   return v2;
 }
 
-- (BKSDisplayRenderOverlayDescriptor)initWithCoder:(id)a3
+- (BKSDisplayRenderOverlayDescriptor)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"displayUUID"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"displayUUID"];
   v7 = [(BKSDisplayRenderOverlayDescriptor *)self _initWithName:v5 displayUUID:v6];
   if (v7)
   {
-    v8 = [v4 decodeIntegerForKey:@"interfaceOrientation"];
+    v8 = [coderCopy decodeIntegerForKey:@"interfaceOrientation"];
     if (BSInterfaceOrientationIsValid())
     {
       v9 = v8;
@@ -174,66 +174,66 @@ id __45__BKSDisplayRenderOverlayDescriptor_isEqual___block_invoke_2(uint64_t a1)
     }
 
     [(BKSDisplayRenderOverlayDescriptor *)v7 setInterfaceOrientation:v9];
-    -[BKSDisplayRenderOverlayDescriptor setLockBacklight:](v7, "setLockBacklight:", [v4 decodeBoolForKey:@"lockBacklight"]);
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"progressIndicatorProperties"];
+    -[BKSDisplayRenderOverlayDescriptor setLockBacklight:](v7, "setLockBacklight:", [coderCopy decodeBoolForKey:@"lockBacklight"]);
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"progressIndicatorProperties"];
     [(BKSDisplayRenderOverlayDescriptor *)v7 setProgressIndicatorProperties:v10];
 
-    -[BKSDisplayRenderOverlayDescriptor _setInterstitial:](v7, "_setInterstitial:", [v4 decodeBoolForKey:@"interstitial"]);
+    -[BKSDisplayRenderOverlayDescriptor _setInterstitial:](v7, "_setInterstitial:", [coderCopy decodeBoolForKey:@"interstitial"]);
   }
 
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   name = self->_name;
-  v5 = a3;
-  [v5 encodeObject:name forKey:@"name"];
-  [v5 encodeObject:self->_displayUUID forKey:@"displayUUID"];
-  [v5 encodeInteger:self->_interfaceOrientation forKey:@"interfaceOrientation"];
-  [v5 encodeBool:self->_lockBacklight forKey:@"lockBacklight"];
-  [v5 encodeObject:self->_progressIndicatorProperties forKey:@"progressIndicatorProperties"];
-  [v5 encodeBool:self->_interstitial forKey:@"interstitial"];
+  coderCopy = coder;
+  [coderCopy encodeObject:name forKey:@"name"];
+  [coderCopy encodeObject:self->_displayUUID forKey:@"displayUUID"];
+  [coderCopy encodeInteger:self->_interfaceOrientation forKey:@"interfaceOrientation"];
+  [coderCopy encodeBool:self->_lockBacklight forKey:@"lockBacklight"];
+  [coderCopy encodeObject:self->_progressIndicatorProperties forKey:@"progressIndicatorProperties"];
+  [coderCopy encodeBool:self->_interstitial forKey:@"interstitial"];
 }
 
-- (void)_appendDescriptionToFormatterCore:(id)a3
+- (void)_appendDescriptionToFormatterCore:(id)core
 {
-  v14 = a3;
-  v4 = [v14 appendObject:self->_name withName:@"name"];
-  v5 = [(BKSDisplayRenderOverlayDescriptor *)self display];
-  v6 = [v5 name];
+  coreCopy = core;
+  v4 = [coreCopy appendObject:self->_name withName:@"name"];
+  display = [(BKSDisplayRenderOverlayDescriptor *)self display];
+  name = [display name];
 
-  if (v6)
+  if (name)
   {
-    v7 = [v14 appendObject:v6 withName:@"displayName"];
+    v7 = [coreCopy appendObject:name withName:@"displayName"];
   }
 
   displayUUID = self->_displayUUID;
   if (displayUUID)
   {
-    v9 = [v14 appendObject:displayUUID withName:@"displayUUID"];
+    v9 = [coreCopy appendObject:displayUUID withName:@"displayUUID"];
   }
 
   interfaceOrientation = self->_interfaceOrientation;
   if (interfaceOrientation)
   {
-    v11 = [v14 appendInteger:interfaceOrientation withName:@"interfaceOrientation"];
+    v11 = [coreCopy appendInteger:interfaceOrientation withName:@"interfaceOrientation"];
   }
 
   if (self->_lockBacklight)
   {
-    [v14 appendString:@"lockBacklight" withName:0];
+    [coreCopy appendString:@"lockBacklight" withName:0];
   }
 
   if (self->_interstitial)
   {
-    [v14 appendString:@"interstitial" withName:0];
+    [coreCopy appendString:@"interstitial" withName:0];
   }
 
   progressIndicatorProperties = self->_progressIndicatorProperties;
   if (progressIndicatorProperties)
   {
-    v13 = [v14 appendObject:progressIndicatorProperties withName:@"progressIndicatorProperties"];
+    v13 = [coreCopy appendObject:progressIndicatorProperties withName:@"progressIndicatorProperties"];
   }
 }
 
@@ -245,7 +245,7 @@ id __45__BKSDisplayRenderOverlayDescriptor_isEqual___block_invoke_2(uint64_t a1)
   if (display)
   {
 LABEL_14:
-    v13 = display;
+    mainDisplay = display;
     goto LABEL_15;
   }
 
@@ -255,8 +255,8 @@ LABEL_14:
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v5 = [getCADisplayClass_8958() displays];
-    v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    displays = [getCADisplayClass_8958() displays];
+    v6 = [displays countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v6)
     {
       v7 = v6;
@@ -267,12 +267,12 @@ LABEL_14:
         {
           if (*v17 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(displays);
           }
 
           v10 = *(*(&v16 + 1) + 8 * i);
           displayUUID = self->_displayUUID;
-          v12 = [v10 uniqueId];
+          uniqueId = [v10 uniqueId];
           LODWORD(displayUUID) = BSEqualStrings();
 
           if (displayUUID)
@@ -282,7 +282,7 @@ LABEL_14:
           }
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v7 = [displays countByEnumeratingWithState:&v16 objects:v20 count:16];
         if (v7)
         {
           continue;
@@ -298,21 +298,21 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v13 = [getCADisplayClass_8958() mainDisplay];
+  mainDisplay = [getCADisplayClass_8958() mainDisplay];
 LABEL_15:
   v14 = *MEMORY[0x1E69E9840];
 
-  return v13;
+  return mainDisplay;
 }
 
-- (BKSDisplayRenderOverlayDescriptor)initWithName:(id)a3 display:(id)a4
+- (BKSDisplayRenderOverlayDescriptor)initWithName:(id)name display:(id)display
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  nameCopy = name;
+  displayCopy = display;
+  v9 = displayCopy;
+  if (nameCopy)
   {
-    if (v8)
+    if (displayCopy)
     {
       goto LABEL_3;
     }
@@ -320,8 +320,8 @@ LABEL_15:
 
   else
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"BKSDisplayRenderOverlayDescriptor.m" lineNumber:51 description:{@"Invalid parameter not satisfying: %@", @"name"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"BKSDisplayRenderOverlayDescriptor.m" lineNumber:51 description:{@"Invalid parameter not satisfying: %@", @"name"}];
 
     if (v9)
     {
@@ -329,29 +329,29 @@ LABEL_15:
     }
   }
 
-  v14 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v14 handleFailureInMethod:a2 object:self file:@"BKSDisplayRenderOverlayDescriptor.m" lineNumber:52 description:{@"Invalid parameter not satisfying: %@", @"display"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"BKSDisplayRenderOverlayDescriptor.m" lineNumber:52 description:{@"Invalid parameter not satisfying: %@", @"display"}];
 
 LABEL_3:
-  v10 = [v9 uniqueId];
-  v11 = [(BKSDisplayRenderOverlayDescriptor *)self _initWithName:v7 displayUUID:v10];
+  uniqueId = [v9 uniqueId];
+  v11 = [(BKSDisplayRenderOverlayDescriptor *)self _initWithName:nameCopy displayUUID:uniqueId];
 
   if (v11)
   {
-    objc_storeStrong(&v11->_display, a4);
+    objc_storeStrong(&v11->_display, display);
   }
 
   return v11;
 }
 
-- (id)_initWithName:(id)a3 displayUUID:(id)a4
+- (id)_initWithName:(id)name displayUUID:(id)d
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  nameCopy = name;
+  dCopy = d;
+  if (!nameCopy)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"BKSDisplayRenderOverlayDescriptor.m" lineNumber:39 description:{@"Invalid parameter not satisfying: %@", @"name"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"BKSDisplayRenderOverlayDescriptor.m" lineNumber:39 description:{@"Invalid parameter not satisfying: %@", @"name"}];
   }
 
   v16.receiver = self;
@@ -359,11 +359,11 @@ LABEL_3:
   v9 = [(BKSDisplayRenderOverlayDescriptor *)&v16 init];
   if (v9)
   {
-    v10 = [v7 copy];
+    v10 = [nameCopy copy];
     name = v9->_name;
     v9->_name = v10;
 
-    v12 = [v8 copy];
+    v12 = [dCopy copy];
     displayUUID = v9->_displayUUID;
     v9->_displayUUID = v12;
 
@@ -381,11 +381,11 @@ LABEL_3:
   return [v2 setWithObjects:{v3, v4, objc_opt_class(), 0}];
 }
 
-+ (BKSDisplayRenderOverlayDescriptor)descriptorWithName:(id)a3 display:(id)a4
++ (BKSDisplayRenderOverlayDescriptor)descriptorWithName:(id)name display:(id)display
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [objc_alloc(objc_opt_class()) initWithName:v6 display:v5];
+  displayCopy = display;
+  nameCopy = name;
+  v7 = [objc_alloc(objc_opt_class()) initWithName:nameCopy display:displayCopy];
 
   return v7;
 }

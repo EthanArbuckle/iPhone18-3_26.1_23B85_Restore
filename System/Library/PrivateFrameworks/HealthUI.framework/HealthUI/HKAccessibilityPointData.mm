@@ -1,25 +1,25 @@
 @interface HKAccessibilityPointData
-- (HKAccessibilityPointData)initWithHorizontalScreenCoordinate:(double)a3 horizontalTimeCoordinate:(id)a4 horizontalDate:(id)a5 values:(id)a6;
+- (HKAccessibilityPointData)initWithHorizontalScreenCoordinate:(double)coordinate horizontalTimeCoordinate:(id)timeCoordinate horizontalDate:(id)date values:(id)values;
 - (id)description;
 @end
 
 @implementation HKAccessibilityPointData
 
-- (HKAccessibilityPointData)initWithHorizontalScreenCoordinate:(double)a3 horizontalTimeCoordinate:(id)a4 horizontalDate:(id)a5 values:(id)a6
+- (HKAccessibilityPointData)initWithHorizontalScreenCoordinate:(double)coordinate horizontalTimeCoordinate:(id)timeCoordinate horizontalDate:(id)date values:(id)values
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  timeCoordinateCopy = timeCoordinate;
+  dateCopy = date;
+  valuesCopy = values;
   v17.receiver = self;
   v17.super_class = HKAccessibilityPointData;
   v14 = [(HKAccessibilityPointData *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    v14->_horizontalScreenCoordinate = a3;
-    objc_storeStrong(&v14->_horizontalTimeCoordinate, a4);
-    objc_storeStrong(&v15->_horizontalDate, a5);
-    objc_storeStrong(&v15->_values, a6);
+    v14->_horizontalScreenCoordinate = coordinate;
+    objc_storeStrong(&v14->_horizontalTimeCoordinate, timeCoordinate);
+    objc_storeStrong(&v15->_horizontalDate, date);
+    objc_storeStrong(&v15->_values, values);
   }
 
   return v15;
@@ -38,30 +38,30 @@
   [v3 addObject:v7];
 
   v8 = MEMORY[0x1E696AEC0];
-  v9 = [(HKAccessibilityPointData *)self horizontalTimeCoordinate];
-  v10 = [v8 stringWithFormat:@"  horizontalTimeCoordinate: '%@'", v9];
+  horizontalTimeCoordinate = [(HKAccessibilityPointData *)self horizontalTimeCoordinate];
+  v10 = [v8 stringWithFormat:@"  horizontalTimeCoordinate: '%@'", horizontalTimeCoordinate];
   [v3 addObject:v10];
 
   v11 = MEMORY[0x1E696AEC0];
-  v12 = [(HKAccessibilityPointData *)self horizontalDate];
-  v13 = [v11 stringWithFormat:@"  horizontalDate: %@", v12];
+  horizontalDate = [(HKAccessibilityPointData *)self horizontalDate];
+  v13 = [v11 stringWithFormat:@"  horizontalDate: %@", horizontalDate];
   [v3 addObject:v13];
 
-  v14 = [(HKAccessibilityPointData *)self values];
+  values = [(HKAccessibilityPointData *)self values];
 
   v15 = MEMORY[0x1E696AEC0];
-  if (v14)
+  if (values)
   {
-    v16 = [(HKAccessibilityPointData *)self values];
-    v17 = [v15 stringWithFormat:@"  values %lu:", objc_msgSend(v16, "count")];
+    values2 = [(HKAccessibilityPointData *)self values];
+    v17 = [v15 stringWithFormat:@"  values %lu:", objc_msgSend(values2, "count")];
     [v3 addObject:v17];
 
     v29 = 0u;
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v18 = [(HKAccessibilityPointData *)self values];
-    v19 = [v18 countByEnumeratingWithState:&v27 objects:v31 count:16];
+    values3 = [(HKAccessibilityPointData *)self values];
+    v19 = [values3 countByEnumeratingWithState:&v27 objects:v31 count:16];
     if (v19)
     {
       v20 = v19;
@@ -72,7 +72,7 @@
         {
           if (*v28 != v21)
           {
-            objc_enumerationMutation(v18);
+            objc_enumerationMutation(values3);
           }
 
           v23 = [*(*(&v27 + 1) + 8 * i) description];
@@ -80,7 +80,7 @@
           [v3 addObject:v24];
         }
 
-        v20 = [v18 countByEnumeratingWithState:&v27 objects:v31 count:16];
+        v20 = [values3 countByEnumeratingWithState:&v27 objects:v31 count:16];
       }
 
       while (v20);
@@ -89,8 +89,8 @@
 
   else
   {
-    v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"  values NULL (no data)"];
-    [v3 addObject:v18];
+    values3 = [MEMORY[0x1E696AEC0] stringWithFormat:@"  values NULL (no data)"];
+    [v3 addObject:values3];
   }
 
   v25 = [v3 componentsJoinedByString:@"\n"];

@@ -1,40 +1,40 @@
 @interface ICMusicSubscriptionStatusController
 + (BOOL)_canConnectToMusicSubscriptionStatusService;
 + (ICMusicSubscriptionStatusController)sharedStatusController;
-- (BOOL)_willPerformSubscriptionStatusRequest:(id)a3 withStatusHandler:(id)a4;
+- (BOOL)_willPerformSubscriptionStatusRequest:(id)request withStatusHandler:(id)handler;
 - (ICMusicSubscriptionStatusController)init;
 - (id)_remoteRequestingClientConnection;
 - (void)_cancelPendingRequests;
 - (void)_cancelRemoteRequestingClientConnectionInvalidationTimer;
-- (void)_deliverSubscriptionStatusResponse:(id)a3 forRequest:(id)a4 error:(id)a5;
-- (void)_didEndRemoteRequestWithUniqueIdentifier:(id)a3;
-- (void)_handlePrivacyAcknowledgementRequirementChanged:(BOOL)a3;
-- (void)_handleSeveredRemoteClientConnectionWithIdentifier:(id)a3;
-- (void)_handleSubscriptionStatusCacheDidChangeNotification:(id)a3;
-- (void)_handleSubscriptionStatusCacheUnderlyingCachingPropertiesDidChangeNotification:(id)a3;
-- (void)_handleSubscriptionStatusDidChangeDistributedNotification:(id)a3;
-- (void)_handleSubscriptionStatusDidChangeFollowingPrivacyAcknowledgementNotification:(id)a3;
+- (void)_deliverSubscriptionStatusResponse:(id)response forRequest:(id)request error:(id)error;
+- (void)_didEndRemoteRequestWithUniqueIdentifier:(id)identifier;
+- (void)_handlePrivacyAcknowledgementRequirementChanged:(BOOL)changed;
+- (void)_handleSeveredRemoteClientConnectionWithIdentifier:(id)identifier;
+- (void)_handleSubscriptionStatusCacheDidChangeNotification:(id)notification;
+- (void)_handleSubscriptionStatusCacheUnderlyingCachingPropertiesDidChangeNotification:(id)notification;
+- (void)_handleSubscriptionStatusDidChangeDistributedNotification:(id)notification;
+- (void)_handleSubscriptionStatusDidChangeFollowingPrivacyAcknowledgementNotification:(id)notification;
 - (void)_invalidateRemoteRequestingClientConnection;
 - (void)_remoteRequestingClientConnectionInvalidationTimerDidExpire;
 - (void)_scheduleInvalidationOfRemoteRequestingClientConnection;
-- (void)_willBeginRemoteRequestWithUniqueIdentifier:(id)a3 statusHandler:(id)a4;
+- (void)_willBeginRemoteRequestWithUniqueIdentifier:(id)identifier statusHandler:(id)handler;
 - (void)dealloc;
-- (void)deliverSubscriptionStatusResponse:(id)a3 forRemoteRequestWithUniqueIdentifier:(id)a4 error:(id)a5;
-- (void)disableSubscriptionForUserIdentity:(id)a3 withCompletionHandler:(id)a4;
-- (void)disableSubscriptionWithCompletionHandler:(id)a3;
-- (void)enableSubscriptionForUserIdentity:(id)a3 withCompletionHandler:(id)a4;
-- (void)enableSubscriptionWithCompletionHandler:(id)a3;
-- (void)getSubscriptionStatusForUserIdentity:(id)a3 bypassingCache:(BOOL)a4 withCompletionHandler:(id)a5;
-- (void)getSubscriptionStatusWithCompletionHandler:(id)a3;
-- (void)invalidateCachedSubscriptionStatusForUserIdentity:(id)a3 withCompletionHandler:(id)a4;
-- (void)invalidateCachedSubscriptionStatusWithCompletionHandler:(id)a3;
-- (void)performSubscriptionStatusRequest:(id)a3 withCompletionHandler:(id)a4;
-- (void)performSubscriptionStatusRequest:(id)a3 withStatusHandler:(id)a4;
-- (void)refreshSubscriptionForUserIdentity:(id)a3 withCompletionHandler:(id)a4;
-- (void)refreshSubscriptionUsingRequestContext:(id)a3 withCompletionHandler:(id)a4;
-- (void)refreshSubscriptionWithCompletionHandler:(id)a3;
-- (void)setSubscriptionStatusFromResponsePayload:(id)a3 forUserIdentity:(id)a4 withCompletionHandler:(id)a5;
-- (void)setSubscriptionStatusFromResponsePayload:(id)a3 withCompletionHandler:(id)a4;
+- (void)deliverSubscriptionStatusResponse:(id)response forRemoteRequestWithUniqueIdentifier:(id)identifier error:(id)error;
+- (void)disableSubscriptionForUserIdentity:(id)identity withCompletionHandler:(id)handler;
+- (void)disableSubscriptionWithCompletionHandler:(id)handler;
+- (void)enableSubscriptionForUserIdentity:(id)identity withCompletionHandler:(id)handler;
+- (void)enableSubscriptionWithCompletionHandler:(id)handler;
+- (void)getSubscriptionStatusForUserIdentity:(id)identity bypassingCache:(BOOL)cache withCompletionHandler:(id)handler;
+- (void)getSubscriptionStatusWithCompletionHandler:(id)handler;
+- (void)invalidateCachedSubscriptionStatusForUserIdentity:(id)identity withCompletionHandler:(id)handler;
+- (void)invalidateCachedSubscriptionStatusWithCompletionHandler:(id)handler;
+- (void)performSubscriptionStatusRequest:(id)request withCompletionHandler:(id)handler;
+- (void)performSubscriptionStatusRequest:(id)request withStatusHandler:(id)handler;
+- (void)refreshSubscriptionForUserIdentity:(id)identity withCompletionHandler:(id)handler;
+- (void)refreshSubscriptionUsingRequestContext:(id)context withCompletionHandler:(id)handler;
+- (void)refreshSubscriptionWithCompletionHandler:(id)handler;
+- (void)setSubscriptionStatusFromResponsePayload:(id)payload forUserIdentity:(id)identity withCompletionHandler:(id)handler;
+- (void)setSubscriptionStatusFromResponsePayload:(id)payload withCompletionHandler:(id)handler;
 @end
 
 @implementation ICMusicSubscriptionStatusController
@@ -77,15 +77,15 @@ uint64_t __61__ICMusicSubscriptionStatusController_sharedStatusController__block
     v10 = v2;
     v25 = v10;
     dispatch_sync(v9, block);
-    v11 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v11 addObserver:v10 selector:sel__handleSubscriptionStatusCacheDidChangeNotification_ name:@"ICMusicSubscriptionStatusCacheDidChangeNotification" object:0];
-    [v11 addObserver:v10 selector:sel__handleSubscriptionStatusCacheUnderlyingCachingPropertiesDidChangeNotification_ name:@"ICMusicSubscriptionStatusCacheUnderlyingCachingPropertiesDidChangeNotification" object:0];
-    v12 = [MEMORY[0x1E696ABB0] defaultCenter];
-    [v12 addObserver:v10 selector:sel__handleSubscriptionStatusDidChangeFollowingPrivacyAcknowledgementNotification_ name:@"com.apple.itunescloud.ICMusicSubscriptionStatusDidChangeFollowingPrivacyAcknowledgementDistributedNotification" object:0];
-    v13 = [MEMORY[0x1E696AE30] processInfo];
-    v14 = [v13 ic_isCloudDaemon];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v10 selector:sel__handleSubscriptionStatusCacheDidChangeNotification_ name:@"ICMusicSubscriptionStatusCacheDidChangeNotification" object:0];
+    [defaultCenter addObserver:v10 selector:sel__handleSubscriptionStatusCacheUnderlyingCachingPropertiesDidChangeNotification_ name:@"ICMusicSubscriptionStatusCacheUnderlyingCachingPropertiesDidChangeNotification" object:0];
+    defaultCenter2 = [MEMORY[0x1E696ABB0] defaultCenter];
+    [defaultCenter2 addObserver:v10 selector:sel__handleSubscriptionStatusDidChangeFollowingPrivacyAcknowledgementNotification_ name:@"com.apple.itunescloud.ICMusicSubscriptionStatusDidChangeFollowingPrivacyAcknowledgementDistributedNotification" object:0];
+    processInfo = [MEMORY[0x1E696AE30] processInfo];
+    ic_isCloudDaemon = [processInfo ic_isCloudDaemon];
 
-    if (v14)
+    if (ic_isCloudDaemon)
     {
       objc_initWeak(&location, v10);
       v15 = +[ICPrivacyInfo sharedPrivacyInfo];
@@ -117,7 +117,7 @@ uint64_t __61__ICMusicSubscriptionStatusController_sharedStatusController__block
 
     else
     {
-      [v12 addObserver:v10 selector:sel__handleSubscriptionStatusDidChangeDistributedNotification_ name:@"_ICMusicSubscriptionStatusDidChangeDistributedNotification" object:0];
+      [defaultCenter2 addObserver:v10 selector:sel__handleSubscriptionStatusDidChangeDistributedNotification_ name:@"_ICMusicSubscriptionStatusDidChangeDistributedNotification" object:0];
     }
   }
 
@@ -276,132 +276,132 @@ void __72__ICMusicSubscriptionStatusController__remoteRequestingClientConnection
   return v4;
 }
 
-- (void)_handleSubscriptionStatusDidChangeDistributedNotification:(id)a3
+- (void)_handleSubscriptionStatusDidChangeDistributedNotification:(id)notification
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  notificationCopy = notification;
   v5 = os_log_create("com.apple.amp.iTunesCloud", "Subscription");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 name];
+    name = [notificationCopy name];
     v9 = 138543874;
-    v10 = self;
+    selfCopy = self;
     v11 = 2114;
-    v12 = v6;
+    v12 = name;
     v13 = 2114;
     v14 = @"ICMusicSubscriptionStatusDidChangeNotification";
     _os_log_impl(&dword_1B4491000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ handling %{public}@. Posting %{public}@.", &v9, 0x20u);
   }
 
-  v7 = [MEMORY[0x1E696AD88] defaultCenter];
-  v8 = [v4 userInfo];
-  [v7 postNotificationName:@"ICMusicSubscriptionStatusDidChangeNotification" object:self userInfo:v8];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  userInfo = [notificationCopy userInfo];
+  [defaultCenter postNotificationName:@"ICMusicSubscriptionStatusDidChangeNotification" object:self userInfo:userInfo];
 }
 
-- (void)_handleSubscriptionStatusCacheUnderlyingCachingPropertiesDidChangeNotification:(id)a3
+- (void)_handleSubscriptionStatusCacheUnderlyingCachingPropertiesDidChangeNotification:(id)notification
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  notificationCopy = notification;
   v5 = os_log_create("com.apple.amp.iTunesCloud", "Subscription");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 name];
+    name = [notificationCopy name];
     v11 = 138543874;
-    v12 = self;
+    selfCopy = self;
     v13 = 2114;
-    v14 = v6;
+    v14 = name;
     v15 = 2114;
     v16 = @"ICMusicSubscriptionStatusDidChangeNotification";
     _os_log_impl(&dword_1B4491000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ handling %{public}@. Posting %{public}@.", &v11, 0x20u);
   }
 
-  v7 = [MEMORY[0x1E696AD88] defaultCenter];
-  v8 = [v4 userInfo];
-  [v7 postNotificationName:@"ICMusicSubscriptionStatusDidChangeNotification" object:self userInfo:v8];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  userInfo = [notificationCopy userInfo];
+  [defaultCenter postNotificationName:@"ICMusicSubscriptionStatusDidChangeNotification" object:self userInfo:userInfo];
 
-  v9 = [MEMORY[0x1E696AE30] processInfo];
-  LODWORD(v7) = [v9 ic_isCloudDaemon];
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  LODWORD(defaultCenter) = [processInfo ic_isCloudDaemon];
 
-  if (v7)
+  if (defaultCenter)
   {
-    v10 = [MEMORY[0x1E696ABB0] defaultCenter];
-    [v10 postNotificationName:@"_ICMusicSubscriptionStatusDidChangeDistributedNotification" object:0 userInfo:0 deliverImmediately:1];
+    defaultCenter2 = [MEMORY[0x1E696ABB0] defaultCenter];
+    [defaultCenter2 postNotificationName:@"_ICMusicSubscriptionStatusDidChangeDistributedNotification" object:0 userInfo:0 deliverImmediately:1];
   }
 }
 
-- (void)_handleSubscriptionStatusCacheDidChangeNotification:(id)a3
+- (void)_handleSubscriptionStatusCacheDidChangeNotification:(id)notification
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  notificationCopy = notification;
   v5 = os_log_create("com.apple.amp.iTunesCloud", "Subscription");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 name];
+    name = [notificationCopy name];
     v11 = 138543874;
-    v12 = self;
+    selfCopy = self;
     v13 = 2114;
-    v14 = v6;
+    v14 = name;
     v15 = 2114;
     v16 = @"ICMusicSubscriptionStatusDidChangeNotification";
     _os_log_impl(&dword_1B4491000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ handling %{public}@. Posting %{public}@.", &v11, 0x20u);
   }
 
-  v7 = [MEMORY[0x1E696AD88] defaultCenter];
-  v8 = [v4 userInfo];
-  [v7 postNotificationName:@"ICMusicSubscriptionStatusDidChangeNotification" object:self userInfo:v8];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  userInfo = [notificationCopy userInfo];
+  [defaultCenter postNotificationName:@"ICMusicSubscriptionStatusDidChangeNotification" object:self userInfo:userInfo];
 
-  v9 = [MEMORY[0x1E696AE30] processInfo];
-  LODWORD(v7) = [v9 ic_isCloudDaemon];
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  LODWORD(defaultCenter) = [processInfo ic_isCloudDaemon];
 
-  if (v7)
+  if (defaultCenter)
   {
-    v10 = [MEMORY[0x1E696ABB0] defaultCenter];
-    [v10 postNotificationName:@"_ICMusicSubscriptionStatusDidChangeDistributedNotification" object:0 userInfo:0 deliverImmediately:1];
+    defaultCenter2 = [MEMORY[0x1E696ABB0] defaultCenter];
+    [defaultCenter2 postNotificationName:@"_ICMusicSubscriptionStatusDidChangeDistributedNotification" object:0 userInfo:0 deliverImmediately:1];
   }
 }
 
-- (void)_handleSubscriptionStatusDidChangeFollowingPrivacyAcknowledgementNotification:(id)a3
+- (void)_handleSubscriptionStatusDidChangeFollowingPrivacyAcknowledgementNotification:(id)notification
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  notificationCopy = notification;
   v5 = os_log_create("com.apple.amp.iTunesCloud", "Subscription");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 name];
+    name = [notificationCopy name];
     *buf = 138543874;
-    v13 = self;
+    selfCopy = self;
     v14 = 2114;
-    v15 = v6;
+    v15 = name;
     v16 = 2114;
     v17 = @"ICMusicSubscriptionStatusDidChangeNotification";
     _os_log_impl(&dword_1B4491000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ handling %{public}@. Posting %{public}@.", buf, 0x20u);
   }
 
-  v7 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v8 = +[ICUserIdentity activeAccount];
   v11 = v8;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v11 forKeys:&v10 count:1];
-  [v7 postNotificationName:@"ICMusicSubscriptionStatusDidChangeNotification" object:self userInfo:v9];
+  [defaultCenter postNotificationName:@"ICMusicSubscriptionStatusDidChangeNotification" object:self userInfo:v9];
 }
 
-- (void)_handlePrivacyAcknowledgementRequirementChanged:(BOOL)a3
+- (void)_handlePrivacyAcknowledgementRequirementChanged:(BOOL)changed
 {
-  v3 = a3;
+  changedCopy = changed;
   v13 = *MEMORY[0x1E69E9840];
   v5 = os_log_create("com.apple.amp.iTunesCloud", "Subscription");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543874;
-    v8 = self;
+    selfCopy = self;
     v9 = 1024;
-    v10 = v3;
+    v10 = changedCopy;
     v11 = 2114;
     v12 = @"com.apple.itunescloud.ICMusicSubscriptionStatusDidChangeFollowingPrivacyAcknowledgementDistributedNotification";
     _os_log_impl(&dword_1B4491000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ handling privacy acknowledgement requirement changed notification: isPrivacyAcknowledgementRequired = %{BOOL}u. Posting distributed notification %{public}@.", &v7, 0x1Cu);
   }
 
-  v6 = [MEMORY[0x1E696ABB0] defaultCenter];
-  [v6 postNotificationName:@"com.apple.itunescloud.ICMusicSubscriptionStatusDidChangeFollowingPrivacyAcknowledgementDistributedNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
+  [defaultCenter postNotificationName:@"com.apple.itunescloud.ICMusicSubscriptionStatusDidChangeFollowingPrivacyAcknowledgementDistributedNotification" object:0];
 }
 
 - (void)_cancelPendingRequests
@@ -411,18 +411,18 @@ void __72__ICMusicSubscriptionStatusController__remoteRequestingClientConnection
   v3 = os_log_create("com.apple.amp.iTunesCloud", "Subscription");
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(NSMutableDictionary *)self->_pendingRequests allKeys];
+    allKeys = [(NSMutableDictionary *)self->_pendingRequests allKeys];
     *buf = 138543362;
-    v19 = v4;
+    v19 = allKeys;
     _os_log_impl(&dword_1B4491000, v3, OS_LOG_TYPE_DEFAULT, "Cancelling requests for identifiers: %{public}@", buf, 0xCu);
   }
 
-  v5 = [(NSMutableDictionary *)self->_pendingRequests allValues];
+  allValues = [(NSMutableDictionary *)self->_pendingRequests allValues];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v6 = [allValues countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -434,32 +434,32 @@ void __72__ICMusicSubscriptionStatusController__remoteRequestingClientConnection
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allValues);
         }
 
         v10 = *(*(&v13 + 1) + 8 * v9);
         v11 = [MEMORY[0x1E696ABC0] errorWithDomain:@"ICError" code:0 userInfo:0];
         [(ICMusicSubscriptionStatusController *)self _deliverSubscriptionStatusResponse:0 forRequest:v10 error:v11];
 
-        v12 = [v10 requestIdentifier];
-        [(ICMusicSubscriptionStatusController *)self _didEndRemoteRequestWithUniqueIdentifier:v12];
+        requestIdentifier = [v10 requestIdentifier];
+        [(ICMusicSubscriptionStatusController *)self _didEndRemoteRequestWithUniqueIdentifier:requestIdentifier];
 
         ++v9;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [allValues countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);
   }
 }
 
-- (BOOL)_willPerformSubscriptionStatusRequest:(id)a3 withStatusHandler:(id)a4
+- (BOOL)_willPerformSubscriptionStatusRequest:(id)request withStatusHandler:(id)handler
 {
   v55 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   v43 = 0;
   v44 = &v43;
   v45 = 0x2020000000;
@@ -479,11 +479,11 @@ void __72__ICMusicSubscriptionStatusController__remoteRequestingClientConnection
   v24 = 3221225472;
   v25 = __95__ICMusicSubscriptionStatusController__willPerformSubscriptionStatusRequest_withStatusHandler___block_invoke;
   v26 = &unk_1E7BF8170;
-  v27 = self;
-  v9 = v6;
+  selfCopy = self;
+  v9 = requestCopy;
   v28 = v9;
   v30 = &v37;
-  v10 = v7;
+  v10 = handlerCopy;
   v29 = v10;
   v31 = &v43;
   v32 = &v33;
@@ -594,7 +594,7 @@ void __95__ICMusicSubscriptionStatusController__willPerformSubscriptionStatusReq
   }
 }
 
-- (void)_willBeginRemoteRequestWithUniqueIdentifier:(id)a3 statusHandler:(id)a4
+- (void)_willBeginRemoteRequestWithUniqueIdentifier:(id)identifier statusHandler:(id)handler
 {
   accessQueue = self->_accessQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -625,20 +625,20 @@ void *__97__ICMusicSubscriptionStatusController__willBeginRemoteRequestWithUniqu
   [(ICMusicSubscriptionStatusController *)self _invalidateRemoteRequestingClientConnection];
 }
 
-- (void)_handleSeveredRemoteClientConnectionWithIdentifier:(id)a3
+- (void)_handleSeveredRemoteClientConnectionWithIdentifier:(id)identifier
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   dispatch_assert_queue_V2(self->_accessQueue);
   v5 = self->_remoteRequestingClientConnectionIdentifier;
   v6 = v5;
-  if (v5 == v4)
+  if (v5 == identifierCopy)
   {
 
     goto LABEL_7;
   }
 
-  v7 = [(NSUUID *)v5 isEqual:v4];
+  v7 = [(NSUUID *)v5 isEqual:identifierCopy];
 
   if (v7)
   {
@@ -652,7 +652,7 @@ LABEL_7:
   {
     remoteRequestingClientConnectionIdentifier = self->_remoteRequestingClientConnectionIdentifier;
     v10 = 138543618;
-    v11 = v4;
+    v11 = identifierCopy;
     v12 = 2114;
     v13 = remoteRequestingClientConnectionIdentifier;
     _os_log_impl(&dword_1B4491000, v8, OS_LOG_TYPE_DEFAULT, "Identifier for severed connection to music subscription status service %{public}@ doesn't match current identifier: %{public}@. Ignoring.", &v10, 0x16u);
@@ -736,7 +736,7 @@ void __72__ICMusicSubscriptionStatusController__remoteRequestingClientConnection
   }
 }
 
-- (void)_didEndRemoteRequestWithUniqueIdentifier:(id)a3
+- (void)_didEndRemoteRequestWithUniqueIdentifier:(id)identifier
 {
   dispatch_assert_queue_V2(self->_accessQueue);
   v4 = self->_numberOfActiveRemoteRequests - 1;
@@ -748,12 +748,12 @@ void __72__ICMusicSubscriptionStatusController__remoteRequestingClientConnection
   }
 }
 
-- (void)_deliverSubscriptionStatusResponse:(id)a3 forRequest:(id)a4 error:(id)a5
+- (void)_deliverSubscriptionStatusResponse:(id)response forRequest:(id)request error:(id)error
 {
   v53 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  responseCopy = response;
+  requestCopy = request;
+  errorCopy = error;
   dispatch_assert_queue_V2(self->_accessQueue);
   v39 = 0;
   v40 = &v39;
@@ -762,18 +762,18 @@ void __72__ICMusicSubscriptionStatusController__remoteRequestingClientConnection
   v43 = __Block_byref_object_dispose__32439;
   v44 = 0;
   statusHandlersForPendingIdenticalRequests = self->_statusHandlersForPendingIdenticalRequests;
-  v12 = [v9 requestIdentifier];
-  v13 = [(NSMutableDictionary *)statusHandlersForPendingIdenticalRequests objectForKey:v12];
+  requestIdentifier = [requestCopy requestIdentifier];
+  v13 = [(NSMutableDictionary *)statusHandlersForPendingIdenticalRequests objectForKey:requestIdentifier];
   v14 = [v13 copy];
   v15 = v40[5];
   v40[5] = v14;
 
   pendingRequests = self->_pendingRequests;
-  v17 = [v9 requestIdentifier];
-  v18 = [(NSMutableDictionary *)pendingRequests objectForKey:v17];
+  requestIdentifier2 = [requestCopy requestIdentifier];
+  v18 = [(NSMutableDictionary *)pendingRequests objectForKey:requestIdentifier2];
 
-  v19 = [v8 isFinalResponse] ^ 1;
-  if (v10)
+  v19 = [responseCopy isFinalResponse] ^ 1;
+  if (errorCopy)
   {
     LOBYTE(v19) = 0;
   }
@@ -781,18 +781,18 @@ void __72__ICMusicSubscriptionStatusController__remoteRequestingClientConnection
   if ((v19 & 1) == 0)
   {
     v20 = self->_pendingRequests;
-    v21 = [v9 requestIdentifier];
-    [(NSMutableDictionary *)v20 removeObjectForKey:v21];
+    requestIdentifier3 = [requestCopy requestIdentifier];
+    [(NSMutableDictionary *)v20 removeObjectForKey:requestIdentifier3];
 
     v22 = self->_statusHandlersForPendingIdenticalRequests;
-    v23 = [v9 requestIdentifier];
-    [(NSMutableDictionary *)v22 removeObjectForKey:v23];
+    requestIdentifier4 = [requestCopy requestIdentifier];
+    [(NSMutableDictionary *)v22 removeObjectForKey:requestIdentifier4];
   }
 
   v24 = [v40[5] count];
   v25 = os_log_create("com.apple.amp.iTunesCloud", "Subscription");
   v26 = v25;
-  if (v10)
+  if (errorCopy)
   {
     if (!os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
     {
@@ -812,7 +812,7 @@ void __72__ICMusicSubscriptionStatusController__remoteRequestingClientConnection
     v49 = 2080;
     v50 = v27;
     v51 = 2114;
-    v52 = v10;
+    v52 = errorCopy;
     v28 = "Delivering result for %{public}@ to %llu status handler%s: error = %{public}@.";
     v29 = v26;
     v30 = OS_LOG_TYPE_ERROR;
@@ -838,7 +838,7 @@ void __72__ICMusicSubscriptionStatusController__remoteRequestingClientConnection
     v49 = 2080;
     v50 = v31;
     v51 = 2114;
-    v52 = v8;
+    v52 = responseCopy;
     v28 = "Delivering result for %{public}@ to %llu status handler%s: response = %{public}@.";
     v29 = v26;
     v30 = OS_LOG_TYPE_DEFAULT;
@@ -855,8 +855,8 @@ LABEL_15:
     block[2] = __91__ICMusicSubscriptionStatusController__deliverSubscriptionStatusResponse_forRequest_error___block_invoke;
     block[3] = &unk_1E7BF97E8;
     v38 = &v39;
-    v36 = v8;
-    v37 = v10;
+    v36 = responseCopy;
+    v37 = errorCopy;
     dispatch_async(callbackQueue, block);
 
     v33 = v36;
@@ -869,7 +869,7 @@ LABEL_15:
     {
       v34 = self->_pendingRequests;
       *buf = 138543618;
-      v46 = v9;
+      v46 = requestCopy;
       v47 = 2114;
       v48 = v34;
       _os_log_impl(&dword_1B4491000, v33, OS_LOG_TYPE_ERROR, "No status handlers found for request %{public}@. pendingRequests = %{public}@", buf, 0x16u);
@@ -914,23 +914,23 @@ void __91__ICMusicSubscriptionStatusController__deliverSubscriptionStatusRespons
   }
 }
 
-- (void)deliverSubscriptionStatusResponse:(id)a3 forRemoteRequestWithUniqueIdentifier:(id)a4 error:(id)a5
+- (void)deliverSubscriptionStatusResponse:(id)response forRemoteRequestWithUniqueIdentifier:(id)identifier error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  responseCopy = response;
+  identifierCopy = identifier;
+  errorCopy = error;
   accessQueue = self->_accessQueue;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __116__ICMusicSubscriptionStatusController_deliverSubscriptionStatusResponse_forRemoteRequestWithUniqueIdentifier_error___block_invoke;
   v15[3] = &unk_1E7BFA1F0;
   v15[4] = self;
-  v16 = v9;
-  v17 = v8;
-  v18 = v10;
-  v12 = v10;
-  v13 = v8;
-  v14 = v9;
+  v16 = identifierCopy;
+  v17 = responseCopy;
+  v18 = errorCopy;
+  v12 = errorCopy;
+  v13 = responseCopy;
+  v14 = identifierCopy;
   dispatch_async(accessQueue, v15);
 }
 
@@ -954,27 +954,27 @@ uint64_t __116__ICMusicSubscriptionStatusController_deliverSubscriptionStatusRes
   return MEMORY[0x1EEE66BB8](v2, v3);
 }
 
-- (void)setSubscriptionStatusFromResponsePayload:(id)a3 forUserIdentity:(id)a4 withCompletionHandler:(id)a5
+- (void)setSubscriptionStatusFromResponsePayload:(id)payload forUserIdentity:(id)identity withCompletionHandler:(id)handler
 {
   v34 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [MEMORY[0x1E696AE30] processInfo];
-  v12 = [v11 ic_isCloudDaemon];
+  payloadCopy = payload;
+  identityCopy = identity;
+  handlerCopy = handler;
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  ic_isCloudDaemon = [processInfo ic_isCloudDaemon];
 
-  if (v12)
+  if (ic_isCloudDaemon)
   {
     v13 = [ICAsyncBlockOperation alloc];
     v24[0] = MEMORY[0x1E69E9820];
     v24[1] = 3221225472;
     v24[2] = __118__ICMusicSubscriptionStatusController_setSubscriptionStatusFromResponsePayload_forUserIdentity_withCompletionHandler___block_invoke;
     v24[3] = &unk_1E7BF8BE8;
-    v25 = v9;
-    v26 = v8;
-    v27 = v10;
-    v14 = v10;
-    v15 = v9;
+    v25 = identityCopy;
+    v26 = payloadCopy;
+    v27 = handlerCopy;
+    v14 = handlerCopy;
+    _remoteRequestingClientConnection = identityCopy;
     v16 = [(ICAsyncBlockOperation *)v13 initWithStartHandler:v24];
     [(NSOperationQueue *)self->_operationQueue addOperation:v16];
 
@@ -987,31 +987,31 @@ uint64_t __116__ICMusicSubscriptionStatusController_deliverSubscriptionStatusRes
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543874;
-      v29 = self;
+      selfCopy = self;
       v30 = 2114;
-      v31 = v9;
+      v31 = identityCopy;
       v32 = 2114;
-      v33 = v8;
+      v33 = payloadCopy;
       _os_log_impl(&dword_1B4491000, v18, OS_LOG_TYPE_DEFAULT, "%{public}@ Sending request to update subscription status for identity %{public}@ with payload: %{public}@", buf, 0x20u);
     }
 
-    v15 = [(ICMusicSubscriptionStatusController *)self _remoteRequestingClientConnection];
+    _remoteRequestingClientConnection = [(ICMusicSubscriptionStatusController *)self _remoteRequestingClientConnection];
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = __118__ICMusicSubscriptionStatusController_setSubscriptionStatusFromResponsePayload_forUserIdentity_withCompletionHandler___block_invoke_69;
     v23[3] = &unk_1E7BF9308;
     v23[4] = self;
-    v19 = [v15 remoteObjectProxyWithErrorHandler:v23];
+    v19 = [_remoteRequestingClientConnection remoteObjectProxyWithErrorHandler:v23];
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __118__ICMusicSubscriptionStatusController_setSubscriptionStatusFromResponsePayload_forUserIdentity_withCompletionHandler___block_invoke_70;
     v20[3] = &unk_1E7BF80D0;
     v20[4] = self;
-    v21 = v9;
-    v22 = v10;
-    v17 = v10;
-    v14 = v9;
-    [v19 setSubscriptionStatusFromResponsePayload:v8 forUserIdentity:v14 withCompletionHandler:v20];
+    v21 = identityCopy;
+    v22 = handlerCopy;
+    v17 = handlerCopy;
+    v14 = identityCopy;
+    [v19 setSubscriptionStatusFromResponsePayload:payloadCopy forUserIdentity:v14 withCompletionHandler:v20];
   }
 }
 
@@ -1099,28 +1099,28 @@ void __118__ICMusicSubscriptionStatusController_setSubscriptionStatusFromRespons
   (*(v5 + 16))(v5, v6, v4);
 }
 
-- (void)setSubscriptionStatusFromResponsePayload:(id)a3 withCompletionHandler:(id)a4
+- (void)setSubscriptionStatusFromResponsePayload:(id)payload withCompletionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  payloadCopy = payload;
   v8 = +[ICUserIdentity activeAccount];
-  [(ICMusicSubscriptionStatusController *)self setSubscriptionStatusFromResponsePayload:v7 forUserIdentity:v8 withCompletionHandler:v6];
+  [(ICMusicSubscriptionStatusController *)self setSubscriptionStatusFromResponsePayload:payloadCopy forUserIdentity:v8 withCompletionHandler:handlerCopy];
 }
 
-- (void)invalidateCachedSubscriptionStatusForUserIdentity:(id)a3 withCompletionHandler:(id)a4
+- (void)invalidateCachedSubscriptionStatusForUserIdentity:(id)identity withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  identityCopy = identity;
+  handlerCopy = handler;
   v8 = [ICAsyncBlockOperation alloc];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __111__ICMusicSubscriptionStatusController_invalidateCachedSubscriptionStatusForUserIdentity_withCompletionHandler___block_invoke;
   v12[3] = &unk_1E7BF8BE8;
-  v14 = self;
-  v15 = v7;
-  v13 = v6;
-  v9 = v7;
-  v10 = v6;
+  selfCopy = self;
+  v15 = handlerCopy;
+  v13 = identityCopy;
+  v9 = handlerCopy;
+  v10 = identityCopy;
   v11 = [(ICAsyncBlockOperation *)v8 initWithStartHandler:v12];
   [(NSOperationQueue *)self->_operationQueue addOperation:v11];
 }
@@ -1161,19 +1161,19 @@ void __111__ICMusicSubscriptionStatusController_invalidateCachedSubscriptionStat
   [*(a1 + 40) finishWithError:{v3, v6, v7, v8, v9}];
 }
 
-- (void)invalidateCachedSubscriptionStatusWithCompletionHandler:(id)a3
+- (void)invalidateCachedSubscriptionStatusWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = [ICAsyncBlockOperation alloc];
   v8 = MEMORY[0x1E69E9820];
   v9 = 3221225472;
   v10 = __95__ICMusicSubscriptionStatusController_invalidateCachedSubscriptionStatusWithCompletionHandler___block_invoke;
   v11 = &unk_1E7BF8080;
-  v12 = self;
-  v13 = v4;
-  v6 = v4;
+  selfCopy = self;
+  v13 = handlerCopy;
+  v6 = handlerCopy;
   v7 = [(ICAsyncBlockOperation *)v5 initWithStartHandler:&v8];
-  [(NSOperationQueue *)self->_operationQueue addOperation:v7, v8, v9, v10, v11, v12];
+  [(NSOperationQueue *)self->_operationQueue addOperation:v7, v8, v9, v10, v11, selfCopy];
 }
 
 void __95__ICMusicSubscriptionStatusController_invalidateCachedSubscriptionStatusWithCompletionHandler___block_invoke(uint64_t a1, void *a2)
@@ -1218,20 +1218,20 @@ void __95__ICMusicSubscriptionStatusController_invalidateCachedSubscriptionStatu
   [*(a1 + 40) finishWithError:{v3, v6, v7, v8, v9}];
 }
 
-- (void)refreshSubscriptionUsingRequestContext:(id)a3 withCompletionHandler:(id)a4
+- (void)refreshSubscriptionUsingRequestContext:(id)context withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  handlerCopy = handler;
   v8 = [ICAsyncBlockOperation alloc];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __100__ICMusicSubscriptionStatusController_refreshSubscriptionUsingRequestContext_withCompletionHandler___block_invoke;
   v12[3] = &unk_1E7BF8BE8;
-  v14 = self;
-  v15 = v7;
-  v13 = v6;
-  v9 = v7;
-  v10 = v6;
+  selfCopy = self;
+  v15 = handlerCopy;
+  v13 = contextCopy;
+  v9 = handlerCopy;
+  v10 = contextCopy;
   v11 = [(ICAsyncBlockOperation *)v8 initWithStartHandler:v12];
   [(NSOperationQueue *)self->_operationQueue addOperation:v11];
 }
@@ -1296,36 +1296,36 @@ void __100__ICMusicSubscriptionStatusController_refreshSubscriptionUsingRequestC
   [*(a1 + 48) finishWithError:v3];
 }
 
-- (void)refreshSubscriptionForUserIdentity:(id)a3 withCompletionHandler:(id)a4
+- (void)refreshSubscriptionForUserIdentity:(id)identity withCompletionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[ICStoreRequestContext alloc] initWithIdentity:v7];
+  handlerCopy = handler;
+  identityCopy = identity;
+  v8 = [[ICStoreRequestContext alloc] initWithIdentity:identityCopy];
 
-  [(ICMusicSubscriptionStatusController *)self refreshSubscriptionUsingRequestContext:v8 withCompletionHandler:v6];
+  [(ICMusicSubscriptionStatusController *)self refreshSubscriptionUsingRequestContext:v8 withCompletionHandler:handlerCopy];
 }
 
-- (void)refreshSubscriptionWithCompletionHandler:(id)a3
+- (void)refreshSubscriptionWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = +[ICUserIdentity activeAccount];
-  [(ICMusicSubscriptionStatusController *)self refreshSubscriptionForUserIdentity:v5 withCompletionHandler:v4];
+  [(ICMusicSubscriptionStatusController *)self refreshSubscriptionForUserIdentity:v5 withCompletionHandler:handlerCopy];
 }
 
-- (void)disableSubscriptionForUserIdentity:(id)a3 withCompletionHandler:(id)a4
+- (void)disableSubscriptionForUserIdentity:(id)identity withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  identityCopy = identity;
+  handlerCopy = handler;
   v8 = [ICAsyncBlockOperation alloc];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __96__ICMusicSubscriptionStatusController_disableSubscriptionForUserIdentity_withCompletionHandler___block_invoke;
   v12[3] = &unk_1E7BF8BE8;
-  v14 = self;
-  v15 = v7;
-  v13 = v6;
-  v9 = v7;
-  v10 = v6;
+  selfCopy = self;
+  v15 = handlerCopy;
+  v13 = identityCopy;
+  v9 = handlerCopy;
+  v10 = identityCopy;
   v11 = [(ICAsyncBlockOperation *)v8 initWithStartHandler:v12];
   [(NSOperationQueue *)self->_operationQueue addOperation:v11];
 }
@@ -1390,27 +1390,27 @@ void __96__ICMusicSubscriptionStatusController_disableSubscriptionForUserIdentit
   [*(a1 + 48) finishWithError:v3];
 }
 
-- (void)disableSubscriptionWithCompletionHandler:(id)a3
+- (void)disableSubscriptionWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = +[ICUserIdentity activeAccount];
-  [(ICMusicSubscriptionStatusController *)self disableSubscriptionForUserIdentity:v5 withCompletionHandler:v4];
+  [(ICMusicSubscriptionStatusController *)self disableSubscriptionForUserIdentity:v5 withCompletionHandler:handlerCopy];
 }
 
-- (void)enableSubscriptionForUserIdentity:(id)a3 withCompletionHandler:(id)a4
+- (void)enableSubscriptionForUserIdentity:(id)identity withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  identityCopy = identity;
+  handlerCopy = handler;
   v8 = [ICAsyncBlockOperation alloc];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __95__ICMusicSubscriptionStatusController_enableSubscriptionForUserIdentity_withCompletionHandler___block_invoke;
   v12[3] = &unk_1E7BF8BE8;
-  v14 = self;
-  v15 = v7;
-  v13 = v6;
-  v9 = v7;
-  v10 = v6;
+  selfCopy = self;
+  v15 = handlerCopy;
+  v13 = identityCopy;
+  v9 = handlerCopy;
+  v10 = identityCopy;
   v11 = [(ICAsyncBlockOperation *)v8 initWithStartHandler:v12];
   [(NSOperationQueue *)self->_operationQueue addOperation:v11];
 }
@@ -1475,40 +1475,40 @@ void __95__ICMusicSubscriptionStatusController_enableSubscriptionForUserIdentity
   [*(a1 + 48) finishWithError:v3];
 }
 
-- (void)enableSubscriptionWithCompletionHandler:(id)a3
+- (void)enableSubscriptionWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = +[ICUserIdentity activeAccount];
-  [(ICMusicSubscriptionStatusController *)self enableSubscriptionForUserIdentity:v5 withCompletionHandler:v4];
+  [(ICMusicSubscriptionStatusController *)self enableSubscriptionForUserIdentity:v5 withCompletionHandler:handlerCopy];
 }
 
-- (void)performSubscriptionStatusRequest:(id)a3 withStatusHandler:(id)a4
+- (void)performSubscriptionStatusRequest:(id)request withStatusHandler:(id)handler
 {
-  v6 = a3;
-  if ([(ICMusicSubscriptionStatusController *)self _willPerformSubscriptionStatusRequest:v6 withStatusHandler:a4])
+  requestCopy = request;
+  if ([(ICMusicSubscriptionStatusController *)self _willPerformSubscriptionStatusRequest:requestCopy withStatusHandler:handler])
   {
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __90__ICMusicSubscriptionStatusController_performSubscriptionStatusRequest_withStatusHandler___block_invoke;
     v19[3] = &unk_1E7BF8008;
     v19[4] = self;
-    v7 = v6;
+    v7 = requestCopy;
     v20 = v7;
     v8 = MEMORY[0x1B8C781E0](v19);
-    v9 = [v7 storeRequestContext];
-    v10 = [v9 identityStore];
-    v11 = [v9 identity];
+    storeRequestContext = [v7 storeRequestContext];
+    identityStore = [storeRequestContext identityStore];
+    identity = [storeRequestContext identity];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __90__ICMusicSubscriptionStatusController_performSubscriptionStatusRequest_withStatusHandler___block_invoke_3;
     v14[3] = &unk_1E7BF8030;
-    v15 = v9;
-    v16 = self;
+    v15 = storeRequestContext;
+    selfCopy = self;
     v18 = v8;
     v17 = v7;
     v12 = v8;
-    v13 = v9;
-    [v10 getPropertiesForUserIdentity:v11 completionHandler:v14];
+    v13 = storeRequestContext;
+    [identityStore getPropertiesForUserIdentity:identity completionHandler:v14];
   }
 }
 
@@ -1648,16 +1648,16 @@ void __90__ICMusicSubscriptionStatusController_performSubscriptionStatusRequest_
   [*(a1 + 32) deliverSubscriptionStatusResponse:0 forRemoteRequestWithUniqueIdentifier:*(a1 + 40) error:v3];
 }
 
-- (void)performSubscriptionStatusRequest:(id)a3 withCompletionHandler:(id)a4
+- (void)performSubscriptionStatusRequest:(id)request withCompletionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __94__ICMusicSubscriptionStatusController_performSubscriptionStatusRequest_withCompletionHandler___block_invoke;
   v8[3] = &unk_1E7BF7FE0;
-  v9 = v6;
-  v7 = v6;
-  [(ICMusicSubscriptionStatusController *)self performSubscriptionStatusRequest:a3 withStatusHandler:v8];
+  v9 = handlerCopy;
+  v7 = handlerCopy;
+  [(ICMusicSubscriptionStatusController *)self performSubscriptionStatusRequest:request withStatusHandler:v8];
 }
 
 void __94__ICMusicSubscriptionStatusController_performSubscriptionStatusRequest_withCompletionHandler___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -1683,28 +1683,28 @@ void __94__ICMusicSubscriptionStatusController_performSubscriptionStatusRequest_
 LABEL_6:
 }
 
-- (void)getSubscriptionStatusForUserIdentity:(id)a3 bypassingCache:(BOOL)a4 withCompletionHandler:(id)a5
+- (void)getSubscriptionStatusForUserIdentity:(id)identity bypassingCache:(BOOL)cache withCompletionHandler:(id)handler
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
+  cacheCopy = cache;
+  identityCopy = identity;
+  handlerCopy = handler;
   v10 = [ICStoreRequestContext alloc];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __113__ICMusicSubscriptionStatusController_getSubscriptionStatusForUserIdentity_bypassingCache_withCompletionHandler___block_invoke;
   v17[3] = &unk_1E7BF7FB8;
-  v18 = v8;
-  v11 = v8;
+  v18 = identityCopy;
+  v11 = identityCopy;
   v12 = [(ICStoreRequestContext *)v10 initWithBlock:v17];
   v13 = [[ICMusicSubscriptionStatusRequest alloc] initWithStoreRequestContext:v12];
   [(ICMusicSubscriptionStatusRequest *)v13 setCarrierBundleProvisioningStyle:1];
-  [(ICMusicSubscriptionStatusRequest *)v13 setShouldIgnoreCache:v6];
+  [(ICMusicSubscriptionStatusRequest *)v13 setShouldIgnoreCache:cacheCopy];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __113__ICMusicSubscriptionStatusController_getSubscriptionStatusForUserIdentity_bypassingCache_withCompletionHandler___block_invoke_2;
   v15[3] = &unk_1E7BF7FE0;
-  v16 = v9;
-  v14 = v9;
+  v16 = handlerCopy;
+  v14 = handlerCopy;
   [(ICMusicSubscriptionStatusController *)self performSubscriptionStatusRequest:v13 withCompletionHandler:v15];
 }
 
@@ -1725,27 +1725,27 @@ void __113__ICMusicSubscriptionStatusController_getSubscriptionStatusForUserIden
   (*(v4 + 16))(v4, v6, v5);
 }
 
-- (void)getSubscriptionStatusWithCompletionHandler:(id)a3
+- (void)getSubscriptionStatusWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = +[ICUserIdentity activeAccount];
-  [(ICMusicSubscriptionStatusController *)self getSubscriptionStatusForUserIdentity:v5 withCompletionHandler:v4];
+  [(ICMusicSubscriptionStatusController *)self getSubscriptionStatusForUserIdentity:v5 withCompletionHandler:handlerCopy];
 }
 
 - (void)dealloc
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:@"ICMusicSubscriptionStatusCacheDidChangeNotification" object:0];
-  [v3 removeObserver:self name:@"ICMusicSubscriptionStatusCacheUnderlyingCachingPropertiesDidChangeNotification" object:0];
-  v4 = [MEMORY[0x1E696ABB0] defaultCenter];
-  [v4 removeObserver:self name:@"com.apple.itunescloud.ICMusicSubscriptionStatusDidChangeFollowingPrivacyAcknowledgementDistributedNotification" object:0];
-  v5 = [MEMORY[0x1E696AE30] processInfo];
-  v6 = [v5 ic_isCloudDaemon];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:@"ICMusicSubscriptionStatusCacheDidChangeNotification" object:0];
+  [defaultCenter removeObserver:self name:@"ICMusicSubscriptionStatusCacheUnderlyingCachingPropertiesDidChangeNotification" object:0];
+  defaultCenter2 = [MEMORY[0x1E696ABB0] defaultCenter];
+  [defaultCenter2 removeObserver:self name:@"com.apple.itunescloud.ICMusicSubscriptionStatusDidChangeFollowingPrivacyAcknowledgementDistributedNotification" object:0];
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  ic_isCloudDaemon = [processInfo ic_isCloudDaemon];
 
-  if ((v6 & 1) == 0)
+  if ((ic_isCloudDaemon & 1) == 0)
   {
-    [v4 removeObserver:self name:@"_ICMusicSubscriptionStatusDidChangeDistributedNotification" object:0];
+    [defaultCenter2 removeObserver:self name:@"_ICMusicSubscriptionStatusDidChangeDistributedNotification" object:0];
   }
 
   if (self->_privacyAcknowledgementObservationToken)
@@ -1755,7 +1755,7 @@ void __113__ICMusicSubscriptionStatusController_getSubscriptionStatusForUserIden
     {
       privacyAcknowledgementObservationToken = self->_privacyAcknowledgementObservationToken;
       *buf = 138543874;
-      v14 = self;
+      selfCopy = self;
       v15 = 2114;
       v16 = @"Music";
       v17 = 2114;

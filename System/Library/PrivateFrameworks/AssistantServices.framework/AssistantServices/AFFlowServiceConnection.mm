@@ -3,7 +3,7 @@
 - (id)_connection;
 - (id)_init;
 - (void)_clearConnection;
-- (void)invokeMethodOnRemoteWithBlock:(id)a3 onError:(id)a4;
+- (void)invokeMethodOnRemoteWithBlock:(id)block onError:(id)error;
 @end
 
 @implementation AFFlowServiceConnection
@@ -79,20 +79,20 @@ void __38__AFFlowServiceConnection__connection__block_invoke(uint64_t a1)
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)invokeMethodOnRemoteWithBlock:(id)a3 onError:(id)a4
+- (void)invokeMethodOnRemoteWithBlock:(id)block onError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  blockCopy = block;
+  errorCopy = error;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __65__AFFlowServiceConnection_invokeMethodOnRemoteWithBlock_onError___block_invoke;
   block[3] = &unk_1E7342078;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = errorCopy;
+  v13 = blockCopy;
+  v9 = blockCopy;
+  v10 = errorCopy;
   dispatch_async(queue, block);
 }
 

@@ -1,58 +1,58 @@
 @interface HREIdentifierBuilder
-- (HREIdentifierBuilder)initWithBaseIdentifier:(id)a3;
+- (HREIdentifierBuilder)initWithBaseIdentifier:(id)identifier;
 - (NSString)composedString;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)makeComposedString;
-- (void)setBaseIdentifier:(id)a3;
-- (void)setObject:(id)a3 forKey:(id)a4;
+- (void)setBaseIdentifier:(id)identifier;
+- (void)setObject:(id)object forKey:(id)key;
 @end
 
 @implementation HREIdentifierBuilder
 
-- (HREIdentifierBuilder)initWithBaseIdentifier:(id)a3
+- (HREIdentifierBuilder)initWithBaseIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = HREIdentifierBuilder;
   v5 = [(HREIdentifierBuilder *)&v11 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     baseIdentifier = v5->_baseIdentifier;
     v5->_baseIdentifier = v6;
 
-    v8 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     keyValues = v5->_keyValues;
-    v5->_keyValues = v8;
+    v5->_keyValues = dictionary;
   }
 
   return v5;
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
-  v12 = a3;
-  v6 = a4;
-  v7 = [(HREIdentifierBuilder *)self keyValues];
-  v8 = [v7 objectForKeyedSubscript:v6];
-  v9 = [v8 isEqualToString:v12];
+  objectCopy = object;
+  keyCopy = key;
+  keyValues = [(HREIdentifierBuilder *)self keyValues];
+  v8 = [keyValues objectForKeyedSubscript:keyCopy];
+  v9 = [v8 isEqualToString:objectCopy];
 
   if ((v9 & 1) == 0)
   {
-    v10 = [(HREIdentifierBuilder *)self keyValues];
-    [v10 setObject:v12 forKeyedSubscript:v6];
+    keyValues2 = [(HREIdentifierBuilder *)self keyValues];
+    [keyValues2 setObject:objectCopy forKeyedSubscript:keyCopy];
 
     composedString = self->_composedString;
     self->_composedString = 0;
   }
 }
 
-- (void)setBaseIdentifier:(id)a3
+- (void)setBaseIdentifier:(id)identifier
 {
-  v6 = a3;
+  identifierCopy = identifier;
   if (![(NSString *)self->_baseIdentifier isEqualToString:?])
   {
-    objc_storeStrong(&self->_baseIdentifier, a3);
+    objc_storeStrong(&self->_baseIdentifier, identifier);
     composedString = self->_composedString;
     self->_composedString = 0;
   }
@@ -63,9 +63,9 @@
   composedString = self->_composedString;
   if (!composedString)
   {
-    v4 = [(HREIdentifierBuilder *)self makeComposedString];
+    makeComposedString = [(HREIdentifierBuilder *)self makeComposedString];
     v5 = self->_composedString;
-    self->_composedString = v4;
+    self->_composedString = makeComposedString;
 
     composedString = self->_composedString;
   }
@@ -75,13 +75,13 @@
 
 - (id)makeComposedString
 {
-  v3 = [(HREIdentifierBuilder *)self keyValues];
-  v4 = [v3 allKeys];
-  v5 = [v4 sortedArrayUsingComparator:&__block_literal_global_3];
+  keyValues = [(HREIdentifierBuilder *)self keyValues];
+  allKeys = [keyValues allKeys];
+  v5 = [allKeys sortedArrayUsingComparator:&__block_literal_global_3];
 
   if ([v5 count])
   {
-    v6 = [MEMORY[0x277CCAB68] string];
+    string = [MEMORY[0x277CCAB68] string];
     if ([v5 count])
     {
       v7 = 0;
@@ -106,9 +106,9 @@
         }
 
         v10 = [v5 objectAtIndexedSubscript:v7];
-        v11 = [(HREIdentifierBuilder *)self keyValues];
-        v12 = [v11 objectForKeyedSubscript:v10];
-        [v6 appendFormat:@"%@%@:%@", v8, v10, v12];
+        keyValues2 = [(HREIdentifierBuilder *)self keyValues];
+        v12 = [keyValues2 objectForKeyedSubscript:v10];
+        [string appendFormat:@"%@%@:%@", v8, v10, v12];
 
         ++v7;
       }
@@ -117,16 +117,16 @@
     }
 
     v13 = MEMORY[0x277CCACA8];
-    v14 = [(HREIdentifierBuilder *)self baseIdentifier];
-    v15 = [v13 stringWithFormat:@"%@=%@", v14, v6];
+    baseIdentifier = [(HREIdentifierBuilder *)self baseIdentifier];
+    baseIdentifier2 = [v13 stringWithFormat:@"%@=%@", baseIdentifier, string];
   }
 
   else
   {
-    v15 = [(HREIdentifierBuilder *)self baseIdentifier];
+    baseIdentifier2 = [(HREIdentifierBuilder *)self baseIdentifier];
   }
 
-  return v15;
+  return baseIdentifier2;
 }
 
 void __42__HREIdentifierBuilder_makeComposedString__block_invoke_3()
@@ -141,14 +141,14 @@ void __42__HREIdentifierBuilder_makeComposedString__block_invoke_5()
   qword_27F5F9790 = &stru_286657A08;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(HREIdentifierBuilder *)self baseIdentifier];
-  v6 = [v4 initWithBaseIdentifier:v5];
+  baseIdentifier = [(HREIdentifierBuilder *)self baseIdentifier];
+  v6 = [v4 initWithBaseIdentifier:baseIdentifier];
 
-  v7 = [(HREIdentifierBuilder *)self keyValues];
-  v8 = [v7 mutableCopy];
+  keyValues = [(HREIdentifierBuilder *)self keyValues];
+  v8 = [keyValues mutableCopy];
   v9 = v6[3];
   v6[3] = v8;
 

@@ -1,8 +1,8 @@
 @interface TSCHChartPolarGridLayoutItem
 - (CGRect)calcDrawingRect;
 - (CGRect)rootedBaseLayoutRect;
-- (_TtC8TSCharts28TSCHChartPolarGridLayoutItem)initWithParent:(id)a3;
-- (id)renderersWithRep:(id)a3;
+- (_TtC8TSCharts28TSCHChartPolarGridLayoutItem)initWithParent:(id)parent;
+- (id)renderersWithRep:(id)rep;
 @end
 
 @implementation TSCHChartPolarGridLayoutItem
@@ -13,12 +13,12 @@
   v3 = *(&self->super.super._layoutSizeSet + OBJC_IVAR____TtC8TSCharts28TSCHChartPolarGridLayoutItem_baseLayoutRect);
   v4 = *(&self->super.super._parent + OBJC_IVAR____TtC8TSCharts28TSCHChartPolarGridLayoutItem_baseLayoutRect);
   v5 = *(&self->super.super._children + OBJC_IVAR____TtC8TSCharts28TSCHChartPolarGridLayoutItem_baseLayoutRect);
-  v6 = self;
-  v7 = [(TSCHChartLayoutItem *)v6 parent];
-  if (v7)
+  selfCopy = self;
+  parent = [(TSCHChartLayoutItem *)selfCopy parent];
+  if (parent)
   {
-    v8 = v7;
-    [(TSCHChartLayoutItem *)v7 rootedLayoutRect];
+    v8 = parent;
+    [(TSCHChartLayoutItem *)parent rootedLayoutRect];
 
     TSUAddPoints();
     v2 = v9;
@@ -40,15 +40,15 @@
   return result;
 }
 
-- (id)renderersWithRep:(id)a3
+- (id)renderersWithRep:(id)rep
 {
   sub_2764A0458(&qword_280A46378);
   v5 = swift_allocObject();
   *(v5 + 16) = xmmword_2764FC4F0;
   v6 = objc_allocWithZone(TSCHChartPolarGridRenderer);
   swift_unknownObjectRetain();
-  v7 = self;
-  *(v5 + 32) = [v6 initWithChartRep:a3 layoutItem:v7];
+  selfCopy = self;
+  *(v5 + 32) = [v6 initWithChartRep:rep layoutItem:selfCopy];
   swift_unknownObjectRelease();
 
   sub_2764A12F8(0, &qword_280A46380);
@@ -59,7 +59,7 @@
 
 - (CGRect)calcDrawingRect
 {
-  v2 = self;
+  selfCopy = self;
   sub_2764A0A28();
   v4 = v3;
   v6 = v5;
@@ -77,7 +77,7 @@
   return result;
 }
 
-- (_TtC8TSCharts28TSCHChartPolarGridLayoutItem)initWithParent:(id)a3
+- (_TtC8TSCharts28TSCHChartPolarGridLayoutItem)initWithParent:(id)parent
 {
   v5 = (self + OBJC_IVAR____TtC8TSCharts28TSCHChartPolarGridLayoutItem_baseLayoutRect);
   v6 = type metadata accessor for TSCHChartPolarGridLayoutItem();
@@ -85,7 +85,7 @@
   v5[1] = 0u;
   v8.receiver = self;
   v8.super_class = v6;
-  return [(TSCHChartGridLayoutItem *)&v8 initWithParent:a3];
+  return [(TSCHChartGridLayoutItem *)&v8 initWithParent:parent];
 }
 
 @end

@@ -2,26 +2,26 @@
 - (BOOL)accessibilityFoundPlayerViewIsVisible;
 - (CGRect)accessibilityFoundPlayerViewAXFrame;
 - (NSString)description;
-- (_TtC11FMFindingUI23FMFindingViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC11FMFindingUI23FMFindingViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (unint64_t)supportedInterfaceOrientations;
 - (unsigned)accessibilityModeRawValue;
 - (void)applicationDidEnterBackground;
 - (void)applicationWillEnterForeground;
-- (void)closeActionWithSender:(id)a3;
-- (void)handlePartPickerWithSender:(id)a3;
-- (void)openMessagesActionWithSender:(id)a3;
-- (void)playSoundActionWithSender:(id)a3;
-- (void)torchActionWithSender:(id)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)closeActionWithSender:(id)sender;
+- (void)handlePartPickerWithSender:(id)sender;
+- (void)openMessagesActionWithSender:(id)sender;
+- (void)playSoundActionWithSender:(id)sender;
+- (void)torchActionWithSender:(id)sender;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation FMFindingViewController
 
-- (void)closeActionWithSender:(id)a3
+- (void)closeActionWithSender:(id)sender
 {
   v4 = swift_allocObject();
   *(v4 + 16) = self;
@@ -32,18 +32,18 @@
   v7[2] = sub_24A5A8458;
   v7[3] = &unk_285DA66B8;
   v5 = _Block_copy(v7);
-  v6 = self;
+  selfCopy = self;
 
-  [(FMFindingViewController *)v6 dismissViewControllerAnimated:1 completion:v5];
+  [(FMFindingViewController *)selfCopy dismissViewControllerAnimated:1 completion:v5];
 
   _Block_release(v5);
 }
 
-- (void)handlePartPickerWithSender:(id)a3
+- (void)handlePartPickerWithSender:(id)sender
 {
-  if (a3)
+  if (sender)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_24A62F234();
     swift_unknownObjectRelease();
@@ -52,7 +52,7 @@
   else
   {
     memset(v6, 0, sizeof(v6));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   sub_24A5913F4(v6);
@@ -60,30 +60,30 @@
   sub_24A50D6A4(v6, &unk_27EF50780, &qword_24A638470);
 }
 
-- (void)playSoundActionWithSender:(id)a3
+- (void)playSoundActionWithSender:(id)sender
 {
-  v4 = a3;
-  v5 = self;
+  senderCopy = sender;
+  selfCopy = self;
   sub_24A5924DC();
 }
 
-- (void)openMessagesActionWithSender:(id)a3
+- (void)openMessagesActionWithSender:(id)sender
 {
-  v4 = a3;
-  v5 = self;
+  senderCopy = sender;
+  selfCopy = self;
   sub_24A5926B4();
 }
 
-- (void)torchActionWithSender:(id)a3
+- (void)torchActionWithSender:(id)sender
 {
-  v3 = self;
+  selfCopy = self;
   sub_24A591960(2, 1);
   sub_24A58FF64();
 }
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_24A5100E8();
 
   v3 = sub_24A62EBE4();
@@ -93,46 +93,46 @@
 
 - (void)applicationDidEnterBackground
 {
-  v2 = self;
+  selfCopy = self;
   sub_24A5BF584();
 }
 
 - (void)applicationWillEnterForeground
 {
-  v2 = self;
+  selfCopy = self;
   sub_24A5BF95C();
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_24A5BFAA8();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_24A5BFBF8(a3);
+  selfCopy = self;
+  sub_24A5BFBF8(appear);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_24A5C03C8(a3);
+  selfCopy = self;
+  sub_24A5C03C8(disappear);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_24A5C0558(a3);
+  selfCopy = self;
+  sub_24A5C0558(disappear);
 }
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v2 = [objc_opt_self() currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  currentDevice = [objc_opt_self() currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v3)
+  if (userInterfaceIdiom)
   {
     return 2;
   }
@@ -143,17 +143,17 @@
   }
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   swift_unknownObjectRetain();
-  v8 = self;
-  sub_24A5C06C0(a4, width, height);
+  selfCopy = self;
+  sub_24A5C06C0(coordinator, width, height);
   swift_unknownObjectRelease();
 }
 
-- (_TtC11FMFindingUI23FMFindingViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC11FMFindingUI23FMFindingViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
@@ -162,7 +162,7 @@
 
 - (unsigned)accessibilityModeRawValue
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_24A5D8788();
 
   return v3;

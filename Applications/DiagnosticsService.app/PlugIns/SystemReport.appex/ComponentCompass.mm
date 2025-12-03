@@ -1,20 +1,20 @@
 @interface ComponentCompass
 - (id)backglassCompassSerialNumber;
-- (void)populateAttributes:(id)a3;
+- (void)populateAttributes:(id)attributes;
 @end
 
 @implementation ComponentCompass
 
-- (void)populateAttributes:(id)a3
+- (void)populateAttributes:(id)attributes
 {
-  v4 = a3;
+  attributesCopy = attributes;
   v6.receiver = self;
   v6.super_class = ComponentCompass;
-  [(ComponentBase *)&v6 populateAttributes:v4];
-  v5 = [(ComponentCompass *)self backglassCompassSerialNumber];
-  if (v5)
+  [(ComponentBase *)&v6 populateAttributes:attributesCopy];
+  backglassCompassSerialNumber = [(ComponentCompass *)self backglassCompassSerialNumber];
+  if (backglassCompassSerialNumber)
   {
-    [v4 setObject:v5 forKeyedSubscript:@"backglassCompassSerialNumber"];
+    [attributesCopy setObject:backglassCompassSerialNumber forKeyedSubscript:@"backglassCompassSerialNumber"];
   }
 }
 

@@ -1,26 +1,26 @@
 @interface DUSchemaDUSpeechAudioRecord
-- (BOOL)isEqual:(id)a3;
-- (DUSchemaDUSpeechAudioRecord)initWithDictionary:(id)a3;
-- (DUSchemaDUSpeechAudioRecord)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (DUSchemaDUSpeechAudioRecord)initWithDictionary:(id)dictionary;
+- (DUSchemaDUSpeechAudioRecord)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation DUSchemaDUSpeechAudioRecord
 
-- (DUSchemaDUSpeechAudioRecord)initWithDictionary:(id)a3
+- (DUSchemaDUSpeechAudioRecord)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v19.receiver = self;
   v19.super_class = DUSchemaDUSpeechAudioRecord;
   v5 = [(DUSchemaDUSpeechAudioRecord *)&v19 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"language"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"language"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -28,7 +28,7 @@
       [(DUSchemaDUSpeechAudioRecord *)v5 setLanguage:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"codec"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"codec"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -36,7 +36,7 @@
       [(DUSchemaDUSpeechAudioRecord *)v5 setCodec:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"interactionId"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"interactionId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -44,7 +44,7 @@
       [(DUSchemaDUSpeechAudioRecord *)v5 setInteractionId:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"speechId"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"speechId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -52,7 +52,7 @@
       [(DUSchemaDUSpeechAudioRecord *)v5 setSpeechId:v13];
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"speechIdString"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"speechIdString"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -60,7 +60,7 @@
       [(DUSchemaDUSpeechAudioRecord *)v5 setSpeechIdString:v15];
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"audioCreatedTimestampMs"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"audioCreatedTimestampMs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -73,30 +73,30 @@
   return v5;
 }
 
-- (DUSchemaDUSpeechAudioRecord)initWithJSON:(id)a3
+- (DUSchemaDUSpeechAudioRecord)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(DUSchemaDUSpeechAudioRecord *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(DUSchemaDUSpeechAudioRecord *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(DUSchemaDUSpeechAudioRecord *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -109,69 +109,69 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[DUSchemaDUSpeechAudioRecord audioCreatedTimestampMs](self, "audioCreatedTimestampMs")}];
-    [v3 setObject:v4 forKeyedSubscript:@"audioCreatedTimestampMs"];
+    [dictionary setObject:v4 forKeyedSubscript:@"audioCreatedTimestampMs"];
   }
 
   if (self->_codec)
   {
-    v5 = [(DUSchemaDUSpeechAudioRecord *)self codec];
-    v6 = [v5 copy];
-    [v3 setObject:v6 forKeyedSubscript:@"codec"];
+    codec = [(DUSchemaDUSpeechAudioRecord *)self codec];
+    v6 = [codec copy];
+    [dictionary setObject:v6 forKeyedSubscript:@"codec"];
   }
 
   if (self->_interactionId)
   {
-    v7 = [(DUSchemaDUSpeechAudioRecord *)self interactionId];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    interactionId = [(DUSchemaDUSpeechAudioRecord *)self interactionId];
+    dictionaryRepresentation = [interactionId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"interactionId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"interactionId"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"interactionId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"interactionId"];
     }
   }
 
   if (self->_language)
   {
-    v10 = [(DUSchemaDUSpeechAudioRecord *)self language];
-    v11 = [v10 copy];
-    [v3 setObject:v11 forKeyedSubscript:@"language"];
+    language = [(DUSchemaDUSpeechAudioRecord *)self language];
+    v11 = [language copy];
+    [dictionary setObject:v11 forKeyedSubscript:@"language"];
   }
 
   if (self->_speechId)
   {
-    v12 = [(DUSchemaDUSpeechAudioRecord *)self speechId];
-    v13 = [v12 dictionaryRepresentation];
-    if (v13)
+    speechId = [(DUSchemaDUSpeechAudioRecord *)self speechId];
+    dictionaryRepresentation2 = [speechId dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v13 forKeyedSubscript:@"speechId"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"speechId"];
     }
 
     else
     {
-      v14 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v14 forKeyedSubscript:@"speechId"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"speechId"];
     }
   }
 
   if (self->_speechIdString)
   {
-    v15 = [(DUSchemaDUSpeechAudioRecord *)self speechIdString];
-    v16 = [v15 copy];
-    [v3 setObject:v16 forKeyedSubscript:@"speechIdString"];
+    speechIdString = [(DUSchemaDUSpeechAudioRecord *)self speechIdString];
+    v16 = [speechIdString copy];
+    [dictionary setObject:v16 forKeyedSubscript:@"speechIdString"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -194,28 +194,28 @@
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_27;
   }
 
-  v5 = [(DUSchemaDUSpeechAudioRecord *)self language];
-  v6 = [v4 language];
-  if ((v5 != 0) == (v6 == 0))
+  language = [(DUSchemaDUSpeechAudioRecord *)self language];
+  language2 = [equalCopy language];
+  if ((language != 0) == (language2 == 0))
   {
     goto LABEL_26;
   }
 
-  v7 = [(DUSchemaDUSpeechAudioRecord *)self language];
-  if (v7)
+  language3 = [(DUSchemaDUSpeechAudioRecord *)self language];
+  if (language3)
   {
-    v8 = v7;
-    v9 = [(DUSchemaDUSpeechAudioRecord *)self language];
-    v10 = [v4 language];
-    v11 = [v9 isEqual:v10];
+    v8 = language3;
+    language4 = [(DUSchemaDUSpeechAudioRecord *)self language];
+    language5 = [equalCopy language];
+    v11 = [language4 isEqual:language5];
 
     if (!v11)
     {
@@ -227,20 +227,20 @@
   {
   }
 
-  v5 = [(DUSchemaDUSpeechAudioRecord *)self codec];
-  v6 = [v4 codec];
-  if ((v5 != 0) == (v6 == 0))
+  language = [(DUSchemaDUSpeechAudioRecord *)self codec];
+  language2 = [equalCopy codec];
+  if ((language != 0) == (language2 == 0))
   {
     goto LABEL_26;
   }
 
-  v12 = [(DUSchemaDUSpeechAudioRecord *)self codec];
-  if (v12)
+  codec = [(DUSchemaDUSpeechAudioRecord *)self codec];
+  if (codec)
   {
-    v13 = v12;
-    v14 = [(DUSchemaDUSpeechAudioRecord *)self codec];
-    v15 = [v4 codec];
-    v16 = [v14 isEqual:v15];
+    v13 = codec;
+    codec2 = [(DUSchemaDUSpeechAudioRecord *)self codec];
+    codec3 = [equalCopy codec];
+    v16 = [codec2 isEqual:codec3];
 
     if (!v16)
     {
@@ -252,20 +252,20 @@
   {
   }
 
-  v5 = [(DUSchemaDUSpeechAudioRecord *)self interactionId];
-  v6 = [v4 interactionId];
-  if ((v5 != 0) == (v6 == 0))
+  language = [(DUSchemaDUSpeechAudioRecord *)self interactionId];
+  language2 = [equalCopy interactionId];
+  if ((language != 0) == (language2 == 0))
   {
     goto LABEL_26;
   }
 
-  v17 = [(DUSchemaDUSpeechAudioRecord *)self interactionId];
-  if (v17)
+  interactionId = [(DUSchemaDUSpeechAudioRecord *)self interactionId];
+  if (interactionId)
   {
-    v18 = v17;
-    v19 = [(DUSchemaDUSpeechAudioRecord *)self interactionId];
-    v20 = [v4 interactionId];
-    v21 = [v19 isEqual:v20];
+    v18 = interactionId;
+    interactionId2 = [(DUSchemaDUSpeechAudioRecord *)self interactionId];
+    interactionId3 = [equalCopy interactionId];
+    v21 = [interactionId2 isEqual:interactionId3];
 
     if (!v21)
     {
@@ -277,20 +277,20 @@
   {
   }
 
-  v5 = [(DUSchemaDUSpeechAudioRecord *)self speechId];
-  v6 = [v4 speechId];
-  if ((v5 != 0) == (v6 == 0))
+  language = [(DUSchemaDUSpeechAudioRecord *)self speechId];
+  language2 = [equalCopy speechId];
+  if ((language != 0) == (language2 == 0))
   {
     goto LABEL_26;
   }
 
-  v22 = [(DUSchemaDUSpeechAudioRecord *)self speechId];
-  if (v22)
+  speechId = [(DUSchemaDUSpeechAudioRecord *)self speechId];
+  if (speechId)
   {
-    v23 = v22;
-    v24 = [(DUSchemaDUSpeechAudioRecord *)self speechId];
-    v25 = [v4 speechId];
-    v26 = [v24 isEqual:v25];
+    v23 = speechId;
+    speechId2 = [(DUSchemaDUSpeechAudioRecord *)self speechId];
+    speechId3 = [equalCopy speechId];
+    v26 = [speechId2 isEqual:speechId3];
 
     if (!v26)
     {
@@ -302,22 +302,22 @@
   {
   }
 
-  v5 = [(DUSchemaDUSpeechAudioRecord *)self speechIdString];
-  v6 = [v4 speechIdString];
-  if ((v5 != 0) == (v6 == 0))
+  language = [(DUSchemaDUSpeechAudioRecord *)self speechIdString];
+  language2 = [equalCopy speechIdString];
+  if ((language != 0) == (language2 == 0))
   {
 LABEL_26:
 
     goto LABEL_27;
   }
 
-  v27 = [(DUSchemaDUSpeechAudioRecord *)self speechIdString];
-  if (v27)
+  speechIdString = [(DUSchemaDUSpeechAudioRecord *)self speechIdString];
+  if (speechIdString)
   {
-    v28 = v27;
-    v29 = [(DUSchemaDUSpeechAudioRecord *)self speechIdString];
-    v30 = [v4 speechIdString];
-    v31 = [v29 isEqual:v30];
+    v28 = speechIdString;
+    speechIdString2 = [(DUSchemaDUSpeechAudioRecord *)self speechIdString];
+    speechIdString3 = [equalCopy speechIdString];
+    v31 = [speechIdString2 isEqual:speechIdString3];
 
     if (!v31)
     {
@@ -329,9 +329,9 @@ LABEL_26:
   {
   }
 
-  if ((*&self->_has & 1) == (v4[56] & 1))
+  if ((*&self->_has & 1) == (equalCopy[56] & 1))
   {
-    if ((*&self->_has & 1) == 0 || (audioCreatedTimestampMs = self->_audioCreatedTimestampMs, audioCreatedTimestampMs == [v4 audioCreatedTimestampMs]))
+    if ((*&self->_has & 1) == 0 || (audioCreatedTimestampMs = self->_audioCreatedTimestampMs, audioCreatedTimestampMs == [equalCopy audioCreatedTimestampMs]))
     {
       v32 = 1;
       goto LABEL_28;
@@ -345,115 +345,115 @@ LABEL_28:
   return v32;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v12 = a3;
-  v4 = [(DUSchemaDUSpeechAudioRecord *)self language];
+  toCopy = to;
+  language = [(DUSchemaDUSpeechAudioRecord *)self language];
 
-  if (v4)
+  if (language)
   {
     PBDataWriterWriteStringField();
   }
 
-  v5 = [(DUSchemaDUSpeechAudioRecord *)self codec];
+  codec = [(DUSchemaDUSpeechAudioRecord *)self codec];
 
-  if (v5)
+  if (codec)
   {
     PBDataWriterWriteStringField();
   }
 
-  v6 = [(DUSchemaDUSpeechAudioRecord *)self interactionId];
+  interactionId = [(DUSchemaDUSpeechAudioRecord *)self interactionId];
 
-  if (v6)
+  if (interactionId)
   {
-    v7 = [(DUSchemaDUSpeechAudioRecord *)self interactionId];
+    interactionId2 = [(DUSchemaDUSpeechAudioRecord *)self interactionId];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(DUSchemaDUSpeechAudioRecord *)self speechId];
+  speechId = [(DUSchemaDUSpeechAudioRecord *)self speechId];
 
-  if (v8)
+  if (speechId)
   {
-    v9 = [(DUSchemaDUSpeechAudioRecord *)self speechId];
+    speechId2 = [(DUSchemaDUSpeechAudioRecord *)self speechId];
     PBDataWriterWriteSubmessage();
   }
 
-  v10 = [(DUSchemaDUSpeechAudioRecord *)self speechIdString];
+  speechIdString = [(DUSchemaDUSpeechAudioRecord *)self speechIdString];
 
-  if (v10)
+  if (speechIdString)
   {
     PBDataWriterWriteStringField();
   }
 
-  v11 = v12;
+  v11 = toCopy;
   if (*&self->_has)
   {
     PBDataWriterWriteUint64Field();
-    v11 = v12;
+    v11 = toCopy;
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v13.receiver = self;
   v13.super_class = DUSchemaDUSpeechAudioRecord;
-  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:v4];
-  if ([v4 isConditionSet:2])
+  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:policyCopy];
+  if ([policyCopy isConditionSet:2])
   {
     [(DUSchemaDUSpeechAudioRecord *)self deleteInteractionId];
     [(DUSchemaDUSpeechAudioRecord *)self deleteSpeechId];
     [(DUSchemaDUSpeechAudioRecord *)self deleteSpeechIdString];
   }
 
-  if ([v4 isConditionSet:4])
+  if ([policyCopy isConditionSet:4])
   {
     [(DUSchemaDUSpeechAudioRecord *)self deleteInteractionId];
     [(DUSchemaDUSpeechAudioRecord *)self deleteSpeechId];
     [(DUSchemaDUSpeechAudioRecord *)self deleteSpeechIdString];
   }
 
-  if ([v4 isConditionSet:5])
+  if ([policyCopy isConditionSet:5])
   {
     [(DUSchemaDUSpeechAudioRecord *)self deleteInteractionId];
     [(DUSchemaDUSpeechAudioRecord *)self deleteSpeechId];
     [(DUSchemaDUSpeechAudioRecord *)self deleteSpeechIdString];
   }
 
-  if ([v4 isConditionSet:6])
+  if ([policyCopy isConditionSet:6])
   {
     [(DUSchemaDUSpeechAudioRecord *)self deleteInteractionId];
     [(DUSchemaDUSpeechAudioRecord *)self deleteSpeechId];
     [(DUSchemaDUSpeechAudioRecord *)self deleteSpeechIdString];
   }
 
-  if ([v4 isConditionSet:7])
+  if ([policyCopy isConditionSet:7])
   {
     [(DUSchemaDUSpeechAudioRecord *)self deleteInteractionId];
     [(DUSchemaDUSpeechAudioRecord *)self deleteSpeechId];
     [(DUSchemaDUSpeechAudioRecord *)self deleteSpeechIdString];
   }
 
-  if ([v4 isConditionSet:8])
+  if ([policyCopy isConditionSet:8])
   {
     [(DUSchemaDUSpeechAudioRecord *)self deleteSpeechId];
     [(DUSchemaDUSpeechAudioRecord *)self deleteSpeechIdString];
   }
 
-  v6 = [(DUSchemaDUSpeechAudioRecord *)self interactionId];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  interactionId = [(DUSchemaDUSpeechAudioRecord *)self interactionId];
+  v7 = [interactionId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(DUSchemaDUSpeechAudioRecord *)self deleteInteractionId];
   }
 
-  v9 = [(DUSchemaDUSpeechAudioRecord *)self speechId];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  speechId = [(DUSchemaDUSpeechAudioRecord *)self speechId];
+  v10 = [speechId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(DUSchemaDUSpeechAudioRecord *)self deleteSpeechId];
   }

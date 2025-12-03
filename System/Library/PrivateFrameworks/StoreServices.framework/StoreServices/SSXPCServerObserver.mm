@@ -1,7 +1,7 @@
 @interface SSXPCServerObserver
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (SEL)selector;
-- (void)setSelector:(SEL)a3;
+- (void)setSelector:(SEL)selector;
 @end
 
 @implementation SSXPCServerObserver
@@ -19,7 +19,7 @@
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -27,24 +27,24 @@
     return 0;
   }
 
-  v5 = [a3 observer];
+  observer = [equal observer];
   observer = self->_observer;
-  if (observer == v5)
+  if (observer == observer)
   {
-    v8 = [a3 selector];
+    selector = [equal selector];
   }
 
   else
   {
     v7 = [observer isEqual:?];
-    v8 = [a3 selector];
+    selector = [equal selector];
     if (!v7)
     {
       return 0;
     }
   }
 
-  v10 = v8;
+  v10 = selector;
   selector = self->_selector;
   if (selector)
   {
@@ -57,7 +57,7 @@
 
   else
   {
-    if (!v8)
+    if (!selector)
     {
       return 1;
     }
@@ -68,19 +68,19 @@
   return sel_isEqual(v12, v10);
 }
 
-- (void)setSelector:(SEL)a3
+- (void)setSelector:(SEL)selector
 {
-  if (a3)
+  if (selector)
   {
-    v3 = a3;
+    selectorCopy = selector;
   }
 
   else
   {
-    v3 = 0;
+    selectorCopy = 0;
   }
 
-  self->_selector = v3;
+  self->_selector = selectorCopy;
 }
 
 @end

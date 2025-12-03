@@ -1,22 +1,22 @@
 @interface CNUIPhotosPosterConfigurationReader
-+ (id)compoundLayerStackFromURL:(id)a3;
-+ (id)faceRectsFromUserInfo:(id)a3;
-+ (id)facesFromConfiguration:(id)a3;
-+ (id)userInfoFromConfiguration:(id)a3;
++ (id)compoundLayerStackFromURL:(id)l;
++ (id)faceRectsFromUserInfo:(id)info;
++ (id)facesFromConfiguration:(id)configuration;
++ (id)userInfoFromConfiguration:(id)configuration;
 - (BOOL)hasFaceRectInPosterSnapshot;
 - (CGImage)createFullExtentPreviewImage;
 - (CGImage)fullExtentPreviewImage;
 - (CGImage)visiblePreviewImage;
-- (CGRect)denormalizeFaceRect:(CGRect)a3 toOriginalImageSize:(CGSize)a4;
-- (CGRect)faceRect:(CGRect)a3 forFullExtentImageSize:(CGSize)a4 fromOriginalImageSize:(CGSize)a5 zoomOut:(BOOL)a6;
+- (CGRect)denormalizeFaceRect:(CGRect)rect toOriginalImageSize:(CGSize)size;
+- (CGRect)faceRect:(CGRect)rect forFullExtentImageSize:(CGSize)size fromOriginalImageSize:(CGSize)imageSize zoomOut:(BOOL)out;
 - (CGRect)faceRectInPosterSnapshot;
 - (CGRect)fullExtentPreviewImageFaceRect;
 - (CGRect)fullExtentPreviewImageFaceRectFromConfiguration;
-- (CGRect)transformFaceRectToTopLeftOrigin:(CGRect)a3 withSize:(CGSize)a4;
+- (CGRect)transformFaceRectToTopLeftOrigin:(CGRect)origin withSize:(CGSize)size;
 - (CGRect)visiblePreviewImageFaceRect;
 - (CGRect)visiblePreviewImageFrame;
 - (CGSize)fullExtentPreviewImageSize;
-- (CNUIPhotosPosterConfigurationReader)initWithPosterConfiguration:(id)a3;
+- (CNUIPhotosPosterConfigurationReader)initWithPosterConfiguration:(id)configuration;
 - (NSData)fullExtentPreviewImageData;
 - (PFWallpaperCompoundLayerStack)compoundLayerStack;
 - (double)faceRectInPosterSnapshotPercentFromTop;
@@ -26,26 +26,26 @@
 
 @implementation CNUIPhotosPosterConfigurationReader
 
-- (CNUIPhotosPosterConfigurationReader)initWithPosterConfiguration:(id)a3
+- (CNUIPhotosPosterConfigurationReader)initWithPosterConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v17.receiver = self;
   v17.super_class = CNUIPhotosPosterConfigurationReader;
   v5 = [(CNUIPhotosPosterConfigurationReader *)&v17 init];
   if (v5)
   {
-    v6 = [v4 assetDirectory];
+    assetDirectory = [configurationCopy assetDirectory];
     v16 = 0;
-    v7 = [MEMORY[0x1E69C07E8] loadFromURL:v6 error:&v16];
+    v7 = [MEMORY[0x1E69C07E8] loadFromURL:assetDirectory error:&v16];
     v8 = v16;
     if (v7)
     {
       objc_storeStrong(&v5->_photosConfiguration, v7);
-      v9 = [v7 media];
-      v10 = [v9 objectAtIndexedSubscript:0];
+      media = [v7 media];
+      v10 = [media objectAtIndexedSubscript:0];
 
-      v11 = [v10 subpath];
-      v12 = [v6 URLByAppendingPathComponent:v11];
+      subpath = [v10 subpath];
+      v12 = [assetDirectory URLByAppendingPathComponent:subpath];
 
       if (v12)
       {
@@ -70,7 +70,7 @@
       v10 = +[CNUICoreLogProvider posters_os_log];
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
-        [(CNUIPhotosPosterConfigurationReader *)v6 initWithPosterConfiguration:v8, v10];
+        [(CNUIPhotosPosterConfigurationReader *)assetDirectory initWithPosterConfiguration:v8, v10];
       }
 
       v13 = 0;
@@ -85,13 +85,13 @@
   return v13;
 }
 
-+ (id)userInfoFromConfiguration:(id)a3
++ (id)userInfoFromConfiguration:(id)configuration
 {
-  v3 = [a3 userInfo];
-  v4 = v3;
-  if (v3)
+  userInfo = [configuration userInfo];
+  v4 = userInfo;
+  if (userInfo)
   {
-    v5 = v3;
+    v5 = userInfo;
   }
 
   else
@@ -106,10 +106,10 @@
   return v4;
 }
 
-+ (id)compoundLayerStackFromURL:(id)a3
++ (id)compoundLayerStackFromURL:(id)l
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  lCopy = l;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2050000000;
@@ -129,7 +129,7 @@
   v5 = v4;
   _Block_object_dispose(&v12, 8);
   v11 = 0;
-  v6 = [v4 loadCompoundLayerStackFromWallpaperURL:v3 options:0 error:&v11];
+  v6 = [v4 loadCompoundLayerStackFromWallpaperURL:lCopy options:0 error:&v11];
   v7 = v11;
   if (v6)
   {
@@ -142,7 +142,7 @@
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      *&buf[4] = v3;
+      *&buf[4] = lCopy;
       *&buf[12] = 2112;
       *&buf[14] = v7;
       _os_log_impl(&dword_1A31E6000, v9, OS_LOG_TYPE_DEFAULT, "Could not could not load layer stack at %@: error %@", buf, 0x16u);
@@ -152,16 +152,16 @@
   return v6;
 }
 
-+ (id)faceRectsFromUserInfo:(id)a3
++ (id)faceRectsFromUserInfo:(id)info
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"regions"];
+  infoCopy = info;
+  v4 = [infoCopy objectForKeyedSubscript:@"regions"];
   v5 = [v4 objectForKeyedSubscript:@"faces"];
 
   v6 = *MEMORY[0x1E6996530];
   if ((*(*MEMORY[0x1E6996530] + 16))(*MEMORY[0x1E6996530], v5))
   {
-    v7 = [v3 objectForKeyedSubscript:@"regions"];
+    v7 = [infoCopy objectForKeyedSubscript:@"regions"];
     v8 = [v7 objectForKeyedSubscript:@"pets"];
 
     v5 = v8;
@@ -186,10 +186,10 @@
   return v10;
 }
 
-+ (id)facesFromConfiguration:(id)a3
++ (id)facesFromConfiguration:(id)configuration
 {
-  v3 = a3;
-  v4 = [objc_opt_class() userInfoFromConfiguration:v3];
+  configurationCopy = configuration;
+  v4 = [objc_opt_class() userInfoFromConfiguration:configurationCopy];
 
   if (v4)
   {
@@ -218,12 +218,12 @@
   v3 = self->_fullExtentPreviewImageData;
   if (!v3)
   {
-    v4 = [(CNUIPhotosPosterConfigurationReader *)self fullExtentPreviewImageDataFromConfiguration];
-    v5 = [v4 imageData];
+    fullExtentPreviewImageDataFromConfiguration = [(CNUIPhotosPosterConfigurationReader *)self fullExtentPreviewImageDataFromConfiguration];
+    imageData = [fullExtentPreviewImageDataFromConfiguration imageData];
     fullExtentPreviewImageData = self->_fullExtentPreviewImageData;
-    self->_fullExtentPreviewImageData = v5;
+    self->_fullExtentPreviewImageData = imageData;
 
-    [v4 imageSize];
+    [fullExtentPreviewImageDataFromConfiguration imageSize];
     self->_fullExtentPreviewImageSize.width = v7;
     self->_fullExtentPreviewImageSize.height = v8;
     v3 = self->_fullExtentPreviewImageData;
@@ -262,9 +262,9 @@
   result = self->_fullExtentPreviewImage;
   if (!result)
   {
-    v4 = [(CNUIPhotosPosterConfigurationReader *)self createFullExtentPreviewImage];
-    self->_fullExtentPreviewImage = v4;
-    Width = CGImageGetWidth(v4);
+    createFullExtentPreviewImage = [(CNUIPhotosPosterConfigurationReader *)self createFullExtentPreviewImage];
+    self->_fullExtentPreviewImage = createFullExtentPreviewImage;
+    Width = CGImageGetWidth(createFullExtentPreviewImage);
     Height = CGImageGetHeight(self->_fullExtentPreviewImage);
     self->_fullExtentPreviewImageSize.width = Width;
     self->_fullExtentPreviewImageSize.height = Height;
@@ -305,9 +305,9 @@
   result = self->_visiblePreviewImage;
   if (!result)
   {
-    v4 = [(CNUIPhotosPosterConfigurationReader *)self fullExtentPreviewImage];
+    fullExtentPreviewImage = [(CNUIPhotosPosterConfigurationReader *)self fullExtentPreviewImage];
     [(CNUIPhotosPosterConfigurationReader *)self visiblePreviewImageFrame];
-    result = CGImageCreateWithImageInRect(v4, v5);
+    result = CGImageCreateWithImageInRect(fullExtentPreviewImage, v5);
     self->_visiblePreviewImage = result;
   }
 
@@ -316,10 +316,10 @@
 
 - (CGRect)visiblePreviewImageFrame
 {
-  v3 = [(CNUIPhotosPosterConfigurationReader *)self compoundLayerStack];
-  v4 = [v3 layout];
-  v5 = [v4 portraitLayout];
-  [v5 normalizedVisibleFrame];
+  compoundLayerStack = [(CNUIPhotosPosterConfigurationReader *)self compoundLayerStack];
+  layout = [compoundLayerStack layout];
+  portraitLayout = [layout portraitLayout];
+  [portraitLayout normalizedVisibleFrame];
   [CNUIPhotosPosterConfigurationReader transformFaceRectToTopLeftOrigin:"transformFaceRectToTopLeftOrigin:withSize:" withSize:?];
   v7 = v6;
   v9 = v8;
@@ -365,18 +365,18 @@
 
 - (id)fullExtentPreviewImageDataFromConfiguration
 {
-  v2 = [(CNUIPhotosPosterConfigurationReader *)self fullExtentPreviewImage];
+  fullExtentPreviewImage = [(CNUIPhotosPosterConfigurationReader *)self fullExtentPreviewImage];
   v3 = objc_opt_new();
   v4 = CGImageDestinationCreateWithData(v3, @"public.jpeg", 1uLL, 0);
-  CGImageDestinationAddImage(v4, v2, 0);
+  CGImageDestinationAddImage(v4, fullExtentPreviewImage, 0);
   CGImageDestinationFinalize(v4);
   if (v4)
   {
     CFRelease(v4);
   }
 
-  Width = CGImageGetWidth(v2);
-  Height = CGImageGetHeight(v2);
+  Width = CGImageGetWidth(fullExtentPreviewImage);
+  Height = CGImageGetHeight(fullExtentPreviewImage);
   v7 = objc_alloc_init(CNUIPhotosPosterConfigurationReaderPreviewImageResult);
   v8 = [(__CFData *)v3 copy];
   [(CNUIPhotosPosterConfigurationReaderPreviewImageResult *)v7 setImageData:v8];
@@ -389,8 +389,8 @@
 - (CGRect)fullExtentPreviewImageFaceRectFromConfiguration
 {
   v3 = objc_opt_class();
-  v4 = [(CNUIPhotosPosterConfigurationReader *)self photosConfiguration];
-  v5 = [v3 facesFromConfiguration:v4];
+  photosConfiguration = [(CNUIPhotosPosterConfigurationReader *)self photosConfiguration];
+  v5 = [v3 facesFromConfiguration:photosConfiguration];
 
   if ((*(*MEMORY[0x1E6996530] + 16))())
   {
@@ -403,18 +403,18 @@
   else
   {
     v10 = objc_opt_class();
-    v11 = [(CNUIPhotosPosterConfigurationReader *)self wallpaperURL];
-    v12 = [v10 compoundLayerStackFromURL:v11];
+    wallpaperURL = [(CNUIPhotosPosterConfigurationReader *)self wallpaperURL];
+    v12 = [v10 compoundLayerStackFromURL:wallpaperURL];
 
     if (v12)
     {
-      v13 = [v12 layout];
-      [v13 imageSize];
+      layout = [v12 layout];
+      [layout imageSize];
       v15 = v14;
       v17 = v16;
-      v18 = [v5 firstObject];
+      firstObject = [v5 firstObject];
       memset(&v29, 0, sizeof(v29));
-      CGRectMakeWithDictionaryRepresentation(v18, &v29);
+      CGRectMakeWithDictionaryRepresentation(firstObject, &v29);
       [(CNUIPhotosPosterConfigurationReader *)self fullExtentPreviewImageSize];
       [(CNUIPhotosPosterConfigurationReader *)self faceRect:1 forFullExtentImageSize:*&v29.origin fromOriginalImageSize:*&v29.size zoomOut:v19, v20, v15, v17];
       v6 = v21;
@@ -463,9 +463,9 @@
 
   v4 = v3;
   _Block_object_dispose(&v13, 8);
-  v5 = [(CNUIPhotosPosterConfigurationReader *)self wallpaperURL];
+  wallpaperURL = [(CNUIPhotosPosterConfigurationReader *)self wallpaperURL];
   v11 = 0;
-  v6 = [v3 createFullExtentPreviewImageForWallpaperAtURL:v5 error:&v11];
+  v6 = [v3 createFullExtentPreviewImageForWallpaperAtURL:wallpaperURL error:&v11];
   v7 = v11;
   if (v6)
   {
@@ -500,8 +500,8 @@ LABEL_10:
   if (!v4)
   {
     v5 = objc_opt_class();
-    v6 = [(CNUIPhotosPosterConfigurationReader *)self wallpaperURL];
-    v4 = [v5 compoundLayerStackFromURL:v6];
+    wallpaperURL = [(CNUIPhotosPosterConfigurationReader *)self wallpaperURL];
+    v4 = [v5 compoundLayerStackFromURL:wallpaperURL];
 
     objc_storeStrong(p_compoundLayerStack, v4);
   }
@@ -509,14 +509,14 @@ LABEL_10:
   return v4;
 }
 
-- (CGRect)faceRect:(CGRect)a3 forFullExtentImageSize:(CGSize)a4 fromOriginalImageSize:(CGSize)a5 zoomOut:(BOOL)a6
+- (CGRect)faceRect:(CGRect)rect forFullExtentImageSize:(CGSize)size fromOriginalImageSize:(CGSize)imageSize zoomOut:(BOOL)out
 {
-  v6 = a6;
-  height = a5.height;
-  width = a5.width;
-  v9 = a4.height;
-  v10 = a4.width;
-  [(CNUIPhotosPosterConfigurationReader *)self denormalizeFaceRect:a3.origin.x toOriginalImageSize:a3.origin.y, a3.size.width, a3.size.height, a5.width, a5.height];
+  outCopy = out;
+  height = imageSize.height;
+  width = imageSize.width;
+  v9 = size.height;
+  v10 = size.width;
+  [(CNUIPhotosPosterConfigurationReader *)self denormalizeFaceRect:rect.origin.x toOriginalImageSize:rect.origin.y, rect.size.width, rect.size.height, imageSize.width, imageSize.height];
   [CNUIPhotosPosterConfigurationReader transformFaceRectToTopLeftOrigin:"transformFaceRectToTopLeftOrigin:withSize:" withSize:?];
   if (width != v10 || height != v9)
   {
@@ -526,7 +526,7 @@ LABEL_10:
     v15 = v10 / width * v15;
   }
 
-  if (v6)
+  if (outCopy)
   {
     v14 = v14 * 3.0;
     v17 = v15 * 3.0;
@@ -554,13 +554,13 @@ LABEL_10:
 {
   if (CGRectEqualToRect(self->_faceRectInPosterSnapshot, *MEMORY[0x1E695F058]))
   {
-    v3 = [(CNUIPhotosPosterConfigurationReader *)self faceRectInPosterSnapshotFromConfiguration];
-    [v3 faceRect];
+    faceRectInPosterSnapshotFromConfiguration = [(CNUIPhotosPosterConfigurationReader *)self faceRectInPosterSnapshotFromConfiguration];
+    [faceRectInPosterSnapshotFromConfiguration faceRect];
     self->_faceRectInPosterSnapshot.origin.x = v4;
     self->_faceRectInPosterSnapshot.origin.y = v5;
     self->_faceRectInPosterSnapshot.size.width = v6;
     self->_faceRectInPosterSnapshot.size.height = v7;
-    [v3 percentFromTop];
+    [faceRectInPosterSnapshotFromConfiguration percentFromTop];
     self->_faceRectInPosterSnapshotPercentFromTop = v8;
     x = self->_faceRectInPosterSnapshot.origin.x;
     y = self->_faceRectInPosterSnapshot.origin.y;
@@ -592,13 +592,13 @@ LABEL_10:
   faceRectInPosterSnapshotPercentFromTop = self->_faceRectInPosterSnapshotPercentFromTop;
   if (faceRectInPosterSnapshotPercentFromTop == 0.0)
   {
-    v4 = [(CNUIPhotosPosterConfigurationReader *)self faceRectInPosterSnapshotFromConfiguration];
-    [v4 faceRect];
+    faceRectInPosterSnapshotFromConfiguration = [(CNUIPhotosPosterConfigurationReader *)self faceRectInPosterSnapshotFromConfiguration];
+    [faceRectInPosterSnapshotFromConfiguration faceRect];
     self->_faceRectInPosterSnapshot.origin.x = v5;
     self->_faceRectInPosterSnapshot.origin.y = v6;
     self->_faceRectInPosterSnapshot.size.width = v7;
     self->_faceRectInPosterSnapshot.size.height = v8;
-    [v4 percentFromTop];
+    [faceRectInPosterSnapshotFromConfiguration percentFromTop];
     faceRectInPosterSnapshotPercentFromTop = v9;
     self->_faceRectInPosterSnapshotPercentFromTop = v9;
   }
@@ -628,8 +628,8 @@ LABEL_10:
 - (id)faceRectInPosterSnapshotFromConfiguration
 {
   v3 = objc_opt_class();
-  v4 = [(CNUIPhotosPosterConfigurationReader *)self photosConfiguration];
-  v5 = [v3 facesFromConfiguration:v4];
+  photosConfiguration = [(CNUIPhotosPosterConfigurationReader *)self photosConfiguration];
+  v5 = [v3 facesFromConfiguration:photosConfiguration];
 
   if ((*(*MEMORY[0x1E6996530] + 16))())
   {
@@ -638,17 +638,17 @@ LABEL_10:
 
   else
   {
-    v7 = [(CNUIPhotosPosterConfigurationReader *)self compoundLayerStack];
-    v8 = v7;
-    if (v7)
+    compoundLayerStack = [(CNUIPhotosPosterConfigurationReader *)self compoundLayerStack];
+    v8 = compoundLayerStack;
+    if (compoundLayerStack)
     {
-      v9 = [v7 portraitLayerStack];
-      v10 = v9;
-      if (v9)
+      portraitLayerStack = [compoundLayerStack portraitLayerStack];
+      v10 = portraitLayerStack;
+      if (portraitLayerStack)
       {
-        v11 = [v9 backgroundLayer];
+        backgroundLayer = [portraitLayerStack backgroundLayer];
         objc_opt_class();
-        v12 = v11;
+        v12 = backgroundLayer;
         if (objc_opt_isKindOfClass())
         {
           v13 = v12;
@@ -661,21 +661,21 @@ LABEL_10:
 
         v14 = v13;
 
-        v15 = [v14 image];
-        Width = CVPixelBufferGetWidth(v15);
-        Height = CVPixelBufferGetHeight(v15);
-        v18 = [v10 layout];
-        [v18 imageSize];
+        image = [v14 image];
+        Width = CVPixelBufferGetWidth(image);
+        Height = CVPixelBufferGetHeight(image);
+        layout = [v10 layout];
+        [layout imageSize];
         v20 = v19;
         v22 = v21;
-        [v18 visibleFrame];
+        [layout visibleFrame];
         v24 = v23;
         v26 = v25;
         v28 = v27;
         v30 = v29;
-        v31 = [v5 firstObject];
+        firstObject = [v5 firstObject];
         memset(&v45, 0, sizeof(v45));
-        CGRectMakeWithDictionaryRepresentation(v31, &v45);
+        CGRectMakeWithDictionaryRepresentation(firstObject, &v45);
         [(CNUIPhotosPosterConfigurationReader *)self denormalizeFaceRect:*&v45.origin toOriginalImageSize:*&v45.size, v20, v22];
         v45.origin.x = Width / v28 * (v32 - v24);
         v45.origin.y = Height / v30 * (v33 - v26);
@@ -713,12 +713,12 @@ LABEL_10:
   return v6;
 }
 
-- (CGRect)denormalizeFaceRect:(CGRect)a3 toOriginalImageSize:(CGSize)a4
+- (CGRect)denormalizeFaceRect:(CGRect)rect toOriginalImageSize:(CGSize)size
 {
-  v4 = a3.origin.x * a4.width;
-  v5 = a3.origin.y * a4.height;
-  v6 = a3.size.width * a4.width;
-  v7 = a3.size.height * a4.height;
+  v4 = rect.origin.x * size.width;
+  v5 = rect.origin.y * size.height;
+  v6 = rect.size.width * size.width;
+  v7 = rect.size.height * size.height;
   result.size.height = v7;
   result.size.width = v6;
   result.origin.y = v5;
@@ -726,13 +726,13 @@ LABEL_10:
   return result;
 }
 
-- (CGRect)transformFaceRectToTopLeftOrigin:(CGRect)a3 withSize:(CGSize)a4
+- (CGRect)transformFaceRectToTopLeftOrigin:(CGRect)origin withSize:(CGSize)size
 {
-  height = a4.height;
-  v5 = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = size.height;
+  v5 = origin.size.height;
+  width = origin.size.width;
+  y = origin.origin.y;
+  x = origin.origin.x;
   memset(&v11, 0, sizeof(v11));
   CGAffineTransformMakeScale(&v11, 1.0, -1.0);
   v9 = v11;

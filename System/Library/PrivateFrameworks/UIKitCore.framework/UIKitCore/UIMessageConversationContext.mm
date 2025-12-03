@@ -24,13 +24,13 @@
   v17 = *MEMORY[0x1E69E9840];
   v15.receiver = self;
   v15.super_class = UIMessageConversationContext;
-  v3 = [(UIConversationContext *)&v15 inputContextHistoryRepresentation];
+  inputContextHistoryRepresentation = [(UIConversationContext *)&v15 inputContextHistoryRepresentation];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(UIConversationContext *)self entries];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v16 count:16];
+  entries = [(UIConversationContext *)self entries];
+  v5 = [entries countByEnumeratingWithState:&v11 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -41,25 +41,25 @@
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(entries);
         }
 
-        v9 = [*(*(&v11 + 1) + 8 * i) inputContextEntryRepresentation];
+        inputContextEntryRepresentation = [*(*(&v11 + 1) + 8 * i) inputContextEntryRepresentation];
         if ([(UIMessageConversationContext *)self isJunk])
         {
-          [v9 setEntryType:3];
+          [inputContextEntryRepresentation setEntryType:3];
         }
 
-        [v3 addEntry:v9];
+        [inputContextHistoryRepresentation addEntry:inputContextEntryRepresentation];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v16 count:16];
+      v6 = [entries countByEnumeratingWithState:&v11 objects:v16 count:16];
     }
 
     while (v6);
   }
 
-  return v3;
+  return inputContextHistoryRepresentation;
 }
 
 @end

@@ -1,24 +1,24 @@
 @interface SSQueryUnderstandingUtilities
-+ (id)queryUnderstandingParseWithQueryUnderstanding:(id)a3;
-+ (int)spotlightQueryIntent:(id)a3;
++ (id)queryUnderstandingParseWithQueryUnderstanding:(id)understanding;
++ (int)spotlightQueryIntent:(id)intent;
 @end
 
 @implementation SSQueryUnderstandingUtilities
 
-+ (id)queryUnderstandingParseWithQueryUnderstanding:(id)a3
++ (id)queryUnderstandingParseWithQueryUnderstanding:(id)understanding
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  understandingCopy = understanding;
   v4 = objc_alloc_init(MEMORY[0x1E69CA330]);
-  v5 = [v3 objectForKeyedSubscript:@"kQPQUIntentIds"];
+  v5 = [understandingCopy objectForKeyedSubscript:@"kQPQUIntentIds"];
   if ([v5 count])
   {
     v6 = [v5 objectAtIndexedSubscript:0];
-    v7 = [v6 intValue];
+    intValue = [v6 intValue];
 
-    if (v7)
+    if (intValue)
     {
-      if (v7 != 1)
+      if (intValue != 1)
       {
         goto LABEL_7;
       }
@@ -35,7 +35,7 @@
   }
 
 LABEL_7:
-  v9 = [v3 objectForKeyedSubscript:@"kQPQUOutputTokenInfo"];
+  v9 = [understandingCopy objectForKeyedSubscript:@"kQPQUOutputTokenInfo"];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -58,12 +58,12 @@ LABEL_7:
         if ([v14 count])
         {
           v15 = [v14 objectAtIndexedSubscript:0];
-          v16 = [v15 intValue];
-          if (v16 <= 7)
+          intValue2 = [v15 intValue];
+          if (intValue2 <= 7)
           {
-            if (v16 > 2)
+            if (intValue2 > 2)
             {
-              switch(v16)
+              switch(intValue2)
               {
                 case 3:
                   [v4 setHasPersonSenderTokens:1];
@@ -77,14 +77,14 @@ LABEL_7:
               }
             }
 
-            else if (v16)
+            else if (intValue2)
             {
-              if (v16 == 1)
+              if (intValue2 == 1)
               {
                 [v4 setHasMediaTypeTokens:1];
               }
 
-              else if (v16 == 2)
+              else if (intValue2 == 2)
               {
                 [v4 setHasPersonTokens:1];
               }
@@ -96,14 +96,14 @@ LABEL_7:
             }
           }
 
-          else if (v16 <= 10)
+          else if (intValue2 <= 10)
           {
-            if (v16 == 8)
+            if (intValue2 == 8)
             {
               [v4 setHasTimeTokens:1];
             }
 
-            else if (v16 == 9)
+            else if (intValue2 == 9)
             {
               [v4 setHasEventTokens:1];
             }
@@ -114,25 +114,25 @@ LABEL_7:
             }
           }
 
-          else if (v16 > 20)
+          else if (intValue2 > 20)
           {
-            if (v16 == 21)
+            if (intValue2 == 21)
             {
               [v4 setHasFavoritedTokens:1];
             }
 
-            else if (v16 == 50)
+            else if (intValue2 == 50)
             {
               [v4 setHasSortCriteriaTokens:1];
             }
           }
 
-          else if (v16 == 11)
+          else if (intValue2 == 11)
           {
             [v4 setHasGenericLocationTokens:1];
           }
 
-          else if (v16 == 12)
+          else if (intValue2 == 12)
           {
             [v4 setHasSourceAppTokens:1];
           }
@@ -150,13 +150,13 @@ LABEL_7:
   return v4;
 }
 
-+ (int)spotlightQueryIntent:(id)a3
++ (int)spotlightQueryIntent:(id)intent
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  intentCopy = intent;
+  v4 = intentCopy;
+  if (intentCopy)
   {
-    v5 = +[SSQueryIntent intentStrength:](SSQueryIntent, "intentStrength:", [v3 intentType]);
+    v5 = +[SSQueryIntent intentStrength:](SSQueryIntent, "intentStrength:", [intentCopy intentType]);
     if (v5 >= 5)
     {
       v6 = 0;

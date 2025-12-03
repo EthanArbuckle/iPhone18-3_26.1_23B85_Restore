@@ -1,29 +1,29 @@
 @interface TSCH3DChartResizerHelper
-+ (TSCH3DChartResizerHelper)helperWithInfo:(id)a3;
-+ (id)vectorForContainingViewport:(void *)a3;
-+ (tvec2<int>)containingViewportForVector:(id)a3;
-- (TSCH3DChartResizerHelper)initWithInfo:(id)a3;
++ (TSCH3DChartResizerHelper)helperWithInfo:(id)info;
++ (id)vectorForContainingViewport:(void *)viewport;
++ (tvec2<int>)containingViewportForVector:(id)vector;
+- (TSCH3DChartResizerHelper)initWithInfo:(id)info;
 - (TSCH3DVector)containingViewportVector;
 - (id).cxx_construct;
-- (id)boundsLayoutForScene:(id)a3 mode:(int)a4;
-- (id)boundsLayoutResizedForScene:(id)a3 bounds:(void *)a4 resizeStartingSize:(void *)a5 mode:(int)a6 returningResultSize:(void *)a7;
-- (tvec2<float>)chartBodyLayoutOffsetInChartAreaLayoutSpaceUsingConverter:(const void *)a3;
-- (tvec2<float>)chartBodySizeByResizingScene:(id)a3 toLayoutSize:(void *)a4 resizeStartingSize:(void *)a5 returningChartBodyLayoutOffsetInChartAreaLayoutSpace:(void *)a6 resultLayoutSize:(void *)a7;
-- (tvec2<float>)layoutSizeByResizingScene:(id)a3 toChartBodyLayoutSize:(void *)a4 resizeStartingSize:(void *)a5 returningChartBodyLayoutBoundsInChartAreaLayoutSpace:(void *)a6;
+- (id)boundsLayoutForScene:(id)scene mode:(int)mode;
+- (id)boundsLayoutResizedForScene:(id)scene bounds:(void *)bounds resizeStartingSize:(void *)size mode:(int)mode returningResultSize:(void *)resultSize;
+- (tvec2<float>)chartBodyLayoutOffsetInChartAreaLayoutSpaceUsingConverter:(const void *)converter;
+- (tvec2<float>)chartBodySizeByResizingScene:(id)scene toLayoutSize:(void *)size resizeStartingSize:(void *)startingSize returningChartBodyLayoutOffsetInChartAreaLayoutSpace:(void *)space resultLayoutSize:(void *)layoutSize;
+- (tvec2<float>)layoutSizeByResizingScene:(id)scene toChartBodyLayoutSize:(void *)size resizeStartingSize:(void *)startingSize returningChartBodyLayoutBoundsInChartAreaLayoutSpace:(void *)space;
 - (void)initializeOriginalContainingViewport;
-- (void)setLayoutSettings:(id *)a3;
+- (void)setLayoutSettings:(id *)settings;
 @end
 
 @implementation TSCH3DChartResizerHelper
 
-+ (tvec2<int>)containingViewportForVector:(id)a3
++ (tvec2<int>)containingViewportForVector:(id)vector
 {
   v4 = v3;
-  v5 = a3;
-  v10 = v5;
-  if (v5)
+  vectorCopy = vector;
+  v10 = vectorCopy;
+  if (vectorCopy)
   {
-    objc_msgSend_value4(v5, v6, v7, v8, v9);
+    objc_msgSend_value4(vectorCopy, v6, v7, v8, v9);
     v11 = vcvt_s32_f32(v28);
   }
 
@@ -43,32 +43,32 @@
   return v27;
 }
 
-+ (id)vectorForContainingViewport:(void *)a3
++ (id)vectorForContainingViewport:(void *)viewport
 {
-  *&v3 = *a3;
-  *&v4 = *(a3 + 1);
+  *&v3 = *viewport;
+  *&v4 = *(viewport + 1);
   return objc_msgSend_x_y_z_w_(TSCH3DVector, a2, 0.0, 0.0, v3, v4);
 }
 
-+ (TSCH3DChartResizerHelper)helperWithInfo:(id)a3
++ (TSCH3DChartResizerHelper)helperWithInfo:(id)info
 {
-  v4 = a3;
-  v5 = [a1 alloc];
-  v10 = objc_msgSend_initWithInfo_(v5, v6, v7, v8, v9, v4);
+  infoCopy = info;
+  v5 = [self alloc];
+  v10 = objc_msgSend_initWithInfo_(v5, v6, v7, v8, v9, infoCopy);
 
   return v10;
 }
 
-- (TSCH3DChartResizerHelper)initWithInfo:(id)a3
+- (TSCH3DChartResizerHelper)initWithInfo:(id)info
 {
-  v5 = a3;
+  infoCopy = info;
   v15.receiver = self;
   v15.super_class = TSCH3DChartResizerHelper;
   v6 = [(TSCH3DChartResizerHelper *)&v15 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_chartInfo, a3);
+    objc_storeStrong(&v6->_chartInfo, info);
     objc_msgSend_initializeOriginalContainingViewport(v7, v8, v9, v10, v11);
     v7->_containingViewport = v7->_originalContainingViewport;
     sub_27635FB94(&v13);
@@ -133,11 +133,11 @@
   return v12;
 }
 
-- (id)boundsLayoutForScene:(id)a3 mode:(int)a4
+- (id)boundsLayoutForScene:(id)scene mode:(int)mode
 {
-  v4 = *&a4;
-  v7 = a3;
-  if (!v7)
+  v4 = *&mode;
+  sceneCopy = scene;
+  if (!sceneCopy)
   {
     v11 = MEMORY[0x277D81150];
     v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, v8, v9, v10, "[TSCH3DChartResizerHelper boundsLayoutForScene:mode:]");
@@ -149,12 +149,12 @@
 
   v26 = objc_msgSend_scene(self->_boundsLayout, v6, v8, v9, v10);
   v31 = v26;
-  if (v26 != v7)
+  if (v26 != sceneCopy)
   {
 
 LABEL_9:
     v38 = [TSCH3DChartBoundsLayout alloc];
-    v43 = objc_msgSend_initWithScene_containingViewport_originalContainingViewport_layoutSettings_(v38, v39, v40, v41, v42, v7, &self->_containingViewport, &self->_originalContainingViewport, &self->_layoutSettings);
+    v43 = objc_msgSend_initWithScene_containingViewport_originalContainingViewport_layoutSettings_(v38, v39, v40, v41, v42, sceneCopy, &self->_containingViewport, &self->_originalContainingViewport, &self->_layoutSettings);
     boundsLayout = self->_boundsLayout;
     self->_boundsLayout = v43;
 
@@ -166,7 +166,7 @@ LABEL_9:
 
     else
     {
-      v58 = objc_msgSend_main(v7, v45, v46, v47, v48);
+      v58 = objc_msgSend_main(sceneCopy, v45, v46, v47, v48);
       Bounds3DClass = objc_msgSend_getBounds3DClass(v58, v59, v60, v61, v62);
       objc_msgSend_setGetBoundsClass_(self->_boundsLayout, v64, v65, v66, v67, Bounds3DClass);
     }
@@ -213,22 +213,22 @@ LABEL_14:
   return v83;
 }
 
-- (id)boundsLayoutResizedForScene:(id)a3 bounds:(void *)a4 resizeStartingSize:(void *)a5 mode:(int)a6 returningResultSize:(void *)a7
+- (id)boundsLayoutResizedForScene:(id)scene bounds:(void *)bounds resizeStartingSize:(void *)size mode:(int)mode returningResultSize:(void *)resultSize
 {
-  v8 = *&a6;
-  v13 = a3;
-  v170 = v13;
+  v8 = *&mode;
+  sceneCopy = scene;
+  v170 = sceneCopy;
   if ((v8 & 2) != 0)
   {
-    objc_msgSend_setLabelWrapBounds_forScene_(TSCH3DChartTitleSceneObject, v12, v14, v15, v16, a4, v13);
+    objc_msgSend_setLabelWrapBounds_forScene_(TSCH3DChartTitleSceneObject, v12, v14, v15, v16, bounds, sceneCopy);
   }
 
-  v17 = objc_msgSend_boundsLayoutForScene_mode_(self, v12, v14, v15, v16, v13, v8);
-  *__p = *a4;
+  v17 = objc_msgSend_boundsLayoutForScene_mode_(self, v12, v14, v15, v16, sceneCopy, v8);
+  *__p = *bounds;
   objc_msgSend_setLayoutInPage_(v17, v18, *__p, v19, v20, __p);
-  *__p = *a4;
+  *__p = *bounds;
   objc_msgSend_setBodyLayoutInPage_(v17, v21, *__p, v22, v23, __p);
-  v169 = objc_msgSend_nonNilAccessorWithScene_(TSCH3DChartScenePropertyAccessor, v24, v25, v26, v27, v13);
+  v169 = objc_msgSend_nonNilAccessorWithScene_(TSCH3DChartScenePropertyAccessor, v24, v25, v26, v27, sceneCopy);
   if (byte_280A46430 == 1)
   {
     v32 = objc_msgSend_projectedBounds(v17, v28, v29, v30, v31);
@@ -264,7 +264,7 @@ LABEL_14:
       objc_msgSend_stringWithUTF8String_(v54, v55, v56, v57, v58, __p[0]);
     }
     v59 = ;
-    v13 = v170;
+    sceneCopy = v170;
     if (v175 < 0)
     {
       operator delete(__p[0]);
@@ -273,7 +273,7 @@ LABEL_14:
     NSLog(&cfstr_PreResizeScale.isa, v47, v59, *&v164, *&v166);
   }
 
-  v60 = objc_msgSend_main(v13, v28, v29, v30, v31);
+  v60 = objc_msgSend_main(sceneCopy, v28, v29, v30, v31);
   v65 = objc_msgSend_resizer3DClass(v60, v61, v62, v63, v64);
 
   if (!v65)
@@ -291,15 +291,15 @@ LABEL_14:
   v90 = TSUDynamicCast();
   v95 = objc_msgSend_resizerWithLayout_chartType_(v65, v91, v92, v93, v94, v17, v90);
 
-  v98 = *a4;
-  v99 = vsub_f32(*(a4 + 8), *a4);
+  v98 = *bounds;
+  v99 = vsub_f32(*(bounds + 8), *bounds);
   __p[0] = v99;
   if (v95)
   {
     v100 = v169;
     v101 = v170;
-    objc_msgSend_resize_startingSize_(v95, v96, *&v99, v98, v97, __p, a5);
-    if (!a7)
+    objc_msgSend_resize_startingSize_(v95, v96, *&v99, v98, v97, __p, size);
+    if (!resultSize)
     {
       goto LABEL_18;
     }
@@ -310,11 +310,11 @@ LABEL_14:
   v171 = 0;
   v100 = v169;
   v101 = v170;
-  if (a7)
+  if (resultSize)
   {
 LABEL_17:
     v99 = v171;
-    *a7 = v171;
+    *resultSize = v171;
   }
 
 LABEL_18:
@@ -439,32 +439,32 @@ LABEL_35:
   return v17;
 }
 
-- (tvec2<float>)chartBodyLayoutOffsetInChartAreaLayoutSpaceUsingConverter:(const void *)a3
+- (tvec2<float>)chartBodyLayoutOffsetInChartAreaLayoutSpaceUsingConverter:(const void *)converter
 {
   v5 = v3;
   v21 = xmmword_2764D5ED0;
-  sub_2761526F4(&v21, (*a3 + 16), &v22);
-  v6 = *a3;
-  v7 = *(a3 + 2);
-  v8 = *(a3 + 12);
+  sub_2761526F4(&v21, (*converter + 16), &v22);
+  v6 = *converter;
+  v7 = *(converter + 2);
+  v8 = *(converter + 12);
   v16 = v22;
   v17 = v6;
   v18 = v7;
   v19 = v8;
-  v20 = *(a3 + 2);
+  v20 = *(converter + 2);
   sub_2761526F4(&v16, v6 + 14, &v22);
   v9 = v18 * v22.f32[0];
   v10 = v18 * v22.f32[3];
   v21 = xmmword_2764D5ED0;
-  sub_2761526F4(&v21, (*a3 + 80), &v22);
-  v11 = *a3;
-  v12 = *(a3 + 2);
-  v13 = *(a3 + 12);
+  sub_2761526F4(&v21, (*converter + 80), &v22);
+  v11 = *converter;
+  v12 = *(converter + 2);
+  v13 = *(converter + 12);
   v16 = v22;
   v17 = v11;
   v18 = v12;
   v19 = v13;
-  v20 = *(a3 + 2);
+  v20 = *(converter + 2);
   sub_2761526F4(&v16, v11 + 14, &v22);
   v15 = v10 - (v18 * v22.f32[3]);
   *v5 = (v18 * v22.f32[0]) - v9;
@@ -472,22 +472,22 @@ LABEL_35:
   return v14;
 }
 
-- (tvec2<float>)chartBodySizeByResizingScene:(id)a3 toLayoutSize:(void *)a4 resizeStartingSize:(void *)a5 returningChartBodyLayoutOffsetInChartAreaLayoutSpace:(void *)a6 resultLayoutSize:(void *)a7
+- (tvec2<float>)chartBodySizeByResizingScene:(id)scene toLayoutSize:(void *)size resizeStartingSize:(void *)startingSize returningChartBodyLayoutOffsetInChartAreaLayoutSpace:(void *)space resultLayoutSize:(void *)layoutSize
 {
   v13 = v7;
-  v14 = a3;
+  sceneCopy = scene;
   v29.i64[0] = 0;
-  v29.i64[1] = *a4;
-  v18 = objc_msgSend_boundsLayoutResizedForScene_bounds_resizeStartingSize_mode_returningResultSize_(self, v15, *&v29.i64[1], v16, v17, v14, &v29, a5, 1, a7);
+  v29.i64[1] = *size;
+  v18 = objc_msgSend_boundsLayoutResizedForScene_bounds_resizeStartingSize_mode_returningResultSize_(self, v15, *&v29.i64[1], v16, v17, sceneCopy, &v29, startingSize, 1, layoutSize);
   v24 = objc_msgSend_projectedBounds(v18, v19, v20, v21, v22);
   v34 = v24;
   v35 = 1.0;
   v36 = 0;
   v37 = 0;
-  if (a6)
+  if (space)
   {
     objc_msgSend_chartBodyLayoutOffsetInChartAreaLayoutSpaceUsingConverter_(self, v23, v25, v26, v27, &v34);
-    *a6 = v29.i64[0];
+    *space = v29.i64[0];
     v24 = v34;
   }
 
@@ -504,21 +504,21 @@ LABEL_35:
   return v28;
 }
 
-- (tvec2<float>)layoutSizeByResizingScene:(id)a3 toChartBodyLayoutSize:(void *)a4 resizeStartingSize:(void *)a5 returningChartBodyLayoutBoundsInChartAreaLayoutSpace:(void *)a6
+- (tvec2<float>)layoutSizeByResizingScene:(id)scene toChartBodyLayoutSize:(void *)size resizeStartingSize:(void *)startingSize returningChartBodyLayoutBoundsInChartAreaLayoutSpace:(void *)space
 {
   v11 = v6;
-  v12 = a3;
+  sceneCopy = scene;
   v39 = 0;
-  v13 = *a4;
+  v13 = *size;
   v30.i64[0] = 0;
   *&v30.i64[1] = v13;
-  v16 = objc_msgSend_boundsLayoutResizedForScene_bounds_resizeStartingSize_mode_returningResultSize_(self, v14, 0.0, v13, v15, v12, &v30, a5, 2, &v39);
+  v16 = objc_msgSend_boundsLayoutResizedForScene_bounds_resizeStartingSize_mode_returningResultSize_(self, v14, 0.0, v13, v15, sceneCopy, &v30, startingSize, 2, &v39);
   v22 = objc_msgSend_projectedBounds(v16, v17, v18, v19, v20);
   v35 = v22;
   v36 = 1.0;
   v37 = 0;
   v38 = 0;
-  if (a6)
+  if (space)
   {
     objc_msgSend_chartBodyLayoutOffsetInChartAreaLayoutSpaceUsingConverter_(self, v21, v23, v24, v25, &v35);
     if (*&v39 < 0.0 || *(&v39 + 1) < 0.0)
@@ -536,7 +536,7 @@ LABEL_35:
       v26 = vaddq_f32(v28, v27);
     }
 
-    *a6 = v26;
+    *space = v26;
     v22 = v35;
   }
 
@@ -553,10 +553,10 @@ LABEL_35:
   return v29;
 }
 
-- (void)setLayoutSettings:(id *)a3
+- (void)setLayoutSettings:(id *)settings
 {
-  v3 = *&a3->var0;
-  self->_layoutSettings.max3DLimitingSeries = a3->var9;
+  v3 = *&settings->var0;
+  self->_layoutSettings.max3DLimitingSeries = settings->var9;
   *&self->_layoutSettings.forceOmitLegend = v3;
 }
 

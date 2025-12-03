@@ -1,6 +1,6 @@
 @interface NTKSquallTimeProvider
 - (NTKSquallTimeProvider)init;
-- (double)_secondsFromDate:(id)a3;
+- (double)_secondsFromDate:(id)date;
 - (double)bezelProgress;
 - (id)_displayDate;
 @end
@@ -30,22 +30,22 @@
   return v3;
 }
 
-- (double)_secondsFromDate:(id)a3
+- (double)_secondsFromDate:(id)date
 {
-  v3 = a3;
+  dateCopy = date;
   v4 = +[NSCalendar currentCalendar];
-  v5 = [v4 components:32896 fromDate:v3];
+  v5 = [v4 components:32896 fromDate:dateCopy];
 
-  v6 = [v5 second];
-  v7 = [v5 nanosecond] / 1000000000.0 + v6;
+  second = [v5 second];
+  v7 = [v5 nanosecond] / 1000000000.0 + second;
 
   return v7;
 }
 
 - (double)bezelProgress
 {
-  v3 = [(NTKSquallTimeProvider *)self _displayDate];
-  [(NTKSquallTimeProvider *)self _secondsFromDate:v3];
+  _displayDate = [(NTKSquallTimeProvider *)self _displayDate];
+  [(NTKSquallTimeProvider *)self _secondsFromDate:_displayDate];
   v5 = v4 / 60.0;
 
   return v5;

@@ -12,11 +12,11 @@
 
 - (id)previewArtworkCatalog
 {
-  v3 = [(MPModelMediaClip *)self previewArtworkCatalogBlock];
-  v4 = v3;
-  if (v3)
+  previewArtworkCatalogBlock = [(MPModelMediaClip *)self previewArtworkCatalogBlock];
+  v4 = previewArtworkCatalogBlock;
+  if (previewArtworkCatalogBlock)
   {
-    v5 = (*(v3 + 16))(v3, self);
+    v5 = (*(previewArtworkCatalogBlock + 16))(previewArtworkCatalogBlock, self);
   }
 
   else
@@ -30,15 +30,15 @@
 - (id)humanDescription
 {
   v3 = MEMORY[0x1E696AD60];
-  v4 = [(MPModelObject *)self identifiers];
-  v5 = [v4 humanDescription];
-  v6 = [v3 stringWithFormat:@"mediaClip %@", v5];
+  identifiers = [(MPModelObject *)self identifiers];
+  humanDescription = [identifiers humanDescription];
+  v6 = [v3 stringWithFormat:@"mediaClip %@", humanDescription];
 
   if ([(MPModelObject *)self hasLoadedValueForKey:@"MPModelPropertyMediaClipTitle"])
   {
     v7 = MEMORY[0x1E696AEC0];
-    v8 = [(MPModelMediaClip *)self title];
-    v9 = [v7 stringWithFormat:@"“%@” ", v8];
+    title = [(MPModelMediaClip *)self title];
+    v9 = [v7 stringWithFormat:@"“%@” ", title];
 
     [v6 insertString:v9 atIndex:0];
   }
@@ -48,20 +48,20 @@
 
 + (void)__MPModelPropertyMediaClipTitle__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelMediaClip.m" lineNumber:48 description:@"Translator was missing mapping for MPModelPropertyMediaClipTitle"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelMediaClip.m" lineNumber:48 description:@"Translator was missing mapping for MPModelPropertyMediaClipTitle"];
 }
 
 + (void)__MPModelRelationshipMediaClipStaticAssets__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelMediaClip.m" lineNumber:47 description:@"Translator was missing mapping for MPModelRelationshipMediaClipStaticAssets"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelMediaClip.m" lineNumber:47 description:@"Translator was missing mapping for MPModelRelationshipMediaClipStaticAssets"];
 }
 
 + (void)__MPModelPropertyMediaClipPreviewArtwork__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelMediaClip.m" lineNumber:46 description:@"Translator was missing mapping for MPModelPropertyMediaClipPreviewArtwork"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelMediaClip.m" lineNumber:46 description:@"Translator was missing mapping for MPModelPropertyMediaClipPreviewArtwork"];
 }
 
 + (id)kind

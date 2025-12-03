@@ -43,17 +43,17 @@ LABEL_9:
 {
   v38 = *MEMORY[0x277D85DE8];
   v3 = a3;
-  v4 = [v3 account];
-  if ([v4 isCurrentAccount])
+  account = [v3 account];
+  if ([account isCurrentAccount])
   {
-    v5 = [v4 primaryHandle];
+    primaryHandle = [account primaryHandle];
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v6 = [v4 handles];
-    v7 = [v6 countByEnumeratingWithState:&v32 objects:v37 count:16];
-    v27 = v4;
+    handles = [account handles];
+    v7 = [handles countByEnumeratingWithState:&v32 objects:v37 count:16];
+    v27 = account;
     if (v7)
     {
       v8 = v7;
@@ -64,7 +64,7 @@ LABEL_9:
         {
           if (*v33 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(handles);
           }
 
           v11 = *(*(&v32 + 1) + 8 * i);
@@ -72,12 +72,12 @@ LABEL_9:
           {
             v12 = v11;
 
-            v5 = v12;
+            primaryHandle = v12;
             goto LABEL_12;
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v32 objects:v37 count:16];
+        v8 = [handles countByEnumeratingWithState:&v32 objects:v37 count:16];
         if (v8)
         {
           continue;
@@ -93,8 +93,8 @@ LABEL_12:
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v13 = [v3 globalHandles];
-    v14 = [v13 countByEnumeratingWithState:&v28 objects:v36 count:16];
+    globalHandles = [v3 globalHandles];
+    v14 = [globalHandles countByEnumeratingWithState:&v28 objects:v36 count:16];
     if (v14)
     {
       v15 = v14;
@@ -105,14 +105,14 @@ LABEL_12:
         {
           if (*v29 != v16)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(globalHandles);
           }
 
-          v18 = [*(*(&v28 + 1) + 8 * j) internal];
+          internal = [*(*(&v28 + 1) + 8 * j) internal];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v19 = v18;
+            v19 = internal;
           }
 
           else
@@ -125,20 +125,20 @@ LABEL_12:
           if (v20)
           {
             v21 = [_HMDGlobalDeviceHandle alloc];
-            v22 = [v20 pushToken];
-            v23 = [(_HMDGlobalDeviceHandle *)v21 initWithPushToken:v22 accountHandle:v5];
+            pushToken = [v20 pushToken];
+            v23 = [(_HMDGlobalDeviceHandle *)v21 initWithPushToken:pushToken accountHandle:primaryHandle];
 
             if (v23)
             {
-              v24 = [(_HMDGlobalDeviceHandle *)v23 destination];
+              destination = [(_HMDGlobalDeviceHandle *)v23 destination];
 
-              v4 = v27;
+              account = v27;
               goto LABEL_27;
             }
           }
         }
 
-        v15 = [v13 countByEnumeratingWithState:&v28 objects:v36 count:16];
+        v15 = [globalHandles countByEnumeratingWithState:&v28 objects:v36 count:16];
         if (v15)
         {
           continue;
@@ -148,15 +148,15 @@ LABEL_12:
       }
     }
 
-    v4 = v27;
+    account = v27;
   }
 
-  v24 = [v3 remoteDestinationString];
+  destination = [v3 remoteDestinationString];
 LABEL_27:
 
   v25 = *MEMORY[0x277D85DE8];
 
-  return v24;
+  return destination;
 }
 
 @end

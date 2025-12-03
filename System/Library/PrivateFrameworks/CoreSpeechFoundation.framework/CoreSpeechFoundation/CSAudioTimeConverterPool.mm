@@ -1,13 +1,13 @@
 @interface CSAudioTimeConverterPool
 + (id)sharedInstance;
 - (CSAudioTimeConverterPool)init;
-- (id)_getAudioTimeConverterWithAudioStreamId:(unint64_t)a3;
+- (id)_getAudioTimeConverterWithAudioStreamId:(unint64_t)id;
 - (id)defaultExclaveConverter;
 @end
 
 @implementation CSAudioTimeConverterPool
 
-- (id)_getAudioTimeConverterWithAudioStreamId:(unint64_t)a3
+- (id)_getAudioTimeConverterWithAudioStreamId:(unint64_t)id
 {
   v7 = 0;
   v8 = &v7;
@@ -21,7 +21,7 @@
   block[2] = __68__CSAudioTimeConverterPool__getAudioTimeConverterWithAudioStreamId___block_invoke;
   block[3] = &unk_1E865C920;
   block[5] = &v7;
-  block[6] = a3;
+  block[6] = id;
   block[4] = self;
   dispatch_async_and_wait(queue, block);
   v4 = v8[5];
@@ -130,9 +130,9 @@ uint64_t __51__CSAudioTimeConverterPool_defaultExclaveConverter__block_invoke(ui
     queue = v2->_queue;
     v2->_queue = v3;
 
-    v5 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     pool = v2->_pool;
-    v2->_pool = v5;
+    v2->_pool = dictionary;
   }
 
   return v2;

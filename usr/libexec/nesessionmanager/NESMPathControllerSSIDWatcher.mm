@@ -1,6 +1,6 @@
 @interface NESMPathControllerSSIDWatcher
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation NESMPathControllerSSIDWatcher
@@ -13,11 +13,11 @@
   [(NESMPathControllerSSIDWatcher *)&v3 dealloc];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v9 = a3;
-  v10 = a4;
-  v12 = a5;
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
   if (self)
   {
     Property = objc_getProperty(self, v11, 16, 1);
@@ -28,7 +28,7 @@
     Property = 0;
   }
 
-  if (Property == v10 && [v9 isEqualToString:@"status"])
+  if (Property == objectCopy && [pathCopy isEqualToString:@"status"])
   {
     v14 = ne_log_obj();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
@@ -43,14 +43,14 @@
         v28 = 0;
       }
 
-      v29 = [v28 status];
+      status = [v28 status];
       v30 = @"Invalid";
-      if (v29 == 2)
+      if (status == 2)
       {
         v30 = @"Not Available";
       }
 
-      if (v29 == 1)
+      if (status == 1)
       {
         v30 = @"Available";
       }

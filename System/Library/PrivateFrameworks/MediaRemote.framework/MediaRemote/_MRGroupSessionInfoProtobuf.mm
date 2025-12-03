@@ -1,51 +1,51 @@
 @interface _MRGroupSessionInfoProtobuf
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsRouteType:(id)a3;
+- (int)StringAsRouteType:(id)type;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _MRGroupSessionInfoProtobuf
 
-- (int)StringAsRouteType:(id)a3
+- (int)StringAsRouteType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"GroupSessionRouteTypeUnknown"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"GroupSessionRouteTypeUnknown"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"GroupSessionRouteTypeCarKit"])
+  else if ([typeCopy isEqualToString:@"GroupSessionRouteTypeCarKit"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"GroupSessionRouteTypeCarPlay"])
+  else if ([typeCopy isEqualToString:@"GroupSessionRouteTypeCarPlay"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"GroupSessionRouteTypeSpeaker"])
+  else if ([typeCopy isEqualToString:@"GroupSessionRouteTypeSpeaker"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"GroupSessionRouteTypeHomePod"])
+  else if ([typeCopy isEqualToString:@"GroupSessionRouteTypeHomePod"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"GroupSessionRouteTypeHomePodMini"])
+  else if ([typeCopy isEqualToString:@"GroupSessionRouteTypeHomePodMini"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"GroupSessionRouteTypeAppleTV"])
+  else if ([typeCopy isEqualToString:@"GroupSessionRouteTypeAppleTV"])
   {
     v4 = 11;
   }
@@ -64,20 +64,20 @@
   v8.receiver = self;
   v8.super_class = _MRGroupSessionInfoProtobuf;
   v4 = [(_MRGroupSessionInfoProtobuf *)&v8 description];
-  v5 = [(_MRGroupSessionInfoProtobuf *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(_MRGroupSessionInfoProtobuf *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   identifier = self->_identifier;
   if (identifier)
   {
-    [v3 setObject:identifier forKey:@"identifier"];
+    [dictionary setObject:identifier forKey:@"identifier"];
   }
 
   hostDisplayName = self->_hostDisplayName;
@@ -117,15 +117,15 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (!self->_identifier)
   {
     [_MRGroupSessionInfoProtobuf writeTo:];
   }
 
-  v8 = v4;
+  v8 = toCopy;
   PBDataWriterWriteStringField();
   if (!self->_hostDisplayName)
   {
@@ -149,18 +149,18 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v5 = a3;
-  [v5 setIdentifier:self->_identifier];
-  [v5 setHostDisplayName:self->_hostDisplayName];
-  v4 = v5;
-  *(v5 + 8) = self->_routeType;
-  *(v5 + 36) = self->_hosted;
+  toCopy = to;
+  [toCopy setIdentifier:self->_identifier];
+  [toCopy setHostDisplayName:self->_hostDisplayName];
+  v4 = toCopy;
+  *(toCopy + 8) = self->_routeType;
+  *(toCopy + 36) = self->_hosted;
   if (self->_equivalentMediaIdentifier)
   {
-    [v5 setEquivalentMediaIdentifier:?];
-    v4 = v5;
+    [toCopy setEquivalentMediaIdentifier:?];
+    v4 = toCopy;
   }
 
   if (*&self->_has)
@@ -170,20 +170,20 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_identifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_identifier copyWithZone:zone];
   v7 = *(v5 + 24);
   *(v5 + 24) = v6;
 
-  v8 = [(NSString *)self->_hostDisplayName copyWithZone:a3];
+  v8 = [(NSString *)self->_hostDisplayName copyWithZone:zone];
   v9 = *(v5 + 16);
   *(v5 + 16) = v8;
 
   *(v5 + 32) = self->_routeType;
   *(v5 + 36) = self->_hosted;
-  v10 = [(NSString *)self->_equivalentMediaIdentifier copyWithZone:a3];
+  v10 = [(NSString *)self->_equivalentMediaIdentifier copyWithZone:zone];
   v11 = *(v5 + 8);
   *(v5 + 8) = v10;
 
@@ -196,16 +196,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_15;
   }
 
   identifier = self->_identifier;
-  if (identifier | *(v4 + 3))
+  if (identifier | *(equalCopy + 3))
   {
     if (![(NSString *)identifier isEqual:?])
     {
@@ -214,7 +214,7 @@
   }
 
   hostDisplayName = self->_hostDisplayName;
-  if (hostDisplayName | *(v4 + 2))
+  if (hostDisplayName | *(equalCopy + 2))
   {
     if (![(NSString *)hostDisplayName isEqual:?])
     {
@@ -222,45 +222,45 @@
     }
   }
 
-  if (self->_routeType != *(v4 + 8))
+  if (self->_routeType != *(equalCopy + 8))
   {
     goto LABEL_15;
   }
 
-  v7 = *(v4 + 36);
+  v7 = *(equalCopy + 36);
   if (self->_hosted)
   {
-    if ((*(v4 + 36) & 1) == 0)
+    if ((*(equalCopy + 36) & 1) == 0)
     {
       goto LABEL_15;
     }
   }
 
-  else if (*(v4 + 36))
+  else if (*(equalCopy + 36))
   {
     goto LABEL_15;
   }
 
   equivalentMediaIdentifier = self->_equivalentMediaIdentifier;
-  if (equivalentMediaIdentifier | *(v4 + 1) && ![(NSString *)equivalentMediaIdentifier isEqual:?])
+  if (equivalentMediaIdentifier | *(equalCopy + 1) && ![(NSString *)equivalentMediaIdentifier isEqual:?])
   {
     goto LABEL_15;
   }
 
-  v9 = (*(v4 + 40) & 1) == 0;
+  v9 = (*(equalCopy + 40) & 1) == 0;
   if (*&self->_has)
   {
-    if (*(v4 + 40))
+    if (*(equalCopy + 40))
     {
       if (self->_placeholder)
       {
-        if ((*(v4 + 37) & 1) == 0)
+        if ((*(equalCopy + 37) & 1) == 0)
         {
           goto LABEL_15;
         }
       }
 
-      else if (*(v4 + 37))
+      else if (*(equalCopy + 37))
       {
         goto LABEL_15;
       }
@@ -298,33 +298,33 @@ LABEL_16:
   return v4 ^ v3 ^ (2654435761 * hosted) ^ (2654435761 * routeType) ^ v7 ^ v8;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 3))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 3))
   {
     [(_MRGroupSessionInfoProtobuf *)self setIdentifier:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(_MRGroupSessionInfoProtobuf *)self setHostDisplayName:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  self->_routeType = *(v4 + 8);
-  self->_hosted = *(v4 + 36);
-  if (*(v4 + 1))
+  self->_routeType = *(fromCopy + 8);
+  self->_hosted = *(fromCopy + 36);
+  if (*(fromCopy + 1))
   {
     [(_MRGroupSessionInfoProtobuf *)self setEquivalentMediaIdentifier:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 40))
+  if (*(fromCopy + 40))
   {
-    self->_placeholder = *(v4 + 37);
+    self->_placeholder = *(fromCopy + 37);
     *&self->_has |= 1u;
   }
 }

@@ -1,7 +1,7 @@
 @interface UARPMetaDataVoiceAssistCertificate
 - (UARPMetaDataVoiceAssistCertificate)init;
-- (UARPMetaDataVoiceAssistCertificate)initWithLength:(unint64_t)a3 value:(void *)a4;
-- (UARPMetaDataVoiceAssistCertificate)initWithPropertyListValue:(id)a3 relativeURL:(id)a4;
+- (UARPMetaDataVoiceAssistCertificate)initWithLength:(unint64_t)length value:(void *)value;
+- (UARPMetaDataVoiceAssistCertificate)initWithPropertyListValue:(id)value relativeURL:(id)l;
 - (id)description;
 @end
 
@@ -23,16 +23,16 @@
   return v3;
 }
 
-- (UARPMetaDataVoiceAssistCertificate)initWithPropertyListValue:(id)a3 relativeURL:(id)a4
+- (UARPMetaDataVoiceAssistCertificate)initWithPropertyListValue:(id)value relativeURL:(id)l
 {
-  v5 = a3;
+  valueCopy = value;
   v6 = [(UARPMetaDataVoiceAssistCertificate *)self init];
   v7 = v6;
   if (v6)
   {
     v13.receiver = v6;
     v13.super_class = UARPMetaDataVoiceAssistCertificate;
-    v8 = [(UARPMetaData *)&v13 dataFromPlistValue:v5];
+    v8 = [(UARPMetaData *)&v13 dataFromPlistValue:valueCopy];
     modelCertificate = v7->_modelCertificate;
     v7->_modelCertificate = v8;
 
@@ -52,12 +52,12 @@ LABEL_6:
   return v11;
 }
 
-- (UARPMetaDataVoiceAssistCertificate)initWithLength:(unint64_t)a3 value:(void *)a4
+- (UARPMetaDataVoiceAssistCertificate)initWithLength:(unint64_t)length value:(void *)value
 {
   v6 = [(UARPMetaDataVoiceAssistCertificate *)self init];
   if (v6)
   {
-    v7 = [[NSData alloc] initWithBytes:a4 length:a3];
+    v7 = [[NSData alloc] initWithBytes:value length:length];
     modelCertificate = v6->_modelCertificate;
     v6->_modelCertificate = v7;
 
@@ -69,9 +69,9 @@ LABEL_6:
 
 - (id)description
 {
-  v3 = [(UARPMetaData *)self tlvName];
-  v4 = [(UARPMetaDataVoiceAssistCertificate *)self modelCertificate];
-  v5 = [NSString stringWithFormat:@"<%@: %@>", v3, v4];
+  tlvName = [(UARPMetaData *)self tlvName];
+  modelCertificate = [(UARPMetaDataVoiceAssistCertificate *)self modelCertificate];
+  v5 = [NSString stringWithFormat:@"<%@: %@>", tlvName, modelCertificate];
 
   return v5;
 }

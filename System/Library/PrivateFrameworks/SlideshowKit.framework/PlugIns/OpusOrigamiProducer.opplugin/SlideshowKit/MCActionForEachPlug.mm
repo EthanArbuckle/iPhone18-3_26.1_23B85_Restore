@@ -1,33 +1,33 @@
 @interface MCActionForEachPlug
-+ (id)forEachPlugActionForTargetPlugObjectID:(id)a3 withAction:(id)a4 andPrefix:(id)a5;
-- (MCActionForEachPlug)initWithImprint:(id)a3;
++ (id)forEachPlugActionForTargetPlugObjectID:(id)d withAction:(id)action andPrefix:(id)prefix;
+- (MCActionForEachPlug)initWithImprint:(id)imprint;
 - (id)description;
 - (id)imprint;
-- (void)_copySelfToSnapshot:(id)a3;
+- (void)_copySelfToSnapshot:(id)snapshot;
 - (void)demolish;
 @end
 
 @implementation MCActionForEachPlug
 
-+ (id)forEachPlugActionForTargetPlugObjectID:(id)a3 withAction:(id)a4 andPrefix:(id)a5
++ (id)forEachPlugActionForTargetPlugObjectID:(id)d withAction:(id)action andPrefix:(id)prefix
 {
   v8 = objc_alloc_init(MCActionForEachPlug);
-  [(MCAction *)v8 setTargetObjectID:a3];
-  [(MCActionForEachPlug *)v8 setAction:a4];
-  [(MCActionForEachPlug *)v8 setPrefix:a5];
+  [(MCAction *)v8 setTargetObjectID:d];
+  [(MCActionForEachPlug *)v8 setAction:action];
+  [(MCActionForEachPlug *)v8 setPrefix:prefix];
 
   return v8;
 }
 
-- (MCActionForEachPlug)initWithImprint:(id)a3
+- (MCActionForEachPlug)initWithImprint:(id)imprint
 {
   v6.receiver = self;
   v6.super_class = MCActionForEachPlug;
   v4 = [(MCAction *)&v6 initWithImprint:?];
   if (v4)
   {
-    v4->_action = +[MCObjectLight objectWithImprint:](MCObjectLight, "objectWithImprint:", [a3 objectForKey:@"action"]);
-    v4->_prefix = [a3 objectForKey:@"prefix"];
+    v4->_action = +[MCObjectLight objectWithImprint:](MCObjectLight, "objectWithImprint:", [imprint objectForKey:@"action"]);
+    v4->_prefix = [imprint objectForKey:@"prefix"];
   }
 
   return v4;
@@ -47,23 +47,23 @@
 {
   v7.receiver = self;
   v7.super_class = MCActionForEachPlug;
-  v3 = [(MCAction *)&v7 imprint];
+  imprint = [(MCAction *)&v7 imprint];
   action = self->_action;
   if (action)
   {
-    [v3 setObject:-[MCAction imprint](action forKey:{"imprint"), @"action"}];
+    [imprint setObject:-[MCAction imprint](action forKey:{"imprint"), @"action"}];
   }
 
   prefix = self->_prefix;
   if (prefix)
   {
-    [v3 setObject:prefix forKey:@"prefix"];
+    [imprint setObject:prefix forKey:@"prefix"];
   }
 
-  return v3;
+  return imprint;
 }
 
-- (void)_copySelfToSnapshot:(id)a3
+- (void)_copySelfToSnapshot:(id)snapshot
 {
   v7.receiver = self;
   v7.super_class = MCActionForEachPlug;
@@ -71,13 +71,13 @@
   action = self->_action;
   if (action)
   {
-    *(a3 + 3) = [(MCAction *)action snapshot];
+    *(snapshot + 3) = [(MCAction *)action snapshot];
   }
 
   prefix = self->_prefix;
   if (prefix)
   {
-    *(a3 + 4) = [(NSString *)prefix copy];
+    *(snapshot + 4) = [(NSString *)prefix copy];
   }
 }
 

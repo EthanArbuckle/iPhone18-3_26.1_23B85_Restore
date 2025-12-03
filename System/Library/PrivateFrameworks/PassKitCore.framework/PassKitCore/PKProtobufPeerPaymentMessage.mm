@@ -1,21 +1,21 @@
 @interface PKProtobufPeerPaymentMessage
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)messagesContextAsString:(int)a3;
-- (id)typeAsString:(int)a3;
-- (int)StringAsMessagesContext:(id)a3;
-- (int)StringAsType:(id)a3;
+- (id)messagesContextAsString:(int)string;
+- (id)typeAsString:(int)string;
+- (int)StringAsMessagesContext:(id)context;
+- (int)StringAsType:(id)type;
 - (int)messagesContext;
 - (int)type;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasMessagesContext:(BOOL)a3;
-- (void)setHasRecurringPaymentStartDate:(BOOL)a3;
-- (void)setHasType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasMessagesContext:(BOOL)context;
+- (void)setHasRecurringPaymentStartDate:(BOOL)date;
+- (void)setHasType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PKProtobufPeerPaymentMessage
@@ -33,9 +33,9 @@
   }
 }
 
-- (void)setHasType:(BOOL)a3
+- (void)setHasType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 8;
   }
@@ -48,40 +48,40 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (id)typeAsString:(int)a3
+- (id)typeAsString:(int)string
 {
-  if (a3 >= 4)
+  if (string >= 4)
   {
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&a3];
+    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   else
   {
-    v4 = off_1E79CCB68[a3];
+    v4 = off_1E79CCB68[string];
   }
 
   return v4;
 }
 
-- (int)StringAsType:(id)a3
+- (int)StringAsType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"UNKNOWN"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"PAYMENT"])
+  else if ([typeCopy isEqualToString:@"PAYMENT"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"REQUEST"])
+  else if ([typeCopy isEqualToString:@"REQUEST"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"RECURRING_PAYMENT"])
+  else if ([typeCopy isEqualToString:@"RECURRING_PAYMENT"])
   {
     v4 = 3;
   }
@@ -94,9 +94,9 @@
   return v4;
 }
 
-- (void)setHasRecurringPaymentStartDate:(BOOL)a3
+- (void)setHasRecurringPaymentStartDate:(BOOL)date
 {
-  if (a3)
+  if (date)
   {
     v3 = 2;
   }
@@ -122,9 +122,9 @@
   }
 }
 
-- (void)setHasMessagesContext:(BOOL)a3
+- (void)setHasMessagesContext:(BOOL)context
 {
-  if (a3)
+  if (context)
   {
     v3 = 4;
   }
@@ -137,35 +137,35 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (id)messagesContextAsString:(int)a3
+- (id)messagesContextAsString:(int)string
 {
-  if (a3 >= 3)
+  if (string >= 3)
   {
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&a3];
+    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   else
   {
-    v4 = off_1E79CCB88[a3];
+    v4 = off_1E79CCB88[string];
   }
 
   return v4;
 }
 
-- (int)StringAsMessagesContext:(id)a3
+- (int)StringAsMessagesContext:(id)context
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN"])
+  contextCopy = context;
+  if ([contextCopy isEqualToString:@"UNKNOWN"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"INDIVIDUAL"])
+  else if ([contextCopy isEqualToString:@"INDIVIDUAL"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"GROUP"])
+  else if ([contextCopy isEqualToString:@"GROUP"])
   {
     v4 = 2;
   }
@@ -184,22 +184,22 @@
   v8.receiver = self;
   v8.super_class = PKProtobufPeerPaymentMessage;
   v4 = [(PKProtobufPeerPaymentMessage *)&v8 description];
-  v5 = [(PKProtobufPeerPaymentMessage *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(PKProtobufPeerPaymentMessage *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_version];
-  [v3 setObject:v4 forKey:@"version"];
+  [dictionary setObject:v4 forKey:@"version"];
 
   identifier = self->_identifier;
   if (identifier)
   {
-    [v3 setObject:identifier forKey:@"identifier"];
+    [dictionary setObject:identifier forKey:@"identifier"];
   }
 
   if ((*&self->_has & 8) != 0)
@@ -215,104 +215,104 @@
       v7 = off_1E79CCB68[type];
     }
 
-    [v3 setObject:v7 forKey:@"type"];
+    [dictionary setObject:v7 forKey:@"type"];
   }
 
   currency = self->_currency;
   if (currency)
   {
-    [v3 setObject:currency forKey:@"currency"];
+    [dictionary setObject:currency forKey:@"currency"];
   }
 
   if (*&self->_has)
   {
     v9 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_amount];
-    [v3 setObject:v9 forKey:@"amount"];
+    [dictionary setObject:v9 forKey:@"amount"];
   }
 
   decimalAmount = self->_decimalAmount;
   if (decimalAmount)
   {
-    v11 = [(PKProtobufNSDecimalNumber *)decimalAmount dictionaryRepresentation];
-    [v3 setObject:v11 forKey:@"decimal_amount"];
+    dictionaryRepresentation = [(PKProtobufNSDecimalNumber *)decimalAmount dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"decimal_amount"];
   }
 
   senderAddress = self->_senderAddress;
   if (senderAddress)
   {
-    [v3 setObject:senderAddress forKey:@"senderAddress"];
+    [dictionary setObject:senderAddress forKey:@"senderAddress"];
   }
 
   recipientAddress = self->_recipientAddress;
   if (recipientAddress)
   {
-    [v3 setObject:recipientAddress forKey:@"recipientAddress"];
+    [dictionary setObject:recipientAddress forKey:@"recipientAddress"];
   }
 
   requestToken = self->_requestToken;
   if (requestToken)
   {
-    [v3 setObject:requestToken forKey:@"requestToken"];
+    [dictionary setObject:requestToken forKey:@"requestToken"];
   }
 
   paymentIdentifier = self->_paymentIdentifier;
   if (paymentIdentifier)
   {
-    [v3 setObject:paymentIdentifier forKey:@"paymentIdentifier"];
+    [dictionary setObject:paymentIdentifier forKey:@"paymentIdentifier"];
   }
 
   transactionIdentifier = self->_transactionIdentifier;
   if (transactionIdentifier)
   {
-    [v3 setObject:transactionIdentifier forKey:@"transactionIdentifier"];
+    [dictionary setObject:transactionIdentifier forKey:@"transactionIdentifier"];
   }
 
   memo = self->_memo;
   if (memo)
   {
-    [v3 setObject:memo forKey:@"memo"];
+    [dictionary setObject:memo forKey:@"memo"];
   }
 
   requestDeviceScoreIdentifier = self->_requestDeviceScoreIdentifier;
   if (requestDeviceScoreIdentifier)
   {
-    [v3 setObject:requestDeviceScoreIdentifier forKey:@"requestDeviceScoreIdentifier"];
+    [dictionary setObject:requestDeviceScoreIdentifier forKey:@"requestDeviceScoreIdentifier"];
   }
 
   recurringPaymentIdentifier = self->_recurringPaymentIdentifier;
   if (recurringPaymentIdentifier)
   {
-    [v3 setObject:recurringPaymentIdentifier forKey:@"recurringPaymentIdentifier"];
+    [dictionary setObject:recurringPaymentIdentifier forKey:@"recurringPaymentIdentifier"];
   }
 
   recurringPaymentEmoji = self->_recurringPaymentEmoji;
   if (recurringPaymentEmoji)
   {
-    [v3 setObject:recurringPaymentEmoji forKey:@"recurringPaymentEmoji"];
+    [dictionary setObject:recurringPaymentEmoji forKey:@"recurringPaymentEmoji"];
   }
 
   recurringPaymentColor = self->_recurringPaymentColor;
   if (recurringPaymentColor)
   {
-    [v3 setObject:recurringPaymentColor forKey:@"recurringPaymentColor"];
+    [dictionary setObject:recurringPaymentColor forKey:@"recurringPaymentColor"];
   }
 
   if ((*&self->_has & 2) != 0)
   {
     v22 = [MEMORY[0x1E696AD98] numberWithDouble:self->_recurringPaymentStartDate];
-    [v3 setObject:v22 forKey:@"recurringPaymentStartDate"];
+    [dictionary setObject:v22 forKey:@"recurringPaymentStartDate"];
   }
 
   recurringPaymentFrequency = self->_recurringPaymentFrequency;
   if (recurringPaymentFrequency)
   {
-    [v3 setObject:recurringPaymentFrequency forKey:@"recurringPaymentFrequency"];
+    [dictionary setObject:recurringPaymentFrequency forKey:@"recurringPaymentFrequency"];
   }
 
   localData = self->_localData;
   if (localData)
   {
-    [v3 setObject:localData forKey:@"localData"];
+    [dictionary setObject:localData forKey:@"localData"];
   }
 
   if ((*&self->_has & 4) != 0)
@@ -328,27 +328,27 @@
       v26 = off_1E79CCB88[messagesContext];
     }
 
-    [v3 setObject:v26 forKey:@"messagesContext"];
+    [dictionary setObject:v26 forKey:@"messagesContext"];
   }
 
   paymentSignature = self->_paymentSignature;
   if (paymentSignature)
   {
-    [v3 setObject:paymentSignature forKey:@"paymentSignature"];
+    [dictionary setObject:paymentSignature forKey:@"paymentSignature"];
   }
 
   messagesGroupIdentifier = self->_messagesGroupIdentifier;
   if (messagesGroupIdentifier)
   {
-    [v3 setObject:messagesGroupIdentifier forKey:@"messagesGroupIdentifier"];
+    [dictionary setObject:messagesGroupIdentifier forKey:@"messagesGroupIdentifier"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   PBDataWriterWriteUint32Field();
   if (self->_identifier)
   {
@@ -360,259 +360,259 @@
     PBDataWriterWriteInt32Field();
   }
 
-  v4 = v5;
+  v4 = toCopy;
   if (self->_currency)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    v4 = toCopy;
   }
 
   if (*&self->_has)
   {
     PBDataWriterWriteSint64Field();
-    v4 = v5;
+    v4 = toCopy;
   }
 
   if (self->_senderAddress)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    v4 = toCopy;
   }
 
   if (self->_recipientAddress)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    v4 = toCopy;
   }
 
   if (self->_requestToken)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    v4 = toCopy;
   }
 
   if (self->_paymentIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    v4 = toCopy;
   }
 
   if (self->_transactionIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    v4 = toCopy;
   }
 
   if (self->_memo)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    v4 = toCopy;
   }
 
   if (self->_requestDeviceScoreIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    v4 = toCopy;
   }
 
   if (self->_recurringPaymentIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    v4 = toCopy;
   }
 
   if (self->_recurringPaymentEmoji)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    v4 = toCopy;
   }
 
   if (self->_recurringPaymentColor)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    v4 = toCopy;
   }
 
   if ((*&self->_has & 2) != 0)
   {
     PBDataWriterWriteDoubleField();
-    v4 = v5;
+    v4 = toCopy;
   }
 
   if (self->_recurringPaymentFrequency)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    v4 = toCopy;
   }
 
   if (self->_decimalAmount)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    v4 = toCopy;
   }
 
   if (self->_localData)
   {
     PBDataWriterWriteDataField();
-    v4 = v5;
+    v4 = toCopy;
   }
 
   if ((*&self->_has & 4) != 0)
   {
     PBDataWriterWriteInt32Field();
-    v4 = v5;
+    v4 = toCopy;
   }
 
   if (self->_paymentSignature)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    v4 = toCopy;
   }
 
   if (self->_messagesGroupIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    v4 = toCopy;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v4[43] = self->_version;
-  v5 = v4;
+  toCopy = to;
+  toCopy[43] = self->_version;
+  v5 = toCopy;
   if (self->_identifier)
   {
-    [v4 setIdentifier:?];
-    v4 = v5;
+    [toCopy setIdentifier:?];
+    toCopy = v5;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    v4[42] = self->_type;
-    *(v4 + 176) |= 8u;
+    toCopy[42] = self->_type;
+    *(toCopy + 176) |= 8u;
   }
 
   if (self->_currency)
   {
     [v5 setCurrency:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 1) = self->_amount;
-    *(v4 + 176) |= 1u;
+    *(toCopy + 1) = self->_amount;
+    *(toCopy + 176) |= 1u;
   }
 
   if (self->_senderAddress)
   {
     [v5 setSenderAddress:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_recipientAddress)
   {
     [v5 setRecipientAddress:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_requestToken)
   {
     [v5 setRequestToken:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_paymentIdentifier)
   {
     [v5 setPaymentIdentifier:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_transactionIdentifier)
   {
     [v5 setTransactionIdentifier:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_memo)
   {
     [v5 setMemo:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_requestDeviceScoreIdentifier)
   {
     [v5 setRequestDeviceScoreIdentifier:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_recurringPaymentIdentifier)
   {
     [v5 setRecurringPaymentIdentifier:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_recurringPaymentEmoji)
   {
     [v5 setRecurringPaymentEmoji:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_recurringPaymentColor)
   {
     [v5 setRecurringPaymentColor:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    *(v4 + 2) = *&self->_recurringPaymentStartDate;
-    *(v4 + 176) |= 2u;
+    *(toCopy + 2) = *&self->_recurringPaymentStartDate;
+    *(toCopy + 176) |= 2u;
   }
 
   if (self->_recurringPaymentFrequency)
   {
     [v5 setRecurringPaymentFrequency:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_decimalAmount)
   {
     [v5 setDecimalAmount:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_localData)
   {
     [v5 setLocalData:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    v4[16] = self->_messagesContext;
-    *(v4 + 176) |= 4u;
+    toCopy[16] = self->_messagesContext;
+    *(toCopy + 176) |= 4u;
   }
 
   if (self->_paymentSignature)
   {
     [v5 setPaymentSignature:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_messagesGroupIdentifier)
   {
     [v5 setMessagesGroupIdentifier:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(v5 + 172) = self->_version;
-  v6 = [(NSString *)self->_identifier copyWithZone:a3];
+  v6 = [(NSString *)self->_identifier copyWithZone:zone];
   v7 = *(v5 + 40);
   *(v5 + 40) = v6;
 
@@ -622,7 +622,7 @@
     *(v5 + 176) |= 8u;
   }
 
-  v8 = [(NSString *)self->_currency copyWithZone:a3];
+  v8 = [(NSString *)self->_currency copyWithZone:zone];
   v9 = *(v5 + 24);
   *(v5 + 24) = v8;
 
@@ -632,43 +632,43 @@
     *(v5 + 176) |= 1u;
   }
 
-  v10 = [(NSString *)self->_senderAddress copyWithZone:a3];
+  v10 = [(NSString *)self->_senderAddress copyWithZone:zone];
   v11 = *(v5 + 152);
   *(v5 + 152) = v10;
 
-  v12 = [(NSString *)self->_recipientAddress copyWithZone:a3];
+  v12 = [(NSString *)self->_recipientAddress copyWithZone:zone];
   v13 = *(v5 + 96);
   *(v5 + 96) = v12;
 
-  v14 = [(NSString *)self->_requestToken copyWithZone:a3];
+  v14 = [(NSString *)self->_requestToken copyWithZone:zone];
   v15 = *(v5 + 144);
   *(v5 + 144) = v14;
 
-  v16 = [(NSString *)self->_paymentIdentifier copyWithZone:a3];
+  v16 = [(NSString *)self->_paymentIdentifier copyWithZone:zone];
   v17 = *(v5 + 80);
   *(v5 + 80) = v16;
 
-  v18 = [(NSString *)self->_transactionIdentifier copyWithZone:a3];
+  v18 = [(NSString *)self->_transactionIdentifier copyWithZone:zone];
   v19 = *(v5 + 160);
   *(v5 + 160) = v18;
 
-  v20 = [(NSString *)self->_memo copyWithZone:a3];
+  v20 = [(NSString *)self->_memo copyWithZone:zone];
   v21 = *(v5 + 56);
   *(v5 + 56) = v20;
 
-  v22 = [(NSString *)self->_requestDeviceScoreIdentifier copyWithZone:a3];
+  v22 = [(NSString *)self->_requestDeviceScoreIdentifier copyWithZone:zone];
   v23 = *(v5 + 136);
   *(v5 + 136) = v22;
 
-  v24 = [(NSString *)self->_recurringPaymentIdentifier copyWithZone:a3];
+  v24 = [(NSString *)self->_recurringPaymentIdentifier copyWithZone:zone];
   v25 = *(v5 + 128);
   *(v5 + 128) = v24;
 
-  v26 = [(NSString *)self->_recurringPaymentEmoji copyWithZone:a3];
+  v26 = [(NSString *)self->_recurringPaymentEmoji copyWithZone:zone];
   v27 = *(v5 + 112);
   *(v5 + 112) = v26;
 
-  v28 = [(NSString *)self->_recurringPaymentColor copyWithZone:a3];
+  v28 = [(NSString *)self->_recurringPaymentColor copyWithZone:zone];
   v29 = *(v5 + 104);
   *(v5 + 104) = v28;
 
@@ -678,15 +678,15 @@
     *(v5 + 176) |= 2u;
   }
 
-  v30 = [(NSString *)self->_recurringPaymentFrequency copyWithZone:a3];
+  v30 = [(NSString *)self->_recurringPaymentFrequency copyWithZone:zone];
   v31 = *(v5 + 120);
   *(v5 + 120) = v30;
 
-  v32 = [(PKProtobufNSDecimalNumber *)self->_decimalAmount copyWithZone:a3];
+  v32 = [(PKProtobufNSDecimalNumber *)self->_decimalAmount copyWithZone:zone];
   v33 = *(v5 + 32);
   *(v5 + 32) = v32;
 
-  v34 = [(NSData *)self->_localData copyWithZone:a3];
+  v34 = [(NSData *)self->_localData copyWithZone:zone];
   v35 = *(v5 + 48);
   *(v5 + 48) = v34;
 
@@ -696,32 +696,32 @@
     *(v5 + 176) |= 4u;
   }
 
-  v36 = [(NSString *)self->_paymentSignature copyWithZone:a3];
+  v36 = [(NSString *)self->_paymentSignature copyWithZone:zone];
   v37 = *(v5 + 88);
   *(v5 + 88) = v36;
 
-  v38 = [(NSString *)self->_messagesGroupIdentifier copyWithZone:a3];
+  v38 = [(NSString *)self->_messagesGroupIdentifier copyWithZone:zone];
   v39 = *(v5 + 72);
   *(v5 + 72) = v38;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_58;
   }
 
-  if (self->_version != *(v4 + 43))
+  if (self->_version != *(equalCopy + 43))
   {
     goto LABEL_58;
   }
 
   identifier = self->_identifier;
-  if (identifier | *(v4 + 5))
+  if (identifier | *(equalCopy + 5))
   {
     if (![(NSString *)identifier isEqual:?])
     {
@@ -730,22 +730,22 @@
   }
 
   has = self->_has;
-  v7 = *(v4 + 176);
+  v7 = *(equalCopy + 176);
   if ((has & 8) != 0)
   {
-    if ((*(v4 + 176) & 8) == 0 || self->_type != *(v4 + 42))
+    if ((*(equalCopy + 176) & 8) == 0 || self->_type != *(equalCopy + 42))
     {
       goto LABEL_58;
     }
   }
 
-  else if ((*(v4 + 176) & 8) != 0)
+  else if ((*(equalCopy + 176) & 8) != 0)
   {
     goto LABEL_58;
   }
 
   currency = self->_currency;
-  if (currency | *(v4 + 3))
+  if (currency | *(equalCopy + 3))
   {
     if (![(NSString *)currency isEqual:?])
     {
@@ -755,12 +755,12 @@ LABEL_58:
     }
 
     has = self->_has;
-    v7 = *(v4 + 176);
+    v7 = *(equalCopy + 176);
   }
 
   if (has)
   {
-    if ((v7 & 1) == 0 || self->_amount != *(v4 + 1))
+    if ((v7 & 1) == 0 || self->_amount != *(equalCopy + 1))
     {
       goto LABEL_58;
     }
@@ -772,13 +772,13 @@ LABEL_58:
   }
 
   senderAddress = self->_senderAddress;
-  if (senderAddress | *(v4 + 19) && ![(NSString *)senderAddress isEqual:?])
+  if (senderAddress | *(equalCopy + 19) && ![(NSString *)senderAddress isEqual:?])
   {
     goto LABEL_58;
   }
 
   recipientAddress = self->_recipientAddress;
-  if (recipientAddress | *(v4 + 12))
+  if (recipientAddress | *(equalCopy + 12))
   {
     if (![(NSString *)recipientAddress isEqual:?])
     {
@@ -787,7 +787,7 @@ LABEL_58:
   }
 
   requestToken = self->_requestToken;
-  if (requestToken | *(v4 + 18))
+  if (requestToken | *(equalCopy + 18))
   {
     if (![(NSString *)requestToken isEqual:?])
     {
@@ -796,7 +796,7 @@ LABEL_58:
   }
 
   paymentIdentifier = self->_paymentIdentifier;
-  if (paymentIdentifier | *(v4 + 10))
+  if (paymentIdentifier | *(equalCopy + 10))
   {
     if (![(NSString *)paymentIdentifier isEqual:?])
     {
@@ -805,7 +805,7 @@ LABEL_58:
   }
 
   transactionIdentifier = self->_transactionIdentifier;
-  if (transactionIdentifier | *(v4 + 20))
+  if (transactionIdentifier | *(equalCopy + 20))
   {
     if (![(NSString *)transactionIdentifier isEqual:?])
     {
@@ -814,7 +814,7 @@ LABEL_58:
   }
 
   memo = self->_memo;
-  if (memo | *(v4 + 7))
+  if (memo | *(equalCopy + 7))
   {
     if (![(NSString *)memo isEqual:?])
     {
@@ -823,7 +823,7 @@ LABEL_58:
   }
 
   requestDeviceScoreIdentifier = self->_requestDeviceScoreIdentifier;
-  if (requestDeviceScoreIdentifier | *(v4 + 17))
+  if (requestDeviceScoreIdentifier | *(equalCopy + 17))
   {
     if (![(NSString *)requestDeviceScoreIdentifier isEqual:?])
     {
@@ -832,7 +832,7 @@ LABEL_58:
   }
 
   recurringPaymentIdentifier = self->_recurringPaymentIdentifier;
-  if (recurringPaymentIdentifier | *(v4 + 16))
+  if (recurringPaymentIdentifier | *(equalCopy + 16))
   {
     if (![(NSString *)recurringPaymentIdentifier isEqual:?])
     {
@@ -841,7 +841,7 @@ LABEL_58:
   }
 
   recurringPaymentEmoji = self->_recurringPaymentEmoji;
-  if (recurringPaymentEmoji | *(v4 + 14))
+  if (recurringPaymentEmoji | *(equalCopy + 14))
   {
     if (![(NSString *)recurringPaymentEmoji isEqual:?])
     {
@@ -850,7 +850,7 @@ LABEL_58:
   }
 
   recurringPaymentColor = self->_recurringPaymentColor;
-  if (recurringPaymentColor | *(v4 + 13))
+  if (recurringPaymentColor | *(equalCopy + 13))
   {
     if (![(NSString *)recurringPaymentColor isEqual:?])
     {
@@ -860,25 +860,25 @@ LABEL_58:
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 176) & 2) == 0 || self->_recurringPaymentStartDate != *(v4 + 2))
+    if ((*(equalCopy + 176) & 2) == 0 || self->_recurringPaymentStartDate != *(equalCopy + 2))
     {
       goto LABEL_58;
     }
   }
 
-  else if ((*(v4 + 176) & 2) != 0)
+  else if ((*(equalCopy + 176) & 2) != 0)
   {
     goto LABEL_58;
   }
 
   recurringPaymentFrequency = self->_recurringPaymentFrequency;
-  if (recurringPaymentFrequency | *(v4 + 15) && ![(NSString *)recurringPaymentFrequency isEqual:?])
+  if (recurringPaymentFrequency | *(equalCopy + 15) && ![(NSString *)recurringPaymentFrequency isEqual:?])
   {
     goto LABEL_58;
   }
 
   decimalAmount = self->_decimalAmount;
-  if (decimalAmount | *(v4 + 4))
+  if (decimalAmount | *(equalCopy + 4))
   {
     if (![(PKProtobufNSDecimalNumber *)decimalAmount isEqual:?])
     {
@@ -887,7 +887,7 @@ LABEL_58:
   }
 
   localData = self->_localData;
-  if (localData | *(v4 + 6))
+  if (localData | *(equalCopy + 6))
   {
     if (![(NSData *)localData isEqual:?])
     {
@@ -897,25 +897,25 @@ LABEL_58:
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 176) & 4) == 0 || self->_messagesContext != *(v4 + 16))
+    if ((*(equalCopy + 176) & 4) == 0 || self->_messagesContext != *(equalCopy + 16))
     {
       goto LABEL_58;
     }
   }
 
-  else if ((*(v4 + 176) & 4) != 0)
+  else if ((*(equalCopy + 176) & 4) != 0)
   {
     goto LABEL_58;
   }
 
   paymentSignature = self->_paymentSignature;
-  if (paymentSignature | *(v4 + 11) && ![(NSString *)paymentSignature isEqual:?])
+  if (paymentSignature | *(equalCopy + 11) && ![(NSString *)paymentSignature isEqual:?])
   {
     goto LABEL_58;
   }
 
   messagesGroupIdentifier = self->_messagesGroupIdentifier;
-  if (messagesGroupIdentifier | *(v4 + 9))
+  if (messagesGroupIdentifier | *(equalCopy + 9))
   {
     v24 = [(NSString *)messagesGroupIdentifier isEqual:?];
   }
@@ -1016,109 +1016,109 @@ LABEL_59:
   return v17 ^ v18 ^ [(NSString *)self->_messagesGroupIdentifier hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  self->_version = *(v4 + 43);
-  v7 = v4;
-  if (*(v4 + 5))
+  fromCopy = from;
+  self->_version = *(fromCopy + 43);
+  v7 = fromCopy;
+  if (*(fromCopy + 5))
   {
     [(PKProtobufPeerPaymentMessage *)self setIdentifier:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if ((*(v4 + 176) & 8) != 0)
+  if ((*(fromCopy + 176) & 8) != 0)
   {
-    self->_type = *(v4 + 42);
+    self->_type = *(fromCopy + 42);
     *&self->_has |= 8u;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(PKProtobufPeerPaymentMessage *)self setCurrency:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (*(v4 + 176))
+  if (*(fromCopy + 176))
   {
-    self->_amount = *(v4 + 1);
+    self->_amount = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 19))
+  if (*(fromCopy + 19))
   {
     [(PKProtobufPeerPaymentMessage *)self setSenderAddress:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (*(v4 + 12))
+  if (*(fromCopy + 12))
   {
     [(PKProtobufPeerPaymentMessage *)self setRecipientAddress:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (*(v4 + 18))
+  if (*(fromCopy + 18))
   {
     [(PKProtobufPeerPaymentMessage *)self setRequestToken:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (*(v4 + 10))
+  if (*(fromCopy + 10))
   {
     [(PKProtobufPeerPaymentMessage *)self setPaymentIdentifier:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (*(v4 + 20))
+  if (*(fromCopy + 20))
   {
     [(PKProtobufPeerPaymentMessage *)self setTransactionIdentifier:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (*(v4 + 7))
+  if (*(fromCopy + 7))
   {
     [(PKProtobufPeerPaymentMessage *)self setMemo:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (*(v4 + 17))
+  if (*(fromCopy + 17))
   {
     [(PKProtobufPeerPaymentMessage *)self setRequestDeviceScoreIdentifier:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (*(v4 + 16))
+  if (*(fromCopy + 16))
   {
     [(PKProtobufPeerPaymentMessage *)self setRecurringPaymentIdentifier:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (*(v4 + 14))
+  if (*(fromCopy + 14))
   {
     [(PKProtobufPeerPaymentMessage *)self setRecurringPaymentEmoji:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (*(v4 + 13))
+  if (*(fromCopy + 13))
   {
     [(PKProtobufPeerPaymentMessage *)self setRecurringPaymentColor:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if ((*(v4 + 176) & 2) != 0)
+  if ((*(fromCopy + 176) & 2) != 0)
   {
-    self->_recurringPaymentStartDate = *(v4 + 2);
+    self->_recurringPaymentStartDate = *(fromCopy + 2);
     *&self->_has |= 2u;
   }
 
-  if (*(v4 + 15))
+  if (*(fromCopy + 15))
   {
     [(PKProtobufPeerPaymentMessage *)self setRecurringPaymentFrequency:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
   decimalAmount = self->_decimalAmount;
-  v6 = *(v4 + 4);
+  v6 = *(fromCopy + 4);
   if (decimalAmount)
   {
     if (!v6)
@@ -1139,30 +1139,30 @@ LABEL_59:
     [(PKProtobufPeerPaymentMessage *)self setDecimalAmount:?];
   }
 
-  v4 = v7;
+  fromCopy = v7;
 LABEL_39:
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(PKProtobufPeerPaymentMessage *)self setLocalData:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if ((*(v4 + 176) & 4) != 0)
+  if ((*(fromCopy + 176) & 4) != 0)
   {
-    self->_messagesContext = *(v4 + 16);
+    self->_messagesContext = *(fromCopy + 16);
     *&self->_has |= 4u;
   }
 
-  if (*(v4 + 11))
+  if (*(fromCopy + 11))
   {
     [(PKProtobufPeerPaymentMessage *)self setPaymentSignature:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (*(v4 + 9))
+  if (*(fromCopy + 9))
   {
     [(PKProtobufPeerPaymentMessage *)self setMessagesGroupIdentifier:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 }
 

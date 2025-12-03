@@ -1,7 +1,7 @@
 @interface AMSUIDHomeScreenIcons
 + (CGSize)size;
 + (double)cornerRadius;
-+ (double)scaledCornerRadiusForSize:(CGSize)a3;
++ (double)scaledCornerRadiusForSize:(CGSize)size;
 + (int)variant;
 @end
 
@@ -9,30 +9,30 @@
 
 + (double)cornerRadius
 {
-  v2 = [a1 variant];
+  variant = [self variant];
 
-  MEMORY[0x1EEE1E2A0](v2);
+  MEMORY[0x1EEE1E2A0](variant);
   return result;
 }
 
 + (CGSize)size
 {
-  v2 = [a1 variant];
+  variant = [self variant];
 
-  MEMORY[0x1EEE1E2B0](v2);
+  MEMORY[0x1EEE1E2B0](variant);
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-+ (double)scaledCornerRadiusForSize:(CGSize)a3
++ (double)scaledCornerRadiusForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  [a1 size];
+  height = size.height;
+  width = size.width;
+  [self size];
   v7 = v6;
   v9 = v8;
-  [a1 cornerRadius];
+  [self cornerRadius];
   v11 = height / v9;
   if (width > height)
   {

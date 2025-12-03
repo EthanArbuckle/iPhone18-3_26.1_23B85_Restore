@@ -24,25 +24,25 @@
   currentLocation = self->currentLocation;
   self->currentLocation = 0;
 
-  v4 = [MEMORY[0x277CBEAA8] distantPast];
+  distantPast = [MEMORY[0x277CBEAA8] distantPast];
   lastRequestLocationDate = self->lastRequestLocationDate;
-  self->lastRequestLocationDate = v4;
+  self->lastRequestLocationDate = distantPast;
 
   v6 = objc_opt_new();
   state = self->state;
   self->state = v6;
 
-  v8 = [MEMORY[0x277CBEAA8] distantPast];
+  distantPast2 = [MEMORY[0x277CBEAA8] distantPast];
   lastLOIUpdateTimestamp = self->lastLOIUpdateTimestamp;
-  self->lastLOIUpdateTimestamp = v8;
+  self->lastLOIUpdateTimestamp = distantPast2;
 
-  v10 = [MEMORY[0x277CBEAA8] distantPast];
+  distantPast3 = [MEMORY[0x277CBEAA8] distantPast];
   lastPredictedLOIsUpdateTimestamp = self->lastPredictedLOIsUpdateTimestamp;
-  self->lastPredictedLOIsUpdateTimestamp = v10;
+  self->lastPredictedLOIsUpdateTimestamp = distantPast3;
 
-  v12 = [MEMORY[0x277CBEAA8] distantPast];
+  distantPast4 = [MEMORY[0x277CBEAA8] distantPast];
   lastPredictedExitTimesUpdateTimestamp = self->lastPredictedExitTimesUpdateTimestamp;
-  self->lastPredictedExitTimesUpdateTimestamp = v12;
+  self->lastPredictedExitTimesUpdateTimestamp = distantPast4;
 
   MEMORY[0x2821F96F8]();
 }

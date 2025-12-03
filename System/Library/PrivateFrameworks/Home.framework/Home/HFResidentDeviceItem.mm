@@ -1,23 +1,23 @@
 @interface HFResidentDeviceItem
 - (HFResidentDeviceItem)init;
-- (HFResidentDeviceItem)initWithResidentDevice:(id)a3;
+- (HFResidentDeviceItem)initWithResidentDevice:(id)device;
 - (NSString)description;
-- (id)_subclass_updateWithOptions:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_subclass_updateWithOptions:(id)options;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation HFResidentDeviceItem
 
-- (HFResidentDeviceItem)initWithResidentDevice:(id)a3
+- (HFResidentDeviceItem)initWithResidentDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v9.receiver = self;
   v9.super_class = HFResidentDeviceItem;
   v6 = [(HFResidentDeviceItem *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_residentDevice, a3);
+    objc_storeStrong(&v6->_residentDevice, device);
   }
 
   return v7;
@@ -25,18 +25,18 @@
 
 - (HFResidentDeviceItem)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithResidentDevice_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HFResidentDeviceItem.m" lineNumber:34 description:{@"%s is unavailable; use %@ instead", "-[HFResidentDeviceItem init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFResidentDeviceItem.m" lineNumber:34 description:{@"%s is unavailable; use %@ instead", "-[HFResidentDeviceItem init]", v5}];
 
   return 0;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(HFResidentDeviceItem *)self residentDevice];
-  v6 = [v4 initWithResidentDevice:v5];
+  residentDevice = [(HFResidentDeviceItem *)self residentDevice];
+  v6 = [v4 initWithResidentDevice:residentDevice];
 
   [v6 copyLatestResultsFromItem:self];
   return v6;
@@ -47,31 +47,31 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(HFResidentDeviceItem *)self residentDevice];
-  v7 = [v6 hf_prettyDescription];
-  v8 = [(HFItem *)self latestResults];
-  v9 = [v3 stringWithFormat:@"<%@: %p, %@ %@>", v5, self, v7, v8];
+  residentDevice = [(HFResidentDeviceItem *)self residentDevice];
+  hf_prettyDescription = [residentDevice hf_prettyDescription];
+  latestResults = [(HFItem *)self latestResults];
+  v9 = [v3 stringWithFormat:@"<%@: %p, %@ %@>", v5, self, hf_prettyDescription, latestResults];
 
   return v9;
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
   v4 = objc_alloc_init(HFMutableItemUpdateOutcome);
-  v5 = [(HFResidentDeviceItem *)self residentDevice];
-  v6 = [v5 hf_displayName];
+  residentDevice = [(HFResidentDeviceItem *)self residentDevice];
+  hf_displayName = [residentDevice hf_displayName];
 
-  v7 = [(HFResidentDeviceItem *)self residentDevice];
-  v8 = [v7 isCurrentDevice];
+  residentDevice2 = [(HFResidentDeviceItem *)self residentDevice];
+  isCurrentDevice = [residentDevice2 isCurrentDevice];
 
-  if (v8)
+  if (isCurrentDevice)
   {
     v9 = @"HFResidentDeviceItemCurrentDeviceName";
   }
 
   else
   {
-    if ([v6 length])
+    if ([hf_displayName length])
     {
       goto LABEL_6;
     }
@@ -81,9 +81,9 @@
 
   v10 = _HFLocalizedStringWithDefaultValue(v9, v9, 1);
 
-  v6 = v10;
+  hf_displayName = v10;
 LABEL_6:
-  [(HFMutableItemUpdateOutcome *)v4 setObject:v6 forKeyedSubscript:@"title"];
+  [(HFMutableItemUpdateOutcome *)v4 setObject:hf_displayName forKeyedSubscript:@"title"];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __52__HFResidentDeviceItem__subclass_updateWithOptions___block_invoke;

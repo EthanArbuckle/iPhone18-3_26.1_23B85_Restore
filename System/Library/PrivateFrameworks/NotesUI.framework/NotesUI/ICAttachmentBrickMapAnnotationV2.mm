@@ -1,45 +1,45 @@
 @interface ICAttachmentBrickMapAnnotationV2
 - (CLLocationCoordinate2D)coordinate;
-- (ICAttachmentBrickMapAnnotationV2)initWithAttachment:(id)a3;
+- (ICAttachmentBrickMapAnnotationV2)initWithAttachment:(id)attachment;
 @end
 
 @implementation ICAttachmentBrickMapAnnotationV2
 
-- (ICAttachmentBrickMapAnnotationV2)initWithAttachment:(id)a3
+- (ICAttachmentBrickMapAnnotationV2)initWithAttachment:(id)attachment
 {
-  v4 = a3;
+  attachmentCopy = attachment;
   v17.receiver = self;
   v17.super_class = ICAttachmentBrickMapAnnotationV2;
   v5 = [(ICAttachmentBrickMapAnnotationV2 *)&v17 init];
   if (!v5)
   {
 LABEL_4:
-    v10 = v5;
+    location = v5;
     goto LABEL_6;
   }
 
-  v6 = [v4 title];
+  title = [attachmentCopy title];
   title = v5->_title;
-  v5->_title = v6;
+  v5->_title = title;
 
-  v8 = [v4 summary];
+  summary = [attachmentCopy summary];
   subtitle = v5->_subtitle;
-  v5->_subtitle = v8;
+  v5->_subtitle = summary;
 
-  v10 = [v4 location];
+  location = [attachmentCopy location];
 
-  if (v10)
+  if (location)
   {
-    v11 = [v4 location];
-    [v11 latitude];
+    location2 = [attachmentCopy location];
+    [location2 latitude];
     v13 = v12;
-    v14 = [v4 location];
-    [v14 longitude];
+    location3 = [attachmentCopy location];
+    [location3 longitude];
     v5->_coordinate = CLLocationCoordinate2DMake(v13, v15);
 
     if (!CLLocationCoordinate2DIsValid(v5->_coordinate))
     {
-      v10 = 0;
+      location = 0;
       goto LABEL_6;
     }
 
@@ -48,7 +48,7 @@ LABEL_4:
 
 LABEL_6:
 
-  return v10;
+  return location;
 }
 
 - (CLLocationCoordinate2D)coordinate

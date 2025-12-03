@@ -1,6 +1,6 @@
 @interface MFUIDSet
-- (MFUIDSet)initWithUIDs:(id)a3;
-- (MFUIDSet)initWithWrapper:(id)a3;
+- (MFUIDSet)initWithUIDs:(id)ds;
+- (MFUIDSet)initWithWrapper:(id)wrapper;
 - (NSArray)uids;
 - (int64_t)count;
 @end
@@ -28,21 +28,21 @@
   return v5;
 }
 
-- (MFUIDSet)initWithWrapper:(id)a3
+- (MFUIDSet)initWithWrapper:(id)wrapper
 {
   swift_getObjectType();
-  MEMORY[0x1E69E5928](a3);
-  return sub_1B0912DB4(a3);
+  MEMORY[0x1E69E5928](wrapper);
+  return sub_1B0912DB4(wrapper);
 }
 
-- (MFUIDSet)initWithUIDs:(id)a3
+- (MFUIDSet)initWithUIDs:(id)ds
 {
   swift_getObjectType();
-  MEMORY[0x1E69E5928](a3);
+  MEMORY[0x1E69E5928](ds);
   sub_1B039A494();
   v3 = sub_1B0E451B8();
   v6 = sub_1B0912F94(v3);
-  MEMORY[0x1E69E5920](a3);
+  MEMORY[0x1E69E5920](ds);
   return v6;
 }
 

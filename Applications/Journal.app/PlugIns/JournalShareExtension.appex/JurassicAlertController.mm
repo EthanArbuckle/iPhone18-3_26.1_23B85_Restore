@@ -1,6 +1,6 @@
 @interface JurassicAlertController
-- (_TtC21JournalShareExtension23JurassicAlertController)initWithCoder:(id)a3;
-- (_TtC21JournalShareExtension23JurassicAlertController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC21JournalShareExtension23JurassicAlertController)initWithCoder:(id)coder;
+- (_TtC21JournalShareExtension23JurassicAlertController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
 @end
 
@@ -12,12 +12,12 @@
   v6.super_class = type metadata accessor for JurassicAlertController();
   v2 = v6.receiver;
   [(JurassicAlertController *)&v6 viewDidLoad];
-  v3 = [v2 view];
-  if (v3)
+  view = [v2 view];
+  if (view)
   {
-    v4 = v3;
-    v5 = [objc_opt_self() systemIndigoColor];
-    [v4 setTintColor:v5];
+    v4 = view;
+    systemIndigoColor = [objc_opt_self() systemIndigoColor];
+    [v4 setTintColor:systemIndigoColor];
   }
 
   else
@@ -26,34 +26,34 @@
   }
 }
 
-- (_TtC21JournalShareExtension23JurassicAlertController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC21JournalShareExtension23JurassicAlertController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_100100FD4();
-    v6 = a4;
+    bundleCopy = bundle;
     v7 = sub_100100F94();
   }
 
   else
   {
-    v8 = a4;
+    bundleCopy2 = bundle;
     v7 = 0;
   }
 
   v11.receiver = self;
   v11.super_class = type metadata accessor for JurassicAlertController();
-  v9 = [(JurassicAlertController *)&v11 initWithNibName:v7 bundle:a4];
+  v9 = [(JurassicAlertController *)&v11 initWithNibName:v7 bundle:bundle];
 
   return v9;
 }
 
-- (_TtC21JournalShareExtension23JurassicAlertController)initWithCoder:(id)a3
+- (_TtC21JournalShareExtension23JurassicAlertController)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for JurassicAlertController();
-  v4 = a3;
-  v5 = [(JurassicAlertController *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(JurassicAlertController *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

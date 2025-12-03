@@ -1,11 +1,11 @@
 @interface SafariProfileDelegate
-- (id)sfWebExtensionsControllersContentBlockerManagersForAllProfiles:(id)a3;
-- (id)sfWebExtensionsControllersForAllProfiles:(id)a3;
+- (id)sfWebExtensionsControllersContentBlockerManagersForAllProfiles:(id)profiles;
+- (id)sfWebExtensionsControllersForAllProfiles:(id)profiles;
 @end
 
 @implementation SafariProfileDelegate
 
-- (id)sfWebExtensionsControllersForAllProfiles:(id)a3
+- (id)sfWebExtensionsControllersForAllProfiles:(id)profiles
 {
   v3 = +[SafariDiagnosticExtension defaultWebExtensionsController];
   v6 = v3;
@@ -14,7 +14,7 @@
   return v4;
 }
 
-- (id)sfWebExtensionsControllersContentBlockerManagersForAllProfiles:(id)a3
+- (id)sfWebExtensionsControllersContentBlockerManagersForAllProfiles:(id)profiles
 {
   v3 = +[SafariDiagnosticExtension defaultContentBlockerManager];
   v6 = v3;

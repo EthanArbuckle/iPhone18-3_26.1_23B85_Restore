@@ -1,62 +1,62 @@
 @interface CARThemeAssetVersion
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToThemeAssetVersion:(id)a3;
-- (CARThemeAssetVersion)initWithCoder:(id)a3;
-- (CARThemeAssetVersion)initWithIdentifier:(id)a3 iOSContentVersion:(id)a4 accessoryContentVersion:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToThemeAssetVersion:(id)version;
+- (CARThemeAssetVersion)initWithCoder:(id)coder;
+- (CARThemeAssetVersion)initWithIdentifier:(id)identifier iOSContentVersion:(id)version accessoryContentVersion:(id)contentVersion;
 - (id)description;
-- (int64_t)compare:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (int64_t)compare:(id)compare;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CARThemeAssetVersion
 
-- (CARThemeAssetVersion)initWithIdentifier:(id)a3 iOSContentVersion:(id)a4 accessoryContentVersion:(id)a5
+- (CARThemeAssetVersion)initWithIdentifier:(id)identifier iOSContentVersion:(id)version accessoryContentVersion:(id)contentVersion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  identifierCopy = identifier;
+  versionCopy = version;
+  contentVersionCopy = contentVersion;
   v15.receiver = self;
   v15.super_class = CARThemeAssetVersion;
   v12 = [(CARThemeAssetVersion *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_identifier, a3);
-    objc_storeStrong(&v13->_iOSContentVersion, a4);
-    objc_storeStrong(&v13->_accessoryContentVersion, a5);
+    objc_storeStrong(&v12->_identifier, identifier);
+    objc_storeStrong(&v13->_iOSContentVersion, version);
+    objc_storeStrong(&v13->_accessoryContentVersion, contentVersion);
   }
 
   return v13;
 }
 
-- (CARThemeAssetVersion)initWithCoder:(id)a3
+- (CARThemeAssetVersion)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"iOSContentVersion"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AccessoryContentVersion"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"iOSContentVersion"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AccessoryContentVersion"];
 
   v8 = [(CARThemeAssetVersion *)self initWithIdentifier:v5 iOSContentVersion:v6 accessoryContentVersion:v7];
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(CARThemeAssetVersion *)self identifier];
-  [v4 encodeObject:v5 forKey:@"identifier"];
+  coderCopy = coder;
+  identifier = [(CARThemeAssetVersion *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 
-  v6 = [(CARThemeAssetVersion *)self iOSContentVersion];
-  [v4 encodeObject:v6 forKey:@"iOSContentVersion"];
+  iOSContentVersion = [(CARThemeAssetVersion *)self iOSContentVersion];
+  [coderCopy encodeObject:iOSContentVersion forKey:@"iOSContentVersion"];
 
-  v7 = [(CARThemeAssetVersion *)self accessoryContentVersion];
-  [v4 encodeObject:v7 forKey:@"AccessoryContentVersion"];
+  accessoryContentVersion = [(CARThemeAssetVersion *)self accessoryContentVersion];
+  [coderCopy encodeObject:accessoryContentVersion forKey:@"AccessoryContentVersion"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -64,26 +64,26 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(CARThemeAssetVersion *)self isEqualToThemeAssetVersion:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(CARThemeAssetVersion *)self isEqualToThemeAssetVersion:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToThemeAssetVersion:(id)a3
+- (BOOL)isEqualToThemeAssetVersion:(id)version
 {
-  v4 = a3;
-  v5 = [(CARThemeAssetVersion *)self identifier];
-  v6 = [v4 identifier];
-  if ([v5 isEqualToString:v6])
+  versionCopy = version;
+  identifier = [(CARThemeAssetVersion *)self identifier];
+  identifier2 = [versionCopy identifier];
+  if ([identifier isEqualToString:identifier2])
   {
-    v7 = [(CARThemeAssetVersion *)self iOSContentVersion];
-    v8 = [v4 iOSContentVersion];
-    if ([v7 isEqualToString:v8])
+    iOSContentVersion = [(CARThemeAssetVersion *)self iOSContentVersion];
+    iOSContentVersion2 = [versionCopy iOSContentVersion];
+    if ([iOSContentVersion isEqualToString:iOSContentVersion2])
     {
-      v9 = [(CARThemeAssetVersion *)self accessoryContentVersion];
-      v10 = [v4 accessoryContentVersion];
-      v11 = [v9 isEqualToNumber:v10];
+      accessoryContentVersion = [(CARThemeAssetVersion *)self accessoryContentVersion];
+      accessoryContentVersion2 = [versionCopy accessoryContentVersion];
+      v11 = [accessoryContentVersion isEqualToNumber:accessoryContentVersion2];
     }
 
     else
@@ -100,23 +100,23 @@
   return v11;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  v5 = [(CARThemeAssetVersion *)self iOSContentVersion];
-  v6 = [v4 iOSContentVersion];
-  v7 = v6;
-  if (v5)
+  compareCopy = compare;
+  iOSContentVersion = [(CARThemeAssetVersion *)self iOSContentVersion];
+  iOSContentVersion2 = [compareCopy iOSContentVersion];
+  v7 = iOSContentVersion2;
+  if (iOSContentVersion)
   {
-    if ([v5 isEqualToString:@"0"] && objc_msgSend(v7, "isEqualToString:", @"0") || (v8 = objc_msgSend(v5, "cr_buildVersionCompare:", v7)) == 0)
+    if ([iOSContentVersion isEqualToString:@"0"] && objc_msgSend(v7, "isEqualToString:", @"0") || (v8 = objc_msgSend(iOSContentVersion, "cr_buildVersionCompare:", v7)) == 0)
     {
-      v9 = [(CARThemeAssetVersion *)self accessoryContentVersion];
-      v10 = [v4 accessoryContentVersion];
-      v8 = [v9 compare:v10];
+      accessoryContentVersion = [(CARThemeAssetVersion *)self accessoryContentVersion];
+      accessoryContentVersion2 = [compareCopy accessoryContentVersion];
+      v8 = [accessoryContentVersion compare:accessoryContentVersion2];
     }
   }
 
-  else if (v6)
+  else if (iOSContentVersion2)
   {
     v8 = 0;
   }
@@ -135,10 +135,10 @@
   v10.receiver = self;
   v10.super_class = CARThemeAssetVersion;
   v4 = [(CARThemeAssetVersion *)&v10 description];
-  v5 = [(CARThemeAssetVersion *)self identifier];
-  v6 = [(CARThemeAssetVersion *)self iOSContentVersion];
-  v7 = [(CARThemeAssetVersion *)self accessoryContentVersion];
-  v8 = [v3 stringWithFormat:@"%@ [id: %@, iOS version: %@, accessory version: %@]", v4, v5, v6, v7];
+  identifier = [(CARThemeAssetVersion *)self identifier];
+  iOSContentVersion = [(CARThemeAssetVersion *)self iOSContentVersion];
+  accessoryContentVersion = [(CARThemeAssetVersion *)self accessoryContentVersion];
+  v8 = [v3 stringWithFormat:@"%@ [id: %@, iOS version: %@, accessory version: %@]", v4, identifier, iOSContentVersion, accessoryContentVersion];
 
   return v8;
 }

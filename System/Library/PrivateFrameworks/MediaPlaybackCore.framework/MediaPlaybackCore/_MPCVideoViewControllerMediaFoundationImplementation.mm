@@ -1,21 +1,21 @@
 @interface _MPCVideoViewControllerMediaFoundationImplementation
 - (BOOL)_isBinCompatApp;
 - (BOOL)isReadyForDisplay;
-- (BOOL)respondsToSelector:(SEL)a3;
+- (BOOL)respondsToSelector:(SEL)selector;
 - (CGRect)videoBounds;
 - (CGSize)presentationSize;
 - (MPCPlaybackEngine)playbackEngine;
 - (MPCVideoOutputDelegate)videoOutputDelegate;
-- (_MPCVideoViewControllerMediaFoundationImplementation)initWithPlaybackEngine:(id)a3;
+- (_MPCVideoViewControllerMediaFoundationImplementation)initWithPlaybackEngine:(id)engine;
 - (id)_stateDictionary;
-- (void)_transferPropertiesFromOldPlayerController:(id)a3 toNewPlayerController:(id)a4;
-- (void)_updateViewControllerHierarchyForPlaybackEngine:(id)a3;
+- (void)_transferPropertiesFromOldPlayerController:(id)controller toNewPlayerController:(id)playerController;
+- (void)_updateViewControllerHierarchyForPlaybackEngine:(id)engine;
 - (void)dealloc;
-- (void)enterFullScreenWithCompletion:(id)a3;
-- (void)exitFullScreenWithCompletion:(id)a3;
-- (void)forwardInvocation:(id)a3;
-- (void)presentViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)showFullScreenPresentationFromView:(id)a3 completion:(id)a4;
+- (void)enterFullScreenWithCompletion:(id)completion;
+- (void)exitFullScreenWithCompletion:(id)completion;
+- (void)forwardInvocation:(id)invocation;
+- (void)presentViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
+- (void)showFullScreenPresentationFromView:(id)view completion:(id)completion;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
@@ -38,51 +38,51 @@
 
 - (BOOL)_isBinCompatApp
 {
-  v2 = [(_MPCVideoViewControllerMediaFoundationImplementation *)self traitCollection];
-  v3 = [v2 userInterfaceIdiom] == 1;
+  traitCollection = [(_MPCVideoViewControllerMediaFoundationImplementation *)self traitCollection];
+  v3 = [traitCollection userInterfaceIdiom] == 1;
 
   return v3;
 }
 
-- (void)_transferPropertiesFromOldPlayerController:(id)a3 toNewPlayerController:(id)a4
+- (void)_transferPropertiesFromOldPlayerController:(id)controller toNewPlayerController:(id)playerController
 {
-  if (a3 && a4)
+  if (controller && playerController)
   {
-    v5 = a4;
-    [v5 setAllowsVideoFrameAnalysis:{objc_msgSend(a3, "allowsVideoFrameAnalysis")}];
+    playerControllerCopy = playerController;
+    [playerControllerCopy setAllowsVideoFrameAnalysis:{objc_msgSend(controller, "allowsVideoFrameAnalysis")}];
   }
 }
 
-- (void)_updateViewControllerHierarchyForPlaybackEngine:(id)a3
+- (void)_updateViewControllerHierarchyForPlaybackEngine:(id)engine
 {
-  v12 = [a3 player];
-  v4 = [v12 playerViewController];
+  player = [engine player];
+  playerViewController = [player playerViewController];
   internalController = self->_internalController;
-  if (internalController != v4)
+  if (internalController != playerViewController)
   {
-    [(_MPCVideoViewControllerMediaFoundationImplementation *)self _transferPropertiesFromOldPlayerController:internalController toNewPlayerController:v4];
+    [(_MPCVideoViewControllerMediaFoundationImplementation *)self _transferPropertiesFromOldPlayerController:internalController toNewPlayerController:playerViewController];
     [(AVPlayerViewController *)self->_internalController willMoveToParentViewController:0];
-    v6 = [(AVPlayerViewController *)self->_internalController view];
-    v7 = [v6 superview];
-    v8 = [(_MPCVideoViewControllerMediaFoundationImplementation *)self view];
+    view = [(AVPlayerViewController *)self->_internalController view];
+    superview = [view superview];
+    view2 = [(_MPCVideoViewControllerMediaFoundationImplementation *)self view];
 
-    if (v7 == v8)
+    if (superview == view2)
     {
-      v9 = [(AVPlayerViewController *)self->_internalController view];
-      [v9 removeFromSuperview];
+      view3 = [(AVPlayerViewController *)self->_internalController view];
+      [view3 removeFromSuperview];
     }
 
     [(AVPlayerViewController *)self->_internalController removeFromParentViewController];
     [(_MPCVideoViewControllerMediaFoundationImplementation *)self willChangeValueForKey:@"internalController"];
-    objc_storeStrong(&self->_internalController, v4);
+    objc_storeStrong(&self->_internalController, playerViewController);
     [(AVPlayerViewController *)self->_internalController setDelegate:self];
     [(_MPCVideoViewControllerMediaFoundationImplementation *)self didChangeValueForKey:@"internalController"];
     if (self->_internalController)
     {
       [(_MPCVideoViewControllerMediaFoundationImplementation *)self addChildViewController:?];
-      v10 = [(_MPCVideoViewControllerMediaFoundationImplementation *)self view];
-      v11 = [(AVPlayerViewController *)self->_internalController view];
-      [v10 addSubview:v11];
+      view4 = [(_MPCVideoViewControllerMediaFoundationImplementation *)self view];
+      view5 = [(AVPlayerViewController *)self->_internalController view];
+      [view4 addSubview:view5];
 
       [(AVPlayerViewController *)self->_internalController didMoveToParentViewController:self];
     }
@@ -92,21 +92,21 @@
 - (id)_stateDictionary
 {
   v59[6] = *MEMORY[0x1E69E9840];
-  v3 = [(_MPCVideoViewControllerMediaFoundationImplementation *)self playbackEngine];
-  v4 = [(_MPCVideoViewControllerMediaFoundationImplementation *)self parentViewController];
-  v51 = v4;
-  v5 = [(__CFString *)v3 player];
-  v38 = v5;
+  playbackEngine = [(_MPCVideoViewControllerMediaFoundationImplementation *)self playbackEngine];
+  parentViewController = [(_MPCVideoViewControllerMediaFoundationImplementation *)self parentViewController];
+  v51 = parentViewController;
+  player = [(__CFString *)playbackEngine player];
+  v38 = player;
   v58[0] = @"_obj";
   v50 = [MEMORY[0x1E696AEC0] stringWithFormat:@"<%@:%p>", objc_opt_class(), self];
   v59[0] = v50;
   v58[1] = @"videoOutputDelegate";
-  v6 = [(_MPCVideoViewControllerMediaFoundationImplementation *)self videoOutputDelegate];
-  v48 = v6;
-  v49 = v3;
-  if (v6)
+  videoOutputDelegate = [(_MPCVideoViewControllerMediaFoundationImplementation *)self videoOutputDelegate];
+  v48 = videoOutputDelegate;
+  v49 = playbackEngine;
+  if (videoOutputDelegate)
   {
-    v7 = v6;
+    v7 = videoOutputDelegate;
   }
 
   else
@@ -114,9 +114,9 @@
     v7 = @"@";
   }
 
-  if (v3)
+  if (playbackEngine)
   {
-    v8 = v3;
+    v8 = playbackEngine;
   }
 
   else
@@ -129,9 +129,9 @@
   v58[2] = @"playbackEngine";
   v58[3] = @"video";
   v56[0] = @"isReadyForDisplay";
-  v9 = [(_MPCVideoViewControllerMediaFoundationImplementation *)self isReadyForDisplay];
+  isReadyForDisplay = [(_MPCVideoViewControllerMediaFoundationImplementation *)self isReadyForDisplay];
   v10 = @"NO";
-  if (v9)
+  if (isReadyForDisplay)
   {
     v10 = @"YES";
   }
@@ -149,11 +149,11 @@
   v59[3] = v45;
   v58[4] = @"view";
   v54[0] = @"_obj";
-  v11 = [(_MPCVideoViewControllerMediaFoundationImplementation *)self view];
-  v44 = v11;
-  if (v11)
+  view = [(_MPCVideoViewControllerMediaFoundationImplementation *)self view];
+  v44 = view;
+  if (view)
   {
-    v12 = v11;
+    v12 = view;
   }
 
   else
@@ -163,12 +163,12 @@
 
   v55[0] = v12;
   v54[1] = @"internalViewController.view";
-  v43 = [(_MPCVideoViewControllerMediaFoundationImplementation *)self internalController];
-  v13 = [v43 view];
-  v42 = v13;
-  if (v13)
+  internalController = [(_MPCVideoViewControllerMediaFoundationImplementation *)self internalController];
+  view2 = [internalController view];
+  v42 = view2;
+  if (view2)
   {
-    v14 = v13;
+    v14 = view2;
   }
 
   else
@@ -178,8 +178,8 @@
 
   v55[1] = v14;
   v54[2] = @"parentViewController.view.recursiveDescription";
-  v41 = [(__CFString *)v4 view];
-  v40 = [v41 valueForKey:@"recursiveDescription"];
+  view3 = [(__CFString *)parentViewController view];
+  v40 = [view3 valueForKey:@"recursiveDescription"];
   v15 = [v40 componentsSeparatedByString:@"\n"];
   v16 = v15;
   if (v15)
@@ -194,12 +194,12 @@
 
   v55[2] = v17;
   v54[3] = @"view.superview";
-  v39 = [(_MPCVideoViewControllerMediaFoundationImplementation *)self view];
-  v18 = [v39 superview];
-  v19 = v18;
-  if (v18)
+  view4 = [(_MPCVideoViewControllerMediaFoundationImplementation *)self view];
+  superview = [view4 superview];
+  v19 = superview;
+  if (superview)
   {
-    v20 = v18;
+    v20 = superview;
   }
 
   else
@@ -209,9 +209,9 @@
 
   v55[3] = v20;
   v54[4] = @"view.superview.recursiveDescription";
-  v37 = [(_MPCVideoViewControllerMediaFoundationImplementation *)self view];
-  v21 = [v37 superview];
-  v22 = [v21 valueForKey:@"recursiveDescription"];
+  view5 = [(_MPCVideoViewControllerMediaFoundationImplementation *)self view];
+  superview2 = [view5 superview];
+  v22 = [superview2 valueForKey:@"recursiveDescription"];
   v23 = [v22 componentsSeparatedByString:@"\n"];
   v24 = v23;
   if (v23)
@@ -229,11 +229,11 @@
   v59[4] = v26;
   v58[5] = @"viewController";
   v52[0] = @"playbackEngine.implementation.playerViewController";
-  v27 = [v5 playerViewController];
-  v28 = v27;
-  if (v27)
+  playerViewController = [player playerViewController];
+  v28 = playerViewController;
+  if (playerViewController)
   {
-    v29 = v27;
+    v29 = playerViewController;
   }
 
   else
@@ -243,11 +243,11 @@
 
   v53[0] = v29;
   v52[1] = @"internalViewController";
-  v30 = [(_MPCVideoViewControllerMediaFoundationImplementation *)self internalController];
-  v31 = v30;
-  if (v30)
+  internalController2 = [(_MPCVideoViewControllerMediaFoundationImplementation *)self internalController];
+  v31 = internalController2;
+  if (internalController2)
   {
-    v32 = v30;
+    v32 = internalController2;
   }
 
   else
@@ -271,45 +271,45 @@
   return v35;
 }
 
-- (void)exitFullScreenWithCompletion:(id)a3
+- (void)exitFullScreenWithCompletion:(id)completion
 {
   internalController = self->_internalController;
   if (internalController)
   {
-    [(AVPlayerViewController *)internalController exitFullScreenWithCompletion:a3];
+    [(AVPlayerViewController *)internalController exitFullScreenWithCompletion:completion];
   }
 
   else
   {
-    (*(a3 + 2))(a3);
+    (*(completion + 2))(completion);
   }
 }
 
-- (void)enterFullScreenWithCompletion:(id)a3
+- (void)enterFullScreenWithCompletion:(id)completion
 {
   internalController = self->_internalController;
   if (internalController)
   {
-    [(AVPlayerViewController *)internalController enterFullScreenWithCompletion:a3];
+    [(AVPlayerViewController *)internalController enterFullScreenWithCompletion:completion];
   }
 
   else
   {
-    (*(a3 + 2))(a3);
+    (*(completion + 2))(completion);
   }
 }
 
-- (void)showFullScreenPresentationFromView:(id)a3 completion:(id)a4
+- (void)showFullScreenPresentationFromView:(id)view completion:(id)completion
 {
   internalController = self->_internalController;
   if (internalController)
   {
-    [(AVPlayerViewController *)internalController showFullScreenPresentationFromView:a3 completion:a4];
+    [(AVPlayerViewController *)internalController showFullScreenPresentationFromView:view completion:completion];
   }
 
   else
   {
-    (*(a4 + 2))(a4);
+    (*(completion + 2))(completion);
   }
 }
 
@@ -337,9 +337,9 @@
 
 - (CGSize)presentationSize
 {
-  v2 = [(AVPlayerViewController *)self->_internalController player];
-  v3 = [v2 currentItem];
-  [v3 presentationSize];
+  player = [(AVPlayerViewController *)self->_internalController player];
+  currentItem = [player currentItem];
+  [currentItem presentationSize];
   v5 = v4;
   v7 = v6;
 
@@ -350,13 +350,13 @@
   return result;
 }
 
-- (void)presentViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)presentViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
   if (self->_internalController)
   {
     internalController = self->_internalController;
 
-    [(AVPlayerViewController *)internalController presentViewController:a3 animated:a4 completion:a5];
+    [(AVPlayerViewController *)internalController presentViewController:controller animated:animated completion:completion];
   }
 
   else
@@ -365,7 +365,7 @@
     v10 = v6;
     v8.receiver = self;
     v8.super_class = _MPCVideoViewControllerMediaFoundationImplementation;
-    [(_MPCVideoViewControllerMediaFoundationImplementation *)&v8 presentViewController:a3 animated:a4 completion:a5];
+    [(_MPCVideoViewControllerMediaFoundationImplementation *)&v8 presentViewController:controller animated:animated completion:completion];
   }
 }
 
@@ -374,14 +374,14 @@
   v13.receiver = self;
   v13.super_class = _MPCVideoViewControllerMediaFoundationImplementation;
   [(_MPCVideoViewControllerMediaFoundationImplementation *)&v13 viewDidLayoutSubviews];
-  v3 = [(_MPCVideoViewControllerMediaFoundationImplementation *)self view];
-  [v3 bounds];
+  view = [(_MPCVideoViewControllerMediaFoundationImplementation *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(AVPlayerViewController *)self->_internalController view];
-  [v12 setFrame:{v5, v7, v9, v11}];
+  view2 = [(AVPlayerViewController *)self->_internalController view];
+  [view2 setFrame:{v5, v7, v9, v11}];
 }
 
 - (void)viewDidLoad
@@ -389,35 +389,35 @@
   v5.receiver = self;
   v5.super_class = _MPCVideoViewControllerMediaFoundationImplementation;
   [(_MPCVideoViewControllerMediaFoundationImplementation *)&v5 viewDidLoad];
-  v3 = [MEMORY[0x1E69DC888] clearColor];
-  v4 = [(_MPCVideoViewControllerMediaFoundationImplementation *)self view];
-  [v4 setBackgroundColor:v3];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  view = [(_MPCVideoViewControllerMediaFoundationImplementation *)self view];
+  [view setBackgroundColor:clearColor];
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 selector];
+  invocationCopy = invocation;
+  selector = [invocationCopy selector];
   v6 = &unk_1F45C9F00;
-  if (protocol_getMethodDescription(v6, v5, 1, 1).name || protocol_getMethodDescription(v6, v5, 0, 1).name || protocol_getMethodDescription(v6, v5, 1, 0).name)
+  if (protocol_getMethodDescription(v6, selector, 1, 1).name || protocol_getMethodDescription(v6, selector, 0, 1).name || protocol_getMethodDescription(v6, selector, 1, 0).name)
   {
   }
 
   else
   {
-    name = protocol_getMethodDescription(v6, v5, 0, 0).name;
+    name = protocol_getMethodDescription(v6, selector, 0, 0).name;
 
     if (!name)
     {
       v16.receiver = self;
       v16.super_class = _MPCVideoViewControllerMediaFoundationImplementation;
-      [(_MPCVideoViewControllerMediaFoundationImplementation *)&v16 forwardInvocation:v4];
+      [(_MPCVideoViewControllerMediaFoundationImplementation *)&v16 forwardInvocation:invocationCopy];
       goto LABEL_15;
     }
   }
 
-  v7 = NSStringFromSelector([v4 selector]);
+  v7 = NSStringFromSelector([invocationCopy selector]);
   v8 = [v7 stringByReplacingOccurrencesOfString:@"playerViewController" withString:@"videoOutput"];
 
   v9 = NSSelectorFromString(v8);
@@ -436,7 +436,7 @@
     }
   }
 
-  v11 = [(_MPCVideoViewControllerMediaFoundationImplementation *)self videoOutputDelegate];
+  videoOutputDelegate = [(_MPCVideoViewControllerMediaFoundationImplementation *)self videoOutputDelegate];
   v12 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
@@ -446,31 +446,31 @@
     v18 = 2114;
     v19 = v13;
     v20 = 2114;
-    v21 = v11;
+    v21 = videoOutputDelegate;
     _os_log_impl(&dword_1C5C61000, v12, OS_LOG_TYPE_DEFAULT, "%{public}@ forwarding AV invocation %{public}@ to delegate %{public}@", buf, 0x20u);
   }
 
-  if (v9 && v11)
+  if (v9 && videoOutputDelegate)
   {
-    [v4 setSelector:v9];
+    [invocationCopy setSelector:v9];
     *buf = self;
-    [v4 setArgument:buf atIndex:2];
-    [v4 invokeWithTarget:v11];
+    [invocationCopy setArgument:buf atIndex:2];
+    [invocationCopy invokeWithTarget:videoOutputDelegate];
   }
 
 LABEL_15:
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
   v5 = &unk_1F45C9F00;
-  if (protocol_getMethodDescription(v5, a3, 1, 1).name || protocol_getMethodDescription(v5, a3, 0, 1).name || protocol_getMethodDescription(v5, a3, 1, 0).name)
+  if (protocol_getMethodDescription(v5, selector, 1, 1).name || protocol_getMethodDescription(v5, selector, 0, 1).name || protocol_getMethodDescription(v5, selector, 1, 0).name)
   {
   }
 
   else
   {
-    name = protocol_getMethodDescription(v5, a3, 0, 0).name;
+    name = protocol_getMethodDescription(v5, selector, 0, 0).name;
 
     if (!name)
     {
@@ -478,7 +478,7 @@ LABEL_15:
     }
   }
 
-  v6 = NSStringFromSelector(a3);
+  v6 = NSStringFromSelector(selector);
   v7 = [v6 stringByReplacingOccurrencesOfString:@"playerViewController" withString:@"videoOutput"];
 
   v8 = NSSelectorFromString(v7);
@@ -503,11 +503,11 @@ LABEL_15:
 LABEL_15:
     v15.receiver = self;
     v15.super_class = _MPCVideoViewControllerMediaFoundationImplementation;
-    v11 = [(_MPCVideoViewControllerMediaFoundationImplementation *)&v15 respondsToSelector:a3];
+    v11 = [(_MPCVideoViewControllerMediaFoundationImplementation *)&v15 respondsToSelector:selector];
     return v11 & 1;
   }
 
-  v10 = [(_MPCVideoViewControllerMediaFoundationImplementation *)self videoOutputDelegate];
+  videoOutputDelegate = [(_MPCVideoViewControllerMediaFoundationImplementation *)self videoOutputDelegate];
   v11 = objc_opt_respondsToSelector();
 
   return v11 & 1;
@@ -522,18 +522,18 @@ LABEL_15:
   [(_MPCVideoViewControllerMediaFoundationImplementation *)&v3 dealloc];
 }
 
-- (_MPCVideoViewControllerMediaFoundationImplementation)initWithPlaybackEngine:(id)a3
+- (_MPCVideoViewControllerMediaFoundationImplementation)initWithPlaybackEngine:(id)engine
 {
-  v4 = a3;
+  engineCopy = engine;
   v16.receiver = self;
   v16.super_class = _MPCVideoViewControllerMediaFoundationImplementation;
   v5 = [(_MPCVideoViewControllerMediaFoundationImplementation *)&v16 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_playbackEngine, v4);
-    [v4 addEngineObserver:v6];
-    [(_MPCVideoViewControllerMediaFoundationImplementation *)v6 _updateViewControllerHierarchyForPlaybackEngine:v4];
+    objc_storeWeak(&v5->_playbackEngine, engineCopy);
+    [engineCopy addEngineObserver:v6];
+    [(_MPCVideoViewControllerMediaFoundationImplementation *)v6 _updateViewControllerHierarchyForPlaybackEngine:engineCopy];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __79___MPCVideoViewControllerMediaFoundationImplementation_initWithPlaybackEngine___block_invoke;

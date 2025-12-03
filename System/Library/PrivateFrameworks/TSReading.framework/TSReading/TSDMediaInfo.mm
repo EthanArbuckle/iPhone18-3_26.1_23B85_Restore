@@ -5,23 +5,23 @@
 - (CGSize)rawDataSize;
 - (NSString)mediaDisplayName;
 - (NSString)mediaFileType;
-- (TSDMediaInfo)initWithContext:(id)a3 geometry:(id)a4;
-- (id)copyWithContext:(id)a3;
-- (void)setFlags:(unsigned int)a3;
-- (void)setGeometry:(id)a3;
-- (void)setOriginalSize:(CGSize)a3;
-- (void)setWasMediaReplaced:(BOOL)a3;
-- (void)takePropertiesFromReplacedMediaInfo:(id)a3;
-- (void)updateGeometryToReplaceMediaInfo:(id)a3;
+- (TSDMediaInfo)initWithContext:(id)context geometry:(id)geometry;
+- (id)copyWithContext:(id)context;
+- (void)setFlags:(unsigned int)flags;
+- (void)setGeometry:(id)geometry;
+- (void)setOriginalSize:(CGSize)size;
+- (void)setWasMediaReplaced:(BOOL)replaced;
+- (void)takePropertiesFromReplacedMediaInfo:(id)info;
+- (void)updateGeometryToReplaceMediaInfo:(id)info;
 @end
 
 @implementation TSDMediaInfo
 
-- (TSDMediaInfo)initWithContext:(id)a3 geometry:(id)a4
+- (TSDMediaInfo)initWithContext:(id)context geometry:(id)geometry
 {
   v7.receiver = self;
   v7.super_class = TSDMediaInfo;
-  v4 = [(TSDDrawableInfo *)&v7 initWithContext:a3 geometry:a4];
+  v4 = [(TSDDrawableInfo *)&v7 initWithContext:context geometry:geometry];
   v5 = v4;
   if (v4)
   {
@@ -33,11 +33,11 @@
   return v5;
 }
 
-- (id)copyWithContext:(id)a3
+- (id)copyWithContext:(id)context
 {
   v5.receiver = self;
   v5.super_class = TSDMediaInfo;
-  result = [(TSDDrawableInfo *)&v5 copyWithContext:a3];
+  result = [(TSDDrawableInfo *)&v5 copyWithContext:context];
   if (result)
   {
     *(result + 9) = self->mOriginalSize;
@@ -47,12 +47,12 @@
   return result;
 }
 
-- (void)setOriginalSize:(CGSize)a3
+- (void)setOriginalSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   p_mOriginalSize = &self->mOriginalSize;
-  if (self->mOriginalSize.width != a3.width || self->mOriginalSize.height != a3.height)
+  if (self->mOriginalSize.width != size.width || self->mOriginalSize.height != size.height)
   {
     [(TSPObject *)self willModify];
     p_mOriginalSize->width = width;
@@ -62,25 +62,25 @@
 
 - (CGSize)defaultOriginalSize
 {
-  v2 = [(TSDDrawableInfo *)self geometry];
+  geometry = [(TSDDrawableInfo *)self geometry];
 
-  [(TSDInfoGeometry *)v2 size];
+  [(TSDInfoGeometry *)geometry size];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (void)setFlags:(unsigned int)a3
+- (void)setFlags:(unsigned int)flags
 {
-  v3 = a3;
+  flagsCopy = flags;
   [(TSDDrawableInfo *)self willChangeProperty:527];
   [(TSPObject *)self willModify];
-  *&self->mFlags = *&self->mFlags & 0xFC | v3 & 3;
+  *&self->mFlags = *&self->mFlags & 0xFC | flagsCopy & 3;
 }
 
-- (void)setWasMediaReplaced:(BOOL)a3
+- (void)setWasMediaReplaced:(BOOL)replaced
 {
-  if (a3)
+  if (replaced)
   {
     v3 = 2;
   }
@@ -93,69 +93,69 @@
   *&self->mFlags = *&self->mFlags & 0xFD | v3;
 }
 
-- (void)setGeometry:(id)a3
+- (void)setGeometry:(id)geometry
 {
   v5.receiver = self;
   v5.super_class = TSDMediaInfo;
   [(TSDDrawableInfo *)&v5 setGeometry:?];
-  [a3 size];
+  [geometry size];
   [(TSDMediaInfo *)self setOriginalSize:?];
 }
 
 - (NSString)mediaDisplayName
 {
-  v2 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v3 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDMediaInfo mediaDisplayName]"];
-  [v2 handleFailureInFunction:v3 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDMediaInfo.m"), 112, @"Abstract method"}];
+  [currentHandler handleFailureInFunction:v3 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDMediaInfo.m"), 112, @"Abstract method"}];
   objc_exception_throw([MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE658] reason:objc_msgSend(MEMORY[0x277CCACA8] userInfo:{"stringWithFormat:", @"%@: %s", @"Abstract method", "-[TSDMediaInfo mediaDisplayName]"), 0}]);
 }
 
 - (NSString)mediaFileType
 {
-  v2 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v3 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDMediaInfo mediaFileType]"];
-  [v2 handleFailureInFunction:v3 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDMediaInfo.m"), 119, @"Abstract method"}];
+  [currentHandler handleFailureInFunction:v3 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDMediaInfo.m"), 119, @"Abstract method"}];
   objc_exception_throw([MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE658] reason:objc_msgSend(MEMORY[0x277CCACA8] userInfo:{"stringWithFormat:", @"%@: %s", @"Abstract method", "-[TSDMediaInfo mediaFileType]"), 0}]);
 }
 
 - (CGSize)rawDataSize
 {
-  v2 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v3 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDMediaInfo rawDataSize]"];
-  [v2 handleFailureInFunction:v3 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDMediaInfo.m"), 125, @"Abstract method"}];
+  [currentHandler handleFailureInFunction:v3 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDMediaInfo.m"), 125, @"Abstract method"}];
   objc_exception_throw([MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE658] reason:objc_msgSend(MEMORY[0x277CCACA8] userInfo:{"stringWithFormat:", @"%@: %s", @"Abstract method", "-[TSDMediaInfo rawDataSize]"), 0}]);
 }
 
-- (void)takePropertiesFromReplacedMediaInfo:(id)a3
+- (void)takePropertiesFromReplacedMediaInfo:(id)info
 {
   [(TSDMediaInfo *)self updateGeometryToReplaceMediaInfo:?];
-  [a3 originalSize];
+  [info originalSize];
   [(TSDMediaInfo *)self setOriginalSize:?];
-  -[TSDMediaInfo setIsPlaceholder:](self, "setIsPlaceholder:", [a3 isPlaceholder]);
+  -[TSDMediaInfo setIsPlaceholder:](self, "setIsPlaceholder:", [info isPlaceholder]);
   [(TSDMediaInfo *)self setWasMediaReplaced:1];
-  -[TSDStyledInfo setStyle:](self, "setStyle:", [a3 style]);
+  -[TSDStyledInfo setStyle:](self, "setStyle:", [info style]);
   if ([(TSDDrawableInfo *)self supportsAttachedComments])
   {
-    -[TSDDrawableInfo setComment:](self, "setComment:", [a3 comment]);
+    -[TSDDrawableInfo setComment:](self, "setComment:", [info comment]);
   }
 
-  -[TSDDrawableInfo setExteriorTextWrap:](self, "setExteriorTextWrap:", [a3 exteriorTextWrap]);
-  -[TSDDrawableInfo setAspectRatioLocked:](self, "setAspectRatioLocked:", [a3 aspectRatioLocked]);
-  v5 = [a3 hyperlinkURL];
+  -[TSDDrawableInfo setExteriorTextWrap:](self, "setExteriorTextWrap:", [info exteriorTextWrap]);
+  -[TSDDrawableInfo setAspectRatioLocked:](self, "setAspectRatioLocked:", [info aspectRatioLocked]);
+  hyperlinkURL = [info hyperlinkURL];
 
-  [(TSDDrawableInfo *)self setHyperlinkURL:v5];
+  [(TSDDrawableInfo *)self setHyperlinkURL:hyperlinkURL];
 }
 
-- (void)updateGeometryToReplaceMediaInfo:(id)a3
+- (void)updateGeometryToReplaceMediaInfo:(id)info
 {
-  v17 = [objc_msgSend(a3 "geometry")];
-  [a3 centerForReplacingWithNewMedia];
+  v17 = [objc_msgSend(info "geometry")];
+  [info centerForReplacingWithNewMedia];
   v6 = v5;
   v8 = v7;
   [(TSDInfoGeometry *)[(TSDDrawableInfo *)self geometry] size];
   v10 = v9;
   v12 = v11;
-  [a3 originalSize];
+  [info originalSize];
   if (TSDShrinkSizeToFitInSize(v10, v12, v13, v14) == *MEMORY[0x277CBF3A8] && v15 == *(MEMORY[0x277CBF3A8] + 8))
   {
     [(TSDInfoGeometry *)[(TSDDrawableInfo *)self geometry] size];
@@ -168,9 +168,9 @@
 
 - (CGPoint)centerForReplacingWithNewMedia
 {
-  v2 = [(TSDDrawableInfo *)self geometry];
+  geometry = [(TSDDrawableInfo *)self geometry];
 
-  [(TSDInfoGeometry *)v2 center];
+  [(TSDInfoGeometry *)geometry center];
   result.y = v4;
   result.x = v3;
   return result;

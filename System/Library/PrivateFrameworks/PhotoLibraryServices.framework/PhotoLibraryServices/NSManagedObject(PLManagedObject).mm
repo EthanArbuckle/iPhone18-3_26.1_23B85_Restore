@@ -10,9 +10,9 @@
 {
   v31 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [[PLDescriptionBuilder alloc] initWithObject:a1 style:3 indent:0];
-  v6 = [a1 entity];
-  v7 = [v6 propertiesByName];
+  v5 = [[PLDescriptionBuilder alloc] initWithObject:self style:3 indent:0];
+  entity = [self entity];
+  propertiesByName = [entity propertiesByName];
 
   v28 = 0u;
   v29 = 0u;
@@ -24,7 +24,7 @@
   {
     v9 = v8;
     v10 = *v27;
-    v24 = a1;
+    selfCopy = self;
     do
     {
       for (i = 0; i != v9; ++i)
@@ -35,7 +35,7 @@
         }
 
         v12 = *(*(&v26 + 1) + 8 * i);
-        v13 = [v7 objectForKey:v12];
+        v13 = [propertiesByName objectForKey:v12];
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
@@ -45,10 +45,10 @@
             goto LABEL_36;
           }
 
-          v18 = [v13 isToMany];
-          v19 = [a1 valueForKey:v12];
+          isToMany = [v13 isToMany];
+          v19 = [self valueForKey:v12];
           v14 = v19;
-          if (v18)
+          if (isToMany)
           {
             [MEMORY[0x1E696AEC0] stringWithFormat:@"%lu objects", objc_msgSend(v19, "count")];
           }
@@ -64,15 +64,15 @@ LABEL_25:
         }
 
         v14 = v13;
-        v15 = [a1 valueForKey:v12];
-        v16 = [v14 attributeType];
-        if (v16 > 699)
+        v15 = [self valueForKey:v12];
+        attributeType = [v14 attributeType];
+        if (attributeType > 699)
         {
-          if (v16 > 899)
+          if (attributeType > 899)
           {
-            if (v16 != 900 && v16 != 1000)
+            if (attributeType != 900 && attributeType != 1000)
             {
-              if (v16 != 1800)
+              if (attributeType != 1800)
               {
                 goto LABEL_34;
               }
@@ -83,19 +83,19 @@ LABEL_25:
                 v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%lu objects", objc_msgSend(v15, "count")];
 
                 v15 = v20;
-                a1 = v24;
+                self = selfCopy;
               }
             }
 
             goto LABEL_25;
           }
 
-          if (v16 == 700)
+          if (attributeType == 700)
           {
             goto LABEL_25;
           }
 
-          if (v16 != 800)
+          if (attributeType != 800)
           {
             goto LABEL_34;
           }
@@ -105,15 +105,15 @@ LABEL_25:
 
         else
         {
-          if (v16 <= 299)
+          if (attributeType <= 299)
           {
-            if (v16 != 100 && v16 != 200)
+            if (attributeType != 100 && attributeType != 200)
             {
 LABEL_34:
               v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"unsupported attribute type %ld", objc_msgSend(v14, "attributeType")];
               [(PLDescriptionBuilder *)v5 appendName:v12 object:v21];
 
-              a1 = v24;
+              self = selfCopy;
               goto LABEL_35;
             }
 
@@ -122,7 +122,7 @@ LABEL_28:
             goto LABEL_35;
           }
 
-          switch(v16)
+          switch(attributeType)
           {
             case 300:
               goto LABEL_28;
@@ -151,9 +151,9 @@ LABEL_36:
     while (v9);
   }
 
-  v22 = [(PLDescriptionBuilder *)v5 build];
+  build = [(PLDescriptionBuilder *)v5 build];
 
-  return v22;
+  return build;
 }
 
 - (id)pointerDescription
@@ -161,7 +161,7 @@ LABEL_36:
   v2 = MEMORY[0x1E696AEC0];
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [v2 stringWithFormat:@"<%@: %p>", v4, a1];
+  v5 = [v2 stringWithFormat:@"<%@: %p>", v4, self];
 
   return v5;
 }
@@ -169,9 +169,9 @@ LABEL_36:
 - (id)pl_shortDescription
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [a1 objectID];
-  v4 = [v3 pl_shortURI];
-  v5 = [v2 stringWithFormat:@"<%p> %@", a1, v4];
+  objectID = [self objectID];
+  pl_shortURI = [objectID pl_shortURI];
+  v5 = [v2 stringWithFormat:@"<%p> %@", self, pl_shortURI];
 
   return v5;
 }

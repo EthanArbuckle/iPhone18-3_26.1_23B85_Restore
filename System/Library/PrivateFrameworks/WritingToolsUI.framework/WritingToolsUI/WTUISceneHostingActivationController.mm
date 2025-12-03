@@ -1,23 +1,23 @@
 @interface WTUISceneHostingActivationController
-- (WTUISceneHostingActivationController)initWithStartupAction:(id)a3 invalidationHandler:(id)a4;
-- (void)activationHandleDidUpdate:(id)a3 forHostingController:(id)a4;
-- (void)hostingController:(id)a3 isMovingToParentScene:(id)a4;
+- (WTUISceneHostingActivationController)initWithStartupAction:(id)action invalidationHandler:(id)handler;
+- (void)activationHandleDidUpdate:(id)update forHostingController:(id)controller;
+- (void)hostingController:(id)controller isMovingToParentScene:(id)scene;
 @end
 
 @implementation WTUISceneHostingActivationController
 
-- (WTUISceneHostingActivationController)initWithStartupAction:(id)a3 invalidationHandler:(id)a4
+- (WTUISceneHostingActivationController)initWithStartupAction:(id)action invalidationHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  actionCopy = action;
+  handlerCopy = handler;
   v14.receiver = self;
   v14.super_class = WTUISceneHostingActivationController;
   v9 = [(WTUISceneHostingActivationController *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_startupAction, a3);
-    v11 = MEMORY[0x1DA6D90E0](v8);
+    objc_storeStrong(&v9->_startupAction, action);
+    v11 = MEMORY[0x1DA6D90E0](handlerCopy);
     invalidationHandler = v10->_invalidationHandler;
     v10->_invalidationHandler = v11;
   }
@@ -25,14 +25,14 @@
   return v10;
 }
 
-- (void)hostingController:(id)a3 isMovingToParentScene:(id)a4
+- (void)hostingController:(id)controller isMovingToParentScene:(id)scene
 {
-  v6 = [(WTUISceneHostingActivationController *)self activationHandle];
-  v7 = [v6 isActive];
+  activationHandle = [(WTUISceneHostingActivationController *)self activationHandle];
+  isActive = [activationHandle isActive];
 
-  if (a4)
+  if (scene)
   {
-    if ((v7 & 1) == 0)
+    if ((isActive & 1) == 0)
     {
       v10[0] = MEMORY[0x1E69E9820];
       v10[1] = 3221225472;
@@ -40,8 +40,8 @@
       v10[3] = &unk_1E8481228;
       v10[4] = self;
       v8 = MEMORY[0x1DA6D90E0](v10);
-      v9 = [(WTUISceneHostingActivationController *)self activationHandle];
-      [v9 activate:v8];
+      activationHandle2 = [(WTUISceneHostingActivationController *)self activationHandle];
+      [activationHandle2 activate:v8];
     }
   }
 }
@@ -56,23 +56,23 @@ void __80__WTUISceneHostingActivationController_hostingController_isMovingToPare
   [v4 setActions:v5];
 }
 
-- (void)activationHandleDidUpdate:(id)a3 forHostingController:(id)a4
+- (void)activationHandleDidUpdate:(id)update forHostingController:(id)controller
 {
-  v9 = a4;
-  v5 = [(WTUISceneHostingActivationController *)self activationHandle];
-  v6 = [v5 isActive];
+  controllerCopy = controller;
+  activationHandle = [(WTUISceneHostingActivationController *)self activationHandle];
+  isActive = [activationHandle isActive];
 
-  if ((v6 & 1) == 0)
+  if ((isActive & 1) == 0)
   {
-    v7 = [(WTUISceneHostingActivationController *)self invalidationHandler];
+    invalidationHandler = [(WTUISceneHostingActivationController *)self invalidationHandler];
 
-    if (v7)
+    if (invalidationHandler)
     {
-      v8 = [(WTUISceneHostingActivationController *)self invalidationHandler];
-      v8[2]();
+      invalidationHandler2 = [(WTUISceneHostingActivationController *)self invalidationHandler];
+      invalidationHandler2[2]();
     }
 
-    [v9 invalidate];
+    [controllerCopy invalidate];
   }
 }
 

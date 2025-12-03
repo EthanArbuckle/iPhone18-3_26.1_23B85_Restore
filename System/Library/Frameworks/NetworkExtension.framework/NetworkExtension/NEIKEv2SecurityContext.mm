@@ -1,18 +1,18 @@
 @interface NEIKEv2SecurityContext
-+ (id)removePaddingFromDecryptedPayload:(uint64_t)a1;
-- (_DWORD)initWithMinimumEncryptedPayloadSize:(void *)a1;
-- (unsigned)maximumPayloadSizeWithinLimit:(unsigned int)a3;
-- (unsigned)overheadForPlaintextLength:(unsigned int)a3;
++ (id)removePaddingFromDecryptedPayload:(uint64_t)payload;
+- (_DWORD)initWithMinimumEncryptedPayloadSize:(void *)size;
+- (unsigned)maximumPayloadSizeWithinLimit:(unsigned int)limit;
+- (unsigned)overheadForPlaintextLength:(unsigned int)length;
 @end
 
 @implementation NEIKEv2SecurityContext
 
-- (unsigned)maximumPayloadSizeWithinLimit:(unsigned int)a3
+- (unsigned)maximumPayloadSizeWithinLimit:(unsigned int)limit
 {
   if (self)
   {
     minimumEncryptedPayloadSize = self->_minimumEncryptedPayloadSize;
-    if (minimumEncryptedPayloadSize >= a3)
+    if (minimumEncryptedPayloadSize >= limit)
     {
       LODWORD(self) = 0;
       return self;
@@ -22,17 +22,17 @@
   else
   {
     minimumEncryptedPayloadSize = 0;
-    if (!a3)
+    if (!limit)
     {
       return self;
     }
   }
 
-  LODWORD(self) = a3 - minimumEncryptedPayloadSize;
+  LODWORD(self) = limit - minimumEncryptedPayloadSize;
   return self;
 }
 
-- (unsigned)overheadForPlaintextLength:(unsigned int)a3
+- (unsigned)overheadForPlaintextLength:(unsigned int)length
 {
   if (self)
   {
@@ -42,7 +42,7 @@
   return self;
 }
 
-+ (id)removePaddingFromDecryptedPayload:(uint64_t)a1
++ (id)removePaddingFromDecryptedPayload:(uint64_t)payload
 {
   v17 = *MEMORY[0x1E69E9840];
   v2 = a2;
@@ -99,9 +99,9 @@ LABEL_7:
   return v7;
 }
 
-- (_DWORD)initWithMinimumEncryptedPayloadSize:(void *)a1
+- (_DWORD)initWithMinimumEncryptedPayloadSize:(void *)size
 {
-  v6.receiver = a1;
+  v6.receiver = size;
   v6.super_class = NEIKEv2SecurityContext;
   result = objc_msgSendSuper2(&v6, sel_init);
   if (result)

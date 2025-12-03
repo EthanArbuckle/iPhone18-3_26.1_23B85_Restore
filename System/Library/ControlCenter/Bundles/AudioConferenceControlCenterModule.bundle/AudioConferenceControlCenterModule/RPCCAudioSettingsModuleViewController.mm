@@ -1,18 +1,18 @@
 @interface RPCCAudioSettingsModuleViewController
-- (BOOL)isSupportedMicMode:(int64_t)a3;
+- (BOOL)isSupportedMicMode:(int64_t)mode;
 - (id)_audioIndicatorImage;
 - (id)_audioOffIndicatorImage;
 - (id)_imageSymbolConfiguration;
 - (id)_unexpandedSubtitleFont;
 - (id)_unexpandedTitleFont;
-- (id)leadingImageForMenuItem:(id)a3;
-- (id)menuImageWithImage:(id)a3 size:(CGSize)a4;
-- (void)buttonTapped:(id)a3 forEvent:(id)a4;
+- (id)leadingImageForMenuItem:(id)item;
+- (id)menuImageWithImage:(id)image size:(CGSize)size;
+- (void)buttonTapped:(id)tapped forEvent:(id)event;
 - (void)disableAutoMicMode;
-- (void)handleAVControlCenterNotification:(id)a3;
+- (void)handleAVControlCenterNotification:(id)notification;
 - (void)layoutVideoConferenceSubviews;
 - (void)loadMenuImages;
-- (void)setCurrentSelectedMode:(int64_t)a3;
+- (void)setCurrentSelectedMode:(int64_t)mode;
 - (void)setModeForBypass;
 - (void)setupAudioFunctionItems;
 - (void)setupInitialSelectedMicMode;
@@ -22,13 +22,13 @@
 - (void)setupMicModeNotifications;
 - (void)setupModuleImageView;
 - (void)setupTitleLabelViews;
-- (void)updateAudioImageViewWithMicOn:(BOOL)a3;
+- (void)updateAudioImageViewWithMicOn:(BOOL)on;
 - (void)updateModuleImageView;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation RPCCAudioSettingsModuleViewController
@@ -90,18 +90,18 @@
   self->_expandedGlyphOffImage = v6;
 
   UIGraphicsEndImageContext();
-  v8 = [(RPCCAudioSettingsModuleViewController *)self _audioIndicatorImage];
+  _audioIndicatorImage = [(RPCCAudioSettingsModuleViewController *)self _audioIndicatorImage];
   audioImage = self->_audioImage;
-  self->_audioImage = v8;
+  self->_audioImage = _audioIndicatorImage;
 
   v10 = [[UIImageView alloc] initWithImage:self->_audioImage];
   audioImageView = self->_audioImageView;
   self->_audioImageView = v10;
 
   [(UIImageView *)self->_audioImageView setAlpha:0.0];
-  v12 = [(RPCCAudioSettingsModuleViewController *)self _audioOffIndicatorImage];
+  _audioOffIndicatorImage = [(RPCCAudioSettingsModuleViewController *)self _audioOffIndicatorImage];
   audioOffImage = self->_audioOffImage;
-  self->_audioOffImage = v12;
+  self->_audioOffImage = _audioOffIndicatorImage;
 
   v14 = [[UIImageView alloc] initWithImage:self->_audioOffImage];
   audioOffImageView = self->_audioOffImageView;
@@ -110,30 +110,30 @@
   [(UIImageView *)self->_audioOffImageView setAlpha:0.0];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = RPCCAudioSettingsModuleViewController;
-  [(RPCCAudioSettingsModuleViewController *)&v5 viewWillDisappear:a3];
+  [(RPCCAudioSettingsModuleViewController *)&v5 viewWillDisappear:disappear];
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 removeObserver:self];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v26.receiver = self;
   v26.super_class = RPCCAudioSettingsModuleViewController;
-  [(RPCCAudioSettingsModuleViewController *)&v26 viewWillAppear:a3];
-  v4 = [(CCUIContentModuleContext *)self->_contentModuleContext sensorActivityDataForActiveSensorType:1];
+  [(RPCCAudioSettingsModuleViewController *)&v26 viewWillAppear:appear];
+  sensorActivityDataEligibleForInactiveMicModeSelection = [(CCUIContentModuleContext *)self->_contentModuleContext sensorActivityDataForActiveSensorType:1];
   v5 = [(CCUIContentModuleContext *)self->_contentModuleContext sensorActivityDataForActiveSensorType:0];
-  if (v4)
+  if (sensorActivityDataEligibleForInactiveMicModeSelection)
   {
     goto LABEL_2;
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v4 = [(CCUIContentModuleContext *)self->_contentModuleContext sensorActivityDataEligibleForInactiveMicModeSelection];
+    sensorActivityDataEligibleForInactiveMicModeSelection = [(CCUIContentModuleContext *)self->_contentModuleContext sensorActivityDataEligibleForInactiveMicModeSelection];
     if (__RPLogLevel <= 1u && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 136446722;
@@ -141,32 +141,32 @@
       v29 = 1024;
       v30 = 208;
       v31 = 2112;
-      v32 = v4;
+      v32 = sensorActivityDataEligibleForInactiveMicModeSelection;
       _os_log_impl(&dword_0, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d replacing applicationMicData with %@", buf, 0x1Cu);
     }
 
-    if (v4)
+    if (sensorActivityDataEligibleForInactiveMicModeSelection)
     {
 LABEL_2:
-      v6 = [v4 displayName];
+      displayName = [sensorActivityDataEligibleForInactiveMicModeSelection displayName];
       applicationDisplayName = self->_applicationDisplayName;
-      self->_applicationDisplayName = v6;
+      self->_applicationDisplayName = displayName;
 
-      v8 = [v4 bundleIdentifier];
-      v9 = [v8 isEqualToString:@"com.apple.TelephonyUtilities"];
+      bundleIdentifier = [sensorActivityDataEligibleForInactiveMicModeSelection bundleIdentifier];
+      v9 = [bundleIdentifier isEqualToString:@"com.apple.TelephonyUtilities"];
       if (v9)
       {
         v10 = v5;
         v11 = 0;
         v12 = 0;
         v13 = 0;
-        v14 = @"com.apple.facetime";
+        bundleIdentifier4 = @"com.apple.facetime";
       }
 
       else
       {
-        [v4 bundleIdentifier];
-        v25 = v14 = @"com.apple.facetime";
+        [sensorActivityDataEligibleForInactiveMicModeSelection bundleIdentifier];
+        v25 = bundleIdentifier4 = @"com.apple.facetime";
         v10 = v5;
         if ([v25 isEqualToString:@"com.apple.facetime"])
         {
@@ -177,8 +177,8 @@ LABEL_2:
 
         else
         {
-          v24 = [v4 bundleIdentifier];
-          if ([v24 isEqualToString:@"com.apple.mediaserverd"])
+          bundleIdentifier2 = [sensorActivityDataEligibleForInactiveMicModeSelection bundleIdentifier];
+          if ([bundleIdentifier2 isEqualToString:@"com.apple.mediaserverd"])
           {
             v12 = 0;
             v13 = 0;
@@ -187,8 +187,8 @@ LABEL_2:
 
           else
           {
-            v23 = [v4 bundleIdentifier];
-            if ([v23 isEqualToString:@"com.apple.avconferenced"])
+            bundleIdentifier3 = [sensorActivityDataEligibleForInactiveMicModeSelection bundleIdentifier];
+            if ([bundleIdentifier3 isEqualToString:@"com.apple.avconferenced"])
             {
               v13 = 0;
               v11 = 1;
@@ -197,7 +197,7 @@ LABEL_2:
 
             else
             {
-              v14 = [v4 bundleIdentifier];
+              bundleIdentifier4 = [sensorActivityDataEligibleForInactiveMicModeSelection bundleIdentifier];
               v11 = 1;
               v12 = 1;
               v13 = 1;
@@ -206,7 +206,7 @@ LABEL_2:
         }
       }
 
-      objc_storeStrong(&self->_applicationBundleID, v14);
+      objc_storeStrong(&self->_applicationBundleID, bundleIdentifier4);
       if (v13)
       {
 
@@ -226,7 +226,7 @@ LABEL_24:
           {
           }
 
-          -[RPCCAudioSettingsModuleViewController updateAudioImageViewWithMicOn:](self, "updateAudioImageViewWithMicOn:", [v4 usedRecently] ^ 1);
+          -[RPCCAudioSettingsModuleViewController updateAudioImageViewWithMicOn:](self, "updateAudioImageViewWithMicOn:", [sensorActivityDataEligibleForInactiveMicModeSelection usedRecently] ^ 1);
           [(RPCCAudioSettingsModuleViewController *)self setupInitialStateAndNotifications];
           v5 = v10;
           goto LABEL_27;
@@ -246,42 +246,42 @@ LABEL_23:
     }
   }
 
-  v15 = [v5 bundleIdentifier];
-  if ([v15 isEqualToString:@"com.apple.TelephonyUtilities"])
+  bundleIdentifier5 = [v5 bundleIdentifier];
+  if ([bundleIdentifier5 isEqualToString:@"com.apple.TelephonyUtilities"])
   {
 LABEL_14:
 
 LABEL_15:
-    v18 = [v5 displayName];
+    displayName2 = [v5 displayName];
     v19 = self->_applicationDisplayName;
-    self->_applicationDisplayName = v18;
+    self->_applicationDisplayName = displayName2;
 
     applicationBundleID = self->_applicationBundleID;
     self->_applicationBundleID = @"com.apple.facetime";
 
     [(RPCCAudioSettingsModuleViewController *)self updateAudioImageViewWithMicOn:0];
     [(RPCCAudioSettingsModuleViewController *)self setupInitialStateAndNotifications];
-    v4 = 0;
+    sensorActivityDataEligibleForInactiveMicModeSelection = 0;
     goto LABEL_27;
   }
 
-  v16 = [v5 bundleIdentifier];
-  if ([v16 isEqualToString:@"com.apple.facetime"])
+  bundleIdentifier6 = [v5 bundleIdentifier];
+  if ([bundleIdentifier6 isEqualToString:@"com.apple.facetime"])
   {
 LABEL_13:
 
     goto LABEL_14;
   }
 
-  v17 = [v5 bundleIdentifier];
-  if ([v17 isEqualToString:@"com.apple.mediaserverd"])
+  bundleIdentifier7 = [v5 bundleIdentifier];
+  if ([bundleIdentifier7 isEqualToString:@"com.apple.mediaserverd"])
   {
 
     goto LABEL_13;
   }
 
-  v21 = [v5 bundleIdentifier];
-  v22 = [v21 isEqualToString:@"com.apple.avconferenced"];
+  bundleIdentifier8 = [v5 bundleIdentifier];
+  v22 = [bundleIdentifier8 isEqualToString:@"com.apple.avconferenced"];
 
   if (v22)
   {
@@ -298,7 +298,7 @@ LABEL_13:
     _os_log_impl(&dword_0, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d could not find mic or camera sensor data. bypassMode=YES", buf, 0x12u);
   }
 
-  v4 = 0;
+  sensorActivityDataEligibleForInactiveMicModeSelection = 0;
   self->_currentBypassMode = 1;
 LABEL_27:
   [(RPCCAudioSettingsModuleViewController *)self setupMicModeColorTint];
@@ -395,9 +395,9 @@ LABEL_27:
   }
 }
 
-- (void)updateAudioImageViewWithMicOn:(BOOL)a3
+- (void)updateAudioImageViewWithMicOn:(BOOL)on
 {
-  if (a3)
+  if (on)
   {
     v4 = 1.0;
   }
@@ -408,7 +408,7 @@ LABEL_27:
   }
 
   audioImageView = self->_audioImageView;
-  if (a3)
+  if (on)
   {
     v6 = 0.0;
   }
@@ -426,11 +426,11 @@ LABEL_27:
 
 - (void)updateModuleImageView
 {
-  v3 = [(RPCCAudioSettingsModuleViewController *)self view];
-  v4 = +[UIView userInterfaceLayoutDirectionForSemanticContentAttribute:](UIView, "userInterfaceLayoutDirectionForSemanticContentAttribute:", [v3 semanticContentAttribute]);
+  view = [(RPCCAudioSettingsModuleViewController *)self view];
+  v4 = +[UIView userInterfaceLayoutDirectionForSemanticContentAttribute:](UIView, "userInterfaceLayoutDirectionForSemanticContentAttribute:", [view semanticContentAttribute]);
 
-  v5 = [(RPCCAudioSettingsModuleViewController *)self view];
-  [v5 frame];
+  view2 = [(RPCCAudioSettingsModuleViewController *)self view];
+  [view2 frame];
   if (v4 == UIUserInterfaceLayoutDirectionRightToLeft)
   {
     MinX = CGRectGetMaxX(*&v6) + -22.0;
@@ -445,39 +445,39 @@ LABEL_27:
 
   v12 = MinX + v11;
 
-  v13 = [(RPCCAudioSettingsModuleViewController *)self view];
-  [v13 frame];
+  view3 = [(RPCCAudioSettingsModuleViewController *)self view];
+  [view3 frame];
   v14 = CGRectGetMidY(v20) + -13.0;
 
   [(UIImageView *)self->_audioImageView setFrame:v12, v14, 22.0, 26.0];
   v15 = [(UIImage *)self->_audioImage imageWithRenderingMode:2];
   [(UIImageView *)self->_audioImageView setImage:v15];
 
-  v16 = [(RPCCAudioSettingsModuleViewController *)self buttonView];
-  [v16 addSubview:self->_audioImageView];
+  buttonView = [(RPCCAudioSettingsModuleViewController *)self buttonView];
+  [buttonView addSubview:self->_audioImageView];
 
   [(UIImageView *)self->_audioOffImageView setFrame:v12, v14, 22.0, 26.0];
   v17 = [(UIImage *)self->_audioOffImage imageWithRenderingMode:2];
   [(UIImageView *)self->_audioOffImageView setImage:v17];
 
-  v18 = [(RPCCAudioSettingsModuleViewController *)self buttonView];
-  [v18 addSubview:self->_audioOffImageView];
+  buttonView2 = [(RPCCAudioSettingsModuleViewController *)self buttonView];
+  [buttonView2 addSubview:self->_audioOffImageView];
 }
 
-- (void)handleAVControlCenterNotification:(id)a3
+- (void)handleAVControlCenterNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKey:AVControlCenterModulesNotificationBundleIdentifierKey];
+  notificationCopy = notification;
+  userInfo = [notificationCopy userInfo];
+  v6 = [userInfo objectForKey:AVControlCenterModulesNotificationBundleIdentifierKey];
 
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_5B68;
   block[3] = &unk_2CC00;
   v10 = v6;
-  v11 = self;
-  v12 = v4;
-  v7 = v4;
+  selfCopy = self;
+  v12 = notificationCopy;
+  v7 = notificationCopy;
   v8 = v6;
   dispatch_async(&_dispatch_main_q, block);
 }
@@ -494,15 +494,15 @@ LABEL_27:
   [(UILabel *)self->_unexpandedSubtitleLabel setText:v3];
 }
 
-- (void)setCurrentSelectedMode:(int64_t)a3
+- (void)setCurrentSelectedMode:(int64_t)mode
 {
-  if (a3 <= 2)
+  if (mode <= 2)
   {
-    v5 = [NSBundle _rpLocalizedStringFromFrameworkBundleWithKey:*(&off_2CCD0 + a3)];
+    v5 = [NSBundle _rpLocalizedStringFromFrameworkBundleWithKey:*(&off_2CCD0 + mode)];
     [(UILabel *)self->_unexpandedSubtitleLabel setText:v5];
   }
 
-  self->_currentMicMode = a3;
+  self->_currentMicMode = mode;
   if ([(RPCCAudioSettingsModuleViewController *)self isExpanded])
   {
 
@@ -510,13 +510,13 @@ LABEL_27:
   }
 }
 
-- (BOOL)isSupportedMicMode:(int64_t)a3
+- (BOOL)isSupportedMicMode:(int64_t)mode
 {
   applicationBundleID = self->_applicationBundleID;
   if (applicationBundleID)
   {
     v5 = AVControlCenterMicrophoneModesModuleGetSupportedMicrophoneModesForBundleID();
-    v6 = [NSNumber numberWithInteger:a3];
+    v6 = [NSNumber numberWithInteger:mode];
     v7 = [v5 containsObject:v6];
 
     LOBYTE(applicationBundleID) = v7;
@@ -636,13 +636,13 @@ LABEL_7:
   self->_wideSpectrumImage = v9;
 }
 
-- (id)menuImageWithImage:(id)a3 size:(CGSize)a4
+- (id)menuImageWithImage:(id)image size:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v6 = a3;
+  height = size.height;
+  width = size.width;
+  imageCopy = image;
   v7 = +[UIColor whiteColor];
-  v8 = [v6 _flatImageWithColor:v7];
+  v8 = [imageCopy _flatImageWithColor:v7];
 
   v12.width = width;
   v12.height = height;
@@ -654,11 +654,11 @@ LABEL_7:
   return v9;
 }
 
-- (id)leadingImageForMenuItem:(id)a3
+- (id)leadingImageForMenuItem:(id)item
 {
-  v4 = a3;
-  v5 = [v4 identifier];
-  v6 = [v5 isEqualToString:@"defaultAudioAction"];
+  itemCopy = item;
+  identifier = [itemCopy identifier];
+  v6 = [identifier isEqualToString:@"defaultAudioAction"];
 
   if (v6)
   {
@@ -667,8 +667,8 @@ LABEL_7:
 
   else
   {
-    v8 = [v4 identifier];
-    v9 = [v8 isEqualToString:@"voiceIsoAudioAction"];
+    identifier2 = [itemCopy identifier];
+    v9 = [identifier2 isEqualToString:@"voiceIsoAudioAction"];
 
     v7 = &OBJC_IVAR___RPCCAudioSettingsModuleViewController__wideSpectrumImage;
     if (v9)
@@ -693,8 +693,8 @@ LABEL_7:
   unexpandedTitleLabel = self->_unexpandedTitleLabel;
   self->_unexpandedTitleLabel = v7;
 
-  v9 = [(RPCCAudioSettingsModuleViewController *)self view];
-  [v9 addSubview:self->_unexpandedTitleLabel];
+  view = [(RPCCAudioSettingsModuleViewController *)self view];
+  [view addSubview:self->_unexpandedTitleLabel];
 
   [(UILabel *)self->_unexpandedTitleLabel setNumberOfLines:1];
   [(UILabel *)self->_unexpandedTitleLabel setLineBreakMode:4];
@@ -706,20 +706,20 @@ LABEL_7:
 
   [(UIVisualEffectView *)self->_subtitleEffectView setTranslatesAutoresizingMaskIntoConstraints:0];
   v14 = self->_subtitleEffectView;
-  v15 = [(RPCCAudioSettingsModuleViewController *)self view];
-  [v15 frame];
+  view2 = [(RPCCAudioSettingsModuleViewController *)self view];
+  [view2 frame];
   [(UIVisualEffectView *)v14 setFrame:?];
 
-  v16 = [(RPCCAudioSettingsModuleViewController *)self view];
-  [v16 addSubview:self->_subtitleEffectView];
+  view3 = [(RPCCAudioSettingsModuleViewController *)self view];
+  [view3 addSubview:self->_subtitleEffectView];
 
   [(UIVisualEffectView *)self->_subtitleEffectView setUserInteractionEnabled:0];
   v17 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
   unexpandedSubtitleLabel = self->_unexpandedSubtitleLabel;
   self->_unexpandedSubtitleLabel = v17;
 
-  v19 = [(UIVisualEffectView *)self->_subtitleEffectView contentView];
-  [v19 addSubview:self->_unexpandedSubtitleLabel];
+  contentView = [(UIVisualEffectView *)self->_subtitleEffectView contentView];
+  [contentView addSubview:self->_unexpandedSubtitleLabel];
 
   [(UILabel *)self->_unexpandedSubtitleLabel setNumberOfLines:1];
   v20 = self->_unexpandedSubtitleLabel;
@@ -740,14 +740,14 @@ LABEL_7:
   }
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v15.receiver = self;
   v15.super_class = RPCCAudioSettingsModuleViewController;
-  v7 = a4;
-  [(RPCCAudioSettingsModuleViewController *)&v15 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  coordinatorCopy = coordinator;
+  [(RPCCAudioSettingsModuleViewController *)&v15 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   if ([(RPCCAudioSettingsModuleViewController *)self isExpanded])
   {
     [(UILabel *)self->_unexpandedTitleLabel removeFromSuperview];
@@ -766,14 +766,14 @@ LABEL_7:
   else
   {
     [(RPCCAudioSettingsModuleViewController *)self updateModuleImageView];
-    v11 = [(RPCCAudioSettingsModuleViewController *)self view];
-    [v11 addSubview:self->_unexpandedTitleLabel];
+    view = [(RPCCAudioSettingsModuleViewController *)self view];
+    [view addSubview:self->_unexpandedTitleLabel];
 
-    v12 = [(RPCCAudioSettingsModuleViewController *)self view];
-    [v12 addSubview:self->_subtitleEffectView];
+    view2 = [(RPCCAudioSettingsModuleViewController *)self view];
+    [view2 addSubview:self->_subtitleEffectView];
 
-    v13 = [(UIVisualEffectView *)self->_subtitleEffectView contentView];
-    [v13 addSubview:self->_unexpandedSubtitleLabel];
+    contentView = [(UIVisualEffectView *)self->_subtitleEffectView contentView];
+    [contentView addSubview:self->_unexpandedSubtitleLabel];
 
     v10 = 0;
   }
@@ -784,7 +784,7 @@ LABEL_7:
   v14[2] = sub_6F94;
   v14[3] = &unk_2CC78;
   v14[4] = self;
-  [v7 animateAlongsideTransition:v14 completion:0];
+  [coordinatorCopy animateAlongsideTransition:v14 completion:0];
 }
 
 - (void)layoutVideoConferenceSubviews
@@ -814,9 +814,9 @@ LABEL_7:
 
     [(UIImageView *)self->_audioImageView setHidden:0];
     [(UIImageView *)self->_audioOffImageView setHidden:0];
-    v34 = [(RPCCAudioSettingsModuleViewController *)self _unexpandedTitleFont];
+    _unexpandedTitleFont = [(RPCCAudioSettingsModuleViewController *)self _unexpandedTitleFont];
     [(UILabel *)self->_unexpandedTitleLabel setAlpha:1.0];
-    [(UILabel *)self->_unexpandedTitleLabel setFont:v34];
+    [(UILabel *)self->_unexpandedTitleLabel setFont:_unexpandedTitleFont];
     if (self->_currentBypassMode)
     {
       +[UIColor systemWhiteColor];
@@ -832,19 +832,19 @@ LABEL_7:
     v5 = [NSBundle _rpLocalizedStringFromFrameworkBundleWithKey:@"CONTROL_CENTER_AUDIO_MODULE_TITLE"];
     [(UILabel *)self->_unexpandedTitleLabel setText:v5];
 
-    v6 = [(RPCCAudioSettingsModuleViewController *)self _unexpandedSubtitleFont];
-    [(UILabel *)self->_unexpandedSubtitleLabel setFont:v6];
-    v7 = [(RPCCAudioSettingsModuleViewController *)self view];
-    [v7 bounds];
+    _unexpandedSubtitleFont = [(RPCCAudioSettingsModuleViewController *)self _unexpandedSubtitleFont];
+    [(UILabel *)self->_unexpandedSubtitleLabel setFont:_unexpandedSubtitleFont];
+    view = [(RPCCAudioSettingsModuleViewController *)self view];
+    [view bounds];
     v9 = v8;
     v11 = v10;
     v13 = v12;
     v15 = v14;
 
-    v16 = [(RPCCAudioSettingsModuleViewController *)self traitCollection];
-    v17 = [v16 preferredContentSizeCategory];
+    traitCollection = [(RPCCAudioSettingsModuleViewController *)self traitCollection];
+    preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
 
-    if (UIContentSizeCategoryCompareToCategory(v17, UIContentSizeCategoryExtraExtraExtraLarge) == NSOrderedAscending)
+    if (UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, UIContentSizeCategoryExtraExtraExtraLarge) == NSOrderedAscending)
     {
       v18 = 12.0;
     }
@@ -865,8 +865,8 @@ LABEL_7:
     width = v37.size.width;
     height = v37.size.height;
     CGRectGetWidth(v37);
-    v24 = [(RPCCAudioSettingsModuleViewController *)self view];
-    if ([v24 _shouldReverseLayoutDirection])
+    view2 = [(RPCCAudioSettingsModuleViewController *)self view];
+    if ([view2 _shouldReverseLayoutDirection])
     {
       v38.origin.x = v9;
       v38.origin.y = v19;
@@ -886,8 +886,8 @@ LABEL_7:
     v40.size.height = height;
     CGRectGetHeight(v40);
 
-    v25 = [(RPCCAudioSettingsModuleViewController *)self view];
-    if ([v25 _shouldReverseLayoutDirection])
+    view3 = [(RPCCAudioSettingsModuleViewController *)self view];
+    if ([view3 _shouldReverseLayoutDirection])
     {
       v41.size.height = v15;
       v41.origin.x = v9;
@@ -911,8 +911,8 @@ LABEL_7:
     UIRectIntegralWithScale();
     [(UILabel *)unexpandedTitleLabel setFrame:?];
     v27 = self->_unexpandedTitleLabel;
-    v28 = [(RPCCAudioSettingsModuleViewController *)self view];
-    if ([v28 _shouldReverseLayoutDirection])
+    view4 = [(RPCCAudioSettingsModuleViewController *)self view];
+    if ([view4 _shouldReverseLayoutDirection])
     {
       v29 = 2;
     }
@@ -928,8 +928,8 @@ LABEL_7:
     UIRectIntegralWithScale();
     [(UILabel *)unexpandedSubtitleLabel setFrame:?];
     v31 = self->_unexpandedSubtitleLabel;
-    v32 = [(RPCCAudioSettingsModuleViewController *)self view];
-    if ([v32 _shouldReverseLayoutDirection])
+    view5 = [(RPCCAudioSettingsModuleViewController *)self view];
+    if ([view5 _shouldReverseLayoutDirection])
     {
       v33 = 2;
     }
@@ -945,14 +945,14 @@ LABEL_7:
 
 - (id)_unexpandedTitleFont
 {
-  v2 = [(RPCCAudioSettingsModuleViewController *)self traitCollection];
-  v3 = [v2 preferredContentSizeCategory];
+  traitCollection = [(RPCCAudioSettingsModuleViewController *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
 
-  if (UIContentSizeCategoryIsAccessibilityCategory(v3))
+  if (UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory))
   {
     v4 = UIContentSizeCategoryAccessibilityMedium;
 
-    v3 = v4;
+    preferredContentSizeCategory = v4;
   }
 
   v5 = [UIFontMetrics metricsForTextStyle:UIFontTextStyleLargeTitle];
@@ -963,7 +963,7 @@ LABEL_7:
   v8 = [NSDictionary dictionaryWithObjects:&v14 forKeys:&v13 count:1];
   v9 = [v6 fontDescriptorByAddingAttributes:v8];
 
-  v10 = [UITraitCollection traitCollectionWithPreferredContentSizeCategory:v3];
+  v10 = [UITraitCollection traitCollectionWithPreferredContentSizeCategory:preferredContentSizeCategory];
   [v5 scaledValueForValue:v10 compatibleWithTraitCollection:14.0];
   v11 = [UIFont fontWithDescriptor:v9 size:?];
 
@@ -972,14 +972,14 @@ LABEL_7:
 
 - (id)_unexpandedSubtitleFont
 {
-  v2 = [(RPCCAudioSettingsModuleViewController *)self traitCollection];
-  v3 = [v2 preferredContentSizeCategory];
+  traitCollection = [(RPCCAudioSettingsModuleViewController *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
 
-  if (UIContentSizeCategoryIsAccessibilityCategory(v3))
+  if (UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory))
   {
     v4 = UIContentSizeCategoryAccessibilityMedium;
 
-    v3 = v4;
+    preferredContentSizeCategory = v4;
   }
 
   v5 = [UIFontMetrics metricsForTextStyle:UIFontTextStyleSubheadline];
@@ -990,7 +990,7 @@ LABEL_7:
   v8 = [NSDictionary dictionaryWithObjects:&v14 forKeys:&v13 count:1];
   v9 = [v6 fontDescriptorByAddingAttributes:v8];
 
-  v10 = [UITraitCollection traitCollectionWithPreferredContentSizeCategory:v3];
+  v10 = [UITraitCollection traitCollectionWithPreferredContentSizeCategory:preferredContentSizeCategory];
   [v5 scaledValueForValue:v10 compatibleWithTraitCollection:13.0];
   v11 = [UIFont fontWithDescriptor:v9 size:?];
 
@@ -999,33 +999,33 @@ LABEL_7:
 
 - (id)_imageSymbolConfiguration
 {
-  v2 = [(RPCCAudioSettingsModuleViewController *)self _fontForTitleLabel];
-  v3 = [UIImageSymbolConfiguration configurationWithFont:v2 scale:1];
+  _fontForTitleLabel = [(RPCCAudioSettingsModuleViewController *)self _fontForTitleLabel];
+  v3 = [UIImageSymbolConfiguration configurationWithFont:_fontForTitleLabel scale:1];
 
   return v3;
 }
 
 - (id)_audioIndicatorImage
 {
-  v2 = [(RPCCAudioSettingsModuleViewController *)self _imageSymbolConfiguration];
-  v3 = [UIImage systemImageNamed:@"mic.fill" withConfiguration:v2];
+  _imageSymbolConfiguration = [(RPCCAudioSettingsModuleViewController *)self _imageSymbolConfiguration];
+  v3 = [UIImage systemImageNamed:@"mic.fill" withConfiguration:_imageSymbolConfiguration];
 
   return v3;
 }
 
 - (id)_audioOffIndicatorImage
 {
-  v2 = [(RPCCAudioSettingsModuleViewController *)self _imageSymbolConfiguration];
-  v3 = [UIImage systemImageNamed:@"mic.slash.fill" withConfiguration:v2];
+  _imageSymbolConfiguration = [(RPCCAudioSettingsModuleViewController *)self _imageSymbolConfiguration];
+  v3 = [UIImage systemImageNamed:@"mic.slash.fill" withConfiguration:_imageSymbolConfiguration];
 
   return v3;
 }
 
-- (void)buttonTapped:(id)a3 forEvent:(id)a4
+- (void)buttonTapped:(id)tapped forEvent:(id)event
 {
   if (!self->_currentBypassMode)
   {
-    [(CCUIContentModuleContext *)self->_contentModuleContext requestExpandModule:a3];
+    [(CCUIContentModuleContext *)self->_contentModuleContext requestExpandModule:tapped];
   }
 }
 

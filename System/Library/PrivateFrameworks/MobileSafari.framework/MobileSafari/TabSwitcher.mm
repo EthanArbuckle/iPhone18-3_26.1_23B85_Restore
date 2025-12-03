@@ -1,11 +1,11 @@
 @interface TabSwitcher
 - (BOOL)becomeFirstResponder;
-- (_TtC12MobileSafari11TabSwitcher)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)anchorViewOfPopoverForOnboardingWithProvider:(id)a3;
+- (_TtC12MobileSafari11TabSwitcher)initWithNibName:(id)name bundle:(id)bundle;
+- (id)anchorViewOfPopoverForOnboardingWithProvider:(id)provider;
 - (void)loadView;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4;
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
 @end
 
@@ -22,43 +22,43 @@
   swift_unknownObjectUnownedInit();
   v8.receiver = v4;
   v8.super_class = v3;
-  v6 = self;
+  selfCopy = self;
   v7 = [(TabSwitcher *)&v8 initWithFrame:0.0, 0.0, 0.0, 0.0];
-  [(TabSwitcher *)v6 setView:v7, v8.receiver, v8.super_class];
+  [(TabSwitcher *)selfCopy setView:v7, v8.receiver, v8.super_class];
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_18B7C4B54();
 }
 
 - (void)viewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_18B7F0518();
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_18B7F1D54();
 }
 
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear
 {
-  v4 = a4;
+  disappearCopy = disappear;
   v8.receiver = self;
   v8.super_class = type metadata accessor for TabSwitcher(0);
-  v6 = a3;
+  windowCopy = window;
   v7 = v8.receiver;
-  [(TabSwitcher *)&v8 viewDidMoveToWindow:v6 shouldAppearOrDisappear:v4];
+  [(TabSwitcher *)&v8 viewDidMoveToWindow:windowCopy shouldAppearOrDisappear:disappearCopy];
   sub_18BAF3798();
 }
 
 - (BOOL)becomeFirstResponder
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_18B7C5C10();
   sub_18B7C9974();
   v5 = v4;
@@ -67,17 +67,17 @@
   return v3;
 }
 
-- (_TtC12MobileSafari11TabSwitcher)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC12MobileSafari11TabSwitcher)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (id)anchorViewOfPopoverForOnboardingWithProvider:(id)a3
+- (id)anchorViewOfPopoverForOnboardingWithProvider:(id)provider
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   v5 = sub_18BB104E8();
   swift_unknownObjectRelease();
 

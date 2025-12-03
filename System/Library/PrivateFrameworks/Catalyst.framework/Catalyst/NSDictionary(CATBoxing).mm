@@ -6,7 +6,7 @@
 
 - (id)cat_errorValue
 {
-  v2 = [a1 objectForKeyedSubscript:@"Domain"];
+  v2 = [self objectForKeyedSubscript:@"Domain"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -20,7 +20,7 @@
 
   v4 = v3;
 
-  v5 = [a1 objectForKeyedSubscript:@"Code"];
+  v5 = [self objectForKeyedSubscript:@"Code"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -34,7 +34,7 @@
 
   v7 = v6;
 
-  v8 = [a1 objectForKeyedSubscript:@"UserInfo"];
+  v8 = [self objectForKeyedSubscript:@"UserInfo"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {

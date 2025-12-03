@@ -1,22 +1,22 @@
 @interface AVOutputContextCommunicationChannel
-- (AVOutputContextCommunicationChannel)initWithOutputContextCommunicationChannelImpl:(id)a3;
+- (AVOutputContextCommunicationChannel)initWithOutputContextCommunicationChannelImpl:(id)impl;
 - (__CFString)commChannelUUID;
 - (void)dealloc;
-- (void)sendData:(id)a3 completionHandler:(id)a4;
+- (void)sendData:(id)data completionHandler:(id)handler;
 @end
 
 @implementation AVOutputContextCommunicationChannel
 
 - (__CFString)commChannelUUID
 {
-  v2 = [(AVOutputContextCommunicationChannel *)self impl];
+  impl = [(AVOutputContextCommunicationChannel *)self impl];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     return 0;
   }
 
-  return [(AVOutputContextCommunicationChannelImpl *)v2 commChannelUUID];
+  return [(AVOutputContextCommunicationChannelImpl *)impl commChannelUUID];
 }
 
 - (void)dealloc
@@ -33,7 +33,7 @@
   [(AVOutputContextCommunicationChannel *)&v4 dealloc];
 }
 
-- (void)sendData:(id)a3 completionHandler:(id)a4
+- (void)sendData:(id)data completionHandler:(id)handler
 {
   v11 = *MEMORY[0x1E69E9840];
   if (dword_1ED6F6B88)
@@ -43,16 +43,16 @@
     fig_log_call_emit_and_clean_up_after_send_and_compose();
   }
 
-  [(AVOutputContextCommunicationChannelImpl *)[(AVOutputContextCommunicationChannel *)self impl:v9] sendData:a3 completionHandler:a4];
+  [(AVOutputContextCommunicationChannelImpl *)[(AVOutputContextCommunicationChannel *)self impl:v9] sendData:data completionHandler:handler];
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (AVOutputContextCommunicationChannel)initWithOutputContextCommunicationChannelImpl:(id)a3
+- (AVOutputContextCommunicationChannel)initWithOutputContextCommunicationChannelImpl:(id)impl
 {
   v10.receiver = self;
   v10.super_class = AVOutputContextCommunicationChannel;
   v4 = [(AVOutputContextCommunicationChannel *)&v10 init];
-  if (v4 && (v5 = objc_alloc_init(AVOutputContextCommunicationChannelInternal), (v4->_ivars = v5) != 0) && (OUTLINED_FUNCTION_0_3(a3), (v7 = *(v6 + 8)) != 0))
+  if (v4 && (v5 = objc_alloc_init(AVOutputContextCommunicationChannelInternal), (v4->_ivars = v5) != 0) && (OUTLINED_FUNCTION_0_3(impl), (v7 = *(v6 + 8)) != 0))
   {
     [v7 setParentCommunicationChannel:v4];
     v8 = v4;

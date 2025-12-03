@@ -15,22 +15,22 @@
     _os_log_impl(&dword_24510B000, v5, OS_LOG_TYPE_DEFAULT, "Attempting silent re-authentication...", buf, 2u);
   }
 
-  if ([a1 idmsRecovery])
+  if ([self idmsRecovery])
   {
-    v6 = [a1 _authProvider];
+    _authProvider = [self _authProvider];
 
-    if (v6)
+    if (_authProvider)
     {
-      objc_initWeak(buf, a1);
-      v7 = [a1 _authProvider];
+      objc_initWeak(buf, self);
+      _authProvider2 = [self _authProvider];
       v10[0] = MEMORY[0x277D85DD0];
       v10[1] = 3221225472;
       v10[2] = __55__CDPContext_Daemon__reauthenticateUserWithCompletion___block_invoke;
       v10[3] = &unk_278E245D0;
       objc_copyWeak(&v12, buf);
-      v10[4] = a1;
+      v10[4] = self;
       v11 = v4;
-      [v7 cdpContext:a1 performSilentRecoveryTokenRenewal:v10];
+      [_authProvider2 cdpContext:self performSilentRecoveryTokenRenewal:v10];
 
       objc_destroyWeak(&v12);
       objc_destroyWeak(buf);
@@ -48,9 +48,9 @@
     v8[1] = 3221225472;
     v8[2] = __55__CDPContext_Daemon__reauthenticateUserWithCompletion___block_invoke_19;
     v8[3] = &unk_278E245F8;
-    v8[4] = a1;
+    v8[4] = self;
     v9 = v4;
-    [CDPAuthenticationHelper silentAuthenticationForContext:a1 withCompletion:v8];
+    [CDPAuthenticationHelper silentAuthenticationForContext:self withCompletion:v8];
   }
 }
 

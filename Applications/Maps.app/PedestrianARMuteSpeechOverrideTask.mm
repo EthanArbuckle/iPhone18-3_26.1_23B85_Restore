@@ -1,20 +1,20 @@
 @interface PedestrianARMuteSpeechOverrideTask
-- (PedestrianARMuteSpeechOverrideTask)initWithNavigationService:(id)a3;
+- (PedestrianARMuteSpeechOverrideTask)initWithNavigationService:(id)service;
 - (void)dealloc;
-- (void)pedestrianARViewControllerDidAppearNotification:(id)a3;
-- (void)pedestrianARViewControllerDidDisappearNotification:(id)a3;
-- (void)platformController:(id)a3 didChangeCurrentSessionFromSession:(id)a4 toSession:(id)a5;
+- (void)pedestrianARViewControllerDidAppearNotification:(id)notification;
+- (void)pedestrianARViewControllerDidDisappearNotification:(id)notification;
+- (void)platformController:(id)controller didChangeCurrentSessionFromSession:(id)session toSession:(id)toSession;
 @end
 
 @implementation PedestrianARMuteSpeechOverrideTask
 
-- (void)platformController:(id)a3 didChangeCurrentSessionFromSession:(id)a4 toSession:(id)a5
+- (void)platformController:(id)controller didChangeCurrentSessionFromSession:(id)session toSession:(id)toSession
 {
-  v8 = a5;
+  toSessionCopy = toSession;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v8;
+    v6 = toSessionCopy;
   }
 
   else
@@ -26,19 +26,19 @@
   [(PedestrianARMuteSpeechOverrideTask *)self setNavigationSession:v7];
 }
 
-- (void)pedestrianARViewControllerDidDisappearNotification:(id)a3
+- (void)pedestrianARViewControllerDidDisappearNotification:(id)notification
 {
-  v4 = [(PedestrianARMuteSpeechOverrideTask *)self navigationSession];
-  v5 = [v4 guidanceType];
+  navigationSession = [(PedestrianARMuteSpeechOverrideTask *)self navigationSession];
+  guidanceType = [navigationSession guidanceType];
 
   v6 = sub_1009C612C();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_INFO);
-  if (v5 == 2)
+  if (guidanceType == 2)
   {
     if (v7)
     {
       v9 = 134349056;
-      v10 = self;
+      selfCopy2 = self;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "[%{public}p] Ignoring AR did disappear notification during route preview", &v9, 0xCu);
     }
   }
@@ -48,31 +48,31 @@
     if (v7)
     {
       v9 = 134349056;
-      v10 = self;
+      selfCopy2 = self;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "[%{public}p] Restoring previous voice guidance level.", &v9, 0xCu);
     }
 
-    v8 = [(PedestrianARMuteSpeechOverrideTask *)self navigationService];
-    [v8 setVoiceGuidanceLevelOverride:self->_previousVoiceGuidanceLevel];
+    navigationService = [(PedestrianARMuteSpeechOverrideTask *)self navigationService];
+    [navigationService setVoiceGuidanceLevelOverride:self->_previousVoiceGuidanceLevel];
 
     self->_previousVoiceGuidanceLevel = -1;
   }
 }
 
-- (void)pedestrianARViewControllerDidAppearNotification:(id)a3
+- (void)pedestrianARViewControllerDidAppearNotification:(id)notification
 {
-  v4 = [(PedestrianARMuteSpeechOverrideTask *)self navigationSession];
-  v5 = [v4 guidanceType];
+  navigationSession = [(PedestrianARMuteSpeechOverrideTask *)self navigationSession];
+  guidanceType = [navigationSession guidanceType];
 
-  v6 = sub_1009C612C();
-  v7 = os_log_type_enabled(v6, OS_LOG_TYPE_INFO);
-  if (v5 == 2)
+  navigationService2 = sub_1009C612C();
+  v7 = os_log_type_enabled(navigationService2, OS_LOG_TYPE_INFO);
+  if (guidanceType == 2)
   {
     if (v7)
     {
       v9 = 134349056;
-      v10 = self;
-      _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "[%{public}p] Ignoring AR did appear notification during route preview", &v9, 0xCu);
+      selfCopy2 = self;
+      _os_log_impl(&_mh_execute_header, navigationService2, OS_LOG_TYPE_INFO, "[%{public}p] Ignoring AR did appear notification during route preview", &v9, 0xCu);
     }
   }
 
@@ -81,15 +81,15 @@
     if (v7)
     {
       v9 = 134349056;
-      v10 = self;
-      _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "[%{public}p] Setting voice guidance level override to None.", &v9, 0xCu);
+      selfCopy2 = self;
+      _os_log_impl(&_mh_execute_header, navigationService2, OS_LOG_TYPE_INFO, "[%{public}p] Setting voice guidance level override to None.", &v9, 0xCu);
     }
 
-    v8 = [(PedestrianARMuteSpeechOverrideTask *)self navigationService];
-    self->_previousVoiceGuidanceLevel = [v8 voiceGuidanceLevel];
+    navigationService = [(PedestrianARMuteSpeechOverrideTask *)self navigationService];
+    self->_previousVoiceGuidanceLevel = [navigationService voiceGuidanceLevel];
 
-    v6 = [(PedestrianARMuteSpeechOverrideTask *)self navigationService];
-    [v6 setVoiceGuidanceLevelOverride:0];
+    navigationService2 = [(PedestrianARMuteSpeechOverrideTask *)self navigationService];
+    [navigationService2 setVoiceGuidanceLevelOverride:0];
   }
 }
 
@@ -99,7 +99,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134349056;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEBUG, "[%{public}p] Deallocating", buf, 0xCu);
   }
 
@@ -108,10 +108,10 @@
   [(PedestrianARMuteSpeechOverrideTask *)&v4 dealloc];
 }
 
-- (PedestrianARMuteSpeechOverrideTask)initWithNavigationService:(id)a3
+- (PedestrianARMuteSpeechOverrideTask)initWithNavigationService:(id)service
 {
-  v5 = a3;
-  if (!v5)
+  serviceCopy = service;
+  if (!serviceCopy)
   {
     v11 = sub_10006D178();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -153,7 +153,7 @@
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "[%{public}p] Initializing", buf, 0xCu);
     }
 
-    objc_storeStrong(&v6->_navigationService, a3);
+    objc_storeStrong(&v6->_navigationService, service);
     v6->_previousVoiceGuidanceLevel = -1;
     v8 = +[NSNotificationCenter defaultCenter];
     [v8 addObserver:v6 selector:"pedestrianARViewControllerDidAppearNotification:" name:@"PedestrianARViewControllerDidAppearNotification" object:0];

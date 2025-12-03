@@ -4,11 +4,11 @@
 - (void)_activate;
 - (void)_invalidate;
 - (void)_update;
-- (void)_wifiAutoJoinNotification:(id)a3;
+- (void)_wifiAutoJoinNotification:(id)notification;
 - (void)_wifiEnsureStarted;
 - (void)_wifiEnsureStopped;
-- (void)_wifiStatusChangedExternal:(int64_t)a3;
-- (void)_wifiStatusChangedInternal:(int64_t)a3;
+- (void)_wifiStatusChangedExternal:(int64_t)external;
+- (void)_wifiStatusChangedInternal:(int64_t)internal;
 - (void)activate;
 - (void)invalidate;
 - (void)reset;
@@ -427,9 +427,9 @@ LABEL_22:
   }
 }
 
-- (void)_wifiAutoJoinNotification:(id)a3
+- (void)_wifiAutoJoinNotification:(id)notification
 {
-  v8 = a3;
+  notificationCopy = notification;
   v4 = *MEMORY[0x1E69B2030];
   CFStringGetTypeID();
   v5 = CFDictionaryGetTypedValue();
@@ -462,10 +462,10 @@ LABEL_10:
   }
 }
 
-- (void)_wifiStatusChangedExternal:(int64_t)a3
+- (void)_wifiStatusChangedExternal:(int64_t)external
 {
   wifiStatusExternal = self->_wifiStatusExternal;
-  if (wifiStatusExternal == a3)
+  if (wifiStatusExternal == external)
   {
     return;
   }
@@ -480,9 +480,9 @@ LABEL_4:
         v6 = off_1E78913F8[wifiStatusExternal];
       }
 
-      if (a3 <= 3)
+      if (external <= 3)
       {
-        v7 = off_1E78913F8[a3];
+        v7 = off_1E78913F8[external];
       }
 
       LogPrintF();
@@ -497,7 +497,7 @@ LABEL_4:
   }
 
 LABEL_11:
-  self->_wifiStatusExternal = a3;
+  self->_wifiStatusExternal = external;
   statusHandler = self->_statusHandler;
   if (statusHandler)
   {
@@ -507,10 +507,10 @@ LABEL_11:
   }
 }
 
-- (void)_wifiStatusChangedInternal:(int64_t)a3
+- (void)_wifiStatusChangedInternal:(int64_t)internal
 {
   wifiStatusInternal = self->_wifiStatusInternal;
-  if (wifiStatusInternal == a3)
+  if (wifiStatusInternal == internal)
   {
     return;
   }
@@ -525,9 +525,9 @@ LABEL_5:
         v6 = off_1E78913F8[wifiStatusInternal];
       }
 
-      if (a3 <= 3)
+      if (internal <= 3)
       {
-        v7 = off_1E78913F8[a3];
+        v7 = off_1E78913F8[internal];
       }
 
       LogPrintF();
@@ -542,8 +542,8 @@ LABEL_5:
   }
 
 LABEL_12:
-  self->_wifiStatusInternal = a3;
-  if (a3 == 1)
+  self->_wifiStatusInternal = internal;
+  if (internal == 1)
   {
     self->_wifiStatusBadTicks = 0;
     self->_wifiStatusGoodTicks = mach_absolute_time();
@@ -561,7 +561,7 @@ LABEL_12:
     [(SFWiFiHealthMonitor *)self _wifiStatusChangedExternal:v11];
   }
 
-  else if ((a3 & 0xFFFFFFFFFFFFFFFELL) == 2)
+  else if ((internal & 0xFFFFFFFFFFFFFFFELL) == 2)
   {
     self->_wifiStatusBadTicks = mach_absolute_time();
     self->_wifiStatusGoodTicks = 0;

@@ -1,6 +1,6 @@
 @interface MCAirPrintPayload
 + (id)typeStrings;
-- (MCAirPrintPayload)initWithDictionary:(id)a3 profile:(id)a4 outError:(id *)a5;
+- (MCAirPrintPayload)initWithDictionary:(id)dictionary profile:(id)profile outError:(id *)error;
 - (id)payloadDescriptionKeyValueSections;
 - (id)restrictions;
 - (id)stubDictionary;
@@ -20,24 +20,24 @@
   return v2;
 }
 
-- (MCAirPrintPayload)initWithDictionary:(id)a3 profile:(id)a4 outError:(id *)a5
+- (MCAirPrintPayload)initWithDictionary:(id)dictionary profile:(id)profile outError:(id *)error
 {
   v70 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  dictionaryCopy = dictionary;
+  profileCopy = profile;
   v64.receiver = self;
   v64.super_class = MCAirPrintPayload;
-  v10 = [(MCPayload *)&v64 initWithDictionary:v8 profile:v9 outError:a5];
+  v10 = [(MCPayload *)&v64 initWithDictionary:dictionaryCopy profile:profileCopy outError:error];
   if (!v10)
   {
     goto LABEL_56;
   }
 
-  v55 = v9;
-  if ([v9 isStub])
+  v55 = profileCopy;
+  if ([profileCopy isStub])
   {
     v58 = 0;
-    v11 = [MCProfile removeOptionalObjectInDictionary:v8 key:@"AirPrintCount" type:objc_opt_class() errorDomain:@"MCPayloadErrorDomain" invalidDataCode:2003 invalidDataErrorString:@"ERROR_PAYLOAD_FIELD_INVALID_P_FIELD" outError:&v58];
+    v11 = [MCProfile removeOptionalObjectInDictionary:dictionaryCopy key:@"AirPrintCount" type:objc_opt_class() errorDomain:@"MCPayloadErrorDomain" invalidDataCode:2003 invalidDataErrorString:@"ERROR_PAYLOAD_FIELD_INVALID_P_FIELD" outError:&v58];
     v12 = v58;
     if (v12)
     {
@@ -48,7 +48,7 @@
     {
       v10->_airPrintCount = [v11 unsignedIntegerValue];
       v57 = 0;
-      v32 = [v8 MCValidateAndRemoveArrayOfClass:objc_opt_class() withKey:@"IPPAddresses" isRequired:0 outError:&v57];
+      v32 = [dictionaryCopy MCValidateAndRemoveArrayOfClass:objc_opt_class() withKey:@"IPPAddresses" isRequired:0 outError:&v57];
       v13 = v57;
       v33 = [v32 mutableCopy];
       ippAddresses = v10->_ippAddresses;
@@ -58,12 +58,12 @@
     goto LABEL_46;
   }
 
-  v14 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v15 = v10->_ippAddresses;
-  v10->_ippAddresses = v14;
+  v10->_ippAddresses = array;
 
   v63 = 0;
-  v16 = [MCProfile removeRequiredObjectInDictionary:v8 key:@"AirPrint" type:objc_opt_class() errorDomain:@"MCPayloadErrorDomain" missingDataCode:2002 missingDataErrorString:@"ERROR_PAYLOAD_REQUIRED_FIELD_MISSING_P_FIELD" invalidDataCode:2003 invalidDataErrorString:@"ERROR_PAYLOAD_FIELD_INVALID_P_FIELD" outError:&v63];
+  v16 = [MCProfile removeRequiredObjectInDictionary:dictionaryCopy key:@"AirPrint" type:objc_opt_class() errorDomain:@"MCPayloadErrorDomain" missingDataCode:2002 missingDataErrorString:@"ERROR_PAYLOAD_REQUIRED_FIELD_MISSING_P_FIELD" invalidDataCode:2003 invalidDataErrorString:@"ERROR_PAYLOAD_FIELD_INVALID_P_FIELD" outError:&v63];
   v13 = v63;
   v59 = 0u;
   v60 = 0u;
@@ -78,8 +78,8 @@
 
   v17 = 0x1E696A000uLL;
   v54 = *v60;
-  v50 = a5;
-  v51 = v8;
+  errorCopy = error;
+  v51 = dictionaryCopy;
   obj = v11;
   while (2)
   {
@@ -172,12 +172,12 @@ LABEL_42:
         }
 
         v28 = [v13 URL];
-        v29 = [v28 absoluteString];
+        absoluteString = [v28 absoluteString];
 
-        v30 = v29 != 0;
-        if (v29)
+        v30 = absoluteString != 0;
+        if (absoluteString)
         {
-          [(NSMutableArray *)v10->_ippAddresses addObject:v29];
+          [(NSMutableArray *)v10->_ippAddresses addObject:absoluteString];
         }
 
         else
@@ -187,8 +187,8 @@ LABEL_42:
           v56 = v31;
         }
 
-        a5 = v50;
-        v8 = v51;
+        error = errorCopy;
+        dictionaryCopy = v51;
       }
 
       if (!v30)
@@ -223,47 +223,47 @@ LABEL_46:
   {
     v36 = [(MCPayload *)v10 malformedPayloadErrorWithError:v13];
     v37 = v36;
-    if (a5)
+    if (error)
     {
       v38 = v36;
-      *a5 = v37;
+      *error = v37;
     }
 
     v39 = _MCLogObjects;
     if (os_log_type_enabled(_MCLogObjects, OS_LOG_TYPE_ERROR))
     {
       v40 = v39;
-      v41 = v8;
+      v41 = dictionaryCopy;
       v42 = objc_opt_class();
       v43 = v42;
-      v44 = [v37 MCVerboseDescription];
+      mCVerboseDescription = [v37 MCVerboseDescription];
       *buf = 138543618;
       v66 = v42;
-      v8 = v41;
+      dictionaryCopy = v41;
       v67 = 2114;
-      v68 = v44;
+      v68 = mCVerboseDescription;
       _os_log_impl(&dword_1A795B000, v40, OS_LOG_TYPE_ERROR, "%{public}@ Can't parse payload: %{public}@", buf, 0x16u);
     }
 
     v10 = 0;
   }
 
-  if ([v8 count])
+  if ([dictionaryCopy count])
   {
     v45 = _MCLogObjects;
     if (os_log_type_enabled(_MCLogObjects, OS_LOG_TYPE_INFO))
     {
       v46 = v45;
-      v47 = [(MCPayload *)v10 friendlyName];
+      friendlyName = [(MCPayload *)v10 friendlyName];
       *buf = 138543618;
-      v66 = v47;
+      v66 = friendlyName;
       v67 = 2114;
-      v68 = v8;
+      v68 = dictionaryCopy;
       _os_log_impl(&dword_1A795B000, v46, OS_LOG_TYPE_INFO, "Payload “%{public}@” contains ignored fields. They are: %{public}@", buf, 0x16u);
     }
   }
 
-  v9 = v55;
+  profileCopy = v55;
 LABEL_56:
 
   v48 = *MEMORY[0x1E69E9840];
@@ -274,19 +274,19 @@ LABEL_56:
 {
   v8.receiver = self;
   v8.super_class = MCAirPrintPayload;
-  v3 = [(MCPayload *)&v8 stubDictionary];
+  stubDictionary = [(MCPayload *)&v8 stubDictionary];
   v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[MCAirPrintPayload airPrintCount](self, "airPrintCount")}];
-  [v3 setObject:v4 forKeyedSubscript:@"AirPrintCount"];
+  [stubDictionary setObject:v4 forKeyedSubscript:@"AirPrintCount"];
 
-  v5 = [(MCAirPrintPayload *)self ippAddresses];
+  ippAddresses = [(MCAirPrintPayload *)self ippAddresses];
 
-  if (v5)
+  if (ippAddresses)
   {
-    v6 = [(MCAirPrintPayload *)self ippAddresses];
-    [v3 setObject:v6 forKeyedSubscript:@"IPPAddresses"];
+    ippAddresses2 = [(MCAirPrintPayload *)self ippAddresses];
+    [stubDictionary setObject:ippAddresses2 forKeyedSubscript:@"IPPAddresses"];
   }
 
-  return v3;
+  return stubDictionary;
 }
 
 - (id)subtitle1Label
@@ -310,20 +310,20 @@ LABEL_56:
   v19 = *MEMORY[0x1E69E9840];
   v17.receiver = self;
   v17.super_class = MCAirPrintPayload;
-  v3 = [(MCPayload *)&v17 verboseDescription];
-  v4 = [v3 mutableCopy];
+  verboseDescription = [(MCPayload *)&v17 verboseDescription];
+  v4 = [verboseDescription mutableCopy];
 
-  v5 = [(MCAirPrintPayload *)self ippAddresses];
+  ippAddresses = [(MCAirPrintPayload *)self ippAddresses];
 
-  if (v5)
+  if (ippAddresses)
   {
     [v4 appendString:@"AirPrint paths:\n"];
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v6 = [(MCAirPrintPayload *)self ippAddresses];
-    v7 = [v6 countByEnumeratingWithState:&v13 objects:v18 count:16];
+    ippAddresses2 = [(MCAirPrintPayload *)self ippAddresses];
+    v7 = [ippAddresses2 countByEnumeratingWithState:&v13 objects:v18 count:16];
     if (v7)
     {
       v8 = v7;
@@ -334,13 +334,13 @@ LABEL_56:
         {
           if (*v14 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(ippAddresses2);
           }
 
           [v4 appendFormat:@"  %@\n", *(*(&v13 + 1) + 8 * i)];
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v13 objects:v18 count:16];
+        v8 = [ippAddresses2 countByEnumeratingWithState:&v13 objects:v18 count:16];
       }
 
       while (v8);
@@ -349,8 +349,8 @@ LABEL_56:
 
   else
   {
-    v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[MCAirPrintPayload airPrintCount](self, "airPrintCount")}];
-    [v4 appendFormat:@"AirPrint devices: %@\n", v6];
+    ippAddresses2 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[MCAirPrintPayload airPrintCount](self, "airPrintCount")}];
+    [v4 appendFormat:@"AirPrint devices: %@\n", ippAddresses2];
   }
 
   v11 = *MEMORY[0x1E69E9840];
@@ -362,15 +362,15 @@ LABEL_56:
 {
   v41 = *MEMORY[0x1E69E9840];
   v3 = objc_opt_new();
-  v4 = [(MCAirPrintPayload *)self ippAddresses];
-  v5 = [v4 count];
+  ippAddresses = [(MCAirPrintPayload *)self ippAddresses];
+  v5 = [ippAddresses count];
 
   if (v5)
   {
     v32 = v3;
     v6 = MEMORY[0x1E695DF70];
-    v7 = [(MCAirPrintPayload *)self ippAddresses];
-    v8 = [v6 arrayWithCapacity:{objc_msgSend(v7, "count")}];
+    ippAddresses2 = [(MCAirPrintPayload *)self ippAddresses];
+    v8 = [v6 arrayWithCapacity:{objc_msgSend(ippAddresses2, "count")}];
 
     v9 = v8;
     v37 = 0u;
@@ -394,23 +394,23 @@ LABEL_56:
           }
 
           v14 = [MEMORY[0x1E695DFF8] URLWithString:*(*(&v35 + 1) + 8 * i)];
-          v15 = [v14 scheme];
-          v16 = [v14 port];
-          v17 = [v14 host];
-          v18 = [v14 path];
-          v19 = v18;
+          scheme = [v14 scheme];
+          port = [v14 port];
+          host = [v14 host];
+          path = [v14 path];
+          v19 = path;
           v20 = MEMORY[0x1E696AEC0];
-          if (v16)
+          if (port)
           {
-            v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@":%@", v16];
-            v22 = [v20 stringWithFormat:@"%@://%@%@%@", v15, v17, v21, v19];
+            v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@":%@", port];
+            v22 = [v20 stringWithFormat:@"%@://%@%@%@", scheme, host, v21, v19];
 
             v9 = v34;
           }
 
           else
           {
-            v22 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@://%@%@%@", v15, v17, &stru_1F1A7FAB0, v18];
+            v22 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@://%@%@%@", scheme, host, &stru_1F1A7FAB0, path];
           }
 
           [v9 addObject:v22];
@@ -460,20 +460,20 @@ LABEL_56:
 
 - (id)restrictions
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [MEMORY[0x1E695DF90] dictionary];
-  [v3 setObject:v4 forKeyedSubscript:@"union"];
-  v5 = [MEMORY[0x1E695DF90] dictionary];
-  [v4 setObject:v5 forKeyedSubscript:@"knownAirPrintTargets"];
-  v6 = [(MCAirPrintPayload *)self ippAddresses];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setObject:dictionary2 forKeyedSubscript:@"union"];
+  dictionary3 = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary2 setObject:dictionary3 forKeyedSubscript:@"knownAirPrintTargets"];
+  ippAddresses = [(MCAirPrintPayload *)self ippAddresses];
 
-  if (v6)
+  if (ippAddresses)
   {
-    v7 = [(MCAirPrintPayload *)self ippAddresses];
-    [v5 setObject:v7 forKeyedSubscript:@"values"];
+    ippAddresses2 = [(MCAirPrintPayload *)self ippAddresses];
+    [dictionary3 setObject:ippAddresses2 forKeyedSubscript:@"values"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 @end

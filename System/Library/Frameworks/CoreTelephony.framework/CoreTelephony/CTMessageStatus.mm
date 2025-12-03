@@ -1,19 +1,19 @@
 @interface CTMessageStatus
-- (CTMessageStatus)initWithMessageId:(unsigned int)a3 messageType:(int)a4 result:(int)a5;
+- (CTMessageStatus)initWithMessageId:(unsigned int)id messageType:(int)type result:(int)result;
 @end
 
 @implementation CTMessageStatus
 
-- (CTMessageStatus)initWithMessageId:(unsigned int)a3 messageType:(int)a4 result:(int)a5
+- (CTMessageStatus)initWithMessageId:(unsigned int)id messageType:(int)type result:(int)result
 {
   v9.receiver = self;
   v9.super_class = CTMessageStatus;
   result = [(CTMessageStatus *)&v9 init];
   if (result)
   {
-    result->_messageId = a3;
-    result->_messageType = a4;
-    result->_result = a5;
+    result->_messageId = id;
+    result->_messageType = type;
+    result->_result = result;
   }
 
   return result;

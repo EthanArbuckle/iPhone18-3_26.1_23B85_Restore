@@ -1,12 +1,12 @@
 @interface HMIFaceprinter
-+ (__CVBuffer)createFacePixelBufferForFaceDetection:(id)a3 pixelBuffer:(__CVBuffer *)a4 roll:(id)a5 error:(id *)a6;
-+ (__CVBuffer)createFacePixelBufferForFaceEvent:(id)a3 pixelBuffer:(__CVBuffer *)a4 roll:(id)a5 error:(id *)a6;
++ (__CVBuffer)createFacePixelBufferForFaceDetection:(id)detection pixelBuffer:(__CVBuffer *)buffer roll:(id)roll error:(id *)error;
++ (__CVBuffer)createFacePixelBufferForFaceEvent:(id)event pixelBuffer:(__CVBuffer *)buffer roll:(id)roll error:(id *)error;
 + (id)currentModelUUID;
-+ (int64_t)_minorVersionFromVisionVersion:(int)a3;
-- (__CVBuffer)createFacePixelBufferFromFaceCrop:(id)a3 error:(id *)a4;
-- (id)createFaceprintForFacePixelBuffer:(__CVBuffer *)a3 fastMode:(BOOL)a4 error:(id *)a5;
-- (id)generateFaceprintForFaceCrop:(id)a3 error:(id *)a4;
-- (id)updatedFaceprintsForFaceCrops:(id)a3 withExistingFaceprints:(id)a4 error:(id *)a5;
++ (int64_t)_minorVersionFromVisionVersion:(int)version;
+- (__CVBuffer)createFacePixelBufferFromFaceCrop:(id)crop error:(id *)error;
+- (id)createFaceprintForFacePixelBuffer:(__CVBuffer *)buffer fastMode:(BOOL)mode error:(id *)error;
+- (id)generateFaceprintForFaceCrop:(id)crop error:(id *)error;
+- (id)updatedFaceprintsForFaceCrops:(id)crops withExistingFaceprints:(id)faceprints error:(id *)error;
 - (void)warmStart;
 @end
 
@@ -18,7 +18,7 @@
   block[1] = 3221225472;
   block[2] = __34__HMIFaceprinter_currentModelUUID__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (currentModelUUID_onceToken_0 != -1)
   {
     dispatch_once(&currentModelUUID_onceToken_0, block);
@@ -171,14 +171,14 @@ LABEL_10:
 LABEL_12:
 }
 
-- (id)createFaceprintForFacePixelBuffer:(__CVBuffer *)a3 fastMode:(BOOL)a4 error:(id *)a5
+- (id)createFaceprintForFacePixelBuffer:(__CVBuffer *)buffer fastMode:(BOOL)mode error:(id *)error
 {
-  v6 = a4;
+  modeCopy = mode;
   v41[1] = *MEMORY[0x277D85DE8];
   v9 = objc_alloc(MEMORY[0x277CE2D50]);
   v10 = +[HMIVisionSession sharedInstance];
-  v11 = [v10 vnSession];
-  v35 = [v9 initWithCVPixelBuffer:a3 options:MEMORY[0x277CBEC10] session:v11];
+  vnSession = [v10 vnSession];
+  v35 = [v9 initWithCVPixelBuffer:buffer options:MEMORY[0x277CBEC10] session:vnSession];
 
   v12 = objc_alloc_init(MEMORY[0x277CE2C48]);
   v13 = [MEMORY[0x277CE2CD0] faceObservationWithRequestRevision:2 unalignedBoundingBox:0.0 alignedBoundingBox:{0.0, 1.0, 1.0, 0.0, 0.0, 1.0, 1.0}];
@@ -199,7 +199,7 @@ LABEL_12:
 
     if (v17)
     {
-      if (v6)
+      if (modeCopy)
       {
         [v12 setDetectionLevel:2];
         [v16 setDetectionLevel:2];
@@ -215,33 +215,33 @@ LABEL_12:
 
       if (v20)
       {
-        v21 = [v12 results];
-        v22 = [v21 firstObject];
+        results = [v12 results];
+        firstObject = [results firstObject];
 
-        v23 = [v16 results];
-        v24 = [v23 firstObject];
+        results2 = [v16 results];
+        firstObject2 = [results2 firstObject];
 
         v25 = 0;
-        if (v22 && v24)
+        if (firstObject && firstObject2)
         {
-          v26 = [v22 faceprint];
-          [v24 setFaceprint:v26];
+          faceprint = [firstObject faceprint];
+          [firstObject2 setFaceprint:faceprint];
 
-          v25 = v24;
+          v25 = firstObject2;
         }
       }
 
       else
       {
         v32 = [MEMORY[0x277CCA9B8] hmiPrivateErrorWithCode:1025 underlyingError:v15];
-        v22 = v32;
-        if (a5)
+        firstObject = v32;
+        if (error)
         {
           v33 = v32;
-          *a5 = v22;
+          *error = firstObject;
         }
 
-        HMIErrorLog(self, v22);
+        HMIErrorLog(self, firstObject);
         v25 = 0;
       }
 
@@ -252,10 +252,10 @@ LABEL_12:
     {
       v29 = [MEMORY[0x277CCA9B8] hmiPrivateErrorWithCode:1025 underlyingError:v18];
       v30 = v29;
-      if (a5)
+      if (error)
       {
         v31 = v29;
-        *a5 = v30;
+        *error = v30;
       }
 
       HMIErrorLog(self, v30);
@@ -269,10 +269,10 @@ LABEL_12:
   {
     v27 = [MEMORY[0x277CCA9B8] hmiPrivateErrorWithCode:1025 underlyingError:v15];
     v16 = v27;
-    if (a5)
+    if (error)
     {
       v28 = v27;
-      *a5 = v16;
+      *error = v16;
     }
 
     HMIErrorLog(self, v16);
@@ -282,14 +282,14 @@ LABEL_12:
   return v25;
 }
 
-+ (__CVBuffer)createFacePixelBufferForFaceDetection:(id)a3 pixelBuffer:(__CVBuffer *)a4 roll:(id)a5 error:(id *)a6
++ (__CVBuffer)createFacePixelBufferForFaceDetection:(id)detection pixelBuffer:(__CVBuffer *)buffer roll:(id)roll error:(id *)error
 {
   v95 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a5;
-  Size = HMICVPixelBufferGetSize(a4);
+  detectionCopy = detection;
+  rollCopy = roll;
+  Size = HMICVPixelBufferGetSize(buffer);
   v13 = v12;
-  [v9 unalignedBoundingBox];
+  [detectionCopy unalignedBoundingBox];
   HMICGRectFlipCoordinateSpaceNormalized(v14, v15, v16, v17);
   HMICGRectSquareNormalized(v18, v19, v20, v21, Size, v13);
   v26 = HMIExpandFaceRect(v22, v23, v24, v25, 1.76470578);
@@ -298,7 +298,7 @@ LABEL_12:
   v33 = v32;
   v35 = v34;
   v37 = v36;
-  [v10 floatValue];
+  [rollCopy floatValue];
   v80 = v37;
   v81 = v35;
   if (fabsf(v38) <= 0.175)
@@ -308,13 +308,13 @@ LABEL_12:
     v43 = v35;
     v42 = v33;
     v41 = v31;
-    v10 = &unk_284075888;
+    rollCopy = &unk_284075888;
   }
 
   else
   {
-    Width = CVPixelBufferGetWidth(a4);
-    Height = CVPixelBufferGetHeight(a4);
+    Width = CVPixelBufferGetWidth(buffer);
+    Height = CVPixelBufferGetHeight(buffer);
     v41 = HMICGRectExpandWithinLimit(v31, v33, v35, v37, Width, Height, 1.4142);
   }
 
@@ -324,7 +324,7 @@ LABEL_12:
   v47 = v96.size.width;
   v48 = v96.size.height;
   v49 = objc_autoreleasePoolPush();
-  v50 = a1;
+  selfCopy = self;
   v51 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v51, OS_LOG_TYPE_DEBUG))
   {
@@ -335,7 +335,7 @@ LABEL_12:
     v97.size.height = v48;
     NSStringFromRect(v97);
     v53 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
-    [v10 floatValue];
+    [rollCopy floatValue];
     *buf = 138544386;
     v86 = v52;
     v87 = 2112;
@@ -373,7 +373,7 @@ LABEL_12:
   }
 
   v84 = 0;
-  v59 = [HMIVisionUtilities transferPixelBuffer:a4 crop:1111970369 size:8 pixelFormat:&v84 options:x error:y, v47, v48, v57, v58];
+  v59 = [HMIVisionUtilities transferPixelBuffer:buffer crop:1111970369 size:8 pixelFormat:&v84 options:x error:y, v47, v48, v57, v58];
   v60 = COERCE_DOUBLE(v84);
   if (v59)
   {
@@ -381,14 +381,14 @@ LABEL_12:
     v63 = v80;
     v62 = v81;
     HMICGRectTransferToNewCoordinate(v31, v33, v81, v80, v57, v58, v61);
-    [v10 floatValue];
+    [rollCopy floatValue];
     v83 = v60;
     v64 = [HMIVisionUtilities transferPixelBuffer:"transferPixelBuffer:rotationAngle:crop:size:precision:error:" rotationAngle:v59 crop:0 size:&v83 precision:? error:?];
     v65 = COERCE_DOUBLE(*&v83);
 
     CVPixelBufferRelease(v59);
     v66 = objc_autoreleasePoolPush();
-    v67 = v50;
+    v67 = selfCopy;
     v68 = HMFGetOSLogHandle();
     v69 = v68;
     if (v64)
@@ -396,7 +396,7 @@ LABEL_12:
       if (os_log_type_enabled(v68, OS_LOG_TYPE_DEBUG))
       {
         v70 = HMFGetLogIdentifier();
-        [v10 floatValue];
+        [rollCopy floatValue];
         *buf = 138543618;
         v86 = v70;
         v87 = 2048;
@@ -427,7 +427,7 @@ LABEL_26:
   else
   {
     v72 = objc_autoreleasePoolPush();
-    v73 = v50;
+    v73 = selfCopy;
     v74 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v74, OS_LOG_TYPE_ERROR))
     {
@@ -445,13 +445,13 @@ LABEL_26:
   }
 
   v82 = v60;
-  v64 = [HMIVisionUtilities transferPixelBuffer:a4 crop:1111970369 size:8 pixelFormat:&v82 options:v31 error:v33, v62, v63, 128.0, 128.0];
+  v64 = [HMIVisionUtilities transferPixelBuffer:buffer crop:1111970369 size:8 pixelFormat:&v82 options:v31 error:v33, v62, v63, 128.0, 128.0];
   v65 = COERCE_DOUBLE(*&v82);
 
   if (!v64)
   {
     v66 = objc_autoreleasePoolPush();
-    v77 = v50;
+    v77 = selfCopy;
     v69 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v69, OS_LOG_TYPE_ERROR))
     {
@@ -472,27 +472,27 @@ LABEL_27:
   return v64;
 }
 
-+ (__CVBuffer)createFacePixelBufferForFaceEvent:(id)a3 pixelBuffer:(__CVBuffer *)a4 roll:(id)a5 error:(id *)a6
++ (__CVBuffer)createFacePixelBufferForFaceEvent:(id)event pixelBuffer:(__CVBuffer *)buffer roll:(id)roll error:(id *)error
 {
-  v9 = a5;
-  [a3 boundingBox];
+  rollCopy = roll;
+  [event boundingBox];
   HMICGRectFlipCoordinateSpaceNormalized(v10, v11, v12, v13);
   v18 = [MEMORY[0x277CE2CD0] faceObservationWithRequestRevision:2 unalignedBoundingBox:v14 alignedBoundingBox:{v15, v16, v17, v14, v15, v16, v17}];
-  v19 = [HMIFaceprinter createFacePixelBufferForFaceDetection:v18 pixelBuffer:a4 roll:v9 error:a6];
+  v19 = [HMIFaceprinter createFacePixelBufferForFaceDetection:v18 pixelBuffer:buffer roll:rollCopy error:error];
 
   return v19;
 }
 
-- (__CVBuffer)createFacePixelBufferFromFaceCrop:(id)a3 error:(id *)a4
+- (__CVBuffer)createFacePixelBufferFromFaceCrop:(id)crop error:(id *)error
 {
   v59 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [v6 dataRepresentation];
-  v8 = [HMIVisionUtilities createPixelBufferFromJPEGData:v7 error:a4];
+  cropCopy = crop;
+  dataRepresentation = [cropCopy dataRepresentation];
+  v8 = [HMIVisionUtilities createPixelBufferFromJPEGData:dataRepresentation error:error];
 
   if (v8)
   {
-    [v6 faceBoundingBox];
+    [cropCopy faceBoundingBox];
     y = 0.0;
     v64.origin.x = 0.0;
     v64.origin.y = 0.0;
@@ -509,7 +509,7 @@ LABEL_27:
     {
       Size = HMICVPixelBufferGetSize(v8);
       v16 = v15;
-      [v6 faceBoundingBox];
+      [cropCopy faceBoundingBox];
       HMICGRectSquareNormalized(v17, v18, v19, v20, Size, v16);
       v25 = HMIExpandFaceRect(v21, v22, v23, v24, 1.76470578);
       HMICGRectPixelFromNormalized(v25, v26, v27, v28, Size, v16);
@@ -519,7 +519,7 @@ LABEL_27:
       Width = v62.size.width;
       Height = v62.size.height;
       v29 = objc_autoreleasePoolPush();
-      v30 = self;
+      selfCopy = self;
       v31 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
       {
@@ -584,10 +584,10 @@ LABEL_27:
     {
       v45 = [MEMORY[0x277CCA9B8] hmiPrivateErrorWithCode:1021 underlyingError:v39];
       v46 = v45;
-      if (a4)
+      if (error)
       {
         v47 = v45;
-        *a4 = v46;
+        *error = v46;
       }
 
       HMIErrorLog(self, v46);
@@ -604,13 +604,13 @@ LABEL_27:
   return v13;
 }
 
-- (id)generateFaceprintForFaceCrop:(id)a3 error:(id *)a4
+- (id)generateFaceprintForFaceCrop:(id)crop error:(id *)error
 {
-  v6 = [(HMIFaceprinter *)self createFacePixelBufferFromFaceCrop:a3 error:?];
+  v6 = [(HMIFaceprinter *)self createFacePixelBufferFromFaceCrop:crop error:?];
   if (v6)
   {
     v7 = v6;
-    v8 = [(HMIFaceprinter *)self createFaceprintForFacePixelBuffer:v6 fastMode:0 error:a4];
+    v8 = [(HMIFaceprinter *)self createFaceprintForFacePixelBuffer:v6 fastMode:0 error:error];
     CVBufferRelease(v7);
   }
 
@@ -622,17 +622,17 @@ LABEL_27:
   return v8;
 }
 
-- (id)updatedFaceprintsForFaceCrops:(id)a3 withExistingFaceprints:(id)a4 error:(id *)a5
+- (id)updatedFaceprintsForFaceCrops:(id)crops withExistingFaceprints:(id)faceprints error:(id *)error
 {
   v97 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CBEB38] dictionary];
+  cropsCopy = crops;
+  faceprintsCopy = faceprints;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v85 = 0u;
   v86 = 0u;
   v87 = 0u;
   v88 = 0u;
-  obj = v7;
+  obj = faceprintsCopy;
   v9 = [obj countByEnumeratingWithState:&v85 objects:v96 count:16];
   if (v9)
   {
@@ -648,8 +648,8 @@ LABEL_27:
         }
 
         v13 = *(*(&v85 + 1) + 8 * i);
-        v14 = [v13 faceCropUUID];
-        v15 = [v8 objectForKey:v14];
+        faceCropUUID = [v13 faceCropUUID];
+        v15 = [dictionary objectForKey:faceCropUUID];
 
         if (!v15)
         {
@@ -657,8 +657,8 @@ LABEL_27:
         }
 
         [v15 addObject:v13];
-        v16 = [v13 faceCropUUID];
-        [v8 setObject:v15 forKeyedSubscript:v16];
+        faceCropUUID2 = [v13 faceCropUUID];
+        [dictionary setObject:v15 forKeyedSubscript:faceCropUUID2];
       }
 
       v10 = [obj countByEnumeratingWithState:&v85 objects:v96 count:16];
@@ -674,9 +674,9 @@ LABEL_27:
   v82 = 0u;
   v83 = 0u;
   v84 = 0u;
-  v76 = v6;
+  v76 = cropsCopy;
   v17 = [v76 countByEnumeratingWithState:&v81 objects:v95 count:16];
-  v19 = self;
+  selfCopy2 = self;
   if (v17)
   {
     v20 = v17;
@@ -685,7 +685,7 @@ LABEL_27:
     *&v18 = 138543362;
     v66 = v18;
     v75 = *v82;
-    v78 = v8;
+    v78 = dictionary;
     do
     {
       v22 = 0;
@@ -698,14 +698,14 @@ LABEL_27:
         }
 
         v23 = *(*(&v81 + 1) + 8 * v22);
-        v24 = [v23 UUID];
-        v25 = [v8 objectForKey:v24];
+        uUID = [v23 UUID];
+        v25 = [dictionary objectForKey:uUID];
 
         if (v25)
         {
           v26 = [v25 na_firstObjectPassingTest:&__block_literal_global_15];
           v27 = objc_autoreleasePoolPush();
-          v28 = v19;
+          v28 = selfCopy2;
           v29 = HMFGetOSLogHandle();
           v30 = os_log_type_enabled(v29, OS_LOG_TYPE_INFO);
           if (v26)
@@ -716,7 +716,7 @@ LABEL_27:
               v71 = v26;
               v31 = v20;
               v32 = v21;
-              v33 = v19;
+              v33 = selfCopy2;
               v35 = v34 = v25;
               *buf = 138543618;
               v90 = v35;
@@ -725,7 +725,7 @@ LABEL_27:
               _os_log_impl(&dword_22D12F000, v29, OS_LOG_TYPE_INFO, "%{public}@Using existing faceprint for face crop:%@", buf, 0x16u);
 
               v25 = v34;
-              v19 = v33;
+              selfCopy2 = v33;
               v21 = v32;
               v20 = v31;
               v26 = v71;
@@ -733,7 +733,7 @@ LABEL_27:
 
             objc_autoreleasePoolPop(v27);
             [v73 addObject:v26];
-            v8 = v78;
+            dictionary = v78;
             goto LABEL_36;
           }
 
@@ -759,7 +759,7 @@ LABEL_27:
 
         v79 = v25;
         v39 = objc_autoreleasePoolPush();
-        v40 = v19;
+        v40 = selfCopy2;
         v41 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v41, OS_LOG_TYPE_INFO))
         {
@@ -777,12 +777,12 @@ LABEL_27:
         v26 = v80;
         if (v43)
         {
-          v44 = [v43 faceAttributes];
-          v45 = [v44 facemaskCategory];
+          faceAttributes = [v43 faceAttributes];
+          facemaskCategory = [faceAttributes facemaskCategory];
 
-          v46 = [v45 label];
-          v47 = [v46 identifier];
-          v48 = [v47 isEqualToString:v69];
+          label = [facemaskCategory label];
+          identifier = [label identifier];
+          v48 = [identifier isEqualToString:v69];
 
           if (v48)
           {
@@ -798,29 +798,29 @@ LABEL_27:
             }
 
             objc_autoreleasePoolPop(v49);
-            v53 = [MEMORY[0x277CCAD78] UUID];
-            v54 = +[HMIFaceprinter currentModelUUID];
-            v55 = [v23 UUID];
-            v56 = [HMIFaceprint sentinelFaceprintWithUUID:v53 modelUUID:v54 faceCropUUID:v55];
+            uUID2 = [MEMORY[0x277CCAD78] UUID];
+            faceprint = +[HMIFaceprinter currentModelUUID];
+            uUID3 = [v23 UUID];
+            v56 = [HMIFaceprint sentinelFaceprintWithUUID:uUID2 modelUUID:faceprint faceCropUUID:uUID3];
           }
 
           else
           {
             v72 = [HMIFaceprint alloc];
-            v53 = [MEMORY[0x277CCAD78] UUID];
-            v54 = [v43 faceprint];
-            v55 = [v54 descriptorData];
+            uUID2 = [MEMORY[0x277CCAD78] UUID];
+            faceprint = [v43 faceprint];
+            uUID3 = [faceprint descriptorData];
             v61 = +[HMIFaceprinter currentModelUUID];
             [v23 UUID];
-            v63 = v62 = v45;
-            v56 = [(HMIFaceprint *)v72 initWithUUID:v53 data:v55 modelUUID:v61 faceCropUUID:v63];
+            v63 = v62 = facemaskCategory;
+            v56 = [(HMIFaceprint *)v72 initWithUUID:uUID2 data:uUID3 modelUUID:v61 faceCropUUID:v63];
 
-            v45 = v62;
-            v19 = self;
+            facemaskCategory = v62;
+            selfCopy2 = self;
           }
 
           [v70 addObject:v56];
-          v8 = v78;
+          dictionary = v78;
           v20 = v74;
           v21 = v75;
         }
@@ -843,7 +843,7 @@ LABEL_27:
           }
 
           objc_autoreleasePoolPop(v57);
-          v8 = v78;
+          dictionary = v78;
         }
 
         v25 = v79;
@@ -873,11 +873,11 @@ uint64_t __77__HMIFaceprinter_updatedFaceprintsForFaceCrops_withExistingFaceprin
   return v4;
 }
 
-+ (int64_t)_minorVersionFromVisionVersion:(int)a3
++ (int64_t)_minorVersionFromVisionVersion:(int)version
 {
   v20 = *MEMORY[0x277D85DE8];
   v5 = objc_autoreleasePoolPush();
-  v6 = a1;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -885,18 +885,18 @@ uint64_t __77__HMIFaceprinter_updatedFaceprintsForFaceCrops_withExistingFaceprin
     v10 = 138544386;
     v11 = v8;
     v12 = 1024;
-    v13 = a3 >> 16;
+    v13 = version >> 16;
     v14 = 1024;
-    v15 = BYTE1(a3);
+    v15 = BYTE1(version);
     v16 = 1024;
-    v17 = a3;
+    versionCopy = version;
     v18 = 1024;
-    v19 = a3;
+    versionCopy2 = version;
     _os_log_impl(&dword_22D12F000, v7, OS_LOG_TYPE_INFO, "%{public}@Vision run-time version: %d.%02d.%02d (%d)", &v10, 0x24u);
   }
 
   objc_autoreleasePoolPop(v5);
-  return a3;
+  return version;
 }
 
 @end

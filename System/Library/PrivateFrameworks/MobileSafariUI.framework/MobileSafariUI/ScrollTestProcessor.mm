@@ -1,42 +1,42 @@
 @interface ScrollTestProcessor
-- (BOOL)performActionForPage:(id)a3;
-- (BOOL)startPageAction:(id)a3;
-- (ScrollTestProcessor)initWithTestName:(id)a3 browserController:(id)a4;
+- (BOOL)performActionForPage:(id)page;
+- (BOOL)startPageAction:(id)action;
+- (ScrollTestProcessor)initWithTestName:(id)name browserController:(id)controller;
 @end
 
 @implementation ScrollTestProcessor
 
-- (ScrollTestProcessor)initWithTestName:(id)a3 browserController:(id)a4
+- (ScrollTestProcessor)initWithTestName:(id)name browserController:(id)controller
 {
-  v6 = a3;
+  nameCopy = name;
   v10.receiver = self;
   v10.super_class = ScrollTestProcessor;
-  v7 = [(ContentInteractionTestRunner *)&v10 initWithTestName:v6 browserController:a4];
+  v7 = [(ContentInteractionTestRunner *)&v10 initWithTestName:nameCopy browserController:controller];
   if (v7)
   {
-    -[ScrollTestProcessor setIsNatural:](v7, "setIsNatural:", [v6 hasSuffix:@"Natural"]);
+    -[ScrollTestProcessor setIsNatural:](v7, "setIsNatural:", [nameCopy hasSuffix:@"Natural"]);
     v8 = v7;
   }
 
   return v7;
 }
 
-- (BOOL)startPageAction:(id)a3
+- (BOOL)startPageAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   [(ScrollTestProcessor *)self setStartedScrollTest:0];
   [(ScrollTestProcessor *)self setEndedScrollTest:0];
   v6.receiver = self;
   v6.super_class = ScrollTestProcessor;
-  LOBYTE(self) = [(ContentInteractionTestRunner *)&v6 startPageAction:v4];
+  LOBYTE(self) = [(ContentInteractionTestRunner *)&v6 startPageAction:actionCopy];
 
   return self;
 }
 
-- (BOOL)performActionForPage:(id)a3
+- (BOOL)performActionForPage:(id)page
 {
-  v4 = [(ContentInteractionTestRunner *)self pageWebView];
-  v5 = [v4 scrollView];
+  pageWebView = [(ContentInteractionTestRunner *)self pageWebView];
+  scrollView = [pageWebView scrollView];
 
   if (![(ScrollTestProcessor *)self startedScrollTest])
   {
@@ -48,40 +48,40 @@
       v10[2] = __44__ScrollTestProcessor_performActionForPage___block_invoke;
       v10[3] = &unk_2781D4D40;
       v10[4] = self;
-      [v5 _performNaturalScrollTest:0 completionHandler:v10];
+      [scrollView _performNaturalScrollTest:0 completionHandler:v10];
     }
 
     else
     {
-      v6 = [(ContentInteractionTestRunner *)self iterations];
+      iterations = [(ContentInteractionTestRunner *)self iterations];
       if ([(ScrollTestProcessor *)self scrollDelta])
       {
-        v7 = [(ScrollTestProcessor *)self scrollDelta];
+        scrollDelta = [(ScrollTestProcessor *)self scrollDelta];
       }
 
       else
       {
-        v7 = 10;
+        scrollDelta = 10;
       }
 
-      [v5 _performScrollTest:0 iterations:v6 delta:v7];
+      [scrollView _performScrollTest:0 iterations:iterations delta:scrollDelta];
     }
 
     [(ScrollTestProcessor *)self setStartedScrollTest:1];
   }
 
-  if (!-[ScrollTestProcessor isNatural](self, "isNatural") && ([v5 _isAnimatingScrollTest] & 1) == 0)
+  if (!-[ScrollTestProcessor isNatural](self, "isNatural") && ([scrollView _isAnimatingScrollTest] & 1) == 0)
   {
     [(ScrollTestProcessor *)self setEndedScrollTest:1];
   }
 
-  v8 = [(ScrollTestProcessor *)self endedScrollTest];
-  if (v8)
+  endedScrollTest = [(ScrollTestProcessor *)self endedScrollTest];
+  if (endedScrollTest)
   {
     [(ContentInteractionTestRunner *)self endTrackingFrameRate];
   }
 
-  return !v8;
+  return !endedScrollTest;
 }
 
 @end

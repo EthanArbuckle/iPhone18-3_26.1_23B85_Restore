@@ -1,23 +1,23 @@
 @interface ExtensionsPayView
 - (CGSize)intrinsicContentSize;
-- (ExtensionsPayView)initWithCoder:(id)a3;
-- (ExtensionsPayView)initWithFrame:(CGRect)a3;
-- (void)_change:(id)a3;
+- (ExtensionsPayView)initWithCoder:(id)coder;
+- (ExtensionsPayView)initWithFrame:(CGRect)frame;
+- (void)_change:(id)_change;
 - (void)_commonInit;
 - (void)callChangeBlock;
-- (void)configureForTitle:(id)a3 subtitle:(id)a4 image:(id)a5;
+- (void)configureForTitle:(id)title subtitle:(id)subtitle image:(id)image;
 @end
 
 @implementation ExtensionsPayView
 
-- (void)_change:(id)a3
+- (void)_change:(id)_change
 {
-  v4 = [(ExtensionsPayView *)self performChangeCommand];
-  if (v4)
+  performChangeCommand = [(ExtensionsPayView *)self performChangeCommand];
+  if (performChangeCommand)
   {
-    v5 = v4;
-    (v4)[2](v4, self);
-    v4 = v5;
+    v5 = performChangeCommand;
+    (performChangeCommand)[2](performChangeCommand, self);
+    performChangeCommand = v5;
   }
 }
 
@@ -30,34 +30,34 @@
   return result;
 }
 
-- (void)configureForTitle:(id)a3 subtitle:(id)a4 image:(id)a5
+- (void)configureForTitle:(id)title subtitle:(id)subtitle image:(id)image
 {
-  v16 = a4;
+  subtitleCopy = subtitle;
   paymentMethodView = self->_paymentMethodView;
-  v9 = a5;
-  v10 = a3;
-  v11 = [(PaymentMethodView *)paymentMethodView paymentTitleLabel];
-  [v11 setText:v10];
+  imageCopy = image;
+  titleCopy = title;
+  paymentTitleLabel = [(PaymentMethodView *)paymentMethodView paymentTitleLabel];
+  [paymentTitleLabel setText:titleCopy];
 
-  v12 = [v16 length] == 0;
-  v13 = [(PaymentMethodView *)self->_paymentMethodView paymentSubtitleLabel];
-  [v13 setHidden:v12];
+  v12 = [subtitleCopy length] == 0;
+  paymentSubtitleLabel = [(PaymentMethodView *)self->_paymentMethodView paymentSubtitleLabel];
+  [paymentSubtitleLabel setHidden:v12];
 
-  v14 = [(PaymentMethodView *)self->_paymentMethodView paymentSubtitleLabel];
-  [v14 setText:v16];
+  paymentSubtitleLabel2 = [(PaymentMethodView *)self->_paymentMethodView paymentSubtitleLabel];
+  [paymentSubtitleLabel2 setText:subtitleCopy];
 
-  v15 = [(PaymentMethodView *)self->_paymentMethodView paymentMethodImageView];
-  [v15 setImage:v9];
+  paymentMethodImageView = [(PaymentMethodView *)self->_paymentMethodView paymentMethodImageView];
+  [paymentMethodImageView setImage:imageCopy];
 }
 
 - (void)callChangeBlock
 {
-  v3 = [(ExtensionsPayView *)self performChangeCommand];
+  performChangeCommand = [(ExtensionsPayView *)self performChangeCommand];
 
-  if (v3)
+  if (performChangeCommand)
   {
-    v4 = [(ExtensionsPayView *)self performChangeCommand];
-    v4[2](v4, self);
+    performChangeCommand2 = [(ExtensionsPayView *)self performChangeCommand];
+    performChangeCommand2[2](performChangeCommand2, self);
   }
 }
 
@@ -65,13 +65,13 @@
 {
   [(ExtensionsPayView *)self setLeftHairlineInset:16.0];
   [(ExtensionsPayView *)self setRightHairlineInset:0.0];
-  v3 = [(ExtensionsPayView *)self theme];
-  v4 = [v3 hairlineColor];
-  [(ExtensionsPayView *)self setHairlineColor:v4];
+  theme = [(ExtensionsPayView *)self theme];
+  hairlineColor = [theme hairlineColor];
+  [(ExtensionsPayView *)self setHairlineColor:hairlineColor];
 
   [(ExtensionsPayView *)self setTopHairlineHidden:0];
   [(ExtensionsPayView *)self setBottomHairlineHidden:1];
-  v36 = [(ExtensionsPayView *)self layoutMarginsGuide];
+  layoutMarginsGuide = [(ExtensionsPayView *)self layoutMarginsGuide];
   v5 = +[NSMutableArray array];
   v6 = objc_alloc_init(PaymentMethodView);
   paymentMethodView = self->_paymentMethodView;
@@ -79,19 +79,19 @@
 
   [(PaymentMethodView *)self->_paymentMethodView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(ExtensionsPayView *)self addSubview:self->_paymentMethodView];
-  v8 = [(PaymentMethodView *)self->_paymentMethodView leadingAnchor];
-  v9 = [v36 leadingAnchor];
-  v10 = [v8 constraintEqualToAnchor:v9 constant:16.0];
+  leadingAnchor = [(PaymentMethodView *)self->_paymentMethodView leadingAnchor];
+  leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+  v10 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:16.0];
   [v5 addObject:v10];
 
-  v11 = [(PaymentMethodView *)self->_paymentMethodView topAnchor];
-  v12 = [v36 topAnchor];
-  v13 = [v11 constraintEqualToAnchor:v12 constant:5.0];
+  topAnchor = [(PaymentMethodView *)self->_paymentMethodView topAnchor];
+  topAnchor2 = [layoutMarginsGuide topAnchor];
+  v13 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:5.0];
   [v5 addObject:v13];
 
-  v14 = [(PaymentMethodView *)self->_paymentMethodView bottomAnchor];
-  v15 = [v36 bottomAnchor];
-  v16 = [v14 constraintEqualToAnchor:v15 constant:-5.0];
+  bottomAnchor = [(PaymentMethodView *)self->_paymentMethodView bottomAnchor];
+  bottomAnchor2 = [layoutMarginsGuide bottomAnchor];
+  v16 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-5.0];
   [v5 addObject:v16];
 
   LODWORD(v17) = 1148846080;
@@ -103,8 +103,8 @@
   self->_changePaymentMethodButton = v19;
 
   [(UIButton *)self->_changePaymentMethodButton setTranslatesAutoresizingMaskIntoConstraints:0];
-  v21 = [(UIButton *)self->_changePaymentMethodButton titleLabel];
-  [DynamicTypeWizard autorefreshLabel:v21 withFontProvider:&stru_10165D8C8];
+  titleLabel = [(UIButton *)self->_changePaymentMethodButton titleLabel];
+  [DynamicTypeWizard autorefreshLabel:titleLabel withFontProvider:&stru_10165D8C8];
 
   v22 = self->_changePaymentMethodButton;
   v23 = +[NSBundle mainBundle];
@@ -112,19 +112,19 @@
   [(UIButton *)v22 setTitle:v24 forState:0];
 
   [(ExtensionsPayView *)self addSubview:self->_changePaymentMethodButton];
-  v25 = [(UIButton *)self->_changePaymentMethodButton centerYAnchor];
-  v26 = [v36 centerYAnchor];
-  v27 = [v25 constraintEqualToAnchor:v26];
+  centerYAnchor = [(UIButton *)self->_changePaymentMethodButton centerYAnchor];
+  centerYAnchor2 = [layoutMarginsGuide centerYAnchor];
+  v27 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   [v5 addObject:v27];
 
-  v28 = [(UIButton *)self->_changePaymentMethodButton trailingAnchor];
-  v29 = [v36 trailingAnchor];
-  v30 = [v28 constraintEqualToAnchor:v29 constant:-16.0];
+  trailingAnchor = [(UIButton *)self->_changePaymentMethodButton trailingAnchor];
+  trailingAnchor2 = [layoutMarginsGuide trailingAnchor];
+  v30 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-16.0];
   [v5 addObject:v30];
 
-  v31 = [(PaymentMethodView *)self->_paymentMethodView trailingAnchor];
-  v32 = [(UIButton *)self->_changePaymentMethodButton leadingAnchor];
-  v33 = [v31 constraintLessThanOrEqualToAnchor:v32 constant:-7.0];
+  trailingAnchor3 = [(PaymentMethodView *)self->_paymentMethodView trailingAnchor];
+  leadingAnchor3 = [(UIButton *)self->_changePaymentMethodButton leadingAnchor];
+  v33 = [trailingAnchor3 constraintLessThanOrEqualToAnchor:leadingAnchor3 constant:-7.0];
   [v5 addObject:v33];
 
   LODWORD(v34) = 1148846080;
@@ -135,11 +135,11 @@
   [(ExtensionsPayView *)self addGestureRecognizer:v35];
 }
 
-- (ExtensionsPayView)initWithFrame:(CGRect)a3
+- (ExtensionsPayView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = ExtensionsPayView;
-  v3 = [(ExtensionsPayView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(ExtensionsPayView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -149,11 +149,11 @@
   return v4;
 }
 
-- (ExtensionsPayView)initWithCoder:(id)a3
+- (ExtensionsPayView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = ExtensionsPayView;
-  v3 = [(ExtensionsPayView *)&v6 initWithCoder:a3];
+  v3 = [(ExtensionsPayView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {

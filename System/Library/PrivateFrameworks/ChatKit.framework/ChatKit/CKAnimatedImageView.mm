@@ -1,8 +1,8 @@
 @interface CKAnimatedImageView
-- (void)animationTimerFired:(double)a3;
+- (void)animationTimerFired:(double)fired;
 - (void)dealloc;
 - (void)didMoveToWindow;
-- (void)setAnimatedImage:(id)a3;
+- (void)setAnimatedImage:(id)image;
 - (void)updateAnimationTimerObserving;
 @end
 
@@ -29,18 +29,18 @@
   }
 }
 
-- (void)setAnimatedImage:(id)a3
+- (void)setAnimatedImage:(id)image
 {
-  v5 = a3;
-  if (self->_animatedImage != v5)
+  imageCopy = image;
+  if (self->_animatedImage != imageCopy)
   {
-    v8 = v5;
-    objc_storeStrong(&self->_animatedImage, a3);
-    v6 = [(CKAnimatedImage *)self->_animatedImage frames];
-    [(CKAnimatedImageView *)self setFrames:v6];
-    if ([v6 count])
+    v8 = imageCopy;
+    objc_storeStrong(&self->_animatedImage, image);
+    frames = [(CKAnimatedImage *)self->_animatedImage frames];
+    [(CKAnimatedImageView *)self setFrames:frames];
+    if ([frames count])
     {
-      [v6 objectAtIndex:0];
+      [frames objectAtIndex:0];
     }
 
     else
@@ -51,22 +51,22 @@
     [(CKAnimatedImageView *)self setImage:v7];
 
     [(CKAnimatedImageView *)self updateAnimationTimerObserving];
-    v5 = v8;
+    imageCopy = v8;
   }
 }
 
 - (void)updateAnimationTimerObserving
 {
-  v3 = [(CKAnimatedImageView *)self frames];
-  if ([v3 count] <= 1)
+  frames = [(CKAnimatedImageView *)self frames];
+  if ([frames count] <= 1)
   {
   }
 
   else
   {
-    v4 = [(CKAnimatedImageView *)self window];
+    window = [(CKAnimatedImageView *)self window];
 
-    if (v4)
+    if (window)
     {
       v5 = +[CKImageAnimationTimer sharedTimer];
       [v5 addAnimationTimerObserver:self];
@@ -79,9 +79,9 @@
 LABEL_6:
 }
 
-- (void)animationTimerFired:(double)a3
+- (void)animationTimerFired:(double)fired
 {
-  v4 = [(CKAnimatedImage *)self->_animatedImage frameForAnimationTime:a3];
+  v4 = [(CKAnimatedImage *)self->_animatedImage frameForAnimationTime:fired];
   [(CKAnimatedImageView *)self setImage:v4];
 }
 

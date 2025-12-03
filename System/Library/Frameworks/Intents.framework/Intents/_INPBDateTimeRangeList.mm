@@ -1,12 +1,12 @@
 @interface _INPBDateTimeRangeList
-- (BOOL)isEqual:(id)a3;
-- (_INPBDateTimeRangeList)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBDateTimeRangeList)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (void)addDateRange:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setDateRanges:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addDateRange:(id)range;
+- (void)encodeWithCoder:(id)coder;
+- (void)setDateRanges:(id)ranges;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBDateTimeRangeList
@@ -14,14 +14,14 @@
 - (id)dictionaryRepresentation
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(_INPBDateTimeRangeList *)self condition];
-  v5 = [v4 dictionaryRepresentation];
-  [v3 setObject:v5 forKeyedSubscript:@"condition"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  condition = [(_INPBDateTimeRangeList *)self condition];
+  dictionaryRepresentation = [condition dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"condition"];
 
   if ([(NSArray *)self->_dateRanges count])
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
@@ -41,8 +41,8 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation2 = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
+          [array addObject:dictionaryRepresentation2];
         }
 
         v9 = [(NSArray *)v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -51,36 +51,36 @@
       while (v9);
     }
 
-    [v3 setObject:v6 forKeyedSubscript:@"dateRange"];
+    [dictionary setObject:array forKeyedSubscript:@"dateRange"];
   }
 
   v13 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(_INPBDateTimeRangeList *)self condition];
-  v6 = [v4 condition];
-  if ((v5 != 0) == (v6 == 0))
+  condition = [(_INPBDateTimeRangeList *)self condition];
+  condition2 = [equalCopy condition];
+  if ((condition != 0) == (condition2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(_INPBDateTimeRangeList *)self condition];
-  if (v7)
+  condition3 = [(_INPBDateTimeRangeList *)self condition];
+  if (condition3)
   {
-    v8 = v7;
-    v9 = [(_INPBDateTimeRangeList *)self condition];
-    v10 = [v4 condition];
-    v11 = [v9 isEqual:v10];
+    v8 = condition3;
+    condition4 = [(_INPBDateTimeRangeList *)self condition];
+    condition5 = [equalCopy condition];
+    v11 = [condition4 isEqual:condition5];
 
     if (!v11)
     {
@@ -92,12 +92,12 @@
   {
   }
 
-  v5 = [(_INPBDateTimeRangeList *)self dateRanges];
-  v6 = [v4 dateRanges];
-  if ((v5 != 0) != (v6 == 0))
+  condition = [(_INPBDateTimeRangeList *)self dateRanges];
+  condition2 = [equalCopy dateRanges];
+  if ((condition != 0) != (condition2 == 0))
   {
-    v12 = [(_INPBDateTimeRangeList *)self dateRanges];
-    if (!v12)
+    dateRanges = [(_INPBDateTimeRangeList *)self dateRanges];
+    if (!dateRanges)
     {
 
 LABEL_15:
@@ -105,10 +105,10 @@ LABEL_15:
       goto LABEL_13;
     }
 
-    v13 = v12;
-    v14 = [(_INPBDateTimeRangeList *)self dateRanges];
-    v15 = [v4 dateRanges];
-    v16 = [v14 isEqual:v15];
+    v13 = dateRanges;
+    dateRanges2 = [(_INPBDateTimeRangeList *)self dateRanges];
+    dateRanges3 = [equalCopy dateRanges];
+    v16 = [dateRanges2 isEqual:dateRanges3];
 
     if (v16)
     {
@@ -128,51 +128,51 @@ LABEL_13:
   return v17;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBDateTimeRangeList allocWithZone:](_INPBDateTimeRangeList init];
-  v6 = [(_INPBCondition *)self->_condition copyWithZone:a3];
+  v6 = [(_INPBCondition *)self->_condition copyWithZone:zone];
   [(_INPBDateTimeRangeList *)v5 setCondition:v6];
 
-  v7 = [(NSArray *)self->_dateRanges copyWithZone:a3];
+  v7 = [(NSArray *)self->_dateRanges copyWithZone:zone];
   [(_INPBDateTimeRangeList *)v5 setDateRanges:v7];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBDateTimeRangeList *)self data];
+  coderCopy = coder;
+  data = [(_INPBDateTimeRangeList *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBDateTimeRangeList)initWithCoder:(id)a3
+- (_INPBDateTimeRangeList)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBDateTimeRangeList *)self initWithData:v6];
+    self = [(_INPBDateTimeRangeList *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_INPBDateTimeRangeList *)self condition];
+  toCopy = to;
+  condition = [(_INPBDateTimeRangeList *)self condition];
 
-  if (v5)
+  if (condition)
   {
-    v6 = [(_INPBDateTimeRangeList *)self condition];
+    condition2 = [(_INPBDateTimeRangeList *)self condition];
     PBDataWriterWriteSubmessage();
   }
 
@@ -211,27 +211,27 @@ LABEL_13:
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addDateRange:(id)a3
+- (void)addDateRange:(id)range
 {
-  v4 = a3;
+  rangeCopy = range;
   dateRanges = self->_dateRanges;
-  v8 = v4;
+  v8 = rangeCopy;
   if (!dateRanges)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_dateRanges;
-    self->_dateRanges = v6;
+    self->_dateRanges = array;
 
-    v4 = v8;
+    rangeCopy = v8;
     dateRanges = self->_dateRanges;
   }
 
-  [(NSArray *)dateRanges addObject:v4];
+  [(NSArray *)dateRanges addObject:rangeCopy];
 }
 
-- (void)setDateRanges:(id)a3
+- (void)setDateRanges:(id)ranges
 {
-  v4 = [a3 mutableCopy];
+  v4 = [ranges mutableCopy];
   dateRanges = self->_dateRanges;
   self->_dateRanges = v4;
 

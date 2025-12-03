@@ -1,44 +1,44 @@
 @interface USUsageReport
-+ (id)emptyReportForInterval:(id)a3;
++ (id)emptyReportForInterval:(id)interval;
 - (NSDictionary)pickupsByBundleIdentifier;
 - (NSDictionary)userNotificationsByBundleIdentifier;
-- (USUsageReport)initWithCoder:(id)a3;
-- (USUsageReport)initWithScreenTime:(double)a3 longestSession:(id)a4 categoryUsage:(id)a5 notifications:(id)a6 pickupsByBundleIdentifier:(id)a7 pickupsWithoutApplicationUsage:(unint64_t)a8 firstPickup:(id)a9 interval:(id)a10 timeZone:(id)a11 lastEventDate:(id)a12;
-- (USUsageReport)initWithScreenTime:(double)a3 longestSession:(id)a4 categoryUsage:(id)a5 pickupsWithoutApplicationUsage:(unint64_t)a6 firstPickup:(id)a7 interval:(id)a8 timeZone:(id)a9 lastEventDate:(id)a10;
-- (id)_addNotifications:(id)a3 andPickups:(id)a4 toApplicationUsageInCategoryUsage:(id)a5;
+- (USUsageReport)initWithCoder:(id)coder;
+- (USUsageReport)initWithScreenTime:(double)time longestSession:(id)session categoryUsage:(id)usage notifications:(id)notifications pickupsByBundleIdentifier:(id)identifier pickupsWithoutApplicationUsage:(unint64_t)applicationUsage firstPickup:(id)pickup interval:(id)self0 timeZone:(id)self1 lastEventDate:(id)self2;
+- (USUsageReport)initWithScreenTime:(double)time longestSession:(id)session categoryUsage:(id)usage pickupsWithoutApplicationUsage:(unint64_t)applicationUsage firstPickup:(id)pickup interval:(id)interval timeZone:(id)zone lastEventDate:(id)self0;
+- (id)_addNotifications:(id)notifications andPickups:(id)pickups toApplicationUsageInCategoryUsage:(id)usage;
 - (id)description;
-- (void)_usUsageReportCommonInitWithScreenTime:(double)a3 longestSession:(id)a4 categoryUsage:(id)a5 pickupsWithoutApplicationUsage:(unint64_t)a6 firstPickup:(id)a7 interval:(id)a8 timeZone:(id)a9 lastEventDate:(id)a10;
-- (void)encodeWithCoder:(id)a3;
+- (void)_usUsageReportCommonInitWithScreenTime:(double)time longestSession:(id)session categoryUsage:(id)usage pickupsWithoutApplicationUsage:(unint64_t)applicationUsage firstPickup:(id)pickup interval:(id)interval timeZone:(id)zone lastEventDate:(id)self0;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation USUsageReport
 
-- (USUsageReport)initWithScreenTime:(double)a3 longestSession:(id)a4 categoryUsage:(id)a5 notifications:(id)a6 pickupsByBundleIdentifier:(id)a7 pickupsWithoutApplicationUsage:(unint64_t)a8 firstPickup:(id)a9 interval:(id)a10 timeZone:(id)a11 lastEventDate:(id)a12
+- (USUsageReport)initWithScreenTime:(double)time longestSession:(id)session categoryUsage:(id)usage notifications:(id)notifications pickupsByBundleIdentifier:(id)identifier pickupsWithoutApplicationUsage:(unint64_t)applicationUsage firstPickup:(id)pickup interval:(id)self0 timeZone:(id)self1 lastEventDate:(id)self2
 {
-  v20 = a12;
-  v21 = a11;
-  v22 = a10;
-  v23 = a9;
-  v24 = a4;
-  v25 = [(USUsageReport *)self _addNotifications:a6 andPickups:a7 toApplicationUsageInCategoryUsage:a5];
-  v26 = [(USUsageReport *)self initWithScreenTime:v24 longestSession:v25 categoryUsage:a8 pickupsWithoutApplicationUsage:v23 firstPickup:v22 interval:v21 timeZone:a3 lastEventDate:v20];
+  dateCopy = date;
+  zoneCopy = zone;
+  intervalCopy = interval;
+  pickupCopy = pickup;
+  sessionCopy = session;
+  v25 = [(USUsageReport *)self _addNotifications:notifications andPickups:identifier toApplicationUsageInCategoryUsage:usage];
+  v26 = [(USUsageReport *)self initWithScreenTime:sessionCopy longestSession:v25 categoryUsage:applicationUsage pickupsWithoutApplicationUsage:pickupCopy firstPickup:intervalCopy interval:zoneCopy timeZone:time lastEventDate:dateCopy];
 
   return v26;
 }
 
-- (id)_addNotifications:(id)a3 andPickups:(id)a4 toApplicationUsageInCategoryUsage:(id)a5
+- (id)_addNotifications:(id)notifications andPickups:(id)pickups toApplicationUsageInCategoryUsage:(id)usage
 {
   v69 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
-  v9 = [a3 mutableCopy];
-  v43 = v7;
-  v10 = [v7 mutableCopy];
+  pickupsCopy = pickups;
+  usageCopy = usage;
+  v9 = [notifications mutableCopy];
+  v43 = pickupsCopy;
+  v10 = [pickupsCopy mutableCopy];
   v59 = 0u;
   v60 = 0u;
   v61 = 0u;
   v62 = 0u;
-  v11 = v8;
+  v11 = usageCopy;
   v46 = [v11 countByEnumeratingWithState:&v59 objects:v68 count:16];
   if (v46)
   {
@@ -77,24 +77,24 @@
               }
 
               v18 = *(*(&v55 + 1) + 8 * i);
-              v19 = [v18 canonicalBundleIdentifier];
-              v20 = [v9 objectForKeyedSubscript:v19];
+              canonicalBundleIdentifier = [v18 canonicalBundleIdentifier];
+              v20 = [v9 objectForKeyedSubscript:canonicalBundleIdentifier];
               v21 = v20;
               if (v20)
               {
-                v65 = v19;
+                v65 = canonicalBundleIdentifier;
                 v66 = v20;
                 v22 = [*(v12 + 2752) dictionaryWithObjects:&v66 forKeys:&v65 count:1];
                 [v18 setUserNotificationsByBundleIdentifier:v22];
 
-                [v9 setObject:0 forKeyedSubscript:v19];
+                [v9 setObject:0 forKeyedSubscript:canonicalBundleIdentifier];
               }
 
-              v23 = [v10 objectForKeyedSubscript:v19];
+              v23 = [v10 objectForKeyedSubscript:canonicalBundleIdentifier];
               v24 = v23;
               if (v23)
               {
-                v63 = v19;
+                v63 = canonicalBundleIdentifier;
                 v64 = v23;
                 [*(v12 + 2752) dictionaryWithObjects:&v64 forKeys:&v63 count:1];
                 v25 = v10;
@@ -105,7 +105,7 @@
                 v12 = v27;
                 v9 = v26;
                 v10 = v25;
-                [v25 setObject:0 forKeyedSubscript:v19];
+                [v25 setObject:0 forKeyedSubscript:canonicalBundleIdentifier];
               }
             }
 
@@ -143,8 +143,8 @@
       v33 = 0;
     }
 
-    v34 = [(USCategoryUsageReport *)v32 applicationUsage];
-    v35 = [v34 mutableCopy];
+    applicationUsage = [(USCategoryUsageReport *)v32 applicationUsage];
+    v35 = [applicationUsage mutableCopy];
 
     v52[0] = MEMORY[0x277D85DD0];
     v52[1] = 3221225472;
@@ -242,80 +242,80 @@ void __80__USUsageReport__addNotifications_andPickups_toApplicationUsageInCatego
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (USUsageReport)initWithScreenTime:(double)a3 longestSession:(id)a4 categoryUsage:(id)a5 pickupsWithoutApplicationUsage:(unint64_t)a6 firstPickup:(id)a7 interval:(id)a8 timeZone:(id)a9 lastEventDate:(id)a10
+- (USUsageReport)initWithScreenTime:(double)time longestSession:(id)session categoryUsage:(id)usage pickupsWithoutApplicationUsage:(unint64_t)applicationUsage firstPickup:(id)pickup interval:(id)interval timeZone:(id)zone lastEventDate:(id)self0
 {
   v25.receiver = self;
   v25.super_class = USUsageReport;
-  v17 = a10;
-  v18 = a9;
-  v19 = a8;
-  v20 = a7;
-  v21 = a5;
-  v22 = a4;
+  dateCopy = date;
+  zoneCopy = zone;
+  intervalCopy = interval;
+  pickupCopy = pickup;
+  usageCopy = usage;
+  sessionCopy = session;
   v23 = [(USUsageReport *)&v25 init];
-  [(USUsageReport *)v23 _usUsageReportCommonInitWithScreenTime:v22 longestSession:v21 categoryUsage:a6 pickupsWithoutApplicationUsage:v20 firstPickup:v19 interval:v18 timeZone:a3 lastEventDate:v17];
+  [(USUsageReport *)v23 _usUsageReportCommonInitWithScreenTime:sessionCopy longestSession:usageCopy categoryUsage:applicationUsage pickupsWithoutApplicationUsage:pickupCopy firstPickup:intervalCopy interval:zoneCopy timeZone:time lastEventDate:dateCopy];
 
   return v23;
 }
 
-- (void)_usUsageReportCommonInitWithScreenTime:(double)a3 longestSession:(id)a4 categoryUsage:(id)a5 pickupsWithoutApplicationUsage:(unint64_t)a6 firstPickup:(id)a7 interval:(id)a8 timeZone:(id)a9 lastEventDate:(id)a10
+- (void)_usUsageReportCommonInitWithScreenTime:(double)time longestSession:(id)session categoryUsage:(id)usage pickupsWithoutApplicationUsage:(unint64_t)applicationUsage firstPickup:(id)pickup interval:(id)interval timeZone:(id)zone lastEventDate:(id)self0
 {
-  self->_screenTime = a3;
-  v17 = a10;
-  v18 = a9;
-  v19 = a8;
-  v20 = a7;
-  v21 = a5;
-  v22 = [a4 copy];
+  self->_screenTime = time;
+  dateCopy = date;
+  zoneCopy = zone;
+  intervalCopy = interval;
+  pickupCopy = pickup;
+  usageCopy = usage;
+  v22 = [session copy];
   longestSession = self->_longestSession;
   self->_longestSession = v22;
 
-  v24 = [v21 copy];
+  v24 = [usageCopy copy];
   categoryUsage = self->_categoryUsage;
   self->_categoryUsage = v24;
 
-  self->_pickupsWithoutApplicationUsage = a6;
-  v26 = [v20 copy];
+  self->_pickupsWithoutApplicationUsage = applicationUsage;
+  v26 = [pickupCopy copy];
 
   firstPickup = self->_firstPickup;
   self->_firstPickup = v26;
 
-  v28 = [v19 copy];
+  v28 = [intervalCopy copy];
   interval = self->_interval;
   self->_interval = v28;
 
-  v30 = [v18 copy];
+  v30 = [zoneCopy copy];
   timeZone = self->_timeZone;
   self->_timeZone = v30;
 
-  v32 = [v17 copy];
+  v32 = [dateCopy copy];
   lastEventDate = self->_lastEventDate;
   self->_lastEventDate = v32;
 }
 
-- (USUsageReport)initWithCoder:(id)a3
+- (USUsageReport)initWithCoder:(id)coder
 {
   v42 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_alloc(MEMORY[0x277CBEB98]);
   v6 = objc_opt_class();
   v7 = [v5 initWithObjects:{v6, objc_opt_class(), 0}];
-  v8 = [v4 decodeObjectOfClasses:v7 forKey:@"CategoryUsage"];
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Interval"];
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"TimeZone"];
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"LastEventDate"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"CategoryUsage"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Interval"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"TimeZone"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"LastEventDate"];
   v12 = v11;
-  if (v8 && v9 && v10 && v11 && [v4 containsValueForKey:@"LongestSession"] && objc_msgSend(v4, "containsValueForKey:", @"ScreenTime") && objc_msgSend(v4, "containsValueForKey:", @"PickupsWithoutApplicationUsage") && objc_msgSend(v4, "containsValueForKey:", @"FirstPickup"))
+  if (v8 && v9 && v10 && v11 && [coderCopy containsValueForKey:@"LongestSession"] && objc_msgSend(coderCopy, "containsValueForKey:", @"ScreenTime") && objc_msgSend(coderCopy, "containsValueForKey:", @"PickupsWithoutApplicationUsage") && objc_msgSend(coderCopy, "containsValueForKey:", @"FirstPickup"))
   {
     v33.receiver = self;
     v33.super_class = USUsageReport;
     v13 = [(USUsageReport *)&v33 init];
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"LongestSession"];
-    [v4 decodeDoubleForKey:@"ScreenTime"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"LongestSession"];
+    [coderCopy decodeDoubleForKey:@"ScreenTime"];
     v16 = v15;
-    v32 = [v4 decodeIntegerForKey:@"PickupsWithoutApplicationUsage"];
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"FirstPickup"];
-    if (([v4 containsValueForKey:@"ApplicationUsageIncludesPickupsAndNotifications"] & 1) == 0)
+    v32 = [coderCopy decodeIntegerForKey:@"PickupsWithoutApplicationUsage"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"FirstPickup"];
+    if (([coderCopy containsValueForKey:@"ApplicationUsageIncludesPickupsAndNotifications"] & 1) == 0)
     {
       v30 = v14;
       v31 = v13;
@@ -323,8 +323,8 @@ void __80__USUsageReport__addNotifications_andPickups_toApplicationUsageInCatego
       v19 = objc_opt_class();
       v20 = objc_opt_class();
       v21 = [v18 initWithObjects:{v19, v20, objc_opt_class(), 0}];
-      v22 = [v4 decodeObjectOfClasses:v21 forKey:@"UserNotificationsByBundleIdentifier"];
-      v23 = [v4 decodeObjectOfClasses:v21 forKey:@"PickupsByBundleIdentifier"];
+      v22 = [coderCopy decodeObjectOfClasses:v21 forKey:@"UserNotificationsByBundleIdentifier"];
+      v23 = [coderCopy decodeObjectOfClasses:v21 forKey:@"PickupsByBundleIdentifier"];
       v24 = v23;
       if (v22 && v23)
       {
@@ -340,7 +340,7 @@ void __80__USUsageReport__addNotifications_andPickups_toApplicationUsageInCatego
     [(USUsageReport *)v13 _usUsageReportCommonInitWithScreenTime:v14 longestSession:v8 categoryUsage:v32 pickupsWithoutApplicationUsage:v17 firstPickup:v9 interval:v10 timeZone:v16 lastEventDate:v12];
 
     self = v13;
-    v25 = self;
+    selfCopy = self;
   }
 
   else
@@ -359,33 +359,33 @@ void __80__USUsageReport__addNotifications_andPickups_toApplicationUsageInCatego
     }
 
     v26 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA050] code:4865 userInfo:0];
-    [v4 failWithError:v26];
+    [coderCopy failWithError:v26];
 
-    v25 = 0;
+    selfCopy = 0;
   }
 
   v27 = *MEMORY[0x277D85DE8];
-  return v25;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   screenTime = self->_screenTime;
-  v5 = a3;
-  [v5 encodeDouble:@"ScreenTime" forKey:screenTime];
-  [v5 encodeObject:self->_longestSession forKey:@"LongestSession"];
-  [v5 encodeObject:self->_categoryUsage forKey:@"CategoryUsage"];
-  [v5 encodeInteger:self->_pickupsWithoutApplicationUsage forKey:@"PickupsWithoutApplicationUsage"];
-  [v5 encodeObject:self->_firstPickup forKey:@"FirstPickup"];
-  [v5 encodeObject:self->_interval forKey:@"Interval"];
-  [v5 encodeObject:self->_timeZone forKey:@"TimeZone"];
-  [v5 encodeObject:self->_lastEventDate forKey:@"LastEventDate"];
-  [v5 encodeBool:1 forKey:@"ApplicationUsageIncludesPickupsAndNotifications"];
-  v6 = [(USUsageReport *)self userNotificationsByBundleIdentifier];
-  [v5 encodeObject:v6 forKey:@"UserNotificationsByBundleIdentifier"];
+  coderCopy = coder;
+  [coderCopy encodeDouble:@"ScreenTime" forKey:screenTime];
+  [coderCopy encodeObject:self->_longestSession forKey:@"LongestSession"];
+  [coderCopy encodeObject:self->_categoryUsage forKey:@"CategoryUsage"];
+  [coderCopy encodeInteger:self->_pickupsWithoutApplicationUsage forKey:@"PickupsWithoutApplicationUsage"];
+  [coderCopy encodeObject:self->_firstPickup forKey:@"FirstPickup"];
+  [coderCopy encodeObject:self->_interval forKey:@"Interval"];
+  [coderCopy encodeObject:self->_timeZone forKey:@"TimeZone"];
+  [coderCopy encodeObject:self->_lastEventDate forKey:@"LastEventDate"];
+  [coderCopy encodeBool:1 forKey:@"ApplicationUsageIncludesPickupsAndNotifications"];
+  userNotificationsByBundleIdentifier = [(USUsageReport *)self userNotificationsByBundleIdentifier];
+  [coderCopy encodeObject:userNotificationsByBundleIdentifier forKey:@"UserNotificationsByBundleIdentifier"];
 
-  v7 = [(USUsageReport *)self pickupsByBundleIdentifier];
-  [v5 encodeObject:v7 forKey:@"PickupsByBundleIdentifier"];
+  pickupsByBundleIdentifier = [(USUsageReport *)self pickupsByBundleIdentifier];
+  [coderCopy encodeObject:pickupsByBundleIdentifier forKey:@"PickupsByBundleIdentifier"];
 }
 
 - (NSDictionary)userNotificationsByBundleIdentifier
@@ -396,8 +396,8 @@ void __80__USUsageReport__addNotifications_andPickups_toApplicationUsageInCatego
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v4 = [(USUsageReport *)self categoryUsage];
-  v5 = [v4 countByEnumeratingWithState:&v22 objects:v27 count:16];
+  categoryUsage = [(USUsageReport *)self categoryUsage];
+  v5 = [categoryUsage countByEnumeratingWithState:&v22 objects:v27 count:16];
   if (v5)
   {
     v6 = v5;
@@ -408,7 +408,7 @@ void __80__USUsageReport__addNotifications_andPickups_toApplicationUsageInCatego
       {
         if (*v23 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(categoryUsage);
         }
 
         v9 = *(*(&v22 + 1) + 8 * i);
@@ -416,8 +416,8 @@ void __80__USUsageReport__addNotifications_andPickups_toApplicationUsageInCatego
         v19 = 0u;
         v20 = 0u;
         v21 = 0u;
-        v10 = [v9 applicationUsage];
-        v11 = [v10 countByEnumeratingWithState:&v18 objects:v26 count:16];
+        applicationUsage = [v9 applicationUsage];
+        v11 = [applicationUsage countByEnumeratingWithState:&v18 objects:v26 count:16];
         if (v11)
         {
           v12 = v11;
@@ -428,21 +428,21 @@ void __80__USUsageReport__addNotifications_andPickups_toApplicationUsageInCatego
             {
               if (*v19 != v13)
               {
-                objc_enumerationMutation(v10);
+                objc_enumerationMutation(applicationUsage);
               }
 
-              v15 = [*(*(&v18 + 1) + 8 * j) userNotificationsByBundleIdentifier];
-              [v3 addEntriesFromDictionary:v15];
+              userNotificationsByBundleIdentifier = [*(*(&v18 + 1) + 8 * j) userNotificationsByBundleIdentifier];
+              [v3 addEntriesFromDictionary:userNotificationsByBundleIdentifier];
             }
 
-            v12 = [v10 countByEnumeratingWithState:&v18 objects:v26 count:16];
+            v12 = [applicationUsage countByEnumeratingWithState:&v18 objects:v26 count:16];
           }
 
           while (v12);
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v22 objects:v27 count:16];
+      v6 = [categoryUsage countByEnumeratingWithState:&v22 objects:v27 count:16];
     }
 
     while (v6);
@@ -461,8 +461,8 @@ void __80__USUsageReport__addNotifications_andPickups_toApplicationUsageInCatego
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v4 = [(USUsageReport *)self categoryUsage];
-  v5 = [v4 countByEnumeratingWithState:&v22 objects:v27 count:16];
+  categoryUsage = [(USUsageReport *)self categoryUsage];
+  v5 = [categoryUsage countByEnumeratingWithState:&v22 objects:v27 count:16];
   if (v5)
   {
     v6 = v5;
@@ -473,7 +473,7 @@ void __80__USUsageReport__addNotifications_andPickups_toApplicationUsageInCatego
       {
         if (*v23 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(categoryUsage);
         }
 
         v9 = *(*(&v22 + 1) + 8 * i);
@@ -481,8 +481,8 @@ void __80__USUsageReport__addNotifications_andPickups_toApplicationUsageInCatego
         v19 = 0u;
         v20 = 0u;
         v21 = 0u;
-        v10 = [v9 applicationUsage];
-        v11 = [v10 countByEnumeratingWithState:&v18 objects:v26 count:16];
+        applicationUsage = [v9 applicationUsage];
+        v11 = [applicationUsage countByEnumeratingWithState:&v18 objects:v26 count:16];
         if (v11)
         {
           v12 = v11;
@@ -493,21 +493,21 @@ void __80__USUsageReport__addNotifications_andPickups_toApplicationUsageInCatego
             {
               if (*v19 != v13)
               {
-                objc_enumerationMutation(v10);
+                objc_enumerationMutation(applicationUsage);
               }
 
-              v15 = [*(*(&v18 + 1) + 8 * j) pickupsByBundleIdentifier];
-              [v3 addEntriesFromDictionary:v15];
+              pickupsByBundleIdentifier = [*(*(&v18 + 1) + 8 * j) pickupsByBundleIdentifier];
+              [v3 addEntriesFromDictionary:pickupsByBundleIdentifier];
             }
 
-            v12 = [v10 countByEnumeratingWithState:&v18 objects:v26 count:16];
+            v12 = [applicationUsage countByEnumeratingWithState:&v18 objects:v26 count:16];
           }
 
           while (v12);
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v22 objects:v27 count:16];
+      v6 = [categoryUsage countByEnumeratingWithState:&v22 objects:v27 count:16];
     }
 
     while (v6);
@@ -526,25 +526,25 @@ void __80__USUsageReport__addNotifications_andPickups_toApplicationUsageInCatego
   v4 = [(USUsageReport *)&v16 description];
   [(USUsageReport *)self screenTime];
   v6 = v5;
-  v7 = [(USUsageReport *)self longestSession];
-  v8 = [(USUsageReport *)self categoryUsage];
-  v9 = [(USUsageReport *)self pickupsWithoutApplicationUsage];
-  v10 = [(USUsageReport *)self firstPickup];
-  v11 = [(USUsageReport *)self interval];
-  v12 = [(USUsageReport *)self timeZone];
-  v13 = [(USUsageReport *)self lastEventDate];
-  v14 = [v3 stringWithFormat:@"%@, ScreenTime: %f, LongestSession: %@, CategoryUsage: %@\nPickupsWithoutApplicationUsage: %lu, First Pickup: %@, Interval: %@, TimeZone: %@, LastEventDate: %@", v4, v6, v7, v8, v9, v10, v11, v12, v13];
+  longestSession = [(USUsageReport *)self longestSession];
+  categoryUsage = [(USUsageReport *)self categoryUsage];
+  pickupsWithoutApplicationUsage = [(USUsageReport *)self pickupsWithoutApplicationUsage];
+  firstPickup = [(USUsageReport *)self firstPickup];
+  interval = [(USUsageReport *)self interval];
+  timeZone = [(USUsageReport *)self timeZone];
+  lastEventDate = [(USUsageReport *)self lastEventDate];
+  v14 = [v3 stringWithFormat:@"%@, ScreenTime: %f, LongestSession: %@, CategoryUsage: %@\nPickupsWithoutApplicationUsage: %lu, First Pickup: %@, Interval: %@, TimeZone: %@, LastEventDate: %@", v4, v6, longestSession, categoryUsage, pickupsWithoutApplicationUsage, firstPickup, interval, timeZone, lastEventDate];
 
   return v14;
 }
 
-+ (id)emptyReportForInterval:(id)a3
++ (id)emptyReportForInterval:(id)interval
 {
-  v3 = a3;
+  intervalCopy = interval;
   v4 = [USUsageReport alloc];
-  v5 = [MEMORY[0x277CBEBB0] localTimeZone];
-  v6 = [v3 startDate];
-  v7 = [(USUsageReport *)v4 initWithScreenTime:0 longestSession:MEMORY[0x277CBEBF8] categoryUsage:0 pickupsWithoutApplicationUsage:0 firstPickup:v3 interval:v5 timeZone:0.0 lastEventDate:v6];
+  localTimeZone = [MEMORY[0x277CBEBB0] localTimeZone];
+  startDate = [intervalCopy startDate];
+  v7 = [(USUsageReport *)v4 initWithScreenTime:0 longestSession:MEMORY[0x277CBEBF8] categoryUsage:0 pickupsWithoutApplicationUsage:0 firstPickup:intervalCopy interval:localTimeZone timeZone:0.0 lastEventDate:startDate];
 
   return v7;
 }

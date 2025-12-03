@@ -1,31 +1,31 @@
 @interface PKSharingMessageExtensionOpenGraphMessage
 - (NSString)description;
-- (PKSharingMessageExtensionOpenGraphMessage)initWithURL:(id)a3;
+- (PKSharingMessageExtensionOpenGraphMessage)initWithURL:(id)l;
 - (id)urlRepresentation;
 @end
 
 @implementation PKSharingMessageExtensionOpenGraphMessage
 
-- (PKSharingMessageExtensionOpenGraphMessage)initWithURL:(id)a3
+- (PKSharingMessageExtensionOpenGraphMessage)initWithURL:(id)l
 {
   v49 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  lCopy = l;
   v47.receiver = self;
   v47.super_class = PKSharingMessageExtensionOpenGraphMessage;
   v6 = [(PKSharingMessageExtensionOpenGraphMessage *)&v47 init];
   v7 = v6;
   if (v6)
   {
-    v41 = v5;
-    objc_storeStrong(&v6->_url, a3);
+    v41 = lCopy;
+    objc_storeStrong(&v6->_url, l);
     v8 = [objc_alloc(MEMORY[0x1E696AF20]) initWithURL:v7->_url resolvingAgainstBaseURL:0];
     v43 = 0u;
     v44 = 0u;
     v45 = 0u;
     v46 = 0u;
     v40 = v8;
-    v9 = [v8 queryItems];
-    v10 = [v9 countByEnumeratingWithState:&v43 objects:v48 count:16];
+    queryItems = [v8 queryItems];
+    v10 = [queryItems countByEnumeratingWithState:&v43 objects:v48 count:16];
     if (!v10)
     {
       goto LABEL_27;
@@ -40,44 +40,44 @@
       {
         if (*v44 != v42)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(queryItems);
         }
 
         v13 = *(*(&v43 + 1) + 8 * v12);
-        v14 = [v13 name];
-        v15 = v14;
-        if (v14 == @"title")
+        name = [v13 name];
+        v15 = name;
+        if (name == @"title")
         {
           goto LABEL_10;
         }
 
-        if (!v14)
+        if (!name)
         {
           goto LABEL_21;
         }
 
-        v16 = [(__CFString *)v14 isEqualToString:@"title"];
+        v16 = [(__CFString *)name isEqualToString:@"title"];
 
         if (v16)
         {
 LABEL_10:
-          v17 = [v13 value];
+          value = [v13 value];
           title = v7->_title;
-          v7->_title = v17;
+          v7->_title = value;
 
           goto LABEL_21;
         }
 
-        v19 = v9;
+        v19 = queryItems;
         v20 = v15;
         if (v20 == @"subtitle" || (v21 = v20, v22 = [(__CFString *)v20 isEqualToString:@"subtitle"], v21, v22))
         {
-          v23 = [v13 value];
+          value2 = [v13 value];
           subtitle = v7->_subtitle;
-          v7->_subtitle = v23;
+          v7->_subtitle = value2;
 
 LABEL_20:
-          v9 = v19;
+          queryItems = v19;
           goto LABEL_21;
         }
 
@@ -85,8 +85,8 @@ LABEL_20:
         if (v25 == @"image" || (v26 = v25, v27 = [(__CFString *)v25 isEqualToString:@"image"], v26, v27))
         {
           v28 = objc_alloc(MEMORY[0x1E695DEF0]);
-          v29 = [v13 value];
-          v30 = [v28 initWithBase64EncodedString:v29 options:0];
+          value3 = [v13 value];
+          v30 = [v28 initWithBase64EncodedString:value3 options:0];
 
           if (v30)
           {
@@ -106,7 +106,7 @@ LABEL_20:
         }
 
         v35 = v26;
-        v9 = v19;
+        queryItems = v19;
         if (v35 == @"fetched" || (v36 = v35, v37 = [(__CFString *)v35 isEqualToString:@"fetched"], v36, v37))
         {
           v7->_hasFetchedOpenGraphPreview = 1;
@@ -118,13 +118,13 @@ LABEL_21:
       }
 
       while (v11 != v12);
-      v38 = [v9 countByEnumeratingWithState:&v43 objects:v48 count:16];
+      v38 = [queryItems countByEnumeratingWithState:&v43 objects:v48 count:16];
       v11 = v38;
       if (!v38)
       {
 LABEL_27:
 
-        v5 = v41;
+        lCopy = v41;
         break;
       }
     }

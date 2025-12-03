@@ -1,9 +1,9 @@
 @interface DBDashboardWorkspaceStateApplicationSceneChangeItem
 - (BOOL)prefersAnimation;
-- (DBDashboardWorkspaceStateApplicationSceneChangeItem)initWithApplication:(id)a3;
-- (id)_newEntityFromChangeItemWithPolicyProvider:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)_buildDescriptionWithBuilder:(id)a3;
+- (DBDashboardWorkspaceStateApplicationSceneChangeItem)initWithApplication:(id)application;
+- (id)_newEntityFromChangeItemWithPolicyProvider:(id)provider;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)_buildDescriptionWithBuilder:(id)builder;
 @end
 
 @implementation DBDashboardWorkspaceStateApplicationSceneChangeItem
@@ -17,57 +17,57 @@
     return 0;
   }
 
-  v3 = [(DBDashboardWorkspaceStateApplicationSceneChangeItem *)self activationSettings];
+  activationSettings = [(DBDashboardWorkspaceStateApplicationSceneChangeItem *)self activationSettings];
 
-  if (!v3)
+  if (!activationSettings)
   {
     return 1;
   }
 
-  v4 = [(DBDashboardWorkspaceStateApplicationSceneChangeItem *)self activationSettings];
-  v5 = [v4 isAnimated];
+  activationSettings2 = [(DBDashboardWorkspaceStateApplicationSceneChangeItem *)self activationSettings];
+  isAnimated = [activationSettings2 isAnimated];
 
-  return v5;
+  return isAnimated;
 }
 
-- (DBDashboardWorkspaceStateApplicationSceneChangeItem)initWithApplication:(id)a3
+- (DBDashboardWorkspaceStateApplicationSceneChangeItem)initWithApplication:(id)application
 {
-  v5 = a3;
+  applicationCopy = application;
   v9.receiver = self;
   v9.super_class = DBDashboardWorkspaceStateApplicationSceneChangeItem;
-  v6 = [(DBDashboardWorkspaceStateChangeItem *)&v9 _init];
-  v7 = v6;
-  if (v6)
+  _init = [(DBDashboardWorkspaceStateChangeItem *)&v9 _init];
+  v7 = _init;
+  if (_init)
   {
-    objc_storeStrong(v6 + 3, a3);
+    objc_storeStrong(_init + 3, application);
   }
 
   return v7;
 }
 
-- (id)_newEntityFromChangeItemWithPolicyProvider:(id)a3
+- (id)_newEntityFromChangeItemWithPolicyProvider:(id)provider
 {
-  v4 = [(DBDashboardWorkspaceStateApplicationSceneChangeItem *)self application];
-  v5 = [v4 appPolicy];
+  application = [(DBDashboardWorkspaceStateApplicationSceneChangeItem *)self application];
+  appPolicy = [application appPolicy];
 
   v6 = self->_application;
-  if ([v5 launchUsingTemplateUI])
+  if ([appPolicy launchUsingTemplateUI])
   {
     v7 = +[DBApplicationController sharedInstance];
-    v8 = [v7 templateUIHostApplication];
+    templateUIHostApplication = [v7 templateUIHostApplication];
   }
 
   else
   {
-    if (([v5 launchUsingMusicUIService] & 1) == 0)
+    if (([appPolicy launchUsingMusicUIService] & 1) == 0)
     {
-      if ([v5 isCarPlayCapable])
+      if ([appPolicy isCarPlayCapable])
       {
         goto LABEL_9;
       }
 
-      v12 = [(DBApplication *)v6 info];
-      v13 = [v12 supportsBackgroundMode:*MEMORY[0x277D76778]];
+      info = [(DBApplication *)v6 info];
+      v13 = [info supportsBackgroundMode:*MEMORY[0x277D76778]];
 
       if (!v13)
       {
@@ -76,10 +76,10 @@
     }
 
     v7 = +[DBApplicationController sharedInstance];
-    v8 = [v7 musicUIServiceApplication];
+    templateUIHostApplication = [v7 musicUIServiceApplication];
   }
 
-  v9 = v8;
+  v9 = templateUIHostApplication;
 
   if (!v9)
   {
@@ -95,21 +95,21 @@ LABEL_10:
   return v11;
 }
 
-- (void)_buildDescriptionWithBuilder:(id)a3
+- (void)_buildDescriptionWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v7.receiver = self;
   v7.super_class = DBDashboardWorkspaceStateApplicationSceneChangeItem;
-  [(DBDashboardWorkspaceStateChangeItem *)&v7 _buildDescriptionWithBuilder:v4];
-  v5 = [(DBApplication *)self->_application bundleIdentifier];
-  v6 = [v4 appendObject:v5 withName:@"bundleID"];
+  [(DBDashboardWorkspaceStateChangeItem *)&v7 _buildDescriptionWithBuilder:builderCopy];
+  bundleIdentifier = [(DBApplication *)self->_application bundleIdentifier];
+  v6 = [builderCopy appendObject:bundleIdentifier withName:@"bundleID"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = DBDashboardWorkspaceStateApplicationSceneChangeItem;
-  v4 = [(DBDashboardWorkspaceStateChangeItem *)&v6 copyWithZone:a3];
+  v4 = [(DBDashboardWorkspaceStateChangeItem *)&v6 copyWithZone:zone];
   objc_storeStrong(v4 + 3, self->_application);
   return v4;
 }

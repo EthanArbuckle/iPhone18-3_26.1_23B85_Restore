@@ -1,17 +1,17 @@
 @interface BELayerHierarchyHostingTransactionCoordinator
-+ (id)coordinatorWithError:(id *)a3;
-+ (id)coordinatorWithXPCRepresentation:(id)a3 error:(id *)a4;
++ (id)coordinatorWithError:(id *)error;
++ (id)coordinatorWithXPCRepresentation:(id)representation error:(id *)error;
 - (BELayerHierarchyHostingTransactionCoordinator)init;
-- (BELayerHierarchyHostingTransactionCoordinator)initWithCoder:(id)a3;
-- (id)_initWithFence:(id)a3;
+- (BELayerHierarchyHostingTransactionCoordinator)initWithCoder:(id)coder;
+- (id)_initWithFence:(id)fence;
 - (id)createXPCRepresentation;
-- (void)_addContext:(uint64_t)a1;
-- (void)_addContextForHostingView:(uint64_t)a1;
-- (void)addLayerHierarchy:(id)a3;
-- (void)addLayerHierarchyHostingView:(id)a3;
+- (void)_addContext:(uint64_t)context;
+- (void)_addContextForHostingView:(uint64_t)view;
+- (void)addLayerHierarchy:(id)hierarchy;
+- (void)addLayerHierarchyHostingView:(id)view;
 - (void)commit;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BELayerHierarchyHostingTransactionCoordinator
@@ -29,7 +29,7 @@
     v11 = 2114;
     v12 = v7;
     v13 = 2048;
-    v14 = self;
+    selfCopy = self;
     v15 = 2114;
     v16 = @"BELayerHierarchyHostingTransactionCoordinator.m";
     v17 = 1024;
@@ -45,15 +45,15 @@
   return result;
 }
 
-- (id)_initWithFence:(id)a3
+- (id)_initWithFence:(id)fence
 {
-  v6 = a3;
-  if (v6)
+  fenceCopy = fence;
+  if (fenceCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      [(BELayerHierarchyHostingTransactionCoordinator *)v6 _initWithFence:a2, self];
+      [(BELayerHierarchyHostingTransactionCoordinator *)fenceCopy _initWithFence:a2, self];
     }
   }
 
@@ -63,7 +63,7 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_fence, a3);
+    objc_storeStrong(&v7->_fence, fence);
   }
 
   return v8;
@@ -79,7 +79,7 @@
     v4 = OUTLINED_FUNCTION_2();
     v5 = NSStringFromClass(v4);
     OUTLINED_FUNCTION_0_1();
-    OUTLINED_FUNCTION_1_0(&dword_19D4FF000, MEMORY[0x1E69E9C10], v6, "failure in %{public}@ of <%{public}@:%p> (%{public}@:%i) : %{public}@", v7, v8, v9, v10, a1, v12, v13);
+    OUTLINED_FUNCTION_1_0(&dword_19D4FF000, MEMORY[0x1E69E9C10], v6, "failure in %{public}@ of <%{public}@:%p> (%{public}@:%i) : %{public}@", v7, v8, v9, v10, self, v12, v13);
   }
 
   [v3 UTF8String];
@@ -87,48 +87,48 @@
   __break(0);
 }
 
-- (void)_addContext:(uint64_t)a1
+- (void)_addContext:(uint64_t)context
 {
   v3 = a2;
-  if (a1)
+  if (context)
   {
-    os_unfair_lock_assert_owner((a1 + 32));
-    if (*(a1 + 36) == 1)
+    os_unfair_lock_assert_owner((context + 32));
+    if (*(context + 36) == 1)
     {
-      [(BELayerHierarchyHostingTransactionCoordinator *)a1 _addContext:?];
+      [(BELayerHierarchyHostingTransactionCoordinator *)context _addContext:?];
     }
 
-    [(BELayerHierarchyHostingTransactionCoordinator *)a1 _addContext:v3];
+    [(BELayerHierarchyHostingTransactionCoordinator *)context _addContext:v3];
   }
 }
 
-- (void)_addContextForHostingView:(uint64_t)a1
+- (void)_addContextForHostingView:(uint64_t)view
 {
   v3 = a2;
-  if (a1)
+  if (view)
   {
-    os_unfair_lock_assert_owner((a1 + 32));
-    if (*(a1 + 36) == 1)
+    os_unfair_lock_assert_owner((view + 32));
+    if (*(view + 36) == 1)
     {
-      [(BELayerHierarchyHostingTransactionCoordinator *)a1 _addContextForHostingView:?];
+      [(BELayerHierarchyHostingTransactionCoordinator *)view _addContextForHostingView:?];
     }
 
-    [(BELayerHierarchyHostingTransactionCoordinator *)v3 _addContextForHostingView:a1];
+    [(BELayerHierarchyHostingTransactionCoordinator *)v3 _addContextForHostingView:view];
   }
 }
 
-+ (id)coordinatorWithError:(id *)a3
++ (id)coordinatorWithError:(id *)error
 {
-  v4 = [MEMORY[0x1E6979370] newFenceFromDefaultServer];
-  if (v4)
+  newFenceFromDefaultServer = [MEMORY[0x1E6979370] newFenceFromDefaultServer];
+  if (newFenceFromDefaultServer)
   {
-    v5 = [[BELayerHierarchyHostingTransactionCoordinator alloc] _initWithFence:v4];
+    v5 = [[BELayerHierarchyHostingTransactionCoordinator alloc] _initWithFence:newFenceFromDefaultServer];
   }
 
-  else if (a3)
+  else if (error)
   {
     [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:1 userInfo:0];
-    *a3 = v5 = 0;
+    *error = v5 = 0;
   }
 
   else
@@ -139,10 +139,10 @@
   return v5;
 }
 
-+ (id)coordinatorWithXPCRepresentation:(id)a3 error:(id *)a4
++ (id)coordinatorWithXPCRepresentation:(id)representation error:(id *)error
 {
   v16 = 0;
-  v5 = [MEMORY[0x1E6979370] handleFromXPCRepresentation:a3 error:&v16];
+  v5 = [MEMORY[0x1E6979370] handleFromXPCRepresentation:representation error:&v16];
   v6 = v16;
   v7 = v6;
   if (v5)
@@ -151,7 +151,7 @@
     goto LABEL_3;
   }
 
-  if (!a4)
+  if (!error)
   {
     v8 = 0;
     goto LABEL_3;
@@ -165,19 +165,19 @@
     goto LABEL_13;
   }
 
-  v10 = [v6 domain];
-  if ([v10 isEqual:*MEMORY[0x1E696A250]])
+  domain = [v6 domain];
+  if ([domain isEqual:*MEMORY[0x1E696A250]])
   {
-    v11 = [v7 code];
+    code = [v7 code];
 
-    if (v11 == 4865)
+    if (code == 4865)
     {
       v12 = MEMORY[0x1E696ABC0];
       v13 = *MEMORY[0x1E696A798];
       v14 = 60;
 LABEL_13:
       [v12 errorWithDomain:v13 code:v14 userInfo:0];
-      *a4 = v8 = 0;
+      *error = v8 = 0;
       goto LABEL_3;
     }
   }
@@ -188,7 +188,7 @@ LABEL_13:
 
   v15 = v7;
   v8 = 0;
-  *a4 = v7;
+  *error = v7;
 LABEL_3:
 
   return v8;
@@ -196,21 +196,21 @@ LABEL_3:
 
 - (id)createXPCRepresentation
 {
-  v2 = [(CAFenceHandle *)self->_fence createXPCRepresentation];
+  createXPCRepresentation = [(CAFenceHandle *)self->_fence createXPCRepresentation];
 
-  return v2;
+  return createXPCRepresentation;
 }
 
-- (BELayerHierarchyHostingTransactionCoordinator)initWithCoder:(id)a3
+- (BELayerHierarchyHostingTransactionCoordinator)initWithCoder:(id)coder
 {
-  v5 = a3;
+  coderCopy = coder;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     [BELayerHierarchyHostingTransactionCoordinator initWithCoder:a2];
   }
 
-  v6 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"fence"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"fence"];
   v7 = v6;
   if (v6 && [v6 isUsable])
   {
@@ -233,47 +233,47 @@ LABEL_3:
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
+  coderCopy = coder;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     [BELayerHierarchyHostingTransactionCoordinator encodeWithCoder:a2];
   }
 
-  [v5 encodeObject:self->_fence forKey:@"fence"];
+  [coderCopy encodeObject:self->_fence forKey:@"fence"];
 }
 
-- (void)addLayerHierarchy:(id)a3
+- (void)addLayerHierarchy:(id)hierarchy
 {
-  v4 = a3;
+  hierarchyCopy = hierarchy;
   BSDispatchQueueAssertMain();
   os_unfair_lock_lock(&self->_commitLock);
-  v5 = [(BELayerHierarchy *)v4 _context];
+  _context = [(BELayerHierarchy *)hierarchyCopy _context];
 
-  [(BELayerHierarchyHostingTransactionCoordinator *)self _addContext:v5];
+  [(BELayerHierarchyHostingTransactionCoordinator *)self _addContext:_context];
 
   os_unfair_lock_unlock(&self->_commitLock);
 }
 
-- (void)addLayerHierarchyHostingView:(id)a3
+- (void)addLayerHierarchyHostingView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   BSDispatchQueueAssertMain();
   os_unfair_lock_lock(&self->_commitLock);
-  [(BELayerHierarchyHostingTransactionCoordinator *)self _addContextForHostingView:v4];
+  [(BELayerHierarchyHostingTransactionCoordinator *)self _addContextForHostingView:viewCopy];
   commitLock_hostingViews = self->_commitLock_hostingViews;
   if (commitLock_hostingViews)
   {
-    [(NSMutableSet *)commitLock_hostingViews addObject:v4];
+    [(NSMutableSet *)commitLock_hostingViews addObject:viewCopy];
   }
 
   else
   {
-    v6 = [MEMORY[0x1E695DFA8] setWithObject:v4];
+    v6 = [MEMORY[0x1E695DFA8] setWithObject:viewCopy];
 
-    v4 = self->_commitLock_hostingViews;
+    viewCopy = self->_commitLock_hostingViews;
     self->_commitLock_hostingViews = v6;
   }
 
@@ -290,7 +290,7 @@ LABEL_3:
     v4 = OUTLINED_FUNCTION_2();
     v5 = NSStringFromClass(v4);
     OUTLINED_FUNCTION_0_1();
-    OUTLINED_FUNCTION_1_0(&dword_19D4FF000, MEMORY[0x1E69E9C10], v6, "failure in %{public}@ of <%{public}@:%p> (%{public}@:%i) : %{public}@", v7, v8, v9, v10, a1, v12, v13);
+    OUTLINED_FUNCTION_1_0(&dword_19D4FF000, MEMORY[0x1E69E9C10], v6, "failure in %{public}@ of <%{public}@:%p> (%{public}@:%i) : %{public}@", v7, v8, v9, v10, self, v12, v13);
   }
 
   [v3 UTF8String];

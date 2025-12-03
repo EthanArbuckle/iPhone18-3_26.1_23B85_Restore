@@ -1,7 +1,7 @@
 @interface CCWalletExtractedOrderContentShippingFulfillment
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4;
-- (CCWalletExtractedOrderContentShippingFulfillment)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (CCWalletExtractedOrderContentShippingFulfillment)initWithStatus:(unsigned int)a3 trackingNumber:(id)a4 carrierName:(id)a5 shippingMethod:(id)a6 shippingDate:(id)a7 shippingTime:(id)a8 estimatedDeliveryStartDate:(id)a9 estimatedDeliveryStartTime:(id)a10 estimatedDeliveryEndDate:(id)a11 estimatedDeliveryEndTime:(id)a12 deliveryDate:(id)a13 deliveryTime:(id)a14 shippingRecipient:(id)a15 fulfillmentUpdateDate:(id)a16 error:(id *)a17;
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error;
+- (CCWalletExtractedOrderContentShippingFulfillment)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (CCWalletExtractedOrderContentShippingFulfillment)initWithStatus:(unsigned int)status trackingNumber:(id)number carrierName:(id)name shippingMethod:(id)method shippingDate:(id)date shippingTime:(id)time estimatedDeliveryStartDate:(id)startDate estimatedDeliveryStartTime:(id)self0 estimatedDeliveryEndDate:(id)self1 estimatedDeliveryEndTime:(id)self2 deliveryDate:(id)self3 deliveryTime:(id)self4 shippingRecipient:(id)self5 fulfillmentUpdateDate:(id)self6 error:(id *)self7;
 - (CCWalletPaymentsCommerceTrackedOrderShippingRecipient)shippingRecipient;
 - (NSDate)fulfillmentUpdateDate;
 - (NSString)carrierName;
@@ -16,45 +16,45 @@
 - (NSString)shippingTime;
 - (NSString)trackingNumber;
 - (id)jsonDictionary;
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4;
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type;
 @end
 
 @implementation CCWalletExtractedOrderContentShippingFulfillment
 
-- (CCWalletExtractedOrderContentShippingFulfillment)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (CCWalletExtractedOrderContentShippingFulfillment)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
-  v5 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   v55[1] = 0;
   IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
   v7 = 0;
   if (IsInstanceOfExpectedClass)
   {
-    v8 = [v5 objectForKeyedSubscript:@"status"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"status"];
     v48 = v8;
-    v42 = a4;
+    errorCopy = error;
     if (v8)
     {
-      v40 = [v8 unsignedIntegerValue];
+      unsignedIntegerValue = [v8 unsignedIntegerValue];
     }
 
     else
     {
-      v40 = 0;
+      unsignedIntegerValue = 0;
     }
 
-    v10 = [v5 objectForKeyedSubscript:@"trackingNumber"];
-    v51 = [v5 objectForKeyedSubscript:@"carrierName"];
-    v11 = [v5 objectForKeyedSubscript:@"shippingMethod"];
-    v12 = [v5 objectForKeyedSubscript:@"shippingDate"];
-    v13 = [v5 objectForKeyedSubscript:@"shippingTime"];
-    v46 = [v5 objectForKeyedSubscript:@"estimatedDeliveryStartDate"];
-    v14 = [v5 objectForKeyedSubscript:@"estimatedDeliveryStartTime"];
-    v44 = [v5 objectForKeyedSubscript:@"estimatedDeliveryEndDate"];
-    v15 = [v5 objectForKeyedSubscript:@"estimatedDeliveryEndTime"];
-    v16 = [v5 objectForKeyedSubscript:@"deliveryDate"];
-    v43 = [v5 objectForKeyedSubscript:@"deliveryTime"];
-    v17 = [v5 objectForKeyedSubscript:@"shippingRecipient"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"trackingNumber"];
+    v51 = [dictionaryCopy objectForKeyedSubscript:@"carrierName"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"shippingMethod"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"shippingDate"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"shippingTime"];
+    v46 = [dictionaryCopy objectForKeyedSubscript:@"estimatedDeliveryStartDate"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"estimatedDeliveryStartTime"];
+    v44 = [dictionaryCopy objectForKeyedSubscript:@"estimatedDeliveryEndDate"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"estimatedDeliveryEndTime"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"deliveryDate"];
+    v43 = [dictionaryCopy objectForKeyedSubscript:@"deliveryTime"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"shippingRecipient"];
     v52 = v10;
     v53 = v13;
     v47 = v12;
@@ -98,7 +98,7 @@
       v24 = v14;
     }
 
-    v22 = [v5 objectForKeyedSubscript:@"fulfillmentUpdateDate"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"fulfillmentUpdateDate"];
     if (!v22)
     {
       v45 = v7;
@@ -130,7 +130,7 @@ LABEL_16:
       v31 = v46;
       v35 = v19;
       v30 = v47;
-      v9 = [(CCWalletExtractedOrderContentShippingFulfillment *)v34 initWithStatus:v40 trackingNumber:v52 carrierName:v51 shippingMethod:v35 shippingDate:v47 shippingTime:v29 estimatedDeliveryStartDate:v46 estimatedDeliveryStartTime:v37 estimatedDeliveryEndDate:v44 estimatedDeliveryEndTime:v39 deliveryDate:v16 deliveryTime:v43 shippingRecipient:v38 fulfillmentUpdateDate:v22 error:v42];
+      v9 = [(CCWalletExtractedOrderContentShippingFulfillment *)v34 initWithStatus:unsignedIntegerValue trackingNumber:v52 carrierName:v51 shippingMethod:v35 shippingDate:v47 shippingTime:v29 estimatedDeliveryStartDate:v46 estimatedDeliveryStartTime:v37 estimatedDeliveryEndDate:v44 estimatedDeliveryEndTime:v39 deliveryDate:v16 deliveryTime:v43 shippingRecipient:v38 fulfillmentUpdateDate:v22 error:errorCopy];
 LABEL_19:
 
       v7 = v45;
@@ -166,75 +166,75 @@ LABEL_20:
 
   if (self->_trackingNumber)
   {
-    v5 = [(CCWalletExtractedOrderContentShippingFulfillment *)self trackingNumber];
-    [v3 setObject:v5 forKeyedSubscript:@"trackingNumber"];
+    trackingNumber = [(CCWalletExtractedOrderContentShippingFulfillment *)self trackingNumber];
+    [v3 setObject:trackingNumber forKeyedSubscript:@"trackingNumber"];
   }
 
   if (self->_carrierName)
   {
-    v6 = [(CCWalletExtractedOrderContentShippingFulfillment *)self carrierName];
-    [v3 setObject:v6 forKeyedSubscript:@"carrierName"];
+    carrierName = [(CCWalletExtractedOrderContentShippingFulfillment *)self carrierName];
+    [v3 setObject:carrierName forKeyedSubscript:@"carrierName"];
   }
 
   if (self->_shippingMethod)
   {
-    v7 = [(CCWalletExtractedOrderContentShippingFulfillment *)self shippingMethod];
-    [v3 setObject:v7 forKeyedSubscript:@"shippingMethod"];
+    shippingMethod = [(CCWalletExtractedOrderContentShippingFulfillment *)self shippingMethod];
+    [v3 setObject:shippingMethod forKeyedSubscript:@"shippingMethod"];
   }
 
   if (self->_shippingDate)
   {
-    v8 = [(CCWalletExtractedOrderContentShippingFulfillment *)self shippingDate];
-    [v3 setObject:v8 forKeyedSubscript:@"shippingDate"];
+    shippingDate = [(CCWalletExtractedOrderContentShippingFulfillment *)self shippingDate];
+    [v3 setObject:shippingDate forKeyedSubscript:@"shippingDate"];
   }
 
   if (self->_shippingTime)
   {
-    v9 = [(CCWalletExtractedOrderContentShippingFulfillment *)self shippingTime];
-    [v3 setObject:v9 forKeyedSubscript:@"shippingTime"];
+    shippingTime = [(CCWalletExtractedOrderContentShippingFulfillment *)self shippingTime];
+    [v3 setObject:shippingTime forKeyedSubscript:@"shippingTime"];
   }
 
   if (self->_estimatedDeliveryStartDate)
   {
-    v10 = [(CCWalletExtractedOrderContentShippingFulfillment *)self estimatedDeliveryStartDate];
-    [v3 setObject:v10 forKeyedSubscript:@"estimatedDeliveryStartDate"];
+    estimatedDeliveryStartDate = [(CCWalletExtractedOrderContentShippingFulfillment *)self estimatedDeliveryStartDate];
+    [v3 setObject:estimatedDeliveryStartDate forKeyedSubscript:@"estimatedDeliveryStartDate"];
   }
 
   if (self->_estimatedDeliveryStartTime)
   {
-    v11 = [(CCWalletExtractedOrderContentShippingFulfillment *)self estimatedDeliveryStartTime];
-    [v3 setObject:v11 forKeyedSubscript:@"estimatedDeliveryStartTime"];
+    estimatedDeliveryStartTime = [(CCWalletExtractedOrderContentShippingFulfillment *)self estimatedDeliveryStartTime];
+    [v3 setObject:estimatedDeliveryStartTime forKeyedSubscript:@"estimatedDeliveryStartTime"];
   }
 
   if (self->_estimatedDeliveryEndDate)
   {
-    v12 = [(CCWalletExtractedOrderContentShippingFulfillment *)self estimatedDeliveryEndDate];
-    [v3 setObject:v12 forKeyedSubscript:@"estimatedDeliveryEndDate"];
+    estimatedDeliveryEndDate = [(CCWalletExtractedOrderContentShippingFulfillment *)self estimatedDeliveryEndDate];
+    [v3 setObject:estimatedDeliveryEndDate forKeyedSubscript:@"estimatedDeliveryEndDate"];
   }
 
   if (self->_estimatedDeliveryEndTime)
   {
-    v13 = [(CCWalletExtractedOrderContentShippingFulfillment *)self estimatedDeliveryEndTime];
-    [v3 setObject:v13 forKeyedSubscript:@"estimatedDeliveryEndTime"];
+    estimatedDeliveryEndTime = [(CCWalletExtractedOrderContentShippingFulfillment *)self estimatedDeliveryEndTime];
+    [v3 setObject:estimatedDeliveryEndTime forKeyedSubscript:@"estimatedDeliveryEndTime"];
   }
 
   if (self->_deliveryDate)
   {
-    v14 = [(CCWalletExtractedOrderContentShippingFulfillment *)self deliveryDate];
-    [v3 setObject:v14 forKeyedSubscript:@"deliveryDate"];
+    deliveryDate = [(CCWalletExtractedOrderContentShippingFulfillment *)self deliveryDate];
+    [v3 setObject:deliveryDate forKeyedSubscript:@"deliveryDate"];
   }
 
   if (self->_deliveryTime)
   {
-    v15 = [(CCWalletExtractedOrderContentShippingFulfillment *)self deliveryTime];
-    [v3 setObject:v15 forKeyedSubscript:@"deliveryTime"];
+    deliveryTime = [(CCWalletExtractedOrderContentShippingFulfillment *)self deliveryTime];
+    [v3 setObject:deliveryTime forKeyedSubscript:@"deliveryTime"];
   }
 
   if (self->_shippingRecipient)
   {
-    v16 = [(CCWalletExtractedOrderContentShippingFulfillment *)self shippingRecipient];
-    v17 = [v16 jsonDictionary];
-    [v3 setObject:v17 forKeyedSubscript:@"shippingRecipient"];
+    shippingRecipient = [(CCWalletExtractedOrderContentShippingFulfillment *)self shippingRecipient];
+    jsonDictionary = [shippingRecipient jsonDictionary];
+    [v3 setObject:jsonDictionary forKeyedSubscript:@"shippingRecipient"];
   }
 
   if (self->_hasRaw_fulfillmentUpdateDate)
@@ -248,88 +248,88 @@ LABEL_20:
   return v19;
 }
 
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type
 {
-  v19 = a3;
+  blockCopy = block;
   v5 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:7974 enumValue:self->_status];
-  v19[2](v19, v5);
+  blockCopy[2](blockCopy, v5);
 
   if (self->_trackingNumber)
   {
     v6 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:7975 stringValue:self->_trackingNumber];
-    v19[2](v19, v6);
+    blockCopy[2](blockCopy, v6);
   }
 
   if (self->_carrierName)
   {
     v7 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:7976 stringValue:self->_carrierName];
-    v19[2](v19, v7);
+    blockCopy[2](blockCopy, v7);
   }
 
   if (self->_shippingMethod)
   {
     v8 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:7977 stringValue:self->_shippingMethod];
-    v19[2](v19, v8);
+    blockCopy[2](blockCopy, v8);
   }
 
   if (self->_shippingDate)
   {
     v9 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:7978 stringValue:self->_shippingDate];
-    v19[2](v19, v9);
+    blockCopy[2](blockCopy, v9);
   }
 
   if (self->_shippingTime)
   {
     v10 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:7979 stringValue:self->_shippingTime];
-    v19[2](v19, v10);
+    blockCopy[2](blockCopy, v10);
   }
 
   if (self->_estimatedDeliveryStartDate)
   {
     v11 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:7980 stringValue:self->_estimatedDeliveryStartDate];
-    v19[2](v19, v11);
+    blockCopy[2](blockCopy, v11);
   }
 
   if (self->_estimatedDeliveryStartTime)
   {
     v12 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:7981 stringValue:self->_estimatedDeliveryStartTime];
-    v19[2](v19, v12);
+    blockCopy[2](blockCopy, v12);
   }
 
   if (self->_estimatedDeliveryEndDate)
   {
     v13 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:7982 stringValue:self->_estimatedDeliveryEndDate];
-    v19[2](v19, v13);
+    blockCopy[2](blockCopy, v13);
   }
 
   if (self->_estimatedDeliveryEndTime)
   {
     v14 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:7983 stringValue:self->_estimatedDeliveryEndTime];
-    v19[2](v19, v14);
+    blockCopy[2](blockCopy, v14);
   }
 
   if (self->_deliveryDate)
   {
     v15 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:7984 stringValue:self->_deliveryDate];
-    v19[2](v19, v15);
+    blockCopy[2](blockCopy, v15);
   }
 
   if (self->_deliveryTime)
   {
     v16 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:7985 stringValue:self->_deliveryTime];
-    v19[2](v19, v16);
+    blockCopy[2](blockCopy, v16);
   }
 
   if (self->_shippingRecipient)
   {
     v17 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:7986 subMessageValue:self->_shippingRecipient];
-    v19[2](v19, v17);
+    blockCopy[2](blockCopy, v17);
   }
 
   if (self->_hasRaw_fulfillmentUpdateDate)
   {
     v18 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:8030 doubleValue:self->_raw_fulfillmentUpdateDate];
-    v19[2](v19, v18);
+    blockCopy[2](blockCopy, v18);
   }
 }
 
@@ -432,10 +432,10 @@ LABEL_20:
   return v2;
 }
 
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:v6];
+  dataCopy = data;
+  v7 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:dataCopy];
   v8 = MEMORY[0x1E6993AB8];
   v9 = MEMORY[0x1E6993AB0];
   v10 = MEMORY[0x1E6993AA8];
@@ -446,7 +446,7 @@ LABEL_20:
 
   v11 = 0;
   v12 = MEMORY[0x1E6993AA0];
-  v51 = v6;
+  v51 = dataCopy;
   do
   {
     if (*&v7[*v10])
@@ -578,7 +578,7 @@ LABEL_44:
       case 0xFu:
         v37 = [CCWalletPaymentsCommerceTrackedOrderShippingRecipient alloc];
         CCPBReaderReadDataNoCopy();
-        v39 = v38 = a4;
+        v39 = v38 = error;
         v52 = 0;
         v40 = [(CCItemMessage *)v37 initWithData:v39 error:&v52];
         v11 = v52;
@@ -616,13 +616,13 @@ LABEL_45:
         {
           v43 = objc_opt_class();
           NSStringFromClass(v43);
-          v39 = v38 = a4;
+          v39 = v38 = error;
           v44 = *&v7[*v10];
           v11 = CCSkipFieldErrorForMessage();
 LABEL_50:
 
-          a4 = v38;
-          v6 = v51;
+          error = v38;
+          dataCopy = v51;
         }
 
         continue;
@@ -699,35 +699,35 @@ LABEL_63:
   return v49;
 }
 
-- (CCWalletExtractedOrderContentShippingFulfillment)initWithStatus:(unsigned int)a3 trackingNumber:(id)a4 carrierName:(id)a5 shippingMethod:(id)a6 shippingDate:(id)a7 shippingTime:(id)a8 estimatedDeliveryStartDate:(id)a9 estimatedDeliveryStartTime:(id)a10 estimatedDeliveryEndDate:(id)a11 estimatedDeliveryEndTime:(id)a12 deliveryDate:(id)a13 deliveryTime:(id)a14 shippingRecipient:(id)a15 fulfillmentUpdateDate:(id)a16 error:(id *)a17
+- (CCWalletExtractedOrderContentShippingFulfillment)initWithStatus:(unsigned int)status trackingNumber:(id)number carrierName:(id)name shippingMethod:(id)method shippingDate:(id)date shippingTime:(id)time estimatedDeliveryStartDate:(id)startDate estimatedDeliveryStartTime:(id)self0 estimatedDeliveryEndDate:(id)self1 estimatedDeliveryEndTime:(id)self2 deliveryDate:(id)self3 deliveryTime:(id)self4 shippingRecipient:(id)self5 fulfillmentUpdateDate:(id)self6 error:(id *)self7
 {
-  v74 = a4;
-  v66 = a5;
-  v22 = a6;
-  v23 = a7;
-  v73 = a8;
-  v72 = a9;
-  v24 = a10;
-  v71 = a11;
-  v25 = a12;
-  v70 = a13;
-  v26 = a14;
-  v69 = a15;
-  v68 = a16;
+  numberCopy = number;
+  nameCopy = name;
+  methodCopy = method;
+  dateCopy = date;
+  timeCopy = time;
+  startDateCopy = startDate;
+  startTimeCopy = startTime;
+  endDateCopy = endDate;
+  endTimeCopy = endTime;
+  deliveryDateCopy = deliveryDate;
+  deliveryTimeCopy = deliveryTime;
+  recipientCopy = recipient;
+  updateDateCopy = updateDate;
   v27 = objc_opt_new();
-  if (a3)
+  if (status)
   {
     v28 = CCValidateEnumField();
     v29 = 0;
     if (!v28)
     {
-      v37 = v25;
+      v37 = endTimeCopy;
       CCSetError();
       v38 = 0;
-      v39 = self;
-      v30 = v23;
-      v32 = v22;
-      v35 = v66;
+      selfCopy3 = self;
+      v30 = dateCopy;
+      v32 = methodCopy;
+      v35 = nameCopy;
       goto LABEL_58;
     }
 
@@ -739,17 +739,17 @@ LABEL_63:
     v29 = 0;
   }
 
-  v30 = v23;
-  v65 = v24;
+  v30 = dateCopy;
+  v65 = startTimeCopy;
   v31 = 0x1E696A000uLL;
-  v32 = v22;
-  if (v74)
+  v32 = methodCopy;
+  if (numberCopy)
   {
     objc_opt_class();
     IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
     v34 = v29;
 
-    v35 = v66;
+    v35 = nameCopy;
     if (!IsInstanceOfExpectedClass)
     {
       goto LABEL_54;
@@ -757,7 +757,7 @@ LABEL_63:
 
     CCPBDataWriterWriteStringField();
     v31 = 0x1E696A000uLL;
-    if (!v66)
+    if (!nameCopy)
     {
 LABEL_8:
       v29 = v34;
@@ -773,8 +773,8 @@ LABEL_8:
   else
   {
     v34 = v29;
-    v35 = v66;
-    if (!v66)
+    v35 = nameCopy;
+    if (!nameCopy)
     {
       goto LABEL_8;
     }
@@ -836,7 +836,7 @@ LABEL_16:
 LABEL_11:
   v29 = v34;
 LABEL_19:
-  if (v73)
+  if (timeCopy)
   {
     v43 = *(v31 + 3776);
     objc_opt_class();
@@ -857,7 +857,7 @@ LABEL_19:
     v34 = v29;
   }
 
-  if (v72)
+  if (startDateCopy)
   {
     v45 = *(v31 + 3776);
     objc_opt_class();
@@ -887,7 +887,7 @@ LABEL_19:
 LABEL_26:
       v48 = v29;
 LABEL_30:
-      if (v71)
+      if (endDateCopy)
       {
         v51 = *(v31 + 3776);
         objc_opt_class();
@@ -908,7 +908,7 @@ LABEL_30:
         v29 = v48;
       }
 
-      if (v25)
+      if (endTimeCopy)
       {
         v54 = *(v31 + 3776);
         objc_opt_class();
@@ -929,7 +929,7 @@ LABEL_30:
         v34 = v29;
       }
 
-      if (v70)
+      if (deliveryDateCopy)
       {
         v56 = *(v31 + 3776);
         objc_opt_class();
@@ -950,7 +950,7 @@ LABEL_30:
         v29 = v34;
       }
 
-      if (!v26)
+      if (!deliveryTimeCopy)
       {
         v34 = v29;
         goto LABEL_47;
@@ -965,7 +965,7 @@ LABEL_30:
       {
         CCPBDataWriterWriteStringField();
 LABEL_47:
-        if (!v69)
+        if (!recipientCopy)
         {
           v29 = v34;
           goto LABEL_51;
@@ -977,13 +977,13 @@ LABEL_47:
 
         if (v60)
         {
-          v61 = [v69 data];
+          data = [recipientCopy data];
           CCPBDataWriterWriteDataField();
 
 LABEL_51:
-          if (!v68)
+          if (!updateDateCopy)
           {
-            v37 = v25;
+            v37 = endTimeCopy;
             goto LABEL_60;
           }
 
@@ -993,15 +993,15 @@ LABEL_51:
 
           if (v62)
           {
-            v37 = v25;
-            [v68 timeIntervalSinceReferenceDate];
+            v37 = endTimeCopy;
+            [updateDateCopy timeIntervalSinceReferenceDate];
             CCPBDataWriterWriteDoubleField();
             v29 = v34;
 LABEL_60:
-            v64 = [v27 immutableData];
-            v39 = [(CCItemMessage *)self initWithData:v64 error:a17];
+            immutableData = [v27 immutableData];
+            selfCopy3 = [(CCItemMessage *)self initWithData:immutableData error:error];
 
-            v38 = v39;
+            v38 = selfCopy3;
             goto LABEL_57;
           }
 
@@ -1009,21 +1009,21 @@ LABEL_60:
         }
 
 LABEL_55:
-        v37 = v25;
+        v37 = endTimeCopy;
         CCSetError();
         v38 = 0;
         goto LABEL_56;
       }
 
 LABEL_54:
-      v37 = v25;
+      v37 = endTimeCopy;
       CCSetError();
       v38 = 0;
       v29 = v34;
 LABEL_56:
-      v39 = self;
+      selfCopy3 = self;
 LABEL_57:
-      v24 = v65;
+      startTimeCopy = v65;
       goto LABEL_58;
     }
   }
@@ -1040,13 +1040,13 @@ LABEL_57:
     goto LABEL_30;
   }
 
-  v37 = v25;
+  v37 = endTimeCopy;
   CCSetError();
   v53 = v47;
   v38 = 0;
   v29 = v48;
-  v39 = self;
-  v24 = v53;
+  selfCopy3 = self;
+  startTimeCopy = v53;
 LABEL_58:
 
   return v38;

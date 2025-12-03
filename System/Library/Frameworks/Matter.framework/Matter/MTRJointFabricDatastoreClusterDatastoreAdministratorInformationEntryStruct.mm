@@ -1,6 +1,6 @@
 @interface MTRJointFabricDatastoreClusterDatastoreAdministratorInformationEntryStruct
 - (MTRJointFabricDatastoreClusterDatastoreAdministratorInformationEntryStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -23,28 +23,28 @@
     vendorID = v3->_vendorID;
     v3->_vendorID = &unk_284C3E588;
 
-    v7 = [MEMORY[0x277CBEA90] data];
+    data = [MEMORY[0x277CBEA90] data];
     icac = v3->_icac;
-    v3->_icac = v7;
+    v3->_icac = data;
   }
 
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRJointFabricDatastoreClusterDatastoreAdministratorInformationEntryStruct);
-  v5 = [(MTRJointFabricDatastoreClusterDatastoreAdministratorInformationEntryStruct *)self nodeID];
-  [(MTRJointFabricDatastoreClusterDatastoreAdministratorInformationEntryStruct *)v4 setNodeID:v5];
+  nodeID = [(MTRJointFabricDatastoreClusterDatastoreAdministratorInformationEntryStruct *)self nodeID];
+  [(MTRJointFabricDatastoreClusterDatastoreAdministratorInformationEntryStruct *)v4 setNodeID:nodeID];
 
-  v6 = [(MTRJointFabricDatastoreClusterDatastoreAdministratorInformationEntryStruct *)self friendlyName];
-  [(MTRJointFabricDatastoreClusterDatastoreAdministratorInformationEntryStruct *)v4 setFriendlyName:v6];
+  friendlyName = [(MTRJointFabricDatastoreClusterDatastoreAdministratorInformationEntryStruct *)self friendlyName];
+  [(MTRJointFabricDatastoreClusterDatastoreAdministratorInformationEntryStruct *)v4 setFriendlyName:friendlyName];
 
-  v7 = [(MTRJointFabricDatastoreClusterDatastoreAdministratorInformationEntryStruct *)self vendorID];
-  [(MTRJointFabricDatastoreClusterDatastoreAdministratorInformationEntryStruct *)v4 setVendorID:v7];
+  vendorID = [(MTRJointFabricDatastoreClusterDatastoreAdministratorInformationEntryStruct *)self vendorID];
+  [(MTRJointFabricDatastoreClusterDatastoreAdministratorInformationEntryStruct *)v4 setVendorID:vendorID];
 
-  v8 = [(MTRJointFabricDatastoreClusterDatastoreAdministratorInformationEntryStruct *)self icac];
-  [(MTRJointFabricDatastoreClusterDatastoreAdministratorInformationEntryStruct *)v4 setIcac:v8];
+  icac = [(MTRJointFabricDatastoreClusterDatastoreAdministratorInformationEntryStruct *)self icac];
+  [(MTRJointFabricDatastoreClusterDatastoreAdministratorInformationEntryStruct *)v4 setIcac:icac];
 
   return v4;
 }

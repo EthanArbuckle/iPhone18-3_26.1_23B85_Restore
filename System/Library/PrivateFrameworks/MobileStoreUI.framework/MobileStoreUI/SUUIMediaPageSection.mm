@@ -1,49 +1,49 @@
 @interface SUUIMediaPageSection
-- (CGSize)cellSizeForIndexPath:(id)a3;
-- (SUUIMediaPageSection)initWithPageComponent:(id)a3;
-- (double)contentInsetAdjustmentForCollectionView:(id)a3;
-- (id)cellForIndexPath:(id)a3;
-- (void)_loadImageWithReason:(int64_t)a3;
-- (void)addImpressionsForIndexPath:(id)a3 toSession:(id)a4;
-- (void)collectionViewDidEndDisplayingCellForItemAtIndexPath:(id)a3;
-- (void)collectionViewDidSelectItemAtIndexPath:(id)a3;
-- (void)collectionViewWillDisplayCellForItemAtIndexPath:(id)a3;
+- (CGSize)cellSizeForIndexPath:(id)path;
+- (SUUIMediaPageSection)initWithPageComponent:(id)component;
+- (double)contentInsetAdjustmentForCollectionView:(id)view;
+- (id)cellForIndexPath:(id)path;
+- (void)_loadImageWithReason:(int64_t)reason;
+- (void)addImpressionsForIndexPath:(id)path toSession:(id)session;
+- (void)collectionViewDidEndDisplayingCellForItemAtIndexPath:(id)path;
+- (void)collectionViewDidSelectItemAtIndexPath:(id)path;
+- (void)collectionViewWillDisplayCellForItemAtIndexPath:(id)path;
 - (void)dealloc;
-- (void)mediaView:(id)a3 playbackStateDidChange:(int64_t)a4;
-- (void)prefetchResourcesWithReason:(int64_t)a3;
-- (void)setSectionIndex:(int64_t)a3;
-- (void)willAppearInContext:(id)a3;
+- (void)mediaView:(id)view playbackStateDidChange:(int64_t)change;
+- (void)prefetchResourcesWithReason:(int64_t)reason;
+- (void)setSectionIndex:(int64_t)index;
+- (void)willAppearInContext:(id)context;
 @end
 
 @implementation SUUIMediaPageSection
 
-- (SUUIMediaPageSection)initWithPageComponent:(id)a3
+- (SUUIMediaPageSection)initWithPageComponent:(id)component
 {
-  v4 = a3;
+  componentCopy = component;
   v23.receiver = self;
   v23.super_class = SUUIMediaPageSection;
-  v5 = [(SUUIStorePageSection *)&v23 initWithPageComponent:v4];
+  v5 = [(SUUIStorePageSection *)&v23 initWithPageComponent:componentCopy];
   if (v5)
   {
-    v6 = [MEMORY[0x277D759A0] mainScreen];
-    [v6 bounds];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen bounds];
     v8 = v7;
     v10 = v9;
 
-    v11 = [MEMORY[0x277D75418] currentDevice];
-    v12 = [v11 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (v8 < v10 && v12 == 1)
+    if (v8 < v10 && userInterfaceIdiom == 1)
     {
       v8 = v10;
     }
 
-    v14 = [v4 bestThumbnailForWidth:v8];
+    v14 = [componentCopy bestThumbnailForWidth:v8];
     artwork = v5->_artwork;
     v5->_artwork = v14;
 
-    v16 = [(SUUIArtwork *)v5->_artwork height];
-    v17 = v8 / [(SUUIArtwork *)v5->_artwork width]* v16;
+    height = [(SUUIArtwork *)v5->_artwork height];
+    v17 = v8 / [(SUUIArtwork *)v5->_artwork width]* height;
     v5->_imageSize.width = v8;
     v5->_imageSize.height = floorf(v17);
     v18 = objc_alloc_init(SUUIEmbeddedMediaView);
@@ -51,8 +51,8 @@
     v5->_mediaView = v18;
 
     v20 = v5->_mediaView;
-    v21 = [v4 accessibilityLabel];
-    [(SUUIEmbeddedMediaView *)v20 setAccessibilityLabel:v21];
+    accessibilityLabel = [componentCopy accessibilityLabel];
+    [(SUUIEmbeddedMediaView *)v20 setAccessibilityLabel:accessibilityLabel];
 
     [(SUUIEmbeddedMediaView *)v5->_mediaView setDelegate:v5];
     [(SUUIEmbeddedMediaView *)v5->_mediaView setThumbnailContentMode:5];
@@ -69,33 +69,33 @@
   [(SUUIStorePageSection *)&v3 dealloc];
 }
 
-- (void)addImpressionsForIndexPath:(id)a3 toSession:(id)a4
+- (void)addImpressionsForIndexPath:(id)path toSession:(id)session
 {
-  v5 = a4;
-  v6 = [(SUUIStorePageSection *)self pageComponent];
-  [v5 addItemIdentifier:{objc_msgSend(v6, "mediaIdentifier")}];
+  sessionCopy = session;
+  pageComponent = [(SUUIStorePageSection *)self pageComponent];
+  [sessionCopy addItemIdentifier:{objc_msgSend(pageComponent, "mediaIdentifier")}];
 
-  v8 = [(SUUIStorePageSection *)self pageComponent];
-  v7 = [v8 viewElement];
-  [v5 addItemViewElement:v7];
+  pageComponent2 = [(SUUIStorePageSection *)self pageComponent];
+  viewElement = [pageComponent2 viewElement];
+  [sessionCopy addItemViewElement:viewElement];
 }
 
-- (id)cellForIndexPath:(id)a3
+- (id)cellForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(SUUIStorePageSection *)self context];
-  v6 = [v5 collectionView];
-  v7 = [v6 dequeueReusableCellWithReuseIdentifier:@"SUUIMediaPageSectionReuseIdentifier" forIndexPath:v4];
+  pathCopy = path;
+  context = [(SUUIStorePageSection *)self context];
+  collectionView = [context collectionView];
+  v7 = [collectionView dequeueReusableCellWithReuseIdentifier:@"SUUIMediaPageSectionReuseIdentifier" forIndexPath:pathCopy];
 
   [v7 setContentInsets:{*MEMORY[0x277D768C8], *(MEMORY[0x277D768C8] + 8), *(MEMORY[0x277D768C8] + 16), *(MEMORY[0x277D768C8] + 24)}];
-  v8 = [v5 resourceLoader];
-  v9 = v8;
+  resourceLoader = [context resourceLoader];
+  v9 = resourceLoader;
   if (!self->_artworkRequestID)
   {
     goto LABEL_4;
   }
 
-  v10 = [v8 cachedResourceForRequestIdentifier:?];
+  v10 = [resourceLoader cachedResourceForRequestIdentifier:?];
   if (v10)
   {
     goto LABEL_6;
@@ -115,11 +115,11 @@ LABEL_6:
   return v7;
 }
 
-- (CGSize)cellSizeForIndexPath:(id)a3
+- (CGSize)cellSizeForIndexPath:(id)path
 {
-  v4 = [(SUUIStorePageSection *)self context];
-  v5 = [v4 collectionView];
-  [v5 bounds];
+  context = [(SUUIStorePageSection *)self context];
+  collectionView = [context collectionView];
+  [collectionView bounds];
   v7 = v6;
 
   height = self->_imageSize.height;
@@ -135,29 +135,29 @@ LABEL_6:
   return result;
 }
 
-- (void)collectionViewWillDisplayCellForItemAtIndexPath:(id)a3
+- (void)collectionViewWillDisplayCellForItemAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(SUUIStorePageSection *)self pageComponent];
-  v6 = [v5 viewElement];
+  pathCopy = path;
+  pageComponent = [(SUUIStorePageSection *)self pageComponent];
+  viewElement = [pageComponent viewElement];
 
-  v7 = [(SUUIStorePageSection *)self context];
-  v8 = [v7 activeMetricsImpressionSession];
-  [v8 beginActiveImpressionForViewElement:v6];
+  context = [(SUUIStorePageSection *)self context];
+  activeMetricsImpressionSession = [context activeMetricsImpressionSession];
+  [activeMetricsImpressionSession beginActiveImpressionForViewElement:viewElement];
 
   v9.receiver = self;
   v9.super_class = SUUIMediaPageSection;
-  [(SUUIStorePageSection *)&v9 collectionViewWillDisplayCellForItemAtIndexPath:v4];
+  [(SUUIStorePageSection *)&v9 collectionViewWillDisplayCellForItemAtIndexPath:pathCopy];
 }
 
-- (void)collectionViewDidEndDisplayingCellForItemAtIndexPath:(id)a3
+- (void)collectionViewDidEndDisplayingCellForItemAtIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   if (self->_artworkRequestID)
   {
-    v5 = [(SUUIStorePageSection *)self context];
-    v6 = [v5 resourceLoader];
-    v7 = [v6 trySetReason:0 forRequestWithIdentifier:self->_artworkRequestID];
+    context = [(SUUIStorePageSection *)self context];
+    resourceLoader = [context resourceLoader];
+    v7 = [resourceLoader trySetReason:0 forRequestWithIdentifier:self->_artworkRequestID];
 
     if ((v7 & 1) == 0)
     {
@@ -165,46 +165,46 @@ LABEL_6:
     }
   }
 
-  v8 = [(SUUIStorePageSection *)self pageComponent];
-  v9 = [v8 viewElement];
+  pageComponent = [(SUUIStorePageSection *)self pageComponent];
+  viewElement = [pageComponent viewElement];
 
-  v10 = [(SUUIStorePageSection *)self context];
-  v11 = [v10 activeMetricsImpressionSession];
-  [v11 endActiveImpressionForViewElement:v9];
+  context2 = [(SUUIStorePageSection *)self context];
+  activeMetricsImpressionSession = [context2 activeMetricsImpressionSession];
+  [activeMetricsImpressionSession endActiveImpressionForViewElement:viewElement];
 
   v12.receiver = self;
   v12.super_class = SUUIMediaPageSection;
-  [(SUUIStorePageSection *)&v12 collectionViewDidEndDisplayingCellForItemAtIndexPath:v4];
+  [(SUUIStorePageSection *)&v12 collectionViewDidEndDisplayingCellForItemAtIndexPath:pathCopy];
 }
 
-- (void)collectionViewDidSelectItemAtIndexPath:(id)a3
+- (void)collectionViewDidSelectItemAtIndexPath:(id)path
 {
-  v8 = [(SUUIStorePageSection *)self pageComponent];
+  pageComponent = [(SUUIStorePageSection *)self pageComponent];
   v4 = [SUUIStorePageSection clickEventWithMedia:"clickEventWithMedia:elementName:index:" elementName:? index:?];
   if (v4)
   {
-    v5 = [(SUUIStorePageSection *)self context];
-    v6 = [v5 metricsController];
-    [v6 recordEvent:v4];
+    context = [(SUUIStorePageSection *)self context];
+    metricsController = [context metricsController];
+    [metricsController recordEvent:v4];
   }
 
-  if ([v8 mediaType])
+  if ([pageComponent mediaType])
   {
     [(SUUIEmbeddedMediaView *)self->_mediaView beginPlaybackAnimated:1];
   }
 
   else
   {
-    v7 = [v8 link];
-    [(SUUIStorePageSection *)self showPageWithLink:v7];
+    link = [pageComponent link];
+    [(SUUIStorePageSection *)self showPageWithLink:link];
   }
 }
 
-- (double)contentInsetAdjustmentForCollectionView:(id)a3
+- (double)contentInsetAdjustmentForCollectionView:(id)view
 {
-  v4 = [(SUUIEmbeddedMediaView *)self->_mediaView showsThumbnailReflection];
+  showsThumbnailReflection = [(SUUIEmbeddedMediaView *)self->_mediaView showsThumbnailReflection];
   result = 0.0;
-  if (v4)
+  if (showsThumbnailReflection)
   {
     return -self->_imageSize.height;
   }
@@ -212,55 +212,55 @@ LABEL_6:
   return result;
 }
 
-- (void)prefetchResourcesWithReason:(int64_t)a3
+- (void)prefetchResourcesWithReason:(int64_t)reason
 {
   if (!self->_artworkRequestID)
   {
-    [(SUUIMediaPageSection *)self _loadImageWithReason:a3];
+    [(SUUIMediaPageSection *)self _loadImageWithReason:reason];
   }
 }
 
-- (void)setSectionIndex:(int64_t)a3
+- (void)setSectionIndex:(int64_t)index
 {
-  [(SUUIEmbeddedMediaView *)self->_mediaView setShowsThumbnailReflection:a3 == 0];
+  [(SUUIEmbeddedMediaView *)self->_mediaView setShowsThumbnailReflection:index == 0];
   v5.receiver = self;
   v5.super_class = SUUIMediaPageSection;
-  [(SUUIStorePageSection *)&v5 setSectionIndex:a3];
+  [(SUUIStorePageSection *)&v5 setSectionIndex:index];
 }
 
-- (void)willAppearInContext:(id)a3
+- (void)willAppearInContext:(id)context
 {
-  v3 = [a3 collectionView];
-  [v3 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"SUUIMediaPageSectionReuseIdentifier"];
+  collectionView = [context collectionView];
+  [collectionView registerClass:objc_opt_class() forCellWithReuseIdentifier:@"SUUIMediaPageSectionReuseIdentifier"];
 }
 
-- (void)mediaView:(id)a3 playbackStateDidChange:(int64_t)a4
+- (void)mediaView:(id)view playbackStateDidChange:(int64_t)change
 {
   v19[2] = *MEMORY[0x277D85DE8];
-  v6 = [(SUUIStorePageSection *)self context];
-  v7 = [v6 metricsController];
+  context = [(SUUIStorePageSection *)self context];
+  metricsController = [context metricsController];
 
-  if ([v7 canRecordEventWithType:*MEMORY[0x277D6A488]])
+  if ([metricsController canRecordEventWithType:*MEMORY[0x277D6A488]])
   {
     v8 = objc_alloc_init(MEMORY[0x277D69BA8]);
-    v9 = SUUIMetricsMediaEventTypeForPlaybackState(a4);
+    v9 = SUUIMetricsMediaEventTypeForPlaybackState(change);
     [v8 setMediaEventType:v9];
 
-    v10 = [(SUUIStorePageSection *)self pageComponent];
-    v11 = [v10 mediaIdentifier];
-    if (v11)
+    pageComponent = [(SUUIStorePageSection *)self pageComponent];
+    mediaIdentifier = [pageComponent mediaIdentifier];
+    if (mediaIdentifier)
     {
-      v12 = [MEMORY[0x277CCABB0] numberWithLongLong:v11];
+      v12 = [MEMORY[0x277CCABB0] numberWithLongLong:mediaIdentifier];
       [v8 setItemIdentifier:v12];
     }
 
-    v13 = [v10 mediaURLString];
-    [v8 setMediaURL:v13];
+    mediaURLString = [pageComponent mediaURLString];
+    [v8 setMediaURL:mediaURLString];
 
-    v14 = [(SUUIStorePageSection *)self pageComponent];
-    v15 = [v7 locationWithPageComponent:v14];
+    pageComponent2 = [(SUUIStorePageSection *)self pageComponent];
+    v15 = [metricsController locationWithPageComponent:pageComponent2];
 
-    v16 = [v7 locationWithPageComponent:v10];
+    v16 = [metricsController locationWithPageComponent:pageComponent];
     v17 = v16;
     if (v15 && v16)
     {
@@ -270,11 +270,11 @@ LABEL_6:
       [v8 setLocationWithEventLocations:v18];
     }
 
-    [v7 recordEvent:v8];
+    [metricsController recordEvent:v8];
   }
 }
 
-- (void)_loadImageWithReason:(int64_t)a3
+- (void)_loadImageWithReason:(int64_t)reason
 {
   v13 = objc_alloc_init(SUUIArtworkRequest);
   [(SUUIArtworkRequest *)v13 setDelegate:self];
@@ -282,24 +282,24 @@ LABEL_6:
   [(SUUIArtworkRequest *)v13 setURL:v4];
 
   v5 = [SUUISizeToFitImageDataConsumer consumerWithConstraintSize:self->_imageSize.width, self->_imageSize.height];
-  v6 = [(SUUIStorePageSection *)self pageComponent];
-  v7 = [v6 mediaAppearance];
+  pageComponent = [(SUUIStorePageSection *)self pageComponent];
+  mediaAppearance = [pageComponent mediaAppearance];
 
-  if (v7 == 1)
+  if (mediaAppearance == 1)
   {
-    v8 = [(SUUIStorePageSection *)self context];
-    v9 = [v8 colorScheme];
-    v10 = [v9 backgroundColor];
-    [v5 setGradientEndColor:v10];
+    context = [(SUUIStorePageSection *)self context];
+    colorScheme = [context colorScheme];
+    backgroundColor = [colorScheme backgroundColor];
+    [v5 setGradientEndColor:backgroundColor];
 
     [v5 setGradientHeight:63.0];
   }
 
   [(SUUIArtworkRequest *)v13 setDataConsumer:v5];
   self->_artworkRequestID = [(SUUIResourceRequest *)v13 requestIdentifier];
-  v11 = [(SUUIStorePageSection *)self context];
-  v12 = [v11 resourceLoader];
-  [v12 loadResourceWithRequest:v13 reason:1];
+  context2 = [(SUUIStorePageSection *)self context];
+  resourceLoader = [context2 resourceLoader];
+  [resourceLoader loadResourceWithRequest:v13 reason:1];
 }
 
 @end

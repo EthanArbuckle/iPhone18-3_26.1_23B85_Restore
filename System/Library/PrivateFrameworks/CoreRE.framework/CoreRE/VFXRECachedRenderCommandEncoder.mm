@@ -1,16 +1,16 @@
 @interface VFXRECachedRenderCommandEncoder
 - (VFXRECachedRenderCommandEncoder)init;
 - (id).cxx_construct;
-- (void)dispatchThreadsPerTile:(id *)a3;
-- (void)drawMeshThreadgroups:(id *)a3 threadsPerObjectThreadgroup:(id *)a4 threadsPerMeshThreadgroup:(id *)a5;
-- (void)drawMeshThreadgroupsWithIndirectBuffer:(id)a3 indirectBufferOffset:(unint64_t)a4 threadsPerObjectThreadgroup:(id *)a5 threadsPerMeshThreadgroup:(id *)a6;
-- (void)drawMeshThreads:(id *)a3 threadsPerObjectThreadgroup:(id *)a4 threadsPerMeshThreadgroup:(id *)a5;
-- (void)setDepthStencilState:(id)a3;
-- (void)setEncoder:(id)a3 state:(void *)a4;
-- (void)setFrontFacingWinding:(unint64_t)a3;
-- (void)setRenderPipelineState:(id)a3;
-- (void)setScissorRect:(id *)a3;
-- (void)setViewport:(id *)a3;
+- (void)dispatchThreadsPerTile:(id *)tile;
+- (void)drawMeshThreadgroups:(id *)threadgroups threadsPerObjectThreadgroup:(id *)threadgroup threadsPerMeshThreadgroup:(id *)meshThreadgroup;
+- (void)drawMeshThreadgroupsWithIndirectBuffer:(id)buffer indirectBufferOffset:(unint64_t)offset threadsPerObjectThreadgroup:(id *)threadgroup threadsPerMeshThreadgroup:(id *)meshThreadgroup;
+- (void)drawMeshThreads:(id *)threads threadsPerObjectThreadgroup:(id *)threadgroup threadsPerMeshThreadgroup:(id *)meshThreadgroup;
+- (void)setDepthStencilState:(id)state;
+- (void)setEncoder:(id)encoder state:(void *)state;
+- (void)setFrontFacingWinding:(unint64_t)winding;
+- (void)setRenderPipelineState:(id)state;
+- (void)setScissorRect:(id *)rect;
+- (void)setViewport:(id *)viewport;
 @end
 
 @implementation VFXRECachedRenderCommandEncoder
@@ -22,96 +22,96 @@
   return [(VFXRECachedRenderCommandEncoder *)&v3 init];
 }
 
-- (void)setEncoder:(id)a3 state:(void *)a4
+- (void)setEncoder:(id)encoder state:(void *)state
 {
-  objc_storeStrong(&self->_encoder, a3);
-  v7 = a3;
-  re::mtl::RenderCommandEncoder::RenderCommandEncoder(v8, v7);
+  objc_storeStrong(&self->_encoder, encoder);
+  encoderCopy = encoder;
+  re::mtl::RenderCommandEncoder::RenderCommandEncoder(v8, encoderCopy);
 
   re::mtl::RenderCommandEncoder::operator=(&self->_encoderCPP.m_object, v8);
   re::mtl::RenderCommandEncoder::~RenderCommandEncoder(v8);
-  self->_encoderState = a4;
+  self->_encoderState = state;
 }
 
-- (void)setFrontFacingWinding:(unint64_t)a3
+- (void)setFrontFacingWinding:(unint64_t)winding
 {
-  v3 = a3;
+  windingCopy = winding;
   encoderState = self->_encoderState;
-  if ((*encoderState & 0x10) == 0 || encoderState[20] != a3)
+  if ((*encoderState & 0x10) == 0 || encoderState[20] != winding)
   {
-    (*(self->_encoderCPP.var0 + 17))(*self->_encoderCPP.var0, sel_setFrontFacingWinding_, a3);
-    encoderState[20] = v3;
+    (*(self->_encoderCPP.var0 + 17))(*self->_encoderCPP.var0, sel_setFrontFacingWinding_, winding);
+    encoderState[20] = windingCopy;
     *encoderState |= 0x10u;
   }
 }
 
-- (void)setDepthStencilState:(id)a3
+- (void)setDepthStencilState:(id)state
 {
-  v4 = a3;
-  re::EncoderState::setDepthStencilState(self->_encoderState, &v4, &self->_encoderCPP);
+  stateCopy = state;
+  re::EncoderState::setDepthStencilState(self->_encoderState, &stateCopy, &self->_encoderCPP);
 }
 
-- (void)setRenderPipelineState:(id)a3
+- (void)setRenderPipelineState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   encoderState = self->_encoderState;
-  v7 = v4;
-  v6 = v4;
+  v7 = stateCopy;
+  v6 = stateCopy;
   re::EncoderState::setRenderPipelineState(encoderState, &v7, &self->_encoderCPP);
   if (v7)
   {
   }
 }
 
-- (void)drawMeshThreadgroups:(id *)a3 threadsPerObjectThreadgroup:(id *)a4 threadsPerMeshThreadgroup:(id *)a5
+- (void)drawMeshThreadgroups:(id *)threadgroups threadsPerObjectThreadgroup:(id *)threadgroup threadsPerMeshThreadgroup:(id *)meshThreadgroup
 {
   encoder = self->_encoder;
-  v8 = *a3;
-  v7 = *a4;
-  v6 = *a5;
+  v8 = *threadgroups;
+  v7 = *threadgroup;
+  v6 = *meshThreadgroup;
   [(MTLRenderCommandEncoder *)encoder drawMeshThreadgroups:&v8 threadsPerObjectThreadgroup:&v7 threadsPerMeshThreadgroup:&v6];
 }
 
-- (void)drawMeshThreadgroupsWithIndirectBuffer:(id)a3 indirectBufferOffset:(unint64_t)a4 threadsPerObjectThreadgroup:(id *)a5 threadsPerMeshThreadgroup:(id *)a6
+- (void)drawMeshThreadgroupsWithIndirectBuffer:(id)buffer indirectBufferOffset:(unint64_t)offset threadsPerObjectThreadgroup:(id *)threadgroup threadsPerMeshThreadgroup:(id *)meshThreadgroup
 {
   encoder = self->_encoder;
-  v8 = *a5;
-  v7 = *a6;
-  [(MTLRenderCommandEncoder *)encoder drawMeshThreadgroupsWithIndirectBuffer:a3 indirectBufferOffset:a4 threadsPerObjectThreadgroup:&v8 threadsPerMeshThreadgroup:&v7];
+  v8 = *threadgroup;
+  v7 = *meshThreadgroup;
+  [(MTLRenderCommandEncoder *)encoder drawMeshThreadgroupsWithIndirectBuffer:buffer indirectBufferOffset:offset threadsPerObjectThreadgroup:&v8 threadsPerMeshThreadgroup:&v7];
 }
 
-- (void)drawMeshThreads:(id *)a3 threadsPerObjectThreadgroup:(id *)a4 threadsPerMeshThreadgroup:(id *)a5
+- (void)drawMeshThreads:(id *)threads threadsPerObjectThreadgroup:(id *)threadgroup threadsPerMeshThreadgroup:(id *)meshThreadgroup
 {
   encoder = self->_encoder;
-  v8 = *a3;
-  v7 = *a4;
-  v6 = *a5;
+  v8 = *threads;
+  v7 = *threadgroup;
+  v6 = *meshThreadgroup;
   [(MTLRenderCommandEncoder *)encoder drawMeshThreads:&v8 threadsPerObjectThreadgroup:&v7 threadsPerMeshThreadgroup:&v6];
 }
 
-- (void)setScissorRect:(id *)a3
+- (void)setScissorRect:(id *)rect
 {
   encoder = self->_encoder;
-  v4 = *&a3->var2;
-  v5[0] = *&a3->var0;
+  v4 = *&rect->var2;
+  v5[0] = *&rect->var0;
   v5[1] = v4;
   [(MTLRenderCommandEncoder *)encoder setScissorRect:v5];
 }
 
-- (void)setViewport:(id *)a3
+- (void)setViewport:(id *)viewport
 {
   encoder = self->_encoder;
-  v4 = *&a3->var2;
-  v5[0] = *&a3->var0;
+  v4 = *&viewport->var2;
+  v5[0] = *&viewport->var0;
   v5[1] = v4;
-  v5[2] = *&a3->var4;
+  v5[2] = *&viewport->var4;
   [(MTLRenderCommandEncoder *)encoder setViewport:v5];
 }
 
-- (void)dispatchThreadsPerTile:(id *)a3
+- (void)dispatchThreadsPerTile:(id *)tile
 {
   encoder = self->_encoder;
-  v4 = *a3;
+  v4 = *tile;
   [(MTLRenderCommandEncoder *)encoder dispatchThreadsPerTile:&v4];
 }
 

@@ -1,25 +1,25 @@
 @interface MUIMessageListGroupedSenderSectionDataSource
-- (MUIMessageListGroupedSenderSectionDataSource)initWithConfiguration:(id)a3;
-- (id)configuredCollectionViewCellForCollectionView:(id)a3 indexPath:(id)a4 itemID:(id)a5 cellIdentifier:(id)a6;
-- (id)sectionForCollection:(id)a3;
-- (void)_configureCell:(id)a3 atIndexPath:(id)a4 itemID:(id)a5;
-- (void)_promptForSenderInconsistencyIfNeeded:(void *)a3 itemID:(void *)a4 indexPath:;
+- (MUIMessageListGroupedSenderSectionDataSource)initWithConfiguration:(id)configuration;
+- (id)configuredCollectionViewCellForCollectionView:(id)view indexPath:(id)path itemID:(id)d cellIdentifier:(id)identifier;
+- (id)sectionForCollection:(id)collection;
+- (void)_configureCell:(id)cell atIndexPath:(id)path itemID:(id)d;
+- (void)_promptForSenderInconsistencyIfNeeded:(void *)needed itemID:(void *)d indexPath:;
 @end
 
 @implementation MUIMessageListGroupedSenderSectionDataSource
 
-- (MUIMessageListGroupedSenderSectionDataSource)initWithConfiguration:(id)a3
+- (MUIMessageListGroupedSenderSectionDataSource)initWithConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v27.receiver = self;
   v27.super_class = MUIMessageListGroupedSenderSectionDataSource;
-  v6 = [(MessageListSectionDataSource *)&v27 initWithConfiguration:v5];
+  v6 = [(MessageListSectionDataSource *)&v27 initWithConfiguration:configurationCopy];
   v7 = v6;
   if (v6)
   {
-    v8 = [(MessageListSectionDataSource *)v6 avatarGenerator];
+    avatarGenerator = [(MessageListSectionDataSource *)v6 avatarGenerator];
 
-    if (!v8)
+    if (!avatarGenerator)
     {
       [(MUIMessageListGroupedSenderSectionDataSource *)a2 initWithConfiguration:v7];
     }
@@ -36,15 +36,15 @@
     cellRegistration = v7->_cellRegistration;
     v7->_cellRegistration = v11;
 
-    v13 = [MEMORY[0x277CBEBD0] em_userDefaults];
+    em_userDefaults = [MEMORY[0x277CBEBD0] em_userDefaults];
     v14 = *MEMORY[0x277D06C88];
-    -[MUIMessageListGroupedSenderSectionDataSource setHideMessageListAvatar:](v7, "setHideMessageListAvatar:", [v13 BOOLForKey:*MEMORY[0x277D06C88]]);
+    -[MUIMessageListGroupedSenderSectionDataSource setHideMessageListAvatar:](v7, "setHideMessageListAvatar:", [em_userDefaults BOOLForKey:*MEMORY[0x277D06C88]]);
     v18 = MEMORY[0x277D85DD0];
     v19 = 3221225472;
     v20 = __70__MUIMessageListGroupedSenderSectionDataSource_initWithConfiguration___block_invoke_2;
     v21 = &unk_278188C80;
     objc_copyWeak(&v23, &location);
-    v15 = v13;
+    v15 = em_userDefaults;
     v22 = v15;
     v16 = [v15 ef_observeKeyPath:v14 options:5 autoCancelToken:1 usingBlock:&v18];
     [(MUIMessageListGroupedSenderSectionDataSource *)v7 setAvatarUserDefaultObserver:v16, v18, v19, v20, v21];
@@ -81,37 +81,37 @@ void __70__MUIMessageListGroupedSenderSectionDataSource_initWithConfiguration___
   }
 }
 
-- (void)_configureCell:(id)a3 atIndexPath:(id)a4 itemID:(id)a5
+- (void)_configureCell:(id)cell atIndexPath:(id)path itemID:(id)d
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(MessageListSectionDataSource *)self numberOfPreviewLines];
+  cellCopy = cell;
+  pathCopy = path;
+  dCopy = d;
+  numberOfPreviewLines = [(MessageListSectionDataSource *)self numberOfPreviewLines];
   v12 = CACurrentMediaTime();
-  v13 = [(MessageListSectionDataSource *)self delegate];
+  delegate = [(MessageListSectionDataSource *)self delegate];
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __82__MUIMessageListGroupedSenderSectionDataSource__configureCell_atIndexPath_itemID___block_invoke;
   aBlock[3] = &unk_27818AA78;
   aBlock[4] = self;
-  v14 = v10;
+  v14 = dCopy;
   v31 = v14;
-  v15 = v9;
+  v15 = pathCopy;
   v32 = v15;
-  v16 = v8;
+  v16 = cellCopy;
   v33 = v16;
-  v35 = v11;
+  v35 = numberOfPreviewLines;
   v36 = v12;
-  v17 = v13;
+  v17 = delegate;
   v34 = v17;
   v18 = _Block_copy(aBlock);
-  v19 = [(MessageListSectionDataSource *)self messageList];
-  v20 = [v19 messageListItemForItemID:v14];
-  v21 = [v20 resultIfAvailable];
+  messageList = [(MessageListSectionDataSource *)self messageList];
+  v20 = [messageList messageListItemForItemID:v14];
+  resultIfAvailable = [v20 resultIfAvailable];
 
-  if (v21)
+  if (resultIfAvailable)
   {
-    v18[2](v18, v21, 1);
+    v18[2](v18, resultIfAvailable, 1);
   }
 
   else
@@ -263,12 +263,12 @@ void __103__MUIMessageListGroupedSenderSectionDataSource__promptForSenderInconsi
   [v3 setReproducibility:5];
 }
 
-- (id)sectionForCollection:(id)a3
+- (id)sectionForCollection:(id)collection
 {
   if (EMBlackPearlIsFeatureEnabled())
   {
-    v4 = [(MessageListSectionDataSource *)self section];
-    if ([v4 isEqualToString:@"MessageListSectionGroupedSenderUnseen"])
+    section = [(MessageListSectionDataSource *)self section];
+    if ([section isEqualToString:@"MessageListSectionGroupedSenderUnseen"])
     {
       v5 = @"MessageListSectionGroupedSenderUnseen";
     }
@@ -289,7 +289,7 @@ void __103__MUIMessageListGroupedSenderSectionDataSource__promptForSenderInconsi
   return v6;
 }
 
-- (id)configuredCollectionViewCellForCollectionView:(id)a3 indexPath:(id)a4 itemID:(id)a5 cellIdentifier:(id)a6
+- (id)configuredCollectionViewCellForCollectionView:(id)view indexPath:(id)path itemID:(id)d cellIdentifier:(id)identifier
 {
   if (self)
   {
@@ -301,52 +301,52 @@ void __103__MUIMessageListGroupedSenderSectionDataSource__promptForSenderInconsi
     cellRegistration = 0;
   }
 
-  return [a3 dequeueConfiguredReusableCellWithRegistration:cellRegistration forIndexPath:a4 item:{a5, a6}];
+  return [view dequeueConfiguredReusableCellWithRegistration:cellRegistration forIndexPath:path item:{d, identifier}];
 }
 
-- (void)_promptForSenderInconsistencyIfNeeded:(void *)a3 itemID:(void *)a4 indexPath:
+- (void)_promptForSenderInconsistencyIfNeeded:(void *)needed itemID:(void *)d indexPath:
 {
   v36 = *MEMORY[0x277D85DE8];
   v7 = a2;
-  v8 = a3;
-  v9 = a4;
-  if (a1)
+  neededCopy = needed;
+  dCopy = d;
+  if (self)
   {
-    v10 = [v7 date];
-    if (v10 && ([v7 displayDate], (v11 = objc_claimAutoreleasedReturnValue()) != 0))
+    date = [v7 date];
+    if (date && ([v7 displayDate], (v11 = objc_claimAutoreleasedReturnValue()) != 0))
     {
     }
 
     else
     {
-      v12 = [MEMORY[0x277D07148] currentDevice];
-      v13 = [v12 isInternal];
+      currentDevice = [MEMORY[0x277D07148] currentDevice];
+      isInternal = [currentDevice isInternal];
 
-      if (v10)
+      if (date)
       {
 
-        if ((v13 & 1) == 0)
+        if ((isInternal & 1) == 0)
         {
           goto LABEL_13;
         }
       }
 
-      else if (!v13)
+      else if (!isInternal)
       {
         goto LABEL_13;
       }
 
-      v14 = [a1 log];
+      v14 = [self log];
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
-        v26 = [v9 ef_publicDescription];
-        v27 = [v7 ef_publicDescription];
+        ef_publicDescription = [dCopy ef_publicDescription];
+        ef_publicDescription2 = [v7 ef_publicDescription];
         *buf = 138543874;
-        v31 = v26;
+        v31 = ef_publicDescription;
         v32 = 2114;
-        v33 = v8;
+        v33 = neededCopy;
         v34 = 2114;
-        v35 = v27;
+        v35 = ef_publicDescription2;
         _os_log_error_impl(&dword_214A5E000, v14, OS_LOG_TYPE_ERROR, "Inconsistency detected at indexPath: %{public}@, itemID: %{public}@, item: %{public}@", buf, 0x20u);
       }
 
@@ -359,9 +359,9 @@ void __103__MUIMessageListGroupedSenderSectionDataSource__promptForSenderInconsi
         v16 = MEMORY[0x277CCACA8];
         v17 = [MEMORY[0x277CBEAA8] now];
         v18 = [v15 stringFromDate:v17];
-        v19 = [v9 ef_publicDescription];
-        v20 = [v7 ef_publicDescription];
-        v21 = [v16 stringWithFormat:@"Sender inconsistency detected:\n\nTimestamp: %@\nItem ID: %@\nIndex Path: %@\n\nMessage List Item: %@", v18, v8, v19, v20];
+        ef_publicDescription3 = [dCopy ef_publicDescription];
+        ef_publicDescription4 = [v7 ef_publicDescription];
+        v21 = [v16 stringWithFormat:@"Sender inconsistency detected:\n\nTimestamp: %@\nItem ID: %@\nIndex Path: %@\n\nMessage List Item: %@", v18, neededCopy, ef_publicDescription3, ef_publicDescription4];
 
         v22 = MEMORY[0x277D259A8];
         v28[0] = MEMORY[0x277D85DD0];

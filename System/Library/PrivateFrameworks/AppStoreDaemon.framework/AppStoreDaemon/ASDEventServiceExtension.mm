@@ -1,16 +1,16 @@
 @interface ASDEventServiceExtension
-- (void)beginRequestWithExtensionContext:(id)a3;
+- (void)beginRequestWithExtensionContext:(id)context;
 @end
 
 @implementation ASDEventServiceExtension
 
-- (void)beginRequestWithExtensionContext:(id)a3
+- (void)beginRequestWithExtensionContext:(id)context
 {
-  v12 = a3;
+  contextCopy = context;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v12;
+    v4 = contextCopy;
   }
 
   else
@@ -22,13 +22,13 @@
   if (v4)
   {
     [v5 setExtensionInstance:self];
-    v11 = v12;
+    v11 = contextCopy;
   }
 
   else
   {
-    v11 = ASDErrorWithUserInfoAndFormat(901, 0, @"context is not an instance of ASDEventServiceExtensionRemoteContext: context='%@'", v6, v7, v8, v9, v10, v12);
-    [v12 cancelRequestWithError:v11];
+    v11 = ASDErrorWithUserInfoAndFormat(901, 0, @"context is not an instance of ASDEventServiceExtensionRemoteContext: context='%@'", v6, v7, v8, v9, v10, contextCopy);
+    [contextCopy cancelRequestWithError:v11];
   }
 }
 

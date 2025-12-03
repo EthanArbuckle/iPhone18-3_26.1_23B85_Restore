@@ -1,32 +1,32 @@
 @interface CKVAdminServiceConnection
-- (BOOL)_isCustomerInstall:(id)a3;
-- (CKVAdminServiceConnection)initWithServiceQueue:(id)a3 taskManager:(id)a4 semAdministrator:(id)a5;
-- (void)beginEvaluation:(id)a3 clean:(BOOL)a4 completion:(id)a5;
-- (void)captureVocabularySnapshot:(id)a3 completion:(id)a4;
-- (void)deleteAllItemsWithUserId:(id)a3 completion:(id)a4;
-- (void)deleteAllItemsWithUserId:(id)a3 deviceId:(id)a4 completion:(id)a5;
-- (void)endEvaluation:(id)a3;
-- (void)finishEventSimulation:(id)a3;
-- (void)handleTask:(unsigned __int16)a3 reason:(unsigned __int16)a4 completion:(id)a5;
-- (void)rebuildSpeechProfileForUserId:(id)a3 completion:(id)a4;
-- (void)startEventSimulation:(BOOL)a3 completion:(id)a4;
-- (void)triggerMaintenance:(id)a3;
-- (void)triggerMigration:(BOOL)a3 completeAfterTrigger:(BOOL)a4 completion:(id)a5;
+- (BOOL)_isCustomerInstall:(id)install;
+- (CKVAdminServiceConnection)initWithServiceQueue:(id)queue taskManager:(id)manager semAdministrator:(id)administrator;
+- (void)beginEvaluation:(id)evaluation clean:(BOOL)clean completion:(id)completion;
+- (void)captureVocabularySnapshot:(id)snapshot completion:(id)completion;
+- (void)deleteAllItemsWithUserId:(id)id completion:(id)completion;
+- (void)deleteAllItemsWithUserId:(id)id deviceId:(id)deviceId completion:(id)completion;
+- (void)endEvaluation:(id)evaluation;
+- (void)finishEventSimulation:(id)simulation;
+- (void)handleTask:(unsigned __int16)task reason:(unsigned __int16)reason completion:(id)completion;
+- (void)rebuildSpeechProfileForUserId:(id)id completion:(id)completion;
+- (void)startEventSimulation:(BOOL)simulation completion:(id)completion;
+- (void)triggerMaintenance:(id)maintenance;
+- (void)triggerMigration:(BOOL)migration completeAfterTrigger:(BOOL)trigger completion:(id)completion;
 @end
 
 @implementation CKVAdminServiceConnection
 
-- (void)endEvaluation:(id)a3
+- (void)endEvaluation:(id)evaluation
 {
-  v4 = a3;
+  evaluationCopy = evaluation;
   serviceQueue = self->_serviceQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __43__CKVAdminServiceConnection_endEvaluation___block_invoke;
   v7[3] = &unk_1E831E850;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = evaluationCopy;
+  v6 = evaluationCopy;
   dispatch_async(serviceQueue, v7);
 }
 
@@ -71,21 +71,21 @@ uint64_t __43__CKVAdminServiceConnection_endEvaluation___block_invoke(uint64_t a
   return result;
 }
 
-- (void)beginEvaluation:(id)a3 clean:(BOOL)a4 completion:(id)a5
+- (void)beginEvaluation:(id)evaluation clean:(BOOL)clean completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  evaluationCopy = evaluation;
+  completionCopy = completion;
   serviceQueue = self->_serviceQueue;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __62__CKVAdminServiceConnection_beginEvaluation_clean_completion___block_invoke;
   v13[3] = &unk_1E831E7D8;
-  v14 = v8;
-  v15 = v9;
+  v14 = evaluationCopy;
+  v15 = completionCopy;
   v13[4] = self;
-  v16 = a4;
-  v11 = v8;
-  v12 = v9;
+  cleanCopy = clean;
+  v11 = evaluationCopy;
+  v12 = completionCopy;
   dispatch_async(serviceQueue, v13);
 }
 
@@ -218,16 +218,16 @@ uint64_t __62__CKVAdminServiceConnection_beginEvaluation_clean_completion___bloc
   return result;
 }
 
-- (void)rebuildSpeechProfileForUserId:(id)a3 completion:(id)a4
+- (void)rebuildSpeechProfileForUserId:(id)id completion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   serviceQueue = self->_serviceQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __70__CKVAdminServiceConnection_rebuildSpeechProfileForUserId_completion___block_invoke;
   block[3] = &unk_1E831EA90;
-  v9 = v5;
-  v7 = v5;
+  v9 = completionCopy;
+  v7 = completionCopy;
   dispatch_async(serviceQueue, block);
 }
 
@@ -251,10 +251,10 @@ uint64_t __70__CKVAdminServiceConnection_rebuildSpeechProfileForUserId_completio
   return result;
 }
 
-- (BOOL)_isCustomerInstall:(id)a3
+- (BOOL)_isCustomerInstall:(id)install
 {
   v9 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  installCopy = install;
   v4 = +[CKVAssistantSettingsBridge isCustomerInstall];
   if (v4)
   {
@@ -266,25 +266,25 @@ uint64_t __70__CKVAdminServiceConnection_rebuildSpeechProfileForUserId_completio
       _os_log_impl(&dword_1C8683000, v5, OS_LOG_TYPE_INFO, "%s Not supported on customer install.", &v7, 0xCu);
     }
 
-    if (v3)
+    if (installCopy)
     {
-      v3[2](v3, 2);
+      installCopy[2](installCopy, 2);
     }
   }
 
   return v4;
 }
 
-- (void)deleteAllItemsWithUserId:(id)a3 deviceId:(id)a4 completion:(id)a5
+- (void)deleteAllItemsWithUserId:(id)id deviceId:(id)deviceId completion:(id)completion
 {
-  v6 = a5;
+  completionCopy = completion;
   serviceQueue = self->_serviceQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __74__CKVAdminServiceConnection_deleteAllItemsWithUserId_deviceId_completion___block_invoke;
   block[3] = &unk_1E831EA90;
-  v10 = v6;
-  v8 = v6;
+  v10 = completionCopy;
+  v8 = completionCopy;
   dispatch_async(serviceQueue, block);
 }
 
@@ -308,16 +308,16 @@ uint64_t __74__CKVAdminServiceConnection_deleteAllItemsWithUserId_deviceId_compl
   return result;
 }
 
-- (void)deleteAllItemsWithUserId:(id)a3 completion:(id)a4
+- (void)deleteAllItemsWithUserId:(id)id completion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   serviceQueue = self->_serviceQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __65__CKVAdminServiceConnection_deleteAllItemsWithUserId_completion___block_invoke;
   block[3] = &unk_1E831EA90;
-  v9 = v5;
-  v7 = v5;
+  v9 = completionCopy;
+  v7 = completionCopy;
   dispatch_async(serviceQueue, block);
 }
 
@@ -341,19 +341,19 @@ uint64_t __65__CKVAdminServiceConnection_deleteAllItemsWithUserId_completion___b
   return result;
 }
 
-- (void)captureVocabularySnapshot:(id)a3 completion:(id)a4
+- (void)captureVocabularySnapshot:(id)snapshot completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  snapshotCopy = snapshot;
+  completionCopy = completion;
   serviceQueue = self->_serviceQueue;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __66__CKVAdminServiceConnection_captureVocabularySnapshot_completion___block_invoke;
   v11[3] = &unk_1E831E850;
-  v12 = v6;
-  v13 = v7;
-  v9 = v6;
-  v10 = v7;
+  v12 = snapshotCopy;
+  v13 = completionCopy;
+  v9 = snapshotCopy;
+  v10 = completionCopy;
   dispatch_async(serviceQueue, v11);
 }
 
@@ -432,17 +432,17 @@ void __66__CKVAdminServiceConnection_captureVocabularySnapshot_completion___bloc
   }
 }
 
-- (void)triggerMaintenance:(id)a3
+- (void)triggerMaintenance:(id)maintenance
 {
-  v4 = a3;
+  maintenanceCopy = maintenance;
   taskManager = self->_taskManager;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __48__CKVAdminServiceConnection_triggerMaintenance___block_invoke;
   v7[3] = &unk_1E831E850;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = maintenanceCopy;
+  v6 = maintenanceCopy;
   [(CKVTaskManager *)taskManager handleTask:102 reason:15 shouldDefer:0 completion:v7];
 }
 
@@ -476,19 +476,19 @@ uint64_t __48__CKVAdminServiceConnection_triggerMaintenance___block_invoke_2(uin
   return result;
 }
 
-- (void)triggerMigration:(BOOL)a3 completeAfterTrigger:(BOOL)a4 completion:(id)a5
+- (void)triggerMigration:(BOOL)migration completeAfterTrigger:(BOOL)trigger completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   serviceQueue = self->_serviceQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __78__CKVAdminServiceConnection_triggerMigration_completeAfterTrigger_completion___block_invoke;
   block[3] = &unk_1E831E788;
-  v13 = a3;
-  v14 = a4;
+  migrationCopy = migration;
+  triggerCopy = trigger;
   block[4] = self;
-  v12 = v8;
-  v10 = v8;
+  v12 = completionCopy;
+  v10 = completionCopy;
   dispatch_async(serviceQueue, block);
 }
 
@@ -559,19 +559,19 @@ uint64_t __78__CKVAdminServiceConnection_triggerMigration_completeAfterTrigger_c
   return result;
 }
 
-- (void)handleTask:(unsigned __int16)a3 reason:(unsigned __int16)a4 completion:(id)a5
+- (void)handleTask:(unsigned __int16)task reason:(unsigned __int16)reason completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   serviceQueue = self->_serviceQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __58__CKVAdminServiceConnection_handleTask_reason_completion___block_invoke;
   block[3] = &unk_1E831E938;
   block[4] = self;
-  v12 = v8;
-  v13 = a3;
-  v14 = a4;
-  v10 = v8;
+  v12 = completionCopy;
+  taskCopy = task;
+  reasonCopy = reason;
+  v10 = completionCopy;
   dispatch_async(serviceQueue, block);
 }
 
@@ -635,16 +635,16 @@ uint64_t __58__CKVAdminServiceConnection_handleTask_reason_completion___block_in
   return result;
 }
 
-- (void)finishEventSimulation:(id)a3
+- (void)finishEventSimulation:(id)simulation
 {
-  v4 = a3;
+  simulationCopy = simulation;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __51__CKVAdminServiceConnection_finishEventSimulation___block_invoke;
   v6[3] = &unk_1E831EA68;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = simulationCopy;
+  v5 = simulationCopy;
   [(CKVAdminServiceConnection *)self endEvaluation:v6];
 }
 
@@ -662,9 +662,9 @@ uint64_t __51__CKVAdminServiceConnection_finishEventSimulation___block_invoke(ui
   return result;
 }
 
-- (void)startEventSimulation:(BOOL)a3 completion:(id)a4
+- (void)startEventSimulation:(BOOL)simulation completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v13 = 0;
   v7 = [MEMORY[0x1E69ABD00] emptyProfile:&v13];
   v8 = v13;
@@ -672,10 +672,10 @@ uint64_t __51__CKVAdminServiceConnection_finishEventSimulation___block_invoke(ui
   v10[1] = 3221225472;
   v10[2] = __61__CKVAdminServiceConnection_startEventSimulation_completion___block_invoke;
   v10[3] = &unk_1E831E738;
-  v12 = a3;
+  simulationCopy = simulation;
   v10[4] = self;
-  v11 = v6;
-  v9 = v6;
+  v11 = completionCopy;
+  v9 = completionCopy;
   [(CKVAdminServiceConnection *)self beginEvaluation:v7 clean:1 completion:v10];
 }
 
@@ -697,16 +697,16 @@ uint64_t __61__CKVAdminServiceConnection_startEventSimulation_completion___block
   return result;
 }
 
-- (CKVAdminServiceConnection)initWithServiceQueue:(id)a3 taskManager:(id)a4 semAdministrator:(id)a5
+- (CKVAdminServiceConnection)initWithServiceQueue:(id)queue taskManager:(id)manager semAdministrator:(id)administrator
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  queueCopy = queue;
+  managerCopy = manager;
+  administratorCopy = administrator;
   v18.receiver = self;
   v18.super_class = CKVAdminServiceConnection;
   v12 = [(CKVAdminServiceConnection *)&v18 init];
   v13 = v12;
-  if (!v12 || (objc_storeStrong(&v12->_serviceQueue, a3), v13->_serviceQueue) && (objc_storeStrong(&v13->_taskManager, a4), v13->_taskManager) && (objc_storeStrong(&v13->_semAdministrator, a5), v13->_semAdministrator) && ([(CKVTaskManager *)v13->_taskManager settings], v14 = objc_claimAutoreleasedReturnValue(), settings = v13->_settings, v13->_settings = v14, settings, v13->_settings))
+  if (!v12 || (objc_storeStrong(&v12->_serviceQueue, queue), v13->_serviceQueue) && (objc_storeStrong(&v13->_taskManager, manager), v13->_taskManager) && (objc_storeStrong(&v13->_semAdministrator, administrator), v13->_semAdministrator) && ([(CKVTaskManager *)v13->_taskManager settings], v14 = objc_claimAutoreleasedReturnValue(), settings = v13->_settings, v13->_settings = v14, settings, v13->_settings))
   {
     v16 = v13;
   }

@@ -2,7 +2,7 @@
 - (CCUIStretchParameters)parameters;
 - (_TtCE15ControlCenterUICSo18CCUIStretchApplier14_StretchSource)init;
 - (void)invalidate;
-- (void)setStretchValue:(double)a3;
+- (void)setStretchValue:(double)value;
 @end
 
 @implementation CCUIStretchApplier._StretchSource
@@ -18,10 +18,10 @@
   return result;
 }
 
-- (void)setStretchValue:(double)a3
+- (void)setStretchValue:(double)value
 {
-  v4 = self;
-  sub_21EA555F4(a3);
+  selfCopy = self;
+  sub_21EA555F4(value);
 }
 
 - (void)invalidate
@@ -30,7 +30,7 @@
   if (Strong)
   {
     v4 = Strong;
-    v5 = self;
+    selfCopy = self;
     [v4 removeStretchSource_];
     [v4 updateStretchForChangedSource_];
   }

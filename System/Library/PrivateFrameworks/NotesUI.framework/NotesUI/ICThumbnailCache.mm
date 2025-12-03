@@ -1,10 +1,10 @@
 @interface ICThumbnailCache
 + (ICThumbnailCache)shared;
 - (ICThumbnailCache)init;
-- (id)creationDateFor:(id)a3;
-- (id)objectForKeyedSubscript:(id)a3;
-- (void)invalidateForObjectIdentifiers:(id)a3;
-- (void)setObject:(id)a3 forKeyedSubscript:(id)a4;
+- (id)creationDateFor:(id)for;
+- (id)objectForKeyedSubscript:(id)subscript;
+- (void)invalidateForObjectIdentifiers:(id)identifiers;
+- (void)setObject:(id)object forKeyedSubscript:(id)subscript;
 @end
 
 @implementation ICThumbnailCache
@@ -21,32 +21,32 @@
   return v3;
 }
 
-- (id)objectForKeyedSubscript:(id)a3
+- (id)objectForKeyedSubscript:(id)subscript
 {
-  v4 = a3;
-  v5 = self;
-  sub_1D418C3D4(v4);
+  subscriptCopy = subscript;
+  selfCopy = self;
+  sub_1D418C3D4(subscriptCopy);
   v7 = v6;
 
   return v7;
 }
 
-- (void)setObject:(id)a3 forKeyedSubscript:(id)a4
+- (void)setObject:(id)object forKeyedSubscript:(id)subscript
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
-  ThumbnailCache.subscript.setter(a3, v8);
+  objectCopy = object;
+  subscriptCopy = subscript;
+  selfCopy = self;
+  ThumbnailCache.subscript.setter(object, subscriptCopy);
 }
 
-- (id)creationDateFor:(id)a3
+- (id)creationDateFor:(id)for
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EC7C98F0);
   MEMORY[0x1EEE9AC00](v5 - 8);
   v7 = &v16 - v6;
-  v8 = a3;
-  v9 = self;
-  ThumbnailCache.creationDate(for:)(v8, v7);
+  forCopy = for;
+  selfCopy = self;
+  ThumbnailCache.creationDate(for:)(forCopy, v7);
 
   v10 = sub_1D4417434();
   v11 = *(v10 - 8);
@@ -62,10 +62,10 @@
   return v13;
 }
 
-- (void)invalidateForObjectIdentifiers:(id)a3
+- (void)invalidateForObjectIdentifiers:(id)identifiers
 {
   v4 = sub_1D441A064();
-  v5 = self;
+  selfCopy = self;
   sub_1D437C4D0(v4);
 }
 

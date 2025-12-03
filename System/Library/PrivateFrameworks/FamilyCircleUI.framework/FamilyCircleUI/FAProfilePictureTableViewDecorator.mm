@@ -1,28 +1,28 @@
 @interface FAProfilePictureTableViewDecorator
-+ (BOOL)_shouldShowPictureInSection:(id)a3;
-+ (BOOL)shouldShowPicturesInPage:(id)a3;
-- (FAProfilePictureTableViewDecorator)initWithTableView:(id)a3 ruiTableView:(id)a4 pictureStore:(id)a5;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
++ (BOOL)_shouldShowPictureInSection:(id)section;
++ (BOOL)shouldShowPicturesInPage:(id)page;
+- (FAProfilePictureTableViewDecorator)initWithTableView:(id)view ruiTableView:(id)tableView pictureStore:(id)store;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (void)_profilePictureStoreDidReload;
 - (void)dealloc;
 @end
 
 @implementation FAProfilePictureTableViewDecorator
 
-- (FAProfilePictureTableViewDecorator)initWithTableView:(id)a3 ruiTableView:(id)a4 pictureStore:(id)a5
+- (FAProfilePictureTableViewDecorator)initWithTableView:(id)view ruiTableView:(id)tableView pictureStore:(id)store
 {
-  v9 = a4;
-  v10 = a5;
+  tableViewCopy = tableView;
+  storeCopy = store;
   v15.receiver = self;
   v15.super_class = FAProfilePictureTableViewDecorator;
-  v11 = [(FATableViewDecorator *)&v15 initWithTableView:a3];
+  v11 = [(FATableViewDecorator *)&v15 initWithTableView:view];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_pictureStore, a5);
-    objc_storeStrong(&v12->_remoteTableViewController, a4);
-    v13 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v13 addObserver:v12 selector:sel__profilePictureStoreDidReload name:FAProfilePictureStoreDidReloadImagesNotification object:v10];
+    objc_storeStrong(&v11->_pictureStore, store);
+    objc_storeStrong(&v12->_remoteTableViewController, tableView);
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v12 selector:sel__profilePictureStoreDidReload name:FAProfilePictureStoreDidReloadImagesNotification object:storeCopy];
   }
 
   return v12;
@@ -46,28 +46,28 @@ void __67__FAProfilePictureTableViewDecorator__profilePictureStoreDidReload__blo
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = FAProfilePictureTableViewDecorator;
   [(FAProfilePictureTableViewDecorator *)&v4 dealloc];
 }
 
-+ (BOOL)shouldShowPicturesInPage:(id)a3
++ (BOOL)shouldShowPicturesInPage:(id)page
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 hasTableView])
+  pageCopy = page;
+  if ([pageCopy hasTableView])
   {
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v5 = [v4 tableViewOM];
-    v6 = [v5 sections];
+    tableViewOM = [pageCopy tableViewOM];
+    sections = [tableViewOM sections];
 
-    v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    v7 = [sections countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v7)
     {
       v8 = v7;
@@ -78,17 +78,17 @@ void __67__FAProfilePictureTableViewDecorator__profilePictureStoreDidReload__blo
         {
           if (*v15 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(sections);
           }
 
-          if ([a1 _shouldShowPictureInSection:*(*(&v14 + 1) + 8 * i)])
+          if ([self _shouldShowPictureInSection:*(*(&v14 + 1) + 8 * i)])
           {
             v11 = 1;
             goto LABEL_13;
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v8 = [sections countByEnumeratingWithState:&v14 objects:v18 count:16];
         if (v8)
         {
           continue;
@@ -111,15 +111,15 @@ LABEL_13:
   return v11;
 }
 
-+ (BOOL)_shouldShowPictureInSection:(id)a3
++ (BOOL)_shouldShowPictureInSection:(id)section
 {
   v19 = *MEMORY[0x277D85DE8];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v3 = [a3 rows];
-  v4 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  rows = [section rows];
+  v4 = [rows countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v4)
   {
     v5 = v4;
@@ -130,11 +130,11 @@ LABEL_13:
       {
         if (*v15 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(rows);
         }
 
-        v8 = [*(*(&v14 + 1) + 8 * i) attributes];
-        v9 = [v8 objectForKeyedSubscript:@"familyAction"];
+        attributes = [*(*(&v14 + 1) + 8 * i) attributes];
+        v9 = [attributes objectForKeyedSubscript:@"familyAction"];
         v10 = [v9 isEqual:@"InjectMemberImage"];
 
         if (v10)
@@ -144,7 +144,7 @@ LABEL_13:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v5 = [rows countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v5)
       {
         continue;
@@ -161,20 +161,20 @@ LABEL_11:
   return v11;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(FATableViewDecorator *)self dataSource];
-  v9 = [v8 tableView:v7 cellForRowAtIndexPath:v6];
+  pathCopy = path;
+  viewCopy = view;
+  dataSource = [(FATableViewDecorator *)self dataSource];
+  v9 = [dataSource tableView:viewCopy cellForRowAtIndexPath:pathCopy];
 
-  v10 = [(RUITableView *)self->_remoteTableViewController objectModelRowForIndexPath:v6];
+  v10 = [(RUITableView *)self->_remoteTableViewController objectModelRowForIndexPath:pathCopy];
 
-  v11 = [v10 attributes];
-  v12 = [v11 objectForKeyedSubscript:@"altDSID"];
+  attributes = [v10 attributes];
+  v12 = [attributes objectForKeyedSubscript:@"altDSID"];
 
-  v13 = [v10 attributes];
-  v14 = [v13 objectForKeyedSubscript:@"familyAction"];
+  attributes2 = [v10 attributes];
+  v14 = [attributes2 objectForKeyedSubscript:@"familyAction"];
 
   if ([v14 isEqualToString:@"InjectMemberImage"])
   {
@@ -192,20 +192,20 @@ LABEL_11:
     if (v16)
     {
       v17 = MEMORY[0x277D755B8];
-      v18 = [MEMORY[0x277D759A0] mainScreen];
-      [v18 scale];
+      mainScreen = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen scale];
       v19 = [v17 imageWithData:v16 scale:?];
-      v20 = [v9 imageView];
-      [v20 setImage:v19];
+      imageView = [v9 imageView];
+      [imageView setImage:v19];
 
-      v21 = [v9 imageView];
-      [v21 setContentMode:4];
+      imageView2 = [v9 imageView];
+      [imageView2 setContentMode:4];
     }
 
     else
     {
-      v21 = [v9 imageView];
-      [v21 setImage:0];
+      imageView2 = [v9 imageView];
+      [imageView2 setImage:0];
     }
   }
 

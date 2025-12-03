@@ -1,38 +1,38 @@
 @interface HMCHIPEcosystem
 + (id)shortDescription;
-- (BOOL)isEqual:(id)a3;
-- (HMCHIPEcosystem)initWithCoder:(id)a3;
-- (HMCHIPEcosystem)initWithRootPublicKey:(id)a3 vendor:(id)a4 owned:(BOOL)a5;
+- (BOOL)isEqual:(id)equal;
+- (HMCHIPEcosystem)initWithCoder:(id)coder;
+- (HMCHIPEcosystem)initWithRootPublicKey:(id)key vendor:(id)vendor owned:(BOOL)owned;
 - (NSArray)attributeDescriptions;
 - (NSString)name;
 - (NSString)shortDescription;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMCHIPEcosystem
 
 - (NSArray)attributeDescriptions
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v4 = objc_alloc(MEMORY[0x1E69A29C8]);
-  v5 = [(HMCHIPEcosystem *)self rootPublicKey];
-  v6 = [v4 initWithName:@"Root Public Key" value:v5];
-  [v3 addObject:v6];
+  rootPublicKey = [(HMCHIPEcosystem *)self rootPublicKey];
+  v6 = [v4 initWithName:@"Root Public Key" value:rootPublicKey];
+  [array addObject:v6];
 
   v7 = objc_alloc(MEMORY[0x1E69A29C8]);
-  v8 = [(HMCHIPEcosystem *)self vendor];
-  v9 = [v7 initWithName:@"Vendor" value:v8];
-  [v3 addObject:v9];
+  vendor = [(HMCHIPEcosystem *)self vendor];
+  v9 = [v7 initWithName:@"Vendor" value:vendor];
+  [array addObject:v9];
 
   v10 = objc_alloc(MEMORY[0x1E69A29C8]);
   [(HMCHIPEcosystem *)self owned];
   v11 = HMFBooleanToString();
   v12 = [v10 initWithName:@"Owned" value:v11];
-  [v3 addObject:v12];
+  [array addObject:v12];
 
-  v13 = [v3 copy];
+  v13 = [array copy];
 
   return v13;
 }
@@ -44,13 +44,13 @@
   return [v2 shortDescription];
 }
 
-- (HMCHIPEcosystem)initWithCoder:(id)a3
+- (HMCHIPEcosystem)initWithCoder:(id)coder
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MTSDPE.ck.rootPublicKey"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MTSDPE.ck.vendor"];
-  v7 = [v4 decodeBoolForKey:@"MTSDPE.ck.owned"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MTSDPE.ck.rootPublicKey"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MTSDPE.ck.vendor"];
+  v7 = [coderCopy decodeBoolForKey:@"MTSDPE.ck.owned"];
   if (v5)
   {
     v8 = v6 == 0;
@@ -66,14 +66,14 @@
     v9 = v6;
     v10 = v5;
 LABEL_9:
-    v11 = [(HMCHIPEcosystem *)self initWithRootPublicKey:v5 vendor:v6 owned:v7];
-    v12 = v11;
+    selfCopy = [(HMCHIPEcosystem *)self initWithRootPublicKey:v5 vendor:v6 owned:v7];
+    v12 = selfCopy;
     goto LABEL_13;
   }
 
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMCE.ck.rootPublicKey"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMCE.ck.rootPublicKey"];
 
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMCE.ck.vendor"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMCE.ck.vendor"];
 
   if (v10 && v9)
   {
@@ -83,7 +83,7 @@ LABEL_9:
   }
 
   v13 = objc_autoreleasePoolPush();
-  v11 = self;
+  selfCopy = self;
   v14 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
   {
@@ -105,24 +105,24 @@ LABEL_13:
   return v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  v4 = [(HMCHIPEcosystem *)self rootPublicKey];
-  [v6 encodeObject:v4 forKey:@"MTSDPE.ck.rootPublicKey"];
+  coderCopy = coder;
+  rootPublicKey = [(HMCHIPEcosystem *)self rootPublicKey];
+  [coderCopy encodeObject:rootPublicKey forKey:@"MTSDPE.ck.rootPublicKey"];
 
-  v5 = [(HMCHIPEcosystem *)self vendor];
-  [v6 encodeObject:v5 forKey:@"MTSDPE.ck.vendor"];
+  vendor = [(HMCHIPEcosystem *)self vendor];
+  [coderCopy encodeObject:vendor forKey:@"MTSDPE.ck.vendor"];
 
-  [v6 encodeBool:-[HMCHIPEcosystem owned](self forKey:{"owned"), @"MTSDPE.ck.owned"}];
+  [coderCopy encodeBool:-[HMCHIPEcosystem owned](self forKey:{"owned"), @"MTSDPE.ck.owned"}];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [HMMutableCHIPEcosystem allocWithZone:a3];
-  v5 = [(HMCHIPEcosystem *)self rootPublicKey];
-  v6 = [(HMCHIPEcosystem *)self vendor];
-  v7 = [(HMCHIPEcosystem *)v4 initWithRootPublicKey:v5 vendor:v6];
+  v4 = [HMMutableCHIPEcosystem allocWithZone:zone];
+  rootPublicKey = [(HMCHIPEcosystem *)self rootPublicKey];
+  vendor = [(HMCHIPEcosystem *)self vendor];
+  v7 = [(HMCHIPEcosystem *)v4 initWithRootPublicKey:rootPublicKey vendor:vendor];
 
   return v7;
 }
@@ -136,19 +136,19 @@ LABEL_13:
 
 - (unint64_t)hash
 {
-  v2 = [(HMCHIPEcosystem *)self rootPublicKey];
-  v3 = [v2 hash];
+  rootPublicKey = [(HMCHIPEcosystem *)self rootPublicKey];
+  v3 = [rootPublicKey hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -159,16 +159,16 @@ LABEL_13:
   v6 = v5;
   if (v6)
   {
-    v7 = [(HMCHIPEcosystem *)self rootPublicKey];
-    v8 = [v6 rootPublicKey];
-    if ([v7 isEqualToData:v8])
+    rootPublicKey = [(HMCHIPEcosystem *)self rootPublicKey];
+    rootPublicKey2 = [v6 rootPublicKey];
+    if ([rootPublicKey isEqualToData:rootPublicKey2])
     {
-      v9 = [(HMCHIPEcosystem *)self vendor];
-      v10 = [v6 vendor];
-      if ([v9 isEqual:v10])
+      vendor = [(HMCHIPEcosystem *)self vendor];
+      vendor2 = [v6 vendor];
+      if ([vendor isEqual:vendor2])
       {
-        v11 = [(HMCHIPEcosystem *)self owned];
-        v12 = v11 ^ [v6 owned] ^ 1;
+        owned = [(HMCHIPEcosystem *)self owned];
+        v12 = owned ^ [v6 owned] ^ 1;
       }
 
       else
@@ -193,24 +193,24 @@ LABEL_13:
 
 - (NSString)name
 {
-  v2 = [(HMCHIPEcosystem *)self vendor];
-  v3 = [v2 name];
+  vendor = [(HMCHIPEcosystem *)self vendor];
+  name = [vendor name];
 
-  return v3;
+  return name;
 }
 
-- (HMCHIPEcosystem)initWithRootPublicKey:(id)a3 vendor:(id)a4 owned:(BOOL)a5
+- (HMCHIPEcosystem)initWithRootPublicKey:(id)key vendor:(id)vendor owned:(BOOL)owned
 {
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  keyCopy = key;
+  vendorCopy = vendor;
+  if (!keyCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_7;
   }
 
-  v10 = v9;
-  if (!v9)
+  v10 = vendorCopy;
+  if (!vendorCopy)
   {
 LABEL_7:
     v23 = _HMFPreconditionFailure();
@@ -222,7 +222,7 @@ LABEL_7:
   v11 = [(HMCHIPEcosystem *)&v27 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [keyCopy copy];
     rootPublicKey = v11->_rootPublicKey;
     v11->_rootPublicKey = v12;
 
@@ -230,14 +230,14 @@ LABEL_7:
     vendor = v11->_vendor;
     v11->_vendor = v14;
 
-    v11->_owned = a5;
+    v11->_owned = owned;
     v16 = v10;
-    v17 = v8;
+    v17 = keyCopy;
     objc_opt_self();
     v18 = MEMORY[0x1E696AFB0];
-    v19 = [v16 UUID];
+    uUID = [v16 UUID];
 
-    v20 = [v18 hmf_UUIDWithNamespace:v19 data:v17];
+    v20 = [v18 hmf_UUIDWithNamespace:uUID data:v17];
 
     UUID = v11->_UUID;
     v11->_UUID = v20;

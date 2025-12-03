@@ -1,16 +1,16 @@
 @interface SBHIconLibrarySpotlightQueryEngine
-- (BOOL)_processingQueue_isBundleIdentifierValid:(id)a3 iconLibraryQueryContext:(id)a4;
-- (id)_processingQueue_sortComperatorForQueryContext:(id)a3;
-- (id)_relevancyQueryForLibraryQuery:(id)a3;
-- (id)_searchQueryForIconLibraryQuery:(id)a3;
-- (void)_processingQueue_markBundleIdentifiers:(id)a3 iconLibraryQueryContext:(id)a4;
-- (void)_processingQueue_noteQueryResultsWereUpdated:(id)a3 iconLibraryQueryContext:(id)a4 notifyDelegate:(BOOL)a5;
-- (void)_processingQueue_teardownQueryContext:(id)a3;
-- (void)_processingQueue_unmarkBundleIdentifiers:(id)a3 iconLibraryQueryContext:(id)a4;
-- (void)_processingQueue_updateQueryRelevancyScores:(id)a3 iconLibraryQueryContext:(id)a4;
-- (void)_teardownCSSearchQuery:(id)a3;
+- (BOOL)_processingQueue_isBundleIdentifierValid:(id)valid iconLibraryQueryContext:(id)context;
+- (id)_processingQueue_sortComperatorForQueryContext:(id)context;
+- (id)_relevancyQueryForLibraryQuery:(id)query;
+- (id)_searchQueryForIconLibraryQuery:(id)query;
+- (void)_processingQueue_markBundleIdentifiers:(id)identifiers iconLibraryQueryContext:(id)context;
+- (void)_processingQueue_noteQueryResultsWereUpdated:(id)updated iconLibraryQueryContext:(id)context notifyDelegate:(BOOL)delegate;
+- (void)_processingQueue_teardownQueryContext:(id)context;
+- (void)_processingQueue_unmarkBundleIdentifiers:(id)identifiers iconLibraryQueryContext:(id)context;
+- (void)_processingQueue_updateQueryRelevancyScores:(id)scores iconLibraryQueryContext:(id)context;
+- (void)_teardownCSSearchQuery:(id)query;
 - (void)dealloc;
-- (void)executeQuery:(id)a3;
+- (void)executeQuery:(id)query;
 @end
 
 @implementation SBHIconLibrarySpotlightQueryEngine
@@ -64,15 +64,15 @@
   [(SBHIconLibraryAbstractQueryEngine *)&v13 dealloc];
 }
 
-- (id)_searchQueryForIconLibraryQuery:(id)a3
+- (id)_searchQueryForIconLibraryQuery:(id)query
 {
   v28[4] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 searchString];
-  v5 = [v4 length];
+  queryCopy = query;
+  searchString = [queryCopy searchString];
+  v5 = [searchString length];
   if (v5)
   {
-    [v3 searchString];
+    [queryCopy searchString];
     StringByAddingBackslashEscapes = __MDQueryCreateStringByAddingBackslashEscapes();
   }
 
@@ -81,7 +81,7 @@
     StringByAddingBackslashEscapes = 0;
   }
 
-  v7 = [v3 keyboardLanguageHint];
+  keyboardLanguageHint = [queryCopy keyboardLanguageHint];
   v8 = *MEMORY[0x1E6963C08];
   v28[0] = *MEMORY[0x1E6963F48];
   v28[1] = v8;
@@ -90,7 +90,7 @@
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v28 count:4];
   if (v5)
   {
-    if (([v7 hasPrefix:@"zh"] & 1) != 0 || (objc_msgSend(v7, "hasPrefix:", @"ja") & 1) != 0 || objc_msgSend(v7, "hasSuffix:", @"CN"))
+    if (([keyboardLanguageHint hasPrefix:@"zh"] & 1) != 0 || (objc_msgSend(keyboardLanguageHint, "hasPrefix:", @"ja") & 1) != 0 || objc_msgSend(keyboardLanguageHint, "hasSuffix:", @"CN"))
     {
       v10 = [@"cdwt" stringByAppendingString:@"s"];
     }
@@ -118,15 +118,15 @@
 
   v14 = objc_alloc_init(MEMORY[0x1E6964E70]);
   [v14 setLive:1];
-  v15 = [v3 keyboardLanguageHint];
-  [v14 setKeyboardLanguage:v15];
+  keyboardLanguageHint2 = [queryCopy keyboardLanguageHint];
+  [v14 setKeyboardLanguage:keyboardLanguageHint2];
 
-  v16 = [v3 markedTextArray];
+  markedTextArray = [queryCopy markedTextArray];
 
-  if (v16)
+  if (markedTextArray)
   {
-    v17 = [v3 markedTextArray];
-    [v14 setMarkedTextArray:v17];
+    markedTextArray2 = [queryCopy markedTextArray];
+    [v14 setMarkedTextArray:markedTextArray2];
   }
 
   v18 = [objc_alloc(MEMORY[0x1E6964E68]) initWithQueryString:v13 queryContext:v14];
@@ -139,30 +139,30 @@
   return v18;
 }
 
-- (id)_relevancyQueryForLibraryQuery:(id)a3
+- (id)_relevancyQueryForLibraryQuery:(id)query
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 searchString];
-  if ([v4 length] && (objc_msgSend(v3, "keyboardLanguageHint"), v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
+  queryCopy = query;
+  searchString = [queryCopy searchString];
+  if ([searchString length] && (objc_msgSend(queryCopy, "keyboardLanguageHint"), v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
   {
     v16[0] = *MEMORY[0x1E6964D98];
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:1];
     v7 = objc_alloc_init(MEMORY[0x1E6964E70]);
     [v7 setMaxCount:25];
     [v7 setFetchAttributes:v6];
-    v8 = [v3 keyboardLanguageHint];
-    [v7 setKeyboardLanguage:v8];
+    keyboardLanguageHint = [queryCopy keyboardLanguageHint];
+    [v7 setKeyboardLanguage:keyboardLanguageHint];
 
-    v9 = [v3 markedTextArray];
+    markedTextArray = [queryCopy markedTextArray];
 
-    if (v9)
+    if (markedTextArray)
     {
-      v10 = [v3 markedTextArray];
-      [v7 setMarkedTextArray:v10];
+      markedTextArray2 = [queryCopy markedTextArray];
+      [v7 setMarkedTextArray:markedTextArray2];
     }
 
-    v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(*=%@*cdwt)", v4];
+    v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(*=%@*cdwt)", searchString];
     v12 = [objc_alloc(MEMORY[0x1E6964EC0]) initWithQueryString:v11 queryContext:v7];
     v15 = *MEMORY[0x1E696A388];
     v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v15 count:1];
@@ -179,23 +179,23 @@
   return v12;
 }
 
-- (void)executeQuery:(id)a3
+- (void)executeQuery:(id)query
 {
-  v4 = a3;
-  v5 = [(SBHIconLibraryAbstractQueryEngine *)self iconModel];
-  v6 = [(SBHIconLibraryAbstractQueryEngine *)self processingQueue];
+  queryCopy = query;
+  iconModel = [(SBHIconLibraryAbstractQueryEngine *)self iconModel];
+  processingQueue = [(SBHIconLibraryAbstractQueryEngine *)self processingQueue];
   objc_initWeak(&location, self);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __51__SBHIconLibrarySpotlightQueryEngine_executeQuery___block_invoke;
   block[3] = &unk_1E808A1E0;
   objc_copyWeak(&v14, &location);
-  v11 = v4;
-  v12 = v5;
-  v13 = v6;
-  v7 = v6;
-  v8 = v5;
-  v9 = v4;
+  v11 = queryCopy;
+  v12 = iconModel;
+  v13 = processingQueue;
+  v7 = processingQueue;
+  v8 = iconModel;
+  v9 = queryCopy;
   dispatch_async(v7, block);
 
   objc_destroyWeak(&v14);
@@ -659,14 +659,14 @@ void __51__SBHIconLibrarySpotlightQueryEngine_executeQuery___block_invoke_72(uin
   }
 }
 
-- (void)_processingQueue_teardownQueryContext:(id)a3
+- (void)_processingQueue_teardownQueryContext:(id)context
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  contextCopy = context;
   v5 = objc_opt_new();
-  v6 = [v4 objectForKeyedSubscript:@"kRunningQueryKey"];
+  v6 = [contextCopy objectForKeyedSubscript:@"kRunningQueryKey"];
   [v5 bs_safeAddObject:v6];
-  v7 = [v4 objectForKeyedSubscript:@"kRelevancyQueryKey"];
+  v7 = [contextCopy objectForKeyedSubscript:@"kRelevancyQueryKey"];
   [v5 bs_safeAddObject:v7];
   v17 = 0u;
   v18 = 0u;
@@ -698,88 +698,88 @@ void __51__SBHIconLibrarySpotlightQueryEngine_executeQuery___block_invoke_72(uin
     while (v10);
   }
 
-  [v4 setObject:0 forKeyedSubscript:@"kRelevancyQueryKey"];
-  [v4 setObject:0 forKeyedSubscript:@"kRunningQueryKey"];
+  [contextCopy setObject:0 forKeyedSubscript:@"kRelevancyQueryKey"];
+  [contextCopy setObject:0 forKeyedSubscript:@"kRunningQueryKey"];
   v14.receiver = self;
   v14.super_class = SBHIconLibrarySpotlightQueryEngine;
-  [(SBHIconLibraryAbstractQueryEngine *)&v14 _processingQueue_teardownQueryContext:v4];
+  [(SBHIconLibraryAbstractQueryEngine *)&v14 _processingQueue_teardownQueryContext:contextCopy];
   WeakRetained = objc_loadWeakRetained(&self->_currentlyRunningQueryContext);
 
-  if (WeakRetained == v4)
+  if (WeakRetained == contextCopy)
   {
     objc_storeWeak(&self->_currentlyRunningQueryContext, 0);
   }
 }
 
-- (void)_teardownCSSearchQuery:(id)a3
+- (void)_teardownCSSearchQuery:(id)query
 {
-  v3 = a3;
-  [v3 setCompletionHandler:0];
-  [v3 setFoundItemsHandler:0];
-  [v3 setRemovedItemsHandler:0];
-  [v3 setGatherEndedHandler:0];
-  [v3 setCompletionScoresHandler:0];
-  [v3 cancel];
+  queryCopy = query;
+  [queryCopy setCompletionHandler:0];
+  [queryCopy setFoundItemsHandler:0];
+  [queryCopy setRemovedItemsHandler:0];
+  [queryCopy setGatherEndedHandler:0];
+  [queryCopy setCompletionScoresHandler:0];
+  [queryCopy cancel];
 }
 
-- (BOOL)_processingQueue_isBundleIdentifierValid:(id)a3 iconLibraryQueryContext:(id)a4
+- (BOOL)_processingQueue_isBundleIdentifierValid:(id)valid iconLibraryQueryContext:(id)context
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 query];
-  v8 = [v7 searchString];
-  v9 = [v8 length];
+  validCopy = valid;
+  contextCopy = context;
+  query = [contextCopy query];
+  searchString = [query searchString];
+  v9 = [searchString length];
 
   if (v9)
   {
-    v10 = [v6 objectForKeyedSubscript:@"markedBundleIdentifiers"];
-    v11 = [v10 containsObject:v5];
+    v10 = [contextCopy objectForKeyedSubscript:@"markedBundleIdentifiers"];
+    v11 = [v10 containsObject:validCopy];
   }
 
   else
   {
-    v11 = v5 != 0;
+    v11 = validCopy != 0;
   }
 
   return v11;
 }
 
-- (void)_processingQueue_markBundleIdentifiers:(id)a3 iconLibraryQueryContext:(id)a4
+- (void)_processingQueue_markBundleIdentifiers:(id)identifiers iconLibraryQueryContext:(id)context
 {
-  v8 = a3;
-  v5 = a4;
-  v6 = [v5 objectForKeyedSubscript:@"markedBundleIdentifiers"];
+  identifiersCopy = identifiers;
+  contextCopy = context;
+  v6 = [contextCopy objectForKeyedSubscript:@"markedBundleIdentifiers"];
   if (!v6)
   {
     v6 = objc_opt_new();
-    [v5 setObject:v6 forKeyedSubscript:@"markedBundleIdentifiers"];
+    [contextCopy setObject:v6 forKeyedSubscript:@"markedBundleIdentifiers"];
   }
 
-  v7 = [MEMORY[0x1E695DFD8] setWithArray:v8];
+  v7 = [MEMORY[0x1E695DFD8] setWithArray:identifiersCopy];
   [v6 unionSet:v7];
 }
 
-- (void)_processingQueue_unmarkBundleIdentifiers:(id)a3 iconLibraryQueryContext:(id)a4
+- (void)_processingQueue_unmarkBundleIdentifiers:(id)identifiers iconLibraryQueryContext:(id)context
 {
-  v5 = a3;
-  v7 = [a4 objectForKeyedSubscript:@"markedBundleIdentifiers"];
-  v6 = [MEMORY[0x1E695DFD8] setWithArray:v5];
+  identifiersCopy = identifiers;
+  v7 = [context objectForKeyedSubscript:@"markedBundleIdentifiers"];
+  v6 = [MEMORY[0x1E695DFD8] setWithArray:identifiersCopy];
 
   [v7 minusSet:v6];
 }
 
-- (void)_processingQueue_updateQueryRelevancyScores:(id)a3 iconLibraryQueryContext:(id)a4
+- (void)_processingQueue_updateQueryRelevancyScores:(id)scores iconLibraryQueryContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 objectForKeyedSubscript:@"kRelevancyQueryKey"];
+  scoresCopy = scores;
+  contextCopy = context;
+  v8 = [contextCopy objectForKeyedSubscript:@"kRelevancyQueryKey"];
 
   if (v8)
   {
-    v9 = [v7 objectForKeyedSubscript:@"kRelevancyQueryErrorKey"];
+    v9 = [contextCopy objectForKeyedSubscript:@"kRelevancyQueryErrorKey"];
     if (!v9)
     {
-      v10 = [v7 objectForKeyedSubscript:@"kRelevancyMapKey"];
+      v10 = [contextCopy objectForKeyedSubscript:@"kRelevancyMapKey"];
       v11 = v10;
       if (v10)
       {
@@ -799,27 +799,27 @@ void __51__SBHIconLibrarySpotlightQueryEngine_executeQuery___block_invoke_72(uin
       v21[3] = &unk_1E808AA60;
       v22 = v13;
       v14 = v13;
-      [v6 enumerateKeysAndObjectsUsingBlock:v21];
-      [v7 setObject:v14 forKeyedSubscript:@"kRelevancyMapKey"];
+      [scoresCopy enumerateKeysAndObjectsUsingBlock:v21];
+      [contextCopy setObject:v14 forKeyedSubscript:@"kRelevancyMapKey"];
     }
 
-    v15 = [(SBHIconLibraryAbstractQueryEngine *)self _processingQueue_lastQueryResultForContext:v7];
+    v15 = [(SBHIconLibraryAbstractQueryEngine *)self _processingQueue_lastQueryResultForContext:contextCopy];
     if (v9 | v15)
     {
-      v16 = [(SBHIconLibrarySpotlightQueryEngine *)self _processingQueue_sortComperatorForQueryContext:v7];
-      v17 = [v7 query];
+      v16 = [(SBHIconLibrarySpotlightQueryEngine *)self _processingQueue_sortComperatorForQueryContext:contextCopy];
+      query = [contextCopy query];
       v18 = [SBHIconLibraryQueryResult alloc];
-      v19 = [v15 icons];
-      v20 = [(SBHIconLibraryQueryResult *)v18 initWithQuery:v17 icons:v19 sortComparator:v16];
+      icons = [v15 icons];
+      v20 = [(SBHIconLibraryQueryResult *)v18 initWithQuery:query icons:icons sortComparator:v16];
 
-      [(SBHIconLibrarySpotlightQueryEngine *)self _processingQueue_noteQueryResultsWereUpdated:v20 iconLibraryQueryContext:v7 notifyDelegate:1];
+      [(SBHIconLibrarySpotlightQueryEngine *)self _processingQueue_noteQueryResultsWereUpdated:v20 iconLibraryQueryContext:contextCopy notifyDelegate:1];
     }
   }
 }
 
-- (id)_processingQueue_sortComperatorForQueryContext:(id)a3
+- (id)_processingQueue_sortComperatorForQueryContext:(id)context
 {
-  v3 = [a3 objectForKeyedSubscript:@"kRelevancyMapKey"];
+  v3 = [context objectForKeyedSubscript:@"kRelevancyMapKey"];
   v4 = v3;
   if (v3)
   {
@@ -848,30 +848,30 @@ void __51__SBHIconLibrarySpotlightQueryEngine_executeQuery___block_invoke_72(uin
   return v6;
 }
 
-- (void)_processingQueue_noteQueryResultsWereUpdated:(id)a3 iconLibraryQueryContext:(id)a4 notifyDelegate:(BOOL)a5
+- (void)_processingQueue_noteQueryResultsWereUpdated:(id)updated iconLibraryQueryContext:(id)context notifyDelegate:(BOOL)delegate
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (v5)
+  delegateCopy = delegate;
+  updatedCopy = updated;
+  contextCopy = context;
+  v10 = contextCopy;
+  if (delegateCopy)
   {
-    v11 = [v9 objectForKeyedSubscript:@"kRelevancyQueryKey"];
+    v11 = [contextCopy objectForKeyedSubscript:@"kRelevancyQueryKey"];
     if (v11 && (v12 = v11, [v10 objectForKeyedSubscript:@"kRelevancyQueryErrorKey"], v13 = objc_claimAutoreleasedReturnValue(), v13, v12, !v13))
     {
       v14 = [v10 objectForKeyedSubscript:@"kRelevancyMapKey"];
-      v5 = v14 != 0;
+      delegateCopy = v14 != 0;
     }
 
     else
     {
-      v5 = 1;
+      delegateCopy = 1;
     }
   }
 
   v15.receiver = self;
   v15.super_class = SBHIconLibrarySpotlightQueryEngine;
-  [(SBHIconLibraryAbstractQueryEngine *)&v15 _processingQueue_noteQueryResultsWereUpdated:v8 iconLibraryQueryContext:v10 notifyDelegate:v5];
+  [(SBHIconLibraryAbstractQueryEngine *)&v15 _processingQueue_noteQueryResultsWereUpdated:updatedCopy iconLibraryQueryContext:v10 notifyDelegate:delegateCopy];
 }
 
 void __51__SBHIconLibrarySpotlightQueryEngine_executeQuery___block_invoke_2_61_cold_1(uint64_t a1, NSObject *a2)

@@ -1,7 +1,7 @@
 @interface SKGUtilities
 + (SKGUtilities)sharedSKGUtilities;
 - (SKGUtilities)init;
-- (id)getSKGDictionary:(id)a3 filterBundle:(id)a4 protectionClasses:(id)a5 processorFlags:(unint64_t)a6;
+- (id)getSKGDictionary:(id)dictionary filterBundle:(id)bundle protectionClasses:(id)classes processorFlags:(unint64_t)flags;
 @end
 
 @implementation SKGUtilities
@@ -32,12 +32,12 @@ uint64_t __34__SKGUtilities_sharedSKGUtilities__block_invoke()
   return [(SKGUtilities *)&v3 init];
 }
 
-- (id)getSKGDictionary:(id)a3 filterBundle:(id)a4 protectionClasses:(id)a5 processorFlags:(unint64_t)a6
+- (id)getSKGDictionary:(id)dictionary filterBundle:(id)bundle protectionClasses:(id)classes processorFlags:(unint64_t)flags
 {
   v211 = *MEMORY[0x1E69E9840];
-  v84 = a3;
-  v87 = a4;
-  v85 = a5;
+  dictionaryCopy = dictionary;
+  bundleCopy = bundle;
+  classesCopy = classes;
   v11 = objc_opt_new();
   v204 = 0;
   v205 = &v204;
@@ -157,7 +157,7 @@ uint64_t __34__SKGUtilities_sharedSKGUtilities__block_invoke()
   v13 = dispatch_group_create();
   dispatch_group_enter(v13);
   v14 = +[SKGAttributeProcessor sharedProcessor];
-  v15 = [v85 allObjects];
+  allObjects = [classesCopy allObjects];
   v95[0] = MEMORY[0x1E69E9820];
   v95[1] = 3221225472;
   v95[2] = __79__SKGUtilities_getSKGDictionary_filterBundle_protectionClasses_processorFlags___block_invoke;
@@ -187,7 +187,7 @@ uint64_t __34__SKGUtilities_sharedSKGUtilities__block_invoke()
   v93[3] = &unk_1E74B7E88;
   group = v13;
   v94 = group;
-  [v14 getGenerationProgressReportForProtectionClasses:v15 processorFlags:a6 reportHandler:v95 completionHandler:v93];
+  [v14 getGenerationProgressReportForProtectionClasses:allObjects processorFlags:flags reportHandler:v95 completionHandler:v93];
 
   dispatch_group_wait(group, 0xFFFFFFFFFFFFFFFFLL);
   v16 = v109[5];
@@ -196,7 +196,7 @@ uint64_t __34__SKGUtilities_sharedSKGUtilities__block_invoke()
     for (i = 0; i < xpc_array_get_count(v16); ++i)
     {
       v18 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{xpc_array_get_string(v109[5], i)}];
-      if (!v87 || [v87 isEqualToString:v18])
+      if (!bundleCopy || [bundleCopy isEqualToString:v18])
       {
         [v12 addObject:v18];
       }
@@ -226,7 +226,7 @@ uint64_t __34__SKGUtilities_sharedSKGUtilities__block_invoke()
 
         v22 = *(*(&v89 + 1) + 8 * j);
         v23 = objc_alloc_init(SKGBundleStatus);
-        if ((a6 & 4) != 0)
+        if ((flags & 4) != 0)
         {
           v24 = v115[5];
           v25 = v22;
@@ -291,7 +291,7 @@ uint64_t __34__SKGUtilities_sharedSKGUtilities__block_invoke()
           }
         }
 
-        if ((a6 & 0x20) != 0)
+        if ((flags & 0x20) != 0)
         {
           v48 = v115[5];
           v49 = v22;
@@ -310,7 +310,7 @@ uint64_t __34__SKGUtilities_sharedSKGUtilities__block_invoke()
           -[SKGBundleStatus setSuggestedEventsCount:](v23, "setSuggestedEventsCount:", xpc_dictionary_get_uint64(v56, [v22 UTF8String]));
         }
 
-        if ((a6 & 0x40) != 0)
+        if ((flags & 0x40) != 0)
         {
           v58 = v115[5];
           v59 = v22;
@@ -329,7 +329,7 @@ uint64_t __34__SKGUtilities_sharedSKGUtilities__block_invoke()
           -[SKGBundleStatus setDocumentUnderstandingCount:](v23, "setDocumentUnderstandingCount:", xpc_dictionary_get_uint64(v66, [v22 UTF8String]));
         }
 
-        if ((a6 & 8) != 0)
+        if ((flags & 8) != 0)
         {
           v68 = v115[5];
           v69 = v22;

@@ -1,20 +1,20 @@
 @interface _TVSwipeUpMessageView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TVSwipeUpMessageView)initWithFrame:(CGRect)a3;
-- (void)_processSwipeUpMessageEvent:(int)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TVSwipeUpMessageView)initWithFrame:(CGRect)frame;
+- (void)_processSwipeUpMessageEvent:(int)event;
 - (void)layoutSubviews;
-- (void)setEnabled:(BOOL)a3;
-- (void)setMessage:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setMessage:(id)message;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation _TVSwipeUpMessageView
 
-- (_TVSwipeUpMessageView)initWithFrame:(CGRect)a3
+- (_TVSwipeUpMessageView)initWithFrame:(CGRect)frame
 {
   v24.receiver = self;
   v24.super_class = _TVSwipeUpMessageView;
-  v3 = [(_TVSwipeUpMessageView *)&v24 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(_TVSwipeUpMessageView *)&v24 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_opt_new();
@@ -27,20 +27,20 @@
     v8 = [v7 _resourceImageNamed:@"icon_chevron_up"];
     [(_TVImageView *)v6 setImage:v8];
 
-    v9 = [(_TVImageView *)v3->_chevronView layer];
-    v10 = [MEMORY[0x277D75348] blackColor];
-    v11 = [v10 colorWithAlphaComponent:0.5];
-    [v9 setShadowColor:{objc_msgSend(v11, "CGColor")}];
+    layer = [(_TVImageView *)v3->_chevronView layer];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    v11 = [blackColor colorWithAlphaComponent:0.5];
+    [layer setShadowColor:{objc_msgSend(v11, "CGColor")}];
 
-    v12 = [(_TVImageView *)v3->_chevronView layer];
-    [v12 setShadowOffset:{0.0, 2.0}];
+    layer2 = [(_TVImageView *)v3->_chevronView layer];
+    [layer2 setShadowOffset:{0.0, 2.0}];
 
-    v13 = [(_TVImageView *)v3->_chevronView layer];
-    [v13 setShadowRadius:4.0];
+    layer3 = [(_TVImageView *)v3->_chevronView layer];
+    [layer3 setShadowRadius:4.0];
 
-    v14 = [(_TVImageView *)v3->_chevronView layer];
+    layer4 = [(_TVImageView *)v3->_chevronView layer];
     LODWORD(v15) = 1.0;
-    [v14 setShadowOpacity:v15];
+    [layer4 setShadowOpacity:v15];
 
     [(_TVSwipeUpMessageView *)v3 addSubview:v3->_chevronView];
     v16 = objc_opt_new();
@@ -50,18 +50,18 @@
     [(UILabel *)v3->_messageView setAlpha:0.0];
     [(UILabel *)v3->_messageView setNumberOfLines:2];
     [(UILabel *)v3->_messageView setTextAlignment:1];
-    v18 = [(_TVSwipeUpMessageView *)v3 traitCollection];
-    v19 = [v18 userInterfaceStyle];
+    traitCollection = [(_TVSwipeUpMessageView *)v3 traitCollection];
+    userInterfaceStyle = [traitCollection userInterfaceStyle];
     v20 = MEMORY[0x277CDA5E8];
-    if (v19 != 2)
+    if (userInterfaceStyle != 2)
     {
       v20 = MEMORY[0x277CDA5D8];
     }
 
     v21 = *v20;
 
-    v22 = [(UILabel *)v3->_messageView layer];
-    [v22 setCompositingFilter:v21];
+    layer5 = [(UILabel *)v3->_messageView layer];
+    [layer5 setCompositingFilter:v21];
 
     [(_TVSwipeUpMessageView *)v3 addSubview:v3->_messageView];
   }
@@ -69,12 +69,12 @@
   return v3;
 }
 
-- (void)setMessage:(id)a3
+- (void)setMessage:(id)message
 {
   v14[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  messageCopy = message;
   message = self->_message;
-  if (message != v4 || ![(NSString *)message isEqualToString:v4])
+  if (message != messageCopy || ![(NSString *)message isEqualToString:messageCopy])
   {
     if (setMessage__onceToken != -1)
     {
@@ -90,7 +90,7 @@
     v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:v13 count:2];
     messageView = self->_messageView;
     v10 = objc_alloc(MEMORY[0x277CCA898]);
-    v11 = [(NSString *)v4 copy];
+    v11 = [(NSString *)messageCopy copy];
     v12 = [v10 initWithString:v11 attributes:v8];
     [(UILabel *)messageView setAttributedText:v12];
 
@@ -98,29 +98,29 @@
   }
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  if (self->_enabled != a3)
+  if (self->_enabled != enabled)
   {
-    self->_enabled = a3;
+    self->_enabled = enabled;
     if (self->_swipeUpMessageState)
     {
-      [(_TVSwipeUpMessageView *)self _processSwipeUpMessageEvent:!a3];
+      [(_TVSwipeUpMessageView *)self _processSwipeUpMessageEvent:!enabled];
     }
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v4 = [(_TVSwipeUpMessageView *)self chevronView:a3.width];
+  v4 = [(_TVSwipeUpMessageView *)self chevronView:fits.width];
   v5 = *MEMORY[0x277CBF3A8];
   v6 = *(MEMORY[0x277CBF3A8] + 8);
   [v4 sizeThatFits:{*MEMORY[0x277CBF3A8], v6}];
   v8 = v7;
   v10 = v9;
 
-  v11 = [(_TVSwipeUpMessageView *)self messageView];
-  [v11 sizeThatFits:{v5, v6}];
+  messageView = [(_TVSwipeUpMessageView *)self messageView];
+  [messageView sizeThatFits:{v5, v6}];
   v13 = v12;
   v15 = v14;
 
@@ -138,36 +138,36 @@
   [(_TVSwipeUpMessageView *)&v24 layoutSubviews];
   [(_TVSwipeUpMessageView *)self bounds];
   v4 = v3;
-  v5 = [(_TVSwipeUpMessageView *)self chevronView];
-  [v5 sizeThatFits:{*MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8)}];
+  chevronView = [(_TVSwipeUpMessageView *)self chevronView];
+  [chevronView sizeThatFits:{*MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8)}];
   v7 = v6;
   v9 = v8;
 
-  v10 = [(_TVSwipeUpMessageView *)self chevronView];
+  chevronView2 = [(_TVSwipeUpMessageView *)self chevronView];
   v11 = v4 * 0.5;
-  [v10 setCenter:{v11, v9 * 0.5}];
+  [chevronView2 setCenter:{v11, v9 * 0.5}];
 
-  v12 = [(_TVSwipeUpMessageView *)self chevronView];
-  [v12 setBounds:{0.0, 0.0, v7, v9}];
+  chevronView3 = [(_TVSwipeUpMessageView *)self chevronView];
+  [chevronView3 setBounds:{0.0, 0.0, v7, v9}];
 
-  v13 = [(_TVSwipeUpMessageView *)self messageView];
-  [v13 sizeThatFits:{468.0, 0.0}];
+  messageView = [(_TVSwipeUpMessageView *)self messageView];
+  [messageView sizeThatFits:{468.0, 0.0}];
   v15 = v14;
   v17 = v16;
 
-  v18 = [(_TVSwipeUpMessageView *)self messageView];
-  [v18 setCenter:{v11, v9 + 6.0 + v17 * 0.5}];
+  messageView2 = [(_TVSwipeUpMessageView *)self messageView];
+  [messageView2 setCenter:{v11, v9 + 6.0 + v17 * 0.5}];
 
-  v19 = [(_TVSwipeUpMessageView *)self messageView];
-  [v19 setBounds:{0.0, 0.0, v15, v17}];
+  messageView3 = [(_TVSwipeUpMessageView *)self messageView];
+  [messageView3 setBounds:{0.0, 0.0, v15, v17}];
 
   chevronView = self->_chevronView;
-  v21 = [(_TVSwipeUpMessageView *)self tintColor];
-  [(_TVImageView *)chevronView _setTintColor:v21];
+  tintColor = [(_TVSwipeUpMessageView *)self tintColor];
+  [(_TVImageView *)chevronView _setTintColor:tintColor];
 
   messageView = self->_messageView;
-  v23 = [(_TVSwipeUpMessageView *)self tintColor];
-  [(UILabel *)messageView setTextColor:v23];
+  tintColor2 = [(_TVSwipeUpMessageView *)self tintColor];
+  [(UILabel *)messageView setTextColor:tintColor2];
 
   if (!self->_swipeUpMessageState)
   {
@@ -175,38 +175,38 @@
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v13.receiver = self;
   v13.super_class = _TVSwipeUpMessageView;
-  [(_TVSwipeUpMessageView *)&v13 traitCollectionDidChange:v4];
-  v5 = [(_TVSwipeUpMessageView *)self traitCollection];
-  if (![v5 userInterfaceStyle])
+  [(_TVSwipeUpMessageView *)&v13 traitCollectionDidChange:changeCopy];
+  traitCollection = [(_TVSwipeUpMessageView *)self traitCollection];
+  if (![traitCollection userInterfaceStyle])
   {
 LABEL_6:
 
     goto LABEL_7;
   }
 
-  v6 = [v4 userInterfaceStyle];
-  v7 = [(_TVSwipeUpMessageView *)self traitCollection];
-  v8 = [v7 userInterfaceStyle];
+  userInterfaceStyle = [changeCopy userInterfaceStyle];
+  traitCollection2 = [(_TVSwipeUpMessageView *)self traitCollection];
+  userInterfaceStyle2 = [traitCollection2 userInterfaceStyle];
 
-  if (v6 != v8)
+  if (userInterfaceStyle != userInterfaceStyle2)
   {
-    v9 = [(_TVSwipeUpMessageView *)self traitCollection];
-    v10 = [v9 userInterfaceStyle];
+    traitCollection3 = [(_TVSwipeUpMessageView *)self traitCollection];
+    userInterfaceStyle3 = [traitCollection3 userInterfaceStyle];
     v11 = MEMORY[0x277CDA5E8];
-    if (v10 != 2)
+    if (userInterfaceStyle3 != 2)
     {
       v11 = MEMORY[0x277CDA5D8];
     }
 
     v12 = *v11;
 
-    v5 = [(UILabel *)self->_messageView layer];
-    [v5 setCompositingFilter:v12];
+    traitCollection = [(UILabel *)self->_messageView layer];
+    [traitCollection setCompositingFilter:v12];
 
     goto LABEL_6;
   }
@@ -214,7 +214,7 @@ LABEL_6:
 LABEL_7:
 }
 
-- (void)_processSwipeUpMessageEvent:(int)a3
+- (void)_processSwipeUpMessageEvent:(int)event
 {
   swipeUpMessageState = self->_swipeUpMessageState;
   if (swipeUpMessageState <= 1)
@@ -226,7 +226,7 @@ LABEL_7:
         return;
       }
 
-      if (a3)
+      if (event)
       {
         v5 = 1;
       }
@@ -239,7 +239,7 @@ LABEL_7:
 
     else
     {
-      if (a3 != 2)
+      if (event != 2)
       {
         return;
       }
@@ -261,12 +261,12 @@ LABEL_7:
     switch(swipeUpMessageState)
     {
       case 2:
-        v6 = a3 == 1;
+        v6 = event == 1;
         v5 = 2;
         v7 = 4;
         break;
       case 3:
-        if (a3 == 1)
+        if (event == 1)
         {
           v5 = 4;
         }
@@ -276,14 +276,14 @@ LABEL_7:
           v5 = 3;
         }
 
-        if (a3 == 2)
+        if (event == 2)
         {
           v5 = 2;
         }
 
         goto LABEL_28;
       case 4:
-        if (a3 == 2)
+        if (event == 2)
         {
           v5 = 1;
         }
@@ -293,7 +293,7 @@ LABEL_7:
           v5 = 4;
         }
 
-        v6 = a3 == 0;
+        v6 = event == 0;
         v7 = 3;
         break;
       default:
@@ -327,9 +327,9 @@ LABEL_28:
 
     else if (v5 == 3)
     {
-      v8 = [(_TVSwipeUpMessageView *)self messageView];
+      messageView = [(_TVSwipeUpMessageView *)self messageView];
       CGAffineTransformMakeTranslation(&v13, 0.0, 20.0);
-      [v8 setTransform:&v13];
+      [messageView setTransform:&v13];
 
       v12[0] = MEMORY[0x277D85DD0];
       v12[1] = 3221225472;

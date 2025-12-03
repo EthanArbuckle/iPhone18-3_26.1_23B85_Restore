@@ -1,5 +1,5 @@
 @interface HUQuickControlSliderViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_axHasSecondarySlider;
 - (CGRect)accessibilityFrame;
 - (double)_axCurrentAdjustableValue;
@@ -9,35 +9,35 @@
 - (id)accessibilityCustomActions;
 - (id)accessibilityValue;
 - (unint64_t)accessibilityTraits;
-- (void)_axUpdateControlValue:(double)a3 incrementing:(BOOL)a4;
+- (void)_axUpdateControlValue:(double)value incrementing:(BOOL)incrementing;
 - (void)accessibilityDecrement;
 - (void)accessibilityIncrement;
 @end
 
 @implementation HUQuickControlSliderViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"HUQuickControlSliderView" hasInstanceMethod:@"sliderValue" withFullSignature:{"d", 0}];
-  [v3 validateClass:@"HUQuickControlSliderView" hasInstanceMethod:@"setSliderValue:" withFullSignature:{"v", "d", 0}];
-  [v3 validateClass:@"HUQuickControlSliderView" hasInstanceMethod:@"secondarySliderValue" withFullSignature:{"d", 0}];
-  [v3 validateClass:@"HUQuickControlSliderView" hasInstanceMethod:@"setSecondarySliderValue:" withFullSignature:{"v", "d", 0}];
-  [v3 validateClass:@"HUQuickControlViewControllerAccessibility" hasInstanceMethod:@"accessibilityControlServiceName" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HUQuickControlSliderView" hasInstanceMethod:@"backgroundView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"UIView" hasInstanceMethod:@"_continuousCornerRadius" withFullSignature:{"d", 0}];
-  [v3 validateClass:@"HUQuickControlSliderView" hasInstanceMethod:@"profile" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HUQuickControlSliderViewProfile" hasInstanceMethod:@"hasSecondaryValue" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"HUQuickControlElasticSliderInteractionCoordinator" hasInstanceMethod:@"setActiveGestureValueType:" withFullSignature:{"v", "Q", 0}];
-  [v3 validateClass:@"HUQuickControlSliderView" hasInstanceMethod:@"showOffState" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"HUQuickControlElasticSliderInteractionCoordinator" hasInstanceMethod:@"gestureTransformer" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HUQuickControlElasticSliderInteractionCoordinator" hasInstanceMethod:@"gestureTransformer:sliderValueDidChange:" withFullSignature:{"v", "@", "d", 0}];
-  [v3 validateClass:@"HUQuickControlSliderView" hasInstanceMethod:@"_permittedValueRange" withFullSignature:{"{?=dd}", 0}];
-  [v3 validateClass:@"_HUQuickControlSingleControlHostView"];
-  [v3 validateClass:@"HUQuickControlSingleControlViewController" hasInstanceMethod:@"controlItem" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HFControlItem" hasInstanceMethod:@"valueSource" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HFSimpleAggregatedCharacteristicValueSource" hasInstanceMethod:@"allServices" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HMService" hasInstanceMethod:@"name" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"HUQuickControlSliderView" hasInstanceMethod:@"sliderValue" withFullSignature:{"d", 0}];
+  [validationsCopy validateClass:@"HUQuickControlSliderView" hasInstanceMethod:@"setSliderValue:" withFullSignature:{"v", "d", 0}];
+  [validationsCopy validateClass:@"HUQuickControlSliderView" hasInstanceMethod:@"secondarySliderValue" withFullSignature:{"d", 0}];
+  [validationsCopy validateClass:@"HUQuickControlSliderView" hasInstanceMethod:@"setSecondarySliderValue:" withFullSignature:{"v", "d", 0}];
+  [validationsCopy validateClass:@"HUQuickControlViewControllerAccessibility" hasInstanceMethod:@"accessibilityControlServiceName" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HUQuickControlSliderView" hasInstanceMethod:@"backgroundView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"UIView" hasInstanceMethod:@"_continuousCornerRadius" withFullSignature:{"d", 0}];
+  [validationsCopy validateClass:@"HUQuickControlSliderView" hasInstanceMethod:@"profile" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HUQuickControlSliderViewProfile" hasInstanceMethod:@"hasSecondaryValue" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"HUQuickControlElasticSliderInteractionCoordinator" hasInstanceMethod:@"setActiveGestureValueType:" withFullSignature:{"v", "Q", 0}];
+  [validationsCopy validateClass:@"HUQuickControlSliderView" hasInstanceMethod:@"showOffState" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"HUQuickControlElasticSliderInteractionCoordinator" hasInstanceMethod:@"gestureTransformer" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HUQuickControlElasticSliderInteractionCoordinator" hasInstanceMethod:@"gestureTransformer:sliderValueDidChange:" withFullSignature:{"v", "@", "d", 0}];
+  [validationsCopy validateClass:@"HUQuickControlSliderView" hasInstanceMethod:@"_permittedValueRange" withFullSignature:{"{?=dd}", 0}];
+  [validationsCopy validateClass:@"_HUQuickControlSingleControlHostView"];
+  [validationsCopy validateClass:@"HUQuickControlSingleControlViewController" hasInstanceMethod:@"controlItem" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HFControlItem" hasInstanceMethod:@"valueSource" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HFSimpleAggregatedCharacteristicValueSource" hasInstanceMethod:@"allServices" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HMService" hasInstanceMethod:@"name" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityCustomActions
@@ -55,19 +55,19 @@
 
     v13[0] = v8;
     v13[1] = v5;
-    v9 = [MEMORY[0x29EDB8D80] arrayWithObjects:v13 count:2];
+    accessibilityCustomActions = [MEMORY[0x29EDB8D80] arrayWithObjects:v13 count:2];
   }
 
   else
   {
     v12.receiver = self;
     v12.super_class = HUQuickControlSliderViewAccessibility;
-    v9 = [(HUQuickControlSliderViewAccessibility *)&v12 accessibilityCustomActions];
+    accessibilityCustomActions = [(HUQuickControlSliderViewAccessibility *)&v12 accessibilityCustomActions];
   }
 
   v10 = *MEMORY[0x29EDCA608];
 
-  return v9;
+  return accessibilityCustomActions;
 }
 
 - (unint64_t)accessibilityTraits
@@ -135,7 +135,7 @@
   return result;
 }
 
-- (void)_axUpdateControlValue:(double)a3 incrementing:(BOOL)a4
+- (void)_axUpdateControlValue:(double)value incrementing:(BOOL)incrementing
 {
   v4 = [(HUQuickControlSliderViewAccessibility *)self safeValueForKey:@"_permittedValueRange"];
   v5[0] = 0;
@@ -189,9 +189,9 @@ void __76__HUQuickControlSliderViewAccessibility__axUpdateControlValue_increment
 - (id)_accessibilitySingleControlHostViewController
 {
   v2 = [(HUQuickControlSliderViewAccessibility *)self _accessibilityFindAncestor:&__block_literal_global_8 startWithSelf:0];
-  v3 = [v2 _accessibilityViewController];
+  _accessibilityViewController = [v2 _accessibilityViewController];
 
-  return v3;
+  return _accessibilityViewController;
 }
 
 uint64_t __86__HUQuickControlSliderViewAccessibility__accessibilitySingleControlHostViewController__block_invoke(uint64_t a1, void *a2)
@@ -205,20 +205,20 @@ uint64_t __86__HUQuickControlSliderViewAccessibility__accessibilitySingleControl
 
 - (id)_accessibilityControlItem
 {
-  v2 = [(HUQuickControlSliderViewAccessibility *)self _accessibilitySingleControlHostViewController];
-  v3 = [v2 safeValueForKey:@"controlItem"];
+  _accessibilitySingleControlHostViewController = [(HUQuickControlSliderViewAccessibility *)self _accessibilitySingleControlHostViewController];
+  v3 = [_accessibilitySingleControlHostViewController safeValueForKey:@"controlItem"];
 
   return v3;
 }
 
 - (id)_accessibilityControlName
 {
-  v2 = [(HUQuickControlSliderViewAccessibility *)self _accessibilityControlItem];
-  v3 = [v2 safeValueForKeyPath:@"valueSource.allServices"];
+  _accessibilityControlItem = [(HUQuickControlSliderViewAccessibility *)self _accessibilityControlItem];
+  v3 = [_accessibilityControlItem safeValueForKeyPath:@"valueSource.allServices"];
 
   objc_opt_class();
-  v4 = [v3 anyObject];
-  v5 = [v4 safeValueForKey:@"name"];
+  anyObject = [v3 anyObject];
+  v5 = [anyObject safeValueForKey:@"name"];
   v6 = __UIAccessibilityCastAsClass();
 
   return v6;

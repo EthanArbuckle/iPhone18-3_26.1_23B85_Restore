@@ -1,31 +1,31 @@
 @interface UIActionSheet
-- (BOOL)_prepareToDismissForTappedIndex:(int64_t)a3;
+- (BOOL)_prepareToDismissForTappedIndex:(int64_t)index;
 - (BOOL)isVisible;
 - (NSInteger)addButtonWithTitle:(NSString *)title;
-- (UIActionSheet)initWithFrame:(CGRect)a3;
+- (UIActionSheet)initWithFrame:(CGRect)frame;
 - (UIActionSheet)initWithTitle:(NSString *)title delegate:(id)delegate cancelButtonTitle:(NSString *)cancelButtonTitle destructiveButtonTitle:(NSString *)destructiveButtonTitle otherButtonTitles:(NSString *)otherButtonTitles;
-- (id)_preparedAlertActionAtIndex:(unint64_t)a3;
+- (id)_preparedAlertActionAtIndex:(unint64_t)index;
 - (id)delegate;
 - (void)_didPresent;
-- (void)_performPresentationDismissalWithClickedButtonIndex:(int64_t)a3 animated:(BOOL)a4;
+- (void)_performPresentationDismissalWithClickedButtonIndex:(int64_t)index animated:(BOOL)animated;
 - (void)_prepareAlertActions;
-- (void)_setAttributedTitleString:(id)a3;
-- (void)_setIsPresented:(BOOL)a3;
-- (void)_showFromRect:(CGRect)a3 inView:(id)a4 direction:(unint64_t)a5 animated:(BOOL)a6;
+- (void)_setAttributedTitleString:(id)string;
+- (void)_setIsPresented:(BOOL)presented;
+- (void)_showFromRect:(CGRect)rect inView:(id)view direction:(unint64_t)direction animated:(BOOL)animated;
 - (void)dealloc;
 - (void)dismissWithClickedButtonIndex:(NSInteger)buttonIndex animated:(BOOL)animated;
-- (void)popoverControllerDidDismissPopover:(id)a3;
+- (void)popoverControllerDidDismissPopover:(id)popover;
 - (void)showFromBarButtonItem:(UIBarButtonItem *)item animated:(BOOL)animated;
 - (void)showInView:(UIView *)view;
 @end
 
 @implementation UIActionSheet
 
-- (UIActionSheet)initWithFrame:(CGRect)a3
+- (UIActionSheet)initWithFrame:(CGRect)frame
 {
   v11.receiver = self;
   v11.super_class = UIActionSheet;
-  v3 = [(UIView *)&v11 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v11 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(UIAlertController);
@@ -119,8 +119,8 @@
   v5 = title;
   if (!v5)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"UIActionSheet.m" lineNumber:125 description:@"UIActionSheet: Buttons added must have a title."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIActionSheet.m" lineNumber:125 description:@"UIActionSheet: Buttons added must have a title."];
   }
 
   v6 = [(NSMutableArray *)self->_actions count];
@@ -133,8 +133,8 @@
 {
   if (self->_isPresented)
   {
-    v2 = [(UIView *)self window];
-    v3 = [v2 isHidden] ^ 1;
+    window = [(UIView *)self window];
+    v3 = [window isHidden] ^ 1;
   }
 
   else
@@ -159,14 +159,14 @@
   [(_UIAlertControllerShimPresenter *)presenter _presentAlertControllerFromBarButtonItem:v6 animated:v4 completion:v8];
 }
 
-- (void)_showFromRect:(CGRect)a3 inView:(id)a4 direction:(unint64_t)a5 animated:(BOOL)a6
+- (void)_showFromRect:(CGRect)rect inView:(id)view direction:(unint64_t)direction animated:(BOOL)animated
 {
-  v6 = a6;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v13 = a4;
+  animatedCopy = animated;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  viewCopy = view;
   [(UIActionSheet *)self _setIsPresented:1];
   presenter = self->_presenter;
   v15[0] = MEMORY[0x1E69E9820];
@@ -174,7 +174,7 @@
   v15[2] = __57__UIActionSheet__showFromRect_inView_direction_animated___block_invoke;
   v15[3] = &unk_1E70F3590;
   v15[4] = self;
-  [(_UIAlertControllerShimPresenter *)presenter _presentAlertControllerFromRect:v13 inView:a5 direction:v6 animated:v15 completion:x, y, width, height];
+  [(_UIAlertControllerShimPresenter *)presenter _presentAlertControllerFromRect:viewCopy inView:direction direction:animatedCopy animated:v15 completion:x, y, width, height];
 }
 
 - (void)showInView:(UIView *)view
@@ -196,10 +196,10 @@
   if (!self->_dismissingAlertController)
   {
     v4 = animated;
-    v7 = [(UIActionSheet *)self delegate];
+    delegate = [(UIActionSheet *)self delegate];
     self->_alertControllerShouldDismiss = 1;
     self->_dismissingAlertController = 1;
-    v8 = v7;
+    v8 = delegate;
     if (objc_opt_respondsToSelector())
     {
       [v8 actionSheet:self willDismissWithButtonIndex:buttonIndex];
@@ -212,21 +212,21 @@
   }
 }
 
-- (void)_performPresentationDismissalWithClickedButtonIndex:(int64_t)a3 animated:(BOOL)a4
+- (void)_performPresentationDismissalWithClickedButtonIndex:(int64_t)index animated:(BOOL)animated
 {
   if (self->_alertControllerShouldDismiss)
   {
     v15 = v4;
     v16 = v5;
-    v8 = [(UIActionSheet *)self delegate:a3];
+    v8 = [(UIActionSheet *)self delegate:index];
     presenter = self->_presenter;
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __78__UIActionSheet__performPresentationDismissalWithClickedButtonIndex_animated___block_invoke;
     v11[3] = &unk_1E70F36D0;
     v12 = v8;
-    v13 = self;
-    v14 = a3;
+    selfCopy = self;
+    indexCopy = index;
     v10 = v8;
     [(_UIAlertControllerShimPresenter *)presenter _dismissAlertControllerAnimated:1 completion:v11];
     self->_dismissingAlertController = 0;
@@ -245,17 +245,17 @@ uint64_t __78__UIActionSheet__performPresentationDismissalWithClickedButtonIndex
   return [v2 _setIsPresented:0];
 }
 
-- (id)_preparedAlertActionAtIndex:(unint64_t)a3
+- (id)_preparedAlertActionAtIndex:(unint64_t)index
 {
-  v4 = [(UIAlertController *)self->_alertController _actions];
-  if ([v4 count] <= a3)
+  _actions = [(UIAlertController *)self->_alertController _actions];
+  if ([_actions count] <= index)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [v4 objectAtIndexedSubscript:a3];
+    v5 = [_actions objectAtIndexedSubscript:index];
   }
 
   return v5;
@@ -331,47 +331,47 @@ uint64_t __37__UIActionSheet__prepareAlertActions__block_invoke_2(uint64_t a1)
   return v4;
 }
 
-- (BOOL)_prepareToDismissForTappedIndex:(int64_t)a3
+- (BOOL)_prepareToDismissForTappedIndex:(int64_t)index
 {
   self->_handlingAlertActionShouldDismiss = 1;
-  v5 = [(UIActionSheet *)self delegate];
-  v6 = v5;
-  v7 = self;
+  delegate = [(UIActionSheet *)self delegate];
+  v6 = delegate;
+  selfCopy = self;
   self->_alertControllerShouldDismiss = 0;
   if (objc_opt_respondsToSelector())
   {
-    [v5 actionSheet:self clickedButtonAtIndex:a3];
+    [delegate actionSheet:self clickedButtonAtIndex:index];
   }
 
-  [(UIActionSheet *)self dismissWithClickedButtonIndex:a3 animated:1];
+  [(UIActionSheet *)self dismissWithClickedButtonIndex:index animated:1];
   self->_handlingAlertActionShouldDismiss = 0;
   return self->_alertControllerShouldDismiss;
 }
 
-- (void)popoverControllerDidDismissPopover:(id)a3
+- (void)popoverControllerDidDismissPopover:(id)popover
 {
   [(UIActionSheet *)self _prepareToDismissForTappedIndex:[(UIActionSheet *)self cancelButtonIndex]];
-  v4 = [(UIActionSheet *)self cancelButtonIndex];
+  cancelButtonIndex = [(UIActionSheet *)self cancelButtonIndex];
 
-  [(UIActionSheet *)self _dismissForTappedIndex:v4];
+  [(UIActionSheet *)self _dismissForTappedIndex:cancelButtonIndex];
 }
 
-- (void)_setIsPresented:(BOOL)a3
+- (void)_setIsPresented:(BOOL)presented
 {
-  if (self->_isPresented != a3)
+  if (self->_isPresented != presented)
   {
-    self->_isPresented = a3;
-    if (a3)
+    self->_isPresented = presented;
+    if (presented)
     {
-      v6 = [(UIActionSheet *)self delegate];
+      delegate = [(UIActionSheet *)self delegate];
       objc_storeStrong(&self->_retainedSelf, self);
       [(UIActionSheet *)self _prepareAlertActions];
       if (objc_opt_respondsToSelector())
       {
-        [(UIActionSheet *)v6 willPresentActionSheet:self];
+        [(UIActionSheet *)delegate willPresentActionSheet:self];
       }
 
-      retainedSelf = v6;
+      retainedSelf = delegate;
     }
 
     else
@@ -384,18 +384,18 @@ uint64_t __37__UIActionSheet__prepareAlertActions__block_invoke_2(uint64_t a1)
 
 - (void)_didPresent
 {
-  v3 = [(UIActionSheet *)self delegate];
+  delegate = [(UIActionSheet *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v3 didPresentActionSheet:self];
+    [delegate didPresentActionSheet:self];
   }
 }
 
-- (void)_setAttributedTitleString:(id)a3
+- (void)_setAttributedTitleString:(id)string
 {
-  v4 = a3;
-  v5 = [(UIActionSheet *)self _alertController];
-  [v5 _setAttributedTitle:v4];
+  stringCopy = string;
+  _alertController = [(UIActionSheet *)self _alertController];
+  [_alertController _setAttributedTitle:stringCopy];
 }
 
 - (id)delegate

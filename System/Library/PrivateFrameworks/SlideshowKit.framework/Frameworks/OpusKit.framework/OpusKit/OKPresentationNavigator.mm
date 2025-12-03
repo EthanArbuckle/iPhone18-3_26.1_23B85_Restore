@@ -1,14 +1,14 @@
 @interface OKPresentationNavigator
-+ (id)navigatorWithName:(id)a3 className:(id)a4 pagesNames:(id)a5 settings:(id)a6 userData:(id)a7;
++ (id)navigatorWithName:(id)name className:(id)className pagesNames:(id)names settings:(id)settings userData:(id)data;
 - (NSMutableArray)pagesNames;
 - (OKPresentationNavigator)init;
-- (OKPresentationNavigator)initWithDictionary:(id)a3 andName:(id)a4 forPresentation:(id)a5 andParent:(id)a6;
-- (id)copyWithZone:(_NSZone *)a3;
+- (OKPresentationNavigator)initWithDictionary:(id)dictionary andName:(id)name forPresentation:(id)presentation andParent:(id)parent;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionary;
-- (id)pageWithName:(id)a3;
+- (id)pageWithName:(id)name;
 - (id)pages;
 - (id)parentPage;
-- (void)addPageName:(id)a3;
+- (void)addPageName:(id)name;
 - (void)dealloc;
 - (void)resolveIfNeeded;
 @end
@@ -31,20 +31,20 @@
   return result;
 }
 
-- (OKPresentationNavigator)initWithDictionary:(id)a3 andName:(id)a4 forPresentation:(id)a5 andParent:(id)a6
+- (OKPresentationNavigator)initWithDictionary:(id)dictionary andName:(id)name forPresentation:(id)presentation andParent:(id)parent
 {
   v10 = [(OKPresentationNavigator *)self init];
   v11 = v10;
   if (v10)
   {
-    [(OKPresentationCanvas *)v10 setPresentation:a5];
-    [(OKPresentationCanvas *)v11 setParent:a6];
-    [(OKPresentationCanvas *)v11 setName:a4];
-    v11->_className = [objc_msgSend(a3 objectForKey:{@"class", "copy"}];
-    v11->_pagesNames = [objc_alloc(MEMORY[0x277CBEB18]) initWithArray:objc_msgSend(a3 copyItems:{"objectForKey:", @"pages", 1}];
-    v11->_internalSettings = [objc_alloc(MEMORY[0x277CBEB38]) initWithDictionary:objc_msgSend(a3 copyItems:{"objectForKey:", @"settings", 1}];
-    v11->_internalUserData = [objc_alloc(MEMORY[0x277CBEB38]) initWithDictionary:objc_msgSend(a3 copyItems:{"objectForKey:", @"userData", 1}];
-    -[OKPresentationCanvas setProperties:](v11, "setProperties:", [objc_alloc(MEMORY[0x277CBEB38]) initWithDictionary:objc_msgSend(a3 copyItems:{"objectForKey:", @"properties", 1}]);
+    [(OKPresentationCanvas *)v10 setPresentation:presentation];
+    [(OKPresentationCanvas *)v11 setParent:parent];
+    [(OKPresentationCanvas *)v11 setName:name];
+    v11->_className = [objc_msgSend(dictionary objectForKey:{@"class", "copy"}];
+    v11->_pagesNames = [objc_alloc(MEMORY[0x277CBEB18]) initWithArray:objc_msgSend(dictionary copyItems:{"objectForKey:", @"pages", 1}];
+    v11->_internalSettings = [objc_alloc(MEMORY[0x277CBEB38]) initWithDictionary:objc_msgSend(dictionary copyItems:{"objectForKey:", @"settings", 1}];
+    v11->_internalUserData = [objc_alloc(MEMORY[0x277CBEB38]) initWithDictionary:objc_msgSend(dictionary copyItems:{"objectForKey:", @"userData", 1}];
+    -[OKPresentationCanvas setProperties:](v11, "setProperties:", [objc_alloc(MEMORY[0x277CBEB38]) initWithDictionary:objc_msgSend(dictionary copyItems:{"objectForKey:", @"properties", 1}]);
   }
 
   return v11;
@@ -85,23 +85,23 @@
   [(OKPresentationCanvas *)&v7 dealloc];
 }
 
-+ (id)navigatorWithName:(id)a3 className:(id)a4 pagesNames:(id)a5 settings:(id)a6 userData:(id)a7
++ (id)navigatorWithName:(id)name className:(id)className pagesNames:(id)names settings:(id)settings userData:(id)data
 {
   v12 = objc_alloc_init(OKPresentationNavigator);
-  [(OKPresentationCanvas *)v12 setName:a3];
-  v12->_className = [a4 copy];
-  v12->_pagesNames = [objc_alloc(MEMORY[0x277CBEB18]) initWithArray:a5 copyItems:1];
-  v12->_internalSettings = [objc_alloc(MEMORY[0x277CBEB38]) initWithDictionary:a6 copyItems:1];
-  v12->_internalUserData = [objc_alloc(MEMORY[0x277CBEB38]) initWithDictionary:a7 copyItems:1];
+  [(OKPresentationCanvas *)v12 setName:name];
+  v12->_className = [className copy];
+  v12->_pagesNames = [objc_alloc(MEMORY[0x277CBEB18]) initWithArray:names copyItems:1];
+  v12->_internalSettings = [objc_alloc(MEMORY[0x277CBEB38]) initWithDictionary:settings copyItems:1];
+  v12->_internalUserData = [objc_alloc(MEMORY[0x277CBEB38]) initWithDictionary:data copyItems:1];
 
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = OKPresentationNavigator;
-  v4 = [(OKPresentationCanvas *)&v7 copyWithZone:a3];
+  v4 = [(OKPresentationCanvas *)&v7 copyWithZone:zone];
   if (v4)
   {
     v4[10] = [(NSString *)self->_className copy];
@@ -118,12 +118,12 @@
 
 - (id)dictionary
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   className = self->_className;
   if (className)
   {
-    [v3 setObject:className forKey:@"class"];
+    [dictionary setObject:className forKey:@"class"];
   }
 
   pagesNames = self->_pagesNames;
@@ -229,22 +229,22 @@
   }
 }
 
-- (void)addPageName:(id)a3
+- (void)addPageName:(id)name
 {
   pagesNames = self->_pagesNames;
   objc_sync_enter(pagesNames);
-  [(NSMutableArray *)self->_pagesNames addObject:a3];
+  [(NSMutableArray *)self->_pagesNames addObject:name];
 
   objc_sync_exit(pagesNames);
 }
 
-- (id)pageWithName:(id)a3
+- (id)pageWithName:(id)name
 {
   if (![(OKPresentationCanvas *)self presentation])
   {
     if (*MEMORY[0x277D62808] >= 4)
     {
-      [MEMORY[0x277D627B8] logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Model/OKPresentationNavigator.m" line:261 andFormat:@"Failed to resolve page %@ for navigator %@: Not attached to any presentation", a3, -[OKPresentationCanvas name](self, "name")];
+      [MEMORY[0x277D627B8] logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Model/OKPresentationNavigator.m" line:261 andFormat:@"Failed to resolve page %@ for navigator %@: Not attached to any presentation", name, -[OKPresentationCanvas name](self, "name")];
     }
 
     return 0;
@@ -252,22 +252,22 @@
 
   pagesNames = self->_pagesNames;
   objc_sync_enter(pagesNames);
-  if (![(NSMutableArray *)self->_pagesNames containsObject:a3])
+  if (![(NSMutableArray *)self->_pagesNames containsObject:name])
   {
     if (*MEMORY[0x277D62808] >= 4)
     {
-      [MEMORY[0x277D627B8] logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Model/OKPresentationNavigator.m" line:255 andFormat:@"Failed to resolve page %@ for navigator %@: Page is not listed in navigator", a3, -[OKPresentationCanvas name](self, "name")];
+      [MEMORY[0x277D627B8] logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Model/OKPresentationNavigator.m" line:255 andFormat:@"Failed to resolve page %@ for navigator %@: Page is not listed in navigator", name, -[OKPresentationCanvas name](self, "name")];
     }
 
     goto LABEL_11;
   }
 
-  v6 = [[(OKPresentationCanvas *)self presentation] pageWithName:a3];
+  v6 = [[(OKPresentationCanvas *)self presentation] pageWithName:name];
   if (!v6)
   {
     if (*MEMORY[0x277D62808] >= 4)
     {
-      [MEMORY[0x277D627B8] logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Model/OKPresentationNavigator.m" line:250 andFormat:@"Failed to resolve page %@ for navigator %@: Page not found", a3, -[OKPresentationCanvas name](self, "name")];
+      [MEMORY[0x277D627B8] logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Model/OKPresentationNavigator.m" line:250 andFormat:@"Failed to resolve page %@ for navigator %@: Page not found", name, -[OKPresentationCanvas name](self, "name")];
     }
 
 LABEL_11:
@@ -284,21 +284,21 @@ LABEL_11:
   v36 = *MEMORY[0x277D85DE8];
   if ([(OKPresentationCanvas *)self presentation])
   {
-    v3 = [(OKPresentationNavigator *)self pages];
-    v4 = [(OKPresentationCanvas *)self isResolved];
-    if (!v4)
+    pages = [(OKPresentationNavigator *)self pages];
+    isResolved = [(OKPresentationCanvas *)self isResolved];
+    if (!isResolved)
     {
-      [v3 makeObjectsPerformSelector:sel_setPresentation_ withObject:{-[OKPresentationCanvas presentation](self, "presentation")}];
-      [v3 makeObjectsPerformSelector:sel_setParent_ withObject:self];
+      [pages makeObjectsPerformSelector:sel_setPresentation_ withObject:{-[OKPresentationCanvas presentation](self, "presentation")}];
+      [pages makeObjectsPerformSelector:sel_setParent_ withObject:self];
       [(OKPresentationCanvas *)self setIsResolved:1];
     }
 
-    v5 = !v4;
+    v5 = !isResolved;
     v31 = 0u;
     v32 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v6 = [v3 countByEnumeratingWithState:&v29 objects:v35 count:16];
+    v6 = [pages countByEnumeratingWithState:&v29 objects:v35 count:16];
     if (v6)
     {
       v7 = v6;
@@ -309,7 +309,7 @@ LABEL_11:
         {
           if (*v30 != v8)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(pages);
           }
 
           v10 = *(*(&v29 + 1) + 8 * i);
@@ -320,7 +320,7 @@ LABEL_11:
           }
         }
 
-        v7 = [v3 countByEnumeratingWithState:&v29 objects:v35 count:16];
+        v7 = [pages countByEnumeratingWithState:&v29 objects:v35 count:16];
       }
 
       while (v7);
@@ -332,8 +332,8 @@ LABEL_11:
       v28 = 0u;
       v25 = 0u;
       v26 = 0u;
-      v11 = [(NSMutableDictionary *)self->_internalSettings allKeys];
-      v12 = [v11 countByEnumeratingWithState:&v25 objects:v34 count:16];
+      allKeys = [(NSMutableDictionary *)self->_internalSettings allKeys];
+      v12 = [allKeys countByEnumeratingWithState:&v25 objects:v34 count:16];
       if (v12)
       {
         v13 = v12;
@@ -344,13 +344,13 @@ LABEL_11:
           {
             if (*v26 != v14)
             {
-              objc_enumerationMutation(v11);
+              objc_enumerationMutation(allKeys);
             }
 
             [(OKPresentationCanvas *)self setSettingsObject:[(NSMutableDictionary *)self->_internalSettings objectForKey:*(*(&v25 + 1) + 8 * j)] forKeyPath:*(*(&v25 + 1) + 8 * j)];
           }
 
-          v13 = [v11 countByEnumeratingWithState:&v25 objects:v34 count:16];
+          v13 = [allKeys countByEnumeratingWithState:&v25 objects:v34 count:16];
         }
 
         while (v13);
@@ -360,8 +360,8 @@ LABEL_11:
       v24 = 0u;
       v21 = 0u;
       v22 = 0u;
-      v16 = [(NSMutableDictionary *)self->_internalUserData allKeys];
-      v17 = [v16 countByEnumeratingWithState:&v21 objects:v33 count:16];
+      allKeys2 = [(NSMutableDictionary *)self->_internalUserData allKeys];
+      v17 = [allKeys2 countByEnumeratingWithState:&v21 objects:v33 count:16];
       if (v17)
       {
         v18 = v17;
@@ -372,13 +372,13 @@ LABEL_11:
           {
             if (*v22 != v19)
             {
-              objc_enumerationMutation(v16);
+              objc_enumerationMutation(allKeys2);
             }
 
             [(OKPresentationCanvas *)self setUserDataObject:[(NSMutableDictionary *)self->_internalUserData objectForKey:*(*(&v21 + 1) + 8 * k)] forKeyPath:*(*(&v21 + 1) + 8 * k)];
           }
 
-          v18 = [v16 countByEnumeratingWithState:&v21 objects:v33 count:16];
+          v18 = [allKeys2 countByEnumeratingWithState:&v21 objects:v33 count:16];
         }
 
         while (v18);

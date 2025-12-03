@@ -1,15 +1,15 @@
 @interface PPBaseScoreInputSet
 - (PPBaseScoreInputSet)init;
-- (unint64_t)indexForArrayScoreName:(id)a3;
-- (unint64_t)indexForObjectScoreName:(id)a3;
-- (unint64_t)indexForScalarScoreName:(id)a3;
+- (unint64_t)indexForArrayScoreName:(id)name;
+- (unint64_t)indexForObjectScoreName:(id)name;
+- (unint64_t)indexForScalarScoreName:(id)name;
 @end
 
 @implementation PPBaseScoreInputSet
 
-- (unint64_t)indexForObjectScoreName:(id)a3
+- (unint64_t)indexForObjectScoreName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -23,21 +23,21 @@
   v11[3] = &unk_278974EA0;
   v11[4] = self;
   v13 = &v14;
-  v6 = v4;
+  v6 = nameCopy;
   v12 = v6;
   [(_PASLock *)objectMap runWithLockAcquired:v11];
   v7 = v15[5];
   if (v7)
   {
-    v8 = [v7 unsignedIntegerValue];
+    unsignedIntegerValue = [v7 unsignedIntegerValue];
   }
 
   else
   {
-    v8 = [(PPBaseScoreInputSet *)self undefinedObjectScoreIndex];
+    unsignedIntegerValue = [(PPBaseScoreInputSet *)self undefinedObjectScoreIndex];
   }
 
-  v9 = v8;
+  v9 = unsignedIntegerValue;
 
   _Block_object_dispose(&v14, 8);
   return v9;
@@ -76,9 +76,9 @@ void __47__PPBaseScoreInputSet_indexForObjectScoreName___block_invoke(uint64_t a
   *(v11 + 40) = v10;
 }
 
-- (unint64_t)indexForArrayScoreName:(id)a3
+- (unint64_t)indexForArrayScoreName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -92,21 +92,21 @@ void __47__PPBaseScoreInputSet_indexForObjectScoreName___block_invoke(uint64_t a
   v11[3] = &unk_278974EA0;
   v11[4] = self;
   v13 = &v14;
-  v6 = v4;
+  v6 = nameCopy;
   v12 = v6;
   [(_PASLock *)arrayMap runWithLockAcquired:v11];
   v7 = v15[5];
   if (v7)
   {
-    v8 = [v7 unsignedIntegerValue];
+    unsignedIntegerValue = [v7 unsignedIntegerValue];
   }
 
   else
   {
-    v8 = [(PPBaseScoreInputSet *)self undefinedArrayScoreIndex];
+    unsignedIntegerValue = [(PPBaseScoreInputSet *)self undefinedArrayScoreIndex];
   }
 
-  v9 = v8;
+  v9 = unsignedIntegerValue;
 
   _Block_object_dispose(&v14, 8);
   return v9;
@@ -145,9 +145,9 @@ void __46__PPBaseScoreInputSet_indexForArrayScoreName___block_invoke(uint64_t a1
   *(v11 + 40) = v10;
 }
 
-- (unint64_t)indexForScalarScoreName:(id)a3
+- (unint64_t)indexForScalarScoreName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -161,21 +161,21 @@ void __46__PPBaseScoreInputSet_indexForArrayScoreName___block_invoke(uint64_t a1
   v11[3] = &unk_278974EA0;
   v11[4] = self;
   v13 = &v14;
-  v6 = v4;
+  v6 = nameCopy;
   v12 = v6;
   [(_PASLock *)scalarMap runWithLockAcquired:v11];
   v7 = v15[5];
   if (v7)
   {
-    v8 = [v7 unsignedIntegerValue];
+    unsignedIntegerValue = [v7 unsignedIntegerValue];
   }
 
   else
   {
-    v8 = [(PPBaseScoreInputSet *)self undefinedScalarScoreIndex];
+    unsignedIntegerValue = [(PPBaseScoreInputSet *)self undefinedScalarScoreIndex];
   }
 
-  v9 = v8;
+  v9 = unsignedIntegerValue;
 
   _Block_object_dispose(&v14, 8);
   return v9;

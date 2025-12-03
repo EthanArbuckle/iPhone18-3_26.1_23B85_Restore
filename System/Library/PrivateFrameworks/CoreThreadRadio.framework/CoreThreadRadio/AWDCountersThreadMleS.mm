@@ -1,27 +1,27 @@
 @interface AWDCountersThreadMleS
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasBetterPartitionAttachAttempts:(BOOL)a3;
-- (void)setHasChildRoleCount:(BOOL)a3;
-- (void)setHasDetachedRoleCount:(BOOL)a3;
-- (void)setHasDisabledRoleCount:(BOOL)a3;
-- (void)setHasLeaderRoleCount:(BOOL)a3;
-- (void)setHasParentChangesCount:(BOOL)a3;
-- (void)setHasPartitionIdChangesCount:(BOOL)a3;
-- (void)setHasRouterRoleCount:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasBetterPartitionAttachAttempts:(BOOL)attempts;
+- (void)setHasChildRoleCount:(BOOL)count;
+- (void)setHasDetachedRoleCount:(BOOL)count;
+- (void)setHasDisabledRoleCount:(BOOL)count;
+- (void)setHasLeaderRoleCount:(BOOL)count;
+- (void)setHasParentChangesCount:(BOOL)count;
+- (void)setHasPartitionIdChangesCount:(BOOL)count;
+- (void)setHasRouterRoleCount:(BOOL)count;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDCountersThreadMleS
 
-- (void)setHasDisabledRoleCount:(BOOL)a3
+- (void)setHasDisabledRoleCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 16;
   }
@@ -34,9 +34,9 @@
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasDetachedRoleCount:(BOOL)a3
+- (void)setHasDetachedRoleCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 8;
   }
@@ -49,9 +49,9 @@
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasChildRoleCount:(BOOL)a3
+- (void)setHasChildRoleCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 4;
   }
@@ -64,9 +64,9 @@
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasRouterRoleCount:(BOOL)a3
+- (void)setHasRouterRoleCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 256;
   }
@@ -79,9 +79,9 @@
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasLeaderRoleCount:(BOOL)a3
+- (void)setHasLeaderRoleCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 32;
   }
@@ -94,9 +94,9 @@
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasPartitionIdChangesCount:(BOOL)a3
+- (void)setHasPartitionIdChangesCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 128;
   }
@@ -109,9 +109,9 @@
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasBetterPartitionAttachAttempts:(BOOL)a3
+- (void)setHasBetterPartitionAttachAttempts:(BOOL)attempts
 {
-  if (a3)
+  if (attempts)
   {
     v3 = 2;
   }
@@ -124,9 +124,9 @@
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (void)setHasParentChangesCount:(BOOL)a3
+- (void)setHasParentChangesCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 64;
   }
@@ -144,8 +144,8 @@
   v7.receiver = self;
   v7.super_class = AWDCountersThreadMleS;
   v3 = [(AWDCountersThreadMleS *)&v7 description];
-  v4 = [(AWDCountersThreadMleS *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(AWDCountersThreadMleS *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -288,9 +288,9 @@ LABEL_11:
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v15 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 0x10) != 0)
   {
@@ -409,7 +409,7 @@ LABEL_20:
   if ((*&self->_has & 0x40) == 0)
   {
 LABEL_10:
-    v5 = v15;
+    v5 = toCopy;
 
     goto LABEL_12;
   }
@@ -417,19 +417,19 @@ LABEL_10:
 LABEL_21:
   parentChangesCount = self->_parentChangesCount;
   PBDataWriterWriteUint32Field();
-  v5 = v15;
+  v5 = toCopy;
 
 LABEL_12:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 0x10) != 0)
   {
-    v4[6] = self->_disabledRoleCount;
-    *(v4 + 22) |= 0x10u;
+    toCopy[6] = self->_disabledRoleCount;
+    *(toCopy + 22) |= 0x10u;
     has = self->_has;
     if ((has & 8) == 0)
     {
@@ -448,8 +448,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[5] = self->_detachedRoleCount;
-  *(v4 + 22) |= 8u;
+  toCopy[5] = self->_detachedRoleCount;
+  *(toCopy + 22) |= 8u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -463,8 +463,8 @@ LABEL_4:
   }
 
 LABEL_15:
-  v4[4] = self->_childRoleCount;
-  *(v4 + 22) |= 4u;
+  toCopy[4] = self->_childRoleCount;
+  *(toCopy + 22) |= 4u;
   has = self->_has;
   if ((has & 0x100) == 0)
   {
@@ -478,8 +478,8 @@ LABEL_5:
   }
 
 LABEL_16:
-  v4[10] = self->_routerRoleCount;
-  *(v4 + 22) |= 0x100u;
+  toCopy[10] = self->_routerRoleCount;
+  *(toCopy + 22) |= 0x100u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -493,8 +493,8 @@ LABEL_6:
   }
 
 LABEL_17:
-  v4[7] = self->_leaderRoleCount;
-  *(v4 + 22) |= 0x20u;
+  toCopy[7] = self->_leaderRoleCount;
+  *(toCopy + 22) |= 0x20u;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -508,8 +508,8 @@ LABEL_7:
   }
 
 LABEL_18:
-  v4[2] = self->_attachAttempts;
-  *(v4 + 22) |= 1u;
+  toCopy[2] = self->_attachAttempts;
+  *(toCopy + 22) |= 1u;
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -523,8 +523,8 @@ LABEL_8:
   }
 
 LABEL_19:
-  v4[9] = self->_partitionIdChangesCount;
-  *(v4 + 22) |= 0x80u;
+  toCopy[9] = self->_partitionIdChangesCount;
+  *(toCopy + 22) |= 0x80u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -538,8 +538,8 @@ LABEL_9:
   }
 
 LABEL_20:
-  v4[3] = self->_betterPartitionAttachAttempts;
-  *(v4 + 22) |= 2u;
+  toCopy[3] = self->_betterPartitionAttachAttempts;
+  *(toCopy + 22) |= 2u;
   if ((*&self->_has & 0x40) == 0)
   {
 LABEL_10:
@@ -548,15 +548,15 @@ LABEL_10:
   }
 
 LABEL_21:
-  v4[8] = self->_parentChangesCount;
-  *(v4 + 22) |= 0x40u;
+  toCopy[8] = self->_parentChangesCount;
+  *(toCopy + 22) |= 0x40u;
 
 LABEL_12:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if ((has & 0x10) != 0)
   {
@@ -683,19 +683,19 @@ LABEL_18:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_47;
   }
 
   has = self->_has;
-  v6 = *(v4 + 22);
+  v6 = *(equalCopy + 22);
   if ((has & 0x10) != 0)
   {
-    if ((v6 & 0x10) == 0 || self->_disabledRoleCount != *(v4 + 6))
+    if ((v6 & 0x10) == 0 || self->_disabledRoleCount != *(equalCopy + 6))
     {
       goto LABEL_47;
     }
@@ -708,7 +708,7 @@ LABEL_18:
 
   if ((has & 8) != 0)
   {
-    if ((v6 & 8) == 0 || self->_detachedRoleCount != *(v4 + 5))
+    if ((v6 & 8) == 0 || self->_detachedRoleCount != *(equalCopy + 5))
     {
       goto LABEL_47;
     }
@@ -721,7 +721,7 @@ LABEL_18:
 
   if ((has & 4) != 0)
   {
-    if ((v6 & 4) == 0 || self->_childRoleCount != *(v4 + 4))
+    if ((v6 & 4) == 0 || self->_childRoleCount != *(equalCopy + 4))
     {
       goto LABEL_47;
     }
@@ -734,20 +734,20 @@ LABEL_18:
 
   if ((*&self->_has & 0x100) != 0)
   {
-    if ((*(v4 + 22) & 0x100) == 0 || self->_routerRoleCount != *(v4 + 10))
+    if ((*(equalCopy + 22) & 0x100) == 0 || self->_routerRoleCount != *(equalCopy + 10))
     {
       goto LABEL_47;
     }
   }
 
-  else if ((*(v4 + 22) & 0x100) != 0)
+  else if ((*(equalCopy + 22) & 0x100) != 0)
   {
     goto LABEL_47;
   }
 
   if ((has & 0x20) != 0)
   {
-    if ((v6 & 0x20) == 0 || self->_leaderRoleCount != *(v4 + 7))
+    if ((v6 & 0x20) == 0 || self->_leaderRoleCount != *(equalCopy + 7))
     {
       goto LABEL_47;
     }
@@ -760,7 +760,7 @@ LABEL_18:
 
   if (has)
   {
-    if ((v6 & 1) == 0 || self->_attachAttempts != *(v4 + 2))
+    if ((v6 & 1) == 0 || self->_attachAttempts != *(equalCopy + 2))
     {
       goto LABEL_47;
     }
@@ -773,7 +773,7 @@ LABEL_18:
 
   if ((has & 0x80) != 0)
   {
-    if ((v6 & 0x80) == 0 || self->_partitionIdChangesCount != *(v4 + 9))
+    if ((v6 & 0x80) == 0 || self->_partitionIdChangesCount != *(equalCopy + 9))
     {
       goto LABEL_47;
     }
@@ -786,7 +786,7 @@ LABEL_18:
 
   if ((has & 2) != 0)
   {
-    if ((v6 & 2) == 0 || self->_betterPartitionAttachAttempts != *(v4 + 3))
+    if ((v6 & 2) == 0 || self->_betterPartitionAttachAttempts != *(equalCopy + 3))
     {
       goto LABEL_47;
     }
@@ -804,7 +804,7 @@ LABEL_18:
     return v7;
   }
 
-  if ((v6 & 0x40) != 0 && self->_parentChangesCount == *(v4 + 8))
+  if ((v6 & 0x40) != 0 && self->_parentChangesCount == *(equalCopy + 8))
   {
 
     return 1;
@@ -940,15 +940,15 @@ LABEL_10:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 22);
+  fromCopy = from;
+  v5 = *(fromCopy + 22);
   if ((v5 & 0x10) != 0)
   {
-    self->_disabledRoleCount = *(v4 + 6);
+    self->_disabledRoleCount = *(fromCopy + 6);
     *&self->_has |= 0x10u;
-    v5 = *(v4 + 22);
+    v5 = *(fromCopy + 22);
     if ((v5 & 8) == 0)
     {
 LABEL_3:
@@ -966,9 +966,9 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  self->_detachedRoleCount = *(v4 + 5);
+  self->_detachedRoleCount = *(fromCopy + 5);
   *&self->_has |= 8u;
-  v5 = *(v4 + 22);
+  v5 = *(fromCopy + 22);
   if ((v5 & 4) == 0)
   {
 LABEL_4:
@@ -981,9 +981,9 @@ LABEL_4:
   }
 
 LABEL_15:
-  self->_childRoleCount = *(v4 + 4);
+  self->_childRoleCount = *(fromCopy + 4);
   *&self->_has |= 4u;
-  v5 = *(v4 + 22);
+  v5 = *(fromCopy + 22);
   if ((v5 & 0x100) == 0)
   {
 LABEL_5:
@@ -996,9 +996,9 @@ LABEL_5:
   }
 
 LABEL_16:
-  self->_routerRoleCount = *(v4 + 10);
+  self->_routerRoleCount = *(fromCopy + 10);
   *&self->_has |= 0x100u;
-  v5 = *(v4 + 22);
+  v5 = *(fromCopy + 22);
   if ((v5 & 0x20) == 0)
   {
 LABEL_6:
@@ -1011,9 +1011,9 @@ LABEL_6:
   }
 
 LABEL_17:
-  self->_leaderRoleCount = *(v4 + 7);
+  self->_leaderRoleCount = *(fromCopy + 7);
   *&self->_has |= 0x20u;
-  v5 = *(v4 + 22);
+  v5 = *(fromCopy + 22);
   if ((v5 & 1) == 0)
   {
 LABEL_7:
@@ -1026,9 +1026,9 @@ LABEL_7:
   }
 
 LABEL_18:
-  self->_attachAttempts = *(v4 + 2);
+  self->_attachAttempts = *(fromCopy + 2);
   *&self->_has |= 1u;
-  v5 = *(v4 + 22);
+  v5 = *(fromCopy + 22);
   if ((v5 & 0x80) == 0)
   {
 LABEL_8:
@@ -1041,9 +1041,9 @@ LABEL_8:
   }
 
 LABEL_19:
-  self->_partitionIdChangesCount = *(v4 + 9);
+  self->_partitionIdChangesCount = *(fromCopy + 9);
   *&self->_has |= 0x80u;
-  v5 = *(v4 + 22);
+  v5 = *(fromCopy + 22);
   if ((v5 & 2) == 0)
   {
 LABEL_9:
@@ -1056,9 +1056,9 @@ LABEL_9:
   }
 
 LABEL_20:
-  self->_betterPartitionAttachAttempts = *(v4 + 3);
+  self->_betterPartitionAttachAttempts = *(fromCopy + 3);
   *&self->_has |= 2u;
-  if ((*(v4 + 22) & 0x40) == 0)
+  if ((*(fromCopy + 22) & 0x40) == 0)
   {
 LABEL_10:
 
@@ -1066,7 +1066,7 @@ LABEL_10:
   }
 
 LABEL_21:
-  self->_parentChangesCount = *(v4 + 8);
+  self->_parentChangesCount = *(fromCopy + 8);
   *&self->_has |= 0x40u;
 
 LABEL_12:

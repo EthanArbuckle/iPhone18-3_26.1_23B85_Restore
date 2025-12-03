@@ -1,6 +1,6 @@
 @interface STFooterListItemsController
 - (id)specifiers;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation STFooterListItemsController
@@ -17,7 +17,7 @@
     v7 = [*(&self->super.super.super.super.super.super.super.isa + v5) objectForKeyedSubscript:@"STFooterListItems"];
     v23.receiver = self;
     v23.super_class = STFooterListItemsController;
-    v8 = [(PSListItemsController *)&v23 specifiers];
+    specifiers = [(PSListItemsController *)&v23 specifiers];
     v9 = [*(&self->super.super.super.super.super.super.super.isa + v5) objectForKeyedSubscript:@"STDisabledRadioGroupIDKey"];
 
     if (v9)
@@ -34,12 +34,12 @@
     v15 = [v14 objectForKeyedSubscript:@"STTitleSectionFooterTextKey"];
     if (v15)
     {
-      v16 = [v13 firstObject];
-      v17 = [v14 titleDictionary];
+      firstObject = [v13 firstObject];
+      titleDictionary = [v14 titleDictionary];
 
-      if (v17)
+      if (titleDictionary)
       {
-        v18 = v16 == 0;
+        v18 = firstObject == 0;
       }
 
       else
@@ -49,7 +49,7 @@
 
       if (!v18)
       {
-        [v16 setObject:v15 forKeyedSubscript:*MEMORY[0x277D3FF88]];
+        [firstObject setObject:v15 forKeyedSubscript:*MEMORY[0x277D3FF88]];
       }
     }
 
@@ -76,19 +76,19 @@
   return v4;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(STFooterListItemsController *)self specifier];
-  v9 = [v8 objectForKeyedSubscript:@"STFooterListItems"];
+  viewCopy = view;
+  pathCopy = path;
+  specifier = [(STFooterListItemsController *)self specifier];
+  v9 = [specifier objectForKeyedSubscript:@"STFooterListItems"];
 
-  v10 = [(STFooterListItemsController *)self specifierAtIndexPath:v7];
+  v10 = [(STFooterListItemsController *)self specifierAtIndexPath:pathCopy];
   if (([v9 containsObject:v10] & 1) == 0)
   {
     v11.receiver = self;
     v11.super_class = STFooterListItemsController;
-    [(STPINListItemsController *)&v11 tableView:v6 didSelectRowAtIndexPath:v7];
+    [(STPINListItemsController *)&v11 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
   }
 }
 

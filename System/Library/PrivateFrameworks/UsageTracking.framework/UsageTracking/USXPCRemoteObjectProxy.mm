@@ -1,24 +1,24 @@
 @interface USXPCRemoteObjectProxy
-+ (void)proxyFromConnection:(id)a3 withRetryCount:(unint64_t)a4 proxyHandler:(id)a5;
-+ (void)synchronousProxyFromConnection:(id)a3 withRetryCount:(unint64_t)a4 proxyHandler:(id)a5;
++ (void)proxyFromConnection:(id)connection withRetryCount:(unint64_t)count proxyHandler:(id)handler;
++ (void)synchronousProxyFromConnection:(id)connection withRetryCount:(unint64_t)count proxyHandler:(id)handler;
 @end
 
 @implementation USXPCRemoteObjectProxy
 
-+ (void)proxyFromConnection:(id)a3 withRetryCount:(unint64_t)a4 proxyHandler:(id)a5
++ (void)proxyFromConnection:(id)connection withRetryCount:(unint64_t)count proxyHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  connectionCopy = connection;
+  handlerCopy = handler;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __74__USXPCRemoteObjectProxy_proxyFromConnection_withRetryCount_proxyHandler___block_invoke;
   v13[3] = &unk_279E0A6E0;
-  v16 = a4;
-  v17 = a1;
-  v14 = v8;
-  v15 = v9;
-  v10 = v9;
-  v11 = v8;
+  countCopy = count;
+  selfCopy = self;
+  v14 = connectionCopy;
+  v15 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = connectionCopy;
   v12 = [v11 remoteObjectProxyWithErrorHandler:v13];
   v10[2](v10, v12, 0);
 }
@@ -56,20 +56,20 @@ LABEL_8:
 LABEL_9:
 }
 
-+ (void)synchronousProxyFromConnection:(id)a3 withRetryCount:(unint64_t)a4 proxyHandler:(id)a5
++ (void)synchronousProxyFromConnection:(id)connection withRetryCount:(unint64_t)count proxyHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  connectionCopy = connection;
+  handlerCopy = handler;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __85__USXPCRemoteObjectProxy_synchronousProxyFromConnection_withRetryCount_proxyHandler___block_invoke;
   v13[3] = &unk_279E0A6E0;
-  v16 = a4;
-  v17 = a1;
-  v14 = v8;
-  v15 = v9;
-  v10 = v9;
-  v11 = v8;
+  countCopy = count;
+  selfCopy = self;
+  v14 = connectionCopy;
+  v15 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = connectionCopy;
   v12 = [v11 synchronousRemoteObjectProxyWithErrorHandler:v13];
   v10[2](v10, v12, 0);
 }

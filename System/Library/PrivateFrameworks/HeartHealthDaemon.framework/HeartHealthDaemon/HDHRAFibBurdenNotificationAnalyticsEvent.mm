@@ -1,52 +1,52 @@
 @interface HDHRAFibBurdenNotificationAnalyticsEvent
-- (HDHRAFibBurdenNotificationAnalyticsEvent)initWithNotificationMode:(id)a3 featureStatus:(id)a4 focusModeDeterminer:(id)a5 notificationsAuthorizedProvider:(id)a6;
-- (HDHRAFibBurdenNotificationAnalyticsEvent)initWithNotificationMode:(id)a3 featureStatus:(id)a4 profile:(id)a5;
-- (id)_notificationTypeStringForType:(int64_t)a3;
-- (id)makeIHAGatedEventPayloadWithDataSource:(id)a3 error:(id *)a4;
+- (HDHRAFibBurdenNotificationAnalyticsEvent)initWithNotificationMode:(id)mode featureStatus:(id)status focusModeDeterminer:(id)determiner notificationsAuthorizedProvider:(id)provider;
+- (HDHRAFibBurdenNotificationAnalyticsEvent)initWithNotificationMode:(id)mode featureStatus:(id)status profile:(id)profile;
+- (id)_notificationTypeStringForType:(int64_t)type;
+- (id)makeIHAGatedEventPayloadWithDataSource:(id)source error:(id *)error;
 @end
 
 @implementation HDHRAFibBurdenNotificationAnalyticsEvent
 
-- (HDHRAFibBurdenNotificationAnalyticsEvent)initWithNotificationMode:(id)a3 featureStatus:(id)a4 profile:(id)a5
+- (HDHRAFibBurdenNotificationAnalyticsEvent)initWithNotificationMode:(id)mode featureStatus:(id)status profile:(id)profile
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  profileCopy = profile;
+  statusCopy = status;
+  modeCopy = mode;
   v11 = objc_alloc_init(HDHRAFibBurdenBiomeFocusModeDeterminer);
-  v12 = [v8 notificationManager];
+  notificationManager = [profileCopy notificationManager];
 
-  v13 = [(HDHRAFibBurdenNotificationAnalyticsEvent *)self initWithNotificationMode:v10 featureStatus:v9 focusModeDeterminer:v11 notificationsAuthorizedProvider:v12];
+  v13 = [(HDHRAFibBurdenNotificationAnalyticsEvent *)self initWithNotificationMode:modeCopy featureStatus:statusCopy focusModeDeterminer:v11 notificationsAuthorizedProvider:notificationManager];
   return v13;
 }
 
-- (HDHRAFibBurdenNotificationAnalyticsEvent)initWithNotificationMode:(id)a3 featureStatus:(id)a4 focusModeDeterminer:(id)a5 notificationsAuthorizedProvider:(id)a6
+- (HDHRAFibBurdenNotificationAnalyticsEvent)initWithNotificationMode:(id)mode featureStatus:(id)status focusModeDeterminer:(id)determiner notificationsAuthorizedProvider:(id)provider
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  modeCopy = mode;
+  statusCopy = status;
+  determinerCopy = determiner;
+  providerCopy = provider;
   v18.receiver = self;
   v18.super_class = HDHRAFibBurdenNotificationAnalyticsEvent;
   v15 = [(HDHRAFibBurdenNotificationAnalyticsEvent *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_notificationMode, a3);
-    objc_storeStrong(&v16->_featureStatus, a4);
-    objc_storeStrong(&v16->_focusModeDeterminer, a5);
-    objc_storeStrong(&v16->_notificationsAuthorizedProvider, a6);
+    objc_storeStrong(&v15->_notificationMode, mode);
+    objc_storeStrong(&v16->_featureStatus, status);
+    objc_storeStrong(&v16->_focusModeDeterminer, determiner);
+    objc_storeStrong(&v16->_notificationsAuthorizedProvider, provider);
   }
 
   return v16;
 }
 
-- (id)makeIHAGatedEventPayloadWithDataSource:(id)a3 error:(id *)a4
+- (id)makeIHAGatedEventPayloadWithDataSource:(id)source error:(id *)error
 {
-  v5 = a3;
+  sourceCopy = source;
   v6 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v7 = [v5 healthDataSource];
+  healthDataSource = [sourceCopy healthDataSource];
   v37 = 0;
-  v8 = [v7 biologicalSexWithError:&v37];
+  v8 = [healthDataSource biologicalSexWithError:&v37];
   v9 = v37;
 
   v10 = MEMORY[0x277CCB800];
@@ -85,11 +85,11 @@ LABEL_7:
 
 LABEL_8:
 
-  v15 = [v5 healthDataSource];
-  v16 = [v5 environmentDataSource];
-  v17 = [v16 currentDate];
+  healthDataSource2 = [sourceCopy healthDataSource];
+  environmentDataSource = [sourceCopy environmentDataSource];
+  currentDate = [environmentDataSource currentDate];
   v36 = 0;
-  v18 = [v15 ageWithCurrentDate:v17 error:&v36];
+  v18 = [healthDataSource2 ageWithCurrentDate:currentDate error:&v36];
   v19 = v36;
 
   if (v19)
@@ -120,12 +120,12 @@ LABEL_8:
   v21 = v19;
 LABEL_14:
 
-  v23 = [(HKFeatureStatus *)self->_featureStatus onboardingRecord];
-  v24 = [v23 onboardingCompletion];
+  onboardingRecord = [(HKFeatureStatus *)self->_featureStatus onboardingRecord];
+  onboardingCompletion = [onboardingRecord onboardingCompletion];
 
-  if (v24)
+  if (onboardingCompletion)
   {
-    [v24 version];
+    [onboardingCompletion version];
     v25 = HKHRAFibBurdenAnalyticsPropertyValueForVersion();
     [v6 setObject:v25 forKeyedSubscript:@"featureVersion"];
   }
@@ -145,29 +145,29 @@ LABEL_14:
   v27 = [(HDHRAFibBurdenNotificationAnalyticsEvent *)self _notificationTypeStringForType:[(HKHRAFibBurdenNotificationMode *)self->_notificationMode type]];
   [v6 setObject:v27 forKeyedSubscript:@"notificationType"];
 
-  v28 = [(HKHRAFibBurdenNotificationMode *)self->_notificationMode currentValueClamped];
+  currentValueClamped = [(HKHRAFibBurdenNotificationMode *)self->_notificationMode currentValueClamped];
 
-  if (v28)
+  if (currentValueClamped)
   {
-    v29 = [(HKHRAFibBurdenNotificationMode *)self->_notificationMode currentValueClamped];
-    [v6 setObject:v29 forKeyedSubscript:@"wasDataClamped"];
+    currentValueClamped2 = [(HKHRAFibBurdenNotificationMode *)self->_notificationMode currentValueClamped];
+    [v6 setObject:currentValueClamped2 forKeyedSubscript:@"wasDataClamped"];
   }
 
   v30 = [MEMORY[0x277CCABB0] numberWithBool:{-[HKHRAFibBurdenNotificationMode shouldForwardToWatch](self->_notificationMode, "shouldForwardToWatch")}];
   [v6 setObject:v30 forKeyedSubscript:@"wasForwardedToWatch"];
 
-  v31 = [(HKHRAFibBurdenNotificationMode *)self->_notificationMode previousTimeZoneDiffersFromCurrent];
+  previousTimeZoneDiffersFromCurrent = [(HKHRAFibBurdenNotificationMode *)self->_notificationMode previousTimeZoneDiffersFromCurrent];
 
-  if (v31)
+  if (previousTimeZoneDiffersFromCurrent)
   {
-    v32 = [(HKHRAFibBurdenNotificationMode *)self->_notificationMode previousTimeZoneDiffersFromCurrent];
-    [v6 setObject:v32 forKeyedSubscript:@"wasPreviousValueInDifferentTimeZone"];
+    previousTimeZoneDiffersFromCurrent2 = [(HKHRAFibBurdenNotificationMode *)self->_notificationMode previousTimeZoneDiffersFromCurrent];
+    [v6 setObject:previousTimeZoneDiffersFromCurrent2 forKeyedSubscript:@"wasPreviousValueInDifferentTimeZone"];
   }
 
-  v33 = [(HDHRAFibBurdenNotificationAnalyticsEventFocusModeDeterminer *)self->_focusModeDeterminer isFocusModeOn];
-  if (v33)
+  isFocusModeOn = [(HDHRAFibBurdenNotificationAnalyticsEventFocusModeDeterminer *)self->_focusModeDeterminer isFocusModeOn];
+  if (isFocusModeOn)
   {
-    [v6 setObject:v33 forKeyedSubscript:@"isFocusModeOn"];
+    [v6 setObject:isFocusModeOn forKeyedSubscript:@"isFocusModeOn"];
   }
 
   v34 = [MEMORY[0x277CCABB0] numberWithBool:{-[HDHRAFibBurdenAnalyticsEventHealthAppNotificationsAuthorizedProvider areHealthNotificationsAuthorized](self->_notificationsAuthorizedProvider, "areHealthNotificationsAuthorized")}];
@@ -176,19 +176,19 @@ LABEL_14:
   return v6;
 }
 
-- (id)_notificationTypeStringForType:(int64_t)a3
+- (id)_notificationTypeStringForType:(int64_t)type
 {
-  if (a3 == 3)
+  if (type == 3)
   {
     v5 = @"insufficientData";
   }
 
-  else if (a3 == 2)
+  else if (type == 2)
   {
     v5 = @"burdenPercentageWithPreviousValue";
   }
 
-  else if (a3)
+  else if (type)
   {
     v5 = @"burdenPercentageWithoutPreviousValue";
   }

@@ -1,38 +1,38 @@
 @interface _UIValueCellContentView
 - (BOOL)_needsDoubleUpdateConstraintsPass;
 - (CGRect)_primaryTextLayoutFrame;
-- (CGSize)_intrinsicSizeWithinSize:(CGSize)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5;
+- (CGSize)_intrinsicSizeWithinSize:(CGSize)size;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority;
 - (NSLayoutRect)_primaryTextLayoutRect;
 - (NSString)description;
 - (UIImageView)imageView;
 - (UILabel)textLabel;
 - (UILabel)valueLabel;
-- (_UIValueCellContentView)initWithCoder:(id)a3;
-- (_UIValueCellContentView)initWithConfiguration:(id)a3;
+- (_UIValueCellContentView)initWithCoder:(id)coder;
+- (_UIValueCellContentView)initWithConfiguration:(id)configuration;
 - (_UIValueCellContentViewConfiguration)configuration;
-- (double)_intrinsicSizeForLabel:(BOOL *)a3 inAvailableSpace:(double)a4 outRequiresMultipleLines:(double)a5;
+- (double)_intrinsicSizeForLabel:(BOOL *)label inAvailableSpace:(double)space outRequiresMultipleLines:(double)lines;
 - (double)_preferredMaxLayoutWidth;
-- (void)_applyConfiguration:(id *)a1;
-- (void)_computeSizesForAvailableSpace:(double)a3;
-- (void)_layoutMarginsDidChangeFromOldMargins:(UIEdgeInsets)a3;
+- (void)_applyConfiguration:(id *)configuration;
+- (void)_computeSizesForAvailableSpace:(double)space;
+- (void)_layoutMarginsDidChangeFromOldMargins:(UIEdgeInsets)margins;
 - (void)_prepareForFirstIntrinsicContentSizeCalculation;
-- (void)_prepareForSecondIntrinsicContentSizeCalculationWithLayoutEngineBounds:(CGRect)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_prepareForSecondIntrinsicContentSizeCalculationWithLayoutEngineBounds:(CGRect)bounds;
+- (void)encodeWithCoder:(id)coder;
 - (void)layoutSubviews;
-- (void)setConfiguration:(id)a3;
+- (void)setConfiguration:(id)configuration;
 @end
 
 @implementation _UIValueCellContentView
 
-- (_UIValueCellContentView)initWithConfiguration:(id)a3
+- (_UIValueCellContentView)initWithConfiguration:(id)configuration
 {
-  v5 = a3;
-  if (!v5)
+  configurationCopy = configuration;
+  if (!configurationCopy)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"_UIValueCellContentView.m" lineNumber:439 description:{@"Invalid parameter not satisfying: %@", @"configuration != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIValueCellContentView.m" lineNumber:439 description:{@"Invalid parameter not satisfying: %@", @"configuration != nil"}];
   }
 
   v13.receiver = self;
@@ -46,17 +46,17 @@
     v10[2] = __49___UIValueCellContentView_initWithConfiguration___block_invoke;
     v10[3] = &unk_1E70F35B8;
     v11 = v6;
-    v12 = v5;
+    v12 = configurationCopy;
     [UIView performWithoutAnimation:v10];
   }
 
   return v7;
 }
 
-- (_UIValueCellContentView)initWithCoder:(id)a3
+- (_UIValueCellContentView)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"configuration"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"configuration"];
   if (!v5)
   {
 
@@ -65,7 +65,7 @@
 
   v12.receiver = self;
   v12.super_class = _UIValueCellContentView;
-  v6 = [(UIView *)&v12 initWithCoder:v4];
+  v6 = [(UIView *)&v12 initWithCoder:coderCopy];
   if (!v6)
   {
 LABEL_5:
@@ -86,13 +86,13 @@ LABEL_6:
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = _UIValueCellContentView;
-  v4 = a3;
-  [(UIView *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_configuration forKey:{@"configuration", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(UIView *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_configuration forKey:{@"configuration", v5.receiver, v5.super_class}];
 }
 
 - (NSString)description
@@ -124,19 +124,19 @@ LABEL_6:
   return v3;
 }
 
-- (void)setConfiguration:(id)a3
+- (void)setConfiguration:(id)configuration
 {
-  v5 = a3;
-  if (!v5)
+  configurationCopy = configuration;
+  if (!configurationCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"_UIValueCellContentView.m" lineNumber:492 description:{@"Invalid parameter not satisfying: %@", @"configuration != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIValueCellContentView.m" lineNumber:492 description:{@"Invalid parameter not satisfying: %@", @"configuration != nil"}];
   }
 
   animatingToConfiguration = self->_animatingToConfiguration;
-  if (![(_UIValueCellContentViewConfiguration *)self->_configuration _isEqualToConfigurationQuick:v5]|| animatingToConfiguration && ([(_UIValueCellContentViewConfiguration *)self->_animatingToConfiguration _isEqualToConfigurationQuick:v5]& 1) == 0)
+  if (![(_UIValueCellContentViewConfiguration *)self->_configuration _isEqualToConfigurationQuick:configurationCopy]|| animatingToConfiguration && ([(_UIValueCellContentViewConfiguration *)self->_animatingToConfiguration _isEqualToConfigurationQuick:configurationCopy]& 1) == 0)
   {
-    v7 = [v5 copy];
+    v7 = [configurationCopy copy];
     if (+[UIView _isInAnimationBlockWithAnimationsEnabled])
     {
       objc_storeStrong(&self->_animatingToConfiguration, v7);
@@ -182,38 +182,38 @@ LABEL_6:
   }
 }
 
-- (void)_applyConfiguration:(id *)a1
+- (void)_applyConfiguration:(id *)configuration
 {
   v4 = a2;
-  if (a1)
+  if (configuration)
   {
     v15 = v4;
     if (!v4)
     {
-      v14 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v14 handleFailureInMethod:sel__applyConfiguration_ object:a1 file:@"_UIValueCellContentView.m" lineNumber:548 description:{@"Invalid parameter not satisfying: %@", @"configuration != nil"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel__applyConfiguration_ object:configuration file:@"_UIValueCellContentView.m" lineNumber:548 description:{@"Invalid parameter not satisfying: %@", @"configuration != nil"}];
     }
 
-    objc_storeStrong(a1 + 54, a2);
-    v5 = [v15 axesPreservingSuperviewLayoutMargins];
-    if ((v5 & 2) != 0)
+    objc_storeStrong(configuration + 54, a2);
+    axesPreservingSuperviewLayoutMargins = [v15 axesPreservingSuperviewLayoutMargins];
+    if ((axesPreservingSuperviewLayoutMargins & 2) != 0)
     {
-      v6 = (v5 << 63 >> 63) & 0xA | 5;
+      v6 = (axesPreservingSuperviewLayoutMargins << 63 >> 63) & 0xA | 5;
     }
 
     else
     {
-      v6 = (v5 << 63 >> 63) & 0xA;
+      v6 = (axesPreservingSuperviewLayoutMargins << 63 >> 63) & 0xA;
     }
 
-    [a1 setEdgesPreservingSuperviewLayoutMargins:v6];
+    [configuration setEdgesPreservingSuperviewLayoutMargins:v6];
     [v15 directionalLayoutMargins];
-    [a1 setDirectionalLayoutMargins:?];
-    v7 = [v15 imageView];
-    v8 = a1;
-    v9 = a1[55];
+    [configuration setDirectionalLayoutMargins:?];
+    imageView = [v15 imageView];
+    configurationCopy = configuration;
+    v9 = configuration[55];
     v10 = v9;
-    if (v7 && (v7[2] || v7[6]))
+    if (imageView && (imageView[2] || imageView[6]))
     {
       if (v9)
       {
@@ -226,13 +226,13 @@ LABEL_6:
       else
       {
         v10 = objc_alloc_init(UIImageView);
-        v11 = a1[55];
-        a1[55] = v10;
+        v11 = configuration[55];
+        configuration[55] = v10;
 
-        [v8 addSubview:v10];
+        [configurationCopy addSubview:v10];
       }
 
-      [v7 applyToImageView:v10];
+      [imageView applyToImageView:v10];
     }
 
     else if (v9 && ![(UIView *)v9 isHidden])
@@ -240,15 +240,15 @@ LABEL_6:
       [(UIImageView *)v10 setHidden:1];
     }
 
-    v12 = [v15 textLabel];
-    _UIUpdateLabelUsingConfiguration(v8, v8 + 56, v12);
+    textLabel = [v15 textLabel];
+    _UIUpdateLabelUsingConfiguration(configurationCopy, configurationCopy + 56, textLabel);
 
-    v13 = [v15 valueLabel];
-    _UIUpdateLabelUsingConfiguration(v8, v8 + 57, v13);
+    valueLabel = [v15 valueLabel];
+    _UIUpdateLabelUsingConfiguration(configurationCopy, configurationCopy + 57, valueLabel);
 
-    v8[53] = 0x7FEFFFFFFFFFFFFFLL;
-    [v8 invalidateIntrinsicContentSize];
-    [v8 setNeedsLayout];
+    configurationCopy[53] = 0x7FEFFFFFFFFFFFFFLL;
+    [configurationCopy invalidateIntrinsicContentSize];
+    [configurationCopy setNeedsLayout];
     v4 = v15;
   }
 }
@@ -303,39 +303,39 @@ LABEL_6:
   result = 0;
   if ((*(&self->super._viewFlags + 6) & 0x10) != 0)
   {
-    v4 = [(_UIValueCellContentView *)self textLabel];
-    if (v4)
+    textLabel = [(_UIValueCellContentView *)self textLabel];
+    if (textLabel)
     {
-      v5 = v4;
-      v6 = [(_UIValueCellContentView *)self valueLabel];
+      v5 = textLabel;
+      valueLabel = [(_UIValueCellContentView *)self valueLabel];
 
-      if (v6)
+      if (valueLabel)
       {
         return 1;
       }
     }
 
-    v7 = [(_UIValueCellContentView *)self textLabel];
-    if (v7)
+    textLabel2 = [(_UIValueCellContentView *)self textLabel];
+    if (textLabel2)
     {
-      v8 = v7;
-      v9 = [(_UIValueCellContentView *)self textLabel];
-      v10 = [v9 numberOfLines];
+      v8 = textLabel2;
+      textLabel3 = [(_UIValueCellContentView *)self textLabel];
+      numberOfLines = [textLabel3 numberOfLines];
 
-      if (v10 != 1)
+      if (numberOfLines != 1)
       {
         return 1;
       }
     }
 
-    v11 = [(_UIValueCellContentView *)self valueLabel];
-    if (v11)
+    valueLabel2 = [(_UIValueCellContentView *)self valueLabel];
+    if (valueLabel2)
     {
-      v12 = v11;
-      v13 = [(_UIValueCellContentView *)self valueLabel];
-      v14 = [v13 numberOfLines];
+      v12 = valueLabel2;
+      valueLabel3 = [(_UIValueCellContentView *)self valueLabel];
+      numberOfLines2 = [valueLabel3 numberOfLines];
 
-      if (v14 != 1)
+      if (numberOfLines2 != 1)
       {
         return 1;
       }
@@ -353,12 +353,12 @@ LABEL_6:
   [(UIView *)&v2 _prepareForFirstIntrinsicContentSizeCalculation];
 }
 
-- (void)_prepareForSecondIntrinsicContentSizeCalculationWithLayoutEngineBounds:(CGRect)a3
+- (void)_prepareForSecondIntrinsicContentSizeCalculationWithLayoutEngineBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(UIView *)self alignmentRectForFrame:?];
   self->_preferredMaxLayoutWidth = v8;
   v9.receiver = self;
@@ -377,32 +377,32 @@ LABEL_6:
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  if (a3.width <= 0.0)
+  if (fits.width <= 0.0)
   {
-    a3.width = 1.79769313e308;
+    fits.width = 1.79769313e308;
   }
 
-  if (a3.height <= 0.0)
+  if (fits.height <= 0.0)
   {
-    a3.height = 1.79769313e308;
+    fits.height = 1.79769313e308;
   }
 
-  [(_UIValueCellContentView *)self _intrinsicSizeWithinSize:a3.width, a3.height];
+  [(_UIValueCellContentView *)self _intrinsicSizeWithinSize:fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v9 = 1.79769313e308;
-  if (a3.width <= 0.0)
+  if (size.width <= 0.0)
   {
-    a3.width = 1.79769313e308;
+    size.width = 1.79769313e308;
   }
 
   if (height > 0.0)
@@ -410,13 +410,13 @@ LABEL_6:
     v9 = height;
   }
 
-  [(_UIValueCellContentView *)self _intrinsicSizeWithinSize:a3.width, v9];
-  if (a4 >= 1000.0)
+  [(_UIValueCellContentView *)self _intrinsicSizeWithinSize:size.width, v9];
+  if (priority >= 1000.0)
   {
     v10 = width;
   }
 
-  if (a5 >= 1000.0)
+  if (fittingPriority >= 1000.0)
   {
     v11 = height;
   }
@@ -426,39 +426,39 @@ LABEL_6:
   return result;
 }
 
-- (double)_intrinsicSizeForLabel:(BOOL *)a3 inAvailableSpace:(double)a4 outRequiresMultipleLines:(double)a5
+- (double)_intrinsicSizeForLabel:(BOOL *)label inAvailableSpace:(double)space outRequiresMultipleLines:(double)lines
 {
   v9 = a2;
-  v10 = [v9 numberOfLines];
+  numberOfLines = [v9 numberOfLines];
   [v9 bounds];
-  if (a3)
+  if (label)
   {
     v37[0] = MEMORY[0x1E69E9820];
     v37[1] = 3221225472;
     v37[2] = __92___UIValueCellContentView__intrinsicSizeForLabel_inAvailableSpace_outRequiresMultipleLines___block_invoke;
     v37[3] = &unk_1E70F38C0;
-    v39 = v10;
+    v39 = numberOfLines;
     v15 = v11;
     v16 = v12;
     v17 = v13;
     v27 = v14;
     v18 = v9;
     v38 = v18;
-    v40 = a4;
-    v41 = a5;
+    spaceCopy = space;
+    linesCopy = lines;
     [UIView performWithoutAnimation:v37];
 
-    [v18 _intrinsicSizeWithinSize:{a4, a5}];
+    [v18 _intrinsicSizeWithinSize:{space, lines}];
     v20 = v19;
-    *a3 = [v18 _measuredNumberOfLines] > 1;
+    *label = [v18 _measuredNumberOfLines] > 1;
     v21 = +[UIView _isInAnimationBlockWithAnimationsEnabled];
     v28[0] = MEMORY[0x1E69E9820];
     v28[1] = 3221225472;
     v28[2] = __92___UIValueCellContentView__intrinsicSizeForLabel_inAvailableSpace_outRequiresMultipleLines___block_invoke_2;
     v28[3] = &unk_1E7103308;
     v22 = v18;
-    v30 = a1;
-    v31 = v10;
+    selfCopy = self;
+    v31 = numberOfLines;
     v36 = v21;
     v29 = v22;
     v32 = v15;
@@ -466,60 +466,60 @@ LABEL_6:
     v34 = v17;
     v35 = v27;
     [UIView performWithoutAnimation:v28];
-    if (v10 == 1)
+    if (numberOfLines == 1)
     {
-      [v22 _intrinsicSizeWithinSize:{a4, a5}];
+      [v22 _intrinsicSizeWithinSize:{space, lines}];
       v20 = v23;
     }
   }
 
   else
   {
-    [v9 _intrinsicSizeWithinSize:{a4, a5}];
+    [v9 _intrinsicSizeWithinSize:{space, lines}];
     v20 = v24;
   }
 
-  v25 = fmax(*MEMORY[0x1E695F060], fmin(v20, a4));
+  v25 = fmax(*MEMORY[0x1E695F060], fmin(v20, space));
 
   return v25;
 }
 
-- (void)_computeSizesForAvailableSpace:(double)a3
+- (void)_computeSizesForAvailableSpace:(double)space
 {
   if (a2)
   {
-    *a1 = 0u;
-    *(a1 + 16) = 0u;
-    *(a1 + 32) = 0u;
-    *(a1 + 48) = 0;
+    *self = 0u;
+    *(self + 16) = 0u;
+    *(self + 32) = 0u;
+    *(self + 48) = 0;
     v7 = MEMORY[0x1E695F060];
     v8 = *MEMORY[0x1E695F060];
-    *(a1 + 8) = *MEMORY[0x1E695F060];
-    *(a1 + 24) = v8;
-    *(a1 + 56) = v8;
-    *(a1 + 72) = v8;
+    *(self + 8) = *MEMORY[0x1E695F060];
+    *(self + 24) = v8;
+    *(self + 56) = v8;
+    *(self + 72) = v8;
     v65 = v8;
-    *(a1 + 88) = v8;
-    v9 = [a2 traitCollection];
-    v10 = [a2 imageView];
-    v11 = [a2[54] imageView];
-    [v11 maximumSize];
+    *(self + 88) = v8;
+    traitCollection = [a2 traitCollection];
+    imageView = [a2 imageView];
+    imageView2 = [a2[54] imageView];
+    [imageView2 maximumSize];
     v70.f64[0] = v12;
     v70.f64[1] = v13;
 
     v14 = 0;
-    if (_UIContentViewShouldUseAccessibilityLargeTextLayout(v9))
+    if (_UIContentViewShouldUseAccessibilityLargeTextLayout(traitCollection))
     {
-      v15 = [a2[54] textLabel];
-      ShouldUseAccessibilityTextWrappingLayout = _UIContentViewShouldUseAccessibilityTextWrappingLayout(v15, v10, &v70);
+      textLabel = [a2[54] textLabel];
+      ShouldUseAccessibilityTextWrappingLayout = _UIContentViewShouldUseAccessibilityTextWrappingLayout(textLabel, imageView, &v70);
 
       if (ShouldUseAccessibilityTextWrappingLayout)
       {
         v14 = 2;
-        *a1 = 2;
-        if (!v10)
+        *self = 2;
+        if (!imageView)
         {
-          v67 = *(a1 + 8);
+          v67 = *(self + 8);
           goto LABEL_26;
         }
 
@@ -528,28 +528,28 @@ LABEL_6:
       }
 
       v14 = 1;
-      *a1 = 1;
+      *self = 1;
     }
 
-    if (!v10)
+    if (!imageView)
     {
       goto LABEL_24;
     }
 
     v17 = 0;
 LABEL_9:
-    [v10 _intrinsicSizeWithinSize:{a3, a4}];
+    [imageView _intrinsicSizeWithinSize:{space, a4}];
     v64 = v18;
     v66 = v19;
-    v20 = [v10 image];
-    v21 = [a2[54] imageView];
-    [v21 reservedLayoutSize];
-    v23 = _UIContentViewImageViewLayoutHeight(v20, v9, v66, v22, v70.f64[1]);
-    *(a1 + 32) = v23;
+    image = [imageView image];
+    imageView3 = [a2[54] imageView];
+    [imageView3 reservedLayoutSize];
+    v23 = _UIContentViewImageViewLayoutHeight(image, traitCollection, v66, v22, v70.f64[1]);
+    *(self + 32) = v23;
 
     [a2 directionalLayoutMargins];
     v26 = a4 + v24 + v25;
-    v27.f64[0] = a3;
+    v27.f64[0] = space;
     if (v23 >= v66)
     {
       v26 = a4;
@@ -577,64 +577,64 @@ LABEL_9:
       v29 = vmulq_n_f64(v28, v31);
     }
 
-    *(a1 + 8) = v29;
+    *(self + 8) = v29;
     v67 = v29.f64[0];
     if (v17)
     {
-      *(a1 + 40) = 0;
+      *(self + 40) = 0;
 LABEL_26:
       [a2[54] imageToTextPadding];
       v40 = v67 + v41;
       v14 = 2;
 LABEL_27:
-      v42 = [a2 textLabel];
-      v43 = [a2[54] textLabel];
-      _UIContentViewUpdateLabelAttributesForAccessibilityLayout(v42, v43, v14, v40);
+      textLabel2 = [a2 textLabel];
+      textLabel3 = [a2[54] textLabel];
+      _UIContentViewUpdateLabelAttributesForAccessibilityLayout(textLabel2, textLabel3, v14, v40);
 
-      v44 = [a2 valueLabel];
-      v45 = [a2[54] valueLabel];
-      _UIContentViewUpdateLabelAttributesForAccessibilityLayout(v44, v45, v14, 0.0);
+      valueLabel = [a2 valueLabel];
+      valueLabel2 = [a2[54] valueLabel];
+      _UIContentViewUpdateLabelAttributesForAccessibilityLayout(valueLabel, valueLabel2, v14, 0.0);
 
-      if (v42)
+      if (textLabel2)
       {
         v69 = 0;
-        v47 = [(_UIValueCellContentView *)a2 _intrinsicSizeForLabel:v42 inAvailableSpace:&v69 outRequiresMultipleLines:a3, a4];
-        *(a1 + 56) = v47;
-        *(a1 + 64) = v46;
-        *(a1 + 88) = *(a1 + 56);
+        v47 = [(_UIValueCellContentView *)a2 _intrinsicSizeForLabel:textLabel2 inAvailableSpace:&v69 outRequiresMultipleLines:space, a4];
+        *(self + 56) = v47;
+        *(self + 64) = v46;
+        *(self + 88) = *(self + 56);
         v48 = v14 != 0 || v69;
-        *(a1 + 48) = v48;
-        if (v44)
+        *(self + 48) = v48;
+        if (valueLabel)
         {
           if (v48)
           {
 LABEL_44:
             v58 = a4 - v46;
             [a2[54] textToValuePadding];
-            v60 = [(_UIValueCellContentView *)a2 _intrinsicSizeForLabel:v44 inAvailableSpace:0 outRequiresMultipleLines:a3, v58 - v59];
+            v60 = [(_UIValueCellContentView *)a2 _intrinsicSizeForLabel:valueLabel inAvailableSpace:0 outRequiresMultipleLines:space, v58 - v59];
             v62 = v61;
-            *(a1 + 72) = v60;
-            *(a1 + 80) = v61;
-            if (*(a1 + 88) >= v60)
+            *(self + 72) = v60;
+            *(self + 80) = v61;
+            if (*(self + 88) >= v60)
             {
-              v60 = *(a1 + 88);
+              v60 = *(self + 88);
             }
 
-            *(a1 + 88) = v60;
+            *(self + 88) = v60;
             [a2[54] textToValuePadding];
-            *(a1 + 96) = *(a1 + 96) + v62 + v63;
+            *(self + 96) = *(self + 96) + v62 + v63;
             goto LABEL_47;
           }
 
 LABEL_33:
           [a2[54] textToValuePadding];
-          v50 = a3 - v47 - v49;
+          v50 = space - v47 - v49;
           if (v50 >= 0.0)
           {
             v69 = 0;
-            *(a1 + 72) = [(_UIValueCellContentView *)a2 _intrinsicSizeForLabel:v44 inAvailableSpace:&v69 outRequiresMultipleLines:v50, a4];
-            *(a1 + 80) = v55;
-            v46 = *(a1 + 64);
+            *(self + 72) = [(_UIValueCellContentView *)a2 _intrinsicSizeForLabel:valueLabel inAvailableSpace:&v69 outRequiresMultipleLines:v50, a4];
+            *(self + 80) = v55;
+            v46 = *(self + 64);
             v56 = v47 != *v7;
             if (v46 != v7[1])
             {
@@ -642,7 +642,7 @@ LABEL_33:
             }
 
             v57 = v56 && v69;
-            *(a1 + 48) = v57;
+            *(self + 48) = v57;
             if (v57 == 1)
             {
               goto LABEL_44;
@@ -651,14 +651,14 @@ LABEL_33:
 
           else
           {
-            v46 = *(a1 + 64);
+            v46 = *(self + 64);
             v51 = v47 != *v7;
             if (v46 != v7[1])
             {
               v51 = 1;
             }
 
-            *(a1 + 48) = v51;
+            *(self + 48) = v51;
             if (v51)
             {
               goto LABEL_44;
@@ -666,25 +666,25 @@ LABEL_33:
           }
 
           [a2[54] textToValuePadding];
-          v53 = *(a1 + 88) + v52 + *(a1 + 72);
-          if (*(a1 + 96) >= *(a1 + 80))
+          v53 = *(self + 88) + v52 + *(self + 72);
+          if (*(self + 96) >= *(self + 80))
           {
-            v54 = *(a1 + 96);
+            v54 = *(self + 96);
           }
 
           else
           {
-            v54 = *(a1 + 80);
+            v54 = *(self + 80);
           }
 
-          *(a1 + 88) = v53;
-          *(a1 + 96) = v54;
+          *(self + 88) = v53;
+          *(self + 96) = v54;
         }
       }
 
-      else if (v44)
+      else if (valueLabel)
       {
-        v47 = *(a1 + 56);
+        v47 = *(self + 56);
         goto LABEL_33;
       }
 
@@ -693,9 +693,9 @@ LABEL_47:
       return;
     }
 
-    v32 = [v10 image];
-    v33 = [a2[54] imageView];
-    [v33 reservedLayoutSize];
+    image2 = [imageView image];
+    imageView4 = [a2[54] imageView];
+    [imageView4 reservedLayoutSize];
     v35 = a2[54];
     if (v35)
     {
@@ -707,31 +707,31 @@ LABEL_47:
       v36 = 0;
     }
 
-    v37 = _UIContentViewImageViewHorizontalCenteringOffset(v32, v9, v36, v67, v34);
-    *(a1 + 40) = v37;
+    v37 = _UIContentViewImageViewHorizontalCenteringOffset(image2, traitCollection, v36, v67, v34);
+    *(self + 40) = v37;
 
     v38 = v67 + v37 + v37;
-    *(a1 + 24) = v38;
+    *(self + 24) = v38;
     [a2[54] imageToTextPadding];
-    a3 = a3 - (v38 + v39);
+    space = space - (v38 + v39);
 LABEL_24:
     v40 = 0.0;
     goto LABEL_27;
   }
 
-  *(a1 + 96) = 0;
-  *(a1 + 64) = 0u;
-  *(a1 + 80) = 0u;
-  *(a1 + 32) = 0u;
-  *(a1 + 48) = 0u;
-  *a1 = 0u;
-  *(a1 + 16) = 0u;
+  *(self + 96) = 0;
+  *(self + 64) = 0u;
+  *(self + 80) = 0u;
+  *(self + 32) = 0u;
+  *(self + 48) = 0u;
+  *self = 0u;
+  *(self + 16) = 0u;
 }
 
-- (CGSize)_intrinsicSizeWithinSize:(CGSize)a3
+- (CGSize)_intrinsicSizeWithinSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   if (self && (animatingToConfiguration = self->_animatingToConfiguration) != 0 && (configuration = self->_configuration, configuration != animatingToConfiguration))
   {
     v8 = configuration;
@@ -743,8 +743,8 @@ LABEL_24:
     v8 = 0;
   }
 
-  v9 = [(UIView *)self traitCollection];
-  v10 = _UITableConstantsForTraitCollection(v9);
+  traitCollection = [(UIView *)self traitCollection];
+  v10 = _UITableConstantsForTraitCollection(traitCollection);
   if (width >= self->_preferredMaxLayoutWidth)
   {
     preferredMaxLayoutWidth = self->_preferredMaxLayoutWidth;
@@ -787,18 +787,18 @@ LABEL_24:
     v20 = v22;
   }
 
-  v24 = [(_UIValueCellContentView *)self textLabel];
-  v25 = [v24 font];
-  v26 = v25;
-  if (v25)
+  textLabel = [(_UIValueCellContentView *)self textLabel];
+  font = [textLabel font];
+  v26 = font;
+  if (font)
   {
-    v27 = v25;
+    font2 = font;
   }
 
   else
   {
-    v28 = [(_UIValueCellContentViewConfiguration *)self->_configuration textLabel];
-    v27 = [v28 font];
+    textLabel2 = [(_UIValueCellContentViewConfiguration *)self->_configuration textLabel];
+    font2 = [textLabel2 font];
   }
 
   v29 = self->_configuration;
@@ -812,7 +812,7 @@ LABEL_24:
     v30 = 0;
   }
 
-  [v10 minimumContentViewHeightForFont:v27 traitCollection:v9 isSidebarStyle:v30];
+  [v10 minimumContentViewHeightForFont:font2 traitCollection:traitCollection isSidebarStyle:v30];
   v32 = v31;
   if (v8)
   {
@@ -851,11 +851,11 @@ LABEL_24:
   return result;
 }
 
-- (void)_layoutMarginsDidChangeFromOldMargins:(UIEdgeInsets)a3
+- (void)_layoutMarginsDidChangeFromOldMargins:(UIEdgeInsets)margins
 {
   v4.receiver = self;
   v4.super_class = _UIValueCellContentView;
-  [(UIView *)&v4 _layoutMarginsDidChangeFromOldMargins:a3.top, a3.left, a3.bottom, a3.right];
+  [(UIView *)&v4 _layoutMarginsDidChangeFromOldMargins:margins.top, margins.left, margins.bottom, margins.right];
   [(UIView *)self invalidateIntrinsicContentSize];
   [(UIView *)self setNeedsLayout];
 }
@@ -891,11 +891,11 @@ LABEL_24:
   v143 = 0u;
   memset(v141, 0, sizeof(v141));
   [(_UIValueCellContentView *)v141 _computeSizesForAvailableSpace:v15 - v18 - v23, v22];
-  v24 = [(_UIValueCellContentView *)self imageView];
+  imageView = [(_UIValueCellContentView *)self imageView];
   v25 = *&v141[0];
   v121 = v13;
   v122 = v11;
-  if (!v24 || *&v141[0] == 2)
+  if (!imageView || *&v141[0] == 2)
   {
     v40 = 2;
     v133 = v15;
@@ -921,7 +921,7 @@ LABEL_24:
     v132 = v36;
     v133 = v37;
     v134 = v38;
-    [v24 setFrame:?];
+    [imageView setFrame:?];
     [(_UIValueCellContentViewConfiguration *)self->_configuration imageToTextPadding];
     v19 = v26 + v39;
     v40 = 8;
@@ -933,25 +933,25 @@ LABEL_24:
   width = v148.size.width;
   height = v148.size.height;
   MinY = CGRectGetMinY(v148);
-  v46 = [(_UIValueCellContentView *)self textLabel];
-  v47 = [(_UIValueCellContentView *)self valueLabel];
-  if (v46)
+  textLabel = [(_UIValueCellContentView *)self textLabel];
+  valueLabel = [(_UIValueCellContentView *)self valueLabel];
+  if (textLabel)
   {
     v48 = v143;
     v127 = v4;
     if ((v143 & 1) == 0)
     {
-      [v46 _firstBaselineOffsetFromTop];
+      [textLabel _firstBaselineOffsetFromTop];
       v49 = v19;
       v51 = v50;
-      [v47 _firstBaselineOffsetFromTop];
+      [valueLabel _firstBaselineOffsetFromTop];
       v53 = v51 < v52;
       v19 = v49;
       if (v53)
       {
-        [v47 _firstBaselineOffsetFromTop];
+        [valueLabel _firstBaselineOffsetFromTop];
         v55 = v54;
-        [v46 _firstBaselineOffsetFromTop];
+        [textLabel _firstBaselineOffsetFromTop];
         v57 = v55 - v56;
         v19 = v49;
         MinY = MinY + v57;
@@ -971,7 +971,7 @@ LABEL_24:
     v64 = v63;
     v66 = v65;
     v68 = v67;
-    [v46 setFrame:?];
+    [textLabel setFrame:?];
     if (v48)
     {
       v149.origin.x = v62;
@@ -997,14 +997,14 @@ LABEL_24:
     v150.size.width = width;
     v150.size.height = height;
     MinY = CGRectGetMinY(v150);
-    [v46 _firstBaselineOffsetFromTop];
+    [textLabel _firstBaselineOffsetFromTop];
     v72 = v71;
-    [v47 _firstBaselineOffsetFromTop];
+    [valueLabel _firstBaselineOffsetFromTop];
     if (v72 > v73)
     {
-      [v46 _firstBaselineOffsetFromTop];
+      [textLabel _firstBaselineOffsetFromTop];
       v75 = v74;
-      [v47 _firstBaselineOffsetFromTop];
+      [valueLabel _firstBaselineOffsetFromTop];
       MinY = MinY + v75 - v76;
     }
 
@@ -1020,18 +1020,18 @@ LABEL_24:
     {
 LABEL_16:
       v77 = v19;
-      [v24 frame];
+      [imageView frame];
       v79 = v78;
       v81 = v80;
       v83 = v82;
       v85 = v84;
-      LineOfLabel = _UIContentViewRectForVerticalCenteringWithFirstLineOfLabel(v46);
+      LineOfLabel = _UIContentViewRectForVerticalCenteringWithFirstLineOfLabel(textLabel);
       v90 = v86;
       if (v25 == 2)
       {
         v91 = v88;
         v92 = v87;
-        [(UIView *)self bringSubviewToFront:v24];
+        [(UIView *)self bringSubviewToFront:imageView];
         v135 = v131;
         v136 = v132;
         v137 = v133;
@@ -1072,20 +1072,20 @@ LABEL_16:
         v19 = v77;
       }
 
-      [v24 setFrame:{UIRectIntegralWithScale(v98, v97, v100, v102, v9)}];
+      [imageView setFrame:{UIRectIntegralWithScale(v98, v97, v100, v102, v9)}];
       v4 = v127;
     }
   }
 
 LABEL_23:
-  if (v24)
+  if (imageView)
   {
-    v109 = [(_UIValueCellContentViewConfiguration *)self->_configuration imageView];
-    [v109 cornerRadius];
-    _UIApplyCornerRadiusToView(v24, v110);
+    imageView2 = [(_UIValueCellContentViewConfiguration *)self->_configuration imageView];
+    [imageView2 cornerRadius];
+    _UIApplyCornerRadiusToView(imageView, v110);
   }
 
-  if (v47)
+  if (valueLabel)
   {
     v135 = v131;
     v136 = v132;
@@ -1094,7 +1094,7 @@ LABEL_23:
     v139 = v40;
     v140 = v19;
     v111 = [(UIView *)self _applyDirectionalRelativePosition:0.0 toRect:MinY, *(&v144 + 1)];
-    [v47 setFrame:{UIRectIntegralWithScale(v111, v112, v113, v114, v9)}];
+    [valueLabel setFrame:{UIRectIntegralWithScale(v111, v112, v113, v114, v9)}];
   }
 
   if (self)
@@ -1120,19 +1120,19 @@ LABEL_23:
 
 - (NSLayoutRect)_primaryTextLayoutRect
 {
-  v2 = [(_UIValueCellContentView *)self textLabel];
-  v3 = [v2 _layoutRect];
+  textLabel = [(_UIValueCellContentView *)self textLabel];
+  _layoutRect = [textLabel _layoutRect];
 
-  return v3;
+  return _layoutRect;
 }
 
 - (CGRect)_primaryTextLayoutFrame
 {
-  v2 = [(_UIValueCellContentView *)self textLabel];
-  v3 = v2;
-  if (v2)
+  textLabel = [(_UIValueCellContentView *)self textLabel];
+  v3 = textLabel;
+  if (textLabel)
   {
-    [v2 frame];
+    [textLabel frame];
     v5 = v4;
     v7 = v6;
     v9 = v8;

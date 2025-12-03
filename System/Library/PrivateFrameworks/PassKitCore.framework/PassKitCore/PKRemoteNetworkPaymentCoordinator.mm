@@ -2,7 +2,7 @@
 - (PKRemoteNetworkPaymentCoordinator)init;
 - (PKRemoteNetworkPaymentCoordinatorDelegate)delegate;
 - (void)handleRemoteNetworkPaymentCoordinatorComplete;
-- (void)handleRemoteNetworkPaymentCoordinatorDidPresentPaymentSheet:(BOOL)a3;
+- (void)handleRemoteNetworkPaymentCoordinatorDidPresentPaymentSheet:(BOOL)sheet;
 @end
 
 @implementation PKRemoteNetworkPaymentCoordinator
@@ -26,26 +26,26 @@
 
 - (void)handleRemoteNetworkPaymentCoordinatorComplete
 {
-  v3 = [(PKRemoteNetworkPaymentCoordinator *)self delegate];
+  delegate = [(PKRemoteNetworkPaymentCoordinator *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(PKRemoteNetworkPaymentCoordinator *)self delegate];
-    [v5 remoteNetworkPaymentCoordinatorDidComplete:self];
+    delegate2 = [(PKRemoteNetworkPaymentCoordinator *)self delegate];
+    [delegate2 remoteNetworkPaymentCoordinatorDidComplete:self];
   }
 }
 
-- (void)handleRemoteNetworkPaymentCoordinatorDidPresentPaymentSheet:(BOOL)a3
+- (void)handleRemoteNetworkPaymentCoordinatorDidPresentPaymentSheet:(BOOL)sheet
 {
-  v3 = a3;
-  v5 = [(PKRemoteNetworkPaymentCoordinator *)self delegate];
+  sheetCopy = sheet;
+  delegate = [(PKRemoteNetworkPaymentCoordinator *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(PKRemoteNetworkPaymentCoordinator *)self delegate];
-    [v7 remoteNetworkPaymentCoordinator:self didPresentPaymentSheet:v3];
+    delegate2 = [(PKRemoteNetworkPaymentCoordinator *)self delegate];
+    [delegate2 remoteNetworkPaymentCoordinator:self didPresentPaymentSheet:sheetCopy];
   }
 }
 

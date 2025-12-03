@@ -1,17 +1,17 @@
 @interface PXNumberFormatter
-- (BOOL)getObjectValue:(id *)a3 forString:(id)a4 range:(_NSRange *)a5 error:(id *)a6;
+- (BOOL)getObjectValue:(id *)value forString:(id)string range:(_NSRange *)range error:(id *)error;
 @end
 
 @implementation PXNumberFormatter
 
-- (BOOL)getObjectValue:(id *)a3 forString:(id)a4 range:(_NSRange *)a5 error:(id *)a6
+- (BOOL)getObjectValue:(id *)value forString:(id)string range:(_NSRange *)range error:(id *)error
 {
   v9.receiver = self;
   v9.super_class = PXNumberFormatter;
-  v7 = [(PXNumberFormatter *)&v9 getObjectValue:a3 forString:a4 range:a5 error:a6];
-  if (a3 && v7 && !*a3)
+  v7 = [(PXNumberFormatter *)&v9 getObjectValue:value forString:string range:range error:error];
+  if (value && v7 && !*value)
   {
-    *a3 = &unk_1F190AD98;
+    *value = &unk_1F190AD98;
   }
 
   return v7;

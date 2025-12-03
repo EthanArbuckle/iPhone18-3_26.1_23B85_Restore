@@ -1,46 +1,46 @@
 @interface LanguageAwareEditor.Coordinator
-- (BOOL)textView:(id)a3 shouldChangeTextInRange:(_NSRange)a4 replacementText:(id)a5;
+- (BOOL)textView:(id)view shouldChangeTextInRange:(_NSRange)range replacementText:(id)text;
 - (_TtCV17SequoiaTranslator19LanguageAwareEditor11Coordinator)init;
-- (void)textDroppableView:(id)a3 dropSessionDidEnter:(id)a4;
-- (void)textViewDidBeginEditing:(id)a3;
-- (void)textViewDidChange:(id)a3;
+- (void)textDroppableView:(id)view dropSessionDidEnter:(id)enter;
+- (void)textViewDidBeginEditing:(id)editing;
+- (void)textViewDidChange:(id)change;
 @end
 
 @implementation LanguageAwareEditor.Coordinator
 
-- (BOOL)textView:(id)a3 shouldChangeTextInRange:(_NSRange)a4 replacementText:(id)a5
+- (BOOL)textView:(id)view shouldChangeTextInRange:(_NSRange)range replacementText:(id)text
 {
   v7 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v9 = v8;
-  v10 = a3;
-  v11 = self;
-  LOBYTE(v7) = sub_1001355B8(v10, v7, v9);
+  viewCopy = view;
+  selfCopy = self;
+  LOBYTE(v7) = sub_1001355B8(viewCopy, v7, v9);
 
   return v7 & 1;
 }
 
-- (void)textViewDidChange:(id)a3
+- (void)textViewDidChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
-  sub_1001348A8(v4);
+  changeCopy = change;
+  selfCopy = self;
+  sub_1001348A8(changeCopy);
 }
 
-- (void)textDroppableView:(id)a3 dropSessionDidEnter:(id)a4
+- (void)textDroppableView:(id)view dropSessionDidEnter:(id)enter
 {
   objc_opt_self();
   v6 = swift_dynamicCastObjCClass();
   if (v6)
   {
     v7 = v6;
-    v11 = a3;
+    viewCopy = view;
     swift_unknownObjectRetain();
-    v8 = self;
-    v9 = [v7 delegate];
-    if (v9)
+    selfCopy = self;
+    delegate = [v7 delegate];
+    if (delegate)
     {
-      v10 = v9;
-      if ([v9 respondsToSelector:"textViewDidChange:"])
+      v10 = delegate;
+      if ([delegate respondsToSelector:"textViewDidChange:"])
       {
         [v10 textViewDidChange:v7];
       }
@@ -57,7 +57,7 @@
   }
 }
 
-- (void)textViewDidBeginEditing:(id)a3
+- (void)textViewDidBeginEditing:(id)editing
 {
   type metadata accessor for LanguageAwareTextView();
   v5 = swift_dynamicCastClass();
@@ -68,8 +68,8 @@
     v8 = *&v7[*(type metadata accessor for LanguageAwareEditor(0) + 64)];
     if (v8)
     {
-      v9 = a3;
-      v10 = self;
+      editingCopy = editing;
+      selfCopy = self;
       sub_10001AD18(v8);
       v8(v6);
       sub_10001ABE4(v8);

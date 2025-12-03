@@ -1,24 +1,24 @@
 @interface SBGridToActiveAppLayoutsSwitcherModifier
 - (BOOL)_isEffectivelyFullScreen;
-- (BOOL)_isIndexActive:(unint64_t)a3;
-- (BOOL)shouldAsyncRenderUntilDelay:(double *)a3;
-- (CGRect)frameForIndex:(unint64_t)a3;
-- (CGRect)frameForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 withBounds:(CGRect)a5;
-- (SBGridToActiveAppLayoutsSwitcherModifier)initWithTransitionID:(id)a3 direction:(int64_t)a4 activeAppLayouts:(id)a5 gridModifier:(id)a6;
-- (SBSwitcherAsyncRenderingAttributes)asyncRenderingAttributesForAppLayout:(id)a3;
-- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)a3;
+- (BOOL)_isIndexActive:(unint64_t)active;
+- (BOOL)shouldAsyncRenderUntilDelay:(double *)delay;
+- (CGRect)frameForIndex:(unint64_t)index;
+- (CGRect)frameForLayoutRole:(int64_t)role inAppLayout:(id)layout withBounds:(CGRect)bounds;
+- (SBGridToActiveAppLayoutsSwitcherModifier)initWithTransitionID:(id)d direction:(int64_t)direction activeAppLayouts:(id)layouts gridModifier:(id)modifier;
+- (SBSwitcherAsyncRenderingAttributes)asyncRenderingAttributesForAppLayout:(id)layout;
+- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)index;
 - (double)_unselectedCardScale;
-- (double)dimmingAlphaForLayoutRole:(int64_t)a3 inAppLayout:(id)a4;
+- (double)dimmingAlphaForLayoutRole:(int64_t)role inAppLayout:(id)layout;
 - (double)homeScreenAlpha;
 - (double)homeScreenBackdropBlurProgress;
 - (double)homeScreenScale;
-- (double)opacityForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 atIndex:(unint64_t)a5;
-- (double)scaleForIndex:(unint64_t)a3;
+- (double)opacityForLayoutRole:(int64_t)role inAppLayout:(id)layout atIndex:(unint64_t)index;
+- (double)scaleForIndex:(unint64_t)index;
 - (double)wallpaperScale;
 - (id)_layoutSettings;
-- (id)animationAttributesForLayoutElement:(id)a3;
+- (id)animationAttributesForLayoutElement:(id)element;
 - (id)appLayoutsToCacheSnapshots;
-- (id)handleTransitionEvent:(id)a3;
+- (id)handleTransitionEvent:(id)event;
 - (id)topMostLayoutElements;
 - (id)transitionWillBegin;
 - (id)visibleAppLayouts;
@@ -27,43 +27,43 @@
 
 @implementation SBGridToActiveAppLayoutsSwitcherModifier
 
-- (SBGridToActiveAppLayoutsSwitcherModifier)initWithTransitionID:(id)a3 direction:(int64_t)a4 activeAppLayouts:(id)a5 gridModifier:(id)a6
+- (SBGridToActiveAppLayoutsSwitcherModifier)initWithTransitionID:(id)d direction:(int64_t)direction activeAppLayouts:(id)layouts gridModifier:(id)modifier
 {
-  v10 = a5;
-  v11 = a6;
+  layoutsCopy = layouts;
+  modifierCopy = modifier;
   v17.receiver = self;
   v17.super_class = SBGridToActiveAppLayoutsSwitcherModifier;
-  v12 = [(SBTransitionSwitcherModifier *)&v17 initWithTransitionID:a3];
+  v12 = [(SBTransitionSwitcherModifier *)&v17 initWithTransitionID:d];
   v13 = v12;
   if (v12)
   {
-    v12->_direction = a4;
-    v14 = [v10 copy];
+    v12->_direction = direction;
+    v14 = [layoutsCopy copy];
     activeAppLayouts = v13->_activeAppLayouts;
     v13->_activeAppLayouts = v14;
 
-    objc_storeStrong(&v13->_gridModifier, a6);
+    objc_storeStrong(&v13->_gridModifier, modifier);
     v13->_wantsMinificationFilter = 0;
   }
 
   return v13;
 }
 
-- (BOOL)shouldAsyncRenderUntilDelay:(double *)a3
+- (BOOL)shouldAsyncRenderUntilDelay:(double *)delay
 {
   direction = self->_direction;
   if (!direction)
   {
-    v6 = [(SBGridToActiveAppLayoutsSwitcherModifier *)self switcherSettings];
-    v7 = [v6 animationSettings];
-    [v7 disableAsyncRenderingTransitionPercentage];
+    switcherSettings = [(SBGridToActiveAppLayoutsSwitcherModifier *)self switcherSettings];
+    animationSettings = [switcherSettings animationSettings];
+    [animationSettings disableAsyncRenderingTransitionPercentage];
     v9 = v8;
 
-    v10 = [(SBGridToActiveAppLayoutsSwitcherModifier *)self _layoutSettings];
-    [v10 settlingDuration];
+    _layoutSettings = [(SBGridToActiveAppLayoutsSwitcherModifier *)self _layoutSettings];
+    [_layoutSettings settlingDuration];
     v12 = v9 * v11;
     UIAnimationDragCoefficient();
-    *a3 = v12 * v13;
+    *delay = v12 * v13;
   }
 
   return direction == 0;
@@ -73,7 +73,7 @@
 {
   v12.receiver = self;
   v12.super_class = SBGridToActiveAppLayoutsSwitcherModifier;
-  v3 = [(SBTransitionSwitcherModifier *)&v12 transitionWillBegin];
+  transitionWillBegin = [(SBTransitionSwitcherModifier *)&v12 transitionWillBegin];
   v4 = [(NSArray *)self->_activeAppLayouts bs_firstObjectPassingTest:&__block_literal_global_225];
   direction = self->_direction;
   v6 = [SBUpdateLayoutSwitcherEventResponse alloc];
@@ -98,33 +98,33 @@
   }
 
   v9 = [(SBUpdateLayoutSwitcherEventResponse *)v6 initWithOptions:v8 updateMode:2];
-  v10 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:v9 toResponse:v3];
+  v10 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:v9 toResponse:transitionWillBegin];
 
   return v10;
 }
 
-- (id)handleTransitionEvent:(id)a3
+- (id)handleTransitionEvent:(id)event
 {
-  v4 = a3;
-  v5 = [v4 transitionID];
-  v6 = [(SBTransitionSwitcherModifier *)self transitionID];
-  v7 = [v5 isEqual:v6];
+  eventCopy = event;
+  transitionID = [eventCopy transitionID];
+  transitionID2 = [(SBTransitionSwitcherModifier *)self transitionID];
+  v7 = [transitionID isEqual:transitionID2];
 
   if (v7)
   {
-    v8 = [v4 fromAppLayout];
-    v9 = [v4 toAppLayout];
-    self->_wantsMinificationFilter = [v8 isEqual:v9];
+    fromAppLayout = [eventCopy fromAppLayout];
+    toAppLayout = [eventCopy toAppLayout];
+    self->_wantsMinificationFilter = [fromAppLayout isEqual:toAppLayout];
   }
 
   v12.receiver = self;
   v12.super_class = SBGridToActiveAppLayoutsSwitcherModifier;
-  v10 = [(SBTransitionSwitcherModifier *)&v12 handleTransitionEvent:v4];
+  v10 = [(SBTransitionSwitcherModifier *)&v12 handleTransitionEvent:eventCopy];
 
   return v10;
 }
 
-- (CGRect)frameForIndex:(unint64_t)a3
+- (CGRect)frameForIndex:(unint64_t)index
 {
   if (![(SBGridToActiveAppLayoutsSwitcherModifier *)self _isEffectivelyFullScreen])
   {
@@ -142,7 +142,7 @@
     v31[3] = &unk_2783AA618;
     v31[4] = self;
     v31[5] = &v32;
-    v31[6] = a3;
+    v31[6] = index;
     [(SBChainableModifier *)self performTransactionWithTemporaryChildModifier:gridModifier usingBlock:v31];
     v6 = v33[4];
     v8 = v33[5];
@@ -153,7 +153,7 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  if (![(SBGridToActiveAppLayoutsSwitcherModifier *)self _isIndexActive:a3])
+  if (![(SBGridToActiveAppLayoutsSwitcherModifier *)self _isIndexActive:index])
   {
     v32 = 0;
     v33 = &v32;
@@ -169,7 +169,7 @@ LABEL_6:
     v29[3] = &unk_2783AA618;
     v29[4] = self;
     v29[5] = &v32;
-    v29[6] = a3;
+    v29[6] = index;
     [(SBChainableModifier *)self performTransactionWithTemporaryChildModifier:v16 usingBlock:v29];
     [(SBGridToActiveAppLayoutsSwitcherModifier *)self _unselectedCardScale];
     v18 = v17;
@@ -192,7 +192,7 @@ LABEL_6:
 
   v30.receiver = self;
   v30.super_class = SBGridToActiveAppLayoutsSwitcherModifier;
-  [(SBGridToActiveAppLayoutsSwitcherModifier *)&v30 frameForIndex:a3];
+  [(SBGridToActiveAppLayoutsSwitcherModifier *)&v30 frameForIndex:index];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -231,14 +231,14 @@ uint64_t __58__SBGridToActiveAppLayoutsSwitcherModifier_frameForIndex___block_in
   return result;
 }
 
-- (CGRect)frameForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 withBounds:(CGRect)a5
+- (CGRect)frameForLayoutRole:(int64_t)role inAppLayout:(id)layout withBounds:(CGRect)bounds
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v11 = a4;
-  if ([(SBGridToActiveAppLayoutsSwitcherModifier *)self _isEffectivelyFullScreen]&& ![(NSArray *)self->_activeAppLayouts containsObject:v11])
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  layoutCopy = layout;
+  if ([(SBGridToActiveAppLayoutsSwitcherModifier *)self _isEffectivelyFullScreen]&& ![(NSArray *)self->_activeAppLayouts containsObject:layoutCopy])
   {
     v34 = 0;
     v35 = &v34;
@@ -252,9 +252,9 @@ uint64_t __58__SBGridToActiveAppLayoutsSwitcherModifier_frameForIndex___block_in
     v26[2] = __86__SBGridToActiveAppLayoutsSwitcherModifier_frameForLayoutRole_inAppLayout_withBounds___block_invoke;
     v26[3] = &unk_2783AA640;
     v28 = &v34;
-    v29 = a3;
+    roleCopy = role;
     v26[4] = self;
-    v27 = v11;
+    v27 = layoutCopy;
     v30 = x;
     v31 = y;
     v32 = width;
@@ -272,7 +272,7 @@ uint64_t __58__SBGridToActiveAppLayoutsSwitcherModifier_frameForIndex___block_in
   {
     v25.receiver = self;
     v25.super_class = SBGridToActiveAppLayoutsSwitcherModifier;
-    [(SBGridToActiveAppLayoutsSwitcherModifier *)&v25 frameForLayoutRole:a3 inAppLayout:v11 withBounds:x, y, width, height];
+    [(SBGridToActiveAppLayoutsSwitcherModifier *)&v25 frameForLayoutRole:role inAppLayout:layoutCopy withBounds:x, y, width, height];
     v13 = v12;
     v15 = v14;
     v17 = v16;
@@ -320,8 +320,8 @@ uint64_t __86__SBGridToActiveAppLayoutsSwitcherModifier_frameForLayoutRole_inApp
   v4 = v11[5];
   v8.receiver = self;
   v8.super_class = SBGridToActiveAppLayoutsSwitcherModifier;
-  v5 = [(SBGridToActiveAppLayoutsSwitcherModifier *)&v8 visibleAppLayouts];
-  v6 = [v4 setByAddingObjectsFromSet:v5];
+  visibleAppLayouts = [(SBGridToActiveAppLayoutsSwitcherModifier *)&v8 visibleAppLayouts];
+  v6 = [v4 setByAddingObjectsFromSet:visibleAppLayouts];
 
   _Block_object_dispose(&v10, 8);
 
@@ -336,13 +336,13 @@ void __61__SBGridToActiveAppLayoutsSwitcherModifier_visibleAppLayouts__block_inv
   *(v3 + 40) = v2;
 }
 
-- (double)scaleForIndex:(unint64_t)a3
+- (double)scaleForIndex:(unint64_t)index
 {
   if ([(SBGridToActiveAppLayoutsSwitcherModifier *)self _isIndexActive:?])
   {
     v15.receiver = self;
     v15.super_class = SBGridToActiveAppLayoutsSwitcherModifier;
-    [(SBGridToActiveAppLayoutsSwitcherModifier *)&v15 scaleForIndex:a3];
+    [(SBGridToActiveAppLayoutsSwitcherModifier *)&v15 scaleForIndex:index];
     return v5;
   }
 
@@ -359,7 +359,7 @@ void __61__SBGridToActiveAppLayoutsSwitcherModifier_visibleAppLayouts__block_inv
     v10[3] = &unk_2783AA618;
     v10[4] = self;
     v10[5] = &v11;
-    v10[6] = a3;
+    v10[6] = index;
     [(SBChainableModifier *)self performTransactionWithTemporaryChildModifier:gridModifier usingBlock:v10];
     [(SBGridToActiveAppLayoutsSwitcherModifier *)self _unselectedCardScale];
     v6 = v8 * v12[3];
@@ -377,46 +377,46 @@ uint64_t __58__SBGridToActiveAppLayoutsSwitcherModifier_scaleForIndex___block_in
   return result;
 }
 
-- (id)animationAttributesForLayoutElement:(id)a3
+- (id)animationAttributesForLayoutElement:(id)element
 {
   v8.receiver = self;
   v8.super_class = SBGridToActiveAppLayoutsSwitcherModifier;
-  v4 = [(SBTransitionSwitcherModifier *)&v8 animationAttributesForLayoutElement:a3];
+  v4 = [(SBTransitionSwitcherModifier *)&v8 animationAttributesForLayoutElement:element];
   v5 = [v4 mutableCopy];
 
-  v6 = [(SBGridToActiveAppLayoutsSwitcherModifier *)self _layoutSettings];
-  [v5 setLayoutSettings:v6];
+  _layoutSettings = [(SBGridToActiveAppLayoutsSwitcherModifier *)self _layoutSettings];
+  [v5 setLayoutSettings:_layoutSettings];
 
   return v5;
 }
 
 - (id)_layoutSettings
 {
-  v3 = [(SBGridToActiveAppLayoutsSwitcherModifier *)self switcherSettings];
-  v4 = [v3 animationSettings];
+  switcherSettings = [(SBGridToActiveAppLayoutsSwitcherModifier *)self switcherSettings];
+  animationSettings = [switcherSettings animationSettings];
 
   if (self->_direction == 1)
   {
-    [v4 toggleAppSwitcherSettings];
+    [animationSettings toggleAppSwitcherSettings];
   }
 
   else
   {
-    [v4 launchAppFromSwitcherSettings];
+    [animationSettings launchAppFromSwitcherSettings];
   }
   v5 = ;
 
   return v5;
 }
 
-- (double)opacityForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 atIndex:(unint64_t)a5
+- (double)opacityForLayoutRole:(int64_t)role inAppLayout:(id)layout atIndex:(unint64_t)index
 {
-  v8 = a4;
-  if (![(SBGridToActiveAppLayoutsSwitcherModifier *)self _isEffectivelyFullScreen]|| (v9 = 0.0, [(SBGridToActiveAppLayoutsSwitcherModifier *)self _isIndexActive:a5]))
+  layoutCopy = layout;
+  if (![(SBGridToActiveAppLayoutsSwitcherModifier *)self _isEffectivelyFullScreen]|| (v9 = 0.0, [(SBGridToActiveAppLayoutsSwitcherModifier *)self _isIndexActive:index]))
   {
     v12.receiver = self;
     v12.super_class = SBGridToActiveAppLayoutsSwitcherModifier;
-    [(SBGridToActiveAppLayoutsSwitcherModifier *)&v12 opacityForLayoutRole:a3 inAppLayout:v8 atIndex:a5];
+    [(SBGridToActiveAppLayoutsSwitcherModifier *)&v12 opacityForLayoutRole:role inAppLayout:layoutCopy atIndex:index];
     v9 = v10;
   }
 
@@ -439,9 +439,9 @@ uint64_t __58__SBGridToActiveAppLayoutsSwitcherModifier_scaleForIndex___block_in
   [(SBChainableModifier *)self performTransactionWithTemporaryChildModifier:gridModifier usingBlock:v9];
   if (!self->_direction && (([(SBGridToActiveAppLayoutsSwitcherModifier *)self homeScreenHasOpenFolder]& 1) != 0 || [(SBGridToActiveAppLayoutsSwitcherModifier *)self isShowingSpotlightOrTodayView]))
   {
-    v4 = [(SBGridToActiveAppLayoutsSwitcherModifier *)self switcherSettings];
-    v5 = [v4 animationSettings];
-    [v5 homeScreenAlphaForMode:1];
+    switcherSettings = [(SBGridToActiveAppLayoutsSwitcherModifier *)self switcherSettings];
+    animationSettings = [switcherSettings animationSettings];
+    [animationSettings homeScreenAlphaForMode:1];
     *(v11 + 3) = v6;
   }
 
@@ -573,15 +573,15 @@ uint64_t __74__SBGridToActiveAppLayoutsSwitcherModifier_homeScreenBackdropBlurPr
   return result;
 }
 
-- (double)dimmingAlphaForLayoutRole:(int64_t)a3 inAppLayout:(id)a4
+- (double)dimmingAlphaForLayoutRole:(int64_t)role inAppLayout:(id)layout
 {
   v13.receiver = self;
   v13.super_class = SBGridToActiveAppLayoutsSwitcherModifier;
-  v6 = a4;
-  [(SBGridToActiveAppLayoutsSwitcherModifier *)&v13 dimmingAlphaForLayoutRole:a3 inAppLayout:v6];
+  layoutCopy = layout;
+  [(SBGridToActiveAppLayoutsSwitcherModifier *)&v13 dimmingAlphaForLayoutRole:role inAppLayout:layoutCopy];
   v8 = v7;
   v9 = [(SBGridToActiveAppLayoutsSwitcherModifier *)self appLayouts:v13.receiver];
-  v10 = [v9 indexOfObject:v6];
+  v10 = [v9 indexOfObject:layoutCopy];
 
   if (![(SBGridToActiveAppLayoutsSwitcherModifier *)self _isIndexActive:v10]&& [(SBGridToActiveAppLayoutsSwitcherModifier *)self _isEffectivelyFullScreen])
   {
@@ -592,7 +592,7 @@ uint64_t __74__SBGridToActiveAppLayoutsSwitcherModifier_homeScreenBackdropBlurPr
   return v8;
 }
 
-- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)a3
+- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)index
 {
   v21 = 0;
   v22 = &v21;
@@ -608,13 +608,13 @@ uint64_t __74__SBGridToActiveAppLayoutsSwitcherModifier_homeScreenBackdropBlurPr
   v20[3] = &unk_2783AA618;
   v20[4] = self;
   v20[5] = &v21;
-  v20[6] = a3;
+  v20[6] = index;
   [(SBChainableModifier *)self performTransactionWithTemporaryChildModifier:gridModifier usingBlock:v20];
-  if ([(SBGridToActiveAppLayoutsSwitcherModifier *)self _isIndexActive:a3]&& [(SBGridToActiveAppLayoutsSwitcherModifier *)self _isEffectivelyFullScreen])
+  if ([(SBGridToActiveAppLayoutsSwitcherModifier *)self _isIndexActive:index]&& [(SBGridToActiveAppLayoutsSwitcherModifier *)self _isEffectivelyFullScreen])
   {
     v19.receiver = self;
     v19.super_class = SBGridToActiveAppLayoutsSwitcherModifier;
-    [(SBGridToActiveAppLayoutsSwitcherModifier *)&v19 cornerRadiiForIndex:a3];
+    [(SBGridToActiveAppLayoutsSwitcherModifier *)&v19 cornerRadiiForIndex:index];
     v8 = v7;
     v10 = v9;
     v12 = v11;
@@ -687,17 +687,17 @@ void __70__SBGridToActiveAppLayoutsSwitcherModifier_appLayoutsToCacheSnapshots__
   v20 = *MEMORY[0x277D85DE8];
   v18.receiver = self;
   v18.super_class = SBGridToActiveAppLayoutsSwitcherModifier;
-  v3 = [(SBGridToActiveAppLayoutsSwitcherModifier *)&v18 topMostLayoutElements];
-  v4 = v3;
-  if (v3)
+  topMostLayoutElements = [(SBGridToActiveAppLayoutsSwitcherModifier *)&v18 topMostLayoutElements];
+  v4 = topMostLayoutElements;
+  if (topMostLayoutElements)
   {
-    v5 = [v3 mutableCopy];
+    v5 = [topMostLayoutElements mutableCopy];
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v6 = [(NSArray *)self->_activeAppLayouts reverseObjectEnumerator];
-    v7 = [v6 countByEnumeratingWithState:&v14 objects:v19 count:16];
+    reverseObjectEnumerator = [(NSArray *)self->_activeAppLayouts reverseObjectEnumerator];
+    v7 = [reverseObjectEnumerator countByEnumeratingWithState:&v14 objects:v19 count:16];
     if (v7)
     {
       v8 = v7;
@@ -708,7 +708,7 @@ void __70__SBGridToActiveAppLayoutsSwitcherModifier_appLayoutsToCacheSnapshots__
         {
           if (*v15 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(reverseObjectEnumerator);
           }
 
           v11 = *(*(&v14 + 1) + 8 * i);
@@ -721,7 +721,7 @@ void __70__SBGridToActiveAppLayoutsSwitcherModifier_appLayoutsToCacheSnapshots__
           [(NSArray *)v5 insertObject:v11 atIndex:0];
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v14 objects:v19 count:16];
+        v8 = [reverseObjectEnumerator countByEnumeratingWithState:&v14 objects:v19 count:16];
       }
 
       while (v8);
@@ -736,18 +736,18 @@ void __70__SBGridToActiveAppLayoutsSwitcherModifier_appLayoutsToCacheSnapshots__
   return v5;
 }
 
-- (SBSwitcherAsyncRenderingAttributes)asyncRenderingAttributesForAppLayout:(id)a3
+- (SBSwitcherAsyncRenderingAttributes)asyncRenderingAttributesForAppLayout:(id)layout
 {
   v4.receiver = self;
   v4.super_class = SBGridToActiveAppLayoutsSwitcherModifier;
-  return ([(SBTransitionSwitcherModifier *)&v4 asyncRenderingAttributesForAppLayout:a3]| (self->_wantsMinificationFilter << 8));
+  return ([(SBTransitionSwitcherModifier *)&v4 asyncRenderingAttributesForAppLayout:layout]| (self->_wantsMinificationFilter << 8));
 }
 
-- (BOOL)_isIndexActive:(unint64_t)a3
+- (BOOL)_isIndexActive:(unint64_t)active
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = [(SBGridToActiveAppLayoutsSwitcherModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  appLayouts = [(SBGridToActiveAppLayoutsSwitcherModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:active];
 
   v14 = 0u;
   v15 = 0u;
@@ -796,9 +796,9 @@ LABEL_11:
     return 1.0;
   }
 
-  v3 = [(SBGridToActiveAppLayoutsSwitcherModifier *)self switcherSettings];
-  v4 = [v3 animationSettings];
-  [v4 appToSwitcherTransitionMinCardScaleFactor];
+  switcherSettings = [(SBGridToActiveAppLayoutsSwitcherModifier *)self switcherSettings];
+  animationSettings = [switcherSettings animationSettings];
+  [animationSettings appToSwitcherTransitionMinCardScaleFactor];
   v6 = v5;
 
   return v6;

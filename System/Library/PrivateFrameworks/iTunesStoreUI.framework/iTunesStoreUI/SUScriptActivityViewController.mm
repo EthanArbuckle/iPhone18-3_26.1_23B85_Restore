@@ -1,33 +1,33 @@
 @interface SUScriptActivityViewController
-+ (id)webScriptNameForKeyName:(id)a3;
-+ (id)webScriptNameForSelector:(SEL)a3;
++ (id)webScriptNameForKeyName:(id)name;
++ (id)webScriptNameForSelector:(SEL)selector;
 + (void)initialize;
-- (SUScriptActivityViewController)initWithScriptItemProviders:(id)a3 applicationActivities:(id)a4;
+- (SUScriptActivityViewController)initWithScriptItemProviders:(id)providers applicationActivities:(id)activities;
 - (id)excludedActivityTypes;
 - (id)newNativeViewController;
 - (id)scriptAttributeKeys;
 - (void)dealloc;
-- (void)setExcludedActivityTypes:(id)a3;
-- (void)setTitle:(id)a3 forActivityType:(id)a4;
+- (void)setExcludedActivityTypes:(id)types;
+- (void)setTitle:(id)title forActivityType:(id)type;
 @end
 
 @implementation SUScriptActivityViewController
 
-- (SUScriptActivityViewController)initWithScriptItemProviders:(id)a3 applicationActivities:(id)a4
+- (SUScriptActivityViewController)initWithScriptItemProviders:(id)providers applicationActivities:(id)activities
 {
   v10.receiver = self;
   v10.super_class = SUScriptActivityViewController;
   v6 = [(SUScriptObject *)&v10 init];
   if (v6)
   {
-    v7 = [a4 copy];
+    v7 = [activities copy];
     v6->_applicationActivities = v7;
     if (v7)
     {
       [(SUScriptObject *)v6 checkInScriptObjects:v7];
     }
 
-    v8 = [a3 copy];
+    v8 = [providers copy];
     v6->_providers = v8;
     if (v8)
     {
@@ -91,10 +91,10 @@
           objc_enumerationMutation(applicationActivities);
         }
 
-        v10 = [*(*(&v23 + 1) + 8 * i) nativeActivity];
-        if (v10)
+        nativeActivity = [*(*(&v23 + 1) + 8 * i) nativeActivity];
+        if (nativeActivity)
         {
-          [v3 addObject:v10];
+          [v3 addObject:nativeActivity];
         }
       }
 
@@ -123,10 +123,10 @@
           objc_enumerationMutation(providers);
         }
 
-        v16 = [*(*(&v19 + 1) + 8 * j) nativeActivityItemProvider];
-        if (v16)
+        nativeActivityItemProvider = [*(*(&v19 + 1) + 8 * j) nativeActivityItemProvider];
+        if (nativeActivityItemProvider)
         {
-          [v4 addObject:v16];
+          [v4 addObject:nativeActivityItemProvider];
         }
       }
 
@@ -141,10 +141,10 @@
   return v17;
 }
 
-- (void)setTitle:(id)a3 forActivityType:(id)a4
+- (void)setTitle:(id)title forActivityType:(id)type
 {
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), !a3) || (isKindOfClass & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass())) && (objc_opt_class(), (objc_opt_isKindOfClass()))
+  if ((objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), !title) || (isKindOfClass & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass())) && (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
     WebThreadRunOnMainThread();
   }
@@ -187,7 +187,7 @@ id __55__SUScriptActivityViewController_excludedActivityTypes__block_invoke(uint
   return result;
 }
 
-- (void)setExcludedActivityTypes:(id)a3
+- (void)setExcludedActivityTypes:(id)types
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -199,13 +199,13 @@ id __55__SUScriptActivityViewController_excludedActivityTypes__block_invoke(uint
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   v5 = 0;
-  if (!a3 || (isKindOfClass & 1) != 0 || (objc_opt_class(), v5 = a3, (objc_opt_isKindOfClass() & 1) != 0))
+  if (!types || (isKindOfClass & 1) != 0 || (objc_opt_class(), v5 = types, (objc_opt_isKindOfClass() & 1) != 0))
   {
 LABEL_3:
-    v6 = [(WebFrame *)[(SUScriptObject *)self webFrame] globalContext];
-    if (v6)
+    globalContext = [(WebFrame *)[(SUScriptObject *)self webFrame] globalContext];
+    if (globalContext)
     {
-      v7 = [v5 copyArrayOrDictionaryWithContext:v6];
+      v7 = [v5 copyArrayOrDictionaryWithContext:globalContext];
       if (v7)
       {
         objc_opt_class();
@@ -241,27 +241,27 @@ uint64_t __59__SUScriptActivityViewController_setExcludedActivityTypes___block_i
   return [v2 setExcludedActivityTypes:v3];
 }
 
-+ (id)webScriptNameForKeyName:(id)a3
++ (id)webScriptNameForKeyName:(id)name
 {
   result = [__KeyMapping_61 objectForKey:?];
   if (!result)
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___SUScriptActivityViewController;
-    return objc_msgSendSuper2(&v6, sel_webScriptNameForKeyName_, a3);
+    return objc_msgSendSuper2(&v6, sel_webScriptNameForKeyName_, name);
   }
 
   return result;
 }
 
-+ (id)webScriptNameForSelector:(SEL)a3
++ (id)webScriptNameForSelector:(SEL)selector
 {
-  result = SUWebScriptNameForSelector2(a3, &__SelectorMapping_47, 1);
+  result = SUWebScriptNameForSelector2(selector, &__SelectorMapping_47, 1);
   if (!result)
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___SUScriptActivityViewController;
-    return objc_msgSendSuper2(&v6, sel_webScriptNameForSelector_, a3);
+    return objc_msgSendSuper2(&v6, sel_webScriptNameForSelector_, selector);
   }
 
   return result;
@@ -271,14 +271,14 @@ uint64_t __59__SUScriptActivityViewController_setExcludedActivityTypes___block_i
 {
   v4.receiver = self;
   v4.super_class = SUScriptActivityViewController;
-  v2 = [(SUScriptViewController *)&v4 scriptAttributeKeys];
-  [v2 addObjectsFromArray:{objc_msgSend(__KeyMapping_61, "allKeys")}];
-  return v2;
+  scriptAttributeKeys = [(SUScriptViewController *)&v4 scriptAttributeKeys];
+  [scriptAttributeKeys addObjectsFromArray:{objc_msgSend(__KeyMapping_61, "allKeys")}];
+  return scriptAttributeKeys;
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     __SelectorMapping_47 = sel_setTitle_forActivityType_;
     *algn_1EBF3B678 = @"setActivityTitle";

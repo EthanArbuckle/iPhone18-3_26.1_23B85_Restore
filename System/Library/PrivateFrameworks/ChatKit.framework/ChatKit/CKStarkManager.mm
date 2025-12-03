@@ -1,22 +1,22 @@
 @interface CKStarkManager
 + (id)_directActionSource;
-+ (void)_activateSiriWithContext:(id)a3;
-+ (void)activateForConversation:(id)a3;
-+ (void)activateForRecipient:(id)a3;
-- (void)openSMSURL:(id)a3;
-- (void)openURL:(id)a3 sourceApplication:(id)a4;
-- (void)scene:(id)a3 openURLContexts:(id)a4;
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5;
-- (void)templateApplicationScene:(id)a3 didConnectInterfaceController:(id)a4;
-- (void)templateApplicationScene:(id)a3 didDisconnectInterfaceController:(id)a4;
++ (void)_activateSiriWithContext:(id)context;
++ (void)activateForConversation:(id)conversation;
++ (void)activateForRecipient:(id)recipient;
+- (void)openSMSURL:(id)l;
+- (void)openURL:(id)l sourceApplication:(id)application;
+- (void)scene:(id)scene openURLContexts:(id)contexts;
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options;
+- (void)templateApplicationScene:(id)scene didConnectInterfaceController:(id)controller;
+- (void)templateApplicationScene:(id)scene didDisconnectInterfaceController:(id)controller;
 @end
 
 @implementation CKStarkManager
 
-- (void)templateApplicationScene:(id)a3 didConnectInterfaceController:(id)a4
+- (void)templateApplicationScene:(id)scene didConnectInterfaceController:(id)controller
 {
-  v6 = a3;
-  v7 = a4;
+  sceneCopy = scene;
+  controllerCopy = controller;
   if (IMOSLoggingEnabled())
   {
     v8 = OSLogHandleForIMFoundationCategory();
@@ -28,15 +28,15 @@
   }
 
   CKStarkManagerConnectedToCarPlay = 1;
-  v9 = [[_TtC7ChatKit31CKCarPlayConversationController alloc] initWithInterfaceController:v7];
+  v9 = [[_TtC7ChatKit31CKCarPlayConversationController alloc] initWithInterfaceController:controllerCopy];
   conversationController = self->_conversationController;
   self->_conversationController = v9;
 }
 
-- (void)templateApplicationScene:(id)a3 didDisconnectInterfaceController:(id)a4
+- (void)templateApplicationScene:(id)scene didDisconnectInterfaceController:(id)controller
 {
-  v6 = a3;
-  v7 = a4;
+  sceneCopy = scene;
+  controllerCopy = controller;
   if (IMOSLoggingEnabled())
   {
     v8 = OSLogHandleForIMFoundationCategory();
@@ -60,11 +60,11 @@
   return v2;
 }
 
-+ (void)_activateSiriWithContext:(id)a3
++ (void)_activateSiriWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [a1 _directActionSource];
-  [v5 activateWithContext:v4 completion:&__block_literal_global_54];
+  contextCopy = context;
+  _directActionSource = [self _directActionSource];
+  [_directActionSource activateWithContext:contextCopy completion:&__block_literal_global_54];
 }
 
 void __43__CKStarkManager__activateSiriWithContext___block_invoke(uint64_t a1, int a2)
@@ -88,21 +88,21 @@ void __43__CKStarkManager__activateSiriWithContext___block_invoke(uint64_t a1, i
   }
 }
 
-+ (void)activateForRecipient:(id)a3
++ (void)activateForRecipient:(id)recipient
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v14[0] = v4;
+  recipientCopy = recipient;
+  v14[0] = recipientCopy;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
   v6 = CKMakeHandlesFromRecipients(v5);
 
   if ([v6 count])
   {
-    v7 = [v6 firstObject];
-    v8 = [v7 fullName];
-    if ([v8 length])
+    firstObject = [v6 firstObject];
+    fullName = [firstObject fullName];
+    if ([fullName length])
     {
-      v9 = v8;
+      v9 = fullName;
     }
 
     else
@@ -116,37 +116,37 @@ void __43__CKStarkManager__activateSiriWithContext___block_invoke(uint64_t a1, i
     v9 = 0;
   }
 
-  v10 = [MEMORY[0x1E69CE1B0] messageComposeNewThreadDirectActionWithAppBundleId:@"com.apple.MobileSMS" fullName:v9 phoneOrEmailAddress:v4];
+  v10 = [MEMORY[0x1E69CE1B0] messageComposeNewThreadDirectActionWithAppBundleId:@"com.apple.MobileSMS" fullName:v9 phoneOrEmailAddress:recipientCopy];
   if (IMOSLoggingEnabled())
   {
     v11 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
       v12 = 138412290;
-      v13 = v4;
+      v13 = recipientCopy;
       _os_log_impl(&dword_19020E000, v11, OS_LOG_TYPE_INFO, "Activated to read message with recipients [%@]", &v12, 0xCu);
     }
   }
 
-  [a1 _activateSiriWithContext:v10];
+  [self _activateSiriWithContext:v10];
 }
 
-+ (void)activateForConversation:(id)a3
++ (void)activateForConversation:(id)conversation
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 chat];
-  v6 = [v5 guid];
-  v7 = v6;
+  conversationCopy = conversation;
+  chat = [conversationCopy chat];
+  guid = [chat guid];
+  v7 = guid;
   v8 = &stru_1F04268F8;
-  if (v6)
+  if (guid)
   {
-    v8 = v6;
+    v8 = guid;
   }
 
   v9 = v8;
 
-  if ([v4 hasUnreadMessages])
+  if ([conversationCopy hasUnreadMessages])
   {
     [MEMORY[0x1E69CE1B0] messageReadDirectActionWithAppBundleId:@"com.apple.MobileSMS" conversationGUID:v9];
   }
@@ -164,67 +164,67 @@ void __43__CKStarkManager__activateSiriWithContext___block_invoke(uint64_t a1, i
       v12 = 138412546;
       v13 = v9;
       v14 = 2112;
-      v15 = v4;
+      v15 = conversationCopy;
       _os_log_impl(&dword_19020E000, v11, OS_LOG_TYPE_INFO, "Activated to read message with message id [%@] from conversation [%@]", &v12, 0x16u);
     }
   }
 
-  [a1 _activateSiriWithContext:v10];
+  [self _activateSiriWithContext:v10];
 }
 
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options
 {
-  v8 = a3;
-  v7 = [a5 URLContexts];
-  if (v7)
+  sceneCopy = scene;
+  uRLContexts = [options URLContexts];
+  if (uRLContexts)
   {
-    [(CKStarkManager *)self scene:v8 openURLContexts:v7];
+    [(CKStarkManager *)self scene:sceneCopy openURLContexts:uRLContexts];
   }
 }
 
-- (void)scene:(id)a3 openURLContexts:(id)a4
+- (void)scene:(id)scene openURLContexts:(id)contexts
 {
-  v8 = [a4 anyObject];
-  v5 = [v8 URL];
-  v6 = [v8 options];
-  v7 = [v6 sourceApplication];
+  anyObject = [contexts anyObject];
+  v5 = [anyObject URL];
+  options = [anyObject options];
+  sourceApplication = [options sourceApplication];
 
-  [(CKStarkManager *)self openURL:v5 sourceApplication:v7];
+  [(CKStarkManager *)self openURL:v5 sourceApplication:sourceApplication];
 }
 
-- (void)openURL:(id)a3 sourceApplication:(id)a4
+- (void)openURL:(id)l sourceApplication:(id)application
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  lCopy = l;
+  applicationCopy = application;
   if (IMOSLoggingEnabled())
   {
     v7 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v19 = v5;
+      v19 = lCopy;
       v20 = 2112;
-      v21 = v6;
+      v21 = applicationCopy;
       _os_log_impl(&dword_19020E000, v7, OS_LOG_TYPE_INFO, "Opening url: %@ from source application: %@", buf, 0x16u);
     }
   }
 
-  v8 = [v5 scheme];
-  v9 = [v8 lowercaseString];
-  if (([v9 isEqualToString:@"sms"] & 1) == 0)
+  scheme = [lCopy scheme];
+  lowercaseString = [scheme lowercaseString];
+  if (([lowercaseString isEqualToString:@"sms"] & 1) == 0)
   {
-    v10 = [v5 scheme];
-    v11 = [v10 lowercaseString];
-    if (([v11 isEqualToString:@"messages"] & 1) == 0)
+    scheme2 = [lCopy scheme];
+    lowercaseString2 = [scheme2 lowercaseString];
+    if (([lowercaseString2 isEqualToString:@"messages"] & 1) == 0)
     {
-      v12 = [v5 scheme];
-      v13 = [v12 lowercaseString];
-      if (([v13 isEqualToString:@"sms-private"] & 1) == 0)
+      scheme3 = [lCopy scheme];
+      lowercaseString3 = [scheme3 lowercaseString];
+      if (([lowercaseString3 isEqualToString:@"sms-private"] & 1) == 0)
       {
-        v14 = [v5 scheme];
-        v15 = [v14 lowercaseString];
-        v16 = [v15 isEqualToString:@"imessage"];
+        scheme4 = [lCopy scheme];
+        lowercaseString4 = [scheme4 lowercaseString];
+        v16 = [lowercaseString4 isEqualToString:@"imessage"];
 
         if ((v16 & 1) == 0)
         {
@@ -237,17 +237,17 @@ void __43__CKStarkManager__activateSiriWithContext___block_invoke(uint64_t a1, i
   }
 
 LABEL_11:
-  [(CKStarkManager *)self openSMSURL:v5];
+  [(CKStarkManager *)self openSMSURL:lCopy];
 LABEL_12:
 }
 
-- (void)openSMSURL:(id)a3
+- (void)openSMSURL:(id)l
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E69A5AF8] sharedRegistry];
+  lCopy = l;
+  mEMORY[0x1E69A5AF8] = [MEMORY[0x1E69A5AF8] sharedRegistry];
   v21 = 0;
-  v5 = [v4 chatForURL:v3 outMessageText:0 outRecipientIDs:&v21 outService:0 outMessageGUID:0];
+  v5 = [mEMORY[0x1E69A5AF8] chatForURL:lCopy outMessageText:0 outRecipientIDs:&v21 outService:0 outMessageGUID:0];
   v6 = v21;
 
   if (v5 && ([v5 allowedToShowConversation] & 1) == 0)
@@ -258,7 +258,7 @@ LABEL_12:
       if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v23 = v3;
+        v23 = lCopy;
         _os_log_impl(&dword_19020E000, v15, OS_LOG_TYPE_INFO, " received URL: (%@) to a chat which contained non-allowlisted handles during downtime, so aborting open url request.", buf, 0xCu);
       }
     }
@@ -266,11 +266,11 @@ LABEL_12:
 
   else
   {
-    if ([v3 ckAllowRetargeting])
+    if ([lCopy ckAllowRetargeting])
     {
-      v7 = [MEMORY[0x1E69A5AF8] sharedRegistry];
+      mEMORY[0x1E69A5AF8]2 = [MEMORY[0x1E69A5AF8] sharedRegistry];
       v20 = 0;
-      v8 = [v7 existingChatWithAddresses:v6 allowAlternativeService:1 bestHandles:&v20];
+      v8 = [mEMORY[0x1E69A5AF8]2 existingChatWithAddresses:v6 allowAlternativeService:1 bestHandles:&v20];
       v9 = v20;
 
       if (v8)
@@ -318,8 +318,8 @@ LABEL_12:
 
     else if (+[CKStarkManager isCarPlayConnected](CKStarkManager, "isCarPlayConnected") && [v6 count])
     {
-      v18 = [v6 firstObject];
-      [CKStarkManager activateForRecipient:v18];
+      firstObject = [v6 firstObject];
+      [CKStarkManager activateForRecipient:firstObject];
     }
 
     else if (IMOSLoggingEnabled())
@@ -328,7 +328,7 @@ LABEL_12:
       if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v23 = v3;
+        v23 = lCopy;
         _os_log_impl(&dword_19020E000, v19, OS_LOG_TYPE_INFO, "Ignoring open url, no conversation or recipients for url %@", buf, 0xCu);
       }
     }

@@ -1,50 +1,50 @@
 @interface SMTSchemaSMTAppLanguageModelBuildEnded
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (SMTSchemaSMTAppLanguageModelBuildEnded)initWithDictionary:(id)a3;
-- (SMTSchemaSMTAppLanguageModelBuildEnded)initWithJSON:(id)a3;
+- (SMTSchemaSMTAppLanguageModelBuildEnded)initWithDictionary:(id)dictionary;
+- (SMTSchemaSMTAppLanguageModelBuildEnded)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasLanguageModelFileSizeInBytes:(BOOL)a3;
-- (void)setHasNumCustomPronunciations:(BOOL)a3;
-- (void)setHasNumOutOfVocabulary:(BOOL)a3;
-- (void)setHasTrainingTimeInNs:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasLanguageModelFileSizeInBytes:(BOOL)bytes;
+- (void)setHasNumCustomPronunciations:(BOOL)pronunciations;
+- (void)setHasNumOutOfVocabulary:(BOOL)vocabulary;
+- (void)setHasTrainingTimeInNs:(BOOL)ns;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SMTSchemaSMTAppLanguageModelBuildEnded
 
-- (SMTSchemaSMTAppLanguageModelBuildEnded)initWithDictionary:(id)a3
+- (SMTSchemaSMTAppLanguageModelBuildEnded)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v17.receiver = self;
   v17.super_class = SMTSchemaSMTAppLanguageModelBuildEnded;
   v5 = [(SMTSchemaSMTAppLanguageModelBuildEnded *)&v17 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"trainingDataSizeInTokens"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"trainingDataSizeInTokens"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SMTSchemaSMTAppLanguageModelBuildEnded setTrainingDataSizeInTokens:](v5, "setTrainingDataSizeInTokens:", [v6 unsignedLongLongValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"numOutOfVocabulary"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"numOutOfVocabulary"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SMTSchemaSMTAppLanguageModelBuildEnded setNumOutOfVocabulary:](v5, "setNumOutOfVocabulary:", [v7 unsignedLongLongValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"numCustomPronunciations"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"numCustomPronunciations"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SMTSchemaSMTAppLanguageModelBuildEnded setNumCustomPronunciations:](v5, "setNumCustomPronunciations:", [v8 unsignedLongLongValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"assetName"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"assetName"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -52,21 +52,21 @@
       [(SMTSchemaSMTAppLanguageModelBuildEnded *)v5 setAssetName:v10];
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"trainingTimeInNs"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"trainingTimeInNs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SMTSchemaSMTAppLanguageModelBuildEnded setTrainingTimeInNs:](v5, "setTrainingTimeInNs:", [v11 unsignedLongLongValue]);
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"languageModelFileSizeInBytes"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"languageModelFileSizeInBytes"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SMTSchemaSMTAppLanguageModelBuildEnded setLanguageModelFileSizeInBytes:](v5, "setLanguageModelFileSizeInBytes:", [v12 unsignedLongLongValue]);
     }
 
-    v13 = [v4 objectForKeyedSubscript:@"artifactFilepath"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"artifactFilepath"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -80,30 +80,30 @@
   return v5;
 }
 
-- (SMTSchemaSMTAppLanguageModelBuildEnded)initWithJSON:(id)a3
+- (SMTSchemaSMTAppLanguageModelBuildEnded)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SMTSchemaSMTAppLanguageModelBuildEnded *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(SMTSchemaSMTAppLanguageModelBuildEnded *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(SMTSchemaSMTAppLanguageModelBuildEnded *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -116,26 +116,26 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_artifactFilepath)
   {
-    v4 = [(SMTSchemaSMTAppLanguageModelBuildEnded *)self artifactFilepath];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"artifactFilepath"];
+    artifactFilepath = [(SMTSchemaSMTAppLanguageModelBuildEnded *)self artifactFilepath];
+    v5 = [artifactFilepath copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"artifactFilepath"];
   }
 
   if (self->_assetName)
   {
-    v6 = [(SMTSchemaSMTAppLanguageModelBuildEnded *)self assetName];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"assetName"];
+    assetName = [(SMTSchemaSMTAppLanguageModelBuildEnded *)self assetName];
+    v7 = [assetName copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"assetName"];
   }
 
   has = self->_has;
   if ((has & 0x10) != 0)
   {
     v11 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[SMTSchemaSMTAppLanguageModelBuildEnded languageModelFileSizeInBytes](self, "languageModelFileSizeInBytes")}];
-    [v3 setObject:v11 forKeyedSubscript:@"languageModelFileSizeInBytes"];
+    [dictionary setObject:v11 forKeyedSubscript:@"languageModelFileSizeInBytes"];
 
     has = self->_has;
     if ((has & 4) == 0)
@@ -156,7 +156,7 @@ LABEL_7:
   }
 
   v12 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[SMTSchemaSMTAppLanguageModelBuildEnded numCustomPronunciations](self, "numCustomPronunciations")}];
-  [v3 setObject:v12 forKeyedSubscript:@"numCustomPronunciations"];
+  [dictionary setObject:v12 forKeyedSubscript:@"numCustomPronunciations"];
 
   has = self->_has;
   if ((has & 2) == 0)
@@ -172,7 +172,7 @@ LABEL_8:
 
 LABEL_16:
   v13 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[SMTSchemaSMTAppLanguageModelBuildEnded numOutOfVocabulary](self, "numOutOfVocabulary")}];
-  [v3 setObject:v13 forKeyedSubscript:@"numOutOfVocabulary"];
+  [dictionary setObject:v13 forKeyedSubscript:@"numOutOfVocabulary"];
 
   has = self->_has;
   if ((has & 1) == 0)
@@ -188,19 +188,19 @@ LABEL_9:
 
 LABEL_17:
   v14 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[SMTSchemaSMTAppLanguageModelBuildEnded trainingDataSizeInTokens](self, "trainingDataSizeInTokens")}];
-  [v3 setObject:v14 forKeyedSubscript:@"trainingDataSizeInTokens"];
+  [dictionary setObject:v14 forKeyedSubscript:@"trainingDataSizeInTokens"];
 
   if ((*&self->_has & 8) != 0)
   {
 LABEL_10:
     v9 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[SMTSchemaSMTAppLanguageModelBuildEnded trainingTimeInNs](self, "trainingTimeInNs")}];
-    [v3 setObject:v9 forKeyedSubscript:@"trainingTimeInNs"];
+    [dictionary setObject:v9 forKeyedSubscript:@"trainingTimeInNs"];
   }
 
 LABEL_11:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -266,16 +266,16 @@ LABEL_10:
   return v4 ^ v3 ^ v5 ^ v7 ^ v8 ^ v6 ^ [(NSString *)self->_artifactFilepath hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_30;
   }
 
   has = self->_has;
-  v6 = v4[64];
+  v6 = equalCopy[64];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_30;
@@ -284,13 +284,13 @@ LABEL_10:
   if (*&has)
   {
     trainingDataSizeInTokens = self->_trainingDataSizeInTokens;
-    if (trainingDataSizeInTokens != [v4 trainingDataSizeInTokens])
+    if (trainingDataSizeInTokens != [equalCopy trainingDataSizeInTokens])
     {
       goto LABEL_30;
     }
 
     has = self->_has;
-    v6 = v4[64];
+    v6 = equalCopy[64];
   }
 
   v8 = (*&has >> 1) & 1;
@@ -302,13 +302,13 @@ LABEL_10:
   if (v8)
   {
     numOutOfVocabulary = self->_numOutOfVocabulary;
-    if (numOutOfVocabulary != [v4 numOutOfVocabulary])
+    if (numOutOfVocabulary != [equalCopy numOutOfVocabulary])
     {
       goto LABEL_30;
     }
 
     has = self->_has;
-    v6 = v4[64];
+    v6 = equalCopy[64];
   }
 
   v10 = (*&has >> 2) & 1;
@@ -320,26 +320,26 @@ LABEL_10:
   if (v10)
   {
     numCustomPronunciations = self->_numCustomPronunciations;
-    if (numCustomPronunciations != [v4 numCustomPronunciations])
+    if (numCustomPronunciations != [equalCopy numCustomPronunciations])
     {
       goto LABEL_30;
     }
   }
 
-  v12 = [(SMTSchemaSMTAppLanguageModelBuildEnded *)self assetName];
-  v13 = [v4 assetName];
-  if ((v12 != 0) == (v13 == 0))
+  assetName = [(SMTSchemaSMTAppLanguageModelBuildEnded *)self assetName];
+  assetName2 = [equalCopy assetName];
+  if ((assetName != 0) == (assetName2 == 0))
   {
     goto LABEL_29;
   }
 
-  v14 = [(SMTSchemaSMTAppLanguageModelBuildEnded *)self assetName];
-  if (v14)
+  assetName3 = [(SMTSchemaSMTAppLanguageModelBuildEnded *)self assetName];
+  if (assetName3)
   {
-    v15 = v14;
-    v16 = [(SMTSchemaSMTAppLanguageModelBuildEnded *)self assetName];
-    v17 = [v4 assetName];
-    v18 = [v16 isEqual:v17];
+    v15 = assetName3;
+    assetName4 = [(SMTSchemaSMTAppLanguageModelBuildEnded *)self assetName];
+    assetName5 = [equalCopy assetName];
+    v18 = [assetName4 isEqual:assetName5];
 
     if (!v18)
     {
@@ -353,7 +353,7 @@ LABEL_10:
 
   v19 = self->_has;
   v20 = (*&v19 >> 3) & 1;
-  v21 = v4[64];
+  v21 = equalCopy[64];
   if (v20 != ((v21 >> 3) & 1))
   {
     goto LABEL_30;
@@ -362,13 +362,13 @@ LABEL_10:
   if (v20)
   {
     trainingTimeInNs = self->_trainingTimeInNs;
-    if (trainingTimeInNs != [v4 trainingTimeInNs])
+    if (trainingTimeInNs != [equalCopy trainingTimeInNs])
     {
       goto LABEL_30;
     }
 
     v19 = self->_has;
-    v21 = v4[64];
+    v21 = equalCopy[64];
   }
 
   v23 = (*&v19 >> 4) & 1;
@@ -380,23 +380,23 @@ LABEL_10:
   if (v23)
   {
     languageModelFileSizeInBytes = self->_languageModelFileSizeInBytes;
-    if (languageModelFileSizeInBytes != [v4 languageModelFileSizeInBytes])
+    if (languageModelFileSizeInBytes != [equalCopy languageModelFileSizeInBytes])
     {
       goto LABEL_30;
     }
   }
 
-  v12 = [(SMTSchemaSMTAppLanguageModelBuildEnded *)self artifactFilepath];
-  v13 = [v4 artifactFilepath];
-  if ((v12 != 0) == (v13 == 0))
+  assetName = [(SMTSchemaSMTAppLanguageModelBuildEnded *)self artifactFilepath];
+  assetName2 = [equalCopy artifactFilepath];
+  if ((assetName != 0) == (assetName2 == 0))
   {
 LABEL_29:
 
     goto LABEL_30;
   }
 
-  v25 = [(SMTSchemaSMTAppLanguageModelBuildEnded *)self artifactFilepath];
-  if (!v25)
+  artifactFilepath = [(SMTSchemaSMTAppLanguageModelBuildEnded *)self artifactFilepath];
+  if (!artifactFilepath)
   {
 
 LABEL_33:
@@ -404,10 +404,10 @@ LABEL_33:
     goto LABEL_31;
   }
 
-  v26 = v25;
-  v27 = [(SMTSchemaSMTAppLanguageModelBuildEnded *)self artifactFilepath];
-  v28 = [v4 artifactFilepath];
-  v29 = [v27 isEqual:v28];
+  v26 = artifactFilepath;
+  artifactFilepath2 = [(SMTSchemaSMTAppLanguageModelBuildEnded *)self artifactFilepath];
+  artifactFilepath3 = [equalCopy artifactFilepath];
+  v29 = [artifactFilepath2 isEqual:artifactFilepath3];
 
   if (v29)
   {
@@ -421,9 +421,9 @@ LABEL_31:
   return v30;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v9 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -454,9 +454,9 @@ LABEL_4:
   }
 
 LABEL_5:
-  v5 = [(SMTSchemaSMTAppLanguageModelBuildEnded *)self assetName];
+  assetName = [(SMTSchemaSMTAppLanguageModelBuildEnded *)self assetName];
 
-  if (v5)
+  if (assetName)
   {
     PBDataWriterWriteStringField();
   }
@@ -473,19 +473,19 @@ LABEL_5:
     PBDataWriterWriteUint64Field();
   }
 
-  v7 = [(SMTSchemaSMTAppLanguageModelBuildEnded *)self artifactFilepath];
+  artifactFilepath = [(SMTSchemaSMTAppLanguageModelBuildEnded *)self artifactFilepath];
 
-  v8 = v9;
-  if (v7)
+  v8 = toCopy;
+  if (artifactFilepath)
   {
     PBDataWriterWriteStringField();
-    v8 = v9;
+    v8 = toCopy;
   }
 }
 
-- (void)setHasLanguageModelFileSizeInBytes:(BOOL)a3
+- (void)setHasLanguageModelFileSizeInBytes:(BOOL)bytes
 {
-  if (a3)
+  if (bytes)
   {
     v3 = 16;
   }
@@ -498,9 +498,9 @@ LABEL_5:
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasTrainingTimeInNs:(BOOL)a3
+- (void)setHasTrainingTimeInNs:(BOOL)ns
 {
-  if (a3)
+  if (ns)
   {
     v3 = 8;
   }
@@ -513,9 +513,9 @@ LABEL_5:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasNumCustomPronunciations:(BOOL)a3
+- (void)setHasNumCustomPronunciations:(BOOL)pronunciations
 {
-  if (a3)
+  if (pronunciations)
   {
     v3 = 4;
   }
@@ -528,9 +528,9 @@ LABEL_5:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasNumOutOfVocabulary:(BOOL)a3
+- (void)setHasNumOutOfVocabulary:(BOOL)vocabulary
 {
-  if (a3)
+  if (vocabulary)
   {
     v3 = 2;
   }

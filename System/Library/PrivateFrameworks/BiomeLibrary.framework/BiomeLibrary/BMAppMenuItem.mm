@@ -1,39 +1,39 @@
 @interface BMAppMenuItem
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMAppMenuItem)initWithBundleID:(id)a3 bundleURL:(id)a4 path:(id)a5;
-- (BMAppMenuItem)initWithJSONDictionary:(id)a3 error:(id *)p_isa;
-- (BOOL)isEqual:(id)a3;
+- (BMAppMenuItem)initWithBundleID:(id)d bundleURL:(id)l path:(id)path;
+- (BMAppMenuItem)initWithJSONDictionary:(id)dictionary error:(id *)p_isa;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (id)_pathJSONArray;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMAppMenuItem
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMAppMenuItem *)self bundleID];
-    v7 = [v5 bundleID];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    bundleID = [(BMAppMenuItem *)self bundleID];
+    bundleID2 = [v5 bundleID];
+    v8 = bundleID2;
+    if (bundleID == bundleID2)
     {
     }
 
     else
     {
-      v9 = [(BMAppMenuItem *)self bundleID];
-      v10 = [v5 bundleID];
-      v11 = [v9 isEqual:v10];
+      bundleID3 = [(BMAppMenuItem *)self bundleID];
+      bundleID4 = [v5 bundleID];
+      v11 = [bundleID3 isEqual:bundleID4];
 
       if (!v11)
       {
@@ -41,18 +41,18 @@
       }
     }
 
-    v13 = [(BMAppMenuItem *)self bundleURL];
-    v14 = [v5 bundleURL];
-    v15 = v14;
-    if (v13 == v14)
+    bundleURL = [(BMAppMenuItem *)self bundleURL];
+    bundleURL2 = [v5 bundleURL];
+    v15 = bundleURL2;
+    if (bundleURL == bundleURL2)
     {
     }
 
     else
     {
-      v16 = [(BMAppMenuItem *)self bundleURL];
-      v17 = [v5 bundleURL];
-      v18 = [v16 isEqual:v17];
+      bundleURL3 = [(BMAppMenuItem *)self bundleURL];
+      bundleURL4 = [v5 bundleURL];
+      v18 = [bundleURL3 isEqual:bundleURL4];
 
       if (!v18)
       {
@@ -64,18 +64,18 @@ LABEL_15:
       }
     }
 
-    v19 = [(BMAppMenuItem *)self path];
-    v20 = [v5 path];
-    if (v19 == v20)
+    path = [(BMAppMenuItem *)self path];
+    path2 = [v5 path];
+    if (path == path2)
     {
       v12 = 1;
     }
 
     else
     {
-      v21 = [(BMAppMenuItem *)self path];
-      v22 = [v5 path];
-      v12 = [v21 isEqual:v22];
+      path3 = [(BMAppMenuItem *)self path];
+      path4 = [v5 path];
+      v12 = [path3 isEqual:path4];
     }
 
     goto LABEL_15;
@@ -90,44 +90,44 @@ LABEL_16:
 - (id)jsonDictionary
 {
   v13[3] = *MEMORY[0x1E69E9840];
-  v3 = [(BMAppMenuItem *)self bundleID];
-  v4 = [(BMAppMenuItem *)self bundleURL];
-  v5 = [(BMAppMenuItem *)self _pathJSONArray];
+  bundleID = [(BMAppMenuItem *)self bundleID];
+  bundleURL = [(BMAppMenuItem *)self bundleURL];
+  _pathJSONArray = [(BMAppMenuItem *)self _pathJSONArray];
   v12[0] = @"bundleID";
-  v6 = v3;
-  if (!v3)
+  null = bundleID;
+  if (!bundleID)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13[0] = v6;
+  v13[0] = null;
   v12[1] = @"bundleURL";
-  v7 = v4;
-  if (!v4)
+  null2 = bundleURL;
+  if (!bundleURL)
   {
-    v7 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13[1] = v7;
+  v13[1] = null2;
   v12[2] = @"path";
-  v8 = v5;
-  if (!v5)
+  null3 = _pathJSONArray;
+  if (!_pathJSONArray)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13[2] = v8;
+  v13[2] = null3;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:v12 count:3];
-  if (v5)
+  if (_pathJSONArray)
   {
-    if (v4)
+    if (bundleURL)
     {
       goto LABEL_9;
     }
 
 LABEL_14:
 
-    if (v3)
+    if (bundleID)
     {
       goto LABEL_10;
     }
@@ -135,13 +135,13 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if (!v4)
+  if (!bundleURL)
   {
     goto LABEL_14;
   }
 
 LABEL_9:
-  if (v3)
+  if (bundleID)
   {
     goto LABEL_10;
   }
@@ -162,8 +162,8 @@ LABEL_10:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(BMAppMenuItem *)self path];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  path = [(BMAppMenuItem *)self path];
+  v5 = [path countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -174,13 +174,13 @@ LABEL_10:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(path);
         }
 
         [v3 addObject:*(*(&v11 + 1) + 8 * i)];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [path countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -191,11 +191,11 @@ LABEL_10:
   return v3;
 }
 
-- (BMAppMenuItem)initWithJSONDictionary:(id)a3 error:(id *)p_isa
+- (BMAppMenuItem)initWithJSONDictionary:(id)dictionary error:(id *)p_isa
 {
   v65[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"bundleID"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"bundleID"];
   if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
@@ -232,7 +232,7 @@ LABEL_10:
     v8 = 0;
   }
 
-  v9 = [v6 objectForKeyedSubscript:@"bundleURL"];
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"bundleURL"];
   v49 = p_isa;
   v50 = v7;
   if (!v9 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
@@ -240,14 +240,14 @@ LABEL_10:
     v48 = v8;
     v10 = 0;
 LABEL_7:
-    v11 = [v6 objectForKeyedSubscript:@"path"];
-    v12 = [MEMORY[0x1E695DFB0] null];
-    v13 = [v11 isEqual:v12];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"path"];
+    null = [MEMORY[0x1E695DFB0] null];
+    v13 = [v11 isEqual:null];
 
     if (v13)
     {
       v45 = v9;
-      v46 = self;
+      selfCopy2 = self;
 
       v11 = 0;
 LABEL_12:
@@ -266,7 +266,7 @@ LABEL_12:
       v16 = v15;
       v17 = *v52;
 LABEL_14:
-      v18 = v6;
+      v18 = dictionaryCopy;
       v19 = v10;
       v20 = 0;
       while (1)
@@ -287,7 +287,7 @@ LABEL_14:
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
           v10 = v19;
-          v6 = v18;
+          dictionaryCopy = v18;
           v9 = v45;
           if (v49)
           {
@@ -312,7 +312,7 @@ LABEL_30:
         {
           v16 = [v11 countByEnumeratingWithState:&v51 objects:v59 count:16];
           v10 = v19;
-          v6 = v18;
+          dictionaryCopy = v18;
           if (v16)
           {
             goto LABEL_14;
@@ -321,7 +321,7 @@ LABEL_30:
 LABEL_21:
 
           v8 = v48;
-          self = [(BMAppMenuItem *)v46 initWithBundleID:v48 bundleURL:v10 path:v14];
+          self = [(BMAppMenuItem *)selfCopy2 initWithBundleID:v48 bundleURL:v10 path:v14];
           p_isa = &self->super.super.isa;
           v9 = v45;
 LABEL_33:
@@ -331,7 +331,7 @@ LABEL_33:
       }
 
       v10 = v19;
-      v6 = v18;
+      dictionaryCopy = v18;
       v9 = v45;
       if (v49)
       {
@@ -349,14 +349,14 @@ LABEL_33:
 LABEL_31:
 
       p_isa = 0;
-      self = v46;
+      self = selfCopy2;
       goto LABEL_32;
     }
 
     if (!v11 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v45 = v9;
-      v46 = self;
+      selfCopy2 = self;
       goto LABEL_12;
     }
 
@@ -422,15 +422,15 @@ LABEL_36:
 {
   v3 = objc_opt_new();
   [(BMAppMenuItem *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_bundleID)
   {
     PBDataWriterWriteStringField();
@@ -476,9 +476,9 @@ LABEL_36:
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v27.receiver = self;
   v27.super_class = BMAppMenuItem;
   v5 = [(BMEventBase *)&v27 init];
@@ -488,12 +488,12 @@ LABEL_36:
   }
 
   v6 = objc_opt_new();
-  v7 = [v4 position];
-  if (v7 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     while (1)
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         goto LABEL_29;
       }
@@ -504,18 +504,18 @@ LABEL_36:
       while (1)
       {
         v28 = 0;
-        v11 = [v4 position] + 1;
-        if (v11 >= [v4 position] && (v12 = objc_msgSend(v4, "position") + 1, v12 <= objc_msgSend(v4, "length")))
+        v11 = [fromCopy position] + 1;
+        if (v11 >= [fromCopy position] && (v12 = objc_msgSend(fromCopy, "position") + 1, v12 <= objc_msgSend(fromCopy, "length")))
         {
-          v13 = [v4 data];
-          [v13 getBytes:&v28 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v28 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v10 |= (v28 & 0x7F) << v8;
@@ -532,9 +532,9 @@ LABEL_36:
         }
       }
 
-      v15 = [v4 hasError] ? 0 : v10;
+      v15 = [fromCopy hasError] ? 0 : v10;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v15 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v15 & 7) == 4)
       {
         goto LABEL_29;
       }
@@ -572,8 +572,8 @@ LABEL_33:
       }
 
 LABEL_28:
-      v21 = [v4 position];
-      if (v21 >= [v4 length])
+      position2 = [fromCopy position];
+      if (position2 >= [fromCopy length])
       {
         goto LABEL_29;
       }
@@ -595,8 +595,8 @@ LABEL_29:
   path = v5->_path;
   v5->_path = v22;
 
-  v24 = [v4 hasError];
-  if (v24)
+  hasError = [fromCopy hasError];
+  if (hasError)
   {
 LABEL_30:
     v25 = 0;
@@ -614,28 +614,28 @@ LABEL_31:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMAppMenuItem *)self bundleID];
-  v5 = [(BMAppMenuItem *)self bundleURL];
-  v6 = [(BMAppMenuItem *)self path];
-  v7 = [v3 initWithFormat:@"BMAppMenuItem with bundleID: %@, bundleURL: %@, path: %@", v4, v5, v6];
+  bundleID = [(BMAppMenuItem *)self bundleID];
+  bundleURL = [(BMAppMenuItem *)self bundleURL];
+  path = [(BMAppMenuItem *)self path];
+  v7 = [v3 initWithFormat:@"BMAppMenuItem with bundleID: %@, bundleURL: %@, path: %@", bundleID, bundleURL, path];
 
   return v7;
 }
 
-- (BMAppMenuItem)initWithBundleID:(id)a3 bundleURL:(id)a4 path:(id)a5
+- (BMAppMenuItem)initWithBundleID:(id)d bundleURL:(id)l path:(id)path
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  dCopy = d;
+  lCopy = l;
+  pathCopy = path;
   v14.receiver = self;
   v14.super_class = BMAppMenuItem;
   v12 = [(BMEventBase *)&v14 init];
   if (v12)
   {
     v12->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v12->_bundleID, a3);
-    objc_storeStrong(&v12->_bundleURL, a4);
-    objc_storeStrong(&v12->_path, a5);
+    objc_storeStrong(&v12->_bundleID, d);
+    objc_storeStrong(&v12->_bundleURL, l);
+    objc_storeStrong(&v12->_path, path);
   }
 
   return v12;
@@ -681,9 +681,9 @@ id __24__BMAppMenuItem_columns__block_invoke(uint64_t a1, void *a2)
   return v4;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -691,8 +691,8 @@ id __24__BMAppMenuItem_columns__block_invoke(uint64_t a1, void *a2)
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMAppMenuItem alloc] initByReadFrom:v7];
     v4 = v8;

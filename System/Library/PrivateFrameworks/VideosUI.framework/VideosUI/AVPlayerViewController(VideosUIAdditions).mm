@@ -11,7 +11,7 @@
   if (result)
   {
 
-    return [a1 setAllowInfoMetadataSubpanel:a3];
+    return [self setAllowInfoMetadataSubpanel:a3];
   }
 
   return result;
@@ -24,7 +24,7 @@
     return 1;
   }
 
-  return [a1 allowInfoMetadataSubpanel];
+  return [self allowInfoMetadataSubpanel];
 }
 
 @end

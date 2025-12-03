@@ -1,89 +1,89 @@
 @interface PUITextLayoutConfiguration
 + (PUIStyle)defaultStyle;
-+ (id)allocWithZone:(_NSZone *)a3;
-+ (id)defaultFontForRole:(id)a3;
-+ (id)styleColorForStyle:(id)a3;
++ (id)allocWithZone:(_NSZone *)zone;
++ (id)defaultFontForRole:(id)role;
++ (id)styleColorForStyle:(id)style;
 + (unint64_t)maximumVerticalTextCharacters;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isVisiblyEqualToTextLayoutConfiguration:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isVisiblyEqualToTextLayoutConfiguration:(id)configuration;
 - (BOOL)prefersVerticalTitleLayout;
 - (NSString)description;
 - (NSString)effectiveNumberingSystemType;
 - (PUIStyle)effectiveStyle;
 - (PUITextLayoutConfiguration)init;
-- (PUITextLayoutConfiguration)initWithBSXPCCoder:(id)a3;
-- (PUITextLayoutConfiguration)initWithCoder:(id)a3;
-- (PUITextLayoutConfiguration)initWithFontConfiguration:(id)a3 preferredAlignment:(unint64_t)a4 preferredLayout:(unint64_t)a5 style:(id)a6 numberingSystemType:(id)a7 userConfigured:(BOOL)a8 contentsLuminance:(double)a9 alternateDateEnabled:(BOOL)a10 groupName:(id)a11;
-- (PUITextLayoutConfiguration)initWithFontConfiguration:(id)a3 preferredAlignment:(unint64_t)a4 preferredLayout:(unint64_t)a5 style:(id)a6 styleColor:(id)a7 numberingSystemType:(id)a8 userConfigured:(BOOL)a9 contentsLuminance:(double)a10 alternateDateEnabled:(BOOL)a11 groupName:(id)a12;
-- (PUITextLayoutConfiguration)initWithFontConfiguration:(id)a3 preferredAlignment:(unint64_t)a4 preferredLayout:(unint64_t)a5 styleColor:(id)a6 numberingSystemType:(id)a7 userConfigured:(BOOL)a8 contentsLuminance:(double)a9 alternateDateEnabled:(BOOL)a10 groupName:(id)a11;
-- (PUITextLayoutConfiguration)initWithFontConfiguration:(id)a3 style:(id)a4;
-- (PUITextLayoutConfiguration)initWithFontConfiguration:(id)a3 style:(id)a4 numberingSystemType:(id)a5;
-- (PUITextLayoutConfiguration)initWithFontConfiguration:(id)a3 styleColor:(id)a4;
-- (PUITextLayoutConfiguration)initWithFontConfiguration:(id)a3 styleColor:(id)a4 numberingSystemType:(id)a5;
-- (PUITextLayoutConfiguration)initWithTextLayoutConfiguration:(id)a3;
+- (PUITextLayoutConfiguration)initWithBSXPCCoder:(id)coder;
+- (PUITextLayoutConfiguration)initWithCoder:(id)coder;
+- (PUITextLayoutConfiguration)initWithFontConfiguration:(id)configuration preferredAlignment:(unint64_t)alignment preferredLayout:(unint64_t)layout style:(id)style numberingSystemType:(id)type userConfigured:(BOOL)configured contentsLuminance:(double)luminance alternateDateEnabled:(BOOL)self0 groupName:(id)self1;
+- (PUITextLayoutConfiguration)initWithFontConfiguration:(id)configuration preferredAlignment:(unint64_t)alignment preferredLayout:(unint64_t)layout style:(id)style styleColor:(id)color numberingSystemType:(id)type userConfigured:(BOOL)configured contentsLuminance:(double)self0 alternateDateEnabled:(BOOL)self1 groupName:(id)self2;
+- (PUITextLayoutConfiguration)initWithFontConfiguration:(id)configuration preferredAlignment:(unint64_t)alignment preferredLayout:(unint64_t)layout styleColor:(id)color numberingSystemType:(id)type userConfigured:(BOOL)configured contentsLuminance:(double)luminance alternateDateEnabled:(BOOL)self0 groupName:(id)self1;
+- (PUITextLayoutConfiguration)initWithFontConfiguration:(id)configuration style:(id)style;
+- (PUITextLayoutConfiguration)initWithFontConfiguration:(id)configuration style:(id)style numberingSystemType:(id)type;
+- (PUITextLayoutConfiguration)initWithFontConfiguration:(id)configuration styleColor:(id)color;
+- (PUITextLayoutConfiguration)initWithFontConfiguration:(id)configuration styleColor:(id)color numberingSystemType:(id)type;
+- (PUITextLayoutConfiguration)initWithTextLayoutConfiguration:(id)configuration;
 - (id)_effectivePrivateStyle;
-- (id)_vibrancyConfigurationWithExtensionBundleURL:(id)a3 luminanceReduced:(BOOL)a4;
-- (id)effectiveFontWithExtensionBundle:(id)a3 forRole:(id)a4;
-- (id)effectiveFontWithExtensionBundleURL:(id)a3 forRole:(id)a4;
+- (id)_vibrancyConfigurationWithExtensionBundleURL:(id)l luminanceReduced:(BOOL)reduced;
+- (id)effectiveFontWithExtensionBundle:(id)bundle forRole:(id)role;
+- (id)effectiveFontWithExtensionBundleURL:(id)l forRole:(id)role;
 - (id)effectiveStyleColor;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (id)vibrancyConfigurationWithExtensionBundle:(id)a3;
-- (id)vibrancyConfigurationWithExtensionBundle:(id)a3 luminanceReduced:(BOOL)a4;
-- (id)vibrancyConfigurationWithExtensionBundleURL:(id)a3 luminanceReduced:(BOOL)a4;
-- (unint64_t)effectiveAlignmentForText:(id)a3 withFont:(id)a4;
-- (unint64_t)effectiveLayoutForText:(id)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (id)vibrancyConfigurationWithExtensionBundle:(id)bundle;
+- (id)vibrancyConfigurationWithExtensionBundle:(id)bundle luminanceReduced:(BOOL)reduced;
+- (id)vibrancyConfigurationWithExtensionBundleURL:(id)l luminanceReduced:(BOOL)reduced;
+- (unint64_t)effectiveAlignmentForText:(id)text withFont:(id)font;
+- (unint64_t)effectiveLayoutForText:(id)text;
 - (unint64_t)hash;
-- (void)appendDescriptionToFormatter:(id)a3;
-- (void)encodeWithBSXPCCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)appendDescriptionToFormatter:(id)formatter;
+- (void)encodeWithBSXPCCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PUITextLayoutConfiguration
 
-+ (id)allocWithZone:(_NSZone *)a3
++ (id)allocWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_self();
 
-  if (v5 == a1)
+  if (v5 == self)
   {
 
-    return [(PUITextLayoutConfiguration *)PUIImmutableTextLayoutConfiguration allocWithZone:a3];
+    return [(PUITextLayoutConfiguration *)PUIImmutableTextLayoutConfiguration allocWithZone:zone];
   }
 
   else
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___PUITextLayoutConfiguration;
-    return objc_msgSendSuper2(&v7, sel_allocWithZone_, a3);
+    return objc_msgSendSuper2(&v7, sel_allocWithZone_, zone);
   }
 }
 
-+ (id)styleColorForStyle:(id)a3
++ (id)styleColorForStyle:(id)style
 {
-  v3 = a3;
-  v4 = [v3 type];
-  v5 = [v3 colors];
-  v6 = [v5 firstObject];
+  styleCopy = style;
+  type = [styleCopy type];
+  colors = [styleCopy colors];
+  firstObject = [colors firstObject];
 
-  if ([v3 allowsVariation])
+  if ([styleCopy allowsVariation])
   {
-    v7 = [v3 variationAppliedColors];
-    v8 = [v7 firstObject];
+    variationAppliedColors = [styleCopy variationAppliedColors];
+    firstObject2 = [variationAppliedColors firstObject];
 
-    v6 = v8;
+    firstObject = firstObject2;
   }
 
   v9 = 0;
-  if (v4 > 1)
+  if (type > 1)
   {
-    if (v4 != 2)
+    if (type != 2)
     {
-      if (v4 != 3)
+      if (type != 3)
       {
-        if (v4 == 4)
+        if (type == 4)
         {
-          v10 = [v3 LUTIdentifier];
-          v9 = [[PUIStyleColor alloc] initWithLUTIdentifier:v10];
+          lUTIdentifier = [styleCopy LUTIdentifier];
+          v9 = [[PUIStyleColor alloc] initWithLUTIdentifier:lUTIdentifier];
         }
 
         goto LABEL_17;
@@ -100,11 +100,11 @@ LABEL_10:
     goto LABEL_12;
   }
 
-  if (!v4)
+  if (!type)
   {
-    v12 = [v3 isVibrant];
+    isVibrant = [styleCopy isVibrant];
     v13 = [PUIStyleColor alloc];
-    if (v12)
+    if (isVibrant)
     {
       v14 = 2;
     }
@@ -114,13 +114,13 @@ LABEL_10:
       v14 = 1;
     }
 
-    v15 = [v3 localizedName];
-    v9 = [(PUIStyleColor *)v13 initWithColor:v6 preferredStyle:v14 localizedName:v15];
+    localizedName = [styleCopy localizedName];
+    v9 = [(PUIStyleColor *)v13 initWithColor:firstObject preferredStyle:v14 localizedName:localizedName];
 
     goto LABEL_17;
   }
 
-  if (v4 == 1)
+  if (type == 1)
   {
     goto LABEL_10;
   }
@@ -137,57 +137,57 @@ LABEL_17:
   return [(PUITextLayoutConfiguration *)self initWithFontConfiguration:0 preferredAlignment:0 preferredLayout:0 style:0 numberingSystemType:0 userConfigured:0 contentsLuminance:v4 alternateDateEnabled:0 groupName:?];
 }
 
-- (PUITextLayoutConfiguration)initWithFontConfiguration:(id)a3 style:(id)a4
+- (PUITextLayoutConfiguration)initWithFontConfiguration:(id)configuration style:(id)style
 {
-  v6 = a4;
-  v7 = a3;
+  styleCopy = style;
+  configurationCopy = configuration;
   [objc_opt_class() defaultContentsLuminance];
   LOBYTE(v10) = 0;
-  v8 = [(PUITextLayoutConfiguration *)self initWithFontConfiguration:v7 preferredAlignment:0 preferredLayout:0 style:v6 numberingSystemType:0 userConfigured:0 contentsLuminance:v10 alternateDateEnabled:0 groupName:?];
+  v8 = [(PUITextLayoutConfiguration *)self initWithFontConfiguration:configurationCopy preferredAlignment:0 preferredLayout:0 style:styleCopy numberingSystemType:0 userConfigured:0 contentsLuminance:v10 alternateDateEnabled:0 groupName:?];
 
   return v8;
 }
 
-- (PUITextLayoutConfiguration)initWithFontConfiguration:(id)a3 style:(id)a4 numberingSystemType:(id)a5
+- (PUITextLayoutConfiguration)initWithFontConfiguration:(id)configuration style:(id)style numberingSystemType:(id)type
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  typeCopy = type;
+  styleCopy = style;
+  configurationCopy = configuration;
   +[PUITextLayoutConfiguration defaultContentsLuminance];
   LOBYTE(v13) = 0;
-  v11 = [(PUITextLayoutConfiguration *)self initWithFontConfiguration:v10 preferredAlignment:0 preferredLayout:0 style:v9 numberingSystemType:v8 userConfigured:0 contentsLuminance:v13 alternateDateEnabled:0 groupName:?];
+  v11 = [(PUITextLayoutConfiguration *)self initWithFontConfiguration:configurationCopy preferredAlignment:0 preferredLayout:0 style:styleCopy numberingSystemType:typeCopy userConfigured:0 contentsLuminance:v13 alternateDateEnabled:0 groupName:?];
 
   return v11;
 }
 
-- (PUITextLayoutConfiguration)initWithFontConfiguration:(id)a3 preferredAlignment:(unint64_t)a4 preferredLayout:(unint64_t)a5 style:(id)a6 numberingSystemType:(id)a7 userConfigured:(BOOL)a8 contentsLuminance:(double)a9 alternateDateEnabled:(BOOL)a10 groupName:(id)a11
+- (PUITextLayoutConfiguration)initWithFontConfiguration:(id)configuration preferredAlignment:(unint64_t)alignment preferredLayout:(unint64_t)layout style:(id)style numberingSystemType:(id)type userConfigured:(BOOL)configured contentsLuminance:(double)luminance alternateDateEnabled:(BOOL)self0 groupName:(id)self1
 {
-  v19 = a11;
-  v20 = a7;
-  v21 = a6;
-  v22 = a3;
-  v23 = [objc_opt_class() styleColorForStyle:v21];
-  BYTE1(v26) = a10;
-  LOBYTE(v26) = a8;
-  v24 = [(PUITextLayoutConfiguration *)self initWithFontConfiguration:v22 preferredAlignment:a4 preferredLayout:a5 style:v21 styleColor:v23 numberingSystemType:v20 userConfigured:a9 contentsLuminance:v26 alternateDateEnabled:v19 groupName:?];
+  nameCopy = name;
+  typeCopy = type;
+  styleCopy = style;
+  configurationCopy = configuration;
+  v23 = [objc_opt_class() styleColorForStyle:styleCopy];
+  BYTE1(v26) = enabled;
+  LOBYTE(v26) = configured;
+  v24 = [(PUITextLayoutConfiguration *)self initWithFontConfiguration:configurationCopy preferredAlignment:alignment preferredLayout:layout style:styleCopy styleColor:v23 numberingSystemType:typeCopy userConfigured:luminance contentsLuminance:v26 alternateDateEnabled:nameCopy groupName:?];
 
   return v24;
 }
 
-- (PUITextLayoutConfiguration)initWithFontConfiguration:(id)a3 preferredAlignment:(unint64_t)a4 preferredLayout:(unint64_t)a5 style:(id)a6 styleColor:(id)a7 numberingSystemType:(id)a8 userConfigured:(BOOL)a9 contentsLuminance:(double)a10 alternateDateEnabled:(BOOL)a11 groupName:(id)a12
+- (PUITextLayoutConfiguration)initWithFontConfiguration:(id)configuration preferredAlignment:(unint64_t)alignment preferredLayout:(unint64_t)layout style:(id)style styleColor:(id)color numberingSystemType:(id)type userConfigured:(BOOL)configured contentsLuminance:(double)self0 alternateDateEnabled:(BOOL)self1 groupName:(id)self2
 {
-  v19 = a3;
-  v20 = a6;
-  v21 = a7;
-  v22 = a8;
-  v23 = a12;
+  configurationCopy = configuration;
+  styleCopy = style;
+  colorCopy = color;
+  typeCopy = type;
+  nameCopy = name;
   v24 = objc_opt_self();
   v25 = [(PUITextLayoutConfiguration *)self isMemberOfClass:v24];
 
   if (v25)
   {
-    LOWORD(v29) = __PAIR16__(a11, a9);
-    v26 = [[PUIImmutableTextLayoutConfiguration alloc] initWithFontConfiguration:v19 preferredAlignment:a4 preferredLayout:a5 style:v20 styleColor:v21 numberingSystemType:v22 userConfigured:a10 contentsLuminance:v29 alternateDateEnabled:v23 groupName:?];
+    LOWORD(v29) = __PAIR16__(enabled, configured);
+    v26 = [[PUIImmutableTextLayoutConfiguration alloc] initWithFontConfiguration:configurationCopy preferredAlignment:alignment preferredLayout:layout style:styleCopy styleColor:colorCopy numberingSystemType:typeCopy userConfigured:luminance contentsLuminance:v29 alternateDateEnabled:nameCopy groupName:?];
   }
 
   else
@@ -203,54 +203,54 @@ LABEL_17:
   return p_super;
 }
 
-- (PUITextLayoutConfiguration)initWithTextLayoutConfiguration:(id)a3
+- (PUITextLayoutConfiguration)initWithTextLayoutConfiguration:(id)configuration
 {
-  v3 = a3;
-  v4 = [v3 fontConfiguration];
-  v5 = [v3 preferredAlignment];
-  v6 = [v3 preferredLayout];
-  v7 = [v3 style];
-  v8 = [v3 styleColor];
-  v9 = [v3 numberingSystemType];
-  v10 = [v3 isUserConfigured];
-  [v3 contentsLuminance];
+  configurationCopy = configuration;
+  fontConfiguration = [configurationCopy fontConfiguration];
+  preferredAlignment = [configurationCopy preferredAlignment];
+  preferredLayout = [configurationCopy preferredLayout];
+  style = [configurationCopy style];
+  styleColor = [configurationCopy styleColor];
+  numberingSystemType = [configurationCopy numberingSystemType];
+  isUserConfigured = [configurationCopy isUserConfigured];
+  [configurationCopy contentsLuminance];
   v12 = v11;
-  v13 = [v3 isAlternateDateEnabled];
-  v14 = [v3 groupName];
+  isAlternateDateEnabled = [configurationCopy isAlternateDateEnabled];
+  groupName = [configurationCopy groupName];
 
-  BYTE1(v17) = v13;
-  LOBYTE(v17) = v10;
-  v15 = [(PUITextLayoutConfiguration *)self initWithFontConfiguration:v4 preferredAlignment:v5 preferredLayout:v6 style:v7 styleColor:v8 numberingSystemType:v9 userConfigured:v12 contentsLuminance:v17 alternateDateEnabled:v14 groupName:?];
+  BYTE1(v17) = isAlternateDateEnabled;
+  LOBYTE(v17) = isUserConfigured;
+  v15 = [(PUITextLayoutConfiguration *)self initWithFontConfiguration:fontConfiguration preferredAlignment:preferredAlignment preferredLayout:preferredLayout style:style styleColor:styleColor numberingSystemType:numberingSystemType userConfigured:v12 contentsLuminance:v17 alternateDateEnabled:groupName groupName:?];
 
   return v15;
 }
 
-- (id)effectiveFontWithExtensionBundle:(id)a3 forRole:(id)a4
+- (id)effectiveFontWithExtensionBundle:(id)bundle forRole:(id)role
 {
-  v6 = a4;
-  v7 = [a3 bundleURL];
-  v8 = [(PUITextLayoutConfiguration *)self effectiveFontWithExtensionBundleURL:v7 forRole:v6];
+  roleCopy = role;
+  bundleURL = [bundle bundleURL];
+  v8 = [(PUITextLayoutConfiguration *)self effectiveFontWithExtensionBundleURL:bundleURL forRole:roleCopy];
 
   return v8;
 }
 
-- (id)effectiveFontWithExtensionBundleURL:(id)a3 forRole:(id)a4
+- (id)effectiveFontWithExtensionBundleURL:(id)l forRole:(id)role
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PUITextLayoutConfiguration *)self fontConfiguration];
+  lCopy = l;
+  roleCopy = role;
+  fontConfiguration = [(PUITextLayoutConfiguration *)self fontConfiguration];
   v9 = objc_opt_self();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v11 = v8;
-    v12 = [v11 fontIdentifier];
-    if (v12)
+    v11 = fontConfiguration;
+    fontIdentifier = [v11 fontIdentifier];
+    if (fontIdentifier)
     {
-      v13 = [MEMORY[0x1E69DB878] pui_UIFontWithPUIFontIdentifier:v12 forRole:v7];
+      v13 = [MEMORY[0x1E69DB878] pui_UIFontWithPUIFontIdentifier:fontIdentifier forRole:roleCopy];
       [v11 weight];
-      v15 = [v13 pui_UIFontWithVariantWeight:v14 forRole:v7];
+      v15 = [v13 pui_UIFontWithVariantWeight:v14 forRole:roleCopy];
     }
 
     else
@@ -269,10 +269,10 @@ LABEL_17:
   v16 = objc_opt_self();
   v17 = objc_opt_isKindOfClass();
 
-  if ((v17 & 1) == 0 || ([v8 fontWithExtensionBundleURL:v6], (v15 = objc_claimAutoreleasedReturnValue()) == 0))
+  if ((v17 & 1) == 0 || ([fontConfiguration fontWithExtensionBundleURL:lCopy], (v15 = objc_claimAutoreleasedReturnValue()) == 0))
   {
 LABEL_9:
-    v15 = [objc_opt_class() defaultFontForRole:v7];
+    v15 = [objc_opt_class() defaultFontForRole:roleCopy];
   }
 
 LABEL_10:
@@ -282,29 +282,29 @@ LABEL_10:
 
 - (PUIStyle)effectiveStyle
 {
-  v3 = [(PUITextLayoutConfiguration *)self style];
-  if (!v3)
+  style = [(PUITextLayoutConfiguration *)self style];
+  if (!style)
   {
     if (([(PUITextLayoutConfiguration *)self isUserConfigured]& 1) != 0)
     {
-      v3 = 0;
+      style = 0;
     }
 
     else
     {
-      v3 = [objc_opt_class() defaultStyle];
+      style = [objc_opt_class() defaultStyle];
     }
   }
 
-  return v3;
+  return style;
 }
 
 - (id)_effectivePrivateStyle
 {
-  v2 = [(PUITextLayoutConfiguration *)self effectiveStyle];
-  if ([v2 conformsToProtocol:&unk_1F1CA3DC8])
+  effectiveStyle = [(PUITextLayoutConfiguration *)self effectiveStyle];
+  if ([effectiveStyle conformsToProtocol:&unk_1F1CA3DC8])
   {
-    v3 = v2;
+    v3 = effectiveStyle;
   }
 
   else
@@ -317,68 +317,68 @@ LABEL_10:
 
 - (id)effectiveStyleColor
 {
-  v3 = [(PUITextLayoutConfiguration *)self styleColor];
-  if (!v3)
+  styleColor = [(PUITextLayoutConfiguration *)self styleColor];
+  if (!styleColor)
   {
     if (([(PUITextLayoutConfiguration *)self isUserConfigured]& 1) != 0)
     {
-      v3 = 0;
+      styleColor = 0;
     }
 
     else
     {
-      v3 = [objc_opt_class() defaultStyleColor];
+      styleColor = [objc_opt_class() defaultStyleColor];
     }
   }
 
-  return v3;
+  return styleColor;
 }
 
-- (unint64_t)effectiveAlignmentForText:(id)a3 withFont:(id)a4
+- (unint64_t)effectiveAlignmentForText:(id)text withFont:(id)font
 {
-  v6 = a3;
-  v7 = a4;
-  if (-[PUITextLayoutConfiguration preferredAlignment](self, "preferredAlignment") != 1 || (v8 = [getPRIncomingCallMetricsProviderClass() canApplyKashidaToText:v6 withFont:v7], v9 = 0, objc_msgSend(v6, "pui_isSuitableForArabicJustification")) && v8)
+  textCopy = text;
+  fontCopy = font;
+  if (-[PUITextLayoutConfiguration preferredAlignment](self, "preferredAlignment") != 1 || (v8 = [getPRIncomingCallMetricsProviderClass() canApplyKashidaToText:textCopy withFont:fontCopy], preferredAlignment = 0, objc_msgSend(textCopy, "pui_isSuitableForArabicJustification")) && v8)
   {
-    v9 = [(PUITextLayoutConfiguration *)self preferredAlignment];
+    preferredAlignment = [(PUITextLayoutConfiguration *)self preferredAlignment];
   }
 
-  return v9;
+  return preferredAlignment;
 }
 
-- (unint64_t)effectiveLayoutForText:(id)a3
+- (unint64_t)effectiveLayoutForText:(id)text
 {
-  v4 = a3;
-  if (!-[PUITextLayoutConfiguration prefersVerticalTitleLayout](self, "prefersVerticalTitleLayout") || (v5 = [v4 length], v6 = objc_msgSend(getPRIncomingCallMetricsProviderClass(), "maximumVerticalTextLength"), v7 = 0, objc_msgSend(v4, "pui_isSuitableForVerticalLayout")) && v5 <= v6)
+  textCopy = text;
+  if (!-[PUITextLayoutConfiguration prefersVerticalTitleLayout](self, "prefersVerticalTitleLayout") || (v5 = [textCopy length], v6 = objc_msgSend(getPRIncomingCallMetricsProviderClass(), "maximumVerticalTextLength"), preferredLayout = 0, objc_msgSend(textCopy, "pui_isSuitableForVerticalLayout")) && v5 <= v6)
   {
-    v7 = [(PUITextLayoutConfiguration *)self preferredLayout];
+    preferredLayout = [(PUITextLayoutConfiguration *)self preferredLayout];
   }
 
-  return v7;
+  return preferredLayout;
 }
 
-- (id)vibrancyConfigurationWithExtensionBundle:(id)a3
+- (id)vibrancyConfigurationWithExtensionBundle:(id)bundle
 {
-  v4 = [a3 bundleURL];
-  v5 = [(PUITextLayoutConfiguration *)self vibrancyConfigurationWithExtensionBundleURL:v4];
+  bundleURL = [bundle bundleURL];
+  v5 = [(PUITextLayoutConfiguration *)self vibrancyConfigurationWithExtensionBundleURL:bundleURL];
 
   return v5;
 }
 
-- (id)vibrancyConfigurationWithExtensionBundle:(id)a3 luminanceReduced:(BOOL)a4
+- (id)vibrancyConfigurationWithExtensionBundle:(id)bundle luminanceReduced:(BOOL)reduced
 {
-  v4 = a4;
-  v6 = [a3 bundleURL];
-  v7 = [(PUITextLayoutConfiguration *)self vibrancyConfigurationWithExtensionBundleURL:v6 luminanceReduced:v4];
+  reducedCopy = reduced;
+  bundleURL = [bundle bundleURL];
+  v7 = [(PUITextLayoutConfiguration *)self vibrancyConfigurationWithExtensionBundleURL:bundleURL luminanceReduced:reducedCopy];
 
   return v7;
 }
 
-- (id)vibrancyConfigurationWithExtensionBundleURL:(id)a3 luminanceReduced:(BOOL)a4
+- (id)vibrancyConfigurationWithExtensionBundleURL:(id)l luminanceReduced:(BOOL)reduced
 {
-  v4 = a4;
-  v6 = a3;
-  if (!v6)
+  reducedCopy = reduced;
+  lCopy = l;
+  if (!lCopy)
   {
     v7 = PUILogCommon();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_FAULT))
@@ -387,26 +387,26 @@ LABEL_10:
     }
   }
 
-  v8 = [(PUITextLayoutConfiguration *)self _vibrancyConfigurationWithExtensionBundleURL:v6 luminanceReduced:v4];
+  v8 = [(PUITextLayoutConfiguration *)self _vibrancyConfigurationWithExtensionBundleURL:lCopy luminanceReduced:reducedCopy];
 
   return v8;
 }
 
-- (id)_vibrancyConfigurationWithExtensionBundleURL:(id)a3 luminanceReduced:(BOOL)a4
+- (id)_vibrancyConfigurationWithExtensionBundleURL:(id)l luminanceReduced:(BOOL)reduced
 {
-  v4 = a4;
-  v6 = a3;
+  reducedCopy = reduced;
+  lCopy = l;
   vibrancyConfiguration = self->_vibrancyConfiguration;
-  v8 = [(PUITextLayoutConfiguration *)self _effectivePrivateStyle];
+  _effectivePrivateStyle = [(PUITextLayoutConfiguration *)self _effectivePrivateStyle];
   [(PUITextLayoutConfiguration *)self contentsLuminance];
   v10 = PUIStyleBackgroundTypeForLuminance(v9);
-  v11 = [v8 vibrancyEffectType];
+  vibrancyEffectType = [_effectivePrivateStyle vibrancyEffectType];
   if (vibrancyConfiguration)
   {
-    if ([(BSUIVibrancyConfiguration *)self->_vibrancyConfiguration effectType]== v11)
+    if ([(BSUIVibrancyConfiguration *)self->_vibrancyConfiguration effectType]== vibrancyEffectType)
     {
-      v12 = [(BSUIVibrancyConfiguration *)self->_vibrancyConfiguration groupName];
-      v13 = [(PUITextLayoutConfiguration *)self groupName];
+      groupName = [(BSUIVibrancyConfiguration *)self->_vibrancyConfiguration groupName];
+      groupName2 = [(PUITextLayoutConfiguration *)self groupName];
       LODWORD(vibrancyConfiguration) = BSEqualObjects();
     }
 
@@ -416,14 +416,14 @@ LABEL_10:
     }
   }
 
-  v14 = [MEMORY[0x1E698E810] pui_vibrancyLUTFromPrivateStyle:v8 extensionBundleURL:v6 luminanceReduced:v4];
+  v14 = [MEMORY[0x1E698E810] pui_vibrancyLUTFromPrivateStyle:_effectivePrivateStyle extensionBundleURL:lCopy luminanceReduced:reducedCopy];
   if (!vibrancyConfiguration || ([(BSUIVibrancyConfiguration *)self->_vibrancyConfiguration alternativeVibrancyEffectLUT], v15 = objc_claimAutoreleasedReturnValue(), v16 = BSEqualObjects(), v15, (v16 & 1) == 0))
   {
     v17 = objc_alloc(MEMORY[0x1E698E810]);
     v18 = BSUIVibrancyBackgroundTypeForPUIStyleBackgroundType(v10);
-    v19 = [v8 vibrancyEffectColor];
-    v20 = [(PUITextLayoutConfiguration *)self groupName];
-    v21 = [v17 initWithEffectType:v11 backgroundType:v18 color:v19 groupName:v20 blendConfiguration:0 blendAmount:v14 alternativeVibrancyEffectLUT:0.0];
+    vibrancyEffectColor = [_effectivePrivateStyle vibrancyEffectColor];
+    groupName3 = [(PUITextLayoutConfiguration *)self groupName];
+    v21 = [v17 initWithEffectType:vibrancyEffectType backgroundType:v18 color:vibrancyEffectColor groupName:groupName3 blendConfiguration:0 blendAmount:v14 alternativeVibrancyEffectLUT:0.0];
     v22 = self->_vibrancyConfiguration;
     self->_vibrancyConfiguration = v21;
   }
@@ -436,37 +436,37 @@ LABEL_10:
 
 - (NSString)effectiveNumberingSystemType
 {
-  v2 = [(PUITextLayoutConfiguration *)self numberingSystemType];
-  if (!v2)
+  numberingSystemType = [(PUITextLayoutConfiguration *)self numberingSystemType];
+  if (!numberingSystemType)
   {
-    v2 = [objc_opt_class() defaultNumberingSystemType];
+    numberingSystemType = [objc_opt_class() defaultNumberingSystemType];
   }
 
-  return v2;
+  return numberingSystemType;
 }
 
 - (BOOL)prefersVerticalTitleLayout
 {
-  v2 = [(PUITextLayoutConfiguration *)self preferredLayout];
+  preferredLayout = [(PUITextLayoutConfiguration *)self preferredLayout];
 
-  return PUITextLayoutIsVertical(v2);
+  return PUITextLayoutIsVertical(preferredLayout);
 }
 
-+ (id)defaultFontForRole:(id)a3
++ (id)defaultFontForRole:(id)role
 {
-  v3 = [MEMORY[0x1E69DB878] pui_defaultFontForRole:a3];
+  v3 = [MEMORY[0x1E69DB878] pui_defaultFontForRole:role];
   v4 = v3;
   if (v3)
   {
-    v5 = v3;
+    pui_defaultFont = v3;
   }
 
   else
   {
-    v5 = [MEMORY[0x1E69DB878] pui_defaultFont];
+    pui_defaultFont = [MEMORY[0x1E69DB878] pui_defaultFont];
   }
 
-  v6 = v5;
+  v6 = pui_defaultFont;
 
   return v6;
 }
@@ -495,10 +495,10 @@ uint64_t __59__PUITextLayoutConfiguration_maximumVerticalTextCharacters__block_i
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     LOBYTE(v23) = 1;
   }
@@ -510,15 +510,15 @@ uint64_t __59__PUITextLayoutConfiguration_maximumVerticalTextCharacters__block_i
 
     if (isKindOfClass)
     {
-      v7 = v4;
-      v8 = [(PUITextLayoutConfiguration *)self fontConfiguration];
-      v9 = [(PUITextLayoutConfiguration *)v7 fontConfiguration];
+      v7 = equalCopy;
+      fontConfiguration = [(PUITextLayoutConfiguration *)self fontConfiguration];
+      fontConfiguration2 = [(PUITextLayoutConfiguration *)v7 fontConfiguration];
       v10 = BSEqualObjects();
 
       if (v10 && (v11 = [(PUITextLayoutConfiguration *)self preferredAlignment], v11 == [(PUITextLayoutConfiguration *)v7 preferredAlignment]) && (v12 = [(PUITextLayoutConfiguration *)self preferredLayout], v12 == [(PUITextLayoutConfiguration *)v7 preferredLayout]) && ([(PUITextLayoutConfiguration *)self style], v13 = objc_claimAutoreleasedReturnValue(), [(PUITextLayoutConfiguration *)v7 style], v14 = objc_claimAutoreleasedReturnValue(), v15 = BSEqualObjects(), v14, v13, v15) && ([(PUITextLayoutConfiguration *)self numberingSystemType], v16 = objc_claimAutoreleasedReturnValue(), [(PUITextLayoutConfiguration *)v7 numberingSystemType], v17 = objc_claimAutoreleasedReturnValue(), v18 = BSEqualObjects(), v17, v16, v18) && ([(PUITextLayoutConfiguration *)self contentsLuminance], v20 = vcvtad_u64_f64(v19 * 10000.0), [(PUITextLayoutConfiguration *)v7 contentsLuminance], v20 == vcvtad_u64_f64(v21 * 10000.0)) && (v22 = [(PUITextLayoutConfiguration *)self isUserConfigured], v22 == [(PUITextLayoutConfiguration *)v7 isUserConfigured]))
       {
-        v25 = [(PUITextLayoutConfiguration *)self isAlternateDateEnabled];
-        v23 = v25 ^ [(PUITextLayoutConfiguration *)v7 isAlternateDateEnabled]^ 1;
+        isAlternateDateEnabled = [(PUITextLayoutConfiguration *)self isAlternateDateEnabled];
+        v23 = isAlternateDateEnabled ^ [(PUITextLayoutConfiguration *)v7 isAlternateDateEnabled]^ 1;
       }
 
       else
@@ -536,24 +536,24 @@ uint64_t __59__PUITextLayoutConfiguration_maximumVerticalTextCharacters__block_i
   return v23;
 }
 
-- (BOOL)isVisiblyEqualToTextLayoutConfiguration:(id)a3
+- (BOOL)isVisiblyEqualToTextLayoutConfiguration:(id)configuration
 {
-  v4 = a3;
-  if (self == v4)
+  configurationCopy = configuration;
+  if (self == configurationCopy)
   {
     v16 = 1;
   }
 
   else
   {
-    v5 = [(PUITextLayoutConfiguration *)self fontConfiguration];
-    v6 = [(PUITextLayoutConfiguration *)v4 fontConfiguration];
+    fontConfiguration = [(PUITextLayoutConfiguration *)self fontConfiguration];
+    fontConfiguration2 = [(PUITextLayoutConfiguration *)configurationCopy fontConfiguration];
     v7 = BSEqualObjects();
 
-    if (v7 && (v8 = [(PUITextLayoutConfiguration *)self preferredAlignment], v8 == [(PUITextLayoutConfiguration *)v4 preferredAlignment]) && (v9 = [(PUITextLayoutConfiguration *)self preferredLayout], v9 == [(PUITextLayoutConfiguration *)v4 preferredLayout]) && ([(PUITextLayoutConfiguration *)self style], v10 = objc_claimAutoreleasedReturnValue(), [(PUITextLayoutConfiguration *)v4 style], v11 = objc_claimAutoreleasedReturnValue(), v12 = BSEqualObjects(), v11, v10, v12) && ([(PUITextLayoutConfiguration *)self numberingSystemType], v13 = objc_claimAutoreleasedReturnValue(), [(PUITextLayoutConfiguration *)v4 numberingSystemType], v14 = objc_claimAutoreleasedReturnValue(), v15 = BSEqualObjects(), v14, v13, v15))
+    if (v7 && (v8 = [(PUITextLayoutConfiguration *)self preferredAlignment], v8 == [(PUITextLayoutConfiguration *)configurationCopy preferredAlignment]) && (v9 = [(PUITextLayoutConfiguration *)self preferredLayout], v9 == [(PUITextLayoutConfiguration *)configurationCopy preferredLayout]) && ([(PUITextLayoutConfiguration *)self style], v10 = objc_claimAutoreleasedReturnValue(), [(PUITextLayoutConfiguration *)configurationCopy style], v11 = objc_claimAutoreleasedReturnValue(), v12 = BSEqualObjects(), v11, v10, v12) && ([(PUITextLayoutConfiguration *)self numberingSystemType], v13 = objc_claimAutoreleasedReturnValue(), [(PUITextLayoutConfiguration *)configurationCopy numberingSystemType], v14 = objc_claimAutoreleasedReturnValue(), v15 = BSEqualObjects(), v14, v13, v15))
     {
       [(PUITextLayoutConfiguration *)self isAlternateDateEnabled];
-      [(PUITextLayoutConfiguration *)v4 isAlternateDateEnabled];
+      [(PUITextLayoutConfiguration *)configurationCopy isAlternateDateEnabled];
       v16 = BSEqualBools();
     }
 
@@ -570,15 +570,15 @@ uint64_t __59__PUITextLayoutConfiguration_maximumVerticalTextCharacters__block_i
 {
   [(PUITextLayoutConfiguration *)self contentsLuminance];
   v4 = vcvtad_u64_f64(v3 * 10000.0);
-  v5 = [(PUITextLayoutConfiguration *)self fontConfiguration];
-  v6 = [v5 hash];
-  v7 = [(PUITextLayoutConfiguration *)self style];
-  v8 = [v7 hash];
-  v9 = [(PUITextLayoutConfiguration *)self numberingSystemType];
-  v10 = [v9 hash];
-  v11 = [(PUITextLayoutConfiguration *)self isUserConfigured];
+  fontConfiguration = [(PUITextLayoutConfiguration *)self fontConfiguration];
+  v6 = [fontConfiguration hash];
+  style = [(PUITextLayoutConfiguration *)self style];
+  v8 = [style hash];
+  numberingSystemType = [(PUITextLayoutConfiguration *)self numberingSystemType];
+  v10 = [numberingSystemType hash];
+  isUserConfigured = [(PUITextLayoutConfiguration *)self isUserConfigured];
   v12 = [MEMORY[0x1E696AD98] numberWithBool:{-[PUITextLayoutConfiguration isAlternateDateEnabled](self, "isAlternateDateEnabled")}];
-  v13 = v6 ^ v8 ^ v10 ^ v11 ^ [v12 hash];
+  v13 = v6 ^ v8 ^ v10 ^ isUserConfigured ^ [v12 hash];
 
   return v13 ^ v4;
 }
@@ -590,7 +590,7 @@ uint64_t __59__PUITextLayoutConfiguration_maximumVerticalTextCharacters__block_i
   v8 = 3221225472;
   v9 = __41__PUITextLayoutConfiguration_description__block_invoke;
   v10 = &unk_1E78548A0;
-  v11 = self;
+  selfCopy = self;
   v12 = v3;
   v4 = v3;
   [v4 appendProem:self block:&v7];
@@ -599,63 +599,63 @@ uint64_t __59__PUITextLayoutConfiguration_maximumVerticalTextCharacters__block_i
   return v5;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [(PUITextLayoutConfiguration *)PUIMutableTextLayoutConfiguration allocWithZone:a3];
+  v4 = [(PUITextLayoutConfiguration *)PUIMutableTextLayoutConfiguration allocWithZone:zone];
 
   return [(PUITextLayoutConfiguration *)v4 initWithTextLayoutConfiguration:self];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v13 = a3;
-  v4 = [(PUITextLayoutConfiguration *)self fontConfiguration];
-  [v13 encodeObject:v4 forKey:@"fontConfiguration"];
+  coderCopy = coder;
+  fontConfiguration = [(PUITextLayoutConfiguration *)self fontConfiguration];
+  [coderCopy encodeObject:fontConfiguration forKey:@"fontConfiguration"];
 
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[PUITextLayoutConfiguration preferredAlignment](self, "preferredAlignment")}];
-  [v13 encodeObject:v5 forKey:@"preferredAlignment"];
+  [coderCopy encodeObject:v5 forKey:@"preferredAlignment"];
 
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[PUITextLayoutConfiguration preferredLayout](self, "preferredLayout")}];
-  [v13 encodeObject:v6 forKey:@"preferredLayout"];
+  [coderCopy encodeObject:v6 forKey:@"preferredLayout"];
 
-  v7 = [(PUITextLayoutConfiguration *)self style];
-  [v13 pui_encodeStyle:v7 forKey:@"style" error:0];
+  style = [(PUITextLayoutConfiguration *)self style];
+  [coderCopy pui_encodeStyle:style forKey:@"style" error:0];
 
-  v8 = [(PUITextLayoutConfiguration *)self styleColor];
-  [v13 encodeObject:v8 forKey:@"styleColor"];
+  styleColor = [(PUITextLayoutConfiguration *)self styleColor];
+  [coderCopy encodeObject:styleColor forKey:@"styleColor"];
 
-  v9 = [(PUITextLayoutConfiguration *)self numberingSystemType];
-  [v13 encodeObject:v9 forKey:@"numberingSystemType"];
+  numberingSystemType = [(PUITextLayoutConfiguration *)self numberingSystemType];
+  [coderCopy encodeObject:numberingSystemType forKey:@"numberingSystemType"];
 
   v10 = MEMORY[0x1E696AD98];
   [(PUITextLayoutConfiguration *)self contentsLuminance];
   v11 = [v10 numberWithDouble:?];
-  [v13 encodeObject:v11 forKey:@"contentsLuminence"];
+  [coderCopy encodeObject:v11 forKey:@"contentsLuminence"];
 
-  v12 = [(PUITextLayoutConfiguration *)self groupName];
-  [v13 encodeObject:v12 forKey:@"groupName"];
+  groupName = [(PUITextLayoutConfiguration *)self groupName];
+  [coderCopy encodeObject:groupName forKey:@"groupName"];
 
-  [v13 encodeBool:-[PUITextLayoutConfiguration isUserConfigured](self forKey:{"isUserConfigured"), @"userConfigured"}];
-  [v13 encodeBool:-[PUITextLayoutConfiguration isAlternateDateEnabled](self forKey:{"isAlternateDateEnabled"), @"alternateDateEnabled"}];
+  [coderCopy encodeBool:-[PUITextLayoutConfiguration isUserConfigured](self forKey:{"isUserConfigured"), @"userConfigured"}];
+  [coderCopy encodeBool:-[PUITextLayoutConfiguration isAlternateDateEnabled](self forKey:{"isAlternateDateEnabled"), @"alternateDateEnabled"}];
 }
 
-- (PUITextLayoutConfiguration)initWithCoder:(id)a3
+- (PUITextLayoutConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = MEMORY[0x1E695DFD8];
   v6 = objc_opt_self();
   v7 = objc_opt_class();
   v8 = [v5 setWithObjects:{v6, v7, objc_opt_class(), 0}];
-  v38 = [v4 decodeObjectOfClasses:v8 forKey:@"fontConfiguration"];
+  v38 = [coderCopy decodeObjectOfClasses:v8 forKey:@"fontConfiguration"];
 
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"style"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"style"];
   v37 = v9;
   if (v9)
   {
     v39 = 0;
-    v10 = [PUIStyleSerialization styleForData:v9 error:&v39];
+    defaultStyle = [PUIStyleSerialization styleForData:v9 error:&v39];
     v11 = v39;
-    if (!v10)
+    if (!defaultStyle)
     {
       v12 = PUILogCommon();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -663,21 +663,21 @@ uint64_t __59__PUITextLayoutConfiguration_maximumVerticalTextCharacters__block_i
         [(PUITextLayoutConfiguration *)v11 initWithCoder:v12];
       }
 
-      v10 = [objc_opt_class() defaultStyle];
+      defaultStyle = [objc_opt_class() defaultStyle];
     }
 
-    v36 = v10;
+    contentStyle = defaultStyle;
   }
 
   else
   {
     v13 = objc_opt_self();
-    v14 = [v4 decodeObjectOfClass:v13 forKey:@"styleColor"];
+    v14 = [coderCopy decodeObjectOfClass:v13 forKey:@"styleColor"];
 
     if (!v14)
     {
       v15 = objc_opt_self();
-      v16 = [v4 decodeObjectOfClass:v15 forKey:@"styleColor"];
+      v16 = [coderCopy decodeObjectOfClass:v15 forKey:@"styleColor"];
 
       if (v16)
       {
@@ -690,41 +690,41 @@ uint64_t __59__PUITextLayoutConfiguration_maximumVerticalTextCharacters__block_i
       }
     }
 
-    v36 = [(PUIStyleColor *)v14 contentStyle];
+    contentStyle = [(PUIStyleColor *)v14 contentStyle];
   }
 
   v17 = objc_opt_self();
-  v18 = [v4 decodeObjectOfClass:v17 forKey:@"textAlignment"];
+  v18 = [coderCopy decodeObjectOfClass:v17 forKey:@"textAlignment"];
 
   if (v18)
   {
-    v35 = [v18 unsignedIntegerValue];
+    unsignedIntegerValue = [v18 unsignedIntegerValue];
   }
 
   else
   {
-    v35 = 0;
+    unsignedIntegerValue = 0;
   }
 
   v19 = objc_opt_self();
-  v20 = [v4 decodeObjectOfClass:v19 forKey:@"preferredLayout"];
+  v20 = [coderCopy decodeObjectOfClass:v19 forKey:@"preferredLayout"];
 
   if (v20)
   {
-    v34 = [v20 unsignedIntegerValue];
+    unsignedIntegerValue2 = [v20 unsignedIntegerValue];
   }
 
   else
   {
-    v34 = 0;
+    unsignedIntegerValue2 = 0;
   }
 
   v21 = objc_opt_self();
-  v22 = [v4 decodeObjectOfClass:v21 forKey:@"numberingSystemType"];
+  v22 = [coderCopy decodeObjectOfClass:v21 forKey:@"numberingSystemType"];
 
-  v23 = [v4 decodeBoolForKey:@"userConfigured"];
+  v23 = [coderCopy decodeBoolForKey:@"userConfigured"];
   v24 = objc_opt_self();
-  v25 = [v4 decodeObjectOfClass:v24 forKey:@"contentsLuminence"];
+  v25 = [coderCopy decodeObjectOfClass:v24 forKey:@"contentsLuminence"];
 
   [objc_opt_class() defaultContentsLuminance];
   if (v25)
@@ -733,57 +733,57 @@ uint64_t __59__PUITextLayoutConfiguration_maximumVerticalTextCharacters__block_i
   }
 
   v27 = v26;
-  v28 = [v4 decodeBoolForKey:@"alternateDateEnabled"];
+  v28 = [coderCopy decodeBoolForKey:@"alternateDateEnabled"];
   v29 = objc_opt_self();
-  v30 = [v4 decodeObjectOfClass:v29 forKey:@"groupName"];
+  v30 = [coderCopy decodeObjectOfClass:v29 forKey:@"groupName"];
 
   LOBYTE(v33) = v28;
-  v31 = [(PUITextLayoutConfiguration *)self initWithFontConfiguration:v38 preferredAlignment:v35 preferredLayout:v34 style:v36 numberingSystemType:v22 userConfigured:v23 contentsLuminance:v27 alternateDateEnabled:v33 groupName:v30];
+  v31 = [(PUITextLayoutConfiguration *)self initWithFontConfiguration:v38 preferredAlignment:unsignedIntegerValue preferredLayout:unsignedIntegerValue2 style:contentStyle numberingSystemType:v22 userConfigured:v23 contentsLuminance:v27 alternateDateEnabled:v33 groupName:v30];
 
   return v31;
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(PUITextLayoutConfiguration *)self fontConfiguration];
-  [v4 encodeObject:v5 forKey:@"fontConfiguration"];
+  coderCopy = coder;
+  fontConfiguration = [(PUITextLayoutConfiguration *)self fontConfiguration];
+  [coderCopy encodeObject:fontConfiguration forKey:@"fontConfiguration"];
 
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[PUITextLayoutConfiguration preferredAlignment](self, "preferredAlignment")}];
-  [v4 encodeObject:v6 forKey:@"preferredAlignment"];
+  [coderCopy encodeObject:v6 forKey:@"preferredAlignment"];
 
   v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[PUITextLayoutConfiguration preferredLayout](self, "preferredLayout")}];
-  [v4 encodeObject:v7 forKey:@"preferredLayout"];
+  [coderCopy encodeObject:v7 forKey:@"preferredLayout"];
 
-  v8 = [(PUITextLayoutConfiguration *)self style];
-  v14 = [PUIStyleSerialization dataForStyle:v8 error:0];
+  style = [(PUITextLayoutConfiguration *)self style];
+  v14 = [PUIStyleSerialization dataForStyle:style error:0];
 
-  [v4 encodeObject:v14 forKey:@"style"];
-  v9 = [(PUITextLayoutConfiguration *)self styleColor];
-  [v4 encodeObject:v9 forKey:@"styleColor"];
+  [coderCopy encodeObject:v14 forKey:@"style"];
+  styleColor = [(PUITextLayoutConfiguration *)self styleColor];
+  [coderCopy encodeObject:styleColor forKey:@"styleColor"];
 
-  v10 = [(PUITextLayoutConfiguration *)self numberingSystemType];
-  [v4 encodeObject:v10 forKey:@"numberingSystemType"];
+  numberingSystemType = [(PUITextLayoutConfiguration *)self numberingSystemType];
+  [coderCopy encodeObject:numberingSystemType forKey:@"numberingSystemType"];
 
   v11 = MEMORY[0x1E696AD98];
   [(PUITextLayoutConfiguration *)self contentsLuminance];
   v12 = [v11 numberWithDouble:?];
-  [v4 encodeObject:v12 forKey:@"contentsLuminence"];
+  [coderCopy encodeObject:v12 forKey:@"contentsLuminence"];
 
-  v13 = [(PUITextLayoutConfiguration *)self groupName];
-  [v4 encodeObject:v13 forKey:@"groupName"];
+  groupName = [(PUITextLayoutConfiguration *)self groupName];
+  [coderCopy encodeObject:groupName forKey:@"groupName"];
 
-  [v4 encodeBool:-[PUITextLayoutConfiguration isUserConfigured](self forKey:{"isUserConfigured"), @"userConfigured"}];
-  [v4 encodeBool:-[PUITextLayoutConfiguration isAlternateDateEnabled](self forKey:{"isAlternateDateEnabled"), @"alternateDateEnabled"}];
+  [coderCopy encodeBool:-[PUITextLayoutConfiguration isUserConfigured](self forKey:{"isUserConfigured"), @"userConfigured"}];
+  [coderCopy encodeBool:-[PUITextLayoutConfiguration isAlternateDateEnabled](self forKey:{"isAlternateDateEnabled"), @"alternateDateEnabled"}];
 }
 
-- (PUITextLayoutConfiguration)initWithBSXPCCoder:(id)a3
+- (PUITextLayoutConfiguration)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_self();
-  v37 = [v4 decodeObjectOfClass:v5 forKey:@"fontConfiguration"];
+  v37 = [coderCopy decodeObjectOfClass:v5 forKey:@"fontConfiguration"];
 
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"style"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"style"];
   v36 = v6;
   if (v6)
   {
@@ -793,7 +793,7 @@ uint64_t __59__PUITextLayoutConfiguration_maximumVerticalTextCharacters__block_i
     v35 = v8;
     if (v7)
     {
-      v34 = v7;
+      defaultStyle = v7;
     }
 
     else
@@ -805,19 +805,19 @@ uint64_t __59__PUITextLayoutConfiguration_maximumVerticalTextCharacters__block_i
         [(PUITextLayoutConfiguration *)v13 initWithCoder:v14];
       }
 
-      v34 = [objc_opt_class() defaultStyle];
+      defaultStyle = [objc_opt_class() defaultStyle];
     }
   }
 
   else
   {
     v9 = objc_opt_self();
-    v10 = [v4 decodeObjectOfClass:v9 forKey:@"styleColor"];
+    v10 = [coderCopy decodeObjectOfClass:v9 forKey:@"styleColor"];
 
     if (!v10)
     {
       v11 = objc_opt_self();
-      v12 = [v4 decodeObjectOfClass:v11 forKey:@"styleColor"];
+      v12 = [coderCopy decodeObjectOfClass:v11 forKey:@"styleColor"];
 
       if (v12)
       {
@@ -830,43 +830,43 @@ uint64_t __59__PUITextLayoutConfiguration_maximumVerticalTextCharacters__block_i
       }
     }
 
-    v34 = [(PUIStyleColor *)v10 contentStyle];
+    defaultStyle = [(PUIStyleColor *)v10 contentStyle];
 
     v35 = 0;
   }
 
   v15 = objc_opt_self();
-  v16 = [v4 decodeObjectOfClass:v15 forKey:@"preferredAlignment"];
+  v16 = [coderCopy decodeObjectOfClass:v15 forKey:@"preferredAlignment"];
 
   if (v16)
   {
-    v33 = [v16 unsignedIntegerValue];
+    unsignedIntegerValue = [v16 unsignedIntegerValue];
   }
 
   else
   {
-    v33 = 0;
+    unsignedIntegerValue = 0;
   }
 
   v17 = objc_opt_self();
-  v18 = [v4 decodeObjectOfClass:v17 forKey:@"preferredLayout"];
+  v18 = [coderCopy decodeObjectOfClass:v17 forKey:@"preferredLayout"];
 
   if (v18)
   {
-    v32 = [v18 unsignedIntegerValue];
+    unsignedIntegerValue2 = [v18 unsignedIntegerValue];
   }
 
   else
   {
-    v32 = 0;
+    unsignedIntegerValue2 = 0;
   }
 
   v19 = objc_opt_self();
-  v20 = [v4 decodeObjectOfClass:v19 forKey:@"numberingSystemType"];
+  v20 = [coderCopy decodeObjectOfClass:v19 forKey:@"numberingSystemType"];
 
-  v21 = [v4 decodeBoolForKey:@"userConfigured"];
+  v21 = [coderCopy decodeBoolForKey:@"userConfigured"];
   v22 = objc_opt_self();
-  v23 = [v4 decodeObjectOfClass:v22 forKey:@"contentsLuminence"];
+  v23 = [coderCopy decodeObjectOfClass:v22 forKey:@"contentsLuminence"];
 
   [objc_opt_class() defaultContentsLuminance];
   if (v23)
@@ -875,69 +875,69 @@ uint64_t __59__PUITextLayoutConfiguration_maximumVerticalTextCharacters__block_i
   }
 
   v25 = v24;
-  v26 = [v4 decodeBoolForKey:@"alternateDateEnabled"];
+  v26 = [coderCopy decodeBoolForKey:@"alternateDateEnabled"];
   v27 = objc_opt_self();
-  v28 = [v4 decodeObjectOfClass:v27 forKey:@"groupName"];
+  v28 = [coderCopy decodeObjectOfClass:v27 forKey:@"groupName"];
 
   LOBYTE(v31) = v26;
-  v29 = [(PUITextLayoutConfiguration *)self initWithFontConfiguration:v37 preferredAlignment:v33 preferredLayout:v32 style:v34 numberingSystemType:v20 userConfigured:v21 contentsLuminance:v25 alternateDateEnabled:v31 groupName:v28];
+  v29 = [(PUITextLayoutConfiguration *)self initWithFontConfiguration:v37 preferredAlignment:unsignedIntegerValue preferredLayout:unsignedIntegerValue2 style:defaultStyle numberingSystemType:v20 userConfigured:v21 contentsLuminance:v25 alternateDateEnabled:v31 groupName:v28];
 
   return v29;
 }
 
-- (void)appendDescriptionToFormatter:(id)a3
+- (void)appendDescriptionToFormatter:(id)formatter
 {
-  v15 = a3;
-  v4 = [(PUITextLayoutConfiguration *)self fontConfiguration];
-  v5 = [v15 appendObject:v4 withName:@"fontConfiguration"];
+  formatterCopy = formatter;
+  fontConfiguration = [(PUITextLayoutConfiguration *)self fontConfiguration];
+  v5 = [formatterCopy appendObject:fontConfiguration withName:@"fontConfiguration"];
 
-  v6 = [v15 appendInteger:-[PUITextLayoutConfiguration preferredAlignment](self withName:{"preferredAlignment"), @"preferredAlignment"}];
-  v7 = [v15 appendInteger:-[PUITextLayoutConfiguration preferredLayout](self withName:{"preferredLayout"), @"preferredLayout"}];
-  v8 = [(PUITextLayoutConfiguration *)self style];
-  v9 = [v15 appendObject:v8 withName:@"style"];
+  v6 = [formatterCopy appendInteger:-[PUITextLayoutConfiguration preferredAlignment](self withName:{"preferredAlignment"), @"preferredAlignment"}];
+  v7 = [formatterCopy appendInteger:-[PUITextLayoutConfiguration preferredLayout](self withName:{"preferredLayout"), @"preferredLayout"}];
+  style = [(PUITextLayoutConfiguration *)self style];
+  v9 = [formatterCopy appendObject:style withName:@"style"];
 
-  v10 = [(PUITextLayoutConfiguration *)self numberingSystemType];
-  v11 = [v15 appendObject:v10 withName:@"numberingSystemType"];
+  numberingSystemType = [(PUITextLayoutConfiguration *)self numberingSystemType];
+  v11 = [formatterCopy appendObject:numberingSystemType withName:@"numberingSystemType"];
 
   [(PUITextLayoutConfiguration *)self contentsLuminance];
-  v12 = [v15 appendDouble:@"contentsLuminance" withName:5 decimalPrecision:?];
-  v13 = [v15 appendBool:-[PUITextLayoutConfiguration isUserConfigured](self withName:{"isUserConfigured"), @"userConfigured"}];
-  v14 = [v15 appendBool:-[PUITextLayoutConfiguration isAlternateDateEnabled](self withName:{"isAlternateDateEnabled"), @"isAlternateDateEnabled"}];
+  v12 = [formatterCopy appendDouble:@"contentsLuminance" withName:5 decimalPrecision:?];
+  v13 = [formatterCopy appendBool:-[PUITextLayoutConfiguration isUserConfigured](self withName:{"isUserConfigured"), @"userConfigured"}];
+  v14 = [formatterCopy appendBool:-[PUITextLayoutConfiguration isAlternateDateEnabled](self withName:{"isAlternateDateEnabled"), @"isAlternateDateEnabled"}];
 }
 
-- (PUITextLayoutConfiguration)initWithFontConfiguration:(id)a3 styleColor:(id)a4
+- (PUITextLayoutConfiguration)initWithFontConfiguration:(id)configuration styleColor:(id)color
 {
-  v6 = a4;
-  v7 = a3;
+  colorCopy = color;
+  configurationCopy = configuration;
   [objc_opt_class() defaultContentsLuminance];
   LOBYTE(v10) = 0;
-  v8 = [(PUITextLayoutConfiguration *)self initWithFontConfiguration:v7 preferredAlignment:0 preferredLayout:0 styleColor:v6 numberingSystemType:0 userConfigured:0 contentsLuminance:v10 alternateDateEnabled:0 groupName:?];
+  v8 = [(PUITextLayoutConfiguration *)self initWithFontConfiguration:configurationCopy preferredAlignment:0 preferredLayout:0 styleColor:colorCopy numberingSystemType:0 userConfigured:0 contentsLuminance:v10 alternateDateEnabled:0 groupName:?];
 
   return v8;
 }
 
-- (PUITextLayoutConfiguration)initWithFontConfiguration:(id)a3 styleColor:(id)a4 numberingSystemType:(id)a5
+- (PUITextLayoutConfiguration)initWithFontConfiguration:(id)configuration styleColor:(id)color numberingSystemType:(id)type
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  typeCopy = type;
+  colorCopy = color;
+  configurationCopy = configuration;
   +[PUITextLayoutConfiguration defaultContentsLuminance];
   LOBYTE(v13) = 0;
-  v11 = [(PUITextLayoutConfiguration *)self initWithFontConfiguration:v10 preferredAlignment:0 preferredLayout:0 styleColor:v9 numberingSystemType:v8 userConfigured:0 contentsLuminance:v13 alternateDateEnabled:0 groupName:?];
+  v11 = [(PUITextLayoutConfiguration *)self initWithFontConfiguration:configurationCopy preferredAlignment:0 preferredLayout:0 styleColor:colorCopy numberingSystemType:typeCopy userConfigured:0 contentsLuminance:v13 alternateDateEnabled:0 groupName:?];
 
   return v11;
 }
 
-- (PUITextLayoutConfiguration)initWithFontConfiguration:(id)a3 preferredAlignment:(unint64_t)a4 preferredLayout:(unint64_t)a5 styleColor:(id)a6 numberingSystemType:(id)a7 userConfigured:(BOOL)a8 contentsLuminance:(double)a9 alternateDateEnabled:(BOOL)a10 groupName:(id)a11
+- (PUITextLayoutConfiguration)initWithFontConfiguration:(id)configuration preferredAlignment:(unint64_t)alignment preferredLayout:(unint64_t)layout styleColor:(id)color numberingSystemType:(id)type userConfigured:(BOOL)configured contentsLuminance:(double)luminance alternateDateEnabled:(BOOL)self0 groupName:(id)self1
 {
-  v19 = a11;
-  v20 = a7;
-  v21 = a6;
-  v22 = a3;
-  v23 = [v21 contentStyle];
-  BYTE1(v26) = a10;
-  LOBYTE(v26) = a8;
-  v24 = [(PUITextLayoutConfiguration *)self initWithFontConfiguration:v22 preferredAlignment:a4 preferredLayout:a5 style:v23 styleColor:v21 numberingSystemType:v20 userConfigured:a9 contentsLuminance:v26 alternateDateEnabled:v19 groupName:?];
+  nameCopy = name;
+  typeCopy = type;
+  colorCopy = color;
+  configurationCopy = configuration;
+  contentStyle = [colorCopy contentStyle];
+  BYTE1(v26) = enabled;
+  LOBYTE(v26) = configured;
+  v24 = [(PUITextLayoutConfiguration *)self initWithFontConfiguration:configurationCopy preferredAlignment:alignment preferredLayout:layout style:contentStyle styleColor:colorCopy numberingSystemType:typeCopy userConfigured:luminance contentsLuminance:v26 alternateDateEnabled:nameCopy groupName:?];
 
   return v24;
 }

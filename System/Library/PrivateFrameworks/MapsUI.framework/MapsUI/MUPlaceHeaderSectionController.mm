@@ -1,15 +1,15 @@
 @interface MUPlaceHeaderSectionController
-- (BOOL)headerViewShouldLayoutSubviews:(id)a3;
-- (MUPlaceHeaderSectionController)initWithPlaceItem:(id)a3 configuration:(id)a4;
+- (BOOL)headerViewShouldLayoutSubviews:(id)subviews;
+- (MUPlaceHeaderSectionController)initWithPlaceItem:(id)item configuration:(id)configuration;
 - (MUPlaceHeaderSectionControllerDelegate)headerDelegate;
 - (id)draggableContent;
-- (void)_notifyDidTapParentMapItem:(id)a3;
-- (void)_populateRevealedAnalyticsModule:(id)a3;
+- (void)_notifyDidTapParentMapItem:(id)item;
+- (void)_populateRevealedAnalyticsModule:(id)module;
 - (void)_setupHeaderView;
-- (void)headerView:(id)a3 didSelectEnclosingMapItemIdentifier:(id)a4;
-- (void)headerView:(id)a3 didSelectShareWithPresentationOptions:(id)a4;
-- (void)setCardExpansionProgress:(double)a3;
-- (void)setHeaderDelegate:(id)a3;
+- (void)headerView:(id)view didSelectEnclosingMapItemIdentifier:(id)identifier;
+- (void)headerView:(id)view didSelectShareWithPresentationOptions:(id)options;
+- (void)setCardExpansionProgress:(double)progress;
+- (void)setHeaderDelegate:(id)delegate;
 @end
 
 @implementation MUPlaceHeaderSectionController
@@ -21,13 +21,13 @@
   return WeakRetained;
 }
 
-- (void)_populateRevealedAnalyticsModule:(id)a3
+- (void)_populateRevealedAnalyticsModule:(id)module
 {
   headerView = self->_headerView;
-  v4 = a3;
-  v6 = [(MUPlaceHeaderView *)headerView viewModel];
-  v5 = MUHeaderRevealedModuleForViewModel(v6);
-  [v4 setTitle:v5];
+  moduleCopy = module;
+  viewModel = [(MUPlaceHeaderView *)headerView viewModel];
+  v5 = MUHeaderRevealedModuleForViewModel(viewModel);
+  [moduleCopy setTitle:v5];
 }
 
 - (id)draggableContent
@@ -37,8 +37,8 @@
   {
     v3 = objc_alloc_init(MUInfoCardDraggableContent);
     [(MUInfoCardDraggableContent *)v3 setView:self->_headerView];
-    v4 = [(MUPlaceSectionController *)self mapItem];
-    [(MUInfoCardDraggableContent *)v3 setDraggableContent:v4];
+    mapItem = [(MUPlaceSectionController *)self mapItem];
+    [(MUInfoCardDraggableContent *)v3 setDraggableContent:mapItem];
 
     [(MUInfoCardDraggableContent *)v3 setHeader:1];
     [(MUInfoCardDraggableContent *)v3 setAnalyticsTarget:1501];
@@ -56,42 +56,42 @@
   return v5;
 }
 
-- (void)_notifyDidTapParentMapItem:(id)a3
+- (void)_notifyDidTapParentMapItem:(id)item
 {
   v4 = MEMORY[0x1E696AEC0];
-  v5 = a3;
-  v6 = [v4 stringWithFormat:@"%llu", objc_msgSend(v5, "_muid")];
+  itemCopy = item;
+  v6 = [v4 stringWithFormat:@"%llu", objc_msgSend(itemCopy, "_muid")];
   [(MUPlaceSectionController *)self captureInfoCardAction:6047 eventValue:v6 feedbackType:0 actionRichProviderId:0 classification:0];
 
-  v7 = [(MUPlaceHeaderSectionController *)self headerDelegate];
-  [v7 placeHeaderSectionController:self didTapMapItem:v5];
+  headerDelegate = [(MUPlaceHeaderSectionController *)self headerDelegate];
+  [headerDelegate placeHeaderSectionController:self didTapMapItem:itemCopy];
 }
 
-- (BOOL)headerViewShouldLayoutSubviews:(id)a3
+- (BOOL)headerViewShouldLayoutSubviews:(id)subviews
 {
-  v3 = self;
-  v4 = [(MUPlaceSectionController *)self delegate];
-  LOBYTE(v3) = [v4 placeSectionControllerShouldLayoutSubviews:v3];
+  selfCopy = self;
+  delegate = [(MUPlaceSectionController *)self delegate];
+  LOBYTE(selfCopy) = [delegate placeSectionControllerShouldLayoutSubviews:selfCopy];
 
-  return v3;
+  return selfCopy;
 }
 
-- (void)headerView:(id)a3 didSelectShareWithPresentationOptions:(id)a4
+- (void)headerView:(id)view didSelectShareWithPresentationOptions:(id)options
 {
-  v5 = a4;
-  v6 = [(MUPlaceHeaderSectionController *)self headerDelegate];
-  [v6 placeHeaderSectionController:self didSelectShareWithPresentationOptions:v5];
+  optionsCopy = options;
+  headerDelegate = [(MUPlaceHeaderSectionController *)self headerDelegate];
+  [headerDelegate placeHeaderSectionController:self didSelectShareWithPresentationOptions:optionsCopy];
 }
 
-- (void)headerView:(id)a3 didSelectEnclosingMapItemIdentifier:(id)a4
+- (void)headerView:(id)view didSelectEnclosingMapItemIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MUPlaceHeaderSectionController *)self headerDelegate];
+  viewCopy = view;
+  identifierCopy = identifier;
+  headerDelegate = [(MUPlaceHeaderSectionController *)self headerDelegate];
 
   v9 = MUGetPlaceCardLog();
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_INFO);
-  if (v8)
+  if (headerDelegate)
   {
     if (v10)
     {
@@ -101,13 +101,13 @@
 
     objc_initWeak(buf, self);
     [(MUPlaceHeaderView *)self->_headerView beginAnimatingActivityIndicator];
-    v11 = [(MUPlaceHeaderView *)self->_headerView viewModel];
+    viewModel = [(MUPlaceHeaderView *)self->_headerView viewModel];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __81__MUPlaceHeaderSectionController_headerView_didSelectEnclosingMapItemIdentifier___block_invoke;
     v12[3] = &unk_1E8219D48;
     objc_copyWeak(&v13, buf);
-    [v11 refineEnclosingMapItemWithCompletion:v12];
+    [viewModel refineEnclosingMapItemWithCompletion:v12];
 
     objc_destroyWeak(&v13);
     objc_destroyWeak(buf);
@@ -149,19 +149,19 @@ void __81__MUPlaceHeaderSectionController_headerView_didSelectEnclosingMapItemId
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setCardExpansionProgress:(double)a3
+- (void)setCardExpansionProgress:(double)progress
 {
   if (![(MUPlaceHeaderSectionControllerConfiguration *)self->_configuration alwaysShowExpandedVerifiedBusinessHeader])
   {
     headerView = self->_headerView;
 
-    [(MUPlaceHeaderView *)headerView setVerifiedBusinessHeaderExpansionProgress:a3];
+    [(MUPlaceHeaderView *)headerView setVerifiedBusinessHeaderExpansionProgress:progress];
   }
 }
 
-- (void)setHeaderDelegate:(id)a3
+- (void)setHeaderDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_headerDelegate);
 
   v5 = obj;
@@ -180,9 +180,9 @@ void __81__MUPlaceHeaderSectionController_headerView_didSelectEnclosingMapItemId
   [(MUPlaceCoverPhotoOptions *)v3 setInsetsCoverPhoto:[(MUPlaceHeaderSectionControllerConfiguration *)self->_configuration shouldInsetRoundCoverPhoto]];
   v4 = [MUPlaceItemHeaderViewModel alloc];
   placeItem = self->_placeItem;
-  v6 = [(MUPlaceHeaderSectionControllerConfiguration *)self->_configuration isDeveloperPlaceCard];
-  v7 = [(MUPlaceHeaderSectionControllerConfiguration *)self->_configuration developerPlaceCardAuditToken];
-  v8 = [(MUPlaceItemHeaderViewModel *)v4 initWithPlaceItem:placeItem isDeveloperPlaceCard:v6 developerPlaceCardAuditToken:v7];
+  isDeveloperPlaceCard = [(MUPlaceHeaderSectionControllerConfiguration *)self->_configuration isDeveloperPlaceCard];
+  developerPlaceCardAuditToken = [(MUPlaceHeaderSectionControllerConfiguration *)self->_configuration developerPlaceCardAuditToken];
+  v8 = [(MUPlaceItemHeaderViewModel *)v4 initWithPlaceItem:placeItem isDeveloperPlaceCard:isDeveloperPlaceCard developerPlaceCardAuditToken:developerPlaceCardAuditToken];
 
   objc_initWeak(&location, self);
   v9 = [MUPlaceHeaderView alloc];
@@ -208,9 +208,9 @@ void __81__MUPlaceHeaderSectionController_headerView_didSelectEnclosingMapItemId
     [(MUPlaceHeaderView *)self->_headerView setBackgroundColor:v12];
   }
 
-  v13 = [(MUPlaceHeaderSectionControllerConfiguration *)self->_configuration alwaysShowExpandedVerifiedBusinessHeader];
+  alwaysShowExpandedVerifiedBusinessHeader = [(MUPlaceHeaderSectionControllerConfiguration *)self->_configuration alwaysShowExpandedVerifiedBusinessHeader];
   v14 = 0.0;
-  if (v13)
+  if (alwaysShowExpandedVerifiedBusinessHeader)
   {
     v14 = 1.0;
   }
@@ -264,14 +264,14 @@ double __50__MUPlaceHeaderSectionController__setupHeaderView__block_invoke_2(uin
   return v3;
 }
 
-- (MUPlaceHeaderSectionController)initWithPlaceItem:(id)a3 configuration:(id)a4
+- (MUPlaceHeaderSectionController)initWithPlaceItem:(id)item configuration:(id)configuration
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 mapItem];
+  itemCopy = item;
+  configurationCopy = configuration;
+  mapItem = [itemCopy mapItem];
   v15.receiver = self;
   v15.super_class = MUPlaceHeaderSectionController;
-  v10 = [(MUPlaceSectionController *)&v15 initWithMapItem:v9];
+  v10 = [(MUPlaceSectionController *)&v15 initWithMapItem:mapItem];
 
   if (v10)
   {
@@ -282,8 +282,8 @@ double __50__MUPlaceHeaderSectionController__setupHeaderView__block_invoke_2(uin
       _os_signpost_emit_with_name_impl(&dword_1C5620000, v11, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "MUPlaceHeaderSectionControllerInit", "", v14, 2u);
     }
 
-    objc_storeStrong(&v10->_placeItem, a3);
-    objc_storeStrong(&v10->_configuration, a4);
+    objc_storeStrong(&v10->_placeItem, item);
+    objc_storeStrong(&v10->_configuration, configuration);
     [(MUPlaceHeaderSectionController *)v10 _setupHeaderView];
     v12 = MUGetPlaceCardLog();
     if (os_signpost_enabled(v12))

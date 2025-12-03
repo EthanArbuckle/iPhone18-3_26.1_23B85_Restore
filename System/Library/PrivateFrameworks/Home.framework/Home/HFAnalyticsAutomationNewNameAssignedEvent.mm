@@ -1,15 +1,15 @@
 @interface HFAnalyticsAutomationNewNameAssignedEvent
-- (HFAnalyticsAutomationNewNameAssignedEvent)initWithData:(id)a3;
+- (HFAnalyticsAutomationNewNameAssignedEvent)initWithData:(id)data;
 - (id)payload;
 @end
 
 @implementation HFAnalyticsAutomationNewNameAssignedEvent
 
-- (HFAnalyticsAutomationNewNameAssignedEvent)initWithData:(id)a3
+- (HFAnalyticsAutomationNewNameAssignedEvent)initWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   objc_opt_class();
-  v5 = [v4 objectForKeyedSubscript:@"didNamingSucceedKey"];
+  v5 = [dataCopy objectForKeyedSubscript:@"didNamingSucceedKey"];
   if (objc_opt_isKindOfClass())
   {
     v6 = v5;
@@ -23,7 +23,7 @@
   v7 = v6;
 
   objc_opt_class();
-  v8 = [v4 objectForKeyedSubscript:@"errorTypeKey"];
+  v8 = [dataCopy objectForKeyedSubscript:@"errorTypeKey"];
   if (objc_opt_isKindOfClass())
   {
     v9 = v8;
@@ -37,7 +37,7 @@
   v10 = v9;
 
   objc_opt_class();
-  v11 = [v4 objectForKeyedSubscript:@"modifiesExisitingTriggerKey"];
+  v11 = [dataCopy objectForKeyedSubscript:@"modifiesExisitingTriggerKey"];
   if (objc_opt_isKindOfClass())
   {
     v12 = v11;
@@ -51,7 +51,7 @@
   v13 = v12;
 
   objc_opt_class();
-  v14 = [v4 objectForKeyedSubscript:@"namingTypeKey"];
+  v14 = [dataCopy objectForKeyedSubscript:@"namingTypeKey"];
 
   if (objc_opt_isKindOfClass())
   {
@@ -84,20 +84,20 @@
 {
   v10.receiver = self;
   v10.super_class = HFAnalyticsAutomationNewNameAssignedEvent;
-  v3 = [(HFAnalyticsEvent *)&v10 payload];
-  v4 = [v3 mutableCopy];
+  payload = [(HFAnalyticsEvent *)&v10 payload];
+  v4 = [payload mutableCopy];
 
-  v5 = [(HFAnalyticsAutomationNewNameAssignedEvent *)self didNamingSucceed];
-  [v4 na_safeSetObject:v5 forKey:@"didNamingSucceed"];
+  didNamingSucceed = [(HFAnalyticsAutomationNewNameAssignedEvent *)self didNamingSucceed];
+  [v4 na_safeSetObject:didNamingSucceed forKey:@"didNamingSucceed"];
 
-  v6 = [(HFAnalyticsAutomationNewNameAssignedEvent *)self errorType];
-  [v4 na_safeSetObject:v6 forKey:@"errorType"];
+  errorType = [(HFAnalyticsAutomationNewNameAssignedEvent *)self errorType];
+  [v4 na_safeSetObject:errorType forKey:@"errorType"];
 
-  v7 = [(HFAnalyticsAutomationNewNameAssignedEvent *)self modifiesExistingTrigger];
-  [v4 na_safeSetObject:v7 forKey:@"modifiesExistingTrigger"];
+  modifiesExistingTrigger = [(HFAnalyticsAutomationNewNameAssignedEvent *)self modifiesExistingTrigger];
+  [v4 na_safeSetObject:modifiesExistingTrigger forKey:@"modifiesExistingTrigger"];
 
-  v8 = [(HFAnalyticsAutomationNewNameAssignedEvent *)self namingType];
-  [v4 na_safeSetObject:v8 forKey:@"namingType"];
+  namingType = [(HFAnalyticsAutomationNewNameAssignedEvent *)self namingType];
+  [v4 na_safeSetObject:namingType forKey:@"namingType"];
 
   return v4;
 }

@@ -1,10 +1,10 @@
 @interface TSCENilCellValue
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToCellValue:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToCellValue:(id)value;
 - (TSCENilCellValue)init;
-- (TSCENilCellValue)initWithLocale:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (int64_t)compareToCellValue:(id)a3;
+- (TSCENilCellValue)initWithLocale:(id)locale;
+- (id)copyWithZone:(_NSZone *)zone;
+- (int64_t)compareToCellValue:(id)value;
 @end
 
 @implementation TSCENilCellValue
@@ -17,11 +17,11 @@
   return v10;
 }
 
-- (TSCENilCellValue)initWithLocale:(id)a3
+- (TSCENilCellValue)initWithLocale:(id)locale
 {
   v4.receiver = self;
   v4.super_class = TSCENilCellValue;
-  result = [(TSCECellValue *)&v4 initWithLocale:a3];
+  result = [(TSCECellValue *)&v4 initWithLocale:locale];
   if (result)
   {
     result->super._valueType = 0;
@@ -30,7 +30,7 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [TSCENilCellValue alloc];
   v9 = objc_msgSend_locale(self, v5, v6, v7, v8);
@@ -39,20 +39,20 @@
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v4.receiver = self;
   v4.super_class = TSCENilCellValue;
-  return [(TSCECellValue *)&v4 isEqual:a3];
+  return [(TSCECellValue *)&v4 isEqual:equal];
 }
 
-- (BOOL)isEqualToCellValue:(id)a3
+- (BOOL)isEqualToCellValue:(id)value
 {
-  v3 = a3;
-  v8 = v3;
-  if (v3)
+  valueCopy = value;
+  v8 = valueCopy;
+  if (valueCopy)
   {
-    v9 = objc_msgSend_valueType(v3, v4, v5, v6, v7) == 0;
+    v9 = objc_msgSend_valueType(valueCopy, v4, v5, v6, v7) == 0;
   }
 
   else
@@ -63,10 +63,10 @@
   return v9;
 }
 
-- (int64_t)compareToCellValue:(id)a3
+- (int64_t)compareToCellValue:(id)value
 {
-  v6 = a3;
-  v7 = v6[8];
+  valueCopy = value;
+  v7 = valueCopy[8];
   if (v7 < 8 && ((0xADu >> v7) & 1) != 0)
   {
     v8 = qword_2217E05C8[v7];

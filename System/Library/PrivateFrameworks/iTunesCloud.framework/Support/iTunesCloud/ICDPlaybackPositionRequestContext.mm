@@ -1,7 +1,7 @@
 @interface ICDPlaybackPositionRequestContext
-+ (id)libraryWithIdentifier:(id)a3;
-- (ICDPlaybackPositionRequestContext)initWithEntity:(id)a3 clientIdentity:(id)a4;
-- (ICDPlaybackPositionRequestContext)initWithLibraryIdentifier:(id)a3 domain:(id)a4 clientIdentity:(id)a5;
++ (id)libraryWithIdentifier:(id)identifier;
+- (ICDPlaybackPositionRequestContext)initWithEntity:(id)entity clientIdentity:(id)identity;
+- (ICDPlaybackPositionRequestContext)initWithLibraryIdentifier:(id)identifier domain:(id)domain clientIdentity:(id)identity;
 - (ICStoreRequestContext)storeRequestContext;
 @end
 
@@ -36,11 +36,11 @@
   return v8;
 }
 
-- (ICDPlaybackPositionRequestContext)initWithLibraryIdentifier:(id)a3 domain:(id)a4 clientIdentity:(id)a5
+- (ICDPlaybackPositionRequestContext)initWithLibraryIdentifier:(id)identifier domain:(id)domain clientIdentity:(id)identity
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  domainCopy = domain;
+  identityCopy = identity;
   v23.receiver = self;
   v23.super_class = ICDPlaybackPositionRequestContext;
   v11 = [(ICDPlaybackPositionRequestContext *)&v23 init];
@@ -48,17 +48,17 @@
   if (v11)
   {
     v11->_lock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v11->_playbackPositionDomain, a4);
-    objc_storeStrong(&v12->_clientIdentity, a5);
-    v13 = [ICDPlaybackPositionRequestContext libraryWithIdentifier:v8];
+    objc_storeStrong(&v11->_playbackPositionDomain, domain);
+    objc_storeStrong(&v12->_clientIdentity, identity);
+    v13 = [ICDPlaybackPositionRequestContext libraryWithIdentifier:identifierCopy];
     library = v12->_library;
     v12->_library = v13;
 
-    v15 = [(ML3MusicLibrary *)v12->_library accountDSID];
-    v16 = v15;
-    if (v15)
+    accountDSID = [(ML3MusicLibrary *)v12->_library accountDSID];
+    v16 = accountDSID;
+    if (accountDSID)
     {
-      v17 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [v15 longLongValue]);
+      v17 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [accountDSID longLongValue]);
       v18 = [ICUserIdentity specificAccountWithDSID:v17];
       userIdentity = v12->_userIdentity;
       v12->_userIdentity = v18;
@@ -83,32 +83,32 @@
   return v12;
 }
 
-- (ICDPlaybackPositionRequestContext)initWithEntity:(id)a3 clientIdentity:(id)a4
+- (ICDPlaybackPositionRequestContext)initWithEntity:(id)entity clientIdentity:(id)identity
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 libraryIdentifier];
-  v10 = [v7 playbackPositionDomain];
-  v11 = [(ICDPlaybackPositionRequestContext *)self initWithLibraryIdentifier:v9 domain:v10 clientIdentity:v8];
+  entityCopy = entity;
+  identityCopy = identity;
+  libraryIdentifier = [entityCopy libraryIdentifier];
+  playbackPositionDomain = [entityCopy playbackPositionDomain];
+  v11 = [(ICDPlaybackPositionRequestContext *)self initWithLibraryIdentifier:libraryIdentifier domain:playbackPositionDomain clientIdentity:identityCopy];
 
   if (v11)
   {
-    objc_storeStrong(&v11->_entity, a3);
+    objc_storeStrong(&v11->_entity, entity);
   }
 
   return v11;
 }
 
-+ (id)libraryWithIdentifier:(id)a3
++ (id)libraryWithIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
   v17 = sub_1000B4020;
   v18 = sub_1000B4030;
   v19 = 0;
-  if (!v3)
+  if (!identifierCopy)
   {
     goto LABEL_3;
   }
@@ -118,7 +118,7 @@
   v11[1] = 3221225472;
   v11[2] = sub_1000B4038;
   v11[3] = &unk_1001DD830;
-  v12 = v3;
+  v12 = identifierCopy;
   v13 = &v14;
   [v4 enumerateObjectsUsingBlock:v11];
 
@@ -130,7 +130,7 @@ LABEL_3:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      v21 = v3;
+      v21 = identifierCopy;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_ERROR, "ICDPlaybackPositionRequestContext: Could not find library with uid=%{public}@. Falling back to autoupdatingSharedLibrary.", buf, 0xCu);
     }
 

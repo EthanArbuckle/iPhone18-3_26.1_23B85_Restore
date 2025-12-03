@@ -1,14 +1,14 @@
 @interface CPSURLOverrideDetailsController
-- (CPSURLOverrideDetailsController)initWithNibName:(id)a3 bundle:(id)a4;
+- (CPSURLOverrideDetailsController)initWithNibName:(id)name bundle:(id)bundle;
 - (id)specifiers;
-- (void)_anyTextFieldDidUpdate:(id)a3;
-- (void)cancelAndDismiss:(id)a3;
-- (void)chooseImage:(id)a3;
-- (void)picker:(id)a3 didFinishPicking:(id)a4;
-- (void)removeOverride:(id)a3;
-- (void)saveAndDismiss:(id)a3;
-- (void)setModel:(id)a3;
-- (void)setModelValue:(id)a3 forSpecifier:(id)a4;
+- (void)_anyTextFieldDidUpdate:(id)update;
+- (void)cancelAndDismiss:(id)dismiss;
+- (void)chooseImage:(id)image;
+- (void)picker:(id)picker didFinishPicking:(id)picking;
+- (void)removeOverride:(id)override;
+- (void)saveAndDismiss:(id)dismiss;
+- (void)setModel:(id)model;
+- (void)setModelValue:(id)value forSpecifier:(id)specifier;
 - (void)updateHeroImageSpecifier;
 - (void)updateSaveItem;
 - (void)viewDidLoad;
@@ -16,11 +16,11 @@
 
 @implementation CPSURLOverrideDetailsController
 
-- (CPSURLOverrideDetailsController)initWithNibName:(id)a3 bundle:(id)a4
+- (CPSURLOverrideDetailsController)initWithNibName:(id)name bundle:(id)bundle
 {
   v11.receiver = self;
   v11.super_class = CPSURLOverrideDetailsController;
-  v4 = [(CPSURLOverrideDetailsController *)&v11 initWithNibName:a3 bundle:a4];
+  v4 = [(CPSURLOverrideDetailsController *)&v11 initWithNibName:name bundle:bundle];
   if (v4)
   {
     v5 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:1 target:v4 action:"cancelAndDismiss:"];
@@ -42,15 +42,15 @@
   v5.receiver = self;
   v5.super_class = CPSURLOverrideDetailsController;
   [(CPSURLOverrideDetailsController *)&v5 viewDidLoad];
-  v3 = [(CPSURLOverrideDetailsController *)self table];
-  [v3 setKeyboardDismissMode:1];
+  table = [(CPSURLOverrideDetailsController *)self table];
+  [table setKeyboardDismissMode:1];
 
-  v4 = [(CPSURLOverrideDetailsController *)self navigationItem];
-  [v4 setLeftBarButtonItem:self->_cancelItem];
-  [v4 setRightBarButtonItem:self->_saveItem];
+  navigationItem = [(CPSURLOverrideDetailsController *)self navigationItem];
+  [navigationItem setLeftBarButtonItem:self->_cancelItem];
+  [navigationItem setRightBarButtonItem:self->_saveItem];
 }
 
-- (void)saveAndDismiss:(id)a3
+- (void)saveAndDismiss:(id)dismiss
 {
   [(CPSDeveloperOverride *)self->_model save];
   dismissHandler = self->_dismissHandler;
@@ -61,27 +61,27 @@
 
   WeakRetained = objc_loadWeakRetained(&self->PSListController_opaque[OBJC_IVAR___PSViewController__parentController]);
   [WeakRetained reloadSpecifiers];
-  v5 = [(CPSURLOverrideDetailsController *)self navigationController];
-  v6 = [v5 popViewControllerAnimated:1];
+  navigationController = [(CPSURLOverrideDetailsController *)self navigationController];
+  v6 = [navigationController popViewControllerAnimated:1];
 
   SFKillProcessNamed();
 }
 
-- (void)cancelAndDismiss:(id)a3
+- (void)cancelAndDismiss:(id)dismiss
 {
   dismissHandler = self->_dismissHandler;
   if (dismissHandler)
   {
-    dismissHandler[2](dismissHandler, 0, a3);
+    dismissHandler[2](dismissHandler, 0, dismiss);
   }
 
-  v6 = [(CPSURLOverrideDetailsController *)self navigationController];
-  v5 = [v6 popViewControllerAnimated:1];
+  navigationController = [(CPSURLOverrideDetailsController *)self navigationController];
+  v5 = [navigationController popViewControllerAnimated:1];
 }
 
-- (void)setModel:(id)a3
+- (void)setModel:(id)model
 {
-  objc_storeStrong(&self->_model, a3);
+  objc_storeStrong(&self->_model, model);
   [(CPSURLOverrideDetailsController *)self updateHeroImageSpecifier];
 
   [(CPSURLOverrideDetailsController *)self updateSaveItem];
@@ -138,23 +138,23 @@
   return v4;
 }
 
-- (void)setModelValue:(id)a3 forSpecifier:(id)a4
+- (void)setModelValue:(id)value forSpecifier:(id)specifier
 {
-  [(CPSDeveloperOverride *)self->_model setValue:a3 forSpecifier:a4];
+  [(CPSDeveloperOverride *)self->_model setValue:value forSpecifier:specifier];
 
   [(CPSURLOverrideDetailsController *)self updateSaveItem];
 }
 
-- (void)_anyTextFieldDidUpdate:(id)a3
+- (void)_anyTextFieldDidUpdate:(id)update
 {
-  v4 = [a3 object];
+  object = [update object];
   v5 = objc_opt_self();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
     v7 = objc_opt_self();
-    v8 = sub_2FB0(v4, v7);
+    v8 = sub_2FB0(object, v7);
 
     if (v8)
     {
@@ -186,9 +186,9 @@
 
             if (v15 == v8)
             {
-              v16 = [v4 text];
+              text = [object text];
               v17 = [(CPSURLOverrideDetailsController *)self specifierForID:v14];
-              [(CPSURLOverrideDetailsController *)self setModelValue:v16 forSpecifier:v17];
+              [(CPSURLOverrideDetailsController *)self setModelValue:text forSpecifier:v17];
 
               goto LABEL_13;
             }
@@ -211,18 +211,18 @@ LABEL_13:
 
 - (void)updateSaveItem
 {
-  v3 = [(CPSDeveloperOverride *)self->_model isComplete];
+  isComplete = [(CPSDeveloperOverride *)self->_model isComplete];
   saveItem = self->_saveItem;
 
-  [(UIBarButtonItem *)saveItem setEnabled:v3];
+  [(UIBarButtonItem *)saveItem setEnabled:isComplete];
 }
 
 - (void)updateHeroImageSpecifier
 {
   if ([(CPSDeveloperOverride *)self->_model heroImage])
   {
-    v3 = [(CPSURLOverrideDetailsController *)self specifiers];
-    v5 = [v3 specifierForID:@"CardPreviewSpecifier"];
+    specifiers = [(CPSURLOverrideDetailsController *)self specifiers];
+    v5 = [specifiers specifierForID:@"CardPreviewSpecifier"];
 
     if (v5)
     {
@@ -239,7 +239,7 @@ LABEL_13:
   }
 }
 
-- (void)chooseImage:(id)a3
+- (void)chooseImage:(id)image
 {
   v6 = objc_alloc_init(PHPickerConfiguration);
   v4 = +[PHPickerFilter imagesFilter];
@@ -250,29 +250,29 @@ LABEL_13:
   [(CPSURLOverrideDetailsController *)self presentViewController:v5 animated:1 completion:0];
 }
 
-- (void)removeOverride:(id)a3
+- (void)removeOverride:(id)override
 {
   [(CPSDeveloperOverride *)self->_model clear];
   WeakRetained = objc_loadWeakRetained(&self->PSListController_opaque[OBJC_IVAR___PSViewController__parentController]);
   [WeakRetained reloadSpecifiers];
-  v4 = [(CPSURLOverrideDetailsController *)self navigationController];
-  v5 = [v4 popViewControllerAnimated:1];
+  navigationController = [(CPSURLOverrideDetailsController *)self navigationController];
+  v5 = [navigationController popViewControllerAnimated:1];
 
   SFKillProcessNamed();
 }
 
-- (void)picker:(id)a3 didFinishPicking:(id)a4
+- (void)picker:(id)picker didFinishPicking:(id)picking
 {
-  v6 = a4;
-  [a3 dismissViewControllerAnimated:1 completion:0];
-  v7 = [v6 firstObject];
+  pickingCopy = picking;
+  [picker dismissViewControllerAnimated:1 completion:0];
+  firstObject = [pickingCopy firstObject];
 
-  v8 = [v7 itemProvider];
+  itemProvider = [firstObject itemProvider];
 
   v9 = objc_opt_self();
-  LODWORD(v7) = [v8 canLoadObjectOfClass:v9];
+  LODWORD(firstObject) = [itemProvider canLoadObjectOfClass:v9];
 
-  if (v7)
+  if (firstObject)
   {
     v10 = objc_opt_self();
     v12[0] = _NSConcreteStackBlock;
@@ -280,7 +280,7 @@ LABEL_13:
     v12[2] = sub_33E0;
     v12[3] = &unk_30EC8;
     v12[4] = self;
-    v11 = [v8 loadObjectOfClass:v10 completionHandler:v12];
+    v11 = [itemProvider loadObjectOfClass:v10 completionHandler:v12];
   }
 }
 

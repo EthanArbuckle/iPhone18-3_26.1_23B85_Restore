@@ -1,11 +1,11 @@
 @interface _ICLLRevisionHash
-- (BOOL)isEqual:(id)a3;
-- (BOOL)readFrom:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)readFrom:(id)from;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _ICLLRevisionHash
@@ -36,31 +36,31 @@
   return v4 ^ v3 ^ v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_14;
   }
 
   has = self->_has;
-  v6 = *(v4 + 24);
+  v6 = *(equalCopy + 24);
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 24) & 2) == 0 || self->_type != *(v4 + 5))
+    if ((*(equalCopy + 24) & 2) == 0 || self->_type != *(equalCopy + 5))
     {
       goto LABEL_14;
     }
   }
 
-  else if ((*(v4 + 24) & 2) != 0)
+  else if ((*(equalCopy + 24) & 2) != 0)
   {
     goto LABEL_14;
   }
 
   hashValue = self->_hashValue;
-  if (hashValue | *(v4 + 1))
+  if (hashValue | *(equalCopy + 1))
   {
     if (![(NSString *)hashValue isEqual:?])
     {
@@ -70,13 +70,13 @@ LABEL_14:
     }
 
     has = self->_has;
-    v6 = *(v4 + 24);
+    v6 = *(equalCopy + 24);
   }
 
   v8 = (v6 & 1) == 0;
   if (has)
   {
-    if ((v6 & 1) == 0 || self->_revision != *(v4 + 4))
+    if ((v6 & 1) == 0 || self->_revision != *(equalCopy + 4))
     {
       goto LABEL_14;
     }
@@ -89,9 +89,9 @@ LABEL_15:
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if ((*&self->_has & 2) != 0)
   {
@@ -99,7 +99,7 @@ LABEL_15:
     *(v5 + 24) |= 2u;
   }
 
-  v7 = [(NSString *)self->_hashValue copyWithZone:a3];
+  v7 = [(NSString *)self->_hashValue copyWithZone:zone];
   v8 = *(v6 + 8);
   *(v6 + 8) = v7;
 
@@ -112,37 +112,37 @@ LABEL_15:
   return v6;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if ((*&self->_has & 2) != 0)
   {
     PBDataWriterWriteInt32Field();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_hashValue)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
     PBDataWriterWriteInt32Field();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (BOOL)readFrom:(id)a3
+- (BOOL)readFrom:(id)from
 {
-  v5 = [a3 position];
-  if (v5 < [a3 length])
+  position = [from position];
+  if (position < [from length])
   {
     while (1)
     {
-      if ([a3 hasError])
+      if ([from hasError])
       {
         goto LABEL_51;
       }
@@ -153,18 +153,18 @@ LABEL_15:
       while (1)
       {
         v34 = 0;
-        v9 = [a3 position] + 1;
-        if (v9 >= [a3 position] && (v10 = objc_msgSend(a3, "position") + 1, v10 <= objc_msgSend(a3, "length")))
+        v9 = [from position] + 1;
+        if (v9 >= [from position] && (v10 = objc_msgSend(from, "position") + 1, v10 <= objc_msgSend(from, "length")))
         {
-          v11 = [a3 data];
-          [v11 getBytes:&v34 range:{objc_msgSend(a3, "position"), 1}];
+          data = [from data];
+          [data getBytes:&v34 range:{objc_msgSend(from, "position"), 1}];
 
-          [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+          [from setPosition:{objc_msgSend(from, "position") + 1}];
         }
 
         else
         {
-          [a3 _setError];
+          [from _setError];
         }
 
         v8 |= (v34 & 0x7F) << v6;
@@ -182,9 +182,9 @@ LABEL_15:
         }
       }
 
-      v13 = [a3 hasError] ? 0 : v8;
+      v13 = [from hasError] ? 0 : v8;
 LABEL_15:
-      if (([a3 hasError] & 1) != 0 || (v13 & 7) == 4)
+      if (([from hasError] & 1) != 0 || (v13 & 7) == 4)
       {
         goto LABEL_51;
       }
@@ -215,18 +215,18 @@ LABEL_15:
         while (1)
         {
           v36 = 0;
-          v18 = [a3 position] + 1;
-          if (v18 >= [a3 position] && (v19 = objc_msgSend(a3, "position") + 1, v19 <= objc_msgSend(a3, "length")))
+          v18 = [from position] + 1;
+          if (v18 >= [from position] && (v19 = objc_msgSend(from, "position") + 1, v19 <= objc_msgSend(from, "length")))
           {
-            v20 = [a3 data];
-            [v20 getBytes:&v36 range:{objc_msgSend(a3, "position"), 1}];
+            data2 = [from data];
+            [data2 getBytes:&v36 range:{objc_msgSend(from, "position"), 1}];
 
-            [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+            [from setPosition:{objc_msgSend(from, "position") + 1}];
           }
 
           else
           {
-            [a3 _setError];
+            [from _setError];
           }
 
           v17 |= (v36 & 0x7F) << v15;
@@ -244,7 +244,7 @@ LABEL_15:
           }
         }
 
-        if ([a3 hasError])
+        if ([from hasError])
         {
           v21 = 0;
         }
@@ -264,8 +264,8 @@ LABEL_48:
       self->_hashValue = v22;
 
 LABEL_50:
-      v32 = [a3 position];
-      if (v32 >= [a3 length])
+      position2 = [from position];
+      if (position2 >= [from length])
       {
         goto LABEL_51;
       }
@@ -278,18 +278,18 @@ LABEL_50:
     while (1)
     {
       v35 = 0;
-      v27 = [a3 position] + 1;
-      if (v27 >= [a3 position] && (v28 = objc_msgSend(a3, "position") + 1, v28 <= objc_msgSend(a3, "length")))
+      v27 = [from position] + 1;
+      if (v27 >= [from position] && (v28 = objc_msgSend(from, "position") + 1, v28 <= objc_msgSend(from, "length")))
       {
-        v29 = [a3 data];
-        [v29 getBytes:&v35 range:{objc_msgSend(a3, "position"), 1}];
+        data3 = [from data];
+        [data3 getBytes:&v35 range:{objc_msgSend(from, "position"), 1}];
 
-        [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+        [from setPosition:{objc_msgSend(from, "position") + 1}];
       }
 
       else
       {
-        [a3 _setError];
+        [from _setError];
       }
 
       v26 |= (v35 & 0x7F) << v24;
@@ -307,7 +307,7 @@ LABEL_50:
       }
     }
 
-    if ([a3 hasError])
+    if ([from hasError])
     {
       v21 = 0;
     }
@@ -325,32 +325,32 @@ LABEL_49:
   }
 
 LABEL_51:
-  LOBYTE(v30) = [a3 hasError] ^ 1;
+  LOBYTE(v30) = [from hasError] ^ 1;
   return v30;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ((*&self->_has & 2) != 0)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithInt:self->_type];
-    [v3 setObject:v4 forKey:@"type"];
+    [dictionary setObject:v4 forKey:@"type"];
   }
 
   hashValue = self->_hashValue;
   if (hashValue)
   {
-    [v3 setObject:hashValue forKey:@"hashValue"];
+    [dictionary setObject:hashValue forKey:@"hashValue"];
   }
 
   if (*&self->_has)
   {
     v6 = [MEMORY[0x1E696AD98] numberWithInt:self->_revision];
-    [v3 setObject:v6 forKey:@"revision"];
+    [dictionary setObject:v6 forKey:@"revision"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -359,8 +359,8 @@ LABEL_51:
   v8.receiver = self;
   v8.super_class = _ICLLRevisionHash;
   v4 = [(_ICLLRevisionHash *)&v8 description];
-  v5 = [(_ICLLRevisionHash *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(_ICLLRevisionHash *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }

@@ -1,8 +1,8 @@
 @interface CTDataConnectionAvailabilityStatus
-- (CTDataConnectionAvailabilityStatus)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CTDataConnectionAvailabilityStatus)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CTDataConnectionAvailabilityStatus
@@ -17,31 +17,31 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setAvailable:{-[CTDataConnectionAvailabilityStatus available](self, "available")}];
   [v4 setCsiError:{-[CTDataConnectionAvailabilityStatus csiError](self, "csiError")}];
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeBool:-[CTDataConnectionAvailabilityStatus available](self forKey:{"available"), @"available"}];
-  [v4 encodeInt:-[CTDataConnectionAvailabilityStatus csiError](self forKey:{"csiError"), @"error"}];
+  coderCopy = coder;
+  [coderCopy encodeBool:-[CTDataConnectionAvailabilityStatus available](self forKey:{"available"), @"available"}];
+  [coderCopy encodeInt:-[CTDataConnectionAvailabilityStatus csiError](self forKey:{"csiError"), @"error"}];
 }
 
-- (CTDataConnectionAvailabilityStatus)initWithCoder:(id)a3
+- (CTDataConnectionAvailabilityStatus)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = CTDataConnectionAvailabilityStatus;
   v5 = [(CTDataConnectionAvailabilityStatus *)&v7 init];
   if (v5)
   {
-    v5->_available = [v4 decodeBoolForKey:@"available"];
-    v5->_csiError = [v4 decodeIntForKey:@"error"];
+    v5->_available = [coderCopy decodeBoolForKey:@"available"];
+    v5->_csiError = [coderCopy decodeIntForKey:@"error"];
   }
 
   return v5;

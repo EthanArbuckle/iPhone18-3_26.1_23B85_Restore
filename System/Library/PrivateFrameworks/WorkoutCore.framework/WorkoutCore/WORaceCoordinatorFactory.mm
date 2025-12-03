@@ -1,23 +1,23 @@
 @interface WORaceCoordinatorFactory
-+ (id)makeWithConfiguration:(id)a3 builder:(id)a4 healthStore:(id)a5;
++ (id)makeWithConfiguration:(id)configuration builder:(id)builder healthStore:(id)store;
 - (WORaceCoordinatorFactory)init;
 @end
 
 @implementation WORaceCoordinatorFactory
 
-+ (id)makeWithConfiguration:(id)a3 builder:(id)a4 healthStore:(id)a5
++ (id)makeWithConfiguration:(id)configuration builder:(id)builder healthStore:(id)store
 {
-  v7 = *(a3 + OBJC_IVAR___WOCoreLiveWorkoutConfiguration_configuration);
+  v7 = *(configuration + OBJC_IVAR___WOCoreLiveWorkoutConfiguration_configuration);
   type metadata accessor for RaceWorkoutConfiguration();
   v8 = swift_dynamicCastClass();
   if (v8)
   {
     v9 = v8;
     v10 = objc_allocWithZone(type metadata accessor for RaceCoordinator());
-    v11 = a4;
-    v12 = a5;
+    builderCopy = builder;
+    storeCopy = store;
     v13 = v7;
-    v14 = specialized RaceCoordinator.init(configuration:builder:healthStore:)(v9, v11, v12);
+    v14 = specialized RaceCoordinator.init(configuration:builder:healthStore:)(v9, builderCopy, storeCopy);
 
     return v14;
   }

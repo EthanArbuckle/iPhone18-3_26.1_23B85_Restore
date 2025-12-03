@@ -1,19 +1,19 @@
 @interface KVDatasetBuilder
-- (BOOL)_finishWithError:(id *)a3;
+- (BOOL)_finishWithError:(id *)error;
 - (KVDatasetBuilder)init;
-- (KVDatasetBuilder)initWithDatasetInfo:(id)a3 writer:(id)a4 error:(id *)a5;
-- (id)addItem:(id)a3 error:(id *)a4;
+- (KVDatasetBuilder)initWithDatasetInfo:(id)info writer:(id)writer error:(id *)error;
+- (id)addItem:(id)item error:(id *)error;
 @end
 
 @implementation KVDatasetBuilder
 
-- (BOOL)_finishWithError:(id *)a3
+- (BOOL)_finishWithError:(id *)error
 {
   v34[1] = *MEMORY[0x277D85DE8];
   itemCount = self->_itemCount;
-  if (itemCount == objc_msgSend_itemCount(self->_datasetInfo, a2, a3, v3, v4, v5))
+  if (itemCount == objc_msgSend_itemCount(self->_datasetInfo, a2, error, v3, v4, v5))
   {
-    v14 = objc_msgSend_finishDataset_(self->_writer, v9, a3, v11, v12, v13);
+    v14 = objc_msgSend_finishDataset_(self->_writer, v9, error, v11, v12, v13);
     writer = self->_writer;
     self->_writer = 0;
 
@@ -31,12 +31,12 @@
     v34[0] = v25;
     v28 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v26, v34, &v33, 1, v27);
     v31 = objc_msgSend_errorWithDomain_code_userInfo_(v18, v29, @"com.apple.koa.profile", 8, v28, v30);
-    if (a3)
+    if (error)
     {
       if (v31)
       {
         v31 = v31;
-        *a3 = v31;
+        *error = v31;
       }
     }
 
@@ -45,19 +45,19 @@
   }
 }
 
-- (id)addItem:(id)a3 error:(id *)a4
+- (id)addItem:(id)item error:(id *)error
 {
   v74[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  itemCopy = item;
+  if (itemCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v12 = objc_msgSend_itemType(v6, v7, v8, v9, v10, v11);
+    v12 = objc_msgSend_itemType(itemCopy, v7, v8, v9, v10, v11);
     if (v12 == objc_msgSend_itemType(self->_datasetInfo, v13, v14, v15, v16, v17))
     {
-      if (objc_msgSend_addItem_error_(self->_writer, v18, v6, a4, v21, v22))
+      if (objc_msgSend_addItem_error_(self->_writer, v18, itemCopy, error, v21, v22))
       {
         ++self->_itemCount;
-        v23 = self;
+        selfCopy = self;
         goto LABEL_11;
       }
     }
@@ -67,7 +67,7 @@
       v41 = MEMORY[0x277CCA9B8];
       v71 = *MEMORY[0x277CCA450];
       v42 = MEMORY[0x277CCACA8];
-      v43 = objc_msgSend_itemType(v6, v18, v19, v20, v21, v22);
+      v43 = objc_msgSend_itemType(itemCopy, v18, v19, v20, v21, v22);
       if (v43 - 1 >= 0x1A)
       {
         v47 = 0;
@@ -95,10 +95,10 @@
       v72 = v64;
       v67 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v65, &v72, &v71, 1, v66);
       v70 = objc_msgSend_errorWithDomain_code_userInfo_(v41, v68, @"com.apple.koa.profile", 7, v67, v69);
-      if (a4 && v70)
+      if (error && v70)
       {
         v70 = v70;
-        *a4 = v70;
+        *error = v70;
       }
     }
   }
@@ -110,30 +110,30 @@
     v25 = MEMORY[0x277CCACA8];
     v26 = objc_opt_class();
     v27 = NSStringFromClass(v26);
-    v32 = objc_msgSend_stringWithFormat_(v25, v28, @"Invalid item: %@ expected %@", v29, v30, v31, v6, v27);
+    v32 = objc_msgSend_stringWithFormat_(v25, v28, @"Invalid item: %@ expected %@", v29, v30, v31, itemCopy, v27);
     v74[0] = v32;
     v35 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v33, v74, &v73, 1, v34);
     v38 = objc_msgSend_errorWithDomain_code_userInfo_(v24, v36, @"com.apple.koa.profile", 7, v35, v37);
-    if (a4 && v38)
+    if (error && v38)
     {
       v38 = v38;
-      *a4 = v38;
+      *error = v38;
     }
   }
 
-  v23 = 0;
+  selfCopy = 0;
 LABEL_11:
 
   v39 = *MEMORY[0x277D85DE8];
 
-  return v23;
+  return selfCopy;
 }
 
-- (KVDatasetBuilder)initWithDatasetInfo:(id)a3 writer:(id)a4 error:(id *)a5
+- (KVDatasetBuilder)initWithDatasetInfo:(id)info writer:(id)writer error:(id *)error
 {
   v44[1] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
+  infoCopy = info;
+  writerCopy = writer;
   v42.receiver = self;
   v42.super_class = KVDatasetBuilder;
   v11 = [(KVDatasetBuilder *)&v42 init];
@@ -144,7 +144,7 @@ LABEL_11:
     goto LABEL_7;
   }
 
-  objc_storeStrong(&v11->_datasetInfo, a3);
+  objc_storeStrong(&v11->_datasetInfo, info);
   if (!v12->_datasetInfo)
   {
     datasetInfo = 0;
@@ -172,17 +172,17 @@ LABEL_10:
     v44[0] = v33;
     v36 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v34, v44, &v43, 1, v35);
     v39 = objc_msgSend_errorWithDomain_code_userInfo_(v32, v37, @"com.apple.koa.profile", 6, v36, v38);
-    if (a5 && v39)
+    if (error && v39)
     {
       v39 = v39;
-      *a5 = v39;
+      *error = v39;
     }
 
     goto LABEL_14;
   }
 
-  objc_storeStrong(&v12->_writer, a4);
-  if (!objc_msgSend_startDataset_error_(v12->_writer, v28, v9, a5, v29, v30))
+  objc_storeStrong(&v12->_writer, writer);
+  if (!objc_msgSend_startDataset_error_(v12->_writer, v28, infoCopy, error, v29, v30))
   {
 LABEL_14:
     v31 = 0;

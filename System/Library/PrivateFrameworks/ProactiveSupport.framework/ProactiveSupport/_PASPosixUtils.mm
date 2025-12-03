@@ -1,16 +1,16 @@
 @interface _PASPosixUtils
-+ (int)runCommandWithPath:(const char *)a3 argv:(const char *)a4 envp:(const char *)a5 handleStdout:(id)a6 handleStderr:(id)a7;
-+ (int)runCommandWithPath:(const char *)a3 argv:(const char *)a4 envp:(const char *)a5 stdoutData:(id *)a6 stderrData:(id *)a7;
++ (int)runCommandWithPath:(const char *)path argv:(const char *)argv envp:(const char *)envp handleStdout:(id)stdout handleStderr:(id)stderr;
++ (int)runCommandWithPath:(const char *)path argv:(const char *)argv envp:(const char *)envp stdoutData:(id *)data stderrData:(id *)stderrData;
 @end
 
 @implementation _PASPosixUtils
 
-+ (int)runCommandWithPath:(const char *)a3 argv:(const char *)a4 envp:(const char *)a5 stdoutData:(id *)a6 stderrData:(id *)a7
++ (int)runCommandWithPath:(const char *)path argv:(const char *)argv envp:(const char *)envp stdoutData:(id *)data stderrData:(id *)stderrData
 {
-  if (a6)
+  if (data)
   {
     v13 = objc_opt_new();
-    if (a7)
+    if (stderrData)
     {
 LABEL_3:
       v14 = objc_opt_new();
@@ -21,7 +21,7 @@ LABEL_3:
   else
   {
     v13 = 0;
-    if (a7)
+    if (stderrData)
     {
       goto LABEL_3;
     }
@@ -29,28 +29,28 @@ LABEL_3:
 
   v14 = 0;
 LABEL_6:
-  v15 = [v13 handleData];
-  v16 = [v14 handleData];
-  v17 = [a1 runCommandWithPath:a3 argv:a4 envp:a5 handleStdout:v15 handleStderr:v16];
+  handleData = [v13 handleData];
+  handleData2 = [v14 handleData];
+  v17 = [self runCommandWithPath:path argv:argv envp:envp handleStdout:handleData handleStderr:handleData2];
 
-  if (a6)
+  if (data)
   {
-    *a6 = [v13 allData];
+    *data = [v13 allData];
   }
 
-  if (a7)
+  if (stderrData)
   {
-    *a7 = [v14 allData];
+    *stderrData = [v14 allData];
   }
 
   return v17;
 }
 
-+ (int)runCommandWithPath:(const char *)a3 argv:(const char *)a4 envp:(const char *)a5 handleStdout:(id)a6 handleStderr:(id)a7
++ (int)runCommandWithPath:(const char *)path argv:(const char *)argv envp:(const char *)envp handleStdout:(id)stdout handleStderr:(id)stderr
 {
   v42[1] = *MEMORY[0x1E69E9840];
-  v11 = a6;
-  v12 = a7;
+  stdoutCopy = stdout;
+  stderrCopy = stderr;
   v13 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
   v14 = dispatch_queue_create("_PASPosixUtils-runCommandWithPath", v13);
 
@@ -58,10 +58,10 @@ LABEL_6:
   v15 = dispatch_group_create();
   v34 = 0;
   posix_spawn_file_actions_init(&v34);
-  if (!v11)
+  if (!stdoutCopy)
   {
     v16 = 0;
-    if (v12)
+    if (stderrCopy)
     {
       goto LABEL_4;
     }
@@ -80,7 +80,7 @@ LABEL_7:
     goto LABEL_29;
   }
 
-  if (!v12)
+  if (!stderrCopy)
   {
     goto LABEL_7;
   }
@@ -97,17 +97,17 @@ LABEL_4:
 LABEL_8:
   v33 = -1;
   v42[0] = 0;
-  if (a5)
+  if (envp)
   {
-    v21 = a5;
+    envpCopy = envp;
   }
 
   else
   {
-    v21 = v42;
+    envpCopy = v42;
   }
 
-  v22 = posix_spawn(&v33, a3, &v34, 0, a4, v21);
+  v22 = posix_spawn(&v33, path, &v34, 0, argv, envpCopy);
   if (v22)
   {
     v23 = v22;
@@ -115,7 +115,7 @@ LABEL_8:
     {
       v31 = strerror(v23);
       *buf = 136315650;
-      v37 = a3;
+      pathCopy2 = path;
       v38 = 2080;
       v39 = v31;
       v40 = 1024;
@@ -128,8 +128,8 @@ LABEL_8:
 
   else
   {
-    [v16 startReadWithHandler:v11];
-    [v18 startReadWithHandler:v12];
+    [v16 startReadWithHandler:stdoutCopy];
+    [v18 startReadWithHandler:stderrCopy];
     dispatch_group_wait(v15, 0xFFFFFFFFFFFFFFFFLL);
     v32 = 1;
     do
@@ -146,7 +146,7 @@ LABEL_8:
         v25 = strerror(*v24);
         v26 = *__error();
         *buf = 136315394;
-        v37 = v25;
+        pathCopy2 = v25;
         v38 = 1024;
         LODWORD(v39) = v26;
         _os_log_error_impl(&dword_1A7F47000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "runCommandWithPath failed on waitpid: %s (%d)", buf, 0x12u);
@@ -161,7 +161,7 @@ LABEL_8:
         if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
         {
           *buf = 136315394;
-          v37 = a3;
+          pathCopy2 = path;
           v38 = 1024;
           LODWORD(v39) = v27;
           _os_log_error_impl(&dword_1A7F47000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "runCommandWithPath subprocess %s did not exit cleanly (status %d)", buf, 0x12u);

@@ -1,12 +1,12 @@
 @interface SYFullSyncRequestAck
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SYFullSyncRequestAck
@@ -17,56 +17,56 @@
   v8.receiver = self;
   v8.super_class = SYFullSyncRequestAck;
   v4 = [(SYFullSyncRequestAck *)&v8 description];
-  v5 = [(SYFullSyncRequestAck *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SYFullSyncRequestAck *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   header = self->_header;
   if (header)
   {
-    v5 = [(SYMessageHeader *)header dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"header"];
+    dictionaryRepresentation = [(SYMessageHeader *)header dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"header"];
   }
 
   requestSyncID = self->_requestSyncID;
   if (requestSyncID)
   {
-    [v3 setObject:requestSyncID forKey:@"requestSyncID"];
+    [dictionary setObject:requestSyncID forKey:@"requestSyncID"];
   }
 
   v7 = [MEMORY[0x1E696AD98] numberWithBool:self->_accepted];
-  [v3 setObject:v7 forKey:@"accepted"];
+  [dictionary setObject:v7 forKey:@"accepted"];
 
   error = self->_error;
   if (error)
   {
-    v9 = [(SYErrorInfo *)error dictionaryRepresentation];
-    [v3 setObject:v9 forKey:@"error"];
+    dictionaryRepresentation2 = [(SYErrorInfo *)error dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"error"];
   }
 
   inProgressSyncID = self->_inProgressSyncID;
   if (inProgressSyncID)
   {
-    [v3 setObject:inProgressSyncID forKey:@"inProgressSyncID"];
+    [dictionary setObject:inProgressSyncID forKey:@"inProgressSyncID"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (!self->_header)
   {
     [SYFullSyncRequestAck writeTo:];
   }
 
-  v6 = v4;
+  v6 = toCopy;
   PBDataWriterWriteSubmessage();
   if (!self->_requestSyncID)
   {
@@ -87,59 +87,59 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v5 = a3;
-  [v5 setHeader:self->_header];
-  [v5 setRequestSyncID:self->_requestSyncID];
-  v4 = v5;
-  v5[40] = self->_accepted;
+  toCopy = to;
+  [toCopy setHeader:self->_header];
+  [toCopy setRequestSyncID:self->_requestSyncID];
+  v4 = toCopy;
+  toCopy[40] = self->_accepted;
   if (self->_error)
   {
-    [v5 setError:?];
-    v4 = v5;
+    [toCopy setError:?];
+    v4 = toCopy;
   }
 
   if (self->_inProgressSyncID)
   {
-    [v5 setInProgressSyncID:?];
-    v4 = v5;
+    [toCopy setInProgressSyncID:?];
+    v4 = toCopy;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(SYMessageHeader *)self->_header copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(SYMessageHeader *)self->_header copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
-  v8 = [(NSString *)self->_requestSyncID copyWithZone:a3];
+  v8 = [(NSString *)self->_requestSyncID copyWithZone:zone];
   v9 = *(v5 + 32);
   *(v5 + 32) = v8;
 
   *(v5 + 40) = self->_accepted;
-  v10 = [(SYErrorInfo *)self->_error copyWithZone:a3];
+  v10 = [(SYErrorInfo *)self->_error copyWithZone:zone];
   v11 = *(v5 + 8);
   *(v5 + 8) = v10;
 
-  v12 = [(NSString *)self->_inProgressSyncID copyWithZone:a3];
+  v12 = [(NSString *)self->_inProgressSyncID copyWithZone:zone];
   v13 = *(v5 + 24);
   *(v5 + 24) = v12;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_14;
   }
 
   header = self->_header;
-  if (header | *(v4 + 2))
+  if (header | *(equalCopy + 2))
   {
     if (![(SYMessageHeader *)header isEqual:?])
     {
@@ -148,7 +148,7 @@
   }
 
   requestSyncID = self->_requestSyncID;
-  if (requestSyncID | *(v4 + 4))
+  if (requestSyncID | *(equalCopy + 4))
   {
     if (![(NSString *)requestSyncID isEqual:?])
     {
@@ -156,16 +156,16 @@
     }
   }
 
-  v7 = *(v4 + 40);
+  v7 = *(equalCopy + 40);
   if (self->_accepted)
   {
-    if ((*(v4 + 40) & 1) == 0)
+    if ((*(equalCopy + 40) & 1) == 0)
     {
       goto LABEL_14;
     }
   }
 
-  else if (*(v4 + 40))
+  else if (*(equalCopy + 40))
   {
 LABEL_14:
     v10 = 0;
@@ -173,13 +173,13 @@ LABEL_14:
   }
 
   error = self->_error;
-  if (error | *(v4 + 1) && ![(SYErrorInfo *)error isEqual:?])
+  if (error | *(equalCopy + 1) && ![(SYErrorInfo *)error isEqual:?])
   {
     goto LABEL_14;
   }
 
   inProgressSyncID = self->_inProgressSyncID;
-  if (inProgressSyncID | *(v4 + 3))
+  if (inProgressSyncID | *(equalCopy + 3))
   {
     v10 = [(NSString *)inProgressSyncID isEqual:?];
   }
@@ -203,12 +203,12 @@ LABEL_15:
   return v6 ^ [(NSString *)self->_inProgressSyncID hash]^ v5;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   header = self->_header;
-  v9 = v4;
-  v6 = *(v4 + 2);
+  v9 = fromCopy;
+  v6 = *(fromCopy + 2);
   if (header)
   {
     if (v6)

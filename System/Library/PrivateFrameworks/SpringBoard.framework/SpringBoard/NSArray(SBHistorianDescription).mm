@@ -6,7 +6,7 @@
 
 - (__CFString)sb_switcherModifierDebugTimelineDescription
 {
-  if ([a1 count])
+  if ([self count])
   {
     v2 = objc_opt_new();
     v10 = MEMORY[0x277D85DD0];
@@ -15,10 +15,10 @@
     v13 = &unk_2783C0540;
     v14 = v2;
     v3 = v2;
-    [a1 enumerateObjectsUsingBlock:&v10];
+    [self enumerateObjectsUsingBlock:&v10];
     v4 = MEMORY[0x277CCACA8];
-    v5 = [a1 count];
-    v6 = [a1 count];
+    v5 = [self count];
+    v6 = [self count];
     v7 = &stru_283094718;
     if (v6 > 1)
     {

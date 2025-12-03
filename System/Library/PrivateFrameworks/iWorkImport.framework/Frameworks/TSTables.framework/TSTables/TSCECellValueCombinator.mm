@@ -1,14 +1,14 @@
 @interface TSCECellValueCombinator
-- (void)addValuesForDimension:(id)a3;
-- (void)enumerateCombinationsWithBlock:(id)a3;
+- (void)addValuesForDimension:(id)dimension;
+- (void)enumerateCombinationsWithBlock:(id)block;
 @end
 
 @implementation TSCECellValueCombinator
 
-- (void)addValuesForDimension:(id)a3
+- (void)addValuesForDimension:(id)dimension
 {
-  v10 = a3;
-  if (v10)
+  dimensionCopy = dimension;
+  if (dimensionCopy)
   {
     valuesForDimension = self->_valuesForDimension;
     if (!valuesForDimension)
@@ -20,14 +20,14 @@
       valuesForDimension = self->_valuesForDimension;
     }
 
-    objc_msgSend_addObject_(valuesForDimension, v4, v10, v5, v6);
+    objc_msgSend_addObject_(valuesForDimension, v4, dimensionCopy, v5, v6);
   }
 }
 
-- (void)enumerateCombinationsWithBlock:(id)a3
+- (void)enumerateCombinationsWithBlock:(id)block
 {
   v62 = *MEMORY[0x277D85DE8];
-  v56 = a3;
+  blockCopy = block;
   if (objc_msgSend_count(self->_valuesForDimension, v4, v5, v6, v7))
   {
     v8 = objc_alloc(MEMORY[0x277CBEB18]);
@@ -95,7 +95,7 @@
         while (v41 > 0);
       }
 
-      v56[2](v56, v17);
+      blockCopy[2](blockCopy, v17);
     }
 
 LABEL_16:

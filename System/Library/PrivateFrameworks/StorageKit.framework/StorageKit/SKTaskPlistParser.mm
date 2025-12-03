@@ -1,9 +1,9 @@
 @interface SKTaskPlistParser
 + (NSData)plistEndTag;
 + (NSData)plistStartTag;
-- (SKTaskPlistParser)initWithCallback:(id)a3;
+- (SKTaskPlistParser)initWithCallback:(id)callback;
 - (_NSRange)startRange;
-- (void)parseData:(id)a3;
+- (void)parseData:(id)data;
 @end
 
 @implementation SKTaskPlistParser
@@ -46,32 +46,32 @@ uint64_t __32__SKTaskPlistParser_plistEndTag__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (SKTaskPlistParser)initWithCallback:(id)a3
+- (SKTaskPlistParser)initWithCallback:(id)callback
 {
-  v4 = a3;
+  callbackCopy = callback;
   v8.receiver = self;
   v8.super_class = SKTaskPlistParser;
   v5 = [(SKTaskPlistParser *)&v8 init];
   if (v5)
   {
-    v6 = [MEMORY[0x277CBEB28] data];
-    [(SKTaskPlistParser *)v5 setBuffer:v6];
+    data = [MEMORY[0x277CBEB28] data];
+    [(SKTaskPlistParser *)v5 setBuffer:data];
 
-    [(SKTaskPlistParser *)v5 setCallback:v4];
+    [(SKTaskPlistParser *)v5 setCallback:callbackCopy];
     [(SKTaskPlistParser *)v5 setStartRange:0x7FFFFFFFFFFFFFFFLL, 0];
   }
 
   return v5;
 }
 
-- (void)parseData:(id)a3
+- (void)parseData:(id)data
 {
-  v29 = a3;
-  v4 = [(SKTaskPlistParser *)self buffer];
-  [v4 appendData:v29];
+  dataCopy = data;
+  buffer = [(SKTaskPlistParser *)self buffer];
+  [buffer appendData:dataCopy];
 
-  v5 = [(SKTaskPlistParser *)self buffer];
-  v6 = [v5 length];
+  buffer2 = [(SKTaskPlistParser *)self buffer];
+  v6 = [buffer2 length];
 
   if (v6)
   {
@@ -79,10 +79,10 @@ uint64_t __32__SKTaskPlistParser_plistEndTag__block_invoke()
     {
       if ([(SKTaskPlistParser *)self startRange]== 0x7FFFFFFFFFFFFFFFLL)
       {
-        v7 = [(SKTaskPlistParser *)self buffer];
-        v8 = [objc_opt_class() plistStartTag];
-        v9 = [(SKTaskPlistParser *)self buffer];
-        v10 = [v7 rangeOfData:v8 options:0 range:{0, objc_msgSend(v9, "length")}];
+        buffer3 = [(SKTaskPlistParser *)self buffer];
+        plistStartTag = [objc_opt_class() plistStartTag];
+        buffer4 = [(SKTaskPlistParser *)self buffer];
+        v10 = [buffer3 rangeOfData:plistStartTag options:0 range:{0, objc_msgSend(buffer4, "length")}];
         [(SKTaskPlistParser *)self setStartRange:v10, v11];
 
         if ([(SKTaskPlistParser *)self startRange]== 0x7FFFFFFFFFFFFFFFLL)
@@ -91,10 +91,10 @@ uint64_t __32__SKTaskPlistParser_plistEndTag__block_invoke()
         }
       }
 
-      v12 = [(SKTaskPlistParser *)self buffer];
-      v13 = [objc_opt_class() plistEndTag];
-      v14 = [(SKTaskPlistParser *)self buffer];
-      v15 = [v12 rangeOfData:v13 options:0 range:{0, objc_msgSend(v14, "length")}];
+      buffer5 = [(SKTaskPlistParser *)self buffer];
+      plistEndTag = [objc_opt_class() plistEndTag];
+      buffer6 = [(SKTaskPlistParser *)self buffer];
+      v15 = [buffer5 rangeOfData:plistEndTag options:0 range:{0, objc_msgSend(buffer6, "length")}];
       v17 = v16;
 
       if (v15 == 0x7FFFFFFFFFFFFFFFLL)
@@ -102,26 +102,26 @@ uint64_t __32__SKTaskPlistParser_plistEndTag__block_invoke()
         break;
       }
 
-      v18 = [(SKTaskPlistParser *)self buffer];
+      buffer7 = [(SKTaskPlistParser *)self buffer];
       v19 = v15 + v17;
-      v20 = [v18 subdataWithRange:{-[SKTaskPlistParser startRange](self, "startRange"), v15 + v17 - -[SKTaskPlistParser startRange](self, "startRange")}];
+      v20 = [buffer7 subdataWithRange:{-[SKTaskPlistParser startRange](self, "startRange"), v15 + v17 - -[SKTaskPlistParser startRange](self, "startRange")}];
 
       v21 = [MEMORY[0x277CCAC58] propertyListWithData:v20 options:0 format:0 error:0];
       if (v21)
       {
-        v22 = [(SKTaskPlistParser *)self buffer];
-        v23 = [(SKTaskPlistParser *)self buffer];
-        v24 = [(SKTaskPlistParser *)self buffer];
-        v25 = [v23 subdataWithRange:{v19 + 1, objc_msgSend(v24, "length") + ~v19}];
-        [v22 setData:v25];
+        buffer8 = [(SKTaskPlistParser *)self buffer];
+        buffer9 = [(SKTaskPlistParser *)self buffer];
+        buffer10 = [(SKTaskPlistParser *)self buffer];
+        v25 = [buffer9 subdataWithRange:{v19 + 1, objc_msgSend(buffer10, "length") + ~v19}];
+        [buffer8 setData:v25];
 
         [(SKTaskPlistParser *)self setStartRange:0x7FFFFFFFFFFFFFFFLL, 0];
-        v26 = [(SKTaskPlistParser *)self callback];
-        (v26)[2](v26, v21);
+        callback = [(SKTaskPlistParser *)self callback];
+        (callback)[2](callback, v21);
       }
 
-      v27 = [(SKTaskPlistParser *)self buffer];
-      v28 = [v27 length];
+      buffer11 = [(SKTaskPlistParser *)self buffer];
+      v28 = [buffer11 length];
     }
 
     while (v28);

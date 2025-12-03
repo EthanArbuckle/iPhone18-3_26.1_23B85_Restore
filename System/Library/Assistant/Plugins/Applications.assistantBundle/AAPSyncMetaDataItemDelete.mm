@@ -1,24 +1,24 @@
 @interface AAPSyncMetaDataItemDelete
-- (AAPSyncMetaDataItemDelete)initWithAppId:(id)a3 anchor:(id)a4;
-- (AAPSyncMetaDataItemDelete)initWithCoder:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (AAPSyncMetaDataItemDelete)initWithAppId:(id)id anchor:(id)anchor;
+- (AAPSyncMetaDataItemDelete)initWithCoder:(id)coder;
+- (BOOL)isEqual:(id)equal;
 - (id)scrapeAppInfo;
 - (void)_validate;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AAPSyncMetaDataItemDelete
 
-- (AAPSyncMetaDataItemDelete)initWithAppId:(id)a3 anchor:(id)a4
+- (AAPSyncMetaDataItemDelete)initWithAppId:(id)id anchor:(id)anchor
 {
   v8.receiver = self;
   v8.super_class = AAPSyncMetaDataItemDelete;
   v6 = [(AAPSyncMetaDataItemDelete *)&v8 init];
   if (v6)
   {
-    v6->_appId = [a3 copy];
-    v6->_anchor = [a4 copy];
+    v6->_appId = [id copy];
+    v6->_anchor = [anchor copy];
     [(AAPSyncMetaDataItemDelete *)v6 _validate];
   }
 
@@ -67,26 +67,26 @@
   return v3;
 }
 
-- (AAPSyncMetaDataItemDelete)initWithCoder:(id)a3
+- (AAPSyncMetaDataItemDelete)initWithCoder:(id)coder
 {
-  v5 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"appId"];
-  v6 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"anchor"];
+  v5 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"appId"];
+  v6 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"anchor"];
 
   return [(AAPSyncMetaDataItemDelete *)self initWithAppId:v5 anchor:v6];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeObject:self->_appId forKey:@"appId"];
+  [coder encodeObject:self->_appId forKey:@"appId"];
   anchor = self->_anchor;
 
-  [a3 encodeObject:anchor forKey:@"anchor"];
+  [coder encodeObject:anchor forKey:@"anchor"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v3 = self;
-  if (self == a3)
+  selfCopy = self;
+  if (self == equal)
   {
     LOBYTE(self) = self != 0;
   }
@@ -96,13 +96,13 @@
     v5 = objc_opt_class();
     if (v5 == objc_opt_class())
     {
-      LODWORD(self) = -[NSString isEqualToString:](v3->_appId, "isEqualToString:", [a3 appId]);
+      LODWORD(self) = -[NSString isEqualToString:](selfCopy->_appId, "isEqualToString:", [equal appId]);
       if (self)
       {
-        anchor = v3->_anchor;
-        v7 = [a3 anchor];
+        anchor = selfCopy->_anchor;
+        anchor = [equal anchor];
 
-        LOBYTE(self) = [(AAPSyncAnchor *)anchor isEqualToAnchor:v7];
+        LOBYTE(self) = [(AAPSyncAnchor *)anchor isEqualToAnchor:anchor];
       }
     }
 

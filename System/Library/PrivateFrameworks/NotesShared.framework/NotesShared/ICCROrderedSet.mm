@@ -1,33 +1,33 @@
 @interface ICCROrderedSet
-- (BOOL)containsObject:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)containsObject:(id)object;
+- (BOOL)isEqual:(id)equal;
 - (ICCRDocument)document;
 - (ICCROrderedSet)init;
-- (ICCROrderedSet)initWithICCRCoder:(id)a3;
+- (ICCROrderedSet)initWithICCRCoder:(id)coder;
 - (NSArray)allObjects;
 - (NSString)description;
-- (id)_indexForIndex:(unint64_t)a3;
-- (id)deltaSince:(id)a3 in:(id)a4;
-- (id)objectAtIndex:(unint64_t)a3;
+- (id)_indexForIndex:(unint64_t)index;
+- (id)deltaSince:(id)since in:(id)in;
+- (id)objectAtIndex:(unint64_t)index;
 - (unint64_t)count;
 - (unint64_t)hash;
-- (unint64_t)indexOfObject:(id)a3;
+- (unint64_t)indexOfObject:(id)object;
 - (void)_sort;
-- (void)addObject:(id)a3;
-- (void)addObjectsFromArray:(id)a3;
-- (void)encodeWithICCRCoder:(id)a3;
-- (void)enumerateWithBlock:(id)a3;
-- (void)insertObject:(id)a3 atIndex:(unint64_t)a4;
-- (void)mergeWith:(id)a3;
-- (void)mergeWithSet:(id)a3;
-- (void)moveObject:(id)a3 toIndex:(unint64_t)a4;
+- (void)addObject:(id)object;
+- (void)addObjectsFromArray:(id)array;
+- (void)encodeWithICCRCoder:(id)coder;
+- (void)enumerateWithBlock:(id)block;
+- (void)insertObject:(id)object atIndex:(unint64_t)index;
+- (void)mergeWith:(id)with;
+- (void)mergeWithSet:(id)set;
+- (void)moveObject:(id)object toIndex:(unint64_t)index;
 - (void)removeAllObjects;
-- (void)removeObject:(id)a3;
-- (void)removeObjectAtIndex:(unint64_t)a3;
-- (void)setDocument:(id)a3;
-- (void)setObject:(id)a3 atIndex:(unint64_t)a4;
-- (void)setObject:(id)a3 atIndexedSubscript:(unint64_t)a4;
-- (void)walkGraph:(id)a3;
+- (void)removeObject:(id)object;
+- (void)removeObjectAtIndex:(unint64_t)index;
+- (void)setDocument:(id)document;
+- (void)setObject:(id)object atIndex:(unint64_t)index;
+- (void)setObject:(id)object atIndexedSubscript:(unint64_t)subscript;
+- (void)walkGraph:(id)graph;
 @end
 
 @implementation ICCROrderedSet
@@ -51,37 +51,37 @@
   return v2;
 }
 
-- (void)encodeWithICCRCoder:(id)a3
+- (void)encodeWithICCRCoder:(id)coder
 {
-  v8 = a3;
-  v4 = [v8 currentDocumentObjectForEncoding];
-  v5 = v4;
-  if (*(v4 + 48) != 5)
+  coderCopy = coder;
+  currentDocumentObjectForEncoding = [coderCopy currentDocumentObjectForEncoding];
+  v5 = currentDocumentObjectForEncoding;
+  if (*(currentDocumentObjectForEncoding + 48) != 5)
   {
-    CRDT::Document_DocObject::clear_contents(v4);
+    CRDT::Document_DocObject::clear_contents(currentDocumentObjectForEncoding);
     *(v5 + 48) = 5;
     operator new();
   }
 
-  v6 = *(v4 + 40);
-  v7 = [(ICCROrderedSet *)self contents];
-  [v7 encodeWithICCRCoder:v8 set:v6 elementValueCoder:&__block_literal_global_67];
+  v6 = *(currentDocumentObjectForEncoding + 40);
+  contents = [(ICCROrderedSet *)self contents];
+  [contents encodeWithICCRCoder:coderCopy set:v6 elementValueCoder:&__block_literal_global_67];
 }
 
-- (ICCROrderedSet)initWithICCRCoder:(id)a3
+- (ICCROrderedSet)initWithICCRCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(ICCROrderedSet *)self init];
   if (v5)
   {
-    v6 = [v4 currentDocumentObjectForDecoding];
-    if (*(v6 + 48) == 5)
+    currentDocumentObjectForDecoding = [coderCopy currentDocumentObjectForDecoding];
+    if (*(currentDocumentObjectForDecoding + 48) == 5)
     {
       v7 = [ICCRSet alloc];
       v8 = v7;
-      if (*(v6 + 48) == 5)
+      if (*(currentDocumentObjectForDecoding + 48) == 5)
       {
-        v9 = *(v6 + 40);
+        v9 = *(currentDocumentObjectForDecoding + 40);
       }
 
       else
@@ -89,7 +89,7 @@
         v9 = CRDT::Dictionary::default_instance(v7);
       }
 
-      v10 = [(ICCRSet *)v8 initWithICCRCoder:v4 set:v9 elementValueDecoder:&__block_literal_global_4_0];
+      v10 = [(ICCRSet *)v8 initWithICCRCoder:coderCopy set:v9 elementValueDecoder:&__block_literal_global_4_0];
       contents = v5->_contents;
       v5->_contents = v10;
 
@@ -98,7 +98,7 @@
       v13[2] = __36__ICCROrderedSet_initWithICCRCoder___block_invoke_2;
       v13[3] = &unk_27819A1C8;
       v14 = v5;
-      [v4 addDecoderCompletionHandler:v13 dependency:0 for:v14];
+      [coderCopy addDecoderCompletionHandler:v13 dependency:0 for:v14];
     }
   }
 
@@ -128,25 +128,25 @@ uint64_t __36__ICCROrderedSet_initWithICCRCoder___block_invoke_2(uint64_t a1)
 
 - (ICCRDocument)document
 {
-  v2 = [(ICCROrderedSet *)self contents];
-  v3 = [v2 document];
+  contents = [(ICCROrderedSet *)self contents];
+  document = [contents document];
 
-  return v3;
+  return document;
 }
 
-- (void)setDocument:(id)a3
+- (void)setDocument:(id)document
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ICCROrderedSet *)self contents];
-  [v5 setDocument:v4];
+  documentCopy = document;
+  contents = [(ICCROrderedSet *)self contents];
+  [contents setDocument:documentCopy];
 
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v6 = [(ICCROrderedSet *)self contents];
-  v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  contents2 = [(ICCROrderedSet *)self contents];
+  v7 = [contents2 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {
     v8 = *v12;
@@ -157,47 +157,47 @@ uint64_t __36__ICCROrderedSet_initWithICCRCoder___block_invoke_2(uint64_t a1)
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(contents2);
         }
 
-        v10 = [*(*(&v11 + 1) + 8 * v9) index];
-        [v10 setDocument:v4];
+        index = [*(*(&v11 + 1) + 8 * v9) index];
+        [index setDocument:documentCopy];
 
         ++v9;
       }
 
       while (v7 != v9);
-      v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [contents2 countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
   }
 }
 
-- (BOOL)containsObject:(id)a3
+- (BOOL)containsObject:(id)object
 {
-  v4 = a3;
-  v5 = [(ICCROrderedSet *)self contents];
-  v6 = [ICCROrderedSetElement temporaryElementWithValue:v4];
-  v7 = [v5 containsObject:v6];
+  objectCopy = object;
+  contents = [(ICCROrderedSet *)self contents];
+  v6 = [ICCROrderedSetElement temporaryElementWithValue:objectCopy];
+  v7 = [contents containsObject:v6];
 
   return v7;
 }
 
-- (id)objectAtIndex:(unint64_t)a3
+- (id)objectAtIndex:(unint64_t)index
 {
-  v4 = [(ICCROrderedSet *)self orderedArray];
-  v5 = [v4 objectAtIndex:a3];
+  orderedArray = [(ICCROrderedSet *)self orderedArray];
+  v5 = [orderedArray objectAtIndex:index];
 
-  v6 = [v5 value];
+  value = [v5 value];
 
-  return v6;
+  return value;
 }
 
 - (unint64_t)count
 {
-  v2 = [(ICCROrderedSet *)self contents];
-  v3 = [v2 count];
+  contents = [(ICCROrderedSet *)self contents];
+  v3 = [contents count];
 
   return v3;
 }
@@ -210,8 +210,8 @@ uint64_t __36__ICCROrderedSet_initWithICCRCoder___block_invoke_2(uint64_t a1)
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v4 = [(ICCROrderedSet *)self orderedArray];
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  orderedArray = [(ICCROrderedSet *)self orderedArray];
+  v5 = [orderedArray countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = *v11;
@@ -221,14 +221,14 @@ uint64_t __36__ICCROrderedSet_initWithICCRCoder___block_invoke_2(uint64_t a1)
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(orderedArray);
         }
 
-        v8 = [*(*(&v10 + 1) + 8 * i) value];
-        [v3 addObject:v8];
+        value = [*(*(&v10 + 1) + 8 * i) value];
+        [v3 addObject:value];
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [orderedArray countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
@@ -237,20 +237,20 @@ uint64_t __36__ICCROrderedSet_initWithICCRCoder___block_invoke_2(uint64_t a1)
   return v3;
 }
 
-- (unint64_t)indexOfObject:(id)a3
+- (unint64_t)indexOfObject:(id)object
 {
-  v4 = a3;
-  v5 = [(ICCROrderedSet *)self orderedArray];
-  v6 = [ICCROrderedSetElement temporaryElementWithValue:v4];
-  v7 = [v5 indexOfObject:v6];
+  objectCopy = object;
+  orderedArray = [(ICCROrderedSet *)self orderedArray];
+  v6 = [ICCROrderedSetElement temporaryElementWithValue:objectCopy];
+  v7 = [orderedArray indexOfObject:v6];
 
   return v7;
 }
 
 - (void)_sort
 {
-  v2 = [(ICCROrderedSet *)self orderedArray];
-  [v2 sortUsingComparator:&__block_literal_global_9];
+  orderedArray = [(ICCROrderedSet *)self orderedArray];
+  [orderedArray sortUsingComparator:&__block_literal_global_9];
 }
 
 uint64_t __23__ICCROrderedSet__sort__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -265,163 +265,163 @@ uint64_t __23__ICCROrderedSet__sort__block_invoke(uint64_t a1, void *a2, void *a
   return v9;
 }
 
-- (id)_indexForIndex:(unint64_t)a3
+- (id)_indexForIndex:(unint64_t)index
 {
-  if (a3)
+  if (index)
   {
-    v5 = [(ICCROrderedSet *)self orderedArray];
-    v6 = [v5 count];
+    orderedArray = [(ICCROrderedSet *)self orderedArray];
+    v6 = [orderedArray count];
 
     [(ICCROrderedSet *)self orderedArray];
-    if (v6 <= a3)
-      v9 = {;
-      v8 = [v9 lastObject];
-      v10 = 0;
+    if (v6 <= index)
+      orderedArray2 = {;
+      lastObject = [orderedArray2 lastObject];
+      firstObject = 0;
     }
 
     else
       v7 = {;
-      v8 = [v7 objectAtIndex:a3 - 1];
+      lastObject = [v7 objectAtIndex:index - 1];
 
-      v9 = [(ICCROrderedSet *)self orderedArray];
-      v10 = [v9 objectAtIndex:a3];
+      orderedArray2 = [(ICCROrderedSet *)self orderedArray];
+      firstObject = [orderedArray2 objectAtIndex:index];
     }
   }
 
   else
   {
-    v9 = [(ICCROrderedSet *)self orderedArray];
-    v10 = [v9 firstObject];
-    v8 = 0;
+    orderedArray2 = [(ICCROrderedSet *)self orderedArray];
+    firstObject = [orderedArray2 firstObject];
+    lastObject = 0;
   }
 
-  v11 = [MEMORY[0x277CCAD78] CR_unserialized];
-  v12 = [v8 index];
-  v13 = [v12 contents];
-  v14 = [v10 index];
-  v15 = [v14 contents];
-  v16 = [ICCRIndex indexForReplica:v11 betweenIndex:v13 andIndex:v15];
+  cR_unserialized = [MEMORY[0x277CCAD78] CR_unserialized];
+  index = [lastObject index];
+  contents = [index contents];
+  index2 = [firstObject index];
+  contents2 = [index2 contents];
+  v16 = [ICCRIndex indexForReplica:cR_unserialized betweenIndex:contents andIndex:contents2];
 
   return v16;
 }
 
-- (void)moveObject:(id)a3 toIndex:(unint64_t)a4
+- (void)moveObject:(id)object toIndex:(unint64_t)index
 {
-  v13 = a3;
-  v6 = [(ICCROrderedSet *)self contents];
-  v7 = [ICCROrderedSetElement temporaryElementWithValue:v13];
-  v8 = [v6 member:v7];
+  objectCopy = object;
+  contents = [(ICCROrderedSet *)self contents];
+  v7 = [ICCROrderedSetElement temporaryElementWithValue:objectCopy];
+  v8 = [contents member:v7];
 
   if (v8)
   {
-    v9 = [(ICCROrderedSet *)self orderedArray];
-    [v9 removeObject:v8];
+    orderedArray = [(ICCROrderedSet *)self orderedArray];
+    [orderedArray removeObject:v8];
 
-    v10 = [(ICCROrderedSet *)self _indexForIndex:a4];
-    v11 = [(ICCROrderedSet *)self orderedArray];
-    [v11 insertObject:v8 atIndex:a4];
+    v10 = [(ICCROrderedSet *)self _indexForIndex:index];
+    orderedArray2 = [(ICCROrderedSet *)self orderedArray];
+    [orderedArray2 insertObject:v8 atIndex:index];
 
-    v12 = [v8 index];
-    [v12 setContents:v10];
+    index = [v8 index];
+    [index setContents:v10];
   }
 }
 
-- (void)setObject:(id)a3 atIndex:(unint64_t)a4
+- (void)setObject:(id)object atIndex:(unint64_t)index
 {
-  v9 = a3;
-  if (v9)
+  objectCopy = object;
+  if (objectCopy)
   {
-    v6 = [(ICCROrderedSet *)self contents];
-    v7 = [ICCROrderedSetElement temporaryElementWithValue:v9];
-    v8 = [v6 containsObject:v7];
+    contents = [(ICCROrderedSet *)self contents];
+    v7 = [ICCROrderedSetElement temporaryElementWithValue:objectCopy];
+    v8 = [contents containsObject:v7];
 
     if ((v8 & 1) == 0)
     {
-      if ([(ICCROrderedSet *)self count]> a4)
+      if ([(ICCROrderedSet *)self count]> index)
       {
-        [(ICCROrderedSet *)self removeObjectAtIndex:a4];
+        [(ICCROrderedSet *)self removeObjectAtIndex:index];
       }
 
-      [(ICCROrderedSet *)self insertObject:v9 atIndex:a4];
+      [(ICCROrderedSet *)self insertObject:objectCopy atIndex:index];
     }
   }
 }
 
-- (void)insertObject:(id)a3 atIndex:(unint64_t)a4
+- (void)insertObject:(id)object atIndex:(unint64_t)index
 {
-  v16 = a3;
-  if (v16)
+  objectCopy = object;
+  if (objectCopy)
   {
-    v6 = [(ICCROrderedSet *)self contents];
-    v7 = [ICCROrderedSetElement temporaryElementWithValue:v16];
-    v8 = [v6 containsObject:v7];
+    contents = [(ICCROrderedSet *)self contents];
+    v7 = [ICCROrderedSetElement temporaryElementWithValue:objectCopy];
+    v8 = [contents containsObject:v7];
 
     if ((v8 & 1) == 0)
     {
       v9 = objc_alloc_init(ICCROrderedSetElement);
-      [(ICCROrderedSetElement *)v9 setValue:v16];
+      [(ICCROrderedSetElement *)v9 setValue:objectCopy];
       v10 = [ICCRRegisterLatest alloc];
-      v11 = [(ICCROrderedSet *)self _indexForIndex:a4];
-      v12 = [(ICCROrderedSet *)self document];
-      v13 = [(ICCRRegisterLatest *)v10 initWithContents:v11 document:v12];
+      v11 = [(ICCROrderedSet *)self _indexForIndex:index];
+      document = [(ICCROrderedSet *)self document];
+      v13 = [(ICCRRegisterLatest *)v10 initWithContents:v11 document:document];
       [(ICCROrderedSetElement *)v9 setIndex:v13];
 
-      v14 = [(ICCROrderedSet *)self contents];
-      [v14 addObject:v9];
+      contents2 = [(ICCROrderedSet *)self contents];
+      [contents2 addObject:v9];
 
-      v15 = [(ICCROrderedSet *)self orderedArray];
-      [v15 addObject:v9];
+      orderedArray = [(ICCROrderedSet *)self orderedArray];
+      [orderedArray addObject:v9];
 
       [(ICCROrderedSet *)self _sort];
     }
   }
 }
 
-- (void)removeObject:(id)a3
+- (void)removeObject:(id)object
 {
-  v6 = [ICCROrderedSetElement temporaryElementWithValue:a3];
-  v4 = [(ICCROrderedSet *)self contents];
-  [v4 removeObject:v6];
+  v6 = [ICCROrderedSetElement temporaryElementWithValue:object];
+  contents = [(ICCROrderedSet *)self contents];
+  [contents removeObject:v6];
 
-  v5 = [(ICCROrderedSet *)self orderedArray];
-  [v5 removeObject:v6];
+  orderedArray = [(ICCROrderedSet *)self orderedArray];
+  [orderedArray removeObject:v6];
 }
 
-- (void)removeObjectAtIndex:(unint64_t)a3
+- (void)removeObjectAtIndex:(unint64_t)index
 {
-  v8 = [(ICCROrderedSet *)self orderedArray];
-  v5 = [v8 count];
+  orderedArray = [(ICCROrderedSet *)self orderedArray];
+  v5 = [orderedArray count];
 
-  if (v5 > a3)
+  if (v5 > index)
   {
-    v9 = [(ICCROrderedSet *)self contents];
-    v6 = [(ICCROrderedSet *)self orderedArray];
-    v7 = [v6 objectAtIndex:a3];
-    [v9 removeObject:v7];
+    contents = [(ICCROrderedSet *)self contents];
+    orderedArray2 = [(ICCROrderedSet *)self orderedArray];
+    v7 = [orderedArray2 objectAtIndex:index];
+    [contents removeObject:v7];
 
-    v10 = [(ICCROrderedSet *)self orderedArray];
-    [v10 removeObjectAtIndex:a3];
+    orderedArray3 = [(ICCROrderedSet *)self orderedArray];
+    [orderedArray3 removeObjectAtIndex:index];
   }
 }
 
 - (void)removeAllObjects
 {
-  v3 = [(ICCROrderedSet *)self contents];
-  [v3 removeAllObjects];
+  contents = [(ICCROrderedSet *)self contents];
+  [contents removeAllObjects];
 
-  v4 = [(ICCROrderedSet *)self orderedArray];
-  [v4 removeAllObjects];
+  orderedArray = [(ICCROrderedSet *)self orderedArray];
+  [orderedArray removeAllObjects];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(ICCROrderedSet *)self contents];
-    v6 = [v4 contents];
-    v7 = [v5 isEqual:v6];
+    contents = [(ICCROrderedSet *)self contents];
+    contents2 = [equalCopy contents];
+    v7 = [contents isEqual:contents2];
   }
 
   else
@@ -434,15 +434,15 @@ uint64_t __23__ICCROrderedSet__sort__block_invoke(uint64_t a1, void *a2, void *a
 
 - (unint64_t)hash
 {
-  v2 = [(ICCROrderedSet *)self contents];
-  v3 = [v2 hash];
+  contents = [(ICCROrderedSet *)self contents];
+  v3 = [contents hash];
 
   return v3;
 }
 
-- (void)mergeWith:(id)a3
+- (void)mergeWith:(id)with
 {
-  v5 = a3;
+  withCopy = with;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -450,46 +450,46 @@ uint64_t __23__ICCROrderedSet__sort__block_invoke(uint64_t a1, void *a2, void *a
     objc_exception_throw(v4);
   }
 
-  [(ICCROrderedSet *)self mergeWithSet:v5];
+  [(ICCROrderedSet *)self mergeWithSet:withCopy];
 }
 
-- (void)mergeWithSet:(id)a3
+- (void)mergeWithSet:(id)set
 {
-  v9 = a3;
-  v4 = [(ICCROrderedSet *)self contents];
-  v5 = [v9 contents];
-  [v4 mergeWith:v5];
+  setCopy = set;
+  contents = [(ICCROrderedSet *)self contents];
+  contents2 = [setCopy contents];
+  [contents mergeWith:contents2];
 
-  v6 = [(ICCROrderedSet *)self contents];
-  v7 = [v6 allObjects];
-  v8 = [v7 mutableCopy];
+  contents3 = [(ICCROrderedSet *)self contents];
+  allObjects = [contents3 allObjects];
+  v8 = [allObjects mutableCopy];
   [(ICCROrderedSet *)self setOrderedArray:v8];
 
   [(ICCROrderedSet *)self _sort];
 }
 
-- (void)walkGraph:(id)a3
+- (void)walkGraph:(id)graph
 {
-  v5 = a3;
-  v4 = [(ICCROrderedSet *)self contents];
-  v5[2](v5, v4);
+  graphCopy = graph;
+  contents = [(ICCROrderedSet *)self contents];
+  graphCopy[2](graphCopy, contents);
 }
 
-- (id)deltaSince:(id)a3 in:(id)a4
+- (id)deltaSince:(id)since in:(id)in
 {
-  v6 = a3;
-  v7 = a4;
+  sinceCopy = since;
+  inCopy = in;
   v8 = objc_alloc_init(ICCROrderedSet);
-  [(ICCROrderedSet *)v8 setDocument:v7];
+  [(ICCROrderedSet *)v8 setDocument:inCopy];
   objc_opt_class();
-  v9 = [(ICCROrderedSet *)self contents];
-  v10 = [v9 deltaSince:v6 in:v7];
+  contents = [(ICCROrderedSet *)self contents];
+  v10 = [contents deltaSince:sinceCopy in:inCopy];
   v11 = ICCheckedDynamicCast();
   [(ICCROrderedSet *)v8 setContents:v11];
 
-  v12 = [(ICCROrderedSet *)v8 contents];
-  v13 = [v12 allObjects];
-  v14 = [v13 mutableCopy];
+  contents2 = [(ICCROrderedSet *)v8 contents];
+  allObjects = [contents2 allObjects];
+  v14 = [allObjects mutableCopy];
   [(ICCROrderedSet *)v8 setOrderedArray:v14];
 
   [(ICCROrderedSet *)v8 _sort];
@@ -497,28 +497,28 @@ uint64_t __23__ICCROrderedSet__sort__block_invoke(uint64_t a1, void *a2, void *a
   return v8;
 }
 
-- (void)enumerateWithBlock:(id)a3
+- (void)enumerateWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = 0;
   v7 = 0;
   while (v5 < [(ICCROrderedSet *)self count]&& (v7 & 1) == 0)
   {
     v6 = [(ICCROrderedSet *)self objectAtIndex:v5];
-    v4[2](v4, v6, v5, &v7);
+    blockCopy[2](blockCopy, v6, v5, &v7);
 
     ++v5;
   }
 }
 
-- (void)addObjectsFromArray:(id)a3
+- (void)addObjectsFromArray:(id)array
 {
   v22 = *MEMORY[0x277D85DE8];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  obj = a3;
+  obj = array;
   v4 = [obj countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v4)
   {
@@ -538,8 +538,8 @@ uint64_t __23__ICCROrderedSet__sort__block_invoke(uint64_t a1, void *a2, void *a
         v9 = [(ICCROrderedSet *)self _indexForIndex:[(NSMutableArray *)self->_orderedArray count]];
         [(ICCROrderedSetElement *)v8 setValue:v7];
         v10 = [ICCRRegisterLatest alloc];
-        v11 = [(ICCROrderedSet *)self document];
-        v12 = [(ICCRRegisterLatest *)v10 initWithContents:v9 document:v11];
+        document = [(ICCROrderedSet *)self document];
+        v12 = [(ICCRRegisterLatest *)v10 initWithContents:v9 document:document];
         [(ICCROrderedSetElement *)v8 setIndex:v12];
 
         [(ICCRSet *)self->_contents addObject:v8];
@@ -553,26 +553,26 @@ uint64_t __23__ICCROrderedSet__sort__block_invoke(uint64_t a1, void *a2, void *a
     while (v4);
   }
 
-  v13 = [(ICCRSet *)self->_contents allObjects];
-  v14 = [v13 mutableCopy];
+  allObjects = [(ICCRSet *)self->_contents allObjects];
+  v14 = [allObjects mutableCopy];
   orderedArray = self->_orderedArray;
   self->_orderedArray = v14;
 
   [(ICCROrderedSet *)self _sort];
 }
 
-- (void)addObject:(id)a3
+- (void)addObject:(id)object
 {
-  v4 = a3;
-  [(ICCROrderedSet *)self insertObject:v4 atIndex:[(ICCROrderedSet *)self count]];
+  objectCopy = object;
+  [(ICCROrderedSet *)self insertObject:objectCopy atIndex:[(ICCROrderedSet *)self count]];
 }
 
-- (void)setObject:(id)a3 atIndexedSubscript:(unint64_t)a4
+- (void)setObject:(id)object atIndexedSubscript:(unint64_t)subscript
 {
-  v6 = a3;
-  if (v6)
+  objectCopy = object;
+  if (objectCopy)
   {
-    [(ICCROrderedSet *)self setObject:v6 atIndex:a4];
+    [(ICCROrderedSet *)self setObject:objectCopy atIndex:subscript];
   }
 }
 
@@ -588,8 +588,8 @@ uint64_t __23__ICCROrderedSet__sort__block_invoke(uint64_t a1, void *a2, void *a
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = [(ICCROrderedSet *)self orderedArray];
-  v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  orderedArray = [(ICCROrderedSet *)self orderedArray];
+  v8 = [orderedArray countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
     v9 = *v16;
@@ -599,16 +599,16 @@ uint64_t __23__ICCROrderedSet__sort__block_invoke(uint64_t a1, void *a2, void *a
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(orderedArray);
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
-        v12 = [v11 index];
-        v13 = [v11 value];
-        [v6 appendFormat:@"  %@ %@, \n", v12, v13];
+        index = [v11 index];
+        value = [v11 value];
+        [v6 appendFormat:@"  %@ %@, \n", index, value];
       }
 
-      v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [orderedArray countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v8);

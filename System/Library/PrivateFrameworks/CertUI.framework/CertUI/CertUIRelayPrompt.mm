@@ -3,33 +3,33 @@
 - (BOOL)allowCertificateTrust;
 - (BOOL)showCertificateDetails;
 - (BOOL)showContinue;
-- (CertUIRelayPrompt)initWithMessageInfo:(id)a3 localizedOriginatingAppName:(id)a4 replyContext:(id)a5;
+- (CertUIRelayPrompt)initWithMessageInfo:(id)info localizedOriginatingAppName:(id)name replyContext:(id)context;
 - (id)_copyCancelOnlyUserNotificationInfo;
 - (id)_copyUserNotificationInfo;
 - (id)_localizedUntrustedCertAcceptNotAllowedMessage;
 - (id)_localizedUntrustedCertAlertMessage;
 - (id)_localizedUntrustedCertAlertTitle;
-- (void)_invokeCompletionWithReply:(id)a3;
-- (void)_receivedCancelOnlyResponseForNotification:(__CFUserNotification *)a3 responseFlags:(unint64_t)a4;
-- (void)_receivedResponseForNotification:(__CFUserNotification *)a3 responseFlags:(unint64_t)a4;
+- (void)_invokeCompletionWithReply:(id)reply;
+- (void)_receivedCancelOnlyResponseForNotification:(__CFUserNotification *)notification responseFlags:(unint64_t)flags;
+- (void)_receivedResponseForNotification:(__CFUserNotification *)notification responseFlags:(unint64_t)flags;
 - (void)_showAlert;
 - (void)_showDetails;
 - (void)dealloc;
-- (void)showPromptWithCompletion:(id)a3;
+- (void)showPromptWithCompletion:(id)completion;
 @end
 
 @implementation CertUIRelayPrompt
 
-- (CertUIRelayPrompt)initWithMessageInfo:(id)a3 localizedOriginatingAppName:(id)a4 replyContext:(id)a5
+- (CertUIRelayPrompt)initWithMessageInfo:(id)info localizedOriginatingAppName:(id)name replyContext:(id)context
 {
   v10.receiver = self;
   v10.super_class = CertUIRelayPrompt;
   v8 = [(CertUIRelayPrompt *)&v10 init];
   if (v8)
   {
-    v8->_messageInfo = [a3 copy];
-    v8->_localizedOriginatingAppName = a4;
-    v8->_replyContext = a5;
+    v8->_messageInfo = [info copy];
+    v8->_localizedOriginatingAppName = name;
+    v8->_replyContext = context;
   }
 
   return v8;
@@ -48,12 +48,12 @@
   [(CertUIRelayPrompt *)&v4 dealloc];
 }
 
-- (void)_invokeCompletionWithReply:(id)a3
+- (void)_invokeCompletionWithReply:(id)reply
 {
   completion = self->_completion;
   if (completion)
   {
-    completion[2](completion, a3);
+    completion[2](completion, reply);
     _Block_release(self->_completion);
     self->_completion = 0;
   }
@@ -94,11 +94,11 @@
   }
 }
 
-- (void)_receivedResponseForNotification:(__CFUserNotification *)a3 responseFlags:(unint64_t)a4
+- (void)_receivedResponseForNotification:(__CFUserNotification *)notification responseFlags:(unint64_t)flags
 {
-  if ((a4 & 3) <= 1)
+  if ((flags & 3) <= 1)
   {
-    if ((a4 & 3) != 0)
+    if ((flags & 3) != 0)
     {
       v5 = 2;
     }
@@ -115,7 +115,7 @@ LABEL_10:
     return;
   }
 
-  if ((a4 & 3) != 2)
+  if ((flags & 3) != 2)
   {
     v5 = 0;
     goto LABEL_10;
@@ -124,11 +124,11 @@ LABEL_10:
   [(CertUIRelayPrompt *)self _showDetails];
 }
 
-- (void)_receivedCancelOnlyResponseForNotification:(__CFUserNotification *)a3 responseFlags:(unint64_t)a4
+- (void)_receivedCancelOnlyResponseForNotification:(__CFUserNotification *)notification responseFlags:(unint64_t)flags
 {
-  v5 = [(CertUIRelayPrompt *)self _replyDictionaryWithCertUIResponse:0, a4];
+  flags = [(CertUIRelayPrompt *)self _replyDictionaryWithCertUIResponse:0, flags];
 
-  [(CertUIRelayPrompt *)self _invokeCompletionWithReply:v5];
+  [(CertUIRelayPrompt *)self _invokeCompletionWithReply:flags];
 }
 
 - (id)_localizedUntrustedCertAlertTitle
@@ -204,23 +204,23 @@ LABEL_10:
 
 - (BOOL)showContinue
 {
-  v3 = [(CertUIRelayPrompt *)self allowCertificateTrust];
-  if (v3)
+  allowCertificateTrust = [(CertUIRelayPrompt *)self allowCertificateTrust];
+  if (allowCertificateTrust)
   {
     v4 = [(NSDictionary *)self->_messageInfo objectForKey:kCertUITrustShowContinueKey];
     if (v4)
     {
 
-      LOBYTE(v3) = [v4 BOOLValue];
+      LOBYTE(allowCertificateTrust) = [v4 BOOLValue];
     }
 
     else
     {
-      LOBYTE(v3) = 1;
+      LOBYTE(allowCertificateTrust) = 1;
     }
   }
 
-  return v3;
+  return allowCertificateTrust;
 }
 
 - (BOOL)showCertificateDetails
@@ -238,10 +238,10 @@ LABEL_10:
 {
   v3 = [NSMutableDictionary alloc];
   v4 = [v3 initWithObjectsAndKeys:{SBUserNotificationAllowInSetupKey, &__kCFBooleanTrue, SBUserNotificationDismissOnLock, &__kCFBooleanTrue, SBUserNotificationDontDismissOnUnlock, &__kCFBooleanTrue, SBUserNotificationPendWhileKeyBagLockedKey, 0}];
-  v5 = [(CertUIRelayPrompt *)self _localizedUntrustedCertAlertTitle];
-  if (v5)
+  _localizedUntrustedCertAlertTitle = [(CertUIRelayPrompt *)self _localizedUntrustedCertAlertTitle];
+  if (_localizedUntrustedCertAlertTitle)
   {
-    [v4 setObject:v5 forKey:kCFUserNotificationAlertHeaderKey];
+    [v4 setObject:_localizedUntrustedCertAlertTitle forKey:kCFUserNotificationAlertHeaderKey];
   }
 
   v6 = [[NSBundle bundleWithIdentifier:?]value:"localizedStringForKey:value:table:" table:@"CANCEL", &stru_100008390, 0];
@@ -264,17 +264,17 @@ LABEL_10:
 
   if ([(CertUIRelayPrompt *)self allowCertificateTrust])
   {
-    v9 = [(CertUIRelayPrompt *)self _localizedUntrustedCertAlertMessage];
+    _localizedUntrustedCertAlertMessage = [(CertUIRelayPrompt *)self _localizedUntrustedCertAlertMessage];
   }
 
   else
   {
-    v9 = [(CertUIRelayPrompt *)self _localizedUntrustedCertAcceptNotAllowedMessage];
+    _localizedUntrustedCertAlertMessage = [(CertUIRelayPrompt *)self _localizedUntrustedCertAcceptNotAllowedMessage];
   }
 
-  if (v9)
+  if (_localizedUntrustedCertAlertMessage)
   {
-    [v4 setObject:v9 forKey:kCFUserNotificationAlertMessageKey];
+    [v4 setObject:_localizedUntrustedCertAlertMessage forKey:kCFUserNotificationAlertMessageKey];
   }
 
   return v4;
@@ -284,16 +284,16 @@ LABEL_10:
 {
   v3 = [NSMutableDictionary alloc];
   v4 = [v3 initWithObjectsAndKeys:{SBUserNotificationAllowInSetupKey, &__kCFBooleanTrue, SBUserNotificationDismissOnLock, &__kCFBooleanTrue, SBUserNotificationDontDismissOnUnlock, &__kCFBooleanTrue, SBUserNotificationPendWhileKeyBagLockedKey, 0}];
-  v5 = [(CertUIRelayPrompt *)self _localizedUntrustedCertAlertTitle];
-  if (v5)
+  _localizedUntrustedCertAlertTitle = [(CertUIRelayPrompt *)self _localizedUntrustedCertAlertTitle];
+  if (_localizedUntrustedCertAlertTitle)
   {
-    [v4 setObject:v5 forKey:kCFUserNotificationAlertHeaderKey];
+    [v4 setObject:_localizedUntrustedCertAlertTitle forKey:kCFUserNotificationAlertHeaderKey];
   }
 
-  v6 = [(CertUIRelayPrompt *)self _localizedUntrustedCertAcceptNotAllowedMessage];
-  if (v6)
+  _localizedUntrustedCertAcceptNotAllowedMessage = [(CertUIRelayPrompt *)self _localizedUntrustedCertAcceptNotAllowedMessage];
+  if (_localizedUntrustedCertAcceptNotAllowedMessage)
   {
-    [v4 setObject:v6 forKey:kCFUserNotificationAlertMessageKey];
+    [v4 setObject:_localizedUntrustedCertAcceptNotAllowedMessage forKey:kCFUserNotificationAlertMessageKey];
   }
 
   return v4;
@@ -303,23 +303,23 @@ LABEL_10:
 {
   if ([(CertUIRelayPrompt *)self isCertificateTrustRestricted])
   {
-    v3 = [(CertUIRelayPrompt *)self _copyCancelOnlyUserNotificationInfo];
+    _copyCancelOnlyUserNotificationInfo = [(CertUIRelayPrompt *)self _copyCancelOnlyUserNotificationInfo];
     v4 = &selRef__receivedCancelOnlyResponseForNotification_responseFlags_;
   }
 
   else
   {
-    v3 = [(CertUIRelayPrompt *)self _copyUserNotificationInfo];
+    _copyCancelOnlyUserNotificationInfo = [(CertUIRelayPrompt *)self _copyUserNotificationInfo];
     v4 = &selRef__receivedResponseForNotification_responseFlags_;
   }
 
-  v5 = v3;
-  sub_1000022E0(v3, self, *v4);
+  v5 = _copyCancelOnlyUserNotificationInfo;
+  sub_1000022E0(_copyCancelOnlyUserNotificationInfo, self, *v4);
 }
 
-- (void)showPromptWithCompletion:(id)a3
+- (void)showPromptWithCompletion:(id)completion
 {
-  self->_completion = _Block_copy(a3);
+  self->_completion = _Block_copy(completion);
 
   [(CertUIRelayPrompt *)self _showAlert];
 }

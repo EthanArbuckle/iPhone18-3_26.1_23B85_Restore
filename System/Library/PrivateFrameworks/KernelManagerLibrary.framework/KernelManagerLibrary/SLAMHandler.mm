@@ -1,11 +1,11 @@
 @interface SLAMHandler
-- (id)transceive:(id)a3 error:(id *)a4;
-- (void)log:(id)a3;
+- (id)transceive:(id)transceive error:(id *)error;
+- (void)log:(id)log;
 @end
 
 @implementation SLAMHandler
 
-- (void)log:(id)a3
+- (void)log:(id)log
 {
   v3 = sub_2557B0C38();
   v5 = v4;
@@ -13,9 +13,9 @@
   sub_25579E460(v3, v5);
 }
 
-- (id)transceive:(id)a3 error:(id *)a4
+- (id)transceive:(id)transceive error:(id *)error
 {
-  v4 = a3;
+  transceiveCopy = transceive;
 
   v5 = sub_2557B09F8();
   v7 = v6;

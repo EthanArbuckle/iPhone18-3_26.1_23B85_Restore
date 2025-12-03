@@ -1,28 +1,28 @@
 @interface TITransientLexiconManager
 + (TITransientLexiconManager)sharedInstance;
-+ (id)getEntries:(_LXLexicon *)a3;
++ (id)getEntries:(_LXLexicon *)entries;
 + (id)singletonInstance;
-+ (void)setSharedTITransientLexiconManager:(id)a3;
-- (BOOL)searchForWord:(id)a3;
-- (BOOL)searchForWordCaseInsensitive:(id)a3;
-- (BOOL)searchHelper:(_LXLexicon *)a3 forWord:(__CFString *)a4 caseSensitive:(BOOL)a5;
++ (void)setSharedTITransientLexiconManager:(id)manager;
+- (BOOL)searchForWord:(id)word;
+- (BOOL)searchForWordCaseInsensitive:(id)insensitive;
+- (BOOL)searchHelper:(_LXLexicon *)helper forWord:(__CFString *)word caseSensitive:(BOOL)sensitive;
 - (TISupplementalLexiconController)ensureSupplementalLexicons;
 - (TITransientLexiconManager)init;
-- (_LXLexicon)addressBookLexiconForLocale:(const char *)a3;
-- (_LXLexicon)appNameLexiconForLocale:(const char *)a3;
-- (_LXLexicon)filterLexicon:(_LXLexicon *)a3 againstLocale:(String *)a4;
-- (_LXLexicon)filteredLexicon:(_LXLexicon *)a3 fromLexiconCache:(void *)a4 forLocale:(const char *)a5;
+- (_LXLexicon)addressBookLexiconForLocale:(const char *)locale;
+- (_LXLexicon)appNameLexiconForLocale:(const char *)locale;
+- (_LXLexicon)filterLexicon:(_LXLexicon *)lexicon againstLocale:(String *)locale;
+- (_LXLexicon)filteredLexicon:(_LXLexicon *)lexicon fromLexiconCache:(void *)cache forLocale:(const char *)locale;
 - (id)_currentConnection;
-- (id)addContactObserver:(id)a3;
+- (id)addContactObserver:(id)observer;
 - (void)dealloc;
 - (void)debugLogEntities;
-- (void)getOnce:(id)a3;
+- (void)getOnce:(id)once;
 - (void)loadLexicons;
 - (void)namedEntitiesUpdateCallback;
 - (void)performMaintenance;
 - (void)registerNamedEntitiesUpdateCallback;
 - (void)releaseCachedNamedEntityLexicons;
-- (void)supplementalLexiconControllerProcessDidTerminate:(id)a3;
+- (void)supplementalLexiconControllerProcessDidTerminate:(id)terminate;
 @end
 
 @implementation TITransientLexiconManager
@@ -100,10 +100,10 @@ void __45__TITransientLexiconManager_debugLogEntities__block_invoke(uint64_t a1)
   v3 = *MEMORY[0x277D85DE8];
 }
 
-- (_LXLexicon)appNameLexiconForLocale:(const char *)a3
+- (_LXLexicon)appNameLexiconForLocale:(const char *)locale
 {
   v23[2] = *MEMORY[0x277D85DE8];
-  KB::String::String(&v21, a3);
+  KB::String::String(&v21, locale);
   if (!std::__hash_table<std::__hash_value_type<KB::String,unsigned long>,std::__unordered_map_hasher<KB::String,std::__hash_value_type<KB::String,unsigned long>,std::hash<KB::String>,std::equal_to<KB::String>,true>,std::__unordered_map_equal<KB::String,std::__hash_value_type<KB::String,unsigned long>,std::equal_to<KB::String>,std::hash<KB::String>,true>,std::allocator<std::__hash_value_type<KB::String,unsigned long>>>::find<KB::String>(self->_appNameLexicons, &v21))
   {
     v4 = v22;
@@ -158,10 +158,10 @@ void __45__TITransientLexiconManager_debugLogEntities__block_invoke(uint64_t a1)
   return v11;
 }
 
-- (_LXLexicon)addressBookLexiconForLocale:(const char *)a3
+- (_LXLexicon)addressBookLexiconForLocale:(const char *)locale
 {
   v23[2] = *MEMORY[0x277D85DE8];
-  KB::String::String(&v21, a3);
+  KB::String::String(&v21, locale);
   if (!std::__hash_table<std::__hash_value_type<KB::String,unsigned long>,std::__unordered_map_hasher<KB::String,std::__hash_value_type<KB::String,unsigned long>,std::hash<KB::String>,std::equal_to<KB::String>,true>,std::__unordered_map_equal<KB::String,std::__hash_value_type<KB::String,unsigned long>,std::equal_to<KB::String>,std::hash<KB::String>,true>,std::allocator<std::__hash_value_type<KB::String,unsigned long>>>::find<KB::String>(self->_addressBookLexicons, &v21))
   {
     v4 = v22;
@@ -216,15 +216,15 @@ void __45__TITransientLexiconManager_debugLogEntities__block_invoke(uint64_t a1)
   return v11;
 }
 
-- (_LXLexicon)filteredLexicon:(_LXLexicon *)a3 fromLexiconCache:(void *)a4 forLocale:(const char *)a5
+- (_LXLexicon)filteredLexicon:(_LXLexicon *)lexicon fromLexiconCache:(void *)cache forLocale:(const char *)locale
 {
   v31 = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!lexicon)
   {
     if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
     {
 LABEL_12:
-      v6 = 0;
+      lexiconCopy = 0;
       goto LABEL_13;
     }
 
@@ -237,7 +237,7 @@ LABEL_40:
     goto LABEL_12;
   }
 
-  if (!a5)
+  if (!locale)
   {
     if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
     {
@@ -251,14 +251,14 @@ LABEL_40:
     goto LABEL_40;
   }
 
-  v6 = a3;
-  KB::String::String(&v29, a5);
-  if (std::__hash_table<std::__hash_value_type<KB::String,unsigned long>,std::__unordered_map_hasher<KB::String,std::__hash_value_type<KB::String,unsigned long>,std::hash<KB::String>,std::equal_to<KB::String>,true>,std::__unordered_map_equal<KB::String,std::__hash_value_type<KB::String,unsigned long>,std::equal_to<KB::String>,std::hash<KB::String>,true>,std::allocator<std::__hash_value_type<KB::String,unsigned long>>>::find<KB::String>(a4, &v29))
+  lexiconCopy = lexicon;
+  KB::String::String(&v29, locale);
+  if (std::__hash_table<std::__hash_value_type<KB::String,unsigned long>,std::__unordered_map_hasher<KB::String,std::__hash_value_type<KB::String,unsigned long>,std::hash<KB::String>,std::equal_to<KB::String>,true>,std::__unordered_map_equal<KB::String,std::__hash_value_type<KB::String,unsigned long>,std::equal_to<KB::String>,std::hash<KB::String>,true>,std::allocator<std::__hash_value_type<KB::String,unsigned long>>>::find<KB::String>(cache, &v29))
   {
     goto LABEL_4;
   }
 
-  v13 = [(TITransientLexiconManager *)self filterLexicon:v6 againstLocale:&v29];
+  v13 = [(TITransientLexiconManager *)self filterLexicon:lexiconCopy againstLocale:&v29];
   if (!v13)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
@@ -286,7 +286,7 @@ LABEL_40:
 
   v16 = KB::String::hash(v15, v26);
   v17 = v16;
-  v18 = *(a4 + 1);
+  v18 = *(cache + 1);
   if (!v18)
   {
     goto LABEL_38;
@@ -309,7 +309,7 @@ LABEL_40:
     v21 = (v18 - 1) & v16;
   }
 
-  v22 = *(*a4 + 8 * v21);
+  v22 = *(*cache + 8 * v21);
   if (!v22 || (v23 = *v22) == 0)
   {
 LABEL_38:
@@ -371,13 +371,13 @@ LABEL_37:
   }
 
 LABEL_4:
-  v8 = std::__hash_table<std::__hash_value_type<KB::String,unsigned long>,std::__unordered_map_hasher<KB::String,std::__hash_value_type<KB::String,unsigned long>,std::hash<KB::String>,std::equal_to<KB::String>,true>,std::__unordered_map_equal<KB::String,std::__hash_value_type<KB::String,unsigned long>,std::equal_to<KB::String>,std::hash<KB::String>,true>,std::allocator<std::__hash_value_type<KB::String,unsigned long>>>::find<KB::String>(a4, &v29);
+  v8 = std::__hash_table<std::__hash_value_type<KB::String,unsigned long>,std::__unordered_map_hasher<KB::String,std::__hash_value_type<KB::String,unsigned long>,std::hash<KB::String>,std::equal_to<KB::String>,true>,std::__unordered_map_equal<KB::String,std::__hash_value_type<KB::String,unsigned long>,std::equal_to<KB::String>,std::hash<KB::String>,true>,std::allocator<std::__hash_value_type<KB::String,unsigned long>>>::find<KB::String>(cache, &v29);
   if (!v8)
   {
     abort();
   }
 
-  v6 = v8[6];
+  lexiconCopy = v8[6];
 LABEL_6:
   if (v30 && BYTE6(v29) == 1)
   {
@@ -386,13 +386,13 @@ LABEL_6:
 
 LABEL_13:
   v11 = *MEMORY[0x277D85DE8];
-  return v6;
+  return lexiconCopy;
 }
 
-- (_LXLexicon)filterLexicon:(_LXLexicon *)a3 againstLocale:(String *)a4
+- (_LXLexicon)filterLexicon:(_LXLexicon *)lexicon againstLocale:(String *)locale
 {
   v13 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (lexicon)
   {
     Mutable = CFDictionaryCreateMutable(*MEMORY[0x277CBECE8], 0, MEMORY[0x277CBF138], MEMORY[0x277CBF150]);
     v5 = LXLexiconCopyName();
@@ -477,9 +477,9 @@ LABEL_8:
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getOnce:(id)a3
+- (void)getOnce:(id)once
 {
-  v4 = a3;
+  onceCopy = once;
   v5 = dispatch_semaphore_create(0);
   v13 = 0;
   v14 = &v13;
@@ -510,7 +510,7 @@ LABEL_8:
   else
   {
     [(TITransientLexiconManager *)self removeContactObserver:v7];
-    v4[2](v4, v14[5]);
+    onceCopy[2](onceCopy, v14[5]);
   }
 
   _Block_object_dispose(&v13, 8);
@@ -528,24 +528,24 @@ intptr_t __37__TITransientLexiconManager_getOnce___block_invoke(uint64_t a1, voi
   return dispatch_semaphore_signal(v6);
 }
 
-- (BOOL)searchForWordCaseInsensitive:(id)a3
+- (BOOL)searchForWordCaseInsensitive:(id)insensitive
 {
-  v4 = a3;
+  insensitiveCopy = insensitive;
   if (!self->_supplementalLexiconSearchEnabled)
   {
     goto LABEL_5;
   }
 
-  v5 = [(TITransientLexiconManager *)self supplementalLexicons];
-  v6 = [v5 activeWordLexicon];
+  supplementalLexicons = [(TITransientLexiconManager *)self supplementalLexicons];
+  activeWordLexicon = [supplementalLexicons activeWordLexicon];
 
-  if (!v6)
+  if (!activeWordLexicon)
   {
     goto LABEL_5;
   }
 
-  v7 = [(TITransientLexiconManager *)self supplementalLexicons];
-  v8 = -[TITransientLexiconManager searchHelper:forWord:caseSensitive:](self, "searchHelper:forWord:caseSensitive:", [v7 activeWordLexicon], v4, 0);
+  supplementalLexicons2 = [(TITransientLexiconManager *)self supplementalLexicons];
+  v8 = -[TITransientLexiconManager searchHelper:forWord:caseSensitive:](self, "searchHelper:forWord:caseSensitive:", [supplementalLexicons2 activeWordLexicon], insensitiveCopy, 0);
 
   if (v8)
   {
@@ -555,35 +555,35 @@ intptr_t __37__TITransientLexiconManager_getOnce___block_invoke(uint64_t a1, voi
   else
   {
 LABEL_5:
-    v9 = [(TITransientLexiconManager *)self searchHelper:[(TITransientLexiconManager *)self namedEntityLexicon] forWord:v4 caseSensitive:0];
+    v9 = [(TITransientLexiconManager *)self searchHelper:[(TITransientLexiconManager *)self namedEntityLexicon] forWord:insensitiveCopy caseSensitive:0];
   }
 
   return v9;
 }
 
-- (BOOL)searchForWord:(id)a3
+- (BOOL)searchForWord:(id)word
 {
-  v4 = a3;
+  wordCopy = word;
   if (!self->_supplementalLexiconSearchEnabled)
   {
     goto LABEL_4;
   }
 
-  v5 = [(TITransientLexiconManager *)self supplementalLexicons];
-  v6 = [v5 activeWordLexicon];
+  supplementalLexicons = [(TITransientLexiconManager *)self supplementalLexicons];
+  activeWordLexicon = [supplementalLexicons activeWordLexicon];
 
-  if (!v6 || (-[TITransientLexiconManager supplementalLexicons](self, "supplementalLexicons"), v7 = objc_claimAutoreleasedReturnValue(), v8 = 1, v9 = -[TITransientLexiconManager searchHelper:forWord:caseSensitive:](self, "searchHelper:forWord:caseSensitive:", [v7 activeWordLexicon], v4, 1), v7, !v9))
+  if (!activeWordLexicon || (-[TITransientLexiconManager supplementalLexicons](self, "supplementalLexicons"), v7 = objc_claimAutoreleasedReturnValue(), v8 = 1, v9 = -[TITransientLexiconManager searchHelper:forWord:caseSensitive:](self, "searchHelper:forWord:caseSensitive:", [v7 activeWordLexicon], wordCopy, 1), v7, !v9))
   {
 LABEL_4:
-    v8 = [(TITransientLexiconManager *)self searchHelper:[(TITransientLexiconManager *)self namedEntityLexicon] forWord:v4 caseSensitive:1];
+    v8 = [(TITransientLexiconManager *)self searchHelper:[(TITransientLexiconManager *)self namedEntityLexicon] forWord:wordCopy caseSensitive:1];
   }
 
   return v8;
 }
 
-- (BOOL)searchHelper:(_LXLexicon *)a3 forWord:(__CFString *)a4 caseSensitive:(BOOL)a5
+- (BOOL)searchHelper:(_LXLexicon *)helper forWord:(__CFString *)word caseSensitive:(BOOL)sensitive
 {
-  if (a3)
+  if (helper)
   {
     v7 = 0;
     v8 = &v7;
@@ -614,16 +614,16 @@ void __64__TITransientLexiconManager_searchHelper_forWord_caseSensitive___block_
   CFRelease(v5);
 }
 
-- (id)addContactObserver:(id)a3
+- (id)addContactObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   [(TITransientLexiconManager *)self loadLexicons];
-  v5 = [(_ICLexiconManaging *)self->_inputContextLexiconManager addContactObserver:v4];
+  v5 = [(_ICLexiconManaging *)self->_inputContextLexiconManager addContactObserver:observerCopy];
 
   return v5;
 }
 
-- (void)supplementalLexiconControllerProcessDidTerminate:(id)a3
+- (void)supplementalLexiconControllerProcessDidTerminate:(id)terminate
 {
   v4 = TISupplementalLexiconOSLogFacility();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -646,9 +646,9 @@ void __64__TITransientLexiconManager_searchHelper_forWord_caseSensitive___block_
     _os_log_impl(&dword_22CA55000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%s  Performing maintenance in Transient Lexicon Manager", &v8, 0xCu);
   }
 
-  v3 = [MEMORY[0x277D1C0B0] lexiconManager];
+  lexiconManager = [MEMORY[0x277D1C0B0] lexiconManager];
   inputContextLexiconManager = self->_inputContextLexiconManager;
-  self->_inputContextLexiconManager = v3;
+  self->_inputContextLexiconManager = lexiconManager;
 
   [(TITransientLexiconManager *)self registerNamedEntitiesUpdateCallback];
   namedEntityLexiconRef = self->_namedEntityLexiconRef;
@@ -676,12 +676,12 @@ void __64__TITransientLexiconManager_searchHelper_forWord_caseSensitive___block_
   v18 = *MEMORY[0x277D85DE8];
   if (!self->_lexiconsLoaded)
   {
-    v3 = [(_ICLexiconManaging *)self->_inputContextLexiconManager loadLexicons];
+    loadLexicons = [(_ICLexiconManaging *)self->_inputContextLexiconManager loadLexicons];
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    v4 = [loadLexicons countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v4)
     {
       v5 = v4;
@@ -692,15 +692,15 @@ void __64__TITransientLexiconManager_searchHelper_forWord_caseSensitive___block_
         {
           if (*v14 != v6)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(loadLexicons);
           }
 
           v8 = *(*(&v13 + 1) + 8 * i);
           if ([v8 typeFlags])
           {
-            v9 = [v8 typeFlags];
+            typeFlags = [v8 typeFlags];
             v10 = CFRetain([v8 getLexiconImplementation]);
-            if ((v9 & 4) != 0)
+            if ((typeFlags & 4) != 0)
             {
               v11 = 16;
             }
@@ -714,7 +714,7 @@ void __64__TITransientLexiconManager_searchHelper_forWord_caseSensitive___block_
           }
         }
 
-        v5 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v5 = [loadLexicons countByEnumeratingWithState:&v13 objects:v17 count:16];
       }
 
       while (v5);
@@ -780,18 +780,18 @@ void __64__TITransientLexiconManager_registerNamedEntitiesUpdateCallback__block_
 
 - (TISupplementalLexiconController)ensureSupplementalLexicons
 {
-  v3 = [(TITransientLexiconManager *)self supplementalLexicons];
-  if (!v3)
+  supplementalLexicons = [(TITransientLexiconManager *)self supplementalLexicons];
+  if (!supplementalLexicons)
   {
     v4 = [TISupplementalLexiconController alloc];
-    v5 = [(TITransientLexiconManager *)self _currentConnection];
-    v3 = [(TISupplementalLexiconController *)v4 initWithConnection:v5];
+    _currentConnection = [(TITransientLexiconManager *)self _currentConnection];
+    supplementalLexicons = [(TISupplementalLexiconController *)v4 initWithConnection:_currentConnection];
 
-    [(TISupplementalLexiconController *)v3 setDelegate:self];
-    objc_storeStrong(&self->_supplementalLexicons, v3);
+    [(TISupplementalLexiconController *)supplementalLexicons setDelegate:self];
+    objc_storeStrong(&self->_supplementalLexicons, supplementalLexicons);
   }
 
-  v6 = v3;
+  v6 = supplementalLexicons;
 
   return v6;
 }
@@ -800,21 +800,21 @@ void __64__TITransientLexiconManager_registerNamedEntitiesUpdateCallback__block_
 {
   if (__overridingCurrentConnectionForTesting)
   {
-    v2 = __overridingCurrentConnectionForTesting;
+    currentConnection = __overridingCurrentConnectionForTesting;
   }
 
   else
   {
-    v2 = [MEMORY[0x277CCAE80] currentConnection];
+    currentConnection = [MEMORY[0x277CCAE80] currentConnection];
   }
 
-  return v2;
+  return currentConnection;
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   namedEntityPhraseLexiconRef = self->_namedEntityPhraseLexiconRef;
   if (namedEntityPhraseLexiconRef)
@@ -971,9 +971,9 @@ LABEL_14:
   v2 = [(TITransientLexiconManager *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277D1C0B0] lexiconManager];
+    lexiconManager = [MEMORY[0x277D1C0B0] lexiconManager];
     inputContextLexiconManager = v2->_inputContextLexiconManager;
-    v2->_inputContextLexiconManager = v3;
+    v2->_inputContextLexiconManager = lexiconManager;
 
     [(TITransientLexiconManager *)v2 registerNamedEntitiesUpdateCallback];
     v2->_supplementalLexiconSearchEnabled = 1;
@@ -984,11 +984,11 @@ LABEL_14:
   return 0;
 }
 
-+ (id)getEntries:(_LXLexicon *)a3
++ (id)getEntries:(_LXLexicon *)entries
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   RootCursor = LXLexiconCreateRootCursor();
-  v6 = v3;
+  v6 = array;
   LXCursorEnumerateEntriesRecursively();
   CFRelease(RootCursor);
 
@@ -1017,14 +1017,14 @@ uint64_t __46__TITransientLexiconManager_singletonInstance__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-+ (void)setSharedTITransientLexiconManager:(id)a3
++ (void)setSharedTITransientLexiconManager:(id)manager
 {
-  v4 = a3;
-  if (__testingInstance != v4)
+  managerCopy = manager;
+  if (__testingInstance != managerCopy)
   {
-    v5 = v4;
-    objc_storeStrong(&__testingInstance, a3);
-    v4 = v5;
+    v5 = managerCopy;
+    objc_storeStrong(&__testingInstance, manager);
+    managerCopy = v5;
   }
 }
 

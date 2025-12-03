@@ -1,14 +1,14 @@
 @interface AXInvertColors_SetupAssistantUI
-+ (void)performValidations:(id)a3;
++ (void)performValidations:(id)validations;
 @end
 
 @implementation AXInvertColors_SetupAssistantUI
 
-+ (void)performValidations:(id)a3
++ (void)performValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"BFFPaneHeaderView" hasInstanceMethod:@"setIcon:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"BFFPaneHeaderView" hasInstanceVariable:@"_iconView" withType:"UIImageView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"BFFPaneHeaderView" hasInstanceMethod:@"setIcon:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"BFFPaneHeaderView" hasInstanceVariable:@"_iconView" withType:"UIImageView"];
 }
 
 @end

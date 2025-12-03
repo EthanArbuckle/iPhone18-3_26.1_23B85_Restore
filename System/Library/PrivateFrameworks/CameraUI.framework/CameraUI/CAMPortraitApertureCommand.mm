@@ -1,72 +1,72 @@
 @interface CAMPortraitApertureCommand
-- (CAMPortraitApertureCommand)initWithAperture:(double)a3;
-- (CAMPortraitApertureCommand)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)executeWithContext:(id)a3;
+- (CAMPortraitApertureCommand)initWithAperture:(double)aperture;
+- (CAMPortraitApertureCommand)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
+- (void)executeWithContext:(id)context;
 @end
 
 @implementation CAMPortraitApertureCommand
 
-- (CAMPortraitApertureCommand)initWithAperture:(double)a3
+- (CAMPortraitApertureCommand)initWithAperture:(double)aperture
 {
   v5.receiver = self;
   v5.super_class = CAMPortraitApertureCommand;
   result = [(CAMCaptureCommand *)&v5 initWithSubcommands:0];
   if (result)
   {
-    result->_aperture = a3;
+    result->_aperture = aperture;
   }
 
   return result;
 }
 
-- (CAMPortraitApertureCommand)initWithCoder:(id)a3
+- (CAMPortraitApertureCommand)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = CAMPortraitApertureCommand;
-  v5 = [(CAMCaptureCommand *)&v8 initWithCoder:v4];
+  v5 = [(CAMCaptureCommand *)&v8 initWithCoder:coderCopy];
   if (v5)
   {
-    [v4 decodeDoubleForKey:@"CAMPortraitApertureCommandAperture"];
+    [coderCopy decodeDoubleForKey:@"CAMPortraitApertureCommandAperture"];
     v5->_aperture = v6;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = CAMPortraitApertureCommand;
-  v4 = a3;
-  [(CAMCaptureCommand *)&v5 encodeWithCoder:v4];
-  [v4 encodeDouble:@"CAMPortraitApertureCommandAperture" forKey:{self->_aperture, v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(CAMCaptureCommand *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeDouble:@"CAMPortraitApertureCommandAperture" forKey:{self->_aperture, v5.receiver, v5.super_class}];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5.receiver = self;
   v5.super_class = CAMPortraitApertureCommand;
-  result = [(CAMCaptureCommand *)&v5 copyWithZone:a3];
+  result = [(CAMCaptureCommand *)&v5 copyWithZone:zone];
   *(result + 3) = *&self->_aperture;
   return result;
 }
 
-- (void)executeWithContext:(id)a3
+- (void)executeWithContext:(id)context
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 currentVideoDeviceInput];
-  v6 = [v4 currentVideoDeviceFormat];
+  contextCopy = context;
+  currentVideoDeviceInput = [contextCopy currentVideoDeviceInput];
+  currentVideoDeviceFormat = [contextCopy currentVideoDeviceFormat];
   v21 = MEMORY[0x1E69E9820];
   v22 = 3221225472;
   v23 = __49__CAMPortraitApertureCommand_executeWithContext___block_invoke;
   v24 = &unk_1E76F7960;
-  v7 = v5;
+  v7 = currentVideoDeviceInput;
   v25 = v7;
-  v8 = v6;
+  v8 = currentVideoDeviceFormat;
   v26 = v8;
   if (executeWithContext__onceToken != -1)
   {
@@ -82,11 +82,11 @@
     [v8 maxSimulatedAperture];
     if (v12 == 0.0 || v13 == 0.0)
     {
-      v18 = os_log_create("com.apple.camera", "Camera");
-      if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
+      apertureSlider = os_log_create("com.apple.camera", "Camera");
+      if (os_log_type_enabled(apertureSlider, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 0;
-        _os_log_impl(&dword_1A3640000, v18, OS_LOG_TYPE_DEFAULT, "Ignoring aperture change request because device format has minSimulatedAperture/maxSimulatedAperture==0", buf, 2u);
+        _os_log_impl(&dword_1A3640000, apertureSlider, OS_LOG_TYPE_DEFAULT, "Ignoring aperture change request because device format has minSimulatedAperture/maxSimulatedAperture==0", buf, 2u);
       }
     }
 
@@ -130,9 +130,9 @@
       v19 = v16;
       *&v14 = v19;
       [v7 setSimulatedAperture:v14];
-      v18 = [v4 apertureSlider];
+      apertureSlider = [contextCopy apertureSlider];
       *&v20 = v16;
-      [v18 setValue:v20];
+      [apertureSlider setValue:v20];
     }
   }
 }

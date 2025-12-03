@@ -1,9 +1,9 @@
 @interface PKDisplayTraitCollection
 - (CGSize)canvasSize;
 - (PKDisplayTraitCollection)init;
-- (PKDisplayTraitCollection)initWithCoder:(id)a3;
+- (PKDisplayTraitCollection)initWithCoder:(id)coder;
 - (PKDisplayTraitCollection)initWithDefaultTraits;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKDisplayTraitCollection
@@ -37,29 +37,29 @@
   return v2;
 }
 
-- (PKDisplayTraitCollection)initWithCoder:(id)a3
+- (PKDisplayTraitCollection)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(PKDisplayTraitCollection *)self init];
   if (v5)
   {
-    [v4 decodeSizeForKey:@"size"];
+    [coderCopy decodeSizeForKey:@"size"];
     v5->_canvasSize.width = v6;
     v5->_canvasSize.height = v7;
-    [v4 decodeDoubleForKey:@"scale"];
+    [coderCopy decodeDoubleForKey:@"scale"];
     v5->_canvasScale = v8;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   width = self->_canvasSize.width;
   height = self->_canvasSize.height;
-  v6 = a3;
-  [v6 encodeSize:@"size" forKey:{width, height}];
-  [v6 encodeDouble:@"scale" forKey:self->_canvasScale];
+  coderCopy = coder;
+  [coderCopy encodeSize:@"size" forKey:{width, height}];
+  [coderCopy encodeDouble:@"scale" forKey:self->_canvasScale];
 }
 
 @end

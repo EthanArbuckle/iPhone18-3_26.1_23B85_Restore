@@ -1,11 +1,11 @@
 @interface PXCMMFooterViewModel
 - (PXCMMFooterViewModel)init;
-- (PXCMMFooterViewModel)initWithMomentShareStatusPresentation:(id)a3 mode:(int64_t)a4;
+- (PXCMMFooterViewModel)initWithMomentShareStatusPresentation:(id)presentation mode:(int64_t)mode;
 - (PXCMMFooterViewModelDelegate)delegate;
-- (void)_invokeStopSharingActionForInvitation:(id)a3 session:(id)a4;
+- (void)_invokeStopSharingActionForInvitation:(id)invitation session:(id)session;
 - (void)_updateAllProperties;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)setDelegate:(id)a3;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation PXCMMFooterViewModel
@@ -17,58 +17,58 @@
   return WeakRetained;
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
-  v9 = a3;
-  if (PXMomentShareStatusPresentationObservationContext_161044 != a5)
+  changeCopy = change;
+  observableCopy = observable;
+  if (PXMomentShareStatusPresentationObservationContext_161044 != context)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PXCMMFooterViewModel.m" lineNumber:198 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCMMFooterViewModel.m" lineNumber:198 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  if ((v6 & 0x886F) != 0)
+  if ((changeCopy & 0x886F) != 0)
   {
-    v11 = v9;
+    v11 = observableCopy;
     [(PXCMMFooterViewModel *)self _updateAllProperties];
-    v9 = v11;
+    observableCopy = v11;
   }
 }
 
-- (void)_invokeStopSharingActionForInvitation:(id)a3 session:(id)a4
+- (void)_invokeStopSharingActionForInvitation:(id)invitation session:(id)session
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  invitationCopy = invitation;
+  sessionCopy = session;
   v8 = PLSharingGetLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v6 identifier];
+    identifier = [invitationCopy identifier];
     *buf = 138543362;
-    v19 = v9;
+    v19 = identifier;
     _os_log_impl(&dword_1A3C1C000, v8, OS_LOG_TYPE_DEFAULT, "PXCMMFooterViewModel: Will delete owned moment share: %{public}@", buf, 0xCu);
   }
 
-  v10 = [v7 actionManager];
-  v11 = [v10 actionPerformerForActionType:@"PXCMMActionTypeDelete"];
+  actionManager = [sessionCopy actionManager];
+  v11 = [actionManager actionPerformerForActionType:@"PXCMMActionTypeDelete"];
 
-  v12 = [(PXCMMFooterViewModel *)self delegate];
-  if (!v12)
+  delegate = [(PXCMMFooterViewModel *)self delegate];
+  if (!delegate)
   {
     PXAssertGetLog();
   }
 
-  v13 = [v12 presentationEnvironmentForCMMFooterViewModel:self];
+  v13 = [delegate presentationEnvironmentForCMMFooterViewModel:self];
   [v11 setPresentationEnvironment:v13];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __70__PXCMMFooterViewModel__invokeStopSharingActionForInvitation_session___block_invoke;
   v16[3] = &unk_1E774C5C0;
-  v17 = v6;
-  v14 = v6;
-  v15 = [v11 performActionWithSession:v7 completionHandler:v16];
+  v17 = invitationCopy;
+  v14 = invitationCopy;
+  v15 = [v11 performActionWithSession:sessionCopy completionHandler:v16];
 }
 
 void __70__PXCMMFooterViewModel__invokeStopSharingActionForInvitation_session___block_invoke(uint64_t a1, int a2, void *a3)
@@ -110,29 +110,29 @@ LABEL_6:
 
 - (void)_updateAllProperties
 {
-  v3 = [(PXMomentShareStatusPresentation *)self->_momentShareStatusPresentation assetsTitle];
-  v4 = [(PXMomentShareStatusPresentation *)self->_momentShareStatusPresentation expirationTitle];
-  v5 = [(PXMomentShareStatusPresentation *)self->_momentShareStatusPresentation type];
-  if (v5 != 1)
+  assetsTitle = [(PXMomentShareStatusPresentation *)self->_momentShareStatusPresentation assetsTitle];
+  expirationTitle = [(PXMomentShareStatusPresentation *)self->_momentShareStatusPresentation expirationTitle];
+  type = [(PXMomentShareStatusPresentation *)self->_momentShareStatusPresentation type];
+  if (type != 1)
   {
-    if (!v5)
+    if (!type)
     {
-      v6 = v4;
+      assetsSaveStatusTitle = expirationTitle;
       v7 = 0;
       goto LABEL_15;
     }
 
 LABEL_13:
     v7 = 0;
-    v6 = 0;
+    assetsSaveStatusTitle = 0;
     goto LABEL_15;
   }
 
   mode = self->_mode;
   if (mode == 1)
   {
-    v6 = [(PXMomentShareStatusPresentation *)self->_momentShareStatusPresentation assetsSaveStatusTitle];
-    v7 = v4;
+    assetsSaveStatusTitle = [(PXMomentShareStatusPresentation *)self->_momentShareStatusPresentation assetsSaveStatusTitle];
+    v7 = expirationTitle;
     goto LABEL_15;
   }
 
@@ -141,21 +141,21 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  v9 = [(PXMomentShareStatusPresentation *)self->_momentShareStatusPresentation byline];
-  v10 = v9;
-  if (v9)
+  byline = [(PXMomentShareStatusPresentation *)self->_momentShareStatusPresentation byline];
+  v10 = byline;
+  if (byline)
   {
-    v11 = v9;
+    v11 = byline;
   }
 
   else
   {
-    v11 = v4;
+    v11 = expirationTitle;
   }
 
-  if (v9)
+  if (byline)
   {
-    v12 = v4;
+    v12 = expirationTitle;
   }
 
   else
@@ -163,7 +163,7 @@ LABEL_13:
     v12 = 0;
   }
 
-  v6 = v11;
+  assetsSaveStatusTitle = v11;
   v7 = v12;
 
 LABEL_15:
@@ -171,15 +171,15 @@ LABEL_15:
   v16[1] = 3221225472;
   v16[2] = __44__PXCMMFooterViewModel__updateAllProperties__block_invoke;
   v16[3] = &unk_1E773ECB8;
-  v17 = v3;
-  v18 = v6;
+  v17 = assetsTitle;
+  v18 = assetsSaveStatusTitle;
   v19 = v7;
   v20 = 0u;
   v21 = 0u;
   v22 = 0;
   v13 = v7;
-  v14 = v6;
-  v15 = v3;
+  v14 = assetsSaveStatusTitle;
+  v15 = assetsTitle;
   [(PXCMMFooterViewModel *)self performChanges:v16];
 }
 
@@ -197,9 +197,9 @@ void __44__PXCMMFooterViewModel__updateAllProperties__block_invoke(void *a1, voi
   [v4 setAction:a1[11]];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   v5 = obj;
@@ -211,13 +211,13 @@ void __44__PXCMMFooterViewModel__updateAllProperties__block_invoke(void *a1, voi
   }
 }
 
-- (PXCMMFooterViewModel)initWithMomentShareStatusPresentation:(id)a3 mode:(int64_t)a4
+- (PXCMMFooterViewModel)initWithMomentShareStatusPresentation:(id)presentation mode:(int64_t)mode
 {
-  v8 = a3;
-  if (!v8)
+  presentationCopy = presentation;
+  if (!presentationCopy)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"PXCMMFooterViewModel.m" lineNumber:33 description:{@"Invalid parameter not satisfying: %@", @"momentShareStatusPresentation"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCMMFooterViewModel.m" lineNumber:33 description:{@"Invalid parameter not satisfying: %@", @"momentShareStatusPresentation"}];
   }
 
   v13.receiver = self;
@@ -226,9 +226,9 @@ void __44__PXCMMFooterViewModel__updateAllProperties__block_invoke(void *a1, voi
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_momentShareStatusPresentation, a3);
+    objc_storeStrong(&v9->_momentShareStatusPresentation, presentation);
     [(PXMomentShareStatusPresentation *)v10->_momentShareStatusPresentation registerChangeObserver:v10 context:PXMomentShareStatusPresentationObservationContext_161044];
-    v10->_mode = a4;
+    v10->_mode = mode;
     [(PXCMMFooterViewModel *)v10 _updateAllProperties];
   }
 
@@ -237,8 +237,8 @@ void __44__PXCMMFooterViewModel__updateAllProperties__block_invoke(void *a1, voi
 
 - (PXCMMFooterViewModel)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXCMMFooterViewModel.m" lineNumber:29 description:{@"%s is not available as initializer", "-[PXCMMFooterViewModel init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXCMMFooterViewModel.m" lineNumber:29 description:{@"%s is not available as initializer", "-[PXCMMFooterViewModel init]"}];
 
   abort();
 }

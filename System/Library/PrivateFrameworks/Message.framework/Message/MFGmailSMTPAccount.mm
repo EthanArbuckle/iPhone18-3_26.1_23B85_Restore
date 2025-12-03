@@ -1,19 +1,19 @@
 @interface MFGmailSMTPAccount
-- (id)_urlFromResponse:(id)a3;
-- (id)errorForResponse:(id)a3;
+- (id)_urlFromResponse:(id)response;
+- (id)errorForResponse:(id)response;
 @end
 
 @implementation MFGmailSMTPAccount
 
-- (id)_urlFromResponse:(id)a3
+- (id)_urlFromResponse:(id)response
 {
   v34 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  responseCopy = response;
   v4 = objc_alloc(MEMORY[0x1E695DF70]);
-  v5 = [v3 continuationResponses];
-  v6 = [v4 initWithArray:v5];
+  continuationResponses = [responseCopy continuationResponses];
+  v6 = [v4 initWithArray:continuationResponses];
 
-  [v6 addObject:v3];
+  [v6 addObject:responseCopy];
   v31 = 0u;
   v32 = 0u;
   v29 = 0u;
@@ -35,22 +35,22 @@
         }
 
         v12 = *(*(&v29 + 1) + 8 * i);
-        if ([v3 failureReason] == 7)
+        if ([responseCopy failureReason] == 7)
         {
-          v13 = [v12 statusString];
-          v14 = [v13 rangeOfString:@">"];
+          statusString = [v12 statusString];
+          v14 = [statusString rangeOfString:@">"];
           v15 = v14;
           if (v9)
           {
             if (v14 == 0x7FFFFFFFFFFFFFFFLL)
             {
-              [v9 appendString:v13];
+              [v9 appendString:statusString];
 LABEL_15:
 
               continue;
             }
 
-            v18 = [v13 substringToIndex:v14];
+            v18 = [statusString substringToIndex:v14];
             [v9 appendString:v18];
 
             v19 = [(GmailAccount *)self->_account _URLFromUncleanString:v9];
@@ -58,7 +58,7 @@ LABEL_15:
 
           else
           {
-            v16 = [v13 rangeOfString:@"<"];
+            v16 = [statusString rangeOfString:@"<"];
             v17 = v16;
             if (v16 == 0x7FFFFFFFFFFFFFFFLL)
             {
@@ -69,7 +69,7 @@ LABEL_15:
             if (v15 == 0x7FFFFFFFFFFFFFFFLL)
             {
               v20 = objc_alloc(MEMORY[0x1E696AD60]);
-              v21 = [v13 substringFromIndex:v17 + 1];
+              v21 = [statusString substringFromIndex:v17 + 1];
               v9 = [v20 initWithString:v21];
 
               goto LABEL_15;
@@ -77,7 +77,7 @@ LABEL_15:
 
             v22 = v15 - (v16 + 1);
             account = self->_account;
-            v24 = [v13 substringWithRange:{v16 + 1, v22}];
+            v24 = [statusString substringWithRange:{v16 + 1, v22}];
             v19 = [(GmailAccount *)account _URLFromUncleanString:v24];
           }
 
@@ -106,14 +106,14 @@ LABEL_22:
   return v19;
 }
 
-- (id)errorForResponse:(id)a3
+- (id)errorForResponse:(id)response
 {
-  v4 = a3;
-  if ([v4 failureReason] != 7 || (account = self->_account, -[MFGmailSMTPAccount _urlFromResponse:](self, "_urlFromResponse:", v4), v6 = objc_claimAutoreleasedReturnValue(), -[GmailAccount _webLoginErrorWithURL:](account, "_webLoginErrorWithURL:", v6), v7 = objc_claimAutoreleasedReturnValue(), v6, !v7))
+  responseCopy = response;
+  if ([responseCopy failureReason] != 7 || (account = self->_account, -[MFGmailSMTPAccount _urlFromResponse:](self, "_urlFromResponse:", responseCopy), v6 = objc_claimAutoreleasedReturnValue(), -[GmailAccount _webLoginErrorWithURL:](account, "_webLoginErrorWithURL:", v6), v7 = objc_claimAutoreleasedReturnValue(), v6, !v7))
   {
     v9.receiver = self;
     v9.super_class = MFGmailSMTPAccount;
-    v7 = [(SMTPAccount *)&v9 errorForResponse:v4];
+    v7 = [(SMTPAccount *)&v9 errorForResponse:responseCopy];
   }
 
   return v7;

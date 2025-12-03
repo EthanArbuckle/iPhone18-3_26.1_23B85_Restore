@@ -1,69 +1,69 @@
 @interface CKPluginMessageStatusCell
 - (BOOL)_shouldOverrideStatusAlignmentWithCenterAlignment;
 - (BOOL)hidesCheckmark;
-- (CKPluginMessageStatusCell)initWithFrame:(CGRect)a3;
+- (CKPluginMessageStatusCell)initWithFrame:(CGRect)frame;
 - (void)_updateBalloonPluginIconImage;
-- (void)configureForChatItem:(id)a3 context:(id)a4 animated:(BOOL)a5 animationDuration:(double)a6 animationCurve:(int64_t)a7;
+- (void)configureForChatItem:(id)item context:(id)context animated:(BOOL)animated animationDuration:(double)duration animationCurve:(int64_t)curve;
 - (void)dealloc;
 - (void)layoutSubviewsForAlignmentContents;
-- (void)performInsertion:(id)a3;
+- (void)performInsertion:(id)insertion;
 - (void)prepareForReuse;
-- (void)setBalloonBundleID:(id)a3;
-- (void)setDataSource:(id)a3;
-- (void)setPreviousPluginSnapshot:(id)a3;
+- (void)setBalloonBundleID:(id)d;
+- (void)setDataSource:(id)source;
+- (void)setPreviousPluginSnapshot:(id)snapshot;
 @end
 
 @implementation CKPluginMessageStatusCell
 
-- (void)configureForChatItem:(id)a3 context:(id)a4 animated:(BOOL)a5 animationDuration:(double)a6 animationCurve:(int64_t)a7
+- (void)configureForChatItem:(id)item context:(id)context animated:(BOOL)animated animationDuration:(double)duration animationCurve:(int64_t)curve
 {
-  v9 = a5;
-  v12 = a3;
+  animatedCopy = animated;
+  itemCopy = item;
   v29.receiver = self;
   v29.super_class = CKPluginMessageStatusCell;
-  [(CKTranscriptStampCell *)&v29 configureForChatItem:v12 context:a4 animated:v9 animationDuration:a7 animationCurve:a6];
-  v13 = [v12 IMChatItem];
-  v14 = [v13 balloonBundleID];
-  [(CKPluginMessageStatusCell *)self setBalloonBundleID:v14];
+  [(CKTranscriptStampCell *)&v29 configureForChatItem:itemCopy context:context animated:animatedCopy animationDuration:curve animationCurve:duration];
+  iMChatItem = [itemCopy IMChatItem];
+  balloonBundleID = [iMChatItem balloonBundleID];
+  [(CKPluginMessageStatusCell *)self setBalloonBundleID:balloonBundleID];
 
-  v15 = [(CKTranscriptLabelCell *)self label];
-  [v15 frame];
+  label = [(CKTranscriptLabelCell *)self label];
+  [label frame];
   v17 = v16;
   v19 = v18;
   v21 = v20;
   v23 = v22;
-  [v12 size];
+  [itemCopy size];
   v25 = v24;
   v27 = v26;
   if (objc_opt_respondsToSelector())
   {
-    [v12 iconSizePlusHorizontalPadding];
+    [itemCopy iconSizePlusHorizontalPadding];
     v25 = v25 - v28;
   }
 
   if (v21 != v25 || v23 != v27)
   {
-    [v15 setFrame:{v17, v19, v25, v27}];
+    [label setFrame:{v17, v19, v25, v27}];
     [(CKPluginMessageStatusCell *)self setNeedsLayout];
   }
 }
 
-- (CKPluginMessageStatusCell)initWithFrame:(CGRect)a3
+- (CKPluginMessageStatusCell)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = CKPluginMessageStatusCell;
-  v3 = [(CKTranscriptLabelCell *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CKTranscriptLabelCell *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x1E69DCAE0]);
     v5 = [v4 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
     [v5 setContentMode:0];
-    v6 = [(CKEditableCollectionViewCell *)v3 contentView];
-    [v6 addSubview:v5];
+    contentView = [(CKEditableCollectionViewCell *)v3 contentView];
+    [contentView addSubview:v5];
 
     [(CKPluginMessageStatusCell *)v3 setImageView:v5];
-    v7 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v7 addObserver:v3 selector:sel__updateBalloonPluginIconImage name:*MEMORY[0x1E69A56D8] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel__updateBalloonPluginIconImage name:*MEMORY[0x1E69A56D8] object:0];
   }
 
   return v3;
@@ -84,8 +84,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = CKPluginMessageStatusCell;
@@ -94,17 +94,17 @@
 
 - (void)_updateBalloonPluginIconImage
 {
-  v3 = [(CKPluginMessageStatusCell *)self balloonBundleID];
+  balloonBundleID = [(CKPluginMessageStatusCell *)self balloonBundleID];
 
-  if (v3)
+  if (balloonBundleID)
   {
-    v4 = [MEMORY[0x1E69A5AD0] sharedInstance];
-    v5 = [(CKPluginMessageStatusCell *)self balloonBundleID];
-    v6 = [v4 balloonPluginForBundleID:v5];
+    mEMORY[0x1E69A5AD0] = [MEMORY[0x1E69A5AD0] sharedInstance];
+    balloonBundleID2 = [(CKPluginMessageStatusCell *)self balloonBundleID];
+    v6 = [mEMORY[0x1E69A5AD0] balloonPluginForBundleID:balloonBundleID2];
 
-    v7 = [v6 identifier];
+    identifier = [v6 identifier];
     v8 = IMBalloonExtensionIDWithSuffix();
-    v9 = [v7 isEqualToString:v8];
+    v9 = [identifier isEqualToString:v8];
 
     v10 = [v6 shouldBreadcrumbHideAppIcon] | v9;
     if (v6 || ([(CKPluginMessageStatusCell *)self balloonBundleID], (v11 = objc_claimAutoreleasedReturnValue()) == 0))
@@ -130,8 +130,8 @@
 
   else
   {
-    v12 = [(CKPluginMessageStatusCell *)self imageView];
-    [v12 setImage:0];
+    imageView = [(CKPluginMessageStatusCell *)self imageView];
+    [imageView setImage:0];
   }
 }
 
@@ -167,19 +167,19 @@ void __58__CKPluginMessageStatusCell__updateBalloonPluginIconImage__block_invoke
 - (void)layoutSubviewsForAlignmentContents
 {
   v3 = +[CKUIBehavior sharedBehaviors];
-  v4 = [(CKTranscriptLabelCell *)self label];
-  [v4 frame];
+  label = [(CKTranscriptLabelCell *)self label];
+  [label frame];
   v6 = v5;
   v8 = v7;
   v50.receiver = self;
   v50.super_class = CKPluginMessageStatusCell;
   [(CKTranscriptStampCell *)&v50 layoutSubviewsForAlignmentContents];
-  v9 = [(CKPluginMessageStatusCell *)self imageView];
-  v10 = [v9 image];
+  imageView = [(CKPluginMessageStatusCell *)self imageView];
+  image = [imageView image];
 
-  [v10 size];
+  [image size];
   v12 = v11;
-  [v10 size];
+  [image size];
   v14 = CKFloatApproximatelyEqualToFloatWithTolerance(v12, v13, 0.1);
   v15 = +[CKUIBehavior sharedBehaviors];
   v16 = v15;
@@ -197,7 +197,7 @@ void __58__CKPluginMessageStatusCell__updateBalloonPluginIconImage__block_invoke
   v20 = v18;
 
   v49 = v19;
-  if (v10)
+  if (image)
   {
     [v3 transcriptCustomStatusImagePadding];
     v22 = v19 + v21;
@@ -213,8 +213,8 @@ void __58__CKPluginMessageStatusCell__updateBalloonPluginIconImage__block_invoke
   v26 = v25;
   v28 = v27;
   v30 = v29;
-  v31 = [(CKEditableCollectionViewCell *)self orientation];
-  if (v31 == 1 || (v32 = v31, [(CKPluginMessageStatusCell *)self _shouldOverrideStatusAlignmentWithCenterAlignment]))
+  orientation = [(CKEditableCollectionViewCell *)self orientation];
+  if (orientation == 1 || (v32 = orientation, [(CKPluginMessageStatusCell *)self _shouldOverrideStatusAlignmentWithCenterAlignment]))
   {
     v51.origin.x = v24;
     v51.origin.y = v26;
@@ -251,32 +251,32 @@ void __58__CKPluginMessageStatusCell__updateBalloonPluginIconImage__block_invoke
     v24 = v22 + CGRectGetMinX(v53);
   }
 
-  [v4 setFrame:{v24, v26, v6, v8}];
-  if (v10)
+  [label setFrame:{v24, v26, v6, v8}];
+  if (image)
   {
-    v34 = [v3 transcriptTextFont];
-    [v34 lineHeight];
+    transcriptTextFont = [v3 transcriptTextFont];
+    [transcriptTextFont lineHeight];
     v36 = v26 + (v35 - v20) * 0.5;
 
-    v37 = [(CKPluginMessageStatusCell *)self imageView];
+    imageView2 = [(CKPluginMessageStatusCell *)self imageView];
     [v3 transcriptCustomStatusImageEdgeInsets];
     v39 = v24 - v22 + v38;
     v41 = v36 + v40;
     v43 = v49 - (v38 + v42);
     v45 = v20 - (v40 + v44);
-    v46 = [v37 layer];
-    v47 = [v46 mask];
-    [v47 setFrame:{0.0, 0.0, v43, v45}];
+    layer = [imageView2 layer];
+    mask = [layer mask];
+    [mask setFrame:{0.0, 0.0, v43, v45}];
 
-    [v37 setFrame:{v39, v41, v43, v45}];
+    [imageView2 setFrame:{v39, v41, v43, v45}];
   }
 }
 
 - (BOOL)_shouldOverrideStatusAlignmentWithCenterAlignment
 {
   v15[3] = *MEMORY[0x1E69E9840];
-  v2 = [(CKPluginMessageStatusCell *)self balloonBundleID];
-  if ([v2 length])
+  balloonBundleID = [(CKPluginMessageStatusCell *)self balloonBundleID];
+  if ([balloonBundleID length])
   {
     v3 = IMBalloonBundleIDFromExtensionID();
     v4 = *MEMORY[0x1E69A6918];
@@ -329,11 +329,11 @@ LABEL_12:
   return v6;
 }
 
-- (void)performInsertion:(id)a3
+- (void)performInsertion:(id)insertion
 {
-  v4 = a3;
-  v5 = [(CKPluginMessageStatusCell *)self previousPluginSnapshot];
-  if (v5)
+  insertionCopy = insertion;
+  previousPluginSnapshot = [(CKPluginMessageStatusCell *)self previousPluginSnapshot];
+  if (previousPluginSnapshot)
   {
     previousPluginSnapshot = self->_previousPluginSnapshot;
     self->_previousPluginSnapshot = 0;
@@ -344,19 +344,19 @@ LABEL_12:
     v11[2] = __46__CKPluginMessageStatusCell_performInsertion___block_invoke;
     v11[3] = &unk_1E72EB8D0;
     v11[4] = self;
-    v12 = v5;
+    v12 = previousPluginSnapshot;
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __46__CKPluginMessageStatusCell_performInsertion___block_invoke_2;
     v8[3] = &unk_1E72ED638;
     v9 = v12;
-    v10 = v4;
+    v10 = insertionCopy;
     [v7 animateWithDuration:0x10000 delay:v11 options:v8 animations:0.3 completion:0.0];
   }
 
-  else if (v4)
+  else if (insertionCopy)
   {
-    (*(v4 + 2))(v4, 1);
+    (*(insertionCopy + 2))(insertionCopy, 1);
   }
 }
 
@@ -407,19 +407,19 @@ uint64_t __46__CKPluginMessageStatusCell_performInsertion___block_invoke_2(uint6
   return result;
 }
 
-- (void)setDataSource:(id)a3
+- (void)setDataSource:(id)source
 {
-  v5 = a3;
-  v12 = v5;
-  if (v5)
+  sourceCopy = source;
+  v12 = sourceCopy;
+  if (sourceCopy)
   {
-    v6 = [v5 pluginPayload];
-    v7 = [v6 pluginBundleID];
+    pluginPayload = [sourceCopy pluginPayload];
+    pluginBundleID = [pluginPayload pluginBundleID];
 
     balloonBundleID = self->_balloonBundleID;
-    if (balloonBundleID != v7 && !-[NSString isEqualToString:](balloonBundleID, "isEqualToString:", v7) || (-[CKPluginMessageStatusCell imageView](self, "imageView"), v9 = objc_claimAutoreleasedReturnValue(), [v9 image], v10 = objc_claimAutoreleasedReturnValue(), v10, v9, !v10))
+    if (balloonBundleID != pluginBundleID && !-[NSString isEqualToString:](balloonBundleID, "isEqualToString:", pluginBundleID) || (-[CKPluginMessageStatusCell imageView](self, "imageView"), v9 = objc_claimAutoreleasedReturnValue(), [v9 image], v10 = objc_claimAutoreleasedReturnValue(), v10, v9, !v10))
     {
-      objc_storeStrong(&self->_dataSource, a3);
+      objc_storeStrong(&self->_dataSource, source);
       [(CKPluginMessageStatusCell *)self _updateBalloonPluginIconImage];
     }
   }
@@ -434,49 +434,49 @@ uint64_t __46__CKPluginMessageStatusCell_performInsertion___block_invoke_2(uint6
   }
 }
 
-- (void)setBalloonBundleID:(id)a3
+- (void)setBalloonBundleID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   balloonBundleID = self->_balloonBundleID;
-  v9 = v5;
-  if (balloonBundleID != v5 && !-[NSString isEqualToString:](balloonBundleID, "isEqualToString:", v5) || (-[CKPluginMessageStatusCell imageView](self, "imageView"), v7 = objc_claimAutoreleasedReturnValue(), [v7 image], v8 = objc_claimAutoreleasedReturnValue(), v8, v7, !v8))
+  v9 = dCopy;
+  if (balloonBundleID != dCopy && !-[NSString isEqualToString:](balloonBundleID, "isEqualToString:", dCopy) || (-[CKPluginMessageStatusCell imageView](self, "imageView"), v7 = objc_claimAutoreleasedReturnValue(), [v7 image], v8 = objc_claimAutoreleasedReturnValue(), v8, v7, !v8))
   {
-    objc_storeStrong(&self->_balloonBundleID, a3);
+    objc_storeStrong(&self->_balloonBundleID, d);
     [(CKPluginMessageStatusCell *)self _updateBalloonPluginIconImage];
   }
 }
 
-- (void)setPreviousPluginSnapshot:(id)a3
+- (void)setPreviousPluginSnapshot:(id)snapshot
 {
-  v5 = a3;
+  snapshotCopy = snapshot;
   previousPluginSnapshot = self->_previousPluginSnapshot;
-  if (previousPluginSnapshot != v5)
+  if (previousPluginSnapshot != snapshotCopy)
   {
-    v12 = v5;
+    v12 = snapshotCopy;
     [(UIView *)previousPluginSnapshot removeFromSuperview];
-    objc_storeStrong(&self->_previousPluginSnapshot, a3);
+    objc_storeStrong(&self->_previousPluginSnapshot, snapshot);
     v7 = self->_previousPluginSnapshot;
-    v8 = [(CKPluginMessageStatusCell *)self imageView];
-    v9 = v8;
+    imageView = [(CKPluginMessageStatusCell *)self imageView];
+    v9 = imageView;
     if (v7)
     {
-      [v8 setAlpha:0.0];
+      [imageView setAlpha:0.0];
 
-      v10 = [(CKTranscriptLabelCell *)self label];
-      [v10 setAlpha:0.0];
+      label = [(CKTranscriptLabelCell *)self label];
+      [label setAlpha:0.0];
 
       [(CKPluginMessageStatusCell *)self insertSubview:self->_previousPluginSnapshot atIndex:0];
     }
 
     else
     {
-      [v8 setAlpha:1.0];
+      [imageView setAlpha:1.0];
 
-      v11 = [(CKTranscriptLabelCell *)self label];
-      [v11 setAlpha:1.0];
+      label2 = [(CKTranscriptLabelCell *)self label];
+      [label2 setAlpha:1.0];
     }
 
-    v5 = v12;
+    snapshotCopy = v12;
   }
 }
 

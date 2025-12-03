@@ -1,19 +1,19 @@
 @interface CKSQLiteDatabaseManager
-+ (id)managerInDatabase:(id)a3 error:(id *)a4;
-- (id)activityEntryForTarget:(id)a3 error:(id *)a4;
-- (id)addActivityTriggerWithTarget:(id)a3 date:(id)a4 coalescingInterval:(double)a5 minimumSeparation:(double)a6;
++ (id)managerInDatabase:(id)database error:(id *)error;
+- (id)activityEntryForTarget:(id)target error:(id *)error;
+- (id)addActivityTriggerWithTarget:(id)target date:(id)date coalescingInterval:(double)interval minimumSeparation:(double)separation;
 - (id)earliestActivityDate;
 - (id)finishInitializing;
-- (id)nextActivityDateForTarget:(id)a3;
-- (id)target:(id)a3 group:(id)a4 willRunActivity:(id)a5;
+- (id)nextActivityDateForTarget:(id)target;
+- (id)target:(id)target group:(id)group willRunActivity:(id)activity;
 - (void)createTables;
-- (void)databaseWasRemoved:(id)a3;
+- (void)databaseWasRemoved:(id)removed;
 - (void)flush;
-- (void)runActivities:(id)a3;
-- (void)setSchedulingDataInActivity:(id)a3 date:(id)a4 coalescingInterval:(double)a5 minimumSeparation:(double)a6;
-- (void)target:(id)a3 group:(id)a4 didRunActivity:(id)a5;
+- (void)runActivities:(id)activities;
+- (void)setSchedulingDataInActivity:(id)activity date:(id)date coalescingInterval:(double)interval minimumSeparation:(double)separation;
+- (void)target:(id)target group:(id)group didRunActivity:(id)activity;
 - (void)waitForComplete;
-- (void)waitForTargetActivityComplete:(id)a3;
+- (void)waitForTargetActivityComplete:(id)complete;
 @end
 
 @implementation CKSQLiteDatabaseManager
@@ -41,7 +41,7 @@
 {
   v23.receiver = self;
   v23.super_class = CKSQLiteDatabaseManager;
-  v3 = [(CKSQLiteTableGroup *)&v23 finishInitializing];
+  finishInitializing = [(CKSQLiteTableGroup *)&v23 finishInitializing];
   v6 = objc_msgSend_db(self, v4, v5);
   v9 = objc_msgSend_databaseManagerTimer(v6, v7, v8);
   timer = self->_timer;
@@ -49,7 +49,7 @@
 
   if (self->_timer)
   {
-    if (v3)
+    if (finishInitializing)
     {
       goto LABEL_9;
     }
@@ -63,7 +63,7 @@
     self->_timer = v15;
 
     objc_msgSend_setDatabaseManagerTimer_(v6, v17, self->_timer);
-    if (v3)
+    if (finishInitializing)
     {
       goto LABEL_9;
     }
@@ -80,42 +80,42 @@
 
 LABEL_9:
 
-  return v3;
+  return finishInitializing;
 }
 
-+ (id)managerInDatabase:(id)a3 error:(id *)a4
++ (id)managerInDatabase:(id)database error:(id *)error
 {
-  v6 = a3;
+  databaseCopy = database;
   v7 = objc_opt_class();
   v8 = NSStringFromClass(v7);
   v10 = objc_msgSend_groupNameWithDomain_domainIdentifier_groupName_(CKSQLiteDatabaseManager, v9, 0, 0, v8);
 
-  v12 = objc_msgSend_tableGroupInDatabase_withName_error_(a1, v11, v6, v10, a4);
+  v12 = objc_msgSend_tableGroupInDatabase_withName_error_(self, v11, databaseCopy, v10, error);
 
   return v12;
 }
 
-- (void)databaseWasRemoved:(id)a3
+- (void)databaseWasRemoved:(id)removed
 {
-  v12 = a3;
+  removedCopy = removed;
   activities = self->_activities;
-  v7 = objc_msgSend_databaseID(v12, v5, v6);
+  v7 = objc_msgSend_databaseID(removedCopy, v5, v6);
   v9 = objc_msgSend_deleteEntriesForDatabase_(activities, v8, v7);
 
-  v11 = objc_msgSend_deleteObject_(self->_registry, v10, v12);
+  v11 = objc_msgSend_deleteObject_(self->_registry, v10, removedCopy);
 }
 
-- (id)activityEntryForTarget:(id)a3 error:(id *)a4
+- (id)activityEntryForTarget:(id)target error:(id *)error
 {
-  v7 = a3;
+  targetCopy = target;
   objc_msgSend_db(self, v8, v9);
 
-  v12 = objc_msgSend_databaseManagerData(v7, v10, v11);
+  v12 = objc_msgSend_databaseManagerData(targetCopy, v10, v11);
   if (!v12)
   {
     v12 = objc_alloc_init(CKSQLiteDatabaseActivityEntry);
     registry = self->_registry;
-    v16 = objc_msgSend_db(v7, v14, v15);
+    v16 = objc_msgSend_db(targetCopy, v14, v15);
     v34 = 0;
     v18 = objc_msgSend_databaseIDForDatabase_error_(registry, v17, v16, &v34);
     v19 = v34;
@@ -123,11 +123,11 @@ LABEL_9:
     if (v19)
     {
 
-      if (a4)
+      if (error)
       {
         v21 = v19;
         v12 = 0;
-        *a4 = v19;
+        *error = v19;
       }
 
       else
@@ -139,7 +139,7 @@ LABEL_9:
     }
 
     objc_msgSend_setDatabaseID_(v12, v20, v18);
-    objc_msgSend__setupActivityEntry_(v7, v22, v12);
+    objc_msgSend__setupActivityEntry_(targetCopy, v22, v12);
     v24 = objc_msgSend_fetchActivityForTarget_(self->_activities, v23, v12);
     if (objc_msgSend_CKIsNoMatchingRowError_(MEMORY[0x1E696ABC0], v25, v24))
     {
@@ -155,87 +155,87 @@ LABEL_9:
       }
 
       v31 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], v26, v27);
-      v32 = self;
+      selfCopy = self;
       v28 = v31;
-      objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v31, v33, a2, v32, @"CKSQLiteDatabaseManager.m", 548, @"database error: %@", v24);
+      objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v31, v33, a2, selfCopy, @"CKSQLiteDatabaseManager.m", 548, @"database error: %@", v24);
     }
 
 LABEL_10:
-    objc_msgSend_setDatabaseManagerData_(v7, v26, v12);
+    objc_msgSend_setDatabaseManagerData_(targetCopy, v26, v12);
 LABEL_11:
   }
 
   return v12;
 }
 
-- (void)setSchedulingDataInActivity:(id)a3 date:(id)a4 coalescingInterval:(double)a5 minimumSeparation:(double)a6
+- (void)setSchedulingDataInActivity:(id)activity date:(id)date coalescingInterval:(double)interval minimumSeparation:(double)separation
 {
-  v23 = a3;
-  v9 = a4;
-  objc_msgSend_setActivityEarliestDate_(v23, v10, v9);
-  v13 = objc_msgSend_numberWithDouble_(MEMORY[0x1E696AD98], v11, v12, a5);
-  objc_msgSend_setCoalescingInterval_(v23, v14, v13);
+  activityCopy = activity;
+  dateCopy = date;
+  objc_msgSend_setActivityEarliestDate_(activityCopy, v10, dateCopy);
+  v13 = objc_msgSend_numberWithDouble_(MEMORY[0x1E696AD98], v11, v12, interval);
+  objc_msgSend_setCoalescingInterval_(activityCopy, v14, v13);
 
-  v17 = objc_msgSend_dateByAddingTimeInterval_(v9, v15, v16, a5);
+  v17 = objc_msgSend_dateByAddingTimeInterval_(dateCopy, v15, v16, interval);
 
-  objc_msgSend_setActivityLatestDate_(v23, v18, v17);
-  if (a6 > 0.0)
+  objc_msgSend_setActivityLatestDate_(activityCopy, v18, v17);
+  if (separation > 0.0)
   {
-    v21 = objc_msgSend_numberWithDouble_(MEMORY[0x1E696AD98], v19, v20, a6);
-    objc_msgSend_setSeparationInterval_(v23, v22, v21);
+    v21 = objc_msgSend_numberWithDouble_(MEMORY[0x1E696AD98], v19, v20, separation);
+    objc_msgSend_setSeparationInterval_(activityCopy, v22, v21);
   }
 }
 
-- (id)addActivityTriggerWithTarget:(id)a3 date:(id)a4 coalescingInterval:(double)a5 minimumSeparation:(double)a6
+- (id)addActivityTriggerWithTarget:(id)target date:(id)date coalescingInterval:(double)interval minimumSeparation:(double)separation
 {
-  v10 = a3;
-  v11 = a4;
+  targetCopy = target;
+  dateCopy = date;
   v18[1] = 3221225472;
-  v12 = 0.001;
+  intervalCopy = 0.001;
   v18[0] = MEMORY[0x1E69E9820];
   v18[2] = sub_188678550;
   v18[3] = &unk_1E70C0C78;
-  if (a5 > 0.0)
+  if (interval > 0.0)
   {
-    v12 = a5;
+    intervalCopy = interval;
   }
 
   v18[4] = self;
-  v19 = v10;
-  v20 = v11;
-  v21 = v12;
-  v22 = a6;
-  v13 = v11;
-  v14 = v10;
+  v19 = targetCopy;
+  v20 = dateCopy;
+  v21 = intervalCopy;
+  separationCopy = separation;
+  v13 = dateCopy;
+  v14 = targetCopy;
   v16 = objc_msgSend_performInTransaction_(self, v15, v18);
 
   return v16;
 }
 
-- (id)target:(id)a3 group:(id)a4 willRunActivity:(id)a5
+- (id)target:(id)target group:(id)group willRunActivity:(id)activity
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  targetCopy = target;
+  groupCopy = group;
+  activityCopy = activity;
   v13 = objc_msgSend_db(self, v11, v12);
   v14 = _CKSQLDBSerializerLock(v13 + 8);
 
-  if (v8)
+  if (targetCopy)
   {
-    v19 = objc_msgSend_databaseManagerData(v8, v15, v16);
+    v19 = objc_msgSend_databaseManagerData(targetCopy, v15, v16);
     if (!v19)
     {
-      v20 = objc_msgSend_name(v9, v17, v18);
-      objc_msgSend_setGroupName_(v10, v21, v20);
+      v20 = objc_msgSend_name(groupCopy, v17, v18);
+      objc_msgSend_setGroupName_(activityCopy, v21, v20);
 
-      v19 = v10;
-      objc_msgSend_setDatabaseManagerData_(v8, v22, v19);
+      v19 = activityCopy;
+      objc_msgSend_setDatabaseManagerData_(targetCopy, v22, v19);
     }
   }
 
   else
   {
-    v19 = v10;
+    v19 = activityCopy;
   }
 
   v23 = objc_msgSend_date(MEMORY[0x1E695DF00], v17, v18);
@@ -256,29 +256,29 @@ LABEL_11:
   return v19;
 }
 
-- (void)target:(id)a3 group:(id)a4 didRunActivity:(id)a5
+- (void)target:(id)target group:(id)group didRunActivity:(id)activity
 {
   v69 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v12 = a5;
-  if (!v8)
+  targetCopy = target;
+  groupCopy = group;
+  activityCopy = activity;
+  if (!targetCopy)
   {
-    v53 = objc_msgSend_deleteObject_(self->_activities, v10, v12);
+    v53 = objc_msgSend_deleteObject_(self->_activities, v10, activityCopy);
     goto LABEL_18;
   }
 
   v13 = objc_msgSend_db(self, v10, v11);
   v14 = _CKSQLDBSerializerLock(v13 + 8);
 
-  v17 = objc_msgSend_separationInterval(v12, v15, v16);
+  v17 = objc_msgSend_separationInterval(activityCopy, v15, v16);
   v20 = v17;
   if (v17)
   {
     objc_msgSend_doubleValue(v17, v18, v19);
     v23 = objc_msgSend_dateWithTimeIntervalSinceNow_(MEMORY[0x1E695DF00], v21, v22);
-    objc_msgSend_setActivityNotBeforeDate_(v12, v24, v23);
-    v27 = objc_msgSend_activityEarliestDate(v12, v25, v26);
+    objc_msgSend_setActivityNotBeforeDate_(activityCopy, v24, v23);
+    v27 = objc_msgSend_activityEarliestDate(activityCopy, v25, v26);
     v29 = v27;
     if (v27 && objc_msgSend_compare_(v27, v28, v23) == -1)
     {
@@ -290,7 +290,7 @@ LABEL_11:
       v30 = ck_log_facility_sql;
       if (os_log_type_enabled(v30, OS_LOG_TYPE_DEBUG))
       {
-        v62 = objc_msgSend_targetDescription(v12, v31, v32);
+        v62 = objc_msgSend_targetDescription(activityCopy, v31, v32);
         v63 = 138543874;
         v64 = v29;
         v65 = 2114;
@@ -300,26 +300,26 @@ LABEL_11:
         _os_log_debug_impl(&dword_1883EA000, v30, OS_LOG_TYPE_DEBUG, "CKSQLiteDatabaseManager rescheduled activity: %{public}@ -> %{public}@ for %{public}@", &v63, 0x20u);
       }
 
-      v35 = objc_msgSend_coalescingInterval(v12, v33, v34);
+      v35 = objc_msgSend_coalescingInterval(activityCopy, v33, v34);
       objc_msgSend_doubleValue(v35, v36, v37);
       v39 = v38;
-      v42 = objc_msgSend_separationInterval(v12, v40, v41);
+      v42 = objc_msgSend_separationInterval(activityCopy, v40, v41);
       objc_msgSend_doubleValue(v42, v43, v44);
-      objc_msgSend_setSchedulingDataInActivity_date_coalescingInterval_minimumSeparation_(self, v45, v12, v23, v39, v46);
+      objc_msgSend_setSchedulingDataInActivity_date_coalescingInterval_minimumSeparation_(self, v45, activityCopy, v23, v39, v46);
     }
   }
 
-  objc_msgSend_setActivityStartDate_(v12, v18, 0);
-  v49 = objc_msgSend_activityEarliestDate(v12, v47, v48);
+  objc_msgSend_setActivityStartDate_(activityCopy, v18, 0);
+  v49 = objc_msgSend_activityEarliestDate(activityCopy, v47, v48);
   if (v49)
   {
 
 LABEL_15:
-    v59 = objc_msgSend_insertOrUpdateActivityDate_(self->_activities, v52, v12);
+    v59 = objc_msgSend_insertOrUpdateActivityDate_(self->_activities, v52, activityCopy);
     goto LABEL_16;
   }
 
-  v54 = objc_msgSend_activityNotBeforeDate(v12, v50, v51);
+  v54 = objc_msgSend_activityNotBeforeDate(activityCopy, v50, v51);
   objc_msgSend_timeIntervalSinceNow(v54, v55, v56);
   v58 = v57 > 0.0;
 
@@ -328,7 +328,7 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  v61 = objc_msgSend_deleteObject_(self->_activities, v52, v12);
+  v61 = objc_msgSend_deleteObject_(self->_activities, v52, activityCopy);
 LABEL_16:
 
   if (v14)
@@ -357,14 +357,14 @@ LABEL_18:
   return v8;
 }
 
-- (void)runActivities:(id)a3
+- (void)runActivities:(id)activities
 {
   v87 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  activitiesCopy = activities;
   context = objc_autoreleasePoolPush();
   v69 = os_transaction_create();
-  v71 = v4;
-  objc_msgSend_activitiesStartingBeforeDate_(self, v5, v4);
+  v71 = activitiesCopy;
+  objc_msgSend_activitiesStartingBeforeDate_(self, v5, activitiesCopy);
   v78 = 0u;
   v79 = 0u;
   v76 = 0u;
@@ -568,9 +568,9 @@ LABEL_38:
   v67 = *MEMORY[0x1E69E9840];
 }
 
-- (id)nextActivityDateForTarget:(id)a3
+- (id)nextActivityDateForTarget:(id)target
 {
-  v7 = a3;
+  targetCopy = target;
   if ((byte_1EA919CC8 & 1) == 0)
   {
     v15 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], v5, v6);
@@ -589,7 +589,7 @@ LABEL_38:
   v17[2] = sub_188679724;
   v17[3] = &unk_1E70C03F0;
   v17[4] = self;
-  v9 = v7;
+  v9 = targetCopy;
   v10 = v9;
   v19 = &v21;
   v20 = a2;
@@ -614,10 +614,10 @@ LABEL_38:
   return v13;
 }
 
-- (void)waitForTargetActivityComplete:(id)a3
+- (void)waitForTargetActivityComplete:(id)complete
 {
   v27 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  completeCopy = complete;
   if ((byte_1EA919CC8 & 1) == 0)
   {
     v23 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], v5, v6);
@@ -640,14 +640,14 @@ LABEL_38:
     _os_log_debug_impl(&dword_1883EA000, v17, OS_LOG_TYPE_DEBUG, "%@ started waiting for complete", &v25, 0xCu);
   }
 
-  v10 = objc_msgSend_nextActivityDateForTarget_(self, v9, v7);
+  v10 = objc_msgSend_nextActivityDateForTarget_(self, v9, completeCopy);
   if (v10)
   {
     v12 = v10;
     do
     {
       objc_msgSend_sleepUntilDate_(MEMORY[0x1E696AF00], v11, v12);
-      v14 = objc_msgSend_nextActivityDateForTarget_(self, v13, v7);
+      v14 = objc_msgSend_nextActivityDateForTarget_(self, v13, completeCopy);
 
       v12 = v14;
     }

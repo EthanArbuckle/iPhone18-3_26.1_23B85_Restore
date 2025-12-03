@@ -1,13 +1,13 @@
 @interface MPStoreAssetPlaybackResponse
-- (id)_copyWithPlaybackResponseClass:(Class)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)_copyWithPlaybackResponseClass:(Class)class;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 @end
 
 @implementation MPStoreAssetPlaybackResponse
 
-- (id)_copyWithPlaybackResponseClass:(Class)a3
+- (id)_copyWithPlaybackResponseClass:(Class)class
 {
-  v4 = objc_alloc_init(a3);
+  v4 = objc_alloc_init(class);
   if (v4)
   {
     v5 = [(NSDictionary *)self->_dialogDictionary copy];
@@ -30,7 +30,7 @@
   return v4;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_class();
 

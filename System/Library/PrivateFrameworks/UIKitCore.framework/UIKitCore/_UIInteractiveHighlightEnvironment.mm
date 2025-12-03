@@ -1,46 +1,46 @@
 @interface _UIInteractiveHighlightEnvironment
-+ (id)interactiveHighlightEnvironmentForContainerView:(id)a3;
-+ (id)requestInteractiveHighlightEnvironmentForView:(id)a3;
++ (id)interactiveHighlightEnvironmentForContainerView:(id)view;
++ (id)requestInteractiveHighlightEnvironmentForView:(id)view;
 - (UIView)contentView;
-- (_UIInteractiveHighlightEnvironment)initWithContainerScreen:(id)a3;
-- (_UIInteractiveHighlightEnvironment)initWithContainerView:(id)a3;
-- (_UIInteractiveHighlightEnvironment)initWithParentEnvironment:(id)a3;
-- (id)backgroundVisualEffectForProgress:(double)a3;
-- (id)interactiveHighlightEffectForView:(id)a3 options:(unint64_t)a4;
+- (_UIInteractiveHighlightEnvironment)initWithContainerScreen:(id)screen;
+- (_UIInteractiveHighlightEnvironment)initWithContainerView:(id)view;
+- (_UIInteractiveHighlightEnvironment)initWithParentEnvironment:(id)environment;
+- (id)backgroundVisualEffectForProgress:(double)progress;
+- (id)interactiveHighlightEffectForView:(id)view options:(unint64_t)options;
 - (id)newBackgroundEffectAnimator;
-- (id)newViewRecordForView:(id)a3 options:(unint64_t)a4;
-- (int64_t)indexOfViewRecordForView:(id)a3;
-- (void)applyBackgroundEffectWithMagnitude:(double)a3 interactive:(BOOL)a4 completion:(id)a5;
-- (void)applyContentInsets:(UIEdgeInsets)a3;
+- (id)newViewRecordForView:(id)view options:(unint64_t)options;
+- (int64_t)indexOfViewRecordForView:(id)view;
+- (void)applyBackgroundEffectWithMagnitude:(double)magnitude interactive:(BOOL)interactive completion:(id)completion;
+- (void)applyContentInsets:(UIEdgeInsets)insets;
 - (void)dealloc;
-- (void)disableClippingForView:(id)a3 ancestorView:(id)a4;
+- (void)disableClippingForView:(id)view ancestorView:(id)ancestorView;
 - (void)finalizeBackgroundEffect;
 - (void)finalizeContainerWindowIfNeeded;
 - (void)finalizeContentViewIfNeeded;
-- (void)finalizeViewRecord:(id)a3;
+- (void)finalizeViewRecord:(id)record;
 - (void)initBackgroundEffectViewIfNeeded;
 - (void)initContainerWindowIfNeeded;
 - (void)initContentViewIfNeeded;
 - (void)removeAllViewRecords;
-- (void)removeInteractiveHighlightEffect:(id)a3;
+- (void)removeInteractiveHighlightEffect:(id)effect;
 - (void)removeViewRecordsIfNeeded;
 - (void)reset;
-- (void)setHidden:(BOOL)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)setUserInteractionOnContainerEnabled:(BOOL)a3;
+- (void)setHidden:(BOOL)hidden animated:(BOOL)animated completion:(id)completion;
+- (void)setUserInteractionOnContainerEnabled:(BOOL)enabled;
 @end
 
 @implementation _UIInteractiveHighlightEnvironment
 
-- (_UIInteractiveHighlightEnvironment)initWithContainerView:(id)a3
+- (_UIInteractiveHighlightEnvironment)initWithContainerView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   v10.receiver = self;
   v10.super_class = _UIInteractiveHighlightEnvironment;
   v6 = [(_UIInteractiveHighlightEnvironment *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_containerView, a3);
+    objc_storeStrong(&v6->_containerView, view);
     objc_setAssociatedObject(v7->_containerView, &_UIInteractiveHighlightingEnvironmentProperty, v7, 0);
     [(_UIInteractiveHighlightEnvironment *)v7 setUserInteractionOnContainerEnabled:0];
     v8 = v7;
@@ -49,16 +49,16 @@
   return v7;
 }
 
-- (_UIInteractiveHighlightEnvironment)initWithContainerScreen:(id)a3
+- (_UIInteractiveHighlightEnvironment)initWithContainerScreen:(id)screen
 {
-  v4 = a3;
+  screenCopy = screen;
   v9.receiver = self;
   v9.super_class = _UIInteractiveHighlightEnvironment;
   v5 = [(_UIInteractiveHighlightEnvironment *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_containerScreen, v4);
+    objc_storeWeak(&v5->_containerScreen, screenCopy);
     [(_UIInteractiveHighlightEnvironment *)v6 initContainerWindowIfNeeded];
     [(_UIInteractiveHighlightEnvironment *)v6 setUserInteractionOnContainerEnabled:0];
     v7 = v6;
@@ -67,28 +67,28 @@
   return v6;
 }
 
-- (_UIInteractiveHighlightEnvironment)initWithParentEnvironment:(id)a3
+- (_UIInteractiveHighlightEnvironment)initWithParentEnvironment:(id)environment
 {
-  v5 = a3;
-  if (!v5)
+  environmentCopy = environment;
+  if (!environmentCopy)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"_UIInteractiveHighlightEnvironment.m" lineNumber:136 description:{@"Invalid parameter not satisfying: %@", @"parentEnvironment"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIInteractiveHighlightEnvironment.m" lineNumber:136 description:{@"Invalid parameter not satisfying: %@", @"parentEnvironment"}];
   }
 
-  WeakRetained = objc_loadWeakRetained(v5 + 12);
+  WeakRetained = objc_loadWeakRetained(environmentCopy + 12);
 
   if (WeakRetained)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"_UIInteractiveHighlightEnvironment.m" lineNumber:137 description:@"Cannot override a child environment."];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"_UIInteractiveHighlightEnvironment.m" lineNumber:137 description:@"Cannot override a child environment."];
   }
 
-  v7 = [v5 contentView];
-  v8 = [(_UIInteractiveHighlightEnvironment *)self initWithContainerView:v7];
+  contentView = [environmentCopy contentView];
+  v8 = [(_UIInteractiveHighlightEnvironment *)self initWithContainerView:contentView];
   if (v8)
   {
-    objc_storeWeak(v5 + 12, v8);
+    objc_storeWeak(environmentCopy + 12, v8);
     v9 = v8;
   }
 
@@ -112,15 +112,15 @@
   return contentView;
 }
 
-- (id)interactiveHighlightEffectForView:(id)a3 options:(unint64_t)a4
+- (id)interactiveHighlightEffectForView:(id)view options:(unint64_t)options
 {
-  v7 = a3;
-  v8 = [v7 window];
+  viewCopy = view;
+  window = [viewCopy window];
 
-  if (!v8)
+  if (!window)
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"_UIInteractiveHighlightEnvironment.m" lineNumber:165 description:{@"Invalid parameter not satisfying: %@", @"view.window"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIInteractiveHighlightEnvironment.m" lineNumber:165 description:{@"Invalid parameter not satisfying: %@", @"view.window"}];
   }
 
   if (!self->_viewRecords)
@@ -129,10 +129,10 @@
   }
 
   v9 = objc_alloc_init(_UIInteractiveHighlightEffect);
-  v10 = [(_UIInteractiveHighlightEnvironment *)self indexOfViewRecordForView:v7];
+  v10 = [(_UIInteractiveHighlightEnvironment *)self indexOfViewRecordForView:viewCopy];
   if (v10 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v11 = [(_UIInteractiveHighlightEnvironment *)self newViewRecordForView:v7 options:a4];
+    v11 = [(_UIInteractiveHighlightEnvironment *)self newViewRecordForView:viewCopy options:options];
     v12 = [(NSArray *)self->_viewRecords arrayByAddingObject:v11];
     viewRecords = self->_viewRecords;
     self->_viewRecords = v12;
@@ -143,35 +143,35 @@
     v11 = [(NSArray *)self->_viewRecords objectAtIndexedSubscript:v10];
   }
 
-  [(_UIInteractiveHighlightEffect *)v9 setView:v7];
-  v14 = [v11 effectView];
-  [(_UIInteractiveHighlightEffect *)v9 setEffectView:v14];
+  [(_UIInteractiveHighlightEffect *)v9 setView:viewCopy];
+  effectView = [v11 effectView];
+  [(_UIInteractiveHighlightEffect *)v9 setEffectView:effectView];
 
-  v15 = [v11 portalView];
-  [(_UIInteractiveHighlightEffect *)v9 setPortalView:v15];
+  portalView = [v11 portalView];
+  [(_UIInteractiveHighlightEffect *)v9 setPortalView:portalView];
 
-  v16 = [v11 superview];
-  [(_UIInteractiveHighlightEffect *)v9 setSuperview:v16];
+  superview = [v11 superview];
+  [(_UIInteractiveHighlightEffect *)v9 setSuperview:superview];
 
   [(_UIInteractiveHighlightEffect *)v9 setEnvironment:self];
-  v17 = [v11 interactiveHighlightEffects];
-  [v17 addObject:v9];
+  interactiveHighlightEffects = [v11 interactiveHighlightEffects];
+  [interactiveHighlightEffects addObject:v9];
 
   return v9;
 }
 
-- (void)applyBackgroundEffectWithMagnitude:(double)a3 interactive:(BOOL)a4 completion:(id)a5
+- (void)applyBackgroundEffectWithMagnitude:(double)magnitude interactive:(BOOL)interactive completion:(id)completion
 {
-  v5 = a4;
+  interactiveCopy = interactive;
   v35[1] = *MEMORY[0x1E69E9840];
-  v8 = a5;
+  completionCopy = completion;
   [(_UIInteractiveHighlightEnvironment *)self initContainerWindowIfNeeded];
   [(_UIInteractiveHighlightEnvironment *)self initBackgroundEffectViewIfNeeded];
   v9 = self->_customBackgroundEffectView;
-  v10 = [(UIView *)v9 superview];
+  superview = [(UIView *)v9 superview];
   containerView = self->_containerView;
 
-  if (v10 != containerView)
+  if (superview != containerView)
   {
     [(UIView *)self->_containerView bounds];
     [(UIView *)v9 setFrame:?];
@@ -190,9 +190,9 @@
 
   if (!(self->_backgroundEffectAnimator | v9))
   {
-    v13 = [(_UIInteractiveHighlightEnvironment *)self newBackgroundEffectAnimator];
+    newBackgroundEffectAnimator = [(_UIInteractiveHighlightEnvironment *)self newBackgroundEffectAnimator];
     backgroundEffectAnimator = self->_backgroundEffectAnimator;
-    self->_backgroundEffectAnimator = v13;
+    self->_backgroundEffectAnimator = newBackgroundEffectAnimator;
   }
 
   backgroundEffectProgress = self->_backgroundEffectProgress;
@@ -216,7 +216,7 @@
   v32[4] = self;
   [UIView _createTransformerWithInputAnimatableProperties:v18 presentationValueChangedCallback:v32];
 
-  if (v5)
+  if (interactiveCopy)
   {
     v19 = 600.0;
   }
@@ -226,18 +226,18 @@
     v19 = 500.0;
   }
 
-  if (v5)
+  if (interactiveCopy)
   {
-    v20 = a3 * 60.0 + (1.0 - a3) * 50.0;
+    v20 = magnitude * 60.0 + (1.0 - magnitude) * 50.0;
   }
 
   else
   {
-    v20 = a3 * 60.0 + (1.0 - a3) * 50.0 + 10.0;
+    v20 = magnitude * 60.0 + (1.0 - magnitude) * 50.0 + 10.0;
   }
 
-  v21 = [MEMORY[0x1E696AFB0] UUID];
-  v22 = [v21 copy];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  v22 = [uUID copy];
   backgroundAnimationIdentifier = self->_backgroundAnimationIdentifier;
   self->_backgroundAnimationIdentifier = v22;
 
@@ -246,30 +246,30 @@
   v30[2] = __96___UIInteractiveHighlightEnvironment_applyBackgroundEffectWithMagnitude_interactive_completion___block_invoke_2;
   v30[3] = &unk_1E70F8DC8;
   objc_copyWeak(v31, &location);
-  v31[1] = *&a3;
+  v31[1] = *&magnitude;
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __96___UIInteractiveHighlightEnvironment_applyBackgroundEffectWithMagnitude_interactive_completion___block_invoke_3;
   v26[3] = &unk_1E711AE80;
-  v29 = v5;
+  v29 = interactiveCopy;
   v26[4] = self;
-  v24 = v21;
+  v24 = uUID;
   v27 = v24;
-  v25 = v8;
+  v25 = completionCopy;
   v28 = v25;
   [UIView _animateUsingSpringWithTension:0 friction:v30 interactive:v26 animations:v19 completion:v20];
   [(UIWindow *)self->_containerWindow setHidden:0];
-  [(_UIInteractiveHighlightEnvironment *)self setUserInteractionOnContainerEnabled:v5];
+  [(_UIInteractiveHighlightEnvironment *)self setUserInteractionOnContainerEnabled:interactiveCopy];
 
   objc_destroyWeak(v31);
   objc_destroyWeak(&v33);
   objc_destroyWeak(&location);
 }
 
-- (void)removeInteractiveHighlightEffect:(id)a3
+- (void)removeInteractiveHighlightEffect:(id)effect
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  effectCopy = effect;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -290,8 +290,8 @@
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v11 + 1) + 8 * v9) interactiveHighlightEffects];
-        [v10 removeObject:v4];
+        interactiveHighlightEffects = [*(*(&v11 + 1) + 8 * v9) interactiveHighlightEffects];
+        [interactiveHighlightEffects removeObject:effectCopy];
 
         ++v9;
       }
@@ -306,15 +306,15 @@
   [(_UIInteractiveHighlightEnvironment *)self removeViewRecordsIfNeeded];
 }
 
-- (void)setUserInteractionOnContainerEnabled:(BOOL)a3
+- (void)setUserInteractionOnContainerEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   containerWindow = self->_containerWindow;
   if (containerWindow)
   {
-    [(UIView *)containerWindow setUserInteractionEnabled:a3];
-    v7 = [(UIView *)self->_containerWindow layer];
-    [v7 setAllowsHitTesting:v3];
+    [(UIView *)containerWindow setUserInteractionEnabled:enabled];
+    layer = [(UIView *)self->_containerWindow layer];
+    [layer setAllowsHitTesting:enabledCopy];
   }
 
   else
@@ -325,27 +325,27 @@
   }
 }
 
-- (void)disableClippingForView:(id)a3 ancestorView:(id)a4
+- (void)disableClippingForView:(id)view ancestorView:(id)ancestorView
 {
-  v8 = a3;
-  v6 = a4;
-  [v8 setClipsToBounds:0];
-  if (v8 != v6)
+  viewCopy = view;
+  ancestorViewCopy = ancestorView;
+  [viewCopy setClipsToBounds:0];
+  if (viewCopy != ancestorViewCopy)
   {
-    v7 = [v8 superview];
-    [(_UIInteractiveHighlightEnvironment *)self disableClippingForView:v7 ancestorView:v6];
+    superview = [viewCopy superview];
+    [(_UIInteractiveHighlightEnvironment *)self disableClippingForView:superview ancestorView:ancestorViewCopy];
   }
 }
 
-- (void)setHidden:(BOOL)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)setHidden:(BOOL)hidden animated:(BOOL)animated completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
-  v8 = a5;
+  animatedCopy = animated;
+  hiddenCopy = hidden;
+  completionCopy = completion;
   containerWindow = self->_containerWindow;
-  if (v5)
+  if (animatedCopy)
   {
-    if ([(UIView *)containerWindow isHidden]&& !v6)
+    if ([(UIView *)containerWindow isHidden]&& !hiddenCopy)
     {
       [(UIView *)self->_containerWindow setAlpha:0.0];
       [(UIWindow *)self->_containerWindow setHidden:0];
@@ -356,24 +356,24 @@
     v13[2] = __68___UIInteractiveHighlightEnvironment_setHidden_animated_completion___block_invoke;
     v13[3] = &unk_1E70F35E0;
     v13[4] = self;
-    v14 = v6;
+    v14 = hiddenCopy;
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __68___UIInteractiveHighlightEnvironment_setHidden_animated_completion___block_invoke_2;
     v10[3] = &unk_1E711AEA8;
     v10[4] = self;
-    v12 = v6;
-    v11 = v8;
+    v12 = hiddenCopy;
+    v11 = completionCopy;
     [UIView animateWithDuration:0 delay:v13 options:v10 animations:0.3 completion:0.0];
   }
 
   else
   {
-    [(UIWindow *)containerWindow setHidden:v6];
+    [(UIWindow *)containerWindow setHidden:hiddenCopy];
     [(UIView *)self->_containerWindow setAlpha:1.0];
-    if (v8)
+    if (completionCopy)
     {
-      (*(v8 + 2))(v8, 1, 0);
+      (*(completionCopy + 2))(completionCopy, 1, 0);
     }
   }
 }
@@ -387,14 +387,14 @@
   [(_UIInteractiveHighlightEnvironment *)self setHidden:0];
 }
 
-- (void)applyContentInsets:(UIEdgeInsets)a3
+- (void)applyContentInsets:(UIEdgeInsets)insets
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
-  v8 = [(UIView *)self->_contentClipView superview];
-  [v8 bounds];
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  superview = [(UIView *)self->_contentClipView superview];
+  [superview bounds];
   v10 = v9;
   v12 = v11;
   v14 = v13;
@@ -405,13 +405,13 @@
   [(UIView *)contentClipView setFrame:left + v10, top + v12, v14 - (left + right), v16 - (top + bottom)];
 }
 
-- (id)newViewRecordForView:(id)a3 options:(unint64_t)a4
+- (id)newViewRecordForView:(id)view options:(unint64_t)options
 {
-  v4 = a4;
-  v6 = a3;
+  optionsCopy = options;
+  viewCopy = view;
   [(_UIInteractiveHighlightEnvironment *)self initContainerWindowIfNeeded];
   [(_UIInteractiveHighlightEnvironment *)self initContentViewIfNeeded];
-  if (v4)
+  if (optionsCopy)
   {
     v7 = 0;
   }
@@ -424,57 +424,57 @@
     [(_UIPortalView *)v7 setMatchesTransform:0];
     [(_UIPortalView *)v7 setMatchesAlpha:1];
     [(_UIPortalView *)v7 setAllowsBackdropGroups:1];
-    [(_UIPortalView *)v7 setSourceView:v6];
+    [(_UIPortalView *)v7 setSourceView:viewCopy];
   }
 
   v8 = self->_contentClipView;
-  if ((v4 & 2) != 0)
+  if ((optionsCopy & 2) != 0)
   {
     v9 = self->_contentOverlayView;
 
     v8 = v9;
   }
 
-  v10 = [v6 superview];
+  superview = [viewCopy superview];
   v11 = [[UIVisualEffectView alloc] initWithEffect:0];
-  [v6 bounds];
-  [v6 convertRect:v8 toView:?];
+  [viewCopy bounds];
+  [viewCopy convertRect:v8 toView:?];
   [(UIView *)v11 setFrame:?];
   if (v7)
   {
-    v12 = [(UIVisualEffectView *)v11 contentView];
-    [v12 addSubview:v7];
+    contentView = [(UIVisualEffectView *)v11 contentView];
+    [contentView addSubview:v7];
 
-    v13 = [(UIVisualEffectView *)v11 contentView];
-    [v13 bounds];
+    contentView2 = [(UIVisualEffectView *)v11 contentView];
+    [contentView2 bounds];
     [(_UIPortalView *)v7 setFrame:?];
 
     [(UIView *)v7 setAutoresizingMask:18];
   }
 
-  else if (v4)
+  else if (optionsCopy)
   {
-    [v6 frame];
+    [viewCopy frame];
     v15 = v14;
     v17 = v16;
     v19 = v18;
     v21 = v20;
-    v22 = [(UIVisualEffectView *)v11 contentView];
-    [v22 addSubview:v6];
+    contentView3 = [(UIVisualEffectView *)v11 contentView];
+    [contentView3 addSubview:viewCopy];
 
-    v23 = [(UIVisualEffectView *)v11 contentView];
-    [v23 convertRect:v10 fromCoordinateSpace:{v15, v17, v19, v21}];
-    [v6 setFrame:?];
+    contentView4 = [(UIVisualEffectView *)v11 contentView];
+    [contentView4 convertRect:superview fromCoordinateSpace:{v15, v17, v19, v21}];
+    [viewCopy setFrame:?];
   }
 
   [(UIView *)v8 addSubview:v11];
   v24 = objc_alloc_init(_UIInteractiveHighlightViewRecord);
-  [(_UIInteractiveHighlightViewRecord *)v24 setView:v6];
+  [(_UIInteractiveHighlightViewRecord *)v24 setView:viewCopy];
   [(_UIInteractiveHighlightViewRecord *)v24 setEffectView:v11];
   [(_UIInteractiveHighlightViewRecord *)v24 setPortalView:v7];
-  if (v4)
+  if (optionsCopy)
   {
-    [(_UIInteractiveHighlightViewRecord *)v24 setSuperview:v10];
+    [(_UIInteractiveHighlightViewRecord *)v24 setSuperview:superview];
   }
 
   else
@@ -483,22 +483,22 @@
     [(_UIInteractiveHighlightEnvironment *)self disableClippingForView:v7 ancestorView:v11];
   }
 
-  v25 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
-  [(_UIInteractiveHighlightViewRecord *)v24 setInteractiveHighlightEffects:v25];
+  weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+  [(_UIInteractiveHighlightViewRecord *)v24 setInteractiveHighlightEffects:weakObjectsHashTable];
 
   return v24;
 }
 
-- (int64_t)indexOfViewRecordForView:(id)a3
+- (int64_t)indexOfViewRecordForView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   viewRecords = self->_viewRecords;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __63___UIInteractiveHighlightEnvironment_indexOfViewRecordForView___block_invoke;
   v9[3] = &unk_1E711AED0;
-  v10 = v4;
-  v6 = v4;
+  v10 = viewCopy;
+  v6 = viewCopy;
   v7 = [(NSArray *)viewRecords indexOfObjectPassingTest:v9];
 
   return v7;
@@ -532,55 +532,55 @@
   v6[3] = &unk_1E711AF18;
   v6[4] = self;
   [(NSArray *)viewRecords enumerateObjectsUsingBlock:v6];
-  v4 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v5 = self->_viewRecords;
-  self->_viewRecords = v4;
+  self->_viewRecords = array;
 
   [(_UIInteractiveHighlightEnvironment *)self finalizeContentViewIfNeeded];
   [(_UIInteractiveHighlightEnvironment *)self finalizeContainerWindowIfNeeded];
 }
 
-- (void)finalizeViewRecord:(id)a3
+- (void)finalizeViewRecord:(id)record
 {
-  v28 = a3;
-  v5 = [v28 superview];
-  if (v5)
+  recordCopy = record;
+  superview = [recordCopy superview];
+  if (superview)
   {
-    v6 = [v28 view];
-    if (!v6)
+    view = [recordCopy view];
+    if (!view)
     {
-      v27 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v27 handleFailureInMethod:a2 object:self file:@"_UIInteractiveHighlightEnvironment.m" lineNumber:437 description:@"Cannot transfer ownership of an already deallocated view."];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"_UIInteractiveHighlightEnvironment.m" lineNumber:437 description:@"Cannot transfer ownership of an already deallocated view."];
     }
 
-    [v6 frame];
+    [view frame];
     v8 = v7;
     v10 = v9;
     v12 = v11;
     v14 = v13;
-    v15 = [v6 superview];
-    [v5 convertRect:v15 fromCoordinateSpace:{v8, v10, v12, v14}];
+    superview2 = [view superview];
+    [superview convertRect:superview2 fromCoordinateSpace:{v8, v10, v12, v14}];
     v17 = v16;
     v19 = v18;
     v21 = v20;
     v23 = v22;
 
-    [v5 addSubview:v6];
-    [v6 setFrame:{v17, v19, v21, v23}];
+    [superview addSubview:view];
+    [view setFrame:{v17, v19, v21, v23}];
   }
 
   else
   {
-    v24 = [v28 portalView];
-    [v24 setHidesSourceView:0];
+    portalView = [recordCopy portalView];
+    [portalView setHidesSourceView:0];
 
-    v6 = [v28 portalView];
-    v25 = [v6 sourceView];
-    [v25 setNeedsLayout];
+    view = [recordCopy portalView];
+    sourceView = [view sourceView];
+    [sourceView setNeedsLayout];
   }
 
-  v26 = [v28 effectView];
-  [v26 removeFromSuperview];
+  effectView = [recordCopy effectView];
+  [effectView removeFromSuperview];
 }
 
 - (void)initContainerWindowIfNeeded
@@ -601,10 +601,10 @@
 
       [(UIView *)v4 setOpaque:0];
       [(UIWindow *)v4 setWindowLevel:10000001.0];
-      v7 = [(UIWindow *)v4 rootViewController];
-      v8 = [v7 view];
+      rootViewController = [(UIWindow *)v4 rootViewController];
+      view = [rootViewController view];
       containerView = self->_containerView;
-      self->_containerView = v8;
+      self->_containerView = view;
 
       objc_setAssociatedObject(self->_containerView, &_UIInteractiveHighlightingEnvironmentProperty, self, 0);
       containerWindow = self->_containerWindow;
@@ -674,8 +674,8 @@
 {
   if (!self->_backgroundEffectView)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"_UIInteractiveHighlightEnvironment.m" lineNumber:534 description:{@"Cannot create background animator, effect view is missing."}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIInteractiveHighlightEnvironment.m" lineNumber:534 description:{@"Cannot create background animator, effect view is missing."}];
   }
 
   v3 = [UIViewPropertyAnimator alloc];
@@ -691,10 +691,10 @@
   return v5;
 }
 
-- (id)backgroundVisualEffectForProgress:(double)a3
+- (id)backgroundVisualEffectForProgress:(double)progress
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  if (a3 <= 0.0)
+  if (progress <= 0.0)
   {
     v6 = 0;
   }
@@ -704,20 +704,20 @@
     if (_AXSEnhanceBackgroundContrastEnabled())
     {
       v4 = +[UIColor blackColor];
-      v5 = [UIVisualEffect effectCompositingColor:v4 withMode:1 alpha:a3 * 0.3 + (1.0 - a3) * 0.0];
+      v5 = [UIVisualEffect effectCompositingColor:v4 withMode:1 alpha:progress * 0.3 + (1.0 - progress) * 0.0];
       v12[0] = v5;
       v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1];
     }
 
     else
     {
-      v7 = (1.0 - a3) * 0.0;
-      v4 = [_UIZoomEffect _underlayZoomEffectWithMagnitude:a3 * 0.015 + v7];
+      v7 = (1.0 - progress) * 0.0;
+      v4 = [_UIZoomEffect _underlayZoomEffectWithMagnitude:progress * 0.015 + v7];
       v11[0] = v4;
       v5 = +[UIColor blackColor];
-      v8 = [UIVisualEffect effectCompositingColor:v5 withMode:1 alpha:a3 * 0.055 + v7];
+      v8 = [UIVisualEffect effectCompositingColor:v5 withMode:1 alpha:progress * 0.055 + v7];
       v11[1] = v8;
-      v9 = [UIBlurEffect effectWithBlurRadius:a3 * 7.0 + v7];
+      v9 = [UIBlurEffect effectWithBlurRadius:progress * 7.0 + v7];
       v11[2] = v9;
       v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:3];
     }
@@ -802,29 +802,29 @@
   }
 }
 
-+ (id)requestInteractiveHighlightEnvironmentForView:(id)a3
++ (id)requestInteractiveHighlightEnvironmentForView:(id)view
 {
-  v3 = a3;
-  v4 = _UIInteractiveHighlightingEnvironmentFromView(v3);
+  viewCopy = view;
+  v4 = _UIInteractiveHighlightingEnvironmentFromView(viewCopy);
   if (v4)
   {
-    v5 = v4;
+    window = v4;
     WeakRetained = objc_loadWeakRetained((v4 + 96));
     if (WeakRetained)
     {
       goto LABEL_12;
     }
 
-    v7 = [[_UIInteractiveHighlightEnvironment alloc] initWithParentEnvironment:v5];
+    _interactiveHighlightEnvironment = [[_UIInteractiveHighlightEnvironment alloc] initWithParentEnvironment:window];
   }
 
   else
   {
-    v5 = [v3 window];
-    if ([v5 _isHostedInAnotherProcess])
+    window = [viewCopy window];
+    if ([window _isHostedInAnotherProcess])
     {
-      v8 = v5;
-      v9 = _UIInteractiveHighlightingEnvironmentFromView(v8);
+      screen = window;
+      v9 = _UIInteractiveHighlightingEnvironmentFromView(screen);
       if (v9)
       {
         v10 = v9;
@@ -832,40 +832,40 @@
 
       else
       {
-        v10 = [[_UIInteractiveHighlightEnvironment alloc] initWithContainerView:v8];
+        v10 = [[_UIInteractiveHighlightEnvironment alloc] initWithContainerView:screen];
       }
 
-      v7 = v10;
+      _interactiveHighlightEnvironment = v10;
     }
 
     else
     {
-      v8 = [v5 screen];
-      v7 = [v8 _interactiveHighlightEnvironment];
+      screen = [window screen];
+      _interactiveHighlightEnvironment = [screen _interactiveHighlightEnvironment];
     }
   }
 
-  WeakRetained = v7;
-  v5 = WeakRetained;
+  WeakRetained = _interactiveHighlightEnvironment;
+  window = WeakRetained;
 LABEL_12:
   v11 = WeakRetained;
 
   return v11;
 }
 
-+ (id)interactiveHighlightEnvironmentForContainerView:(id)a3
++ (id)interactiveHighlightEnvironmentForContainerView:(id)view
 {
-  v5 = a3;
-  if (!v5)
+  viewCopy = view;
+  if (!viewCopy)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:a1 file:@"_UIInteractiveHighlightEnvironment.m" lineNumber:639 description:{@"Invalid parameter not satisfying: %@", @"containerView"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIInteractiveHighlightEnvironment.m" lineNumber:639 description:{@"Invalid parameter not satisfying: %@", @"containerView"}];
   }
 
-  v6 = objc_getAssociatedObject(v5, &_UIInteractiveHighlightingEnvironmentProperty);
+  v6 = objc_getAssociatedObject(viewCopy, &_UIInteractiveHighlightingEnvironmentProperty);
   if (!v6)
   {
-    v6 = [[a1 alloc] initWithContainerView:v5];
+    v6 = [[self alloc] initWithContainerView:viewCopy];
   }
 
   return v6;

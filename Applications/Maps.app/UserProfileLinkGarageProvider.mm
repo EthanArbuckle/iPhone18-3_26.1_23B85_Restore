@@ -6,21 +6,21 @@
 - (id)retrieveSubtitleText;
 - (void)_loadGarage;
 - (void)_loadUnpairedVehicles;
-- (void)_updateLinkAndNotifyObservers:(BOOL)a3;
-- (void)virtualGarage:(id)a3 didUpdateUnpairedVehicles:(id)a4;
-- (void)virtualGarageDidUpdate:(id)a3;
+- (void)_updateLinkAndNotifyObservers:(BOOL)observers;
+- (void)virtualGarage:(id)garage didUpdateUnpairedVehicles:(id)vehicles;
+- (void)virtualGarageDidUpdate:(id)update;
 @end
 
 @implementation UserProfileLinkGarageProvider
 
-- (void)virtualGarage:(id)a3 didUpdateUnpairedVehicles:(id)a4
+- (void)virtualGarage:(id)garage didUpdateUnpairedVehicles:(id)vehicles
 {
-  v5 = a4;
-  v6 = [(UserProfileLinkGarageProvider *)self hasUnpairedVehicles];
-  v7 = [v5 count];
+  vehiclesCopy = vehicles;
+  hasUnpairedVehicles = [(UserProfileLinkGarageProvider *)self hasUnpairedVehicles];
+  v7 = [vehiclesCopy count];
 
   [(UserProfileLinkGarageProvider *)self setHasUnpairedVehicles:v7 != 0];
-  if (v6 != [(UserProfileLinkGarageProvider *)self hasUnpairedVehicles])
+  if (hasUnpairedVehicles != [(UserProfileLinkGarageProvider *)self hasUnpairedVehicles])
   {
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
@@ -31,10 +31,10 @@
   }
 }
 
-- (void)virtualGarageDidUpdate:(id)a3
+- (void)virtualGarageDidUpdate:(id)update
 {
-  v4 = a3;
-  if (([(VGVirtualGarage *)self->_virtualGarage isEqual:v4]& 1) == 0)
+  updateCopy = update;
+  if (([(VGVirtualGarage *)self->_virtualGarage isEqual:updateCopy]& 1) == 0)
   {
     objc_initWeak(&location, self);
     block[0] = _NSConcreteStackBlock;
@@ -42,7 +42,7 @@
     block[2] = sub_100623180;
     block[3] = &unk_101661340;
     objc_copyWeak(&v7, &location);
-    v6 = v4;
+    v6 = updateCopy;
     dispatch_async(&_dispatch_main_q, block);
 
     objc_destroyWeak(&v7);
@@ -50,17 +50,17 @@
   }
 }
 
-- (void)_updateLinkAndNotifyObservers:(BOOL)a3
+- (void)_updateLinkAndNotifyObservers:(BOOL)observers
 {
-  v3 = a3;
-  v7 = [(UserProfileLinkGarageProvider *)self retrieveSubtitleText];
-  v5 = [(UserProfileLink *)self->_newLink subtitle];
-  v6 = [v5 isEqualToString:v7];
+  observersCopy = observers;
+  retrieveSubtitleText = [(UserProfileLinkGarageProvider *)self retrieveSubtitleText];
+  subtitle = [(UserProfileLink *)self->_newLink subtitle];
+  v6 = [subtitle isEqualToString:retrieveSubtitleText];
 
   if ((v6 & 1) == 0)
   {
-    [(UserProfileLink *)self->_newLink setSubtitle:v7];
-    if (v3)
+    [(UserProfileLink *)self->_newLink setSubtitle:retrieveSubtitleText];
+    if (observersCopy)
     {
       [(GEOObserverHashTable *)self->_observers dataDidUpdateForUserProfileLinkType:[(UserProfileLinkGarageProvider *)self userProfileLinkType]];
     }
@@ -116,8 +116,8 @@
 {
   if ((MapsFeature_IsEnabled_EVRouting() & 1) != 0 || MapsFeature_IsEnabled_Alberta())
   {
-    v3 = [(VGVirtualGarage *)self->_virtualGarage vehicles];
-    v4 = [v3 count] != 0;
+    vehicles = [(VGVirtualGarage *)self->_virtualGarage vehicles];
+    v4 = [vehicles count] != 0;
   }
 
   else
@@ -126,20 +126,20 @@
   }
 
   IsEnabled_Alberta = MapsFeature_IsEnabled_Alberta();
-  v6 = [(VGVirtualGarage *)self->_virtualGarage selectedVehicle];
-  v7 = v6;
+  selectedVehicle = [(VGVirtualGarage *)self->_virtualGarage selectedVehicle];
+  v7 = selectedVehicle;
   if (!IsEnabled_Alberta || v4)
   {
-    v9 = [v6 displayName];
+    displayName = [selectedVehicle displayName];
   }
 
   else
   {
     v8 = +[NSBundle mainBundle];
-    v9 = [v8 localizedStringForKey:@"[User Profile Vehicles] Add" value:@"localized string not found" table:0];
+    displayName = [v8 localizedStringForKey:@"[User Profile Vehicles] Add" value:@"localized string not found" table:0];
   }
 
-  return v9;
+  return displayName;
 }
 
 - (id)createUserProfileLink
@@ -160,8 +160,8 @@
   self->_newLink = v11;
 
   [(UserProfileLink *)self->_newLink setUserProfileLinkType:[(UserProfileLinkGarageProvider *)self userProfileLinkType]];
-  v13 = [(UserProfileLinkGarageProvider *)self retrieveSubtitleText];
-  [(UserProfileLink *)self->_newLink setSubtitle:v13];
+  retrieveSubtitleText = [(UserProfileLinkGarageProvider *)self retrieveSubtitleText];
+  [(UserProfileLink *)self->_newLink setSubtitle:retrieveSubtitleText];
 
   v14 = self->_newLink;
   v15 = v14;

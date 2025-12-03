@@ -7,7 +7,7 @@
 + (id)mf_mailComposeRemoteServiceInterface
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v1 = [a1 interfaceWithProtocol:&unk_1F3DA7730];
+  v1 = [self interfaceWithProtocol:&unk_1F3DA7730];
   v2 = MEMORY[0x1E695DFD8];
   v3 = objc_opt_class();
   v4 = objc_opt_class();

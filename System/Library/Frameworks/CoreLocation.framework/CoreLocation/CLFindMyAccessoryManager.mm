@@ -1,79 +1,79 @@
 @interface CLFindMyAccessoryManager
-+ (id)checkAvailabilityForPairedOwnerInformationControlPointMessages:(id)a3 messageName:()basic_string<char;
-+ (id)errorFromFragmentationStatus:(unint64_t)a3;
-- (CLFindMyAccessoryManager)initWithDelegate:(id)a3 delegateQueue:(id)a4;
-- (void)configureNBRangingOnDevice:(id)a3 withParams:(id)a4;
-- (void)connectDevice:(id)a3;
++ (id)checkAvailabilityForPairedOwnerInformationControlPointMessages:(id)messages messageName:()basic_string<char;
++ (id)errorFromFragmentationStatus:(unint64_t)status;
+- (CLFindMyAccessoryManager)initWithDelegate:(id)delegate delegateQueue:(id)queue;
+- (void)configureNBRangingOnDevice:(id)device withParams:(id)params;
+- (void)connectDevice:(id)device;
 - (void)dealloc;
-- (void)deinitRangingOnDevice:(id)a3;
-- (void)disconnectDevice:(id)a3;
-- (void)dumpLogDataOfType:(unint64_t)a3 fromDevice:(id)a4;
-- (void)fetchAISAccessoryCapabilities:(id)a3;
-- (void)fetchAISAccessoryCategory:(id)a3;
-- (void)fetchAISBatteryLevel:(id)a3;
-- (void)fetchAISBatteryType:(id)a3;
-- (void)fetchAISFirmwareVersion:(id)a3;
-- (void)fetchAISForTAUnknownBeacon:(id)a3 macAddress:(id)a4 deviceType:(id)a5;
-- (void)fetchAISManufacturerName:(id)a3;
-- (void)fetchAISModelName:(id)a3;
-- (void)fetchAISNetworkID:(id)a3;
-- (void)fetchAISProductData:(id)a3;
-- (void)fetchAISProtocolImplementation:(id)a3;
-- (void)fetchAISSerialNumber:(id)a3;
-- (void)fetchAccelerometerOrientationModeConfigurationForDevice:(id)a3;
-- (void)fetchAccelerometerSlopeModeConfigurationForDevice:(id)a3;
-- (void)fetchAccessoryInformationForDevice:(id)a3;
-- (void)fetchBatteryStatusForDevice:(id)a3;
-- (void)fetchConnectionStateForDevice:(id)a3;
-- (void)fetchFindingCapabilities:(id)a3;
-- (void)fetchFirmwareVersionFromDevice:(id)a3;
-- (void)fetchHawkeyeAISAccessoryCapabilities:(id)a3;
-- (void)fetchHawkeyeAISAccessoryCategory:(id)a3;
-- (void)fetchHawkeyeAISBatteryType:(id)a3;
-- (void)fetchHawkeyeAISFindMyVersion:(id)a3;
-- (void)fetchHawkeyeAISManufacturerName:(id)a3;
-- (void)fetchHawkeyeAISModelColorCode:(id)a3;
-- (void)fetchHawkeyeAISModelName:(id)a3;
-- (void)fetchHawkeyeAISProductData:(id)a3;
-- (void)fetchHawkeyeCurrentPrimaryKey:(id)a3;
-- (void)fetchHawkeyeSerialNumber:(id)a3;
-- (void)fetchHawkeyeiCloudIdentifier:(id)a3;
-- (void)fetchTxPower:(id)a3;
-- (void)forceSurfaceStagedDetections:(id)a3 deviceType:(id)a4 detailsBitmask:(id)a5;
-- (void)getMultiPartStatusFromDevice:(id)a3;
-- (void)getMultiStatusFromDevice:(id)a3;
+- (void)deinitRangingOnDevice:(id)device;
+- (void)disconnectDevice:(id)device;
+- (void)dumpLogDataOfType:(unint64_t)type fromDevice:(id)device;
+- (void)fetchAISAccessoryCapabilities:(id)capabilities;
+- (void)fetchAISAccessoryCategory:(id)category;
+- (void)fetchAISBatteryLevel:(id)level;
+- (void)fetchAISBatteryType:(id)type;
+- (void)fetchAISFirmwareVersion:(id)version;
+- (void)fetchAISForTAUnknownBeacon:(id)beacon macAddress:(id)address deviceType:(id)type;
+- (void)fetchAISManufacturerName:(id)name;
+- (void)fetchAISModelName:(id)name;
+- (void)fetchAISNetworkID:(id)d;
+- (void)fetchAISProductData:(id)data;
+- (void)fetchAISProtocolImplementation:(id)implementation;
+- (void)fetchAISSerialNumber:(id)number;
+- (void)fetchAccelerometerOrientationModeConfigurationForDevice:(id)device;
+- (void)fetchAccelerometerSlopeModeConfigurationForDevice:(id)device;
+- (void)fetchAccessoryInformationForDevice:(id)device;
+- (void)fetchBatteryStatusForDevice:(id)device;
+- (void)fetchConnectionStateForDevice:(id)device;
+- (void)fetchFindingCapabilities:(id)capabilities;
+- (void)fetchFirmwareVersionFromDevice:(id)device;
+- (void)fetchHawkeyeAISAccessoryCapabilities:(id)capabilities;
+- (void)fetchHawkeyeAISAccessoryCategory:(id)category;
+- (void)fetchHawkeyeAISBatteryType:(id)type;
+- (void)fetchHawkeyeAISFindMyVersion:(id)version;
+- (void)fetchHawkeyeAISManufacturerName:(id)name;
+- (void)fetchHawkeyeAISModelColorCode:(id)code;
+- (void)fetchHawkeyeAISModelName:(id)name;
+- (void)fetchHawkeyeAISProductData:(id)data;
+- (void)fetchHawkeyeCurrentPrimaryKey:(id)key;
+- (void)fetchHawkeyeSerialNumber:(id)number;
+- (void)fetchHawkeyeiCloudIdentifier:(id)identifier;
+- (void)fetchTxPower:(id)power;
+- (void)forceSurfaceStagedDetections:(id)detections deviceType:(id)type detailsBitmask:(id)bitmask;
+- (void)getMultiPartStatusFromDevice:(id)device;
+- (void)getMultiStatusFromDevice:(id)device;
 - (void)handleInterruption;
-- (void)handleMessage:(shared_ptr<CLConnectionMessage>)a3;
-- (void)induceCrashOnDevice:(id)a3;
+- (void)handleMessage:(shared_ptr<CLConnectionMessage>)message;
+- (void)induceCrashOnDevice:(id)device;
 - (void)initAccumulator;
-- (void)initRangingOnDevice:(id)a3 macAddress:(id)a4;
-- (void)prepareRangingOnDevice:(id)a3;
-- (void)rollWildKeyOnDevice:(id)a3;
+- (void)initRangingOnDevice:(id)device macAddress:(id)address;
+- (void)prepareRangingOnDevice:(id)device;
+- (void)rollWildKeyOnDevice:(id)device;
 - (void)scanForHELE;
 - (void)scanForNearbyDevicesLong;
 - (void)scanForNearbyOwner;
-- (void)sendMessage:(const char *)a3;
-- (void)sendMessage:(const char *)a3 withPayload:(id)a4;
-- (void)setAccelerometerOrientationModeConfiguration:(id)a3 forDevice:(id)a4;
-- (void)setAccelerometerSlopeModeConfiguration:(id)a3 forDevice:(id)a4;
-- (void)setBatteryStatus:(unint64_t)a3 forDevice:(id)a4;
-- (void)setObfuscatedIdentifier:(id)a3 onDevice:(id)a4;
-- (void)setWildConfiguration:(id)a3 onDevice:(id)a4;
-- (void)stageTADetection:(id)a3 deviceType:(id)a4 detailsBitmask:(id)a5 shouldRemoveDevice:(id)a6;
-- (void)startEventCounterForDevice:(id)a3;
-- (void)startNBRangingOnDevice:(id)a3 withIRK:(id)a4;
-- (void)startPlayingSoundSequence:(id)a3 onDevice:(id)a4;
-- (void)startPlayingUnauthorizedSoundOnDevice:(id)a3;
-- (void)startPlayingUnauthorizedSoundSequence:(id)a3 onDevice:(id)a4;
-- (void)startUnauthorizedAggressiveAdvertisingOnDevice:(id)a3;
-- (void)stopAggressiveAdvertisingOnDevice:(id)a3;
-- (void)stopEventCounterForDevice:(id)a3;
-- (void)stopPlayingSoundOnDevice:(id)a3;
-- (void)stopPlayingUnauthorizedSoundOnDevice:(id)a3;
-- (void)stopRangingOnDevice:(id)a3;
+- (void)sendMessage:(const char *)message;
+- (void)sendMessage:(const char *)message withPayload:(id)payload;
+- (void)setAccelerometerOrientationModeConfiguration:(id)configuration forDevice:(id)device;
+- (void)setAccelerometerSlopeModeConfiguration:(id)configuration forDevice:(id)device;
+- (void)setBatteryStatus:(unint64_t)status forDevice:(id)device;
+- (void)setObfuscatedIdentifier:(id)identifier onDevice:(id)device;
+- (void)setWildConfiguration:(id)configuration onDevice:(id)device;
+- (void)stageTADetection:(id)detection deviceType:(id)type detailsBitmask:(id)bitmask shouldRemoveDevice:(id)device;
+- (void)startEventCounterForDevice:(id)device;
+- (void)startNBRangingOnDevice:(id)device withIRK:(id)k;
+- (void)startPlayingSoundSequence:(id)sequence onDevice:(id)device;
+- (void)startPlayingUnauthorizedSoundOnDevice:(id)device;
+- (void)startPlayingUnauthorizedSoundSequence:(id)sequence onDevice:(id)device;
+- (void)startUnauthorizedAggressiveAdvertisingOnDevice:(id)device;
+- (void)stopAggressiveAdvertisingOnDevice:(id)device;
+- (void)stopEventCounterForDevice:(id)device;
+- (void)stopPlayingSoundOnDevice:(id)device;
+- (void)stopPlayingUnauthorizedSoundOnDevice:(id)device;
+- (void)stopRangingOnDevice:(id)device;
 - (void)stopScanForNearbyDevicesLong;
-- (void)unpairFromDevice:(id)a3;
-- (void)unpairFromDeviceWithAddress:(id)a3;
+- (void)unpairFromDevice:(id)device;
+- (void)unpairFromDeviceWithAddress:(id)address;
 @end
 
 @implementation CLFindMyAccessoryManager
@@ -100,7 +100,7 @@
   }
 }
 
-- (CLFindMyAccessoryManager)initWithDelegate:(id)a3 delegateQueue:(id)a4
+- (CLFindMyAccessoryManager)initWithDelegate:(id)delegate delegateQueue:(id)queue
 {
   v9.receiver = self;
   v9.super_class = CLFindMyAccessoryManager;
@@ -108,11 +108,11 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeWeak(&v6->_delegate, a3);
-    if (a4)
+    objc_storeWeak(&v6->_delegate, delegate);
+    if (queue)
     {
-      v7->_delegateQueue = a4;
-      dispatch_retain(a4);
+      v7->_delegateQueue = queue;
+      dispatch_retain(queue);
     }
 
     else
@@ -127,10 +127,10 @@
   return 0;
 }
 
-+ (id)errorFromFragmentationStatus:(unint64_t)a3
++ (id)errorFromFragmentationStatus:(unint64_t)status
 {
   v7[1] = *MEMORY[0x1E69E9840];
-  if (a3 == 1)
+  if (status == 1)
   {
     result = 0;
   }
@@ -147,17 +147,17 @@
   return result;
 }
 
-+ (id)checkAvailabilityForPairedOwnerInformationControlPointMessages:(id)a3 messageName:()basic_string<char
++ (id)checkAvailabilityForPairedOwnerInformationControlPointMessages:(id)messages messageName:()basic_string<char
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!messages)
   {
     goto LABEL_15;
   }
 
   if (!std::string::compare(a4, "DurianManagement/DidFetchHawkeyeSerialNumber"))
   {
-    if ([a3 length] != 141 && objc_msgSend(a3, "length") != 145)
+    if ([messages length] != 141 && objc_msgSend(messages, "length") != 145)
     {
       goto LABEL_9;
     }
@@ -172,7 +172,7 @@
         goto LABEL_15;
       }
 
-      if ([a3 length] == 60)
+      if ([messages length] == 60)
       {
         goto LABEL_11;
       }
@@ -189,17 +189,17 @@ LABEL_14:
       goto LABEL_16;
     }
 
-    if ([a3 length] != 28)
+    if ([messages length] != 28)
     {
       goto LABEL_9;
     }
   }
 
 LABEL_11:
-  result = [a3 length];
+  result = [messages length];
   if (result)
   {
-    if ([a3 isEqual:{objc_msgSend(MEMORY[0x1E695DF88], "dataWithLength:", objc_msgSend(a3, "length"))}])
+    if ([messages isEqual:{objc_msgSend(MEMORY[0x1E695DF88], "dataWithLength:", objc_msgSend(messages, "length"))}])
     {
       v11 = MEMORY[0x1E696ABC0];
       v13 = *MEMORY[0x1E696A578];
@@ -219,9 +219,9 @@ LABEL_16:
   return result;
 }
 
-- (void)handleMessage:(shared_ptr<CLConnectionMessage>)a3
+- (void)handleMessage:(shared_ptr<CLConnectionMessage>)message
 {
-  var0 = a3.var0;
+  var0 = message.var0;
   v198 = *MEMORY[0x1E69E9840];
   v173 = MEMORY[0x1E695DFD8];
   v4 = objc_opt_class();
@@ -1582,15 +1582,15 @@ LABEL_256:
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)sendMessage:(const char *)a3 withPayload:(id)a4
+- (void)sendMessage:(const char *)message withPayload:(id)payload
 {
   v13 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!message)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
-  v6 = [a4 objectForKey:0x1F0E747E0];
+  v6 = [payload objectForKey:0x1F0E747E0];
   if (qword_1EAFE46C8 != -1)
   {
     dispatch_once(&qword_1EAFE46C8, &unk_1F0E6BAF0);
@@ -1604,7 +1604,7 @@ LABEL_256:
     v9[0] = 2082;
     *&v9[1] = "";
     v9[5] = 2082;
-    v10 = a3;
+    messageCopy = message;
     v11 = 2082;
     v12 = [objc_msgSend(v6 "UUIDString")];
     _os_log_impl(&dword_19B873000, v7, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#durian client sending message, messageName:%{public, location:escape_only}s, beaconUUID:%{public, location:escape_only}s}", buf, 0x26u);
@@ -1613,10 +1613,10 @@ LABEL_256:
   sub_19B87C844();
 }
 
-- (void)sendMessage:(const char *)a3
+- (void)sendMessage:(const char *)message
 {
   v10 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!message)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
@@ -1634,62 +1634,62 @@ LABEL_256:
     v6 = 2082;
     v7 = "";
     v8 = 2082;
-    v9 = a3;
+    messageCopy = message;
     _os_log_impl(&dword_19B873000, v4, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#durian client sending message, messageName:%{public, location:escape_only}s}", buf, 0x1Cu);
   }
 
   operator new();
 }
 
-- (void)connectDevice:(id)a3
+- (void)connectDevice:(id)device
 {
   v7[1] = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!device)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
   v6 = 0x1F0E747E0;
-  v7[0] = a3;
+  v7[0] = device;
   -[CLFindMyAccessoryManager sendMessage:withPayload:](self, "sendMessage:withPayload:", "DurianManagement/Connect", [MEMORY[0x1E695DF20] dictionaryWithObjects:v7 forKeys:&v6 count:1]);
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)disconnectDevice:(id)a3
+- (void)disconnectDevice:(id)device
 {
   v7[1] = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!device)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
   v6 = 0x1F0E747E0;
-  v7[0] = a3;
+  v7[0] = device;
   -[CLFindMyAccessoryManager sendMessage:withPayload:](self, "sendMessage:withPayload:", "DurianManagement/Disconnect", [MEMORY[0x1E695DF20] dictionaryWithObjects:v7 forKeys:&v6 count:1]);
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchConnectionStateForDevice:(id)a3
+- (void)fetchConnectionStateForDevice:(id)device
 {
   v7[1] = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!device)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
   v6 = 0x1F0E747E0;
-  v7[0] = a3;
+  v7[0] = device;
   -[CLFindMyAccessoryManager sendMessage:withPayload:](self, "sendMessage:withPayload:", "DurianManagement/FetchConnectionState", [MEMORY[0x1E695DF20] dictionaryWithObjects:v7 forKeys:&v6 count:1]);
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)startPlayingSoundSequence:(id)a3 onDevice:(id)a4
+- (void)startPlayingSoundSequence:(id)sequence onDevice:(id)device
 {
   v10[2] = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!sequence)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
-    if (a4)
+    if (device)
     {
       goto LABEL_3;
     }
@@ -1699,7 +1699,7 @@ LABEL_5:
     goto LABEL_3;
   }
 
-  if (!a4)
+  if (!device)
   {
     goto LABEL_5;
   }
@@ -1707,179 +1707,179 @@ LABEL_5:
 LABEL_3:
   v9[0] = 0x1F0E747E0;
   v9[1] = 0x1F0E74940;
-  v10[0] = a4;
-  v10[1] = a3;
+  v10[0] = device;
+  v10[1] = sequence;
   -[CLFindMyAccessoryManager sendMessage:withPayload:](self, "sendMessage:withPayload:", "DurianManagement/StartSoundSequence", [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:v9 count:2]);
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)startPlayingUnauthorizedSoundOnDevice:(id)a3
+- (void)startPlayingUnauthorizedSoundOnDevice:(id)device
 {
   v7[1] = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!device)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
   v6 = 0x1F0E747E0;
-  v7[0] = a3;
+  v7[0] = device;
   -[CLFindMyAccessoryManager sendMessage:withPayload:](self, "sendMessage:withPayload:", "DurianManagement/StartUnauthorizedSound", [MEMORY[0x1E695DF20] dictionaryWithObjects:v7 forKeys:&v6 count:1]);
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)startPlayingUnauthorizedSoundSequence:(id)a3 onDevice:(id)a4
+- (void)startPlayingUnauthorizedSoundSequence:(id)sequence onDevice:(id)device
 {
   v9[2] = *MEMORY[0x1E69E9840];
-  if (!a4)
+  if (!device)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
   v8[0] = 0x1F0E747E0;
   v8[1] = 0x1F0E74940;
-  v9[0] = a4;
-  v9[1] = a3;
+  v9[0] = device;
+  v9[1] = sequence;
   -[CLFindMyAccessoryManager sendMessage:withPayload:](self, "sendMessage:withPayload:", "DurianManagement/StartUnauthorizedSound", [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:v8 count:2]);
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)stopPlayingSoundOnDevice:(id)a3
+- (void)stopPlayingSoundOnDevice:(id)device
 {
   v7[1] = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!device)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
   v6 = 0x1F0E747E0;
-  v7[0] = a3;
+  v7[0] = device;
   -[CLFindMyAccessoryManager sendMessage:withPayload:](self, "sendMessage:withPayload:", "DurianManagement/StopSound", [MEMORY[0x1E695DF20] dictionaryWithObjects:v7 forKeys:&v6 count:1]);
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)stopPlayingUnauthorizedSoundOnDevice:(id)a3
+- (void)stopPlayingUnauthorizedSoundOnDevice:(id)device
 {
   v7[1] = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!device)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
   v6 = 0x1F0E747E0;
-  v7[0] = a3;
+  v7[0] = device;
   -[CLFindMyAccessoryManager sendMessage:withPayload:](self, "sendMessage:withPayload:", "DurianManagement/StopUnauthorizedSound", [MEMORY[0x1E695DF20] dictionaryWithObjects:v7 forKeys:&v6 count:1]);
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)getMultiStatusFromDevice:(id)a3
+- (void)getMultiStatusFromDevice:(id)device
 {
   v7[1] = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!device)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
   v6 = 0x1F0E747E0;
-  v7[0] = a3;
+  v7[0] = device;
   -[CLFindMyAccessoryManager sendMessage:withPayload:](self, "sendMessage:withPayload:", "DurianManagement/GetMultiStatus", [MEMORY[0x1E695DF20] dictionaryWithObjects:v7 forKeys:&v6 count:1]);
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)getMultiPartStatusFromDevice:(id)a3
+- (void)getMultiPartStatusFromDevice:(id)device
 {
   v7[1] = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!device)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
   v6 = 0x1F0E747E0;
-  v7[0] = a3;
+  v7[0] = device;
   -[CLFindMyAccessoryManager sendMessage:withPayload:](self, "sendMessage:withPayload:", "DurianManagement/GetMultiPartStatus", [MEMORY[0x1E695DF20] dictionaryWithObjects:v7 forKeys:&v6 count:1]);
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)dumpLogDataOfType:(unint64_t)a3 fromDevice:(id)a4
+- (void)dumpLogDataOfType:(unint64_t)type fromDevice:(id)device
 {
   v9[2] = *MEMORY[0x1E69E9840];
-  if (!a4)
+  if (!device)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
   v8[0] = 0x1F0E747E0;
   v8[1] = 0x1F0E74880;
-  v9[0] = a4;
-  v9[1] = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v9[0] = device;
+  v9[1] = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:type];
   -[CLFindMyAccessoryManager sendMessage:withPayload:](self, "sendMessage:withPayload:", "DurianManagement/DumpLogs", [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:v8 count:2]);
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)induceCrashOnDevice:(id)a3
+- (void)induceCrashOnDevice:(id)device
 {
   v7[1] = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!device)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
   v6 = 0x1F0E747E0;
-  v7[0] = a3;
+  v7[0] = device;
   -[CLFindMyAccessoryManager sendMessage:withPayload:](self, "sendMessage:withPayload:", "DurianManagement/InduceCrash", [MEMORY[0x1E695DF20] dictionaryWithObjects:v7 forKeys:&v6 count:1]);
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)unpairFromDevice:(id)a3
+- (void)unpairFromDevice:(id)device
 {
   v7[1] = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!device)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
   v6 = 0x1F0E747E0;
-  v7[0] = a3;
+  v7[0] = device;
   -[CLFindMyAccessoryManager sendMessage:withPayload:](self, "sendMessage:withPayload:", "DurianManagement/Unpair", [MEMORY[0x1E695DF20] dictionaryWithObjects:v7 forKeys:&v6 count:1]);
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)unpairFromDeviceWithAddress:(id)a3
+- (void)unpairFromDeviceWithAddress:(id)address
 {
   v7[1] = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!address)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
   v6 = 0x1F0E74800;
-  v7[0] = a3;
+  v7[0] = address;
   -[CLFindMyAccessoryManager sendMessage:withPayload:](self, "sendMessage:withPayload:", "DurianManagement/Unpair", [MEMORY[0x1E695DF20] dictionaryWithObjects:v7 forKeys:&v6 count:1]);
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setObfuscatedIdentifier:(id)a3 onDevice:(id)a4
+- (void)setObfuscatedIdentifier:(id)identifier onDevice:(id)device
 {
   v9[2] = *MEMORY[0x1E69E9840];
-  if (!a4)
+  if (!device)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
   v8[0] = 0x1F0E747E0;
   v8[1] = 0x1F0E74900;
-  v9[0] = a4;
-  v9[1] = a3;
+  v9[0] = device;
+  v9[1] = identifier;
   -[CLFindMyAccessoryManager sendMessage:withPayload:](self, "sendMessage:withPayload:", "DurianManagement/SetObfuscatedIdentifier", [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:v8 count:2]);
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setWildConfiguration:(id)a3 onDevice:(id)a4
+- (void)setWildConfiguration:(id)configuration onDevice:(id)device
 {
   v10[2] = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!configuration)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
-    if (a4)
+    if (device)
     {
       goto LABEL_3;
     }
@@ -1889,7 +1889,7 @@ LABEL_5:
     goto LABEL_3;
   }
 
-  if (!a4)
+  if (!device)
   {
     goto LABEL_5;
   }
@@ -1897,52 +1897,52 @@ LABEL_5:
 LABEL_3:
   v9[0] = 0x1F0E747E0;
   v9[1] = 0x1F0E749A0;
-  v10[0] = a4;
-  v10[1] = a3;
+  v10[0] = device;
+  v10[1] = configuration;
   -[CLFindMyAccessoryManager sendMessage:withPayload:](self, "sendMessage:withPayload:", "DurianManagement/SetWildConfiguration", [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:v9 count:2]);
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)rollWildKeyOnDevice:(id)a3
+- (void)rollWildKeyOnDevice:(id)device
 {
   v7[1] = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!device)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
   v6 = 0x1F0E747E0;
-  v7[0] = a3;
+  v7[0] = device;
   -[CLFindMyAccessoryManager sendMessage:withPayload:](self, "sendMessage:withPayload:", "DurianManagement/RollWildKey", [MEMORY[0x1E695DF20] dictionaryWithObjects:v7 forKeys:&v6 count:1]);
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setBatteryStatus:(unint64_t)a3 forDevice:(id)a4
+- (void)setBatteryStatus:(unint64_t)status forDevice:(id)device
 {
   v9[2] = *MEMORY[0x1E69E9840];
-  if (!a4)
+  if (!device)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
   v8[0] = 0x1F0E747E0;
   v8[1] = 0x1F0E748C0;
-  v9[0] = a4;
-  v9[1] = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v9[0] = device;
+  v9[1] = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:status];
   -[CLFindMyAccessoryManager sendMessage:withPayload:](self, "sendMessage:withPayload:", "DurianManagement/SetBatteryStatus", [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:v8 count:2]);
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchBatteryStatusForDevice:(id)a3
+- (void)fetchBatteryStatusForDevice:(id)device
 {
   v7[1] = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!device)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
   v6 = 0x1F0E747E0;
-  v7[0] = a3;
+  v7[0] = device;
   -[CLFindMyAccessoryManager sendMessage:withPayload:](self, "sendMessage:withPayload:", "DurianManagement/FetchBatteryStatus", [MEMORY[0x1E695DF20] dictionaryWithObjects:v7 forKeys:&v6 count:1]);
   v5 = *MEMORY[0x1E69E9840];
 }
@@ -1975,13 +1975,13 @@ LABEL_3:
   sub_19B87B83C();
 }
 
-- (void)setAccelerometerSlopeModeConfiguration:(id)a3 forDevice:(id)a4
+- (void)setAccelerometerSlopeModeConfiguration:(id)configuration forDevice:(id)device
 {
   v10[2] = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!configuration)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
-    if (a4)
+    if (device)
     {
       goto LABEL_3;
     }
@@ -1991,7 +1991,7 @@ LABEL_5:
     goto LABEL_3;
   }
 
-  if (!a4)
+  if (!device)
   {
     goto LABEL_5;
   }
@@ -1999,33 +1999,33 @@ LABEL_5:
 LABEL_3:
   v9[0] = 0x1F0E747E0;
   v9[1] = 0x1F0E74A60;
-  v10[0] = a4;
-  v10[1] = a3;
+  v10[0] = device;
+  v10[1] = configuration;
   -[CLFindMyAccessoryManager sendMessage:withPayload:](self, "sendMessage:withPayload:", "DurianManagement/SetAccelerometerSlopeMode", [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:v9 count:2]);
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchAccelerometerSlopeModeConfigurationForDevice:(id)a3
+- (void)fetchAccelerometerSlopeModeConfigurationForDevice:(id)device
 {
   v7[1] = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!device)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
   v6 = 0x1F0E747E0;
-  v7[0] = a3;
+  v7[0] = device;
   -[CLFindMyAccessoryManager sendMessage:withPayload:](self, "sendMessage:withPayload:", "DurianManagement/GetAccelerometerSlopeModeConfiguration", [MEMORY[0x1E695DF20] dictionaryWithObjects:v7 forKeys:&v6 count:1]);
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setAccelerometerOrientationModeConfiguration:(id)a3 forDevice:(id)a4
+- (void)setAccelerometerOrientationModeConfiguration:(id)configuration forDevice:(id)device
 {
   v10[2] = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!configuration)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
-    if (a4)
+    if (device)
     {
       goto LABEL_3;
     }
@@ -2035,7 +2035,7 @@ LABEL_5:
     goto LABEL_3;
   }
 
-  if (!a4)
+  if (!device)
   {
     goto LABEL_5;
   }
@@ -2043,243 +2043,243 @@ LABEL_5:
 LABEL_3:
   v9[0] = 0x1F0E747E0;
   v9[1] = 0x1F0E74A80;
-  v10[0] = a4;
-  v10[1] = a3;
+  v10[0] = device;
+  v10[1] = configuration;
   -[CLFindMyAccessoryManager sendMessage:withPayload:](self, "sendMessage:withPayload:", "DurianManagement/SetAccelerometerOrientationMode", [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:v9 count:2]);
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchAccelerometerOrientationModeConfigurationForDevice:(id)a3
+- (void)fetchAccelerometerOrientationModeConfigurationForDevice:(id)device
 {
   v7[1] = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!device)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
   v6 = 0x1F0E747E0;
-  v7[0] = a3;
+  v7[0] = device;
   -[CLFindMyAccessoryManager sendMessage:withPayload:](self, "sendMessage:withPayload:", "DurianManagement/GetAccelerometerOrientationModeConfiguration", [MEMORY[0x1E695DF20] dictionaryWithObjects:v7 forKeys:&v6 count:1]);
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchFirmwareVersionFromDevice:(id)a3
+- (void)fetchFirmwareVersionFromDevice:(id)device
 {
   v7[1] = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!device)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
   v6 = 0x1F0E747E0;
-  v7[0] = a3;
+  v7[0] = device;
   -[CLFindMyAccessoryManager sendMessage:withPayload:](self, "sendMessage:withPayload:", "DurianManagement/FetchFirmwareVersion", [MEMORY[0x1E695DF20] dictionaryWithObjects:v7 forKeys:&v6 count:1]);
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchTxPower:(id)a3
+- (void)fetchTxPower:(id)power
 {
   v7[1] = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!power)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
   v6 = 0x1F0E747E0;
-  v7[0] = a3;
+  v7[0] = power;
   -[CLFindMyAccessoryManager sendMessage:withPayload:](self, "sendMessage:withPayload:", "DurianManagement/FetchTxPower", [MEMORY[0x1E695DF20] dictionaryWithObjects:v7 forKeys:&v6 count:1]);
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)stopAggressiveAdvertisingOnDevice:(id)a3
+- (void)stopAggressiveAdvertisingOnDevice:(id)device
 {
   v7[1] = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!device)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
   v6 = 0x1F0E747E0;
-  v7[0] = a3;
+  v7[0] = device;
   -[CLFindMyAccessoryManager sendMessage:withPayload:](self, "sendMessage:withPayload:", "DurianManagement/StopAggressiveAdvertising", [MEMORY[0x1E695DF20] dictionaryWithObjects:v7 forKeys:&v6 count:1]);
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)startUnauthorizedAggressiveAdvertisingOnDevice:(id)a3
+- (void)startUnauthorizedAggressiveAdvertisingOnDevice:(id)device
 {
   v7[1] = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!device)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
   v6 = 0x1F0E747E0;
-  v7[0] = a3;
+  v7[0] = device;
   -[CLFindMyAccessoryManager sendMessage:withPayload:](self, "sendMessage:withPayload:", "DurianManagement/StartUnauthorizedAggressiveAdvertising", [MEMORY[0x1E695DF20] dictionaryWithObjects:v7 forKeys:&v6 count:1]);
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchHawkeyeAISProductData:(id)a3
+- (void)fetchHawkeyeAISProductData:(id)data
 {
   v7[1] = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!data)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
   v6 = 0x1F0E747E0;
-  v7[0] = a3;
+  v7[0] = data;
   -[CLFindMyAccessoryManager sendMessage:withPayload:](self, "sendMessage:withPayload:", "DurianManagement/FetchHawkeyeAISProductData", [MEMORY[0x1E695DF20] dictionaryWithObjects:v7 forKeys:&v6 count:1]);
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchHawkeyeAISManufacturerName:(id)a3
+- (void)fetchHawkeyeAISManufacturerName:(id)name
 {
   v7[1] = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!name)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
   v6 = 0x1F0E747E0;
-  v7[0] = a3;
+  v7[0] = name;
   -[CLFindMyAccessoryManager sendMessage:withPayload:](self, "sendMessage:withPayload:", "DurianManagement/FetchHawkeyeAISManufacturerName", [MEMORY[0x1E695DF20] dictionaryWithObjects:v7 forKeys:&v6 count:1]);
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchHawkeyeAISModelName:(id)a3
+- (void)fetchHawkeyeAISModelName:(id)name
 {
   v7[1] = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!name)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
   v6 = 0x1F0E747E0;
-  v7[0] = a3;
+  v7[0] = name;
   -[CLFindMyAccessoryManager sendMessage:withPayload:](self, "sendMessage:withPayload:", "DurianManagement/FetchHawkeyeAISModelName", [MEMORY[0x1E695DF20] dictionaryWithObjects:v7 forKeys:&v6 count:1]);
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchHawkeyeAISModelColorCode:(id)a3
+- (void)fetchHawkeyeAISModelColorCode:(id)code
 {
   v7[1] = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!code)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
   v6 = 0x1F0E747E0;
-  v7[0] = a3;
+  v7[0] = code;
   -[CLFindMyAccessoryManager sendMessage:withPayload:](self, "sendMessage:withPayload:", "DurianManagement/FetchHawkeyeAISModelColorCode", [MEMORY[0x1E695DF20] dictionaryWithObjects:v7 forKeys:&v6 count:1]);
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchHawkeyeAISAccessoryCategory:(id)a3
+- (void)fetchHawkeyeAISAccessoryCategory:(id)category
 {
   v7[1] = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!category)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
   v6 = 0x1F0E747E0;
-  v7[0] = a3;
+  v7[0] = category;
   -[CLFindMyAccessoryManager sendMessage:withPayload:](self, "sendMessage:withPayload:", "DurianManagement/FetchHawkeyeAISAccessoryCategory", [MEMORY[0x1E695DF20] dictionaryWithObjects:v7 forKeys:&v6 count:1]);
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchHawkeyeAISAccessoryCapabilities:(id)a3
+- (void)fetchHawkeyeAISAccessoryCapabilities:(id)capabilities
 {
   v7[1] = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!capabilities)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
   v6 = 0x1F0E747E0;
-  v7[0] = a3;
+  v7[0] = capabilities;
   -[CLFindMyAccessoryManager sendMessage:withPayload:](self, "sendMessage:withPayload:", "DurianManagement/FetchHawkeyeAISAccessoryCapabilities", [MEMORY[0x1E695DF20] dictionaryWithObjects:v7 forKeys:&v6 count:1]);
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchHawkeyeAISFindMyVersion:(id)a3
+- (void)fetchHawkeyeAISFindMyVersion:(id)version
 {
   v7[1] = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!version)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
   v6 = 0x1F0E747E0;
-  v7[0] = a3;
+  v7[0] = version;
   -[CLFindMyAccessoryManager sendMessage:withPayload:](self, "sendMessage:withPayload:", "DurianManagement/FetchHawkeyeAISFindMyVersion", [MEMORY[0x1E695DF20] dictionaryWithObjects:v7 forKeys:&v6 count:1]);
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchHawkeyeAISBatteryType:(id)a3
+- (void)fetchHawkeyeAISBatteryType:(id)type
 {
   v7[1] = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!type)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
   v6 = 0x1F0E747E0;
-  v7[0] = a3;
+  v7[0] = type;
   -[CLFindMyAccessoryManager sendMessage:withPayload:](self, "sendMessage:withPayload:", "DurianManagement/FetchHawkeyeAISBatteryType", [MEMORY[0x1E695DF20] dictionaryWithObjects:v7 forKeys:&v6 count:1]);
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchHawkeyeSerialNumber:(id)a3
+- (void)fetchHawkeyeSerialNumber:(id)number
 {
   v7[1] = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!number)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
   v6 = 0x1F0E747E0;
-  v7[0] = a3;
+  v7[0] = number;
   -[CLFindMyAccessoryManager sendMessage:withPayload:](self, "sendMessage:withPayload:", "DurianManagement/FetchHawkeyeSerialNumber", [MEMORY[0x1E695DF20] dictionaryWithObjects:v7 forKeys:&v6 count:1]);
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchHawkeyeCurrentPrimaryKey:(id)a3
+- (void)fetchHawkeyeCurrentPrimaryKey:(id)key
 {
   v7[1] = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!key)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
   v6 = 0x1F0E747E0;
-  v7[0] = a3;
+  v7[0] = key;
   -[CLFindMyAccessoryManager sendMessage:withPayload:](self, "sendMessage:withPayload:", "DurianManagement/FetchHawkeyeCurrentPrimaryKey", [MEMORY[0x1E695DF20] dictionaryWithObjects:v7 forKeys:&v6 count:1]);
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchHawkeyeiCloudIdentifier:(id)a3
+- (void)fetchHawkeyeiCloudIdentifier:(id)identifier
 {
   v7[1] = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!identifier)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
   v6 = 0x1F0E747E0;
-  v7[0] = a3;
+  v7[0] = identifier;
   -[CLFindMyAccessoryManager sendMessage:withPayload:](self, "sendMessage:withPayload:", "DurianManagement/FetchHawkeyeiCloudIdentifier", [MEMORY[0x1E695DF20] dictionaryWithObjects:v7 forKeys:&v6 count:1]);
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchAISForTAUnknownBeacon:(id)a3 macAddress:(id)a4 deviceType:(id)a5
+- (void)fetchAISForTAUnknownBeacon:(id)beacon macAddress:(id)address deviceType:(id)type
 {
   v12[3] = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!beacon)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
-    if (a4)
+    if (address)
     {
       goto LABEL_3;
     }
@@ -2289,7 +2289,7 @@ LABEL_5:
     goto LABEL_3;
   }
 
-  if (!a4)
+  if (!address)
   {
     goto LABEL_5;
   }
@@ -2297,27 +2297,27 @@ LABEL_5:
 LABEL_3:
   v11[0] = 0x1F0E747E0;
   v11[1] = 0x1F0E74800;
-  v12[0] = a3;
-  v12[1] = a4;
+  v12[0] = beacon;
+  v12[1] = address;
   v11[2] = 0x1F0E748E0;
-  v12[2] = a5;
+  v12[2] = type;
   -[CLFindMyAccessoryManager sendMessage:withPayload:](self, "sendMessage:withPayload:", "DurianManagement/FetchAISForTAUnknownBeacon", [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:v11 count:3]);
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)stageTADetection:(id)a3 deviceType:(id)a4 detailsBitmask:(id)a5 shouldRemoveDevice:(id)a6
+- (void)stageTADetection:(id)detection deviceType:(id)type detailsBitmask:(id)bitmask shouldRemoveDevice:(id)device
 {
   v14[4] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (detection)
   {
-    if (a4)
+    if (type)
     {
       goto LABEL_3;
     }
 
 LABEL_6:
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
-    if (a5)
+    if (bitmask)
     {
       goto LABEL_4;
     }
@@ -2328,13 +2328,13 @@ LABEL_7:
   }
 
   [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
-  if (!a4)
+  if (!type)
   {
     goto LABEL_6;
   }
 
 LABEL_3:
-  if (!a5)
+  if (!bitmask)
   {
     goto LABEL_7;
   }
@@ -2342,29 +2342,29 @@ LABEL_3:
 LABEL_4:
   v13[0] = 0x1F0E74800;
   v13[1] = 0x1F0E748E0;
-  v14[0] = a3;
-  v14[1] = a4;
+  v14[0] = detection;
+  v14[1] = type;
   v13[2] = 0x1F0E75120;
   v13[3] = 0x1F0E74D00;
-  v14[2] = a5;
-  v14[3] = a6;
+  v14[2] = bitmask;
+  v14[3] = device;
   -[CLFindMyAccessoryManager sendMessage:withPayload:](self, "sendMessage:withPayload:", "DurianManagement/StageTADetection", [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:v13 count:4]);
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)forceSurfaceStagedDetections:(id)a3 deviceType:(id)a4 detailsBitmask:(id)a5
+- (void)forceSurfaceStagedDetections:(id)detections deviceType:(id)type detailsBitmask:(id)bitmask
 {
   v12[3] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (detections)
   {
-    if (a4)
+    if (type)
     {
       goto LABEL_3;
     }
 
 LABEL_6:
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
-    if (a5)
+    if (bitmask)
     {
       goto LABEL_4;
     }
@@ -2375,13 +2375,13 @@ LABEL_7:
   }
 
   [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
-  if (!a4)
+  if (!type)
   {
     goto LABEL_6;
   }
 
 LABEL_3:
-  if (!a5)
+  if (!bitmask)
   {
     goto LABEL_7;
   }
@@ -2389,310 +2389,310 @@ LABEL_3:
 LABEL_4:
   v11[0] = 0x1F0E74800;
   v11[1] = 0x1F0E748E0;
-  v12[0] = a3;
-  v12[1] = a4;
+  v12[0] = detections;
+  v12[1] = type;
   v11[2] = 0x1F0E75120;
-  v12[2] = a5;
+  v12[2] = bitmask;
   -[CLFindMyAccessoryManager sendMessage:withPayload:](self, "sendMessage:withPayload:", "DurianManagement/ForceSurfaceStagedDetections", [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:v11 count:3]);
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchFindingCapabilities:(id)a3
+- (void)fetchFindingCapabilities:(id)capabilities
 {
   v5[1] = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!capabilities)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
   v4 = 0x1F0E747E0;
-  v5[0] = a3;
+  v5[0] = capabilities;
   [MEMORY[0x1E695DF20] dictionaryWithObjects:v5 forKeys:&v4 count:1];
   sub_19B890E08();
 }
 
-- (void)initRangingOnDevice:(id)a3 macAddress:(id)a4
+- (void)initRangingOnDevice:(id)device macAddress:(id)address
 {
   v7[2] = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!device)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
   v6[0] = 0x1F0E747E0;
   v6[1] = 0x1F0E74B40;
-  v7[0] = a3;
-  v7[1] = a4;
+  v7[0] = device;
+  v7[1] = address;
   [MEMORY[0x1E695DF20] dictionaryWithObjects:v7 forKeys:v6 count:2];
   sub_19B890E08();
 }
 
-- (void)deinitRangingOnDevice:(id)a3
+- (void)deinitRangingOnDevice:(id)device
 {
   v5[1] = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!device)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
   v4 = 0x1F0E747E0;
-  v5[0] = a3;
+  v5[0] = device;
   [MEMORY[0x1E695DF20] dictionaryWithObjects:v5 forKeys:&v4 count:1];
   sub_19B890E08();
 }
 
-- (void)configureNBRangingOnDevice:(id)a3 withParams:(id)a4
+- (void)configureNBRangingOnDevice:(id)device withParams:(id)params
 {
   v7[2] = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!device)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
   v6[0] = 0x1F0E747E0;
   v6[1] = @"CLDurianNBConfigDictionary";
-  v7[0] = a3;
-  v7[1] = a4;
+  v7[0] = device;
+  v7[1] = params;
   [MEMORY[0x1E695DF20] dictionaryWithObjects:v7 forKeys:v6 count:2];
   sub_19B890E08();
 }
 
-- (void)prepareRangingOnDevice:(id)a3
+- (void)prepareRangingOnDevice:(id)device
 {
   v5[1] = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!device)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
   v4 = 0x1F0E747E0;
-  v5[0] = a3;
+  v5[0] = device;
   [MEMORY[0x1E695DF20] dictionaryWithObjects:v5 forKeys:&v4 count:1];
   sub_19B890E08();
 }
 
-- (void)startNBRangingOnDevice:(id)a3 withIRK:(id)a4
+- (void)startNBRangingOnDevice:(id)device withIRK:(id)k
 {
   v7[2] = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!device)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
   v6[0] = 0x1F0E747E0;
   v6[1] = @"CLDurianRangingIRK";
-  v7[0] = a3;
-  v7[1] = a4;
+  v7[0] = device;
+  v7[1] = k;
   [MEMORY[0x1E695DF20] dictionaryWithObjects:v7 forKeys:v6 count:2];
   sub_19B890E08();
 }
 
-- (void)stopRangingOnDevice:(id)a3
+- (void)stopRangingOnDevice:(id)device
 {
   v5[1] = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!device)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
   v4 = 0x1F0E747E0;
-  v5[0] = a3;
+  v5[0] = device;
   [MEMORY[0x1E695DF20] dictionaryWithObjects:v5 forKeys:&v4 count:1];
   sub_19B890E08();
 }
 
-- (void)startEventCounterForDevice:(id)a3
+- (void)startEventCounterForDevice:(id)device
 {
   v5[1] = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!device)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
   v4 = 0x1F0E747E0;
-  v5[0] = a3;
+  v5[0] = device;
   [MEMORY[0x1E695DF20] dictionaryWithObjects:v5 forKeys:&v4 count:1];
   sub_19B890E08();
 }
 
-- (void)stopEventCounterForDevice:(id)a3
+- (void)stopEventCounterForDevice:(id)device
 {
   v5[1] = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!device)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
   v4 = 0x1F0E747E0;
-  v5[0] = a3;
+  v5[0] = device;
   [MEMORY[0x1E695DF20] dictionaryWithObjects:v5 forKeys:&v4 count:1];
   sub_19B890E08();
 }
 
-- (void)fetchAISProductData:(id)a3
+- (void)fetchAISProductData:(id)data
 {
   v5[1] = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!data)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
   v4 = 0x1F0E747E0;
-  v5[0] = a3;
+  v5[0] = data;
   [MEMORY[0x1E695DF20] dictionaryWithObjects:v5 forKeys:&v4 count:1];
   sub_19B890E08();
 }
 
-- (void)fetchAISManufacturerName:(id)a3
+- (void)fetchAISManufacturerName:(id)name
 {
   v5[1] = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!name)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
   v4 = 0x1F0E747E0;
-  v5[0] = a3;
+  v5[0] = name;
   [MEMORY[0x1E695DF20] dictionaryWithObjects:v5 forKeys:&v4 count:1];
   sub_19B890E08();
 }
 
-- (void)fetchAISModelName:(id)a3
+- (void)fetchAISModelName:(id)name
 {
   v5[1] = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!name)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
   v4 = 0x1F0E747E0;
-  v5[0] = a3;
+  v5[0] = name;
   [MEMORY[0x1E695DF20] dictionaryWithObjects:v5 forKeys:&v4 count:1];
   sub_19B890E08();
 }
 
-- (void)fetchAISProtocolImplementation:(id)a3
+- (void)fetchAISProtocolImplementation:(id)implementation
 {
   v5[1] = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!implementation)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
   v4 = 0x1F0E747E0;
-  v5[0] = a3;
+  v5[0] = implementation;
   [MEMORY[0x1E695DF20] dictionaryWithObjects:v5 forKeys:&v4 count:1];
   sub_19B890E08();
 }
 
-- (void)fetchAISAccessoryCategory:(id)a3
+- (void)fetchAISAccessoryCategory:(id)category
 {
   v5[1] = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!category)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
   v4 = 0x1F0E747E0;
-  v5[0] = a3;
+  v5[0] = category;
   [MEMORY[0x1E695DF20] dictionaryWithObjects:v5 forKeys:&v4 count:1];
   sub_19B890E08();
 }
 
-- (void)fetchAISAccessoryCapabilities:(id)a3
+- (void)fetchAISAccessoryCapabilities:(id)capabilities
 {
   v5[1] = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!capabilities)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
   v4 = 0x1F0E747E0;
-  v5[0] = a3;
+  v5[0] = capabilities;
   [MEMORY[0x1E695DF20] dictionaryWithObjects:v5 forKeys:&v4 count:1];
   sub_19B890E08();
 }
 
-- (void)fetchAISNetworkID:(id)a3
+- (void)fetchAISNetworkID:(id)d
 {
   v5[1] = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!d)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
   v4 = 0x1F0E747E0;
-  v5[0] = a3;
+  v5[0] = d;
   [MEMORY[0x1E695DF20] dictionaryWithObjects:v5 forKeys:&v4 count:1];
   sub_19B890E08();
 }
 
-- (void)fetchAISFirmwareVersion:(id)a3
+- (void)fetchAISFirmwareVersion:(id)version
 {
   v5[1] = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!version)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
   v4 = 0x1F0E747E0;
-  v5[0] = a3;
+  v5[0] = version;
   [MEMORY[0x1E695DF20] dictionaryWithObjects:v5 forKeys:&v4 count:1];
   sub_19B890E08();
 }
 
-- (void)fetchAISBatteryType:(id)a3
+- (void)fetchAISBatteryType:(id)type
 {
   v5[1] = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!type)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
   v4 = 0x1F0E747E0;
-  v5[0] = a3;
+  v5[0] = type;
   [MEMORY[0x1E695DF20] dictionaryWithObjects:v5 forKeys:&v4 count:1];
   sub_19B890E08();
 }
 
-- (void)fetchAISBatteryLevel:(id)a3
+- (void)fetchAISBatteryLevel:(id)level
 {
   v5[1] = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!level)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
   v4 = 0x1F0E747E0;
-  v5[0] = a3;
+  v5[0] = level;
   [MEMORY[0x1E695DF20] dictionaryWithObjects:v5 forKeys:&v4 count:1];
   sub_19B890E08();
 }
 
-- (void)fetchAISSerialNumber:(id)a3
+- (void)fetchAISSerialNumber:(id)number
 {
   v5[1] = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!number)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
   v4 = 0x1F0E747E0;
-  v5[0] = a3;
+  v5[0] = number;
   [MEMORY[0x1E695DF20] dictionaryWithObjects:v5 forKeys:&v4 count:1];
   sub_19B890E08();
 }
 
-- (void)fetchAccessoryInformationForDevice:(id)a3
+- (void)fetchAccessoryInformationForDevice:(id)device
 {
   v5[1] = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!device)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
   v4 = 0x1F0E747E0;
-  v5[0] = a3;
+  v5[0] = device;
   [MEMORY[0x1E695DF20] dictionaryWithObjects:v5 forKeys:&v4 count:1];
   sub_19B890E08();
 }

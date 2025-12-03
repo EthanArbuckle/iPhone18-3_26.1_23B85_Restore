@@ -1,24 +1,24 @@
 @interface MKMapAttributionImage
-+ (id)badgeImageForView:(id)a3;
-- (MKMapAttributionImage)initWithAttributions:(id)a3 type:(int64_t)a4;
-- (id)imageNameForScale:(double)a3;
++ (id)badgeImageForView:(id)view;
+- (MKMapAttributionImage)initWithAttributions:(id)attributions type:(int64_t)type;
+- (id)imageNameForScale:(double)scale;
 @end
 
 @implementation MKMapAttributionImage
 
-- (id)imageNameForScale:(double)a3
+- (id)imageNameForScale:(double)scale
 {
   imageNameForScale = self->_imageNameForScale;
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:vcvtpd_u64_f64(a3)];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:vcvtpd_u64_f64(scale)];
   v5 = [(NSDictionary *)imageNameForScale objectForKeyedSubscript:v4];
 
   return v5;
 }
 
-- (MKMapAttributionImage)initWithAttributions:(id)a3 type:(int64_t)a4
+- (MKMapAttributionImage)initWithAttributions:(id)attributions type:(int64_t)type
 {
   v66 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  attributionsCopy = attributions;
   v63.receiver = self;
   v63.super_class = MKMapAttributionImage;
   v6 = [(MKMapAttributionImage *)&v63 init];
@@ -28,29 +28,29 @@
     goto LABEL_49;
   }
 
-  v7 = [MEMORY[0x1E695DF90] dictionary];
-  if (![v5 count])
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  if (![attributionsCopy count])
   {
     goto LABEL_44;
   }
 
-  v46 = [v5 objectAtIndex:0];
-  v8 = _attributionImagesForType(v46, a4);
+  v46 = [attributionsCopy objectAtIndex:0];
+  v8 = _attributionImagesForType(v46, type);
   if (![v8 count])
   {
     goto LABEL_43;
   }
 
   v44 = v6;
-  v54 = [v8 firstObject];
-  v9 = [v54 stringByDeletingPathExtension];
+  firstObject = [v8 firstObject];
+  stringByDeletingPathExtension = [firstObject stringByDeletingPathExtension];
   v10 = 3;
   v11 = 0x1E696A000uLL;
-  v12 = @"@%lux";
+  name2 = @"@%lux";
   while (1)
   {
     v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"@%lux", v10];
-    v14 = [v9 rangeOfString:v13];
+    v14 = [stringByDeletingPathExtension rangeOfString:v13];
 
     if (v14 != 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -65,9 +65,9 @@
     }
   }
 
-  v16 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:v10];
-  v49 = v7;
-  [v7 setObject:v54 forKeyedSubscript:v16];
+  name3 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:v10];
+  v49 = dictionary;
+  [dictionary setObject:firstObject forKeyedSubscript:name3];
 
   v43 = v8;
   v47 = [v8 mutableCopy];
@@ -75,8 +75,8 @@
   v60 = 0u;
   v61 = 0u;
   v62 = 0u;
-  v45 = v5;
-  obj = v5;
+  v45 = attributionsCopy;
+  obj = attributionsCopy;
   v17 = [obj countByEnumeratingWithState:&v59 objects:v65 count:16];
   v18 = v46;
   if (!v17)
@@ -100,29 +100,29 @@
       v22 = *(*(&v59 + 1) + 8 * v21);
       if (v22 != v18)
       {
-        v23 = [*(*(&v59 + 1) + 8 * v21) name];
-        if (v23)
+        name = [*(*(&v59 + 1) + 8 * v21) name];
+        if (name)
         {
-          v12 = [v22 name];
-          v16 = [v18 name];
-          if (([(__CFString *)v12 isEqualToString:v16]& 1) == 0)
+          name2 = [v22 name];
+          name3 = [v18 name];
+          if (([(__CFString *)name2 isEqualToString:name3]& 1) == 0)
           {
 
             goto LABEL_25;
           }
         }
 
-        v24 = v12;
+        v24 = name2;
         v25 = [v22 url];
         if (!v25)
         {
-          if (v23)
+          if (name)
           {
           }
 
 LABEL_24:
-          v23 = _attributionImagesForType(v22, a4);
-          [v47 addObjectsFromArray:v23];
+          name = _attributionImagesForType(v22, type);
+          [v47 addObjectsFromArray:name];
           v11 = 0x1E696A000;
 LABEL_25:
 
@@ -135,10 +135,10 @@ LABEL_25:
         v29 = [v18 url];
         v30 = [v28 isEqualToString:v29];
 
-        if (v23)
+        if (name)
         {
 
-          v12 = v24;
+          name2 = v24;
           v18 = v46;
           v20 = v27;
           v19 = v48;
@@ -153,7 +153,7 @@ LABEL_25:
           v18 = v46;
           v20 = v27;
           v19 = v48;
-          v12 = v24;
+          name2 = v24;
           if (v30)
           {
             goto LABEL_24;
@@ -196,14 +196,14 @@ LABEL_29:
         }
 
         v35 = *(*(&v55 + 1) + 8 * v34);
-        if (([v35 isEqualToString:v54] & 1) == 0)
+        if (([v35 isEqualToString:firstObject] & 1) == 0)
         {
-          v36 = [v35 stringByDeletingPathExtension];
+          stringByDeletingPathExtension2 = [v35 stringByDeletingPathExtension];
           v37 = 3;
           while (1)
           {
             v38 = [*(v11 + 3776) stringWithFormat:@"@%lux", v37];
-            v39 = [v36 rangeOfString:v38];
+            v39 = [stringByDeletingPathExtension2 rangeOfString:v38];
 
             if (v39 != 0x7FFFFFFFFFFFFFFFLL)
             {
@@ -235,15 +235,15 @@ LABEL_29:
   }
 
   v6 = v44;
-  v5 = v45;
-  v7 = v49;
+  attributionsCopy = v45;
+  dictionary = v49;
   v8 = v43;
 LABEL_43:
 
 LABEL_44:
-  if ([v7 count])
+  if ([dictionary count])
   {
-    objc_storeStrong(&v6->_imageNameForScale, v7);
+    objc_storeStrong(&v6->_imageNameForScale, dictionary);
     v41 = v6;
   }
 
@@ -256,22 +256,22 @@ LABEL_49:
   return v41;
 }
 
-+ (id)badgeImageForView:(id)a3
++ (id)badgeImageForView:(id)view
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E69A2478] modernManager];
-  v5 = [v4 activeTileGroup];
-  v6 = [v5 attributionsCount];
+  viewCopy = view;
+  modernManager = [MEMORY[0x1E69A2478] modernManager];
+  activeTileGroup = [modernManager activeTileGroup];
+  attributionsCount = [activeTileGroup attributionsCount];
 
-  if (v6)
+  if (attributionsCount)
   {
     v7 = [MKMapAttributionImage alloc];
-    v8 = [MEMORY[0x1E69A2478] modernManager];
-    v9 = [v8 activeTileGroup];
-    v10 = [v9 attributions];
-    v11 = [(MKMapAttributionImage *)v7 initWithAttributions:v10 type:1];
+    modernManager2 = [MEMORY[0x1E69A2478] modernManager];
+    activeTileGroup2 = [modernManager2 activeTileGroup];
+    attributions = [activeTileGroup2 attributions];
+    v11 = [(MKMapAttributionImage *)v7 initWithAttributions:attributions type:1];
 
-    [v3 _mapkit_currentScreenScale];
+    [viewCopy _mapkit_currentScreenScale];
     v13 = v12;
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
@@ -297,17 +297,17 @@ LABEL_49:
         }
       }
 
-      v6 = v17;
+      attributionsCount = v17;
     }
 
     else
     {
 LABEL_5:
-      v6 = 0;
+      attributionsCount = 0;
     }
   }
 
-  return v6;
+  return attributionsCount;
 }
 
 id __43__MKMapAttributionImage_badgeImageForView___block_invoke(uint64_t a1, double a2)

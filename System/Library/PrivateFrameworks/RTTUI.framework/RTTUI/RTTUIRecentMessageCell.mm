@@ -1,19 +1,19 @@
 @interface RTTUIRecentMessageCell
-- (void)configureWithUtterance:(id)a3 needsPrefix:(BOOL)a4 otherContactDisplayName:(id)a5;
+- (void)configureWithUtterance:(id)utterance needsPrefix:(BOOL)prefix otherContactDisplayName:(id)name;
 @end
 
 @implementation RTTUIRecentMessageCell
 
-- (void)configureWithUtterance:(id)a3 needsPrefix:(BOOL)a4 otherContactDisplayName:(id)a5
+- (void)configureWithUtterance:(id)utterance needsPrefix:(BOOL)prefix otherContactDisplayName:(id)name
 {
-  v6 = a4;
+  prefixCopy = prefix;
   v87[8] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v83 = a5;
-  v9 = [(RTTUIRecentMessageCell *)self label];
+  utteranceCopy = utterance;
+  nameCopy = name;
+  label = [(RTTUIRecentMessageCell *)self label];
 
-  v84 = v6;
-  if (!v9)
+  v84 = prefixCopy;
+  if (!label)
   {
     v10 = objc_alloc(MEMORY[0x277D75D68]);
     v11 = MEMORY[0x277D75D00];
@@ -25,79 +25,79 @@
     v15 = objc_opt_new();
     [(RTTUIRecentMessageCell *)self setLabel:v15];
 
-    v16 = [(RTTUIRecentMessageCell *)self label];
-    [v16 setNumberOfLines:0];
+    label2 = [(RTTUIRecentMessageCell *)self label];
+    [label2 setNumberOfLines:0];
 
-    v17 = [(RTTUIRecentMessageCell *)self label];
-    [v17 setAdjustsFontForContentSizeCategory:1];
+    label3 = [(RTTUIRecentMessageCell *)self label];
+    [label3 setAdjustsFontForContentSizeCategory:1];
 
-    v18 = [(RTTUIRecentMessageCell *)self label];
-    [v18 setTranslatesAutoresizingMaskIntoConstraints:0];
+    label4 = [(RTTUIRecentMessageCell *)self label];
+    [label4 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v19 = [(RTTUIRecentMessageCell *)self contentView];
-    [v19 addSubview:v14];
+    contentView = [(RTTUIRecentMessageCell *)self contentView];
+    [contentView addSubview:v14];
 
-    v20 = [v14 contentView];
-    v21 = [(RTTUIRecentMessageCell *)self label];
-    [v20 addSubview:v21];
+    contentView2 = [v14 contentView];
+    label5 = [(RTTUIRecentMessageCell *)self label];
+    [contentView2 addSubview:label5];
 
     v65 = MEMORY[0x277CCAAD0];
-    v80 = [v14 leadingAnchor];
-    v81 = [(RTTUIRecentMessageCell *)self contentView];
-    v79 = [v81 leadingAnchor];
-    v78 = [v80 constraintEqualToAnchor:v79];
+    leadingAnchor = [v14 leadingAnchor];
+    contentView3 = [(RTTUIRecentMessageCell *)self contentView];
+    leadingAnchor2 = [contentView3 leadingAnchor];
+    v78 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v87[0] = v78;
-    v76 = [v14 topAnchor];
-    v77 = [(RTTUIRecentMessageCell *)self contentView];
-    v75 = [v77 topAnchor];
-    v74 = [v76 constraintEqualToAnchor:v75];
+    topAnchor = [v14 topAnchor];
+    contentView4 = [(RTTUIRecentMessageCell *)self contentView];
+    topAnchor2 = [contentView4 topAnchor];
+    v74 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v87[1] = v74;
-    v72 = [v14 trailingAnchor];
-    v73 = [(RTTUIRecentMessageCell *)self contentView];
-    v71 = [v73 trailingAnchor];
-    v70 = [v72 constraintEqualToAnchor:v71];
+    trailingAnchor = [v14 trailingAnchor];
+    contentView5 = [(RTTUIRecentMessageCell *)self contentView];
+    trailingAnchor2 = [contentView5 trailingAnchor];
+    v70 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v87[2] = v70;
-    v68 = [v14 bottomAnchor];
-    v69 = [(RTTUIRecentMessageCell *)self contentView];
-    v67 = [v69 bottomAnchor];
-    v66 = [v68 constraintEqualToAnchor:v67];
+    bottomAnchor = [v14 bottomAnchor];
+    contentView6 = [(RTTUIRecentMessageCell *)self contentView];
+    bottomAnchor2 = [contentView6 bottomAnchor];
+    v66 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v87[3] = v66;
-    v64 = [(RTTUIRecentMessageCell *)self label];
-    v62 = [v64 leadingAnchor];
-    v63 = [v14 contentView];
-    v61 = [v63 leadingAnchor];
-    v60 = [v62 constraintEqualToAnchor:v61];
+    label6 = [(RTTUIRecentMessageCell *)self label];
+    leadingAnchor3 = [label6 leadingAnchor];
+    contentView7 = [v14 contentView];
+    leadingAnchor4 = [contentView7 leadingAnchor];
+    v60 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     v87[4] = v60;
-    v59 = [(RTTUIRecentMessageCell *)self label];
-    v57 = [v59 topAnchor];
-    v58 = [v14 contentView];
-    v56 = [v58 topAnchor];
-    v55 = [v57 constraintEqualToAnchor:v56];
+    label7 = [(RTTUIRecentMessageCell *)self label];
+    topAnchor3 = [label7 topAnchor];
+    contentView8 = [v14 contentView];
+    topAnchor4 = [contentView8 topAnchor];
+    v55 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
     v87[5] = v55;
-    v54 = [(RTTUIRecentMessageCell *)self label];
-    v52 = [v54 trailingAnchor];
-    v53 = [v14 contentView];
-    v22 = [v53 trailingAnchor];
-    v23 = [v52 constraintEqualToAnchor:v22];
+    label8 = [(RTTUIRecentMessageCell *)self label];
+    trailingAnchor3 = [label8 trailingAnchor];
+    contentView9 = [v14 contentView];
+    trailingAnchor4 = [contentView9 trailingAnchor];
+    v23 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     v87[6] = v23;
     [(RTTUIRecentMessageCell *)self label];
-    v24 = v82 = v8;
-    v25 = [v24 bottomAnchor];
-    v26 = [v14 contentView];
-    v27 = [v26 bottomAnchor];
-    v28 = [v25 constraintEqualToAnchor:v27];
+    v24 = v82 = utteranceCopy;
+    bottomAnchor3 = [v24 bottomAnchor];
+    contentView10 = [v14 contentView];
+    bottomAnchor4 = [contentView10 bottomAnchor];
+    v28 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
     v87[7] = v28;
     v29 = [MEMORY[0x277CBEA60] arrayWithObjects:v87 count:8];
     [v65 activateConstraints:v29];
 
-    v8 = v82;
-    v6 = v84;
+    utteranceCopy = v82;
+    prefixCopy = v84;
   }
 
-  v30 = [MEMORY[0x277D751C0] clearConfiguration];
-  [(RTTUIRecentMessageCell *)self setBackgroundConfiguration:v30];
+  clearConfiguration = [MEMORY[0x277D751C0] clearConfiguration];
+  [(RTTUIRecentMessageCell *)self setBackgroundConfiguration:clearConfiguration];
 
-  if ([v8 isMe])
+  if ([utteranceCopy isMe])
   {
     [MEMORY[0x277D75348] secondaryLabelColor];
   }
@@ -110,11 +110,11 @@
   v32 = *MEMORY[0x277D76918];
   v33 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76918]];
   v34 = [MEMORY[0x277D74300] _preferredFontForTextStyle:v32 weight:*MEMORY[0x277D74420]];
-  v35 = [v8 text];
-  if ([v8 isTranscription])
+  text = [utteranceCopy text];
+  if ([utteranceCopy isTranscription])
   {
-    v36 = [v33 fontDescriptor];
-    v37 = [v36 fontDescriptorWithSymbolicTraits:1];
+    fontDescriptor = [v33 fontDescriptor];
+    v37 = [fontDescriptor fontDescriptorWithSymbolicTraits:1];
 
     v38 = MEMORY[0x277D74300];
     [v33 pointSize];
@@ -123,33 +123,33 @@
     v33 = v39;
   }
 
-  if (v6)
+  if (prefixCopy)
   {
-    if ([v8 isMe])
+    if ([utteranceCopy isMe])
     {
       v40 = ttyLocString();
-      v41 = [v8 text];
-      v51 = v41;
+      text2 = [utteranceCopy text];
+      v51 = text2;
     }
 
     else
     {
       v40 = ttyLocString();
-      v41 = [v8 text];
-      v51 = v83;
+      text2 = [utteranceCopy text];
+      v51 = nameCopy;
     }
 
     v43 = AXCFormattedString();
 
-    v44 = [v8 text];
-    v42 = [v43 rangeOfString:v44];
+    text3 = [utteranceCopy text];
+    v42 = [v43 rangeOfString:text3];
 
     if (v42 == 0x7FFFFFFFFFFFFFFFLL)
     {
       v42 = 0;
     }
 
-    v35 = v43;
+    text = v43;
   }
 
   else
@@ -165,15 +165,15 @@
   v86[0] = v33;
   v86[1] = v31;
   v48 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v86 forKeys:v85 count:2];
-  v49 = [v45 initWithString:v35 attributes:v48];
+  v49 = [v45 initWithString:text attributes:v48];
 
   if (v84 && v42)
   {
     [v49 addAttribute:v46 value:v34 range:{0, v42}];
   }
 
-  v50 = [(RTTUIRecentMessageCell *)self label];
-  [v50 setAttributedText:v49];
+  label9 = [(RTTUIRecentMessageCell *)self label];
+  [label9 setAttributedText:v49];
 }
 
 @end

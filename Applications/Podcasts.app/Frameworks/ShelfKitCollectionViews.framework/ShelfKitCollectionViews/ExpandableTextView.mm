@@ -1,5 +1,5 @@
 @interface ExpandableTextView
-- (void)moreFrom:(id)a3;
+- (void)moreFrom:(id)from;
 - (void)tintColorDidChange;
 @end
 
@@ -12,17 +12,17 @@
   v2 = v5.receiver;
   [(ExpandableTextView *)&v5 tintColorDidChange];
   v3 = *&v2[OBJC_IVAR____TtC23ShelfKitCollectionViews18ExpandableTextView_moreButton];
-  v4 = [v2 tintColor];
-  [v3 setTitleColor:v4 forState:0];
+  tintColor = [v2 tintColor];
+  [v3 setTitleColor:tintColor forState:0];
 }
 
-- (void)moreFrom:(id)a3
+- (void)moreFrom:(id)from
 {
   v3 = *(&self->super.super.super.isa + OBJC_IVAR____TtC23ShelfKitCollectionViews18ExpandableTextView_moreTapHandler);
   if (v3)
   {
     v4 = *&self->textView[OBJC_IVAR____TtC23ShelfKitCollectionViews18ExpandableTextView_moreTapHandler];
-    v5 = self;
+    selfCopy = self;
     v6 = sub_A0EF8(v3, v4);
     v3(v6);
 

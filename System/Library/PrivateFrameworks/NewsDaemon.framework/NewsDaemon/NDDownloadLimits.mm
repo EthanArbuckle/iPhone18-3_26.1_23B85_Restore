@@ -1,11 +1,11 @@
 @interface NDDownloadLimits
 + (NDDownloadLimits)defaultLimits;
-- (BOOL)isEqual:(id)a3;
-- (NDDownloadLimits)initWithCoder:(id)a3;
-- (NDDownloadLimits)initWithMinDeviceStorage:(int64_t)a3 maxDownloadStorage:(int64_t)a4;
+- (BOOL)isEqual:(id)equal;
+- (NDDownloadLimits)initWithCoder:(id)coder;
+- (NDDownloadLimits)initWithMinDeviceStorage:(int64_t)storage maxDownloadStorage:(int64_t)downloadStorage;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NDDownloadLimits
@@ -29,30 +29,30 @@ uint64_t __33__NDDownloadLimits_defaultLimits__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (NDDownloadLimits)initWithMinDeviceStorage:(int64_t)a3 maxDownloadStorage:(int64_t)a4
+- (NDDownloadLimits)initWithMinDeviceStorage:(int64_t)storage maxDownloadStorage:(int64_t)downloadStorage
 {
   v7.receiver = self;
   v7.super_class = NDDownloadLimits;
   result = [(NDDownloadLimits *)&v7 init];
   if (result)
   {
-    result->_minDeviceStorage = a3;
-    result->_maxDownloadStorage = a4;
+    result->_minDeviceStorage = storage;
+    result->_maxDownloadStorage = downloadStorage;
   }
 
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   v5 = FCDynamicCast();
 
   if (v5 && (v6 = -[NDDownloadLimits minDeviceStorage](self, "minDeviceStorage"), v6 == [v5 minDeviceStorage]))
   {
-    v7 = [(NDDownloadLimits *)self maxDownloadStorage];
-    v8 = v7 == [v5 maxDownloadStorage];
+    maxDownloadStorage = [(NDDownloadLimits *)self maxDownloadStorage];
+    v8 = maxDownloadStorage == [v5 maxDownloadStorage];
   }
 
   else
@@ -82,30 +82,30 @@ uint64_t __33__NDDownloadLimits_defaultLimits__block_invoke()
   v5 = [MEMORY[0x277CCA8E8] stringFromByteCount:-[NDDownloadLimits maxDownloadStorage](self countStyle:{"maxDownloadStorage"), 0}];
   [v3 addField:@"maxDownloadStorage" object:v5];
 
-  v6 = [v3 descriptionString];
+  descriptionString = [v3 descriptionString];
 
-  return v6;
+  return descriptionString;
 }
 
-- (NDDownloadLimits)initWithCoder:(id)a3
+- (NDDownloadLimits)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"minDeviceStorage"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"maxDownloadStorage"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"minDeviceStorage"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"maxDownloadStorage"];
 
   v7 = -[NDDownloadLimits initWithMinDeviceStorage:maxDownloadStorage:](self, "initWithMinDeviceStorage:maxDownloadStorage:", [v5 unsignedLongLongValue], objc_msgSend(v6, "unsignedLongLongValue"));
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x277CCABB0];
-  v5 = a3;
+  coderCopy = coder;
   v6 = [v4 numberWithLongLong:{-[NDDownloadLimits minDeviceStorage](self, "minDeviceStorage")}];
-  [v5 encodeObject:v6 forKey:@"minDeviceStorage"];
+  [coderCopy encodeObject:v6 forKey:@"minDeviceStorage"];
 
   v7 = [MEMORY[0x277CCABB0] numberWithLongLong:{-[NDDownloadLimits maxDownloadStorage](self, "maxDownloadStorage")}];
-  [v5 encodeObject:v7 forKey:@"maxDownloadStorage"];
+  [coderCopy encodeObject:v7 forKey:@"maxDownloadStorage"];
 }
 
 @end

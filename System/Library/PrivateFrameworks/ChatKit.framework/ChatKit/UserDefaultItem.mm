@@ -1,7 +1,7 @@
 @interface UserDefaultItem
 - (_TtC7ChatKit15UserDefaultItem)init;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation UserDefaultItem
@@ -9,23 +9,23 @@
 - (void)dealloc
 {
   v2 = *(&self->super.isa + OBJC_IVAR____TtC7ChatKit15UserDefaultItem_defaults);
-  v3 = self;
+  selfCopy = self;
   v4 = v2;
   sub_190D52690();
   v5 = sub_190D56ED0();
 
-  [v4 removeObserver:v3 forKeyPath:v5];
+  [v4 removeObserver:selfCopy forKeyPath:v5];
 
-  v6.receiver = v3;
+  v6.receiver = selfCopy;
   v6.super_class = type metadata accessor for UserDefaultItem(0);
   [(UserDefaultItem *)&v6 dealloc];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (a4)
+  if (object)
   {
-    v7 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_190D58140();
     swift_unknownObjectRelease();
@@ -34,7 +34,7 @@
   else
   {
     memset(v10, 0, sizeof(v10));
-    v8 = self;
+    selfCopy2 = self;
   }
 
   v9 = OBJC_IVAR____TtC7ChatKit15UserDefaultItem_shouldSetValueInUserDefaults;

@@ -1,17 +1,17 @@
 @interface DynamicHeightLabelView
-- (_TtC16HealthArticlesUI22DynamicHeightLabelView)initWithCoder:(id)a3;
-- (_TtC16HealthArticlesUI22DynamicHeightLabelView)initWithFrame:(CGRect)a3;
+- (_TtC16HealthArticlesUI22DynamicHeightLabelView)initWithCoder:(id)coder;
+- (_TtC16HealthArticlesUI22DynamicHeightLabelView)initWithFrame:(CGRect)frame;
 - (void)preferredContentSizeCategoryDidChange;
 @end
 
 @implementation DynamicHeightLabelView
 
-- (_TtC16HealthArticlesUI22DynamicHeightLabelView)initWithFrame:(CGRect)a3
+- (_TtC16HealthArticlesUI22DynamicHeightLabelView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   sub_25133F8F4();
   sub_25133F8E4();
   sub_25133F894();
@@ -25,7 +25,7 @@
   return v7;
 }
 
-- (_TtC16HealthArticlesUI22DynamicHeightLabelView)initWithCoder:(id)a3
+- (_TtC16HealthArticlesUI22DynamicHeightLabelView)initWithCoder:(id)coder
 {
   sub_25133F8F4();
   sub_25133F8E4();
@@ -55,7 +55,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = self;
+  selfCopy = self;
   sub_25131B180();
 }
 

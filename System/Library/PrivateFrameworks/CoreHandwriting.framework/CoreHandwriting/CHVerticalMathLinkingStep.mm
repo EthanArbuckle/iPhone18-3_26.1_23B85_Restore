@@ -1,19 +1,19 @@
 @interface CHVerticalMathLinkingStep
-- (id)process:(id)a3 options:(id)a4;
+- (id)process:(id)process options:(id)options;
 @end
 
 @implementation CHVerticalMathLinkingStep
 
-- (id)process:(id)a3 options:(id)a4
+- (id)process:(id)process options:(id)options
 {
   v608 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v563 = a4;
-  v577 = v5;
-  v14 = objc_msgSend_objectForKeyedSubscript_(v563, v6, qword_1EA84BB58, v7, v8, v9);
+  processCopy = process;
+  optionsCopy = options;
+  v577 = processCopy;
+  v14 = objc_msgSend_objectForKeyedSubscript_(optionsCopy, v6, qword_1EA84BB58, v7, v8, v9);
   if (v14)
   {
-    v15 = objc_msgSend_objectForKeyedSubscript_(v563, v10, qword_1EA84BB58, v11, v12, v13);
+    v15 = objc_msgSend_objectForKeyedSubscript_(optionsCopy, v10, qword_1EA84BB58, v11, v12, v13);
     v21 = objc_msgSend_BOOLValue(v15, v16, v17, v18, v19, v20);
   }
 
@@ -24,7 +24,7 @@
 
   v27 = objc_msgSend_groupingManager(self, v22, v23, v24, v25, v26);
   v33 = objc_msgSend_strokeProvider(v27, v28, v29, v30, v31, v32);
-  sub_1838DD388(&v596, v5, v33, v21);
+  sub_1838DD388(&v596, processCopy, v33, v21);
 
   if (qword_1EA84DC48 != -1)
   {
@@ -925,7 +925,7 @@ LABEL_167:
   }
 
 LABEL_185:
-  v430 = v563;
+  v430 = optionsCopy;
   v431 = v577;
   objc_opt_self();
   v436 = v430;

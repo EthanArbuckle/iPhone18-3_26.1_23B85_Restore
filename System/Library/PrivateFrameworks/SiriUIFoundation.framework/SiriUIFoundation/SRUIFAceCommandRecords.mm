@@ -1,15 +1,15 @@
 @interface SRUIFAceCommandRecords
 - (SRUIFAceCommandRecords)init;
 - (SRUIFAceCommandRecordsDelegate)delegate;
-- (id)_recordForAceCommand:(id)a3;
-- (id)aceCommandWithIdentifier:(id)a3;
-- (id)pendingAddViewsWithReflectionDialogPhaseWithRefId:(id)a3;
-- (int64_t)resultForAceCommand:(id)a3;
-- (void)aceCommandRecordDidChangeResult:(id)a3;
-- (void)recordActionCompletedForAceCommand:(id)a3 success:(BOOL)a4;
-- (void)recordActionStartedForAceCommand:(id)a3;
-- (void)recordActionStoppedForAceCommand:(id)a3;
-- (void)registerAceCommand:(id)a3 completion:(id)a4;
+- (id)_recordForAceCommand:(id)command;
+- (id)aceCommandWithIdentifier:(id)identifier;
+- (id)pendingAddViewsWithReflectionDialogPhaseWithRefId:(id)id;
+- (int64_t)resultForAceCommand:(id)command;
+- (void)aceCommandRecordDidChangeResult:(id)result;
+- (void)recordActionCompletedForAceCommand:(id)command success:(BOOL)success;
+- (void)recordActionStartedForAceCommand:(id)command;
+- (void)recordActionStoppedForAceCommand:(id)command;
+- (void)registerAceCommand:(id)command completion:(id)completion;
 @end
 
 @implementation SRUIFAceCommandRecords
@@ -21,9 +21,9 @@
   v2 = [(SRUIFAceCommandRecords *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     recordsByCommandIdentifier = v2->_recordsByCommandIdentifier;
-    v2->_recordsByCommandIdentifier = v3;
+    v2->_recordsByCommandIdentifier = dictionary;
   }
 
   return v2;
@@ -36,54 +36,54 @@
   return WeakRetained;
 }
 
-- (void)aceCommandRecordDidChangeResult:(id)a3
+- (void)aceCommandRecordDidChangeResult:(id)result
 {
-  v4 = a3;
-  v7 = [(SRUIFAceCommandRecords *)self delegate];
-  v5 = [v4 aceCommand];
-  v6 = [v4 commandCompletion];
+  resultCopy = result;
+  delegate = [(SRUIFAceCommandRecords *)self delegate];
+  aceCommand = [resultCopy aceCommand];
+  commandCompletion = [resultCopy commandCompletion];
 
-  [v7 aceCommandRecords:self didChangeResultForCommand:v5 completion:v6];
+  [delegate aceCommandRecords:self didChangeResultForCommand:aceCommand completion:commandCompletion];
 }
 
-- (void)registerAceCommand:(id)a3 completion:(id)a4
+- (void)registerAceCommand:(id)command completion:(id)completion
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 aceId];
+  commandCopy = command;
+  completionCopy = completion;
+  aceId = [commandCopy aceId];
   v9 = MEMORY[0x277CEF098];
   v10 = *MEMORY[0x277CEF098];
-  if (v8)
+  if (aceId)
   {
     if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
     {
       v22 = 136315394;
       v23 = "[SRUIFAceCommandRecords registerAceCommand:completion:]";
       v24 = 2112;
-      v25 = v8;
+      v25 = aceId;
       _os_log_impl(&dword_26951F000, v10, OS_LOG_TYPE_DEFAULT, "%s #aceCommandRecord identifier=%@", &v22, 0x16u);
     }
 
-    v11 = [(SRUIFAceCommandRecords *)self aceCommandWithIdentifier:v8];
+    v11 = [(SRUIFAceCommandRecords *)self aceCommandWithIdentifier:aceId];
     if (v11)
     {
-      if (([v6 isEqual:v11] & 1) == 0)
+      if (([commandCopy isEqual:v11] & 1) == 0)
       {
-        v12 = [[SRUIFAceCommandRecord alloc] initWithAceCommand:v6 andCompletion:v7];
+        v12 = [[SRUIFAceCommandRecord alloc] initWithAceCommand:commandCopy andCompletion:completionCopy];
         [(SRUIFAceCommandRecord *)v12 setDelegate:self];
-        v13 = [(SRUIFAceCommandRecords *)self _recordsByCommandIdentifier];
-        [v13 setObject:v12 forKey:v8];
+        _recordsByCommandIdentifier = [(SRUIFAceCommandRecords *)self _recordsByCommandIdentifier];
+        [_recordsByCommandIdentifier setObject:v12 forKey:aceId];
       }
 
-      if (![v6 isEqual:v11])
+      if (![commandCopy isEqual:v11])
       {
         goto LABEL_16;
       }
 
-      v14 = [(SRUIFAceCommandRecords *)self _recordsByCommandIdentifier];
-      v15 = [v11 aceId];
-      v16 = [v14 objectForKey:v15];
+      _recordsByCommandIdentifier2 = [(SRUIFAceCommandRecords *)self _recordsByCommandIdentifier];
+      aceId2 = [v11 aceId];
+      v16 = [_recordsByCommandIdentifier2 objectForKey:aceId2];
 
       if (!v16)
       {
@@ -98,17 +98,17 @@ LABEL_16:
         v17 = 0x277D47218;
 LABEL_20:
         v20 = objc_alloc_init(*v17);
-        v18 = v20;
-        if (v7 && v20)
+        _recordsByCommandIdentifier3 = v20;
+        if (completionCopy && v20)
         {
-          [v20 setRefId:v8];
+          [v20 setRefId:aceId];
           v21 = *v9;
           if (os_log_type_enabled(*v9, OS_LOG_TYPE_ERROR))
           {
             [(SRUIFAceCommandRecords *)v11 registerAceCommand:v21 completion:v16];
           }
 
-          v7[2](v7, v18);
+          completionCopy[2](completionCopy, _recordsByCommandIdentifier3);
         }
 
         goto LABEL_14;
@@ -120,15 +120,15 @@ LABEL_20:
         goto LABEL_20;
       }
 
-      v18 = 0;
+      _recordsByCommandIdentifier3 = 0;
     }
 
     else
     {
-      v16 = [[SRUIFAceCommandRecord alloc] initWithAceCommand:v6 andCompletion:v7];
+      v16 = [[SRUIFAceCommandRecord alloc] initWithAceCommand:commandCopy andCompletion:completionCopy];
       [(SRUIFAceCommandRecord *)v16 setDelegate:self];
-      v18 = [(SRUIFAceCommandRecords *)self _recordsByCommandIdentifier];
-      [v18 setObject:v16 forKey:v8];
+      _recordsByCommandIdentifier3 = [(SRUIFAceCommandRecords *)self _recordsByCommandIdentifier];
+      [_recordsByCommandIdentifier3 setObject:v16 forKey:aceId];
     }
 
 LABEL_14:
@@ -138,7 +138,7 @@ LABEL_14:
 
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_ERROR))
   {
-    [SRUIFAceCommandRecords registerAceCommand:v6 completion:v10];
+    [SRUIFAceCommandRecords registerAceCommand:commandCopy completion:v10];
   }
 
 LABEL_17:
@@ -146,20 +146,20 @@ LABEL_17:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (id)pendingAddViewsWithReflectionDialogPhaseWithRefId:(id)a3
+- (id)pendingAddViewsWithReflectionDialogPhaseWithRefId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v6 = [(SRUIFAceCommandRecords *)self _recordsByCommandIdentifier];
+  _recordsByCommandIdentifier = [(SRUIFAceCommandRecords *)self _recordsByCommandIdentifier];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __76__SRUIFAceCommandRecords_pendingAddViewsWithReflectionDialogPhaseWithRefId___block_invoke;
   v12[3] = &unk_279C62968;
-  v13 = v4;
+  v13 = idCopy;
   v7 = v5;
   v14 = v7;
-  v8 = v4;
-  [v6 enumerateKeysAndObjectsUsingBlock:v12];
+  v8 = idCopy;
+  [_recordsByCommandIdentifier enumerateKeysAndObjectsUsingBlock:v12];
 
   v9 = v14;
   v10 = v7;
@@ -213,87 +213,87 @@ LABEL_6:
 LABEL_8:
 }
 
-- (id)aceCommandWithIdentifier:(id)a3
+- (id)aceCommandWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(SRUIFAceCommandRecords *)self _recordsByCommandIdentifier];
-  v6 = [v5 objectForKey:v4];
+  identifierCopy = identifier;
+  _recordsByCommandIdentifier = [(SRUIFAceCommandRecords *)self _recordsByCommandIdentifier];
+  v6 = [_recordsByCommandIdentifier objectForKey:identifierCopy];
 
-  v7 = [v6 aceCommand];
+  aceCommand = [v6 aceCommand];
+
+  return aceCommand;
+}
+
+- (id)_recordForAceCommand:(id)command
+{
+  commandCopy = command;
+  [(SRUIFAceCommandRecords *)self registerAceCommand:commandCopy completion:0];
+  _recordsByCommandIdentifier = [(SRUIFAceCommandRecords *)self _recordsByCommandIdentifier];
+  aceId = [commandCopy aceId];
+
+  v7 = [_recordsByCommandIdentifier objectForKey:aceId];
 
   return v7;
 }
 
-- (id)_recordForAceCommand:(id)a3
-{
-  v4 = a3;
-  [(SRUIFAceCommandRecords *)self registerAceCommand:v4 completion:0];
-  v5 = [(SRUIFAceCommandRecords *)self _recordsByCommandIdentifier];
-  v6 = [v4 aceId];
-
-  v7 = [v5 objectForKey:v6];
-
-  return v7;
-}
-
-- (void)recordActionStartedForAceCommand:(id)a3
+- (void)recordActionStartedForAceCommand:(id)command
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  commandCopy = command;
   v5 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
   {
     v8 = 136315394;
     v9 = "[SRUIFAceCommandRecords recordActionStartedForAceCommand:]";
     v10 = 2112;
-    v11 = v4;
+    v11 = commandCopy;
     _os_log_impl(&dword_26951F000, v5, OS_LOG_TYPE_DEFAULT, "%s #aceCommandRecord aceCommand=%@", &v8, 0x16u);
   }
 
-  v6 = [(SRUIFAceCommandRecords *)self _recordForAceCommand:v4];
+  v6 = [(SRUIFAceCommandRecords *)self _recordForAceCommand:commandCopy];
   [v6 incrementNumberOfStartedActions];
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)recordActionStoppedForAceCommand:(id)a3
+- (void)recordActionStoppedForAceCommand:(id)command
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  commandCopy = command;
   v5 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
   {
     v8 = 136315394;
     v9 = "[SRUIFAceCommandRecords recordActionStoppedForAceCommand:]";
     v10 = 2112;
-    v11 = v4;
+    v11 = commandCopy;
     _os_log_impl(&dword_26951F000, v5, OS_LOG_TYPE_DEFAULT, "%s #aceCommandRecord aceCommand=%@", &v8, 0x16u);
   }
 
-  v6 = [(SRUIFAceCommandRecords *)self _recordForAceCommand:v4];
+  v6 = [(SRUIFAceCommandRecords *)self _recordForAceCommand:commandCopy];
   [v6 incrementNumberOfStoppedActions];
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)recordActionCompletedForAceCommand:(id)a3 success:(BOOL)a4
+- (void)recordActionCompletedForAceCommand:(id)command success:(BOOL)success
 {
-  v4 = a4;
+  successCopy = success;
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(SRUIFAceCommandRecords *)self _recordForAceCommand:v6];
+  commandCopy = command;
+  v7 = [(SRUIFAceCommandRecords *)self _recordForAceCommand:commandCopy];
   v8 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
   {
     v9 = v8;
-    v10 = [v7 result];
+    result = [v7 result];
     v11 = @"SRUIFAceCommandResultNone";
-    if (v10 == 1)
+    if (result == 1)
     {
       v11 = @"SRUIFAceCommandResultSucceeded";
     }
 
-    if (v10 == 2)
+    if (result == 2)
     {
       v11 = @"SRUIFAceCommandResultFailed";
     }
@@ -302,23 +302,23 @@ LABEL_8:
     v14 = 136316674;
     v15 = "[SRUIFAceCommandRecords recordActionCompletedForAceCommand:success:]";
     v16 = 2112;
-    v17 = v6;
+    v17 = commandCopy;
     v18 = 2112;
     v19 = v12;
     v20 = 2048;
-    v21 = [v7 numberOfStartedActions];
+    numberOfStartedActions = [v7 numberOfStartedActions];
     v22 = 2048;
-    v23 = [v7 numberOfStoppedActions];
+    numberOfStoppedActions = [v7 numberOfStoppedActions];
     v24 = 2048;
-    v25 = [v7 numberOfSuccessfullyCompletedActions];
+    numberOfSuccessfullyCompletedActions = [v7 numberOfSuccessfullyCompletedActions];
     v26 = 2048;
-    v27 = [v7 numberOfUnsuccessfullyCompletedActions];
+    numberOfUnsuccessfullyCompletedActions = [v7 numberOfUnsuccessfullyCompletedActions];
     _os_log_impl(&dword_26951F000, v9, OS_LOG_TYPE_DEFAULT, "%s #aceCommandRecord aceCommand=%@ result=%@ StartedActions=%zd StoppedActions=%zd SuccessfulActions=%zd UnsuccessfulActions=%zd ", &v14, 0x48u);
   }
 
   if (![v7 result])
   {
-    if (v4)
+    if (successCopy)
     {
       [v7 incrementNumberOfSuccessfullyCompletedActions];
     }
@@ -332,12 +332,12 @@ LABEL_8:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (int64_t)resultForAceCommand:(id)a3
+- (int64_t)resultForAceCommand:(id)command
 {
-  v3 = [(SRUIFAceCommandRecords *)self _recordForAceCommand:a3];
-  v4 = [v3 result];
+  v3 = [(SRUIFAceCommandRecords *)self _recordForAceCommand:command];
+  result = [v3 result];
 
-  return v4;
+  return result;
 }
 
 - (void)registerAceCommand:(void *)a3 completion:.cold.1(void *a1, void *a2, void *a3)

@@ -1,12 +1,12 @@
 @interface CPUINowPlayingManager
 + (id)sharedManager;
-- (CPUINowPlayingManager)initWithBundleIdentifier:(id)a3;
+- (CPUINowPlayingManager)initWithBundleIdentifier:(id)identifier;
 - (void)_setupRequestController;
-- (void)addNowPlayingObserver:(id)a3;
-- (void)controller:(id)a3 defersResponseReplacement:(id)a4;
+- (void)addNowPlayingObserver:(id)observer;
+- (void)controller:(id)controller defersResponseReplacement:(id)replacement;
 - (void)dealloc;
-- (void)performCommandRequest:(id)a3 completion:(id)a4;
-- (void)setThrottleBehavior:(unint64_t)a3;
+- (void)performCommandRequest:(id)request completion:(id)completion;
+- (void)setThrottleBehavior:(unint64_t)behavior;
 @end
 
 @implementation CPUINowPlayingManager
@@ -17,7 +17,7 @@
   block[1] = 3221225472;
   block[2] = __38__CPUINowPlayingManager_sharedManager__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedManager_onceToken != -1)
   {
     dispatch_once(&sharedManager_onceToken, block);
@@ -35,9 +35,9 @@ uint64_t __38__CPUINowPlayingManager_sharedManager__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (CPUINowPlayingManager)initWithBundleIdentifier:(id)a3
+- (CPUINowPlayingManager)initWithBundleIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v12.receiver = self;
   v12.super_class = CPUINowPlayingManager;
   v6 = [(CPUINowPlayingManager *)&v12 init];
@@ -50,19 +50,19 @@ uint64_t __38__CPUINowPlayingManager_sharedManager__block_invoke(uint64_t a1)
     stateObservers = v7->_stateObservers;
     v7->_stateObservers = v9;
 
-    objc_storeStrong(&v7->_bundleIdentifier, a3);
+    objc_storeStrong(&v7->_bundleIdentifier, identifier);
     [(CPUINowPlayingManager *)v7 _setupRequestController];
   }
 
   return v7;
 }
 
-- (void)setThrottleBehavior:(unint64_t)a3
+- (void)setThrottleBehavior:(unint64_t)behavior
 {
-  if (self->_throttleBehavior != a3)
+  if (self->_throttleBehavior != behavior)
   {
-    self->_throttleBehavior = a3;
-    if (a3)
+    self->_throttleBehavior = behavior;
+    if (behavior)
     {
       metadataThrottle = self->_metadataThrottle;
       if (metadataThrottle)
@@ -85,7 +85,7 @@ uint64_t __38__CPUINowPlayingManager_sharedManager__block_invoke(uint64_t a1)
 {
   v59[1] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc_init(MEMORY[0x277CD6038]);
-  v44 = self;
+  selfCopy = self;
   requestController = self->_requestController;
   self->_requestController = v3;
 
@@ -151,16 +151,16 @@ uint64_t __38__CPUINowPlayingManager_sharedManager__block_invoke(uint64_t a1)
   [v30 setQueueItemProperties:v22];
   [v30 setPlayingItemProperties:v22];
   v31 = MEMORY[0x277D278E0];
-  v32 = [(CPUINowPlayingManager *)v44 bundleIdentifier];
-  v33 = [v31 pathWithRoute:0 bundleID:v32 playerID:0];
+  bundleIdentifier = [(CPUINowPlayingManager *)selfCopy bundleIdentifier];
+  v33 = [v31 pathWithRoute:0 bundleID:bundleIdentifier playerID:0];
   [v30 setPlayerPath:v33];
 
   [v30 setQueueSectionProperties:v29];
-  v34 = [(CPUINowPlayingManager *)v44 requestController];
-  [v34 setRequest:v30];
+  requestController = [(CPUINowPlayingManager *)selfCopy requestController];
+  [requestController setRequest:v30];
 
-  v35 = [(CPUINowPlayingManager *)v44 requestController];
-  [v35 setDelegate:v44];
+  requestController2 = [(CPUINowPlayingManager *)selfCopy requestController];
+  [requestController2 setDelegate:selfCopy];
 
   v36 = CarPlayUIGeneralLogging();
   if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
@@ -169,8 +169,8 @@ uint64_t __38__CPUINowPlayingManager_sharedManager__block_invoke(uint64_t a1)
     _os_log_impl(&dword_243134000, v36, OS_LOG_TYPE_DEFAULT, "Beginning automatic mediaplayer response loading.", buf, 2u);
   }
 
-  v37 = [(CPUINowPlayingManager *)v44 requestController];
-  [v37 beginAutomaticResponseLoading];
+  requestController3 = [(CPUINowPlayingManager *)selfCopy requestController];
+  [requestController3 beginAutomaticResponseLoading];
 }
 
 - (void)dealloc
@@ -188,14 +188,14 @@ uint64_t __38__CPUINowPlayingManager_sharedManager__block_invoke(uint64_t a1)
   [(CPUINowPlayingManager *)&v4 dealloc];
 }
 
-- (void)addNowPlayingObserver:(id)a3
+- (void)addNowPlayingObserver:(id)observer
 {
-  v4 = a3;
-  [(CARObserverHashTable *)self->_stateObservers registerObserver:v4];
-  v5 = [(CPUINowPlayingManager *)self snapshot];
-  if (v5)
+  observerCopy = observer;
+  [(CARObserverHashTable *)self->_stateObservers registerObserver:observerCopy];
+  snapshot = [(CPUINowPlayingManager *)self snapshot];
+  if (snapshot)
   {
-    v6 = v5;
+    v6 = snapshot;
     v7 = objc_opt_respondsToSelector();
 
     if (v7)
@@ -204,8 +204,8 @@ uint64_t __38__CPUINowPlayingManager_sharedManager__block_invoke(uint64_t a1)
       v8[1] = 3221225472;
       v8[2] = __47__CPUINowPlayingManager_addNowPlayingObserver___block_invoke;
       v8[3] = &unk_278D9C530;
-      v9 = v4;
-      v10 = self;
+      v9 = observerCopy;
+      selfCopy = self;
       dispatch_async(MEMORY[0x277D85CD0], v8);
     }
   }
@@ -219,17 +219,17 @@ void __47__CPUINowPlayingManager_addNowPlayingObserver___block_invoke(uint64_t a
   [v1 nowPlayingManager:v2 didUpdateSnapshot:v3];
 }
 
-- (void)performCommandRequest:(id)a3 completion:(id)a4
+- (void)performCommandRequest:(id)request completion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   v6 = MEMORY[0x277D278C0];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __58__CPUINowPlayingManager_performCommandRequest_completion___block_invoke;
   v8[3] = &unk_278D9C580;
-  v9 = v5;
-  v7 = v5;
-  [v6 performRequest:a3 options:0x10000 completion:v8];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [v6 performRequest:request options:0x10000 completion:v8];
 }
 
 void __58__CPUINowPlayingManager_performCommandRequest_completion___block_invoke(uint64_t a1, void *a2)
@@ -247,19 +247,19 @@ void __58__CPUINowPlayingManager_performCommandRequest_completion___block_invoke
   }
 }
 
-- (void)controller:(id)a3 defersResponseReplacement:(id)a4
+- (void)controller:(id)controller defersResponseReplacement:(id)replacement
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  replacementCopy = replacement;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __62__CPUINowPlayingManager_controller_defersResponseReplacement___block_invoke;
   block[3] = &unk_278D9C5D0;
-  v12 = self;
-  v13 = v7;
-  v11 = v6;
-  v8 = v6;
-  v9 = v7;
+  selfCopy = self;
+  v13 = replacementCopy;
+  v11 = controllerCopy;
+  v8 = controllerCopy;
+  v9 = replacementCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 

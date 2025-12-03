@@ -1,43 +1,43 @@
 @interface SceneDelegate
 - (_TtC4Tips13SceneDelegate)init;
-- (void)scene:(id)a3 continueUserActivity:(id)a4;
-- (void)scene:(id)a3 openURLContexts:(id)a4;
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5;
-- (void)sceneDidBecomeActive:(id)a3;
-- (void)sceneDidDisconnect:(id)a3;
-- (void)sceneDidEnterBackground:(id)a3;
-- (void)sceneWillEnterForeground:(id)a3;
-- (void)setWindow:(id)a3;
-- (void)windowScene:(id)a3 performActionForShortcutItem:(id)a4 completionHandler:(id)a5;
+- (void)scene:(id)scene continueUserActivity:(id)activity;
+- (void)scene:(id)scene openURLContexts:(id)contexts;
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options;
+- (void)sceneDidBecomeActive:(id)active;
+- (void)sceneDidDisconnect:(id)disconnect;
+- (void)sceneDidEnterBackground:(id)background;
+- (void)sceneWillEnterForeground:(id)foreground;
+- (void)setWindow:(id)window;
+- (void)windowScene:(id)scene performActionForShortcutItem:(id)item completionHandler:(id)handler;
 @end
 
 @implementation SceneDelegate
 
-- (void)setWindow:(id)a3
+- (void)setWindow:(id)window
 {
   v4 = *(&self->super.super.isa + OBJC_IVAR____TtC4Tips13SceneDelegate_window);
-  *(&self->super.super.isa + OBJC_IVAR____TtC4Tips13SceneDelegate_window) = a3;
-  v3 = a3;
+  *(&self->super.super.isa + OBJC_IVAR____TtC4Tips13SceneDelegate_window) = window;
+  windowCopy = window;
 }
 
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  sub_10002A09C(v8, v10);
+  sceneCopy = scene;
+  sessionCopy = session;
+  optionsCopy = options;
+  selfCopy = self;
+  sub_10002A09C(sceneCopy, optionsCopy);
 }
 
-- (void)scene:(id)a3 openURLContexts:(id)a4
+- (void)scene:(id)scene openURLContexts:(id)contexts
 {
   sub_10001AC14(0, &qword_1000B32D8, UIOpenURLContext_ptr);
   sub_10002AB3C(&qword_1000B32E0, &qword_1000B32D8, UIOpenURLContext_ptr);
   v5 = static Set._unconditionallyBridgeFromObjectiveC(_:)();
-  v8 = self;
+  selfCopy = self;
   sub_100029A80(v5);
 
-  v6 = *(&v8->super.super.isa + OBJC_IVAR____TtC4Tips13SceneDelegate_appCoordinator);
+  v6 = *(&selfCopy->super.super.isa + OBJC_IVAR____TtC4Tips13SceneDelegate_appCoordinator);
   if (v6)
   {
     v7 = *(v6 + OBJC_IVAR___TPSAppCoordinator_mainViewController);
@@ -45,48 +45,48 @@
   }
 }
 
-- (void)windowScene:(id)a3 performActionForShortcutItem:(id)a4 completionHandler:(id)a5
+- (void)windowScene:(id)scene performActionForShortcutItem:(id)item completionHandler:(id)handler
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(handler);
   _Block_copy(v8);
-  v9 = a3;
-  v10 = a4;
-  v11 = self;
-  sub_10002A5EC(v10, v11, v8);
+  sceneCopy = scene;
+  itemCopy = item;
+  selfCopy = self;
+  sub_10002A5EC(itemCopy, selfCopy, v8);
   _Block_release(v8);
   _Block_release(v8);
 }
 
-- (void)scene:(id)a3 continueUserActivity:(id)a4
+- (void)scene:(id)scene continueUserActivity:(id)activity
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_10002A6F0(v7);
+  sceneCopy = scene;
+  activityCopy = activity;
+  selfCopy = self;
+  sub_10002A6F0(activityCopy);
 }
 
-- (void)sceneWillEnterForeground:(id)a3
+- (void)sceneWillEnterForeground:(id)foreground
 {
-  v4 = a3;
-  v5 = self;
+  foregroundCopy = foreground;
+  selfCopy = self;
   sub_10002A780();
 }
 
-- (void)sceneDidEnterBackground:(id)a3
+- (void)sceneDidEnterBackground:(id)background
 {
-  v4 = a3;
-  v5 = self;
+  backgroundCopy = background;
+  selfCopy = self;
   sub_10002A8E8();
 }
 
-- (void)sceneDidDisconnect:(id)a3
+- (void)sceneDidDisconnect:(id)disconnect
 {
-  v4 = a3;
-  v5 = self;
+  disconnectCopy = disconnect;
+  selfCopy = self;
   sub_10002AA30();
 }
 
-- (void)sceneDidBecomeActive:(id)a3
+- (void)sceneDidBecomeActive:(id)active
 {
   v3 = *(&self->super.super.isa + OBJC_IVAR____TtC4Tips13SceneDelegate_appCoordinator);
   if (v3)

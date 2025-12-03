@@ -1,16 +1,16 @@
 @interface MosaicLayout.Attributes
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)debugDescription;
 - (_TtCC7Journal12MosaicLayout10Attributes)init;
-- (id)copyWithZone:(void *)a3;
+- (id)copyWithZone:(void *)zone;
 @end
 
 @implementation MosaicLayout.Attributes
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v4 = self;
-  sub_100068EF0(a3, v7);
+  selfCopy = self;
+  sub_100068EF0(zone, v7);
 
   sub_10000CA14(v7, v7[3]);
   v5 = _bridgeAnythingToObjectiveC<A>(_:)();
@@ -31,11 +31,11 @@
   return [(MosaicLayout.Attributes *)&v4 init];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -44,7 +44,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = sub_100072E1C(v8);
@@ -55,7 +55,7 @@
 
 - (NSString)debugDescription
 {
-  v2 = self;
+  selfCopy = self;
   sub_1003C1988();
 
   v3 = String._bridgeToObjectiveC()();

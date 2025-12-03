@@ -10,19 +10,19 @@
 {
   v68 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
-  v6 = [a1 batteryLevel];
-  v7 = [v6 leftPercentage];
-  if (v7)
+  array = [MEMORY[0x1E695DF70] array];
+  batteryLevel = [self batteryLevel];
+  leftPercentage = [batteryLevel leftPercentage];
+  if (leftPercentage)
   {
-    v8 = [v6 rightPercentage];
-    if (v8)
+    rightPercentage = [batteryLevel rightPercentage];
+    if (rightPercentage)
     {
-      v9 = [v6 leftPercentage];
-      [v9 floatValue];
+      leftPercentage2 = [batteryLevel leftPercentage];
+      [leftPercentage2 floatValue];
       v11 = v10;
-      v12 = [v6 rightPercentage];
-      [v12 floatValue];
+      rightPercentage2 = [batteryLevel rightPercentage];
+      [rightPercentage2 floatValue];
       v14 = vabds_f32(v11, v13) >= 0.1;
     }
 
@@ -37,131 +37,131 @@
     v14 = 0;
   }
 
-  v15 = [v6 leftPercentage];
-  if (v15)
+  leftPercentage3 = [batteryLevel leftPercentage];
+  if (leftPercentage3)
   {
-    v16 = v15;
-    v17 = [v6 rightPercentage];
-    v18 = v17 != 0 && v14;
+    v16 = leftPercentage3;
+    rightPercentage3 = [batteryLevel rightPercentage];
+    v18 = rightPercentage3 != 0 && v14;
 
     if (v18 == 1)
     {
-      v19 = [v6 leftPercentage];
-      v20 = [v4 stringFromNumber:v19];
-      v21 = [v6 rightPercentage];
-      v22 = [v4 stringFromNumber:v21];
+      leftPercentage4 = [batteryLevel leftPercentage];
+      v20 = [v4 stringFromNumber:leftPercentage4];
+      rightPercentage4 = [batteryLevel rightPercentage];
+      v22 = [v4 stringFromNumber:rightPercentage4];
       v23 = [MRUStringsProvider accessoryBatteryLevelCombinedLeft:v20 right:v22];
-      [v5 addObject:v23];
+      [array addObject:v23];
 
 LABEL_22:
       goto LABEL_23;
     }
   }
 
-  v24 = [v6 leftPercentage];
-  if (v24)
+  leftPercentage5 = [batteryLevel leftPercentage];
+  if (leftPercentage5)
   {
-    v25 = v24;
-    v26 = [v6 rightPercentage];
+    v25 = leftPercentage5;
+    rightPercentage5 = [batteryLevel rightPercentage];
 
-    if (v26)
+    if (rightPercentage5)
     {
-      v27 = [v6 leftPercentage];
-      [v27 floatValue];
+      leftPercentage6 = [batteryLevel leftPercentage];
+      [leftPercentage6 floatValue];
       v29 = v28;
-      v30 = [v6 rightPercentage];
-      [v30 floatValue];
+      rightPercentage6 = [batteryLevel rightPercentage];
+      [rightPercentage6 floatValue];
       if (v29 < v31)
       {
-        [v6 leftPercentage];
+        [batteryLevel leftPercentage];
       }
 
       else
       {
-        [v6 rightPercentage];
+        [batteryLevel rightPercentage];
       }
-      v19 = ;
+      leftPercentage4 = ;
 
       goto LABEL_20;
     }
   }
 
-  v32 = [v6 leftPercentage];
+  leftPercentage7 = [batteryLevel leftPercentage];
 
-  if (v32)
+  if (leftPercentage7)
   {
-    v19 = [v6 leftPercentage];
-    v20 = [v4 stringFromNumber:v19];
+    leftPercentage4 = [batteryLevel leftPercentage];
+    v20 = [v4 stringFromNumber:leftPercentage4];
     v33 = [MRUStringsProvider accessoryBatteryLevelLeft:v20];
 LABEL_21:
-    v21 = v33;
-    [v5 addObject:v33];
+    rightPercentage4 = v33;
+    [array addObject:v33];
     goto LABEL_22;
   }
 
-  v34 = [v6 rightPercentage];
+  rightPercentage7 = [batteryLevel rightPercentage];
 
-  if (v34)
+  if (rightPercentage7)
   {
-    v19 = [v6 rightPercentage];
-    v20 = [v4 stringFromNumber:v19];
+    leftPercentage4 = [batteryLevel rightPercentage];
+    v20 = [v4 stringFromNumber:leftPercentage4];
     v33 = [MRUStringsProvider accessoryBatteryLevelRight:v20];
     goto LABEL_21;
   }
 
-  v50 = [v6 singlePercentage];
+  singlePercentage = [batteryLevel singlePercentage];
 
-  if (v50)
+  if (singlePercentage)
   {
-    v19 = [v6 singlePercentage];
+    leftPercentage4 = [batteryLevel singlePercentage];
 LABEL_20:
-    v20 = [v4 stringFromNumber:v19];
+    v20 = [v4 stringFromNumber:leftPercentage4];
     v33 = [MRUStringsProvider accessoryBatteryLevelSingle:v20];
     goto LABEL_21;
   }
 
 LABEL_23:
-  v35 = [v6 casePercentage];
+  casePercentage = [batteryLevel casePercentage];
 
-  if (v35)
+  if (casePercentage)
   {
-    v36 = [v6 casePercentage];
-    v37 = [v4 stringFromNumber:v36];
+    casePercentage2 = [batteryLevel casePercentage];
+    v37 = [v4 stringFromNumber:casePercentage2];
     v38 = [MRUStringsProvider accessoryBatteryLevelCase:v37];
-    [v5 addObject:v38];
+    [array addObject:v38];
   }
 
-  v39 = a1;
+  selfCopy = self;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v40 = [v39 logicalLeaderOutputDevice];
-    v41 = [v40 alternateTransportType];
-    if ([v40 deviceType] == 2)
+    logicalLeaderOutputDevice = [selfCopy logicalLeaderOutputDevice];
+    alternateTransportType = [logicalLeaderOutputDevice alternateTransportType];
+    if ([logicalLeaderOutputDevice deviceType] == 2)
     {
       v42 = MCLogCategoryDefault();
       if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
       {
         v52 = objc_opt_class();
-        v43 = [v40 uid];
-        v44 = [v40 name];
-        [v40 deviceType];
+        v43 = [logicalLeaderOutputDevice uid];
+        name = [logicalLeaderOutputDevice name];
+        [logicalLeaderOutputDevice deviceType];
         v51 = MRAVOutputDeviceTypeCopyDescription();
-        [v40 modelID];
+        [logicalLeaderOutputDevice modelID];
         v45 = v53 = v4;
-        v46 = [v6 description];
+        v46 = [batteryLevel description];
         *buf = 138544898;
         v55 = v52;
         v56 = 2114;
         v57 = v43;
         v58 = 2114;
-        v59 = v44;
+        v59 = name;
         v60 = 2114;
         v61 = v51;
         v62 = 2114;
         v63 = v45;
         v64 = 2114;
-        v65 = v41;
+        v65 = alternateTransportType;
         v66 = 2114;
         v67 = v46;
         _os_log_impl(&dword_1A20FC000, v42, OS_LOG_TYPE_DEFAULT, "%{public}@ Battery Info - id: %{public}@ | name: %{public}@ | device type: %{public}@ | model: %{public}@ | transport: %{public}@ | battery: %{public}@", buf, 0x48u);
@@ -169,17 +169,17 @@ LABEL_23:
         v4 = v53;
       }
 
-      if ([v41 isEqualToString:*MEMORY[0x1E6958720]])
+      if ([alternateTransportType isEqualToString:*MEMORY[0x1E6958720]])
       {
         v47 = +[MRUStringsProvider USBAudio];
-        [v5 addObject:v47];
+        [array addObject:v47];
       }
     }
   }
 
-  if ([v5 count])
+  if ([array count])
   {
-    v48 = [v5 componentsJoinedByString:@"  "];
+    v48 = [array componentsJoinedByString:@"  "];
   }
 
   else
@@ -192,26 +192,26 @@ LABEL_23:
 
 - (id)alternateTransportType
 {
-  v1 = a1;
+  selfCopy = self;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v2 = [v1 logicalLeaderOutputDevice];
-    v3 = [v2 alternateTransportType];
+    logicalLeaderOutputDevice = [selfCopy logicalLeaderOutputDevice];
+    alternateTransportType = [logicalLeaderOutputDevice alternateTransportType];
   }
 
   else
   {
-    v3 = 0;
+    alternateTransportType = 0;
   }
 
-  return v3;
+  return alternateTransportType;
 }
 
 - (id)routingPairedDeviceText
 {
   v17 = *MEMORY[0x1E69E9840];
-  if (![a1 isPickedOnPairedDevice])
+  if (![self isPickedOnPairedDevice])
   {
     v10 = 0;
     goto LABEL_18;
@@ -221,8 +221,8 @@ LABEL_23:
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [a1 auxiliaryDevices];
-  v3 = [v2 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  auxiliaryDevices = [self auxiliaryDevices];
+  v3 = [auxiliaryDevices countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (!v3)
   {
 
@@ -239,7 +239,7 @@ LABEL_4:
   {
     if (*v13 != v6)
     {
-      objc_enumerationMutation(v2);
+      objc_enumerationMutation(auxiliaryDevices);
     }
 
     v5 = *(*(&v12 + 1) + 8 * v7);
@@ -253,7 +253,7 @@ LABEL_4:
     v8 = v5;
     if (v4 == v7)
     {
-      v4 = [v2 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v4 = [auxiliaryDevices countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v4)
       {
         goto LABEL_4;
@@ -266,20 +266,20 @@ LABEL_4:
   if (!v5)
   {
 LABEL_15:
-    v9 = [a1 playingPairedDeviceName];
-    if (!v9)
+    playingPairedDeviceName = [self playingPairedDeviceName];
+    if (!playingPairedDeviceName)
     {
       goto LABEL_12;
     }
 
 LABEL_16:
-    v10 = [MRUStringsProvider routingInUseOnPairedDevice:v9];
+    v10 = [MRUStringsProvider routingInUseOnPairedDevice:playingPairedDeviceName];
     goto LABEL_17;
   }
 
-  v9 = [v5 deviceName];
+  playingPairedDeviceName = [v5 deviceName];
 
-  if (v9)
+  if (playingPairedDeviceName)
   {
     goto LABEL_16;
   }

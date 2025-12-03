@@ -1,20 +1,20 @@
 @interface JFXVideoCameraController
 + (BOOL)allowsDepthFromDualBackCamera;
-+ (double)cameraZoomFactorForUIZoomFactor:(double)a3 captureDeviceType:(id)a4;
++ (double)cameraZoomFactorForUIZoomFactor:(double)factor captureDeviceType:(id)type;
 + (id)sharedInstance;
 + (void)initialize;
 - ($2825F4736939C4A6D3AD43837233062D)depthDimensions;
 - (BOOL)ARKitEnabled;
-- (BOOL)JFX_buildCaptureSessionGraphError:(id *)a3;
-- (BOOL)JFX_configureCaptureSessionForCaptureDevice:(id)a3 error:(id *)a4;
-- (BOOL)JFX_configureCaptureSesstionForPosition:(int64_t)a3 applyFFCZoom:(BOOL)a4 configureLockedCamera:(id)a5 error:(id *)a6;
-- (BOOL)JFX_configureLockedCaptureDeviceCustomFormat:(id)a3 applyFFCZoom:(BOOL)a4;
+- (BOOL)JFX_buildCaptureSessionGraphError:(id *)error;
+- (BOOL)JFX_configureCaptureSessionForCaptureDevice:(id)device error:(id *)error;
+- (BOOL)JFX_configureCaptureSesstionForPosition:(int64_t)position applyFFCZoom:(BOOL)zoom configureLockedCamera:(id)camera error:(id *)error;
+- (BOOL)JFX_configureLockedCaptureDeviceCustomFormat:(id)format applyFFCZoom:(BOOL)zoom;
 - (BOOL)JFX_isARKitEnabledCaptureSessionQueue;
 - (BOOL)JFX_isUsingInternalMicCaptureSessionQueue;
-- (BOOL)JFX_setupCaptureSessionAudioError:(id *)a3;
-- (BOOL)JFX_setupCaptureSessionDepthError:(id *)a3;
-- (BOOL)JFX_setupCaptureSessionPhotoError:(id *)a3;
-- (BOOL)JFX_setupCaptureSessionVideoDataOutputError:(id *)a3;
+- (BOOL)JFX_setupCaptureSessionAudioError:(id *)error;
+- (BOOL)JFX_setupCaptureSessionDepthError:(id *)error;
+- (BOOL)JFX_setupCaptureSessionPhotoError:(id *)error;
+- (BOOL)JFX_setupCaptureSessionVideoDataOutputError:(id *)error;
 - (BOOL)allowARMetadata;
 - (BOOL)audioEnabled;
 - (BOOL)cameraSessionRunning;
@@ -27,102 +27,102 @@
 - (BOOL)skipARProcessingWhenNoFaceDataIsPresent;
 - (CGSize)cameraFrameResolution_dataOutSynchQueue;
 - (JFXARMetadata)mostRecentARMetadata;
-- (JFXFaceAnchor)JFX_processPixelBufferForFaceTransform:(double)a3 cameraIntrinsics:(float)a4 forNormalizedFaceRect:(CGFloat)a5 withRollAngle:(CGFloat)a6 withTimestamp:(CGFloat)a7 andDuration:(CGFloat)a8 detectionOrientation:(float)a9 interfaceOrientation:(uint64_t)a10 needsMirroring:(__CVBuffer *)a11;
+- (JFXFaceAnchor)JFX_processPixelBufferForFaceTransform:(double)transform cameraIntrinsics:(float)intrinsics forNormalizedFaceRect:(CGFloat)rect withRollAngle:(CGFloat)angle withTimestamp:(CGFloat)timestamp andDuration:(CGFloat)duration detectionOrientation:(float)orientation interfaceOrientation:(uint64_t)self0 needsMirroring:(__CVBuffer *)self1;
 - (JFXFaceAnchor)stillImageFaceAnchor;
 - (JFXVideoCameraController)init;
 - (VCPCaptureAnalysisSession)vcpAnalyzer;
-- (__n128)setCameraDeviceIntrinsics_dataOutSynchQueue:(__n128)a3;
+- (__n128)setCameraDeviceIntrinsics_dataOutSynchQueue:(__n128)queue;
 - (double)zoomFactor;
-- (id)JFX_createPVFrameSetFromPixelBuffer:(__CVBuffer *)a3 withMetadata:(id)a4 timeInterval:(double)a5 error:(id *)a6;
-- (id)JFX_currentAVMetadataFaceObject:(id)a3;
-- (id)JFX_getFormatForCaptureDevice:(id)a3 previewDimensions:(id)a4 colorSpace:(int64_t)a5;
-- (id)JFX_updateCurrentlyTrackedFaceID:(id)a3;
+- (id)JFX_createPVFrameSetFromPixelBuffer:(__CVBuffer *)buffer withMetadata:(id)metadata timeInterval:(double)interval error:(id *)error;
+- (id)JFX_currentAVMetadataFaceObject:(id)object;
+- (id)JFX_getFormatForCaptureDevice:(id)device previewDimensions:(id)dimensions colorSpace:(int64_t)space;
+- (id)JFX_updateCurrentlyTrackedFaceID:(id)d;
 - (id)cameraType;
 - (id)createLivePlayerCameraSource;
 - (id)debugFrameRateLabel;
-- (id)updateCurrentlyTrackedFaceID:(id)a3;
+- (id)updateCurrentlyTrackedFaceID:(id)d;
 - (int64_t)cameraColorSpace;
 - (int64_t)cameraMode;
 - (int64_t)cameraPosition;
 - (int64_t)captureVideoOrientation;
-- (void)JFX_audioSessionRouteChangeNotification:(id)a3;
-- (void)JFX_captureSessionDidStartRunningNotification:(id)a3;
-- (void)JFX_captureSessionDidStopRunningNotification:(id)a3;
-- (void)JFX_captureSessionInterruptionEndedNotification:(id)a3;
-- (void)JFX_captureSessionRuntimeErrorNotification:(id)a3;
-- (void)JFX_captureSessionWasInterruptedNotification:(id)a3;
+- (void)JFX_audioSessionRouteChangeNotification:(id)notification;
+- (void)JFX_captureSessionDidStartRunningNotification:(id)notification;
+- (void)JFX_captureSessionDidStopRunningNotification:(id)notification;
+- (void)JFX_captureSessionInterruptionEndedNotification:(id)notification;
+- (void)JFX_captureSessionRuntimeErrorNotification:(id)notification;
+- (void)JFX_captureSessionWasInterruptedNotification:(id)notification;
 - (void)JFX_configureCaptureSessionDataOutputSynchronizer;
 - (void)JFX_configureCaptureSessionEnableCameraIntrinsicMatrixDelivery;
-- (void)JFX_configureCaptureSessionMetadataForCaptureDevice:(id)a3;
+- (void)JFX_configureCaptureSessionMetadataForCaptureDevice:(id)device;
 - (void)JFX_configureCaptureSessionMicrophoneForOmnidirectionalPattern;
-- (void)JFX_configureCaptureSessionMicrophoneForPosition:(int64_t)a3;
-- (void)JFX_configureCaptureSessionPhotoOrientationFromInterfaceOrientation:(int64_t)a3;
+- (void)JFX_configureCaptureSessionMicrophoneForPosition:(int64_t)position;
+- (void)JFX_configureCaptureSessionPhotoOrientationFromInterfaceOrientation:(int64_t)orientation;
 - (void)JFX_configureCaptureSessionPreset;
 - (void)JFX_configureCaptureSessionVideoDataOutput;
-- (void)JFX_configureLockedCaptureDevice:(id)a3;
-- (void)JFX_configureLockedCaptureDevice:(id)a3 minFrameRate:(int)a4 maxFrameRate:(int)a5;
-- (void)JFX_configureLockedCaptureDeviceExposure:(id)a3 exposurePoint:(CGPoint)a4;
-- (void)JFX_configureLockedCaptureDeviceFocus:(id)a3 focusPoint:(CGPoint)a4;
-- (void)JFX_configureLockedCaptureDeviceForDepth:(id)a3;
-- (void)JFX_configureLockedCaptureDeviceFrameRate:(id)a3;
-- (void)JFX_notifyVideoDelegatesOfDroppedFrameWithTimeStamp:(id *)a3;
-- (void)JFX_notifyVideoDelegatesOfFrameSetDataOutSynchQueue:(id)a3;
-- (void)JFX_observeCaptureSessionNotifications:(id)a3;
-- (void)JFX_orientationMonitorDeviceInterfaceOrientationNotification:(id)a3;
-- (void)JFX_processMetadataObjectsDataOutSynchQueue:(id)a3;
-- (void)JFX_rampToZoom:(double)a3 rate:(double)a4 durationCaptureSessionQueue:(double)a5;
+- (void)JFX_configureLockedCaptureDevice:(id)device;
+- (void)JFX_configureLockedCaptureDevice:(id)device minFrameRate:(int)rate maxFrameRate:(int)frameRate;
+- (void)JFX_configureLockedCaptureDeviceExposure:(id)exposure exposurePoint:(CGPoint)point;
+- (void)JFX_configureLockedCaptureDeviceFocus:(id)focus focusPoint:(CGPoint)point;
+- (void)JFX_configureLockedCaptureDeviceForDepth:(id)depth;
+- (void)JFX_configureLockedCaptureDeviceFrameRate:(id)rate;
+- (void)JFX_notifyVideoDelegatesOfDroppedFrameWithTimeStamp:(id *)stamp;
+- (void)JFX_notifyVideoDelegatesOfFrameSetDataOutSynchQueue:(id)queue;
+- (void)JFX_observeCaptureSessionNotifications:(id)notifications;
+- (void)JFX_orientationMonitorDeviceInterfaceOrientationNotification:(id)notification;
+- (void)JFX_processMetadataObjectsDataOutSynchQueue:(id)queue;
+- (void)JFX_rampToZoom:(double)zoom rate:(double)rate durationCaptureSessionQueue:(double)queue;
 - (void)JFX_resetSessionCaptureSessionQueue;
-- (void)JFX_setCaptureDeviceType:(id)a3 captureDevicePositionCaptureSessionQueue:(int64_t)a4;
-- (void)JFX_setIsFlashScene:(BOOL)a3;
-- (void)JFX_setZoomFactor_captureSessionQueue:(double)a3;
+- (void)JFX_setCaptureDeviceType:(id)type captureDevicePositionCaptureSessionQueue:(int64_t)queue;
+- (void)JFX_setIsFlashScene:(BOOL)scene;
+- (void)JFX_setZoomFactor_captureSessionQueue:(double)queue;
 - (void)JFX_setupARCameraSessionController;
 - (void)JFX_startARCameraSessionController;
-- (void)JFX_thermalPolicyOrLevelChangedNotification:(id)a3;
-- (void)addAudioRenderDelegate:(id)a3;
-- (void)addVideoRenderDelegate:(id)a3;
-- (void)captureOutput:(id)a3 didFinishProcessingPhoto:(id)a4 error:(id)a5;
-- (void)captureOutput:(id)a3 didOutputSampleBuffer:(opaqueCMSampleBuffer *)a4 fromConnection:(id)a5;
-- (void)capturePhotoWithFlash:(int64_t)a3 completion:(id)a4;
+- (void)JFX_thermalPolicyOrLevelChangedNotification:(id)notification;
+- (void)addAudioRenderDelegate:(id)delegate;
+- (void)addVideoRenderDelegate:(id)delegate;
+- (void)captureOutput:(id)output didFinishProcessingPhoto:(id)photo error:(id)error;
+- (void)captureOutput:(id)output didOutputSampleBuffer:(opaqueCMSampleBuffer *)buffer fromConnection:(id)connection;
+- (void)capturePhotoWithFlash:(int64_t)flash completion:(id)completion;
 - (void)clear;
-- (void)dataOutputSynchronizer:(id)a3 didOutputSynchronizedDataCollection:(id)a4;
+- (void)dataOutputSynchronizer:(id)synchronizer didOutputSynchronizedDataCollection:(id)collection;
 - (void)dealloc;
-- (void)didUpdateFrame:(id)a3;
-- (void)enableRecordingMovieMode:(BOOL)a3 completion:(id)a4;
-- (void)minFrameRate:(int *)a3 maxFrameRate:(int *)a4;
-- (void)notifyExternalARKitFaceTrackedImageData:(id)a3 completion:(id)a4;
-- (void)notifyExternalImageData:(id)a3 completion:(id)a4;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)preProcessFrameWithPixelBuffer:(__CVBuffer *)a3 metadata:(id)a4 timestamp:(double)a5 completion:(id)a6;
-- (void)prepareCameraForMode:(int64_t)a3 position:(int64_t)a4 completion:(id)a5;
-- (void)rampToZoom:(double)a3 duration:(double)a4;
-- (void)rampToZoom:(double)a3 rate:(double)a4;
-- (void)removeAudioRenderDelegate:(id)a3 async:(BOOL)a4;
-- (void)removeLivePlayerCameraSource:(id)a3;
-- (void)removeVideoRenderDelegate:(id)a3 async:(BOOL)a4;
-- (void)saveToPhotoLibrary:(id)a3;
-- (void)scaleCurrentZoomFactor:(double)a3;
-- (void)setAllowARMetadata:(BOOL)a3;
-- (void)setCameraZoomFactorForUIZoomFactor:(double)a3;
-- (void)setCaptureTorchMode:(int64_t)a3 completion:(id)a4;
-- (void)setFFCZoom:(BOOL)a3 completion:(id)a4;
-- (void)setFocusAndExposurePoint:(CGPoint)a3;
-- (void)setHasValidFaceData:(BOOL)a3;
-- (void)setMinFrameRate:(int)a3 maxFrameRate:(int)a4;
-- (void)setMostRecentARMetadata:(id)a3;
-- (void)setSessionRequiresFaceTracking:(BOOL)a3;
-- (void)setSkipARProcessingWhenNoFaceDataIsPresent:(BOOL)a3;
-- (void)setThermalDelegate:(id)a3;
-- (void)setZoomFactor:(double)a3;
-- (void)startCameraSession:(id)a3;
-- (void)stopCameraSession:(id)a3;
-- (void)stopRampToZoom:(id)a3;
-- (void)supportedFlashModes:(id)a3;
-- (void)switchCamera:(id)a3;
-- (void)switchCameraToPosition:(int64_t)a3 applyFFCZoom:(BOOL)a4 configureLockedCamera:(id)a5 completion:(id)a6;
-- (void)switchCameraToPosition:(int64_t)a3 completion:(id)a4;
+- (void)didUpdateFrame:(id)frame;
+- (void)enableRecordingMovieMode:(BOOL)mode completion:(id)completion;
+- (void)minFrameRate:(int *)rate maxFrameRate:(int *)frameRate;
+- (void)notifyExternalARKitFaceTrackedImageData:(id)data completion:(id)completion;
+- (void)notifyExternalImageData:(id)data completion:(id)completion;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)preProcessFrameWithPixelBuffer:(__CVBuffer *)buffer metadata:(id)metadata timestamp:(double)timestamp completion:(id)completion;
+- (void)prepareCameraForMode:(int64_t)mode position:(int64_t)position completion:(id)completion;
+- (void)rampToZoom:(double)zoom duration:(double)duration;
+- (void)rampToZoom:(double)zoom rate:(double)rate;
+- (void)removeAudioRenderDelegate:(id)delegate async:(BOOL)async;
+- (void)removeLivePlayerCameraSource:(id)source;
+- (void)removeVideoRenderDelegate:(id)delegate async:(BOOL)async;
+- (void)saveToPhotoLibrary:(id)library;
+- (void)scaleCurrentZoomFactor:(double)factor;
+- (void)setAllowARMetadata:(BOOL)metadata;
+- (void)setCameraZoomFactorForUIZoomFactor:(double)factor;
+- (void)setCaptureTorchMode:(int64_t)mode completion:(id)completion;
+- (void)setFFCZoom:(BOOL)zoom completion:(id)completion;
+- (void)setFocusAndExposurePoint:(CGPoint)point;
+- (void)setHasValidFaceData:(BOOL)data;
+- (void)setMinFrameRate:(int)rate maxFrameRate:(int)frameRate;
+- (void)setMostRecentARMetadata:(id)metadata;
+- (void)setSessionRequiresFaceTracking:(BOOL)tracking;
+- (void)setSkipARProcessingWhenNoFaceDataIsPresent:(BOOL)present;
+- (void)setThermalDelegate:(id)delegate;
+- (void)setZoomFactor:(double)factor;
+- (void)startCameraSession:(id)session;
+- (void)stopCameraSession:(id)session;
+- (void)stopRampToZoom:(id)zoom;
+- (void)supportedFlashModes:(id)modes;
+- (void)switchCamera:(id)camera;
+- (void)switchCameraToPosition:(int64_t)position applyFFCZoom:(BOOL)zoom configureLockedCamera:(id)camera completion:(id)completion;
+- (void)switchCameraToPosition:(int64_t)position completion:(id)completion;
 - (void)turnOffMicrophone;
 - (void)turnOnMicrophone;
-- (void)videoAndAudioOutputSettings:(id)a3;
+- (void)videoAndAudioOutputSettings:(id)settings;
 @end
 
 @implementation JFXVideoCameraController
@@ -205,40 +205,40 @@
   callObserver = v2->_callObserver;
   v2->_callObserver = v30;
 
-  v32 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v32 addObserver:v2 selector:sel_JFX_thermalPolicyOrLevelChangedNotification_ name:@"JFXThermalMonitorLevelChangedNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:v2 selector:sel_JFX_thermalPolicyOrLevelChangedNotification_ name:@"JFXThermalMonitorLevelChangedNotification" object:0];
 
-  v33 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v33 addObserver:v2 selector:sel_JFX_thermalPolicyOrLevelChangedNotification_ name:@"JFXThermalPolicyChangedNotification" object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 addObserver:v2 selector:sel_JFX_thermalPolicyOrLevelChangedNotification_ name:@"JFXThermalPolicyChangedNotification" object:0];
 
-  v34 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v34 addObserver:v2 selector:sel_JFX_orientationMonitorDeviceInterfaceOrientationNotification_ name:@"kJFXOrientationMonitorDeviceInterfaceOrientationNotification" object:0];
+  defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter3 addObserver:v2 selector:sel_JFX_orientationMonitorDeviceInterfaceOrientationNotification_ name:@"kJFXOrientationMonitorDeviceInterfaceOrientationNotification" object:0];
 
   return v2;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = v12;
-  if (a6 == sAVCapturePhotoOutputIsFlashScene)
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  v13 = changeCopy;
+  if (context == sAVCapturePhotoOutputIsFlashScene)
   {
-    v14 = [v12 objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
-    v15 = [v14 BOOLValue];
+    v14 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
+    bOOLValue = [v14 BOOLValue];
 
-    [(JFXVideoCameraController *)self JFX_setIsFlashScene:v15];
+    [(JFXVideoCameraController *)self JFX_setIsFlashScene:bOOLValue];
   }
 
-  else if (a6 == sAVCaptureDeviceSystemPressureState)
+  else if (context == sAVCaptureDeviceSystemPressureState)
   {
     [(JFXVideoCameraController *)self JFX_thermalPolicyOrLevelChangedNotification:0];
   }
 
-  else if (a6 == &sAVCaptureDeviceVideoZoomFactor)
+  else if (context == &sAVCaptureDeviceVideoZoomFactor)
   {
-    v16 = [v12 objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
+    v16 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
     [v16 doubleValue];
     v18 = v17;
 
@@ -256,7 +256,7 @@
   {
     v20.receiver = self;
     v20.super_class = JFXVideoCameraController;
-    [(JFXVideoCameraController *)&v20 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(JFXVideoCameraController *)&v20 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 
@@ -433,10 +433,10 @@ uint64_t __40__JFXVideoCameraController_audioEnabled__block_invoke(uint64_t a1)
 
 - (BOOL)depthEnabled
 {
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  v4 = [v3 jfx_hasDepthCapableCamera];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  jfx_hasDepthCapableCamera = [currentDevice jfx_hasDepthCapableCamera];
 
-  if (v4)
+  if (jfx_hasDepthCapableCamera)
   {
     v9 = 0;
     v10 = &v9;
@@ -471,10 +471,10 @@ uint64_t __40__JFXVideoCameraController_depthEnabled__block_invoke(uint64_t a1)
 
 - (BOOL)hasFFCZoomEnabled
 {
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  v4 = [v3 jfx_hasTrueDepthFrontCameraCustomZoomFormat];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  jfx_hasTrueDepthFrontCameraCustomZoomFormat = [currentDevice jfx_hasTrueDepthFrontCameraCustomZoomFormat];
 
-  if (v4)
+  if (jfx_hasTrueDepthFrontCameraCustomZoomFormat)
   {
     v9 = 0;
     v10 = &v9;
@@ -598,14 +598,14 @@ uint64_t __38__JFXVideoCameraController_zoomFactor__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setZoomFactor:(double)a3
+- (void)setZoomFactor:(double)factor
 {
   captureSessionQueue = self->_captureSessionQueue;
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __42__JFXVideoCameraController_setZoomFactor___block_invoke;
   v4[3] = &unk_278D7A118;
-  *&v4[5] = a3;
+  *&v4[5] = factor;
   v4[4] = self;
   dispatch_async(captureSessionQueue, v4);
 }
@@ -625,17 +625,17 @@ uint64_t __42__JFXVideoCameraController_setZoomFactor___block_invoke(uint64_t a1
   return [v5 JFX_setZoomFactor_captureSessionQueue:v2];
 }
 
-- (void)setThermalDelegate:(id)a3
+- (void)setThermalDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   captureSessionQueue = self->_captureSessionQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __47__JFXVideoCameraController_setThermalDelegate___block_invoke;
   v7[3] = &unk_278D79C88;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = delegateCopy;
+  v6 = delegateCopy;
   dispatch_async(captureSessionQueue, v7);
 }
 
@@ -665,17 +665,17 @@ uint64_t __40__JFXVideoCameraController_ARKitEnabled__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setMostRecentARMetadata:(id)a3
+- (void)setMostRecentARMetadata:(id)metadata
 {
-  v4 = a3;
+  metadataCopy = metadata;
   queryDataQueue = self->_queryDataQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __52__JFXVideoCameraController_setMostRecentARMetadata___block_invoke;
   v7[3] = &unk_278D79C88;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = metadataCopy;
+  v6 = metadataCopy;
   dispatch_barrier_async(queryDataQueue, v7);
 }
 
@@ -725,7 +725,7 @@ _BYTE *__48__JFXVideoCameraController_mostRecentARMetadata__block_invoke(uint64_
   return result;
 }
 
-- (void)setSessionRequiresFaceTracking:(BOOL)a3
+- (void)setSessionRequiresFaceTracking:(BOOL)tracking
 {
   queryDataQueue = self->_queryDataQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -733,7 +733,7 @@ _BYTE *__48__JFXVideoCameraController_mostRecentARMetadata__block_invoke(uint64_
   v4[2] = __59__JFXVideoCameraController_setSessionRequiresFaceTracking___block_invoke;
   v4[3] = &unk_278D79E38;
   v4[4] = self;
-  v5 = a3;
+  trackingCopy = tracking;
   dispatch_barrier_async(queryDataQueue, v4);
 }
 
@@ -763,7 +763,7 @@ uint64_t __55__JFXVideoCameraController_sessionRequiresFaceTracking__block_invok
   return result;
 }
 
-- (void)setSkipARProcessingWhenNoFaceDataIsPresent:(BOOL)a3
+- (void)setSkipARProcessingWhenNoFaceDataIsPresent:(BOOL)present
 {
   queryDataQueue = self->_queryDataQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -771,7 +771,7 @@ uint64_t __55__JFXVideoCameraController_sessionRequiresFaceTracking__block_invok
   v4[2] = __71__JFXVideoCameraController_setSkipARProcessingWhenNoFaceDataIsPresent___block_invoke;
   v4[3] = &unk_278D79E38;
   v4[4] = self;
-  v5 = a3;
+  presentCopy = present;
   dispatch_barrier_async(queryDataQueue, v4);
 }
 
@@ -830,7 +830,7 @@ uint64_t __48__JFXVideoCameraController_stillImageFaceAnchor__block_invoke(uint6
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)setAllowARMetadata:(BOOL)a3
+- (void)setAllowARMetadata:(BOOL)metadata
 {
   queryDataQueue = self->_queryDataQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -838,7 +838,7 @@ uint64_t __48__JFXVideoCameraController_stillImageFaceAnchor__block_invoke(uint6
   v4[2] = __47__JFXVideoCameraController_setAllowARMetadata___block_invoke;
   v4[3] = &unk_278D79E38;
   v4[4] = self;
-  v5 = a3;
+  metadataCopy = metadata;
   dispatch_barrier_async(queryDataQueue, v4);
 }
 
@@ -879,7 +879,7 @@ uint64_t __43__JFXVideoCameraController_allowARMetadata__block_invoke(uint64_t a
   return result;
 }
 
-- (void)setHasValidFaceData:(BOOL)a3
+- (void)setHasValidFaceData:(BOOL)data
 {
   queryDataQueue = self->_queryDataQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -887,7 +887,7 @@ uint64_t __43__JFXVideoCameraController_allowARMetadata__block_invoke(uint64_t a
   v4[2] = __48__JFXVideoCameraController_setHasValidFaceData___block_invoke;
   v4[3] = &unk_278D79E38;
   v4[4] = self;
-  v5 = a3;
+  dataCopy = data;
   dispatch_barrier_async(queryDataQueue, v4);
 }
 
@@ -917,29 +917,29 @@ uint64_t __44__JFXVideoCameraController_hasValidFaceData__block_invoke(uint64_t 
   return result;
 }
 
-- (void)JFX_observeCaptureSessionNotifications:(id)a3
+- (void)JFX_observeCaptureSessionNotifications:(id)notifications
 {
   v4 = MEMORY[0x277CCAB98];
-  v5 = a3;
-  v6 = [v4 defaultCenter];
-  [v6 addObserver:self selector:sel_JFX_captureSessionDidStartRunningNotification_ name:*MEMORY[0x277CE5930] object:v5];
+  notificationsCopy = notifications;
+  defaultCenter = [v4 defaultCenter];
+  [defaultCenter addObserver:self selector:sel_JFX_captureSessionDidStartRunningNotification_ name:*MEMORY[0x277CE5930] object:notificationsCopy];
 
-  v7 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v7 addObserver:self selector:sel_JFX_captureSessionDidStopRunningNotification_ name:*MEMORY[0x277CE5938] object:v5];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel_JFX_captureSessionDidStopRunningNotification_ name:*MEMORY[0x277CE5938] object:notificationsCopy];
 
-  v8 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v8 addObserver:self selector:sel_JFX_captureSessionWasInterruptedNotification_ name:*MEMORY[0x277CE59C8] object:v5];
+  defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter3 addObserver:self selector:sel_JFX_captureSessionWasInterruptedNotification_ name:*MEMORY[0x277CE59C8] object:notificationsCopy];
 
-  v9 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v9 addObserver:self selector:sel_JFX_captureSessionInterruptionEndedNotification_ name:*MEMORY[0x277CE5948] object:v5];
+  defaultCenter4 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter4 addObserver:self selector:sel_JFX_captureSessionInterruptionEndedNotification_ name:*MEMORY[0x277CE5948] object:notificationsCopy];
 
-  v10 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v10 addObserver:self selector:sel_JFX_captureSessionRuntimeErrorNotification_ name:*MEMORY[0x277CE59C0] object:v5];
+  defaultCenter5 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter5 addObserver:self selector:sel_JFX_captureSessionRuntimeErrorNotification_ name:*MEMORY[0x277CE59C0] object:notificationsCopy];
 }
 
-- (void)JFX_captureSessionDidStartRunningNotification:(id)a3
+- (void)JFX_captureSessionDidStartRunningNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = JFXLog_DebugCamera();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -955,9 +955,9 @@ uint64_t __44__JFXVideoCameraController_hasValidFaceData__block_invoke(uint64_t 
   dispatch_barrier_async(queryDataQueue, block);
 }
 
-- (void)JFX_captureSessionDidStopRunningNotification:(id)a3
+- (void)JFX_captureSessionDidStopRunningNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = JFXLog_DebugCamera();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -973,29 +973,29 @@ uint64_t __44__JFXVideoCameraController_hasValidFaceData__block_invoke(uint64_t 
   dispatch_barrier_async(queryDataQueue, block);
 }
 
-- (void)JFX_captureSessionWasInterruptedNotification:(id)a3
+- (void)JFX_captureSessionWasInterruptedNotification:(id)notification
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:*MEMORY[0x277CE5950]];
-  v7 = [v6 integerValue];
+  notificationCopy = notification;
+  userInfo = [notificationCopy userInfo];
+  v6 = [userInfo objectForKeyedSubscript:*MEMORY[0x277CE5950]];
+  integerValue = [v6 integerValue];
 
-  v8 = [v4 userInfo];
+  userInfo2 = [notificationCopy userInfo];
   v9 = *MEMORY[0x277CE5958];
-  v10 = [v8 objectForKeyedSubscript:*MEMORY[0x277CE5958]];
+  v10 = [userInfo2 objectForKeyedSubscript:*MEMORY[0x277CE5958]];
 
   v11 = 0;
-  if (v7 <= 2)
+  if (integerValue <= 2)
   {
-    if (v7 == 1)
+    if (integerValue == 1)
     {
       v14 = kCaptureSessionInterruptionVideoDeviceNotAvailableInBackground;
     }
 
     else
     {
-      if (v7 != 2)
+      if (integerValue != 2)
       {
         goto LABEL_13;
       }
@@ -1006,7 +1006,7 @@ uint64_t __44__JFXVideoCameraController_hasValidFaceData__block_invoke(uint64_t 
     goto LABEL_12;
   }
 
-  switch(v7)
+  switch(integerValue)
   {
     case 3:
       v14 = kCaptureSessionInterruptionVideoDeviceInUseByAnotherClient;
@@ -1017,8 +1017,8 @@ LABEL_12:
       v14 = kCaptureSessionInterruptionVideoDeviceNotAvailableWithMultipleForegroundApps;
       goto LABEL_12;
     case 5:
-      v12 = [v4 userInfo];
-      v13 = [v12 objectForKeyedSubscript:v9];
+      userInfo3 = [notificationCopy userInfo];
+      v13 = [userInfo3 objectForKeyedSubscript:v9];
 
       v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@(%@)", @"VideoDeviceNotAvailableDueToSystemPressure", v13];
 
@@ -1030,7 +1030,7 @@ LABEL_13:
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v25 = v4;
+    v25 = notificationCopy;
     v26 = 2112;
     v27 = v11;
     v28 = 2112;
@@ -1051,23 +1051,23 @@ LABEL_13:
   v22[0] = @"JTCaptureSessionInterruptedKey";
   v22[1] = @"JTCaptureSessionReasonInterruptedKey";
   v23[0] = MEMORY[0x277CBEC38];
-  v18 = [MEMORY[0x277CCABB0] numberWithInteger:v7];
+  v18 = [MEMORY[0x277CCABB0] numberWithInteger:integerValue];
   v23[1] = v18;
   v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v23 forKeys:v22 count:2];
 
-  v20 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v20 postNotificationName:@"JTCaptureSessionInterruptedNotification" object:self userInfo:v19];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"JTCaptureSessionInterruptedNotification" object:self userInfo:v19];
 }
 
-- (void)JFX_captureSessionInterruptionEndedNotification:(id)a3
+- (void)JFX_captureSessionInterruptionEndedNotification:(id)notification
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  notificationCopy = notification;
   v5 = JFXLog_camera();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v13 = v4;
+    v13 = notificationCopy;
     _os_log_impl(&dword_242A3B000, v5, OS_LOG_TYPE_DEFAULT, "AVCaptureSessionInterruptionEndedNotification: %@", buf, 0xCu);
   }
 
@@ -1078,34 +1078,34 @@ LABEL_13:
   block[3] = &unk_278D79D20;
   block[4] = self;
   dispatch_barrier_async(queryDataQueue, block);
-  v7 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v10 = @"JTCaptureSessionInterruptedKey";
   v11 = MEMORY[0x277CBEC28];
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v11 forKeys:&v10 count:1];
-  [v7 postNotificationName:@"JTCaptureSessionInterruptedNotification" object:self userInfo:v8];
+  [defaultCenter postNotificationName:@"JTCaptureSessionInterruptedNotification" object:self userInfo:v8];
 }
 
-- (void)JFX_captureSessionRuntimeErrorNotification:(id)a3
+- (void)JFX_captureSessionRuntimeErrorNotification:(id)notification
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  notificationCopy = notification;
   v5 = JFXLog_camera();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v15 = v4;
+    v15 = notificationCopy;
     _os_log_impl(&dword_242A3B000, v5, OS_LOG_TYPE_DEFAULT, "AVCaptureSessionRuntimeErrorNotification: %@", buf, 0xCu);
   }
 
-  v6 = [v4 userInfo];
-  v7 = [v6 objectForKeyedSubscript:*MEMORY[0x277CE5940]];
+  userInfo = [notificationCopy userInfo];
+  v7 = [userInfo objectForKeyedSubscript:*MEMORY[0x277CE5940]];
   captureSessionQueue = self->_captureSessionQueue;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __71__JFXVideoCameraController_JFX_captureSessionRuntimeErrorNotification___block_invoke;
   v11[3] = &unk_278D79C88;
   v12 = v7;
-  v13 = self;
+  selfCopy = self;
   v9 = v7;
   v10 = captureSessionQueue;
   dispatch_async(v10, v11);
@@ -1180,7 +1180,7 @@ void __71__JFXVideoCameraController_JFX_captureSessionRuntimeErrorNotification__
   }
 }
 
-- (void)JFX_thermalPolicyOrLevelChangedNotification:(id)a3
+- (void)JFX_thermalPolicyOrLevelChangedNotification:(id)notification
 {
   captureSessionQueue = self->_captureSessionQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -1202,7 +1202,7 @@ void __72__JFXVideoCameraController_JFX_thermalPolicyOrLevelChangedNotification_
   JFX_configureCaptureDevice(v2, v3);
 }
 
-- (void)JFX_orientationMonitorDeviceInterfaceOrientationNotification:(id)a3
+- (void)JFX_orientationMonitorDeviceInterfaceOrientationNotification:(id)notification
 {
   v4 = +[JFXOrientationMonitor deviceInterfaceOrientation];
   captureSessionQueue = self->_captureSessionQueue;
@@ -1229,11 +1229,11 @@ void __89__JFXVideoCameraController_JFX_orientationMonitorDeviceInterfaceOrienta
   JFX_configureCaptureSession(v2, v4);
 }
 
-- (void)JFX_audioSessionRouteChangeNotification:(id)a3
+- (void)JFX_audioSessionRouteChangeNotification:(id)notification
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x277CB8220]];
-  v6 = [v5 integerValue];
+  userInfo = [notification userInfo];
+  v5 = [userInfo objectForKeyedSubscript:*MEMORY[0x277CB8220]];
+  integerValue = [v5 integerValue];
 
   captureSessionQueue = self->_captureSessionQueue;
   v8[0] = MEMORY[0x277D85DD0];
@@ -1241,7 +1241,7 @@ void __89__JFXVideoCameraController_JFX_orientationMonitorDeviceInterfaceOrienta
   v8[2] = __68__JFXVideoCameraController_JFX_audioSessionRouteChangeNotification___block_invoke;
   v8[3] = &unk_278D7A118;
   v8[4] = self;
-  v8[5] = v6;
+  v8[5] = integerValue;
   dispatch_async(captureSessionQueue, v8);
 }
 
@@ -1292,11 +1292,11 @@ void __68__JFXVideoCameraController_JFX_audioSessionRouteChangeNotification___bl
 
 + (BOOL)allowsDepthFromDualBackCamera
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  if ([v3 jfx_hasDualBackCamera])
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  if ([currentDevice jfx_hasDualBackCamera])
   {
-    v4 = [v2 BOOLForKey:@"allowsDepthDualBackCamera"];
+    v4 = [standardUserDefaults BOOLForKey:@"allowsDepthDualBackCamera"];
   }
 
   else
@@ -1335,17 +1335,17 @@ uint64_t __42__JFXVideoCameraController_sharedInstance__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)prepareCameraForMode:(int64_t)a3 position:(int64_t)a4 completion:(id)a5
+- (void)prepareCameraForMode:(int64_t)mode position:(int64_t)position completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   captureSessionQueue = self->_captureSessionQueue;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __69__JFXVideoCameraController_prepareCameraForMode_position_completion___block_invoke;
   v14[3] = &unk_278D7B850;
-  if (a3)
+  if (mode)
   {
-    v10 = a4 == 0;
+    v10 = position == 0;
   }
 
   else
@@ -1353,8 +1353,8 @@ uint64_t __42__JFXVideoCameraController_sharedInstance__block_invoke()
     v10 = 1;
   }
 
-  v16 = a3;
-  v17 = a4;
+  modeCopy = mode;
+  positionCopy = position;
   v11 = v10;
   if (v10)
   {
@@ -1367,9 +1367,9 @@ uint64_t __42__JFXVideoCameraController_sharedInstance__block_invoke()
   }
 
   v14[4] = self;
-  v15 = v8;
+  v15 = completionCopy;
   v18 = v11;
-  v13 = v8;
+  v13 = completionCopy;
   v12(captureSessionQueue, v14);
 }
 
@@ -1479,9 +1479,9 @@ LABEL_17:
   }
 }
 
-- (void)startCameraSession:(id)a3
+- (void)startCameraSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   kdebug_trace();
   captureSessionQueue = self->_captureSessionQueue;
   v7[0] = MEMORY[0x277D85DD0];
@@ -1489,8 +1489,8 @@ LABEL_17:
   v7[2] = __47__JFXVideoCameraController_startCameraSession___block_invoke;
   v7[3] = &unk_278D7A140;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = sessionCopy;
+  v6 = sessionCopy;
   dispatch_async(captureSessionQueue, v7);
 }
 
@@ -1516,9 +1516,9 @@ void __47__JFXVideoCameraController_startCameraSession___block_invoke(uint64_t a
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-- (void)stopCameraSession:(id)a3
+- (void)stopCameraSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   kdebug_trace();
   captureSessionQueue = self->_captureSessionQueue;
   v7[0] = MEMORY[0x277D85DD0];
@@ -1526,8 +1526,8 @@ void __47__JFXVideoCameraController_startCameraSession___block_invoke(uint64_t a
   v7[2] = __46__JFXVideoCameraController_stopCameraSession___block_invoke;
   v7[3] = &unk_278D7A140;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = sessionCopy;
+  v6 = sessionCopy;
   dispatch_async(captureSessionQueue, v7);
 }
 
@@ -1646,17 +1646,17 @@ uint64_t __51__JFXVideoCameraController_captureVideoOrientation__block_invoke(ui
   return result;
 }
 
-- (void)switchCamera:(id)a3
+- (void)switchCamera:(id)camera
 {
-  v4 = a3;
+  cameraCopy = camera;
   captureSessionQueue = self->_captureSessionQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __41__JFXVideoCameraController_switchCamera___block_invoke;
   v7[3] = &unk_278D7A140;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = cameraCopy;
+  v6 = cameraCopy;
   dispatch_async(captureSessionQueue, v7);
 }
 
@@ -1704,18 +1704,18 @@ uint64_t __41__JFXVideoCameraController_switchCamera___block_invoke_2(uint64_t a
   return result;
 }
 
-- (void)switchCameraToPosition:(int64_t)a3 completion:(id)a4
+- (void)switchCameraToPosition:(int64_t)position completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   captureSessionQueue = self->_captureSessionQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __62__JFXVideoCameraController_switchCameraToPosition_completion___block_invoke;
   block[3] = &unk_278D7B440;
-  v10 = v6;
-  v11 = a3;
+  v10 = completionCopy;
+  positionCopy = position;
   block[4] = self;
-  v8 = v6;
+  v8 = completionCopy;
   dispatch_async(captureSessionQueue, block);
 }
 
@@ -1742,22 +1742,22 @@ void __62__JFXVideoCameraController_switchCameraToPosition_completion___block_in
   }
 }
 
-- (void)switchCameraToPosition:(int64_t)a3 applyFFCZoom:(BOOL)a4 configureLockedCamera:(id)a5 completion:(id)a6
+- (void)switchCameraToPosition:(int64_t)position applyFFCZoom:(BOOL)zoom configureLockedCamera:(id)camera completion:(id)completion
 {
-  v10 = a5;
-  v11 = a6;
+  cameraCopy = camera;
+  completionCopy = completion;
   captureSessionQueue = self->_captureSessionQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __97__JFXVideoCameraController_switchCameraToPosition_applyFFCZoom_configureLockedCamera_completion___block_invoke;
   block[3] = &unk_278D7B8A0;
-  v19 = a4;
+  zoomCopy = zoom;
   block[4] = self;
-  v16 = v10;
-  v17 = v11;
-  v18 = a3;
-  v13 = v11;
-  v14 = v10;
+  v16 = cameraCopy;
+  v17 = completionCopy;
+  positionCopy = position;
+  v13 = completionCopy;
+  v14 = cameraCopy;
   dispatch_async(captureSessionQueue, block);
 }
 
@@ -1827,18 +1827,18 @@ void __97__JFXVideoCameraController_switchCameraToPosition_applyFFCZoom_configur
   [v2 setInteger:*(a1 + 32) forKey:@"JTLastCameraPositionDefault"];
 }
 
-+ (double)cameraZoomFactorForUIZoomFactor:(double)a3 captureDeviceType:(id)a4
++ (double)cameraZoomFactorForUIZoomFactor:(double)factor captureDeviceType:(id)type
 {
-  v5 = a4;
-  if (([v5 isEqualToString:*MEMORY[0x277CE5860]] & 1) != 0 || objc_msgSend(v5, "isEqualToString:", *MEMORY[0x277CE5848]))
+  typeCopy = type;
+  if (([typeCopy isEqualToString:*MEMORY[0x277CE5860]] & 1) != 0 || objc_msgSend(typeCopy, "isEqualToString:", *MEMORY[0x277CE5848]))
   {
-    a3 = a3 + a3;
+    factor = factor + factor;
   }
 
-  return a3;
+  return factor;
 }
 
-- (void)setCameraZoomFactorForUIZoomFactor:(double)a3
+- (void)setCameraZoomFactorForUIZoomFactor:(double)factor
 {
   captureSessionQueue = self->_captureSessionQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -1846,7 +1846,7 @@ void __97__JFXVideoCameraController_switchCameraToPosition_applyFFCZoom_configur
   v4[2] = __63__JFXVideoCameraController_setCameraZoomFactorForUIZoomFactor___block_invoke;
   v4[3] = &unk_278D7A118;
   v4[4] = self;
-  *&v4[5] = a3;
+  *&v4[5] = factor;
   dispatch_async(captureSessionQueue, v4);
 }
 
@@ -1874,28 +1874,28 @@ uint64_t __63__JFXVideoCameraController_setCameraZoomFactorForUIZoomFactor___blo
   return [v2 setZoomFactor:?];
 }
 
-- (void)scaleCurrentZoomFactor:(double)a3
+- (void)scaleCurrentZoomFactor:(double)factor
 {
   [(JFXVideoCameraController *)self zoomFactor];
-  v6 = v5 * a3;
+  v6 = v5 * factor;
 
   [(JFXVideoCameraController *)self setZoomFactor:v6];
 }
 
-- (void)setFFCZoom:(BOOL)a3 completion:(id)a4
+- (void)setFFCZoom:(BOOL)zoom completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
+  zoomCopy = zoom;
+  completionCopy = completion;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __50__JFXVideoCameraController_setFFCZoom_completion___block_invoke;
   v8[3] = &unk_278D7B8C8;
-  v9 = v6;
-  v7 = v6;
-  [(JFXVideoCameraController *)self switchCameraToPosition:2 applyFFCZoom:v4 configureLockedCamera:0 completion:v8];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [(JFXVideoCameraController *)self switchCameraToPosition:2 applyFFCZoom:zoomCopy configureLockedCamera:0 completion:v8];
 }
 
-- (void)rampToZoom:(double)a3 rate:(double)a4
+- (void)rampToZoom:(double)zoom rate:(double)rate
 {
   captureSessionQueue = self->_captureSessionQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -1903,12 +1903,12 @@ uint64_t __63__JFXVideoCameraController_setCameraZoomFactorForUIZoomFactor___blo
   block[2] = __44__JFXVideoCameraController_rampToZoom_rate___block_invoke;
   block[3] = &unk_278D7B8F0;
   block[4] = self;
-  *&block[5] = a3;
-  *&block[6] = a4;
+  *&block[5] = zoom;
+  *&block[6] = rate;
   dispatch_async(captureSessionQueue, block);
 }
 
-- (void)rampToZoom:(double)a3 duration:(double)a4
+- (void)rampToZoom:(double)zoom duration:(double)duration
 {
   captureSessionQueue = self->_captureSessionQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -1916,22 +1916,22 @@ uint64_t __63__JFXVideoCameraController_setCameraZoomFactorForUIZoomFactor___blo
   block[2] = __48__JFXVideoCameraController_rampToZoom_duration___block_invoke;
   block[3] = &unk_278D7B8F0;
   block[4] = self;
-  *&block[5] = a3;
-  *&block[6] = a4;
+  *&block[5] = zoom;
+  *&block[6] = duration;
   dispatch_async(captureSessionQueue, block);
 }
 
-- (void)stopRampToZoom:(id)a3
+- (void)stopRampToZoom:(id)zoom
 {
-  v4 = a3;
+  zoomCopy = zoom;
   captureSessionQueue = self->_captureSessionQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __43__JFXVideoCameraController_stopRampToZoom___block_invoke;
   v7[3] = &unk_278D7A140;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = zoomCopy;
+  v6 = zoomCopy;
   dispatch_async(captureSessionQueue, v7);
 }
 
@@ -1958,7 +1958,7 @@ uint64_t __43__JFXVideoCameraController_stopRampToZoom___block_invoke_3(uint64_t
   return v2();
 }
 
-- (void)minFrameRate:(int *)a3 maxFrameRate:(int *)a4
+- (void)minFrameRate:(int *)rate maxFrameRate:(int *)frameRate
 {
   v15 = 0;
   v16 = &v15;
@@ -1983,8 +1983,8 @@ uint64_t __43__JFXVideoCameraController_stopRampToZoom___block_invoke_3(uint64_t
   block[5] = &v15;
   block[6] = &v8;
   dispatch_sync(captureSessionQueue, block);
-  *a3 = *(v9 + 10) / v9[4];
-  *a4 = *(v16 + 10) / v16[4];
+  *rate = *(v9 + 10) / v9[4];
+  *frameRate = *(v16 + 10) / v16[4];
   _Block_object_dispose(&v8, 8);
   _Block_object_dispose(&v15, 8);
 }
@@ -2026,7 +2026,7 @@ void __54__JFXVideoCameraController_minFrameRate_maxFrameRate___block_invoke(voi
   *(v7 + 48) = v9;
 }
 
-- (void)setMinFrameRate:(int)a3 maxFrameRate:(int)a4
+- (void)setMinFrameRate:(int)rate maxFrameRate:(int)frameRate
 {
   captureSessionQueue = self->_captureSessionQueue;
   v5[0] = MEMORY[0x277D85DD0];
@@ -2034,8 +2034,8 @@ void __54__JFXVideoCameraController_minFrameRate_maxFrameRate___block_invoke(voi
   v5[2] = __57__JFXVideoCameraController_setMinFrameRate_maxFrameRate___block_invoke;
   v5[3] = &unk_278D7A118;
   v5[4] = self;
-  v6 = a3;
-  v7 = a4;
+  rateCopy = rate;
+  frameRateCopy = frameRate;
   dispatch_async(captureSessionQueue, v5);
 }
 
@@ -2051,7 +2051,7 @@ void __57__JFXVideoCameraController_setMinFrameRate_maxFrameRate___block_invoke(
   JFX_configureCaptureDevice(v2, v3);
 }
 
-- (void)setFocusAndExposurePoint:(CGPoint)a3
+- (void)setFocusAndExposurePoint:(CGPoint)point
 {
   captureSessionQueue = self->_captureSessionQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -2059,7 +2059,7 @@ void __57__JFXVideoCameraController_setMinFrameRate_maxFrameRate___block_invoke(
   block[2] = __53__JFXVideoCameraController_setFocusAndExposurePoint___block_invoke;
   block[3] = &unk_278D7B8F0;
   block[4] = self;
-  v5 = a3;
+  pointCopy = point;
   dispatch_async(captureSessionQueue, block);
 }
 
@@ -2092,7 +2092,7 @@ void __53__JFXVideoCameraController_setFocusAndExposurePoint___block_invoke_2(ui
   if (HIDWORD(v7) == v7)
   {
     v2 = [MEMORY[0x277CCABB0] numberWithInt:?];
-    v3 = [v2 stringValue];
+    stringValue = [v2 stringValue];
   }
 
   else
@@ -2100,23 +2100,23 @@ void __53__JFXVideoCameraController_setFocusAndExposurePoint___block_invoke_2(ui
     v4 = MEMORY[0x277CCACA8];
     v2 = [MEMORY[0x277CCABB0] numberWithInt:?];
     v5 = [MEMORY[0x277CCABB0] numberWithInt:v7];
-    v3 = [v4 stringWithFormat:@"%@-%@", v2, v5];
+    stringValue = [v4 stringWithFormat:@"%@-%@", v2, v5];
   }
 
-  return v3;
+  return stringValue;
 }
 
-- (void)videoAndAudioOutputSettings:(id)a3
+- (void)videoAndAudioOutputSettings:(id)settings
 {
-  v4 = a3;
+  settingsCopy = settings;
   captureSessionQueue = self->_captureSessionQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __56__JFXVideoCameraController_videoAndAudioOutputSettings___block_invoke;
   v7[3] = &unk_278D7A140;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = settingsCopy;
+  v6 = settingsCopy;
   dispatch_async(captureSessionQueue, v7);
 }
 
@@ -2138,18 +2138,18 @@ void __56__JFXVideoCameraController_videoAndAudioOutputSettings___block_invoke(u
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-- (void)setCaptureTorchMode:(int64_t)a3 completion:(id)a4
+- (void)setCaptureTorchMode:(int64_t)mode completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   captureSessionQueue = self->_captureSessionQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __59__JFXVideoCameraController_setCaptureTorchMode_completion___block_invoke;
   block[3] = &unk_278D7B440;
-  v10 = v6;
-  v11 = a3;
+  v10 = completionCopy;
+  modeCopy = mode;
   block[4] = self;
-  v8 = v6;
+  v8 = completionCopy;
   dispatch_async(captureSessionQueue, block);
 }
 
@@ -2205,18 +2205,18 @@ uint64_t __59__JFXVideoCameraController_setCaptureTorchMode_completion___block_i
   return result;
 }
 
-- (void)enableRecordingMovieMode:(BOOL)a3 completion:(id)a4
+- (void)enableRecordingMovieMode:(BOOL)mode completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   captureSessionQueue = self->_captureSessionQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __64__JFXVideoCameraController_enableRecordingMovieMode_completion___block_invoke;
   block[3] = &unk_278D7BA20;
-  v11 = a3;
+  modeCopy = mode;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = completionCopy;
+  v8 = completionCopy;
   dispatch_async(captureSessionQueue, block);
 }
 
@@ -2299,17 +2299,17 @@ void __64__JFXVideoCameraController_enableRecordingMovieMode_completion___block_
   }
 }
 
-- (void)supportedFlashModes:(id)a3
+- (void)supportedFlashModes:(id)modes
 {
-  v4 = a3;
+  modesCopy = modes;
   captureSessionQueue = self->_captureSessionQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __48__JFXVideoCameraController_supportedFlashModes___block_invoke;
   v7[3] = &unk_278D7A140;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = modesCopy;
+  v6 = modesCopy;
   dispatch_async(captureSessionQueue, v7);
 }
 
@@ -2327,18 +2327,18 @@ void __48__JFXVideoCameraController_supportedFlashModes___block_invoke(uint64_t 
   dispatch_async(MEMORY[0x277D85CD0], v5);
 }
 
-- (void)capturePhotoWithFlash:(int64_t)a3 completion:(id)a4
+- (void)capturePhotoWithFlash:(int64_t)flash completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   captureSessionQueue = self->_captureSessionQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __61__JFXVideoCameraController_capturePhotoWithFlash_completion___block_invoke;
   block[3] = &unk_278D7B440;
   block[4] = self;
-  v10 = v6;
-  v11 = a3;
-  v8 = v6;
+  v10 = completionCopy;
+  flashCopy = flash;
+  v8 = completionCopy;
   dispatch_async(captureSessionQueue, block);
 }
 
@@ -2493,41 +2493,41 @@ void __61__JFXVideoCameraController_capturePhotoWithFlash_completion___block_inv
   return v5;
 }
 
-- (void)removeLivePlayerCameraSource:(id)a3
+- (void)removeLivePlayerCameraSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   livePlayerSourceQueue = self->_livePlayerSourceQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __57__JFXVideoCameraController_removeLivePlayerCameraSource___block_invoke;
   v7[3] = &unk_278D79C88;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = sourceCopy;
+  v6 = sourceCopy;
   dispatch_async(livePlayerSourceQueue, v7);
 }
 
-- (void)addVideoRenderDelegate:(id)a3
+- (void)addVideoRenderDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   videoDelegateQueue = self->_videoDelegateQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __51__JFXVideoCameraController_addVideoRenderDelegate___block_invoke;
   v7[3] = &unk_278D79C88;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = delegateCopy;
+  v6 = delegateCopy;
   dispatch_async(videoDelegateQueue, v7);
 }
 
-- (void)removeVideoRenderDelegate:(id)a3 async:(BOOL)a4
+- (void)removeVideoRenderDelegate:(id)delegate async:(BOOL)async
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = v6;
+  asyncCopy = async;
+  delegateCopy = delegate;
+  v7 = delegateCopy;
   videoDelegateQueue = self->_videoDelegateQueue;
-  if (v4)
+  if (asyncCopy)
   {
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
@@ -2535,7 +2535,7 @@ void __61__JFXVideoCameraController_capturePhotoWithFlash_completion___block_inv
     block[3] = &unk_278D79C88;
     block[4] = self;
     v9 = &v13;
-    v13 = v6;
+    v13 = delegateCopy;
     dispatch_async(videoDelegateQueue, block);
   }
 
@@ -2547,32 +2547,32 @@ void __61__JFXVideoCameraController_capturePhotoWithFlash_completion___block_inv
     v10[3] = &unk_278D79C88;
     v10[4] = self;
     v9 = &v11;
-    v11 = v6;
+    v11 = delegateCopy;
     dispatch_sync(videoDelegateQueue, v10);
   }
 }
 
-- (void)addAudioRenderDelegate:(id)a3
+- (void)addAudioRenderDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   audioDelegateQueue = self->_audioDelegateQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __51__JFXVideoCameraController_addAudioRenderDelegate___block_invoke;
   v7[3] = &unk_278D79C88;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = delegateCopy;
+  v6 = delegateCopy;
   dispatch_async(audioDelegateQueue, v7);
 }
 
-- (void)removeAudioRenderDelegate:(id)a3 async:(BOOL)a4
+- (void)removeAudioRenderDelegate:(id)delegate async:(BOOL)async
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = v6;
+  asyncCopy = async;
+  delegateCopy = delegate;
+  v7 = delegateCopy;
   audioDelegateQueue = self->_audioDelegateQueue;
-  if (v4)
+  if (asyncCopy)
   {
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
@@ -2580,7 +2580,7 @@ void __61__JFXVideoCameraController_capturePhotoWithFlash_completion___block_inv
     block[3] = &unk_278D79C88;
     block[4] = self;
     v9 = &v13;
-    v13 = v6;
+    v13 = delegateCopy;
     dispatch_async(audioDelegateQueue, block);
   }
 
@@ -2592,15 +2592,15 @@ void __61__JFXVideoCameraController_capturePhotoWithFlash_completion___block_inv
     v10[3] = &unk_278D79C88;
     v10[4] = self;
     v9 = &v11;
-    v11 = v6;
+    v11 = delegateCopy;
     dispatch_sync(audioDelegateQueue, v10);
   }
 }
 
-- (void)saveToPhotoLibrary:(id)a3
+- (void)saveToPhotoLibrary:(id)library
 {
-  v3 = a3;
-  if (v3)
+  libraryCopy = library;
+  if (libraryCopy)
   {
     v4 = dispatch_semaphore_create(0);
     v5 = JFXLog_DebugCamera();
@@ -2609,12 +2609,12 @@ void __61__JFXVideoCameraController_capturePhotoWithFlash_completion___block_inv
       [JFXVideoCameraController saveToPhotoLibrary:];
     }
 
-    v6 = [MEMORY[0x277CD9948] sharedPhotoLibrary];
+    mEMORY[0x277CD9948] = [MEMORY[0x277CD9948] sharedPhotoLibrary];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __47__JFXVideoCameraController_saveToPhotoLibrary___block_invoke;
     v11[3] = &unk_278D79D20;
-    v12 = v3;
+    v12 = libraryCopy;
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __47__JFXVideoCameraController_saveToPhotoLibrary___block_invoke_2;
@@ -2622,7 +2622,7 @@ void __61__JFXVideoCameraController_capturePhotoWithFlash_completion___block_inv
     v9 = v12;
     v10 = v4;
     v7 = v4;
-    [v6 performChanges:v11 completionHandler:v8];
+    [mEMORY[0x277CD9948] performChanges:v11 completionHandler:v8];
 
     dispatch_semaphore_wait(v7, 0xFFFFFFFFFFFFFFFFLL);
   }
@@ -2657,27 +2657,27 @@ void __47__JFXVideoCameraController_saveToPhotoLibrary___block_invoke_2(uint64_t
   dispatch_semaphore_signal(*(a1 + 40));
 }
 
-- (void)preProcessFrameWithPixelBuffer:(__CVBuffer *)a3 metadata:(id)a4 timestamp:(double)a5 completion:(id)a6
+- (void)preProcessFrameWithPixelBuffer:(__CVBuffer *)buffer metadata:(id)metadata timestamp:(double)timestamp completion:(id)completion
 {
-  v10 = a4;
-  v11 = a6;
-  CMTimeMakeWithSeconds(&v20, a5, 1000000000);
+  metadataCopy = metadata;
+  completionCopy = completion;
+  CMTimeMakeWithSeconds(&v20, timestamp, 1000000000);
   time = v20;
   CMTimeGetSeconds(&time);
   kdebug_trace();
-  CVPixelBufferRetain(a3);
+  CVPixelBufferRetain(buffer);
   dataOutSynchQueue = self->_dataOutSynchQueue;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __89__JFXVideoCameraController_preProcessFrameWithPixelBuffer_metadata_timestamp_completion___block_invoke;
   v15[3] = &unk_278D7BA70;
   v15[4] = self;
-  v16 = v10;
-  v19 = a5;
-  v17 = v11;
-  v18 = a3;
-  v13 = v11;
-  v14 = v10;
+  v16 = metadataCopy;
+  timestampCopy = timestamp;
+  v17 = completionCopy;
+  bufferCopy = buffer;
+  v13 = completionCopy;
+  v14 = metadataCopy;
   dispatch_async(dataOutSynchQueue, v15);
 }
 
@@ -2716,18 +2716,18 @@ void __89__JFXVideoCameraController_preProcessFrameWithPixelBuffer_metadata_time
   }
 }
 
-- (void)notifyExternalARKitFaceTrackedImageData:(id)a3 completion:(id)a4
+- (void)notifyExternalARKitFaceTrackedImageData:(id)data completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  [v6 cameraIntrinsics];
+  dataCopy = data;
+  completionCopy = completion;
+  [dataCopy cameraIntrinsics];
   dataOutSynchQueue = self->_dataOutSynchQueue;
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __79__JFXVideoCameraController_notifyExternalARKitFaceTrackedImageData_completion___block_invoke;
   v17[3] = &unk_278D7BA98;
-  v26 = self;
-  v27 = v6;
+  selfCopy = self;
+  v27 = dataCopy;
   v18 = v9;
   v17[4] = v10;
   v19 = 0;
@@ -2737,9 +2737,9 @@ void __89__JFXVideoCameraController_preProcessFrameWithPixelBuffer_metadata_time
   v24 = v13;
   v23 = v14;
   v25 = 0;
-  v28 = v7;
-  v15 = v7;
-  v16 = v6;
+  v28 = completionCopy;
+  v15 = completionCopy;
+  v16 = dataCopy;
   dispatch_async(dataOutSynchQueue, v17);
 }
 
@@ -2801,18 +2801,18 @@ uint64_t __79__JFXVideoCameraController_notifyExternalARKitFaceTrackedImageData_
   return result;
 }
 
-- (void)notifyExternalImageData:(id)a3 completion:(id)a4
+- (void)notifyExternalImageData:(id)data completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  [v6 cameraIntrinsics];
+  dataCopy = data;
+  completionCopy = completion;
+  [dataCopy cameraIntrinsics];
   dataOutSynchQueue = self->_dataOutSynchQueue;
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __63__JFXVideoCameraController_notifyExternalImageData_completion___block_invoke;
   v17[3] = &unk_278D7BA98;
-  v26 = self;
-  v27 = v6;
+  selfCopy = self;
+  v27 = dataCopy;
   v18 = v9;
   v17[4] = v10;
   v19 = 0;
@@ -2822,9 +2822,9 @@ uint64_t __79__JFXVideoCameraController_notifyExternalARKitFaceTrackedImageData_
   v24 = v13;
   v23 = v14;
   v25 = 0;
-  v28 = v7;
-  v15 = v7;
-  v16 = v6;
+  v28 = completionCopy;
+  v15 = completionCopy;
+  v16 = dataCopy;
   dispatch_async(dataOutSynchQueue, v17);
 }
 
@@ -2943,16 +2943,16 @@ uint64_t __63__JFXVideoCameraController_notifyExternalImageData_completion___blo
   return result;
 }
 
-- (void)captureOutput:(id)a3 didOutputSampleBuffer:(opaqueCMSampleBuffer *)a4 fromConnection:(id)a5
+- (void)captureOutput:(id)output didOutputSampleBuffer:(opaqueCMSampleBuffer *)buffer fromConnection:(id)connection
 {
-  CFRetain(a4);
+  CFRetain(buffer);
   audioDelegateQueue = self->_audioDelegateQueue;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __79__JFXVideoCameraController_captureOutput_didOutputSampleBuffer_fromConnection___block_invoke;
   v8[3] = &unk_278D7A118;
   v8[4] = self;
-  v8[5] = a4;
+  v8[5] = buffer;
   dispatch_async(audioDelegateQueue, v8);
 }
 
@@ -2990,10 +2990,10 @@ void __79__JFXVideoCameraController_captureOutput_didOutputSampleBuffer_fromConn
   dispatch_async(v4, v7);
 }
 
-- (void)dataOutputSynchronizer:(id)a3 didOutputSynchronizedDataCollection:(id)a4
+- (void)dataOutputSynchronizer:(id)synchronizer didOutputSynchronizedDataCollection:(id)collection
 {
-  v5 = a4;
-  v6 = [v5 objectForKeyedSubscript:self->_videoOutput];
+  collectionCopy = collection;
+  v6 = [collectionCopy objectForKeyedSubscript:self->_videoOutput];
 
   if (!v6)
   {
@@ -3001,13 +3001,13 @@ void __79__JFXVideoCameraController_captureOutput_didOutputSampleBuffer_fromConn
   }
 
   kdebug_trace();
-  v7 = [v5 objectForKeyedSubscript:self->_videoOutput];
-  v8 = [v7 sampleBufferWasDropped];
-  v9 = [v7 sampleBuffer];
-  v10 = v9;
-  if (v8)
+  v7 = [collectionCopy objectForKeyedSubscript:self->_videoOutput];
+  sampleBufferWasDropped = [v7 sampleBufferWasDropped];
+  sampleBuffer = [v7 sampleBuffer];
+  v10 = sampleBuffer;
+  if (sampleBufferWasDropped)
   {
-    v11 = CMGetAttachment(v9, *MEMORY[0x277CC06C8], 0);
+    v11 = CMGetAttachment(sampleBuffer, *MEMORY[0x277CC06C8], 0);
     v12 = v11;
     if (v11 && !CFEqual(v11, *MEMORY[0x277CC0770]) && !CFEqual(v12, *MEMORY[0x277CC0778]))
     {
@@ -3030,7 +3030,7 @@ void __79__JFXVideoCameraController_captureOutput_didOutputSampleBuffer_fromConn
 
   if (self->_depthOutput)
   {
-    v14 = [v5 objectForKeyedSubscript:?];
+    v14 = [collectionCopy objectForKeyedSubscript:?];
     if ([v14 depthDataWasDropped])
     {
       [v14 droppedReason];
@@ -3041,80 +3041,80 @@ void __79__JFXVideoCameraController_captureOutput_didOutputSampleBuffer_fromConn
         [JFXVideoCameraController dataOutputSynchronizer:v14 didOutputSynchronizedDataCollection:?];
       }
 
-      v16 = 0;
-      LOBYTE(v8) = 1;
+      depthData = 0;
+      LOBYTE(sampleBufferWasDropped) = 1;
     }
 
     else
     {
-      v16 = [v14 depthData];
+      depthData = [v14 depthData];
     }
   }
 
   else
   {
-    v16 = 0;
+    depthData = 0;
   }
 
   [(JFXVideoCameraController *)self setPvDetectedFacesArray_dataOutSynchQueue:0];
   [(JFXVideoCameraController *)self setMetadataFaceObjectsArray_dataOutSynchQueue:0];
   [(JFXVideoCameraController *)self setMetadataTrackedFacesArray_dataOutSynchQueue:0];
-  v17 = [v5 objectForKeyedSubscript:self->_metadataOutput];
-  v18 = [(AVCaptureMetadataOutput *)self->_metadataOutput metadataObjectTypes];
-  v76 = v18;
+  v17 = [collectionCopy objectForKeyedSubscript:self->_metadataOutput];
+  metadataObjectTypes = [(AVCaptureMetadataOutput *)self->_metadataOutput metadataObjectTypes];
+  v76 = metadataObjectTypes;
   if (v17)
   {
-    v19 = [v17 metadataObjects];
-    [(JFXVideoCameraController *)self JFX_processMetadataObjectsDataOutSynchQueue:v19];
+    metadataObjects = [v17 metadataObjects];
+    [(JFXVideoCameraController *)self JFX_processMetadataObjectsDataOutSynchQueue:metadataObjects];
 LABEL_26:
 
     goto LABEL_27;
   }
 
-  if ([v18 containsObject:*MEMORY[0x277CE5A88]])
+  if ([metadataObjectTypes containsObject:*MEMORY[0x277CE5A88]])
   {
-    v19 = JFXLog_DebugCamera();
-    if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
+    metadataObjects = JFXLog_DebugCamera();
+    if (os_log_type_enabled(metadataObjects, OS_LOG_TYPE_DEBUG))
     {
       [JFXVideoCameraController dataOutputSynchronizer:didOutputSynchronizedDataCollection:];
     }
 
-    LOBYTE(v8) = 1;
+    LOBYTE(sampleBufferWasDropped) = 1;
     goto LABEL_26;
   }
 
 LABEL_27:
-  v20 = [MEMORY[0x277CBEB38] dictionary];
-  v21 = [(JFXVideoCameraController *)self pvDetectedFacesArray_dataOutSynchQueue];
-  v22 = [v21 count];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  pvDetectedFacesArray_dataOutSynchQueue = [(JFXVideoCameraController *)self pvDetectedFacesArray_dataOutSynchQueue];
+  v22 = [pvDetectedFacesArray_dataOutSynchQueue count];
 
   if (v22)
   {
-    v23 = [(JFXVideoCameraController *)self pvDetectedFacesArray_dataOutSynchQueue];
-    v24 = [v23 copy];
-    [v20 setObject:v24 forKeyedSubscript:*MEMORY[0x277D41A60]];
+    pvDetectedFacesArray_dataOutSynchQueue2 = [(JFXVideoCameraController *)self pvDetectedFacesArray_dataOutSynchQueue];
+    v24 = [pvDetectedFacesArray_dataOutSynchQueue2 copy];
+    [dictionary setObject:v24 forKeyedSubscript:*MEMORY[0x277D41A60]];
   }
 
-  if ((v8 & 1) == 0)
+  if ((sampleBufferWasDropped & 1) == 0)
   {
     v25 = [objc_alloc(MEMORY[0x277D415D8]) initWithSampleBuffer:v10];
-    if (v16)
+    if (depthData)
     {
-      v26 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-      v27 = [v26 BOOLForKey:@"JFXDepthPreQuantization"];
+      standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+      v27 = [standardUserDefaults BOOLForKey:@"JFXDepthPreQuantization"];
 
       if (v27)
       {
-        v28 = [v16 depthDataMap];
-        if (v28)
+        depthDataMap = [depthData depthDataMap];
+        if (depthDataMap)
         {
           v29 = v25;
-          v30 = copySimulatedL010RoundtripImage(v28);
+          v30 = copySimulatedL010RoundtripImage(depthDataMap);
           if (v30)
           {
             v31 = v30;
             v79 = 0;
-            v32 = [v16 depthDataByReplacingDepthDataMapWithPixelBuffer:v30 error:&v79];
+            v32 = [depthData depthDataByReplacingDepthDataMapWithPixelBuffer:v30 error:&v79];
             v74 = v79;
             if (v74)
             {
@@ -3131,7 +3131,7 @@ LABEL_27:
             else
             {
 
-              v16 = v32;
+              depthData = v32;
             }
 
             CVPixelBufferRelease(v31);
@@ -3143,21 +3143,21 @@ LABEL_27:
     }
 
     v75 = v25;
-    v34 = [objc_alloc(MEMORY[0x277D41608]) initWithColorBuffer:v25 depthData:v16 metadata:v20];
+    v34 = [objc_alloc(MEMORY[0x277D41608]) initWithColorBuffer:v25 depthData:depthData metadata:dictionary];
     if (self->_runningARKit_dataOutSynchQueue)
     {
       if ([v76 containsObject:*MEMORY[0x277CE5A88]])
       {
-        v35 = [(JFXVideoCameraController *)self metadataTrackedFacesArray_dataOutSynchQueue];
-        v36 = [v35 count];
+        metadataTrackedFacesArray_dataOutSynchQueue = [(JFXVideoCameraController *)self metadataTrackedFacesArray_dataOutSynchQueue];
+        v36 = [metadataTrackedFacesArray_dataOutSynchQueue count];
 
         if (v36)
         {
-          v37 = [(JFXVideoCameraController *)self arCameraSessionController];
-          v38 = [(JFXVideoCameraController *)self metadataTrackedFacesArray_dataOutSynchQueue];
-          v39 = [v38 copy];
-          v40 = [MEMORY[0x277CBEA60] array];
-          [v37 provideSensorFrameSet:v34 trackedFacesMetadata:v39 faceObjectsMetadata:v40];
+          arCameraSessionController = [(JFXVideoCameraController *)self arCameraSessionController];
+          metadataTrackedFacesArray_dataOutSynchQueue2 = [(JFXVideoCameraController *)self metadataTrackedFacesArray_dataOutSynchQueue];
+          v39 = [metadataTrackedFacesArray_dataOutSynchQueue2 copy];
+          array = [MEMORY[0x277CBEA60] array];
+          [arCameraSessionController provideSensorFrameSet:v34 trackedFacesMetadata:v39 faceObjectsMetadata:array];
         }
 
         else
@@ -3176,8 +3176,8 @@ LABEL_27:
       if ([(JFXVideoCameraController *)self faceTrackingEnabled])
       {
         v69 = v34;
-        v41 = [(JFXVideoCameraController *)self metadataFaceObjectsArray_dataOutSynchQueue];
-        v42 = [v41 copy];
+        metadataFaceObjectsArray_dataOutSynchQueue = [(JFXVideoCameraController *)self metadataFaceObjectsArray_dataOutSynchQueue];
+        v42 = [metadataFaceObjectsArray_dataOutSynchQueue copy];
         v43 = [(JFXVideoCameraController *)self JFX_currentAVMetadataFaceObject:v42];
 
         v44 = 0.0;
@@ -3212,7 +3212,7 @@ LABEL_27:
           v59 = [[JFXARMetadata alloc] initWithFaceAnchor:v57 cameraIntrinsics:*&v73, *&v71, *&v70];
         }
 
-        [v20 setObject:v59 forKeyedSubscript:@"PVFrameSetMetadataARMetadataKey"];
+        [dictionary setObject:v59 forKeyedSubscript:@"PVFrameSetMetadataARMetadataKey"];
         [(JFXVideoCameraController *)self setMostRecentARMetadata:v59];
 
         v34 = v69;
@@ -3224,8 +3224,8 @@ LABEL_27:
       v66 = CFDictionaryGetValue(v64, *MEMORY[0x277CC4CC0]);
       if (!Value || !v66)
       {
-        v67 = [MEMORY[0x277D415E0] rec709GammaColorSpace];
-        [v67 jfx_attachColorSpaceToPixelBuffer:v63];
+        rec709GammaColorSpace = [MEMORY[0x277D415E0] rec709GammaColorSpace];
+        [rec709GammaColorSpace jfx_attachColorSpaceToPixelBuffer:v63];
       }
 
       if (v64)
@@ -3233,7 +3233,7 @@ LABEL_27:
         CFRelease(v64);
       }
 
-      [v34 setMetadataDict:v20];
+      [v34 setMetadataDict:dictionary];
       [(JFXVideoCameraController *)self JFX_notifyVideoDelegatesOfFrameSetDataOutSynchQueue:v34];
     }
   }
@@ -3243,20 +3243,20 @@ LABEL_27:
 LABEL_61:
 }
 
-- (void)captureOutput:(id)a3 didFinishProcessingPhoto:(id)a4 error:(id)a5
+- (void)captureOutput:(id)output didFinishProcessingPhoto:(id)photo error:(id)error
 {
-  v7 = a4;
-  v8 = a5;
+  photoCopy = photo;
+  errorCopy = error;
   captureSessionQueue = self->_captureSessionQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __73__JFXVideoCameraController_captureOutput_didFinishProcessingPhoto_error___block_invoke;
   block[3] = &unk_278D7A600;
   block[4] = self;
-  v13 = v8;
-  v14 = v7;
-  v10 = v7;
-  v11 = v8;
+  v13 = errorCopy;
+  v14 = photoCopy;
+  v10 = photoCopy;
+  v11 = errorCopy;
   dispatch_async(captureSessionQueue, block);
 }
 
@@ -3346,12 +3346,12 @@ LABEL_6:
   (*(*(a1 + 56) + 16))();
 }
 
-- (void)JFX_processMetadataObjectsDataOutSynchQueue:(id)a3
+- (void)JFX_processMetadataObjectsDataOutSynchQueue:(id)queue
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] array];
-  v6 = [MEMORY[0x277CBEB18] array];
-  v7 = [MEMORY[0x277CBEB18] array];
+  queueCopy = queue;
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
+  array3 = [MEMORY[0x277CBEB18] array];
   v38[0] = 0;
   v38[1] = v38;
   v38[2] = 0x2020000000;
@@ -3366,16 +3366,16 @@ LABEL_6:
   v25[1] = 3221225472;
   v25[2] = __72__JFXVideoCameraController_JFX_processMetadataObjectsDataOutSynchQueue___block_invoke;
   v25[3] = &unk_278D7BB60;
-  v8 = v6;
+  v8 = array2;
   v26 = v8;
-  v27 = self;
-  v9 = v5;
+  selfCopy = self;
+  v9 = array;
   v28 = v9;
   v30 = v38;
   v31 = &v32;
-  v10 = v7;
+  v10 = array3;
   v29 = v10;
-  [v4 enumerateObjectsUsingBlock:v25];
+  [queueCopy enumerateObjectsUsingBlock:v25];
   if ([(JFXVideoCameraController *)self currentCameraPosition_dataOutSynchQueue]== 2)
   {
     v11 = v33[5];
@@ -3502,7 +3502,7 @@ void __72__JFXVideoCameraController_JFX_processMetadataObjectsDataOutSynchQueue_
   JFX_configureCaptureDevice(v2, v3);
 }
 
-- (void)JFX_notifyVideoDelegatesOfDroppedFrameWithTimeStamp:(id *)a3
+- (void)JFX_notifyVideoDelegatesOfDroppedFrameWithTimeStamp:(id *)stamp
 {
   videoDelegateQueue = self->_videoDelegateQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -3510,7 +3510,7 @@ void __72__JFXVideoCameraController_JFX_processMetadataObjectsDataOutSynchQueue_
   v4[2] = __80__JFXVideoCameraController_JFX_notifyVideoDelegatesOfDroppedFrameWithTimeStamp___block_invoke;
   v4[3] = &unk_278D7A078;
   v4[4] = self;
-  v5 = *a3;
+  v5 = *stamp;
   dispatch_async(videoDelegateQueue, v4);
 }
 
@@ -3556,10 +3556,10 @@ uint64_t __80__JFXVideoCameraController_JFX_notifyVideoDelegatesOfDroppedFrameWi
   return result;
 }
 
-- (void)JFX_notifyVideoDelegatesOfFrameSetDataOutSynchQueue:(id)a3
+- (void)JFX_notifyVideoDelegatesOfFrameSetDataOutSynchQueue:(id)queue
 {
-  v4 = a3;
-  v5 = [(JFXVideoCameraController *)self cameraPosition];
+  queueCopy = queue;
+  cameraPosition = [(JFXVideoCameraController *)self cameraPosition];
   v6 = +[JFXOrientationMonitor interfaceOrientation];
   v7 = +[JFXOrientationMonitor deviceInterfaceOrientation];
   if ([(JFXVideoCameraController *)self cameraMode])
@@ -3581,34 +3581,34 @@ uint64_t __80__JFXVideoCameraController_JFX_notifyVideoDelegatesOfDroppedFrameWi
   v17 = v16;
   [v9 rollRadians];
   v19 = v18;
-  v20 = [(JFXVideoCameraController *)self captureVideoOrientation_dataOutSynchQueue];
+  captureVideoOrientation_dataOutSynchQueue = [(JFXVideoCameraController *)self captureVideoOrientation_dataOutSynchQueue];
   v38.x = v11;
   v38.y = v13;
   v38.z = v15;
   v38.w = v17;
-  v21 = MakePVCameraFrameMetadata(v5, v38, v19, v8, v20);
-  [v4 setMetadataObject:v21 forKey:*MEMORY[0x277D41A00]];
+  v21 = MakePVCameraFrameMetadata(cameraPosition, v38, v19, v8, captureVideoOrientation_dataOutSynchQueue);
+  [queueCopy setMetadataObject:v21 forKey:*MEMORY[0x277D41A00]];
   v22 = [MEMORY[0x277CCABB0] numberWithInteger:v7];
-  [v4 setMetadataObject:v22 forKey:@"PVFrameSetMetadataDeviceOrientationkey"];
+  [queueCopy setMetadataObject:v22 forKey:@"PVFrameSetMetadataDeviceOrientationkey"];
 
-  v23 = [v4 colorImageBuffer];
-  [v23 size];
+  colorImageBuffer = [queueCopy colorImageBuffer];
+  [colorImageBuffer size];
   v25 = v24;
   v27 = v26;
 
   v37[0] = v25;
   v37[1] = v27;
   v28 = [MEMORY[0x277CCAE60] valueWithBytes:v37 objCType:"{CGSize=dd}"];
-  [v4 setMetadataObject:v28 forKey:@"PVFrameSetMetadataOriginalBufferSizeKey"];
+  [queueCopy setMetadataObject:v28 forKey:@"PVFrameSetMetadataOriginalBufferSizeKey"];
 
-  [(JFXVideoCameraController *)self setCurrentFrameSet_dataOutSynchQueue:v4];
+  [(JFXVideoCameraController *)self setCurrentFrameSet_dataOutSynchQueue:queueCopy];
   videoDelegateQueue = self->_videoDelegateQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __80__JFXVideoCameraController_JFX_notifyVideoDelegatesOfFrameSetDataOutSynchQueue___block_invoke;
   block[3] = &unk_278D79C88;
   block[4] = self;
-  v30 = v4;
+  v30 = queueCopy;
   v36 = v30;
   dispatch_async(videoDelegateQueue, block);
   livePlayerSourceQueue = self->_livePlayerSourceQueue;
@@ -3676,15 +3676,15 @@ void __80__JFXVideoCameraController_JFX_notifyVideoDelegatesOfFrameSetDataOutSyn
   dispatch_async(v4, v6);
 }
 
-- (void)didUpdateFrame:(id)a3
+- (void)didUpdateFrame:(id)frame
 {
-  v4 = a3;
-  [v4 timestamp];
+  frameCopy = frame;
+  [frameCopy timestamp];
   CMTimeMakeWithSeconds(&v26, v5, 1000000000);
   time = v26;
   CMTimeGetSeconds(&time);
   kdebug_trace();
-  v6 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v7 = +[JFXOrientationMonitor deviceInterfaceOrientation];
   v8 = +[JFXOrientationMonitor interfaceOrientation];
   v9 = JFX_adjustFaceAnchorCaptureInterfaceOrientationForDevice(v8);
@@ -3694,7 +3694,7 @@ void __80__JFXVideoCameraController_JFX_notifyVideoDelegatesOfFrameSetDataOutSyn
   }
 
   [JFXFaceTrackingUtilities faceRectScaleFactorForInterfaceOrientation:v8 andDeviceInterfaceOrientation:v7];
-  v10 = [JFXFaceAnchor faceAnchorWithARFrame:v4 captureInterfaceOrientation:v9 withFaceRectScaleFactor:?];
+  v10 = [JFXFaceAnchor faceAnchorWithARFrame:frameCopy captureInterfaceOrientation:v9 withFaceRectScaleFactor:?];
   if (!JFXIsVideoCameraMode([(JFXVideoCameraController *)self cameraMode_dataOutSynchQueue]) && [(JFXVideoCameraController *)self cameraMode_dataOutSynchQueue]&& [(JFXVideoCameraController *)self currentCameraPosition_dataOutSynchQueue]== 2 && v10)
   {
     [v10 normalizedFaceRect];
@@ -3719,10 +3719,10 @@ void __80__JFXVideoCameraController_JFX_notifyVideoDelegatesOfFrameSetDataOutSyn
     dispatch_async(captureSessionQueue, block);
   }
 
-  v18 = [[JFXARMetadata alloc] initWithARFrame:v4 faceAnchor:v10];
-  [v6 setObject:v18 forKeyedSubscript:@"PVFrameSetMetadataARMetadataKey"];
-  v19 = [v4 capturedImage];
-  [v4 timestamp];
+  v18 = [[JFXARMetadata alloc] initWithARFrame:frameCopy faceAnchor:v10];
+  [dictionary setObject:v18 forKeyedSubscript:@"PVFrameSetMetadataARMetadataKey"];
+  capturedImage = [frameCopy capturedImage];
+  [frameCopy timestamp];
   v21 = v20;
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
@@ -3731,7 +3731,7 @@ void __80__JFXVideoCameraController_JFX_notifyVideoDelegatesOfFrameSetDataOutSyn
   v23[4] = self;
   v24 = v18;
   v22 = v18;
-  [(JFXVideoCameraController *)self preProcessFrameWithPixelBuffer:v19 metadata:v6 timestamp:v23 completion:v21];
+  [(JFXVideoCameraController *)self preProcessFrameWithPixelBuffer:capturedImage metadata:dictionary timestamp:v23 completion:v21];
 }
 
 void __43__JFXVideoCameraController_didUpdateFrame___block_invoke(uint64_t a1)
@@ -3767,9 +3767,9 @@ uint64_t __43__JFXVideoCameraController_didUpdateFrame___block_invoke_3(uint64_t
   return v3;
 }
 
-- (id)updateCurrentlyTrackedFaceID:(id)a3
+- (id)updateCurrentlyTrackedFaceID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -3781,10 +3781,10 @@ uint64_t __43__JFXVideoCameraController_didUpdateFrame___block_invoke_3(uint64_t
   block[1] = 3221225472;
   block[2] = __57__JFXVideoCameraController_updateCurrentlyTrackedFaceID___block_invoke;
   block[3] = &unk_278D7A230;
-  v10 = v4;
+  v10 = dCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = dCopy;
   dispatch_sync(dataOutSynchQueue, block);
   v7 = v13[5];
 
@@ -3800,7 +3800,7 @@ uint64_t __57__JFXVideoCameraController_updateCurrentlyTrackedFaceID___block_inv
   return MEMORY[0x2821F96F8]();
 }
 
-- (BOOL)JFX_buildCaptureSessionGraphError:(id *)a3
+- (BOOL)JFX_buildCaptureSessionGraphError:(id *)error
 {
   v5 = objc_alloc_init(MEMORY[0x277CE5B38]);
   captureSession = self->_captureSession;
@@ -3817,14 +3817,14 @@ uint64_t __57__JFXVideoCameraController_updateCurrentlyTrackedFaceID___block_inv
 
   else
   {
-    v10 = [(JFXVideoCameraController *)self callObserver];
-    v9 = [v10 callCount] > 0;
+    callObserver = [(JFXVideoCameraController *)self callObserver];
+    v9 = [callObserver callCount] > 0;
   }
 
-  v11 = [(JFXVideoCameraController *)self JFX_setupCaptureSessionVideoDataOutputError:a3];
+  v11 = [(JFXVideoCameraController *)self JFX_setupCaptureSessionVideoDataOutputError:error];
   if (v11)
   {
-    v11 = [(JFXVideoCameraController *)self JFX_setupCaptureSessionPhotoError:a3];
+    v11 = [(JFXVideoCameraController *)self JFX_setupCaptureSessionPhotoError:error];
     if (v9 || !v11)
     {
       if (!v11)
@@ -3833,7 +3833,7 @@ uint64_t __57__JFXVideoCameraController_updateCurrentlyTrackedFaceID___block_inv
       }
     }
 
-    else if (![(JFXVideoCameraController *)self JFX_setupCaptureSessionAudioError:a3])
+    else if (![(JFXVideoCameraController *)self JFX_setupCaptureSessionAudioError:error])
     {
       LOBYTE(v11) = 0;
       return v11;
@@ -3846,14 +3846,14 @@ uint64_t __57__JFXVideoCameraController_updateCurrentlyTrackedFaceID___block_inv
   return v11;
 }
 
-- (BOOL)JFX_setupCaptureSessionVideoDataOutputError:(id *)a3
+- (BOOL)JFX_setupCaptureSessionVideoDataOutputError:(id *)error
 {
   v5 = objc_alloc_init(MEMORY[0x277CE5B60]);
   videoOutput = self->_videoOutput;
   self->_videoOutput = v5;
 
-  v7 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v8 = [v7 BOOLForKey:@"alwaysDiscardsLateVideoFrames"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v8 = [standardUserDefaults BOOLForKey:@"alwaysDiscardsLateVideoFrames"];
 
   v9 = JFXLog_DebugCamera();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -3868,23 +3868,23 @@ uint64_t __57__JFXVideoCameraController_updateCurrentlyTrackedFaceID___block_inv
     [(AVCaptureSession *)self->_captureSession addOutput:self->_videoOutput];
   }
 
-  else if (*a3)
+  else if (*error)
   {
-    *a3 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CE5DC0] code:-11861 userInfo:0];
+    *error = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CE5DC0] code:-11861 userInfo:0];
   }
 
   return v10;
 }
 
-- (BOOL)JFX_setupCaptureSessionPhotoError:(id *)a3
+- (BOOL)JFX_setupCaptureSessionPhotoError:(id *)error
 {
   v5 = objc_alloc_init(MEMORY[0x277CE5B28]);
   photoOutput = self->_photoOutput;
   self->_photoOutput = v5;
 
-  v7 = [MEMORY[0x277CE5B30] photoSettings];
-  [v7 setFlashMode:2];
-  [(AVCapturePhotoOutput *)self->_photoOutput setPhotoSettingsForSceneMonitoring:v7];
+  photoSettings = [MEMORY[0x277CE5B30] photoSettings];
+  [photoSettings setFlashMode:2];
+  [(AVCapturePhotoOutput *)self->_photoOutput setPhotoSettingsForSceneMonitoring:photoSettings];
   [(JFXVideoCameraController *)self JFX_setIsFlashScene:[(AVCapturePhotoOutput *)self->_photoOutput isFlashScene]];
   [(AVCapturePhotoOutput *)self->_photoOutput addObserver:self forKeyPath:@"isFlashScene" options:1 context:sAVCapturePhotoOutputIsFlashScene];
   v8 = [(AVCaptureSession *)self->_captureSession canAddOutput:self->_photoOutput];
@@ -3893,20 +3893,20 @@ uint64_t __57__JFXVideoCameraController_updateCurrentlyTrackedFaceID___block_inv
     [(AVCaptureSession *)self->_captureSession addOutput:self->_photoOutput];
   }
 
-  else if (*a3)
+  else if (*error)
   {
-    *a3 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CE5DC0] code:-11861 userInfo:0];
+    *error = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CE5DC0] code:-11861 userInfo:0];
   }
 
   return v8;
 }
 
-- (BOOL)JFX_setupCaptureSessionDepthError:(id *)a3
+- (BOOL)JFX_setupCaptureSessionDepthError:(id *)error
 {
-  v4 = [MEMORY[0x277D75418] currentDevice];
-  v5 = [v4 jfx_hasDepthCapableCamera];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  jfx_hasDepthCapableCamera = [currentDevice jfx_hasDepthCapableCamera];
 
-  if (v5)
+  if (jfx_hasDepthCapableCamera)
   {
     v6 = objc_alloc_init(MEMORY[0x277CE5AC0]);
     depthOutput = self->_depthOutput;
@@ -3933,7 +3933,7 @@ uint64_t __57__JFXVideoCameraController_updateCurrentlyTrackedFaceID___block_inv
   return 0;
 }
 
-- (BOOL)JFX_setupCaptureSessionAudioError:(id *)a3
+- (BOOL)JFX_setupCaptureSessionAudioError:(id *)error
 {
   v5 = *MEMORY[0x277CE5DC0];
   v6 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CE5DC0] code:-11814 userInfo:0];
@@ -3948,10 +3948,10 @@ uint64_t __57__JFXVideoCameraController_updateCurrentlyTrackedFaceID___block_inv
 
     if (v9)
     {
-      if (a3)
+      if (error)
       {
         v11 = v9;
-        *a3 = v9;
+        *error = v9;
       }
 
       v12 = 0;
@@ -3986,19 +3986,19 @@ LABEL_18:
       v20 = self->_audioOutput;
       self->_audioOutput = 0;
 
-      if (a3)
+      if (error)
       {
         [MEMORY[0x277CCA9B8] errorWithDomain:v5 code:-11861 userInfo:0];
-        *a3 = v12 = 0;
+        *error = v12 = 0;
         goto LABEL_18;
       }
     }
 
-    else if (a3)
+    else if (error)
     {
       v18 = v6;
       v12 = 0;
-      *a3 = v6;
+      *error = v6;
       goto LABEL_18;
     }
 
@@ -4006,11 +4006,11 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  if (*a3)
+  if (*error)
   {
     v14 = v6;
     v12 = 0;
-    *a3 = v6;
+    *error = v6;
   }
 
   else
@@ -4045,9 +4045,9 @@ LABEL_19:
   dispatch_async(captureSessionQueue, block);
 }
 
-- (BOOL)JFX_configureCaptureSesstionForPosition:(int64_t)a3 applyFFCZoom:(BOOL)a4 configureLockedCamera:(id)a5 error:(id *)a6
+- (BOOL)JFX_configureCaptureSesstionForPosition:(int64_t)position applyFFCZoom:(BOOL)zoom configureLockedCamera:(id)camera error:(id *)error
 {
-  v9 = a5;
+  cameraCopy = camera;
   v44 = 0;
   v45[0] = 0;
   v43 = 0;
@@ -4056,7 +4056,7 @@ LABEL_19:
   v11 = v44;
   v12 = v43;
   v13 = v12;
-  if (a3 == 2)
+  if (position == 2)
   {
     v14 = v10;
   }
@@ -4069,12 +4069,12 @@ LABEL_19:
   v15 = v14;
   if ([v15 jfx_trueDepthCamera])
   {
-    v16 = [v15 jfx_supportsDepth];
+    jfx_supportsDepth = [v15 jfx_supportsDepth];
   }
 
   else
   {
-    v16 = 0;
+    jfx_supportsDepth = 0;
   }
 
   self->_rgbOnlyMemoji = JFXRGBOnlyMemoji(v11);
@@ -4114,14 +4114,14 @@ LABEL_19:
   v20 = v15;
   v26 = v20;
   v29 = &v32;
-  v30 = v16;
-  v31 = a4;
-  v21 = v9;
+  v30 = jfx_supportsDepth;
+  zoomCopy = zoom;
+  v21 = cameraCopy;
   v27 = v21;
   JFX_configureCaptureSession(captureSession, v25);
-  if (a6)
+  if (error)
   {
-    *a6 = v33[5];
+    *error = v33[5];
   }
 
   v22 = *(v39 + 24);
@@ -4267,15 +4267,15 @@ void __109__JFXVideoCameraController_JFX_configureCaptureSesstionForPosition_app
   }
 }
 
-- (BOOL)JFX_configureCaptureSessionForCaptureDevice:(id)a3 error:(id *)a4
+- (BOOL)JFX_configureCaptureSessionForCaptureDevice:(id)device error:(id *)error
 {
   v42 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [MEMORY[0x277CE5AD8] deviceInputWithDevice:v6 error:a4];
+  deviceCopy = device;
+  v7 = [MEMORY[0x277CE5AD8] deviceInputWithDevice:deviceCopy error:error];
   v8 = v7;
-  if (a4)
+  if (error)
   {
-    if (*a4)
+    if (*error)
     {
       v9 = 1;
     }
@@ -4299,9 +4299,9 @@ void __109__JFXVideoCameraController_JFX_configureCaptureSesstionForPosition_app
   cameraDeviceInput = self->_cameraDeviceInput;
   if (cameraDeviceInput)
   {
-    v11 = [(AVCaptureDeviceInput *)cameraDeviceInput device];
-    [v11 removeObserver:self forKeyPath:@"systemPressureState" context:sAVCaptureDeviceSystemPressureState];
-    [v11 removeObserver:self forKeyPath:@"videoZoomFactor" context:&sAVCaptureDeviceVideoZoomFactor];
+    device = [(AVCaptureDeviceInput *)cameraDeviceInput device];
+    [device removeObserver:self forKeyPath:@"systemPressureState" context:sAVCaptureDeviceSystemPressureState];
+    [device removeObserver:self forKeyPath:@"videoZoomFactor" context:&sAVCaptureDeviceVideoZoomFactor];
     [(AVCaptureSession *)self->_captureSession removeInput:self->_cameraDeviceInput];
     v12 = self->_cameraDeviceInput;
     self->_cameraDeviceInput = 0;
@@ -4312,27 +4312,27 @@ void __109__JFXVideoCameraController_JFX_configureCaptureSesstionForPosition_app
   v13 = [(AVCaptureSession *)self->_captureSession canAddInput:v8];
   if (v13)
   {
-    [v6 addObserver:self forKeyPath:@"systemPressureState" options:1 context:sAVCaptureDeviceSystemPressureState];
-    [v6 addObserver:self forKeyPath:@"videoZoomFactor" options:1 context:&sAVCaptureDeviceVideoZoomFactor];
+    [deviceCopy addObserver:self forKeyPath:@"systemPressureState" options:1 context:sAVCaptureDeviceSystemPressureState];
+    [deviceCopy addObserver:self forKeyPath:@"videoZoomFactor" options:1 context:&sAVCaptureDeviceVideoZoomFactor];
     [(AVCaptureSession *)self->_captureSession addInput:v8];
     objc_storeStrong(&self->_cameraDeviceInput, v8);
-    v14 = [v8 device];
-    v15 = [v14 activeFormat];
-    v16 = [v15 supportedMaxPhotoDimensions];
+    device2 = [v8 device];
+    activeFormat = [device2 activeFormat];
+    supportedMaxPhotoDimensions = [activeFormat supportedMaxPhotoDimensions];
 
-    if ([v16 count])
+    if ([supportedMaxPhotoDimensions count])
     {
-      v17 = [v16 firstObject];
-      v18 = [v17 CMVideoDimensionsValue];
-      v19 = v18;
-      v20 = HIDWORD(v18);
+      firstObject = [supportedMaxPhotoDimensions firstObject];
+      cMVideoDimensionsValue = [firstObject CMVideoDimensionsValue];
+      v19 = cMVideoDimensionsValue;
+      v20 = HIDWORD(cMVideoDimensionsValue);
 
       v37 = 0u;
       v38 = 0u;
       v35 = 0u;
       v36 = 0u;
-      v34 = v16;
-      v21 = v16;
+      v34 = supportedMaxPhotoDimensions;
+      v21 = supportedMaxPhotoDimensions;
       v22 = [v21 countByEnumeratingWithState:&v35 objects:v41 count:16];
       if (v22)
       {
@@ -4347,21 +4347,21 @@ void __109__JFXVideoCameraController_JFX_configureCaptureSesstionForPosition_app
               objc_enumerationMutation(v21);
             }
 
-            v26 = [*(*(&v35 + 1) + 8 * i) CMVideoDimensionsValue];
+            cMVideoDimensionsValue2 = [*(*(&v35 + 1) + 8 * i) CMVideoDimensionsValue];
             v27 = v19 * v20;
-            if (HIDWORD(v26) * v26 <= (v19 * v20))
+            if (HIDWORD(cMVideoDimensionsValue2) * cMVideoDimensionsValue2 <= (v19 * v20))
             {
               v20 = v20;
             }
 
             else
             {
-              v20 = HIDWORD(v26);
+              v20 = HIDWORD(cMVideoDimensionsValue2);
             }
 
-            if (HIDWORD(v26) * v26 > v27)
+            if (HIDWORD(cMVideoDimensionsValue2) * cMVideoDimensionsValue2 > v27)
             {
-              v19 = v26;
+              v19 = cMVideoDimensionsValue2;
             }
           }
 
@@ -4372,15 +4372,15 @@ void __109__JFXVideoCameraController_JFX_configureCaptureSesstionForPosition_app
       }
 
       [(AVCapturePhotoOutput *)self->_photoOutput setMaxPhotoDimensions:v19 | (v20 << 32)];
-      v16 = v34;
+      supportedMaxPhotoDimensions = v34;
     }
 
-    v28 = [v6 deviceType];
-    -[JFXVideoCameraController JFX_setCaptureDeviceType:captureDevicePositionCaptureSessionQueue:](self, "JFX_setCaptureDeviceType:captureDevicePositionCaptureSessionQueue:", v28, [v6 position]);
+    deviceType = [deviceCopy deviceType];
+    -[JFXVideoCameraController JFX_setCaptureDeviceType:captureDevicePositionCaptureSessionQueue:](self, "JFX_setCaptureDeviceType:captureDevicePositionCaptureSessionQueue:", deviceType, [deviceCopy position]);
     goto LABEL_29;
   }
 
-  if (!a4)
+  if (!error)
   {
 LABEL_30:
     LOBYTE(v13) = 0;
@@ -4391,11 +4391,11 @@ LABEL_30:
   v30 = *MEMORY[0x277CE5DC0];
   v39 = *MEMORY[0x277CE5D30];
   v31 = MEMORY[0x277CCACA8];
-  v16 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v6, "position")}];
-  v28 = [v31 stringWithFormat:@"AVCaptureDevicePosition:%@", v16];
-  v40 = v28;
+  supportedMaxPhotoDimensions = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(deviceCopy, "position")}];
+  deviceType = [v31 stringWithFormat:@"AVCaptureDevicePosition:%@", supportedMaxPhotoDimensions];
+  v40 = deviceType;
   v32 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v40 forKeys:&v39 count:1];
-  *a4 = [v29 errorWithDomain:v30 code:-11814 userInfo:v32];
+  *error = [v29 errorWithDomain:v30 code:-11814 userInfo:v32];
 
 LABEL_29:
 LABEL_31:
@@ -4405,9 +4405,9 @@ LABEL_31:
 
 - (void)JFX_configureCaptureSessionPreset
 {
-  v3 = [(JFXVideoCameraController *)self cameraMode_captureSessionQueue];
+  cameraMode_captureSessionQueue = [(JFXVideoCameraController *)self cameraMode_captureSessionQueue];
   captureSession = self->_captureSession;
-  if (v3 == 3)
+  if (cameraMode_captureSessionQueue == 3)
   {
     v5 = MEMORY[0x277CE5968];
 LABEL_5:
@@ -4420,7 +4420,7 @@ LABEL_5:
     goto LABEL_8;
   }
 
-  if (v3 == 2)
+  if (cameraMode_captureSessionQueue == 2)
   {
     v5 = MEMORY[0x277CE5960];
     goto LABEL_5;
@@ -4445,19 +4445,19 @@ LABEL_8:
 {
   v66 = *MEMORY[0x277D85DE8];
   [(AVCaptureVideoDataOutput *)self->_videoOutput setVideoSettings:0];
-  v3 = [(AVCaptureVideoDataOutput *)self->_videoOutput videoSettings];
-  v52 = [v3 mutableCopy];
+  videoSettings = [(AVCaptureVideoDataOutput *)self->_videoOutput videoSettings];
+  v52 = [videoSettings mutableCopy];
 
-  v4 = [(JFXVideoCameraController *)self cameraMode_captureSessionQueue];
+  cameraMode_captureSessionQueue = [(JFXVideoCameraController *)self cameraMode_captureSessionQueue];
   v5 = JFXMinimumVideoDimensionsForCameraMode(2);
   v6 = JFXMaximumVideoDimensionsForCameraMode(6);
-  v7 = JFXMinimumVideoDimensionsForCameraMode(v4);
+  v7 = JFXMinimumVideoDimensionsForCameraMode(cameraMode_captureSessionQueue);
   v48 = HIDWORD(v7);
-  v8 = JFXMaximumVideoDimensionsForCameraMode(v4);
-  v9 = [(AVCaptureDeviceInput *)self->_cameraDeviceInput device];
-  v10 = [v9 activeFormat];
+  v8 = JFXMaximumVideoDimensionsForCameraMode(cameraMode_captureSessionQueue);
+  device = [(AVCaptureDeviceInput *)self->_cameraDeviceInput device];
+  activeFormat = [device activeFormat];
 
-  Dimensions = CMVideoFormatDescriptionGetDimensions([v10 formatDescription]);
+  Dimensions = CMVideoFormatDescriptionGetDimensions([activeFormat formatDescription]);
   v12 = HIDWORD(Dimensions);
   log = JFXLog_camera();
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
@@ -4465,7 +4465,7 @@ LABEL_8:
     v49 = v8;
     v51 = v5;
     v13 = MEMORY[0x277CCACA8];
-    v46 = v4;
+    v46 = cameraMode_captureSessionQueue;
     [MEMORY[0x277CCABB0] numberWithInt:Dimensions];
     v14 = v47 = v7;
     [MEMORY[0x277CCABB0] numberWithInt:v12];
@@ -4558,22 +4558,22 @@ LABEL_8:
   }
 }
 
-- (void)JFX_configureCaptureSessionPhotoOrientationFromInterfaceOrientation:(int64_t)a3
+- (void)JFX_configureCaptureSessionPhotoOrientationFromInterfaceOrientation:(int64_t)orientation
 {
   v6 = [(AVCapturePhotoOutput *)self->_photoOutput connectionWithMediaType:*MEMORY[0x277CE5EA8]];
   if ([v6 isVideoOrientationSupported])
   {
-    if ((a3 - 2) >= 3)
+    if ((orientation - 2) >= 3)
     {
-      v5 = 1;
+      orientationCopy = 1;
     }
 
     else
     {
-      v5 = a3;
+      orientationCopy = orientation;
     }
 
-    [v6 setVideoOrientation:v5];
+    [v6 setVideoOrientation:orientationCopy];
   }
 
   if ([v6 isVideoMirroringSupported])
@@ -4587,23 +4587,23 @@ LABEL_8:
   }
 }
 
-- (void)JFX_configureCaptureSessionMetadataForCaptureDevice:(id)a3
+- (void)JFX_configureCaptureSessionMetadataForCaptureDevice:(id)device
 {
-  v10 = a3;
+  deviceCopy = device;
   v4 = objc_alloc_init(MEMORY[0x277CE5B00]);
   if ([(AVCaptureSession *)self->_captureSession canAddOutput:v4])
   {
     [(AVCaptureSession *)self->_captureSession addOutput:v4];
-    v5 = [v10 position];
-    v6 = [MEMORY[0x277CBEB18] array];
-    if (v5 == 2)
+    position = [deviceCopy position];
+    array = [MEMORY[0x277CBEB18] array];
+    if (position == 2)
     {
-      if ([v10 jfx_trueDepthCamera])
+      if ([deviceCopy jfx_trueDepthCamera])
       {
-        v7 = [v10 jfx_supportsDepth];
-        v8 = [v4 isFaceTrackingSupported];
+        jfx_supportsDepth = [deviceCopy jfx_supportsDepth];
+        isFaceTrackingSupported = [v4 isFaceTrackingSupported];
         v9 = MEMORY[0x277CE5A50];
-        if (v8 && v7)
+        if (isFaceTrackingSupported && jfx_supportsDepth)
         {
           [v4 setFaceTrackingMetadataObjectTypesAvailable:1];
           v9 = MEMORY[0x277CE5A88];
@@ -4617,9 +4617,9 @@ LABEL_8:
 
     v9 = MEMORY[0x277CE5A50];
 LABEL_9:
-    [v6 addObject:*v9];
-    [v4 setMetadataObjectTypes:v6];
-    if ([v6 count])
+    [array addObject:*v9];
+    [v4 setMetadataObjectTypes:array];
+    if ([array count])
     {
       objc_storeStrong(&self->_metadataOutput, v4);
     }
@@ -4631,14 +4631,14 @@ LABEL_9:
   }
 }
 
-- (void)JFX_configureCaptureSessionMicrophoneForPosition:(int64_t)a3
+- (void)JFX_configureCaptureSessionMicrophoneForPosition:(int64_t)position
 {
-  if (a3 == 2)
+  if (position == 2)
   {
     if (self->_observingAudioRouteChanges)
     {
-      v4 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v4 removeObserver:self name:*MEMORY[0x277CB8210] object:0];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter removeObserver:self name:*MEMORY[0x277CB8210] object:0];
 
       self->_observingAudioRouteChanges = 0;
     }
@@ -4648,7 +4648,7 @@ LABEL_9:
     [(AVCaptureSession *)captureSession setAutomaticallyConfiguresApplicationAudioSession:1];
   }
 
-  else if (a3 == 1)
+  else if (position == 1)
   {
 
     [(JFXVideoCameraController *)self JFX_configureCaptureSessionMicrophoneForOmnidirectionalPattern];
@@ -4658,15 +4658,15 @@ LABEL_9:
 - (void)JFX_configureCaptureSessionMicrophoneForOmnidirectionalPattern
 {
   v61 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CB83F8] sharedInstance];
+  mEMORY[0x277CB83F8] = [MEMORY[0x277CB83F8] sharedInstance];
   if ([(JFXVideoCameraController *)self JFX_isUsingInternalMicCaptureSessionQueue])
   {
     v57 = 0u;
     v58 = 0u;
     v55 = 0u;
     v56 = 0u;
-    v4 = [v3 availableInputs];
-    v5 = [v4 countByEnumeratingWithState:&v55 objects:v60 count:16];
+    availableInputs = [mEMORY[0x277CB83F8] availableInputs];
+    v5 = [availableInputs countByEnumeratingWithState:&v55 objects:v60 count:16];
     if (v5)
     {
       v6 = v5;
@@ -4678,12 +4678,12 @@ LABEL_9:
         {
           if (*v56 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(availableInputs);
           }
 
           v10 = *(*(&v55 + 1) + 8 * i);
-          v11 = [v10 portType];
-          v12 = [v11 isEqualToString:v8];
+          portType = [v10 portType];
+          v12 = [portType isEqualToString:v8];
 
           if (v12)
           {
@@ -4692,7 +4692,7 @@ LABEL_9:
           }
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v55 objects:v60 count:16];
+        v6 = [availableInputs countByEnumeratingWithState:&v55 objects:v60 count:16];
         if (v6)
         {
           continue;
@@ -4709,14 +4709,14 @@ LABEL_14:
     v54 = 0u;
     v51 = 0u;
     v52 = 0u;
-    v15 = [v13 dataSources];
-    v16 = [v15 countByEnumeratingWithState:&v51 objects:v59 count:16];
+    dataSources = [v13 dataSources];
+    v16 = [dataSources countByEnumeratingWithState:&v51 objects:v59 count:16];
     v17 = MEMORY[0x277CB80F8];
     if (v16)
     {
       v18 = v16;
-      v46 = self;
-      v19 = v3;
+      selfCopy = self;
+      v19 = mEMORY[0x277CB83F8];
       v20 = v13;
       v21 = *v52;
       v22 = *MEMORY[0x277CB80F8];
@@ -4726,12 +4726,12 @@ LABEL_14:
         {
           if (*v52 != v21)
           {
-            objc_enumerationMutation(v15);
+            objc_enumerationMutation(dataSources);
           }
 
           v24 = *(*(&v51 + 1) + 8 * j);
-          v25 = [v24 orientation];
-          v26 = [v25 isEqual:v22];
+          orientation = [v24 orientation];
+          v26 = [orientation isEqual:v22];
 
           if (v26)
           {
@@ -4740,7 +4740,7 @@ LABEL_14:
           }
         }
 
-        v18 = [v15 countByEnumeratingWithState:&v51 objects:v59 count:16];
+        v18 = [dataSources countByEnumeratingWithState:&v51 objects:v59 count:16];
         if (v18)
         {
           continue;
@@ -4752,8 +4752,8 @@ LABEL_14:
       v27 = 0;
 LABEL_24:
       v13 = v20;
-      v3 = v19;
-      self = v46;
+      mEMORY[0x277CB83F8] = v19;
+      self = selfCopy;
       v17 = MEMORY[0x277CB80F8];
     }
 
@@ -4762,9 +4762,9 @@ LABEL_24:
       v27 = 0;
     }
 
-    v28 = [v27 supportedPolarPatterns];
+    supportedPolarPatterns = [v27 supportedPolarPatterns];
     v29 = *MEMORY[0x277CB8138];
-    v30 = [v28 containsObject:*MEMORY[0x277CB8138]];
+    v30 = [supportedPolarPatterns containsObject:*MEMORY[0x277CB8138]];
 
     if (!v30)
     {
@@ -4774,14 +4774,14 @@ LABEL_52:
       goto LABEL_53;
     }
 
-    v31 = [v13 selectedDataSource];
-    v32 = [v31 orientation];
-    v33 = v32;
-    if (v32 == *v17)
+    selectedDataSource = [v13 selectedDataSource];
+    orientation2 = [selectedDataSource orientation];
+    v33 = orientation2;
+    if (orientation2 == *v17)
     {
-      v34 = [v31 selectedPolarPattern];
+      selectedPolarPattern = [selectedDataSource selectedPolarPattern];
 
-      if (v34 == v29)
+      if (selectedPolarPattern == v29)
       {
         v14 = 0;
 LABEL_51:
@@ -4810,21 +4810,21 @@ LABEL_51:
         if (v38)
         {
           v48 = v39;
-          v40 = [v3 setPreferredInput:v13 error:&v48];
+          v40 = [mEMORY[0x277CB83F8] setPreferredInput:v13 error:&v48];
           v37 = v48;
 
           if (v40)
           {
             v47 = v37;
-            v41 = [v3 setActive:1 error:&v47];
+            v41 = [mEMORY[0x277CB83F8] setActive:1 error:&v47];
             v14 = v47;
 
             if (v41)
             {
               if (!self->_observingAudioRouteChanges)
               {
-                v42 = [MEMORY[0x277CCAB98] defaultCenter];
-                [v42 addObserver:self selector:sel_JFX_audioSessionRouteChangeNotification_ name:*MEMORY[0x277CB8210] object:v3];
+                defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+                [defaultCenter addObserver:self selector:sel_JFX_audioSessionRouteChangeNotification_ name:*MEMORY[0x277CB8210] object:mEMORY[0x277CB83F8]];
 
                 self->_observingAudioRouteChanges = 1;
               }
@@ -4934,15 +4934,15 @@ void __90__JFXVideoCameraController_JFX_configureCaptureSessionEnableCameraIntri
 - (void)JFX_configureCaptureSessionDataOutputSynchronizer
 {
   v37 = *MEMORY[0x277D85DE8];
-  v3 = [(JFXVideoCameraController *)self JFX_isDepthEnabledCaptureSessionQueue];
-  v4 = [MEMORY[0x277CBEB18] array];
-  v5 = v4;
+  jFX_isDepthEnabledCaptureSessionQueue = [(JFXVideoCameraController *)self JFX_isDepthEnabledCaptureSessionQueue];
+  array = [MEMORY[0x277CBEB18] array];
+  v5 = array;
   if (self->_videoOutput)
   {
-    [v4 addObject:?];
+    [array addObject:?];
   }
 
-  if (v3)
+  if (jFX_isDepthEnabledCaptureSessionQueue)
   {
     [v5 addObject:self->_depthOutput];
   }
@@ -4953,13 +4953,13 @@ void __90__JFXVideoCameraController_JFX_configureCaptureSessionEnableCameraIntri
   }
 
   v6 = [(AVCaptureVideoDataOutput *)self->_videoOutput connectionWithMediaType:*MEMORY[0x277CE5EA8]];
-  v7 = [v6 videoOrientation];
-  v8 = [(AVCaptureDeviceInput *)self->_cameraDeviceInput device];
-  v9 = [v8 activeFormat];
-  Dimensions = CMVideoFormatDescriptionGetDimensions([v9 formatDescription]);
+  videoOrientation = [v6 videoOrientation];
+  device = [(AVCaptureDeviceInput *)self->_cameraDeviceInput device];
+  activeFormat = [device activeFormat];
+  Dimensions = CMVideoFormatDescriptionGetDimensions([activeFormat formatDescription]);
   v11 = Dimensions;
   v12 = HIDWORD(Dimensions);
-  [v9 videoFieldOfView];
+  [activeFormat videoFieldOfView];
   pv_intrinsics_from_fov_side_and_resolution();
   v38.columns[0].i32[3] = 0;
   v38.columns[1].i32[3] = 0;
@@ -4973,9 +4973,9 @@ void __90__JFXVideoCameraController_JFX_configureCaptureSessionEnableCameraIntri
   block[1] = 3221225472;
   block[2] = __77__JFXVideoCameraController_JFX_configureCaptureSessionDataOutputSynchronizer__block_invoke;
   block[3] = &unk_278D7BC70;
-  v26 = self;
-  v27 = v7;
-  v30 = v3;
+  selfCopy = self;
+  v27 = videoOrientation;
+  v30 = jFX_isDepthEnabledCaptureSessionQueue;
   v23 = v21;
   v24 = v20;
   v25 = v19;
@@ -5031,12 +5031,12 @@ uint64_t __77__JFXVideoCameraController_JFX_configureCaptureSessionDataOutputSyn
   return [*(a1 + 80) setCameraFrameResolution_dataOutSynchQueue:{*(a1 + 96), *(a1 + 100)}];
 }
 
-- (BOOL)JFX_configureLockedCaptureDeviceCustomFormat:(id)a3 applyFFCZoom:(BOOL)a4
+- (BOOL)JFX_configureLockedCaptureDeviceCustomFormat:(id)format applyFFCZoom:(BOOL)zoom
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [MEMORY[0x277D75418] currentDevice];
-  v8 = [v7 userInterfaceIdiom];
+  zoomCopy = zoom;
+  formatCopy = format;
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   if (JFXLowResolutionDevice())
   {
@@ -5048,17 +5048,17 @@ uint64_t __77__JFXVideoCameraController_JFX_configureCaptureSessionDataOutputSyn
     v9 = JFXMediumResolutionDevice();
   }
 
-  v10 = [v6 jfx_trueDepthCamera];
-  v11 = [(JFXVideoCameraController *)self cameraMode_captureSessionQueue];
-  v12 = JFXIsCTMCameraMode(v11);
-  v13 = 0;
-  if (v4 && !v8 && (v9 & 1) == 0 && v10 && v12)
+  jfx_trueDepthCamera = [formatCopy jfx_trueDepthCamera];
+  cameraMode_captureSessionQueue = [(JFXVideoCameraController *)self cameraMode_captureSessionQueue];
+  v12 = JFXIsCTMCameraMode(cameraMode_captureSessionQueue);
+  jfx_hasTrueDepthFrontCameraCustomZoomFormat = 0;
+  if (zoomCopy && !userInterfaceIdiom && (v9 & 1) == 0 && jfx_trueDepthCamera && v12)
   {
-    v14 = [MEMORY[0x277D75418] currentDevice];
-    v13 = [v14 jfx_hasTrueDepthFrontCameraCustomZoomFormat];
+    currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+    jfx_hasTrueDepthFrontCameraCustomZoomFormat = [currentDevice2 jfx_hasTrueDepthFrontCameraCustomZoomFormat];
   }
 
-  switch(v11)
+  switch(cameraMode_captureSessionQueue)
   {
     case 4:
       v16 = 0x2D000000000;
@@ -5072,13 +5072,13 @@ uint64_t __77__JFXVideoCameraController_JFX_configureCaptureSessionDataOutputSyn
       break;
     case 7:
       v15 = 3088;
-      if (!v13)
+      if (!jfx_hasTrueDepthFrontCameraCustomZoomFormat)
       {
         v15 = 1920;
       }
 
       v16 = 0x5A000000000;
-      if (v13)
+      if (jfx_hasTrueDepthFrontCameraCustomZoomFormat)
       {
         v16 = 0x90C00000000;
       }
@@ -5086,7 +5086,7 @@ uint64_t __77__JFXVideoCameraController_JFX_configureCaptureSessionDataOutputSyn
       v17 = 2;
       break;
     default:
-      if (!v13)
+      if (!jfx_hasTrueDepthFrontCameraCustomZoomFormat)
       {
         v19 = 0;
         goto LABEL_23;
@@ -5098,9 +5098,9 @@ uint64_t __77__JFXVideoCameraController_JFX_configureCaptureSessionDataOutputSyn
       break;
   }
 
-  v18 = [(JFXVideoCameraController *)self JFX_getFormatForCaptureDevice:v6 previewDimensions:v16 | v15 colorSpace:v17];
-  [v6 setActiveFormat:v18];
-  [v6 setActiveColorSpace:v17];
+  v18 = [(JFXVideoCameraController *)self JFX_getFormatForCaptureDevice:formatCopy previewDimensions:v16 | v15 colorSpace:v17];
+  [formatCopy setActiveFormat:v18];
+  [formatCopy setActiveColorSpace:v17];
 
   v19 = 1;
 LABEL_23:
@@ -5108,9 +5108,9 @@ LABEL_23:
   return v19;
 }
 
-- (void)JFX_configureLockedCaptureDeviceForDepth:(id)a3
+- (void)JFX_configureLockedCaptureDeviceForDepth:(id)depth
 {
-  v4 = a3;
+  depthCopy = depth;
   v9 = 0;
   v10 = &v9;
   v11 = 0x3032000000;
@@ -5122,8 +5122,8 @@ LABEL_23:
   v8[2] = 0x2810000000;
   v8[3] = "";
   v8[4] = 0;
-  v5 = [v4 activeFormat];
-  v6 = [v5 supportedDepthDataFormats];
+  activeFormat = [depthCopy activeFormat];
+  supportedDepthDataFormats = [activeFormat supportedDepthDataFormats];
 
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
@@ -5132,10 +5132,10 @@ LABEL_23:
   v7[4] = self;
   v7[5] = &v9;
   v7[6] = v8;
-  [v6 enumerateObjectsUsingBlock:v7];
+  [supportedDepthDataFormats enumerateObjectsUsingBlock:v7];
   if (v10[5])
   {
-    [v4 setActiveDepthDataFormat:?];
+    [depthCopy setActiveDepthDataFormat:?];
   }
 
   _Block_object_dispose(v8, 8);
@@ -5165,31 +5165,31 @@ void __69__JFXVideoCameraController_JFX_configureLockedCaptureDeviceForDepth___b
   }
 }
 
-- (void)JFX_configureLockedCaptureDevice:(id)a3
+- (void)JFX_configureLockedCaptureDevice:(id)device
 {
-  v5 = a3;
-  [v5 setVideoZoomFactor:1.0];
-  v4 = [v5 activeFormat];
-  [v4 videoMaxZoomFactor];
+  deviceCopy = device;
+  [deviceCopy setVideoZoomFactor:1.0];
+  activeFormat = [deviceCopy activeFormat];
+  [activeFormat videoMaxZoomFactor];
   [(JFXVideoCameraController *)self setCameraVideoMaxZoomFactor_captureSessionQueue:?];
 
-  if ([v5 isSmoothAutoFocusSupported])
+  if ([deviceCopy isSmoothAutoFocusSupported])
   {
-    [v5 setSmoothAutoFocusEnabled:0];
+    [deviceCopy setSmoothAutoFocusEnabled:0];
   }
 
-  if ([v5 position] == 2 && (objc_opt_respondsToSelector() & 1) != 0)
+  if ([deviceCopy position] == 2 && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v5 performSelector:sel_setFaceDetectionDrivenImageProcessingEnabled_ withObject:MEMORY[0x277CBEC38]];
+    [deviceCopy performSelector:sel_setFaceDetectionDrivenImageProcessingEnabled_ withObject:MEMORY[0x277CBEC38]];
   }
 }
 
-- (void)JFX_configureLockedCaptureDeviceFocus:(id)a3 focusPoint:(CGPoint)a4
+- (void)JFX_configureLockedCaptureDeviceFocus:(id)focus focusPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  v11 = a3;
-  if ([v11 isFocusPointOfInterestSupported])
+  y = point.y;
+  x = point.x;
+  focusCopy = focus;
+  if ([focusCopy isFocusPointOfInterestSupported])
   {
     v14.origin.x = 0.0;
     v14.origin.y = 0.0;
@@ -5214,36 +5214,36 @@ void __69__JFXVideoCameraController_JFX_configureLockedCaptureDeviceForDepth___b
       v7 = x;
     }
 
-    [v11 setFocusPointOfInterest:{v7, v8}];
+    [focusCopy setFocusPointOfInterest:{v7, v8}];
   }
 
-  v9 = [v11 focusMode];
+  focusMode = [focusCopy focusMode];
   v10 = 2;
-  if (([v11 isFocusModeSupported:2] & 1) == 0)
+  if (([focusCopy isFocusModeSupported:2] & 1) == 0)
   {
-    if ([v11 isFocusModeSupported:1])
+    if ([focusCopy isFocusModeSupported:1])
     {
       v10 = 1;
     }
 
     else
     {
-      v10 = v9;
+      v10 = focusMode;
     }
   }
 
-  if ([v11 isFocusModeSupported:v10])
+  if ([focusCopy isFocusModeSupported:v10])
   {
-    [v11 setFocusMode:v10];
+    [focusCopy setFocusMode:v10];
   }
 }
 
-- (void)JFX_configureLockedCaptureDeviceExposure:(id)a3 exposurePoint:(CGPoint)a4
+- (void)JFX_configureLockedCaptureDeviceExposure:(id)exposure exposurePoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  v6 = a3;
-  if ([v6 isExposurePointOfInterestSupported])
+  y = point.y;
+  x = point.x;
+  exposureCopy = exposure;
+  if ([exposureCopy isExposurePointOfInterestSupported])
   {
     v15.origin.x = 0.0;
     v15.origin.y = 0.0;
@@ -5268,55 +5268,55 @@ void __69__JFXVideoCameraController_JFX_configureLockedCaptureDeviceForDepth___b
       v8 = x;
     }
 
-    [v6 setExposurePointOfInterest:{v8, v9}];
+    [exposureCopy setExposurePointOfInterest:{v8, v9}];
   }
 
   v12 = *MEMORY[0x277CC0898];
   v13 = *(MEMORY[0x277CC0898] + 16);
-  [v6 setActiveMaxExposureDuration:&v12];
-  v10 = [v6 exposureMode];
+  [exposureCopy setActiveMaxExposureDuration:&v12];
+  exposureMode = [exposureCopy exposureMode];
   v11 = 2;
-  if (([v6 isExposureModeSupported:2] & 1) == 0)
+  if (([exposureCopy isExposureModeSupported:2] & 1) == 0)
   {
-    if ([v6 isExposureModeSupported:1])
+    if ([exposureCopy isExposureModeSupported:1])
     {
       v11 = 1;
     }
 
     else
     {
-      v11 = v10;
+      v11 = exposureMode;
     }
   }
 
-  if ([v6 isExposureModeSupported:v11])
+  if ([exposureCopy isExposureModeSupported:v11])
   {
-    [v6 setExposureMode:v11];
+    [exposureCopy setExposureMode:v11];
   }
 }
 
-- (void)JFX_configureLockedCaptureDeviceFrameRate:(id)a3
+- (void)JFX_configureLockedCaptureDeviceFrameRate:(id)rate
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(JFXVideoCameraController *)self thermalDelegate];
+  rateCopy = rate;
+  thermalDelegate = [(JFXVideoCameraController *)self thermalDelegate];
 
-  if (v5)
+  if (thermalDelegate)
   {
     v6 = +[JFXThermalMonitor sharedInstance];
-    v7 = [v6 thermalLevel];
+    thermalLevel = [v6 thermalLevel];
 
     v11 = 0;
-    v8 = [(JFXVideoCameraController *)self thermalDelegate];
-    v9 = [v4 deviceType];
-    [v8 cameraFPSForThermalLevel:v7 deviceType:v9 minRate:&v11 + 4 maxRate:&v11];
+    thermalDelegate2 = [(JFXVideoCameraController *)self thermalDelegate];
+    deviceType = [rateCopy deviceType];
+    [thermalDelegate2 cameraFPSForThermalLevel:thermalLevel deviceType:deviceType minRate:&v11 + 4 maxRate:&v11];
 
-    [(JFXVideoCameraController *)self JFX_configureLockedCaptureDevice:v4 minFrameRate:HIDWORD(v11) maxFrameRate:v11];
+    [(JFXVideoCameraController *)self JFX_configureLockedCaptureDevice:rateCopy minFrameRate:HIDWORD(v11) maxFrameRate:v11];
     v10 = JFXLog_DebugThermals();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
       *buf = 67109632;
-      v13 = v7;
+      v13 = thermalLevel;
       v14 = 1024;
       v15 = HIDWORD(v11);
       v16 = 1024;
@@ -5326,16 +5326,16 @@ void __69__JFXVideoCameraController_JFX_configureLockedCaptureDeviceForDepth___b
   }
 }
 
-- (void)JFX_configureLockedCaptureDevice:(id)a3 minFrameRate:(int)a4 maxFrameRate:(int)a5
+- (void)JFX_configureLockedCaptureDevice:(id)device minFrameRate:(int)rate maxFrameRate:(int)frameRate
 {
-  v5 = *&a5;
+  v5 = *&frameRate;
   v51 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  deviceCopy = device;
   memset(&v38, 0, sizeof(v38));
   CMTimeMake(&v38, 1, v5);
-  if (v8)
+  if (deviceCopy)
   {
-    [v8 activeVideoMinFrameDuration];
+    [deviceCopy activeVideoMinFrameDuration];
   }
 
   else
@@ -5347,14 +5347,14 @@ void __69__JFXVideoCameraController_JFX_configureLockedCaptureDeviceForDepth___b
   if (CMTimeCompare(&time1, &time2))
   {
     time1 = v38;
-    [v8 setActiveVideoMinFrameDuration:&time1];
+    [deviceCopy setActiveVideoMinFrameDuration:&time1];
   }
 
   memset(&time2, 0, sizeof(time2));
-  CMTimeMake(&time2, 1, a4);
-  if (v8)
+  CMTimeMake(&time2, 1, rate);
+  if (deviceCopy)
   {
-    [v8 activeVideoMaxFrameDuration];
+    [deviceCopy activeVideoMaxFrameDuration];
   }
 
   else
@@ -5362,25 +5362,25 @@ void __69__JFXVideoCameraController_JFX_configureLockedCaptureDeviceForDepth___b
     memset(&time1, 0, sizeof(time1));
   }
 
-  v29 = a4;
+  rateCopy = rate;
   v36 = time2;
   if (CMTimeCompare(&time1, &v36))
   {
     time1 = time2;
-    [v8 setActiveVideoMaxFrameDuration:&time1];
+    [deviceCopy setActiveVideoMaxFrameDuration:&time1];
   }
 
-  v9 = [v8 systemPressureState];
-  v10 = [v9 factors];
-  v11 = [v9 level];
-  v31 = self;
-  if ([v8 jfx_trueDepthCamera] && objc_msgSend(v8, "jfx_supportsDepth") && self->_depthOutput && (objc_msgSend(v8, "activeDepthDataFormat"), v12 = objc_claimAutoreleasedReturnValue(), v12, v12))
+  systemPressureState = [deviceCopy systemPressureState];
+  factors = [systemPressureState factors];
+  level = [systemPressureState level];
+  selfCopy = self;
+  if ([deviceCopy jfx_trueDepthCamera] && objc_msgSend(deviceCopy, "jfx_supportsDepth") && self->_depthOutput && (objc_msgSend(deviceCopy, "activeDepthDataFormat"), v12 = objc_claimAutoreleasedReturnValue(), v12, v12))
   {
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __87__JFXVideoCameraController_JFX_configureLockedCaptureDevice_minFrameRate_maxFrameRate___block_invoke;
     block[3] = &unk_278D79D20;
-    v13 = v8;
+    v13 = deviceCopy;
     v35 = v13;
     if (JFX_configureLockedCaptureDevice_minFrameRate_maxFrameRate__onceToken != -1)
     {
@@ -5388,29 +5388,29 @@ void __69__JFXVideoCameraController_JFX_configureLockedCaptureDeviceForDepth___b
     }
 
     v14 = v5;
-    if ((v10 & 4) != 0)
+    if ((factors & 4) != 0)
     {
-      v15 = [JFX_configureLockedCaptureDevice_minFrameRate_maxFrameRate__depthSystemPressureLevelFPSLookup objectForKeyedSubscript:v11];
+      v15 = [JFX_configureLockedCaptureDevice_minFrameRate_maxFrameRate__depthSystemPressureLevelFPSLookup objectForKeyedSubscript:level];
       v16 = v15;
       v14 = v5;
       if (v15)
       {
-        v17 = [v15 intValue];
-        if (v17 >= v5)
+        intValue = [v15 intValue];
+        if (intValue >= v5)
         {
           v14 = v5;
         }
 
         else
         {
-          v14 = v17;
+          v14 = intValue;
         }
       }
     }
 
     memset(&time1, 0, sizeof(time1));
     CMTimeMake(&time1, 1, v14);
-    if (v8)
+    if (deviceCopy)
     {
       [v13 activeDepthDataMinFrameDuration];
     }
@@ -5433,15 +5433,15 @@ void __69__JFXVideoCameraController_JFX_configureLockedCaptureDeviceForDepth___b
     v14 = 0;
   }
 
-  v18 = [v8 deviceType];
+  deviceType = [deviceCopy deviceType];
   v19 = +[JFXThermalMonitor sharedInstance];
-  v20 = [v19 thermalLevel];
+  thermalLevel = [v19 thermalLevel];
 
   v21 = JFXLog_DebugCamera();
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
   {
-    v28 = NSStringFromJFXCameraMode([(JFXVideoCameraController *)v31 cameraMode_captureSessionQueue]);
-    v27 = [MEMORY[0x277CCABB0] numberWithInt:v29];
+    v28 = NSStringFromJFXCameraMode([(JFXVideoCameraController *)selfCopy cameraMode_captureSessionQueue]);
+    v27 = [MEMORY[0x277CCABB0] numberWithInt:rateCopy];
     v32 = [MEMORY[0x277CCABB0] numberWithInt:v5];
     v22 = v14;
     if (v14 < 1)
@@ -5456,10 +5456,10 @@ void __69__JFXVideoCameraController_JFX_configureLockedCaptureDeviceForDepth___b
       v30 = [v23 stringWithFormat:@" depth %@ fps", v26];
     }
 
-    v24 = [JFXThermalMonitor stringFromThermalPressureLevel:v20];
-    v25 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v10];
+    v24 = [JFXThermalMonitor stringFromThermalPressureLevel:thermalLevel];
+    v25 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:factors];
     LODWORD(time1.value) = 138414082;
-    *(&time1.value + 4) = v18;
+    *(&time1.value + 4) = deviceType;
     LOWORD(time1.flags) = 2112;
     *(&time1.flags + 2) = v28;
     HIWORD(time1.epoch) = 2112;
@@ -5471,7 +5471,7 @@ void __69__JFXVideoCameraController_JFX_configureLockedCaptureDeviceForDepth___b
     v45 = 2112;
     v46 = v24;
     v47 = 2112;
-    v48 = v11;
+    v48 = level;
     v49 = 2112;
     v50 = v25;
     _os_log_debug_impl(&dword_242A3B000, v21, OS_LOG_TYPE_DEBUG, "configuring camera %@ (mode: %@) to [%@, %@] fps%@ system thermal: %@ avf thermal: %@ avf thermal factors: %@", &time1, 0x52u);
@@ -5546,19 +5546,19 @@ void __87__JFXVideoCameraController_JFX_configureLockedCaptureDevice_minFrameRat
   JFX_configureLockedCaptureDevice_minFrameRate_maxFrameRate__depthSystemPressureLevelFPSLookup = v14;
 }
 
-- (void)JFX_setCaptureDeviceType:(id)a3 captureDevicePositionCaptureSessionQueue:(int64_t)a4
+- (void)JFX_setCaptureDeviceType:(id)type captureDevicePositionCaptureSessionQueue:(int64_t)queue
 {
-  v6 = a3;
-  [(JFXVideoCameraController *)self setCurrentCameraPosition_captureSessionQueue:a4];
+  typeCopy = type;
+  [(JFXVideoCameraController *)self setCurrentCameraPosition_captureSessionQueue:queue];
   queryDataQueue = self->_queryDataQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __94__JFXVideoCameraController_JFX_setCaptureDeviceType_captureDevicePositionCaptureSessionQueue___block_invoke;
   block[3] = &unk_278D7A458;
   block[4] = self;
-  v12 = v6;
-  v13 = a4;
-  v8 = v6;
+  v12 = typeCopy;
+  queueCopy = queue;
+  v8 = typeCopy;
   dispatch_barrier_async(queryDataQueue, block);
   dataOutSynchQueue = self->_dataOutSynchQueue;
   v10[0] = MEMORY[0x277D85DD0];
@@ -5566,7 +5566,7 @@ void __87__JFXVideoCameraController_JFX_configureLockedCaptureDevice_minFrameRat
   v10[2] = __94__JFXVideoCameraController_JFX_setCaptureDeviceType_captureDevicePositionCaptureSessionQueue___block_invoke_2;
   v10[3] = &unk_278D7A118;
   v10[4] = self;
-  v10[5] = a4;
+  v10[5] = queue;
   dispatch_async(dataOutSynchQueue, v10);
 }
 
@@ -5579,24 +5579,24 @@ uint64_t __94__JFXVideoCameraController_JFX_setCaptureDeviceType_captureDevicePo
   return [v3 setCurrentCameraPosition_queryDataQueue:v2];
 }
 
-- (id)JFX_getFormatForCaptureDevice:(id)a3 previewDimensions:(id)a4 colorSpace:(int64_t)a5
+- (id)JFX_getFormatForCaptureDevice:(id)device previewDimensions:(id)dimensions colorSpace:(int64_t)space
 {
-  v7 = a3;
+  deviceCopy = device;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__16;
   v16 = __Block_byref_object_dispose__16;
   v17 = 0;
-  v8 = [v7 formats];
+  formats = [deviceCopy formats];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __87__JFXVideoCameraController_JFX_getFormatForCaptureDevice_previewDimensions_colorSpace___block_invoke;
   v11[3] = &unk_278D7BCC0;
-  v11[5] = a5;
-  v11[6] = a4;
+  v11[5] = space;
+  v11[6] = dimensions;
   v11[4] = &v12;
-  [v8 enumerateObjectsUsingBlock:v11];
+  [formats enumerateObjectsUsingBlock:v11];
   v9 = v13[5];
 
   _Block_object_dispose(&v12, 8);
@@ -5624,7 +5624,7 @@ void __87__JFXVideoCameraController_JFX_getFormatForCaptureDevice_previewDimensi
   }
 }
 
-- (void)JFX_setIsFlashScene:(BOOL)a3
+- (void)JFX_setIsFlashScene:(BOOL)scene
 {
   [(JFXVideoCameraController *)self willChangeValueForKey:@"isFlashScene"];
   queryDataQueue = self->_queryDataQueue;
@@ -5633,7 +5633,7 @@ void __87__JFXVideoCameraController_JFX_getFormatForCaptureDevice_previewDimensi
   v6[2] = __48__JFXVideoCameraController_JFX_setIsFlashScene___block_invoke;
   v6[3] = &unk_278D79E38;
   v6[4] = self;
-  v7 = a3;
+  sceneCopy = scene;
   dispatch_barrier_async(queryDataQueue, v6);
 }
 
@@ -5655,11 +5655,11 @@ void __48__JFXVideoCameraController_JFX_setIsFlashScene___block_invoke(uint64_t 
     [(AVCaptureSession *)self->_captureSession stopRunning];
   }
 
-  v3 = [(AVCaptureDeviceInput *)self->_cameraDeviceInput device];
-  [v3 removeObserver:self forKeyPath:@"systemPressureState" context:sAVCaptureDeviceSystemPressureState];
+  device = [(AVCaptureDeviceInput *)self->_cameraDeviceInput device];
+  [device removeObserver:self forKeyPath:@"systemPressureState" context:sAVCaptureDeviceSystemPressureState];
 
-  v4 = [(AVCaptureDeviceInput *)self->_cameraDeviceInput device];
-  [v4 removeObserver:self forKeyPath:@"videoZoomFactor" context:&sAVCaptureDeviceVideoZoomFactor];
+  device2 = [(AVCaptureDeviceInput *)self->_cameraDeviceInput device];
+  [device2 removeObserver:self forKeyPath:@"videoZoomFactor" context:&sAVCaptureDeviceVideoZoomFactor];
 
   [(AVCapturePhotoOutput *)self->_photoOutput removeObserver:self forKeyPath:@"isFlashScene" context:sAVCapturePhotoOutputIsFlashScene];
   captureSession = self->_captureSession;
@@ -5729,36 +5729,36 @@ uint64_t __63__JFXVideoCameraController_JFX_resetSessionCaptureSessionQueue__blo
   return [v2 setStillImageFaceAnchor_queryDataQueue:0];
 }
 
-- (void)JFX_setZoomFactor_captureSessionQueue:(double)a3
+- (void)JFX_setZoomFactor_captureSessionQueue:(double)queue
 {
-  v5 = [(JFXVideoCameraController *)self currentCameraPosition_captureSessionQueue];
-  if (a3 >= 1.0 && v5 == 1)
+  currentCameraPosition_captureSessionQueue = [(JFXVideoCameraController *)self currentCameraPosition_captureSessionQueue];
+  if (queue >= 1.0 && currentCameraPosition_captureSessionQueue == 1)
   {
     [(JFXVideoCameraController *)self cameraVideoMaxZoomFactor_captureSessionQueue];
-    if (v7 >= a3)
+    if (v7 >= queue)
     {
-      v8 = [(AVCaptureDeviceInput *)self->_cameraDeviceInput device];
+      device = [(AVCaptureDeviceInput *)self->_cameraDeviceInput device];
       v9[0] = MEMORY[0x277D85DD0];
       v9[1] = 3221225472;
       v9[2] = __66__JFXVideoCameraController_JFX_setZoomFactor_captureSessionQueue___block_invoke;
       v9[3] = &__block_descriptor_40_e25_v16__0__AVCaptureDevice_8l;
-      *&v9[4] = a3;
-      JFX_configureCaptureDevice(v8, v9);
+      *&v9[4] = queue;
+      JFX_configureCaptureDevice(device, v9);
     }
   }
 }
 
-- (void)JFX_rampToZoom:(double)a3 rate:(double)a4 durationCaptureSessionQueue:(double)a5
+- (void)JFX_rampToZoom:(double)zoom rate:(double)rate durationCaptureSessionQueue:(double)queue
 {
-  v8 = [(AVCaptureDeviceInput *)self->_cameraDeviceInput device];
+  device = [(AVCaptureDeviceInput *)self->_cameraDeviceInput device];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __76__JFXVideoCameraController_JFX_rampToZoom_rate_durationCaptureSessionQueue___block_invoke;
   v9[3] = &__block_descriptor_56_e25_v16__0__AVCaptureDevice_8l;
-  *&v9[4] = a5;
-  *&v9[5] = a3;
-  *&v9[6] = a4;
-  JFX_configureCaptureDevice(v8, v9);
+  *&v9[4] = queue;
+  *&v9[5] = zoom;
+  *&v9[6] = rate;
+  JFX_configureCaptureDevice(device, v9);
 }
 
 uint64_t __76__JFXVideoCameraController_JFX_rampToZoom_rate_durationCaptureSessionQueue___block_invoke(double *a1, void *a2)
@@ -5780,21 +5780,21 @@ uint64_t __76__JFXVideoCameraController_JFX_rampToZoom_rate_durationCaptureSessi
 
 - (BOOL)JFX_isUsingInternalMicCaptureSessionQueue
 {
-  v2 = [MEMORY[0x277CB83F8] sharedInstance];
-  v3 = [v2 currentRoute];
-  v4 = [v3 inputs];
-  v5 = [v4 firstObject];
+  mEMORY[0x277CB83F8] = [MEMORY[0x277CB83F8] sharedInstance];
+  currentRoute = [mEMORY[0x277CB83F8] currentRoute];
+  inputs = [currentRoute inputs];
+  firstObject = [inputs firstObject];
 
-  v6 = [v5 portType];
-  LOBYTE(v4) = [v6 isEqualToString:*MEMORY[0x277CB8190]];
+  portType = [firstObject portType];
+  LOBYTE(inputs) = [portType isEqualToString:*MEMORY[0x277CB8190]];
 
-  return v4;
+  return inputs;
 }
 
 - (BOOL)JFX_isARKitEnabledCaptureSessionQueue
 {
-  v2 = [(JFXVideoCameraController *)self arCameraSessionController];
-  v3 = v2 != 0;
+  arCameraSessionController = [(JFXVideoCameraController *)self arCameraSessionController];
+  v3 = arCameraSessionController != 0;
 
   return v3;
 }
@@ -5805,22 +5805,22 @@ uint64_t __76__JFXVideoCameraController_JFX_rampToZoom_rate_durationCaptureSessi
   {
     v4 = [JFXARKitCameraSessionController alloc];
     captureSession = self->_captureSession;
-    v6 = [(AVCaptureDeviceInput *)self->_cameraDeviceInput device];
-    v7 = [(JFXARKitCameraSessionController *)v4 initWithAVCaptureSession:captureSession captureDevice:v6 arSessionDelegateQueue:self->_dataOutSynchQueue];
+    device = [(AVCaptureDeviceInput *)self->_cameraDeviceInput device];
+    v7 = [(JFXARKitCameraSessionController *)v4 initWithAVCaptureSession:captureSession captureDevice:device arSessionDelegateQueue:self->_dataOutSynchQueue];
     [(JFXVideoCameraController *)self setArCameraSessionController:v7];
 
-    v8 = [(JFXVideoCameraController *)self arCameraSessionController];
-    [v8 setFrameDelegate:self];
+    arCameraSessionController = [(JFXVideoCameraController *)self arCameraSessionController];
+    [arCameraSessionController setFrameDelegate:self];
   }
 }
 
 - (void)JFX_startARCameraSessionController
 {
-  v3 = [(JFXVideoCameraController *)self JFX_isARKitEnabledCaptureSessionQueue];
-  v4 = [(JFXVideoCameraController *)self arCameraSessionController];
-  v5 = [v4 running];
+  jFX_isARKitEnabledCaptureSessionQueue = [(JFXVideoCameraController *)self JFX_isARKitEnabledCaptureSessionQueue];
+  arCameraSessionController = [(JFXVideoCameraController *)self arCameraSessionController];
+  running = [arCameraSessionController running];
 
-  if (v3 && (v5 & 1) == 0)
+  if (jFX_isARKitEnabledCaptureSessionQueue && (running & 1) == 0)
   {
     v6 = JFXLog_DebugCamera();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -5828,29 +5828,29 @@ uint64_t __76__JFXVideoCameraController_JFX_rampToZoom_rate_durationCaptureSessi
       [JFXVideoCameraController JFX_startARCameraSessionController];
     }
 
-    v7 = [(JFXVideoCameraController *)self arCameraSessionController];
-    [v7 startARSession];
+    arCameraSessionController2 = [(JFXVideoCameraController *)self arCameraSessionController];
+    [arCameraSessionController2 startARSession];
   }
 }
 
-- (id)JFX_createPVFrameSetFromPixelBuffer:(__CVBuffer *)a3 withMetadata:(id)a4 timeInterval:(double)a5 error:(id *)a6
+- (id)JFX_createPVFrameSetFromPixelBuffer:(__CVBuffer *)buffer withMetadata:(id)metadata timeInterval:(double)interval error:(id *)error
 {
-  v10 = a4;
+  metadataCopy = metadata;
   memset(&v27, 0, sizeof(v27));
-  CMTimeMakeWithSeconds(&v27, a5, 1000000000);
-  v11 = [MEMORY[0x277D41618] imageWithCVPixelBuffer:a3];
+  CMTimeMakeWithSeconds(&v27, interval, 1000000000);
+  v11 = [MEMORY[0x277D41618] imageWithCVPixelBuffer:buffer];
   v12 = +[JFXMediaSettings timeScale];
-  v13 = [v10 objectForKeyedSubscript:@"PVFrameSetMetadataARMetadataKey"];
-  v14 = [v13 arFrame];
-  v15 = v14;
-  if (v14 && !self->_rgbOnlyMemoji)
+  v13 = [metadataCopy objectForKeyedSubscript:@"PVFrameSetMetadataARMetadataKey"];
+  arFrame = [v13 arFrame];
+  v15 = arFrame;
+  if (arFrame && !self->_rgbOnlyMemoji)
   {
-    v16 = [v14 capturedDepthData];
+    capturedDepthData = [arFrame capturedDepthData];
   }
 
   else
   {
-    v16 = 0;
+    capturedDepthData = 0;
   }
 
   memset(&v26, 0, sizeof(v26));
@@ -5861,10 +5861,10 @@ uint64_t __76__JFXVideoCameraController_JFX_rampToZoom_rate_durationCaptureSessi
   v17 = [MEMORY[0x277D415D8] sampleBufferWithPVImageBuffer:v11 timestamp:&v24 frameDuration:&v23 error:&v25];
   v18 = v25;
   v19 = v18;
-  if (a6)
+  if (error)
   {
     v20 = v18;
-    *a6 = v19;
+    *error = v19;
   }
 
   if (v19)
@@ -5882,21 +5882,21 @@ uint64_t __76__JFXVideoCameraController_JFX_rampToZoom_rate_durationCaptureSessi
 
   else
   {
-    v21 = [objc_alloc(MEMORY[0x277D41608]) initWithColorBuffer:v17 depthData:v16 metadata:v10];
+    v21 = [objc_alloc(MEMORY[0x277D41608]) initWithColorBuffer:v17 depthData:capturedDepthData metadata:metadataCopy];
   }
 
   return v21;
 }
 
-- (id)JFX_updateCurrentlyTrackedFaceID:(id)a3
+- (id)JFX_updateCurrentlyTrackedFaceID:(id)d
 {
   v21 = *MEMORY[0x277D85DE8];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  dCopy = d;
+  v5 = [dCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v5)
   {
     v6 = v5;
@@ -5907,35 +5907,35 @@ LABEL_3:
     {
       if (*v17 != v7)
       {
-        objc_enumerationMutation(v4);
+        objc_enumerationMutation(dCopy);
       }
 
       v9 = *(*(&v16 + 1) + 8 * v8);
-      v10 = [(JFXVideoCameraController *)self currentlyTrackedFaceID];
+      currentlyTrackedFaceID = [(JFXVideoCameraController *)self currentlyTrackedFaceID];
 
-      if (!v10)
+      if (!currentlyTrackedFaceID)
       {
         [(JFXVideoCameraController *)self setCurrentlyTrackedFaceID:v9];
       }
 
-      v11 = [(JFXVideoCameraController *)self currentlyTrackedFaceID];
-      v12 = [v9 isEqual:v11];
+      currentlyTrackedFaceID2 = [(JFXVideoCameraController *)self currentlyTrackedFaceID];
+      v12 = [v9 isEqual:currentlyTrackedFaceID2];
 
       if (v12)
       {
         break;
       }
 
-      v13 = [v4 lastObject];
+      lastObject = [dCopy lastObject];
 
-      if (v9 == v13)
+      if (v9 == lastObject)
       {
         [(JFXVideoCameraController *)self setCurrentlyTrackedFaceID:v9];
       }
 
       if (v6 == ++v8)
       {
-        v6 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v6 = [dCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
         if (v6)
         {
           goto LABEL_3;
@@ -5946,29 +5946,29 @@ LABEL_3:
     }
   }
 
-  v14 = [(JFXVideoCameraController *)self currentlyTrackedFaceID];
+  currentlyTrackedFaceID3 = [(JFXVideoCameraController *)self currentlyTrackedFaceID];
 
-  return v14;
+  return currentlyTrackedFaceID3;
 }
 
-- (id)JFX_currentAVMetadataFaceObject:(id)a3
+- (id)JFX_currentAVMetadataFaceObject:(id)object
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  objectCopy = object;
+  v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(objectCopy, "count")}];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __60__JFXVideoCameraController_JFX_currentAVMetadataFaceObject___block_invoke;
   v12[3] = &unk_278D7BD28;
   v6 = v5;
   v13 = v6;
-  [v4 enumerateObjectsUsingBlock:v12];
+  [objectCopy enumerateObjectsUsingBlock:v12];
   v7 = [(JFXVideoCameraController *)self JFX_updateCurrentlyTrackedFaceID:v6];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __60__JFXVideoCameraController_JFX_currentAVMetadataFaceObject___block_invoke_2;
   v11[3] = &unk_278D7BD50;
   v11[4] = self;
-  v8 = [v4 indexOfObjectPassingTest:v11];
+  v8 = [objectCopy indexOfObjectPassingTest:v11];
   if (v8 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v9 = 0;
@@ -5976,7 +5976,7 @@ LABEL_3:
 
   else
   {
-    v9 = [v4 objectAtIndexedSubscript:v8];
+    v9 = [objectCopy objectAtIndexedSubscript:v8];
   }
 
   return v9;
@@ -5998,80 +5998,80 @@ BOOL __60__JFXVideoCameraController_JFX_currentAVMetadataFaceObject___block_invo
   return v5;
 }
 
-- (JFXFaceAnchor)JFX_processPixelBufferForFaceTransform:(double)a3 cameraIntrinsics:(float)a4 forNormalizedFaceRect:(CGFloat)a5 withRollAngle:(CGFloat)a6 withTimestamp:(CGFloat)a7 andDuration:(CGFloat)a8 detectionOrientation:(float)a9 interfaceOrientation:(uint64_t)a10 needsMirroring:(__CVBuffer *)a11
+- (JFXFaceAnchor)JFX_processPixelBufferForFaceTransform:(double)transform cameraIntrinsics:(float)intrinsics forNormalizedFaceRect:(CGFloat)rect withRollAngle:(CGFloat)angle withTimestamp:(CGFloat)timestamp andDuration:(CGFloat)duration detectionOrientation:(float)orientation interfaceOrientation:(uint64_t)self0 needsMirroring:(__CVBuffer *)self1
 {
   v86[1] = *MEMORY[0x277D85DE8];
   v25 = *(MEMORY[0x277CBF2C0] + 16);
   *&v80.a = *MEMORY[0x277CBF2C0];
   *&v80.c = v25;
   *&v80.tx = *(MEMORY[0x277CBF2C0] + 32);
-  Width = CVPixelBufferGetWidth(a11);
-  Height = CVPixelBufferGetHeight(a11);
+  Width = CVPixelBufferGetWidth(mirroring);
+  Height = CVPixelBufferGetHeight(mirroring);
   CGAffineTransformMakeTranslation(&v80, Height, 0.0);
   v78 = v80;
   CGAffineTransformRotate(&v79, &v78, 3.14159265);
   v80 = v79;
-  v28 = a2 / (a4 + a4);
-  v29 = [a1 vcpAnalyzer];
+  v28 = a2 / (intrinsics + intrinsics);
+  vcpAnalyzer = [self vcpAnalyzer];
 
-  if (v29)
+  if (vcpAnalyzer)
   {
     v30 = v28 * Width;
-    v31 = [a1 vcpAnalyzer];
+    vcpAnalyzer2 = [self vcpAnalyzer];
     v85 = *MEMORY[0x277D26820];
     v32 = [MEMORY[0x277CCABB0] numberWithDouble:v30];
     v86[0] = v32;
     v33 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v86 forKeys:&v85 count:1];
-    [v31 updatePreferredTransform:&v80 properties:v33];
+    [vcpAnalyzer2 updatePreferredTransform:&v80 properties:v33];
   }
 
   else
   {
-    v31 = JFXLog_camera();
-    if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
+    vcpAnalyzer2 = JFXLog_camera();
+    if (os_log_type_enabled(vcpAnalyzer2, OS_LOG_TYPE_ERROR))
     {
       [JFXVideoCameraController JFX_processPixelBufferForFaceTransform:cameraIntrinsics:forNormalizedFaceRect:withRollAngle:withTimestamp:andDuration:detectionOrientation:interfaceOrientation:needsMirroring:];
     }
   }
 
   v83[0] = *MEMORY[0x277D26810];
-  v88.origin.x = a5;
-  v88.origin.y = a6;
-  v88.size.width = a7;
-  v88.size.height = a8;
+  v88.origin.x = rect;
+  v88.origin.y = angle;
+  v88.size.width = timestamp;
+  v88.size.height = duration;
   v34 = NSStringFromCGRect(v88);
   v82 = v34;
   v35 = [MEMORY[0x277CBEA60] arrayWithObjects:&v82 count:1];
   v84[0] = v35;
   v83[1] = *MEMORY[0x277D26818];
-  *&v36 = a9;
+  *&v36 = orientation;
   v37 = [MEMORY[0x277CCABB0] numberWithFloat:v36];
   v81 = v37;
   v38 = [MEMORY[0x277CBEA60] arrayWithObjects:&v81 count:1];
   v84[1] = v38;
   v39 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v84 forKeys:v83 count:2];
 
-  v40 = [a1 vcpAnalyzer];
+  vcpAnalyzer3 = [self vcpAnalyzer];
   *&v79.a = *a12;
   v79.c = *(a12 + 16);
   *&v78.a = *a13;
   v78.c = *(a13 + 16);
-  v41 = [v40 analyzePixelBuffer:a11 withTimestamp:&v79 andDuration:&v78 properties:v39 error:0];
+  v41 = [vcpAnalyzer3 analyzePixelBuffer:mirroring withTimestamp:&v79 andDuration:&v78 properties:v39 error:0];
 
   v42 = [v41 objectForKeyedSubscript:*MEMORY[0x277D26808]];
   if ([v42 count])
   {
-    v43 = [v42 firstObject];
-    [v43 transform];
+    firstObject = [v42 firstObject];
+    [firstObject transform];
     v75 = v44;
     v70 = v46;
     v71 = v45;
     v69 = v47;
-    v48 = [v43 geometry];
-    [v48 vertices];
-    v77 = a8;
-    v49 = [v43 geometry];
-    [v49 vertices];
+    geometry = [firstObject geometry];
+    [geometry vertices];
+    durationCopy = duration;
+    geometry2 = [firstObject geometry];
+    [geometry2 vertices];
 
     SquareWithSize = CGRectMakeSquareWithSize();
     v66 = v51;
@@ -6079,15 +6079,15 @@ BOOL __60__JFXVideoCameraController_JFX_currentAVMetadataFaceObject___block_invo
     v53 = v52;
     v65 = v54;
     +[JFXFaceTrackingUtilities faceRectScaleFactorForInterfaceOrientation:andDeviceInterfaceOrientation:](JFXFaceTrackingUtilities, "faceRectScaleFactorForInterfaceOrientation:andDeviceInterfaceOrientation:", a15, +[JFXOrientationMonitor deviceInterfaceOrientation]);
-    v68 = a7;
+    timestampCopy = timestamp;
     v56 = v55;
-    v57 = a6;
+    angleCopy = angle;
     v59 = v58;
     v60 = JFX_adjustFaceAnchorCaptureInterfaceOrientationForDevice(a15);
-    [a1 cameraFrameResolution_dataOutSynchQueue];
+    [self cameraFrameResolution_dataOutSynchQueue];
     v63 = [[JFXFaceAnchor alloc] initWithTransform:a16 forFaceRect:v60 needsMirroring:3 withFaceRectScaleFactor:v75 frameImageResolution:v71 captureInterfaceOrientation:v70 preferredAnchorOrientation:v69, v67, v66, v53, v65, v56, v59, v61, v62];
     [(JFXFaceAnchor *)v63 setFocalLength:v28];
-    [(JFXFaceAnchor *)v63 setNormalizedFaceRect:a5, v57, v68, v77];
+    [(JFXFaceAnchor *)v63 setNormalizedFaceRect:rect, angleCopy, timestampCopy, durationCopy];
     if (![JFXFaceTrackingUtilities isFaceAnchorInRange:v63])
     {
 
@@ -6103,10 +6103,10 @@ BOOL __60__JFXVideoCameraController_JFX_currentAVMetadataFaceObject___block_invo
   return v63;
 }
 
-- (__n128)setCameraDeviceIntrinsics_dataOutSynchQueue:(__n128)a3
+- (__n128)setCameraDeviceIntrinsics_dataOutSynchQueue:(__n128)queue
 {
   result[27] = a2;
-  result[28] = a3;
+  result[28] = queue;
   result[29] = a4;
   return result;
 }

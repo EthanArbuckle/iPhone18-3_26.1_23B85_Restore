@@ -1,5 +1,5 @@
 @interface _ML3MultiUserDaemonAccountChangeOperation
-- (_ML3MultiUserDaemonAccountChangeOperation)initWithInitialDSID:(id)a3 finalDSID:(id)a4 accountChangeObserver:(id)a5;
+- (_ML3MultiUserDaemonAccountChangeOperation)initWithInitialDSID:(id)d finalDSID:(id)iD accountChangeObserver:(id)observer;
 - (_ML3MultiUserDaemonAccountChangeOperationDelegate)delegate;
 - (void)execute;
 @end
@@ -16,14 +16,14 @@
 - (void)execute
 {
   v26 = *MEMORY[0x277D85DE8];
-  v3 = [(_ML3MultiUserDaemonAccountChangeOperation *)self delegate];
-  if (!v3)
+  delegate = [(_ML3MultiUserDaemonAccountChangeOperation *)self delegate];
+  if (!delegate)
   {
     v4 = os_log_create("com.apple.amp.medialibrary", "MultiUser");
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      v21 = self;
+      selfCopy4 = self;
       _os_log_impl(&dword_22D2FA000, v4, OS_LOG_TYPE_ERROR, "%{public}@ - Missing delegate - unable to perform operation", buf, 0xCu);
     }
 
@@ -31,7 +31,7 @@
   }
 
   v19 = 0;
-  v5 = [v3 shouldExecuteAccountChangeOperation:self reason:&v19];
+  v5 = [delegate shouldExecuteAccountChangeOperation:self reason:&v19];
   v6 = v19;
   v7 = os_log_create("com.apple.amp.medialibrary", "MultiUser");
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
@@ -39,33 +39,33 @@
   {
     if (v8)
     {
-      v9 = [(_ML3MultiUserDaemonAccountChangeOperation *)self initialDSID];
-      v10 = [(_ML3MultiUserDaemonAccountChangeOperation *)self finalDSID];
+      initialDSID = [(_ML3MultiUserDaemonAccountChangeOperation *)self initialDSID];
+      finalDSID = [(_ML3MultiUserDaemonAccountChangeOperation *)self finalDSID];
       *buf = 138543874;
-      v21 = self;
+      selfCopy4 = self;
       v22 = 2114;
-      v23 = v9;
+      v23 = initialDSID;
       v24 = 2114;
-      v25 = v10;
+      v25 = finalDSID;
       _os_log_impl(&dword_22D2FA000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ - Starting account change operation from %{public}@ to %{public}@", buf, 0x20u);
     }
 
     v11 = os_log_create("com.apple.amp.medialibrary", "MultiUser");
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
-      v12 = [(_ML3MultiUserDaemonAccountChangeOperation *)self accountChangeObserver];
+      accountChangeObserver = [(_ML3MultiUserDaemonAccountChangeOperation *)self accountChangeObserver];
       *buf = 138543618;
-      v21 = self;
+      selfCopy4 = self;
       v22 = 2114;
-      v23 = v12;
+      v23 = accountChangeObserver;
       _os_log_impl(&dword_22D2FA000, v11, OS_LOG_TYPE_DEBUG, "%{public}@ - Active account changed - Performing dabase path change with observer %{public}@", buf, 0x16u);
     }
 
-    v13 = [(_ML3MultiUserDaemonAccountChangeOperation *)self finalDSID];
-    v14 = [v3 databasePathForDSID:v13];
+    finalDSID2 = [(_ML3MultiUserDaemonAccountChangeOperation *)self finalDSID];
+    v14 = [delegate databasePathForDSID:finalDSID2];
 
-    [v3 accountChangeOperationWillStartPerformingDatabasePathChange:self newDatabasePath:v14];
-    v15 = [(_ML3MultiUserDaemonAccountChangeOperation *)self accountChangeObserver];
+    [delegate accountChangeOperationWillStartPerformingDatabasePathChange:self newDatabasePath:v14];
+    accountChangeObserver2 = [(_ML3MultiUserDaemonAccountChangeOperation *)self accountChangeObserver];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __52___ML3MultiUserDaemonAccountChangeOperation_execute__block_invoke;
@@ -73,7 +73,7 @@
     v17[4] = self;
     v18 = v14;
     v16 = v14;
-    [v15 performDatabasePathChange:v16 completion:v17];
+    [accountChangeObserver2 performDatabasePathChange:v16 completion:v17];
   }
 
   else
@@ -81,7 +81,7 @@
     if (v8)
     {
       *buf = 138543618;
-      v21 = self;
+      selfCopy4 = self;
       v22 = 2114;
       v23 = v6;
       _os_log_impl(&dword_22D2FA000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ - No account change operation to perform - reason=%{public}@", buf, 0x16u);
@@ -91,25 +91,25 @@
   }
 }
 
-- (_ML3MultiUserDaemonAccountChangeOperation)initWithInitialDSID:(id)a3 finalDSID:(id)a4 accountChangeObserver:(id)a5
+- (_ML3MultiUserDaemonAccountChangeOperation)initWithInitialDSID:(id)d finalDSID:(id)iD accountChangeObserver:(id)observer
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  iDCopy = iD;
+  observerCopy = observer;
   v17.receiver = self;
   v17.super_class = _ML3MultiUserDaemonAccountChangeOperation;
   v11 = [(MSVAsyncOperation *)&v17 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [dCopy copy];
     initialDSID = v11->_initialDSID;
     v11->_initialDSID = v12;
 
-    v14 = [v9 copy];
+    v14 = [iDCopy copy];
     finalDSID = v11->_finalDSID;
     v11->_finalDSID = v14;
 
-    objc_storeStrong(&v11->_accountChangeObserver, a5);
+    objc_storeStrong(&v11->_accountChangeObserver, observer);
   }
 
   return v11;

@@ -1,13 +1,13 @@
 @interface AAUIMyCustodianActionHandler
-- (AAUIMyCustodianActionHandler)initWithAccountManager:(id)a3 localContact:(id)a4;
+- (AAUIMyCustodianActionHandler)initWithAccountManager:(id)manager localContact:(id)contact;
 - (BOOL)_isWalrusEnabled;
 - (id)_recoveryFactorController;
 - (void)_addRecoveryContact;
-- (void)_checkRecoveryContactAndRecoveryKeyStatus:(id)a3;
-- (void)_continueDoingDestructiveAction:(id)a3 specifier:(id)a4 account:(id)a5;
+- (void)_checkRecoveryContactAndRecoveryKeyStatus:(id)status;
+- (void)_continueDoingDestructiveAction:(id)action specifier:(id)specifier account:(id)account;
 - (void)_dismissAndPopFromRecoveryContactRemovedScreen;
 - (void)_dismissAndStartHealthCheck;
-- (void)_dismissRecoveryContactRemovedScreenWithCompletion:(id)a3;
+- (void)_dismissRecoveryContactRemovedScreenWithCompletion:(id)completion;
 - (void)_displayCustodianDeleteNotAllowedAlert;
 - (void)_displayRatchetGenericErrorAlert;
 - (void)_doCustodianRemove;
@@ -15,24 +15,24 @@
 - (void)_popToAccountRecoveryScreen;
 - (void)_setupRecoveryKey;
 - (void)_stopSpinners;
-- (void)_updateUIAfterDeleteWithHasRecoveryContact:(BOOL)a3 hasRecoveryKey:(BOOL)a4;
-- (void)doDestructiveAction:(id)a3 specifier:(id)a4;
+- (void)_updateUIAfterDeleteWithHasRecoveryContact:(BOOL)contact hasRecoveryKey:(BOOL)key;
+- (void)doDestructiveAction:(id)action specifier:(id)specifier;
 @end
 
 @implementation AAUIMyCustodianActionHandler
 
-- (AAUIMyCustodianActionHandler)initWithAccountManager:(id)a3 localContact:(id)a4
+- (AAUIMyCustodianActionHandler)initWithAccountManager:(id)manager localContact:(id)contact
 {
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  contactCopy = contact;
   v17.receiver = self;
   v17.super_class = AAUIMyCustodianActionHandler;
   v9 = [(AAUIMyCustodianActionHandler *)&v17 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_contact, a4);
-    objc_storeStrong(&v10->_accountManager, a3);
+    objc_storeStrong(&v9->_contact, contact);
+    objc_storeStrong(&v10->_accountManager, manager);
     v11 = objc_opt_new();
     spinnerManager = v10->_spinnerManager;
     v10->_spinnerManager = v11;
@@ -46,26 +46,26 @@
   return v10;
 }
 
-- (void)doDestructiveAction:(id)a3 specifier:(id)a4
+- (void)doDestructiveAction:(id)action specifier:(id)specifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AIDAAccountManager *)self->_accountManager accounts];
-  v9 = [v8 objectForKeyedSubscript:*MEMORY[0x1E698C218]];
+  actionCopy = action;
+  specifierCopy = specifier;
+  accounts = [(AIDAAccountManager *)self->_accountManager accounts];
+  v9 = [accounts objectForKeyedSubscript:*MEMORY[0x1E698C218]];
 
   if (v9)
   {
     dtoHelper = self->_dtoHelper;
-    v11 = [v9 aa_altDSID];
+    aa_altDSID = [v9 aa_altDSID];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __62__AAUIMyCustodianActionHandler_doDestructiveAction_specifier___block_invoke;
     v13[3] = &unk_1E820DA18;
     v13[4] = self;
-    v14 = v6;
-    v15 = v7;
+    v14 = actionCopy;
+    v15 = specifierCopy;
     v16 = v9;
-    [(AAUIDTOHelper *)dtoHelper shouldGateUsingRatchetForAltDSID:v11 completion:v13];
+    [(AAUIDTOHelper *)dtoHelper shouldGateUsingRatchetForAltDSID:aa_altDSID completion:v13];
   }
 
   else
@@ -191,27 +191,27 @@ uint64_t __62__AAUIMyCustodianActionHandler_doDestructiveAction_specifier___bloc
   return [*(a1 + 32) _displayCustodianDeleteNotAllowedAlert];
 }
 
-- (void)_continueDoingDestructiveAction:(id)a3 specifier:(id)a4 account:(id)a5
+- (void)_continueDoingDestructiveAction:(id)action specifier:(id)specifier account:(id)account
 {
   v23 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  actionCopy = action;
+  specifierCopy = specifier;
+  accountCopy = account;
   v11 = _AAUILogSystem();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [(AALocalContactInfo *)self->_contact handle];
+    handle = [(AALocalContactInfo *)self->_contact handle];
     *buf = 138412290;
-    v22 = v12;
+    v22 = handle;
     _os_log_impl(&dword_1C5355000, v11, OS_LOG_TYPE_DEFAULT, "Removing custodian %@.", buf, 0xCu);
   }
 
   spinnerManager = self->_spinnerManager;
-  v14 = [v9 identifier];
-  [(AAUISpinnerManager *)spinnerManager startSpinnerInSpecifier:v9 forKey:v14];
+  identifier = [specifierCopy identifier];
+  [(AAUISpinnerManager *)spinnerManager startSpinnerInSpecifier:specifierCopy forKey:identifier];
 
   objc_initWeak(buf, self);
-  v15 = [(AAUIMyCustodianActionHandler *)self _isWalrusEnabled];
+  _isWalrusEnabled = [(AAUIMyCustodianActionHandler *)self _isWalrusEnabled];
   v16 = objc_opt_new();
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
@@ -219,9 +219,9 @@ uint64_t __62__AAUIMyCustodianActionHandler_doDestructiveAction_specifier___bloc
   v18[3] = &unk_1E820DA40;
   objc_copyWeak(&v20, buf);
   v18[4] = self;
-  v17 = v8;
+  v17 = actionCopy;
   v19 = v17;
-  [v16 aaui_authenticateAccount:v10 forceInteraction:v15 presentingViewController:v17 completion:v18];
+  [v16 aaui_authenticateAccount:accountCopy forceInteraction:_isWalrusEnabled presentingViewController:v17 completion:v18];
 
   objc_destroyWeak(&v20);
   objc_destroyWeak(buf);
@@ -260,14 +260,14 @@ void __82__AAUIMyCustodianActionHandler__continueDoingDestructiveAction_specifie
 {
   objc_initWeak(&location, self);
   v3 = objc_opt_new();
-  v4 = [(AALocalContactInfo *)self->_contact custodianID];
+  custodianID = [(AALocalContactInfo *)self->_contact custodianID];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __50__AAUIMyCustodianActionHandler__doCustodianRemove__block_invoke;
   v5[3] = &unk_1E820C3A0;
   objc_copyWeak(&v6, &location);
   v5[4] = self;
-  [v3 removeCustodian:v4 completion:v5];
+  [v3 removeCustodian:custodianID completion:v5];
 
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
@@ -415,20 +415,20 @@ void __51__AAUIMyCustodianActionHandler__performHealthCheck__block_invoke(uint64
 
 - (void)_popToAccountRecoveryScreen
 {
-  v2 = [(UIViewController *)self->_presentingViewController navigationController];
-  [v2 aaui_removeLastViewControllerAnimated:0];
+  navigationController = [(UIViewController *)self->_presentingViewController navigationController];
+  [navigationController aaui_removeLastViewControllerAnimated:0];
 }
 
-- (void)_dismissRecoveryContactRemovedScreenWithCompletion:(id)a3
+- (void)_dismissRecoveryContactRemovedScreenWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   recoveryContactRemovedNavigationController = self->_recoveryContactRemovedNavigationController;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __83__AAUIMyCustodianActionHandler__dismissRecoveryContactRemovedScreenWithCompletion___block_invoke;
   v7[3] = &unk_1E820B820;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   [(OBNavigationController *)recoveryContactRemovedNavigationController dismissViewControllerAnimated:1 completion:v7];
 }
 
@@ -489,9 +489,9 @@ void __49__AAUIMyCustodianActionHandler__setupRecoveryKey__block_invoke_2(uint64
   [WeakRetained _popToAccountRecoveryScreen];
 }
 
-- (void)_checkRecoveryContactAndRecoveryKeyStatus:(id)a3
+- (void)_checkRecoveryContactAndRecoveryKeyStatus:(id)status
 {
-  v3 = a3;
+  statusCopy = status;
   v22[0] = 0;
   v22[1] = v22;
   v22[2] = 0x2020000000;
@@ -525,10 +525,10 @@ void __49__AAUIMyCustodianActionHandler__setupRecoveryKey__block_invoke_2(uint64
   block[1] = 3221225472;
   block[2] = __74__AAUIMyCustodianActionHandler__checkRecoveryContactAndRecoveryKeyStatus___block_invoke_53;
   block[3] = &unk_1E820DB08;
-  v11 = v3;
+  v11 = statusCopy;
   v12 = v22;
   v13 = v20;
-  v9 = v3;
+  v9 = statusCopy;
   dispatch_group_notify(v8, MEMORY[0x1E69E96A0], block);
 
   _Block_object_dispose(v20, 8);
@@ -559,44 +559,44 @@ void __74__AAUIMyCustodianActionHandler__checkRecoveryContactAndRecoveryKeyStatu
   dispatch_group_leave(*(a1 + 32));
 }
 
-- (void)_updateUIAfterDeleteWithHasRecoveryContact:(BOOL)a3 hasRecoveryKey:(BOOL)a4
+- (void)_updateUIAfterDeleteWithHasRecoveryContact:(BOOL)contact hasRecoveryKey:(BOOL)key
 {
-  v4 = a4;
-  v5 = a3;
+  keyCopy = key;
+  contactCopy = contact;
   [(AAUISpinnerManager *)self->_spinnerManager stopAllSpinners];
-  v19 = [[AAUIWalrusRecoveryContactRemovedScreenModel alloc] initWithHasRecoveryContact:v5 hasRecoveryKey:v4];
+  v19 = [[AAUIWalrusRecoveryContactRemovedScreenModel alloc] initWithHasRecoveryContact:contactCopy hasRecoveryKey:keyCopy];
   v7 = [[AAUIOBWelcomeController alloc] initWithViewModel:v19];
   v8 = v7;
-  if (v5 || v4)
+  if (contactCopy || keyCopy)
   {
-    v15 = [(AAUIOBWelcomeController *)v7 primaryButton];
-    [v15 addTarget:self action:sel__dismissAndPopFromRecoveryContactRemovedScreen forControlEvents:64];
+    primaryButton = [(AAUIOBWelcomeController *)v7 primaryButton];
+    [primaryButton addTarget:self action:sel__dismissAndPopFromRecoveryContactRemovedScreen forControlEvents:64];
 
-    v14 = [(OBBaseWelcomeController *)v8 navigationItem];
-    [v14 setHidesBackButton:1];
+    navigationItem = [(OBBaseWelcomeController *)v8 navigationItem];
+    [navigationItem setHidesBackButton:1];
   }
 
   else
   {
     v9 = objc_alloc(MEMORY[0x1E69DC708]);
-    v10 = [(AAWalrusRecoveryContactRemovedScreenModel *)v19 leftBarButton];
-    v11 = [v9 initWithTitle:v10 style:0 target:self action:sel__dismissAndStartHealthCheck];
-    v12 = [(OBBaseWelcomeController *)v8 navigationItem];
-    [v12 setLeftBarButtonItem:v11];
+    leftBarButton = [(AAWalrusRecoveryContactRemovedScreenModel *)v19 leftBarButton];
+    v11 = [v9 initWithTitle:leftBarButton style:0 target:self action:sel__dismissAndStartHealthCheck];
+    navigationItem2 = [(OBBaseWelcomeController *)v8 navigationItem];
+    [navigationItem2 setLeftBarButtonItem:v11];
 
-    v13 = [(AAUIOBWelcomeController *)v8 primaryButton];
-    [v13 addTarget:self action:sel__addRecoveryContact forControlEvents:64];
+    primaryButton2 = [(AAUIOBWelcomeController *)v8 primaryButton];
+    [primaryButton2 addTarget:self action:sel__addRecoveryContact forControlEvents:64];
 
-    v14 = [(AAUIOBWelcomeController *)v8 secondaryButton];
-    [v14 addTarget:self action:sel__setupRecoveryKey forControlEvents:64];
+    navigationItem = [(AAUIOBWelcomeController *)v8 secondaryButton];
+    [navigationItem addTarget:self action:sel__setupRecoveryKey forControlEvents:64];
   }
 
   v16 = [objc_alloc(MEMORY[0x1E69B7D40]) initWithRootViewController:v8];
   recoveryContactRemovedNavigationController = self->_recoveryContactRemovedNavigationController;
   self->_recoveryContactRemovedNavigationController = v16;
 
-  v18 = [(UIViewController *)self->_presentingViewController navigationController];
-  [v18 presentViewController:self->_recoveryContactRemovedNavigationController animated:1 completion:0];
+  navigationController = [(UIViewController *)self->_presentingViewController navigationController];
+  [navigationController presentViewController:self->_recoveryContactRemovedNavigationController animated:1 completion:0];
 }
 
 - (void)_stopSpinners
@@ -620,14 +620,14 @@ void __45__AAUIMyCustodianActionHandler__stopSpinners__block_invoke(uint64_t a1)
 
 - (void)_displayCustodianDeleteNotAllowedAlert
 {
-  v3 = [(AAUIDTOHelper *)self->_dtoHelper makeCustodianDeleteOpNotAllowedAlert];
-  [(UIViewController *)self->_presentingViewController presentViewController:v3 animated:1 completion:0];
+  makeCustodianDeleteOpNotAllowedAlert = [(AAUIDTOHelper *)self->_dtoHelper makeCustodianDeleteOpNotAllowedAlert];
+  [(UIViewController *)self->_presentingViewController presentViewController:makeCustodianDeleteOpNotAllowedAlert animated:1 completion:0];
 }
 
 - (void)_displayRatchetGenericErrorAlert
 {
-  v3 = [(AAUIDTOHelper *)self->_dtoHelper makeGenericRatchetFailedAlert];
-  [(UIViewController *)self->_presentingViewController presentViewController:v3 animated:1 completion:0];
+  makeGenericRatchetFailedAlert = [(AAUIDTOHelper *)self->_dtoHelper makeGenericRatchetFailedAlert];
+  [(UIViewController *)self->_presentingViewController presentViewController:makeGenericRatchetFailedAlert animated:1 completion:0];
 }
 
 @end

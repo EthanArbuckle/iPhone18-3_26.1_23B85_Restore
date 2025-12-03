@@ -6,9 +6,9 @@
 
 - (BOOL)readyForProcessing
 {
-  v2 = [(BWStillImageProcessorControllerRequest *)self input];
+  input = [(BWStillImageProcessorControllerRequest *)self input];
 
-  return [(BWDeferredCaptureControllerInput *)&v2->super.isa readyForProcessing];
+  return [(BWDeferredCaptureControllerInput *)&input->super.isa readyForProcessing];
 }
 
 @end

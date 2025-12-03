@@ -1,29 +1,29 @@
 @interface BRKCompanionContextManager
-- (BRKCompanionContextManager)initWithBRKIDSService:(id)a3;
-- (id)_messageForRegion:(id)a3;
+- (BRKCompanionContextManager)initWithBRKIDSService:(id)service;
+- (id)_messageForRegion:(id)region;
 - (void)fetchLocationOfInterest;
-- (void)locationManager:(id)a3 didEnter:(id)a4 completion:(id)a5;
-- (void)locationManager:(id)a3 didExitRegion:(id)a4;
-- (void)locationManagerDidChangeAuthorization:(id)a3;
-- (void)monitorLocationOfInterest:(id)a3;
-- (void)startMonitoring:(id)a3 forRegion:(id)a4;
-- (void)stopMonitoring:(id)a3 forRegionIdentifier:(id)a4;
+- (void)locationManager:(id)manager didEnter:(id)enter completion:(id)completion;
+- (void)locationManager:(id)manager didExitRegion:(id)region;
+- (void)locationManagerDidChangeAuthorization:(id)authorization;
+- (void)monitorLocationOfInterest:(id)interest;
+- (void)startMonitoring:(id)monitoring forRegion:(id)region;
+- (void)stopMonitoring:(id)monitoring forRegionIdentifier:(id)identifier;
 - (void)stopMonitoringHome;
-- (void)stopMonitoringIdentifier:(id)a3;
+- (void)stopMonitoringIdentifier:(id)identifier;
 @end
 
 @implementation BRKCompanionContextManager
 
-- (BRKCompanionContextManager)initWithBRKIDSService:(id)a3
+- (BRKCompanionContextManager)initWithBRKIDSService:(id)service
 {
-  v5 = a3;
+  serviceCopy = service;
   v19.receiver = self;
   v19.super_class = BRKCompanionContextManager;
   v6 = [(BRKCompanionContextManager *)&v19 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_idsService, a3);
+    objc_storeStrong(&v6->_idsService, service);
     [(BRKIDSService *)v7->_idsService setCompanionContextManagerDelegate:v7];
     v8 = [CLLocationManager alloc];
     v9 = [NSBundle bundleWithPath:@"/System/Library/LocationBundles/HandwashingLocation.bundle"];
@@ -31,12 +31,12 @@
     locationManager = v7->_locationManager;
     v7->_locationManager = v10;
 
-    v12 = [(CLLocationManager *)v7->_locationManager authorizationStatus];
+    authorizationStatus = [(CLLocationManager *)v7->_locationManager authorizationStatus];
     v13 = BRKLoggingObjectForDomain();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109120;
-      v21 = v12;
+      v21 = authorizationStatus;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "authorizationStatus %d", buf, 8u);
     }
 
@@ -45,9 +45,9 @@
     v7->_routineManager = v14;
 
     v16 = +[BRKSettings settingsForActiveDevice];
-    v17 = [v16 isCachedLocationAuthFlowEnabled];
+    isCachedLocationAuthFlowEnabled = [v16 isCachedLocationAuthFlowEnabled];
 
-    if (v17)
+    if (isCachedLocationAuthFlowEnabled)
     {
       [(BRKCompanionContextManager *)v7 stopMonitoringHome];
     }
@@ -56,51 +56,51 @@
   return v7;
 }
 
-- (void)startMonitoring:(id)a3 forRegion:(id)a4
+- (void)startMonitoring:(id)monitoring forRegion:(id)region
 {
-  v5 = a4;
+  regionCopy = region;
   v6 = BRKLoggingObjectForDomain();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 136315394;
     v8 = "[BRKCompanionContextManager startMonitoring:forRegion:]";
     v9 = 2112;
-    v10 = v5;
+    v10 = regionCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%s DAEMON startMonitoringForRegion: %@", &v7, 0x16u);
   }
 
-  [v5 setConservativeEntry:1];
-  [(CLLocationManager *)self->_locationManager startMonitoringForRegion:v5];
+  [regionCopy setConservativeEntry:1];
+  [(CLLocationManager *)self->_locationManager startMonitoringForRegion:regionCopy];
 }
 
-- (void)stopMonitoring:(id)a3 forRegionIdentifier:(id)a4
+- (void)stopMonitoring:(id)monitoring forRegionIdentifier:(id)identifier
 {
-  v5 = a4;
+  identifierCopy = identifier;
   v6 = BRKLoggingObjectForDomain();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 136315394;
     v8 = "[BRKCompanionContextManager stopMonitoring:forRegionIdentifier:]";
     v9 = 2112;
-    v10 = v5;
+    v10 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%s DAEMON stopMonitoringForRegion: %@", &v7, 0x16u);
   }
 
-  [(BRKCompanionContextManager *)self stopMonitoringIdentifier:v5];
+  [(BRKCompanionContextManager *)self stopMonitoringIdentifier:identifierCopy];
 }
 
-- (id)_messageForRegion:(id)a3
+- (id)_messageForRegion:(id)region
 {
-  v3 = a3;
+  regionCopy = region;
   v4 = objc_alloc_init(BRKIDSMessage);
-  v5 = [v3 identifier];
-  [v4 setIdentifier:v5];
+  identifier = [regionCopy identifier];
+  [v4 setIdentifier:identifier];
 
-  [v3 center];
+  [regionCopy center];
   [v4 setLongitude:v6];
-  [v3 center];
+  [regionCopy center];
   [v4 setLatitude:?];
-  [v3 radius];
+  [regionCopy radius];
   v8 = v7;
 
   [v4 setRadius:v8];
@@ -121,35 +121,35 @@
   [(BRKCompanionContextManager *)self stopMonitoringIdentifier:@"brook-home"];
 }
 
-- (void)stopMonitoringIdentifier:(id)a3
+- (void)stopMonitoringIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = BRKLoggingObjectForDomain();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 136315394;
     v10 = "[BRKCompanionContextManager stopMonitoringIdentifier:]";
     v11 = 2112;
-    v12 = v4;
+    v12 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s _locationManager stopMonitoringForRegion: %@", &v9, 0x16u);
   }
 
   v6 = CLLocationCoordinate2DMake(0.0, 0.0);
   locationManager = self->_locationManager;
-  v8 = [[CLCircularRegion alloc] initWithCenter:v4 radius:v6.latitude identifier:{v6.longitude, 0.0}];
+  v8 = [[CLCircularRegion alloc] initWithCenter:identifierCopy radius:v6.latitude identifier:{v6.longitude, 0.0}];
   [(CLLocationManager *)locationManager stopMonitoringForRegion:v8];
 }
 
-- (void)locationManagerDidChangeAuthorization:(id)a3
+- (void)locationManagerDidChangeAuthorization:(id)authorization
 {
   v4 = BRKLoggingObjectForDomain();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(CLLocationManager *)self->_locationManager authorizationStatus];
+    authorizationStatus = [(CLLocationManager *)self->_locationManager authorizationStatus];
     v8 = 136315394;
     v9 = "[BRKCompanionContextManager locationManagerDidChangeAuthorization:]";
     v10 = 1024;
-    LODWORD(v11) = v5;
+    LODWORD(v11) = authorizationStatus;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%s %d", &v8, 0x12u);
   }
 
@@ -201,15 +201,15 @@
   [BRKRoutineManager fetchLocationsOfInterestWithSingleRetryOfType:0 routineManager:routineManager withHandler:v5];
 }
 
-- (void)monitorLocationOfInterest:(id)a3
+- (void)monitorLocationOfInterest:(id)interest
 {
-  v4 = a3;
-  v5 = [v4 location];
-  [v5 latitude];
+  interestCopy = interest;
+  location = [interestCopy location];
+  [location latitude];
   v7 = v6;
-  v8 = [v4 location];
+  location2 = [interestCopy location];
 
-  [v8 longitude];
+  [location2 longitude];
   v10 = CLLocationCoordinate2DMake(v7, v9);
 
   if (CLLocationCoordinate2DIsValid(v10))
@@ -230,10 +230,10 @@
   }
 }
 
-- (void)locationManager:(id)a3 didEnter:(id)a4 completion:(id)a5
+- (void)locationManager:(id)manager didEnter:(id)enter completion:(id)completion
 {
-  v7 = a5;
-  v8 = a4;
+  completionCopy = completion;
+  enterCopy = enter;
   v9 = BRKLoggingObjectForDomain();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -242,7 +242,7 @@
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%s", buf, 0xCu);
   }
 
-  v10 = [(BRKCompanionContextManager *)self _messageForRegion:v8];
+  v10 = [(BRKCompanionContextManager *)self _messageForRegion:enterCopy];
 
   v11 = BRKLoggingObjectForDomain();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -262,15 +262,15 @@
   v13 = v10;
   v16 = v13;
   v14 = [(BRKIDSService *)idsService sendProtobuf:v13 type:5 priority:300 completionHandler:v15 withTimeout:30.0];
-  if (v7)
+  if (completionCopy)
   {
-    v7[2](v7);
+    completionCopy[2](completionCopy);
   }
 }
 
-- (void)locationManager:(id)a3 didExitRegion:(id)a4
+- (void)locationManager:(id)manager didExitRegion:(id)region
 {
-  v5 = a4;
+  regionCopy = region;
   v6 = BRKLoggingObjectForDomain();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -279,7 +279,7 @@
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%s", buf, 0xCu);
   }
 
-  v7 = [(BRKCompanionContextManager *)self _messageForRegion:v5];
+  v7 = [(BRKCompanionContextManager *)self _messageForRegion:regionCopy];
 
   idsService = self->_idsService;
   v11[0] = _NSConcreteStackBlock;

@@ -1,12 +1,12 @@
 @interface PXZoomableInlineHeadersLayout
-- (PXZoomableInlineHeadersLayout)initWithDataSourceManager:(id)a3;
+- (PXZoomableInlineHeadersLayout)initWithDataSourceManager:(id)manager;
 - (PXZoomableInlineHeadersLayoutGeometrySource)geometrySource;
 - (void)_updateSublayouts;
 - (void)invalidateAnchorItemFrames;
 - (void)invalidateGeometry;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)setGeometrySource:(id)a3;
-- (void)setSpec:(id)a3;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)setGeometrySource:(id)source;
+- (void)setSpec:(id)spec;
 - (void)update;
 @end
 
@@ -21,9 +21,9 @@
   {
     if (self->_updateFlags.isPerformingUpdate)
     {
-      v5 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXZoomableInlineHeadersLayout update]"];
-      [v5 handleFailureInFunction:v6 file:@"PXZoomableInlineHeadersLayout.m" lineNumber:109 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
+      [currentHandler handleFailureInFunction:v6 file:@"PXZoomableInlineHeadersLayout.m" lineNumber:109 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
 
       needsUpdate = p_updateFlags->needsUpdate;
     }
@@ -40,9 +40,9 @@
     p_updateFlags->isPerformingUpdate = 0;
     if (needsUpdate)
     {
-      v7 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXZoomableInlineHeadersLayout update]"];
-      [v7 handleFailureInFunction:v8 file:@"PXZoomableInlineHeadersLayout.m" lineNumber:115 description:{@"still needing to update %lu after update pass", p_updateFlags->needsUpdate}];
+      [currentHandler2 handleFailureInFunction:v8 file:@"PXZoomableInlineHeadersLayout.m" lineNumber:115 description:{@"still needing to update %lu after update pass", p_updateFlags->needsUpdate}];
     }
   }
 
@@ -53,21 +53,21 @@
 
 - (void)_updateSublayouts
 {
-  v3 = [(PXZoomableInlineHeadersLayout *)self dataSourceManager];
-  v4 = [v3 yearsDataSource];
-  [(PXInlineHeadersSpriteLayout *)self->_yearsLayout setDataSource:v4];
+  dataSourceManager = [(PXZoomableInlineHeadersLayout *)self dataSourceManager];
+  yearsDataSource = [dataSourceManager yearsDataSource];
+  [(PXInlineHeadersSpriteLayout *)self->_yearsLayout setDataSource:yearsDataSource];
 
-  v5 = [(PXZoomableInlineHeadersLayout *)self dataSourceManager];
-  v6 = [v5 monthsDataSource];
-  [(PXInlineHeadersSpriteLayout *)self->_monthsLayout setDataSource:v6];
+  dataSourceManager2 = [(PXZoomableInlineHeadersLayout *)self dataSourceManager];
+  monthsDataSource = [dataSourceManager2 monthsDataSource];
+  [(PXInlineHeadersSpriteLayout *)self->_monthsLayout setDataSource:monthsDataSource];
 
-  v7 = [(PXZoomableInlineHeadersLayout *)self spec];
-  v8 = [v7 style];
+  spec = [(PXZoomableInlineHeadersLayout *)self spec];
+  style = [spec style];
 
-  [(PXInlineHeadersSpriteLayout *)self->_yearsLayout setStyle:v8];
+  [(PXInlineHeadersSpriteLayout *)self->_yearsLayout setStyle:style];
   monthsLayout = self->_monthsLayout;
 
-  [(PXInlineHeadersSpriteLayout *)monthsLayout setStyle:v8];
+  [(PXInlineHeadersSpriteLayout *)monthsLayout setStyle:style];
 }
 
 - (PXZoomableInlineHeadersLayoutGeometrySource)geometrySource
@@ -77,19 +77,19 @@
   return WeakRetained;
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
-  v9 = a3;
-  if (PXCuratedLibraryInlineHeadersObserverContext != a5)
+  changeCopy = change;
+  observableCopy = observable;
+  if (PXCuratedLibraryInlineHeadersObserverContext != context)
   {
-    v13 = [MEMORY[0x277CCA890] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"PXZoomableInlineHeadersLayout.m" lineNumber:134 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXZoomableInlineHeadersLayout.m" lineNumber:134 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  if (v6)
+  if (changeCopy)
   {
     p_updateFlags = &self->_updateFlags;
     needsUpdate = self->_updateFlags.needsUpdate;
@@ -105,9 +105,9 @@ LABEL_8:
 LABEL_7:
       if (self->_updateFlags.updated)
       {
-        v14 = [MEMORY[0x277CCA890] currentHandler];
+        currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
         v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXZoomableInlineHeadersLayout observable:didChange:context:]"];
-        [v14 handleFailureInFunction:v15 file:@"PXZoomableInlineHeadersLayout.m" lineNumber:131 description:{@"invalidating %lu after it already has been updated", 1}];
+        [currentHandler2 handleFailureInFunction:v15 file:@"PXZoomableInlineHeadersLayout.m" lineNumber:131 description:{@"invalidating %lu after it already has been updated", 1}];
 
         abort();
       }
@@ -124,9 +124,9 @@ LABEL_7:
     p_updateFlags->needsUpdate = 1;
     if (!willPerformUpdate)
     {
-      v16 = v9;
+      v16 = observableCopy;
       [(PXZoomableInlineHeadersLayout *)self setNeedsUpdate];
-      v9 = v16;
+      observableCopy = v16;
     }
   }
 
@@ -149,15 +149,15 @@ LABEL_9:
   [(PXInlineHeadersSpriteLayout *)monthsLayout invalidateAnchorItemFrames];
 }
 
-- (void)setSpec:(id)a3
+- (void)setSpec:(id)spec
 {
-  v5 = a3;
-  if (self->_spec != v5)
+  specCopy = spec;
+  if (self->_spec != specCopy)
   {
-    v11 = v5;
-    objc_storeStrong(&self->_spec, a3);
+    v11 = specCopy;
+    objc_storeStrong(&self->_spec, spec);
     [(PXInlineHeadersSpriteLayout *)self->_yearsLayout setSpec:v11];
-    v5 = [(PXInlineHeadersSpriteLayout *)self->_monthsLayout setSpec:v11];
+    specCopy = [(PXInlineHeadersSpriteLayout *)self->_monthsLayout setSpec:v11];
     p_updateFlags = &self->_updateFlags;
     needsUpdate = self->_updateFlags.needsUpdate;
     if (needsUpdate)
@@ -172,9 +172,9 @@ LABEL_7:
 LABEL_6:
       if (self->_updateFlags.updated)
       {
-        v9 = [MEMORY[0x277CCA890] currentHandler];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
         v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXZoomableInlineHeadersLayout setSpec:]"];
-        [v9 handleFailureInFunction:v10 file:@"PXZoomableInlineHeadersLayout.m" lineNumber:79 description:{@"invalidating %lu after it already has been updated", 1}];
+        [currentHandler handleFailureInFunction:v10 file:@"PXZoomableInlineHeadersLayout.m" lineNumber:79 description:{@"invalidating %lu after it already has been updated", 1}];
 
         abort();
       }
@@ -191,18 +191,18 @@ LABEL_6:
     p_updateFlags->needsUpdate = 1;
     if (!willPerformUpdate)
     {
-      v5 = [(PXZoomableInlineHeadersLayout *)self setNeedsUpdate];
+      specCopy = [(PXZoomableInlineHeadersLayout *)self setNeedsUpdate];
     }
   }
 
 LABEL_8:
 
-  MEMORY[0x2821F9730](v5);
+  MEMORY[0x2821F9730](specCopy);
 }
 
-- (void)setGeometrySource:(id)a3
+- (void)setGeometrySource:(id)source
 {
-  obj = a3;
+  obj = source;
   WeakRetained = objc_loadWeakRetained(&self->_geometrySource);
 
   if (WeakRetained != obj)
@@ -213,17 +213,17 @@ LABEL_8:
   }
 }
 
-- (PXZoomableInlineHeadersLayout)initWithDataSourceManager:(id)a3
+- (PXZoomableInlineHeadersLayout)initWithDataSourceManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v18.receiver = self;
   v18.super_class = PXZoomableInlineHeadersLayout;
   v6 = [(PXZoomableInlineHeadersLayout *)&v18 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dataSourceManager, a3);
-    [v5 registerChangeObserver:v7 context:PXCuratedLibraryInlineHeadersObserverContext];
+    objc_storeStrong(&v6->_dataSourceManager, manager);
+    [managerCopy registerChangeObserver:v7 context:PXCuratedLibraryInlineHeadersObserverContext];
     v8 = [[PXInlineHeadersSpriteLayout alloc] initWithLevel:0];
     yearsLayout = v7->_yearsLayout;
     v7->_yearsLayout = v8;
@@ -249,9 +249,9 @@ LABEL_7:
 LABEL_6:
       if (v7->_updateFlags.updated)
       {
-        v16 = [MEMORY[0x277CCA890] currentHandler];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
         v17 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXZoomableInlineHeadersLayout initWithDataSourceManager:]"];
-        [v16 handleFailureInFunction:v17 file:@"PXZoomableInlineHeadersLayout.m" lineNumber:58 description:{@"invalidating %lu after it already has been updated", 1}];
+        [currentHandler handleFailureInFunction:v17 file:@"PXZoomableInlineHeadersLayout.m" lineNumber:58 description:{@"invalidating %lu after it already has been updated", 1}];
 
         abort();
       }

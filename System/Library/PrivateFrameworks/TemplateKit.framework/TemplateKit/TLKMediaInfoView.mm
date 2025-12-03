@@ -4,8 +4,8 @@
 - (id)setupContentView;
 - (id)titleLabelStrings;
 - (void)observedPropertiesChanged;
-- (void)setContents:(id)a3;
-- (void)setImage:(id)a3;
+- (void)setContents:(id)contents;
+- (void)setImage:(id)image;
 @end
 
 @implementation TLKMediaInfoView
@@ -34,32 +34,32 @@
   return v3;
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v10 = a3;
-  if (self->_image != v10)
+  imageCopy = image;
+  if (self->_image != imageCopy)
   {
-    objc_storeStrong(&self->_image, a3);
-    v5 = [(TLKView *)self observer];
-    if (v5)
+    objc_storeStrong(&self->_image, image);
+    observer = [(TLKView *)self observer];
+    if (observer)
     {
-      v6 = v5;
-      v7 = [(TLKView *)self observer];
-      v8 = [v7 batchUpdateCount];
+      v6 = observer;
+      observer2 = [(TLKView *)self observer];
+      batchUpdateCount = [observer2 batchUpdateCount];
 
-      if (!v8)
+      if (!batchUpdateCount)
       {
-        v9 = [(TLKView *)self observer];
-        [v9 propertiesDidChange];
+        observer3 = [(TLKView *)self observer];
+        [observer3 propertiesDidChange];
       }
     }
   }
 }
 
-- (void)setContents:(id)a3
+- (void)setContents:(id)contents
 {
   v34 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  contentsCopy = contents;
   if (objc_opt_respondsToSelector())
   {
     [(NSArray *)self->_contents setObserver:0];
@@ -70,7 +70,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v23 = v5;
+      v23 = contentsCopy;
       v30 = 0u;
       v31 = 0u;
       v28 = 0u;
@@ -103,11 +103,11 @@
         while (v8);
       }
 
-      v5 = v23;
+      contentsCopy = v23;
     }
   }
 
-  objc_storeStrong(&self->_contents, a3);
+  objc_storeStrong(&self->_contents, contents);
   if (objc_opt_respondsToSelector())
   {
     [(NSArray *)self->_contents setObserver:self];
@@ -152,42 +152,42 @@
     }
   }
 
-  v18 = [(TLKView *)self observer];
-  if (v18)
+  observer = [(TLKView *)self observer];
+  if (observer)
   {
-    v19 = v18;
-    v20 = [(TLKView *)self observer];
-    v21 = [v20 batchUpdateCount];
+    v19 = observer;
+    observer2 = [(TLKView *)self observer];
+    batchUpdateCount = [observer2 batchUpdateCount];
 
-    if (!v21)
+    if (!batchUpdateCount)
     {
-      v22 = [(TLKView *)self observer];
-      [v22 propertiesDidChange];
+      observer3 = [(TLKView *)self observer];
+      [observer3 propertiesDidChange];
     }
   }
 }
 
 - (void)observedPropertiesChanged
 {
-  v3 = [(TLKMediaInfoView *)self image];
-  v4 = [(TLKMediaInfoView *)self imageView];
-  [v4 setTlkImage:v3];
+  image = [(TLKMediaInfoView *)self image];
+  imageView = [(TLKMediaInfoView *)self imageView];
+  [imageView setTlkImage:image];
 
-  v5 = [(TLKMediaInfoView *)self image];
-  v6 = [(TLKMediaInfoView *)self imageView];
-  [v6 setHidden:v5 == 0];
+  image2 = [(TLKMediaInfoView *)self image];
+  imageView2 = [(TLKMediaInfoView *)self imageView];
+  [imageView2 setHidden:image2 == 0];
 
-  v8 = [(TLKMediaInfoView *)self contentsContainer];
-  v7 = [(TLKMediaInfoView *)self contents];
-  [v8 updateWithContents:v7];
+  contentsContainer = [(TLKMediaInfoView *)self contentsContainer];
+  contents = [(TLKMediaInfoView *)self contents];
+  [contentsContainer updateWithContents:contents];
 }
 
 - (BOOL)imageViewIsHidden
 {
-  v2 = [(TLKMediaInfoView *)self imageView];
-  v3 = [v2 isHidden];
+  imageView = [(TLKMediaInfoView *)self imageView];
+  isHidden = [imageView isHidden];
 
-  return v3;
+  return isHidden;
 }
 
 - (id)titleLabelStrings
@@ -198,10 +198,10 @@
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [(TLKMediaInfoView *)self contentsContainer];
-  v5 = [v4 contentsViews];
+  contentsContainer = [(TLKMediaInfoView *)self contentsContainer];
+  contentsViews = [contentsContainer contentsViews];
 
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v6 = [contentsViews countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -212,19 +212,19 @@
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(contentsViews);
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
         if (([v10 isHidden] & 1) == 0)
         {
-          v11 = [v10 titleLabel];
-          v12 = [v11 text];
-          [v3 addObject:v12];
+          titleLabel = [v10 titleLabel];
+          text = [titleLabel text];
+          [v3 addObject:text];
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [contentsViews countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v7);
@@ -241,10 +241,10 @@
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v3 = [(TLKMediaInfoView *)self contentsContainer];
-  v4 = [v3 contentsViews];
+  contentsContainer = [(TLKMediaInfoView *)self contentsContainer];
+  contentsViews = [contentsContainer contentsViews];
 
-  v5 = [v4 countByEnumeratingWithState:&v24 objects:v29 count:16];
+  v5 = [contentsViews countByEnumeratingWithState:&v24 objects:v29 count:16];
   if (v5)
   {
     v6 = v5;
@@ -255,7 +255,7 @@
       {
         if (*v25 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(contentsViews);
         }
 
         v9 = *(*(&v24 + 1) + 8 * i);
@@ -266,8 +266,8 @@
           v21 = 0u;
           v22 = 0u;
           v23 = 0u;
-          v11 = [v9 detailsLabels];
-          v12 = [v11 countByEnumeratingWithState:&v20 objects:v28 count:16];
+          detailsLabels = [v9 detailsLabels];
+          v12 = [detailsLabels countByEnumeratingWithState:&v20 objects:v28 count:16];
           if (v12)
           {
             v13 = v12;
@@ -278,18 +278,18 @@
               {
                 if (*v21 != v14)
                 {
-                  objc_enumerationMutation(v11);
+                  objc_enumerationMutation(detailsLabels);
                 }
 
                 v16 = *(*(&v20 + 1) + 8 * j);
                 if (([v16 isHidden] & 1) == 0)
                 {
-                  v17 = [v16 text];
-                  [v10 addObject:v17];
+                  text = [v16 text];
+                  [v10 addObject:text];
                 }
               }
 
-              v13 = [v11 countByEnumeratingWithState:&v20 objects:v28 count:16];
+              v13 = [detailsLabels countByEnumeratingWithState:&v20 objects:v28 count:16];
             }
 
             while (v13);
@@ -299,7 +299,7 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v24 objects:v29 count:16];
+      v6 = [contentsViews countByEnumeratingWithState:&v24 objects:v29 count:16];
     }
 
     while (v6);

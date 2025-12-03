@@ -1,41 +1,41 @@
 @interface PPLPeopleEntityViewController
 - (CGRect)initialSceneFrame;
-- (CGRect)sceneSettingsFrameFromRect:(CGRect)a3;
+- (CGRect)sceneSettingsFrameFromRect:(CGRect)rect;
 - (NSURL)personURL;
-- (PPLPeopleEntityViewController)initWithMetadata:(id)a3;
-- (PPLPeopleEntityViewController)initWithMetadata:(id)a3 sceneManager:(id)a4;
+- (PPLPeopleEntityViewController)initWithMetadata:(id)metadata;
+- (PPLPeopleEntityViewController)initWithMetadata:(id)metadata sceneManager:(id)manager;
 - (PPLPeopleEntityViewControllerDelegate)delegate;
-- (UIEdgeInsets)safeAreaInsetFromSceneSettings:(id)a3;
+- (UIEdgeInsets)safeAreaInsetFromSceneSettings:(id)settings;
 - (UIEdgeInsets)sceneSafeAreaInsetPortrait;
-- (void)sceneManager:(id)a3 didGrantOwnershipOfScene:(id)a4;
-- (void)sceneManager:(id)a3 didRevokeOwnershipOfScene:(id)a4;
-- (void)sceneManager:(id)a3 sceneDidRequestDismissal:(id)a4;
+- (void)sceneManager:(id)manager didGrantOwnershipOfScene:(id)scene;
+- (void)sceneManager:(id)manager didRevokeOwnershipOfScene:(id)scene;
+- (void)sceneManager:(id)manager sceneDidRequestDismissal:(id)dismissal;
 - (void)viewDidLayoutSubviews;
 @end
 
 @implementation PPLPeopleEntityViewController
 
-- (PPLPeopleEntityViewController)initWithMetadata:(id)a3
+- (PPLPeopleEntityViewController)initWithMetadata:(id)metadata
 {
-  v4 = a3;
+  metadataCopy = metadata;
   v5 = +[PPLPeopleAppSceneManager sharedSceneManager];
-  v6 = [(PPLPeopleEntityViewController *)self initWithMetadata:v4 sceneManager:v5];
+  v6 = [(PPLPeopleEntityViewController *)self initWithMetadata:metadataCopy sceneManager:v5];
 
   return v6;
 }
 
-- (PPLPeopleEntityViewController)initWithMetadata:(id)a3 sceneManager:(id)a4
+- (PPLPeopleEntityViewController)initWithMetadata:(id)metadata sceneManager:(id)manager
 {
-  v7 = a3;
-  v8 = a4;
+  metadataCopy = metadata;
+  managerCopy = manager;
   v12.receiver = self;
   v12.super_class = PPLPeopleEntityViewController;
   v9 = [(PPLPeopleEntityViewController *)&v12 initWithNibName:0 bundle:0];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_metadata, a3);
-    objc_storeStrong(&v10->_sceneManager, a4);
+    objc_storeStrong(&v9->_metadata, metadata);
+    objc_storeStrong(&v10->_sceneManager, manager);
   }
 
   return v10;
@@ -43,8 +43,8 @@
 
 - (CGRect)initialSceneFrame
 {
-  v3 = [(PPLPeopleEntityViewController *)self view];
-  [v3 bounds];
+  view = [(PPLPeopleEntityViewController *)self view];
+  [view bounds];
   [(PPLPeopleEntityViewController *)self sceneSettingsFrameFromRect:?];
   v5 = v4;
   v7 = v6;
@@ -64,60 +64,60 @@
 
 - (NSURL)personURL
 {
-  v2 = [(PPLPeopleEntityViewController *)self metadata];
-  v3 = [v2 url];
+  metadata = [(PPLPeopleEntityViewController *)self metadata];
+  v3 = [metadata url];
 
   return v3;
 }
 
-- (void)sceneManager:(id)a3 didGrantOwnershipOfScene:(id)a4
+- (void)sceneManager:(id)manager didGrantOwnershipOfScene:(id)scene
 {
-  v5 = a4;
-  v6 = [(PPLPeopleEntityViewController *)self scene];
+  sceneCopy = scene;
+  scene = [(PPLPeopleEntityViewController *)self scene];
 
-  if (!v6)
+  if (!scene)
   {
-    [(PPLPeopleEntityViewController *)self setScene:v5];
-    v7 = [(PPLPeopleEntityViewController *)self scene];
-    v8 = [v7 uiPresentationManager];
+    [(PPLPeopleEntityViewController *)self setScene:sceneCopy];
+    scene2 = [(PPLPeopleEntityViewController *)self scene];
+    uiPresentationManager = [scene2 uiPresentationManager];
 
     v9 = MEMORY[0x277CCACA8];
-    v10 = [v5 identifier];
-    v11 = [v9 stringWithFormat:@"%@-%p", v10, self];
+    identifier = [sceneCopy identifier];
+    v11 = [v9 stringWithFormat:@"%@-%p", identifier, self];
 
-    v12 = [v8 createPresenterWithIdentifier:v11];
+    v12 = [uiPresentationManager createPresenterWithIdentifier:v11];
     [(PPLPeopleEntityViewController *)self setPresenter:v12];
-    v13 = [v12 presentationView];
-    [(PPLPeopleEntityViewController *)self setHostView:v13];
+    presentationView = [v12 presentationView];
+    [(PPLPeopleEntityViewController *)self setHostView:presentationView];
 
     [v12 modifyPresentationContext:&__block_literal_global];
     [v12 activate];
-    v14 = [(PPLPeopleEntityViewController *)self view];
-    v15 = [(PPLPeopleEntityViewController *)self hostView];
-    v16 = [(PPLPeopleEntityViewController *)self hostView];
-    [v14 addSubview:v16];
+    view = [(PPLPeopleEntityViewController *)self view];
+    hostView = [(PPLPeopleEntityViewController *)self hostView];
+    hostView2 = [(PPLPeopleEntityViewController *)self hostView];
+    [view addSubview:hostView2];
 
-    v17 = [(PPLPeopleEntityViewController *)self hostView];
-    [v17 setTranslatesAutoresizingMaskIntoConstraints:0];
+    hostView3 = [(PPLPeopleEntityViewController *)self hostView];
+    [hostView3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v18 = [v15 leadingAnchor];
-    v19 = [v14 leadingAnchor];
-    v20 = [v18 constraintEqualToAnchor:v19];
+    leadingAnchor = [hostView leadingAnchor];
+    leadingAnchor2 = [view leadingAnchor];
+    v20 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     [v20 setActive:1];
 
-    v21 = [v15 trailingAnchor];
-    v22 = [v14 trailingAnchor];
-    v23 = [v21 constraintEqualToAnchor:v22];
+    trailingAnchor = [hostView trailingAnchor];
+    trailingAnchor2 = [view trailingAnchor];
+    v23 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     [v23 setActive:1];
 
-    v24 = [v15 topAnchor];
-    v25 = [v14 topAnchor];
-    v26 = [v24 constraintEqualToAnchor:v25];
+    topAnchor = [hostView topAnchor];
+    topAnchor2 = [view topAnchor];
+    v26 = [topAnchor constraintEqualToAnchor:topAnchor2];
     [v26 setActive:1];
 
-    v27 = [v15 bottomAnchor];
-    v28 = [v14 bottomAnchor];
-    v29 = [v27 constraintEqualToAnchor:v28];
+    bottomAnchor = [hostView bottomAnchor];
+    bottomAnchor2 = [view bottomAnchor];
+    v29 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     [v29 setActive:1];
 
     v30 = PPLPeopleViewServiceLog();
@@ -127,8 +127,8 @@
       _os_log_impl(&dword_25E21C000, v30, OS_LOG_TYPE_DEFAULT, "created scene", buf, 2u);
     }
 
-    v31 = [(PPLPeopleEntityViewController *)self view];
-    [v31 layoutIfNeeded];
+    view2 = [(PPLPeopleEntityViewController *)self view];
+    [view2 layoutIfNeeded];
   }
 }
 
@@ -139,20 +139,20 @@ void __71__PPLPeopleEntityViewController_sceneManager_didGrantOwnershipOfScene__
   [v2 setBackgroundColorWhileHosting:0];
 }
 
-- (void)sceneManager:(id)a3 didRevokeOwnershipOfScene:(id)a4
+- (void)sceneManager:(id)manager didRevokeOwnershipOfScene:(id)scene
 {
-  [(PPLPeopleEntityViewController *)self setScene:0, a4];
-  v5 = [(PPLPeopleEntityViewController *)self presenter];
-  [v5 invalidate];
+  [(PPLPeopleEntityViewController *)self setScene:0, scene];
+  presenter = [(PPLPeopleEntityViewController *)self presenter];
+  [presenter invalidate];
 
   [(PPLPeopleEntityViewController *)self setPresenter:0];
-  v6 = [(PPLPeopleEntityViewController *)self hostView];
-  [v6 removeFromSuperview];
+  hostView = [(PPLPeopleEntityViewController *)self hostView];
+  [hostView removeFromSuperview];
 
   [(PPLPeopleEntityViewController *)self setHostView:0];
 }
 
-- (void)sceneManager:(id)a3 sceneDidRequestDismissal:(id)a4
+- (void)sceneManager:(id)manager sceneDidRequestDismissal:(id)dismissal
 {
   v5 = PPLPeopleViewServiceLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -161,8 +161,8 @@ void __71__PPLPeopleEntityViewController_sceneManager_didGrantOwnershipOfScene__
     _os_log_impl(&dword_25E21C000, v5, OS_LOG_TYPE_DEFAULT, "scene requested dismissal", v7, 2u);
   }
 
-  v6 = [(PPLPeopleEntityViewController *)self delegate];
-  [v6 peopleEntityViewControllerDidRequestDismissal:self];
+  delegate = [(PPLPeopleEntityViewController *)self delegate];
+  [delegate peopleEntityViewControllerDidRequestDismissal:self];
 }
 
 - (void)viewDidLayoutSubviews
@@ -170,8 +170,8 @@ void __71__PPLPeopleEntityViewController_sceneManager_didGrantOwnershipOfScene__
   v40.receiver = self;
   v40.super_class = PPLPeopleEntityViewController;
   [(PPLPeopleEntityViewController *)&v40 viewDidLayoutSubviews];
-  v3 = [(PPLPeopleEntityViewController *)self view];
-  [v3 bounds];
+  view = [(PPLPeopleEntityViewController *)self view];
+  [view bounds];
   [(PPLPeopleEntityViewController *)self sceneSettingsFrameFromRect:?];
   v5 = v4;
   v37 = v6;
@@ -183,17 +183,17 @@ void __71__PPLPeopleEntityViewController_sceneManager_didGrantOwnershipOfScene__
   v14 = v13;
   v16 = v15;
   v38 = v17;
-  v18 = [(PPLPeopleEntityViewController *)self scene];
-  v19 = [v18 settings];
-  [(PPLPeopleEntityViewController *)self safeAreaInsetFromSceneSettings:v19];
+  scene = [(PPLPeopleEntityViewController *)self scene];
+  settings = [scene settings];
+  [(PPLPeopleEntityViewController *)self safeAreaInsetFromSceneSettings:settings];
   v21 = v20;
   v23 = v22;
   v35 = v24;
   v36 = v25;
 
-  v26 = [(PPLPeopleEntityViewController *)self scene];
-  v27 = [v26 settings];
-  [v27 frame];
+  scene2 = [(PPLPeopleEntityViewController *)self scene];
+  settings2 = [scene2 settings];
+  [settings2 frame];
   v42.origin.x = v28;
   v42.origin.y = v29;
   v42.size.width = v30;
@@ -206,7 +206,7 @@ void __71__PPLPeopleEntityViewController_sceneManager_didGrantOwnershipOfScene__
 
   if (!v32 || v14 != v23 || v12 != v21 || (v33 = v38, v38 != v36) || (v33 = v35, v16 != v35))
   {
-    v34 = [(PPLPeopleEntityViewController *)self scene];
+    scene3 = [(PPLPeopleEntityViewController *)self scene];
     v39[0] = MEMORY[0x277D85DD0];
     v39[1] = 3221225472;
     v39[2] = __54__PPLPeopleEntityViewController_viewDidLayoutSubviews__block_invoke;
@@ -219,7 +219,7 @@ void __71__PPLPeopleEntityViewController_sceneManager_didGrantOwnershipOfScene__
     *&v39[9] = v14;
     *&v39[10] = v16;
     *&v39[11] = v38;
-    [v34 updateSettingsWithBlock:v39];
+    [scene3 updateSettingsWithBlock:v39];
   }
 }
 
@@ -233,14 +233,14 @@ void __54__PPLPeopleEntityViewController_viewDidLayoutSubviews__block_invoke(dou
   }
 }
 
-- (CGRect)sceneSettingsFrameFromRect:(CGRect)a3
+- (CGRect)sceneSettingsFrameFromRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = [MEMORY[0x277D759A0] mainScreen];
-  [v7 bounds];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v9 = v8;
   v11 = v10;
 
@@ -280,8 +280,8 @@ void __54__PPLPeopleEntityViewController_viewDidLayoutSubviews__block_invoke(dou
 
 - (UIEdgeInsets)sceneSafeAreaInsetPortrait
 {
-  v3 = [MEMORY[0x277D759A0] mainScreen];
-  [v3 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v5 = v4;
   v7 = v6;
   [(PPLPeopleEntityViewController *)self initialSceneFrame];
@@ -290,14 +290,14 @@ void __54__PPLPeopleEntityViewController_viewDidLayoutSubviews__block_invoke(dou
 
   if (v5 == v9 && v7 == v11)
   {
-    v17 = [(PPLPeopleEntityViewController *)self view];
-    v18 = [v17 window];
-    v19 = [v18 _scene];
-    v20 = [v19 settings];
+    view = [(PPLPeopleEntityViewController *)self view];
+    window = [view window];
+    _scene = [window _scene];
+    settings = [_scene settings];
 
-    if (v20 && ([v20 isUISubclass] & 1) != 0)
+    if (settings && ([settings isUISubclass] & 1) != 0)
     {
-      [v20 safeAreaInsetsPortrait];
+      [settings safeAreaInsetsPortrait];
       v13 = v21;
       v14 = v22;
       v15 = v23;
@@ -332,12 +332,12 @@ void __54__PPLPeopleEntityViewController_viewDidLayoutSubviews__block_invoke(dou
   return result;
 }
 
-- (UIEdgeInsets)safeAreaInsetFromSceneSettings:(id)a3
+- (UIEdgeInsets)safeAreaInsetFromSceneSettings:(id)settings
 {
-  v3 = a3;
-  if ([v3 isUISubclass])
+  settingsCopy = settings;
+  if ([settingsCopy isUISubclass])
   {
-    [v3 safeAreaInsetsPortrait];
+    [settingsCopy safeAreaInsetsPortrait];
     v5 = v4;
     v7 = v6;
     v9 = v8;

@@ -1,44 +1,44 @@
 @interface WFContentItemSetterAction
-- (BOOL)setParameterState:(id)a3 forKey:(id)a4;
+- (BOOL)setParameterState:(id)state forKey:(id)key;
 - (NSArray)properties;
 - (WFContentProperty)selectedProperty;
-- (id)appContentDestinationForSystemAppBundleIdentifier:(id)a3;
-- (id)contentDestinationWithError:(id *)a3;
-- (id)displayStringForTransactionModeState:(id)a3;
-- (id)enumeration:(id)a3 localizedLabelForPossibleState:(id)a4;
-- (id)localizedDefaultOutputNameWithContext:(id)a3;
-- (id)localizedDescriptionSummaryWithContext:(id)a3;
-- (id)localizedKeywordsWithContext:(id)a3;
-- (id)localizedNameWithContext:(id)a3;
+- (id)appContentDestinationForSystemAppBundleIdentifier:(id)identifier;
+- (id)contentDestinationWithError:(id *)error;
+- (id)displayStringForTransactionModeState:(id)state;
+- (id)enumeration:(id)enumeration localizedLabelForPossibleState:(id)state;
+- (id)localizedDefaultOutputNameWithContext:(id)context;
+- (id)localizedDescriptionSummaryWithContext:(id)context;
+- (id)localizedKeywordsWithContext:(id)context;
+- (id)localizedNameWithContext:(id)context;
 - (id)outputContentClasses;
 - (id)parameterDefinitions;
-- (id)parameterKeyForProperty:(id)a3;
+- (id)parameterKeyForProperty:(id)property;
 - (id)parameterSummary;
-- (id)possibleStatesForEnumeration:(id)a3;
-- (id)requiredResourceForProperty:(id)a3;
-- (id)setAdditionalPropertyIfNecessaryForValue:(id)a3;
-- (id)smartPromptWithContentDescription:(id)a3 contentDestination:(id)a4 workflowName:(id)a5;
+- (id)possibleStatesForEnumeration:(id)enumeration;
+- (id)requiredResourceForProperty:(id)property;
+- (id)setAdditionalPropertyIfNecessaryForValue:(id)value;
+- (id)smartPromptWithContentDescription:(id)description contentDestination:(id)destination workflowName:(id)name;
 - (void)initializeParameters;
-- (void)presentAlertWithUserInterface:(id)a3 input:(id)a4 completion:(id)a5;
-- (void)runAsynchronouslyWithInput:(id)a3;
+- (void)presentAlertWithUserInterface:(id)interface input:(id)input completion:(id)completion;
+- (void)runAsynchronouslyWithInput:(id)input;
 - (void)setPromptForSelectedParameter;
-- (void)userValueForSelectedPropertyWithCompletion:(id)a3;
+- (void)userValueForSelectedPropertyWithCompletion:(id)completion;
 @end
 
 @implementation WFContentItemSetterAction
 
-- (id)smartPromptWithContentDescription:(id)a3 contentDestination:(id)a4 workflowName:(id)a5
+- (id)smartPromptWithContentDescription:(id)description contentDestination:(id)destination workflowName:(id)name
 {
   v6 = MEMORY[0x1E696AEC0];
-  v7 = a5;
-  v8 = a3;
+  nameCopy = name;
+  descriptionCopy = description;
   v9 = WFLocalizedString(@"Allow “%1$@” to edit %2$@?");
-  v10 = [v6 localizedStringWithFormat:v9, v7, v8];
+  descriptionCopy = [v6 localizedStringWithFormat:v9, nameCopy, descriptionCopy];
 
-  return v10;
+  return descriptionCopy;
 }
 
-- (id)contentDestinationWithError:(id *)a3
+- (id)contentDestinationWithError:(id *)error
 {
   v14 = *MEMORY[0x1E69E9840];
   if ([(objc_class *)[(WFAction *)self contentItemClass] isEqual:objc_opt_class()])
@@ -79,34 +79,34 @@ LABEL_8:
   return v5;
 }
 
-- (id)appContentDestinationForSystemAppBundleIdentifier:(id)a3
+- (id)appContentDestinationForSystemAppBundleIdentifier:(id)identifier
 {
   v3 = MEMORY[0x1E696E720];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithBundleIdentifier:v4];
+  identifierCopy = identifier;
+  v5 = [[v3 alloc] initWithBundleIdentifier:identifierCopy];
 
-  v6 = [MEMORY[0x1E696E748] sharedResolver];
-  v7 = [v6 resolvedAppMatchingDescriptor:v5];
+  mEMORY[0x1E696E748] = [MEMORY[0x1E696E748] sharedResolver];
+  v7 = [mEMORY[0x1E696E748] resolvedAppMatchingDescriptor:v5];
 
   v8 = [MEMORY[0x1E6996C90] locationWithAppDescriptor:v7];
 
   return v8;
 }
 
-- (id)setAdditionalPropertyIfNecessaryForValue:(id)a3
+- (id)setAdditionalPropertyIfNecessaryForValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v5 = MEMORY[0x1E6996F00];
-    v6 = v4;
-    v7 = [v6 string];
-    v8 = [v6 contactName];
+    v6 = valueCopy;
+    string = [v6 string];
+    contactName = [v6 contactName];
 
-    v9 = [(WFAction *)self processedParameters];
-    v10 = [v9 objectForKey:@"ValueLabel"];
-    v11 = [v5 phoneNumberWithPhoneNumberString:v7 contactName:v8 label:v10];
+    processedParameters = [(WFAction *)self processedParameters];
+    v10 = [processedParameters objectForKey:@"ValueLabel"];
+    v11 = [v5 phoneNumberWithPhoneNumberString:string contactName:contactName label:v10];
 
     goto LABEL_8;
   }
@@ -115,10 +115,10 @@ LABEL_8:
   if (objc_opt_isKindOfClass())
   {
     v12 = MEMORY[0x1E6996E00];
-    v13 = [v4 address];
-    v14 = [(WFAction *)self processedParameters];
-    v15 = [v14 objectForKey:@"ValueLabel"];
-    v11 = [v12 addressWithEmailAddress:v13 label:v15];
+    address = [valueCopy address];
+    processedParameters2 = [(WFAction *)self processedParameters];
+    v15 = [processedParameters2 objectForKey:@"ValueLabel"];
+    v11 = [v12 addressWithEmailAddress:address label:v15];
 
 LABEL_7:
     goto LABEL_8;
@@ -127,10 +127,10 @@ LABEL_7:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v16 = v4;
-    v13 = [(WFAction *)self processedParameters];
-    v14 = [v13 objectForKey:@"ValueLabel"];
-    v11 = [v16 streetAddressWithLabel:v14];
+    v16 = valueCopy;
+    address = [(WFAction *)self processedParameters];
+    processedParameters2 = [address objectForKey:@"ValueLabel"];
+    v11 = [v16 streetAddressWithLabel:processedParameters2];
 
     goto LABEL_7;
   }
@@ -138,12 +138,12 @@ LABEL_7:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v18 = v4;
-    v19 = [(WFAction *)self processedParameters];
-    v20 = [v19 objectForKey:@"ValueLabel"];
-    v21 = [v20 BOOLValue];
+    v18 = valueCopy;
+    processedParameters3 = [(WFAction *)self processedParameters];
+    v20 = [processedParameters3 objectForKey:@"ValueLabel"];
+    bOOLValue = [v20 BOOLValue];
     v22 = 1;
-    if (!v21)
+    if (!bOOLValue)
     {
       v22 = 2;
     }
@@ -152,19 +152,19 @@ LABEL_7:
 
     v41 = objc_alloc(MEMORY[0x1E6996EE8]);
     v40 = [v18 URL];
-    v23 = [v18 name];
-    v24 = [v18 emailAddress];
-    v25 = [v18 status];
-    v26 = [v18 type];
-    v27 = [v18 sourceIdentifier];
-    v28 = [v18 isManaged];
-    v29 = [v18 isCurrentUser];
-    v30 = [v18 contactPredicate];
+    name = [v18 name];
+    emailAddress = [v18 emailAddress];
+    status = [v18 status];
+    type = [v18 type];
+    sourceIdentifier = [v18 sourceIdentifier];
+    isManaged = [v18 isManaged];
+    isCurrentUser = [v18 isCurrentUser];
+    contactPredicate = [v18 contactPredicate];
 
-    BYTE1(v39) = v29;
-    LOBYTE(v39) = v28;
+    BYTE1(v39) = isCurrentUser;
+    LOBYTE(v39) = isManaged;
     v31 = v40;
-    v11 = [v41 initWithURL:v40 name:v23 emailAddress:v24 status:v25 role:v42 type:v26 sourceIdentifier:v27 isManaged:v39 isCurrentUser:v30 contactPredicate:?];
+    v11 = [v41 initWithURL:v40 name:name emailAddress:emailAddress status:status role:v42 type:type sourceIdentifier:sourceIdentifier isManaged:v39 isCurrentUser:contactPredicate contactPredicate:?];
   }
 
   else
@@ -175,32 +175,32 @@ LABEL_7:
       goto LABEL_19;
     }
 
-    v32 = [(WFContentItemSetterAction *)self selectedProperty];
-    v33 = [(WFContentItemSetterAction *)self parameterKeyForProperty:v32];
+    selectedProperty = [(WFContentItemSetterAction *)self selectedProperty];
+    v33 = [(WFContentItemSetterAction *)self parameterKeyForProperty:selectedProperty];
     v31 = [(WFAction *)self parameterValueForKey:v33 ofClass:objc_opt_class()];
 
     if (!v31)
     {
 LABEL_19:
-      v11 = v4;
+      v11 = valueCopy;
       goto LABEL_8;
     }
 
     v34 = [MEMORY[0x1E6996DC0] detectedDatesInString:v31 error:0];
-    v35 = [v34 firstObject];
+    firstObject = [v34 firstObject];
 
-    LODWORD(v34) = [v35 timeIsSignificant];
-    v36 = [MEMORY[0x1E695DEE8] currentCalendar];
-    v37 = v36;
+    LODWORD(v34) = [firstObject timeIsSignificant];
+    currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+    v37 = currentCalendar;
     if (v34)
     {
-      v38 = [MEMORY[0x1E695DFE8] systemTimeZone];
-      v11 = [v37 componentsInTimeZone:v38 fromDate:v4];
+      systemTimeZone = [MEMORY[0x1E695DFE8] systemTimeZone];
+      v11 = [v37 componentsInTimeZone:systemTimeZone fromDate:valueCopy];
     }
 
     else
     {
-      v11 = [v36 components:30 fromDate:v4];
+      v11 = [currentCalendar components:30 fromDate:valueCopy];
     }
   }
 
@@ -209,33 +209,33 @@ LABEL_8:
   return v11;
 }
 
-- (void)presentAlertWithUserInterface:(id)a3 input:(id)a4 completion:(id)a5
+- (void)presentAlertWithUserInterface:(id)interface input:(id)input completion:(id)completion
 {
   v52 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  interfaceCopy = interface;
+  inputCopy = input;
+  completionCopy = completion;
   v11 = objc_opt_new();
-  v12 = [v9 items];
-  v13 = [(objc_class *)[(WFAction *)self contentItemClass] localizedTypeDescription];
-  v39 = v9;
-  v40 = v8;
-  v38 = v10;
-  v14 = v12;
+  items = [inputCopy items];
+  localizedTypeDescription = [(objc_class *)[(WFAction *)self contentItemClass] localizedTypeDescription];
+  v39 = inputCopy;
+  v40 = interfaceCopy;
+  v38 = completionCopy;
+  v14 = items;
   if ([(objc_class *)[(WFAction *)self contentItemClass] canLowercaseTypeDescription])
   {
-    v15 = [v13 localizedLowercaseString];
+    localizedLowercaseString = [localizedTypeDescription localizedLowercaseString];
 
-    v13 = v15;
+    localizedTypeDescription = localizedLowercaseString;
   }
 
   v16 = [MEMORY[0x1E6996C70] alertWithPreferredStyle:1];
   v17 = MEMORY[0x1E696AEC0];
   v18 = WFLocalizedString(@"Choose the %@ to remove from the %@.");
-  v19 = [(WFContentItemSetterAction *)self selectedProperty];
-  v20 = [v19 name];
-  v21 = [v20 lowercaseString];
-  v22 = [v17 stringWithFormat:v18, v21, v13];
+  selectedProperty = [(WFContentItemSetterAction *)self selectedProperty];
+  name = [selectedProperty name];
+  lowercaseString = [name lowercaseString];
+  v22 = [v17 stringWithFormat:v18, lowercaseString, localizedTypeDescription];
   [v16 setTitle:v22];
 
   v48[0] = MEMORY[0x1E69E9820];
@@ -394,25 +394,25 @@ void __76__WFContentItemSetterAction_presentAlertWithUserInterface_input_complet
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)userValueForSelectedPropertyWithCompletion:(id)a3
+- (void)userValueForSelectedPropertyWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(WFContentItemSetterAction *)self selectedProperty];
-  v6 = [(WFContentItemSetterAction *)self parameterKeyForProperty:v5];
+  completionCopy = completion;
+  selectedProperty = [(WFContentItemSetterAction *)self selectedProperty];
+  v6 = [(WFContentItemSetterAction *)self parameterKeyForProperty:selectedProperty];
 
   v7 = [(WFAction *)self parameterForKey:v6];
-  v8 = [(WFAction *)self processedParameters];
-  v9 = [v8 objectForKey:v6];
+  processedParameters = [(WFAction *)self processedParameters];
+  v9 = [processedParameters objectForKey:v6];
 
   if (!v9 || (objc_opt_class(), (objc_opt_isKindOfClass()) && [v9 wf_isEmpty]) && (objc_msgSend(v7, "supportedVariableTypes"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "containsObject:", @"Ask"), v10, (v11))
   {
-    v12 = [(WFAction *)self userInterface];
-    v13 = [v12 isRunningWithSiriUI];
+    userInterface = [(WFAction *)self userInterface];
+    isRunningWithSiriUI = [userInterface isRunningWithSiriUI];
 
-    if (v13)
+    if (isRunningWithSiriUI)
     {
-      v14 = [MEMORY[0x1E696ABC0] wfUnsupportedUserInterfaceError];
-      [(WFAction *)self finishRunningWithError:v14];
+      wfUnsupportedUserInterfaceError = [MEMORY[0x1E696ABC0] wfUnsupportedUserInterfaceError];
+      [(WFAction *)self finishRunningWithError:wfUnsupportedUserInterfaceError];
     }
 
     else
@@ -425,15 +425,15 @@ void __76__WFContentItemSetterAction_presentAlertWithUserInterface_input_complet
       v17[2] = __72__WFContentItemSetterAction_userValueForSelectedPropertyWithCompletion___block_invoke;
       v17[3] = &unk_1E8378808;
       v18 = v6;
-      v19 = self;
-      v20 = v4;
+      selfCopy = self;
+      v20 = completionCopy;
       [(WFAction *)self askForValuesOfParameters:v15 withDefaultStates:MEMORY[0x1E695E0F8] prompts:MEMORY[0x1E695E0F8] input:0 workQueue:v16 completionHandler:v17];
     }
   }
 
   else
   {
-    (*(v4 + 2))(v4, v9);
+    (*(completionCopy + 2))(completionCopy, v9);
   }
 }
 
@@ -449,42 +449,42 @@ void __72__WFContentItemSetterAction_userValueForSelectedPropertyWithCompletion_
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)runAsynchronouslyWithInput:(id)a3
+- (void)runAsynchronouslyWithInput:(id)input
 {
   v42[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(WFContentItemSetterAction *)self selectedProperty];
+  inputCopy = input;
+  selectedProperty = [(WFContentItemSetterAction *)self selectedProperty];
 
-  if (!v5)
+  if (!selectedProperty)
   {
     [(WFAction *)self finishRunningWithError:0];
     goto LABEL_17;
   }
 
-  v6 = [v4 items];
-  v7 = [v6 firstObject];
+  items = [inputCopy items];
+  firstObject = [items firstObject];
 
-  if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  if (firstObject && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     [(WFAction *)self contentItemClass];
     if (objc_opt_isKindOfClass())
     {
-      v8 = [(objc_class *)[(WFAction *)self contentItemClass] localizedTypeDescription];
+      localizedTypeDescription = [(objc_class *)[(WFAction *)self contentItemClass] localizedTypeDescription];
       if ([(objc_class *)[(WFAction *)self contentItemClass] canLowercaseTypeDescription])
       {
-        v9 = [v8 localizedLowercaseString];
+        localizedLowercaseString = [localizedTypeDescription localizedLowercaseString];
 
-        v8 = v9;
+        localizedTypeDescription = localizedLowercaseString;
       }
 
-      v10 = [(WFContentItemSetterAction *)self changeTransactionWithInput:v7];
+      v10 = [(WFContentItemSetterAction *)self changeTransactionWithInput:firstObject];
       if (!v10)
       {
         v23 = MEMORY[0x1E695DF90];
         v41 = *MEMORY[0x1E696A588];
         v24 = MEMORY[0x1E696AEC0];
         v25 = WFLocalizedString(@"The provided %@ cannot be edited.");
-        v26 = [v24 stringWithFormat:v25, v8];
+        v26 = [v24 stringWithFormat:v25, localizedTypeDescription];
         v42[0] = v26;
         v27 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v42 forKeys:&v41 count:1];
         v11 = [v23 dictionaryWithDictionary:v27];
@@ -502,8 +502,8 @@ void __72__WFContentItemSetterAction_userValueForSelectedPropertyWithCompletion_
       }
 
       v11 = [(WFAction *)self parameterStateForKey:@"Mode"];
-      v12 = [v11 value];
-      [v10 setMode:v12];
+      value = [v11 value];
+      [v10 setMode:value];
 
       aBlock[0] = MEMORY[0x1E69E9820];
       aBlock[1] = 3221225472;
@@ -513,13 +513,13 @@ void __72__WFContentItemSetterAction_userValueForSelectedPropertyWithCompletion_
       v13 = v10;
       v40 = v13;
       v14 = _Block_copy(aBlock);
-      v15 = [v13 mode];
-      if ([v15 isEqual:*MEMORY[0x1E6997020]])
+      mode = [v13 mode];
+      if ([mode isEqual:*MEMORY[0x1E6997020]])
       {
-        v16 = [(WFContentItemSetterAction *)self selectedProperty];
-        v17 = [v16 multipleValues];
+        selectedProperty2 = [(WFContentItemSetterAction *)self selectedProperty];
+        multipleValues = [selectedProperty2 multipleValues];
 
-        if (v17)
+        if (multipleValues)
         {
           v18 = [(WFAction *)self parameterStateForKey:@"RemoveSpecifiedValue"];
           if (v18 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
@@ -530,22 +530,22 @@ void __72__WFContentItemSetterAction_userValueForSelectedPropertyWithCompletion_
             v34[2] = __56__WFContentItemSetterAction_runAsynchronouslyWithInput___block_invoke_10;
             v34[3] = &unk_1E8378790;
             v35 = v14;
-            v20 = [(WFContentItemSetterAction *)self selectedProperty];
-            v21 = [v20 propertyClasses];
-            [v19 getObjectRepresentations:v34 forClass:{objc_msgSend(v21, "firstObject")}];
+            selectedProperty3 = [(WFContentItemSetterAction *)self selectedProperty];
+            propertyClasses = [selectedProperty3 propertyClasses];
+            [v19 getObjectRepresentations:v34 forClass:{objc_msgSend(propertyClasses, "firstObject")}];
           }
 
           else
           {
-            v30 = [(WFContentItemSetterAction *)self selectedProperty];
+            selectedProperty4 = [(WFContentItemSetterAction *)self selectedProperty];
             v36[0] = MEMORY[0x1E69E9820];
             v36[1] = 3221225472;
             v36[2] = __56__WFContentItemSetterAction_runAsynchronouslyWithInput___block_invoke_4;
             v36[3] = &unk_1E83787B8;
             v36[4] = self;
-            v37 = v8;
+            v37 = localizedTypeDescription;
             v38 = v14;
-            [v30 getValuesForObject:v7 completionHandler:v36];
+            [selectedProperty4 getValuesForObject:firstObject completionHandler:v36];
           }
 
           goto LABEL_25;
@@ -562,7 +562,7 @@ void __72__WFContentItemSetterAction_userValueForSelectedPropertyWithCompletion_
       v31[3] = &unk_1E83790C8;
       v31[4] = self;
       v33 = v14;
-      v32 = v7;
+      v32 = firstObject;
       [(WFContentItemSetterAction *)self userValueForSelectedPropertyWithCompletion:v31];
 
 LABEL_25:
@@ -575,7 +575,7 @@ LABEL_26:
   else
   {
 
-    v7 = 0;
+    firstObject = 0;
   }
 
   [(WFAction *)self finishRunningWithError:0];
@@ -893,19 +893,19 @@ uint64_t __56__WFContentItemSetterAction_runAsynchronouslyWithInput___block_invo
   return [v6 finishRunningWithError:0];
 }
 
-- (id)enumeration:(id)a3 localizedLabelForPossibleState:(id)a4
+- (id)enumeration:(id)enumeration localizedLabelForPossibleState:(id)state
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 key];
+  enumerationCopy = enumeration;
+  stateCopy = state;
+  v8 = [enumerationCopy key];
   v9 = [v8 isEqual:@"WFContentItemPropertyName"];
 
   if (v9)
   {
     v10 = [(WFAction *)self parameterStateForKey:@"Mode"];
-    v11 = [(WFAction *)self contentItemClass];
-    v12 = [v7 value];
-    v13 = [(objc_class *)v11 propertyForName:v12];
+    contentItemClass = [(WFAction *)self contentItemClass];
+    value = [stateCopy value];
+    v13 = [(objc_class *)contentItemClass propertyForName:value];
 
     if (!v13)
     {
@@ -915,16 +915,16 @@ LABEL_14:
       goto LABEL_15;
     }
 
-    v14 = [v10 value];
-    if ([v14 isEqual:*MEMORY[0x1E6997018]])
+    value2 = [v10 value];
+    if ([value2 isEqual:*MEMORY[0x1E6997018]])
     {
-      v15 = [v13 singularItemName];
+      singularItemName = [v13 singularItemName];
 
-      if (v15)
+      if (singularItemName)
       {
-        v16 = [v13 localizedSingularItemName];
+        localizedSingularItemName = [v13 localizedSingularItemName];
 LABEL_13:
-        v22 = v16;
+        v22 = localizedSingularItemName;
         goto LABEL_14;
       }
     }
@@ -933,22 +933,22 @@ LABEL_13:
     {
     }
 
-    v16 = [v13 localizedName];
+    localizedSingularItemName = [v13 localizedName];
     goto LABEL_13;
   }
 
-  v17 = [v6 key];
+  v17 = [enumerationCopy key];
   v18 = [v17 isEqual:@"ValueLabel"];
 
   if (v18)
   {
-    v19 = [v7 value];
+    value3 = [stateCopy value];
 
-    if (v19)
+    if (value3)
     {
       v20 = MEMORY[0x1E6996D18];
-      v21 = [v7 value];
-      v22 = [v20 localizedStringForLabel:v21];
+      value4 = [stateCopy value];
+      v22 = [v20 localizedStringForLabel:value4];
     }
 
     else
@@ -959,7 +959,7 @@ LABEL_13:
 
   else
   {
-    v22 = [(WFContentItemSetterAction *)self displayStringForTransactionModeState:v7];
+    v22 = [(WFContentItemSetterAction *)self displayStringForTransactionModeState:stateCopy];
   }
 
 LABEL_15:
@@ -967,33 +967,33 @@ LABEL_15:
   return v22;
 }
 
-- (id)possibleStatesForEnumeration:(id)a3
+- (id)possibleStatesForEnumeration:(id)enumeration
 {
-  v4 = a3;
-  v5 = [v4 key];
+  enumerationCopy = enumeration;
+  v5 = [enumerationCopy key];
   v6 = [v5 isEqual:@"WFContentItemPropertyName"];
 
   if (v6)
   {
-    v7 = [(WFContentItemSetterAction *)self properties];
-    v8 = [v7 if_compactMap:&__block_literal_global_431_33777];
+    properties = [(WFContentItemSetterAction *)self properties];
+    v8 = [properties if_compactMap:&__block_literal_global_431_33777];
     goto LABEL_9;
   }
 
-  v9 = [v4 key];
+  v9 = [enumerationCopy key];
   v10 = [v9 isEqual:@"ValueLabel"];
 
   if (v10)
   {
-    v7 = [(WFContentItemSetterAction *)self selectedProperty];
-    v11 = [v7 possibleLabels];
-    v8 = [v11 if_map:&__block_literal_global_434];
+    properties = [(WFContentItemSetterAction *)self selectedProperty];
+    possibleLabels = [properties possibleLabels];
+    v8 = [possibleLabels if_map:&__block_literal_global_434];
   }
 
   else
   {
-    v7 = [(WFAction *)self parameterStateForKey:@"WFContentItemPropertyName"];
-    v12 = [v7 variable];
+    properties = [(WFAction *)self parameterStateForKey:@"WFContentItemPropertyName"];
+    variable = [properties variable];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -1003,10 +1003,10 @@ LABEL_15:
       goto LABEL_9;
     }
 
-    v11 = [(WFContentItemSetterAction *)self selectedProperty];
-    v14 = [v11 allowedTransactionModes];
-    v15 = [v14 allObjects];
-    v8 = [v15 if_map:&__block_literal_global_437];
+    possibleLabels = [(WFContentItemSetterAction *)self selectedProperty];
+    allowedTransactionModes = [possibleLabels allowedTransactionModes];
+    allObjects = [allowedTransactionModes allObjects];
+    v8 = [allObjects if_map:&__block_literal_global_437];
   }
 
 LABEL_9:
@@ -1041,11 +1041,11 @@ WFStringSubstitutableState *__58__WFContentItemSetterAction_possibleStatesForEnu
   return v5;
 }
 
-- (id)displayStringForTransactionModeState:(id)a3
+- (id)displayStringForTransactionModeState:(id)state
 {
-  v3 = a3;
-  v4 = [v3 value];
-  v5 = [v4 isEqual:*MEMORY[0x1E6997018]];
+  stateCopy = state;
+  value = [stateCopy value];
+  v5 = [value isEqual:*MEMORY[0x1E6997018]];
 
   if (v5)
   {
@@ -1054,8 +1054,8 @@ WFStringSubstitutableState *__58__WFContentItemSetterAction_possibleStatesForEnu
 
   else
   {
-    v7 = [v3 value];
-    v8 = [v7 isEqual:*MEMORY[0x1E6997020]];
+    value2 = [stateCopy value];
+    v8 = [value2 isEqual:*MEMORY[0x1E6997020]];
 
     if (v8)
     {
@@ -1064,8 +1064,8 @@ WFStringSubstitutableState *__58__WFContentItemSetterAction_possibleStatesForEnu
 
     else
     {
-      v10 = [v3 value];
-      v11 = [v10 isEqual:*MEMORY[0x1E6997028]];
+      value3 = [stateCopy value];
+      v11 = [value3 isEqual:*MEMORY[0x1E6997028]];
 
       if (v11)
       {
@@ -1097,37 +1097,37 @@ WFStringSubstitutableState *__58__WFContentItemSetterAction_possibleStatesForEnu
     v3 = v24;
     if (isKindOfClass)
     {
-      v5 = [(WFContentItemSetterAction *)self selectedProperty];
-      v6 = [(WFContentItemSetterAction *)self parameterKeyForProperty:v5];
+      selectedProperty = [(WFContentItemSetterAction *)self selectedProperty];
+      v6 = [(WFContentItemSetterAction *)self parameterKeyForProperty:selectedProperty];
       v7 = [(WFAction *)self parameterForKey:v6];
 
-      v8 = [v24 value];
-      v9 = [v8 isEqual:*MEMORY[0x1E6997018]];
+      value = [v24 value];
+      v9 = [value isEqual:*MEMORY[0x1E6997018]];
 
       if (v9)
       {
-        v10 = [v5 singularItemName];
-        if (v10)
+        singularItemName = [selectedProperty singularItemName];
+        if (singularItemName)
         {
-          [v5 localizedSingularItemName];
+          [selectedProperty localizedSingularItemName];
         }
 
         else
         {
-          [v5 localizedName];
+          [selectedProperty localizedName];
         }
-        v11 = ;
+        localizedName = ;
 
-        if ([v5 canLowercaseName])
+        if ([selectedProperty canLowercaseName])
         {
-          v18 = [v11 localizedLowercaseString];
+          localizedLowercaseString = [localizedName localizedLowercaseString];
 
-          v11 = v18;
+          localizedName = localizedLowercaseString;
         }
 
         v19 = MEMORY[0x1E696AEC0];
         v20 = WFLocalizedString(@"What %@ do you want to add?");
-        v21 = [v19 localizedStringWithFormat:v20, v11];
+        v21 = [v19 localizedStringWithFormat:v20, localizedName];
         [v7 setLocalizedPrompt:v21];
 
         v16 = [(WFAction *)self parameterForKey:@"ValueLabel"];
@@ -1138,23 +1138,23 @@ WFStringSubstitutableState *__58__WFContentItemSetterAction_possibleStatesForEnu
 
         v22 = MEMORY[0x1E696AEC0];
         v17 = WFLocalizedString(@"What label do you want for the %@?");
-        v23 = [v22 localizedStringWithFormat:v17, v11];
+        v23 = [v22 localizedStringWithFormat:v17, localizedName];
         [v16 setLocalizedPrompt:v23];
       }
 
       else
       {
-        v11 = [v5 localizedName];
-        if ([v5 canLowercaseName])
+        localizedName = [selectedProperty localizedName];
+        if ([selectedProperty canLowercaseName])
         {
-          v12 = [v11 localizedLowercaseString];
+          localizedLowercaseString2 = [localizedName localizedLowercaseString];
 
-          v11 = v12;
+          localizedName = localizedLowercaseString2;
         }
 
-        v13 = [v5 multipleValues];
+        multipleValues = [selectedProperty multipleValues];
         v14 = MEMORY[0x1E696AEC0];
-        if (v13)
+        if (multipleValues)
         {
           v15 = @"What %@ do you want to set? (Plural)";
         }
@@ -1165,7 +1165,7 @@ WFStringSubstitutableState *__58__WFContentItemSetterAction_possibleStatesForEnu
         }
 
         v16 = WFLocalizedStringWithKey(v15, @"What %@ do you want to set?");
-        v17 = [v14 localizedStringWithFormat:v16, v11];
+        v17 = [v14 localizedStringWithFormat:v16, localizedName];
         [v7 setLocalizedPrompt:v17];
       }
 
@@ -1225,15 +1225,15 @@ LABEL_18:
   v20 = [(WFParameterDefinition *)v12 initWithDictionary:v19];
   [v3 addObject:v20];
 
-  v21 = [(WFContentItemSetterAction *)self inputParameterKey];
-  if (v21)
+  inputParameterKey = [(WFContentItemSetterAction *)self inputParameterKey];
+  if (inputParameterKey)
   {
     v22 = [WFParameterDefinition alloc];
     v132[0] = @"Class";
     v23 = objc_opt_class();
     v24 = NSStringFromClass(v23);
     v133[0] = v24;
-    v133[1] = v21;
+    v133[1] = inputParameterKey;
     v132[1] = @"Key";
     v132[2] = @"Label";
     v25 = [[WFContentItemSetterActionParameterDescription alloc] initWithContentItemClass:[(WFAction *)self contentItemClass] field:0];
@@ -1246,7 +1246,7 @@ LABEL_18:
     [v3 addObject:v28];
   }
 
-  v98 = v21;
+  v98 = inputParameterKey;
   v99 = [WFParameterDefinition alloc];
   v130[0] = @"Class";
   v29 = objc_opt_class();
@@ -1275,8 +1275,8 @@ LABEL_18:
   v126[0] = @"WFContentItemPropertyName";
   v125[0] = @"WFParameterKey";
   v125[1] = @"WFParameterValues";
-  v33 = [(WFContentItemSetterAction *)self properties];
-  v34 = [v33 if_compactMap:&__block_literal_global_33840];
+  properties = [(WFContentItemSetterAction *)self properties];
+  v34 = [properties if_compactMap:&__block_literal_global_33840];
   v126[1] = v34;
   v125[2] = @"WFResourceClass";
   v35 = objc_opt_class();
@@ -1298,8 +1298,8 @@ LABEL_18:
   v106 = 0u;
   v107 = 0u;
   v108 = 0u;
-  v42 = [(WFContentItemSetterAction *)self properties];
-  v43 = [v42 countByEnumeratingWithState:&v105 objects:v124 count:16];
+  properties2 = [(WFContentItemSetterAction *)self properties];
+  v43 = [properties2 countByEnumeratingWithState:&v105 objects:v124 count:16];
   if (v43)
   {
     v44 = v43;
@@ -1310,7 +1310,7 @@ LABEL_18:
       {
         if (*v106 != v45)
         {
-          objc_enumerationMutation(v42);
+          objc_enumerationMutation(properties2);
         }
 
         v47 = *(*(&v105 + 1) + 8 * i);
@@ -1320,8 +1320,8 @@ LABEL_18:
         if (!v49)
         {
           v50 = MEMORY[0x1E695DF90];
-          v51 = [v47 parameterDefinition];
-          v52 = [v50 dictionaryWithDictionary:v51];
+          parameterDefinition = [v47 parameterDefinition];
+          v52 = [v50 dictionaryWithDictionary:parameterDefinition];
 
           [v52 setObject:v48 forKeyedSubscript:@"Key"];
           v53 = [(WFContentItemSetterAction *)self requiredResourceForProperty:v47];
@@ -1332,26 +1332,26 @@ LABEL_18:
 
           if ([v47 isLabeledValue])
           {
-            v55 = [v47 name];
-            [v104 addObject:v55];
+            name = [v47 name];
+            [v104 addObject:name];
           }
 
           if ([v47 hasPropertyClass:objc_opt_class()])
           {
-            v56 = [v47 name];
-            [v102 addObject:v56];
+            name2 = [v47 name];
+            [v102 addObject:name2];
           }
         }
       }
 
-      v44 = [v42 countByEnumeratingWithState:&v105 objects:v124 count:16];
+      v44 = [properties2 countByEnumeratingWithState:&v105 objects:v124 count:16];
     }
 
     while (v44);
   }
 
-  v57 = [v41 allValues];
-  [v100 addObjectsFromArray:v57];
+  allValues = [v41 allValues];
+  [v100 addObjectsFromArray:allValues];
 
   v58 = v104;
   if ([v104 count])
@@ -1478,17 +1478,17 @@ id __49__WFContentItemSetterAction_parameterDefinitions__block_invoke(uint64_t a
   return v3;
 }
 
-- (BOOL)setParameterState:(id)a3 forKey:(id)a4
+- (BOOL)setParameterState:(id)state forKey:(id)key
 {
-  v6 = a4;
+  keyCopy = key;
   v19.receiver = self;
   v19.super_class = WFContentItemSetterAction;
-  v7 = [(WFAction *)&v19 setParameterState:a3 forKey:v6];
-  if (v7 && [v6 isEqualToString:@"WFContentItemPropertyName"])
+  v7 = [(WFAction *)&v19 setParameterState:state forKey:keyCopy];
+  if (v7 && [keyCopy isEqualToString:@"WFContentItemPropertyName"])
   {
     [(WFAction *)self outputDetailsUpdated];
     v8 = [(WFAction *)self parameterStateForKey:@"Mode"];
-    v9 = [v8 variable];
+    variable = [v8 variable];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -1501,9 +1501,9 @@ id __49__WFContentItemSetterAction_parameterDefinitions__block_invoke(uint64_t a
 
     else
     {
-      v14 = [(WFContentItemSetterAction *)self selectedProperty];
-      v15 = [v8 value];
-      v12 = [v14 preferredTransactionModeWithCurrentMode:v15];
+      selectedProperty = [(WFContentItemSetterAction *)self selectedProperty];
+      value = [v8 value];
+      v12 = [selectedProperty preferredTransactionModeWithCurrentMode:value];
 
       if (!v12)
       {
@@ -1522,7 +1522,7 @@ LABEL_8:
     [v17 reloadPossibleStates];
   }
 
-  if (([v6 isEqualToString:@"WFContentItemPropertyName"] & 1) != 0 || objc_msgSend(v6, "isEqualToString:", @"Mode"))
+  if (([keyCopy isEqualToString:@"WFContentItemPropertyName"] & 1) != 0 || objc_msgSend(keyCopy, "isEqualToString:", @"Mode"))
   {
     [(WFContentItemSetterAction *)self setPromptForSelectedParameter];
   }
@@ -1530,14 +1530,14 @@ LABEL_8:
   return v7;
 }
 
-- (id)requiredResourceForProperty:(id)a3
+- (id)requiredResourceForProperty:(id)property
 {
   v20[2] = *MEMORY[0x1E69E9840];
   v19[0] = @"WFContentItemPropertyName";
   v18[0] = @"WFParameterKey";
   v18[1] = @"WFParameterValue";
-  v3 = [a3 name];
-  v19[1] = v3;
+  name = [property name];
+  v19[1] = name;
   v18[2] = @"WFResourceClass";
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
@@ -1565,14 +1565,14 @@ LABEL_8:
   return v12;
 }
 
-- (id)parameterKeyForProperty:(id)a3
+- (id)parameterKeyForProperty:(id)property
 {
   v4 = MEMORY[0x1E696AEC0];
-  v5 = a3;
+  propertyCopy = property;
   v6 = [(objc_class *)[(WFAction *)self contentItemClass] description];
-  v7 = [v5 name];
+  name = [propertyCopy name];
 
-  v8 = [v7 stringByReplacingOccurrencesOfString:@" " withString:&stru_1F4A1C408];
+  v8 = [name stringByReplacingOccurrencesOfString:@" " withString:&stru_1F4A1C408];
   v9 = [v4 stringWithFormat:@"%@%@", v6, v8];
 
   return v9;
@@ -1600,15 +1600,15 @@ LABEL_8:
   [(WFContentItemSetterAction *)self setPromptForSelectedParameter];
 }
 
-- (id)localizedDefaultOutputNameWithContext:(id)a3
+- (id)localizedDefaultOutputNameWithContext:(id)context
 {
   v4 = MEMORY[0x1E696AEC0];
-  v5 = a3;
+  contextCopy = context;
   v6 = WFLocalizedStringResourceWithKey(@"Edited %@", @"Edited %@");
-  v7 = [v5 localize:v6];
+  v7 = [contextCopy localize:v6];
 
-  v8 = [(objc_class *)[(WFAction *)self contentItemClass] localizedTypeDescription];
-  v9 = [v4 localizedStringWithFormat:v7, v8];
+  localizedTypeDescription = [(objc_class *)[(WFAction *)self contentItemClass] localizedTypeDescription];
+  v9 = [v4 localizedStringWithFormat:v7, localizedTypeDescription];
 
   return v9;
 }
@@ -1617,16 +1617,16 @@ LABEL_8:
 {
   if ([(WFAction *)self isRunning]&& ([(WFAction *)self processedParameters], v3 = objc_claimAutoreleasedReturnValue(), v3, v3))
   {
-    v4 = [(WFAction *)self parameterValueForKey:@"WFContentItemPropertyName" ofClass:objc_opt_class()];
+    value = [(WFAction *)self parameterValueForKey:@"WFContentItemPropertyName" ofClass:objc_opt_class()];
   }
 
   else
   {
     v5 = [(WFAction *)self parameterStateForKey:@"WFContentItemPropertyName"];
-    v4 = [v5 value];
+    value = [v5 value];
   }
 
-  v6 = [(objc_class *)[(WFAction *)self contentItemClass] propertyForName:v4];
+  v6 = [(objc_class *)[(WFAction *)self contentItemClass] propertyForName:value];
 
   return v6;
 }
@@ -1641,14 +1641,14 @@ LABEL_8:
   return v2;
 }
 
-- (id)localizedKeywordsWithContext:(id)a3
+- (id)localizedKeywordsWithContext:(id)context
 {
   v10.receiver = self;
   v10.super_class = WFContentItemSetterAction;
-  v3 = a3;
-  v4 = [(WFAction *)&v10 localizedKeywordsWithContext:v3];
+  contextCopy = context;
+  v4 = [(WFAction *)&v10 localizedKeywordsWithContext:contextCopy];
   v5 = WFLocalizedStringResourceWithKey(@"property|properties|add|update", @"property|properties|add|update");
-  v6 = [v3 localize:{v5, v10.receiver, v10.super_class}];
+  v6 = [contextCopy localize:{v5, v10.receiver, v10.super_class}];
 
   v7 = [v6 componentsSeparatedByString:@"|"];
 
@@ -1657,22 +1657,22 @@ LABEL_8:
   return v8;
 }
 
-- (id)localizedDescriptionSummaryWithContext:(id)a3
+- (id)localizedDescriptionSummaryWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [(objc_class *)[(WFAction *)self contentItemClass] localizedTypeDescription];
+  contextCopy = context;
+  localizedTypeDescription = [(objc_class *)[(WFAction *)self contentItemClass] localizedTypeDescription];
   if ([(objc_class *)[(WFAction *)self contentItemClass] canLowercaseTypeDescription])
   {
-    v6 = [v5 lowercaseString];
+    lowercaseString = [localizedTypeDescription lowercaseString];
 
-    v5 = v6;
+    localizedTypeDescription = lowercaseString;
   }
 
   v7 = MEMORY[0x1E696AEC0];
   v8 = WFLocalizedStringResourceWithKey(@"Sets a specific field of the %@ passed into the action.", @"Sets a specific field of the %@ passed into the action.");
-  v9 = [v4 localize:v8];
+  v9 = [contextCopy localize:v8];
 
-  v10 = [v7 localizedStringWithFormat:v9, v5];
+  v10 = [v7 localizedStringWithFormat:v9, localizedTypeDescription];
 
   return v10;
 }
@@ -1699,7 +1699,7 @@ LABEL_8:
   if (v46)
   {
     v45 = *v62;
-    v53 = self;
+    selfCopy = self;
     do
     {
       v4 = 0;
@@ -1716,8 +1716,8 @@ LABEL_8:
         v58 = 0u;
         v59 = 0u;
         v60 = 0u;
-        v56 = [(WFContentItemSetterAction *)self properties];
-        v6 = [v56 countByEnumeratingWithState:&v57 objects:v65 count:16];
+        properties = [(WFContentItemSetterAction *)self properties];
+        v6 = [properties countByEnumeratingWithState:&v57 objects:v65 count:16];
         if (v6)
         {
           v7 = v6;
@@ -1728,12 +1728,12 @@ LABEL_8:
             {
               if (*v58 != v8)
               {
-                objc_enumerationMutation(v56);
+                objc_enumerationMutation(properties);
               }
 
               v10 = *(*(&v57 + 1) + 8 * i);
-              v11 = [v10 allowedTransactionModes];
-              v12 = [v11 containsObject:v5];
+              allowedTransactionModes = [v10 allowedTransactionModes];
+              v12 = [allowedTransactionModes containsObject:v5];
 
               if (v12)
               {
@@ -1752,8 +1752,8 @@ LABEL_8:
                 if ([v5 isEqual:v55])
                 {
                   v15 = MEMORY[0x1E696AEC0];
-                  v16 = v53;
-                  v17 = [(WFContentItemSetterAction *)v53 parameterKeyForProperty:v10];
+                  v16 = selfCopy;
+                  v17 = [(WFContentItemSetterAction *)selfCopy parameterKeyForProperty:v10];
                   v18 = [v15 stringWithFormat:@"Mode(Set), WFContentItemPropertyName, WFInput, %@%@", v17, v14];
 
                   v19 = v13 == 0;
@@ -1769,8 +1769,8 @@ LABEL_8:
                   }
 
                   v22 = MEMORY[0x1E696AEC0];
-                  v16 = v53;
-                  v23 = [(WFContentItemSetterAction *)v53 parameterKeyForProperty:v10];
+                  v16 = selfCopy;
+                  v23 = [(WFContentItemSetterAction *)selfCopy parameterKeyForProperty:v10];
                   v18 = [v22 stringWithFormat:@"Mode(Append), WFInput, WFContentItemPropertyName, %@%@", v23, v14];
 
                   v19 = v13 == 0;
@@ -1788,23 +1788,23 @@ LABEL_8:
                   v24 = v21;
                 }
 
-                v25 = [v24 localize];
+                localize = [v24 localize];
                 v26 = [(WFContentItemSetterAction *)v16 parameterKeyForProperty:v10];
-                v27 = [v25 stringByReplacingOccurrencesOfString:@"__PARAMETER__" withString:v26];
+                v27 = [localize stringByReplacingOccurrencesOfString:@"__PARAMETER__" withString:v26];
 
                 v28 = [[WFActionParameterSummaryValue alloc] initWithKey:v18 localizedSummaryString:v27];
                 [v52 addObject:v28];
               }
             }
 
-            v7 = [v56 countByEnumeratingWithState:&v57 objects:v65 count:16];
+            v7 = [properties countByEnumeratingWithState:&v57 objects:v65 count:16];
           }
 
           while (v7);
         }
 
         v4 = v47 + 1;
-        self = v53;
+        self = selfCopy;
       }
 
       while (v47 + 1 != v46);
@@ -1840,26 +1840,26 @@ LABEL_8:
   return v41;
 }
 
-- (id)localizedNameWithContext:(id)a3
+- (id)localizedNameWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [(WFAction *)self definition];
-  v6 = [v5 name];
+  contextCopy = context;
+  definition = [(WFAction *)self definition];
+  name = [definition name];
 
-  if (v6)
+  if (name)
   {
     v13.receiver = self;
     v13.super_class = WFContentItemSetterAction;
-    v7 = [(WFAction *)&v13 localizedNameWithContext:v4];
+    v7 = [(WFAction *)&v13 localizedNameWithContext:contextCopy];
   }
 
   else
   {
     v8 = WFLocalizedStringResourceWithKey(@"WFContentItemSetterAction - Action Name", @"Edit %@");
     v9 = MEMORY[0x1E696AEC0];
-    v10 = [v4 localize:v8];
-    v11 = [(objc_class *)[(WFAction *)self contentItemClass] localizedTypeDescription];
-    v7 = [v9 localizedStringWithFormat:v10, v11];
+    v10 = [contextCopy localize:v8];
+    localizedTypeDescription = [(objc_class *)[(WFAction *)self contentItemClass] localizedTypeDescription];
+    v7 = [v9 localizedStringWithFormat:v10, localizedTypeDescription];
   }
 
   return v7;
@@ -1867,9 +1867,9 @@ LABEL_8:
 
 - (NSArray)properties
 {
-  v2 = [(objc_class *)[(WFAction *)self contentItemClass] allProperties];
+  allProperties = [(objc_class *)[(WFAction *)self contentItemClass] allProperties];
   v3 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K = YES", @"settable"];
-  v4 = [v2 filteredArrayUsingPredicate:v3];
+  v4 = [allProperties filteredArrayUsingPredicate:v3];
 
   return v4;
 }

@@ -1,13 +1,13 @@
 @interface THPageLocation
-+ (id)pageLocationWithAnnotation:(id)a3;
-+ (id)pageLocationWithStorageAnchor:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)pageLocationWithAnnotation:(id)annotation;
++ (id)pageLocationWithStorageAnchor:(id)anchor;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (THPageLocation)init;
-- (THPageLocation)initWithAbsolutePageIndex:(unint64_t)a3 range:(_NSRange)a4 storageUID:(id)a5 contentNodeGUID:(id)a6;
-- (THPageLocation)initWithDictionaryRepresentation:(id)a3;
+- (THPageLocation)initWithAbsolutePageIndex:(unint64_t)index range:(_NSRange)range storageUID:(id)d contentNodeGUID:(id)iD;
+- (THPageLocation)initWithDictionaryRepresentation:(id)representation;
 - (_NSRange)range;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (id)stringValue;
 - (unint64_t)hash;
@@ -23,48 +23,48 @@
   return [(THPageLocation *)self initWithAbsolutePageIndex:0x7FFFFFFFFFFFFFFFLL];
 }
 
-- (THPageLocation)initWithAbsolutePageIndex:(unint64_t)a3 range:(_NSRange)a4 storageUID:(id)a5 contentNodeGUID:(id)a6
+- (THPageLocation)initWithAbsolutePageIndex:(unint64_t)index range:(_NSRange)range storageUID:(id)d contentNodeGUID:(id)iD
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v14.receiver = self;
   v14.super_class = THPageLocation;
   v11 = [(THPageLocation *)&v14 init];
   if (v11)
   {
-    if (a3 && a3 != 0x7FFFFFFFFFFFFFFFLL)
+    if (index && index != 0x7FFFFFFFFFFFFFFFLL)
     {
-      if (![a5 length] || (NSInvalidRange[0] == location ? (v12 = NSInvalidRange[1] == length) : (v12 = 0), v12))
+      if (![d length] || (NSInvalidRange[0] == location ? (v12 = NSInvalidRange[1] == length) : (v12 = 0), v12))
       {
         [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
       }
     }
 
-    [(THPageLocation *)v11 setAbsolutePhysicalPageIndex:a3];
+    [(THPageLocation *)v11 setAbsolutePhysicalPageIndex:index];
     [(THPageLocation *)v11 setRange:location, length];
-    [(THPageLocation *)v11 setStorageUID:a5];
-    [(THPageLocation *)v11 setContentNodeGUID:a6];
+    [(THPageLocation *)v11 setStorageUID:d];
+    [(THPageLocation *)v11 setContentNodeGUID:iD];
   }
 
   return v11;
 }
 
-+ (id)pageLocationWithAnnotation:(id)a3
++ (id)pageLocationWithAnnotation:(id)annotation
 {
   v4 = [THPageLocation alloc];
-  v5 = [a3 annotationAbsolutePhysicalPageIndex];
-  v6 = [a3 annotationStorageRange];
-  v8 = -[THPageLocation initWithAbsolutePageIndex:range:storageUID:contentNodeGUID:](v4, "initWithAbsolutePageIndex:range:storageUID:contentNodeGUID:", v5, v6, v7, [a3 annotationStorageUID], objc_msgSend(a3, "annotationContentNodeID"));
+  annotationAbsolutePhysicalPageIndex = [annotation annotationAbsolutePhysicalPageIndex];
+  annotationStorageRange = [annotation annotationStorageRange];
+  v8 = -[THPageLocation initWithAbsolutePageIndex:range:storageUID:contentNodeGUID:](v4, "initWithAbsolutePageIndex:range:storageUID:contentNodeGUID:", annotationAbsolutePhysicalPageIndex, annotationStorageRange, v7, [annotation annotationStorageUID], objc_msgSend(annotation, "annotationContentNodeID"));
 
   return v8;
 }
 
-+ (id)pageLocationWithStorageAnchor:(id)a3
++ (id)pageLocationWithStorageAnchor:(id)anchor
 {
   v4 = [THPageLocation alloc];
-  v5 = [a3 absolutePageIndex];
-  v6 = [a3 range];
-  v8 = -[THPageLocation initWithAbsolutePageIndex:range:storageUID:contentNodeGUID:](v4, "initWithAbsolutePageIndex:range:storageUID:contentNodeGUID:", v5, v6, v7, [a3 storageUID], objc_msgSend(objc_msgSend(a3, "contentNode"), "nodeGUID"));
+  absolutePageIndex = [anchor absolutePageIndex];
+  range = [anchor range];
+  v8 = -[THPageLocation initWithAbsolutePageIndex:range:storageUID:contentNodeGUID:](v4, "initWithAbsolutePageIndex:range:storageUID:contentNodeGUID:", absolutePageIndex, range, v7, [anchor storageUID], objc_msgSend(objc_msgSend(anchor, "contentNode"), "nodeGUID"));
 
   return v8;
 }
@@ -80,8 +80,8 @@
 
 - (NSString)description
 {
-  v3 = [(THPageLocation *)self absolutePhysicalPageIndex];
-  v4 = [(THPageLocation *)self storageUID];
+  absolutePhysicalPageIndex = [(THPageLocation *)self absolutePhysicalPageIndex];
+  storageUID = [(THPageLocation *)self storageUID];
   if ([(THPageLocation *)self range]== 0x7FFFFFFFFFFFFFFFLL)
   {
     v5 = @"--";
@@ -93,12 +93,12 @@
     v5 = NSStringFromRange(v7);
   }
 
-  return [NSString stringWithFormat:@"<pg %lu (%@, %@) [%p]>", v3, v4, v5, self];
+  return [NSString stringWithFormat:@"<pg %lu (%@, %@) [%p]>", absolutePhysicalPageIndex, storageUID, v5, self];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v11) = 1;
   }
@@ -112,10 +112,10 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      if (![objc_msgSend(a3 "storageUID")] || !-[NSString length](-[THPageLocation storageUID](self, "storageUID"), "length") || (v11 = -[NSString isEqualToString:](-[THPageLocation storageUID](self, "storageUID"), "isEqualToString:", objc_msgSend(a3, "storageUID"))) && (v12 = -[THPageLocation range](self, "range"), v14 = v13, v16 = objc_msgSend(a3, "range"), LOBYTE(v11) = 0, v12 == v16) && v14 == v15)
+      if (![objc_msgSend(equal "storageUID")] || !-[NSString length](-[THPageLocation storageUID](self, "storageUID"), "length") || (v11 = -[NSString isEqualToString:](-[THPageLocation storageUID](self, "storageUID"), "isEqualToString:", objc_msgSend(equal, "storageUID"))) && (v12 = -[THPageLocation range](self, "range"), v14 = v13, v16 = objc_msgSend(equal, "range"), LOBYTE(v11) = 0, v12 == v16) && v14 == v15)
       {
         v17 = [(THPageLocation *)self absolutePhysicalPageIndex:v19];
-        LOBYTE(v11) = v17 == [a3 absolutePhysicalPageIndex];
+        LOBYTE(v11) = v17 == [equal absolutePhysicalPageIndex];
       }
     }
 
@@ -130,46 +130,46 @@
 
 - (unint64_t)hash
 {
-  v3 = [(THPageLocation *)self absolutePhysicalPageIndex];
+  absolutePhysicalPageIndex = [(THPageLocation *)self absolutePhysicalPageIndex];
   if ([(THPageLocation *)self storageUID])
   {
     v4 = [(NSString *)[(THPageLocation *)self storageUID] hash];
     v6.location = [(THPageLocation *)self range];
-    v3 &= v4 & [NSStringFromRange(v6) hash];
+    absolutePhysicalPageIndex &= v4 & [NSStringFromRange(v6) hash];
   }
 
-  return v3;
+  return absolutePhysicalPageIndex;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(THPageLocation *)self absolutePhysicalPageIndex];
-  v6 = [(THPageLocation *)self range];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  absolutePhysicalPageIndex = [(THPageLocation *)self absolutePhysicalPageIndex];
+  range = [(THPageLocation *)self range];
   v8 = v7;
-  v9 = [(THPageLocation *)self storageUID];
-  v10 = [(THPageLocation *)self contentNodeGUID];
+  storageUID = [(THPageLocation *)self storageUID];
+  contentNodeGUID = [(THPageLocation *)self contentNodeGUID];
 
-  return [v4 initWithAbsolutePageIndex:v5 range:v6 storageUID:v8 contentNodeGUID:{v9, v10}];
+  return [v4 initWithAbsolutePageIndex:absolutePhysicalPageIndex range:range storageUID:v8 contentNodeGUID:{storageUID, contentNodeGUID}];
 }
 
-- (THPageLocation)initWithDictionaryRepresentation:(id)a3
+- (THPageLocation)initWithDictionaryRepresentation:(id)representation
 {
   objc_opt_class();
-  [a3 objectForKey:@"pageIndex"];
+  [representation objectForKey:@"pageIndex"];
   v5 = TSUDynamicCast();
   if (v5)
   {
-    v6 = [v5 unsignedIntegerValue];
+    unsignedIntegerValue = [v5 unsignedIntegerValue];
   }
 
   else
   {
-    v6 = 0x7FFFFFFFFFFFFFFFLL;
+    unsignedIntegerValue = 0x7FFFFFFFFFFFFFFFLL;
   }
 
   objc_opt_class();
-  [a3 objectForKey:@"range"];
+  [representation objectForKey:@"range"];
   v7 = TSUDynamicCast();
   if (v7)
   {
@@ -185,13 +185,13 @@
   }
 
   objc_opt_class();
-  [a3 objectForKey:@"storage"];
+  [representation objectForKey:@"storage"];
   v11 = TSUDynamicCast();
   objc_opt_class();
-  [a3 objectForKey:@"nodeGUID"];
+  [representation objectForKey:@"nodeGUID"];
   v12 = TSUDynamicCast();
 
-  return [(THPageLocation *)self initWithAbsolutePageIndex:v6 range:location storageUID:length contentNodeGUID:v11, v12];
+  return [(THPageLocation *)self initWithAbsolutePageIndex:unsignedIntegerValue range:location storageUID:length contentNodeGUID:v11, v12];
 }
 
 - (id)dictionaryRepresentation
@@ -216,8 +216,8 @@
 
 - (id)stringValue
 {
-  v3 = [(THPageLocation *)self absolutePhysicalPageIndex];
-  v4 = [(THPageLocation *)self storageUID];
+  absolutePhysicalPageIndex = [(THPageLocation *)self absolutePhysicalPageIndex];
+  storageUID = [(THPageLocation *)self storageUID];
   if ([(THPageLocation *)self range]== 0x7FFFFFFFFFFFFFFFLL)
   {
     v5 = @"--";
@@ -229,7 +229,7 @@
     v5 = NSStringFromRange(v7);
   }
 
-  return [NSString stringWithFormat:@"<pg %lu (%@, %@) >", v3, v4, v5];
+  return [NSString stringWithFormat:@"<pg %lu (%@, %@) >", absolutePhysicalPageIndex, storageUID, v5];
 }
 
 - (_NSRange)range

@@ -1,13 +1,13 @@
 @interface MRAppDelegateiOS
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4;
-- (void)setViewController:(id)a3;
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options;
+- (void)setViewController:(id)controller;
 @end
 
 @implementation MRAppDelegateiOS
 
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options
 {
-  v5 = a3;
+  applicationCopy = application;
   sub_100003250(v19, 1, 1);
   v6 = [UIWindow alloc];
   v7 = +[UIScreen mainScreen];
@@ -23,13 +23,13 @@
   v12 = [UIView alloc];
   [*(&self->super._shouldCreateViewController + 1) bounds];
   v13 = [v12 initWithFrame:?];
-  v14 = [v13 layer];
-  [v14 setBackgroundColor:v11];
+  layer = [v13 layer];
+  [layer setBackgroundColor:v11];
 
   CGColorRelease(v11);
   CGColorSpaceRelease(DeviceRGB);
-  [v5 setIdleTimerDisabled:1];
-  [v5 setIdleTimerDisabled:1];
+  [applicationCopy setIdleTimerDisabled:1];
+  [applicationCopy setIdleTimerDisabled:1];
   v15 = objc_alloc_init(UIViewController);
   v16 = *(&self->_window + 1);
   *(&self->_window + 1) = v15;
@@ -44,13 +44,13 @@
   return 1;
 }
 
-- (void)setViewController:(id)a3
+- (void)setViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   sub_100003250(v5, 1, 1);
-  if (v4)
+  if (controllerCopy)
   {
-    [*(&self->super._shouldCreateViewController + 1) setRootViewController:v4];
+    [*(&self->super._shouldCreateViewController + 1) setRootViewController:controllerCopy];
   }
 
   else

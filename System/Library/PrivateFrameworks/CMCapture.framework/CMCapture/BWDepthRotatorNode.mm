@@ -1,29 +1,29 @@
 @interface BWDepthRotatorNode
-- (BWDepthRotatorNode)initWithRotationDegrees:(int)a3 separateDepthComponentsEnabled:(BOOL)a4 depthProvidedAsAttachedMedia:(BOOL)a5;
-- (uint64_t)_setupDepthMediaConfigurationForOutput:(uint64_t)a3 attachedMediaKey:;
-- (uint64_t)_updateDepthOutputFormatRequirementsForInputFormat:(uint64_t)a3 pixelFormat:(uint64_t)a4 attachedMediaKey:;
+- (BWDepthRotatorNode)initWithRotationDegrees:(int)degrees separateDepthComponentsEnabled:(BOOL)enabled depthProvidedAsAttachedMedia:(BOOL)media;
+- (uint64_t)_setupDepthMediaConfigurationForOutput:(uint64_t)output attachedMediaKey:;
+- (uint64_t)_updateDepthOutputFormatRequirementsForInputFormat:(uint64_t)format pixelFormat:(uint64_t)pixelFormat attachedMediaKey:;
 - (void)dealloc;
-- (void)didReachEndOfDataForInput:(id)a3;
-- (void)didSelectFormat:(id)a3 forInput:(id)a4 forAttachedMediaKey:(id)a5;
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4;
+- (void)didReachEndOfDataForInput:(id)input;
+- (void)didSelectFormat:(id)format forInput:(id)input forAttachedMediaKey:(id)key;
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input;
 @end
 
 @implementation BWDepthRotatorNode
 
-- (BWDepthRotatorNode)initWithRotationDegrees:(int)a3 separateDepthComponentsEnabled:(BOOL)a4 depthProvidedAsAttachedMedia:(BOOL)a5
+- (BWDepthRotatorNode)initWithRotationDegrees:(int)degrees separateDepthComponentsEnabled:(BOOL)enabled depthProvidedAsAttachedMedia:(BOOL)media
 {
-  v5 = a5;
+  mediaCopy = media;
   v19.receiver = self;
   v19.super_class = BWDepthRotatorNode;
   v8 = [(BWNode *)&v19 init];
   v9 = v8;
   if (v8)
   {
-    v8->_separateDepthComponentsEnabled = a4;
-    v8->_depthProvidedAsAttachedMedia = v5;
+    v8->_separateDepthComponentsEnabled = enabled;
+    v8->_depthProvidedAsAttachedMedia = mediaCopy;
     v10 = [[BWNodeInput alloc] initWithMediaType:1986618469 node:v8];
     v11 = v10;
-    if (v5)
+    if (mediaCopy)
     {
       [(BWNodeInput *)v10 setPassthroughMode:1];
       v12 = objc_alloc_init(BWVideoFormatRequirements);
@@ -37,7 +37,7 @@
 
     v13 = objc_alloc_init(BWVideoFormatRequirements);
     [(BWVideoFormatRequirements *)v13 setSupportedPixelFormats:&unk_1F2248970];
-    if (v5)
+    if (mediaCopy)
     {
       v14 = objc_alloc_init(BWNodeInputMediaConfiguration);
       [(BWNodeInputMediaConfiguration *)v14 setFormatRequirements:v13];
@@ -56,8 +56,8 @@
     v16 = objc_alloc_init(BWVideoFormatRequirements);
     [(BWNodeOutput *)v15 setFormatRequirements:v16];
 
-    [(BWNodeOutput *)v15 setPassthroughMode:v5];
-    if (v5)
+    [(BWNodeOutput *)v15 setPassthroughMode:mediaCopy];
+    if (mediaCopy)
     {
       if (v9->_separateDepthComponentsEnabled)
       {
@@ -79,7 +79,7 @@
 
     [(BWNode *)v9 addOutput:v15];
 
-    v9->_rotationDegrees = a3;
+    v9->_rotationDegrees = degrees;
   }
 
   return v9;
@@ -104,31 +104,31 @@
   [(BWNode *)&v5 dealloc];
 }
 
-- (void)didSelectFormat:(id)a3 forInput:(id)a4 forAttachedMediaKey:(id)a5
+- (void)didSelectFormat:(id)format forInput:(id)input forAttachedMediaKey:(id)key
 {
   if (self->_depthProvidedAsAttachedMedia)
   {
-    if ([a5 isEqualToString:@"PrimaryFormat"])
+    if ([key isEqualToString:@"PrimaryFormat"])
     {
       output = self->super._output;
 
-      [(BWNodeOutput *)output setFormat:a3];
+      [(BWNodeOutput *)output setFormat:format];
       return;
     }
 
-    if (![a5 isEqualToString:@"Depth"])
+    if (![key isEqualToString:@"Depth"])
     {
       v15.receiver = self;
       v15.super_class = BWDepthRotatorNode;
-      [(BWNode *)&v15 didSelectFormat:a3 forInput:a4 forAttachedMediaKey:a5];
+      [(BWNode *)&v15 didSelectFormat:format forInput:input forAttachedMediaKey:key];
       return;
     }
 
     if (!self->_separateDepthComponentsEnabled)
     {
-      v14 = [a3 pixelFormat];
-      v12 = self;
-      v13 = a3;
+      pixelFormat = [format pixelFormat];
+      selfCopy2 = self;
+      formatCopy2 = format;
       v11 = @"Depth";
       goto LABEL_11;
     }
@@ -146,26 +146,26 @@
     v10 = BWAttachedMediaKey_PrimaryFormat;
   }
 
-  [(BWDepthRotatorNode *)self _updateDepthOutputFormatRequirementsForInputFormat:a3 pixelFormat:825306677 attachedMediaKey:*v10];
+  [(BWDepthRotatorNode *)self _updateDepthOutputFormatRequirementsForInputFormat:format pixelFormat:825306677 attachedMediaKey:*v10];
   v11 = @"DepthData_DY";
-  v12 = self;
-  v13 = a3;
-  v14 = 1932996149;
+  selfCopy2 = self;
+  formatCopy2 = format;
+  pixelFormat = 1932996149;
 LABEL_11:
 
-  [(BWDepthRotatorNode *)v12 _updateDepthOutputFormatRequirementsForInputFormat:v13 pixelFormat:v14 attachedMediaKey:v11];
+  [(BWDepthRotatorNode *)selfCopy2 _updateDepthOutputFormatRequirementsForInputFormat:formatCopy2 pixelFormat:pixelFormat attachedMediaKey:v11];
 }
 
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input
 {
-  v4 = a3;
+  bufferCopy = buffer;
   cf = 0;
   target = 0;
   ++self->_bufferSerialNumber;
-  AttachedMedia = a3;
+  AttachedMedia = buffer;
   if (self->_depthProvidedAsAttachedMedia)
   {
-    AttachedMedia = BWSampleBufferGetAttachedMedia(a3, @"Depth");
+    AttachedMedia = BWSampleBufferGetAttachedMedia(buffer, @"Depth");
   }
 
   if (!AttachedMedia)
@@ -248,7 +248,7 @@ LABEL_51:
         cf = 0;
       }
 
-      CMSampleBufferGetPresentationTimeStamp(&v34, v4);
+      CMSampleBufferGetPresentationTimeStamp(&v34, bufferCopy);
       v32 = [BWDroppedSample newDroppedSampleWithReason:0x1F219C050 pts:&v34];
       [(BWNodeOutput *)self->super._output emitDroppedSample:v32];
 
@@ -284,7 +284,7 @@ LABEL_19:
     goto LABEL_50;
   }
 
-  v33 = v4;
+  v33 = bufferCopy;
   v19 = *off_1E798A328;
   CMRemoveAttachment(target, *off_1E798A328);
   v20 = CMGetAttachment(AttachedMedia, v19, 0);
@@ -301,7 +301,7 @@ LABEL_19:
   if (!v22)
   {
     v24 = 0;
-    v4 = v33;
+    bufferCopy = v33;
     goto LABEL_36;
   }
 
@@ -309,7 +309,7 @@ LABEL_19:
   if (!v24)
   {
 LABEL_75:
-    v4 = v33;
+    bufferCopy = v33;
     goto LABEL_51;
   }
 
@@ -319,24 +319,24 @@ LABEL_75:
     goto LABEL_75;
   }
 
-  v25 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v26 = *off_1E798ABA0;
   if ([v20 objectForKeyedSubscript:*off_1E798ABA0])
   {
-    [v25 setObject:objc_msgSend(v20 forKeyedSubscript:{"objectForKeyedSubscript:", v26), v26}];
+    [dictionary setObject:objc_msgSend(v20 forKeyedSubscript:{"objectForKeyedSubscript:", v26), v26}];
   }
 
   if (!self->_separateDepthComponentsEnabled)
   {
-    [v25 setObject:v24 forKeyedSubscript:v21];
+    [dictionary setObject:v24 forKeyedSubscript:v21];
     p_target = &target;
-    v4 = v33;
+    bufferCopy = v33;
 LABEL_34:
-    CMSetAttachment(*p_target, v19, v25, 1u);
+    CMSetAttachment(*p_target, v19, dictionary, 1u);
     goto LABEL_36;
   }
 
-  v4 = v33;
+  bufferCopy = v33;
   if (BWCMSampleBufferCreateCopyWithNewPixelBuffer(AttachedMedia, v24, &self->_outputDYFormatDescription, &cf))
   {
     [BWDepthRotatorNode renderSampleBuffer:forInput:];
@@ -344,7 +344,7 @@ LABEL_34:
   }
 
   p_target = &cf;
-  if (![(BWDepthRotatorNode *)&cf renderSampleBuffer:v19 forInput:v21, v25])
+  if (![(BWDepthRotatorNode *)&cf renderSampleBuffer:v19 forInput:v21, dictionary])
   {
     goto LABEL_34;
   }
@@ -364,8 +364,8 @@ LABEL_36:
   v28 = @"Depth";
   if (self->_separateDepthComponentsEnabled)
   {
-    BWSampleBufferRemoveAttachedMedia(v4, @"Depth");
-    BWSampleBufferSetAttachedMedia(v4, @"DepthData_DX", target);
+    BWSampleBufferRemoveAttachedMedia(bufferCopy, @"Depth");
+    BWSampleBufferSetAttachedMedia(bufferCopy, @"DepthData_DX", target);
     v28 = @"DepthData_DY";
     v29 = cf;
   }
@@ -375,10 +375,10 @@ LABEL_36:
     v29 = target;
   }
 
-  BWSampleBufferSetAttachedMedia(v4, v28, v29);
-  if (v4)
+  BWSampleBufferSetAttachedMedia(bufferCopy, v28, v29);
+  if (bufferCopy)
   {
-    v30 = v4;
+    v30 = bufferCopy;
 LABEL_45:
     v31 = CFRetain(v30);
     goto LABEL_57;
@@ -410,19 +410,19 @@ LABEL_59:
 
   if (v31)
   {
-    [(BWNodeOutput *)self->super._output emitSampleBuffer:v4];
+    [(BWNodeOutput *)self->super._output emitSampleBuffer:bufferCopy];
     CFRelease(v31);
   }
 }
 
-- (void)didReachEndOfDataForInput:(id)a3
+- (void)didReachEndOfDataForInput:(id)input
 {
   v3.receiver = self;
   v3.super_class = BWDepthRotatorNode;
-  [(BWNode *)&v3 didReachEndOfDataForInput:a3];
+  [(BWNode *)&v3 didReachEndOfDataForInput:input];
 }
 
-- (uint64_t)_setupDepthMediaConfigurationForOutput:(uint64_t)a3 attachedMediaKey:
+- (uint64_t)_setupDepthMediaConfigurationForOutput:(uint64_t)output attachedMediaKey:
 {
   if (result)
   {
@@ -431,19 +431,19 @@ LABEL_59:
     [(BWNodeOutputMediaConfiguration *)v5 setPassthroughMode:0];
     [(BWNodeOutputMediaConfiguration *)v5 setProvidesPixelBufferPool:1];
 
-    return [a2 setMediaConfiguration:v5 forAttachedMediaKey:a3];
+    return [a2 setMediaConfiguration:v5 forAttachedMediaKey:output];
   }
 
   return result;
 }
 
-- (uint64_t)_updateDepthOutputFormatRequirementsForInputFormat:(uint64_t)a3 pixelFormat:(uint64_t)a4 attachedMediaKey:
+- (uint64_t)_updateDepthOutputFormatRequirementsForInputFormat:(uint64_t)format pixelFormat:(uint64_t)pixelFormat attachedMediaKey:
 {
   if (result)
   {
     v6 = result;
-    [objc_msgSend(*(result + 16) mediaConfigurationForAttachedMediaKey:{a4), "formatRequirements"}];
-    v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:a3];
+    [objc_msgSend(*(result + 16) mediaConfigurationForAttachedMediaKey:{pixelFormat), "formatRequirements"}];
+    v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:format];
     [MEMORY[0x1E695DEC8] arrayWithObjects:&v8 count:1];
     [OUTLINED_FUNCTION_4() setSupportedPixelFormats:?];
     v7 = *(v6 + 156);

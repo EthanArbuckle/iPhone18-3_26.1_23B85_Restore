@@ -6,11 +6,11 @@
 
 - (id)_newImage
 {
-  v3 = [(NUImageAccumulationNode *)self layout];
-  v4 = [(NUImageAccumulationNode *)self pixelFormat];
-  v5 = [(NUImageAccumulationNode *)self colorSpace];
+  layout = [(NUImageAccumulationNode *)self layout];
+  pixelFormat = [(NUImageAccumulationNode *)self pixelFormat];
+  colorSpace = [(NUImageAccumulationNode *)self colorSpace];
   [(NUImageAccumulationNode *)self contentHeadroom];
-  v6 = [NUImageFactory surfaceImageWithLayout:v3 format:v4 colorSpace:v5 headroom:?];
+  v6 = [NUImageFactory surfaceImageWithLayout:layout format:pixelFormat colorSpace:colorSpace headroom:?];
 
   return v6;
 }

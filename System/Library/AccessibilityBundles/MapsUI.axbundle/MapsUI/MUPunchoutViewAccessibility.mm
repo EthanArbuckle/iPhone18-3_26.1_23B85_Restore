@@ -1,15 +1,15 @@
 @interface MUPunchoutViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation MUPunchoutViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MUPunchoutView" hasInstanceMethod:@"viewModel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MUPunchoutViewModel" hasInstanceMethod:@"punchoutText" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MUPunchoutView" hasInstanceMethod:@"viewModel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MUPunchoutViewModel" hasInstanceMethod:@"punchoutText" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel

@@ -1,6 +1,6 @@
 @interface PGUpNextMemoriesGenerationResult
 - (NSDictionary)dictionaryRepresentation;
-- (PGUpNextMemoriesGenerationResult)initWithMemoryLocalIdentifiers:(id)a3 debugInfo:(id)a4;
+- (PGUpNextMemoriesGenerationResult)initWithMemoryLocalIdentifiers:(id)identifiers debugInfo:(id)info;
 @end
 
 @implementation PGUpNextMemoriesGenerationResult
@@ -20,18 +20,18 @@
   return v4;
 }
 
-- (PGUpNextMemoriesGenerationResult)initWithMemoryLocalIdentifiers:(id)a3 debugInfo:(id)a4
+- (PGUpNextMemoriesGenerationResult)initWithMemoryLocalIdentifiers:(id)identifiers debugInfo:(id)info
 {
-  v7 = a3;
-  v8 = a4;
+  identifiersCopy = identifiers;
+  infoCopy = info;
   v12.receiver = self;
   v12.super_class = PGUpNextMemoriesGenerationResult;
   v9 = [(PGUpNextMemoriesGenerationResult *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_memoryLocalIdentifiers, a3);
-    objc_storeStrong(&v10->_debugInfo, a4);
+    objc_storeStrong(&v9->_memoryLocalIdentifiers, identifiers);
+    objc_storeStrong(&v10->_debugInfo, info);
   }
 
   return v10;

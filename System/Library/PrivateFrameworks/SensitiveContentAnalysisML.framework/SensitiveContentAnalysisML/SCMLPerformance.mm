@@ -1,41 +1,41 @@
 @interface SCMLPerformance
-- (SCMLPerformance)initWithOptions:(id)a3;
-- (void)run:(id)a3 block:(id)a4;
+- (SCMLPerformance)initWithOptions:(id)options;
+- (void)run:(id)run block:(id)block;
 @end
 
 @implementation SCMLPerformance
 
-- (SCMLPerformance)initWithOptions:(id)a3
+- (SCMLPerformance)initWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v11.receiver = self;
   v11.super_class = SCMLPerformance;
   v5 = [(SCMLPerformance *)&v11 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:SCMLTrackPerformance[0]];
-    v7 = [v6 BOOLValue];
-    v5->_computePerf = v7;
-    if (v7)
+    v6 = [optionsCopy objectForKeyedSubscript:SCMLTrackPerformance[0]];
+    bOOLValue = [v6 BOOLValue];
+    v5->_computePerf = bOOLValue;
+    if (bOOLValue)
     {
-      v8 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
       results = v5->_results;
-      v5->_results = v8;
+      v5->_results = dictionary;
     }
   }
 
   return v5;
 }
 
-- (void)run:(id)a3 block:(id)a4
+- (void)run:(id)run block:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  runCopy = run;
+  blockCopy = block;
   if ([(SCMLPerformance *)self computePerf])
   {
     pc_session_create();
-    v8 = [MEMORY[0x1E696AE30] processInfo];
-    [v8 processIdentifier];
+    processInfo = [MEMORY[0x1E696AE30] processInfo];
+    [processInfo processIdentifier];
     pc_session_set_procpid();
 
     pc_session_add_metric();
@@ -44,18 +44,18 @@
     pc_session_add_metric();
     pc_session_add_metric();
     pc_session_begin();
-    v9 = [MEMORY[0x1E695DF00] date];
-    if (v7)
+    date = [MEMORY[0x1E695DF00] date];
+    if (blockCopy)
     {
-      v7[2](v7);
+      blockCopy[2](blockCopy);
     }
 
-    v10 = [MEMORY[0x1E695DF00] date];
-    [v10 timeIntervalSinceDate:v9];
+    date2 = [MEMORY[0x1E695DF00] date];
+    [date2 timeIntervalSinceDate:date];
     v12 = v11;
 
     pc_session_end();
-    v13 = [[SCMLPerformanceResult alloc] initWithName:v6];
+    v13 = [[SCMLPerformanceResult alloc] initWithName:runCopy];
     pc_session_get_value();
     pc_session_get_value();
     pc_session_get_value();
@@ -68,25 +68,25 @@
     *&v13->recentpeak = vmulq_f64(*&v13->recentpeak, v14);
     v13->cpuTime = v13->cpuTime / 1000000.0;
     v13->timeInterval = v12;
-    v15 = [(SCMLPerformance *)self results];
-    v16 = [v15 objectForKeyedSubscript:v6];
+    results = [(SCMLPerformance *)self results];
+    v16 = [results objectForKeyedSubscript:runCopy];
 
     if (!v16)
     {
-      v17 = [MEMORY[0x1E695DF70] array];
-      v18 = [(SCMLPerformance *)self results];
-      [v18 setObject:v17 forKeyedSubscript:v6];
+      array = [MEMORY[0x1E695DF70] array];
+      results2 = [(SCMLPerformance *)self results];
+      [results2 setObject:array forKeyedSubscript:runCopy];
     }
 
-    v19 = [(SCMLPerformance *)self results];
-    v20 = [v19 objectForKeyedSubscript:v6];
-    v21 = [(SCMLPerformanceResult *)v13 dict];
-    [v20 addObject:v21];
+    results3 = [(SCMLPerformance *)self results];
+    v20 = [results3 objectForKeyedSubscript:runCopy];
+    dict = [(SCMLPerformanceResult *)v13 dict];
+    [v20 addObject:dict];
   }
 
-  else if (v7)
+  else if (blockCopy)
   {
-    v7[2](v7);
+    blockCopy[2](blockCopy);
   }
 }
 

@@ -1,7 +1,7 @@
 @interface PXSharedLibraryCameraSharingBannerStatusProvider
 - (PXSharedLibraryCameraSharingBannerStatusProvider)init;
 - (void)_updateShouldShowBanner;
-- (void)setShouldShowBanner:(BOOL)a3;
+- (void)setShouldShowBanner:(BOOL)banner;
 @end
 
 @implementation PXSharedLibraryCameraSharingBannerStatusProvider
@@ -15,8 +15,8 @@
   if (v2)
   {
     PXRegisterPreferencesObserver(v2);
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 addObserver:v3 selector:sel__significantTimeChange_ name:*MEMORY[0x1E69DDB88] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel__significantTimeChange_ name:*MEMORY[0x1E69DDB88] object:0];
 
     [(PXSharedLibraryCameraSharingBannerStatusProvider *)v3 _updateShouldShowBanner];
   }
@@ -44,15 +44,15 @@
     v6 = PXPreferencesFirstCheckDateForCameraSharingPreferences();
     if (v6)
     {
-      v7 = [MEMORY[0x1E695DEE8] currentCalendar];
+      currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
       v8 = [MEMORY[0x1E695DF00] now];
-      v9 = [v7 components:16 fromDate:v6 toDate:v8 options:0];
+      v9 = [currentCalendar components:16 fromDate:v6 toDate:v8 options:0];
       v10 = [v9 day];
 
       v11 = +[PXSharedLibrarySettings sharedInstance];
-      v12 = [v11 sharingSuggestionsBannerFirstCheckThreshold];
+      sharingSuggestionsBannerFirstCheckThreshold = [v11 sharingSuggestionsBannerFirstCheckThreshold];
 
-      if (v10 < v12)
+      if (v10 < sharingSuggestionsBannerFirstCheckThreshold)
       {
         v4 = 0;
 LABEL_13:
@@ -96,22 +96,22 @@ LABEL_14:
   [(PXSharedLibraryCameraSharingBannerStatusProvider *)self performChanges:v17];
 }
 
-- (void)setShouldShowBanner:(BOOL)a3
+- (void)setShouldShowBanner:(BOOL)banner
 {
   v12 = *MEMORY[0x1E69E9840];
-  if (self->_shouldShowBanner != a3)
+  if (self->_shouldShowBanner != banner)
   {
-    v3 = a3;
-    self->_shouldShowBanner = a3;
+    bannerCopy = banner;
+    self->_shouldShowBanner = banner;
     v5 = PLSharedLibraryGetLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6 = 138543874;
       v7 = objc_opt_class();
       v8 = 2048;
-      v9 = self;
+      selfCopy = self;
       v10 = 1024;
-      v11 = v3;
+      v11 = bannerCopy;
       _os_log_impl(&dword_1A3C1C000, v5, OS_LOG_TYPE_DEFAULT, "<%{public}@:%p> Should show banner: %d", &v6, 0x1Cu);
     }
 

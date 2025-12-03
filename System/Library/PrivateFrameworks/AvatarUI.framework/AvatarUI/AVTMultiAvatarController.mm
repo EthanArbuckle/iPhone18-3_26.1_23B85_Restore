@@ -1,77 +1,77 @@
 @interface AVTMultiAvatarController
-+ (id)listItemsForAvatarRecords:(id)a3;
-+ (id)newCollectionViewLayoutForEngagedCellSize:(CGSize)a3 boundsSize:(CGSize)a4 environment:(id)a5;
-+ (id)snapshotProviderFocusedOnRecordWithIdentifier:(id)a3 size:(CGSize)a4 avtViewAspectRatio:(CGSize)a5 dataSource:(id)a6 environment:(id)a7;
++ (id)listItemsForAvatarRecords:(id)records;
++ (id)newCollectionViewLayoutForEngagedCellSize:(CGSize)size boundsSize:(CGSize)boundsSize environment:(id)environment;
++ (id)snapshotProviderFocusedOnRecordWithIdentifier:(id)identifier size:(CGSize)size avtViewAspectRatio:(CGSize)ratio dataSource:(id)source environment:(id)environment;
 - (AVTAvatarDisplayingControllerDelegate)delegate;
 - (AVTCarouselPlusButtonView)addItemView;
-- (AVTMultiAvatarController)initWithDataSource:(id)a3 environment:(id)a4 initialAVTViewLayout:(id)a5;
+- (AVTMultiAvatarController)initWithDataSource:(id)source environment:(id)environment initialAVTViewLayout:(id)layout;
 - (AVTPresenterDelegate)presenterDelegate;
 - (BOOL)shouldCurrentlyDisplayedRecordTransitionToLive;
 - (CGPoint)lastContentOffset;
 - (UIView)view;
-- (id)cellForRecordItem:(id)a3;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
+- (id)cellForRecordItem:(id)item;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
 - (id)getFirstItem;
 - (id)indexPathForItemClosestToCenter;
 - (id)listItemsForDisplay;
 - (id)loadRecords;
-- (id)recordForItem:(id)a3;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
-- (unint64_t)listItemIndexForRecord:(id)a3;
+- (id)recordForItem:(id)item;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
+- (unint64_t)listItemIndexForRecord:(id)record;
 - (void)buildCollectionViewAndConfigureLayoutIfNeeded;
-- (void)collectionView:(id)a3 didEndDisplayingCell:(id)a4 forItemAtIndexPath:(id)a5;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5;
+- (void)collectionView:(id)view didEndDisplayingCell:(id)cell forItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path;
 - (void)createAddItemViewIfNeeded;
 - (void)createAvatar;
 - (void)dealloc;
-- (void)displayAvatarForRecord:(id)a3 animated:(BOOL)a4;
-- (void)layoutDidChangeWhileMoving:(BOOL)a3 offset:(CGPoint)a4;
+- (void)displayAvatarForRecord:(id)record animated:(BOOL)animated;
+- (void)layoutDidChangeWhileMoving:(BOOL)moving offset:(CGPoint)offset;
 - (void)loadRecordsIfNeeded;
 - (void)loadView;
-- (void)notifyDelegateForScrollingTowardItem:(id)a3 ratio:(double)a4;
-- (void)notifyDelegateForScrollingTowardItemFromOffset:(CGPoint)a3;
-- (void)notifyingContainerViewDidChangeSize:(CGSize)a3;
+- (void)notifyDelegateForScrollingTowardItem:(id)item ratio:(double)ratio;
+- (void)notifyDelegateForScrollingTowardItemFromOffset:(CGPoint)offset;
+- (void)notifyingContainerViewDidChangeSize:(CGSize)size;
 - (void)preloadAll;
-- (void)prepareToTransitionToVisible:(BOOL)a3 completionHandler:(id *)a4;
-- (void)prepareViewWithLayout:(id)a3;
+- (void)prepareToTransitionToVisible:(BOOL)visible completionHandler:(id *)handler;
+- (void)prepareViewWithLayout:(id)layout;
 - (void)reloadData;
 - (void)reloadRecordListItems;
 - (void)scrollToDisplayedRecord;
-- (void)scrollToViewAtIndex:(unint64_t)a3 animated:(BOOL)a4;
-- (void)scrollToViewForAvatarRecord:(id)a3 animated:(BOOL)a4;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)setAllowsCreate:(BOOL)a3 animated:(BOOL)a4;
-- (void)setDecelerationRate:(double)a3;
-- (void)setDisplayedRecordFromIndex:(unint64_t)a3;
-- (void)snapshotInBlock:(id)a3;
-- (void)stopUsingAVTViewSessionSynchronously:(BOOL)a3 completionHandler:(id)a4;
-- (void)transitionCell:(id)a3 indexPath:(id)a4 toStartFocusingAnimated:(BOOL)a5 session:(id)a6 completionHandler:(id)a7;
-- (void)transitionCell:(id)a3 toStopFocusingAnimated:(BOOL)a4 completionHandler:(id)a5;
+- (void)scrollToViewAtIndex:(unint64_t)index animated:(BOOL)animated;
+- (void)scrollToViewForAvatarRecord:(id)record animated:(BOOL)animated;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)setAllowsCreate:(BOOL)create animated:(BOOL)animated;
+- (void)setDecelerationRate:(double)rate;
+- (void)setDisplayedRecordFromIndex:(unint64_t)index;
+- (void)snapshotInBlock:(id)block;
+- (void)stopUsingAVTViewSessionSynchronously:(BOOL)synchronously completionHandler:(id)handler;
+- (void)transitionCell:(id)cell indexPath:(id)path toStartFocusingAnimated:(BOOL)animated session:(id)session completionHandler:(id)handler;
+- (void)transitionCell:(id)cell toStopFocusingAnimated:(BOOL)animated completionHandler:(id)handler;
 - (void)transitionCenterCellIfPresentToStartFocusing;
-- (void)transitionCenterCellIfPresentToStopFocusingAnimated:(BOOL)a3;
-- (void)transitionCenterCellToStartFocusing:(id)a3 indexPath:(id)a4;
-- (void)transitionCurrentDisplayedRecordAnimated:(BOOL)a3;
+- (void)transitionCenterCellIfPresentToStopFocusingAnimated:(BOOL)animated;
+- (void)transitionCenterCellToStartFocusing:(id)focusing indexPath:(id)path;
+- (void)transitionCurrentDisplayedRecordAnimated:(BOOL)animated;
 - (void)updateCachedCanCreateValueIfNeeded;
 - (void)updateDisplayedRecordIfNeeded;
-- (void)useAVTViewFromSession:(id)a3 withLayout:(id)a4;
+- (void)useAVTViewFromSession:(id)session withLayout:(id)layout;
 @end
 
 @implementation AVTMultiAvatarController
 
-+ (id)newCollectionViewLayoutForEngagedCellSize:(CGSize)a3 boundsSize:(CGSize)a4 environment:(id)a5
++ (id)newCollectionViewLayoutForEngagedCellSize:(CGSize)size boundsSize:(CGSize)boundsSize environment:(id)environment
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3.height;
-  v8 = a3.width;
-  v9 = a5;
-  v10 = [v9 deviceIsPad];
+  height = boundsSize.height;
+  width = boundsSize.width;
+  v7 = size.height;
+  v8 = size.width;
+  environmentCopy = environment;
+  deviceIsPad = [environmentCopy deviceIsPad];
   v11 = width > 400.0;
-  v12 = v10 & v11;
+  v12 = deviceIsPad & v11;
   v13 = 0.3;
-  if ((v10 & v11) != 0)
+  if ((deviceIsPad & v11) != 0)
   {
     v14 = 0.2;
   }
@@ -81,7 +81,7 @@
     v14 = 0.3;
   }
 
-  if ((v10 & v11) == 0)
+  if ((deviceIsPad & v11) == 0)
   {
     v13 = 0.7;
   }
@@ -98,7 +98,7 @@
   v24 = v12;
   v23[4] = v18;
   v20 = [(AVTEngagementLayout *)v19 initWithDefaultCellSize:v23 engagedCellSize:v15 interItemSpacingProvider:v16, v8, v7];
-  v21 = [[AVTZIndexEngagementListCollectionViewLayout alloc] initWithEngagementLayout:v20 minAlphaFactor:v9 environment:v14];
+  v21 = [[AVTZIndexEngagementListCollectionViewLayout alloc] initWithEngagementLayout:v20 minAlphaFactor:environmentCopy environment:v14];
 
   return v21;
 }
@@ -125,16 +125,16 @@ double __93__AVTMultiAvatarController_newCollectionViewLayoutForEngagedCellSize_
   return v3 + (v2 - v3) * a2;
 }
 
-+ (id)listItemsForAvatarRecords:(id)a3
++ (id)listItemsForAvatarRecords:(id)records
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF70] array];
+  recordsCopy = records;
+  array = [MEMORY[0x1E695DF70] array];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = v3;
+  v5 = recordsCopy;
   v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
@@ -152,7 +152,7 @@ double __93__AVTMultiAvatarController_newCollectionViewLayoutForEngagedCellSize_
         v10 = *(*(&v15 + 1) + 8 * i);
         v11 = [AVTAvatarListRecordItem alloc];
         v12 = [(AVTAvatarListRecordItem *)v11 initWithAvatar:v10, v15];
-        [v4 addObject:v12];
+        [array addObject:v12];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -161,34 +161,34 @@ double __93__AVTMultiAvatarController_newCollectionViewLayoutForEngagedCellSize_
     while (v7);
   }
 
-  v13 = [v4 copy];
+  v13 = [array copy];
 
   return v13;
 }
 
-- (AVTMultiAvatarController)initWithDataSource:(id)a3 environment:(id)a4 initialAVTViewLayout:(id)a5
+- (AVTMultiAvatarController)initWithDataSource:(id)source environment:(id)environment initialAVTViewLayout:(id)layout
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  sourceCopy = source;
+  environmentCopy = environment;
+  layoutCopy = layout;
   v23.receiver = self;
   v23.super_class = AVTMultiAvatarController;
   v12 = [(AVTMultiAvatarController *)&v23 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_dataSource, a3);
+    objc_storeStrong(&v12->_dataSource, source);
     [(AVTAvatarRecordDataSource *)v13->_dataSource addObserver:v13];
-    v14 = [(AVTUIEnvironment *)v10 logger];
+    logger = [(AVTUIEnvironment *)environmentCopy logger];
     logger = v13->_logger;
-    v13->_logger = v14;
+    v13->_logger = logger;
 
-    v13->_environment = v10;
+    v13->_environment = environmentCopy;
     v16 = +[AVTRenderingScope listControllerThumbnailScope];
     renderingScope = v13->_renderingScope;
     v13->_renderingScope = v16;
 
-    v18 = [[_AVTAvatarRecordImageProvider alloc] initWithEnvironment:v10];
+    v18 = [[_AVTAvatarRecordImageProvider alloc] initWithEnvironment:environmentCopy];
     thumbnailRenderer = v13->_thumbnailRenderer;
     v13->_thumbnailRenderer = v18;
 
@@ -197,7 +197,7 @@ double __93__AVTMultiAvatarController_newCollectionViewLayoutForEngagedCellSize_
     v13->_transitionCoordinator = v20;
 
     v13->_decelerationRate = *MEMORY[0x1E69DE3A0];
-    objc_storeStrong(&v13->_avtViewLayout, a5);
+    objc_storeStrong(&v13->_avtViewLayout, layout);
     v13->_allowsCreate = 1;
   }
 
@@ -214,17 +214,17 @@ double __93__AVTMultiAvatarController_newCollectionViewLayoutForEngagedCellSize_
 
 - (id)listItemsForDisplay
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [(AVTMultiAvatarController *)self getFirstItem];
-  if (v4)
+  array = [MEMORY[0x1E695DF70] array];
+  getFirstItem = [(AVTMultiAvatarController *)self getFirstItem];
+  if (getFirstItem)
   {
-    [v3 addObject:v4];
+    [array addObject:getFirstItem];
   }
 
-  v5 = [(AVTMultiAvatarController *)self recordListItems];
-  [v3 addObjectsFromArray:v5];
+  recordListItems = [(AVTMultiAvatarController *)self recordListItems];
+  [array addObjectsFromArray:recordListItems];
 
-  return v3;
+  return array;
 }
 
 - (UIView)view
@@ -240,13 +240,13 @@ double __93__AVTMultiAvatarController_newCollectionViewLayoutForEngagedCellSize_
   return view;
 }
 
-- (void)setDecelerationRate:(double)a3
+- (void)setDecelerationRate:(double)rate
 {
-  if (self->_decelerationRate != a3)
+  if (self->_decelerationRate != rate)
   {
-    self->_decelerationRate = a3;
-    v4 = [(AVTMultiAvatarController *)self collectionView];
-    [v4 setDecelerationRate:a3];
+    self->_decelerationRate = rate;
+    collectionView = [(AVTMultiAvatarController *)self collectionView];
+    [collectionView setDecelerationRate:rate];
   }
 }
 
@@ -256,10 +256,10 @@ double __93__AVTMultiAvatarController_newCollectionViewLayoutForEngagedCellSize_
   {
     v9[7] = v2;
     v9[8] = v3;
-    v5 = [(AVTMultiAvatarController *)self dataSource];
-    v6 = [v5 internalRecordStore];
+    dataSource = [(AVTMultiAvatarController *)self dataSource];
+    internalRecordStore = [dataSource internalRecordStore];
     v9[0] = 0;
-    v7 = [v6 canCreateAvatarWithError:v9];
+    v7 = [internalRecordStore canCreateAvatarWithError:v9];
     v8 = v9[0];
 
     if (!v8)
@@ -277,36 +277,36 @@ double __93__AVTMultiAvatarController_newCollectionViewLayoutForEngagedCellSize_
     goto LABEL_8;
   }
 
-  v3 = [(AVTMultiAvatarController *)self cachedCanCreateValue];
-  if (([v3 BOOLValue] & 1) == 0)
+  cachedCanCreateValue = [(AVTMultiAvatarController *)self cachedCanCreateValue];
+  if (([cachedCanCreateValue BOOLValue] & 1) == 0)
   {
 
     goto LABEL_8;
   }
 
-  v4 = [(AVTMultiAvatarController *)self allowsCreate];
+  allowsCreate = [(AVTMultiAvatarController *)self allowsCreate];
 
-  if (!v4)
+  if (!allowsCreate)
   {
 LABEL_8:
-    v9 = 0;
+    addListItem2 = 0;
     goto LABEL_9;
   }
 
-  v5 = [(AVTMultiAvatarController *)self addListItem];
+  addListItem = [(AVTMultiAvatarController *)self addListItem];
 
-  if (!v5)
+  if (!addListItem)
   {
     v6 = [AVTAvatarListViewItem alloc];
-    v7 = [(AVTMultiAvatarController *)self addItemView];
-    v8 = [(AVTAvatarListViewItem *)v6 initWithView:v7];
+    addItemView = [(AVTMultiAvatarController *)self addItemView];
+    v8 = [(AVTAvatarListViewItem *)v6 initWithView:addItemView];
     [(AVTMultiAvatarController *)self setAddListItem:v8];
   }
 
-  v9 = [(AVTMultiAvatarController *)self addListItem];
+  addListItem2 = [(AVTMultiAvatarController *)self addListItem];
 LABEL_9:
 
-  return v9;
+  return addListItem2;
 }
 
 - (AVTCarouselPlusButtonView)addItemView
@@ -322,26 +322,26 @@ LABEL_9:
   if (!self->_addItemView)
   {
     v3 = [AVTCarouselPlusButtonView alloc];
-    v4 = [(AVTMultiAvatarController *)self environment];
-    v5 = [(AVTCarouselPlusButtonView *)v3 initWithFrame:v4 environment:0.0, 0.0, 100.0, 100.0];
+    environment = [(AVTMultiAvatarController *)self environment];
+    v5 = [(AVTCarouselPlusButtonView *)v3 initWithFrame:environment environment:0.0, 0.0, 100.0, 100.0];
     addItemView = self->_addItemView;
     self->_addItemView = v5;
 
-    v7 = [(AVTMultiAvatarController *)self collectionViewLayout];
+    collectionViewLayout = [(AVTMultiAvatarController *)self collectionViewLayout];
 
-    if (v7)
+    if (collectionViewLayout)
     {
-      v9 = [(AVTMultiAvatarController *)self collectionViewLayout];
-      v8 = [v9 engagementLayout];
-      [v8 engagedCellSize];
+      collectionViewLayout2 = [(AVTMultiAvatarController *)self collectionViewLayout];
+      engagementLayout = [collectionViewLayout2 engagementLayout];
+      [engagementLayout engagedCellSize];
       [(AVTCarouselPlusButtonView *)self->_addItemView setMaxItemSize:?];
     }
   }
 }
 
-- (void)setAllowsCreate:(BOOL)a3 animated:(BOOL)a4
+- (void)setAllowsCreate:(BOOL)create animated:(BOOL)animated
 {
-  if (self->_allowsCreate != a3)
+  if (self->_allowsCreate != create)
   {
     v71 = v9;
     v72 = v8;
@@ -349,19 +349,19 @@ LABEL_9:
     v74 = v6;
     v75 = v4;
     v76 = v5;
-    v11 = a3;
-    self->_allowsCreate = a3;
+    createCopy = create;
+    self->_allowsCreate = create;
     [(AVTMultiAvatarController *)self updateCachedCanCreateValueIfNeeded];
     if (AVTUIIsAvatarUIEnabled())
     {
-      v13 = [(AVTMultiAvatarController *)self cachedCanCreateValue];
-      v14 = [v13 BOOLValue];
+      cachedCanCreateValue = [(AVTMultiAvatarController *)self cachedCanCreateValue];
+      bOOLValue = [cachedCanCreateValue BOOLValue];
 
-      if (v14)
+      if (bOOLValue)
       {
-        v15 = [(AVTMultiAvatarController *)self collectionViewLayout];
-        v16 = v15;
-        if (v11)
+        collectionViewLayout = [(AVTMultiAvatarController *)self collectionViewLayout];
+        v16 = collectionViewLayout;
+        if (createCopy)
         {
           v17 = [MEMORY[0x1E696AC88] indexPathForItem:0 inSection:0];
           [v16 setPlusButtonIndexPath:v17];
@@ -369,97 +369,97 @@ LABEL_9:
 
         else
         {
-          [v15 setPlusButtonIndexPath:0];
+          [collectionViewLayout setPlusButtonIndexPath:0];
         }
 
-        v18 = [(AVTMultiAvatarController *)self indexPathForItemClosestToCenter];
-        v19 = [v18 item];
+        indexPathForItemClosestToCenter = [(AVTMultiAvatarController *)self indexPathForItemClosestToCenter];
+        item = [indexPathForItemClosestToCenter item];
 
-        v20 = [(AVTMultiAvatarController *)self displayedRecord];
-        v21 = [(AVTMultiAvatarController *)self listItemIndexForRecord:v20];
+        displayedRecord = [(AVTMultiAvatarController *)self displayedRecord];
+        v21 = [(AVTMultiAvatarController *)self listItemIndexForRecord:displayedRecord];
 
-        v22 = [(AVTMultiAvatarController *)self collectionViewLayout];
+        collectionViewLayout2 = [(AVTMultiAvatarController *)self collectionViewLayout];
         v23 = [MEMORY[0x1E696AC88] indexPathForItem:v21 inSection:0];
-        [v22 setBackIndexPath:v23];
+        [collectionViewLayout2 setBackIndexPath:v23];
 
-        v24 = [objc_alloc(MEMORY[0x1E69DD278]) initWithDuration:2 * (v19 != 0) curve:0 animations:dbl_1BB416380[v19 == 0]];
+        v24 = [objc_alloc(MEMORY[0x1E69DD278]) initWithDuration:2 * (item != 0) curve:0 animations:dbl_1BB416380[item == 0]];
         v68[0] = MEMORY[0x1E69E9820];
         v68[1] = 3221225472;
         v68[2] = __53__AVTMultiAvatarController_setAllowsCreate_animated___block_invoke;
         v68[3] = &unk_1E7F3B550;
         v68[4] = self;
-        v69 = v19 == 0;
-        v70 = a4;
+        v69 = item == 0;
+        animatedCopy = animated;
         [v24 addCompletion:v68];
-        if (v11)
+        if (createCopy)
         {
-          v25 = [(AVTMultiAvatarController *)self collectionViewLayout];
-          v26 = [(AVTMultiAvatarController *)self collectionView];
-          [v26 bounds];
+          collectionViewLayout3 = [(AVTMultiAvatarController *)self collectionViewLayout];
+          collectionView = [(AVTMultiAvatarController *)self collectionView];
+          [collectionView bounds];
           v28 = v27;
           v30 = v29;
-          v31 = [(AVTMultiAvatarController *)self collectionView];
-          [v31 bounds];
-          [v25 centerForCenteringElementAtIndex:v19 + 1 visibleBoundsSize:v28 proposedOrigin:{v30, v32, v33}];
+          collectionView2 = [(AVTMultiAvatarController *)self collectionView];
+          [collectionView2 bounds];
+          [collectionViewLayout3 centerForCenteringElementAtIndex:item + 1 visibleBoundsSize:v28 proposedOrigin:{v30, v32, v33}];
           v35 = v34;
           v37 = v36;
 
-          v38 = [(AVTMultiAvatarController *)self collectionView];
-          [AVTCenteringCollectionViewHelper contentOffsetForCenteringPoint:v38 collectionView:v35, v37];
+          collectionView3 = [(AVTMultiAvatarController *)self collectionView];
+          [AVTCenteringCollectionViewHelper contentOffsetForCenteringPoint:collectionView3 collectionView:v35, v37];
           v40 = v39;
           v42 = v41;
 
-          v43 = [(AVTMultiAvatarController *)self collectionViewLayout];
-          [v43 setTargetContentOffsetForAnimations:{v40, v42}];
+          collectionViewLayout4 = [(AVTMultiAvatarController *)self collectionViewLayout];
+          [collectionViewLayout4 setTargetContentOffsetForAnimations:{v40, v42}];
 
-          v44 = [(AVTMultiAvatarController *)self collectionView];
+          collectionView4 = [(AVTMultiAvatarController *)self collectionView];
           v67[0] = MEMORY[0x1E69E9820];
           v67[1] = 3221225472;
           v67[2] = __53__AVTMultiAvatarController_setAllowsCreate_animated___block_invoke_2;
           v67[3] = &unk_1E7F3A9B8;
           v67[4] = self;
-          [v44 performBatchUpdates:v67 withAnimator:v24];
+          [collectionView4 performBatchUpdates:v67 withAnimator:v24];
 
           [v24 startAnimation];
         }
 
         else
         {
-          if (v19)
+          if (item)
           {
-            v45 = [(AVTMultiAvatarController *)self collectionViewLayout];
-            v46 = [(AVTMultiAvatarController *)self collectionView];
-            [v46 bounds];
+            collectionViewLayout5 = [(AVTMultiAvatarController *)self collectionViewLayout];
+            collectionView5 = [(AVTMultiAvatarController *)self collectionView];
+            [collectionView5 bounds];
             v48 = v47;
             v50 = v49;
-            v51 = [(AVTMultiAvatarController *)self collectionView];
-            [v51 bounds];
-            [v45 centerForCenteringElementAtIndex:v19 - 1 visibleBoundsSize:v48 proposedOrigin:{v50, v52, v53}];
+            collectionView6 = [(AVTMultiAvatarController *)self collectionView];
+            [collectionView6 bounds];
+            [collectionViewLayout5 centerForCenteringElementAtIndex:item - 1 visibleBoundsSize:v48 proposedOrigin:{v50, v52, v53}];
             v55 = v54;
             v57 = v56;
 
-            v58 = [(AVTMultiAvatarController *)self collectionView];
-            [AVTCenteringCollectionViewHelper contentOffsetForCenteringPoint:v58 collectionView:v55, v57];
+            collectionView7 = [(AVTMultiAvatarController *)self collectionView];
+            [AVTCenteringCollectionViewHelper contentOffsetForCenteringPoint:collectionView7 collectionView:v55, v57];
             v60 = v59;
             v62 = v61;
 
-            v63 = [(AVTMultiAvatarController *)self collectionViewLayout];
-            [v63 setTargetContentOffsetForAnimations:{v60, v62}];
+            collectionViewLayout6 = [(AVTMultiAvatarController *)self collectionViewLayout];
+            [collectionViewLayout6 setTargetContentOffsetForAnimations:{v60, v62}];
           }
 
-          v64 = [(AVTMultiAvatarController *)self collectionView];
+          collectionView8 = [(AVTMultiAvatarController *)self collectionView];
           v66[0] = MEMORY[0x1E69E9820];
           v66[1] = 3221225472;
           v66[2] = __53__AVTMultiAvatarController_setAllowsCreate_animated___block_invoke_3;
           v66[3] = &unk_1E7F3A9B8;
           v66[4] = self;
-          [v64 performBatchUpdates:v66 withAnimator:v24];
+          [collectionView8 performBatchUpdates:v66 withAnimator:v24];
 
           [v24 startAnimation];
-          if (!v19)
+          if (!item)
           {
-            v65 = [(AVTMultiAvatarController *)self collectionView];
-            [v65 contentOffset];
+            collectionView9 = [(AVTMultiAvatarController *)self collectionView];
+            [collectionView9 contentOffset];
             [(AVTMultiAvatarController *)self layoutDidChangeWhileMoving:1 offset:?];
           }
         }
@@ -504,27 +504,27 @@ void __53__AVTMultiAvatarController_setAllowsCreate_animated___block_invoke_3(ui
 
 - (void)buildCollectionViewAndConfigureLayoutIfNeeded
 {
-  v3 = [(AVTMultiAvatarController *)self avtViewLayout];
+  avtViewLayout = [(AVTMultiAvatarController *)self avtViewLayout];
 
-  if (v3)
+  if (avtViewLayout)
   {
-    v4 = [(AVTMultiAvatarController *)self avtViewLayout];
-    v5 = [(AVTMultiAvatarController *)self view];
-    [v5 bounds];
-    [v4 avatarViewSizeForAvailableContentSize:{v6, v7}];
+    avtViewLayout2 = [(AVTMultiAvatarController *)self avtViewLayout];
+    view = [(AVTMultiAvatarController *)self view];
+    [view bounds];
+    [avtViewLayout2 avatarViewSizeForAvailableContentSize:{v6, v7}];
     v9 = v8;
     v11 = v10;
 
-    v12 = [(AVTMultiAvatarController *)self collectionViewLayout];
-    if (!v12 || (v13 = v12, -[AVTMultiAvatarController collectionViewLayout](self, "collectionViewLayout"), v14 = objc_claimAutoreleasedReturnValue(), [v14 engagementLayout], v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v15, "engagedCellSize"), v17 = v16, v19 = v18, v15, v14, v13, v17 != v9) || v19 != v11)
+    collectionViewLayout = [(AVTMultiAvatarController *)self collectionViewLayout];
+    if (!collectionViewLayout || (v13 = collectionViewLayout, -[AVTMultiAvatarController collectionViewLayout](self, "collectionViewLayout"), v14 = objc_claimAutoreleasedReturnValue(), [v14 engagementLayout], v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v15, "engagedCellSize"), v17 = v16, v19 = v18, v15, v14, v13, v17 != v9) || v19 != v11)
     {
       v20 = objc_opt_class();
-      v21 = [(AVTMultiAvatarController *)self view];
-      [v21 bounds];
+      view2 = [(AVTMultiAvatarController *)self view];
+      [view2 bounds];
       v23 = v22;
       v25 = v24;
-      v26 = [(AVTMultiAvatarController *)self environment];
-      v52 = [v20 newCollectionViewLayoutForEngagedCellSize:v26 boundsSize:v9 environment:{v11, v23, v25}];
+      environment = [(AVTMultiAvatarController *)self environment];
+      v52 = [v20 newCollectionViewLayoutForEngagedCellSize:environment boundsSize:v9 environment:{v11, v23, v25}];
 
       if ([(AVTMultiAvatarController *)self allowsCreate])
       {
@@ -537,65 +537,65 @@ void __53__AVTMultiAvatarController_setAllowsCreate_animated___block_invoke_3(ui
         [v52 setPlusButtonIndexPath:0];
       }
 
-      v28 = [(AVTMultiAvatarController *)self displayedRecord];
-      v29 = [(AVTMultiAvatarController *)self listItemIndexForRecord:v28];
+      displayedRecord = [(AVTMultiAvatarController *)self displayedRecord];
+      v29 = [(AVTMultiAvatarController *)self listItemIndexForRecord:displayedRecord];
 
       v30 = [MEMORY[0x1E696AC88] indexPathForItem:v29 inSection:0];
       [v52 setBackIndexPath:v30];
 
       [(AVTMultiAvatarController *)self setCollectionViewLayout:v52];
-      v31 = [(AVTMultiAvatarController *)self collectionViewLayout];
-      v32 = [v31 engagementLayout];
-      [v32 engagedCellSize];
+      collectionViewLayout2 = [(AVTMultiAvatarController *)self collectionViewLayout];
+      engagementLayout = [collectionViewLayout2 engagementLayout];
+      [engagementLayout engagedCellSize];
       v34 = v33;
       v36 = v35;
-      v37 = [(AVTMultiAvatarController *)self addItemView];
-      [v37 setMaxItemSize:{v34, v36}];
+      addItemView = [(AVTMultiAvatarController *)self addItemView];
+      [addItemView setMaxItemSize:{v34, v36}];
 
-      v38 = [(AVTMultiAvatarController *)self collectionView];
+      collectionView = [(AVTMultiAvatarController *)self collectionView];
 
-      if (v38)
+      if (collectionView)
       {
-        v39 = [(AVTMultiAvatarController *)self collectionView];
-        [v39 setCollectionViewLayout:v52];
+        collectionView2 = [(AVTMultiAvatarController *)self collectionView];
+        [collectionView2 setCollectionViewLayout:v52];
       }
 
       else
       {
         v40 = objc_alloc(MEMORY[0x1E69DC7F0]);
-        v41 = [(AVTMultiAvatarController *)self view];
-        [v41 bounds];
-        v39 = [v40 initWithFrame:v52 collectionViewLayout:?];
+        view3 = [(AVTMultiAvatarController *)self view];
+        [view3 bounds];
+        collectionView2 = [v40 initWithFrame:v52 collectionViewLayout:?];
 
         v42 = [AVTCenteringCollectionViewDelegate alloc];
-        v43 = [(AVTMultiAvatarController *)self environment];
-        v44 = [(AVTCenteringCollectionViewDelegate *)v42 initWithCollectionView:v39 delegate:self environment:v43];
+        environment2 = [(AVTMultiAvatarController *)self environment];
+        v44 = [(AVTCenteringCollectionViewDelegate *)v42 initWithCollectionView:collectionView2 delegate:self environment:environment2];
         [(AVTMultiAvatarController *)self setCenteringDelegate:v44];
 
-        v45 = [(AVTMultiAvatarController *)self centeringDelegate];
-        [v39 setDelegate:v45];
+        centeringDelegate = [(AVTMultiAvatarController *)self centeringDelegate];
+        [collectionView2 setDelegate:centeringDelegate];
 
-        [v39 setDataSource:self];
+        [collectionView2 setDataSource:self];
         [(AVTMultiAvatarController *)self decelerationRate];
-        [v39 setDecelerationRate:?];
+        [collectionView2 setDecelerationRate:?];
         v46 = objc_opt_class();
         v47 = +[AVTAvatarListCell reuseIdentifier];
-        [v39 registerClass:v46 forCellWithReuseIdentifier:v47];
+        [collectionView2 registerClass:v46 forCellWithReuseIdentifier:v47];
 
         v48 = objc_opt_class();
         v49 = +[AVTCollectionViewCell reuseIdentifier];
-        [v39 registerClass:v48 forCellWithReuseIdentifier:v49];
+        [collectionView2 registerClass:v48 forCellWithReuseIdentifier:v49];
 
-        v50 = [MEMORY[0x1E69DC888] clearColor];
-        [v39 setBackgroundColor:v50];
+        clearColor = [MEMORY[0x1E69DC888] clearColor];
+        [collectionView2 setBackgroundColor:clearColor];
 
-        [v39 setShowsHorizontalScrollIndicator:0];
-        [v39 setContentInsetAdjustmentBehavior:2];
-        [v39 setAutoresizingMask:18];
-        v51 = [(AVTMultiAvatarController *)self view];
-        [v51 addSubview:v39];
+        [collectionView2 setShowsHorizontalScrollIndicator:0];
+        [collectionView2 setContentInsetAdjustmentBehavior:2];
+        [collectionView2 setAutoresizingMask:18];
+        view4 = [(AVTMultiAvatarController *)self view];
+        [view4 addSubview:collectionView2];
 
-        [(AVTMultiAvatarController *)self setCollectionView:v39];
+        [(AVTMultiAvatarController *)self setCollectionView:collectionView2];
       }
     }
   }
@@ -614,30 +614,30 @@ void __53__AVTMultiAvatarController_setAllowsCreate_animated___block_invoke_3(ui
   if (AVTUIAvatarPreLoadOnLaunch())
   {
     v3 = MEMORY[0x1E698E328];
-    v5 = [(AVTMultiAvatarController *)self dataSource];
-    v4 = [v5 recordStore];
-    [v3 preloadAllAvatarsWithStore:v4 completionHandler:0];
+    dataSource = [(AVTMultiAvatarController *)self dataSource];
+    recordStore = [dataSource recordStore];
+    [v3 preloadAllAvatarsWithStore:recordStore completionHandler:0];
   }
 }
 
 - (id)loadRecords
 {
-  v3 = [(AVTMultiAvatarController *)self dataSource];
-  v4 = [v3 numberOfRecords];
+  dataSource = [(AVTMultiAvatarController *)self dataSource];
+  numberOfRecords = [dataSource numberOfRecords];
 
-  v5 = [MEMORY[0x1E695DF70] array];
-  if (v4)
+  array = [MEMORY[0x1E695DF70] array];
+  if (numberOfRecords)
   {
-    for (i = 0; i != v4; ++i)
+    for (i = 0; i != numberOfRecords; ++i)
     {
-      v7 = [(AVTMultiAvatarController *)self dataSource];
-      v8 = [v7 recordAtIndex:i];
+      dataSource2 = [(AVTMultiAvatarController *)self dataSource];
+      v8 = [dataSource2 recordAtIndex:i];
 
-      [v5 addObject:v8];
+      [array addObject:v8];
     }
   }
 
-  v9 = [v5 copy];
+  v9 = [array copy];
 
   return v9;
 }
@@ -646,94 +646,94 @@ void __53__AVTMultiAvatarController_setAllowsCreate_animated___block_invoke_3(ui
 {
   if ([(AVTMultiAvatarController *)self allowsCreate])
   {
-    v8 = [(AVTMultiAvatarController *)self indexPathForItemClosestToCenter];
+    indexPathForItemClosestToCenter = [(AVTMultiAvatarController *)self indexPathForItemClosestToCenter];
     v3 = MEMORY[0x1E696AC88];
-    v4 = [(AVTMultiAvatarController *)self listItemsForDisplay];
-    v5 = [(AVTMultiAvatarController *)self addListItem];
-    v6 = [v3 indexPathForItem:objc_msgSend(v4 inSection:{"indexOfObject:", v5), 0}];
+    listItemsForDisplay = [(AVTMultiAvatarController *)self listItemsForDisplay];
+    addListItem = [(AVTMultiAvatarController *)self addListItem];
+    v6 = [v3 indexPathForItem:objc_msgSend(listItemsForDisplay inSection:{"indexOfObject:", addListItem), 0}];
 
-    if ([v8 isEqual:v6])
+    if ([indexPathForItemClosestToCenter isEqual:v6])
     {
-      v7 = [(AVTMultiAvatarController *)self delegate];
-      [v7 displayingControllerWantsToPresentEditorForCreation:self];
+      delegate = [(AVTMultiAvatarController *)self delegate];
+      [delegate displayingControllerWantsToPresentEditorForCreation:self];
     }
   }
 }
 
 - (void)scrollToDisplayedRecord
 {
-  v3 = [(AVTMultiAvatarController *)self displayedRecord];
-  [(AVTMultiAvatarController *)self scrollToViewForAvatarRecord:v3 animated:0];
+  displayedRecord = [(AVTMultiAvatarController *)self displayedRecord];
+  [(AVTMultiAvatarController *)self scrollToViewForAvatarRecord:displayedRecord animated:0];
 }
 
-- (void)scrollToViewForAvatarRecord:(id)a3 animated:(BOOL)a4
+- (void)scrollToViewForAvatarRecord:(id)record animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  v9 = v6;
-  if (!v6)
+  animatedCopy = animated;
+  recordCopy = record;
+  v9 = recordCopy;
+  if (!recordCopy)
   {
-    v8 = [(AVTMultiAvatarController *)self getFirstItem];
+    getFirstItem = [(AVTMultiAvatarController *)self getFirstItem];
 
-    v6 = 0;
-    if (v8)
+    recordCopy = 0;
+    if (getFirstItem)
     {
       v7 = 0;
       goto LABEL_6;
     }
   }
 
-  v7 = [(AVTMultiAvatarController *)self listItemIndexForRecord:v6];
+  v7 = [(AVTMultiAvatarController *)self listItemIndexForRecord:recordCopy];
   if (v7 != 0x7FFFFFFFFFFFFFFFLL)
   {
 LABEL_6:
-    [(AVTMultiAvatarController *)self scrollToViewAtIndex:v7 animated:v4];
+    [(AVTMultiAvatarController *)self scrollToViewAtIndex:v7 animated:animatedCopy];
   }
 }
 
-- (void)scrollToViewAtIndex:(unint64_t)a3 animated:(BOOL)a4
+- (void)scrollToViewAtIndex:(unint64_t)index animated:(BOOL)animated
 {
-  v4 = a4;
-  v29 = [MEMORY[0x1E696AC88] indexPathForRow:a3 inSection:0];
-  v7 = [(AVTMultiAvatarController *)self collectionViewLayout];
-  v8 = [v29 item];
-  v9 = [(AVTMultiAvatarController *)self collectionView];
-  [v9 bounds];
+  animatedCopy = animated;
+  v29 = [MEMORY[0x1E696AC88] indexPathForRow:index inSection:0];
+  collectionViewLayout = [(AVTMultiAvatarController *)self collectionViewLayout];
+  item = [v29 item];
+  collectionView = [(AVTMultiAvatarController *)self collectionView];
+  [collectionView bounds];
   v11 = v10;
   v13 = v12;
-  v14 = [(AVTMultiAvatarController *)self collectionView];
-  [v14 bounds];
-  [v7 centerForCenteringElementAtIndex:v8 visibleBoundsSize:v11 proposedOrigin:{v13, v15, v16}];
+  collectionView2 = [(AVTMultiAvatarController *)self collectionView];
+  [collectionView2 bounds];
+  [collectionViewLayout centerForCenteringElementAtIndex:item visibleBoundsSize:v11 proposedOrigin:{v13, v15, v16}];
   v18 = v17;
   v20 = v19;
 
-  v21 = [(AVTMultiAvatarController *)self collectionView];
-  [AVTCenteringCollectionViewHelper contentOffsetForCenteringPoint:v21 collectionView:v18, v20];
+  collectionView3 = [(AVTMultiAvatarController *)self collectionView];
+  [AVTCenteringCollectionViewHelper contentOffsetForCenteringPoint:collectionView3 collectionView:v18, v20];
   v23 = v22;
   v25 = v24;
 
-  v26 = [(AVTMultiAvatarController *)self collectionView];
-  [v26 setContentOffset:v4 animated:{v23, v25}];
+  collectionView4 = [(AVTMultiAvatarController *)self collectionView];
+  [collectionView4 setContentOffset:animatedCopy animated:{v23, v25}];
 
-  if (!v4)
+  if (!animatedCopy)
   {
-    v27 = [(AVTMultiAvatarController *)self listItemsForDisplay];
-    v28 = [v27 objectAtIndexedSubscript:a3];
+    listItemsForDisplay = [(AVTMultiAvatarController *)self listItemsForDisplay];
+    v28 = [listItemsForDisplay objectAtIndexedSubscript:index];
     [(AVTMultiAvatarController *)self notifyDelegateForScrollingTowardItem:v28 ratio:1.0];
   }
 }
 
-- (unint64_t)listItemIndexForRecord:(id)a3
+- (unint64_t)listItemIndexForRecord:(id)record
 {
-  v4 = a3;
-  v5 = [(AVTMultiAvatarController *)self listItemsForDisplay];
+  recordCopy = record;
+  listItemsForDisplay = [(AVTMultiAvatarController *)self listItemsForDisplay];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __51__AVTMultiAvatarController_listItemIndexForRecord___block_invoke;
   v9[3] = &unk_1E7F3B5A0;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 indexOfObjectPassingTest:v9];
+  v10 = recordCopy;
+  v6 = recordCopy;
+  v7 = [listItemsForDisplay indexOfObjectPassingTest:v9];
 
   return v7;
 }
@@ -764,9 +764,9 @@ void __51__AVTMultiAvatarController_listItemIndexForRecord___block_invoke_2(uint
   *(*(*(a1 + 40) + 8) + 24) = [v3 isEqual:*(a1 + 32)];
 }
 
-- (id)recordForItem:(id)a3
+- (id)recordForItem:(id)item
 {
-  v3 = a3;
+  itemCopy = item;
   v7 = 0;
   v8 = &v7;
   v9 = 0x3032000000;
@@ -778,7 +778,7 @@ void __51__AVTMultiAvatarController_listItemIndexForRecord___block_invoke_2(uint
   v6[2] = __42__AVTMultiAvatarController_recordForItem___block_invoke;
   v6[3] = &unk_1E7F3B5C8;
   v6[4] = &v7;
-  [v3 downcastWithRecordHandler:v6 viewHandler:0];
+  [itemCopy downcastWithRecordHandler:v6 viewHandler:0];
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
 
@@ -797,61 +797,61 @@ uint64_t __42__AVTMultiAvatarController_recordForItem___block_invoke(uint64_t a1
 
 - (id)indexPathForItemClosestToCenter
 {
-  v3 = [(AVTMultiAvatarController *)self collectionView];
-  [v3 contentOffset];
+  collectionView = [(AVTMultiAvatarController *)self collectionView];
+  [collectionView contentOffset];
   v5 = v4;
   v7 = v6;
-  v8 = [(AVTMultiAvatarController *)self collectionView];
-  v9 = [AVTCenteringCollectionViewHelper indexPathForNearestItemToCenterWithOffset:v8 collectionView:v5, v7];
+  collectionView2 = [(AVTMultiAvatarController *)self collectionView];
+  v9 = [AVTCenteringCollectionViewHelper indexPathForNearestItemToCenterWithOffset:collectionView2 collectionView:v5, v7];
 
   return v9;
 }
 
-- (id)cellForRecordItem:(id)a3
+- (id)cellForRecordItem:(id)item
 {
-  v4 = a3;
-  v5 = [(AVTMultiAvatarController *)self listItemsForDisplay];
-  v6 = [v5 indexOfObject:v4];
+  itemCopy = item;
+  listItemsForDisplay = [(AVTMultiAvatarController *)self listItemsForDisplay];
+  v6 = [listItemsForDisplay indexOfObject:itemCopy];
 
   if (v6 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:{@"List item not found %@", v4}];
+    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:{@"List item not found %@", itemCopy}];
   }
 
   v7 = [MEMORY[0x1E696AC88] indexPathForRow:v6 inSection:0];
-  v8 = [(AVTMultiAvatarController *)self collectionView];
-  v9 = [v8 cellForItemAtIndexPath:v7];
+  collectionView = [(AVTMultiAvatarController *)self collectionView];
+  v9 = [collectionView cellForItemAtIndexPath:v7];
 
   return v9;
 }
 
 - (BOOL)shouldCurrentlyDisplayedRecordTransitionToLive
 {
-  v3 = [(AVTMultiAvatarController *)self displayedRecord];
-  v4 = [(AVTMultiAvatarController *)self listItemIndexForRecord:v3];
+  displayedRecord = [(AVTMultiAvatarController *)self displayedRecord];
+  v4 = [(AVTMultiAvatarController *)self listItemIndexForRecord:displayedRecord];
 
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
   {
     return 0;
   }
 
-  v6 = [(AVTMultiAvatarController *)self collectionViewLayout];
-  v7 = [(AVTMultiAvatarController *)self collectionView];
-  [v7 bounds];
+  collectionViewLayout = [(AVTMultiAvatarController *)self collectionViewLayout];
+  collectionView = [(AVTMultiAvatarController *)self collectionView];
+  [collectionView bounds];
   v9 = v8;
   v11 = v10;
-  v12 = [(AVTMultiAvatarController *)self collectionView];
-  [v12 bounds];
-  [v6 centerForCenteringElementAtIndex:v4 visibleBoundsSize:v9 proposedOrigin:{v11, v13, v14}];
+  collectionView2 = [(AVTMultiAvatarController *)self collectionView];
+  [collectionView2 bounds];
+  [collectionViewLayout centerForCenteringElementAtIndex:v4 visibleBoundsSize:v9 proposedOrigin:{v11, v13, v14}];
   v16 = v15;
   v18 = v17;
 
-  v19 = [(AVTMultiAvatarController *)self collectionView];
-  [AVTCenteringCollectionViewHelper contentOffsetForCenteringPoint:v19 collectionView:v16, v18];
+  collectionView3 = [(AVTMultiAvatarController *)self collectionView];
+  [AVTCenteringCollectionViewHelper contentOffsetForCenteringPoint:collectionView3 collectionView:v16, v18];
   v21 = v20;
 
-  v22 = [(AVTMultiAvatarController *)self collectionView];
-  [v22 contentOffset];
+  collectionView4 = [(AVTMultiAvatarController *)self collectionView];
+  [collectionView4 contentOffset];
   v5 = vabdd_f64(v21, v23) < 1.0;
 
   return v5;
@@ -859,27 +859,27 @@ uint64_t __42__AVTMultiAvatarController_recordForItem___block_invoke(uint64_t a1
 
 - (void)updateDisplayedRecordIfNeeded
 {
-  v3 = [(AVTMultiAvatarController *)self indexPathForItemClosestToCenter];
-  if (v3)
+  indexPathForItemClosestToCenter = [(AVTMultiAvatarController *)self indexPathForItemClosestToCenter];
+  if (indexPathForItemClosestToCenter)
   {
-    v4 = v3;
-    -[AVTMultiAvatarController setDisplayedRecordFromIndex:](self, "setDisplayedRecordFromIndex:", [v3 item]);
-    v3 = v4;
+    v4 = indexPathForItemClosestToCenter;
+    -[AVTMultiAvatarController setDisplayedRecordFromIndex:](self, "setDisplayedRecordFromIndex:", [indexPathForItemClosestToCenter item]);
+    indexPathForItemClosestToCenter = v4;
   }
 }
 
-- (void)setDisplayedRecordFromIndex:(unint64_t)a3
+- (void)setDisplayedRecordFromIndex:(unint64_t)index
 {
-  v5 = [(AVTMultiAvatarController *)self listItemsForDisplay];
-  v6 = [v5 count];
+  listItemsForDisplay = [(AVTMultiAvatarController *)self listItemsForDisplay];
+  v6 = [listItemsForDisplay count];
 
-  if (v6 <= a3)
+  if (v6 <= index)
   {
-    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:{@"Can't find displayed record for index %ld", a3}];
+    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:{@"Can't find displayed record for index %ld", index}];
   }
 
-  v7 = [(AVTMultiAvatarController *)self listItemsForDisplay];
-  v8 = [v7 objectAtIndex:a3];
+  listItemsForDisplay2 = [(AVTMultiAvatarController *)self listItemsForDisplay];
+  v8 = [listItemsForDisplay2 objectAtIndex:index];
 
   v15 = 0;
   v16 = &v15;
@@ -890,7 +890,7 @@ uint64_t __42__AVTMultiAvatarController_recordForItem___block_invoke(uint64_t a1
   v12[2] = __56__AVTMultiAvatarController_setDisplayedRecordFromIndex___block_invoke;
   v12[3] = &unk_1E7F3B5F0;
   v12[4] = self;
-  v14 = a3;
+  indexCopy = index;
   v9 = v8;
   v13 = v9;
   v11[0] = MEMORY[0x1E69E9820];
@@ -900,8 +900,8 @@ uint64_t __42__AVTMultiAvatarController_recordForItem___block_invoke(uint64_t a1
   v11[4] = self;
   v11[5] = &v15;
   [v9 downcastWithRecordHandler:v12 viewHandler:v11];
-  v10 = [(AVTMultiAvatarController *)self addItemView];
-  [v10 setAllowHighlight:*(v16 + 24)];
+  addItemView = [(AVTMultiAvatarController *)self addItemView];
+  [addItemView setAllowHighlight:*(v16 + 24)];
 
   _Block_object_dispose(&v15, 8);
 }
@@ -949,16 +949,16 @@ void __56__AVTMultiAvatarController_setDisplayedRecordFromIndex___block_invoke_2
   }
 }
 
-- (void)transitionCurrentDisplayedRecordAnimated:(BOOL)a3
+- (void)transitionCurrentDisplayedRecordAnimated:(BOOL)animated
 {
-  v5 = [(AVTMultiAvatarController *)self displayedRecord];
-  v6 = [(AVTMultiAvatarController *)self listItemIndexForRecord:v5];
+  displayedRecord = [(AVTMultiAvatarController *)self displayedRecord];
+  v6 = [(AVTMultiAvatarController *)self listItemIndexForRecord:displayedRecord];
 
   if (v6 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v7 = [MEMORY[0x1E696AC88] indexPathForItem:v6 inSection:0];
-    v8 = [(AVTMultiAvatarController *)self collectionView];
-    v9 = [v8 cellForItemAtIndexPath:v7];
+    collectionView = [(AVTMultiAvatarController *)self collectionView];
+    v9 = [collectionView cellForItemAtIndexPath:v7];
 
     if ([(AVTMultiAvatarController *)self shouldCurrentlyDisplayedRecordTransitionToLive])
     {
@@ -968,7 +968,7 @@ void __56__AVTMultiAvatarController_setDisplayedRecordFromIndex___block_invoke_2
       v10[3] = &unk_1E7F3AB88;
       v10[4] = self;
       v11 = v7;
-      v12 = a3;
+      animatedCopy = animated;
       [v9 downcastWithCellHandler:0 listCellHandler:v10];
     }
   }
@@ -1016,29 +1016,29 @@ void __69__AVTMultiAvatarController_transitionCurrentDisplayedRecordAnimated___b
   }
 }
 
-- (void)notifyDelegateForScrollingTowardItemFromOffset:(CGPoint)a3
+- (void)notifyDelegateForScrollingTowardItemFromOffset:(CGPoint)offset
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(AVTMultiAvatarController *)self indexPathForItemClosestToCenter];
+  y = offset.y;
+  x = offset.x;
+  indexPathForItemClosestToCenter = [(AVTMultiAvatarController *)self indexPathForItemClosestToCenter];
   v18 = 0.0;
-  v7 = [(AVTMultiAvatarController *)self collectionView];
-  [v7 contentOffset];
+  collectionView = [(AVTMultiAvatarController *)self collectionView];
+  [collectionView contentOffset];
   v9 = v8;
   v11 = v10;
-  v12 = [(AVTMultiAvatarController *)self listItemsForDisplay];
-  v13 = [v12 count];
+  listItemsForDisplay = [(AVTMultiAvatarController *)self listItemsForDisplay];
+  v13 = [listItemsForDisplay count];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __75__AVTMultiAvatarController_notifyDelegateForScrollingTowardItemFromOffset___block_invoke;
   v17[3] = &unk_1E7F3B640;
   v17[4] = self;
-  v14 = [AVTCenteringCollectionViewHelper indexPathForItemBeingScrolledTowardFromOffset:v6 currentOffset:v13 nearestItemToCenter:v17 itemCount:&v18 itemOffsetProvider:x ratio:y, v9, v11];
+  v14 = [AVTCenteringCollectionViewHelper indexPathForItemBeingScrolledTowardFromOffset:indexPathForItemClosestToCenter currentOffset:v13 nearestItemToCenter:v17 itemCount:&v18 itemOffsetProvider:x ratio:y, v9, v11];
 
   if (v14)
   {
-    v15 = [(AVTMultiAvatarController *)self listItemsForDisplay];
-    v16 = [v15 objectAtIndexedSubscript:{objc_msgSend(v14, "item")}];
+    listItemsForDisplay2 = [(AVTMultiAvatarController *)self listItemsForDisplay];
+    v16 = [listItemsForDisplay2 objectAtIndexedSubscript:{objc_msgSend(v14, "item")}];
 
     [(AVTMultiAvatarController *)self notifyDelegateForScrollingTowardItem:v16 ratio:v18];
   }
@@ -1068,21 +1068,21 @@ double __75__AVTMultiAvatarController_notifyDelegateForScrollingTowardItemFromOf
   return v21;
 }
 
-- (void)notifyDelegateForScrollingTowardItem:(id)a3 ratio:(double)a4
+- (void)notifyDelegateForScrollingTowardItem:(id)item ratio:(double)ratio
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __71__AVTMultiAvatarController_notifyDelegateForScrollingTowardItem_ratio___block_invoke;
   v5[3] = &unk_1E7F3B668;
   v5[4] = self;
-  *&v5[5] = a4;
+  *&v5[5] = ratio;
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __71__AVTMultiAvatarController_notifyDelegateForScrollingTowardItem_ratio___block_invoke_2;
   v4[3] = &unk_1E7F3B690;
   v4[4] = self;
-  *&v4[5] = a4;
-  [a3 downcastWithRecordHandler:v5 viewHandler:v4];
+  *&v4[5] = ratio;
+  [item downcastWithRecordHandler:v5 viewHandler:v4];
 }
 
 void __71__AVTMultiAvatarController_notifyDelegateForScrollingTowardItem_ratio___block_invoke(uint64_t a1, void *a2)
@@ -1102,16 +1102,16 @@ void __71__AVTMultiAvatarController_notifyDelegateForScrollingTowardItem_ratio__
   [v2 displayingController:*(a1 + 32) didMoveTowardRecord:0 withFactor:*(a1 + 40)];
 }
 
-- (void)layoutDidChangeWhileMoving:(BOOL)a3 offset:(CGPoint)a4
+- (void)layoutDidChangeWhileMoving:(BOOL)moving offset:(CGPoint)offset
 {
-  y = a4.y;
-  x = a4.x;
-  v6 = a3;
+  y = offset.y;
+  x = offset.x;
+  movingCopy = moving;
   [(AVTMultiAvatarController *)self lastContentOffset];
   v9 = v8;
   v11 = v10;
   [(AVTMultiAvatarController *)self setLastContentOffset:x, y];
-  if (v6)
+  if (movingCopy)
   {
     [(AVTMultiAvatarController *)self transitionCenterCellIfPresentToStopFocusingAnimated:1];
     [(AVTMultiAvatarController *)self notifyDelegateForScrollingTowardItemFromOffset:v9, v11];
@@ -1126,9 +1126,9 @@ void __71__AVTMultiAvatarController_notifyDelegateForScrollingTowardItem_ratio__
   }
 }
 
-- (void)notifyingContainerViewDidChangeSize:(CGSize)a3
+- (void)notifyingContainerViewDidChangeSize:(CGSize)size
 {
-  if ([(AVTMultiAvatarController *)self isViewLoaded:a3.width])
+  if ([(AVTMultiAvatarController *)self isViewLoaded:size.width])
   {
     [(AVTMultiAvatarController *)self buildCollectionViewAndConfigureLayoutIfNeeded];
 
@@ -1136,23 +1136,23 @@ void __71__AVTMultiAvatarController_notifyDelegateForScrollingTowardItem_ratio__
   }
 }
 
-- (void)displayAvatarForRecord:(id)a3 animated:(BOOL)a4
+- (void)displayAvatarForRecord:(id)record animated:(BOOL)animated
 {
-  v5 = a4;
-  v13 = a3;
+  animatedCopy = animated;
+  recordCopy = record;
   [(AVTMultiAvatarController *)self loadRecordsIfNeeded];
-  v7 = [(AVTMultiAvatarController *)self listItemIndexForRecord:v13];
-  v8 = v13;
+  v7 = [(AVTMultiAvatarController *)self listItemIndexForRecord:recordCopy];
+  v8 = recordCopy;
   if (v7 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    if (v13 || ([(AVTMultiAvatarController *)self displayedRecord], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
+    if (recordCopy || ([(AVTMultiAvatarController *)self displayedRecord], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v9 = [(AVTMultiAvatarController *)self displayedRecord];
-      v10 = [v13 isEqual:v9];
+      displayedRecord = [(AVTMultiAvatarController *)self displayedRecord];
+      v10 = [recordCopy isEqual:displayedRecord];
 
-      if (v13)
+      if (recordCopy)
       {
-        if (v5)
+        if (animatedCopy)
         {
           goto LABEL_11;
         }
@@ -1162,19 +1162,19 @@ LABEL_9:
         {
           [(AVTMultiAvatarController *)self transitionCenterCellIfPresentToStopFocusingAnimated:0];
           [(AVTMultiAvatarController *)self setDisplayedRecordFromIndex:v7];
-          v11 = [(AVTMultiAvatarController *)self displayedRecord];
-          [(AVTMultiAvatarController *)self scrollToViewForAvatarRecord:v11 animated:0];
+          displayedRecord2 = [(AVTMultiAvatarController *)self displayedRecord];
+          [(AVTMultiAvatarController *)self scrollToViewForAvatarRecord:displayedRecord2 animated:0];
 
           [(AVTMultiAvatarController *)self transitionCenterCellIfPresentToStartFocusing];
 LABEL_12:
-          v8 = v13;
+          v8 = recordCopy;
           goto LABEL_13;
         }
 
 LABEL_11:
         [(AVTMultiAvatarController *)self setDisplayedRecordFromIndex:v7];
-        v12 = [(AVTMultiAvatarController *)self displayedRecord];
-        [(AVTMultiAvatarController *)self scrollToViewForAvatarRecord:v12 animated:v5];
+        displayedRecord3 = [(AVTMultiAvatarController *)self displayedRecord];
+        [(AVTMultiAvatarController *)self scrollToViewForAvatarRecord:displayedRecord3 animated:animatedCopy];
 
         goto LABEL_12;
       }
@@ -1185,7 +1185,7 @@ LABEL_11:
       v10 = 1;
     }
 
-    if (v5)
+    if (animatedCopy)
     {
       goto LABEL_11;
     }
@@ -1198,9 +1198,9 @@ LABEL_13:
 
 - (void)loadRecordsIfNeeded
 {
-  v3 = [(AVTMultiAvatarController *)self recordListItems];
+  recordListItems = [(AVTMultiAvatarController *)self recordListItems];
 
-  if (!v3)
+  if (!recordListItems)
   {
 
     [(AVTMultiAvatarController *)self reloadRecordListItems];
@@ -1209,28 +1209,28 @@ LABEL_13:
 
 - (void)reloadRecordListItems
 {
-  v9 = [(AVTMultiAvatarController *)self loadRecords];
-  v3 = [objc_opt_class() listItemsForAvatarRecords:v9];
+  loadRecords = [(AVTMultiAvatarController *)self loadRecords];
+  v3 = [objc_opt_class() listItemsForAvatarRecords:loadRecords];
   [(AVTMultiAvatarController *)self setRecordListItems:v3];
 
-  v4 = [(AVTMultiAvatarController *)self displayedRecord];
-  if (!v4 || (v5 = v4, -[AVTMultiAvatarController displayedRecord](self, "displayedRecord"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v9 containsObject:v6], v6, v5, (v7 & 1) == 0))
+  displayedRecord = [(AVTMultiAvatarController *)self displayedRecord];
+  if (!displayedRecord || (v5 = displayedRecord, -[AVTMultiAvatarController displayedRecord](self, "displayedRecord"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [loadRecords containsObject:v6], v6, v5, (v7 & 1) == 0))
   {
-    v8 = [v9 firstObject];
-    [(AVTMultiAvatarController *)self setDisplayedRecordFromIndex:[(AVTMultiAvatarController *)self listItemIndexForRecord:v8]];
+    firstObject = [loadRecords firstObject];
+    [(AVTMultiAvatarController *)self setDisplayedRecordFromIndex:[(AVTMultiAvatarController *)self listItemIndexForRecord:firstObject]];
   }
 }
 
 - (void)reloadData
 {
   [(AVTMultiAvatarController *)self reloadRecordListItems];
-  v3 = [(AVTMultiAvatarController *)self liveCell];
+  liveCell = [(AVTMultiAvatarController *)self liveCell];
 
-  if (v3)
+  if (liveCell)
   {
     [(AVTMultiAvatarController *)self transitionCenterCellIfPresentToStopFocusingAnimated:0];
-    v4 = [(AVTMultiAvatarController *)self collectionView];
-    [v4 reloadData];
+    collectionView = [(AVTMultiAvatarController *)self collectionView];
+    [collectionView reloadData];
 
     [(AVTMultiAvatarController *)self scrollToDisplayedRecord];
 
@@ -1239,25 +1239,25 @@ LABEL_13:
 
   else
   {
-    v5 = [(AVTMultiAvatarController *)self collectionView];
-    [v5 reloadData];
+    collectionView2 = [(AVTMultiAvatarController *)self collectionView];
+    [collectionView2 reloadData];
 
     [(AVTMultiAvatarController *)self scrollToDisplayedRecord];
   }
 }
 
-- (void)prepareViewWithLayout:(id)a3
+- (void)prepareViewWithLayout:(id)layout
 {
-  [(AVTMultiAvatarController *)self setAvtViewLayout:a3];
+  [(AVTMultiAvatarController *)self setAvtViewLayout:layout];
 
   [(AVTMultiAvatarController *)self buildCollectionViewAndConfigureLayoutIfNeeded];
 }
 
-- (void)useAVTViewFromSession:(id)a3 withLayout:(id)a4
+- (void)useAVTViewFromSession:(id)session withLayout:(id)layout
 {
-  v6 = a3;
-  [(AVTMultiAvatarController *)self setAvtViewLayout:a4];
-  [(AVTMultiAvatarController *)self setAvtViewSession:v6];
+  sessionCopy = session;
+  [(AVTMultiAvatarController *)self setAvtViewLayout:layout];
+  [(AVTMultiAvatarController *)self setAvtViewSession:sessionCopy];
 
   [(AVTMultiAvatarController *)self buildCollectionViewAndConfigureLayoutIfNeeded];
   if ([(AVTMultiAvatarController *)self shouldCurrentlyDisplayedRecordTransitionToLive])
@@ -1267,51 +1267,51 @@ LABEL_13:
   }
 }
 
-- (void)stopUsingAVTViewSessionSynchronously:(BOOL)a3 completionHandler:(id)a4
+- (void)stopUsingAVTViewSessionSynchronously:(BOOL)synchronously completionHandler:(id)handler
 {
-  v7 = a4;
-  v5 = [(AVTMultiAvatarController *)self transitionCoordinator];
-  [v5 cancelAllTransitions];
+  handlerCopy = handler;
+  transitionCoordinator = [(AVTMultiAvatarController *)self transitionCoordinator];
+  [transitionCoordinator cancelAllTransitions];
 
   [(AVTMultiAvatarController *)self transitionCenterCellIfPresentToStopFocusingAnimated:0];
   [(AVTMultiAvatarController *)self setAvtViewSession:0];
-  v6 = v7;
-  if (v7)
+  v6 = handlerCopy;
+  if (handlerCopy)
   {
-    (*(v7 + 2))(v7, 1);
-    v6 = v7;
+    (*(handlerCopy + 2))(handlerCopy, 1);
+    v6 = handlerCopy;
   }
 }
 
-- (void)prepareToTransitionToVisible:(BOOL)a3 completionHandler:(id *)a4
+- (void)prepareToTransitionToVisible:(BOOL)visible completionHandler:(id *)handler
 {
-  v5 = a3;
-  v7 = [(AVTMultiAvatarController *)self collectionView];
-  [v7 layoutIfNeeded];
+  visibleCopy = visible;
+  collectionView = [(AVTMultiAvatarController *)self collectionView];
+  [collectionView layoutIfNeeded];
 
-  v8 = [(AVTMultiAvatarController *)self indexPathForItemClosestToCenter];
-  if (v8)
+  indexPathForItemClosestToCenter = [(AVTMultiAvatarController *)self indexPathForItemClosestToCenter];
+  if (indexPathForItemClosestToCenter)
   {
     [(AVTMultiAvatarController *)self setHideImageForDisplayedRecord:1];
-    v9 = [(AVTMultiAvatarController *)self collectionView];
-    v10 = [v9 cellForItemAtIndexPath:v8];
+    collectionView2 = [(AVTMultiAvatarController *)self collectionView];
+    v10 = [collectionView2 cellForItemAtIndexPath:indexPathForItemClosestToCenter];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __75__AVTMultiAvatarController_prepareToTransitionToVisible_completionHandler___block_invoke;
     v13[3] = &unk_1E7F3B6B8;
-    v14 = v5;
+    v14 = visibleCopy;
     v13[4] = self;
-    v13[5] = a4;
+    v13[5] = handler;
     [v10 downcastWithCellHandler:0 listCellHandler:v13];
 
-    if (!v5)
+    if (!visibleCopy)
     {
-      v11 = [(AVTMultiAvatarController *)self displayedRecord];
-      [(AVTMultiAvatarController *)self scrollToViewForAvatarRecord:v11 animated:1];
+      displayedRecord = [(AVTMultiAvatarController *)self displayedRecord];
+      [(AVTMultiAvatarController *)self scrollToViewForAvatarRecord:displayedRecord animated:1];
     }
 
-    v12 = [(AVTMultiAvatarController *)self collectionView];
-    [v12 setScrollEnabled:v5];
+    collectionView3 = [(AVTMultiAvatarController *)self collectionView];
+    [collectionView3 setScrollEnabled:visibleCopy];
   }
 }
 
@@ -1339,20 +1339,20 @@ uint64_t __75__AVTMultiAvatarController_prepareToTransitionToVisible_completionH
   return [v2 setImageViewVisible:1];
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  v4 = [(AVTMultiAvatarController *)self listItemsForDisplay:a3];
+  v4 = [(AVTMultiAvatarController *)self listItemsForDisplay:view];
   v5 = [v4 count];
 
   return v5;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AVTMultiAvatarController *)self listItemsForDisplay];
-  v9 = [v8 objectAtIndexedSubscript:{objc_msgSend(v7, "row")}];
+  viewCopy = view;
+  pathCopy = path;
+  listItemsForDisplay = [(AVTMultiAvatarController *)self listItemsForDisplay];
+  v9 = [listItemsForDisplay objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
 
   v23 = 0;
   v24 = &v23;
@@ -1364,9 +1364,9 @@ uint64_t __75__AVTMultiAvatarController_prepareToTransitionToVisible_completionH
   v18[1] = 3221225472;
   v18[2] = __66__AVTMultiAvatarController_collectionView_cellForItemAtIndexPath___block_invoke;
   v18[3] = &unk_1E7F3B708;
-  v19 = v6;
-  v20 = v7;
-  v21 = self;
+  v19 = viewCopy;
+  v20 = pathCopy;
+  selfCopy = self;
   v22 = &v23;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
@@ -1480,34 +1480,34 @@ void __66__AVTMultiAvatarController_collectionView_cellForItemAtIndexPath___bloc
   *(v7 + 40) = v6;
 }
 
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [v8 item];
-  v10 = [(AVTMultiAvatarController *)self displayedRecord];
-  v11 = [(AVTMultiAvatarController *)self listItemIndexForRecord:v10];
+  cellCopy = cell;
+  pathCopy = path;
+  item = [pathCopy item];
+  displayedRecord = [(AVTMultiAvatarController *)self displayedRecord];
+  v11 = [(AVTMultiAvatarController *)self listItemIndexForRecord:displayedRecord];
 
-  if (v9 == v11)
+  if (item == v11)
   {
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __78__AVTMultiAvatarController_collectionView_willDisplayCell_forItemAtIndexPath___block_invoke;
     v12[3] = &unk_1E7F3ABB0;
     v12[4] = self;
-    v13 = v8;
-    [v7 downcastWithCellHandler:0 listCellHandler:v12];
+    v13 = pathCopy;
+    [cellCopy downcastWithCellHandler:0 listCellHandler:v12];
   }
 }
 
-- (void)collectionView:(id)a3 didEndDisplayingCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view didEndDisplayingCell:(id)cell forItemAtIndexPath:(id)path
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __83__AVTMultiAvatarController_collectionView_didEndDisplayingCell_forItemAtIndexPath___block_invoke;
   v5[3] = &unk_1E7F3ABD8;
   v5[4] = self;
-  [a4 downcastWithCellHandler:0 listCellHandler:{v5, a5}];
+  [cell downcastWithCellHandler:0 listCellHandler:{v5, path}];
 }
 
 void __83__AVTMultiAvatarController_collectionView_didEndDisplayingCell_forItemAtIndexPath___block_invoke(uint64_t a1, void *a2)
@@ -1518,38 +1518,38 @@ void __83__AVTMultiAvatarController_collectionView_didEndDisplayingCell_forItemA
   [v4 cancelTransitionsMatchingModel:v3];
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = [(AVTMultiAvatarController *)self listItemsForDisplay];
-  v8 = [v7 objectAtIndex:{objc_msgSend(v6, "item")}];
+  viewCopy = view;
+  pathCopy = path;
+  listItemsForDisplay = [(AVTMultiAvatarController *)self listItemsForDisplay];
+  v8 = [listItemsForDisplay objectAtIndex:{objc_msgSend(pathCopy, "item")}];
 
-  v9 = [(AVTMultiAvatarController *)self addListItem];
-  v10 = [v8 isEqual:v9];
+  addListItem = [(AVTMultiAvatarController *)self addListItem];
+  v10 = [v8 isEqual:addListItem];
 
   if (v10)
   {
     [(AVTMultiAvatarController *)self createAvatar];
   }
 
-  [v11 deselectItemAtIndexPath:v6 animated:1];
+  [viewCopy deselectItemAtIndexPath:pathCopy animated:1];
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
-  v5 = [v4 avtui_isMoving];
-  [v4 contentOffset];
+  scrollCopy = scroll;
+  avtui_isMoving = [scrollCopy avtui_isMoving];
+  [scrollCopy contentOffset];
   v7 = v6;
   v9 = v8;
 
-  [(AVTMultiAvatarController *)self layoutDidChangeWhileMoving:v5 offset:v7, v9];
+  [(AVTMultiAvatarController *)self layoutDidChangeWhileMoving:avtui_isMoving offset:v7, v9];
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  if (!a4)
+  if (!decelerate)
   {
     [(AVTMultiAvatarController *)self transitionCurrentDisplayedRecordAnimated:1];
   }
@@ -1557,16 +1557,16 @@ void __83__AVTMultiAvatarController_collectionView_didEndDisplayingCell_forItemA
 
 - (void)transitionCenterCellIfPresentToStartFocusing
 {
-  v3 = [(AVTMultiAvatarController *)self displayedRecord];
-  v4 = [(AVTMultiAvatarController *)self listItemIndexForRecord:v3];
+  displayedRecord = [(AVTMultiAvatarController *)self displayedRecord];
+  v4 = [(AVTMultiAvatarController *)self listItemIndexForRecord:displayedRecord];
 
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"Can't find a displayed record"];
   }
 
-  v5 = [(AVTMultiAvatarController *)self listItemsForDisplay];
-  v6 = [v5 objectAtIndexedSubscript:v4];
+  listItemsForDisplay = [(AVTMultiAvatarController *)self listItemsForDisplay];
+  v6 = [listItemsForDisplay objectAtIndexedSubscript:v4];
   v7 = [(AVTMultiAvatarController *)self cellForRecordItem:v6];
 
   v8 = [MEMORY[0x1E696AC88] indexPathForItem:v4 inSection:0];
@@ -1580,24 +1580,24 @@ void __83__AVTMultiAvatarController_collectionView_didEndDisplayingCell_forItemA
   [v7 downcastWithCellHandler:0 listCellHandler:v10];
 }
 
-- (void)transitionCenterCellIfPresentToStopFocusingAnimated:(BOOL)a3
+- (void)transitionCenterCellIfPresentToStopFocusingAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(AVTMultiAvatarController *)self liveCell];
+  animatedCopy = animated;
+  liveCell = [(AVTMultiAvatarController *)self liveCell];
 
-  if (v5)
+  if (liveCell)
   {
-    v6 = [(AVTMultiAvatarController *)self delegate];
-    [v6 willEndFocus:self];
+    delegate = [(AVTMultiAvatarController *)self delegate];
+    [delegate willEndFocus:self];
 
     v7 = MEMORY[0x1BFB0DE80]();
-    v8 = [(AVTMultiAvatarController *)self liveCell];
-    [(AVTMultiAvatarController *)self transitionCell:v8 toStopFocusingAnimated:v3 completionHandler:v7];
+    liveCell2 = [(AVTMultiAvatarController *)self liveCell];
+    [(AVTMultiAvatarController *)self transitionCell:liveCell2 toStopFocusingAnimated:animatedCopy completionHandler:v7];
 
-    if (!v3)
+    if (!animatedCopy)
     {
-      v9 = [(AVTMultiAvatarController *)self delegate];
-      [v9 didEndFocus:self];
+      delegate2 = [(AVTMultiAvatarController *)self delegate];
+      [delegate2 didEndFocus:self];
     }
   }
 }
@@ -1611,38 +1611,38 @@ void __80__AVTMultiAvatarController_transitionCenterCellIfPresentToStopFocusingA
   }
 }
 
-- (void)transitionCenterCellToStartFocusing:(id)a3 indexPath:(id)a4
+- (void)transitionCenterCellToStartFocusing:(id)focusing indexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  focusingCopy = focusing;
+  pathCopy = path;
+  if (focusingCopy)
   {
-    v8 = [(AVTMultiAvatarController *)self liveCell];
+    liveCell = [(AVTMultiAvatarController *)self liveCell];
 
-    if (!v8)
+    if (!liveCell)
     {
-      v9 = [(AVTMultiAvatarController *)self collectionView];
-      v10 = [v9 avtui_isMoving];
+      collectionView = [(AVTMultiAvatarController *)self collectionView];
+      avtui_isMoving = [collectionView avtui_isMoving];
 
-      if ((v10 & 1) == 0)
+      if ((avtui_isMoving & 1) == 0)
       {
-        v11 = [(AVTMultiAvatarController *)self avtViewSession];
-        if ([v11 isActive])
+        avtViewSession = [(AVTMultiAvatarController *)self avtViewSession];
+        if ([avtViewSession isActive])
         {
-          v12 = [v11 avtViewUpdater];
-          v13 = [v12 avatarRecord];
-          v14 = [(AVTMultiAvatarController *)self displayedRecord];
-          v15 = [v13 isEqual:v14];
+          avtViewUpdater = [avtViewSession avtViewUpdater];
+          avatarRecord = [avtViewUpdater avatarRecord];
+          displayedRecord = [(AVTMultiAvatarController *)self displayedRecord];
+          v15 = [avatarRecord isEqual:displayedRecord];
 
-          v16 = [(AVTMultiAvatarController *)self delegate];
-          [v16 willBeginFocus:self];
+          delegate = [(AVTMultiAvatarController *)self delegate];
+          [delegate willBeginFocus:self];
 
           v17[0] = MEMORY[0x1E69E9820];
           v17[1] = 3221225472;
           v17[2] = __74__AVTMultiAvatarController_transitionCenterCellToStartFocusing_indexPath___block_invoke;
           v17[3] = &unk_1E7F3AA80;
           v17[4] = self;
-          [(AVTMultiAvatarController *)self transitionCell:v6 indexPath:v7 toStartFocusingAnimated:v15 ^ 1u session:v11 completionHandler:v17];
+          [(AVTMultiAvatarController *)self transitionCell:focusingCopy indexPath:pathCopy toStartFocusingAnimated:v15 ^ 1u session:avtViewSession completionHandler:v17];
         }
       }
     }
@@ -1658,16 +1658,16 @@ void __74__AVTMultiAvatarController_transitionCenterCellToStartFocusing_indexPat
   }
 }
 
-- (void)transitionCell:(id)a3 indexPath:(id)a4 toStartFocusingAnimated:(BOOL)a5 session:(id)a6 completionHandler:(id)a7
+- (void)transitionCell:(id)cell indexPath:(id)path toStartFocusingAnimated:(BOOL)animated session:(id)session completionHandler:(id)handler
 {
-  v9 = a5;
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
-  [(AVTMultiAvatarController *)self setLiveCell:v12];
-  v16 = [(AVTMultiAvatarController *)self transitionCoordinator];
-  [v16 cancelTransitionsMatchingModel:v12];
+  animatedCopy = animated;
+  cellCopy = cell;
+  pathCopy = path;
+  sessionCopy = session;
+  handlerCopy = handler;
+  [(AVTMultiAvatarController *)self setLiveCell:cellCopy];
+  transitionCoordinator = [(AVTMultiAvatarController *)self transitionCoordinator];
+  [transitionCoordinator cancelTransitionsMatchingModel:cellCopy];
 
   v29 = 0;
   v30 = &v29;
@@ -1677,21 +1677,21 @@ void __74__AVTMultiAvatarController_transitionCenterCellToStartFocusing_indexPat
   v34 = 0;
   v17 = [AVTAvatarToLiveTransition alloc];
   v25 = MEMORY[0x1E69E9820];
-  v18 = v12;
+  v18 = cellCopy;
   v26 = v18;
   v28 = &v29;
-  v19 = v14;
+  v19 = sessionCopy;
   v27 = v19;
   v20 = [(AVTMultiAvatarController *)self logger:v25];
-  v21 = [(AVTAvatarToLiveTransition *)v17 initWithModel:v18 animated:v9 setupHandler:&v25 completionHandler:v15 logger:v20];
+  v21 = [(AVTAvatarToLiveTransition *)v17 initWithModel:v18 animated:animatedCopy setupHandler:&v25 completionHandler:handlerCopy logger:v20];
 
   objc_storeWeak(v30 + 5, v21);
-  v22 = [(AVTMultiAvatarController *)self logger];
+  logger = [(AVTMultiAvatarController *)self logger];
   v23 = [(AVTTransition *)v21 description];
-  [v22 logCarouselAddsTransitionToCoordinator:v23];
+  [logger logCarouselAddsTransitionToCoordinator:v23];
 
-  v24 = [(AVTMultiAvatarController *)self transitionCoordinator];
-  [v24 addTransition:v21];
+  transitionCoordinator2 = [(AVTMultiAvatarController *)self transitionCoordinator];
+  [transitionCoordinator2 addTransition:v21];
 
   _Block_object_dispose(&v29, 8);
   objc_destroyWeak(&v34);
@@ -1718,24 +1718,24 @@ void __103__AVTMultiAvatarController_transitionCell_indexPath_toStartFocusingAni
   [v8 setAvatarRecord:v9 completionHandler:v11];
 }
 
-- (void)transitionCell:(id)a3 toStopFocusingAnimated:(BOOL)a4 completionHandler:(id)a5
+- (void)transitionCell:(id)cell toStopFocusingAnimated:(BOOL)animated completionHandler:(id)handler
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
+  animatedCopy = animated;
+  cellCopy = cell;
+  handlerCopy = handler;
   [(AVTMultiAvatarController *)self setLiveCell:0];
-  v10 = [(AVTMultiAvatarController *)self logger];
-  v11 = [(AVTMultiAvatarController *)self displayedRecord];
-  v12 = [v11 description];
-  v13 = [v8 description];
-  [v10 logCarouselStopsFocusingOnCenterItem:v12 withCell:v13];
+  logger = [(AVTMultiAvatarController *)self logger];
+  displayedRecord = [(AVTMultiAvatarController *)self displayedRecord];
+  v12 = [displayedRecord description];
+  v13 = [cellCopy description];
+  [logger logCarouselStopsFocusingOnCenterItem:v12 withCell:v13];
 
-  v14 = [(AVTMultiAvatarController *)self transitionCoordinator];
-  [v14 cancelTransitionsMatchingModel:v8];
+  transitionCoordinator = [(AVTMultiAvatarController *)self transitionCoordinator];
+  [transitionCoordinator cancelTransitionsMatchingModel:cellCopy];
 
-  v15 = [v8 avtView];
+  avtView = [cellCopy avtView];
 
-  if (v15)
+  if (avtView)
   {
     v26 = 0;
     v27 = &v26;
@@ -1746,26 +1746,26 @@ void __103__AVTMultiAvatarController_transitionCell_indexPath_toStartFocusingAni
     v16 = [AVTAvatarToStaticTransition alloc];
     v22 = MEMORY[0x1E69E9820];
     v25 = &v26;
-    v23 = v8;
-    v24 = v9;
+    v23 = cellCopy;
+    v24 = handlerCopy;
     v17 = [(AVTMultiAvatarController *)self logger:v22];
-    v18 = [(AVTAvatarToStaticTransition *)v16 initWithModel:v23 animated:v6 completionHandler:&v22 logger:v17];
+    v18 = [(AVTAvatarToStaticTransition *)v16 initWithModel:v23 animated:animatedCopy completionHandler:&v22 logger:v17];
 
     objc_storeWeak(v27 + 5, v18);
-    v19 = [(AVTMultiAvatarController *)self logger];
+    logger2 = [(AVTMultiAvatarController *)self logger];
     v20 = [(AVTTransition *)v18 description];
-    [v19 logCarouselAddsTransitionToCoordinator:v20];
+    [logger2 logCarouselAddsTransitionToCoordinator:v20];
 
-    v21 = [(AVTMultiAvatarController *)self transitionCoordinator];
-    [v21 addTransition:v18];
+    transitionCoordinator2 = [(AVTMultiAvatarController *)self transitionCoordinator];
+    [transitionCoordinator2 addTransition:v18];
 
     _Block_object_dispose(&v26, 8);
     objc_destroyWeak(&v31);
   }
 
-  else if (v9)
+  else if (handlerCopy)
   {
-    (*(v9 + 2))(v9, 1);
+    (*(handlerCopy + 2))(handlerCopy, 1);
   }
 }
 
@@ -1816,48 +1816,48 @@ uint64_t __84__AVTMultiAvatarController_transitionCell_toStopFocusingAnimated_co
   return result;
 }
 
-+ (id)snapshotProviderFocusedOnRecordWithIdentifier:(id)a3 size:(CGSize)a4 avtViewAspectRatio:(CGSize)a5 dataSource:(id)a6 environment:(id)a7
++ (id)snapshotProviderFocusedOnRecordWithIdentifier:(id)identifier size:(CGSize)size avtViewAspectRatio:(CGSize)ratio dataSource:(id)source environment:(id)environment
 {
-  height = a5.height;
-  width = a5.width;
-  v11 = a4.height;
-  v12 = a4.width;
+  height = ratio.height;
+  width = ratio.width;
+  v11 = size.height;
+  v12 = size.width;
   v49 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a6;
-  v15 = a7;
-  v39 = [AVTViewCarouselLayout adaptativeLayoutWithAVTViewAspectRatio:width, height];
-  v16 = [[AVTMultiAvatarController alloc] initWithDataSource:v14 environment:v15 initialAVTViewLayout:v39];
+  identifierCopy = identifier;
+  sourceCopy = source;
+  environmentCopy = environment;
+  height = [AVTViewCarouselLayout adaptativeLayoutWithAVTViewAspectRatio:width, height];
+  v16 = [[AVTMultiAvatarController alloc] initWithDataSource:sourceCopy environment:environmentCopy initialAVTViewLayout:height];
   v46[0] = MEMORY[0x1E69E9820];
   v46[1] = 3221225472;
   v46[2] = __135__AVTMultiAvatarController_Snapshotting__snapshotProviderFocusedOnRecordWithIdentifier_size_avtViewAspectRatio_dataSource_environment___block_invoke;
   v46[3] = &unk_1E7F3B3B0;
-  v17 = v13;
+  v17 = identifierCopy;
   v47 = v17;
-  v18 = [v14 indexOfRecordPassingTest:v46];
+  v18 = [sourceCopy indexOfRecordPassingTest:v46];
   if (v18 == 0x7FFFFFFFFFFFFFFFLL)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:{@"Can't find record with identifier %@ for snapshotting", v17}];
   }
 
   v38 = v17;
-  v37 = [v14 recordAtIndex:v18];
+  v37 = [sourceCopy recordAtIndex:v18];
   v19 = [MEMORY[0x1E695DF70] arrayWithObject:?];
   if (v18)
   {
-    v20 = [v14 recordAtIndex:v18 - 1];
+    v20 = [sourceCopy recordAtIndex:v18 - 1];
     [v19 addObject:v20];
   }
 
-  if (v18 < [v14 numberOfRecords] - 1)
+  if (v18 < [sourceCopy numberOfRecords] - 1)
   {
-    v21 = [v14 recordAtIndex:v18 + 1];
+    v21 = [sourceCopy recordAtIndex:v18 + 1];
     [v19 addObject:v21];
   }
 
-  v41 = v14;
-  v40 = v15;
-  v22 = [[_AVTAvatarRecordImageProvider alloc] initWithEnvironment:v15];
+  v41 = sourceCopy;
+  v40 = environmentCopy;
+  v22 = [[_AVTAvatarRecordImageProvider alloc] initWithEnvironment:environmentCopy];
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
@@ -1878,8 +1878,8 @@ uint64_t __84__AVTMultiAvatarController_transitionCell_toStopFocusingAnimated_co
         }
 
         v28 = *(*(&v42 + 1) + 8 * i);
-        v29 = [(AVTMultiAvatarController *)v16 renderingScope];
-        v30 = [(_AVTAvatarRecordImageProvider *)v22 providerForRecord:v28 scope:v29];
+        renderingScope = [(AVTMultiAvatarController *)v16 renderingScope];
+        v30 = [(_AVTAvatarRecordImageProvider *)v22 providerForRecord:v28 scope:renderingScope];
 
         v31 = (v30)[2](v30, &__block_literal_global_27, 1);
       }
@@ -1894,11 +1894,11 @@ uint64_t __84__AVTMultiAvatarController_transitionCell_toStopFocusingAnimated_co
   [(AVTMultiAvatarController *)v16 reloadData];
   v32 = *MEMORY[0x1E695F058];
   v33 = *(MEMORY[0x1E695F058] + 8);
-  v34 = [(AVTMultiAvatarController *)v16 view];
-  [v34 setFrame:{v32, v33, v12, v11}];
+  view = [(AVTMultiAvatarController *)v16 view];
+  [view setFrame:{v32, v33, v12, v11}];
 
-  v35 = [v40 logger];
-  [v35 logCarouselSnapshotForIndex:v18 size:{v12, v11}];
+  logger = [v40 logger];
+  [logger logCarouselSnapshotForIndex:v18 size:{v12, v11}];
 
   return v16;
 }
@@ -1911,11 +1911,11 @@ uint64_t __135__AVTMultiAvatarController_Snapshotting__snapshotProviderFocusedOn
   return v4;
 }
 
-- (void)snapshotInBlock:(id)a3
+- (void)snapshotInBlock:(id)block
 {
-  v5 = a3;
-  v6 = [(AVTMultiAvatarController *)self view];
-  (*(a3 + 2))(v5, v6);
+  blockCopy = block;
+  view = [(AVTMultiAvatarController *)self view];
+  (*(block + 2))(blockCopy, view);
 }
 
 @end

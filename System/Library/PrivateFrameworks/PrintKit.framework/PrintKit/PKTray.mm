@@ -1,35 +1,35 @@
 @interface PKTray
-+ (id)filter:(id)a3 withBlock:(id)a4;
-+ (id)trayWithString:(id)a3 andMediaSource:(id)a4;
-+ (id)traysWithMediaSourceSupported:(id)a3 printerInputTrays:(id)a4;
++ (id)filter:(id)filter withBlock:(id)block;
++ (id)trayWithString:(id)string andMediaSource:(id)source;
++ (id)traysWithMediaSourceSupported:(id)supported printerInputTrays:(id)trays;
 - (BOOL)isEmpty;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (NSString)localizedName;
 - (NSString)name;
-- (PKTray)initWithCoder:(id)a3;
-- (PKTray)initWithString:(id)a3 andMediaSource:(id)a4;
-- (PKTray)initWithUserCodableDictionary:(id)a3;
+- (PKTray)initWithCoder:(id)coder;
+- (PKTray)initWithString:(id)string andMediaSource:(id)source;
+- (PKTray)initWithUserCodableDictionary:(id)dictionary;
 - (id)mediaName;
 - (void)dealloc;
 @end
 
 @implementation PKTray
 
-+ (id)traysWithMediaSourceSupported:(id)a3 printerInputTrays:(id)a4
++ (id)traysWithMediaSourceSupported:(id)supported printerInputTrays:(id)trays
 {
-  v5 = a3;
-  v6 = a4;
+  supportedCopy = supported;
+  traysCopy = trays;
   v7 = [MEMORY[0x277CBEB18] arrayWithCapacity:0];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __58__PKTray_traysWithMediaSourceSupported_printerInputTrays___block_invoke;
   v13[3] = &unk_279A93478;
-  v8 = v6;
+  v8 = traysCopy;
   v14 = v8;
   v9 = v7;
   v15 = v9;
-  [v5 enumerateObjectsUsingBlock:v13];
+  [supportedCopy enumerateObjectsUsingBlock:v13];
   v10 = v15;
   v11 = v9;
 
@@ -54,17 +54,17 @@ void __58__PKTray_traysWithMediaSourceSupported_printerInputTrays___block_invoke
   [*(a1 + 40) addObject:v7];
 }
 
-+ (id)filter:(id)a3 withBlock:(id)a4
++ (id)filter:(id)filter withBlock:(id)block
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  filterCopy = filter;
+  blockCopy = block;
   v7 = [MEMORY[0x277CBEB18] arrayWithCapacity:0];
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v8 = v5;
+  v8 = filterCopy;
   v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v9)
   {
@@ -79,7 +79,7 @@ void __58__PKTray_traysWithMediaSourceSupported_printerInputTrays___block_invoke
         }
 
         v12 = *(*(&v14 + 1) + 8 * i);
-        if (v6[2](v6, v12))
+        if (blockCopy[2](blockCopy, v12))
         {
           [v7 addObject:{v12, v14}];
         }
@@ -94,27 +94,27 @@ void __58__PKTray_traysWithMediaSourceSupported_printerInputTrays___block_invoke
   return v7;
 }
 
-+ (id)trayWithString:(id)a3 andMediaSource:(id)a4
++ (id)trayWithString:(id)string andMediaSource:(id)source
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [[PKTray alloc] initWithString:v5 andMediaSource:v6];
+  stringCopy = string;
+  sourceCopy = source;
+  v7 = [[PKTray alloc] initWithString:stringCopy andMediaSource:sourceCopy];
 
   return v7;
 }
 
-- (PKTray)initWithString:(id)a3 andMediaSource:(id)a4
+- (PKTray)initWithString:(id)string andMediaSource:(id)source
 {
   v29 = *MEMORY[0x277D85DE8];
-  v20 = a3;
-  v21 = a4;
+  stringCopy = string;
+  sourceCopy = source;
   v23.receiver = self;
   v23.super_class = PKTray;
   v19 = [(PKTray *)&v23 init];
   if (v19)
   {
-    v17 = v20;
-    v18 = v21;
+    v17 = stringCopy;
+    v18 = sourceCopy;
     v22 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:0];
     v6 = [v17 componentsSeparatedByString:@""];;
     v26 = 0u;
@@ -139,12 +139,12 @@ void __58__PKTray_traysWithMediaSourceSupported_printerInputTrays___block_invoke
           if ([v11 count] == 2)
           {
             v12 = [v11 objectAtIndexedSubscript:0];
-            v13 = [v12 lowercaseString];
+            lowercaseString = [v12 lowercaseString];
 
             v14 = [v11 objectAtIndexedSubscript:1];
-            if (!v13)
+            if (!lowercaseString)
             {
-              v13 = @"unreadable-key";
+              lowercaseString = @"unreadable-key";
             }
 
             if (v14)
@@ -157,7 +157,7 @@ void __58__PKTray_traysWithMediaSourceSupported_printerInputTrays___block_invoke
               v15 = @"unreadable-value";
             }
 
-            [v22 setObject:v15 forKeyedSubscript:v13];
+            [v22 setObject:v15 forKeyedSubscript:lowercaseString];
           }
         }
 
@@ -188,8 +188,8 @@ void __58__PKTray_traysWithMediaSourceSupported_printerInputTrays___block_invoke
 
 - (NSString)name
 {
-  v2 = [(PKTray *)self trayDict];
-  v3 = [v2 objectForKeyedSubscript:@"media-source"];
+  trayDict = [(PKTray *)self trayDict];
+  v3 = [trayDict objectForKeyedSubscript:@"media-source"];
 
   if (v3)
   {
@@ -206,25 +206,25 @@ void __58__PKTray_traysWithMediaSourceSupported_printerInputTrays___block_invoke
 
 - (NSString)localizedName
 {
-  v2 = [(PKTray *)self name];
+  name = [(PKTray *)self name];
   v3 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.framework.PrintKit"];
-  v4 = [v3 localizedStringForKey:v2 value:v2 table:@"InputSlots"];
+  v4 = [v3 localizedStringForKey:name value:name table:@"InputSlots"];
 
   return v4;
 }
 
 - (id)mediaName
 {
-  v2 = [(PKTray *)self trayDict];
-  v3 = [v2 objectForKeyedSubscript:@"medianame"];
+  trayDict = [(PKTray *)self trayDict];
+  v3 = [trayDict objectForKeyedSubscript:@"medianame"];
 
   return v3;
 }
 
 - (BOOL)isEmpty
 {
-  v2 = [(PKTray *)self trayDict];
-  v3 = [v2 objectForKeyedSubscript:@"status"];
+  trayDict = [(PKTray *)self trayDict];
+  v3 = [trayDict objectForKeyedSubscript:@"status"];
 
   if (v3)
   {
@@ -242,22 +242,22 @@ void __58__PKTray_traysWithMediaSourceSupported_printerInputTrays___block_invoke
 - (NSString)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(PKTray *)self trayDict];
-  v5 = [v3 stringWithFormat:@"PKTray<%p> %@", self, v4];
+  trayDict = [(PKTray *)self trayDict];
+  v5 = [v3 stringWithFormat:@"PKTray<%p> %@", self, trayDict];
 
   return v5;
 }
 
-- (PKTray)initWithCoder:(id)a3
+- (PKTray)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = PKTray;
   v5 = [(PKTray *)&v10 init];
   if (v5)
   {
     v6 = objc_opt_class();
-    v7 = [v4 decodeDictionaryWithKeysOfClass:v6 objectsOfClass:objc_opt_class() forKey:@"trayDict"];
+    v7 = [coderCopy decodeDictionaryWithKeysOfClass:v6 objectsOfClass:objc_opt_class() forKey:@"trayDict"];
     trayDict = v5->_trayDict;
     v5->_trayDict = v7;
   }
@@ -265,15 +265,15 @@ void __58__PKTray_traysWithMediaSourceSupported_printerInputTrays___block_invoke
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(PKTray *)self trayDict];
-    v6 = [v4 trayDict];
-    v7 = [v5 isEqualToDictionary:v6];
+    trayDict = [(PKTray *)self trayDict];
+    trayDict2 = [equalCopy trayDict];
+    v7 = [trayDict isEqualToDictionary:trayDict2];
   }
 
   else
@@ -284,15 +284,15 @@ void __58__PKTray_traysWithMediaSourceSupported_printerInputTrays___block_invoke
   return v7;
 }
 
-- (PKTray)initWithUserCodableDictionary:(id)a3
+- (PKTray)initWithUserCodableDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = PKTray;
   v5 = [(PKTray *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dictionaryCopy copy];
     trayDict = v5->_trayDict;
     v5->_trayDict = v6;
   }

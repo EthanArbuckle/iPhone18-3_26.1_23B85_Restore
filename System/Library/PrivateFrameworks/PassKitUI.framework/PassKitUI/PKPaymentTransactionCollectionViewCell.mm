@@ -1,18 +1,18 @@
 @interface PKPaymentTransactionCollectionViewCell
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKPaymentTransactionCollectionViewCell)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKPaymentTransactionCollectionViewCell)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)updateConfigurationUsingState:(id)a3;
+- (void)updateConfigurationUsingState:(id)state;
 @end
 
 @implementation PKPaymentTransactionCollectionViewCell
 
-- (PKPaymentTransactionCollectionViewCell)initWithFrame:(CGRect)a3
+- (PKPaymentTransactionCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v18.receiver = self;
   v18.super_class = PKPaymentTransactionCollectionViewCell;
-  v3 = [(PKDashboardCollectionViewCell *)&v18 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PKDashboardCollectionViewCell *)&v18 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x1E69DCAE0]);
@@ -23,8 +23,8 @@
 
     [(UIImageView *)v3->_multiselectImageView setFrame:0.0, 0.0, 25.6667, 25.6667];
     v8 = v3->_multiselectImageView;
-    v9 = [MEMORY[0x1E69DC888] tertiaryLabelColor];
-    [(UIImageView *)v8 setTintColor:v9];
+    tertiaryLabelColor = [MEMORY[0x1E69DC888] tertiaryLabelColor];
+    [(UIImageView *)v8 setTintColor:tertiaryLabelColor];
 
     [(UIImageView *)v3->_multiselectImageView setHidden:!v3->_isEditing];
     v10 = v3->_multiselectImageView;
@@ -35,14 +35,14 @@
     transactionView = v3->_transactionView;
     v3->_transactionView = v12;
 
-    v14 = [(PKPaymentTransactionCollectionViewCell *)v3 contentView];
-    [v14 addSubview:v3->_multiselectImageView];
+    contentView = [(PKPaymentTransactionCollectionViewCell *)v3 contentView];
+    [contentView addSubview:v3->_multiselectImageView];
 
-    v15 = [(PKPaymentTransactionCollectionViewCell *)v3 contentView];
-    [v15 addSubview:v3->_transactionView];
+    contentView2 = [(PKPaymentTransactionCollectionViewCell *)v3 contentView];
+    [contentView2 addSubview:v3->_transactionView];
 
-    v16 = [(PKPaymentTransactionCollectionViewCell *)v3 contentView];
-    [v16 setClipsToBounds:1];
+    contentView3 = [(PKPaymentTransactionCollectionViewCell *)v3 contentView];
+    [contentView3 setClipsToBounds:1];
 
     [(PKPaymentTransactionCollectionViewCell *)v3 setAccessibilityIdentifier:*MEMORY[0x1E69B9D38]];
   }
@@ -72,9 +72,9 @@
   [(PKPaymentTransactionView *)self->_transactionView setSecondaryBadgeSymbolConfiguration:0];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(PKPaymentTransactionView *)self->_transactionView sizeThatFits:a3.width, a3.height];
+  [(PKPaymentTransactionView *)self->_transactionView sizeThatFits:fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
@@ -85,8 +85,8 @@
   v21.receiver = self;
   v21.super_class = PKPaymentTransactionCollectionViewCell;
   [(PKDashboardCollectionViewCell *)&v21 layoutSubviews];
-  v3 = [(PKPaymentTransactionCollectionViewCell *)self contentView];
-  [v3 bounds];
+  contentView = [(PKPaymentTransactionCollectionViewCell *)self contentView];
+  [contentView bounds];
   x = v4;
   y = v6;
   width = v8;
@@ -120,35 +120,35 @@
   [(PKPaymentTransactionView *)self->_transactionView setFrame:x, y, width, height];
 }
 
-- (void)updateConfigurationUsingState:(id)a3
+- (void)updateConfigurationUsingState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v14.receiver = self;
   v14.super_class = PKPaymentTransactionCollectionViewCell;
-  [(PKPaymentTransactionCollectionViewCell *)&v14 updateConfigurationUsingState:v4];
-  if ([v4 isEditing] && !self->_isEditing)
+  [(PKPaymentTransactionCollectionViewCell *)&v14 updateConfigurationUsingState:stateCopy];
+  if ([stateCopy isEditing] && !self->_isEditing)
   {
     self->_originalShowsDisclosureView = [(PKPaymentTransactionView *)self->_transactionView showsDisclosureView];
     [(PKPaymentTransactionView *)self->_transactionView setShowsDisclosureView:0];
     v5 = objc_alloc(MEMORY[0x1E69DD250]);
     v6 = [v5 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
-    v7 = [MEMORY[0x1E69DC888] systemGray4Color];
-    [v6 setBackgroundColor:v7];
+    systemGray4Color = [MEMORY[0x1E69DC888] systemGray4Color];
+    [v6 setBackgroundColor:systemGray4Color];
 
     [(PKPaymentTransactionCollectionViewCell *)self setSelectedBackgroundView:v6];
   }
 
-  else if (([v4 isEditing] & 1) == 0 && self->_isEditing)
+  else if (([stateCopy isEditing] & 1) == 0 && self->_isEditing)
   {
     [(PKPaymentTransactionView *)self->_transactionView setShowsDisclosureView:self->_originalShowsDisclosureView];
     [(PKPaymentTransactionCollectionViewCell *)self setSelectedBackgroundView:0];
   }
 
-  if ([v4 isEditing])
+  if ([stateCopy isEditing])
   {
-    v8 = [v4 isSelected];
+    isSelected = [stateCopy isSelected];
     multiselectImageView = self->_multiselectImageView;
-    if (v8)
+    if (isSelected)
     {
       v10 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"checkmark.circle.fill"];
       [(UIImageView *)multiselectImageView setImage:v10];
@@ -169,7 +169,7 @@
     [(UIImageView *)v11 setTintColor:v13];
   }
 
-  self->_isEditing = [v4 isEditing];
+  self->_isEditing = [stateCopy isEditing];
   [(PKPaymentTransactionCollectionViewCell *)self setNeedsLayout];
   [(PKPaymentTransactionCollectionViewCell *)self layoutIfNeeded];
 }

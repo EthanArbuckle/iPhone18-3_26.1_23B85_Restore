@@ -1,34 +1,34 @@
 @interface HUZoneModuleController
-- (BOOL)_validateNewZoneName:(id)a3;
-- (BOOL)textFieldShouldEndEditing:(id)a3;
-- (BOOL)textFieldShouldReturn:(id)a3;
-- (Class)collectionCellClassForItem:(id)a3;
+- (BOOL)_validateNewZoneName:(id)name;
+- (BOOL)textFieldShouldEndEditing:(id)editing;
+- (BOOL)textFieldShouldReturn:(id)return;
+- (Class)collectionCellClassForItem:(id)item;
 - (HUEditableTextCollectionListCell)createNewZoneCell;
-- (HUZoneModuleController)initWithModule:(id)a3 room:(id)a4;
+- (HUZoneModuleController)initWithModule:(id)module room:(id)room;
 - (UICollectionViewListCell)currentZoneItemCell;
 - (UITextField)editingTextField;
-- (id)_createNewZoneWithName:(id)a3;
-- (id)_didSelectZoneBuilderItem:(id)a3;
-- (id)_didSelectZoneItem:(id)a3;
+- (id)_createNewZoneWithName:(id)name;
+- (id)_didSelectZoneBuilderItem:(id)item;
+- (id)_didSelectZoneItem:(id)item;
 - (id)finishZoneNameEditing;
-- (unint64_t)didSelectItem:(id)a3;
-- (void)_configureCreateNewZoneItem:(id)a3 forCell:(id)a4;
-- (void)_configureCurrentZonesItem:(id)a3 forCell:(id)a4;
-- (void)_configureZoneBuilderItem:(id)a3 forCell:(id)a4;
-- (void)_configureZoneItem:(id)a3 forCell:(id)a4;
-- (void)_updateCreateNewZoneCellText:(BOOL)a3;
-- (void)configureCell:(id)a3 forItem:(id)a4;
-- (void)textFieldDidBeginEditing:(id)a3;
+- (unint64_t)didSelectItem:(id)item;
+- (void)_configureCreateNewZoneItem:(id)item forCell:(id)cell;
+- (void)_configureCurrentZonesItem:(id)item forCell:(id)cell;
+- (void)_configureZoneBuilderItem:(id)item forCell:(id)cell;
+- (void)_configureZoneItem:(id)item forCell:(id)cell;
+- (void)_updateCreateNewZoneCellText:(BOOL)text;
+- (void)configureCell:(id)cell forItem:(id)item;
+- (void)textFieldDidBeginEditing:(id)editing;
 @end
 
 @implementation HUZoneModuleController
 
-- (HUZoneModuleController)initWithModule:(id)a3 room:(id)a4
+- (HUZoneModuleController)initWithModule:(id)module room:(id)room
 {
-  v6 = a3;
-  v7 = a4;
+  moduleCopy = module;
+  roomCopy = room;
   v8 = objc_opt_class();
-  v9 = v6;
+  v9 = moduleCopy;
   if (v9)
   {
     if (objc_opt_isKindOfClass())
@@ -47,9 +47,9 @@
       goto LABEL_8;
     }
 
-    v12 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"id  _Nullable NAAssertCast(Class  _Nonnull __unsafe_unretained, id  _Nonnull __strong)"}];
-    [v12 handleFailureInFunction:v13 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v8, objc_opt_class()}];
+    [currentHandler handleFailureInFunction:v13 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v8, objc_opt_class()}];
   }
 
   v11 = 0;
@@ -61,34 +61,34 @@ LABEL_8:
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_room, a4);
+    objc_storeStrong(&v14->_room, room);
   }
 
   return v15;
 }
 
-- (Class)collectionCellClassForItem:(id)a3
+- (Class)collectionCellClassForItem:(id)item
 {
-  v4 = a3;
-  v5 = [(HUItemModuleController *)self module];
-  v6 = [v5 createNewZoneItem];
-  [v4 isEqual:v6];
+  itemCopy = item;
+  module = [(HUItemModuleController *)self module];
+  createNewZoneItem = [module createNewZoneItem];
+  [itemCopy isEqual:createNewZoneItem];
 
   v7 = objc_opt_class();
 
   return v7;
 }
 
-- (void)configureCell:(id)a3 forItem:(id)a4
+- (void)configureCell:(id)cell forItem:(id)item
 {
-  v12 = a3;
-  v6 = a4;
-  v7 = [(HUItemModuleController *)self module];
-  v8 = [v7 createNewZoneItem];
+  cellCopy = cell;
+  itemCopy = item;
+  module = [(HUItemModuleController *)self module];
+  createNewZoneItem = [module createNewZoneItem];
 
-  if (v8 == v6)
+  if (createNewZoneItem == itemCopy)
   {
-    [(HUZoneModuleController *)self _configureCreateNewZoneItem:v6 forCell:v12];
+    [(HUZoneModuleController *)self _configureCreateNewZoneItem:itemCopy forCell:cellCopy];
   }
 
   else
@@ -96,20 +96,20 @@ LABEL_8:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = [v6 sourceItem];
+      sourceItem = [itemCopy sourceItem];
 
-      v10 = [(HUItemModuleController *)self module];
-      v11 = [v10 currentZoneItem];
+      module2 = [(HUItemModuleController *)self module];
+      currentZoneItem = [module2 currentZoneItem];
 
-      if (v11 == v9)
+      if (currentZoneItem == sourceItem)
       {
-        [(HUZoneModuleController *)self _configureCurrentZonesItem:v9 forCell:v12];
+        [(HUZoneModuleController *)self _configureCurrentZonesItem:sourceItem forCell:cellCopy];
       }
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [(HUZoneModuleController *)self _configureZoneBuilderItem:v9 forCell:v12];
+        [(HUZoneModuleController *)self _configureZoneBuilderItem:sourceItem forCell:cellCopy];
       }
 
       else
@@ -117,36 +117,36 @@ LABEL_8:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          [(HUZoneModuleController *)self _configureZoneItem:v9 forCell:v12];
+          [(HUZoneModuleController *)self _configureZoneItem:sourceItem forCell:cellCopy];
         }
       }
 
-      v6 = v9;
+      itemCopy = sourceItem;
     }
   }
 }
 
-- (unint64_t)didSelectItem:(id)a3
+- (unint64_t)didSelectItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 sourceItem];
+    sourceItem = [itemCopy sourceItem];
 
-    v6 = [(HUItemModuleController *)self module];
-    v7 = [v6 currentZoneItem];
+    module = [(HUItemModuleController *)self module];
+    currentZoneItem = [module currentZoneItem];
 
-    if (v5 == v7)
+    if (sourceItem == currentZoneItem)
     {
-      v10 = [(HUItemModuleController *)self module];
-      [v10 toggleExpansion];
+      module2 = [(HUItemModuleController *)self module];
+      [module2 toggleExpansion];
     }
 
     else
     {
       objc_opt_class();
-      v8 = v5;
+      v8 = sourceItem;
       if (objc_opt_isKindOfClass())
       {
         v9 = v8;
@@ -157,9 +157,9 @@ LABEL_8:
         v9 = 0;
       }
 
-      v10 = v9;
+      module2 = v9;
 
-      if (v10)
+      if (module2)
       {
         v11 = [(HUZoneModuleController *)self _didSelectZoneItem:v8];
       }
@@ -187,43 +187,43 @@ LABEL_8:
 
   else
   {
-    v5 = v4;
+    sourceItem = itemCopy;
   }
 
   return 0;
 }
 
-- (id)_didSelectZoneItem:(id)a3
+- (id)_didSelectZoneItem:(id)item
 {
-  v5 = [a3 zone];
+  v5 = [item zone];
   v6 = objc_alloc(MEMORY[0x277D14D20]);
-  v7 = [(HUZoneModuleController *)self room];
-  v8 = [v7 home];
-  v9 = [v6 initWithExistingObject:v5 inHome:v8];
+  room = [(HUZoneModuleController *)self room];
+  home = [room home];
+  v9 = [v6 initWithExistingObject:v5 inHome:home];
 
-  v10 = [v5 rooms];
-  v11 = [(HUZoneModuleController *)self room];
-  v12 = [v10 containsObject:v11];
+  rooms = [v5 rooms];
+  room2 = [(HUZoneModuleController *)self room];
+  v12 = [rooms containsObject:room2];
 
-  v13 = [(HUZoneModuleController *)self room];
+  room3 = [(HUZoneModuleController *)self room];
   if (v12)
   {
-    [v9 removeRoom:v13];
+    [v9 removeRoom:room3];
   }
 
   else
   {
-    [v9 addRoom:v13];
+    [v9 addRoom:room3];
   }
 
-  v14 = [v9 commitItem];
+  commitItem = [v9 commitItem];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __45__HUZoneModuleController__didSelectZoneItem___block_invoke;
   v17[3] = &unk_277DBA2C8;
   v17[4] = self;
   v17[5] = a2;
-  v15 = [v14 addCompletionBlock:v17];
+  v15 = [commitItem addCompletionBlock:v17];
 
   return v15;
 }
@@ -250,20 +250,20 @@ void __45__HUZoneModuleController__didSelectZoneItem___block_invoke(uint64_t a1,
   }
 }
 
-- (id)_didSelectZoneBuilderItem:(id)a3
+- (id)_didSelectZoneBuilderItem:(id)item
 {
-  v5 = [a3 zoneBuilder];
-  v6 = [(HUZoneModuleController *)self room];
-  [v5 addRoom:v6];
+  zoneBuilder = [item zoneBuilder];
+  room = [(HUZoneModuleController *)self room];
+  [zoneBuilder addRoom:room];
 
-  v7 = [v5 commitItem];
+  commitItem = [zoneBuilder commitItem];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __52__HUZoneModuleController__didSelectZoneBuilderItem___block_invoke;
   v10[3] = &unk_277DBA2C8;
   v10[4] = self;
   v10[5] = a2;
-  v8 = [v7 addCompletionBlock:v10];
+  v8 = [commitItem addCompletionBlock:v10];
 
   return v8;
 }
@@ -290,122 +290,122 @@ void __52__HUZoneModuleController__didSelectZoneBuilderItem___block_invoke(uint6
   }
 }
 
-- (void)_updateCreateNewZoneCellText:(BOOL)a3
+- (void)_updateCreateNewZoneCellText:(BOOL)text
 {
-  v3 = a3;
-  v21 = [(HUZoneModuleController *)self createNewZoneCell];
-  v5 = [(HUItemModuleController *)self module];
-  v6 = [v5 createNewZoneItem];
+  textCopy = text;
+  createNewZoneCell = [(HUZoneModuleController *)self createNewZoneCell];
+  module = [(HUItemModuleController *)self module];
+  createNewZoneItem = [module createNewZoneItem];
 
-  v7 = [MEMORY[0x277D756E0] cellConfiguration];
-  v8 = [v21 textField];
-  v9 = [v8 isEditing];
+  cellConfiguration = [MEMORY[0x277D756E0] cellConfiguration];
+  textField = [createNewZoneCell textField];
+  isEditing = [textField isEditing];
 
-  if (!v9 || v3)
+  if (!isEditing || textCopy)
   {
-    v13 = [v6 latestResults];
-    v14 = [v13 objectForKeyedSubscript:*MEMORY[0x277D13F60]];
-    [v7 setText:v14];
+    latestResults = [createNewZoneItem latestResults];
+    v14 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13F60]];
+    [cellConfiguration setText:v14];
 
-    v15 = [MEMORY[0x277D75348] hf_keyColor];
-    v16 = [v7 textProperties];
-    [v16 setColor:v15];
+    hf_keyColor = [MEMORY[0x277D75348] hf_keyColor];
+    textProperties = [cellConfiguration textProperties];
+    [textProperties setColor:hf_keyColor];
 
-    v17 = [v21 textField];
-    [v17 setPlaceholder:&stru_2823E0EE8];
+    textField2 = [createNewZoneCell textField];
+    [textField2 setPlaceholder:&stru_2823E0EE8];
 
-    v18 = [v21 textField];
-    [v18 setText:&stru_2823E0EE8];
+    textField3 = [createNewZoneCell textField];
+    [textField3 setText:&stru_2823E0EE8];
 
-    [v21 setContentConfiguration:v7];
-    if (v3)
+    [createNewZoneCell setContentConfiguration:cellConfiguration];
+    if (textCopy)
     {
-      v19 = [v21 textField];
-      [v19 setText:&stru_2823E0EE8];
+      textField4 = [createNewZoneCell textField];
+      [textField4 setText:&stru_2823E0EE8];
 
-      v20 = [v21 textField];
-      [v20 resignFirstResponder];
+      textField5 = [createNewZoneCell textField];
+      [textField5 resignFirstResponder];
     }
   }
 
   else
   {
-    [v7 setText:0];
-    [v21 setContentConfiguration:v7];
-    v10 = [v6 latestResults];
-    v11 = [v10 objectForKeyedSubscript:*MEMORY[0x277D13F70]];
-    v12 = [v21 textField];
-    [v12 setPlaceholder:v11];
+    [cellConfiguration setText:0];
+    [createNewZoneCell setContentConfiguration:cellConfiguration];
+    latestResults2 = [createNewZoneItem latestResults];
+    v11 = [latestResults2 objectForKeyedSubscript:*MEMORY[0x277D13F70]];
+    textField6 = [createNewZoneCell textField];
+    [textField6 setPlaceholder:v11];
   }
 }
 
-- (void)_configureCreateNewZoneItem:(id)a3 forCell:(id)a4
+- (void)_configureCreateNewZoneItem:(id)item forCell:(id)cell
 {
-  v5 = a4;
-  [(HUZoneModuleController *)self setCreateNewZoneCell:v5];
+  cellCopy = cell;
+  [(HUZoneModuleController *)self setCreateNewZoneCell:cellCopy];
   [(HUZoneModuleController *)self _updateCreateNewZoneCellText:0];
-  v6 = [v5 textField];
-  [v6 setAutocapitalizationType:1];
+  textField = [cellCopy textField];
+  [textField setAutocapitalizationType:1];
 
-  v7 = [v5 textField];
+  textField2 = [cellCopy textField];
 
-  [v7 setDelegate:self];
+  [textField2 setDelegate:self];
 }
 
-- (void)_configureZoneItem:(id)a3 forCell:(id)a4
+- (void)_configureZoneItem:(id)item forCell:(id)cell
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
-  v8 = [HUListContentConfigurationUtilities labelDefaultConfigurationForItem:v7];
-  [v6 setContentConfiguration:v8];
-  v9 = [v7 zone];
+  cellCopy = cell;
+  itemCopy = item;
+  v8 = [HUListContentConfigurationUtilities labelDefaultConfigurationForItem:itemCopy];
+  [cellCopy setContentConfiguration:v8];
+  v9 = [itemCopy zone];
 
-  v10 = [v9 rooms];
-  v11 = [(HUZoneModuleController *)self room];
-  v12 = [v10 containsObject:v11];
+  rooms = [v9 rooms];
+  room = [(HUZoneModuleController *)self room];
+  v12 = [rooms containsObject:room];
 
   if (v12)
   {
     v13 = objc_alloc_init(MEMORY[0x277D75248]);
     v15[0] = v13;
     v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:1];
-    [v6 setAccessories:v14];
+    [cellCopy setAccessories:v14];
   }
 
   else
   {
-    [v6 setAccessories:MEMORY[0x277CBEBF8]];
+    [cellCopy setAccessories:MEMORY[0x277CBEBF8]];
   }
 }
 
-- (void)_configureZoneBuilderItem:(id)a3 forCell:(id)a4
+- (void)_configureZoneBuilderItem:(id)item forCell:(id)cell
 {
   v5 = MEMORY[0x277D756E0];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v5 valueCellConfiguration];
-  v11 = [HUListContentConfigurationUtilities labelConfiguration:v8 forItem:v7];
+  cellCopy = cell;
+  itemCopy = item;
+  valueCellConfiguration = [v5 valueCellConfiguration];
+  v11 = [HUListContentConfigurationUtilities labelConfiguration:valueCellConfiguration forItem:itemCopy];
 
-  v9 = [MEMORY[0x277D75348] secondaryLabelColor];
-  v10 = [v11 textProperties];
-  [v10 setColor:v9];
+  secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+  textProperties = [v11 textProperties];
+  [textProperties setColor:secondaryLabelColor];
 
-  [v6 setContentConfiguration:v11];
-  [v6 setAccessories:MEMORY[0x277CBEBF8]];
+  [cellCopy setContentConfiguration:v11];
+  [cellCopy setAccessories:MEMORY[0x277CBEBF8]];
 }
 
-- (void)_configureCurrentZonesItem:(id)a3 forCell:(id)a4
+- (void)_configureCurrentZonesItem:(id)item forCell:(id)cell
 {
-  v6 = a4;
-  v7 = a3;
-  [(HUZoneModuleController *)self setCurrentZoneItemCell:v6];
-  v8 = [MEMORY[0x277D756E0] valueCellConfiguration];
-  v13 = [HUListContentConfigurationUtilities labelConfiguration:v8 forItem:v7];
+  cellCopy = cell;
+  itemCopy = item;
+  [(HUZoneModuleController *)self setCurrentZoneItemCell:cellCopy];
+  valueCellConfiguration = [MEMORY[0x277D756E0] valueCellConfiguration];
+  v13 = [HUListContentConfigurationUtilities labelConfiguration:valueCellConfiguration forItem:itemCopy];
 
-  v9 = [(HUZoneModuleController *)self room];
-  v10 = [v9 hf_allZones];
-  if ([v10 count])
+  room = [(HUZoneModuleController *)self room];
+  hf_allZones = [room hf_allZones];
+  if ([hf_allZones count])
   {
     [MEMORY[0x277D75348] hf_keyColor];
   }
@@ -415,25 +415,25 @@ void __52__HUZoneModuleController__didSelectZoneBuilderItem___block_invoke(uint6
     [MEMORY[0x277D75348] secondaryLabelColor];
   }
   v11 = ;
-  v12 = [v13 secondaryTextProperties];
-  [v12 setColor:v11];
+  secondaryTextProperties = [v13 secondaryTextProperties];
+  [secondaryTextProperties setColor:v11];
 
-  [v6 setContentConfiguration:v13];
-  [v6 setAccessories:MEMORY[0x277CBEBF8]];
+  [cellCopy setContentConfiguration:v13];
+  [cellCopy setAccessories:MEMORY[0x277CBEBF8]];
 }
 
-- (BOOL)_validateNewZoneName:(id)a3
+- (BOOL)_validateNewZoneName:(id)name
 {
-  v3 = [MEMORY[0x277D14CE8] sanitizeUserEnteredHomeKitName:a3];
+  v3 = [MEMORY[0x277D14CE8] sanitizeUserEnteredHomeKitName:name];
   v4 = [v3 length] != 0;
 
   return v4;
 }
 
-- (id)_createNewZoneWithName:(id)a3
+- (id)_createNewZoneWithName:(id)name
 {
   v50 = *MEMORY[0x277D85DE8];
-  v5 = [MEMORY[0x277D14CE8] sanitizeUserEnteredHomeKitName:a3];
+  v5 = [MEMORY[0x277D14CE8] sanitizeUserEnteredHomeKitName:name];
   if ([(HUZoneModuleController *)self hasPendingCreation])
   {
     v6 = HFLogForCategory();
@@ -441,7 +441,7 @@ void __52__HUZoneModuleController__didSelectZoneBuilderItem___block_invoke(uint6
     {
       v7 = NSStringFromSelector(a2);
       *buf = 138412802;
-      v45 = self;
+      selfCopy = self;
       v46 = 2112;
       v47 = v7;
       v48 = 2112;
@@ -455,21 +455,21 @@ void __52__HUZoneModuleController__didSelectZoneBuilderItem___block_invoke(uint6
   if (![(HUZoneModuleController *)self _validateNewZoneName:v5])
   {
 LABEL_15:
-    v29 = [MEMORY[0x277D2C900] futureWithNoResult];
+    futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
     goto LABEL_18;
   }
 
-  v33 = [(HUItemModuleController *)self module];
+  module = [(HUItemModuleController *)self module];
   v8 = objc_opt_new();
-  v9 = [(HUItemModuleController *)self module];
-  v10 = [v9 itemProviders];
+  module2 = [(HUItemModuleController *)self module];
+  itemProviders = [module2 itemProviders];
   v41[0] = MEMORY[0x277D85DD0];
   v41[1] = 3221225472;
   v41[2] = __49__HUZoneModuleController__createNewZoneWithName___block_invoke;
   v41[3] = &unk_277DBA310;
   v11 = v8;
   v42 = v11;
-  [v10 na_each:v41];
+  [itemProviders na_each:v41];
 
   v39 = 0u;
   v40 = 0u;
@@ -492,8 +492,8 @@ LABEL_15:
 
         v17 = *(*(&v37 + 1) + 8 * i);
         v18 = [v17 zone];
-        v19 = [v18 name];
-        v20 = [v19 isEqualToString:v5];
+        name = [v18 name];
+        v20 = [name isEqualToString:v5];
 
         if (v20)
         {
@@ -505,9 +505,9 @@ LABEL_15:
           v36[4] = self;
           v31 = [v30 addSuccessBlock:v36];
 
-          v29 = [MEMORY[0x277D2C900] futureWithNoResult];
+          futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
           v25 = v12;
-          v22 = v33;
+          v22 = module;
           goto LABEL_17;
         }
       }
@@ -523,34 +523,34 @@ LABEL_15:
   }
 
   v21 = objc_alloc(MEMORY[0x277D14D20]);
-  v22 = v33;
-  v23 = [v33 room];
-  v24 = [v23 home];
-  v25 = [v21 initWithHome:v24];
+  v22 = module;
+  room = [module room];
+  home = [room home];
+  v25 = [v21 initWithHome:home];
 
   [v25 setName:v5];
-  v26 = [v33 room];
-  [v25 addRoom:v26];
+  room2 = [module room];
+  [v25 addRoom:room2];
 
   [(HUZoneModuleController *)self setHasPendingCreation:1];
-  v27 = [v25 commitItem];
+  commitItem = [v25 commitItem];
   v35[0] = MEMORY[0x277D85DD0];
   v35[1] = 3221225472;
   v35[2] = __49__HUZoneModuleController__createNewZoneWithName___block_invoke_5;
   v35[3] = &unk_277DBA360;
   v35[4] = self;
-  v28 = [v27 addSuccessBlock:v35];
+  v28 = [commitItem addSuccessBlock:v35];
   v34[0] = MEMORY[0x277D85DD0];
   v34[1] = 3221225472;
   v34[2] = __49__HUZoneModuleController__createNewZoneWithName___block_invoke_6;
   v34[3] = &unk_277DB8C00;
   v34[4] = self;
-  v29 = [v28 addFailureBlock:v34];
+  futureWithNoResult = [v28 addFailureBlock:v34];
 
 LABEL_17:
 LABEL_18:
 
-  return v29;
+  return futureWithNoResult;
 }
 
 void __49__HUZoneModuleController__createNewZoneWithName___block_invoke(uint64_t a1, void *a2)
@@ -614,41 +614,41 @@ uint64_t __49__HUZoneModuleController__createNewZoneWithName___block_invoke_6(ui
 
 - (id)finishZoneNameEditing
 {
-  v3 = [(HUZoneModuleController *)self editingTextField];
-  [v3 resignFirstResponder];
-  v4 = [v3 text];
-  v5 = [(HUZoneModuleController *)self _createNewZoneWithName:v4];
+  editingTextField = [(HUZoneModuleController *)self editingTextField];
+  [editingTextField resignFirstResponder];
+  text = [editingTextField text];
+  v5 = [(HUZoneModuleController *)self _createNewZoneWithName:text];
 
   return v5;
 }
 
-- (void)textFieldDidBeginEditing:(id)a3
+- (void)textFieldDidBeginEditing:(id)editing
 {
-  [(HUZoneModuleController *)self setEditingTextField:a3];
+  [(HUZoneModuleController *)self setEditingTextField:editing];
 
   [(HUZoneModuleController *)self _updateCreateNewZoneCellText:0];
 }
 
-- (BOOL)textFieldShouldReturn:(id)a3
+- (BOOL)textFieldShouldReturn:(id)return
 {
-  v4 = a3;
-  v5 = [v4 text];
-  v6 = [(HUZoneModuleController *)self _createNewZoneWithName:v5];
+  returnCopy = return;
+  text = [returnCopy text];
+  v6 = [(HUZoneModuleController *)self _createNewZoneWithName:text];
 
-  [v4 resignFirstResponder];
+  [returnCopy resignFirstResponder];
   return 1;
 }
 
-- (BOOL)textFieldShouldEndEditing:(id)a3
+- (BOOL)textFieldShouldEndEditing:(id)editing
 {
-  v4 = a3;
-  v5 = [v4 text];
-  v6 = [v5 length];
+  editingCopy = editing;
+  text = [editingCopy text];
+  v6 = [text length];
 
   if (v6)
   {
-    v7 = [v4 text];
-    v8 = [(HUZoneModuleController *)self _validateNewZoneName:v7];
+    text2 = [editingCopy text];
+    v8 = [(HUZoneModuleController *)self _validateNewZoneName:text2];
   }
 
   else

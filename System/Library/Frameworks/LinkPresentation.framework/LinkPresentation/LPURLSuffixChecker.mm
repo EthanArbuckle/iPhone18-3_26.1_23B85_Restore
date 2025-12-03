@@ -1,30 +1,30 @@
 @interface LPURLSuffixChecker
-- (BOOL)hasSuffix:(id)a3 remainingPrefix:(id *)a4;
-- (BOOL)insertString:(id)a3 intoTrieWithCache:(id *)a4;
-- (LPURLSuffixChecker)initWithSuffixes:(id)a3;
-- (void)addStringToFailedSuffixes:(id)a3;
+- (BOOL)hasSuffix:(id)suffix remainingPrefix:(id *)prefix;
+- (BOOL)insertString:(id)string intoTrieWithCache:(id *)cache;
+- (LPURLSuffixChecker)initWithSuffixes:(id)suffixes;
+- (void)addStringToFailedSuffixes:(id)suffixes;
 - (void)dealloc;
 @end
 
 @implementation LPURLSuffixChecker
 
-- (BOOL)insertString:(id)a3 intoTrieWithCache:(id *)a4
+- (BOOL)insertString:(id)string intoTrieWithCache:(id *)cache
 {
   v36 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  Length = CFStringGetLength(v6);
+  stringCopy = string;
+  Length = CFStringGetLength(stringCopy);
   if (Length > 0x20)
   {
     goto LABEL_34;
   }
 
-  CStringPtr = CFStringGetCStringPtr(v6, 0x600u);
+  CStringPtr = CFStringGetCStringPtr(stringCopy, 0x600u);
   if (CStringPtr)
   {
     goto LABEL_5;
   }
 
-  if (!CFStringGetCString(v6, buffer, 32, 0x600u))
+  if (!CFStringGetCString(stringCopy, buffer, 32, 0x600u))
   {
 LABEL_34:
     v30 = 0;
@@ -45,10 +45,10 @@ LABEL_5:
     goto LABEL_34;
   }
 
-  var1 = a4->var1;
+  var1 = cache->var1;
   if (Length >= var1)
   {
-    v11 = a4->var1;
+    v11 = cache->var1;
   }
 
   else
@@ -58,7 +58,7 @@ LABEL_5:
 
   if (v11 >= 2)
   {
-    v12 = &a4->var0[1];
+    v12 = &cache->var0[1];
     v13 = 1;
     do
     {
@@ -81,7 +81,7 @@ LABEL_5:
 
       if (v16 != v12->var0)
       {
-        a4->var1 = v13;
+        cache->var1 = v13;
         var1 = v13;
       }
 
@@ -104,7 +104,7 @@ LABEL_5:
 
   v18 = var1 - 1;
   trie = self->_trie;
-  a4->var1 = Length;
+  cache->var1 = Length;
   v20 = Length - 1;
   if (Length - 1 <= var1 - 1)
   {
@@ -113,7 +113,7 @@ LABEL_5:
 
   else
   {
-    p_var1 = &a4->var0[Length - 1].var1;
+    p_var1 = &cache->var0[Length - 1].var1;
     v22 = trie;
     do
     {
@@ -183,18 +183,18 @@ LABEL_5:
     v34 = v33;
   }
 
-  v22->var0[v34] = a4->var0[v18].var1;
+  v22->var0[v34] = cache->var0[v18].var1;
   v30 = 1;
 LABEL_35:
 
   return v30;
 }
 
-- (void)addStringToFailedSuffixes:(id)a3
+- (void)addStringToFailedSuffixes:(id)suffixes
 {
-  v4 = a3;
+  suffixesCopy = suffixes;
   failedSuffixes = self->_failedSuffixes;
-  v9 = v4;
+  v9 = suffixesCopy;
   if (!failedSuffixes)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -202,17 +202,17 @@ LABEL_35:
     self->_failedSuffixes = v6;
 
     failedSuffixes = self->_failedSuffixes;
-    v4 = v9;
+    suffixesCopy = v9;
   }
 
-  v8 = [v4 substringFromIndex:1];
+  v8 = [suffixesCopy substringFromIndex:1];
   [(NSMutableArray *)failedSuffixes addObject:v8];
 }
 
-- (LPURLSuffixChecker)initWithSuffixes:(id)a3
+- (LPURLSuffixChecker)initWithSuffixes:(id)suffixes
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  suffixesCopy = suffixes;
   v19.receiver = self;
   v19.super_class = LPURLSuffixChecker;
   v5 = [(LPURLSuffixChecker *)&v19 init];
@@ -227,7 +227,7 @@ LABEL_35:
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v6 = v4;
+    v6 = suffixesCopy;
     v7 = [v6 countByEnumeratingWithState:&v13 objects:v20 count:16];
     if (v7)
     {
@@ -260,17 +260,17 @@ LABEL_35:
   return v5;
 }
 
-- (BOOL)hasSuffix:(id)a3 remainingPrefix:(id *)a4
+- (BOOL)hasSuffix:(id)suffix remainingPrefix:(id *)prefix
 {
   v32 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = v6;
-  if (!v6)
+  suffixCopy = suffix;
+  v7 = suffixCopy;
+  if (!suffixCopy)
   {
     goto LABEL_34;
   }
 
-  Length = CFStringGetLength(v6);
+  Length = CFStringGetLength(suffixCopy);
   CStringPtr = CFStringGetCStringPtr(v7, 0x600u);
   if (CStringPtr)
   {
@@ -332,9 +332,9 @@ LABEL_5:
         }
       }
 
-      if (a4)
+      if (prefix)
       {
-        *a4 = [(__CFString *)v7 substringToIndex:Length];
+        *prefix = [(__CFString *)v7 substringToIndex:Length];
       }
 
 LABEL_43:
@@ -346,9 +346,9 @@ LABEL_43:
 LABEL_19:
     if (trie->var0[0] == 1)
     {
-      if (a4)
+      if (prefix)
       {
-        *a4 = 0;
+        *prefix = 0;
       }
 
       goto LABEL_43;
@@ -394,18 +394,18 @@ LABEL_22:
             continue;
           }
 
-          if (a4)
+          if (prefix)
           {
             v24 = [(__CFString *)v7 substringToIndex:v22];
             goto LABEL_41;
           }
         }
 
-        else if (a4)
+        else if (prefix)
         {
           v24 = 0;
 LABEL_41:
-          *a4 = v24;
+          *prefix = v24;
         }
 
         goto LABEL_43;

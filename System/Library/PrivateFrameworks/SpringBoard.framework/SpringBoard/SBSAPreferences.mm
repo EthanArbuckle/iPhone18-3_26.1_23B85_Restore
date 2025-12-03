@@ -1,39 +1,39 @@
 @interface SBSAPreferences
-+ (id)instanceWithBlock:(id)a3;
-- (BOOL)_doesUnanimatedTransitionDescriptionExistForProperty:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)instanceWithBlock:(id)block;
+- (BOOL)_doesUnanimatedTransitionDescriptionExistForProperty:(id)property;
+- (BOOL)isEqual:(id)equal;
 - (BSOrderedDictionary)dictionaryDescription;
 - (NSString)description;
-- (id)_effectiveTransitionDescriptionForPropertyForProperty:(id)a3 addingMilestonesAndCreatingUniqueDescriptionIfIndirect:(BOOL)a4;
-- (id)animatedTransitionDescriptionForProperty:(id)a3;
-- (id)copyByAddingActions:(id)a3;
-- (id)copyByUpdatingBackgroundBlurDescription:(id)a3;
-- (id)copyByUpdatingContainerViewDescriptions:(id)a3;
-- (id)copyByUpdatingElementDescriptions:(id)a3;
-- (id)copyByUpdatingMaintainedPreferences:(id)a3;
-- (id)copyWithBlock:(id)a3;
-- (id)copyWithCancellationOfGestureOfClass:(Class)a3 context:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)effectiveMilestoneProvidingAnimatedTransitionDescriptionForProperty:(id)a3;
+- (id)_effectiveTransitionDescriptionForPropertyForProperty:(id)property addingMilestonesAndCreatingUniqueDescriptionIfIndirect:(BOOL)indirect;
+- (id)animatedTransitionDescriptionForProperty:(id)property;
+- (id)copyByAddingActions:(id)actions;
+- (id)copyByUpdatingBackgroundBlurDescription:(id)description;
+- (id)copyByUpdatingContainerViewDescriptions:(id)descriptions;
+- (id)copyByUpdatingElementDescriptions:(id)descriptions;
+- (id)copyByUpdatingMaintainedPreferences:(id)preferences;
+- (id)copyWithBlock:(id)block;
+- (id)copyWithCancellationOfGestureOfClass:(Class)class context:(id)context;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)effectiveMilestoneProvidingAnimatedTransitionDescriptionForProperty:(id)property;
 - (unint64_t)hash;
-- (void)_setCurtainRenderingConfiguration:(SBSystemApertureContainerRenderingConfiguration *)a3;
-- (void)_setHighLevelCurtainRenderingConfiguration:(SBSystemApertureContainerRenderingConfiguration *)a3;
-- (void)finalizePreferencesForApplication:(id)a3;
+- (void)_setCurtainRenderingConfiguration:(SBSystemApertureContainerRenderingConfiguration *)configuration;
+- (void)_setHighLevelCurtainRenderingConfiguration:(SBSystemApertureContainerRenderingConfiguration *)configuration;
+- (void)finalizePreferencesForApplication:(id)application;
 @end
 
 @implementation SBSAPreferences
 
-- (void)finalizePreferencesForApplication:(id)a3
+- (void)finalizePreferencesForApplication:(id)application
 {
   v37 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  applicationCopy = application;
   self->_finalizedForApplication = 1;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v5 = [(NSMutableDictionary *)self->_interfaceElementPropertiesToBehaviorSettings allKeys];
-  v6 = [v5 countByEnumeratingWithState:&v31 objects:v36 count:16];
+  allKeys = [(NSMutableDictionary *)self->_interfaceElementPropertiesToBehaviorSettings allKeys];
+  v6 = [allKeys countByEnumeratingWithState:&v31 objects:v36 count:16];
   if (v6)
   {
     v7 = v6;
@@ -44,7 +44,7 @@
       {
         if (*v32 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allKeys);
         }
 
         v10 = *(*(&v31 + 1) + 8 * i);
@@ -66,19 +66,19 @@
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v31 objects:v36 count:16];
+      v7 = [allKeys countByEnumeratingWithState:&v31 objects:v36 count:16];
     }
 
     while (v7);
   }
 
-  v14 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v15 = [(SBSAPreferences *)self containerViewDescriptions];
-  v16 = [v15 countByEnumeratingWithState:&v27 objects:v35 count:16];
+  containerViewDescriptions = [(SBSAPreferences *)self containerViewDescriptions];
+  v16 = [containerViewDescriptions countByEnumeratingWithState:&v27 objects:v35 count:16];
   if (v16)
   {
     v17 = v16;
@@ -89,53 +89,53 @@
       {
         if (*v28 != v18)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(containerViewDescriptions);
         }
 
         v20 = *(*(&v27 + 1) + 8 * j);
-        [v4 displayScale];
+        [applicationCopy displayScale];
         v21 = [v20 copyByPixelAligningGeometryWithScale:?];
-        [v14 addObject:v21];
+        [array addObject:v21];
       }
 
-      v17 = [v15 countByEnumeratingWithState:&v27 objects:v35 count:16];
+      v17 = [containerViewDescriptions countByEnumeratingWithState:&v27 objects:v35 count:16];
     }
 
     while (v17);
   }
 
-  v22 = [v14 copy];
+  v22 = [array copy];
   [(SBSAPreferences *)self _setContainerViewDescriptions:v22];
 
-  v23 = [(SBSAPreferences *)self containerParentViewDescription];
-  [v4 displayScale];
-  v24 = [v23 copyByPixelAligningGeometryWithScale:?];
+  containerParentViewDescription = [(SBSAPreferences *)self containerParentViewDescription];
+  [applicationCopy displayScale];
+  v24 = [containerParentViewDescription copyByPixelAligningGeometryWithScale:?];
 
   [(SBSAPreferences *)self _setContainerParentViewDescription:v24];
-  v25 = [(SBSAPreferences *)self indicatorContainerViewDescription];
-  [v4 displayScale];
-  v26 = [v25 copyByPixelAligningGeometryWithScale:?];
+  indicatorContainerViewDescription = [(SBSAPreferences *)self indicatorContainerViewDescription];
+  [applicationCopy displayScale];
+  v26 = [indicatorContainerViewDescription copyByPixelAligningGeometryWithScale:?];
 
   [(SBSAPreferences *)self _setIndicatorContainerViewDescription:v26];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v61 = [MEMORY[0x277CF0C20] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
+  equalCopy = equal;
+  v61 = [MEMORY[0x277CF0C20] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
   v108[0] = MEMORY[0x277D85DD0];
   v108[1] = 3221225472;
   v108[2] = __27__SBSAPreferences_isEqual___block_invoke;
   v108[3] = &unk_2783A94B0;
-  v109 = v4;
-  v110 = self;
+  v109 = equalCopy;
+  selfCopy = self;
   v105[0] = MEMORY[0x277D85DD0];
   v105[1] = 3221225472;
   v105[2] = __27__SBSAPreferences_isEqual___block_invoke_2;
   v105[3] = &unk_2783A94B0;
   v5 = v109;
   v106 = v5;
-  v107 = self;
+  selfCopy2 = self;
   v60 = MEMORY[0x223D6F7F0](v105);
   v102[0] = MEMORY[0x277D85DD0];
   v102[1] = 3221225472;
@@ -143,7 +143,7 @@
   v102[3] = &unk_2783A94B0;
   v6 = v5;
   v103 = v6;
-  v104 = self;
+  selfCopy3 = self;
   v59 = MEMORY[0x223D6F7F0](v102);
   v99[0] = MEMORY[0x277D85DD0];
   v99[1] = 3221225472;
@@ -151,7 +151,7 @@
   v99[3] = &unk_2783A94B0;
   v7 = v6;
   v100 = v7;
-  v101 = self;
+  selfCopy4 = self;
   v58 = MEMORY[0x223D6F7F0](v99);
   v96[0] = MEMORY[0x277D85DD0];
   v96[1] = 3221225472;
@@ -159,7 +159,7 @@
   v96[3] = &unk_2783A94B0;
   v8 = v7;
   v97 = v8;
-  v98 = self;
+  selfCopy5 = self;
   v57 = MEMORY[0x223D6F7F0](v96);
   v93[0] = MEMORY[0x277D85DD0];
   v93[1] = 3221225472;
@@ -167,7 +167,7 @@
   v93[3] = &unk_2783A94B0;
   v9 = v8;
   v94 = v9;
-  v95 = self;
+  selfCopy6 = self;
   v56 = MEMORY[0x223D6F7F0](v93);
   v90[0] = MEMORY[0x277D85DD0];
   v90[1] = 3221225472;
@@ -175,7 +175,7 @@
   v90[3] = &unk_2783A94B0;
   v10 = v9;
   v91 = v10;
-  v92 = self;
+  selfCopy7 = self;
   v55 = MEMORY[0x223D6F7F0](v90);
   v54 = [v61 appendEqualsBlocks:{v108, v60, v59, v58, v57, v56, v55, 0}];
   indicatorElementDescription = self->_indicatorElementDescription;
@@ -375,8 +375,8 @@ BOOL __27__SBSAPreferences_isEqual___block_invoke_7(uint64_t a1)
 
 - (unint64_t)hash
 {
-  v28 = [MEMORY[0x277CF0C40] builder];
-  v27 = [v28 appendObject:self->_gestureDescriptions];
+  builder = [MEMORY[0x277CF0C40] builder];
+  v27 = [builder appendObject:self->_gestureDescriptions];
   v26 = [v27 appendObject:self->_timerDescriptions];
   v25 = [v26 appendObject:self->_actions];
   v24 = [v25 appendObject:self->_containerParentViewDescription];
@@ -406,13 +406,13 @@ BOOL __27__SBSAPreferences_isEqual___block_invoke_7(uint64_t a1)
 
 - (NSString)description
 {
-  v2 = [(SBSAPreferences *)self dictionaryDescription];
-  v3 = SBSAStringFromDictionaryDescription(v2);
+  dictionaryDescription = [(SBSAPreferences *)self dictionaryDescription];
+  v3 = SBSAStringFromDictionaryDescription(dictionaryDescription);
 
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   v5 = [(NSArray *)self->_gestureDescriptions copy];
@@ -491,8 +491,8 @@ BOOL __27__SBSAPreferences_isEqual___block_invoke_7(uint64_t a1)
 - (BSOrderedDictionary)dictionaryDescription
 {
   v3 = objc_alloc(MEMORY[0x277CF0C78]);
-  v4 = [MEMORY[0x277CF0C98] sortByInsertionOrder];
-  v5 = [v3 initWithKeyOrderingStrategy:v4];
+  sortByInsertionOrder = [MEMORY[0x277CF0C98] sortByInsertionOrder];
+  v5 = [v3 initWithKeyOrderingStrategy:sortByInsertionOrder];
 
   v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%p", self];
   v7 = objc_opt_class();
@@ -646,35 +646,35 @@ BOOL __27__SBSAPreferences_isEqual___block_invoke_7(uint64_t a1)
   return v5;
 }
 
-- (id)effectiveMilestoneProvidingAnimatedTransitionDescriptionForProperty:(id)a3
+- (id)effectiveMilestoneProvidingAnimatedTransitionDescriptionForProperty:(id)property
 {
-  v4 = a3;
+  propertyCopy = property;
   if (!self->_finalizedForApplication)
   {
     [SBSAPreferences effectiveMilestoneProvidingAnimatedTransitionDescriptionForProperty:];
   }
 
-  v5 = [(SBSAPreferences *)self _effectiveTransitionDescriptionForPropertyForProperty:v4 addingMilestonesAndCreatingUniqueDescriptionIfIndirect:1];
+  v5 = [(SBSAPreferences *)self _effectiveTransitionDescriptionForPropertyForProperty:propertyCopy addingMilestonesAndCreatingUniqueDescriptionIfIndirect:1];
 
   return v5;
 }
 
-- (BOOL)_doesUnanimatedTransitionDescriptionExistForProperty:(id)a3
+- (BOOL)_doesUnanimatedTransitionDescriptionExistForProperty:(id)property
 {
-  v3 = [(SBSAPreferences *)self _effectiveTransitionDescriptionForPropertyForProperty:a3 addingMilestonesAndCreatingUniqueDescriptionIfIndirect:0];
-  v4 = [v3 behaviorSettings];
-  v5 = [v4 isUnanimated];
+  v3 = [(SBSAPreferences *)self _effectiveTransitionDescriptionForPropertyForProperty:property addingMilestonesAndCreatingUniqueDescriptionIfIndirect:0];
+  behaviorSettings = [v3 behaviorSettings];
+  isUnanimated = [behaviorSettings isUnanimated];
 
-  return v5;
+  return isUnanimated;
 }
 
-- (id)_effectiveTransitionDescriptionForPropertyForProperty:(id)a3 addingMilestonesAndCreatingUniqueDescriptionIfIndirect:(BOOL)a4
+- (id)_effectiveTransitionDescriptionForPropertyForProperty:(id)property addingMilestonesAndCreatingUniqueDescriptionIfIndirect:(BOOL)indirect
 {
-  v4 = a4;
-  v7 = a3;
-  if (v7)
+  indirectCopy = indirect;
+  propertyCopy = property;
+  if (propertyCopy)
   {
-    v8 = [(NSMutableDictionary *)self->_interfaceElementPropertiesToBehaviorSettings objectForKey:v7];
+    v8 = [(NSMutableDictionary *)self->_interfaceElementPropertiesToBehaviorSettings objectForKey:propertyCopy];
     if (objc_opt_respondsToSelector())
     {
       v9 = objc_opt_respondsToSelector();
@@ -723,7 +723,7 @@ BOOL __27__SBSAPreferences_isEqual___block_invoke_7(uint64_t a1)
 
     v13 = v16;
 
-    if (v4)
+    if (indirectCopy)
     {
       if (!(v12 & 1 | (v13 == 0)))
       {
@@ -747,7 +747,7 @@ BOOL __27__SBSAPreferences_isEqual___block_invoke_7(uint64_t a1)
         v20[3] = &unk_2783AD750;
         v22 = a2;
         v20[4] = self;
-        v21 = v7;
+        v21 = propertyCopy;
         v18 = [v13 copyWithBlock:v20];
 
         v13 = v18;
@@ -853,24 +853,24 @@ void __128__SBSAPreferences__effectiveTransitionDescriptionForPropertyForPropert
   [v6 setMilestones:v7];
 }
 
-- (void)_setCurtainRenderingConfiguration:(SBSystemApertureContainerRenderingConfiguration *)a3
+- (void)_setCurtainRenderingConfiguration:(SBSystemApertureContainerRenderingConfiguration *)configuration
 {
-  v3 = *&a3->renderingStyle;
-  *&self->_curtainRenderingConfiguration.alwaysRenderInSnapshots = *&a3->alwaysRenderInSnapshots;
+  v3 = *&configuration->renderingStyle;
+  *&self->_curtainRenderingConfiguration.alwaysRenderInSnapshots = *&configuration->alwaysRenderInSnapshots;
   *&self->_curtainRenderingConfiguration.renderingStyle = v3;
 }
 
-- (void)_setHighLevelCurtainRenderingConfiguration:(SBSystemApertureContainerRenderingConfiguration *)a3
+- (void)_setHighLevelCurtainRenderingConfiguration:(SBSystemApertureContainerRenderingConfiguration *)configuration
 {
-  v3 = *&a3->renderingStyle;
-  *&self->_highLevelCurtainRenderingConfiguration.alwaysRenderInSnapshots = *&a3->alwaysRenderInSnapshots;
+  v3 = *&configuration->renderingStyle;
+  *&self->_highLevelCurtainRenderingConfiguration.alwaysRenderInSnapshots = *&configuration->alwaysRenderInSnapshots;
   *&self->_highLevelCurtainRenderingConfiguration.renderingStyle = v3;
 }
 
-- (id)copyByAddingActions:(id)a3
+- (id)copyByAddingActions:(id)actions
 {
-  v5 = a3;
-  if ([v5 count])
+  actionsCopy = actions;
+  if ([actionsCopy count])
   {
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
@@ -878,16 +878,16 @@ void __128__SBSAPreferences__effectiveTransitionDescriptionForPropertyForPropert
     v8[3] = &unk_2783AD750;
     v10 = a2;
     v8[4] = self;
-    v9 = v5;
-    v6 = [(SBSAPreferences *)self copyWithBlock:v8];
+    v9 = actionsCopy;
+    selfCopy = [(SBSAPreferences *)self copyWithBlock:v8];
   }
 
   else
   {
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 void __48__SBSAPreferences_Private__copyByAddingActions___block_invoke(uint64_t a1, void *a2)
@@ -945,11 +945,11 @@ void __48__SBSAPreferences_Private__copyByAddingActions___block_invoke(uint64_t 
   }
 }
 
-- (id)copyWithCancellationOfGestureOfClass:(Class)a3 context:(id)a4
+- (id)copyWithCancellationOfGestureOfClass:(Class)class context:(id)context
 {
-  v7 = a4;
-  v8 = [(NSArray *)self->_gestureDescriptions bs_firstObjectOfClass:a3];
-  if (v8 || (([v7 gestureDescriptions], v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "bs_firstObjectOfClass:", a3), v10 = objc_claimAutoreleasedReturnValue(), (v11 = v10) == 0) ? (v12 = objc_alloc_init(a3)) : (v12 = v10), v8 = v12, v11, v9, v8))
+  contextCopy = context;
+  v8 = [(NSArray *)self->_gestureDescriptions bs_firstObjectOfClass:class];
+  if (v8 || (([contextCopy gestureDescriptions], v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "bs_firstObjectOfClass:", class), v10 = objc_claimAutoreleasedReturnValue(), (v11 = v10) == 0) ? (v12 = objc_alloc_init(class)) : (v12 = v10), v8 = v12, v11, v9, v8))
   {
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
@@ -959,15 +959,15 @@ void __48__SBSAPreferences_Private__copyByAddingActions___block_invoke(uint64_t 
     v18 = a2;
     v16[4] = self;
     v13 = v8;
-    v14 = [(SBSAPreferences *)self copyWithBlock:v16];
+    selfCopy = [(SBSAPreferences *)self copyWithBlock:v16];
   }
 
   else
   {
-    v14 = self;
+    selfCopy = self;
   }
 
-  return v14;
+  return selfCopy;
 }
 
 void __73__SBSAPreferences_Private__copyWithCancellationOfGestureOfClass_context___block_invoke(void *a1, void *a2)
@@ -1076,17 +1076,17 @@ void __73__SBSAPreferences_Private__copyWithCancellationOfGestureOfClass_context
   [v5 setGestureRecognizerState:4];
 }
 
-- (id)copyByUpdatingContainerViewDescriptions:(id)a3
+- (id)copyByUpdatingContainerViewDescriptions:(id)descriptions
 {
-  v5 = a3;
+  descriptionsCopy = descriptions;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __68__SBSAPreferences_Private__copyByUpdatingContainerViewDescriptions___block_invoke;
   v9[3] = &unk_2783AD750;
-  v10 = v5;
+  v10 = descriptionsCopy;
   v11 = a2;
   v9[4] = self;
-  v6 = v5;
+  v6 = descriptionsCopy;
   v7 = [(SBSAPreferences *)self copyWithBlock:v9];
 
   return v7;
@@ -1133,17 +1133,17 @@ void __68__SBSAPreferences_Private__copyByUpdatingContainerViewDescriptions___bl
   [v6 setContainerViewDescriptions:*(a1 + 40)];
 }
 
-- (id)copyByUpdatingElementDescriptions:(id)a3
+- (id)copyByUpdatingElementDescriptions:(id)descriptions
 {
-  v5 = a3;
+  descriptionsCopy = descriptions;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __62__SBSAPreferences_Private__copyByUpdatingElementDescriptions___block_invoke;
   v9[3] = &unk_2783AD750;
-  v10 = v5;
+  v10 = descriptionsCopy;
   v11 = a2;
   v9[4] = self;
-  v6 = v5;
+  v6 = descriptionsCopy;
   v7 = [(SBSAPreferences *)self copyWithBlock:v9];
 
   return v7;
@@ -1190,17 +1190,17 @@ void __62__SBSAPreferences_Private__copyByUpdatingElementDescriptions___block_in
   [v6 setElementDescriptions:*(a1 + 40)];
 }
 
-- (id)copyByUpdatingBackgroundBlurDescription:(id)a3
+- (id)copyByUpdatingBackgroundBlurDescription:(id)description
 {
-  v5 = a3;
+  descriptionCopy = description;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __68__SBSAPreferences_Private__copyByUpdatingBackgroundBlurDescription___block_invoke;
   v9[3] = &unk_2783AD750;
-  v10 = v5;
+  v10 = descriptionCopy;
   v11 = a2;
   v9[4] = self;
-  v6 = v5;
+  v6 = descriptionCopy;
   v7 = [(SBSAPreferences *)self copyWithBlock:v9];
 
   return v7;
@@ -1247,17 +1247,17 @@ void __68__SBSAPreferences_Private__copyByUpdatingBackgroundBlurDescription___bl
   [v6 setBackgroundBlurDescription:*(a1 + 40)];
 }
 
-- (id)copyByUpdatingMaintainedPreferences:(id)a3
+- (id)copyByUpdatingMaintainedPreferences:(id)preferences
 {
-  v5 = a3;
+  preferencesCopy = preferences;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __64__SBSAPreferences_Private__copyByUpdatingMaintainedPreferences___block_invoke;
   v9[3] = &unk_2783B5748;
-  v10 = v5;
+  v10 = preferencesCopy;
   v11 = a2;
   v9[4] = self;
-  v6 = v5;
+  v6 = preferencesCopy;
   v7 = [(SBSAPreferences *)self copyWithBlock:v9];
 
   return v7;
@@ -1305,36 +1305,36 @@ void __64__SBSAPreferences_Private__copyByUpdatingMaintainedPreferences___block_
   [v6 setMaintainedPreferences:v7];
 }
 
-+ (id)instanceWithBlock:(id)a3
++ (id)instanceWithBlock:(id)block
 {
-  v3 = a3;
+  blockCopy = block;
   v4 = objc_alloc_init(objc_opt_class());
-  v5 = [v4 copyWithBlock:v3];
+  v5 = [v4 copyWithBlock:blockCopy];
 
   return v5;
 }
 
-- (id)copyWithBlock:(id)a3
+- (id)copyWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   if (self->_finalizedForApplication)
   {
     [SBSAPreferences(Private) copyWithBlock:];
   }
 
   v5 = [(SBSAPreferences *)self copy];
-  if (v4)
+  if (blockCopy)
   {
     v6 = [objc_alloc(objc_msgSend(objc_opt_class() "mutatorClass"))];
-    v4[2](v4, v6);
+    blockCopy[2](blockCopy, v6);
   }
 
   return v5;
 }
 
-- (id)animatedTransitionDescriptionForProperty:(id)a3
+- (id)animatedTransitionDescriptionForProperty:(id)property
 {
-  if (a3)
+  if (property)
   {
     v3 = [(NSMutableDictionary *)self->_interfaceElementPropertiesToBehaviorSettings objectForKey:?];
     v4 = objc_opt_class();

@@ -1,46 +1,46 @@
 @interface HFAnalyticsServiceCountEvent
-- (HFAnalyticsServiceCountEvent)initWithData:(id)a3;
+- (HFAnalyticsServiceCountEvent)initWithData:(id)data;
 @end
 
 @implementation HFAnalyticsServiceCountEvent
 
-- (HFAnalyticsServiceCountEvent)initWithData:(id)a3
+- (HFAnalyticsServiceCountEvent)initWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v11.receiver = self;
   v11.super_class = HFAnalyticsServiceCountEvent;
   v5 = [(HFAnalyticsEvent *)&v11 initWithEventType:31];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"numFavoriteServices_v2"];
+    v6 = [dataCopy objectForKeyedSubscript:@"numFavoriteServices_v2"];
 
     if (!v6)
     {
       NSLog(&cfstr_MissingFavorit.isa);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"numShowInHomeCameras"];
+    v7 = [dataCopy objectForKeyedSubscript:@"numShowInHomeCameras"];
 
     if (!v7)
     {
       NSLog(&cfstr_MissingShowinh.isa);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"numSupportedServices"];
+    v8 = [dataCopy objectForKeyedSubscript:@"numSupportedServices"];
 
     if (!v8)
     {
       NSLog(&cfstr_MissingSupport.isa);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"numUnsupportedServices"];
+    v9 = [dataCopy objectForKeyedSubscript:@"numUnsupportedServices"];
 
     if (!v9)
     {
       NSLog(&cfstr_MissingUnsuppo.isa);
     }
 
-    [(HFAnalyticsServiceCountEvent *)v5 setPayloadDictionary:v4];
+    [(HFAnalyticsServiceCountEvent *)v5 setPayloadDictionary:dataCopy];
   }
 
   return v5;

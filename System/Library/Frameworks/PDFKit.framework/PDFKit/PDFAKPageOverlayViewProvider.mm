@@ -1,39 +1,39 @@
 @interface PDFAKPageOverlayViewProvider
-- (PDFAKPageOverlayViewProvider)initWithPDFDocument:(id)a3 pdfView:(id)a4 andAKController:(id)a5;
-- (id)pdfView:(id)a3 overlayViewForPage:(id)a4;
-- (void)overlayViewInstalledForPage:(id)a3;
-- (void)overlayViewWillBeUninstalledForPage:(id)a3;
-- (void)pdfView:(id)a3 willEndDisplayingOverlayView:(id)a4 forPage:(id)a5;
-- (void)setupGestureRecognizersForView:(id)a3;
-- (void)teardownGestureRecognizersForView:(id)a3;
+- (PDFAKPageOverlayViewProvider)initWithPDFDocument:(id)document pdfView:(id)view andAKController:(id)controller;
+- (id)pdfView:(id)view overlayViewForPage:(id)page;
+- (void)overlayViewInstalledForPage:(id)page;
+- (void)overlayViewWillBeUninstalledForPage:(id)page;
+- (void)pdfView:(id)view willEndDisplayingOverlayView:(id)overlayView forPage:(id)page;
+- (void)setupGestureRecognizersForView:(id)view;
+- (void)teardownGestureRecognizersForView:(id)view;
 @end
 
 @implementation PDFAKPageOverlayViewProvider
 
-- (PDFAKPageOverlayViewProvider)initWithPDFDocument:(id)a3 pdfView:(id)a4 andAKController:(id)a5
+- (PDFAKPageOverlayViewProvider)initWithPDFDocument:(id)document pdfView:(id)view andAKController:(id)controller
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  documentCopy = document;
+  viewCopy = view;
+  controllerCopy = controller;
   v14.receiver = self;
   v14.super_class = PDFAKPageOverlayViewProvider;
   v11 = [(PDFAKPageOverlayViewProvider *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_pdfDocument, v8);
-    objc_storeWeak(&v12->_pdfView, v9);
-    objc_storeWeak(&v12->_akController, v10);
+    objc_storeWeak(&v11->_pdfDocument, documentCopy);
+    objc_storeWeak(&v12->_pdfView, viewCopy);
+    objc_storeWeak(&v12->_akController, controllerCopy);
   }
 
   return v12;
 }
 
-- (id)pdfView:(id)a3 overlayViewForPage:(id)a4
+- (id)pdfView:(id)view overlayViewForPage:(id)page
 {
-  v5 = a4;
+  pageCopy = page;
   WeakRetained = objc_loadWeakRetained(&self->_pdfDocument);
-  v7 = [WeakRetained indexForPage:v5];
+  v7 = [WeakRetained indexForPage:pageCopy];
 
   v8 = objc_loadWeakRetained(&self->_akController);
   if (([v8 isOverlayViewLoadedAtIndex:v7] & 1) == 0)
@@ -46,34 +46,34 @@
   return v9;
 }
 
-- (void)pdfView:(id)a3 willEndDisplayingOverlayView:(id)a4 forPage:(id)a5
+- (void)pdfView:(id)view willEndDisplayingOverlayView:(id)overlayView forPage:(id)page
 {
-  v6 = a5;
+  pageCopy = page;
   WeakRetained = objc_loadWeakRetained(&self->_pdfDocument);
-  v8 = [WeakRetained indexForPage:v6];
+  v8 = [WeakRetained indexForPage:pageCopy];
 
   v9 = objc_loadWeakRetained(&self->_akController);
   [v9 relinquishOverlayAtIndex:v8];
 }
 
-- (void)setupGestureRecognizersForView:(id)a3
+- (void)setupGestureRecognizersForView:(id)view
 {
   v45[5] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  viewCopy = view;
   WeakRetained = objc_loadWeakRetained(&self->_akController);
   v6 = WeakRetained;
-  if (v4 && WeakRetained)
+  if (viewCopy && WeakRetained)
   {
-    v7 = [WeakRetained tapGestureRecognizer];
-    v45[0] = v7;
-    v8 = [v6 doubleTapGestureRecognizer];
-    v45[1] = v8;
-    v9 = [v6 pressGestureRecognizer];
-    v45[2] = v9;
-    v10 = [v6 panGestureRecognizer];
-    v45[3] = v10;
-    v11 = [v6 rotationGestureRecognizer];
-    v45[4] = v11;
+    tapGestureRecognizer = [WeakRetained tapGestureRecognizer];
+    v45[0] = tapGestureRecognizer;
+    doubleTapGestureRecognizer = [v6 doubleTapGestureRecognizer];
+    v45[1] = doubleTapGestureRecognizer;
+    pressGestureRecognizer = [v6 pressGestureRecognizer];
+    v45[2] = pressGestureRecognizer;
+    panGestureRecognizer = [v6 panGestureRecognizer];
+    v45[3] = panGestureRecognizer;
+    rotationGestureRecognizer = [v6 rotationGestureRecognizer];
+    v45[4] = rotationGestureRecognizer;
     v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v45 count:5];
 
     v42 = 0u;
@@ -96,7 +96,7 @@
             objc_enumerationMutation(v13);
           }
 
-          [v4 addGestureRecognizer:{*(*(&v40 + 1) + 8 * v17++), v40}];
+          [viewCopy addGestureRecognizer:{*(*(&v40 + 1) + 8 * v17++), v40}];
         }
 
         while (v15 != v17);
@@ -106,77 +106,77 @@
       while (v15);
     }
 
-    v18 = [v4 tapGestureRecognizer];
-    v19 = [v6 tapGestureRecognizer];
-    [v18 requireGestureRecognizerToFail:v19];
+    tapGestureRecognizer2 = [viewCopy tapGestureRecognizer];
+    tapGestureRecognizer3 = [v6 tapGestureRecognizer];
+    [tapGestureRecognizer2 requireGestureRecognizerToFail:tapGestureRecognizer3];
 
-    v20 = [v4 longPressGestureRecognizer];
-    v21 = [v6 tapGestureRecognizer];
-    [v20 requireGestureRecognizerToFail:v21];
+    longPressGestureRecognizer = [viewCopy longPressGestureRecognizer];
+    tapGestureRecognizer4 = [v6 tapGestureRecognizer];
+    [longPressGestureRecognizer requireGestureRecognizerToFail:tapGestureRecognizer4];
 
-    v22 = [v4 longPressGestureRecognizer];
-    v23 = [v6 pressGestureRecognizer];
-    [v22 requireGestureRecognizerToFail:v23];
+    longPressGestureRecognizer2 = [viewCopy longPressGestureRecognizer];
+    pressGestureRecognizer2 = [v6 pressGestureRecognizer];
+    [longPressGestureRecognizer2 requireGestureRecognizerToFail:pressGestureRecognizer2];
 
-    v24 = [v4 longPressGestureRecognizer];
-    v25 = [v6 panGestureRecognizer];
-    [v24 requireGestureRecognizerToFail:v25];
+    longPressGestureRecognizer3 = [viewCopy longPressGestureRecognizer];
+    panGestureRecognizer2 = [v6 panGestureRecognizer];
+    [longPressGestureRecognizer3 requireGestureRecognizerToFail:panGestureRecognizer2];
 
-    v26 = [v4 longPressGestureRecognizer];
-    v27 = [v6 rotationGestureRecognizer];
-    [v26 requireGestureRecognizerToFail:v27];
+    longPressGestureRecognizer4 = [viewCopy longPressGestureRecognizer];
+    rotationGestureRecognizer2 = [v6 rotationGestureRecognizer];
+    [longPressGestureRecognizer4 requireGestureRecognizerToFail:rotationGestureRecognizer2];
 
-    if ([v4 isUsingPageViewController])
+    if ([viewCopy isUsingPageViewController])
     {
-      v28 = [v4 documentViewController];
-      v29 = [v28 scrollView];
+      documentViewController = [viewCopy documentViewController];
+      scrollView = [documentViewController scrollView];
     }
 
     else
     {
-      v29 = [v4 documentScrollView];
+      scrollView = [viewCopy documentScrollView];
     }
 
-    v30 = [v29 panGestureRecognizer];
-    v31 = [v6 panGestureRecognizer];
-    [v30 requireGestureRecognizerToFail:v31];
+    panGestureRecognizer3 = [scrollView panGestureRecognizer];
+    panGestureRecognizer4 = [v6 panGestureRecognizer];
+    [panGestureRecognizer3 requireGestureRecognizerToFail:panGestureRecognizer4];
 
-    v32 = [v29 panGestureRecognizer];
-    v33 = [v6 rotationGestureRecognizer];
-    [v32 requireGestureRecognizerToFail:v33];
+    panGestureRecognizer5 = [scrollView panGestureRecognizer];
+    rotationGestureRecognizer3 = [v6 rotationGestureRecognizer];
+    [panGestureRecognizer5 requireGestureRecognizerToFail:rotationGestureRecognizer3];
 
-    v34 = [v29 pinchGestureRecognizer];
-    v35 = [v6 panGestureRecognizer];
-    [v34 requireGestureRecognizerToFail:v35];
+    pinchGestureRecognizer = [scrollView pinchGestureRecognizer];
+    panGestureRecognizer6 = [v6 panGestureRecognizer];
+    [pinchGestureRecognizer requireGestureRecognizerToFail:panGestureRecognizer6];
 
-    v36 = [v29 pinchGestureRecognizer];
-    v37 = [v6 rotationGestureRecognizer];
-    [v36 requireGestureRecognizerToFail:v37];
+    pinchGestureRecognizer2 = [scrollView pinchGestureRecognizer];
+    rotationGestureRecognizer4 = [v6 rotationGestureRecognizer];
+    [pinchGestureRecognizer2 requireGestureRecognizerToFail:rotationGestureRecognizer4];
 
-    v38 = [v4 scrollViewMinimumNumberOfTouches];
-    v39 = [v29 panGestureRecognizer];
-    [v39 setMinimumNumberOfTouches:v38];
+    scrollViewMinimumNumberOfTouches = [viewCopy scrollViewMinimumNumberOfTouches];
+    panGestureRecognizer7 = [scrollView panGestureRecognizer];
+    [panGestureRecognizer7 setMinimumNumberOfTouches:scrollViewMinimumNumberOfTouches];
   }
 }
 
-- (void)teardownGestureRecognizersForView:(id)a3
+- (void)teardownGestureRecognizersForView:(id)view
 {
   v23[5] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  viewCopy = view;
   WeakRetained = objc_loadWeakRetained(&self->_akController);
   v6 = WeakRetained;
-  if (v4 && WeakRetained)
+  if (viewCopy && WeakRetained)
   {
-    v7 = [WeakRetained tapGestureRecognizer];
-    v23[0] = v7;
-    v8 = [v6 doubleTapGestureRecognizer];
-    v23[1] = v8;
-    v9 = [v6 pressGestureRecognizer];
-    v23[2] = v9;
-    v10 = [v6 panGestureRecognizer];
-    v23[3] = v10;
-    v11 = [v6 rotationGestureRecognizer];
-    v23[4] = v11;
+    tapGestureRecognizer = [WeakRetained tapGestureRecognizer];
+    v23[0] = tapGestureRecognizer;
+    doubleTapGestureRecognizer = [v6 doubleTapGestureRecognizer];
+    v23[1] = doubleTapGestureRecognizer;
+    pressGestureRecognizer = [v6 pressGestureRecognizer];
+    v23[2] = pressGestureRecognizer;
+    panGestureRecognizer = [v6 panGestureRecognizer];
+    v23[3] = panGestureRecognizer;
+    rotationGestureRecognizer = [v6 rotationGestureRecognizer];
+    v23[4] = rotationGestureRecognizer;
     v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:5];
 
     v20 = 0u;
@@ -199,7 +199,7 @@
             objc_enumerationMutation(v13);
           }
 
-          [v4 removeGestureRecognizer:{*(*(&v18 + 1) + 8 * v17++), v18}];
+          [viewCopy removeGestureRecognizer:{*(*(&v18 + 1) + 8 * v17++), v18}];
         }
 
         while (v15 != v17);
@@ -211,44 +211,44 @@
   }
 }
 
-- (void)overlayViewInstalledForPage:(id)a3
+- (void)overlayViewInstalledForPage:(id)page
 {
   v50 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  pageCopy = page;
   WeakRetained = objc_loadWeakRetained(&self->_akController);
   if (WeakRetained)
   {
     v6 = objc_loadWeakRetained(&self->_pdfView);
     v7 = objc_loadWeakRetained(&self->_pdfDocument);
-    v8 = [v7 indexForPage:v4];
+    v8 = [v7 indexForPage:pageCopy];
 
     if ([v6 isUsingPageViewController])
     {
-      v9 = [v6 documentViewController];
-      v10 = [v9 findPageViewControllerForPageIndex:v8];
+      documentViewController = [v6 documentViewController];
+      v10 = [documentViewController findPageViewControllerForPageIndex:v8];
       v11 = v10;
       if (v10)
       {
-        v12 = [v10 scrollView];
-        v13 = [v12 panGestureRecognizer];
-        v14 = [WeakRetained panGestureRecognizer];
-        [v13 requireGestureRecognizerToFail:v14];
+        scrollView = [v10 scrollView];
+        panGestureRecognizer = [scrollView panGestureRecognizer];
+        panGestureRecognizer2 = [WeakRetained panGestureRecognizer];
+        [panGestureRecognizer requireGestureRecognizerToFail:panGestureRecognizer2];
 
-        v15 = [v12 panGestureRecognizer];
-        v16 = [WeakRetained rotationGestureRecognizer];
-        [v15 requireGestureRecognizerToFail:v16];
+        panGestureRecognizer3 = [scrollView panGestureRecognizer];
+        rotationGestureRecognizer = [WeakRetained rotationGestureRecognizer];
+        [panGestureRecognizer3 requireGestureRecognizerToFail:rotationGestureRecognizer];
 
-        v17 = [v12 pinchGestureRecognizer];
-        v18 = [WeakRetained panGestureRecognizer];
-        [v17 requireGestureRecognizerToFail:v18];
+        pinchGestureRecognizer = [scrollView pinchGestureRecognizer];
+        panGestureRecognizer4 = [WeakRetained panGestureRecognizer];
+        [pinchGestureRecognizer requireGestureRecognizerToFail:panGestureRecognizer4];
 
-        v19 = [v12 pinchGestureRecognizer];
-        v20 = [WeakRetained rotationGestureRecognizer];
-        [v19 requireGestureRecognizerToFail:v20];
+        pinchGestureRecognizer2 = [scrollView pinchGestureRecognizer];
+        rotationGestureRecognizer2 = [WeakRetained rotationGestureRecognizer];
+        [pinchGestureRecognizer2 requireGestureRecognizerToFail:rotationGestureRecognizer2];
 
-        v21 = [v6 scrollViewMinimumNumberOfTouches];
-        v22 = [v12 panGestureRecognizer];
-        [v22 setMinimumNumberOfTouches:v21];
+        scrollViewMinimumNumberOfTouches = [v6 scrollViewMinimumNumberOfTouches];
+        panGestureRecognizer5 = [scrollView panGestureRecognizer];
+        [panGestureRecognizer5 setMinimumNumberOfTouches:scrollViewMinimumNumberOfTouches];
       }
     }
 
@@ -256,9 +256,9 @@
     if (v23)
     {
       v35 = v6;
-      v24 = [WeakRetained tapGestureRecognizer];
+      tapGestureRecognizer = [WeakRetained tapGestureRecognizer];
       v36 = WeakRetained;
-      v25 = [WeakRetained panGestureRecognizer];
+      panGestureRecognizer6 = [WeakRetained panGestureRecognizer];
       v44 = 0u;
       v45 = 0u;
       v46 = 0u;
@@ -305,8 +305,8 @@
             v43 = 0u;
             v40 = 0u;
             v41 = 0u;
-            v28 = [v27 gestureRecognizers];
-            v29 = [v28 countByEnumeratingWithState:&v40 objects:v48 count:16];
+            gestureRecognizers = [v27 gestureRecognizers];
+            v29 = [gestureRecognizers countByEnumeratingWithState:&v40 objects:v48 count:16];
             if (v29)
             {
               v30 = v29;
@@ -317,24 +317,24 @@
                 {
                   if (*v41 != v31)
                   {
-                    objc_enumerationMutation(v28);
+                    objc_enumerationMutation(gestureRecognizers);
                   }
 
                   v33 = *(*(&v40 + 1) + 8 * j);
                   objc_opt_class();
                   if (objc_opt_isKindOfClass())
                   {
-                    [v33 requireGestureRecognizerToFail:v24];
+                    [v33 requireGestureRecognizerToFail:tapGestureRecognizer];
                   }
 
                   objc_opt_class();
                   if (objc_opt_isKindOfClass())
                   {
-                    [v33 requireGestureRecognizerToFail:v25];
+                    [v33 requireGestureRecognizerToFail:panGestureRecognizer6];
                   }
                 }
 
-                v30 = [v28 countByEnumeratingWithState:&v40 objects:v48 count:16];
+                v30 = [gestureRecognizers countByEnumeratingWithState:&v40 objects:v48 count:16];
               }
 
               while (v30);
@@ -354,38 +354,38 @@
   }
 }
 
-- (void)overlayViewWillBeUninstalledForPage:(id)a3
+- (void)overlayViewWillBeUninstalledForPage:(id)page
 {
-  v19 = a3;
+  pageCopy = page;
   WeakRetained = objc_loadWeakRetained(&self->_pdfView);
   if ([WeakRetained isUsingPageViewController])
   {
     v5 = objc_loadWeakRetained(&self->_pdfDocument);
-    v6 = [v5 indexForPage:v19];
+    v6 = [v5 indexForPage:pageCopy];
 
-    v7 = [WeakRetained documentViewController];
-    v8 = [v7 findPageViewControllerForPageIndex:v6];
+    documentViewController = [WeakRetained documentViewController];
+    v8 = [documentViewController findPageViewControllerForPageIndex:v6];
     if (v8)
     {
       v9 = objc_loadWeakRetained(&self->_akController);
       if (v9)
       {
-        v10 = [v8 scrollView];
-        v11 = [v10 panGestureRecognizer];
-        v12 = [v9 panGestureRecognizer];
-        [v11 removeFailureRequirement:v12];
+        scrollView = [v8 scrollView];
+        panGestureRecognizer = [scrollView panGestureRecognizer];
+        panGestureRecognizer2 = [v9 panGestureRecognizer];
+        [panGestureRecognizer removeFailureRequirement:panGestureRecognizer2];
 
-        v13 = [v10 panGestureRecognizer];
-        v14 = [v9 rotationGestureRecognizer];
-        [v13 removeFailureRequirement:v14];
+        panGestureRecognizer3 = [scrollView panGestureRecognizer];
+        rotationGestureRecognizer = [v9 rotationGestureRecognizer];
+        [panGestureRecognizer3 removeFailureRequirement:rotationGestureRecognizer];
 
-        v15 = [v10 pinchGestureRecognizer];
-        v16 = [v9 panGestureRecognizer];
-        [v15 removeFailureRequirement:v16];
+        pinchGestureRecognizer = [scrollView pinchGestureRecognizer];
+        panGestureRecognizer4 = [v9 panGestureRecognizer];
+        [pinchGestureRecognizer removeFailureRequirement:panGestureRecognizer4];
 
-        v17 = [v10 pinchGestureRecognizer];
-        v18 = [v9 rotationGestureRecognizer];
-        [v17 removeFailureRequirement:v18];
+        pinchGestureRecognizer2 = [scrollView pinchGestureRecognizer];
+        rotationGestureRecognizer2 = [v9 rotationGestureRecognizer];
+        [pinchGestureRecognizer2 removeFailureRequirement:rotationGestureRecognizer2];
       }
     }
   }

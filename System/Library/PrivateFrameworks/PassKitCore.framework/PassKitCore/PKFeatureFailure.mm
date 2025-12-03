@@ -1,27 +1,27 @@
 @interface PKFeatureFailure
-- (BOOL)isEqual:(id)a3;
-- (PKFeatureFailure)initWithCoder:(id)a3;
-- (PKFeatureFailure)initWithDictionary:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (PKFeatureFailure)initWithCoder:(id)coder;
+- (PKFeatureFailure)initWithDictionary:(id)dictionary;
 - (id)description;
 - (id)errorRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKFeatureFailure
 
-- (PKFeatureFailure)initWithDictionary:(id)a3
+- (PKFeatureFailure)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v18.receiver = self;
   v18.super_class = PKFeatureFailure;
   v5 = [(PKFeatureFailure *)&v18 init];
   if (v5)
   {
-    v6 = [v4 PKStringForKey:@"featureIdentifier"];
+    v6 = [dictionaryCopy PKStringForKey:@"featureIdentifier"];
     v5->_featureIdentifier = PKFeatureIdentifierFromString(v6);
 
-    v7 = [v4 PKStringForKey:@"errorCode"];
+    v7 = [dictionaryCopy PKStringForKey:@"errorCode"];
     v8 = v7;
     if (v7)
     {
@@ -30,21 +30,21 @@
 
     else
     {
-      [v4 PKNumberForKey:@"errorCode"];
+      [dictionaryCopy PKNumberForKey:@"errorCode"];
     }
     v9 = ;
     errorCode = v5->_errorCode;
     v5->_errorCode = v9;
 
-    v11 = [v4 PKStringForKey:@"localizedTitle"];
+    v11 = [dictionaryCopy PKStringForKey:@"localizedTitle"];
     localizedTitle = v5->_localizedTitle;
     v5->_localizedTitle = v11;
 
-    v13 = [v4 PKStringForKey:@"localizedDescription"];
+    v13 = [dictionaryCopy PKStringForKey:@"localizedDescription"];
     localizedDescription = v5->_localizedDescription;
     v5->_localizedDescription = v13;
 
-    v15 = [v4 PKStringForKey:@"debugDescription"];
+    v15 = [dictionaryCopy PKStringForKey:@"debugDescription"];
     serverDescription = v5->_serverDescription;
     v5->_serverDescription = v15;
   }
@@ -69,35 +69,35 @@
   }
 
   v7 = objc_alloc(MEMORY[0x1E696ABC0]);
-  v8 = [(NSNumber *)self->_errorCode integerValue];
+  integerValue = [(NSNumber *)self->_errorCode integerValue];
   v9 = [v4 copy];
-  v10 = [v7 initWithDomain:@"PKAccountErrorDomain" code:v8 userInfo:v9];
+  v10 = [v7 initWithDomain:@"PKAccountErrorDomain" code:integerValue userInfo:v9];
 
   return v10;
 }
 
-- (PKFeatureFailure)initWithCoder:(id)a3
+- (PKFeatureFailure)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = PKFeatureFailure;
   v5 = [(PKFeatureFailure *)&v15 init];
   if (v5)
   {
-    v5->_featureIdentifier = [v4 decodeIntegerForKey:@"featureIdentifier"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"errorCode"];
+    v5->_featureIdentifier = [coderCopy decodeIntegerForKey:@"featureIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"errorCode"];
     errorCode = v5->_errorCode;
     v5->_errorCode = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localizedTitle"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localizedTitle"];
     localizedTitle = v5->_localizedTitle;
     v5->_localizedTitle = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localizedDescription"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localizedDescription"];
     localizedDescription = v5->_localizedDescription;
     v5->_localizedDescription = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"serverDescription"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"serverDescription"];
     serverDescription = v5->_serverDescription;
     v5->_serverDescription = v12;
   }
@@ -105,37 +105,37 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   featureIdentifier = self->_featureIdentifier;
-  v5 = a3;
-  [v5 encodeInteger:featureIdentifier forKey:@"featureIdentifier"];
-  [v5 encodeObject:self->_errorCode forKey:@"errorCode"];
-  [v5 encodeObject:self->_localizedTitle forKey:@"localizedTitle"];
-  [v5 encodeObject:self->_localizedDescription forKey:@"localizedDescription"];
-  [v5 encodeObject:self->_serverDescription forKey:@"serverDescription"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:featureIdentifier forKey:@"featureIdentifier"];
+  [coderCopy encodeObject:self->_errorCode forKey:@"errorCode"];
+  [coderCopy encodeObject:self->_localizedTitle forKey:@"localizedTitle"];
+  [coderCopy encodeObject:self->_localizedDescription forKey:@"localizedDescription"];
+  [coderCopy encodeObject:self->_serverDescription forKey:@"serverDescription"];
 }
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 safelyAddObject:self->_errorCode];
-  [v3 safelyAddObject:self->_localizedTitle];
-  [v3 safelyAddObject:self->_localizedDescription];
-  [v3 safelyAddObject:self->_serverDescription];
-  v4 = PKCombinedHash(17, v3);
+  array = [MEMORY[0x1E695DF70] array];
+  [array safelyAddObject:self->_errorCode];
+  [array safelyAddObject:self->_localizedTitle];
+  [array safelyAddObject:self->_localizedDescription];
+  [array safelyAddObject:self->_serverDescription];
+  v4 = PKCombinedHash(17, array);
   v5 = self->_featureIdentifier - v4 + 32 * v4;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else

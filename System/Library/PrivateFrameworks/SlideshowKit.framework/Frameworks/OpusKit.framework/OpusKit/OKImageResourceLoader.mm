@@ -1,28 +1,28 @@
 @interface OKImageResourceLoader
-- (id)copyResource:(id)a3;
-- (id)loadResourceWithURL:(id)a3 withPresentationViewController:(id)a4;
-- (void)deleteResource:(id)a3;
+- (id)copyResource:(id)resource;
+- (id)loadResourceWithURL:(id)l withPresentationViewController:(id)controller;
+- (void)deleteResource:(id)resource;
 @end
 
 @implementation OKImageResourceLoader
 
-- (id)loadResourceWithURL:(id)a3 withPresentationViewController:(id)a4
+- (id)loadResourceWithURL:(id)l withPresentationViewController:(id)controller
 {
-  v5 = [objc_msgSend(a4 "presentation")];
+  v5 = [objc_msgSend(controller "presentation")];
   [objc_msgSend(v5 "metadata")];
   v7 = v6;
-  v8 = [a4 colorSpace];
+  colorSpace = [controller colorSpace];
 
-  return [v5 thumbnailImageForResolution:2048 aspectRatio:v8 scale:v7 quality:1.0 colorSpace:1.0];
+  return [v5 thumbnailImageForResolution:2048 aspectRatio:colorSpace scale:v7 quality:1.0 colorSpace:1.0];
 }
 
-- (id)copyResource:(id)a3
+- (id)copyResource:(id)resource
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
 
-    return [a3 copy];
+    return [resource copy];
   }
 
   else
@@ -36,12 +36,12 @@
   }
 }
 
-- (void)deleteResource:(id)a3
+- (void)deleteResource:(id)resource
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (a3)
+    if (resource)
     {
     }
   }

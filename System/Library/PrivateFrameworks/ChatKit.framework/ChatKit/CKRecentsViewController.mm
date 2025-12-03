@@ -1,45 +1,45 @@
 @interface CKRecentsViewController
-- (BOOL)dragManager:(id)a3 canPeelItem:(id)a4;
-- (BOOL)dragManager:(id)a3 canRotateItem:(id)a4;
-- (BOOL)dragManager:(id)a3 canScaleItem:(id)a4;
+- (BOOL)dragManager:(id)manager canPeelItem:(id)item;
+- (BOOL)dragManager:(id)manager canRotateItem:(id)item;
+- (BOOL)dragManager:(id)manager canScaleItem:(id)item;
 - (BOOL)isLoaded;
-- (BOOL)stickerBrowserView:(id)a3 shouldDrawBorderAroundSticker:(id)a4;
-- (CKRecentsViewController)initWithBalloonPlugin:(id)a3 dataSource:(id)a4;
-- (id)_stickerForMSSticker:(id)a3;
+- (BOOL)stickerBrowserView:(id)view shouldDrawBorderAroundSticker:(id)sticker;
+- (CKRecentsViewController)initWithBalloonPlugin:(id)plugin dataSource:(id)source;
+- (id)_stickerForMSSticker:(id)sticker;
 - (id)requestSnapshotDataForPersistance;
-- (id)stickerBrowserView:(id)a3 stickerAtIndex:(int64_t)a4;
+- (id)stickerBrowserView:(id)view stickerAtIndex:(int64_t)index;
 - (int64_t)_userInterfaceStyle;
-- (int64_t)numberOfStickersInStickerBrowserView:(id)a3;
-- (void)_loadRecentHandwritingsAndStickersWithCompletion:(id)a3;
+- (int64_t)numberOfStickersInStickerBrowserView:(id)view;
+- (void)_loadRecentHandwritingsAndStickersWithCompletion:(id)completion;
 - (void)_postBrowserDidPrepareForDisplayNotificationIfNecessary;
-- (void)_setContentOverlayInsets:(UIEdgeInsets)a3;
+- (void)_setContentOverlayInsets:(UIEdgeInsets)insets;
 - (void)dealloc;
-- (void)didTransitionFromOrientation:(int64_t)a3 toOrientation:(int64_t)a4;
+- (void)didTransitionFromOrientation:(int64_t)orientation toOrientation:(int64_t)toOrientation;
 - (void)dismiss;
-- (void)dragManager:(id)a3 didEndDraggingItem:(id)a4 toDragTarget:(id)a5 dropArea:(int)a6;
+- (void)dragManager:(id)manager didEndDraggingItem:(id)item toDragTarget:(id)target dropArea:(int)area;
 - (void)forceTearDownRemoteView;
-- (void)insertSticker:(id)a3 forceStage:(BOOL)a4 completionHandler:(id)a5;
-- (void)insertSticker:(id)a3 representations:(id)a4 forceStage:(BOOL)a5 frameInScreenCoordinates:(CGRect)a6 completionHandler:(id)a7;
+- (void)insertSticker:(id)sticker forceStage:(BOOL)stage completionHandler:(id)handler;
+- (void)insertSticker:(id)sticker representations:(id)representations forceStage:(BOOL)stage frameInScreenCoordinates:(CGRect)coordinates completionHandler:(id)handler;
 - (void)loadRecents;
 - (void)loadView;
 - (void)prepareForDisplay;
 - (void)resortAndReloadRecents;
 - (void)saveSnapshotForBrowserViewController;
 - (void)setupNoRecentsLabel;
-- (void)startDragSticker:(id)a3 frameInRemoteView:(CGRect)a4 fence:(id)a5 completionHandler:(id)a6;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)startDragSticker:(id)sticker frameInRemoteView:(CGRect)view fence:(id)fence completionHandler:(id)handler;
+- (void)traitCollectionDidChange:(id)change;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation CKRecentsViewController
 
-- (CKRecentsViewController)initWithBalloonPlugin:(id)a3 dataSource:(id)a4
+- (CKRecentsViewController)initWithBalloonPlugin:(id)plugin dataSource:(id)source
 {
   v11.receiver = self;
   v11.super_class = CKRecentsViewController;
-  v4 = [(CKBrowserViewController *)&v11 initWithBalloonPlugin:a3 dataSource:a4];
+  v4 = [(CKBrowserViewController *)&v11 initWithBalloonPlugin:plugin dataSource:source];
   v5 = v4;
   if (v4)
   {
@@ -100,12 +100,12 @@ void __38__CKRecentsViewController_loadRecents__block_invoke(uint64_t a1, void *
   [v7 setIsLoadingRecents:0];
 }
 
-- (void)_loadRecentHandwritingsAndStickersWithCompletion:(id)a3
+- (void)_loadRecentHandwritingsAndStickersWithCompletion:(id)completion
 {
   v3 = MEMORY[0x1E69A81E8];
-  v4 = a3;
-  v5 = [v3 sharedInstance];
-  [v5 loadRecentHandwritingsAndStickersWithThumbnailSize:v4 completion:{80.0, 44.0}];
+  completionCopy = completion;
+  sharedInstance = [v3 sharedInstance];
+  [sharedInstance loadRecentHandwritingsAndStickersWithThumbnailSize:completionCopy completion:{80.0, 44.0}];
 }
 
 - (void)prepareForDisplay
@@ -115,16 +115,16 @@ void __38__CKRecentsViewController_loadRecents__block_invoke(uint64_t a1, void *
   [(CKRecentsViewController *)self loadRecents];
 }
 
-- (void)didTransitionFromOrientation:(int64_t)a3 toOrientation:(int64_t)a4
+- (void)didTransitionFromOrientation:(int64_t)orientation toOrientation:(int64_t)toOrientation
 {
-  v4 = [(CKRecentsViewController *)self browserView:a3];
+  v4 = [(CKRecentsViewController *)self browserView:orientation];
   [v4 invalidateFlowLayout];
 }
 
 - (void)forceTearDownRemoteView
 {
-  v2 = [(CKRecentsViewController *)self browserView];
-  [v2 invalidateFlowLayout];
+  browserView = [(CKRecentsViewController *)self browserView];
+  [browserView invalidateFlowLayout];
 }
 
 - (void)resortAndReloadRecents
@@ -132,8 +132,8 @@ void __38__CKRecentsViewController_loadRecents__block_invoke(uint64_t a1, void *
   if ([(NSMutableArray *)self->_recentItems count])
   {
     [(NSMutableArray *)self->_recentItems sortUsingComparator:&__block_literal_global_194];
-    v3 = [(CKRecentsViewController *)self browserView];
-    [v3 reloadData];
+    browserView = [(CKRecentsViewController *)self browserView];
+    [browserView reloadData];
 
     [(UILabel *)self->_noRecentsLabel removeFromSuperview];
     noRecentsLabel = self->_noRecentsLabel;
@@ -179,23 +179,23 @@ uint64_t __49__CKRecentsViewController_resortAndReloadRecents__block_invoke(uint
   v10[1] = *MEMORY[0x1E69E9840];
   if ([(CKRecentsViewController *)self isPreparingForDisplay])
   {
-    v3 = [(CKBrowserViewController *)self balloonPlugin];
+    balloonPlugin = [(CKBrowserViewController *)self balloonPlugin];
 
-    if (v3)
+    if (balloonPlugin)
     {
       v9 = @"CKRemoteViewPluginKey";
-      v4 = [(CKBrowserViewController *)self balloonPlugin];
-      v10[0] = v4;
-      v3 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:&v9 count:1];
+      balloonPlugin2 = [(CKBrowserViewController *)self balloonPlugin];
+      v10[0] = balloonPlugin2;
+      balloonPlugin = [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:&v9 count:1];
     }
 
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __82__CKRecentsViewController__postBrowserDidPrepareForDisplayNotificationIfNecessary__block_invoke;
     block[3] = &unk_1E72EB8D0;
-    v7 = v3;
-    v8 = self;
-    v5 = v3;
+    v7 = balloonPlugin;
+    selfCopy = self;
+    v5 = balloonPlugin;
     dispatch_async(MEMORY[0x1E69E96A0], block);
   }
 }
@@ -214,8 +214,8 @@ uint64_t __82__CKRecentsViewController__postBrowserDidPrepareForDisplayNotificat
 {
   [(UILabel *)self->_noRecentsLabel removeFromSuperview];
   v3 = objc_alloc(MEMORY[0x1E69DCC10]);
-  v4 = [(CKRecentsViewController *)self view];
-  [v4 frame];
+  view = [(CKRecentsViewController *)self view];
+  [view frame];
   v5 = [v3 initWithFrame:?];
   noRecentsLabel = self->_noRecentsLabel;
   self->_noRecentsLabel = v5;
@@ -239,9 +239,9 @@ uint64_t __82__CKRecentsViewController__postBrowserDidPrepareForDisplayNotificat
   v9.receiver = self;
   v9.super_class = CKRecentsViewController;
   [(CKBrowserViewController *)&v9 loadView];
-  v3 = [(CKRecentsViewController *)self view];
-  v4 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  [v3 setBackgroundColor:v4];
+  view = [(CKRecentsViewController *)self view];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  [view setBackgroundColor:systemBackgroundColor];
 
   v5 = [objc_alloc(MEMORY[0x193AF5EC0](@"MSStickerBrowserView" @"Messages"))];
   [(MSStickerBrowserView *)v5 setDataSource:self];
@@ -251,56 +251,56 @@ uint64_t __82__CKRecentsViewController__postBrowserDidPrepareForDisplayNotificat
   self->_browserView = v5;
   v7 = v5;
 
-  v8 = [(CKRecentsViewController *)self view];
-  [v8 addSubview:self->_browserView];
+  view2 = [(CKRecentsViewController *)self view];
+  [view2 addSubview:self->_browserView];
 }
 
 - (void)viewDidLayoutSubviews
 {
   browserView = self->_browserView;
-  v4 = [(CKRecentsViewController *)self view];
-  [v4 bounds];
+  view = [(CKRecentsViewController *)self view];
+  [view bounds];
   [(MSStickerBrowserView *)browserView setFrame:?];
 
   noRecentsLabel = self->_noRecentsLabel;
   if (noRecentsLabel)
   {
-    v6 = [(CKRecentsViewController *)self view];
-    [v6 bounds];
+    view2 = [(CKRecentsViewController *)self view];
+    [view2 bounds];
     [(UILabel *)noRecentsLabel setFrame:?];
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = CKRecentsViewController;
-  [(CKBrowserViewController *)&v6 viewWillAppear:a3];
+  [(CKBrowserViewController *)&v6 viewWillAppear:appear];
   v4 = [MEMORY[0x193AF5EC0](@"_MSStickerSendManager" @"Messages")];
   [v4 setDelegate:self];
 
-  v5 = [(CKRecentsViewController *)self browserView];
-  [v5 _startAnimating];
+  browserView = [(CKRecentsViewController *)self browserView];
+  [browserView _startAnimating];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = CKRecentsViewController;
-  [(CKBrowserViewController *)&v5 viewDidDisappear:a3];
-  v4 = [(CKRecentsViewController *)self browserView];
-  [v4 _stopAnimating];
+  [(CKBrowserViewController *)&v5 viewDidDisappear:disappear];
+  browserView = [(CKRecentsViewController *)self browserView];
+  [browserView _stopAnimating];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = CKRecentsViewController;
-  [(CKRecentsViewController *)&v4 traitCollectionDidChange:a3];
+  [(CKRecentsViewController *)&v4 traitCollectionDidChange:change];
   [(CKRecentsViewController *)self recentsUpdated];
 }
 
-- (int64_t)numberOfStickersInStickerBrowserView:(id)a3
+- (int64_t)numberOfStickersInStickerBrowserView:(id)view
 {
   result = [(NSMutableArray *)self->_recentItems count];
   if (result >= 0x19)
@@ -311,34 +311,34 @@ uint64_t __82__CKRecentsViewController__postBrowserDidPrepareForDisplayNotificat
   return result;
 }
 
-- (id)stickerBrowserView:(id)a3 stickerAtIndex:(int64_t)a4
+- (id)stickerBrowserView:(id)view stickerAtIndex:(int64_t)index
 {
-  v4 = self;
-  v5 = [(NSMutableArray *)self->_recentItems objectAtIndex:a4];
+  selfCopy = self;
+  v5 = [(NSMutableArray *)self->_recentItems objectAtIndex:index];
   v6 = MEMORY[0x193AF5EC0](@"MSSticker", @"Messages");
-  v7 = [v5 payloadData];
+  payloadData = [v5 payloadData];
 
-  if (v7)
+  if (payloadData)
   {
     v8 = [v6 alloc];
-    v9 = [v5 fileURL];
-    v10 = [v5 payloadData];
-    v11 = [v8 initWithContentsOfURL:v9 data:v10 localizedDescription:@"handwriting" error:0];
+    fileURL = [v5 fileURL];
+    payloadData2 = [v5 payloadData];
+    v11 = [v8 initWithContentsOfURL:fileURL data:payloadData2 localizedDescription:@"handwriting" error:0];
   }
 
   else
   {
-    v9 = [v5 messageItemInfo];
-    v12 = [v5 fileURL];
-    v13 = [v12 path];
-    v10 = [v13 lastPathComponent];
+    fileURL = [v5 messageItemInfo];
+    fileURL2 = [v5 fileURL];
+    path = [fileURL2 path];
+    payloadData2 = [path lastPathComponent];
 
     v14 = MEMORY[0x1E695DFF8];
-    v15 = [v5 fileURL];
-    v16 = [v15 path];
-    v17 = [v14 fileURLWithPath:v16];
+    fileURL3 = [v5 fileURL];
+    path2 = [fileURL3 path];
+    v17 = [v14 fileURLWithPath:path2];
 
-    v18 = [v9 objectForKey:*MEMORY[0x1E69A7CB0]];
+    v18 = [fileURL objectForKey:*MEMORY[0x1E69A7CB0]];
     v19 = v18;
     v20 = @"com.apple.messages.Recents";
     if (v18)
@@ -349,31 +349,31 @@ uint64_t __82__CKRecentsViewController__postBrowserDidPrepareForDisplayNotificat
     v21 = v20;
 
     v22 = objc_alloc(MEMORY[0x1E69A82C0]);
-    v23 = [v5 accessibilityString];
+    accessibilityString = [v5 accessibilityString];
     v47 = v17;
-    v24 = [v22 initWithStickerID:v10 stickerPackID:v21 fileURL:v17 accessibilityLabel:v23 accessibilityName:0 searchText:0 sanitizedPrompt:0 moodCategory:0 stickerName:0];
+    v24 = [v22 initWithStickerID:payloadData2 stickerPackID:v21 fileURL:v17 accessibilityLabel:accessibilityString accessibilityName:0 searchText:0 sanitizedPrompt:0 moodCategory:0 stickerName:0];
 
-    v25 = [MEMORY[0x1E69A5AD0] sharedInstance];
-    v26 = [v24 stickerPackGUID];
-    v27 = [v25 balloonPluginForBundleID:v26];
+    mEMORY[0x1E69A5AD0] = [MEMORY[0x1E69A5AD0] sharedInstance];
+    stickerPackGUID = [v24 stickerPackGUID];
+    v27 = [mEMORY[0x1E69A5AD0] balloonPluginForBundleID:stickerPackGUID];
 
     v46 = v27;
-    v28 = [v27 attributionInfo];
-    [v24 setAttributionInfo:v28];
+    attributionInfo = [v27 attributionInfo];
+    [v24 setAttributionInfo:attributionInfo];
 
-    v29 = [v9 objectForKey:*MEMORY[0x1E69A7CC0]];
+    v29 = [fileURL objectForKey:*MEMORY[0x1E69A7CC0]];
     if ([v29 length])
     {
-      v30 = [v29 _FTDataFromHexString];
-      [v24 setRecipe:v30];
+      _FTDataFromHexString = [v29 _FTDataFromHexString];
+      [v24 setRecipe:_FTDataFromHexString];
 
-      v31 = [v9 objectForKey:*MEMORY[0x1E69A7C80]];
+      v31 = [fileURL objectForKey:*MEMORY[0x1E69A7C80]];
       [v24 setBallonBundleID:v31];
     }
 
     v45 = v29;
-    v32 = [v5 accessibilityString];
-    v33 = [v32 length];
+    accessibilityString2 = [v5 accessibilityString];
+    v33 = [accessibilityString2 length];
 
     v34 = MEMORY[0x1E696AEC0];
     v35 = CKFrameworkBundle();
@@ -382,12 +382,12 @@ uint64_t __82__CKRecentsViewController__postBrowserDidPrepareForDisplayNotificat
     {
       v37 = [v35 localizedStringForKey:@"STICKER_ACCESSIBILTY_LABEL_FORMAT" value:&stru_1F04268F8 table:@"ChatKit"];
       [v5 accessibilityString];
-      v38 = v4;
+      v38 = selfCopy;
       v40 = v39 = v6;
       v41 = [v34 stringWithFormat:v37, v40];
 
       v6 = v39;
-      v4 = v38;
+      selfCopy = v38;
     }
 
     else
@@ -397,38 +397,38 @@ uint64_t __82__CKRecentsViewController__postBrowserDidPrepareForDisplayNotificat
     }
 
     v11 = [[v6 alloc] initWithContentsOfFileURL:v47 localizedDescription:v41 error:0];
-    stickerCache = v4->_stickerCache;
-    v43 = [v11 imageFileURL];
-    [(NSMutableDictionary *)stickerCache setObject:v24 forKey:v43];
+    stickerCache = selfCopy->_stickerCache;
+    imageFileURL = [v11 imageFileURL];
+    [(NSMutableDictionary *)stickerCache setObject:v24 forKey:imageFileURL];
   }
 
   return v11;
 }
 
-- (id)_stickerForMSSticker:(id)a3
+- (id)_stickerForMSSticker:(id)sticker
 {
-  v4 = [a3 imageFileURL];
-  v5 = [(NSMutableDictionary *)self->_stickerCache objectForKey:v4];
+  imageFileURL = [sticker imageFileURL];
+  v5 = [(NSMutableDictionary *)self->_stickerCache objectForKey:imageFileURL];
 
   return v5;
 }
 
 - (id)requestSnapshotDataForPersistance
 {
-  v2 = [(CKRecentsViewController *)self view];
-  [v2 bounds];
+  view = [(CKRecentsViewController *)self view];
+  [view bounds];
   v4 = v3;
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v11 scale];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
   v13 = v12;
   v18.width = v8;
   v18.height = v10;
   UIGraphicsBeginImageContextWithOptions(v18, 1, v13);
 
-  [v2 drawViewHierarchyInRect:0 afterScreenUpdates:{v4, v6, v8, v10}];
+  [view drawViewHierarchyInRect:0 afterScreenUpdates:{v4, v6, v8, v10}];
   v14 = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
   v15 = UIImagePNGRepresentation(v14);
@@ -438,29 +438,29 @@ uint64_t __82__CKRecentsViewController__postBrowserDidPrepareForDisplayNotificat
 
 - (void)saveSnapshotForBrowserViewController
 {
-  v3 = [(CKRecentsViewController *)self _userInterfaceStyle];
-  v4 = [(CKRecentsViewController *)self view];
-  [v4 bounds];
-  v16 = [CKSnapshotCacheKey keyWithIdentifier:@"com.apple.messages.browser.RecentPlugin" interfaceStyle:v3 bounds:?];
+  _userInterfaceStyle = [(CKRecentsViewController *)self _userInterfaceStyle];
+  view = [(CKRecentsViewController *)self view];
+  [view bounds];
+  v16 = [CKSnapshotCacheKey keyWithIdentifier:@"com.apple.messages.browser.RecentPlugin" interfaceStyle:_userInterfaceStyle bounds:?];
 
-  v5 = [(CKRecentsViewController *)self requestSnapshotDataForPersistance];
+  requestSnapshotDataForPersistance = [(CKRecentsViewController *)self requestSnapshotDataForPersistance];
   v6 = MEMORY[0x1E69DCAB8];
-  v7 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v7 scale];
-  v8 = [v6 imageWithData:v5 scale:?];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
+  v8 = [v6 imageWithData:requestSnapshotDataForPersistance scale:?];
 
   v9 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v8];
-  v10 = [v16 stringValue];
-  v11 = CKBrowserSnapshotPreviewURL(v10, @"png");
+  stringValue = [v16 stringValue];
+  v11 = CKBrowserSnapshotPreviewURL(stringValue, @"png");
 
-  CKFreeSpaceWriteDataToURL(v5, v11, 1);
+  CKFreeSpaceWriteDataToURL(requestSnapshotDataForPersistance, v11, 1);
   v12 = +[CKBalloonPluginManager sharedInstance];
-  v13 = [v12 snapshotCache];
-  v14 = [v16 stringValue];
-  [v13 setCachedPreview:v9 key:v14];
+  snapshotCache = [v12 snapshotCache];
+  stringValue2 = [v16 stringValue];
+  [snapshotCache setCachedPreview:v9 key:stringValue2];
 
-  v15 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v15 postNotificationName:@"CKBalloonPluginManagerSnapshotsDidChange" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"CKBalloonPluginManagerSnapshotsDidChange" object:0];
 }
 
 - (void)dismiss
@@ -477,84 +477,84 @@ uint64_t __82__CKRecentsViewController__postBrowserDidPrepareForDisplayNotificat
   return [(CKBrowserViewController *)&v3 isLoaded];
 }
 
-- (void)_setContentOverlayInsets:(UIEdgeInsets)a3
+- (void)_setContentOverlayInsets:(UIEdgeInsets)insets
 {
-  bottom = a3.bottom;
-  top = a3.top;
+  bottom = insets.bottom;
+  top = insets.top;
   v6.receiver = self;
   v6.super_class = CKRecentsViewController;
-  [(CKRecentsViewController *)&v6 _setContentOverlayInsets:a3.top, a3.left, a3.bottom, a3.right];
+  [(CKRecentsViewController *)&v6 _setContentOverlayInsets:insets.top, insets.left, insets.bottom, insets.right];
   [(CKRecentsViewController *)self _setNavigationControllerContentInsetAdjustment:top, 0.0, bottom, 0.0];
 }
 
-- (void)insertSticker:(id)a3 forceStage:(BOOL)a4 completionHandler:(id)a5
+- (void)insertSticker:(id)sticker forceStage:(BOOL)stage completionHandler:(id)handler
 {
-  v7 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v7 handleFailureInMethod:a2 object:self file:@"CKRecentsViewController.m" lineNumber:338 description:{@"Unexpected call to %s", "-[CKRecentsViewController insertSticker:forceStage:completionHandler:]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"CKRecentsViewController.m" lineNumber:338 description:{@"Unexpected call to %s", "-[CKRecentsViewController insertSticker:forceStage:completionHandler:]"}];
 }
 
-- (void)insertSticker:(id)a3 representations:(id)a4 forceStage:(BOOL)a5 frameInScreenCoordinates:(CGRect)a6 completionHandler:(id)a7
+- (void)insertSticker:(id)sticker representations:(id)representations forceStage:(BOOL)stage frameInScreenCoordinates:(CGRect)coordinates completionHandler:(id)handler
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v12 = a3;
-  v13 = [v12 data];
+  height = coordinates.size.height;
+  width = coordinates.size.width;
+  y = coordinates.origin.y;
+  x = coordinates.origin.x;
+  stickerCopy = sticker;
+  data = [stickerCopy data];
 
-  if (v13)
+  if (data)
   {
-    v14 = objc_alloc_init(CKBrowserItemPayload);
-    v15 = [v12 data];
+    sendDelegate2 = objc_alloc_init(CKBrowserItemPayload);
+    data2 = [stickerCopy data];
 
-    [(CKBrowserItemPayload *)v14 setData:v15];
-    [(CKBrowserItemPayload *)v14 setPluginBundleID:@"com.apple.Handwriting.HandwritingProvider"];
-    v16 = [(CKBrowserViewController *)self sendDelegate];
-    [v16 startEditingPayload:v14];
+    [(CKBrowserItemPayload *)sendDelegate2 setData:data2];
+    [(CKBrowserItemPayload *)sendDelegate2 setPluginBundleID:@"com.apple.Handwriting.HandwritingProvider"];
+    sendDelegate = [(CKBrowserViewController *)self sendDelegate];
+    [sendDelegate startEditingPayload:sendDelegate2];
   }
 
   else
   {
-    v14 = [(CKBrowserViewController *)self sendDelegate];
-    v16 = [(CKRecentsViewController *)self _stickerForMSSticker:v12];
+    sendDelegate2 = [(CKBrowserViewController *)self sendDelegate];
+    sendDelegate = [(CKRecentsViewController *)self _stickerForMSSticker:stickerCopy];
 
-    [(CKBrowserItemPayload *)v14 commitSticker:v16 stickerFrame:x, y, width, height];
+    [(CKBrowserItemPayload *)sendDelegate2 commitSticker:sendDelegate stickerFrame:x, y, width, height];
   }
 
-  v17 = [MEMORY[0x1E69A8168] sharedInstance];
-  [v17 trackEvent:*MEMORY[0x1E69A7718]];
+  mEMORY[0x1E69A8168] = [MEMORY[0x1E69A8168] sharedInstance];
+  [mEMORY[0x1E69A8168] trackEvent:*MEMORY[0x1E69A7718]];
 
   if ([(CKBrowserViewController *)self inExpandedPresentation])
   {
-    v18 = [(CKBrowserViewController *)self sendDelegate];
-    [v18 dismissAndReloadInputViews:1];
+    sendDelegate3 = [(CKBrowserViewController *)self sendDelegate];
+    [sendDelegate3 dismissAndReloadInputViews:1];
   }
 }
 
-- (void)startDragSticker:(id)a3 frameInRemoteView:(CGRect)a4 fence:(id)a5 completionHandler:(id)a6
+- (void)startDragSticker:(id)sticker frameInRemoteView:(CGRect)view fence:(id)fence completionHandler:(id)handler
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v25 = a3;
-  v12 = a6;
-  v13 = [v25 data];
+  height = view.size.height;
+  width = view.size.width;
+  y = view.origin.y;
+  x = view.origin.x;
+  stickerCopy = sticker;
+  handlerCopy = handler;
+  data = [stickerCopy data];
 
-  if (v13)
+  if (data)
   {
-    if (v12)
+    if (handlerCopy)
     {
-      (*(v12 + 2))(v12, 0, 0);
+      (*(handlerCopy + 2))(handlerCopy, 0, 0);
     }
   }
 
   else
   {
-    v24 = [v25 imageFileURL];
-    v14 = [[CKImageData alloc] initWithURL:v24];
+    imageFileURL = [stickerCopy imageFileURL];
+    v14 = [[CKImageData alloc] initWithURL:imageFileURL];
     v15 = [(CKImageData *)v14 durationsWithMaxCount:0x7FFFFFFFLL];
-    v16 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     if ([(CKImageData *)v14 count])
     {
       v17 = 0;
@@ -563,7 +563,7 @@ uint64_t __82__CKRecentsViewController__postBrowserDidPrepareForDisplayNotificat
         v18 = [(CKImageData *)v14 thumbnailAtIndex:v17 fillToSize:0x7FFFFFFFLL maxCount:1.79769313e308, 1.79769313e308];
         if (v18)
         {
-          [v16 addObject:v18];
+          [array addObject:v18];
         }
 
         ++v17;
@@ -572,82 +572,82 @@ uint64_t __82__CKRecentsViewController__postBrowserDidPrepareForDisplayNotificat
       while (v17 < [(CKImageData *)v14 count]);
     }
 
-    v19 = [[CKAnimatedImage alloc] initWithImages:v16 durations:v15];
-    v20 = [(CKBrowserViewController *)self browserDragManager];
-    v21 = [(CKRecentsViewController *)self view];
-    v22 = [(CKRecentsViewController *)self view];
-    v23 = [v22 window];
-    [v21 convertRect:v23 fromView:{x, y, width, height}];
-    [v20 beginDraggingItem:v25 withAnimatedDragImage:v19 fromRect:?];
+    v19 = [[CKAnimatedImage alloc] initWithImages:array durations:v15];
+    browserDragManager = [(CKBrowserViewController *)self browserDragManager];
+    view = [(CKRecentsViewController *)self view];
+    view2 = [(CKRecentsViewController *)self view];
+    window = [view2 window];
+    [view convertRect:window fromView:{x, y, width, height}];
+    [browserDragManager beginDraggingItem:stickerCopy withAnimatedDragImage:v19 fromRect:?];
 
-    [(CKRecentsViewController *)self setDraggingCompletionHandler:v12];
+    [(CKRecentsViewController *)self setDraggingCompletionHandler:handlerCopy];
   }
 }
 
-- (void)dragManager:(id)a3 didEndDraggingItem:(id)a4 toDragTarget:(id)a5 dropArea:(int)a6
+- (void)dragManager:(id)manager didEndDraggingItem:(id)item toDragTarget:(id)target dropArea:(int)area
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [(CKBrowserViewController *)self sendDelegate];
-  v14 = [(CKRecentsViewController *)self _stickerForMSSticker:v11];
+  targetCopy = target;
+  itemCopy = item;
+  managerCopy = manager;
+  sendDelegate = [(CKBrowserViewController *)self sendDelegate];
+  v14 = [(CKRecentsViewController *)self _stickerForMSSticker:itemCopy];
 
-  v15 = [v12 draggedSticker];
+  draggedSticker = [managerCopy draggedSticker];
 
-  [v13 commitSticker:v14 withDragTarget:v10 draggedSticker:v15];
-  v16 = [MEMORY[0x1E69A8168] sharedInstance];
-  [v16 trackEvent:*MEMORY[0x1E69A7718]];
+  [sendDelegate commitSticker:v14 withDragTarget:targetCopy draggedSticker:draggedSticker];
+  mEMORY[0x1E69A8168] = [MEMORY[0x1E69A8168] sharedInstance];
+  [mEMORY[0x1E69A8168] trackEvent:*MEMORY[0x1E69A7718]];
 
-  v17 = [(CKRecentsViewController *)self draggingCompletionHandler];
+  draggingCompletionHandler = [(CKRecentsViewController *)self draggingCompletionHandler];
 
-  if (v17)
+  if (draggingCompletionHandler)
   {
-    v18 = [(CKRecentsViewController *)self draggingCompletionHandler];
-    (v18)[2](v18, (a6 & 0xFFFFFFFD) == 1, 0);
+    draggingCompletionHandler2 = [(CKRecentsViewController *)self draggingCompletionHandler];
+    (draggingCompletionHandler2)[2](draggingCompletionHandler2, (area & 0xFFFFFFFD) == 1, 0);
 
     [(CKRecentsViewController *)self setDraggingCompletionHandler:0];
   }
 }
 
-- (BOOL)dragManager:(id)a3 canScaleItem:(id)a4
+- (BOOL)dragManager:(id)manager canScaleItem:(id)item
 {
-  v4 = [a4 data];
-  v5 = v4 == 0;
+  data = [item data];
+  v5 = data == 0;
 
   return v5;
 }
 
-- (BOOL)dragManager:(id)a3 canRotateItem:(id)a4
+- (BOOL)dragManager:(id)manager canRotateItem:(id)item
 {
-  v4 = [a4 data];
-  v5 = v4 == 0;
+  data = [item data];
+  v5 = data == 0;
 
   return v5;
 }
 
-- (BOOL)dragManager:(id)a3 canPeelItem:(id)a4
+- (BOOL)dragManager:(id)manager canPeelItem:(id)item
 {
-  v4 = [a4 data];
-  v5 = v4 == 0;
+  data = [item data];
+  v5 = data == 0;
 
   return v5;
 }
 
-- (BOOL)stickerBrowserView:(id)a3 shouldDrawBorderAroundSticker:(id)a4
+- (BOOL)stickerBrowserView:(id)view shouldDrawBorderAroundSticker:(id)sticker
 {
-  v4 = [a4 data];
-  v5 = v4 != 0;
+  data = [sticker data];
+  v5 = data != 0;
 
   return v5;
 }
 
 - (int64_t)_userInterfaceStyle
 {
-  v2 = [(CKRecentsViewController *)self view];
-  v3 = [v2 traitCollection];
-  v4 = [v3 userInterfaceStyle];
+  view = [(CKRecentsViewController *)self view];
+  traitCollection = [view traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  return v4;
+  return userInterfaceStyle;
 }
 
 @end

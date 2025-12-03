@@ -1,24 +1,24 @@
 @interface ULSpatialSceneClassificationResultData
-- (ULSpatialSceneClassificationResultData)initWithIndoorOutdoorLabel:(int64_t)a3 indoorOutdoorLabelProbabilities:(id)a4 spatialSceneClassifications:(id)a5;
+- (ULSpatialSceneClassificationResultData)initWithIndoorOutdoorLabel:(int64_t)label indoorOutdoorLabelProbabilities:(id)probabilities spatialSceneClassifications:(id)classifications;
 - (id)description;
 - (int64_t)_calculateWeightedMajorityVoteClassification;
 @end
 
 @implementation ULSpatialSceneClassificationResultData
 
-- (ULSpatialSceneClassificationResultData)initWithIndoorOutdoorLabel:(int64_t)a3 indoorOutdoorLabelProbabilities:(id)a4 spatialSceneClassifications:(id)a5
+- (ULSpatialSceneClassificationResultData)initWithIndoorOutdoorLabel:(int64_t)label indoorOutdoorLabelProbabilities:(id)probabilities spatialSceneClassifications:(id)classifications
 {
-  v8 = a4;
-  v9 = a5;
+  probabilitiesCopy = probabilities;
+  classificationsCopy = classifications;
   v13.receiver = self;
   v13.super_class = ULSpatialSceneClassificationResultData;
   v10 = [(ULSpatialSceneClassificationResultData *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    [(ULSpatialSceneClassificationResultData *)v10 setIndoorOutdoorLabel:a3];
-    [(ULSpatialSceneClassificationResultData *)v11 setIndoorOutdoorProbabilities:v8];
-    [(ULSpatialSceneClassificationResultData *)v11 setSpatialSceneClassifications:v9];
+    [(ULSpatialSceneClassificationResultData *)v10 setIndoorOutdoorLabel:label];
+    [(ULSpatialSceneClassificationResultData *)v11 setIndoorOutdoorProbabilities:probabilitiesCopy];
+    [(ULSpatialSceneClassificationResultData *)v11 setSpatialSceneClassifications:classificationsCopy];
     [(ULSpatialSceneClassificationResultData *)v11 setWeightedMajorityVoteClassification:[(ULSpatialSceneClassificationResultData *)v11 _calculateWeightedMajorityVoteClassification]];
   }
 
@@ -28,13 +28,13 @@
 - (int64_t)_calculateWeightedMajorityVoteClassification
 {
   v40 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v36 = 0u;
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v4 = [(ULSpatialSceneClassificationResultData *)self spatialSceneClassifications];
-  v5 = [v4 countByEnumeratingWithState:&v34 objects:v39 count:16];
+  spatialSceneClassifications = [(ULSpatialSceneClassificationResultData *)self spatialSceneClassifications];
+  v5 = [spatialSceneClassifications countByEnumeratingWithState:&v34 objects:v39 count:16];
   if (v5)
   {
     v6 = *v35;
@@ -44,26 +44,26 @@
       {
         if (*v35 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(spatialSceneClassifications);
         }
 
         v8 = *(*(&v34 + 1) + 8 * i);
-        v9 = [v8 first];
-        v10 = [v8 second];
-        if ([v9 intValue])
+        first = [v8 first];
+        second = [v8 second];
+        if ([first intValue])
         {
           v11 = MEMORY[0x277CCABB0];
-          v12 = [v3 objectForKeyedSubscript:v9];
+          v12 = [dictionary objectForKeyedSubscript:first];
           [v12 floatValue];
           v14 = v13;
-          [v10 floatValue];
+          [second floatValue];
           *&v16 = v14 + v15;
           v17 = [v11 numberWithFloat:v16];
-          [v3 setObject:v17 forKeyedSubscript:v9];
+          [dictionary setObject:v17 forKeyedSubscript:first];
         }
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v34 objects:v39 count:16];
+      v5 = [spatialSceneClassifications countByEnumeratingWithState:&v34 objects:v39 count:16];
     }
 
     while (v5);
@@ -73,8 +73,8 @@
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v18 = v3;
-  v19 = 0;
+  v18 = dictionary;
+  intValue = 0;
   v20 = [v18 countByEnumeratingWithState:&v30 objects:v38 count:16];
   if (v20)
   {
@@ -96,7 +96,7 @@
         {
           [v25 floatValue];
           v22 = v27;
-          v19 = [v24 intValue];
+          intValue = [v24 intValue];
         }
       }
 
@@ -107,27 +107,27 @@
   }
 
   v28 = *MEMORY[0x277D85DE8];
-  return v19;
+  return intValue;
 }
 
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(ULSpatialSceneClassificationResultData *)self indoorOutdoorLabel];
-  if (v4 > 2)
+  indoorOutdoorLabel = [(ULSpatialSceneClassificationResultData *)self indoorOutdoorLabel];
+  if (indoorOutdoorLabel > 2)
   {
     v5 = @"Invalid";
   }
 
   else
   {
-    v5 = off_2798D55F0[v4];
+    v5 = off_2798D55F0[indoorOutdoorLabel];
   }
 
-  v6 = [(ULSpatialSceneClassificationResultData *)self indoorOutdoorProbabilities];
+  indoorOutdoorProbabilities = [(ULSpatialSceneClassificationResultData *)self indoorOutdoorProbabilities];
   v7 = ULSpatialSceneTypeToString([(ULSpatialSceneClassificationResultData *)self weightedMajorityVoteClassification]);
-  v8 = [(ULSpatialSceneClassificationResultData *)self spatialSceneClassifications];
-  v9 = [v3 stringWithFormat:@"ULSpatialSceneClassificationResultData with indoorOutdoorLabel: %@, indoorOutdoorProbabilities: %@, weightedMajorityVoteClassification: %@, spatialSceneClassifications: %@", v5, v6, v7, v8];
+  spatialSceneClassifications = [(ULSpatialSceneClassificationResultData *)self spatialSceneClassifications];
+  v9 = [v3 stringWithFormat:@"ULSpatialSceneClassificationResultData with indoorOutdoorLabel: %@, indoorOutdoorProbabilities: %@, weightedMajorityVoteClassification: %@, spatialSceneClassifications: %@", v5, indoorOutdoorProbabilities, v7, spatialSceneClassifications];
 
   return v9;
 }

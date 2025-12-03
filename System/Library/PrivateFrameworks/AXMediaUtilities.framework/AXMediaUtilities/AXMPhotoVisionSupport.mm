@@ -1,18 +1,18 @@
 @interface AXMPhotoVisionSupport
 + (BOOL)_validatePhotosFormatSoftLinkSymbols;
-+ (BOOL)axmIsSceneClassId:(unsigned int)a3 childOfSceneClassId:(unsigned int)a4;
-+ (id)_collectLabelsIncludingLeafNodes:(BOOL)a3 nonLeafNodes:(BOOL)a4;
++ (BOOL)axmIsSceneClassId:(unsigned int)id childOfSceneClassId:(unsigned int)classId;
++ (id)_collectLabelsIncludingLeafNodes:(BOOL)nodes nonLeafNodes:(BOOL)leafNodes;
 + (id)_deniedVoiceOverObjectClassificationLabels;
 + (id)_deniedVoiceOverSceneClassificationLabels;
-+ (id)axmTaxonomyNodeForObjectObservation:(id)a3;
-+ (id)axmTaxonomyNodeForSceneTaxonomyNode:(id)a3;
++ (id)axmTaxonomyNodeForObjectObservation:(id)observation;
++ (id)axmTaxonomyNodeForSceneTaxonomyNode:(id)node;
 + (id)buildGraphStatisticsDescription;
 + (id)buildParentChainDescriptionForAllNodes;
 + (id)buildTaxonomyDescription;
-+ (id)findLeastCommonAncestorForSceneClassIds:(id)a3 withKnownAncestorSceneClassId:(unsigned int)a4;
-+ (id)localizedLabelForClassificationObservation:(id)a3;
-+ (id)processSceneClassifications:(id)a3 withOptions:(unsigned int)a4;
-+ (void)_addNode:(id)a3 toDescription:(id)a4 atLevel:(int64_t)a5;
++ (id)findLeastCommonAncestorForSceneClassIds:(id)ids withKnownAncestorSceneClassId:(unsigned int)id;
++ (id)localizedLabelForClassificationObservation:(id)observation;
++ (id)processSceneClassifications:(id)classifications withOptions:(unsigned int)options;
++ (void)_addNode:(id)node toDescription:(id)description atLevel:(int64_t)level;
 @end
 
 @implementation AXMPhotoVisionSupport
@@ -23,7 +23,7 @@
   block[1] = 3221225472;
   block[2] = __66__AXMPhotoVisionSupport__deniedVoiceOverSceneClassificationLabels__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_deniedVoiceOverSceneClassificationLabels_onceToken != -1)
   {
     dispatch_once(&_deniedVoiceOverSceneClassificationLabels_onceToken, block);
@@ -50,7 +50,7 @@ void __66__AXMPhotoVisionSupport__deniedVoiceOverSceneClassificationLabels__bloc
   block[1] = 3221225472;
   block[2] = __67__AXMPhotoVisionSupport__deniedVoiceOverObjectClassificationLabels__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_deniedVoiceOverObjectClassificationLabels_onceToken != -1)
   {
     dispatch_once(&_deniedVoiceOverObjectClassificationLabels_onceToken, block);
@@ -71,19 +71,19 @@ void __67__AXMPhotoVisionSupport__deniedVoiceOverObjectClassificationLabels__blo
   _deniedVoiceOverObjectClassificationLabels__DeniedLabels = v3;
 }
 
-+ (id)processSceneClassifications:(id)a3 withOptions:(unsigned int)a4
++ (id)processSceneClassifications:(id)classifications withOptions:(unsigned int)options
 {
-  v4 = a4;
+  optionsCopy = options;
   v45 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [MEMORY[0x1E695DF70] array];
-  v32 = [getPFSceneTaxonomyClass() sharedTaxonomy];
+  classificationsCopy = classifications;
+  array = [MEMORY[0x1E695DF70] array];
+  sharedTaxonomy = [getPFSceneTaxonomyClass() sharedTaxonomy];
   v30 = [MEMORY[0x1E695DFA8] set];
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
-  obj = v6;
+  obj = classificationsCopy;
   v8 = [obj countByEnumeratingWithState:&v39 objects:v44 count:16];
   if (v8)
   {
@@ -99,11 +99,11 @@ void __67__AXMPhotoVisionSupport__deniedVoiceOverObjectClassificationLabels__blo
         }
 
         v12 = *(*(&v39 + 1) + 8 * i);
-        if ((v4 & 4) != 0)
+        if ((optionsCopy & 4) != 0)
         {
-          v13 = [a1 _deniedVoiceOverSceneClassificationLabels];
-          v14 = [v12 identifier];
-          v15 = [v13 containsObject:v14];
+          _deniedVoiceOverSceneClassificationLabels = [self _deniedVoiceOverSceneClassificationLabels];
+          identifier = [v12 identifier];
+          v15 = [_deniedVoiceOverSceneClassificationLabels containsObject:identifier];
 
           if (v15)
           {
@@ -111,12 +111,12 @@ void __67__AXMPhotoVisionSupport__deniedVoiceOverObjectClassificationLabels__blo
           }
         }
 
-        v16 = [v12 identifier];
-        v17 = [v32 nodeForName:v16];
+        identifier2 = [v12 identifier];
+        v17 = [sharedTaxonomy nodeForName:identifier2];
 
         if (v17)
         {
-          if ((v4 & 1) == 0 || ([v12 confidence], v19 = v18, objc_msgSend(v17, "searchThreshold"), v20 < v19))
+          if ((optionsCopy & 1) == 0 || ([v12 confidence], v19 = v18, objc_msgSend(v17, "searchThreshold"), v20 < v19))
           {
             [v30 addObject:v17];
           }
@@ -129,7 +129,7 @@ void __67__AXMPhotoVisionSupport__deniedVoiceOverObjectClassificationLabels__blo
     while (v9);
   }
 
-  if ((v4 & 2) != 0)
+  if ((optionsCopy & 2) != 0)
   {
     v21 = [MEMORY[0x1E695DFA8] set];
     v37[0] = MEMORY[0x1E69E9820];
@@ -162,7 +162,7 @@ void __67__AXMPhotoVisionSupport__deniedVoiceOverObjectClassificationLabels__blo
         }
 
         v28 = [AXMPhotoVisionSupport axmTaxonomyNodeForSceneTaxonomyNode:*(*(&v33 + 1) + 8 * j)];
-        [v7 addObject:v28];
+        [array addObject:v28];
       }
 
       v25 = [v23 countByEnumeratingWithState:&v33 objects:v43 count:16];
@@ -171,7 +171,7 @@ void __67__AXMPhotoVisionSupport__deniedVoiceOverObjectClassificationLabels__blo
     while (v25);
   }
 
-  return v7;
+  return array;
 }
 
 void __65__AXMPhotoVisionSupport_processSceneClassifications_withOptions___block_invoke(uint64_t a1, void *a2)
@@ -198,49 +198,49 @@ uint64_t __65__AXMPhotoVisionSupport_processSceneClassifications_withOptions___b
   return 0;
 }
 
-+ (id)localizedLabelForClassificationObservation:(id)a3
++ (id)localizedLabelForClassificationObservation:(id)observation
 {
-  v3 = a3;
-  v4 = [getPFSceneTaxonomyClass() sharedTaxonomy];
-  v5 = [v3 identifier];
+  observationCopy = observation;
+  sharedTaxonomy = [getPFSceneTaxonomyClass() sharedTaxonomy];
+  identifier = [observationCopy identifier];
 
-  v6 = [v4 nodeForName:v5];
+  v6 = [sharedTaxonomy nodeForName:identifier];
 
-  v7 = [v6 localizedLabel];
+  localizedLabel = [v6 localizedLabel];
 
-  return v7;
+  return localizedLabel;
 }
 
-+ (id)axmTaxonomyNodeForObjectObservation:(id)a3
++ (id)axmTaxonomyNodeForObjectObservation:(id)observation
 {
-  v3 = a3;
-  v4 = [getPFSceneTaxonomyClass() sharedTaxonomy];
-  v5 = [v3 labels];
+  observationCopy = observation;
+  sharedTaxonomy = [getPFSceneTaxonomyClass() sharedTaxonomy];
+  labels = [observationCopy labels];
 
-  v6 = [v5 firstObject];
-  v7 = [v6 identifier];
-  v8 = [v4 nodeForName:v7];
+  firstObject = [labels firstObject];
+  identifier = [firstObject identifier];
+  v8 = [sharedTaxonomy nodeForName:identifier];
 
   v9 = [AXMPhotoVisionSupport axmTaxonomyNodeForSceneTaxonomyNode:v8];
 
   return v9;
 }
 
-+ (BOOL)axmIsSceneClassId:(unsigned int)a3 childOfSceneClassId:(unsigned int)a4
++ (BOOL)axmIsSceneClassId:(unsigned int)id childOfSceneClassId:(unsigned int)classId
 {
-  v4 = *&a4;
-  v5 = *&a3;
-  v6 = [getPFSceneTaxonomyClass() sharedTaxonomy];
-  v7 = [v6 nodeForSceneClassId:v5];
-  v8 = [v6 nodeForSceneClassId:v4];
-  v9 = [v8 parents];
+  v4 = *&classId;
+  v5 = *&id;
+  sharedTaxonomy = [getPFSceneTaxonomyClass() sharedTaxonomy];
+  v7 = [sharedTaxonomy nodeForSceneClassId:v5];
+  v8 = [sharedTaxonomy nodeForSceneClassId:v4];
+  parents = [v8 parents];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __63__AXMPhotoVisionSupport_axmIsSceneClassId_childOfSceneClassId___block_invoke;
   v15[3] = &unk_1E7A1D790;
   v16 = v7;
   v10 = v7;
-  v11 = [v9 ax_filteredSetUsingBlock:v15];
+  v11 = [parents ax_filteredSetUsingBlock:v15];
   v12 = [v8 isEqualToNode:v10] ^ 1;
   if (v11)
   {
@@ -255,27 +255,27 @@ uint64_t __65__AXMPhotoVisionSupport_processSceneClassifications_withOptions___b
   return v13;
 }
 
-+ (id)findLeastCommonAncestorForSceneClassIds:(id)a3 withKnownAncestorSceneClassId:(unsigned int)a4
++ (id)findLeastCommonAncestorForSceneClassIds:(id)ids withKnownAncestorSceneClassId:(unsigned int)id
 {
-  v5 = a3;
-  v6 = [getPFSceneTaxonomyClass() sharedTaxonomy];
+  idsCopy = ids;
+  sharedTaxonomy = [getPFSceneTaxonomyClass() sharedTaxonomy];
   v7 = [MEMORY[0x1E695DFA8] set];
   v40[0] = MEMORY[0x1E69E9820];
   v40[1] = 3221225472;
   v40[2] = __95__AXMPhotoVisionSupport_findLeastCommonAncestorForSceneClassIds_withKnownAncestorSceneClassId___block_invoke;
   v40[3] = &unk_1E7A1C9B0;
-  v8 = v6;
+  v8 = sharedTaxonomy;
   v41 = v8;
   v9 = v7;
   v42 = v9;
-  [v5 enumerateObjectsUsingBlock:v40];
-  v10 = [MEMORY[0x1E695DF90] dictionary];
+  [idsCopy enumerateObjectsUsingBlock:v40];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v37[0] = MEMORY[0x1E69E9820];
   v37[1] = 3221225472;
   v37[2] = __95__AXMPhotoVisionSupport_findLeastCommonAncestorForSceneClassIds_withKnownAncestorSceneClassId___block_invoke_2;
   v37[3] = &unk_1E7A1D7E0;
-  v39 = a4;
-  v11 = v10;
+  idCopy = id;
+  v11 = dictionary;
   v38 = v11;
   [v9 enumerateObjectsUsingBlock:v37];
   v33 = 0;
@@ -290,43 +290,43 @@ uint64_t __65__AXMPhotoVisionSupport_processSceneClassifications_withOptions___b
   [v11 enumerateKeysAndObjectsUsingBlock:v32];
   v30 = v9;
   v31 = v8;
-  v12 = [v11 allValues];
-  v13 = [v12 objectAtIndexedSubscript:0];
+  allValues = [v11 allValues];
+  v13 = [allValues objectAtIndexedSubscript:0];
   v14 = [v13 objectAtIndexedSubscript:v34[3] - 1];
-  v15 = [v14 sceneClassId];
-  v29 = a4;
+  sceneClassId = [v14 sceneClassId];
+  idCopy2 = id;
 
   v16 = v34[3];
 LABEL_2:
-  v17 = [v12 objectAtIndexedSubscript:0];
+  v17 = [allValues objectAtIndexedSubscript:0];
   v18 = [v17 objectAtIndexedSubscript:--v16];
-  v19 = [v18 sceneClassId];
+  sceneClassId2 = [v18 sceneClassId];
 
   v20 = 1;
   do
   {
-    if (v20 >= [v5 count])
+    if (v20 >= [idsCopy count])
     {
-      v15 = v19;
+      sceneClassId = sceneClassId2;
       goto LABEL_2;
     }
 
-    v21 = [v12 objectAtIndexedSubscript:v20];
+    v21 = [allValues objectAtIndexedSubscript:v20];
     v22 = [v21 objectAtIndexedSubscript:v16];
-    v23 = [v22 sceneClassId];
+    sceneClassId3 = [v22 sceneClassId];
 
     ++v20;
   }
 
-  while (v19 == v23);
-  if ([AXMPhotoVisionSupport axmIsSceneClassId:v15 childOfSceneClassId:v29])
+  while (sceneClassId2 == sceneClassId3);
+  if ([AXMPhotoVisionSupport axmIsSceneClassId:sceneClassId childOfSceneClassId:idCopy2])
   {
-    v25 = v15;
+    v25 = sceneClassId;
   }
 
   else
   {
-    v25 = v29;
+    v25 = idCopy2;
   }
 
   v26 = [v31 nodeForSceneClassId:v25];
@@ -413,42 +413,42 @@ void __61__AXMPhotoVisionSupport__validatePhotosFormatSoftLinkSymbols__block_inv
 
 + (id)buildTaxonomyDescription
 {
-  v3 = [MEMORY[0x1E696AD60] string];
-  v4 = [getPFSceneTaxonomyClass() sharedTaxonomy];
-  v5 = [v4 rootNode];
-  [a1 _addNode:v5 toDescription:v3 atLevel:0];
+  string = [MEMORY[0x1E696AD60] string];
+  sharedTaxonomy = [getPFSceneTaxonomyClass() sharedTaxonomy];
+  rootNode = [sharedTaxonomy rootNode];
+  [self _addNode:rootNode toDescription:string atLevel:0];
 
-  return v3;
+  return string;
 }
 
-+ (void)_addNode:(id)a3 toDescription:(id)a4 atLevel:(int64_t)a5
++ (void)_addNode:(id)node toDescription:(id)description atLevel:(int64_t)level
 {
   v24 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  if (a5 >= 1)
+  nodeCopy = node;
+  descriptionCopy = description;
+  if (level >= 1)
   {
-    v10 = a5;
+    levelCopy = level;
     do
     {
-      [v9 appendString:@"   "];
-      --v10;
+      [descriptionCopy appendString:@"   "];
+      --levelCopy;
     }
 
-    while (v10);
+    while (levelCopy);
   }
 
-  v11 = [v8 name];
-  v12 = [v8 localizedLabel];
-  [v8 searchThreshold];
-  [v9 appendFormat:@"%@ - localized:'%@' threshold:%.2f\n", v11, v12, v13];
+  name = [nodeCopy name];
+  localizedLabel = [nodeCopy localizedLabel];
+  [nodeCopy searchThreshold];
+  [descriptionCopy appendFormat:@"%@ - localized:'%@' threshold:%.2f\n", name, localizedLabel, v13];
 
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v14 = [v8 children];
-  v15 = [v14 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  children = [nodeCopy children];
+  v15 = [children countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v15)
   {
     v16 = v15;
@@ -460,14 +460,14 @@ void __61__AXMPhotoVisionSupport__validatePhotosFormatSoftLinkSymbols__block_inv
       {
         if (*v20 != v17)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(children);
         }
 
-        [a1 _addNode:*(*(&v19 + 1) + 8 * v18++) toDescription:v9 atLevel:a5 + 1];
+        [self _addNode:*(*(&v19 + 1) + 8 * v18++) toDescription:descriptionCopy atLevel:level + 1];
       }
 
       while (v16 != v18);
-      v16 = [v14 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v16 = [children countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v16);
@@ -476,9 +476,9 @@ void __61__AXMPhotoVisionSupport__validatePhotosFormatSoftLinkSymbols__block_inv
 
 + (id)buildParentChainDescriptionForAllNodes
 {
-  v2 = [MEMORY[0x1E696AD60] string];
-  v3 = [getPFSceneTaxonomyClass() sharedTaxonomy];
-  v4 = [v3 rootNode];
+  string = [MEMORY[0x1E696AD60] string];
+  sharedTaxonomy = [getPFSceneTaxonomyClass() sharedTaxonomy];
+  rootNode = [sharedTaxonomy rootNode];
   v10[0] = 0;
   v10[1] = v10;
   v10[2] = 0x2020000000;
@@ -487,10 +487,10 @@ void __61__AXMPhotoVisionSupport__validatePhotosFormatSoftLinkSymbols__block_inv
   v7[1] = 3221225472;
   v7[2] = __63__AXMPhotoVisionSupport_buildParentChainDescriptionForAllNodes__block_invoke;
   v7[3] = &unk_1E7A1D858;
-  v5 = v2;
+  v5 = string;
   v8 = v5;
   v9 = v10;
-  [v4 traverse:1 visitor:v7];
+  [rootNode traverse:1 visitor:v7];
 
   _Block_object_dispose(v10, 8);
 
@@ -543,37 +543,37 @@ uint64_t __63__AXMPhotoVisionSupport_buildParentChainDescriptionForAllNodes__blo
   return 0;
 }
 
-+ (id)_collectLabelsIncludingLeafNodes:(BOOL)a3 nonLeafNodes:(BOOL)a4
++ (id)_collectLabelsIncludingLeafNodes:(BOOL)nodes nonLeafNodes:(BOOL)leafNodes
 {
-  v5 = a3;
+  nodesCopy = nodes;
   v6 = [MEMORY[0x1E695DFA8] set];
-  v7 = [getPFSceneTaxonomyClass() sharedTaxonomy];
-  v8 = [v7 rootNode];
-  v9 = [MEMORY[0x1E695DF70] arrayWithObject:v8];
+  sharedTaxonomy = [getPFSceneTaxonomyClass() sharedTaxonomy];
+  rootNode = [sharedTaxonomy rootNode];
+  v9 = [MEMORY[0x1E695DF70] arrayWithObject:rootNode];
   v10 = v9;
   while ([v9 count])
   {
-    v11 = [v10 firstObject];
+    firstObject = [v10 firstObject];
     [v10 removeObjectAtIndex:0];
-    v12 = [v11 children];
-    if ([v12 count])
+    children = [firstObject children];
+    if ([children count])
     {
-      v13 = [v12 allObjects];
-      [v10 addObjectsFromArray:v13];
+      allObjects = [children allObjects];
+      [v10 addObjectsFromArray:allObjects];
 
-      if (!a4)
+      if (!leafNodes)
       {
         goto LABEL_6;
       }
 
 LABEL_5:
-      v14 = [v11 name];
-      [v6 addObject:v14];
+      name = [firstObject name];
+      [v6 addObject:name];
 
       goto LABEL_6;
     }
 
-    if (v5)
+    if (nodesCopy)
     {
       goto LABEL_5;
     }
@@ -588,9 +588,9 @@ LABEL_6:
 
 + (id)buildGraphStatisticsDescription
 {
-  v10 = [MEMORY[0x1E696AD60] string];
-  v3 = [getPFSceneTaxonomyClass() sharedTaxonomy];
-  v4 = [v3 rootNode];
+  string = [MEMORY[0x1E696AD60] string];
+  sharedTaxonomy = [getPFSceneTaxonomyClass() sharedTaxonomy];
+  rootNode = [sharedTaxonomy rootNode];
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
@@ -603,14 +603,14 @@ LABEL_6:
   v13 = &v14;
   v6 = v5;
   v12 = v6;
-  [v4 traverse:1 visitor:v11];
-  v7 = [a1 leafNodeLabels];
-  v8 = [a1 nonLeafNodeLabels];
-  [v10 appendFormat:@"Total nodes in graph via PV traverse API: %ld\nTotal nodes in graph via PV traverse API (removing visit duplicates): %ld\nLeaf nodes in graph via AX API: %ld\nNon-leaf nodes in graph via AX API: %ld\nTotal nodes in graph via AX API: %ld", v15[3], objc_msgSend(v6, "count"), objc_msgSend(v7, "count"), objc_msgSend(v8, "count"), objc_msgSend(v8, "count") + objc_msgSend(v7, "count")];
+  [rootNode traverse:1 visitor:v11];
+  leafNodeLabels = [self leafNodeLabels];
+  nonLeafNodeLabels = [self nonLeafNodeLabels];
+  [string appendFormat:@"Total nodes in graph via PV traverse API: %ld\nTotal nodes in graph via PV traverse API (removing visit duplicates): %ld\nLeaf nodes in graph via AX API: %ld\nNon-leaf nodes in graph via AX API: %ld\nTotal nodes in graph via AX API: %ld", v15[3], objc_msgSend(v6, "count"), objc_msgSend(leafNodeLabels, "count"), objc_msgSend(nonLeafNodeLabels, "count"), objc_msgSend(nonLeafNodeLabels, "count") + objc_msgSend(leafNodeLabels, "count")];
 
   _Block_object_dispose(&v14, 8);
 
-  return v10;
+  return string;
 }
 
 uint64_t __56__AXMPhotoVisionSupport_buildGraphStatisticsDescription__block_invoke(uint64_t a1, uint64_t a2)
@@ -620,21 +620,21 @@ uint64_t __56__AXMPhotoVisionSupport_buildGraphStatisticsDescription__block_invo
   return 0;
 }
 
-+ (id)axmTaxonomyNodeForSceneTaxonomyNode:(id)a3
++ (id)axmTaxonomyNodeForSceneTaxonomyNode:(id)node
 {
-  v3 = a3;
+  nodeCopy = node;
   v4 = objc_alloc_init(AXMTaxonomyNode);
-  [v3 searchThreshold];
+  [nodeCopy searchThreshold];
   [(AXMTaxonomyNode *)v4 setConfidence:?];
-  v5 = [v3 name];
-  [(AXMTaxonomyNode *)v4 setLabel:v5];
+  name = [nodeCopy name];
+  [(AXMTaxonomyNode *)v4 setLabel:name];
 
-  v6 = [v3 localizedLabel];
-  [(AXMTaxonomyNode *)v4 setLocalizedName:v6];
+  localizedLabel = [nodeCopy localizedLabel];
+  [(AXMTaxonomyNode *)v4 setLocalizedName:localizedLabel];
 
-  -[AXMTaxonomyNode setSceneClassId:](v4, "setSceneClassId:", [v3 sceneClassId]);
+  -[AXMTaxonomyNode setSceneClassId:](v4, "setSceneClassId:", [nodeCopy sceneClassId]);
   v7 = [MEMORY[0x1E695DFA8] set];
-  v8 = [v3 detectors];
+  detectors = [nodeCopy detectors];
 
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -642,7 +642,7 @@ uint64_t __56__AXMPhotoVisionSupport_buildGraphStatisticsDescription__block_invo
   v11[3] = &unk_1E7A1D768;
   v12 = v7;
   v9 = v7;
-  [v8 enumerateObjectsUsingBlock:v11];
+  [detectors enumerateObjectsUsingBlock:v11];
 
   [(AXMTaxonomyNode *)v4 setDetectorSceneClassIds:v9];
 

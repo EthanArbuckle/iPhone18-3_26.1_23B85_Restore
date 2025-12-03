@@ -3,15 +3,15 @@
 - (CCUIConnectivityManager)init;
 - (void)_hostAPStateChanged;
 - (void)_networkTetheringStateChanged;
-- (void)addCellularDataViewControllerObservingStateChanges:(id)a3;
-- (void)addHotspotViewControllerObservingStateChanges:(id)a3;
-- (void)addVPNViewControllerObservingStateChanges:(id)a3;
-- (void)addWiFiViewControllerObservingStateChanges:(id)a3;
-- (void)connectivityManagerDidChange:(id)a3;
-- (void)removeCellularDataViewControllerObservingStateChanges:(id)a3;
-- (void)removeHotspotViewControllerObservingStateChanges:(id)a3;
-- (void)removeVPNViewControllerObservingStateChanges:(id)a3;
-- (void)removeWiFiViewControllerObservingStateChanges:(id)a3;
+- (void)addCellularDataViewControllerObservingStateChanges:(id)changes;
+- (void)addHotspotViewControllerObservingStateChanges:(id)changes;
+- (void)addVPNViewControllerObservingStateChanges:(id)changes;
+- (void)addWiFiViewControllerObservingStateChanges:(id)changes;
+- (void)connectivityManagerDidChange:(id)change;
+- (void)removeCellularDataViewControllerObservingStateChanges:(id)changes;
+- (void)removeHotspotViewControllerObservingStateChanges:(id)changes;
+- (void)removeVPNViewControllerObservingStateChanges:(id)changes;
+- (void)removeWiFiViewControllerObservingStateChanges:(id)changes;
 @end
 
 @implementation CCUIConnectivityManager
@@ -45,21 +45,21 @@ void __41__CCUIConnectivityManager_sharedInstance__block_invoke()
     return v2;
   }
 
-  v3 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+  weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
   vpnViewControllersObservingStateChanges = v2->_vpnViewControllersObservingStateChanges;
-  v2->_vpnViewControllersObservingStateChanges = v3;
+  v2->_vpnViewControllersObservingStateChanges = weakObjectsHashTable;
 
-  v5 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+  weakObjectsHashTable2 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
   wifiViewControllersObservingStateChanges = v2->_wifiViewControllersObservingStateChanges;
-  v2->_wifiViewControllersObservingStateChanges = v5;
+  v2->_wifiViewControllersObservingStateChanges = weakObjectsHashTable2;
 
-  v7 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+  weakObjectsHashTable3 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
   hotspotViewControllersObservingStateChanges = v2->_hotspotViewControllersObservingStateChanges;
-  v2->_hotspotViewControllersObservingStateChanges = v7;
+  v2->_hotspotViewControllersObservingStateChanges = weakObjectsHashTable3;
 
-  v9 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+  weakObjectsHashTable4 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
   cellularDataViewControllersObservingStateChanges = v2->_cellularDataViewControllersObservingStateChanges;
-  v2->_cellularDataViewControllersObservingStateChanges = v9;
+  v2->_cellularDataViewControllersObservingStateChanges = weakObjectsHashTable4;
 
   v11 = [objc_alloc(MEMORY[0x277CD92F8]) initWithDelegate:v2];
   vpnConnectivityManager = v2->_vpnConnectivityManager;
@@ -121,8 +121,8 @@ void __41__CCUIConnectivityManager_sharedInstance__block_invoke()
   hotspotStateMonitor = v2->_hotspotStateMonitor;
   v2->_hotspotStateMonitor = v22;
 
-  v24 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v24 addObserver:v2 selector:sel__networkTetheringStateChanged name:*MEMORY[0x277D67A90] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:v2 selector:sel__networkTetheringStateChanged name:*MEMORY[0x277D67A90] object:0];
   v44 = 0;
   v45 = &v44;
   v46 = 0x2020000000;
@@ -146,16 +146,16 @@ void __41__CCUIConnectivityManager_sharedInstance__block_invoke()
   if (v25)
   {
     v28 = *v25;
-    [v24 addObserver:v2 selector:sel__hostAPStateChanged name:v28 object:0];
+    [defaultCenter addObserver:v2 selector:sel__hostAPStateChanged name:v28 object:0];
 
     objc_destroyWeak(&v36);
     objc_destroyWeak(&location);
     return v2;
   }
 
-  v30 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v31 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString *getWFInterfaceHostAPStateChangeNotification(void)"];
-  [v30 handleFailureInFunction:v31 file:@"CCUIConnectivityManager.m" lineNumber:24 description:{@"%s", dlerror(), v32, v33, v34, v35}];
+  [currentHandler handleFailureInFunction:v31 file:@"CCUIConnectivityManager.m" lineNumber:24 description:{@"%s", dlerror(), v32, v33, v34, v35}];
 
   __break(1u);
   return result;
@@ -219,123 +219,123 @@ void __31__CCUIConnectivityManager_init__block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)addVPNViewControllerObservingStateChanges:(id)a3
+- (void)addVPNViewControllerObservingStateChanges:(id)changes
 {
-  v4 = a3;
-  v5 = [(CCUIConnectivityManager *)self vpnViewControllersObservingStateChanges];
-  [v5 addObject:v4];
+  changesCopy = changes;
+  vpnViewControllersObservingStateChanges = [(CCUIConnectivityManager *)self vpnViewControllersObservingStateChanges];
+  [vpnViewControllersObservingStateChanges addObject:changesCopy];
 }
 
-- (void)removeVPNViewControllerObservingStateChanges:(id)a3
+- (void)removeVPNViewControllerObservingStateChanges:(id)changes
 {
-  v4 = a3;
-  v5 = [(CCUIConnectivityManager *)self vpnViewControllersObservingStateChanges];
-  [v5 removeObject:v4];
+  changesCopy = changes;
+  vpnViewControllersObservingStateChanges = [(CCUIConnectivityManager *)self vpnViewControllersObservingStateChanges];
+  [vpnViewControllersObservingStateChanges removeObject:changesCopy];
 }
 
-- (void)addWiFiViewControllerObservingStateChanges:(id)a3
+- (void)addWiFiViewControllerObservingStateChanges:(id)changes
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(CCUIConnectivityManager *)self wifiViewControllersObservingStateChanges];
-  [v5 addObject:v4];
+  changesCopy = changes;
+  wifiViewControllersObservingStateChanges = [(CCUIConnectivityManager *)self wifiViewControllersObservingStateChanges];
+  [wifiViewControllersObservingStateChanges addObject:changesCopy];
   v6 = *MEMORY[0x277CFC8F8];
   if (os_log_type_enabled(*MEMORY[0x277CFC8F8], OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543618;
-    v8 = v4;
+    v8 = changesCopy;
     v9 = 2114;
-    v10 = v5;
+    v10 = wifiViewControllersObservingStateChanges;
     _os_log_impl(&dword_21E9F5000, v6, OS_LOG_TYPE_DEFAULT, "[WiFi Module] (ConnectivityManager) Added wifiViewController:%{public}@ to wifiViewControllersObservingStateChanges: %{public}@", &v7, 0x16u);
   }
 }
 
-- (void)removeWiFiViewControllerObservingStateChanges:(id)a3
+- (void)removeWiFiViewControllerObservingStateChanges:(id)changes
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(CCUIConnectivityManager *)self wifiViewControllersObservingStateChanges];
-  [v5 removeObject:v4];
+  changesCopy = changes;
+  wifiViewControllersObservingStateChanges = [(CCUIConnectivityManager *)self wifiViewControllersObservingStateChanges];
+  [wifiViewControllersObservingStateChanges removeObject:changesCopy];
   v6 = *MEMORY[0x277CFC8F8];
   if (os_log_type_enabled(*MEMORY[0x277CFC8F8], OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543618;
-    v8 = v4;
+    v8 = changesCopy;
     v9 = 2114;
-    v10 = v5;
+    v10 = wifiViewControllersObservingStateChanges;
     _os_log_impl(&dword_21E9F5000, v6, OS_LOG_TYPE_DEFAULT, "[WiFi Module] (ConnectivityManager) Removed wifiViewController:%{public}@ from wifiViewControllersObservingStateChanges: %{public}@", &v7, 0x16u);
   }
 }
 
-- (void)addHotspotViewControllerObservingStateChanges:(id)a3
+- (void)addHotspotViewControllerObservingStateChanges:(id)changes
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(CCUIConnectivityManager *)self hotspotViewControllersObservingStateChanges];
-  [v5 addObject:v4];
+  changesCopy = changes;
+  hotspotViewControllersObservingStateChanges = [(CCUIConnectivityManager *)self hotspotViewControllersObservingStateChanges];
+  [hotspotViewControllersObservingStateChanges addObject:changesCopy];
   v6 = *MEMORY[0x277CFC8F8];
   if (os_log_type_enabled(*MEMORY[0x277CFC8F8], OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543618;
-    v8 = v4;
+    v8 = changesCopy;
     v9 = 2114;
-    v10 = v5;
+    v10 = hotspotViewControllersObservingStateChanges;
     _os_log_impl(&dword_21E9F5000, v6, OS_LOG_TYPE_DEFAULT, "[Hotspot] (ConnectivityManager) Added hotspotViewController:%{public}@ to hotspotViewControllersObservingStateChanges: %{public}@", &v7, 0x16u);
   }
 }
 
-- (void)removeHotspotViewControllerObservingStateChanges:(id)a3
+- (void)removeHotspotViewControllerObservingStateChanges:(id)changes
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(CCUIConnectivityManager *)self hotspotViewControllersObservingStateChanges];
-  [v5 removeObject:v4];
+  changesCopy = changes;
+  hotspotViewControllersObservingStateChanges = [(CCUIConnectivityManager *)self hotspotViewControllersObservingStateChanges];
+  [hotspotViewControllersObservingStateChanges removeObject:changesCopy];
   v6 = *MEMORY[0x277CFC8F8];
   if (os_log_type_enabled(*MEMORY[0x277CFC8F8], OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543618;
-    v8 = v4;
+    v8 = changesCopy;
     v9 = 2114;
-    v10 = v5;
+    v10 = hotspotViewControllersObservingStateChanges;
     _os_log_impl(&dword_21E9F5000, v6, OS_LOG_TYPE_DEFAULT, "[Hotspot] (ConnectivityManager) Removed hotspotViewController:%{public}@ from hotspotViewControllersObservingStateChanges: %{public}@", &v7, 0x16u);
   }
 }
 
-- (void)addCellularDataViewControllerObservingStateChanges:(id)a3
+- (void)addCellularDataViewControllerObservingStateChanges:(id)changes
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(CCUIConnectivityManager *)self cellularDataViewControllersObservingStateChanges];
-  [v5 addObject:v4];
+  changesCopy = changes;
+  cellularDataViewControllersObservingStateChanges = [(CCUIConnectivityManager *)self cellularDataViewControllersObservingStateChanges];
+  [cellularDataViewControllersObservingStateChanges addObject:changesCopy];
   v6 = *MEMORY[0x277CFC8F8];
   if (os_log_type_enabled(*MEMORY[0x277CFC8F8], OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543618;
-    v8 = v4;
+    v8 = changesCopy;
     v9 = 2114;
-    v10 = v5;
+    v10 = cellularDataViewControllersObservingStateChanges;
     _os_log_impl(&dword_21E9F5000, v6, OS_LOG_TYPE_DEFAULT, "[Cellular Data Module] (ConnectivityManager) Added cellularDataViewController:%{public}@ to cellularDataViewControllersObservingStateChanges: %{public}@", &v7, 0x16u);
   }
 }
 
-- (void)removeCellularDataViewControllerObservingStateChanges:(id)a3
+- (void)removeCellularDataViewControllerObservingStateChanges:(id)changes
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(CCUIConnectivityManager *)self cellularDataViewControllersObservingStateChanges];
-  [v5 removeObject:v4];
+  changesCopy = changes;
+  cellularDataViewControllersObservingStateChanges = [(CCUIConnectivityManager *)self cellularDataViewControllersObservingStateChanges];
+  [cellularDataViewControllersObservingStateChanges removeObject:changesCopy];
   v6 = *MEMORY[0x277CFC8F8];
   if (os_log_type_enabled(*MEMORY[0x277CFC8F8], OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543618;
-    v8 = v4;
+    v8 = changesCopy;
     v9 = 2114;
-    v10 = v5;
+    v10 = cellularDataViewControllersObservingStateChanges;
     _os_log_impl(&dword_21E9F5000, v6, OS_LOG_TYPE_DEFAULT, "[Cellular Data Module] (ConnectivityManager) Removed cellularDataViewController:%{public}@ from cellularDataViewControllersObservingStateChanges: %{public}@", &v7, 0x16u);
   }
 }
 
-- (void)connectivityManagerDidChange:(id)a3
+- (void)connectivityManagerDidChange:(id)change
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -386,9 +386,9 @@ void __56__CCUIConnectivityManager_connectivityManagerDidChange___block_invoke(u
   if (os_log_type_enabled(*MEMORY[0x277CFC8F8], OS_LOG_TYPE_DEFAULT))
   {
     v4 = v3;
-    v5 = [(CCUIConnectivityManager *)self hotspotViewControllersObservingStateChanges];
+    hotspotViewControllersObservingStateChanges = [(CCUIConnectivityManager *)self hotspotViewControllersObservingStateChanges];
     *buf = 138543362;
-    v8 = v5;
+    v8 = hotspotViewControllersObservingStateChanges;
     _os_log_impl(&dword_21E9F5000, v4, OS_LOG_TYPE_DEFAULT, "[Hotspot] (ConnectivityManager) Received SBNetworkTetheringStateChangedNotification, Sending state update to hotspotViewControllersObservingStateChanges: %{public}@", buf, 0xCu);
   }
 
@@ -441,9 +441,9 @@ void __56__CCUIConnectivityManager__networkTetheringStateChanged__block_invoke(u
   if (os_log_type_enabled(*MEMORY[0x277CFC8F8], OS_LOG_TYPE_DEFAULT))
   {
     v4 = v3;
-    v5 = [(CCUIConnectivityManager *)self hotspotViewControllersObservingStateChanges];
+    hotspotViewControllersObservingStateChanges = [(CCUIConnectivityManager *)self hotspotViewControllersObservingStateChanges];
     *buf = 138543362;
-    v8 = v5;
+    v8 = hotspotViewControllersObservingStateChanges;
     _os_log_impl(&dword_21E9F5000, v4, OS_LOG_TYPE_DEFAULT, "[Hotspot] (ConnectivityManager) Received WFInterfaceHostAPStateChangeNotification, Sending state update to hotspotViewControllersObservingStateChanges: %{public}@", buf, 0xCu);
   }
 

@@ -1,7 +1,7 @@
 @interface ContactsLimitedAccessPromptViewController
-- (_TtC23LimitedAccessPromptView41ContactsLimitedAccessPromptViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC23LimitedAccessPromptView41ContactsLimitedAccessPromptViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (unint64_t)supportedInterfaceOrientations;
-- (void)prepareForActivationWithContext:(id)a3 completion:(id)a4;
+- (void)prepareForActivationWithContext:(id)context completion:(id)completion;
 - (void)viewDidLoad;
 @end
 
@@ -9,10 +9,10 @@
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v2 = [objc_opt_self() currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  currentDevice = [objc_opt_self() currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v3 == 1)
+  if (userInterfaceIdiom == 1)
   {
     return 30;
   }
@@ -25,28 +25,28 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_100014460();
 }
 
-- (void)prepareForActivationWithContext:(id)a3 completion:(id)a4
+- (void)prepareForActivationWithContext:(id)context completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   if (v6)
   {
     *(swift_allocObject() + 16) = v6;
     v6 = sub_100016CB0;
   }
 
-  v7 = a3;
-  v8 = self;
-  sub_100015C70(a3);
+  contextCopy = context;
+  selfCopy = self;
+  sub_100015C70(context);
   sub_10000809C(v6);
 }
 
-- (_TtC23LimitedAccessPromptView41ContactsLimitedAccessPromptViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC23LimitedAccessPromptView41ContactsLimitedAccessPromptViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v7 = v6;
@@ -58,8 +58,8 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_100014DA4(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_100014DA4(v5, v7, bundle);
 }
 
 @end

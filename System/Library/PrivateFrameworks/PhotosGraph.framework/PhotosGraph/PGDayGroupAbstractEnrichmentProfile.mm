@@ -1,12 +1,12 @@
 @interface PGDayGroupAbstractEnrichmentProfile
-- (BOOL)canEnrichHighlight:(id)a3 withOptions:(unint64_t)a4;
+- (BOOL)canEnrichHighlight:(id)highlight withOptions:(unint64_t)options;
 - (NSString)identifier;
-- (PGDayGroupAbstractEnrichmentProfile)initWithCurationManager:(id)a3 loggingConnection:(id)a4;
-- (double)promotionScoreWithHighlightInfo:(id)a3;
-- (id)curationOptionsWithHighlightInfo:(id)a3 sharingFilter:(unsigned __int16)a4;
-- (id)highlightInfoWithHighlight:(id)a3 graph:(id)a4 highlightTailorContext:(id)a5;
-- (id)titleWithHighlightInfo:(id)a3 sharingFilter:(unsigned __int16)a4 curatedAssets:(id)a5 keyAsset:(id)a6 createVerboseTitle:(BOOL)a7 error:(id *)a8;
-- (unsigned)enrichmentStateWithHighlightInfo:(id)a3 highlightTailorContext:(id)a4;
+- (PGDayGroupAbstractEnrichmentProfile)initWithCurationManager:(id)manager loggingConnection:(id)connection;
+- (double)promotionScoreWithHighlightInfo:(id)info;
+- (id)curationOptionsWithHighlightInfo:(id)info sharingFilter:(unsigned __int16)filter;
+- (id)highlightInfoWithHighlight:(id)highlight graph:(id)graph highlightTailorContext:(id)context;
+- (id)titleWithHighlightInfo:(id)info sharingFilter:(unsigned __int16)filter curatedAssets:(id)assets keyAsset:(id)asset createVerboseTitle:(BOOL)title error:(id *)error;
+- (unsigned)enrichmentStateWithHighlightInfo:(id)info highlightTailorContext:(id)context;
 @end
 
 @implementation PGDayGroupAbstractEnrichmentProfile
@@ -30,56 +30,56 @@ void __100__PGDayGroupAbstractEnrichmentProfile_summaryCurationWithHighlightInfo
   }
 }
 
-- (double)promotionScoreWithHighlightInfo:(id)a3
+- (double)promotionScoreWithHighlightInfo:(id)info
 {
-  v5 = a3;
+  infoCopy = info;
   v6 = PGAbstractMethodException(self, a2);
   objc_exception_throw(v6);
 }
 
-- (id)curationOptionsWithHighlightInfo:(id)a3 sharingFilter:(unsigned __int16)a4
+- (id)curationOptionsWithHighlightInfo:(id)info sharingFilter:(unsigned __int16)filter
 {
-  v6 = a3;
+  infoCopy = info;
   v7 = PGAbstractMethodException(self, a2);
   objc_exception_throw(v7);
 }
 
-- (id)titleWithHighlightInfo:(id)a3 sharingFilter:(unsigned __int16)a4 curatedAssets:(id)a5 keyAsset:(id)a6 createVerboseTitle:(BOOL)a7 error:(id *)a8
+- (id)titleWithHighlightInfo:(id)info sharingFilter:(unsigned __int16)filter curatedAssets:(id)assets keyAsset:(id)asset createVerboseTitle:(BOOL)title error:(id *)error
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
+  infoCopy = info;
+  assetsCopy = assets;
+  assetCopy = asset;
   v15 = PGAbstractMethodException(self, a2);
   objc_exception_throw(v15);
 }
 
-- (id)highlightInfoWithHighlight:(id)a3 graph:(id)a4 highlightTailorContext:(id)a5
+- (id)highlightInfoWithHighlight:(id)highlight graph:(id)graph highlightTailorContext:(id)context
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[PGHighlightTailorHighlightInfo alloc] initWithHighlight:v9 graph:v8 highlightTailorContext:v7];
+  contextCopy = context;
+  graphCopy = graph;
+  highlightCopy = highlight;
+  v10 = [[PGHighlightTailorHighlightInfo alloc] initWithHighlight:highlightCopy graph:graphCopy highlightTailorContext:contextCopy];
 
   return v10;
 }
 
-- (BOOL)canEnrichHighlight:(id)a3 withOptions:(unint64_t)a4
+- (BOOL)canEnrichHighlight:(id)highlight withOptions:(unint64_t)options
 {
-  v6 = a3;
+  highlightCopy = highlight;
   v7 = PGAbstractMethodException(self, a2);
   objc_exception_throw(v7);
 }
 
-- (unsigned)enrichmentStateWithHighlightInfo:(id)a3 highlightTailorContext:(id)a4
+- (unsigned)enrichmentStateWithHighlightInfo:(id)info highlightTailorContext:(id)context
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  contextCopy = context;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = [a3 childHighlights];
-  v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  childHighlights = [info childHighlights];
+  v7 = [childHighlights countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
     v8 = v7;
@@ -91,25 +91,25 @@ void __100__PGDayGroupAbstractEnrichmentProfile_summaryCurationWithHighlightInfo
       {
         if (*v18 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(childHighlights);
         }
 
         v12 = *(*(&v17 + 1) + 8 * i);
-        v13 = [v12 uuid];
-        v14 = [v5 pendingEnrichmentStateForHighlightUUID:v13];
+        uuid = [v12 uuid];
+        enrichmentState = [contextCopy pendingEnrichmentStateForHighlightUUID:uuid];
 
-        if (!v14)
+        if (!enrichmentState)
         {
-          v14 = [v12 enrichmentState];
+          enrichmentState = [v12 enrichmentState];
         }
 
-        if (v10 >= v14)
+        if (v10 >= enrichmentState)
         {
-          v10 = v14;
+          v10 = enrichmentState;
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v8 = [childHighlights countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v8);
@@ -130,18 +130,18 @@ void __100__PGDayGroupAbstractEnrichmentProfile_summaryCurationWithHighlightInfo
   objc_exception_throw(v2);
 }
 
-- (PGDayGroupAbstractEnrichmentProfile)initWithCurationManager:(id)a3 loggingConnection:(id)a4
+- (PGDayGroupAbstractEnrichmentProfile)initWithCurationManager:(id)manager loggingConnection:(id)connection
 {
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  connectionCopy = connection;
   v14.receiver = self;
   v14.super_class = PGDayGroupAbstractEnrichmentProfile;
   v9 = [(PGDayGroupAbstractEnrichmentProfile *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_curationManager, a3);
-    objc_storeStrong(&v10->_loggingConnection, a4);
+    objc_storeStrong(&v9->_curationManager, manager);
+    objc_storeStrong(&v10->_loggingConnection, connection);
     v11 = objc_alloc_init(MEMORY[0x277CBEB38]);
     mutableDebugInfos = v10->_mutableDebugInfos;
     v10->_mutableDebugInfos = v11;

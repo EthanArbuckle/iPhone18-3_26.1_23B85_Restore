@@ -1,14 +1,14 @@
 @interface ManagedWorkoutPlanScheduledItemIndex
-- (ManagedWorkoutPlanScheduledItemIndex)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4;
+- (ManagedWorkoutPlanScheduledItemIndex)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context;
 @end
 
 @implementation ManagedWorkoutPlanScheduledItemIndex
 
-- (ManagedWorkoutPlanScheduledItemIndex)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4
+- (ManagedWorkoutPlanScheduledItemIndex)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for ManagedWorkoutPlanScheduledItemIndex();
-  return [(ManagedWorkoutPlanScheduledItemIndex *)&v7 initWithEntity:a3 insertIntoManagedObjectContext:a4];
+  return [(ManagedWorkoutPlanScheduledItemIndex *)&v7 initWithEntity:entity insertIntoManagedObjectContext:context];
 }
 
 @end

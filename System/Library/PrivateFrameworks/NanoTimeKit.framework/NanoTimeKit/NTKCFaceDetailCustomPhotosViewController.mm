@@ -1,18 +1,18 @@
 @interface NTKCFaceDetailCustomPhotosViewController
-- (NTKCFaceDetailCustomPhotosViewController)initWithPhotosEditor:(id)a3 forFace:(id)a4 inGallery:(BOOL)a5 faceView:(id)a6 externalImagesSet:(BOOL)a7;
-- (void)customPhotosControllerDidFinish:(id)a3;
+- (NTKCFaceDetailCustomPhotosViewController)initWithPhotosEditor:(id)editor forFace:(id)face inGallery:(BOOL)gallery faceView:(id)view externalImagesSet:(BOOL)set;
+- (void)customPhotosControllerDidFinish:(id)finish;
 @end
 
 @implementation NTKCFaceDetailCustomPhotosViewController
 
-- (NTKCFaceDetailCustomPhotosViewController)initWithPhotosEditor:(id)a3 forFace:(id)a4 inGallery:(BOOL)a5 faceView:(id)a6 externalImagesSet:(BOOL)a7
+- (NTKCFaceDetailCustomPhotosViewController)initWithPhotosEditor:(id)editor forFace:(id)face inGallery:(BOOL)gallery faceView:(id)view externalImagesSet:(BOOL)set
 {
-  v7 = a7;
-  v8 = a5;
-  v12 = a6;
-  v13 = a4;
-  v14 = a3;
-  v15 = [[_NTKCFaceDetailCustomPhotosViewController alloc] initWithPhotosEditor:v14 forFace:v13 inGallery:v8 faceView:v12 externalImagesSet:v7];
+  setCopy = set;
+  galleryCopy = gallery;
+  viewCopy = view;
+  faceCopy = face;
+  editorCopy = editor;
+  v15 = [[_NTKCFaceDetailCustomPhotosViewController alloc] initWithPhotosEditor:editorCopy forFace:faceCopy inGallery:galleryCopy faceView:viewCopy externalImagesSet:setCopy];
 
   v19.receiver = self;
   v19.super_class = NTKCFaceDetailCustomPhotosViewController;
@@ -27,10 +27,10 @@
   return v17;
 }
 
-- (void)customPhotosControllerDidFinish:(id)a3
+- (void)customPhotosControllerDidFinish:(id)finish
 {
-  v4 = [(NTKCFaceDetailCustomPhotosViewController *)self delegate];
-  [v4 customPhotosControllerDidFinish:self];
+  delegate = [(NTKCFaceDetailCustomPhotosViewController *)self delegate];
+  [delegate customPhotosControllerDidFinish:self];
 }
 
 void __83___NTKCFaceDetailCustomPhotosViewController_collectionView_cellForItemAtIndexPath___block_invoke(uint64_t a1, void *a2, double x, double y, double width, double height)

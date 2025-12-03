@@ -1,7 +1,7 @@
 @interface HMDHomeManagerModel
 + (id)properties;
-- (id)cd_generateValueForModelObjectFromManagedObject:(id)a3 modelObjectField:(id)a4 modelFieldInfo:(id)a5;
-- (id)cd_generateValueForProperty:(id)a3 managedObjectField:(id)a4 context:(id)a5;
+- (id)cd_generateValueForModelObjectFromManagedObject:(id)object modelObjectField:(id)field modelFieldInfo:(id)info;
+- (id)cd_generateValueForProperty:(id)property managedObjectField:(id)field context:(id)context;
 @end
 
 @implementation HMDHomeManagerModel
@@ -37,19 +37,19 @@ void __33__HMDHomeManagerModel_properties__block_invoke()
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (id)cd_generateValueForProperty:(id)a3 managedObjectField:(id)a4 context:(id)a5
+- (id)cd_generateValueForProperty:(id)property managedObjectField:(id)field context:(id)context
 {
   v35 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (![v9 isEqualToString:@"primaryHome"])
+  propertyCopy = property;
+  fieldCopy = field;
+  contextCopy = context;
+  if (![fieldCopy isEqualToString:@"primaryHome"])
   {
     v27.receiver = self;
     v27.super_class = HMDHomeManagerModel;
-    v18 = [(HMDBackingStoreModelObject *)&v27 cd_generateValueForProperty:v8 managedObjectField:v9 context:v10];
+    null = [(HMDBackingStoreModelObject *)&v27 cd_generateValueForProperty:propertyCopy managedObjectField:fieldCopy context:contextCopy];
 LABEL_9:
-    v16 = v18;
+    v16 = null;
     goto LABEL_14;
   }
 
@@ -59,17 +59,17 @@ LABEL_9:
     goto LABEL_14;
   }
 
-  v11 = [(HMDHomeManagerModel *)self primaryHomeUUID];
+  primaryHomeUUID = [(HMDHomeManagerModel *)self primaryHomeUUID];
 
-  if (!v11)
+  if (!primaryHomeUUID)
   {
-    v18 = [MEMORY[0x277CBEB68] null];
+    null = [MEMORY[0x277CBEB68] null];
     goto LABEL_9;
   }
 
   v12 = objc_alloc(MEMORY[0x277CCAD78]);
-  v13 = [(HMDHomeManagerModel *)self primaryHomeUUID];
-  v14 = [v12 initWithUUIDString:v13];
+  primaryHomeUUID2 = [(HMDHomeManagerModel *)self primaryHomeUUID];
+  v14 = [v12 initWithUUIDString:primaryHomeUUID2];
 
   if (v14)
   {
@@ -81,7 +81,7 @@ LABEL_9:
     if (!v16 || v17)
     {
       v21 = objc_autoreleasePoolPush();
-      v22 = self;
+      selfCopy = self;
       v23 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_FAULT))
       {
@@ -113,28 +113,28 @@ LABEL_14:
   return v16;
 }
 
-- (id)cd_generateValueForModelObjectFromManagedObject:(id)a3 modelObjectField:(id)a4 modelFieldInfo:(id)a5
+- (id)cd_generateValueForModelObjectFromManagedObject:(id)object modelObjectField:(id)field modelFieldInfo:(id)info
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v9 isEqualToString:@"primaryHomeUUID"])
+  objectCopy = object;
+  fieldCopy = field;
+  infoCopy = info;
+  if ([fieldCopy isEqualToString:@"primaryHomeUUID"])
   {
-    v11 = [v8 primaryHome];
-    v12 = [v11 handle];
-    v13 = [v12 homeUUID];
-    v14 = [v13 UUIDString];
-    v15 = v14;
+    primaryHome = [objectCopy primaryHome];
+    handle = [primaryHome handle];
+    homeUUID = [handle homeUUID];
+    uUIDString = [homeUUID UUIDString];
+    v15 = uUIDString;
     v16 = *MEMORY[0x277CBEEE8];
-    if (v14)
+    if (uUIDString)
     {
-      v16 = v14;
+      v16 = uUIDString;
     }
 
     v17 = v16;
   }
 
-  else if ([v9 isEqualToString:@"cloudZoneInformation"])
+  else if ([fieldCopy isEqualToString:@"cloudZoneInformation"])
   {
     v17 = 0;
   }
@@ -143,7 +143,7 @@ LABEL_14:
   {
     v19.receiver = self;
     v19.super_class = HMDHomeManagerModel;
-    v17 = [(HMDBackingStoreModelObject *)&v19 cd_generateValueForModelObjectFromManagedObject:v8 modelObjectField:v9 modelFieldInfo:v10];
+    v17 = [(HMDBackingStoreModelObject *)&v19 cd_generateValueForModelObjectFromManagedObject:objectCopy modelObjectField:fieldCopy modelFieldInfo:infoCopy];
   }
 
   return v17;

@@ -1,26 +1,26 @@
 @interface MOStateOfMindAnnotationManager
-- (MOStateOfMindAnnotationManager)initWithUniverse:(id)a3;
-- (id)_getEventsOnDay:(id)a3 startTime:(id)a4 endTime:(id)a5;
-- (id)_getTimeSpanOfMOEventArray:(id)a3;
-- (id)annotateBaseEvents:(id)a3 contextEvents:(id)a4;
-- (id)getBaseEvents:(id)a3;
-- (id)getContextEventsForBaseEvents:(id)a3 events:(id)a4 withPatternEvents:(id)a5;
-- (id)groupBaseEvents:(id)a3;
+- (MOStateOfMindAnnotationManager)initWithUniverse:(id)universe;
+- (id)_getEventsOnDay:(id)day startTime:(id)time endTime:(id)endTime;
+- (id)_getTimeSpanOfMOEventArray:(id)array;
+- (id)annotateBaseEvents:(id)events contextEvents:(id)contextEvents;
+- (id)getBaseEvents:(id)events;
+- (id)getContextEventsForBaseEvents:(id)events events:(id)a4 withPatternEvents:(id)patternEvents;
+- (id)groupBaseEvents:(id)events;
 @end
 
 @implementation MOStateOfMindAnnotationManager
 
-- (MOStateOfMindAnnotationManager)initWithUniverse:(id)a3
+- (MOStateOfMindAnnotationManager)initWithUniverse:(id)universe
 {
-  v4 = a3;
+  universeCopy = universe;
   v11.receiver = self;
   v11.super_class = MOStateOfMindAnnotationManager;
-  v5 = [(MOTimeContextAnnotationManager *)&v11 initWithUniverse:v4];
+  v5 = [(MOTimeContextAnnotationManager *)&v11 initWithUniverse:universeCopy];
   if (v5)
   {
     v6 = objc_opt_class();
     v7 = NSStringFromClass(v6);
-    v8 = [v4 getService:v7];
+    v8 = [universeCopy getService:v7];
     configurationManager = v5->_configurationManager;
     v5->_configurationManager = v8;
   }
@@ -28,26 +28,26 @@
   return v5;
 }
 
-- (id)getBaseEvents:(id)a3
+- (id)getBaseEvents:(id)events
 {
-  v3 = a3;
+  eventsCopy = events;
   v4 = [NSPredicate predicateWithFormat:@"%K = %lu", @"category", 24];
-  v5 = [v3 filteredArrayUsingPredicate:v4];
+  v5 = [eventsCopy filteredArrayUsingPredicate:v4];
 
   return v5;
 }
 
-- (id)groupBaseEvents:(id)a3
+- (id)groupBaseEvents:(id)events
 {
-  v4 = a3;
-  if ([v4 count])
+  eventsCopy = events;
+  if ([eventsCopy count])
   {
     v5 = objc_opt_new();
     v6 = [[NSSortDescriptor alloc] initWithKey:@"startDate" ascending:1];
     v45 = v6;
     v7 = [NSArray arrayWithObjects:&v45 count:1];
-    v36 = v4;
-    v8 = [v4 sortedArrayUsingDescriptors:v7];
+    v36 = eventsCopy;
+    v8 = [eventsCopy sortedArrayUsingDescriptors:v7];
 
     v33 = [NSPredicate predicateWithFormat:@"stateOfMindEvent.reflectiveInterval = %d", 2];
     v37 = [v8 filteredArrayUsingPredicate:?];
@@ -55,16 +55,16 @@
     v30 = [v8 filteredArrayUsingPredicate:?];
     v9 = +[NSCalendar currentCalendar];
     v10 = [(MOStateOfMindAnnotationManager *)self _getTimeSpanOfMOEventArray:v8];
-    v11 = [v10 startDate];
-    v12 = [v9 components:28 fromDate:v11];
+    startDate = [v10 startDate];
+    v12 = [v9 components:28 fromDate:startDate];
 
     v31 = v12;
     v13 = [v9 dateFromComponents:v12];
     v39 = v9;
     v14 = [v9 dateByAddingUnit:16 value:1 toDate:v13 options:0];
     v38 = v10;
-    v15 = [v10 endDate];
-    LODWORD(v9) = [v13 isOnOrBefore:v15];
+    endDate = [v10 endDate];
+    LODWORD(v9) = [v13 isOnOrBefore:endDate];
 
     v34 = v8;
     v35 = v6;
@@ -83,8 +83,8 @@
 
         v19 = [v39 dateByAddingUnit:16 value:1 toDate:v14 options:0];
 
-        v20 = [v38 endDate];
-        v21 = [v18 isOnOrBefore:v20];
+        endDate2 = [v38 endDate];
+        v21 = [v18 isOnOrBefore:endDate2];
 
         v14 = v19;
         v13 = v18;
@@ -129,7 +129,7 @@
       while (v24);
     }
 
-    v4 = v36;
+    eventsCopy = v36;
   }
 
   else
@@ -140,30 +140,30 @@
   return v5;
 }
 
-- (id)_getTimeSpanOfMOEventArray:(id)a3
+- (id)_getTimeSpanOfMOEventArray:(id)array
 {
-  v3 = a3;
-  v4 = [v3 firstObject];
-  v5 = [v4 startDate];
-  v6 = [v3 lastObject];
+  arrayCopy = array;
+  firstObject = [arrayCopy firstObject];
+  startDate = [firstObject startDate];
+  lastObject = [arrayCopy lastObject];
 
-  v7 = [v6 endDate];
-  v8 = [[NSDateInterval alloc] initWithStartDate:v5 endDate:v7];
+  endDate = [lastObject endDate];
+  v8 = [[NSDateInterval alloc] initWithStartDate:startDate endDate:endDate];
 
   return v8;
 }
 
-- (id)_getEventsOnDay:(id)a3 startTime:(id)a4 endTime:(id)a5
+- (id)_getEventsOnDay:(id)day startTime:(id)time endTime:(id)endTime
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  dayCopy = day;
+  timeCopy = time;
+  endTimeCopy = endTime;
   v20 = objc_opt_new();
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v10 = v7;
+  v10 = dayCopy;
   v11 = [v10 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v11)
   {
@@ -179,11 +179,11 @@
         }
 
         v15 = *(*(&v21 + 1) + 8 * i);
-        v16 = [v15 startDate];
-        if ([v16 isOnOrAfter:v8])
+        startDate = [v15 startDate];
+        if ([startDate isOnOrAfter:timeCopy])
         {
-          v17 = [v15 startDate];
-          v18 = [v17 isBeforeDate:v9];
+          startDate2 = [v15 startDate];
+          v18 = [startDate2 isBeforeDate:endTimeCopy];
 
           if (v18)
           {
@@ -205,21 +205,21 @@
   return v20;
 }
 
-- (id)getContextEventsForBaseEvents:(id)a3 events:(id)a4 withPatternEvents:(id)a5
+- (id)getContextEventsForBaseEvents:(id)events events:(id)a4 withPatternEvents:(id)patternEvents
 {
-  v7 = a3;
+  eventsCopy = events;
   v41 = a4;
-  v8 = a5;
+  patternEventsCopy = patternEvents;
   v47 = objc_opt_new();
-  v44 = v8;
-  if ([v8 count])
+  v44 = patternEventsCopy;
+  if ([patternEventsCopy count])
   {
     v58 = 0u;
     v59 = 0u;
     v56 = 0u;
     v57 = 0u;
-    v40 = v7;
-    obj = v7;
+    v40 = eventsCopy;
+    obj = eventsCopy;
     v45 = [obj countByEnumeratingWithState:&v56 objects:v69 count:16];
     if (v45)
     {
@@ -260,19 +260,19 @@
                 }
 
                 v15 = *(*(&v52 + 1) + 8 * v14);
-                v16 = [v15 patterns];
-                v17 = [v16 objectForKeyedSubscript:v9];
+                patterns = [v15 patterns];
+                v17 = [patterns objectForKeyedSubscript:v9];
                 if ([v17 intValue])
                 {
                 }
 
                 else
                 {
-                  v18 = [v49 eventIdentifier];
-                  [v18 UUIDString];
+                  eventIdentifier = [v49 eventIdentifier];
+                  [eventIdentifier UUIDString];
                   v20 = v19 = v9;
-                  v21 = [v15 patterns];
-                  v22 = [v21 objectForKeyedSubscript:@"kEventPatternAnomalousEventIdentifier"];
+                  patterns2 = [v15 patterns];
+                  v22 = [patterns2 objectForKeyedSubscript:@"kEventPatternAnomalousEventIdentifier"];
                   v23 = [v20 isEqualToString:v22];
 
                   v9 = v19;
@@ -305,14 +305,14 @@
       while (v45);
     }
 
-    v7 = v40;
+    eventsCopy = v40;
   }
 
-  v24 = [v7 lastObject];
-  v25 = [v24 startDate];
-  v26 = [v7 lastObject];
-  v27 = [v26 endDate];
-  v28 = [MOContextAnnotationUtilities predicateOfSocialContextEventWithStartDate:v25 endData:v27];
+  lastObject = [eventsCopy lastObject];
+  startDate = [lastObject startDate];
+  lastObject2 = [eventsCopy lastObject];
+  endDate = [lastObject2 endDate];
+  v28 = [MOContextAnnotationUtilities predicateOfSocialContextEventWithStartDate:startDate endData:endDate];
 
   v29 = v41;
   v30 = [v41 filteredArrayUsingPredicate:v28];
@@ -322,18 +322,18 @@
     v32 = objc_opt_class();
     v33 = NSStringFromClass(v32);
     v34 = [v30 count];
-    v35 = [v7 lastObject];
-    v36 = [v35 startDate];
-    v37 = [v7 lastObject];
-    v38 = [v37 endDate];
+    lastObject3 = [eventsCopy lastObject];
+    startDate2 = [lastObject3 startDate];
+    lastObject4 = [eventsCopy lastObject];
+    endDate2 = [lastObject4 endDate];
     *buf = 138413058;
     v61 = v33;
     v62 = 2048;
     v63 = v34;
     v64 = 2112;
-    v65 = v36;
+    v65 = startDate2;
     v66 = 2112;
-    v67 = v38;
+    v67 = endDate2;
     _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_INFO, "%@: filtered social context event count, %lu, startDate, %@, endDate, %@", buf, 0x2Au);
 
     v29 = v41;
@@ -347,11 +347,11 @@
   return v47;
 }
 
-- (id)annotateBaseEvents:(id)a3 contextEvents:(id)a4
+- (id)annotateBaseEvents:(id)events contextEvents:(id)contextEvents
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  eventsCopy = events;
+  contextEventsCopy = contextEvents;
+  if ([eventsCopy count])
   {
     v8 = [MOEventBundle alloc];
     v9 = +[NSUUID UUID];
@@ -360,20 +360,20 @@
 
     [(MOEventBundle *)v11 setInterfaceType:14];
     [(MOEventBundle *)v11 setBundleSuperType:8];
-    v12 = [v6 lastObject];
+    lastObject = [eventsCopy lastObject];
     v13 = +[NSCalendar currentCalendar];
-    v14 = [v12 stateOfMindEvent];
-    [v14 reflectiveInterval];
+    stateOfMindEvent = [lastObject stateOfMindEvent];
+    [stateOfMindEvent reflectiveInterval];
     v16 = v15;
 
     if (v16 == 2.0)
     {
       [(MOEventBundle *)v11 setBundleSubType:801];
-      v17 = [v6 lastObject];
-      v18 = [v17 startDate];
-      v19 = [v13 components:28 fromDate:v18];
+      lastObject2 = [eventsCopy lastObject];
+      startDate = [lastObject2 startDate];
+      startDate3 = [v13 components:28 fromDate:startDate];
 
-      v20 = [v13 dateFromComponents:v19];
+      v20 = [v13 dateFromComponents:startDate3];
       [(MOEventBundle *)v11 setStartDate:v20];
       v21 = [v13 dateByAddingUnit:16 value:1 toDate:v20 options:0];
       [(MOEventBundle *)v11 setEndDate:v21];
@@ -382,17 +382,17 @@
     else
     {
       [(MOEventBundle *)v11 setBundleSubType:802];
-      v22 = [v6 lastObject];
-      v23 = [v22 startDate];
-      [(MOEventBundle *)v11 setStartDate:v23];
+      lastObject3 = [eventsCopy lastObject];
+      startDate2 = [lastObject3 startDate];
+      [(MOEventBundle *)v11 setStartDate:startDate2];
 
-      v19 = [(MOEventBundle *)v11 startDate];
-      v20 = [v13 dateByAddingUnit:64 value:1 toDate:v19 options:0];
+      startDate3 = [(MOEventBundle *)v11 startDate];
+      v20 = [v13 dateByAddingUnit:64 value:1 toDate:startDate3 options:0];
       [(MOEventBundle *)v11 setEndDate:v20];
     }
 
-    v24 = [v12 stateOfMindEvent];
-    [v24 valenceClassification];
+    stateOfMindEvent2 = [lastObject stateOfMindEvent];
+    [stateOfMindEvent2 valenceClassification];
     v26 = v25;
 
     v101 = v13;
@@ -403,8 +403,8 @@
 
     else
     {
-      v28 = [v12 stateOfMindEvent];
-      [v28 valenceClassification];
+      stateOfMindEvent3 = [lastObject stateOfMindEvent];
+      [stateOfMindEvent3 valenceClassification];
       v30 = v29;
 
       if (v30 == 7.0)
@@ -414,8 +414,8 @@
 
       else
       {
-        v31 = [v12 stateOfMindEvent];
-        [v31 valenceClassification];
+        stateOfMindEvent4 = [lastObject stateOfMindEvent];
+        [stateOfMindEvent4 valenceClassification];
         v33 = v32;
 
         if (v33 == 6.0)
@@ -425,8 +425,8 @@
 
         else
         {
-          v34 = [v12 stateOfMindEvent];
-          [v34 valenceClassification];
+          stateOfMindEvent5 = [lastObject stateOfMindEvent];
+          [stateOfMindEvent5 valenceClassification];
           v36 = v35;
 
           if (v36 == 5.0)
@@ -436,8 +436,8 @@
 
           else
           {
-            v37 = [v12 stateOfMindEvent];
-            [v37 valenceClassification];
+            stateOfMindEvent6 = [lastObject stateOfMindEvent];
+            [stateOfMindEvent6 valenceClassification];
             v39 = v38;
 
             if (v39 == 1.0)
@@ -447,8 +447,8 @@
 
             else
             {
-              v40 = [v12 stateOfMindEvent];
-              [v40 valenceClassification];
+              stateOfMindEvent7 = [lastObject stateOfMindEvent];
+              [stateOfMindEvent7 valenceClassification];
               v42 = v41;
 
               if (v42 == 2.0)
@@ -458,8 +458,8 @@
 
               else
               {
-                v43 = [v12 stateOfMindEvent];
-                [v43 valenceClassification];
+                stateOfMindEvent8 = [lastObject stateOfMindEvent];
+                [stateOfMindEvent8 valenceClassification];
                 v45 = v44;
 
                 if (v45 == 3.0)
@@ -478,15 +478,15 @@
       }
     }
 
-    v46 = [v6 lastObject];
-    v47 = [v46 appBundle];
-    v48 = [MOContextAnnotationUtilities bundleNameFromBundleId:v47];
+    lastObject4 = [eventsCopy lastObject];
+    appBundle = [lastObject4 appBundle];
+    v48 = [MOContextAnnotationUtilities bundleNameFromBundleId:appBundle];
 
     v103 = objc_opt_new();
-    v49 = [v6 lastObject];
-    LODWORD(v46) = [v49 fromFirstParty];
+    lastObject5 = [eventsCopy lastObject];
+    LODWORD(lastObject4) = [lastObject5 fromFirstParty];
 
-    if (!v46 && v48)
+    if (!lastObject4 && v48)
     {
       [v103 setObject:v48 forKeyedSubscript:@"MediaActionMetaDataAppName"];
     }
@@ -494,20 +494,20 @@
     v50 = [[MOAction alloc] initWithActionName:@"stateOfMind" actionType:12 actionSubtype:v27 actionMetaData:v103];
     [(MOEventBundle *)v11 setAction:v50];
 
-    v51 = [v12 eventIdentifier];
-    v52 = [(MOEventBundle *)v11 action];
-    [v52 setSourceEventIdentifier:v51];
+    eventIdentifier = [lastObject eventIdentifier];
+    action = [(MOEventBundle *)v11 action];
+    [action setSourceEventIdentifier:eventIdentifier];
 
-    v53 = [v6 lastObject];
-    v54 = [v53 startDate];
-    v55 = [(MOAnnotationManager *)self timeZoneManager];
-    v56 = [MOTime timeForDate:v54 timeZoneManager:v55];
+    lastObject6 = [eventsCopy lastObject];
+    startDate4 = [lastObject6 startDate];
+    timeZoneManager = [(MOAnnotationManager *)self timeZoneManager];
+    v56 = [MOTime timeForDate:startDate4 timeZoneManager:timeZoneManager];
     [(MOEventBundle *)v11 setTime:v56];
 
     v57 = objc_opt_new();
-    [v57 addObjectsFromArray:v6];
+    [v57 addObjectsFromArray:eventsCopy];
     v98 = [NSPredicate predicateWithFormat:@"%K = %lu", @"provider", 5];
-    v58 = [v7 filteredArrayUsingPredicate:?];
+    v58 = [contextEventsCopy filteredArrayUsingPredicate:?];
     if ([v58 count])
     {
       [v57 addObjectsFromArray:v58];
@@ -519,11 +519,11 @@
     [(MOEventBundle *)v11 setEvents:v59];
 
     [(MOEventBundle *)v11 setPropertiesBasedOnEvents];
-    v60 = [(MOEventBundle *)v11 resources];
-    if (v60)
+    resources = [(MOEventBundle *)v11 resources];
+    if (resources)
     {
-      v61 = [(MOEventBundle *)v11 resources];
-      v96 = [v61 mutableCopy];
+      resources2 = [(MOEventBundle *)v11 resources];
+      v96 = [resources2 mutableCopy];
     }
 
     else
@@ -531,10 +531,10 @@
       v96 = objc_opt_new();
     }
 
-    v62 = [v6 lastObject];
-    v63 = [v62 fromFirstParty];
+    lastObject7 = [eventsCopy lastObject];
+    fromFirstParty = [lastObject7 fromFirstParty];
 
-    if (!v63 && v48)
+    if (!fromFirstParty && v48)
     {
       [(MOEventBundle *)v11 addMetaDataForRankForKey:@"StateOfMindLoggedIn3pApp" value:&__kCFBooleanTrue];
     }
@@ -545,43 +545,43 @@
     }
 
     v64 = objc_opt_new();
-    v65 = [(MOEventBundle *)v11 startDate];
-    [v65 timeIntervalSince1970];
+    startDate5 = [(MOEventBundle *)v11 startDate];
+    [startDate5 timeIntervalSince1970];
     v66 = [NSNumber numberWithDouble:?];
     [v64 setObject:v66 forKey:@"MOStateOfMindMetaDataKeyStartDate"];
 
-    v67 = [(MOEventBundle *)v11 endDate];
-    [v67 timeIntervalSince1970];
+    endDate = [(MOEventBundle *)v11 endDate];
+    [endDate timeIntervalSince1970];
     v68 = [NSNumber numberWithDouble:?];
     [v64 setObject:v68 forKey:@"MOStateOfMindMetaDataKeyEndDate"];
 
-    v69 = [v6 lastObject];
-    v70 = [v69 stateOfMindEvent];
-    v71 = [v70 labels];
+    lastObject8 = [eventsCopy lastObject];
+    stateOfMindEvent9 = [lastObject8 stateOfMindEvent];
+    labels = [stateOfMindEvent9 labels];
 
-    if ([v71 count])
+    if ([labels count])
     {
-      [v64 setObject:v71 forKey:@"MOStateOfMindMetaDataKeyLabel"];
-      [(MOEventBundle *)v11 addMetaDataForRankForKey:@"StateOfMindLabels" value:v71];
+      [v64 setObject:labels forKey:@"MOStateOfMindMetaDataKeyLabel"];
+      [(MOEventBundle *)v11 addMetaDataForRankForKey:@"StateOfMindLabels" value:labels];
     }
 
-    v95 = v71;
+    v95 = labels;
     v100 = v48;
-    v72 = [v6 lastObject];
-    v73 = [v72 stateOfMindEvent];
-    v74 = [v73 domains];
+    lastObject9 = [eventsCopy lastObject];
+    stateOfMindEvent10 = [lastObject9 stateOfMindEvent];
+    domains = [stateOfMindEvent10 domains];
 
-    if ([v74 count])
+    if ([domains count])
     {
-      [v64 setObject:v74 forKey:@"MOStateOfMindMetaDataKeyDomain"];
-      [(MOEventBundle *)v11 addMetaDataForRankForKey:@"StateOfMindDomains" value:v74];
+      [v64 setObject:domains forKey:@"MOStateOfMindMetaDataKeyDomain"];
+      [(MOEventBundle *)v11 addMetaDataForRankForKey:@"StateOfMindDomains" value:domains];
     }
 
-    v94 = v74;
-    v102 = v7;
-    v75 = [v6 lastObject];
-    v76 = [v75 stateOfMindEvent];
-    [v76 reflectiveInterval];
+    v94 = domains;
+    v102 = contextEventsCopy;
+    lastObject10 = [eventsCopy lastObject];
+    stateOfMindEvent11 = [lastObject10 stateOfMindEvent];
+    [stateOfMindEvent11 reflectiveInterval];
     v77 = [NSNumber numberWithDouble:?];
 
     if (v77)
@@ -590,9 +590,9 @@
       [(MOEventBundle *)v11 addMetaDataForRankForKey:@"StateOfMindReflectiveInterval" value:v77];
     }
 
-    v78 = [v6 lastObject];
-    v79 = [v78 stateOfMindEvent];
-    [v79 valence];
+    lastObject11 = [eventsCopy lastObject];
+    stateOfMindEvent12 = [lastObject11 stateOfMindEvent];
+    [stateOfMindEvent12 valence];
     v80 = [NSNumber numberWithDouble:?];
 
     if (v80)
@@ -602,9 +602,9 @@
       [(MOEventBundle *)v11 addMetaDataForRankForKey:@"StateOfMindValence" value:v81];
     }
 
-    v82 = [v6 lastObject];
-    v83 = [v82 stateOfMindEvent];
-    [v83 valenceClassification];
+    lastObject12 = [eventsCopy lastObject];
+    stateOfMindEvent13 = [lastObject12 stateOfMindEvent];
+    [stateOfMindEvent13 valenceClassification];
     v84 = [NSNumber numberWithDouble:?];
 
     if (v84)
@@ -614,19 +614,19 @@
       [(MOEventBundle *)v11 addMetaDataForRankForKey:@"StateOfMindValenceClassification" value:v85];
     }
 
-    v86 = [v6 lastObject];
-    v87 = [v86 identifierFromProvider];
+    lastObject13 = [eventsCopy lastObject];
+    identifierFromProvider = [lastObject13 identifierFromProvider];
 
-    if (v87)
+    if (identifierFromProvider)
     {
-      v88 = [v6 lastObject];
-      v89 = [v88 identifierFromProvider];
-      [v64 setObject:v89 forKey:@"MOStateOfMindMetaDataKeyStateOfMindID"];
+      lastObject14 = [eventsCopy lastObject];
+      identifierFromProvider2 = [lastObject14 identifierFromProvider];
+      [v64 setObject:identifierFromProvider2 forKey:@"MOStateOfMindMetaDataKeyStateOfMindID"];
     }
 
     v90 = [[MOResource alloc] initWithName:@"StateOfMind" type:16 dict:v64 value:0.0];
-    v91 = [v12 eventIdentifier];
-    [(MOResource *)v90 setSourceEventIdentifier:v91];
+    eventIdentifier2 = [lastObject eventIdentifier];
+    [(MOResource *)v90 setSourceEventIdentifier:eventIdentifier2];
 
     [(MOResource *)v90 setSourceEventAccessType:8];
     [(MOResource *)v90 setPriorityScore:100.0];
@@ -640,7 +640,7 @@
     [v96 addObject:v90];
     [(MOEventBundle *)v11 setResources:v96];
 
-    v7 = v102;
+    contextEventsCopy = v102;
   }
 
   else

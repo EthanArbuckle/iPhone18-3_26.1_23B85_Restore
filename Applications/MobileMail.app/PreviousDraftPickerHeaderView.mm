@@ -1,18 +1,18 @@
 @interface PreviousDraftPickerHeaderView
-- (PreviousDraftPickerHeaderView)initWithFrame:(CGRect)a3;
+- (PreviousDraftPickerHeaderView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setHasDrafts:(BOOL)a3;
-- (void)setLoading:(BOOL)a3 immediately:(BOOL)a4;
+- (void)setHasDrafts:(BOOL)drafts;
+- (void)setLoading:(BOOL)loading immediately:(BOOL)immediately;
 - (void)updateUI;
 @end
 
 @implementation PreviousDraftPickerHeaderView
 
-- (PreviousDraftPickerHeaderView)initWithFrame:(CGRect)a3
+- (PreviousDraftPickerHeaderView)initWithFrame:(CGRect)frame
 {
   v13.receiver = self;
   v13.super_class = PreviousDraftPickerHeaderView;
-  v3 = [(PreviousDraftPickerHeaderView *)&v13 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PreviousDraftPickerHeaderView *)&v13 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -70,26 +70,26 @@
   [(UIActivityIndicatorView *)self->_activityIndicatorView setCenter:MidX, CGRectGetMidY(v16)];
 }
 
-- (void)setHasDrafts:(BOOL)a3
+- (void)setHasDrafts:(BOOL)drafts
 {
-  if (self->_hasDrafts != a3)
+  if (self->_hasDrafts != drafts)
   {
-    self->_hasDrafts = a3;
+    self->_hasDrafts = drafts;
     [(PreviousDraftPickerHeaderView *)self updateUI];
   }
 }
 
-- (void)setLoading:(BOOL)a3 immediately:(BOOL)a4
+- (void)setLoading:(BOOL)loading immediately:(BOOL)immediately
 {
-  if (self->_loading != a3)
+  if (self->_loading != loading)
   {
-    self->_loading = a3;
-    if (a3 && !self->_completedFirstLoad)
+    self->_loading = loading;
+    if (loading && !self->_completedFirstLoad)
     {
       self->_completedFirstLoad = 1;
     }
 
-    if (a4)
+    if (immediately)
     {
 
       [(PreviousDraftPickerHeaderView *)self updateUI];
@@ -121,8 +121,8 @@
   {
     v3 = +[NSBundle mainBundle];
     v4 = [v3 localizedStringForKey:@"PREVIOUS_DRAFT_PICKER_PREVIOUS_DRAFTS" value:&stru_100662A88 table:@"Main"];
-    v5 = [v4 localizedUppercaseString];
-    [(UILabel *)self->_label setText:v5];
+    localizedUppercaseString = [v4 localizedUppercaseString];
+    [(UILabel *)self->_label setText:localizedUppercaseString];
 
     [(UILabel *)self->_label setTextAlignment:4];
     v6 = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline1];

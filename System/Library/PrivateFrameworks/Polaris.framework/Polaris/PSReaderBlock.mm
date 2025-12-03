@@ -1,15 +1,15 @@
 @interface PSReaderBlock
-- (PSReaderBlock)initWithReader:(id)a3 graph:(id)a4 readerOptions:(PSResourceManagerOptions *)a5 resourceOptions:(ps_input_resource_options_s *)a6 withPRMManager:(PSResourceManager *)a7 forCABufferExpiry:(id *)a8 withFrameHistoryClientHandle:(void *)a9;
-- (id)init3rdPartyReader:(id)a3 graph:(id)a4 readerOptions:(PSResourceManagerOptions *)a5 withPRMManager:(PSResourceManager *)a6;
+- (PSReaderBlock)initWithReader:(id)reader graph:(id)graph readerOptions:(PSResourceManagerOptions *)options resourceOptions:(ps_input_resource_options_s *)resourceOptions withPRMManager:(PSResourceManager *)manager forCABufferExpiry:(id *)expiry withFrameHistoryClientHandle:(void *)handle;
+- (id)init3rdPartyReader:(id)reader graph:(id)graph readerOptions:(PSResourceManagerOptions *)options withPRMManager:(PSResourceManager *)manager;
 - (void)dealloc;
 @end
 
 @implementation PSReaderBlock
 
-- (PSReaderBlock)initWithReader:(id)a3 graph:(id)a4 readerOptions:(PSResourceManagerOptions *)a5 resourceOptions:(ps_input_resource_options_s *)a6 withPRMManager:(PSResourceManager *)a7 forCABufferExpiry:(id *)a8 withFrameHistoryClientHandle:(void *)a9
+- (PSReaderBlock)initWithReader:(id)reader graph:(id)graph readerOptions:(PSResourceManagerOptions *)options resourceOptions:(ps_input_resource_options_s *)resourceOptions withPRMManager:(PSResourceManager *)manager forCABufferExpiry:(id *)expiry withFrameHistoryClientHandle:(void *)handle
 {
-  v16 = a3;
-  v17 = a4;
+  readerCopy = reader;
+  graphCopy = graph;
   v33.receiver = self;
   v33.super_class = PSReaderBlock;
   v18 = [(PSReaderBlock *)&v33 init];
@@ -18,32 +18,32 @@
     goto LABEL_8;
   }
 
-  v19 = [v17 criticalityCPU] != 0;
-  v20 = [v16 name];
-  v21 = ps_task_resources_create(1u, 0, [v20 UTF8String], a7, v19);
+  v19 = [graphCopy criticalityCPU] != 0;
+  name = [readerCopy name];
+  v21 = ps_task_resources_create(1u, 0, [name UTF8String], manager, v19);
 
   if (v21)
   {
-    a7 = [v16 input];
-    v22 = [(PSResourceManager *)a7 type];
-    if ((v22 - 1) < 2)
+    manager = [readerCopy input];
+    type = [(PSResourceManager *)manager type];
+    if ((type - 1) < 2)
     {
-      ps_task_resources_add_input(v21, [(PSResourceManager *)a7 type], 0xFFFFFFFF, a5, 0, 0, a6, a8, 1);
+      ps_task_resources_add_input(v21, [(PSResourceManager *)manager type], 0xFFFFFFFF, options, 0, 0, resourceOptions, expiry, 1);
 LABEL_7:
-      objc_storeStrong(&v18->_reader, a3);
-      v23 = [v16 getContext];
-      *v23 = v21;
-      v23[1] = ps_reader_block_acquire;
-      v23[2] = ps_reader_block_relinquish;
-      v23[6] = a9;
-      ps_frame_history_reader_buffer_init(a9, v17, v16);
+      objc_storeStrong(&v18->_reader, reader);
+      getContext = [readerCopy getContext];
+      *getContext = v21;
+      getContext[1] = ps_reader_block_acquire;
+      getContext[2] = ps_reader_block_relinquish;
+      getContext[6] = handle;
+      ps_frame_history_reader_buffer_init(handle, graphCopy, readerCopy);
       v24 = v18;
 
 LABEL_8:
       return v18;
     }
 
-    if (v22 && v22 != 3)
+    if (type && type != 3)
     {
       goto LABEL_7;
     }
@@ -51,17 +51,17 @@ LABEL_8:
 
   else
   {
-    [PSReaderBlock initWithReader:v16 graph:? readerOptions:? resourceOptions:? withPRMManager:? forCABufferExpiry:? withFrameHistoryClientHandle:?];
+    [PSReaderBlock initWithReader:readerCopy graph:? readerOptions:? resourceOptions:? withPRMManager:? forCABufferExpiry:? withFrameHistoryClientHandle:?];
   }
 
-  v26 = [PSReaderBlock initWithReader:a7 graph:? readerOptions:? resourceOptions:? withPRMManager:? forCABufferExpiry:? withFrameHistoryClientHandle:?];
+  v26 = [PSReaderBlock initWithReader:manager graph:? readerOptions:? resourceOptions:? withPRMManager:? forCABufferExpiry:? withFrameHistoryClientHandle:?];
   return [(PSReaderBlock *)v26 init3rdPartyReader:v27 graph:v28 readerOptions:v29 withPRMManager:v30, v31];
 }
 
-- (id)init3rdPartyReader:(id)a3 graph:(id)a4 readerOptions:(PSResourceManagerOptions *)a5 withPRMManager:(PSResourceManager *)a6
+- (id)init3rdPartyReader:(id)reader graph:(id)graph readerOptions:(PSResourceManagerOptions *)options withPRMManager:(PSResourceManager *)manager
 {
-  v11 = a3;
-  v12 = a4;
+  readerCopy = reader;
+  graphCopy = graph;
   v24.receiver = self;
   v24.super_class = PSReaderBlock;
   v13 = [(PSReaderBlock *)&v24 init];
@@ -70,49 +70,49 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  v14 = [v11 name];
-  v15 = ps_task_resources_create(1u, 0, [v14 UTF8String], a6, 0);
+  name = [readerCopy name];
+  v15 = ps_task_resources_create(1u, 0, [name UTF8String], manager, 0);
 
   if (!v15)
   {
-    [PSReaderBlock init3rdPartyReader:v11 graph:? readerOptions:? withPRMManager:?];
+    [PSReaderBlock init3rdPartyReader:readerCopy graph:? readerOptions:? withPRMManager:?];
   }
 
-  v16 = [v11 input];
-  v17 = [v16 type];
-  if ((v17 - 1) < 2)
+  input = [readerCopy input];
+  type = [input type];
+  if ((type - 1) < 2)
   {
-    ps_task_3rdParty_resources_add_input(v15, [v16 type], a5);
+    ps_task_3rdParty_resources_add_input(v15, [input type], options);
 LABEL_7:
-    objc_storeStrong(&v13->_reader, a3);
-    v18 = [v11 getContext];
-    *v18 = v15;
-    v18[1] = ps_reader_block_acquire;
-    v18[2] = ps_reader_block_relinquish;
+    objc_storeStrong(&v13->_reader, reader);
+    getContext = [readerCopy getContext];
+    *getContext = v15;
+    getContext[1] = ps_reader_block_acquire;
+    getContext[2] = ps_reader_block_relinquish;
     v19 = v13;
 
 LABEL_8:
     return v13;
   }
 
-  if (v17 && v17 != 3)
+  if (type && type != 3)
   {
     goto LABEL_7;
   }
 
-  v21 = [PSReaderBlock init3rdPartyReader:v16 graph:? readerOptions:? withPRMManager:?];
+  v21 = [PSReaderBlock init3rdPartyReader:input graph:? readerOptions:? withPRMManager:?];
   [(PSReaderBlock *)v21 dealloc];
   return result;
 }
 
 - (void)dealloc
 {
-  v3 = [(PSReader *)self->_reader getContext];
-  ps_task_resources_destroy_inputs(*v3);
-  ps_task_resources_destroy_outputs(*v3);
-  ps_task_resources_destroy(*v3);
-  ps_frame_history_graph_metadata_set_removal_timestamp(*(v3 + 32));
-  ps_frame_history_buffer_service_deallocate_buffer(*(v3 + 48), *(v3 + 32));
+  getContext = [(PSReader *)self->_reader getContext];
+  ps_task_resources_destroy_inputs(*getContext);
+  ps_task_resources_destroy_outputs(*getContext);
+  ps_task_resources_destroy(*getContext);
+  ps_frame_history_graph_metadata_set_removal_timestamp(*(getContext + 32));
+  ps_frame_history_buffer_service_deallocate_buffer(*(getContext + 48), *(getContext + 32));
   reader = self->_reader;
   self->_reader = 0;
 

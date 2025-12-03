@@ -12,9 +12,9 @@
 - (void)_setupTitleAndSubtitleConstraints;
 - (void)_setupTitleLabel;
 - (void)_setupView;
-- (void)contextProvided:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)contextProvided:(id)provided;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
 @end
 
@@ -42,11 +42,11 @@ LABEL_13:
 
   if ([v2 numberOfTimesCarDNDSiriCardShown] < 10)
   {
-    v5 = [MEMORY[0x277CEF368] sharedPreferences];
-    if ([v5 assistantIsEnabled])
+    mEMORY[0x277CEF368] = [MEMORY[0x277CEF368] sharedPreferences];
+    if ([mEMORY[0x277CEF368] assistantIsEnabled])
     {
-      v6 = [MEMORY[0x277CEF368] sharedPreferences];
-      if (![v6 disableAssistantWhilePasscodeLocked])
+      mEMORY[0x277CEF368]2 = [MEMORY[0x277CEF368] sharedPreferences];
+      if (![mEMORY[0x277CEF368]2 disableAssistantWhilePasscodeLocked])
       {
         v9 = AFAssistantRestricted();
 
@@ -70,10 +70,10 @@ LABEL_13:
 
           v11 = v10;
           _Block_object_dispose(&v16, 8);
-          v12 = [v10 sharedSystemState];
-          v13 = [v12 isConnectedToCarPlay];
+          sharedSystemState = [v10 sharedSystemState];
+          isConnectedToCarPlay = [sharedSystemState isConnectedToCarPlay];
 
-          if (v13)
+          if (isConnectedToCarPlay)
           {
             v3 = *MEMORY[0x277CEF098];
             if (!os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
@@ -88,9 +88,9 @@ LABEL_13:
           }
 
           v14 = CFPreferencesCopyAppValue(@"VoiceTrigger Enabled", @"com.apple.voicetrigger");
-          v15 = [v14 BOOLValue];
+          bOOLValue = [v14 BOOLValue];
 
-          if (v15)
+          if (bOOLValue)
           {
             v7 = 1;
             goto LABEL_15;
@@ -153,11 +153,11 @@ LABEL_15:
   [(SiriUICarDNDUseSiriHeaderViewController *)self _setupTitleAndSubtitleConstraints];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = SiriUICarDNDUseSiriHeaderViewController;
-  [(SiriUICarDNDUseSiriHeaderViewController *)&v5 viewDidAppear:a3];
+  [(SiriUICarDNDUseSiriHeaderViewController *)&v5 viewDidAppear:appear];
   [(SiriUICarDNDUseSiriHeaderViewController *)self _addContextProvider];
   v4 = dispatch_get_global_queue(0, 0);
   dispatch_async(v4, &__block_literal_global_5);
@@ -171,31 +171,31 @@ void __57__SiriUICarDNDUseSiriHeaderViewController_viewDidAppear___block_invoke(
   [v0 setNumberOfTimesCarDNDSiriCardShown:{objc_msgSend(v0, "numberOfTimesCarDNDSiriCardShown") + 1}];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = SiriUICarDNDUseSiriHeaderViewController;
-  [(SiriUICarDNDUseSiriHeaderViewController *)&v4 viewDidDisappear:a3];
+  [(SiriUICarDNDUseSiriHeaderViewController *)&v4 viewDidDisappear:disappear];
   [(SiriUICarDNDUseSiriHeaderViewController *)self _removeContextProvider];
 }
 
 - (void)_setupView
 {
-  v3 = [(SiriUICarDNDUseSiriHeaderViewController *)self view];
-  v4 = [MEMORY[0x277D75348] clearColor];
-  [v3 setBackgroundColor:v4];
+  view = [(SiriUICarDNDUseSiriHeaderViewController *)self view];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [view setBackgroundColor:clearColor];
 
   v5 = objc_alloc(MEMORY[0x277D75D68]);
-  v6 = [(SiriUICarDNDUseSiriHeaderViewController *)self view];
-  [v6 frame];
+  view2 = [(SiriUICarDNDUseSiriHeaderViewController *)self view];
+  [view2 frame];
   v9 = [v5 initWithFrame:?];
 
   v7 = [MEMORY[0x277D75210] effectWithStyle:1203];
   [v9 setEffect:v7];
 
   [v9 _setOverrideUserInterfaceStyle:2];
-  v8 = [(SiriUICarDNDUseSiriHeaderViewController *)self view];
-  [v8 addSubview:v9];
+  view3 = [(SiriUICarDNDUseSiriHeaderViewController *)self view];
+  [view3 addSubview:v9];
 }
 
 - (void)_setupImageView
@@ -207,84 +207,84 @@ void __57__SiriUICarDNDUseSiriHeaderViewController_viewDidAppear___block_invoke(
   [v3 setImage:v5];
   [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
   [(SiriUICarDNDUseSiriHeaderViewController *)self _setSiriOrbImageView:v3];
-  v6 = [(SiriUICarDNDUseSiriHeaderViewController *)self view];
-  v7 = [(SiriUICarDNDUseSiriHeaderViewController *)self _siriOrbImageView];
-  [v6 addSubview:v7];
+  view = [(SiriUICarDNDUseSiriHeaderViewController *)self view];
+  _siriOrbImageView = [(SiriUICarDNDUseSiriHeaderViewController *)self _siriOrbImageView];
+  [view addSubview:_siriOrbImageView];
 
-  v8 = [(SiriUICarDNDUseSiriHeaderViewController *)self _siriOrbImageView];
-  v9 = [v8 heightAnchor];
-  v10 = [v9 constraintEqualToConstant:72.0];
+  _siriOrbImageView2 = [(SiriUICarDNDUseSiriHeaderViewController *)self _siriOrbImageView];
+  heightAnchor = [_siriOrbImageView2 heightAnchor];
+  v10 = [heightAnchor constraintEqualToConstant:72.0];
   [v10 setActive:1];
 
-  v11 = [(SiriUICarDNDUseSiriHeaderViewController *)self _siriOrbImageView];
-  v12 = [v11 widthAnchor];
-  v13 = [v12 constraintEqualToConstant:72.0];
+  _siriOrbImageView3 = [(SiriUICarDNDUseSiriHeaderViewController *)self _siriOrbImageView];
+  widthAnchor = [_siriOrbImageView3 widthAnchor];
+  v13 = [widthAnchor constraintEqualToConstant:72.0];
   [v13 setActive:1];
 
   v14 = MEMORY[0x277CCAAD0];
-  v15 = [(SiriUICarDNDUseSiriHeaderViewController *)self _siriOrbImageView];
-  v16 = [(SiriUICarDNDUseSiriHeaderViewController *)self view];
-  v17 = [v14 constraintWithItem:v15 attribute:3 relatedBy:0 toItem:v16 attribute:3 multiplier:1.0 constant:44.0];
+  _siriOrbImageView4 = [(SiriUICarDNDUseSiriHeaderViewController *)self _siriOrbImageView];
+  view2 = [(SiriUICarDNDUseSiriHeaderViewController *)self view];
+  v17 = [v14 constraintWithItem:_siriOrbImageView4 attribute:3 relatedBy:0 toItem:view2 attribute:3 multiplier:1.0 constant:44.0];
 
   v18 = MEMORY[0x277CCAAD0];
-  v19 = [(SiriUICarDNDUseSiriHeaderViewController *)self _siriOrbImageView];
-  v20 = [(SiriUICarDNDUseSiriHeaderViewController *)self view];
-  v21 = [v18 constraintWithItem:v19 attribute:9 relatedBy:0 toItem:v20 attribute:9 multiplier:1.0 constant:0.0];
+  _siriOrbImageView5 = [(SiriUICarDNDUseSiriHeaderViewController *)self _siriOrbImageView];
+  view3 = [(SiriUICarDNDUseSiriHeaderViewController *)self view];
+  v21 = [v18 constraintWithItem:_siriOrbImageView5 attribute:9 relatedBy:0 toItem:view3 attribute:9 multiplier:1.0 constant:0.0];
 
-  v22 = [(SiriUICarDNDUseSiriHeaderViewController *)self view];
+  view4 = [(SiriUICarDNDUseSiriHeaderViewController *)self view];
   v24[0] = v17;
   v24[1] = v21;
   v23 = [MEMORY[0x277CBEA60] arrayWithObjects:v24 count:2];
-  [v22 addConstraints:v23];
+  [view4 addConstraints:v23];
 }
 
 - (void)_setupTitleLabel
 {
   v3 = MEMORY[0x277D74300];
   v4 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76A08]];
-  v5 = [v4 fontDescriptor];
-  v6 = [v5 fontDescriptorWithSymbolicTraits:2];
+  fontDescriptor = [v4 fontDescriptor];
+  v6 = [fontDescriptor fontDescriptorWithSymbolicTraits:2];
   v13 = [v3 fontWithDescriptor:v6 size:34.0];
 
-  v7 = [(SiriUICarDNDUseSiriHeaderViewController *)self _localizedTitle];
+  _localizedTitle = [(SiriUICarDNDUseSiriHeaderViewController *)self _localizedTitle];
   v8 = objc_alloc(MEMORY[0x277D756B8]);
   v9 = [v8 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
   [v9 setTextAlignment:1];
   [v9 setFont:v13];
-  [v9 setText:v7];
+  [v9 setText:_localizedTitle];
   [v9 setNumberOfLines:0];
-  v10 = [MEMORY[0x277D75348] whiteColor];
-  [v9 setTextColor:v10];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  [v9 setTextColor:whiteColor];
 
   [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
   [(SiriUICarDNDUseSiriHeaderViewController *)self _setTitleLabel:v9];
-  v11 = [(SiriUICarDNDUseSiriHeaderViewController *)self view];
-  v12 = [(SiriUICarDNDUseSiriHeaderViewController *)self _titleLabel];
-  [v11 addSubview:v12];
+  view = [(SiriUICarDNDUseSiriHeaderViewController *)self view];
+  _titleLabel = [(SiriUICarDNDUseSiriHeaderViewController *)self _titleLabel];
+  [view addSubview:_titleLabel];
 }
 
 - (void)_setupSubtitleLabel
 {
   v3 = MEMORY[0x277D74300];
   v4 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76A28]];
-  v5 = [v4 fontDescriptor];
-  v12 = [v3 fontWithDescriptor:v5 size:22.0];
+  fontDescriptor = [v4 fontDescriptor];
+  v12 = [v3 fontWithDescriptor:fontDescriptor size:22.0];
 
-  v6 = [(SiriUICarDNDUseSiriHeaderViewController *)self _localizedSubtitle];
+  _localizedSubtitle = [(SiriUICarDNDUseSiriHeaderViewController *)self _localizedSubtitle];
   v7 = objc_alloc(MEMORY[0x277D756B8]);
   v8 = [v7 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
   [v8 setTextAlignment:1];
   [v8 setFont:v12];
-  [v8 setText:v6];
+  [v8 setText:_localizedSubtitle];
   [v8 setNumberOfLines:0];
-  v9 = [MEMORY[0x277D75348] whiteColor];
-  [v8 setTextColor:v9];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  [v8 setTextColor:whiteColor];
 
   [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
   [(SiriUICarDNDUseSiriHeaderViewController *)self _setSubtitleLabel:v8];
-  v10 = [(SiriUICarDNDUseSiriHeaderViewController *)self view];
-  v11 = [(SiriUICarDNDUseSiriHeaderViewController *)self _subtitleLabel];
-  [v10 addSubview:v11];
+  view = [(SiriUICarDNDUseSiriHeaderViewController *)self view];
+  _subtitleLabel = [(SiriUICarDNDUseSiriHeaderViewController *)self _subtitleLabel];
+  [view addSubview:_subtitleLabel];
 }
 
 - (void)_setupTitleAndSubtitleConstraints
@@ -311,58 +311,58 @@ void __57__SiriUICarDNDUseSiriHeaderViewController_viewDidAppear___block_invoke(
   }
   v4 = ;
   v5 = MEMORY[0x277CCAAD0];
-  v6 = [(SiriUICarDNDUseSiriHeaderViewController *)self view];
-  v37 = [v5 constraintWithItem:v3 attribute:9 relatedBy:0 toItem:v6 attribute:9 multiplier:1.0 constant:0.0];
+  view = [(SiriUICarDNDUseSiriHeaderViewController *)self view];
+  v37 = [v5 constraintWithItem:v3 attribute:9 relatedBy:0 toItem:view attribute:9 multiplier:1.0 constant:0.0];
 
   v7 = MEMORY[0x277CCAAD0];
-  v8 = [(SiriUICarDNDUseSiriHeaderViewController *)self _siriOrbImageView];
+  _siriOrbImageView = [(SiriUICarDNDUseSiriHeaderViewController *)self _siriOrbImageView];
   v9 = v3;
-  v10 = v8;
+  v10 = _siriOrbImageView;
   v11 = v9;
   v36 = [v7 constraintWithItem:1.0 attribute:24.0 relatedBy:? toItem:? attribute:? multiplier:? constant:?];
 
   v12 = MEMORY[0x277CCAAD0];
-  v13 = [(SiriUICarDNDUseSiriHeaderViewController *)self view];
-  v35 = [v12 constraintWithItem:v11 attribute:5 relatedBy:0 toItem:v13 attribute:5 multiplier:1.0 constant:28.0];
+  view2 = [(SiriUICarDNDUseSiriHeaderViewController *)self view];
+  v35 = [v12 constraintWithItem:v11 attribute:5 relatedBy:0 toItem:view2 attribute:5 multiplier:1.0 constant:28.0];
 
   v14 = MEMORY[0x277CCAAD0];
-  v15 = [(SiriUICarDNDUseSiriHeaderViewController *)self view];
+  view3 = [(SiriUICarDNDUseSiriHeaderViewController *)self view];
   v34 = v11;
-  v16 = [v14 constraintWithItem:v11 attribute:6 relatedBy:0 toItem:v15 attribute:6 multiplier:1.0 constant:-28.0];
+  v16 = [v14 constraintWithItem:v11 attribute:6 relatedBy:0 toItem:view3 attribute:6 multiplier:1.0 constant:-28.0];
 
-  v17 = [(SiriUICarDNDUseSiriHeaderViewController *)self view];
+  view4 = [(SiriUICarDNDUseSiriHeaderViewController *)self view];
   v39[0] = v37;
   v39[1] = v36;
   v39[2] = v35;
   v39[3] = v16;
   v18 = [MEMORY[0x277CBEA60] arrayWithObjects:v39 count:4];
-  [v17 addConstraints:v18];
+  [view4 addConstraints:v18];
 
   v19 = MEMORY[0x277CCAAD0];
-  v20 = [(SiriUICarDNDUseSiriHeaderViewController *)self view];
-  v21 = [v19 constraintWithItem:v4 attribute:9 relatedBy:0 toItem:v20 attribute:9 multiplier:1.0 constant:0.0];
+  view5 = [(SiriUICarDNDUseSiriHeaderViewController *)self view];
+  v21 = [v19 constraintWithItem:v4 attribute:9 relatedBy:0 toItem:view5 attribute:9 multiplier:1.0 constant:0.0];
 
   v22 = [MEMORY[0x277CCAAD0] constraintWithItem:v4 attribute:3 relatedBy:0 toItem:v11 attribute:4 multiplier:1.0 constant:4.0];
   v23 = MEMORY[0x277CCAAD0];
-  v24 = [(SiriUICarDNDUseSiriHeaderViewController *)self view];
-  v25 = [v23 constraintWithItem:v4 attribute:4 relatedBy:0 toItem:v24 attribute:4 multiplier:1.0 constant:-40.0];
+  view6 = [(SiriUICarDNDUseSiriHeaderViewController *)self view];
+  v25 = [v23 constraintWithItem:v4 attribute:4 relatedBy:0 toItem:view6 attribute:4 multiplier:1.0 constant:-40.0];
 
   v26 = MEMORY[0x277CCAAD0];
-  v27 = [(SiriUICarDNDUseSiriHeaderViewController *)self view];
-  v28 = [v26 constraintWithItem:v4 attribute:5 relatedBy:0 toItem:v27 attribute:5 multiplier:1.0 constant:28.0];
+  view7 = [(SiriUICarDNDUseSiriHeaderViewController *)self view];
+  v28 = [v26 constraintWithItem:v4 attribute:5 relatedBy:0 toItem:view7 attribute:5 multiplier:1.0 constant:28.0];
 
   v29 = MEMORY[0x277CCAAD0];
-  v30 = [(SiriUICarDNDUseSiriHeaderViewController *)self view];
-  v31 = [v29 constraintWithItem:v4 attribute:6 relatedBy:0 toItem:v30 attribute:6 multiplier:1.0 constant:-28.0];
+  view8 = [(SiriUICarDNDUseSiriHeaderViewController *)self view];
+  v31 = [v29 constraintWithItem:v4 attribute:6 relatedBy:0 toItem:view8 attribute:6 multiplier:1.0 constant:-28.0];
 
-  v32 = [(SiriUICarDNDUseSiriHeaderViewController *)self view];
+  view9 = [(SiriUICarDNDUseSiriHeaderViewController *)self view];
   v38[0] = v21;
   v38[1] = v22;
   v38[2] = v25;
   v38[3] = v28;
   v38[4] = v31;
   v33 = [MEMORY[0x277CBEA60] arrayWithObjects:v38 count:5];
-  [v32 addConstraints:v33];
+  [view9 addConstraints:v33];
 }
 
 - (NSString)_localizedTitle
@@ -394,10 +394,10 @@ void __57__SiriUICarDNDUseSiriHeaderViewController_viewDidAppear___block_invoke(
 
     v7 = v6;
     _Block_object_dispose(&v15, 8);
-    v8 = [v6 sharedPreferences];
-    v9 = [MEMORY[0x277CEF368] sharedPreferences];
-    v10 = [v9 languageCode];
-    v11 = [v8 localizedTriggerPhraseForLanguageCode:v10];
+    sharedPreferences = [v6 sharedPreferences];
+    mEMORY[0x277CEF368] = [MEMORY[0x277CEF368] sharedPreferences];
+    languageCode = [mEMORY[0x277CEF368] languageCode];
+    v11 = [sharedPreferences localizedTriggerPhraseForLanguageCode:languageCode];
 
     v12 = [v5 localizedStringForKey:@"CARDND_USE_SIRI_TITLE" value:@"Say “%@”" table:0];
     v3 = [v12 stringByReplacingOccurrencesOfString:@"%@" withString:v11];
@@ -431,27 +431,27 @@ void __57__SiriUICarDNDUseSiriHeaderViewController_viewDidAppear___block_invoke(
 
 - (void)_addContextProvider
 {
-  v3 = [(SiriUICarDNDUseSiriHeaderViewController *)self _contextProvider];
+  _contextProvider = [(SiriUICarDNDUseSiriHeaderViewController *)self _contextProvider];
 
-  if (!v3)
+  if (!_contextProvider)
   {
     v4 = objc_alloc_init(SiriUICarDNDContextProvider);
     [(SiriUICarDNDUseSiriHeaderViewController *)self _setContextProvider:v4];
   }
 
-  v9 = [(SiriUICarDNDUseSiriHeaderViewController *)self _hintContext];
-  if (v9)
+  _hintContext = [(SiriUICarDNDUseSiriHeaderViewController *)self _hintContext];
+  if (_hintContext)
   {
-    v5 = [(SiriUICarDNDUseSiriHeaderViewController *)self _contextProvider];
-    [v5 _setHintContext:v9];
+    _contextProvider2 = [(SiriUICarDNDUseSiriHeaderViewController *)self _contextProvider];
+    [_contextProvider2 _setHintContext:_hintContext];
   }
 
-  v6 = [(SiriUICarDNDUseSiriHeaderViewController *)self _contextProvider];
-  [v6 setDelegate:self];
+  _contextProvider3 = [(SiriUICarDNDUseSiriHeaderViewController *)self _contextProvider];
+  [_contextProvider3 setDelegate:self];
 
-  v7 = [MEMORY[0x277CEF220] defaultContextManager];
-  v8 = [(SiriUICarDNDUseSiriHeaderViewController *)self _contextProvider];
-  [v7 addContextProvider:v8];
+  defaultContextManager = [MEMORY[0x277CEF220] defaultContextManager];
+  _contextProvider4 = [(SiriUICarDNDUseSiriHeaderViewController *)self _contextProvider];
+  [defaultContextManager addContextProvider:_contextProvider4];
 }
 
 - (id)_hintContext
@@ -471,23 +471,23 @@ void __57__SiriUICarDNDUseSiriHeaderViewController_viewDidAppear___block_invoke(
 
 - (void)_removeContextProvider
 {
-  v3 = [MEMORY[0x277CEF220] defaultContextManager];
-  v4 = [(SiriUICarDNDUseSiriHeaderViewController *)self _contextProvider];
-  [v3 removeContextProvider:v4];
+  defaultContextManager = [MEMORY[0x277CEF220] defaultContextManager];
+  _contextProvider = [(SiriUICarDNDUseSiriHeaderViewController *)self _contextProvider];
+  [defaultContextManager removeContextProvider:_contextProvider];
 
   [(SiriUICarDNDUseSiriHeaderViewController *)self _setContextProvider:0];
 }
 
 - (void)_sendCardAppearedAnalyticsEvent
 {
-  v0 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v1 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"_Bool soft_AnalyticsSendEventLazy(NSString *__strong, NSDictionary<NSString *, NSObject *> *(^__strong)(void))"}];
-  [v0 handleFailureInFunction:v1 file:@"SiriUICarDNDUseSiriHeaderViewController.m" lineNumber:30 description:{@"%s", dlerror()}];
+  [currentHandler handleFailureInFunction:v1 file:@"SiriUICarDNDUseSiriHeaderViewController.m" lineNumber:30 description:{@"%s", dlerror()}];
 
   __break(1u);
 }
 
-- (void)contextProvided:(id)a3
+- (void)contextProvided:(id)provided
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained controllerDidProvideContext:self];

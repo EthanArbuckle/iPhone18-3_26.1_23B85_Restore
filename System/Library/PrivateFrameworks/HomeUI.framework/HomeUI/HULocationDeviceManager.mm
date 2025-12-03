@@ -4,11 +4,11 @@
 - (NAFuture)activeFMFDeviceFuture;
 - (NAFuture)thisDeviceFuture;
 - (id)updateActiveLocationDeviceToThisDevice;
-- (void)_updateActiveFMFDevice:(id)a3;
-- (void)addObserver:(id)a3;
+- (void)_updateActiveFMFDevice:(id)device;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
-- (void)didChangeActiveLocationSharingDevice:(id)a3;
-- (void)removeObserver:(id)a3;
+- (void)didChangeActiveLocationSharingDevice:(id)device;
+- (void)removeObserver:(id)observer;
 - (void)startUpdatingFindMyPreferences;
 @end
 
@@ -44,9 +44,9 @@ void __41__HULocationDeviceManager_sharedInstance__block_invoke()
     findMyLocateSession = v2->_findMyLocateSession;
     v2->_findMyLocateSession = v3;
 
-    v5 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     observers = v2->_observers;
-    v2->_observers = v5;
+    v2->_observers = weakObjectsHashTable;
 
     [(HULocationDeviceManager *)v2 startUpdatingFindMyPreferences];
   }
@@ -62,18 +62,18 @@ void __41__HULocationDeviceManager_sharedInstance__block_invoke()
   [(HULocationDeviceManager *)&v3 dealloc];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(HULocationDeviceManager *)self observers];
-  [v5 addObject:v4];
+  observerCopy = observer;
+  observers = [(HULocationDeviceManager *)self observers];
+  [observers addObject:observerCopy];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(HULocationDeviceManager *)self observers];
-  [v5 removeObject:v4];
+  observerCopy = observer;
+  observers = [(HULocationDeviceManager *)self observers];
+  [observers removeObject:observerCopy];
 }
 
 - (void)startUpdatingFindMyPreferences
@@ -173,14 +173,14 @@ void __56__HULocationDeviceManager_stopUpdatingFindMyPreferences__block_invoke(u
   if (!activeFMFDeviceFuture)
   {
     v4 = objc_alloc_init(MEMORY[0x277D2C900]);
-    v5 = [(HULocationDeviceManager *)self findMyLocateSession];
+    findMyLocateSession = [(HULocationDeviceManager *)self findMyLocateSession];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __48__HULocationDeviceManager_activeFMFDeviceFuture__block_invoke;
     v12[3] = &unk_277DBE2B0;
     v6 = v4;
     v13 = v6;
-    [v5 getActiveLocationSharingDeviceWithCompletionHandler:v12];
+    [findMyLocateSession getActiveLocationSharingDeviceWithCompletionHandler:v12];
 
     v7 = self->_activeFMFDeviceFuture;
     self->_activeFMFDeviceFuture = v6;
@@ -189,8 +189,8 @@ void __56__HULocationDeviceManager_stopUpdatingFindMyPreferences__block_invoke(u
     activeFMFDeviceFuture = self->_activeFMFDeviceFuture;
   }
 
-  v9 = [MEMORY[0x277D2C938] mainThreadScheduler];
-  v10 = [(NAFuture *)activeFMFDeviceFuture reschedule:v9];
+  mainThreadScheduler = [MEMORY[0x277D2C938] mainThreadScheduler];
+  v10 = [(NAFuture *)activeFMFDeviceFuture reschedule:mainThreadScheduler];
 
   return v10;
 }
@@ -252,21 +252,21 @@ LABEL_8:
   v19 = __Block_byref_object_copy__15;
   v20 = __Block_byref_object_dispose__15;
   v21 = 0;
-  v4 = [(HULocationDeviceManager *)self findMyLocateSession];
+  findMyLocateSession = [(HULocationDeviceManager *)self findMyLocateSession];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __65__HULocationDeviceManager_updateActiveLocationDeviceToThisDevice__block_invoke;
   v15[3] = &unk_277DB8DF8;
   v15[4] = buf;
-  [v4 getThisDeviceWithCompletionHandler:v15];
+  [findMyLocateSession getThisDeviceWithCompletionHandler:v15];
 
   v5 = objc_alloc_init(MEMORY[0x277D2C900]);
-  v6 = [(HULocationDeviceManager *)self findMyLocateSession];
-  v7 = [v5 errorOnlyCompletionHandlerAdapter];
-  [v6 setActiveLocationSharingDeviceToThisDeviceWithCompletionHandler:v7];
+  findMyLocateSession2 = [(HULocationDeviceManager *)self findMyLocateSession];
+  errorOnlyCompletionHandlerAdapter = [v5 errorOnlyCompletionHandlerAdapter];
+  [findMyLocateSession2 setActiveLocationSharingDeviceToThisDeviceWithCompletionHandler:errorOnlyCompletionHandlerAdapter];
 
-  v8 = [MEMORY[0x277D2C938] mainThreadScheduler];
-  v9 = [v5 reschedule:v8];
+  mainThreadScheduler = [MEMORY[0x277D2C938] mainThreadScheduler];
+  v9 = [v5 reschedule:mainThreadScheduler];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __65__HULocationDeviceManager_updateActiveLocationDeviceToThisDevice__block_invoke_202;
@@ -339,14 +339,14 @@ void __65__HULocationDeviceManager_updateActiveLocationDeviceToThisDevice__block
   if (!thisDeviceFuture)
   {
     v4 = objc_alloc_init(MEMORY[0x277D2C900]);
-    v5 = [(HULocationDeviceManager *)self findMyLocateSession];
+    findMyLocateSession = [(HULocationDeviceManager *)self findMyLocateSession];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __43__HULocationDeviceManager_thisDeviceFuture__block_invoke;
     v12[3] = &unk_277DBE2B0;
     v6 = v4;
     v13 = v6;
-    [v5 getThisDeviceWithCompletionHandler:v12];
+    [findMyLocateSession getThisDeviceWithCompletionHandler:v12];
 
     v7 = self->_thisDeviceFuture;
     self->_thisDeviceFuture = v6;
@@ -355,8 +355,8 @@ void __65__HULocationDeviceManager_updateActiveLocationDeviceToThisDevice__block
     thisDeviceFuture = self->_thisDeviceFuture;
   }
 
-  v9 = [MEMORY[0x277D2C938] mainThreadScheduler];
-  v10 = [(NAFuture *)thisDeviceFuture reschedule:v9];
+  mainThreadScheduler = [MEMORY[0x277D2C938] mainThreadScheduler];
+  v10 = [(NAFuture *)thisDeviceFuture reschedule:mainThreadScheduler];
 
   return v10;
 }
@@ -403,9 +403,9 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)_updateActiveFMFDevice:(id)a3
+- (void)_updateActiveFMFDevice:(id)device
 {
-  v8 = a3;
+  deviceCopy = device;
   activeFMFDeviceFuture = self->_activeFMFDeviceFuture;
   if (activeFMFDeviceFuture && ([(NAFuture *)activeFMFDeviceFuture isFinished]& 1) == 0)
   {
@@ -418,9 +418,9 @@ LABEL_8:
   }
 
   v6 = v5;
-  if (v8)
+  if (deviceCopy)
   {
-    [(NAFuture *)v5 finishWithResult:v8];
+    [(NAFuture *)v5 finishWithResult:deviceCopy];
   }
 
   else
@@ -432,27 +432,27 @@ LABEL_8:
   [(HULocationDeviceManager *)self setActiveFMFDeviceFuture:v6];
 }
 
-- (void)didChangeActiveLocationSharingDevice:(id)a3
+- (void)didChangeActiveLocationSharingDevice:(id)device
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  deviceCopy = device;
   v5 = HFLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v11 = v4;
+    v11 = deviceCopy;
     _os_log_impl(&dword_20CEB6000, v5, OS_LOG_TYPE_DEFAULT, "findmylocate: didChangeActiveLocationSharingDevice: %@", buf, 0xCu);
   }
 
-  [(HULocationDeviceManager *)self _updateActiveFMFDevice:v4];
+  [(HULocationDeviceManager *)self _updateActiveFMFDevice:deviceCopy];
   objc_initWeak(buf, self);
-  v6 = [(HULocationDeviceManager *)self activeLocationDeviceFuture];
+  activeLocationDeviceFuture = [(HULocationDeviceManager *)self activeLocationDeviceFuture];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __64__HULocationDeviceManager_didChangeActiveLocationSharingDevice___block_invoke;
   v8[3] = &unk_277DBE288;
   objc_copyWeak(&v9, buf);
-  v7 = [v6 addSuccessBlock:v8];
+  v7 = [activeLocationDeviceFuture addSuccessBlock:v8];
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(buf);

@@ -3,9 +3,9 @@
 - (int64_t)clientConnections;
 - (void)_runManagerCallbackThread;
 - (void)_spawnManagerCallbackThread;
-- (void)asyncMISDiscoveryState:(id)a3;
+- (void)asyncMISDiscoveryState:(id)state;
 - (void)dealloc;
-- (void)setMISDiscoveryState:(BOOL)a3 immediateDisable:(BOOL)a4;
+- (void)setMISDiscoveryState:(BOOL)state immediateDisable:(BOOL)disable;
 @end
 
 @implementation WFPersonalHotspotStateMonitor
@@ -54,8 +54,8 @@ void __37__WFPersonalHotspotStateMonitor_init__block_invoke(uint64_t a1)
 
 - (void)dealloc
 {
-  v3 = [(WFPersonalHotspotStateMonitor *)self callbackThread];
-  [v3 cancel];
+  callbackThread = [(WFPersonalHotspotStateMonitor *)self callbackThread];
+  [callbackThread cancel];
 
   v4.receiver = self;
   v4.super_class = WFPersonalHotspotStateMonitor;
@@ -104,13 +104,13 @@ void __37__WFPersonalHotspotStateMonitor_init__block_invoke(uint64_t a1)
 {
   v16 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = [MEMORY[0x277CCACC8] currentThread];
-  [v4 setName:@"WFPersonalHotspotStateMonitor callback thread"];
+  currentThread = [MEMORY[0x277CCACC8] currentThread];
+  [currentThread setName:@"WFPersonalHotspotStateMonitor callback thread"];
 
   self->_callbackRunLoop = [MEMORY[0x277CBEB88] currentRunLoop];
-  v5 = [MEMORY[0x277CBEB00] port];
-  v6 = [MEMORY[0x277CBEB88] currentRunLoop];
-  [v5 scheduleInRunLoop:v6 forMode:*MEMORY[0x277CBE738]];
+  port = [MEMORY[0x277CBEB00] port];
+  currentRunLoop = [MEMORY[0x277CBEB88] currentRunLoop];
+  [port scheduleInRunLoop:currentRunLoop forMode:*MEMORY[0x277CBE738]];
 
   objc_autoreleasePoolPop(v3);
   v7 = WFLogForCategory(4uLL);
@@ -125,16 +125,16 @@ void __37__WFPersonalHotspotStateMonitor_init__block_invoke(uint64_t a1)
     _os_log_impl(&dword_273ECD000, v7, v8, "%s: runLoop %@", &v12, 0x16u);
   }
 
-  v10 = [MEMORY[0x277CBEB88] currentRunLoop];
-  [v10 run];
+  currentRunLoop2 = [MEMORY[0x277CBEB88] currentRunLoop];
+  [currentRunLoop2 run];
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setMISDiscoveryState:(BOOL)a3 immediateDisable:(BOOL)a4
+- (void)setMISDiscoveryState:(BOOL)state immediateDisable:(BOOL)disable
 {
-  v4 = a4;
-  v5 = a3;
+  disableCopy = disable;
+  stateCopy = state;
   v21 = *MEMORY[0x277D85DE8];
   v7 = WFLogForCategory(4uLL);
   v8 = OSLogForWFLogLevel(3uLL);
@@ -143,9 +143,9 @@ void __37__WFPersonalHotspotStateMonitor_init__block_invoke(uint64_t a1)
     *buf = 136315650;
     v16 = "[WFPersonalHotspotStateMonitor setMISDiscoveryState:immediateDisable:]";
     v17 = 1024;
-    v18 = v5;
+    v18 = stateCopy;
     v19 = 1024;
-    v20 = v4;
+    v20 = disableCopy;
     _os_log_impl(&dword_273ECD000, v7, v8, "%s: state %d immediateDisable: %d", buf, 0x18u);
   }
 
@@ -156,8 +156,8 @@ void __37__WFPersonalHotspotStateMonitor_init__block_invoke(uint64_t a1)
   v11[2] = __71__WFPersonalHotspotStateMonitor_setMISDiscoveryState_immediateDisable___block_invoke;
   v11[3] = &unk_279EBE3C0;
   objc_copyWeak(&v12, buf);
-  v13 = v5;
-  v14 = v4;
+  v13 = stateCopy;
+  v14 = disableCopy;
   dispatch_async(internalQueue, v11);
   objc_destroyWeak(&v12);
   objc_destroyWeak(buf);
@@ -177,10 +177,10 @@ void __71__WFPersonalHotspotStateMonitor_setMISDiscoveryState_immediateDisable__
   }
 }
 
-- (void)asyncMISDiscoveryState:(id)a3
+- (void)asyncMISDiscoveryState:(id)state
 {
-  v4 = a3;
-  if (v4)
+  stateCopy = state;
+  if (stateCopy)
   {
     objc_initWeak(&location, self);
     internalQueue = self->_internalQueue;
@@ -189,7 +189,7 @@ void __71__WFPersonalHotspotStateMonitor_setMISDiscoveryState_immediateDisable__
     block[2] = __56__WFPersonalHotspotStateMonitor_asyncMISDiscoveryState___block_invoke;
     block[3] = &unk_279EBDF78;
     objc_copyWeak(&v8, &location);
-    v7 = v4;
+    v7 = stateCopy;
     dispatch_async(internalQueue, block);
 
     objc_destroyWeak(&v8);

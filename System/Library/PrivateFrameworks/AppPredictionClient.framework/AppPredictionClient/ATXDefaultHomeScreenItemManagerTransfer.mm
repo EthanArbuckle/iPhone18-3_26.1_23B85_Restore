@@ -1,33 +1,33 @@
 @interface ATXDefaultHomeScreenItemManagerTransfer
 - (ATXDefaultHomeScreenItemManagerTransfer)init;
-- (ATXDefaultHomeScreenItemManagerTransfer)initWithPath:(id)a3;
-- (BOOL)_writeSmartStacks:(id)a3 toPath:(id)a4;
-- (id)_readSmartStacksWithPath:(id)a3 error:(id *)a4;
-- (id)stringForSmartStackVariant:(unint64_t)a3;
-- (void)fetchImportedWidgetSmartStackWithRequest:(id)a3 completionHandler:(id)a4;
-- (void)importWidgetSmartStackWithRequest:(id)a3 response:(id)a4 completionHandler:(id)a5;
+- (ATXDefaultHomeScreenItemManagerTransfer)initWithPath:(id)path;
+- (BOOL)_writeSmartStacks:(id)stacks toPath:(id)path;
+- (id)_readSmartStacksWithPath:(id)path error:(id *)error;
+- (id)stringForSmartStackVariant:(unint64_t)variant;
+- (void)fetchImportedWidgetSmartStackWithRequest:(id)request completionHandler:(id)handler;
+- (void)importWidgetSmartStackWithRequest:(id)request response:(id)response completionHandler:(id)handler;
 @end
 
 @implementation ATXDefaultHomeScreenItemManagerTransfer
 
 - (ATXDefaultHomeScreenItemManagerTransfer)init
 {
-  v3 = [MEMORY[0x1E698B010] appPredictionCacheDirectory];
-  v4 = [v3 stringByAppendingPathComponent:@"ATXDefaultHomeScreenItemManagerTransfer"];
+  appPredictionCacheDirectory = [MEMORY[0x1E698B010] appPredictionCacheDirectory];
+  v4 = [appPredictionCacheDirectory stringByAppendingPathComponent:@"ATXDefaultHomeScreenItemManagerTransfer"];
 
   v5 = [(ATXDefaultHomeScreenItemManagerTransfer *)self initWithPath:v4];
   return v5;
 }
 
-- (ATXDefaultHomeScreenItemManagerTransfer)initWithPath:(id)a3
+- (ATXDefaultHomeScreenItemManagerTransfer)initWithPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v9.receiver = self;
   v9.super_class = ATXDefaultHomeScreenItemManagerTransfer;
   v5 = [(ATXDefaultHomeScreenItemManagerTransfer *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [pathCopy copy];
     path = v5->_path;
     v5->_path = v6;
   }
@@ -35,18 +35,18 @@
   return v5;
 }
 
-- (void)fetchImportedWidgetSmartStackWithRequest:(id)a3 completionHandler:(id)a4
+- (void)fetchImportedWidgetSmartStackWithRequest:(id)request completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = -[ATXDefaultHomeScreenItemManagerTransfer stringForSmartStackVariant:](self, "stringForSmartStackVariant:", [v6 smartStackVariant]);
+  requestCopy = request;
+  handlerCopy = handler;
+  v8 = -[ATXDefaultHomeScreenItemManagerTransfer stringForSmartStackVariant:](self, "stringForSmartStackVariant:", [requestCopy smartStackVariant]);
   v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%@", self->_path, v8];
   v16 = 0;
   v10 = [(ATXDefaultHomeScreenItemManagerTransfer *)self _readSmartStacksWithPath:v9 error:&v16];
   v11 = v10;
   if (!v16 && v10 && ([v10 stacks], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "count"), v12, v13))
   {
-    v7[2](v7, v11, 0);
+    handlerCopy[2](handlerCopy, v11, 0);
   }
 
   else
@@ -58,22 +58,22 @@
     }
 
     v15 = +[ATXDefaultHomeScreenItemManager sharedInstance];
-    [v15 fetchWidgetSmartStackWithRequest:v6 completionHandler:v7];
+    [v15 fetchWidgetSmartStackWithRequest:requestCopy completionHandler:handlerCopy];
   }
 }
 
-- (void)importWidgetSmartStackWithRequest:(id)a3 response:(id)a4 completionHandler:(id)a5
+- (void)importWidgetSmartStackWithRequest:(id)request response:(id)response completionHandler:(id)handler
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v8 = a5;
-  v9 = a4;
-  v10 = -[ATXDefaultHomeScreenItemManagerTransfer stringForSmartStackVariant:](self, "stringForSmartStackVariant:", [a3 smartStackVariant]);
+  handlerCopy = handler;
+  responseCopy = response;
+  v10 = -[ATXDefaultHomeScreenItemManagerTransfer stringForSmartStackVariant:](self, "stringForSmartStackVariant:", [request smartStackVariant]);
   v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%@", self->_path, v10];
-  LODWORD(self) = [(ATXDefaultHomeScreenItemManagerTransfer *)self _writeSmartStacks:v9 toPath:v11];
+  LODWORD(self) = [(ATXDefaultHomeScreenItemManagerTransfer *)self _writeSmartStacks:responseCopy toPath:v11];
 
   if (self)
   {
-    v8[2](v8, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 
   else
@@ -84,21 +84,21 @@
     v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:&v15 count:1];
     v14 = [v12 errorWithDomain:@"ATXDefaultHomeScreenItemManagerTransfer" code:0 userInfo:v13];
 
-    (v8)[2](v8, v14);
+    (handlerCopy)[2](handlerCopy, v14);
   }
 }
 
-- (BOOL)_writeSmartStacks:(id)a3 toPath:(id)a4
+- (BOOL)_writeSmartStacks:(id)stacks toPath:(id)path
 {
   v5 = MEMORY[0x1E698AFF0];
-  v6 = a4;
-  v7 = a3;
+  pathCopy = path;
+  stacksCopy = stacks;
   v8 = [v5 alloc];
   v9 = __atxlog_handle_home_screen();
-  v10 = [v8 initWithCacheFilePath:v6 loggingHandle:v9 debugName:@"ATXDefaultHomeScreenItemManagerTransfer"];
+  v10 = [v8 initWithCacheFilePath:pathCopy loggingHandle:v9 debugName:@"ATXDefaultHomeScreenItemManagerTransfer"];
 
   v15 = 0;
-  v11 = [v10 storeSecureCodedObject:v7 error:&v15];
+  v11 = [v10 storeSecureCodedObject:stacksCopy error:&v15];
 
   v12 = v15;
   if (v12)
@@ -113,31 +113,31 @@
   return v11;
 }
 
-- (id)_readSmartStacksWithPath:(id)a3 error:(id *)a4
+- (id)_readSmartStacksWithPath:(id)path error:(id *)error
 {
-  v5 = a3;
+  pathCopy = path;
   v6 = objc_alloc(MEMORY[0x1E698AFF0]);
   v7 = __atxlog_handle_home_screen();
-  v8 = [v6 initWithCacheFilePath:v5 loggingHandle:v7 debugName:@"ATXDefaultHomeScreenItemManagerTransfer"];
+  v8 = [v6 initWithCacheFilePath:pathCopy loggingHandle:v7 debugName:@"ATXDefaultHomeScreenItemManagerTransfer"];
 
   v9 = objc_autoreleasePoolPush();
   v10 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{objc_opt_class(), 0}];
   objc_autoreleasePoolPop(v9);
-  v11 = [v8 readSecureCodedObjectWithMaxValidAge:v10 allowableClasses:a4 error:-1.0];
+  v11 = [v8 readSecureCodedObjectWithMaxValidAge:v10 allowableClasses:error error:-1.0];
 
   return v11;
 }
 
-- (id)stringForSmartStackVariant:(unint64_t)a3
+- (id)stringForSmartStackVariant:(unint64_t)variant
 {
-  if (a3 - 1 > 5)
+  if (variant - 1 > 5)
   {
     return @"AppList";
   }
 
   else
   {
-    return off_1E80C2EF0[a3 - 1];
+    return off_1E80C2EF0[variant - 1];
   }
 }
 

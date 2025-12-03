@@ -3,14 +3,14 @@
 - (NMMessageQueue)init;
 - (unint64_t)count;
 - (void)_trimPendingMessagesIfNeeded;
-- (void)dequeueMessageIfPossible:(id)a3 orReply:(id)a4;
-- (void)didSendPayloadWithSize:(unint64_t)a3;
-- (void)enqueueMessage:(id)a3 options:(id)a4 reply:(id)a5;
-- (void)enqueueReply:(id)a3 forMessage:(id)a4 options:(id)a5;
+- (void)dequeueMessageIfPossible:(id)possible orReply:(id)reply;
+- (void)didSendPayloadWithSize:(unint64_t)size;
+- (void)enqueueMessage:(id)message options:(id)options reply:(id)reply;
+- (void)enqueueReply:(id)reply forMessage:(id)message options:(id)options;
 - (void)removeAllMessages;
-- (void)removeMessage:(id)a3;
-- (void)removeReply:(id)a3;
-- (void)willSendPayloadWithSize:(unint64_t)a3;
+- (void)removeMessage:(id)message;
+- (void)removeReply:(id)reply;
+- (void)willSendPayloadWithSize:(unint64_t)size;
 @end
 
 @implementation NMMessageQueue
@@ -108,41 +108,41 @@ LABEL_12:
   return v3;
 }
 
-- (void)enqueueMessage:(id)a3 options:(id)a4 reply:(id)a5
+- (void)enqueueMessage:(id)message options:(id)options reply:(id)reply
 {
-  if (a3)
+  if (message)
   {
-    v8 = a5;
-    v9 = a4;
-    v10 = a3;
+    replyCopy = reply;
+    optionsCopy = options;
+    messageCopy = message;
     v12 = objc_alloc_init(_NMEnqueuedMessage);
-    [(_NMEnqueuedMessage *)v12 setMessage:v10];
-    [(_NMEnqueuedMessage *)v12 setOptions:v9];
+    [(_NMEnqueuedMessage *)v12 setMessage:messageCopy];
+    [(_NMEnqueuedMessage *)v12 setOptions:optionsCopy];
 
-    [(_NMEnqueuedMessage *)v12 setReplyBlock:v8];
+    [(_NMEnqueuedMessage *)v12 setReplyBlock:replyCopy];
     [(_NMEnqueuedMessage *)v12 setEnqueuedTime:CFAbsoluteTimeGetCurrent()];
     [(NSLock *)self->_queueLock lock];
     [(NSMutableArray *)self->_queue addObject:v12];
     [(NSLock *)self->_queueLock unlock];
     [(NMMessageQueue *)self _trimPendingMessagesIfNeeded];
-    v11 = [v10 type];
+    type = [messageCopy type];
 
-    [(NMMessageQueue *)self _trimPendingMessagesIfNeededOfType:v11];
+    [(NMMessageQueue *)self _trimPendingMessagesIfNeededOfType:type];
   }
 }
 
-- (void)enqueueReply:(id)a3 forMessage:(id)a4 options:(id)a5
+- (void)enqueueReply:(id)reply forMessage:(id)message options:(id)options
 {
-  if (a3)
+  if (reply)
   {
-    v8 = a5;
-    v9 = a4;
-    v10 = a3;
+    optionsCopy = options;
+    messageCopy = message;
+    replyCopy = reply;
     v11 = objc_alloc_init(_NMEnqueuedMessage);
-    [(_NMEnqueuedMessage *)v11 setReply:v10];
+    [(_NMEnqueuedMessage *)v11 setReply:replyCopy];
 
-    [(_NMEnqueuedMessage *)v11 setMessage:v9];
-    [(_NMEnqueuedMessage *)v11 setOptions:v8];
+    [(_NMEnqueuedMessage *)v11 setMessage:messageCopy];
+    [(_NMEnqueuedMessage *)v11 setOptions:optionsCopy];
 
     [(_NMEnqueuedMessage *)v11 setEnqueuedTime:CFAbsoluteTimeGetCurrent()];
     [(NSLock *)self->_queueLock lock];
@@ -180,15 +180,15 @@ LABEL_12:
   [(NSLock *)self->_queueLock unlock];
 }
 
-- (void)dequeueMessageIfPossible:(id)a3 orReply:(id)a4
+- (void)dequeueMessageIfPossible:(id)possible orReply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  possibleCopy = possible;
+  replyCopy = reply;
   if (![(NMMessageQueue *)self isPaused])
   {
     [(NSLock *)self->_queueLock lock];
-    v8 = [(NSMutableArray *)self->_queue firstObject];
-    if (!v8)
+    firstObject = [(NSMutableArray *)self->_queue firstObject];
+    if (!firstObject)
     {
       [(NSLock *)self->_queueLock unlock];
       goto LABEL_14;
@@ -198,76 +198,76 @@ LABEL_12:
     v9 = sub_100001B24();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
-      v10 = [v8 message];
-      v11 = [v10 shortDebugDescription];
+      message = [firstObject message];
+      shortDebugDescription = [message shortDebugDescription];
       v12 = [(NSMutableArray *)self->_queue count];
       v23 = 138412546;
-      v24 = v11;
+      v24 = shortDebugDescription;
       v25 = 2048;
       v26 = v12;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "Dequeued message: %@, %lu remaining in queue", &v23, 0x16u);
     }
 
     [(NSLock *)self->_queueLock unlock];
-    v13 = [v8 reply];
+    reply = [firstObject reply];
 
-    if (v13)
+    if (reply)
     {
-      if (!v7)
+      if (!replyCopy)
       {
         goto LABEL_14;
       }
 
-      v14 = [v8 reply];
-      v15 = [v8 message];
-      v16 = [v8 options];
+      reply2 = [firstObject reply];
+      message2 = [firstObject message];
+      options = [firstObject options];
       Current = CFAbsoluteTimeGetCurrent();
-      [v8 enqueuedTime];
+      [firstObject enqueuedTime];
       v19.n128_f64[0] = Current - v18;
-      v7[2](v7, v14, v15, v16, v19);
+      replyCopy[2](replyCopy, reply2, message2, options, v19);
     }
 
     else
     {
-      if (!v6)
+      if (!possibleCopy)
       {
         goto LABEL_14;
       }
 
-      v14 = [v8 message];
-      v15 = [v8 options];
-      v16 = [v8 replyBlock];
+      reply2 = [firstObject message];
+      message2 = [firstObject options];
+      options = [firstObject replyBlock];
       v20 = CFAbsoluteTimeGetCurrent();
-      [v8 enqueuedTime];
+      [firstObject enqueuedTime];
       v22.n128_f64[0] = v20 - v21;
-      v6[2](v6, v14, v15, v16, v22);
+      possibleCopy[2](possibleCopy, reply2, message2, options, v22);
     }
 
     goto LABEL_14;
   }
 
-  v8 = sub_100001B24();
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
+  firstObject = sub_100001B24();
+  if (os_log_type_enabled(firstObject, OS_LOG_TYPE_INFO))
   {
     LOWORD(v23) = 0;
-    _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Will not dequeue message, currently paused", &v23, 2u);
+    _os_log_impl(&_mh_execute_header, firstObject, OS_LOG_TYPE_INFO, "Will not dequeue message, currently paused", &v23, 2u);
   }
 
 LABEL_14:
 }
 
-- (void)willSendPayloadWithSize:(unint64_t)a3
+- (void)willSendPayloadWithSize:(unint64_t)size
 {
   [(NSLock *)self->_queueLock lock];
   v5.i64[0] = vdupq_n_s64(1uLL).u64[0];
-  v5.i64[1] = a3;
+  v5.i64[1] = size;
   *&self->_inFlightPayloadsCount = vaddq_s64(*&self->_inFlightPayloadsCount, v5);
   queueLock = self->_queueLock;
 
   [(NSLock *)queueLock unlock];
 }
 
-- (void)didSendPayloadWithSize:(unint64_t)a3
+- (void)didSendPayloadWithSize:(unint64_t)size
 {
   [(NSLock *)self->_queueLock lock];
   inFlightPayloadsCount = self->_inFlightPayloadsCount;
@@ -287,8 +287,8 @@ LABEL_14:
   }
 
   inFlightPayloadsSize = self->_inFlightPayloadsSize;
-  v8 = inFlightPayloadsSize >= a3;
-  v9 = inFlightPayloadsSize - a3;
+  v8 = inFlightPayloadsSize >= size;
+  v9 = inFlightPayloadsSize - size;
   if (v8)
   {
     self->_inFlightPayloadsSize = v9;
@@ -307,17 +307,17 @@ LABEL_14:
   [(NSLock *)self->_queueLock unlock];
 }
 
-- (void)removeMessage:(id)a3
+- (void)removeMessage:(id)message
 {
-  v4 = a3;
-  if (v4)
+  messageCopy = message;
+  if (messageCopy)
   {
     v5 = sub_100001B24();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
-      v6 = [v4 shortDebugDescription];
+      shortDebugDescription = [messageCopy shortDebugDescription];
       *buf = 138412290;
-      v23 = v6;
+      v23 = shortDebugDescription;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Removing message: %@", buf, 0xCu);
     }
 
@@ -342,9 +342,9 @@ LABEL_6:
         }
 
         v12 = *(*(&v17 + 1) + 8 * v11);
-        v13 = [v12 message];
+        message = [v12 message];
 
-        if (v13 == v4)
+        if (message == messageCopy)
         {
           break;
         }
@@ -373,9 +373,9 @@ LABEL_6:
       v15 = sub_100001B24();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
       {
-        v16 = [v4 shortDebugDescription];
+        shortDebugDescription2 = [messageCopy shortDebugDescription];
         *buf = 138412290;
-        v23 = v16;
+        v23 = shortDebugDescription2;
         _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "Found and removed enqueued message: %@", buf, 0xCu);
       }
     }
@@ -390,10 +390,10 @@ LABEL_17:
   }
 }
 
-- (void)removeReply:(id)a3
+- (void)removeReply:(id)reply
 {
-  v4 = a3;
-  if (v4)
+  replyCopy = reply;
+  if (replyCopy)
   {
     [(NSLock *)self->_queueLock lock];
     v15 = 0u;
@@ -416,9 +416,9 @@ LABEL_17:
           }
 
           v10 = *(*(&v13 + 1) + 8 * i);
-          v11 = [v10 reply];
+          reply = [v10 reply];
 
-          if (v11 == v4)
+          if (reply == replyCopy)
           {
             v12 = v10;
 

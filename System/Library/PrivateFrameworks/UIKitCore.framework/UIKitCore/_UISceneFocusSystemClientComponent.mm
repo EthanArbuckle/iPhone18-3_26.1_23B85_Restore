@@ -1,27 +1,27 @@
 @interface _UISceneFocusSystemClientComponent
 - (BOOL)isHostAssertingActiveFocusSystem;
-- (void)scene:(id)a3 didUpdateSettings:(id)a4;
+- (void)scene:(id)scene didUpdateSettings:(id)settings;
 @end
 
 @implementation _UISceneFocusSystemClientComponent
 
-- (void)scene:(id)a3 didUpdateSettings:(id)a4
+- (void)scene:(id)scene didUpdateSettings:(id)settings
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [v5 settingsDiff];
-  v7 = [v6 containsProperty:sel_isHostAssertingActiveFocusSystem];
+  settingsCopy = settings;
+  settingsDiff = [settingsCopy settingsDiff];
+  v7 = [settingsDiff containsProperty:sel_isHostAssertingActiveFocusSystem];
 
   if (v7)
   {
-    v8 = [v5 settings];
-    v9 = [v8 isHostAssertingActiveFocusSystem];
+    settings = [settingsCopy settings];
+    isHostAssertingActiveFocusSystem = [settings isHostAssertingActiveFocusSystem];
 
     v10 = *(__UILogGetCategoryCachedImpl("_UISceneFocusSystemClientComponent", &scene_didUpdateSettings____s_category_1) + 8);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v11 = @"DISABLED";
-      if (v9)
+      if (isHostAssertingActiveFocusSystem)
       {
         v11 = @"ENABLED";
       }
@@ -33,23 +33,23 @@
 
     if (self)
     {
-      v12 = [(FBSSceneComponent *)self clientScene];
-      v13 = [UIScene _sceneForFBSScene:v12];
+      clientScene = [(FBSSceneComponent *)self clientScene];
+      v13 = [UIScene _sceneForFBSScene:clientScene];
 
-      v14 = [v13 _focusSystemSceneComponent];
-      v15 = [v14 sceneHostAssertionObserver];
-      [v15 performUpdatesAndNotifyObservers:&__block_literal_global_616];
+      _focusSystemSceneComponent = [v13 _focusSystemSceneComponent];
+      sceneHostAssertionObserver = [_focusSystemSceneComponent sceneHostAssertionObserver];
+      [sceneHostAssertionObserver performUpdatesAndNotifyObservers:&__block_literal_global_616];
     }
   }
 }
 
 - (BOOL)isHostAssertingActiveFocusSystem
 {
-  v2 = [(FBSSceneComponent *)self scene];
-  v3 = [v2 settings];
-  v4 = [v3 isHostAssertingActiveFocusSystem];
+  scene = [(FBSSceneComponent *)self scene];
+  settings = [scene settings];
+  isHostAssertingActiveFocusSystem = [settings isHostAssertingActiveFocusSystem];
 
-  return v4;
+  return isHostAssertingActiveFocusSystem;
 }
 
 @end

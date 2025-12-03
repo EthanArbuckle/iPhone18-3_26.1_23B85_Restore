@@ -1,26 +1,26 @@
 @interface LACDTOLocationControllerFactory
-+ (id)controllerWithStore:(id)a3 featureController:(id)a4 eventBus:(id)a5 featureFlags:(id)a6 workQueue:(id)a7;
++ (id)controllerWithStore:(id)store featureController:(id)controller eventBus:(id)bus featureFlags:(id)flags workQueue:(id)queue;
 @end
 
 @implementation LACDTOLocationControllerFactory
 
-+ (id)controllerWithStore:(id)a3 featureController:(id)a4 eventBus:(id)a5 featureFlags:(id)a6 workQueue:(id)a7
++ (id)controllerWithStore:(id)store featureController:(id)controller eventBus:(id)bus featureFlags:(id)flags workQueue:(id)queue
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  v14 = a7;
+  storeCopy = store;
+  controllerCopy = controller;
+  flagsCopy = flags;
+  queueCopy = queue;
   v43[0] = MEMORY[0x1E69E9820];
   v43[1] = 3221225472;
   v43[2] = __105__LACDTOLocationControllerFactory_controllerWithStore_featureController_eventBus_featureFlags_workQueue___block_invoke;
   v43[3] = &unk_1E7A95C90;
-  v15 = v14;
+  v15 = queueCopy;
   v44 = v15;
-  v16 = v11;
+  v16 = storeCopy;
   v45 = v16;
-  v46 = v12;
-  v17 = v12;
-  v18 = a5;
+  v46 = controllerCopy;
+  v17 = controllerCopy;
+  busCopy = bus;
   v19 = __105__LACDTOLocationControllerFactory_controllerWithStore_featureController_eventBus_featureFlags_workQueue___block_invoke(v43);
   v38[0] = MEMORY[0x1E69E9820];
   v38[1] = 3221225472;
@@ -30,7 +30,7 @@
   v39 = v20;
   v21 = v16;
   v40 = v21;
-  v22 = v13;
+  v22 = flagsCopy;
   v41 = v22;
   v23 = v15;
   v42 = v23;
@@ -50,7 +50,7 @@
   v28 = v21;
   v29 = v20;
   v30 = __105__LACDTOLocationControllerFactory_controllerWithStore_featureController_eventBus_featureFlags_workQueue___block_invoke_4(v32);
-  [v30 setEventBus:v18];
+  [v30 setEventBus:busCopy];
 
   return v30;
 }

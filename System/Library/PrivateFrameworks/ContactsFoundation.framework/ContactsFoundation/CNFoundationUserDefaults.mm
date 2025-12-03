@@ -7,7 +7,7 @@
 - (id)countryCode;
 - (unint64_t)newContactNameOrder;
 - (unint64_t)sortOrder;
-- (void)setFilteredAccountsAndContainers:(id)a3;
+- (void)setFilteredAccountsAndContainers:(id)containers;
 @end
 
 @implementation CNFoundationUserDefaults
@@ -28,7 +28,7 @@
   block[1] = 3221225472;
   block[2] = __46__CNFoundationUserDefaults_registeredDefaults__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (registeredDefaults_cn_once_token_2 != -1)
   {
     dispatch_once(&registeredDefaults_cn_once_token_2, block);
@@ -80,8 +80,8 @@ uint64_t __42__CNFoundationUserDefaults_sharedDefaults__block_invoke()
     v2->_userDefaults = v3;
 
     v5 = v2->_userDefaults;
-    v6 = [objc_opt_class() registeredDefaults];
-    [(CNUserDefaults *)v5 registerDefaults:v6];
+    registeredDefaults = [objc_opt_class() registeredDefaults];
+    [(CNUserDefaults *)v5 registerDefaults:registeredDefaults];
 
     v7 = v2;
   }
@@ -126,17 +126,17 @@ uint64_t __42__CNFoundationUserDefaults_sharedDefaults__block_invoke()
 
 - (NSDictionary)filteredAccountsAndContainers
 {
-  v2 = [(CNFoundationUserDefaults *)self userDefaults];
-  v3 = [v2 objectForKey:@"CNDefaultsFilteredAccountsAndContainersKey"];
+  userDefaults = [(CNFoundationUserDefaults *)self userDefaults];
+  v3 = [userDefaults objectForKey:@"CNDefaultsFilteredAccountsAndContainersKey"];
 
   return v3;
 }
 
-- (void)setFilteredAccountsAndContainers:(id)a3
+- (void)setFilteredAccountsAndContainers:(id)containers
 {
-  v4 = a3;
-  v5 = [(CNFoundationUserDefaults *)self userDefaults];
-  [v5 setObject:v4 forKey:@"CNDefaultsFilteredAccountsAndContainersKey"];
+  containersCopy = containers;
+  userDefaults = [(CNFoundationUserDefaults *)self userDefaults];
+  [userDefaults setObject:containersCopy forKey:@"CNDefaultsFilteredAccountsAndContainersKey"];
 }
 
 @end

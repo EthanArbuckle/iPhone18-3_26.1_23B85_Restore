@@ -1,46 +1,46 @@
 @interface PKProvisioningUtility
-- (PKProvisioningUtility)initWithDestinationWebService:(id)a3 managingWebService:(id)a4;
+- (PKProvisioningUtility)initWithDestinationWebService:(id)service managingWebService:(id)webService;
 - (PKProvisioningUtilityDataHelper)dataProvider;
-- (void)_downloadAndIngestPassesFoPasses:(id)a3 response:(id)a4 cloudStoreCoordinatorDelegate:(id)a5 ingestionProperties:(id)a6 sid:(id)a7 completion:(id)a8;
-- (void)_requestProvisioning:(id)a3 externalizedAuth:(id)a4 cloudStoreCoordinatorDelegate:(id)a5 downloadPasses:(BOOL)a6 resolveEnableRequirements:(BOOL)a7 onStartPassDownload:(id)a8 sid:(id)a9 completion:(id)a10;
-- (void)_updateRequirementsRequestForSuperEasyProvisioning:(id)a3 sid:(id)a4 completion:(id)a5;
-- (void)downloadAndIngestPassForPassURL:(id)a3 deviceCredential:(id)a4 cloudStoreCoordinatorDelegate:(id)a5 ingestionProperties:(id)a6 sid:(id)a7 completion:(id)a8;
-- (void)downloadAndIngestPassesForResponse:(id)a3 cloudStoreCoordinatorDelegate:(id)a4 ingestionProperties:(id)a5 sid:(id)a6 completion:(id)a7;
-- (void)downloadMoreInfoItemsFrom:(id)a3 metadata:(id)a4 sid:(id)a5 completion:(id)a6;
-- (void)ingestProvisioningPassData:(id)a3 cloudStoreCoordinatorDelegate:(id)a4 moreInfoURLs:(id)a5 ingestionProperties:(id)a6 sid:(id)a7 completion:(id)a8;
-- (void)nonceWithSID:(id)a3 completion:(id)a4;
-- (void)requestEligibility:(id)a3 sid:(id)a4 completion:(id)a5;
-- (void)requestProvisioning:(id)a3 externalizedAuth:(id)a4 cloudStoreCoordinatorDelegate:(id)a5 onStartPassDownload:(id)a6 sid:(id)a7 requireZoneCreationSuccess:(BOOL)a8 completion:(id)a9;
-- (void)requestProvisioning:(id)a3 sid:(id)a4 completion:(id)a5;
-- (void)requestRequirements:(id)a3 sid:(id)a4 completion:(id)a5;
-- (void)updateProvisioningRequestForEnableRequirements:(id)a3 externalizedAuth:(id)a4 sid:(id)a5 completion:(id)a6;
+- (void)_downloadAndIngestPassesFoPasses:(id)passes response:(id)response cloudStoreCoordinatorDelegate:(id)delegate ingestionProperties:(id)properties sid:(id)sid completion:(id)completion;
+- (void)_requestProvisioning:(id)provisioning externalizedAuth:(id)auth cloudStoreCoordinatorDelegate:(id)delegate downloadPasses:(BOOL)passes resolveEnableRequirements:(BOOL)requirements onStartPassDownload:(id)download sid:(id)sid completion:(id)self0;
+- (void)_updateRequirementsRequestForSuperEasyProvisioning:(id)provisioning sid:(id)sid completion:(id)completion;
+- (void)downloadAndIngestPassForPassURL:(id)l deviceCredential:(id)credential cloudStoreCoordinatorDelegate:(id)delegate ingestionProperties:(id)properties sid:(id)sid completion:(id)completion;
+- (void)downloadAndIngestPassesForResponse:(id)response cloudStoreCoordinatorDelegate:(id)delegate ingestionProperties:(id)properties sid:(id)sid completion:(id)completion;
+- (void)downloadMoreInfoItemsFrom:(id)from metadata:(id)metadata sid:(id)sid completion:(id)completion;
+- (void)ingestProvisioningPassData:(id)data cloudStoreCoordinatorDelegate:(id)delegate moreInfoURLs:(id)ls ingestionProperties:(id)properties sid:(id)sid completion:(id)completion;
+- (void)nonceWithSID:(id)d completion:(id)completion;
+- (void)requestEligibility:(id)eligibility sid:(id)sid completion:(id)completion;
+- (void)requestProvisioning:(id)provisioning externalizedAuth:(id)auth cloudStoreCoordinatorDelegate:(id)delegate onStartPassDownload:(id)download sid:(id)sid requireZoneCreationSuccess:(BOOL)success completion:(id)completion;
+- (void)requestProvisioning:(id)provisioning sid:(id)sid completion:(id)completion;
+- (void)requestRequirements:(id)requirements sid:(id)sid completion:(id)completion;
+- (void)updateProvisioningRequestForEnableRequirements:(id)requirements externalizedAuth:(id)auth sid:(id)sid completion:(id)completion;
 @end
 
 @implementation PKProvisioningUtility
 
-- (PKProvisioningUtility)initWithDestinationWebService:(id)a3 managingWebService:(id)a4
+- (PKProvisioningUtility)initWithDestinationWebService:(id)service managingWebService:(id)webService
 {
-  v7 = a3;
-  v8 = a4;
+  serviceCopy = service;
+  webServiceCopy = webService;
   v12.receiver = self;
   v12.super_class = PKProvisioningUtility;
   v9 = [(PKProvisioningUtility *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_destinationWebService, a3);
-    objc_storeStrong(&v10->_managingWebService, a4);
+    objc_storeStrong(&v9->_destinationWebService, service);
+    objc_storeStrong(&v10->_managingWebService, webService);
   }
 
   return v10;
 }
 
-- (void)requestRequirements:(id)a3 sid:(id)a4 completion:(id)a5
+- (void)requestRequirements:(id)requirements sid:(id)sid completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  requirementsCopy = requirements;
+  sidCopy = sid;
+  completionCopy = completion;
+  if (completionCopy)
   {
     v17 = 0;
     v18 = &v17;
@@ -58,10 +58,10 @@
     v12[2] = __60__PKProvisioningUtility_requestRequirements_sid_completion___block_invoke_2;
     v12[3] = &unk_1E79D8A00;
     v12[4] = self;
-    v13 = v8;
-    v14 = v10;
+    v13 = requirementsCopy;
+    v14 = completionCopy;
     v15 = &v17;
-    [(PKProvisioningUtility *)self _updateRequirementsRequestForSuperEasyProvisioning:v13 sid:v9 completion:v12];
+    [(PKProvisioningUtility *)self _updateRequirementsRequestForSuperEasyProvisioning:v13 sid:sidCopy completion:v12];
 
     _Block_object_dispose(&v17, 8);
   }
@@ -123,14 +123,14 @@ LABEL_7:
   }
 }
 
-- (void)_updateRequirementsRequestForSuperEasyProvisioning:(id)a3 sid:(id)a4 completion:(id)a5
+- (void)_updateRequirementsRequestForSuperEasyProvisioning:(id)provisioning sid:(id)sid completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [a3 paymentCredential];
-  if (![v10 couldSupportSuperEasyProvisioning] || (objc_msgSend(v10, "supportsFrictionlessProvisioning") & 1) != 0 || (objc_msgSend(v10, "state"), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "hasNonce"), v11, (v12 & 1) != 0))
+  sidCopy = sid;
+  completionCopy = completion;
+  paymentCredential = [provisioning paymentCredential];
+  if (![paymentCredential couldSupportSuperEasyProvisioning] || (objc_msgSend(paymentCredential, "supportsFrictionlessProvisioning") & 1) != 0 || (objc_msgSend(paymentCredential, "state"), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "hasNonce"), v11, (v12 & 1) != 0))
   {
-    v9[2](v9, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
   else
@@ -139,9 +139,9 @@ LABEL_7:
     v13[1] = 3221225472;
     v13[2] = __91__PKProvisioningUtility__updateRequirementsRequestForSuperEasyProvisioning_sid_completion___block_invoke;
     v13[3] = &unk_1E79D8A28;
-    v14 = v10;
-    v15 = v8;
-    v16 = v9;
+    v14 = paymentCredential;
+    v15 = sidCopy;
+    v16 = completionCopy;
     [(PKProvisioningUtility *)self nonceWithSID:v15 completion:v13];
   }
 }
@@ -176,43 +176,43 @@ void __91__PKProvisioningUtility__updateRequirementsRequestForSuperEasyProvision
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)requestEligibility:(id)a3 sid:(id)a4 completion:(id)a5
+- (void)requestEligibility:(id)eligibility sid:(id)sid completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v10)
+  eligibilityCopy = eligibility;
+  sidCopy = sid;
+  completionCopy = completion;
+  v11 = completionCopy;
+  if (completionCopy)
   {
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __59__PKProvisioningUtility_requestEligibility_sid_completion___block_invoke;
     aBlock[3] = &unk_1E79D8A78;
     aBlock[4] = self;
-    v12 = v10;
+    v12 = completionCopy;
     v20 = v12;
     v13 = _Block_copy(aBlock);
-    v14 = [v8 nonce];
-    if (v14)
+    nonce = [eligibilityCopy nonce];
+    if (nonce)
     {
     }
 
-    else if ([v8 requiresNonce])
+    else if ([eligibilityCopy requiresNonce])
     {
       v15[0] = MEMORY[0x1E69E9820];
       v15[1] = 3221225472;
       v15[2] = __59__PKProvisioningUtility_requestEligibility_sid_completion___block_invoke_3;
       v15[3] = &unk_1E79D8AA0;
-      v16 = v8;
+      v16 = eligibilityCopy;
       v17 = v13;
       v18 = v12;
-      [(PKProvisioningUtility *)self nonceWithSID:v9 completion:v15];
+      [(PKProvisioningUtility *)self nonceWithSID:sidCopy completion:v15];
 
 LABEL_7:
       goto LABEL_8;
     }
 
-    (*(v13 + 2))(v13, v8);
+    (*(v13 + 2))(v13, eligibilityCopy);
     goto LABEL_7;
   }
 
@@ -273,36 +273,36 @@ uint64_t __59__PKProvisioningUtility_requestEligibility_sid_completion___block_i
   }
 }
 
-- (void)requestProvisioning:(id)a3 externalizedAuth:(id)a4 cloudStoreCoordinatorDelegate:(id)a5 onStartPassDownload:(id)a6 sid:(id)a7 requireZoneCreationSuccess:(BOOL)a8 completion:(id)a9
+- (void)requestProvisioning:(id)provisioning externalizedAuth:(id)auth cloudStoreCoordinatorDelegate:(id)delegate onStartPassDownload:(id)download sid:(id)sid requireZoneCreationSuccess:(BOOL)success completion:(id)completion
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a9;
+  provisioningCopy = provisioning;
+  authCopy = auth;
+  delegateCopy = delegate;
+  downloadCopy = download;
+  sidCopy = sid;
+  completionCopy = completion;
   v21 = [[PKPaymentCloudStoreZoneCreationManager alloc] initWithWebService:self->_destinationWebService];
   objc_initWeak(&location, self);
-  v22 = [v15 eligibilityResponse];
+  eligibilityResponse = [provisioningCopy eligibilityResponse];
   v29[0] = MEMORY[0x1E69E9820];
   v29[1] = 3221225472;
   v29[2] = __154__PKProvisioningUtility_requestProvisioning_externalizedAuth_cloudStoreCoordinatorDelegate_onStartPassDownload_sid_requireZoneCreationSuccess_completion___block_invoke;
   v29[3] = &unk_1E79D8AC8;
-  v37 = a8;
+  successCopy = success;
   objc_copyWeak(&v36, &location);
-  v23 = v15;
+  v23 = provisioningCopy;
   v30 = v23;
-  v24 = v16;
+  v24 = authCopy;
   v31 = v24;
-  v25 = v17;
+  v25 = delegateCopy;
   v32 = v25;
-  v26 = v18;
+  v26 = downloadCopy;
   v34 = v26;
-  v27 = v19;
+  v27 = sidCopy;
   v33 = v27;
-  v28 = v20;
+  v28 = completionCopy;
   v35 = v28;
-  [(PKPaymentCloudStoreZoneCreationManager *)v21 triggerCloudStoreZoneCreationIfNeededForEligibilityResponse:v22 completion:v29];
+  [(PKPaymentCloudStoreZoneCreationManager *)v21 triggerCloudStoreZoneCreationIfNeededForEligibilityResponse:eligibilityResponse completion:v29];
 
   objc_destroyWeak(&v36);
   objc_destroyWeak(&location);
@@ -328,16 +328,16 @@ void __154__PKProvisioningUtility_requestProvisioning_externalizedAuth_cloudStor
   }
 }
 
-- (void)requestProvisioning:(id)a3 sid:(id)a4 completion:(id)a5
+- (void)requestProvisioning:(id)provisioning sid:(id)sid completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __60__PKProvisioningUtility_requestProvisioning_sid_completion___block_invoke;
   v10[3] = &unk_1E79D8AF0;
-  v11 = v8;
-  v9 = v8;
-  [(PKProvisioningUtility *)self _requestProvisioning:a3 externalizedAuth:0 cloudStoreCoordinatorDelegate:0 downloadPasses:0 resolveEnableRequirements:0 onStartPassDownload:0 sid:a4 completion:v10];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [(PKProvisioningUtility *)self _requestProvisioning:provisioning externalizedAuth:0 cloudStoreCoordinatorDelegate:0 downloadPasses:0 resolveEnableRequirements:0 onStartPassDownload:0 sid:sid completion:v10];
 }
 
 void __60__PKProvisioningUtility_requestProvisioning_sid_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -348,14 +348,14 @@ void __60__PKProvisioningUtility_requestProvisioning_sid_completion___block_invo
   (*(v4 + 16))(v4, v6, v5);
 }
 
-- (void)_requestProvisioning:(id)a3 externalizedAuth:(id)a4 cloudStoreCoordinatorDelegate:(id)a5 downloadPasses:(BOOL)a6 resolveEnableRequirements:(BOOL)a7 onStartPassDownload:(id)a8 sid:(id)a9 completion:(id)a10
+- (void)_requestProvisioning:(id)provisioning externalizedAuth:(id)auth cloudStoreCoordinatorDelegate:(id)delegate downloadPasses:(BOOL)passes resolveEnableRequirements:(BOOL)requirements onStartPassDownload:(id)download sid:(id)sid completion:(id)self0
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a8;
-  v19 = a9;
-  v20 = a10;
+  provisioningCopy = provisioning;
+  authCopy = auth;
+  delegateCopy = delegate;
+  downloadCopy = download;
+  sidCopy = sid;
+  completionCopy = completion;
   v21 = objc_alloc_init(PKAsyncUnaryOperationComposer);
   objc_initWeak(location, self);
   v65[0] = 0;
@@ -369,22 +369,22 @@ void __60__PKProvisioningUtility_requestProvisioning_sid_completion___block_invo
   v63[2] = 0x3032000000;
   v63[3] = __Block_byref_object_copy__41;
   v63[4] = __Block_byref_object_dispose__41;
-  v64 = [[PKProvisionedPassBundle alloc] _init];
+  _init = [[PKProvisionedPassBundle alloc] _init];
   v56[0] = MEMORY[0x1E69E9820];
   v56[1] = 3221225472;
   v56[2] = __169__PKProvisioningUtility__requestProvisioning_externalizedAuth_cloudStoreCoordinatorDelegate_downloadPasses_resolveEnableRequirements_onStartPassDownload_sid_completion___block_invoke;
   v56[3] = &unk_1E79D8B40;
-  v62 = a7;
+  requirementsCopy = requirements;
   objc_copyWeak(&v61, location);
-  v22 = v15;
+  v22 = provisioningCopy;
   v57 = v22;
-  v23 = v16;
+  v23 = authCopy;
   v58 = v23;
-  v24 = v19;
+  v24 = sidCopy;
   v59 = v24;
   v60 = v65;
   [(PKAsyncUnaryOperationComposer *)v21 addOperation:v56];
-  v34 = v20;
+  v34 = completionCopy;
   v51[0] = MEMORY[0x1E69E9820];
   v51[1] = 3221225472;
   v51[2] = __169__PKProvisioningUtility__requestProvisioning_externalizedAuth_cloudStoreCoordinatorDelegate_downloadPasses_resolveEnableRequirements_onStartPassDownload_sid_completion___block_invoke_75;
@@ -410,18 +410,18 @@ void __60__PKProvisioningUtility_requestProvisioning_sid_completion___block_invo
   v40[1] = 3221225472;
   v40[2] = __169__PKProvisioningUtility__requestProvisioning_externalizedAuth_cloudStoreCoordinatorDelegate_downloadPasses_resolveEnableRequirements_onStartPassDownload_sid_completion___block_invoke_5;
   v40[3] = &unk_1E79D8C08;
-  v46 = a6;
-  v28 = v18;
+  passesCopy = passes;
+  v28 = downloadCopy;
   v43 = v28;
   v44 = v63;
   v40[4] = self;
-  v29 = v17;
+  v29 = delegateCopy;
   v41 = v29;
   v30 = v26;
   v42 = v30;
   v45 = v65;
   [(PKAsyncUnaryOperationComposer *)v21 addOperation:v40];
-  v31 = [MEMORY[0x1E695DFB0] null];
+  null = [MEMORY[0x1E695DFB0] null];
   v36[0] = MEMORY[0x1E69E9820];
   v36[1] = 3221225472;
   v36[2] = __169__PKProvisioningUtility__requestProvisioning_externalizedAuth_cloudStoreCoordinatorDelegate_downloadPasses_resolveEnableRequirements_onStartPassDownload_sid_completion___block_invoke_7;
@@ -430,7 +430,7 @@ void __60__PKProvisioningUtility_requestProvisioning_sid_completion___block_invo
   v37 = v32;
   v38 = v63;
   v39 = v65;
-  v33 = [(PKAsyncUnaryOperationComposer *)v21 evaluateWithInput:v31 completion:v36];
+  v33 = [(PKAsyncUnaryOperationComposer *)v21 evaluateWithInput:null completion:v36];
 
   objc_destroyWeak(&v55);
   objc_destroyWeak(&v61);
@@ -655,20 +655,20 @@ void __169__PKProvisioningUtility__requestProvisioning_externalizedAuth_cloudSto
   (*(v2 + 16))(v2, v3, *(*(a1[6] + 8) + 40));
 }
 
-- (void)updateProvisioningRequestForEnableRequirements:(id)a3 externalizedAuth:(id)a4 sid:(id)a5 completion:(id)a6
+- (void)updateProvisioningRequestForEnableRequirements:(id)requirements externalizedAuth:(id)auth sid:(id)sid completion:(id)completion
 {
   v113 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v40 = a4;
-  v11 = a5;
-  v12 = a6;
-  if (v12)
+  requirementsCopy = requirements;
+  authCopy = auth;
+  sidCopy = sid;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v13 = [v10 eligibilityResponse];
-    v14 = v13;
-    if (v10 && v13)
+    eligibilityResponse = [requirementsCopy eligibilityResponse];
+    v14 = eligibilityResponse;
+    if (requirementsCopy && eligibilityResponse)
     {
-      v39 = [(PKPaymentWebService *)self->_destinationWebService targetDevice];
+      targetDevice = [(PKPaymentWebService *)self->_destinationWebService targetDevice];
       v15 = objc_alloc_init(PKAsyncUnaryOperationComposer);
       *&buf = 0;
       *(&buf + 1) = &buf;
@@ -676,38 +676,38 @@ void __169__PKProvisioningUtility__requestProvisioning_externalizedAuth_cloudSto
       v110 = __Block_byref_object_copy__41;
       v111 = __Block_byref_object_dispose__41;
       v112 = 0;
-      v16 = [v14 shouldGenerateAuxiliaryCapabilities];
-      v17 = [v14 hasEnableRequirements];
+      shouldGenerateAuxiliaryCapabilities = [v14 shouldGenerateAuxiliaryCapabilities];
+      hasEnableRequirements = [v14 hasEnableRequirements];
       v106[0] = 0;
       v106[1] = v106;
       v106[2] = 0x2020000000;
       v107 = 0;
-      if (v16)
+      if (shouldGenerateAuxiliaryCapabilities)
       {
         v97[0] = MEMORY[0x1E69E9820];
         v97[1] = 3221225472;
         v97[2] = __104__PKProvisioningUtility_updateProvisioningRequestForEnableRequirements_externalizedAuth_sid_completion___block_invoke;
         v97[3] = &unk_1E79D8C58;
-        v98 = v11;
-        v99 = v39;
-        v100 = v10;
+        v98 = sidCopy;
+        v99 = targetDevice;
+        v100 = requirementsCopy;
         v101 = v14;
-        v102 = v40;
+        v102 = authCopy;
         p_buf = &buf;
         v104 = v106;
-        v105 = v17;
+        v105 = hasEnableRequirements;
         [(PKAsyncUnaryOperationComposer *)v15 addOperation:v97];
       }
 
-      if (v17)
+      if (hasEnableRequirements)
       {
-        v36 = [v14 shouldGenerateFidoKey];
-        v38 = [v14 shouldSignFidoChallenge];
-        v18 = [(PKPaymentWebService *)self->_destinationWebService targetDevice];
-        v19 = [v18 deviceName];
-        v20 = [v19 isEqualToString:@"Apple Watch"];
+        shouldGenerateFidoKey = [v14 shouldGenerateFidoKey];
+        shouldSignFidoChallenge = [v14 shouldSignFidoChallenge];
+        targetDevice2 = [(PKPaymentWebService *)self->_destinationWebService targetDevice];
+        deviceName = [targetDevice2 deviceName];
+        v20 = [deviceName isEqualToString:@"Apple Watch"];
 
-        if (v40)
+        if (authCopy)
         {
           v21 = 1;
         }
@@ -717,14 +717,14 @@ void __169__PKProvisioningUtility__requestProvisioning_externalizedAuth_cloudSto
           v21 = v20;
         }
 
-        if ((v21 & 1) == 0 && ((v38 ^ 1) & 1) == 0)
+        if ((v21 & 1) == 0 && ((shouldSignFidoChallenge ^ 1) & 1) == 0)
         {
           v93[0] = MEMORY[0x1E69E9820];
           v93[1] = 3221225472;
           v93[2] = __104__PKProvisioningUtility_updateProvisioningRequestForEnableRequirements_externalizedAuth_sid_completion___block_invoke_2;
           v93[3] = &unk_1E79D68F8;
           v95 = v106;
-          v94 = v11;
+          v94 = sidCopy;
           v96 = &buf;
           [(PKAsyncUnaryOperationComposer *)v15 addOperation:v93];
         }
@@ -736,13 +736,13 @@ void __169__PKProvisioningUtility__requestProvisioning_externalizedAuth_cloudSto
           v85[2] = __104__PKProvisioningUtility_updateProvisioningRequestForEnableRequirements_externalizedAuth_sid_completion___block_invoke_89;
           v85[3] = &unk_1E79D8CA8;
           v91 = v106;
-          v22 = v11;
+          v22 = sidCopy;
           v86 = v22;
           v87 = v14;
-          v23 = v39;
+          v23 = targetDevice;
           v88 = v23;
-          v89 = self;
-          v24 = v10;
+          selfCopy = self;
+          v24 = requirementsCopy;
           v90 = v24;
           v92 = &buf;
           [(PKAsyncUnaryOperationComposer *)v15 addOperation:v85];
@@ -758,7 +758,7 @@ void __169__PKProvisioningUtility__requestProvisioning_externalizedAuth_cloudSto
           [(PKAsyncUnaryOperationComposer *)v15 addOperation:v79];
         }
 
-        v25 = [v14 fidoProfile];
+        fidoProfile = [v14 fidoProfile];
         v77[0] = 0;
         v77[1] = v77;
         v77[2] = 0x2020000000;
@@ -768,9 +768,9 @@ void __169__PKProvisioningUtility__requestProvisioning_externalizedAuth_cloudSto
         v72[2] = __104__PKProvisioningUtility_updateProvisioningRequestForEnableRequirements_externalizedAuth_sid_completion___block_invoke_2_99;
         v72[3] = &unk_1E79D8D20;
         v75 = v106;
-        v26 = v39;
+        v26 = targetDevice;
         v73 = v26;
-        v27 = v25;
+        v27 = fidoProfile;
         v74 = v27;
         v76 = v77;
         [(PKAsyncUnaryOperationComposer *)v15 addOperation:v72];
@@ -778,10 +778,10 @@ void __169__PKProvisioningUtility__requestProvisioning_externalizedAuth_cloudSto
         v60[1] = 3221225472;
         v60[2] = __104__PKProvisioningUtility_updateProvisioningRequestForEnableRequirements_externalizedAuth_sid_completion___block_invoke_4;
         v60[3] = &unk_1E79D8D98;
-        v70 = v36;
+        v70 = shouldGenerateFidoKey;
         v67 = v106;
         v68 = v77;
-        v28 = v11;
+        v28 = sidCopy;
         v61 = v28;
         v29 = v26;
         v62 = v29;
@@ -789,9 +789,9 @@ void __169__PKProvisioningUtility__requestProvisioning_externalizedAuth_cloudSto
         v63 = v37;
         v30 = v14;
         v64 = v30;
-        v65 = v40;
-        v31 = v10;
-        v71 = v38;
+        v65 = authCopy;
+        v31 = requirementsCopy;
+        v71 = shouldSignFidoChallenge;
         v66 = v31;
         v69 = &buf;
         [(PKAsyncUnaryOperationComposer *)v15 addOperation:v60];
@@ -827,18 +827,18 @@ void __169__PKProvisioningUtility__requestProvisioning_externalizedAuth_cloudSto
         _Block_object_dispose(v77, 8);
       }
 
-      v32 = [MEMORY[0x1E695DFB0] null];
+      null = [MEMORY[0x1E695DFB0] null];
       v41[0] = MEMORY[0x1E69E9820];
       v41[1] = 3221225472;
       v41[2] = __104__PKProvisioningUtility_updateProvisioningRequestForEnableRequirements_externalizedAuth_sid_completion___block_invoke_2_118;
       v41[3] = &unk_1E79D8E60;
       v46 = &buf;
-      v42 = v11;
-      v43 = v10;
-      v33 = v39;
+      v42 = sidCopy;
+      v43 = requirementsCopy;
+      v33 = targetDevice;
       v44 = v33;
-      v45 = v12;
-      v34 = [(PKAsyncUnaryOperationComposer *)v15 evaluateWithInput:v32 completion:v41];
+      v45 = completionCopy;
+      v34 = [(PKAsyncUnaryOperationComposer *)v15 evaluateWithInput:null completion:v41];
 
       _Block_object_dispose(v106, 8);
       _Block_object_dispose(&buf, 8);
@@ -850,12 +850,12 @@ void __169__PKProvisioningUtility__requestProvisioning_externalizedAuth_cloudSto
       if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
       {
         LODWORD(buf) = 138412290;
-        *(&buf + 4) = v11;
+        *(&buf + 4) = sidCopy;
         _os_log_impl(&dword_1AD337000, v35, OS_LOG_TYPE_DEFAULT, "[%@] Update provisioning request missing request or eligibilityResponse", &buf, 0xCu);
       }
 
       v33 = [MEMORY[0x1E696ABC0] errorWithDomain:@"PKPaymentErrorDomain" code:0 userInfo:0];
-      (*(v12 + 2))(v12, 0, v33);
+      (*(completionCopy + 2))(completionCopy, 0, v33);
     }
   }
 }
@@ -1524,50 +1524,50 @@ void __104__PKProvisioningUtility_updateProvisioningRequestForEnableRequirements
   (*(*(a1 + 56) + 16))(*(a1 + 56), v12, *(*(*(a1 + 64) + 8) + 40));
 }
 
-- (void)downloadAndIngestPassesForResponse:(id)a3 cloudStoreCoordinatorDelegate:(id)a4 ingestionProperties:(id)a5 sid:(id)a6 completion:(id)a7
+- (void)downloadAndIngestPassesForResponse:(id)response cloudStoreCoordinatorDelegate:(id)delegate ingestionProperties:(id)properties sid:(id)sid completion:(id)completion
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
-  v17 = [v16 downloadablePasses];
-  [(PKProvisioningUtility *)self _downloadAndIngestPassesFoPasses:v17 response:v16 cloudStoreCoordinatorDelegate:v15 ingestionProperties:v14 sid:v13 completion:v12];
+  completionCopy = completion;
+  sidCopy = sid;
+  propertiesCopy = properties;
+  delegateCopy = delegate;
+  responseCopy = response;
+  downloadablePasses = [responseCopy downloadablePasses];
+  [(PKProvisioningUtility *)self _downloadAndIngestPassesFoPasses:downloadablePasses response:responseCopy cloudStoreCoordinatorDelegate:delegateCopy ingestionProperties:propertiesCopy sid:sidCopy completion:completionCopy];
 }
 
-- (void)downloadAndIngestPassForPassURL:(id)a3 deviceCredential:(id)a4 cloudStoreCoordinatorDelegate:(id)a5 ingestionProperties:(id)a6 sid:(id)a7 completion:(id)a8
+- (void)downloadAndIngestPassForPassURL:(id)l deviceCredential:(id)credential cloudStoreCoordinatorDelegate:(id)delegate ingestionProperties:(id)properties sid:(id)sid completion:(id)completion
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v14 = a8;
-  v15 = a7;
-  v16 = a6;
-  v17 = a5;
-  v18 = a4;
-  v19 = a3;
-  v20 = [[PKPaymentProvisioningPassData alloc] initWithPassURL:v19];
+  completionCopy = completion;
+  sidCopy = sid;
+  propertiesCopy = properties;
+  delegateCopy = delegate;
+  credentialCopy = credential;
+  lCopy = l;
+  v20 = [[PKPaymentProvisioningPassData alloc] initWithPassURL:lCopy];
 
-  [(PKPaymentProvisioningPassData *)v20 setDeviceCredential:v18];
+  [(PKPaymentProvisioningPassData *)v20 setDeviceCredential:credentialCopy];
   [(PKPaymentProvisioningPassData *)v20 setWillProvisionWithAuthenticationDisabled:1];
   v22[0] = v20;
   v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:1];
-  [(PKProvisioningUtility *)self _downloadAndIngestPassesFoPasses:v21 response:0 cloudStoreCoordinatorDelegate:v17 ingestionProperties:v16 sid:v15 completion:v14];
+  [(PKProvisioningUtility *)self _downloadAndIngestPassesFoPasses:v21 response:0 cloudStoreCoordinatorDelegate:delegateCopy ingestionProperties:propertiesCopy sid:sidCopy completion:completionCopy];
 }
 
-- (void)_downloadAndIngestPassesFoPasses:(id)a3 response:(id)a4 cloudStoreCoordinatorDelegate:(id)a5 ingestionProperties:(id)a6 sid:(id)a7 completion:(id)a8
+- (void)_downloadAndIngestPassesFoPasses:(id)passes response:(id)response cloudStoreCoordinatorDelegate:(id)delegate ingestionProperties:(id)properties sid:(id)sid completion:(id)completion
 {
   v67 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v38 = a4;
-  v35 = a5;
-  v34 = a6;
-  v33 = a7;
-  v30 = a8;
+  passesCopy = passes;
+  responseCopy = response;
+  delegateCopy = delegate;
+  propertiesCopy = properties;
+  sidCopy = sid;
+  completionCopy = completion;
   v15 = objc_alloc_init(PKAsyncUnaryOperationComposer);
-  v16 = [v14 firstObject];
-  v32 = [v16 passURL];
+  firstObject = [passesCopy firstObject];
+  passURL = [firstObject passURL];
 
-  v37 = [[PKProvisionedPassBundle alloc] _init];
-  [v37 setProvisioningResponse:v38];
+  _init = [[PKProvisionedPassBundle alloc] _init];
+  [_init setProvisioningResponse:responseCopy];
   v64[0] = 0;
   v64[1] = v64;
   v64[2] = 0x3032000000;
@@ -1580,12 +1580,12 @@ void __104__PKProvisioningUtility_updateProvisioningRequestForEnableRequirements
   v63 = 0u;
   v60 = 0u;
   v61 = 0u;
-  v18 = [v14 reverseObjectEnumerator];
-  v19 = [v18 countByEnumeratingWithState:&v60 objects:v66 count:16];
+  reverseObjectEnumerator = [passesCopy reverseObjectEnumerator];
+  v19 = [reverseObjectEnumerator countByEnumeratingWithState:&v60 objects:v66 count:16];
   if (v19)
   {
     v20 = *v61;
-    obj = v18;
+    obj = reverseObjectEnumerator;
     do
     {
       for (i = 0; i != v19; ++i)
@@ -1603,26 +1603,26 @@ void __104__PKProvisioningUtility_updateProvisioningRequestForEnableRequirements
         v59[4] = self;
         v59[5] = v22;
         v59[6] = v64;
-        [(PKAsyncUnaryOperationComposer *)v15 addOperation:v59, v30];
+        [(PKAsyncUnaryOperationComposer *)v15 addOperation:v59, completionCopy];
         v47[0] = MEMORY[0x1E69E9820];
         v47[1] = 3221225472;
         v47[2] = __132__PKProvisioningUtility__downloadAndIngestPassesFoPasses_response_cloudStoreCoordinatorDelegate_ingestionProperties_sid_completion___block_invoke_3;
         v47[3] = &unk_1E79D8E38;
-        v48 = v32;
+        v48 = passURL;
         v49 = v22;
-        v50 = self;
-        v51 = v35;
-        v52 = v38;
-        v53 = v34;
-        v54 = v33;
-        v55 = v37;
+        selfCopy = self;
+        v51 = delegateCopy;
+        v52 = responseCopy;
+        v53 = propertiesCopy;
+        v54 = sidCopy;
+        v55 = _init;
         v56 = v36;
         v57 = v17;
         v58 = v64;
         [(PKAsyncUnaryOperationComposer *)v15 addOperation:v47];
       }
 
-      v18 = obj;
+      reverseObjectEnumerator = obj;
       v19 = [obj countByEnumeratingWithState:&v60 objects:v66 count:16];
     }
 
@@ -1633,24 +1633,24 @@ void __104__PKProvisioningUtility_updateProvisioningRequestForEnableRequirements
   v45[1] = 3221225472;
   v45[2] = __132__PKProvisioningUtility__downloadAndIngestPassesFoPasses_response_cloudStoreCoordinatorDelegate_ingestionProperties_sid_completion___block_invoke_132;
   v45[3] = &unk_1E79D5CF0;
-  v23 = v38;
+  v23 = responseCopy;
   v46 = v23;
   [(PKAsyncUnaryOperationComposer *)v15 addOperation:v45];
-  v24 = [MEMORY[0x1E695DFB0] null];
+  null = [MEMORY[0x1E695DFB0] null];
   v39[0] = MEMORY[0x1E69E9820];
   v39[1] = 3221225472;
   v39[2] = __132__PKProvisioningUtility__downloadAndIngestPassesFoPasses_response_cloudStoreCoordinatorDelegate_ingestionProperties_sid_completion___block_invoke_2_134;
   v39[3] = &unk_1E79D8E60;
   v25 = v17;
   v40 = v25;
-  v26 = v37;
+  v26 = _init;
   v41 = v26;
   v27 = v36;
   v42 = v27;
-  v28 = v30;
+  v28 = completionCopy;
   v43 = v28;
   v44 = v64;
-  v29 = [(PKAsyncUnaryOperationComposer *)v15 evaluateWithInput:v24 completion:v39];
+  v29 = [(PKAsyncUnaryOperationComposer *)v15 evaluateWithInput:null completion:v39];
 
   _Block_object_dispose(v64, 8);
 }
@@ -1835,33 +1835,33 @@ uint64_t __132__PKProvisioningUtility__downloadAndIngestPassesFoPasses_response_
   return v6();
 }
 
-- (void)ingestProvisioningPassData:(id)a3 cloudStoreCoordinatorDelegate:(id)a4 moreInfoURLs:(id)a5 ingestionProperties:(id)a6 sid:(id)a7 completion:(id)a8
+- (void)ingestProvisioningPassData:(id)data cloudStoreCoordinatorDelegate:(id)delegate moreInfoURLs:(id)ls ingestionProperties:(id)properties sid:(id)sid completion:(id)completion
 {
   v138 = *MEMORY[0x1E69E9840];
-  v57 = a3;
-  v14 = a4;
-  v54 = a5;
-  v55 = a6;
-  v15 = a7;
-  v16 = a8;
+  dataCopy = data;
+  delegateCopy = delegate;
+  lsCopy = ls;
+  propertiesCopy = properties;
+  sidCopy = sid;
+  completionCopy = completion;
   v17 = PKLogFacilityTypeGetObject(0x28uLL);
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
-    v18 = [v57 description];
+    v18 = [dataCopy description];
     *buf = 138412546;
-    *&buf[4] = v15;
+    *&buf[4] = sidCopy;
     *&buf[12] = 2112;
     *&buf[14] = v18;
     _os_log_impl(&dword_1AD337000, v17, OS_LOG_TYPE_DEFAULT, "[%@] Adding pass data (%@)...", buf, 0x16u);
   }
 
-  v19 = [v57 secureElementPass];
+  secureElementPass = [dataCopy secureElementPass];
   v20 = self->_destinationWebService;
-  v21 = [(PKPaymentWebService *)v20 targetDevice];
-  v22 = [v21 secureElementIdentifiers];
+  targetDevice = [(PKPaymentWebService *)v20 targetDevice];
+  secureElementIdentifiers = [targetDevice secureElementIdentifiers];
   v23 = objc_alloc_init(PKAsyncUnaryOperationComposer);
-  v52 = v16;
-  v53 = self;
+  v52 = completionCopy;
+  selfCopy = self;
   *buf = 0;
   *&buf[8] = buf;
   *&buf[16] = 0x3032000000;
@@ -1904,13 +1904,13 @@ uint64_t __132__PKProvisioningUtility__downloadAndIngestPassesFoPasses_response_
   v116[1] = 3221225472;
   v116[2] = __130__PKProvisioningUtility_ingestProvisioningPassData_cloudStoreCoordinatorDelegate_moreInfoURLs_ingestionProperties_sid_completion___block_invoke;
   v116[3] = &unk_1E79D5F60;
-  v49 = v14;
+  v49 = delegateCopy;
   v117 = v49;
-  v24 = v22;
+  v24 = secureElementIdentifiers;
   v118 = v24;
-  v25 = v19;
+  v25 = secureElementPass;
   v119 = v25;
-  v26 = v15;
+  v26 = sidCopy;
   v120 = v26;
   v121 = buf;
   [(PKAsyncUnaryOperationComposer *)v23 addOperation:v116];
@@ -1918,7 +1918,7 @@ uint64_t __132__PKProvisioningUtility__downloadAndIngestPassesFoPasses_response_
   v110[1] = 3221225472;
   v110[2] = __130__PKProvisioningUtility_ingestProvisioningPassData_cloudStoreCoordinatorDelegate_moreInfoURLs_ingestionProperties_sid_completion___block_invoke_137;
   v110[3] = &unk_1E79D5F60;
-  v27 = v21;
+  v27 = targetDevice;
   v111 = v27;
   v28 = v25;
   v112 = v28;
@@ -1939,7 +1939,7 @@ uint64_t __132__PKProvisioningUtility__downloadAndIngestPassesFoPasses_response_
   v105 = v30;
   v31 = v20;
   v106 = v31;
-  v56 = v55;
+  v56 = propertiesCopy;
   v107 = v56;
   v109 = v132;
   [(PKAsyncUnaryOperationComposer *)v23 addOperation:v103];
@@ -1962,7 +1962,7 @@ uint64_t __132__PKProvisioningUtility__downloadAndIngestPassesFoPasses_response_
   v90[3] = &unk_1E79D8F50;
   v95 = v132;
   v96 = v97;
-  v33 = v57;
+  v33 = dataCopy;
   v91 = v33;
   v34 = v32;
   v92 = v34;
@@ -1987,7 +1987,7 @@ uint64_t __132__PKProvisioningUtility__downloadAndIngestPassesFoPasses_response_
   v87 = v124;
   v40 = v36;
   v82 = v40;
-  v83 = v53;
+  v83 = selfCopy;
   v88 = v128;
   v89 = v126;
   [(PKAsyncUnaryOperationComposer *)v23 addOperation:v78];
@@ -1998,8 +1998,8 @@ uint64_t __132__PKProvisioningUtility__downloadAndIngestPassesFoPasses_response_
   v76 = v128;
   v77 = v126;
   v75 = v132;
-  v72[4] = v53;
-  v41 = v54;
+  v72[4] = selfCopy;
+  v41 = lsCopy;
   v73 = v41;
   v42 = v37;
   v74 = v42;
@@ -2013,7 +2013,7 @@ uint64_t __132__PKProvisioningUtility__downloadAndIngestPassesFoPasses_response_
   v43 = v42;
   v69 = v43;
   [(PKAsyncUnaryOperationComposer *)v23 addOperation:v68];
-  v44 = [MEMORY[0x1E695DFB0] null];
+  null = [MEMORY[0x1E695DFB0] null];
   v58[0] = MEMORY[0x1E69E9820];
   v58[1] = 3221225472;
   v58[2] = __130__PKProvisioningUtility_ingestProvisioningPassData_cloudStoreCoordinatorDelegate_moreInfoURLs_ingestionProperties_sid_completion___block_invoke_183;
@@ -2030,7 +2030,7 @@ uint64_t __132__PKProvisioningUtility__downloadAndIngestPassesFoPasses_response_
   v65 = v124;
   v66 = v128;
   v67 = v122;
-  v48 = [(PKAsyncUnaryOperationComposer *)v23 evaluateWithInput:v44 completion:v58];
+  v48 = [(PKAsyncUnaryOperationComposer *)v23 evaluateWithInput:null completion:v58];
 
   _Block_object_dispose(v97, 8);
   _Block_object_dispose(v122, 8);
@@ -2986,13 +2986,13 @@ void __130__PKProvisioningUtility_ingestProvisioningPassData_cloudStoreCoordinat
   }
 }
 
-- (void)downloadMoreInfoItemsFrom:(id)a3 metadata:(id)a4 sid:(id)a5 completion:(id)a6
+- (void)downloadMoreInfoItemsFrom:(id)from metadata:(id)metadata sid:(id)sid completion:(id)completion
 {
   v59[4] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v41 = a5;
-  v37 = a6;
+  fromCopy = from;
+  metadataCopy = metadata;
+  sidCopy = sid;
+  completionCopy = completion;
   queue = dispatch_queue_create("itemsQueue", 0);
   v42 = objc_alloc_init(MEMORY[0x1E695DF70]);
   if (PKShowFakeMoreInfo())
@@ -3025,9 +3025,9 @@ void __130__PKProvisioningUtility_ingestProvisioningPassData_cloudStoreCoordinat
     [v42 addObject:v16];
   }
 
-  if (v10)
+  if (metadataCopy)
   {
-    v17 = v10;
+    v17 = metadataCopy;
   }
 
   else
@@ -3064,7 +3064,7 @@ void __130__PKProvisioningUtility_ingestProvisioningPassData_cloudStoreCoordinat
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
-  obj = v9;
+  obj = fromCopy;
   v28 = [obj countByEnumeratingWithState:&v51 objects:v55 count:16];
   if (v28)
   {
@@ -3090,7 +3090,7 @@ void __130__PKProvisioningUtility_ingestProvisioningPassData_cloudStoreCoordinat
         v47 = queue;
         v48 = v42;
         v49 = v27;
-        v50 = v41;
+        v50 = sidCopy;
         [(PKPaymentWebService *)destinationWebService moreInfoItemAtURL:v32 withMetadata:v26 completion:v46];
 
         ++v31;
@@ -3108,9 +3108,9 @@ void __130__PKProvisioningUtility_ingestProvisioningPassData_cloudStoreCoordinat
   block[2] = __75__PKProvisioningUtility_downloadMoreInfoItemsFrom_metadata_sid_completion___block_invoke_227;
   block[3] = &unk_1E79C44A0;
   v44 = v42;
-  v45 = v37;
+  v45 = completionCopy;
   v34 = v42;
-  v35 = v37;
+  v35 = completionCopy;
   dispatch_group_notify(v27, queue, block);
 }
 
@@ -3163,20 +3163,20 @@ void __75__PKProvisioningUtility_downloadMoreInfoItemsFrom_metadata_sid_completi
   dispatch_group_leave(v2);
 }
 
-- (void)nonceWithSID:(id)a3 completion:(id)a4
+- (void)nonceWithSID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  dCopy = d;
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (completionCopy)
   {
     destinationWebService = self->_destinationWebService;
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __49__PKProvisioningUtility_nonceWithSID_completion___block_invoke;
     v10[3] = &unk_1E79D90E0;
-    v12 = v7;
-    v11 = v6;
+    v12 = completionCopy;
+    v11 = dCopy;
     [(PKPaymentWebService *)destinationWebService paymentProvisioningNonceOfType:0 completion:v10];
   }
 }

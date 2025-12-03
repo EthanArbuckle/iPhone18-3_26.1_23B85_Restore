@@ -1,10 +1,10 @@
 @interface MAAutoAssetPolicy
 - (MAAutoAssetPolicy)init;
-- (MAAutoAssetPolicy)initWithCoder:(id)a3;
+- (MAAutoAssetPolicy)initWithCoder:(id)coder;
 - (id)description;
 - (id)newSummaryDictionary;
 - (id)summary;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MAAutoAssetPolicy
@@ -30,24 +30,24 @@
   return v3;
 }
 
-- (MAAutoAssetPolicy)initWithCoder:(id)a3
+- (MAAutoAssetPolicy)initWithCoder:(id)coder
 {
   v14[8] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = MAAutoAssetPolicy;
   v5 = [(MAAutoAssetPolicy *)&v13 init];
   if (v5)
   {
-    v5->_userInitiated = [v4 decodeBoolForKey:@"userInitiated"];
-    v5->_waitForNewestSecs = [v4 decodeIntegerForKey:@"waitForNewestSecs"];
-    v5->_interestAcrossTermination = [v4 decodeBoolForKey:@"interestAcrossTermination"];
-    v5->_lockAcrossTermination = [v4 decodeBoolForKey:@"lockAcrossTermination"];
-    v5->_lockAcrossReboot = [v4 decodeBoolForKey:@"lockAcrossReboot"];
-    v5->_lockAcrossOTAUpdate = [v4 decodeBoolForKey:@"lockAcrossOTAUpdate"];
-    v5->_lockInhibitsEmergencyRemoval = [v4 decodeBoolForKey:@"lockInhibitsEmergencyRemoval"];
-    v5->_unlockAfterUsageSecs = [v4 decodeIntegerForKey:@"unlockAfterUsageSecs"];
-    v5->_preventGarbageCollectionSecs = [v4 decodeIntegerForKey:@"preventGarbageCollectionSecs"];
+    v5->_userInitiated = [coderCopy decodeBoolForKey:@"userInitiated"];
+    v5->_waitForNewestSecs = [coderCopy decodeIntegerForKey:@"waitForNewestSecs"];
+    v5->_interestAcrossTermination = [coderCopy decodeBoolForKey:@"interestAcrossTermination"];
+    v5->_lockAcrossTermination = [coderCopy decodeBoolForKey:@"lockAcrossTermination"];
+    v5->_lockAcrossReboot = [coderCopy decodeBoolForKey:@"lockAcrossReboot"];
+    v5->_lockAcrossOTAUpdate = [coderCopy decodeBoolForKey:@"lockAcrossOTAUpdate"];
+    v5->_lockInhibitsEmergencyRemoval = [coderCopy decodeBoolForKey:@"lockInhibitsEmergencyRemoval"];
+    v5->_unlockAfterUsageSecs = [coderCopy decodeIntegerForKey:@"unlockAfterUsageSecs"];
+    v5->_preventGarbageCollectionSecs = [coderCopy decodeIntegerForKey:@"preventGarbageCollectionSecs"];
     v6 = MEMORY[0x1E695DFD8];
     v14[0] = objc_opt_class();
     v14[1] = objc_opt_class();
@@ -60,7 +60,7 @@
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:8];
     v8 = [v6 setWithArray:v7];
 
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"additionalPolicyControl"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"additionalPolicyControl"];
     additionalPolicyControl = v5->_additionalPolicyControl;
     v5->_additionalPolicyControl = v9;
   }
@@ -69,47 +69,47 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeBool:-[MAAutoAssetPolicy userInitiated](self forKey:{"userInitiated"), @"userInitiated"}];
-  [v4 encodeInteger:-[MAAutoAssetPolicy waitForNewestSecs](self forKey:{"waitForNewestSecs"), @"waitForNewestSecs"}];
-  [v4 encodeBool:-[MAAutoAssetPolicy interestAcrossTermination](self forKey:{"interestAcrossTermination"), @"interestAcrossTermination"}];
-  [v4 encodeBool:-[MAAutoAssetPolicy lockAcrossTermination](self forKey:{"lockAcrossTermination"), @"lockAcrossTermination"}];
-  [v4 encodeBool:-[MAAutoAssetPolicy lockAcrossReboot](self forKey:{"lockAcrossReboot"), @"lockAcrossReboot"}];
-  [v4 encodeBool:-[MAAutoAssetPolicy lockAcrossOTAUpdate](self forKey:{"lockAcrossOTAUpdate"), @"lockAcrossOTAUpdate"}];
-  [v4 encodeBool:-[MAAutoAssetPolicy lockInhibitsEmergencyRemoval](self forKey:{"lockInhibitsEmergencyRemoval"), @"lockInhibitsEmergencyRemoval"}];
-  [v4 encodeInteger:-[MAAutoAssetPolicy unlockAfterUsageSecs](self forKey:{"unlockAfterUsageSecs"), @"unlockAfterUsageSecs"}];
-  [v4 encodeInteger:-[MAAutoAssetPolicy preventGarbageCollectionSecs](self forKey:{"preventGarbageCollectionSecs"), @"preventGarbageCollectionSecs"}];
-  v5 = [(MAAutoAssetPolicy *)self additionalPolicyControl];
-  [v4 encodeObject:v5 forKey:@"additionalPolicyControl"];
+  coderCopy = coder;
+  [coderCopy encodeBool:-[MAAutoAssetPolicy userInitiated](self forKey:{"userInitiated"), @"userInitiated"}];
+  [coderCopy encodeInteger:-[MAAutoAssetPolicy waitForNewestSecs](self forKey:{"waitForNewestSecs"), @"waitForNewestSecs"}];
+  [coderCopy encodeBool:-[MAAutoAssetPolicy interestAcrossTermination](self forKey:{"interestAcrossTermination"), @"interestAcrossTermination"}];
+  [coderCopy encodeBool:-[MAAutoAssetPolicy lockAcrossTermination](self forKey:{"lockAcrossTermination"), @"lockAcrossTermination"}];
+  [coderCopy encodeBool:-[MAAutoAssetPolicy lockAcrossReboot](self forKey:{"lockAcrossReboot"), @"lockAcrossReboot"}];
+  [coderCopy encodeBool:-[MAAutoAssetPolicy lockAcrossOTAUpdate](self forKey:{"lockAcrossOTAUpdate"), @"lockAcrossOTAUpdate"}];
+  [coderCopy encodeBool:-[MAAutoAssetPolicy lockInhibitsEmergencyRemoval](self forKey:{"lockInhibitsEmergencyRemoval"), @"lockInhibitsEmergencyRemoval"}];
+  [coderCopy encodeInteger:-[MAAutoAssetPolicy unlockAfterUsageSecs](self forKey:{"unlockAfterUsageSecs"), @"unlockAfterUsageSecs"}];
+  [coderCopy encodeInteger:-[MAAutoAssetPolicy preventGarbageCollectionSecs](self forKey:{"preventGarbageCollectionSecs"), @"preventGarbageCollectionSecs"}];
+  additionalPolicyControl = [(MAAutoAssetPolicy *)self additionalPolicyControl];
+  [coderCopy encodeObject:additionalPolicyControl forKey:@"additionalPolicyControl"];
 }
 
 - (id)description
 {
-  v3 = [(MAAutoAssetPolicy *)self additionalPolicyControl];
+  additionalPolicyControl = [(MAAutoAssetPolicy *)self additionalPolicyControl];
 
-  if (v3)
+  if (additionalPolicyControl)
   {
     v4 = MEMORY[0x1E696AEC0];
-    v5 = [(MAAutoAssetPolicy *)self summary];
-    v6 = [(MAAutoAssetPolicy *)self additionalPolicyControl];
-    v7 = [v4 stringWithFormat:@"%@|additional:\n%@", v5, v6];
+    summary = [(MAAutoAssetPolicy *)self summary];
+    additionalPolicyControl2 = [(MAAutoAssetPolicy *)self additionalPolicyControl];
+    summary2 = [v4 stringWithFormat:@"%@|additional:\n%@", summary, additionalPolicyControl2];
   }
 
   else
   {
-    v7 = [(MAAutoAssetPolicy *)self summary];
+    summary2 = [(MAAutoAssetPolicy *)self summary];
   }
 
-  return v7;
+  return summary2;
 }
 
 - (id)summary
 {
-  v3 = [(MAAutoAssetPolicy *)self additionalPolicyControl];
+  additionalPolicyControl = [(MAAutoAssetPolicy *)self additionalPolicyControl];
   v4 = @"(w/additional)";
-  if (!v3)
+  if (!additionalPolicyControl)
   {
     v4 = &stru_1F0C1B388;
   }
@@ -276,8 +276,8 @@
   v12 = [MEMORY[0x1E696AD98] numberWithInteger:{-[MAAutoAssetPolicy preventGarbageCollectionSecs](self, "preventGarbageCollectionSecs")}];
   [v3 setSafeObject:v12 forKey:@"preventGarbageCollectionSecs"];
 
-  v13 = [(MAAutoAssetPolicy *)self additionalPolicyControl];
-  if (v13)
+  additionalPolicyControl = [(MAAutoAssetPolicy *)self additionalPolicyControl];
+  if (additionalPolicyControl)
   {
     v14 = @"YES";
   }

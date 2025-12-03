@@ -1,13 +1,13 @@
 @interface SBHClockApplicationIcon
-- (Class)iconImageViewClassForLocation:(id)a3;
+- (Class)iconImageViewClassForLocation:(id)location;
 @end
 
 @implementation SBHClockApplicationIcon
 
-- (Class)iconImageViewClassForLocation:(id)a3
+- (Class)iconImageViewClassForLocation:(id)location
 {
-  v4 = a3;
-  if ([objc_opt_class() _shouldAnimateInLocation:v4])
+  locationCopy = location;
+  if ([objc_opt_class() _shouldAnimateInLocation:locationCopy])
   {
     v5 = objc_opt_self();
   }
@@ -16,7 +16,7 @@
   {
     v8.receiver = self;
     v8.super_class = SBHClockApplicationIcon;
-    v5 = [(SBIcon *)&v8 iconImageViewClassForLocation:v4];
+    v5 = [(SBIcon *)&v8 iconImageViewClassForLocation:locationCopy];
   }
 
   v6 = v5;

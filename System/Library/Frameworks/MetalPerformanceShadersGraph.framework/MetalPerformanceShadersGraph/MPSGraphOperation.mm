@@ -1,15 +1,15 @@
 @interface MPSGraphOperation
-- (BOOL)recurseFromBlock:(id)a3 onEscaped:(id)a4 withAutodiff:(Autodiff *)a5;
-- (BOOL)recurseOnBlocksFromOutput:(id)a3 withAutodiff:(Autodiff *)a4;
-- (BOOL)recurseOutFromBlockInput:(id)a3 withAutodiff:(Autodiff *)a4;
+- (BOOL)recurseFromBlock:(id)block onEscaped:(id)escaped withAutodiff:(Autodiff *)autodiff;
+- (BOOL)recurseOnBlocksFromOutput:(id)output withAutodiff:(Autodiff *)autodiff;
+- (BOOL)recurseOutFromBlockInput:(id)input withAutodiff:(Autodiff *)autodiff;
 - (MPSGraph)graph;
 - (MPSGraphOperation)init;
-- (MPSGraphOperation)initWithGraph:(id)a3 inputTensors:(id)a4 controlDependencies:(id)a5 region:(id)a6 name:(id)a7;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)partialDerivativeForInputTensor:(id)a3 incomingGradient:(id)a4 inputIndex:(unint64_t)a5 name:(id)a6;
-- (id)partialDerivativesForInputTensors:(id)a3 incomingGradients:(id)a4 name:(id)a5;
-- (void)makeMLIROpWithBuilder:(void *)a3 symbolTable:(void *)a4 inputValues:(void *)a5 opInitialization:(BOOL)a6 name:(id)a7;
-- (void)partialDerivateForCFOpWithAutodiff:(Autodiff *)a3;
+- (MPSGraphOperation)initWithGraph:(id)graph inputTensors:(id)tensors controlDependencies:(id)dependencies region:(id)region name:(id)name;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)partialDerivativeForInputTensor:(id)tensor incomingGradient:(id)gradient inputIndex:(unint64_t)index name:(id)name;
+- (id)partialDerivativesForInputTensors:(id)tensors incomingGradients:(id)gradients name:(id)name;
+- (void)makeMLIROpWithBuilder:(void *)builder symbolTable:(void *)table inputValues:(void *)values opInitialization:(BOOL)initialization name:(id)name;
+- (void)partialDerivateForCFOpWithAutodiff:(Autodiff *)autodiff;
 @end
 
 @implementation MPSGraphOperation
@@ -21,56 +21,56 @@
   return [(MPSGraphOperation *)&v3 init];
 }
 
-- (MPSGraphOperation)initWithGraph:(id)a3 inputTensors:(id)a4 controlDependencies:(id)a5 region:(id)a6 name:(id)a7
+- (MPSGraphOperation)initWithGraph:(id)graph inputTensors:(id)tensors controlDependencies:(id)dependencies region:(id)region name:(id)name
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v90 = a6;
-  v89 = a7;
+  graphCopy = graph;
+  tensorsCopy = tensors;
+  dependenciesCopy = dependencies;
+  regionCopy = region;
+  nameCopy = name;
   v107.receiver = self;
   v107.super_class = MPSGraphOperation;
   v15 = [(MPSGraphOperation *)&v107 init];
   v102 = 0x2B2B07D42B2B07D0;
-  v103 = v12;
+  v103 = graphCopy;
   v104 = 0;
   v105 = 0;
   v106 = 0;
   kdebug_trace();
-  objc_storeWeak(&v15->_graph, v12);
-  v16 = [MEMORY[0x1E695DF70] arrayWithArray:v13];
+  objc_storeWeak(&v15->_graph, graphCopy);
+  v16 = [MEMORY[0x1E695DF70] arrayWithArray:tensorsCopy];
   WeakRetained = objc_loadWeakRetained(&v15->_graph);
-  v93 = v12;
-  v87 = v14;
-  v88 = v13;
+  v93 = graphCopy;
+  v87 = dependenciesCopy;
+  v88 = tensorsCopy;
   v96 = v16;
-  v18 = [WeakRetained[21] allObjects];
-  v19 = [v18 arrayByAddingObjectsFromArray:v14];
+  allObjects = [WeakRetained[21] allObjects];
+  v19 = [allObjects arrayByAddingObjectsFromArray:dependenciesCopy];
   v20 = [v19 mutableCopy];
   controlDependencies = v15->_controlDependencies;
   v15->_controlDependencies = v20;
 
-  objc_storeStrong(&v15->_name, a7);
+  objc_storeStrong(&v15->_name, name);
   v15->_stopGradient = 0;
-  objc_storeStrong(&v15->_region, a6);
+  objc_storeStrong(&v15->_region, region);
   region = v15->_region;
   if (region)
   {
     objc_storeWeak(&region->_parentOp, v15);
   }
 
-  objc_storeWeak(&v15->_parentBlock, *(v12 + 22));
+  objc_storeWeak(&v15->_parentBlock, *(graphCopy + 22));
   for (i = 0; i < [v16 count]; ++i)
   {
     v24 = [v16 objectAtIndexedSubscript:i];
 
     v25 = objc_loadWeakRetained(v24 + 3);
-    if (v25 != v12 && MTLReportFailureTypeEnabled())
+    if (v25 != graphCopy && MTLReportFailureTypeEnabled())
     {
       MTLReportFailure();
     }
 
-    v26 = [v24 operation];
+    operation = [v24 operation];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -97,7 +97,7 @@
             v91 = v29;
           }
 
-          v31 = [v12 readVariable:v24 name:v29];
+          v31 = [graphCopy readVariable:v24 name:v29];
           v32 = v94;
           if (!name)
           {
@@ -122,11 +122,11 @@
   while (v35 < [(NSArray *)v15->_inputTensors count])
   {
     v37 = [(NSArray *)v15->_inputTensors objectAtIndexedSubscript:v35];
-    v38 = [v37 value];
+    value = [v37 value];
     v39 = v100;
     if (v100 < v101)
     {
-      *v100 = v38;
+      *v100 = value;
       v36 = (v39 + 8);
     }
 
@@ -167,7 +167,7 @@
         std::__throw_bad_array_new_length[abi:ne200100]();
       }
 
-      *(8 * v42) = v38;
+      *(8 * v42) = value;
       v36 = 8 * v42 + 8;
       memcpy(0, v40, v41);
       __p = 0;
@@ -181,7 +181,7 @@
     v16 = v96;
   }
 
-  pthread_mutex_lock((v12 + 104));
+  pthread_mutex_lock((graphCopy + 104));
   v46 = objc_loadWeakRetained(&v15->_graph);
   v15->_mlirOperation = [(MPSGraphOperation *)v15 makeMLIROpWithBuilder:v46[7] symbolTable:v46[9] inputValues:&__p opInitialization:1 name:v15->_name];
 
@@ -192,13 +192,13 @@
   v49 = v15->_name;
   v15->_name = v48;
 
-  v50 = [MEMORY[0x1E695DF70] array];
-  v51 = v50;
+  array = [MEMORY[0x1E695DF70] array];
+  v51 = array;
   mlirOperation = v15->_mlirOperation;
   v53 = mlirOperation[9];
   if (v53 >= 1)
   {
-    v95 = v50;
+    v95 = array;
     v54 = [MPSGraphTensor alloc];
     v55 = objc_loadWeakRetained(&v15->_parentBlock);
     v56 = [(MPSGraphTensor *)v54 initTensorWithOperation:v15 value:mlirOperation - 4 graph:v93 parentBlock:v55 name:v15->_name];
@@ -306,19 +306,19 @@
   return v85;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v3 = self;
-  v4 = v3;
-  if (v3)
+  selfCopy = self;
+  v4 = selfCopy;
+  if (selfCopy)
   {
-    v5 = v3;
+    v5 = selfCopy;
   }
 
   return v4;
 }
 
-- (void)makeMLIROpWithBuilder:(void *)a3 symbolTable:(void *)a4 inputValues:(void *)a5 opInitialization:(BOOL)a6 name:(id)a7
+- (void)makeMLIROpWithBuilder:(void *)builder symbolTable:(void *)table inputValues:(void *)values opInitialization:(BOOL)initialization name:(id)name
 {
   if (MTLReportFailureTypeEnabled())
   {
@@ -328,9 +328,9 @@
   return 0;
 }
 
-- (id)partialDerivativeForInputTensor:(id)a3 incomingGradient:(id)a4 inputIndex:(unint64_t)a5 name:(id)a6
+- (id)partialDerivativeForInputTensor:(id)tensor incomingGradient:(id)gradient inputIndex:(unint64_t)index name:(id)name
 {
-  v6 = [(MPSGraphOperation *)self graph:a3];
+  v6 = [(MPSGraphOperation *)self graph:tensor];
   [v6 dump];
 
   if (MTLReportFailureTypeEnabled())
@@ -341,26 +341,26 @@
   return 0;
 }
 
-- (id)partialDerivativesForInputTensors:(id)a3 incomingGradients:(id)a4 name:(id)a5
+- (id)partialDerivativesForInputTensors:(id)tensors incomingGradients:(id)gradients name:(id)name
 {
-  v8 = a3;
-  v9 = a4;
-  v21 = a5;
-  if ([v9 count] == 1)
+  tensorsCopy = tensors;
+  gradientsCopy = gradients;
+  nameCopy = name;
+  if ([gradientsCopy count] == 1)
   {
-    v10 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v8, "count")}];
-    for (i = 0; i < [v8 count]; ++i)
+    v10 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(tensorsCopy, "count")}];
+    for (i = 0; i < [tensorsCopy count]; ++i)
     {
-      v12 = [v8 objectAtIndexedSubscript:i];
+      v12 = [tensorsCopy objectAtIndexedSubscript:i];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
-      if ((isKindOfClass & 1) != 0 || ([v8 objectAtIndexedSubscript:i], v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "objectAtIndexedSubscript:", 0), v15 = objc_claimAutoreleasedReturnValue(), v16 = MEMORY[0x1E696AEC0], objc_msgSend(v14, "name"), v17 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v16, "stringWithFormat:", @"gradient for %@", v17), v18 = objc_claimAutoreleasedReturnValue(), -[MPSGraphOperation partialDerivativeForInputTensor:incomingGradient:inputIndex:name:](self, "partialDerivativeForInputTensor:incomingGradient:inputIndex:name:", v14, v15, i, v18), v19 = objc_claimAutoreleasedReturnValue(), v18, v17, v15, v14, !v19))
+      if ((isKindOfClass & 1) != 0 || ([tensorsCopy objectAtIndexedSubscript:i], v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(gradientsCopy, "objectAtIndexedSubscript:", 0), v15 = objc_claimAutoreleasedReturnValue(), v16 = MEMORY[0x1E696AEC0], objc_msgSend(v14, "name"), v17 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v16, "stringWithFormat:", @"gradient for %@", v17), v18 = objc_claimAutoreleasedReturnValue(), -[MPSGraphOperation partialDerivativeForInputTensor:incomingGradient:inputIndex:name:](self, "partialDerivativeForInputTensor:incomingGradient:inputIndex:name:", v14, v15, i, v18), null = objc_claimAutoreleasedReturnValue(), v18, v17, v15, v14, !null))
       {
-        v19 = [MEMORY[0x1E695DFB0] null];
+        null = [MEMORY[0x1E695DFB0] null];
       }
 
-      [v10 addObject:v19];
+      [v10 addObject:null];
     }
   }
 
@@ -377,7 +377,7 @@
   return v10;
 }
 
-- (void)partialDerivateForCFOpWithAutodiff:(Autodiff *)a3
+- (void)partialDerivateForCFOpWithAutodiff:(Autodiff *)autodiff
 {
   if (MTLReportFailureTypeEnabled())
   {
@@ -386,17 +386,7 @@
   }
 }
 
-- (BOOL)recurseFromBlock:(id)a3 onEscaped:(id)a4 withAutodiff:(Autodiff *)a5
-{
-  if (MTLReportFailureTypeEnabled())
-  {
-    MTLReportFailure();
-  }
-
-  return 0;
-}
-
-- (BOOL)recurseOnBlocksFromOutput:(id)a3 withAutodiff:(Autodiff *)a4
+- (BOOL)recurseFromBlock:(id)block onEscaped:(id)escaped withAutodiff:(Autodiff *)autodiff
 {
   if (MTLReportFailureTypeEnabled())
   {
@@ -406,7 +396,17 @@
   return 0;
 }
 
-- (BOOL)recurseOutFromBlockInput:(id)a3 withAutodiff:(Autodiff *)a4
+- (BOOL)recurseOnBlocksFromOutput:(id)output withAutodiff:(Autodiff *)autodiff
+{
+  if (MTLReportFailureTypeEnabled())
+  {
+    MTLReportFailure();
+  }
+
+  return 0;
+}
+
+- (BOOL)recurseOutFromBlockInput:(id)input withAutodiff:(Autodiff *)autodiff
 {
   if (MTLReportFailureTypeEnabled())
   {

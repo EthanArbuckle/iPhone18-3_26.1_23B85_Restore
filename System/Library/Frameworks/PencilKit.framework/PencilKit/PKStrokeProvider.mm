@@ -1,43 +1,43 @@
 @interface PKStrokeProvider
-+ (id)_identifiersForStrokes:(id)a3;
-+ (id)slicesForStrokes:(id)a3;
-- (BOOL)isStroke:(id)a3 versionOfStrokeWithIdentifier:(id)a4;
-- (BOOL)isValidStrokeIdentifier:(id)a3;
++ (id)_identifiersForStrokes:(id)strokes;
++ (id)slicesForStrokes:(id)strokes;
+- (BOOL)isStroke:(id)stroke versionOfStrokeWithIdentifier:(id)identifier;
+- (BOOL)isValidStrokeIdentifier:(id)identifier;
 - (CGSize)drawingCanvasSize;
 - (CHStrokeProviderVersion)strokeProviderVersion;
 - (NSArray)orderedStrokes;
 - (NSOrderedSet)visibleStrokeEncodedIdentifiers;
 - (NSString)description;
-- (PKStrokeProvider)initWithDrawing:(id)a3;
-- (PKStrokeProvider)initWithDrawing:(id)a3 visibleOnscreenStrokes:(id)a4 shouldProcessVisibleStrokes:(BOOL)a5 transcriptionCache:(id)a6;
-- (id)_cachedStrokeIdentifier:(id)a3;
-- (id)cachedTranscriptionForStrokeGroup:(id)a3;
-- (id)cachedTranscriptionsIntersectingStrokeGroup:(id)a3;
-- (id)encodedStrokeIdentifier:(id)a3;
-- (id)sliceForIdentifier:(id)a3;
+- (PKStrokeProvider)initWithDrawing:(id)drawing;
+- (PKStrokeProvider)initWithDrawing:(id)drawing visibleOnscreenStrokes:(id)strokes shouldProcessVisibleStrokes:(BOOL)visibleStrokes transcriptionCache:(id)cache;
+- (id)_cachedStrokeIdentifier:(id)identifier;
+- (id)cachedTranscriptionForStrokeGroup:(id)group;
+- (id)cachedTranscriptionsIntersectingStrokeGroup:(id)group;
+- (id)encodedStrokeIdentifier:(id)identifier;
+- (id)sliceForIdentifier:(id)identifier;
 - (id)slices;
-- (id)strokeForIdentifier:(id)a3;
-- (id)strokeIdentifierFromData:(id)a3;
-- (int64_t)compareOrderOfStrokeWithIdentifier:(id)a3 toStrokeWithIdentifier:(id)a4;
-- (unint64_t)compareStyleOfStrokeWithIdentifier:(id)a3 toStrokeWithIdentifier:(id)a4;
-- (void)_cacheStrokeIdentifier:(id)a3 withEncodedStrokeIdentifier:(id)a4;
-- (void)updateTranscriptionCache:(id)a3;
+- (id)strokeForIdentifier:(id)identifier;
+- (id)strokeIdentifierFromData:(id)data;
+- (int64_t)compareOrderOfStrokeWithIdentifier:(id)identifier toStrokeWithIdentifier:(id)withIdentifier;
+- (unint64_t)compareStyleOfStrokeWithIdentifier:(id)identifier toStrokeWithIdentifier:(id)withIdentifier;
+- (void)_cacheStrokeIdentifier:(id)identifier withEncodedStrokeIdentifier:(id)strokeIdentifier;
+- (void)updateTranscriptionCache:(id)cache;
 @end
 
 @implementation PKStrokeProvider
 
-- (PKStrokeProvider)initWithDrawing:(id)a3
+- (PKStrokeProvider)initWithDrawing:(id)drawing
 {
-  v4 = a3;
+  drawingCopy = drawing;
   v14.receiver = self;
   v14.super_class = PKStrokeProvider;
   v5 = [(PKStrokeProvider *)&v14 init];
-  v6 = [v4 copy];
+  v6 = [drawingCopy copy];
   drawing = v5->_drawing;
   v5->_drawing = v6;
 
-  v8 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v5->_disabled = [v8 BOOLForKey:@"PKDrawingRecognitionDisableUpdates"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v5->_disabled = [standardUserDefaults BOOLForKey:@"PKDrawingRecognitionDisableUpdates"];
 
   v9 = objc_alloc_init(MEMORY[0x1E695DF90]);
   strokeIdsByEncoding = v5->_strokeIdsByEncoding;
@@ -50,20 +50,20 @@
   return v5;
 }
 
-- (PKStrokeProvider)initWithDrawing:(id)a3 visibleOnscreenStrokes:(id)a4 shouldProcessVisibleStrokes:(BOOL)a5 transcriptionCache:(id)a6
+- (PKStrokeProvider)initWithDrawing:(id)drawing visibleOnscreenStrokes:(id)strokes shouldProcessVisibleStrokes:(BOOL)visibleStrokes transcriptionCache:(id)cache
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [(PKStrokeProvider *)self initWithDrawing:v10];
+  drawingCopy = drawing;
+  strokesCopy = strokes;
+  cacheCopy = cache;
+  v13 = [(PKStrokeProvider *)self initWithDrawing:drawingCopy];
   if (v13)
   {
-    v14 = [v11 copy];
+    v14 = [strokesCopy copy];
     visibleOnscreenStrokes = v13->_visibleOnscreenStrokes;
     v13->_visibleOnscreenStrokes = v14;
 
-    v13->_shouldProcessVisibleStrokes = a5;
-    v16 = [v12 copy];
+    v13->_shouldProcessVisibleStrokes = visibleStrokes;
+    v16 = [cacheCopy copy];
     transcriptionCache = v13->_transcriptionCache;
     v13->_transcriptionCache = v16;
   }
@@ -76,37 +76,37 @@
   v8.receiver = self;
   v8.super_class = PKStrokeProvider;
   v3 = [(PKStrokeProvider *)&v8 description];
-  v4 = [(PKStrokeProvider *)self strokeProviderVersion];
-  v5 = [(PKStrokeProvider *)self orderedStrokes];
-  v6 = [v3 stringByAppendingFormat:@" version: %@, strokes: %ld", v4, objc_msgSend(v5, "count")];
+  strokeProviderVersion = [(PKStrokeProvider *)self strokeProviderVersion];
+  orderedStrokes = [(PKStrokeProvider *)self orderedStrokes];
+  v6 = [v3 stringByAppendingFormat:@" version: %@, strokes: %ld", strokeProviderVersion, objc_msgSend(orderedStrokes, "count")];
 
   return v6;
 }
 
-- (id)cachedTranscriptionForStrokeGroup:(id)a3
+- (id)cachedTranscriptionForStrokeGroup:(id)group
 {
-  v3 = [(PKHandwritingTranscriptionCache *)self->_transcriptionCache cachedTranscriptionForStrokeGroup:a3];
+  v3 = [(PKHandwritingTranscriptionCache *)self->_transcriptionCache cachedTranscriptionForStrokeGroup:group];
 
   return v3;
 }
 
-- (id)cachedTranscriptionsIntersectingStrokeGroup:(id)a3
+- (id)cachedTranscriptionsIntersectingStrokeGroup:(id)group
 {
   v24 = *MEMORY[0x1E69E9840];
-  v16 = a3;
-  v4 = [(PKHandwritingTranscriptionCache *)self->_transcriptionCache allCachedGroups];
+  groupCopy = group;
+  allCachedGroups = [(PKHandwritingTranscriptionCache *)self->_transcriptionCache allCachedGroups];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __64__PKStrokeProvider_cachedTranscriptionsIntersectingStrokeGroup___block_invoke;
   v21[3] = &unk_1E82D9108;
-  v5 = v16;
+  v5 = groupCopy;
   v22 = v5;
-  v6 = [v4 indexesOfObjectsPassingTest:v21];
+  v6 = [allCachedGroups indexesOfObjectsPassingTest:v21];
 
   if ([v6 count])
   {
-    v7 = [(PKHandwritingTranscriptionCache *)self->_transcriptionCache allCachedGroups];
-    v8 = [v7 objectsAtIndexes:v6];
+    allCachedGroups2 = [(PKHandwritingTranscriptionCache *)self->_transcriptionCache allCachedGroups];
+    v8 = [allCachedGroups2 objectsAtIndexes:v6];
 
     v9 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(v8, "count")}];
     v19 = 0u;
@@ -149,27 +149,27 @@
   return v9;
 }
 
-- (void)updateTranscriptionCache:(id)a3
+- (void)updateTranscriptionCache:(id)cache
 {
-  v6 = a3;
-  v4 = [v6 copy];
+  cacheCopy = cache;
+  v4 = [cacheCopy copy];
   transcriptionCache = self->_transcriptionCache;
   self->_transcriptionCache = v4;
 }
 
 - (CHStrokeProviderVersion)strokeProviderVersion
 {
-  v2 = [(PKStrokeProvider *)self drawing];
-  v3 = [v2 version];
+  drawing = [(PKStrokeProvider *)self drawing];
+  version = [drawing version];
 
-  return v3;
+  return version;
 }
 
 - (id)slices
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  strokeSlices = v2->_strokeSlices;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  strokeSlices = selfCopy->_strokeSlices;
   if (strokeSlices)
   {
     v4 = strokeSlices;
@@ -177,39 +177,39 @@
 
   else
   {
-    if (v2->_shouldProcessVisibleStrokes)
+    if (selfCopy->_shouldProcessVisibleStrokes)
     {
-      v5 = v2->_visibleOnscreenStrokes;
+      strokes = selfCopy->_visibleOnscreenStrokes;
     }
 
     else
     {
-      v6 = [(PKStrokeProvider *)v2 drawing];
-      v5 = [v6 strokes];
+      drawing = [(PKStrokeProvider *)selfCopy drawing];
+      strokes = [drawing strokes];
     }
 
-    v7 = [objc_opt_class() slicesForStrokes:v5];
-    v8 = v2->_strokeSlices;
-    v2->_strokeSlices = v7;
+    v7 = [objc_opt_class() slicesForStrokes:strokes];
+    v8 = selfCopy->_strokeSlices;
+    selfCopy->_strokeSlices = v7;
 
-    v4 = v2->_strokeSlices;
+    v4 = selfCopy->_strokeSlices;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v4;
 }
 
-+ (id)slicesForStrokes:(id)a3
++ (id)slicesForStrokes:(id)strokes
 {
   v24 = *MEMORY[0x1E69E9840];
-  v18 = a3;
-  v3 = [MEMORY[0x1E695DFA0] orderedSetWithCapacity:{objc_msgSend(v18, "count")}];
+  strokesCopy = strokes;
+  v3 = [MEMORY[0x1E695DFA0] orderedSetWithCapacity:{objc_msgSend(strokesCopy, "count")}];
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v4 = v18;
+  v4 = strokesCopy;
   v5 = [v4 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v5)
   {
@@ -224,8 +224,8 @@
         }
 
         v8 = *(*(&v19 + 1) + 8 * i);
-        v9 = [v8 _strokeMask];
-        v10 = v9 == 0;
+        _strokeMask = [v8 _strokeMask];
+        v10 = _strokeMask == 0;
 
         if (v10)
         {
@@ -235,11 +235,11 @@
 
         else
         {
-          v11 = [v8 _strokeMask];
-          v12 = [v11 centerlineSlices];
+          _strokeMask2 = [v8 _strokeMask];
+          centerlineSlices = [_strokeMask2 centerlineSlices];
 
-          v13 = *v12;
-          v14 = v12[1];
+          v13 = *centerlineSlices;
+          v14 = centerlineSlices[1];
           while (v13 != v14)
           {
             v15 = [[PKStrokeProviderSlice alloc] initWithStroke:v8 tStart:*v13 tEnd:v13[1]];
@@ -263,28 +263,28 @@
 {
   if (self->_disabled)
   {
-    v2 = MEMORY[0x1E695E0F0];
+    array = MEMORY[0x1E695E0F0];
   }
 
   else
   {
-    v3 = [(PKStrokeProvider *)self slices];
-    v2 = [v3 array];
+    slices = [(PKStrokeProvider *)self slices];
+    array = [slices array];
   }
 
-  return v2;
+  return array;
 }
 
-- (int64_t)compareOrderOfStrokeWithIdentifier:(id)a3 toStrokeWithIdentifier:(id)a4
+- (int64_t)compareOrderOfStrokeWithIdentifier:(id)identifier toStrokeWithIdentifier:(id)withIdentifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PKStrokeProvider *)self slices];
-  v9 = [[PKStrokeProviderSlice alloc] initWithIdentifier:v6];
-  v10 = [v8 indexOfObject:v9];
+  identifierCopy = identifier;
+  withIdentifierCopy = withIdentifier;
+  slices = [(PKStrokeProvider *)self slices];
+  v9 = [[PKStrokeProviderSlice alloc] initWithIdentifier:identifierCopy];
+  v10 = [slices indexOfObject:v9];
 
-  v11 = [[PKStrokeProviderSlice alloc] initWithIdentifier:v7];
-  v12 = [v8 indexOfObject:v11];
+  v11 = [[PKStrokeProviderSlice alloc] initWithIdentifier:withIdentifierCopy];
+  v12 = [slices indexOfObject:v11];
 
   if (v10 < v12)
   {
@@ -299,33 +299,33 @@
   return v13;
 }
 
-- (unint64_t)compareStyleOfStrokeWithIdentifier:(id)a3 toStrokeWithIdentifier:(id)a4
+- (unint64_t)compareStyleOfStrokeWithIdentifier:(id)identifier toStrokeWithIdentifier:(id)withIdentifier
 {
-  v6 = a4;
-  v25 = [(PKStrokeProvider *)self strokeForIdentifier:a3];
-  v7 = [(PKStrokeProvider *)self strokeForIdentifier:v6];
-  v8 = [v25 stroke];
-  v9 = [v7 stroke];
-  v10 = [v8 ink];
-  v11 = [v9 ink];
-  v12 = [v10 identifier];
-  v13 = [v11 identifier];
-  LODWORD(v17) = [v12 isEqual:v13];
+  withIdentifierCopy = withIdentifier;
+  v25 = [(PKStrokeProvider *)self strokeForIdentifier:identifier];
+  v7 = [(PKStrokeProvider *)self strokeForIdentifier:withIdentifierCopy];
+  stroke = [v25 stroke];
+  stroke2 = [v7 stroke];
+  v10 = [stroke ink];
+  v11 = [stroke2 ink];
+  identifier = [v10 identifier];
+  identifier2 = [v11 identifier];
+  LODWORD(v17) = [identifier isEqual:identifier2];
 
-  v14 = [v10 color];
-  v15 = [v14 CGColor];
-  v16 = [v11 color];
-  LODWORD(v15) = CGColorEqualToColor(v15, [v16 CGColor]);
+  color = [v10 color];
+  cGColor = [color CGColor];
+  color2 = [v11 color];
+  LODWORD(cGColor) = CGColorEqualToColor(cGColor, [color2 CGColor]);
   v17 = v17;
 
-  if (v15)
+  if (cGColor)
   {
     v17 = v17 | 2;
   }
 
-  [v8 _maxWidthForStroke];
+  [stroke _maxWidthForStroke];
   v19 = v18;
-  [v9 _maxWidthForStroke];
+  [stroke2 _maxWidthForStroke];
   if (vabdd_f64(v19, v20) < 3.0)
   {
     [v10 weight];
@@ -350,17 +350,17 @@
   return result;
 }
 
-- (BOOL)isStroke:(id)a3 versionOfStrokeWithIdentifier:(id)a4
+- (BOOL)isStroke:(id)stroke versionOfStrokeWithIdentifier:(id)identifier
 {
-  v5 = a4;
-  v6 = [a3 identifier];
-  v7 = v5;
-  v8 = [v7 strokeUUID];
-  if (v8)
+  identifierCopy = identifier;
+  identifier = [stroke identifier];
+  v7 = identifierCopy;
+  strokeUUID = [v7 strokeUUID];
+  if (strokeUUID)
   {
-    v9 = [v6 strokeUUID];
-    v10 = [v7 strokeUUID];
-    v11 = [v9 isEqual:v10];
+    strokeUUID2 = [identifier strokeUUID];
+    strokeUUID3 = [v7 strokeUUID];
+    v11 = [strokeUUID2 isEqual:strokeUUID3];
   }
 
   else
@@ -371,53 +371,53 @@
   return v11;
 }
 
-- (BOOL)isValidStrokeIdentifier:(id)a3
+- (BOOL)isValidStrokeIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(PKStrokeProvider *)self slices];
-  v6 = [[PKStrokeProviderSlice alloc] initWithIdentifier:v4];
-  v7 = [v5 containsObject:v6];
+  identifierCopy = identifier;
+  slices = [(PKStrokeProvider *)self slices];
+  v6 = [[PKStrokeProviderSlice alloc] initWithIdentifier:identifierCopy];
+  v7 = [slices containsObject:v6];
 
   return v7;
 }
 
-- (id)strokeForIdentifier:(id)a3
+- (id)strokeForIdentifier:(id)identifier
 {
-  v3 = [(PKStrokeProvider *)self sliceForIdentifier:a3];
+  v3 = [(PKStrokeProvider *)self sliceForIdentifier:identifier];
 
   return v3;
 }
 
-- (void)_cacheStrokeIdentifier:(id)a3 withEncodedStrokeIdentifier:(id)a4
+- (void)_cacheStrokeIdentifier:(id)identifier withEncodedStrokeIdentifier:(id)strokeIdentifier
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = self;
-  objc_sync_enter(v7);
-  if (v9)
+  identifierCopy = identifier;
+  strokeIdentifierCopy = strokeIdentifier;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (identifierCopy)
   {
-    if (v6)
+    if (strokeIdentifierCopy)
     {
-      v8 = [(NSMutableDictionary *)v7->_strokeIdsByEncoding objectForKey:v6];
+      v8 = [(NSMutableDictionary *)selfCopy->_strokeIdsByEncoding objectForKey:strokeIdentifierCopy];
 
       if (!v8)
       {
-        [(NSMutableDictionary *)v7->_strokeIdsByEncoding setObject:v9 forKey:v6];
+        [(NSMutableDictionary *)selfCopy->_strokeIdsByEncoding setObject:identifierCopy forKey:strokeIdentifierCopy];
       }
     }
   }
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
 }
 
-- (id)_cachedStrokeIdentifier:(id)a3
+- (id)_cachedStrokeIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (v4)
+  identifierCopy = identifier;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (identifierCopy)
   {
-    v6 = [(NSMutableDictionary *)v5->_strokeIdsByEncoding objectForKey:v4];
+    v6 = [(NSMutableDictionary *)selfCopy->_strokeIdsByEncoding objectForKey:identifierCopy];
   }
 
   else
@@ -425,15 +425,15 @@
     v6 = 0;
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
-- (id)strokeIdentifierFromData:(id)a3
+- (id)strokeIdentifierFromData:(id)data
 {
-  v4 = a3;
-  v5 = [(PKStrokeProvider *)self _cachedStrokeIdentifier:v4];
+  dataCopy = data;
+  v5 = [(PKStrokeProvider *)self _cachedStrokeIdentifier:dataCopy];
   if (!v5)
   {
     if (_MergedGlobals_140 != -1)
@@ -443,12 +443,12 @@
 
     v6 = MEMORY[0x1E696ACD0];
     v7 = qword_1ED6A5130;
-    v8 = [v4 encodedStrokeIdentifier];
+    encodedStrokeIdentifier = [dataCopy encodedStrokeIdentifier];
     v11 = 0;
-    v5 = [v6 unarchivedObjectOfClasses:v7 fromData:v8 error:&v11];
+    v5 = [v6 unarchivedObjectOfClasses:v7 fromData:encodedStrokeIdentifier error:&v11];
     v9 = v11;
 
-    [(PKStrokeProvider *)self _cacheStrokeIdentifier:v5 withEncodedStrokeIdentifier:v4];
+    [(PKStrokeProvider *)self _cacheStrokeIdentifier:v5 withEncodedStrokeIdentifier:dataCopy];
   }
 
   return v5;
@@ -478,15 +478,15 @@ void __45__PKStrokeProvider_strokeIdentifierFromData___block_invoke()
   }
 }
 
-- (id)encodedStrokeIdentifier:(id)a3
+- (id)encodedStrokeIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(PKStrokeProvider *)self strokeForIdentifier:v4];
+  identifierCopy = identifier;
+  v5 = [(PKStrokeProvider *)self strokeForIdentifier:identifierCopy];
   v6 = v5;
   if (!v5 || ([v5 encodedStrokeIdentifier], (v7 = objc_claimAutoreleasedReturnValue()) == 0))
   {
     v14 = 0;
-    v8 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v4 requiringSecureCoding:1 error:&v14];
+    v8 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:identifierCopy requiringSecureCoding:1 error:&v14];
     v9 = v14;
     if (v8)
     {
@@ -499,7 +499,7 @@ void __45__PKStrokeProvider_strokeIdentifierFromData___block_invoke()
     }
   }
 
-  [(PKStrokeProvider *)self _cacheStrokeIdentifier:v4 withEncodedStrokeIdentifier:v7];
+  [(PKStrokeProvider *)self _cacheStrokeIdentifier:identifierCopy withEncodedStrokeIdentifier:v7];
   if (v7)
   {
     v10 = v7;
@@ -508,8 +508,8 @@ void __45__PKStrokeProvider_strokeIdentifierFromData___block_invoke()
   else
   {
     v11 = objc_alloc(MEMORY[0x1E6997B58]);
-    v12 = [MEMORY[0x1E695DEF0] data];
-    v10 = [v11 initWithData:v12];
+    data = [MEMORY[0x1E695DEF0] data];
+    v10 = [v11 initWithData:data];
   }
 
   return v10;
@@ -520,9 +520,9 @@ void __45__PKStrokeProvider_strokeIdentifierFromData___block_invoke()
   v21 = *MEMORY[0x1E69E9840];
   v3 = [MEMORY[0x1E695DFA0] orderedSetWithArray:self->_visibleOnscreenStrokes];
   v4 = MEMORY[0x1E695DFB8];
-  v5 = [(PKStrokeProvider *)self drawing];
-  v6 = [v5 strokes];
-  v7 = [v4 orderedSetWithArray:v6];
+  drawing = [(PKStrokeProvider *)self drawing];
+  strokes = [drawing strokes];
+  v7 = [v4 orderedSetWithArray:strokes];
   [v3 intersectOrderedSet:v7];
 
   v8 = [PKStrokeProvider _identifiersForStrokes:v3];
@@ -558,12 +558,12 @@ void __45__PKStrokeProvider_strokeIdentifierFromData___block_invoke()
   return v9;
 }
 
-- (id)sliceForIdentifier:(id)a3
+- (id)sliceForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(PKStrokeProvider *)self slices];
-  v6 = [[PKStrokeProviderSlice alloc] initWithIdentifier:v4];
-  v7 = [v5 indexOfObject:v6];
+  identifierCopy = identifier;
+  slices = [(PKStrokeProvider *)self slices];
+  v6 = [[PKStrokeProviderSlice alloc] initWithIdentifier:identifierCopy];
+  v7 = [slices indexOfObject:v6];
 
   if (v7 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -572,17 +572,17 @@ void __45__PKStrokeProvider_strokeIdentifierFromData___block_invoke()
 
   else
   {
-    v8 = [v5 objectAtIndexedSubscript:v7];
+    v8 = [slices objectAtIndexedSubscript:v7];
   }
 
   return v8;
 }
 
-+ (id)_identifiersForStrokes:(id)a3
++ (id)_identifiersForStrokes:(id)strokes
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [a3 array];
-  v4 = [PKStrokeProvider slicesForStrokes:v3];
+  array = [strokes array];
+  v4 = [PKStrokeProvider slicesForStrokes:array];
 
   v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v4, "count")}];
   v14 = 0u;
@@ -603,8 +603,8 @@ void __45__PKStrokeProvider_strokeIdentifierFromData___block_invoke()
           objc_enumerationMutation(v6);
         }
 
-        v10 = [*(*(&v12 + 1) + 8 * i) strokeIdentifier];
-        [v5 addObject:v10];
+        strokeIdentifier = [*(*(&v12 + 1) + 8 * i) strokeIdentifier];
+        [v5 addObject:strokeIdentifier];
       }
 
       v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];

@@ -1,5 +1,5 @@
 @interface MTPodcastPlaylistSheetHeaderViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (CGPoint)accessibilityActivationPoint;
 - (id)accessibilityValue;
 - (unint64_t)accessibilityTraits;
@@ -7,25 +7,25 @@
 
 @implementation MTPodcastPlaylistSheetHeaderViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MTPodcastPlaylistSheetHeaderView" hasInstanceVariable:@"_switch" withType:"UISwitch"];
-  [v3 validateClass:@"MTPodcastPlaylistSheetHeaderView" hasInstanceVariable:@"_title" withType:"UILabel"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MTPodcastPlaylistSheetHeaderView" hasInstanceVariable:@"_switch" withType:"UISwitch"];
+  [validationsCopy validateClass:@"MTPodcastPlaylistSheetHeaderView" hasInstanceVariable:@"_title" withType:"UILabel"];
 }
 
 - (id)accessibilityValue
 {
-  v2 = [(MTPodcastPlaylistSheetHeaderViewAccessibility *)self _axSwitch];
-  v3 = [v2 accessibilityValue];
+  _axSwitch = [(MTPodcastPlaylistSheetHeaderViewAccessibility *)self _axSwitch];
+  accessibilityValue = [_axSwitch accessibilityValue];
 
-  return v3;
+  return accessibilityValue;
 }
 
 - (CGPoint)accessibilityActivationPoint
 {
-  v2 = [(MTPodcastPlaylistSheetHeaderViewAccessibility *)self _axSwitch];
-  [v2 accessibilityActivationPoint];
+  _axSwitch = [(MTPodcastPlaylistSheetHeaderViewAccessibility *)self _axSwitch];
+  [_axSwitch accessibilityActivationPoint];
   v4 = v3;
   v6 = v5;
 
@@ -38,8 +38,8 @@
 
 - (unint64_t)accessibilityTraits
 {
-  v2 = [(MTPodcastPlaylistSheetHeaderViewAccessibility *)self _axSwitch];
-  [v2 accessibilityTraits];
+  _axSwitch = [(MTPodcastPlaylistSheetHeaderViewAccessibility *)self _axSwitch];
+  [_axSwitch accessibilityTraits];
 
   v3 = *MEMORY[0x29EDBDBD0];
 

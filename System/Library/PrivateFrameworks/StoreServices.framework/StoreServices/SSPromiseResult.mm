@@ -1,21 +1,21 @@
 @interface SSPromiseResult
-- (SSPromiseResult)initWithResult:(id)a3 error:(id)a4;
+- (SSPromiseResult)initWithResult:(id)result error:(id)error;
 @end
 
 @implementation SSPromiseResult
 
-- (SSPromiseResult)initWithResult:(id)a3 error:(id)a4
+- (SSPromiseResult)initWithResult:(id)result error:(id)error
 {
-  v7 = a3;
-  v8 = a4;
+  resultCopy = result;
+  errorCopy = error;
   v14.receiver = self;
   v14.super_class = SSPromiseResult;
   v9 = [(SSPromiseResult *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_result, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_result, result);
+    v11 = [errorCopy copy];
     error = v10->_error;
     v10->_error = v11;
   }

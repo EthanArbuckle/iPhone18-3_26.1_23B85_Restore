@@ -1,52 +1,52 @@
 @interface IRAVOutputDeviceMO
-+ (id)aVOutputDeviceMOFromAVOutputDeviceDO:(id)a3 inNode:(id)a4 withManagedObjectContext:(id)a5;
-+ (void)setPropertiesOfAVOutputDeviceMO:(id)a3 withAVOutputDevice:(id)a4;
++ (id)aVOutputDeviceMOFromAVOutputDeviceDO:(id)o inNode:(id)node withManagedObjectContext:(id)context;
++ (void)setPropertiesOfAVOutputDeviceMO:(id)o withAVOutputDevice:(id)device;
 - (id)convert;
 @end
 
 @implementation IRAVOutputDeviceMO
 
-+ (id)aVOutputDeviceMOFromAVOutputDeviceDO:(id)a3 inNode:(id)a4 withManagedObjectContext:(id)a5
++ (id)aVOutputDeviceMOFromAVOutputDeviceDO:(id)o inNode:(id)node withManagedObjectContext:(id)context
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[IRAVOutputDeviceMO alloc] initWithContext:v7];
+  contextCopy = context;
+  nodeCopy = node;
+  oCopy = o;
+  v10 = [[IRAVOutputDeviceMO alloc] initWithContext:contextCopy];
 
-  [(IRAVOutputDeviceMO *)v10 setNode:v8];
-  [IRAVOutputDeviceMO setPropertiesOfAVOutputDeviceMO:v10 withAVOutputDevice:v9];
+  [(IRAVOutputDeviceMO *)v10 setNode:nodeCopy];
+  [IRAVOutputDeviceMO setPropertiesOfAVOutputDeviceMO:v10 withAVOutputDevice:oCopy];
 
   return v10;
 }
 
-+ (void)setPropertiesOfAVOutputDeviceMO:(id)a3 withAVOutputDevice:(id)a4
++ (void)setPropertiesOfAVOutputDeviceMO:(id)o withAVOutputDevice:(id)device
 {
-  v5 = a4;
-  v10 = a3;
-  v6 = [v5 deviceID];
-  [v10 setDeviceID:v6];
+  deviceCopy = device;
+  oCopy = o;
+  deviceID = [deviceCopy deviceID];
+  [oCopy setDeviceID:deviceID];
 
-  v7 = [v5 deviceName];
-  [v10 setDeviceName:v7];
+  deviceName = [deviceCopy deviceName];
+  [oCopy setDeviceName:deviceName];
 
-  v8 = [v5 modelID];
-  [v10 setModelID:v8];
+  modelID = [deviceCopy modelID];
+  [oCopy setModelID:modelID];
 
-  [v10 setDeviceType:{objc_msgSend(v5, "deviceType")}];
-  [v10 setDeviceSubType:{objc_msgSend(v5, "deviceSubType")}];
-  [v10 setHasAirplayProperties:{objc_msgSend(v5, "hasAirplayProperties")}];
-  [v10 setDiscoveredOverInfra:{objc_msgSend(v5, "discoveredOverInfra")}];
-  v9 = [v5 discoveredWithBroker];
+  [oCopy setDeviceType:{objc_msgSend(deviceCopy, "deviceType")}];
+  [oCopy setDeviceSubType:{objc_msgSend(deviceCopy, "deviceSubType")}];
+  [oCopy setHasAirplayProperties:{objc_msgSend(deviceCopy, "hasAirplayProperties")}];
+  [oCopy setDiscoveredOverInfra:{objc_msgSend(deviceCopy, "discoveredOverInfra")}];
+  discoveredWithBroker = [deviceCopy discoveredWithBroker];
 
-  [v10 setDiscoveredWithBroker:v9];
+  [oCopy setDiscoveredWithBroker:discoveredWithBroker];
 }
 
 - (id)convert
 {
-  v3 = [(IRAVOutputDeviceMO *)self deviceID];
-  v4 = [(IRAVOutputDeviceMO *)self modelID];
-  v5 = [(IRAVOutputDeviceMO *)self deviceName];
-  v6 = [IRAVOutputDeviceDO aVOutputDeviceDOWithDeviceID:v3 modelID:v4 deviceName:v5 hasAirplayProperties:[(IRAVOutputDeviceMO *)self hasAirplayProperties] discoveredOverInfra:[(IRAVOutputDeviceMO *)self discoveredOverInfra] discoveredWithBroker:[(IRAVOutputDeviceMO *)self discoveredWithBroker] deviceType:[(IRAVOutputDeviceMO *)self deviceType] deviceSubType:[(IRAVOutputDeviceMO *)self deviceSubType]];
+  deviceID = [(IRAVOutputDeviceMO *)self deviceID];
+  modelID = [(IRAVOutputDeviceMO *)self modelID];
+  deviceName = [(IRAVOutputDeviceMO *)self deviceName];
+  v6 = [IRAVOutputDeviceDO aVOutputDeviceDOWithDeviceID:deviceID modelID:modelID deviceName:deviceName hasAirplayProperties:[(IRAVOutputDeviceMO *)self hasAirplayProperties] discoveredOverInfra:[(IRAVOutputDeviceMO *)self discoveredOverInfra] discoveredWithBroker:[(IRAVOutputDeviceMO *)self discoveredWithBroker] deviceType:[(IRAVOutputDeviceMO *)self deviceType] deviceSubType:[(IRAVOutputDeviceMO *)self deviceSubType]];
 
   return v6;
 }

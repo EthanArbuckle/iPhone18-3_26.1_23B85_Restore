@@ -1,33 +1,33 @@
 @interface _ActivityRemoteDataGatherer
-- (_ActivityRemoteDataGatherer)initWithActivitySummaryDataProvider:(id)a3 monthDateInterval:(id)a4 sixMonthDateInterval:(id)a5 completion:(id)a6;
-- (id)_chartDataSourceQueryDataFromSummaries:(id)a3;
-- (id)_dateRangeFromInterval:(id)a3;
+- (_ActivityRemoteDataGatherer)initWithActivitySummaryDataProvider:(id)provider monthDateInterval:(id)interval sixMonthDateInterval:(id)dateInterval completion:(id)completion;
+- (id)_chartDataSourceQueryDataFromSummaries:(id)summaries;
+- (id)_dateRangeFromInterval:(id)interval;
 - (void)dealloc;
 - (void)gatherData;
 @end
 
 @implementation _ActivityRemoteDataGatherer
 
-- (_ActivityRemoteDataGatherer)initWithActivitySummaryDataProvider:(id)a3 monthDateInterval:(id)a4 sixMonthDateInterval:(id)a5 completion:(id)a6
+- (_ActivityRemoteDataGatherer)initWithActivitySummaryDataProvider:(id)provider monthDateInterval:(id)interval sixMonthDateInterval:(id)dateInterval completion:(id)completion
 {
   v28 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  providerCopy = provider;
+  intervalCopy = interval;
+  dateIntervalCopy = dateInterval;
+  completionCopy = completion;
   v25.receiver = self;
   v25.super_class = _ActivityRemoteDataGatherer;
   v15 = [(_ActivityRemoteDataGatherer *)&v25 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_monthDateInterval, a4);
-    objc_storeStrong(&v16->_sixMonthDateInterval, a5);
-    v17 = [v14 copy];
+    objc_storeStrong(&v15->_monthDateInterval, interval);
+    objc_storeStrong(&v16->_sixMonthDateInterval, dateInterval);
+    v17 = [completionCopy copy];
     completion = v16->_completion;
     v16->_completion = v17;
 
-    objc_storeStrong(&v16->_activitySummaryProvider, a3);
+    objc_storeStrong(&v16->_activitySummaryProvider, provider);
     [(HKActivitySummaryDataProvider *)v16->_activitySummaryProvider addObserver:v16];
     monthActivitySummaries = v16->_monthActivitySummaries;
     v16->_monthActivitySummaries = 0;
@@ -67,7 +67,7 @@
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       *buf = 134217984;
-      v8 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1C3942000, v5, OS_LOG_TYPE_INFO, "[_ActivityRemoteDataGatherer:%p] dealloc", buf, 0xCu);
     }
   }
@@ -80,35 +80,35 @@
 
 - (void)gatherData
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"HKInteractiveChartActivityController.m" lineNumber:2657 description:@"Gathering remote data must be done from the main thread due to restrictions imposed by HKActivitySummaryDataProvider"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"HKInteractiveChartActivityController.m" lineNumber:2657 description:@"Gathering remote data must be done from the main thread due to restrictions imposed by HKActivitySummaryDataProvider"];
 }
 
-- (id)_dateRangeFromInterval:(id)a3
+- (id)_dateRangeFromInterval:(id)interval
 {
-  v3 = a3;
-  v4 = [v3 startDate];
-  v5 = [v3 endDate];
+  intervalCopy = interval;
+  startDate = [intervalCopy startDate];
+  endDate = [intervalCopy endDate];
 
-  v6 = [HKValueRange valueRangeWithMinValue:v4 maxValue:v5];
+  v6 = [HKValueRange valueRangeWithMinValue:startDate maxValue:endDate];
 
   return v6;
 }
 
-- (id)_chartDataSourceQueryDataFromSummaries:(id)a3
+- (id)_chartDataSourceQueryDataFromSummaries:(id)summaries
 {
-  v3 = [HKInteractiveChartActivityController _codableActivitySummaryDataFromSummaries:a3];
+  v3 = [HKInteractiveChartActivityController _codableActivitySummaryDataFromSummaries:summaries];
   v4 = objc_alloc_init(HKCodableChartDataSourceQueryData);
-  v5 = [v3 data];
-  [(HKCodableChartDataSourceQueryData *)v4 setQueryDataObject:v5];
+  data = [v3 data];
+  [(HKCodableChartDataSourceQueryData *)v4 setQueryDataObject:data];
 
   [(HKCodableChartDataSourceQueryData *)v4 setType:10];
-  v6 = [MEMORY[0x1E695DFE8] localTimeZone];
-  v7 = [v6 name];
-  [(HKCodableChartDataSourceQueryData *)v4 setTimeZoneName:v7];
+  localTimeZone = [MEMORY[0x1E695DFE8] localTimeZone];
+  name = [localTimeZone name];
+  [(HKCodableChartDataSourceQueryData *)v4 setTimeZoneName:name];
 
-  v8 = [MEMORY[0x1E695DF58] currentLocale];
-  v9 = [v8 objectForKey:*MEMORY[0x1E695D958]];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  v9 = [currentLocale objectForKey:*MEMORY[0x1E695D958]];
 
   if (v9)
   {

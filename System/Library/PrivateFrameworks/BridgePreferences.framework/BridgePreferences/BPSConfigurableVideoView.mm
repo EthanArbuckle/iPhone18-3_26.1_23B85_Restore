@@ -1,18 +1,18 @@
 @interface BPSConfigurableVideoView
 - (BOOL)isPlaying;
-- (BPSConfigurableVideoView)initWithCoder:(id)a3;
-- (BPSConfigurableVideoView)initWithFrame:(CGRect)a3;
+- (BPSConfigurableVideoView)initWithCoder:(id)coder;
+- (BPSConfigurableVideoView)initWithFrame:(CGRect)frame;
 - (UIView)view;
 - (void)dealloc;
 - (void)pauseVideo;
 - (void)playVideo;
 - (void)resetVideo;
-- (void)setVolume:(float)a3;
+- (void)setVolume:(float)volume;
 @end
 
 @implementation BPSConfigurableVideoView
 
-- (BPSConfigurableVideoView)initWithCoder:(id)a3
+- (BPSConfigurableVideoView)initWithCoder:(id)coder
 {
   sub_241EA9E38();
   sub_241EA9E28();
@@ -41,9 +41,9 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = self;
+  selfCopy = self;
 
-  return v3;
+  return selfCopy;
 }
 
 - (BOOL)isPlaying
@@ -99,7 +99,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = self;
+  selfCopy = self;
   sub_241EA5FD8();
 }
 
@@ -125,7 +125,7 @@
   }
 }
 
-- (void)setVolume:(float)a3
+- (void)setVolume:(float)volume
 {
   sub_241EA9E38();
   sub_241EA9E28();
@@ -138,15 +138,15 @@
   if (*(&self->super.super.super.isa + OBJC_IVAR___BPSConfigurableVideoView_hostingView))
   {
     v5 = *(&self->super.super._responderFlags + OBJC_IVAR___BPSConfigurableVideoView_hostingView);
-    v6 = 0.0;
-    if (a3 > 0.0)
+    volumeCopy = 0.0;
+    if (volume > 0.0)
     {
-      v6 = a3;
+      volumeCopy = volume;
     }
 
-    if (v6 <= 1.0)
+    if (volumeCopy <= 1.0)
     {
-      v7 = v6;
+      v7 = volumeCopy;
     }
 
     else
@@ -173,14 +173,14 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = self;
+  selfCopy = self;
   sub_241EA9E28();
   sub_241EA9E18();
 
   swift_task_deinitOnExecutor();
 }
 
-- (BPSConfigurableVideoView)initWithFrame:(CGRect)a3
+- (BPSConfigurableVideoView)initWithFrame:(CGRect)frame
 {
   sub_241EA9E38();
   sub_241EA9E28();

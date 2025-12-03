@@ -1,35 +1,35 @@
 @interface SBCenterAppIconZoomAnimator
 - (CGPoint)cameraPosition;
-- (SBCenterAppIconZoomAnimator)initWithFolderController:(id)a3 appView:(id)a4 window:(id)a5;
+- (SBCenterAppIconZoomAnimator)initWithFolderController:(id)controller appView:(id)view window:(id)window;
 - (double)_appZoomDelay;
 - (double)_iconZoomDelay;
 - (unint64_t)_numberOfSignificantAnimations;
 - (void)_cleanupAnimation;
 - (void)_delayedForRotation;
-- (void)_performAnimationToFraction:(double)a3 withCentralAnimationSettings:(id)a4 delay:(double)a5 alreadyAnimating:(BOOL)a6 sharedCompletion:(id)a7;
+- (void)_performAnimationToFraction:(double)fraction withCentralAnimationSettings:(id)settings delay:(double)delay alreadyAnimating:(BOOL)animating sharedCompletion:(id)completion;
 - (void)_prepareAnimation;
-- (void)_setAnimationFraction:(double)a3;
-- (void)_translateAppForZoomFraction:(double)a3;
-- (void)_zoomAppForZoomFraction:(double)a3;
+- (void)_setAnimationFraction:(double)fraction;
+- (void)_translateAppForZoomFraction:(double)fraction;
+- (void)_zoomAppForZoomFraction:(double)fraction;
 @end
 
 @implementation SBCenterAppIconZoomAnimator
 
-- (SBCenterAppIconZoomAnimator)initWithFolderController:(id)a3 appView:(id)a4 window:(id)a5
+- (SBCenterAppIconZoomAnimator)initWithFolderController:(id)controller appView:(id)view window:(id)window
 {
-  v9 = a4;
-  v10 = a5;
+  viewCopy = view;
+  windowCopy = window;
   v21.receiver = self;
   v21.super_class = SBCenterAppIconZoomAnimator;
-  v11 = [(SBCenterIconZoomAnimator *)&v21 initWithFolderController:a3];
+  v11 = [(SBCenterIconZoomAnimator *)&v21 initWithFolderController:controller];
   if (v11)
   {
-    if (!v10)
+    if (!windowCopy)
     {
       [SBCenterAppIconZoomAnimator initWithFolderController:a2 appView:v11 window:?];
     }
 
-    [v9 frame];
+    [viewCopy frame];
     v11->_destinationFrame.origin.x = v12;
     v11->_destinationFrame.origin.y = v13;
     v11->_destinationFrame.size.width = v14;
@@ -39,9 +39,9 @@
     v11->_appView = &v16->super;
 
     BSRectWithSize();
-    [v9 setFrame:?];
-    [(UIView *)v11->_appView addSubview:v9];
-    objc_storeStrong(&v11->_window, a5);
+    [viewCopy setFrame:?];
+    [(UIView *)v11->_appView addSubview:viewCopy];
+    objc_storeStrong(&v11->_window, window);
     v11->_distantScale = 0.01;
     v18 = objc_alloc_init(MEMORY[0x277CBEB18]);
     animationCompletions = v11->_animationCompletions;
@@ -71,33 +71,33 @@
   v28.receiver = self;
   v28.super_class = SBCenterAppIconZoomAnimator;
   [(SBCenterIconZoomAnimator *)&v28 _prepareAnimation];
-  v3 = [(SBCenterIconZoomAnimator *)self zoomView];
-  v4 = [(SBIconAnimator *)self referenceView];
-  v5 = [(SBIconAnimator *)self settings];
-  if ([v5 zoomViewBelowIcons])
+  zoomView = [(SBCenterIconZoomAnimator *)self zoomView];
+  referenceView = [(SBIconAnimator *)self referenceView];
+  settings = [(SBIconAnimator *)self settings];
+  if ([settings zoomViewBelowIcons])
   {
     appView = self->_appView;
-    [v4 bounds];
+    [referenceView bounds];
     UIRectGetCenter();
-    [v3 convertPoint:v4 fromView:?];
+    [zoomView convertPoint:referenceView fromView:?];
     [(UIView *)appView setCenter:?];
-    [v3 insertSubview:self->_appView atIndex:0];
+    [zoomView insertSubview:self->_appView atIndex:0];
   }
 
   else
   {
-    [v3 bounds];
-    [v4 convertRect:v3 fromView:?];
+    [zoomView bounds];
+    [referenceView convertRect:zoomView fromView:?];
     v11 = [objc_alloc(MEMORY[0x277D75D18]) initWithFrame:{v7, v8, v9, v10}];
     appZoomView = self->_appZoomView;
     self->_appZoomView = v11;
 
-    v13 = [(UIView *)self->_appZoomView layer];
-    v14 = [v3 layer];
-    v15 = v14;
-    if (v14)
+    layer = [(UIView *)self->_appZoomView layer];
+    layer2 = [zoomView layer];
+    v15 = layer2;
+    if (layer2)
     {
-      [v14 sublayerTransform];
+      [layer2 sublayerTransform];
     }
 
     else
@@ -105,36 +105,36 @@
       memset(v27, 0, sizeof(v27));
     }
 
-    [v13 setSublayerTransform:v27];
+    [layer setSublayerTransform:v27];
 
     [(UIView *)self->_appZoomView frame];
     v17 = v16;
     v19 = v18;
     v21 = v20;
     v23 = v22;
-    v24 = [(UIView *)self->_appZoomView layer];
-    v25 = [v3 layer];
-    [v25 anchorPoint];
-    [v24 setAnchorPoint:?];
+    layer3 = [(UIView *)self->_appZoomView layer];
+    layer4 = [zoomView layer];
+    [layer4 anchorPoint];
+    [layer3 setAnchorPoint:?];
 
     [(UIView *)self->_appZoomView setFrame:v17, v19, v21, v23];
     v26 = self->_appView;
-    [v4 bounds];
+    [referenceView bounds];
     UIRectGetCenter();
     [(UIView *)v26 setCenter:?];
     [(UIView *)self->_appZoomView addSubview:self->_appView];
-    [v4 addSubview:self->_appZoomView];
+    [referenceView addSubview:self->_appZoomView];
   }
 }
 
-- (void)_setAnimationFraction:(double)a3
+- (void)_setAnimationFraction:(double)fraction
 {
   v5.receiver = self;
   v5.super_class = SBCenterAppIconZoomAnimator;
   [(SBCenterIconZoomAnimator *)&v5 _setAnimationFraction:?];
-  [(SBCenterAppIconZoomAnimator *)self _zoomAppForZoomFraction:a3];
-  [(SBCenterAppIconZoomAnimator *)self _translateAppForZoomFraction:a3];
-  [(SBCenterAppIconZoomAnimator *)self _fadeAppForZoomFraction:a3];
+  [(SBCenterAppIconZoomAnimator *)self _zoomAppForZoomFraction:fraction];
+  [(SBCenterAppIconZoomAnimator *)self _translateAppForZoomFraction:fraction];
+  [(SBCenterAppIconZoomAnimator *)self _fadeAppForZoomFraction:fraction];
 }
 
 - (void)_cleanupAnimation
@@ -146,8 +146,8 @@
   v21[1] = v4;
   v21[2] = *(MEMORY[0x277CBF2C0] + 32);
   [(UIView *)appView setTransform:v21];
-  v5 = [(UIView *)self->_appView layer];
-  [v5 setZPosition:0.0];
+  layer = [(UIView *)self->_appView layer];
+  [layer setZPosition:0.0];
 
   [(UIView *)self->_appView removeFromSuperview];
   v6 = self->_appView;
@@ -157,13 +157,13 @@
   appZoomView = self->_appZoomView;
   self->_appZoomView = 0;
 
-  v8 = [(SBCenterAppIconZoomAnimator *)self animationCompletions];
-  v9 = [v8 copy];
+  animationCompletions = [(SBCenterAppIconZoomAnimator *)self animationCompletions];
+  v9 = [animationCompletions copy];
 
   if ([v9 count])
   {
-    v10 = [(SBCenterAppIconZoomAnimator *)self animationCompletions];
-    [v10 removeAllObjects];
+    animationCompletions2 = [(SBCenterAppIconZoomAnimator *)self animationCompletions];
+    [animationCompletions2 removeAllObjects];
 
     v19 = 0u;
     v20 = 0u;
@@ -210,26 +210,26 @@
   return [(SBCenterIconZoomAnimator *)&v3 _numberOfSignificantAnimations]+ 2;
 }
 
-- (void)_performAnimationToFraction:(double)a3 withCentralAnimationSettings:(id)a4 delay:(double)a5 alreadyAnimating:(BOOL)a6 sharedCompletion:(id)a7
+- (void)_performAnimationToFraction:(double)fraction withCentralAnimationSettings:(id)settings delay:(double)delay alreadyAnimating:(BOOL)animating sharedCompletion:(id)completion
 {
-  v8 = a6;
-  v12 = a4;
-  v13 = a7;
+  animatingCopy = animating;
+  settingsCopy = settings;
+  completionCopy = completion;
   v64.receiver = self;
   v64.super_class = SBCenterAppIconZoomAnimator;
-  v52 = v12;
-  [(SBCenterIconZoomAnimator *)&v64 _performAnimationToFraction:v12 withCentralAnimationSettings:v8 delay:v13 alreadyAnimating:a3 sharedCompletion:a5];
+  v52 = settingsCopy;
+  [(SBCenterIconZoomAnimator *)&v64 _performAnimationToFraction:settingsCopy withCentralAnimationSettings:animatingCopy delay:completionCopy alreadyAnimating:fraction sharedCompletion:delay];
   [(SBCenterAppIconZoomAnimator *)self _appZoomDelay];
-  v15 = v14 + a5;
-  v16 = [(SBIconAnimator *)self settings];
+  v15 = v14 + delay;
+  settings = [(SBIconAnimator *)self settings];
   v17 = 4;
-  if (!v8)
+  if (!animatingCopy)
   {
     v17 = 0;
   }
 
   v53 = v17;
-  if (v8)
+  if (animatingCopy)
   {
     v15 = 0.0;
   }
@@ -263,52 +263,52 @@ LABEL_11:
   v62[2] = __128__SBCenterAppIconZoomAnimator__performAnimationToFraction_withCentralAnimationSettings_delay_alreadyAnimating_sharedCompletion___block_invoke;
   v62[3] = &unk_2783A9C98;
   v62[4] = self;
-  v51 = v13;
+  v51 = completionCopy;
   v63 = v51;
   v23 = MEMORY[0x223D6F7F0](v62);
-  v54 = v16;
-  v24 = [v16 appZoomSettings];
-  v25 = [v24 BSAnimationSettings];
+  v54 = settings;
+  appZoomSettings = [settings appZoomSettings];
+  bSAnimationSettings = [appZoomSettings BSAnimationSettings];
 
-  v26 = [v25 mutableCopy];
+  v26 = [bSAnimationSettings mutableCopy];
   [v26 delay];
   [v26 setDelay:v15 + v27];
-  v28 = [(SBCenterAppIconZoomAnimator *)self animationCompletions];
+  animationCompletions = [(SBCenterAppIconZoomAnimator *)self animationCompletions];
   v55 = v23;
   v29 = MEMORY[0x223D6F7F0](v23);
-  [v28 addObject:v29];
+  [animationCompletions addObject:v29];
 
   ++self->_testCompletionCount;
-  v30 = [(SBCenterAppIconZoomAnimator *)self appZoomAnimator];
-  if (v30 && (v31 = v30, -[SBCenterAppIconZoomAnimator appZoomAnimator](self, "appZoomAnimator"), v32 = objc_claimAutoreleasedReturnValue(), v33 = [v32 hasReversed], v32, v31, (v33 & 1) == 0))
+  appZoomAnimator = [(SBCenterAppIconZoomAnimator *)self appZoomAnimator];
+  if (appZoomAnimator && (v31 = appZoomAnimator, -[SBCenterAppIconZoomAnimator appZoomAnimator](self, "appZoomAnimator"), v32 = objc_claimAutoreleasedReturnValue(), v33 = [v32 hasReversed], v32, v31, (v33 & 1) == 0))
   {
     if (BSFloatIsOne())
     {
-      v34 = [MEMORY[0x277CF0CF0] settingsWithMass:3.0 stiffness:1000.0 damping:500.0];
-      v45 = [MEMORY[0x277D661A0] rootSettings];
-      v46 = [v45 iconAnimationSettings];
-      v47 = [v46 crossfadeAcceleratedSuspendSettings];
-      v48 = [v47 centralAnimationSettings];
-      v50 = [v48 BSAnimationSettings];
+      appZoomAnimator3 = [MEMORY[0x277CF0CF0] settingsWithMass:3.0 stiffness:1000.0 damping:500.0];
+      rootSettings = [MEMORY[0x277D661A0] rootSettings];
+      iconAnimationSettings = [rootSettings iconAnimationSettings];
+      crossfadeAcceleratedSuspendSettings = [iconAnimationSettings crossfadeAcceleratedSuspendSettings];
+      centralAnimationSettings = [crossfadeAcceleratedSuspendSettings centralAnimationSettings];
+      bSAnimationSettings2 = [centralAnimationSettings BSAnimationSettings];
 
-      v49 = [(SBCenterAppIconZoomAnimator *)self appZoomAnimator];
-      [v49 reverseWithSettings:v34 directionChangeSettings:v50 headStart:0.0002];
+      appZoomAnimator2 = [(SBCenterAppIconZoomAnimator *)self appZoomAnimator];
+      [appZoomAnimator2 reverseWithSettings:appZoomAnimator3 directionChangeSettings:bSAnimationSettings2 headStart:0.0002];
     }
 
     else
     {
-      v34 = [(SBCenterAppIconZoomAnimator *)self appZoomAnimator];
-      [v34 reverse];
+      appZoomAnimator3 = [(SBCenterAppIconZoomAnimator *)self appZoomAnimator];
+      [appZoomAnimator3 reverse];
     }
   }
 
   else
   {
-    [(SBCenterAppIconZoomAnimator *)self _appZPositionForZoomFraction:a3];
-    v34 = [(UIView *)self->_appView layer];
+    [(SBCenterAppIconZoomAnimator *)self _appZPositionForZoomFraction:fraction];
+    appZoomAnimator3 = [(UIView *)self->_appView layer];
     v35 = objc_alloc(MEMORY[0x277D66410]);
-    [v34 zPosition];
-    v36 = [v35 initWithLayer:v34 keyPath:@"zPosition" initialValue:? targetValue:?];
+    [appZoomAnimator3 zPosition];
+    v36 = [v35 initWithLayer:appZoomAnimator3 keyPath:@"zPosition" initialValue:? targetValue:?];
     [(SBCenterAppIconZoomAnimator *)self setAppZoomAnimator:v36];
     objc_initWeak(&location, self);
     v58[0] = MEMORY[0x277D85DD0];
@@ -327,10 +327,10 @@ LABEL_11:
 
   v39 = v54;
 
-  v40 = [MEMORY[0x277CF0D38] factoryWithSettings:v25];
-  if (!v8 || BSFloatIsZero())
+  v40 = [MEMORY[0x277CF0D38] factoryWithSettings:bSAnimationSettings];
+  if (!animatingCopy || BSFloatIsZero())
   {
-    [v40 setAllowsAdditiveAnimations:{1, v50}];
+    [v40 setAllowsAdditiveAnimations:{1, bSAnimationSettings2}];
   }
 
   ++self->_testCompletionCount;
@@ -339,21 +339,21 @@ LABEL_11:
   v57[2] = __128__SBCenterAppIconZoomAnimator__performAnimationToFraction_withCentralAnimationSettings_delay_alreadyAnimating_sharedCompletion___block_invoke_3;
   v57[3] = &unk_2783A8BC8;
   v57[4] = self;
-  *&v57[5] = a3;
-  [MEMORY[0x277CF0D38] animateWithFactory:v40 additionalDelay:v53 options:v57 actions:v55 completion:{v15, v50}];
+  *&v57[5] = fraction;
+  [MEMORY[0x277CF0D38] animateWithFactory:v40 additionalDelay:v53 options:v57 actions:v55 completion:{v15, bSAnimationSettings2}];
   if ((BSFloatIsZero() & 1) != 0 || BSFloatIsOne())
   {
-    v41 = [v54 appFadeSettings];
-    v42 = [v41 BSAnimationSettings];
-    v43 = [v42 mutableCopy];
+    appFadeSettings = [v54 appFadeSettings];
+    bSAnimationSettings3 = [appFadeSettings BSAnimationSettings];
+    v43 = [bSAnimationSettings3 mutableCopy];
 
-    if (v8)
+    if (animatingCopy)
     {
       [v43 setDelay:0.0];
     }
 
     v44 = [MEMORY[0x277CF0D38] factoryWithSettings:v43];
-    if (!v8 || BSFloatIsZero())
+    if (!animatingCopy || BSFloatIsZero())
     {
       [v44 setAllowsAdditiveAnimations:1];
     }
@@ -363,7 +363,7 @@ LABEL_11:
     v56[2] = __128__SBCenterAppIconZoomAnimator__performAnimationToFraction_withCentralAnimationSettings_delay_alreadyAnimating_sharedCompletion___block_invoke_6;
     v56[3] = &unk_2783A8BC8;
     v56[4] = self;
-    *&v56[5] = a3;
+    *&v56[5] = fraction;
     [MEMORY[0x277CF0D38] animateWithFactory:v44 additionalDelay:v53 options:v56 actions:0 completion:v15];
 
     v39 = v54;
@@ -500,8 +500,8 @@ uint64_t __128__SBCenterAppIconZoomAnimator__performAnimationToFraction_withCent
 
 - (double)_iconZoomDelay
 {
-  v2 = [(SBIconAnimator *)self settings];
-  [v2 appHeadStart];
+  settings = [(SBIconAnimator *)self settings];
+  [settings appHeadStart];
   v4 = v3;
 
   return fmax(v4, 0.0);
@@ -509,12 +509,12 @@ uint64_t __128__SBCenterAppIconZoomAnimator__performAnimationToFraction_withCent
 
 - (CGPoint)cameraPosition
 {
-  v3 = [(SBIconAnimator *)self referenceView];
+  referenceView = [(SBIconAnimator *)self referenceView];
   UIRectGetCenter();
   v5 = v4;
   v7 = v6;
-  v8 = [(SBCenterIconZoomAnimator *)self zoomView];
-  [v3 convertPoint:v8 toView:{v5, v7}];
+  zoomView = [(SBCenterIconZoomAnimator *)self zoomView];
+  [referenceView convertPoint:zoomView toView:{v5, v7}];
   v10 = v9;
   v12 = v11;
 
@@ -527,8 +527,8 @@ uint64_t __128__SBCenterAppIconZoomAnimator__performAnimationToFraction_withCent
 
 - (double)_appZoomDelay
 {
-  v2 = [(SBIconAnimator *)self settings];
-  [v2 appHeadStart];
+  settings = [(SBIconAnimator *)self settings];
+  [settings appHeadStart];
   v4 = v3;
 
   result = -v4;
@@ -540,22 +540,22 @@ uint64_t __128__SBCenterAppIconZoomAnimator__performAnimationToFraction_withCent
   return result;
 }
 
-- (void)_zoomAppForZoomFraction:(double)a3
+- (void)_zoomAppForZoomFraction:(double)fraction
 {
-  [(SBCenterAppIconZoomAnimator *)self _appZPositionForZoomFraction:a3];
+  [(SBCenterAppIconZoomAnimator *)self _appZPositionForZoomFraction:fraction];
   v5 = v4;
-  v6 = [(UIView *)self->_appView layer];
-  [v6 setZPosition:v5];
+  layer = [(UIView *)self->_appView layer];
+  [layer setZPosition:v5];
 }
 
-- (void)_translateAppForZoomFraction:(double)a3
+- (void)_translateAppForZoomFraction:(double)fraction
 {
   [(UIView *)self->_appView center];
   v6 = v5;
   v8 = v7;
   [(SBCenterAppIconZoomAnimator *)self cameraPosition];
   appView = self->_appView;
-  CGAffineTransformMakeTranslation(&v12, (v9 - v6) * a3, (v10 - v8) * a3);
+  CGAffineTransformMakeTranslation(&v12, (v9 - v6) * fraction, (v10 - v8) * fraction);
   [(UIView *)appView setTransform:&v12];
 }
 

@@ -1,17 +1,17 @@
 @interface CKDProtobufStreamWriter
-+ (id)_dataForMessage:(id)a3;
-+ (id)uncompressedDataForStreamedObjects:(id)a3;
-- (BOOL)_finishStreaming:(id)a3;
-- (CKDProtobufStreamWriter)initWithCompression:(BOOL)a3;
-- (id)_compressBodyData:(id)a3 shouldFlush:(BOOL)a4;
++ (id)_dataForMessage:(id)message;
++ (id)uncompressedDataForStreamedObjects:(id)objects;
+- (BOOL)_finishStreaming:(id)streaming;
+- (CKDProtobufStreamWriter)initWithCompression:(BOOL)compression;
+- (id)_compressBodyData:(id)data shouldFlush:(BOOL)flush;
 - (id)open;
-- (int64_t)_streamNextObject:(id)a3;
-- (int64_t)_writeDataToStream:(id)a3;
-- (void)_prepareObjectForStreaming:(id)a3;
+- (int64_t)_streamNextObject:(id)object;
+- (int64_t)_writeDataToStream:(id)stream;
+- (void)_prepareObjectForStreaming:(id)streaming;
 - (void)_tearDownOutputStream;
 - (void)dealloc;
-- (void)setStreamedObjects:(id)a3;
-- (void)stream:(id)a3 handleEvent:(unint64_t)a4;
+- (void)setStreamedObjects:(id)objects;
+- (void)stream:(id)stream handleEvent:(unint64_t)event;
 - (void)tearDown;
 @end
 
@@ -20,12 +20,12 @@
 - (id)open
 {
   v26 = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v3 = MEMORY[0x277CBEBA0];
   v22 = 0;
   v23 = 0;
-  v6 = objc_msgSend_bufferSize(v2, v4, v5);
+  v6 = objc_msgSend_bufferSize(selfCopy, v4, v5);
   objc_msgSend_CKCreateBoundInputStream_outputStream_bufferSize_(v3, v7, &v23, &v22, v6);
   v8 = v23;
   v9 = v23;
@@ -47,11 +47,11 @@ LABEL_12:
     __assert_rtn("[CKDProtobufStreamWriter open]", "CKDProtobufStreamWriter.m", v21, v20);
   }
 
-  objc_storeStrong(&v2->_inputStream, v8);
-  objc_storeStrong(&v2->_outputStream, v10);
-  objc_msgSend_setDelegate_(v2->_outputStream, v13, v2);
-  MEMORY[0x22AA63810](v2->_outputStream, v2->_dispatchQueue);
-  objc_msgSend_open(v2->_outputStream, v14, v15);
+  objc_storeStrong(&selfCopy->_inputStream, v8);
+  objc_storeStrong(&selfCopy->_outputStream, v10);
+  objc_msgSend_setDelegate_(selfCopy->_outputStream, v13, selfCopy);
+  MEMORY[0x22AA63810](selfCopy->_outputStream, selfCopy->_dispatchQueue);
+  objc_msgSend_open(selfCopy->_outputStream, v14, v15);
   if (*MEMORY[0x277CBC880] != -1)
   {
     dispatch_once(MEMORY[0x277CBC880], *MEMORY[0x277CBC878]);
@@ -60,13 +60,13 @@ LABEL_12:
   v16 = *MEMORY[0x277CBC830];
   if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_DEBUG))
   {
-    outputStream = v2->_outputStream;
+    outputStream = selfCopy->_outputStream;
     *buf = 134217984;
     v25 = outputStream;
     _os_log_debug_impl(&dword_22506F000, v16, OS_LOG_TYPE_DEBUG, "Opened outputStream: %p", buf, 0xCu);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
   v17 = *MEMORY[0x277D85DE8];
 
   return v9;
@@ -75,9 +75,9 @@ LABEL_12:
 - (void)_tearDownOutputStream
 {
   v12 = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
-  if (v2->_outputStream)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_outputStream)
   {
     if (*MEMORY[0x277CBC880] != -1)
     {
@@ -87,26 +87,26 @@ LABEL_12:
     v3 = *MEMORY[0x277CBC830];
     if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_DEBUG))
     {
-      outputStream = v2->_outputStream;
+      outputStream = selfCopy->_outputStream;
       v10 = 134217984;
       v11 = outputStream;
       _os_log_debug_impl(&dword_22506F000, v3, OS_LOG_TYPE_DEBUG, "Tearing down output stream: %p", &v10, 0xCu);
     }
 
-    MEMORY[0x22AA63810](v2->_outputStream, 0);
-    objc_msgSend_setDelegate_(v2->_outputStream, v4, 0);
-    objc_msgSend_close(v2->_outputStream, v5, v6);
-    v7 = v2->_outputStream;
-    v2->_outputStream = 0;
+    MEMORY[0x22AA63810](selfCopy->_outputStream, 0);
+    objc_msgSend_setDelegate_(selfCopy->_outputStream, v4, 0);
+    objc_msgSend_close(selfCopy->_outputStream, v5, v6);
+    v7 = selfCopy->_outputStream;
+    selfCopy->_outputStream = 0;
   }
 
-  if (v2->_hasInitedCompression)
+  if (selfCopy->_hasInitedCompression)
   {
-    deflateEnd(&v2->_zlibStream);
-    v2->_hasInitedCompression = 0;
+    deflateEnd(&selfCopy->_zlibStream);
+    selfCopy->_hasInitedCompression = 0;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   v8 = *MEMORY[0x277D85DE8];
 }
@@ -131,9 +131,9 @@ LABEL_12:
   [(CKDProtobufStreamWriter *)&v4 dealloc];
 }
 
-- (CKDProtobufStreamWriter)initWithCompression:(BOOL)a3
+- (CKDProtobufStreamWriter)initWithCompression:(BOOL)compression
 {
-  v3 = a3;
+  compressionCopy = compression;
   v22 = *MEMORY[0x277D85DE8];
   v19.receiver = self;
   v19.super_class = CKDProtobufStreamWriter;
@@ -142,8 +142,8 @@ LABEL_12:
   if (v4)
   {
     v4->_curDataPos = 0;
-    v4->_shouldCompress = v3;
-    if (v3)
+    v4->_shouldCompress = compressionCopy;
+    if (compressionCopy)
     {
       v4->_zlibStream.zalloc = 0;
       v4->_zlibStream.zfree = 0;
@@ -188,25 +188,25 @@ LABEL_12:
   return v5;
 }
 
-- (void)setStreamedObjects:(id)a3
+- (void)setStreamedObjects:(id)objects
 {
-  v4 = objc_msgSend_mutableCopy(a3, a2, a3);
+  v4 = objc_msgSend_mutableCopy(objects, a2, objects);
   allObjects = self->_allObjects;
   self->_allObjects = v4;
 
   MEMORY[0x2821F96F8]();
 }
 
-+ (id)uncompressedDataForStreamedObjects:(id)a3
++ (id)uncompressedDataForStreamedObjects:(id)objects
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  objectsCopy = objects;
   v5 = objc_opt_new();
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = v4;
+  v6 = objectsCopy;
   v8 = objc_msgSend_countByEnumeratingWithState_objects_count_(v6, v7, &v17, v21, 16);
   if (v8)
   {
@@ -221,7 +221,7 @@ LABEL_12:
           objc_enumerationMutation(v6);
         }
 
-        v13 = objc_msgSend__dataForMessage_(a1, v9, *(*(&v17 + 1) + 8 * i), v17);
+        v13 = objc_msgSend__dataForMessage_(self, v9, *(*(&v17 + 1) + 8 * i), v17);
         objc_msgSend_appendData_(v5, v14, v13);
       }
 
@@ -236,17 +236,17 @@ LABEL_12:
   return v5;
 }
 
-- (id)_compressBodyData:(id)a3 shouldFlush:(BOOL)a4
+- (id)_compressBodyData:(id)data shouldFlush:(BOOL)flush
 {
-  v4 = a4;
+  flushCopy = flush;
   v27 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  dataCopy = data;
   v10 = objc_msgSend_data(MEMORY[0x277CBEB28], v8, v9);
   bzero(v26, 0x2000uLL);
-  v11 = v7;
+  v11 = dataCopy;
   self->_zlibStream.next_in = objc_msgSend_bytes(v11, v12, v13);
   self->_zlibStream.avail_in = objc_msgSend_length(v11, v14, v15);
-  if (v4)
+  if (flushCopy)
   {
     if (objc_msgSend_haveFinishedCompression(self, v16, v17))
     {
@@ -286,9 +286,9 @@ LABEL_12:
   return v10;
 }
 
-- (BOOL)_finishStreaming:(id)a3
+- (BOOL)_finishStreaming:(id)streaming
 {
-  if (!objc_msgSend_shouldCompress(self, a2, a3))
+  if (!objc_msgSend_shouldCompress(self, a2, streaming))
   {
     return 1;
   }
@@ -309,16 +309,16 @@ LABEL_12:
   return result;
 }
 
-- (int64_t)_writeDataToStream:(id)a3
+- (int64_t)_writeDataToStream:(id)stream
 {
-  v4 = a3;
+  streamCopy = stream;
   if (objc_msgSend_length(self->_curData, v5, v6) && (v9 = self->_curDataPos, v9 < objc_msgSend_length(self->_curData, v7, v8)))
   {
     v10 = self->_curData;
     v13 = objc_msgSend_bytes(v10, v11, v12);
     curDataPos = self->_curDataPos;
     v17 = objc_msgSend_length(v10, v15, v16);
-    v19 = objc_msgSend_write_maxLength_(v4, v18, v13 + curDataPos, v17 - self->_curDataPos);
+    v19 = objc_msgSend_write_maxLength_(streamCopy, v18, v13 + curDataPos, v17 - self->_curDataPos);
     v20 = v19;
     if (v19 >= 1)
     {
@@ -334,10 +334,10 @@ LABEL_12:
   return v20;
 }
 
-+ (id)_dataForMessage:(id)a3
++ (id)_dataForMessage:(id)message
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = objc_msgSend_data(a3, a2, a3);
+  v3 = objc_msgSend_data(message, a2, message);
   v13 = 0;
   v12 = 0;
   objc_msgSend_length(v3, v4, v5);
@@ -351,11 +351,11 @@ LABEL_12:
   return v7;
 }
 
-- (void)_prepareObjectForStreaming:(id)a3
+- (void)_prepareObjectForStreaming:(id)streaming
 {
-  v4 = a3;
+  streamingCopy = streaming;
   v5 = objc_opt_class();
-  v16 = objc_msgSend__dataForMessage_(v5, v6, v4);
+  v16 = objc_msgSend__dataForMessage_(v5, v6, streamingCopy);
 
   v9 = objc_msgSend_logRequestObjectBlock(self, v7, v8);
 
@@ -381,9 +381,9 @@ LABEL_12:
   self->_curDataPos = 0;
 }
 
-- (int64_t)_streamNextObject:(id)a3
+- (int64_t)_streamNextObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   curDataPos = self->_curDataPos;
   if (curDataPos >= objc_msgSend_length(self->_curData, v6, v7))
   {
@@ -406,16 +406,16 @@ LABEL_12:
   else
   {
 LABEL_2:
-    v10 = objc_msgSend__writeDataToStream_(self, v8, v4);
+    v10 = objc_msgSend__writeDataToStream_(self, v8, objectCopy);
   }
 
   return v10;
 }
 
-- (void)stream:(id)a3 handleEvent:(unint64_t)a4
+- (void)stream:(id)stream handleEvent:(unint64_t)event
 {
   v29 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  streamCopy = stream;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -426,9 +426,9 @@ LABEL_2:
   if ((objc_msgSend_haveFinishedStreaming(self, v8, v9) & 1) == 0)
   {
     v12 = objc_autoreleasePoolPush();
-    if (a4 != 16)
+    if (event != 16)
     {
-      if (a4 == 8)
+      if (event == 8)
       {
         if (*MEMORY[0x277CBC880] != -1)
         {
@@ -439,7 +439,7 @@ LABEL_2:
         if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_ERROR))
         {
           v18 = v17;
-          v21 = objc_msgSend_streamError(v7, v19, v20);
+          v21 = objc_msgSend_streamError(streamCopy, v19, v20);
           v27 = 138412290;
           v28 = v21;
           _os_log_error_impl(&dword_22506F000, v18, OS_LOG_TYPE_ERROR, "Got a stream error: %@", &v27, 0xCu);
@@ -448,7 +448,7 @@ LABEL_2:
         goto LABEL_22;
       }
 
-      if (a4 != 4)
+      if (event != 4)
       {
         goto LABEL_22;
       }

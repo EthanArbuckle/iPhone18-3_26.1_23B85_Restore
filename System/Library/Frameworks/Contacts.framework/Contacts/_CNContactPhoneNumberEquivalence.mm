@@ -1,22 +1,22 @@
 @interface _CNContactPhoneNumberEquivalence
-- (BOOL)isEquivalentToString:(id)a3 strict:(BOOL *)a4;
-- (BOOL)isPhoneNumberEquivalent:(id)a3 strict:(BOOL *)a4;
+- (BOOL)isEquivalentToString:(id)string strict:(BOOL *)strict;
+- (BOOL)isPhoneNumberEquivalent:(id)equivalent strict:(BOOL *)strict;
 - (BOOL)preparePhoneNumberRepresentation;
-- (_CNContactPhoneNumberEquivalence)initWithPhoneNumberString:(id)a3;
+- (_CNContactPhoneNumberEquivalence)initWithPhoneNumberString:(id)string;
 - (void)dealloc;
 @end
 
 @implementation _CNContactPhoneNumberEquivalence
 
-- (_CNContactPhoneNumberEquivalence)initWithPhoneNumberString:(id)a3
+- (_CNContactPhoneNumberEquivalence)initWithPhoneNumberString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v10.receiver = self;
   v10.super_class = _CNContactPhoneNumberEquivalence;
   v5 = [(_CNContactPhoneNumberEquivalence *)&v10 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [stringCopy copy];
     rawString = v5->_rawString;
     v5->_rawString = v6;
 
@@ -47,18 +47,18 @@
   [(_CNContactPhoneNumberEquivalence *)&v5 dealloc];
 }
 
-- (BOOL)isEquivalentToString:(id)a3 strict:(BOOL *)a4
+- (BOOL)isEquivalentToString:(id)string strict:(BOOL *)strict
 {
-  v6 = a3;
-  if ([(_CNContactPhoneNumberEquivalence *)self isRawStringEquivalent:v6])
+  stringCopy = string;
+  if ([(_CNContactPhoneNumberEquivalence *)self isRawStringEquivalent:stringCopy])
   {
     v7 = 1;
-    *a4 = 1;
+    *strict = 1;
   }
 
   else if ([(_CNContactPhoneNumberEquivalence *)self preparePhoneNumberRepresentation])
   {
-    v7 = [(_CNContactPhoneNumberEquivalence *)self isPhoneNumberEquivalent:v6 strict:a4];
+    v7 = [(_CNContactPhoneNumberEquivalence *)self isPhoneNumberEquivalent:stringCopy strict:strict];
   }
 
   else
@@ -88,18 +88,18 @@
   return self->_decomposedRepresentation != 0;
 }
 
-- (BOOL)isPhoneNumberEquivalent:(id)a3 strict:(BOOL *)a4
+- (BOOL)isPhoneNumberEquivalent:(id)equivalent strict:(BOOL *)strict
 {
   v5 = MEMORY[0x1E69967B0];
-  v6 = a3;
-  v7 = [v5 countryCodeForNumber:v6];
+  equivalentCopy = equivalent;
+  v7 = [v5 countryCodeForNumber:equivalentCopy];
   v8 = PNCopyBestGuessNormalizedNumberForCountry();
 
   PNDecomposeForCountry();
   v9 = decomposedPhoneNumbersEqual();
-  if (a4)
+  if (strict)
   {
-    *a4 = 0;
+    *strict = 0;
   }
 
   if (v8)

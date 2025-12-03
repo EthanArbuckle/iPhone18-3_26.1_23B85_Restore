@@ -48,13 +48,13 @@
     [(CIFilter *)v10 setDefaults];
     [(CIFilter *)v10 setValue:self->inputRadius forKey:@"inputRadius"];
     [(CIFilter *)v10 setValue:self->inputImage forKey:@"inputImage"];
-    v11 = [(CIFilter *)v10 outputImage];
+    outputImage = [(CIFilter *)v10 outputImage];
     [(CIImage *)self->inputImage extent];
-    v12 = [(CIImage *)v11 imageByCroppingToRect:?];
-    v13 = [(CIDepthOfField *)self _CIAlphaNormalize];
+    v12 = [(CIImage *)outputImage imageByCroppingToRect:?];
+    _CIAlphaNormalize = [(CIDepthOfField *)self _CIAlphaNormalize];
     [(CIImage *)self->inputImage extent];
     v50[0] = v12;
-    v18 = [v13 applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v50, 1), v14, v15, v16, v17}];
+    v18 = [_CIAlphaNormalize applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v50, 1), v14, v15, v16, v17}];
     v19 = MEMORY[0x1E696AD98];
     [(NSNumber *)self->inputRadius floatValue];
     *&v21 = v20 * 3.0;
@@ -63,14 +63,14 @@
     [(CIFilter *)v23 setDefaults];
     [(CIFilter *)v23 setValue:v22 forKey:@"inputRadius"];
     [(CIFilter *)v23 setValue:self->inputImage forKey:@"inputImage"];
-    v24 = [(CIFilter *)v23 outputImage];
+    outputImage2 = [(CIFilter *)v23 outputImage];
     [(CIImage *)self->inputImage extent];
-    v25 = [(CIImage *)v24 imageByCroppingToRect:?];
-    v26 = [(CIDepthOfField *)self _CIAlphaNormalize];
+    v25 = [(CIImage *)outputImage2 imageByCroppingToRect:?];
+    _CIAlphaNormalize2 = [(CIDepthOfField *)self _CIAlphaNormalize];
     [(CIImage *)self->inputImage extent];
     v49 = v25;
-    v31 = [v26 applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", &v49, 1), v27, v28, v29, v30}];
-    v32 = [(CIDepthOfField *)self _CITiltShift];
+    v31 = [_CIAlphaNormalize2 applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", &v49, 1), v27, v28, v29, v30}];
+    _CITiltShift = [(CIDepthOfField *)self _CITiltShift];
     [(CIImage *)inputImage extent];
     v34 = v33;
     v36 = v35;
@@ -87,7 +87,7 @@
     v44 = v43;
     [(CIImage *)self->inputImage extent];
     v48[5] = [CIVector vectorWithX:v44 Y:v45];
-    return [v32 applyWithExtent:&__block_literal_global_17 roiCallback:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v48, 6), v34, v36, v38, v40}];
+    return [_CITiltShift applyWithExtent:&__block_literal_global_17 roiCallback:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v48, 6), v34, v36, v38, v40}];
   }
 }
 

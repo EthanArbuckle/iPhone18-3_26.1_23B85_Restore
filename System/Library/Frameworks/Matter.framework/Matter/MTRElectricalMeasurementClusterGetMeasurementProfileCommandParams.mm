@@ -1,8 +1,8 @@
 @interface MTRElectricalMeasurementClusterGetMeasurementProfileCommandParams
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3;
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader;
 - (MTRElectricalMeasurementClusterGetMeasurementProfileCommandParams)init;
-- (id)_encodeAsDataValue:(id *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_encodeAsDataValue:(id *)value;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -35,23 +35,23 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRElectricalMeasurementClusterGetMeasurementProfileCommandParams);
-  v5 = [(MTRElectricalMeasurementClusterGetMeasurementProfileCommandParams *)self attributeId];
-  [(MTRElectricalMeasurementClusterGetMeasurementProfileCommandParams *)v4 setAttributeId:v5];
+  attributeId = [(MTRElectricalMeasurementClusterGetMeasurementProfileCommandParams *)self attributeId];
+  [(MTRElectricalMeasurementClusterGetMeasurementProfileCommandParams *)v4 setAttributeId:attributeId];
 
-  v6 = [(MTRElectricalMeasurementClusterGetMeasurementProfileCommandParams *)self startTime];
-  [(MTRElectricalMeasurementClusterGetMeasurementProfileCommandParams *)v4 setStartTime:v6];
+  startTime = [(MTRElectricalMeasurementClusterGetMeasurementProfileCommandParams *)self startTime];
+  [(MTRElectricalMeasurementClusterGetMeasurementProfileCommandParams *)v4 setStartTime:startTime];
 
-  v7 = [(MTRElectricalMeasurementClusterGetMeasurementProfileCommandParams *)self numberOfIntervals];
-  [(MTRElectricalMeasurementClusterGetMeasurementProfileCommandParams *)v4 setNumberOfIntervals:v7];
+  numberOfIntervals = [(MTRElectricalMeasurementClusterGetMeasurementProfileCommandParams *)self numberOfIntervals];
+  [(MTRElectricalMeasurementClusterGetMeasurementProfileCommandParams *)v4 setNumberOfIntervals:numberOfIntervals];
 
-  v8 = [(MTRElectricalMeasurementClusterGetMeasurementProfileCommandParams *)self timedInvokeTimeoutMs];
-  [(MTRElectricalMeasurementClusterGetMeasurementProfileCommandParams *)v4 setTimedInvokeTimeoutMs:v8];
+  timedInvokeTimeoutMs = [(MTRElectricalMeasurementClusterGetMeasurementProfileCommandParams *)self timedInvokeTimeoutMs];
+  [(MTRElectricalMeasurementClusterGetMeasurementProfileCommandParams *)v4 setTimedInvokeTimeoutMs:timedInvokeTimeoutMs];
 
-  v9 = [(MTRElectricalMeasurementClusterGetMeasurementProfileCommandParams *)self serverSideProcessingTimeout];
-  [(MTRElectricalMeasurementClusterGetMeasurementProfileCommandParams *)v4 setServerSideProcessingTimeout:v9];
+  serverSideProcessingTimeout = [(MTRElectricalMeasurementClusterGetMeasurementProfileCommandParams *)self serverSideProcessingTimeout];
+  [(MTRElectricalMeasurementClusterGetMeasurementProfileCommandParams *)v4 setServerSideProcessingTimeout:serverSideProcessingTimeout];
 
   return v4;
 }
@@ -66,7 +66,7 @@
   return v6;
 }
 
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader
 {
   v3 = "/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/MTRBackwardsCompatShims.mm";
   v4 = 0x305E0000002DLL;
@@ -76,19 +76,19 @@
   return result;
 }
 
-- (id)_encodeAsDataValue:(id *)a3
+- (id)_encodeAsDataValue:(id *)value
 {
   v5 = sub_2393C5AAC(v12);
   v13 = 0;
   v7 = [(MTRElectricalMeasurementClusterGetMeasurementProfileCommandParams *)self _encodeToTLVReader:v12, v5];
   if (v7)
   {
-    if (a3)
+    if (value)
     {
       v8 = sub_23921C1E4(MTRError, v7, v6);
       v9 = 0;
 LABEL_7:
-      *a3 = v8;
+      *value = v8;
       goto LABEL_9;
     }
 
@@ -99,7 +99,7 @@ LABEL_7:
   {
     v10 = sub_238EE60DC(v12, 0);
     v9 = v10;
-    if (a3 && !v10)
+    if (value && !v10)
     {
       v8 = sub_23921C1E4(MTRError, 0x306F00000003, "/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/MTRBackwardsCompatShims.mm");
       goto LABEL_7;

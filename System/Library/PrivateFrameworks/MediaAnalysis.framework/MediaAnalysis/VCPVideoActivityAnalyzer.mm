@@ -1,21 +1,21 @@
 @interface VCPVideoActivityAnalyzer
 - (VCPVideoActivityAnalyzer)init;
-- (float)actionScoreInTimeRange:(id *)a3;
-- (float)scaleBasedOnFaceForTimeRange:(id *)a3;
-- (float)validationScoreOfTimeRange:(id *)a3 fromResult:(id)a4 startIdx:(int *)a5;
+- (float)actionScoreInTimeRange:(id *)range;
+- (float)scaleBasedOnFaceForTimeRange:(id *)range;
+- (float)validationScoreOfTimeRange:(id *)range fromResult:(id)result startIdx:(int *)idx;
 - (id)results;
-- (int)analyzeFrame:(__CVBuffer *)a3 timestamp:(id *)a4 duration:(id *)a5 frameStats:(id)a6 flags:(unint64_t *)a7;
-- (int)computeActivityScoreAtTime:(id *)a3;
-- (int)extractRequiredClassificationInfoFrom:(id)a3 toArray:(id)a4;
-- (int)extractRequiredFaceInfoFrom:(id)a3 toArray:(id)a4;
-- (int)extractRequiredInfoFrom:(id)a3 toArray:(id)a4;
-- (int)finishAnalysisPass:(id *)a3 fpsRate:(float)a4;
-- (int)preProcessQualityResults:(id)a3 interestingnessResults:(id)a4 obstructionResults:(id)a5 classificationResults:(id)a6 fineActionResults:(id)a7 faceResults:(id)a8 sceneSwitchFrequency:(float)a9;
-- (void)addSceneClassificationContributionToActivityLevel:(float *)a3;
-- (void)addSceneSwitchFrequencyConstributionToActivityLevel:(float *)a3;
+- (int)analyzeFrame:(__CVBuffer *)frame timestamp:(id *)timestamp duration:(id *)duration frameStats:(id)stats flags:(unint64_t *)flags;
+- (int)computeActivityScoreAtTime:(id *)time;
+- (int)extractRequiredClassificationInfoFrom:(id)from toArray:(id)array;
+- (int)extractRequiredFaceInfoFrom:(id)from toArray:(id)array;
+- (int)extractRequiredInfoFrom:(id)from toArray:(id)array;
+- (int)finishAnalysisPass:(id *)pass fpsRate:(float)rate;
+- (int)preProcessQualityResults:(id)results interestingnessResults:(id)interestingnessResults obstructionResults:(id)obstructionResults classificationResults:(id)classificationResults fineActionResults:(id)actionResults faceResults:(id)faceResults sceneSwitchFrequency:(float)frequency;
+- (void)addSceneClassificationContributionToActivityLevel:(float *)level;
+- (void)addSceneSwitchFrequencyConstributionToActivityLevel:(float *)level;
 - (void)generateActivityDescriptor;
 - (void)normalizeActivityDescriptor;
-- (void)resetActivityStatsAtTime:(id *)a3;
+- (void)resetActivityStatsAtTime:(id *)time;
 - (void)validateActivityScores;
 @end
 
@@ -34,41 +34,41 @@
     v5 = *(v2 + 1);
     *(v2 + 1) = v4;
 
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = *(v2 + 2);
-    *(v2 + 2) = v6;
+    *(v2 + 2) = array;
 
-    v8 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v9 = *(v2 + 3);
-    *(v2 + 3) = v8;
+    *(v2 + 3) = array2;
 
-    v10 = [MEMORY[0x1E695DF70] array];
+    array3 = [MEMORY[0x1E695DF70] array];
     v11 = *(v2 + 4);
-    *(v2 + 4) = v10;
+    *(v2 + 4) = array3;
 
-    v12 = [MEMORY[0x1E695DF70] array];
+    array4 = [MEMORY[0x1E695DF70] array];
     v13 = *(v2 + 5);
-    *(v2 + 5) = v12;
+    *(v2 + 5) = array4;
 
-    v14 = [MEMORY[0x1E695DF70] array];
+    array5 = [MEMORY[0x1E695DF70] array];
     v15 = *(v2 + 6);
-    *(v2 + 6) = v14;
+    *(v2 + 6) = array5;
 
-    v16 = [MEMORY[0x1E695DF70] array];
+    array6 = [MEMORY[0x1E695DF70] array];
     v17 = *(v2 + 7);
-    *(v2 + 7) = v16;
+    *(v2 + 7) = array6;
 
-    v18 = [MEMORY[0x1E695DF70] array];
+    array7 = [MEMORY[0x1E695DF70] array];
     v19 = *(v2 + 8);
-    *(v2 + 8) = v18;
+    *(v2 + 8) = array7;
 
-    v20 = [MEMORY[0x1E695DF70] array];
+    array8 = [MEMORY[0x1E695DF70] array];
     v21 = *(v2 + 9);
-    *(v2 + 9) = v20;
+    *(v2 + 9) = array8;
 
-    v22 = [MEMORY[0x1E695DF70] array];
+    array9 = [MEMORY[0x1E695DF70] array];
     v23 = *(v2 + 10);
-    *(v2 + 10) = v22;
+    *(v2 + 10) = array9;
 
     *(v2 + 22) = 0;
     *(v2 + 12) = 0;
@@ -76,8 +76,8 @@
     *(v2 + 104) = *MEMORY[0x1E6960CC0];
     *(v2 + 15) = v24;
     *(v2 + 32) = 0;
-    v25 = [MEMORY[0x1E69C0858] vcp_sharedTaxonomy];
-    v26 = [v25 mad_extendedSceneIdFromSceneName:@"sport"];
+    vcp_sharedTaxonomy = [MEMORY[0x1E69C0858] vcp_sharedTaxonomy];
+    v26 = [vcp_sharedTaxonomy mad_extendedSceneIdFromSceneName:@"sport"];
     v27 = *(v2 + 19);
     *(v2 + 19) = v26;
 
@@ -118,8 +118,8 @@
                         v30 = *(v2 + 17);
                         if (v30)
                         {
-                          v31 = [v30 getGPUContext];
-                          v32 = [VCPCNNData cnnDataWithPlane:1 height:10 width:1 context:v31];
+                          getGPUContext = [v30 getGPUContext];
+                          v32 = [VCPCNNData cnnDataWithPlane:1 height:10 width:1 context:getGPUContext];
                           v33 = *(v2 + 18);
                           *(v2 + 18) = v32;
 
@@ -136,11 +136,11 @@
                                 v37 = [VCPCNNFullConnectionBlock fcBlockWithNumNeurons:3 NeuronType:0];
                                 if (![*(v2 + 17) add:v37])
                                 {
-                                  v40 = [MEMORY[0x1E696AAE8] vcp_mediaAnalysisBundle];
-                                  v41 = [v40 resourceURL];
+                                  vcp_mediaAnalysisBundle = [MEMORY[0x1E696AAE8] vcp_mediaAnalysisBundle];
+                                  resourceURL = [vcp_mediaAnalysisBundle resourceURL];
 
-                                  v42 = v41;
-                                  v43 = [MEMORY[0x1E695DFF8] URLWithString:@"cnn_activitylevel.dat" relativeToURL:v41];
+                                  v42 = resourceURL;
+                                  v43 = [MEMORY[0x1E695DFF8] URLWithString:@"cnn_activitylevel.dat" relativeToURL:resourceURL];
                                   v44 = *(v2 + 17);
                                   v45 = [*(v2 + 18) size];
                                   LODWORD(v44) = [v44 prepareNetworkFromURL:v43 withInputSize:v45];
@@ -192,8 +192,8 @@ LABEL_22:
     for (i = 0; i != 10; ++i)
     {
       numOfFrames = self->_numOfFrames;
-      v5 = [(VCPVideoActivityDescriptor *)self->_activityDescriptor descriptors];
-      v5[i] = v5[i] / numOfFrames;
+      descriptors = [(VCPVideoActivityDescriptor *)self->_activityDescriptor descriptors];
+      descriptors[i] = descriptors[i] / numOfFrames;
     }
 
     [(VCPVideoActivityAnalyzer *)self normalizeActivityDescriptor];
@@ -209,19 +209,19 @@ LABEL_22:
   }
 }
 
-- (void)resetActivityStatsAtTime:(id *)a3
+- (void)resetActivityStatsAtTime:(id *)time
 {
-  var3 = a3->var3;
-  *&self->_lastProcessTime.value = *&a3->var0;
+  var3 = time->var3;
+  *&self->_lastProcessTime.value = *&time->var0;
   self->_lastProcessTime.epoch = var3;
   self->_numOfFrames = 0;
   [(VCPVideoActivityDescriptor *)self->_activityDescriptor reset];
 }
 
-- (int)computeActivityScoreAtTime:(id *)a3
+- (int)computeActivityScoreAtTime:(id *)time
 {
   p_lastProcessTime = &self->_lastProcessTime;
-  time1.start = *a3;
+  time1.start = *time;
   v22.start = self->_lastProcessTime;
   if (CMTimeCompare(&time1.start, &v22.start) < 0)
   {
@@ -234,20 +234,20 @@ LABEL_22:
     *([(VCPCNNData *)self->_input data]+ i) = v7;
   }
 
-  v8 = [(VCPCNNModel *)self->_model forward:self->_input];
-  if (!v8)
+  softmax = [(VCPCNNModel *)self->_model forward:self->_input];
+  if (!softmax)
   {
-    v9 = [(VCPCNNModel *)self->_model output];
-    v8 = [v9 softmax];
+    output = [(VCPCNNModel *)self->_model output];
+    softmax = [output softmax];
 
-    if (!v8)
+    if (!softmax)
     {
       v10 = 0;
       v11 = 0.0;
       do
       {
-        v12 = [(VCPCNNModel *)self->_model output];
-        v11 = v11 + *([v12 data] + v10);
+        output2 = [(VCPCNNModel *)self->_model output];
+        v11 = v11 + *([output2 data] + v10);
 
         v10 += 4;
       }
@@ -258,8 +258,8 @@ LABEL_22:
       {
         for (j = 0; j != 3; ++j)
         {
-          v15 = [(VCPCNNModel *)self->_model output];
-          v13 = v13 + ((*([v15 data] + j * 4) * *&-[VCPVideoActivityAnalyzer computeActivityScoreAtTime:]::kClassScore[j]) / v11);
+          output3 = [(VCPCNNModel *)self->_model output];
+          v13 = v13 + ((*([output3 data] + j * 4) * *&-[VCPVideoActivityAnalyzer computeActivityScoreAtTime:]::kClassScore[j]) / v11);
         }
       }
 
@@ -281,8 +281,8 @@ LABEL_22:
       }
 
       start = *p_lastProcessTime;
-      *&v22.start.value = *&a3->var0;
-      v22.start.epoch = a3->var3;
+      *&v22.start.value = *&time->var0;
+      v22.start.epoch = time->var3;
       rhs = *p_lastProcessTime;
       CMTimeSubtract(&duration, &v22.start, &rhs);
       CMTimeRangeMake(&time1, &start, &duration);
@@ -296,15 +296,15 @@ LABEL_22:
     }
   }
 
-  return v8;
+  return softmax;
 }
 
-- (int)analyzeFrame:(__CVBuffer *)a3 timestamp:(id *)a4 duration:(id *)a5 frameStats:(id)a6 flags:(unint64_t *)a7
+- (int)analyzeFrame:(__CVBuffer *)frame timestamp:(id *)timestamp duration:(id *)duration frameStats:(id)stats flags:(unint64_t *)flags
 {
   v23 = *MEMORY[0x1E69E9840];
-  v9 = a6;
-  v10 = v9;
-  if (!v9)
+  statsCopy = stats;
+  v10 = statsCopy;
+  if (!statsCopy)
   {
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_FAULT))
     {
@@ -315,9 +315,9 @@ LABEL_22:
     goto LABEL_13;
   }
 
-  v11 = [v9 videoActivityDescriptor];
+  videoActivityDescriptor = [statsCopy videoActivityDescriptor];
 
-  if (!v11)
+  if (!videoActivityDescriptor)
   {
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_FAULT))
     {
@@ -332,14 +332,14 @@ LABEL_13:
 
   for (i = 0; i != 10; ++i)
   {
-    v13 = [v10 videoActivityDescriptor];
-    v14 = *([v13 descriptors] + i * 4);
-    v15 = [(VCPVideoActivityDescriptor *)self->_activityDescriptor descriptors];
-    v15[i] = v14 + v15[i];
+    videoActivityDescriptor2 = [v10 videoActivityDescriptor];
+    v14 = *([videoActivityDescriptor2 descriptors] + i * 4);
+    descriptors = [(VCPVideoActivityDescriptor *)self->_activityDescriptor descriptors];
+    descriptors[i] = v14 + descriptors[i];
   }
 
   ++self->_numOfFrames;
-  lhs = *a4;
+  lhs = *timestamp;
   rhs = self->_lastProcessTime;
   CMTimeSubtract(&time, &lhs, &rhs);
   if (CMTimeGetSeconds(&time) < 1.0)
@@ -348,11 +348,11 @@ LABEL_13:
   }
 
   [(VCPVideoActivityAnalyzer *)self generateActivityDescriptor];
-  lhs = *a4;
+  lhs = *timestamp;
   v16 = [(VCPVideoActivityAnalyzer *)self computeActivityScoreAtTime:&lhs];
   if (!v16)
   {
-    lhs = *a4;
+    lhs = *timestamp;
     [(VCPVideoActivityAnalyzer *)self resetActivityStatsAtTime:&lhs];
 LABEL_8:
     v16 = 0;
@@ -363,32 +363,32 @@ LABEL_14:
   return v16;
 }
 
-- (int)preProcessQualityResults:(id)a3 interestingnessResults:(id)a4 obstructionResults:(id)a5 classificationResults:(id)a6 fineActionResults:(id)a7 faceResults:(id)a8 sceneSwitchFrequency:(float)a9
+- (int)preProcessQualityResults:(id)results interestingnessResults:(id)interestingnessResults obstructionResults:(id)obstructionResults classificationResults:(id)classificationResults fineActionResults:(id)actionResults faceResults:(id)faceResults sceneSwitchFrequency:(float)frequency
 {
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = [(VCPVideoActivityAnalyzer *)self extractRequiredInfoFrom:a3 toArray:self->_qualityResults];
+  interestingnessResultsCopy = interestingnessResults;
+  obstructionResultsCopy = obstructionResults;
+  classificationResultsCopy = classificationResults;
+  actionResultsCopy = actionResults;
+  faceResultsCopy = faceResults;
+  v21 = [(VCPVideoActivityAnalyzer *)self extractRequiredInfoFrom:results toArray:self->_qualityResults];
   if (!v21)
   {
-    v21 = [(VCPVideoActivityAnalyzer *)self extractRequiredInfoFrom:v16 toArray:self->_interestingnessResults];
+    v21 = [(VCPVideoActivityAnalyzer *)self extractRequiredInfoFrom:interestingnessResultsCopy toArray:self->_interestingnessResults];
     if (!v21)
     {
-      v21 = [(VCPVideoActivityAnalyzer *)self extractRequiredInfoFrom:v17 toArray:self->_obstructionResults];
+      v21 = [(VCPVideoActivityAnalyzer *)self extractRequiredInfoFrom:obstructionResultsCopy toArray:self->_obstructionResults];
       if (!v21)
       {
-        v21 = [(VCPVideoActivityAnalyzer *)self extractRequiredClassificationInfoFrom:v18 toArray:self->_classificationResults];
+        v21 = [(VCPVideoActivityAnalyzer *)self extractRequiredClassificationInfoFrom:classificationResultsCopy toArray:self->_classificationResults];
         if (!v21)
         {
-          v21 = [(VCPVideoActivityAnalyzer *)self extractRequiredInfoFrom:v19 toArray:self->_fineActionResults];
+          v21 = [(VCPVideoActivityAnalyzer *)self extractRequiredInfoFrom:actionResultsCopy toArray:self->_fineActionResults];
           if (!v21)
           {
-            v21 = [(VCPVideoActivityAnalyzer *)self extractRequiredFaceInfoFrom:v20 toArray:self->_faceResults];
+            v21 = [(VCPVideoActivityAnalyzer *)self extractRequiredFaceInfoFrom:faceResultsCopy toArray:self->_faceResults];
             if (!v21)
             {
-              self->_sceneSwitchFrequency = a9;
+              self->_sceneSwitchFrequency = frequency;
             }
           }
         }
@@ -399,16 +399,16 @@ LABEL_14:
   return v21;
 }
 
-- (int)extractRequiredInfoFrom:(id)a3 toArray:(id)a4
+- (int)extractRequiredInfoFrom:(id)from toArray:(id)array
 {
   v26 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  fromCopy = from;
+  arrayCopy = array;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v7 = v5;
+  v7 = fromCopy;
   v8 = [v7 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v8)
   {
@@ -438,7 +438,7 @@ LABEL_14:
           goto LABEL_11;
         }
 
-        [v6 addObject:v16];
+        [arrayCopy addObject:v16];
       }
 
       v8 = [v7 countByEnumeratingWithState:&v21 objects:v25 count:16];
@@ -457,16 +457,16 @@ LABEL_11:
   return v17;
 }
 
-- (int)extractRequiredFaceInfoFrom:(id)a3 toArray:(id)a4
+- (int)extractRequiredFaceInfoFrom:(id)from toArray:(id)array
 {
   v28 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  fromCopy = from;
+  arrayCopy = array;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v7 = v5;
+  v7 = fromCopy;
   v8 = [v7 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v8)
   {
@@ -501,7 +501,7 @@ LABEL_11:
           goto LABEL_11;
         }
 
-        [v6 addObject:v18];
+        [arrayCopy addObject:v18];
       }
 
       v8 = [v7 countByEnumeratingWithState:&v23 objects:v27 count:16];
@@ -520,20 +520,20 @@ LABEL_11:
   return v19;
 }
 
-- (int)extractRequiredClassificationInfoFrom:(id)a3 toArray:(id)a4
+- (int)extractRequiredClassificationInfoFrom:(id)from toArray:(id)array
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v21 = v6;
+  fromCopy = from;
+  arrayCopy = array;
+  v21 = fromCopy;
   if (self->_sportsSceneId)
   {
     v27 = 0u;
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    obj = v6;
-    v8 = [obj countByEnumeratingWithState:&v25 objects:v29 count:{16, v6}];
+    obj = fromCopy;
+    v8 = [obj countByEnumeratingWithState:&v25 objects:v29 count:{16, fromCopy}];
     if (v8)
     {
       v9 = *v26;
@@ -550,8 +550,8 @@ LABEL_11:
           memset(&v24, 0, sizeof(v24));
           CMTimeRangeMakeFromDictionary(&v24, v11);
           v12 = [(__CFDictionary *)v11 objectForKeyedSubscript:@"attributes"];
-          v13 = [(NSNumber *)self->_sportsSceneId stringValue];
-          v14 = [v12 objectForKeyedSubscript:v13];
+          stringValue = [(NSNumber *)self->_sportsSceneId stringValue];
+          v14 = [v12 objectForKeyedSubscript:stringValue];
 
           if (v14)
           {
@@ -567,7 +567,7 @@ LABEL_11:
               goto LABEL_15;
             }
 
-            [v7 addObject:v18];
+            [arrayCopy addObject:v18];
           }
         }
 
@@ -593,24 +593,24 @@ LABEL_15:
   return v19;
 }
 
-- (float)validationScoreOfTimeRange:(id *)a3 fromResult:(id)a4 startIdx:(int *)a5
+- (float)validationScoreOfTimeRange:(id *)range fromResult:(id)result startIdx:(int *)idx
 {
-  v7 = a4;
-  v8 = *a5;
+  resultCopy = result;
+  v8 = *idx;
   memset(&v27, 0, sizeof(v27));
-  v9 = *&a3->var0.var3;
-  *&range.start.value = *&a3->var0.var0;
+  v9 = *&range->var0.var3;
+  *&range.start.value = *&range->var0.var0;
   *&range.start.epoch = v9;
-  *&range.duration.timescale = *&a3->var1.var1;
+  *&range.duration.timescale = *&range->var1.var1;
   CMTimeRangeGetEnd(&v27, &range);
   v10 = v8;
   v11 = 0.0;
   v12 = MEMORY[0x1E6960CC0];
   v13 = 0.0;
-  while ([v7 count] > v10)
+  while ([resultCopy count] > v10)
   {
     memset(&range, 0, sizeof(range));
-    v14 = [v7 objectAtIndexedSubscript:v10];
+    v14 = [resultCopy objectAtIndexedSubscript:v10];
     v15 = v14;
     if (v14)
     {
@@ -630,18 +630,18 @@ LABEL_15:
       break;
     }
 
-    v16 = *&a3->var0.var3;
-    *&time2.start.value = *&a3->var0.var0;
+    v16 = *&range->var0.var3;
+    *&time2.start.value = *&range->var0.var0;
     *&time2.start.epoch = v16;
-    *&time2.duration.timescale = *&a3->var1.var1;
+    *&time2.duration.timescale = *&range->var1.var1;
     memset(&time1, 0, sizeof(time1));
-    v23 = range;
-    CMTimeRangeGetIntersection(&time1, &time2, &v23);
-    if ((time1.start.flags & 1) == 0 || (time1.duration.flags & 1) == 0 || time1.duration.epoch || time1.duration.value < 0 || (time2.start = time1.duration, *&v23.start.value = *v12, v23.start.epoch = *(v12 + 16), CMTimeCompare(&time2.start, &v23.start)))
+    rangeCopy = range;
+    CMTimeRangeGetIntersection(&time1, &time2, &rangeCopy);
+    if ((time1.start.flags & 1) == 0 || (time1.duration.flags & 1) == 0 || time1.duration.epoch || time1.duration.value < 0 || (time2.start = time1.duration, *&rangeCopy.start.value = *v12, rangeCopy.start.epoch = *(v12 + 16), CMTimeCompare(&time2.start, &rangeCopy.start)))
     {
       time2.start = time1.duration;
       Seconds = CMTimeGetSeconds(&time2.start);
-      v18 = [v7 objectAtIndexedSubscript:v10];
+      v18 = [resultCopy objectAtIndexedSubscript:v10];
       [v18 score];
       v20 = v19;
       *&Seconds = Seconds;
@@ -654,7 +654,7 @@ LABEL_15:
     ++v10;
   }
 
-  *a5 = v8;
+  *idx = v8;
   if (v11 == 0.0)
   {
     v21 = 0.0;
@@ -767,7 +767,7 @@ LABEL_15:
   }
 }
 
-- (float)scaleBasedOnFaceForTimeRange:(id *)a3
+- (float)scaleBasedOnFaceForTimeRange:(id *)range
 {
   v32 = *MEMORY[0x1E69E9840];
   v27 = 0u;
@@ -802,10 +802,10 @@ LABEL_15:
           memset(&range, 0, sizeof(range));
         }
 
-        v11 = *&a3->var0.var3;
-        *&otherRange.start.value = *&a3->var0.var0;
+        v11 = *&range->var0.var3;
+        *&otherRange.start.value = *&range->var0.var0;
         *&otherRange.start.epoch = v11;
-        *&otherRange.duration.timescale = *&a3->var1.var1;
+        *&otherRange.duration.timescale = *&range->var1.var1;
         CMTimeRangeGetIntersection(&v26, &range, &otherRange);
         if ((v26.start.flags & 1) == 0)
         {
@@ -822,10 +822,10 @@ LABEL_15:
           memset(&range, 0, sizeof(range));
         }
 
-        v12 = *&a3->var0.var3;
-        *&otherRange.start.value = *&a3->var0.var0;
+        v12 = *&range->var0.var3;
+        *&otherRange.start.value = *&range->var0.var0;
         *&otherRange.start.epoch = v12;
-        *&otherRange.duration.timescale = *&a3->var1.var1;
+        *&otherRange.duration.timescale = *&range->var1.var1;
         CMTimeRangeGetIntersection(&v23, &range, &otherRange);
         if ((v23.duration.flags & 1) == 0)
         {
@@ -842,10 +842,10 @@ LABEL_15:
           memset(&range, 0, sizeof(range));
         }
 
-        v13 = *&a3->var0.var3;
-        *&otherRange.start.value = *&a3->var0.var0;
+        v13 = *&range->var0.var3;
+        *&otherRange.start.value = *&range->var0.var0;
         *&otherRange.start.epoch = v13;
-        *&otherRange.duration.timescale = *&a3->var1.var1;
+        *&otherRange.duration.timescale = *&range->var1.var1;
         CMTimeRangeGetIntersection(&v22, &range, &otherRange);
         if (v22.duration.epoch)
         {
@@ -862,10 +862,10 @@ LABEL_15:
           memset(&range, 0, sizeof(range));
         }
 
-        v15 = *&a3->var0.var3;
-        *&otherRange.start.value = *&a3->var0.var0;
+        v15 = *&range->var0.var3;
+        *&otherRange.start.value = *&range->var0.var0;
         *&otherRange.start.epoch = v15;
-        *&otherRange.duration.timescale = *&a3->var1.var1;
+        *&otherRange.duration.timescale = *&range->var1.var1;
         CMTimeRangeGetIntersection(&v21, &range, &otherRange);
         if (v21.duration.value < 0)
         {
@@ -882,10 +882,10 @@ LABEL_15:
           memset(&range, 0, sizeof(range));
         }
 
-        v16 = *&a3->var0.var3;
-        *&otherRange.start.value = *&a3->var0.var0;
+        v16 = *&range->var0.var3;
+        *&otherRange.start.value = *&range->var0.var0;
         *&otherRange.start.epoch = v16;
-        *&otherRange.duration.timescale = *&a3->var1.var1;
+        *&otherRange.duration.timescale = *&range->var1.var1;
         CMTimeRangeGetIntersection(&v20, &range, &otherRange);
         range.start = v20.duration;
         *&otherRange.start.value = *v8;
@@ -928,11 +928,11 @@ LABEL_18:
   return v18;
 }
 
-- (void)addSceneSwitchFrequencyConstributionToActivityLevel:(float *)a3
+- (void)addSceneSwitchFrequencyConstributionToActivityLevel:(float *)level
 {
-  v3 = *a3;
+  v3 = *level;
   v4 = 0.9;
-  if (*a3 < 0.9)
+  if (*level < 0.9)
   {
     v5 = 0.9 - v3;
     if ((0.9 - v3) < 0.0)
@@ -956,18 +956,18 @@ LABEL_18:
       v7 = v4;
     }
 
-    *a3 = v7;
+    *level = v7;
   }
 }
 
-- (float)actionScoreInTimeRange:(id *)a3
+- (float)actionScoreInTimeRange:(id *)range
 {
   v28 = *MEMORY[0x1E69E9840];
   memset(&v26, 0, sizeof(v26));
-  v5 = *&a3->var0.var3;
-  *&range.start.value = *&a3->var0.var0;
+  v5 = *&range->var0.var3;
+  *&range.start.value = *&range->var0.var0;
   *&range.start.epoch = v5;
-  *&range.duration.timescale = *&a3->var1.var1;
+  *&range.duration.timescale = *&range->var1.var1;
   CMTimeRangeGetEnd(&v26, &range);
   v21 = 0u;
   v22 = 0u;
@@ -1010,10 +1010,10 @@ LABEL_3:
       }
 
       memset(&range, 0, sizeof(range));
-      v14 = *&a3->var0.var3;
-      *&time1.start.value = *&a3->var0.var0;
+      v14 = *&range->var0.var3;
+      *&time1.start.value = *&range->var0.var0;
       *&time1.start.epoch = v14;
-      *&time1.duration.timescale = *&a3->var1.var1;
+      *&time1.duration.timescale = *&range->var1.var1;
       if (v13)
       {
         [v13 timerange];
@@ -1063,15 +1063,15 @@ LABEL_3:
   return result;
 }
 
-- (void)addSceneClassificationContributionToActivityLevel:(float *)a3
+- (void)addSceneClassificationContributionToActivityLevel:(float *)level
 {
   v28 = *MEMORY[0x1E69E9840];
-  if (*a3 < 0.9)
+  if (*level < 0.9)
   {
     v5 = 0.0;
-    if ((0.9 - *a3) >= 0.0)
+    if ((0.9 - *level) >= 0.0)
     {
-      v6 = 0.9 - *a3;
+      v6 = 0.9 - *level;
     }
 
     else
@@ -1126,10 +1126,10 @@ LABEL_3:
       while (v8);
     }
 
-    v16 = *a3 + (v6 * v5);
+    v16 = *level + (v6 * v5);
     if (v16 < 0.9)
     {
-      v17 = *a3 + (v6 * v5);
+      v17 = *level + (v6 * v5);
     }
 
     else
@@ -1144,17 +1144,17 @@ LABEL_3:
       v19 = v17;
     }
 
-    *a3 = v19;
+    *level = v19;
   }
 }
 
-- (int)finishAnalysisPass:(id *)a3 fpsRate:(float)a4
+- (int)finishAnalysisPass:(id *)pass fpsRate:(float)rate
 {
   v38 = *MEMORY[0x1E69E9840];
-  if ((a3->var0.var2 & 1) != 0 && (a3->var1.var2 & 1) != 0 && !a3->var1.var3 && (a3->var1.var0 & 0x8000000000000000) == 0)
+  if ((pass->var0.var2 & 1) != 0 && (pass->var1.var2 & 1) != 0 && !pass->var1.var3 && (pass->var1.var0 & 0x8000000000000000) == 0)
   {
-    v27 = *&a3->var1.var0;
-    *&v28[0] = a3->var1.var3;
+    v27 = *&pass->var1.var0;
+    *&v28[0] = pass->var1.var3;
     time = **&MEMORY[0x1E6960CC0];
     if (!CMTimeCompare(&v27, &time))
     {
@@ -1163,9 +1163,9 @@ LABEL_3:
   }
 
   v33 = 0.0;
-  v27 = *&a3->var1.var0;
-  *&v28[0] = a3->var1.var3;
-  if (CMTimeGetSeconds(&v27) / a4 >= 3.0)
+  v27 = *&pass->var1.var0;
+  *&v28[0] = pass->var1.var3;
+  if (CMTimeGetSeconds(&v27) / rate >= 3.0)
   {
     [(VCPVideoActivityAnalyzer *)self validateActivityScores];
     v31 = 0u;
@@ -1239,8 +1239,8 @@ LABEL_3:
       v11 = 0.0;
     }
 
-    v27 = *&a3->var1.var0;
-    *&v28[0] = a3->var1.var3;
+    v27 = *&pass->var1.var0;
+    *&v28[0] = pass->var1.var3;
     v19 = v11 / CMTimeGetSeconds(&v27);
     if (v19 <= 0.15)
     {
@@ -1256,13 +1256,13 @@ LABEL_3:
 
   results = self->_results;
   v35[0] = @"start";
-  v27 = *&a3->var0.var0;
-  *&v28[0] = a3->var0.var3;
+  v27 = *&pass->var0.var0;
+  *&v28[0] = pass->var0.var3;
   v21 = CMTimeCopyAsDictionary(&v27, 0);
   v36[0] = v21;
   v35[1] = @"duration";
-  v27 = *&a3->var1.var0;
-  *&v28[0] = a3->var1.var3;
+  v27 = *&pass->var1.var0;
+  *&v28[0] = pass->var1.var3;
   v22 = CMTimeCopyAsDictionary(&v27, 0);
   v36[1] = v22;
   v35[2] = @"quality";

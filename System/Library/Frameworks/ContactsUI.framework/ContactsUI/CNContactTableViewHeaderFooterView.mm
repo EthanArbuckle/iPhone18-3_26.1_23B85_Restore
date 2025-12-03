@@ -1,31 +1,31 @@
 @interface CNContactTableViewHeaderFooterView
-- (void)setAttributedString:(id)a3;
-- (void)updateConfigurationUsingState:(id)a3;
+- (void)setAttributedString:(id)string;
+- (void)updateConfigurationUsingState:(id)state;
 @end
 
 @implementation CNContactTableViewHeaderFooterView
 
-- (void)updateConfigurationUsingState:(id)a3
+- (void)updateConfigurationUsingState:(id)state
 {
-  v5 = [MEMORY[0x1E69DCC28] headerConfiguration];
-  [v5 setAttributedText:self->_attributedString];
-  [(CNContactTableViewHeaderFooterView *)self setContentConfiguration:v5];
+  headerConfiguration = [MEMORY[0x1E69DCC28] headerConfiguration];
+  [headerConfiguration setAttributedText:self->_attributedString];
+  [(CNContactTableViewHeaderFooterView *)self setContentConfiguration:headerConfiguration];
   if (_UISolariumEnabled())
   {
-    v4 = [MEMORY[0x1E69DC6E8] clearConfiguration];
-    [(CNContactTableViewHeaderFooterView *)self setBackgroundConfiguration:v4];
+    clearConfiguration = [MEMORY[0x1E69DC6E8] clearConfiguration];
+    [(CNContactTableViewHeaderFooterView *)self setBackgroundConfiguration:clearConfiguration];
   }
 }
 
-- (void)setAttributedString:(id)a3
+- (void)setAttributedString:(id)string
 {
-  v5 = a3;
-  if (self->_attributedString != v5)
+  stringCopy = string;
+  if (self->_attributedString != stringCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_attributedString, a3);
+    v6 = stringCopy;
+    objc_storeStrong(&self->_attributedString, string);
     [(CNContactTableViewHeaderFooterView *)self setNeedsUpdateConfiguration];
-    v5 = v6;
+    stringCopy = v6;
   }
 }
 

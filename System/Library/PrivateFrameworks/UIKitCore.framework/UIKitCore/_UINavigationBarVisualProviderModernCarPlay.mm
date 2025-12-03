@@ -1,28 +1,28 @@
 @interface _UINavigationBarVisualProviderModernCarPlay
-- (BOOL)navigationItemIsBackItem:(id)a3;
-- (BOOL)navigationItemIsTopItem:(id)a3;
+- (BOOL)navigationItemIsBackItem:(id)item;
+- (BOOL)navigationItemIsTopItem:(id)item;
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (_UIBarButtonItemAppearanceStorage)appearanceStorage;
 - (id)defaultFontDescriptor;
 - (void)__backButtonAction;
 - (void)_configureBackground;
-- (void)_installGradientLayerMaskForClippingView:(id)a3;
-- (void)_updateContentAnimated:(BOOL)a3 completion:(id)a4 direction:(unint64_t)a5;
-- (void)_updateContentForTopItem:(id)a3 backItem:(id)a4 animated:(BOOL)a5 direction:(unint64_t)a6;
+- (void)_installGradientLayerMaskForClippingView:(id)view;
+- (void)_updateContentAnimated:(BOOL)animated completion:(id)completion direction:(unint64_t)direction;
+- (void)_updateContentForTopItem:(id)item backItem:(id)backItem animated:(BOOL)animated direction:(unint64_t)direction;
 - (void)navigationBarInvalidatedResolvedLayoutMargins;
-- (void)navigationItemUpdatedBackButtonContent:(id)a3 animated:(BOOL)a4;
-- (void)navigationItemUpdatedContentLayout:(id)a3 animated:(BOOL)a4;
-- (void)navigationItemUpdatedLeftBarButtonItems:(id)a3 animated:(BOOL)a4;
-- (void)navigationItemUpdatedRightBarButtonItems:(id)a3 animated:(BOOL)a4;
-- (void)navigationItemUpdatedTitleContent:(id)a3 animated:(BOOL)a4;
+- (void)navigationItemUpdatedBackButtonContent:(id)content animated:(BOOL)animated;
+- (void)navigationItemUpdatedContentLayout:(id)layout animated:(BOOL)animated;
+- (void)navigationItemUpdatedLeftBarButtonItems:(id)items animated:(BOOL)animated;
+- (void)navigationItemUpdatedRightBarButtonItems:(id)items animated:(BOOL)animated;
+- (void)navigationItemUpdatedTitleContent:(id)content animated:(BOOL)animated;
 - (void)prepare;
-- (void)provideViewsForContents:(id)a3 topItem:(id)a4 backItem:(id)a5;
+- (void)provideViewsForContents:(id)contents topItem:(id)item backItem:(id)backItem;
 - (void)setupTopNavigationItem;
-- (void)stackDidChangeFrom:(id)a3;
+- (void)stackDidChangeFrom:(id)from;
 - (void)teardown;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)updateTopNavigationItemAnimated:(BOOL)a3;
+- (void)traitCollectionDidChange:(id)change;
+- (void)updateTopNavigationItemAnimated:(BOOL)animated;
 @end
 
 @implementation _UINavigationBarVisualProviderModernCarPlay
@@ -30,45 +30,45 @@
 - (void)_configureBackground
 {
   v18[2] = *MEMORY[0x1E69E9840];
-  v3 = [(_UINavigationBarVisualProvider *)self navigationBar];
-  v4 = [v3 barStyle];
+  navigationBar = [(_UINavigationBarVisualProvider *)self navigationBar];
+  barStyle = [navigationBar barStyle];
 
-  if (v4 == 4)
+  if (barStyle == 4)
   {
-    v5 = [(_UINavigationBarVisualProviderModernCarPlay *)self backgroundView];
+    backgroundView = [(_UINavigationBarVisualProviderModernCarPlay *)self backgroundView];
     v6 = +[UIColor clearColor];
-    [v5 setBackgroundColor:v6];
+    [backgroundView setBackgroundColor:v6];
 
-    v17 = [(_UINavigationBarVisualProviderModernCarPlay *)self backgroundView];
-    [v17 setBackgroundEffects:MEMORY[0x1E695E0F0]];
+    backgroundView2 = [(_UINavigationBarVisualProviderModernCarPlay *)self backgroundView];
+    [backgroundView2 setBackgroundEffects:MEMORY[0x1E695E0F0]];
   }
 
   else
   {
-    v7 = [(_UINavigationBarVisualProvider *)self navigationBar];
-    v8 = [v7 traitCollection];
-    v9 = dbl_18A67B790[[v8 accessibilityContrast] == 1];
+    navigationBar2 = [(_UINavigationBarVisualProvider *)self navigationBar];
+    traitCollection = [navigationBar2 traitCollection];
+    v9 = dbl_18A67B790[[traitCollection accessibilityContrast] == 1];
 
     v10 = +[UIColor tableBackgroundColor];
     v11 = [v10 colorWithAlphaComponent:v9];
-    v12 = [(_UINavigationBarVisualProviderModernCarPlay *)self backgroundView];
-    [v12 setBackgroundColor:v11];
+    backgroundView3 = [(_UINavigationBarVisualProviderModernCarPlay *)self backgroundView];
+    [backgroundView3 setBackgroundColor:v11];
 
     v13 = [UIColorEffect colorEffectSaturate:1.5];
     v14 = [UIBlurEffect effectWithBlurRadius:10.0];
-    v15 = [(_UINavigationBarVisualProviderModernCarPlay *)self backgroundView];
+    backgroundView4 = [(_UINavigationBarVisualProviderModernCarPlay *)self backgroundView];
     v18[0] = v13;
     v18[1] = v14;
     v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:2];
-    [v15 setBackgroundEffects:v16];
+    [backgroundView4 setBackgroundEffects:v16];
   }
 }
 
 - (void)setupTopNavigationItem
 {
-  v4 = [(_UINavigationBarItemStack *)self->super._stack topItem];
-  v3 = [(_UINavigationBarItemStack *)self->super._stack backItem];
-  [(_UINavigationBarVisualProviderModernCarPlay *)self _updateContentForTopItem:v4 backItem:v3 animated:0 direction:0];
+  topItem = [(_UINavigationBarItemStack *)self->super._stack topItem];
+  backItem = [(_UINavigationBarItemStack *)self->super._stack backItem];
+  [(_UINavigationBarVisualProviderModernCarPlay *)self _updateContentForTopItem:topItem backItem:backItem animated:0 direction:0];
 }
 
 - (void)prepare
@@ -93,49 +93,49 @@
     v5 = objc_alloc_init(UIView);
     [(_UINavigationBarVisualProviderModernCarPlay *)self setContentView:v5];
 
-    v6 = [(_UINavigationBarVisualProviderModernCarPlay *)self contentView];
-    [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
+    contentView = [(_UINavigationBarVisualProviderModernCarPlay *)self contentView];
+    [contentView setTranslatesAutoresizingMaskIntoConstraints:0];
 
     navigationBar = self->super._navigationBar;
-    v8 = [(_UINavigationBarVisualProviderModernCarPlay *)self contentView];
-    [(UIView *)navigationBar addSubview:v8];
+    contentView2 = [(_UINavigationBarVisualProviderModernCarPlay *)self contentView];
+    [(UIView *)navigationBar addSubview:contentView2];
 
     v9 = [_UICarTitleView alloc];
     v10 = [(UIView *)v9 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
     [(_UINavigationBarVisualProviderModernCarPlay *)self setTitleView:v10];
 
-    v11 = [(_UINavigationBarVisualProviderModernCarPlay *)self titleView];
-    [v11 setTranslatesAutoresizingMaskIntoConstraints:0];
+    titleView = [(_UINavigationBarVisualProviderModernCarPlay *)self titleView];
+    [titleView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v12 = [(_UINavigationBarVisualProviderModernCarPlay *)self titleView];
+    titleView2 = [(_UINavigationBarVisualProviderModernCarPlay *)self titleView];
     LODWORD(v13) = 1144750080;
-    [v12 setContentCompressionResistancePriority:0 forAxis:v13];
+    [titleView2 setContentCompressionResistancePriority:0 forAxis:v13];
 
-    v14 = [(_UINavigationBarVisualProviderModernCarPlay *)self titleView];
+    titleView3 = [(_UINavigationBarVisualProviderModernCarPlay *)self titleView];
     LODWORD(v15) = 1111752704;
-    [v14 setContentHuggingPriority:0 forAxis:v15];
+    [titleView3 setContentHuggingPriority:0 forAxis:v15];
 
-    v16 = [(_UINavigationBarVisualProviderModernCarPlay *)self contentView];
-    v17 = [(_UINavigationBarVisualProviderModernCarPlay *)self titleView];
-    [v16 addSubview:v17];
+    contentView3 = [(_UINavigationBarVisualProviderModernCarPlay *)self contentView];
+    titleView4 = [(_UINavigationBarVisualProviderModernCarPlay *)self titleView];
+    [contentView3 addSubview:titleView4];
 
     v18 = _newButtonBar(self);
     [(_UINavigationBarVisualProviderModernCarPlay *)self setLeadingBar:v18];
 
     v19 = self->super._navigationBar;
-    v20 = [(_UINavigationBarVisualProviderModernCarPlay *)self leadingBar];
-    v21 = [v20 view];
-    [(UIView *)v19 addSubview:v21];
+    leadingBar = [(_UINavigationBarVisualProviderModernCarPlay *)self leadingBar];
+    view = [leadingBar view];
+    [(UIView *)v19 addSubview:view];
 
     v22 = _newButtonBar(self);
     [(_UINavigationBarVisualProviderModernCarPlay *)self setTrailingBar:v22];
 
     v23 = self->super._navigationBar;
-    v24 = [(_UINavigationBarVisualProviderModernCarPlay *)self trailingBar];
-    v25 = [v24 view];
-    [(UIView *)v23 addSubview:v25];
+    trailingBar = [(_UINavigationBarVisualProviderModernCarPlay *)self trailingBar];
+    view2 = [trailingBar view];
+    [(UIView *)v23 addSubview:view2];
 
-    v26 = self;
+    selfCopy = self;
     v27 = [_UIButtonBarButton alloc];
     v28 = objc_alloc_init(_UIButtonBarButtonVisualProviderCarPlay);
     v29 = [(_UIButtonBarButton *)v27 initWithVisualProvider:v28];
@@ -143,12 +143,12 @@
     [(UIView *)v29 setTranslatesAutoresizingMaskIntoConstraints:0];
     LODWORD(v30) = 1144586240;
     [(UIView *)v29 setContentCompressionResistancePriority:0 forAxis:v30];
-    [(UIControl *)v29 addTarget:v26 action:sel___backButtonAction forControlEvents:0x2000];
+    [(UIControl *)v29 addTarget:selfCopy action:sel___backButtonAction forControlEvents:0x2000];
 
-    [(_UINavigationBarVisualProviderModernCarPlay *)v26 setBackBarButton:v29];
-    v31 = [(_UINavigationBarVisualProviderModernCarPlay *)v26 contentView];
-    v32 = [(_UINavigationBarVisualProviderModernCarPlay *)v26 backBarButton];
-    [v31 addSubview:v32];
+    [(_UINavigationBarVisualProviderModernCarPlay *)selfCopy setBackBarButton:v29];
+    contentView4 = [(_UINavigationBarVisualProviderModernCarPlay *)selfCopy contentView];
+    backBarButton = [(_UINavigationBarVisualProviderModernCarPlay *)selfCopy backBarButton];
+    [contentView4 addSubview:backBarButton];
 
     [(UIView *)self->super._navigationBar _setWantsAutolayout];
     if ([(UIView *)self->super._navigationBar translatesAutoresizingMaskIntoConstraints])
@@ -156,243 +156,243 @@
       [(UIView *)self->super._navigationBar _setHostsLayoutEngine:1];
     }
 
-    v33 = [(_UINavigationBarVisualProviderModernCarPlay *)v26 leadingBar];
-    v34 = [v33 view];
-    v35 = [v34 leadingAnchor];
-    v36 = [(UIView *)self->super._navigationBar safeAreaLayoutGuide];
-    v37 = [v36 leadingAnchor];
-    v38 = [v35 constraintEqualToAnchor:v37 constant:12.0];
-    [(_UINavigationBarVisualProviderModernCarPlay *)v26 setLeadingBarConstraint:v38];
+    leadingBar2 = [(_UINavigationBarVisualProviderModernCarPlay *)selfCopy leadingBar];
+    view3 = [leadingBar2 view];
+    leadingAnchor = [view3 leadingAnchor];
+    safeAreaLayoutGuide = [(UIView *)self->super._navigationBar safeAreaLayoutGuide];
+    leadingAnchor2 = [safeAreaLayoutGuide leadingAnchor];
+    v38 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:12.0];
+    [(_UINavigationBarVisualProviderModernCarPlay *)selfCopy setLeadingBarConstraint:v38];
 
-    v39 = [(_UINavigationBarVisualProviderModernCarPlay *)v26 leadingBar];
-    v40 = [v39 view];
-    v41 = [v40 widthAnchor];
-    v42 = [v41 constraintEqualToConstant:0.0];
-    [(_UINavigationBarVisualProviderModernCarPlay *)v26 setLeadingBarNoItemsConstraint:v42];
+    leadingBar3 = [(_UINavigationBarVisualProviderModernCarPlay *)selfCopy leadingBar];
+    view4 = [leadingBar3 view];
+    widthAnchor = [view4 widthAnchor];
+    v42 = [widthAnchor constraintEqualToConstant:0.0];
+    [(_UINavigationBarVisualProviderModernCarPlay *)selfCopy setLeadingBarNoItemsConstraint:v42];
 
-    v43 = [(_UINavigationBarVisualProviderModernCarPlay *)v26 trailingBar];
-    v44 = [v43 view];
-    v45 = [v44 widthAnchor];
-    v46 = [v45 constraintEqualToConstant:0.0];
-    [(_UINavigationBarVisualProviderModernCarPlay *)v26 setTrailingBarNoItemsConstraint:v46];
+    trailingBar2 = [(_UINavigationBarVisualProviderModernCarPlay *)selfCopy trailingBar];
+    view5 = [trailingBar2 view];
+    widthAnchor2 = [view5 widthAnchor];
+    v46 = [widthAnchor2 constraintEqualToConstant:0.0];
+    [(_UINavigationBarVisualProviderModernCarPlay *)selfCopy setTrailingBarNoItemsConstraint:v46];
 
-    v215 = [(_UINavigationBarVisualProviderModernCarPlay *)v26 backBarButton];
-    v211 = [v215 leadingAnchor];
-    v213 = [(UIView *)self->super._navigationBar safeAreaLayoutGuide];
-    v209 = [v213 leadingAnchor];
-    v47 = [v211 constraintEqualToAnchor:v209];
+    backBarButton2 = [(_UINavigationBarVisualProviderModernCarPlay *)selfCopy backBarButton];
+    leadingAnchor3 = [backBarButton2 leadingAnchor];
+    safeAreaLayoutGuide2 = [(UIView *)self->super._navigationBar safeAreaLayoutGuide];
+    leadingAnchor4 = [safeAreaLayoutGuide2 leadingAnchor];
+    v47 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     v220[0] = v47;
-    v48 = [(_UINavigationBarVisualProviderModernCarPlay *)v26 backBarButton];
-    v49 = [v48 trailingAnchor];
-    v50 = [(_UINavigationBarVisualProviderModernCarPlay *)v26 leadingBar];
-    v51 = [v50 view];
-    v52 = [v51 leadingAnchor];
-    v53 = [v49 constraintEqualToAnchor:v52];
+    backBarButton3 = [(_UINavigationBarVisualProviderModernCarPlay *)selfCopy backBarButton];
+    trailingAnchor = [backBarButton3 trailingAnchor];
+    leadingBar4 = [(_UINavigationBarVisualProviderModernCarPlay *)selfCopy leadingBar];
+    view6 = [leadingBar4 view];
+    leadingAnchor5 = [view6 leadingAnchor];
+    v53 = [trailingAnchor constraintEqualToAnchor:leadingAnchor5];
     v220[1] = v53;
     v54 = [MEMORY[0x1E695DEC8] arrayWithObjects:v220 count:2];
-    [(_UINavigationBarVisualProviderModernCarPlay *)v26 setBackButtonConstraints:v54];
+    [(_UINavigationBarVisualProviderModernCarPlay *)selfCopy setBackButtonConstraints:v54];
 
-    v55 = [(_UINavigationBarVisualProviderModernCarPlay *)v26 titleView];
-    v56 = [v55 leadingAnchor];
-    v57 = [(UIView *)self->super._navigationBar safeAreaLayoutGuide];
-    v58 = [v57 leadingAnchor];
-    v59 = [v56 constraintEqualToAnchor:v58 constant:12.0];
-    [(_UINavigationBarVisualProviderModernCarPlay *)v26 setLargeTitleLeadingConstraint:v59];
+    titleView5 = [(_UINavigationBarVisualProviderModernCarPlay *)selfCopy titleView];
+    leadingAnchor6 = [titleView5 leadingAnchor];
+    safeAreaLayoutGuide3 = [(UIView *)self->super._navigationBar safeAreaLayoutGuide];
+    leadingAnchor7 = [safeAreaLayoutGuide3 leadingAnchor];
+    v59 = [leadingAnchor6 constraintEqualToAnchor:leadingAnchor7 constant:12.0];
+    [(_UINavigationBarVisualProviderModernCarPlay *)selfCopy setLargeTitleLeadingConstraint:v59];
 
-    v60 = [(_UINavigationBarVisualProviderModernCarPlay *)v26 titleView];
-    v61 = [v60 trailingAnchor];
-    v62 = [(UIView *)self->super._navigationBar safeAreaLayoutGuide];
-    v63 = [v62 trailingAnchor];
-    v64 = [v61 constraintEqualToAnchor:v63 constant:-12.0];
-    [(_UINavigationBarVisualProviderModernCarPlay *)v26 setLargeTitleTrailingConstraint:v64];
+    titleView6 = [(_UINavigationBarVisualProviderModernCarPlay *)selfCopy titleView];
+    trailingAnchor2 = [titleView6 trailingAnchor];
+    safeAreaLayoutGuide4 = [(UIView *)self->super._navigationBar safeAreaLayoutGuide];
+    trailingAnchor3 = [safeAreaLayoutGuide4 trailingAnchor];
+    v64 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3 constant:-12.0];
+    [(_UINavigationBarVisualProviderModernCarPlay *)selfCopy setLargeTitleTrailingConstraint:v64];
 
-    v65 = [(_UINavigationBarVisualProviderModernCarPlay *)v26 titleView];
-    v66 = [v65 centerXAnchor];
-    v67 = [(UIView *)self->super._navigationBar safeAreaLayoutGuide];
-    v68 = [v67 centerXAnchor];
-    v69 = [v66 constraintEqualToAnchor:v68];
-    [(_UINavigationBarVisualProviderModernCarPlay *)v26 setRegularTitleConstraint:v69];
+    titleView7 = [(_UINavigationBarVisualProviderModernCarPlay *)selfCopy titleView];
+    centerXAnchor = [titleView7 centerXAnchor];
+    safeAreaLayoutGuide5 = [(UIView *)self->super._navigationBar safeAreaLayoutGuide];
+    centerXAnchor2 = [safeAreaLayoutGuide5 centerXAnchor];
+    v69 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
+    [(_UINavigationBarVisualProviderModernCarPlay *)selfCopy setRegularTitleConstraint:v69];
 
-    v70 = [(_UINavigationBarVisualProviderModernCarPlay *)v26 leadingBar];
-    v71 = [v70 view];
-    v72 = [v71 trailingAnchor];
-    v73 = [(_UINavigationBarVisualProviderModernCarPlay *)v26 titleView];
-    v74 = [v73 leadingAnchor];
-    v75 = [v72 constraintLessThanOrEqualToAnchor:v74 constant:-12.0];
-    [(_UINavigationBarVisualProviderModernCarPlay *)v26 setLeadingBarWithTitleTrailingConstraint:v75];
+    leadingBar5 = [(_UINavigationBarVisualProviderModernCarPlay *)selfCopy leadingBar];
+    view7 = [leadingBar5 view];
+    trailingAnchor4 = [view7 trailingAnchor];
+    titleView8 = [(_UINavigationBarVisualProviderModernCarPlay *)selfCopy titleView];
+    leadingAnchor8 = [titleView8 leadingAnchor];
+    v75 = [trailingAnchor4 constraintLessThanOrEqualToAnchor:leadingAnchor8 constant:-12.0];
+    [(_UINavigationBarVisualProviderModernCarPlay *)selfCopy setLeadingBarWithTitleTrailingConstraint:v75];
 
-    v76 = [(_UINavigationBarVisualProviderModernCarPlay *)v26 leadingBar];
-    v77 = [v76 view];
-    v78 = [v77 trailingAnchor];
-    v79 = [(_UINavigationBarVisualProviderModernCarPlay *)v26 trailingBar];
-    v80 = [v79 view];
-    v81 = [v80 leadingAnchor];
-    v82 = [v78 constraintLessThanOrEqualToAnchor:v81 constant:-12.0];
-    [(_UINavigationBarVisualProviderModernCarPlay *)v26 setLeadingBarWithNoTitleTrailingConstraint:v82];
+    leadingBar6 = [(_UINavigationBarVisualProviderModernCarPlay *)selfCopy leadingBar];
+    view8 = [leadingBar6 view];
+    trailingAnchor5 = [view8 trailingAnchor];
+    trailingBar3 = [(_UINavigationBarVisualProviderModernCarPlay *)selfCopy trailingBar];
+    view9 = [trailingBar3 view];
+    leadingAnchor9 = [view9 leadingAnchor];
+    v82 = [trailingAnchor5 constraintLessThanOrEqualToAnchor:leadingAnchor9 constant:-12.0];
+    [(_UINavigationBarVisualProviderModernCarPlay *)selfCopy setLeadingBarWithNoTitleTrailingConstraint:v82];
 
-    v83 = [(_UINavigationBarVisualProviderModernCarPlay *)v26 trailingBar];
-    v84 = [v83 view];
-    v85 = [v84 leadingAnchor];
-    v86 = [(_UINavigationBarVisualProviderModernCarPlay *)v26 titleView];
-    v87 = [v86 trailingAnchor];
-    v88 = [v85 constraintGreaterThanOrEqualToAnchor:v87 constant:12.0];
-    [(_UINavigationBarVisualProviderModernCarPlay *)v26 setTrailingBarWithTitleLeadingConstraint:v88];
+    trailingBar4 = [(_UINavigationBarVisualProviderModernCarPlay *)selfCopy trailingBar];
+    view10 = [trailingBar4 view];
+    leadingAnchor10 = [view10 leadingAnchor];
+    titleView9 = [(_UINavigationBarVisualProviderModernCarPlay *)selfCopy titleView];
+    trailingAnchor6 = [titleView9 trailingAnchor];
+    v88 = [leadingAnchor10 constraintGreaterThanOrEqualToAnchor:trailingAnchor6 constant:12.0];
+    [(_UINavigationBarVisualProviderModernCarPlay *)selfCopy setTrailingBarWithTitleLeadingConstraint:v88];
 
-    v89 = [(_UINavigationBarVisualProviderModernCarPlay *)v26 trailingBar];
-    v90 = [v89 view];
-    v91 = [v90 leadingAnchor];
-    v92 = [(_UINavigationBarVisualProviderModernCarPlay *)v26 leadingBar];
-    v93 = [v92 view];
-    v94 = [v93 trailingAnchor];
-    v95 = [v91 constraintGreaterThanOrEqualToAnchor:v94 constant:12.0];
-    [(_UINavigationBarVisualProviderModernCarPlay *)v26 setTrailingBarWithNoTitleLeadingConstraint:v95];
+    trailingBar5 = [(_UINavigationBarVisualProviderModernCarPlay *)selfCopy trailingBar];
+    view11 = [trailingBar5 view];
+    leadingAnchor11 = [view11 leadingAnchor];
+    leadingBar7 = [(_UINavigationBarVisualProviderModernCarPlay *)selfCopy leadingBar];
+    view12 = [leadingBar7 view];
+    trailingAnchor7 = [view12 trailingAnchor];
+    v95 = [leadingAnchor11 constraintGreaterThanOrEqualToAnchor:trailingAnchor7 constant:12.0];
+    [(_UINavigationBarVisualProviderModernCarPlay *)selfCopy setTrailingBarWithNoTitleLeadingConstraint:v95];
 
-    v96 = [(_UINavigationBarVisualProviderModernCarPlay *)v26 trailingBar];
-    v97 = [v96 view];
-    v98 = [v97 trailingAnchor];
-    v99 = [(UIView *)self->super._navigationBar safeAreaLayoutGuide];
-    v100 = [v99 trailingAnchor];
-    v101 = [v98 constraintEqualToAnchor:v100 constant:-12.0];
-    [(_UINavigationBarVisualProviderModernCarPlay *)v26 setTrailingBarConstraint:v101];
+    trailingBar6 = [(_UINavigationBarVisualProviderModernCarPlay *)selfCopy trailingBar];
+    view13 = [trailingBar6 view];
+    trailingAnchor8 = [view13 trailingAnchor];
+    safeAreaLayoutGuide6 = [(UIView *)self->super._navigationBar safeAreaLayoutGuide];
+    trailingAnchor9 = [safeAreaLayoutGuide6 trailingAnchor];
+    v101 = [trailingAnchor8 constraintEqualToAnchor:trailingAnchor9 constant:-12.0];
+    [(_UINavigationBarVisualProviderModernCarPlay *)selfCopy setTrailingBarConstraint:v101];
 
     v102 = objc_alloc_init(UIFocusContainerGuide);
-    focusContainerGuide = v26->_focusContainerGuide;
-    v26->_focusContainerGuide = v102;
+    focusContainerGuide = selfCopy->_focusContainerGuide;
+    selfCopy->_focusContainerGuide = v102;
 
     v104 = self->super._navigationBar;
-    v105 = [(_UINavigationBarVisualProviderModernCarPlay *)v26 focusContainerGuide];
-    [(UIView *)v104 addLayoutGuide:v105];
+    focusContainerGuide = [(_UINavigationBarVisualProviderModernCarPlay *)selfCopy focusContainerGuide];
+    [(UIView *)v104 addLayoutGuide:focusContainerGuide];
 
     v168 = MEMORY[0x1E69977A0];
-    v216 = [(_UINavigationBarVisualProviderModernCarPlay *)v26 contentView];
-    v212 = [v216 topAnchor];
-    v214 = [(UIView *)self->super._navigationBar safeAreaLayoutGuide];
-    v210 = [v214 topAnchor];
-    v208 = [v212 constraintEqualToAnchor:v210];
+    contentView5 = [(_UINavigationBarVisualProviderModernCarPlay *)selfCopy contentView];
+    topAnchor = [contentView5 topAnchor];
+    safeAreaLayoutGuide7 = [(UIView *)self->super._navigationBar safeAreaLayoutGuide];
+    topAnchor2 = [safeAreaLayoutGuide7 topAnchor];
+    v208 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v219[0] = v208;
-    v207 = [(_UINavigationBarVisualProviderModernCarPlay *)v26 contentView];
-    v205 = [v207 bottomAnchor];
-    v206 = [(UIView *)self->super._navigationBar safeAreaLayoutGuide];
-    v204 = [v206 bottomAnchor];
-    v203 = [v205 constraintEqualToAnchor:v204];
+    contentView6 = [(_UINavigationBarVisualProviderModernCarPlay *)selfCopy contentView];
+    bottomAnchor = [contentView6 bottomAnchor];
+    safeAreaLayoutGuide8 = [(UIView *)self->super._navigationBar safeAreaLayoutGuide];
+    bottomAnchor2 = [safeAreaLayoutGuide8 bottomAnchor];
+    v203 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v219[1] = v203;
-    v202 = [(_UINavigationBarVisualProviderModernCarPlay *)v26 contentView];
-    v200 = [v202 leftAnchor];
-    v201 = [(UIView *)self->super._navigationBar safeAreaLayoutGuide];
-    v199 = [v201 leftAnchor];
-    v198 = [v200 constraintEqualToAnchor:v199];
+    contentView7 = [(_UINavigationBarVisualProviderModernCarPlay *)selfCopy contentView];
+    leftAnchor = [contentView7 leftAnchor];
+    safeAreaLayoutGuide9 = [(UIView *)self->super._navigationBar safeAreaLayoutGuide];
+    leftAnchor2 = [safeAreaLayoutGuide9 leftAnchor];
+    v198 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
     v219[2] = v198;
-    v197 = [(_UINavigationBarVisualProviderModernCarPlay *)v26 contentView];
-    v195 = [v197 rightAnchor];
-    v196 = [(UIView *)self->super._navigationBar safeAreaLayoutGuide];
-    v194 = [v196 rightAnchor];
-    v193 = [v195 constraintEqualToAnchor:v194];
+    contentView8 = [(_UINavigationBarVisualProviderModernCarPlay *)selfCopy contentView];
+    rightAnchor = [contentView8 rightAnchor];
+    safeAreaLayoutGuide10 = [(UIView *)self->super._navigationBar safeAreaLayoutGuide];
+    rightAnchor2 = [safeAreaLayoutGuide10 rightAnchor];
+    v193 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
     v219[3] = v193;
-    v192 = [(_UINavigationBarVisualProviderModernCarPlay *)v26 backBarButton];
-    v190 = [v192 topAnchor];
-    v191 = [(_UINavigationBarVisualProviderModernCarPlay *)v26 contentView];
-    v189 = [v191 topAnchor];
-    v188 = [v190 constraintEqualToAnchor:v189];
+    backBarButton4 = [(_UINavigationBarVisualProviderModernCarPlay *)selfCopy backBarButton];
+    topAnchor3 = [backBarButton4 topAnchor];
+    contentView9 = [(_UINavigationBarVisualProviderModernCarPlay *)selfCopy contentView];
+    topAnchor4 = [contentView9 topAnchor];
+    v188 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
     v219[4] = v188;
-    v187 = [(_UINavigationBarVisualProviderModernCarPlay *)v26 backBarButton];
-    v185 = [v187 bottomAnchor];
-    v186 = [(_UINavigationBarVisualProviderModernCarPlay *)v26 contentView];
-    v184 = [v186 bottomAnchor];
-    v183 = [v185 constraintEqualToAnchor:v184];
+    backBarButton5 = [(_UINavigationBarVisualProviderModernCarPlay *)selfCopy backBarButton];
+    bottomAnchor3 = [backBarButton5 bottomAnchor];
+    contentView10 = [(_UINavigationBarVisualProviderModernCarPlay *)selfCopy contentView];
+    bottomAnchor4 = [contentView10 bottomAnchor];
+    v183 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
     v219[5] = v183;
-    v182 = [(_UINavigationBarVisualProviderModernCarPlay *)v26 leadingBarConstraint];
-    v219[6] = v182;
-    v181 = [(_UINavigationBarVisualProviderModernCarPlay *)v26 leadingBar];
-    v180 = [v181 view];
-    v178 = [v180 topAnchor];
-    v179 = [(UIView *)self->super._navigationBar safeAreaLayoutGuide];
-    v177 = [v179 topAnchor];
-    v176 = [v178 constraintEqualToAnchor:v177];
+    leadingBarConstraint = [(_UINavigationBarVisualProviderModernCarPlay *)selfCopy leadingBarConstraint];
+    v219[6] = leadingBarConstraint;
+    leadingBar8 = [(_UINavigationBarVisualProviderModernCarPlay *)selfCopy leadingBar];
+    view14 = [leadingBar8 view];
+    topAnchor5 = [view14 topAnchor];
+    safeAreaLayoutGuide11 = [(UIView *)self->super._navigationBar safeAreaLayoutGuide];
+    topAnchor6 = [safeAreaLayoutGuide11 topAnchor];
+    v176 = [topAnchor5 constraintEqualToAnchor:topAnchor6];
     v219[7] = v176;
-    v175 = [(_UINavigationBarVisualProviderModernCarPlay *)v26 leadingBar];
-    v174 = [v175 view];
-    v172 = [v174 bottomAnchor];
-    v173 = [(UIView *)self->super._navigationBar safeAreaLayoutGuide];
-    v171 = [v173 bottomAnchor];
-    v170 = [v172 constraintEqualToAnchor:v171];
+    leadingBar9 = [(_UINavigationBarVisualProviderModernCarPlay *)selfCopy leadingBar];
+    view15 = [leadingBar9 view];
+    bottomAnchor5 = [view15 bottomAnchor];
+    safeAreaLayoutGuide12 = [(UIView *)self->super._navigationBar safeAreaLayoutGuide];
+    bottomAnchor6 = [safeAreaLayoutGuide12 bottomAnchor];
+    v170 = [bottomAnchor5 constraintEqualToAnchor:bottomAnchor6];
     v219[8] = v170;
-    v169 = [(_UINavigationBarVisualProviderModernCarPlay *)v26 leadingBarWithTitleTrailingConstraint];
-    v219[9] = v169;
-    v167 = [(_UINavigationBarVisualProviderModernCarPlay *)v26 titleView];
-    v165 = [v167 centerYAnchor];
-    v166 = [(_UINavigationBarVisualProviderModernCarPlay *)v26 contentView];
-    v164 = [v166 centerYAnchor];
-    v163 = [v165 constraintEqualToAnchor:v164];
+    leadingBarWithTitleTrailingConstraint = [(_UINavigationBarVisualProviderModernCarPlay *)selfCopy leadingBarWithTitleTrailingConstraint];
+    v219[9] = leadingBarWithTitleTrailingConstraint;
+    titleView10 = [(_UINavigationBarVisualProviderModernCarPlay *)selfCopy titleView];
+    centerYAnchor = [titleView10 centerYAnchor];
+    contentView11 = [(_UINavigationBarVisualProviderModernCarPlay *)selfCopy contentView];
+    centerYAnchor2 = [contentView11 centerYAnchor];
+    v163 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v219[10] = v163;
-    v162 = [(_UINavigationBarVisualProviderModernCarPlay *)v26 titleView];
-    v160 = [v162 heightAnchor];
-    v161 = [(_UINavigationBarVisualProviderModernCarPlay *)v26 contentView];
-    v159 = [v161 heightAnchor];
-    v158 = [v160 constraintEqualToAnchor:v159];
+    titleView11 = [(_UINavigationBarVisualProviderModernCarPlay *)selfCopy titleView];
+    heightAnchor = [titleView11 heightAnchor];
+    contentView12 = [(_UINavigationBarVisualProviderModernCarPlay *)selfCopy contentView];
+    heightAnchor2 = [contentView12 heightAnchor];
+    v158 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
     v219[11] = v158;
-    v157 = [(_UINavigationBarVisualProviderModernCarPlay *)v26 regularTitleConstraint];
-    v219[12] = v157;
-    v156 = [(_UINavigationBarVisualProviderModernCarPlay *)v26 trailingBarWithTitleLeadingConstraint];
-    v219[13] = v156;
-    v155 = [(_UINavigationBarVisualProviderModernCarPlay *)v26 trailingBarConstraint];
-    v219[14] = v155;
-    v154 = [(_UINavigationBarVisualProviderModernCarPlay *)v26 trailingBar];
-    v153 = [v154 view];
-    v151 = [v153 topAnchor];
-    v152 = [(UIView *)self->super._navigationBar safeAreaLayoutGuide];
-    v150 = [v152 topAnchor];
-    v149 = [v151 constraintEqualToAnchor:v150];
+    regularTitleConstraint = [(_UINavigationBarVisualProviderModernCarPlay *)selfCopy regularTitleConstraint];
+    v219[12] = regularTitleConstraint;
+    trailingBarWithTitleLeadingConstraint = [(_UINavigationBarVisualProviderModernCarPlay *)selfCopy trailingBarWithTitleLeadingConstraint];
+    v219[13] = trailingBarWithTitleLeadingConstraint;
+    trailingBarConstraint = [(_UINavigationBarVisualProviderModernCarPlay *)selfCopy trailingBarConstraint];
+    v219[14] = trailingBarConstraint;
+    trailingBar7 = [(_UINavigationBarVisualProviderModernCarPlay *)selfCopy trailingBar];
+    view16 = [trailingBar7 view];
+    topAnchor7 = [view16 topAnchor];
+    safeAreaLayoutGuide13 = [(UIView *)self->super._navigationBar safeAreaLayoutGuide];
+    topAnchor8 = [safeAreaLayoutGuide13 topAnchor];
+    v149 = [topAnchor7 constraintEqualToAnchor:topAnchor8];
     v219[15] = v149;
-    v148 = [(_UINavigationBarVisualProviderModernCarPlay *)v26 trailingBar];
-    v147 = [v148 view];
-    v145 = [v147 bottomAnchor];
-    v146 = [(UIView *)self->super._navigationBar safeAreaLayoutGuide];
-    v144 = [v146 bottomAnchor];
-    v143 = [v145 constraintEqualToAnchor:v144];
+    trailingBar8 = [(_UINavigationBarVisualProviderModernCarPlay *)selfCopy trailingBar];
+    view17 = [trailingBar8 view];
+    bottomAnchor7 = [view17 bottomAnchor];
+    safeAreaLayoutGuide14 = [(UIView *)self->super._navigationBar safeAreaLayoutGuide];
+    bottomAnchor8 = [safeAreaLayoutGuide14 bottomAnchor];
+    v143 = [bottomAnchor7 constraintEqualToAnchor:bottomAnchor8];
     v219[16] = v143;
-    v142 = [(_UINavigationBarVisualProviderModernCarPlay *)v26 backgroundView];
-    v141 = [v142 topAnchor];
-    v140 = [(UIView *)self->super._navigationBar topAnchor];
-    v139 = [v141 constraintEqualToAnchor:v140];
+    backgroundView = [(_UINavigationBarVisualProviderModernCarPlay *)selfCopy backgroundView];
+    topAnchor9 = [backgroundView topAnchor];
+    topAnchor10 = [(UIView *)self->super._navigationBar topAnchor];
+    v139 = [topAnchor9 constraintEqualToAnchor:topAnchor10];
     v219[17] = v139;
-    v138 = [(_UINavigationBarVisualProviderModernCarPlay *)v26 backgroundView];
-    v137 = [v138 bottomAnchor];
-    v136 = [(UIView *)self->super._navigationBar bottomAnchor];
-    v135 = [v137 constraintEqualToAnchor:v136];
+    backgroundView2 = [(_UINavigationBarVisualProviderModernCarPlay *)selfCopy backgroundView];
+    bottomAnchor9 = [backgroundView2 bottomAnchor];
+    bottomAnchor10 = [(UIView *)self->super._navigationBar bottomAnchor];
+    v135 = [bottomAnchor9 constraintEqualToAnchor:bottomAnchor10];
     v219[18] = v135;
-    v134 = [(_UINavigationBarVisualProviderModernCarPlay *)v26 backgroundView];
-    v133 = [v134 leftAnchor];
-    v132 = [(UIView *)self->super._navigationBar leftAnchor];
-    v131 = [v133 constraintEqualToAnchor:v132];
+    backgroundView3 = [(_UINavigationBarVisualProviderModernCarPlay *)selfCopy backgroundView];
+    leftAnchor3 = [backgroundView3 leftAnchor];
+    leftAnchor4 = [(UIView *)self->super._navigationBar leftAnchor];
+    v131 = [leftAnchor3 constraintEqualToAnchor:leftAnchor4];
     v219[19] = v131;
-    v130 = [(_UINavigationBarVisualProviderModernCarPlay *)v26 backgroundView];
-    v129 = [v130 rightAnchor];
-    v128 = [(UIView *)self->super._navigationBar rightAnchor];
-    v127 = [v129 constraintEqualToAnchor:v128];
+    backgroundView4 = [(_UINavigationBarVisualProviderModernCarPlay *)selfCopy backgroundView];
+    rightAnchor3 = [backgroundView4 rightAnchor];
+    rightAnchor4 = [(UIView *)self->super._navigationBar rightAnchor];
+    v127 = [rightAnchor3 constraintEqualToAnchor:rightAnchor4];
     v219[20] = v127;
-    v126 = [(_UINavigationBarVisualProviderModernCarPlay *)v26 focusContainerGuide];
-    v124 = [v126 leadingAnchor];
-    v125 = [(UIView *)self->super._navigationBar safeAreaLayoutGuide];
-    v123 = [v125 leadingAnchor];
-    v122 = [v124 constraintEqualToAnchor:v123];
+    focusContainerGuide2 = [(_UINavigationBarVisualProviderModernCarPlay *)selfCopy focusContainerGuide];
+    leadingAnchor12 = [focusContainerGuide2 leadingAnchor];
+    safeAreaLayoutGuide15 = [(UIView *)self->super._navigationBar safeAreaLayoutGuide];
+    leadingAnchor13 = [safeAreaLayoutGuide15 leadingAnchor];
+    v122 = [leadingAnchor12 constraintEqualToAnchor:leadingAnchor13];
     v219[21] = v122;
-    v121 = [(_UINavigationBarVisualProviderModernCarPlay *)v26 focusContainerGuide];
-    v119 = [v121 trailingAnchor];
-    v120 = [(UIView *)self->super._navigationBar safeAreaLayoutGuide];
-    v118 = [v120 trailingAnchor];
-    v117 = [v119 constraintEqualToAnchor:v118];
+    focusContainerGuide3 = [(_UINavigationBarVisualProviderModernCarPlay *)selfCopy focusContainerGuide];
+    trailingAnchor10 = [focusContainerGuide3 trailingAnchor];
+    safeAreaLayoutGuide16 = [(UIView *)self->super._navigationBar safeAreaLayoutGuide];
+    trailingAnchor11 = [safeAreaLayoutGuide16 trailingAnchor];
+    v117 = [trailingAnchor10 constraintEqualToAnchor:trailingAnchor11];
     v219[22] = v117;
-    v116 = [(_UINavigationBarVisualProviderModernCarPlay *)v26 focusContainerGuide];
-    v106 = [v116 topAnchor];
-    v107 = [(UIView *)self->super._navigationBar safeAreaLayoutGuide];
-    v108 = [v107 topAnchor];
-    v109 = [v106 constraintEqualToAnchor:v108];
+    focusContainerGuide4 = [(_UINavigationBarVisualProviderModernCarPlay *)selfCopy focusContainerGuide];
+    topAnchor11 = [focusContainerGuide4 topAnchor];
+    safeAreaLayoutGuide17 = [(UIView *)self->super._navigationBar safeAreaLayoutGuide];
+    topAnchor12 = [safeAreaLayoutGuide17 topAnchor];
+    v109 = [topAnchor11 constraintEqualToAnchor:topAnchor12];
     v219[23] = v109;
-    v110 = [(_UINavigationBarVisualProviderModernCarPlay *)v26 focusContainerGuide];
-    v111 = [v110 bottomAnchor];
-    v112 = [(UIView *)self->super._navigationBar safeAreaLayoutGuide];
-    v113 = [v112 bottomAnchor];
-    v114 = [v111 constraintEqualToAnchor:v113];
+    focusContainerGuide5 = [(_UINavigationBarVisualProviderModernCarPlay *)selfCopy focusContainerGuide];
+    bottomAnchor11 = [focusContainerGuide5 bottomAnchor];
+    safeAreaLayoutGuide18 = [(UIView *)self->super._navigationBar safeAreaLayoutGuide];
+    bottomAnchor12 = [safeAreaLayoutGuide18 bottomAnchor];
+    v114 = [bottomAnchor11 constraintEqualToAnchor:bottomAnchor12];
     v219[24] = v114;
     v115 = [MEMORY[0x1E695DEC8] arrayWithObjects:v219 count:25];
     [v168 activateConstraints:v115];
@@ -401,39 +401,39 @@
 
 - (void)teardown
 {
-  v3 = [(_UINavigationBarVisualProviderModernCarPlay *)self titleView];
-  [v3 removeFromSuperview];
+  titleView = [(_UINavigationBarVisualProviderModernCarPlay *)self titleView];
+  [titleView removeFromSuperview];
 
   [(_UINavigationBarVisualProviderModernCarPlay *)self setTitleView:0];
-  v4 = [(_UINavigationBarVisualProviderModernCarPlay *)self leadingBar];
-  v5 = [v4 view];
-  [v5 removeFromSuperview];
+  leadingBar = [(_UINavigationBarVisualProviderModernCarPlay *)self leadingBar];
+  view = [leadingBar view];
+  [view removeFromSuperview];
 
   [(_UINavigationBarVisualProviderModernCarPlay *)self setLeadingBar:0];
-  v6 = [(_UINavigationBarVisualProviderModernCarPlay *)self trailingBar];
-  v7 = [v6 view];
-  [v7 removeFromSuperview];
+  trailingBar = [(_UINavigationBarVisualProviderModernCarPlay *)self trailingBar];
+  view2 = [trailingBar view];
+  [view2 removeFromSuperview];
 
   [(_UINavigationBarVisualProviderModernCarPlay *)self setTrailingBar:0];
-  v8 = [(_UINavigationBarVisualProviderModernCarPlay *)self backBarButton];
-  [v8 removeFromSuperview];
+  backBarButton = [(_UINavigationBarVisualProviderModernCarPlay *)self backBarButton];
+  [backBarButton removeFromSuperview];
 
   [(_UINavigationBarVisualProviderModernCarPlay *)self setBackBarButton:0];
-  v9 = [(_UINavigationBarVisualProviderModernCarPlay *)self backgroundView];
-  [v9 removeFromSuperview];
+  backgroundView = [(_UINavigationBarVisualProviderModernCarPlay *)self backgroundView];
+  [backgroundView removeFromSuperview];
 
   [(_UINavigationBarVisualProviderModernCarPlay *)self setBackgroundView:0];
-  v10 = [(_UINavigationBarVisualProviderModernCarPlay *)self contentView];
-  [v10 removeFromSuperview];
+  contentView = [(_UINavigationBarVisualProviderModernCarPlay *)self contentView];
+  [contentView removeFromSuperview];
 
   [(_UINavigationBarVisualProviderModernCarPlay *)self setContentView:0];
-  v11 = [(_UINavigationBarVisualProviderModernCarPlay *)self debugViews];
-  [v11 enumerateObjectsUsingBlock:&__block_literal_global_240];
+  debugViews = [(_UINavigationBarVisualProviderModernCarPlay *)self debugViews];
+  [debugViews enumerateObjectsUsingBlock:&__block_literal_global_240];
 
   [(_UINavigationBarVisualProviderModernCarPlay *)self setDebugViews:0];
   navigationBar = self->super._navigationBar;
-  v13 = [(_UINavigationBarVisualProviderModernCarPlay *)self focusContainerGuide];
-  [(UIView *)navigationBar removeLayoutGuide:v13];
+  focusContainerGuide = [(_UINavigationBarVisualProviderModernCarPlay *)self focusContainerGuide];
+  [(UIView *)navigationBar removeLayoutGuide:focusContainerGuide];
 
   [(_UINavigationBarVisualProviderModernCarPlay *)self setFocusContainerGuide:0];
   [(_UINavigationBarVisualProviderModernCarPlay *)self setLeadingBarConstraint:0];
@@ -450,37 +450,37 @@
   [(_UINavigationBarVisualProvider *)&v14 teardown];
 }
 
-- (void)provideViewsForContents:(id)a3 topItem:(id)a4 backItem:(id)a5
+- (void)provideViewsForContents:(id)contents topItem:(id)item backItem:(id)backItem
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(_UINavigationBarVisualProviderModernCarPlay *)self titleView];
-  [v6 setTitleView:v7];
+  contentsCopy = contents;
+  titleView = [(_UINavigationBarVisualProviderModernCarPlay *)self titleView];
+  [contentsCopy setTitleView:titleView];
 
-  v8 = [(_UINavigationBarVisualProviderModernCarPlay *)self backBarButton];
-  v9 = [v8 isHidden];
+  backBarButton = [(_UINavigationBarVisualProviderModernCarPlay *)self backBarButton];
+  isHidden = [backBarButton isHidden];
 
-  if ((v9 & 1) == 0)
+  if ((isHidden & 1) == 0)
   {
-    v10 = [(_UINavigationBarVisualProviderModernCarPlay *)self backBarButton];
-    v12[0] = v10;
+    backBarButton2 = [(_UINavigationBarVisualProviderModernCarPlay *)self backBarButton];
+    v12[0] = backBarButton2;
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1];
-    [v6 setViewsRepresentingBackButton:v11];
+    [contentsCopy setViewsRepresentingBackButton:v11];
   }
 }
 
-- (void)stackDidChangeFrom:(id)a3
+- (void)stackDidChangeFrom:(id)from
 {
   [(_UINavigationBarItemStack *)self->super._stack setChangeObserver:self];
 
   [(_UINavigationBarVisualProviderModernCarPlay *)self _updateContentAnimated:0 completion:0 direction:0];
 }
 
-- (void)updateTopNavigationItemAnimated:(BOOL)a3
+- (void)updateTopNavigationItemAnimated:(BOOL)animated
 {
-  v5 = [(_UINavigationBarItemStack *)self->super._stack topItem];
-  v4 = [(_UINavigationBarItemStack *)self->super._stack backItem];
-  [(_UINavigationBarVisualProviderModernCarPlay *)self _updateContentForTopItem:v5 backItem:v4 animated:0 direction:0];
+  topItem = [(_UINavigationBarItemStack *)self->super._stack topItem];
+  backItem = [(_UINavigationBarItemStack *)self->super._stack backItem];
+  [(_UINavigationBarVisualProviderModernCarPlay *)self _updateContentForTopItem:topItem backItem:backItem animated:0 direction:0];
 }
 
 - (void)navigationBarInvalidatedResolvedLayoutMargins
@@ -497,8 +497,8 @@
     v6 = v3;
   }
 
-  v7 = [(_UINavigationBarVisualProviderModernCarPlay *)self leadingBarConstraint];
-  [v7 setConstant:v6];
+  leadingBarConstraint = [(_UINavigationBarVisualProviderModernCarPlay *)self leadingBarConstraint];
+  [leadingBarConstraint setConstant:v6];
 
   if (v5 == 0.0)
   {
@@ -510,8 +510,8 @@
     v8 = -v5;
   }
 
-  v9 = [(_UINavigationBarVisualProviderModernCarPlay *)self trailingBarConstraint];
-  [v9 setConstant:v8];
+  trailingBarConstraint = [(_UINavigationBarVisualProviderModernCarPlay *)self trailingBarConstraint];
+  [trailingBarConstraint setConstant:v8];
 }
 
 - (CGSize)intrinsicContentSize
@@ -523,16 +523,16 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  if (a3.width == 0.0)
+  width = fits.width;
+  if (fits.width == 0.0)
   {
-    v4 = [(UIView *)self->super._navigationBar superview];
-    v5 = v4;
-    if (v4)
+    superview = [(UIView *)self->super._navigationBar superview];
+    v5 = superview;
+    if (superview)
     {
-      [v4 bounds];
+      [superview bounds];
       width = v6;
     }
   }
@@ -544,96 +544,96 @@
   return result;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = _UINavigationBarVisualProviderModernCarPlay;
-  [(_UINavigationBarVisualProvider *)&v4 traitCollectionDidChange:a3];
+  [(_UINavigationBarVisualProvider *)&v4 traitCollectionDidChange:change];
   [(_UINavigationBarVisualProviderModernCarPlay *)self _configureBackground];
 }
 
 - (void)__backButtonAction
 {
   navigationBar = self->super._navigationBar;
-  v4 = [(_UINavigationBarItemStack *)self->super._stack backItem];
-  v3 = [v4 _effectiveBackBarButtonItem];
-  [(UINavigationBar *)navigationBar _sendNavigationPopForBackBarButtonItem:v3];
+  backItem = [(_UINavigationBarItemStack *)self->super._stack backItem];
+  _effectiveBackBarButtonItem = [backItem _effectiveBackBarButtonItem];
+  [(UINavigationBar *)navigationBar _sendNavigationPopForBackBarButtonItem:_effectiveBackBarButtonItem];
 }
 
-- (void)_updateContentForTopItem:(id)a3 backItem:(id)a4 animated:(BOOL)a5 direction:(unint64_t)a6
+- (void)_updateContentForTopItem:(id)item backItem:(id)backItem animated:(BOOL)animated direction:(unint64_t)direction
 {
   v307[2] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  itemCopy = item;
+  backItemCopy = backItem;
   v10 = objc_opt_new();
   v11 = objc_opt_new();
-  v12 = [v8 titleView];
+  titleView = [itemCopy titleView];
 
-  if (v12)
+  if (titleView)
   {
-    v13 = [(_UINavigationBarVisualProviderModernCarPlay *)self titleView];
-    [v13 setHidden:0];
+    titleView2 = [(_UINavigationBarVisualProviderModernCarPlay *)self titleView];
+    [titleView2 setHidden:0];
 
-    v14 = [v8 titleView];
-    v15 = [(_UINavigationBarVisualProviderModernCarPlay *)self titleView];
-    [v15 setView:v14];
+    titleView3 = [itemCopy titleView];
+    titleView4 = [(_UINavigationBarVisualProviderModernCarPlay *)self titleView];
+    [titleView4 setView:titleView3];
 
-    v16 = [(_UINavigationBarVisualProviderModernCarPlay *)self leadingBarWithNoTitleTrailingConstraint];
-    v307[0] = v16;
-    v17 = [(_UINavigationBarVisualProviderModernCarPlay *)self trailingBarWithNoTitleLeadingConstraint];
-    v307[1] = v17;
+    leadingBarWithNoTitleTrailingConstraint = [(_UINavigationBarVisualProviderModernCarPlay *)self leadingBarWithNoTitleTrailingConstraint];
+    v307[0] = leadingBarWithNoTitleTrailingConstraint;
+    trailingBarWithNoTitleLeadingConstraint = [(_UINavigationBarVisualProviderModernCarPlay *)self trailingBarWithNoTitleLeadingConstraint];
+    v307[1] = trailingBarWithNoTitleLeadingConstraint;
     v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v307 count:2];
     [v10 addObjectsFromArray:v18];
 
-    v19 = [(_UINavigationBarVisualProviderModernCarPlay *)self leadingBarWithTitleTrailingConstraint];
-    v306[0] = v19;
-    v20 = [(_UINavigationBarVisualProviderModernCarPlay *)self trailingBarWithTitleLeadingConstraint];
-    v306[1] = v20;
+    leadingBarWithTitleTrailingConstraint = [(_UINavigationBarVisualProviderModernCarPlay *)self leadingBarWithTitleTrailingConstraint];
+    v306[0] = leadingBarWithTitleTrailingConstraint;
+    trailingBarWithTitleLeadingConstraint = [(_UINavigationBarVisualProviderModernCarPlay *)self trailingBarWithTitleLeadingConstraint];
+    v306[1] = trailingBarWithTitleLeadingConstraint;
     v21 = v306;
   }
 
   else
   {
-    v22 = [v8 title];
-    if (v22 && (v23 = v22, [v8 title], v24 = objc_claimAutoreleasedReturnValue(), v25 = objc_msgSend(v24, "isEqualToString:", &stru_1EFB14550), v24, v23, (v25 & 1) == 0))
+    title = [itemCopy title];
+    if (title && (v23 = title, [itemCopy title], v24 = objc_claimAutoreleasedReturnValue(), v25 = objc_msgSend(v24, "isEqualToString:", &stru_1EFB14550), v24, v23, (v25 & 1) == 0))
     {
-      v30 = [(_UINavigationBarVisualProviderModernCarPlay *)self titleView];
-      [v30 setHidden:0];
+      titleView5 = [(_UINavigationBarVisualProviderModernCarPlay *)self titleView];
+      [titleView5 setHidden:0];
 
-      v31 = [v8 title];
-      v32 = [(_UINavigationBarVisualProviderModernCarPlay *)self titleView];
-      [v32 setText:v31];
+      title2 = [itemCopy title];
+      titleView6 = [(_UINavigationBarVisualProviderModernCarPlay *)self titleView];
+      [titleView6 setText:title2];
 
-      v33 = [(_UINavigationBarVisualProviderModernCarPlay *)self leadingBarWithNoTitleTrailingConstraint];
-      v305[0] = v33;
-      v34 = [(_UINavigationBarVisualProviderModernCarPlay *)self trailingBarWithNoTitleLeadingConstraint];
-      v305[1] = v34;
+      leadingBarWithNoTitleTrailingConstraint2 = [(_UINavigationBarVisualProviderModernCarPlay *)self leadingBarWithNoTitleTrailingConstraint];
+      v305[0] = leadingBarWithNoTitleTrailingConstraint2;
+      trailingBarWithNoTitleLeadingConstraint2 = [(_UINavigationBarVisualProviderModernCarPlay *)self trailingBarWithNoTitleLeadingConstraint];
+      v305[1] = trailingBarWithNoTitleLeadingConstraint2;
       v35 = [MEMORY[0x1E695DEC8] arrayWithObjects:v305 count:2];
       [v10 addObjectsFromArray:v35];
 
-      v19 = [(_UINavigationBarVisualProviderModernCarPlay *)self leadingBarWithTitleTrailingConstraint];
-      v304[0] = v19;
-      v20 = [(_UINavigationBarVisualProviderModernCarPlay *)self trailingBarWithTitleLeadingConstraint];
-      v304[1] = v20;
+      leadingBarWithTitleTrailingConstraint = [(_UINavigationBarVisualProviderModernCarPlay *)self leadingBarWithTitleTrailingConstraint];
+      v304[0] = leadingBarWithTitleTrailingConstraint;
+      trailingBarWithTitleLeadingConstraint = [(_UINavigationBarVisualProviderModernCarPlay *)self trailingBarWithTitleLeadingConstraint];
+      v304[1] = trailingBarWithTitleLeadingConstraint;
       v21 = v304;
     }
 
     else
     {
-      v26 = [(_UINavigationBarVisualProviderModernCarPlay *)self titleView];
-      [v26 setHidden:1];
+      titleView7 = [(_UINavigationBarVisualProviderModernCarPlay *)self titleView];
+      [titleView7 setHidden:1];
 
-      v27 = [(_UINavigationBarVisualProviderModernCarPlay *)self leadingBarWithTitleTrailingConstraint];
-      v303[0] = v27;
-      v28 = [(_UINavigationBarVisualProviderModernCarPlay *)self trailingBarWithTitleLeadingConstraint];
-      v303[1] = v28;
+      leadingBarWithTitleTrailingConstraint2 = [(_UINavigationBarVisualProviderModernCarPlay *)self leadingBarWithTitleTrailingConstraint];
+      v303[0] = leadingBarWithTitleTrailingConstraint2;
+      trailingBarWithTitleLeadingConstraint2 = [(_UINavigationBarVisualProviderModernCarPlay *)self trailingBarWithTitleLeadingConstraint];
+      v303[1] = trailingBarWithTitleLeadingConstraint2;
       v29 = [MEMORY[0x1E695DEC8] arrayWithObjects:v303 count:2];
       [v10 addObjectsFromArray:v29];
 
-      v19 = [(_UINavigationBarVisualProviderModernCarPlay *)self leadingBarWithNoTitleTrailingConstraint];
-      v302[0] = v19;
-      v20 = [(_UINavigationBarVisualProviderModernCarPlay *)self trailingBarWithNoTitleLeadingConstraint];
-      v302[1] = v20;
+      leadingBarWithTitleTrailingConstraint = [(_UINavigationBarVisualProviderModernCarPlay *)self leadingBarWithNoTitleTrailingConstraint];
+      v302[0] = leadingBarWithTitleTrailingConstraint;
+      trailingBarWithTitleLeadingConstraint = [(_UINavigationBarVisualProviderModernCarPlay *)self trailingBarWithNoTitleLeadingConstraint];
+      v302[1] = trailingBarWithTitleLeadingConstraint;
       v21 = v302;
     }
   }
@@ -641,17 +641,17 @@
   v36 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:2];
   [v11 addObjectsFromArray:v36];
 
-  v37 = [v9 _effectiveBackBarButtonItem];
-  v270 = v9;
+  _effectiveBackBarButtonItem = [backItemCopy _effectiveBackBarButtonItem];
+  v270 = backItemCopy;
 
-  v38 = [v8 hidesBackButton];
-  [v8 leftItemsSupplementBackButton];
-  v39 = [v8 leftBarButtonItems];
-  v40 = v39;
+  hidesBackButton = [itemCopy hidesBackButton];
+  [itemCopy leftItemsSupplementBackButton];
+  leftBarButtonItems = [itemCopy leftBarButtonItems];
+  v40 = leftBarButtonItems;
   v41 = MEMORY[0x1E695E0F0];
-  if (v39)
+  if (leftBarButtonItems)
   {
-    v42 = v39;
+    v42 = leftBarButtonItems;
   }
 
   else
@@ -661,18 +661,18 @@
 
   v43 = v42;
 
-  v44 = [v8 rightBarButtonItems];
-  v45 = v44;
-  if (!v44)
+  rightBarButtonItems = [itemCopy rightBarButtonItems];
+  v45 = rightBarButtonItems;
+  if (!rightBarButtonItems)
   {
-    v44 = v41;
+    rightBarButtonItems = v41;
   }
 
-  v46 = [v44 reverseObjectEnumerator];
-  v47 = [v46 allObjects];
+  reverseObjectEnumerator = [rightBarButtonItems reverseObjectEnumerator];
+  allObjects = [reverseObjectEnumerator allObjects];
 
-  v48 = [(_UINavigationBarVisualProviderModernCarPlay *)self backBarButton];
-  v275 = [v48 isHidden];
+  backBarButton = [(_UINavigationBarVisualProviderModernCarPlay *)self backBarButton];
+  isHidden = [backBarButton isHidden];
 
   v281 = v43;
   if ([v43 count])
@@ -685,10 +685,10 @@
     v49 = v11;
   }
 
-  v50 = [(_UINavigationBarVisualProviderModernCarPlay *)self leadingBarNoItemsConstraint];
-  [v49 addObject:v50];
+  leadingBarNoItemsConstraint = [(_UINavigationBarVisualProviderModernCarPlay *)self leadingBarNoItemsConstraint];
+  [v49 addObject:leadingBarNoItemsConstraint];
 
-  if ([v47 count])
+  if ([allObjects count])
   {
     v51 = v10;
   }
@@ -698,51 +698,51 @@
     v51 = v11;
   }
 
-  v52 = [(_UINavigationBarVisualProviderModernCarPlay *)self trailingBarNoItemsConstraint];
-  [v51 addObject:v52];
+  trailingBarNoItemsConstraint = [(_UINavigationBarVisualProviderModernCarPlay *)self trailingBarNoItemsConstraint];
+  [v51 addObject:trailingBarNoItemsConstraint];
 
-  v53 = [(_UINavigationBarVisualProviderModernCarPlay *)self backBarButton];
-  v54 = v53;
-  v279 = v37;
-  if (!v37 || (v38 & 1) != 0)
+  backBarButton2 = [(_UINavigationBarVisualProviderModernCarPlay *)self backBarButton];
+  v54 = backBarButton2;
+  v279 = _effectiveBackBarButtonItem;
+  if (!_effectiveBackBarButtonItem || (hidesBackButton & 1) != 0)
   {
-    [v53 setHidden:1];
+    [backBarButton2 setHidden:1];
 
-    v63 = [(_UINavigationBarVisualProviderModernCarPlay *)self backButtonConstraints];
-    [v10 addObjectsFromArray:v63];
+    backButtonConstraints = [(_UINavigationBarVisualProviderModernCarPlay *)self backButtonConstraints];
+    [v10 addObjectsFromArray:backButtonConstraints];
 
-    v64 = [(_UINavigationBarVisualProviderModernCarPlay *)self leadingBarConstraint];
-    [v11 addObject:v64];
+    leadingBarConstraint = [(_UINavigationBarVisualProviderModernCarPlay *)self leadingBarConstraint];
+    [v11 addObject:leadingBarConstraint];
 
     v62 = v43;
     if ([v43 count])
     {
-      v65 = [(_UINavigationBarVisualProviderModernCarPlay *)self regularTitleConstraint];
-      [v11 addObject:v65];
+      regularTitleConstraint = [(_UINavigationBarVisualProviderModernCarPlay *)self regularTitleConstraint];
+      [v11 addObject:regularTitleConstraint];
 
-      v66 = [(_UINavigationBarVisualProviderModernCarPlay *)self largeTitleLeadingConstraint];
-      [v10 addObject:v66];
+      largeTitleLeadingConstraint = [(_UINavigationBarVisualProviderModernCarPlay *)self largeTitleLeadingConstraint];
+      [v10 addObject:largeTitleLeadingConstraint];
 
-      v67 = [(_UINavigationBarVisualProviderModernCarPlay *)self largeTitleTrailingConstraint];
-      [v10 addObject:v67];
+      largeTitleTrailingConstraint = [(_UINavigationBarVisualProviderModernCarPlay *)self largeTitleTrailingConstraint];
+      [v10 addObject:largeTitleTrailingConstraint];
 
-      v61 = [(_UINavigationBarVisualProviderModernCarPlay *)self titleView];
-      [v61 setLargeText:0];
+      titleView8 = [(_UINavigationBarVisualProviderModernCarPlay *)self titleView];
+      [titleView8 setLargeText:0];
     }
 
     else
     {
-      v68 = [(_UINavigationBarVisualProviderModernCarPlay *)self largeTitleLeadingConstraint];
-      [v11 addObject:v68];
+      largeTitleLeadingConstraint2 = [(_UINavigationBarVisualProviderModernCarPlay *)self largeTitleLeadingConstraint];
+      [v11 addObject:largeTitleLeadingConstraint2];
 
-      v69 = [(_UINavigationBarVisualProviderModernCarPlay *)self regularTitleConstraint];
-      [v10 addObject:v69];
+      regularTitleConstraint2 = [(_UINavigationBarVisualProviderModernCarPlay *)self regularTitleConstraint];
+      [v10 addObject:regularTitleConstraint2];
 
-      v70 = [(_UINavigationBarVisualProviderModernCarPlay *)self titleView];
-      [v70 setLargeText:1];
+      titleView9 = [(_UINavigationBarVisualProviderModernCarPlay *)self titleView];
+      [titleView9 setLargeText:1];
 
-      v71 = [v47 count];
-      v61 = [(_UINavigationBarVisualProviderModernCarPlay *)self largeTitleTrailingConstraint];
+      v71 = [allObjects count];
+      titleView8 = [(_UINavigationBarVisualProviderModernCarPlay *)self largeTitleTrailingConstraint];
       if (v71)
       {
         v72 = v10;
@@ -753,172 +753,172 @@
         v72 = v11;
       }
 
-      [v72 addObject:v61];
+      [v72 addObject:titleView8];
     }
   }
 
   else
   {
-    [v53 setHidden:0];
+    [backBarButton2 setHidden:0];
 
-    v55 = [(_UINavigationBarVisualProviderModernCarPlay *)self backBarButton];
-    [v55 configureBackButtonFromBarItem:v37 withAppearanceDelegate:self];
+    backBarButton3 = [(_UINavigationBarVisualProviderModernCarPlay *)self backBarButton];
+    [backBarButton3 configureBackButtonFromBarItem:_effectiveBackBarButtonItem withAppearanceDelegate:self];
 
-    v56 = [(_UINavigationBarVisualProviderModernCarPlay *)self backButtonConstraints];
-    [v11 addObjectsFromArray:v56];
+    backButtonConstraints2 = [(_UINavigationBarVisualProviderModernCarPlay *)self backButtonConstraints];
+    [v11 addObjectsFromArray:backButtonConstraints2];
 
-    v57 = [(_UINavigationBarVisualProviderModernCarPlay *)self regularTitleConstraint];
-    [v11 addObject:v57];
+    regularTitleConstraint3 = [(_UINavigationBarVisualProviderModernCarPlay *)self regularTitleConstraint];
+    [v11 addObject:regularTitleConstraint3];
 
-    v58 = [(_UINavigationBarVisualProviderModernCarPlay *)self largeTitleLeadingConstraint];
-    [v10 addObject:v58];
+    largeTitleLeadingConstraint3 = [(_UINavigationBarVisualProviderModernCarPlay *)self largeTitleLeadingConstraint];
+    [v10 addObject:largeTitleLeadingConstraint3];
 
-    v59 = [(_UINavigationBarVisualProviderModernCarPlay *)self largeTitleTrailingConstraint];
-    [v10 addObject:v59];
+    largeTitleTrailingConstraint2 = [(_UINavigationBarVisualProviderModernCarPlay *)self largeTitleTrailingConstraint];
+    [v10 addObject:largeTitleTrailingConstraint2];
 
-    v60 = [(_UINavigationBarVisualProviderModernCarPlay *)self leadingBarConstraint];
-    [v10 addObject:v60];
+    leadingBarConstraint2 = [(_UINavigationBarVisualProviderModernCarPlay *)self leadingBarConstraint];
+    [v10 addObject:leadingBarConstraint2];
 
-    v61 = [(_UINavigationBarVisualProviderModernCarPlay *)self titleView];
-    [v61 setLargeText:0];
+    titleView8 = [(_UINavigationBarVisualProviderModernCarPlay *)self titleView];
+    [titleView8 setLargeText:0];
     v62 = v43;
   }
 
   [MEMORY[0x1E69977A0] deactivateConstraints:v10];
   [MEMORY[0x1E69977A0] activateConstraints:v11];
   v73 = [[UIBarButtonItemGroup alloc] initWithBarButtonItems:v62 representativeItem:0];
-  v74 = [[UIBarButtonItemGroup alloc] initWithBarButtonItems:v47 representativeItem:0];
+  v74 = [[UIBarButtonItemGroup alloc] initWithBarButtonItems:allObjects representativeItem:0];
   v75 = v74;
   v278 = v73;
-  if (!a5)
+  if (!animated)
   {
     v301 = v73;
     v90 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v301 count:1];
-    v91 = [(_UINavigationBarVisualProviderModernCarPlay *)self leadingBar];
-    [v91 setBarButtonGroups:v90];
+    leadingBar = [(_UINavigationBarVisualProviderModernCarPlay *)self leadingBar];
+    [leadingBar setBarButtonGroups:v90];
 
     v300 = v75;
     v92 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v300 count:1];
-    v93 = [(_UINavigationBarVisualProviderModernCarPlay *)self trailingBar];
-    [v93 setBarButtonGroups:v92];
+    trailingBar = [(_UINavigationBarVisualProviderModernCarPlay *)self trailingBar];
+    [trailingBar setBarButtonGroups:v92];
 LABEL_87:
 
     goto LABEL_88;
   }
 
   v272 = v74;
-  v76 = [(_UINavigationBarVisualProviderModernCarPlay *)self leadingBar];
-  v77 = [v76 view];
+  leadingBar2 = [(_UINavigationBarVisualProviderModernCarPlay *)self leadingBar];
+  view = [leadingBar2 view];
   v293[0] = MEMORY[0x1E69E9820];
   v293[1] = 3221225472;
-  v277 = v47;
+  v277 = allObjects;
   v293[2] = __100___UINavigationBarVisualProviderModernCarPlay__updateContentForTopItem_backItem_animated_direction___block_invoke;
   v293[3] = &unk_1E70F35B8;
   v293[4] = self;
   v294 = v73;
   v75 = v272;
-  [UIView transitionWithView:v77 duration:5242880 options:v293 animations:&__block_literal_global_19 completion:0.35];
+  [UIView transitionWithView:view duration:5242880 options:v293 animations:&__block_literal_global_19 completion:0.35];
 
   v62 = v281;
-  v78 = [(_UINavigationBarVisualProviderModernCarPlay *)self trailingBar];
-  v79 = [v78 view];
+  trailingBar2 = [(_UINavigationBarVisualProviderModernCarPlay *)self trailingBar];
+  view2 = [trailingBar2 view];
   v291[0] = MEMORY[0x1E69E9820];
   v291[1] = 3221225472;
   v291[2] = __100___UINavigationBarVisualProviderModernCarPlay__updateContentForTopItem_backItem_animated_direction___block_invoke_3;
   v291[3] = &unk_1E70F35B8;
   v291[4] = self;
   v292 = v272;
-  [UIView transitionWithView:v79 duration:5242880 options:v291 animations:&__block_literal_global_21_2 completion:0.35];
+  [UIView transitionWithView:view2 duration:5242880 options:v291 animations:&__block_literal_global_21_2 completion:0.35];
 
-  if (a6)
+  if (direction)
   {
-    v80 = [(_UINavigationBarVisualProviderModernCarPlay *)self backBarButton];
-    v81 = [v80 visualProvider];
-    v82 = [v81 contentView];
+    backBarButton4 = [(_UINavigationBarVisualProviderModernCarPlay *)self backBarButton];
+    visualProvider = [backBarButton4 visualProvider];
+    contentView = [visualProvider contentView];
 
     v83 = [UIView alloc];
     v84 = [(UIView *)v83 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
     [(UIView *)v84 setClipsToBounds:1];
-    v85 = [(_UINavigationBarVisualProvider *)self navigationBar];
+    navigationBar = [(_UINavigationBarVisualProvider *)self navigationBar];
     v273 = v84;
-    [v85 addSubview:v84];
+    [navigationBar addSubview:v84];
 
-    v86 = [(_UINavigationBarVisualProviderModernCarPlay *)self backBarButton];
-    LODWORD(v84) = [v86 isHidden];
+    backBarButton5 = [(_UINavigationBarVisualProviderModernCarPlay *)self backBarButton];
+    LODWORD(v84) = [backBarButton5 isHidden];
 
-    v269 = v82;
+    v269 = contentView;
     v251 = v11;
     if (v84)
     {
-      v87 = [(_UINavigationBarVisualProviderModernCarPlay *)self leadingBar];
-      v88 = [v87 view];
-      v89 = [v88 trailingAnchor];
+      leadingBar3 = [(_UINavigationBarVisualProviderModernCarPlay *)self leadingBar];
+      view3 = [leadingBar3 view];
+      trailingAnchor = [view3 trailingAnchor];
     }
 
     else
     {
-      v89 = [v82 leadingAnchor];
+      trailingAnchor = [contentView leadingAnchor];
     }
 
     v94 = objc_alloc_init(UILayoutGuide);
-    v95 = [(_UINavigationBarVisualProvider *)self navigationBar];
-    [v95 addLayoutGuide:v94];
+    navigationBar2 = [(_UINavigationBarVisualProvider *)self navigationBar];
+    [navigationBar2 addLayoutGuide:v94];
 
-    v96 = [(UILayoutGuide *)v94 trailingAnchor];
-    v97 = [(_UINavigationBarVisualProviderModernCarPlay *)self trailingBar];
-    v98 = [v97 view];
-    v99 = [v98 leadingAnchor];
-    v100 = [v96 constraintEqualToAnchor:v99];
+    trailingAnchor2 = [(UILayoutGuide *)v94 trailingAnchor];
+    trailingBar3 = [(_UINavigationBarVisualProviderModernCarPlay *)self trailingBar];
+    view4 = [trailingBar3 view];
+    leadingAnchor = [view4 leadingAnchor];
+    v100 = [trailingAnchor2 constraintEqualToAnchor:leadingAnchor];
 
     v258 = v100;
     LODWORD(v101) = 1148846080;
     [v100 setPriority:v101];
     v268 = v94;
-    v102 = [(UILayoutGuide *)v94 leadingAnchor];
-    v250 = v89;
-    v103 = [v102 constraintEqualToAnchor:v89];
+    leadingAnchor2 = [(UILayoutGuide *)v94 leadingAnchor];
+    v250 = trailingAnchor;
+    v103 = [leadingAnchor2 constraintEqualToAnchor:trailingAnchor];
 
     LODWORD(v104) = 1148846080;
     [v103 setPriority:v104];
-    v105 = [(_UINavigationBarVisualProviderModernCarPlay *)self backBarButton];
-    LOBYTE(v97) = [v105 isHidden];
+    backBarButton6 = [(_UINavigationBarVisualProviderModernCarPlay *)self backBarButton];
+    LOBYTE(trailingBar3) = [backBarButton6 isHidden];
 
-    if ((v97 & 1) == 0)
+    if ((trailingBar3 & 1) == 0)
     {
       [v103 setConstant:-4.0];
     }
 
     v252 = v10;
-    v253 = v8;
+    v253 = itemCopy;
     v274 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v106 = [(_UINavigationBarVisualProviderModernCarPlay *)self titleView];
-    v107 = [v106 snapshotViewAfterScreenUpdates:0];
+    titleView10 = [(_UINavigationBarVisualProviderModernCarPlay *)self titleView];
+    v107 = [titleView10 snapshotViewAfterScreenUpdates:0];
 
     v254 = v107;
     if (v107)
     {
       [(UIView *)v107 setTranslatesAutoresizingMaskIntoConstraints:0];
       [(UIView *)v273 addSubview:v107];
-      v108 = [(UIView *)v107 centerXAnchor];
-      v109 = [(_UINavigationBarVisualProviderModernCarPlay *)self titleView];
-      v110 = [v109 centerXAnchor];
-      v111 = [v108 constraintEqualToAnchor:v110];
+      centerXAnchor = [(UIView *)v107 centerXAnchor];
+      titleView11 = [(_UINavigationBarVisualProviderModernCarPlay *)self titleView];
+      centerXAnchor2 = [titleView11 centerXAnchor];
+      v111 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
 
       v263 = v111;
       v299[0] = v111;
-      v264 = [(UIView *)v107 heightAnchor];
-      v266 = [(_UINavigationBarVisualProviderModernCarPlay *)self titleView];
-      [v266 frame];
-      v113 = [v264 constraintEqualToConstant:v112];
+      heightAnchor = [(UIView *)v107 heightAnchor];
+      titleView12 = [(_UINavigationBarVisualProviderModernCarPlay *)self titleView];
+      [titleView12 frame];
+      v113 = [heightAnchor constraintEqualToConstant:v112];
       v299[1] = v113;
-      v114 = [(UIView *)v107 widthAnchor];
-      v115 = [(_UINavigationBarVisualProviderModernCarPlay *)self titleView];
-      [v115 frame];
-      v117 = [v114 constraintEqualToConstant:v116];
+      widthAnchor = [(UIView *)v107 widthAnchor];
+      titleView13 = [(_UINavigationBarVisualProviderModernCarPlay *)self titleView];
+      [titleView13 frame];
+      v117 = [widthAnchor constraintEqualToConstant:v116];
       v299[2] = v117;
-      v118 = [(UIView *)v107 centerYAnchor];
-      v119 = [(UIView *)v273 centerYAnchor];
-      [v118 constraintEqualToAnchor:v119];
+      centerYAnchor = [(UIView *)v107 centerYAnchor];
+      centerYAnchor2 = [(UIView *)v273 centerYAnchor];
+      [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
       v121 = v120 = v103;
       v299[3] = v121;
       v122 = [MEMORY[0x1E695DEC8] arrayWithObjects:v299 count:4];
@@ -935,15 +935,15 @@ LABEL_87:
     v249 = v103;
     v298[0] = v103;
     v298[1] = v258;
-    v123 = [(UILayoutGuide *)v268 topAnchor];
-    v124 = [(_UINavigationBarVisualProvider *)self navigationBar];
-    v125 = [v124 topAnchor];
-    v126 = [v123 constraintEqualToAnchor:v125];
+    topAnchor = [(UILayoutGuide *)v268 topAnchor];
+    navigationBar3 = [(_UINavigationBarVisualProvider *)self navigationBar];
+    topAnchor2 = [navigationBar3 topAnchor];
+    v126 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v298[2] = v126;
-    v127 = [(UILayoutGuide *)v268 bottomAnchor];
-    v128 = [(_UINavigationBarVisualProvider *)self navigationBar];
-    v129 = [v128 bottomAnchor];
-    v130 = [v127 constraintEqualToAnchor:v129];
+    bottomAnchor = [(UILayoutGuide *)v268 bottomAnchor];
+    navigationBar4 = [(_UINavigationBarVisualProvider *)self navigationBar];
+    bottomAnchor2 = [navigationBar4 bottomAnchor];
+    v130 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v298[3] = v130;
     v131 = [MEMORY[0x1E695DEC8] arrayWithObjects:v298 count:4];
     [v274 addObjectsFromArray:v131];
@@ -952,7 +952,7 @@ LABEL_87:
     v133 = v273;
     [(UIView *)v273 addSubview:v132];
     v265 = v132;
-    if (v275)
+    if (isHidden)
     {
       v262 = 0;
       v267 = 0;
@@ -965,24 +965,24 @@ LABEL_87:
       v135 = [v269 snapshotViewAfterScreenUpdates:0];
       [v135 setTranslatesAutoresizingMaskIntoConstraints:0];
       [(UIView *)v273 addSubview:v135];
-      v136 = [v135 leadingAnchor];
-      v137 = [(UIView *)v132 leadingAnchor];
-      v138 = [v136 constraintEqualToAnchor:v137];
+      leadingAnchor3 = [v135 leadingAnchor];
+      leadingAnchor4 = [(UIView *)v132 leadingAnchor];
+      v138 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
 
-      v139 = [v135 heightAnchor];
+      heightAnchor2 = [v135 heightAnchor];
       [v269 frame];
-      v141 = [v139 constraintEqualToConstant:v140];
+      v141 = [heightAnchor2 constraintEqualToConstant:v140];
       v297[0] = v141;
-      v142 = [v135 widthAnchor];
+      widthAnchor2 = [v135 widthAnchor];
       [v269 frame];
-      v144 = [v142 constraintEqualToConstant:v143];
+      v144 = [widthAnchor2 constraintEqualToConstant:v143];
       v297[1] = v144;
       v262 = v138;
       v297[2] = v138;
       v267 = v135;
-      v145 = [v135 topAnchor];
-      v146 = [(UIView *)v132 topAnchor];
-      v147 = [v145 constraintEqualToAnchor:v146];
+      topAnchor3 = [v135 topAnchor];
+      topAnchor4 = [(UIView *)v132 topAnchor];
+      v147 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
       v297[3] = v147;
       v148 = [MEMORY[0x1E695DEC8] arrayWithObjects:v297 count:4];
       [v274 addObjectsFromArray:v148];
@@ -992,8 +992,8 @@ LABEL_87:
     }
 
     [MEMORY[0x1E69977A0] activateConstraints:v274];
-    v149 = [(_UINavigationBarVisualProvider *)self navigationBar];
-    [v149 layoutIfNeeded];
+    navigationBar5 = [(_UINavigationBarVisualProvider *)self navigationBar];
+    [navigationBar5 layoutIfNeeded];
 
     [(UILayoutGuide *)v268 layoutFrame];
     [(UIView *)v133 setFrame:?];
@@ -1002,53 +1002,53 @@ LABEL_87:
     v153 = v152;
     v155 = v154;
     v157 = v156;
-    v158 = [(_UINavigationBarVisualProviderModernCarPlay *)self backBarButton];
-    [(UIView *)v133 convertRect:v158 fromView:v151, v153, v155, v157];
+    backBarButton7 = [(_UINavigationBarVisualProviderModernCarPlay *)self backBarButton];
+    [(UIView *)v133 convertRect:backBarButton7 fromView:v151, v153, v155, v157];
     [(UIView *)v132 setFrame:?];
 
     [(_UINavigationBarVisualProviderModernCarPlay *)self _installGradientLayerMaskForClippingView:v133];
-    v159 = [(_UINavigationBarVisualProviderModernCarPlay *)self titleView];
-    v160 = [v159 snapshotViewAfterScreenUpdates:1];
+    titleView14 = [(_UINavigationBarVisualProviderModernCarPlay *)self titleView];
+    v160 = [titleView14 snapshotViewAfterScreenUpdates:1];
 
     [v160 setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIView *)v133 addSubview:v160];
-    if (a6 == 1)
+    if (direction == 1)
     {
-      v161 = [v160 leadingAnchor];
+      leadingAnchor5 = [v160 leadingAnchor];
     }
 
     else
     {
-      v161 = [v160 leadingAnchor];
+      leadingAnchor5 = [v160 leadingAnchor];
       if (v132)
       {
-        v162 = [(UIView *)v132 leadingAnchor];
+        leadingAnchor6 = [(UIView *)v132 leadingAnchor];
         goto LABEL_46;
       }
     }
 
-    v162 = [(UIView *)v133 trailingAnchor];
+    leadingAnchor6 = [(UIView *)v133 trailingAnchor];
 LABEL_46:
-    v163 = v162;
-    v164 = [v161 constraintEqualToAnchor:v162];
+    v163 = leadingAnchor6;
+    v164 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
 
     v165 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v257 = v164;
     v296[0] = v164;
-    v247 = [v160 heightAnchor];
-    v259 = [(_UINavigationBarVisualProviderModernCarPlay *)self titleView];
-    [v259 frame];
-    v167 = [v247 constraintEqualToConstant:v166];
+    heightAnchor3 = [v160 heightAnchor];
+    titleView15 = [(_UINavigationBarVisualProviderModernCarPlay *)self titleView];
+    [titleView15 frame];
+    v167 = [heightAnchor3 constraintEqualToConstant:v166];
     v296[1] = v167;
-    v168 = [v160 widthAnchor];
-    v169 = [(_UINavigationBarVisualProviderModernCarPlay *)self titleView];
-    [v169 frame];
-    v171 = [v168 constraintEqualToConstant:v170];
+    widthAnchor3 = [v160 widthAnchor];
+    titleView16 = [(_UINavigationBarVisualProviderModernCarPlay *)self titleView];
+    [titleView16 frame];
+    v171 = [widthAnchor3 constraintEqualToConstant:v170];
     v296[2] = v171;
     v256 = v160;
-    v172 = [v160 centerYAnchor];
-    v173 = [(UIView *)v133 centerYAnchor];
-    v174 = [v172 constraintEqualToAnchor:v173];
+    centerYAnchor3 = [v160 centerYAnchor];
+    centerYAnchor4 = [(UIView *)v133 centerYAnchor];
+    v174 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
     v296[3] = v174;
     v175 = [MEMORY[0x1E695DEC8] arrayWithObjects:v296 count:4];
     v255 = v165;
@@ -1066,14 +1066,14 @@ LABEL_46:
       goto LABEL_50;
     }
 
-    v176 = [(_UINavigationBarVisualProviderModernCarPlay *)self backBarButton];
-    v177 = [v176 isHidden];
+    backBarButton8 = [(_UINavigationBarVisualProviderModernCarPlay *)self backBarButton];
+    isHidden2 = [backBarButton8 isHidden];
 
     v178 = 0x1E6997000;
     v180 = v262;
     v179 = v263;
     v181 = v254;
-    if (v177)
+    if (isHidden2)
     {
       v182 = 0;
       v271 = 0;
@@ -1084,23 +1084,23 @@ LABEL_50:
       goto LABEL_59;
     }
 
-    v185 = [(_UINavigationBarVisualProviderModernCarPlay *)self backBarButton];
-    v186 = [v185 visualProvider];
-    v187 = [v186 backIndicatorView];
+    backBarButton9 = [(_UINavigationBarVisualProviderModernCarPlay *)self backBarButton];
+    visualProvider2 = [backBarButton9 visualProvider];
+    backIndicatorView = [visualProvider2 backIndicatorView];
 
-    v188 = [v187 snapshotViewAfterScreenUpdates:1];
-    v189 = [(_UINavigationBarVisualProvider *)self navigationBar];
-    [v189 addSubview:v188];
+    v188 = [backIndicatorView snapshotViewAfterScreenUpdates:1];
+    navigationBar6 = [(_UINavigationBarVisualProvider *)self navigationBar];
+    [navigationBar6 addSubview:v188];
 
-    v190 = [(_UINavigationBarVisualProvider *)self navigationBar];
-    v246 = v187;
-    [v187 frame];
+    navigationBar7 = [(_UINavigationBarVisualProvider *)self navigationBar];
+    v246 = backIndicatorView;
+    [backIndicatorView frame];
     v192 = v191;
     v194 = v193;
     v196 = v195;
     v198 = v197;
-    v199 = [(_UINavigationBarVisualProviderModernCarPlay *)self backBarButton];
-    [v190 convertRect:v199 fromView:{v192, v194, v196, v198}];
+    backBarButton10 = [(_UINavigationBarVisualProviderModernCarPlay *)self backBarButton];
+    [navigationBar7 convertRect:backBarButton10 fromView:{v192, v194, v196, v198}];
     [v188 setFrame:?];
 
     v200 = [v269 snapshotViewAfterScreenUpdates:1];
@@ -1108,7 +1108,7 @@ LABEL_50:
     [(UIView *)v273 addSubview:v200];
     v183 = v257;
     v248 = v188;
-    if (a6 == 1)
+    if (direction == 1)
     {
       v201 = v265;
       if (!v254)
@@ -1116,19 +1116,19 @@ LABEL_50:
         goto LABEL_57;
       }
 
-      v202 = [v200 leadingAnchor];
+      leadingAnchor7 = [v200 leadingAnchor];
       v203 = v254;
     }
 
     else
     {
-      v202 = [v200 trailingAnchor];
+      leadingAnchor7 = [v200 trailingAnchor];
       v201 = v265;
       v203 = v265;
     }
 
-    v204 = [(UIView *)v203 leadingAnchor];
-    v205 = [v202 constraintEqualToAnchor:v204];
+    leadingAnchor8 = [(UIView *)v203 leadingAnchor];
+    v205 = [leadingAnchor7 constraintEqualToAnchor:leadingAnchor8];
 
     if (v205)
     {
@@ -1136,18 +1136,18 @@ LABEL_50:
       v260 = v205;
       [v255 addObject:v205];
 LABEL_58:
-      v245 = [v200 heightAnchor];
+      heightAnchor4 = [v200 heightAnchor];
       [v269 frame];
-      v208 = [v245 constraintEqualToConstant:v207];
+      v208 = [heightAnchor4 constraintEqualToConstant:v207];
       v295[0] = v208;
-      v209 = [v200 widthAnchor];
+      widthAnchor4 = [v200 widthAnchor];
       [v269 frame];
-      v211 = [v209 constraintEqualToConstant:v210];
+      v211 = [widthAnchor4 constraintEqualToConstant:v210];
       v295[1] = v211;
       v271 = v200;
-      v212 = [v200 topAnchor];
-      v213 = [(UIView *)v201 topAnchor];
-      v214 = [v212 constraintEqualToAnchor:v213];
+      topAnchor5 = [v200 topAnchor];
+      topAnchor6 = [(UIView *)v201 topAnchor];
+      v214 = [topAnchor5 constraintEqualToAnchor:topAnchor6];
       v295[2] = v214;
       v215 = [MEMORY[0x1E695DEC8] arrayWithObjects:v295 count:3];
       [v206 addObjectsFromArray:v215];
@@ -1160,12 +1160,12 @@ LABEL_58:
       v182 = v260;
 LABEL_59:
       [*(v178 + 1952) activateConstraints:v184];
-      v216 = [(_UINavigationBarVisualProvider *)self navigationBar];
-      [v216 layoutIfNeeded];
+      navigationBar8 = [(_UINavigationBarVisualProvider *)self navigationBar];
+      [navigationBar8 layoutIfNeeded];
 
       v217 = objc_alloc_init(MEMORY[0x1E695DF70]);
       v218 = v217;
-      v47 = v277;
+      allObjects = v277;
       if (v183)
       {
         [v217 addObject:v183];
@@ -1191,35 +1191,35 @@ LABEL_59:
       v219 = objc_alloc_init(MEMORY[0x1E695DF70]);
       if (v256)
       {
-        v220 = [v256 centerXAnchor];
-        v221 = [(_UINavigationBarVisualProviderModernCarPlay *)self titleView];
-        v222 = [v221 centerXAnchor];
-        v223 = [v220 constraintEqualToAnchor:v222];
+        centerXAnchor3 = [v256 centerXAnchor];
+        titleView17 = [(_UINavigationBarVisualProviderModernCarPlay *)self titleView];
+        centerXAnchor4 = [titleView17 centerXAnchor];
+        v223 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
         [v219 addObject:v223];
 
-        v47 = v277;
+        allObjects = v277;
       }
 
-      if (a6 == 2)
+      if (direction == 2)
       {
         if (v267)
         {
-          v224 = [v267 leadingAnchor];
-          v225 = [v256 leadingAnchor];
-          v226 = [v224 constraintEqualToAnchor:v225];
+          leadingAnchor9 = [v267 leadingAnchor];
+          leadingAnchor10 = [v256 leadingAnchor];
+          v226 = [leadingAnchor9 constraintEqualToAnchor:leadingAnchor10];
           [v219 addObject:v226];
 
-          v47 = v277;
+          allObjects = v277;
         }
 
         if (v181)
         {
-          v227 = [(UIView *)v181 leadingAnchor];
-          v228 = [(UIView *)v273 trailingAnchor];
-          v229 = [v227 constraintEqualToAnchor:v228];
+          leadingAnchor11 = [(UIView *)v181 leadingAnchor];
+          trailingAnchor3 = [(UIView *)v273 trailingAnchor];
+          v229 = [leadingAnchor11 constraintEqualToAnchor:trailingAnchor3];
           [v219 addObject:v229];
 
-          v47 = v277;
+          allObjects = v277;
         }
 
         if (!v271)
@@ -1227,9 +1227,9 @@ LABEL_59:
           goto LABEL_84;
         }
 
-        v230 = [v271 leadingAnchor];
-        v231 = [(UIView *)v265 leadingAnchor];
-        v232 = [v230 constraintEqualToAnchor:v231 constant:0.0];
+        leadingAnchor12 = [v271 leadingAnchor];
+        leadingAnchor13 = [(UIView *)v265 leadingAnchor];
+        v232 = [leadingAnchor12 constraintEqualToAnchor:leadingAnchor13 constant:0.0];
       }
 
       else
@@ -1241,12 +1241,12 @@ LABEL_59:
 
         if (v181 && v269)
         {
-          v233 = [(UIView *)v181 leadingAnchor];
-          v234 = [(UIView *)v265 leadingAnchor];
-          v235 = [v233 constraintEqualToAnchor:v234];
+          leadingAnchor14 = [(UIView *)v181 leadingAnchor];
+          leadingAnchor15 = [(UIView *)v265 leadingAnchor];
+          v235 = [leadingAnchor14 constraintEqualToAnchor:leadingAnchor15];
           [v219 addObject:v235];
 
-          v47 = v277;
+          allObjects = v277;
         }
 
         if (!v267)
@@ -1254,9 +1254,9 @@ LABEL_59:
           goto LABEL_84;
         }
 
-        v230 = [v267 trailingAnchor];
-        v231 = [(UIView *)v273 leadingAnchor];
-        v232 = [v230 constraintEqualToAnchor:v231];
+        leadingAnchor12 = [v267 trailingAnchor];
+        leadingAnchor13 = [(UIView *)v273 leadingAnchor];
+        v232 = [leadingAnchor12 constraintEqualToAnchor:leadingAnchor13];
       }
 
       v236 = v232;
@@ -1266,13 +1266,13 @@ LABEL_84:
       [*(v178 + 1952) activateConstraints:v219];
       [v256 setAlpha:0.0];
       [v271 setAlpha:0.0];
-      if (v275)
+      if (isHidden)
       {
         [v248 setAlpha:0.0];
       }
 
-      v237 = [(_UINavigationBarVisualProviderModernCarPlay *)self contentView];
-      [v237 setHidden:1];
+      contentView2 = [(_UINavigationBarVisualProviderModernCarPlay *)self contentView];
+      [contentView2 setHidden:1];
 
       v285[0] = MEMORY[0x1E69E9820];
       v285[1] = 3221225472;
@@ -1301,8 +1301,8 @@ LABEL_84:
       [UIView animateWithDuration:0x20000 delay:v285 options:v282 animations:0.35 completion:0.0];
 
       v10 = v252;
-      v8 = v253;
-      v93 = v250;
+      itemCopy = v253;
+      trailingBar = v250;
       v11 = v251;
       v62 = v281;
       v75 = v272;
@@ -1319,165 +1319,165 @@ LABEL_57:
 LABEL_88:
 }
 
-- (void)_updateContentAnimated:(BOOL)a3 completion:(id)a4 direction:(unint64_t)a5
+- (void)_updateContentAnimated:(BOOL)animated completion:(id)completion direction:(unint64_t)direction
 {
-  v6 = a3;
-  v11 = a4;
+  animatedCopy = animated;
+  completionCopy = completion;
   if (![(_UINavigationBarVisualProviderModernCarPlay *)self havePrepared])
   {
     [(_UINavigationBarVisualProviderModernCarPlay *)self prepare];
   }
 
-  v8 = [(_UINavigationBarItemStack *)self->super._stack topItem];
-  v9 = [(_UINavigationBarItemStack *)self->super._stack backItem];
-  [(_UINavigationBarVisualProviderModernCarPlay *)self _updateContentForTopItem:v8 backItem:v9 animated:v6 direction:a5];
-  if (v11)
+  topItem = [(_UINavigationBarItemStack *)self->super._stack topItem];
+  backItem = [(_UINavigationBarItemStack *)self->super._stack backItem];
+  [(_UINavigationBarVisualProviderModernCarPlay *)self _updateContentForTopItem:topItem backItem:backItem animated:animatedCopy direction:direction];
+  if (completionCopy)
   {
-    v10 = [(_UINavigationBarItemStack *)self->super._stack transitionAssistant];
-    v11[2](v11, v6, v10);
+    transitionAssistant = [(_UINavigationBarItemStack *)self->super._stack transitionAssistant];
+    completionCopy[2](completionCopy, animatedCopy, transitionAssistant);
   }
 }
 
-- (BOOL)navigationItemIsTopItem:(id)a3
+- (BOOL)navigationItemIsTopItem:(id)item
 {
   stack = self->super._stack;
-  v4 = a3;
-  v5 = [(_UINavigationBarItemStack *)stack topItem];
+  itemCopy = item;
+  topItem = [(_UINavigationBarItemStack *)stack topItem];
 
-  return v5 == v4;
+  return topItem == itemCopy;
 }
 
-- (BOOL)navigationItemIsBackItem:(id)a3
+- (BOOL)navigationItemIsBackItem:(id)item
 {
   stack = self->super._stack;
-  v4 = a3;
-  v5 = [(_UINavigationBarItemStack *)stack backItem];
+  itemCopy = item;
+  backItem = [(_UINavigationBarItemStack *)stack backItem];
 
-  return v5 == v4;
+  return backItem == itemCopy;
 }
 
-- (void)navigationItemUpdatedTitleContent:(id)a3 animated:(BOOL)a4
+- (void)navigationItemUpdatedTitleContent:(id)content animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   stack = self->super._stack;
-  v7 = a3;
-  v11 = [(_UINavigationBarItemStack *)stack topItem];
-  v8 = [(_UINavigationBarItemStack *)self->super._stack backItem];
-  v9 = [(_UINavigationBarItemStack *)self->super._stack state];
+  contentCopy = content;
+  topItem = [(_UINavigationBarItemStack *)stack topItem];
+  backItem = [(_UINavigationBarItemStack *)self->super._stack backItem];
+  state = [(_UINavigationBarItemStack *)self->super._stack state];
 
-  if (v9)
+  if (state)
   {
     v10 = 0;
   }
 
   else
   {
-    v10 = v11 == v7;
+    v10 = topItem == contentCopy;
   }
 
   if (v10)
   {
-    [(_UINavigationBarVisualProviderModernCarPlay *)self _updateContentForTopItem:v11 backItem:v8 animated:v4 direction:0];
+    [(_UINavigationBarVisualProviderModernCarPlay *)self _updateContentForTopItem:topItem backItem:backItem animated:animatedCopy direction:0];
   }
 }
 
-- (void)navigationItemUpdatedContentLayout:(id)a3 animated:(BOOL)a4
+- (void)navigationItemUpdatedContentLayout:(id)layout animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   stack = self->super._stack;
-  v7 = a3;
-  v11 = [(_UINavigationBarItemStack *)stack topItem];
-  v8 = [(_UINavigationBarItemStack *)self->super._stack backItem];
-  v9 = [(_UINavigationBarItemStack *)self->super._stack state];
+  layoutCopy = layout;
+  topItem = [(_UINavigationBarItemStack *)stack topItem];
+  backItem = [(_UINavigationBarItemStack *)self->super._stack backItem];
+  state = [(_UINavigationBarItemStack *)self->super._stack state];
 
-  if (v9)
+  if (state)
   {
     v10 = 0;
   }
 
   else
   {
-    v10 = v11 == v7;
+    v10 = topItem == layoutCopy;
   }
 
   if (v10)
   {
-    [(_UINavigationBarVisualProviderModernCarPlay *)self _updateContentForTopItem:v11 backItem:v8 animated:v4 direction:0];
+    [(_UINavigationBarVisualProviderModernCarPlay *)self _updateContentForTopItem:topItem backItem:backItem animated:animatedCopy direction:0];
   }
 }
 
-- (void)navigationItemUpdatedBackButtonContent:(id)a3 animated:(BOOL)a4
+- (void)navigationItemUpdatedBackButtonContent:(id)content animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   stack = self->super._stack;
-  v7 = a3;
-  v11 = [(_UINavigationBarItemStack *)stack topItem];
-  v8 = [(_UINavigationBarItemStack *)self->super._stack backItem];
-  v9 = [(_UINavigationBarItemStack *)self->super._stack state];
+  contentCopy = content;
+  topItem = [(_UINavigationBarItemStack *)stack topItem];
+  backItem = [(_UINavigationBarItemStack *)self->super._stack backItem];
+  state = [(_UINavigationBarItemStack *)self->super._stack state];
 
-  if (v9)
+  if (state)
   {
     v10 = 0;
   }
 
   else
   {
-    v10 = v8 == v7;
+    v10 = backItem == contentCopy;
   }
 
   if (v10)
   {
-    [(_UINavigationBarVisualProviderModernCarPlay *)self _updateContentForTopItem:v11 backItem:v8 animated:v4 direction:0];
+    [(_UINavigationBarVisualProviderModernCarPlay *)self _updateContentForTopItem:topItem backItem:backItem animated:animatedCopy direction:0];
   }
 }
 
-- (void)navigationItemUpdatedLeftBarButtonItems:(id)a3 animated:(BOOL)a4
+- (void)navigationItemUpdatedLeftBarButtonItems:(id)items animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   stack = self->super._stack;
-  v7 = a3;
-  v11 = [(_UINavigationBarItemStack *)stack topItem];
-  v8 = [(_UINavigationBarItemStack *)self->super._stack backItem];
-  v9 = [(_UINavigationBarItemStack *)self->super._stack state];
+  itemsCopy = items;
+  topItem = [(_UINavigationBarItemStack *)stack topItem];
+  backItem = [(_UINavigationBarItemStack *)self->super._stack backItem];
+  state = [(_UINavigationBarItemStack *)self->super._stack state];
 
-  if (v9)
+  if (state)
   {
     v10 = 0;
   }
 
   else
   {
-    v10 = v11 == v7;
+    v10 = topItem == itemsCopy;
   }
 
   if (v10)
   {
-    [(_UINavigationBarVisualProviderModernCarPlay *)self _updateContentForTopItem:v11 backItem:v8 animated:v4 direction:0];
+    [(_UINavigationBarVisualProviderModernCarPlay *)self _updateContentForTopItem:topItem backItem:backItem animated:animatedCopy direction:0];
   }
 }
 
-- (void)navigationItemUpdatedRightBarButtonItems:(id)a3 animated:(BOOL)a4
+- (void)navigationItemUpdatedRightBarButtonItems:(id)items animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   stack = self->super._stack;
-  v7 = a3;
-  v11 = [(_UINavigationBarItemStack *)stack topItem];
-  v8 = [(_UINavigationBarItemStack *)self->super._stack backItem];
-  v9 = [(_UINavigationBarItemStack *)self->super._stack state];
+  itemsCopy = items;
+  topItem = [(_UINavigationBarItemStack *)stack topItem];
+  backItem = [(_UINavigationBarItemStack *)self->super._stack backItem];
+  state = [(_UINavigationBarItemStack *)self->super._stack state];
 
-  if (v9)
+  if (state)
   {
     v10 = 0;
   }
 
   else
   {
-    v10 = v11 == v7;
+    v10 = topItem == itemsCopy;
   }
 
   if (v10)
   {
-    [(_UINavigationBarVisualProviderModernCarPlay *)self _updateContentForTopItem:v11 backItem:v8 animated:v4 direction:0];
+    [(_UINavigationBarVisualProviderModernCarPlay *)self _updateContentForTopItem:topItem backItem:backItem animated:animatedCopy direction:0];
   }
 }
 
@@ -1498,42 +1498,42 @@ LABEL_88:
 
 - (id)defaultFontDescriptor
 {
-  v2 = [(_UINavigationBarVisualProviderModernCarPlay *)self titleView];
-  v3 = [v2 traitCollection];
-  v4 = [off_1E70ECC20 preferredFontDescriptorWithTextStyle:@"UICTFontTextStyleCallout" compatibleWithTraitCollection:v3];
+  titleView = [(_UINavigationBarVisualProviderModernCarPlay *)self titleView];
+  traitCollection = [titleView traitCollection];
+  v4 = [off_1E70ECC20 preferredFontDescriptorWithTextStyle:@"UICTFontTextStyleCallout" compatibleWithTraitCollection:traitCollection];
 
   return v4;
 }
 
-- (void)_installGradientLayerMaskForClippingView:(id)a3
+- (void)_installGradientLayerMaskForClippingView:(id)view
 {
   v20[4] = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E6979380];
-  v4 = a3;
-  v5 = [v3 layer];
-  v6 = [v4 layer];
-  [v6 bounds];
-  [v5 setFrame:?];
+  viewCopy = view;
+  layer = [v3 layer];
+  layer2 = [viewCopy layer];
+  [layer2 bounds];
+  [layer setFrame:?];
 
   v7 = +[UIColor clearColor];
-  v8 = [v7 CGColor];
+  cGColor = [v7 CGColor];
 
   v9 = +[UIColor blackColor];
-  v10 = [v9 CGColor];
+  cGColor2 = [v9 CGColor];
 
-  v20[0] = v8;
-  v20[1] = v10;
-  v20[2] = v10;
-  v20[3] = v8;
+  v20[0] = cGColor;
+  v20[1] = cGColor2;
+  v20[2] = cGColor2;
+  v20[3] = cGColor;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:4];
-  [v5 setColors:v11];
+  [layer setColors:v11];
 
-  v12 = [v4 layer];
-  [v12 setMask:v5];
+  layer3 = [viewCopy layer];
+  [layer3 setMask:layer];
 
-  [v5 setStartPoint:{0.0, 0.5}];
-  [v5 setEndPoint:{1.0, 0.5}];
-  [v5 frame];
+  [layer setStartPoint:{0.0, 0.5}];
+  [layer setEndPoint:{1.0, 0.5}];
+  [layer frame];
   v19[0] = &unk_1EFE2E3F8;
   v14 = 6.0 / v13;
   v15 = [MEMORY[0x1E696AD98] numberWithDouble:6.0 / v13];
@@ -1542,11 +1542,11 @@ LABEL_88:
   v19[2] = v16;
   v19[3] = &unk_1EFE2E408;
   v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:4];
-  [v5 setLocations:v17];
+  [layer setLocations:v17];
 
-  v18 = [v4 layer];
+  layer4 = [viewCopy layer];
 
-  [v18 setMask:v5];
+  [layer4 setMask:layer];
 }
 
 @end

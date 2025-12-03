@@ -1,49 +1,49 @@
 @interface CMOdometry
-- (CMOdometry)initWithCoder:(id)a3;
-- (CMOdometry)initWithDeltaPositionX:(id)a3 deltaPositionY:(id)a4 deltaPositionZ:(id)a5 deltaVelocityX:(id)a6 deltaVelocityY:(id)a7 deltaVelocityZ:(id)a8 quaternionX:(id)a9 quaternionY:(id)a10 quaternionZ:(id)a11 quaternionW:(id)a12 rotationArbitraryToTrueNorth:(float)a13 staticFlag:(int64_t)a14 isDOTBiasChangePossible:(BOOL)a15 isMounted:(BOOL)a16 isZUPT:(BOOL)a17 timestamp:(double)a18;
-- (CMOdometry)initWithDeltaPositionX:(id)a3 deltaPositionY:(id)a4 deltaPositionZ:(id)a5 deltaVelocityX:(id)a6 deltaVelocityY:(id)a7 deltaVelocityZ:(id)a8 quaternionX:(id)a9 quaternionY:(id)a10 quaternionZ:(id)a11 quaternionW:(id)a12 rotationArbitraryToTrueNorth:(float)a13 staticFlag:(int64_t)a14 timestamp:(double)a15;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CMOdometry)initWithCoder:(id)coder;
+- (CMOdometry)initWithDeltaPositionX:(id)x deltaPositionY:(id)y deltaPositionZ:(id)z deltaVelocityX:(id)velocityX deltaVelocityY:(id)velocityY deltaVelocityZ:(id)velocityZ quaternionX:(id)quaternionX quaternionY:(id)self0 quaternionZ:(id)self1 quaternionW:(id)self2 rotationArbitraryToTrueNorth:(float)self3 staticFlag:(int64_t)self4 isDOTBiasChangePossible:(BOOL)self5 isMounted:(BOOL)self6 isZUPT:(BOOL)self7 timestamp:(double)self8;
+- (CMOdometry)initWithDeltaPositionX:(id)x deltaPositionY:(id)y deltaPositionZ:(id)z deltaVelocityX:(id)velocityX deltaVelocityY:(id)velocityY deltaVelocityZ:(id)velocityZ quaternionX:(id)quaternionX quaternionY:(id)self0 quaternionZ:(id)self1 quaternionW:(id)self2 rotationArbitraryToTrueNorth:(float)self3 staticFlag:(int64_t)self4 timestamp:(double)self5;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)rotateArbitraryToTrueNorth;
 @end
 
 @implementation CMOdometry
 
-- (CMOdometry)initWithDeltaPositionX:(id)a3 deltaPositionY:(id)a4 deltaPositionZ:(id)a5 deltaVelocityX:(id)a6 deltaVelocityY:(id)a7 deltaVelocityZ:(id)a8 quaternionX:(id)a9 quaternionY:(id)a10 quaternionZ:(id)a11 quaternionW:(id)a12 rotationArbitraryToTrueNorth:(float)a13 staticFlag:(int64_t)a14 isDOTBiasChangePossible:(BOOL)a15 isMounted:(BOOL)a16 isZUPT:(BOOL)a17 timestamp:(double)a18
+- (CMOdometry)initWithDeltaPositionX:(id)x deltaPositionY:(id)y deltaPositionZ:(id)z deltaVelocityX:(id)velocityX deltaVelocityY:(id)velocityY deltaVelocityZ:(id)velocityZ quaternionX:(id)quaternionX quaternionY:(id)self0 quaternionZ:(id)self1 quaternionW:(id)self2 rotationArbitraryToTrueNorth:(float)self3 staticFlag:(int64_t)self4 isDOTBiasChangePossible:(BOOL)self5 isMounted:(BOOL)self6 isZUPT:(BOOL)self7 timestamp:(double)self8
 {
   v27.receiver = self;
   v27.super_class = CMOdometry;
-  v25 = [(CMLogItem *)&v27 initWithTimestamp:a18];
+  v25 = [(CMLogItem *)&v27 initWithTimestamp:timestamp];
   if (v25)
   {
-    v25->_deltaPositionX = a3;
-    v25->_deltaPositionY = a4;
-    v25->_deltaPositionZ = a5;
-    v25->_deltaVelocityX = a6;
-    v25->_deltaVelocityY = a7;
-    v25->_deltaVelocityZ = a8;
-    v25->_quaternionX = a9;
-    v25->_quaternionY = a10;
-    v25->_quaternionZ = a11;
-    v25->_quaternionW = a12;
+    v25->_deltaPositionX = x;
+    v25->_deltaPositionY = y;
+    v25->_deltaPositionZ = z;
+    v25->_deltaVelocityX = velocityX;
+    v25->_deltaVelocityY = velocityY;
+    v25->_deltaVelocityZ = velocityZ;
+    v25->_quaternionX = quaternionX;
+    v25->_quaternionY = quaternionY;
+    v25->_quaternionZ = quaternionZ;
+    v25->_quaternionW = w;
     v25->_referenceFrame = 1;
-    v25->_rotationArbitraryToTrueNorth = a13;
-    v25->_staticFlag = a14;
-    v25->_isDOTBiasChangePossible = a15;
-    v25->_isMounted = a16;
-    v25->_isZUPT = a17;
+    v25->_rotationArbitraryToTrueNorth = north;
+    v25->_staticFlag = flag;
+    v25->_isDOTBiasChangePossible = possible;
+    v25->_isMounted = mounted;
+    v25->_isZUPT = t;
   }
 
   return v25;
 }
 
-- (CMOdometry)initWithDeltaPositionX:(id)a3 deltaPositionY:(id)a4 deltaPositionZ:(id)a5 deltaVelocityX:(id)a6 deltaVelocityY:(id)a7 deltaVelocityZ:(id)a8 quaternionX:(id)a9 quaternionY:(id)a10 quaternionZ:(id)a11 quaternionW:(id)a12 rotationArbitraryToTrueNorth:(float)a13 staticFlag:(int64_t)a14 timestamp:(double)a15
+- (CMOdometry)initWithDeltaPositionX:(id)x deltaPositionY:(id)y deltaPositionZ:(id)z deltaVelocityX:(id)velocityX deltaVelocityY:(id)velocityY deltaVelocityZ:(id)velocityZ quaternionX:(id)quaternionX quaternionY:(id)self0 quaternionZ:(id)self1 quaternionW:(id)self2 rotationArbitraryToTrueNorth:(float)self3 staticFlag:(int64_t)self4 timestamp:(double)self5
 {
   BYTE2(v16) = 0;
   LOWORD(v16) = 0;
-  return objc_msgSend_initWithDeltaPositionX_deltaPositionY_deltaPositionZ_deltaVelocityX_deltaVelocityY_deltaVelocityZ_quaternionX_quaternionY_quaternionZ_quaternionW_rotationArbitraryToTrueNorth_staticFlag_isDOTBiasChangePossible_isMounted_isZUPT_timestamp_(self, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a14, v16);
+  return objc_msgSend_initWithDeltaPositionX_deltaPositionY_deltaPositionZ_deltaVelocityX_deltaVelocityY_deltaVelocityZ_quaternionX_quaternionY_quaternionZ_quaternionW_rotationArbitraryToTrueNorth_staticFlag_isDOTBiasChangePossible_isMounted_isZUPT_timestamp_(self, a2, x, y, z, velocityX, velocityY, velocityZ, quaternionX, quaternionY, quaternionZ, w, flag, v16);
 }
 
 - (void)rotateArbitraryToTrueNorth
@@ -153,61 +153,61 @@
   }
 }
 
-- (CMOdometry)initWithCoder:(id)a3
+- (CMOdometry)initWithCoder:(id)coder
 {
   v27.receiver = self;
   v27.super_class = CMOdometry;
   v5 = [(CMLogItem *)&v27 initWithCoder:?];
   if (v5)
   {
-    v5->_deltaPositionX = objc_msgSend_decodeObjectForKey_(a3, v4, @"kCMOdometryCodingKeyDeltaPositionX");
-    v5->_deltaPositionY = objc_msgSend_decodeObjectForKey_(a3, v6, @"kCMOdometryCodingKeyDeltaPositionY");
-    v5->_deltaPositionZ = objc_msgSend_decodeObjectForKey_(a3, v7, @"kCMOdometryCodingKeyDeltaPositionZ");
-    v5->_deltaVelocityX = objc_msgSend_decodeObjectForKey_(a3, v8, @"kCMOdometryCodingKeyDeltaVelocityX");
-    v5->_deltaVelocityY = objc_msgSend_decodeObjectForKey_(a3, v9, @"kCMOdometryCodingKeyDeltaVelocityY");
-    v5->_deltaVelocityZ = objc_msgSend_decodeObjectForKey_(a3, v10, @"kCMOdometryCodingKeyDeltaVelocityZ");
-    v5->_quaternionX = objc_msgSend_decodeObjectForKey_(a3, v11, @"kCMOdometryCodingKeyQuaternionX");
-    v5->_quaternionY = objc_msgSend_decodeObjectForKey_(a3, v12, @"kCMOdometryCodingKeyQuaternionY");
-    v5->_quaternionZ = objc_msgSend_decodeObjectForKey_(a3, v13, @"kCMOdometryCodingKeyQuaternionZ");
-    v5->_quaternionW = objc_msgSend_decodeObjectForKey_(a3, v14, @"kCMOdometryCodingKeyQuaternionW");
-    objc_msgSend_decodeFloatForKey_(a3, v15, @"kCMOdometryCodingKeyReferenceFrame");
+    v5->_deltaPositionX = objc_msgSend_decodeObjectForKey_(coder, v4, @"kCMOdometryCodingKeyDeltaPositionX");
+    v5->_deltaPositionY = objc_msgSend_decodeObjectForKey_(coder, v6, @"kCMOdometryCodingKeyDeltaPositionY");
+    v5->_deltaPositionZ = objc_msgSend_decodeObjectForKey_(coder, v7, @"kCMOdometryCodingKeyDeltaPositionZ");
+    v5->_deltaVelocityX = objc_msgSend_decodeObjectForKey_(coder, v8, @"kCMOdometryCodingKeyDeltaVelocityX");
+    v5->_deltaVelocityY = objc_msgSend_decodeObjectForKey_(coder, v9, @"kCMOdometryCodingKeyDeltaVelocityY");
+    v5->_deltaVelocityZ = objc_msgSend_decodeObjectForKey_(coder, v10, @"kCMOdometryCodingKeyDeltaVelocityZ");
+    v5->_quaternionX = objc_msgSend_decodeObjectForKey_(coder, v11, @"kCMOdometryCodingKeyQuaternionX");
+    v5->_quaternionY = objc_msgSend_decodeObjectForKey_(coder, v12, @"kCMOdometryCodingKeyQuaternionY");
+    v5->_quaternionZ = objc_msgSend_decodeObjectForKey_(coder, v13, @"kCMOdometryCodingKeyQuaternionZ");
+    v5->_quaternionW = objc_msgSend_decodeObjectForKey_(coder, v14, @"kCMOdometryCodingKeyQuaternionW");
+    objc_msgSend_decodeFloatForKey_(coder, v15, @"kCMOdometryCodingKeyReferenceFrame");
     v5->_referenceFrame = v16;
-    objc_msgSend_decodeFloatForKey_(a3, v17, @"kCMOdometryCodingKeyRotationArbitraryToTrueNort");
+    objc_msgSend_decodeFloatForKey_(coder, v17, @"kCMOdometryCodingKeyRotationArbitraryToTrueNort");
     v5->_rotationArbitraryToTrueNorth = v18;
-    v20 = objc_msgSend_decodeObjectForKey_(a3, v19, @"kCMOdometryCodingKeyStaticFlag");
+    v20 = objc_msgSend_decodeObjectForKey_(coder, v19, @"kCMOdometryCodingKeyStaticFlag");
     v5->_staticFlag = objc_msgSend_integerValue(v20, v21, v22);
-    v5->_isDOTBiasChangePossible = objc_msgSend_decodeBoolForKey_(a3, v23, @"kCMOdometryCodingKeyIsDOTBiasChangePossible");
-    v5->_isMounted = objc_msgSend_decodeBoolForKey_(a3, v24, @"kCMOdometryCodingKeyIsMounted");
-    v5->_isZUPT = objc_msgSend_decodeBoolForKey_(a3, v25, @"kCMOdometryCodingKeyIsZUPT");
+    v5->_isDOTBiasChangePossible = objc_msgSend_decodeBoolForKey_(coder, v23, @"kCMOdometryCodingKeyIsDOTBiasChangePossible");
+    v5->_isMounted = objc_msgSend_decodeBoolForKey_(coder, v24, @"kCMOdometryCodingKeyIsMounted");
+    v5->_isZUPT = objc_msgSend_decodeBoolForKey_(coder, v25, @"kCMOdometryCodingKeyIsZUPT");
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v25.receiver = self;
   v25.super_class = CMOdometry;
   [(CMLogItem *)&v25 encodeWithCoder:?];
-  objc_msgSend_encodeObject_forKey_(a3, v5, self->_deltaPositionX, @"kCMOdometryCodingKeyDeltaPositionX");
-  objc_msgSend_encodeObject_forKey_(a3, v6, self->_deltaPositionY, @"kCMOdometryCodingKeyDeltaPositionY");
-  objc_msgSend_encodeObject_forKey_(a3, v7, self->_deltaPositionZ, @"kCMOdometryCodingKeyDeltaPositionZ");
-  objc_msgSend_encodeObject_forKey_(a3, v8, self->_deltaVelocityX, @"kCMOdometryCodingKeyDeltaVelocityX");
-  objc_msgSend_encodeObject_forKey_(a3, v9, self->_deltaVelocityY, @"kCMOdometryCodingKeyDeltaVelocityY");
-  objc_msgSend_encodeObject_forKey_(a3, v10, self->_deltaVelocityZ, @"kCMOdometryCodingKeyDeltaVelocityZ");
-  objc_msgSend_encodeObject_forKey_(a3, v11, self->_quaternionX, @"kCMOdometryCodingKeyQuaternionX");
-  objc_msgSend_encodeObject_forKey_(a3, v12, self->_quaternionY, @"kCMOdometryCodingKeyQuaternionY");
-  objc_msgSend_encodeObject_forKey_(a3, v13, self->_quaternionZ, @"kCMOdometryCodingKeyQuaternionZ");
-  objc_msgSend_encodeObject_forKey_(a3, v14, self->_quaternionW, @"kCMOdometryCodingKeyQuaternionW");
+  objc_msgSend_encodeObject_forKey_(coder, v5, self->_deltaPositionX, @"kCMOdometryCodingKeyDeltaPositionX");
+  objc_msgSend_encodeObject_forKey_(coder, v6, self->_deltaPositionY, @"kCMOdometryCodingKeyDeltaPositionY");
+  objc_msgSend_encodeObject_forKey_(coder, v7, self->_deltaPositionZ, @"kCMOdometryCodingKeyDeltaPositionZ");
+  objc_msgSend_encodeObject_forKey_(coder, v8, self->_deltaVelocityX, @"kCMOdometryCodingKeyDeltaVelocityX");
+  objc_msgSend_encodeObject_forKey_(coder, v9, self->_deltaVelocityY, @"kCMOdometryCodingKeyDeltaVelocityY");
+  objc_msgSend_encodeObject_forKey_(coder, v10, self->_deltaVelocityZ, @"kCMOdometryCodingKeyDeltaVelocityZ");
+  objc_msgSend_encodeObject_forKey_(coder, v11, self->_quaternionX, @"kCMOdometryCodingKeyQuaternionX");
+  objc_msgSend_encodeObject_forKey_(coder, v12, self->_quaternionY, @"kCMOdometryCodingKeyQuaternionY");
+  objc_msgSend_encodeObject_forKey_(coder, v13, self->_quaternionZ, @"kCMOdometryCodingKeyQuaternionZ");
+  objc_msgSend_encodeObject_forKey_(coder, v14, self->_quaternionW, @"kCMOdometryCodingKeyQuaternionW");
   *&v15 = self->_referenceFrame;
-  objc_msgSend_encodeFloat_forKey_(a3, v16, @"kCMOdometryCodingKeyReferenceFrame", v15);
+  objc_msgSend_encodeFloat_forKey_(coder, v16, @"kCMOdometryCodingKeyReferenceFrame", v15);
   *&v17 = self->_rotationArbitraryToTrueNorth;
-  objc_msgSend_encodeFloat_forKey_(a3, v18, @"kCMOdometryCodingKeyRotationArbitraryToTrueNort", v17);
+  objc_msgSend_encodeFloat_forKey_(coder, v18, @"kCMOdometryCodingKeyRotationArbitraryToTrueNort", v17);
   v20 = objc_msgSend_numberWithInteger_(MEMORY[0x1E696AD98], v19, self->_staticFlag);
-  objc_msgSend_encodeObject_forKey_(a3, v21, v20, @"kCMOdometryCodingKeyStaticFlag");
-  objc_msgSend_encodeBool_forKey_(a3, v22, self->_isDOTBiasChangePossible, @"kCMOdometryCodingKeyIsDOTBiasChangePossible");
-  objc_msgSend_encodeBool_forKey_(a3, v23, self->_isMounted, @"kCMOdometryCodingKeyIsMounted");
-  objc_msgSend_encodeBool_forKey_(a3, v24, self->_isZUPT, @"kCMOdometryCodingKeyIsZUPT");
+  objc_msgSend_encodeObject_forKey_(coder, v21, v20, @"kCMOdometryCodingKeyStaticFlag");
+  objc_msgSend_encodeBool_forKey_(coder, v22, self->_isDOTBiasChangePossible, @"kCMOdometryCodingKeyIsDOTBiasChangePossible");
+  objc_msgSend_encodeBool_forKey_(coder, v23, self->_isMounted, @"kCMOdometryCodingKeyIsMounted");
+  objc_msgSend_encodeBool_forKey_(coder, v24, self->_isZUPT, @"kCMOdometryCodingKeyIsZUPT");
 }
 
 - (void)dealloc
@@ -217,23 +217,23 @@
   [(CMLogItem *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v17.receiver = self;
   v17.super_class = CMOdometry;
   v6 = [(CMLogItem *)&v17 copyWithZone:?];
   if (v6)
   {
-    v6[3] = objc_msgSend_copyWithZone_(self->_deltaPositionX, v5, a3);
-    v6[4] = objc_msgSend_copyWithZone_(self->_deltaPositionY, v7, a3);
-    v6[5] = objc_msgSend_copyWithZone_(self->_deltaPositionZ, v8, a3);
-    v6[6] = objc_msgSend_copyWithZone_(self->_deltaVelocityX, v9, a3);
-    v6[7] = objc_msgSend_copyWithZone_(self->_deltaVelocityY, v10, a3);
-    v6[8] = objc_msgSend_copyWithZone_(self->_deltaVelocityZ, v11, a3);
-    v6[9] = objc_msgSend_copyWithZone_(self->_quaternionX, v12, a3);
-    v6[10] = objc_msgSend_copyWithZone_(self->_quaternionY, v13, a3);
-    v6[11] = objc_msgSend_copyWithZone_(self->_quaternionZ, v14, a3);
-    v6[12] = objc_msgSend_copyWithZone_(self->_quaternionW, v15, a3);
+    v6[3] = objc_msgSend_copyWithZone_(self->_deltaPositionX, v5, zone);
+    v6[4] = objc_msgSend_copyWithZone_(self->_deltaPositionY, v7, zone);
+    v6[5] = objc_msgSend_copyWithZone_(self->_deltaPositionZ, v8, zone);
+    v6[6] = objc_msgSend_copyWithZone_(self->_deltaVelocityX, v9, zone);
+    v6[7] = objc_msgSend_copyWithZone_(self->_deltaVelocityY, v10, zone);
+    v6[8] = objc_msgSend_copyWithZone_(self->_deltaVelocityZ, v11, zone);
+    v6[9] = objc_msgSend_copyWithZone_(self->_quaternionX, v12, zone);
+    v6[10] = objc_msgSend_copyWithZone_(self->_quaternionY, v13, zone);
+    v6[11] = objc_msgSend_copyWithZone_(self->_quaternionZ, v14, zone);
+    v6[12] = objc_msgSend_copyWithZone_(self->_quaternionW, v15, zone);
     v6[13] = self->_referenceFrame;
     *(v6 + 5) = LODWORD(self->_rotationArbitraryToTrueNorth);
     v6[14] = self->_staticFlag;

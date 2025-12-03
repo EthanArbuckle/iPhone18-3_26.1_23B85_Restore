@@ -28,8 +28,8 @@ uint64_t __29__LACUIDevice_sharedInstance__block_invoke()
 {
   if (SBUIIsSystemApertureEnabled())
   {
-    v2 = [MEMORY[0x277D24050] sharedInstance];
-    v3 = [v2 isClarityBoardRunning] ^ 1;
+    mEMORY[0x277D24050] = [MEMORY[0x277D24050] sharedInstance];
+    v3 = [mEMORY[0x277D24050] isClarityBoardRunning] ^ 1;
   }
 
   else

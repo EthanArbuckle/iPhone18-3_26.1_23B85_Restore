@@ -6,18 +6,18 @@
 - (id)_dictionaryRepresentation;
 - (id)_metadata;
 - (id)_typedBackingStore;
-- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)a3 containingAppBundleId:(id)a4;
-- (void)_setMetadata:(id)a3;
-- (void)setGroupName:(id)a3;
-- (void)setTaskTitles:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)options containingAppBundleId:(id)id;
+- (void)_setMetadata:(id)metadata;
+- (void)setGroupName:(id)name;
+- (void)setTaskTitles:(id)titles;
+- (void)setTitle:(id)title;
 @end
 
 @implementation INCreateTaskListIntent
 
-- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)a3 containingAppBundleId:(id)a4
+- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)options containingAppBundleId:(id)id
 {
-  v6 = [(INCreateTaskListIntent *)self _typedBackingStore:a3];
+  v6 = [(INCreateTaskListIntent *)self _typedBackingStore:options];
   v5 = [v6 copy];
   [(INIntent *)self setBackingStore:v5];
 }
@@ -26,42 +26,42 @@
 {
   v13[3] = *MEMORY[0x1E69E9840];
   v12[0] = @"title";
-  v3 = [(INCreateTaskListIntent *)self title];
-  v4 = v3;
-  if (!v3)
+  title = [(INCreateTaskListIntent *)self title];
+  null = title;
+  if (!title)
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13[0] = v4;
+  v13[0] = null;
   v12[1] = @"taskTitles";
-  v5 = [(INCreateTaskListIntent *)self taskTitles];
-  v6 = v5;
-  if (!v5)
+  taskTitles = [(INCreateTaskListIntent *)self taskTitles];
+  null2 = taskTitles;
+  if (!taskTitles)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13[1] = v6;
+  v13[1] = null2;
   v12[2] = @"groupName";
-  v7 = [(INCreateTaskListIntent *)self groupName];
-  v8 = v7;
-  if (!v7)
+  groupName = [(INCreateTaskListIntent *)self groupName];
+  null3 = groupName;
+  if (!groupName)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13[2] = v8;
+  v13[2] = null3;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:v12 count:3];
-  if (!v7)
+  if (!groupName)
   {
   }
 
-  if (!v5)
+  if (!taskTitles)
   {
   }
 
-  if (!v3)
+  if (!title)
   {
   }
 
@@ -70,56 +70,56 @@
   return v9;
 }
 
-- (void)setGroupName:(id)a3
+- (void)setGroupName:(id)name
 {
-  v4 = a3;
-  v6 = [(INCreateTaskListIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToDataString(v4);
+  nameCopy = name;
+  _typedBackingStore = [(INCreateTaskListIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToDataString(nameCopy);
 
-  [v6 setGroupName:v5];
+  [_typedBackingStore setGroupName:v5];
 }
 
 - (INSpeakableString)groupName
 {
-  v2 = [(INCreateTaskListIntent *)self _typedBackingStore];
-  v3 = [v2 groupName];
-  v4 = INIntentSlotValueTransformFromDataString(v3);
+  _typedBackingStore = [(INCreateTaskListIntent *)self _typedBackingStore];
+  groupName = [_typedBackingStore groupName];
+  v4 = INIntentSlotValueTransformFromDataString(groupName);
 
   return v4;
 }
 
-- (void)setTaskTitles:(id)a3
+- (void)setTaskTitles:(id)titles
 {
-  v4 = a3;
-  v6 = [(INCreateTaskListIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToDataStrings(v4);
+  titlesCopy = titles;
+  _typedBackingStore = [(INCreateTaskListIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToDataStrings(titlesCopy);
 
-  [v6 setTaskTitles:v5];
+  [_typedBackingStore setTaskTitles:v5];
 }
 
 - (NSArray)taskTitles
 {
-  v2 = [(INCreateTaskListIntent *)self _typedBackingStore];
-  v3 = [v2 taskTitles];
-  v4 = INIntentSlotValueTransformFromDataStrings(v3);
+  _typedBackingStore = [(INCreateTaskListIntent *)self _typedBackingStore];
+  taskTitles = [_typedBackingStore taskTitles];
+  v4 = INIntentSlotValueTransformFromDataStrings(taskTitles);
 
   return v4;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = a3;
-  v6 = [(INCreateTaskListIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToDataString(v4);
+  titleCopy = title;
+  _typedBackingStore = [(INCreateTaskListIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToDataString(titleCopy);
 
-  [v6 setTitle:v5];
+  [_typedBackingStore setTitle:v5];
 }
 
 - (INSpeakableString)title
 {
-  v2 = [(INCreateTaskListIntent *)self _typedBackingStore];
-  v3 = [v2 title];
-  v4 = INIntentSlotValueTransformFromDataString(v3);
+  _typedBackingStore = [(INCreateTaskListIntent *)self _typedBackingStore];
+  title = [_typedBackingStore title];
+  v4 = INIntentSlotValueTransformFromDataString(title);
 
   return v4;
 }
@@ -143,28 +143,28 @@
   return v12;
 }
 
-- (void)_setMetadata:(id)a3
+- (void)_setMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = [(INCreateTaskListIntent *)self _typedBackingStore];
-  [v5 setIntentMetadata:v4];
+  metadataCopy = metadata;
+  _typedBackingStore = [(INCreateTaskListIntent *)self _typedBackingStore];
+  [_typedBackingStore setIntentMetadata:metadataCopy];
 }
 
 - (id)_metadata
 {
-  v2 = [(INCreateTaskListIntent *)self _typedBackingStore];
-  v3 = [v2 intentMetadata];
+  _typedBackingStore = [(INCreateTaskListIntent *)self _typedBackingStore];
+  intentMetadata = [_typedBackingStore intentMetadata];
 
-  return v3;
+  return intentMetadata;
 }
 
 - (id)_typedBackingStore
 {
-  v2 = [(INIntent *)self backingStore];
+  backingStore = [(INIntent *)self backingStore];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = backingStore;
   }
 
   else

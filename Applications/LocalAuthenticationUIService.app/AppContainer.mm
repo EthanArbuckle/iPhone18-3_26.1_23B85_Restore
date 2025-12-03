@@ -20,7 +20,7 @@
 
 - (void)assemble
 {
-  v2 = self;
+  selfCopy = self;
   AppContainer.assemble()();
 }
 

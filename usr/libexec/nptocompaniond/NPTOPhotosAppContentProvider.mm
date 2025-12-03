@@ -1,18 +1,18 @@
 @interface NPTOPhotosAppContentProvider
-- (NPTOPhotosAppContentProvider)initWithDevice:(id)a3;
+- (NPTOPhotosAppContentProvider)initWithDevice:(id)device;
 - (NPTOSyncContentProviderDelegate)delegate;
 - (id)assetCollections;
-- (id)assetsForAssetCollection:(id)a3;
+- (id)assetsForAssetCollection:(id)collection;
 - (void)_invalidateContent;
 - (void)dealloc;
-- (void)photoLibraryDidChange:(id)a3;
+- (void)photoLibraryDidChange:(id)change;
 @end
 
 @implementation NPTOPhotosAppContentProvider
 
-- (NPTOPhotosAppContentProvider)initWithDevice:(id)a3
+- (NPTOPhotosAppContentProvider)initWithDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v34.receiver = self;
   v34.super_class = NPTOPhotosAppContentProvider;
   v5 = [(NPTOPhotosAppContentProvider *)&v34 init];
@@ -23,7 +23,7 @@
     v5->_queue = v6;
 
     v8 = +[NRPairedDeviceRegistry sharedInstance];
-    v9 = [v8 deviceForIDSDevice:v4];
+    v9 = [v8 deviceForIDSDevice:deviceCopy];
 
     v10 = [[NPTOPreferencesAccessor alloc] initWithDevice:v9];
     preferencesAccessor = v5->_preferencesAccessor;
@@ -95,9 +95,9 @@
     assetCollections = self->_assetCollections;
     if (!assetCollections)
     {
-      v4 = [(NPTOPreferencesAccessor *)self->_preferencesAccessor npto_fetchSyncedAlbum];
+      npto_fetchSyncedAlbum = [(NPTOPreferencesAccessor *)self->_preferencesAccessor npto_fetchSyncedAlbum];
       v5 = self->_assetCollections;
-      self->_assetCollections = v4;
+      self->_assetCollections = npto_fetchSyncedAlbum;
 
       assetCollections = self->_assetCollections;
     }
@@ -113,11 +113,11 @@
   return v6;
 }
 
-- (id)assetsForAssetCollection:(id)a3
+- (id)assetsForAssetCollection:(id)collection
 {
-  v4 = a3;
+  collectionCopy = collection;
   v5 = objc_alloc_init(PHFetchOptions);
-  if (_os_feature_enabled_impl() && [v4 assetCollectionSubtype] == 101)
+  if (_os_feature_enabled_impl() && [collectionCopy assetCollectionSubtype] == 101)
   {
     [v5 setExcludeSensitiveAndUnprocessedAssets:1];
     v6 = sub_10000268C();
@@ -154,22 +154,22 @@
   v12 = [NSArray arrayWithObjects:&v17 count:1];
   [v5 addFetchPropertySets:v12];
 
-  v13 = [PHAsset fetchAssetsInAssetCollection:v4 options:v5];
+  v13 = [PHAsset fetchAssetsInAssetCollection:collectionCopy options:v5];
 
   return v13;
 }
 
-- (void)photoLibraryDidChange:(id)a3
+- (void)photoLibraryDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100048318;
   v7[3] = &unk_10008B1E8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = changeCopy;
+  v6 = changeCopy;
   dispatch_async(queue, v7);
 }
 
@@ -190,8 +190,8 @@
   assetCollections = self->_assetCollections;
   self->_assetCollections = 0;
 
-  v5 = [(NPTOPhotosAppContentProvider *)self delegate];
-  [v5 contentProviderDidInvalidateContent:self];
+  delegate = [(NPTOPhotosAppContentProvider *)self delegate];
+  [delegate contentProviderDidInvalidateContent:self];
 }
 
 - (NPTOSyncContentProviderDelegate)delegate

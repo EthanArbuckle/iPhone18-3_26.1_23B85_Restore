@@ -1,17 +1,17 @@
 @interface ShowcaseCollectionViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityCustomActions;
 - (id)accessibilityUserInputLabels;
 @end
 
 @implementation ShowcaseCollectionViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"ShelfKitCollectionViews.ShowcaseCollectionViewCell" hasInstanceMethod:@"accessibilityCaptionLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ShelfKitCollectionViews.ShowcaseCollectionViewCell" hasInstanceMethod:@"accessibilityTitleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ShelfKitCollectionViews.ShowcaseCollectionViewCell" hasInstanceMethod:@"accessibilitySubtitleLabel" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"ShelfKitCollectionViews.ShowcaseCollectionViewCell" hasInstanceMethod:@"accessibilityCaptionLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ShelfKitCollectionViews.ShowcaseCollectionViewCell" hasInstanceMethod:@"accessibilityTitleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ShelfKitCollectionViews.ShowcaseCollectionViewCell" hasInstanceMethod:@"accessibilitySubtitleLabel" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityUserInputLabels

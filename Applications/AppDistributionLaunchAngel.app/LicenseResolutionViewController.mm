@@ -1,14 +1,14 @@
 @interface LicenseResolutionViewController
-- (_TtC26AppDistributionLaunchAngel31LicenseResolutionViewController)initWithCoder:(id)a3;
-- (_TtC26AppDistributionLaunchAngel31LicenseResolutionViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC26AppDistributionLaunchAngel31LicenseResolutionViewController)initWithCoder:(id)coder;
+- (_TtC26AppDistributionLaunchAngel31LicenseResolutionViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (int64_t)preferredStatusBarStyle;
-- (void)presentationControllerDidDismiss:(id)a3;
-- (void)safariViewControllerDidFinish:(id)a3;
+- (void)presentationControllerDidDismiss:(id)dismiss;
+- (void)safariViewControllerDidFinish:(id)finish;
 @end
 
 @implementation LicenseResolutionViewController
 
-- (_TtC26AppDistributionLaunchAngel31LicenseResolutionViewController)initWithCoder:(id)a3
+- (_TtC26AppDistributionLaunchAngel31LicenseResolutionViewController)initWithCoder:(id)coder
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -22,10 +22,10 @@
   *v4 = 0;
   v4[1] = 0;
   v5 = OBJC_IVAR____TtC26AppDistributionLaunchAngel31LicenseResolutionViewController_isIPad;
-  v6 = [objc_opt_self() currentDevice];
-  v7 = [v6 userInterfaceIdiom];
+  currentDevice = [objc_opt_self() currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  *(&self->super.super.super.isa + v5) = v7 == 1;
+  *(&self->super.super.super.isa + v5) = userInterfaceIdiom == 1;
   result = _assertionFailure(_:_:file:line:flags:)();
   __break(1u);
   return result;
@@ -46,7 +46,7 @@
   return ~v3 & 1;
 }
 
-- (_TtC26AppDistributionLaunchAngel31LicenseResolutionViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC26AppDistributionLaunchAngel31LicenseResolutionViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -61,7 +61,7 @@
   return result;
 }
 
-- (void)safariViewControllerDidFinish:(id)a3
+- (void)safariViewControllerDidFinish:(id)finish
 {
   v4 = sub_1000047BC(&unk_100088F10, &qword_100065D60);
   v5 = *(*(v4 - 8) + 64);
@@ -73,11 +73,11 @@
   v9[2] = 0;
   v9[3] = 0;
   v9[4] = self;
-  v10 = self;
+  selfCopy = self;
   sub_100007654(0, 0, v7, &unk_1000662F0, v9);
 }
 
-- (void)presentationControllerDidDismiss:(id)a3
+- (void)presentationControllerDidDismiss:(id)dismiss
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -87,7 +87,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v4 = self;
+  selfCopy = self;
   sub_100012C50();
 }
 

@@ -1,58 +1,58 @@
 @interface VUIAccountViewController
-- (VUIAccountViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)signInController:(id)a3 didCompleteWithOperationsResults:(id)a4;
-- (void)signInControllerDidCancel:(id)a3;
-- (void)signInControllerDidSkip:(id)a3;
+- (VUIAccountViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)signInController:(id)controller didCompleteWithOperationsResults:(id)results;
+- (void)signInControllerDidCancel:(id)cancel;
+- (void)signInControllerDidSkip:(id)skip;
 - (void)viewDidLayoutSubviews;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation VUIAccountViewController
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  AccountViewController.viewWillAppear(_:)(a3);
+  selfCopy = self;
+  AccountViewController.viewWillAppear(_:)(appear);
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   AccountViewController.viewDidLayoutSubviews()();
 }
 
-- (VUIAccountViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (VUIAccountViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_1E4205F14();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   AccountViewController.init(nibName:bundle:)();
 }
 
-- (void)signInControllerDidCancel:(id)a3
+- (void)signInControllerDidCancel:(id)cancel
 {
-  v4 = a3;
-  v5 = self;
+  cancelCopy = cancel;
+  selfCopy = self;
   OUTLINED_FUNCTION_1_26();
   AccountViewController.signInControllerDidCancel(_:)();
 }
 
-- (void)signInController:(id)a3 didCompleteWithOperationsResults:(id)a4
+- (void)signInController:(id)controller didCompleteWithOperationsResults:(id)results
 {
   sub_1E3280A90(0, &unk_1ECF37CB0);
   v6 = sub_1E4205C64();
-  v7 = a3;
-  v8 = self;
-  AccountViewController.signInController(_:didCompleteWithOperationsResults:)(v7, v6);
+  controllerCopy = controller;
+  selfCopy = self;
+  AccountViewController.signInController(_:didCompleteWithOperationsResults:)(controllerCopy, v6);
 }
 
-- (void)signInControllerDidSkip:(id)a3
+- (void)signInControllerDidSkip:(id)skip
 {
-  v4 = a3;
-  v5 = self;
+  skipCopy = skip;
+  selfCopy = self;
   OUTLINED_FUNCTION_1_26();
   AccountViewController.signInControllerDidSkip(_:)();
 }

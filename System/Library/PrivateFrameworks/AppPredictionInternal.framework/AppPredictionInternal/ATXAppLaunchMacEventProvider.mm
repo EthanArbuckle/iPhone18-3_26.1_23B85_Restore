@@ -1,12 +1,12 @@
 @interface ATXAppLaunchMacEventProvider
 - (ATXAppLaunchMacEventProvider)init;
-- (BOOL)isEventFromProvider:(id)a3;
-- (id)aggregationEventsFromEvent:(id)a3;
-- (id)biomePublisherWithBookmark:(id)a3 devicePlatform:(int64_t)a4 startTime:(double)a5;
-- (id)dateIntervalFromEvent:(id)a3;
+- (BOOL)isEventFromProvider:(id)provider;
+- (id)aggregationEventsFromEvent:(id)event;
+- (id)biomePublisherWithBookmark:(id)bookmark devicePlatform:(int64_t)platform startTime:(double)time;
+- (id)dateIntervalFromEvent:(id)event;
 - (id)eventsFromPublisher;
-- (id)iOSBundleIDForMacOSBundleID:(id)a3;
-- (id)remoteDevicesForDevicePlatform:(int64_t)a3;
+- (id)iOSBundleIDForMacOSBundleID:(id)d;
+- (id)remoteDevicesForDevicePlatform:(int64_t)platform;
 @end
 
 @implementation ATXAppLaunchMacEventProvider
@@ -20,8 +20,8 @@
   {
     v3 = objc_alloc(MEMORY[0x277CBEB58]);
     v4 = +[_ATXAppIconState sharedInstance];
-    v5 = [v4 allInstalledAppsKnownToSpringBoard];
-    v6 = [v3 initWithArray:v5];
+    allInstalledAppsKnownToSpringBoard = [v4 allInstalledAppsKnownToSpringBoard];
+    v6 = [v3 initWithArray:allInstalledAppsKnownToSpringBoard];
     iOSInstalledApps = v2->_iOSInstalledApps;
     v2->_iOSInstalledApps = v6;
   }
@@ -29,33 +29,33 @@
   return v2;
 }
 
-- (id)biomePublisherWithBookmark:(id)a3 devicePlatform:(int64_t)a4 startTime:(double)a5
+- (id)biomePublisherWithBookmark:(id)bookmark devicePlatform:(int64_t)platform startTime:(double)time
 {
   v8 = BiomeLibrary();
   v9 = [v8 App];
-  v10 = [v9 InFocus];
+  inFocus = [v9 InFocus];
 
-  v11 = [(ATXAppLaunchMacEventProvider *)self remoteDevicesForDevicePlatform:a4];
+  v11 = [(ATXAppLaunchMacEventProvider *)self remoteDevicesForDevicePlatform:platform];
   if ([v11 count])
   {
-    v12 = [v10 publishersForDevices:v11 withUseCase:*MEMORY[0x277CEBB48] startTime:0 includeLocal:&__block_literal_global_219 pipeline:a5];
-    v13 = [v12 merge];
+    v12 = [inFocus publishersForDevices:v11 withUseCase:*MEMORY[0x277CEBB48] startTime:0 includeLocal:&__block_literal_global_219 pipeline:time];
+    merge = [v12 merge];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __84__ATXAppLaunchMacEventProvider_biomePublisherWithBookmark_devicePlatform_startTime___block_invoke_2;
     v16[3] = &__block_descriptor_34_e48___ATXBiomeAppLaunchWrapper_16__0__BMStoreEvent_8l;
-    v17 = a4 == 4;
-    v18 = a4 == 3;
-    v14 = [v13 mapWithTransform:v16];
+    v17 = platform == 4;
+    v18 = platform == 3;
+    bpsPublisher = [merge mapWithTransform:v16];
   }
 
   else
   {
     v12 = objc_opt_new();
-    v14 = [v12 bpsPublisher];
+    bpsPublisher = [v12 bpsPublisher];
   }
 
-  return v14;
+  return bpsPublisher;
 }
 
 ATXBiomeAppLaunchWrapper *__84__ATXAppLaunchMacEventProvider_biomePublisherWithBookmark_devicePlatform_startTime___block_invoke_2(uint64_t a1, void *a2)
@@ -69,7 +69,7 @@ ATXBiomeAppLaunchWrapper *__84__ATXAppLaunchMacEventProvider_biomePublisherWithB
   return v6;
 }
 
-- (id)remoteDevicesForDevicePlatform:(int64_t)a3
+- (id)remoteDevicesForDevicePlatform:(int64_t)platform
 {
   v20 = *MEMORY[0x277D85DE8];
   v4 = objc_opt_new();
@@ -80,7 +80,7 @@ ATXBiomeAppLaunchWrapper *__84__ATXAppLaunchMacEventProvider_biomePublisherWithB
   v14[1] = 3221225472;
   v14[2] = __63__ATXAppLaunchMacEventProvider_remoteDevicesForDevicePlatform___block_invoke;
   v14[3] = &__block_descriptor_40_e18_B16__0__BMDevice_8l;
-  v14[4] = a3;
+  v14[4] = platform;
   v7 = [v5 _pas_filteredArrayWithTest:v14];
 
   v8 = __atxlog_handle_modes();
@@ -103,7 +103,7 @@ ATXBiomeAppLaunchWrapper *__84__ATXAppLaunchMacEventProvider_biomePublisherWithB
       *buf = 134218240;
       v17 = v11;
       v18 = 2048;
-      v19 = a3;
+      platformCopy = platform;
       _os_log_impl(&dword_2263AA000, v9, OS_LOG_TYPE_INFO, "ATXAppLaunchMacEventProvider: Got %lu remote devices for BMDevicePlatform: %ld", buf, 0x16u);
     }
 
@@ -154,17 +154,17 @@ void __51__ATXAppLaunchMacEventProvider_eventsFromPublisher__block_invoke_2(uint
   }
 }
 
-- (id)aggregationEventsFromEvent:(id)a3
+- (id)aggregationEventsFromEvent:(id)event
 {
   v23[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([(ATXAppLaunchMacEventProvider *)self isEventFromProvider:v4])
+  eventCopy = event;
+  if ([(ATXAppLaunchMacEventProvider *)self isEventFromProvider:eventCopy])
   {
-    v5 = [v4 appLaunchEvent];
-    if ([v5 starting])
+    appLaunchEvent = [eventCopy appLaunchEvent];
+    if ([appLaunchEvent starting])
     {
-      v6 = [v5 bundleID];
-      v7 = [(ATXAppLaunchMacEventProvider *)self iOSBundleIDForMacOSBundleID:v6];
+      bundleID = [appLaunchEvent bundleID];
+      v7 = [(ATXAppLaunchMacEventProvider *)self iOSBundleIDForMacOSBundleID:bundleID];
 
       if (v7 && [(NSSet *)self->_iOSInstalledApps containsObject:v7])
       {
@@ -184,9 +184,9 @@ void __51__ATXAppLaunchMacEventProvider_eventsFromPublisher__block_invoke_2(uint
         v14 = [v12 initWithBundleId:v7 itunesGenreIds:v13];
 
         v15 = [ATXModeEvent alloc];
-        v16 = [v5 absoluteTimestamp];
-        v17 = [v5 absoluteTimestamp];
-        v18 = [(ATXModeEvent *)v15 initWithStartDate:v16 endDate:v17 entity:v14];
+        absoluteTimestamp = [appLaunchEvent absoluteTimestamp];
+        absoluteTimestamp2 = [appLaunchEvent absoluteTimestamp];
+        v18 = [(ATXModeEvent *)v15 initWithStartDate:absoluteTimestamp endDate:absoluteTimestamp2 entity:v14];
 
         v19 = objc_alloc(MEMORY[0x277CBEA60]);
         v20 = [v19 initWithObjects:{v18, 0}];
@@ -214,27 +214,27 @@ void __51__ATXAppLaunchMacEventProvider_eventsFromPublisher__block_invoke_2(uint
   return v20;
 }
 
-- (BOOL)isEventFromProvider:(id)a3
+- (BOOL)isEventFromProvider:(id)provider
 {
-  v3 = a3;
+  providerCopy = provider;
   objc_opt_class();
-  v4 = (objc_opt_isKindOfClass() & 1) != 0 && ![v3 isLocal];
+  v4 = (objc_opt_isKindOfClass() & 1) != 0 && ![providerCopy isLocal];
 
   return v4;
 }
 
-- (id)dateIntervalFromEvent:(id)a3
+- (id)dateIntervalFromEvent:(id)event
 {
-  v4 = a3;
-  if ([(ATXAppLaunchMacEventProvider *)self isEventFromProvider:v4])
+  eventCopy = event;
+  if ([(ATXAppLaunchMacEventProvider *)self isEventFromProvider:eventCopy])
   {
     v5 = MEMORY[0x277CCA970];
-    v6 = v4;
+    v6 = eventCopy;
     v7 = [v5 alloc];
-    v8 = [v6 launchTimestamp];
-    v9 = [v6 launchTimestamp];
+    launchTimestamp = [v6 launchTimestamp];
+    launchTimestamp2 = [v6 launchTimestamp];
 
-    v10 = [v7 initWithStartDate:v8 endDate:v9];
+    v10 = [v7 initWithStartDate:launchTimestamp endDate:launchTimestamp2];
   }
 
   else
@@ -245,12 +245,12 @@ void __51__ATXAppLaunchMacEventProvider_eventsFromPublisher__block_invoke_2(uint
   return v10;
 }
 
-- (id)iOSBundleIDForMacOSBundleID:(id)a3
+- (id)iOSBundleIDForMacOSBundleID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = objc_autoreleasePoolPush();
-  v5 = [MEMORY[0x277CF9650] sharedCategories];
-  v6 = [v5 bundleIDForPlatform:*MEMORY[0x277CF9640] fromBundleID:v3 platform:*MEMORY[0x277CF9648]];
+  mEMORY[0x277CF9650] = [MEMORY[0x277CF9650] sharedCategories];
+  v6 = [mEMORY[0x277CF9650] bundleIDForPlatform:*MEMORY[0x277CF9640] fromBundleID:dCopy platform:*MEMORY[0x277CF9648]];
 
   objc_autoreleasePoolPop(v4);
 

@@ -1,12 +1,12 @@
 @interface THWReviewDragTargetRep
 - (id)p_questionHost;
-- (void)addAdditionalChildLayersToArray:(id)a3;
+- (void)addAdditionalChildLayersToArray:(id)array;
 - (void)dealloc;
 - (void)p_addPulseAnimation;
 - (void)p_addRelaxAnimation;
 - (void)p_updateLayer;
-- (void)setChoiceState:(int)a3;
-- (void)setRadioState:(int)a3 animated:(BOOL)a4;
+- (void)setChoiceState:(int)state;
+- (void)setRadioState:(int)state animated:(BOOL)animated;
 @end
 
 @implementation THWReviewDragTargetRep
@@ -18,7 +18,7 @@
   [(THWReviewDragTargetRep *)&v3 dealloc];
 }
 
-- (void)addAdditionalChildLayersToArray:(id)a3
+- (void)addAdditionalChildLayersToArray:(id)array
 {
   v5.receiver = self;
   v5.super_class = THWReviewDragTargetRep;
@@ -26,7 +26,7 @@
   [(THWReviewDragTargetRep *)self p_updateLayer];
   if (self->_buttonLayer)
   {
-    [a3 addObject:?];
+    [array addObject:?];
   }
 }
 
@@ -67,38 +67,38 @@
   [(CALayer *)self->_buttonLayer setAffineTransform:&v6];
 }
 
-- (void)setChoiceState:(int)a3
+- (void)setChoiceState:(int)state
 {
-  if (self->_choiceState != a3)
+  if (self->_choiceState != state)
   {
-    self->_choiceState = a3;
+    self->_choiceState = state;
     [(THWReviewDragTargetRep *)self p_updateLayer];
   }
 }
 
-- (void)setRadioState:(int)a3 animated:(BOOL)a4
+- (void)setRadioState:(int)state animated:(BOOL)animated
 {
-  if (self->_radioState == a3)
+  if (self->_radioState == state)
   {
     return;
   }
 
-  v4 = a4;
-  self->_radioState = a3;
+  animatedCopy = animated;
+  self->_radioState = state;
   [(THWReviewDragTargetRep *)self p_updateLayer];
-  if (!v4)
+  if (!animatedCopy)
   {
     return;
   }
 
-  if (a3 == 2)
+  if (state == 2)
   {
     goto LABEL_6;
   }
 
-  if (a3 != 1)
+  if (state != 1)
   {
-    if (a3)
+    if (state)
     {
       return;
     }
@@ -159,9 +159,9 @@ LABEL_6:
 
 - (id)p_questionHost
 {
-  v3 = [(THWReviewDragTargetRep *)self interactiveCanvasController];
+  interactiveCanvasController = [(THWReviewDragTargetRep *)self interactiveCanvasController];
 
-  return [v3 ancestorRepOfRep:self orDelegateConformingToProtocol:&OBJC_PROTOCOL___THWReviewQuestionHosting];
+  return [interactiveCanvasController ancestorRepOfRep:self orDelegateConformingToProtocol:&OBJC_PROTOCOL___THWReviewQuestionHosting];
 }
 
 @end

@@ -1,8 +1,8 @@
 @interface BRCFileProviderDaemonUtils
 + (id)sharedInstance;
 - (BOOL)boostFileProvider;
-- (BOOL)waitForFPToBeReadyToAcceptXPCWithError:(id *)a3;
-- (id)_initWithSyncBubble:(BOOL)a3 isFPFS:(BOOL)a4;
+- (BOOL)waitForFPToBeReadyToAcceptXPCWithError:(id *)error;
+- (id)_initWithSyncBubble:(BOOL)bubble isFPFS:(BOOL)s;
 - (void)_signalFPReady;
 - (void)_waitIsOver;
 - (void)dealloc;
@@ -18,7 +18,7 @@
   block[1] = 3221225472;
   block[2] = __44__BRCFileProviderDaemonUtils_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken != -1)
   {
     dispatch_once(&sharedInstance_onceToken, block);
@@ -32,18 +32,18 @@
 - (BOOL)boostFileProvider
 {
   v17 = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
-  fpReady = v2->_fpReady;
-  if (fpReady || !v2->_startedWaitingForFP)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  fpReady = selfCopy->_fpReady;
+  if (fpReady || !selfCopy->_startedWaitingForFP)
   {
-    objc_sync_exit(v2);
+    objc_sync_exit(selfCopy);
   }
 
   else
   {
-    shouldBoostFileProvider = v2->_shouldBoostFileProvider;
-    objc_sync_exit(v2);
+    shouldBoostFileProvider = selfCopy->_shouldBoostFileProvider;
+    objc_sync_exit(selfCopy);
 
     if (shouldBoostFileProvider)
     {
@@ -57,14 +57,14 @@
         v14 = __Block_byref_object_copy__56;
         v15 = __Block_byref_object_dispose__56;
         v16 = 0;
-        v7 = [MEMORY[0x277CC63A8] synchronousSharedConnectionProxy];
+        synchronousSharedConnectionProxy = [MEMORY[0x277CC63A8] synchronousSharedConnectionProxy];
         v11[0] = MEMORY[0x277D85DD0];
         v11[1] = 3221225472;
         v11[2] = __47__BRCFileProviderDaemonUtils_boostFileProvider__block_invoke;
         v11[3] = &unk_278508260;
-        v11[4] = v2;
+        v11[4] = selfCopy;
         v11[5] = &buf;
-        [v7 wakeUpForURL:v6 completionHandler:v11];
+        [synchronousSharedConnectionProxy wakeUpForURL:v6 completionHandler:v11];
 
         fpReady = *(*(&buf + 1) + 40) == 0;
         _Block_object_dispose(&buf, 8);
@@ -95,7 +95,7 @@
   return fpReady;
 }
 
-- (id)_initWithSyncBubble:(BOOL)a3 isFPFS:(BOOL)a4
+- (id)_initWithSyncBubble:(BOOL)bubble isFPFS:(BOOL)s
 {
   v16.receiver = self;
   v16.super_class = BRCFileProviderDaemonUtils;
@@ -103,8 +103,8 @@
   v7 = v6;
   if (v6)
   {
-    v6->_inSyncBubble = a3;
-    v6->_isFPFS = a4;
+    v6->_inSyncBubble = bubble;
+    v6->_isFPFS = s;
     *&v6->_interrupted = 0;
     *&v6->_startedWaitingForFP = 0;
     v8 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_UNSPECIFIED, 0);
@@ -144,8 +144,8 @@ uint64_t __44__BRCFileProviderDaemonUtils_sharedInstance__block_invoke(uint64_t 
 - (void)interrupt
 {
   v8 = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v3 = brc_bread_crumbs();
   v4 = brc_default_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -155,9 +155,9 @@ uint64_t __44__BRCFileProviderDaemonUtils_sharedInstance__block_invoke(uint64_t 
     _os_log_impl(&dword_223E7A000, v4, OS_LOG_TYPE_DEFAULT, "[NOTICE] got interrupted%@", &v6, 0xCu);
   }
 
-  v2->_interrupted = 1;
-  dispatch_semaphore_signal(v2->_waitForFPSemaphore);
-  objc_sync_exit(v2);
+  selfCopy->_interrupted = 1;
+  dispatch_semaphore_signal(selfCopy->_waitForFPSemaphore);
+  objc_sync_exit(selfCopy);
 
   v5 = *MEMORY[0x277D85DE8];
 }
@@ -165,9 +165,9 @@ uint64_t __44__BRCFileProviderDaemonUtils_sharedInstance__block_invoke(uint64_t 
 - (void)_signalFPReady
 {
   v8 = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_fpReady)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_fpReady)
   {
     v3 = brc_bread_crumbs();
     v4 = brc_default_log();
@@ -178,11 +178,11 @@ uint64_t __44__BRCFileProviderDaemonUtils_sharedInstance__block_invoke(uint64_t 
       _os_log_impl(&dword_223E7A000, v4, OS_LOG_TYPE_DEFAULT, "[NOTICE] FP is now ready to accept xpc connections%@", &v6, 0xCu);
     }
 
-    v2->_fpReady = 1;
-    dispatch_semaphore_signal(v2->_waitForFPSemaphore);
+    selfCopy->_fpReady = 1;
+    dispatch_semaphore_signal(selfCopy->_waitForFPSemaphore);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   v5 = *MEMORY[0x277D85DE8];
 }
@@ -222,7 +222,7 @@ uint64_t __44__BRCFileProviderDaemonUtils_sharedInstance__block_invoke(uint64_t 
   objc_sync_exit(obj);
 }
 
-- (BOOL)waitForFPToBeReadyToAcceptXPCWithError:(id *)a3
+- (BOOL)waitForFPToBeReadyToAcceptXPCWithError:(id *)error
 {
   v52 = *MEMORY[0x277D85DE8];
   if (!self->_isFPFS && self->_inSyncBubble)
@@ -236,9 +236,9 @@ uint64_t __44__BRCFileProviderDaemonUtils_sharedInstance__block_invoke(uint64_t 
       _os_log_impl(&dword_223E7A000, v5, OS_LOG_TYPE_DEFAULT, "[NOTICE] Device is in sync bubble%@", buf, 0xCu);
     }
 
-    v6 = [MEMORY[0x277CCA9B8] brc_errorCantCallFPInSyncBubble];
-    fpReady = v6 == 0;
-    if (v6)
+    brc_errorCantCallFPInSyncBubble = [MEMORY[0x277CCA9B8] brc_errorCantCallFPInSyncBubble];
+    fpReady = brc_errorCantCallFPInSyncBubble == 0;
+    if (brc_errorCantCallFPInSyncBubble)
     {
       v8 = brc_bread_crumbs();
       v9 = brc_default_log();
@@ -248,34 +248,34 @@ uint64_t __44__BRCFileProviderDaemonUtils_sharedInstance__block_invoke(uint64_t 
         *buf = 136315906;
         v45 = "[BRCFileProviderDaemonUtils waitForFPToBeReadyToAcceptXPCWithError:]";
         v46 = 2080;
-        if (!a3)
+        if (!error)
         {
           v40 = "(ignored by caller)";
         }
 
         v47 = v40;
         v48 = 2112;
-        v49 = v6;
+        v49 = brc_errorCantCallFPInSyncBubble;
         v50 = 2112;
         v51 = v8;
         _os_log_error_impl(&dword_223E7A000, v9, 0x90u, "[ERROR] %s: %s error: %@%@", buf, 0x2Au);
       }
     }
 
-    if (a3)
+    if (error)
     {
-      v10 = v6;
-      *a3 = v6;
+      v10 = brc_errorCantCallFPInSyncBubble;
+      *error = brc_errorCantCallFPInSyncBubble;
     }
 
     goto LABEL_27;
   }
 
-  v11 = self;
-  objc_sync_enter(v11);
-  startedWaitingForFP = v11->_startedWaitingForFP;
-  v11->_startedWaitingForFP = 1;
-  objc_sync_exit(v11);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  startedWaitingForFP = selfCopy->_startedWaitingForFP;
+  selfCopy->_startedWaitingForFP = 1;
+  objc_sync_exit(selfCopy);
 
   if (!startedWaitingForFP)
   {
@@ -286,7 +286,7 @@ uint64_t __44__BRCFileProviderDaemonUtils_sharedInstance__block_invoke(uint64_t 
       [(BRCFileProviderDaemonUtils *)v13 waitForFPToBeReadyToAcceptXPCWithError:v14];
     }
 
-    if ([(BRCFileProviderDaemonUtils *)v11 boostFileProvider])
+    if ([(BRCFileProviderDaemonUtils *)selfCopy boostFileProvider])
     {
       v15 = brc_bread_crumbs();
       v16 = brc_default_log();
@@ -302,31 +302,31 @@ uint64_t __44__BRCFileProviderDaemonUtils_sharedInstance__block_invoke(uint64_t 
       v43[1] = 3221225472;
       v43[2] = __69__BRCFileProviderDaemonUtils_waitForFPToBeReadyToAcceptXPCWithError___block_invoke;
       v43[3] = &unk_278500DC8;
-      v43[4] = v11;
+      v43[4] = selfCopy;
       v17 = [MEMORY[0x277CC6420] beginMonitoringProviderDomainChangesWithHandler:v43];
       v18 = [BRCUserDefaults defaultsForMangledID:0];
-      v19 = [v18 fpReadyForXpcCheckMaxWaitTimeInSec];
+      fpReadyForXpcCheckMaxWaitTimeInSec = [v18 fpReadyForXpcCheckMaxWaitTimeInSec];
 
-      waitForFPSemaphore = v11->_waitForFPSemaphore;
-      v21 = dispatch_time(0, 1000000000 * v19);
+      waitForFPSemaphore = selfCopy->_waitForFPSemaphore;
+      v21 = dispatch_time(0, 1000000000 * fpReadyForXpcCheckMaxWaitTimeInSec);
       dispatch_semaphore_wait(waitForFPSemaphore, v21);
       [MEMORY[0x277CC6420] endMonitoringProviderDomainChanges:v17];
     }
 
-    [(BRCFileProviderDaemonUtils *)v11 _waitIsOver];
+    [(BRCFileProviderDaemonUtils *)selfCopy _waitIsOver];
   }
 
-  v6 = v11;
-  objc_sync_enter(v6);
-  fpReady = v6->_fpReady;
+  brc_errorCantCallFPInSyncBubble = selfCopy;
+  objc_sync_enter(brc_errorCantCallFPInSyncBubble);
+  fpReady = brc_errorCantCallFPInSyncBubble->_fpReady;
   if (fpReady)
   {
 LABEL_26:
-    objc_sync_exit(v6);
+    objc_sync_exit(brc_errorCantCallFPInSyncBubble);
     goto LABEL_27;
   }
 
-  fpReadyError = v6->_fpReadyError;
+  fpReadyError = brc_errorCantCallFPInSyncBubble->_fpReadyError;
   if (fpReadyError)
   {
     v23 = fpReadyError;
@@ -338,7 +338,7 @@ LABEL_26:
       *buf = 136315906;
       v45 = "[BRCFileProviderDaemonUtils waitForFPToBeReadyToAcceptXPCWithError:]";
       v46 = 2080;
-      if (!a3)
+      if (!error)
       {
         v39 = "(ignored by caller)";
       }
@@ -351,28 +351,28 @@ LABEL_26:
       _os_log_error_impl(&dword_223E7A000, v25, 0x90u, "[ERROR] %s: %s error: %@%@", buf, 0x2Au);
     }
 
-    if (a3)
+    if (error)
     {
       v26 = v23;
-      *a3 = v23;
+      *error = v23;
     }
 
     goto LABEL_26;
   }
 
-  objc_sync_exit(v6);
+  objc_sync_exit(brc_errorCantCallFPInSyncBubble);
 
-  dispatch_sync(v6->_fileProviderReadyQueue, &__block_literal_global_76);
-  v29 = v6;
+  dispatch_sync(brc_errorCantCallFPInSyncBubble->_fileProviderReadyQueue, &__block_literal_global_76);
+  v29 = brc_errorCantCallFPInSyncBubble;
   objc_sync_enter(v29);
-  if (v6->_fpReady)
+  if (brc_errorCantCallFPInSyncBubble->_fpReady)
   {
     fpReady = 1;
   }
 
   else
   {
-    v30 = v6->_fpReadyError;
+    v30 = brc_errorCantCallFPInSyncBubble->_fpReadyError;
     if (v30)
     {
       v31 = v30;
@@ -384,7 +384,7 @@ LABEL_26:
         *buf = 136315906;
         v45 = "[BRCFileProviderDaemonUtils waitForFPToBeReadyToAcceptXPCWithError:]";
         v46 = 2080;
-        if (!a3)
+        if (!error)
         {
           v41 = "(ignored by caller)";
         }
@@ -421,7 +421,7 @@ LABEL_26:
           *buf = 136315906;
           v45 = "[BRCFileProviderDaemonUtils waitForFPToBeReadyToAcceptXPCWithError:]";
           v46 = 2080;
-          if (!a3)
+          if (!error)
           {
             v42 = "(ignored by caller)";
           }
@@ -436,15 +436,15 @@ LABEL_26:
       }
     }
 
-    if (a3)
+    if (error)
     {
       v38 = v31;
-      *a3 = v31;
+      *error = v31;
     }
   }
 
   objc_sync_exit(v29);
-  v6 = v29;
+  brc_errorCantCallFPInSyncBubble = v29;
 LABEL_27:
 
   v27 = *MEMORY[0x277D85DE8];

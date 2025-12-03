@@ -1,5 +1,5 @@
 @interface _GCDeviceTypeDeclared
-- (uint64_t)initWithType:(uint64_t)a1;
+- (uint64_t)initWithType:(uint64_t)type;
 - (void)dealloc;
 @end
 
@@ -12,14 +12,14 @@
   [(_GCDeviceTypeDeclared *)&v3 dealloc];
 }
 
-- (uint64_t)initWithType:(uint64_t)a1
+- (uint64_t)initWithType:(uint64_t)type
 {
-  if (a1)
+  if (type)
   {
-    *(a1 + 8) = a2;
+    *(type + 8) = a2;
   }
 
-  return a1;
+  return type;
 }
 
 @end

@@ -1,5 +1,5 @@
 @interface UIPDFPageRenderOperation
-- (UIPDFPageRenderOperation)initWithJob:(id)a3;
+- (UIPDFPageRenderOperation)initWithJob:(id)job;
 - (void)completeOperation;
 - (void)dealloc;
 - (void)main;
@@ -8,7 +8,7 @@
 
 @implementation UIPDFPageRenderOperation
 
-- (UIPDFPageRenderOperation)initWithJob:(id)a3
+- (UIPDFPageRenderOperation)initWithJob:(id)job
 {
   v7.receiver = self;
   v7.super_class = UIPDFPageRenderOperation;
@@ -16,7 +16,7 @@
   v5 = v4;
   if (v4)
   {
-    [(UIPDFPageRenderOperation *)v4 setJob:a3];
+    [(UIPDFPageRenderOperation *)v4 setJob:job];
   }
 
   return v5;

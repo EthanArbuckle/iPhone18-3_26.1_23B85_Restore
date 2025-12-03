@@ -1,20 +1,20 @@
 @interface COAlarmSnoozeNotification
-- (COAlarmSnoozeNotification)initWithAlarmIdentifier:(id)a3;
-- (COAlarmSnoozeNotification)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (COAlarmSnoozeNotification)initWithAlarmIdentifier:(id)identifier;
+- (COAlarmSnoozeNotification)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation COAlarmSnoozeNotification
 
-- (COAlarmSnoozeNotification)initWithAlarmIdentifier:(id)a3
+- (COAlarmSnoozeNotification)initWithAlarmIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = COAlarmSnoozeNotification;
   v5 = [(COMeshCommand *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     identifier = v5->_identifier;
     v5->_identifier = v6;
   }
@@ -22,15 +22,15 @@
   return v5;
 }
 
-- (COAlarmSnoozeNotification)initWithCoder:(id)a3
+- (COAlarmSnoozeNotification)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = COAlarmSnoozeNotification;
-  v5 = [(COMeshCommand *)&v9 initWithCoder:v4];
+  v5 = [(COMeshCommand *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
   }
@@ -38,14 +38,14 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = COAlarmSnoozeNotification;
-  v4 = a3;
-  [(COMeshCommand *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(COMeshCommand *)&v6 encodeWithCoder:coderCopy];
   v5 = [(COAlarmSnoozeNotification *)self identifier:v6.receiver];
-  [v4 encodeObject:v5 forKey:@"identifier"];
+  [coderCopy encodeObject:v5 forKey:@"identifier"];
 }
 
 @end

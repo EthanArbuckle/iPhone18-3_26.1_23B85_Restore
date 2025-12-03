@@ -1,23 +1,23 @@
 @interface VCReportingDeltaDistribution
-- (void)accumulate:(id)a3;
-- (void)updateReport:(id)a3 withStreamGroup:(id)a4;
-- (void)updateWithPayload:(id)a3;
+- (void)accumulate:(id)accumulate;
+- (void)updateReport:(id)report withStreamGroup:(id)group;
+- (void)updateWithPayload:(id)payload;
 @end
 
 @implementation VCReportingDeltaDistribution
 
-- (void)updateWithPayload:(id)a3
+- (void)updateWithPayload:(id)payload
 {
-  if (a3)
+  if (payload)
   {
     v16.receiver = self;
     v16.super_class = VCReportingDeltaDistribution;
     [(VCReportingDistribution *)&v16 updateWithPayload:?];
-    [objc_msgSend(a3 objectForKeyedSubscript:{-[NSDictionary objectForKeyedSubscript:](-[VCReportingDistribution keys](self, "keys"), "objectForKeyedSubscript:", @"VCReportingDeltaDistributionKey_ReportingAbsoluteSum", "doubleValue"}];
+    [objc_msgSend(payload objectForKeyedSubscript:{-[NSDictionary objectForKeyedSubscript:](-[VCReportingDistribution keys](self, "keys"), "objectForKeyedSubscript:", @"VCReportingDeltaDistributionKey_ReportingAbsoluteSum", "doubleValue"}];
     v6 = v5;
-    [objc_msgSend(a3 objectForKeyedSubscript:{-[NSDictionary objectForKeyedSubscript:](-[VCReportingDistribution keys](self, "keys"), "objectForKeyedSubscript:", @"VCReportingDistributionKey_ReportingSum", "doubleValue"}];
+    [objc_msgSend(payload objectForKeyedSubscript:{-[NSDictionary objectForKeyedSubscript:](-[VCReportingDistribution keys](self, "keys"), "objectForKeyedSubscript:", @"VCReportingDistributionKey_ReportingSum", "doubleValue"}];
     v8 = v7;
-    [objc_msgSend(a3 objectForKeyedSubscript:{-[NSDictionary objectForKeyedSubscript:](-[VCReportingDistribution keys](self, "keys"), "objectForKeyedSubscript:", @"VCReportingDistributionKey_ReportingCount", "doubleValue"}];
+    [objc_msgSend(payload objectForKeyedSubscript:{-[NSDictionary objectForKeyedSubscript:](-[VCReportingDistribution keys](self, "keys"), "objectForKeyedSubscript:", @"VCReportingDistributionKey_ReportingCount", "doubleValue"}];
     if (v9 != 0.0)
     {
       self->_absoluteSum = v6 + self->_absoluteSum;
@@ -26,7 +26,7 @@
       absoluteMin = v10;
       if (v11)
       {
-        [objc_msgSend(a3 objectForKeyedSubscript:{v11, v10), "doubleValue"}];
+        [objc_msgSend(payload objectForKeyedSubscript:{v11, v10), "doubleValue"}];
       }
 
       if (fabs(self->_absoluteMin) < fabs(absoluteMin))
@@ -38,7 +38,7 @@
       v13 = [(NSDictionary *)[(VCReportingDistribution *)self keys] objectForKeyedSubscript:@"VCReportingDeltaDistributionKey_ReportingAbsoluteMax"];
       if (v13)
       {
-        [objc_msgSend(a3 objectForKeyedSubscript:{v13), "doubleValue"}];
+        [objc_msgSend(payload objectForKeyedSubscript:{v13), "doubleValue"}];
         v10 = v14;
       }
 
@@ -58,21 +58,21 @@
   }
 }
 
-- (void)accumulate:(id)a3
+- (void)accumulate:(id)accumulate
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v12.receiver = self;
     v12.super_class = VCReportingDeltaDistribution;
-    [(VCReportingDistribution *)&v12 accumulate:a3];
-    [a3 absoluteSum];
+    [(VCReportingDistribution *)&v12 accumulate:accumulate];
+    [accumulate absoluteSum];
     self->_absoluteSum = v5 + self->_absoluteSum;
     v6 = fabs(self->_absoluteMax);
-    [a3 absoluteMax];
+    [accumulate absoluteMax];
     if (v6 <= fabs(v7))
     {
-      [a3 absoluteMax];
+      [accumulate absoluteMax];
     }
 
     else
@@ -82,10 +82,10 @@
 
     self->_absoluteMax = absoluteMax;
     v9 = fabs(self->_absoluteMin);
-    [a3 absoluteMin];
+    [accumulate absoluteMin];
     if (v9 >= fabs(v10))
     {
-      [a3 absoluteMin];
+      [accumulate absoluteMin];
     }
 
     else
@@ -97,65 +97,65 @@
   }
 }
 
-- (void)updateReport:(id)a3 withStreamGroup:(id)a4
+- (void)updateReport:(id)report withStreamGroup:(id)group
 {
-  if (a3)
+  if (report)
   {
     [(VCReportingDistribution *)self count];
     if (v7 != 0.0)
     {
       v17.receiver = self;
       v17.super_class = VCReportingDeltaDistribution;
-      [(VCReportingDistribution *)&v17 updateReport:a3 withStreamGroup:a4];
+      [(VCReportingDistribution *)&v17 updateReport:report withStreamGroup:group];
       absoluteSum = self->_absoluteSum;
       [(VCReportingDistribution *)self count];
       v10 = v9;
       v11 = [(NSDictionary *)[(VCReportingDistribution *)self keys] objectForKeyedSubscript:@"VCReportingDeltaDistributionKey_AggregatedAbsoluteAverage"];
-      if (a4 && v11)
+      if (group && v11)
       {
-        v12 = [MEMORY[0x277CCACA0] stringWithFormat:@"%@_%@", -[NSDictionary objectForKeyedSubscript:](-[VCReportingDistribution keys](self, "keys"), "objectForKeyedSubscript:", @"VCReportingDeltaDistributionKey_AggregatedAbsoluteAverage", a4];
+        group = [MEMORY[0x277CCACA0] stringWithFormat:@"%@_%@", -[NSDictionary objectForKeyedSubscript:](-[VCReportingDistribution keys](self, "keys"), "objectForKeyedSubscript:", @"VCReportingDeltaDistributionKey_AggregatedAbsoluteAverage", group];
       }
 
       else
       {
-        v12 = [(NSDictionary *)[(VCReportingDistribution *)self keys] objectForKeyedSubscript:@"VCReportingDeltaDistributionKey_AggregatedAbsoluteAverage"];
+        group = [(NSDictionary *)[(VCReportingDistribution *)self keys] objectForKeyedSubscript:@"VCReportingDeltaDistributionKey_AggregatedAbsoluteAverage"];
       }
 
-      if (v12)
+      if (group)
       {
-        [a3 setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithDouble:", absoluteSum / v10), v12}];
+        [report setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithDouble:", absoluteSum / v10), group}];
       }
 
       v13 = [(NSDictionary *)[(VCReportingDistribution *)self keys] objectForKeyedSubscript:@"VCReportingDeltaDistributionKey_AggregatedAbsoluteMin"];
-      if (a4 && v13)
+      if (group && v13)
       {
-        v14 = [MEMORY[0x277CCACA0] stringWithFormat:@"%@_%@", -[NSDictionary objectForKeyedSubscript:](-[VCReportingDistribution keys](self, "keys"), "objectForKeyedSubscript:", @"VCReportingDeltaDistributionKey_AggregatedAbsoluteMin", a4];
+        group2 = [MEMORY[0x277CCACA0] stringWithFormat:@"%@_%@", -[NSDictionary objectForKeyedSubscript:](-[VCReportingDistribution keys](self, "keys"), "objectForKeyedSubscript:", @"VCReportingDeltaDistributionKey_AggregatedAbsoluteMin", group];
       }
 
       else
       {
-        v14 = [(NSDictionary *)[(VCReportingDistribution *)self keys] objectForKeyedSubscript:@"VCReportingDeltaDistributionKey_AggregatedAbsoluteMin"];
+        group2 = [(NSDictionary *)[(VCReportingDistribution *)self keys] objectForKeyedSubscript:@"VCReportingDeltaDistributionKey_AggregatedAbsoluteMin"];
       }
 
-      if (v14)
+      if (group2)
       {
-        [a3 setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithDouble:", self->_absoluteMin), v14}];
+        [report setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithDouble:", self->_absoluteMin), group2}];
       }
 
       v15 = [(NSDictionary *)[(VCReportingDistribution *)self keys] objectForKeyedSubscript:@"VCReportingDeltaDistributionKey_AggregatedAbsoluteMax"];
-      if (a4 && v15)
+      if (group && v15)
       {
-        v16 = [MEMORY[0x277CCACA0] stringWithFormat:@"%@_%@", -[NSDictionary objectForKeyedSubscript:](-[VCReportingDistribution keys](self, "keys"), "objectForKeyedSubscript:", @"VCReportingDeltaDistributionKey_AggregatedAbsoluteMax", a4];
+        group3 = [MEMORY[0x277CCACA0] stringWithFormat:@"%@_%@", -[NSDictionary objectForKeyedSubscript:](-[VCReportingDistribution keys](self, "keys"), "objectForKeyedSubscript:", @"VCReportingDeltaDistributionKey_AggregatedAbsoluteMax", group];
       }
 
       else
       {
-        v16 = [(NSDictionary *)[(VCReportingDistribution *)self keys] objectForKeyedSubscript:@"VCReportingDeltaDistributionKey_AggregatedAbsoluteMax"];
+        group3 = [(NSDictionary *)[(VCReportingDistribution *)self keys] objectForKeyedSubscript:@"VCReportingDeltaDistributionKey_AggregatedAbsoluteMax"];
       }
 
-      if (v16)
+      if (group3)
       {
-        [a3 setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithDouble:", self->_absoluteMax), v16}];
+        [report setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithDouble:", self->_absoluteMax), group3}];
       }
     }
   }

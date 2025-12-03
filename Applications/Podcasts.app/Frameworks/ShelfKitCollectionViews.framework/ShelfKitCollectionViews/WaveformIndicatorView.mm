@@ -1,11 +1,11 @@
 @interface WaveformIndicatorView
-- (_TtC23ShelfKitCollectionViews21WaveformIndicatorView)initWithCoder:(id)a3;
-- (_TtC23ShelfKitCollectionViews21WaveformIndicatorView)initWithFrame:(CGRect)a3;
+- (_TtC23ShelfKitCollectionViews21WaveformIndicatorView)initWithCoder:(id)coder;
+- (_TtC23ShelfKitCollectionViews21WaveformIndicatorView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation WaveformIndicatorView
 
-- (_TtC23ShelfKitCollectionViews21WaveformIndicatorView)initWithCoder:(id)a3
+- (_TtC23ShelfKitCollectionViews21WaveformIndicatorView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC23ShelfKitCollectionViews21WaveformIndicatorView_state;
   v5 = enum case for WaveformState.hidden(_:);
@@ -16,7 +16,7 @@
   return result;
 }
 
-- (_TtC23ShelfKitCollectionViews21WaveformIndicatorView)initWithFrame:(CGRect)a3
+- (_TtC23ShelfKitCollectionViews21WaveformIndicatorView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

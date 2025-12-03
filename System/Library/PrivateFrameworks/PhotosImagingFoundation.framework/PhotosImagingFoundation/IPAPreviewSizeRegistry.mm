@@ -1,10 +1,10 @@
 @interface IPAPreviewSizeRegistry
 - (IPAPreviewSizeRegistry)init;
-- (IPAPreviewSizeRegistry)initWithName:(id)a3;
+- (IPAPreviewSizeRegistry)initWithName:(id)name;
 - (id)description;
-- (id)policyForStyle:(unint64_t)a3;
-- (id)policyForStyleObject:(id)a3;
-- (void)addPolicy:(id)a3;
+- (id)policyForStyle:(unint64_t)style;
+- (id)policyForStyleObject:(id)object;
+- (void)addPolicy:(id)policy;
 @end
 
 @implementation IPAPreviewSizeRegistry
@@ -13,17 +13,17 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(NSMutableDictionary *)self->_policies allValues];
-  v6 = [v5 valueForKey:@"name"];
+  allValues = [(NSMutableDictionary *)self->_policies allValues];
+  v6 = [allValues valueForKey:@"name"];
   v7 = [v3 stringWithFormat:@"<%@:%p> %@", v4, self, v6];
 
   return v7;
 }
 
-- (id)policyForStyleObject:(id)a3
+- (id)policyForStyleObject:(id)object
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_policies objectForKeyedSubscript:v4];
+  objectCopy = object;
+  v5 = [(NSMutableDictionary *)self->_policies objectForKeyedSubscript:objectCopy];
   if (v5)
   {
     v6 = v5;
@@ -38,7 +38,7 @@
   }
 }
 
-- (id)policyForStyle:(unint64_t)a3
+- (id)policyForStyle:(unint64_t)style
 {
   policies = self->_policies;
   v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:?];
@@ -59,24 +59,24 @@
   return result;
 }
 
-- (void)addPolicy:(id)a3
+- (void)addPolicy:(id)policy
 {
   policies = self->_policies;
-  v4 = a3;
-  v5 = [v4 style];
-  [(NSMutableDictionary *)policies setObject:v4 forKeyedSubscript:v5];
+  policyCopy = policy;
+  style = [policyCopy style];
+  [(NSMutableDictionary *)policies setObject:policyCopy forKeyedSubscript:style];
 }
 
-- (IPAPreviewSizeRegistry)initWithName:(id)a3
+- (IPAPreviewSizeRegistry)initWithName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   v11.receiver = self;
   v11.super_class = IPAPreviewSizeRegistry;
   v6 = [(IPAPreviewSizeRegistry *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_name, a3);
+    objc_storeStrong(&v6->_name, name);
     v8 = objc_alloc_init(MEMORY[0x277CBEB38]);
     policies = v7->_policies;
     v7->_policies = v8;

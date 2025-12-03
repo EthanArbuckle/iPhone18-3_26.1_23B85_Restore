@@ -1,14 +1,14 @@
 @interface AuthRequestWrapper
-+ (id)requestWrapperWithCompletion:(id)a3 andUserNotification:(id)a4;
++ (id)requestWrapperWithCompletion:(id)completion andUserNotification:(id)notification;
 - (AuthRequestWrapper)init;
 @end
 
 @implementation AuthRequestWrapper
 
-+ (id)requestWrapperWithCompletion:(id)a3 andUserNotification:(id)a4
++ (id)requestWrapperWithCompletion:(id)completion andUserNotification:(id)notification
 {
-  v5 = a3;
-  v6 = a4;
+  completionCopy = completion;
+  notificationCopy = notification;
   v7 = objc_alloc_init(AuthRequestWrapper);
   objc_initWeak(&location, v7);
   v10[0] = MEMORY[0x277D85DD0];
@@ -16,10 +16,10 @@
   v10[2] = __71__AuthRequestWrapper_requestWrapperWithCompletion_andUserNotification___block_invoke;
   v10[3] = &unk_2796A3198;
   objc_copyWeak(&v12, &location);
-  v8 = v5;
+  v8 = completionCopy;
   v11 = v8;
   [(AuthRequestWrapper *)v7 setCompletionHandler:v10];
-  [(AuthRequestWrapper *)v7 setUserNotification:v6];
+  [(AuthRequestWrapper *)v7 setUserNotification:notificationCopy];
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);
@@ -53,9 +53,9 @@ void __71__AuthRequestWrapper_requestWrapperWithCompletion_andUserNotification__
     v3->_pairingStatus = 0;
     v3->_pairingCodeDigits = 0;
 
-    v7 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     pairingCodeDigitsEntered = v3->_pairingCodeDigitsEntered;
-    v3->_pairingCodeDigitsEntered = v7;
+    v3->_pairingCodeDigitsEntered = array;
 
     v3->_pairingFailureCount = 0;
   }

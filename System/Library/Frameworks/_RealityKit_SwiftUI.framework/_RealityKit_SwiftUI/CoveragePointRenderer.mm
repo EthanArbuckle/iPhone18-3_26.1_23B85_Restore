@@ -1,24 +1,24 @@
 @interface CoveragePointRenderer
-- (void)drawInMTKView:(id)a3;
-- (void)mtkView:(id)a3 drawableSizeWillChange:(CGSize)a4;
+- (void)drawInMTKView:(id)view;
+- (void)mtkView:(id)view drawableSizeWillChange:(CGSize)change;
 @end
 
 @implementation CoveragePointRenderer
 
-- (void)mtkView:(id)a3 drawableSizeWillChange:(CGSize)a4
+- (void)mtkView:(id)view drawableSizeWillChange:(CGSize)change
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3;
-  v8 = self;
-  CoveragePointRenderer.mtkView(_:drawableSizeWillChange:)(v7, __PAIR128__(*&height, *&width));
+  height = change.height;
+  width = change.width;
+  viewCopy = view;
+  selfCopy = self;
+  CoveragePointRenderer.mtkView(_:drawableSizeWillChange:)(viewCopy, __PAIR128__(*&height, *&width));
 }
 
-- (void)drawInMTKView:(id)a3
+- (void)drawInMTKView:(id)view
 {
-  v4 = a3;
-  v5 = self;
-  CoveragePointRenderer.draw(in:)(v4);
+  viewCopy = view;
+  selfCopy = self;
+  CoveragePointRenderer.draw(in:)(viewCopy);
 }
 
 @end

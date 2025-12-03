@@ -2,9 +2,9 @@
 + (BUBag)defaultBag;
 + (NSDictionary)_defaultValueDictionary;
 + (NSDictionary)defaultBagKeysDictionary;
-+ (void)audiobookStoreIsAvailable:(id)a3;
-- (BUBag)initWithBackingBag:(id)a3;
-- (void)isMangaStoreEnabled:(id)a3;
++ (void)audiobookStoreIsAvailable:(id)available;
+- (BUBag)initWithBackingBag:(id)bag;
+- (void)isMangaStoreEnabled:(id)enabled;
 @end
 
 @implementation BUBag
@@ -15,7 +15,7 @@
   block[1] = 3221225472;
   block[2] = sub_241DA7D50;
   block[3] = &unk_278D1CD30;
-  block[4] = a1;
+  block[4] = self;
   if (qword_280BC5E70 != -1)
   {
     dispatch_once(&qword_280BC5E70, block);
@@ -26,16 +26,16 @@
   return v2;
 }
 
-- (BUBag)initWithBackingBag:(id)a3
+- (BUBag)initWithBackingBag:(id)bag
 {
-  v5 = a3;
+  bagCopy = bag;
   v9.receiver = self;
   v9.super_class = BUBag;
   v6 = [(BUBag *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_bag, a3);
+    objc_storeStrong(&v6->_bag, bag);
   }
 
   return v7;
@@ -288,10 +288,10 @@
   return v2;
 }
 
-+ (void)audiobookStoreIsAvailable:(id)a3
++ (void)audiobookStoreIsAvailable:(id)available
 {
   v26 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  availableCopy = available;
   v6 = objc_msgSend_standardUserDefaults(MEMORY[0x277CBEBD0], v4, v5);
   v8 = objc_msgSend_valueForKey_(v6, v7, @"BUSimulateAudiobookStoreAvailability");
 
@@ -306,7 +306,7 @@
       _os_log_impl(&dword_241DA6000, v12, OS_LOG_TYPE_DEFAULT, "WARNING: Forcing isAudiobooksStoreEnabled to %d.", buf, 8u);
     }
 
-    v13 = MEMORY[0x245D00360](v3);
+    v13 = MEMORY[0x245D00360](availableCopy);
     v14 = v13;
     if (v13)
     {
@@ -324,7 +324,7 @@
       v22[1] = 3221225472;
       v22[2] = sub_241DAAF78;
       v22[3] = &unk_278D1CD58;
-      v23 = v3;
+      v23 = availableCopy;
       objc_msgSend_valueWithCompletion_(v17, v18, v22);
       v19 = v23;
     }
@@ -337,7 +337,7 @@
         sub_241DCF5C8(v20);
       }
 
-      v21 = MEMORY[0x245D00360](v3);
+      v21 = MEMORY[0x245D00360](availableCopy);
       v19 = v21;
       if (v21)
       {
@@ -347,16 +347,16 @@
   }
 }
 
-- (void)isMangaStoreEnabled:(id)a3
+- (void)isMangaStoreEnabled:(id)enabled
 {
-  v4 = a3;
+  enabledCopy = enabled;
   v6 = objc_msgSend_stringForKey_(self, v5, @"manga-grouping-id");
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = sub_241DAB1AC;
   v9[3] = &unk_278D1CD80;
-  v10 = v4;
-  v7 = v4;
+  v10 = enabledCopy;
+  v7 = enabledCopy;
   objc_msgSend_valueWithCompletion_(v6, v8, v9);
 }
 

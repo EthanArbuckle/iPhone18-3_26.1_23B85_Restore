@@ -1,13 +1,13 @@
 @interface MSVExtendableBackgroundTaskProvider
-- (BOOL)_locked_acquireAssertion:(id)a3;
+- (BOOL)_locked_acquireAssertion:(id)assertion;
 - (BOOL)_locked_needsAssertion;
-- (MSVExtendableBackgroundTaskProvider)initWithRunningRBSDomain:(id)a3 name:(id)a4 invalidationDuration:(double)a5;
-- (unint64_t)beginTaskWithName:(id)a3 expirationHandler:(id)a4;
-- (void)_assertionInvalidated:(id)a3 error:(id)a4;
+- (MSVExtendableBackgroundTaskProvider)initWithRunningRBSDomain:(id)domain name:(id)name invalidationDuration:(double)duration;
+- (unint64_t)beginTaskWithName:(id)name expirationHandler:(id)handler;
+- (void)_assertionInvalidated:(id)invalidated error:(id)error;
 - (void)_locked_releaseAssertion;
-- (void)_locked_removeAllTasksWithError:(id)a3;
-- (void)_taskDidTimeout:(unint64_t)a3;
-- (void)endTask:(unint64_t)a3;
+- (void)_locked_removeAllTasksWithError:(id)error;
+- (void)_taskDidTimeout:(unint64_t)timeout;
+- (void)endTask:(unint64_t)task;
 @end
 
 @implementation MSVExtendableBackgroundTaskProvider
@@ -71,18 +71,18 @@ uint64_t __63__MSVExtendableBackgroundTaskProvider__locked_releaseAssertion__blo
   return result;
 }
 
-- (BOOL)_locked_acquireAssertion:(id)a3
+- (BOOL)_locked_acquireAssertion:(id)assertion
 {
   v36[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  assertionCopy = assertion;
   if ([(MSVExtendableBackgroundTaskProvider *)self _locked_needsAssertion])
   {
-    v5 = [MEMORY[0x1E69C7640] currentProcess];
+    currentProcess = [MEMORY[0x1E69C7640] currentProcess];
     v6 = [MEMORY[0x1E69C7560] attributeWithDomain:self->_domain name:self->_name];
     v36[0] = v6;
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v36 count:1];
 
-    v8 = [objc_alloc(MEMORY[0x1E69C7548]) initWithExplanation:v4 target:v5 attributes:v7];
+    v8 = [objc_alloc(MEMORY[0x1E69C7548]) initWithExplanation:assertionCopy target:currentProcess attributes:v7];
     objc_initWeak(&location, self);
     v21 = 0;
     v22 = &v21;
@@ -103,20 +103,20 @@ uint64_t __63__MSVExtendableBackgroundTaskProvider__locked_releaseAssertion__blo
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134218754;
-        v29 = self;
+        selfCopy = self;
         v30 = 2048;
         v31 = v8;
         v32 = 2114;
         v33 = v7;
         v34 = 2114;
-        v35 = v4;
+        v35 = assertionCopy;
         _os_log_impl(&dword_1AC81F000, v9, OS_LOG_TYPE_DEFAULT, "MSVExtendableBackgroundTaskProvider %p Took RBSAssertion %p %{public}@ [%{public}@]", buf, 0x2Au);
       }
 
       v10 = self->_assertion;
       objc_storeStrong(&self->_assertion, v8);
-      v11 = [MEMORY[0x1E695DF00] date];
-      [v11 timeIntervalSince1970];
+      date = [MEMORY[0x1E695DF00] date];
+      [date timeIntervalSince1970];
       self->_assertionCreatedTime = v12;
 
       if (v10)
@@ -141,7 +141,7 @@ uint64_t __63__MSVExtendableBackgroundTaskProvider__locked_releaseAssertion__blo
 
   else
   {
-    v14 = [v4 stringByAppendingString:@" (extension)"];
+    v14 = [assertionCopy stringByAppendingString:@" (extension)"];
     v15 = self->_explanationForExtension;
     self->_explanationForExtension = v14;
   }
@@ -164,17 +164,17 @@ void __64__MSVExtendableBackgroundTaskProvider__locked_acquireAssertion___block_
   *(v8 + 40) = v5;
 }
 
-- (void)_locked_removeAllTasksWithError:(id)a3
+- (void)_locked_removeAllTasksWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   timeoutGuards = self->_timeoutGuards;
   v7 = MEMORY[0x1E69E9820];
   v8 = 3221225472;
   v9 = __71__MSVExtendableBackgroundTaskProvider__locked_removeAllTasksWithError___block_invoke;
   v10 = &unk_1E7981868;
-  v11 = self;
-  v12 = v4;
-  v6 = v4;
+  selfCopy = self;
+  v12 = errorCopy;
+  v6 = errorCopy;
   [(NSMutableDictionary *)timeoutGuards enumerateKeysAndObjectsUsingBlock:&v7];
   [(NSMutableDictionary *)self->_timeoutGuards removeAllObjects:v7];
   [(NSMutableDictionary *)self->_expirationHandlers removeAllObjects];
@@ -220,39 +220,39 @@ void __71__MSVExtendableBackgroundTaskProvider__locked_removeAllTasksWithError__
   }
 
   v4 = self->_assertionCreatedTime + self->_invalidationDuration;
-  v5 = [MEMORY[0x1E695DF00] date];
-  [v5 timeIntervalSince1970];
+  date = [MEMORY[0x1E695DF00] date];
+  [date timeIntervalSince1970];
   v7 = v4 - v6;
 
   return v7 < 5.0;
 }
 
-- (void)_assertionInvalidated:(id)a3 error:(id)a4
+- (void)_assertionInvalidated:(id)invalidated error:(id)error
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  invalidatedCopy = invalidated;
+  errorCopy = error;
   os_unfair_recursive_lock_lock_with_options();
   v8 = os_log_create("com.apple.amp.MediaServices", "Default");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 134218498;
-    v12 = self;
+    selfCopy = self;
     v13 = 2048;
-    v14 = v6;
+    v14 = invalidatedCopy;
     v15 = 2114;
-    v16 = v7;
+    v16 = errorCopy;
     _os_log_impl(&dword_1AC81F000, v8, OS_LOG_TYPE_DEFAULT, "MSVExtendableBackgroundTaskProvider %p RBSAssertion %p invalidated with error: %{public}@", &v11, 0x20u);
   }
 
   assertion = self->_assertion;
-  if (assertion == v6)
+  if (assertion == invalidatedCopy)
   {
     self->_assertion = 0;
 
     if ([(MSVExtendableBackgroundTaskProvider *)self _locked_taskCount]>= 1 && (!self->_explanationForExtension || ![(MSVExtendableBackgroundTaskProvider *)self _locked_acquireAssertion:?]))
     {
-      [(MSVExtendableBackgroundTaskProvider *)self _locked_removeAllTasksWithError:v7];
+      [(MSVExtendableBackgroundTaskProvider *)self _locked_removeAllTasksWithError:errorCopy];
     }
   }
 
@@ -261,12 +261,12 @@ void __71__MSVExtendableBackgroundTaskProvider__locked_removeAllTasksWithError__
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_taskDidTimeout:(unint64_t)a3
+- (void)_taskDidTimeout:(unint64_t)timeout
 {
   v14 = *MEMORY[0x1E69E9840];
   os_unfair_recursive_lock_lock_with_options();
   expirationHandlers = self->_expirationHandlers;
-  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:timeout];
   v7 = [(NSMutableDictionary *)expirationHandlers objectForKeyedSubscript:v6];
 
   if (v7)
@@ -275,9 +275,9 @@ void __71__MSVExtendableBackgroundTaskProvider__locked_removeAllTasksWithError__
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 134218240;
-      v11 = self;
+      selfCopy = self;
       v12 = 2048;
-      v13 = a3;
+      timeoutCopy = timeout;
       _os_log_impl(&dword_1AC81F000, v8, OS_LOG_TYPE_DEFAULT, "MSVExtendableBackgroundTaskProvider %p Task #%ld expired", &v10, 0x16u);
     }
 
@@ -289,32 +289,32 @@ void __71__MSVExtendableBackgroundTaskProvider__locked_removeAllTasksWithError__
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)endTask:(unint64_t)a3
+- (void)endTask:(unint64_t)task
 {
   v18 = *MEMORY[0x1E69E9840];
   os_unfair_recursive_lock_lock_with_options();
   timeoutGuards = self->_timeoutGuards;
-  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:task];
   v7 = [(NSMutableDictionary *)timeoutGuards objectForKeyedSubscript:v6];
 
   if (v7)
   {
     [v7 disarm];
     v8 = self->_timeoutGuards;
-    v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+    v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:task];
     [(NSMutableDictionary *)v8 setObject:0 forKeyedSubscript:v9];
 
     expirationHandlers = self->_expirationHandlers;
-    v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+    v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:task];
     [(NSMutableDictionary *)expirationHandlers setObject:0 forKeyedSubscript:v11];
 
     v12 = os_log_create("com.apple.amp.MediaServices", "Default");
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v14 = 134218240;
-      v15 = self;
+      selfCopy = self;
       v16 = 2048;
-      v17 = a3;
+      taskCopy = task;
       _os_log_impl(&dword_1AC81F000, v12, OS_LOG_TYPE_DEFAULT, "MSVExtendableBackgroundTaskProvider %p Task #%ld ended", &v14, 0x16u);
     }
 
@@ -329,20 +329,20 @@ void __71__MSVExtendableBackgroundTaskProvider__locked_removeAllTasksWithError__
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (unint64_t)beginTaskWithName:(id)a3 expirationHandler:(id)a4
+- (unint64_t)beginTaskWithName:(id)name expirationHandler:(id)handler
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  handlerCopy = handler;
   os_unfair_recursive_lock_lock_with_options();
   v8 = (self->_lastIdentifier + 1);
   self->_lastIdentifier = v8;
-  if (!v6)
+  if (!nameCopy)
   {
-    v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"BackgroundTask#%ld", v8];
+    nameCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"BackgroundTask#%ld", v8];
   }
 
-  if ([(MSVExtendableBackgroundTaskProvider *)self _locked_acquireAssertion:v6])
+  if ([(MSVExtendableBackgroundTaskProvider *)self _locked_acquireAssertion:nameCopy])
   {
     objc_initWeak(&location, self);
     v9 = [MSVBlockGuard alloc];
@@ -354,7 +354,7 @@ void __71__MSVExtendableBackgroundTaskProvider__locked_removeAllTasksWithError__
     objc_copyWeak(v21, &location);
     v21[1] = v8;
     v11 = [(MSVBlockGuard *)v9 initWithTimeout:v20 interruptionHandler:invalidationDuration];
-    v12 = MEMORY[0x1B26EC6C0](v7);
+    v12 = MEMORY[0x1B26EC6C0](handlerCopy);
     expirationHandlers = self->_expirationHandlers;
     v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v8];
     [(NSMutableDictionary *)expirationHandlers setObject:v12 forKeyedSubscript:v14];
@@ -367,11 +367,11 @@ void __71__MSVExtendableBackgroundTaskProvider__locked_removeAllTasksWithError__
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218498;
-      v24 = self;
+      selfCopy = self;
       v25 = 2048;
       v26 = v8;
       v27 = 2114;
-      v28 = v6;
+      v28 = nameCopy;
       _os_log_impl(&dword_1AC81F000, v17, OS_LOG_TYPE_DEFAULT, "MSVExtendableBackgroundTaskProvider %p Task #%ld started [%{public}@]", buf, 0x20u);
     }
 
@@ -403,27 +403,27 @@ void __75__MSVExtendableBackgroundTaskProvider_beginTaskWithName_expirationHandl
   [WeakRetained endTask:*(a1 + 40)];
 }
 
-- (MSVExtendableBackgroundTaskProvider)initWithRunningRBSDomain:(id)a3 name:(id)a4 invalidationDuration:(double)a5
+- (MSVExtendableBackgroundTaskProvider)initWithRunningRBSDomain:(id)domain name:(id)name invalidationDuration:(double)duration
 {
-  v9 = a3;
-  v10 = a4;
+  domainCopy = domain;
+  nameCopy = name;
   v18.receiver = self;
   v18.super_class = MSVExtendableBackgroundTaskProvider;
   v11 = [(MSVExtendableBackgroundTaskProvider *)&v18 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_domain, a3);
-    objc_storeStrong(&v12->_name, a4);
-    v12->_invalidationDuration = a5;
+    objc_storeStrong(&v11->_domain, domain);
+    objc_storeStrong(&v12->_name, name);
+    v12->_invalidationDuration = duration;
     v12->_lock = 0;
-    v13 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     timeoutGuards = v12->_timeoutGuards;
-    v12->_timeoutGuards = v13;
+    v12->_timeoutGuards = dictionary;
 
-    v15 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     expirationHandlers = v12->_expirationHandlers;
-    v12->_expirationHandlers = v15;
+    v12->_expirationHandlers = dictionary2;
   }
 
   return v12;

@@ -1,44 +1,44 @@
 @interface CRKInMemoryIdentity
-+ (id)identityWithConfiguration:(id)a3 validityDateInterval:(id)a4;
-- (CRKInMemoryIdentity)initWithCertificate:(id)a3 privateKey:(id)a4;
++ (id)identityWithConfiguration:(id)configuration validityDateInterval:(id)interval;
+- (CRKInMemoryIdentity)initWithCertificate:(id)certificate privateKey:(id)key;
 - (__SecIdentity)underlyingIdentity;
 @end
 
 @implementation CRKInMemoryIdentity
 
-- (CRKInMemoryIdentity)initWithCertificate:(id)a3 privateKey:(id)a4
+- (CRKInMemoryIdentity)initWithCertificate:(id)certificate privateKey:(id)key
 {
-  v7 = a3;
-  v8 = a4;
+  certificateCopy = certificate;
+  keyCopy = key;
   v12.receiver = self;
   v12.super_class = CRKInMemoryIdentity;
   v9 = [(CRKInMemoryIdentity *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_certificate, a3);
-    objc_storeStrong(&v10->_privateKey, a4);
+    objc_storeStrong(&v9->_certificate, certificate);
+    objc_storeStrong(&v10->_privateKey, key);
   }
 
   return v10;
 }
 
-+ (id)identityWithConfiguration:(id)a3 validityDateInterval:(id)a4
++ (id)identityWithConfiguration:(id)configuration validityDateInterval:(id)interval
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[CRKInMemoryCertificate alloc] initWithConfiguration:v7 validityDateInterval:v6];
+  intervalCopy = interval;
+  configurationCopy = configuration;
+  v8 = [[CRKInMemoryCertificate alloc] initWithConfiguration:configurationCopy validityDateInterval:intervalCopy];
 
-  v9 = [[CRKInMemoryPrivateKey alloc] initWithConfiguration:v7];
-  v10 = [[a1 alloc] initWithCertificate:v8 privateKey:v9];
+  v9 = [[CRKInMemoryPrivateKey alloc] initWithConfiguration:configurationCopy];
+  v10 = [[self alloc] initWithCertificate:v8 privateKey:v9];
 
   return v10;
 }
 
 - (__SecIdentity)underlyingIdentity
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"CRKInMemoryIdentity.m" lineNumber:41 description:@"Reconsider what you are trying to test"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"CRKInMemoryIdentity.m" lineNumber:41 description:@"Reconsider what you are trying to test"];
 
   return 0;
 }

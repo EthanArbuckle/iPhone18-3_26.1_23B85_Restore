@@ -1,14 +1,14 @@
 @interface MXExclaves
 + (id)sharedInstance;
-- (BOOL)shouldSendSensorStatusStatistics:(unsigned int)a3 newStatus:(unsigned int)a4;
+- (BOOL)shouldSendSensorStatusStatistics:(unsigned int)statistics newStatus:(unsigned int)status;
 - (MXExclaves)init;
-- (int)updateSensorStatus:(id)a3 reason:(id)a4;
+- (int)updateSensorStatus:(id)status reason:(id)reason;
 - (void)dealloc;
 - (void)dumpDebugInfo;
 - (void)handleSensorStatusChanged;
-- (void)reportExclavesSensorStatusStatistics:(unint64_t)a3 previousStatus:(unsigned int)a4 newStatus:(unsigned int)a5;
+- (void)reportExclavesSensorStatusStatistics:(unint64_t)statistics previousStatus:(unsigned int)status newStatus:(unsigned int)newStatus;
 - (void)resetClientsStillUsingExclavesSensor;
-- (void)updateSessionTimestampFromSensorStart:(unint64_t)a3;
+- (void)updateSessionTimestampFromSensorStart:(unint64_t)start;
 @end
 
 @implementation MXExclaves
@@ -83,16 +83,16 @@ LABEL_9:
   [(MXExclaves *)&v3 dealloc];
 }
 
-- (int)updateSensorStatus:(id)a3 reason:(id)a4
+- (int)updateSensorStatus:(id)status reason:(id)reason
 {
   v34[24] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (status)
   {
     v31 = 0;
     [(NSLock *)self->mSensorPortLock lock];
-    if (([a3 isUsingExclaveSensor] & 1) != 0 || !objc_msgSend(a3, "requiresExclaveSensor"))
+    if (([status isUsingExclaveSensor] & 1) != 0 || !objc_msgSend(status, "requiresExclaveSensor"))
     {
-      if ([a3 isUsingExclaveSensor] && (objc_msgSend(a3, "requiresExclaveSensor") & 1) == 0)
+      if ([status isUsingExclaveSensor] && (objc_msgSend(status, "requiresExclaveSensor") & 1) == 0)
       {
         mSensorPort = self->mSensorPort;
         if (exclaves_sensor_stop())
@@ -110,7 +110,7 @@ LABEL_30:
         }
 
         --self->mSensorAccessCount;
-        [a3 setIsUsingExclaveSensor:0];
+        [status setIsUsingExclaveSensor:0];
         if (dword_1EB75DE40)
         {
           *v30 = 0;
@@ -179,7 +179,7 @@ LABEL_28:
       }
 
       ++self->mSensorAccessCount;
-      [a3 setIsUsingExclaveSensor:1];
+      [status setIsUsingExclaveSensor:1];
       if (dword_1EB75DE40)
       {
         *v30 = 0;
@@ -190,9 +190,9 @@ LABEL_28:
       }
 
       mClientsUsingSensorToRecord = self->mClientsUsingSensorToRecord;
-      v33 = [a3 displayID];
+      displayID = [status displayID];
       v34[0] = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:mach_absolute_time()];
-      -[NSMutableArray addObject:](mClientsUsingSensorToRecord, "addObject:", [MEMORY[0x1E695DF20] dictionaryWithObjects:v34 forKeys:&v33 count:1]);
+      -[NSMutableArray addObject:](mClientsUsingSensorToRecord, "addObject:", [MEMORY[0x1E695DF20] dictionaryWithObjects:v34 forKeys:&displayID count:1]);
     }
 
     v9 = 0;
@@ -316,7 +316,7 @@ LABEL_31:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)reportExclavesSensorStatusStatistics:(unint64_t)a3 previousStatus:(unsigned int)a4 newStatus:(unsigned int)a5
+- (void)reportExclavesSensorStatusStatistics:(unint64_t)statistics previousStatus:(unsigned int)status newStatus:(unsigned int)newStatus
 {
   v32 = *MEMORY[0x1E69E9840];
   v27 = 0u;
@@ -341,12 +341,12 @@ LABEL_31:
         v9 = *(*(&v27 + 1) + 8 * i);
         v10 = [objc_msgSend(v9 "allKeys")];
         v11 = [objc_msgSend(objc_msgSend(v9 "allValues")];
-        v12 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a3 - v11];
+        v12 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:statistics - v11];
         v13 = objc_alloc(MEMORY[0x1E695DF20]);
         v14 = kMXAudioStatistics_ExclavesRecordingClientBundleId;
-        v15 = [MXExclaves sensorStatusToString:a4];
+        v15 = [MXExclaves sensorStatusToString:status];
         v16 = kMXAudioStatistics_ExclavesPreviousSensorStatus;
-        v17 = [MXExclaves sensorStatusToString:a5];
+        v17 = [MXExclaves sensorStatusToString:newStatus];
         v18 = [v13 initWithObjectsAndKeys:{v10, v14, v15, v16, v17, kMXAudioStatistics_ExclavesNewSensorStatus, v12, kMXAudioStatistics_DurationInNanoSeconds, 0}];
         if (dword_1EB75DE40)
         {
@@ -367,12 +367,12 @@ LABEL_31:
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updateSessionTimestampFromSensorStart:(unint64_t)a3
+- (void)updateSessionTimestampFromSensorStart:(unint64_t)start
 {
   v10[1] = *MEMORY[0x1E69E9840];
   if ([(NSMutableArray *)self->mClientsUsingSensorToRecord count])
   {
-    v5 = [MEMORY[0x1E696AD98] numberWithLongLong:a3];
+    v5 = [MEMORY[0x1E696AD98] numberWithLongLong:start];
     v6 = [objc_msgSend(-[NSMutableArray firstObject](self->mClientsUsingSensorToRecord "firstObject")];
     mClientsUsingSensorToRecord = self->mClientsUsingSensorToRecord;
     v9 = v6;
@@ -383,31 +383,31 @@ LABEL_31:
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)shouldSendSensorStatusStatistics:(unsigned int)a3 newStatus:(unsigned int)a4
+- (BOOL)shouldSendSensorStatusStatistics:(unsigned int)statistics newStatus:(unsigned int)status
 {
   v18 = *MEMORY[0x1E69E9840];
-  if (a3 != a4)
+  if (statistics != status)
   {
-    if (a4 == 1)
+    if (status == 1)
     {
-      v5 = 0;
+      copyMXCoreSessionList = 0;
     }
 
     else
     {
-      if (a4 != 2)
+      if (status != 2)
       {
         LOBYTE(v8) = 0;
-        v5 = 0;
+        copyMXCoreSessionList = 0;
         goto LABEL_17;
       }
 
-      v5 = [+[MXSessionManager sharedInstance](MXSessionManager copyMXCoreSessionList];
+      copyMXCoreSessionList = [+[MXSessionManager sharedInstance](MXSessionManager copyMXCoreSessionList];
       v11 = 0u;
       v12 = 0u;
       v13 = 0u;
       v14 = 0u;
-      v8 = [v5 countByEnumeratingWithState:&v11 objects:v17 count:16];
+      v8 = [copyMXCoreSessionList countByEnumeratingWithState:&v11 objects:v17 count:16];
       if (!v8)
       {
 LABEL_17:
@@ -422,7 +422,7 @@ LABEL_7:
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(copyMXCoreSessionList);
         }
 
         if ([*(*(&v11 + 1) + 8 * v7) isUsingExclaveSensor])
@@ -432,7 +432,7 @@ LABEL_7:
 
         if (v8 == ++v7)
         {
-          v8 = [v5 countByEnumeratingWithState:&v11 objects:v17 count:16];
+          v8 = [copyMXCoreSessionList countByEnumeratingWithState:&v11 objects:v17 count:16];
           if (v8)
           {
             goto LABEL_7;
@@ -462,12 +462,12 @@ LABEL_18:
 {
   v16 = *MEMORY[0x1E69E9840];
   [(NSMutableArray *)self->mClientsUsingSensorToRecord removeAllObjects];
-  v2 = [+[MXSessionManager sharedInstance](MXSessionManager copyMXCoreSessionList];
+  copyMXCoreSessionList = [+[MXSessionManager sharedInstance](MXSessionManager copyMXCoreSessionList];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v3 = [copyMXCoreSessionList countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v3)
   {
     v4 = v3;
@@ -478,7 +478,7 @@ LABEL_18:
       {
         if (*v12 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(copyMXCoreSessionList);
         }
 
         if ([*(*(&v11 + 1) + 8 * i) isUsingExclaveSensor])
@@ -490,7 +490,7 @@ LABEL_18:
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v4 = [copyMXCoreSessionList countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v4);

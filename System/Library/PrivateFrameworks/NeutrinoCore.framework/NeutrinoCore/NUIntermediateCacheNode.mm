@@ -1,45 +1,45 @@
 @interface NUIntermediateCacheNode
-- (BOOL)shouldCacheNodeForPipelineState:(id)a3;
-- (id)_evaluateImage:(id *)a3;
-- (id)_evaluateVideo:(id *)a3;
-- (id)_evaluateVideoComposition:(id *)a3;
-- (id)nodeByReplayingAgainstCache:(id)a3 pipelineState:(id)a4 error:(id *)a5;
+- (BOOL)shouldCacheNodeForPipelineState:(id)state;
+- (id)_evaluateImage:(id *)image;
+- (id)_evaluateVideo:(id *)video;
+- (id)_evaluateVideoComposition:(id *)composition;
+- (id)nodeByReplayingAgainstCache:(id)cache pipelineState:(id)state error:(id *)error;
 @end
 
 @implementation NUIntermediateCacheNode
 
-- (id)_evaluateVideoComposition:(id *)a3
+- (id)_evaluateVideoComposition:(id *)composition
 {
-  v4 = [(NUCacheNode *)self inputNode];
-  v5 = [v4 outputVideoComposition:a3];
+  inputNode = [(NUCacheNode *)self inputNode];
+  v5 = [inputNode outputVideoComposition:composition];
 
   return v5;
 }
 
-- (id)_evaluateVideo:(id *)a3
+- (id)_evaluateVideo:(id *)video
 {
-  v4 = [(NUCacheNode *)self inputNode];
-  v5 = [v4 outputVideo:a3];
+  inputNode = [(NUCacheNode *)self inputNode];
+  v5 = [inputNode outputVideo:video];
 
   return v5;
 }
 
-- (id)_evaluateImage:(id *)a3
+- (id)_evaluateImage:(id *)image
 {
-  v4 = [(NUCacheNode *)self inputNode];
-  v5 = [v4 outputImage:a3];
+  inputNode = [(NUCacheNode *)self inputNode];
+  v5 = [inputNode outputImage:image];
 
-  v6 = [v5 _imageByRenderingToIntermediate];
+  _imageByRenderingToIntermediate = [v5 _imageByRenderingToIntermediate];
 
-  return v6;
+  return _imageByRenderingToIntermediate;
 }
 
-- (id)nodeByReplayingAgainstCache:(id)a3 pipelineState:(id)a4 error:(id *)a5
+- (id)nodeByReplayingAgainstCache:(id)cache pipelineState:(id)state error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(NUCacheNode *)self inputNode];
-  v11 = [v10 nodeByReplayingAgainstCache:v8 pipelineState:v9 error:a5];
+  cacheCopy = cache;
+  stateCopy = state;
+  inputNode = [(NUCacheNode *)self inputNode];
+  v11 = [inputNode nodeByReplayingAgainstCache:cacheCopy pipelineState:stateCopy error:error];
 
   if (!v11)
   {
@@ -47,23 +47,23 @@
     goto LABEL_15;
   }
 
-  if (![(NUIntermediateCacheNode *)self shouldCacheNodeForPipelineState:v9])
+  if (![(NUIntermediateCacheNode *)self shouldCacheNodeForPipelineState:stateCopy])
   {
     v22 = v11;
     goto LABEL_15;
   }
 
-  if ([v9 evaluationMode] == 1)
+  if ([stateCopy evaluationMode] == 1)
   {
-    v12 = [(NURenderNode *)self settings];
-    v13 = [v12 objectForKeyedSubscript:@"keepCacheWhenAtOneToOne"];
-    v14 = [v13 BOOLValue];
+    settings = [(NURenderNode *)self settings];
+    v13 = [settings objectForKeyedSubscript:@"keepCacheWhenAtOneToOne"];
+    bOOLValue = [v13 BOOLValue];
 
-    v15 = [(NURenderNode *)self settings];
-    v16 = [v15 objectForKeyedSubscript:@"onlyCacheWhenAtOneToOne"];
-    v17 = [v16 BOOLValue];
+    settings2 = [(NURenderNode *)self settings];
+    v16 = [settings2 objectForKeyedSubscript:@"onlyCacheWhenAtOneToOne"];
+    bOOLValue2 = [v16 BOOLValue];
 
-    v18 = [v11 outputImageGeometry:a5];
+    v18 = [v11 outputImageGeometry:error];
     v19 = v18;
     if (!v18)
     {
@@ -71,10 +71,10 @@
       goto LABEL_11;
     }
 
-    v20 = [v18 renderScale];
-    if (NUScaleEqual(v20, v21, NUScaleOne, *(&NUScaleOne + 1)))
+    renderScale = [v18 renderScale];
+    if (NUScaleEqual(renderScale, v21, NUScaleOne, *(&NUScaleOne + 1)))
     {
-      if (((v17 | v14) & 1) == 0)
+      if (((bOOLValue2 | bOOLValue) & 1) == 0)
       {
 LABEL_7:
         v22 = v11;
@@ -84,30 +84,30 @@ LABEL_11:
       }
     }
 
-    else if (v17)
+    else if (bOOLValue2)
     {
       goto LABEL_7;
     }
   }
 
   v23 = objc_alloc(objc_opt_class());
-  v24 = [(NURenderNode *)self settings];
-  v25 = [v23 initWithInput:v11 settings:v24 subsampleFactor:0];
+  settings3 = [(NURenderNode *)self settings];
+  v25 = [v23 initWithInput:v11 settings:settings3 subsampleFactor:0];
 
-  v22 = [NURenderNode nodeFromCache:v25 cache:v8];
+  v22 = [NURenderNode nodeFromCache:v25 cache:cacheCopy];
 
-  [v22 setEvaluatedForMode:{objc_msgSend(v9, "evaluationMode")}];
+  [v22 setEvaluatedForMode:{objc_msgSend(stateCopy, "evaluationMode")}];
 LABEL_15:
 
   return v22;
 }
 
-- (BOOL)shouldCacheNodeForPipelineState:(id)a3
+- (BOOL)shouldCacheNodeForPipelineState:(id)state
 {
-  v3 = a3;
-  if ([v3 evaluationMode])
+  stateCopy = state;
+  if ([stateCopy evaluationMode])
   {
-    v4 = ([v3 disableIntermediateCaching] & 1) == 0 && objc_msgSend(v3, "auxiliaryImageType") == 1;
+    v4 = ([stateCopy disableIntermediateCaching] & 1) == 0 && objc_msgSend(stateCopy, "auxiliaryImageType") == 1;
   }
 
   else

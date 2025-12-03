@@ -1,14 +1,14 @@
 @interface DOCAlertController
-- (DOCAlertController)initWithNibName:(id)a3 bundle:(id)a4;
+- (DOCAlertController)initWithNibName:(id)name bundle:(id)bundle;
 @end
 
 @implementation DOCAlertController
 
-- (DOCAlertController)initWithNibName:(id)a3 bundle:(id)a4
+- (DOCAlertController)initWithNibName:(id)name bundle:(id)bundle
 {
   v5.receiver = self;
   v5.super_class = DOCAlertController;
-  return [(DOCAlertController *)&v5 initWithNibName:a3 bundle:a4];
+  return [(DOCAlertController *)&v5 initWithNibName:name bundle:bundle];
 }
 
 @end

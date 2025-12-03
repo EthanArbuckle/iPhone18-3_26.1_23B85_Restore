@@ -1,27 +1,27 @@
 @interface MCLViewControllerCollection
-- (MCLViewControllerCollection)initWithFrame:(CGRect)a3;
+- (MCLViewControllerCollection)initWithFrame:(CGRect)frame;
 - (UIViewController)owner;
 - (void)layoutSubviews;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)setViews:(id)a3;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)setViews:(id)views;
 @end
 
 @implementation MCLViewControllerCollection
 
-- (MCLViewControllerCollection)initWithFrame:(CGRect)a3
+- (MCLViewControllerCollection)initWithFrame:(CGRect)frame
 {
   v28[4] = *MEMORY[0x277D85DE8];
-  v27 = a3;
+  frameCopy = frame;
   v25 = a2;
   v26 = 0;
   v24.receiver = self;
   v24.super_class = MCLViewControllerCollection;
-  v26 = [(MCLViewControllerCollection *)&v24 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v26 = [(MCLViewControllerCollection *)&v24 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   objc_storeStrong(&v26, v26);
   if (v26)
   {
     v3 = objc_alloc(MEMORY[0x277D75A68]);
-    v4 = [v3 initWithFrame:{v27.origin.x, v27.origin.y, v27.size.width, v27.size.height}];
+    v4 = [v3 initWithFrame:{frameCopy.origin.x, frameCopy.origin.y, frameCopy.size.width, frameCopy.size.height}];
     contentView = v26->_contentView;
     v26->_contentView = v4;
     MEMORY[0x277D82BD8](contentView);
@@ -30,44 +30,44 @@
     [(UIStackView *)v26->_contentView setDistribution:?];
     [(UIStackView *)v26->_contentView setAlignment:0];
     [(UIStackView *)v26->_contentView setSpacing:1.0];
-    v6 = [MEMORY[0x277CCAAD0] constraintWithItem:v26->_contentView attribute:7 relatedBy:0 toItem:0 attribute:0.0 multiplier:v27.size.width constant:?];
+    v6 = [MEMORY[0x277CCAAD0] constraintWithItem:v26->_contentView attribute:7 relatedBy:0 toItem:0 attribute:0.0 multiplier:frameCopy.size.width constant:?];
     widthConstraint = v26->_widthConstraint;
     v26->_widthConstraint = v6;
     MEMORY[0x277D82BD8](widthConstraint);
     [(MCLViewControllerCollection *)v26 setDelegate:v26];
     [(MCLViewControllerCollection *)v26 addSubview:v26->_contentView];
     v10 = MEMORY[0x277CCAAD0];
-    v23 = [(UIStackView *)v26->_contentView leftAnchor];
-    v22 = [(MCLViewControllerCollection *)v26 leftAnchor];
-    v21 = [v23 constraintEqualToAnchor:?];
+    leftAnchor = [(UIStackView *)v26->_contentView leftAnchor];
+    leftAnchor2 = [(MCLViewControllerCollection *)v26 leftAnchor];
+    v21 = [leftAnchor constraintEqualToAnchor:?];
     v28[0] = v21;
-    v20 = [(UIStackView *)v26->_contentView rightAnchor];
-    v19 = [(MCLViewControllerCollection *)v26 rightAnchor];
-    v18 = [v20 constraintEqualToAnchor:?];
+    rightAnchor = [(UIStackView *)v26->_contentView rightAnchor];
+    rightAnchor2 = [(MCLViewControllerCollection *)v26 rightAnchor];
+    v18 = [rightAnchor constraintEqualToAnchor:?];
     v28[1] = v18;
-    v17 = [(UIStackView *)v26->_contentView topAnchor];
-    v16 = [(MCLViewControllerCollection *)v26 topAnchor];
-    v15 = [v17 constraintEqualToAnchor:?];
+    topAnchor = [(UIStackView *)v26->_contentView topAnchor];
+    topAnchor2 = [(MCLViewControllerCollection *)v26 topAnchor];
+    v15 = [topAnchor constraintEqualToAnchor:?];
     v28[2] = v15;
-    v14 = [(UIStackView *)v26->_contentView bottomAnchor];
-    v13 = [(MCLViewControllerCollection *)v26 bottomAnchor];
-    v12 = [v14 constraintEqualToAnchor:?];
+    bottomAnchor = [(UIStackView *)v26->_contentView bottomAnchor];
+    bottomAnchor2 = [(MCLViewControllerCollection *)v26 bottomAnchor];
+    v12 = [bottomAnchor constraintEqualToAnchor:?];
     v28[3] = v12;
     v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v28 count:4];
     [v10 activateConstraints:?];
     MEMORY[0x277D82BD8](v11);
     MEMORY[0x277D82BD8](v12);
-    MEMORY[0x277D82BD8](v13);
-    MEMORY[0x277D82BD8](v14);
+    MEMORY[0x277D82BD8](bottomAnchor2);
+    MEMORY[0x277D82BD8](bottomAnchor);
     MEMORY[0x277D82BD8](v15);
-    MEMORY[0x277D82BD8](v16);
-    MEMORY[0x277D82BD8](v17);
+    MEMORY[0x277D82BD8](topAnchor2);
+    MEMORY[0x277D82BD8](topAnchor);
     MEMORY[0x277D82BD8](v18);
-    MEMORY[0x277D82BD8](v19);
-    MEMORY[0x277D82BD8](v20);
+    MEMORY[0x277D82BD8](rightAnchor2);
+    MEMORY[0x277D82BD8](rightAnchor);
     MEMORY[0x277D82BD8](v21);
-    MEMORY[0x277D82BD8](v22);
-    MEMORY[0x277D82BD8](v23);
+    MEMORY[0x277D82BD8](leftAnchor2);
+    MEMORY[0x277D82BD8](leftAnchor);
   }
 
   v9 = MEMORY[0x277D82BE0](v26);
@@ -76,24 +76,24 @@
   return v9;
 }
 
-- (void)setViews:(id)a3
+- (void)setViews:(id)views
 {
-  v20 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, views);
   v18 = [MEMORY[0x277CBEB58] setWithArray:location[0]];
-  v17 = [MEMORY[0x277CBEB58] setWithArray:v20->_views];
+  v17 = [MEMORY[0x277CBEB58] setWithArray:selfCopy->_views];
   [v18 minusSet:v17];
   v6 = [MEMORY[0x277CBEB98] setWithArray:location[0]];
   [v17 minusSet:?];
   MEMORY[0x277D82BD8](v6);
   [v17 enumerateObjectsUsingBlock:&__block_literal_global_6];
   v3 = [location[0] copy];
-  views = v20->_views;
-  v20->_views = v3;
+  views = selfCopy->_views;
+  selfCopy->_views = v3;
   MEMORY[0x277D82BD8](views);
-  WeakRetained = objc_loadWeakRetained(&v20->_owner);
+  WeakRetained = objc_loadWeakRetained(&selfCopy->_owner);
   if (WeakRetained)
   {
     v5 = location[0];
@@ -104,7 +104,7 @@
     v11 = &unk_2797EE580;
     v12 = MEMORY[0x277D82BE0](v18);
     v13 = MEMORY[0x277D82BE0](WeakRetained);
-    v14 = MEMORY[0x277D82BE0](v20);
+    v14 = MEMORY[0x277D82BE0](selfCopy);
     [v5 enumerateObjectsUsingBlock:&v7];
     objc_storeStrong(&v14, 0);
     objc_storeStrong(&v13, 0);
@@ -284,7 +284,7 @@ void __40__MCLViewControllerCollection_setViews___block_invoke_2(uint64_t a1, vo
 
 - (void)layoutSubviews
 {
-  v18 = self;
+  selfCopy = self;
   v17 = a2;
   [(MCLViewControllerCollection *)self frame];
   v12 = v2;
@@ -292,28 +292,28 @@ void __40__MCLViewControllerCollection_setViews___block_invoke_2(uint64_t a1, vo
   v14 = v4;
   v15 = v5;
   v16 = v4;
-  [(NSLayoutConstraint *)v18->_widthConstraint constant];
+  [(NSLayoutConstraint *)selfCopy->_widthConstraint constant];
   if (v6 != v16)
   {
-    [(NSLayoutConstraint *)v18->_widthConstraint setConstant:v16];
-    [(NSLayoutConstraint *)v18->_widthConstraint setActive:1];
-    [(MCLViewControllerCollection *)v18 contentOffset];
+    [(NSLayoutConstraint *)selfCopy->_widthConstraint setConstant:v16];
+    [(NSLayoutConstraint *)selfCopy->_widthConstraint setActive:1];
+    [(MCLViewControllerCollection *)selfCopy contentOffset];
     v10 = v7;
     v11 = v8 - 1.0;
-    [(MCLViewControllerCollection *)v18 setContentOffset:1 animated:v7, v8 - 1.0];
+    [(MCLViewControllerCollection *)selfCopy setContentOffset:1 animated:v7, v8 - 1.0];
   }
 
-  v9.receiver = v18;
+  v9.receiver = selfCopy;
   v9.super_class = MCLViewControllerCollection;
   [(MCLViewControllerCollection *)&v9 layoutSubviews];
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v36 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, scroll);
   if (UIAccessibilityIsVoiceOverRunning() || UIAccessibilityIsSwitchControlRunning())
   {
     v34 = 1;
@@ -337,7 +337,7 @@ void __40__MCLViewControllerCollection_setViews___block_invoke_2(uint64_t a1, vo
     v24 = v11;
     v25 = v12;
     v26 = v33 + v12 + 40.0;
-    v14 = [(UIStackView *)v36->_contentView arrangedSubviews];
+    arrangedSubviews = [(UIStackView *)selfCopy->_contentView arrangedSubviews];
     v15 = MEMORY[0x277D85DD0];
     v16 = -1073741824;
     v17 = 0;
@@ -345,8 +345,8 @@ void __40__MCLViewControllerCollection_setViews___block_invoke_2(uint64_t a1, vo
     v19 = &__block_descriptor_48_e23_v32__0__UIView_8Q16_B24l;
     v20 = v33;
     v21 = v26;
-    [(NSArray *)v14 enumerateObjectsUsingBlock:?];
-    MEMORY[0x277D82BD8](v14);
+    [(NSArray *)arrangedSubviews enumerateObjectsUsingBlock:?];
+    MEMORY[0x277D82BD8](arrangedSubviews);
     v34 = 0;
   }
 

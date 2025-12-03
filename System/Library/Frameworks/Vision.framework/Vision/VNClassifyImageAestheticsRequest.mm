@@ -1,41 +1,41 @@
 @interface VNClassifyImageAestheticsRequest
-+ (BOOL)revision:(unint64_t)a3 mayAcceptResultsProducedByRevision:(unint64_t)a4;
-+ (id)descriptionForPrivateRevision:(unint64_t)a3;
++ (BOOL)revision:(unint64_t)revision mayAcceptResultsProducedByRevision:(unint64_t)byRevision;
++ (id)descriptionForPrivateRevision:(unint64_t)revision;
 + (id)privateRevisionsSet;
-- (BOOL)internalPerformRevision:(unint64_t)a3 inContext:(id)a4 error:(id *)a5;
-- (id)applicableDetectorTypeForRevision:(unint64_t)a3 error:(id *)a4;
-- (id)newDefaultDetectorOptionsForRequestRevision:(unint64_t)a3 session:(id)a4;
+- (BOOL)internalPerformRevision:(unint64_t)revision inContext:(id)context error:(id *)error;
+- (id)applicableDetectorTypeForRevision:(unint64_t)revision error:(id *)error;
+- (id)newDefaultDetectorOptionsForRequestRevision:(unint64_t)revision session:(id)session;
 @end
 
 @implementation VNClassifyImageAestheticsRequest
 
-+ (BOOL)revision:(unint64_t)a3 mayAcceptResultsProducedByRevision:(unint64_t)a4
++ (BOOL)revision:(unint64_t)revision mayAcceptResultsProducedByRevision:(unint64_t)byRevision
 {
-  v7 = [VNImageAnalyzerMultiDetector modelForRequestClass:a1 revision:a3];
-  if (v7 != [VNImageAnalyzerMultiDetector modelForRequestClass:a1 revision:a4])
+  v7 = [VNImageAnalyzerMultiDetector modelForRequestClass:self revision:revision];
+  if (v7 != [VNImageAnalyzerMultiDetector modelForRequestClass:self revision:byRevision])
   {
     return 0;
   }
 
-  v9.receiver = a1;
+  v9.receiver = self;
   v9.super_class = &OBJC_METACLASS___VNClassifyImageAestheticsRequest;
-  return objc_msgSendSuper2(&v9, sel_revision_mayAcceptResultsProducedByRevision_, a3, a4);
+  return objc_msgSendSuper2(&v9, sel_revision_mayAcceptResultsProducedByRevision_, revision, byRevision);
 }
 
-+ (id)descriptionForPrivateRevision:(unint64_t)a3
++ (id)descriptionForPrivateRevision:(unint64_t)revision
 {
-  if (a3 - 3737841664u >= 5)
+  if (revision - 3737841664u >= 5)
   {
     v8 = v3;
     v9 = v4;
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___VNClassifyImageAestheticsRequest;
     v5 = objc_msgSendSuper2(&v7, sel_descriptionForPrivateRevision_);
   }
 
   else
   {
-    v5 = off_1E77B3020[a3 - 3737841664u];
+    v5 = off_1E77B3020[revision - 3737841664u];
   }
 
   return v5;
@@ -60,24 +60,24 @@ uint64_t __55__VNClassifyImageAestheticsRequest_privateRevisionsSet__block_invok
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (BOOL)internalPerformRevision:(unint64_t)a3 inContext:(id)a4 error:(id *)a5
+- (BOOL)internalPerformRevision:(unint64_t)revision inContext:(id)context error:(id *)error
 {
-  if (a5)
+  if (error)
   {
-    *a5 = [VNError errorForUnsupportedRevision:a3 ofRequest:self];
+    *error = [VNError errorForUnsupportedRevision:revision ofRequest:self];
   }
 
   return 0;
 }
 
-- (id)newDefaultDetectorOptionsForRequestRevision:(unint64_t)a3 session:(id)a4
+- (id)newDefaultDetectorOptionsForRequestRevision:(unint64_t)revision session:(id)session
 {
   v17[1] = *MEMORY[0x1E69E9840];
   v16.receiver = self;
   v16.super_class = VNClassifyImageAestheticsRequest;
-  v6 = [(VNRequest *)&v16 newDefaultDetectorOptionsForRequestRevision:a3 session:a4];
-  v7 = [(VNRequest *)self frameworkClass];
-  if ([VNCoreSceneUnderstandingDetector handlesRequestClass:v7 revision:a3])
+  v6 = [(VNRequest *)&v16 newDefaultDetectorOptionsForRequestRevision:revision session:session];
+  frameworkClass = [(VNRequest *)self frameworkClass];
+  if ([VNCoreSceneUnderstandingDetector handlesRequestClass:frameworkClass revision:revision])
   {
     v8 = [(VNCoreSceneUnderstandingDetectorFeatureConfiguration *)[VNCoreSceneUnderstandingDetectorImageAestheticsConfiguration alloc] initWithObservationsRecipient:self];
     v17[0] = v8;
@@ -89,7 +89,7 @@ uint64_t __55__VNClassifyImageAestheticsRequest_privateRevisionsSet__block_invok
 
   else
   {
-    v11 = [VNImageAnalyzerMultiDetector modelForRequestClass:v7 revision:a3];
+    v11 = [VNImageAnalyzerMultiDetector modelForRequestClass:frameworkClass revision:revision];
     if (v11)
     {
       v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v11];
@@ -105,10 +105,10 @@ uint64_t __55__VNClassifyImageAestheticsRequest_privateRevisionsSet__block_invok
   return v6;
 }
 
-- (id)applicableDetectorTypeForRevision:(unint64_t)a3 error:(id *)a4
+- (id)applicableDetectorTypeForRevision:(unint64_t)revision error:(id *)error
 {
-  v7 = [(VNRequest *)self frameworkClass];
-  if ([VNCoreSceneUnderstandingDetector handlesRequestClass:v7 revision:a3])
+  frameworkClass = [(VNRequest *)self frameworkClass];
+  if ([VNCoreSceneUnderstandingDetector handlesRequestClass:frameworkClass revision:revision])
   {
     v8 = @"VNCoreSceneUnderstandingDetectorType";
 LABEL_5:
@@ -116,16 +116,16 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  if ([VNImageAnalyzerMultiDetector modelForRequestClass:v7 revision:a3])
+  if ([VNImageAnalyzerMultiDetector modelForRequestClass:frameworkClass revision:revision])
   {
     v8 = @"VNImageAnalyzerMultiDetectorType";
     goto LABEL_5;
   }
 
-  if (a4)
+  if (error)
   {
-    [VNError errorForUnsupportedRevision:a3 ofRequest:self];
-    *a4 = v8 = 0;
+    [VNError errorForUnsupportedRevision:revision ofRequest:self];
+    *error = v8 = 0;
   }
 
   else

@@ -1,10 +1,10 @@
 @interface MNNotificationManager
-- (void)showPredictedRouteTrafficIncidentBulletinForCommuteDetails:(id)a3;
+- (void)showPredictedRouteTrafficIncidentBulletinForCommuteDetails:(id)details;
 @end
 
 @implementation MNNotificationManager
 
-- (void)showPredictedRouteTrafficIncidentBulletinForCommuteDetails:(id)a3
+- (void)showPredictedRouteTrafficIncidentBulletinForCommuteDetails:(id)details
 {
   v18 = *MEMORY[0x1E69E9840];
   v4 = GEOFindOrCreateLog();

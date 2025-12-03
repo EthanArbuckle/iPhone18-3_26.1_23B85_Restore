@@ -1,7 +1,7 @@
 @interface FCPaywallTopOffsetConfiguration
 - (FCPaywallTopOffsetConfiguration)init;
-- (FCPaywallTopOffsetConfiguration)initWithCompactPortraitTopOffsetRatio:(double)a3 compactLandscapeTopOffsetRatio:(double)a4 regularPortraitTopOffsetRatio:(double)a5 regularLandscapeTopOffsetRatio:(double)a6;
-- (FCPaywallTopOffsetConfiguration)initWithConfigDictionary:(id)a3;
+- (FCPaywallTopOffsetConfiguration)initWithCompactPortraitTopOffsetRatio:(double)ratio compactLandscapeTopOffsetRatio:(double)offsetRatio regularPortraitTopOffsetRatio:(double)topOffsetRatio regularLandscapeTopOffsetRatio:(double)landscapeTopOffsetRatio;
+- (FCPaywallTopOffsetConfiguration)initWithConfigDictionary:(id)dictionary;
 @end
 
 @implementation FCPaywallTopOffsetConfiguration
@@ -32,34 +32,34 @@
   objc_exception_throw(v6);
 }
 
-- (FCPaywallTopOffsetConfiguration)initWithConfigDictionary:(id)a3
+- (FCPaywallTopOffsetConfiguration)initWithConfigDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v7.receiver = self;
   v7.super_class = FCPaywallTopOffsetConfiguration;
   v5 = [(FCPaywallTopOffsetConfiguration *)&v7 init];
   if (v5)
   {
-    v5->_compactPortraitTopOffsetRatio = FCAppConfigurationDoubleValue(v4, @"compactPortraitTopOffsetRatio", 0.0);
-    v5->_compactLandscapeTopOffsetRatio = FCAppConfigurationDoubleValue(v4, @"compactLandscapeTopOffsetRatio", 0.0);
-    v5->_regularPortraitTopOffsetRatio = FCAppConfigurationDoubleValue(v4, @"regularPortraitTopOffsetRatio", 0.0);
-    v5->_regularLandscapeTopOffsetRatio = FCAppConfigurationDoubleValue(v4, @"regularLandscapeTopOffsetRatio", 0.0);
+    v5->_compactPortraitTopOffsetRatio = FCAppConfigurationDoubleValue(dictionaryCopy, @"compactPortraitTopOffsetRatio", 0.0);
+    v5->_compactLandscapeTopOffsetRatio = FCAppConfigurationDoubleValue(dictionaryCopy, @"compactLandscapeTopOffsetRatio", 0.0);
+    v5->_regularPortraitTopOffsetRatio = FCAppConfigurationDoubleValue(dictionaryCopy, @"regularPortraitTopOffsetRatio", 0.0);
+    v5->_regularLandscapeTopOffsetRatio = FCAppConfigurationDoubleValue(dictionaryCopy, @"regularLandscapeTopOffsetRatio", 0.0);
   }
 
   return v5;
 }
 
-- (FCPaywallTopOffsetConfiguration)initWithCompactPortraitTopOffsetRatio:(double)a3 compactLandscapeTopOffsetRatio:(double)a4 regularPortraitTopOffsetRatio:(double)a5 regularLandscapeTopOffsetRatio:(double)a6
+- (FCPaywallTopOffsetConfiguration)initWithCompactPortraitTopOffsetRatio:(double)ratio compactLandscapeTopOffsetRatio:(double)offsetRatio regularPortraitTopOffsetRatio:(double)topOffsetRatio regularLandscapeTopOffsetRatio:(double)landscapeTopOffsetRatio
 {
   v11.receiver = self;
   v11.super_class = FCPaywallTopOffsetConfiguration;
   result = [(FCPaywallTopOffsetConfiguration *)&v11 init];
   if (result)
   {
-    result->_compactPortraitTopOffsetRatio = a3;
-    result->_compactLandscapeTopOffsetRatio = a4;
-    result->_regularPortraitTopOffsetRatio = a5;
-    result->_regularLandscapeTopOffsetRatio = a6;
+    result->_compactPortraitTopOffsetRatio = ratio;
+    result->_compactLandscapeTopOffsetRatio = offsetRatio;
+    result->_regularPortraitTopOffsetRatio = topOffsetRatio;
+    result->_regularLandscapeTopOffsetRatio = landscapeTopOffsetRatio;
   }
 
   return result;

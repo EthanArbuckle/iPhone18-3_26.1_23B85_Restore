@@ -1,16 +1,16 @@
 @interface ATXApp2VecMapping
-- (ATXApp2VecMapping)initWithPath:(id)a3;
-- (BOOL)getVectorForBundleId:(id)a3 into:(float *)a4;
-- (BOOL)getVectorForBundleIdWithGenreBackup:(id)a3 into:(float *)a4;
+- (ATXApp2VecMapping)initWithPath:(id)path;
+- (BOOL)getVectorForBundleId:(id)id into:(float *)into;
+- (BOOL)getVectorForBundleIdWithGenreBackup:(id)backup into:(float *)into;
 - (void)dealloc;
 @end
 
 @implementation ATXApp2VecMapping
 
-- (ATXApp2VecMapping)initWithPath:(id)a3
+- (ATXApp2VecMapping)initWithPath:(id)path
 {
-  v5 = a3;
-  if (!v5)
+  pathCopy = path;
+  if (!pathCopy)
   {
     [(ATXApp2VecMapping *)a2 initWithPath:?];
   }
@@ -21,7 +21,7 @@
   if (v6)
   {
     v19 = 0;
-    v7 = [objc_alloc(MEMORY[0x277CBEA90]) initWithContentsOfFile:v5 options:1 error:&v19];
+    v7 = [objc_alloc(MEMORY[0x277CBEA90]) initWithContentsOfFile:pathCopy options:1 error:&v19];
     v8 = v19;
     data = v6->_data;
     v6->_data = v7;
@@ -55,12 +55,12 @@ LABEL_7:
     }
 
     v6->_hdr = *[(NSData *)v6->_data bytes];
-    v12 = [(NSData *)v6->_data bytes];
-    v13 = v12 + 16 + 2 * v6->_hdr.length * v6->_hdr.nvectors;
-    v6->_matrix = (v12 + 16);
+    bytes = [(NSData *)v6->_data bytes];
+    v13 = bytes + 16 + 2 * v6->_hdr.length * v6->_hdr.nvectors;
+    v6->_matrix = (bytes + 16);
     v6->_endOfMatrix = v13;
-    v14 = [(NSData *)v6->_data bytes];
-    if (v13 >= v14 + [(NSData *)v6->_data length])
+    bytes2 = [(NSData *)v6->_data bytes];
+    if (v13 >= bytes2 + [(NSData *)v6->_data length])
     {
       v11 = __atxlog_handle_default();
       if (!os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -105,13 +105,13 @@ LABEL_19:
   [(ATXApp2VecMapping *)&v3 dealloc];
 }
 
-- (BOOL)getVectorForBundleId:(id)a3 into:(float *)a4
+- (BOOL)getVectorForBundleId:(id)id into:(float *)into
 {
-  v7 = a3;
-  v8 = v7;
-  if (a4)
+  idCopy = id;
+  v8 = idCopy;
+  if (into)
   {
-    if (v7)
+    if (idCopy)
     {
       goto LABEL_3;
     }
@@ -164,7 +164,7 @@ LABEL_14:
     do
     {
       v15 = *v11++;
-      *a4++ = base + (v15 * incr);
+      *into++ = base + (v15 * incr);
       --length;
     }
 
@@ -177,10 +177,10 @@ LABEL_16:
   return v16;
 }
 
-- (BOOL)getVectorForBundleIdWithGenreBackup:(id)a3 into:(float *)a4
+- (BOOL)getVectorForBundleIdWithGenreBackup:(id)backup into:(float *)into
 {
-  v6 = a3;
-  if ([(ATXApp2VecMapping *)self getVectorForBundleId:v6 into:a4])
+  backupCopy = backup;
+  if ([(ATXApp2VecMapping *)self getVectorForBundleId:backupCopy into:into])
   {
     v7 = 1;
   }
@@ -188,12 +188,12 @@ LABEL_16:
   else
   {
     v8 = +[_ATXAppInfoManager sharedInstance];
-    v9 = [v8 genreIdForBundleId:v6];
+    v9 = [v8 genreIdForBundleId:backupCopy];
     v10 = v9;
     if (v9)
     {
-      v11 = [v9 stringValue];
-      v7 = [(ATXApp2VecMapping *)self getVectorForBundleId:v11 into:a4];
+      stringValue = [v9 stringValue];
+      v7 = [(ATXApp2VecMapping *)self getVectorForBundleId:stringValue into:into];
     }
 
     else

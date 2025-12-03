@@ -2,13 +2,13 @@
 - (BOOL)_hasGaugeClusterScreen;
 - (BOOL)updateWallpaperToSupportDynamicAppearance;
 - (CRSUIWallpaper)currentWallpaper;
-- (CRSUIWallpaperPreferences)initWithDataProvider:(id)a3;
-- (id)wallpaperForLayoutIdentifier:(id)a3;
-- (id)wallpaperFromThemeData:(id)a3;
-- (void)setCurrentWallpaper:(id)a3;
-- (void)setStagedWallpaper:(id)a3;
-- (void)setVehicle:(id)a3;
-- (void)updateThemeData:(id)a3;
+- (CRSUIWallpaperPreferences)initWithDataProvider:(id)provider;
+- (id)wallpaperForLayoutIdentifier:(id)identifier;
+- (id)wallpaperFromThemeData:(id)data;
+- (void)setCurrentWallpaper:(id)wallpaper;
+- (void)setStagedWallpaper:(id)wallpaper;
+- (void)setVehicle:(id)vehicle;
+- (void)updateThemeData:(id)data;
 - (void)updateWallpaperToSupportDynamicAppearance;
 @end
 
@@ -19,30 +19,30 @@
   stagedWallpaper = self->_stagedWallpaper;
   if (stagedWallpaper)
   {
-    v3 = stagedWallpaper;
+    firstObject = stagedWallpaper;
   }
 
   else
   {
-    v5 = [(CRSUIWallpaperPreferences *)self vehicle];
-    v6 = [(CRSUIWallpaperPreferences *)self dataProvider];
-    v7 = [v6 displayID];
-    v8 = [v5 wallpaperForDisplayWithID:v7];
+    vehicle = [(CRSUIWallpaperPreferences *)self vehicle];
+    dataProvider = [(CRSUIWallpaperPreferences *)self dataProvider];
+    displayID = [dataProvider displayID];
+    v8 = [vehicle wallpaperForDisplayWithID:displayID];
 
-    if (!v8 || (-[CRSUIWallpaperPreferences dataProvider](self, "dataProvider"), v9 = objc_claimAutoreleasedReturnValue(), [v9 loadWallpaperFromData:v8], v3 = objc_claimAutoreleasedReturnValue(), v9, !v3))
+    if (!v8 || (-[CRSUIWallpaperPreferences dataProvider](self, "dataProvider"), v9 = objc_claimAutoreleasedReturnValue(), [v9 loadWallpaperFromData:v8], firstObject = objc_claimAutoreleasedReturnValue(), v9, !firstObject))
     {
-      v10 = [(CRSUIWallpaperPreferences *)self dataProvider];
-      v11 = [v10 defaultWallpapers];
-      v3 = [v11 firstObject];
+      dataProvider2 = [(CRSUIWallpaperPreferences *)self dataProvider];
+      defaultWallpapers = [dataProvider2 defaultWallpapers];
+      firstObject = [defaultWallpapers firstObject];
     }
   }
 
-  return v3;
+  return firstObject;
 }
 
-- (CRSUIWallpaperPreferences)initWithDataProvider:(id)a3
+- (CRSUIWallpaperPreferences)initWithDataProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v10.receiver = self;
   v10.super_class = CRSUIWallpaperPreferences;
   v6 = [(CRSUIWallpaperPreferences *)&v10 init];
@@ -52,37 +52,37 @@
     vehicleManager = v6->_vehicleManager;
     v6->_vehicleManager = v7;
 
-    objc_storeStrong(&v6->_dataProvider, a3);
+    objc_storeStrong(&v6->_dataProvider, provider);
   }
 
   return v6;
 }
 
-- (void)setVehicle:(id)a3
+- (void)setVehicle:(id)vehicle
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [(CRSUIWallpaperPreferences *)self vehicle];
-  v7 = [(CRSUIWallpaperPreferences *)self dataProvider];
-  v8 = [v7 displayID];
-  v9 = [v6 wallpaperForDisplayWithID:v8];
+  vehicleCopy = vehicle;
+  vehicle = [(CRSUIWallpaperPreferences *)self vehicle];
+  dataProvider = [(CRSUIWallpaperPreferences *)self dataProvider];
+  displayID = [dataProvider displayID];
+  v9 = [vehicle wallpaperForDisplayWithID:displayID];
 
-  v10 = [(CRSUIWallpaperPreferences *)self dataProvider];
-  v11 = [v10 displayID];
-  v12 = [v5 wallpaperForDisplayWithID:v11];
+  dataProvider2 = [(CRSUIWallpaperPreferences *)self dataProvider];
+  displayID2 = [dataProvider2 displayID];
+  v12 = [vehicleCopy wallpaperForDisplayWithID:displayID2];
 
   if (v9 == v12)
   {
-    objc_storeStrong(&self->_vehicle, a3);
+    objc_storeStrong(&self->_vehicle, vehicle);
   }
 
   else
   {
-    v13 = [v9 identifier];
-    v14 = [v12 identifier];
-    v15 = [v13 isEqualToString:v14];
+    identifier = [v9 identifier];
+    identifier2 = [v12 identifier];
+    v15 = [identifier isEqualToString:identifier2];
 
-    objc_storeStrong(&self->_vehicle, a3);
+    objc_storeStrong(&self->_vehicle, vehicle);
     if ((v15 & 1) == 0)
     {
       v16 = CRSUILogForCategory(0);
@@ -94,38 +94,38 @@
         _os_log_impl(&dword_243218000, v16, OS_LOG_TYPE_DEFAULT, "[CRSUIWallpaperPreferences] Vehicle #wallpaper preference changed: %{public}@", &v20, 0xCu);
       }
 
-      v18 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v18 postNotificationName:@"CRSUIWallpaperChangedNotification" object:0];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter postNotificationName:@"CRSUIWallpaperChangedNotification" object:0];
     }
   }
 
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setStagedWallpaper:(id)a3
+- (void)setStagedWallpaper:(id)wallpaper
 {
-  v9 = a3;
-  v5 = [v9 identifier];
-  v6 = [(CRSUIWallpaperPreferences *)self currentWallpaper];
-  v7 = [v6 identifier];
-  v8 = [v5 isEqualToString:v7];
+  wallpaperCopy = wallpaper;
+  identifier = [wallpaperCopy identifier];
+  currentWallpaper = [(CRSUIWallpaperPreferences *)self currentWallpaper];
+  identifier2 = [currentWallpaper identifier];
+  v8 = [identifier isEqualToString:identifier2];
 
   if ((v8 & 1) == 0)
   {
-    objc_storeStrong(&self->_stagedWallpaper, a3);
+    objc_storeStrong(&self->_stagedWallpaper, wallpaper);
   }
 }
 
-- (id)wallpaperFromThemeData:(id)a3
+- (id)wallpaperFromThemeData:(id)data
 {
-  v4 = a3;
-  v5 = [(CRSUIWallpaperPreferences *)self dataProvider];
-  v6 = [v5 displayID];
+  dataCopy = data;
+  dataProvider = [(CRSUIWallpaperPreferences *)self dataProvider];
+  displayID = [dataProvider displayID];
 
-  if (v6 && ([v4 objectForKeyedSubscript:v6], v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "currentWallpaper"), v8 = objc_claimAutoreleasedReturnValue(), v7, v8))
+  if (displayID && ([dataCopy objectForKeyedSubscript:displayID], v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "currentWallpaper"), v8 = objc_claimAutoreleasedReturnValue(), v7, v8))
   {
-    v9 = [(CRSUIWallpaperPreferences *)self dataProvider];
-    v10 = [v9 loadWallpaperFromData:v8];
+    dataProvider2 = [(CRSUIWallpaperPreferences *)self dataProvider];
+    v10 = [dataProvider2 loadWallpaperFromData:v8];
   }
 
   else
@@ -136,21 +136,21 @@
   return v10;
 }
 
-- (void)updateThemeData:(id)a3
+- (void)updateThemeData:(id)data
 {
   v52 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(CRSUIWallpaperPreferences *)self vehicle];
-  v6 = [v5 displayThemeData];
-  v7 = [v6 isEqualToDictionary:v4];
+  dataCopy = data;
+  vehicle = [(CRSUIWallpaperPreferences *)self vehicle];
+  displayThemeData = [vehicle displayThemeData];
+  v7 = [displayThemeData isEqualToDictionary:dataCopy];
 
   if (v7)
   {
-    v8 = CRSUILogForCategory(0);
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    defaultCenter = CRSUILogForCategory(0);
+    if (os_log_type_enabled(defaultCenter, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_243218000, v8, OS_LOG_TYPE_DEFAULT, "Ignoring duplicated update to theme data", buf, 2u);
+      _os_log_impl(&dword_243218000, defaultCenter, OS_LOG_TYPE_DEFAULT, "Ignoring duplicated update to theme data", buf, 2u);
     }
 
     goto LABEL_26;
@@ -160,8 +160,8 @@
   v48 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v38 = v4;
-  v9 = v4;
+  v38 = dataCopy;
+  v9 = dataCopy;
   v40 = [v9 countByEnumeratingWithState:&v45 objects:v51 count:16];
   if (v40)
   {
@@ -177,25 +177,25 @@
 
         v11 = *(*(&v45 + 1) + 8 * i);
         v12 = [v9 objectForKeyedSubscript:v11];
-        v13 = self;
-        v14 = [(CRSUIWallpaperPreferences *)self vehicle];
-        v15 = [v14 displayThemeData];
-        v16 = [v15 objectForKeyedSubscript:v11];
+        selfCopy = self;
+        vehicle2 = [(CRSUIWallpaperPreferences *)self vehicle];
+        displayThemeData2 = [vehicle2 displayThemeData];
+        v16 = [displayThemeData2 objectForKeyedSubscript:v11];
 
-        v17 = [v12 currentWallpaper];
-        v18 = [v17 identifier];
-        v19 = [v16 currentWallpaper];
-        v20 = [v19 identifier];
-        v21 = [v18 isEqualToString:v20];
+        currentWallpaper = [v12 currentWallpaper];
+        identifier = [currentWallpaper identifier];
+        currentWallpaper2 = [v16 currentWallpaper];
+        identifier2 = [currentWallpaper2 identifier];
+        v21 = [identifier isEqualToString:identifier2];
 
         if (!v21)
         {
           v22 = 1;
-          self = v13;
+          self = selfCopy;
           goto LABEL_14;
         }
 
-        self = v13;
+        self = selfCopy;
       }
 
       v40 = [v9 countByEnumeratingWithState:&v45 objects:v51 count:16];
@@ -231,21 +231,21 @@ LABEL_14:
         }
 
         v28 = [v23 objectForKeyedSubscript:*(*(&v41 + 1) + 8 * j)];
-        v29 = [(CRSUIWallpaperPreferences *)self dataProvider];
-        v30 = [v28 currentWallpaper];
-        v31 = [v29 loadWallpaperFromData:v30];
+        dataProvider = [(CRSUIWallpaperPreferences *)self dataProvider];
+        currentWallpaper3 = [v28 currentWallpaper];
+        v31 = [dataProvider loadWallpaperFromData:currentWallpaper3];
 
-        v32 = [v31 traits];
-        LODWORD(v30) = [v32 supportsDynamicAppearance];
+        traits = [v31 traits];
+        LODWORD(currentWallpaper3) = [traits supportsDynamicAppearance];
 
-        if (!v30)
+        if (!currentWallpaper3)
         {
 
-          v34 = [(CRSUIWallpaperPreferences *)self vehicle];
-          [v34 setDisplayThemeData:v23];
+          vehicle3 = [(CRSUIWallpaperPreferences *)self vehicle];
+          [vehicle3 setDisplayThemeData:v23];
 
-          v33 = [(CRSUIWallpaperPreferences *)self vehicle];
-          [v33 setAppearanceModePreference:2];
+          vehicle4 = [(CRSUIWallpaperPreferences *)self vehicle];
+          [vehicle4 setAppearanceModePreference:2];
           goto LABEL_24;
         }
       }
@@ -260,19 +260,19 @@ LABEL_14:
     }
   }
 
-  v33 = [(CRSUIWallpaperPreferences *)self vehicle];
-  [v33 setDisplayThemeData:v23];
+  vehicle4 = [(CRSUIWallpaperPreferences *)self vehicle];
+  [vehicle4 setDisplayThemeData:v23];
 LABEL_24:
 
-  v35 = [(CRSUIWallpaperPreferences *)self vehicleManager];
-  v36 = [(CRSUIWallpaperPreferences *)self vehicle];
-  [v35 saveVehicle:v36 completion:&__block_literal_global_3];
+  vehicleManager = [(CRSUIWallpaperPreferences *)self vehicleManager];
+  vehicle5 = [(CRSUIWallpaperPreferences *)self vehicle];
+  [vehicleManager saveVehicle:vehicle5 completion:&__block_literal_global_3];
 
-  v4 = v38;
+  dataCopy = v38;
   if (v22)
   {
-    v8 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v8 postNotificationName:@"CRSUIWallpaperChangedNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"CRSUIWallpaperChangedNotification" object:0];
 LABEL_26:
   }
 
@@ -307,24 +307,24 @@ void __57__CRSUIWallpaperPreferences_updateHasGaugeClusterScreen___block_invoke(
   }
 }
 
-- (id)wallpaperForLayoutIdentifier:(id)a3
+- (id)wallpaperForLayoutIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CRSUIWallpaperPreferences *)self vehicle];
-  v6 = [v5 displayThemeData];
+  identifierCopy = identifier;
+  vehicle = [(CRSUIWallpaperPreferences *)self vehicle];
+  displayThemeData = [vehicle displayThemeData];
 
-  if (v6)
+  if (displayThemeData)
   {
-    v7 = [(CRSUIWallpaperPreferences *)self vehicle];
-    v8 = [v7 displayThemeData];
-    v9 = [(CRSUIWallpaperPreferences *)self dataProvider];
-    v10 = [v9 displayID];
-    v11 = [v8 objectForKeyedSubscript:v10];
+    vehicle2 = [(CRSUIWallpaperPreferences *)self vehicle];
+    displayThemeData2 = [vehicle2 displayThemeData];
+    dataProvider = [(CRSUIWallpaperPreferences *)self dataProvider];
+    displayID = [dataProvider displayID];
+    v11 = [displayThemeData2 objectForKeyedSubscript:displayID];
 
-    v12 = [(CRSUIWallpaperPreferences *)self dataProvider];
-    v13 = [v11 wallpaperForLayout];
-    v14 = [v13 objectForKey:v4];
-    v15 = [v12 loadWallpaperFromData:v14];
+    dataProvider2 = [(CRSUIWallpaperPreferences *)self dataProvider];
+    wallpaperForLayout = [v11 wallpaperForLayout];
+    v14 = [wallpaperForLayout objectForKey:identifierCopy];
+    currentWallpaper = [dataProvider2 loadWallpaperFromData:v14];
   }
 
   else
@@ -335,37 +335,37 @@ void __57__CRSUIWallpaperPreferences_updateHasGaugeClusterScreen___block_invoke(
       [(CRSUIWallpaperPreferences *)self wallpaperForLayoutIdentifier:v16];
     }
 
-    v15 = [(CRSUIWallpaperPreferences *)self currentWallpaper];
+    currentWallpaper = [(CRSUIWallpaperPreferences *)self currentWallpaper];
   }
 
-  return v15;
+  return currentWallpaper;
 }
 
-- (void)setCurrentWallpaper:(id)a3
+- (void)setCurrentWallpaper:(id)wallpaper
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(CRSUIWallpaperPreferences *)self vehicle];
-  v6 = [(CRSUIWallpaperPreferences *)self dataProvider];
-  v7 = [v6 displayID];
-  v8 = [v5 wallpaperForDisplayWithID:v7];
+  wallpaperCopy = wallpaper;
+  vehicle = [(CRSUIWallpaperPreferences *)self vehicle];
+  dataProvider = [(CRSUIWallpaperPreferences *)self dataProvider];
+  displayID = [dataProvider displayID];
+  v8 = [vehicle wallpaperForDisplayWithID:displayID];
 
-  v9 = [v8 identifier];
-  v10 = [v4 data];
-  v11 = [v10 identifier];
-  v12 = [v9 isEqualToString:v11];
+  identifier = [v8 identifier];
+  data = [wallpaperCopy data];
+  identifier2 = [data identifier];
+  v12 = [identifier isEqualToString:identifier2];
 
   [(CRSUIWallpaperPreferences *)self setStagedWallpaper:0];
-  v13 = CRSUILogForCategory(0);
-  v14 = os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT);
+  defaultCenter = CRSUILogForCategory(0);
+  v14 = os_log_type_enabled(defaultCenter, OS_LOG_TYPE_DEFAULT);
   if (v12)
   {
     if (v14)
     {
-      v15 = [v4 identifier];
+      identifier3 = [wallpaperCopy identifier];
       v25 = 138543362;
-      v26 = v15;
-      _os_log_impl(&dword_243218000, v13, OS_LOG_TYPE_DEFAULT, "[CRSUIWallpaperPreferences] Ignoring #wallpaper update to %{public}@ for vehicle", &v25, 0xCu);
+      v26 = identifier3;
+      _os_log_impl(&dword_243218000, defaultCenter, OS_LOG_TYPE_DEFAULT, "[CRSUIWallpaperPreferences] Ignoring #wallpaper update to %{public}@ for vehicle", &v25, 0xCu);
     }
   }
 
@@ -373,25 +373,25 @@ void __57__CRSUIWallpaperPreferences_updateHasGaugeClusterScreen___block_invoke(
   {
     if (v14)
     {
-      v16 = [v4 identifier];
+      identifier4 = [wallpaperCopy identifier];
       v25 = 138543362;
-      v26 = v16;
-      _os_log_impl(&dword_243218000, v13, OS_LOG_TYPE_DEFAULT, "[CRSUIWallpaperPreferences] Setting #wallpaper %{public}@ for vehicle", &v25, 0xCu);
+      v26 = identifier4;
+      _os_log_impl(&dword_243218000, defaultCenter, OS_LOG_TYPE_DEFAULT, "[CRSUIWallpaperPreferences] Setting #wallpaper %{public}@ for vehicle", &v25, 0xCu);
     }
 
-    v17 = [(CRSUIWallpaperPreferences *)self vehicle];
-    v18 = [v4 data];
-    v19 = [(CRSUIWallpaperPreferences *)self dataProvider];
-    v20 = [v19 displayID];
-    v21 = [v4 traits];
-    [v17 setWallpaper:v18 forDisplayWithID:v20 requiresDarkAppearance:{objc_msgSend(v21, "supportsDynamicAppearance") ^ 1}];
+    vehicle2 = [(CRSUIWallpaperPreferences *)self vehicle];
+    data2 = [wallpaperCopy data];
+    dataProvider2 = [(CRSUIWallpaperPreferences *)self dataProvider];
+    displayID2 = [dataProvider2 displayID];
+    traits = [wallpaperCopy traits];
+    [vehicle2 setWallpaper:data2 forDisplayWithID:displayID2 requiresDarkAppearance:{objc_msgSend(traits, "supportsDynamicAppearance") ^ 1}];
 
-    v22 = [(CRSUIWallpaperPreferences *)self vehicleManager];
-    v23 = [(CRSUIWallpaperPreferences *)self vehicle];
-    [v22 saveVehicle:v23 completion:&__block_literal_global_34];
+    vehicleManager = [(CRSUIWallpaperPreferences *)self vehicleManager];
+    vehicle3 = [(CRSUIWallpaperPreferences *)self vehicle];
+    [vehicleManager saveVehicle:vehicle3 completion:&__block_literal_global_34];
 
-    v13 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v13 postNotificationName:@"CRSUIWallpaperChangedNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"CRSUIWallpaperChangedNotification" object:0];
   }
 
   v24 = *MEMORY[0x277D85DE8];
@@ -414,26 +414,26 @@ void __49__CRSUIWallpaperPreferences_setCurrentWallpaper___block_invoke(uint64_t
 - (BOOL)updateWallpaperToSupportDynamicAppearance
 {
   v40 = *MEMORY[0x277D85DE8];
-  v3 = [(CRSUIWallpaperPreferences *)self dataProvider];
-  v4 = [(CRSUIWallpaperPreferences *)self vehicle];
-  v5 = [v3 dynamicAppearanceWallpapersForVehicle:v4];
+  dataProvider = [(CRSUIWallpaperPreferences *)self dataProvider];
+  vehicle = [(CRSUIWallpaperPreferences *)self vehicle];
+  v5 = [dataProvider dynamicAppearanceWallpapersForVehicle:vehicle];
 
   if ([v5 count])
   {
-    v6 = [(CRSUIWallpaperPreferences *)self vehicle];
-    v7 = [v6 displayThemeData];
-    if (v7)
+    vehicle2 = [(CRSUIWallpaperPreferences *)self vehicle];
+    displayThemeData = [vehicle2 displayThemeData];
+    if (displayThemeData)
     {
-      v8 = v7;
-      v9 = [(CRSUIWallpaperPreferences *)self dataProvider];
-      v10 = [v9 displayID];
+      v8 = displayThemeData;
+      dataProvider2 = [(CRSUIWallpaperPreferences *)self dataProvider];
+      displayID = [dataProvider2 displayID];
 
-      if (!v10)
+      if (!displayID)
       {
-        v32 = self;
-        v11 = [(CRSUIWallpaperPreferences *)self vehicle];
-        v12 = [v11 displayThemeData];
-        v13 = [v12 mutableCopy];
+        selfCopy = self;
+        vehicle3 = [(CRSUIWallpaperPreferences *)self vehicle];
+        displayThemeData2 = [vehicle3 displayThemeData];
+        v13 = [displayThemeData2 mutableCopy];
 
         v35 = 0u;
         v36 = 0u;
@@ -470,15 +470,15 @@ void __49__CRSUIWallpaperPreferences_setCurrentWallpaper___block_invoke(uint64_t
 
               if (v22)
               {
-                v23 = [v21 displayID];
-                v24 = [v13 objectForKey:v23];
+                displayID2 = [v21 displayID];
+                v24 = [v13 objectForKey:displayID2];
 
                 if (v24)
                 {
-                  v25 = [v21 data];
-                  v26 = [v24 themeDataWithCurrentWallpaper:v25];
-                  v27 = [v21 displayID];
-                  [v13 setObject:v26 forKey:v27];
+                  data = [v21 data];
+                  v26 = [v24 themeDataWithCurrentWallpaper:data];
+                  displayID3 = [v21 displayID];
+                  [v13 setObject:v26 forKey:displayID3];
 
                   v17 = 1;
                 }
@@ -505,7 +505,7 @@ void __49__CRSUIWallpaperPreferences_setCurrentWallpaper___block_invoke(uint64_t
           v17 = 0;
         }
 
-        [(CRSUIWallpaperPreferences *)v32 updateThemeData:v13];
+        [(CRSUIWallpaperPreferences *)selfCopy updateThemeData:v13];
         goto LABEL_31;
       }
     }
@@ -519,11 +519,11 @@ void __49__CRSUIWallpaperPreferences_setCurrentWallpaper___block_invoke(uint64_t
       [CRSUIWallpaperPreferences updateWallpaperToSupportDynamicAppearance];
     }
 
-    v29 = [v5 firstObject];
-    v17 = v29 != 0;
-    if (v29)
+    firstObject = [v5 firstObject];
+    v17 = firstObject != 0;
+    if (firstObject)
     {
-      [(CRSUIWallpaperPreferences *)self setCurrentWallpaper:v29];
+      [(CRSUIWallpaperPreferences *)self setCurrentWallpaper:firstObject];
     }
   }
 
@@ -546,11 +546,11 @@ LABEL_31:
 
 - (BOOL)_hasGaugeClusterScreen
 {
-  v2 = [(CRSUIWallpaperPreferences *)self vehicle];
-  v3 = [v2 hasGaugeClusterScreen];
-  v4 = [v3 BOOLValue];
+  vehicle = [(CRSUIWallpaperPreferences *)self vehicle];
+  hasGaugeClusterScreen = [vehicle hasGaugeClusterScreen];
+  bOOLValue = [hasGaugeClusterScreen BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 void __45__CRSUIWallpaperPreferences_updateThemeData___block_invoke_cold_1()
@@ -581,9 +581,9 @@ void __45__CRSUIWallpaperPreferences_updateThemeData___block_invoke_cold_1()
 {
   v7 = objc_opt_class();
   v8 = NSStringFromClass(v7);
-  *a1 = 138543362;
+  *self = 138543362;
   *a3 = v8;
-  _os_log_fault_impl(&dword_243218000, a4, OS_LOG_TYPE_FAULT, "Unsupported wallpaper type: %{public}@", a1, 0xCu);
+  _os_log_fault_impl(&dword_243218000, a4, OS_LOG_TYPE_FAULT, "Unsupported wallpaper type: %{public}@", self, 0xCu);
 }
 
 @end

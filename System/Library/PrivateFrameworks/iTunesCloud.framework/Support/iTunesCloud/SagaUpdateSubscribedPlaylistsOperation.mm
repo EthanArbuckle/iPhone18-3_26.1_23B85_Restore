@@ -1,5 +1,5 @@
 @interface SagaUpdateSubscribedPlaylistsOperation
-- (SagaUpdateSubscribedPlaylistsOperation)initWithConfiguration:(id)a3 clientIdentity:(id)a4 subscribedPlaylistSagaIDs:(id)a5 ignoreMinRefreshInterval:(BOOL)a6 requestReason:(int64_t)a7 pinnedOnly:(BOOL)a8;
+- (SagaUpdateSubscribedPlaylistsOperation)initWithConfiguration:(id)configuration clientIdentity:(id)identity subscribedPlaylistSagaIDs:(id)ds ignoreMinRefreshInterval:(BOOL)interval requestReason:(int64_t)reason pinnedOnly:(BOOL)only;
 - (void)main;
 @end
 
@@ -20,18 +20,18 @@ LABEL_4:
     v4 = [NSString stringWithFormat:@"SagaUpdateSubscribedPlaylistsOperation - (saga_id count = %llu)", [(NSArray *)playlistSagaIDs count]];
     v5 = [[MSVXPCTransaction alloc] initWithName:v4];
     [v5 beginTransaction];
-    v6 = [(CloudLibraryOperation *)self musicLibrary];
-    v7 = [(CloudLibraryOperation *)self clientIdentity];
-    [v6 setClientIdentity:v7];
+    musicLibrary = [(CloudLibraryOperation *)self musicLibrary];
+    clientIdentity = [(CloudLibraryOperation *)self clientIdentity];
+    [musicLibrary setClientIdentity:clientIdentity];
 
-    v8 = [(CloudLibraryOperation *)self connection];
-    v9 = [[SagaSubscribedPlaylistUpdater alloc] initWithSubscribedPlaylistCloudIDs:self->_playlistSagaIDs cloudLibraryConnection:v8];
+    connection = [(CloudLibraryOperation *)self connection];
+    v9 = [[SagaSubscribedPlaylistUpdater alloc] initWithSubscribedPlaylistCloudIDs:self->_playlistSagaIDs cloudLibraryConnection:connection];
     [(SagaSubscribedPlaylistUpdater *)v9 setIgnoreMinRefreshInterval:self->_ignoreMinRefreshInterval];
     [(SagaSubscribedPlaylistUpdater *)v9 setRequestReason:self->_requestReason];
     [(SagaSubscribedPlaylistUpdater *)v9 setPinnedOnly:self->_pinnedOnly];
-    v10 = [(CloudLibraryOperation *)self clientIdentity];
+    clientIdentity2 = [(CloudLibraryOperation *)self clientIdentity];
     v17 = 0;
-    [(SagaSubscribedPlaylistUpdater *)v9 performUpdateWithClientIdentity:v10 error:&v17];
+    [(SagaSubscribedPlaylistUpdater *)v9 performUpdateWithClientIdentity:clientIdentity2 error:&v17];
     v11 = v17;
 
     if (v11)
@@ -53,9 +53,9 @@ LABEL_4:
     }
 
     [(CloudLibraryOperation *)self setStatus:v13];
-    v14 = [(CloudLibraryOperation *)self musicLibrary];
+    musicLibrary2 = [(CloudLibraryOperation *)self musicLibrary];
     v15 = MSVTCCIdentityForCurrentProcess();
-    [v14 setClientIdentity:v15];
+    [musicLibrary2 setClientIdentity:v15];
 
     [v5 endTransaction];
     return;
@@ -71,21 +71,21 @@ LABEL_4:
   [(CloudLibraryOperation *)self setStatus:1];
 }
 
-- (SagaUpdateSubscribedPlaylistsOperation)initWithConfiguration:(id)a3 clientIdentity:(id)a4 subscribedPlaylistSagaIDs:(id)a5 ignoreMinRefreshInterval:(BOOL)a6 requestReason:(int64_t)a7 pinnedOnly:(BOOL)a8
+- (SagaUpdateSubscribedPlaylistsOperation)initWithConfiguration:(id)configuration clientIdentity:(id)identity subscribedPlaylistSagaIDs:(id)ds ignoreMinRefreshInterval:(BOOL)interval requestReason:(int64_t)reason pinnedOnly:(BOOL)only
 {
-  v14 = a5;
+  dsCopy = ds;
   v19.receiver = self;
   v19.super_class = SagaUpdateSubscribedPlaylistsOperation;
-  v15 = [(CloudLibraryOperation *)&v19 initWithConfiguration:a3 clientIdentity:a4];
+  v15 = [(CloudLibraryOperation *)&v19 initWithConfiguration:configuration clientIdentity:identity];
   if (v15)
   {
-    v16 = [v14 copy];
+    v16 = [dsCopy copy];
     playlistSagaIDs = v15->_playlistSagaIDs;
     v15->_playlistSagaIDs = v16;
 
-    v15->_ignoreMinRefreshInterval = a6;
-    v15->_requestReason = a7;
-    v15->_pinnedOnly = a8;
+    v15->_ignoreMinRefreshInterval = interval;
+    v15->_requestReason = reason;
+    v15->_pinnedOnly = only;
   }
 
   return v15;

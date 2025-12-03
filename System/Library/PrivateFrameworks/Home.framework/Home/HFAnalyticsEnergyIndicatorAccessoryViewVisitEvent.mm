@@ -1,15 +1,15 @@
 @interface HFAnalyticsEnergyIndicatorAccessoryViewVisitEvent
-- (HFAnalyticsEnergyIndicatorAccessoryViewVisitEvent)initWithData:(id)a3;
+- (HFAnalyticsEnergyIndicatorAccessoryViewVisitEvent)initWithData:(id)data;
 - (id)payload;
 @end
 
 @implementation HFAnalyticsEnergyIndicatorAccessoryViewVisitEvent
 
-- (HFAnalyticsEnergyIndicatorAccessoryViewVisitEvent)initWithData:(id)a3
+- (HFAnalyticsEnergyIndicatorAccessoryViewVisitEvent)initWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   objc_opt_class();
-  v5 = [v4 objectForKeyedSubscript:@"energyForecastGridID"];
+  v5 = [dataCopy objectForKeyedSubscript:@"energyForecastGridID"];
   if (objc_opt_isKindOfClass())
   {
     v6 = v5;
@@ -28,7 +28,7 @@
   }
 
   objc_opt_class();
-  v8 = [v4 objectForKeyedSubscript:@"energyIndicatorAdviceText"];
+  v8 = [dataCopy objectForKeyedSubscript:@"energyIndicatorAdviceText"];
   if (objc_opt_isKindOfClass())
   {
     v9 = v8;
@@ -63,14 +63,14 @@
 {
   v8.receiver = self;
   v8.super_class = HFAnalyticsEnergyIndicatorAccessoryViewVisitEvent;
-  v3 = [(HFAnalyticsEvent *)&v8 payload];
-  v4 = [v3 mutableCopy];
+  payload = [(HFAnalyticsEvent *)&v8 payload];
+  v4 = [payload mutableCopy];
 
-  v5 = [(HFAnalyticsEnergyIndicatorAccessoryViewVisitEvent *)self gridID];
-  [v4 na_safeSetObject:v5 forKey:@"energyForecastGridID"];
+  gridID = [(HFAnalyticsEnergyIndicatorAccessoryViewVisitEvent *)self gridID];
+  [v4 na_safeSetObject:gridID forKey:@"energyForecastGridID"];
 
-  v6 = [(HFAnalyticsEnergyIndicatorAccessoryViewVisitEvent *)self adviceText];
-  [v4 na_safeSetObject:v6 forKey:@"energyIndicatorAdviceText"];
+  adviceText = [(HFAnalyticsEnergyIndicatorAccessoryViewVisitEvent *)self adviceText];
+  [v4 na_safeSetObject:adviceText forKey:@"energyIndicatorAdviceText"];
 
   [v4 na_safeSetObject:&unk_2825236A0 forKey:@"homeAppEventCount"];
 

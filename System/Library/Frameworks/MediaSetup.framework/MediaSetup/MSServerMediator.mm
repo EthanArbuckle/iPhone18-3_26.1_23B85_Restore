@@ -1,37 +1,37 @@
 @interface MSServerMediator
 - (MSAccountsImplementer)accountsInterfaceDelegate;
 - (MSProxyConnectionDelegate)connectionDelegate;
-- (MSServerMediator)initWithAccountsDelegate:(id)a3;
-- (void)activeServiceApplicationInformationForSharedUserID:(id)a3 completionHandler:(id)a4;
-- (void)addMediaService:(id)a3 usingSetupBundles:(id)a4 completion:(id)a5;
-- (void)getAvailableServices:(id)a3 userIdentifier:(id)a4 completion:(id)a5;
-- (void)getCachedAvailableServices:(id)a3 userIdentifier:(id)a4 completion:(id)a5;
-- (void)getCachedServiceInfo:(id)a3 homeUserID:(id)a4 endpointID:(id)a5 completion:(id)a6;
-- (void)getDefaultMediaService:(id)a3 homeUserID:(id)a4 completion:(id)a5;
-- (void)getDefaultMediaServiceForAllUsers:(id)a3;
-- (void)getMediaServiceChoicesForAllUsers:(id)a3;
-- (void)getMediaServiceChoicesForSharedUser:(id)a3 completion:(id)a4;
-- (void)getPublicInfoForBundleID:(id)a3 completion:(id)a4;
-- (void)getResolvedServiceInfo:(id)a3 completion:(id)a4;
-- (void)getResolvedServiceInfo:(id)a3 sharedUserID:(id)a4 completion:(id)a5;
-- (void)getServiceConfigurationInfo:(id)a3 serviceID:(id)a4 completion:(id)a5;
-- (void)getSupportedThirdPartyMediaServices:(id)a3;
+- (MSServerMediator)initWithAccountsDelegate:(id)delegate;
+- (void)activeServiceApplicationInformationForSharedUserID:(id)d completionHandler:(id)handler;
+- (void)addMediaService:(id)service usingSetupBundles:(id)bundles completion:(id)completion;
+- (void)getAvailableServices:(id)services userIdentifier:(id)identifier completion:(id)completion;
+- (void)getCachedAvailableServices:(id)services userIdentifier:(id)identifier completion:(id)completion;
+- (void)getCachedServiceInfo:(id)info homeUserID:(id)d endpointID:(id)iD completion:(id)completion;
+- (void)getDefaultMediaService:(id)service homeUserID:(id)d completion:(id)completion;
+- (void)getDefaultMediaServiceForAllUsers:(id)users;
+- (void)getMediaServiceChoicesForAllUsers:(id)users;
+- (void)getMediaServiceChoicesForSharedUser:(id)user completion:(id)completion;
+- (void)getPublicInfoForBundleID:(id)d completion:(id)completion;
+- (void)getResolvedServiceInfo:(id)info completion:(id)completion;
+- (void)getResolvedServiceInfo:(id)info sharedUserID:(id)d completion:(id)completion;
+- (void)getServiceConfigurationInfo:(id)info serviceID:(id)d completion:(id)completion;
+- (void)getSupportedThirdPartyMediaServices:(id)services;
 - (void)openConnection;
-- (void)removeMediaService:(id)a3 homeID:(id)a4 homeUserID:(id)a5 completion:(id)a6;
-- (void)requestAuthRenewalForMediaService:(id)a3 homeUserID:(id)a4 parentNetworkActivity:(id)a5 completion:(id)a6;
-- (void)setVersion:(unint64_t)a3 completion:(id)a4;
-- (void)switchUserAccountInfo:(id)a3 homeID:(id)a4 homeUserID:(id)a5 completion:(id)a6;
-- (void)thirdPartyMusicAvailable:(id)a3 completion:(id)a4;
-- (void)updateDefaultMediaService:(id)a3 homeID:(id)a4 homeUserID:(id)a5 completion:(id)a6;
-- (void)updateProperty:(id)a3 homeID:(id)a4 homeUserID:(id)a5 withOptions:(id)a6 completion:(id)a7;
+- (void)removeMediaService:(id)service homeID:(id)d homeUserID:(id)iD completion:(id)completion;
+- (void)requestAuthRenewalForMediaService:(id)service homeUserID:(id)d parentNetworkActivity:(id)activity completion:(id)completion;
+- (void)setVersion:(unint64_t)version completion:(id)completion;
+- (void)switchUserAccountInfo:(id)info homeID:(id)d homeUserID:(id)iD completion:(id)completion;
+- (void)thirdPartyMusicAvailable:(id)available completion:(id)completion;
+- (void)updateDefaultMediaService:(id)service homeID:(id)d homeUserID:(id)iD completion:(id)completion;
+- (void)updateProperty:(id)property homeID:(id)d homeUserID:(id)iD withOptions:(id)options completion:(id)completion;
 @end
 
 @implementation MSServerMediator
 
-- (MSServerMediator)initWithAccountsDelegate:(id)a3
+- (MSServerMediator)initWithAccountsDelegate:(id)delegate
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  delegateCopy = delegate;
   v9.receiver = self;
   v9.super_class = MSServerMediator;
   v5 = [(MSServerMediator *)&v9 init];
@@ -45,7 +45,7 @@
       _os_log_impl(&dword_23986C000, v6, OS_LOG_TYPE_DEFAULT, "%s", buf, 0xCu);
     }
 
-    objc_storeWeak(&v5->_accountsInterfaceDelegate, v4);
+    objc_storeWeak(&v5->_accountsInterfaceDelegate, delegateCopy);
   }
 
   v7 = *MEMORY[0x277D85DE8];
@@ -54,65 +54,65 @@
 
 - (void)openConnection
 {
-  v3 = [(MSServerMediator *)self connectionDelegate];
+  connectionDelegate = [(MSServerMediator *)self connectionDelegate];
 
-  if (v3)
+  if (connectionDelegate)
   {
-    v4 = [(MSServerMediator *)self connectionDelegate];
-    [v4 openConnection];
+    connectionDelegate2 = [(MSServerMediator *)self connectionDelegate];
+    [connectionDelegate2 openConnection];
   }
 }
 
-- (void)getDefaultMediaService:(id)a3 homeUserID:(id)a4 completion:(id)a5
+- (void)getDefaultMediaService:(id)service homeUserID:(id)d completion:(id)completion
 {
-  v12 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(MSServerMediator *)self accountsInterfaceDelegate];
+  serviceCopy = service;
+  dCopy = d;
+  completionCopy = completion;
+  accountsInterfaceDelegate = [(MSServerMediator *)self accountsInterfaceDelegate];
 
-  if (v9 && v10)
+  if (completionCopy && accountsInterfaceDelegate)
   {
-    v11 = [(MSServerMediator *)self accountsInterfaceDelegate];
-    [v11 getDefaultMediaService:v12 homeUserID:v8 completion:v9];
+    accountsInterfaceDelegate2 = [(MSServerMediator *)self accountsInterfaceDelegate];
+    [accountsInterfaceDelegate2 getDefaultMediaService:serviceCopy homeUserID:dCopy completion:completionCopy];
   }
 }
 
-- (void)updateDefaultMediaService:(id)a3 homeID:(id)a4 homeUserID:(id)a5 completion:(id)a6
+- (void)updateDefaultMediaService:(id)service homeID:(id)d homeUserID:(id)iD completion:(id)completion
 {
-  v15 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [(MSServerMediator *)self accountsInterfaceDelegate];
+  serviceCopy = service;
+  dCopy = d;
+  iDCopy = iD;
+  completionCopy = completion;
+  accountsInterfaceDelegate = [(MSServerMediator *)self accountsInterfaceDelegate];
 
-  if (v12 && v13)
+  if (completionCopy && accountsInterfaceDelegate)
   {
-    v14 = [(MSServerMediator *)self accountsInterfaceDelegate];
-    [v14 updateDefaultMediaService:v15 homeID:v10 homeUserID:v11 completion:v12];
+    accountsInterfaceDelegate2 = [(MSServerMediator *)self accountsInterfaceDelegate];
+    [accountsInterfaceDelegate2 updateDefaultMediaService:serviceCopy homeID:dCopy homeUserID:iDCopy completion:completionCopy];
   }
 }
 
-- (void)getAvailableServices:(id)a3 userIdentifier:(id)a4 completion:(id)a5
+- (void)getAvailableServices:(id)services userIdentifier:(id)identifier completion:(id)completion
 {
-  v12 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(MSServerMediator *)self accountsInterfaceDelegate];
+  servicesCopy = services;
+  identifierCopy = identifier;
+  completionCopy = completion;
+  accountsInterfaceDelegate = [(MSServerMediator *)self accountsInterfaceDelegate];
 
-  if (v9 && v10)
+  if (completionCopy && accountsInterfaceDelegate)
   {
-    v11 = [(MSServerMediator *)self accountsInterfaceDelegate];
-    [v11 getAvailableServices:v12 userIdentifier:v8 completion:v9];
+    accountsInterfaceDelegate2 = [(MSServerMediator *)self accountsInterfaceDelegate];
+    [accountsInterfaceDelegate2 getAvailableServices:servicesCopy userIdentifier:identifierCopy completion:completionCopy];
   }
 }
 
-- (void)getMediaServiceChoicesForSharedUser:(id)a3 completion:(id)a4
+- (void)getMediaServiceChoicesForSharedUser:(id)user completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MSServerMediator *)self accountsInterfaceDelegate];
+  userCopy = user;
+  completionCopy = completion;
+  accountsInterfaceDelegate = [(MSServerMediator *)self accountsInterfaceDelegate];
 
-  if (!v8)
+  if (!accountsInterfaceDelegate)
   {
     v10 = _MSLogingFacility();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -120,25 +120,25 @@
       [(MSServerMediator *)v10 getMediaServiceChoicesForSharedUser:v11 completion:v12, v13, v14, v15, v16, v17];
     }
 
-    v9 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.mediasetup.errorDomain" code:1 userInfo:0];
-    v7[2](v7, 0, v9);
+    accountsInterfaceDelegate2 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.mediasetup.errorDomain" code:1 userInfo:0];
+    completionCopy[2](completionCopy, 0, accountsInterfaceDelegate2);
     goto LABEL_7;
   }
 
-  if (v7)
+  if (completionCopy)
   {
-    v9 = [(MSServerMediator *)self accountsInterfaceDelegate];
-    [v9 getMediaServiceChoicesForSharedUser:v6 completion:v7];
+    accountsInterfaceDelegate2 = [(MSServerMediator *)self accountsInterfaceDelegate];
+    [accountsInterfaceDelegate2 getMediaServiceChoicesForSharedUser:userCopy completion:completionCopy];
 LABEL_7:
   }
 }
 
-- (void)getMediaServiceChoicesForAllUsers:(id)a3
+- (void)getMediaServiceChoicesForAllUsers:(id)users
 {
-  v4 = a3;
-  v5 = [(MSServerMediator *)self accountsInterfaceDelegate];
+  usersCopy = users;
+  accountsInterfaceDelegate = [(MSServerMediator *)self accountsInterfaceDelegate];
 
-  if (!v5)
+  if (!accountsInterfaceDelegate)
   {
     v7 = _MSLogingFacility();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -146,233 +146,233 @@ LABEL_7:
       [(MSServerMediator *)v7 getMediaServiceChoicesForSharedUser:v8 completion:v9, v10, v11, v12, v13, v14];
     }
 
-    v6 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.mediasetup.errorDomain" code:1 userInfo:0];
-    v4[2](v4, 0, v6);
+    accountsInterfaceDelegate2 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.mediasetup.errorDomain" code:1 userInfo:0];
+    usersCopy[2](usersCopy, 0, accountsInterfaceDelegate2);
     goto LABEL_7;
   }
 
-  if (v4)
+  if (usersCopy)
   {
-    v6 = [(MSServerMediator *)self accountsInterfaceDelegate];
-    [v6 getMediaServiceChoicesForAllUsers:v4];
+    accountsInterfaceDelegate2 = [(MSServerMediator *)self accountsInterfaceDelegate];
+    [accountsInterfaceDelegate2 getMediaServiceChoicesForAllUsers:usersCopy];
 LABEL_7:
   }
 }
 
-- (void)getCachedAvailableServices:(id)a3 userIdentifier:(id)a4 completion:(id)a5
+- (void)getCachedAvailableServices:(id)services userIdentifier:(id)identifier completion:(id)completion
 {
-  v12 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(MSServerMediator *)self accountsInterfaceDelegate];
+  servicesCopy = services;
+  identifierCopy = identifier;
+  completionCopy = completion;
+  accountsInterfaceDelegate = [(MSServerMediator *)self accountsInterfaceDelegate];
 
-  if (v9 && v10)
+  if (completionCopy && accountsInterfaceDelegate)
   {
-    v11 = [(MSServerMediator *)self accountsInterfaceDelegate];
-    [v11 getCachedAvailableServices:v12 userIdentifier:v8 completion:v9];
+    accountsInterfaceDelegate2 = [(MSServerMediator *)self accountsInterfaceDelegate];
+    [accountsInterfaceDelegate2 getCachedAvailableServices:servicesCopy userIdentifier:identifierCopy completion:completionCopy];
   }
 }
 
-- (void)thirdPartyMusicAvailable:(id)a3 completion:(id)a4
+- (void)thirdPartyMusicAvailable:(id)available completion:(id)completion
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(MSServerMediator *)self accountsInterfaceDelegate];
+  availableCopy = available;
+  completionCopy = completion;
+  accountsInterfaceDelegate = [(MSServerMediator *)self accountsInterfaceDelegate];
 
-  if (v6 && v7)
+  if (completionCopy && accountsInterfaceDelegate)
   {
-    v8 = [(MSServerMediator *)self accountsInterfaceDelegate];
-    [v8 thirdPartyMusicAvailable:v9 completion:v6];
+    accountsInterfaceDelegate2 = [(MSServerMediator *)self accountsInterfaceDelegate];
+    [accountsInterfaceDelegate2 thirdPartyMusicAvailable:availableCopy completion:completionCopy];
   }
 }
 
-- (void)getCachedServiceInfo:(id)a3 homeUserID:(id)a4 endpointID:(id)a5 completion:(id)a6
+- (void)getCachedServiceInfo:(id)info homeUserID:(id)d endpointID:(id)iD completion:(id)completion
 {
-  v15 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [(MSServerMediator *)self accountsInterfaceDelegate];
+  infoCopy = info;
+  dCopy = d;
+  iDCopy = iD;
+  completionCopy = completion;
+  accountsInterfaceDelegate = [(MSServerMediator *)self accountsInterfaceDelegate];
 
-  if (v12 && v13)
+  if (completionCopy && accountsInterfaceDelegate)
   {
-    v14 = [(MSServerMediator *)self accountsInterfaceDelegate];
-    [v14 getCachedServiceInfo:v15 homeUserID:v10 endpointID:v11 completion:v12];
+    accountsInterfaceDelegate2 = [(MSServerMediator *)self accountsInterfaceDelegate];
+    [accountsInterfaceDelegate2 getCachedServiceInfo:infoCopy homeUserID:dCopy endpointID:iDCopy completion:completionCopy];
   }
 }
 
-- (void)requestAuthRenewalForMediaService:(id)a3 homeUserID:(id)a4 parentNetworkActivity:(id)a5 completion:(id)a6
+- (void)requestAuthRenewalForMediaService:(id)service homeUserID:(id)d parentNetworkActivity:(id)activity completion:(id)completion
 {
-  v15 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [(MSServerMediator *)self accountsInterfaceDelegate];
+  serviceCopy = service;
+  dCopy = d;
+  activityCopy = activity;
+  completionCopy = completion;
+  accountsInterfaceDelegate = [(MSServerMediator *)self accountsInterfaceDelegate];
 
-  if (v12 && v13)
+  if (completionCopy && accountsInterfaceDelegate)
   {
-    v14 = [(MSServerMediator *)self accountsInterfaceDelegate];
-    [v14 requestAuthRenewalForMediaService:v15 homeUserID:v10 parentNetworkActivity:v11 completion:v12];
+    accountsInterfaceDelegate2 = [(MSServerMediator *)self accountsInterfaceDelegate];
+    [accountsInterfaceDelegate2 requestAuthRenewalForMediaService:serviceCopy homeUserID:dCopy parentNetworkActivity:activityCopy completion:completionCopy];
   }
 }
 
-- (void)addMediaService:(id)a3 usingSetupBundles:(id)a4 completion:(id)a5
+- (void)addMediaService:(id)service usingSetupBundles:(id)bundles completion:(id)completion
 {
-  v12 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(MSServerMediator *)self accountsInterfaceDelegate];
+  serviceCopy = service;
+  bundlesCopy = bundles;
+  completionCopy = completion;
+  accountsInterfaceDelegate = [(MSServerMediator *)self accountsInterfaceDelegate];
 
-  if (v9 && v10)
+  if (completionCopy && accountsInterfaceDelegate)
   {
-    v11 = [(MSServerMediator *)self accountsInterfaceDelegate];
-    [v11 addMediaService:v12 usingSetupBundles:v8 completion:v9];
+    accountsInterfaceDelegate2 = [(MSServerMediator *)self accountsInterfaceDelegate];
+    [accountsInterfaceDelegate2 addMediaService:serviceCopy usingSetupBundles:bundlesCopy completion:completionCopy];
   }
 }
 
-- (void)removeMediaService:(id)a3 homeID:(id)a4 homeUserID:(id)a5 completion:(id)a6
+- (void)removeMediaService:(id)service homeID:(id)d homeUserID:(id)iD completion:(id)completion
 {
-  v15 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [(MSServerMediator *)self accountsInterfaceDelegate];
+  serviceCopy = service;
+  dCopy = d;
+  iDCopy = iD;
+  completionCopy = completion;
+  accountsInterfaceDelegate = [(MSServerMediator *)self accountsInterfaceDelegate];
 
-  if (v12 && v13)
+  if (completionCopy && accountsInterfaceDelegate)
   {
-    v14 = [(MSServerMediator *)self accountsInterfaceDelegate];
-    [v14 removeMediaService:v15 homeID:v10 homeUserID:v11 completion:v12];
+    accountsInterfaceDelegate2 = [(MSServerMediator *)self accountsInterfaceDelegate];
+    [accountsInterfaceDelegate2 removeMediaService:serviceCopy homeID:dCopy homeUserID:iDCopy completion:completionCopy];
   }
 }
 
-- (void)updateProperty:(id)a3 homeID:(id)a4 homeUserID:(id)a5 withOptions:(id)a6 completion:(id)a7
+- (void)updateProperty:(id)property homeID:(id)d homeUserID:(id)iD withOptions:(id)options completion:(id)completion
 {
-  v18 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = [(MSServerMediator *)self accountsInterfaceDelegate];
+  propertyCopy = property;
+  dCopy = d;
+  iDCopy = iD;
+  optionsCopy = options;
+  completionCopy = completion;
+  accountsInterfaceDelegate = [(MSServerMediator *)self accountsInterfaceDelegate];
 
-  if (v15 && v16)
+  if (completionCopy && accountsInterfaceDelegate)
   {
-    v17 = [(MSServerMediator *)self accountsInterfaceDelegate];
-    [v17 updateProperty:v18 homeID:v12 homeUserID:v13 withOptions:v14 completion:v15];
+    accountsInterfaceDelegate2 = [(MSServerMediator *)self accountsInterfaceDelegate];
+    [accountsInterfaceDelegate2 updateProperty:propertyCopy homeID:dCopy homeUserID:iDCopy withOptions:optionsCopy completion:completionCopy];
   }
 }
 
-- (void)getServiceConfigurationInfo:(id)a3 serviceID:(id)a4 completion:(id)a5
+- (void)getServiceConfigurationInfo:(id)info serviceID:(id)d completion:(id)completion
 {
-  v12 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(MSServerMediator *)self accountsInterfaceDelegate];
+  infoCopy = info;
+  dCopy = d;
+  completionCopy = completion;
+  accountsInterfaceDelegate = [(MSServerMediator *)self accountsInterfaceDelegate];
 
-  if (v9 && v10)
+  if (completionCopy && accountsInterfaceDelegate)
   {
-    v11 = [(MSServerMediator *)self accountsInterfaceDelegate];
-    [v11 getServiceConfigurationInfo:v12 serviceID:v8 completion:v9];
+    accountsInterfaceDelegate2 = [(MSServerMediator *)self accountsInterfaceDelegate];
+    [accountsInterfaceDelegate2 getServiceConfigurationInfo:infoCopy serviceID:dCopy completion:completionCopy];
   }
 }
 
-- (void)getResolvedServiceInfo:(id)a3 sharedUserID:(id)a4 completion:(id)a5
+- (void)getResolvedServiceInfo:(id)info sharedUserID:(id)d completion:(id)completion
 {
-  v12 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(MSServerMediator *)self accountsInterfaceDelegate];
+  infoCopy = info;
+  dCopy = d;
+  completionCopy = completion;
+  accountsInterfaceDelegate = [(MSServerMediator *)self accountsInterfaceDelegate];
 
-  if (v9 && v10)
+  if (completionCopy && accountsInterfaceDelegate)
   {
-    v11 = [(MSServerMediator *)self accountsInterfaceDelegate];
-    [v11 getResolvedServiceInfo:v12 sharedUserID:v8 completion:v9];
+    accountsInterfaceDelegate2 = [(MSServerMediator *)self accountsInterfaceDelegate];
+    [accountsInterfaceDelegate2 getResolvedServiceInfo:infoCopy sharedUserID:dCopy completion:completionCopy];
   }
 }
 
-- (void)getDefaultMediaServiceForAllUsers:(id)a3
+- (void)getDefaultMediaServiceForAllUsers:(id)users
 {
-  v6 = a3;
-  v4 = [(MSServerMediator *)self accountsInterfaceDelegate];
+  usersCopy = users;
+  accountsInterfaceDelegate = [(MSServerMediator *)self accountsInterfaceDelegate];
 
-  if (v6 && v4)
+  if (usersCopy && accountsInterfaceDelegate)
   {
-    v5 = [(MSServerMediator *)self accountsInterfaceDelegate];
-    [v5 getDefaultMediaServiceForAllUsers:v6];
+    accountsInterfaceDelegate2 = [(MSServerMediator *)self accountsInterfaceDelegate];
+    [accountsInterfaceDelegate2 getDefaultMediaServiceForAllUsers:usersCopy];
   }
 }
 
-- (void)getPublicInfoForBundleID:(id)a3 completion:(id)a4
+- (void)getPublicInfoForBundleID:(id)d completion:(id)completion
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(MSServerMediator *)self accountsInterfaceDelegate];
+  dCopy = d;
+  completionCopy = completion;
+  accountsInterfaceDelegate = [(MSServerMediator *)self accountsInterfaceDelegate];
 
-  if (v6 && v7)
+  if (completionCopy && accountsInterfaceDelegate)
   {
-    v8 = [(MSServerMediator *)self accountsInterfaceDelegate];
-    [v8 getPublicInfoForBundleID:v9 completion:v6];
+    accountsInterfaceDelegate2 = [(MSServerMediator *)self accountsInterfaceDelegate];
+    [accountsInterfaceDelegate2 getPublicInfoForBundleID:dCopy completion:completionCopy];
   }
 }
 
-- (void)setVersion:(unint64_t)a3 completion:(id)a4
+- (void)setVersion:(unint64_t)version completion:(id)completion
 {
-  v8 = a4;
-  v6 = [(MSServerMediator *)self accountsInterfaceDelegate];
+  completionCopy = completion;
+  accountsInterfaceDelegate = [(MSServerMediator *)self accountsInterfaceDelegate];
 
-  if (v8 && v6)
+  if (completionCopy && accountsInterfaceDelegate)
   {
-    v7 = [(MSServerMediator *)self accountsInterfaceDelegate];
-    [v7 setVersion:a3 completion:v8];
+    accountsInterfaceDelegate2 = [(MSServerMediator *)self accountsInterfaceDelegate];
+    [accountsInterfaceDelegate2 setVersion:version completion:completionCopy];
   }
 }
 
-- (void)getResolvedServiceInfo:(id)a3 completion:(id)a4
+- (void)getResolvedServiceInfo:(id)info completion:(id)completion
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(MSServerMediator *)self accountsInterfaceDelegate];
+  infoCopy = info;
+  completionCopy = completion;
+  accountsInterfaceDelegate = [(MSServerMediator *)self accountsInterfaceDelegate];
 
-  if (v6 && v7)
+  if (completionCopy && accountsInterfaceDelegate)
   {
-    v8 = [(MSServerMediator *)self accountsInterfaceDelegate];
-    [v8 getResolvedServiceInfo:v9 completion:v6];
+    accountsInterfaceDelegate2 = [(MSServerMediator *)self accountsInterfaceDelegate];
+    [accountsInterfaceDelegate2 getResolvedServiceInfo:infoCopy completion:completionCopy];
   }
 }
 
-- (void)activeServiceApplicationInformationForSharedUserID:(id)a3 completionHandler:(id)a4
+- (void)activeServiceApplicationInformationForSharedUserID:(id)d completionHandler:(id)handler
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(MSServerMediator *)self accountsInterfaceDelegate];
+  dCopy = d;
+  handlerCopy = handler;
+  accountsInterfaceDelegate = [(MSServerMediator *)self accountsInterfaceDelegate];
 
-  if (v6 && v7)
+  if (handlerCopy && accountsInterfaceDelegate)
   {
-    v8 = [(MSServerMediator *)self accountsInterfaceDelegate];
-    [v8 activeServiceApplicationInformationForSharedUserID:v9 completionHandler:v6];
+    accountsInterfaceDelegate2 = [(MSServerMediator *)self accountsInterfaceDelegate];
+    [accountsInterfaceDelegate2 activeServiceApplicationInformationForSharedUserID:dCopy completionHandler:handlerCopy];
   }
 }
 
-- (void)switchUserAccountInfo:(id)a3 homeID:(id)a4 homeUserID:(id)a5 completion:(id)a6
+- (void)switchUserAccountInfo:(id)info homeID:(id)d homeUserID:(id)iD completion:(id)completion
 {
-  v15 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [(MSServerMediator *)self accountsInterfaceDelegate];
+  infoCopy = info;
+  dCopy = d;
+  iDCopy = iD;
+  completionCopy = completion;
+  accountsInterfaceDelegate = [(MSServerMediator *)self accountsInterfaceDelegate];
 
-  if (v12 && v13)
+  if (completionCopy && accountsInterfaceDelegate)
   {
-    v14 = [(MSServerMediator *)self accountsInterfaceDelegate];
-    [v14 switchUserAccountInfo:v15 homeID:v10 homeUserID:v11 completion:v12];
+    accountsInterfaceDelegate2 = [(MSServerMediator *)self accountsInterfaceDelegate];
+    [accountsInterfaceDelegate2 switchUserAccountInfo:infoCopy homeID:dCopy homeUserID:iDCopy completion:completionCopy];
   }
 }
 
-- (void)getSupportedThirdPartyMediaServices:(id)a3
+- (void)getSupportedThirdPartyMediaServices:(id)services
 {
-  v4 = a3;
-  v5 = [(MSServerMediator *)self accountsInterfaceDelegate];
+  servicesCopy = services;
+  accountsInterfaceDelegate = [(MSServerMediator *)self accountsInterfaceDelegate];
 
-  if (!v5)
+  if (!accountsInterfaceDelegate)
   {
     v7 = _MSLogingFacility();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -380,15 +380,15 @@ LABEL_7:
       [(MSServerMediator *)v7 getMediaServiceChoicesForSharedUser:v8 completion:v9, v10, v11, v12, v13, v14];
     }
 
-    v6 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.mediasetup.errorDomain" code:1 userInfo:0];
-    v4[2](v4, 0, v6);
+    accountsInterfaceDelegate2 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.mediasetup.errorDomain" code:1 userInfo:0];
+    servicesCopy[2](servicesCopy, 0, accountsInterfaceDelegate2);
     goto LABEL_7;
   }
 
-  if (v4)
+  if (servicesCopy)
   {
-    v6 = [(MSServerMediator *)self accountsInterfaceDelegate];
-    [v6 getSupportedThirdPartyMediaServices:v4];
+    accountsInterfaceDelegate2 = [(MSServerMediator *)self accountsInterfaceDelegate];
+    [accountsInterfaceDelegate2 getSupportedThirdPartyMediaServices:servicesCopy];
 LABEL_7:
   }
 }

@@ -3,23 +3,23 @@
 + (void)initialize;
 - (APKActivityProgressUIServer)server;
 - (_DASContinuedProcessingTaskUIClient)init;
-- (int64_t)expirationEventForSuspendedActivity:(id)a3;
+- (int64_t)expirationEventForSuspendedActivity:(id)activity;
 - (void)activateConnection;
-- (void)activitiesBeganRunning:(id)a3;
-- (void)activitiesWereSubmitted:(id)a3;
-- (void)activitiesWereSuspended:(id)a3;
-- (void)beginActivity:(id)a3 startingProgress:(id)a4;
-- (void)cancelActivities:(id)a3;
-- (void)cleanupActivity:(id)a3 didComplete:(BOOL)a4;
+- (void)activitiesBeganRunning:(id)running;
+- (void)activitiesWereSubmitted:(id)submitted;
+- (void)activitiesWereSuspended:(id)suspended;
+- (void)beginActivity:(id)activity startingProgress:(id)progress;
+- (void)cancelActivities:(id)activities;
+- (void)cleanupActivity:(id)activity didComplete:(BOOL)complete;
 - (void)dealloc;
-- (void)eventResultReceivedForActivity:(id)a3 event:(id)a4 result:(id)a5;
+- (void)eventResultReceivedForActivity:(id)activity event:(id)event result:(id)result;
 - (void)invalidateConnection;
-- (void)postActivityEvent:(int64_t)a3 forIdentifier:(id)a4;
+- (void)postActivityEvent:(int64_t)event forIdentifier:(id)identifier;
 - (void)resetConnection;
-- (void)startActivityWithIdentifier:(id)a3 bundleIdentifier:(id)a4 imageUTI:(id)a5 activityName:(id)a6 activityDescription:(id)a7 progress:(id)a8;
-- (void)updateMetadataForActivity:(id)a3;
-- (void)updateProgress:(id)a3 forIdentifier:(id)a4;
-- (void)updateProgressForActivity:(id)a3;
+- (void)startActivityWithIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier imageUTI:(id)i activityName:(id)name activityDescription:(id)description progress:(id)progress;
+- (void)updateMetadataForActivity:(id)activity;
+- (void)updateProgress:(id)progress forIdentifier:(id)identifier;
+- (void)updateProgressForActivity:(id)activity;
 @end
 
 @implementation _DASContinuedProcessingTaskUIClient
@@ -75,15 +75,15 @@
     }
 
     self = v3;
-    v11 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
 + (id)sharedClient
@@ -92,7 +92,7 @@
   block[1] = 3221225472;
   block[2] = sub_1000B4D24;
   block[3] = &unk_1001B54A0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10020B710 != -1)
   {
     dispatch_once(&qword_10020B710, block);
@@ -105,17 +105,17 @@
 
 - (APKActivityProgressUIServer)server
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  server = v2->_server;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  server = selfCopy->_server;
   if (!server)
   {
-    [(_DASContinuedProcessingTaskUIClient *)v2 resetConnection];
-    server = v2->_server;
+    [(_DASContinuedProcessingTaskUIClient *)selfCopy resetConnection];
+    server = selfCopy->_server;
   }
 
   v4 = server;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v4;
 }
@@ -155,7 +155,7 @@
     v17 = sub_1000B50B8;
     v18 = &unk_1001B7E58;
     v19 = v3;
-    v20 = self;
+    selfCopy = self;
     [(BSServiceConnectionClient *)v9 configureConnection:&v15];
     [(BSServiceConnectionClient *)self->_connection activate:v15];
     v10 = [RBSDomainAttribute attributeWithDomain:@"com.apple.common" name:@"BasicAngelIPC"];
@@ -206,40 +206,40 @@
   [(_DASContinuedProcessingTaskUIClient *)&v3 dealloc];
 }
 
-- (void)updateProgressForActivity:(id)a3
+- (void)updateProgressForActivity:(id)activity
 {
-  v4 = a3;
-  v6 = [v4 progress];
-  v5 = [v4 uuid];
+  activityCopy = activity;
+  progress = [activityCopy progress];
+  uuid = [activityCopy uuid];
 
-  [(_DASContinuedProcessingTaskUIClient *)self updateProgress:v6 forIdentifier:v5];
+  [(_DASContinuedProcessingTaskUIClient *)self updateProgress:progress forIdentifier:uuid];
 }
 
-- (void)updateMetadataForActivity:(id)a3
+- (void)updateMetadataForActivity:(id)activity
 {
-  v4 = a3;
-  v9 = [v4 continuedProcessingWrapper];
-  v5 = [v9 title];
-  v6 = [v4 continuedProcessingWrapper];
-  v7 = [v6 subtitle];
-  v8 = [v4 uuid];
+  activityCopy = activity;
+  continuedProcessingWrapper = [activityCopy continuedProcessingWrapper];
+  title = [continuedProcessingWrapper title];
+  continuedProcessingWrapper2 = [activityCopy continuedProcessingWrapper];
+  subtitle = [continuedProcessingWrapper2 subtitle];
+  uuid = [activityCopy uuid];
 
-  [(_DASContinuedProcessingTaskUIClient *)self updateTitle:v5 description:v7 forIdentifier:v8 playHaptics:0];
+  [(_DASContinuedProcessingTaskUIClient *)self updateTitle:title description:subtitle forIdentifier:uuid playHaptics:0];
 }
 
-- (void)startActivityWithIdentifier:(id)a3 bundleIdentifier:(id)a4 imageUTI:(id)a5 activityName:(id)a6 activityDescription:(id)a7 progress:(id)a8
+- (void)startActivityWithIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier imageUTI:(id)i activityName:(id)name activityDescription:(id)description progress:(id)progress
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  v19 = a5;
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
+  nameCopy = name;
+  descriptionCopy = description;
+  progressCopy = progress;
+  iCopy = i;
   v20 = objc_alloc(sub_1000B4A8C());
   v21 = v20;
-  if (v18)
+  if (progressCopy)
   {
-    v22 = [v20 initWithProgress:v18];
+    v22 = [v20 initWithProgress:progressCopy];
   }
 
   else
@@ -252,55 +252,55 @@
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
     v26 = 138413058;
-    v27 = v14;
+    v27 = identifierCopy;
     v28 = 2112;
-    v29 = v16;
+    v29 = nameCopy;
     v30 = 2112;
-    v31 = v17;
+    v31 = descriptionCopy;
     v32 = 2112;
-    v33 = v15;
+    v33 = bundleIdentifierCopy;
     _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEFAULT, "[%@] Starting activity %@ %@, bundleIdentifier: %@", &v26, 0x2Au);
   }
 
-  v25 = [(_DASContinuedProcessingTaskUIClient *)self server];
-  [v25 startActivityForIdentifier:v14 bundleIdentifier:v15 imageUTI:v19 activityName:v16 activityDescription:v17 progress:v22];
+  server = [(_DASContinuedProcessingTaskUIClient *)self server];
+  [server startActivityForIdentifier:identifierCopy bundleIdentifier:bundleIdentifierCopy imageUTI:iCopy activityName:nameCopy activityDescription:descriptionCopy progress:v22];
 }
 
-- (void)updateProgress:(id)a3 forIdentifier:(id)a4
+- (void)updateProgress:(id)progress forIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [objc_alloc(sub_1000B4A8C()) initWithProgress:v6];
+  progressCopy = progress;
+  identifierCopy = identifier;
+  v8 = [objc_alloc(sub_1000B4A8C()) initWithProgress:progressCopy];
   if (os_log_type_enabled(self->_log, OS_LOG_TYPE_DEBUG))
   {
     sub_100128B8C();
   }
 
-  v9 = [(_DASContinuedProcessingTaskUIClient *)self server];
-  [v9 updateProgress:v8 forIdentifier:v7];
+  server = [(_DASContinuedProcessingTaskUIClient *)self server];
+  [server updateProgress:v8 forIdentifier:identifierCopy];
 }
 
-- (void)cleanupActivity:(id)a3 didComplete:(BOOL)a4
+- (void)cleanupActivity:(id)activity didComplete:(BOOL)complete
 {
-  v4 = a4;
-  v6 = a3;
+  completeCopy = complete;
+  activityCopy = activity;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
     v8 = log;
-    v9 = [v6 uuid];
+    uuid = [activityCopy uuid];
     v21 = 138412290;
-    v22 = v9;
+    v22 = uuid;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "[%@] Ending activity", &v21, 0xCu);
   }
 
-  if ([v6 isContinuedProcessingTask])
+  if ([activityCopy isContinuedProcessingTask])
   {
-    v10 = [v6 progress];
-    v11 = v10;
-    if (v10)
+    progress = [activityCopy progress];
+    v11 = progress;
+    if (progress)
     {
-      v12 = v10;
+      v12 = progress;
     }
 
     else
@@ -311,22 +311,22 @@
     v13 = v12;
 
     v14 = os_log_type_enabled(self->_log, OS_LOG_TYPE_DEBUG);
-    if (v4)
+    if (completeCopy)
     {
       if (v14)
       {
         sub_100128C84();
       }
 
-      v15 = [v13 completedUnitCount];
-      if (v15 <= 1)
+      completedUnitCount = [v13 completedUnitCount];
+      if (completedUnitCount <= 1)
       {
         v16 = 1;
       }
 
       else
       {
-        v16 = v15;
+        v16 = completedUnitCount;
       }
 
       [v13 setCompletedUnitCount:v16];
@@ -343,13 +343,13 @@
       [v13 cancel];
     }
 
-    [v6 setProgress:v13];
+    [activityCopy setProgress:v13];
     v17 = [_DASDaemonLogger logForCategory:@"ActivityProgress"];
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
       v18 = @"incomplete";
       v21 = 138412802;
-      if (v4)
+      if (completeCopy)
       {
         v18 = @"completed";
       }
@@ -358,68 +358,68 @@
       v23 = 2112;
       v24 = v13;
       v25 = 2112;
-      v26 = v6;
+      v26 = activityCopy;
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Finishing progress (%@) to %@ for %@", &v21, 0x20u);
     }
 
-    [(_DASContinuedProcessingTaskUIClient *)self updateProgressForActivity:v6];
-    v19 = [(_DASContinuedProcessingTaskUIClient *)self server];
-    v20 = [v6 uuid];
-    [v19 endActivityForIdentifier:v20];
+    [(_DASContinuedProcessingTaskUIClient *)self updateProgressForActivity:activityCopy];
+    server = [(_DASContinuedProcessingTaskUIClient *)self server];
+    uuid2 = [activityCopy uuid];
+    [server endActivityForIdentifier:uuid2];
   }
 }
 
-- (void)postActivityEvent:(int64_t)a3 forIdentifier:(id)a4
+- (void)postActivityEvent:(int64_t)event forIdentifier:(id)identifier
 {
-  v6 = a4;
+  identifierCopy = identifier;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
     v8 = log;
-    v9 = [NSNumber numberWithInteger:a3];
+    v9 = [NSNumber numberWithInteger:event];
     v12 = 138412546;
-    v13 = v6;
+    v13 = identifierCopy;
     v14 = 2112;
     v15 = v9;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "[%@] Posting %@", &v12, 0x16u);
   }
 
-  v10 = [(_DASContinuedProcessingTaskUIClient *)self server];
-  v11 = [NSNumber numberWithInteger:a3];
-  [v10 handleActivityEvent:v11 forIdentifier:v6];
+  server = [(_DASContinuedProcessingTaskUIClient *)self server];
+  v11 = [NSNumber numberWithInteger:event];
+  [server handleActivityEvent:v11 forIdentifier:identifierCopy];
 }
 
-- (void)cancelActivities:(id)a3
+- (void)cancelActivities:(id)activities
 {
-  v4 = a3;
+  activitiesCopy = activities;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = v4;
+    v9 = activitiesCopy;
     _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEFAULT, "Cancelling activities: %@", &v8, 0xCu);
   }
 
   daemon = self->_daemon;
-  v7 = [v4 taskIdentifiers];
-  [(_DASDaemon *)daemon suspendAndCancelActivitiesWithIdentifiers:v7 denialReason:[_DASPolicyManager bitmaskForPolicy:@"UserForcedCancellation"]];
+  taskIdentifiers = [activitiesCopy taskIdentifiers];
+  [(_DASDaemon *)daemon suspendAndCancelActivitiesWithIdentifiers:taskIdentifiers denialReason:[_DASPolicyManager bitmaskForPolicy:@"UserForcedCancellation"]];
 }
 
-- (void)eventResultReceivedForActivity:(id)a3 event:(id)a4 result:(id)a5
+- (void)eventResultReceivedForActivity:(id)activity event:(id)event result:(id)result
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [a4 integerValue];
-  v11 = [v9 integerValue];
+  activityCopy = activity;
+  resultCopy = result;
+  integerValue = [event integerValue];
+  integerValue2 = [resultCopy integerValue];
 
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
     v13 = log;
-    v14 = [NSNumber numberWithInteger:v10];
-    v15 = [NSNumber numberWithInteger:v11];
+    v14 = [NSNumber numberWithInteger:integerValue];
+    v15 = [NSNumber numberWithInteger:integerValue2];
     v18 = 138412802;
-    v19 = v8;
+    v19 = activityCopy;
     v20 = 2112;
     v21 = v14;
     v22 = 2112;
@@ -428,11 +428,11 @@
   }
 
   v16 = +[_DASProgressReportingMonitor sharedMonitor];
-  v17 = [v16 trackerForUUID:v8];
+  v17 = [v16 trackerForUUID:activityCopy];
 
   if (v17)
   {
-    [v17 eventResultReceivedForEvent:v10 result:v11];
+    [v17 eventResultReceivedForEvent:integerValue result:integerValue2];
   }
 
   else if (os_log_type_enabled(self->_log, OS_LOG_TYPE_ERROR))
@@ -441,14 +441,14 @@
   }
 }
 
-- (void)activitiesWereSubmitted:(id)a3
+- (void)activitiesWereSubmitted:(id)submitted
 {
-  v4 = a3;
+  submittedCopy = submitted;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v5 = [submittedCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -459,7 +459,7 @@
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(submittedCopy);
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
@@ -470,21 +470,21 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [submittedCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)activitiesBeganRunning:(id)a3
+- (void)activitiesBeganRunning:(id)running
 {
-  v4 = a3;
+  runningCopy = running;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v5 = [runningCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -495,7 +495,7 @@
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(runningCopy);
         }
 
         v9 = *(*(&v10 + 1) + 8 * i);
@@ -505,21 +505,21 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [runningCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)activitiesWereSuspended:(id)a3
+- (void)activitiesWereSuspended:(id)suspended
 {
-  v4 = a3;
+  suspendedCopy = suspended;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v5 = [suspendedCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -530,42 +530,42 @@
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(suspendedCopy);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
         if ([v9 isContinuedProcessingTask])
         {
           v10 = [(_DASContinuedProcessingTaskUIClient *)self expirationEventForSuspendedActivity:v9];
-          v11 = [v9 uuid];
-          [(_DASContinuedProcessingTaskUIClient *)self postActivityEvent:v10 forIdentifier:v11];
+          uuid = [v9 uuid];
+          [(_DASContinuedProcessingTaskUIClient *)self postActivityEvent:v10 forIdentifier:uuid];
 
           [(_DASContinuedProcessingTaskUIClient *)self cleanupActivity:v9 didComplete:0];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [suspendedCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
   }
 }
 
-- (int64_t)expirationEventForSuspendedActivity:(id)a3
+- (int64_t)expirationEventForSuspendedActivity:(id)activity
 {
-  v3 = a3;
-  objc_sync_enter(v3);
+  activityCopy = activity;
+  objc_sync_enter(activityCopy);
   v4 = [NSDictionary alloc];
-  v5 = [v3 policyResponseMetadata];
-  v6 = [v4 initWithDictionary:v5 copyItems:1];
+  policyResponseMetadata = [activityCopy policyResponseMetadata];
+  v6 = [v4 initWithDictionary:policyResponseMetadata copyItems:1];
 
-  objc_sync_exit(v3);
+  objc_sync_exit(activityCopy);
   v7 = +[_DASLowPowerModePolicy policyInstance];
-  v8 = [v7 policyName];
-  v9 = [v6 objectForKeyedSubscript:v8];
-  v10 = [v9 reason];
+  policyName = [v7 policyName];
+  v9 = [v6 objectForKeyedSubscript:policyName];
+  reason = [v9 reason];
 
-  if (v10)
+  if (reason)
   {
     v23 = 5;
   }
@@ -573,11 +573,11 @@
   else
   {
     v11 = +[_DASViewfinderPolicy policyInstance];
-    v12 = [v11 policyName];
-    v13 = [v6 objectForKeyedSubscript:v12];
-    v14 = [v13 reason];
+    policyName2 = [v11 policyName];
+    v13 = [v6 objectForKeyedSubscript:policyName2];
+    reason2 = [v13 reason];
 
-    if (v14)
+    if (reason2)
     {
       v23 = 3;
     }
@@ -585,11 +585,11 @@
     else
     {
       v15 = +[_DASConsoleModePolicy policyInstance];
-      v16 = [v15 policyName];
-      v17 = [v6 objectForKeyedSubscript:v16];
-      v18 = [v17 reason];
+      policyName3 = [v15 policyName];
+      v17 = [v6 objectForKeyedSubscript:policyName3];
+      reason3 = [v17 reason];
 
-      if (v18)
+      if (reason3)
       {
         v23 = 4;
       }
@@ -597,11 +597,11 @@
       else
       {
         v19 = +[_DASThermalPolicy policyInstance];
-        v20 = [v19 policyName];
-        v21 = [v6 objectForKeyedSubscript:v20];
-        v22 = [v21 reason];
+        policyName4 = [v19 policyName];
+        v21 = [v6 objectForKeyedSubscript:policyName4];
+        reason4 = [v21 reason];
 
-        if ((v22 & 0x18) != 0)
+        if ((reason4 & 0x18) != 0)
         {
           v23 = 2;
         }
@@ -617,32 +617,32 @@
   return v23;
 }
 
-- (void)beginActivity:(id)a3 startingProgress:(id)a4
+- (void)beginActivity:(id)activity startingProgress:(id)progress
 {
-  v19 = a3;
-  v6 = a4;
-  v7 = [v19 continuedProcessingWrapper];
-  v8 = [v7 linkToBundleIdentifier];
-  v9 = v8;
-  if (v8)
+  activityCopy = activity;
+  progressCopy = progress;
+  continuedProcessingWrapper = [activityCopy continuedProcessingWrapper];
+  linkToBundleIdentifier = [continuedProcessingWrapper linkToBundleIdentifier];
+  v9 = linkToBundleIdentifier;
+  if (linkToBundleIdentifier)
   {
-    v10 = v8;
+    firstObject = linkToBundleIdentifier;
   }
 
   else
   {
-    v11 = [v19 relatedApplications];
-    v10 = [v11 firstObject];
+    relatedApplications = [activityCopy relatedApplications];
+    firstObject = [relatedApplications firstObject];
   }
 
-  v12 = [v19 uuid];
-  v13 = [v19 continuedProcessingWrapper];
-  v14 = [v13 iconBundleIdentifier];
-  v15 = [v19 continuedProcessingWrapper];
-  v16 = [v15 title];
-  v17 = [v19 continuedProcessingWrapper];
-  v18 = [v17 subtitle];
-  [(_DASContinuedProcessingTaskUIClient *)self startActivityWithIdentifier:v12 bundleIdentifier:v10 imageUTI:v14 activityName:v16 activityDescription:v18 progress:v6];
+  uuid = [activityCopy uuid];
+  continuedProcessingWrapper2 = [activityCopy continuedProcessingWrapper];
+  iconBundleIdentifier = [continuedProcessingWrapper2 iconBundleIdentifier];
+  continuedProcessingWrapper3 = [activityCopy continuedProcessingWrapper];
+  title = [continuedProcessingWrapper3 title];
+  continuedProcessingWrapper4 = [activityCopy continuedProcessingWrapper];
+  subtitle = [continuedProcessingWrapper4 subtitle];
+  [(_DASContinuedProcessingTaskUIClient *)self startActivityWithIdentifier:uuid bundleIdentifier:firstObject imageUTI:iconBundleIdentifier activityName:title activityDescription:subtitle progress:progressCopy];
 }
 
 @end

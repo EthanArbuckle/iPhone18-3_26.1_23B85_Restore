@@ -1,5 +1,5 @@
 @interface PUReviewCreateAssetNode
-- (PUReviewCreateAssetNode)initWithInputAsset:(id)a3 imageInfoNode:(id)a4 renderImageInfoNode:(id)a5 renderImageDataNode:(id)a6 videoURLNode:(id)a7 videoAssetNode:(id)a8 renderVideoURLNode:(id)a9 renderVideoAssetNode:(id)a10 adjustmentURLNode:(id)a11;
+- (PUReviewCreateAssetNode)initWithInputAsset:(id)asset imageInfoNode:(id)node renderImageInfoNode:(id)infoNode renderImageDataNode:(id)dataNode videoURLNode:(id)lNode videoAssetNode:(id)assetNode renderVideoURLNode:(id)rLNode renderVideoAssetNode:(id)self0 adjustmentURLNode:(id)self1;
 - (void)run;
 @end
 
@@ -10,21 +10,21 @@
   reviewAsset = self->_reviewAsset;
   self->_reviewAsset = 0;
 
-  v4 = [(PUReviewCreateAssetNode *)self inputAsset];
+  inputAsset = [(PUReviewCreateAssetNode *)self inputAsset];
   url = [(PUReviewImageURLNode *)self->_imageInfoNode providedFullsizeImageURL];
-  v5 = [(PUImageInfoNode *)self->_renderImageInfoNode imageDataURL];
-  v6 = [(PUReviewVideoURLNode *)self->_videoURLNode providedVideoURL];
-  v7 = [(PUVideoAssetNode *)self->_videoAssetNode videoAsset];
-  v59 = [(PUVideoURLExportNode *)self->_renderVideoURLNode videoURL];
-  v57 = [(PUVideoAssetNode *)self->_renderVideoAssetNode videoAsset];
-  v56 = [(PUAdjustmentURLNode *)self->_adjustmentURLNode adjustmentURL];
-  v8 = [v4 pixelWidth];
-  v9 = [v4 pixelHeight];
+  imageDataURL = [(PUImageInfoNode *)self->_renderImageInfoNode imageDataURL];
+  providedVideoURL = [(PUReviewVideoURLNode *)self->_videoURLNode providedVideoURL];
+  videoAsset = [(PUVideoAssetNode *)self->_videoAssetNode videoAsset];
+  videoURL = [(PUVideoURLExportNode *)self->_renderVideoURLNode videoURL];
+  videoAsset2 = [(PUVideoAssetNode *)self->_renderVideoAssetNode videoAsset];
+  adjustmentURL = [(PUAdjustmentURLNode *)self->_adjustmentURLNode adjustmentURL];
+  pixelWidth = [inputAsset pixelWidth];
+  pixelHeight = [inputAsset pixelHeight];
   v10 = !self->_renderImageInfoNode && !self->_renderImageDataNode && !self->_renderVideoURLNode && self->_renderVideoAssetNode == 0;
-  v11 = v8;
-  v12 = v9;
-  v55 = v7;
-  if ([v4 mediaType] == 1)
+  v11 = pixelWidth;
+  v12 = pixelHeight;
+  v55 = videoAsset;
+  if ([inputAsset mediaType] == 1)
   {
     if (v10)
     {
@@ -35,14 +35,14 @@ LABEL_16:
         v27 = v11;
         v28 = v12;
 LABEL_20:
-        v33 = v7;
+        v33 = videoAsset;
         if (v33)
         {
           goto LABEL_30;
         }
 
-        v32 = v6;
-        if (!v6)
+        v32 = providedVideoURL;
+        if (!providedVideoURL)
         {
           goto LABEL_30;
         }
@@ -54,7 +54,7 @@ LABEL_29:
 
       v14 = v13;
       v15 = CGImageSourceCopyPropertiesAtIndex(v13, 0, 0);
-      v16 = v15;
+      firstObject = v15;
       if (v15)
       {
         v65 = 0;
@@ -63,7 +63,7 @@ LABEL_29:
         MEMORY[0x1B8C6C120](v15, v66, &v65, &v64);
         v17 = v66[0];
         v52 = v65;
-        v54 = v6;
+        v54 = providedVideoURL;
         v18 = v64;
         [v52 unsignedIntegerValue];
         [v18 unsignedIntegerValue];
@@ -73,13 +73,13 @@ LABEL_29:
         v11 = v19;
         v12 = v20;
 
-        v6 = v54;
+        providedVideoURL = v54;
       }
 
       CFRelease(v14);
 LABEL_15:
 
-      v7 = v55;
+      videoAsset = v55;
       goto LABEL_16;
     }
 
@@ -99,21 +99,21 @@ LABEL_26:
     goto LABEL_27;
   }
 
-  if ([v4 mediaType] == 2)
+  if ([inputAsset mediaType] == 2)
   {
     if (v10)
     {
-      v21 = [MEMORY[0x1E69C0708] tracksWithMediaType:*MEMORY[0x1E6987608] forAsset:v7];
-      v16 = [v21 firstObject];
+      v21 = [MEMORY[0x1E69C0708] tracksWithMediaType:*MEMORY[0x1E6987608] forAsset:videoAsset];
+      firstObject = [v21 firstObject];
 
-      if (v16)
+      if (firstObject)
       {
-        [v16 naturalSize];
+        [firstObject naturalSize];
         v23 = v22;
         v25 = v24;
         v62 = 0u;
         v63 = 0u;
-        [v16 preferredTransform];
+        [firstObject preferredTransform];
         v26 = v25 * 0.0 + 0.0 * v23;
         v11 = fabs(v26);
         v12 = v11;
@@ -140,11 +140,11 @@ LABEL_26:
   }
 
 LABEL_27:
-  v33 = v57;
+  v33 = videoAsset2;
   if (!v33)
   {
-    v32 = v59;
-    if (v59)
+    v32 = videoURL;
+    if (videoURL)
     {
       goto LABEL_29;
     }
@@ -162,110 +162,110 @@ LABEL_30:
 
   else
   {
-    [v4 duration];
+    [inputAsset duration];
   }
 
   v36 = Seconds;
-  v37 = [v4 playbackStyle];
+  playbackStyle = [inputAsset playbackStyle];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v51 = v28;
     v53 = v27;
-    v38 = v6;
-    v39 = [objc_alloc(MEMORY[0x1E69C0660]) initWithURL:v56];
-    v40 = v4;
-    v41 = [v40 providedPreviewImage];
+    v38 = providedVideoURL;
+    v39 = [objc_alloc(MEMORY[0x1E69C0660]) initWithURL:adjustmentURL];
+    v40 = inputAsset;
+    providedPreviewImage = [v40 providedPreviewImage];
     [v40 duration];
-    v43 = v37 != 4 || v36 == v42;
-    if (!v43 || v37 == 5)
+    v43 = playbackStyle != 4 || v36 == v42;
+    if (!v43 || playbackStyle == 5)
     {
-      v50 = v5;
-      v45 = v59;
-      if (!v59)
+      v50 = imageDataURL;
+      v45 = videoURL;
+      if (!videoURL)
       {
         v45 = v38;
       }
 
-      v46 = [v45 path];
+      path = [v45 path];
       PLPreviewImageAndDurationForVideoAtPath();
-      v47 = v41;
+      v47 = providedPreviewImage;
 
-      v41 = v47;
+      providedPreviewImage = v47;
       v44 = v50;
     }
 
     else
     {
-      v44 = v5;
+      v44 = imageDataURL;
     }
 
-    v5 = v44;
-    v48 = [[PUReviewAsset alloc] initWithReviewAsset:v40 baseImageURL:url renderedImageURL:v44 baseVideoURL:v38 renderedVideoURL:v59 previewImage:v41 pixelWidth:v36 pixelHeight:v53 assetAdjustments:v51 duration:v39];
+    imageDataURL = v44;
+    v48 = [[PUReviewAsset alloc] initWithReviewAsset:v40 baseImageURL:url renderedImageURL:v44 baseVideoURL:v38 renderedVideoURL:videoURL previewImage:providedPreviewImage pixelWidth:v36 pixelHeight:v53 assetAdjustments:v51 duration:v39];
     v49 = self->_reviewAsset;
     self->_reviewAsset = v48;
 
     [(PXRunNode *)self completeWithError:0];
-    v6 = v38;
+    providedVideoURL = v38;
   }
 }
 
-- (PUReviewCreateAssetNode)initWithInputAsset:(id)a3 imageInfoNode:(id)a4 renderImageInfoNode:(id)a5 renderImageDataNode:(id)a6 videoURLNode:(id)a7 videoAssetNode:(id)a8 renderVideoURLNode:(id)a9 renderVideoAssetNode:(id)a10 adjustmentURLNode:(id)a11
+- (PUReviewCreateAssetNode)initWithInputAsset:(id)asset imageInfoNode:(id)node renderImageInfoNode:(id)infoNode renderImageDataNode:(id)dataNode videoURLNode:(id)lNode videoAssetNode:(id)assetNode renderVideoURLNode:(id)rLNode renderVideoAssetNode:(id)self0 adjustmentURLNode:(id)self1
 {
-  v38 = a3;
-  v33 = a4;
-  v17 = a4;
-  v34 = a5;
-  v18 = a5;
-  v35 = a6;
-  v19 = a6;
-  v36 = a7;
-  v20 = a7;
-  v37 = a8;
-  v21 = a8;
-  v22 = a9;
-  v23 = a10;
-  v24 = a11;
+  assetCopy = asset;
+  nodeCopy = node;
+  nodeCopy2 = node;
+  infoNodeCopy = infoNode;
+  infoNodeCopy2 = infoNode;
+  dataNodeCopy = dataNode;
+  dataNodeCopy2 = dataNode;
+  lNodeCopy = lNode;
+  lNodeCopy2 = lNode;
+  assetNodeCopy = assetNode;
+  assetNodeCopy2 = assetNode;
+  rLNodeCopy = rLNode;
+  videoAssetNodeCopy = videoAssetNode;
+  uRLNodeCopy = uRLNode;
   v25 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v26 = v25;
-  if (v17)
+  if (nodeCopy2)
   {
-    [v25 addObject:v17];
+    [v25 addObject:nodeCopy2];
   }
 
-  if (v18)
+  if (infoNodeCopy2)
   {
-    [v26 addObject:v18];
+    [v26 addObject:infoNodeCopy2];
   }
 
-  if (v19)
+  if (dataNodeCopy2)
   {
-    [v26 addObject:v19];
+    [v26 addObject:dataNodeCopy2];
   }
 
-  if (v20)
+  if (lNodeCopy2)
   {
-    [v26 addObject:v20];
+    [v26 addObject:lNodeCopy2];
   }
 
-  if (v21)
+  if (assetNodeCopy2)
   {
-    [v26 addObject:v21];
+    [v26 addObject:assetNodeCopy2];
   }
 
-  if (v22)
+  if (rLNodeCopy)
   {
-    [v26 addObject:v22];
+    [v26 addObject:rLNodeCopy];
   }
 
-  if (v23)
+  if (videoAssetNodeCopy)
   {
-    [v26 addObject:v23];
+    [v26 addObject:videoAssetNodeCopy];
   }
 
-  if (v24)
+  if (uRLNodeCopy)
   {
-    [v26 addObject:v24];
+    [v26 addObject:uRLNodeCopy];
   }
 
   v39.receiver = self;
@@ -273,21 +273,21 @@ LABEL_30:
   v27 = [(PXRunNode *)&v39 initWithDependencies:v26];
   if (v27)
   {
-    if (!v38 || !v17 && !v18 && !v19 && !v20 && !v22 && !v24)
+    if (!assetCopy || !nodeCopy2 && !infoNodeCopy2 && !dataNodeCopy2 && !lNodeCopy2 && !rLNodeCopy && !uRLNodeCopy)
     {
-      v30 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v30 handleFailureInMethod:a2 object:v27 file:@"PUReviewCreateAssetNode.m" lineNumber:73 description:{@"Invalid parameter not satisfying: %@", @"inputAsset && (imageInfoNode || renderImageInfoNode || renderImageDataNode || videoURLNode || renderVideoURLNode || adjustmentURLNode)"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v27 file:@"PUReviewCreateAssetNode.m" lineNumber:73 description:{@"Invalid parameter not satisfying: %@", @"inputAsset && (imageInfoNode || renderImageInfoNode || renderImageDataNode || videoURLNode || renderVideoURLNode || adjustmentURLNode)"}];
     }
 
-    objc_storeStrong(&v27->_inputAsset, a3);
-    objc_storeStrong(&v27->_imageInfoNode, v33);
-    objc_storeStrong(&v27->_renderImageInfoNode, v34);
-    objc_storeStrong(&v27->_renderImageDataNode, v35);
-    objc_storeStrong(&v27->_videoURLNode, v36);
-    objc_storeStrong(&v27->_videoAssetNode, v37);
-    objc_storeStrong(&v27->_renderVideoURLNode, a9);
-    objc_storeStrong(&v27->_renderVideoAssetNode, a10);
-    objc_storeStrong(&v27->_adjustmentURLNode, a11);
+    objc_storeStrong(&v27->_inputAsset, asset);
+    objc_storeStrong(&v27->_imageInfoNode, nodeCopy);
+    objc_storeStrong(&v27->_renderImageInfoNode, infoNodeCopy);
+    objc_storeStrong(&v27->_renderImageDataNode, dataNodeCopy);
+    objc_storeStrong(&v27->_videoURLNode, lNodeCopy);
+    objc_storeStrong(&v27->_videoAssetNode, assetNodeCopy);
+    objc_storeStrong(&v27->_renderVideoURLNode, rLNode);
+    objc_storeStrong(&v27->_renderVideoAssetNode, videoAssetNode);
+    objc_storeStrong(&v27->_adjustmentURLNode, uRLNode);
     v28 = v27;
   }
 

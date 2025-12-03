@@ -1,18 +1,18 @@
 @interface FMMultilineButton
 - (CGSize)intrinsicContentSize;
-- (_TtC6FindMy17FMMultilineButton)initWithCoder:(id)a3;
-- (_TtC6FindMy17FMMultilineButton)initWithFrame:(CGRect)a3;
+- (_TtC6FindMy17FMMultilineButton)initWithCoder:(id)coder;
+- (_TtC6FindMy17FMMultilineButton)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation FMMultilineButton
 
-- (_TtC6FindMy17FMMultilineButton)initWithCoder:(id)a3
+- (_TtC6FindMy17FMMultilineButton)initWithCoder:(id)coder
 {
   v9.receiver = self;
   v9.super_class = type metadata accessor for FMMultilineButton();
-  v4 = a3;
-  v5 = [(FMMultilineButton *)&v9 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(FMMultilineButton *)&v9 initWithCoder:coderCopy];
   v6 = v5;
   if (v5)
   {
@@ -23,23 +23,23 @@
   return v6;
 }
 
-- (_TtC6FindMy17FMMultilineButton)initWithFrame:(CGRect)a3
+- (_TtC6FindMy17FMMultilineButton)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v9.receiver = self;
   v9.super_class = type metadata accessor for FMMultilineButton();
-  v7 = [(FMMultilineButton *)&v9 initWithFrame:x, y, width, height];
+  height = [(FMMultilineButton *)&v9 initWithFrame:x, y, width, height];
   sub_1002434C8();
 
-  return v7;
+  return height;
 }
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = self;
+  selfCopy = self;
   sub_1002435F8();
   v4 = v3;
   v6 = v5;
@@ -57,15 +57,15 @@
   v9.super_class = type metadata accessor for FMMultilineButton();
   v2 = v9.receiver;
   [(FMMultilineButton *)&v9 layoutSubviews];
-  v3 = [v2 titleLabel];
-  if (v3)
+  titleLabel = [v2 titleLabel];
+  if (titleLabel)
   {
-    v4 = v3;
-    v5 = [v2 titleLabel];
-    if (v5)
+    v4 = titleLabel;
+    titleLabel2 = [v2 titleLabel];
+    if (titleLabel2)
     {
-      v6 = v5;
-      [v5 frame];
+      v6 = titleLabel2;
+      [titleLabel2 frame];
       v8 = v7;
     }
 

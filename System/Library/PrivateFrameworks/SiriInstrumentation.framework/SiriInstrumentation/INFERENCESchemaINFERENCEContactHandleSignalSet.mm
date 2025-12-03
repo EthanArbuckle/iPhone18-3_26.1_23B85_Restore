@@ -1,64 +1,64 @@
 @interface INFERENCESchemaINFERENCEContactHandleSignalSet
-- (BOOL)isEqual:(id)a3;
-- (INFERENCESchemaINFERENCEContactHandleSignalSet)initWithDictionary:(id)a3;
-- (INFERENCESchemaINFERENCEContactHandleSignalSet)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (INFERENCESchemaINFERENCEContactHandleSignalSet)initWithDictionary:(id)dictionary;
+- (INFERENCESchemaINFERENCEContactHandleSignalSet)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasIsAllowedType:(BOOL)a3;
-- (void)setHasIsFaceTimeable:(BOOL)a3;
-- (void)setHasIsFavorite:(BOOL)a3;
-- (void)setHasIsNotFaceTimeable:(BOOL)a3;
-- (void)setHasIsPartialQueryValueMatch:(BOOL)a3;
-- (void)setHasIsPreferredType:(BOOL)a3;
-- (void)setHasIsQueryExactMatch:(BOOL)a3;
-- (void)setHasIsQueryMatch:(BOOL)a3;
-- (void)setHasIsRecentInAnyGroup:(BOOL)a3;
-- (void)setHasIsRecentInSameGroup:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasIsAllowedType:(BOOL)type;
+- (void)setHasIsFaceTimeable:(BOOL)timeable;
+- (void)setHasIsFavorite:(BOOL)favorite;
+- (void)setHasIsNotFaceTimeable:(BOOL)timeable;
+- (void)setHasIsPartialQueryValueMatch:(BOOL)match;
+- (void)setHasIsPreferredType:(BOOL)type;
+- (void)setHasIsQueryExactMatch:(BOOL)match;
+- (void)setHasIsQueryMatch:(BOOL)match;
+- (void)setHasIsRecentInAnyGroup:(BOOL)group;
+- (void)setHasIsRecentInSameGroup:(BOOL)group;
+- (void)writeTo:(id)to;
 @end
 
 @implementation INFERENCESchemaINFERENCEContactHandleSignalSet
 
-- (INFERENCESchemaINFERENCEContactHandleSignalSet)initWithDictionary:(id)a3
+- (INFERENCESchemaINFERENCEContactHandleSignalSet)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v27.receiver = self;
   v27.super_class = INFERENCESchemaINFERENCEContactHandleSignalSet;
   v5 = [(INFERENCESchemaINFERENCEContactHandleSignalSet *)&v27 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"isSuggestedHandle"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"isSuggestedHandle"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCEContactHandleSignalSet setIsSuggestedHandle:](v5, "setIsSuggestedHandle:", [v6 BOOLValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"isFavorite"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"isFavorite"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCEContactHandleSignalSet setIsFavorite:](v5, "setIsFavorite:", [v7 BOOLValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"isQueryExactMatch"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"isQueryExactMatch"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCEContactHandleSignalSet setIsQueryExactMatch:](v5, "setIsQueryExactMatch:", [v8 BOOLValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"isQueryMatch"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"isQueryMatch"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCEContactHandleSignalSet setIsQueryMatch:](v5, "setIsQueryMatch:", [v9 BOOLValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"isPartialQueryValueMatch"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"isPartialQueryValueMatch"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -66,7 +66,7 @@
     }
 
     v23 = v10;
-    v11 = [v4 objectForKeyedSubscript:@"historyStats"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"historyStats"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -75,14 +75,14 @@
     }
 
     v22 = v11;
-    v13 = [v4 objectForKeyedSubscript:@"isRecentInAnyGroup"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"isRecentInAnyGroup"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCEContactHandleSignalSet setIsRecentInAnyGroup:](v5, "setIsRecentInAnyGroup:", [v13 BOOLValue]);
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"isRecentInSameGroup"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"isRecentInSameGroup"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -90,7 +90,7 @@
     }
 
     v26 = v6;
-    v15 = [v4 objectForKeyedSubscript:@"isPreferredType"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"isPreferredType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -99,7 +99,7 @@
 
     v24 = v9;
     v25 = v7;
-    v16 = [v4 objectForKeyedSubscript:@"isAllowedType"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"isAllowedType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -107,14 +107,14 @@
     }
 
     v17 = v8;
-    v18 = [v4 objectForKeyedSubscript:@"isFaceTimeable"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"isFaceTimeable"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCEContactHandleSignalSet setIsFaceTimeable:](v5, "setIsFaceTimeable:", [v18 BOOLValue]);
     }
 
-    v19 = [v4 objectForKeyedSubscript:@"isNotFaceTimeable"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"isNotFaceTimeable"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -127,30 +127,30 @@
   return v5;
 }
 
-- (INFERENCESchemaINFERENCEContactHandleSignalSet)initWithJSON:(id)a3
+- (INFERENCESchemaINFERENCEContactHandleSignalSet)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(INFERENCESchemaINFERENCEContactHandleSignalSet *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(INFERENCESchemaINFERENCEContactHandleSignalSet *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(INFERENCESchemaINFERENCEContactHandleSignalSet *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -163,20 +163,20 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_historyStats)
   {
-    v4 = [(INFERENCESchemaINFERENCEContactHandleSignalSet *)self historyStats];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    historyStats = [(INFERENCESchemaINFERENCEContactHandleSignalSet *)self historyStats];
+    dictionaryRepresentation = [historyStats dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"historyStats"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"historyStats"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"historyStats"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"historyStats"];
     }
   }
 
@@ -184,7 +184,7 @@
   if ((v7 & 0x100) != 0)
   {
     v10 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCEContactHandleSignalSet isAllowedType](self, "isAllowedType")}];
-    [v3 setObject:v10 forKeyedSubscript:@"isAllowedType"];
+    [dictionary setObject:v10 forKeyedSubscript:@"isAllowedType"];
 
     v7 = *(&self->_isNotFaceTimeable + 1);
     if ((v7 & 0x200) == 0)
@@ -205,7 +205,7 @@ LABEL_8:
   }
 
   v11 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCEContactHandleSignalSet isFaceTimeable](self, "isFaceTimeable")}];
-  [v3 setObject:v11 forKeyedSubscript:@"isFaceTimeable"];
+  [dictionary setObject:v11 forKeyedSubscript:@"isFaceTimeable"];
 
   v7 = *(&self->_isNotFaceTimeable + 1);
   if ((v7 & 2) == 0)
@@ -221,7 +221,7 @@ LABEL_9:
 
 LABEL_23:
   v12 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCEContactHandleSignalSet isFavorite](self, "isFavorite")}];
-  [v3 setObject:v12 forKeyedSubscript:@"isFavorite"];
+  [dictionary setObject:v12 forKeyedSubscript:@"isFavorite"];
 
   v7 = *(&self->_isNotFaceTimeable + 1);
   if ((v7 & 0x400) == 0)
@@ -237,7 +237,7 @@ LABEL_10:
 
 LABEL_24:
   v13 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCEContactHandleSignalSet isNotFaceTimeable](self, "isNotFaceTimeable")}];
-  [v3 setObject:v13 forKeyedSubscript:@"isNotFaceTimeable"];
+  [dictionary setObject:v13 forKeyedSubscript:@"isNotFaceTimeable"];
 
   v7 = *(&self->_isNotFaceTimeable + 1);
   if ((v7 & 0x10) == 0)
@@ -253,7 +253,7 @@ LABEL_11:
 
 LABEL_25:
   v14 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCEContactHandleSignalSet isPartialQueryValueMatch](self, "isPartialQueryValueMatch")}];
-  [v3 setObject:v14 forKeyedSubscript:@"isPartialQueryValueMatch"];
+  [dictionary setObject:v14 forKeyedSubscript:@"isPartialQueryValueMatch"];
 
   v7 = *(&self->_isNotFaceTimeable + 1);
   if ((v7 & 0x80) == 0)
@@ -269,7 +269,7 @@ LABEL_12:
 
 LABEL_26:
   v15 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCEContactHandleSignalSet isPreferredType](self, "isPreferredType")}];
-  [v3 setObject:v15 forKeyedSubscript:@"isPreferredType"];
+  [dictionary setObject:v15 forKeyedSubscript:@"isPreferredType"];
 
   v7 = *(&self->_isNotFaceTimeable + 1);
   if ((v7 & 4) == 0)
@@ -285,7 +285,7 @@ LABEL_13:
 
 LABEL_27:
   v16 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCEContactHandleSignalSet isQueryExactMatch](self, "isQueryExactMatch")}];
-  [v3 setObject:v16 forKeyedSubscript:@"isQueryExactMatch"];
+  [dictionary setObject:v16 forKeyedSubscript:@"isQueryExactMatch"];
 
   v7 = *(&self->_isNotFaceTimeable + 1);
   if ((v7 & 8) == 0)
@@ -301,7 +301,7 @@ LABEL_14:
 
 LABEL_28:
   v17 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCEContactHandleSignalSet isQueryMatch](self, "isQueryMatch")}];
-  [v3 setObject:v17 forKeyedSubscript:@"isQueryMatch"];
+  [dictionary setObject:v17 forKeyedSubscript:@"isQueryMatch"];
 
   v7 = *(&self->_isNotFaceTimeable + 1);
   if ((v7 & 0x20) == 0)
@@ -317,7 +317,7 @@ LABEL_15:
 
 LABEL_29:
   v18 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCEContactHandleSignalSet isRecentInAnyGroup](self, "isRecentInAnyGroup")}];
-  [v3 setObject:v18 forKeyedSubscript:@"isRecentInAnyGroup"];
+  [dictionary setObject:v18 forKeyedSubscript:@"isRecentInAnyGroup"];
 
   v7 = *(&self->_isNotFaceTimeable + 1);
   if ((v7 & 0x40) == 0)
@@ -333,19 +333,19 @@ LABEL_16:
 
 LABEL_30:
   v19 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCEContactHandleSignalSet isRecentInSameGroup](self, "isRecentInSameGroup")}];
-  [v3 setObject:v19 forKeyedSubscript:@"isRecentInSameGroup"];
+  [dictionary setObject:v19 forKeyedSubscript:@"isRecentInSameGroup"];
 
   if (*(&self->_isNotFaceTimeable + 1))
   {
 LABEL_17:
     v8 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCEContactHandleSignalSet isSuggestedHandle](self, "isSuggestedHandle")}];
-    [v3 setObject:v8 forKeyedSubscript:@"isSuggestedHandle"];
+    [dictionary setObject:v8 forKeyedSubscript:@"isSuggestedHandle"];
   }
 
 LABEL_18:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -497,16 +497,16 @@ LABEL_18:
   return v5 ^ v4 ^ v6 ^ v7 ^ v8 ^ v11 ^ v12 ^ v13 ^ v14 ^ v15 ^ v16 ^ v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_51;
   }
 
   v5 = *(&self->_isNotFaceTimeable + 1);
-  v6 = v4[15];
+  v6 = equalCopy[15];
   if ((v5 & 1) != (v6 & 1))
   {
     goto LABEL_51;
@@ -515,13 +515,13 @@ LABEL_18:
   if (v5)
   {
     isSuggestedHandle = self->_isSuggestedHandle;
-    if (isSuggestedHandle != [v4 isSuggestedHandle])
+    if (isSuggestedHandle != [equalCopy isSuggestedHandle])
     {
       goto LABEL_51;
     }
 
     v5 = *(&self->_isNotFaceTimeable + 1);
-    v6 = v4[15];
+    v6 = equalCopy[15];
   }
 
   v8 = (v5 >> 1) & 1;
@@ -533,13 +533,13 @@ LABEL_18:
   if (v8)
   {
     isFavorite = self->_isFavorite;
-    if (isFavorite != [v4 isFavorite])
+    if (isFavorite != [equalCopy isFavorite])
     {
       goto LABEL_51;
     }
 
     v5 = *(&self->_isNotFaceTimeable + 1);
-    v6 = v4[15];
+    v6 = equalCopy[15];
   }
 
   v10 = (v5 >> 2) & 1;
@@ -551,13 +551,13 @@ LABEL_18:
   if (v10)
   {
     isQueryExactMatch = self->_isQueryExactMatch;
-    if (isQueryExactMatch != [v4 isQueryExactMatch])
+    if (isQueryExactMatch != [equalCopy isQueryExactMatch])
     {
       goto LABEL_51;
     }
 
     v5 = *(&self->_isNotFaceTimeable + 1);
-    v6 = v4[15];
+    v6 = equalCopy[15];
   }
 
   v12 = (v5 >> 3) & 1;
@@ -569,13 +569,13 @@ LABEL_18:
   if (v12)
   {
     isQueryMatch = self->_isQueryMatch;
-    if (isQueryMatch != [v4 isQueryMatch])
+    if (isQueryMatch != [equalCopy isQueryMatch])
     {
       goto LABEL_51;
     }
 
     v5 = *(&self->_isNotFaceTimeable + 1);
-    v6 = v4[15];
+    v6 = equalCopy[15];
   }
 
   v14 = (v5 >> 4) & 1;
@@ -587,28 +587,28 @@ LABEL_18:
   if (v14)
   {
     isPartialQueryValueMatch = self->_isPartialQueryValueMatch;
-    if (isPartialQueryValueMatch != [v4 isPartialQueryValueMatch])
+    if (isPartialQueryValueMatch != [equalCopy isPartialQueryValueMatch])
     {
       goto LABEL_51;
     }
   }
 
-  v16 = [(INFERENCESchemaINFERENCEContactHandleSignalSet *)self historyStats];
-  v17 = [v4 historyStats];
-  v18 = v17;
-  if ((v16 != 0) == (v17 == 0))
+  historyStats = [(INFERENCESchemaINFERENCEContactHandleSignalSet *)self historyStats];
+  historyStats2 = [equalCopy historyStats];
+  v18 = historyStats2;
+  if ((historyStats != 0) == (historyStats2 == 0))
   {
 
     goto LABEL_51;
   }
 
-  v19 = [(INFERENCESchemaINFERENCEContactHandleSignalSet *)self historyStats];
-  if (v19)
+  historyStats3 = [(INFERENCESchemaINFERENCEContactHandleSignalSet *)self historyStats];
+  if (historyStats3)
   {
-    v20 = v19;
-    v21 = [(INFERENCESchemaINFERENCEContactHandleSignalSet *)self historyStats];
-    v22 = [v4 historyStats];
-    v23 = [v21 isEqual:v22];
+    v20 = historyStats3;
+    historyStats4 = [(INFERENCESchemaINFERENCEContactHandleSignalSet *)self historyStats];
+    historyStats5 = [equalCopy historyStats];
+    v23 = [historyStats4 isEqual:historyStats5];
 
     if (!v23)
     {
@@ -622,7 +622,7 @@ LABEL_18:
 
   v24 = *(&self->_isNotFaceTimeable + 1);
   v25 = (v24 >> 5) & 1;
-  v26 = v4[15];
+  v26 = equalCopy[15];
   if (v25 != ((v26 >> 5) & 1))
   {
 LABEL_51:
@@ -633,13 +633,13 @@ LABEL_51:
   if (v25)
   {
     isRecentInAnyGroup = self->_isRecentInAnyGroup;
-    if (isRecentInAnyGroup != [v4 isRecentInAnyGroup])
+    if (isRecentInAnyGroup != [equalCopy isRecentInAnyGroup])
     {
       goto LABEL_51;
     }
 
     v24 = *(&self->_isNotFaceTimeable + 1);
-    v26 = v4[15];
+    v26 = equalCopy[15];
   }
 
   v28 = (v24 >> 6) & 1;
@@ -651,13 +651,13 @@ LABEL_51:
   if (v28)
   {
     isRecentInSameGroup = self->_isRecentInSameGroup;
-    if (isRecentInSameGroup != [v4 isRecentInSameGroup])
+    if (isRecentInSameGroup != [equalCopy isRecentInSameGroup])
     {
       goto LABEL_51;
     }
 
     v24 = *(&self->_isNotFaceTimeable + 1);
-    v26 = v4[15];
+    v26 = equalCopy[15];
   }
 
   v30 = (v24 >> 7) & 1;
@@ -669,13 +669,13 @@ LABEL_51:
   if (v30)
   {
     isPreferredType = self->_isPreferredType;
-    if (isPreferredType != [v4 isPreferredType])
+    if (isPreferredType != [equalCopy isPreferredType])
     {
       goto LABEL_51;
     }
 
     v24 = *(&self->_isNotFaceTimeable + 1);
-    v26 = v4[15];
+    v26 = equalCopy[15];
   }
 
   v32 = (v24 >> 8) & 1;
@@ -687,13 +687,13 @@ LABEL_51:
   if (v32)
   {
     isAllowedType = self->_isAllowedType;
-    if (isAllowedType != [v4 isAllowedType])
+    if (isAllowedType != [equalCopy isAllowedType])
     {
       goto LABEL_51;
     }
 
     v24 = *(&self->_isNotFaceTimeable + 1);
-    v26 = v4[15];
+    v26 = equalCopy[15];
   }
 
   v34 = (v24 >> 9) & 1;
@@ -705,10 +705,10 @@ LABEL_51:
   if (v34)
   {
     isFaceTimeable = self->_isFaceTimeable;
-    if (isFaceTimeable == [v4 isFaceTimeable])
+    if (isFaceTimeable == [equalCopy isFaceTimeable])
     {
       v24 = *(&self->_isNotFaceTimeable + 1);
-      v26 = v4[15];
+      v26 = equalCopy[15];
       goto LABEL_47;
     }
 
@@ -725,7 +725,7 @@ LABEL_47:
   if (v36)
   {
     isNotFaceTimeable = self->_isNotFaceTimeable;
-    if (isNotFaceTimeable != [v4 isNotFaceTimeable])
+    if (isNotFaceTimeable != [equalCopy isNotFaceTimeable])
     {
       goto LABEL_51;
     }
@@ -737,9 +737,9 @@ LABEL_52:
   return v38;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   v4 = *(&self->_isNotFaceTimeable + 1);
   if (v4)
   {
@@ -798,11 +798,11 @@ LABEL_6:
   }
 
 LABEL_7:
-  v5 = [(INFERENCESchemaINFERENCEContactHandleSignalSet *)self historyStats];
+  historyStats = [(INFERENCESchemaINFERENCEContactHandleSignalSet *)self historyStats];
 
-  if (v5)
+  if (historyStats)
   {
-    v6 = [(INFERENCESchemaINFERENCEContactHandleSignalSet *)self historyStats];
+    historyStats2 = [(INFERENCESchemaINFERENCEContactHandleSignalSet *)self historyStats];
     PBDataWriterWriteSubmessage();
   }
 
@@ -880,9 +880,9 @@ LABEL_15:
 LABEL_16:
 }
 
-- (void)setHasIsNotFaceTimeable:(BOOL)a3
+- (void)setHasIsNotFaceTimeable:(BOOL)timeable
 {
-  if (a3)
+  if (timeable)
   {
     v3 = 1024;
   }
@@ -895,9 +895,9 @@ LABEL_16:
   *(&self->_isNotFaceTimeable + 1) = *(&self->_isNotFaceTimeable + 1) & 0xFBFF | v3;
 }
 
-- (void)setHasIsFaceTimeable:(BOOL)a3
+- (void)setHasIsFaceTimeable:(BOOL)timeable
 {
-  if (a3)
+  if (timeable)
   {
     v3 = 512;
   }
@@ -910,9 +910,9 @@ LABEL_16:
   *(&self->_isNotFaceTimeable + 1) = *(&self->_isNotFaceTimeable + 1) & 0xFDFF | v3;
 }
 
-- (void)setHasIsAllowedType:(BOOL)a3
+- (void)setHasIsAllowedType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 256;
   }
@@ -925,9 +925,9 @@ LABEL_16:
   *(&self->_isNotFaceTimeable + 1) = *(&self->_isNotFaceTimeable + 1) & 0xFEFF | v3;
 }
 
-- (void)setHasIsPreferredType:(BOOL)a3
+- (void)setHasIsPreferredType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 128;
   }
@@ -940,9 +940,9 @@ LABEL_16:
   *(&self->_isNotFaceTimeable + 1) = *(&self->_isNotFaceTimeable + 1) & 0xFF7F | v3;
 }
 
-- (void)setHasIsRecentInSameGroup:(BOOL)a3
+- (void)setHasIsRecentInSameGroup:(BOOL)group
 {
-  if (a3)
+  if (group)
   {
     v3 = 64;
   }
@@ -955,9 +955,9 @@ LABEL_16:
   *(&self->_isNotFaceTimeable + 1) = *(&self->_isNotFaceTimeable + 1) & 0xFFBF | v3;
 }
 
-- (void)setHasIsRecentInAnyGroup:(BOOL)a3
+- (void)setHasIsRecentInAnyGroup:(BOOL)group
 {
-  if (a3)
+  if (group)
   {
     v3 = 32;
   }
@@ -970,9 +970,9 @@ LABEL_16:
   *(&self->_isNotFaceTimeable + 1) = *(&self->_isNotFaceTimeable + 1) & 0xFFDF | v3;
 }
 
-- (void)setHasIsPartialQueryValueMatch:(BOOL)a3
+- (void)setHasIsPartialQueryValueMatch:(BOOL)match
 {
-  if (a3)
+  if (match)
   {
     v3 = 16;
   }
@@ -985,9 +985,9 @@ LABEL_16:
   *(&self->_isNotFaceTimeable + 1) = *(&self->_isNotFaceTimeable + 1) & 0xFFEF | v3;
 }
 
-- (void)setHasIsQueryMatch:(BOOL)a3
+- (void)setHasIsQueryMatch:(BOOL)match
 {
-  if (a3)
+  if (match)
   {
     v3 = 8;
   }
@@ -1000,9 +1000,9 @@ LABEL_16:
   *(&self->_isNotFaceTimeable + 1) = *(&self->_isNotFaceTimeable + 1) & 0xFFF7 | v3;
 }
 
-- (void)setHasIsQueryExactMatch:(BOOL)a3
+- (void)setHasIsQueryExactMatch:(BOOL)match
 {
-  if (a3)
+  if (match)
   {
     v3 = 4;
   }
@@ -1015,9 +1015,9 @@ LABEL_16:
   *(&self->_isNotFaceTimeable + 1) = *(&self->_isNotFaceTimeable + 1) & 0xFFFB | v3;
 }
 
-- (void)setHasIsFavorite:(BOOL)a3
+- (void)setHasIsFavorite:(BOOL)favorite
 {
-  if (a3)
+  if (favorite)
   {
     v3 = 2;
   }
@@ -1030,17 +1030,17 @@ LABEL_16:
   *(&self->_isNotFaceTimeable + 1) = *(&self->_isNotFaceTimeable + 1) & 0xFFFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = INFERENCESchemaINFERENCEContactHandleSignalSet;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(INFERENCESchemaINFERENCEContactHandleSignalSet *)self historyStats:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(INFERENCESchemaINFERENCEContactHandleSignalSet *)self deleteHistoryStats];
   }

@@ -1,19 +1,19 @@
 @interface SilenceCallsSettingsController
-- (BOOL)supportsCallBlockingForSubscriptionContext:(id)a3;
+- (BOOL)supportsCallBlockingForSubscriptionContext:(id)context;
 - (PSListController)parentListController;
 - (SilenceCallsSettingsController)init;
-- (id)getBooleanFromUserDefaults:(id)a3 default:(id)a4;
-- (id)getOnlyAllowContacts:(id)a3;
-- (id)informationalUrlForSubscriptionContext:(id)a3;
-- (id)localizedStringForKey:(id)a3;
-- (id)objectForKeyHierarchy:(id)a3 subscriptionContext:(id)a4 error:(id *)a5;
+- (id)getBooleanFromUserDefaults:(id)defaults default:(id)default;
+- (id)getOnlyAllowContacts:(id)contacts;
+- (id)informationalUrlForSubscriptionContext:(id)context;
+- (id)localizedStringForKey:(id)key;
+- (id)objectForKeyHierarchy:(id)hierarchy subscriptionContext:(id)context error:(id *)error;
 - (id)specifiers;
-- (id)stringForKeyHierarchy:(id)a3 subscriptionContext:(id)a4 error:(id *)a5;
-- (void)carrierBundleController:(id)a3 carrierBundleDidChangeForSubscriptionContext:(id)a4;
+- (id)stringForKeyHierarchy:(id)hierarchy subscriptionContext:(id)context error:(id *)error;
+- (void)carrierBundleController:(id)controller carrierBundleDidChangeForSubscriptionContext:(id)context;
 - (void)configurationChanged;
 - (void)emitNavigationEvent;
-- (void)setOnlyAllowContacts:(id)a3 specifier:(id)a4;
-- (void)setValueInUserDefaults:(id)a3 forKey:(id)a4;
+- (void)setOnlyAllowContacts:(id)contacts specifier:(id)specifier;
+- (void)setValueInUserDefaults:(id)defaults forKey:(id)key;
 @end
 
 @implementation SilenceCallsSettingsController
@@ -44,27 +44,27 @@
 
 - (void)emitNavigationEvent
 {
-  v3 = [(SilenceCallsSettingsController *)self specifier];
-  v4 = [v3 target];
-  v5 = [v4 parentListController];
-  v6 = [v5 specifierID];
+  specifier = [(SilenceCallsSettingsController *)self specifier];
+  target = [specifier target];
+  parentListController = [target parentListController];
+  specifierID = [parentListController specifierID];
 
   v7 = &TUResolvedPhoneResource_ptr;
   v8 = [_NSLocalizedStringResource alloc];
   v9 = +[NSLocale currentLocale];
   v10 = [NSBundle bundleForClass:objc_opt_class()];
-  v11 = [v10 bundleURL];
-  v12 = [v8 initWithKey:@"Apps" table:0 locale:v9 bundleURL:v11];
+  bundleURL = [v10 bundleURL];
+  v12 = [v8 initWithKey:@"Apps" table:0 locale:v9 bundleURL:bundleURL];
 
   v13 = [[NSMutableArray alloc] initWithObjects:{v12, 0}];
-  if ([v6 isEqualToString:@"com.apple.preferences.facetime"])
+  if ([specifierID isEqualToString:@"com.apple.preferences.facetime"])
   {
     v26 = TUBundleIdentifierFaceTimeApplication;
     v14 = [_NSLocalizedStringResource alloc];
     v15 = +[NSLocale currentLocale];
     v16 = [NSBundle bundleForClass:objc_opt_class()];
-    v17 = [v16 bundleURL];
-    v18 = [v14 initWithKey:@"FaceTime" table:0 locale:v15 bundleURL:v17];
+    bundleURL2 = [v16 bundleURL];
+    v18 = [v14 initWithKey:@"FaceTime" table:0 locale:v15 bundleURL:bundleURL2];
     [v13 addObject:v18];
 
     v7 = &TUResolvedPhoneResource_ptr;
@@ -82,17 +82,17 @@
   v21 = objc_alloc(v7[61]);
   v22 = +[NSLocale currentLocale];
   v23 = [NSBundle bundleForClass:objc_opt_class()];
-  v24 = [v23 bundleURL];
-  v25 = [v21 initWithKey:@"Silence Unknown Callers" table:0 locale:v22 bundleURL:v24];
+  bundleURL3 = [v23 bundleURL];
+  v25 = [v21 initWithKey:@"Silence Unknown Callers" table:0 locale:v22 bundleURL:bundleURL3];
 
   [(SilenceCallsSettingsController *)self pe_emitNavigationEventForApplicationSettingsWithApplicationBundleIdentifier:v26 title:v25 localizedNavigationComponents:v13 deepLink:v20];
 }
 
-- (BOOL)supportsCallBlockingForSubscriptionContext:(id)a3
+- (BOOL)supportsCallBlockingForSubscriptionContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v12 = 0;
-  v5 = [(SilenceCallsSettingsController *)self stringForKeyHierarchy:&off_8640 subscriptionContext:v4 error:&v12];
+  v5 = [(SilenceCallsSettingsController *)self stringForKeyHierarchy:&off_8640 subscriptionContext:contextCopy error:&v12];
   v6 = v12;
   v7 = v6;
   if (v5)
@@ -103,7 +103,7 @@
       *buf = 138412546;
       v14 = v5;
       v15 = 2112;
-      v16 = v4;
+      v16 = contextCopy;
       v9 = "Retrieved call blocking value '%@' for subscription %@";
 LABEL_7:
       _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, v9, buf, 0x16u);
@@ -121,7 +121,7 @@ LABEL_7:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v14 = v4;
+      v14 = contextCopy;
       v15 = 2112;
       v16 = v7;
       v9 = "Retrieving call blocking value for subscription %@ failed with error %@";
@@ -143,11 +143,11 @@ LABEL_9:
   return v10;
 }
 
-- (id)informationalUrlForSubscriptionContext:(id)a3
+- (id)informationalUrlForSubscriptionContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v11 = 0;
-  v5 = [(SilenceCallsSettingsController *)self stringForKeyHierarchy:&off_8658 subscriptionContext:v4 error:&v11];
+  v5 = [(SilenceCallsSettingsController *)self stringForKeyHierarchy:&off_8658 subscriptionContext:contextCopy error:&v11];
   v6 = v11;
   v7 = v6;
   if (v5)
@@ -158,7 +158,7 @@ LABEL_9:
       *buf = 138412546;
       v13 = v5;
       v14 = 2112;
-      v15 = v4;
+      v15 = contextCopy;
       v9 = "Retrieved informational url value '%@' for subscription %@";
 LABEL_7:
       _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, v9, buf, 0x16u);
@@ -176,7 +176,7 @@ LABEL_7:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v13 = v4;
+      v13 = contextCopy;
       v14 = 2112;
       v15 = v7;
       v9 = "Retrieving informational url value for subscription %@ failed with error %@";
@@ -225,42 +225,42 @@ LABEL_9:
   return v4;
 }
 
-- (id)localizedStringForKey:(id)a3
+- (id)localizedStringForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = [NSBundle bundleForClass:objc_opt_class()];
-  v6 = [(SilenceCallsSettingsController *)self localizationTableName];
-  v7 = [v5 localizedStringForKey:v4 value:&stru_83F0 table:v6];
+  localizationTableName = [(SilenceCallsSettingsController *)self localizationTableName];
+  v7 = [v5 localizedStringForKey:keyCopy value:&stru_83F0 table:localizationTableName];
 
   return v7;
 }
 
-- (id)getOnlyAllowContacts:(id)a3
+- (id)getOnlyAllowContacts:(id)contacts
 {
-  v4 = [(SilenceCallsSettingsController *)self tuFeatureFlags];
-  v5 = [v4 deviceExpertMigrationEnabled];
+  tuFeatureFlags = [(SilenceCallsSettingsController *)self tuFeatureFlags];
+  deviceExpertMigrationEnabled = [tuFeatureFlags deviceExpertMigrationEnabled];
 
-  v6 = [(SilenceCallsSettingsController *)self specifier];
-  v7 = [v6 target];
-  v8 = [v7 parentListController];
-  v9 = [v8 specifierID];
-  v10 = [v9 isEqualToString:@"com.apple.preferences.facetime"];
+  specifier = [(SilenceCallsSettingsController *)self specifier];
+  target = [specifier target];
+  parentListController = [target parentListController];
+  specifierID = [parentListController specifierID];
+  v10 = [specifierID isEqualToString:@"com.apple.preferences.facetime"];
 
-  if (v5)
+  if (deviceExpertMigrationEnabled)
   {
-    v11 = [(SilenceCallsSettingsController *)self configurationProvider];
-    v12 = v11;
+    configurationProvider = [(SilenceCallsSettingsController *)self configurationProvider];
+    v12 = configurationProvider;
     if (v10)
     {
-      v13 = [v11 isSilenceUnknownCallersEnabledForFaceTime];
+      isSilenceUnknownCallersEnabledForFaceTime = [configurationProvider isSilenceUnknownCallersEnabledForFaceTime];
     }
 
     else
     {
-      v13 = [v11 isSilenceUnknownCallersEnabledForPhone];
+      isSilenceUnknownCallersEnabledForFaceTime = [configurationProvider isSilenceUnknownCallersEnabledForPhone];
     }
 
-    v16 = [NSNumber numberWithBool:v13];
+    v16 = [NSNumber numberWithBool:isSilenceUnknownCallersEnabledForFaceTime];
   }
 
   else if (v10)
@@ -278,34 +278,34 @@ LABEL_9:
   return v16;
 }
 
-- (void)setOnlyAllowContacts:(id)a3 specifier:(id)a4
+- (void)setOnlyAllowContacts:(id)contacts specifier:(id)specifier
 {
-  v5 = a3;
-  v6 = [(SilenceCallsSettingsController *)self tuFeatureFlags];
-  v7 = [v6 deviceExpertMigrationEnabled];
+  contactsCopy = contacts;
+  tuFeatureFlags = [(SilenceCallsSettingsController *)self tuFeatureFlags];
+  deviceExpertMigrationEnabled = [tuFeatureFlags deviceExpertMigrationEnabled];
 
-  v8 = [(SilenceCallsSettingsController *)self specifier];
-  v9 = [v8 target];
-  v10 = [v9 parentListController];
-  v11 = [v10 specifierID];
-  v12 = [v11 isEqualToString:@"com.apple.preferences.facetime"];
+  specifier = [(SilenceCallsSettingsController *)self specifier];
+  target = [specifier target];
+  parentListController = [target parentListController];
+  specifierID = [parentListController specifierID];
+  v12 = [specifierID isEqualToString:@"com.apple.preferences.facetime"];
 
   v13 = PHDefaultLog();
   v14 = os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT);
-  if (v7)
+  if (deviceExpertMigrationEnabled)
   {
     if (v12)
     {
       if (v14)
       {
         v19 = 138412290;
-        v20 = v5;
+        v20 = contactsCopy;
         _os_log_impl(&dword_0, v13, OS_LOG_TYPE_DEFAULT, "User toggled Silence Unknown Callers FaceTime switch to %@", &v19, 0xCu);
       }
 
-      v15 = [v5 BOOLValue];
-      v16 = [(SilenceCallsSettingsController *)self configurationProvider];
-      [v16 setSilenceUnknownCallersEnabledForFaceTime:v15];
+      bOOLValue = [contactsCopy BOOLValue];
+      configurationProvider = [(SilenceCallsSettingsController *)self configurationProvider];
+      [configurationProvider setSilenceUnknownCallersEnabledForFaceTime:bOOLValue];
     }
 
     else
@@ -313,13 +313,13 @@ LABEL_9:
       if (v14)
       {
         v19 = 138412290;
-        v20 = v5;
+        v20 = contactsCopy;
         _os_log_impl(&dword_0, v13, OS_LOG_TYPE_DEFAULT, "User toggled Silence Unknown Callers switch to %@", &v19, 0xCu);
       }
 
-      v18 = [v5 BOOLValue];
-      v16 = [(SilenceCallsSettingsController *)self configurationProvider];
-      [v16 setSilenceUnknownCallersEnabledForPhone:v18];
+      bOOLValue2 = [contactsCopy BOOLValue];
+      configurationProvider = [(SilenceCallsSettingsController *)self configurationProvider];
+      [configurationProvider setSilenceUnknownCallersEnabledForPhone:bOOLValue2];
     }
   }
 
@@ -330,7 +330,7 @@ LABEL_9:
       if (v14)
       {
         v19 = 138412290;
-        v20 = v5;
+        v20 = contactsCopy;
         _os_log_impl(&dword_0, v13, OS_LOG_TYPE_DEFAULT, "User toggled Silence Unknown Callers FaceTime switch to %@", &v19, 0xCu);
       }
 
@@ -342,24 +342,24 @@ LABEL_9:
       if (v14)
       {
         v19 = 138412290;
-        v20 = v5;
+        v20 = contactsCopy;
         _os_log_impl(&dword_0, v13, OS_LOG_TYPE_DEFAULT, "User toggled Silence Unknown Callers switch to %@", &v19, 0xCu);
       }
 
       v17 = &TUCallFilteringPreferencesContactsOnlyKey;
     }
 
-    [(SilenceCallsSettingsController *)self setValueInUserDefaults:v5 forKey:*v17];
+    [(SilenceCallsSettingsController *)self setValueInUserDefaults:contactsCopy forKey:*v17];
   }
 }
 
-- (id)getBooleanFromUserDefaults:(id)a3 default:(id)a4
+- (id)getBooleanFromUserDefaults:(id)defaults default:(id)default
 {
-  v5 = a4;
-  v6 = a3;
+  defaultCopy = default;
+  defaultsCopy = defaults;
   v7 = [NSUserDefaults alloc];
   v8 = [v7 initWithSuiteName:TUBundleIdentifierTelephonyUtilitiesFramework];
-  v9 = [v8 objectForKey:v6];
+  v9 = [v8 objectForKey:defaultsCopy];
 
   if (v9)
   {
@@ -368,7 +368,7 @@ LABEL_9:
 
   else
   {
-    v10 = v5;
+    v10 = defaultCopy;
   }
 
   v11 = v10;
@@ -376,39 +376,39 @@ LABEL_9:
   return v10;
 }
 
-- (void)setValueInUserDefaults:(id)a3 forKey:(id)a4
+- (void)setValueInUserDefaults:(id)defaults forKey:(id)key
 {
-  v5 = a4;
-  v6 = a3;
+  keyCopy = key;
+  defaultsCopy = defaults;
   v7 = [NSUserDefaults alloc];
   v8 = TUBundleIdentifierTelephonyUtilitiesFramework;
   v9 = [v7 initWithSuiteName:TUBundleIdentifierTelephonyUtilitiesFramework];
-  [v9 setValue:v6 forKey:v5];
+  [v9 setValue:defaultsCopy forKey:keyCopy];
 
   v10 = +[NSNotificationCenter defaultCenter];
   [v10 postNotificationName:@"SilenceCallsSettingsChangedNotification" object:0];
 
   v12 = objc_opt_new();
-  v11 = [NSSet setWithObject:v5];
+  v11 = [NSSet setWithObject:keyCopy];
 
   [v12 synchronizeUserDefaultsDomain:v8 keys:v11];
 }
 
-- (id)objectForKeyHierarchy:(id)a3 subscriptionContext:(id)a4 error:(id *)a5
+- (id)objectForKeyHierarchy:(id)hierarchy subscriptionContext:(id)context error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
+  contextCopy = context;
+  hierarchyCopy = hierarchy;
   v10 = [[CTBundle alloc] initWithBundleType:1];
-  v11 = [(SilenceCallsSettingsController *)self carrierBundleController];
-  v12 = [v11 telephonyClient];
-  v13 = [v12 copyCarrierBundleValue:v8 keyHierarchy:v9 bundleType:v10 error:a5];
+  carrierBundleController = [(SilenceCallsSettingsController *)self carrierBundleController];
+  telephonyClient = [carrierBundleController telephonyClient];
+  v13 = [telephonyClient copyCarrierBundleValue:contextCopy keyHierarchy:hierarchyCopy bundleType:v10 error:error];
 
   return v13;
 }
 
-- (id)stringForKeyHierarchy:(id)a3 subscriptionContext:(id)a4 error:(id *)a5
+- (id)stringForKeyHierarchy:(id)hierarchy subscriptionContext:(id)context error:(id *)error
 {
-  v5 = [(SilenceCallsSettingsController *)self objectForKeyHierarchy:a3 subscriptionContext:a4 error:a5];
+  v5 = [(SilenceCallsSettingsController *)self objectForKeyHierarchy:hierarchy subscriptionContext:context error:error];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -423,14 +423,14 @@ LABEL_9:
   return v6;
 }
 
-- (void)carrierBundleController:(id)a3 carrierBundleDidChangeForSubscriptionContext:(id)a4
+- (void)carrierBundleController:(id)controller carrierBundleDidChangeForSubscriptionContext:(id)context
 {
-  v4 = a4;
+  contextCopy = context;
   v5 = PHDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = contextCopy;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "Carrier bundle changed for subscription context %@", &v6, 0xCu);
   }
 }

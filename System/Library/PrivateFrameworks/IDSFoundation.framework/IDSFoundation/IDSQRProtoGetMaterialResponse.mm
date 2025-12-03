@@ -1,32 +1,32 @@
 @interface IDSQRProtoGetMaterialResponse
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)addMaterials:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addMaterials:(id)materials;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation IDSQRProtoGetMaterialResponse
 
-- (void)addMaterials:(id)a3
+- (void)addMaterials:(id)materials
 {
-  v4 = a3;
+  materialsCopy = materials;
   materials = self->_materials;
-  v8 = v4;
+  v8 = materialsCopy;
   if (!materials)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_materials;
     self->_materials = v6;
 
-    v4 = v8;
+    materialsCopy = v8;
     materials = self->_materials;
   }
 
-  [(NSMutableArray *)materials addObject:v4];
+  [(NSMutableArray *)materials addObject:materialsCopy];
 }
 
 - (id)description
@@ -35,8 +35,8 @@
   v8.receiver = self;
   v8.super_class = IDSQRProtoGetMaterialResponse;
   v4 = [(IDSQRProtoGetMaterialResponse *)&v8 description];
-  v5 = [(IDSQRProtoGetMaterialResponse *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(IDSQRProtoGetMaterialResponse *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -44,7 +44,7 @@
 - (id)dictionaryRepresentation
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSMutableArray *)self->_materials count])
   {
     v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{-[NSMutableArray count](self->_materials, "count")}];
@@ -67,8 +67,8 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v12 + 1) + 8 * i) dictionaryRepresentation];
-          [v4 addObject:v10];
+          dictionaryRepresentation = [*(*(&v12 + 1) + 8 * i) dictionaryRepresentation];
+          [v4 addObject:dictionaryRepresentation];
         }
 
         v7 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -77,16 +77,16 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKey:@"materials"];
+    [dictionary setObject:v4 forKey:@"materials"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -119,29 +119,29 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if ([(IDSQRProtoGetMaterialResponse *)self materialsCount])
   {
-    [v8 clearMaterials];
-    v4 = [(IDSQRProtoGetMaterialResponse *)self materialsCount];
-    if (v4)
+    [toCopy clearMaterials];
+    materialsCount = [(IDSQRProtoGetMaterialResponse *)self materialsCount];
+    if (materialsCount)
     {
-      v5 = v4;
+      v5 = materialsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(IDSQRProtoGetMaterialResponse *)self materialsAtIndex:i];
-        [v8 addMaterials:v7];
+        [toCopy addMaterials:v7];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -162,7 +162,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v13 + 1) + 8 * v10) copyWithZone:{a3, v13}];
+        v11 = [*(*(&v13 + 1) + 8 * v10) copyWithZone:{zone, v13}];
         [v5 addMaterials:v11];
 
         ++v10;
@@ -178,13 +178,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     materials = self->_materials;
-    if (materials | v4[1])
+    if (materials | equalCopy[1])
     {
       v6 = [(NSMutableArray *)materials isEqual:?];
     }
@@ -203,14 +203,14 @@
   return v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v14 = *MEMORY[0x1E69E9840];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = *(a3 + 1);
+  v4 = *(from + 1);
   v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {

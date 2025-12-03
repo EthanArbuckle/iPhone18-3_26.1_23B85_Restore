@@ -1,12 +1,12 @@
 @interface AEAudiobookReadingTimeTracker
 + (id)startTracking;
-+ (id)testInstanceWithPlayer:(id)a3 bcTracker:(id)a4;
-- (AEAudiobookReadingTimeTracker)initWithPlayer:(id)a3;
-- (void)_beginReadingSessionForEventType:(unint64_t)a3;
-- (void)_endReadingSessionForEventType:(unint64_t)a3;
-- (void)player:(id)a3 audiobookDidChange:(id)a4;
-- (void)player:(id)a3 audiobookWillChange:(id)a4;
-- (void)player:(id)a3 stateDidChangeFrom:(int64_t)a4 to:(int64_t)a5;
++ (id)testInstanceWithPlayer:(id)player bcTracker:(id)tracker;
+- (AEAudiobookReadingTimeTracker)initWithPlayer:(id)player;
+- (void)_beginReadingSessionForEventType:(unint64_t)type;
+- (void)_endReadingSessionForEventType:(unint64_t)type;
+- (void)player:(id)player audiobookDidChange:(id)change;
+- (void)player:(id)player audiobookWillChange:(id)change;
+- (void)player:(id)player stateDidChangeFrom:(int64_t)from to:(int64_t)to;
 @end
 
 @implementation AEAudiobookReadingTimeTracker
@@ -17,7 +17,7 @@
   block[1] = 3221225472;
   block[2] = sub_8FC04;
   block[3] = &unk_1E4E30;
-  block[4] = a1;
+  block[4] = self;
   if (qword_22D058 != -1)
   {
     dispatch_once(&qword_22D058, block);
@@ -28,37 +28,37 @@
   return v2;
 }
 
-+ (id)testInstanceWithPlayer:(id)a3 bcTracker:(id)a4
++ (id)testInstanceWithPlayer:(id)player bcTracker:(id)tracker
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithPlayer:v7];
+  trackerCopy = tracker;
+  playerCopy = player;
+  v8 = [[self alloc] initWithPlayer:playerCopy];
 
-  [v8 setBcTracker:v6];
+  [v8 setBcTracker:trackerCopy];
 
   return v8;
 }
 
-- (AEAudiobookReadingTimeTracker)initWithPlayer:(id)a3
+- (AEAudiobookReadingTimeTracker)initWithPlayer:(id)player
 {
-  v5 = a3;
+  playerCopy = player;
   v10.receiver = self;
   v10.super_class = AEAudiobookReadingTimeTracker;
   v6 = [(AEAudiobookReadingTimeTracker *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_player, a3);
-    v8 = [(AEAudiobookReadingTimeTracker *)v7 player];
-    [v8 addObserver:v7];
+    objc_storeStrong(&v6->_player, player);
+    player = [(AEAudiobookReadingTimeTracker *)v7 player];
+    [player addObserver:v7];
   }
 
   return v7;
 }
 
-- (void)player:(id)a3 audiobookWillChange:(id)a4
+- (void)player:(id)player audiobookWillChange:(id)change
 {
-  v5 = [(AEAudiobookReadingTimeTracker *)self sessionID:a3];
+  v5 = [(AEAudiobookReadingTimeTracker *)self sessionID:player];
 
   if (v5)
   {
@@ -67,13 +67,13 @@
   }
 }
 
-- (void)player:(id)a3 audiobookDidChange:(id)a4
+- (void)player:(id)player audiobookDidChange:(id)change
 {
-  if ([a3 state] == &dword_0 + 2)
+  if ([player state] == &dword_0 + 2)
   {
-    v5 = [(AEAudiobookReadingTimeTracker *)self sessionID];
+    sessionID = [(AEAudiobookReadingTimeTracker *)self sessionID];
 
-    if (!v5)
+    if (!sessionID)
     {
 
       [(AEAudiobookReadingTimeTracker *)self _beginReadingSessionForEventType:7];
@@ -81,39 +81,39 @@
   }
 }
 
-- (void)player:(id)a3 stateDidChangeFrom:(int64_t)a4 to:(int64_t)a5
+- (void)player:(id)player stateDidChangeFrom:(int64_t)from to:(int64_t)to
 {
-  v7 = a3;
-  v8 = v7;
-  if (a5 == 3)
+  playerCopy = player;
+  v8 = playerCopy;
+  if (to == 3)
   {
-    v16 = v7;
-    v12 = [(AEAudiobookReadingTimeTracker *)self sessionID];
+    v16 = playerCopy;
+    sessionID = [(AEAudiobookReadingTimeTracker *)self sessionID];
 
     v8 = v16;
-    if (v12)
+    if (sessionID)
     {
-      v7 = [v16 isScrubbing];
+      playerCopy = [v16 isScrubbing];
       v8 = v16;
-      if ((v7 & 1) == 0)
+      if ((playerCopy & 1) == 0)
       {
-        v13 = [v16 skipController];
-        if ([v13 isSkipping])
+        skipController = [v16 skipController];
+        if ([skipController isSkipping])
         {
         }
 
         else
         {
-          v14 = [v16 skipController];
-          v15 = [v14 isSeeking];
+          skipController2 = [v16 skipController];
+          isSeeking = [skipController2 isSeeking];
 
           v8 = v16;
-          if (v15)
+          if (isSeeking)
           {
             goto LABEL_15;
           }
 
-          v7 = [(AEAudiobookReadingTimeTracker *)self _endReadingSessionForEventType:10];
+          playerCopy = [(AEAudiobookReadingTimeTracker *)self _endReadingSessionForEventType:10];
         }
 
         goto LABEL_14;
@@ -121,17 +121,17 @@
     }
   }
 
-  else if (a5 == 2)
+  else if (to == 2)
   {
-    v16 = v7;
-    v9 = [(AEAudiobookReadingTimeTracker *)self sessionID];
+    v16 = playerCopy;
+    sessionID2 = [(AEAudiobookReadingTimeTracker *)self sessionID];
 
     v8 = v16;
-    if (!v9)
+    if (!sessionID2)
     {
-      v10 = [(AEAudiobookReadingTimeTracker *)self pausedTime];
+      pausedTime = [(AEAudiobookReadingTimeTracker *)self pausedTime];
 
-      if (v10)
+      if (pausedTime)
       {
         v11 = 11;
       }
@@ -141,7 +141,7 @@
         v11 = 7;
       }
 
-      v7 = [(AEAudiobookReadingTimeTracker *)self _beginReadingSessionForEventType:v11];
+      playerCopy = [(AEAudiobookReadingTimeTracker *)self _beginReadingSessionForEventType:v11];
 LABEL_14:
       v8 = v16;
     }
@@ -149,60 +149,60 @@ LABEL_14:
 
 LABEL_15:
 
-  _objc_release_x1(v7, v8);
+  _objc_release_x1(playerCopy, v8);
 }
 
-- (void)_beginReadingSessionForEventType:(unint64_t)a3
+- (void)_beginReadingSessionForEventType:(unint64_t)type
 {
   v5 = +[NSUUID UUID];
   [(AEAudiobookReadingTimeTracker *)self setSessionID:v5];
 
-  v6 = [(AEAudiobookReadingTimeTracker *)self player];
-  v7 = [v6 currentAudiobook];
-  v8 = [v7 assetID];
+  player = [(AEAudiobookReadingTimeTracker *)self player];
+  currentAudiobook = [player currentAudiobook];
+  assetID = [currentAudiobook assetID];
 
   v9 = _AEBookPluginsAudiobookLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [(AEAudiobookReadingTimeTracker *)self sessionID];
+    sessionID = [(AEAudiobookReadingTimeTracker *)self sessionID];
     v13 = 138543874;
-    v14 = v10;
+    v14 = sessionID;
     v15 = 2112;
-    v16 = v8;
+    v16 = assetID;
     v17 = 2048;
-    v18 = a3;
+    typeCopy = type;
     _os_log_impl(&dword_0, v9, OS_LOG_TYPE_DEFAULT, "beginReadingSession: %{public}@ assetID:%@ eventType:%lu", &v13, 0x20u);
   }
 
-  v11 = [(AEAudiobookReadingTimeTracker *)self bcTracker];
-  v12 = [(AEAudiobookReadingTimeTracker *)self sessionID];
-  [v11 trackReadingSessionBeganWithAssetID:v8 sessionID:v12 trackerEventType:a3 readingFeatureFlags:1 completion:0];
+  bcTracker = [(AEAudiobookReadingTimeTracker *)self bcTracker];
+  sessionID2 = [(AEAudiobookReadingTimeTracker *)self sessionID];
+  [bcTracker trackReadingSessionBeganWithAssetID:assetID sessionID:sessionID2 trackerEventType:type readingFeatureFlags:1 completion:0];
 }
 
-- (void)_endReadingSessionForEventType:(unint64_t)a3
+- (void)_endReadingSessionForEventType:(unint64_t)type
 {
-  v5 = [(AEAudiobookReadingTimeTracker *)self player];
-  v6 = [v5 currentAudiobook];
-  v7 = [v6 assetID];
+  player = [(AEAudiobookReadingTimeTracker *)self player];
+  currentAudiobook = [player currentAudiobook];
+  assetID = [currentAudiobook assetID];
 
   v8 = _AEBookPluginsAudiobookLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(AEAudiobookReadingTimeTracker *)self sessionID];
+    sessionID = [(AEAudiobookReadingTimeTracker *)self sessionID];
     v13 = 138543874;
-    v14 = v9;
+    v14 = sessionID;
     v15 = 2112;
-    v16 = v7;
+    v16 = assetID;
     v17 = 2048;
-    v18 = a3;
+    typeCopy = type;
     _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "endReadingSession:%{public}@ assetID:%@ eventType:%lu", &v13, 0x20u);
   }
 
-  v10 = [(AEAudiobookReadingTimeTracker *)self bcTracker];
-  v11 = [(AEAudiobookReadingTimeTracker *)self sessionID];
-  [v10 trackReadingSessionEndedWithAssetID:v7 sessionID:v11 trackerEventType:a3 readingFeatureFlags:1 completion:0];
+  bcTracker = [(AEAudiobookReadingTimeTracker *)self bcTracker];
+  sessionID2 = [(AEAudiobookReadingTimeTracker *)self sessionID];
+  [bcTracker trackReadingSessionEndedWithAssetID:assetID sessionID:sessionID2 trackerEventType:type readingFeatureFlags:1 completion:0];
 
-  if (a3 == 10)
+  if (type == 10)
   {
     v12 = +[NSDate date];
     [(AEAudiobookReadingTimeTracker *)self setPausedTime:v12];

@@ -1,36 +1,36 @@
 @interface BUZipFileArchive
-+ (BOOL)extractArchiveFromURL:(id)a3 toURL:(id)a4 options:(unint64_t)a5 error:(id *)a6;
-+ (BOOL)isZipArchiveAtFD:(int)a3;
-+ (BOOL)isZipArchiveAtURL:(id)a3 error:(id *)a4;
-+ (id)zipArchiveFromURL:(id)a3 options:(unint64_t)a4 error:(id *)a5;
-+ (void)readArchiveFromURL:(id)a3 options:(unint64_t)a4 queue:(id)a5 completion:(id)a6;
-- (BOOL)copyToTemporaryLocationRelativeToURL:(id)a3 error:(id *)a4;
++ (BOOL)extractArchiveFromURL:(id)l toURL:(id)rL options:(unint64_t)options error:(id *)error;
++ (BOOL)isZipArchiveAtFD:(int)d;
++ (BOOL)isZipArchiveAtURL:(id)l error:(id *)error;
++ (id)zipArchiveFromURL:(id)l options:(unint64_t)options error:(id *)error;
++ (void)readArchiveFromURL:(id)l options:(unint64_t)options queue:(id)queue completion:(id)completion;
+- (BOOL)copyToTemporaryLocationRelativeToURL:(id)l error:(id *)error;
 - (BOOL)isValid;
-- (BOOL)openWithURL:(id)a3 error:(id *)a4;
-- (BOOL)reopenWithTemporaryURL:(id)a3 error:(id *)a4;
-- (BUZipFileArchive)initWithWriter:(id)a3 forReadingFromURL:(id)a4 options:(unint64_t)a5 error:(id *)a6;
+- (BOOL)openWithURL:(id)l error:(id *)error;
+- (BOOL)reopenWithTemporaryURL:(id)l error:(id *)error;
+- (BUZipFileArchive)initWithWriter:(id)writer forReadingFromURL:(id)l options:(unint64_t)options error:(id *)error;
 - (id)debugDescription;
-- (id)initForReadingFromURL:(id)a3 options:(unint64_t)a4 error:(id *)a5;
+- (id)initForReadingFromURL:(id)l options:(unint64_t)options error:(id *)error;
 - (id)newArchiveReadChannel;
 - (unint64_t)archiveLength;
-- (void)createTemporaryDirectoryRelativeToURL:(id)a3;
+- (void)createTemporaryDirectoryRelativeToURL:(id)l;
 - (void)dealloc;
 - (void)removeTemporaryDirectory;
 @end
 
 @implementation BUZipFileArchive
 
-+ (BOOL)isZipArchiveAtURL:(id)a3 error:(id *)a4
++ (BOOL)isZipArchiveAtURL:(id)l error:(id *)error
 {
-  v6 = a3;
-  v9 = objc_msgSend_path(v6, v7, v8);
+  lCopy = l;
+  v9 = objc_msgSend_path(lCopy, v7, v8);
   if (!objc_msgSend_length(v9, v10, v11))
   {
     v22 = 0;
     goto LABEL_7;
   }
 
-  v14 = objc_msgSend_path(v6, v12, v13);
+  v14 = objc_msgSend_path(lCopy, v12, v13);
   v15 = v14;
   v18 = objc_msgSend_fileSystemRepresentation(v15, v16, v17);
   v19 = open(v18, 0, 0);
@@ -42,7 +42,7 @@
     v22 = objc_msgSend_bu_fileReadPOSIXErrorWithNumber_userInfo_(v23, v25, *v24, 0);
 LABEL_7:
     isZipArchiveAtFD = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_12;
     }
@@ -50,10 +50,10 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  isZipArchiveAtFD = objc_msgSend_isZipArchiveAtFD_(a1, v20, v19);
+  isZipArchiveAtFD = objc_msgSend_isZipArchiveAtFD_(self, v20, v19);
   close(v19);
   v22 = 0;
-  if (!a4)
+  if (!error)
   {
     goto LABEL_12;
   }
@@ -64,13 +64,13 @@ LABEL_8:
     if (v22)
     {
       v26 = v22;
-      *a4 = v22;
+      *error = v22;
     }
 
     else
     {
       v27 = objc_msgSend_bu_fileReadUnknownErrorWithUserInfo_(MEMORY[0x277CCA9B8], v12, 0);
-      *a4 = v27;
+      *error = v27;
     }
   }
 
@@ -79,13 +79,13 @@ LABEL_12:
   return isZipArchiveAtFD;
 }
 
-+ (BOOL)isZipArchiveAtFD:(int)a3
++ (BOOL)isZipArchiveAtFD:(int)d
 {
-  v4 = lseek(a3, 0, 1);
+  v4 = lseek(d, 0, 1);
   v5 = v4;
   if ((v4 - 1) <= 0xFFFFFFFFFFFFFFFDLL)
   {
-    if (lseek(a3, 0, 0) == -1)
+    if (lseek(d, 0, 0) == -1)
     {
       goto LABEL_12;
     }
@@ -96,33 +96,33 @@ LABEL_12:
   if (v4 != -1)
   {
 LABEL_5:
-    if (read(a3, &v9, 4uLL) == 4)
+    if (read(d, &v9, 4uLL) == 4)
     {
       v7 = v9 == 67324752 || v9 == 101010256;
-      return lseek(a3, v5, 0) != -1 && v7;
+      return lseek(d, v5, 0) != -1 && v7;
     }
 
 LABEL_12:
     v7 = 0;
-    return lseek(a3, v5, 0) != -1 && v7;
+    return lseek(d, v5, 0) != -1 && v7;
   }
 
   return 0;
 }
 
-+ (void)readArchiveFromURL:(id)a3 options:(unint64_t)a4 queue:(id)a5 completion:(id)a6
++ (void)readArchiveFromURL:(id)l options:(unint64_t)options queue:(id)queue completion:(id)completion
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a3;
-  v13 = [a1 alloc];
+  completionCopy = completion;
+  queueCopy = queue;
+  lCopy = l;
+  v13 = [self alloc];
   v21 = 0;
-  v15 = objc_msgSend_initForReadingFromURL_options_error_(v13, v14, v12, a4, &v21);
+  v15 = objc_msgSend_initForReadingFromURL_options_error_(v13, v14, lCopy, options, &v21);
 
   v17 = v21;
   if (v15)
   {
-    objc_msgSend_readArchiveWithQueue_completion_(v15, v16, v11, v10);
+    objc_msgSend_readArchiveWithQueue_completion_(v15, v16, queueCopy, completionCopy);
   }
 
   else
@@ -131,17 +131,17 @@ LABEL_12:
     block[1] = 3221225472;
     block[2] = sub_241DB7FE8;
     block[3] = &unk_278D1CEA0;
-    v20 = v10;
+    v20 = completionCopy;
     v19 = v17;
-    dispatch_async(v11, block);
+    dispatch_async(queueCopy, block);
 
-    v11 = v20;
+    queueCopy = v20;
   }
 }
 
-+ (id)zipArchiveFromURL:(id)a3 options:(unint64_t)a4 error:(id *)a5
++ (id)zipArchiveFromURL:(id)l options:(unint64_t)options error:(id *)error
 {
-  v8 = a3;
+  lCopy = l;
   v31 = 0;
   v32 = &v31;
   v33 = 0x3032000000;
@@ -155,7 +155,7 @@ LABEL_12:
   v29 = sub_241DB82E8;
   v30 = 0;
   obj = 0;
-  isZipArchiveAtURL_error = objc_msgSend_isZipArchiveAtURL_error_(a1, v9, v8, &obj);
+  isZipArchiveAtURL_error = objc_msgSend_isZipArchiveAtURL_error_(self, v9, lCopy, &obj);
   objc_storeStrong(&v30, obj);
   if (isZipArchiveAtURL_error)
   {
@@ -170,22 +170,22 @@ LABEL_12:
     v23 = &v25;
     v14 = v12;
     v21 = v14;
-    objc_msgSend_readArchiveFromURL_options_queue_completion_(a1, v15, v8, a4, v13, v20);
+    objc_msgSend_readArchiveFromURL_options_queue_completion_(self, v15, lCopy, options, v13, v20);
     dispatch_group_wait(v14, 0xFFFFFFFFFFFFFFFFLL);
   }
 
-  if (a5 && !v32[5])
+  if (error && !v32[5])
   {
     v16 = v26[5];
     if (v16)
     {
-      *a5 = v16;
+      *error = v16;
     }
 
     else
     {
       v17 = objc_msgSend_bu_fileReadUnknownErrorWithUserInfo_(MEMORY[0x277CCA9B8], v11, 0);
-      *a5 = v17;
+      *error = v17;
     }
   }
 
@@ -197,25 +197,25 @@ LABEL_12:
   return v18;
 }
 
-- (id)initForReadingFromURL:(id)a3 options:(unint64_t)a4 error:(id *)a5
+- (id)initForReadingFromURL:(id)l options:(unint64_t)options error:(id *)error
 {
-  v8 = a3;
+  lCopy = l;
   v15.receiver = self;
   v15.super_class = BUZipFileArchive;
-  v9 = [(BUZipArchive *)&v15 initWithOptions:a4];
+  v9 = [(BUZipArchive *)&v15 initWithOptions:options];
   if (v9)
   {
     v10 = BUZipLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
-      sub_241DCFE28(v9, v8, v10);
+      sub_241DCFE28(v9, lCopy, v10);
     }
 
     v11 = dispatch_queue_create("BUZipFileArchive.Access", 0);
     accessQueue = v9->_accessQueue;
     v9->_accessQueue = v11;
 
-    if ((objc_msgSend_openWithURL_error_(v9, v13, v8, a5) & 1) == 0)
+    if ((objc_msgSend_openWithURL_error_(v9, v13, lCopy, error) & 1) == 0)
     {
 
       v9 = 0;
@@ -225,24 +225,24 @@ LABEL_12:
   return v9;
 }
 
-- (BOOL)openWithURL:(id)a3 error:(id *)a4
+- (BOOL)openWithURL:(id)l error:(id *)error
 {
-  v6 = a3;
+  lCopy = l;
   v7 = BUZipLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    sub_241DCFEBC(self, v6, v7);
+    sub_241DCFEBC(self, lCopy, v7);
   }
 
-  v10 = objc_msgSend_copy(v6, v8, v9);
+  v10 = objc_msgSend_copy(lCopy, v8, v9);
   URL = self->_URL;
   self->_URL = v10;
 
   v12 = *MEMORY[0x277CBE838];
-  objc_msgSend_removeCachedResourceValueForKey_(v6, v13, *MEMORY[0x277CBE838]);
+  objc_msgSend_removeCachedResourceValueForKey_(lCopy, v13, *MEMORY[0x277CBE838]);
   v45 = 0;
   v46 = 0;
-  ResourceValue_forKey_error = objc_msgSend_getResourceValue_forKey_error_(v6, v14, &v46, v12, &v45);
+  ResourceValue_forKey_error = objc_msgSend_getResourceValue_forKey_error_(lCopy, v14, &v46, v12, &v45);
   v16 = v46;
   v19 = v45;
   if (!ResourceValue_forKey_error)
@@ -250,13 +250,13 @@ LABEL_12:
     v36 = BUZipLog();
     if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
     {
-      sub_241DCFF50(v6, v19, v36);
+      sub_241DCFF50(lCopy, v19, v36);
     }
 
 LABEL_15:
 
     v35 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_18;
     }
@@ -265,7 +265,7 @@ LABEL_15:
   }
 
   self->_archiveLength = objc_msgSend_unsignedLongLongValue(v16, v17, v18);
-  v22 = objc_msgSend_path(v6, v20, v21);
+  v22 = objc_msgSend_path(lCopy, v20, v21);
   v23 = v22;
   v26 = objc_msgSend_fileSystemRepresentation(v23, v24, v25);
   v27 = open(v26, 0, 0);
@@ -303,7 +303,7 @@ LABEL_14:
   }
 
   v35 = 1;
-  if (!a4)
+  if (!error)
   {
     goto LABEL_18;
   }
@@ -312,7 +312,7 @@ LABEL_16:
   if (v19)
   {
     v43 = v19;
-    *a4 = v19;
+    *error = v19;
   }
 
 LABEL_18:
@@ -320,12 +320,12 @@ LABEL_18:
   return v35;
 }
 
-- (BUZipFileArchive)initWithWriter:(id)a3 forReadingFromURL:(id)a4 options:(unint64_t)a5 error:(id *)a6
+- (BUZipFileArchive)initWithWriter:(id)writer forReadingFromURL:(id)l options:(unint64_t)options error:(id *)error
 {
   v42 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v13 = objc_msgSend_initForReadingFromURL_options_error_(self, v12, v11, a5, a6);
+  writerCopy = writer;
+  lCopy = l;
+  v13 = objc_msgSend_initForReadingFromURL_options_error_(self, v12, lCopy, options, error);
   if (v13)
   {
     v14 = v13;
@@ -335,14 +335,14 @@ LABEL_18:
       *buf = 138412802;
       v37 = v14;
       v38 = 2112;
-      v39 = v10;
+      v39 = writerCopy;
       v40 = 2112;
-      v41 = v11;
+      v41 = lCopy;
       _os_log_debug_impl(&dword_241DA6000, v15, OS_LOG_TYPE_DEBUG, "%@: initWithWriter: %@, atURL: %@", buf, 0x20u);
     }
 
     v18 = objc_msgSend_archiveLength(v14, v16, v17);
-    if (v18 == objc_msgSend_archiveLength(v10, v19, v20))
+    if (v18 == objc_msgSend_archiveLength(writerCopy, v19, v20))
     {
       v34[0] = MEMORY[0x277D85DD0];
       v34[1] = 3221225472;
@@ -350,7 +350,7 @@ LABEL_18:
       v34[3] = &unk_278D1D3E8;
       v21 = v14;
       v35 = v21;
-      objc_msgSend_enumerateEntriesUsingBlock_(v10, v22, v34);
+      objc_msgSend_enumerateEntriesUsingBlock_(writerCopy, v22, v34);
       v14 = v35;
     }
 
@@ -359,9 +359,9 @@ LABEL_18:
       v23 = BUZipLog();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
       {
-        v27 = objc_msgSend_path(v11, v24, v25);
+        v27 = objc_msgSend_path(lCopy, v24, v25);
         v30 = objc_msgSend_archiveLength(v14, v28, v29);
-        v33 = objc_msgSend_archiveLength(v10, v31, v32);
+        v33 = objc_msgSend_archiveLength(writerCopy, v31, v32);
         *buf = 138412802;
         v37 = v27;
         v38 = 2048;
@@ -395,13 +395,13 @@ LABEL_18:
   [(BUZipFileArchive *)&v6 dealloc];
 }
 
-- (void)createTemporaryDirectoryRelativeToURL:(id)a3
+- (void)createTemporaryDirectoryRelativeToURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   if (!self->_temporaryDirectoryURL)
   {
-    v20 = v4;
-    if (!v4 || (objc_msgSend_defaultManager(MEMORY[0x277CCAA00], v5, v6), v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend_URLForDirectory_inDomain_appropriateForURL_create_error_(v7, v8, 99, 1, v20, 1, 0), v9 = objc_claimAutoreleasedReturnValue(), v10 = self->_temporaryDirectoryURL, self->_temporaryDirectoryURL = v9, v10, v7, v4 = v20, !self->_temporaryDirectoryURL))
+    v20 = lCopy;
+    if (!lCopy || (objc_msgSend_defaultManager(MEMORY[0x277CCAA00], v5, v6), v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend_URLForDirectory_inDomain_appropriateForURL_create_error_(v7, v8, 99, 1, v20, 1, 0), v9 = objc_claimAutoreleasedReturnValue(), v10 = self->_temporaryDirectoryURL, self->_temporaryDirectoryURL = v9, v10, v7, lCopy = v20, !self->_temporaryDirectoryURL))
     {
       v11 = [BUTemporaryDirectory alloc];
       v13 = objc_msgSend_initWithSignature_error_(v11, v12, @"ZipFile", 0);
@@ -410,7 +410,7 @@ LABEL_18:
       temporaryDirectoryURL = self->_temporaryDirectoryURL;
       self->_temporaryDirectoryURL = v18;
 
-      v4 = v20;
+      lCopy = v20;
     }
   }
 }
@@ -439,7 +439,7 @@ LABEL_18:
   }
 }
 
-- (BOOL)reopenWithTemporaryURL:(id)a3 error:(id *)a4
+- (BOOL)reopenWithTemporaryURL:(id)l error:(id *)error
 {
   archiveLength = self->_archiveLength;
   fdWrapper = self->_fdWrapper;
@@ -447,9 +447,9 @@ LABEL_18:
   self->_archiveLength = 0;
   v10 = self->_fdWrapper;
   self->_fdWrapper = 0;
-  v11 = a3;
+  lCopy = l;
 
-  v13 = objc_msgSend_openWithURL_error_(self, v12, v11, a4);
+  v13 = objc_msgSend_openWithURL_error_(self, v12, lCopy, error);
   if ((v13 & 1) == 0)
   {
     self->_archiveLength = archiveLength;
@@ -459,9 +459,9 @@ LABEL_18:
   return v13;
 }
 
-- (BOOL)copyToTemporaryLocationRelativeToURL:(id)a3 error:(id *)a4
+- (BOOL)copyToTemporaryLocationRelativeToURL:(id)l error:(id *)error
 {
-  v6 = a3;
+  lCopy = l;
   v28 = 0;
   v29 = &v28;
   v30 = 0x2020000000;
@@ -477,24 +477,24 @@ LABEL_18:
   v15 = 3221225472;
   v16 = sub_241DB8D60;
   v17 = &unk_278D1D460;
-  v18 = self;
-  v8 = v6;
+  selfCopy = self;
+  v8 = lCopy;
   v19 = v8;
   v20 = &v22;
   v21 = &v28;
   dispatch_sync(accessQueue, &v14);
-  if (a4 && (v29[3] & 1) == 0)
+  if (error && (v29[3] & 1) == 0)
   {
     v10 = v23[5];
     if (v10)
     {
-      *a4 = v10;
+      *error = v10;
     }
 
     else
     {
-      v11 = objc_msgSend_bu_fileReadUnknownErrorWithUserInfo_(MEMORY[0x277CCA9B8], v9, 0, v14, v15, v16, v17, v18);
-      *a4 = v11;
+      v11 = objc_msgSend_bu_fileReadUnknownErrorWithUserInfo_(MEMORY[0x277CCA9B8], v9, 0, v14, v15, v16, v17, selfCopy);
+      *error = v11;
     }
   }
 
@@ -584,11 +584,11 @@ LABEL_18:
   return v13;
 }
 
-+ (BOOL)extractArchiveFromURL:(id)a3 toURL:(id)a4 options:(unint64_t)a5 error:(id *)a6
++ (BOOL)extractArchiveFromURL:(id)l toURL:(id)rL options:(unint64_t)options error:(id *)error
 {
-  v9 = a4;
+  rLCopy = rL;
   v20 = 0;
-  v11 = objc_msgSend_zipArchiveFromURL_options_error_(BUZipFileArchive, v10, a3, a5, &v20);
+  v11 = objc_msgSend_zipArchiveFromURL_options_error_(BUZipFileArchive, v10, l, options, &v20);
   v12 = v20;
   if (v11)
   {
@@ -604,7 +604,7 @@ LABEL_18:
   {
     v15 = v12;
     v16 = 0;
-    if (!a6)
+    if (!error)
     {
       goto LABEL_9;
     }
@@ -613,13 +613,13 @@ LABEL_18:
   }
 
   v19 = 0;
-  v16 = objc_msgSend_extractToURL_error_(v11, v13, v9, &v19);
+  v16 = objc_msgSend_extractToURL_error_(v11, v13, rLCopy, &v19);
   v15 = v19;
-  if (a6)
+  if (error)
   {
 LABEL_8:
     v17 = v15;
-    *a6 = v15;
+    *error = v15;
   }
 
 LABEL_9:

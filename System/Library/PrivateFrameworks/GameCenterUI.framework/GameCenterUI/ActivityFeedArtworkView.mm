@@ -1,15 +1,15 @@
 @interface ActivityFeedArtworkView
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (NSString)accessibilityLabel;
 - (void)layoutSubviews;
-- (void)setAccessibilityLabel:(id)a3;
+- (void)setAccessibilityLabel:(id)label;
 @end
 
 @implementation ActivityFeedArtworkView
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v3 = self;
+  selfCopy = self;
   v4 = sub_24E17E520();
   v6 = v5;
 
@@ -22,13 +22,13 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_24E17E6A0();
 }
 
 - (NSString)accessibilityLabel
 {
-  v2 = self;
+  selfCopy = self;
   sub_24E17F120();
   v4 = v3;
 
@@ -45,9 +45,9 @@
   return v5;
 }
 
-- (void)setAccessibilityLabel:(id)a3
+- (void)setAccessibilityLabel:(id)label
 {
-  if (a3)
+  if (label)
   {
     v4 = sub_24E347CF8();
     v6 = v5;
@@ -59,7 +59,7 @@
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   sub_24E018BB0(v4, v6);
 }
 

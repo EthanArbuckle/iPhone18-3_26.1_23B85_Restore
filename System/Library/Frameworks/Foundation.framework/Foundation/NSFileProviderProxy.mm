@@ -1,32 +1,32 @@
 @interface NSFileProviderProxy
-- (BOOL)allowedForURL:(id)a3;
-- (NSFileProviderProxy)initWithClient:(id)a3 remoteProvider:(id)a4 reactorID:(id)a5 secureID:(id)a6 uniqueID:(id)a7;
-- (id)provideItemAtURL:(id)a3 withOptions:(unint64_t)a4 forAccessClaim:(id)a5 completionHandler:(id)a6;
-- (id)provideItemForKernelRequestWithInfo:(id)a3 atURL:(id)a4 forProcess:(id *)a5 withOptions:(unint64_t)a6 completionHandler:(id)a7;
+- (BOOL)allowedForURL:(id)l;
+- (NSFileProviderProxy)initWithClient:(id)client remoteProvider:(id)provider reactorID:(id)d secureID:(id)iD uniqueID:(id)uniqueID;
+- (id)provideItemAtURL:(id)l withOptions:(unint64_t)options forAccessClaim:(id)claim completionHandler:(id)handler;
+- (id)provideItemForKernelRequestWithInfo:(id)info atURL:(id)l forProcess:(id *)process withOptions:(unint64_t)options completionHandler:(id)handler;
 - (void)dealloc;
-- (void)forwardUsingProxy:(id)a3;
+- (void)forwardUsingProxy:(id)proxy;
 - (void)invalidate;
-- (void)movingItemAtURL:(id)a3 requiresProvidingWithDestinationDirectoryURL:(id)a4 newFileName:(id)a5 completionHandler:(id)a6;
-- (void)observeEndOfWriteAtLocation:(id)a3 forAccessClaim:(id)a4;
-- (void)observePresentationChangeOfKind:(id)a3 withPresenter:(id)a4 url:(id)a5 newURL:(id)a6;
-- (void)provideLogicalURLForURL:(id)a3 completionHandler:(id)a4;
-- (void)providePhysicalURLForURL:(id)a3 completionHandler:(id)a4;
-- (void)setItemLocation:(id)a3;
+- (void)movingItemAtURL:(id)l requiresProvidingWithDestinationDirectoryURL:(id)rL newFileName:(id)name completionHandler:(id)handler;
+- (void)observeEndOfWriteAtLocation:(id)location forAccessClaim:(id)claim;
+- (void)observePresentationChangeOfKind:(id)kind withPresenter:(id)presenter url:(id)url newURL:(id)l;
+- (void)provideLogicalURLForURL:(id)l completionHandler:(id)handler;
+- (void)providePhysicalURLForURL:(id)l completionHandler:(id)handler;
+- (void)setItemLocation:(id)location;
 @end
 
 @implementation NSFileProviderProxy
 
-- (NSFileProviderProxy)initWithClient:(id)a3 remoteProvider:(id)a4 reactorID:(id)a5 secureID:(id)a6 uniqueID:(id)a7
+- (NSFileProviderProxy)initWithClient:(id)client remoteProvider:(id)provider reactorID:(id)d secureID:(id)iD uniqueID:(id)uniqueID
 {
   v13 = *MEMORY[0x1E69E9840];
   v12.receiver = self;
   v12.super_class = NSFileProviderProxy;
-  v10 = [(NSFileReactorProxy *)&v12 initWithClient:a3 reactorID:a5];
+  v10 = [(NSFileReactorProxy *)&v12 initWithClient:client reactorID:d];
   if (v10)
   {
-    v10->_remoteProvider = a4;
-    v10->_uniqueID = [a7 copy];
-    v10->_secureID = [a6 copy];
+    v10->_remoteProvider = provider;
+    v10->_uniqueID = [uniqueID copy];
+    v10->_secureID = [iD copy];
   }
 
   return v10;
@@ -41,11 +41,11 @@
   [(NSFileReactorProxy *)&v3 dealloc];
 }
 
-- (void)setItemLocation:(id)a3
+- (void)setItemLocation:(id)location
 {
   v10 = *MEMORY[0x1E69E9840];
   itemLocation = self->super._itemLocation;
-  if (a3 && itemLocation)
+  if (location && itemLocation)
   {
     v6 = _NSFCProviderLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -62,17 +62,17 @@
       [(NSFileAccessNode *)itemLocation forEachPresenterOfItemOrContainedItemPerformProcedure:&__block_literal_global_205_0];
     }
 
-    v7 = self;
+    selfCopy = self;
     [(NSFileAccessNode *)self->super._itemLocation removeProvider:self];
-    if ([a3 setProvider:self])
+    if ([location setProvider:self])
     {
-      self->super._itemLocation = a3;
+      self->super._itemLocation = location;
       v8[0] = MEMORY[0x1E69E9820];
       v8[1] = 3221225472;
       v8[2] = __39__NSFileProviderProxy_setItemLocation___block_invoke_2;
       v8[3] = &unk_1E69F9008;
       v8[4] = self;
-      [a3 forEachPresenterOfItemOrContainedItemPerformProcedure:v8];
+      [location forEachPresenterOfItemOrContainedItemPerformProcedure:v8];
     }
 
     else
@@ -90,7 +90,7 @@ uint64_t __39__NSFileProviderProxy_setItemLocation___block_invoke_2(uint64_t a1,
   return [a2 observeNewProvider:v4];
 }
 
-- (void)forwardUsingProxy:(id)a3
+- (void)forwardUsingProxy:(id)proxy
 {
   forwardedMessenger = self->_forwardedMessenger;
   if (!forwardedMessenger)
@@ -99,7 +99,7 @@ uint64_t __39__NSFileProviderProxy_setItemLocation___block_invoke_2(uint64_t a1,
     self->_forwardedMessenger = forwardedMessenger;
   }
 
-  [a3 addProvider:forwardedMessenger withID:self->super._reactorID uniqueID:self->_uniqueID forProvidedItemsURL:-[NSFileAccessNode url](self->super._itemLocation options:"url") withServer:0 reply:{0, &__block_literal_global_209}];
+  [proxy addProvider:forwardedMessenger withID:self->super._reactorID uniqueID:self->_uniqueID forProvidedItemsURL:-[NSFileAccessNode url](self->super._itemLocation options:"url") withServer:0 reply:{0, &__block_literal_global_209}];
 }
 
 - (void)invalidate
@@ -109,10 +109,10 @@ uint64_t __39__NSFileProviderProxy_setItemLocation___block_invoke_2(uint64_t a1,
   self->_forwardedMessenger = 0;
 }
 
-- (BOOL)allowedForURL:(id)a3
+- (BOOL)allowedForURL:(id)l
 {
   v22 = *MEMORY[0x1E69E9840];
-  if ([a3 isFileURL])
+  if ([l isFileURL])
   {
     *v20 = 0;
     *&v20[8] = v20;
@@ -120,10 +120,10 @@ uint64_t __39__NSFileProviderProxy_setItemLocation___block_invoke_2(uint64_t a1,
     v21 = 0;
     v18 = 0u;
     v19 = 0u;
-    v5 = [(NSFileReactorProxy *)self client];
-    if (v5)
+    client = [(NSFileReactorProxy *)self client];
+    if (client)
     {
-      [v5 auditToken];
+      [client auditToken];
     }
 
     else
@@ -147,7 +147,7 @@ uint64_t __39__NSFileProviderProxy_setItemLocation___block_invoke_2(uint64_t a1,
       v14[2] = __37__NSFileProviderProxy_allowedForURL___block_invoke;
       v14[3] = &unk_1E69F96B8;
       v14[4] = v20;
-      [NSFileReactorProxy _enumerateParentDirectoriesStartingAtURL:a3 usingBlock:v14];
+      [NSFileReactorProxy _enumerateParentDirectoriesStartingAtURL:l usingBlock:v14];
       if ((*(*&v20[8] + 24) & 1) == 0)
       {
         v9 = _NSFCPresenterLog();
@@ -155,13 +155,13 @@ uint64_t __39__NSFileProviderProxy_setItemLocation___block_invoke_2(uint64_t a1,
         {
           reactorID = self->super._reactorID;
           v11 = [-[NSFileReactorProxy client](self "client")];
-          v12 = [a3 path];
+          path = [l path];
           *buf = 138543875;
           *&buf[4] = reactorID;
           *&buf[12] = 1024;
           *&buf[14] = v11;
           *&buf[18] = 2113;
-          *&buf[20] = v12;
+          *&buf[20] = path;
           _os_log_impl(&dword_18075C000, v9, OS_LOG_TYPE_DEFAULT, "Registering provider %{public}@ disallowed. Process %d is not allowed to access the requested path or any of its parent directories: %{private}@", buf, 0x1Cu);
         }
       }
@@ -179,7 +179,7 @@ uint64_t __39__NSFileProviderProxy_setItemLocation___block_invoke_2(uint64_t a1,
       *v20 = 138543619;
       *&v20[4] = self;
       *&v20[12] = 2113;
-      *&v20[14] = a3;
+      *&v20[14] = l;
       _os_log_error_impl(&dword_18075C000, v6, OS_LOG_TYPE_ERROR, "Registering provider %{public}@ disallowed. Only file URLs are allowed, unlike this one: %{private}@", v20, 0x16u);
     }
 
@@ -209,14 +209,14 @@ uint64_t __37__NSFileProviderProxy_allowedForURL___block_invoke(uint64_t a1, voi
   return result;
 }
 
-- (id)provideItemAtURL:(id)a3 withOptions:(unint64_t)a4 forAccessClaim:(id)a5 completionHandler:(id)a6
+- (id)provideItemAtURL:(id)l withOptions:(unint64_t)options forAccessClaim:(id)claim completionHandler:(id)handler
 {
   v24 = *MEMORY[0x1E69E9840];
-  v11 = [a5 claimID];
-  v12 = [a5 client];
-  if (v12)
+  claimID = [claim claimID];
+  client = [claim client];
+  if (client)
   {
-    [v12 auditToken];
+    [client auditToken];
   }
 
   else
@@ -224,14 +224,14 @@ uint64_t __37__NSFileProviderProxy_allowedForURL___block_invoke(uint64_t a1, voi
     memset(buf, 0, 32);
   }
 
-  v13 = [NSFileProvidingInfo infoWithReaderID:v11 options:a4 auditToken:buf kernelMaterializationInfo:0];
+  v13 = [NSFileProvidingInfo infoWithReaderID:claimID options:options auditToken:buf kernelMaterializationInfo:0];
   v14 = _NSFCProviderLog();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
-    v15 = [a5 claimID];
+    claimID2 = [claim claimID];
     reactorID = self->super._reactorID;
     *buf = 138543618;
-    *&buf[4] = v15;
+    *&buf[4] = claimID2;
     *&buf[12] = 2114;
     *&buf[14] = reactorID;
     _os_log_impl(&dword_18075C000, v14, OS_LOG_TYPE_DEFAULT, "%{public}@ asking provider %{public}@ to provide", buf, 0x16u);
@@ -242,24 +242,24 @@ uint64_t __37__NSFileProviderProxy_allowedForURL___block_invoke(uint64_t a1, voi
   v22[1] = 3221225472;
   v22[2] = __85__NSFileProviderProxy_provideItemAtURL_withOptions_forAccessClaim_completionHandler___block_invoke;
   v22[3] = &unk_1E69F9838;
-  v22[4] = a3;
-  v22[5] = a6;
+  v22[4] = l;
+  v22[5] = handler;
   v18 = [(NSFileProviderXPCInterface *)remoteProvider remoteObjectProxyWithErrorHandler:v22];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __85__NSFileProviderProxy_provideItemAtURL_withOptions_forAccessClaim_completionHandler___block_invoke_226;
   v21[3] = &unk_1E69F9860;
   v21[4] = self;
-  v21[5] = a5;
-  v21[6] = a6;
-  [v18 provideItemAtURL:a3 withInfo:v13 completionHandler:v21];
+  v21[5] = claim;
+  v21[6] = handler;
+  [v18 provideItemAtURL:l withInfo:v13 completionHandler:v21];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __85__NSFileProviderProxy_provideItemAtURL_withOptions_forAccessClaim_completionHandler___block_invoke_228;
   v20[3] = &unk_1E69F68D8;
-  v20[4] = a5;
+  v20[4] = claim;
   v20[5] = self;
-  v20[6] = a3;
+  v20[6] = l;
   return [v20 copy];
 }
 
@@ -317,14 +317,14 @@ uint64_t __85__NSFileProviderProxy_provideItemAtURL_withOptions_forAccessClaim_c
   return [*(*(a1 + 40) + 56) cancelProvidingItemAtURL:*(a1 + 48) forClaimWithID:{objc_msgSend(*(a1 + 32), "claimID")}];
 }
 
-- (id)provideItemForKernelRequestWithInfo:(id)a3 atURL:(id)a4 forProcess:(id *)a5 withOptions:(unint64_t)a6 completionHandler:(id)a7
+- (id)provideItemForKernelRequestWithInfo:(id)info atURL:(id)l forProcess:(id *)process withOptions:(unint64_t)options completionHandler:(id)handler
 {
   v25 = *MEMORY[0x1E69E9840];
-  v13 = [+[NSUUID UUID](NSUUID UUIDString];
-  v14 = *&a5->var0[4];
-  *buf = *a5->var0;
+  uUIDString = [+[NSUUID UUID](NSUUID UUIDString];
+  v14 = *&process->var0[4];
+  *buf = *process->var0;
   *&buf[16] = v14;
-  v15 = [NSFileProvidingInfo infoWithReaderID:v13 options:a6 auditToken:buf kernelMaterializationInfo:a3];
+  v15 = [NSFileProvidingInfo infoWithReaderID:uUIDString options:options auditToken:buf kernelMaterializationInfo:info];
   v16 = _NSFCProviderLog();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
@@ -332,7 +332,7 @@ uint64_t __85__NSFileProviderProxy_provideItemAtURL_withOptions_forAccessClaim_c
     *buf = 138543619;
     *&buf[4] = reactorID;
     *&buf[12] = 2113;
-    *&buf[14] = a4;
+    *&buf[14] = l;
     _os_log_impl(&dword_18075C000, v16, OS_LOG_TYPE_DEFAULT, "Kernel asking provider %{public}@ to provide %{private}@", buf, 0x16u);
   }
 
@@ -341,22 +341,22 @@ uint64_t __85__NSFileProviderProxy_provideItemAtURL_withOptions_forAccessClaim_c
   v23[1] = 3221225472;
   v23[2] = __106__NSFileProviderProxy_provideItemForKernelRequestWithInfo_atURL_forProcess_withOptions_completionHandler___block_invoke;
   v23[3] = &unk_1E69F3938;
-  v23[4] = a7;
+  v23[4] = handler;
   v19 = [(NSFileProviderXPCInterface *)remoteProvider remoteObjectProxyWithErrorHandler:v23];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __106__NSFileProviderProxy_provideItemForKernelRequestWithInfo_atURL_forProcess_withOptions_completionHandler___block_invoke_230;
   v22[3] = &unk_1E69F9888;
   v22[4] = self;
-  v22[5] = a7;
-  [v19 provideItemAtURL:a4 withInfo:v15 completionHandler:v22];
+  v22[5] = handler;
+  [v19 provideItemAtURL:l withInfo:v15 completionHandler:v22];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __106__NSFileProviderProxy_provideItemForKernelRequestWithInfo_atURL_forProcess_withOptions_completionHandler___block_invoke_231;
   v21[3] = &unk_1E69F68D8;
-  v21[4] = v13;
+  v21[4] = uUIDString;
   v21[5] = self;
-  v21[6] = a4;
+  v21[6] = l;
   return [v21 copy];
 }
 
@@ -409,7 +409,7 @@ uint64_t __106__NSFileProviderProxy_provideItemForKernelRequestWithInfo_atURL_fo
   return [*(a1[5] + 56) cancelProvidingItemAtURL:a1[6] forClaimWithID:a1[4]];
 }
 
-- (void)providePhysicalURLForURL:(id)a3 completionHandler:(id)a4
+- (void)providePhysicalURLForURL:(id)l completionHandler:(id)handler
 {
   v15 = *MEMORY[0x1E69E9840];
   v7 = _NSFCProviderLog();
@@ -426,15 +426,15 @@ uint64_t __106__NSFileProviderProxy_provideItemForKernelRequestWithInfo_atURL_fo
   v12[1] = 3221225472;
   v12[2] = __66__NSFileProviderProxy_providePhysicalURLForURL_completionHandler___block_invoke;
   v12[3] = &unk_1E69F3938;
-  v12[4] = a4;
+  v12[4] = handler;
   v10 = [(NSFileProviderXPCInterface *)remoteProvider remoteObjectProxyWithErrorHandler:v12];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __66__NSFileProviderProxy_providePhysicalURLForURL_completionHandler___block_invoke_235;
   v11[3] = &unk_1E69F84D8;
   v11[4] = self;
-  v11[5] = a4;
-  [v10 providePhysicalItemForURL:a3 completionHandler:v11];
+  v11[5] = handler;
+  [v10 providePhysicalItemForURL:l completionHandler:v11];
 }
 
 uint64_t __66__NSFileProviderProxy_providePhysicalURLForURL_completionHandler___block_invoke(uint64_t a1, uint64_t a2)
@@ -468,11 +468,11 @@ uint64_t __66__NSFileProviderProxy_providePhysicalURLForURL_completionHandler___
   return (*(*(a1 + 40) + 16))();
 }
 
-- (void)provideLogicalURLForURL:(id)a3 completionHandler:(id)a4
+- (void)provideLogicalURLForURL:(id)l completionHandler:(id)handler
 {
   if (!_CFURLIsItemPromiseAtURL())
   {
-    v7 = [NSURLPromisePair pairWithLogicalURL:a3 physicalURL:0];
+    v7 = [NSURLPromisePair pairWithLogicalURL:l physicalURL:0];
     goto LABEL_5;
   }
 
@@ -487,29 +487,29 @@ LABEL_5:
 
   v8 = 0;
 LABEL_7:
-  v9 = *(a4 + 2);
+  v9 = *(handler + 2);
 
-  v9(a4, v8);
+  v9(handler, v8);
 }
 
-- (void)observePresentationChangeOfKind:(id)a3 withPresenter:(id)a4 url:(id)a5 newURL:(id)a6
+- (void)observePresentationChangeOfKind:(id)kind withPresenter:(id)presenter url:(id)url newURL:(id)l
 {
   v18 = *MEMORY[0x1E69E9840];
-  if ([a3 isEqualToString:@"added"])
+  if ([kind isEqualToString:@"added"])
   {
-    v11 = [a4 observedUbiquityAttributes];
+    observedUbiquityAttributes = [presenter observedUbiquityAttributes];
   }
 
   else
   {
-    v11 = 0;
+    observedUbiquityAttributes = 0;
   }
 
-  v12 = [a4 reactorID];
-  v13 = [a4 client];
-  if (v13)
+  reactorID = [presenter reactorID];
+  client = [presenter client];
+  if (client)
   {
-    [v13 auditToken];
+    [client auditToken];
   }
 
   else
@@ -518,33 +518,33 @@ LABEL_7:
     v17 = 0u;
   }
 
-  v14 = [NSFileProviderPresenterInfo infoWithPresenterID:v12 auditToken:&v16 observedUbiquityAttributes:v11];
+  v14 = [NSFileProviderPresenterInfo infoWithPresenterID:reactorID auditToken:&v16 observedUbiquityAttributes:observedUbiquityAttributes];
   v15 = v14;
-  if (a6)
+  if (l)
   {
-    [(NSFileProviderPresenterInfo *)v14 setChangedURL:a6];
+    [(NSFileProviderPresenterInfo *)v14 setChangedURL:l];
   }
 
-  [(NSFileProviderXPCInterface *)self->_remoteProvider observePresentationChangeOfKind:a3 forPresenterOfURL:a5 withInfo:v15, v16, v17];
+  [(NSFileProviderXPCInterface *)self->_remoteProvider observePresentationChangeOfKind:kind forPresenterOfURL:url withInfo:v15, v16, v17];
 }
 
-- (void)observeEndOfWriteAtLocation:(id)a3 forAccessClaim:(id)a4
+- (void)observeEndOfWriteAtLocation:(id)location forAccessClaim:(id)claim
 {
-  if (self->_wantsWriteNotifications && ([objc_msgSend(a4 "purposeID")] & 1) == 0)
+  if (self->_wantsWriteNotifications && ([objc_msgSend(claim "purposeID")] & 1) == 0)
   {
-    v7 = [a3 standardizedURL];
-    v8 = [a4 claimID];
-    v9 = [a4 clientProcessIdentifier];
+    standardizedURL = [location standardizedURL];
+    claimID = [claim claimID];
+    clientProcessIdentifier = [claim clientProcessIdentifier];
     remoteProvider = self->_remoteProvider;
 
-    [(NSFileProviderXPCInterface *)remoteProvider observeEndOfWriteAtURL:v7 forClaimWithID:v8 fromProcessWithIdentifier:v9];
+    [(NSFileProviderXPCInterface *)remoteProvider observeEndOfWriteAtURL:standardizedURL forClaimWithID:claimID fromProcessWithIdentifier:clientProcessIdentifier];
   }
 }
 
-- (void)movingItemAtURL:(id)a3 requiresProvidingWithDestinationDirectoryURL:(id)a4 newFileName:(id)a5 completionHandler:(id)a6
+- (void)movingItemAtURL:(id)l requiresProvidingWithDestinationDirectoryURL:(id)rL newFileName:(id)name completionHandler:(id)handler
 {
   v17 = *MEMORY[0x1E69E9840];
-  v10 = [NSFileProviderMovingInfo infoWithDestinationDirectoryURL:a4];
+  v10 = [NSFileProviderMovingInfo infoWithDestinationDirectoryURL:rL];
   v11 = _NSFCProviderLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -560,8 +560,8 @@ LABEL_7:
   v14[2] = __114__NSFileProviderProxy_movingItemAtURL_requiresProvidingWithDestinationDirectoryURL_newFileName_completionHandler___block_invoke;
   v14[3] = &unk_1E69F98B0;
   v14[4] = self;
-  v14[5] = a6;
-  [(NSFileProviderXPCInterface *)remoteProvider movingItemAtURL:a3 withInfo:v10 fileName:a5 completionHandler:v14];
+  v14[5] = handler;
+  [(NSFileProviderXPCInterface *)remoteProvider movingItemAtURL:l withInfo:v10 fileName:name completionHandler:v14];
 }
 
 uint64_t __114__NSFileProviderProxy_movingItemAtURL_requiresProvidingWithDestinationDirectoryURL_newFileName_completionHandler___block_invoke(uint64_t a1, uint64_t a2)

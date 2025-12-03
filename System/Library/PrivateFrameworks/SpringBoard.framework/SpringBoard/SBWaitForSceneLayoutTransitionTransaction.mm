@@ -1,21 +1,21 @@
 @interface SBWaitForSceneLayoutTransitionTransaction
-- (SBWaitForSceneLayoutTransitionTransaction)initWithSceneLayoutTransitionCoordinator:(id)a3;
+- (SBWaitForSceneLayoutTransitionTransaction)initWithSceneLayoutTransitionCoordinator:(id)coordinator;
 - (void)_begin;
 - (void)dealloc;
 @end
 
 @implementation SBWaitForSceneLayoutTransitionTransaction
 
-- (SBWaitForSceneLayoutTransitionTransaction)initWithSceneLayoutTransitionCoordinator:(id)a3
+- (SBWaitForSceneLayoutTransitionTransaction)initWithSceneLayoutTransitionCoordinator:(id)coordinator
 {
-  v5 = a3;
+  coordinatorCopy = coordinator;
   v9.receiver = self;
   v9.super_class = SBWaitForSceneLayoutTransitionTransaction;
   v6 = [(SBTransaction *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_transitionCoordinator, a3);
+    objc_storeStrong(&v6->_transitionCoordinator, coordinator);
     [(SBLayoutStateTransitionCoordinator *)v7->_transitionCoordinator addObserver:v7];
   }
 

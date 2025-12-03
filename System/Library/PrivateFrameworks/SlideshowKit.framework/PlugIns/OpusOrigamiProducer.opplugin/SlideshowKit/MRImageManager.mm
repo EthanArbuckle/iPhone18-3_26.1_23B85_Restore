@@ -1,27 +1,27 @@
 @interface MRImageManager
 + (void)cleanupPictureCache;
 + (void)initialize;
-- (CGImage)CGImageWithData:(id)a3 withOriginalSize:(CGSize)a4 forSize:(CGSize)a5 orientation:(char *)a6;
-- (CGImage)CGImageWithMoviePath:(id)a3 withOriginalSize:(CGSize)a4 forSize:(CGSize)a5 atTime:(double)a6 orientation:(char *)a7;
-- (CGImage)CGImageWithPath:(id)a3 withOriginalSize:(CGSize)a4 forSize:(CGSize)a5 orientation:(char *)a6;
-- (MRImageManager)initWithBaseContext:(id)a3;
-- (id)_lockedMasterForAssetAtPath:(id)a3 withOptions:(id)a4;
-- (id)_textureWithSize:(id)a3 isFBO:(BOOL)a4 options:(id *)a5;
-- (id)optimizedPath:(id)a3 forSize:(CGSize)a4;
-- (id)retainedByUserImageWithCGContext:(CGContext *)a3;
-- (id)retainedByUserImageWithSize:(CGSize)a3 andColor:(const float *)a4;
-- (id)retainedByUserPlayerForAssetAtPath:(id)a3 size:(CGSize)a4 andOptions:(id)a5;
-- (id)retainedByUserThumbnailForAssetAtPath:(id)a3;
+- (CGImage)CGImageWithData:(id)data withOriginalSize:(CGSize)size forSize:(CGSize)forSize orientation:(char *)orientation;
+- (CGImage)CGImageWithMoviePath:(id)path withOriginalSize:(CGSize)size forSize:(CGSize)forSize atTime:(double)time orientation:(char *)orientation;
+- (CGImage)CGImageWithPath:(id)path withOriginalSize:(CGSize)size forSize:(CGSize)forSize orientation:(char *)orientation;
+- (MRImageManager)initWithBaseContext:(id)context;
+- (id)_lockedMasterForAssetAtPath:(id)path withOptions:(id)options;
+- (id)_textureWithSize:(id)size isFBO:(BOOL)o options:(id *)options;
+- (id)optimizedPath:(id)path forSize:(CGSize)size;
+- (id)retainedByUserImageWithCGContext:(CGContext *)context;
+- (id)retainedByUserImageWithSize:(CGSize)size andColor:(const float *)color;
+- (id)retainedByUserPlayerForAssetAtPath:(id)path size:(CGSize)size andOptions:(id)options;
+- (id)retainedByUserThumbnailForAssetAtPath:(id)path;
 - (void)dealloc;
-- (void)purgeResources:(BOOL)a3;
-- (void)recycleTexture:(id)a3;
+- (void)purgeResources:(BOOL)resources;
+- (void)recycleTexture:(id)texture;
 @end
 
 @implementation MRImageManager
 
 + (void)initialize
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___MRImageManager;
   objc_msgSendSuper2(&v2, "initialize");
   if ((byte_1EF2A0 & 1) == 0)
@@ -31,7 +31,7 @@
   }
 }
 
-- (MRImageManager)initWithBaseContext:(id)a3
+- (MRImageManager)initWithBaseContext:(id)context
 {
   v7.receiver = self;
   v7.super_class = MRImageManager;
@@ -39,8 +39,8 @@
   v5 = v4;
   if (v4)
   {
-    v4->mBaseContext = a3;
-    v4->mImageGLContext = [[EAGLContext alloc] initWithAPI:2 sharegroup:{objc_msgSend(objc_msgSend(a3, "glContext"), "sharegroup")}];
+    v4->mBaseContext = context;
+    v4->mImageGLContext = [[EAGLContext alloc] initWithAPI:2 sharegroup:{objc_msgSend(objc_msgSend(context, "glContext"), "sharegroup")}];
     v5->mTextures = objc_alloc_init(NSMutableDictionary);
     v5->mAvailableTextures = objc_alloc_init(NSMutableSet);
     v5->mRecyclableTextures = objc_alloc_init(NSMutableSet);
@@ -70,17 +70,17 @@
   [(MRImageManager *)&v4 dealloc];
 }
 
-- (void)purgeResources:(BOOL)a3
+- (void)purgeResources:(BOOL)resources
 {
-  v3 = a3;
+  resourcesCopy = resources;
   assetMasters = self->_assetMasters;
   objc_sync_enter(assetMasters);
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v6 = [(NSMutableDictionary *)self->_assetMasters objectEnumerator];
-  v7 = [v6 countByEnumeratingWithState:&v37 objects:v43 count:16];
+  objectEnumerator = [(NSMutableDictionary *)self->_assetMasters objectEnumerator];
+  v7 = [objectEnumerator countByEnumeratingWithState:&v37 objects:v43 count:16];
   if (v7)
   {
     v8 = 0;
@@ -91,7 +91,7 @@
       {
         if (*v38 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v11 = *(*(&v37 + 1) + 8 * i);
@@ -106,7 +106,7 @@
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v37 objects:v43 count:16];
+      v7 = [objectEnumerator countByEnumeratingWithState:&v37 objects:v43 count:16];
     }
 
     while (v7);
@@ -118,7 +118,7 @@
 
   objc_sync_exit(assetMasters);
   objc_sync_enter(self);
-  if (v3)
+  if (resourcesCopy)
   {
     [(NSMutableSet *)self->mAvailableTextures removeAllObjects];
     [(NSMutableSet *)self->mRecyclableTextures removeAllObjects];
@@ -159,9 +159,9 @@
             {
               v20 = [v17 size];
               v21 = [v17 size];
-              v22 = [v17 pixelFormat];
+              pixelFormat = [v17 pixelFormat];
               v23 = 4;
-              if (v22 == 40)
+              if (pixelFormat == 40)
               {
                 v23 = 1;
               }
@@ -217,17 +217,17 @@
   objc_sync_exit(self);
 }
 
-- (id)_textureWithSize:(id)a3 isFBO:(BOOL)a4 options:(id *)a5
+- (id)_textureWithSize:(id)size isFBO:(BOOL)o options:(id *)options
 {
-  v6 = a4;
-  if (a4)
+  oCopy = o;
+  if (o)
   {
-    v9 = [NSString stringWithFormat:@"f.%dx%d", a3, a3.var1, v23];
+    v9 = [NSString stringWithFormat:@"f.%dx%d", size, size.var1, v23];
   }
 
   else
   {
-    if (a5->var3)
+    if (options->var3)
     {
       v10 = 1;
     }
@@ -237,7 +237,7 @@
       v10 = 4;
     }
 
-    v9 = [NSString stringWithFormat:@"t.%dx%dx%d", a3, a3.var1, v10];
+    v9 = [NSString stringWithFormat:@"t.%dx%dx%d", size, size.var1, v10];
   }
 
   v11 = v9;
@@ -253,21 +253,21 @@
 LABEL_21:
     v18 = [MRTexture alloc];
     mImageGLContext = self->mImageGLContext;
-    if (v6)
+    if (oCopy)
     {
-      v20 = [(MRTexture *)v18 initFBOWithSize:a3 inGLContext:mImageGLContext options:a5];
+      v20 = [(MRTexture *)v18 initFBOWithSize:size inGLContext:mImageGLContext options:options];
     }
 
     else
     {
-      v20 = [(MRTexture *)v18 initWithSize:a3 inGLContext:mImageGLContext options:a5];
+      v20 = [(MRTexture *)v18 initWithSize:size inGLContext:mImageGLContext options:options];
     }
 
     v17 = v20;
     if (v20)
     {
       [(MRTexture *)v20 setIsShared:1];
-      if (v6)
+      if (oCopy)
       {
         v21 = @"Marimba FBO";
       }
@@ -334,25 +334,25 @@ LABEL_18:
   return v17;
 }
 
-- (void)recycleTexture:(id)a3
+- (void)recycleTexture:(id)texture
 {
   objc_sync_enter(self);
-  [(NSMutableSet *)self->mRecyclableTextures addObject:a3];
+  [(NSMutableSet *)self->mRecyclableTextures addObject:texture];
 
   objc_sync_exit(self);
 }
 
-- (id)_lockedMasterForAssetAtPath:(id)a3 withOptions:(id)a4
+- (id)_lockedMasterForAssetAtPath:(id)path withOptions:(id)options
 {
-  if (!a3)
+  if (!path)
   {
     return 0;
   }
 
   assetMasters = self->_assetMasters;
   objc_sync_enter(assetMasters);
-  v8 = [(NSMutableDictionary *)self->_assetMasters objectForKey:a3];
-  if (v8 || ((v9 = -[MRContext assetManager](self->mBaseContext, "assetManager"), v10 = [a4 isEmbeddedAsset], !v10) ? ((objc_msgSend(a3, "isEqualToString:", @"liveCamera") & 1) == 0 ? (-[MZMediaManagement resolutionForAssetAtPath:](v9, "resolutionForAssetAtPath:", a3), v12 = v16, v14 = v17) : (v14 = 720.0, v12 = 1280.0), v15 = -[MZMediaManagement isSupportedMovieForAssetAtPath:](v9, "isSupportedMovieForAssetAtPath:", a3)) : (objc_msgSend(a4, "resolutionIfEmbeddedAsset"), v12 = v11, v14 = v13, v15 = 0), v8 = -[MRAssetMaster initWithPath:originalSize:isEmbeddedAsset:isSupportedMovie:andImageManager:]([MRAssetMaster alloc], "initWithPath:originalSize:isEmbeddedAsset:isSupportedMovie:andImageManager:", a3, v10, v15, self, v12, v14), -[MRAssetMaster setTimestamp:](v8, "setTimestamp:", 0.0), -[NSMutableDictionary setObject:forKey:](self->_assetMasters, "setObject:forKey:", v8, a3), v8, v8))
+  v8 = [(NSMutableDictionary *)self->_assetMasters objectForKey:path];
+  if (v8 || ((v9 = -[MRContext assetManager](self->mBaseContext, "assetManager"), v10 = [options isEmbeddedAsset], !v10) ? ((objc_msgSend(path, "isEqualToString:", @"liveCamera") & 1) == 0 ? (-[MZMediaManagement resolutionForAssetAtPath:](v9, "resolutionForAssetAtPath:", path), v12 = v16, v14 = v17) : (v14 = 720.0, v12 = 1280.0), v15 = -[MZMediaManagement isSupportedMovieForAssetAtPath:](v9, "isSupportedMovieForAssetAtPath:", path)) : (objc_msgSend(options, "resolutionIfEmbeddedAsset"), v12 = v11, v14 = v13, v15 = 0), v8 = -[MRAssetMaster initWithPath:originalSize:isEmbeddedAsset:isSupportedMovie:andImageManager:]([MRAssetMaster alloc], "initWithPath:originalSize:isEmbeddedAsset:isSupportedMovie:andImageManager:", path, v10, v15, self, v12, v14), -[MRAssetMaster setTimestamp:](v8, "setTimestamp:", 0.0), -[NSMutableDictionary setObject:forKey:](self->_assetMasters, "setObject:forKey:", v8, path), v8, v8))
   {
     objc_sync_enter(v8);
   }
@@ -361,15 +361,15 @@ LABEL_18:
   return v8;
 }
 
-- (id)retainedByUserPlayerForAssetAtPath:(id)a3 size:(CGSize)a4 andOptions:(id)a5
+- (id)retainedByUserPlayerForAssetAtPath:(id)path size:(CGSize)size andOptions:(id)options
 {
-  if (!a3)
+  if (!path)
   {
     return 0;
   }
 
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v8 = [MRImageManager _lockedMasterForAssetAtPath:"_lockedMasterForAssetAtPath:withOptions:" withOptions:?];
   if (!v8)
   {
@@ -377,19 +377,19 @@ LABEL_18:
   }
 
   v9 = v8;
-  v10 = [v8 retainedByUserPlayerForSize:a5 andOptions:{width, height}];
+  v10 = [v8 retainedByUserPlayerForSize:options andOptions:{width, height}];
   objc_sync_exit(v9);
   return v10;
 }
 
-- (id)retainedByUserThumbnailForAssetAtPath:(id)a3
+- (id)retainedByUserThumbnailForAssetAtPath:(id)path
 {
-  if (!a3)
+  if (!path)
   {
     return 0;
   }
 
-  v3 = [(MRImageManager *)self _lockedMasterForAssetAtPath:a3 withOptions:0];
+  v3 = [(MRImageManager *)self _lockedMasterForAssetAtPath:path withOptions:0];
   if (!v3)
   {
     return 0;
@@ -401,27 +401,27 @@ LABEL_18:
   return v5;
 }
 
-- (id)retainedByUserImageWithCGContext:(CGContext *)a3
+- (id)retainedByUserImageWithCGContext:(CGContext *)context
 {
-  v4 = [[MRTextureSource alloc] initWithCGContext:a3 imageManager:self];
+  v4 = [[MRTextureSource alloc] initWithCGContext:context imageManager:self];
   v5 = [MRImage alloc];
-  Width = CGBitmapContextGetWidth(a3);
-  v7 = [(MRImage *)v5 initWithTextureSource:v4 andSize:Width, CGBitmapContextGetHeight(a3)];
+  Width = CGBitmapContextGetWidth(context);
+  v7 = [(MRImage *)v5 initWithTextureSource:v4 andSize:Width, CGBitmapContextGetHeight(context)];
 
   [(MRImage *)v7 setLabel:[NSString stringWithFormat:@"Marimba CGContext"]];
   return v7;
 }
 
-- (id)retainedByUserImageWithSize:(CGSize)a3 andColor:(const float *)a4
+- (id)retainedByUserImageWithSize:(CGSize)size andColor:(const float *)color
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = [[MRTextureSource alloc] initWithSize:a3.width | (a3.height << 32) andColor:a4 imageManager:self];
-  v8 = [[MRImage alloc] initWithTextureSource:v7 andSize:width, height];
+  height = size.height;
+  width = size.width;
+  v7 = [[MRTextureSource alloc] initWithSize:size.width | (size.height << 32) andColor:color imageManager:self];
+  height = [[MRImage alloc] initWithTextureSource:v7 andSize:width, height];
 
-  if (a4)
+  if (color)
   {
-    v9 = [NSString stringWithFormat:@"Marimba Color %.2f %.2f %.2f %.2f", *a4, a4[1], a4[2], a4[3]];
+    v9 = [NSString stringWithFormat:@"Marimba Color %.2f %.2f %.2f %.2f", *color, color[1], color[2], color[3]];
   }
 
   else
@@ -429,36 +429,36 @@ LABEL_18:
     v9 = [NSString stringWithFormat:@"Marimba", v11, v12, v13, v14];
   }
 
-  [(MRImage *)v8 setLabel:v9];
+  [(MRImage *)height setLabel:v9];
 
-  return v8;
+  return height;
 }
 
-- (id)optimizedPath:(id)a3 forSize:(CGSize)a4
+- (id)optimizedPath:(id)path forSize:(CGSize)size
 {
-  if (a4.width < a4.height)
+  if (size.width < size.height)
   {
-    a4.width = a4.height;
+    size.width = size.height;
   }
 
-  if (a4.width >= 361.984)
+  if (size.width >= 361.984)
   {
-    return a3;
+    return path;
   }
 
   else
   {
-    return [NSString stringWithValidatedFormat:a3 validFormatSpecifiers:@"%d" error:0, 256];
+    return [NSString stringWithValidatedFormat:path validFormatSpecifiers:@"%d" error:0, 256];
   }
 }
 
-- (CGImage)CGImageWithPath:(id)a3 withOriginalSize:(CGSize)a4 forSize:(CGSize)a5 orientation:(char *)a6
+- (CGImage)CGImageWithPath:(id)path withOriginalSize:(CGSize)size forSize:(CGSize)forSize orientation:(char *)orientation
 {
-  height = a5.height;
-  width = a5.width;
-  v8 = a4.height;
-  v9 = a4.width;
-  v10 = [(MRImageManager *)self optimizedPath:a3 forSize:a6, a5.width, a5.height];
+  height = forSize.height;
+  width = forSize.width;
+  v8 = size.height;
+  v9 = size.width;
+  v10 = [(MRImageManager *)self optimizedPath:path forSize:orientation, forSize.width, forSize.height];
   v11 = CGImageSourceCreateWithURL([NSURL fileURLWithPath:v10], 0);
   if (v11)
   {
@@ -503,13 +503,13 @@ LABEL_18:
   return ThumbnailAtIndex;
 }
 
-- (CGImage)CGImageWithData:(id)a3 withOriginalSize:(CGSize)a4 forSize:(CGSize)a5 orientation:(char *)a6
+- (CGImage)CGImageWithData:(id)data withOriginalSize:(CGSize)size forSize:(CGSize)forSize orientation:(char *)orientation
 {
-  height = a5.height;
-  width = a5.width;
-  v9 = a4.height;
-  v10 = a4.width;
-  v11 = CGImageSourceCreateWithData(a3, 0);
+  height = forSize.height;
+  width = forSize.width;
+  v9 = size.height;
+  v10 = size.width;
+  v11 = CGImageSourceCreateWithData(data, 0);
   if (v11)
   {
     v12 = v11;
@@ -517,7 +517,7 @@ LABEL_18:
     if (v13)
     {
       v14 = v13;
-      *a6 = [-[__CFDictionary objectForKey:](v13 objectForKey:{kCGImagePropertyOrientation), "intValue"}];
+      *orientation = [-[__CFDictionary objectForKey:](v13 objectForKey:{kCGImagePropertyOrientation), "intValue"}];
     }
 
     v15 = v10 / width;
@@ -560,14 +560,14 @@ LABEL_18:
   return ThumbnailAtIndex;
 }
 
-- (CGImage)CGImageWithMoviePath:(id)a3 withOriginalSize:(CGSize)a4 forSize:(CGSize)a5 atTime:(double)a6 orientation:(char *)a7
+- (CGImage)CGImageWithMoviePath:(id)path withOriginalSize:(CGSize)size forSize:(CGSize)forSize atTime:(double)time orientation:(char *)orientation
 {
-  height = a5.height;
-  width = a5.width;
-  v10 = [AVURLAsset URLAssetWithURL:[NSURL URLWithString:a3 options:a7, a4.width, a4.height], 0];
+  height = forSize.height;
+  width = forSize.width;
+  v10 = [AVURLAsset URLAssetWithURL:[NSURL URLWithString:path options:orientation, size.width, size.height], 0];
   v11 = [[AVAssetImageGenerator alloc] initWithAsset:v10];
   v12 = v11;
-  if (a6 >= 0.0)
+  if (time >= 0.0)
   {
     *timescale = *&kCMTimeZero.value;
     v22 = *timescale;
@@ -597,8 +597,8 @@ LABEL_18:
     v14 = 0;
   }
 
-  v16 = v14 * a6;
-  if (a6 < 0.0)
+  v16 = v14 * time;
+  if (time < 0.0)
   {
     v16 = 0.0;
   }
@@ -617,8 +617,8 @@ LABEL_18:
   v18 = [v12 copyCGImageAtTime:&v24 actualTime:0 error:&v25];
   if (v25)
   {
-    v19 = [v25 code];
-    if (a6 >= 0.0 && v19 == -11832)
+    code = [v25 code];
+    if (time >= 0.0 && code == -11832)
     {
       v24 = kCMTimePositiveInfinity;
       v23 = *&v24.value;
@@ -670,9 +670,9 @@ LABEL_18:
 
   sleep(v7);
   v8 = +[NSFileManager defaultManager];
-  v9 = [-[NSArray lastObject](NSSearchPathForDirectoriesInDomains(NSCachesDirectory 1uLL];
-  [(NSFileManager *)v8 createDirectoryAtPath:v9 withIntermediateDirectories:1 attributes:0 error:0];
-  v10 = [(NSFileManager *)v8 subpathsOfDirectoryAtPath:v9 error:0];
+  1uLL = [-[NSArray lastObject](NSSearchPathForDirectoriesInDomains(NSCachesDirectory 1uLL];
+  [(NSFileManager *)v8 createDirectoryAtPath:1uLL withIntermediateDirectories:1 attributes:0 error:0];
+  v10 = [(NSFileManager *)v8 subpathsOfDirectoryAtPath:1uLL error:0];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -692,7 +692,7 @@ LABEL_18:
           objc_enumerationMutation(v10);
         }
 
-        v15 = [v9 stringByAppendingPathComponent:*(*(&v17 + 1) + 8 * v14)];
+        v15 = [1uLL stringByAppendingPathComponent:*(*(&v17 + 1) + 8 * v14)];
         [-[NSDictionary objectForKey:](-[NSFileManager attributesOfItemAtPath:error:](v8 attributesOfItemAtPath:v15 error:{0), "objectForKey:", NSFileModificationDate), "timeIntervalSinceNow"}];
         if (v5 < -v16)
         {

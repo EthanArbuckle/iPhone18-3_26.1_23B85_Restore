@@ -1,16 +1,16 @@
 @interface BSUIDailyReadingBoxLayout
 - ($C9FAB8CAB2AF31EF60403A04CE35D411)computeIntrinsicHeight;
-- (BSUIDailyReadingBoxLayout)initWithModel:(id)a3 parent:(id)a4 controller:(id)a5;
+- (BSUIDailyReadingBoxLayout)initWithModel:(id)model parent:(id)parent controller:(id)controller;
 - (double)_endCapHeight;
 - (double)_layoutAndComputeIntrinsicHeight;
 - (double)_specifiedOrContainingWidth;
 - (double)arcRadius;
-- (double)chordLengthAtHeightFromTop:(double)a3;
+- (double)chordLengthAtHeightFromTop:(double)top;
 - (double)computeIntrinsicAspectRatio;
-- (double)highestPointOfArcForWidth:(double)a3;
+- (double)highestPointOfArcForWidth:(double)width;
 - (double)maximumDefaultYForLayout;
 - (double)minimumTextSeparation;
-- (id)newRenderModelCompatibleWithKind:(unint64_t)a3 context:(id)a4;
+- (id)newRenderModelCompatibleWithKind:(unint64_t)kind context:(id)context;
 - (void)_computeIntrinsicContentSize;
 - (void)_layoutToBaseOfControlIfPossible;
 - (void)computeLayout;
@@ -19,11 +19,11 @@
 
 @implementation BSUIDailyReadingBoxLayout
 
-- (BSUIDailyReadingBoxLayout)initWithModel:(id)a3 parent:(id)a4 controller:(id)a5
+- (BSUIDailyReadingBoxLayout)initWithModel:(id)model parent:(id)parent controller:(id)controller
 {
   v6.receiver = self;
   v6.super_class = BSUIDailyReadingBoxLayout;
-  result = [(BSUIDailyReadingBoxLayout *)&v6 initWithModel:a3 parent:a4 controller:a5];
+  result = [(BSUIDailyReadingBoxLayout *)&v6 initWithModel:model parent:parent controller:controller];
   if (result)
   {
     result->_intrinsicContentSize = CGSizeZero;
@@ -32,17 +32,17 @@
   return result;
 }
 
-- (id)newRenderModelCompatibleWithKind:(unint64_t)a3 context:(id)a4
+- (id)newRenderModelCompatibleWithKind:(unint64_t)kind context:(id)context
 {
-  v6 = a4;
-  if (a3 < 3)
+  contextCopy = context;
+  if (kind < 3)
   {
     v23 = 0;
   }
 
   else
   {
-    [(BSUIDailyReadingBoxLayout *)self renderModelSizeWithContext:v6];
+    [(BSUIDailyReadingBoxLayout *)self renderModelSizeWithContext:contextCopy];
     v8 = v7;
     v10 = v9;
     v11 = objc_alloc_init(NSMutableArray);
@@ -50,7 +50,7 @@
     memset(&v29, 0, sizeof(v29));
     CGAffineTransformMakeTranslation(&v29, v12 * 0.5, v13 * 0.5);
     v28 = v29;
-    [(BSUIDailyReadingBoxLayout *)self appendChildRenderModelCompatibleWithKind:3 context:v6 transform:&v28 toModels:v11];
+    [(BSUIDailyReadingBoxLayout *)self appendChildRenderModelCompatibleWithKind:3 context:contextCopy transform:&v28 toModels:v11];
     v28.a = 0.0;
     *&v28.b = &v28;
     *&v28.c = 0x3032000000;
@@ -63,22 +63,22 @@
     v27[3] = &unk_388350;
     v27[4] = &v28;
     [v11 enumerateObjectsUsingBlock:v27];
-    v14 = [(BSUIDailyReadingBoxLayout *)self controller];
-    v15 = [v14 manager];
-    v16 = [v15 resourceRegistry];
-    v17 = [v16 fileProviderForKind:@"mica-provider"];
+    controller = [(BSUIDailyReadingBoxLayout *)self controller];
+    manager = [controller manager];
+    resourceRegistry = [manager resourceRegistry];
+    v17 = [resourceRegistry fileProviderForKind:@"mica-provider"];
 
     v18 = [_BSUIDailyReadingLayerConfig alloc];
     v19 = [(BSUIDailyReadingBoxLayout *)self box];
-    v20 = [v19 dailyReadingMetrics];
-    v21 = [(_BSUIDailyReadingLayerConfig *)v18 initWithMetrics:v20 timeTextYOffset:v17 micaFileProvider:self->_timeTextYOffset];
+    dailyReadingMetrics = [v19 dailyReadingMetrics];
+    v21 = [(_BSUIDailyReadingLayerConfig *)v18 initWithMetrics:dailyReadingMetrics timeTextYOffset:v17 micaFileProvider:self->_timeTextYOffset];
 
     v22 = [TUIRenderModelLayer alloc];
     v23 = [v22 initWithSubmodels:*(*&v28.b + 40) config:v21 erasableInsets:{UIEdgeInsetsZero.top, UIEdgeInsetsZero.left, UIEdgeInsetsZero.bottom, UIEdgeInsetsZero.right}];
     [v23 setSize:{v8, v10}];
     v24 = [(BSUIDailyReadingBoxLayout *)self box];
-    v25 = [v24 identifier];
-    [v23 setIdentifier:v25];
+    identifier = [v24 identifier];
+    [v23 setIdentifier:identifier];
 
     _Block_object_dispose(&v28, 8);
   }
@@ -107,9 +107,9 @@
 - (double)_endCapHeight
 {
   v2 = [(BSUIDailyReadingBoxLayout *)self box];
-  v3 = [v2 dailyReadingMetrics];
-  v4 = [v3 progressBarWidth];
-  [v4 floatValue];
+  dailyReadingMetrics = [v2 dailyReadingMetrics];
+  progressBarWidth = [dailyReadingMetrics progressBarWidth];
+  [progressBarWidth floatValue];
   v6 = v5 * 0.5;
 
   return v6;
@@ -120,18 +120,18 @@
   [(BSUIDailyReadingBoxLayout *)self _specifiedOrContainingWidth];
   v4 = v3;
   v5 = [(BSUIDailyReadingBoxLayout *)self box];
-  v6 = [v5 dailyReadingMetrics];
-  v7 = [v6 progressBarWidth];
-  [v7 floatValue];
+  dailyReadingMetrics = [v5 dailyReadingMetrics];
+  progressBarWidth = [dailyReadingMetrics progressBarWidth];
+  [progressBarWidth floatValue];
   v9 = v4 - (v8 + v8);
 
   return v9 * 0.5;
 }
 
-- (double)highestPointOfArcForWidth:(double)a3
+- (double)highestPointOfArcForWidth:(double)width
 {
   [(BSUIDailyReadingBoxLayout *)self arcRadius];
-  v5 = result - sqrt(result * result - a3 * 0.5 * (a3 * 0.5));
+  v5 = result - sqrt(result * result - width * 0.5 * (width * 0.5));
   if (v5 < result)
   {
     return v5;
@@ -140,14 +140,14 @@
   return result;
 }
 
-- (double)chordLengthAtHeightFromTop:(double)a3
+- (double)chordLengthAtHeightFromTop:(double)top
 {
   [(BSUIDailyReadingBoxLayout *)self _specifiedOrContainingWidth];
   v6 = v5;
   [(BSUIDailyReadingBoxLayout *)self arcRadius];
-  if (a3 > 0.0 && v7 > a3)
+  if (top > 0.0 && v7 > top)
   {
-    v9 = sqrt((v7 + v7) * a3 - a3 * a3);
+    v9 = sqrt((v7 + v7) * top - top * top);
     return v9 + v9;
   }
 
@@ -157,15 +157,15 @@
 - (double)maximumDefaultYForLayout
 {
   v3 = [(BSUIDailyReadingBoxLayout *)self box];
-  v4 = [v3 dailyReadingMetrics];
-  v5 = [v4 useLargeLayoutMode];
+  dailyReadingMetrics = [v3 dailyReadingMetrics];
+  useLargeLayoutMode = [dailyReadingMetrics useLargeLayoutMode];
 
-  if (v5)
+  if (useLargeLayoutMode)
   {
     v6 = [(BSUIDailyReadingBoxLayout *)self box];
-    v7 = [v6 dailyReadingMetrics];
-    v8 = [v7 progressBarWidth];
-    [v8 floatValue];
+    dailyReadingMetrics2 = [v6 dailyReadingMetrics];
+    progressBarWidth = [dailyReadingMetrics2 progressBarWidth];
+    [progressBarWidth floatValue];
     v10 = v9 + 162.0;
   }
 
@@ -174,9 +174,9 @@
     [(BSUIDailyReadingBoxLayout *)self arcRadius];
     v12 = v11;
     v13 = [(BSUIDailyReadingBoxLayout *)self box];
-    v14 = [v13 dailyReadingMetrics];
-    v15 = [v14 progressBarWidth];
-    [v15 floatValue];
+    dailyReadingMetrics3 = [v13 dailyReadingMetrics];
+    progressBarWidth2 = [dailyReadingMetrics3 progressBarWidth];
+    [progressBarWidth2 floatValue];
     v17 = v12 + v16;
 
     [(BSUIDailyReadingBoxLayout *)self _endCapHeight];
@@ -189,17 +189,17 @@
 - (double)minimumTextSeparation
 {
   v3 = [(BSUIDailyReadingBoxLayout *)self box];
-  v4 = [v3 dailyReadingMetrics];
-  v5 = [v4 axValue];
-  v6 = [v5 integerValue];
+  dailyReadingMetrics = [v3 dailyReadingMetrics];
+  axValue = [dailyReadingMetrics axValue];
+  integerValue = [axValue integerValue];
 
   v7 = 10.0;
-  if (v6 >= 5)
+  if (integerValue >= 5)
   {
     v8 = [(BSUIDailyReadingBoxLayout *)self box];
-    v9 = [v8 dailyReadingMetrics];
-    v10 = [v9 axValue];
-    [v10 floatValue];
+    dailyReadingMetrics2 = [v8 dailyReadingMetrics];
+    axValue2 = [dailyReadingMetrics2 axValue];
+    [axValue2 floatValue];
     v7 = v11 * 0.25 * 10.0;
   }
 
@@ -222,9 +222,9 @@
   }
 
   v7 = [(BSUIDailyReadingBoxLayout *)self box];
-  v8 = [v7 dailyReadingMetrics];
-  v9 = [v8 arcWidth];
-  [v9 floatValue];
+  dailyReadingMetrics = [v7 dailyReadingMetrics];
+  arcWidth = [dailyReadingMetrics arcWidth];
+  [arcWidth floatValue];
   v11 = v10;
 
   result = v11;
@@ -266,11 +266,11 @@
 - (void)_layoutToBaseOfControlIfPossible
 {
   v19 = [(BSUIDailyReadingBoxLayout *)self box];
-  v3 = [v19 dailyReadingMetrics];
-  if (([v3 iconMode] & 1) == 0)
+  dailyReadingMetrics = [v19 dailyReadingMetrics];
+  if (([dailyReadingMetrics iconMode] & 1) == 0)
   {
-    v4 = [(BSUIDailyReadingBoxLayout *)self children];
-    v5 = [v4 count];
+    children = [(BSUIDailyReadingBoxLayout *)self children];
+    v5 = [children count];
 
     if (v5 < 3)
     {
@@ -278,18 +278,18 @@
     }
 
     objc_opt_class();
-    v6 = [(BSUIDailyReadingBoxLayout *)self children];
-    v7 = [v6 objectAtIndex:0];
+    children2 = [(BSUIDailyReadingBoxLayout *)self children];
+    v7 = [children2 objectAtIndex:0];
     v19 = BUDynamicCast();
 
     objc_opt_class();
-    v8 = [(BSUIDailyReadingBoxLayout *)self children];
-    v9 = [v8 objectAtIndex:1];
-    v3 = BUDynamicCast();
+    children3 = [(BSUIDailyReadingBoxLayout *)self children];
+    v9 = [children3 objectAtIndex:1];
+    dailyReadingMetrics = BUDynamicCast();
 
     objc_opt_class();
-    v10 = [(BSUIDailyReadingBoxLayout *)self children];
-    v11 = [v10 objectAtIndex:2];
+    children4 = [(BSUIDailyReadingBoxLayout *)self children];
+    v11 = [children4 objectAtIndex:2];
     v12 = BUDynamicCast();
 
     [v12 computedOrigin];
@@ -302,8 +302,8 @@
       v18 = v17 - v16;
       [v19 computedOrigin];
       [v19 setComputedOrigin:?];
-      [v3 computedOrigin];
-      [v3 setComputedOrigin:?];
+      [dailyReadingMetrics computedOrigin];
+      [dailyReadingMetrics setComputedOrigin:?];
       [v12 computedOrigin];
       [v12 setComputedOrigin:?];
       self->_timeTextYOffset = v18 + self->_timeTextYOffset;
@@ -316,40 +316,40 @@
   [(BSUIDailyReadingBoxLayout *)self _specifiedOrContainingWidth];
   v4 = v3;
   v5 = [(BSUIDailyReadingBoxLayout *)self box];
-  v6 = [v5 dailyReadingMetrics];
-  if ([v6 iconMode])
+  dailyReadingMetrics = [v5 dailyReadingMetrics];
+  if ([dailyReadingMetrics iconMode])
   {
 LABEL_68:
 
     return v4;
   }
 
-  v7 = [(BSUIDailyReadingBoxLayout *)self children];
-  v8 = [v7 count];
+  children = [(BSUIDailyReadingBoxLayout *)self children];
+  v8 = [children count];
 
   if (v8 == &dword_4)
   {
     v9 = [(BSUIDailyReadingBoxLayout *)self box];
-    v10 = [v9 dailyReadingMetrics];
-    v11 = [v10 isAX];
+    dailyReadingMetrics2 = [v9 dailyReadingMetrics];
+    isAX = [dailyReadingMetrics2 isAX];
 
     v12 = [(BSUIDailyReadingBoxLayout *)self box];
-    v13 = [v12 dailyReadingMetrics];
-    v14 = [v13 useNarrowLayoutMode];
+    dailyReadingMetrics3 = [v12 dailyReadingMetrics];
+    useNarrowLayoutMode = [dailyReadingMetrics3 useNarrowLayoutMode];
 
     [(BSUIDailyReadingBoxLayout *)self minimumTextSeparation];
     v16 = v15;
-    v17 = [(BSUIDailyReadingBoxLayout *)self children];
-    v5 = [v17 objectAtIndex:0];
+    children2 = [(BSUIDailyReadingBoxLayout *)self children];
+    v5 = [children2 objectAtIndex:0];
 
-    v18 = [v5 box];
+    v5Box = [v5 box];
     [v5 invalidateLayout];
     [v5 validateLayout];
     [(BSUIDailyReadingBoxLayout *)self arcRadius];
     v20 = v19;
     -[BSUIDailyReadingBoxLayout highestPointOfArcForWidth:](self, "highestPointOfArcForWidth:", COERCE_FLOAT([v5 computedWidth]));
     v22 = v21;
-    if (v14)
+    if (useNarrowLayoutMode)
     {
       v23 = 10.0;
     }
@@ -360,24 +360,24 @@ LABEL_68:
     }
 
     v24 = [(BSUIDailyReadingBoxLayout *)self box];
-    v25 = [v24 dailyReadingMetrics];
-    v26 = [v25 progressBarWidth];
-    [v26 floatValue];
+    dailyReadingMetrics4 = [v24 dailyReadingMetrics];
+    progressBarWidth = [dailyReadingMetrics4 progressBarWidth];
+    [progressBarWidth floatValue];
     v28 = v22 + v23 + v27;
 
     if (v28 > v20)
     {
       v29 = [(BSUIDailyReadingBoxLayout *)self box];
-      v30 = [v29 dailyReadingMetrics];
-      v31 = [v30 progressBarWidth];
-      [v31 floatValue];
+      dailyReadingMetrics5 = [v29 dailyReadingMetrics];
+      progressBarWidth2 = [dailyReadingMetrics5 progressBarWidth];
+      [progressBarWidth2 floatValue];
       v28 = v20 + v32 + 10.0;
     }
 
     v33 = 4286578687;
     [(BSUIDailyReadingBoxLayout *)self chordLengthAtHeightFromTop:v28];
     v35 = v34;
-    [v18 setAllowShrinkToFit:1];
+    [v5Box setAllowShrinkToFit:1];
     v36 = v35 * 0.5;
     v37 = 4286578687;
     if (v35 > -3.40282347e38)
@@ -419,7 +419,7 @@ LABEL_17:
       {
         v41 = v35;
 LABEL_23:
-        [v18 setWidth:{v37 | (LODWORD(v39) << 32), LODWORD(v41) | 0xF000000000000}];
+        [v5Box setWidth:{v37 | (LODWORD(v39) << 32), LODWORD(v41) | 0xF000000000000}];
         [v5 computedNaturalSize];
         [v5 setComputedNaturalSize:v35];
         [v5 invalidateLayout];
@@ -430,12 +430,12 @@ LABEL_23:
         [v5 setComputedOrigin:{floor(v4 * 0.5 - v46 * 0.5), floor(v28)}];
         v47 = v28 + v44;
 
-        v48 = [(BSUIDailyReadingBoxLayout *)self children];
-        v6 = [v48 objectAtIndex:1];
+        children3 = [(BSUIDailyReadingBoxLayout *)self children];
+        dailyReadingMetrics = [children3 objectAtIndex:1];
 
-        v49 = [v6 box];
-        [v6 invalidateLayout];
-        [v6 validateLayout];
+        v49 = [dailyReadingMetrics box];
+        [dailyReadingMetrics invalidateLayout];
+        [dailyReadingMetrics validateLayout];
         [(BSUIDailyReadingBoxLayout *)self chordLengthAtHeightFromTop:v28 + v44];
         v51 = v50;
         [v49 setAllowShrinkToFit:1];
@@ -489,21 +489,21 @@ LABEL_32:
         v57 = *&v58;
 LABEL_38:
         [v49 setWidth:{v53 | (LODWORD(v55) << 32), LODWORD(v57) | 0xF000000000000}];
-        [v6 computedNaturalSize];
+        [dailyReadingMetrics computedNaturalSize];
         if (v59 > v51)
         {
           v59 = v51;
         }
 
-        [v6 setComputedNaturalSize:v59];
-        [v6 invalidateLayout];
-        [v6 validateLayout];
-        [v6 computedNaturalSize];
+        [dailyReadingMetrics setComputedNaturalSize:v59];
+        [dailyReadingMetrics invalidateLayout];
+        [dailyReadingMetrics validateLayout];
+        [dailyReadingMetrics computedNaturalSize];
         v61 = v60;
         v63 = v45 - v62 * 0.5;
         v64 = v16 + v60;
         v65 = 57.0;
-        if (!v14)
+        if (!useNarrowLayoutMode)
         {
           v65 = 66.0;
         }
@@ -521,19 +521,19 @@ LABEL_38:
 
         v68 = v47 + v67;
         v69 = floor(v47 + v67);
-        [v6 setComputedOrigin:{floor(v63), v69}];
+        [dailyReadingMetrics setComputedOrigin:{floor(v63), v69}];
         self->_timeTextYOffset = v69;
         v70 = v61 + v68;
 
-        v71 = [(BSUIDailyReadingBoxLayout *)self children];
-        v72 = [v71 objectAtIndex:2];
+        children4 = [(BSUIDailyReadingBoxLayout *)self children];
+        v72 = [children4 objectAtIndex:2];
 
         v73 = [v72 box];
         [v72 invalidateLayout];
         [v72 validateLayout];
         [(BSUIDailyReadingBoxLayout *)self chordLengthAtHeightFromTop:v61 + v68];
         v75 = v74;
-        if (v11)
+        if (isAX)
         {
           v76 = 2;
         }
@@ -659,12 +659,12 @@ LABEL_63:
   [(BSUIDailyReadingBoxLayout *)self _specifiedOrContainingWidth];
   v4 = v3;
   v5 = [(BSUIDailyReadingBoxLayout *)self box];
-  v6 = [v5 dailyReadingMetrics];
-  [v6 setUseLargeLayoutMode:v4 >= 350.0];
+  dailyReadingMetrics = [v5 dailyReadingMetrics];
+  [dailyReadingMetrics setUseLargeLayoutMode:v4 >= 350.0];
 
   v7 = [(BSUIDailyReadingBoxLayout *)self box];
-  v8 = [v7 dailyReadingMetrics];
-  [v8 setUseNarrowLayoutMode:v4 <= 256.0];
+  dailyReadingMetrics2 = [v7 dailyReadingMetrics];
+  [dailyReadingMetrics2 setUseNarrowLayoutMode:v4 <= 256.0];
 
   v12.receiver = self;
   v12.super_class = BSUIDailyReadingBoxLayout;

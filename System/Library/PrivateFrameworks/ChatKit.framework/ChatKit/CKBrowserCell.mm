@@ -1,35 +1,35 @@
 @interface CKBrowserCell
-+ (Class)classForItemType:(int64_t)a3;
++ (Class)classForItemType:(int64_t)type;
 + (id)reuseIdentifier;
 - (CGRect)browserCellIconFrame;
 - (CGRect)selectionFrame;
-- (CKBrowserCell)initWithFrame:(CGRect)a3;
+- (CKBrowserCell)initWithFrame:(CGRect)frame;
 - (CKBrowserCellDelegate)delegate;
 - (double)browserCellSelectionBorderOutset;
-- (void)applyLayoutAttributes:(id)a3;
+- (void)applyLayoutAttributes:(id)attributes;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setBorderStyle:(int64_t)a3;
+- (void)setBorderStyle:(int64_t)style;
 @end
 
 @implementation CKBrowserCell
 
 + (id)reuseIdentifier
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"CKBrowserCell.m" lineNumber:50 description:@"Please override +reuseIdentifier in your subclass"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"CKBrowserCell.m" lineNumber:50 description:@"Please override +reuseIdentifier in your subclass"];
 
-  return NSStringFromClass(a1);
+  return NSStringFromClass(self);
 }
 
-+ (Class)classForItemType:(int64_t)a3
++ (Class)classForItemType:(int64_t)type
 {
-  if (a3 >= 3)
+  if (type >= 3)
   {
     v4 = IMLogHandleForCategory();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
     {
-      [(CKBrowserCell *)a3 classForItemType:v4];
+      [(CKBrowserCell *)type classForItemType:v4];
     }
   }
 
@@ -38,19 +38,19 @@
   return v5;
 }
 
-- (CKBrowserCell)initWithFrame:(CGRect)a3
+- (CKBrowserCell)initWithFrame:(CGRect)frame
 {
   v32.receiver = self;
   v32.super_class = CKBrowserCell;
-  v3 = [(CKBrowserCell *)&v32 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CKBrowserCell *)&v32 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x1E69DC888] clearColor];
-    [(CKBrowserCell *)v3 setBackgroundColor:v4];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(CKBrowserCell *)v3 setBackgroundColor:clearColor];
 
-    v5 = [(CKBrowserCell *)v3 contentView];
-    v6 = [(CKBrowserCell *)v3 iconView];
-    [v5 addSubview:v6];
+    contentView = [(CKBrowserCell *)v3 contentView];
+    iconView = [(CKBrowserCell *)v3 iconView];
+    [contentView addSubview:iconView];
 
     v7 = objc_alloc(MEMORY[0x1E69DCC10]);
     v8 = *MEMORY[0x1E695F058];
@@ -60,45 +60,45 @@
     v12 = [v7 initWithFrame:{*MEMORY[0x1E695F058], v9, v10, v11}];
     [(CKBrowserCell *)v3 setBrowserLabel:v12];
 
-    v13 = [(CKBrowserCell *)v3 browserLabel];
-    [v13 setTextAlignment:1];
+    browserLabel = [(CKBrowserCell *)v3 browserLabel];
+    [browserLabel setTextAlignment:1];
 
-    v14 = [(CKBrowserCell *)v3 browserLabel];
-    [v14 setLineBreakMode:4];
+    browserLabel2 = [(CKBrowserCell *)v3 browserLabel];
+    [browserLabel2 setLineBreakMode:4];
 
-    v15 = [(CKBrowserCell *)v3 browserLabel];
-    [v15 setNumberOfLines:1];
+    browserLabel3 = [(CKBrowserCell *)v3 browserLabel];
+    [browserLabel3 setNumberOfLines:1];
 
-    v16 = [(CKBrowserCell *)v3 browserLabel];
-    [v16 setAllowsDefaultTighteningForTruncation:1];
+    browserLabel4 = [(CKBrowserCell *)v3 browserLabel];
+    [browserLabel4 setAllowsDefaultTighteningForTruncation:1];
 
-    v17 = [(CKBrowserCell *)v3 browserLabel];
+    browserLabel5 = [(CKBrowserCell *)v3 browserLabel];
     v18 = +[CKUIBehavior sharedBehaviors];
-    v19 = [v18 browserCellFont];
-    [v17 setFont:v19];
+    browserCellFont = [v18 browserCellFont];
+    [browserLabel5 setFont:browserCellFont];
 
-    v20 = [(CKBrowserCell *)v3 contentView];
-    v21 = [(CKBrowserCell *)v3 browserLabel];
-    [v20 addSubview:v21];
+    contentView2 = [(CKBrowserCell *)v3 contentView];
+    browserLabel6 = [(CKBrowserCell *)v3 browserLabel];
+    [contentView2 addSubview:browserLabel6];
 
     v22 = [[CKBadgeView alloc] initWithFrame:v8, v9, v10, v11];
     [(CKBrowserCell *)v3 setBadgeView:v22];
 
-    v23 = [(CKBrowserCell *)v3 contentView];
-    v24 = [(CKBrowserCell *)v3 badgeView];
-    [v23 addSubview:v24];
+    contentView3 = [(CKBrowserCell *)v3 contentView];
+    badgeView = [(CKBrowserCell *)v3 badgeView];
+    [contentView3 addSubview:badgeView];
 
     v25 = objc_alloc_init(MEMORY[0x1E69DCAE0]);
     [(CKBrowserCell *)v3 setBorderView:v25];
 
-    v26 = [(CKBrowserCell *)v3 borderView];
-    v27 = [MEMORY[0x1E69DC888] whiteColor];
-    v28 = [v27 colorWithAlphaComponent:0.25];
-    [v26 setTintColor:v28];
+    borderView = [(CKBrowserCell *)v3 borderView];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    v28 = [whiteColor colorWithAlphaComponent:0.25];
+    [borderView setTintColor:v28];
 
-    v29 = [(CKBrowserCell *)v3 contentView];
-    v30 = [(CKBrowserCell *)v3 borderView];
-    [v29 addSubview:v30];
+    contentView4 = [(CKBrowserCell *)v3 contentView];
+    borderView2 = [(CKBrowserCell *)v3 borderView];
+    [contentView4 addSubview:borderView2];
 
     v3->_shouldShowLabel = 1;
   }
@@ -111,8 +111,8 @@
   v110.receiver = self;
   v110.super_class = CKBrowserCell;
   [(CKBrowserCell *)&v110 layoutSubviews];
-  v3 = [(CKBrowserCell *)self contentView];
-  [v3 bounds];
+  contentView = [(CKBrowserCell *)self contentView];
+  [contentView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -133,29 +133,29 @@
   v18 = v17;
   v20 = v19;
   v21 = v17 + v13 * 2.0;
-  v22 = [(CKBrowserCell *)self browserLabel];
-  v23 = v22;
+  browserLabel = [(CKBrowserCell *)self browserLabel];
+  v23 = browserLabel;
   v24 = Width;
   if (Width <= v21)
   {
-    [v22 setAlpha:0.0];
+    [browserLabel setAlpha:0.0];
 
-    v27 = [(CKBrowserCell *)self shinyStatusView];
-    [v27 setAlpha:0.0];
+    shinyStatusView = [(CKBrowserCell *)self shinyStatusView];
+    [shinyStatusView setAlpha:0.0];
 
-    v28 = [(CKBrowserCell *)self badgeView];
-    [v28 setAlpha:0.0];
+    badgeView = [(CKBrowserCell *)self badgeView];
+    [badgeView setAlpha:0.0];
   }
 
   else
   {
-    [v22 setAlpha:1.0];
+    [browserLabel setAlpha:1.0];
 
-    v25 = [(CKBrowserCell *)self shinyStatusView];
-    [v25 setAlpha:1.0];
+    shinyStatusView2 = [(CKBrowserCell *)self shinyStatusView];
+    [shinyStatusView2 setAlpha:1.0];
 
-    v26 = [(CKBrowserCell *)self badgeView];
-    [v26 setAlpha:1.0];
+    badgeView2 = [(CKBrowserCell *)self badgeView];
+    [badgeView2 setAlpha:1.0];
 
     v14 = 12.0;
     v16 = 5.0;
@@ -163,8 +163,8 @@
     v20 = 45.0;
   }
 
-  v29 = [(CKBrowserCell *)self iconView];
-  [v29 setFrame:{v14, v16, v18, v20}];
+  iconView = [(CKBrowserCell *)self iconView];
+  [iconView setFrame:{v14, v16, v18, v20}];
 
   [(CKBrowserCell *)self browserCellSelectionBorderOutset];
   v31 = -v30;
@@ -178,17 +178,17 @@
   v112.size.height = v20;
   v113 = CGRectInset(v112, v31, v31);
   [(CKBrowserCell *)self setSelectionFrame:v113.origin.x, v113.origin.y, v113.size.width, v113.size.height];
-  v32 = [(CKBrowserCell *)self shinyStatusView];
-  [v32 sizeToFit];
-  [v32 frame];
+  shinyStatusView3 = [(CKBrowserCell *)self shinyStatusView];
+  [shinyStatusView3 sizeToFit];
+  [shinyStatusView3 frame];
   v33 = CGRectGetWidth(v114);
-  v34 = [(CKBrowserCell *)self contentView];
-  [v34 bounds];
+  contentView2 = [(CKBrowserCell *)self contentView];
+  [contentView2 bounds];
   v35 = CGRectGetWidth(v115) + -3.0;
 
   v103 = v33;
   v36 = v33 + 2.0;
-  if (v32)
+  if (shinyStatusView3)
   {
     v37 = v35 - (v33 + 2.0);
   }
@@ -198,16 +198,16 @@
     v37 = v35;
   }
 
-  v38 = [(CKBrowserCell *)self browserLabel];
-  [v38 sizeToFit];
+  browserLabel2 = [(CKBrowserCell *)self browserLabel];
+  [browserLabel2 sizeToFit];
 
-  v39 = [(CKBrowserCell *)self browserLabel];
-  v40 = [(CKBrowserCell *)self iconView];
-  [v40 frame];
-  [v39 _setFirstLineBaselineFrameOriginY:CGRectGetMaxY(v116) + 13.0];
+  browserLabel3 = [(CKBrowserCell *)self browserLabel];
+  iconView2 = [(CKBrowserCell *)self iconView];
+  [iconView2 frame];
+  [browserLabel3 _setFirstLineBaselineFrameOriginY:CGRectGetMaxY(v116) + 13.0];
 
-  v41 = [(CKBrowserCell *)self browserLabel];
-  [v41 frame];
+  browserLabel4 = [(CKBrowserCell *)self browserLabel];
+  [browserLabel4 frame];
   v43 = v42;
   v45 = v44;
   v47 = v46;
@@ -233,10 +233,10 @@
   v118.size.width = v51;
   v118.size.height = v49;
   v52 = CGRectGetWidth(v118);
-  if (v32)
+  if (shinyStatusView3)
   {
     v99 = v36;
-    [v32 frame];
+    [shinyStatusView3 frame];
     v54 = v53;
     v101 = v55;
     if (CKMainScreenScale_once_42 != -1)
@@ -309,7 +309,7 @@
       v67 = round(v65 * v66) / v66;
     }
 
-    [v32 setFrame:{v60, v100, v62, v54}];
+    [shinyStatusView3 setFrame:{v60, v100, v62, v54}];
   }
 
   else
@@ -331,14 +331,14 @@
     v67 = v104 - round(v68 * v69) / v69;
   }
 
-  v71 = [(CKBrowserCell *)self browserLabel];
-  [v71 setFrame:{v67, v45, v51, v49}];
+  browserLabel5 = [(CKBrowserCell *)self browserLabel];
+  [browserLabel5 setFrame:{v67, v45, v51, v49}];
 
-  v72 = [(CKBrowserCell *)self badgeView];
-  [v72 sizeToFit];
+  badgeView3 = [(CKBrowserCell *)self badgeView];
+  [badgeView3 sizeToFit];
 
-  v73 = [(CKBrowserCell *)self badgeView];
-  [v73 frame];
+  badgeView4 = [(CKBrowserCell *)self badgeView];
+  [badgeView4 frame];
   v75 = v74;
   v77 = v76;
   v79 = v78;
@@ -372,17 +372,17 @@
 
   v85 = round((MaxX + v82 * -0.5 + -5.0) * v84) / v84;
   v86 = round((MinY + -1.0) * v84) / v84;
-  v87 = [(CKBrowserCell *)self badgeView];
-  [v87 setFrame:{v85, v86, v79, v81}];
+  badgeView5 = [(CKBrowserCell *)self badgeView];
+  [badgeView5 setFrame:{v85, v86, v79, v81}];
 
-  v88 = [(CKBrowserCell *)self iconView];
-  [v88 frame];
+  iconView3 = [(CKBrowserCell *)self iconView];
+  [iconView3 frame];
   v90 = v89;
   v92 = v91;
   v94 = v93;
   v96 = v95;
-  v97 = [(CKBrowserCell *)self borderView];
-  [v97 setFrame:{v90, v92, v94, v96}];
+  borderView = [(CKBrowserCell *)self borderView];
+  [borderView setFrame:{v90, v92, v94, v96}];
 }
 
 - (CGRect)browserCellIconFrame
@@ -413,15 +413,15 @@
 
 - (double)browserCellSelectionBorderOutset
 {
-  v2 = [MEMORY[0x1E69DCBB8] __ck_isUsingCompactHeightPredictionBar];
+  __ck_isUsingCompactHeightPredictionBar = [MEMORY[0x1E69DCBB8] __ck_isUsingCompactHeightPredictionBar];
   result = 3.0;
-  if (v2)
+  if (__ck_isUsingCompactHeightPredictionBar)
   {
     v4 = +[CKUIBehavior sharedBehaviors];
-    v5 = [v4 isAppStripInKeyboard];
+    isAppStripInKeyboard = [v4 isAppStripInKeyboard];
 
     result = 3.0;
-    if (v5)
+    if (isAppStripInKeyboard)
     {
       return 2.0;
     }
@@ -430,16 +430,16 @@
   return result;
 }
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
-  v4 = a3;
+  attributesCopy = attributes;
   v7.receiver = self;
   v7.super_class = CKBrowserCell;
-  [(CKBrowserCell *)&v7 applyLayoutAttributes:v4];
+  [(CKBrowserCell *)&v7 applyLayoutAttributes:attributesCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = attributesCopy;
     if ([v5 showsBorder])
     {
       if ([v5 appStripSize])
@@ -462,7 +462,7 @@
   }
 }
 
-- (void)setBorderStyle:(int64_t)a3
+- (void)setBorderStyle:(int64_t)style
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -472,7 +472,7 @@
   if (setBorderStyle__onceToken != -1)
   {
     dispatch_once(&setBorderStyle__onceToken, block);
-    if (a3)
+    if (style)
     {
       goto LABEL_3;
     }
@@ -482,20 +482,20 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (!a3)
+  if (!style)
   {
     goto LABEL_9;
   }
 
 LABEL_3:
-  if (a3 == 1)
+  if (style == 1)
   {
     v5 = &setBorderStyle__onePxBorderImage;
   }
 
   else
   {
-    if (a3 != 2)
+    if (style != 2)
     {
       return;
     }
@@ -503,13 +503,13 @@ LABEL_3:
     v5 = &setBorderStyle__twoPxBorderImage;
   }
 
-  v6 = [(CKBrowserCell *)self borderView];
-  [v6 setImage:*v5];
+  borderView = [(CKBrowserCell *)self borderView];
+  [borderView setImage:*v5];
 
   v7 = 1.0;
 LABEL_10:
-  v8 = [(CKBrowserCell *)self borderView];
-  [v8 setAlpha:v7];
+  borderView2 = [(CKBrowserCell *)self borderView];
+  [borderView2 setAlpha:v7];
 }
 
 void __32__CKBrowserCell_setBorderStyle___block_invoke()
@@ -534,8 +534,8 @@ void __32__CKBrowserCell_setBorderStyle___block_invoke()
   v4.receiver = self;
   v4.super_class = CKBrowserCell;
   [(CKBrowserCell *)&v4 prepareForReuse];
-  v3 = [(CKBrowserCell *)self badgeView];
-  [v3 setValue:0];
+  badgeView = [(CKBrowserCell *)self badgeView];
+  [badgeView setValue:0];
 }
 
 - (CKBrowserCellDelegate)delegate

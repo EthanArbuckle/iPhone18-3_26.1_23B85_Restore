@@ -2,25 +2,25 @@
 - (BOOL)_shouldBlurBackground;
 - (BOOL)handleHomeButtonPress;
 - (SBControlCenterModuleTransientOverlayViewController)init;
-- (SBControlCenterModuleTransientOverlayViewController)initWithCoder:(id)a3;
-- (SBControlCenterModuleTransientOverlayViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (SBControlCenterModuleTransientOverlayViewController)initWithWindowScene:(id)a3 moduleIdentifier:(id)a4 presentationOptions:(id)a5;
+- (SBControlCenterModuleTransientOverlayViewController)initWithCoder:(id)coder;
+- (SBControlCenterModuleTransientOverlayViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (SBControlCenterModuleTransientOverlayViewController)initWithWindowScene:(id)scene moduleIdentifier:(id)identifier presentationOptions:(id)options;
 - (SBControlCenterModuleTransientOverlayViewControllerDelegate)delegate;
 - (id)newTransientOverlayDismissalTransitionCoordinator;
 - (id)newTransientOverlayPresentationTransitionCoordinator;
-- (void)_animateTransitionFromViewController:(id)a3 toViewController:(id)a4 containerView:(id)a5 isAnimated:(BOOL)a6 otherAnimations:(id)a7 completion:(id)a8;
+- (void)_animateTransitionFromViewController:(id)controller toViewController:(id)viewController containerView:(id)view isAnimated:(BOOL)animated otherAnimations:(id)animations completion:(id)completion;
 - (void)_dismiss;
 - (void)viewDidLoad;
 @end
 
 @implementation SBControlCenterModuleTransientOverlayViewController
 
-- (SBControlCenterModuleTransientOverlayViewController)initWithWindowScene:(id)a3 moduleIdentifier:(id)a4 presentationOptions:(id)a5
+- (SBControlCenterModuleTransientOverlayViewController)initWithWindowScene:(id)scene moduleIdentifier:(id)identifier presentationOptions:(id)options
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v10)
+  sceneCopy = scene;
+  identifierCopy = identifier;
+  optionsCopy = options;
+  if (!identifierCopy)
   {
     [SBControlCenterModuleTransientOverlayViewController initWithWindowScene:a2 moduleIdentifier:self presentationOptions:?];
   }
@@ -30,13 +30,13 @@
   v12 = [(SBTransientOverlayViewController *)&v21 initWithNibName:0 bundle:0];
   if (v12)
   {
-    v13 = [v9 controlCenterController];
-    v14 = [v13 viewController];
+    controlCenterController = [sceneCopy controlCenterController];
+    viewController = [controlCenterController viewController];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v15 = v14;
+      v15 = viewController;
     }
 
     else
@@ -46,7 +46,7 @@
 
     v16 = MEMORY[0x277CFC898];
     v17 = v15;
-    v18 = [[v16 alloc] initWithModuleIdentifier:v10 presentationOptions:v11 mainViewController:v17];
+    v18 = [[v16 alloc] initWithModuleIdentifier:identifierCopy presentationOptions:optionsCopy mainViewController:v17];
 
     moduleOverlayViewController = v12->_moduleOverlayViewController;
     v12->_moduleOverlayViewController = v18;
@@ -57,29 +57,29 @@
   return v12;
 }
 
-- (SBControlCenterModuleTransientOverlayViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (SBControlCenterModuleTransientOverlayViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  v6 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v7 = NSStringFromSelector(sel_initWithModuleIdentifier_presentationOptions_);
-  [v6 handleFailureInMethod:a2 object:self file:@"SBControlCenterModuleTransientOverlayViewController.m" lineNumber:68 description:{@"%s is unavailable; use %@ instead", "-[SBControlCenterModuleTransientOverlayViewController initWithNibName:bundle:]", v7}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SBControlCenterModuleTransientOverlayViewController.m" lineNumber:68 description:{@"%s is unavailable; use %@ instead", "-[SBControlCenterModuleTransientOverlayViewController initWithNibName:bundle:]", v7}];
 
   return 0;
 }
 
-- (SBControlCenterModuleTransientOverlayViewController)initWithCoder:(id)a3
+- (SBControlCenterModuleTransientOverlayViewController)initWithCoder:(id)coder
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v6 = NSStringFromSelector(sel_initWithModuleIdentifier_presentationOptions_);
-  [v5 handleFailureInMethod:a2 object:self file:@"SBControlCenterModuleTransientOverlayViewController.m" lineNumber:72 description:{@"%s is unavailable; use %@ instead", "-[SBControlCenterModuleTransientOverlayViewController initWithCoder:]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SBControlCenterModuleTransientOverlayViewController.m" lineNumber:72 description:{@"%s is unavailable; use %@ instead", "-[SBControlCenterModuleTransientOverlayViewController initWithCoder:]", v6}];
 
   return 0;
 }
 
 - (SBControlCenterModuleTransientOverlayViewController)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithModuleIdentifier_presentationOptions_);
-  [v4 handleFailureInMethod:a2 object:self file:@"SBControlCenterModuleTransientOverlayViewController.m" lineNumber:76 description:{@"%s is unavailable; use %@ instead", "-[SBControlCenterModuleTransientOverlayViewController init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SBControlCenterModuleTransientOverlayViewController.m" lineNumber:76 description:{@"%s is unavailable; use %@ instead", "-[SBControlCenterModuleTransientOverlayViewController init]", v5}];
 
   return 0;
 }
@@ -89,39 +89,39 @@
   v5.receiver = self;
   v5.super_class = SBControlCenterModuleTransientOverlayViewController;
   [(SBTransientOverlayViewController *)&v5 viewDidLoad];
-  v3 = [(SBTransientOverlayViewController *)self contentView];
-  [(SBControlCenterModuleTransientOverlayViewController *)self bs_addChildViewController:self->_moduleOverlayViewController withSuperview:v3];
-  v4 = [(CCUIModuleAlertViewController *)self->_moduleOverlayViewController view];
-  [v4 setAutoresizingMask:18];
-  [v4 setHidden:1];
-  [v3 bounds];
-  [v4 setFrame:?];
-  [v4 setNeedsLayout];
-  [v4 layoutIfNeeded];
+  contentView = [(SBTransientOverlayViewController *)self contentView];
+  [(SBControlCenterModuleTransientOverlayViewController *)self bs_addChildViewController:self->_moduleOverlayViewController withSuperview:contentView];
+  view = [(CCUIModuleAlertViewController *)self->_moduleOverlayViewController view];
+  [view setAutoresizingMask:18];
+  [view setHidden:1];
+  [contentView bounds];
+  [view setFrame:?];
+  [view setNeedsLayout];
+  [view layoutIfNeeded];
 }
 
 - (void)_dismiss
 {
-  v3 = [(SBControlCenterModuleTransientOverlayViewController *)self delegate];
-  [v3 controlCenterModuleTransientOverlayViewControllerNeedsDismissal:self];
+  delegate = [(SBControlCenterModuleTransientOverlayViewController *)self delegate];
+  [delegate controlCenterModuleTransientOverlayViewControllerNeedsDismissal:self];
 }
 
 - (id)newTransientOverlayPresentationTransitionCoordinator
 {
-  v3 = [(SBControlCenterModuleTransientOverlayViewController *)self _shouldBlurBackground];
-  v4 = [(CCUIModuleAlertViewController *)self->_moduleOverlayViewController view];
-  v5 = [(SBTransientOverlayViewController *)self contentView];
+  _shouldBlurBackground = [(SBControlCenterModuleTransientOverlayViewController *)self _shouldBlurBackground];
+  view = [(CCUIModuleAlertViewController *)self->_moduleOverlayViewController view];
+  contentView = [(SBTransientOverlayViewController *)self contentView];
   v6 = objc_alloc_init(SBTransientOverlayBlockTransitionCoordinator);
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __107__SBControlCenterModuleTransientOverlayViewController_newTransientOverlayPresentationTransitionCoordinator__block_invoke;
   v10[3] = &unk_2783B39D0;
   v10[4] = self;
-  v11 = v5;
-  v12 = v4;
-  v13 = v3;
-  v7 = v4;
-  v8 = v5;
+  v11 = contentView;
+  v12 = view;
+  v13 = _shouldBlurBackground;
+  v7 = view;
+  v8 = contentView;
   [(SBTransientOverlayBlockTransitionCoordinator *)v6 setStartTransitionHandler:v10];
 
   return v6;
@@ -168,20 +168,20 @@ uint64_t __107__SBControlCenterModuleTransientOverlayViewController_newTransient
 
 - (id)newTransientOverlayDismissalTransitionCoordinator
 {
-  v3 = [(SBControlCenterModuleTransientOverlayViewController *)self _shouldBlurBackground];
-  v4 = [(CCUIModuleAlertViewController *)self->_moduleOverlayViewController view];
-  v5 = [(SBTransientOverlayViewController *)self contentView];
+  _shouldBlurBackground = [(SBControlCenterModuleTransientOverlayViewController *)self _shouldBlurBackground];
+  view = [(CCUIModuleAlertViewController *)self->_moduleOverlayViewController view];
+  contentView = [(SBTransientOverlayViewController *)self contentView];
   v6 = objc_alloc_init(SBTransientOverlayBlockTransitionCoordinator);
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __104__SBControlCenterModuleTransientOverlayViewController_newTransientOverlayDismissalTransitionCoordinator__block_invoke;
   v10[3] = &unk_2783B39D0;
   v10[4] = self;
-  v11 = v5;
-  v13 = v3;
-  v12 = v4;
-  v7 = v4;
-  v8 = v5;
+  v11 = contentView;
+  v13 = _shouldBlurBackground;
+  v12 = view;
+  v7 = view;
+  v8 = contentView;
   [(SBTransientOverlayBlockTransitionCoordinator *)v6 setStartTransitionHandler:v10];
 
   return v6;
@@ -255,23 +255,23 @@ uint64_t __76__SBControlCenterModuleTransientOverlayViewController_handleHomeBut
 
 - (BOOL)_shouldBlurBackground
 {
-  v2 = [(SBControlCenterModuleTransientOverlayViewController *)self presentationOptions];
-  v3 = [v2 blurBackground];
+  presentationOptions = [(SBControlCenterModuleTransientOverlayViewController *)self presentationOptions];
+  blurBackground = [presentationOptions blurBackground];
 
-  return v3;
+  return blurBackground;
 }
 
-- (void)_animateTransitionFromViewController:(id)a3 toViewController:(id)a4 containerView:(id)a5 isAnimated:(BOOL)a6 otherAnimations:(id)a7 completion:(id)a8
+- (void)_animateTransitionFromViewController:(id)controller toViewController:(id)viewController containerView:(id)view isAnimated:(BOOL)animated otherAnimations:(id)animations completion:(id)completion
 {
-  v10 = a6;
-  v12 = a4;
-  v13 = a7;
-  v14 = a8;
+  animatedCopy = animated;
+  viewControllerCopy = viewController;
+  animationsCopy = animations;
+  completionCopy = completion;
   moduleOverlayViewController = self->_moduleOverlayViewController;
-  v16 = [(CCUIModuleAlertViewController *)moduleOverlayViewController moduleAlertView];
+  moduleAlertView = [(CCUIModuleAlertViewController *)moduleOverlayViewController moduleAlertView];
   memset(&v32, 0, sizeof(v32));
-  v17 = moduleOverlayViewController == v12;
-  if (moduleOverlayViewController == v12)
+  v17 = moduleOverlayViewController == viewControllerCopy;
+  if (moduleOverlayViewController == viewControllerCopy)
   {
     v18 = *(MEMORY[0x277CBF2C0] + 16);
     *&v32.a = *MEMORY[0x277CBF2C0];
@@ -289,11 +289,11 @@ uint64_t __76__SBControlCenterModuleTransientOverlayViewController_handleHomeBut
   v29[1] = 3221225472;
   v29[2] = __161__SBControlCenterModuleTransientOverlayViewController__animateTransitionFromViewController_toViewController_containerView_isAnimated_otherAnimations_completion___block_invoke;
   v29[3] = &unk_2783A9F58;
-  v20 = v16;
+  v20 = moduleAlertView;
   v30 = v20;
   v31 = v17;
   [v19 performWithoutAnimation:v29];
-  if (v10)
+  if (animatedCopy)
   {
     v21 = MEMORY[0x277D75D18];
     v24[0] = MEMORY[0x277D85DD0];
@@ -303,25 +303,25 @@ uint64_t __76__SBControlCenterModuleTransientOverlayViewController_handleHomeBut
     v25 = v20;
     v28 = v17;
     v27 = v32;
-    v26 = v13;
+    v26 = animationsCopy;
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
     v22[2] = __161__SBControlCenterModuleTransientOverlayViewController__animateTransitionFromViewController_toViewController_containerView_isAnimated_otherAnimations_completion___block_invoke_3;
     v22[3] = &unk_2783AE778;
-    v23 = v14;
+    v23 = completionCopy;
     [v21 _animateUsingSpringWithTension:0 friction:v24 interactive:v22 animations:500.0 completion:30.0];
   }
 
   else
   {
-    if (v13)
+    if (animationsCopy)
     {
-      v13[2](v13);
+      animationsCopy[2](animationsCopy);
     }
 
-    if (v14)
+    if (completionCopy)
     {
-      (*(v14 + 2))(v14, 1);
+      (*(completionCopy + 2))(completionCopy, 1);
     }
   }
 }

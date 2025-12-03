@@ -2,7 +2,7 @@
 + (id)Engagement;
 + (id)configurationForEngagement;
 + (id)storeConfigurationForEngagement;
-+ (id)streamWithName:(id)a3;
++ (id)streamWithName:(id)name;
 + (id)validKeyPaths;
 @end
 
@@ -11,7 +11,7 @@
 + (id)Engagement
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForEngagement];
+  configurationForEngagement = [self configurationForEngagement];
   v3 = +[BMEmojiEngagement columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -23,7 +23,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"Emoji.Engagement" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Emoji.Engagement" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Emoji.Engagement" schema:v9 configuration:configurationForEngagement];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -32,13 +32,13 @@
 
 + (id)configurationForEngagement
 {
-  v3 = [a1 storeConfigurationForEngagement];
-  v4 = [a1 syncPolicyForEngagement];
+  storeConfigurationForEngagement = [self storeConfigurationForEngagement];
+  syncPolicyForEngagement = [self syncPolicyForEngagement];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"7F769C00-47A6-49A6-BD7A-F77FB89648DF"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Emoji.Engagement" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Emoji.Engagement" eventClass:objc_opt_class() storeConfig:storeConfigurationForEngagement syncPolicy:syncPolicyForEngagement legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -51,19 +51,19 @@
   return v3;
 }
 
-+ (id)streamWithName:(id)a3
++ (id)streamWithName:(id)name
 {
-  if ([a3 isEqualToString:@"Engagement"])
+  if ([name isEqualToString:@"Engagement"])
   {
-    v4 = [a1 Engagement];
+    engagement = [self Engagement];
   }
 
   else
   {
-    v4 = 0;
+    engagement = 0;
   }
 
-  return v4;
+  return engagement;
 }
 
 + (id)validKeyPaths

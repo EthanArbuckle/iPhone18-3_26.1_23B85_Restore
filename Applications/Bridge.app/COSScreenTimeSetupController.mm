@@ -1,10 +1,10 @@
 @interface COSScreenTimeSetupController
-+ (BOOL)_screenTimeEnabledWithoutPasscodeForFamilyMember:(id)a3;
-+ (BOOL)controllerNeedsToRunForBuddyControllerDelegate:(id)a3;
++ (BOOL)_screenTimeEnabledWithoutPasscodeForFamilyMember:(id)member;
++ (BOOL)controllerNeedsToRunForBuddyControllerDelegate:(id)delegate;
 - (COSScreenTimeSetupController)init;
 - (id)familyMember;
 - (id)familyMemberFirstName;
-- (void)miniFlowStepComplete:(id)a3 nextControllerClass:(Class)a4;
+- (void)miniFlowStepComplete:(id)complete nextControllerClass:(Class)class;
 @end
 
 @implementation COSScreenTimeSetupController
@@ -26,44 +26,44 @@
   return v2;
 }
 
-- (void)miniFlowStepComplete:(id)a3 nextControllerClass:(Class)a4
+- (void)miniFlowStepComplete:(id)complete nextControllerClass:(Class)class
 {
-  if (a4)
+  if (class)
   {
-    v5 = objc_alloc_init(a4);
-    [v5 setMiniFlowDelegate:self];
-    [(COSScreenTimeSetupController *)self pushController:v5 animated:1];
+    delegate = objc_alloc_init(class);
+    [delegate setMiniFlowDelegate:self];
+    [(COSScreenTimeSetupController *)self pushController:delegate animated:1];
   }
 
   else
   {
-    v5 = [(COSScreenTimeSetupController *)self delegate];
-    [v5 buddyControllerDone:self];
+    delegate = [(COSScreenTimeSetupController *)self delegate];
+    [delegate buddyControllerDone:self];
   }
 }
 
 - (id)familyMember
 {
-  v2 = [(COSScreenTimeSetupController *)self delegate];
-  v3 = [v2 setupFlowUserInfo];
-  v4 = [v3 objectForKeyedSubscript:BPSPairingFlowFamilyMember];
+  delegate = [(COSScreenTimeSetupController *)self delegate];
+  setupFlowUserInfo = [delegate setupFlowUserInfo];
+  v4 = [setupFlowUserInfo objectForKeyedSubscript:BPSPairingFlowFamilyMember];
 
   return v4;
 }
 
 - (id)familyMemberFirstName
 {
-  v2 = [(COSScreenTimeSetupController *)self familyMember];
-  v3 = [v2 firstName];
+  familyMember = [(COSScreenTimeSetupController *)self familyMember];
+  firstName = [familyMember firstName];
 
-  return v3;
+  return firstName;
 }
 
-+ (BOOL)controllerNeedsToRunForBuddyControllerDelegate:(id)a3
++ (BOOL)controllerNeedsToRunForBuddyControllerDelegate:(id)delegate
 {
-  v3 = a3;
-  v4 = [v3 setupFlowUserInfo];
-  v5 = [v4 objectForKeyedSubscript:BPSPairingFlowFamilyMember];
+  delegateCopy = delegate;
+  setupFlowUserInfo = [delegateCopy setupFlowUserInfo];
+  v5 = [setupFlowUserInfo objectForKeyedSubscript:BPSPairingFlowFamilyMember];
 
   if (v5)
   {
@@ -94,25 +94,25 @@
   return v6;
 }
 
-+ (BOOL)_screenTimeEnabledWithoutPasscodeForFamilyMember:(id)a3
++ (BOOL)_screenTimeEnabledWithoutPasscodeForFamilyMember:(id)member
 {
-  v3 = a3;
+  memberCopy = member;
   v4 = sub_100015C10();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [v3 dsid];
+    dsid = [memberCopy dsid];
     *buf = 136315650;
     *&buf[4] = "+[COSScreenTimeSetupController _screenTimeEnabledWithoutPasscodeForFamilyMember:]";
     *&buf[12] = 2112;
-    *&buf[14] = v3;
+    *&buf[14] = memberCopy;
     *&buf[22] = 2114;
-    v30 = v5;
+    v30 = dsid;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%s: familyMember:%@, dsid:%{public}@", buf, 0x20u);
   }
 
-  v6 = [v3 dsid];
+  dsid2 = [memberCopy dsid];
 
-  if (v6)
+  if (dsid2)
   {
     v25 = 0;
     v26 = &v25;
@@ -152,8 +152,8 @@
     v11 = v10;
     _Block_object_dispose(&v25, 8);
     v12 = [v10 alloc];
-    v13 = [v3 dsid];
-    v14 = [v12 initWithDSID:v13];
+    dsid3 = [memberCopy dsid];
+    v14 = [v12 initWithDSID:dsid3];
 
     v24 = 0;
     v15 = [v9 currentConfigurationForUser:v14 error:&v24];
@@ -173,8 +173,8 @@
     {
       if ([v15 screenTimeState] == 1)
       {
-        v19 = [v15 passcode];
-        v18 = v19 == 0;
+        passcode = [v15 passcode];
+        v18 = passcode == 0;
       }
 
       else
@@ -185,14 +185,14 @@
       v17 = sub_100015C10();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
-        v20 = [v15 screenTimeState];
-        v21 = [v15 passcode];
+        screenTimeState = [v15 screenTimeState];
+        passcode2 = [v15 passcode];
         v22 = @"YES";
         *buf = 136316162;
         *&buf[4] = "+[COSScreenTimeSetupController _screenTimeEnabledWithoutPasscodeForFamilyMember:]";
         *&buf[12] = 2048;
-        *&buf[14] = v20;
-        if (!v21)
+        *&buf[14] = screenTimeState;
+        if (!passcode2)
         {
           v22 = @"NO";
         }

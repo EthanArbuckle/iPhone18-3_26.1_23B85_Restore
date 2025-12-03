@@ -21,7 +21,7 @@
     {
       v5 = *off_1E70EC918;
       v6[0] = a3;
-      [a1 sizeWithAttributes:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v6, &v5, 1, result)}];
+      [self sizeWithAttributes:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v6, &v5, 1, result)}];
       return ceil(v4);
     }
   }
@@ -50,7 +50,7 @@
     [v11 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithFloat:", v12), *off_1E70EC950}];
   }
 
-  [a1 boundingRectWithSize:0 options:v11 attributes:0 context:{a2, 3.40282347e38}];
+  [self boundingRectWithSize:0 options:v11 attributes:0 context:{a2, 3.40282347e38}];
   v15 = v14;
 
   if (v15 - a2 >= 0.0001)
@@ -83,15 +83,15 @@
     if (a7)
     {
       v26 = result;
-      v27 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
       v28 = objc_alloc_init(off_1E70ECB98);
       [v28 setMaximumNumberOfLines:1];
       v29 = objc_alloc_init(off_1E70ECB80);
       [v29 setLineBreakMode:UILineBreakToNSLineBreakStyleSingleLineVariant[a8]];
       [v29 setAlignment:0];
-      [v27 setObject:v29 forKey:*off_1E70EC988];
+      [dictionary setObject:v29 forKey:*off_1E70EC988];
 
-      [v27 setObject:a7 forKey:*off_1E70EC918];
+      [dictionary setObject:a7 forKey:*off_1E70EC918];
       ContextStack = GetContextStack(0);
       if (*ContextStack >= 1)
       {
@@ -100,7 +100,7 @@
           v32 = [UIColor colorWithCGColor:CGContextGetFillColorAsColor()];
           if (v32)
           {
-            [v27 setObject:v32 forKey:*off_1E70EC920];
+            [dictionary setObject:v32 forKey:*off_1E70EC920];
           }
         }
       }
@@ -108,7 +108,7 @@
       if (a5 != 0.0)
       {
         *&v31 = a5;
-        [v27 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithFloat:", v31), *off_1E70EC950}];
+        [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithFloat:", v31), *off_1E70EC950}];
       }
 
       v33 = objc_alloc(MEMORY[0x1E696AAB0]);
@@ -122,7 +122,7 @@
         v34 = &stru_1EFB14550;
       }
 
-      v35 = [v33 initWithString:v34 attributes:{v27, v37, v38, v39, v40, v41, v42, v43, v44, v45, v46, v14, v15}];
+      v35 = [v33 initWithString:v34 attributes:{dictionary, v37, v38, v39, v40, v41, v42, v43, v44, v45, v46, v14, v15}];
       [a7 ascender];
       [v35 drawWithRect:64 options:v28 context:{a2, a3 + v36, a4, 0.0}];
       return [v28 totalBounds];
@@ -230,17 +230,17 @@
   v26 = a5;
   v28 = fmaxf(v26, *&v27);
   v29 = objc_alloc(MEMORY[0x1E696AAB0]);
-  if (a1)
+  if (self)
   {
-    v30 = a1;
+    selfCopy = self;
   }
 
   else
   {
-    v30 = &stru_1EFB14550;
+    selfCopy = &stru_1EFB14550;
   }
 
-  [objc_msgSend(v29 initWithString:v30 attributes:{v20), "drawWithRect:options:context:", 65, v19, a2, a3, a4, v28}];
+  [objc_msgSend(v29 initWithString:selfCopy attributes:{v20), "drawWithRect:options:context:", 65, v19, a2, a3, a4, v28}];
   [v19 totalBounds];
   return v31;
 }
@@ -361,14 +361,14 @@
   a3 = a3 + v24;
 LABEL_8:
 
-  return [a1 _legacy_drawAtPoint:v19 forWidth:a8 withFont:a10 lineBreakMode:a2 letterSpacing:a3 includeEmoji:{a4, 0.0}];
+  return [self _legacy_drawAtPoint:v19 forWidth:a8 withFont:a10 lineBreakMode:a2 letterSpacing:a3 includeEmoji:{a4, 0.0}];
 }
 
 - (uint64_t)_legacy_drawAtPoint:()UIStringDrawingLegacy forWidth:withFont:minFontSize:actualFontSize:lineBreakMode:baselineAdjustment:includeEmoji:
 {
   v21 = 0.0;
-  [a1 _legacy_sizeWithFont:a7 minFontSize:&v21 actualFontSize:a5 forWidth:a4 lineBreakMode:?];
-  result = [a1 _legacy_drawAtPoint:a7 forWidth:a9 withFont:a10 fontSize:a11 lineBreakMode:a2 baselineAdjustment:a3 includeEmoji:{a4, v21}];
+  [self _legacy_sizeWithFont:a7 minFontSize:&v21 actualFontSize:a5 forWidth:a4 lineBreakMode:?];
+  result = [self _legacy_drawAtPoint:a7 forWidth:a9 withFont:a10 fontSize:a11 lineBreakMode:a2 baselineAdjustment:a3 includeEmoji:{a4, v21}];
   if (a8)
   {
     *a8 = v21;

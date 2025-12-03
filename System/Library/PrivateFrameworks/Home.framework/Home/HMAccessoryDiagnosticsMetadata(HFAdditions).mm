@@ -8,9 +8,9 @@
 - (id)hf_serviceURLWithParameters
 {
   v2 = objc_opt_class();
-  v3 = [a1 uploadDestination];
-  v4 = [a1 urlParameters];
-  v5 = [v2 hf_serviceURL:v3 withParameters:v4];
+  uploadDestination = [self uploadDestination];
+  urlParameters = [self urlParameters];
+  v5 = [v2 hf_serviceURL:uploadDestination withParameters:urlParameters];
 
   return v5;
 }
@@ -20,7 +20,7 @@
   v24 = *MEMORY[0x277D85DE8];
   v5 = a4;
   v6 = [MEMORY[0x277CCACE0] componentsWithURL:a3 resolvingAgainstBaseURL:0];
-  v7 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -43,7 +43,7 @@
         v13 = *(*(&v19 + 1) + 8 * i);
         v14 = [v8 objectForKeyedSubscript:{v13, v19}];
         v15 = [MEMORY[0x277CCAD18] queryItemWithName:v13 value:v14];
-        [v7 addObject:v15];
+        [array addObject:v15];
       }
 
       v10 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
@@ -52,9 +52,9 @@
     while (v10);
   }
 
-  if ([v7 count])
+  if ([array count])
   {
-    [v6 setQueryItems:v7];
+    [v6 setQueryItems:array];
   }
 
   v16 = [v6 URL];

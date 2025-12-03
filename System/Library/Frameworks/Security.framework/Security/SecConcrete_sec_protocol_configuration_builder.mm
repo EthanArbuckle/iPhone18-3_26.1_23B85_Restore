@@ -1,11 +1,11 @@
 @interface SecConcrete_sec_protocol_configuration_builder
 - (SecConcrete_sec_protocol_configuration_builder)init;
-- (SecConcrete_sec_protocol_configuration_builder)initWithDictionary:(__CFDictionary *)a3 andInternalFlag:(BOOL)a4;
+- (SecConcrete_sec_protocol_configuration_builder)initWithDictionary:(__CFDictionary *)dictionary andInternalFlag:(BOOL)flag;
 @end
 
 @implementation SecConcrete_sec_protocol_configuration_builder
 
-- (SecConcrete_sec_protocol_configuration_builder)initWithDictionary:(__CFDictionary *)a3 andInternalFlag:(BOOL)a4
+- (SecConcrete_sec_protocol_configuration_builder)initWithDictionary:(__CFDictionary *)dictionary andInternalFlag:(BOOL)flag
 {
   v9.receiver = self;
   v9.super_class = SecConcrete_sec_protocol_configuration_builder;
@@ -13,13 +13,13 @@
   v7 = v6;
   if (v6)
   {
-    v6->dictionary = a3;
-    if (a3)
+    v6->dictionary = dictionary;
+    if (dictionary)
     {
-      CFRetain(a3);
+      CFRetain(dictionary);
     }
 
-    v7->is_apple = a4;
+    v7->is_apple = flag;
   }
 
   return v7;
@@ -49,9 +49,9 @@
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v7 = [v6 BOOLValue];
+          bOOLValue = [v6 BOOLValue];
 
-          if (v7)
+          if (bOOLValue)
           {
             if (_is_apple_bundle_onceToken != -1)
             {

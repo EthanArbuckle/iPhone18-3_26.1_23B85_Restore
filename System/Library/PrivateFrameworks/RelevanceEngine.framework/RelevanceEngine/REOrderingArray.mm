@@ -1,26 +1,26 @@
 @interface REOrderingArray
-- (REOrderingArray)initWithComparators:(id)a3;
-- (void)_createDependenciesForObject:(id)a3;
+- (REOrderingArray)initWithComparators:(id)comparators;
+- (void)_createDependenciesForObject:(id)object;
 - (void)_performOrMarkUpdate;
 - (void)_updateContentOrder;
-- (void)addObject:(id)a3;
-- (void)performBatchUpdates:(id)a3;
-- (void)removeObject:(id)a3;
-- (void)updateObject:(id)a3;
+- (void)addObject:(id)object;
+- (void)performBatchUpdates:(id)updates;
+- (void)removeObject:(id)object;
+- (void)updateObject:(id)object;
 @end
 
 @implementation REOrderingArray
 
-- (REOrderingArray)initWithComparators:(id)a3
+- (REOrderingArray)initWithComparators:(id)comparators
 {
-  v5 = a3;
+  comparatorsCopy = comparators;
   v12.receiver = self;
   v12.super_class = REOrderingArray;
   v6 = [(REOrderingArray *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_comparators, a3);
+    objc_storeStrong(&v6->_comparators, comparators);
     orderedObjects = v7->_orderedObjects;
     v7->_orderedObjects = MEMORY[0x277CBEBF8];
 
@@ -32,9 +32,9 @@
   return v7;
 }
 
-- (void)_createDependenciesForObject:(id)a3
+- (void)_createDependenciesForObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   if ([(NSArray *)self->_comparators count]>= 2)
   {
     v5 = 1;
@@ -46,8 +46,8 @@
       v10[1] = 3221225472;
       v10[2] = __48__REOrderingArray__createDependenciesForObject___block_invoke;
       v10[3] = &unk_2785FAB58;
-      v8 = v4;
-      v12 = self;
+      v8 = objectCopy;
+      selfCopy = self;
       v13 = v6;
       v11 = v8;
       v9 = v6;
@@ -97,43 +97,43 @@ LABEL_7:
   return MEMORY[0x2821F96F8](v3, v4);
 }
 
-- (void)addObject:(id)a3
+- (void)addObject:(id)object
 {
   dependencyGraph = self->_dependencyGraph;
-  v5 = a3;
-  [(REDependencyGraph *)dependencyGraph addItem:v5];
-  [(REOrderingArray *)self _createDependenciesForObject:v5];
+  objectCopy = object;
+  [(REDependencyGraph *)dependencyGraph addItem:objectCopy];
+  [(REOrderingArray *)self _createDependenciesForObject:objectCopy];
 
   [(REOrderingArray *)self _performOrMarkUpdate];
 }
 
-- (void)removeObject:(id)a3
+- (void)removeObject:(id)object
 {
-  [(REDependencyGraph *)self->_dependencyGraph removeItem:a3];
+  [(REDependencyGraph *)self->_dependencyGraph removeItem:object];
 
   [(REOrderingArray *)self _performOrMarkUpdate];
 }
 
-- (void)updateObject:(id)a3
+- (void)updateObject:(id)object
 {
   dependencyGraph = self->_dependencyGraph;
-  v5 = a3;
-  [(REDependencyGraph *)dependencyGraph removeItem:v5];
-  [(REDependencyGraph *)self->_dependencyGraph addItem:v5];
-  [(REOrderingArray *)self _createDependenciesForObject:v5];
+  objectCopy = object;
+  [(REDependencyGraph *)dependencyGraph removeItem:objectCopy];
+  [(REDependencyGraph *)self->_dependencyGraph addItem:objectCopy];
+  [(REOrderingArray *)self _createDependenciesForObject:objectCopy];
 
   [(REOrderingArray *)self _performOrMarkUpdate];
 }
 
-- (void)performBatchUpdates:(id)a3
+- (void)performBatchUpdates:(id)updates
 {
-  v4 = a3;
+  updatesCopy = updates;
   batchCount = self->_batchCount;
   self->_batchCount = batchCount + 1;
-  v6 = v4;
-  if (v4)
+  v6 = updatesCopy;
+  if (updatesCopy)
   {
-    (*(v4 + 2))();
+    (*(updatesCopy + 2))();
     batchCount = self->_batchCount - 1;
   }
 
@@ -160,14 +160,14 @@ LABEL_7:
 - (void)_updateContentOrder
 {
   self->_needsUpdate = 0;
-  v3 = [(NSArray *)self->_comparators firstObject];
+  firstObject = [(NSArray *)self->_comparators firstObject];
   dependencyGraph = self->_dependencyGraph;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __38__REOrderingArray__updateContentOrder__block_invoke;
   v8[3] = &unk_2785FAB80;
-  v9 = v3;
-  v5 = v3;
+  v9 = firstObject;
+  v5 = firstObject;
   v6 = [(REDependencyGraph *)dependencyGraph topologicalSortedItemsWithComparator:v8];
   orderedObjects = self->_orderedObjects;
   self->_orderedObjects = v6;

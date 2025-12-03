@@ -1,24 +1,24 @@
 @interface PLPersistentHistoryTransactionIterator
-+ (id)iteratorSinceMarker:(id)a3 withFetchRequest:(id)a4 managedObjectObjectContext:(id)a5 error:(id *)a6;
-+ (id)iteratorSinceToken:(id)a3 withManagedObjectObjectContext:(id)a4 error:(id *)a5;
-- (BOOL)enumerateOneTransactionWithBlock:(id)a3;
-- (PLPersistentHistoryTransactionIterator)initWithTransactions:(id)a3 managedObjectObjectContext:(id)a4;
-- (id)_safeTransactionAtIndex:(unint64_t)a3;
-- (void)enumerateRemainingTransactionsWithBlock:(id)a3;
++ (id)iteratorSinceMarker:(id)marker withFetchRequest:(id)request managedObjectObjectContext:(id)context error:(id *)error;
++ (id)iteratorSinceToken:(id)token withManagedObjectObjectContext:(id)context error:(id *)error;
+- (BOOL)enumerateOneTransactionWithBlock:(id)block;
+- (PLPersistentHistoryTransactionIterator)initWithTransactions:(id)transactions managedObjectObjectContext:(id)context;
+- (id)_safeTransactionAtIndex:(unint64_t)index;
+- (void)enumerateRemainingTransactionsWithBlock:(id)block;
 @end
 
 @implementation PLPersistentHistoryTransactionIterator
 
-- (id)_safeTransactionAtIndex:(unint64_t)a3
+- (id)_safeTransactionAtIndex:(unint64_t)index
 {
   v3 = [(NSArray *)self->_transactions objectAtIndexedSubscript:?];
 
   return v3;
 }
 
-- (BOOL)enumerateOneTransactionWithBlock:(id)a3
+- (BOOL)enumerateOneTransactionWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -44,7 +44,7 @@
   if (v6)
   {
     v11 = 0;
-    v4[2](v4, v6, &v11);
+    blockCopy[2](blockCopy, v6, &v11);
     v7 = [v14[5] copy];
     lastIteratedToken = self->_lastIteratedToken;
     self->_lastIteratedToken = v7;
@@ -80,9 +80,9 @@ void __75__PLPersistentHistoryTransactionIterator_enumerateOneTransactionWithBlo
   }
 }
 
-- (void)enumerateRemainingTransactionsWithBlock:(id)a3
+- (void)enumerateRemainingTransactionsWithBlock:(id)block
 {
-  v6 = a3;
+  blockCopy = block;
   do
   {
     if (![(PLPersistentHistoryTransactionIterator *)self hasMoreTransactions])
@@ -91,17 +91,17 @@ void __75__PLPersistentHistoryTransactionIterator_enumerateOneTransactionWithBlo
     }
 
     v4 = objc_autoreleasePoolPush();
-    v5 = [(PLPersistentHistoryTransactionIterator *)self enumerateOneTransactionWithBlock:v6];
+    v5 = [(PLPersistentHistoryTransactionIterator *)self enumerateOneTransactionWithBlock:blockCopy];
     objc_autoreleasePoolPop(v4);
   }
 
   while (!v5);
 }
 
-- (PLPersistentHistoryTransactionIterator)initWithTransactions:(id)a3 managedObjectObjectContext:(id)a4
+- (PLPersistentHistoryTransactionIterator)initWithTransactions:(id)transactions managedObjectObjectContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  transactionsCopy = transactions;
+  contextCopy = context;
   v17.receiver = self;
   v17.super_class = PLPersistentHistoryTransactionIterator;
   v8 = [(PLPersistentHistoryTransactionIterator *)&v17 init];
@@ -109,7 +109,7 @@ void __75__PLPersistentHistoryTransactionIterator_enumerateOneTransactionWithBlo
   if (v8)
   {
     v8->_transactionIndex = 0;
-    objc_storeStrong(&v8->_context, a4);
+    objc_storeStrong(&v8->_context, context);
     context = v9->_context;
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
@@ -117,7 +117,7 @@ void __75__PLPersistentHistoryTransactionIterator_enumerateOneTransactionWithBlo
     v14[3] = &unk_1E7578848;
     v11 = v9;
     v15 = v11;
-    v16 = v6;
+    v16 = transactionsCopy;
     [(NSManagedObjectContext *)context performBlockAndWait:v14];
     v12 = v11;
   }
@@ -137,23 +137,23 @@ uint64_t __90__PLPersistentHistoryTransactionIterator_initWithTransactions_manag
   return result;
 }
 
-+ (id)iteratorSinceMarker:(id)a3 withFetchRequest:(id)a4 managedObjectObjectContext:(id)a5 error:(id *)a6
++ (id)iteratorSinceMarker:(id)marker withFetchRequest:(id)request managedObjectObjectContext:(id)context error:(id *)error
 {
   v25 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a5;
-  v12 = a4;
+  markerCopy = marker;
+  contextCopy = context;
+  requestCopy = request;
   v13 = PLPersistentHistoryGetLog();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138543618;
-    v22 = a1;
+    selfCopy = self;
     v23 = 2114;
-    v24 = v10;
+    v24 = markerCopy;
     _os_log_impl(&dword_19BF1F000, v13, OS_LOG_TYPE_DEBUG, "%{public}@: Fetching persistent history transactions since marker: %{public}@", buf, 0x16u);
   }
 
-  v14 = [PLPersistentHistoryUtilities fetchTransactionsSinceMarker:v10 withFetchRequest:v12 batchSize:100 context:v11 error:a6];
+  v14 = [PLPersistentHistoryUtilities fetchTransactionsSinceMarker:markerCopy withFetchRequest:requestCopy batchSize:100 context:contextCopy error:error];
 
   v15 = PLPersistentHistoryGetLog();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
@@ -162,14 +162,14 @@ uint64_t __90__PLPersistentHistoryTransactionIterator_initWithTransactions_manag
     v18[1] = 3221225472;
     v18[2] = __112__PLPersistentHistoryTransactionIterator_iteratorSinceMarker_withFetchRequest_managedObjectObjectContext_error___block_invoke;
     v18[3] = &unk_1E7577B90;
-    v20 = a1;
+    selfCopy2 = self;
     v19 = v14;
-    [v11 performBlockAndWait:v18];
+    [contextCopy performBlockAndWait:v18];
   }
 
   if (v14)
   {
-    v16 = [[a1 alloc] initWithTransactions:v14 managedObjectObjectContext:v11];
+    v16 = [[self alloc] initWithTransactions:v14 managedObjectObjectContext:contextCopy];
   }
 
   else
@@ -196,11 +196,11 @@ void __112__PLPersistentHistoryTransactionIterator_iteratorSinceMarker_withFetch
   }
 }
 
-+ (id)iteratorSinceToken:(id)a3 withManagedObjectObjectContext:(id)a4 error:(id *)a5
++ (id)iteratorSinceToken:(id)token withManagedObjectObjectContext:(id)context error:(id *)error
 {
-  v8 = a4;
-  v9 = [PLPersistentHistoryMarker markerWithToken:a3];
-  v10 = [a1 iteratorSinceMarker:v9 withFetchRequest:0 managedObjectObjectContext:v8 error:a5];
+  contextCopy = context;
+  v9 = [PLPersistentHistoryMarker markerWithToken:token];
+  v10 = [self iteratorSinceMarker:v9 withFetchRequest:0 managedObjectObjectContext:contextCopy error:error];
 
   return v10;
 }

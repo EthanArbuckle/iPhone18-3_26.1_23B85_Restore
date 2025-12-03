@@ -1,18 +1,18 @@
 @interface ICQUILegacyPurchaseFlowController
-- (void)beginFlowWithPresenter:(id)a3 action:(id)a4 completion:(id)a5;
-- (void)manager:(id)a3 didCompleteWithError:(id)a4;
-- (void)manager:(id)a3 loadDidFailWithError:(id)a4;
-- (void)managerDidCancel:(id)a3;
-- (void)presentationControllerDidDismiss:(id)a3;
+- (void)beginFlowWithPresenter:(id)presenter action:(id)action completion:(id)completion;
+- (void)manager:(id)manager didCompleteWithError:(id)error;
+- (void)manager:(id)manager loadDidFailWithError:(id)error;
+- (void)managerDidCancel:(id)cancel;
+- (void)presentationControllerDidDismiss:(id)dismiss;
 @end
 
 @implementation ICQUILegacyPurchaseFlowController
 
-- (void)beginFlowWithPresenter:(id)a3 action:(id)a4 completion:(id)a5
+- (void)beginFlowWithPresenter:(id)presenter action:(id)action completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
+  actionCopy = action;
+  completionCopy = completion;
+  presenterCopy = presenter;
   v11 = _ICQGetLogSystem();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -31,8 +31,8 @@
     offerManager = self->_offerManager;
   }
 
-  [(ICQUICloudStorageOffersManager *)offerManager setShouldOfferDeviceOffers:*MEMORY[0x277D3FD48] == v8];
-  v15 = [v9 copy];
+  [(ICQUICloudStorageOffersManager *)offerManager setShouldOfferDeviceOffers:*MEMORY[0x277D3FD48] == actionCopy];
+  v15 = [completionCopy copy];
 
   flowCompletion = self->_flowCompletion;
   self->_flowCompletion = v15;
@@ -44,15 +44,15 @@
 
   [(UINavigationController *)self->_navController setModalPresentationStyle:2];
   [(UINavigationController *)self->_navController setModalTransitionStyle:0];
-  [v10 presentViewController:self->_navController animated:1 completion:0];
+  [presenterCopy presentViewController:self->_navController animated:1 completion:0];
 
-  v20 = [(UINavigationController *)self->_navController presentationController];
-  [v20 setDelegate:self];
+  presentationController = [(UINavigationController *)self->_navController presentationController];
+  [presentationController setDelegate:self];
 
   [(ICQUICloudStorageOffersManager *)self->_offerManager beginFlowWithNavigationController:self->_navController modally:0];
 }
 
-- (void)managerDidCancel:(id)a3
+- (void)managerDidCancel:(id)cancel
 {
   v4 = _ICQGetLogSystem();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -70,27 +70,27 @@
   }
 }
 
-- (void)manager:(id)a3 didCompleteWithError:(id)a4
+- (void)manager:(id)manager didCompleteWithError:(id)error
 {
   v13 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  errorCopy = error;
   v6 = _ICQGetLogSystem();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412290;
-    v12 = v5;
+    v12 = errorCopy;
     _os_log_impl(&dword_275623000, v6, OS_LOG_TYPE_DEFAULT, "Cloud storage offers flow did complete with error: %@", &v11, 0xCu);
   }
 
   flowCompletion = self->_flowCompletion;
   if (flowCompletion)
   {
-    if (v5)
+    if (errorCopy)
     {
-      v8 = [v5 domain];
-      if ([v8 isEqualToString:@"com.apple.Preferences.cloud-storage-offers"])
+      domain = [errorCopy domain];
+      if ([domain isEqualToString:@"com.apple.Preferences.cloud-storage-offers"])
       {
-        v9 = [v5 code] == 2;
+        v9 = [errorCopy code] == 2;
       }
 
       else
@@ -106,32 +106,32 @@
       v9 = 1;
     }
 
-    flowCompletion[2](flowCompletion, v9, v5);
+    flowCompletion[2](flowCompletion, v9, errorCopy);
     v10 = self->_flowCompletion;
     self->_flowCompletion = 0;
   }
 }
 
-- (void)manager:(id)a3 loadDidFailWithError:(id)a4
+- (void)manager:(id)manager loadDidFailWithError:(id)error
 {
   v10 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  errorCopy = error;
   v6 = _ICQGetLogSystem();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = v5;
+    v9 = errorCopy;
     _os_log_impl(&dword_275623000, v6, OS_LOG_TYPE_DEFAULT, "Cloud storage offers flow did fail with error: %@", &v8, 0xCu);
   }
 
   flowCompletion = self->_flowCompletion;
   if (flowCompletion)
   {
-    flowCompletion[2](flowCompletion, 0, v5);
+    flowCompletion[2](flowCompletion, 0, errorCopy);
   }
 }
 
-- (void)presentationControllerDidDismiss:(id)a3
+- (void)presentationControllerDidDismiss:(id)dismiss
 {
   v4 = _ICQGetLogSystem();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))

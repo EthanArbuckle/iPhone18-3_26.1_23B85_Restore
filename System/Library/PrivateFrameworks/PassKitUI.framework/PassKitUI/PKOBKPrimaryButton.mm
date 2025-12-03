@@ -1,13 +1,13 @@
 @interface PKOBKPrimaryButton
-- (void)setTitle:(id)a3 forState:(unint64_t)a4;
+- (void)setTitle:(id)title forState:(unint64_t)state;
 - (void)updateConfiguration;
 @end
 
 @implementation PKOBKPrimaryButton
 
-- (void)setTitle:(id)a3 forState:(unint64_t)a4
+- (void)setTitle:(id)title forState:(unint64_t)state
 {
-  objc_storeStrong(&self->_cachedTitle, a3);
+  objc_storeStrong(&self->_cachedTitle, title);
 
   [(PKOBKPrimaryButton *)self setNeedsUpdateConfiguration];
 }
@@ -17,29 +17,29 @@
   v7.receiver = self;
   v7.super_class = PKOBKPrimaryButton;
   [(PKOBKPrimaryButton *)&v7 updateConfiguration];
-  v3 = [(PKOBKPrimaryButton *)self configuration];
+  configuration = [(PKOBKPrimaryButton *)self configuration];
   if ([(PKLegacyButtonInterfaceButton *)self showSpinner])
   {
-    v4 = [v3 title];
-    cachedTitle = v4;
-    if (!v4)
+    title = [configuration title];
+    cachedTitle = title;
+    if (!title)
     {
       cachedTitle = self->_cachedTitle;
     }
 
     objc_storeStrong(&self->_cachedTitle, cachedTitle);
 
-    [v3 setTitle:0];
+    [configuration setTitle:0];
   }
 
   else if (self->_cachedTitle)
   {
-    [v3 setTitle:?];
+    [configuration setTitle:?];
     v6 = self->_cachedTitle;
     self->_cachedTitle = 0;
   }
 
-  [(PKOBKPrimaryButton *)self setConfiguration:v3];
+  [(PKOBKPrimaryButton *)self setConfiguration:configuration];
 }
 
 @end

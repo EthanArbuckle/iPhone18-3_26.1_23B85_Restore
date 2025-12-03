@@ -2,8 +2,8 @@
 - (NSString)bundleID;
 - (NSString)description;
 - (_TtC10GamePolicy15GameLibraryGame)init;
-- (_TtC10GamePolicy15GameLibraryGame)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_TtC10GamePolicy15GameLibraryGame)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation GameLibraryGame
@@ -26,24 +26,24 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_24E5BF300(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_24E5BF300(coderCopy);
 }
 
-- (_TtC10GamePolicy15GameLibraryGame)initWithCoder:(id)a3
+- (_TtC10GamePolicy15GameLibraryGame)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = sub_24E5BF864(v3);
+  coderCopy = coder;
+  v4 = sub_24E5BF864(coderCopy);
 
   return v4;
 }
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_24E5BF650();
 
   v3 = sub_24E5D2CB0();

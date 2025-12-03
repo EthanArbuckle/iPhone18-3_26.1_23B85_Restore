@@ -1,11 +1,11 @@
 @interface TSWPCTTypesetterCache
 - (id).cxx_construct;
-- (shared_ptr<TSWPParagraphTypesetter>)cachedTypesetterForParagraphIdentifier:(unint64_t)a3;
-- (void)addTypesetterForParagraphIdentifier:(unint64_t)a3 typesetter:(shared_ptr<TSWPParagraphTypesetter>)a4;
+- (shared_ptr<TSWPParagraphTypesetter>)cachedTypesetterForParagraphIdentifier:(unint64_t)identifier;
+- (void)addTypesetterForParagraphIdentifier:(unint64_t)identifier typesetter:(shared_ptr<TSWPParagraphTypesetter>)typesetter;
 - (void)clearCache;
 - (void)dealloc;
-- (void)p_limitCacheSize:(unint64_t)a3;
-- (void)removeTypesetterForParagraphIndex:(unint64_t)a3;
+- (void)p_limitCacheSize:(unint64_t)size;
+- (void)removeTypesetterForParagraphIndex:(unint64_t)index;
 @end
 
 @implementation TSWPCTTypesetterCache
@@ -18,7 +18,7 @@
   [(TSWPCTTypesetterCache *)&v4 dealloc];
 }
 
-- (shared_ptr<TSWPParagraphTypesetter>)cachedTypesetterForParagraphIdentifier:(unint64_t)a3
+- (shared_ptr<TSWPParagraphTypesetter>)cachedTypesetterForParagraphIdentifier:(unint64_t)identifier
 {
   *v3 = 0;
   v3[1] = 0;
@@ -31,8 +31,8 @@
     do
     {
       v8 = v5[4].__left_;
-      v9 = v8 >= a3;
-      v10 = v8 < a3;
+      v9 = v8 >= identifier;
+      v10 = v8 < identifier;
       if (v9)
       {
         v7 = v5;
@@ -42,7 +42,7 @@
     }
 
     while (v5);
-    if (v7 != p_end_node && v7[4].__left_ <= a3)
+    if (v7 != p_end_node && v7[4].__left_ <= identifier)
     {
       v12 = v7[5].__left_;
       v11 = v7[6].__left_;
@@ -61,12 +61,12 @@
   return result;
 }
 
-- (void)addTypesetterForParagraphIdentifier:(unint64_t)a3 typesetter:(shared_ptr<TSWPParagraphTypesetter>)a4
+- (void)addTypesetterForParagraphIdentifier:(unint64_t)identifier typesetter:(shared_ptr<TSWPParagraphTypesetter>)typesetter
 {
-  v19[0] = a3;
-  if (*a4.var0)
+  v19[0] = identifier;
+  if (*typesetter.var0)
   {
-    var0 = a4.var0;
+    var0 = typesetter.var0;
     v19[2] = v19;
     v6 = sub_276DE4DCC(&self->_typesetters, v19);
     v9 = *var0;
@@ -97,7 +97,7 @@
   }
 }
 
-- (void)removeTypesetterForParagraphIndex:(unint64_t)a3
+- (void)removeTypesetterForParagraphIndex:(unint64_t)index
 {
   p_end_node = &self->_typesetters.__tree_.__end_node_;
   left = self->_typesetters.__tree_.__end_node_.__left_;
@@ -108,8 +108,8 @@
     do
     {
       v7 = left[4];
-      v8 = v7 >= a3;
-      v9 = v7 < a3;
+      v8 = v7 >= index;
+      v9 = v7 < index;
       if (v8)
       {
         v6 = left;
@@ -119,7 +119,7 @@
     }
 
     while (left);
-    if (v6 != p_end_node && v6[4] <= a3)
+    if (v6 != p_end_node && v6[4] <= index)
     {
       sub_276DE4EA0(p_typesetters, v6);
     }
@@ -135,7 +135,7 @@
   p_end_node[-1].__left_ = p_end_node;
 }
 
-- (void)p_limitCacheSize:(unint64_t)a3
+- (void)p_limitCacheSize:(unint64_t)size
 {
   if (self->_typesetters.__tree_.__size_ >= 0x41)
   {
@@ -164,7 +164,7 @@
       while (v6);
     }
 
-    if (begin_node[4] == a3)
+    if (begin_node[4] == size)
     {
       begin_node = self->_typesetters.__tree_.__begin_node_;
     }

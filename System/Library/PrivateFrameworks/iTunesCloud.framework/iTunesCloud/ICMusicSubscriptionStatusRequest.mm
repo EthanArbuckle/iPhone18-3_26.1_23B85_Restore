@@ -1,11 +1,11 @@
 @interface ICMusicSubscriptionStatusRequest
-- (BOOL)isEqual:(id)a3;
-- (ICMusicSubscriptionStatusRequest)initWithCoder:(id)a3;
-- (ICMusicSubscriptionStatusRequest)initWithStoreRequestContext:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (ICMusicSubscriptionStatusRequest)initWithCoder:(id)coder;
+- (ICMusicSubscriptionStatusRequest)initWithStoreRequestContext:(id)context;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ICMusicSubscriptionStatusRequest
@@ -66,36 +66,36 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   allowsFallbackToExpiredStatus = self->_allowsFallbackToExpiredStatus;
-  v5 = a3;
-  [v5 encodeBool:allowsFallbackToExpiredStatus forKey:@"allowsFallbackToExpiredStatus"];
-  [v5 encodeBool:self->_allowsFallbackToStatusNeedingReload forKey:@"allowsFallbackToStatusNeedingReload"];
-  [v5 encodeInteger:self->_carrierBundleProvisioningStyle forKey:@"carrierBundleProvisioningStyle"];
-  [v5 encodeInteger:self->_reason forKey:@"reason"];
-  [v5 encodeBool:self->_shouldIgnoreCache forKey:@"shouldIgnoreCache"];
-  [v5 encodeObject:self->_storeRequestContext forKey:@"storeRequestContext"];
-  [v5 encodeBool:self->_shouldReturnLastKnownStatusOnly forKey:@"shouldReturnLastKnownStatusOnly"];
-  [v5 encodeBool:self->_shouldBypassEnforcementOfPrivacyAcknowledgement forKey:@"shouldBypassEnforcementOfPrivacyAcknowledgement"];
-  [v5 encodeObject:self->_requestIdentifier forKey:@"requestIdentifier"];
+  coderCopy = coder;
+  [coderCopy encodeBool:allowsFallbackToExpiredStatus forKey:@"allowsFallbackToExpiredStatus"];
+  [coderCopy encodeBool:self->_allowsFallbackToStatusNeedingReload forKey:@"allowsFallbackToStatusNeedingReload"];
+  [coderCopy encodeInteger:self->_carrierBundleProvisioningStyle forKey:@"carrierBundleProvisioningStyle"];
+  [coderCopy encodeInteger:self->_reason forKey:@"reason"];
+  [coderCopy encodeBool:self->_shouldIgnoreCache forKey:@"shouldIgnoreCache"];
+  [coderCopy encodeObject:self->_storeRequestContext forKey:@"storeRequestContext"];
+  [coderCopy encodeBool:self->_shouldReturnLastKnownStatusOnly forKey:@"shouldReturnLastKnownStatusOnly"];
+  [coderCopy encodeBool:self->_shouldBypassEnforcementOfPrivacyAcknowledgement forKey:@"shouldBypassEnforcementOfPrivacyAcknowledgement"];
+  [coderCopy encodeObject:self->_requestIdentifier forKey:@"requestIdentifier"];
 }
 
-- (ICMusicSubscriptionStatusRequest)initWithCoder:(id)a3
+- (ICMusicSubscriptionStatusRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"storeRequestContext"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"storeRequestContext"];
   v6 = [(ICMusicSubscriptionStatusRequest *)self initWithStoreRequestContext:v5];
   if (v6)
   {
-    v6->_allowsFallbackToExpiredStatus = [v4 decodeBoolForKey:@"allowsFallbackToExpiredStatus"];
-    v6->_allowsFallbackToStatusNeedingReload = [v4 decodeBoolForKey:@"allowsFallbackToStatusNeedingReload"];
-    v6->_carrierBundleProvisioningStyle = [v4 decodeIntegerForKey:@"carrierBundleProvisioningStyle"];
-    v6->_reason = [v4 decodeIntegerForKey:@"reason"];
-    v6->_shouldIgnoreCache = [v4 decodeBoolForKey:@"shouldIgnoreCache"];
-    v6->_shouldReturnLastKnownStatusOnly = [v4 decodeBoolForKey:@"shouldReturnLastKnownStatusOnly"];
-    v6->_shouldBypassEnforcementOfPrivacyAcknowledgement = [v4 decodeBoolForKey:@"shouldBypassEnforcementOfPrivacyAcknowledgement"];
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"requestIdentifier"];
+    v6->_allowsFallbackToExpiredStatus = [coderCopy decodeBoolForKey:@"allowsFallbackToExpiredStatus"];
+    v6->_allowsFallbackToStatusNeedingReload = [coderCopy decodeBoolForKey:@"allowsFallbackToStatusNeedingReload"];
+    v6->_carrierBundleProvisioningStyle = [coderCopy decodeIntegerForKey:@"carrierBundleProvisioningStyle"];
+    v6->_reason = [coderCopy decodeIntegerForKey:@"reason"];
+    v6->_shouldIgnoreCache = [coderCopy decodeBoolForKey:@"shouldIgnoreCache"];
+    v6->_shouldReturnLastKnownStatusOnly = [coderCopy decodeBoolForKey:@"shouldReturnLastKnownStatusOnly"];
+    v6->_shouldBypassEnforcementOfPrivacyAcknowledgement = [coderCopy decodeBoolForKey:@"shouldBypassEnforcementOfPrivacyAcknowledgement"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"requestIdentifier"];
     requestIdentifier = v6->_requestIdentifier;
     v6->_requestIdentifier = v7;
   }
@@ -103,7 +103,7 @@
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   result = [objc_alloc(objc_opt_class()) initWithStoreRequestContext:self->_storeRequestContext];
   if (result)
@@ -120,19 +120,19 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
 
   else
   {
-    if ([(ICMusicSubscriptionStatusRequest *)v4 isMemberOfClass:objc_opt_class()])
+    if ([(ICMusicSubscriptionStatusRequest *)equalCopy isMemberOfClass:objc_opt_class()])
     {
-      v5 = v4;
+      v5 = equalCopy;
       storeRequestContext = v5->_storeRequestContext;
       v7 = self->_storeRequestContext;
       v8 = v7;
@@ -277,9 +277,9 @@ LABEL_18:
   return (v81 + v82) ^ __ROR8__(v81, 47) ^ v84 ^ __ROR8__(v81 + v82, 32) ^ v84 ^ __ROR8__(v82 ^ v83, 43);
 }
 
-- (ICMusicSubscriptionStatusRequest)initWithStoreRequestContext:(id)a3
+- (ICMusicSubscriptionStatusRequest)initWithStoreRequestContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v12.receiver = self;
   v12.super_class = ICMusicSubscriptionStatusRequest;
   v5 = [(ICMusicSubscriptionStatusRequest *)&v12 init];
@@ -289,13 +289,13 @@ LABEL_18:
     *(v5 + 9) = 257;
     *(v5 + 3) = 0;
     *(v5 + 4) = 0;
-    v7 = [v4 copy];
+    v7 = [contextCopy copy];
     storeRequestContext = v6->_storeRequestContext;
     v6->_storeRequestContext = v7;
 
-    v9 = [MEMORY[0x1E696AFB0] UUID];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
     requestIdentifier = v6->_requestIdentifier;
-    v6->_requestIdentifier = v9;
+    v6->_requestIdentifier = uUID;
   }
 
   return v6;

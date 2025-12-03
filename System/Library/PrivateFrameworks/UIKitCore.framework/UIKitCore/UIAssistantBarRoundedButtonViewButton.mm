@@ -1,20 +1,20 @@
 @interface UIAssistantBarRoundedButtonViewButton
 - (id)_currentTitleColor;
 - (void)_updateBackgroundAndTitleColor;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setHighlightedBackgroundColor:(id)a3;
-- (void)setHighlightedTitleColor:(id)a3;
-- (void)setNormalBackgroundColor:(id)a3;
-- (void)setNormalTitleColor:(id)a3;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setHighlightedBackgroundColor:(id)color;
+- (void)setHighlightedTitleColor:(id)color;
+- (void)setNormalBackgroundColor:(id)color;
+- (void)setNormalTitleColor:(id)color;
 @end
 
 @implementation UIAssistantBarRoundedButtonViewButton
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
   v4.receiver = self;
   v4.super_class = UIAssistantBarRoundedButtonViewButton;
-  [(UIButton *)&v4 setHighlighted:a3];
+  [(UIButton *)&v4 setHighlighted:highlighted];
   [(UIAssistantBarRoundedButtonViewButton *)self _updateBackgroundAndTitleColor];
 }
 
@@ -48,35 +48,35 @@
   v3 = ;
   [(UIView *)self setBackgroundColor:v3];
 
-  v5 = [(UIAssistantBarRoundedButtonViewButton *)self _currentTitleColor];
-  v4 = [(UIButton *)self titleLabel];
-  [v4 setTextColor:v5];
+  _currentTitleColor = [(UIAssistantBarRoundedButtonViewButton *)self _currentTitleColor];
+  titleLabel = [(UIButton *)self titleLabel];
+  [titleLabel setTextColor:_currentTitleColor];
 }
 
-- (void)setNormalBackgroundColor:(id)a3
+- (void)setNormalBackgroundColor:(id)color
 {
-  objc_storeStrong(&self->_normalBackgroundColor, a3);
+  objc_storeStrong(&self->_normalBackgroundColor, color);
 
   [(UIAssistantBarRoundedButtonViewButton *)self _updateBackgroundAndTitleColor];
 }
 
-- (void)setHighlightedBackgroundColor:(id)a3
+- (void)setHighlightedBackgroundColor:(id)color
 {
-  objc_storeStrong(&self->_highlightedBackgroundColor, a3);
+  objc_storeStrong(&self->_highlightedBackgroundColor, color);
 
   [(UIAssistantBarRoundedButtonViewButton *)self _updateBackgroundAndTitleColor];
 }
 
-- (void)setNormalTitleColor:(id)a3
+- (void)setNormalTitleColor:(id)color
 {
-  objc_storeStrong(&self->_normalTitleColor, a3);
+  objc_storeStrong(&self->_normalTitleColor, color);
 
   [(UIAssistantBarRoundedButtonViewButton *)self _updateBackgroundAndTitleColor];
 }
 
-- (void)setHighlightedTitleColor:(id)a3
+- (void)setHighlightedTitleColor:(id)color
 {
-  objc_storeStrong(&self->_highlightedTitleColor, a3);
+  objc_storeStrong(&self->_highlightedTitleColor, color);
 
   [(UIAssistantBarRoundedButtonViewButton *)self _updateBackgroundAndTitleColor];
 }

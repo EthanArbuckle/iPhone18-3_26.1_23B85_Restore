@@ -2,40 +2,40 @@
 - (NSDictionary)mapsMerchantDetails;
 - (NSDictionary)merchantDetails;
 - (NSDictionary)transactionDetails;
-- (PKTransactionDebugDetailsViewController)initWithTransaction:(id)a3;
-- (id)_cellWithPrimaryText:(id)a3 infoText:(id)a4;
-- (id)_mapsBrandInfoCellForIndex:(int64_t)a3;
+- (PKTransactionDebugDetailsViewController)initWithTransaction:(id)transaction;
+- (id)_cellWithPrimaryText:(id)text infoText:(id)infoText;
+- (id)_mapsBrandInfoCellForIndex:(int64_t)index;
 - (id)_mapsCell;
-- (id)_mapsMerchantInfoCellForIndex:(int64_t)a3;
-- (id)_merchantInfoCellForIndex:(int64_t)a3;
-- (id)_stringForCreditDebitIndicator:(int64_t)a3;
-- (id)_stringForTechnologyType:(int64_t)a3;
-- (id)_stringForTransactionSource:(unint64_t)a3;
-- (id)_stringForTransactionStatus:(int64_t)a3;
-- (id)_stringForTransactionType:(int64_t)a3;
-- (id)_transactionInfoCellForIndex:(int64_t)a3;
+- (id)_mapsMerchantInfoCellForIndex:(int64_t)index;
+- (id)_merchantInfoCellForIndex:(int64_t)index;
+- (id)_stringForCreditDebitIndicator:(int64_t)indicator;
+- (id)_stringForTechnologyType:(int64_t)type;
+- (id)_stringForTransactionSource:(unint64_t)source;
+- (id)_stringForTransactionStatus:(int64_t)status;
+- (id)_stringForTransactionType:(int64_t)type;
+- (id)_transactionInfoCellForIndex:(int64_t)index;
 - (id)mapsBrandDetails;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 contextMenuConfigurationForRowAtIndexPath:(id)a4 point:(CGPoint)a5;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view contextMenuConfigurationForRowAtIndexPath:(id)path point:(CGPoint)point;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)_didSelectMap;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
 @implementation PKTransactionDebugDetailsViewController
 
-- (PKTransactionDebugDetailsViewController)initWithTransaction:(id)a3
+- (PKTransactionDebugDetailsViewController)initWithTransaction:(id)transaction
 {
-  v5 = a3;
+  transactionCopy = transaction;
   v9.receiver = self;
   v9.super_class = PKTransactionDebugDetailsViewController;
   v6 = [(PKTransactionDebugDetailsViewController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_transaction, a3);
+    objc_storeStrong(&v6->_transaction, transaction);
     v7->_inBridge = PKBridgeUsesDarkAppearance();
   }
 
@@ -47,44 +47,44 @@
   v4.receiver = self;
   v4.super_class = PKTransactionDebugDetailsViewController;
   [(PKTransactionDebugDetailsViewController *)&v4 viewDidLoad];
-  v3 = [(PKTransactionDebugDetailsViewController *)self tableView];
-  [v3 registerClass:objc_opt_class() forCellReuseIdentifier:@"PKPaymentTransactionTitleValueLabelCellReuseIdentifier"];
+  tableView = [(PKTransactionDebugDetailsViewController *)self tableView];
+  [tableView registerClass:objc_opt_class() forCellReuseIdentifier:@"PKPaymentTransactionTitleValueLabelCellReuseIdentifier"];
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v6 = a3;
+  viewCopy = view;
   v7 = 0;
-  if (a4 > 1)
+  if (section > 1)
   {
-    if (a4 == 2)
+    if (section == 2)
     {
-      v9 = [(PKTransactionDebugDetailsViewController *)self mapsMerchantDetails];
-      v7 = [v9 count] + 1;
+      mapsMerchantDetails = [(PKTransactionDebugDetailsViewController *)self mapsMerchantDetails];
+      v7 = [mapsMerchantDetails count] + 1;
       goto LABEL_11;
     }
 
-    if (a4 == 3)
+    if (section == 3)
     {
-      v8 = [(PKTransactionDebugDetailsViewController *)self mapsBrandDetails];
+      mapsBrandDetails = [(PKTransactionDebugDetailsViewController *)self mapsBrandDetails];
       goto LABEL_9;
     }
   }
 
   else
   {
-    if (!a4)
+    if (!section)
     {
-      v8 = [(PKTransactionDebugDetailsViewController *)self transactionDetails];
+      mapsBrandDetails = [(PKTransactionDebugDetailsViewController *)self transactionDetails];
       goto LABEL_9;
     }
 
-    if (a4 == 1)
+    if (section == 1)
     {
-      v8 = [(PKTransactionDebugDetailsViewController *)self merchantDetails];
+      mapsBrandDetails = [(PKTransactionDebugDetailsViewController *)self merchantDetails];
 LABEL_9:
-      v9 = v8;
-      v7 = [v8 count];
+      mapsMerchantDetails = mapsBrandDetails;
+      v7 = [mapsBrandDetails count];
 LABEL_11:
     }
   }
@@ -92,34 +92,34 @@ LABEL_11:
   return v7;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  if (a4 > 3)
+  if (section > 3)
   {
     return 0;
   }
 
   else
   {
-    return off_1E80277D0[a4];
+    return off_1E80277D0[section];
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  if ([v5 section])
+  pathCopy = path;
+  if ([pathCopy section])
   {
-    if ([v5 section] == 1)
+    if ([pathCopy section] == 1)
     {
-      v6 = -[PKTransactionDebugDetailsViewController _merchantInfoCellForIndex:](self, "_merchantInfoCellForIndex:", [v5 row]);
+      v6 = -[PKTransactionDebugDetailsViewController _merchantInfoCellForIndex:](self, "_merchantInfoCellForIndex:", [pathCopy row]);
     }
 
     else
     {
-      v7 = [v5 section];
-      v8 = [v5 row];
-      if (v7 == 2)
+      section = [pathCopy section];
+      v8 = [pathCopy row];
+      if (section == 2)
       {
         [(PKTransactionDebugDetailsViewController *)self _mapsMerchantInfoCellForIndex:v8];
       }
@@ -134,7 +134,7 @@ LABEL_11:
 
   else
   {
-    v6 = -[PKTransactionDebugDetailsViewController _transactionInfoCellForIndex:](self, "_transactionInfoCellForIndex:", [v5 row]);
+    v6 = -[PKTransactionDebugDetailsViewController _transactionInfoCellForIndex:](self, "_transactionInfoCellForIndex:", [pathCopy row]);
   }
 
   v9 = v6;
@@ -142,15 +142,15 @@ LABEL_11:
   return v9;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v25 = a3;
-  v6 = a4;
-  if ([v6 section] != 2 || objc_msgSend(v6, "row") || (-[PKPaymentTransaction merchant](self->_transaction, "merchant"), v23 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v23, "mapsMerchant"), v24 = objc_claimAutoreleasedReturnValue(), v24, v23, !v24))
+  viewCopy = view;
+  pathCopy = path;
+  if ([pathCopy section] != 2 || objc_msgSend(pathCopy, "row") || (-[PKPaymentTransaction merchant](self->_transaction, "merchant"), v23 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v23, "mapsMerchant"), v24 = objc_claimAutoreleasedReturnValue(), v24, v23, !v24))
   {
-    if ([v6 section] == 2)
+    if ([pathCopy section] == 2)
     {
-      v7 = [v25 cellForRowAtIndexPath:v6];
+      v7 = [viewCopy cellForRowAtIndexPath:pathCopy];
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
@@ -159,10 +159,10 @@ LABEL_19:
         goto LABEL_20;
       }
 
-      v8 = [v7 keyLabel];
-      v9 = [v8 text];
+      keyLabel = [v7 keyLabel];
+      text = [keyLabel text];
 
-      v10 = v9;
+      v10 = text;
       v11 = v10;
       if (v10 != @"stylingInfo")
       {
@@ -174,28 +174,28 @@ LABEL_18:
         }
       }
 
-      v13 = [(PKPaymentTransaction *)self->_transaction merchant];
-      v14 = [v13 mapsMerchant];
+      merchant = [(PKPaymentTransaction *)self->_transaction merchant];
+      mapsMerchant = [merchant mapsMerchant];
     }
 
     else
     {
-      if ([v6 section] != 3)
+      if ([pathCopy section] != 3)
       {
         goto LABEL_20;
       }
 
-      v7 = [v25 cellForRowAtIndexPath:v6];
+      v7 = [viewCopy cellForRowAtIndexPath:pathCopy];
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
         goto LABEL_19;
       }
 
-      v15 = [v7 keyLabel];
-      v16 = [v15 text];
+      keyLabel2 = [v7 keyLabel];
+      text2 = [keyLabel2 text];
 
-      v17 = v16;
+      v17 = text2;
       v11 = v17;
       if (v17 != @"stylingInfo")
       {
@@ -212,18 +212,18 @@ LABEL_18:
         }
       }
 
-      v13 = [(PKPaymentTransaction *)self->_transaction merchant];
-      v14 = [v13 mapsBrand];
+      merchant = [(PKPaymentTransaction *)self->_transaction merchant];
+      mapsMerchant = [merchant mapsBrand];
     }
 
-    v19 = v14;
-    v20 = [v14 stylingInfo];
+    v19 = mapsMerchant;
+    stylingInfo = [mapsMerchant stylingInfo];
 
-    if (v20)
+    if (stylingInfo)
     {
-      v21 = [[PKMapsMerchantStylingInfoViewController alloc] initWithStylingInfo:v20];
-      v22 = [(PKTransactionDebugDetailsViewController *)self navigationController];
-      [v22 pushViewController:v21 animated:1];
+      v21 = [[PKMapsMerchantStylingInfoViewController alloc] initWithStylingInfo:stylingInfo];
+      navigationController = [(PKTransactionDebugDetailsViewController *)self navigationController];
+      [navigationController pushViewController:v21 animated:1];
     }
 
     goto LABEL_18;
@@ -233,9 +233,9 @@ LABEL_18:
 LABEL_20:
 }
 
-- (id)tableView:(id)a3 contextMenuConfigurationForRowAtIndexPath:(id)a4 point:(CGPoint)a5
+- (id)tableView:(id)view contextMenuConfigurationForRowAtIndexPath:(id)path point:(CGPoint)point
 {
-  v5 = [a3 cellForRowAtIndexPath:{a4, a5.x, a5.y}];
+  v5 = [view cellForRowAtIndexPath:{path, point.x, point.y}];
   v6 = v5;
   if (!v5 || [v5 accessoryType] == 1)
   {
@@ -245,34 +245,34 @@ LABEL_20:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v6 keyLabel];
-    v8 = [v7 text];
+    keyLabel = [v6 keyLabel];
+    text = [keyLabel text];
 
     [v6 valueLabel];
   }
 
   else
   {
-    v9 = [v6 textLabel];
-    v8 = [v9 text];
+    textLabel = [v6 textLabel];
+    text = [textLabel text];
 
     [v6 detailTextLabel];
   }
   v10 = ;
-  v11 = [v10 text];
+  text2 = [v10 text];
 
-  if (![v8 length])
+  if (![text length])
   {
 
-    v8 = 0;
+    text = 0;
   }
 
-  if ([v11 length])
+  if ([text2 length])
   {
-    v12 = v8 != 0;
-    if (v8 && v11)
+    v12 = text != 0;
+    if (text && text2)
     {
-      v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ : %@", v8, v11];
+      v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ : %@", text, text2];
       goto LABEL_17;
     }
   }
@@ -280,18 +280,18 @@ LABEL_20:
   else
   {
 
-    v11 = 0;
-    v12 = v8 != 0;
+    text2 = 0;
+    v12 = text != 0;
   }
 
   if (v12)
   {
-    v14 = v8;
+    v14 = text;
   }
 
   else
   {
-    v14 = v11;
+    v14 = text2;
   }
 
   v13 = v14;
@@ -346,62 +346,62 @@ void __101__PKTransactionDebugDetailsViewController_tableView_contextMenuConfigu
   [v2 setString:*(a1 + 32)];
 }
 
-- (id)_stringForTransactionStatus:(int64_t)a3
+- (id)_stringForTransactionStatus:(int64_t)status
 {
   v3 = PKPaymentTransactionStatusToString();
-  v4 = [v3 capitalizedString];
+  capitalizedString = [v3 capitalizedString];
 
-  return v4;
+  return capitalizedString;
 }
 
-- (id)_stringForTransactionType:(int64_t)a3
+- (id)_stringForTransactionType:(int64_t)type
 {
-  if ((a3 - 1) > 0x15)
+  if ((type - 1) > 0x15)
   {
     return @"Purchase";
   }
 
   else
   {
-    return off_1E80277F0[a3 - 1];
+    return off_1E80277F0[type - 1];
   }
 }
 
-- (id)_stringForTechnologyType:(int64_t)a3
+- (id)_stringForTechnologyType:(int64_t)type
 {
-  if (a3 > 2)
+  if (type > 2)
   {
     return &stru_1F3BD7330;
   }
 
   else
   {
-    return off_1E80278A0[a3];
+    return off_1E80278A0[type];
   }
 }
 
-- (id)_stringForTransactionSource:(unint64_t)a3
+- (id)_stringForTransactionSource:(unint64_t)source
 {
-  if (a3 > 8)
+  if (source > 8)
   {
     return &stru_1F3BD7330;
   }
 
   else
   {
-    return off_1E80278B8[a3];
+    return off_1E80278B8[source];
   }
 }
 
-- (id)_stringForCreditDebitIndicator:(int64_t)a3
+- (id)_stringForCreditDebitIndicator:(int64_t)indicator
 {
   v3 = @"Unknown";
-  if (a3 == 1)
+  if (indicator == 1)
   {
     v3 = @"Credit";
   }
 
-  if (a3 == 2)
+  if (indicator == 2)
   {
     return @"Debit";
   }
@@ -416,11 +416,11 @@ void __101__PKTransactionDebugDetailsViewController_tableView_contextMenuConfigu
 {
   v199[60] = *MEMORY[0x1E69E9840];
   v198[0] = @"identifier";
-  v3 = [(PKPaymentTransaction *)self->_transaction identifier];
-  v197 = v3;
-  if (v3)
+  identifier = [(PKPaymentTransaction *)self->_transaction identifier];
+  v197 = identifier;
+  if (identifier)
   {
-    v4 = v3;
+    v4 = identifier;
   }
 
   else
@@ -430,12 +430,12 @@ void __101__PKTransactionDebugDetailsViewController_tableView_contextMenuConfigu
 
   v199[0] = v4;
   v198[1] = @"amount";
-  v196 = [(PKPaymentTransaction *)self->_transaction amount];
-  v5 = [v196 stringValue];
-  v195 = v5;
-  if (v5)
+  amount = [(PKPaymentTransaction *)self->_transaction amount];
+  stringValue = [amount stringValue];
+  v195 = stringValue;
+  if (stringValue)
   {
-    v6 = v5;
+    v6 = stringValue;
   }
 
   else
@@ -445,11 +445,11 @@ void __101__PKTransactionDebugDetailsViewController_tableView_contextMenuConfigu
 
   v199[1] = v6;
   v198[2] = @"currencyCode";
-  v7 = [(PKPaymentTransaction *)self->_transaction currencyCode];
-  v194 = v7;
-  if (v7)
+  currencyCode = [(PKPaymentTransaction *)self->_transaction currencyCode];
+  v194 = currencyCode;
+  if (currencyCode)
   {
-    v8 = v7;
+    v8 = currencyCode;
   }
 
   else
@@ -459,8 +459,8 @@ void __101__PKTransactionDebugDetailsViewController_tableView_contextMenuConfigu
 
   v199[2] = v8;
   v198[3] = @"transactionDate";
-  v193 = [(PKPaymentTransaction *)self->_transaction transactionDate];
-  v9 = [v193 description];
+  transactionDate = [(PKPaymentTransaction *)self->_transaction transactionDate];
+  v9 = [transactionDate description];
   v192 = v9;
   if (v9)
   {
@@ -489,11 +489,11 @@ void __101__PKTransactionDebugDetailsViewController_tableView_contextMenuConfigu
 
   v199[4] = v12;
   v198[5] = @"displayLocation";
-  v13 = [(PKPaymentTransaction *)self->_transaction displayLocation];
-  v190 = v13;
-  if (v13)
+  displayLocation = [(PKPaymentTransaction *)self->_transaction displayLocation];
+  v190 = displayLocation;
+  if (displayLocation)
   {
-    v14 = v13;
+    v14 = displayLocation;
   }
 
   else
@@ -503,11 +503,11 @@ void __101__PKTransactionDebugDetailsViewController_tableView_contextMenuConfigu
 
   v199[5] = v14;
   v198[6] = @"serviceIdentifier";
-  v15 = [(PKPaymentTransaction *)self->_transaction serviceIdentifier];
-  v189 = v15;
-  if (v15)
+  serviceIdentifier = [(PKPaymentTransaction *)self->_transaction serviceIdentifier];
+  v189 = serviceIdentifier;
+  if (serviceIdentifier)
   {
-    v16 = v15;
+    v16 = serviceIdentifier;
   }
 
   else
@@ -517,11 +517,11 @@ void __101__PKTransactionDebugDetailsViewController_tableView_contextMenuConfigu
 
   v199[6] = v16;
   v198[7] = @"paymentHash";
-  v17 = [(PKPaymentTransaction *)self->_transaction paymentHash];
-  v188 = v17;
-  if (v17)
+  paymentHash = [(PKPaymentTransaction *)self->_transaction paymentHash];
+  v188 = paymentHash;
+  if (paymentHash)
   {
-    v18 = v17;
+    v18 = paymentHash;
   }
 
   else
@@ -531,11 +531,11 @@ void __101__PKTransactionDebugDetailsViewController_tableView_contextMenuConfigu
 
   v199[7] = v18;
   v198[8] = @"locality";
-  v19 = [(PKPaymentTransaction *)self->_transaction locality];
-  v187 = v19;
-  if (v19)
+  locality = [(PKPaymentTransaction *)self->_transaction locality];
+  v187 = locality;
+  if (locality)
   {
-    v20 = v19;
+    v20 = locality;
   }
 
   else
@@ -545,11 +545,11 @@ void __101__PKTransactionDebugDetailsViewController_tableView_contextMenuConfigu
 
   v199[8] = v20;
   v198[9] = @"administrativeArea";
-  v21 = [(PKPaymentTransaction *)self->_transaction administrativeArea];
-  v186 = v21;
-  if (v21)
+  administrativeArea = [(PKPaymentTransaction *)self->_transaction administrativeArea];
+  v186 = administrativeArea;
+  if (administrativeArea)
   {
-    v22 = v21;
+    v22 = administrativeArea;
   }
 
   else
@@ -559,8 +559,8 @@ void __101__PKTransactionDebugDetailsViewController_tableView_contextMenuConfigu
 
   v199[9] = v22;
   v198[10] = @"location";
-  v185 = [(PKPaymentTransaction *)self->_transaction location];
-  v23 = [v185 description];
+  location = [(PKPaymentTransaction *)self->_transaction location];
+  v23 = [location description];
   v184 = v23;
   if (v23)
   {
@@ -574,8 +574,8 @@ void __101__PKTransactionDebugDetailsViewController_tableView_contextMenuConfigu
 
   v199[10] = v24;
   v198[11] = @"locationDate";
-  v183 = [(PKPaymentTransaction *)self->_transaction locationDate];
-  v25 = [v183 description];
+  locationDate = [(PKPaymentTransaction *)self->_transaction locationDate];
+  v25 = [locationDate description];
   v182 = v25;
   if (v25)
   {
@@ -589,12 +589,12 @@ void __101__PKTransactionDebugDetailsViewController_tableView_contextMenuConfigu
 
   v199[11] = v26;
   v198[12] = @"timeZone";
-  v181 = [(PKPaymentTransaction *)self->_transaction timeZone];
-  v27 = [v181 name];
-  v180 = v27;
-  if (v27)
+  timeZone = [(PKPaymentTransaction *)self->_transaction timeZone];
+  name = [timeZone name];
+  v180 = name;
+  if (name)
   {
-    v28 = v27;
+    v28 = name;
   }
 
   else
@@ -604,8 +604,8 @@ void __101__PKTransactionDebugDetailsViewController_tableView_contextMenuConfigu
 
   v199[12] = v28;
   v198[13] = @"statusChangeDate";
-  v179 = [(PKPaymentTransaction *)self->_transaction transactionStatusChangedDate];
-  v29 = [v179 description];
+  transactionStatusChangedDate = [(PKPaymentTransaction *)self->_transaction transactionStatusChangedDate];
+  v29 = [transactionStatusChangedDate description];
   v178 = v29;
   if (v29)
   {
@@ -627,14 +627,14 @@ void __101__PKTransactionDebugDetailsViewController_tableView_contextMenuConfigu
   v199[14] = v177;
   v198[15] = @"horizontalAccuracy";
   v35 = MEMORY[0x1E696AEC0];
-  v176 = [(PKPaymentTransaction *)self->_transaction location];
-  [v176 horizontalAccuracy];
+  location2 = [(PKPaymentTransaction *)self->_transaction location];
+  [location2 horizontalAccuracy];
   v175 = [v35 stringWithFormat:@"%1.f", v36];
   v199[15] = v175;
   v198[16] = @"verticalAccuracy";
   v37 = MEMORY[0x1E696AEC0];
-  v174 = [(PKPaymentTransaction *)self->_transaction location];
-  [v174 verticalAccuracy];
+  location3 = [(PKPaymentTransaction *)self->_transaction location];
+  [location3 verticalAccuracy];
   v173 = [v37 stringWithFormat:@"%1.f", v38];
   v199[16] = v173;
   v198[17] = @"transactionStatus";
@@ -677,11 +677,11 @@ void __101__PKTransactionDebugDetailsViewController_tableView_contextMenuConfigu
   v168 = [(PKTransactionDebugDetailsViewController *)self _stringForTransactionSource:[(PKPaymentTransaction *)self->_transaction cardType]];
   v199[23] = v168;
   v198[24] = @"accountIdentifier";
-  v41 = [(PKPaymentTransaction *)self->_transaction accountIdentifier];
-  v167 = v41;
-  if (v41)
+  accountIdentifier = [(PKPaymentTransaction *)self->_transaction accountIdentifier];
+  v167 = accountIdentifier;
+  if (accountIdentifier)
   {
-    v42 = v41;
+    v42 = accountIdentifier;
   }
 
   else
@@ -691,12 +691,12 @@ void __101__PKTransactionDebugDetailsViewController_tableView_contextMenuConfigu
 
   v199[24] = v42;
   v198[25] = @"rewardsTotal";
-  v166 = [(PKPaymentTransaction *)self->_transaction rewardsTotalAmount];
-  v43 = [v166 stringValue];
-  v165 = v43;
-  if (v43)
+  rewardsTotalAmount = [(PKPaymentTransaction *)self->_transaction rewardsTotalAmount];
+  stringValue2 = [rewardsTotalAmount stringValue];
+  v165 = stringValue2;
+  if (stringValue2)
   {
-    v44 = v43;
+    v44 = stringValue2;
   }
 
   else
@@ -706,11 +706,11 @@ void __101__PKTransactionDebugDetailsViewController_tableView_contextMenuConfigu
 
   v199[25] = v44;
   v198[26] = @"rewardsCurrency";
-  v45 = [(PKPaymentTransaction *)self->_transaction rewardsTotalCurrencyCode];
-  v164 = v45;
-  if (v45)
+  rewardsTotalCurrencyCode = [(PKPaymentTransaction *)self->_transaction rewardsTotalCurrencyCode];
+  v164 = rewardsTotalCurrencyCode;
+  if (rewardsTotalCurrencyCode)
   {
-    v46 = v45;
+    v46 = rewardsTotalCurrencyCode;
   }
 
   else
@@ -735,11 +735,11 @@ void __101__PKTransactionDebugDetailsViewController_tableView_contextMenuConfigu
 
   v199[27] = v48;
   v198[28] = @"lifecycleIdentifier";
-  v49 = [(PKPaymentTransaction *)self->_transaction lifecycleIdentifier];
-  v162 = v49;
-  if (v49)
+  lifecycleIdentifier = [(PKPaymentTransaction *)self->_transaction lifecycleIdentifier];
+  v162 = lifecycleIdentifier;
+  if (lifecycleIdentifier)
   {
-    v50 = v49;
+    v50 = lifecycleIdentifier;
   }
 
   else
@@ -749,11 +749,11 @@ void __101__PKTransactionDebugDetailsViewController_tableView_contextMenuConfigu
 
   v199[28] = v50;
   v198[29] = @"authNetworkData";
-  v51 = [(PKPaymentTransaction *)self->_transaction authNetworkData];
-  v161 = v51;
-  if (v51)
+  authNetworkData = [(PKPaymentTransaction *)self->_transaction authNetworkData];
+  v161 = authNetworkData;
+  if (authNetworkData)
   {
-    v52 = v51;
+    v52 = authNetworkData;
   }
 
   else
@@ -763,11 +763,11 @@ void __101__PKTransactionDebugDetailsViewController_tableView_contextMenuConfigu
 
   v199[29] = v52;
   v198[30] = @"clearingNetworkData";
-  v53 = [(PKPaymentTransaction *)self->_transaction clearingNetworkData];
-  v160 = v53;
-  if (v53)
+  clearingNetworkData = [(PKPaymentTransaction *)self->_transaction clearingNetworkData];
+  v160 = clearingNetworkData;
+  if (clearingNetworkData)
   {
-    v54 = v53;
+    v54 = clearingNetworkData;
   }
 
   else
@@ -777,11 +777,11 @@ void __101__PKTransactionDebugDetailsViewController_tableView_contextMenuConfigu
 
   v199[30] = v54;
   v198[31] = @"cardIdentifier";
-  v55 = [(PKPaymentTransaction *)self->_transaction cardIdentifier];
-  v159 = v55;
-  if (v55)
+  cardIdentifier = [(PKPaymentTransaction *)self->_transaction cardIdentifier];
+  v159 = cardIdentifier;
+  if (cardIdentifier)
   {
-    v56 = v55;
+    v56 = cardIdentifier;
   }
 
   else
@@ -791,11 +791,11 @@ void __101__PKTransactionDebugDetailsViewController_tableView_contextMenuConfigu
 
   v199[31] = v56;
   v198[32] = @"referenceIdentifier";
-  v57 = [(PKPaymentTransaction *)self->_transaction referenceIdentifier];
-  v158 = v57;
-  if (v57)
+  referenceIdentifier = [(PKPaymentTransaction *)self->_transaction referenceIdentifier];
+  v158 = referenceIdentifier;
+  if (referenceIdentifier)
   {
-    v58 = v57;
+    v58 = referenceIdentifier;
   }
 
   else
@@ -829,8 +829,8 @@ void __101__PKTransactionDebugDetailsViewController_tableView_contextMenuConfigu
 
   v199[34] = v60;
   v198[35] = @"lastMerchantReprocessingDate";
-  v157 = [(PKPaymentTransaction *)self->_transaction lastMerchantReprocessingDate];
-  v61 = [v157 description];
+  lastMerchantReprocessingDate = [(PKPaymentTransaction *)self->_transaction lastMerchantReprocessingDate];
+  v61 = [lastMerchantReprocessingDate description];
   v156 = v61;
   if (v61)
   {
@@ -844,9 +844,9 @@ void __101__PKTransactionDebugDetailsViewController_tableView_contextMenuConfigu
 
   v199[35] = v62;
   v198[36] = @"lastForceReprocessingRequest";
-  v155 = [(PKPaymentTransaction *)self->_transaction merchant];
-  v154 = [v155 lastForceMerchantReprocessingRequestDate];
-  v63 = [v154 description];
+  merchant = [(PKPaymentTransaction *)self->_transaction merchant];
+  lastForceMerchantReprocessingRequestDate = [merchant lastForceMerchantReprocessingRequestDate];
+  v63 = [lastForceMerchantReprocessingRequestDate description];
   v153 = v63;
   if (v63)
   {
@@ -861,11 +861,11 @@ void __101__PKTransactionDebugDetailsViewController_tableView_contextMenuConfigu
   v199[36] = v64;
   v198[37] = @"releasedDataElements";
   v65 = MEMORY[0x1E696AD98];
-  v152 = [(PKPaymentTransaction *)self->_transaction releasedData];
-  v151 = [v152 elements];
-  v150 = [v65 numberWithUnsignedInteger:{objc_msgSend(v151, "count")}];
-  v149 = [v150 stringValue];
-  v199[37] = v149;
+  releasedData = [(PKPaymentTransaction *)self->_transaction releasedData];
+  elements = [releasedData elements];
+  v150 = [v65 numberWithUnsignedInteger:{objc_msgSend(elements, "count")}];
+  stringValue3 = [v150 stringValue];
+  v199[37] = stringValue3;
   v198[38] = @"isBankConnectTransaction";
   if ([(PKPaymentTransaction *)self->_transaction isBankConnectTransaction])
   {
@@ -879,8 +879,8 @@ void __101__PKTransactionDebugDetailsViewController_tableView_contextMenuConfigu
 
   v199[38] = v66;
   v198[39] = @"classifiedByMaps";
-  v148 = [(PKPaymentTransaction *)self->_transaction bankConnectMetadata];
-  if ([v148 classifiedByMaps])
+  bankConnectMetadata = [(PKPaymentTransaction *)self->_transaction bankConnectMetadata];
+  if ([bankConnectMetadata classifiedByMaps])
   {
     v67 = @"YES";
   }
@@ -892,8 +892,8 @@ void __101__PKTransactionDebugDetailsViewController_tableView_contextMenuConfigu
 
   v199[39] = v67;
   v198[40] = @"roundTransactionDate";
-  v147 = [(PKPaymentTransaction *)self->_transaction bankConnectMetadata];
-  if ([v147 roundTransactionDate])
+  bankConnectMetadata2 = [(PKPaymentTransaction *)self->_transaction bankConnectMetadata];
+  if ([bankConnectMetadata2 roundTransactionDate])
   {
     v68 = @"YES";
   }
@@ -905,17 +905,17 @@ void __101__PKTransactionDebugDetailsViewController_tableView_contextMenuConfigu
 
   v199[40] = v68;
   v198[41] = @"bankConnectCreditDebitIndicator";
-  v146 = [(PKPaymentTransaction *)self->_transaction bankConnectMetadata];
-  v145 = -[PKTransactionDebugDetailsViewController _stringForCreditDebitIndicator:](self, "_stringForCreditDebitIndicator:", [v146 creditDebitIndicator]);
+  bankConnectMetadata3 = [(PKPaymentTransaction *)self->_transaction bankConnectMetadata];
+  v145 = -[PKTransactionDebugDetailsViewController _stringForCreditDebitIndicator:](self, "_stringForCreditDebitIndicator:", [bankConnectMetadata3 creditDebitIndicator]);
   v199[41] = v145;
   v198[42] = @"bankConnectDigitalServicingURL";
-  v144 = [(PKPaymentTransaction *)self->_transaction bankConnectMetadata];
-  v143 = [v144 digitalServicingURL];
-  v69 = [v143 absoluteString];
-  v142 = v69;
-  if (v69)
+  bankConnectMetadata4 = [(PKPaymentTransaction *)self->_transaction bankConnectMetadata];
+  digitalServicingURL = [bankConnectMetadata4 digitalServicingURL];
+  absoluteString = [digitalServicingURL absoluteString];
+  v142 = absoluteString;
+  if (absoluteString)
   {
-    v70 = v69;
+    v70 = absoluteString;
   }
 
   else
@@ -925,13 +925,13 @@ void __101__PKTransactionDebugDetailsViewController_tableView_contextMenuConfigu
 
   v199[42] = v70;
   v198[43] = @"bankConnectPayNowURL";
-  v141 = [(PKPaymentTransaction *)self->_transaction bankConnectMetadata];
-  v140 = [v141 payNowURL];
-  v71 = [v140 absoluteString];
-  v139 = v71;
-  if (v71)
+  bankConnectMetadata5 = [(PKPaymentTransaction *)self->_transaction bankConnectMetadata];
+  payNowURL = [bankConnectMetadata5 payNowURL];
+  absoluteString2 = [payNowURL absoluteString];
+  v139 = absoluteString2;
+  if (absoluteString2)
   {
-    v72 = v71;
+    v72 = absoluteString2;
   }
 
   else
@@ -941,13 +941,13 @@ void __101__PKTransactionDebugDetailsViewController_tableView_contextMenuConfigu
 
   v199[43] = v72;
   v198[44] = @"bankConnectPostInstallmentURL";
-  v138 = [(PKPaymentTransaction *)self->_transaction bankConnectMetadata];
-  v137 = [v138 postInstallmentURL];
-  v73 = [v137 absoluteString];
-  v136 = v73;
-  if (v73)
+  bankConnectMetadata6 = [(PKPaymentTransaction *)self->_transaction bankConnectMetadata];
+  postInstallmentURL = [bankConnectMetadata6 postInstallmentURL];
+  absoluteString3 = [postInstallmentURL absoluteString];
+  v136 = absoluteString3;
+  if (absoluteString3)
   {
-    v74 = v73;
+    v74 = absoluteString3;
   }
 
   else
@@ -957,13 +957,13 @@ void __101__PKTransactionDebugDetailsViewController_tableView_contextMenuConfigu
 
   v199[44] = v74;
   v198[45] = @"bankConnectRedeemRewardsURL";
-  v135 = [(PKPaymentTransaction *)self->_transaction bankConnectMetadata];
-  v134 = [v135 redeemRewardsURL];
-  v75 = [v134 absoluteString];
-  v133 = v75;
-  if (v75)
+  bankConnectMetadata7 = [(PKPaymentTransaction *)self->_transaction bankConnectMetadata];
+  redeemRewardsURL = [bankConnectMetadata7 redeemRewardsURL];
+  absoluteString4 = [redeemRewardsURL absoluteString];
+  v133 = absoluteString4;
+  if (absoluteString4)
   {
-    v76 = v75;
+    v76 = absoluteString4;
   }
 
   else
@@ -973,12 +973,12 @@ void __101__PKTransactionDebugDetailsViewController_tableView_contextMenuConfigu
 
   v199[45] = v76;
   v198[46] = @"originalTransactionDescription";
-  v132 = [(PKPaymentTransaction *)self->_transaction bankConnectMetadata];
-  v77 = [v132 originalTransactionDescription];
-  v131 = v77;
-  if (v77)
+  bankConnectMetadata8 = [(PKPaymentTransaction *)self->_transaction bankConnectMetadata];
+  originalTransactionDescription = [bankConnectMetadata8 originalTransactionDescription];
+  v131 = originalTransactionDescription;
+  if (originalTransactionDescription)
   {
-    v78 = v77;
+    v78 = originalTransactionDescription;
   }
 
   else
@@ -989,16 +989,16 @@ void __101__PKTransactionDebugDetailsViewController_tableView_contextMenuConfigu
   v199[46] = v78;
   v198[47] = @"creditDebitIndicator";
   v79 = MEMORY[0x1E696AEC0];
-  v130 = [(PKPaymentTransaction *)self->_transaction bankConnectMetadata];
-  v129 = [v79 stringWithFormat:@"%ld", objc_msgSend(v130, "creditDebitIndicator")];
+  bankConnectMetadata9 = [(PKPaymentTransaction *)self->_transaction bankConnectMetadata];
+  v129 = [v79 stringWithFormat:@"%ld", objc_msgSend(bankConnectMetadata9, "creditDebitIndicator")];
   v199[47] = v129;
   v198[48] = @"bankCategoryDescription";
-  v128 = [(PKPaymentTransaction *)self->_transaction bankConnectMetadata];
-  v80 = [v128 bankCategoryDescription];
-  v127 = v80;
-  if (v80)
+  bankConnectMetadata10 = [(PKPaymentTransaction *)self->_transaction bankConnectMetadata];
+  bankCategoryDescription = [bankConnectMetadata10 bankCategoryDescription];
+  v127 = bankCategoryDescription;
+  if (bankCategoryDescription)
   {
-    v81 = v80;
+    v81 = bankCategoryDescription;
   }
 
   else
@@ -1008,12 +1008,12 @@ void __101__PKTransactionDebugDetailsViewController_tableView_contextMenuConfigu
 
   v199[48] = v81;
   v198[49] = @"bankMerchantAddress";
-  v126 = [(PKPaymentTransaction *)self->_transaction bankConnectMetadata];
-  v82 = [v126 bankMerchantAddress];
-  v125 = v82;
-  if (v82)
+  bankConnectMetadata11 = [(PKPaymentTransaction *)self->_transaction bankConnectMetadata];
+  bankMerchantAddress = [bankConnectMetadata11 bankMerchantAddress];
+  v125 = bankMerchantAddress;
+  if (bankMerchantAddress)
   {
-    v83 = v82;
+    v83 = bankMerchantAddress;
   }
 
   else
@@ -1023,12 +1023,12 @@ void __101__PKTransactionDebugDetailsViewController_tableView_contextMenuConfigu
 
   v199[49] = v83;
   v198[50] = @"bankMerchantCategoryCode";
-  v124 = [(PKPaymentTransaction *)self->_transaction bankConnectMetadata];
-  v84 = [v124 bankMerchantCategoryCode];
-  v123 = v84;
-  if (v84)
+  bankConnectMetadata12 = [(PKPaymentTransaction *)self->_transaction bankConnectMetadata];
+  bankMerchantCategoryCode = [bankConnectMetadata12 bankMerchantCategoryCode];
+  v123 = bankMerchantCategoryCode;
+  if (bankMerchantCategoryCode)
   {
-    v85 = v84;
+    v85 = bankMerchantCategoryCode;
   }
 
   else
@@ -1038,12 +1038,12 @@ void __101__PKTransactionDebugDetailsViewController_tableView_contextMenuConfigu
 
   v199[50] = v85;
   v198[51] = @"bankMerchantName";
-  v122 = [(PKPaymentTransaction *)self->_transaction bankConnectMetadata];
-  v86 = [v122 bankMerchantName];
-  v121 = v86;
-  if (v86)
+  bankConnectMetadata13 = [(PKPaymentTransaction *)self->_transaction bankConnectMetadata];
+  bankMerchantName = [bankConnectMetadata13 bankMerchantName];
+  v121 = bankMerchantName;
+  if (bankMerchantName)
   {
-    v87 = v86;
+    v87 = bankMerchantName;
   }
 
   else
@@ -1053,12 +1053,12 @@ void __101__PKTransactionDebugDetailsViewController_tableView_contextMenuConfigu
 
   v199[51] = v87;
   v198[52] = @"bankMerchantNumber";
-  v120 = [(PKPaymentTransaction *)self->_transaction bankConnectMetadata];
-  v88 = [v120 bankMerchantNumber];
-  v119 = v88;
-  if (v88)
+  bankConnectMetadata14 = [(PKPaymentTransaction *)self->_transaction bankConnectMetadata];
+  bankMerchantNumber = [bankConnectMetadata14 bankMerchantNumber];
+  v119 = bankMerchantNumber;
+  if (bankMerchantNumber)
   {
-    v89 = v88;
+    v89 = bankMerchantNumber;
   }
 
   else
@@ -1068,12 +1068,12 @@ void __101__PKTransactionDebugDetailsViewController_tableView_contextMenuConfigu
 
   v199[52] = v89;
   v198[53] = @"bankStandardIndustrialClassificationCode";
-  v118 = [(PKPaymentTransaction *)self->_transaction bankConnectMetadata];
-  v90 = [v118 bankStandardIndustrialClassificationCode];
-  v117 = v90;
-  if (v90)
+  bankConnectMetadata15 = [(PKPaymentTransaction *)self->_transaction bankConnectMetadata];
+  bankStandardIndustrialClassificationCode = [bankConnectMetadata15 bankStandardIndustrialClassificationCode];
+  v117 = bankStandardIndustrialClassificationCode;
+  if (bankStandardIndustrialClassificationCode)
   {
-    v91 = v90;
+    v91 = bankStandardIndustrialClassificationCode;
   }
 
   else
@@ -1083,11 +1083,11 @@ void __101__PKTransactionDebugDetailsViewController_tableView_contextMenuConfigu
 
   v199[53] = v91;
   v198[54] = @"transactionSourceIdentifier";
-  v92 = [(PKPaymentTransaction *)self->_transaction transactionSourceIdentifier];
-  v116 = v92;
-  if (v92)
+  transactionSourceIdentifier = [(PKPaymentTransaction *)self->_transaction transactionSourceIdentifier];
+  v116 = transactionSourceIdentifier;
+  if (transactionSourceIdentifier)
   {
-    v93 = v92;
+    v93 = transactionSourceIdentifier;
   }
 
   else
@@ -1097,8 +1097,8 @@ void __101__PKTransactionDebugDetailsViewController_tableView_contextMenuConfigu
 
   v199[54] = v93;
   v198[55] = @"rewards";
-  v115 = [(PKPaymentTransaction *)self->_transaction rewards];
-  v94 = [v115 description];
+  rewards = [(PKPaymentTransaction *)self->_transaction rewards];
+  v94 = [rewards description];
   v95 = v94;
   if (v94)
   {
@@ -1112,13 +1112,13 @@ void __101__PKTransactionDebugDetailsViewController_tableView_contextMenuConfigu
 
   v199[55] = v96;
   v198[56] = @"paymentIdentifier";
-  v114 = [(PKPaymentTransaction *)self->_transaction payments];
-  v97 = [v114 firstObject];
-  v98 = [v97 identifier];
-  v99 = v98;
-  if (v98)
+  payments = [(PKPaymentTransaction *)self->_transaction payments];
+  firstObject = [payments firstObject];
+  identifier2 = [firstObject identifier];
+  v99 = identifier2;
+  if (identifier2)
   {
-    v100 = v98;
+    v100 = identifier2;
   }
 
   else
@@ -1128,13 +1128,13 @@ void __101__PKTransactionDebugDetailsViewController_tableView_contextMenuConfigu
 
   v199[56] = v100;
   v198[57] = @"paymentReferenceIdentifier";
-  v101 = [(PKPaymentTransaction *)self->_transaction payments];
-  v102 = [v101 firstObject];
-  v103 = [v102 referenceIdentifier];
-  v104 = v103;
-  if (v103)
+  payments2 = [(PKPaymentTransaction *)self->_transaction payments];
+  firstObject2 = [payments2 firstObject];
+  referenceIdentifier2 = [firstObject2 referenceIdentifier];
+  v104 = referenceIdentifier2;
+  if (referenceIdentifier2)
   {
-    v105 = v103;
+    v105 = referenceIdentifier2;
   }
 
   else
@@ -1144,21 +1144,21 @@ void __101__PKTransactionDebugDetailsViewController_tableView_contextMenuConfigu
 
   v199[57] = v105;
   v198[58] = @"isIssuerInstallmentTransaction";
-  v106 = [(PKPaymentTransaction *)self->_transaction isIssuerInstallmentTransaction];
+  isIssuerInstallmentTransaction = [(PKPaymentTransaction *)self->_transaction isIssuerInstallmentTransaction];
   v107 = @"NO";
-  if (v106)
+  if (isIssuerInstallmentTransaction)
   {
     v107 = @"YES";
   }
 
   v199[58] = v107;
   v198[59] = @"issuerInstallmentManagementURL";
-  v108 = [(PKPaymentTransaction *)self->_transaction issuerInstallmentManagementURL];
-  v109 = [v108 absoluteString];
-  v110 = v109;
-  if (v109)
+  issuerInstallmentManagementURL = [(PKPaymentTransaction *)self->_transaction issuerInstallmentManagementURL];
+  absoluteString5 = [issuerInstallmentManagementURL absoluteString];
+  v110 = absoluteString5;
+  if (absoluteString5)
   {
-    v111 = v109;
+    v111 = absoluteString5;
   }
 
   else
@@ -1175,16 +1175,16 @@ void __101__PKTransactionDebugDetailsViewController_tableView_contextMenuConfigu
 - (NSDictionary)merchantDetails
 {
   v51[16] = *MEMORY[0x1E69E9840];
-  v2 = [(PKPaymentTransaction *)self->_transaction merchant];
+  merchant = [(PKPaymentTransaction *)self->_transaction merchant];
   v50[0] = @"industryCode";
-  v49 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%ld", objc_msgSend(v2, "industryCode")];
+  v49 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%ld", objc_msgSend(merchant, "industryCode")];
   v51[0] = v49;
   v50[1] = @"industryCategory";
-  v3 = [v2 industryCategory];
-  v48 = v3;
-  if (v3)
+  industryCategory = [merchant industryCategory];
+  v48 = industryCategory;
+  if (industryCategory)
   {
-    v4 = v3;
+    v4 = industryCategory;
   }
 
   else
@@ -1194,11 +1194,11 @@ void __101__PKTransactionDebugDetailsViewController_tableView_contextMenuConfigu
 
   v51[1] = v4;
   v50[2] = @"name";
-  v5 = [v2 name];
-  v47 = v5;
-  if (v5)
+  name = [merchant name];
+  v47 = name;
+  if (name)
   {
-    v6 = v5;
+    v6 = name;
   }
 
   else
@@ -1208,11 +1208,11 @@ void __101__PKTransactionDebugDetailsViewController_tableView_contextMenuConfigu
 
   v51[2] = v6;
   v50[3] = @"rawName";
-  v7 = [v2 rawName];
-  v46 = v7;
-  if (v7)
+  rawName = [merchant rawName];
+  v46 = rawName;
+  if (rawName)
   {
-    v8 = v7;
+    v8 = rawName;
   }
 
   else
@@ -1222,11 +1222,11 @@ void __101__PKTransactionDebugDetailsViewController_tableView_contextMenuConfigu
 
   v51[3] = v8;
   v50[4] = @"rawCANL";
-  v9 = [v2 rawCANL];
-  v45 = v9;
-  if (v9)
+  rawCANL = [merchant rawCANL];
+  v45 = rawCANL;
+  if (rawCANL)
   {
-    v10 = v9;
+    v10 = rawCANL;
   }
 
   else
@@ -1236,11 +1236,11 @@ void __101__PKTransactionDebugDetailsViewController_tableView_contextMenuConfigu
 
   v51[4] = v10;
   v50[5] = @"rawCity";
-  v11 = [v2 rawCity];
-  v44 = v11;
-  if (v11)
+  rawCity = [merchant rawCity];
+  v44 = rawCity;
+  if (rawCity)
   {
-    v12 = v11;
+    v12 = rawCity;
   }
 
   else
@@ -1250,11 +1250,11 @@ void __101__PKTransactionDebugDetailsViewController_tableView_contextMenuConfigu
 
   v51[5] = v12;
   v50[6] = @"rawState";
-  v13 = [v2 rawState];
-  v43 = v13;
-  if (v13)
+  rawState = [merchant rawState];
+  v43 = rawState;
+  if (rawState)
   {
-    v14 = v13;
+    v14 = rawState;
   }
 
   else
@@ -1264,11 +1264,11 @@ void __101__PKTransactionDebugDetailsViewController_tableView_contextMenuConfigu
 
   v51[6] = v14;
   v50[7] = @"rawCountry";
-  v15 = [v2 rawCountry];
-  v16 = v15;
-  if (v15)
+  rawCountry = [merchant rawCountry];
+  v16 = rawCountry;
+  if (rawCountry)
   {
-    v17 = v15;
+    v17 = rawCountry;
   }
 
   else
@@ -1278,11 +1278,11 @@ void __101__PKTransactionDebugDetailsViewController_tableView_contextMenuConfigu
 
   v51[7] = v17;
   v50[8] = @"city";
-  v18 = [v2 city];
-  v19 = v18;
-  if (v18)
+  city = [merchant city];
+  v19 = city;
+  if (city)
   {
-    v20 = v18;
+    v20 = city;
   }
 
   else
@@ -1292,11 +1292,11 @@ void __101__PKTransactionDebugDetailsViewController_tableView_contextMenuConfigu
 
   v51[8] = v20;
   v50[9] = @"state";
-  v21 = [v2 state];
-  v22 = v21;
-  if (v21)
+  state = [merchant state];
+  v22 = state;
+  if (state)
   {
-    v23 = v21;
+    v23 = state;
   }
 
   else
@@ -1306,7 +1306,7 @@ void __101__PKTransactionDebugDetailsViewController_tableView_contextMenuConfigu
 
   v51[9] = v23;
   v50[10] = @"zip";
-  v24 = [v2 zip];
+  v24 = [merchant zip];
   v25 = v24;
   if (v24)
   {
@@ -1320,11 +1320,11 @@ void __101__PKTransactionDebugDetailsViewController_tableView_contextMenuConfigu
 
   v51[10] = v26;
   v50[11] = @"displayName";
-  v27 = [v2 displayName];
-  v28 = v27;
-  if (v27)
+  displayName = [merchant displayName];
+  v28 = displayName;
+  if (displayName)
   {
-    v29 = v27;
+    v29 = displayName;
   }
 
   else
@@ -1334,11 +1334,11 @@ void __101__PKTransactionDebugDetailsViewController_tableView_contextMenuConfigu
 
   v51[11] = v29;
   v50[12] = @"merchantIdentifier";
-  v30 = [v2 merchantIdentifier];
-  v31 = v30;
-  if (v30)
+  merchantIdentifier = [merchant merchantIdentifier];
+  v31 = merchantIdentifier;
+  if (merchantIdentifier)
   {
-    v32 = v30;
+    v32 = merchantIdentifier;
   }
 
   else
@@ -1348,7 +1348,7 @@ void __101__PKTransactionDebugDetailsViewController_tableView_contextMenuConfigu
 
   v51[12] = v32;
   v50[13] = @"fallbackCategory";
-  [v2 fallbackcategory];
+  [merchant fallbackcategory];
   v33 = PKMerchantCategoryToString();
   v34 = v33;
   if (v33)
@@ -1363,11 +1363,11 @@ void __101__PKTransactionDebugDetailsViewController_tableView_contextMenuConfigu
 
   v51[13] = v35;
   v50[14] = @"fallbackDetailedCategory";
-  v36 = [v2 fallbackDetailedCategory];
-  v37 = v36;
-  if (v36)
+  fallbackDetailedCategory = [merchant fallbackDetailedCategory];
+  v37 = fallbackDetailedCategory;
+  if (fallbackDetailedCategory)
   {
-    v38 = v36;
+    v38 = fallbackDetailedCategory;
   }
 
   else
@@ -1377,9 +1377,9 @@ void __101__PKTransactionDebugDetailsViewController_tableView_contextMenuConfigu
 
   v51[14] = v38;
   v50[15] = @"localMatch";
-  v39 = [v2 mapsDataIsFromLocalMatch];
+  mapsDataIsFromLocalMatch = [merchant mapsDataIsFromLocalMatch];
   v40 = @"NO";
-  if (v39)
+  if (mapsDataIsFromLocalMatch)
   {
     v40 = @"YES";
   }
@@ -1393,23 +1393,23 @@ void __101__PKTransactionDebugDetailsViewController_tableView_contextMenuConfigu
 - (NSDictionary)mapsMerchantDetails
 {
   v43[11] = *MEMORY[0x1E69E9840];
-  v2 = [(PKPaymentTransaction *)self->_transaction merchant];
-  v3 = [v2 mapsMerchant];
+  merchant = [(PKPaymentTransaction *)self->_transaction merchant];
+  mapsMerchant = [merchant mapsMerchant];
 
   v42[0] = @"identifier";
-  v41 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(v3, "identifier")}];
-  v40 = [v41 stringValue];
-  v43[0] = v40;
+  v41 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(mapsMerchant, "identifier")}];
+  stringValue = [v41 stringValue];
+  v43[0] = stringValue;
   v42[1] = @"resultProviderIdentifier";
-  v39 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v3, "resultProviderIdentifier")}];
-  v38 = [v39 stringValue];
-  v43[1] = v38;
+  v39 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(mapsMerchant, "resultProviderIdentifier")}];
+  stringValue2 = [v39 stringValue];
+  v43[1] = stringValue2;
   v42[2] = @"name";
-  v4 = [v3 name];
-  v37 = v4;
-  if (v4)
+  name = [mapsMerchant name];
+  v37 = name;
+  if (name)
   {
-    v5 = v4;
+    v5 = name;
   }
 
   else
@@ -1419,11 +1419,11 @@ void __101__PKTransactionDebugDetailsViewController_tableView_contextMenuConfigu
 
   v43[2] = v5;
   v42[3] = @"phoneNumber";
-  v6 = [v3 phoneNumber];
-  v36 = v6;
-  if (v6)
+  phoneNumber = [mapsMerchant phoneNumber];
+  v36 = phoneNumber;
+  if (phoneNumber)
   {
-    v7 = v6;
+    v7 = phoneNumber;
   }
 
   else
@@ -1433,12 +1433,12 @@ void __101__PKTransactionDebugDetailsViewController_tableView_contextMenuConfigu
 
   v43[3] = v7;
   v42[4] = @"url";
-  v35 = [v3 url];
-  v8 = [v35 absoluteString];
-  v34 = v8;
-  if (v8)
+  v35 = [mapsMerchant url];
+  absoluteString = [v35 absoluteString];
+  v34 = absoluteString;
+  if (absoluteString)
   {
-    v9 = v8;
+    v9 = absoluteString;
   }
 
   else
@@ -1448,8 +1448,8 @@ void __101__PKTransactionDebugDetailsViewController_tableView_contextMenuConfigu
 
   v43[4] = v9;
   v42[5] = @"location";
-  v33 = [v3 location];
-  v10 = [v33 description];
+  location = [mapsMerchant location];
+  v10 = [location description];
   v11 = v10;
   if (v10)
   {
@@ -1463,8 +1463,8 @@ void __101__PKTransactionDebugDetailsViewController_tableView_contextMenuConfigu
 
   v43[5] = v12;
   v42[6] = @"postalAddress";
-  v32 = [v3 postalAddress];
-  v13 = [v32 description];
+  postalAddress = [mapsMerchant postalAddress];
+  v13 = [postalAddress description];
   v14 = v13;
   if (v13)
   {
@@ -1478,7 +1478,7 @@ void __101__PKTransactionDebugDetailsViewController_tableView_contextMenuConfigu
 
   v43[6] = v15;
   v42[7] = @"category";
-  [v3 category];
+  [mapsMerchant category];
   v16 = PKMerchantCategoryToString();
   v17 = v16;
   if (v16)
@@ -1493,11 +1493,11 @@ void __101__PKTransactionDebugDetailsViewController_tableView_contextMenuConfigu
 
   v43[7] = v18;
   v42[8] = @"detailedCategory";
-  v19 = [v3 detailedCategory];
-  v20 = v19;
-  if (v19)
+  detailedCategory = [mapsMerchant detailedCategory];
+  v20 = detailedCategory;
+  if (detailedCategory)
   {
-    v21 = v19;
+    v21 = detailedCategory;
   }
 
   else
@@ -1507,12 +1507,12 @@ void __101__PKTransactionDebugDetailsViewController_tableView_contextMenuConfigu
 
   v43[8] = v21;
   v42[9] = @"heroImageURL";
-  v22 = [v3 heroImageURL];
-  v23 = [v22 absoluteString];
-  v24 = v23;
-  if (v23)
+  heroImageURL = [mapsMerchant heroImageURL];
+  absoluteString2 = [heroImageURL absoluteString];
+  v24 = absoluteString2;
+  if (absoluteString2)
   {
-    v25 = v23;
+    v25 = absoluteString2;
   }
 
   else
@@ -1522,8 +1522,8 @@ void __101__PKTransactionDebugDetailsViewController_tableView_contextMenuConfigu
 
   v43[9] = v25;
   v42[10] = @"stylingInfo";
-  v26 = [v3 stylingInfo];
-  v27 = [v26 description];
+  stylingInfo = [mapsMerchant stylingInfo];
+  v27 = [stylingInfo description];
   v28 = v27;
   if (v27)
   {
@@ -1544,23 +1544,23 @@ void __101__PKTransactionDebugDetailsViewController_tableView_contextMenuConfigu
 - (id)mapsBrandDetails
 {
   v35[9] = *MEMORY[0x1E69E9840];
-  v2 = [(PKPaymentTransaction *)self->_transaction merchant];
-  v3 = [v2 mapsBrand];
+  merchant = [(PKPaymentTransaction *)self->_transaction merchant];
+  mapsBrand = [merchant mapsBrand];
 
   v34[0] = @"identifier";
-  v33 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(v3, "identifier")}];
-  v32 = [v33 stringValue];
-  v35[0] = v32;
+  v33 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(mapsBrand, "identifier")}];
+  stringValue = [v33 stringValue];
+  v35[0] = stringValue;
   v34[1] = @"resultProviderIdentifier";
-  v31 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v3, "resultProviderIdentifier")}];
-  v30 = [v31 stringValue];
-  v35[1] = v30;
+  v31 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(mapsBrand, "resultProviderIdentifier")}];
+  stringValue2 = [v31 stringValue];
+  v35[1] = stringValue2;
   v34[2] = @"name";
-  v4 = [v3 name];
-  v29 = v4;
-  if (v4)
+  name = [mapsBrand name];
+  v29 = name;
+  if (name)
   {
-    v5 = v4;
+    v5 = name;
   }
 
   else
@@ -1570,11 +1570,11 @@ void __101__PKTransactionDebugDetailsViewController_tableView_contextMenuConfigu
 
   v35[2] = v5;
   v34[3] = @"phoneNumber";
-  v6 = [v3 phoneNumber];
-  v7 = v6;
-  if (v6)
+  phoneNumber = [mapsBrand phoneNumber];
+  v7 = phoneNumber;
+  if (phoneNumber)
   {
-    v8 = v6;
+    v8 = phoneNumber;
   }
 
   else
@@ -1584,12 +1584,12 @@ void __101__PKTransactionDebugDetailsViewController_tableView_contextMenuConfigu
 
   v35[3] = v8;
   v34[4] = @"url";
-  v28 = [v3 url];
-  v9 = [v28 absoluteString];
-  v10 = v9;
-  if (v9)
+  v28 = [mapsBrand url];
+  absoluteString = [v28 absoluteString];
+  v10 = absoluteString;
+  if (absoluteString)
   {
-    v11 = v9;
+    v11 = absoluteString;
   }
 
   else
@@ -1599,12 +1599,12 @@ void __101__PKTransactionDebugDetailsViewController_tableView_contextMenuConfigu
 
   v35[4] = v11;
   v34[5] = @"logoURL";
-  v12 = [v3 logoURL];
-  v13 = [v12 absoluteString];
-  v14 = v13;
-  if (v13)
+  logoURL = [mapsBrand logoURL];
+  absoluteString2 = [logoURL absoluteString];
+  v14 = absoluteString2;
+  if (absoluteString2)
   {
-    v15 = v13;
+    v15 = absoluteString2;
   }
 
   else
@@ -1614,7 +1614,7 @@ void __101__PKTransactionDebugDetailsViewController_tableView_contextMenuConfigu
 
   v35[5] = v15;
   v34[6] = @"category";
-  [v3 category];
+  [mapsBrand category];
   v16 = PKMerchantCategoryToString();
   v17 = v16;
   if (v16)
@@ -1629,11 +1629,11 @@ void __101__PKTransactionDebugDetailsViewController_tableView_contextMenuConfigu
 
   v35[6] = v18;
   v34[7] = @"detailedCategory";
-  v19 = [v3 detailedCategory];
-  v20 = v19;
-  if (v19)
+  detailedCategory = [mapsBrand detailedCategory];
+  v20 = detailedCategory;
+  if (detailedCategory)
   {
-    v21 = v19;
+    v21 = detailedCategory;
   }
 
   else
@@ -1643,8 +1643,8 @@ void __101__PKTransactionDebugDetailsViewController_tableView_contextMenuConfigu
 
   v35[7] = v21;
   v34[8] = @"stylingInfo";
-  v22 = [v3 stylingInfo];
-  v23 = [v22 description];
+  stylingInfo = [mapsBrand stylingInfo];
+  v23 = [stylingInfo description];
   v24 = v23;
   if (v23)
   {
@@ -1662,65 +1662,65 @@ void __101__PKTransactionDebugDetailsViewController_tableView_contextMenuConfigu
   return v26;
 }
 
-- (id)_transactionInfoCellForIndex:(int64_t)a3
+- (id)_transactionInfoCellForIndex:(int64_t)index
 {
-  v5 = [(PKTransactionDebugDetailsViewController *)self transactionDetails];
-  v6 = [v5 allKeys];
-  v7 = [v6 objectAtIndexedSubscript:a3];
-  v8 = [(PKTransactionDebugDetailsViewController *)self transactionDetails];
-  v9 = [v8 allValues];
-  v10 = [v9 objectAtIndexedSubscript:a3];
+  transactionDetails = [(PKTransactionDebugDetailsViewController *)self transactionDetails];
+  allKeys = [transactionDetails allKeys];
+  v7 = [allKeys objectAtIndexedSubscript:index];
+  transactionDetails2 = [(PKTransactionDebugDetailsViewController *)self transactionDetails];
+  allValues = [transactionDetails2 allValues];
+  v10 = [allValues objectAtIndexedSubscript:index];
   v11 = [(PKTransactionDebugDetailsViewController *)self _cellWithPrimaryText:v7 infoText:v10];
 
   return v11;
 }
 
-- (id)_merchantInfoCellForIndex:(int64_t)a3
+- (id)_merchantInfoCellForIndex:(int64_t)index
 {
-  v5 = [(PKTransactionDebugDetailsViewController *)self merchantDetails];
-  v6 = [v5 allKeys];
-  v7 = [v6 objectAtIndexedSubscript:a3];
-  v8 = [(PKTransactionDebugDetailsViewController *)self merchantDetails];
-  v9 = [v8 allValues];
-  v10 = [v9 objectAtIndexedSubscript:a3];
+  merchantDetails = [(PKTransactionDebugDetailsViewController *)self merchantDetails];
+  allKeys = [merchantDetails allKeys];
+  v7 = [allKeys objectAtIndexedSubscript:index];
+  merchantDetails2 = [(PKTransactionDebugDetailsViewController *)self merchantDetails];
+  allValues = [merchantDetails2 allValues];
+  v10 = [allValues objectAtIndexedSubscript:index];
   v11 = [(PKTransactionDebugDetailsViewController *)self _cellWithPrimaryText:v7 infoText:v10];
 
   return v11;
 }
 
-- (id)_mapsMerchantInfoCellForIndex:(int64_t)a3
+- (id)_mapsMerchantInfoCellForIndex:(int64_t)index
 {
-  if (a3)
+  if (index)
   {
-    v4 = a3;
-    v5 = [(PKTransactionDebugDetailsViewController *)self mapsMerchantDetails];
-    v6 = [v5 allKeys];
-    v7 = [v6 objectAtIndex:--v4];
+    indexCopy = index;
+    mapsMerchantDetails = [(PKTransactionDebugDetailsViewController *)self mapsMerchantDetails];
+    allKeys = [mapsMerchantDetails allKeys];
+    v7 = [allKeys objectAtIndex:--indexCopy];
 
-    v8 = [(PKTransactionDebugDetailsViewController *)self mapsMerchantDetails];
-    v9 = [v8 allValues];
-    v10 = [v9 objectAtIndex:v4];
+    mapsMerchantDetails2 = [(PKTransactionDebugDetailsViewController *)self mapsMerchantDetails];
+    allValues = [mapsMerchantDetails2 allValues];
+    v10 = [allValues objectAtIndex:indexCopy];
 
-    v11 = [(PKTransactionDebugDetailsViewController *)self _cellWithPrimaryText:v7 infoText:v10];
+    _mapsCell = [(PKTransactionDebugDetailsViewController *)self _cellWithPrimaryText:v7 infoText:v10];
   }
 
   else
   {
-    v11 = [(PKTransactionDebugDetailsViewController *)self _mapsCell];
+    _mapsCell = [(PKTransactionDebugDetailsViewController *)self _mapsCell];
   }
 
-  return v11;
+  return _mapsCell;
 }
 
-- (id)_mapsBrandInfoCellForIndex:(int64_t)a3
+- (id)_mapsBrandInfoCellForIndex:(int64_t)index
 {
-  v5 = [(PKTransactionDebugDetailsViewController *)self mapsBrandDetails];
-  v6 = [v5 allKeys];
-  v7 = [v6 objectAtIndex:a3];
+  mapsBrandDetails = [(PKTransactionDebugDetailsViewController *)self mapsBrandDetails];
+  allKeys = [mapsBrandDetails allKeys];
+  v7 = [allKeys objectAtIndex:index];
 
-  v8 = [(PKTransactionDebugDetailsViewController *)self mapsBrandDetails];
-  v9 = [v8 allValues];
-  v10 = [v9 objectAtIndex:a3];
+  mapsBrandDetails2 = [(PKTransactionDebugDetailsViewController *)self mapsBrandDetails];
+  allValues = [mapsBrandDetails2 allValues];
+  v10 = [allValues objectAtIndex:index];
 
   v11 = [(PKTransactionDebugDetailsViewController *)self _cellWithPrimaryText:v7 infoText:v10];
 
@@ -1737,12 +1737,12 @@ void __101__PKTransactionDebugDetailsViewController_tableView_contextMenuConfigu
     self->_mapsCell = v4;
 
     [(UITableViewCell *)self->_mapsCell setAccessoryType:1];
-    v6 = [(UITableViewCell *)self->_mapsCell textLabel];
-    [v6 setText:@"View in Maps"];
+    textLabel = [(UITableViewCell *)self->_mapsCell textLabel];
+    [textLabel setText:@"View in Maps"];
 
-    v7 = [(UITableViewCell *)self->_mapsCell textLabel];
-    v8 = [MEMORY[0x1E69DC888] systemBlueColor];
-    [v7 setTextColor:v8];
+    textLabel2 = [(UITableViewCell *)self->_mapsCell textLabel];
+    systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
+    [textLabel2 setTextColor:systemBlueColor];
 
     mapsCell = self->_mapsCell;
   }
@@ -1750,33 +1750,33 @@ void __101__PKTransactionDebugDetailsViewController_tableView_contextMenuConfigu
   return mapsCell;
 }
 
-- (id)_cellWithPrimaryText:(id)a3 infoText:(id)a4
+- (id)_cellWithPrimaryText:(id)text infoText:(id)infoText
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PKTransactionDebugDetailsViewController *)self tableView];
-  v9 = [v8 dequeueReusableCellWithIdentifier:@"PKPaymentTransactionTitleValueLabelCellReuseIdentifier"];
+  infoTextCopy = infoText;
+  textCopy = text;
+  tableView = [(PKTransactionDebugDetailsViewController *)self tableView];
+  v9 = [tableView dequeueReusableCellWithIdentifier:@"PKPaymentTransactionTitleValueLabelCellReuseIdentifier"];
 
   [v9 setSelectionStyle:0];
-  v10 = [(PKTransactionDebugDetailsViewController *)self tableView];
-  [v10 separatorInset];
+  tableView2 = [(PKTransactionDebugDetailsViewController *)self tableView];
+  [tableView2 separatorInset];
   v12 = v11;
 
   [v9 setLayoutMargins:{0.0, v12, 0.0, v12}];
-  v13 = [v9 keyLabel];
-  [v13 setText:v7];
+  keyLabel = [v9 keyLabel];
+  [keyLabel setText:textCopy];
 
-  v14 = [MEMORY[0x1E69DC888] labelColor];
-  [v13 setTextColor:v14];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  [keyLabel setTextColor:labelColor];
 
   if (self->_inBridge)
   {
     v15 = PKBridgeTextColor();
-    [v13 setTextColor:v15];
+    [keyLabel setTextColor:v15];
   }
 
-  v16 = [v9 valueLabel];
-  [v16 setText:v6];
+  valueLabel = [v9 valueLabel];
+  [valueLabel setText:infoTextCopy];
 
   return v9;
 }
@@ -1784,18 +1784,18 @@ void __101__PKTransactionDebugDetailsViewController_tableView_contextMenuConfigu
 - (void)_didSelectMap
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v3 = [(PKPaymentTransaction *)self->_transaction merchant];
-  v4 = [v3 mapsMerchant];
+  merchant = [(PKPaymentTransaction *)self->_transaction merchant];
+  mapsMerchant = [merchant mapsMerchant];
 
   v5 = objc_alloc_init(MEMORY[0x1E696F260]);
-  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(v4, "identifier")}];
+  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(mapsMerchant, "identifier")}];
   v13[0] = v6;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:1];
   [v5 _setMuids:v7];
 
-  if ([v4 resultProviderIdentifier])
+  if ([mapsMerchant resultProviderIdentifier])
   {
-    [v5 _setResultProviderID:{objc_msgSend(v4, "resultProviderIdentifier")}];
+    [v5 _setResultProviderID:{objc_msgSend(mapsMerchant, "resultProviderIdentifier")}];
   }
 
   v8 = [objc_alloc(MEMORY[0x1E69DC638]) initWithActivityIndicatorStyle:100];
@@ -1808,8 +1808,8 @@ void __101__PKTransactionDebugDetailsViewController_tableView_contextMenuConfigu
   v11[2] = __56__PKTransactionDebugDetailsViewController__didSelectMap__block_invoke;
   v11[3] = &unk_1E80277B0;
   v11[4] = self;
-  v12 = v4;
-  v10 = v4;
+  v12 = mapsMerchant;
+  v10 = mapsMerchant;
   [v9 startWithCompletionHandler:v11];
 }
 

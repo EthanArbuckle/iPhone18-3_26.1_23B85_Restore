@@ -1,50 +1,50 @@
 @interface HDWorkoutClusterEntity
-+ (BOOL)deleteWorkoutClusterWithUUID:(id)a3 profile:(id)a4 error:(id *)a5;
-+ (BOOL)updateWorkoutClusterWithUUID:(id)a3 relevanceValue:(id)a4 lastWorkoutUUID:(id)a5 bestWorkoutUUID:(id)a6 workoutUUIDsToAssociate:(id)a7 workoutUUIDsToRemove:(id)a8 profile:(id)a9 error:(id *)a10;
-+ (BOOL)updateWorkoutClusterWithUUID:(id)a3 routeLabel:(id)a4 profile:(id)a5 error:(id *)a6;
-+ (BOOL)updateWorkoutClusterWithUUID:(id)a3 routeSnapshot:(id)a4 profile:(id)a5 error:(id *)a6;
++ (BOOL)deleteWorkoutClusterWithUUID:(id)d profile:(id)profile error:(id *)error;
++ (BOOL)updateWorkoutClusterWithUUID:(id)d relevanceValue:(id)value lastWorkoutUUID:(id)iD bestWorkoutUUID:(id)uID workoutUUIDsToAssociate:(id)associate workoutUUIDsToRemove:(id)remove profile:(id)profile error:(id *)self0;
++ (BOOL)updateWorkoutClusterWithUUID:(id)d routeLabel:(id)label profile:(id)profile error:(id *)error;
++ (BOOL)updateWorkoutClusterWithUUID:(id)d routeSnapshot:(id)snapshot profile:(id)profile error:(id *)error;
 + (id)_baseEntityProperties;
-+ (id)_clusterModelForSQLiteRow:(void *)a3 database:(uint64_t)a4 error:;
-+ (id)_workoutClusterEntityForUUID:(void *)a3 database:(void *)a4 error:;
-+ (id)_workoutEntityForUUID:(void *)a3 database:(void *)a4 error:;
-+ (id)_workoutUUIDForPersistentID:(void *)a3 database:(uint64_t)a4 error:;
-+ (id)clusterEntitiesWithTransaction:(id)a3 limit:(unint64_t)a4 error:(id *)a5;
-+ (id)clusterUUIDsForWorkoutUUIDs:(id)a3 profile:(id)a4 error:(id *)a5;
-+ (id)entityForClusterUUID:(id)a3 transaction:(id)a4 error:(id *)a5;
++ (id)_clusterModelForSQLiteRow:(void *)row database:(uint64_t)database error:;
++ (id)_workoutClusterEntityForUUID:(void *)d database:(void *)database error:;
++ (id)_workoutEntityForUUID:(void *)d database:(void *)database error:;
++ (id)_workoutUUIDForPersistentID:(void *)d database:(uint64_t)database error:;
++ (id)clusterEntitiesWithTransaction:(id)transaction limit:(unint64_t)limit error:(id *)error;
++ (id)clusterUUIDsForWorkoutUUIDs:(id)ds profile:(id)profile error:(id *)error;
++ (id)entityForClusterUUID:(id)d transaction:(id)transaction error:(id *)error;
 + (id)foreignKeys;
-+ (id)insertWorkoutCluster:(id)a3 profile:(id)a4 error:(id *)a5;
++ (id)insertWorkoutCluster:(id)cluster profile:(id)profile error:(id *)error;
 + (id)privateSubEntities;
 + (id)uniquedColumns;
-+ (id)workoutClusterContainingWorkoutUUID:(id)a3 profile:(id)a4 error:(id *)a5;
-+ (id)workoutClustersForProfile:(id)a3 limit:(unint64_t)a4 error:(id *)a5;
-+ (id)workoutEntityForUUID:(id)a3 transaction:(id)a4 error:(id *)a5;
-+ (id)workoutUUIDsForClusterUUID:(id)a3 profile:(id)a4 error:(id *)a5;
-- (BOOL)modelPropertiesWithTransaction:(id)a3 error:(id *)a4 handler:(id)a5;
-- (id)snapshotEntityWithTransaction:(id)a3 error:(id *)a4;
-- (id)workoutRouteSnapshotWithTransaction:(id)a3 error:(id *)a4;
-- (id)workoutUUIDsWithTransaction:(id)a3 error:(id *)a4;
-- (uint64_t)_associateWorkoutUUIDs:(void *)a3 transaction:(void *)a4 error:;
++ (id)workoutClusterContainingWorkoutUUID:(id)d profile:(id)profile error:(id *)error;
++ (id)workoutClustersForProfile:(id)profile limit:(unint64_t)limit error:(id *)error;
++ (id)workoutEntityForUUID:(id)d transaction:(id)transaction error:(id *)error;
++ (id)workoutUUIDsForClusterUUID:(id)d profile:(id)profile error:(id *)error;
+- (BOOL)modelPropertiesWithTransaction:(id)transaction error:(id *)error handler:(id)handler;
+- (id)snapshotEntityWithTransaction:(id)transaction error:(id *)error;
+- (id)workoutRouteSnapshotWithTransaction:(id)transaction error:(id *)error;
+- (id)workoutUUIDsWithTransaction:(id)transaction error:(id *)error;
+- (uint64_t)_associateWorkoutUUIDs:(void *)ds transaction:(void *)transaction error:;
 @end
 
 @implementation HDWorkoutClusterEntity
 
-+ (id)entityForClusterUUID:(id)a3 transaction:(id)a4 error:(id *)a5
++ (id)entityForClusterUUID:(id)d transaction:(id)transaction error:(id *)error
 {
-  v8 = a3;
-  v9 = [a4 databaseForEntityClass:a1];
-  v10 = [(HDWorkoutClusterEntity *)a1 _workoutClusterEntityForUUID:v8 database:v9 error:a5];
+  dCopy = d;
+  v9 = [transaction databaseForEntityClass:self];
+  v10 = [(HDWorkoutClusterEntity *)self _workoutClusterEntityForUUID:dCopy database:v9 error:error];
 
   return v10;
 }
 
-+ (id)_workoutClusterEntityForUUID:(void *)a3 database:(void *)a4 error:
++ (id)_workoutClusterEntityForUUID:(void *)d database:(void *)database error:
 {
   v6 = a2;
-  v7 = a3;
+  dCopy = d;
   objc_opt_self();
   v8 = [MEMORY[0x277D10B18] predicateWithProperty:@"uuid" equalToValue:v6];
   v15 = 0;
-  v9 = [(HDSQLiteEntity *)HDWorkoutClusterEntity anyInDatabase:v7 predicate:v8 error:&v15];
+  v9 = [(HDSQLiteEntity *)HDWorkoutClusterEntity anyInDatabase:dCopy predicate:v8 error:&v15];
 
   v10 = v15;
   v11 = v10;
@@ -53,10 +53,10 @@
     v12 = v10;
     if (v11)
     {
-      if (a4)
+      if (database)
       {
         v13 = v12;
-        *a4 = v12;
+        *database = v12;
       }
 
       else
@@ -68,36 +68,36 @@
 
   else
   {
-    [MEMORY[0x277CCA9B8] hk_assignError:a4 code:118 format:{@"Cluster (%@) not found", v6}];
+    [MEMORY[0x277CCA9B8] hk_assignError:database code:118 format:{@"Cluster (%@) not found", v6}];
   }
 
   return v9;
 }
 
-+ (id)insertWorkoutCluster:(id)a3 profile:(id)a4 error:(id *)a5
++ (id)insertWorkoutCluster:(id)cluster profile:(id)profile error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  clusterCopy = cluster;
+  profileCopy = profile;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
   v24 = __Block_byref_object_copy__205;
   v25 = __Block_byref_object_dispose__205;
   v26 = 0;
-  v10 = [v9 database];
+  database = [profileCopy database];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __61__HDWorkoutClusterEntity_insertWorkoutCluster_profile_error___block_invoke;
   v16[3] = &unk_27861C150;
-  v20 = a1;
-  v11 = v8;
+  selfCopy = self;
+  v11 = clusterCopy;
   v17 = v11;
   v19 = &v21;
-  v12 = v9;
+  v12 = profileCopy;
   v18 = v12;
-  LODWORD(a5) = [a1 performWriteTransactionWithHealthDatabase:v10 error:a5 block:v16];
+  LODWORD(error) = [self performWriteTransactionWithHealthDatabase:database error:error block:v16];
 
-  if (a5)
+  if (error)
   {
     v13 = v22[5];
   }
@@ -180,14 +180,14 @@ uint64_t __61__HDWorkoutClusterEntity_insertWorkoutCluster_profile_error___block
   return v26;
 }
 
-+ (id)_workoutEntityForUUID:(void *)a3 database:(void *)a4 error:
++ (id)_workoutEntityForUUID:(void *)d database:(void *)database error:
 {
   v6 = a2;
-  v7 = a3;
+  dCopy = d;
   objc_opt_self();
   v8 = HDDataEntityPredicateForDataUUID();
   v14 = 0;
-  v9 = [(HDDataEntity *)HDWorkoutEntity anyInDatabase:v7 predicate:v8 error:&v14];
+  v9 = [(HDDataEntity *)HDWorkoutEntity anyInDatabase:dCopy predicate:v8 error:&v14];
 
   v10 = v14;
   if (v9 | v10)
@@ -195,10 +195,10 @@ uint64_t __61__HDWorkoutClusterEntity_insertWorkoutCluster_profile_error___block
     v11 = v10;
     if (v10)
     {
-      if (a4)
+      if (database)
       {
         v12 = v11;
-        *a4 = v11;
+        *database = v11;
       }
 
       else
@@ -210,7 +210,7 @@ uint64_t __61__HDWorkoutClusterEntity_insertWorkoutCluster_profile_error___block
 
   else
   {
-    [MEMORY[0x277CCA9B8] hk_assignError:a4 code:118 format:{@"Workout (%@) not found", v6}];
+    [MEMORY[0x277CCA9B8] hk_assignError:database code:118 format:{@"Workout (%@) not found", v6}];
   }
 
   return v9;
@@ -249,11 +249,11 @@ void __61__HDWorkoutClusterEntity_insertWorkoutCluster_profile_error___block_inv
   MEMORY[0x22AAC6B50](a2, @"modified_date", v6);
 }
 
-- (uint64_t)_associateWorkoutUUIDs:(void *)a3 transaction:(void *)a4 error:
+- (uint64_t)_associateWorkoutUUIDs:(void *)ds transaction:(void *)transaction error:
 {
   v28 = *MEMORY[0x277D85DE8];
   v7 = a2;
-  v8 = a3;
+  dsCopy = ds;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
@@ -274,10 +274,10 @@ void __61__HDWorkoutClusterEntity_insertWorkoutCluster_profile_error___block_inv
         }
 
         v13 = *(*(&v23 + 1) + 8 * i);
-        v14 = v8;
+        v14 = dsCopy;
         v15 = v13;
-        v16 = [v14 databaseForEntity:a1];
-        v17 = [HDWorkoutClusterEntity _workoutEntityForUUID:v15 database:v16 error:a4];
+        v16 = [v14 databaseForEntity:self];
+        v17 = [HDWorkoutClusterEntity _workoutEntityForUUID:v15 database:v16 error:transaction];
 
         if (!v17)
         {
@@ -287,7 +287,7 @@ LABEL_13:
           goto LABEL_14;
         }
 
-        v18 = [HDWorkoutClusterComponentEntity associateWorkout:v17 withCluster:a1 transaction:v14 error:a4];
+        v18 = [HDWorkoutClusterComponentEntity associateWorkout:v17 withCluster:self transaction:v14 error:transaction];
 
         if (!v18)
         {
@@ -317,13 +317,13 @@ LABEL_14:
   return v19;
 }
 
-+ (id)clusterEntitiesWithTransaction:(id)a3 limit:(unint64_t)a4 error:(id *)a5
++ (id)clusterEntitiesWithTransaction:(id)transaction limit:(unint64_t)limit error:(id *)error
 {
   v8 = MEMORY[0x277CBEB18];
-  v9 = a3;
+  transactionCopy = transaction;
   v10 = objc_alloc_init(v8);
-  v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"SELECT ROWID FROM RacePreviousRoute_workout_cluster ORDER BY relevance DESC LIMIT %lu", a4];
-  v12 = [v9 databaseForEntityClass:a1];
+  limit = [MEMORY[0x277CCACA8] stringWithFormat:@"SELECT ROWID FROM RacePreviousRoute_workout_cluster ORDER BY relevance DESC LIMIT %lu", limit];
+  v12 = [transactionCopy databaseForEntityClass:self];
 
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
@@ -331,7 +331,7 @@ LABEL_14:
   v16[3] = &unk_278614098;
   v13 = v10;
   v17 = v13;
-  LODWORD(v10) = [v12 executeSQL:v11 error:a5 bindingHandler:0 enumerationHandler:v16];
+  LODWORD(v10) = [v12 executeSQL:limit error:error bindingHandler:0 enumerationHandler:v16];
 
   v14 = 0;
   if (v10)
@@ -351,24 +351,24 @@ uint64_t __69__HDWorkoutClusterEntity_clusterEntitiesWithTransaction_limit_error
   return 1;
 }
 
-+ (id)workoutClustersForProfile:(id)a3 limit:(unint64_t)a4 error:(id *)a5
++ (id)workoutClustersForProfile:(id)profile limit:(unint64_t)limit error:(id *)error
 {
   v8 = MEMORY[0x277CBEB18];
-  v9 = a3;
+  profileCopy = profile;
   v10 = objc_alloc_init(v8);
-  v11 = [v9 database];
+  database = [profileCopy database];
 
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __64__HDWorkoutClusterEntity_workoutClustersForProfile_limit_error___block_invoke;
   v15[3] = &unk_27861E450;
-  v17 = a1;
-  v18 = a4;
+  selfCopy = self;
+  limitCopy = limit;
   v12 = v10;
   v16 = v12;
-  LODWORD(a5) = [a1 performReadTransactionWithHealthDatabase:v11 error:a5 block:v15];
+  LODWORD(error) = [self performReadTransactionWithHealthDatabase:database error:error block:v15];
 
-  if (a5)
+  if (error)
   {
     v13 = [v12 copy];
   }
@@ -420,9 +420,9 @@ BOOL __64__HDWorkoutClusterEntity_workoutClustersForProfile_limit_error___block_
   return v6 != 0;
 }
 
-+ (id)_clusterModelForSQLiteRow:(void *)a3 database:(uint64_t)a4 error:
++ (id)_clusterModelForSQLiteRow:(void *)row database:(uint64_t)database error:
 {
-  v5 = a3;
+  rowCopy = row;
   v6 = objc_opt_self();
   v7 = HDSQLiteColumnWithNameAsUUID();
   v8 = HDSQLiteColumnWithNameAsInt64();
@@ -430,10 +430,10 @@ BOOL __64__HDWorkoutClusterEntity_workoutClustersForProfile_limit_error___block_
   HDSQLiteColumnWithNameAsDouble();
   v11 = v10;
   v12 = HDSQLiteColumnWithNameAsString();
-  v13 = [(HDWorkoutClusterEntity *)v6 _workoutUUIDForPersistentID:v8 database:v5 error:a4];
+  v13 = [(HDWorkoutClusterEntity *)v6 _workoutUUIDForPersistentID:v8 database:rowCopy error:database];
   if (v13)
   {
-    v14 = [(HDWorkoutClusterEntity *)v6 _workoutUUIDForPersistentID:v9 database:v5 error:a4];
+    v14 = [(HDWorkoutClusterEntity *)v6 _workoutUUIDForPersistentID:v9 database:rowCopy error:database];
     if (v14)
     {
       v15 = [objc_alloc(MEMORY[0x277CCDC20]) _initWithUUID:v7 workoutUUIDs:0 lastWorkoutUUID:v13 bestWorkoutUUID:v14 relevanceValue:0 workoutRouteSnapshot:v12 workoutRouteLabel:v11];
@@ -453,28 +453,28 @@ BOOL __64__HDWorkoutClusterEntity_workoutClustersForProfile_limit_error___block_
   return v15;
 }
 
-+ (id)workoutClusterContainingWorkoutUUID:(id)a3 profile:(id)a4 error:(id *)a5
++ (id)workoutClusterContainingWorkoutUUID:(id)d profile:(id)profile error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  dCopy = d;
+  profileCopy = profile;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
   v22 = __Block_byref_object_copy__205;
   v23 = __Block_byref_object_dispose__205;
   v24 = 0;
-  v10 = [v9 database];
+  database = [profileCopy database];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __76__HDWorkoutClusterEntity_workoutClusterContainingWorkoutUUID_profile_error___block_invoke;
   v15[3] = &unk_278616AA0;
-  v18 = a1;
-  v11 = v8;
+  selfCopy = self;
+  v11 = dCopy;
   v16 = v11;
   v17 = &v19;
-  LODWORD(a5) = [a1 performReadTransactionWithHealthDatabase:v10 error:a5 block:v15];
+  LODWORD(error) = [self performReadTransactionWithHealthDatabase:database error:error block:v15];
 
-  if (a5)
+  if (error)
   {
     v12 = v20[5];
   }
@@ -554,26 +554,26 @@ BOOL __76__HDWorkoutClusterEntity_workoutClusterContainingWorkoutUUID_profile_er
   return *(*(*(a1 + 40) + 8) + 40) != 0;
 }
 
-+ (id)clusterUUIDsForWorkoutUUIDs:(id)a3 profile:(id)a4 error:(id *)a5
++ (id)clusterUUIDsForWorkoutUUIDs:(id)ds profile:(id)profile error:(id *)error
 {
-  v8 = a3;
+  dsCopy = ds;
   v9 = MEMORY[0x277CBEB18];
-  v10 = a4;
+  profileCopy = profile;
   v11 = objc_alloc_init(v9);
-  v12 = [v10 database];
+  database = [profileCopy database];
 
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __68__HDWorkoutClusterEntity_clusterUUIDsForWorkoutUUIDs_profile_error___block_invoke;
   v17[3] = &unk_278614698;
-  v20 = a1;
-  v18 = v8;
+  selfCopy = self;
+  v18 = dsCopy;
   v13 = v11;
   v19 = v13;
-  v14 = v8;
-  LODWORD(a5) = [a1 performReadTransactionWithHealthDatabase:v12 error:a5 block:v17];
+  v14 = dsCopy;
+  LODWORD(error) = [self performReadTransactionWithHealthDatabase:database error:error block:v17];
 
-  if (a5)
+  if (error)
   {
     v15 = [v13 copy];
   }
@@ -640,37 +640,37 @@ uint64_t __68__HDWorkoutClusterEntity_clusterUUIDsForWorkoutUUIDs_profile_error_
   return 1;
 }
 
-+ (id)workoutEntityForUUID:(id)a3 transaction:(id)a4 error:(id *)a5
++ (id)workoutEntityForUUID:(id)d transaction:(id)transaction error:(id *)error
 {
-  v8 = a3;
-  v9 = [a4 databaseForEntityClass:a1];
-  v10 = [HDWorkoutClusterEntity _workoutEntityForUUID:v8 database:v9 error:a5];
+  dCopy = d;
+  v9 = [transaction databaseForEntityClass:self];
+  v10 = [HDWorkoutClusterEntity _workoutEntityForUUID:dCopy database:v9 error:error];
 
   return v10;
 }
 
-+ (id)workoutUUIDsForClusterUUID:(id)a3 profile:(id)a4 error:(id *)a5
++ (id)workoutUUIDsForClusterUUID:(id)d profile:(id)profile error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  dCopy = d;
+  profileCopy = profile;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
   v22 = __Block_byref_object_copy__205;
   v23 = __Block_byref_object_dispose__205;
   v24 = 0;
-  v10 = [v9 database];
+  database = [profileCopy database];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __67__HDWorkoutClusterEntity_workoutUUIDsForClusterUUID_profile_error___block_invoke;
   v15[3] = &unk_278616AA0;
-  v18 = a1;
-  v11 = v8;
+  selfCopy = self;
+  v11 = dCopy;
   v16 = v11;
   v17 = &v19;
-  LODWORD(a5) = [(HDHealthEntity *)HDWorkoutClusterEntity performReadTransactionWithHealthDatabase:v10 error:a5 block:v15];
+  LODWORD(error) = [(HDHealthEntity *)HDWorkoutClusterEntity performReadTransactionWithHealthDatabase:database error:error block:v15];
 
-  if (a5)
+  if (error)
   {
     v12 = v20[5];
   }
@@ -711,11 +711,11 @@ BOOL __67__HDWorkoutClusterEntity_workoutUUIDsForClusterUUID_profile_error___blo
   return v12;
 }
 
-- (id)workoutUUIDsWithTransaction:(id)a3 error:(id *)a4
+- (id)workoutUUIDsWithTransaction:(id)transaction error:(id *)error
 {
-  v6 = a3;
+  transactionCopy = transaction;
   v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v8 = [v6 databaseForEntity:self];
+  v8 = [transactionCopy databaseForEntity:self];
   v13 = MEMORY[0x277D85DD0];
   v14 = 3221225472;
   v15 = __60__HDWorkoutClusterEntity_workoutUUIDsWithTransaction_error___block_invoke;
@@ -724,7 +724,7 @@ BOOL __67__HDWorkoutClusterEntity_workoutUUIDsForClusterUUID_profile_error___blo
   v17 = v9;
   v10 = v7;
   v18 = v10;
-  if (self && [HDWorkoutClusterComponentEntity enumerateWorkoutsForCluster:self transaction:v6 error:a4 block:&v13])
+  if (self && [HDWorkoutClusterComponentEntity enumerateWorkoutsForCluster:self transaction:transactionCopy error:error block:&v13])
   {
     v11 = [v10 copy];
   }
@@ -748,37 +748,37 @@ BOOL __60__HDWorkoutClusterEntity_workoutUUIDsWithTransaction_error___block_invo
   return v4 != 0;
 }
 
-+ (id)_workoutUUIDForPersistentID:(void *)a3 database:(uint64_t)a4 error:
++ (id)_workoutUUIDForPersistentID:(void *)d database:(uint64_t)database error:
 {
-  v6 = a3;
+  dCopy = d;
   objc_opt_self();
   v7 = [MEMORY[0x277CCABB0] numberWithLongLong:a2];
   v8 = HDDataEntityPredicateForRowID(v7, 1);
 
-  v9 = [(HDSQLiteEntity *)HDDataEntity propertyValueForAnyInDatabase:v6 property:@"uuid" predicate:v8 error:a4];
+  v9 = [(HDSQLiteEntity *)HDDataEntity propertyValueForAnyInDatabase:dCopy property:@"uuid" predicate:v8 error:database];
 
   v10 = _HDUUIDForSQLiteValue();
 
   return v10;
 }
 
-+ (BOOL)updateWorkoutClusterWithUUID:(id)a3 routeSnapshot:(id)a4 profile:(id)a5 error:(id *)a6
++ (BOOL)updateWorkoutClusterWithUUID:(id)d routeSnapshot:(id)snapshot profile:(id)profile error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = [a5 database];
+  dCopy = d;
+  snapshotCopy = snapshot;
+  database = [profile database];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __83__HDWorkoutClusterEntity_updateWorkoutClusterWithUUID_routeSnapshot_profile_error___block_invoke;
   v16[3] = &unk_278614698;
-  v18 = v11;
-  v19 = a1;
-  v17 = v10;
-  v13 = v11;
-  v14 = v10;
-  LOBYTE(a6) = [a1 performWriteTransactionWithHealthDatabase:v12 error:a6 block:v16];
+  v18 = snapshotCopy;
+  selfCopy = self;
+  v17 = dCopy;
+  v13 = snapshotCopy;
+  v14 = dCopy;
+  LOBYTE(error) = [self performWriteTransactionWithHealthDatabase:database error:error block:v16];
 
-  return a6;
+  return error;
 }
 
 uint64_t __83__HDWorkoutClusterEntity_updateWorkoutClusterWithUUID_routeSnapshot_profile_error___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -810,23 +810,23 @@ uint64_t __83__HDWorkoutClusterEntity_updateWorkoutClusterWithUUID_routeSnapshot
   return v11;
 }
 
-+ (BOOL)updateWorkoutClusterWithUUID:(id)a3 routeLabel:(id)a4 profile:(id)a5 error:(id *)a6
++ (BOOL)updateWorkoutClusterWithUUID:(id)d routeLabel:(id)label profile:(id)profile error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = [a5 database];
+  dCopy = d;
+  labelCopy = label;
+  database = [profile database];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __80__HDWorkoutClusterEntity_updateWorkoutClusterWithUUID_routeLabel_profile_error___block_invoke;
   v16[3] = &unk_278614698;
-  v18 = v11;
-  v19 = a1;
-  v17 = v10;
-  v13 = v11;
-  v14 = v10;
-  LOBYTE(a6) = [a1 performWriteTransactionWithHealthDatabase:v12 error:a6 block:v16];
+  v18 = labelCopy;
+  selfCopy = self;
+  v17 = dCopy;
+  v13 = labelCopy;
+  v14 = dCopy;
+  LOBYTE(error) = [self performWriteTransactionWithHealthDatabase:database error:error block:v16];
 
-  return a6;
+  return error;
 }
 
 uint64_t __80__HDWorkoutClusterEntity_updateWorkoutClusterWithUUID_routeLabel_profile_error___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -855,33 +855,33 @@ uint64_t __80__HDWorkoutClusterEntity_updateWorkoutClusterWithUUID_routeLabel_pr
   return v8;
 }
 
-+ (BOOL)updateWorkoutClusterWithUUID:(id)a3 relevanceValue:(id)a4 lastWorkoutUUID:(id)a5 bestWorkoutUUID:(id)a6 workoutUUIDsToAssociate:(id)a7 workoutUUIDsToRemove:(id)a8 profile:(id)a9 error:(id *)a10
++ (BOOL)updateWorkoutClusterWithUUID:(id)d relevanceValue:(id)value lastWorkoutUUID:(id)iD bestWorkoutUUID:(id)uID workoutUUIDsToAssociate:(id)associate workoutUUIDsToRemove:(id)remove profile:(id)profile error:(id *)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  v22 = [a9 database];
+  dCopy = d;
+  valueCopy = value;
+  iDCopy = iD;
+  uIDCopy = uID;
+  associateCopy = associate;
+  removeCopy = remove;
+  database = [profile database];
   v31[0] = MEMORY[0x277D85DD0];
   v31[1] = 3221225472;
   v31[2] = __161__HDWorkoutClusterEntity_updateWorkoutClusterWithUUID_relevanceValue_lastWorkoutUUID_bestWorkoutUUID_workoutUUIDsToAssociate_workoutUUIDsToRemove_profile_error___block_invoke;
   v31[3] = &unk_278626488;
-  v37 = v21;
-  v38 = a1;
-  v32 = v16;
-  v33 = v17;
-  v34 = v18;
-  v35 = v19;
-  v36 = v20;
-  v23 = v21;
-  v24 = v20;
-  v25 = v19;
-  v26 = v18;
-  v27 = v17;
-  v28 = v16;
-  v29 = [a1 performWriteTransactionWithHealthDatabase:v22 error:a10 block:v31];
+  v37 = removeCopy;
+  selfCopy = self;
+  v32 = dCopy;
+  v33 = valueCopy;
+  v34 = iDCopy;
+  v35 = uIDCopy;
+  v36 = associateCopy;
+  v23 = removeCopy;
+  v24 = associateCopy;
+  v25 = uIDCopy;
+  v26 = iDCopy;
+  v27 = valueCopy;
+  v28 = dCopy;
+  v29 = [self performWriteTransactionWithHealthDatabase:database error:error block:v31];
 
   return v29;
 }
@@ -1088,20 +1088,20 @@ uint64_t __161__HDWorkoutClusterEntity_updateWorkoutClusterWithUUID_relevanceVal
   return sqlite3_bind_int64(a2, v7, v10);
 }
 
-+ (BOOL)deleteWorkoutClusterWithUUID:(id)a3 profile:(id)a4 error:(id *)a5
++ (BOOL)deleteWorkoutClusterWithUUID:(id)d profile:(id)profile error:(id *)error
 {
-  v8 = a3;
-  v9 = [a4 database];
+  dCopy = d;
+  database = [profile database];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __69__HDWorkoutClusterEntity_deleteWorkoutClusterWithUUID_profile_error___block_invoke;
   v12[3] = &unk_278619348;
-  v13 = v8;
-  v14 = a1;
-  v10 = v8;
-  LOBYTE(a5) = [a1 performWriteTransactionWithHealthDatabase:v9 error:a5 block:v12];
+  v13 = dCopy;
+  selfCopy = self;
+  v10 = dCopy;
+  LOBYTE(error) = [self performWriteTransactionWithHealthDatabase:database error:error block:v12];
 
-  return a5;
+  return error;
 }
 
 uint64_t __69__HDWorkoutClusterEntity_deleteWorkoutClusterWithUUID_profile_error___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -1142,25 +1142,25 @@ uint64_t __69__HDWorkoutClusterEntity_deleteWorkoutClusterWithUUID_profile_error
   return v18;
 }
 
-- (id)snapshotEntityWithTransaction:(id)a3 error:(id *)a4
+- (id)snapshotEntityWithTransaction:(id)transaction error:(id *)error
 {
   v18[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  transactionCopy = transaction;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
   v17 = -1;
   v18[0] = @"snapshot_id";
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v18 count:1];
-  v8 = [v6 databaseForEntity:self];
+  v8 = [transactionCopy databaseForEntity:self];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __62__HDWorkoutClusterEntity_snapshotEntityWithTransaction_error___block_invoke;
   v13[3] = &unk_278618B98;
   v13[4] = &v14;
-  LOBYTE(a4) = [(HDSQLiteEntity *)self getValuesForProperties:v7 database:v8 error:a4 handler:v13];
+  LOBYTE(error) = [(HDSQLiteEntity *)self getValuesForProperties:v7 database:v8 error:error handler:v13];
 
-  if (a4)
+  if (error)
   {
     v9 = [HDRaceRouteSnapshotEntity alloc];
     v10 = [(HDSQLiteEntity *)v9 initWithPersistentID:v15[3]];
@@ -1185,12 +1185,12 @@ uint64_t __62__HDWorkoutClusterEntity_snapshotEntityWithTransaction_error___bloc
   return result;
 }
 
-- (BOOL)modelPropertiesWithTransaction:(id)a3 error:(id *)a4 handler:(id)a5
+- (BOOL)modelPropertiesWithTransaction:(id)transaction error:(id *)error handler:(id)handler
 {
   v23[5] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = [v8 databaseForEntity:self];
+  transactionCopy = transaction;
+  handlerCopy = handler;
+  v10 = [transactionCopy databaseForEntity:self];
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
@@ -1205,10 +1205,10 @@ uint64_t __62__HDWorkoutClusterEntity_snapshotEntityWithTransaction_error___bloc
   v16[1] = 3221225472;
   v16[2] = __71__HDWorkoutClusterEntity_modelPropertiesWithTransaction_error_handler___block_invoke;
   v16[3] = &unk_27862F9E8;
-  v12 = v9;
+  v12 = handlerCopy;
   v17 = v12;
   v18 = &v19;
-  v13 = [(HDSQLiteEntity *)self getValuesForProperties:v11 database:v10 error:a4 handler:v16];
+  v13 = [(HDSQLiteEntity *)self getValuesForProperties:v11 database:v10 error:error handler:v16];
 
   if (v13)
   {
@@ -1237,14 +1237,14 @@ void __71__HDWorkoutClusterEntity_modelPropertiesWithTransaction_error_handler__
   *(*(*(a1 + 40) + 8) + 24) = 1;
 }
 
-- (id)workoutRouteSnapshotWithTransaction:(id)a3 error:(id *)a4
+- (id)workoutRouteSnapshotWithTransaction:(id)transaction error:(id *)error
 {
-  v6 = a3;
-  v7 = [(HDWorkoutClusterEntity *)self snapshotEntityWithTransaction:v6 error:a4];
+  transactionCopy = transaction;
+  v7 = [(HDWorkoutClusterEntity *)self snapshotEntityWithTransaction:transactionCopy error:error];
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 snapshotDataWithTransaction:v6 error:a4];
+    v9 = [v7 snapshotDataWithTransaction:transactionCopy error:error];
   }
 
   else

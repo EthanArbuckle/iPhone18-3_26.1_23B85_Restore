@@ -1,22 +1,22 @@
 @interface ML3StoreImportOperation
-- (BOOL)_importAlbumArtistsUsingImportSession:(void *)a3;
-- (BOOL)_importPlaylistsUsingImportSession:(void *)a3;
-- (BOOL)_importTracksUsingImportSession:(void *)a3;
-- (BOOL)_performImportWithTransaction:(id)a3;
+- (BOOL)_importAlbumArtistsUsingImportSession:(void *)session;
+- (BOOL)_importPlaylistsUsingImportSession:(void *)session;
+- (BOOL)_importTracksUsingImportSession:(void *)session;
+- (BOOL)_performImportWithTransaction:(id)transaction;
 - (void)main;
 @end
 
 @implementation ML3StoreImportOperation
 
-- (BOOL)_importAlbumArtistsUsingImportSession:(void *)a3
+- (BOOL)_importAlbumArtistsUsingImportSession:(void *)session
 {
   v13 = *MEMORY[0x277D85DE8];
   if ([(ML3StoreItemAlbumArtistData *)self->_albumArtistData albumArtistCount])
   {
-    v7 = [(ML3StoreItemAlbumArtistData *)self->_albumArtistData parsedStoreAlbumArtistImportProperties];
-    v9 = [MEMORY[0x277CBEB18] array];
+    parsedStoreAlbumArtistImportProperties = [(ML3StoreItemAlbumArtistData *)self->_albumArtistData parsedStoreAlbumArtistImportProperties];
+    array = [MEMORY[0x277CBEB18] array];
     memset(v10, 0, sizeof(v10));
-    obj = v7;
+    obj = parsedStoreAlbumArtistImportProperties;
     if ([obj countByEnumeratingWithState:v10 objects:v12 count:16])
     {
       [(ML3ImportOperation *)self import];
@@ -25,7 +25,7 @@
       operator new();
     }
 
-    v5 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v9 requiringSecureCoding:1 error:0];
+    v5 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:array requiringSecureCoding:1 error:0];
     [(ML3ImportOperation *)self setReturnData:v5];
 
     v4 = obj;
@@ -44,23 +44,23 @@
   return 1;
 }
 
-- (BOOL)_importPlaylistsUsingImportSession:(void *)a3
+- (BOOL)_importPlaylistsUsingImportSession:(void *)session
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = [(ML3StoreItemPlaylistData *)self->_playlistData playlistCount];
+  playlistCount = [(ML3StoreItemPlaylistData *)self->_playlistData playlistCount];
   v5 = os_log_create("com.apple.amp.medialibrary", "Import");
   v6 = v5;
-  if (v4)
+  if (playlistCount)
   {
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
       *buf = 134217984;
-      v15 = v4;
+      v15 = playlistCount;
       _os_log_impl(&dword_22D2FA000, v6, OS_LOG_TYPE_DEBUG, "[ML3StoreImportOperation] found %lu playlists to import", buf, 0xCu);
     }
 
-    v7 = [(ML3ImportOperation *)self import];
-    v12 = [v7 library];
+    import = [(ML3ImportOperation *)self import];
+    library = [import library];
 
     [(ML3StoreItemPlaylistData *)self->_playlistData parsedStorePlaylistsImportProperties];
     obj = memset(v13, 0, sizeof(v13));
@@ -71,7 +71,7 @@
       operator new();
     }
 
-    v6 = v12;
+    v6 = library;
   }
 
   else
@@ -88,25 +88,25 @@
   return v9;
 }
 
-- (BOOL)_importTracksUsingImportSession:(void *)a3
+- (BOOL)_importTracksUsingImportSession:(void *)session
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [(ML3StoreItemTrackData *)self->_trackData trackCount];
+  trackCount = [(ML3StoreItemTrackData *)self->_trackData trackCount];
   v4 = os_log_create("com.apple.amp.medialibrary", "Import");
   v5 = v4;
-  if (v3)
+  if (trackCount)
   {
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
     {
       *buf = 134217984;
-      v17 = v3;
+      v17 = trackCount;
       _os_log_impl(&dword_22D2FA000, v5, OS_LOG_TYPE_DEBUG, "[ML3StoreImportOperation] found %lu tracks to import", buf, 0xCu);
     }
 
-    v10 = [(ML3StoreItemTrackData *)self->_trackData parsedStoreItemsImportProperties];
-    v11 = [MEMORY[0x277CBEB18] arrayWithCapacity:v3];
+    parsedStoreItemsImportProperties = [(ML3StoreItemTrackData *)self->_trackData parsedStoreItemsImportProperties];
+    v11 = [MEMORY[0x277CBEB18] arrayWithCapacity:trackCount];
     memset(v14, 0, sizeof(v14));
-    v6 = v10;
+    v6 = parsedStoreItemsImportProperties;
     obj = v6;
     if ([v6 countByEnumeratingWithState:v14 objects:v15 count:16])
     {
@@ -140,37 +140,37 @@
   return v7;
 }
 
-- (BOOL)_performImportWithTransaction:(id)a3
+- (BOOL)_performImportWithTransaction:(id)transaction
 {
-  v4 = a3;
+  transactionCopy = transaction;
   v5 = [ML3StoreItemTrackData alloc];
-  v6 = [(ML3ImportOperation *)self import];
-  v7 = [v6 trackData];
-  v8 = [(ML3StoreItemTrackData *)v5 initWithTrackData:v7];
+  import = [(ML3ImportOperation *)self import];
+  trackData = [import trackData];
+  v8 = [(ML3StoreItemTrackData *)v5 initWithTrackData:trackData];
   trackData = self->_trackData;
   self->_trackData = v8;
 
   v10 = [ML3StoreItemPlaylistData alloc];
-  v11 = [(ML3ImportOperation *)self import];
-  v12 = [v11 playlistData];
-  v13 = [(ML3StoreItemPlaylistData *)v10 initWithPlaylistsData:v12];
+  import2 = [(ML3ImportOperation *)self import];
+  playlistData = [import2 playlistData];
+  v13 = [(ML3StoreItemPlaylistData *)v10 initWithPlaylistsData:playlistData];
   playlistData = self->_playlistData;
   self->_playlistData = v13;
 
   v15 = [ML3StoreItemAlbumArtistData alloc];
-  v16 = [(ML3ImportOperation *)self import];
-  v17 = [v16 albumArtistData];
-  v18 = [(ML3StoreItemAlbumArtistData *)v15 initWithAlbumArtistData:v17];
+  import3 = [(ML3ImportOperation *)self import];
+  albumArtistData = [import3 albumArtistData];
+  v18 = [(ML3StoreItemAlbumArtistData *)v15 initWithAlbumArtistData:albumArtistData];
   albumArtistData = self->_albumArtistData;
   self->_albumArtistData = v18;
 
-  v20 = [(ML3ImportOperation *)self import];
-  if ([v20 tracksAreLibraryOwnedContent])
+  import4 = [(ML3ImportOperation *)self import];
+  if ([import4 tracksAreLibraryOwnedContent])
   {
-    v21 = [(ML3ImportOperation *)self import];
-    v22 = [v21 isPendingMatch];
+    import5 = [(ML3ImportOperation *)self import];
+    isPendingMatch = [import5 isPendingMatch];
 
-    if (v22)
+    if (isPendingMatch)
     {
       v23 = 6;
     }
@@ -188,9 +188,9 @@
   }
 
   [(ML3ImportOperation *)self import];
-  v24 = [objc_claimAutoreleasedReturnValue() library];
-  v25 = [v4 connection];
-  ML3ImportSession::ML3ImportSession(v27, v24, v25, v23, 1);
+  library = [objc_claimAutoreleasedReturnValue() library];
+  connection = [transactionCopy connection];
+  ML3ImportSession::ML3ImportSession(v27, library, connection, v23, 1);
 }
 
 - (void)main
@@ -216,11 +216,11 @@
   v5 = os_log_create("com.apple.amp.medialibrary", "Import");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    v6 = [(ML3StoreImportOperation *)self isCancelled];
+    isCancelled = [(ML3StoreImportOperation *)self isCancelled];
     v7 = *(v12 + 24);
     [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
     *buf = 67109632;
-    v16 = v6;
+    v16 = isCancelled;
     v17 = 1024;
     v18 = v7;
     v19 = 2048;

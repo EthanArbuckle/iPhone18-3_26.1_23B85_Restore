@@ -1,16 +1,16 @@
 @interface VCAggregatorHomeKitAudio
-- (VCAggregatorHomeKitAudio)initWithDelegate:(id)a3;
+- (VCAggregatorHomeKitAudio)initWithDelegate:(id)delegate;
 - (id)dispatchedAggregatedSessionReport;
 - (void)dealloc;
 - (void)reset;
-- (void)updateStreamDirection:(unsigned int)a3 time:(double)a4;
+- (void)updateStreamDirection:(unsigned int)direction time:(double)time;
 @end
 
 @implementation VCAggregatorHomeKitAudio
 
-- (VCAggregatorHomeKitAudio)initWithDelegate:(id)a3
+- (VCAggregatorHomeKitAudio)initWithDelegate:(id)delegate
 {
-  v3 = [(VCAggregatorAudioStream *)self initWithDelegate:a3 withMode:6];
+  v3 = [(VCAggregatorAudioStream *)self initWithDelegate:delegate withMode:6];
   if (!v3)
   {
     [VCAggregatorHomeKitAudio initWithDelegate:];
@@ -46,16 +46,16 @@ LABEL_6:
   self->_rtcpTimeoutCount = 0;
 }
 
-- (void)updateStreamDirection:(unsigned int)a3 time:(double)a4
+- (void)updateStreamDirection:(unsigned int)direction time:(double)time
 {
   lastStreamDirectionSwitchTime = self->_lastStreamDirectionSwitchTime;
   if (lastStreamDirectionSwitchTime > 0.0)
   {
-    [(VCHistogram *)self->_streamDirectionDurations addOnlyExactMatchingValue:self->_previousStreamDirection increment:((a4 - lastStreamDirectionSwitchTime) * 1000.0)];
+    [(VCHistogram *)self->_streamDirectionDurations addOnlyExactMatchingValue:self->_previousStreamDirection increment:((time - lastStreamDirectionSwitchTime) * 1000.0)];
   }
 
-  self->_previousStreamDirection = a3;
-  self->_lastStreamDirectionSwitchTime = a4;
+  self->_previousStreamDirection = direction;
+  self->_lastStreamDirectionSwitchTime = time;
 }
 
 uint64_t __76__VCAggregatorHomeKitAudio_dispatchedProcessEventWithCategory_type_payload___block_invoke(uint64_t a1, void *a2)
@@ -86,14 +86,14 @@ uint64_t __76__VCAggregatorHomeKitAudio_dispatchedProcessEventWithCategory_type_
   dispatch_assert_queue_V2(self->super.super._stateQueue);
   v5.receiver = self;
   v5.super_class = VCAggregatorHomeKitAudio;
-  v3 = [(VCAggregatorAudioStream *)&v5 dispatchedAggregatedSessionReport];
-  [v3 setObject:&unk_284FA57F8 forKeyedSubscript:@"RVER"];
-  [v3 setObject:@"audio" forKeyedSubscript:@"HKMT"];
-  [v3 setObject:-[VCHistogram description](self->_streamDirectionDurations forKeyedSubscript:{"description"), @"SDDUR"}];
-  [v3 setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", self->_connectionType), @"HKCT"}];
-  [v3 setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithInt:", self->_mediaStreamEndReason == 0), @"MSSuccess"}];
-  [v3 setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", self->_mediaStreamEndReason), @"MSEndReason"}];
-  return v3;
+  dispatchedAggregatedSessionReport = [(VCAggregatorAudioStream *)&v5 dispatchedAggregatedSessionReport];
+  [dispatchedAggregatedSessionReport setObject:&unk_284FA57F8 forKeyedSubscript:@"RVER"];
+  [dispatchedAggregatedSessionReport setObject:@"audio" forKeyedSubscript:@"HKMT"];
+  [dispatchedAggregatedSessionReport setObject:-[VCHistogram description](self->_streamDirectionDurations forKeyedSubscript:{"description"), @"SDDUR"}];
+  [dispatchedAggregatedSessionReport setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", self->_connectionType), @"HKCT"}];
+  [dispatchedAggregatedSessionReport setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithInt:", self->_mediaStreamEndReason == 0), @"MSSuccess"}];
+  [dispatchedAggregatedSessionReport setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", self->_mediaStreamEndReason), @"MSEndReason"}];
+  return dispatchedAggregatedSessionReport;
 }
 
 - (void)initWithDelegate:(void *)a1 .cold.1(void *a1)

@@ -1,14 +1,14 @@
 @interface BLDAAPServerInfoRequest
-- (BLDAAPServerInfoRequest)initWithDSID:(id)a3 reason:(int64_t)a4;
+- (BLDAAPServerInfoRequest)initWithDSID:(id)d reason:(int64_t)reason;
 @end
 
 @implementation BLDAAPServerInfoRequest
 
-- (BLDAAPServerInfoRequest)initWithDSID:(id)a3 reason:(int64_t)a4
+- (BLDAAPServerInfoRequest)initWithDSID:(id)d reason:(int64_t)reason
 {
   v7.receiver = self;
   v7.super_class = BLDAAPServerInfoRequest;
-  v4 = [(BLDAAPURLRequest *)&v7 initWithDSID:a3 reason:a4];
+  v4 = [(BLDAAPURLRequest *)&v7 initWithDSID:d reason:reason];
   v5 = v4;
   if (v4)
   {

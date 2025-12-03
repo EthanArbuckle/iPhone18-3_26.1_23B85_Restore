@@ -1,14 +1,14 @@
 @interface SCNTextureSource
-- (__C3DRendererContext)rendererContextForTextureSourceWithEngineContext:(__C3DEngineContext *)a3;
-- (__C3DTexture)_textureWithEngineContext:(__C3DEngineContext *)a3 textureSampler:(__C3DTextureSampler *)a4 nextFrameTime:(double *)a5;
-- (__C3DTexture)textureWithEngineContext:(__C3DEngineContext *)a3 textureSampler:(__C3DTextureSampler *)a4 nextFrameTime:(double *)a5;
+- (__C3DRendererContext)rendererContextForTextureSourceWithEngineContext:(__C3DEngineContext *)context;
+- (__C3DTexture)_textureWithEngineContext:(__C3DEngineContext *)context textureSampler:(__C3DTextureSampler *)sampler nextFrameTime:(double *)time;
+- (__C3DTexture)textureWithEngineContext:(__C3DEngineContext *)context textureSampler:(__C3DTextureSampler *)sampler nextFrameTime:(double *)time;
 - (double)textureSize;
-- (id)metalTextureWithEngineContext:(__C3DEngineContext *)a3 textureSampler:(__C3DTextureSampler *)a4 nextFrameTime:(double *)a5 status:(id *)a6;
-- (void)cleanup:(__C3DRendererContext *)a3;
+- (id)metalTextureWithEngineContext:(__C3DEngineContext *)context textureSampler:(__C3DTextureSampler *)sampler nextFrameTime:(double *)time status:(id *)status;
+- (void)cleanup:(__C3DRendererContext *)cleanup;
 - (void)dealloc;
-- (void)renderWithEngineContext:(__C3DEngineContext *)a3 textureSampler:(__C3DTextureSampler *)a4 nextFrameTime:(double *)a5;
-- (void)setGlTextureCache:(id)a3;
-- (void)setMTLTextureCache:(id)a3;
+- (void)renderWithEngineContext:(__C3DEngineContext *)context textureSampler:(__C3DTextureSampler *)sampler nextFrameTime:(double *)time;
+- (void)setGlTextureCache:(id)cache;
+- (void)setMTLTextureCache:(id)cache;
 @end
 
 @implementation SCNTextureSource
@@ -20,9 +20,9 @@
   [(SCNTextureSource *)&v3 dealloc];
 }
 
-- (__C3DRendererContext)rendererContextForTextureSourceWithEngineContext:(__C3DEngineContext *)a3
+- (__C3DRendererContext)rendererContextForTextureSourceWithEngineContext:(__C3DEngineContext *)context
 {
-  RendererContextGL = C3DEngineContextGetRendererContextGL(a3);
+  RendererContextGL = C3DEngineContextGetRendererContextGL(context);
   if ([(SCNTextureSource *)self prefersGL3]|| !RendererContextGL)
   {
     if (C3DTextureSourceGetSharedRendererContext_onceToken != -1)
@@ -36,7 +36,7 @@
   return RendererContextGL;
 }
 
-- (__C3DTexture)textureWithEngineContext:(__C3DEngineContext *)a3 textureSampler:(__C3DTextureSampler *)a4 nextFrameTime:(double *)a5
+- (__C3DTexture)textureWithEngineContext:(__C3DEngineContext *)context textureSampler:(__C3DTextureSampler *)sampler nextFrameTime:(double *)time
 {
   v6 = scn_default_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -47,7 +47,7 @@
   return 0;
 }
 
-- (__C3DTexture)_textureWithEngineContext:(__C3DEngineContext *)a3 textureSampler:(__C3DTextureSampler *)a4 nextFrameTime:(double *)a5
+- (__C3DTexture)_textureWithEngineContext:(__C3DEngineContext *)context textureSampler:(__C3DTextureSampler *)sampler nextFrameTime:(double *)time
 {
   v6 = scn_default_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -71,9 +71,9 @@
   return result;
 }
 
-- (id)metalTextureWithEngineContext:(__C3DEngineContext *)a3 textureSampler:(__C3DTextureSampler *)a4 nextFrameTime:(double *)a5 status:(id *)a6
+- (id)metalTextureWithEngineContext:(__C3DEngineContext *)context textureSampler:(__C3DTextureSampler *)sampler nextFrameTime:(double *)time status:(id *)status
 {
-  if (!C3DEngineContextGetRenderContext(a3))
+  if (!C3DEngineContextGetRenderContext(context))
   {
     v10 = scn_default_log();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
@@ -89,8 +89,8 @@
 
   else
   {
-    [MEMORY[0x277CD9388] setCurrentContext:{C3DRendererContextGetGLContext(-[SCNTextureSource rendererContextForTextureSourceWithEngineContext:](self, "rendererContextForTextureSourceWithEngineContext:", a3))}];
-    result = [(SCNTextureSource *)self _textureWithEngineContext:a3 textureSampler:a4 nextFrameTime:a5];
+    [MEMORY[0x277CD9388] setCurrentContext:{C3DRendererContextGetGLContext(-[SCNTextureSource rendererContextForTextureSourceWithEngineContext:](self, "rendererContextForTextureSourceWithEngineContext:", context))}];
+    result = [(SCNTextureSource *)self _textureWithEngineContext:context textureSampler:sampler nextFrameTime:time];
     if (!result)
     {
       return result;
@@ -103,8 +103,8 @@
   result = [(SCNTextureSource *)self MTLTextureCache];
   if (!result)
   {
-    RenderContext = C3DEngineContextGetRenderContext(a3);
-    v21 = [(SCNMTLRenderContext *)RenderContext device];
+    RenderContext = C3DEngineContextGetRenderContext(context);
+    device = [(SCNMTLRenderContext *)RenderContext device];
     [(SCNTextureSource *)self textureSize];
     v26 = v22;
     if (C3DLinearRenderingIsEnabled())
@@ -120,7 +120,7 @@
     v24 = [MEMORY[0x277CD7058] texture2DDescriptorWithPixelFormat:v23 width:*&v26 height:*(&v26 + 1) mipmapped:0, v26];
     [v24 setStorageMode:2 * (IOSurface == 0)];
     [v24 setUsage:1];
-    v25 = [v21 newTextureWithDescriptor:v24 iosurface:IOSurface plane:0];
+    v25 = [device newTextureWithDescriptor:v24 iosurface:IOSurface plane:0];
     [(SCNTextureSource *)self setMTLTextureCache:v25];
     return v25;
   }
@@ -128,7 +128,7 @@
   return result;
 }
 
-- (void)renderWithEngineContext:(__C3DEngineContext *)a3 textureSampler:(__C3DTextureSampler *)a4 nextFrameTime:(double *)a5
+- (void)renderWithEngineContext:(__C3DEngineContext *)context textureSampler:(__C3DTextureSampler *)sampler nextFrameTime:(double *)time
 {
   v6 = scn_default_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -137,7 +137,7 @@
   }
 }
 
-- (void)cleanup:(__C3DRendererContext *)a3
+- (void)cleanup:(__C3DRendererContext *)cleanup
 {
   v4 = scn_default_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -146,23 +146,23 @@
   }
 }
 
-- (void)setMTLTextureCache:(id)a3
+- (void)setMTLTextureCache:(id)cache
 {
   mtlTextureCache = self->_mtlTextureCache;
-  if (mtlTextureCache != a3)
+  if (mtlTextureCache != cache)
   {
 
-    self->_mtlTextureCache = a3;
+    self->_mtlTextureCache = cache;
   }
 }
 
-- (void)setGlTextureCache:(id)a3
+- (void)setGlTextureCache:(id)cache
 {
   glTextureCache = self->_glTextureCache;
-  if (glTextureCache != a3)
+  if (glTextureCache != cache)
   {
 
-    self->_glTextureCache = a3;
+    self->_glTextureCache = cache;
   }
 }
 

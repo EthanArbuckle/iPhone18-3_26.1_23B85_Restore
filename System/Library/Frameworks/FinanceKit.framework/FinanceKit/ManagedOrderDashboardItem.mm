@@ -1,14 +1,14 @@
 @interface ManagedOrderDashboardItem
-- (_TtC10FinanceKit25ManagedOrderDashboardItem)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4;
+- (_TtC10FinanceKit25ManagedOrderDashboardItem)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context;
 @end
 
 @implementation ManagedOrderDashboardItem
 
-- (_TtC10FinanceKit25ManagedOrderDashboardItem)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4
+- (_TtC10FinanceKit25ManagedOrderDashboardItem)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context
 {
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
-  return [(ManagedOrderDashboardItem *)&v7 initWithEntity:a3 insertIntoManagedObjectContext:a4];
+  return [(ManagedOrderDashboardItem *)&v7 initWithEntity:entity insertIntoManagedObjectContext:context];
 }
 
 @end

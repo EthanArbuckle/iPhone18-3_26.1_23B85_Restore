@@ -7,15 +7,15 @@
 - (void)scrc_deepMutableCopyWithZone:()SCRCArrayExtras
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(MEMORY[0x277CBEB18] "allocWithZone:{"initWithCapacity:", objc_msgSend(a1, "count")}")];
+  v5 = [objc_msgSend(MEMORY[0x277CBEB18] "allocWithZone:{"initWithCapacity:", objc_msgSend(self, "count")}")];
   if (v5)
   {
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v6 = a1;
-    v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    selfCopy = self;
+    v7 = [selfCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v7)
     {
       v8 = v7;
@@ -27,7 +27,7 @@
         {
           if (*v18 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(selfCopy);
           }
 
           v11 = *(*(&v17 + 1) + 8 * v10);
@@ -47,7 +47,7 @@
         }
 
         while (v8 != v10);
-        v8 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v8 = [selfCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
       }
 
       while (v8);

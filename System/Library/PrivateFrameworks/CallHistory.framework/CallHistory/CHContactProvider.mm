@@ -1,39 +1,39 @@
 @interface CHContactProvider
-- (CHContactProvider)initWithDataSource:(id)a3;
-- (id)contactsByHandleForCalls:(id)a3 keyDescriptors:(id)a4 error:(id *)a5;
-- (id)contactsByHandleForHandles:(id)a3 keyDescriptors:(id)a4 error:(id *)a5;
+- (CHContactProvider)initWithDataSource:(id)source;
+- (id)contactsByHandleForCalls:(id)calls keyDescriptors:(id)descriptors error:(id *)error;
+- (id)contactsByHandleForHandles:(id)handles keyDescriptors:(id)descriptors error:(id *)error;
 @end
 
 @implementation CHContactProvider
 
-- (CHContactProvider)initWithDataSource:(id)a3
+- (CHContactProvider)initWithDataSource:(id)source
 {
-  v5 = a3;
+  sourceCopy = source;
   v9.receiver = self;
   v9.super_class = CHContactProvider;
   v6 = [(CHContactProvider *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dataSource, a3);
+    objc_storeStrong(&v6->_dataSource, source);
   }
 
   return v7;
 }
 
-- (id)contactsByHandleForCalls:(id)a3 keyDescriptors:(id)a4 error:(id *)a5
+- (id)contactsByHandleForCalls:(id)calls keyDescriptors:(id)descriptors error:(id *)error
 {
-  v24 = self;
-  v25 = a5;
+  selfCopy = self;
+  errorCopy = error;
   v36 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  callsCopy = calls;
+  descriptorsCopy = descriptors;
   v8 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v9 = v6;
+  v9 = callsCopy;
   v10 = [v9 countByEnumeratingWithState:&v30 objects:v35 count:16];
   if (v10)
   {
@@ -53,8 +53,8 @@
         v27 = 0u;
         v28 = 0u;
         v29 = 0u;
-        v15 = [v14 remoteParticipantHandles];
-        v16 = [v15 countByEnumeratingWithState:&v26 objects:v34 count:16];
+        remoteParticipantHandles = [v14 remoteParticipantHandles];
+        v16 = [remoteParticipantHandles countByEnumeratingWithState:&v26 objects:v34 count:16];
         if (v16)
         {
           v17 = v16;
@@ -65,13 +65,13 @@
             {
               if (*v27 != v18)
               {
-                objc_enumerationMutation(v15);
+                objc_enumerationMutation(remoteParticipantHandles);
               }
 
               [v8 addObject:*(*(&v26 + 1) + 8 * j)];
             }
 
-            v17 = [v15 countByEnumeratingWithState:&v26 objects:v34 count:16];
+            v17 = [remoteParticipantHandles countByEnumeratingWithState:&v26 objects:v34 count:16];
           }
 
           while (v17);
@@ -84,25 +84,25 @@
     while (v11);
   }
 
-  v20 = [v8 allObjects];
-  v21 = [(CHContactProvider *)v24 contactsByHandleForHandles:v20 keyDescriptors:v7 error:v25];
+  allObjects = [v8 allObjects];
+  v21 = [(CHContactProvider *)selfCopy contactsByHandleForHandles:allObjects keyDescriptors:descriptorsCopy error:errorCopy];
 
   v22 = *MEMORY[0x1E69E9840];
 
   return v21;
 }
 
-- (id)contactsByHandleForHandles:(id)a3 keyDescriptors:(id)a4 error:(id *)a5
+- (id)contactsByHandleForHandles:(id)handles keyDescriptors:(id)descriptors error:(id *)error
 {
   v57 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v36 = a4;
+  handlesCopy = handles;
+  descriptorsCopy = descriptors;
   v41 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
-  obj = v8;
+  obj = handlesCopy;
   v9 = [obj countByEnumeratingWithState:&v50 objects:v56 count:16];
   if (v9)
   {
@@ -118,17 +118,17 @@
         }
 
         v13 = *(*(&v50 + 1) + 8 * i);
-        v14 = [v13 normalizedValue];
-        if (![v14 length])
+        normalizedValue = [v13 normalizedValue];
+        if (![normalizedValue length])
         {
-          v15 = [v13 value];
+          value = [v13 value];
 
-          v14 = v15;
+          normalizedValue = value;
         }
 
-        if ([v14 length])
+        if ([normalizedValue length])
         {
-          v16 = [v41 objectForKeyedSubscript:v14];
+          v16 = [v41 objectForKeyedSubscript:normalizedValue];
           if (v16)
           {
             v17 = v16;
@@ -138,7 +138,7 @@
           else
           {
             v17 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{v13, 0}];
-            [v41 setObject:v17 forKeyedSubscript:v14];
+            [v41 setObject:v17 forKeyedSubscript:normalizedValue];
           }
         }
       }
@@ -149,10 +149,10 @@
     while (v10);
   }
 
-  v18 = [(CHContactProvider *)self dataSource];
+  dataSource = [(CHContactProvider *)self dataSource];
   v19 = v41;
-  v20 = [v41 allKeys];
-  v21 = [v18 contactsByContactHandleForContactHandles:v20 keyDescriptors:v36 error:a5];
+  allKeys = [v41 allKeys];
+  v21 = [dataSource contactsByContactHandleForContactHandles:allKeys keyDescriptors:descriptorsCopy error:error];
 
   if (v21)
   {
@@ -161,8 +161,8 @@
     v47 = 0u;
     v48 = 0u;
     v49 = 0u;
-    v37 = [v21 allKeys];
-    v40 = [v37 countByEnumeratingWithState:&v46 objects:v55 count:16];
+    allKeys2 = [v21 allKeys];
+    v40 = [allKeys2 countByEnumeratingWithState:&v46 objects:v55 count:16];
     if (v40)
     {
       v39 = *v47;
@@ -172,7 +172,7 @@
         {
           if (*v47 != v39)
           {
-            objc_enumerationMutation(v37);
+            objc_enumerationMutation(allKeys2);
           }
 
           v24 = *(*(&v46 + 1) + 8 * j);
@@ -213,7 +213,7 @@
           v19 = v41;
         }
 
-        v40 = [v37 countByEnumeratingWithState:&v46 objects:v55 count:16];
+        v40 = [allKeys2 countByEnumeratingWithState:&v46 objects:v55 count:16];
       }
 
       while (v40);

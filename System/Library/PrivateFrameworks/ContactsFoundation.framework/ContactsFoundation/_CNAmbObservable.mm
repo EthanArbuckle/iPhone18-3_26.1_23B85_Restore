@@ -1,25 +1,25 @@
 @interface _CNAmbObservable
-- (_CNAmbObservable)initWithObservables:(id)a3;
-- (id)subscribe:(id)a3;
+- (_CNAmbObservable)initWithObservables:(id)observables;
+- (id)subscribe:(id)subscribe;
 - (void)cancelRemainingObservables;
-- (void)observerWillRelayEvent:(id)a3;
+- (void)observerWillRelayEvent:(id)event;
 @end
 
 @implementation _CNAmbObservable
 
-- (_CNAmbObservable)initWithObservables:(id)a3
+- (_CNAmbObservable)initWithObservables:(id)observables
 {
-  v4 = a3;
+  observablesCopy = observables;
   v12.receiver = self;
   v12.super_class = _CNAmbObservable;
   v5 = [(_CNAmbObservable *)&v12 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [observablesCopy copy];
     observables = v5->_observables;
     v5->_observables = v6;
 
-    v8 = [objc_alloc(MEMORY[0x1E696AD18]) initWithKeyOptions:0 valueOptions:0 capacity:{objc_msgSend(v4, "count")}];
+    v8 = [objc_alloc(MEMORY[0x1E696AD18]) initWithKeyOptions:0 valueOptions:0 capacity:{objc_msgSend(observablesCopy, "count")}];
     tokensByObserver = v5->_tokensByObserver;
     v5->_tokensByObserver = v8;
 
@@ -30,22 +30,22 @@
   return v5;
 }
 
-- (id)subscribe:(id)a3
+- (id)subscribe:(id)subscribe
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  subscribeCopy = subscribe;
   if (![(NSArray *)self->_observables count])
   {
-    v5 = +[CNObservable emptyObservable];
+    firstObject = +[CNObservable emptyObservable];
     goto LABEL_5;
   }
 
   if ([(NSArray *)self->_observables count]== 1)
   {
-    v5 = [(NSArray *)self->_observables firstObject];
+    firstObject = [(NSArray *)self->_observables firstObject];
 LABEL_5:
-    v6 = v5;
-    v7 = [v5 subscribe:v4];
+    v6 = firstObject;
+    v7 = [firstObject subscribe:subscribeCopy];
 
     goto LABEL_14;
   }
@@ -70,7 +70,7 @@ LABEL_5:
         }
 
         v13 = *(*(&v19 + 1) + 8 * i);
-        v14 = [[_CNAmbObserver alloc] initWithObserver:v4 delegate:self];
+        v14 = [[_CNAmbObserver alloc] initWithObserver:subscribeCopy delegate:self];
         v15 = [v13 subscribe:v14];
         [(NSMapTable *)self->_tokensByObserver setObject:v15 forKey:v14];
       }
@@ -94,24 +94,24 @@ LABEL_14:
   return v7;
 }
 
-- (void)observerWillRelayEvent:(id)a3
+- (void)observerWillRelayEvent:(id)event
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  if (v4->_winnerDeclared)
+  eventCopy = event;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_winnerDeclared)
   {
-    objc_sync_exit(v4);
+    objc_sync_exit(selfCopy);
   }
 
   else
   {
-    [v5 declareWinner];
-    [(NSMapTable *)v4->_tokensByObserver removeObjectForKey:v5];
-    v4->_winnerDeclared = 1;
-    objc_sync_exit(v4);
+    [eventCopy declareWinner];
+    [(NSMapTable *)selfCopy->_tokensByObserver removeObjectForKey:eventCopy];
+    selfCopy->_winnerDeclared = 1;
+    objc_sync_exit(selfCopy);
 
-    [(_CNAmbObservable *)v4 cancelRemainingObservables];
+    [(_CNAmbObservable *)selfCopy cancelRemainingObservables];
   }
 }
 
@@ -122,8 +122,8 @@ LABEL_14:
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(NSMapTable *)self->_tokensByObserver objectEnumerator];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  objectEnumerator = [(NSMapTable *)self->_tokensByObserver objectEnumerator];
+  v3 = [objectEnumerator countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = v3;
@@ -135,14 +135,14 @@ LABEL_14:
       {
         if (*v9 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         [*(*(&v8 + 1) + 8 * v6++) cancel];
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v4 = [objectEnumerator countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v4);

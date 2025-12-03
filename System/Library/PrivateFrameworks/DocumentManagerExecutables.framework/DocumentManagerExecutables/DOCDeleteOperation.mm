@@ -1,5 +1,5 @@
 @interface DOCDeleteOperation
-- (_TtC26DocumentManagerExecutables18DOCDeleteOperation)initWithItems:(id)a3;
+- (_TtC26DocumentManagerExecutables18DOCDeleteOperation)initWithItems:(id)items;
 - (id)operationForRedoing;
 @end
 
@@ -10,9 +10,9 @@
   v2 = *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC26DocumentManagerExecutables18DOCDeleteOperation_items);
   if (v2 >> 62)
   {
-    v8 = self;
+    selfCopy = self;
     v9 = __CocoaSet.count.getter();
-    self = v8;
+    self = selfCopy;
     if (v9 >= 1)
     {
       goto LABEL_3;
@@ -38,7 +38,7 @@ LABEL_6:
   return v7;
 }
 
-- (_TtC26DocumentManagerExecutables18DOCDeleteOperation)initWithItems:(id)a3
+- (_TtC26DocumentManagerExecutables18DOCDeleteOperation)initWithItems:(id)items
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

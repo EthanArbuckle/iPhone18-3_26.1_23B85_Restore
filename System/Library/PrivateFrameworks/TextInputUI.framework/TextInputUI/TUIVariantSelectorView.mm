@@ -1,73 +1,73 @@
 @interface TUIVariantSelectorView
 - (BOOL)drawsShadows;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (CGSize)originRectRadius;
 - (CGSize)paddleRadius;
-- (TUIVariantSelectorView)initWithKey:(id)a3 renderTraits:(id)a4;
+- (TUIVariantSelectorView)initWithKey:(id)key renderTraits:(id)traits;
 - (UIEdgeInsets)stackLayoutMargins;
-- (id)alignmentConstraintsForKey:(id)a3;
+- (id)alignmentConstraintsForKey:(id)key;
 - (id)backgroundBezierPath;
-- (id)heightConstraintsForVariantCell:(id)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (id)variantCellWithString:(id)a3 annotation:(id)a4;
-- (id)widthConstraintsForVariantCell:(id)a3 previousCell:(id)a4;
-- (void)addVariantsForKey:(id)a3 toView:(id)a4;
-- (void)updateVariantsIfNeededForKey:(id)a3;
+- (id)heightConstraintsForVariantCell:(id)cell;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (id)variantCellWithString:(id)string annotation:(id)annotation;
+- (id)widthConstraintsForVariantCell:(id)cell previousCell:(id)previousCell;
+- (void)addVariantsForKey:(id)key toView:(id)view;
+- (void)updateVariantsIfNeededForKey:(id)key;
 @end
 
 @implementation TUIVariantSelectorView
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [(TUIKeyPopupView *)self associatedTree];
-  v9 = [v8 interactionType];
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  associatedTree = [(TUIKeyPopupView *)self associatedTree];
+  interactionType = [associatedTree interactionType];
 
-  if (v9 == 9)
+  if (interactionType == 9)
   {
-    if (![(TUIVariantSelectorView *)self pointInside:v7 withEvent:x, y])
+    if (![(TUIVariantSelectorView *)self pointInside:eventCopy withEvent:x, y])
     {
-      v10 = [(TUIKeyPopupView *)self popupDelegate];
-      [v10 tappedToDismissSelector];
+      popupDelegate = [(TUIKeyPopupView *)self popupDelegate];
+      [popupDelegate tappedToDismissSelector];
     }
 
-    v11 = self;
+    selfCopy = self;
   }
 
   else
   {
     [(TUIKeyPopupView *)self finishVariantSelection];
-    v11 = [(TUIKeyPopupView *)self touchesForwardingView];
+    selfCopy = [(TUIKeyPopupView *)self touchesForwardingView];
   }
 
-  v12 = v11;
+  v12 = selfCopy;
 
   return v12;
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = inside.y;
+  x = inside.x;
+  eventCopy = event;
   v13.receiver = self;
   v13.super_class = TUIVariantSelectorView;
-  v8 = [(TUIKeyPopupView *)&v13 pointInside:v7 withEvent:x, y];
-  v9 = [(TUIKeyPopupView *)self associatedTree];
-  if ([v9 interactionType] != 9)
+  v8 = [(TUIKeyPopupView *)&v13 pointInside:eventCopy withEvent:x, y];
+  associatedTree = [(TUIKeyPopupView *)self associatedTree];
+  if ([associatedTree interactionType] != 9)
   {
     goto LABEL_4;
   }
 
-  v10 = [(TUIKeyPopupView *)self associatedTree];
-  v11 = [v10 state];
+  associatedTree2 = [(TUIKeyPopupView *)self associatedTree];
+  state = [associatedTree2 state];
 
-  if (v11 == 16)
+  if (state == 16)
   {
-    v9 = [(TUIKeyPopupView *)self variantView];
-    v8 = [v9 pointInside:v7 withEvent:{x, y}];
+    associatedTree = [(TUIKeyPopupView *)self variantView];
+    v8 = [associatedTree pointInside:eventCopy withEvent:{x, y}];
 LABEL_4:
   }
 
@@ -82,15 +82,15 @@ LABEL_4:
   [(TUIVariantSelectorView *)self originRectRadius];
   v100 = v5;
   v7 = v6;
-  v8 = [(TUIKeyPopupView *)self variantView];
-  [v8 frame];
+  variantView = [(TUIKeyPopupView *)self variantView];
+  [variantView frame];
   v10 = v9;
   v12 = v11;
   v14 = v13;
   v16 = v15;
 
-  v17 = [(TUIKeyPopupView *)self baseKeyLayoutGuide];
-  [v17 layoutFrame];
+  baseKeyLayoutGuide = [(TUIKeyPopupView *)self baseKeyLayoutGuide];
+  [baseKeyLayoutGuide layoutFrame];
   UIRectInset();
   v102 = v18;
   v20 = v19;
@@ -131,8 +131,8 @@ LABEL_14:
   v26 = MaxY - CGRectGetMinY(v111);
   v97 = v20 + v26;
   v98 = v24 - v26;
-  v27 = [(TUIKeyPopupView *)self baseKeyLayoutGuide];
-  [v27 layoutFrame];
+  baseKeyLayoutGuide2 = [(TUIKeyPopupView *)self baseKeyLayoutGuide];
+  [baseKeyLayoutGuide2 layoutFrame];
   MinX = CGRectGetMinX(v112);
   v113.origin.x = v10;
   v113.origin.y = v12;
@@ -153,8 +153,8 @@ LABEL_14:
   }
 
   v92 = v31;
-  v32 = [(TUIKeyPopupView *)self baseKeyLayoutGuide];
-  [v32 layoutFrame];
+  baseKeyLayoutGuide3 = [(TUIKeyPopupView *)self baseKeyLayoutGuide];
+  [baseKeyLayoutGuide3 layoutFrame];
   MaxX = CGRectGetMaxX(v114);
   v115.origin.x = v10;
   v115.origin.y = v12;
@@ -174,12 +174,12 @@ LABEL_14:
   }
 
   v94 = v35;
-  v36 = [MEMORY[0x1E69DC728] bezierPath];
+  bezierPath = [MEMORY[0x1E69DC728] bezierPath];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __46__TUIVariantSelectorView_backgroundBezierPath__block_invoke;
   aBlock[3] = &unk_1E72D7F88;
-  v37 = v36;
+  v37 = bezierPath;
   v108 = v37;
   v38 = _Block_copy(aBlock);
   v103[0] = MEMORY[0x1E69E9820];
@@ -449,24 +449,24 @@ uint64_t __46__TUIVariantSelectorView_backgroundBezierPath__block_invoke_2(uint6
 
 - (BOOL)drawsShadows
 {
-  v3 = [(TUIKeyPopupView *)self renderTraits];
-  if ([v3 blendForm] == 10)
+  renderTraits = [(TUIKeyPopupView *)self renderTraits];
+  if ([renderTraits blendForm] == 10)
   {
     LOBYTE(v4) = 0;
   }
 
   else
   {
-    v5 = [(TUIKeyPopupView *)self renderTraits];
-    if ([v5 blendForm] == 11 || (_UISolariumEnabled() & 1) != 0)
+    renderTraits2 = [(TUIKeyPopupView *)self renderTraits];
+    if ([renderTraits2 blendForm] == 11 || (_UISolariumEnabled() & 1) != 0)
     {
       LOBYTE(v4) = 0;
     }
 
     else
     {
-      v6 = [(TUIKeyPopupView *)self renderTraits];
-      v4 = [v6 usesDarkAppearance] ^ 1;
+      renderTraits3 = [(TUIKeyPopupView *)self renderTraits];
+      v4 = [renderTraits3 usesDarkAppearance] ^ 1;
     }
   }
 
@@ -475,12 +475,12 @@ uint64_t __46__TUIVariantSelectorView_backgroundBezierPath__block_invoke_2(uint6
 
 - (CGSize)originRectRadius
 {
-  v3 = [(TUIVariantSelectorView *)self cornerRadiusOverride];
+  cornerRadiusOverride = [(TUIVariantSelectorView *)self cornerRadiusOverride];
 
-  if (v3)
+  if (cornerRadiusOverride)
   {
-    v4 = [(TUIVariantSelectorView *)self cornerRadiusOverride];
-    [v4 CGSizeValue];
+    cornerRadiusOverride2 = [(TUIVariantSelectorView *)self cornerRadiusOverride];
+    [cornerRadiusOverride2 CGSizeValue];
     v6 = v5;
     v8 = v7;
 
@@ -490,9 +490,9 @@ uint64_t __46__TUIVariantSelectorView_backgroundBezierPath__block_invoke_2(uint6
 
   else
   {
-    v11 = [(TUIKeyPopupView *)self isColorAdaptiveBackground];
+    isColorAdaptiveBackground = [(TUIKeyPopupView *)self isColorAdaptiveBackground];
     v9 = 6.0;
-    if (v11)
+    if (isColorAdaptiveBackground)
     {
       v9 = 10.0;
     }
@@ -514,33 +514,33 @@ uint64_t __46__TUIVariantSelectorView_backgroundBezierPath__block_invoke_2(uint6
   return result;
 }
 
-- (id)widthConstraintsForVariantCell:(id)a3 previousCell:(id)a4
+- (id)widthConstraintsForVariantCell:(id)cell previousCell:(id)previousCell
 {
-  v6 = a3;
-  v7 = a4;
+  cellCopy = cell;
+  previousCellCopy = previousCell;
   v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if (v7)
+  if (previousCellCopy)
   {
-    v9 = [v6 widthAnchor];
-    v10 = [v7 widthAnchor];
-    v11 = [v9 constraintEqualToAnchor:v10];
+    widthAnchor = [cellCopy widthAnchor];
+    widthAnchor2 = [previousCellCopy widthAnchor];
+    v11 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
     [v8 addObject:v11];
   }
 
   if ([(TUIKeyPopupView *)self isCharacterPreviewPaddle])
   {
-    v12 = [v6 widthAnchor];
-    v13 = [(TUIKeyPopupView *)self baseKeyLayoutGuide];
-    v14 = [v13 widthAnchor];
-    v15 = [v12 constraintGreaterThanOrEqualToAnchor:v14];
+    widthAnchor3 = [cellCopy widthAnchor];
+    baseKeyLayoutGuide = [(TUIKeyPopupView *)self baseKeyLayoutGuide];
+    widthAnchor4 = [baseKeyLayoutGuide widthAnchor];
+    v15 = [widthAnchor3 constraintGreaterThanOrEqualToAnchor:widthAnchor4];
 
     [v8 addObject:v15];
   }
 
-  v16 = [v6 widthAnchor];
-  v17 = [(TUIKeyPopupView *)self baseKeyLayoutGuide];
-  v18 = [v17 widthAnchor];
-  v19 = [v16 constraintEqualToAnchor:v18];
+  widthAnchor5 = [cellCopy widthAnchor];
+  baseKeyLayoutGuide2 = [(TUIKeyPopupView *)self baseKeyLayoutGuide];
+  widthAnchor6 = [baseKeyLayoutGuide2 widthAnchor];
+  v19 = [widthAnchor5 constraintEqualToAnchor:widthAnchor6];
 
   LODWORD(v20) = 1144750080;
   [v19 setPriority:v20];
@@ -549,41 +549,41 @@ uint64_t __46__TUIVariantSelectorView_backgroundBezierPath__block_invoke_2(uint6
   return v8;
 }
 
-- (id)heightConstraintsForVariantCell:(id)a3
+- (id)heightConstraintsForVariantCell:(id)cell
 {
-  v4 = [a3 heightAnchor];
-  v5 = [(TUIKeyPopupView *)self baseKeyLayoutGuide];
-  v6 = [v5 heightAnchor];
+  heightAnchor = [cell heightAnchor];
+  baseKeyLayoutGuide = [(TUIKeyPopupView *)self baseKeyLayoutGuide];
+  heightAnchor2 = [baseKeyLayoutGuide heightAnchor];
   [(TUIVariantSelectorView *)self cellMinHeightMultiplierForKeyStyle:[(TUIKeyPopupView *)self layoutStyle]];
-  v7 = [v4 constraintGreaterThanOrEqualToAnchor:v6 multiplier:?];
+  v7 = [heightAnchor constraintGreaterThanOrEqualToAnchor:heightAnchor2 multiplier:?];
 
   return v7;
 }
 
-- (id)variantCellWithString:(id)a3 annotation:(id)a4
+- (id)variantCellWithString:(id)string annotation:(id)annotation
 {
-  v6 = a4;
-  v7 = a3;
+  annotationCopy = annotation;
+  stringCopy = string;
   v8 = [TUIVariantCell alloc];
-  v9 = [(TUIKeyPopupView *)self renderTraits];
-  v10 = [(TUIVariantCell *)v8 initWithFrame:v7 string:v6 annotation:v9 traits:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
+  renderTraits = [(TUIKeyPopupView *)self renderTraits];
+  v10 = [(TUIVariantCell *)v8 initWithFrame:stringCopy string:annotationCopy annotation:renderTraits traits:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
 
   return v10;
 }
 
-- (void)addVariantsForKey:(id)a3 toView:(id)a4
+- (void)addVariantsForKey:(id)key toView:(id)view
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7 && [(TUIKeyPopupView *)self needsPopup])
+  keyCopy = key;
+  viewCopy = view;
+  if (viewCopy && [(TUIKeyPopupView *)self needsPopup])
   {
-    v8 = [v6 subtrees];
-    v9 = [v8 count];
-    v10 = [(TUIKeyPopupView *)self arrangedVariantCells];
-    if (v9 == [v10 count])
+    subtrees = [keyCopy subtrees];
+    v9 = [subtrees count];
+    arrangedVariantCells = [(TUIKeyPopupView *)self arrangedVariantCells];
+    if (v9 == [arrangedVariantCells count])
     {
-      v11 = [(TUIKeyPopupView *)self arrangedVariantCells];
-      v12 = [v11 count];
+      arrangedVariantCells2 = [(TUIKeyPopupView *)self arrangedVariantCells];
+      v12 = [arrangedVariantCells2 count];
 
       if (v12)
       {
@@ -599,33 +599,33 @@ uint64_t __46__TUIVariantSelectorView_backgroundBezierPath__block_invoke_2(uint6
     v60 = v13;
     if ([(TUIKeyPopupView *)self isCharacterPreviewPaddle])
     {
-      [v13 addObject:v6];
+      [v13 addObject:keyCopy];
     }
 
     else
     {
       v14 = [MEMORY[0x1E69DD250] userInterfaceLayoutDirectionForSemanticContentAttribute:0];
-      v15 = [(TUIKeyPopupView *)self arrangedVariantsArray];
-      v16 = v15;
+      arrangedVariantsArray = [(TUIKeyPopupView *)self arrangedVariantsArray];
+      v16 = arrangedVariantsArray;
       if (v14 == 1)
       {
-        v17 = [v15 reverseObjectEnumerator];
-        v18 = [v17 allObjects];
-        [v13 addObjectsFromArray:v18];
+        reverseObjectEnumerator = [arrangedVariantsArray reverseObjectEnumerator];
+        allObjects = [reverseObjectEnumerator allObjects];
+        [v13 addObjectsFromArray:allObjects];
 
         [(TUIKeyPopupView *)self setBaseKeyOnRight:[(TUIKeyPopupView *)self baseKeyOnRight]^ 1];
       }
 
       else
       {
-        [v13 addObjectsFromArray:v15];
+        [v13 addObjectsFromArray:arrangedVariantsArray];
       }
     }
 
-    v62 = v6;
-    v19 = [(TUIKeyPopupView *)self maxVariantsPerRowForKey:v6, v7];
-    v20 = [(TUIKeyPopupView *)self arrangedVariantRows];
-    v58 = [v20 reverseObjectEnumerator];
+    v62 = keyCopy;
+    viewCopy = [(TUIKeyPopupView *)self maxVariantsPerRowForKey:keyCopy, viewCopy];
+    arrangedVariantRows = [(TUIKeyPopupView *)self arrangedVariantRows];
+    reverseObjectEnumerator2 = [arrangedVariantRows reverseObjectEnumerator];
 
     v61 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v21 = v13;
@@ -634,15 +634,15 @@ uint64_t __46__TUIVariantSelectorView_backgroundBezierPath__block_invoke_2(uint6
       v22 = 0;
       v23 = 0;
       v24 = 0;
-      v59 = v19;
+      v59 = viewCopy;
       while (1)
       {
-        v25 = v22 / v19;
-        if (!v23 || !(v22 % v19))
+        v25 = v22 / viewCopy;
+        if (!v23 || !(v22 % viewCopy))
         {
-          v26 = [v58 nextObject];
+          nextObject = [reverseObjectEnumerator2 nextObject];
 
-          v23 = v26;
+          v23 = nextObject;
         }
 
         v27 = [v21 objectAtIndex:v22];
@@ -666,45 +666,45 @@ LABEL_52:
         }
       }
 
-      v29 = [v27 variantDisplayString];
-      if (!v29 || [(TUIKeyPopupView *)self isCharacterPreviewPaddle])
+      variantDisplayString = [v27 variantDisplayString];
+      if (!variantDisplayString || [(TUIKeyPopupView *)self isCharacterPreviewPaddle])
       {
         if ([v62 displayType] == 8 && (objc_msgSend(v28, "overrideDisplayString"), v30 = objc_claimAutoreleasedReturnValue(), v30, v30))
         {
-          v31 = [v28 overrideDisplayString];
+          overrideDisplayString = [v28 overrideDisplayString];
         }
 
         else
         {
-          v31 = [v28 displayString];
+          overrideDisplayString = [v28 displayString];
         }
 
-        v33 = v31;
+        v33 = overrideDisplayString;
 
-        v29 = v33;
+        variantDisplayString = v33;
       }
 
-      v34 = [v28 secondaryDisplayStrings];
-      if ([v34 count])
+      secondaryDisplayStrings = [v28 secondaryDisplayStrings];
+      if ([secondaryDisplayStrings count])
       {
         if ([v28 displayType] == 7)
         {
 
 LABEL_30:
-          v34 = [v28 secondaryDisplayStrings];
-          v35 = [v34 firstObject];
+          secondaryDisplayStrings = [v28 secondaryDisplayStrings];
+          firstObject = [secondaryDisplayStrings firstObject];
 LABEL_33:
 
 LABEL_34:
-          v63 = v35;
-          v64 = v29;
-          v32 = [(TUIVariantSelectorView *)self variantCellWithString:v29 annotation:v35];
+          v63 = firstObject;
+          v64 = variantDisplayString;
+          v32 = [(TUIVariantSelectorView *)self variantCellWithString:variantDisplayString annotation:firstObject];
           [v32 setUserInteractionEnabled:{-[TUIKeyPopupView wantsUserInteractionEnabled](self, "wantsUserInteractionEnabled")}];
           [v32 setCharacterPreviewPaddle:{-[TUIKeyPopupView isCharacterPreviewPaddle](self, "isCharacterPreviewPaddle")}];
-          v36 = [v62 subtrees];
-          v37 = [v28 name];
-          v38 = [v62 subtreeWithName:v37];
-          [v32 setIndexNumber:{objc_msgSend(v36, "indexOfObject:", v38)}];
+          subtrees2 = [v62 subtrees];
+          name = [v28 name];
+          v38 = [v62 subtreeWithName:name];
+          [v32 setIndexNumber:{objc_msgSend(subtrees2, "indexOfObject:", v38)}];
 
           v21 = v60;
           if ([v32 indexNumber] == 0x7FFFFFFFFFFFFFFFLL)
@@ -739,19 +739,19 @@ LABEL_34:
             }
           }
 
-          v39 = [(TUIKeyPopupView *)self primaryVariant];
-          if (v39)
+          primaryVariant = [(TUIKeyPopupView *)self primaryVariant];
+          if (primaryVariant)
           {
-            v40 = [(TUIKeyPopupView *)self primaryVariant];
-            [v32 setPrimaryVariant:v40 == v28];
+            primaryVariant2 = [(TUIKeyPopupView *)self primaryVariant];
+            [v32 setPrimaryVariant:primaryVariant2 == v28];
           }
 
           else
           {
             if ([(TUIKeyPopupView *)self shouldProvideDefaultSelection]&& ![(TUIKeyPopupView *)self isCharacterPreviewPaddle])
             {
-              v43 = [v62 selectedVariantIndex];
-              v41 = v43 == [v32 indexNumber];
+              selectedVariantIndex = [v62 selectedVariantIndex];
+              v41 = selectedVariantIndex == [v32 indexNumber];
             }
 
             else
@@ -763,21 +763,21 @@ LABEL_34:
           }
 
           [v23 addArrangedSubview:v32];
-          v44 = [(TUIKeyPopupView *)self arrangedVariantCells];
-          [v44 addObject:v32];
+          arrangedVariantCells3 = [(TUIKeyPopupView *)self arrangedVariantCells];
+          [arrangedVariantCells3 addObject:v32];
 
-          v19 = v59;
+          viewCopy = v59;
           if (!v22 && !-[TUIKeyPopupView baseKeyOnRight](self, "baseKeyOnRight") || v22 - v25 * v59 == [v21 count] - 1 && -[TUIKeyPopupView baseKeyOnRight](self, "baseKeyOnRight"))
           {
-            v45 = [(TUIKeyPopupView *)self baseKeyLayoutGuide];
-            v46 = [v45 centerXAnchor];
-            v47 = [v32 centerXAnchor];
-            v48 = [v46 constraintEqualToAnchor:v47];
+            baseKeyLayoutGuide = [(TUIKeyPopupView *)self baseKeyLayoutGuide];
+            centerXAnchor = [baseKeyLayoutGuide centerXAnchor];
+            centerXAnchor2 = [v32 centerXAnchor];
+            v48 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
 
             v21 = v60;
-            v49 = [(TUIKeyPopupView *)self isCharacterPreviewPaddle];
+            isCharacterPreviewPaddle = [(TUIKeyPopupView *)self isCharacterPreviewPaddle];
             LODWORD(v50) = 1148829696;
-            if (!v49)
+            if (!isCharacterPreviewPaddle)
             {
               LODWORD(v50) = dword_1900C0D60[[v60 count] == 1];
             }
@@ -785,7 +785,7 @@ LABEL_34:
             [v48 setPriority:v50];
             [v61 addObject:v48];
 
-            v19 = v59;
+            viewCopy = v59;
           }
 
           v51 = [(TUIVariantSelectorView *)self heightConstraintsForVariantCell:v32];
@@ -801,11 +801,11 @@ LABEL_34:
 
         if (![v28 displayType])
         {
-          v42 = [v28 supportsSupplementalDisplayString];
+          supportsSupplementalDisplayString = [v28 supportsSupplementalDisplayString];
 
-          if (v42)
+          if (supportsSupplementalDisplayString)
           {
-            v35 = 0;
+            firstObject = 0;
             goto LABEL_34;
           }
 
@@ -813,7 +813,7 @@ LABEL_34:
         }
       }
 
-      v35 = 0;
+      firstObject = 0;
       goto LABEL_33;
     }
 
@@ -823,19 +823,19 @@ LABEL_63:
     [MEMORY[0x1E696ACD8] activateConstraints:v61];
     [(TUIVariantSelectorView *)self layoutIfNeeded];
 
-    v6 = v62;
-    v7 = v57;
+    keyCopy = v62;
+    viewCopy = v57;
   }
 
 LABEL_64:
   [(TUIKeyPopupView *)self setInitialHighlight];
 }
 
-- (void)updateVariantsIfNeededForKey:(id)a3
+- (void)updateVariantsIfNeededForKey:(id)key
 {
-  v4 = a3;
-  v5 = [v4 subtrees];
-  v6 = [v5 count];
+  keyCopy = key;
+  subtrees = [keyCopy subtrees];
+  v6 = [subtrees count];
 
   if (v6)
   {
@@ -845,8 +845,8 @@ LABEL_64:
       v7 = 0;
     }
 
-    [v4 setSelectedVariantIndex:v7];
-    if ([v4 state] == 16)
+    [keyCopy setSelectedVariantIndex:v7];
+    if ([keyCopy state] == 16)
     {
       [(TUIKeyPopupView *)self setNeedsPopup:1];
     }
@@ -854,34 +854,34 @@ LABEL_64:
 
   v8.receiver = self;
   v8.super_class = TUIVariantSelectorView;
-  [(TUIKeyPopupView *)&v8 updateVariantsIfNeededForKey:v4];
+  [(TUIKeyPopupView *)&v8 updateVariantsIfNeededForKey:keyCopy];
 }
 
-- (id)alignmentConstraintsForKey:(id)a3
+- (id)alignmentConstraintsForKey:(id)key
 {
   v47[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4 && ([(TUIKeyPopupView *)self associatedTree], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
+  keyCopy = key;
+  if (keyCopy && ([(TUIKeyPopupView *)self associatedTree], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
   {
-    v44 = v4;
+    v44 = keyCopy;
     v45 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v6 = [(TUIKeyPopupView *)self associatedTree];
-    v7 = [v6 interactionType];
+    associatedTree = [(TUIKeyPopupView *)self associatedTree];
+    interactionType = [associatedTree interactionType];
 
     v8 = 0x1E695D000;
-    if (v7 == 2)
+    if (interactionType == 2)
     {
-      v42 = [(TUIKeyPopupView *)self baseKeyLayoutGuide];
-      v40 = [v42 leadingAnchor];
-      v9 = [(TUIKeyPopupView *)self variantView];
-      v10 = [v9 leadingAnchor];
-      v11 = [v40 constraintGreaterThanOrEqualToAnchor:v10];
+      baseKeyLayoutGuide = [(TUIKeyPopupView *)self baseKeyLayoutGuide];
+      leadingAnchor = [baseKeyLayoutGuide leadingAnchor];
+      variantView = [(TUIKeyPopupView *)self variantView];
+      leadingAnchor2 = [variantView leadingAnchor];
+      v11 = [leadingAnchor constraintGreaterThanOrEqualToAnchor:leadingAnchor2];
       v47[0] = v11;
-      v12 = [(TUIKeyPopupView *)self variantView];
-      v13 = [v12 trailingAnchor];
-      v14 = [(TUIKeyPopupView *)self baseKeyLayoutGuide];
-      v15 = [v14 trailingAnchor];
-      v16 = [v13 constraintGreaterThanOrEqualToAnchor:v15];
+      variantView2 = [(TUIKeyPopupView *)self variantView];
+      trailingAnchor = [variantView2 trailingAnchor];
+      baseKeyLayoutGuide2 = [(TUIKeyPopupView *)self baseKeyLayoutGuide];
+      trailingAnchor2 = [baseKeyLayoutGuide2 trailingAnchor];
+      v16 = [trailingAnchor constraintGreaterThanOrEqualToAnchor:trailingAnchor2];
       v47[1] = v16;
       v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v47 count:2];
 
@@ -889,38 +889,38 @@ LABEL_64:
       [v45 addObjectsFromArray:v17];
     }
 
-    v43 = [(TUIKeyPopupView *)self variantView];
-    v41 = [v43 leadingAnchor];
-    v39 = [(TUIVariantSelectorView *)self leadingAnchor];
-    v38 = [v41 constraintEqualToAnchor:v39 constant:0.0];
+    variantView3 = [(TUIKeyPopupView *)self variantView];
+    leadingAnchor3 = [variantView3 leadingAnchor];
+    leadingAnchor4 = [(TUIVariantSelectorView *)self leadingAnchor];
+    v38 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:0.0];
     v46[0] = v38;
-    v36 = [(TUIVariantSelectorView *)self trailingAnchor];
-    v37 = [(TUIKeyPopupView *)self variantView];
-    v35 = [v37 trailingAnchor];
-    v34 = [v36 constraintEqualToAnchor:v35 constant:0.0];
+    trailingAnchor3 = [(TUIVariantSelectorView *)self trailingAnchor];
+    variantView4 = [(TUIKeyPopupView *)self variantView];
+    trailingAnchor4 = [variantView4 trailingAnchor];
+    v34 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:0.0];
     v46[1] = v34;
-    v33 = [(TUIKeyPopupView *)self variantView];
-    v32 = [v33 topAnchor];
-    v31 = [(TUIVariantSelectorView *)self topAnchor];
-    v30 = [v32 constraintEqualToAnchor:v31 constant:0.0];
+    variantView5 = [(TUIKeyPopupView *)self variantView];
+    topAnchor = [variantView5 topAnchor];
+    topAnchor2 = [(TUIVariantSelectorView *)self topAnchor];
+    v30 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:0.0];
     v46[2] = v30;
-    v29 = [(TUIKeyPopupView *)self baseKeyLayoutGuide];
-    v18 = [v29 topAnchor];
-    v19 = [(TUIKeyPopupView *)self variantView];
-    v20 = [v19 bottomAnchor];
+    baseKeyLayoutGuide3 = [(TUIKeyPopupView *)self baseKeyLayoutGuide];
+    topAnchor3 = [baseKeyLayoutGuide3 topAnchor];
+    variantView6 = [(TUIKeyPopupView *)self variantView];
+    bottomAnchor = [variantView6 bottomAnchor];
     [(TUIKeyPopupView *)self variantViewBottomSpacing];
-    v21 = [v18 constraintEqualToAnchor:v20 constant:?];
+    v21 = [topAnchor3 constraintEqualToAnchor:bottomAnchor constant:?];
     v46[3] = v21;
-    v22 = [(TUIVariantSelectorView *)self bottomAnchor];
-    v23 = [(TUIKeyPopupView *)self baseKeyLayoutGuide];
-    v24 = [v23 bottomAnchor];
-    v25 = [v22 constraintEqualToAnchor:v24];
+    bottomAnchor2 = [(TUIVariantSelectorView *)self bottomAnchor];
+    baseKeyLayoutGuide4 = [(TUIKeyPopupView *)self baseKeyLayoutGuide];
+    bottomAnchor3 = [baseKeyLayoutGuide4 bottomAnchor];
+    v25 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
     v46[4] = v25;
     v26 = [*(v8 + 3784) arrayWithObjects:v46 count:5];
     v27 = v45;
     [v45 addObjectsFromArray:v26];
 
-    v4 = v44;
+    keyCopy = v44;
   }
 
   else
@@ -931,11 +931,11 @@ LABEL_64:
   return v27;
 }
 
-- (TUIVariantSelectorView)initWithKey:(id)a3 renderTraits:(id)a4
+- (TUIVariantSelectorView)initWithKey:(id)key renderTraits:(id)traits
 {
   v5.receiver = self;
   v5.super_class = TUIVariantSelectorView;
-  return [(TUIKeyPopupView *)&v5 initWithKey:a3 renderTraits:a4];
+  return [(TUIKeyPopupView *)&v5 initWithKey:key renderTraits:traits];
 }
 
 @end

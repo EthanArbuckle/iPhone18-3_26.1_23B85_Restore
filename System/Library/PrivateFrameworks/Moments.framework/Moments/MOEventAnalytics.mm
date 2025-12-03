@@ -1,50 +1,50 @@
 @interface MOEventAnalytics
-- (MOEventAnalytics)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (MOEventAnalytics)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MOEventAnalytics
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   trends = self->_trends;
-  v7 = a3;
+  coderCopy = coder;
   v5 = [MODictionaryEncoder encodeDictionary:trends];
-  [v7 encodeObject:v5 forKey:@"trends"];
+  [coderCopy encodeObject:v5 forKey:@"trends"];
 
   v6 = [MODictionaryEncoder encodeDictionary:self->_patterns];
-  [v7 encodeObject:v6 forKey:@"patterns"];
+  [coderCopy encodeObject:v6 forKey:@"patterns"];
 
-  [v7 encodeInteger:self->_timeAtHomeSubType forKey:@"timeAtHomeSubtype"];
+  [coderCopy encodeInteger:self->_timeAtHomeSubType forKey:@"timeAtHomeSubtype"];
 }
 
-- (MOEventAnalytics)initWithCoder:(id)a3
+- (MOEventAnalytics)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = MOEventAnalytics;
   v5 = [(MOEventAnalytics *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"trends"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"trends"];
     v7 = [MODictionaryEncoder decodeToDictionary:v6];
     trends = v5->_trends;
     v5->_trends = v7;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"patterns"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"patterns"];
     v10 = [MODictionaryEncoder decodeToDictionary:v9];
     patterns = v5->_patterns;
     v5->_patterns = v10;
 
-    v5->_timeAtHomeSubType = [v4 decodeIntegerForKey:@"timeAtHomeSubtype"];
+    v5->_timeAtHomeSubType = [coderCopy decodeIntegerForKey:@"timeAtHomeSubtype"];
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MOEventAnalytics);
   objc_storeStrong(&v4->_trends, self->_trends);

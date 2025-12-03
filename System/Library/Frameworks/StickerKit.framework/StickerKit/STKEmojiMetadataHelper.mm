@@ -1,15 +1,15 @@
 @interface STKEmojiMetadataHelper
-+ (id)metadataDictionaryFromData:(id)a3;
++ (id)metadataDictionaryFromData:(id)data;
 - (STKEmojiMetadataHelper)init;
 @end
 
 @implementation STKEmojiMetadataHelper
 
-+ (id)metadataDictionaryFromData:(id)a3
++ (id)metadataDictionaryFromData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v3 = a3;
+    dataCopy = data;
     v4 = sub_19A7A8E34();
     v6 = v5;
   }

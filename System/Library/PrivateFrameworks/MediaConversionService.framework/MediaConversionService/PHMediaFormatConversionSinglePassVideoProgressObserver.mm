@@ -1,8 +1,8 @@
 @interface PHMediaFormatConversionSinglePassVideoProgressObserver
 - (NSProgress)progress;
 - (PHMediaFormatConversionRequest)request;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)startObservingProgress:(id)a3 forRequest:(id)a4;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)startObservingProgress:(id)progress forRequest:(id)request;
 - (void)stopObserving;
 @end
 
@@ -28,10 +28,10 @@
   [WeakRetained removeObserver:self forKeyPath:@"fractionCompleted" context:&PHMediaFormatConversionSinglePassVideoProgressObserverContext];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   v26 = *MEMORY[0x277D85DE8];
-  if (a6 == &PHMediaFormatConversionSinglePassVideoProgressObserverContext)
+  if (context == &PHMediaFormatConversionSinglePassVideoProgressObserverContext)
   {
     WeakRetained = objc_loadWeakRetained(&self->_request);
     if (!WeakRetained)
@@ -48,20 +48,20 @@
       goto LABEL_18;
     }
 
-    v8 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     observedFileHandle = self->_observedFileHandle;
     if (!observedFileHandle)
     {
-      v12 = [(NSURL *)self->_observedFileURL path];
-      v13 = [v8 fileExistsAtPath:v12];
+      path = [(NSURL *)self->_observedFileURL path];
+      v13 = [defaultManager fileExistsAtPath:path];
 
       if ((v13 & 1) == 0)
       {
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
         {
-          v18 = [(NSURL *)self->_observedFileURL path];
+          path2 = [(NSURL *)self->_observedFileURL path];
           *buf = 138412290;
-          v23 = v18;
+          v23 = path2;
           _os_log_impl(&dword_2585D9000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "Ignoring progress update for output file %@ that doesn't exist", buf, 0xCu);
         }
 
@@ -76,9 +76,9 @@
       {
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
         {
-          v20 = [(NSURL *)self->_observedFileURL path];
+          path3 = [(NSURL *)self->_observedFileURL path];
           *buf = 138412546;
-          v23 = v20;
+          v23 = path3;
           v24 = 2112;
           v25 = v16;
           _os_log_error_impl(&dword_2585D9000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "Unable to open file handle for output file %@: %@", buf, 0x16u);
@@ -93,10 +93,10 @@
       observedFileHandle = self->_observedFileHandle;
     }
 
-    v10 = [(NSFileHandle *)observedFileHandle seekToEndOfFile];
-    if (v10 != self->_lastFileSize)
+    seekToEndOfFile = [(NSFileHandle *)observedFileHandle seekToEndOfFile];
+    if (seekToEndOfFile != self->_lastFileSize)
     {
-      self->_lastFileSize = v10;
+      self->_lastFileSize = seekToEndOfFile;
       [WeakRetained updateSinglePassVideoConversionStatus:2 addedRange:? error:?];
     }
 
@@ -108,13 +108,13 @@ LABEL_18:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startObservingProgress:(id)a3 forRequest:(id)a4
+- (void)startObservingProgress:(id)progress forRequest:(id)request
 {
-  obj = a3;
-  v7 = a4;
+  obj = progress;
+  requestCopy = request;
   if (obj)
   {
-    if (v7)
+    if (requestCopy)
     {
       goto LABEL_3;
     }
@@ -122,42 +122,42 @@ LABEL_18:
 
   else
   {
-    v14 = [MEMORY[0x277CCA890] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"PHMediaFormatConversionSinglePassVideoProgressObserver.m" lineNumber:22 description:{@"Invalid parameter not satisfying: %@", @"progress"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHMediaFormatConversionSinglePassVideoProgressObserver.m" lineNumber:22 description:{@"Invalid parameter not satisfying: %@", @"progress"}];
 
-    if (v7)
+    if (requestCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v15 = [MEMORY[0x277CCA890] currentHandler];
-  [v15 handleFailureInMethod:a2 object:self file:@"PHMediaFormatConversionSinglePassVideoProgressObserver.m" lineNumber:23 description:{@"Invalid parameter not satisfying: %@", @"request"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PHMediaFormatConversionSinglePassVideoProgressObserver.m" lineNumber:23 description:{@"Invalid parameter not satisfying: %@", @"request"}];
 
 LABEL_3:
-  v8 = [v7 singlePassVideoConversionUpdateHandler];
+  singlePassVideoConversionUpdateHandler = [requestCopy singlePassVideoConversionUpdateHandler];
 
-  if (!v8)
+  if (!singlePassVideoConversionUpdateHandler)
   {
-    v16 = [MEMORY[0x277CCA890] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"PHMediaFormatConversionSinglePassVideoProgressObserver.m" lineNumber:24 description:{@"Invalid parameter not satisfying: %@", @"request.singlePassVideoConversionUpdateHandler"}];
+    currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"PHMediaFormatConversionSinglePassVideoProgressObserver.m" lineNumber:24 description:{@"Invalid parameter not satisfying: %@", @"request.singlePassVideoConversionUpdateHandler"}];
   }
 
-  v9 = [v7 destination];
-  v10 = [v9 fileURL];
+  destination = [requestCopy destination];
+  fileURL = [destination fileURL];
 
-  if (!v10)
+  if (!fileURL)
   {
-    v17 = [MEMORY[0x277CCA890] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"PHMediaFormatConversionSinglePassVideoProgressObserver.m" lineNumber:25 description:{@"Invalid parameter not satisfying: %@", @"request.destination.fileURL"}];
+    currentHandler4 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler4 handleFailureInMethod:a2 object:self file:@"PHMediaFormatConversionSinglePassVideoProgressObserver.m" lineNumber:25 description:{@"Invalid parameter not satisfying: %@", @"request.destination.fileURL"}];
   }
 
   objc_storeWeak(&self->_progress, obj);
-  objc_storeWeak(&self->_request, v7);
-  v11 = [v7 destination];
-  v12 = [v11 fileURL];
+  objc_storeWeak(&self->_request, requestCopy);
+  destination2 = [requestCopy destination];
+  fileURL2 = [destination2 fileURL];
   observedFileURL = self->_observedFileURL;
-  self->_observedFileURL = v12;
+  self->_observedFileURL = fileURL2;
 
   [obj addObserver:self forKeyPath:@"fractionCompleted" options:0 context:&PHMediaFormatConversionSinglePassVideoProgressObserverContext];
 }

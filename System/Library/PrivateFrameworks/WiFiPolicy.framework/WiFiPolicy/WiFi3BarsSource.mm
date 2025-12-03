@@ -1,23 +1,23 @@
 @interface WiFi3BarsSource
-- (WiFi3BarsSource)initWithChangeHandler:(id)a3 localStoreType:(unint64_t)a4;
-- (id)_descriptorForType:(unint64_t)a3;
-- (id)_matchSearchBSSIDs:(id)a3 toResponse:(id)a4;
-- (void)_handleRemoteFetchResponse:(id)a3;
-- (void)fetch3BarsNetworksForLocation:(id)a3 forceRemote:(BOOL)a4 trigger:(unint64_t)a5 completionHandler:(id)a6;
-- (void)fetch3BarsNetworksPredictedForLocation:(id)a3 duration:(double)a4 maxLocations:(unint64_t)a5 completionHandler:(id)a6;
-- (void)fetchCandidateNetworksMatchingBSSIDs:(id)a3 completionHandler:(id)a4;
-- (void)forceFetch3BarsNetworkMatchingBSSID:(id)a3 completionHandler:(id)a4;
-- (void)prune3BarsNetworks:(unint64_t)a3 completionHandler:(id)a4;
-- (void)setCacheExpirationInDays:(unint64_t)a3;
+- (WiFi3BarsSource)initWithChangeHandler:(id)handler localStoreType:(unint64_t)type;
+- (id)_descriptorForType:(unint64_t)type;
+- (id)_matchSearchBSSIDs:(id)ds toResponse:(id)response;
+- (void)_handleRemoteFetchResponse:(id)response;
+- (void)fetch3BarsNetworksForLocation:(id)location forceRemote:(BOOL)remote trigger:(unint64_t)trigger completionHandler:(id)handler;
+- (void)fetch3BarsNetworksPredictedForLocation:(id)location duration:(double)duration maxLocations:(unint64_t)locations completionHandler:(id)handler;
+- (void)fetchCandidateNetworksMatchingBSSIDs:(id)ds completionHandler:(id)handler;
+- (void)forceFetch3BarsNetworkMatchingBSSID:(id)d completionHandler:(id)handler;
+- (void)prune3BarsNetworks:(unint64_t)networks completionHandler:(id)handler;
+- (void)setCacheExpirationInDays:(unint64_t)days;
 - (void)submitCacheAnalyticsEvent;
 @end
 
 @implementation WiFi3BarsSource
 
-- (WiFi3BarsSource)initWithChangeHandler:(id)a3 localStoreType:(unint64_t)a4
+- (WiFi3BarsSource)initWithChangeHandler:(id)handler localStoreType:(unint64_t)type
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  handlerCopy = handler;
   v27.receiver = self;
   v27.super_class = WiFi3BarsSource;
   v7 = [(WiFi3BarsSource *)&v27 init];
@@ -26,9 +26,9 @@
     goto LABEL_15;
   }
 
-  if (v6)
+  if (handlerCopy)
   {
-    v8 = MEMORY[0x23839E400](v6);
+    v8 = MEMORY[0x23839E400](handlerCopy);
     changeHandler = v7->changeHandler;
     v7->changeHandler = v8;
   }
@@ -47,7 +47,7 @@ LABEL_17:
     goto LABEL_14;
   }
 
-  v14 = [(WiFi3BarsSource *)v7 _descriptorForType:a4];
+  v14 = [(WiFi3BarsSource *)v7 _descriptorForType:type];
   if (!v14)
   {
     [WiFi3BarsSource initWithChangeHandler:buf localStoreType:?];
@@ -56,8 +56,8 @@ LABEL_17:
   }
 
   v15 = v14;
-  v16 = [v14 storeURL];
-  v17 = [v16 copy];
+  storeURL = [v14 storeURL];
+  v17 = [storeURL copy];
   storeURL = v7->_storeURL;
   v7->_storeURL = v17;
 
@@ -104,12 +104,12 @@ LABEL_14:
   return v7;
 }
 
-- (void)fetch3BarsNetworksForLocation:(id)a3 forceRemote:(BOOL)a4 trigger:(unint64_t)a5 completionHandler:(id)a6
+- (void)fetch3BarsNetworksForLocation:(id)location forceRemote:(BOOL)remote trigger:(unint64_t)trigger completionHandler:(id)handler
 {
-  v8 = a4;
+  remoteCopy = remote;
   v40 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a6;
+  locationCopy = location;
+  handlerCopy = handler;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315138;
@@ -117,15 +117,15 @@ LABEL_14:
     _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%s", buf, 0xCu);
   }
 
-  v12 = [MEMORY[0x277CBEAA8] date];
-  v13 = [v12 dateByAddingDays:{--[WiFi3BarsSource cacheExpirationInDays](self, "cacheExpirationInDays")}];
+  date = [MEMORY[0x277CBEAA8] date];
+  v13 = [date dateByAddingDays:{--[WiFi3BarsSource cacheExpirationInDays](self, "cacheExpirationInDays")}];
 
   v14 = [TBLocationFetchRequestDescriptor alloc];
-  [v10 coordinate];
+  [locationCopy coordinate];
   v16 = v15;
-  [v10 coordinate];
+  [locationCopy coordinate];
   v18 = v17;
-  if (a5 == 1)
+  if (trigger == 1)
   {
     +[TBDefaults nearbyTileSearchRadius];
     v20 = [(TBLocationFetchRequestDescriptor *)v14 initWithLatitude:v13 longitude:v16 radius:v18 maxCacheAge:v19];
@@ -137,7 +137,7 @@ LABEL_14:
   }
 
   v21 = v20;
-  if (v8)
+  if (remoteCopy)
   {
     v22 = 2;
   }
@@ -149,7 +149,7 @@ LABEL_14:
 
   v23 = [TBLocationFetchRequest fetchRequestWithDescriptor:v20 sourcePolicy:v22 cacheable:1];
   v36[0] = @"trigger";
-  v24 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a5];
+  v24 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:trigger];
   v36[1] = @"tileKey";
   v37[0] = v24;
   v25 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v21, "primaryTileKey")}];
@@ -161,9 +161,9 @@ LABEL_14:
   v31 = 3221225472;
   v32 = __87__WiFi3BarsSource_fetch3BarsNetworksForLocation_forceRemote_trigger_completionHandler___block_invoke;
   v33 = &unk_2789C8200;
-  v34 = self;
-  v35 = v11;
-  v27 = v11;
+  selfCopy = self;
+  v35 = handlerCopy;
+  v27 = handlerCopy;
   [v23 setResultsHandler:&v30];
   v28 = [(WiFi3BarsSource *)self sourceMediator:v30];
   [v28 executeFetchRequest:v23];
@@ -192,16 +192,16 @@ void __87__WiFi3BarsSource_fetch3BarsNetworksForLocation_forceRemote_trigger_com
   }
 }
 
-- (void)_handleRemoteFetchResponse:(id)a3
+- (void)_handleRemoteFetchResponse:(id)response
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 error];
+  responseCopy = response;
+  error = [responseCopy error];
 
-  if (!v4)
+  if (!error)
   {
-    v7 = [v3 tiles];
-    v8 = [v7 count];
+    tiles = [responseCopy tiles];
+    v8 = [tiles count];
 
     v9 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT);
     if (v8)
@@ -211,11 +211,11 @@ void __87__WiFi3BarsSource_fetch3BarsNetworksForLocation_forceRemote_trigger_com
         goto LABEL_11;
       }
 
-      v5 = [v3 tiles];
+      tiles2 = [responseCopy tiles];
       v13 = 136315394;
       v14 = "[WiFi3BarsSource _handleRemoteFetchResponse:]";
       v15 = 2048;
-      v16 = [v5 count];
+      uTF8String = [tiles2 count];
       v10 = MEMORY[0x277D86220];
       v11 = "%s: Fetched %lu tiles";
     }
@@ -227,11 +227,11 @@ void __87__WiFi3BarsSource_fetch3BarsNetworksForLocation_forceRemote_trigger_com
         goto LABEL_11;
       }
 
-      v5 = [v3 results];
+      tiles2 = [responseCopy results];
       v13 = 136315394;
       v14 = "[WiFi3BarsSource _handleRemoteFetchResponse:]";
       v15 = 2048;
-      v16 = [v5 count];
+      uTF8String = [tiles2 count];
       v10 = MEMORY[0x277D86220];
       v11 = "%s: Fetched %lu results";
     }
@@ -242,12 +242,12 @@ void __87__WiFi3BarsSource_fetch3BarsNetworksForLocation_forceRemote_trigger_com
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [v3 error];
-    v6 = [v5 description];
+    tiles2 = [responseCopy error];
+    v6 = [tiles2 description];
     v13 = 136315394;
     v14 = "[WiFi3BarsSource _handleRemoteFetchResponse:]";
     v15 = 2080;
-    v16 = [v6 UTF8String];
+    uTF8String = [v6 UTF8String];
     _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%s: Failed fetch with error %s\n", &v13, 0x16u);
 
 LABEL_10:
@@ -258,23 +258,23 @@ LABEL_11:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetch3BarsNetworksPredictedForLocation:(id)a3 duration:(double)a4 maxLocations:(unint64_t)a5 completionHandler:(id)a6
+- (void)fetch3BarsNetworksPredictedForLocation:(id)location duration:(double)duration maxLocations:(unint64_t)locations completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a6;
-  v12 = [(WiFi3BarsSource *)self queue];
+  locationCopy = location;
+  handlerCopy = handler;
+  queue = [(WiFi3BarsSource *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __98__WiFi3BarsSource_fetch3BarsNetworksPredictedForLocation_duration_maxLocations_completionHandler___block_invoke;
   block[3] = &unk_2789C8278;
   block[4] = self;
-  v16 = v10;
-  v19 = a4;
-  v17 = v11;
-  v18 = a5;
-  v13 = v11;
-  v14 = v10;
-  dispatch_async(v12, block);
+  v16 = locationCopy;
+  durationCopy = duration;
+  v17 = handlerCopy;
+  locationsCopy = locations;
+  v13 = handlerCopy;
+  v14 = locationCopy;
+  dispatch_async(queue, block);
 }
 
 void __98__WiFi3BarsSource_fetch3BarsNetworksPredictedForLocation_duration_maxLocations_completionHandler___block_invoke(uint64_t a1)
@@ -419,24 +419,24 @@ void __98__WiFi3BarsSource_fetch3BarsNetworksPredictedForLocation_duration_maxLo
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)prune3BarsNetworks:(unint64_t)a3 completionHandler:(id)a4
+- (void)prune3BarsNetworks:(unint64_t)networks completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [(WiFi3BarsSource *)self sourceMediator];
-  [v7 prune3BarsNetworks:a3 completionHandler:v6];
+  handlerCopy = handler;
+  sourceMediator = [(WiFi3BarsSource *)self sourceMediator];
+  [sourceMediator prune3BarsNetworks:networks completionHandler:handlerCopy];
 }
 
-- (void)fetchCandidateNetworksMatchingBSSIDs:(id)a3 completionHandler:(id)a4
+- (void)fetchCandidateNetworksMatchingBSSIDs:(id)ds completionHandler:(id)handler
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  handlerCopy = handler;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     *&buf[4] = "[WiFi3BarsSource fetchCandidateNetworksMatchingBSSIDs:completionHandler:]";
     *&buf[12] = 2048;
-    *&buf[14] = [v6 count];
+    *&buf[14] = [dsCopy count];
     _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%s: fetching candidates for %lu BSSIDS", buf, 0x16u);
   }
 
@@ -446,17 +446,17 @@ void __98__WiFi3BarsSource_fetch3BarsNetworksPredictedForLocation_duration_maxLo
   v23 = __Block_byref_object_copy__8;
   v24 = __Block_byref_object_dispose__8;
   v25 = os_transaction_create();
-  v8 = [[TBNetworkFetchRequestDescriptor alloc] initWithBSSIDs:v6];
+  v8 = [[TBNetworkFetchRequestDescriptor alloc] initWithBSSIDs:dsCopy];
   v9 = [TBNetworkFetchRequest fetchRequestWithDescriptor:v8 sourcePolicy:1];
   [v9 setUserInfo:&unk_2848BB100];
   v14 = MEMORY[0x277D85DD0];
   v15 = 3221225472;
   v16 = __74__WiFi3BarsSource_fetchCandidateNetworksMatchingBSSIDs_completionHandler___block_invoke;
   v17 = &unk_2789C82A0;
-  v18 = self;
-  v10 = v6;
+  selfCopy = self;
+  v10 = dsCopy;
   v19 = v10;
-  v11 = v7;
+  v11 = handlerCopy;
   v20 = v11;
   v21 = buf;
   [v9 setResultsHandler:&v14];
@@ -504,26 +504,26 @@ void __74__WiFi3BarsSource_fetchCandidateNetworksMatchingBSSIDs_completionHandle
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_matchSearchBSSIDs:(id)a3 toResponse:(id)a4
+- (id)_matchSearchBSSIDs:(id)ds toResponse:(id)response
 {
   v58 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  dsCopy = ds;
+  responseCopy = response;
   v30 = objc_alloc_init(MEMORY[0x277CBEB38]);
   if (objc_opt_respondsToSelector())
   {
-    v7 = [v6 resultsByBSSID];
-    v8 = [v7 count];
+    resultsByBSSID = [responseCopy resultsByBSSID];
+    v8 = [resultsByBSSID count];
 
     if (v8)
     {
-      v9 = [v6 resultsByBSSID];
+      resultsByBSSID2 = [responseCopy resultsByBSSID];
       v53[0] = MEMORY[0x277D85DD0];
       v53[1] = 3221225472;
       v53[2] = __49__WiFi3BarsSource__matchSearchBSSIDs_toResponse___block_invoke;
       v53[3] = &unk_2789C82C8;
       v54 = v30;
-      [v9 enumerateKeysAndObjectsUsingBlock:v53];
+      [resultsByBSSID2 enumerateKeysAndObjectsUsingBlock:v53];
 
       goto LABEL_35;
     }
@@ -533,15 +533,15 @@ void __74__WiFi3BarsSource_fetchCandidateNetworksMatchingBSSIDs_completionHandle
   v52 = 0u;
   v49 = 0u;
   v50 = 0u;
-  obj = v5;
+  obj = dsCopy;
   v35 = [obj countByEnumeratingWithState:&v49 objects:v57 count:16];
   if (!v35)
   {
     goto LABEL_34;
   }
 
-  v29 = v5;
-  v32 = v6;
+  v29 = dsCopy;
+  v32 = responseCopy;
   v33 = *v50;
   do
   {
@@ -553,13 +553,13 @@ void __74__WiFi3BarsSource_fetchCandidateNetworksMatchingBSSIDs_completionHandle
       }
 
       v11 = *(*(&v49 + 1) + 8 * i);
-      v12 = [v11 reformatBSSID];
+      reformatBSSID = [v11 reformatBSSID];
       v45 = 0u;
       v46 = 0u;
       v47 = 0u;
       v48 = 0u;
-      v13 = [v6 results];
-      v39 = [(WiFi3BarsNetwork *)v13 countByEnumeratingWithState:&v45 objects:v56 count:16];
+      results = [responseCopy results];
+      v39 = [(WiFi3BarsNetwork *)results countByEnumeratingWithState:&v45 objects:v56 count:16];
       if (!v39)
       {
         v26 = 0;
@@ -568,7 +568,7 @@ void __74__WiFi3BarsSource_fetchCandidateNetworksMatchingBSSIDs_completionHandle
 
       v34 = v11;
       v36 = i;
-      v37 = v13;
+      v37 = results;
       v40 = 0;
       v38 = *v46;
       do
@@ -585,8 +585,8 @@ void __74__WiFi3BarsSource_fetchCandidateNetworksMatchingBSSIDs_completionHandle
           v42 = 0u;
           v43 = 0u;
           v44 = 0u;
-          v16 = [v15 accessPoints];
-          v17 = [v16 countByEnumeratingWithState:&v41 objects:v55 count:16];
+          accessPoints = [v15 accessPoints];
+          v17 = [accessPoints countByEnumeratingWithState:&v41 objects:v55 count:16];
           if (v17)
           {
             v18 = v17;
@@ -597,13 +597,13 @@ void __74__WiFi3BarsSource_fetchCandidateNetworksMatchingBSSIDs_completionHandle
               {
                 if (*v42 != v19)
                 {
-                  objc_enumerationMutation(v16);
+                  objc_enumerationMutation(accessPoints);
                 }
 
                 v21 = *(*(&v41 + 1) + 8 * k);
                 v22 = objc_autoreleasePoolPush();
-                v23 = [v21 BSSID];
-                v24 = [v23 isEqualToString:v12];
+                bSSID = [v21 BSSID];
+                v24 = [bSSID isEqualToString:reformatBSSID];
 
                 if (v24)
                 {
@@ -617,7 +617,7 @@ void __74__WiFi3BarsSource_fetchCandidateNetworksMatchingBSSIDs_completionHandle
                 objc_autoreleasePoolPop(v22);
               }
 
-              v18 = [v16 countByEnumeratingWithState:&v41 objects:v55 count:16];
+              v18 = [accessPoints countByEnumeratingWithState:&v41 objects:v55 count:16];
               if (v18)
               {
                 continue;
@@ -638,16 +638,16 @@ LABEL_24:
       v26 = v40;
       if (v40)
       {
-        v13 = [[WiFi3BarsNetwork alloc] initWithNetwork:v40];
-        [v30 setObject:v13 forKey:v34];
-        v6 = v32;
+        results = [[WiFi3BarsNetwork alloc] initWithNetwork:v40];
+        [v30 setObject:results forKey:v34];
+        responseCopy = v32;
         i = v36;
 LABEL_29:
 
         goto LABEL_31;
       }
 
-      v6 = v32;
+      responseCopy = v32;
       i = v36;
 LABEL_31:
     }
@@ -656,7 +656,7 @@ LABEL_31:
   }
 
   while (v35);
-  v5 = v29;
+  dsCopy = v29;
 LABEL_34:
 
 LABEL_35:
@@ -674,11 +674,11 @@ void __49__WiFi3BarsSource__matchSearchBSSIDs_toResponse___block_invoke(uint64_t
   [*(a1 + 32) setObject:v7 forKey:v6];
 }
 
-- (void)forceFetch3BarsNetworkMatchingBSSID:(id)a3 completionHandler:(id)a4
+- (void)forceFetch3BarsNetworkMatchingBSSID:(id)d completionHandler:(id)handler
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  handlerCopy = handler;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315650;
@@ -686,13 +686,13 @@ void __49__WiFi3BarsSource__matchSearchBSSIDs_toResponse___block_invoke(uint64_t
     v22 = 2160;
     v23 = 1752392040;
     v24 = 2112;
-    v25 = v6;
+    v25 = dCopy;
     _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%s: fetching 3bars network for %{mask.hash}@", buf, 0x20u);
   }
 
-  v8 = [MEMORY[0x277CBEB98] setWithObjects:{v6, 0}];
-  v9 = [MEMORY[0x277CBEAA8] date];
-  v10 = [v9 dateByAddingDays:{--[WiFi3BarsSource cacheExpirationInDays](self, "cacheExpirationInDays")}];
+  v8 = [MEMORY[0x277CBEB98] setWithObjects:{dCopy, 0}];
+  date = [MEMORY[0x277CBEAA8] date];
+  v10 = [date dateByAddingDays:{--[WiFi3BarsSource cacheExpirationInDays](self, "cacheExpirationInDays")}];
 
   v11 = [[TBNetworkFetchRequestDescriptor alloc] initWithBSSIDs:v8 maxCacheAge:v10];
   v12 = [TBNetworkFetchRequest fetchRequestWithDescriptor:v11 sourcePolicy:3 cacheable:1];
@@ -703,12 +703,12 @@ void __49__WiFi3BarsSource__matchSearchBSSIDs_toResponse___block_invoke(uint64_t
   v17[3] = &unk_2789C82F0;
   v17[4] = self;
   v18 = v8;
-  v19 = v7;
-  v13 = v7;
+  v19 = handlerCopy;
+  v13 = handlerCopy;
   v14 = v8;
   [v12 setResultsHandler:v17];
-  v15 = [(WiFi3BarsSource *)self sourceMediator];
-  [v15 executeFetchRequest:v12];
+  sourceMediator = [(WiFi3BarsSource *)self sourceMediator];
+  [sourceMediator executeFetchRequest:v12];
 
   v16 = *MEMORY[0x277D85DE8];
 }
@@ -754,24 +754,24 @@ void __73__WiFi3BarsSource_forceFetch3BarsNetworkMatchingBSSID_completionHandler
 - (void)submitCacheAnalyticsEvent
 {
   v25 = *MEMORY[0x277D85DE8];
-  v2 = [(WiFi3BarsSource *)self sourceMediator];
-  v3 = [v2 local];
-  v4 = [v3 context];
+  sourceMediator = [(WiFi3BarsSource *)self sourceMediator];
+  local = [sourceMediator local];
+  context = [local context];
 
-  if (v4)
+  if (context)
   {
     v5 = +[TBTileMO fetchRequest];
     [v5 setIncludesSubentities:0];
     v6 = +[TBTileMO fetchRequest];
     [v6 setIncludesSubentities:0];
-    v7 = [MEMORY[0x277CBEAA8] date];
-    v8 = [v7 dateByAddingDays:-1];
+    date = [MEMORY[0x277CBEAA8] date];
+    v8 = [date dateByAddingDays:-1];
 
     v9 = [MEMORY[0x277CCAC30] predicateWithFormat:@"created > %@", v8];
     [v6 setPredicate:v9];
 
     v18 = 0;
-    v10 = [v4 countForFetchRequest:v5 error:&v18];
+    v10 = [context countForFetchRequest:v5 error:&v18];
     v11 = v18;
     if (v10 == 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -788,7 +788,7 @@ void __73__WiFi3BarsSource_forceFetch3BarsNetworkMatchingBSSID_completionHandler
     else
     {
       v17 = 0;
-      v12 = [v4 countForFetchRequest:v6 error:&v17];
+      v12 = [context countForFetchRequest:v6 error:&v17];
       v13 = v17;
       v14 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT);
       if (v12 == 0x7FFFFFFFFFFFFFFFLL)
@@ -832,7 +832,7 @@ void __73__WiFi3BarsSource_forceFetch3BarsNetworkMatchingBSSID_completionHandler
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setCacheExpirationInDays:(unint64_t)a3
+- (void)setCacheExpirationInDays:(unint64_t)days
 {
   v12 = *MEMORY[0x277D85DE8];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
@@ -840,37 +840,37 @@ void __73__WiFi3BarsSource_forceFetch3BarsNetworkMatchingBSSID_completionHandler
     v8 = 136315394;
     v9 = "[WiFi3BarsSource setCacheExpirationInDays:]";
     v10 = 2048;
-    v11 = a3;
+    daysCopy = days;
     _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%s: setting new cache expiration %lu", &v8, 0x16u);
   }
 
-  self->_cacheExpirationInDays = a3;
-  v5 = [(WiFi3BarsSource *)self sourceMediator];
-  v6 = [v5 local];
-  [v6 setCacheExpirationInDays:a3];
+  self->_cacheExpirationInDays = days;
+  sourceMediator = [(WiFi3BarsSource *)self sourceMediator];
+  local = [sourceMediator local];
+  [local setCacheExpirationInDays:days];
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_descriptorForType:(unint64_t)a3
+- (id)_descriptorForType:(unint64_t)type
 {
   v3 = 0;
-  if (a3 > 1)
+  if (type > 1)
   {
-    if (a3 == 3)
+    if (type == 3)
     {
       v3 = +[TBCoreDataStoreDescriptor tempStoreDescriptor];
     }
 
-    else if (a3 == 2)
+    else if (type == 2)
     {
       v3 = +[TBCoreDataStoreDescriptor clientStoreDescriptor];
     }
   }
 
-  else if (a3)
+  else if (type)
   {
-    if (a3 == 1)
+    if (type == 1)
     {
       v3 = +[TBCoreDataStoreDescriptor directStoreDescriptor];
     }

@@ -1,6 +1,6 @@
 @interface IPAIdentityOperator
 - (id)description;
-- (id)transformForGeometry:(id)a3;
+- (id)transformForGeometry:(id)geometry;
 @end
 
 @implementation IPAIdentityOperator
@@ -15,9 +15,9 @@
   return v6;
 }
 
-- (id)transformForGeometry:(id)a3
+- (id)transformForGeometry:(id)geometry
 {
-  v3 = [IPAImageTransform identityTransformForGeometry:a3];
+  v3 = [IPAImageTransform identityTransformForGeometry:geometry];
 
   return v3;
 }

@@ -11,20 +11,20 @@
 - (id)targetApplicationWithController:()SpringBoard
 {
   v4 = a3;
-  v5 = [a1 process];
-  v6 = [a1 launchingApplicationIdentity];
-  v7 = v6;
-  if (v5)
+  process = [self process];
+  launchingApplicationIdentity = [self launchingApplicationIdentity];
+  v7 = launchingApplicationIdentity;
+  if (process)
   {
-    v8 = [v4 applicationWithPid:{objc_msgSend(v5, "pid")}];
+    v8 = [v4 applicationWithPid:{objc_msgSend(process, "pid")}];
   }
 
-  else if (v6)
+  else if (launchingApplicationIdentity)
   {
-    v9 = [a1 _launchingApplicationRecord];
-    v10 = [v9 bundleIdentifier];
+    _launchingApplicationRecord = [self _launchingApplicationRecord];
+    bundleIdentifier = [_launchingApplicationRecord bundleIdentifier];
 
-    v8 = [v4 applicationWithBundleIdentifier:v10];
+    v8 = [v4 applicationWithBundleIdentifier:bundleIdentifier];
   }
 
   else
@@ -38,20 +38,20 @@
 - (uint64_t)matchesOverlayViewController:()SpringBoard
 {
   v4 = a3;
-  v5 = [a1 process];
-  v6 = [a1 launchingApplicationIdentity];
-  v7 = v6;
-  if (v5)
+  process = [self process];
+  launchingApplicationIdentity = [self launchingApplicationIdentity];
+  v7 = launchingApplicationIdentity;
+  if (process)
   {
-    v8 = [v4 isPresentedByProcess:v5];
+    v8 = [v4 isPresentedByProcess:process];
   }
 
-  else if (v6)
+  else if (launchingApplicationIdentity)
   {
-    v9 = [a1 _launchingApplicationRecord];
-    v10 = [v9 bundleIdentifier];
+    _launchingApplicationRecord = [self _launchingApplicationRecord];
+    bundleIdentifier = [_launchingApplicationRecord bundleIdentifier];
 
-    v8 = [v4 isPresentedByBundleIdentifier:v10];
+    v8 = [v4 isPresentedByBundleIdentifier:bundleIdentifier];
   }
 
   else
@@ -65,18 +65,18 @@
 - (void)configureTransientOverlayContext:()SpringBoard
 {
   v5 = a3;
-  v4 = [a1 process];
-  if (v4)
+  process = [self process];
+  if (process)
   {
-    [v5 setOriginatingProcess:v4];
+    [v5 setOriginatingProcess:process];
   }
 }
 
 - (id)_launchingApplicationRecord
 {
-  v1 = [a1 launchingApplicationIdentity];
+  launchingApplicationIdentity = [self launchingApplicationIdentity];
   v6 = 0;
-  v2 = [v1 findApplicationRecordWithError:&v6];
+  v2 = [launchingApplicationIdentity findApplicationRecordWithError:&v6];
   v3 = v6;
 
   if (v3)
@@ -95,7 +95,7 @@
 {
   v4 = *MEMORY[0x277D85DE8];
   v2 = 138543362;
-  v3 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_21ED4E000, a2, OS_LOG_TYPE_ERROR, "could not find app record for app identity. error: %{public}@", &v2, 0xCu);
 }
 

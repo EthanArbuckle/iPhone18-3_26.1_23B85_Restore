@@ -1,6 +1,6 @@
 @interface AMSDHomeKitHomeCloudShare
 - (AMSDCloudDataShareToken)token;
-- (AMSDHomeKitHomeCloudShare)initWithShareInvitation:(id)a3;
+- (AMSDHomeKitHomeCloudShare)initWithShareInvitation:(id)invitation;
 - (NSString)containerIdentifier;
 - (NSString)hashedDescription;
 - (NSURL)URL;
@@ -9,16 +9,16 @@
 
 @implementation AMSDHomeKitHomeCloudShare
 
-- (AMSDHomeKitHomeCloudShare)initWithShareInvitation:(id)a3
+- (AMSDHomeKitHomeCloudShare)initWithShareInvitation:(id)invitation
 {
-  v5 = a3;
+  invitationCopy = invitation;
   v9.receiver = self;
   v9.super_class = AMSDHomeKitHomeCloudShare;
   v6 = [(AMSDHomeKitHomeCloudShare *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_shareInvitation, a3);
+    objc_storeStrong(&v6->_shareInvitation, invitation);
   }
 
   return v7;
@@ -26,35 +26,35 @@
 
 - (NSString)containerIdentifier
 {
-  v2 = [(AMSDHomeKitHomeCloudShare *)self shareInvitation];
-  v3 = [v2 containerID];
+  shareInvitation = [(AMSDHomeKitHomeCloudShare *)self shareInvitation];
+  containerID = [shareInvitation containerID];
 
-  return v3;
+  return containerID;
 }
 
 - (NSUUID)homeIdentifier
 {
-  v2 = [(AMSDHomeKitHomeCloudShare *)self shareInvitation];
-  v3 = [v2 home];
-  v4 = [v3 uniqueIdentifier];
+  shareInvitation = [(AMSDHomeKitHomeCloudShare *)self shareInvitation];
+  home = [shareInvitation home];
+  uniqueIdentifier = [home uniqueIdentifier];
 
-  return v4;
+  return uniqueIdentifier;
 }
 
 - (AMSDCloudDataShareToken)token
 {
-  v2 = [(AMSDHomeKitHomeCloudShare *)self shareInvitation];
-  v3 = [v2 shareToken];
+  shareInvitation = [(AMSDHomeKitHomeCloudShare *)self shareInvitation];
+  shareToken = [shareInvitation shareToken];
 
-  return v3;
+  return shareToken;
 }
 
 - (NSURL)URL
 {
-  v2 = [(AMSDHomeKitHomeCloudShare *)self shareInvitation];
-  v3 = [v2 shareURL];
+  shareInvitation = [(AMSDHomeKitHomeCloudShare *)self shareInvitation];
+  shareURL = [shareInvitation shareURL];
 
-  return v3;
+  return shareURL;
 }
 
 - (NSString)hashedDescription
@@ -62,11 +62,11 @@
   v3 = objc_opt_class();
   v4 = [(AMSDHomeKitHomeCloudShare *)self URL];
   v5 = AMSHashIfNeeded();
-  v6 = [(AMSDHomeKitHomeCloudShare *)self containerIdentifier];
+  containerIdentifier = [(AMSDHomeKitHomeCloudShare *)self containerIdentifier];
   v7 = AMSHashIfNeeded();
-  v8 = [(AMSDHomeKitHomeCloudShare *)self homeIdentifier];
+  homeIdentifier = [(AMSDHomeKitHomeCloudShare *)self homeIdentifier];
   v9 = AMSHashIfNeeded();
-  v10 = [(AMSDHomeKitHomeCloudShare *)self token];
+  token = [(AMSDHomeKitHomeCloudShare *)self token];
   v11 = AMSHashIfNeeded();
   v12 = [NSString stringWithFormat:@"<%@: %p URL = %@ | containerIdentifier = %@ | token = %@ | home = %@", v3, self, v5, v7, v9, v11];
 

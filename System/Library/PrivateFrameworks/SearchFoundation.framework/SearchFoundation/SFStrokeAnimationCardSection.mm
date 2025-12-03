@@ -1,12 +1,12 @@
 @interface SFStrokeAnimationCardSection
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (SFStrokeAnimationCardSection)initWithCoder:(id)a3;
-- (SFStrokeAnimationCardSection)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SFStrokeAnimationCardSection)initWithCoder:(id)coder;
+- (SFStrokeAnimationCardSection)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFStrokeAnimationCardSection
@@ -16,52 +16,52 @@
   v27.receiver = self;
   v27.super_class = SFStrokeAnimationCardSection;
   v3 = [(SFCardSection *)&v27 hash];
-  v26 = [(SFCardSection *)self punchoutOptions];
-  v4 = [v26 hash];
-  v5 = [(SFCardSection *)self punchoutPickerTitle];
-  v6 = v4 ^ [v5 hash];
-  v7 = [(SFCardSection *)self punchoutPickerDismissText];
-  v8 = v6 ^ [v7 hash];
+  punchoutOptions = [(SFCardSection *)self punchoutOptions];
+  v4 = [punchoutOptions hash];
+  punchoutPickerTitle = [(SFCardSection *)self punchoutPickerTitle];
+  v6 = v4 ^ [punchoutPickerTitle hash];
+  punchoutPickerDismissText = [(SFCardSection *)self punchoutPickerDismissText];
+  v8 = v6 ^ [punchoutPickerDismissText hash];
   v9 = v8 ^ [(SFCardSection *)self canBeHidden];
   v10 = v9 ^ [(SFCardSection *)self hasTopPadding]^ v3;
-  v11 = [(SFCardSection *)self hasBottomPadding];
-  v12 = [(SFStrokeAnimationCardSection *)self type];
-  v13 = v11 ^ [v12 hash];
+  hasBottomPadding = [(SFCardSection *)self hasBottomPadding];
+  type = [(SFStrokeAnimationCardSection *)self type];
+  v13 = hasBottomPadding ^ [type hash];
   v14 = v13 ^ [(SFCardSection *)self separatorStyle];
-  v15 = [(SFCardSection *)self backgroundColor];
-  v16 = v14 ^ [v15 hash];
-  v17 = [(SFStrokeAnimationCardSection *)self strokeAnimationRepresentation];
-  v18 = v10 ^ v16 ^ [v17 hash];
-  v19 = [(SFStrokeAnimationCardSection *)self strokeNames];
-  v20 = [v19 hash];
-  v21 = [(SFStrokeAnimationCardSection *)self characters];
-  v22 = v20 ^ [v21 hash];
-  v23 = [(SFStrokeAnimationCardSection *)self pronunciations];
-  v24 = v22 ^ [v23 hash];
+  backgroundColor = [(SFCardSection *)self backgroundColor];
+  v16 = v14 ^ [backgroundColor hash];
+  strokeAnimationRepresentation = [(SFStrokeAnimationCardSection *)self strokeAnimationRepresentation];
+  v18 = v10 ^ v16 ^ [strokeAnimationRepresentation hash];
+  strokeNames = [(SFStrokeAnimationCardSection *)self strokeNames];
+  v20 = [strokeNames hash];
+  characters = [(SFStrokeAnimationCardSection *)self characters];
+  v22 = v20 ^ [characters hash];
+  pronunciations = [(SFStrokeAnimationCardSection *)self pronunciations];
+  v24 = v22 ^ [pronunciations hash];
 
   return v18 ^ v24;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
   else
   {
-    if ([(SFStrokeAnimationCardSection *)v5 isMemberOfClass:objc_opt_class()])
+    if ([(SFStrokeAnimationCardSection *)equalCopy isMemberOfClass:objc_opt_class()])
     {
       v77.receiver = self;
       v77.super_class = SFStrokeAnimationCardSection;
-      if ([(SFCardSection *)&v77 isEqual:v5])
+      if ([(SFCardSection *)&v77 isEqual:equalCopy])
       {
-        v6 = v5;
-        v7 = [(SFCardSection *)self punchoutOptions];
-        v8 = [(SFCardSection *)v6 punchoutOptions];
-        if ((v7 != 0) == (v8 == 0))
+        v6 = equalCopy;
+        punchoutOptions = [(SFCardSection *)self punchoutOptions];
+        punchoutOptions2 = [(SFCardSection *)v6 punchoutOptions];
+        if ((punchoutOptions != 0) == (punchoutOptions2 == 0))
         {
           v11 = 0;
 LABEL_40:
@@ -69,12 +69,12 @@ LABEL_40:
           goto LABEL_41;
         }
 
-        v9 = [(SFCardSection *)self punchoutOptions];
-        if (v9)
+        punchoutOptions3 = [(SFCardSection *)self punchoutOptions];
+        if (punchoutOptions3)
         {
-          v10 = [(SFCardSection *)self punchoutOptions];
-          v3 = [(SFCardSection *)v6 punchoutOptions];
-          if (![v10 isEqual:v3])
+          punchoutOptions4 = [(SFCardSection *)self punchoutOptions];
+          punchoutOptions5 = [(SFCardSection *)v6 punchoutOptions];
+          if (![punchoutOptions4 isEqual:punchoutOptions5])
           {
             v11 = 0;
 LABEL_38:
@@ -82,121 +82,121 @@ LABEL_38:
             goto LABEL_39;
           }
 
-          v75 = v3;
-          v76 = v10;
+          v75 = punchoutOptions5;
+          v76 = punchoutOptions4;
         }
 
-        v12 = [(SFCardSection *)self punchoutPickerTitle];
-        v13 = [(SFCardSection *)v6 punchoutPickerTitle];
-        if ((v12 != 0) == (v13 == 0))
+        punchoutPickerTitle = [(SFCardSection *)self punchoutPickerTitle];
+        punchoutPickerTitle2 = [(SFCardSection *)v6 punchoutPickerTitle];
+        if ((punchoutPickerTitle != 0) == (punchoutPickerTitle2 == 0))
         {
           goto LABEL_35;
         }
 
-        v14 = [(SFCardSection *)self punchoutPickerTitle];
-        if (v14)
+        punchoutPickerTitle3 = [(SFCardSection *)self punchoutPickerTitle];
+        if (punchoutPickerTitle3)
         {
-          v15 = [(SFCardSection *)self punchoutPickerTitle];
-          v16 = [(SFCardSection *)v6 punchoutPickerTitle];
-          v72 = v15;
-          v17 = v15;
-          v3 = v16;
-          if (![v17 isEqual:v16])
+          punchoutPickerTitle4 = [(SFCardSection *)self punchoutPickerTitle];
+          punchoutPickerTitle5 = [(SFCardSection *)v6 punchoutPickerTitle];
+          v72 = punchoutPickerTitle4;
+          v17 = punchoutPickerTitle4;
+          punchoutOptions5 = punchoutPickerTitle5;
+          if (![v17 isEqual:punchoutPickerTitle5])
           {
             goto LABEL_34;
           }
         }
 
-        v73 = v12;
-        v74 = v14;
-        v18 = [(SFCardSection *)self punchoutPickerDismissText];
-        v19 = [(SFCardSection *)v6 punchoutPickerDismissText];
-        if ((v18 != 0) == (v19 == 0))
+        v73 = punchoutPickerTitle;
+        v74 = punchoutPickerTitle3;
+        punchoutPickerDismissText = [(SFCardSection *)self punchoutPickerDismissText];
+        punchoutPickerDismissText2 = [(SFCardSection *)v6 punchoutPickerDismissText];
+        if ((punchoutPickerDismissText != 0) == (punchoutPickerDismissText2 == 0))
         {
 
           goto LABEL_33;
         }
 
-        v69 = v18;
-        v70 = v19;
-        v71 = [(SFCardSection *)self punchoutPickerDismissText];
-        if (v71)
+        v69 = punchoutPickerDismissText;
+        v70 = punchoutPickerDismissText2;
+        punchoutPickerDismissText3 = [(SFCardSection *)self punchoutPickerDismissText];
+        if (punchoutPickerDismissText3)
         {
-          v20 = [(SFCardSection *)self punchoutPickerDismissText];
-          v21 = [(SFCardSection *)v6 punchoutPickerDismissText];
-          v68 = v20;
-          v22 = v20;
-          v18 = v21;
-          if (![v22 isEqual:v21])
+          punchoutPickerDismissText4 = [(SFCardSection *)self punchoutPickerDismissText];
+          punchoutPickerDismissText5 = [(SFCardSection *)v6 punchoutPickerDismissText];
+          v68 = punchoutPickerDismissText4;
+          v22 = punchoutPickerDismissText4;
+          punchoutPickerDismissText = punchoutPickerDismissText5;
+          if (![v22 isEqual:punchoutPickerDismissText5])
           {
             goto LABEL_31;
           }
         }
 
-        v23 = [(SFCardSection *)self canBeHidden];
-        if (v23 == [(SFCardSection *)v6 canBeHidden])
+        canBeHidden = [(SFCardSection *)self canBeHidden];
+        if (canBeHidden == [(SFCardSection *)v6 canBeHidden])
         {
-          v24 = [(SFCardSection *)self hasTopPadding];
-          if (v24 == [(SFCardSection *)v6 hasTopPadding])
+          hasTopPadding = [(SFCardSection *)self hasTopPadding];
+          if (hasTopPadding == [(SFCardSection *)v6 hasTopPadding])
           {
-            v25 = [(SFCardSection *)self hasBottomPadding];
-            if (v25 == [(SFCardSection *)v6 hasBottomPadding])
+            hasBottomPadding = [(SFCardSection *)self hasBottomPadding];
+            if (hasBottomPadding == [(SFCardSection *)v6 hasBottomPadding])
             {
-              v26 = [(SFStrokeAnimationCardSection *)self type];
-              v27 = [(SFStrokeAnimationCardSection *)v6 type];
-              if ((v26 != 0) != (v27 == 0))
+              type = [(SFStrokeAnimationCardSection *)self type];
+              type2 = [(SFStrokeAnimationCardSection *)v6 type];
+              if ((type != 0) != (type2 == 0))
               {
-                v65 = v27;
-                v66 = v26;
+                v65 = type2;
+                v66 = type;
                 [(SFStrokeAnimationCardSection *)self type];
-                v67 = v14 = v74;
+                v67 = punchoutPickerTitle3 = v74;
                 if (v67)
                 {
-                  v64 = [(SFStrokeAnimationCardSection *)self type];
-                  v63 = [(SFStrokeAnimationCardSection *)v6 type];
-                  if (![v64 isEqual:?])
+                  type3 = [(SFStrokeAnimationCardSection *)self type];
+                  type4 = [(SFStrokeAnimationCardSection *)v6 type];
+                  if (![type3 isEqual:?])
                   {
                     goto LABEL_50;
                   }
                 }
 
-                v29 = [(SFCardSection *)self separatorStyle];
-                if (v29 == [(SFCardSection *)v6 separatorStyle])
+                separatorStyle = [(SFCardSection *)self separatorStyle];
+                if (separatorStyle == [(SFCardSection *)v6 separatorStyle])
                 {
-                  v62 = [(SFCardSection *)self backgroundColor];
-                  v30 = [(SFCardSection *)v6 backgroundColor];
-                  if ((v62 != 0) != (v30 == 0))
+                  backgroundColor = [(SFCardSection *)self backgroundColor];
+                  backgroundColor2 = [(SFCardSection *)v6 backgroundColor];
+                  if ((backgroundColor != 0) != (backgroundColor2 == 0))
                   {
-                    v60 = v3;
-                    v61 = v30;
-                    v59 = v18;
-                    v31 = [(SFCardSection *)self backgroundColor];
-                    if (v31)
+                    v60 = punchoutOptions5;
+                    v61 = backgroundColor2;
+                    v59 = punchoutPickerDismissText;
+                    backgroundColor3 = [(SFCardSection *)self backgroundColor];
+                    if (backgroundColor3)
                     {
-                      v32 = [(SFCardSection *)self backgroundColor];
-                      v56 = [(SFCardSection *)v6 backgroundColor];
-                      v57 = v32;
-                      if (![v32 isEqual:?])
+                      backgroundColor4 = [(SFCardSection *)self backgroundColor];
+                      backgroundColor5 = [(SFCardSection *)v6 backgroundColor];
+                      v57 = backgroundColor4;
+                      if (![backgroundColor4 isEqual:?])
                       {
 LABEL_57:
 
 LABEL_58:
-                        v14 = v74;
-                        v18 = v59;
-                        v3 = v60;
+                        punchoutPickerTitle3 = v74;
+                        punchoutPickerDismissText = v59;
+                        punchoutOptions5 = v60;
 LABEL_49:
                         if (!v67)
                         {
 LABEL_51:
 
 LABEL_30:
-                          if (!v71)
+                          if (!punchoutPickerDismissText3)
                           {
 LABEL_32:
 
 LABEL_33:
-                            v12 = v73;
-                            if (!v14)
+                            punchoutPickerTitle = v73;
+                            if (!punchoutPickerTitle3)
                             {
 LABEL_35:
 
@@ -219,13 +219,13 @@ LABEL_50:
                       }
                     }
 
-                    v58 = [(SFStrokeAnimationCardSection *)self strokeAnimationRepresentation];
-                    v33 = [(SFStrokeAnimationCardSection *)v6 strokeAnimationRepresentation];
-                    v34 = v33;
-                    if ((v58 != 0) == (v33 == 0))
+                    strokeAnimationRepresentation = [(SFStrokeAnimationCardSection *)self strokeAnimationRepresentation];
+                    strokeAnimationRepresentation2 = [(SFStrokeAnimationCardSection *)v6 strokeAnimationRepresentation];
+                    v34 = strokeAnimationRepresentation2;
+                    if ((strokeAnimationRepresentation != 0) == (strokeAnimationRepresentation2 == 0))
                     {
 
-                      if (!v31)
+                      if (!backgroundColor3)
                       {
                         goto LABEL_58;
                       }
@@ -233,28 +233,28 @@ LABEL_50:
                       goto LABEL_57;
                     }
 
-                    v55 = [(SFStrokeAnimationCardSection *)self strokeAnimationRepresentation];
-                    if (v55)
+                    strokeAnimationRepresentation3 = [(SFStrokeAnimationCardSection *)self strokeAnimationRepresentation];
+                    if (strokeAnimationRepresentation3)
                     {
-                      v35 = [(SFStrokeAnimationCardSection *)self strokeAnimationRepresentation];
-                      v51 = [(SFStrokeAnimationCardSection *)v6 strokeAnimationRepresentation];
-                      v52 = v35;
-                      if (![v35 isEqual:?])
+                      strokeAnimationRepresentation4 = [(SFStrokeAnimationCardSection *)self strokeAnimationRepresentation];
+                      strokeAnimationRepresentation5 = [(SFStrokeAnimationCardSection *)v6 strokeAnimationRepresentation];
+                      v52 = strokeAnimationRepresentation4;
+                      if (![strokeAnimationRepresentation4 isEqual:?])
                       {
                         goto LABEL_65;
                       }
                     }
 
-                    v54 = [(SFStrokeAnimationCardSection *)self strokeNames];
-                    v53 = [(SFStrokeAnimationCardSection *)v6 strokeNames];
-                    if ((v54 != 0) == (v53 == 0))
+                    strokeNames = [(SFStrokeAnimationCardSection *)self strokeNames];
+                    strokeNames2 = [(SFStrokeAnimationCardSection *)v6 strokeNames];
+                    if ((strokeNames != 0) == (strokeNames2 == 0))
                     {
 
-                      if (!v55)
+                      if (!strokeAnimationRepresentation3)
                       {
 LABEL_66:
 
-                        if (v31)
+                        if (backgroundColor3)
                         {
                         }
 
@@ -262,7 +262,7 @@ LABEL_66:
                         {
                         }
 
-                        if (v71)
+                        if (punchoutPickerDismissText3)
                         {
                         }
 
@@ -272,7 +272,7 @@ LABEL_66:
 
 LABEL_36:
                         v11 = 0;
-                        if (!v9)
+                        if (!punchoutOptions3)
                         {
 LABEL_39:
 
@@ -287,23 +287,23 @@ LABEL_65:
                       goto LABEL_66;
                     }
 
-                    v50 = [(SFStrokeAnimationCardSection *)self strokeNames];
-                    if (v50)
+                    strokeNames3 = [(SFStrokeAnimationCardSection *)self strokeNames];
+                    if (strokeNames3)
                     {
-                      v36 = [(SFStrokeAnimationCardSection *)self strokeNames];
-                      v46 = [(SFStrokeAnimationCardSection *)v6 strokeNames];
-                      v47 = v36;
-                      if (![v36 isEqual:?])
+                      strokeNames4 = [(SFStrokeAnimationCardSection *)self strokeNames];
+                      strokeNames5 = [(SFStrokeAnimationCardSection *)v6 strokeNames];
+                      v47 = strokeNames4;
+                      if (![strokeNames4 isEqual:?])
                       {
                         v11 = 0;
 LABEL_89:
 
 LABEL_90:
-                        if (v55)
+                        if (strokeAnimationRepresentation3)
                         {
                         }
 
-                        if (v31)
+                        if (backgroundColor3)
                         {
                         }
 
@@ -311,7 +311,7 @@ LABEL_90:
                         {
                         }
 
-                        if (v71)
+                        if (punchoutPickerDismissText3)
                         {
                         }
 
@@ -319,33 +319,33 @@ LABEL_90:
                         {
                         }
 
-                        if (!v9)
+                        if (!punchoutOptions3)
                         {
                           goto LABEL_39;
                         }
 
 LABEL_37:
-                        v3 = v75;
-                        v10 = v76;
+                        punchoutOptions5 = v75;
+                        punchoutOptions4 = v76;
                         goto LABEL_38;
                       }
                     }
 
-                    v49 = [(SFStrokeAnimationCardSection *)self characters];
-                    v48 = [(SFStrokeAnimationCardSection *)v6 characters];
-                    if ((v49 != 0) == (v48 == 0))
+                    characters = [(SFStrokeAnimationCardSection *)self characters];
+                    characters2 = [(SFStrokeAnimationCardSection *)v6 characters];
+                    if ((characters != 0) == (characters2 == 0))
                     {
 
                       v11 = 0;
                       goto LABEL_88;
                     }
 
-                    v45 = [(SFStrokeAnimationCardSection *)self characters];
-                    if (!v45 || (-[SFStrokeAnimationCardSection characters](self, "characters"), v37 = objc_claimAutoreleasedReturnValue(), -[SFStrokeAnimationCardSection characters](v6, "characters"), v41 = objc_claimAutoreleasedReturnValue(), v42 = v37, [v37 isEqual:?]))
+                    characters3 = [(SFStrokeAnimationCardSection *)self characters];
+                    if (!characters3 || (-[SFStrokeAnimationCardSection characters](self, "characters"), v37 = objc_claimAutoreleasedReturnValue(), -[SFStrokeAnimationCardSection characters](v6, "characters"), v41 = objc_claimAutoreleasedReturnValue(), v42 = v37, [v37 isEqual:?]))
                     {
-                      v44 = [(SFStrokeAnimationCardSection *)self pronunciations];
-                      v43 = [(SFStrokeAnimationCardSection *)v6 pronunciations];
-                      if ((v44 != 0) == (v43 == 0))
+                      pronunciations = [(SFStrokeAnimationCardSection *)self pronunciations];
+                      pronunciations2 = [(SFStrokeAnimationCardSection *)v6 pronunciations];
+                      if ((pronunciations != 0) == (pronunciations2 == 0))
                       {
 
                         v11 = 0;
@@ -353,12 +353,12 @@ LABEL_37:
 
                       else
                       {
-                        v40 = [(SFStrokeAnimationCardSection *)self pronunciations];
-                        if (v40)
+                        pronunciations3 = [(SFStrokeAnimationCardSection *)self pronunciations];
+                        if (pronunciations3)
                         {
-                          v39 = [(SFStrokeAnimationCardSection *)self pronunciations];
-                          v38 = [(SFStrokeAnimationCardSection *)v6 pronunciations];
-                          v11 = [v39 isEqual:v38];
+                          pronunciations4 = [(SFStrokeAnimationCardSection *)self pronunciations];
+                          pronunciations5 = [(SFStrokeAnimationCardSection *)v6 pronunciations];
+                          v11 = [pronunciations4 isEqual:pronunciations5];
                         }
 
                         else
@@ -368,7 +368,7 @@ LABEL_37:
                         }
                       }
 
-                      if (!v45)
+                      if (!characters3)
                       {
                         goto LABEL_87;
                       }
@@ -381,7 +381,7 @@ LABEL_37:
 
 LABEL_87:
 LABEL_88:
-                    if (!v50)
+                    if (!strokeNames3)
                     {
                       goto LABEL_90;
                     }
@@ -390,14 +390,14 @@ LABEL_88:
                   }
                 }
 
-                v14 = v74;
+                punchoutPickerTitle3 = v74;
                 goto LABEL_49;
               }
             }
           }
         }
 
-        v14 = v74;
+        punchoutPickerTitle3 = v74;
         goto LABEL_30;
       }
     }
@@ -410,49 +410,49 @@ LABEL_41:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v24.receiver = self;
   v24.super_class = SFStrokeAnimationCardSection;
-  v4 = [(SFCardSection *)&v24 copyWithZone:a3];
-  v5 = [(SFCardSection *)self punchoutOptions];
-  v6 = [v5 copy];
+  v4 = [(SFCardSection *)&v24 copyWithZone:zone];
+  punchoutOptions = [(SFCardSection *)self punchoutOptions];
+  v6 = [punchoutOptions copy];
   [v4 setPunchoutOptions:v6];
 
-  v7 = [(SFCardSection *)self punchoutPickerTitle];
-  v8 = [v7 copy];
+  punchoutPickerTitle = [(SFCardSection *)self punchoutPickerTitle];
+  v8 = [punchoutPickerTitle copy];
   [v4 setPunchoutPickerTitle:v8];
 
-  v9 = [(SFCardSection *)self punchoutPickerDismissText];
-  v10 = [v9 copy];
+  punchoutPickerDismissText = [(SFCardSection *)self punchoutPickerDismissText];
+  v10 = [punchoutPickerDismissText copy];
   [v4 setPunchoutPickerDismissText:v10];
 
   [v4 setCanBeHidden:{-[SFCardSection canBeHidden](self, "canBeHidden")}];
   [v4 setHasTopPadding:{-[SFCardSection hasTopPadding](self, "hasTopPadding")}];
   [v4 setHasBottomPadding:{-[SFCardSection hasBottomPadding](self, "hasBottomPadding")}];
-  v11 = [(SFStrokeAnimationCardSection *)self type];
-  v12 = [v11 copy];
+  type = [(SFStrokeAnimationCardSection *)self type];
+  v12 = [type copy];
   [v4 setType:v12];
 
   [v4 setSeparatorStyle:{-[SFCardSection separatorStyle](self, "separatorStyle")}];
-  v13 = [(SFCardSection *)self backgroundColor];
-  v14 = [v13 copy];
+  backgroundColor = [(SFCardSection *)self backgroundColor];
+  v14 = [backgroundColor copy];
   [v4 setBackgroundColor:v14];
 
-  v15 = [(SFStrokeAnimationCardSection *)self strokeAnimationRepresentation];
-  v16 = [v15 copy];
+  strokeAnimationRepresentation = [(SFStrokeAnimationCardSection *)self strokeAnimationRepresentation];
+  v16 = [strokeAnimationRepresentation copy];
   [v4 setStrokeAnimationRepresentation:v16];
 
-  v17 = [(SFStrokeAnimationCardSection *)self strokeNames];
-  v18 = [v17 copy];
+  strokeNames = [(SFStrokeAnimationCardSection *)self strokeNames];
+  v18 = [strokeNames copy];
   [v4 setStrokeNames:v18];
 
-  v19 = [(SFStrokeAnimationCardSection *)self characters];
-  v20 = [v19 copy];
+  characters = [(SFStrokeAnimationCardSection *)self characters];
+  v20 = [characters copy];
   [v4 setCharacters:v20];
 
-  v21 = [(SFStrokeAnimationCardSection *)self pronunciations];
-  v22 = [v21 copy];
+  pronunciations = [(SFStrokeAnimationCardSection *)self pronunciations];
+  v22 = [pronunciations copy];
   [v4 setPronunciations:v22];
 
   return v4;
@@ -461,167 +461,167 @@ LABEL_41:
 - (NSData)jsonData
 {
   v2 = [[_SFPBStrokeAnimationCardSection alloc] initWithFacade:self];
-  v3 = [(_SFPBStrokeAnimationCardSection *)v2 jsonData];
+  jsonData = [(_SFPBStrokeAnimationCardSection *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBStrokeAnimationCardSection alloc] initWithFacade:self];
-  v3 = [(_SFPBStrokeAnimationCardSection *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBStrokeAnimationCardSection *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = SFStrokeAnimationCardSection;
-  [(SFCardSection *)&v3 encodeWithCoder:a3];
+  [(SFCardSection *)&v3 encodeWithCoder:coder];
 }
 
-- (SFStrokeAnimationCardSection)initWithCoder:(id)a3
+- (SFStrokeAnimationCardSection)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(SFCardSection *)self init];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v7 = [[_SFPBCardSection alloc] initWithData:v6];
   v8 = [[SFCardSection alloc] initWithProtobuf:v7];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [(SFCardSection *)v8 punchoutOptions];
-    [(SFCardSection *)v5 setPunchoutOptions:v9];
+    punchoutOptions = [(SFCardSection *)v8 punchoutOptions];
+    [(SFCardSection *)v5 setPunchoutOptions:punchoutOptions];
 
-    v10 = [(SFCardSection *)v8 punchoutPickerTitle];
-    [(SFCardSection *)v5 setPunchoutPickerTitle:v10];
+    punchoutPickerTitle = [(SFCardSection *)v8 punchoutPickerTitle];
+    [(SFCardSection *)v5 setPunchoutPickerTitle:punchoutPickerTitle];
 
-    v11 = [(SFCardSection *)v8 punchoutPickerDismissText];
-    [(SFCardSection *)v5 setPunchoutPickerDismissText:v11];
+    punchoutPickerDismissText = [(SFCardSection *)v8 punchoutPickerDismissText];
+    [(SFCardSection *)v5 setPunchoutPickerDismissText:punchoutPickerDismissText];
 
     [(SFCardSection *)v5 setCanBeHidden:[(SFCardSection *)v8 canBeHidden]];
     [(SFCardSection *)v5 setHasTopPadding:[(SFCardSection *)v8 hasTopPadding]];
     [(SFCardSection *)v5 setHasBottomPadding:[(SFCardSection *)v8 hasBottomPadding]];
-    v12 = [(SFCardSection *)v8 type];
-    [(SFStrokeAnimationCardSection *)v5 setType:v12];
+    type = [(SFCardSection *)v8 type];
+    [(SFStrokeAnimationCardSection *)v5 setType:type];
 
     [(SFCardSection *)v5 setSeparatorStyle:[(SFCardSection *)v8 separatorStyle]];
-    v13 = [(SFCardSection *)v8 backgroundColor];
-    [(SFCardSection *)v5 setBackgroundColor:v13];
+    backgroundColor = [(SFCardSection *)v8 backgroundColor];
+    [(SFCardSection *)v5 setBackgroundColor:backgroundColor];
 
-    v14 = [(SFCardSection *)v8 strokeAnimationRepresentation];
-    [(SFStrokeAnimationCardSection *)v5 setStrokeAnimationRepresentation:v14];
+    strokeAnimationRepresentation = [(SFCardSection *)v8 strokeAnimationRepresentation];
+    [(SFStrokeAnimationCardSection *)v5 setStrokeAnimationRepresentation:strokeAnimationRepresentation];
 
-    v15 = [(SFCardSection *)v8 strokeNames];
-    [(SFStrokeAnimationCardSection *)v5 setStrokeNames:v15];
+    strokeNames = [(SFCardSection *)v8 strokeNames];
+    [(SFStrokeAnimationCardSection *)v5 setStrokeNames:strokeNames];
 
-    v16 = [(SFCardSection *)v8 characters];
-    [(SFStrokeAnimationCardSection *)v5 setCharacters:v16];
+    characters = [(SFCardSection *)v8 characters];
+    [(SFStrokeAnimationCardSection *)v5 setCharacters:characters];
 
-    v17 = [(SFCardSection *)v8 pronunciations];
-    [(SFStrokeAnimationCardSection *)v5 setPronunciations:v17];
+    pronunciations = [(SFCardSection *)v8 pronunciations];
+    [(SFStrokeAnimationCardSection *)v5 setPronunciations:pronunciations];
 
-    v18 = [(SFCardSection *)v8 nextCard];
-    [(SFCardSection *)v5 setNextCard:v18];
+    nextCard = [(SFCardSection *)v8 nextCard];
+    [(SFCardSection *)v5 setNextCard:nextCard];
 
-    v19 = [(SFCardSection *)v8 commands];
-    [(SFCardSection *)v5 setCommands:v19];
+    commands = [(SFCardSection *)v8 commands];
+    [(SFCardSection *)v5 setCommands:commands];
 
-    v20 = [(SFCardSection *)v8 parameterKeyPaths];
-    [(SFCardSection *)v5 setParameterKeyPaths:v20];
+    parameterKeyPaths = [(SFCardSection *)v8 parameterKeyPaths];
+    [(SFCardSection *)v5 setParameterKeyPaths:parameterKeyPaths];
 
-    v21 = [(SFCardSection *)v8 cardSectionId];
-    [(SFCardSection *)v5 setCardSectionId:v21];
+    cardSectionId = [(SFCardSection *)v8 cardSectionId];
+    [(SFCardSection *)v5 setCardSectionId:cardSectionId];
 
-    v22 = [(SFCardSection *)v8 resultIdentifier];
-    [(SFCardSection *)v5 setResultIdentifier:v22];
+    resultIdentifier = [(SFCardSection *)v8 resultIdentifier];
+    [(SFCardSection *)v5 setResultIdentifier:resultIdentifier];
 
-    v23 = [(SFCardSection *)v8 userReportRequest];
-    [(SFCardSection *)v5 setUserReportRequest:v23];
+    userReportRequest = [(SFCardSection *)v8 userReportRequest];
+    [(SFCardSection *)v5 setUserReportRequest:userReportRequest];
 
-    v24 = [(SFCardSection *)v8 command];
-    [(SFCardSection *)v5 setCommand:v24];
+    command = [(SFCardSection *)v8 command];
+    [(SFCardSection *)v5 setCommand:command];
 
-    v25 = [(SFCardSection *)v8 previewCommand];
-    [(SFCardSection *)v5 setPreviewCommand:v25];
+    previewCommand = [(SFCardSection *)v8 previewCommand];
+    [(SFCardSection *)v5 setPreviewCommand:previewCommand];
 
-    v26 = [(SFCardSection *)v8 previewButtonItems];
-    [(SFCardSection *)v5 setPreviewButtonItems:v26];
+    previewButtonItems = [(SFCardSection *)v8 previewButtonItems];
+    [(SFCardSection *)v5 setPreviewButtonItems:previewButtonItems];
 
-    v27 = [(SFCardSection *)v8 cardSectionDetail];
-    [(SFCardSection *)v5 setCardSectionDetail:v27];
+    cardSectionDetail = [(SFCardSection *)v8 cardSectionDetail];
+    [(SFCardSection *)v5 setCardSectionDetail:cardSectionDetail];
 
-    v28 = [(SFCardSection *)v8 previewButtonItemsTitle];
-    [(SFCardSection *)v5 setPreviewButtonItemsTitle:v28];
+    previewButtonItemsTitle = [(SFCardSection *)v8 previewButtonItemsTitle];
+    [(SFCardSection *)v5 setPreviewButtonItemsTitle:previewButtonItemsTitle];
 
-    v29 = [(SFCardSection *)v8 backgroundColor];
-    [(SFCardSection *)v5 setBackgroundColor:v29];
+    backgroundColor2 = [(SFCardSection *)v8 backgroundColor];
+    [(SFCardSection *)v5 setBackgroundColor:backgroundColor2];
 
     [(SFCardSection *)v5 setShouldHideInAmbientMode:[(SFCardSection *)v8 shouldHideInAmbientMode]];
-    v30 = [(SFCardSection *)v8 leadingSwipeButtonItems];
-    [(SFCardSection *)v5 setLeadingSwipeButtonItems:v30];
+    leadingSwipeButtonItems = [(SFCardSection *)v8 leadingSwipeButtonItems];
+    [(SFCardSection *)v5 setLeadingSwipeButtonItems:leadingSwipeButtonItems];
 
-    v31 = [(SFCardSection *)v8 trailingSwipeButtonItems];
-    [(SFCardSection *)v5 setTrailingSwipeButtonItems:v31];
+    trailingSwipeButtonItems = [(SFCardSection *)v8 trailingSwipeButtonItems];
+    [(SFCardSection *)v5 setTrailingSwipeButtonItems:trailingSwipeButtonItems];
 
-    v32 = [(SFCardSection *)v8 punchoutOptions];
-    [(SFCardSection *)v5 setPunchoutOptions:v32];
+    punchoutOptions2 = [(SFCardSection *)v8 punchoutOptions];
+    [(SFCardSection *)v5 setPunchoutOptions:punchoutOptions2];
 
-    v33 = [(SFCardSection *)v8 punchoutPickerTitle];
-    [(SFCardSection *)v5 setPunchoutPickerTitle:v33];
+    punchoutPickerTitle2 = [(SFCardSection *)v8 punchoutPickerTitle];
+    [(SFCardSection *)v5 setPunchoutPickerTitle:punchoutPickerTitle2];
 
-    v34 = [(SFCardSection *)v8 punchoutPickerDismissText];
-    [(SFCardSection *)v5 setPunchoutPickerDismissText:v34];
+    punchoutPickerDismissText2 = [(SFCardSection *)v8 punchoutPickerDismissText];
+    [(SFCardSection *)v5 setPunchoutPickerDismissText:punchoutPickerDismissText2];
 
     [(SFCardSection *)v5 setCanBeHidden:[(SFCardSection *)v8 canBeHidden]];
     [(SFCardSection *)v5 setHasTopPadding:[(SFCardSection *)v8 hasTopPadding]];
     [(SFCardSection *)v5 setHasBottomPadding:[(SFCardSection *)v8 hasBottomPadding]];
     [(SFCardSection *)v5 setSeparatorStyle:[(SFCardSection *)v8 separatorStyle]];
-    v35 = [(SFCardSection *)v8 referencedCommands];
-    [(SFCardSection *)v5 setReferencedCommands:v35];
+    referencedCommands = [(SFCardSection *)v8 referencedCommands];
+    [(SFCardSection *)v5 setReferencedCommands:referencedCommands];
 
     [(SFCardSection *)v5 setForceEnable3DTouch:[(SFCardSection *)v8 forceEnable3DTouch]];
     [(SFCardSection *)v5 setShouldShowInSmartDialog:[(SFCardSection *)v8 shouldShowInSmartDialog]];
-    v36 = [(SFCardSection *)v8 appEntityAnnotation];
-    [(SFCardSection *)v5 setAppEntityAnnotation:v36];
+    appEntityAnnotation = [(SFCardSection *)v8 appEntityAnnotation];
+    [(SFCardSection *)v5 setAppEntityAnnotation:appEntityAnnotation];
 
-    v37 = [(SFCardSection *)v8 emphasisSubjectId];
-    [(SFCardSection *)v5 setEmphasisSubjectId:v37];
+    emphasisSubjectId = [(SFCardSection *)v8 emphasisSubjectId];
+    [(SFCardSection *)v5 setEmphasisSubjectId:emphasisSubjectId];
 
     [(SFCardSection *)v5 setIncreasedContrastMode:[(SFCardSection *)v8 increasedContrastMode]];
-    v38 = [(SFCardSection *)v8 secondaryCommand];
-    [(SFCardSection *)v5 setSecondaryCommand:v38];
+    secondaryCommand = [(SFCardSection *)v8 secondaryCommand];
+    [(SFCardSection *)v5 setSecondaryCommand:secondaryCommand];
 
     [(SFCardSection *)v5 setRequiredLevelOfDetail:[(SFCardSection *)v8 requiredLevelOfDetail]];
-    v39 = [(SFCardSection *)v8 racFeedbackSubfeatureId];
-    [(SFCardSection *)v5 setRacFeedbackSubfeatureId:v39];
+    racFeedbackSubfeatureId = [(SFCardSection *)v8 racFeedbackSubfeatureId];
+    [(SFCardSection *)v5 setRacFeedbackSubfeatureId:racFeedbackSubfeatureId];
 
-    v40 = [(SFCardSection *)v8 racFeedbackLoggingContent];
-    [(SFCardSection *)v5 setRacFeedbackLoggingContent:v40];
+    racFeedbackLoggingContent = [(SFCardSection *)v8 racFeedbackLoggingContent];
+    [(SFCardSection *)v5 setRacFeedbackLoggingContent:racFeedbackLoggingContent];
 
-    v41 = [(SFCardSection *)v8 copyableItems];
-    [(SFCardSection *)v5 setCopyableItems:v41];
+    copyableItems = [(SFCardSection *)v8 copyableItems];
+    [(SFCardSection *)v5 setCopyableItems:copyableItems];
 
-    v42 = [(SFCardSection *)v8 applicationBundleIdentifier];
-    [(SFCardSection *)v5 setApplicationBundleIdentifier:v42];
+    applicationBundleIdentifier = [(SFCardSection *)v8 applicationBundleIdentifier];
+    [(SFCardSection *)v5 setApplicationBundleIdentifier:applicationBundleIdentifier];
   }
 
   return v5;
 }
 
-- (SFStrokeAnimationCardSection)initWithProtobuf:(id)a3
+- (SFStrokeAnimationCardSection)initWithProtobuf:(id)protobuf
 {
   v71 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  protobufCopy = protobuf;
   v66.receiver = self;
   v66.super_class = SFStrokeAnimationCardSection;
   v5 = [(SFCardSection *)&v66 init];
   if (v5)
   {
-    v6 = [v4 punchoutOptions];
-    if (v6)
+    punchoutOptions = [protobufCopy punchoutOptions];
+    if (punchoutOptions)
     {
       v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -635,8 +635,8 @@ LABEL_41:
     v65 = 0u;
     v62 = 0u;
     v63 = 0u;
-    v8 = [v4 punchoutOptions];
-    v9 = [v8 countByEnumeratingWithState:&v62 objects:v70 count:16];
+    punchoutOptions2 = [protobufCopy punchoutOptions];
+    v9 = [punchoutOptions2 countByEnumeratingWithState:&v62 objects:v70 count:16];
     if (v9)
     {
       v10 = v9;
@@ -647,7 +647,7 @@ LABEL_41:
         {
           if (*v63 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(punchoutOptions2);
           }
 
           v13 = [[SFPunchout alloc] initWithProtobuf:*(*(&v62 + 1) + 8 * i)];
@@ -657,77 +657,77 @@ LABEL_41:
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v62 objects:v70 count:16];
+        v10 = [punchoutOptions2 countByEnumeratingWithState:&v62 objects:v70 count:16];
       }
 
       while (v10);
     }
 
     [(SFCardSection *)v5 setPunchoutOptions:v7];
-    v14 = [v4 punchoutPickerTitle];
+    punchoutPickerTitle = [protobufCopy punchoutPickerTitle];
 
-    if (v14)
+    if (punchoutPickerTitle)
     {
-      v15 = [v4 punchoutPickerTitle];
-      [(SFCardSection *)v5 setPunchoutPickerTitle:v15];
+      punchoutPickerTitle2 = [protobufCopy punchoutPickerTitle];
+      [(SFCardSection *)v5 setPunchoutPickerTitle:punchoutPickerTitle2];
     }
 
-    v16 = [v4 punchoutPickerDismissText];
+    punchoutPickerDismissText = [protobufCopy punchoutPickerDismissText];
 
-    if (v16)
+    if (punchoutPickerDismissText)
     {
-      v17 = [v4 punchoutPickerDismissText];
-      [(SFCardSection *)v5 setPunchoutPickerDismissText:v17];
+      punchoutPickerDismissText2 = [protobufCopy punchoutPickerDismissText];
+      [(SFCardSection *)v5 setPunchoutPickerDismissText:punchoutPickerDismissText2];
     }
 
-    if ([v4 canBeHidden])
+    if ([protobufCopy canBeHidden])
     {
-      -[SFCardSection setCanBeHidden:](v5, "setCanBeHidden:", [v4 canBeHidden]);
+      -[SFCardSection setCanBeHidden:](v5, "setCanBeHidden:", [protobufCopy canBeHidden]);
     }
 
-    if ([v4 hasTopPadding])
+    if ([protobufCopy hasTopPadding])
     {
-      -[SFCardSection setHasTopPadding:](v5, "setHasTopPadding:", [v4 hasTopPadding]);
+      -[SFCardSection setHasTopPadding:](v5, "setHasTopPadding:", [protobufCopy hasTopPadding]);
     }
 
-    if ([v4 hasBottomPadding])
+    if ([protobufCopy hasBottomPadding])
     {
-      -[SFCardSection setHasBottomPadding:](v5, "setHasBottomPadding:", [v4 hasBottomPadding]);
+      -[SFCardSection setHasBottomPadding:](v5, "setHasBottomPadding:", [protobufCopy hasBottomPadding]);
     }
 
-    v18 = [v4 type];
+    type = [protobufCopy type];
 
-    if (v18)
+    if (type)
     {
-      v19 = [v4 type];
-      [(SFStrokeAnimationCardSection *)v5 setType:v19];
+      type2 = [protobufCopy type];
+      [(SFStrokeAnimationCardSection *)v5 setType:type2];
     }
 
-    if ([v4 separatorStyle])
+    if ([protobufCopy separatorStyle])
     {
-      -[SFCardSection setSeparatorStyle:](v5, "setSeparatorStyle:", [v4 separatorStyle]);
+      -[SFCardSection setSeparatorStyle:](v5, "setSeparatorStyle:", [protobufCopy separatorStyle]);
     }
 
-    v20 = [v4 backgroundColor];
+    backgroundColor = [protobufCopy backgroundColor];
 
-    if (v20)
+    if (backgroundColor)
     {
       v21 = [SFColor alloc];
-      v22 = [v4 backgroundColor];
-      v23 = [(SFColor *)v21 initWithProtobuf:v22];
+      backgroundColor2 = [protobufCopy backgroundColor];
+      v23 = [(SFColor *)v21 initWithProtobuf:backgroundColor2];
       [(SFCardSection *)v5 setBackgroundColor:v23];
     }
 
-    v24 = [v4 strokeAnimationRepresentation];
+    strokeAnimationRepresentation = [protobufCopy strokeAnimationRepresentation];
 
-    if (v24)
+    if (strokeAnimationRepresentation)
     {
-      v25 = [v4 strokeAnimationRepresentation];
-      [(SFStrokeAnimationCardSection *)v5 setStrokeAnimationRepresentation:v25];
+      strokeAnimationRepresentation2 = [protobufCopy strokeAnimationRepresentation];
+      [(SFStrokeAnimationCardSection *)v5 setStrokeAnimationRepresentation:strokeAnimationRepresentation2];
     }
 
-    v26 = [v4 strokeNames];
-    if (v26)
+    strokeNames = [protobufCopy strokeNames];
+    if (strokeNames)
     {
       v27 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -741,8 +741,8 @@ LABEL_41:
     v61 = 0u;
     v58 = 0u;
     v59 = 0u;
-    v28 = [v4 strokeNames];
-    v29 = [v28 countByEnumeratingWithState:&v58 objects:v69 count:16];
+    strokeNames2 = [protobufCopy strokeNames];
+    v29 = [strokeNames2 countByEnumeratingWithState:&v58 objects:v69 count:16];
     if (v29)
     {
       v30 = v29;
@@ -753,7 +753,7 @@ LABEL_41:
         {
           if (*v59 != v31)
           {
-            objc_enumerationMutation(v28);
+            objc_enumerationMutation(strokeNames2);
           }
 
           if (*(*(&v58 + 1) + 8 * j))
@@ -762,15 +762,15 @@ LABEL_41:
           }
         }
 
-        v30 = [v28 countByEnumeratingWithState:&v58 objects:v69 count:16];
+        v30 = [strokeNames2 countByEnumeratingWithState:&v58 objects:v69 count:16];
       }
 
       while (v30);
     }
 
     [(SFStrokeAnimationCardSection *)v5 setStrokeNames:v27];
-    v33 = [v4 characters];
-    if (v33)
+    characters = [protobufCopy characters];
+    if (characters)
     {
       v34 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -784,8 +784,8 @@ LABEL_41:
     v57 = 0u;
     v54 = 0u;
     v55 = 0u;
-    v35 = [v4 characters];
-    v36 = [v35 countByEnumeratingWithState:&v54 objects:v68 count:16];
+    characters2 = [protobufCopy characters];
+    v36 = [characters2 countByEnumeratingWithState:&v54 objects:v68 count:16];
     if (v36)
     {
       v37 = v36;
@@ -796,7 +796,7 @@ LABEL_41:
         {
           if (*v55 != v38)
           {
-            objc_enumerationMutation(v35);
+            objc_enumerationMutation(characters2);
           }
 
           if (*(*(&v54 + 1) + 8 * k))
@@ -805,15 +805,15 @@ LABEL_41:
           }
         }
 
-        v37 = [v35 countByEnumeratingWithState:&v54 objects:v68 count:16];
+        v37 = [characters2 countByEnumeratingWithState:&v54 objects:v68 count:16];
       }
 
       while (v37);
     }
 
     [(SFStrokeAnimationCardSection *)v5 setCharacters:v34];
-    v40 = [v4 pronunciations];
-    if (v40)
+    pronunciations = [protobufCopy pronunciations];
+    if (pronunciations)
     {
       v41 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -827,8 +827,8 @@ LABEL_41:
     v53 = 0u;
     v50 = 0u;
     v51 = 0u;
-    v42 = [v4 pronunciations];
-    v43 = [v42 countByEnumeratingWithState:&v50 objects:v67 count:16];
+    pronunciations2 = [protobufCopy pronunciations];
+    v43 = [pronunciations2 countByEnumeratingWithState:&v50 objects:v67 count:16];
     if (v43)
     {
       v44 = v43;
@@ -839,7 +839,7 @@ LABEL_41:
         {
           if (*v51 != v45)
           {
-            objc_enumerationMutation(v42);
+            objc_enumerationMutation(pronunciations2);
           }
 
           if (*(*(&v50 + 1) + 8 * m))
@@ -848,7 +848,7 @@ LABEL_41:
           }
         }
 
-        v44 = [v42 countByEnumeratingWithState:&v50 objects:v67 count:16];
+        v44 = [pronunciations2 countByEnumeratingWithState:&v50 objects:v67 count:16];
       }
 
       while (v44);

@@ -1,6 +1,6 @@
 @interface MCMResultGetCodeSignMapping
-- (BOOL)encodeResultOntoReply:(id)a3;
-- (MCMResultGetCodeSignMapping)initWithInfo:(id)a3;
+- (BOOL)encodeResultOntoReply:(id)reply;
+- (MCMResultGetCodeSignMapping)initWithInfo:(id)info;
 - (NSDictionary)info;
 @end
 
@@ -14,25 +14,25 @@
   return result;
 }
 
-- (BOOL)encodeResultOntoReply:(id)a3
+- (BOOL)encodeResultOntoReply:(id)reply
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  replyCopy = reply;
   v11.receiver = self;
   v11.super_class = MCMResultGetCodeSignMapping;
-  v5 = [(MCMResultBase *)&v11 encodeResultOntoReply:v4];
+  v5 = [(MCMResultBase *)&v11 encodeResultOntoReply:replyCopy];
   if (v5)
   {
-    v6 = [(MCMResultBase *)self error];
+    error = [(MCMResultBase *)self error];
 
-    if (!v6)
+    if (!error)
     {
-      v7 = [(MCMResultGetCodeSignMapping *)self info];
+      info = [(MCMResultGetCodeSignMapping *)self info];
       v8 = _CFXPCCreateXPCObjectFromCFObject();
 
       if (v8)
       {
-        xpc_dictionary_set_value(v4, "ReplyInfoDictionary", v8);
+        xpc_dictionary_set_value(replyCopy, "ReplyInfoDictionary", v8);
       }
     }
   }
@@ -41,17 +41,17 @@
   return v5;
 }
 
-- (MCMResultGetCodeSignMapping)initWithInfo:(id)a3
+- (MCMResultGetCodeSignMapping)initWithInfo:(id)info
 {
   v11 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  infoCopy = info;
   v10.receiver = self;
   v10.super_class = MCMResultGetCodeSignMapping;
   v6 = [(MCMResultBase *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_info, a3);
+    objc_storeStrong(&v6->_info, info);
   }
 
   v8 = *MEMORY[0x1E69E9840];

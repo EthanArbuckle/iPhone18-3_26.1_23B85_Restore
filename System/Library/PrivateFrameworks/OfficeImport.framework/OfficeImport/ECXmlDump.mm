@@ -1,13 +1,13 @@
 @interface ECXmlDump
-+ (_xmlNode)xmlNodeForObject:(id)a3;
-+ (_xmlNode)xmlNodeWithName:(id)a3 forObject:(id)a4;
++ (_xmlNode)xmlNodeForObject:(id)object;
++ (_xmlNode)xmlNodeWithName:(id)name forObject:(id)object;
 @end
 
 @implementation ECXmlDump
 
-+ (_xmlNode)xmlNodeForObject:(id)a3
++ (_xmlNode)xmlNodeForObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
   v7 = v6;
@@ -29,32 +29,32 @@ LABEL_6:
     }
   }
 
-  v10 = [a1 xmlNodeWithName:v7 forObject:v4];
+  v10 = [self xmlNodeWithName:v7 forObject:objectCopy];
 
   return v10;
 }
 
-+ (_xmlNode)xmlNodeWithName:(id)a3 forObject:(id)a4
++ (_xmlNode)xmlNodeWithName:(id)name forObject:(id)object
 {
-  v5 = a3;
-  v6 = a4;
-  if (!v5 || ![(__CFString *)v5 length])
+  nameCopy = name;
+  objectCopy = object;
+  if (!nameCopy || ![(__CFString *)nameCopy length])
   {
 
-    v5 = @"UnknownObject";
+    nameCopy = @"UnknownObject";
   }
 
-  if ((objc_opt_respondsToSelector() & 1) != 0 && ([v6 isXmlNodeNeeded] & 1) == 0)
+  if ((objc_opt_respondsToSelector() & 1) != 0 && ([objectCopy isXmlNodeNeeded] & 1) == 0)
   {
     v7 = 0;
   }
 
   else
   {
-    v7 = xmlNewNode(0, [(__CFString *)v5 tc_xmlString]);
+    v7 = xmlNewNode(0, [(__CFString *)nameCopy tc_xmlString]);
     if (objc_opt_respondsToSelector())
     {
-      [v6 addXmlProperties:v7];
+      [objectCopy addXmlProperties:v7];
     }
 
     else

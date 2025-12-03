@@ -1,34 +1,34 @@
 @interface PXDeleteAssetsAction
-- (void)performAction:(id)a3;
-- (void)performUndo:(id)a3;
+- (void)performAction:(id)action;
+- (void)performUndo:(id)undo;
 @end
 
 @implementation PXDeleteAssetsAction
 
-- (void)performUndo:(id)a3
+- (void)performUndo:(id)undo
 {
-  v4 = a3;
-  v5 = [(PXAssetsAction *)self assets];
+  undoCopy = undo;
+  assets = [(PXAssetsAction *)self assets];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __36__PXDeleteAssetsAction_performUndo___block_invoke;
   v7[3] = &unk_1E774C648;
-  v8 = v5;
-  v6 = v5;
-  [(PXDestructiveAssetsAction *)self performChanges:v7 completionHandler:v4];
+  v8 = assets;
+  v6 = assets;
+  [(PXDestructiveAssetsAction *)self performChanges:v7 completionHandler:undoCopy];
 }
 
-- (void)performAction:(id)a3
+- (void)performAction:(id)action
 {
-  v4 = a3;
-  v5 = [(PXAssetsAction *)self assets];
+  actionCopy = action;
+  assets = [(PXAssetsAction *)self assets];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __38__PXDeleteAssetsAction_performAction___block_invoke;
   v7[3] = &unk_1E774C648;
-  v8 = v5;
-  v6 = v5;
-  [(PXDestructiveAssetsAction *)self performChanges:v7 completionHandler:v4];
+  v8 = assets;
+  v6 = assets;
+  [(PXDestructiveAssetsAction *)self performChanges:v7 completionHandler:actionCopy];
 }
 
 @end

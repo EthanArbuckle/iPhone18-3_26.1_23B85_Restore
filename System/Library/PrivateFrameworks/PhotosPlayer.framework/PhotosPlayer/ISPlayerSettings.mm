@@ -127,9 +127,9 @@
 + (id)sharedInstance
 {
   v2 = +[ISRootSettings sharedInstance];
-  v3 = [v2 playerSettings];
+  playerSettings = [v2 playerSettings];
 
-  return v3;
+  return playerSettings;
 }
 
 @end

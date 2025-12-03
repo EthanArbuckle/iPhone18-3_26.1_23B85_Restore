@@ -1,38 +1,38 @@
 @interface BMSiriEntityInfo
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMSiriEntityInfo)initWithExternalIdentifier:(id)a3 hashInfo:(id)a4;
-- (BMSiriEntityInfo)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BMSiriEntityInfo)initWithExternalIdentifier:(id)identifier hashInfo:(id)info;
+- (BMSiriEntityInfo)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMSiriEntityInfo
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMSiriEntityInfo *)self externalIdentifier];
-    v7 = [v5 externalIdentifier];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    externalIdentifier = [(BMSiriEntityInfo *)self externalIdentifier];
+    externalIdentifier2 = [v5 externalIdentifier];
+    v8 = externalIdentifier2;
+    if (externalIdentifier == externalIdentifier2)
     {
     }
 
     else
     {
-      v9 = [(BMSiriEntityInfo *)self externalIdentifier];
-      v10 = [v5 externalIdentifier];
-      v11 = [v9 isEqual:v10];
+      externalIdentifier3 = [(BMSiriEntityInfo *)self externalIdentifier];
+      externalIdentifier4 = [v5 externalIdentifier];
+      v11 = [externalIdentifier3 isEqual:externalIdentifier4];
 
       if (!v11)
       {
@@ -43,18 +43,18 @@ LABEL_11:
       }
     }
 
-    v13 = [(BMSiriEntityInfo *)self hashInfo];
-    v14 = [v5 hashInfo];
-    if (v13 == v14)
+    hashInfo = [(BMSiriEntityInfo *)self hashInfo];
+    hashInfo2 = [v5 hashInfo];
+    if (hashInfo == hashInfo2)
     {
       v12 = 1;
     }
 
     else
     {
-      v15 = [(BMSiriEntityInfo *)self hashInfo];
-      v16 = [v5 hashInfo];
-      v12 = [v15 isEqual:v16];
+      hashInfo3 = [(BMSiriEntityInfo *)self hashInfo];
+      hashInfo4 = [v5 hashInfo];
+      v12 = [hashInfo3 isEqual:hashInfo4];
     }
 
     goto LABEL_11;
@@ -69,30 +69,30 @@ LABEL_12:
 - (id)jsonDictionary
 {
   v12[2] = *MEMORY[0x1E69E9840];
-  v3 = [(BMSiriEntityInfo *)self externalIdentifier];
-  v4 = [(BMSiriEntityInfo *)self hashInfo];
-  v5 = [v4 jsonDictionary];
+  externalIdentifier = [(BMSiriEntityInfo *)self externalIdentifier];
+  hashInfo = [(BMSiriEntityInfo *)self hashInfo];
+  jsonDictionary = [hashInfo jsonDictionary];
 
   v11[0] = @"externalIdentifier";
-  v6 = v3;
-  if (!v3)
+  null = externalIdentifier;
+  if (!externalIdentifier)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
   v11[1] = @"hashInfo";
-  v12[0] = v6;
-  v7 = v5;
-  if (!v5)
+  v12[0] = null;
+  null2 = jsonDictionary;
+  if (!jsonDictionary)
   {
-    v7 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v12[1] = v7;
+  v12[1] = null2;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:v11 count:2];
-  if (v5)
+  if (jsonDictionary)
   {
-    if (v3)
+    if (externalIdentifier)
     {
       goto LABEL_7;
     }
@@ -101,7 +101,7 @@ LABEL_12:
   else
   {
 
-    if (v3)
+    if (externalIdentifier)
     {
       goto LABEL_7;
     }
@@ -113,20 +113,20 @@ LABEL_7:
   return v8;
 }
 
-- (BMSiriEntityInfo)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMSiriEntityInfo)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v26[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"externalIdentifier"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"externalIdentifier"];
   if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (!a4)
+      if (!error)
       {
         v8 = 0;
-        v11 = 0;
+        selfCopy = 0;
         goto LABEL_10;
       }
 
@@ -138,8 +138,8 @@ LABEL_7:
       v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v26 forKeys:&v25 count:1];
       v18 = [v16 initWithDomain:v17 code:2 userInfo:v10];
       v8 = 0;
-      v11 = 0;
-      *a4 = v18;
+      selfCopy = 0;
+      *error = v18;
       goto LABEL_8;
     }
 
@@ -151,13 +151,13 @@ LABEL_7:
     v8 = 0;
   }
 
-  v9 = [v6 objectForKeyedSubscript:@"hashInfo"];
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"hashInfo"];
   if (!v9 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v10 = 0;
 LABEL_7:
     self = [(BMSiriEntityInfo *)self initWithExternalIdentifier:v8 hashInfo:v10];
-    v11 = self;
+    selfCopy = self;
     goto LABEL_8;
   }
 
@@ -170,13 +170,13 @@ LABEL_7:
     v15 = v22;
     if (v15)
     {
-      if (a4)
+      if (error)
       {
         v15 = v15;
-        *a4 = v15;
+        *error = v15;
       }
 
-      v11 = 0;
+      selfCopy = 0;
       v9 = v14;
       goto LABEL_8;
     }
@@ -184,9 +184,9 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  if (!a4)
+  if (!error)
   {
-    v11 = 0;
+    selfCopy = 0;
     goto LABEL_9;
   }
 
@@ -196,30 +196,30 @@ LABEL_7:
   v10 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSDictionary", objc_opt_class(), @"hashInfo"];
   v24 = v10;
   v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v24 forKeys:&v23 count:1];
-  *a4 = [v21 initWithDomain:v19 code:2 userInfo:v20];
+  *error = [v21 initWithDomain:v19 code:2 userInfo:v20];
 
-  v11 = 0;
+  selfCopy = 0;
 LABEL_8:
 
 LABEL_9:
 LABEL_10:
 
   v12 = *MEMORY[0x1E69E9840];
-  return v11;
+  return selfCopy;
 }
 
 - (id)serialize
 {
   v3 = objc_opt_new();
   [(BMSiriEntityInfo *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_externalIdentifier)
   {
     PBDataWriterWriteStringField();
@@ -228,14 +228,14 @@ LABEL_10:
   if (self->_hashInfo)
   {
     PBDataWriterPlaceMark();
-    [(BMSiriEntityInfoSiriEntityHashInfo *)self->_hashInfo writeTo:v4];
+    [(BMSiriEntityInfoSiriEntityHashInfo *)self->_hashInfo writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v22.receiver = self;
   v22.super_class = BMSiriEntityInfo;
   v5 = [(BMEventBase *)&v22 init];
@@ -244,12 +244,12 @@ LABEL_10:
     goto LABEL_28;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -260,18 +260,18 @@ LABEL_10:
       while (1)
       {
         LOBYTE(v23[0]) = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:v23 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:v23 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v23[0] & 0x7F) << v7;
@@ -288,9 +288,9 @@ LABEL_10:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -304,7 +304,7 @@ LABEL_16:
           goto LABEL_27;
         }
 
-        v17 = [[BMSiriEntityInfoSiriEntityHashInfo alloc] initByReadFrom:v4];
+        v17 = [[BMSiriEntityInfoSiriEntityHashInfo alloc] initByReadFrom:fromCopy];
         if (!v17)
         {
           goto LABEL_27;
@@ -328,13 +328,13 @@ LABEL_16:
         goto LABEL_27;
       }
 
-      v19 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v19 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_27:
     v20 = 0;
@@ -352,25 +352,25 @@ LABEL_28:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMSiriEntityInfo *)self externalIdentifier];
-  v5 = [(BMSiriEntityInfo *)self hashInfo];
-  v6 = [v3 initWithFormat:@"BMSiriEntityInfo with externalIdentifier: %@, hashInfo: %@", v4, v5];
+  externalIdentifier = [(BMSiriEntityInfo *)self externalIdentifier];
+  hashInfo = [(BMSiriEntityInfo *)self hashInfo];
+  v6 = [v3 initWithFormat:@"BMSiriEntityInfo with externalIdentifier: %@, hashInfo: %@", externalIdentifier, hashInfo];
 
   return v6;
 }
 
-- (BMSiriEntityInfo)initWithExternalIdentifier:(id)a3 hashInfo:(id)a4
+- (BMSiriEntityInfo)initWithExternalIdentifier:(id)identifier hashInfo:(id)info
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  infoCopy = info;
   v11.receiver = self;
   v11.super_class = BMSiriEntityInfo;
   v9 = [(BMEventBase *)&v11 init];
   if (v9)
   {
     v9->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v9->_externalIdentifier, a3);
-    objc_storeStrong(&v9->_hashInfo, a4);
+    objc_storeStrong(&v9->_externalIdentifier, identifier);
+    objc_storeStrong(&v9->_hashInfo, info);
   }
 
   return v9;
@@ -414,9 +414,9 @@ id __27__BMSiriEntityInfo_columns__block_invoke(uint64_t a1, void *a2)
   return v5;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -424,8 +424,8 @@ id __27__BMSiriEntityInfo_columns__block_invoke(uint64_t a1, void *a2)
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMSiriEntityInfo alloc] initByReadFrom:v7];
     v4 = v8;

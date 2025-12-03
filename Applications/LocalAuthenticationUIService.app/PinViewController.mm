@@ -4,7 +4,7 @@
 - (void)_updateCurrentAppearanceIfNeeded;
 - (void)didReceiveAuthenticationData;
 - (void)loadView;
-- (void)pinEntered:(id)a3;
+- (void)pinEntered:(id)entered;
 - (void)viewDidLayoutSubviews;
 @end
 
@@ -14,24 +14,24 @@
 {
   v3 = [PinView alloc];
   pinLength = self->_pinLength;
-  v5 = [(PinViewController *)self pinMinLength];
-  v6 = [(PinViewController *)self pinMaxLength];
-  v7 = [(PinViewController *)self pinCharset];
-  v8 = [(PinView *)v3 initWithPinLength:pinLength minLength:v5 maxLength:v6 charset:v7];
+  pinMinLength = [(PinViewController *)self pinMinLength];
+  pinMaxLength = [(PinViewController *)self pinMaxLength];
+  pinCharset = [(PinViewController *)self pinCharset];
+  v8 = [(PinView *)v3 initWithPinLength:pinLength minLength:pinMinLength maxLength:pinMaxLength charset:pinCharset];
   pinView = self->_pinView;
   self->_pinView = v8;
 
   v10 = self->_pinView;
-  v11 = [(TransitionViewController *)self authenticationTitle];
-  [(PinView *)v10 setTitle:v11];
+  authenticationTitle = [(TransitionViewController *)self authenticationTitle];
+  [(PinView *)v10 setTitle:authenticationTitle];
 
   [(PinView *)self->_pinView setDelegate:self];
   [(PinView *)self->_pinView setViewController:self];
   if (![(TransitionViewController *)self isRemoteViewController])
   {
-    v12 = [(PinViewController *)self _createBlurView];
+    _createBlurView = [(PinViewController *)self _createBlurView];
     blurView = self->_blurView;
-    self->_blurView = v12;
+    self->_blurView = _createBlurView;
 
     [(PinView *)self->_pinView addSubview:self->_blurView];
     [(PinView *)self->_pinView sendSubviewToBack:self->_blurView];
@@ -67,10 +67,10 @@
 
 - (int64_t)_backdropStyle
 {
-  v2 = [(PinViewController *)self traitCollection];
-  v3 = [v2 userInterfaceStyle];
+  traitCollection = [(PinViewController *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  if (v3 == 1000 || v3 == 2)
+  if (userInterfaceStyle == 1000 || userInterfaceStyle == 2)
   {
     return 2032;
   }
@@ -91,18 +91,18 @@
 
 - (void)_updateCurrentAppearanceIfNeeded
 {
-  v3 = [(PinViewController *)self traitCollection];
-  v4 = [v3 userInterfaceStyle];
+  traitCollection = [(PinViewController *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  if (self->_currentInterfaceStyle != v4)
+  if (self->_currentInterfaceStyle != userInterfaceStyle)
   {
-    self->_currentInterfaceStyle = v4;
+    self->_currentInterfaceStyle = userInterfaceStyle;
     if (![(TransitionViewController *)self isRemoteViewController])
     {
       [(_UIBackdropView *)self->_blurView removeFromSuperview];
-      v5 = [(PinViewController *)self _createBlurView];
+      _createBlurView = [(PinViewController *)self _createBlurView];
       blurView = self->_blurView;
-      self->_blurView = v5;
+      self->_blurView = _createBlurView;
 
       [(PinView *)self->_pinView addSubview:self->_blurView];
       pinView = self->_pinView;
@@ -118,13 +118,13 @@
   v28.receiver = self;
   v28.super_class = PinViewController;
   [(TransitionViewController *)&v28 didReceiveAuthenticationData];
-  v3 = [(TransitionViewController *)self authenticationTitle];
-  v4 = [v3 length];
+  authenticationTitle = [(TransitionViewController *)self authenticationTitle];
+  v4 = [authenticationTitle length];
 
   if (!v4)
   {
-    v5 = [(TransitionViewController *)self options];
-    v6 = [v5 objectForKey:&off_1000AF488];
+    options = [(TransitionViewController *)self options];
+    v6 = [options objectForKey:&off_1000AF488];
 
     if (v6)
     {
@@ -151,38 +151,38 @@
     }
   }
 
-  v12 = [(TransitionViewController *)self internalInfo];
-  v13 = [v12 objectForKeyedSubscript:@"PassphrasePurpose"];
+  internalInfo = [(TransitionViewController *)self internalInfo];
+  v13 = [internalInfo objectForKeyedSubscript:@"PassphrasePurpose"];
   self->_purpose = [v13 unsignedIntValue];
 
-  v14 = [(TransitionViewController *)self options];
-  v15 = [v14 objectForKeyedSubscript:&off_1000AF4A0];
+  options2 = [(TransitionViewController *)self options];
+  v15 = [options2 objectForKeyedSubscript:&off_1000AF4A0];
   pinLength = self->_pinLength;
   self->_pinLength = v15;
 
-  v17 = [(TransitionViewController *)self options];
-  v18 = [v17 objectForKeyedSubscript:&off_1000AF4B8];
+  options3 = [(TransitionViewController *)self options];
+  v18 = [options3 objectForKeyedSubscript:&off_1000AF4B8];
   pinMinLength = self->_pinMinLength;
   self->_pinMinLength = v18;
 
-  v20 = [(TransitionViewController *)self options];
-  v21 = [v20 objectForKeyedSubscript:&off_1000AF4D0];
+  options4 = [(TransitionViewController *)self options];
+  v21 = [options4 objectForKeyedSubscript:&off_1000AF4D0];
   pinMaxLength = self->_pinMaxLength;
   self->_pinMaxLength = v21;
 
-  v23 = [(TransitionViewController *)self options];
-  v24 = [v23 objectForKeyedSubscript:&off_1000AF4E8];
+  options5 = [(TransitionViewController *)self options];
+  v24 = [options5 objectForKeyedSubscript:&off_1000AF4E8];
   pinCharset = self->_pinCharset;
   self->_pinCharset = v24;
 
-  v26 = [(TransitionViewController *)self internalInfo];
-  v27 = [v26 objectForKeyedSubscript:@"CTKPIN"];
+  internalInfo2 = [(TransitionViewController *)self internalInfo];
+  v27 = [internalInfo2 objectForKeyedSubscript:@"CTKPIN"];
   self->_ctkPin = [v27 BOOLValue];
 }
 
-- (void)pinEntered:(id)a3
+- (void)pinEntered:(id)entered
 {
-  v4 = a3;
+  enteredCopy = entered;
   if (LA_LOG_PinViewController_once != -1)
   {
     [PinViewController pinEntered:];
@@ -194,14 +194,14 @@
     *buf = 136315394;
     v31 = "[PinViewController pinEntered:]";
     v32 = 2112;
-    v33 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s  on %@", buf, 0x16u);
   }
 
   if ([(PinViewController *)self ctkPin])
   {
-    v6 = [v4 data];
-    v7 = +[NSString stringWithUTF8String:](NSString, "stringWithUTF8String:", [v6 bytes]);
+    data = [enteredCopy data];
+    v7 = +[NSString stringWithUTF8String:](NSString, "stringWithUTF8String:", [data bytes]);
 
     v28[0] = @"Result";
     v26 = &off_1000AF500;
@@ -217,12 +217,12 @@
   else
   {
     v10 = [LACACMHelper alloc];
-    v11 = [(TransitionViewController *)self cachedExternalizedContext];
-    v12 = [v11 externalizedContext];
-    v8 = [v10 initWithExternalizedContext:v12];
+    cachedExternalizedContext = [(TransitionViewController *)self cachedExternalizedContext];
+    externalizedContext = [cachedExternalizedContext externalizedContext];
+    v8 = [v10 initWithExternalizedContext:externalizedContext];
 
-    v13 = [(TransitionViewController *)self options];
-    v14 = [v13 objectForKey:&off_1000AF518];
+    options = [(TransitionViewController *)self options];
+    v14 = [options objectForKey:&off_1000AF518];
     [v14 doubleValue];
     v16 = v15;
 
@@ -238,7 +238,7 @@
 
     purpose = self->_purpose;
     v21 = 0;
-    v19 = [v8 replacePassphraseCredentialWithPurpose:purpose passphrase:v4 scope:v17 error:&v21];
+    v19 = [v8 replacePassphraseCredentialWithPurpose:purpose passphrase:enteredCopy scope:v17 error:&v21];
     v7 = v21;
     if (!v19)
     {
@@ -256,7 +256,7 @@
   }
 
 LABEL_14:
-  [v4 reset];
+  [enteredCopy reset];
 }
 
 @end

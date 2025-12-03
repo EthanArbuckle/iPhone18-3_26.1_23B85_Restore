@@ -1,100 +1,100 @@
 @interface AXMDescriptionBuilder
-+ (id)builderWithOptions:(int64_t)a3;
++ (id)builderWithOptions:(int64_t)options;
 - (BOOL)_shouldReplaceCaptionWithGenericTemplate;
-- (id)_ignoredTagsForTags:(id)a3;
-- (id)_initWithOptions:(int64_t)a3;
+- (id)_ignoredTagsForTags:(id)tags;
+- (id)_initWithOptions:(int64_t)options;
 - (id)_knownPersonNames;
-- (id)_stringForPauseType:(int64_t)a3;
-- (id)_subsumedTagsForTags:(id)a3;
-- (id)_templateRulesForTag:(id)a3;
+- (id)_stringForPauseType:(int64_t)type;
+- (id)_subsumedTagsForTags:(id)tags;
+- (id)_templateRulesForTag:(id)tag;
 - (id)buildSpeakableDescription;
-- (void)_addBlurInformationToDescription:(id)a3;
-- (void)_addBrightnessInformationToDescription:(id)a3;
-- (void)_addCaptionInformationToDescription:(id)a3 didConsumeDetectedFaceInfo:(BOOL *)a4;
-- (void)_addClassificationInformationToDescription:(id)a3;
-- (void)_addDetailedFaceInformationToDescription:(id)a3;
-- (void)_addFaceInformationToDescription:(id)a3;
-- (void)_addGenericTemplateForCaptionInformationToDescription:(id)a3;
-- (void)_addIconClassInformationToDescription:(id)a3;
-- (void)_addPersonSummaryToDescription:(id)a3;
-- (void)_appendPauseType:(int64_t)a3 toDescriptionIfNeeded:(id)a4;
-- (void)_appendToDescription:(id)a3 afterPauseType:(int64_t)a4 withContents:(id)a5;
-- (void)addDetectedClassificationFeatures:(id)a3;
-- (void)addDetectedClassificationLocalizedValue:(id)a3 forLabel:(id)a4;
-- (void)addDetectedFaces:(id)a3;
-- (void)addDetectedIconClasses:(id)a3;
-- (void)addMediaAnalysisDetectedFaces:(id)a3;
+- (void)_addBlurInformationToDescription:(id)description;
+- (void)_addBrightnessInformationToDescription:(id)description;
+- (void)_addCaptionInformationToDescription:(id)description didConsumeDetectedFaceInfo:(BOOL *)info;
+- (void)_addClassificationInformationToDescription:(id)description;
+- (void)_addDetailedFaceInformationToDescription:(id)description;
+- (void)_addFaceInformationToDescription:(id)description;
+- (void)_addGenericTemplateForCaptionInformationToDescription:(id)description;
+- (void)_addIconClassInformationToDescription:(id)description;
+- (void)_addPersonSummaryToDescription:(id)description;
+- (void)_appendPauseType:(int64_t)type toDescriptionIfNeeded:(id)needed;
+- (void)_appendToDescription:(id)description afterPauseType:(int64_t)type withContents:(id)contents;
+- (void)addDetectedClassificationFeatures:(id)features;
+- (void)addDetectedClassificationLocalizedValue:(id)value forLabel:(id)label;
+- (void)addDetectedFaces:(id)faces;
+- (void)addDetectedIconClasses:(id)classes;
+- (void)addMediaAnalysisDetectedFaces:(id)faces;
 @end
 
 @implementation AXMDescriptionBuilder
 
-+ (id)builderWithOptions:(int64_t)a3
++ (id)builderWithOptions:(int64_t)options
 {
-  v3 = [[AXMDescriptionBuilder alloc] _initWithOptions:a3];
+  v3 = [[AXMDescriptionBuilder alloc] _initWithOptions:options];
 
   return v3;
 }
 
-- (id)_initWithOptions:(int64_t)a3
+- (id)_initWithOptions:(int64_t)options
 {
   v5.receiver = self;
   v5.super_class = AXMDescriptionBuilder;
   result = [(AXMDescriptionBuilder *)&v5 init];
   if (result)
   {
-    *(result + 1) = a3;
+    *(result + 1) = options;
   }
 
   return result;
 }
 
-- (void)addDetectedFaces:(id)a3
+- (void)addDetectedFaces:(id)faces
 {
-  v7 = a3;
-  if ([v7 count])
+  facesCopy = faces;
+  if ([facesCopy count])
   {
     faceFeatures = self->_faceFeatures;
     if (!faceFeatures)
     {
-      v5 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       v6 = self->_faceFeatures;
-      self->_faceFeatures = v5;
+      self->_faceFeatures = array;
 
       faceFeatures = self->_faceFeatures;
     }
 
-    [(NSMutableArray *)faceFeatures addObjectsFromArray:v7];
+    [(NSMutableArray *)faceFeatures addObjectsFromArray:facesCopy];
   }
 }
 
-- (void)addMediaAnalysisDetectedFaces:(id)a3
+- (void)addMediaAnalysisDetectedFaces:(id)faces
 {
-  v7 = a3;
-  if ([v7 count])
+  facesCopy = faces;
+  if ([facesCopy count])
   {
     mediaAnalysisFaceFeatures = self->_mediaAnalysisFaceFeatures;
     if (!mediaAnalysisFaceFeatures)
     {
-      v5 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       v6 = self->_mediaAnalysisFaceFeatures;
-      self->_mediaAnalysisFaceFeatures = v5;
+      self->_mediaAnalysisFaceFeatures = array;
 
       mediaAnalysisFaceFeatures = self->_mediaAnalysisFaceFeatures;
     }
 
-    [(NSMutableArray *)mediaAnalysisFaceFeatures addObjectsFromArray:v7];
+    [(NSMutableArray *)mediaAnalysisFaceFeatures addObjectsFromArray:facesCopy];
   }
 }
 
-- (void)addDetectedClassificationFeatures:(id)a3
+- (void)addDetectedClassificationFeatures:(id)features
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  featuresCopy = features;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v5 = [featuresCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -105,58 +105,58 @@
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(featuresCopy);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
-        v10 = [v9 classificationLocalizedValue];
-        v11 = [v9 classificationLabel];
-        [(AXMDescriptionBuilder *)self addDetectedClassificationLocalizedValue:v10 forLabel:v11];
+        classificationLocalizedValue = [v9 classificationLocalizedValue];
+        classificationLabel = [v9 classificationLabel];
+        [(AXMDescriptionBuilder *)self addDetectedClassificationLocalizedValue:classificationLocalizedValue forLabel:classificationLabel];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [featuresCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)addDetectedClassificationLocalizedValue:(id)a3 forLabel:(id)a4
+- (void)addDetectedClassificationLocalizedValue:(id)value forLabel:(id)label
 {
-  v10 = a3;
-  v6 = a4;
-  if ([v10 length] && objc_msgSend(v6, "length"))
+  valueCopy = value;
+  labelCopy = label;
+  if ([valueCopy length] && objc_msgSend(labelCopy, "length"))
   {
     classificationLabelsToLocValuesMap = self->_classificationLabelsToLocValuesMap;
     if (!classificationLabelsToLocValuesMap)
     {
-      v8 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
       v9 = self->_classificationLabelsToLocValuesMap;
-      self->_classificationLabelsToLocValuesMap = v8;
+      self->_classificationLabelsToLocValuesMap = dictionary;
 
       classificationLabelsToLocValuesMap = self->_classificationLabelsToLocValuesMap;
     }
 
-    [(NSMutableDictionary *)classificationLabelsToLocValuesMap setObject:v10 forKeyedSubscript:v6];
+    [(NSMutableDictionary *)classificationLabelsToLocValuesMap setObject:valueCopy forKeyedSubscript:labelCopy];
   }
 }
 
-- (void)addDetectedIconClasses:(id)a3
+- (void)addDetectedIconClasses:(id)classes
 {
-  v7 = a3;
-  if ([v7 count])
+  classesCopy = classes;
+  if ([classesCopy count])
   {
     iconClassFeatures = self->_iconClassFeatures;
     if (!iconClassFeatures)
     {
-      v5 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       v6 = self->_iconClassFeatures;
-      self->_iconClassFeatures = v5;
+      self->_iconClassFeatures = array;
 
       iconClassFeatures = self->_iconClassFeatures;
     }
 
-    [(NSMutableArray *)iconClassFeatures addObjectsFromArray:v7];
+    [(NSMutableArray *)iconClassFeatures addObjectsFromArray:classesCopy];
   }
 }
 
@@ -172,16 +172,16 @@
       v3 = v4;
     }
 
-    v5 = [(AXMVisionFeature *)v3 isLowConfidence];
-    if (v5)
+    isLowConfidence = [(AXMVisionFeature *)v3 isLowConfidence];
+    if (isLowConfidence)
     {
       v6 = @"caption-low-confidence";
     }
 
     else
     {
-      v5 = [(AXMDescriptionBuilder *)self isNSFW];
-      if (!v5)
+      isLowConfidence = [(AXMDescriptionBuilder *)self isNSFW];
+      if (!isLowConfidence)
       {
         v7 = 0;
         goto LABEL_11;
@@ -190,7 +190,7 @@
       v6 = @"caption-nsfw";
     }
 
-    __65__AXMDescriptionBuilder__shouldReplaceCaptionWithGenericTemplate__block_invoke(v5, v6);
+    __65__AXMDescriptionBuilder__shouldReplaceCaptionWithGenericTemplate__block_invoke(isLowConfidence, v6);
     v7 = 1;
 LABEL_11:
 
@@ -271,9 +271,9 @@ id __65__AXMDescriptionBuilder__shouldReplaceCaptionWithGenericTemplate__block_i
 
   else
   {
-    v5 = [MEMORY[0x1E696AD60] string];
+    string = [MEMORY[0x1E696AD60] string];
     v6 = self->_speakableDescription;
-    self->_speakableDescription = v5;
+    self->_speakableDescription = string;
 
     v12 = 0;
     v7 = self->_captionFeature;
@@ -286,9 +286,9 @@ id __65__AXMDescriptionBuilder__shouldReplaceCaptionWithGenericTemplate__block_i
 
     if (v7)
     {
-      v9 = [(AXMDescriptionBuilder *)self _shouldReplaceCaptionWithGenericTemplate];
+      _shouldReplaceCaptionWithGenericTemplate = [(AXMDescriptionBuilder *)self _shouldReplaceCaptionWithGenericTemplate];
       v10 = self->_speakableDescription;
-      if (v9)
+      if (_shouldReplaceCaptionWithGenericTemplate)
       {
         [(AXMDescriptionBuilder *)self _addGenericTemplateForCaptionInformationToDescription:v10];
       }
@@ -319,9 +319,9 @@ id __65__AXMDescriptionBuilder__shouldReplaceCaptionWithGenericTemplate__block_i
   return v3;
 }
 
-- (id)_stringForPauseType:(int64_t)a3
+- (id)_stringForPauseType:(int64_t)type
 {
-  if (a3)
+  if (type)
   {
     return @".";
   }
@@ -332,33 +332,33 @@ id __65__AXMDescriptionBuilder__shouldReplaceCaptionWithGenericTemplate__block_i
   }
 }
 
-- (void)_appendPauseType:(int64_t)a3 toDescriptionIfNeeded:(id)a4
+- (void)_appendPauseType:(int64_t)type toDescriptionIfNeeded:(id)needed
 {
-  v7 = a4;
-  if ([v7 length] && (objc_msgSend(v7, "hasSuffix:", @",") & 1) == 0 && (objc_msgSend(v7, "hasSuffix:", @".") & 1) == 0)
+  neededCopy = needed;
+  if ([neededCopy length] && (objc_msgSend(neededCopy, "hasSuffix:", @",") & 1) == 0 && (objc_msgSend(neededCopy, "hasSuffix:", @".") & 1) == 0)
   {
-    v6 = [(AXMDescriptionBuilder *)self _stringForPauseType:a3];
-    [v7 appendFormat:@"%@ ", v6];
+    v6 = [(AXMDescriptionBuilder *)self _stringForPauseType:type];
+    [neededCopy appendFormat:@"%@ ", v6];
   }
 }
 
-- (void)_appendToDescription:(id)a3 afterPauseType:(int64_t)a4 withContents:(id)a5
+- (void)_appendToDescription:(id)description afterPauseType:(int64_t)type withContents:(id)contents
 {
-  v9 = a3;
-  v8 = a5;
-  if ([v8 length])
+  descriptionCopy = description;
+  contentsCopy = contents;
+  if ([contentsCopy length])
   {
-    [(AXMDescriptionBuilder *)self _appendPauseType:a4 toDescriptionIfNeeded:v9];
-    [v9 appendString:v8];
+    [(AXMDescriptionBuilder *)self _appendPauseType:type toDescriptionIfNeeded:descriptionCopy];
+    [descriptionCopy appendString:contentsCopy];
   }
 }
 
-- (void)_addBrightnessInformationToDescription:(id)a3
+- (void)_addBrightnessInformationToDescription:(id)description
 {
   brightnessFeature = self->_brightnessFeature;
   if (brightnessFeature)
   {
-    v5 = a3;
+    descriptionCopy = description;
     [(AXMVisionFeature *)brightnessFeature brightness];
     if (v6 <= 0.2)
     {
@@ -387,16 +387,16 @@ id __65__AXMDescriptionBuilder__shouldReplaceCaptionWithGenericTemplate__block_i
 
     v9 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.accessibility.AXMediaUtilities"];
     v8 = [v9 localizedStringForKey:v7 value:&stru_1F23EA908 table:@"Accessibility"];
-    [(AXMDescriptionBuilder *)self _appendToDescription:v5 afterPauseType:0 withContents:v8];
+    [(AXMDescriptionBuilder *)self _appendToDescription:descriptionCopy afterPauseType:0 withContents:v8];
   }
 }
 
-- (void)_addBlurInformationToDescription:(id)a3
+- (void)_addBlurInformationToDescription:(id)description
 {
   blurFeature = self->_blurFeature;
   if (blurFeature)
   {
-    v5 = a3;
+    descriptionCopy = description;
     [(AXMVisionFeature *)blurFeature blur];
     if (v6 >= 0.166666667)
     {
@@ -442,7 +442,7 @@ id __65__AXMDescriptionBuilder__shouldReplaceCaptionWithGenericTemplate__block_i
 
     v9 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.accessibility.AXMediaUtilities"];
     v8 = [v9 localizedStringForKey:v7 value:&stru_1F23EA908 table:@"Accessibility"];
-    [(AXMDescriptionBuilder *)self _appendToDescription:v5 afterPauseType:0 withContents:v8];
+    [(AXMDescriptionBuilder *)self _appendToDescription:descriptionCopy afterPauseType:0 withContents:v8];
   }
 }
 
@@ -482,18 +482,18 @@ id __65__AXMDescriptionBuilder__shouldReplaceCaptionWithGenericTemplate__block_i
           }
 
           v12 = *(*(&v18 + 1) + 8 * i);
-          v13 = [v12 faceDetectionResult];
+          faceDetectionResult = [v12 faceDetectionResult];
           if (AXRuntimeCheck_MediaAnalysisSupport())
           {
-            v14 = [v12 mediaAnalysisFaceDetectionResult];
+            mediaAnalysisFaceDetectionResult = [v12 mediaAnalysisFaceDetectionResult];
 
-            v13 = v14;
+            faceDetectionResult = mediaAnalysisFaceDetectionResult;
           }
 
-          v15 = [v13 name];
-          if ([v15 length])
+          name = [faceDetectionResult name];
+          if ([name length])
           {
-            [v6 addObject:v15];
+            [v6 addObject:name];
           }
         }
 
@@ -503,36 +503,36 @@ id __65__AXMDescriptionBuilder__shouldReplaceCaptionWithGenericTemplate__block_i
       while (v9);
     }
 
-    v16 = [v6 allObjects];
+    allObjects = [v6 allObjects];
   }
 
   else
   {
-    v16 = MEMORY[0x1E695E0F0];
+    allObjects = MEMORY[0x1E695E0F0];
   }
 
-  return v16;
+  return allObjects;
 }
 
-- (void)_addPersonSummaryToDescription:(id)a3
+- (void)_addPersonSummaryToDescription:(id)description
 {
-  v15 = a3;
-  v4 = [(AXMDescriptionBuilder *)self _knownPersonNames];
-  if ([v4 count])
+  descriptionCopy = description;
+  _knownPersonNames = [(AXMDescriptionBuilder *)self _knownPersonNames];
+  if ([_knownPersonNames count])
   {
-    if ([v4 count] == 1)
+    if ([_knownPersonNames count] == 1)
     {
       v5 = MEMORY[0x1E696AEC0];
       v6 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.accessibility.AXMediaUtilities"];
       v7 = [v6 localizedStringForKey:@"people.summary.one.person" value:&stru_1F23EA908 table:@"Accessibility"];
-      v8 = [v4 firstObject];
-      v9 = [v5 localizedStringWithFormat:v7, v8];
-      [(AXMDescriptionBuilder *)self _appendToDescription:v15 afterPauseType:0 withContents:v9];
+      firstObject = [_knownPersonNames firstObject];
+      v9 = [v5 localizedStringWithFormat:v7, firstObject];
+      [(AXMDescriptionBuilder *)self _appendToDescription:descriptionCopy afterPauseType:0 withContents:v9];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E696AD08] localizedStringByJoiningStrings:v4];
+      v6 = [MEMORY[0x1E696AD08] localizedStringByJoiningStrings:_knownPersonNames];
       v10 = [(NSMutableArray *)self->_faceFeatures count];
       if (AXRuntimeCheck_MediaAnalysisSupport())
       {
@@ -541,20 +541,20 @@ id __65__AXMDescriptionBuilder__shouldReplaceCaptionWithGenericTemplate__block_i
 
       v11 = MEMORY[0x1E696AEC0];
       v7 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.accessibility.AXMediaUtilities"];
-      v8 = [v7 localizedStringForKey:@"people.summary.multiple.people" value:&stru_1F23EA908 table:@"Accessibility"];
+      firstObject = [v7 localizedStringForKey:@"people.summary.multiple.people" value:&stru_1F23EA908 table:@"Accessibility"];
       v12 = MEMORY[0x1E696ADA0];
       v9 = [MEMORY[0x1E696AD98] numberWithInteger:v10];
       v13 = [v12 localizedStringFromNumber:v9 numberStyle:0];
-      v14 = [v11 localizedStringWithFormat:v8, v13, v6];
-      [(AXMDescriptionBuilder *)self _appendToDescription:v15 afterPauseType:0 withContents:v14];
+      v14 = [v11 localizedStringWithFormat:firstObject, v13, v6];
+      [(AXMDescriptionBuilder *)self _appendToDescription:descriptionCopy afterPauseType:0 withContents:v14];
     }
   }
 }
 
-- (void)_addDetailedFaceInformationToDescription:(id)a3
+- (void)_addDetailedFaceInformationToDescription:(id)description
 {
   v64 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  descriptionCopy = description;
   v5 = self->_faceFeatures;
   if (AXRuntimeCheck_MediaAnalysisSupport())
   {
@@ -570,7 +570,7 @@ id __65__AXMDescriptionBuilder__shouldReplaceCaptionWithGenericTemplate__block_i
     v8 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.accessibility.AXMediaUtilities"];
     v9 = [v8 localizedStringForKey:@"photo.description.faces" value:&stru_1F23EA908 table:@"Accessibility"];
     v10 = [v7 localizedStringWithFormat:v9, -[NSMutableArray count](v5, "count")];
-    [(AXMDescriptionBuilder *)self _appendToDescription:v4 afterPauseType:0 withContents:v10];
+    [(AXMDescriptionBuilder *)self _appendToDescription:descriptionCopy afterPauseType:0 withContents:v10];
 
     v11 = objc_alloc_init(MEMORY[0x1E695DF90]);
     v58 = 0u;
@@ -583,7 +583,7 @@ id __65__AXMDescriptionBuilder__shouldReplaceCaptionWithGenericTemplate__block_i
     v53 = v11;
     if (obj)
     {
-      v49 = self;
+      selfCopy = self;
       v50 = *v59;
       v13 = 1;
       v14 = 0x1E696A000uLL;
@@ -597,21 +597,21 @@ id __65__AXMDescriptionBuilder__shouldReplaceCaptionWithGenericTemplate__block_i
           }
 
           v16 = *(*(&v58 + 1) + 8 * i);
-          v17 = [v16 faceDetectionResult];
+          faceDetectionResult = [v16 faceDetectionResult];
           if (AXRuntimeCheck_MediaAnalysisSupport())
           {
-            v18 = [v16 mediaAnalysisFaceDetectionResult];
+            mediaAnalysisFaceDetectionResult = [v16 mediaAnalysisFaceDetectionResult];
 
-            v17 = v18;
+            faceDetectionResult = mediaAnalysisFaceDetectionResult;
           }
 
-          v19 = [v17 likelyExpression];
-          if ((v19 & 0xFFFFFFFFFFFFFFFDLL) != 0)
+          likelyExpression = [faceDetectionResult likelyExpression];
+          if ((likelyExpression & 0xFFFFFFFFFFFFFFFDLL) != 0)
           {
-            v20 = v19;
-            v21 = v4;
+            v20 = likelyExpression;
+            v21 = descriptionCopy;
             v22 = v12;
-            [*(v14 + 3480) numberWithInteger:v19];
+            [*(v14 + 3480) numberWithInteger:likelyExpression];
             v24 = v23 = v14;
             v25 = [v11 objectForKey:v24];
 
@@ -630,28 +630,28 @@ id __65__AXMDescriptionBuilder__shouldReplaceCaptionWithGenericTemplate__block_i
 
             v14 = 0x1E696A000;
             v12 = v22;
-            v4 = v21;
-            self = v49;
+            descriptionCopy = v21;
+            self = selfCopy;
           }
 
-          v28 = [v17 attributes];
+          attributes = [faceDetectionResult attributes];
           if ([(NSMutableArray *)v12 count]!= 1)
           {
             v29 = MEMORY[0x1E696AEC0];
             v30 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.accessibility.AXMediaUtilities"];
             v31 = [v30 localizedStringForKey:@"face.number" value:&stru_1F23EA908 table:@"Accessibility"];
             v32 = [v29 localizedStringWithFormat:v31, v13];
-            [(AXMDescriptionBuilder *)self _appendToDescription:v4 afterPauseType:0 withContents:v32];
+            [(AXMDescriptionBuilder *)self _appendToDescription:descriptionCopy afterPauseType:0 withContents:v32];
 
             v11 = v53;
             v14 = 0x1E696A000;
           }
 
-          v33 = [v17 name];
-          [(AXMDescriptionBuilder *)self _appendToDescription:v4 afterPauseType:0 withContents:v33];
+          name = [faceDetectionResult name];
+          [(AXMDescriptionBuilder *)self _appendToDescription:descriptionCopy afterPauseType:0 withContents:name];
 
-          v34 = [v28 accessibilityLabelForAttributes];
-          [(AXMDescriptionBuilder *)self _appendToDescription:v4 afterPauseType:0 withContents:v34];
+          accessibilityLabelForAttributes = [attributes accessibilityLabelForAttributes];
+          [(AXMDescriptionBuilder *)self _appendToDescription:descriptionCopy afterPauseType:0 withContents:accessibilityLabelForAttributes];
 
           v13 = (v13 + 1);
         }
@@ -683,7 +683,7 @@ id __65__AXMDescriptionBuilder__shouldReplaceCaptionWithGenericTemplate__block_i
 
           v39 = *(*(&v54 + 1) + 8 * j);
           v40 = [v11 objectForKey:v39];
-          v41 = [v40 integerValue];
+          integerValue = [v40 integerValue];
 
           v42 = [AXMVisionFeatureFaceDetectionResult localizedStringFormatterForExpression:v39];
           v43 = MEMORY[0x1E696AEC0];
@@ -691,8 +691,8 @@ id __65__AXMDescriptionBuilder__shouldReplaceCaptionWithGenericTemplate__block_i
           v45 = [v44 localizedStringForKey:v42 value:&stru_1F23EA908 table:@"Accessibility"];
           v46 = v43;
           v11 = v53;
-          v47 = [v46 localizedStringWithFormat:v45, v41];
-          [(AXMDescriptionBuilder *)self _appendToDescription:v4 afterPauseType:0 withContents:v47];
+          v47 = [v46 localizedStringWithFormat:v45, integerValue];
+          [(AXMDescriptionBuilder *)self _appendToDescription:descriptionCopy afterPauseType:0 withContents:v47];
         }
 
         v36 = [obja countByEnumeratingWithState:&v54 objects:v62 count:16];
@@ -740,52 +740,52 @@ uint64_t __66__AXMDescriptionBuilder__addDetailedFaceInformationToDescription___
   return v14;
 }
 
-- (void)_addFaceInformationToDescription:(id)a3
+- (void)_addFaceInformationToDescription:(id)description
 {
-  v4 = a3;
+  descriptionCopy = description;
   if ([(AXMDescriptionBuilder *)self _shouldSummarizeDetectedPeople])
   {
-    [(AXMDescriptionBuilder *)self _addPersonSummaryToDescription:v4];
+    [(AXMDescriptionBuilder *)self _addPersonSummaryToDescription:descriptionCopy];
   }
 
   else
   {
-    [(AXMDescriptionBuilder *)self _addDetailedFaceInformationToDescription:v4];
+    [(AXMDescriptionBuilder *)self _addDetailedFaceInformationToDescription:descriptionCopy];
   }
 }
 
-- (void)_addCaptionInformationToDescription:(id)a3 didConsumeDetectedFaceInfo:(BOOL *)a4
+- (void)_addCaptionInformationToDescription:(id)description didConsumeDetectedFaceInfo:(BOOL *)info
 {
   v52 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  descriptionCopy = description;
   v7 = self->_captionFeature;
-  v8 = [(AXMVisionFeature *)v7 translatedCaption];
+  translatedCaption = [(AXMVisionFeature *)v7 translatedCaption];
   if (AXRuntimeCheck_MediaAnalysisSupport())
   {
     v9 = self->_mediaAnalysisImageCaptionFeature;
 
-    v10 = [(AXMVisionFeature *)v9 mediaAnalysisTranslatedImageCaption];
+    mediaAnalysisTranslatedImageCaption = [(AXMVisionFeature *)v9 mediaAnalysisTranslatedImageCaption];
 
-    v8 = v10;
+    translatedCaption = mediaAnalysisTranslatedImageCaption;
     v7 = v9;
   }
 
-  if (v8)
+  if (translatedCaption)
   {
     v11 = +[AXMLocSupport sharedInstance];
-    v12 = [v8 targetLocale];
-    v13 = [v11 localeBaseLanguageIsEnglish:v12];
+    targetLocale = [translatedCaption targetLocale];
+    v13 = [v11 localeBaseLanguageIsEnglish:targetLocale];
 
-    v14 = [v8 text];
-    v15 = v14;
+    text = [translatedCaption text];
+    v15 = text;
     if ((v13 & 1) == 0)
     {
 LABEL_72:
-      [(AXMDescriptionBuilder *)self _appendToDescription:v6 afterPauseType:0 withContents:v15];
+      [(AXMDescriptionBuilder *)self _appendToDescription:descriptionCopy afterPauseType:0 withContents:v15];
       goto LABEL_73;
     }
 
-    if (![v14 length])
+    if (![text length])
     {
 LABEL_73:
 
@@ -800,67 +800,67 @@ LABEL_38:
         goto LABEL_72;
       }
 
-      v32 = [(AXMDescriptionBuilder *)self primarySensitiveContentFeature];
+      primarySensitiveContentFeature = [(AXMDescriptionBuilder *)self primarySensitiveContentFeature];
 
-      if (!v32)
+      if (!primarySensitiveContentFeature)
       {
         goto LABEL_72;
       }
 
-      v33 = [(AXMDescriptionBuilder *)self primarySensitiveContentFeature];
-      v34 = [v33 classificationLabel];
+      primarySensitiveContentFeature2 = [(AXMDescriptionBuilder *)self primarySensitiveContentFeature];
+      classificationLabel = [primarySensitiveContentFeature2 classificationLabel];
 
-      if ([v34 isEqualToString:@"Blood"] && (-[NSObject containsString:](v15, "containsString:", @"blood") & 1) == 0)
+      if ([classificationLabel isEqualToString:@"Blood"] && (-[NSObject containsString:](v15, "containsString:", @"blood") & 1) == 0)
       {
         v35 = @" that might contain blood";
       }
 
-      else if ([v34 isEqualToString:@"Demonstration"] && (-[NSObject containsString:](v15, "containsString:", @"demonstration") & 1) == 0)
+      else if ([classificationLabel isEqualToString:@"Demonstration"] && (-[NSObject containsString:](v15, "containsString:", @"demonstration") & 1) == 0)
       {
         v35 = @" that might be a demonstration";
       }
 
       else
       {
-        if (![v34 isEqualToString:@"Destruction"])
+        if (![classificationLabel isEqualToString:@"Destruction"])
         {
-          if ([v34 isEqualToString:@"Fire Devastation"] && (-[NSObject containsString:](v15, "containsString:", @"fire") & 1) == 0)
+          if ([classificationLabel isEqualToString:@"Fire Devastation"] && (-[NSObject containsString:](v15, "containsString:", @"fire") & 1) == 0)
           {
             v35 = @" that might include fire";
             goto LABEL_70;
           }
 
-          if ([v34 isEqualToString:@"Flood Devastation"] && (-[NSObject containsString:](v15, "containsString:", @"flood") & 1) == 0)
+          if ([classificationLabel isEqualToString:@"Flood Devastation"] && (-[NSObject containsString:](v15, "containsString:", @"flood") & 1) == 0)
           {
             v35 = @" that might be a flood";
             goto LABEL_70;
           }
 
-          if ([v34 isEqualToString:@"Funeral"] && (-[NSObject containsString:](v15, "containsString:", @"funeral") & 1) == 0)
+          if ([classificationLabel isEqualToString:@"Funeral"] && (-[NSObject containsString:](v15, "containsString:", @"funeral") & 1) == 0)
           {
             v35 = @" that might be a funeral";
             goto LABEL_70;
           }
 
-          if ([v34 isEqualToString:@"Hospital"] && (-[NSObject containsString:](v15, "containsString:", @"hospital") & 1) == 0)
+          if ([classificationLabel isEqualToString:@"Hospital"] && (-[NSObject containsString:](v15, "containsString:", @"hospital") & 1) == 0)
           {
             v35 = @" that might be a hospital";
             goto LABEL_70;
           }
 
-          if ([v34 isEqualToString:@"Religious Setting"] && (-[NSObject containsString:](v15, "containsString:", @"religious") & 1) == 0)
+          if ([classificationLabel isEqualToString:@"Religious Setting"] && (-[NSObject containsString:](v15, "containsString:", @"religious") & 1) == 0)
           {
             v35 = @" that might be a religious setting";
             goto LABEL_70;
           }
 
-          if ([v34 isEqualToString:@"Vehicle Crash"] && (-[NSObject containsString:](v15, "containsString:", @"crash") & 1) == 0)
+          if ([classificationLabel isEqualToString:@"Vehicle Crash"] && (-[NSObject containsString:](v15, "containsString:", @"crash") & 1) == 0)
           {
             v35 = @" that might be a vehicle crash";
             goto LABEL_70;
           }
 
-          if (![v34 isEqualToString:@"War"] || (-[NSObject containsString:](v15, "containsString:", @"war") & 1) != 0)
+          if (![classificationLabel isEqualToString:@"War"] || (-[NSObject containsString:](v15, "containsString:", @"war") & 1) != 0)
           {
             v36 = AXMediaLogCommon();
             if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
@@ -883,15 +883,15 @@ LABEL_71:
       goto LABEL_72;
     }
 
-    v16 = [(AXMDescriptionBuilder *)self _knownPersonNames];
-    if ([v16 count] != 1)
+    _knownPersonNames = [(AXMDescriptionBuilder *)self _knownPersonNames];
+    if ([_knownPersonNames count] != 1)
     {
 LABEL_37:
 
       goto LABEL_38;
     }
 
-    v17 = [v16 firstObject];
+    firstObject = [_knownPersonNames firstObject];
     v50 = 0;
     v18 = [objc_alloc(MEMORY[0x1E696AE70]) initWithPattern:@"^(?!.*?\\b(person|people|child|children|baby|babies)\\b.*?\\ba\\s+person\\b)(?!.*?\\ba\\s+person\\b.*?\\b(person|people|child|children|baby|babies)\\b)(?<prefix>.*?)\\ba\\s+person(\\s+that\\s+is\\b)?\\b(?<suffix>.*)$" options:3 error:&v50];
     v40 = v50;
@@ -919,8 +919,8 @@ LABEL_36:
       v43 = [v19 countByEnumeratingWithState:&v46 objects:v51 count:16];
       if (v43)
       {
-        v37 = v17;
-        v38 = v16;
+        v37 = firstObject;
+        v38 = _knownPersonNames;
         v41 = *v47;
         while (2)
         {
@@ -979,12 +979,12 @@ LABEL_36:
                 v31 = &stru_1F23EA908;
               }
 
-              v17 = v37;
+              firstObject = v37;
               v45 = [v44 stringWithFormat:@"%@%@%@", v42, v37, v31];
 
-              *a4 = 1;
+              *info = 1;
               v15 = v45;
-              v16 = v38;
+              _knownPersonNames = v38;
               v19 = v22;
               goto LABEL_34;
             }
@@ -1001,8 +1001,8 @@ LABEL_36:
           break;
         }
 
-        v17 = v37;
-        v16 = v38;
+        firstObject = v37;
+        _knownPersonNames = v38;
       }
 
 LABEL_34:
@@ -1017,7 +1017,7 @@ LABEL_34:
 LABEL_74:
 }
 
-- (id)_templateRulesForTag:(id)a3
+- (id)_templateRulesForTag:(id)tag
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -1025,13 +1025,13 @@ LABEL_74:
   block[3] = &unk_1E7A1CCB8;
   block[4] = self;
   v3 = _templateRulesForTag__onceToken;
-  v4 = a3;
+  tagCopy = tag;
   if (v3 != -1)
   {
     dispatch_once(&_templateRulesForTag__onceToken, block);
   }
 
-  v5 = [_templateRulesForTag___TemplateRules objectForKey:v4];
+  v5 = [_templateRulesForTag___TemplateRules objectForKey:tagCopy];
 
   return v5;
 }
@@ -1045,16 +1045,16 @@ void __46__AXMDescriptionBuilder__templateRulesForTag___block_invoke()
   _templateRulesForTag___TemplateRules = v1;
 }
 
-- (id)_subsumedTagsForTags:(id)a3
+- (id)_subsumedTagsForTags:(id)tags
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  tagsCopy = tags;
   v5 = [MEMORY[0x1E695DFA8] set];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v4;
+  v6 = tagsCopy;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -1086,16 +1086,16 @@ void __46__AXMDescriptionBuilder__templateRulesForTag___block_invoke()
   return v5;
 }
 
-- (id)_ignoredTagsForTags:(id)a3
+- (id)_ignoredTagsForTags:(id)tags
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  tagsCopy = tags;
   v5 = [MEMORY[0x1E695DFA8] set];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = v4;
+  v6 = tagsCopy;
   v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
@@ -1120,9 +1120,9 @@ void __46__AXMDescriptionBuilder__templateRulesForTag___block_invoke()
         {
           v12 = [(AXMDescriptionBuilder *)self _templateRulesForTag:v11];
           v13 = [v12 objectForKeyedSubscript:@"ignored"];
-          v14 = [v13 BOOLValue];
+          bOOLValue = [v13 BOOLValue];
 
-          if (v14)
+          if (bOOLValue)
           {
             [v5 addObject:v11];
           }
@@ -1138,21 +1138,21 @@ void __46__AXMDescriptionBuilder__templateRulesForTag___block_invoke()
   return v5;
 }
 
-- (void)_addGenericTemplateForCaptionInformationToDescription:(id)a3
+- (void)_addGenericTemplateForCaptionInformationToDescription:(id)description
 {
-  v4 = a3;
+  descriptionCopy = description;
   if ([(AXMDescriptionBuilder *)self shouldModifyCaptionForSensitiveContent]&& [(AXMDescriptionBuilder *)self isNSFW])
   {
-    [(AXMDescriptionBuilder *)self _appendToDescription:v4 afterPauseType:0 withContents:@"Possible adult content"];
+    [(AXMDescriptionBuilder *)self _appendToDescription:descriptionCopy afterPauseType:0 withContents:@"Possible adult content"];
   }
 
-  v5 = [(NSMutableDictionary *)self->_classificationLabelsToLocValuesMap allKeys];
+  allKeys = [(NSMutableDictionary *)self->_classificationLabelsToLocValuesMap allKeys];
   v36[0] = MEMORY[0x1E69E9820];
   v36[1] = 3221225472;
   v36[2] = __79__AXMDescriptionBuilder__addGenericTemplateForCaptionInformationToDescription___block_invoke;
   v36[3] = &unk_1E7A1CD00;
   v36[4] = self;
-  v6 = [v5 sortedArrayUsingComparator:v36];
+  v6 = [allKeys sortedArrayUsingComparator:v36];
 
   v7 = [(AXMDescriptionBuilder *)self _subsumedTagsForTags:v6];
   v8 = [(AXMDescriptionBuilder *)self _ignoredTagsForTags:v6];
@@ -1172,23 +1172,23 @@ void __46__AXMDescriptionBuilder__templateRulesForTag___block_invoke()
     v13 = v12;
     v29 = v10;
     v30 = v9;
-    v31 = v4;
+    v31 = descriptionCopy;
     v32 = [MEMORY[0x1E696AB08] characterSetWithCharactersInString:@"aeiouAEIOU"];
-    v14 = [MEMORY[0x1E696AD60] string];
+    string = [MEMORY[0x1E696AD60] string];
     v15 = 0;
     do
     {
       v16 = [v11 objectAtIndex:v15];
       v17 = [(AXMDescriptionBuilder *)self _templateRulesForTag:v16];
-      v18 = [v17 objectForKeyedSubscript:@"speech"];
-      if (!v18)
+      lowercaseString = [v17 objectForKeyedSubscript:@"speech"];
+      if (!lowercaseString)
       {
         v19 = [(NSMutableDictionary *)self->_classificationLabelsToLocValuesMap objectForKeyedSubscript:v16];
-        v18 = [v19 lowercaseString];
+        lowercaseString = [v19 lowercaseString];
       }
 
       v20 = [v17 objectForKeyedSubscript:@"nonCountNounOrPlural"];
-      v21 = [v20 BOOLValue];
+      bOOLValue = [v20 BOOLValue];
 
       if (v15)
       {
@@ -1202,40 +1202,40 @@ void __46__AXMDescriptionBuilder__templateRulesForTag___block_invoke()
           v22 = @", ";
         }
 
-        [v14 appendString:v22];
-        if (v21)
+        [string appendString:v22];
+        if (bOOLValue)
         {
-          [v14 appendString:v18];
+          [string appendString:lowercaseString];
         }
 
         else
         {
-          v23 = [v18 rangeOfCharacterFromSet:v32];
+          v23 = [lowercaseString rangeOfCharacterFromSet:v32];
           v24 = @"a";
           if (!v23)
           {
             v24 = @"an";
           }
 
-          [v14 appendFormat:@"%@ %@", v24, v18];
+          [string appendFormat:@"%@ %@", v24, lowercaseString];
         }
       }
 
-      else if (v21)
+      else if (bOOLValue)
       {
-        [v14 appendFormat:@"A photo of %@", v18, v28];
+        [string appendFormat:@"A photo of %@", lowercaseString, v28];
       }
 
       else
       {
-        v25 = [v18 rangeOfCharacterFromSet:v32];
+        v25 = [lowercaseString rangeOfCharacterFromSet:v32];
         v26 = @"a";
         if (!v25)
         {
           v26 = @"an";
         }
 
-        [v14 appendFormat:@"A photo containing %@ %@", v26, v18];
+        [string appendFormat:@"A photo containing %@ %@", v26, lowercaseString];
       }
 
       ++v15;
@@ -1243,8 +1243,8 @@ void __46__AXMDescriptionBuilder__templateRulesForTag___block_invoke()
     }
 
     while (v13);
-    v4 = v31;
-    [(AXMDescriptionBuilder *)self _appendToDescription:v31 afterPauseType:0 withContents:v14];
+    descriptionCopy = v31;
+    [(AXMDescriptionBuilder *)self _appendToDescription:v31 afterPauseType:0 withContents:string];
     v10 = v29;
     v9 = v30;
     v27 = v32;
@@ -1253,8 +1253,8 @@ void __46__AXMDescriptionBuilder__templateRulesForTag___block_invoke()
   else
   {
     v27 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.accessibility.AXMediaUtilities"];
-    v14 = [v27 localizedStringForKey:@"No_Description" value:&stru_1F23EA908 table:@"Accessibility"];
-    [(AXMDescriptionBuilder *)self _appendToDescription:v4 afterPauseType:0 withContents:v14];
+    string = [v27 localizedStringForKey:@"No_Description" value:&stru_1F23EA908 table:@"Accessibility"];
+    [(AXMDescriptionBuilder *)self _appendToDescription:descriptionCopy afterPauseType:0 withContents:string];
   }
 }
 
@@ -1302,9 +1302,9 @@ uint64_t __79__AXMDescriptionBuilder__addGenericTemplateForCaptionInformationToD
   return v4;
 }
 
-- (void)_addClassificationInformationToDescription:(id)a3
+- (void)_addClassificationInformationToDescription:(id)description
 {
-  v4 = a3;
+  descriptionCopy = description;
   v5 = [MEMORY[0x1E696AB50] set];
   classificationLabelsToLocValuesMap = self->_classificationLabelsToLocValuesMap;
   v13[0] = MEMORY[0x1E69E9820];
@@ -1314,26 +1314,26 @@ uint64_t __79__AXMDescriptionBuilder__addGenericTemplateForCaptionInformationToD
   v14 = v5;
   v7 = v5;
   [(NSMutableDictionary *)classificationLabelsToLocValuesMap enumerateKeysAndObjectsUsingBlock:v13];
-  v8 = [v7 allObjects];
-  v9 = [v8 sortedArrayUsingComparator:&__block_literal_global_246];
+  allObjects = [v7 allObjects];
+  v9 = [allObjects sortedArrayUsingComparator:&__block_literal_global_246];
 
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __68__AXMDescriptionBuilder__addClassificationInformationToDescription___block_invoke_3;
   v11[3] = &unk_1E7A1CD98;
   v11[4] = self;
-  v12 = v4;
-  v10 = v4;
+  v12 = descriptionCopy;
+  v10 = descriptionCopy;
   [v9 enumerateObjectsUsingBlock:v11];
 }
 
-- (void)_addIconClassInformationToDescription:(id)a3
+- (void)_addIconClassInformationToDescription:(id)description
 {
   iconClassFeatures = self->_iconClassFeatures;
-  v5 = a3;
-  v7 = [(NSMutableArray *)iconClassFeatures axm_featureWithHighestConfidence];
-  v6 = [v7 value];
-  [(AXMDescriptionBuilder *)self _appendToDescription:v5 afterPauseType:0 withContents:v6];
+  descriptionCopy = description;
+  axm_featureWithHighestConfidence = [(NSMutableArray *)iconClassFeatures axm_featureWithHighestConfidence];
+  value = [axm_featureWithHighestConfidence value];
+  [(AXMDescriptionBuilder *)self _appendToDescription:descriptionCopy afterPauseType:0 withContents:value];
 }
 
 - (void)_addCaptionInformationToDescription:(uint64_t)a1 didConsumeDetectedFaceInfo:(NSObject *)a2 .cold.1(uint64_t a1, NSObject *a2)

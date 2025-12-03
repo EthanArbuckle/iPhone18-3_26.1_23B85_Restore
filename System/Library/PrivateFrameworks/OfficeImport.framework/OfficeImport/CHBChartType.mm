@@ -1,81 +1,81 @@
 @interface CHBChartType
-+ (Class)chdChartTypeClassWithPlot:(void *)a3;
-+ (id)readWithState:(id)a3;
++ (Class)chdChartTypeClassWithPlot:(void *)plot;
++ (id)readWithState:(id)state;
 @end
 
 @implementation CHBChartType
 
-+ (id)readWithState:(id)a3
++ (id)readWithState:(id)state
 {
-  v3 = a3;
-  v4 = [v3 xlCurrentPlot];
-  if (!v4 || (v5 = [CHBChartType chdChartTypeClassWithPlot:v4]) == 0)
+  stateCopy = state;
+  xlCurrentPlot = [stateCopy xlCurrentPlot];
+  if (!xlCurrentPlot || (v5 = [CHBChartType chdChartTypeClassWithPlot:xlCurrentPlot]) == 0)
   {
     v6 = 0;
     goto LABEL_31;
   }
 
-  v6 = [(objc_class *)v5 chdChartTypeWithState:v3];
-  v7 = *(v4 + 16);
+  v6 = [(objc_class *)v5 chdChartTypeWithState:stateCopy];
+  v7 = *(xlCurrentPlot + 16);
   if (v7)
   {
     [v6 setVaryColors:XlChartChartFormat::isVaried(v7)];
   }
 
-  v8 = [v6 axisIds];
-  v9 = *(v4 + 136);
-  if (XlChartBinaryReader::hasAxis([v3 xlReader], v9, 0))
+  axisIds = [v6 axisIds];
+  v9 = *(xlCurrentPlot + 136);
+  if (XlChartBinaryReader::hasAxis([stateCopy xlReader], v9, 0))
   {
-    v10 = [MEMORY[0x277CCABB0] numberWithInt:{+[CHBAxis chbAxisIdForPlotAxis:state:](CHBAxis, "chbAxisIdForPlotAxis:state:", 0, v3)}];
-    [v8 addObject:v10];
+    v10 = [MEMORY[0x277CCABB0] numberWithInt:{+[CHBAxis chbAxisIdForPlotAxis:state:](CHBAxis, "chbAxisIdForPlotAxis:state:", 0, stateCopy)}];
+    [axisIds addObject:v10];
   }
 
-  if (XlChartBinaryReader::hasAxis([v3 xlReader], v9, 1))
+  if (XlChartBinaryReader::hasAxis([stateCopy xlReader], v9, 1))
   {
-    v11 = [MEMORY[0x277CCABB0] numberWithInt:{+[CHBAxis chbAxisIdForPlotAxis:state:](CHBAxis, "chbAxisIdForPlotAxis:state:", 1, v3)}];
-    [v8 addObject:v11];
+    v11 = [MEMORY[0x277CCABB0] numberWithInt:{+[CHBAxis chbAxisIdForPlotAxis:state:](CHBAxis, "chbAxisIdForPlotAxis:state:", 1, stateCopy)}];
+    [axisIds addObject:v11];
   }
 
-  if (XlChartBinaryReader::hasAxis([v3 xlReader], v9, 2))
+  if (XlChartBinaryReader::hasAxis([stateCopy xlReader], v9, 2))
   {
-    v12 = [MEMORY[0x277CCABB0] numberWithInt:{+[CHBAxis chbAxisIdForPlotAxis:state:](CHBAxis, "chbAxisIdForPlotAxis:state:", 2, v3)}];
-    [v8 addObject:v12];
+    v12 = [MEMORY[0x277CCABB0] numberWithInt:{+[CHBAxis chbAxisIdForPlotAxis:state:](CHBAxis, "chbAxisIdForPlotAxis:state:", 2, stateCopy)}];
+    [axisIds addObject:v12];
   }
 
-  for (i = 0; i < [v3 xlSeriesCount]; i = (i + 1))
+  for (i = 0; i < [stateCopy xlSeriesCount]; i = (i + 1))
   {
-    v14 = [v3 xlChartDataSeriesAtIndex:i];
+    v14 = [stateCopy xlChartDataSeriesAtIndex:i];
     v15 = v14[10];
-    if ([v3 xlCurrentPlotIndex] == v15 && !(*(*v14 + 16))(v14))
+    if ([stateCopy xlCurrentPlotIndex] == v15 && !(*(*v14 + 16))(v14))
     {
-      [v3 setXlCurrentSeriesIndex:i];
-      v16 = [CHBSeries readFrom:v14 state:v3];
+      [stateCopy setXlCurrentSeriesIndex:i];
+      v16 = [CHBSeries readFrom:v14 state:stateCopy];
       v17 = v16;
       if (v16)
       {
         if (([v16 isHidden] & 1) == 0)
         {
           [v17 setChartType:v6];
-          v18 = [v6 seriesCollection];
-          [v18 addObject:v17];
+          seriesCollection = [v6 seriesCollection];
+          [seriesCollection addObject:v17];
         }
       }
     }
   }
 
-  for (j = 0; j < [v3 xlSeriesCount]; j = (j + 1))
+  for (j = 0; j < [stateCopy xlSeriesCount]; j = (j + 1))
   {
-    v20 = [v3 xlChartDataSeriesAtIndex:j];
+    v20 = [stateCopy xlChartDataSeriesAtIndex:j];
     v21 = v20[10];
-    if ([v3 xlCurrentPlotIndex] != v21)
+    if ([stateCopy xlCurrentPlotIndex] != v21)
     {
       continue;
     }
 
     if ((*(*v20 + 16))(v20) == 1)
     {
-      v22 = [v6 seriesCollection];
-      [CHBErrorBar readFrom:v20 toSeries:v22 state:v3];
+      seriesCollection2 = [v6 seriesCollection];
+      [CHBErrorBar readFrom:v20 toSeries:seriesCollection2 state:stateCopy];
     }
 
     else
@@ -85,12 +85,12 @@
         continue;
       }
 
-      v22 = [v6 seriesCollection];
-      [CHBTrendLine readFrom:v20 toSeries:v22 state:v3];
+      seriesCollection2 = [v6 seriesCollection];
+      [CHBTrendLine readFrom:v20 toSeries:seriesCollection2 state:stateCopy];
     }
   }
 
-  v23 = [CHBDataLabel chdDataLabelFromXlChartSeriesFormat:*(v4 + 24) state:v3];
+  v23 = [CHBDataLabel chdDataLabelFromXlChartSeriesFormat:*(xlCurrentPlot + 24) state:stateCopy];
   [v6 setDefaultDataLabel:v23];
 
 LABEL_31:
@@ -98,12 +98,12 @@ LABEL_31:
   return v6;
 }
 
-+ (Class)chdChartTypeClassWithPlot:(void *)a3
++ (Class)chdChartTypeClassWithPlot:(void *)plot
 {
-  v4 = (*(*a3 + 16))(a3, a2);
-  if (!*(a3 + 1) && v4 > 3 && (v4 - 6) >= 3 && v4 == 5)
+  v4 = (*(*plot + 16))(plot, a2);
+  if (!*(plot + 1) && v4 > 3 && (v4 - 6) >= 3 && v4 == 5)
   {
-    XlChartChartFormat::isVaried((a3 + 144));
+    XlChartChartFormat::isVaried((plot + 144));
   }
 
   v5 = objc_opt_class();

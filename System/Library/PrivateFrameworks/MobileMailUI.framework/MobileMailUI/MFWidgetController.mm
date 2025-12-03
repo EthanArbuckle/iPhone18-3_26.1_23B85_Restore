@@ -5,7 +5,7 @@
 + (OS_os_log)signpostLog;
 - (MFWidgetController)init;
 - (unint64_t)signpostID;
-- (void)reloadTimelinesWithReason:(id)a3;
+- (void)reloadTimelinesWithReason:(id)reason;
 @end
 
 @implementation MFWidgetController
@@ -16,7 +16,7 @@
   block[1] = 3221225472;
   block[2] = __25__MFWidgetController_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_7 != -1)
   {
     dispatch_once(&log_onceToken_7, block);
@@ -41,7 +41,7 @@ void __25__MFWidgetController_log__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __33__MFWidgetController_signpostLog__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (signpostLog_onceToken_1 != -1)
   {
     dispatch_once(&signpostLog_onceToken_1, block);
@@ -62,8 +62,8 @@ void __33__MFWidgetController_signpostLog__block_invoke(uint64_t a1)
 
 - (unint64_t)signpostID
 {
-  v3 = [objc_opt_class() signpostLog];
-  v4 = os_signpost_id_make_with_pointer(v3, self);
+  signpostLog = [objc_opt_class() signpostLog];
+  v4 = os_signpost_id_make_with_pointer(signpostLog, self);
 
   return v4;
 }
@@ -122,9 +122,9 @@ void __31__MFWidgetController_scheduler__block_invoke()
   return v2;
 }
 
-- (void)reloadTimelinesWithReason:(id)a3
+- (void)reloadTimelinesWithReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   v5 = +[MFWidgetController signpostLog];
   v6 = os_signpost_id_generate(v5);
   v7 = v5;
@@ -143,8 +143,8 @@ void __31__MFWidgetController_scheduler__block_invoke()
   v10 = v8;
   v16 = v6;
   v13 = v10;
-  v14 = self;
-  v11 = v4;
+  selfCopy = self;
+  v11 = reasonCopy;
   v15 = v11;
   [v9 performBlock:v12];
 }

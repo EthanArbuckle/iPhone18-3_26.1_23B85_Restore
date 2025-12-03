@@ -1,11 +1,11 @@
 @interface VCPHandPoseImageRequest
-- (BOOL)cleanupWithOptions:(id)a3 error:(id *)a4;
-- (BOOL)updateWithOptions:(id)a3 error:(id *)a4;
-- (CGSize)preferredInputSizeWithOptions:(id)a3 error:(id *)a4;
+- (BOOL)cleanupWithOptions:(id)options error:(id *)error;
+- (BOOL)updateWithOptions:(id)options error:(id *)error;
+- (CGSize)preferredInputSizeWithOptions:(id)options error:(id *)error;
 - (VCPHandPoseImageRequest)init;
-- (VCPHandPoseImageRequest)initWithOptions:(id)a3;
-- (id)processImage:(__CVBuffer *)a3 withOptions:(id)a4 error:(id *)a5;
-- (int)parseResults:(id)a3 observations:(id)a4;
+- (VCPHandPoseImageRequest)initWithOptions:(id)options;
+- (id)processImage:(__CVBuffer *)image withOptions:(id)options error:(id *)error;
+- (int)parseResults:(id)results observations:(id)observations;
 @end
 
 @implementation VCPHandPoseImageRequest
@@ -21,10 +21,10 @@
   return 0;
 }
 
-- (VCPHandPoseImageRequest)initWithOptions:(id)a3
+- (VCPHandPoseImageRequest)initWithOptions:(id)options
 {
   v40 = *MEMORY[0x1E69E9840];
-  v32 = a3;
+  optionsCopy = options;
   v4 = VCPSignPostLog();
   v5 = os_signpost_id_generate(v4);
 
@@ -38,7 +38,7 @@
 
   v33.receiver = self;
   v33.super_class = VCPHandPoseImageRequest;
-  v8 = [(VCPRequest *)&v33 initWithOptions:v32];
+  v8 = [(VCPRequest *)&v33 initWithOptions:optionsCopy];
   v10 = v8;
   v11 = &OBJC_IVAR___VCPMovieAssetWriter__livePhotoInfoQueue;
   if (v8)
@@ -91,7 +91,7 @@
     HIDWORD(v28) = v10->super._width;
     LODWORD(v29) = v10->super._height;
     LOBYTE(v28) = v10->super._enableHandPoseLite;
-    v20 = [(VCPImageHandsAnalyzer *)v19 initWithKeypointsOption:v10->super._maxNumHands forceCPU:v10->super._useCPUOnly sharedModel:0 enableHandDetection:v10->super._enableHandDetection enableANSTHandDetection:v10->super._enableANSTHandDetection enableRejectHandsNearBoundaries:v10->super._enableRejectHandsNearBoundaries enableHandObject:v28 sourceWidth:v29 sourceHeight:v16 modelName:v30 revision:v32 options:?];
+    v20 = [(VCPImageHandsAnalyzer *)v19 initWithKeypointsOption:v10->super._maxNumHands forceCPU:v10->super._useCPUOnly sharedModel:0 enableHandDetection:v10->super._enableHandDetection enableANSTHandDetection:v10->super._enableANSTHandDetection enableRejectHandsNearBoundaries:v10->super._enableRejectHandsNearBoundaries enableHandObject:v28 sourceWidth:v29 sourceHeight:v16 modelName:v30 revision:optionsCopy options:?];
     analyzer = v10->_analyzer;
     v10->_analyzer = v20;
 
@@ -128,19 +128,19 @@
   return v26;
 }
 
-- (int)parseResults:(id)a3 observations:(id)a4
+- (int)parseResults:(id)results observations:(id)observations
 {
   v52 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v38 = v6;
-  v39 = a4;
-  if (v39)
+  resultsCopy = results;
+  v38 = resultsCopy;
+  observationsCopy = observations;
+  if (observationsCopy)
   {
     v48 = 0u;
     v49 = 0u;
     v46 = 0u;
     v47 = 0u;
-    obj = v6;
+    obj = resultsCopy;
     v33 = [obj countByEnumeratingWithState:&v46 objects:v51 count:16];
     if (v33)
     {
@@ -167,7 +167,7 @@ LABEL_29:
           }
 
           v8 = objc_alloc_init(VCPHandObservation);
-          v9 = [MEMORY[0x1E695DF70] array];
+          array = [MEMORY[0x1E695DF70] array];
           v44 = 0u;
           v45 = 0u;
           v42 = 0u;
@@ -205,7 +205,7 @@ LABEL_29:
                 [v20 floatValue];
                 [(VCPKeypoint *)v14 setConfidence:?];
 
-                [v9 addObject:v14];
+                [array addObject:v14];
                 if (self->super._revision == 2 && ![(VCPHandObservation *)v8 chirality])
                 {
                   v21 = [v13 objectAtIndexedSubscript:3];
@@ -228,7 +228,7 @@ LABEL_29:
             }
           }
 
-          [(VCPHandObservation *)v8 setKeypoints:v9];
+          [(VCPHandObservation *)v8 setKeypoints:array];
           v22 = [v37 objectForKeyedSubscript:@"attributes"];
           v23 = [v22 objectForKeyedSubscript:@"handsGroupID"];
           -[VCPHandObservation setGroupID:](v8, "setGroupID:", [v23 intValue]);
@@ -258,7 +258,7 @@ LABEL_29:
           v53 = NSRectFromString(v30);
           [(VCPHandObservation *)v8 setBounds:v53.origin.x, v53.origin.y, v53.size.width, v53.size.height];
 
-          [v39 addObject:v8];
+          [observationsCopy addObject:v8];
         }
 
         v31 = 0;
@@ -288,9 +288,9 @@ LABEL_31:
   return v31;
 }
 
-- (id)processImage:(__CVBuffer *)a3 withOptions:(id)a4 error:(id *)a5
+- (id)processImage:(__CVBuffer *)image withOptions:(id)options error:(id *)error
 {
-  v7 = a4;
+  optionsCopy = options;
   v8 = VCPSignPostLog();
   v9 = os_signpost_id_generate(v8);
 
@@ -302,11 +302,11 @@ LABEL_31:
     _os_signpost_emit_with_name_impl(&dword_1C9B70000, v11, OS_SIGNPOST_INTERVAL_BEGIN, v9, "VCPHandPoseImageRequest_processImage", "", buf, 2u);
   }
 
-  v12 = [(NSDictionary *)v7 objectForKeyedSubscript:@"handObjects"];
+  v12 = [(NSDictionary *)optionsCopy objectForKeyedSubscript:@"handObjects"];
 
   if (v12)
   {
-    v13 = [(NSDictionary *)v7 objectForKeyedSubscript:@"handObjects"];
+    v13 = [(NSDictionary *)optionsCopy objectForKeyedSubscript:@"handObjects"];
   }
 
   else
@@ -314,14 +314,14 @@ LABEL_31:
     v13 = 0;
   }
 
-  v14 = [(NSDictionary *)v7 objectForKeyedSubscript:@"rotationInDegrees"];
+  v14 = [(NSDictionary *)optionsCopy objectForKeyedSubscript:@"rotationInDegrees"];
 
   if (v14)
   {
-    v14 = [MEMORY[0x1E696AD98] numberWithInt:getRotationInDegrees(v7)];
+    v14 = [MEMORY[0x1E696AD98] numberWithInt:getRotationInDegrees(optionsCopy)];
   }
 
-  v15 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   *buf = 0;
   analyzer = self->_analyzer;
   if (!analyzer)
@@ -329,10 +329,10 @@ LABEL_31:
     v20 = 0;
     v18 = -18;
 LABEL_18:
-    if (a5)
+    if (error)
     {
       [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:v18 userInfo:0];
-      *a5 = v25 = 0;
+      *error = v25 = 0;
     }
 
     else
@@ -346,7 +346,7 @@ LABEL_18:
   [(VCPImageHandsAnalyzer *)analyzer setHandObjects:v13];
   v17 = self->_analyzer;
   v29 = 0;
-  v18 = [(VCPImageHandsAnalyzer *)v17 analyzePixelBuffer:a3 rotationInDegrees:v14 flags:buf results:&v29 cancel:&__block_literal_global_84];
+  v18 = [(VCPImageHandsAnalyzer *)v17 analyzePixelBuffer:image rotationInDegrees:v14 flags:buf results:&v29 cancel:&__block_literal_global_84];
   v19 = v29;
   v20 = v19;
   if (v18)
@@ -359,7 +359,7 @@ LABEL_18:
   if (v21)
   {
     v22 = [v20 objectForKeyedSubscript:@"HandsResults"];
-    v18 = [(VCPHandPoseImageRequest *)self parseResults:v22 observations:v15];
+    v18 = [(VCPHandPoseImageRequest *)self parseResults:v22 observations:array];
 
     if (v18)
     {
@@ -375,20 +375,20 @@ LABEL_18:
     _os_signpost_emit_with_name_impl(&dword_1C9B70000, v24, OS_SIGNPOST_INTERVAL_END, v9, "VCPHandPoseImageRequest_processImage", "", v28, 2u);
   }
 
-  v25 = v15;
+  v25 = array;
 LABEL_21:
 
   return v25;
 }
 
-- (BOOL)updateWithOptions:(id)a3 error:(id *)a4
+- (BOOL)updateWithOptions:(id)options error:(id *)error
 {
-  v6 = a3;
+  optionsCopy = options;
   width = self->super._width;
   height = self->super._height;
   v16.receiver = self;
   v16.super_class = VCPHandPoseImageRequest;
-  [(VCPRequest *)&v16 updateWithOptions:v6 error:a4];
+  [(VCPRequest *)&v16 updateWithOptions:optionsCopy error:error];
   v9 = self->super._width;
   if (width == v9)
   {
@@ -405,7 +405,7 @@ LABEL_21:
     {
 LABEL_14:
       analyzer = self->_analyzer;
-      v14 = [v6 objectForKeyedSubscript:@"maxNumberHands"];
+      v14 = [optionsCopy objectForKeyedSubscript:@"maxNumberHands"];
       [(VCPImageHandsAnalyzer *)analyzer updateMaxNumHands:v14];
 
       v12 = 1;
@@ -432,7 +432,7 @@ LABEL_15:
   return v12;
 }
 
-- (CGSize)preferredInputSizeWithOptions:(id)a3 error:(id *)a4
+- (CGSize)preferredInputSizeWithOptions:(id)options error:(id *)error
 {
   preferredWidth = self->_preferredWidth;
   preferredHeight = self->_preferredHeight;
@@ -441,7 +441,7 @@ LABEL_15:
   return result;
 }
 
-- (BOOL)cleanupWithOptions:(id)a3 error:(id *)a4
+- (BOOL)cleanupWithOptions:(id)options error:(id *)error
 {
   analyzer = self->_analyzer;
   self->_analyzer = 0;

@@ -1,12 +1,12 @@
 @interface BorderedScreenshotView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC20ProductPageExtension22BorderedScreenshotView)initWithCoder:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC20ProductPageExtension22BorderedScreenshotView)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 @end
 
 @implementation BorderedScreenshotView
 
-- (_TtC20ProductPageExtension22BorderedScreenshotView)initWithCoder:(id)a3
+- (_TtC20ProductPageExtension22BorderedScreenshotView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC20ProductPageExtension22BorderedScreenshotView_platform) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC20ProductPageExtension22BorderedScreenshotView_chromeBorderView) = 0;
@@ -26,13 +26,13 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_100125714();
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
+  height = fits.height;
   v5 = sub_10076D39C();
   v6 = *(v5 - 8);
   __chkstk_darwin(v5);

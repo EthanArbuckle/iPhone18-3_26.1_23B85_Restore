@@ -1,15 +1,15 @@
 @interface MapsSuggestionsReservationImprover
-- (BOOL)improveEntry:(id)a3;
+- (BOOL)improveEntry:(id)entry;
 @end
 
 @implementation MapsSuggestionsReservationImprover
 
-- (BOOL)improveEntry:(id)a3
+- (BOOL)improveEntry:(id)entry
 {
   v54 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  entryCopy = entry;
+  v4 = entryCopy;
+  if (!entryCopy)
   {
     v5 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -36,7 +36,7 @@ LABEL_52:
     goto LABEL_53;
   }
 
-  if ([v3 type] == 8)
+  if ([entryCopy type] == 8)
   {
     if ([v4 containsKey:@"MapsSuggestionsScheduledTimeKey"])
     {
@@ -121,9 +121,9 @@ LABEL_29:
         [v35 weight];
         if (vabdd_f64(v37, v38) < 2.22044605e-16 && (v39 = [v34 integerForKey:@"MapsSuggestionsSinkRankKey"], v39 == -[NSObject integerForKey:](v35, "integerForKey:", @"MapsSuggestionsSinkRankKey")) && (v40 = objc_msgSend(v34, "containsKey:", @"MapsSuggestionsNeedsETATrackingKey"), v40 == -[NSObject containsKey:](v35, "containsKey:", @"MapsSuggestionsNeedsETATrackingKey")) && (v41 = objc_msgSend(v34, "BOOLeanForKey:", @"MapsSuggestionsNeedsETATrackingKey"), v41 == -[NSObject BOOLeanForKey:](v35, "BOOLeanForKey:", @"MapsSuggestionsNeedsETATrackingKey")))
         {
-          v43 = [v4 undecoratedSubtitle];
-          v44 = [v5 undecoratedSubtitle];
-          v45 = [v43 isEqualToString:v44];
+          undecoratedSubtitle = [v4 undecoratedSubtitle];
+          undecoratedSubtitle2 = [v5 undecoratedSubtitle];
+          v45 = [undecoratedSubtitle isEqualToString:undecoratedSubtitle2];
 
           v14 = v45 ^ 1;
         }
@@ -145,8 +145,8 @@ LABEL_29:
         {
 LABEL_24:
 
-          v17 = [v4 undecoratedSubtitle];
-          if ([v17 isEqualToString:v7])
+          undecoratedSubtitle3 = [v4 undecoratedSubtitle];
+          if ([undecoratedSubtitle3 isEqualToString:v7])
           {
           }
 

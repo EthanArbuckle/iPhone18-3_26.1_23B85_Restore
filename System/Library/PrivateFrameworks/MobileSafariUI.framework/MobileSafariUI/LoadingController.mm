@@ -4,12 +4,12 @@
 - (NSString)titleForStatePersisting;
 - (NSURL)URL;
 - (NSURL)URLForStatePersisting;
-- (id)loadRequest:(id)a3 userDriven:(BOOL)a4 shouldOpenExternalURLs:(BOOL)a5 eventAttribution:(id)a6;
+- (id)loadRequest:(id)request userDriven:(BOOL)driven shouldOpenExternalURLs:(BOOL)ls eventAttribution:(id)attribution;
 - (void)goBack;
 - (void)goForward;
-- (void)reloadFromOrigin:(BOOL)a3;
-- (void)setTitle:(id)a3;
-- (void)setURL:(id)a3;
+- (void)reloadFromOrigin:(BOOL)origin;
+- (void)setTitle:(id)title;
+- (void)setURL:(id)l;
 @end
 
 @implementation LoadingController
@@ -27,8 +27,8 @@
     title = self->_title;
   }
 
-  v4 = [MEMORY[0x277CCA900] safari_lockRelatedEmojiCharacterSet];
-  v5 = [title safari_stringByRemovingCharactersInSet:v4];
+  safari_lockRelatedEmojiCharacterSet = [MEMORY[0x277CCA900] safari_lockRelatedEmojiCharacterSet];
+  v5 = [title safari_stringByRemovingCharactersInSet:safari_lockRelatedEmojiCharacterSet];
 
   if (webView)
   {
@@ -51,14 +51,14 @@
   return URL;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_title != v4)
+  titleCopy = title;
+  v5 = titleCopy;
+  if (self->_title != titleCopy)
   {
-    v9 = v4;
-    v6 = [(NSString *)v4 isEqualToString:?];
+    v9 = titleCopy;
+    v6 = [(NSString *)titleCopy isEqualToString:?];
     v5 = v9;
     if (!v6)
     {
@@ -71,16 +71,16 @@
   }
 }
 
-- (void)setURL:(id)a3
+- (void)setURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   URL = self->_URL;
   p_URL = &self->_URL;
-  if (URL != v5)
+  if (URL != lCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_URL, a3);
-    v5 = v8;
+    v8 = lCopy;
+    objc_storeStrong(p_URL, l);
+    lCopy = v8;
   }
 }
 
@@ -103,9 +103,9 @@
     v15 = 0u;
     v16 = 0u;
     v6 = +[Application sharedApplication];
-    v7 = [v6 allWebExtensionsControllers];
+    allWebExtensionsControllers = [v6 allWebExtensionsControllers];
 
-    v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    v8 = [allWebExtensionsControllers countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v8)
     {
       v9 = v8;
@@ -116,7 +116,7 @@
         {
           if (*v16 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(allWebExtensionsControllers);
           }
 
           v12 = [*(*(&v15 + 1) + 8 * i) _persistentStateURLForExtensionURL:v5];
@@ -128,7 +128,7 @@
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v9 = [allWebExtensionsControllers countByEnumeratingWithState:&v15 objects:v19 count:16];
         if (v9)
         {
           continue;
@@ -147,9 +147,9 @@ LABEL_15:
 
 - (NSString)titleForStatePersisting
 {
-  v3 = [(LoadingController *)self title];
-  title = v3;
-  if (!v3)
+  title = [(LoadingController *)self title];
+  title = title;
+  if (!title)
   {
     title = self->_title;
   }
@@ -159,12 +159,12 @@ LABEL_15:
   return title;
 }
 
-- (id)loadRequest:(id)a3 userDriven:(BOOL)a4 shouldOpenExternalURLs:(BOOL)a5 eventAttribution:(id)a6
+- (id)loadRequest:(id)request userDriven:(BOOL)driven shouldOpenExternalURLs:(BOOL)ls eventAttribution:(id)attribution
 {
-  v7 = a5;
-  v8 = a4;
-  v10 = a3;
-  v11 = a6;
+  lsCopy = ls;
+  drivenCopy = driven;
+  requestCopy = request;
+  attributionCopy = attribution;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (!self->_webView)
   {
@@ -175,12 +175,12 @@ LABEL_15:
     }
   }
 
-  v14 = [v10 safari_requestBySettingIsUserInitiated:1];
+  v14 = [requestCopy safari_requestBySettingIsUserInitiated:1];
 
-  [WeakRetained loadingController:self willLoadRequest:v14 webView:self->_webView userDriven:v8];
+  [WeakRetained loadingController:self willLoadRequest:v14 webView:self->_webView userDriven:drivenCopy];
   if (objc_opt_respondsToSelector())
   {
-    [(WKWebView *)self->_webView _setUIEventAttribution:v11];
+    [(WKWebView *)self->_webView _setUIEventAttribution:attributionCopy];
   }
 
   v15 = [v14 URL];
@@ -188,26 +188,26 @@ LABEL_15:
   {
     webView = self->_webView;
     v17 = MEMORY[0x277CBEBC0];
-    v18 = [MEMORY[0x277D7B5A8] readingListArchivesDirectoryPath];
-    v19 = [v17 fileURLWithPath:v18 isDirectory:1];
+    readingListArchivesDirectoryPath = [MEMORY[0x277D7B5A8] readingListArchivesDirectoryPath];
+    v19 = [v17 fileURLWithPath:readingListArchivesDirectoryPath isDirectory:1];
     v20 = [(WKWebView *)webView loadFileURL:v15 allowingReadAccessToURL:v19];
 
-    v21 = [MEMORY[0x277CBEBD0] safari_browserDefaults];
-    [v21 setBool:1 forKey:*MEMORY[0x277D29268]];
+    safari_browserDefaults = [MEMORY[0x277CBEBD0] safari_browserDefaults];
+    [safari_browserDefaults setBool:1 forKey:*MEMORY[0x277D29268]];
   }
 
   else
   {
-    v22 = [v15 sf_isTestWebArchiveURL];
+    sf_isTestWebArchiveURL = [v15 sf_isTestWebArchiveURL];
     v23 = self->_webView;
-    if (v22)
+    if (sf_isTestWebArchiveURL)
     {
       v24 = [(WKWebView *)v23 loadFileURL:v15 allowingReadAccessToURL:v15];
     }
 
     else
     {
-      if (v7)
+      if (lsCopy)
       {
         [(WKWebView *)v23 _loadRequest:v14 shouldOpenExternalURLs:1];
       }
@@ -230,7 +230,7 @@ LABEL_15:
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained loadingControllerWillStartUserDrivenLoad:self];
 
-  v4 = [(WKWebView *)self->_webView goBack];
+  goBack = [(WKWebView *)self->_webView goBack];
 }
 
 - (void)goForward
@@ -238,24 +238,24 @@ LABEL_15:
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained loadingControllerWillStartUserDrivenLoad:self];
 
-  v4 = [(WKWebView *)self->_webView goForward];
+  goForward = [(WKWebView *)self->_webView goForward];
 }
 
-- (void)reloadFromOrigin:(BOOL)a3
+- (void)reloadFromOrigin:(BOOL)origin
 {
-  v3 = a3;
+  originCopy = origin;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained loadingControllerWillStartUserDrivenLoad:self];
 
   webView = self->_webView;
-  if (v3)
+  if (originCopy)
   {
-    v7 = [(WKWebView *)webView reloadFromOrigin];
+    reloadFromOrigin = [(WKWebView *)webView reloadFromOrigin];
   }
 
   else
   {
-    v8 = [(WKWebView *)webView reload];
+    reload = [(WKWebView *)webView reload];
   }
 }
 

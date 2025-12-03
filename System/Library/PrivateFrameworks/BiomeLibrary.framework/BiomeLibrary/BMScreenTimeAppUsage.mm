@@ -1,16 +1,16 @@
 @interface BMScreenTimeAppUsage
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMScreenTimeAppUsage)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BMScreenTimeAppUsage)initWithStarting:(id)a3 absoluteTimestamp:(id)a4 bundleID:(id)a5 parentBundleID:(id)a6 isUsageTrusted:(id)a7;
-- (BOOL)isEqual:(id)a3;
+- (BMScreenTimeAppUsage)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BMScreenTimeAppUsage)initWithStarting:(id)starting absoluteTimestamp:(id)timestamp bundleID:(id)d parentBundleID:(id)iD isUsageTrusted:(id)trusted;
+- (BOOL)isEqual:(id)equal;
 - (NSDate)absoluteTimestamp;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMScreenTimeAppUsage
@@ -19,18 +19,18 @@
 {
   v3 = objc_opt_new();
   [(BMScreenTimeAppUsage *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     if (-[BMScreenTimeAppUsage hasStarting](self, "hasStarting") || [v5 hasStarting])
     {
       if (![(BMScreenTimeAppUsage *)self hasStarting])
@@ -43,25 +43,25 @@
         goto LABEL_25;
       }
 
-      v6 = [(BMScreenTimeAppUsage *)self starting];
-      if (v6 != [v5 starting])
+      starting = [(BMScreenTimeAppUsage *)self starting];
+      if (starting != [v5 starting])
       {
         goto LABEL_25;
       }
     }
 
-    v7 = [(BMScreenTimeAppUsage *)self absoluteTimestamp];
-    v8 = [v5 absoluteTimestamp];
-    v9 = v8;
-    if (v7 == v8)
+    absoluteTimestamp = [(BMScreenTimeAppUsage *)self absoluteTimestamp];
+    absoluteTimestamp2 = [v5 absoluteTimestamp];
+    v9 = absoluteTimestamp2;
+    if (absoluteTimestamp == absoluteTimestamp2)
     {
     }
 
     else
     {
-      v10 = [(BMScreenTimeAppUsage *)self absoluteTimestamp];
-      v11 = [v5 absoluteTimestamp];
-      v12 = [v10 isEqual:v11];
+      absoluteTimestamp3 = [(BMScreenTimeAppUsage *)self absoluteTimestamp];
+      absoluteTimestamp4 = [v5 absoluteTimestamp];
+      v12 = [absoluteTimestamp3 isEqual:absoluteTimestamp4];
 
       if (!v12)
       {
@@ -69,18 +69,18 @@
       }
     }
 
-    v14 = [(BMScreenTimeAppUsage *)self bundleID];
-    v15 = [v5 bundleID];
-    v16 = v15;
-    if (v14 == v15)
+    bundleID = [(BMScreenTimeAppUsage *)self bundleID];
+    bundleID2 = [v5 bundleID];
+    v16 = bundleID2;
+    if (bundleID == bundleID2)
     {
     }
 
     else
     {
-      v17 = [(BMScreenTimeAppUsage *)self bundleID];
-      v18 = [v5 bundleID];
-      v19 = [v17 isEqual:v18];
+      bundleID3 = [(BMScreenTimeAppUsage *)self bundleID];
+      bundleID4 = [v5 bundleID];
+      v19 = [bundleID3 isEqual:bundleID4];
 
       if (!v19)
       {
@@ -88,18 +88,18 @@
       }
     }
 
-    v20 = [(BMScreenTimeAppUsage *)self parentBundleID];
-    v21 = [v5 parentBundleID];
-    v22 = v21;
-    if (v20 == v21)
+    parentBundleID = [(BMScreenTimeAppUsage *)self parentBundleID];
+    parentBundleID2 = [v5 parentBundleID];
+    v22 = parentBundleID2;
+    if (parentBundleID == parentBundleID2)
     {
     }
 
     else
     {
-      v23 = [(BMScreenTimeAppUsage *)self parentBundleID];
-      v24 = [v5 parentBundleID];
-      v25 = [v23 isEqual:v24];
+      parentBundleID3 = [(BMScreenTimeAppUsage *)self parentBundleID];
+      parentBundleID4 = [v5 parentBundleID];
+      v25 = [parentBundleID3 isEqual:parentBundleID4];
 
       if (!v25)
       {
@@ -115,8 +115,8 @@
 
     if (-[BMScreenTimeAppUsage hasIsUsageTrusted](self, "hasIsUsageTrusted") && [v5 hasIsUsageTrusted])
     {
-      v26 = [(BMScreenTimeAppUsage *)self isUsageTrusted];
-      v13 = v26 ^ [v5 isUsageTrusted] ^ 1;
+      isUsageTrusted = [(BMScreenTimeAppUsage *)self isUsageTrusted];
+      v13 = isUsageTrusted ^ [v5 isUsageTrusted] ^ 1;
 LABEL_26:
 
       goto LABEL_27;
@@ -163,12 +163,12 @@ LABEL_27:
     v3 = 0;
   }
 
-  v4 = [(BMScreenTimeAppUsage *)self absoluteTimestamp];
-  if (v4)
+  absoluteTimestamp = [(BMScreenTimeAppUsage *)self absoluteTimestamp];
+  if (absoluteTimestamp)
   {
     v5 = MEMORY[0x1E696AD98];
-    v6 = [(BMScreenTimeAppUsage *)self absoluteTimestamp];
-    [v6 timeIntervalSince1970];
+    absoluteTimestamp2 = [(BMScreenTimeAppUsage *)self absoluteTimestamp];
+    [absoluteTimestamp2 timeIntervalSince1970];
     v7 = [v5 numberWithDouble:?];
   }
 
@@ -177,8 +177,8 @@ LABEL_27:
     v7 = 0;
   }
 
-  v8 = [(BMScreenTimeAppUsage *)self bundleID];
-  v9 = [(BMScreenTimeAppUsage *)self parentBundleID];
+  bundleID = [(BMScreenTimeAppUsage *)self bundleID];
+  parentBundleID = [(BMScreenTimeAppUsage *)self parentBundleID];
   if ([(BMScreenTimeAppUsage *)self hasIsUsageTrusted])
   {
     v10 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMScreenTimeAppUsage isUsageTrusted](self, "isUsageTrusted")}];
@@ -190,50 +190,50 @@ LABEL_27:
   }
 
   v21 = @"starting";
-  v11 = v3;
+  null = v3;
   if (!v3)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v19 = v11;
-  v26[0] = v11;
+  v19 = null;
+  v26[0] = null;
   v22 = @"absoluteTimestamp";
-  v12 = v7;
+  null2 = v7;
   if (!v7)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v26[1] = v12;
+  v26[1] = null2;
   v23 = @"bundleID";
-  v13 = v8;
-  if (!v8)
+  null3 = bundleID;
+  if (!bundleID)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v26[2] = v13;
+  v26[2] = null3;
   v24 = @"parentBundleID";
-  v14 = v9;
-  if (!v9)
+  null4 = parentBundleID;
+  if (!parentBundleID)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v26[3] = v14;
+  v26[3] = null4;
   v25 = @"isUsageTrusted";
-  v15 = v10;
+  null5 = v10;
   if (!v10)
   {
-    v15 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v26[4] = v15;
+  v26[4] = null5;
   v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v26 forKeys:&v21 count:{5, v19}];
   if (v10)
   {
-    if (v9)
+    if (parentBundleID)
     {
       goto LABEL_22;
     }
@@ -242,10 +242,10 @@ LABEL_27:
   else
   {
 
-    if (v9)
+    if (parentBundleID)
     {
 LABEL_22:
-      if (v8)
+      if (bundleID)
       {
         goto LABEL_23;
       }
@@ -254,7 +254,7 @@ LABEL_22:
     }
   }
 
-  if (v8)
+  if (bundleID)
   {
 LABEL_23:
     if (v7)
@@ -293,16 +293,16 @@ LABEL_25:
   return v16;
 }
 
-- (BMScreenTimeAppUsage)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMScreenTimeAppUsage)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v52[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"starting"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"starting"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v42 = 0;
 LABEL_4:
-    v8 = [v6 objectForKeyedSubscript:@"absoluteTimestamp"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"absoluteTimestamp"];
     if (v8 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
@@ -331,7 +331,7 @@ LABEL_4:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (!a4)
+          if (!error)
           {
             v18 = 0;
             goto LABEL_43;
@@ -344,8 +344,8 @@ LABEL_4:
           v50 = v41;
           v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v50 forKeys:&v49 count:1];
           v18 = 0;
-          *a4 = [v34 initWithDomain:v35 code:2 userInfo:v20];
-          a4 = 0;
+          *error = [v34 initWithDomain:v35 code:2 userInfo:v20];
+          error = 0;
           goto LABEL_42;
         }
 
@@ -361,22 +361,22 @@ LABEL_4:
     }
 
 LABEL_16:
-    v20 = [v6 objectForKeyedSubscript:@"bundleID"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"bundleID"];
     v39 = v7;
     if (v20 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v41 = 0;
           v18 = 0;
-          a4 = v40;
+          error = v40;
           goto LABEL_42;
         }
 
-        v21 = self;
+        selfCopy3 = self;
         v26 = objc_alloc(MEMORY[0x1E696ABC0]);
         v27 = *MEMORY[0x1E698F240];
         v47 = *MEMORY[0x1E696A578];
@@ -385,21 +385,21 @@ LABEL_16:
         v22 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v48 forKeys:&v47 count:1];
         v41 = 0;
         v18 = 0;
-        *a4 = [v26 initWithDomain:v27 code:2 userInfo:v22];
+        *error = [v26 initWithDomain:v27 code:2 userInfo:v22];
         goto LABEL_50;
       }
 
-      v21 = self;
+      selfCopy3 = self;
       v41 = v20;
     }
 
     else
     {
-      v21 = self;
+      selfCopy3 = self;
       v41 = 0;
     }
 
-    v22 = [v6 objectForKeyedSubscript:@"parentBundleID"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"parentBundleID"];
     if (!v22 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v23 = 0;
@@ -411,18 +411,18 @@ LABEL_16:
     {
       v23 = v22;
 LABEL_22:
-      v24 = [v6 objectForKeyedSubscript:@"isUsageTrusted"];
+      v24 = [dictionaryCopy objectForKeyedSubscript:@"isUsageTrusted"];
       if (!v24 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
         v25 = 0;
 LABEL_25:
-        a4 = v40;
-        v18 = [(BMScreenTimeAppUsage *)v21 initWithStarting:v42 absoluteTimestamp:v40 bundleID:v41 parentBundleID:v23 isUsageTrusted:v25];
-        v21 = v18;
+        error = v40;
+        v18 = [(BMScreenTimeAppUsage *)selfCopy3 initWithStarting:v42 absoluteTimestamp:v40 bundleID:v41 parentBundleID:v23 isUsageTrusted:v25];
+        selfCopy3 = v18;
 LABEL_40:
 
 LABEL_41:
-        self = v21;
+        self = selfCopy3;
         v7 = v39;
 LABEL_42:
 
@@ -436,7 +436,7 @@ LABEL_42:
         goto LABEL_25;
       }
 
-      if (a4)
+      if (error)
       {
         v38 = objc_alloc(MEMORY[0x1E696ABC0]);
         v36 = *MEMORY[0x1E698F240];
@@ -444,17 +444,17 @@ LABEL_42:
         v30 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"isUsageTrusted"];
         v44 = v30;
         v31 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v44 forKeys:&v43 count:1];
-        *a4 = [v38 initWithDomain:v36 code:2 userInfo:v31];
+        *error = [v38 initWithDomain:v36 code:2 userInfo:v31];
       }
 
       v25 = 0;
       v18 = 0;
 LABEL_39:
-      a4 = v40;
+      error = v40;
       goto LABEL_40;
     }
 
-    if (a4)
+    if (error)
     {
       v37 = objc_alloc(MEMORY[0x1E696ABC0]);
       v28 = *MEMORY[0x1E698F240];
@@ -465,14 +465,14 @@ LABEL_39:
       v29 = [v37 initWithDomain:v28 code:2 userInfo:v24];
       v23 = 0;
       v18 = 0;
-      *a4 = v29;
+      *error = v29;
       goto LABEL_39;
     }
 
     v23 = 0;
     v18 = 0;
 LABEL_50:
-    a4 = v40;
+    error = v40;
     goto LABEL_41;
   }
 
@@ -483,7 +483,7 @@ LABEL_50:
     goto LABEL_4;
   }
 
-  if (!a4)
+  if (!error)
   {
     v42 = 0;
     v18 = 0;
@@ -498,8 +498,8 @@ LABEL_50:
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v52 forKeys:&v51 count:1];
   v42 = 0;
   v18 = 0;
-  *a4 = [v15 initWithDomain:v16 code:2 userInfo:v8];
-  a4 = v17;
+  *error = [v15 initWithDomain:v16 code:2 userInfo:v8];
+  error = v17;
 LABEL_43:
 
 LABEL_44:
@@ -507,9 +507,9 @@ LABEL_44:
   return v18;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v7 = a3;
+  toCopy = to;
   if (self->_hasStarting)
   {
     starting = self->_starting;
@@ -539,9 +539,9 @@ LABEL_44:
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v39.receiver = self;
   v39.super_class = BMScreenTimeAppUsage;
   v5 = [(BMEventBase *)&v39 init];
@@ -550,12 +550,12 @@ LABEL_44:
     goto LABEL_60;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -566,18 +566,18 @@ LABEL_44:
       while (1)
       {
         LOBYTE(v40) = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v40 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v40 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (LOBYTE(v40) & 0x7F) << v7;
@@ -595,9 +595,9 @@ LABEL_44:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -614,18 +614,18 @@ LABEL_16:
           while (1)
           {
             LOBYTE(v40) = 0;
-            v31 = [v4 position] + 1;
-            if (v31 >= [v4 position] && (v32 = objc_msgSend(v4, "position") + 1, v32 <= objc_msgSend(v4, "length")))
+            v31 = [fromCopy position] + 1;
+            if (v31 >= [fromCopy position] && (v32 = objc_msgSend(fromCopy, "position") + 1, v32 <= objc_msgSend(fromCopy, "length")))
             {
-              v33 = [v4 data];
-              [v33 getBytes:&v40 range:{objc_msgSend(v4, "position"), 1}];
+              data2 = [fromCopy data];
+              [data2 getBytes:&v40 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v30 |= (LOBYTE(v40) & 0x7F) << v28;
@@ -643,7 +643,7 @@ LABEL_16:
             }
           }
 
-          v22 = (v30 != 0) & ~[v4 hasError];
+          v22 = (v30 != 0) & ~[fromCopy hasError];
 LABEL_51:
           v34 = 32;
 LABEL_54:
@@ -664,18 +664,18 @@ LABEL_48:
 
         v5->_hasRaw_absoluteTimestamp = 1;
         v40 = 0.0;
-        v23 = [v4 position] + 8;
-        if (v23 >= [v4 position] && (v24 = objc_msgSend(v4, "position") + 8, v24 <= objc_msgSend(v4, "length")))
+        v23 = [fromCopy position] + 8;
+        if (v23 >= [fromCopy position] && (v24 = objc_msgSend(fromCopy, "position") + 8, v24 <= objc_msgSend(fromCopy, "length")))
         {
-          v35 = [v4 data];
-          [v35 getBytes:&v40 range:{objc_msgSend(v4, "position"), 8}];
+          data3 = [fromCopy data];
+          [data3 getBytes:&v40 range:{objc_msgSend(fromCopy, "position"), 8}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 8}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 8}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v5->_raw_absoluteTimestamp = v40;
@@ -701,18 +701,18 @@ LABEL_48:
             while (1)
             {
               LOBYTE(v40) = 0;
-              v19 = [v4 position] + 1;
-              if (v19 >= [v4 position] && (v20 = objc_msgSend(v4, "position") + 1, v20 <= objc_msgSend(v4, "length")))
+              v19 = [fromCopy position] + 1;
+              if (v19 >= [fromCopy position] && (v20 = objc_msgSend(fromCopy, "position") + 1, v20 <= objc_msgSend(fromCopy, "length")))
               {
-                v21 = [v4 data];
-                [v21 getBytes:&v40 range:{objc_msgSend(v4, "position"), 1}];
+                data4 = [fromCopy data];
+                [data4 getBytes:&v40 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
               }
 
               else
               {
-                [v4 _setError];
+                [fromCopy _setError];
               }
 
               v18 |= (LOBYTE(v40) & 0x7F) << v16;
@@ -730,7 +730,7 @@ LABEL_48:
               }
             }
 
-            v22 = (v18 != 0) & ~[v4 hasError];
+            v22 = (v18 != 0) & ~[fromCopy hasError];
 LABEL_53:
             v34 = 34;
             goto LABEL_54;
@@ -743,13 +743,13 @@ LABEL_53:
       }
 
 LABEL_57:
-      v36 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v36 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_59:
     v37 = 0;
@@ -768,32 +768,32 @@ LABEL_60:
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
   v4 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMScreenTimeAppUsage starting](self, "starting")}];
-  v5 = [(BMScreenTimeAppUsage *)self absoluteTimestamp];
-  v6 = [(BMScreenTimeAppUsage *)self bundleID];
-  v7 = [(BMScreenTimeAppUsage *)self parentBundleID];
+  absoluteTimestamp = [(BMScreenTimeAppUsage *)self absoluteTimestamp];
+  bundleID = [(BMScreenTimeAppUsage *)self bundleID];
+  parentBundleID = [(BMScreenTimeAppUsage *)self parentBundleID];
   v8 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMScreenTimeAppUsage isUsageTrusted](self, "isUsageTrusted")}];
-  v9 = [v3 initWithFormat:@"BMScreenTimeAppUsage with starting: %@, absoluteTimestamp: %@, bundleID: %@, parentBundleID: %@, isUsageTrusted: %@", v4, v5, v6, v7, v8];
+  v9 = [v3 initWithFormat:@"BMScreenTimeAppUsage with starting: %@, absoluteTimestamp: %@, bundleID: %@, parentBundleID: %@, isUsageTrusted: %@", v4, absoluteTimestamp, bundleID, parentBundleID, v8];
 
   return v9;
 }
 
-- (BMScreenTimeAppUsage)initWithStarting:(id)a3 absoluteTimestamp:(id)a4 bundleID:(id)a5 parentBundleID:(id)a6 isUsageTrusted:(id)a7
+- (BMScreenTimeAppUsage)initWithStarting:(id)starting absoluteTimestamp:(id)timestamp bundleID:(id)d parentBundleID:(id)iD isUsageTrusted:(id)trusted
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  startingCopy = starting;
+  timestampCopy = timestamp;
+  dCopy = d;
+  iDCopy = iD;
+  trustedCopy = trusted;
   v20.receiver = self;
   v20.super_class = BMScreenTimeAppUsage;
   v17 = [(BMEventBase *)&v20 init];
   if (v17)
   {
     v17->_dataVersion = [objc_opt_class() latestDataVersion];
-    if (v12)
+    if (startingCopy)
     {
       v17->_hasStarting = 1;
-      v17->_starting = [v12 BOOLValue];
+      v17->_starting = [startingCopy BOOLValue];
     }
 
     else
@@ -802,10 +802,10 @@ LABEL_60:
       v17->_starting = 0;
     }
 
-    if (v13)
+    if (timestampCopy)
     {
       v17->_hasRaw_absoluteTimestamp = 1;
-      [v13 timeIntervalSince1970];
+      [timestampCopy timeIntervalSince1970];
     }
 
     else
@@ -815,12 +815,12 @@ LABEL_60:
     }
 
     v17->_raw_absoluteTimestamp = v18;
-    objc_storeStrong(&v17->_bundleID, a5);
-    objc_storeStrong(&v17->_parentBundleID, a6);
-    if (v16)
+    objc_storeStrong(&v17->_bundleID, d);
+    objc_storeStrong(&v17->_parentBundleID, iD);
+    if (trustedCopy)
     {
       v17->_hasIsUsageTrusted = 1;
-      v17->_isUsageTrusted = [v16 BOOLValue];
+      v17->_isUsageTrusted = [trustedCopy BOOLValue];
     }
 
     else
@@ -872,9 +872,9 @@ LABEL_60:
   return v7;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -882,8 +882,8 @@ LABEL_60:
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMScreenTimeAppUsage alloc] initByReadFrom:v7];
     v4 = v8;

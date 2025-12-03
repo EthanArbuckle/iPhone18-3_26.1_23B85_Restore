@@ -1,19 +1,19 @@
 @interface WFPhoneNumber
-+ (WFPhoneNumber)phoneNumberWithPhoneNumberString:(id)a3 contactName:(id)a4 label:(id)a5;
-+ (WFPhoneNumber)phoneNumberWithTextCheckingResult:(id)a3;
-+ (id)objectWithWFSerializedRepresentation:(id)a3;
-+ (id)phoneNumbersInString:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
++ (WFPhoneNumber)phoneNumberWithPhoneNumberString:(id)string contactName:(id)name label:(id)label;
++ (WFPhoneNumber)phoneNumberWithTextCheckingResult:(id)result;
++ (id)objectWithWFSerializedRepresentation:(id)representation;
++ (id)phoneNumbersInString:(id)string error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (NSString)formattedPhoneNumber;
 - (NSString)localizedLabel;
 - (NSString)normalizedPhoneNumber;
 - (NSString)wfName;
-- (WFPhoneNumber)initWithCoder:(id)a3;
-- (WFPhoneNumber)initWithPhoneNumberString:(id)a3 contactName:(id)a4 label:(id)a5;
+- (WFPhoneNumber)initWithCoder:(id)coder;
+- (WFPhoneNumber)initWithPhoneNumberString:(id)string contactName:(id)name label:(id)label;
 - (id)wfSerializedRepresentation;
-- (int64_t)compare:(id)a3;
+- (int64_t)compare:(id)compare;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFPhoneNumber
@@ -21,8 +21,8 @@
 - (id)wfSerializedRepresentation
 {
   v3 = objc_opt_new();
-  v4 = [(WFPhoneNumber *)self string];
-  [v3 setObject:v4 forKey:@"link.contentkit.phonenumber"];
+  string = [(WFPhoneNumber *)self string];
+  [v3 setObject:string forKey:@"link.contentkit.phonenumber"];
 
   [v3 setValue:self->_contactName forKey:@"link.contentkit.phonenumber.contactname"];
   [v3 setValue:self->_label forKey:@"link.contentkit.phonelabel"];
@@ -32,21 +32,21 @@
 
 - (unint64_t)hash
 {
-  v3 = [(WFPhoneNumber *)self string];
-  v4 = [v3 hash];
-  v5 = [(WFPhoneNumber *)self label];
-  v6 = [v5 hash];
-  v7 = [(WFPhoneNumber *)self contactName];
+  string = [(WFPhoneNumber *)self string];
+  v4 = [string hash];
+  label = [(WFPhoneNumber *)self label];
+  v6 = [label hash];
+  contactName = [(WFPhoneNumber *)self contactName];
   v8 = v4 ^ v6;
-  v9 = [v7 hash] ^ 0x9811FA8CLL;
+  v9 = [contactName hash] ^ 0x9811FA8CLL;
 
   return v8 ^ v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
-  if (v6 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v11 = 1;
   }
@@ -56,9 +56,9 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [(WFPhoneNumber *)v6 string];
-      v8 = [(WFPhoneNumber *)self string];
-      if (![v7 isEqualToString:v8])
+      string = [(WFPhoneNumber *)equalCopy string];
+      string2 = [(WFPhoneNumber *)self string];
+      if (![string isEqualToString:string2])
       {
         v11 = 0;
 LABEL_21:
@@ -66,12 +66,12 @@ LABEL_21:
         goto LABEL_22;
       }
 
-      v9 = [(WFPhoneNumber *)v6 label];
-      if (v9 || ([(WFPhoneNumber *)self label], (v18 = objc_claimAutoreleasedReturnValue()) != 0))
+      label = [(WFPhoneNumber *)equalCopy label];
+      if (label || ([(WFPhoneNumber *)self label], (v18 = objc_claimAutoreleasedReturnValue()) != 0))
       {
-        v3 = [(WFPhoneNumber *)v6 label];
-        v4 = [(WFPhoneNumber *)self label];
-        if (([v3 isEqualToString:v4] & 1) == 0)
+        label2 = [(WFPhoneNumber *)equalCopy label];
+        label3 = [(WFPhoneNumber *)self label];
+        if (([label2 isEqualToString:label3] & 1) == 0)
         {
 
           v11 = 0;
@@ -87,15 +87,15 @@ LABEL_21:
         v10 = 0;
       }
 
-      v12 = [(WFPhoneNumber *)v6 contactName];
-      if (v12 || ([(WFPhoneNumber *)self contactName], (v17 = objc_claimAutoreleasedReturnValue()) != 0))
+      contactName = [(WFPhoneNumber *)equalCopy contactName];
+      if (contactName || ([(WFPhoneNumber *)self contactName], (v17 = objc_claimAutoreleasedReturnValue()) != 0))
       {
         v19 = v10;
-        v13 = [(WFPhoneNumber *)v6 contactName];
-        v14 = [(WFPhoneNumber *)self contactName];
-        v11 = [v13 isEqualToString:v14];
+        contactName2 = [(WFPhoneNumber *)equalCopy contactName];
+        contactName3 = [(WFPhoneNumber *)self contactName];
+        v11 = [contactName2 isEqualToString:contactName3];
 
-        if (v12)
+        if (contactName)
         {
 
           if (v19)
@@ -104,7 +104,7 @@ LABEL_17:
           }
 
 LABEL_18:
-          if (!v9)
+          if (!label)
           {
           }
 
@@ -137,29 +137,29 @@ LABEL_22:
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  [v6 encodeObject:self->_string forKey:@"string"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_string forKey:@"string"];
   label = self->_label;
   if (label)
   {
-    [v6 encodeObject:label forKey:@"phoneLabel"];
+    [coderCopy encodeObject:label forKey:@"phoneLabel"];
   }
 
   contactName = self->_contactName;
   if (contactName)
   {
-    [v6 encodeObject:contactName forKey:@"contactName"];
+    [coderCopy encodeObject:contactName forKey:@"contactName"];
   }
 }
 
-- (WFPhoneNumber)initWithCoder:(id)a3
+- (WFPhoneNumber)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"string"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"contactName"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"phoneLabel"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"string"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"contactName"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"phoneLabel"];
 
   v8 = [(WFPhoneNumber *)self initWithPhoneNumberString:v5 contactName:v6 label:v7];
   return v8;
@@ -167,10 +167,10 @@ LABEL_22:
 
 - (NSString)localizedLabel
 {
-  v2 = [(WFPhoneNumber *)self label];
-  if (v2)
+  label = [(WFPhoneNumber *)self label];
+  if (label)
   {
-    v3 = [WFContactLabeledValue localizedStringForLabel:v2];
+    v3 = [WFContactLabeledValue localizedStringForLabel:label];
   }
 
   else
@@ -183,28 +183,28 @@ LABEL_22:
 
 - (NSString)wfName
 {
-  v3 = [(WFPhoneNumber *)self contactName];
-  v4 = v3;
-  if (v3)
+  contactName = [(WFPhoneNumber *)self contactName];
+  v4 = contactName;
+  if (contactName)
   {
-    v5 = v3;
+    v5 = contactName;
   }
 
   else
   {
-    v6 = [(WFPhoneNumber *)self formattedPhoneNumber];
-    v7 = v6;
-    if (v6)
+    formattedPhoneNumber = [(WFPhoneNumber *)self formattedPhoneNumber];
+    v7 = formattedPhoneNumber;
+    if (formattedPhoneNumber)
     {
-      v8 = v6;
+      string = formattedPhoneNumber;
     }
 
     else
     {
-      v8 = [(WFPhoneNumber *)self string];
+      string = [(WFPhoneNumber *)self string];
     }
 
-    v5 = v8;
+    v5 = string;
   }
 
   return v5;
@@ -213,100 +213,100 @@ LABEL_22:
 - (NSString)normalizedPhoneNumber
 {
   CNPhoneNumberClass = getCNPhoneNumberClass();
-  v4 = [(WFPhoneNumber *)self string];
-  v5 = [CNPhoneNumberClass phoneNumberWithStringValue:v4];
-  v6 = [v5 unformattedInternationalStringValue];
+  string = [(WFPhoneNumber *)self string];
+  v5 = [CNPhoneNumberClass phoneNumberWithStringValue:string];
+  unformattedInternationalStringValue = [v5 unformattedInternationalStringValue];
 
-  return v6;
+  return unformattedInternationalStringValue;
 }
 
 - (NSString)formattedPhoneNumber
 {
   CNPhoneNumberClass = getCNPhoneNumberClass();
-  v4 = [(WFPhoneNumber *)self string];
-  v5 = [CNPhoneNumberClass phoneNumberWithStringValue:v4];
-  v6 = [v5 formattedStringValue];
+  string = [(WFPhoneNumber *)self string];
+  v5 = [CNPhoneNumberClass phoneNumberWithStringValue:string];
+  formattedStringValue = [v5 formattedStringValue];
 
-  return v6;
+  return formattedStringValue;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  v5 = [(WFPhoneNumber *)self normalizedPhoneNumber];
-  v6 = [v4 normalizedPhoneNumber];
+  compareCopy = compare;
+  normalizedPhoneNumber = [(WFPhoneNumber *)self normalizedPhoneNumber];
+  normalizedPhoneNumber2 = [compareCopy normalizedPhoneNumber];
 
-  v7 = [v5 compare:v6];
+  v7 = [normalizedPhoneNumber compare:normalizedPhoneNumber2];
   return v7;
 }
 
-- (WFPhoneNumber)initWithPhoneNumberString:(id)a3 contactName:(id)a4 label:(id)a5
+- (WFPhoneNumber)initWithPhoneNumberString:(id)string contactName:(id)name label:(id)label
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 length] && (self = -[WFPhoneNumber init](self, "init")) != 0)
+  stringCopy = string;
+  nameCopy = name;
+  labelCopy = label;
+  if ([stringCopy length] && (self = -[WFPhoneNumber init](self, "init")) != 0)
   {
-    v11 = [v8 copy];
+    v11 = [stringCopy copy];
     string = self->_string;
     self->_string = v11;
 
-    v13 = [v9 copy];
+    v13 = [nameCopy copy];
     contactName = self->_contactName;
     self->_contactName = v13;
 
-    v15 = [v10 copy];
+    v15 = [labelCopy copy];
     label = self->_label;
     self->_label = v15;
 
     self = self;
-    v17 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v17 = 0;
+    selfCopy = 0;
   }
 
-  return v17;
+  return selfCopy;
 }
 
-+ (id)objectWithWFSerializedRepresentation:(id)a3
++ (id)objectWithWFSerializedRepresentation:(id)representation
 {
-  v4 = a3;
-  v5 = [v4 wfObjectOfClass:objc_opt_class() forKey:@"link.contentkit.phonenumber"];
-  v6 = [v4 wfObjectOfClass:objc_opt_class() forKey:@"link.contentkit.phonenumber.contactname"];
-  v7 = [v4 wfObjectOfClass:objc_opt_class() forKey:@"link.contentkit.phonelabel"];
+  representationCopy = representation;
+  v5 = [representationCopy wfObjectOfClass:objc_opt_class() forKey:@"link.contentkit.phonenumber"];
+  v6 = [representationCopy wfObjectOfClass:objc_opt_class() forKey:@"link.contentkit.phonenumber.contactname"];
+  v7 = [representationCopy wfObjectOfClass:objc_opt_class() forKey:@"link.contentkit.phonelabel"];
 
-  v8 = [[a1 alloc] initWithPhoneNumberString:v5 contactName:v6 label:v7];
+  v8 = [[self alloc] initWithPhoneNumberString:v5 contactName:v6 label:v7];
 
   return v8;
 }
 
-+ (WFPhoneNumber)phoneNumberWithPhoneNumberString:(id)a3 contactName:(id)a4 label:(id)a5
++ (WFPhoneNumber)phoneNumberWithPhoneNumberString:(id)string contactName:(id)name label:(id)label
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[a1 alloc] initWithPhoneNumberString:v10 contactName:v9 label:v8];
+  labelCopy = label;
+  nameCopy = name;
+  stringCopy = string;
+  v11 = [[self alloc] initWithPhoneNumberString:stringCopy contactName:nameCopy label:labelCopy];
 
   return v11;
 }
 
-+ (WFPhoneNumber)phoneNumberWithTextCheckingResult:(id)a3
++ (WFPhoneNumber)phoneNumberWithTextCheckingResult:(id)result
 {
-  v4 = [a3 phoneNumber];
-  v5 = [a1 phoneNumberWithPhoneNumberString:v4];
+  phoneNumber = [result phoneNumber];
+  v5 = [self phoneNumberWithPhoneNumberString:phoneNumber];
 
   return v5;
 }
 
-+ (id)phoneNumbersInString:(id)a3 error:(id *)a4
++ (id)phoneNumbersInString:(id)string error:(id *)error
 {
-  v4 = [WFDataDetector resultsForString:a3 ofTypes:2048 error:a4];
-  v5 = [v4 phoneNumbers];
+  v4 = [WFDataDetector resultsForString:string ofTypes:2048 error:error];
+  phoneNumbers = [v4 phoneNumbers];
 
-  return v5;
+  return phoneNumbers;
 }
 
 @end

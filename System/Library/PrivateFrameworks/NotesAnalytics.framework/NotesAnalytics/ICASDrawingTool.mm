@@ -1,33 +1,33 @@
 @interface ICASDrawingTool
-- (ICASDrawingTool)initWithDrawingTool:(int64_t)a3;
-- (id)toJsonValueAndReturnError:(id *)a3;
+- (ICASDrawingTool)initWithDrawingTool:(int64_t)tool;
+- (id)toJsonValueAndReturnError:(id *)error;
 @end
 
 @implementation ICASDrawingTool
 
-- (ICASDrawingTool)initWithDrawingTool:(int64_t)a3
+- (ICASDrawingTool)initWithDrawingTool:(int64_t)tool
 {
   v5.receiver = self;
   v5.super_class = ICASDrawingTool;
   result = [(ICASDrawingTool *)&v5 init];
   if (result)
   {
-    result->_drawingTool = a3;
+    result->_drawingTool = tool;
   }
 
   return result;
 }
 
-- (id)toJsonValueAndReturnError:(id *)a3
+- (id)toJsonValueAndReturnError:(id *)error
 {
-  v3 = [(ICASDrawingTool *)self drawingTool];
+  drawingTool = [(ICASDrawingTool *)self drawingTool];
   v4 = @"unknown";
-  if (v3 == 1)
+  if (drawingTool == 1)
   {
     v4 = @"pencil";
   }
 
-  if (v3 == 2)
+  if (drawingTool == 2)
   {
     return @"finger";
   }

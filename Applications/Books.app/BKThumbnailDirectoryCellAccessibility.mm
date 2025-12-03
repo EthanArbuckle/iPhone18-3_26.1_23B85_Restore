@@ -9,33 +9,33 @@
 {
   v15.receiver = self;
   v15.super_class = BKThumbnailDirectoryCellAccessibility;
-  v3 = [(BKThumbnailDirectoryCellAccessibility *)&v15 accessibilityLabel];
+  accessibilityLabel = [(BKThumbnailDirectoryCellAccessibility *)&v15 accessibilityLabel];
   v4 = [(BKThumbnailDirectoryCellAccessibility *)self imaxValueForKey:@"pageView"];
   v5 = [v4 imaxValueForKey:@"pageNumber"];
-  v6 = [v5 intValue];
+  intValue = [v5 intValue];
 
-  if (v6 >= 1)
+  if (intValue >= 1)
   {
     v7 = +[NSBundle mainBundle];
     v8 = [v7 localizedStringForKey:@"Page %d" value:&stru_100A30A68 table:0];
 
-    v9 = [NSString stringWithFormat:v8, v6];
+    v9 = [NSString stringWithFormat:v8, intValue];
 
-    v3 = v9;
+    accessibilityLabel = v9;
   }
 
   v10 = [(BKThumbnailDirectoryCellAccessibility *)self imaxValueForKey:@"hasRibbon"];
-  v11 = [v10 BOOLValue];
+  bOOLValue = [v10 BOOLValue];
 
-  if (v11)
+  if (bOOLValue)
   {
     v14 = sub_1000765EC(@"has.bookmark");
     v12 = __IMAccessibilityStringForVariables();
 
-    v3 = v12;
+    accessibilityLabel = v12;
   }
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (CGRect)accessibilityFrame

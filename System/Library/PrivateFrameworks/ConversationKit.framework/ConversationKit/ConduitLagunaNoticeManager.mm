@@ -1,51 +1,51 @@
 @interface ConduitLagunaNoticeManager
-- (void)conversationManager:(id)a3 remoteMembersChangedForConversation:(id)a4;
-- (void)conversationManager:(id)a3 stateChangedForConversation:(id)a4 fromOldConversation:(id)a5;
-- (void)neighborhoodActivityConduit:(id)a3 splitSessionEnded:(id)a4;
-- (void)neighborhoodActivityConduit:(id)a3 splitSessionStarted:(id)a4;
-- (void)neighborhoodActivityConduit:(id)a3 suggestionUpdated:(id)a4;
+- (void)conversationManager:(id)manager remoteMembersChangedForConversation:(id)conversation;
+- (void)conversationManager:(id)manager stateChangedForConversation:(id)conversation fromOldConversation:(id)oldConversation;
+- (void)neighborhoodActivityConduit:(id)conduit splitSessionEnded:(id)ended;
+- (void)neighborhoodActivityConduit:(id)conduit splitSessionStarted:(id)started;
+- (void)neighborhoodActivityConduit:(id)conduit suggestionUpdated:(id)updated;
 @end
 
 @implementation ConduitLagunaNoticeManager
 
-- (void)neighborhoodActivityConduit:(id)a3 splitSessionStarted:(id)a4
+- (void)neighborhoodActivityConduit:(id)conduit splitSessionStarted:(id)started
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  conduitCopy = conduit;
+  startedCopy = started;
+  selfCopy = self;
   ConduitLagunaNoticeManager.neighborhoodActivityConduit(_:splitSessionStarted:)();
 }
 
-- (void)neighborhoodActivityConduit:(id)a3 splitSessionEnded:(id)a4
+- (void)neighborhoodActivityConduit:(id)conduit splitSessionEnded:(id)ended
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  conduitCopy = conduit;
+  endedCopy = ended;
+  selfCopy = self;
   ConduitLagunaNoticeManager.neighborhoodActivityConduit(_:splitSessionEnded:)();
 }
 
-- (void)neighborhoodActivityConduit:(id)a3 suggestionUpdated:(id)a4
+- (void)neighborhoodActivityConduit:(id)conduit suggestionUpdated:(id)updated
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  conduitCopy = conduit;
+  updatedCopy = updated;
+  selfCopy = self;
   ConduitLagunaNoticeManager.neighborhoodActivityConduit(_:suggestionUpdated:)();
 }
 
-- (void)conversationManager:(id)a3 stateChangedForConversation:(id)a4 fromOldConversation:(id)a5
+- (void)conversationManager:(id)manager stateChangedForConversation:(id)conversation fromOldConversation:(id)oldConversation
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
+  managerCopy = manager;
+  conversationCopy = conversation;
+  oldConversationCopy = oldConversation;
+  selfCopy = self;
   ConduitLagunaNoticeManager.conversationManager(_:stateChangedFor:fromOldConversation:)();
 }
 
-- (void)conversationManager:(id)a3 remoteMembersChangedForConversation:(id)a4
+- (void)conversationManager:(id)manager remoteMembersChangedForConversation:(id)conversation
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  managerCopy = manager;
+  conversationCopy = conversation;
+  selfCopy = self;
   ConduitLagunaNoticeManager.conversationManager(_:remoteMembersChangedFor:)();
 }
 

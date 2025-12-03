@@ -1,15 +1,15 @@
 @interface EDColorReference
-+ (EDColorReference)colorReferenceWithColor:(id)a3 resources:(id)a4;
-+ (EDColorReference)colorReferenceWithColorIndex:(unint64_t)a3 resources:(id)a4;
-+ (EDColorReference)colorReferenceWithResources:(id)a3;
-+ (EDColorReference)colorReferenceWithSystemColorID:(int)a3 resources:(id)a4;
-+ (EDColorReference)colorReferenceWithThemeIndex:(unint64_t)a3 tint:(double)a4 resources:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToColorReference:(id)a3;
-- (EDColorReference)initWithColor:(id)a3 resources:(id)a4;
-- (EDColorReference)initWithResources:(id)a3;
++ (EDColorReference)colorReferenceWithColor:(id)color resources:(id)resources;
++ (EDColorReference)colorReferenceWithColorIndex:(unint64_t)index resources:(id)resources;
++ (EDColorReference)colorReferenceWithResources:(id)resources;
++ (EDColorReference)colorReferenceWithSystemColorID:(int)d resources:(id)resources;
++ (EDColorReference)colorReferenceWithThemeIndex:(unint64_t)index tint:(double)tint resources:(id)resources;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToColorReference:(id)reference;
+- (EDColorReference)initWithColor:(id)color resources:(id)resources;
+- (EDColorReference)initWithResources:(id)resources;
 - (id)color;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -29,51 +29,51 @@
     v6 = WeakRetained;
     if (mThemeIndex == -1)
     {
-      v11 = [WeakRetained colors];
-      v2 = [v11 objectAtIndex:self->mColorIndex];
+      colors = [WeakRetained colors];
+      v2 = [colors objectAtIndex:self->mColorIndex];
     }
 
     else
     {
-      v7 = [WeakRetained themes];
-      v8 = [v7 objectAtIndex:self->mThemeIndex];
+      themes = [WeakRetained themes];
+      v8 = [themes objectAtIndex:self->mThemeIndex];
 
       mTint = self->mTint;
       if (mTint >= 0.0)
       {
         if (mTint <= 0.0)
         {
-          v10 = v8;
+          mTint = v8;
         }
 
         else
         {
-          v10 = [v8 colorWithTintValue:1.0 - mTint];
+          mTint = [v8 colorWithTintValue:1.0 - mTint];
         }
       }
 
       else
       {
-        v10 = [v8 colorWithShadeValue:mTint + 1.0];
+        mTint = [v8 colorWithShadeValue:mTint + 1.0];
       }
 
-      v2 = v10;
+      v2 = mTint;
     }
   }
 
   return v2;
 }
 
-- (EDColorReference)initWithResources:(id)a3
+- (EDColorReference)initWithResources:(id)resources
 {
-  v4 = a3;
+  resourcesCopy = resources;
   v8.receiver = self;
   v8.super_class = EDColorReference;
   v5 = [(EDColorReference *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->mResources, v4);
+    objc_storeWeak(&v5->mResources, resourcesCopy);
     v6->mSystemColorID = 0;
     v6->mColorIndex = -1;
     v6->mThemeIndex = -1;
@@ -83,38 +83,38 @@
   return v6;
 }
 
-- (EDColorReference)initWithColor:(id)a3 resources:(id)a4
+- (EDColorReference)initWithColor:(id)color resources:(id)resources
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(EDColorReference *)self initWithResources:v7];
+  colorCopy = color;
+  resourcesCopy = resources;
+  v8 = [(EDColorReference *)self initWithResources:resourcesCopy];
   if (v8)
   {
-    v9 = [v7 colors];
-    v8->mColorIndex = [v9 addOrEquivalentColorExcludingDefaults:v6];
+    colors = [resourcesCopy colors];
+    v8->mColorIndex = [colors addOrEquivalentColorExcludingDefaults:colorCopy];
   }
 
   return v8;
 }
 
-+ (EDColorReference)colorReferenceWithResources:(id)a3
++ (EDColorReference)colorReferenceWithResources:(id)resources
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithResources:v3];
+  resourcesCopy = resources;
+  v4 = [objc_alloc(objc_opt_class()) initWithResources:resourcesCopy];
 
   return v4;
 }
 
-+ (EDColorReference)colorReferenceWithColor:(id)a3 resources:(id)a4
++ (EDColorReference)colorReferenceWithColor:(id)color resources:(id)resources
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [objc_alloc(objc_opt_class()) initWithColor:v5 resources:v6];
+  colorCopy = color;
+  resourcesCopy = resources;
+  v7 = [objc_alloc(objc_opt_class()) initWithColor:colorCopy resources:resourcesCopy];
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   WeakRetained = objc_loadWeakRetained(&self->mResources);
@@ -132,26 +132,26 @@
   return v6;
 }
 
-- (BOOL)isEqualToColorReference:(id)a3
+- (BOOL)isEqualToColorReference:(id)reference
 {
-  v4 = a3;
-  v5 = *(v4 + 24) == *&self->mColorIndex && *(v4 + 4) == self->mSystemColorID;
+  referenceCopy = reference;
+  v5 = *(referenceCopy + 24) == *&self->mColorIndex && *(referenceCopy + 4) == self->mSystemColorID;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(EDColorReference *)self isEqualToColorReference:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(EDColorReference *)self isEqualToColorReference:v5];
   }
 
   return v6;
@@ -166,36 +166,36 @@
   return v2;
 }
 
-+ (EDColorReference)colorReferenceWithSystemColorID:(int)a3 resources:(id)a4
++ (EDColorReference)colorReferenceWithSystemColorID:(int)d resources:(id)resources
 {
-  v5 = [a1 colorReferenceWithResources:a4];
-  v5[4] = a3;
+  v5 = [self colorReferenceWithResources:resources];
+  v5[4] = d;
 
   return v5;
 }
 
-+ (EDColorReference)colorReferenceWithColorIndex:(unint64_t)a3 resources:(id)a4
++ (EDColorReference)colorReferenceWithColorIndex:(unint64_t)index resources:(id)resources
 {
-  v6 = a4;
-  if ([EDColorsCollection isSystemColorId:a3])
+  resourcesCopy = resources;
+  if ([EDColorsCollection isSystemColorId:index])
   {
-    v7 = [EDColorReference colorReferenceWithSystemColorID:[EDColorsCollection systemColorIdFromIndex:a3] resources:v6];
+    v7 = [EDColorReference colorReferenceWithSystemColorID:[EDColorsCollection systemColorIdFromIndex:index] resources:resourcesCopy];
   }
 
   else
   {
-    v7 = [a1 colorReferenceWithResources:v6];
-    v7[3] = a3;
+    v7 = [self colorReferenceWithResources:resourcesCopy];
+    v7[3] = index;
   }
 
   return v7;
 }
 
-+ (EDColorReference)colorReferenceWithThemeIndex:(unint64_t)a3 tint:(double)a4 resources:(id)a5
++ (EDColorReference)colorReferenceWithThemeIndex:(unint64_t)index tint:(double)tint resources:(id)resources
 {
-  v7 = [a1 colorReferenceWithResources:a5];
-  *(v7 + 32) = a3;
-  *(v7 + 40) = a4;
+  v7 = [self colorReferenceWithResources:resources];
+  *(v7 + 32) = index;
+  *(v7 + 40) = tint;
 
   return v7;
 }

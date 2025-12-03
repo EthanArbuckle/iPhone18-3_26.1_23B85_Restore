@@ -1,42 +1,42 @@
 @interface MSVPersistentTimer
 - (BOOL)isValid;
-- (MSVPersistentTimer)initWithInterval:(double)a3 name:(id)a4 queue:(id)a5 block:(id)a6;
-- (void)_handleTimerElapsed:(id)a3;
+- (MSVPersistentTimer)initWithInterval:(double)interval name:(id)name queue:(id)queue block:(id)block;
+- (void)_handleTimerElapsed:(id)elapsed;
 - (void)dealloc;
-- (void)invalidateWithReason:(id)a3;
+- (void)invalidateWithReason:(id)reason;
 @end
 
 @implementation MSVPersistentTimer
 
 - (BOOL)isValid
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_timer != 0;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_timer != 0;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)invalidateWithReason:(id)a3
+- (void)invalidateWithReason:(id)reason
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (v5->_timer)
+  reasonCopy = reason;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_timer)
   {
     v6 = os_log_create("com.apple.amp.MediaServices", "SystemUtilities");
     v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
-    if (v4)
+    if (reasonCopy)
     {
       if (v7)
       {
-        name = v5->_name;
+        name = selfCopy->_name;
         v15 = 138412546;
         v16 = name;
         v17 = 2112;
-        v18 = v4;
+        v18 = reasonCopy;
         v9 = "[MSVPersistentTimer] Timer <%@> invalidated because <%@>";
         v10 = v6;
         v11 = 22;
@@ -47,7 +47,7 @@ LABEL_7:
 
     else if (v7)
     {
-      v12 = v5->_name;
+      v12 = selfCopy->_name;
       v15 = 138412290;
       v16 = v12;
       v9 = "[MSVPersistentTimer] Timer <%@> invalidated";
@@ -56,31 +56,31 @@ LABEL_7:
       goto LABEL_7;
     }
 
-    [(PCPersistentTimer *)v5->_timer invalidate];
-    timer = v5->_timer;
-    v5->_timer = 0;
+    [(PCPersistentTimer *)selfCopy->_timer invalidate];
+    timer = selfCopy->_timer;
+    selfCopy->_timer = 0;
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleTimerElapsed:(id)a3
+- (void)_handleTimerElapsed:(id)elapsed
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (v5->_timer)
+  elapsedCopy = elapsed;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_timer)
   {
     v6 = os_log_create("com.apple.amp.MediaServices", "SystemUtilities");
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      name = v5->_name;
-      v8 = [MEMORY[0x1E695DF00] date];
-      [v8 timeIntervalSinceDate:v5->_startDate];
-      interval = v5->_interval;
+      name = selfCopy->_name;
+      date = [MEMORY[0x1E695DF00] date];
+      [date timeIntervalSinceDate:selfCopy->_startDate];
+      interval = selfCopy->_interval;
       v14 = 138412802;
       v15 = name;
       v16 = 2048;
@@ -90,11 +90,11 @@ LABEL_7:
       _os_log_impl(&dword_1AC81F000, v6, OS_LOG_TYPE_DEFAULT, "[MSVPersistentTimer] Timer <%@> elapased after <%lf> seconds (<%lf> expected)", &v14, 0x20u);
     }
 
-    [(MSVPersistentTimer *)v5 invalidateWithReason:@"TimerElapsed"];
-    timer = v5->_timer;
-    v5->_timer = 0;
+    [(MSVPersistentTimer *)selfCopy invalidateWithReason:@"TimerElapsed"];
+    timer = selfCopy->_timer;
+    selfCopy->_timer = 0;
 
-    v12 = [v5->_block copy];
+    v12 = [selfCopy->_block copy];
   }
 
   else
@@ -102,7 +102,7 @@ LABEL_7:
     v12 = 0;
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   if (v12)
   {
@@ -120,53 +120,53 @@ LABEL_7:
   [(MSVPersistentTimer *)&v3 dealloc];
 }
 
-- (MSVPersistentTimer)initWithInterval:(double)a3 name:(id)a4 queue:(id)a5 block:(id)a6
+- (MSVPersistentTimer)initWithInterval:(double)interval name:(id)name queue:(id)queue block:(id)block
 {
   v39 = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  nameCopy = name;
+  queueCopy = queue;
+  blockCopy = block;
   v34.receiver = self;
   v34.super_class = MSVPersistentTimer;
   v13 = [(MSVPersistentTimer *)&v34 init];
   v14 = v13;
   if (v13)
   {
-    v13->_interval = a3;
-    v15 = [v12 copy];
+    v13->_interval = interval;
+    v15 = [blockCopy copy];
     block = v14->_block;
     v14->_block = v15;
 
-    v17 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@-%p", v10, v14];
+    v17 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@-%p", nameCopy, v14];
     name = v14->_name;
     v14->_name = v17;
 
-    v19 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     startDate = v14->_startDate;
-    v14->_startDate = v19;
+    v14->_startDate = date;
 
-    v21 = [MEMORY[0x1E696AAE8] mainBundle];
-    v22 = [v21 bundleIdentifier];
-    v23 = v22;
-    if (v22)
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
+    v23 = bundleIdentifier;
+    if (bundleIdentifier)
     {
-      v24 = v22;
+      processName = bundleIdentifier;
     }
 
     else
     {
-      v25 = [MEMORY[0x1E696AE30] processInfo];
-      v24 = [v25 processName];
+      processInfo = [MEMORY[0x1E696AE30] processInfo];
+      processName = [processInfo processName];
     }
 
-    v26 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.MSVTimer", v24];
-    v27 = [objc_alloc(MEMORY[0x1E69BDC30]) initWithTimeInterval:v26 serviceIdentifier:v14 target:sel__handleTimerElapsed_ selector:0 userInfo:a3];
+    v26 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.MSVTimer", processName];
+    v27 = [objc_alloc(MEMORY[0x1E69BDC30]) initWithTimeInterval:v26 serviceIdentifier:v14 target:sel__handleTimerElapsed_ selector:0 userInfo:interval];
     timer = v14->_timer;
     v14->_timer = v27;
 
-    if (v11)
+    if (queueCopy)
     {
-      v29 = v11;
+      v29 = queueCopy;
     }
 
     else
@@ -182,7 +182,7 @@ LABEL_7:
       *buf = 138412546;
       v36 = v31;
       v37 = 2048;
-      v38 = a3;
+      intervalCopy = interval;
       _os_log_impl(&dword_1AC81F000, v30, OS_LOG_TYPE_DEFAULT, "[MSVPersistentTimer] Setting timer <%@> for <%lf> seconds", buf, 0x16u);
     }
   }

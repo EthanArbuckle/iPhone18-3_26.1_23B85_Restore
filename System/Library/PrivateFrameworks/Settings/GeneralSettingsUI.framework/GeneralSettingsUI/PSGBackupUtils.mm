@@ -1,67 +1,67 @@
 @interface PSGBackupUtils
-+ (BOOL)hasValidDisplayNameOfDomain:(id)a3;
-+ (BOOL)isDomainNameIgnored:(id)a3;
-+ (BOOL)isDomainWhitelisted:(id)a3;
++ (BOOL)hasValidDisplayNameOfDomain:(id)domain;
++ (BOOL)isDomainNameIgnored:(id)ignored;
++ (BOOL)isDomainWhitelisted:(id)whitelisted;
 + (BOOL)isiCloudPhotosEnabled;
-+ (id)alertBodyForBackupDisabledAppsInfo:(id)a3 ofType:(unint64_t)a4;
-+ (id)alertTitleForBackupDisabledAppsInfo:(id)a3;
-+ (id)bundleIdForDomainInfo:(id)a3;
-+ (id)displayNameForDomainInfo:(id)a3;
-+ (void)configureAlertMessageOfType:(unint64_t)a3 AndTitleForBackUpDisabledApps:(id)a4 completion:(id)a5;
-+ (void)fetchBackupDisabledAppsWithBackupManager:(id)a3 completion:(id)a4;
++ (id)alertBodyForBackupDisabledAppsInfo:(id)info ofType:(unint64_t)type;
++ (id)alertTitleForBackupDisabledAppsInfo:(id)info;
++ (id)bundleIdForDomainInfo:(id)info;
++ (id)displayNameForDomainInfo:(id)info;
++ (void)configureAlertMessageOfType:(unint64_t)type AndTitleForBackUpDisabledApps:(id)apps completion:(id)completion;
++ (void)fetchBackupDisabledAppsWithBackupManager:(id)manager completion:(id)completion;
 @end
 
 @implementation PSGBackupUtils
 
-+ (void)configureAlertMessageOfType:(unint64_t)a3 AndTitleForBackUpDisabledApps:(id)a4 completion:(id)a5
++ (void)configureAlertMessageOfType:(unint64_t)type AndTitleForBackUpDisabledApps:(id)apps completion:(id)completion
 {
-  v11 = a4;
-  v8 = a5;
-  if ([v11 backupDisabledAppCount] || objc_msgSend(v11, "includePhoto"))
+  appsCopy = apps;
+  completionCopy = completion;
+  if ([appsCopy backupDisabledAppCount] || objc_msgSend(appsCopy, "includePhoto"))
   {
-    v9 = [a1 alertTitleForBackupDisabledAppsInfo:v11];
-    v10 = [a1 alertBodyForBackupDisabledAppsInfo:v11 ofType:a3];
-    v8[2](v8, 1, v9, v10);
+    v9 = [self alertTitleForBackupDisabledAppsInfo:appsCopy];
+    v10 = [self alertBodyForBackupDisabledAppsInfo:appsCopy ofType:type];
+    completionCopy[2](completionCopy, 1, v9, v10);
   }
 
   else
   {
-    v8[2](v8, 0, 0, 0);
+    completionCopy[2](completionCopy, 0, 0, 0);
   }
 }
 
-+ (id)alertBodyForBackupDisabledAppsInfo:(id)a3 ofType:(unint64_t)a4
++ (id)alertBodyForBackupDisabledAppsInfo:(id)info ofType:(unint64_t)type
 {
-  v5 = a3;
-  v6 = [v5 backupDisabledAppCount];
+  infoCopy = info;
+  backupDisabledAppCount = [infoCopy backupDisabledAppCount];
   v7 = @"_ERASE";
-  if (!a4)
+  if (!type)
   {
     v7 = @"_BACKUP";
   }
 
   v8 = v7;
-  v9 = [v5 backupDisabledAppsForDisplay];
-  v10 = [v5 includePhoto];
+  backupDisabledAppsForDisplay = [infoCopy backupDisabledAppsForDisplay];
+  includePhoto = [infoCopy includePhoto];
 
-  if (v10)
+  if (includePhoto)
   {
-    if (v6 != 2)
+    if (backupDisabledAppCount != 2)
     {
-      v11 = v6 - 1;
-      if (v6 == 1)
+      v11 = backupDisabledAppCount - 1;
+      if (backupDisabledAppCount == 1)
       {
         v14 = MEMORY[0x277CCACA8];
         v12 = [@"PHOTO_AND_ONE_APP_BACK_UP_DISABLED_MESSAGE" stringByAppendingString:v8];
         v15 = PSG_LocalizedStringForBackupAlert(v12);
-        v20 = [v9 firstObject];
-        v16 = v20;
+        firstObject = [backupDisabledAppsForDisplay firstObject];
+        firstObject2 = firstObject;
 LABEL_19:
-        v13 = [v14 localizedStringWithFormat:v15, v20, v23, v24];
+        v13 = [v14 localizedStringWithFormat:v15, firstObject, v23, v24];
         goto LABEL_20;
       }
 
-      if (!v6)
+      if (!backupDisabledAppCount)
       {
         v12 = [@"PHOTO_BACK_UP_DISABLED_ONLY_MESSAGE" stringByAppendingString:v8];
         v13 = PSG_LocalizedStringForBackupAlert(v12);
@@ -73,8 +73,8 @@ LABEL_19:
 LABEL_18:
       v12 = [(__CFString *)v19 stringByAppendingString:v8];
       v15 = PSG_LocalizedStringForBackupAlert(v12);
-      v20 = [v9 objectAtIndexedSubscript:0];
-      v16 = v20;
+      firstObject = [backupDisabledAppsForDisplay objectAtIndexedSubscript:0];
+      firstObject2 = firstObject;
       v23 = v11;
       v24 = v11;
       goto LABEL_19;
@@ -86,19 +86,19 @@ LABEL_18:
   }
 
   v14 = MEMORY[0x277CCACA8];
-  if (v6 == 2)
+  if (backupDisabledAppCount == 2)
   {
     v18 = @"TWO_APPS_BACK_UP_DISABLED_MESSAGE";
 LABEL_15:
     v12 = [(__CFString *)v18 stringByAppendingString:v8];
     v15 = PSG_LocalizedStringForBackupAlert(v12);
-    v16 = [v9 objectAtIndexedSubscript:0];
-    v17 = [v9 objectAtIndexedSubscript:1];
+    firstObject2 = [backupDisabledAppsForDisplay objectAtIndexedSubscript:0];
+    firstObject3 = [backupDisabledAppsForDisplay objectAtIndexedSubscript:1];
     goto LABEL_16;
   }
 
-  v11 = v6 - 1;
-  if (v6 != 1)
+  v11 = backupDisabledAppCount - 1;
+  if (backupDisabledAppCount != 1)
   {
     v19 = @"TWO_MORE_APPS_BACK_UP_DISABLED_MESSAGE";
     goto LABEL_18;
@@ -106,11 +106,11 @@ LABEL_15:
 
   v12 = [@"SINGAL_APP_BACK_UP_DISABLED_MESSAGE" stringByAppendingString:v8];
   v15 = PSG_LocalizedStringForBackupAlert(v12);
-  v16 = [v9 firstObject];
-  v17 = [v9 firstObject];
+  firstObject2 = [backupDisabledAppsForDisplay firstObject];
+  firstObject3 = [backupDisabledAppsForDisplay firstObject];
 LABEL_16:
-  v21 = v17;
-  v13 = [v14 localizedStringWithFormat:v15, v16, v17];
+  v21 = firstObject3;
+  v13 = [v14 localizedStringWithFormat:v15, firstObject2, firstObject3];
 
 LABEL_20:
 LABEL_21:
@@ -118,20 +118,20 @@ LABEL_21:
   return v13;
 }
 
-+ (id)alertTitleForBackupDisabledAppsInfo:(id)a3
++ (id)alertTitleForBackupDisabledAppsInfo:(id)info
 {
-  v3 = a3;
-  if ([v3 includePhoto])
+  infoCopy = info;
+  if ([infoCopy includePhoto])
   {
-    v4 = [v3 backupDisabledAppCount];
-    if (v4 > 2)
+    backupDisabledAppCount = [infoCopy backupDisabledAppCount];
+    if (backupDisabledAppCount > 2)
     {
       v5 = @"PHOTO_AND_OTHER_APPS_BACK_UP_DISABLED_TITLE";
     }
 
     else
     {
-      v5 = off_2783256E8[v4];
+      v5 = off_2783256E8[backupDisabledAppCount];
     }
   }
 
@@ -145,28 +145,28 @@ LABEL_21:
   return v6;
 }
 
-+ (void)fetchBackupDisabledAppsWithBackupManager:(id)a3 completion:(id)a4
++ (void)fetchBackupDisabledAppsWithBackupManager:(id)manager completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  completionCopy = completion;
   v8 = objc_opt_new();
-  if (v6)
+  if (managerCopy)
   {
     v9 = dispatch_get_global_queue(2, 0);
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __70__PSGBackupUtils_fetchBackupDisabledAppsWithBackupManager_completion___block_invoke;
     v10[3] = &unk_2783256C8;
-    v11 = v6;
-    v14 = a1;
+    v11 = managerCopy;
+    selfCopy = self;
     v12 = v8;
-    v13 = v7;
+    v13 = completionCopy;
     dispatch_async(v9, v10);
   }
 
   else
   {
-    (*(v7 + 2))(v7, v8);
+    (*(completionCopy + 2))(completionCopy, v8);
   }
 }
 
@@ -264,19 +264,19 @@ void __70__PSGBackupUtils_fetchBackupDisabledAppsWithBackupManager_completion___
   v18 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)displayNameForDomainInfo:(id)a3
++ (id)displayNameForDomainInfo:(id)info
 {
-  v4 = a3;
-  if ([v4 isCameraRollDomain])
+  infoCopy = info;
+  if ([infoCopy isCameraRollDomain])
   {
     v5 = @"PHOTO_LIBRARY";
 LABEL_7:
-    v10 = PSG_LocalizedStringForBackupInfo(v5);
+    localizedName = PSG_LocalizedStringForBackupInfo(v5);
     goto LABEL_8;
   }
 
-  v6 = [v4 domainName];
-  v7 = [v6 isEqualToString:@"KeyboardDomain"];
+  domainName = [infoCopy domainName];
+  v7 = [domainName isEqualToString:@"KeyboardDomain"];
 
   if (v7)
   {
@@ -284,8 +284,8 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v8 = [v4 domainName];
-  v9 = [v8 isEqualToString:@"HealthDomain"];
+  domainName2 = [infoCopy domainName];
+  v9 = [domainName2 isEqualToString:@"HealthDomain"];
 
   if (v9)
   {
@@ -294,45 +294,45 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  if (([v4 isAppDomain] & 1) != 0 || objc_msgSend(a1, "isDomainWhitelisted:", v4))
+  if (([infoCopy isAppDomain] & 1) != 0 || objc_msgSend(self, "isDomainWhitelisted:", infoCopy))
   {
-    v12 = [v4 bundleID];
-    v13 = [MEMORY[0x277CC1E60] applicationProxyForIdentifier:v12];
+    bundleID = [infoCopy bundleID];
+    v13 = [MEMORY[0x277CC1E60] applicationProxyForIdentifier:bundleID];
     v14 = v13;
     if (v13 && ([v13 appState], v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "isInstalled"), v15, v16))
     {
-      v10 = [v14 localizedName];
+      localizedName = [v14 localizedName];
     }
 
     else
     {
-      v10 = 0;
+      localizedName = 0;
     }
   }
 
   else
   {
-    v10 = 0;
+    localizedName = 0;
   }
 
 LABEL_8:
 
-  return v10;
+  return localizedName;
 }
 
-+ (BOOL)hasValidDisplayNameOfDomain:(id)a3
++ (BOOL)hasValidDisplayNameOfDomain:(id)domain
 {
-  v4 = a3;
-  v5 = [v4 domainName];
-  if ([v5 isEqualToString:@"BooksDomain"])
+  domainCopy = domain;
+  domainName = [domainCopy domainName];
+  if ([domainName isEqualToString:@"BooksDomain"])
   {
     v6 = 0;
   }
 
   else
   {
-    v7 = [v4 domainName];
-    v8 = [v7 isEqualToString:@"AppDomain-com.apple.Health"];
+    domainName2 = [domainCopy domainName];
+    v8 = [domainName2 isEqualToString:@"AppDomain-com.apple.Health"];
 
     if (v8)
     {
@@ -340,29 +340,29 @@ LABEL_8:
       goto LABEL_8;
     }
 
-    if ([v4 isCameraRollDomain])
+    if ([domainCopy isCameraRollDomain])
     {
       v6 = 1;
       goto LABEL_8;
     }
 
-    v5 = [v4 domainName];
-    if ([v5 isEqualToString:@"KeyboardDomain"])
+    domainName = [domainCopy domainName];
+    if ([domainName isEqualToString:@"KeyboardDomain"])
     {
       v6 = 1;
     }
 
     else
     {
-      v10 = [v4 domainName];
-      if ([v10 isEqualToString:@"HealthDomain"] & 1) != 0 || (objc_msgSend(v4, "isAppDomain"))
+      domainName3 = [domainCopy domainName];
+      if ([domainName3 isEqualToString:@"HealthDomain"] & 1) != 0 || (objc_msgSend(domainCopy, "isAppDomain"))
       {
         v6 = 1;
       }
 
       else
       {
-        v6 = [a1 isDomainWhitelisted:v4];
+        v6 = [self isDomainWhitelisted:domainCopy];
       }
     }
   }
@@ -373,69 +373,69 @@ LABEL_8:
 
 + (BOOL)isiCloudPhotosEnabled
 {
-  v2 = [MEMORY[0x277CCAA00] defaultManager];
-  v3 = [v2 fileExistsAtPath:@"/var/mobile/Media/PhotoData/CPL/initialsync_marker"];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v3 = [defaultManager fileExistsAtPath:@"/var/mobile/Media/PhotoData/CPL/initialsync_marker"];
 
   return v3;
 }
 
-+ (id)bundleIdForDomainInfo:(id)a3
++ (id)bundleIdForDomainInfo:(id)info
 {
-  v4 = a3;
-  if ([v4 isCameraRollDomain])
+  infoCopy = info;
+  if ([infoCopy isCameraRollDomain])
   {
-    v5 = @"com.apple.camera";
+    bundleID = @"com.apple.camera";
   }
 
   else
   {
-    v6 = [v4 domainName];
-    v7 = [v6 isEqualToString:@"KeyboardDomain"];
+    domainName = [infoCopy domainName];
+    v7 = [domainName isEqualToString:@"KeyboardDomain"];
 
     if (v7)
     {
-      v5 = @"com.apple.keyboard";
+      bundleID = @"com.apple.keyboard";
     }
 
     else
     {
-      v8 = [v4 domainName];
-      v9 = [v8 isEqualToString:@"HealthDomain"];
+      domainName2 = [infoCopy domainName];
+      v9 = [domainName2 isEqualToString:@"HealthDomain"];
 
       if (v9)
       {
         NSLog(&cfstr_FoundHealthDom.isa);
-        v5 = @"com.apple.Health";
+        bundleID = @"com.apple.Health";
       }
 
-      else if (([v4 isAppDomain] & 1) != 0 || objc_msgSend(a1, "isDomainWhitelisted:", v4))
+      else if (([infoCopy isAppDomain] & 1) != 0 || objc_msgSend(self, "isDomainWhitelisted:", infoCopy))
       {
-        v5 = [v4 bundleID];
+        bundleID = [infoCopy bundleID];
       }
 
       else
       {
-        v5 = 0;
+        bundleID = 0;
       }
     }
   }
 
-  return v5;
+  return bundleID;
 }
 
-+ (BOOL)isDomainWhitelisted:(id)a3
++ (BOOL)isDomainWhitelisted:(id)whitelisted
 {
   v3 = isDomainWhitelisted__onceToken;
-  v4 = a3;
+  whitelistedCopy = whitelisted;
   if (v3 != -1)
   {
     +[PSGBackupUtils isDomainWhitelisted:];
   }
 
   v5 = isDomainWhitelisted__whitelist;
-  v6 = [v4 bundleID];
+  bundleID = [whitelistedCopy bundleID];
 
-  v7 = [v5 containsObject:v6];
+  v7 = [v5 containsObject:bundleID];
   return v7;
 }
 
@@ -455,17 +455,17 @@ void __38__PSGBackupUtils_isDomainWhitelisted___block_invoke()
   v4 = *MEMORY[0x277D85DE8];
 }
 
-+ (BOOL)isDomainNameIgnored:(id)a3
++ (BOOL)isDomainNameIgnored:(id)ignored
 {
-  v3 = [a3 domainName];
-  if ([v3 isEqualToString:@"BooksDomain"])
+  domainName = [ignored domainName];
+  if ([domainName isEqualToString:@"BooksDomain"])
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"AppDomain-com.apple.Health"];
+    v4 = [domainName isEqualToString:@"AppDomain-com.apple.Health"];
   }
 
   return v4;

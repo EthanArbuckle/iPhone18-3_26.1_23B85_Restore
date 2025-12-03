@@ -1,7 +1,7 @@
 @interface ACCNavigationLaneGuidanceLaneInfo
-+ (id)keyForType:(unsigned __int16)a3;
++ (id)keyForType:(unsigned __int16)type;
 - (ACCNavigationLaneGuidanceLaneInfo)init;
-- (BOOL)_checkDataClassForType:(unsigned __int16)a3 data:(id)a4;
+- (BOOL)_checkDataClassForType:(unsigned __int16)type data:(id)data;
 @end
 
 @implementation ACCNavigationLaneGuidanceLaneInfo
@@ -21,11 +21,11 @@
   return v2;
 }
 
-- (BOOL)_checkDataClassForType:(unsigned __int16)a3 data:(id)a4
+- (BOOL)_checkDataClassForType:(unsigned __int16)type data:(id)data
 {
-  v4 = a3;
-  v5 = a4;
-  if (v4 >= 4)
+  typeCopy = type;
+  dataCopy = data;
+  if (typeCopy >= 4)
   {
     if (gLogObjects && gNumLogObjects >= 1)
     {
@@ -46,7 +46,7 @@
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v10[0] = 67109120;
-      v10[1] = v4;
+      v10[1] = typeCopy;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "[#Navigation] ERROR: Unknown LaneGuidanceInfoUpdate:LaneInfo InfoType %d", v10, 8u);
     }
 
@@ -62,18 +62,18 @@
   return isKindOfClass & 1;
 }
 
-+ (id)keyForType:(unsigned __int16)a3
++ (id)keyForType:(unsigned __int16)type
 {
-  v3 = a3;
-  if (a3 > 1)
+  typeCopy = type;
+  if (type > 1)
   {
-    if (a3 == 2)
+    if (type == 2)
     {
       v4 = &ACCNav_LGIUpdate_LaneInfo_Angle;
       goto LABEL_18;
     }
 
-    if (a3 == 3)
+    if (type == 3)
     {
       v4 = &ACCNav_LGIUpdate_LaneInfo_AngleHighlight;
       goto LABEL_18;
@@ -82,13 +82,13 @@
 
   else
   {
-    if (!a3)
+    if (!type)
     {
       v4 = &ACCNav_LGIUpdate_LaneInfo_Index;
       goto LABEL_18;
     }
 
-    if (a3 == 1)
+    if (type == 1)
     {
       v4 = &ACCNav_LGIUpdate_LaneInfo_Status;
 LABEL_18:
@@ -126,7 +126,7 @@ LABEL_18:
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v10[0] = 67109120;
-    v10[1] = v3;
+    v10[1] = typeCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "[#Navigation] ERROR: Unknown LaneGuidanceInfoUpdate:LaneInfo InfoType %d", v10, 8u);
   }
 

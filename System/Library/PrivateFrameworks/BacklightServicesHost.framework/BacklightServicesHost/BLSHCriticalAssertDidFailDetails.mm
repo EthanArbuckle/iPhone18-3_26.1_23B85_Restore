@@ -1,21 +1,21 @@
 @interface BLSHCriticalAssertDidFailDetails
-- (BLSHCriticalAssertDidFailDetails)initWithCriticalAssertDidFailDictionary:(id)a3;
+- (BLSHCriticalAssertDidFailDetails)initWithCriticalAssertDidFailDictionary:(id)dictionary;
 @end
 
 @implementation BLSHCriticalAssertDidFailDetails
 
-- (BLSHCriticalAssertDidFailDetails)initWithCriticalAssertDidFailDictionary:(id)a3
+- (BLSHCriticalAssertDidFailDetails)initWithCriticalAssertDidFailDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v26.receiver = self;
   v26.super_class = BLSHCriticalAssertDidFailDetails;
   v5 = [(BLSHCriticalAssertDidFailDetails *)&v26 init];
   if (v5)
   {
-    v6 = [v4 bs_safeObjectForKey:@"BLSHCriticalAssertDidFailDate" ofType:objc_opt_class()];
-    v7 = [v4 bs_safeStringForKey:@"BLSHCriticalAssertDidFailBuildVersion"];
-    v8 = [v4 bs_safeStringForKey:@"BLSHCriticalAssertDidFailDescription"];
-    v9 = [v4 bs_safeStringForKey:@"BLSHCriticalAssertDidFailProcess"];
+    v6 = [dictionaryCopy bs_safeObjectForKey:@"BLSHCriticalAssertDidFailDate" ofType:objc_opt_class()];
+    v7 = [dictionaryCopy bs_safeStringForKey:@"BLSHCriticalAssertDidFailBuildVersion"];
+    v8 = [dictionaryCopy bs_safeStringForKey:@"BLSHCriticalAssertDidFailDescription"];
+    v9 = [dictionaryCopy bs_safeStringForKey:@"BLSHCriticalAssertDidFailProcess"];
     v10 = MGCopyAnswer();
     v11 = [v10 copy];
 
@@ -48,10 +48,10 @@
     v22 = bls_backlight_log();
     v5->_debugLogsEnabled = os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG);
 
-    v23 = [v4 bs_safeNumberForKey:@"BLSHCriticalAssertDidFailUserInitiated"];
+    v23 = [dictionaryCopy bs_safeNumberForKey:@"BLSHCriticalAssertDidFailUserInitiated"];
     v5->_radarIsUserInitiated = [v23 BOOLValue];
 
-    v24 = [v4 bs_safeNumberForKey:@"BLSHCriticalAssertDidFailSource"];
+    v24 = [dictionaryCopy bs_safeNumberForKey:@"BLSHCriticalAssertDidFailSource"];
     v5->_failureSource = [v24 unsignedIntegerValue];
   }
 

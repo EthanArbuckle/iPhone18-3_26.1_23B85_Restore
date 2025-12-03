@@ -1,8 +1,8 @@
 @interface HMCharacteristicMetadata
-- (BOOL)isEqual:(id)a3;
-- (BOOL)mergeFromNewObject:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)mergeFromNewObject:(id)object;
 - (HMCharacteristicMetadata)init;
-- (HMCharacteristicMetadata)initWithCoder:(id)a3;
+- (HMCharacteristicMetadata)initWithCoder:(id)coder;
 - (NSArray)validValues;
 - (NSNumber)maxLength;
 - (NSNumber)maximumValue;
@@ -13,22 +13,22 @@
 - (NSString)manufacturerDescription;
 - (NSString)units;
 - (unint64_t)hash;
-- (void)setFormat:(id)a3;
-- (void)setManufacturerDescription:(id)a3;
-- (void)setMaxLength:(id)a3;
-- (void)setMaximumValue:(id)a3;
-- (void)setMinimumValue:(id)a3;
-- (void)setStepValue:(id)a3;
-- (void)setUnits:(id)a3;
-- (void)setValidValues:(id)a3;
+- (void)setFormat:(id)format;
+- (void)setManufacturerDescription:(id)description;
+- (void)setMaxLength:(id)length;
+- (void)setMaximumValue:(id)value;
+- (void)setMinimumValue:(id)value;
+- (void)setStepValue:(id)value;
+- (void)setUnits:(id)units;
+- (void)setValidValues:(id)values;
 @end
 
 @implementation HMCharacteristicMetadata
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v24 = 1;
   }
@@ -38,7 +38,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -54,7 +54,7 @@
     }
 
     minimumValue = self->_minimumValue;
-    v9 = [(HMCharacteristicMetadata *)v6 minimumValue];
+    minimumValue = [(HMCharacteristicMetadata *)v6 minimumValue];
     LODWORD(minimumValue) = HMFEqualObjects();
 
     if (!minimumValue)
@@ -63,7 +63,7 @@
     }
 
     maximumValue = self->_maximumValue;
-    v11 = [(HMCharacteristicMetadata *)v7 maximumValue];
+    maximumValue = [(HMCharacteristicMetadata *)v7 maximumValue];
     LODWORD(maximumValue) = HMFEqualObjects();
 
     if (!maximumValue)
@@ -72,7 +72,7 @@
     }
 
     stepValue = self->_stepValue;
-    v13 = [(HMCharacteristicMetadata *)v7 stepValue];
+    stepValue = [(HMCharacteristicMetadata *)v7 stepValue];
     LODWORD(stepValue) = HMFEqualObjects();
 
     if (!stepValue)
@@ -81,7 +81,7 @@
     }
 
     maxLength = self->_maxLength;
-    v15 = [(HMCharacteristicMetadata *)v7 maxLength];
+    maxLength = [(HMCharacteristicMetadata *)v7 maxLength];
     LODWORD(maxLength) = HMFEqualObjects();
 
     if (!maxLength)
@@ -90,7 +90,7 @@
     }
 
     format = self->_format;
-    v17 = [(HMCharacteristicMetadata *)v7 format];
+    format = [(HMCharacteristicMetadata *)v7 format];
     LODWORD(format) = HMFEqualObjects();
 
     if (!format)
@@ -99,7 +99,7 @@
     }
 
     units = self->_units;
-    v19 = [(HMCharacteristicMetadata *)v7 units];
+    units = [(HMCharacteristicMetadata *)v7 units];
     LODWORD(units) = HMFEqualObjects();
 
     if (!units)
@@ -108,13 +108,13 @@
     }
 
     manufacturerDescription = self->_manufacturerDescription;
-    v21 = [(HMCharacteristicMetadata *)v7 manufacturerDescription];
+    manufacturerDescription = [(HMCharacteristicMetadata *)v7 manufacturerDescription];
     LODWORD(manufacturerDescription) = HMFEqualObjects();
 
     if (manufacturerDescription)
     {
       validValues = self->_validValues;
-      v23 = [(HMCharacteristicMetadata *)v7 validValues];
+      validValues = [(HMCharacteristicMetadata *)v7 validValues];
       v24 = HMFEqualObjects();
     }
 
@@ -130,52 +130,52 @@ LABEL_14:
 
 - (unint64_t)hash
 {
-  v3 = [(HMCharacteristicMetadata *)self minimumValue];
-  v4 = [v3 hash];
+  minimumValue = [(HMCharacteristicMetadata *)self minimumValue];
+  v4 = [minimumValue hash];
 
-  v5 = [(HMCharacteristicMetadata *)self maximumValue];
-  v6 = [v5 hash] ^ v4;
+  maximumValue = [(HMCharacteristicMetadata *)self maximumValue];
+  v6 = [maximumValue hash] ^ v4;
 
-  v7 = [(HMCharacteristicMetadata *)self stepValue];
-  v8 = [v7 hash];
+  stepValue = [(HMCharacteristicMetadata *)self stepValue];
+  v8 = [stepValue hash];
 
-  v9 = [(HMCharacteristicMetadata *)self maxLength];
-  v10 = v6 ^ v8 ^ [v9 hash];
+  maxLength = [(HMCharacteristicMetadata *)self maxLength];
+  v10 = v6 ^ v8 ^ [maxLength hash];
 
-  v11 = [(HMCharacteristicMetadata *)self format];
-  v12 = [v11 hash];
+  format = [(HMCharacteristicMetadata *)self format];
+  v12 = [format hash];
 
-  v13 = [(HMCharacteristicMetadata *)self units];
-  v14 = v12 ^ [v13 hash];
+  units = [(HMCharacteristicMetadata *)self units];
+  v14 = v12 ^ [units hash];
 
-  v15 = [(HMCharacteristicMetadata *)self manufacturerDescription];
-  v16 = v10 ^ v14 ^ [v15 hash];
+  manufacturerDescription = [(HMCharacteristicMetadata *)self manufacturerDescription];
+  v16 = v10 ^ v14 ^ [manufacturerDescription hash];
 
-  v17 = [(HMCharacteristicMetadata *)self validValues];
-  v18 = [v17 hash];
+  validValues = [(HMCharacteristicMetadata *)self validValues];
+  v18 = [validValues hash];
 
   return v16 ^ v18;
 }
 
-- (BOOL)mergeFromNewObject:(id)a3
+- (BOOL)mergeFromNewObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(HMCharacteristicMetadata *)self minimumValue];
-    v7 = [v5 minimumValue];
+    v5 = objectCopy;
+    minimumValue = [(HMCharacteristicMetadata *)self minimumValue];
+    minimumValue2 = [v5 minimumValue];
     v8 = HMFEqualObjects();
 
     if ((v8 & 1) == 0)
     {
-      v9 = [v5 minimumValue];
-      [(HMCharacteristicMetadata *)self setMinimumValue:v9];
+      minimumValue3 = [v5 minimumValue];
+      [(HMCharacteristicMetadata *)self setMinimumValue:minimumValue3];
     }
 
-    v10 = [(HMCharacteristicMetadata *)self maximumValue];
-    v11 = [v5 maximumValue];
+    maximumValue = [(HMCharacteristicMetadata *)self maximumValue];
+    maximumValue2 = [v5 maximumValue];
     v12 = HMFEqualObjects();
 
     if (v12)
@@ -185,80 +185,80 @@ LABEL_14:
 
     else
     {
-      v14 = [v5 maximumValue];
-      [(HMCharacteristicMetadata *)self setMaximumValue:v14];
+      maximumValue3 = [v5 maximumValue];
+      [(HMCharacteristicMetadata *)self setMaximumValue:maximumValue3];
 
       v13 = 1;
     }
 
-    v15 = [(HMCharacteristicMetadata *)self stepValue];
-    v16 = [v5 stepValue];
+    stepValue = [(HMCharacteristicMetadata *)self stepValue];
+    stepValue2 = [v5 stepValue];
     v17 = HMFEqualObjects();
 
     if ((v17 & 1) == 0)
     {
-      v18 = [v5 stepValue];
-      [(HMCharacteristicMetadata *)self setStepValue:v18];
+      stepValue3 = [v5 stepValue];
+      [(HMCharacteristicMetadata *)self setStepValue:stepValue3];
 
       v13 = 1;
     }
 
-    v19 = [(HMCharacteristicMetadata *)self maxLength];
-    v20 = [v5 maxLength];
+    maxLength = [(HMCharacteristicMetadata *)self maxLength];
+    maxLength2 = [v5 maxLength];
     v21 = HMFEqualObjects();
 
     if ((v21 & 1) == 0)
     {
-      v22 = [v5 maxLength];
-      [(HMCharacteristicMetadata *)self setMaxLength:v22];
+      maxLength3 = [v5 maxLength];
+      [(HMCharacteristicMetadata *)self setMaxLength:maxLength3];
 
       v13 = 1;
     }
 
-    v23 = [(HMCharacteristicMetadata *)self format];
-    v24 = [v5 format];
+    format = [(HMCharacteristicMetadata *)self format];
+    format2 = [v5 format];
     v25 = HMFEqualObjects();
 
     if ((v25 & 1) == 0)
     {
-      v26 = [v5 format];
-      [(HMCharacteristicMetadata *)self setFormat:v26];
+      format3 = [v5 format];
+      [(HMCharacteristicMetadata *)self setFormat:format3];
 
       v13 = 1;
     }
 
-    v27 = [(HMCharacteristicMetadata *)self units];
-    v28 = [v5 units];
+    units = [(HMCharacteristicMetadata *)self units];
+    units2 = [v5 units];
     v29 = HMFEqualObjects();
 
     if ((v29 & 1) == 0)
     {
-      v30 = [v5 units];
-      [(HMCharacteristicMetadata *)self setUnits:v30];
+      units3 = [v5 units];
+      [(HMCharacteristicMetadata *)self setUnits:units3];
 
       v13 = 1;
     }
 
-    v31 = [(HMCharacteristicMetadata *)self manufacturerDescription];
-    v32 = [v5 manufacturerDescription];
+    manufacturerDescription = [(HMCharacteristicMetadata *)self manufacturerDescription];
+    manufacturerDescription2 = [v5 manufacturerDescription];
     v33 = HMFEqualObjects();
 
     if ((v33 & 1) == 0)
     {
-      v34 = [v5 manufacturerDescription];
-      [(HMCharacteristicMetadata *)self setManufacturerDescription:v34];
+      manufacturerDescription3 = [v5 manufacturerDescription];
+      [(HMCharacteristicMetadata *)self setManufacturerDescription:manufacturerDescription3];
 
       v13 = 1;
     }
 
-    v35 = [(HMCharacteristicMetadata *)self validValues];
-    v36 = [v5 validValues];
+    validValues = [(HMCharacteristicMetadata *)self validValues];
+    validValues2 = [v5 validValues];
     v37 = HMFEqualObjects();
 
     if ((v37 & 1) == 0)
     {
-      v38 = [v5 validValues];
-      [(HMCharacteristicMetadata *)self setValidValues:v38];
+      validValues3 = [v5 validValues];
+      [(HMCharacteristicMetadata *)self setValidValues:validValues3];
 
       v13 = 1;
     }
@@ -276,12 +276,12 @@ LABEL_14:
 {
   v47 = *MEMORY[0x1E69E9840];
   v3 = [objc_alloc(MEMORY[0x1E696AD60]) initWithString:@"[%@"];
-  v4 = [(HMCharacteristicMetadata *)self format];
+  format = [(HMCharacteristicMetadata *)self format];
 
-  if (v4)
+  if (format)
   {
-    v5 = [(HMCharacteristicMetadata *)self format];
-    [v3 appendFormat:@"%@%@%@", @" ", @"Format: ", v5];
+    format2 = [(HMCharacteristicMetadata *)self format];
+    [v3 appendFormat:@"%@%@%@", @" ", @"Format: ", format2];
 
     v6 = 1;
   }
@@ -291,12 +291,12 @@ LABEL_14:
     v6 = 0;
   }
 
-  v7 = [(HMCharacteristicMetadata *)self units];
+  units = [(HMCharacteristicMetadata *)self units];
 
-  if (v7)
+  if (units)
   {
     ++v6;
-    if (v4)
+    if (format)
     {
       v8 = @", ";
     }
@@ -306,13 +306,13 @@ LABEL_14:
       v8 = @" ";
     }
 
-    v9 = [(HMCharacteristicMetadata *)self units];
-    [v3 appendFormat:@"%@%@%@", v8, @"Units: ", v9];
+    units2 = [(HMCharacteristicMetadata *)self units];
+    [v3 appendFormat:@"%@%@%@", v8, @"Units: ", units2];
   }
 
-  v10 = [(HMCharacteristicMetadata *)self minimumValue];
+  minimumValue = [(HMCharacteristicMetadata *)self minimumValue];
 
-  if (v10)
+  if (minimumValue)
   {
     v11 = v6 + 1;
     if (v6)
@@ -325,16 +325,16 @@ LABEL_14:
       v12 = @" ";
     }
 
-    v13 = [(HMCharacteristicMetadata *)self minimumValue];
-    [v13 doubleValue];
+    minimumValue2 = [(HMCharacteristicMetadata *)self minimumValue];
+    [minimumValue2 doubleValue];
     [v3 appendFormat:@"%@%@%.2f", v12, @"Min: ", v14];
 
     v6 = v11;
   }
 
-  v15 = [(HMCharacteristicMetadata *)self maximumValue];
+  maximumValue = [(HMCharacteristicMetadata *)self maximumValue];
 
-  if (v15)
+  if (maximumValue)
   {
     v16 = v6 + 1;
     if (v6)
@@ -347,16 +347,16 @@ LABEL_14:
       v17 = @" ";
     }
 
-    v18 = [(HMCharacteristicMetadata *)self maximumValue];
-    [v18 doubleValue];
+    maximumValue2 = [(HMCharacteristicMetadata *)self maximumValue];
+    [maximumValue2 doubleValue];
     [v3 appendFormat:@"%@%@%.2f", v17, @"Max: ", v19];
 
     v6 = v16;
   }
 
-  v20 = [(HMCharacteristicMetadata *)self stepValue];
+  stepValue = [(HMCharacteristicMetadata *)self stepValue];
 
-  if (v20)
+  if (stepValue)
   {
     v21 = v6 + 1;
     if (v6)
@@ -369,16 +369,16 @@ LABEL_14:
       v22 = @" ";
     }
 
-    v23 = [(HMCharacteristicMetadata *)self stepValue];
-    [v23 doubleValue];
+    stepValue2 = [(HMCharacteristicMetadata *)self stepValue];
+    [stepValue2 doubleValue];
     [v3 appendFormat:@"%@%@%.2f", v22, @"Step: ", v24];
 
     v6 = v21;
   }
 
-  v25 = [(HMCharacteristicMetadata *)self maxLength];
+  maxLength = [(HMCharacteristicMetadata *)self maxLength];
 
-  if (v25)
+  if (maxLength)
   {
     v26 = v6 + 1;
     if (v6)
@@ -391,15 +391,15 @@ LABEL_14:
       v27 = @" ";
     }
 
-    v28 = [(HMCharacteristicMetadata *)self maxLength];
-    [v3 appendFormat:@"%@%@%u", v27, @"Max length: ", objc_msgSend(v28, "unsignedIntValue")];
+    maxLength2 = [(HMCharacteristicMetadata *)self maxLength];
+    [v3 appendFormat:@"%@%@%u", v27, @"Max length: ", objc_msgSend(maxLength2, "unsignedIntValue")];
 
     v6 = v26;
   }
 
-  v29 = [(HMCharacteristicMetadata *)self manufacturerDescription];
+  manufacturerDescription = [(HMCharacteristicMetadata *)self manufacturerDescription];
 
-  if (v29)
+  if (manufacturerDescription)
   {
     if (v6)
     {
@@ -411,14 +411,14 @@ LABEL_14:
       v30 = @" ";
     }
 
-    v31 = [(HMCharacteristicMetadata *)self manufacturerDescription];
-    [v3 appendFormat:@"%@%@%@", v30, @"Manufacturer Description: ", v31];
+    manufacturerDescription2 = [(HMCharacteristicMetadata *)self manufacturerDescription];
+    [v3 appendFormat:@"%@%@%@", v30, @"Manufacturer Description: ", manufacturerDescription2];
 
     v6 = 1;
   }
 
-  v32 = [(HMCharacteristicMetadata *)self validValues];
-  v33 = [v32 count];
+  validValues = [(HMCharacteristicMetadata *)self validValues];
+  v33 = [validValues count];
 
   if (v33)
   {
@@ -437,8 +437,8 @@ LABEL_14:
     v45 = 0u;
     v42 = 0u;
     v43 = 0u;
-    v35 = [(HMCharacteristicMetadata *)self validValues];
-    v36 = [v35 countByEnumeratingWithState:&v42 objects:v46 count:16];
+    validValues2 = [(HMCharacteristicMetadata *)self validValues];
+    v36 = [validValues2 countByEnumeratingWithState:&v42 objects:v46 count:16];
     if (v36)
     {
       v37 = v36;
@@ -449,13 +449,13 @@ LABEL_14:
         {
           if (*v43 != v38)
           {
-            objc_enumerationMutation(v35);
+            objc_enumerationMutation(validValues2);
           }
 
           [v3 appendFormat:@"%@, ", *(*(&v42 + 1) + 8 * i)];
         }
 
-        v37 = [v35 countByEnumeratingWithState:&v42 objects:v46 count:16];
+        v37 = [validValues2 countByEnumeratingWithState:&v42 objects:v46 count:16];
       }
 
       while (v37);
@@ -468,41 +468,41 @@ LABEL_14:
   return v3;
 }
 
-- (HMCharacteristicMetadata)initWithCoder:(id)a3
+- (HMCharacteristicMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(HMCharacteristicMetadata *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"metadataMinimumValue"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"metadataMinimumValue"];
     minimumValue = v5->_minimumValue;
     v5->_minimumValue = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"metadataMaximumValue"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"metadataMaximumValue"];
     maximumValue = v5->_maximumValue;
     v5->_maximumValue = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"metadataStepValue"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"metadataStepValue"];
     stepValue = v5->_stepValue;
     v5->_stepValue = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"metadataMaxLength"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"metadataMaxLength"];
     maxLength = v5->_maxLength;
     v5->_maxLength = v12;
 
-    v14 = [v4 hm_decodeAndCacheStringForKey:@"metadataFormat"];
+    v14 = [coderCopy hm_decodeAndCacheStringForKey:@"metadataFormat"];
     format = v5->_format;
     v5->_format = v14;
 
-    v16 = [v4 hm_decodeAndCacheStringForKey:@"metadataUnits"];
+    v16 = [coderCopy hm_decodeAndCacheStringForKey:@"metadataUnits"];
     units = v5->_units;
     v5->_units = v16;
 
-    v18 = [v4 hm_decodeAndCacheStringForKey:@"metadataUserDescription"];
+    v18 = [coderCopy hm_decodeAndCacheStringForKey:@"metadataUserDescription"];
     manufacturerDescription = v5->_manufacturerDescription;
     v5->_manufacturerDescription = v18;
 
-    v20 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"metadataValidValues"];
+    v20 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"metadataValidValues"];
     validValues = v5->_validValues;
     v5->_validValues = v20;
   }
@@ -510,11 +510,11 @@ LABEL_14:
   return v5;
 }
 
-- (void)setValidValues:(id)a3
+- (void)setValidValues:(id)values
 {
-  v6 = a3;
+  valuesCopy = values;
   os_unfair_lock_lock_with_options();
-  v4 = [v6 copy];
+  v4 = [valuesCopy copy];
   validValues = self->_validValues;
   self->_validValues = v4;
 
@@ -530,11 +530,11 @@ LABEL_14:
   return v3;
 }
 
-- (void)setManufacturerDescription:(id)a3
+- (void)setManufacturerDescription:(id)description
 {
-  v6 = a3;
+  descriptionCopy = description;
   os_unfair_lock_lock_with_options();
-  v4 = [MEMORY[0x1E69A2A20] hmf_cachedInstanceForString:v6];
+  v4 = [MEMORY[0x1E69A2A20] hmf_cachedInstanceForString:descriptionCopy];
   manufacturerDescription = self->_manufacturerDescription;
   self->_manufacturerDescription = v4;
 
@@ -550,11 +550,11 @@ LABEL_14:
   return v3;
 }
 
-- (void)setUnits:(id)a3
+- (void)setUnits:(id)units
 {
-  v6 = a3;
+  unitsCopy = units;
   os_unfair_lock_lock_with_options();
-  v4 = [MEMORY[0x1E69A2A20] hmf_cachedInstanceForString:v6];
+  v4 = [MEMORY[0x1E69A2A20] hmf_cachedInstanceForString:unitsCopy];
   units = self->_units;
   self->_units = v4;
 
@@ -570,11 +570,11 @@ LABEL_14:
   return v3;
 }
 
-- (void)setFormat:(id)a3
+- (void)setFormat:(id)format
 {
-  v6 = a3;
+  formatCopy = format;
   os_unfair_lock_lock_with_options();
-  v4 = [MEMORY[0x1E69A2A20] hmf_cachedInstanceForString:v6];
+  v4 = [MEMORY[0x1E69A2A20] hmf_cachedInstanceForString:formatCopy];
   format = self->_format;
   self->_format = v4;
 
@@ -590,12 +590,12 @@ LABEL_14:
   return v3;
 }
 
-- (void)setMaxLength:(id)a3
+- (void)setMaxLength:(id)length
 {
-  v4 = a3;
+  lengthCopy = length;
   os_unfair_lock_lock_with_options();
   maxLength = self->_maxLength;
-  self->_maxLength = v4;
+  self->_maxLength = lengthCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -609,12 +609,12 @@ LABEL_14:
   return v3;
 }
 
-- (void)setStepValue:(id)a3
+- (void)setStepValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   os_unfair_lock_lock_with_options();
   stepValue = self->_stepValue;
-  self->_stepValue = v4;
+  self->_stepValue = valueCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -628,12 +628,12 @@ LABEL_14:
   return v3;
 }
 
-- (void)setMaximumValue:(id)a3
+- (void)setMaximumValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   os_unfair_lock_lock_with_options();
   maximumValue = self->_maximumValue;
-  self->_maximumValue = v4;
+  self->_maximumValue = valueCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -647,12 +647,12 @@ LABEL_14:
   return v3;
 }
 
-- (void)setMinimumValue:(id)a3
+- (void)setMinimumValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   os_unfair_lock_lock_with_options();
   minimumValue = self->_minimumValue;
-  self->_minimumValue = v4;
+  self->_minimumValue = valueCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }

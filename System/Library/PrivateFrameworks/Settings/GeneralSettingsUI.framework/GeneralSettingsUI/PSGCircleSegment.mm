@@ -1,19 +1,19 @@
 @interface PSGCircleSegment
-- (CGRect)titleRectForContentRect:(CGRect)a3;
+- (CGRect)titleRectForContentRect:(CGRect)rect;
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PSGCircleSegment)initWithFrame:(CGRect)a3;
-- (void)setImage:(id)a3 animated:(BOOL)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PSGCircleSegment)initWithFrame:(CGRect)frame;
+- (void)setImage:(id)image animated:(BOOL)animated;
 @end
 
 @implementation PSGCircleSegment
 
-- (PSGCircleSegment)initWithFrame:(CGRect)a3
+- (PSGCircleSegment)initWithFrame:(CGRect)frame
 {
   v18[1] = *MEMORY[0x277D85DE8];
   v16.receiver = self;
   v16.super_class = PSGCircleSegment;
-  v3 = [(PSGCircleSegment *)&v16 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PSGCircleSegment *)&v16 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [MEMORY[0x277D74310] preferredFontDescriptorWithTextStyle:*MEMORY[0x277D76A08]];
@@ -27,41 +27,41 @@
     v8 = [MEMORY[0x277D74300] fontWithDescriptor:v7 size:0.0];
     [(PSGCircleSegment *)v3 setOpaque:1];
     [(PSGCircleSegment *)v3 setAdjustsImageWhenHighlighted:0];
-    v9 = [(PSGCircleSegment *)v3 titleLabel];
-    [v9 setAdjustsFontSizeToFitWidth:1];
+    titleLabel = [(PSGCircleSegment *)v3 titleLabel];
+    [titleLabel setAdjustsFontSizeToFitWidth:1];
 
-    v10 = [(PSGCircleSegment *)v3 titleLabel];
-    [v10 setTextAlignment:1];
+    titleLabel2 = [(PSGCircleSegment *)v3 titleLabel];
+    [titleLabel2 setTextAlignment:1];
 
-    v11 = [(PSGCircleSegment *)v3 titleLabel];
-    [v11 setFont:v8];
+    titleLabel3 = [(PSGCircleSegment *)v3 titleLabel];
+    [titleLabel3 setFont:v8];
 
     [(PSGCircleSegment *)v3 sizeToFit];
-    v12 = [MEMORY[0x277D75348] whiteColor];
-    [(PSGCircleSegment *)v3 setTitleColor:v12 forState:4];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [(PSGCircleSegment *)v3 setTitleColor:whiteColor forState:4];
 
-    v13 = [MEMORY[0x277D75348] systemBlueColor];
-    [(PSGCircleSegment *)v3 setTitleColor:v13 forState:0];
+    systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
+    [(PSGCircleSegment *)v3 setTitleColor:systemBlueColor forState:0];
   }
 
   v14 = *MEMORY[0x277D85DE8];
   return v3;
 }
 
-- (CGRect)titleRectForContentRect:(CGRect)a3
+- (CGRect)titleRectForContentRect:(CGRect)rect
 {
-  v20 = CGRectInset(a3, 4.0, 4.0);
+  v20 = CGRectInset(rect, 4.0, 4.0);
   x = v20.origin.x;
   y = v20.origin.y;
   width = v20.size.width;
   height = v20.size.height;
-  v8 = [(PSGCircleSegment *)self imageView];
-  v9 = [v8 image];
-  [v9 size];
+  imageView = [(PSGCircleSegment *)self imageView];
+  image = [imageView image];
+  [image size];
   v11 = v10;
-  v12 = [(PSGCircleSegment *)self imageView];
-  v13 = [v12 image];
-  [v13 size];
+  imageView2 = [(PSGCircleSegment *)self imageView];
+  image2 = [imageView2 image];
+  [image2 size];
   v15 = height - (v11 - v14);
 
   v16 = x;
@@ -75,34 +75,34 @@
   return result;
 }
 
-- (void)setImage:(id)a3 animated:(BOOL)a4
+- (void)setImage:(id)image animated:(BOOL)animated
 {
-  v4 = a4;
-  v10 = a3;
-  if (v4)
+  animatedCopy = animated;
+  imageCopy = image;
+  if (animatedCopy)
   {
     v6 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"contents"];
     [v6 setDuration:0.15];
-    v7 = [(PSGCircleSegment *)self currentImage];
-    [v6 setFromValue:{objc_msgSend(v7, "CGImage")}];
+    currentImage = [(PSGCircleSegment *)self currentImage];
+    [v6 setFromValue:{objc_msgSend(currentImage, "CGImage")}];
 
-    [v6 setToValue:{objc_msgSend(v10, "CGImage")}];
+    [v6 setToValue:{objc_msgSend(imageCopy, "CGImage")}];
     [v6 setRemovedOnCompletion:1];
     [v6 setFillMode:*MEMORY[0x277CDA238]];
-    v8 = [(PSGCircleSegment *)self imageView];
-    v9 = [v8 layer];
-    [v9 addAnimation:v6 forKey:@"animateContents"];
+    imageView = [(PSGCircleSegment *)self imageView];
+    layer = [imageView layer];
+    [layer addAnimation:v6 forKey:@"animateContents"];
   }
 
-  [(PSGCircleSegment *)self setImage:v10 forState:0];
+  [(PSGCircleSegment *)self setImage:imageCopy forState:0];
   [(PSGCircleSegment *)self sizeToFit];
 }
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = [(PSGCircleSegment *)self imageView];
-  v3 = [v2 image];
-  [v3 size];
+  imageView = [(PSGCircleSegment *)self imageView];
+  image = [imageView image];
+  [image size];
   v5 = v4;
   v7 = v6;
 
@@ -113,11 +113,11 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v3 = [(PSGCircleSegment *)self imageView:a3.width];
-  v4 = [v3 image];
-  [v4 size];
+  v3 = [(PSGCircleSegment *)self imageView:fits.width];
+  image = [v3 image];
+  [image size];
   v6 = v5;
   v8 = v7;
 

@@ -1,19 +1,19 @@
 @interface _NSPlaceholderCharacterSet
 - (BOOL)_isDeallocating;
 - (BOOL)_tryRetain;
-- (BOOL)hasMemberInPlane:(unsigned __int8)a3;
+- (BOOL)hasMemberInPlane:(unsigned __int8)plane;
 - (BOOL)isEmpty;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isSupersetOfSet:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isSupersetOfSet:(id)set;
 - (_NSPlaceholderCharacterSet)autorelease;
-- (_NSPlaceholderCharacterSet)initWithSet:(id)a3 options:(unint64_t)a4;
+- (_NSPlaceholderCharacterSet)initWithSet:(id)set options:(unint64_t)options;
 - (_NSPlaceholderCharacterSet)retain;
 - (__CFCharacterSet)_expandedCFCharacterSet;
 - (id)bitmapRepresentation;
 - (id)invertedSet;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (id)replacementObjectForCoder:(id)a3;
-- (id)replacementObjectForKeyedArchiver:(id)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (id)replacementObjectForCoder:(id)coder;
+- (id)replacementObjectForKeyedArchiver:(id)archiver;
 - (unint64_t)retainCount;
 - (void)_expandInverted;
 - (void)dealloc;
@@ -22,16 +22,16 @@
 
 @implementation _NSPlaceholderCharacterSet
 
-- (_NSPlaceholderCharacterSet)initWithSet:(id)a3 options:(unint64_t)a4
+- (_NSPlaceholderCharacterSet)initWithSet:(id)set options:(unint64_t)options
 {
-  v4 = a4;
+  optionsCopy = options;
   v12 = *MEMORY[0x1E69E9840];
   v11.receiver = self;
   v11.super_class = _NSPlaceholderCharacterSet;
   v6 = [(NSCharacterSet *)&v11 init];
-  v7 = *(v6 + 6) & 0xFFFFFFFC | v4 & 3;
+  v7 = *(v6 + 6) & 0xFFFFFFFC | optionsCopy & 3;
   *(v6 + 6) = v7;
-  if (v4)
+  if (optionsCopy)
   {
     v8 = 0;
   }
@@ -52,9 +52,9 @@
   }
 
   *(v6 + 6) = v7 & 0xFFFFFFFB | v8;
-  if ((v7 & 1) != 0 && [a3 isMutable])
+  if ((v7 & 1) != 0 && [set isMutable])
   {
-    v9 = [a3 mutableCopyWithZone:0];
+    v9 = [set mutableCopyWithZone:0];
     [(_NSPlaceholderCharacterSet *)v9 invert];
     [(NSCharacterSet *)v9 makeImmutable];
 
@@ -63,7 +63,7 @@
 
   else
   {
-    *(v6 + 1) = a3;
+    *(v6 + 1) = set;
   }
 
   return v6;
@@ -96,7 +96,7 @@
   }
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   invertedSet = self->_invertedSet;
   if (invertedSet)
@@ -118,15 +118,15 @@
   }
 }
 
-- (BOOL)isSupersetOfSet:(id)a3
+- (BOOL)isSupersetOfSet:(id)set
 {
   invertedSet = self->_invertedSet;
   if (invertedSet)
   {
-    return CFCharacterSetIsSupersetOfSet(invertedSet, a3) != 0;
+    return CFCharacterSetIsSupersetOfSet(invertedSet, set) != 0;
   }
 
-  IsSupersetOfSet = CFCharacterSetIsSupersetOfSet(self->_original, a3);
+  IsSupersetOfSet = CFCharacterSetIsSupersetOfSet(self->_original, set);
   if (IsSupersetOfSet)
   {
     result = (*&self->_flags & 1) == 0;
@@ -141,15 +141,15 @@
   {
     [(_NSPlaceholderCharacterSet *)self _expandInverted];
     invertedSet = self->_invertedSet;
-    return CFCharacterSetIsSupersetOfSet(invertedSet, a3) != 0;
+    return CFCharacterSetIsSupersetOfSet(invertedSet, set) != 0;
   }
 
   return result;
 }
 
-- (BOOL)hasMemberInPlane:(unsigned __int8)a3
+- (BOOL)hasMemberInPlane:(unsigned __int8)plane
 {
-  v3 = a3;
+  planeCopy = plane;
   v5 = &OBJC_IVAR____NSPlaceholderCharacterSet__original;
   if (*&self->_flags)
   {
@@ -157,12 +157,12 @@
     v5 = &OBJC_IVAR____NSPlaceholderCharacterSet__invertedSet;
   }
 
-  return CFCharacterSetHasMemberInPlane(*(&self->super.super.isa + *v5), v3) != 0;
+  return CFCharacterSetHasMemberInPlane(*(&self->super.super.isa + *v5), planeCopy) != 0;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
@@ -171,7 +171,7 @@
   flags = self->_flags;
   if ((*&flags & 4) != 0)
   {
-    if (original == [a3 _expandedCFCharacterSet])
+    if (original == [equal _expandedCFCharacterSet])
     {
       return 1;
     }
@@ -185,7 +185,7 @@
     original = self->_invertedSet;
   }
 
-  return CFEqual(original, a3) != 0;
+  return CFEqual(original, equal) != 0;
 }
 
 - (id)bitmapRepresentation
@@ -314,7 +314,7 @@
   }
 }
 
-- (id)replacementObjectForKeyedArchiver:(id)a3
+- (id)replacementObjectForKeyedArchiver:(id)archiver
 {
   v4 = &OBJC_IVAR____NSPlaceholderCharacterSet__original;
   if (*&self->_flags)
@@ -326,7 +326,7 @@
   return *(&self->super.super.isa + *v4);
 }
 
-- (id)replacementObjectForCoder:(id)a3
+- (id)replacementObjectForCoder:(id)coder
 {
   v4 = &OBJC_IVAR____NSPlaceholderCharacterSet__original;
   if (*&self->_flags)

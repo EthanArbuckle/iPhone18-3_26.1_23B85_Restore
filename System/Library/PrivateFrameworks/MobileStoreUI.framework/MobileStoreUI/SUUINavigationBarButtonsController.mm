@@ -1,32 +1,32 @@
 @interface SUUINavigationBarButtonsController
-- (SUUINavigationBarButtonsController)initWithNavigationBarViewElement:(id)a3;
-- (UIEdgeInsets)_imageInsetsForImageViewElement:(id)a3;
-- (id)_imageForImageViewElement:(id)a3;
-- (id)addButtonItemWithButtonViewElement:(id)a3;
-- (id)barButtonItemForElementIdentifier:(id)a3;
-- (void)_buttonAction:(id)a3;
-- (void)_itemOfferAction:(id)a3;
-- (void)_reloadButtonItem:(id)a3 withButtonViewElement:(id)a4;
-- (void)_updateButtonItem:(id)a3 withButtonViewElement:(id)a4;
-- (void)_updateItemOfferButton:(id)a3 withButtonViewElement:(id)a4;
-- (void)artworkRequest:(id)a3 didLoadImage:(id)a4;
+- (SUUINavigationBarButtonsController)initWithNavigationBarViewElement:(id)element;
+- (UIEdgeInsets)_imageInsetsForImageViewElement:(id)element;
+- (id)_imageForImageViewElement:(id)element;
+- (id)addButtonItemWithButtonViewElement:(id)element;
+- (id)barButtonItemForElementIdentifier:(id)identifier;
+- (void)_buttonAction:(id)action;
+- (void)_itemOfferAction:(id)action;
+- (void)_reloadButtonItem:(id)item withButtonViewElement:(id)element;
+- (void)_updateButtonItem:(id)item withButtonViewElement:(id)element;
+- (void)_updateItemOfferButton:(id)button withButtonViewElement:(id)element;
+- (void)artworkRequest:(id)request didLoadImage:(id)image;
 - (void)dealloc;
 - (void)disconnectAllButtons;
-- (void)reloadAfterDocumentUpdateWithNavigationItem:(id)a3;
+- (void)reloadAfterDocumentUpdateWithNavigationItem:(id)item;
 @end
 
 @implementation SUUINavigationBarButtonsController
 
-- (SUUINavigationBarButtonsController)initWithNavigationBarViewElement:(id)a3
+- (SUUINavigationBarButtonsController)initWithNavigationBarViewElement:(id)element
 {
-  v5 = a3;
+  elementCopy = element;
   v9.receiver = self;
   v9.super_class = SUUINavigationBarButtonsController;
   v6 = [(SUUINavigationBarButtonsController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_navigationBarElement, a3);
+    objc_storeStrong(&v6->_navigationBarElement, element);
   }
 
   return v7;
@@ -56,10 +56,10 @@
           objc_enumerationMutation(v3);
         }
 
-        v8 = [*(*(&v10 + 1) + 8 * v7) customView];
+        customView = [*(*(&v10 + 1) + 8 * v7) customView];
         if (objc_opt_isKindOfClass())
         {
-          [v8 removeTarget:self action:0 forControlEvents:0xFFFFFFFFLL];
+          [customView removeTarget:self action:0 forControlEvents:0xFFFFFFFFLL];
         }
 
         ++v7;
@@ -77,21 +77,21 @@
   [(SUUINavigationBarSectionController *)&v9 dealloc];
 }
 
-- (id)addButtonItemWithButtonViewElement:(id)a3
+- (id)addButtonItemWithButtonViewElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v5 = objc_alloc_init(MEMORY[0x277D751E0]);
-  if ([v4 buttonViewType] == 2)
+  if ([elementCopy buttonViewType] == 2)
   {
     v6 = objc_alloc_init(SUUIItemOfferButton);
     [(SUUIItemOfferButton *)v6 addTarget:self action:sel__cancelConfirmationAction_ forControlEvents:0x10000];
     [(SUUIItemOfferButton *)v6 addTarget:self action:sel__itemOfferAction_ forControlEvents:0x20000];
     [(SUUIItemOfferButton *)v6 addTarget:self action:sel__showConfirmationAction_ forControlEvents:0x40000];
-    v7 = [MEMORY[0x277D75348] clearColor];
-    [(SUUIItemOfferButton *)v6 setBackgroundColor:v7];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(SUUIItemOfferButton *)v6 setBackgroundColor:clearColor];
 
     [(SUUIItemOfferButton *)v6 setDelegate:self];
-    [(SUUINavigationBarButtonsController *)self _updateItemOfferButton:v6 withButtonViewElement:v4];
+    [(SUUINavigationBarButtonsController *)self _updateItemOfferButton:v6 withButtonViewElement:elementCopy];
     [v5 setCustomView:v6];
   }
 
@@ -99,7 +99,7 @@
   {
     [v5 setAction:sel__buttonAction_];
     [v5 setTarget:self];
-    [(SUUINavigationBarButtonsController *)self _updateButtonItem:v5 withButtonViewElement:v4];
+    [(SUUINavigationBarButtonsController *)self _updateButtonItem:v5 withButtonViewElement:elementCopy];
   }
 
   buttonItemElements = self->_buttonItemElements;
@@ -112,9 +112,9 @@
     buttonItemElements = self->_buttonItemElements;
   }
 
-  [(NSMapTable *)buttonItemElements setObject:v4 forKey:v5];
-  v11 = [(SUUINavigationBarSectionController *)self viewLayoutContext];
-  v12 = [v11 imageResourceCacheKeyForViewElement:v4];
+  [(NSMapTable *)buttonItemElements setObject:elementCopy forKey:v5];
+  viewLayoutContext = [(SUUINavigationBarSectionController *)self viewLayoutContext];
+  v12 = [viewLayoutContext imageResourceCacheKeyForViewElement:elementCopy];
 
   if (v12)
   {
@@ -134,10 +134,10 @@
   return v5;
 }
 
-- (id)barButtonItemForElementIdentifier:(id)a3
+- (id)barButtonItemForElementIdentifier:(id)identifier
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -159,8 +159,8 @@
 
         v9 = *(*(&v16 + 1) + 8 * i);
         v10 = [(NSMapTable *)self->_buttonItemElements objectForKey:v9];
-        v11 = [v10 itmlID];
-        v12 = [v11 isEqualToString:v4];
+        itmlID = [v10 itmlID];
+        v12 = [itmlID isEqualToString:identifierCopy];
 
         if (v12)
         {
@@ -209,9 +209,9 @@ LABEL_11:
         }
 
         v8 = *(*(&v10 + 1) + 8 * i);
-        v9 = [v8 customView];
+        customView = [v8 customView];
         [v8 setTarget:0];
-        [v9 removeTarget:self action:0 forControlEvents:0xFFFFFFFFLL];
+        [customView removeTarget:self action:0 forControlEvents:0xFFFFFFFFLL];
       }
 
       v5 = [(NSMapTable *)v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
@@ -224,13 +224,13 @@ LABEL_11:
   [(NSMapTable *)self->_buttonItemToImageResourceCacheKey removeAllObjects];
 }
 
-- (void)reloadAfterDocumentUpdateWithNavigationItem:(id)a3
+- (void)reloadAfterDocumentUpdateWithNavigationItem:(id)item
 {
   v40[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 leftBarButtonItems];
-  v27 = v4;
-  v6 = [v4 rightBarButtonItems];
+  itemCopy = item;
+  leftBarButtonItems = [itemCopy leftBarButtonItems];
+  v27 = itemCopy;
+  rightBarButtonItems = [itemCopy rightBarButtonItems];
   v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
   navigationBarElement = self->_navigationBarElement;
@@ -243,14 +243,14 @@ LABEL_11:
   v11 = v8;
   v37 = v11;
   [(SUUIViewElement *)navigationBarElement enumerateChildrenUsingBlock:v35];
-  v25 = v6;
-  v26 = v5;
-  v39[0] = v5;
+  v25 = rightBarButtonItems;
+  v26 = leftBarButtonItems;
+  v39[0] = leftBarButtonItems;
   v39[1] = v10;
   v23 = v11;
   v24 = v10;
   v12 = v39;
-  v40[0] = v6;
+  v40[0] = rightBarButtonItems;
   v40[1] = v11;
   v13 = 1;
   do
@@ -350,16 +350,16 @@ LABEL_7:
   return MEMORY[0x2821F96F8](IsButton, v4);
 }
 
-- (void)_buttonAction:(id)a3
+- (void)_buttonAction:(id)action
 {
-  v3 = [(NSMapTable *)self->_buttonItemElements objectForKey:a3];
+  v3 = [(NSMapTable *)self->_buttonItemElements objectForKey:action];
   [v3 dispatchEventOfType:2 canBubble:1 isCancelable:1 extraInfo:0 completionBlock:0];
 }
 
-- (void)_itemOfferAction:(id)a3
+- (void)_itemOfferAction:(id)action
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  actionCopy = action;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -380,9 +380,9 @@ LABEL_7:
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
-        v11 = [v10 customView];
+        customView = [v10 customView];
 
-        if (v11 == v4)
+        if (customView == actionCopy)
         {
           v12 = [(NSMapTable *)self->_buttonItemElements objectForKey:v10];
           [v12 dispatchEventOfType:2 canBubble:1 isCancelable:1 extraInfo:0 completionBlock:0];
@@ -404,14 +404,14 @@ LABEL_7:
 LABEL_11:
 }
 
-- (void)artworkRequest:(id)a3 didLoadImage:(id)a4
+- (void)artworkRequest:(id)request didLoadImage:(id)image
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v22 = a4;
-  v7 = [(SUUINavigationBarSectionController *)self viewLayoutContext];
-  v21 = v6;
-  v8 = [v6 requestIdentifier];
+  requestCopy = request;
+  imageCopy = image;
+  viewLayoutContext = [(SUUINavigationBarSectionController *)self viewLayoutContext];
+  v21 = requestCopy;
+  requestIdentifier = [requestCopy requestIdentifier];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
@@ -433,17 +433,17 @@ LABEL_11:
 
         v13 = *(*(&v24 + 1) + 8 * i);
         v14 = [(NSMapTable *)self->_buttonItemToImageResourceCacheKey objectForKey:v13];
-        v15 = [v7 requestIdentifierForResourceCacheKey:v14];
+        v15 = [viewLayoutContext requestIdentifierForResourceCacheKey:v14];
         v16 = v15;
-        if (v15 && [v15 unsignedIntegerValue] == v8)
+        if (v15 && [v15 unsignedIntegerValue] == requestIdentifier)
         {
-          [v13 setImage:v22];
-          v17 = [(SUUINavigationBarSectionController *)self context];
-          v18 = [v17 parentViewController];
-          v19 = [v18 navigationController];
-          v20 = [v19 navigationBar];
+          [v13 setImage:imageCopy];
+          context = [(SUUINavigationBarSectionController *)self context];
+          parentViewController = [context parentViewController];
+          navigationController = [parentViewController navigationController];
+          navigationBar = [navigationController navigationBar];
 
-          [v20 setNeedsLayout];
+          [navigationBar setNeedsLayout];
           goto LABEL_12;
         }
       }
@@ -461,23 +461,23 @@ LABEL_11:
 LABEL_12:
 }
 
-- (id)_imageForImageViewElement:(id)a3
+- (id)_imageForImageViewElement:(id)element
 {
-  v4 = a3;
-  v5 = [v4 resourceName];
-  v6 = v5;
-  if (v5)
+  elementCopy = element;
+  resourceName = [elementCopy resourceName];
+  v6 = resourceName;
+  if (resourceName)
   {
-    v7 = SUUIImageWithResourceName(v5);
+    v7 = SUUIImageWithResourceName(resourceName);
   }
 
   else
   {
-    v8 = [(SUUINavigationBarSectionController *)self viewLayoutContext];
-    v9 = [v8 requestIdentifierForViewElement:v4];
-    if (!v9 || ([v8 resourceLoader], v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "cachedResourceForRequestIdentifier:", objc_msgSend(v9, "unsignedIntegerValue")), v7 = objc_claimAutoreleasedReturnValue(), v10, !v7))
+    viewLayoutContext = [(SUUINavigationBarSectionController *)self viewLayoutContext];
+    v9 = [viewLayoutContext requestIdentifierForViewElement:elementCopy];
+    if (!v9 || ([viewLayoutContext resourceLoader], v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "cachedResourceForRequestIdentifier:", objc_msgSend(v9, "unsignedIntegerValue")), v7 = objc_claimAutoreleasedReturnValue(), v10, !v7))
     {
-      [v8 loadImageForImageElement:v4 reason:1];
+      [viewLayoutContext loadImageForImageElement:elementCopy reason:1];
       v7 = 0;
     }
   }
@@ -485,11 +485,11 @@ LABEL_12:
   return v7;
 }
 
-- (UIEdgeInsets)_imageInsetsForImageViewElement:(id)a3
+- (UIEdgeInsets)_imageInsetsForImageViewElement:(id)element
 {
-  v4 = a3;
-  v5 = [v4 style];
-  [v5 elementPadding];
+  elementCopy = element;
+  style = [elementCopy style];
+  [style elementPadding];
   v27 = v7;
   v28 = v6;
   v8.f64[0] = v6;
@@ -500,14 +500,14 @@ LABEL_12:
   v11.f64[1] = v7;
   if (vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(v8, *MEMORY[0x277D768C8]), vceqq_f64(v11, *(MEMORY[0x277D768C8] + 16))))))
   {
-    v12 = [v4 resourceName];
-    v13 = [v12 isEqualToString:@"previewHistory"];
+    resourceName = [elementCopy resourceName];
+    v13 = [resourceName isEqualToString:@"previewHistory"];
 
     if (v13)
     {
-      v14 = [(SUUINavigationBarSectionController *)self context];
-      v15 = [v14 clientContext];
-      v16 = SUUIUserInterfaceIdiom(v15);
+      context = [(SUUINavigationBarSectionController *)self context];
+      clientContext = [context clientContext];
+      v16 = SUUIUserInterfaceIdiom(clientContext);
 
       v17 = 2.0;
       if (v16 == 1)
@@ -518,15 +518,15 @@ LABEL_12:
 
     else
     {
-      v18 = [MEMORY[0x277D75418] currentDevice];
-      if ([v18 userInterfaceIdiom])
+      currentDevice = [MEMORY[0x277D75418] currentDevice];
+      if ([currentDevice userInterfaceIdiom])
       {
 
         goto LABEL_10;
       }
 
-      v19 = [v4 resourceName];
-      v20 = [v19 isEqualToString:@"share"];
+      resourceName2 = [elementCopy resourceName];
+      v20 = [resourceName2 isEqualToString:@"share"];
 
       if (!v20)
       {
@@ -555,67 +555,67 @@ LABEL_10:
   return result;
 }
 
-- (void)_reloadButtonItem:(id)a3 withButtonViewElement:(id)a4
+- (void)_reloadButtonItem:(id)item withButtonViewElement:(id)element
 {
-  v8 = a3;
-  v6 = a4;
-  if ([v6 updateType])
+  itemCopy = item;
+  elementCopy = element;
+  if ([elementCopy updateType])
   {
-    if ([v6 buttonViewType] == 2)
+    if ([elementCopy buttonViewType] == 2)
     {
-      v7 = [v8 customView];
-      [(SUUINavigationBarButtonsController *)self _updateItemOfferButton:v7 withButtonViewElement:v6];
+      customView = [itemCopy customView];
+      [(SUUINavigationBarButtonsController *)self _updateItemOfferButton:customView withButtonViewElement:elementCopy];
     }
 
     else
     {
-      [(SUUINavigationBarButtonsController *)self _updateButtonItem:v8 withButtonViewElement:v6];
+      [(SUUINavigationBarButtonsController *)self _updateButtonItem:itemCopy withButtonViewElement:elementCopy];
     }
   }
 }
 
-- (void)_updateButtonItem:(id)a3 withButtonViewElement:(id)a4
+- (void)_updateButtonItem:(id)item withButtonViewElement:(id)element
 {
-  v12 = a3;
-  v6 = a4;
-  [v12 setEnabled:{objc_msgSend(v6, "isEnabled")}];
-  [v12 setStyle:{2 * (objc_msgSend(v6, "buttonViewType") == 8)}];
-  v7 = [v6 buttonImage];
-  if (v7)
+  itemCopy = item;
+  elementCopy = element;
+  [itemCopy setEnabled:{objc_msgSend(elementCopy, "isEnabled")}];
+  [itemCopy setStyle:{2 * (objc_msgSend(elementCopy, "buttonViewType") == 8)}];
+  buttonImage = [elementCopy buttonImage];
+  if (buttonImage)
   {
-    v8 = [v6 accessibilityText];
+    accessibilityText = [elementCopy accessibilityText];
 
-    [v12 setAccessibilityLabel:v8];
-    v9 = [(SUUINavigationBarButtonsController *)self _imageForImageViewElement:v7];
-    [v12 setImage:v9];
+    [itemCopy setAccessibilityLabel:accessibilityText];
+    v9 = [(SUUINavigationBarButtonsController *)self _imageForImageViewElement:buttonImage];
+    [itemCopy setImage:v9];
 
-    [(SUUINavigationBarButtonsController *)self _imageInsetsForImageViewElement:v7];
-    [v12 setImageInsets:?];
+    [(SUUINavigationBarButtonsController *)self _imageInsetsForImageViewElement:buttonImage];
+    [itemCopy setImageInsets:?];
   }
 
   else
   {
-    v10 = [v6 buttonText];
+    buttonText = [elementCopy buttonText];
 
-    v11 = [v10 string];
-    [v12 setTitle:v11];
+    string = [buttonText string];
+    [itemCopy setTitle:string];
   }
 }
 
-- (void)_updateItemOfferButton:(id)a3 withButtonViewElement:(id)a4
+- (void)_updateItemOfferButton:(id)button withButtonViewElement:(id)element
 {
-  v5 = a4;
-  v6 = a3;
-  v9 = [v5 confirmationText];
-  [v6 setConfirmationTitle:v9];
-  [v6 setEnabled:{objc_msgSend(v5, "isEnabled")}];
-  [v6 setShowsConfirmationState:v9 != 0];
-  v7 = [v5 buttonText];
+  elementCopy = element;
+  buttonCopy = button;
+  confirmationText = [elementCopy confirmationText];
+  [buttonCopy setConfirmationTitle:confirmationText];
+  [buttonCopy setEnabled:{objc_msgSend(elementCopy, "isEnabled")}];
+  [buttonCopy setShowsConfirmationState:confirmationText != 0];
+  buttonText = [elementCopy buttonText];
 
-  v8 = [v7 string];
-  [v6 setTitle:v8];
+  string = [buttonText string];
+  [buttonCopy setTitle:string];
 
-  [v6 sizeToFit];
+  [buttonCopy sizeToFit];
 }
 
 @end

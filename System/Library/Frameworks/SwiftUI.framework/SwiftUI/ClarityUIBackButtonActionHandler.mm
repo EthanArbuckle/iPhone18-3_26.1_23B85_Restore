@@ -1,18 +1,18 @@
 @interface ClarityUIBackButtonActionHandler
-- (id)_respondToActions:(id)a3 forFBSScene:(id)a4 inUIScene:(id)a5 fromTransitionContext:(id)a6;
+- (id)_respondToActions:(id)actions forFBSScene:(id)scene inUIScene:(id)iScene fromTransitionContext:(id)context;
 @end
 
 @implementation ClarityUIBackButtonActionHandler
 
-- (id)_respondToActions:(id)a3 forFBSScene:(id)a4 inUIScene:(id)a5 fromTransitionContext:(id)a6
+- (id)_respondToActions:(id)actions forFBSScene:(id)scene inUIScene:(id)iScene fromTransitionContext:(id)context
 {
   type metadata accessor for BSAction();
   lazy protocol witness table accessor for type BSAction and conformance NSObject();
   v10 = static Set._unconditionallyBridgeFromObjectiveC(_:)();
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = self;
+  sceneCopy = scene;
+  iSceneCopy = iScene;
+  contextCopy = context;
+  selfCopy = self;
   specialized ClarityUIBackButtonActionHandler._respond(to:for:in:from:)(v10);
 
   v15.super.isa = Set._bridgeToObjectiveC()().super.isa;

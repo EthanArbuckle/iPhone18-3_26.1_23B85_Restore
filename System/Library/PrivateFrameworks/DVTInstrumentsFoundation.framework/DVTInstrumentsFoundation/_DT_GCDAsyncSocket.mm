@@ -1,25 +1,25 @@
 @interface _DT_GCDAsyncSocket
-+ (BOOL)getHost:(id *)a3 port:(unsigned __int16 *)a4 family:(char *)a5 fromAddress:(id)a6;
-+ (BOOL)isIPv4Address:(id)a3;
-+ (BOOL)isIPv6Address:(id)a3;
-+ (id)gaiError:(int)a3;
-+ (id)hostFromAddress:(id)a3;
-+ (id)hostFromSockaddr4:(const sockaddr_in *)a3;
-+ (id)hostFromSockaddr6:(const sockaddr_in6 *)a3;
-+ (unsigned)portFromAddress:(id)a3;
++ (BOOL)getHost:(id *)host port:(unsigned __int16 *)port family:(char *)family fromAddress:(id)address;
++ (BOOL)isIPv4Address:(id)address;
++ (BOOL)isIPv6Address:(id)address;
++ (id)gaiError:(int)error;
++ (id)hostFromAddress:(id)address;
++ (id)hostFromSockaddr4:(const sockaddr_in *)sockaddr4;
++ (id)hostFromSockaddr6:(const sockaddr_in6 *)sockaddr6;
++ (unsigned)portFromAddress:(id)address;
 + (void)cfstreamThread;
-+ (void)scheduleCFStreams:(id)a3;
++ (void)scheduleCFStreams:(id)streams;
 + (void)startCFStreamThreadIfNeeded;
 + (void)stopCFStreamThreadIfNeeded;
-+ (void)unscheduleCFStreams:(id)a3;
-- (BOOL)acceptOnInterface:(id)a3 port:(unsigned __int16)a4 error:(id *)a5;
++ (void)unscheduleCFStreams:(id)streams;
+- (BOOL)acceptOnInterface:(id)interface port:(unsigned __int16)port error:(id *)error;
 - (BOOL)addStreamsToRunLoop;
 - (BOOL)autoDisconnectOnClosedReadStream;
-- (BOOL)connectToAddress:(id)a3 viaInterface:(id)a4 withTimeout:(double)a5 error:(id *)a6;
-- (BOOL)connectToHost:(id)a3 onPort:(unsigned __int16)a4 viaInterface:(id)a5 withTimeout:(double)a6 error:(id *)a7;
-- (BOOL)connectWithAddress4:(id)a3 address6:(id)a4 error:(id *)a5;
+- (BOOL)connectToAddress:(id)address viaInterface:(id)interface withTimeout:(double)timeout error:(id *)error;
+- (BOOL)connectToHost:(id)host onPort:(unsigned __int16)port viaInterface:(id)interface withTimeout:(double)timeout error:(id *)error;
+- (BOOL)connectWithAddress4:(id)address4 address6:(id)address6 error:(id *)error;
 - (BOOL)createReadAndWriteStream;
-- (BOOL)doAccept:(int)a3;
+- (BOOL)doAccept:(int)accept;
 - (BOOL)isConnected;
 - (BOOL)isDisconnected;
 - (BOOL)isIPv4;
@@ -29,64 +29,64 @@
 - (BOOL)isIPv6Enabled;
 - (BOOL)isSecure;
 - (BOOL)openStreams;
-- (BOOL)preConnectWithInterface:(id)a3 error:(id *)a4;
-- (BOOL)registerForStreamCallbacksIncludingReadWrite:(BOOL)a3;
+- (BOOL)preConnectWithInterface:(id)interface error:(id *)error;
+- (BOOL)registerForStreamCallbacksIncludingReadWrite:(BOOL)write;
 - (NSData)connectedAddress;
 - (NSData)localAddress;
 - (NSString)connectedHost;
 - (NSString)localHost;
 - (OS_dispatch_queue)delegateQueue;
 - (SSLContext)sslContext;
-- (_DT_GCDAsyncSocket)initWithDelegate:(id)a3 delegateQueue:(id)a4 socketQueue:(id)a5;
+- (_DT_GCDAsyncSocket)initWithDelegate:(id)delegate delegateQueue:(id)queue socketQueue:(id)socketQueue;
 - (__CFReadStream)readStream;
 - (__CFWriteStream)writeStream;
-- (float)progressOfReadReturningTag:(int64_t *)a3 bytesDone:(unint64_t *)a4 total:(unint64_t *)a5;
-- (float)progressOfWriteReturningTag:(int64_t *)a3 bytesDone:(unint64_t *)a4 total:(unint64_t *)a5;
-- (id)badConfigError:(id)a3;
-- (id)badParamError:(id)a3;
+- (float)progressOfReadReturningTag:(int64_t *)tag bytesDone:(unint64_t *)done total:(unint64_t *)total;
+- (float)progressOfWriteReturningTag:(int64_t *)tag bytesDone:(unint64_t *)done total:(unint64_t *)total;
+- (id)badConfigError:(id)error;
+- (id)badParamError:(id)error;
 - (id)connectTimeoutError;
 - (id)connectedHost4;
 - (id)connectedHost6;
-- (id)connectedHostFromSocket4:(int)a3;
-- (id)connectedHostFromSocket6:(int)a3;
+- (id)connectedHostFromSocket4:(int)socket4;
+- (id)connectedHostFromSocket6:(int)socket6;
 - (id)connectionClosedError;
 - (id)delegate;
 - (id)errnoError;
-- (id)errnoErrorWithReason:(id)a3;
+- (id)errnoErrorWithReason:(id)reason;
 - (id)localHost4;
 - (id)localHost6;
-- (id)localHostFromSocket4:(int)a3;
-- (id)localHostFromSocket6:(int)a3;
-- (id)otherError:(id)a3;
+- (id)localHostFromSocket4:(int)socket4;
+- (id)localHostFromSocket6:(int)socket6;
+- (id)otherError:(id)error;
 - (id)readMaxedOutError;
 - (id)readTimeoutError;
-- (id)sslError:(int)a3;
+- (id)sslError:(int)error;
 - (id)userData;
 - (id)writeTimeoutError;
 - (int)socket4FD;
 - (int)socket6FD;
 - (int)socketFD;
-- (int)sslReadWithBuffer:(void *)a3 length:(unint64_t *)a4;
-- (int)sslWriteWithBuffer:(const void *)a3 length:(unint64_t *)a4;
+- (int)sslReadWithBuffer:(void *)buffer length:(unint64_t *)length;
+- (int)sslWriteWithBuffer:(const void *)buffer length:(unint64_t *)length;
 - (unsigned)connectedPort;
 - (unsigned)connectedPort4;
 - (unsigned)connectedPort6;
-- (unsigned)connectedPortFromSocket4:(int)a3;
-- (unsigned)connectedPortFromSocket6:(int)a3;
+- (unsigned)connectedPortFromSocket4:(int)socket4;
+- (unsigned)connectedPortFromSocket6:(int)socket6;
 - (unsigned)localPort;
 - (unsigned)localPort4;
 - (unsigned)localPort6;
-- (unsigned)localPortFromSocket4:(int)a3;
-- (unsigned)localPortFromSocket6:(int)a3;
-- (void)cf_abortSSLHandshake:(id)a3;
+- (unsigned)localPortFromSocket4:(int)socket4;
+- (unsigned)localPortFromSocket6:(int)socket6;
+- (void)cf_abortSSLHandshake:(id)handshake;
 - (void)cf_finishSSLHandshake;
 - (void)cf_startTLS;
-- (void)closeWithError:(id)a3;
+- (void)closeWithError:(id)error;
 - (void)completeCurrentRead;
 - (void)completeCurrentWrite;
 - (void)dealloc;
-- (void)didConnect:(int)a3;
-- (void)didNotConnect:(int)a3 error:(id)a4;
+- (void)didConnect:(int)connect;
+- (void)didNotConnect:(int)connect error:(id)error;
 - (void)disconnect;
 - (void)disconnectAfterReading;
 - (void)disconnectAfterReadingAndWriting;
@@ -95,91 +95,91 @@
 - (void)doReadData;
 - (void)doReadEOF;
 - (void)doReadTimeout;
-- (void)doReadTimeoutWithExtension:(double)a3;
+- (void)doReadTimeoutWithExtension:(double)extension;
 - (void)doWriteData;
 - (void)doWriteTimeout;
-- (void)doWriteTimeoutWithExtension:(double)a3;
+- (void)doWriteTimeoutWithExtension:(double)extension;
 - (void)endConnectTimeout;
 - (void)endCurrentRead;
 - (void)endCurrentWrite;
 - (void)flushSSLBuffers;
-- (void)getDelegate:(id *)a3 delegateQueue:(id *)a4;
-- (void)getInterfaceAddress4:(id *)a3 address6:(id *)a4 fromDescription:(id)a5 port:(unsigned __int16)a6;
-- (void)lookup:(int)a3 didFail:(id)a4;
-- (void)lookup:(int)a3 didSucceedWithAddress4:(id)a4 address6:(id)a5;
+- (void)getDelegate:(id *)delegate delegateQueue:(id *)queue;
+- (void)getInterfaceAddress4:(id *)address4 address6:(id *)address6 fromDescription:(id)description port:(unsigned __int16)port;
+- (void)lookup:(int)lookup didFail:(id)fail;
+- (void)lookup:(int)lookup didSucceedWithAddress4:(id)address4 address6:(id)address6;
 - (void)maybeClose;
 - (void)maybeDequeueRead;
 - (void)maybeDequeueWrite;
 - (void)maybeStartTLS;
-- (void)performBlock:(id)a3;
-- (void)readDataToData:(id)a3 withTimeout:(double)a4 buffer:(id)a5 bufferOffset:(unint64_t)a6 maxLength:(unint64_t)a7 tag:(int64_t)a8;
-- (void)readDataToLength:(unint64_t)a3 withTimeout:(double)a4 buffer:(id)a5 bufferOffset:(unint64_t)a6 tag:(int64_t)a7;
-- (void)readDataWithTimeout:(double)a3 buffer:(id)a4 bufferOffset:(unint64_t)a5 maxLength:(unint64_t)a6 tag:(int64_t)a7;
+- (void)performBlock:(id)block;
+- (void)readDataToData:(id)data withTimeout:(double)timeout buffer:(id)buffer bufferOffset:(unint64_t)offset maxLength:(unint64_t)length tag:(int64_t)tag;
+- (void)readDataToLength:(unint64_t)length withTimeout:(double)timeout buffer:(id)buffer bufferOffset:(unint64_t)offset tag:(int64_t)tag;
+- (void)readDataWithTimeout:(double)timeout buffer:(id)buffer bufferOffset:(unint64_t)offset maxLength:(unint64_t)length tag:(int64_t)tag;
 - (void)removeStreamsFromRunLoop;
 - (void)resumeReadSource;
 - (void)resumeWriteSource;
-- (void)setAutoDisconnectOnClosedReadStream:(BOOL)a3;
-- (void)setDelegate:(id)a3 delegateQueue:(id)a4 synchronously:(BOOL)a5;
-- (void)setDelegate:(id)a3 synchronously:(BOOL)a4;
-- (void)setDelegateQueue:(id)a3 synchronously:(BOOL)a4;
-- (void)setIPv4Enabled:(BOOL)a3;
-- (void)setIPv4PreferredOverIPv6:(BOOL)a3;
-- (void)setIPv6Enabled:(BOOL)a3;
-- (void)setUserData:(id)a3;
-- (void)setupReadAndWriteSourcesForNewlyConnectedSocket:(int)a3;
-- (void)setupReadTimerWithTimeout:(double)a3;
-- (void)setupWriteTimerWithTimeout:(double)a3;
+- (void)setAutoDisconnectOnClosedReadStream:(BOOL)stream;
+- (void)setDelegate:(id)delegate delegateQueue:(id)queue synchronously:(BOOL)synchronously;
+- (void)setDelegate:(id)delegate synchronously:(BOOL)synchronously;
+- (void)setDelegateQueue:(id)queue synchronously:(BOOL)synchronously;
+- (void)setIPv4Enabled:(BOOL)enabled;
+- (void)setIPv4PreferredOverIPv6:(BOOL)pv6;
+- (void)setIPv6Enabled:(BOOL)enabled;
+- (void)setUserData:(id)data;
+- (void)setupReadAndWriteSourcesForNewlyConnectedSocket:(int)socket;
+- (void)setupReadTimerWithTimeout:(double)timeout;
+- (void)setupWriteTimerWithTimeout:(double)timeout;
 - (void)ssl_continueSSLHandshake;
-- (void)ssl_shouldTrustPeer:(BOOL)a3 stateIndex:(int)a4;
+- (void)ssl_shouldTrustPeer:(BOOL)peer stateIndex:(int)index;
 - (void)ssl_startTLS;
-- (void)startConnectTimeout:(double)a3;
-- (void)startTLS:(id)a3;
+- (void)startConnectTimeout:(double)timeout;
+- (void)startTLS:(id)s;
 - (void)suspendReadSource;
 - (void)suspendWriteSource;
-- (void)writeData:(id)a3 withTimeout:(double)a4 tag:(int64_t)a5;
+- (void)writeData:(id)data withTimeout:(double)timeout tag:(int64_t)tag;
 @end
 
 @implementation _DT_GCDAsyncSocket
 
-- (_DT_GCDAsyncSocket)initWithDelegate:(id)a3 delegateQueue:(id)a4 socketQueue:(id)a5
+- (_DT_GCDAsyncSocket)initWithDelegate:(id)delegate delegateQueue:(id)queue socketQueue:(id)socketQueue
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  delegateCopy = delegate;
+  queueCopy = queue;
+  socketQueueCopy = socketQueue;
   v27.receiver = self;
   v27.super_class = _DT_GCDAsyncSocket;
   v11 = [(_DT_GCDAsyncSocket *)&v27 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->delegate, v8);
-    objc_storeStrong(&v12->delegateQueue, a4);
+    objc_storeWeak(&v11->delegate, delegateCopy);
+    objc_storeStrong(&v12->delegateQueue, queue);
     *&v12->socket4FD = -1;
     v12->stateIndex = 0;
-    if (v10)
+    if (socketQueueCopy)
     {
       v13 = dispatch_get_global_queue(-2, 0);
 
-      if (v13 == v10)
+      if (v13 == socketQueueCopy)
       {
         sub_24802D808();
       }
 
       v14 = dispatch_get_global_queue(2, 0);
 
-      if (v14 == v10)
+      if (v14 == socketQueueCopy)
       {
         sub_24802D864();
       }
 
       v15 = dispatch_get_global_queue(0, 0);
 
-      if (v15 == v10)
+      if (v15 == socketQueueCopy)
       {
         sub_24802D8C0();
       }
 
-      v16 = v10;
+      v16 = socketQueueCopy;
     }
 
     else
@@ -275,16 +275,16 @@
   return WeakRetained;
 }
 
-- (void)setDelegate:(id)a3 synchronously:(BOOL)a4
+- (void)setDelegate:(id)delegate synchronously:(BOOL)synchronously
 {
-  v4 = a4;
-  v6 = a3;
+  synchronouslyCopy = synchronously;
+  delegateCopy = delegate;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = sub_247F9D4F8;
   v10[3] = &unk_278EF1550;
   v10[4] = self;
-  v7 = v6;
+  v7 = delegateCopy;
   v11 = v7;
   v8 = _Block_copy(v10);
   if (dispatch_get_specific(self->IsOnSocketQueueOrTargetQueueKey))
@@ -295,7 +295,7 @@
   else
   {
     socketQueue = self->socketQueue;
-    if (v4)
+    if (synchronouslyCopy)
     {
       dispatch_sync(socketQueue, v8);
     }
@@ -337,16 +337,16 @@
   return v3;
 }
 
-- (void)setDelegateQueue:(id)a3 synchronously:(BOOL)a4
+- (void)setDelegateQueue:(id)queue synchronously:(BOOL)synchronously
 {
-  v4 = a4;
-  v6 = a3;
+  synchronouslyCopy = synchronously;
+  queueCopy = queue;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = sub_247F9D714;
   v10[3] = &unk_278EF1550;
   v10[4] = self;
-  v7 = v6;
+  v7 = queueCopy;
   v11 = v7;
   v8 = _Block_copy(v10);
   if (dispatch_get_specific(self->IsOnSocketQueueOrTargetQueueKey))
@@ -357,7 +357,7 @@
   else
   {
     socketQueue = self->socketQueue;
-    if (v4)
+    if (synchronouslyCopy)
     {
       dispatch_sync(socketQueue, v8);
     }
@@ -369,18 +369,18 @@
   }
 }
 
-- (void)getDelegate:(id *)a3 delegateQueue:(id *)a4
+- (void)getDelegate:(id *)delegate delegateQueue:(id *)queue
 {
   if (dispatch_get_specific(self->IsOnSocketQueueOrTargetQueueKey))
   {
-    if (a3)
+    if (delegate)
     {
-      *a3 = objc_loadWeakRetained(&self->delegate);
+      *delegate = objc_loadWeakRetained(&self->delegate);
     }
 
-    if (a4)
+    if (queue)
     {
-      *a4 = self->delegateQueue;
+      *queue = self->delegateQueue;
     }
   }
 
@@ -407,14 +407,14 @@
     block[5] = &v15;
     block[6] = &v9;
     dispatch_sync(socketQueue, block);
-    if (a3)
+    if (delegate)
     {
-      *a3 = v16[5];
+      *delegate = v16[5];
     }
 
-    if (a4)
+    if (queue)
     {
-      *a4 = v10[5];
+      *queue = v10[5];
     }
 
     _Block_object_dispose(&v9, 8);
@@ -423,19 +423,19 @@
   }
 }
 
-- (void)setDelegate:(id)a3 delegateQueue:(id)a4 synchronously:(BOOL)a5
+- (void)setDelegate:(id)delegate delegateQueue:(id)queue synchronously:(BOOL)synchronously
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  synchronouslyCopy = synchronously;
+  delegateCopy = delegate;
+  queueCopy = queue;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = sub_247F9DA28;
   aBlock[3] = &unk_278EF2788;
   aBlock[4] = self;
-  v10 = v8;
+  v10 = delegateCopy;
   v15 = v10;
-  v11 = v9;
+  v11 = queueCopy;
   v16 = v11;
   v12 = _Block_copy(aBlock);
   if (dispatch_get_specific(self->IsOnSocketQueueOrTargetQueueKey))
@@ -446,7 +446,7 @@
   else
   {
     socketQueue = self->socketQueue;
-    if (v5)
+    if (synchronouslyCopy)
     {
       dispatch_sync(socketQueue, v12);
     }
@@ -486,13 +486,13 @@
   return v3 & 1;
 }
 
-- (void)setIPv4Enabled:(BOOL)a3
+- (void)setIPv4Enabled:(BOOL)enabled
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = sub_247F9DC14;
   v5[3] = &unk_278EF27B0;
-  v6 = a3;
+  enabledCopy = enabled;
   v5[4] = self;
   v4 = _Block_copy(v5);
   if (dispatch_get_specific(self->IsOnSocketQueueOrTargetQueueKey))
@@ -534,13 +534,13 @@
   return v3 & 1;
 }
 
-- (void)setIPv6Enabled:(BOOL)a3
+- (void)setIPv6Enabled:(BOOL)enabled
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = sub_247F9DDC4;
   v5[3] = &unk_278EF27B0;
-  v6 = a3;
+  enabledCopy = enabled;
   v5[4] = self;
   v4 = _Block_copy(v5);
   if (dispatch_get_specific(self->IsOnSocketQueueOrTargetQueueKey))
@@ -582,13 +582,13 @@
   return v3 & 1;
 }
 
-- (void)setIPv4PreferredOverIPv6:(BOOL)a3
+- (void)setIPv4PreferredOverIPv6:(BOOL)pv6
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = sub_247F9DF80;
   v5[3] = &unk_278EF27B0;
-  v6 = a3;
+  pv6Copy = pv6;
   v5[4] = self;
   v4 = _Block_copy(v5);
   if (dispatch_get_specific(self->IsOnSocketQueueOrTargetQueueKey))
@@ -634,15 +634,15 @@
   return v4;
 }
 
-- (void)setUserData:(id)a3
+- (void)setUserData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = sub_247F9E1C4;
   v7[3] = &unk_278EF1550;
   v7[4] = self;
-  v5 = v4;
+  v5 = dataCopy;
   v8 = v5;
   v6 = _Block_copy(v7);
   if (dispatch_get_specific(self->IsOnSocketQueueOrTargetQueueKey))
@@ -656,10 +656,10 @@
   }
 }
 
-- (BOOL)acceptOnInterface:(id)a3 port:(unsigned __int16)a4 error:(id *)a5
+- (BOOL)acceptOnInterface:(id)interface port:(unsigned __int16)port error:(id *)error
 {
-  v8 = a3;
-  v9 = [v8 copy];
+  interfaceCopy = interface;
+  v9 = [interfaceCopy copy];
   v29 = 0;
   v30 = &v29;
   v31 = 0x2020000000;
@@ -685,7 +685,7 @@
   v19 = &v23;
   v11 = v9;
   v17 = v11;
-  v21 = a4;
+  portCopy = port;
   v12 = v10;
   v18 = v12;
   v20 = &v29;
@@ -701,9 +701,9 @@
   }
 
   v14 = *(v30 + 24);
-  if (a5 && (v30[3] & 1) == 0)
+  if (error && (v30[3] & 1) == 0)
   {
-    *a5 = v24[5];
+    *error = v24[5];
     v14 = *(v30 + 24);
   }
 
@@ -713,13 +713,13 @@
   return v14 & 1;
 }
 
-- (BOOL)doAccept:(int)a3
+- (BOOL)doAccept:(int)accept
 {
   v26 = *MEMORY[0x277D85DE8];
   socket4FD = self->socket4FD;
   *&v23.sa_len = 0;
   *&v23.sa_data[6] = 0;
-  if (socket4FD == a3)
+  if (socket4FD == accept)
   {
     v6 = 16;
   }
@@ -732,7 +732,7 @@
   }
 
   v22 = v6;
-  v7 = accept(a3, &v23, &v22);
+  v7 = accept(accept, &v23, &v22);
   if (v7 == -1)
   {
     goto LABEL_10;
@@ -753,7 +753,7 @@ LABEL_10:
   setsockopt(v8, 0xFFFF, 4130, &v23, 4u);
   if (self->delegateQueue)
   {
-    v10 = socket4FD == a3;
+    v10 = socket4FD == accept;
     WeakRetained = objc_loadWeakRetained(&self->delegate);
     delegateQueue = self->delegateQueue;
     block[0] = MEMORY[0x277D85DD0];
@@ -762,7 +762,7 @@ LABEL_10:
     block[3] = &unk_278EF2870;
     v17 = WeakRetained;
     v18 = v9;
-    v19 = self;
+    selfCopy = self;
     v21 = v10;
     v20 = v8;
     v13 = WeakRetained;
@@ -775,9 +775,9 @@ LABEL_11:
   return result;
 }
 
-- (BOOL)preConnectWithInterface:(id)a3 error:(id *)a4
+- (BOOL)preConnectWithInterface:(id)interface error:(id *)error
 {
-  v6 = a3;
+  interfaceCopy = interface;
   if (!dispatch_get_specific(self->IsOnSocketQueueOrTargetQueueKey))
   {
     sub_24802D91C();
@@ -787,7 +787,7 @@ LABEL_11:
 
   if (!WeakRetained)
   {
-    if (a4)
+    if (error)
     {
       v9 = @"Attempting to connect without a delegate. Set a delegate first.";
       goto LABEL_15;
@@ -800,7 +800,7 @@ LABEL_30:
 
   if (!self->delegateQueue)
   {
-    if (a4)
+    if (error)
     {
       v9 = @"Attempting to connect without a delegate queue. Set a delegate queue first.";
       goto LABEL_15;
@@ -811,7 +811,7 @@ LABEL_30:
 
   if (![(_DT_GCDAsyncSocket *)self isDisconnected])
   {
-    if (a4)
+    if (error)
     {
       v9 = @"Attempting to connect while connected or accepting connections. Disconnect first.";
       goto LABEL_15;
@@ -823,21 +823,21 @@ LABEL_30:
   config = self->config;
   if ((~config & 3) != 0)
   {
-    if (v6)
+    if (interfaceCopy)
     {
       v19 = 0;
       v20 = 0;
-      [(_DT_GCDAsyncSocket *)self getInterfaceAddress4:&v20 address6:&v19 fromDescription:v6 port:0];
+      [(_DT_GCDAsyncSocket *)self getInterfaceAddress4:&v20 address6:&v19 fromDescription:interfaceCopy port:0];
       v11 = v20;
       v12 = v19;
       v13 = v12;
       if (!(v11 | v12))
       {
-        if (a4)
+        if (error)
         {
           v14 = @"Unknown interface. Specify valid interface by name (e.g. en1) or IP address.";
 LABEL_28:
-          *a4 = [(_DT_GCDAsyncSocket *)self badParamError:v14];
+          *error = [(_DT_GCDAsyncSocket *)self badParamError:v14];
           goto LABEL_29;
         }
 
@@ -846,7 +846,7 @@ LABEL_28:
 
       if ((config & 1) != 0 && !v12)
       {
-        if (a4)
+        if (error)
         {
           v14 = @"IPv4 has been disabled and specified interface doesn't support IPv6.";
           goto LABEL_28;
@@ -859,7 +859,7 @@ LABEL_29:
 
       if ((config & 2) != 0 && !v11)
       {
-        if (a4)
+        if (error)
         {
           v14 = @"IPv6 has been disabled and specified interface doesn't support IPv4.";
           goto LABEL_28;
@@ -882,7 +882,7 @@ LABEL_29:
     goto LABEL_31;
   }
 
-  if (!a4)
+  if (!error)
   {
     goto LABEL_30;
   }
@@ -890,18 +890,18 @@ LABEL_29:
   v9 = @"Both IPv4 and IPv6 have been disabled. Must enable at least one protocol first.";
 LABEL_15:
   [(_DT_GCDAsyncSocket *)self badConfigError:v9];
-  *a4 = v10 = 0;
+  *error = v10 = 0;
 LABEL_31:
 
   return v10;
 }
 
-- (BOOL)connectToHost:(id)a3 onPort:(unsigned __int16)a4 viaInterface:(id)a5 withTimeout:(double)a6 error:(id *)a7
+- (BOOL)connectToHost:(id)host onPort:(unsigned __int16)port viaInterface:(id)interface withTimeout:(double)timeout error:(id *)error
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = [v12 copy];
-  v15 = [v13 copy];
+  hostCopy = host;
+  interfaceCopy = interface;
+  v14 = [hostCopy copy];
+  v15 = [interfaceCopy copy];
   v35 = 0;
   v36 = &v35;
   v37 = 0x2020000000;
@@ -919,17 +919,17 @@ LABEL_31:
   v16 = v14;
   v25 = &v29;
   v22 = v16;
-  v23 = self;
+  selfCopy = self;
   v17 = v15;
-  v28 = a4;
-  v27 = a6;
+  portCopy = port;
+  timeoutCopy = timeout;
   v24 = v17;
   v26 = &v35;
   v18 = _Block_copy(aBlock);
   if (!dispatch_get_specific(self->IsOnSocketQueueOrTargetQueueKey))
   {
     dispatch_sync(self->socketQueue, v18);
-    if (!a7)
+    if (!error)
     {
       goto LABEL_4;
     }
@@ -938,10 +938,10 @@ LABEL_31:
   }
 
   v18[2](v18);
-  if (a7)
+  if (error)
   {
 LABEL_3:
-    *a7 = v30[5];
+    *error = v30[5];
   }
 
 LABEL_4:
@@ -953,12 +953,12 @@ LABEL_4:
   return v19;
 }
 
-- (BOOL)connectToAddress:(id)a3 viaInterface:(id)a4 withTimeout:(double)a5 error:(id *)a6
+- (BOOL)connectToAddress:(id)address viaInterface:(id)interface withTimeout:(double)timeout error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = [v10 copy];
-  v13 = [v11 copy];
+  addressCopy = address;
+  interfaceCopy = interface;
+  v12 = [addressCopy copy];
+  v13 = [interfaceCopy copy];
   v32 = 0;
   v33 = &v32;
   v34 = 0x2020000000;
@@ -976,9 +976,9 @@ LABEL_4:
   v14 = v12;
   v23 = &v26;
   v20 = v14;
-  v21 = self;
+  selfCopy = self;
   v15 = v13;
-  v25 = a5;
+  timeoutCopy = timeout;
   v22 = v15;
   v24 = &v32;
   v16 = _Block_copy(v19);
@@ -993,9 +993,9 @@ LABEL_4:
   }
 
   v17 = *(v33 + 24);
-  if (a6 && (v33[3] & 1) == 0)
+  if (error && (v33[3] & 1) == 0)
   {
-    *a6 = v27[5];
+    *error = v27[5];
     v17 = *(v33 + 24);
   }
 
@@ -1005,29 +1005,29 @@ LABEL_4:
   return v17 & 1;
 }
 
-- (void)lookup:(int)a3 didSucceedWithAddress4:(id)a4 address6:(id)a5
+- (void)lookup:(int)lookup didSucceedWithAddress4:(id)address4 address6:(id)address6
 {
-  v8 = a4;
-  v9 = a5;
+  address4Copy = address4;
+  address6Copy = address6;
   if (!dispatch_get_specific(self->IsOnSocketQueueOrTargetQueueKey))
   {
     sub_24802D988();
   }
 
-  if (!(v8 | v9))
+  if (!(address4Copy | address6Copy))
   {
     sub_24802D9F4();
   }
 
-  if (self->stateIndex == a3)
+  if (self->stateIndex == lookup)
   {
     config = self->config;
-    if (v9 || (config & 1) == 0)
+    if (address6Copy || (config & 1) == 0)
     {
-      if (v8 || (config & 2) == 0)
+      if (address4Copy || (config & 2) == 0)
       {
         v14 = 0;
-        v13 = [(_DT_GCDAsyncSocket *)self connectWithAddress4:v8 address6:v9 error:&v14];
+        v13 = [(_DT_GCDAsyncSocket *)self connectWithAddress4:address4Copy address6:address6Copy error:&v14];
         v12 = v14;
         if (v13)
         {
@@ -1052,37 +1052,37 @@ LABEL_14:
   }
 }
 
-- (void)lookup:(int)a3 didFail:(id)a4
+- (void)lookup:(int)lookup didFail:(id)fail
 {
-  v6 = a4;
+  failCopy = fail;
   if (!dispatch_get_specific(self->IsOnSocketQueueOrTargetQueueKey))
   {
     sub_24802DA60();
   }
 
-  if (self->stateIndex == a3)
+  if (self->stateIndex == lookup)
   {
     [(_DT_GCDAsyncSocket *)self endConnectTimeout];
-    [(_DT_GCDAsyncSocket *)self closeWithError:v6];
+    [(_DT_GCDAsyncSocket *)self closeWithError:failCopy];
   }
 }
 
-- (BOOL)connectWithAddress4:(id)a3 address6:(id)a4 error:(id *)a5
+- (BOOL)connectWithAddress4:(id)address4 address6:(id)address6 error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  address4Copy = address4;
+  address6Copy = address6;
   if (!dispatch_get_specific(self->IsOnSocketQueueOrTargetQueueKey))
   {
     sub_24802DACC();
   }
 
   v10 = (self->config >> 2) & 1;
-  if (!v9)
+  if (!address6Copy)
   {
     v10 = 0;
   }
 
-  if (!v8)
+  if (!address4Copy)
   {
     v10 = 1;
   }
@@ -1109,12 +1109,12 @@ LABEL_14:
 
   if (v10)
   {
-    v13 = v9;
+    v13 = address6Copy;
   }
 
   else
   {
-    v13 = v8;
+    v13 = address4Copy;
   }
 
   if (v10)
@@ -1134,7 +1134,7 @@ LABEL_14:
   v18 = v17;
   if (v15 == -1)
   {
-    if (a5)
+    if (error)
     {
       v19 = @"Error in socket() function";
       goto LABEL_29;
@@ -1155,12 +1155,12 @@ LABEL_30:
 
     if (bind(v15, [v18 bytes], objc_msgSend(v18, "length")))
     {
-      if (a5)
+      if (error)
       {
         v19 = @"Error in bind() function";
 LABEL_29:
         [(_DT_GCDAsyncSocket *)self errnoErrorWithReason:v19];
-        *a5 = v20 = 0;
+        *error = v20 = 0;
         goto LABEL_31;
       }
 
@@ -1192,14 +1192,14 @@ LABEL_31:
   return v20;
 }
 
-- (void)didConnect:(int)a3
+- (void)didConnect:(int)connect
 {
   if (!dispatch_get_specific(self->IsOnSocketQueueOrTargetQueueKey))
   {
     sub_24802DB38();
   }
 
-  if (self->stateIndex == a3)
+  if (self->stateIndex == connect)
   {
     self->flags |= 2u;
     [(_DT_GCDAsyncSocket *)self endConnectTimeout];
@@ -1217,8 +1217,8 @@ LABEL_31:
     v21 = stateIndex;
     v20[4] = self;
     v7 = _Block_copy(v20);
-    v8 = [(_DT_GCDAsyncSocket *)self connectedHost];
-    v9 = [(_DT_GCDAsyncSocket *)self connectedPort];
+    connectedHost = [(_DT_GCDAsyncSocket *)self connectedHost];
+    connectedPort = [(_DT_GCDAsyncSocket *)self connectedPort];
     WeakRetained = objc_loadWeakRetained(&self->delegate);
     if (self->delegateQueue && (objc_opt_respondsToSelector() & 1) != 0)
     {
@@ -1229,9 +1229,9 @@ LABEL_31:
       block[2] = sub_247FA06A4;
       block[3] = &unk_278EF2988;
       v15 = WeakRetained;
-      v16 = self;
-      v17 = v8;
-      v19 = v9;
+      selfCopy = self;
+      v17 = connectedHost;
+      v19 = connectedPort;
       v18 = v7;
       dispatch_async(delegateQueue, block);
     }
@@ -1263,23 +1263,23 @@ LABEL_31:
   }
 }
 
-- (void)didNotConnect:(int)a3 error:(id)a4
+- (void)didNotConnect:(int)connect error:(id)error
 {
-  v6 = a4;
+  errorCopy = error;
   if (!dispatch_get_specific(self->IsOnSocketQueueOrTargetQueueKey))
   {
     sub_24802DBA4();
   }
 
-  if (self->stateIndex == a3)
+  if (self->stateIndex == connect)
   {
-    [(_DT_GCDAsyncSocket *)self closeWithError:v6];
+    [(_DT_GCDAsyncSocket *)self closeWithError:errorCopy];
   }
 }
 
-- (void)startConnectTimeout:(double)a3
+- (void)startConnectTimeout:(double)timeout
 {
-  if (a3 >= 0.0)
+  if (timeout >= 0.0)
   {
     location[1] = v6;
     location[2] = v5;
@@ -1297,7 +1297,7 @@ LABEL_31:
     v13[3] = &unk_278EF1238;
     objc_copyWeak(&v14, location);
     dispatch_source_set_event_handler(v11, v13);
-    v12 = dispatch_time(0, (a3 * 1000000000.0));
+    v12 = dispatch_time(0, (timeout * 1000000000.0));
     dispatch_source_set_timer(self->connectTimer, v12, 0xFFFFFFFFFFFFFFFFLL, 0);
     dispatch_resume(self->connectTimer);
     objc_destroyWeak(&v14);
@@ -1332,13 +1332,13 @@ LABEL_31:
 - (void)doConnectTimeout
 {
   [(_DT_GCDAsyncSocket *)self endConnectTimeout];
-  v3 = [(_DT_GCDAsyncSocket *)self connectTimeoutError];
-  [(_DT_GCDAsyncSocket *)self closeWithError:v3];
+  connectTimeoutError = [(_DT_GCDAsyncSocket *)self connectTimeoutError];
+  [(_DT_GCDAsyncSocket *)self closeWithError:connectTimeoutError];
 }
 
-- (void)closeWithError:(id)a3
+- (void)closeWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   if (!dispatch_get_specific(self->IsOnSocketQueueOrTargetQueueKey))
   {
     sub_24802DC10();
@@ -1467,15 +1467,15 @@ LABEL_25:
     WeakRetained = objc_loadWeakRetained(&self->delegate);
     if ((flags & 0x10000) != 0)
     {
-      v19 = 0;
+      selfCopy = 0;
     }
 
     else
     {
-      v19 = self;
+      selfCopy = self;
     }
 
-    v20 = v19;
+    v20 = selfCopy;
     if (self->delegateQueue && (objc_opt_respondsToSelector() & 1) != 0)
     {
       delegateQueue = self->delegateQueue;
@@ -1485,7 +1485,7 @@ LABEL_25:
       block[3] = &unk_278EF2788;
       v25 = WeakRetained;
       v26 = v20;
-      v27 = v4;
+      v27 = errorCopy;
       dispatch_async(delegateQueue, block);
     }
   }
@@ -1582,38 +1582,38 @@ LABEL_12:
   [(_DT_GCDAsyncSocket *)self closeWithError:0];
 }
 
-- (id)badConfigError:(id)a3
+- (id)badConfigError:(id)error
 {
-  v3 = [MEMORY[0x277CBEAC0] dictionaryWithObject:a3 forKey:*MEMORY[0x277CCA450]];
+  v3 = [MEMORY[0x277CBEAC0] dictionaryWithObject:error forKey:*MEMORY[0x277CCA450]];
   v4 = [MEMORY[0x277CCA9B8] errorWithDomain:@"GCDAsyncSocketErrorDomain" code:1 userInfo:v3];
 
   return v4;
 }
 
-- (id)badParamError:(id)a3
+- (id)badParamError:(id)error
 {
-  v3 = [MEMORY[0x277CBEAC0] dictionaryWithObject:a3 forKey:*MEMORY[0x277CCA450]];
+  v3 = [MEMORY[0x277CBEAC0] dictionaryWithObject:error forKey:*MEMORY[0x277CCA450]];
   v4 = [MEMORY[0x277CCA9B8] errorWithDomain:@"GCDAsyncSocketErrorDomain" code:2 userInfo:v3];
 
   return v4;
 }
 
-+ (id)gaiError:(int)a3
++ (id)gaiError:(int)error
 {
-  v4 = [MEMORY[0x277CCACA8] stringWithCString:gai_strerror(a3) encoding:1];
+  v4 = [MEMORY[0x277CCACA8] stringWithCString:gai_strerror(error) encoding:1];
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObject:v4 forKey:*MEMORY[0x277CCA450]];
-  v6 = [MEMORY[0x277CCA9B8] errorWithDomain:@"kCFStreamErrorDomainNetDB" code:a3 userInfo:v5];
+  v6 = [MEMORY[0x277CCA9B8] errorWithDomain:@"kCFStreamErrorDomainNetDB" code:error userInfo:v5];
 
   return v6;
 }
 
-- (id)errnoErrorWithReason:(id)a3
+- (id)errnoErrorWithReason:(id)reason
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = a3;
+  reasonCopy = reason;
   v5 = __error();
   v6 = [v3 stringWithUTF8String:strerror(*v5)];
-  v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{v6, *MEMORY[0x277CCA450], v4, *MEMORY[0x277CCA470], 0}];
+  v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{v6, *MEMORY[0x277CCA450], reasonCopy, *MEMORY[0x277CCA470], 0}];
 
   v8 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:*__error() userInfo:v7];
 
@@ -1631,18 +1631,18 @@ LABEL_12:
   return v6;
 }
 
-- (id)sslError:(int)a3
+- (id)sslError:(int)error
 {
   v4 = [MEMORY[0x277CBEAC0] dictionaryWithObject:@"Error code definition can be found in Apple's SecureTransport.h" forKey:*MEMORY[0x277CCA498]];
-  v5 = [MEMORY[0x277CCA9B8] errorWithDomain:@"kCFStreamErrorDomainSSL" code:a3 userInfo:v4];
+  v5 = [MEMORY[0x277CCA9B8] errorWithDomain:@"kCFStreamErrorDomainSSL" code:error userInfo:v4];
 
   return v5;
 }
 
 - (id)connectTimeoutError
 {
-  v2 = [MEMORY[0x277CCA8D8] mainBundle];
-  v3 = [v2 localizedStringForKey:@"GCDAsyncSocketConnectTimeoutError" value:@"Attempt to connect to host timed out" table:@"_DT_GCDAsyncSocket"];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v3 = [mainBundle localizedStringForKey:@"GCDAsyncSocketConnectTimeoutError" value:@"Attempt to connect to host timed out" table:@"_DT_GCDAsyncSocket"];
 
   v4 = [MEMORY[0x277CBEAC0] dictionaryWithObject:v3 forKey:*MEMORY[0x277CCA450]];
   v5 = [MEMORY[0x277CCA9B8] errorWithDomain:@"GCDAsyncSocketErrorDomain" code:3 userInfo:v4];
@@ -1652,8 +1652,8 @@ LABEL_12:
 
 - (id)readMaxedOutError
 {
-  v2 = [MEMORY[0x277CCA8D8] mainBundle];
-  v3 = [v2 localizedStringForKey:@"GCDAsyncSocketReadMaxedOutError" value:@"Read operation reached set maximum length" table:@"_DT_GCDAsyncSocket"];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v3 = [mainBundle localizedStringForKey:@"GCDAsyncSocketReadMaxedOutError" value:@"Read operation reached set maximum length" table:@"_DT_GCDAsyncSocket"];
 
   v4 = [MEMORY[0x277CBEAC0] dictionaryWithObject:v3 forKey:*MEMORY[0x277CCA450]];
   v5 = [MEMORY[0x277CCA9B8] errorWithDomain:@"GCDAsyncSocketErrorDomain" code:6 userInfo:v4];
@@ -1663,8 +1663,8 @@ LABEL_12:
 
 - (id)readTimeoutError
 {
-  v2 = [MEMORY[0x277CCA8D8] mainBundle];
-  v3 = [v2 localizedStringForKey:@"GCDAsyncSocketReadTimeoutError" value:@"Read operation timed out" table:@"_DT_GCDAsyncSocket"];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v3 = [mainBundle localizedStringForKey:@"GCDAsyncSocketReadTimeoutError" value:@"Read operation timed out" table:@"_DT_GCDAsyncSocket"];
 
   v4 = [MEMORY[0x277CBEAC0] dictionaryWithObject:v3 forKey:*MEMORY[0x277CCA450]];
   v5 = [MEMORY[0x277CCA9B8] errorWithDomain:@"GCDAsyncSocketErrorDomain" code:4 userInfo:v4];
@@ -1674,8 +1674,8 @@ LABEL_12:
 
 - (id)writeTimeoutError
 {
-  v2 = [MEMORY[0x277CCA8D8] mainBundle];
-  v3 = [v2 localizedStringForKey:@"GCDAsyncSocketWriteTimeoutError" value:@"Write operation timed out" table:@"_DT_GCDAsyncSocket"];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v3 = [mainBundle localizedStringForKey:@"GCDAsyncSocketWriteTimeoutError" value:@"Write operation timed out" table:@"_DT_GCDAsyncSocket"];
 
   v4 = [MEMORY[0x277CBEAC0] dictionaryWithObject:v3 forKey:*MEMORY[0x277CCA450]];
   v5 = [MEMORY[0x277CCA9B8] errorWithDomain:@"GCDAsyncSocketErrorDomain" code:5 userInfo:v4];
@@ -1685,8 +1685,8 @@ LABEL_12:
 
 - (id)connectionClosedError
 {
-  v2 = [MEMORY[0x277CCA8D8] mainBundle];
-  v3 = [v2 localizedStringForKey:@"GCDAsyncSocketClosedError" value:@"Socket closed by remote peer" table:@"_DT_GCDAsyncSocket"];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v3 = [mainBundle localizedStringForKey:@"GCDAsyncSocketClosedError" value:@"Socket closed by remote peer" table:@"_DT_GCDAsyncSocket"];
 
   v4 = [MEMORY[0x277CBEAC0] dictionaryWithObject:v3 forKey:*MEMORY[0x277CCA450]];
   v5 = [MEMORY[0x277CCA9B8] errorWithDomain:@"GCDAsyncSocketErrorDomain" code:7 userInfo:v4];
@@ -1694,9 +1694,9 @@ LABEL_12:
   return v5;
 }
 
-- (id)otherError:(id)a3
+- (id)otherError:(id)error
 {
-  v3 = [MEMORY[0x277CBEAC0] dictionaryWithObject:a3 forKey:*MEMORY[0x277CCA450]];
+  v3 = [MEMORY[0x277CBEAC0] dictionaryWithObject:error forKey:*MEMORY[0x277CCA450]];
   v4 = [MEMORY[0x277CCA9B8] errorWithDomain:@"GCDAsyncSocketErrorDomain" code:8 userInfo:v3];
 
   return v4;
@@ -2030,13 +2030,13 @@ LABEL_8:
   }
 }
 
-- (id)connectedHostFromSocket4:(int)a3
+- (id)connectedHostFromSocket4:(int)socket4
 {
   v8 = *MEMORY[0x277D85DE8];
   *&v7.sa_len = 0;
   *&v7.sa_data[6] = 0;
   v6 = 16;
-  if (getpeername(a3, &v7, &v6) < 0)
+  if (getpeername(socket4, &v7, &v6) < 0)
   {
     v3 = 0;
   }
@@ -2051,14 +2051,14 @@ LABEL_8:
   return v3;
 }
 
-- (id)connectedHostFromSocket6:(int)a3
+- (id)connectedHostFromSocket6:(int)socket6
 {
   *&v6.sa_len = 0;
   *&v6.sa_data[6] = 0;
   v8 = 0;
   v7 = 0;
   v5 = 28;
-  if (getpeername(a3, &v6, &v5) < 0)
+  if (getpeername(socket6, &v6, &v5) < 0)
   {
     v3 = 0;
   }
@@ -2071,13 +2071,13 @@ LABEL_8:
   return v3;
 }
 
-- (unsigned)connectedPortFromSocket4:(int)a3
+- (unsigned)connectedPortFromSocket4:(int)socket4
 {
   v7 = *MEMORY[0x277D85DE8];
   *&v6.sa_len = 0;
   *&v6.sa_data[6] = 0;
   v5 = 16;
-  if (getpeername(a3, &v6, &v5) < 0)
+  if (getpeername(socket4, &v6, &v5) < 0)
   {
     result = 0;
   }
@@ -2091,14 +2091,14 @@ LABEL_8:
   return result;
 }
 
-- (unsigned)connectedPortFromSocket6:(int)a3
+- (unsigned)connectedPortFromSocket6:(int)socket6
 {
   *&v5.sa_len = 0;
   *&v5.sa_data[6] = 0;
   v7 = 0;
   v6 = 0;
   v4 = 28;
-  if (getpeername(a3, &v5, &v4) < 0)
+  if (getpeername(socket6, &v5, &v4) < 0)
   {
     return 0;
   }
@@ -2109,13 +2109,13 @@ LABEL_8:
   }
 }
 
-- (id)localHostFromSocket4:(int)a3
+- (id)localHostFromSocket4:(int)socket4
 {
   v8 = *MEMORY[0x277D85DE8];
   *&v7.sa_len = 0;
   *&v7.sa_data[6] = 0;
   v6 = 16;
-  if (getsockname(a3, &v7, &v6) < 0)
+  if (getsockname(socket4, &v7, &v6) < 0)
   {
     v3 = 0;
   }
@@ -2130,14 +2130,14 @@ LABEL_8:
   return v3;
 }
 
-- (id)localHostFromSocket6:(int)a3
+- (id)localHostFromSocket6:(int)socket6
 {
   *&v6.sa_len = 0;
   *&v6.sa_data[6] = 0;
   v8 = 0;
   v7 = 0;
   v5 = 28;
-  if (getsockname(a3, &v6, &v5) < 0)
+  if (getsockname(socket6, &v6, &v5) < 0)
   {
     v3 = 0;
   }
@@ -2150,13 +2150,13 @@ LABEL_8:
   return v3;
 }
 
-- (unsigned)localPortFromSocket4:(int)a3
+- (unsigned)localPortFromSocket4:(int)socket4
 {
   v7 = *MEMORY[0x277D85DE8];
   *&v6.sa_len = 0;
   *&v6.sa_data[6] = 0;
   v5 = 16;
-  if (getsockname(a3, &v6, &v5) < 0)
+  if (getsockname(socket4, &v6, &v5) < 0)
   {
     result = 0;
   }
@@ -2170,14 +2170,14 @@ LABEL_8:
   return result;
 }
 
-- (unsigned)localPortFromSocket6:(int)a3
+- (unsigned)localPortFromSocket6:(int)socket6
 {
   *&v5.sa_len = 0;
   *&v5.sa_data[6] = 0;
   v7 = 0;
   v6 = 0;
   v4 = 28;
-  if (getsockname(a3, &v5, &v4) < 0)
+  if (getsockname(socket6, &v5, &v4) < 0)
   {
     return 0;
   }
@@ -2310,10 +2310,10 @@ LABEL_8:
 
 - (BOOL)isSecure
 {
-  v2 = self;
+  selfCopy = self;
   if (dispatch_get_specific(self->IsOnSocketQueueOrTargetQueueKey))
   {
-    LODWORD(v2) = (BYTE1(v2->flags) >> 5) & 1;
+    LODWORD(selfCopy) = (BYTE1(selfCopy->flags) >> 5) & 1;
   }
 
   else
@@ -2322,27 +2322,27 @@ LABEL_8:
     v7 = &v6;
     v8 = 0x2020000000;
     v9 = 0;
-    socketQueue = v2->socketQueue;
+    socketQueue = selfCopy->socketQueue;
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
     v5[2] = sub_247FA2F30;
     v5[3] = &unk_278EF2738;
-    v5[4] = v2;
+    v5[4] = selfCopy;
     v5[5] = &v6;
     dispatch_sync(socketQueue, v5);
-    LOBYTE(v2) = *(v7 + 24);
+    LOBYTE(selfCopy) = *(v7 + 24);
     _Block_object_dispose(&v6, 8);
   }
 
-  return v2 & 1;
+  return selfCopy & 1;
 }
 
-- (void)getInterfaceAddress4:(id *)a3 address6:(id *)a4 fromDescription:(id)a5 port:(unsigned __int16)a6
+- (void)getInterfaceAddress4:(id *)address4 address6:(id *)address6 fromDescription:(id)description port:(unsigned __int16)port
 {
-  v6 = a6;
+  portCopy = port;
   v32 = *MEMORY[0x277D85DE8];
-  v9 = a5;
-  v10 = [v9 componentsSeparatedByString:@":"];
+  descriptionCopy = description;
+  v10 = [descriptionCopy componentsSeparatedByString:@":"];
   if ([v10 count])
   {
     v11 = [v10 objectAtIndex:0];
@@ -2363,19 +2363,19 @@ LABEL_8:
   }
 
   v13 = [v10 count];
-  if (!v6 && v13 >= 2)
+  if (!portCopy && v13 >= 2)
   {
     v14 = [v10 objectAtIndex:1];
     v15 = strtol([v14 UTF8String], 0, 10);
 
     if ((v15 - 1) >= 0xFFFF)
     {
-      v6 = 0;
+      portCopy = 0;
     }
 
     else
     {
-      v6 = v15;
+      portCopy = v15;
     }
   }
 
@@ -2383,7 +2383,7 @@ LABEL_8:
   {
     *&__s1[8] = 0;
     *__s1 = 528;
-    *&__s1[2] = bswap32(v6) >> 16;
+    *&__s1[2] = bswap32(portCopy) >> 16;
     *&__s1[4] = 0;
     memset(v30 + 4, 0, 24);
     LOWORD(v30[0]) = 7708;
@@ -2396,7 +2396,7 @@ LABEL_8:
   {
     *&__s1[8] = 0;
     *__s1 = 528;
-    *&__s1[2] = bswap32(v6) >> 16;
+    *&__s1[2] = bswap32(portCopy) >> 16;
     *&__s1[4] = 16777343;
     memset(v30 + 4, 0, 24);
     LOWORD(v30[0]) = 7708;
@@ -2409,7 +2409,7 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  v22 = [v12 UTF8String];
+  uTF8String = [v12 UTF8String];
   v29 = 0;
   v18 = 0;
   v17 = 0;
@@ -2420,14 +2420,14 @@ LABEL_17:
     {
       v17 = 0;
       v18 = 0;
-      v24 = bswap32(v6) >> 16;
+      v24 = bswap32(portCopy) >> 16;
       do
       {
         if (v17 || (v25 = v23->ifa_addr, v25->sa_family != 2))
         {
           if (!v18)
           {
-            if (v23->ifa_addr->sa_family == 30 && ((memset(__s1, 0, 28), ifa_addr = v23->ifa_addr, v27 = *&ifa_addr->sa_data[10], *__s1 = *ifa_addr, *&__s1[12] = v27, !strcmp(v23->ifa_name, v22)) || inet_ntop(30, &__s1[8], v30, 0x2Eu) && !strcmp(v30, v22)))
+            if (v23->ifa_addr->sa_family == 30 && ((memset(__s1, 0, 28), ifa_addr = v23->ifa_addr, v27 = *&ifa_addr->sa_data[10], *__s1 = *ifa_addr, *&__s1[12] = v27, !strcmp(v23->ifa_name, uTF8String)) || inet_ntop(30, &__s1[8], v30, 0x2Eu) && !strcmp(v30, uTF8String)))
             {
               *&__s1[2] = v24;
               v18 = [MEMORY[0x277CBEB28] dataWithBytes:__s1 length:28];
@@ -2444,7 +2444,7 @@ LABEL_17:
         {
           v30[0] = 0uLL;
           v30[0] = *v25;
-          if (!strcmp(v23->ifa_name, v22) || inet_ntop(2, v30 + 4, __s1, 0x10u) && !strcmp(__s1, v22))
+          if (!strcmp(v23->ifa_name, uTF8String) || inet_ntop(2, v30 + 4, __s1, 0x10u) && !strcmp(__s1, uTF8String))
           {
             WORD1(v30[0]) = v24;
             v17 = [MEMORY[0x277CBEB28] dataWithBytes:v30 length:16];
@@ -2474,29 +2474,29 @@ LABEL_17:
   }
 
 LABEL_18:
-  if (a3)
+  if (address4)
   {
     v19 = v17;
-    *a3 = v17;
+    *address4 = v17;
   }
 
-  if (a4)
+  if (address6)
   {
     v20 = v18;
-    *a4 = v18;
+    *address6 = v18;
   }
 
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setupReadAndWriteSourcesForNewlyConnectedSocket:(int)a3
+- (void)setupReadAndWriteSourcesForNewlyConnectedSocket:(int)socket
 {
-  v5 = a3;
-  v6 = dispatch_source_create(MEMORY[0x277D85D28], a3, 0, self->socketQueue);
+  socketCopy = socket;
+  v6 = dispatch_source_create(MEMORY[0x277D85D28], socket, 0, self->socketQueue);
   readSource = self->readSource;
   self->readSource = v6;
 
-  v8 = dispatch_source_create(MEMORY[0x277D85D50], v5, 0, self->socketQueue);
+  v8 = dispatch_source_create(MEMORY[0x277D85D50], socketCopy, 0, self->socketQueue);
   writeSource = self->writeSource;
   self->writeSource = v8;
 
@@ -2525,7 +2525,7 @@ LABEL_18:
   v16[2] = sub_247FA3644;
   v16[3] = &unk_278EF29B0;
   v16[4] = v18;
-  v17 = a3;
+  socketCopy2 = socket;
   dispatch_source_set_cancel_handler(v12, v16);
   v13 = self->writeSource;
   v14[0] = MEMORY[0x277D85DD0];
@@ -2533,7 +2533,7 @@ LABEL_18:
   v14[2] = sub_247FA3668;
   v14[3] = &unk_278EF29B0;
   v14[4] = v18;
-  v15 = a3;
+  socketCopy3 = socket;
   dispatch_source_set_cancel_handler(v13, v14);
   self->socketFDBytesAvailable = 0;
   self->flags &= ~0x100u;
@@ -2581,12 +2581,12 @@ LABEL_18:
   }
 }
 
-- (void)readDataWithTimeout:(double)a3 buffer:(id)a4 bufferOffset:(unint64_t)a5 maxLength:(unint64_t)a6 tag:(int64_t)a7
+- (void)readDataWithTimeout:(double)timeout buffer:(id)buffer bufferOffset:(unint64_t)offset maxLength:(unint64_t)length tag:(int64_t)tag
 {
-  v12 = a4;
-  if ([v12 length] >= a5)
+  bufferCopy = buffer;
+  if ([bufferCopy length] >= offset)
   {
-    v13 = [[_DT_GCDAsyncReadPacket alloc] initWithData:v12 startOffset:a5 maxLength:a6 timeout:0 readLength:0 terminator:a7 tag:a3];
+    v13 = [[_DT_GCDAsyncReadPacket alloc] initWithData:bufferCopy startOffset:offset maxLength:length timeout:0 readLength:0 terminator:tag tag:timeout];
     socketQueue = self->socketQueue;
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
@@ -2599,13 +2599,13 @@ LABEL_18:
   }
 }
 
-- (void)readDataToLength:(unint64_t)a3 withTimeout:(double)a4 buffer:(id)a5 bufferOffset:(unint64_t)a6 tag:(int64_t)a7
+- (void)readDataToLength:(unint64_t)length withTimeout:(double)timeout buffer:(id)buffer bufferOffset:(unint64_t)offset tag:(int64_t)tag
 {
-  v12 = a5;
-  v13 = v12;
-  if (a3 && [v12 length] >= a6)
+  bufferCopy = buffer;
+  v13 = bufferCopy;
+  if (length && [bufferCopy length] >= offset)
   {
-    v14 = [[_DT_GCDAsyncReadPacket alloc] initWithData:v13 startOffset:a6 maxLength:0 timeout:a3 readLength:0 terminator:a7 tag:a4];
+    v14 = [[_DT_GCDAsyncReadPacket alloc] initWithData:v13 startOffset:offset maxLength:0 timeout:length readLength:0 terminator:tag tag:timeout];
     socketQueue = self->socketQueue;
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
@@ -2618,13 +2618,13 @@ LABEL_18:
   }
 }
 
-- (void)readDataToData:(id)a3 withTimeout:(double)a4 buffer:(id)a5 bufferOffset:(unint64_t)a6 maxLength:(unint64_t)a7 tag:(int64_t)a8
+- (void)readDataToData:(id)data withTimeout:(double)timeout buffer:(id)buffer bufferOffset:(unint64_t)offset maxLength:(unint64_t)length tag:(int64_t)tag
 {
-  v14 = a3;
-  v15 = a5;
-  if ([v14 length] && objc_msgSend(v15, "length") >= a6 && (!a7 || objc_msgSend(v14, "length") <= a7))
+  dataCopy = data;
+  bufferCopy = buffer;
+  if ([dataCopy length] && objc_msgSend(bufferCopy, "length") >= offset && (!length || objc_msgSend(dataCopy, "length") <= length))
   {
-    v16 = [[_DT_GCDAsyncReadPacket alloc] initWithData:v15 startOffset:a6 maxLength:a7 timeout:0 readLength:v14 terminator:a8 tag:a4];
+    v16 = [[_DT_GCDAsyncReadPacket alloc] initWithData:bufferCopy startOffset:offset maxLength:length timeout:0 readLength:dataCopy terminator:tag tag:timeout];
     socketQueue = self->socketQueue;
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
@@ -2637,7 +2637,7 @@ LABEL_18:
   }
 }
 
-- (float)progressOfReadReturningTag:(int64_t *)a3 bytesDone:(unint64_t *)a4 total:(unint64_t *)a5
+- (float)progressOfReadReturningTag:(int64_t *)tag bytesDone:(unint64_t *)done total:(unint64_t *)total
 {
   v10 = 0;
   v11 = &v10;
@@ -2647,9 +2647,9 @@ LABEL_18:
   aBlock[1] = 3221225472;
   aBlock[2] = sub_247FA3D98;
   aBlock[3] = &unk_278EF29D8;
-  aBlock[6] = a3;
-  aBlock[7] = a4;
-  aBlock[8] = a5;
+  aBlock[6] = tag;
+  aBlock[7] = done;
+  aBlock[8] = total;
   aBlock[4] = self;
   aBlock[5] = &v10;
   v6 = _Block_copy(aBlock);
@@ -2768,9 +2768,9 @@ LABEL_18:
       while (v10[3])
       {
         [(_DT_GCDAsyncSocketPreBuffer *)self->preBuffer ensureCapacityForWrite:?];
-        v5 = [(_DT_GCDAsyncSocketPreBuffer *)self->preBuffer writeBuffer];
+        writeBuffer = [(_DT_GCDAsyncSocketPreBuffer *)self->preBuffer writeBuffer];
         processed = 0;
-        v6 = SSLRead(self->sslContext, v5, v10[3], &processed);
+        v6 = SSLRead(self->sslContext, writeBuffer, v10[3], &processed);
         if (processed)
         {
           [(_DT_GCDAsyncSocketPreBuffer *)self->preBuffer didWrite:?];
@@ -2834,10 +2834,10 @@ LABEL_19:
     socketFDBytesAvailable = self->socketFDBytesAvailable;
     if ((self->flags & 0x2000) != 0)
     {
-      v6 = [(_DT_GCDAsyncSocketPreBuffer *)self->sslPreBuffer availableBytes];
+      availableBytes = [(_DT_GCDAsyncSocketPreBuffer *)self->sslPreBuffer availableBytes];
       bufferSize = 0;
       SSLGetBufferedReadSize(self->sslContext, &bufferSize);
-      socketFDBytesAvailable += v6 + bufferSize;
+      socketFDBytesAvailable += availableBytes + bufferSize;
     }
 
     if (socketFDBytesAvailable)
@@ -2886,7 +2886,7 @@ LABEL_22:
       readLength = v13->readLength;
       if (readLength)
       {
-        v12 = 0;
+        readMaxedOutError = 0;
         v15 = v13->bytesDone == readLength;
 LABEL_36:
         v58 = v15;
@@ -2906,7 +2906,7 @@ LABEL_36:
           v15 = 0;
         }
 
-        v12 = 0;
+        readMaxedOutError = 0;
         goto LABEL_36;
       }
 
@@ -2917,7 +2917,7 @@ LABEL_36:
         {
           if (v13->bytesDone >= v22)
           {
-            v12 = [(_DT_GCDAsyncSocket *)self readMaxedOutError];
+            readMaxedOutError = [(_DT_GCDAsyncSocket *)self readMaxedOutError];
             goto LABEL_37;
           }
         }
@@ -2929,10 +2929,10 @@ LABEL_36:
       v11 = 0;
     }
 
-    v12 = 0;
+    readMaxedOutError = 0;
 LABEL_37:
     v16 = self->flags;
-    if (v58 || v12)
+    if (v58 || readMaxedOutError)
     {
       v18 = 0;
       v21 = (v16 >> 14) & 1;
@@ -2957,7 +2957,7 @@ LABEL_37:
 
     if ((v16 & 0x4000) != 0)
     {
-      v12 = 0;
+      readMaxedOutError = 0;
       v18 = 0;
       v21 = 1;
     }
@@ -2980,19 +2980,19 @@ LABEL_37:
             if (v57 == 1)
             {
               [(_DT_GCDAsyncSocketPreBuffer *)self->preBuffer ensureCapacityForWrite:v24];
-              v25 = [(_DT_GCDAsyncSocketPreBuffer *)self->preBuffer writeBuffer];
+              writeBuffer = [(_DT_GCDAsyncSocketPreBuffer *)self->preBuffer writeBuffer];
             }
 
             else
             {
               [(_DT_GCDAsyncReadPacket *)*p_currentRead ensureCapacityForAdditionalDataOfLength:v24];
-              v25 = ([(NSMutableData *)(*p_currentRead)->buffer mutableBytes]+ (*p_currentRead)->startOffset + (*p_currentRead)->bytesDone);
+              writeBuffer = ([(NSMutableData *)(*p_currentRead)->buffer mutableBytes]+ (*p_currentRead)->startOffset + (*p_currentRead)->bytesDone);
             }
 
-            v35 = CFReadStreamRead(self->readStream, v25, v24);
+            v35 = CFReadStreamRead(self->readStream, writeBuffer, v24);
             if (v35 < 0)
             {
-              v12 = CFReadStreamCopyError(self->readStream);
+              readMaxedOutError = CFReadStreamCopyError(self->readStream);
               v31 = 0;
               v18 = 0;
               v21 = 0;
@@ -3001,7 +3001,7 @@ LABEL_37:
             else
             {
               v31 = v35;
-              v12 = 0;
+              readMaxedOutError = 0;
               v21 = v35 == 0;
               if (v35)
               {
@@ -3033,20 +3033,20 @@ LABEL_37:
             if (v57 == 1)
             {
               [(_DT_GCDAsyncSocketPreBuffer *)self->preBuffer ensureCapacityForWrite:v27];
-              v25 = [(_DT_GCDAsyncSocketPreBuffer *)self->preBuffer writeBuffer];
+              writeBuffer = [(_DT_GCDAsyncSocketPreBuffer *)self->preBuffer writeBuffer];
             }
 
             else
             {
               [(_DT_GCDAsyncReadPacket *)*p_currentRead ensureCapacityForAdditionalDataOfLength:v27];
-              v25 = ([(NSMutableData *)(*p_currentRead)->buffer mutableBytes]+ (*p_currentRead)->startOffset + (*p_currentRead)->bytesDone);
+              writeBuffer = ([(NSMutableData *)(*p_currentRead)->buffer mutableBytes]+ (*p_currentRead)->startOffset + (*p_currentRead)->bytesDone);
             }
 
             v31 = 0;
             do
             {
               bufferSize = 0;
-              v36 = SSLRead(self->sslContext, &v25[v31], v27 - v31, &bufferSize);
+              v36 = SSLRead(self->sslContext, &writeBuffer[v31], v27 - v31, &bufferSize);
               v31 += bufferSize;
               if (v36)
               {
@@ -3060,7 +3060,7 @@ LABEL_37:
             }
 
             while (!v37);
-            v12 = 0;
+            readMaxedOutError = 0;
             v21 = 0;
             if (v36 == -9803)
             {
@@ -3071,14 +3071,14 @@ LABEL_37:
             {
               if (v36 >> 1 == 2147478745)
               {
-                v12 = 0;
+                readMaxedOutError = 0;
                 self->sslErrCode = v36;
                 v21 = 1;
               }
 
               else
               {
-                v12 = [(_DT_GCDAsyncSocket *)self sslError:v36];
+                readMaxedOutError = [(_DT_GCDAsyncSocket *)self sslError:v36];
                 v21 = 0;
               }
             }
@@ -3113,13 +3113,13 @@ LABEL_119:
           if (v57 == 1)
           {
             [(_DT_GCDAsyncSocketPreBuffer *)self->preBuffer ensureCapacityForWrite:v20];
-            v25 = [(_DT_GCDAsyncSocketPreBuffer *)self->preBuffer writeBuffer];
+            writeBuffer = [(_DT_GCDAsyncSocketPreBuffer *)self->preBuffer writeBuffer];
           }
 
           else
           {
             [(_DT_GCDAsyncReadPacket *)*p_currentRead ensureCapacityForAdditionalDataOfLength:v20];
-            v25 = ([(NSMutableData *)(*p_currentRead)->buffer mutableBytes]+ (*p_currentRead)->startOffset + (*p_currentRead)->bytesDone);
+            writeBuffer = ([(NSMutableData *)(*p_currentRead)->buffer mutableBytes]+ (*p_currentRead)->startOffset + (*p_currentRead)->bytesDone);
           }
 
           socket4FD = self->socket4FD;
@@ -3128,19 +3128,19 @@ LABEL_119:
             socket4FD = self->socket6FD;
           }
 
-          v30 = read(socket4FD, v25, v28);
+          v30 = read(socket4FD, writeBuffer, v28);
           if ((v30 & 0x8000000000000000) != 0)
           {
             v34 = *__error();
             v18 = v34 == 35;
             if (v34 == 35)
             {
-              v12 = 0;
+              readMaxedOutError = 0;
             }
 
             else
             {
-              v12 = [(_DT_GCDAsyncSocket *)self errnoErrorWithReason:@"Error in read() function"];
+              readMaxedOutError = [(_DT_GCDAsyncSocket *)self errnoErrorWithReason:@"Error in read() function"];
             }
 
             v21 = 0;
@@ -3152,7 +3152,7 @@ LABEL_119:
           if (!v30)
           {
             v18 = 0;
-            v12 = 0;
+            readMaxedOutError = 0;
             self->socketFDBytesAvailable = 0;
             v21 = 1;
             goto LABEL_119;
@@ -3176,7 +3176,7 @@ LABEL_119:
             v33 = 1;
           }
 
-          v12 = 0;
+          readMaxedOutError = 0;
           v21 = 0;
           self->socketFDBytesAvailable = v32;
           v18 = v33 | v17;
@@ -3246,9 +3246,9 @@ LABEL_149:
             v47 = (*p_currentRead)->maxLength;
             if (v47 && (*p_currentRead)->bytesDone >= v47)
             {
-              v48 = [(_DT_GCDAsyncSocket *)self readMaxedOutError];
+              readMaxedOutError2 = [(_DT_GCDAsyncSocket *)self readMaxedOutError];
 
-              v12 = v48;
+              readMaxedOutError = readMaxedOutError2;
             }
 
             goto LABEL_119;
@@ -3256,7 +3256,7 @@ LABEL_149:
 
           v31 -= v45;
           [(_DT_GCDAsyncSocketPreBuffer *)self->preBuffer ensureCapacityForWrite:v45];
-          memcpy([(_DT_GCDAsyncSocketPreBuffer *)self->preBuffer writeBuffer], &v25[v31], v46);
+          memcpy([(_DT_GCDAsyncSocketPreBuffer *)self->preBuffer writeBuffer], &writeBuffer[v31], v46);
           [(_DT_GCDAsyncSocketPreBuffer *)self->preBuffer didWrite:v46];
         }
 
@@ -3266,7 +3266,7 @@ LABEL_149:
         goto LABEL_119;
       }
 
-      v12 = 0;
+      readMaxedOutError = 0;
       v21 = 0;
       v18 = 1;
     }
@@ -3286,7 +3286,7 @@ LABEL_120:
           v51 = sub_247FA4B9C;
           v52 = &unk_278EF2A00;
           v53 = WeakRetained;
-          v54 = self;
+          selfCopy = self;
           v55 = v11;
           v56 = tag;
           dispatch_async(delegateQueue, &v49);
@@ -3300,7 +3300,7 @@ LABEL_120:
     if (!v11)
     {
 LABEL_127:
-      if (v12)
+      if (readMaxedOutError)
       {
         goto LABEL_128;
       }
@@ -3322,10 +3322,10 @@ LABEL_130:
 
 LABEL_50:
     [(_DT_GCDAsyncSocket *)self completeCurrentRead];
-    if (v12)
+    if (readMaxedOutError)
     {
 LABEL_128:
-      [(_DT_GCDAsyncSocket *)self closeWithError:v12, v49, v50, v51, v52];
+      [(_DT_GCDAsyncSocket *)self closeWithError:readMaxedOutError, v49, v50, v51, v52];
 
       return;
     }
@@ -3392,15 +3392,15 @@ LABEL_20:
 LABEL_15:
     if ([(_DT_GCDAsyncSocket *)self usingSecureTransportForTLS]&& (sslErrCode = self->sslErrCode, sslErrCode != -9805) && sslErrCode)
     {
-      v8 = [(_DT_GCDAsyncSocket *)self sslError:?];
+      connectionClosedError = [(_DT_GCDAsyncSocket *)self sslError:?];
     }
 
     else
     {
-      v8 = [(_DT_GCDAsyncSocket *)self connectionClosedError];
+      connectionClosedError = [(_DT_GCDAsyncSocket *)self connectionClosedError];
     }
 
-    v5 = v8;
+    v5 = connectionClosedError;
     goto LABEL_20;
   }
 
@@ -3435,7 +3435,7 @@ LABEL_15:
       v14 = sub_247FA4DDC;
       v15 = &unk_278EF1550;
       v16 = WeakRetained;
-      v17 = self;
+      selfCopy = self;
       dispatch_async(delegateQueue, &v12);
     }
   }
@@ -3489,8 +3489,8 @@ LABEL_21:
       v8 = *p_currentRead;
     }
 
-    v13 = [(NSMutableData *)v8->buffer mutableBytes];
-    v6 = [MEMORY[0x277CBEA90] dataWithBytesNoCopy:v13 + (*p_currentRead)->startOffset length:(*p_currentRead)->bytesDone freeWhenDone:0];
+    mutableBytes = [(NSMutableData *)v8->buffer mutableBytes];
+    v6 = [MEMORY[0x277CBEA90] dataWithBytesNoCopy:mutableBytes + (*p_currentRead)->startOffset length:(*p_currentRead)->bytesDone freeWhenDone:0];
   }
 
   v14 = v6;
@@ -3504,7 +3504,7 @@ LABEL_21:
     block[2] = sub_247FA4FD4;
     block[3] = &unk_278EF2A28;
     v20 = WeakRetained;
-    v21 = self;
+    selfCopy = self;
     v22 = v14;
     v23 = v16;
     v18 = v16;
@@ -3528,9 +3528,9 @@ LABEL_21:
   self->currentRead = 0;
 }
 
-- (void)setupReadTimerWithTimeout:(double)a3
+- (void)setupReadTimerWithTimeout:(double)timeout
 {
-  if (a3 >= 0.0)
+  if (timeout >= 0.0)
   {
     location[1] = v6;
     location[2] = v5;
@@ -3548,7 +3548,7 @@ LABEL_21:
     v13[3] = &unk_278EF1238;
     objc_copyWeak(&v14, location);
     dispatch_source_set_event_handler(v11, v13);
-    v12 = dispatch_time(0, (a3 * 1000000000.0));
+    v12 = dispatch_time(0, (timeout * 1000000000.0));
     dispatch_source_set_timer(self->readTimer, v12, 0xFFFFFFFFFFFFFFFFLL, 0);
     dispatch_resume(self->readTimer);
     objc_destroyWeak(&v14);
@@ -3569,7 +3569,7 @@ LABEL_21:
     block[2] = sub_247FA52E4;
     block[3] = &unk_278EF2788;
     v8 = WeakRetained;
-    v9 = self;
+    selfCopy = self;
     v10 = v4;
     v6 = v4;
     dispatch_async(delegateQueue, block);
@@ -3581,21 +3581,21 @@ LABEL_21:
   }
 }
 
-- (void)doReadTimeoutWithExtension:(double)a3
+- (void)doReadTimeoutWithExtension:(double)extension
 {
   currentRead = self->currentRead;
   if (currentRead)
   {
-    if (a3 <= 0.0)
+    if (extension <= 0.0)
     {
-      v6 = [(_DT_GCDAsyncSocket *)self readTimeoutError];
-      [(_DT_GCDAsyncSocket *)self closeWithError:v6];
+      readTimeoutError = [(_DT_GCDAsyncSocket *)self readTimeoutError];
+      [(_DT_GCDAsyncSocket *)self closeWithError:readTimeoutError];
     }
 
     else
     {
-      currentRead->timeout = currentRead->timeout + a3;
-      v5 = dispatch_time(0, (a3 * 1000000000.0));
+      currentRead->timeout = currentRead->timeout + extension;
+      v5 = dispatch_time(0, (extension * 1000000000.0));
       dispatch_source_set_timer(self->readTimer, v5, 0xFFFFFFFFFFFFFFFFLL, 0);
       self->flags &= ~8u;
 
@@ -3604,12 +3604,12 @@ LABEL_21:
   }
 }
 
-- (void)writeData:(id)a3 withTimeout:(double)a4 tag:(int64_t)a5
+- (void)writeData:(id)data withTimeout:(double)timeout tag:(int64_t)tag
 {
-  v8 = a3;
-  if ([v8 length])
+  dataCopy = data;
+  if ([dataCopy length])
   {
-    v9 = [[_DT_GCDAsyncWritePacket alloc] initWithData:v8 timeout:a5 tag:a4];
+    v9 = [[_DT_GCDAsyncWritePacket alloc] initWithData:dataCopy timeout:tag tag:timeout];
     socketQueue = self->socketQueue;
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
@@ -3622,7 +3622,7 @@ LABEL_21:
   }
 }
 
-- (float)progressOfWriteReturningTag:(int64_t *)a3 bytesDone:(unint64_t *)a4 total:(unint64_t *)a5
+- (float)progressOfWriteReturningTag:(int64_t *)tag bytesDone:(unint64_t *)done total:(unint64_t *)total
 {
   v10 = 0;
   v11 = &v10;
@@ -3632,9 +3632,9 @@ LABEL_21:
   aBlock[1] = 3221225472;
   aBlock[2] = sub_247FA5700;
   aBlock[3] = &unk_278EF29D8;
-  aBlock[6] = a3;
-  aBlock[7] = a4;
-  aBlock[8] = a5;
+  aBlock[6] = tag;
+  aBlock[7] = done;
+  aBlock[8] = total;
   aBlock[4] = self;
   aBlock[5] = &v10;
   v6 = _Block_copy(aBlock);
@@ -3923,7 +3923,7 @@ LABEL_59:
       v28 = sub_247FA5E24;
       v29 = &unk_278EF2A00;
       v30 = WeakRetained;
-      v31 = self;
+      selfCopy = self;
       v32 = sslWriteCachedLength;
       v33 = tag;
       dispatch_async(delegateQueue, &v26);
@@ -3955,7 +3955,7 @@ LABEL_69:
     block[2] = sub_247FA5F58;
     block[3] = &unk_278EF2A50;
     v7 = WeakRetained;
-    v8 = self;
+    selfCopy = self;
     v9 = tag;
     dispatch_async(delegateQueue, block);
   }
@@ -3977,9 +3977,9 @@ LABEL_69:
   self->currentWrite = 0;
 }
 
-- (void)setupWriteTimerWithTimeout:(double)a3
+- (void)setupWriteTimerWithTimeout:(double)timeout
 {
-  if (a3 >= 0.0)
+  if (timeout >= 0.0)
   {
     location[1] = v6;
     location[2] = v5;
@@ -3997,7 +3997,7 @@ LABEL_69:
     v13[3] = &unk_278EF1238;
     objc_copyWeak(&v14, location);
     dispatch_source_set_event_handler(v11, v13);
-    v12 = dispatch_time(0, (a3 * 1000000000.0));
+    v12 = dispatch_time(0, (timeout * 1000000000.0));
     dispatch_source_set_timer(self->writeTimer, v12, 0xFFFFFFFFFFFFFFFFLL, 0);
     dispatch_resume(self->writeTimer);
     objc_destroyWeak(&v14);
@@ -4018,7 +4018,7 @@ LABEL_69:
     block[2] = sub_247FA6264;
     block[3] = &unk_278EF2788;
     v8 = WeakRetained;
-    v9 = self;
+    selfCopy = self;
     v10 = v4;
     v6 = v4;
     dispatch_async(delegateQueue, block);
@@ -4030,21 +4030,21 @@ LABEL_69:
   }
 }
 
-- (void)doWriteTimeoutWithExtension:(double)a3
+- (void)doWriteTimeoutWithExtension:(double)extension
 {
   currentWrite = self->currentWrite;
   if (currentWrite)
   {
-    if (a3 <= 0.0)
+    if (extension <= 0.0)
     {
-      v6 = [(_DT_GCDAsyncSocket *)self writeTimeoutError];
-      [(_DT_GCDAsyncSocket *)self closeWithError:v6];
+      writeTimeoutError = [(_DT_GCDAsyncSocket *)self writeTimeoutError];
+      [(_DT_GCDAsyncSocket *)self closeWithError:writeTimeoutError];
     }
 
     else
     {
-      currentWrite->timeout = currentWrite->timeout + a3;
-      v5 = dispatch_time(0, (a3 * 1000000000.0));
+      currentWrite->timeout = currentWrite->timeout + extension;
+      v5 = dispatch_time(0, (extension * 1000000000.0));
       dispatch_source_set_timer(self->writeTimer, v5, 0xFFFFFFFFFFFFFFFFLL, 0);
       self->flags &= ~0x10u;
 
@@ -4053,15 +4053,15 @@ LABEL_69:
   }
 }
 
-- (void)startTLS:(id)a3
+- (void)startTLS:(id)s
 {
-  v4 = a3;
-  if (!v4)
+  sCopy = s;
+  if (!sCopy)
   {
-    v4 = [MEMORY[0x277CBEAC0] dictionary];
+    sCopy = [MEMORY[0x277CBEAC0] dictionary];
   }
 
-  v5 = [[_DT_GCDAsyncSpecialPacket alloc] initWithTLSSettings:v4];
+  v5 = [[_DT_GCDAsyncSpecialPacket alloc] initWithTLSSettings:sCopy];
   socketQueue = self->socketQueue;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
@@ -4091,9 +4091,9 @@ LABEL_69:
   if (v5)
   {
     v6 = v5;
-    v7 = [v5 BOOLValue];
+    bOOLValue = [v5 BOOLValue];
 
-    if (v7)
+    if (bOOLValue)
     {
 
       MEMORY[0x2821F9670](self, sel_cf_startTLS);
@@ -4108,37 +4108,37 @@ LABEL_69:
   MEMORY[0x2821F9670](self, sel_ssl_startTLS);
 }
 
-- (int)sslReadWithBuffer:(void *)a3 length:(unint64_t *)a4
+- (int)sslReadWithBuffer:(void *)buffer length:(unint64_t *)length
 {
   if (!self->socketFDBytesAvailable && ![(_DT_GCDAsyncSocketPreBuffer *)self->sslPreBuffer availableBytes])
   {
     [(_DT_GCDAsyncSocket *)self resumeReadSource];
-    *a4 = 0;
+    *length = 0;
     return -9803;
   }
 
-  v7 = *a4;
-  v8 = [(_DT_GCDAsyncSocketPreBuffer *)self->sslPreBuffer availableBytes];
-  if (v8)
+  v7 = *length;
+  availableBytes = [(_DT_GCDAsyncSocketPreBuffer *)self->sslPreBuffer availableBytes];
+  if (availableBytes)
   {
-    if (v8 >= v7)
+    if (availableBytes >= v7)
     {
       v9 = v7;
     }
 
     else
     {
-      v9 = v8;
+      v9 = availableBytes;
     }
 
-    memcpy(a3, [(_DT_GCDAsyncSocketPreBuffer *)self->sslPreBuffer readBuffer], v9);
+    memcpy(buffer, [(_DT_GCDAsyncSocketPreBuffer *)self->sslPreBuffer readBuffer], v9);
     [(_DT_GCDAsyncSocketPreBuffer *)self->sslPreBuffer didRead:v9];
     v7 -= v9;
     if (!v7)
     {
       result = 0;
 LABEL_28:
-      *a4 = v9;
+      *length = v9;
       return result;
     }
   }
@@ -4163,7 +4163,7 @@ LABEL_28:
 
   if (socketFDBytesAvailable <= v7)
   {
-    v14 = a3 + v9;
+    writeBuffer = buffer + v9;
     v13 = v7;
   }
 
@@ -4171,10 +4171,10 @@ LABEL_28:
   {
     [(_DT_GCDAsyncSocketPreBuffer *)self->sslPreBuffer ensureCapacityForWrite:self->socketFDBytesAvailable];
     v13 = self->socketFDBytesAvailable;
-    v14 = [(_DT_GCDAsyncSocketPreBuffer *)self->sslPreBuffer writeBuffer];
+    writeBuffer = [(_DT_GCDAsyncSocketPreBuffer *)self->sslPreBuffer writeBuffer];
   }
 
-  v15 = read(socket6FD, v14, v13);
+  v15 = read(socket6FD, writeBuffer, v13);
   if ((v15 & 0x8000000000000000) == 0)
   {
     v16 = v15;
@@ -4197,7 +4197,7 @@ LABEL_28:
           v16 = v7;
         }
 
-        memcpy(a3 + v9, [(_DT_GCDAsyncSocketPreBuffer *)self->sslPreBuffer readBuffer], v16);
+        memcpy(buffer + v9, [(_DT_GCDAsyncSocketPreBuffer *)self->sslPreBuffer readBuffer], v16);
         [(_DT_GCDAsyncSocketPreBuffer *)self->sslPreBuffer didRead:v16];
       }
 
@@ -4216,13 +4216,13 @@ LABEL_28:
     }
 
     self->socketFDBytesAvailable = 0;
-    *a4 = v9;
+    *length = v9;
     return -9806;
   }
 
   v20 = *__error();
   self->socketFDBytesAvailable = 0;
-  *a4 = v9;
+  *length = v9;
   if (v20 == 35)
   {
     return -9803;
@@ -4231,29 +4231,29 @@ LABEL_28:
   return -9806;
 }
 
-- (int)sslWriteWithBuffer:(const void *)a3 length:(unint64_t *)a4
+- (int)sslWriteWithBuffer:(const void *)buffer length:(unint64_t *)length
 {
   if ((self->flags & 0x80) == 0)
   {
     [(_DT_GCDAsyncSocket *)self resumeWriteSource];
 LABEL_3:
-    *a4 = 0;
+    *length = 0;
     return -9803;
   }
 
-  v7 = *a4;
+  v7 = *length;
   socket4FD = self->socket4FD;
   if (socket4FD == -1)
   {
     socket4FD = self->socket6FD;
   }
 
-  v9 = write(socket4FD, a3, *a4);
+  v9 = write(socket4FD, buffer, *length);
   if (v9 < 0)
   {
     v10 = *__error();
     self->flags &= ~0x80u;
-    *a4 = 0;
+    *length = 0;
     if (v10 == 35)
     {
       return -9803;
@@ -4273,7 +4273,7 @@ LABEL_3:
       goto LABEL_3;
     }
 
-    *a4 = v9;
+    *length = v9;
     if (v9 == v7)
     {
       return 0;
@@ -4295,9 +4295,9 @@ LABEL_3:
   {
     v6 = v4->buffer;
     v7 = [(NSMutableData *)v6 objectForKey:*MEMORY[0x277CBAEA8]];
-    v8 = [v7 BOOLValue];
+    bOOLValue = [v7 BOOLValue];
 
-    v9 = SSLCreateContext(*MEMORY[0x277CBECE8], (v8 ^ 1), kSSLStreamType);
+    v9 = SSLCreateContext(*MEMORY[0x277CBECE8], (bOOLValue ^ 1), kSSLStreamType);
     self->sslContext = v9;
     if (!v9)
     {
@@ -4322,11 +4322,11 @@ LABEL_9:
     }
 
     v14 = [(NSMutableData *)v6 objectForKey:@"GCDAsyncSocketManuallyEvaluateTrust"];
-    v15 = [v14 BOOLValue];
+    bOOLValue2 = [v14 BOOLValue];
 
-    if (v15)
+    if (bOOLValue2)
     {
-      if (v8)
+      if (bOOLValue)
       {
         v10 = @"Manual trust validation is not supported for server sockets";
         goto LABEL_9;
@@ -4343,9 +4343,9 @@ LABEL_9:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v17 = [v16 UTF8String];
-      v18 = strlen(v17);
-      if (SSLSetPeerDomainName(self->sslContext, v17, v18))
+      uTF8String = [v16 UTF8String];
+      v18 = strlen(uTF8String);
+      if (SSLSetPeerDomainName(self->sslContext, uTF8String, v18))
       {
         v19 = @"Error in SSLSetPeerDomainName";
 LABEL_21:
@@ -4359,8 +4359,8 @@ LABEL_22:
 
     else if (v16)
     {
-      v20 = [MEMORY[0x277CCA890] currentHandler];
-      [v20 handleFailureInMethod:a2 object:self file:@"GCDAsyncSocket.m" lineNumber:6251 description:@"Invalid value for kCFStreamSSLPeerName. Value must be of type NSString."];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"GCDAsyncSocket.m" lineNumber:6251 description:@"Invalid value for kCFStreamSSLPeerName. Value must be of type NSString."];
 
       v19 = @"Invalid value for kCFStreamSSLPeerName.";
       goto LABEL_21;
@@ -4384,8 +4384,8 @@ LABEL_28:
 
     else if (v22)
     {
-      v24 = [MEMORY[0x277CCA890] currentHandler];
-      [v24 handleFailureInMethod:a2 object:self file:@"GCDAsyncSocket.m" lineNumber:6273 description:@"Invalid value for kCFStreamSSLCertificates. Value must be of type NSArray."];
+      currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"GCDAsyncSocket.m" lineNumber:6273 description:@"Invalid value for kCFStreamSSLCertificates. Value must be of type NSArray."];
 
       v23 = @"Invalid value for kCFStreamSSLCertificates.";
       goto LABEL_28;
@@ -4408,8 +4408,8 @@ LABEL_28:
 
     else if (v26)
     {
-      v28 = [MEMORY[0x277CCA890] currentHandler];
-      [v28 handleFailureInMethod:a2 object:self file:@"GCDAsyncSocket.m" lineNumber:6297 description:@"Invalid value for GCDAsyncSocketSSLPeerID. Value must be of type NSData. (You can convert strings to data using a method like [string dataUsingEncoding:NSUTF8StringEncoding])"];
+      currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler3 handleFailureInMethod:a2 object:self file:@"GCDAsyncSocket.m" lineNumber:6297 description:@"Invalid value for GCDAsyncSocketSSLPeerID. Value must be of type NSData. (You can convert strings to data using a method like [string dataUsingEncoding:NSUTF8StringEncoding])"];
 
       v29 = @"Invalid value for GCDAsyncSocketSSLPeerID.";
 LABEL_34:
@@ -4425,8 +4425,8 @@ LABEL_35:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v31 = [v16 intValue];
-      if (v31 && SSLSetProtocolVersionMin(self->sslContext, v31))
+      intValue = [v16 intValue];
+      if (intValue && SSLSetProtocolVersionMin(self->sslContext, intValue))
       {
         v19 = @"Error in SSLSetProtocolVersionMin";
         goto LABEL_21;
@@ -4435,8 +4435,8 @@ LABEL_35:
 
     else if (v16)
     {
-      v32 = [MEMORY[0x277CCA890] currentHandler];
-      [v32 handleFailureInMethod:a2 object:self file:@"GCDAsyncSocket.m" lineNumber:6321 description:@"Invalid value for GCDAsyncSocketSSLProtocolVersionMin. Value must be of type NSNumber."];
+      currentHandler4 = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler4 handleFailureInMethod:a2 object:self file:@"GCDAsyncSocket.m" lineNumber:6321 description:@"Invalid value for GCDAsyncSocketSSLProtocolVersionMin. Value must be of type NSNumber."];
 
       v19 = @"Invalid value for GCDAsyncSocketSSLProtocolVersionMin.";
       goto LABEL_21;
@@ -4447,8 +4447,8 @@ LABEL_35:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v33 = [v26 intValue];
-      if (v33 && SSLSetProtocolVersionMax(self->sslContext, v33))
+      intValue2 = [v26 intValue];
+      if (intValue2 && SSLSetProtocolVersionMax(self->sslContext, intValue2))
       {
         v29 = @"Error in SSLSetProtocolVersionMax";
         goto LABEL_34;
@@ -4457,8 +4457,8 @@ LABEL_35:
 
     else if (v26)
     {
-      v34 = [MEMORY[0x277CCA890] currentHandler];
-      [v34 handleFailureInMethod:a2 object:self file:@"GCDAsyncSocket.m" lineNumber:6345 description:@"Invalid value for GCDAsyncSocketSSLProtocolVersionMax. Value must be of type NSNumber."];
+      currentHandler5 = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler5 handleFailureInMethod:a2 object:self file:@"GCDAsyncSocket.m" lineNumber:6345 description:@"Invalid value for GCDAsyncSocketSSLProtocolVersionMax. Value must be of type NSNumber."];
 
       v29 = @"Invalid value for GCDAsyncSocketSSLProtocolVersionMax.";
       goto LABEL_34;
@@ -4478,8 +4478,8 @@ LABEL_35:
 
     else if (v16)
     {
-      v35 = [MEMORY[0x277CCA890] currentHandler];
-      [v35 handleFailureInMethod:a2 object:self file:@"GCDAsyncSocket.m" lineNumber:6365 description:@"Invalid value for GCDAsyncSocketSSLSessionOptionFalseStart. Value must be of type NSNumber."];
+      currentHandler6 = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler6 handleFailureInMethod:a2 object:self file:@"GCDAsyncSocket.m" lineNumber:6365 description:@"Invalid value for GCDAsyncSocketSSLSessionOptionFalseStart. Value must be of type NSNumber."];
 
       v19 = @"Invalid value for GCDAsyncSocketSSLSessionOptionFalseStart.";
       goto LABEL_21;
@@ -4499,8 +4499,8 @@ LABEL_35:
 
     else if (v26)
     {
-      v36 = [MEMORY[0x277CCA890] currentHandler];
-      [v36 handleFailureInMethod:a2 object:self file:@"GCDAsyncSocket.m" lineNumber:6387 description:@"Invalid value for GCDAsyncSocketSSLSessionOptionSendOneByteRecord. Value must be of type NSNumber."];
+      currentHandler7 = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler7 handleFailureInMethod:a2 object:self file:@"GCDAsyncSocket.m" lineNumber:6387 description:@"Invalid value for GCDAsyncSocketSSLSessionOptionSendOneByteRecord. Value must be of type NSNumber."];
 
       v29 = @"Invalid value for GCDAsyncSocketSSLSessionOptionSendOneByteRecord.";
       goto LABEL_34;
@@ -4535,8 +4535,8 @@ LABEL_35:
 
     else if (v16)
     {
-      v42 = [MEMORY[0x277CCA890] currentHandler];
-      [v42 handleFailureInMethod:a2 object:self file:@"GCDAsyncSocket.m" lineNumber:6418 description:@"Invalid value for GCDAsyncSocketSSLCipherSuites. Value must be of type NSArray."];
+      currentHandler8 = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler8 handleFailureInMethod:a2 object:self file:@"GCDAsyncSocket.m" lineNumber:6418 description:@"Invalid value for GCDAsyncSocketSSLCipherSuites. Value must be of type NSArray."];
 
       v19 = @"Invalid value for GCDAsyncSocketSSLCipherSuites.";
       goto LABEL_21;
@@ -4546,8 +4546,8 @@ LABEL_35:
 
     if (v26)
     {
-      v43 = [MEMORY[0x277CCA890] currentHandler];
-      [v43 handleFailureInMethod:a2 object:self file:@"GCDAsyncSocket.m" lineNumber:6459 description:@"Security option unavailable - kCFStreamSSLAllowsAnyRoot - You must use manual trust evaluation"];
+      currentHandler9 = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler9 handleFailureInMethod:a2 object:self file:@"GCDAsyncSocket.m" lineNumber:6459 description:@"Security option unavailable - kCFStreamSSLAllowsAnyRoot - You must use manual trust evaluation"];
 
       v29 = @"Security option unavailable - kCFStreamSSLAllowsAnyRoot";
       goto LABEL_34;
@@ -4557,8 +4557,8 @@ LABEL_35:
     if (v44)
     {
       v16 = v44;
-      v45 = [MEMORY[0x277CCA890] currentHandler];
-      [v45 handleFailureInMethod:a2 object:self file:@"GCDAsyncSocket.m" lineNumber:6474 description:@"Security option unavailable - kCFStreamSSLAllowsExpiredRoots - You must use manual trust evaluation"];
+      currentHandler10 = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler10 handleFailureInMethod:a2 object:self file:@"GCDAsyncSocket.m" lineNumber:6474 description:@"Security option unavailable - kCFStreamSSLAllowsExpiredRoots - You must use manual trust evaluation"];
 
       v19 = @"Security option unavailable - kCFStreamSSLAllowsExpiredRoots";
       goto LABEL_21;
@@ -4568,8 +4568,8 @@ LABEL_35:
     if (v46)
     {
       v16 = v46;
-      v47 = [MEMORY[0x277CCA890] currentHandler];
-      [v47 handleFailureInMethod:a2 object:self file:@"GCDAsyncSocket.m" lineNumber:6489 description:@"Security option unavailable - kCFStreamSSLValidatesCertificateChain - You must use manual trust evaluation"];
+      currentHandler11 = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler11 handleFailureInMethod:a2 object:self file:@"GCDAsyncSocket.m" lineNumber:6489 description:@"Security option unavailable - kCFStreamSSLValidatesCertificateChain - You must use manual trust evaluation"];
 
       v19 = @"Security option unavailable - kCFStreamSSLValidatesCertificateChain";
       goto LABEL_21;
@@ -4579,8 +4579,8 @@ LABEL_35:
     if (v48)
     {
       v16 = v48;
-      v49 = [MEMORY[0x277CCA890] currentHandler];
-      [v49 handleFailureInMethod:a2 object:self file:@"GCDAsyncSocket.m" lineNumber:6504 description:@"Security option unavailable - kCFStreamSSLAllowsExpiredCertificates - You must use manual trust evaluation"];
+      currentHandler12 = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler12 handleFailureInMethod:a2 object:self file:@"GCDAsyncSocket.m" lineNumber:6504 description:@"Security option unavailable - kCFStreamSSLAllowsExpiredCertificates - You must use manual trust evaluation"];
 
       v19 = @"Security option unavailable - kCFStreamSSLAllowsExpiredCertificates";
       goto LABEL_21;
@@ -4590,8 +4590,8 @@ LABEL_35:
     if (v50)
     {
       v16 = v50;
-      v51 = [MEMORY[0x277CCA890] currentHandler];
-      [v51 handleFailureInMethod:a2 object:self file:@"GCDAsyncSocket.m" lineNumber:6519 description:@"Security option unavailable - kCFStreamSSLLevel - You must use GCDAsyncSocketSSLProtocolVersionMin & GCDAsyncSocketSSLProtocolVersionMax"];
+      currentHandler13 = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler13 handleFailureInMethod:a2 object:self file:@"GCDAsyncSocket.m" lineNumber:6519 description:@"Security option unavailable - kCFStreamSSLLevel - You must use GCDAsyncSocketSSLProtocolVersionMin & GCDAsyncSocketSSLProtocolVersionMax"];
 
       v19 = @"Security option unavailable - kCFStreamSSLLevel";
       goto LABEL_21;
@@ -4601,11 +4601,11 @@ LABEL_35:
     sslPreBuffer = self->sslPreBuffer;
     self->sslPreBuffer = v52;
 
-    v54 = [(_DT_GCDAsyncSocketPreBuffer *)self->preBuffer availableBytes];
-    if (v54)
+    availableBytes = [(_DT_GCDAsyncSocketPreBuffer *)self->preBuffer availableBytes];
+    if (availableBytes)
     {
-      v55 = v54;
-      [(_DT_GCDAsyncSocketPreBuffer *)self->sslPreBuffer ensureCapacityForWrite:v54];
+      v55 = availableBytes;
+      [(_DT_GCDAsyncSocketPreBuffer *)self->sslPreBuffer ensureCapacityForWrite:availableBytes];
       memcpy([(_DT_GCDAsyncSocketPreBuffer *)self->sslPreBuffer writeBuffer], [(_DT_GCDAsyncSocketPreBuffer *)self->preBuffer readBuffer], v55);
       [(_DT_GCDAsyncSocketPreBuffer *)self->preBuffer didRead:v55];
       [(_DT_GCDAsyncSocketPreBuffer *)self->sslPreBuffer didWrite:v55];
@@ -4617,8 +4617,8 @@ LABEL_35:
 
   else
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"GCDAsyncSocket.m" lineNumber:6125 description:@"Logic error"];
+    currentHandler14 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler14 handleFailureInMethod:a2 object:self file:@"GCDAsyncSocket.m" lineNumber:6125 description:@"Logic error"];
 
     v6 = [(_DT_GCDAsyncSocket *)self otherError:@"Logic error"];
     [(_DT_GCDAsyncSocket *)self closeWithError:v6];
@@ -4669,7 +4669,7 @@ LABEL_10:
         v16[2] = sub_247FA79C4;
         v16[3] = &unk_278EF2AC8;
         v17 = WeakRetained;
-        v18 = self;
+        selfCopy = self;
         v20 = &v27;
         v19 = v10;
         dispatch_async(delegateQueue, v16);
@@ -4719,7 +4719,7 @@ LABEL_10:
           block[2] = sub_247FA7834;
           block[3] = &unk_278EF1550;
           v32 = v4;
-          v33 = self;
+          selfCopy2 = self;
           dispatch_async(v5, block);
         }
       }
@@ -4732,12 +4732,12 @@ LABEL_10:
   }
 }
 
-- (void)ssl_shouldTrustPeer:(BOOL)a3 stateIndex:(int)a4
+- (void)ssl_shouldTrustPeer:(BOOL)peer stateIndex:(int)index
 {
-  if (self->stateIndex == a4)
+  if (self->stateIndex == index)
   {
-    self->stateIndex = a4 + 1;
-    if (a3)
+    self->stateIndex = index + 1;
+    if (peer)
     {
 
       [(_DT_GCDAsyncSocket *)self ssl_continueSSLHandshake];
@@ -4770,7 +4770,7 @@ LABEL_10:
         v10 = sub_247FA7BBC;
         v11 = &unk_278EF1550;
         v12 = WeakRetained;
-        v13 = self;
+        selfCopy = self;
         dispatch_async(delegateQueue, &v8);
       }
     }
@@ -4782,13 +4782,13 @@ LABEL_10:
   }
 }
 
-- (void)cf_abortSSLHandshake:(id)a3
+- (void)cf_abortSSLHandshake:(id)handshake
 {
   flags = self->flags;
   if ((~flags & 0x1800) == 0)
   {
     self->flags = flags & 0xFFFFE7FF;
-    [(_DT_GCDAsyncSocket *)self closeWithError:a3];
+    [(_DT_GCDAsyncSocket *)self closeWithError:handshake];
   }
 }
 
@@ -4875,7 +4875,7 @@ LABEL_16:
   block[1] = 3221225472;
   block[2] = sub_247FA7EE0;
   block[3] = &unk_278EF2AE8;
-  block[4] = a1;
+  block[4] = self;
   dispatch_sync(qword_27EE842F0, block);
 }
 
@@ -4890,86 +4890,86 @@ LABEL_16:
 + (void)cfstreamThread
 {
   v3 = objc_autoreleasePoolPush();
-  v4 = [MEMORY[0x277CCACC8] currentThread];
-  [v4 setName:@"_DT_GCDAsyncSocket-CFStream"];
+  currentThread = [MEMORY[0x277CCACC8] currentThread];
+  [currentThread setName:@"_DT_GCDAsyncSocket-CFStream"];
 
   v5 = MEMORY[0x277CBEBB8];
-  v6 = [MEMORY[0x277CBEAA8] distantFuture];
-  [v6 timeIntervalSinceNow];
-  v7 = [v5 scheduledTimerWithTimeInterval:a1 target:sel_ignore_ selector:0 userInfo:1 repeats:?];
+  distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+  [distantFuture timeIntervalSinceNow];
+  v7 = [v5 scheduledTimerWithTimeInterval:self target:sel_ignore_ selector:0 userInfo:1 repeats:?];
 
-  v8 = [MEMORY[0x277CCACC8] currentThread];
-  v9 = [MEMORY[0x277CBEB88] currentRunLoop];
-  if (([v8 isCancelled] & 1) == 0)
+  currentThread2 = [MEMORY[0x277CCACC8] currentThread];
+  currentRunLoop = [MEMORY[0x277CBEB88] currentRunLoop];
+  if (([currentThread2 isCancelled] & 1) == 0)
   {
     v10 = *MEMORY[0x277CBE640];
     do
     {
-      v11 = [MEMORY[0x277CBEAA8] distantFuture];
-      v12 = [v9 runMode:v10 beforeDate:v11];
+      distantFuture2 = [MEMORY[0x277CBEAA8] distantFuture];
+      v12 = [currentRunLoop runMode:v10 beforeDate:distantFuture2];
     }
 
-    while (v12 && ![v8 isCancelled]);
+    while (v12 && ![currentThread2 isCancelled]);
   }
 
   objc_autoreleasePoolPop(v3);
 }
 
-+ (void)scheduleCFStreams:(id)a3
++ (void)scheduleCFStreams:(id)streams
 {
-  v10 = a3;
-  v3 = [MEMORY[0x277CCACC8] currentThread];
+  streamsCopy = streams;
+  currentThread = [MEMORY[0x277CCACC8] currentThread];
   v4 = qword_27EE842F8;
 
-  if (v3 != v4)
+  if (currentThread != v4)
   {
     sub_24802E1C8();
   }
 
   Current = CFRunLoopGetCurrent();
-  v6 = v10;
-  v7 = *(v10 + 27);
+  v6 = streamsCopy;
+  v7 = *(streamsCopy + 27);
   v8 = MEMORY[0x277CBF058];
   if (v7)
   {
     CFReadStreamScheduleWithRunLoop(v7, Current, *MEMORY[0x277CBF058]);
-    v6 = v10;
+    v6 = streamsCopy;
   }
 
   v9 = v6[28];
   if (v9)
   {
     CFWriteStreamScheduleWithRunLoop(v9, Current, *v8);
-    v6 = v10;
+    v6 = streamsCopy;
   }
 }
 
-+ (void)unscheduleCFStreams:(id)a3
++ (void)unscheduleCFStreams:(id)streams
 {
-  v10 = a3;
-  v3 = [MEMORY[0x277CCACC8] currentThread];
+  streamsCopy = streams;
+  currentThread = [MEMORY[0x277CCACC8] currentThread];
   v4 = qword_27EE842F8;
 
-  if (v3 != v4)
+  if (currentThread != v4)
   {
     sub_24802E234();
   }
 
   Current = CFRunLoopGetCurrent();
-  v6 = v10;
-  v7 = *(v10 + 27);
+  v6 = streamsCopy;
+  v7 = *(streamsCopy + 27);
   v8 = MEMORY[0x277CBF058];
   if (v7)
   {
     CFReadStreamUnscheduleFromRunLoop(v7, Current, *MEMORY[0x277CBF058]);
-    v6 = v10;
+    v6 = streamsCopy;
   }
 
   v9 = v6[28];
   if (v9)
   {
     CFWriteStreamUnscheduleFromRunLoop(v9, Current, *v8);
-    v6 = v10;
+    v6 = streamsCopy;
   }
 }
 
@@ -5061,9 +5061,9 @@ LABEL_18:
   return v5;
 }
 
-- (BOOL)registerForStreamCallbacksIncludingReadWrite:(BOOL)a3
+- (BOOL)registerForStreamCallbacksIncludingReadWrite:(BOOL)write
 {
-  v3 = a3;
+  writeCopy = write;
   if (!dispatch_get_specific(self->IsOnSocketQueueOrTargetQueueKey))
   {
     sub_24802E30C();
@@ -5079,7 +5079,7 @@ LABEL_18:
   self->streamContext.version = 0;
   self->streamContext.info = self;
   self->streamContext.retain = 0;
-  if (v3)
+  if (writeCopy)
   {
     v6 = 26;
   }
@@ -5094,7 +5094,7 @@ LABEL_18:
   v7 = CFReadStreamSetClient(readStream, v6, sub_247FA8554, &self->streamContext);
   if (v7)
   {
-    if (v3)
+    if (writeCopy)
     {
       v8 = 28;
     }
@@ -5215,13 +5215,13 @@ LABEL_18:
   return v3 & 1;
 }
 
-- (void)setAutoDisconnectOnClosedReadStream:(BOOL)a3
+- (void)setAutoDisconnectOnClosedReadStream:(BOOL)stream
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = sub_247FA8B88;
   v5[3] = &unk_278EF27B0;
-  v6 = a3;
+  streamCopy = stream;
   v5[4] = self;
   v4 = _Block_copy(v5);
   if (dispatch_get_specific(self->IsOnSocketQueueOrTargetQueueKey))
@@ -5235,20 +5235,20 @@ LABEL_18:
   }
 }
 
-- (void)performBlock:(id)a3
+- (void)performBlock:(id)block
 {
   if (dispatch_get_specific(self->IsOnSocketQueueOrTargetQueueKey))
   {
-    v5 = *(a3 + 2);
+    v5 = *(block + 2);
 
-    v5(a3);
+    v5(block);
   }
 
   else
   {
     socketQueue = self->socketQueue;
 
-    dispatch_sync(socketQueue, a3);
+    dispatch_sync(socketQueue, block);
   }
 }
 
@@ -5337,10 +5337,10 @@ LABEL_18:
   return result;
 }
 
-+ (id)hostFromSockaddr4:(const sockaddr_in *)a3
++ (id)hostFromSockaddr4:(const sockaddr_in *)sockaddr4
 {
   v7 = *MEMORY[0x277D85DE8];
-  if (!inet_ntop(2, &a3->sin_addr, v6, 0x10u))
+  if (!inet_ntop(2, &sockaddr4->sin_addr, v6, 0x10u))
   {
     v6[0] = 0;
   }
@@ -5351,10 +5351,10 @@ LABEL_18:
   return v3;
 }
 
-+ (id)hostFromSockaddr6:(const sockaddr_in6 *)a3
++ (id)hostFromSockaddr6:(const sockaddr_in6 *)sockaddr6
 {
   v7 = *MEMORY[0x277D85DE8];
-  if (!inet_ntop(30, &a3->sin6_addr, v6, 0x2Eu))
+  if (!inet_ntop(30, &sockaddr6->sin6_addr, v6, 0x2Eu))
   {
     v6[0] = 0;
   }
@@ -5365,10 +5365,10 @@ LABEL_18:
   return v3;
 }
 
-+ (id)hostFromAddress:(id)a3
++ (id)hostFromAddress:(id)address
 {
   v8 = 0;
-  v3 = [a1 getHost:&v8 port:0 fromAddress:a3];
+  v3 = [self getHost:&v8 port:0 fromAddress:address];
   v4 = v8;
   v5 = v4;
   v6 = 0;
@@ -5380,10 +5380,10 @@ LABEL_18:
   return v6;
 }
 
-+ (unsigned)portFromAddress:(id)a3
++ (unsigned)portFromAddress:(id)address
 {
   v6 = 0;
-  v3 = [a1 getHost:0 port:&v6 fromAddress:a3];
+  v3 = [self getHost:0 port:&v6 fromAddress:address];
   v4 = v6;
   if (!v3)
   {
@@ -5393,51 +5393,51 @@ LABEL_18:
   return v4;
 }
 
-+ (BOOL)isIPv4Address:(id)a3
++ (BOOL)isIPv4Address:(id)address
 {
-  v3 = a3;
-  v4 = [v3 length] >= 0x10 && *(objc_msgSend(v3, "bytes") + 1) == 2;
+  addressCopy = address;
+  v4 = [addressCopy length] >= 0x10 && *(objc_msgSend(addressCopy, "bytes") + 1) == 2;
 
   return v4;
 }
 
-+ (BOOL)isIPv6Address:(id)a3
++ (BOOL)isIPv6Address:(id)address
 {
-  v3 = a3;
-  v4 = [v3 length] >= 0x10 && *(objc_msgSend(v3, "bytes") + 1) == 30;
+  addressCopy = address;
+  v4 = [addressCopy length] >= 0x10 && *(objc_msgSend(addressCopy, "bytes") + 1) == 30;
 
   return v4;
 }
 
-+ (BOOL)getHost:(id *)a3 port:(unsigned __int16 *)a4 family:(char *)a5 fromAddress:(id)a6
++ (BOOL)getHost:(id *)host port:(unsigned __int16 *)port family:(char *)family fromAddress:(id)address
 {
   v19 = *MEMORY[0x277D85DE8];
-  v10 = a6;
-  if ([v10 length] < 0x10)
+  addressCopy = address;
+  if ([addressCopy length] < 0x10)
   {
     goto LABEL_20;
   }
 
-  v11 = [v10 bytes];
-  v12 = *(v11 + 1);
+  bytes = [addressCopy bytes];
+  v12 = *(bytes + 1);
   if (v12 == 30)
   {
-    if ([v10 length] >= 0x1C)
+    if ([addressCopy length] >= 0x1C)
     {
-      v14 = *v11;
-      *&v18[12] = *(v11 + 12);
+      v14 = *bytes;
+      *&v18[12] = *(bytes + 12);
       *v18 = v14;
-      if (a3)
+      if (host)
       {
-        *a3 = [a1 hostFromSockaddr6:v18];
+        *host = [self hostFromSockaddr6:v18];
       }
 
-      if (a4)
+      if (port)
       {
-        *a4 = [a1 portFromSockaddr6:v18];
+        *port = [self portFromSockaddr6:v18];
       }
 
-      if (!a5)
+      if (!family)
       {
         goto LABEL_19;
       }
@@ -5451,30 +5451,30 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  if (v12 != 2 || [v10 length] < 0x10)
+  if (v12 != 2 || [addressCopy length] < 0x10)
   {
     goto LABEL_20;
   }
 
-  *v18 = *v11;
-  if (a3)
+  *v18 = *bytes;
+  if (host)
   {
-    *a3 = [a1 hostFromSockaddr4:v18];
+    *host = [self hostFromSockaddr4:v18];
   }
 
-  if (a4)
+  if (port)
   {
-    *a4 = [a1 portFromSockaddr4:v18];
+    *port = [self portFromSockaddr4:v18];
   }
 
-  if (!a5)
+  if (!family)
   {
     goto LABEL_19;
   }
 
   v13 = 2;
 LABEL_18:
-  *a5 = v13;
+  *family = v13;
 LABEL_19:
   v15 = 1;
 LABEL_21:

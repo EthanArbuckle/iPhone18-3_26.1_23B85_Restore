@@ -7,31 +7,31 @@
 - (TUCallCapabilitiesState)state;
 - (TUCallCapabilitiesXPCClient)init;
 - (id)asynchronousServer;
-- (id)asynchronousServerWithErrorHandler:(id)a3;
-- (id)synchronousServerWithErrorHandler:(id)a3;
+- (id)asynchronousServerWithErrorHandler:(id)handler;
+- (id)synchronousServerWithErrorHandler:(id)handler;
 - (void)_retrieveState;
-- (void)_updateState:(id)a3;
-- (void)addDelegate:(id)a3 queue:(id)a4;
+- (void)_updateState:(id)state;
+- (void)addDelegate:(id)delegate queue:(id)queue;
 - (void)cancelPinRequestFromPrimaryDevice;
-- (void)capabilityStateUpdated:(id)a3;
+- (void)capabilityStateUpdated:(id)updated;
 - (void)dealloc;
 - (void)endEmergencyCallbackMode;
 - (void)handleServerDisconnect;
 - (void)invalidate;
-- (void)invalidateAndRefreshThumperCallingProvisioningURLForSenderIdentityWithUUID:(id)a3;
-- (void)invalidateAndRefreshWiFiCallingProvisioningURLForSenderIdentityWithUUID:(id)a3;
-- (void)performBlockOnQueue:(id)a3;
-- (void)performDelegateCallbackBlock:(id)a3;
-- (void)removeDelegate:(id)a3;
+- (void)invalidateAndRefreshThumperCallingProvisioningURLForSenderIdentityWithUUID:(id)d;
+- (void)invalidateAndRefreshWiFiCallingProvisioningURLForSenderIdentityWithUUID:(id)d;
+- (void)performBlockOnQueue:(id)queue;
+- (void)performDelegateCallbackBlock:(id)block;
+- (void)removeDelegate:(id)delegate;
 - (void)requestPinFromPrimaryDevice;
-- (void)setRelayCallingEnabled:(BOOL)a3;
-- (void)setRelayCallingEnabled:(BOOL)a3 forDeviceWithID:(id)a4;
-- (void)setThumperCallingAllowed:(BOOL)a3 onSecondaryDeviceWithID:(id)a4 forSenderIdentityWithUUID:(id)a5;
-- (void)setThumperCallingAllowedOnDefaultPairedDevice:(BOOL)a3 forSenderIdentityWithUUID:(id)a4;
-- (void)setThumperCallingEnabled:(BOOL)a3 forSenderIdentityWithUUID:(id)a4;
-- (void)setVoLTECallingEnabled:(BOOL)a3 forSenderIdentityWithUUID:(id)a4;
-- (void)setWiFiCallingEnabled:(BOOL)a3 forSenderIdentityWithUUID:(id)a4;
-- (void)setWiFiCallingRoamingEnabled:(BOOL)a3 forSenderIdentityWithUUID:(id)a4;
+- (void)setRelayCallingEnabled:(BOOL)enabled;
+- (void)setRelayCallingEnabled:(BOOL)enabled forDeviceWithID:(id)d;
+- (void)setThumperCallingAllowed:(BOOL)allowed onSecondaryDeviceWithID:(id)d forSenderIdentityWithUUID:(id)iD;
+- (void)setThumperCallingAllowedOnDefaultPairedDevice:(BOOL)device forSenderIdentityWithUUID:(id)d;
+- (void)setThumperCallingEnabled:(BOOL)enabled forSenderIdentityWithUUID:(id)d;
+- (void)setVoLTECallingEnabled:(BOOL)enabled forSenderIdentityWithUUID:(id)d;
+- (void)setWiFiCallingEnabled:(BOOL)enabled forSenderIdentityWithUUID:(id)d;
+- (void)setWiFiCallingRoamingEnabled:(BOOL)enabled forSenderIdentityWithUUID:(id)d;
 @end
 
 @implementation TUCallCapabilitiesXPCClient
@@ -48,9 +48,9 @@
     *(v2 + 3) = v3;
 
     dispatch_queue_set_specific(*(v2 + 3), [v2 queueContext], objc_msgSend(v2, "queueContext"), 0);
-    v5 = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
     v6 = *(v2 + 5);
-    *(v2 + 5) = v5;
+    *(v2 + 5) = weakToStrongObjectsMapTable;
 
     v7 = *(v2 + 3);
     block[0] = MEMORY[0x1E69E9820];
@@ -86,8 +86,8 @@ void __35__TUCallCapabilitiesXPCClient_init__block_invoke(uint64_t a1)
 
 - (void)_retrieveState
 {
-  v3 = [(TUCallCapabilitiesXPCClient *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(TUCallCapabilitiesXPCClient *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v4 = TUDefaultLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -108,8 +108,8 @@ void __35__TUCallCapabilitiesXPCClient_init__block_invoke(uint64_t a1)
 - (NSXPCConnection)xpcConnection
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [(TUCallCapabilitiesXPCClient *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(TUCallCapabilitiesXPCClient *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   xpcConnection = self->_xpcConnection;
   if (!xpcConnection)
@@ -126,11 +126,11 @@ void __35__TUCallCapabilitiesXPCClient_init__block_invoke(uint64_t a1)
     v7 = self->_xpcConnection;
     self->_xpcConnection = v6;
 
-    v8 = [objc_opt_class() callCapabilitiesServerXPCInterface];
-    [(NSXPCConnection *)self->_xpcConnection setRemoteObjectInterface:v8];
+    callCapabilitiesServerXPCInterface = [objc_opt_class() callCapabilitiesServerXPCInterface];
+    [(NSXPCConnection *)self->_xpcConnection setRemoteObjectInterface:callCapabilitiesServerXPCInterface];
 
-    v9 = [objc_opt_class() callCapabilitiesClientXPCInterface];
-    [(NSXPCConnection *)self->_xpcConnection setExportedInterface:v9];
+    callCapabilitiesClientXPCInterface = [objc_opt_class() callCapabilitiesClientXPCInterface];
+    [(NSXPCConnection *)self->_xpcConnection setExportedInterface:callCapabilitiesClientXPCInterface];
 
     [(NSXPCConnection *)self->_xpcConnection setExportedObject:self];
     objc_initWeak(buf, self);
@@ -223,14 +223,14 @@ void __45__TUCallCapabilitiesXPCClient__retrieveState__block_invoke_12(uint64_t 
   v10 = __Block_byref_object_copy__4;
   v11 = __Block_byref_object_dispose__4;
   v12 = 0;
-  v3 = [(TUCallCapabilitiesXPCClient *)self queue];
+  queue = [(TUCallCapabilitiesXPCClient *)self queue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __36__TUCallCapabilitiesXPCClient_state__block_invoke;
   v6[3] = &unk_1E7425C58;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(queue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -296,8 +296,8 @@ void __35__TUCallCapabilitiesXPCClient_init__block_invoke_2(uint64_t a1)
 
 - (void)handleServerDisconnect
 {
-  v3 = [(TUCallCapabilitiesXPCClient *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(TUCallCapabilitiesXPCClient *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v4 = TUDefaultLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -372,30 +372,30 @@ uint64_t __44__TUCallCapabilitiesXPCClient_xpcConnection__block_invoke_2_9(uint6
 
 - (id)asynchronousServer
 {
-  v3 = [(TUCallCapabilitiesXPCClient *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(TUCallCapabilitiesXPCClient *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   WeakRetained = objc_loadWeakRetained(&sAsynchronousServer_1);
   v5 = WeakRetained;
   if (WeakRetained)
   {
-    v6 = WeakRetained;
+    remoteObjectProxy = WeakRetained;
   }
 
   else
   {
-    v7 = [(TUCallCapabilitiesXPCClient *)self xpcConnection];
-    v6 = [v7 remoteObjectProxy];
+    xpcConnection = [(TUCallCapabilitiesXPCClient *)self xpcConnection];
+    remoteObjectProxy = [xpcConnection remoteObjectProxy];
   }
 
-  return v6;
+  return remoteObjectProxy;
 }
 
-- (id)asynchronousServerWithErrorHandler:(id)a3
+- (id)asynchronousServerWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(TUCallCapabilitiesXPCClient *)self queue];
-  dispatch_assert_queue_V2(v5);
+  handlerCopy = handler;
+  queue = [(TUCallCapabilitiesXPCClient *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   WeakRetained = objc_loadWeakRetained(&sAsynchronousServer_1);
   v7 = WeakRetained;
@@ -406,18 +406,18 @@ uint64_t __44__TUCallCapabilitiesXPCClient_xpcConnection__block_invoke_2_9(uint6
 
   else
   {
-    v9 = [(TUCallCapabilitiesXPCClient *)self xpcConnection];
-    v8 = [v9 remoteObjectProxyWithErrorHandler:v4];
+    xpcConnection = [(TUCallCapabilitiesXPCClient *)self xpcConnection];
+    v8 = [xpcConnection remoteObjectProxyWithErrorHandler:handlerCopy];
   }
 
   return v8;
 }
 
-- (id)synchronousServerWithErrorHandler:(id)a3
+- (id)synchronousServerWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(TUCallCapabilitiesXPCClient *)self queue];
-  dispatch_assert_queue_V2(v5);
+  handlerCopy = handler;
+  queue = [(TUCallCapabilitiesXPCClient *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   WeakRetained = objc_loadWeakRetained(&sSynchronousServer_1);
   v7 = WeakRetained;
@@ -428,28 +428,28 @@ uint64_t __44__TUCallCapabilitiesXPCClient_xpcConnection__block_invoke_2_9(uint6
 
   else
   {
-    v9 = [(TUCallCapabilitiesXPCClient *)self xpcConnection];
-    v8 = [v9 synchronousRemoteObjectProxyWithErrorHandler:v4];
+    xpcConnection = [(TUCallCapabilitiesXPCClient *)self xpcConnection];
+    v8 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:handlerCopy];
   }
 
   return v8;
 }
 
-- (void)addDelegate:(id)a3 queue:(id)a4
+- (void)addDelegate:(id)delegate queue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TUCallCapabilitiesXPCClient *)self queue];
+  delegateCopy = delegate;
+  queueCopy = queue;
+  queue = [(TUCallCapabilitiesXPCClient *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __49__TUCallCapabilitiesXPCClient_addDelegate_queue___block_invoke;
   block[3] = &unk_1E7424FD8;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
-  dispatch_async(v8, block);
+  v12 = queueCopy;
+  v13 = delegateCopy;
+  v9 = delegateCopy;
+  v10 = queueCopy;
+  dispatch_async(queue, block);
 }
 
 void __49__TUCallCapabilitiesXPCClient_addDelegate_queue___block_invoke(uint64_t a1)
@@ -458,16 +458,16 @@ void __49__TUCallCapabilitiesXPCClient_addDelegate_queue___block_invoke(uint64_t
   [v2 setObject:*(a1 + 40) forKey:*(a1 + 48)];
 }
 
-- (void)removeDelegate:(id)a3
+- (void)removeDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __46__TUCallCapabilitiesXPCClient_removeDelegate___block_invoke;
   v6[3] = &unk_1E7424898;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = delegateCopy;
+  v5 = delegateCopy;
   [(TUCallCapabilitiesXPCClient *)self performBlockOnQueue:v6];
 }
 
@@ -477,9 +477,9 @@ void __46__TUCallCapabilitiesXPCClient_removeDelegate___block_invoke(uint64_t a1
   [v2 removeObjectForKey:*(a1 + 40)];
 }
 
-- (void)performBlockOnQueue:(id)a3
+- (void)performBlockOnQueue:(id)queue
 {
-  block = a3;
+  block = queue;
   specific = dispatch_get_specific([(TUCallCapabilitiesXPCClient *)self queueContext]);
   if (specific == [(TUCallCapabilitiesXPCClient *)self queueContext])
   {
@@ -488,23 +488,23 @@ void __46__TUCallCapabilitiesXPCClient_removeDelegate___block_invoke(uint64_t a1
 
   else
   {
-    v5 = [(TUCallCapabilitiesXPCClient *)self queue];
-    dispatch_sync(v5, block);
+    queue = [(TUCallCapabilitiesXPCClient *)self queue];
+    dispatch_sync(queue, block);
   }
 }
 
-- (void)performDelegateCallbackBlock:(id)a3
+- (void)performDelegateCallbackBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(TUCallCapabilitiesXPCClient *)self queue];
+  blockCopy = block;
+  queue = [(TUCallCapabilitiesXPCClient *)self queue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __60__TUCallCapabilitiesXPCClient_performDelegateCallbackBlock___block_invoke;
   v7[3] = &unk_1E7424E20;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = blockCopy;
+  v6 = blockCopy;
+  dispatch_async(queue, v7);
 }
 
 void __60__TUCallCapabilitiesXPCClient_performDelegateCallbackBlock___block_invoke(uint64_t a1)
@@ -556,16 +556,16 @@ void __60__TUCallCapabilitiesXPCClient_performDelegateCallbackBlock___block_invo
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setRelayCallingEnabled:(BOOL)a3
+- (void)setRelayCallingEnabled:(BOOL)enabled
 {
-  v5 = [(TUCallCapabilitiesXPCClient *)self queue];
+  queue = [(TUCallCapabilitiesXPCClient *)self queue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __54__TUCallCapabilitiesXPCClient_setRelayCallingEnabled___block_invoke;
   v6[3] = &unk_1E7425000;
   v6[4] = self;
-  v7 = a3;
-  dispatch_async(v5, v6);
+  enabledCopy = enabled;
+  dispatch_async(queue, v6);
 }
 
 void __54__TUCallCapabilitiesXPCClient_setRelayCallingEnabled___block_invoke(uint64_t a1)
@@ -574,19 +574,19 @@ void __54__TUCallCapabilitiesXPCClient_setRelayCallingEnabled___block_invoke(uin
   [v2 setRelayCallingEnabled:*(a1 + 40)];
 }
 
-- (void)setRelayCallingEnabled:(BOOL)a3 forDeviceWithID:(id)a4
+- (void)setRelayCallingEnabled:(BOOL)enabled forDeviceWithID:(id)d
 {
-  v6 = a4;
-  v7 = [(TUCallCapabilitiesXPCClient *)self queue];
+  dCopy = d;
+  queue = [(TUCallCapabilitiesXPCClient *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __70__TUCallCapabilitiesXPCClient_setRelayCallingEnabled_forDeviceWithID___block_invoke;
   block[3] = &unk_1E7425B78;
-  v11 = a3;
+  enabledCopy = enabled;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
-  dispatch_async(v7, block);
+  v10 = dCopy;
+  v8 = dCopy;
+  dispatch_async(queue, block);
 }
 
 void __70__TUCallCapabilitiesXPCClient_setRelayCallingEnabled_forDeviceWithID___block_invoke(uint64_t a1)
@@ -595,19 +595,19 @@ void __70__TUCallCapabilitiesXPCClient_setRelayCallingEnabled_forDeviceWithID___
   [v2 setRelayCallingEnabled:*(a1 + 48) forDeviceWithID:*(a1 + 40)];
 }
 
-- (void)setWiFiCallingEnabled:(BOOL)a3 forSenderIdentityWithUUID:(id)a4
+- (void)setWiFiCallingEnabled:(BOOL)enabled forSenderIdentityWithUUID:(id)d
 {
-  v6 = a4;
-  v7 = [(TUCallCapabilitiesXPCClient *)self queue];
+  dCopy = d;
+  queue = [(TUCallCapabilitiesXPCClient *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __79__TUCallCapabilitiesXPCClient_setWiFiCallingEnabled_forSenderIdentityWithUUID___block_invoke;
   block[3] = &unk_1E7425B78;
-  v11 = a3;
+  enabledCopy = enabled;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
-  dispatch_async(v7, block);
+  v10 = dCopy;
+  v8 = dCopy;
+  dispatch_async(queue, block);
 }
 
 void __79__TUCallCapabilitiesXPCClient_setWiFiCallingEnabled_forSenderIdentityWithUUID___block_invoke(uint64_t a1)
@@ -616,19 +616,19 @@ void __79__TUCallCapabilitiesXPCClient_setWiFiCallingEnabled_forSenderIdentityWi
   [v2 setWiFiCallingEnabled:*(a1 + 48) forSenderIdentityWithUUID:*(a1 + 40)];
 }
 
-- (void)setWiFiCallingRoamingEnabled:(BOOL)a3 forSenderIdentityWithUUID:(id)a4
+- (void)setWiFiCallingRoamingEnabled:(BOOL)enabled forSenderIdentityWithUUID:(id)d
 {
-  v6 = a4;
-  v7 = [(TUCallCapabilitiesXPCClient *)self queue];
+  dCopy = d;
+  queue = [(TUCallCapabilitiesXPCClient *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __86__TUCallCapabilitiesXPCClient_setWiFiCallingRoamingEnabled_forSenderIdentityWithUUID___block_invoke;
   block[3] = &unk_1E7425B78;
-  v11 = a3;
+  enabledCopy = enabled;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
-  dispatch_async(v7, block);
+  v10 = dCopy;
+  v8 = dCopy;
+  dispatch_async(queue, block);
 }
 
 void __86__TUCallCapabilitiesXPCClient_setWiFiCallingRoamingEnabled_forSenderIdentityWithUUID___block_invoke(uint64_t a1)
@@ -637,19 +637,19 @@ void __86__TUCallCapabilitiesXPCClient_setWiFiCallingRoamingEnabled_forSenderIde
   [v2 setWiFiCallingRoamingEnabled:*(a1 + 48) forSenderIdentityWithUUID:*(a1 + 40)];
 }
 
-- (void)setVoLTECallingEnabled:(BOOL)a3 forSenderIdentityWithUUID:(id)a4
+- (void)setVoLTECallingEnabled:(BOOL)enabled forSenderIdentityWithUUID:(id)d
 {
-  v6 = a4;
-  v7 = [(TUCallCapabilitiesXPCClient *)self queue];
+  dCopy = d;
+  queue = [(TUCallCapabilitiesXPCClient *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __80__TUCallCapabilitiesXPCClient_setVoLTECallingEnabled_forSenderIdentityWithUUID___block_invoke;
   block[3] = &unk_1E7425B78;
-  v11 = a3;
+  enabledCopy = enabled;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
-  dispatch_async(v7, block);
+  v10 = dCopy;
+  v8 = dCopy;
+  dispatch_async(queue, block);
 }
 
 void __80__TUCallCapabilitiesXPCClient_setVoLTECallingEnabled_forSenderIdentityWithUUID___block_invoke(uint64_t a1)
@@ -658,19 +658,19 @@ void __80__TUCallCapabilitiesXPCClient_setVoLTECallingEnabled_forSenderIdentityW
   [v2 setVoLTECallingEnabled:*(a1 + 48) forSenderIdentityWithUUID:*(a1 + 40)];
 }
 
-- (void)setThumperCallingEnabled:(BOOL)a3 forSenderIdentityWithUUID:(id)a4
+- (void)setThumperCallingEnabled:(BOOL)enabled forSenderIdentityWithUUID:(id)d
 {
-  v6 = a4;
-  v7 = [(TUCallCapabilitiesXPCClient *)self queue];
+  dCopy = d;
+  queue = [(TUCallCapabilitiesXPCClient *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __82__TUCallCapabilitiesXPCClient_setThumperCallingEnabled_forSenderIdentityWithUUID___block_invoke;
   block[3] = &unk_1E7425B78;
-  v11 = a3;
+  enabledCopy = enabled;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
-  dispatch_async(v7, block);
+  v10 = dCopy;
+  v8 = dCopy;
+  dispatch_async(queue, block);
 }
 
 void __82__TUCallCapabilitiesXPCClient_setThumperCallingEnabled_forSenderIdentityWithUUID___block_invoke(uint64_t a1)
@@ -679,22 +679,22 @@ void __82__TUCallCapabilitiesXPCClient_setThumperCallingEnabled_forSenderIdentit
   [v2 setThumperCallingEnabled:*(a1 + 48) forSenderIdentityWithUUID:*(a1 + 40)];
 }
 
-- (void)setThumperCallingAllowed:(BOOL)a3 onSecondaryDeviceWithID:(id)a4 forSenderIdentityWithUUID:(id)a5
+- (void)setThumperCallingAllowed:(BOOL)allowed onSecondaryDeviceWithID:(id)d forSenderIdentityWithUUID:(id)iD
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [(TUCallCapabilitiesXPCClient *)self queue];
+  dCopy = d;
+  iDCopy = iD;
+  queue = [(TUCallCapabilitiesXPCClient *)self queue];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __106__TUCallCapabilitiesXPCClient_setThumperCallingAllowed_onSecondaryDeviceWithID_forSenderIdentityWithUUID___block_invoke;
   v13[3] = &unk_1E7425C80;
-  v16 = a3;
+  allowedCopy = allowed;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v11 = v9;
-  v12 = v8;
-  dispatch_async(v10, v13);
+  v14 = dCopy;
+  v15 = iDCopy;
+  v11 = iDCopy;
+  v12 = dCopy;
+  dispatch_async(queue, v13);
 }
 
 void __106__TUCallCapabilitiesXPCClient_setThumperCallingAllowed_onSecondaryDeviceWithID_forSenderIdentityWithUUID___block_invoke(uint64_t a1)
@@ -703,19 +703,19 @@ void __106__TUCallCapabilitiesXPCClient_setThumperCallingAllowed_onSecondaryDevi
   [v2 setThumperCallingAllowed:*(a1 + 56) onSecondaryDeviceWithID:*(a1 + 40) forSenderIdentityWithUUID:*(a1 + 48)];
 }
 
-- (void)setThumperCallingAllowedOnDefaultPairedDevice:(BOOL)a3 forSenderIdentityWithUUID:(id)a4
+- (void)setThumperCallingAllowedOnDefaultPairedDevice:(BOOL)device forSenderIdentityWithUUID:(id)d
 {
-  v6 = a4;
-  v7 = [(TUCallCapabilitiesXPCClient *)self queue];
+  dCopy = d;
+  queue = [(TUCallCapabilitiesXPCClient *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __103__TUCallCapabilitiesXPCClient_setThumperCallingAllowedOnDefaultPairedDevice_forSenderIdentityWithUUID___block_invoke;
   block[3] = &unk_1E7425B78;
-  v11 = a3;
+  deviceCopy = device;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
-  dispatch_async(v7, block);
+  v10 = dCopy;
+  v8 = dCopy;
+  dispatch_async(queue, block);
 }
 
 void __103__TUCallCapabilitiesXPCClient_setThumperCallingAllowedOnDefaultPairedDevice_forSenderIdentityWithUUID___block_invoke(uint64_t a1)
@@ -726,13 +726,13 @@ void __103__TUCallCapabilitiesXPCClient_setThumperCallingAllowedOnDefaultPairedD
 
 - (void)endEmergencyCallbackMode
 {
-  v3 = [(TUCallCapabilitiesXPCClient *)self queue];
+  queue = [(TUCallCapabilitiesXPCClient *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __55__TUCallCapabilitiesXPCClient_endEmergencyCallbackMode__block_invoke;
   block[3] = &unk_1E7424950;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 void __55__TUCallCapabilitiesXPCClient_endEmergencyCallbackMode__block_invoke(uint64_t a1)
@@ -741,18 +741,18 @@ void __55__TUCallCapabilitiesXPCClient_endEmergencyCallbackMode__block_invoke(ui
   [v1 endEmergencyCallbackMode];
 }
 
-- (void)invalidateAndRefreshWiFiCallingProvisioningURLForSenderIdentityWithUUID:(id)a3
+- (void)invalidateAndRefreshWiFiCallingProvisioningURLForSenderIdentityWithUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(TUCallCapabilitiesXPCClient *)self queue];
+  dCopy = d;
+  queue = [(TUCallCapabilitiesXPCClient *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __103__TUCallCapabilitiesXPCClient_invalidateAndRefreshWiFiCallingProvisioningURLForSenderIdentityWithUUID___block_invoke;
   block[3] = &unk_1E7424898;
   block[4] = self;
-  v6 = v4;
+  v6 = dCopy;
   v11 = v6;
-  dispatch_async(v5, block);
+  dispatch_async(queue, block);
 
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
@@ -791,18 +791,18 @@ void __103__TUCallCapabilitiesXPCClient_invalidateAndRefreshWiFiCallingProvision
   [v3 invalidateProvisioningURL];
 }
 
-- (void)invalidateAndRefreshThumperCallingProvisioningURLForSenderIdentityWithUUID:(id)a3
+- (void)invalidateAndRefreshThumperCallingProvisioningURLForSenderIdentityWithUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(TUCallCapabilitiesXPCClient *)self queue];
+  dCopy = d;
+  queue = [(TUCallCapabilitiesXPCClient *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __106__TUCallCapabilitiesXPCClient_invalidateAndRefreshThumperCallingProvisioningURLForSenderIdentityWithUUID___block_invoke;
   block[3] = &unk_1E7424898;
   block[4] = self;
-  v6 = v4;
+  v6 = dCopy;
   v11 = v6;
-  dispatch_async(v5, block);
+  dispatch_async(queue, block);
 
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
@@ -843,13 +843,13 @@ void __106__TUCallCapabilitiesXPCClient_invalidateAndRefreshThumperCallingProvis
 
 - (void)requestPinFromPrimaryDevice
 {
-  v3 = [(TUCallCapabilitiesXPCClient *)self queue];
+  queue = [(TUCallCapabilitiesXPCClient *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __58__TUCallCapabilitiesXPCClient_requestPinFromPrimaryDevice__block_invoke;
   block[3] = &unk_1E7424950;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 void __58__TUCallCapabilitiesXPCClient_requestPinFromPrimaryDevice__block_invoke(uint64_t a1)
@@ -860,13 +860,13 @@ void __58__TUCallCapabilitiesXPCClient_requestPinFromPrimaryDevice__block_invoke
 
 - (void)cancelPinRequestFromPrimaryDevice
 {
-  v3 = [(TUCallCapabilitiesXPCClient *)self queue];
+  queue = [(TUCallCapabilitiesXPCClient *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __64__TUCallCapabilitiesXPCClient_cancelPinRequestFromPrimaryDevice__block_invoke;
   block[3] = &unk_1E7424950;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 void __64__TUCallCapabilitiesXPCClient_cancelPinRequestFromPrimaryDevice__block_invoke(uint64_t a1)
@@ -877,13 +877,13 @@ void __64__TUCallCapabilitiesXPCClient_cancelPinRequestFromPrimaryDevice__block_
 
 - (void)invalidate
 {
-  v3 = [(TUCallCapabilitiesXPCClient *)self queue];
+  queue = [(TUCallCapabilitiesXPCClient *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __41__TUCallCapabilitiesXPCClient_invalidate__block_invoke;
   block[3] = &unk_1E7424950;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 void __41__TUCallCapabilitiesXPCClient_invalidate__block_invoke(uint64_t a1)
@@ -893,18 +893,18 @@ void __41__TUCallCapabilitiesXPCClient_invalidate__block_invoke(uint64_t a1)
   [WeakRetained unregisterClient:*(a1 + 32)];
 }
 
-- (void)capabilityStateUpdated:(id)a3
+- (void)capabilityStateUpdated:(id)updated
 {
-  v4 = a3;
-  v5 = [(TUCallCapabilitiesXPCClient *)self queue];
+  updatedCopy = updated;
+  queue = [(TUCallCapabilitiesXPCClient *)self queue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __54__TUCallCapabilitiesXPCClient_capabilityStateUpdated___block_invoke;
   v7[3] = &unk_1E7424898;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = updatedCopy;
+  selfCopy = self;
+  v6 = updatedCopy;
+  dispatch_async(queue, v7);
 }
 
 uint64_t __54__TUCallCapabilitiesXPCClient_capabilityStateUpdated___block_invoke(uint64_t a1)
@@ -934,12 +934,12 @@ void __45__TUCallCapabilitiesXPCClient__retrieveState__block_invoke(uint64_t a1,
   }
 }
 
-- (void)_updateState:(id)a3
+- (void)_updateState:(id)state
 {
   v13 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [(TUCallCapabilitiesXPCClient *)self queue];
-  dispatch_assert_queue_V2(v6);
+  stateCopy = state;
+  queue = [(TUCallCapabilitiesXPCClient *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   if (self->_state)
   {
@@ -948,18 +948,18 @@ void __45__TUCallCapabilitiesXPCClient__retrieveState__block_invoke(uint64_t a1,
     v9[2] = __44__TUCallCapabilitiesXPCClient__updateState___block_invoke;
     v9[3] = &unk_1E7424898;
     v9[4] = self;
-    v10 = v5;
+    v10 = stateCopy;
     dispatch_async(MEMORY[0x1E69E96A0], v9);
   }
 
   else
   {
-    objc_storeStrong(&self->_state, a3);
+    objc_storeStrong(&self->_state, state);
     v7 = TUDefaultLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v12 = v5;
+      v12 = stateCopy;
       _os_log_impl(&dword_1956FD000, v7, OS_LOG_TYPE_DEFAULT, "Updated to newState: %@", buf, 0xCu);
     }
   }

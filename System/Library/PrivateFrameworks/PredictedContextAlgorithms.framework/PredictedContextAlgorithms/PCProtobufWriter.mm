@@ -1,9 +1,9 @@
 @interface PCProtobufWriter
-+ (id)convertData:(id)a3 error:(id *)a4;
-+ (id)insertEscapeSequenceTo:(id)a3;
++ (id)convertData:(id)data error:(id *)error;
++ (id)insertEscapeSequenceTo:(id)to;
 - (BOOL)closeFile;
-- (BOOL)openFileWithName:(id)a3 append:(BOOL)a4 error:(id *)a5;
-- (BOOL)writeRecord:(id)a3 error:(id *)a4;
+- (BOOL)openFileWithName:(id)name append:(BOOL)append error:(id *)error;
+- (BOOL)writeRecord:(id)record error:(id *)error;
 - (PCProtobufWriter)init;
 @end
 
@@ -24,19 +24,19 @@
   return v3;
 }
 
-- (BOOL)openFileWithName:(id)a3 append:(BOOL)a4 error:(id *)a5
+- (BOOL)openFileWithName:(id)name append:(BOOL)append error:(id *)error
 {
   v26[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  nameCopy = name;
   if (self->_fileHandle)
   {
     [(PCProtobufWriter *)self closeFile];
   }
 
-  v9 = [MEMORY[0x1E696AC08] defaultManager];
-  if ([v9 fileExistsAtPath:v8] & 1) != 0 || (objc_msgSend(v9, "createFileAtPath:contents:attributes:", v8, 0, 0))
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  if ([defaultManager fileExistsAtPath:nameCopy] & 1) != 0 || (objc_msgSend(defaultManager, "createFileAtPath:contents:attributes:", nameCopy, 0, 0))
   {
-    v10 = [MEMORY[0x1E695DFF8] fileURLWithPath:v8];
+    v10 = [MEMORY[0x1E695DFF8] fileURLWithPath:nameCopy];
     v22 = 0;
     v11 = [MEMORY[0x1E696AC00] fileHandleForWritingToURL:v10 error:&v22];
     v12 = v22;
@@ -47,7 +47,7 @@
     v15 = v14 != 0;
     if (v14)
     {
-      if (a4)
+      if (append)
       {
         [(NSFileHandle *)v14 seekToEndOfFile];
       }
@@ -58,12 +58,12 @@
       }
     }
 
-    else if (a5)
+    else if (error)
     {
       if (v12)
       {
         v16 = v12;
-        *a5 = v12;
+        *error = v12;
       }
 
       else
@@ -72,21 +72,21 @@
         v23 = *MEMORY[0x1E696A578];
         v24 = @"Failed to open file for writing";
         v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v24 forKeys:&v23 count:1];
-        *a5 = [v18 errorWithDomain:@"PCProtobufWriter" code:2 userInfo:v19];
+        *error = [v18 errorWithDomain:@"PCProtobufWriter" code:2 userInfo:v19];
       }
     }
 
     goto LABEL_17;
   }
 
-  if (a5)
+  if (error)
   {
     v17 = MEMORY[0x1E696ABC0];
     v25 = *MEMORY[0x1E696A578];
     v26[0] = @"Failed to create output file";
     v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v26 forKeys:&v25 count:1];
     [v17 errorWithDomain:@"PCProtobufWriter" code:1 userInfo:v10];
-    *a5 = v15 = 0;
+    *error = v15 = 0;
 LABEL_17:
 
     goto LABEL_18;
@@ -99,17 +99,17 @@ LABEL_18:
   return v15;
 }
 
-+ (id)convertData:(id)a3 error:(id *)a4
++ (id)convertData:(id)data error:(id *)error
 {
   v25[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  dataCopy = data;
+  v6 = dataCopy;
+  if (dataCopy)
   {
-    v7 = PCEncodeVarint([v5 length]);
+    v7 = PCEncodeVarint([dataCopy length]);
     v8 = [objc_alloc(MEMORY[0x1E695DF88]) initWithData:v7];
     [v8 appendData:v6];
-    v9 = [v6 bytes];
+    bytes = [v6 bytes];
     v10 = [v6 length];
     if (v10)
     {
@@ -117,7 +117,7 @@ LABEL_18:
       v12 = 1;
       do
       {
-        v13 = *v9++;
+        v13 = *bytes++;
         v12 = (v12 + v13) % 0xFFF1;
         v11 = (v12 + v11) % 0xFFF1;
         --v10;
@@ -144,13 +144,13 @@ LABEL_18:
 
   else
   {
-    if (a4)
+    if (error)
     {
       v15 = MEMORY[0x1E696ABC0];
       v24 = *MEMORY[0x1E696A578];
       v25[0] = @"Failed to serialize record";
       v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v25 forKeys:&v24 count:1];
-      *a4 = [v15 errorWithDomain:@"PCProtobufWriter" code:4 userInfo:v16];
+      *error = [v15 errorWithDomain:@"PCProtobufWriter" code:4 userInfo:v16];
     }
 
     v17 = 0;
@@ -161,29 +161,29 @@ LABEL_18:
   return v17;
 }
 
-+ (id)insertEscapeSequenceTo:(id)a3
++ (id)insertEscapeSequenceTo:(id)to
 {
-  v3 = a3;
-  v4 = [v3 bytes];
-  v5 = [v3 length];
-  v6 = [MEMORY[0x1E695DF88] data];
+  toCopy = to;
+  bytes = [toCopy bytes];
+  v5 = [toCopy length];
+  data = [MEMORY[0x1E695DF88] data];
   if (v5)
   {
     v7 = 0;
     do
     {
-      v9 = *v4++;
+      v9 = *bytes++;
       v8 = v9;
       v14 = v9;
       if (v7 && (v8 & 0xFFFFFFDF) == 0x5D)
       {
         v13 = 93;
         v10 = [MEMORY[0x1E695DEF0] dataWithBytes:&v13 length:1];
-        [v6 appendData:v10];
+        [data appendData:v10];
       }
 
       v11 = [MEMORY[0x1E695DEF0] dataWithBytes:&v14 length:1];
-      [v6 appendData:v11];
+      [data appendData:v11];
 
       v7 = v14 == 126;
       --v5;
@@ -192,22 +192,22 @@ LABEL_18:
     while (v5);
   }
 
-  return v6;
+  return data;
 }
 
-- (BOOL)writeRecord:(id)a3 error:(id *)a4
+- (BOOL)writeRecord:(id)record error:(id *)error
 {
   v42[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = v6;
+  recordCopy = record;
+  v7 = recordCopy;
   if (self->_fileHandle)
   {
-    v8 = [v6 data];
-    v9 = v8;
-    v10 = v8 != 0;
-    if (v8)
+    data = [recordCopy data];
+    v9 = data;
+    v10 = data != 0;
+    if (data)
     {
-      v11 = [v8 bytes];
+      bytes = [data bytes];
       v12 = [v9 length];
       v36 = v10;
       if (v12)
@@ -216,7 +216,7 @@ LABEL_18:
         v14 = 1;
         do
         {
-          v15 = *v11++;
+          v15 = *bytes++;
           v14 = (v14 + v15) % 0xFFF1;
           v13 = (v14 + v13) % 0xFFF1;
           --v12;
@@ -240,7 +240,7 @@ LABEL_18:
       v22 = [MEMORY[0x1E695DEF0] dataWithBytes:&kPCProtobufIOMessageStartSeq length:3];
       [(NSFileHandle *)fileHandle writeData:v22];
 
-      v23 = [v20 bytes];
+      bytes2 = [v20 bytes];
       v24 = [v20 length];
       if (v24)
       {
@@ -248,7 +248,7 @@ LABEL_18:
         v26 = 0;
         do
         {
-          v28 = *v23++;
+          v28 = *bytes2++;
           v27 = v28;
           v38 = v28;
           if (v26 && (v27 & 0xFFFFFFDF) == 0x5D)
@@ -275,7 +275,7 @@ LABEL_18:
 
     else
     {
-      if (!a4)
+      if (!error)
       {
         v9 = 0;
         v10 = 0;
@@ -286,13 +286,13 @@ LABEL_18:
       v39 = *MEMORY[0x1E696A578];
       v40 = @"Failed to serialize record";
       v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v40 forKeys:&v39 count:1];
-      *a4 = [v18 errorWithDomain:@"PCProtobufWriter" code:4 userInfo:v19];
+      *error = [v18 errorWithDomain:@"PCProtobufWriter" code:4 userInfo:v19];
     }
   }
 
   else
   {
-    if (!a4)
+    if (!error)
     {
       v10 = 0;
       goto LABEL_21;
@@ -303,7 +303,7 @@ LABEL_18:
     v42[0] = @"File not open";
     v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v42 forKeys:&v41 count:1];
     [v17 errorWithDomain:@"PCProtobufWriter" code:3 userInfo:v9];
-    *a4 = v10 = 0;
+    *error = v10 = 0;
   }
 
 LABEL_20:

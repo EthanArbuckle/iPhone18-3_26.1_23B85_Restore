@@ -1,12 +1,12 @@
 @interface RCRecordingCardMoreButtonMenuCreator
 - (_TtC10VoiceMemos36RCRecordingCardMoreButtonMenuCreator)init;
-- (_TtC10VoiceMemos36RCRecordingCardMoreButtonMenuCreator)initWithRecordingUUID:(id)a3 actionDelegate:(id)a4;
-- (id)createMenuWithDisplayCopyTranscriptAction:(BOOL)a3 hideTrimItem:(BOOL)a4 hasMultipleTracks:(BOOL)a5 showUndoItem:(BOOL)a6 showShareItem:(BOOL)a7;
+- (_TtC10VoiceMemos36RCRecordingCardMoreButtonMenuCreator)initWithRecordingUUID:(id)d actionDelegate:(id)delegate;
+- (id)createMenuWithDisplayCopyTranscriptAction:(BOOL)action hideTrimItem:(BOOL)item hasMultipleTracks:(BOOL)tracks showUndoItem:(BOOL)undoItem showShareItem:(BOOL)shareItem;
 @end
 
 @implementation RCRecordingCardMoreButtonMenuCreator
 
-- (_TtC10VoiceMemos36RCRecordingCardMoreButtonMenuCreator)initWithRecordingUUID:(id)a3 actionDelegate:(id)a4
+- (_TtC10VoiceMemos36RCRecordingCardMoreButtonMenuCreator)initWithRecordingUUID:(id)d actionDelegate:(id)delegate
 {
   v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v6 = v5;
@@ -16,10 +16,10 @@
   return v7;
 }
 
-- (id)createMenuWithDisplayCopyTranscriptAction:(BOOL)a3 hideTrimItem:(BOOL)a4 hasMultipleTracks:(BOOL)a5 showUndoItem:(BOOL)a6 showShareItem:(BOOL)a7
+- (id)createMenuWithDisplayCopyTranscriptAction:(BOOL)action hideTrimItem:(BOOL)item hasMultipleTracks:(BOOL)tracks showUndoItem:(BOOL)undoItem showShareItem:(BOOL)shareItem
 {
-  v12 = self;
-  v13.super.super.isa = sub_100006014(a3, a4, a5, a6, a7).super.super.isa;
+  selfCopy = self;
+  v13.super.super.isa = sub_100006014(action, item, tracks, undoItem, shareItem).super.super.isa;
 
   return v13.super.super.isa;
 }

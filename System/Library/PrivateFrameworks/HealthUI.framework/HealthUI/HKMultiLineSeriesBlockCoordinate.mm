@@ -1,7 +1,7 @@
 @interface HKMultiLineSeriesBlockCoordinate
 - (HKGraphSeriesBlockCoordinateInfo)userInfo;
 - (_TtC8HealthUI32HKMultiLineSeriesBlockCoordinate)init;
-- (id)copyWithTransform:(CGAffineTransform *)a3 roundToViewScale:(BOOL)a4;
+- (id)copyWithTransform:(CGAffineTransform *)transform roundToViewScale:(BOOL)scale;
 @end
 
 @implementation HKMultiLineSeriesBlockCoordinate
@@ -13,14 +13,14 @@
   return v2;
 }
 
-- (id)copyWithTransform:(CGAffineTransform *)a3 roundToViewScale:(BOOL)a4
+- (id)copyWithTransform:(CGAffineTransform *)transform roundToViewScale:(BOOL)scale
 {
-  v5 = *&a3->c;
-  v9[0] = *&a3->a;
+  v5 = *&transform->c;
+  v9[0] = *&transform->a;
   v9[1] = v5;
-  v9[2] = *&a3->tx;
-  v6 = self;
-  v7 = sub_1C3CF6FB8(v9, a4);
+  v9[2] = *&transform->tx;
+  selfCopy = self;
+  v7 = sub_1C3CF6FB8(v9, scale);
 
   return v7;
 }

@@ -1,13 +1,13 @@
 @interface SWCSecurityGuard
 + (SWCSecurityGuard)sharedSecurityGuard;
-- (BOOL)_isSystemTrusted:(__SecTrust *)a3;
-- (BOOL)_verifyExtendedValidationOfTrust:(__SecTrust *)a3 error:(id *)a4;
-- (BOOL)verifyTrust:(__SecTrust *)a3 allowInstalledRootCertificates:(BOOL)a4 error:(id *)a5;
-- (id)JSONObjectWithSignedJSONData:(id)a3 error:(id *)a4;
-- (id)_errorForUntrustedRootCertificateOfTrust:(__SecTrust *)a3;
+- (BOOL)_isSystemTrusted:(__SecTrust *)trusted;
+- (BOOL)_verifyExtendedValidationOfTrust:(__SecTrust *)trust error:(id *)error;
+- (BOOL)verifyTrust:(__SecTrust *)trust allowInstalledRootCertificates:(BOOL)certificates error:(id *)error;
+- (id)JSONObjectWithSignedJSONData:(id)data error:(id *)error;
+- (id)_errorForUntrustedRootCertificateOfTrust:(__SecTrust *)trust;
 - (id)_init;
-- (optional<SecTrustResultType>)_evaluateTrust:(__SecTrust *)a3 allowingKeychains:(BOOL)a4 error:(id *)a5;
-- (optional<SecTrustResultType>)_evaluateTrust:(__SecTrust *)a3 error:(id *)a4;
+- (optional<SecTrustResultType>)_evaluateTrust:(__SecTrust *)trust allowingKeychains:(BOOL)keychains error:(id *)error;
+- (optional<SecTrustResultType>)_evaluateTrust:(__SecTrust *)trust error:(id *)error;
 @end
 
 @implementation SWCSecurityGuard
@@ -24,12 +24,12 @@
   return v3;
 }
 
-- (id)JSONObjectWithSignedJSONData:(id)a3 error:(id *)a4
+- (id)JSONObjectWithSignedJSONData:(id)data error:(id *)error
 {
-  v5 = a3;
+  dataCopy = data;
   v6 = objc_autoreleasePoolPush();
   v24 = 0;
-  v7 = [NSJSONSerialization JSONObjectWithData:v5 options:0 error:&v24];
+  v7 = [NSJSONSerialization JSONObjectWithData:dataCopy options:0 error:&v24];
   v8 = v24;
   if (v7)
   {
@@ -87,21 +87,21 @@
   }
 
   objc_autoreleasePoolPop(v6);
-  if (a4 && !v9)
+  if (error && !v9)
   {
     v18 = v8;
-    *a4 = v8;
+    *error = v8;
   }
 
   return v9;
 }
 
-- (BOOL)verifyTrust:(__SecTrust *)a3 allowInstalledRootCertificates:(BOOL)a4 error:(id *)a5
+- (BOOL)verifyTrust:(__SecTrust *)trust allowInstalledRootCertificates:(BOOL)certificates error:(id *)error
 {
-  v9 = [(SWCSecurityGuard *)self _evaluateTrust:a3 allowingKeychains:0 error:?];
+  v9 = [(SWCSecurityGuard *)self _evaluateTrust:trust allowingKeychains:0 error:?];
   if ((*&v9 & 0x1FFFFFFFFLL) == 0x100000005)
   {
-    v9 = [(SWCSecurityGuard *)self _evaluateTrust:a3 allowingKeychains:1 error:a5];
+    v9 = [(SWCSecurityGuard *)self _evaluateTrust:trust allowingKeychains:1 error:error];
   }
 
   if ((*&v9 & 0x100000000) == 0)
@@ -112,14 +112,14 @@
 
   if (v9.var0.var1 == 1)
   {
-    if (a4 || [(SWCSecurityGuard *)self _isSystemTrusted:a3])
+    if (certificates || [(SWCSecurityGuard *)self _isSystemTrusted:trust])
     {
       v10 = 0;
       v11 = 1;
       goto LABEL_17;
     }
 
-    v10 = [(SWCSecurityGuard *)self _errorForUntrustedRootCertificateOfTrust:a3];
+    v10 = [(SWCSecurityGuard *)self _errorForUntrustedRootCertificateOfTrust:trust];
     goto LABEL_14;
   }
 
@@ -141,7 +141,7 @@
 
 LABEL_14:
     v11 = 0;
-    if (!a5)
+    if (!error)
     {
       goto LABEL_17;
     }
@@ -149,9 +149,9 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  v11 = [(SWCSecurityGuard *)self _verifyExtendedValidationOfTrust:a3 error:a5];
+  v11 = [(SWCSecurityGuard *)self _verifyExtendedValidationOfTrust:trust error:error];
   v10 = 0;
-  if (!a5)
+  if (!error)
   {
     goto LABEL_17;
   }
@@ -161,7 +161,7 @@ LABEL_15:
   {
     v16 = v10;
     v11 = 0;
-    *a5 = v10;
+    *error = v10;
   }
 
 LABEL_17:
@@ -176,13 +176,13 @@ LABEL_17:
   return [(SWCSecurityGuard *)&v3 init];
 }
 
-- (optional<SecTrustResultType>)_evaluateTrust:(__SecTrust *)a3 error:(id *)a4
+- (optional<SecTrustResultType>)_evaluateTrust:(__SecTrust *)trust error:(id *)error
 {
   error = 0;
   v6 = objc_autoreleasePoolPush();
-  v7 = SecTrustEvaluateWithError(a3, &error);
+  v7 = SecTrustEvaluateWithError(trust, &error);
   result = kSecTrustResultInvalid;
-  TrustResult = SecTrustGetTrustResult(a3, &result);
+  TrustResult = SecTrustGetTrustResult(trust, &result);
   if (!TrustResult)
   {
     v26 = result & 0xFFFFFF00;
@@ -213,16 +213,16 @@ LABEL_17:
     v40[3] = v13;
     v14 = [NSDictionary dictionaryWithObjects:v40 forKeys:v39 count:4];
     v15 = [v9 initWithDomain:_SWCErrorDomain code:100 userInfo:v14];
-    v16 = error;
+    errorCopy = error;
     error = v15;
   }
 
-  v17 = [(__CFError *)error userInfo];
-  v18 = [v17 mutableCopy];
+  userInfo = [(__CFError *)error userInfo];
+  v18 = [userInfo mutableCopy];
 
   if (v18)
   {
-    v19 = SecTrustCopyResult(a3);
+    v19 = SecTrustCopyResult(trust);
     if (v19)
     {
       [v18 setObject:v19 forKeyedSubscript:@"TrustResult"];
@@ -235,9 +235,9 @@ LABEL_17:
     }
 
     v21 = [NSError alloc];
-    v22 = [(__CFError *)error domain];
-    v23 = [v21 initWithDomain:v22 code:-[__CFError code](error userInfo:{"code"), v18}];
-    v24 = error;
+    domain = [(__CFError *)error domain];
+    v23 = [v21 initWithDomain:domain code:-[__CFError code](error userInfo:{"code"), v18}];
+    errorCopy2 = error;
     error = v23;
   }
 
@@ -250,11 +250,11 @@ LABEL_17:
   if (os_log_type_enabled(qword_10003AD40, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412546;
-    v34 = a3;
+    trustCopy = trust;
     v35 = 2112;
-    v36 = error;
+    errorCopy3 = error;
     _os_log_error_impl(&_mh_execute_header, v25, OS_LOG_TYPE_ERROR, "Error evaluating trust %@: %@", buf, 0x16u);
-    if (a4)
+    if (error)
     {
       goto LABEL_14;
     }
@@ -266,7 +266,7 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  if (!a4)
+  if (!error)
   {
     goto LABEL_17;
   }
@@ -275,16 +275,16 @@ LABEL_14:
   v26 = 0;
   v27 = 0;
   v28 = 0;
-  *a4 = error;
+  *error = error;
 LABEL_18:
   objc_autoreleasePoolPop(v6);
 
   return (v28 | v27 | v26);
 }
 
-- (optional<SecTrustResultType>)_evaluateTrust:(__SecTrust *)a3 allowingKeychains:(BOOL)a4 error:(id *)a5
+- (optional<SecTrustResultType>)_evaluateTrust:(__SecTrust *)trust allowingKeychains:(BOOL)keychains error:(id *)error
 {
-  v6 = a4;
+  keychainsCopy = keychains;
   v23 = 0;
   KeychainsAllowed = SecTrustGetKeychainsAllowed();
   if (KeychainsAllowed)
@@ -317,7 +317,7 @@ LABEL_18:
 
   SecTrustSetKeychainsAllowed();
   v22 = 0;
-  v17 = [(SWCSecurityGuard *)self _evaluateTrust:a3 error:&v22];
+  v17 = [(SWCSecurityGuard *)self _evaluateTrust:trust error:&v22];
   v15 = v22;
   SecTrustSetKeychainsAllowed();
   v16 = HIDWORD(v17);
@@ -325,10 +325,10 @@ LABEL_18:
   if ((v17 & 0x100000000) == 0)
   {
 LABEL_10:
-    if (a5)
+    if (error)
     {
       v20 = v15;
-      *a5 = v15;
+      *error = v15;
     }
 
     goto LABEL_12;
@@ -344,8 +344,8 @@ LABEL_10:
   {
     v19 = @"NOT ";
     *buf = 138412802;
-    v25 = a3;
-    if (v6)
+    trustCopy = trust;
+    if (keychainsCopy)
     {
       v19 = &stru_100035ED8;
     }
@@ -362,9 +362,9 @@ LABEL_12:
   return (v17 | ((v13 & 0xFFFFFF) << 8) | (v16 << 32));
 }
 
-- (id)_errorForUntrustedRootCertificateOfTrust:(__SecTrust *)a3
+- (id)_errorForUntrustedRootCertificateOfTrust:(__SecTrust *)trust
 {
-  CertificateCount = SecTrustGetCertificateCount(a3);
+  CertificateCount = SecTrustGetCertificateCount(trust);
   if (CertificateCount < 1)
   {
     CertificateAtIndex = 0;
@@ -373,16 +373,16 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  CertificateAtIndex = SecTrustGetCertificateAtIndex(a3, CertificateCount - 1);
+  CertificateAtIndex = SecTrustGetCertificateAtIndex(trust, CertificateCount - 1);
   if (!CertificateAtIndex)
   {
     goto LABEL_9;
   }
 
   v6 = +[_SWCPrefs sharedPrefs];
-  v7 = [v6 isAppleInternal];
+  isAppleInternal = [v6 isAppleInternal];
 
-  if (!v7)
+  if (!isAppleInternal)
   {
     goto LABEL_9;
   }
@@ -419,17 +419,17 @@ LABEL_10:
   return v15;
 }
 
-- (BOOL)_verifyExtendedValidationOfTrust:(__SecTrust *)a3 error:(id *)a4
+- (BOOL)_verifyExtendedValidationOfTrust:(__SecTrust *)trust error:(id *)error
 {
   v6 = +[_SWCPrefs sharedPrefs];
-  v7 = [v6 verifyExtendedValidation];
+  verifyExtendedValidation = [v6 verifyExtendedValidation];
 
-  if (!v7)
+  if (!verifyExtendedValidation)
   {
     return 1;
   }
 
-  v8 = SecTrustCopyResult(a3);
+  v8 = SecTrustCopyResult(trust);
   v9 = v8;
   if (v8)
   {
@@ -451,7 +451,7 @@ LABEL_10:
     v12 = 0;
   }
 
-  if (a4 && (v12 & 1) == 0)
+  if (error && (v12 & 1) == 0)
   {
     v13 = [NSError alloc];
     v18[0] = &off_100036BA0;
@@ -462,7 +462,7 @@ LABEL_10:
     v17[2] = NSDebugDescriptionErrorKey;
     v18[2] = @"Extended validation failed.";
     v15 = [NSDictionary dictionaryWithObjects:v18 forKeys:v17 count:3];
-    *a4 = [v13 initWithDomain:_SWCErrorDomain code:102 userInfo:v15];
+    *error = [v13 initWithDomain:_SWCErrorDomain code:102 userInfo:v15];
 
     return 0;
   }
@@ -470,9 +470,9 @@ LABEL_10:
   return v12;
 }
 
-- (BOOL)_isSystemTrusted:(__SecTrust *)a3
+- (BOOL)_isSystemTrusted:(__SecTrust *)trusted
 {
-  CertificateCount = SecTrustGetCertificateCount(a3);
+  CertificateCount = SecTrustGetCertificateCount(trusted);
   if (CertificateCount < 1)
   {
     LOBYTE(CertificateAtIndex) = 0;
@@ -480,7 +480,7 @@ LABEL_10:
 
   else
   {
-    CertificateAtIndex = SecTrustGetCertificateAtIndex(a3, CertificateCount - 1);
+    CertificateAtIndex = SecTrustGetCertificateAtIndex(trusted, CertificateCount - 1);
     if (CertificateAtIndex)
     {
       SecTrustStoreForDomain();

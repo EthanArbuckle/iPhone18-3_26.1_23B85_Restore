@@ -1,46 +1,46 @@
 @interface NavigationDisplay
-- ($F9C4767691F2EDF2F3162F5FE7B1523A)cartographicConfigurationForTransportType:(SEL)a3;
-- (BOOL)mapView:(id)a3 shouldSelectLabelMarker:(id)a4;
+- ($F9C4767691F2EDF2F3162F5FE7B1523A)cartographicConfigurationForTransportType:(SEL)type;
+- (BOOL)mapView:(id)view shouldSelectLabelMarker:(id)marker;
 - (ChromeViewController)chromeViewController;
 - (NavigationDisplay)init;
 - (NavigationDisplayDelegate)delegate;
-- (id)mapViewCurrentRouteMatch:(id)a3;
-- (void)_setTracking:(BOOL)a3;
+- (id)mapViewCurrentRouteMatch:(id)match;
+- (void)_setTracking:(BOOL)tracking;
 - (void)_startObservingChromeIfNeeded;
 - (void)_stopObservingChromeIfNeeded;
 - (void)_updateCartographicConfiguration;
 - (void)_updateDestinationBuildingId;
 - (void)_updateMapViewAndCameraController;
-- (void)_updateRoadDescription:(id)a3;
+- (void)_updateRoadDescription:(id)description;
 - (void)_updateSky;
-- (void)_updateUserAnnotationViewForCurrentTransportTypeAnimated:(BOOL)a3;
+- (void)_updateUserAnnotationViewForCurrentTransportTypeAnimated:(BOOL)animated;
 - (void)clearCache;
 - (void)dealloc;
-- (void)didTapMapView:(id)a3 atPoint:(CGPoint)a4;
-- (void)mapView:(id)a3 didChangeUserTrackingMode:(int64_t)a4 animated:(BOOL)a5 fromTrackingButton:(BOOL)a6;
-- (void)mapView:(id)a3 didDeselectLabelMarker:(id)a4;
-- (void)mapView:(id)a3 didSelectAnnotationView:(id)a4;
-- (void)mapView:(id)a3 didSelectLabelMarker:(id)a4;
-- (void)mapView:(id)a3 didStopRespondingToGesture:(int64_t)a4 zoomDirection:(int64_t)a5 zoomGestureType:(int64_t)a6 didDecelerate:(BOOL)a7 tiltDirection:(int64_t)a8;
-- (void)mapView:(id)a3 didUpdateYaw:(double)a4;
-- (void)mapView:(id)a3 regionDidChangeAnimated:(BOOL)a4;
-- (void)mapViewNavigationCameraDidLeaveDefaultZoom:(id)a3;
-- (void)mapViewNavigationCameraDidReturnToDefaultZoom:(id)a3;
-- (void)mapViewNavigationCameraHasStartedPanning:(id)a3;
-- (void)mapViewNavigationCameraHasStoppedPanning:(id)a3;
+- (void)didTapMapView:(id)view atPoint:(CGPoint)point;
+- (void)mapView:(id)view didChangeUserTrackingMode:(int64_t)mode animated:(BOOL)animated fromTrackingButton:(BOOL)button;
+- (void)mapView:(id)view didDeselectLabelMarker:(id)marker;
+- (void)mapView:(id)view didSelectAnnotationView:(id)annotationView;
+- (void)mapView:(id)view didSelectLabelMarker:(id)marker;
+- (void)mapView:(id)view didStopRespondingToGesture:(int64_t)gesture zoomDirection:(int64_t)direction zoomGestureType:(int64_t)type didDecelerate:(BOOL)decelerate tiltDirection:(int64_t)tiltDirection;
+- (void)mapView:(id)view didUpdateYaw:(double)yaw;
+- (void)mapView:(id)view regionDidChangeAnimated:(BOOL)animated;
+- (void)mapViewNavigationCameraDidLeaveDefaultZoom:(id)zoom;
+- (void)mapViewNavigationCameraDidReturnToDefaultZoom:(id)zoom;
+- (void)mapViewNavigationCameraHasStartedPanning:(id)panning;
+- (void)mapViewNavigationCameraHasStoppedPanning:(id)panning;
 - (void)pauseCameraMotion;
-- (void)setChromeViewController:(id)a3;
-- (void)setMapView:(id)a3;
-- (void)setNavigationDestinationState:(unint64_t)a3;
-- (void)setRouteGeniusEntry:(id)a3;
-- (void)setShowsRoadLabel:(BOOL)a3;
-- (void)setSky:(int64_t)a3;
-- (void)setTransportType:(int)a3 animated:(BOOL)a4;
-- (void)setUserLocationAnnotationView:(id)a3;
-- (void)startMotion:(BOOL)a3;
+- (void)setChromeViewController:(id)controller;
+- (void)setMapView:(id)view;
+- (void)setNavigationDestinationState:(unint64_t)state;
+- (void)setRouteGeniusEntry:(id)entry;
+- (void)setShowsRoadLabel:(BOOL)label;
+- (void)setSky:(int64_t)sky;
+- (void)setTransportType:(int)type animated:(BOOL)animated;
+- (void)setUserLocationAnnotationView:(id)view;
+- (void)startMotion:(BOOL)motion;
 - (void)stopCameraMotion;
-- (void)updateWithLocation:(id)a3;
-- (void)updateWithRoute:(id)a3;
+- (void)updateWithLocation:(id)location;
+- (void)updateWithRoute:(id)route;
 @end
 
 @implementation NavigationDisplay
@@ -59,125 +59,125 @@
   return WeakRetained;
 }
 
-- (void)mapView:(id)a3 regionDidChangeAnimated:(BOOL)a4
+- (void)mapView:(id)view regionDidChangeAnimated:(BOOL)animated
 {
-  v4 = a4;
-  v9 = a3;
+  animatedCopy = animated;
+  viewCopy = view;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
     v8 = objc_loadWeakRetained(&self->_delegate);
-    [v8 mapView:v9 regionDidChangeAnimated:v4];
+    [v8 mapView:viewCopy regionDidChangeAnimated:animatedCopy];
   }
 }
 
-- (void)mapView:(id)a3 didSelectAnnotationView:(id)a4
+- (void)mapView:(id)view didSelectAnnotationView:(id)annotationView
 {
-  v11 = a3;
-  v7 = a4;
+  viewCopy = view;
+  annotationViewCopy = annotationView;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
     v10 = objc_loadWeakRetained(&self->_delegate);
-    [v10 performSelector:a2 withObject:v11 withObject:v7];
+    [v10 performSelector:a2 withObject:viewCopy withObject:annotationViewCopy];
   }
 }
 
-- (void)mapViewNavigationCameraDidReturnToDefaultZoom:(id)a3
+- (void)mapViewNavigationCameraDidReturnToDefaultZoom:(id)zoom
 {
-  v8 = a3;
+  zoomCopy = zoom;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
     v7 = objc_loadWeakRetained(&self->_delegate);
-    [v7 performSelector:a2 withObject:v8];
+    [v7 performSelector:a2 withObject:zoomCopy];
   }
 }
 
-- (void)mapViewNavigationCameraDidLeaveDefaultZoom:(id)a3
+- (void)mapViewNavigationCameraDidLeaveDefaultZoom:(id)zoom
 {
-  v8 = a3;
+  zoomCopy = zoom;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
     v7 = objc_loadWeakRetained(&self->_delegate);
-    [v7 performSelector:a2 withObject:v8];
+    [v7 performSelector:a2 withObject:zoomCopy];
   }
 }
 
-- (void)mapViewNavigationCameraHasStoppedPanning:(id)a3
+- (void)mapViewNavigationCameraHasStoppedPanning:(id)panning
 {
-  v8 = a3;
+  panningCopy = panning;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
     v7 = objc_loadWeakRetained(&self->_delegate);
-    [v7 performSelector:a2 withObject:v8];
+    [v7 performSelector:a2 withObject:panningCopy];
   }
 }
 
-- (void)mapViewNavigationCameraHasStartedPanning:(id)a3
+- (void)mapViewNavigationCameraHasStartedPanning:(id)panning
 {
-  v8 = a3;
+  panningCopy = panning;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
     v7 = objc_loadWeakRetained(&self->_delegate);
-    [v7 performSelector:a2 withObject:v8];
+    [v7 performSelector:a2 withObject:panningCopy];
   }
 }
 
-- (void)mapView:(id)a3 didDeselectLabelMarker:(id)a4
+- (void)mapView:(id)view didDeselectLabelMarker:(id)marker
 {
-  v10 = a3;
-  v6 = a4;
+  viewCopy = view;
+  markerCopy = marker;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
     v9 = objc_loadWeakRetained(&self->_delegate);
-    [v9 mapView:v10 didDeselectLabelMarker:v6];
+    [v9 mapView:viewCopy didDeselectLabelMarker:markerCopy];
   }
 }
 
-- (void)mapView:(id)a3 didSelectLabelMarker:(id)a4
+- (void)mapView:(id)view didSelectLabelMarker:(id)marker
 {
-  v10 = a3;
-  v6 = a4;
+  viewCopy = view;
+  markerCopy = marker;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
     v9 = objc_loadWeakRetained(&self->_delegate);
-    [v9 mapView:v10 didSelectLabelMarker:v6];
+    [v9 mapView:viewCopy didSelectLabelMarker:markerCopy];
   }
 }
 
-- (BOOL)mapView:(id)a3 shouldSelectLabelMarker:(id)a4
+- (BOOL)mapView:(id)view shouldSelectLabelMarker:(id)marker
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  markerCopy = marker;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
     v10 = objc_loadWeakRetained(&self->_delegate);
-    v11 = [v10 mapView:v6 shouldSelectLabelMarker:v7];
+    v11 = [v10 mapView:viewCopy shouldSelectLabelMarker:markerCopy];
   }
 
   else
@@ -188,25 +188,25 @@
   return v11;
 }
 
-- (void)mapView:(id)a3 didStopRespondingToGesture:(int64_t)a4 zoomDirection:(int64_t)a5 zoomGestureType:(int64_t)a6 didDecelerate:(BOOL)a7 tiltDirection:(int64_t)a8
+- (void)mapView:(id)view didStopRespondingToGesture:(int64_t)gesture zoomDirection:(int64_t)direction zoomGestureType:(int64_t)type didDecelerate:(BOOL)decelerate tiltDirection:(int64_t)tiltDirection
 {
-  v12 = a3;
-  if (a4 <= 1)
+  viewCopy = view;
+  if (gesture <= 1)
   {
-    if (!a4)
+    if (!gesture)
     {
-      v24 = v12;
+      v24 = viewCopy;
       v13 = 1001;
       goto LABEL_34;
     }
 
-    if (a5 == 1)
+    if (direction == 1)
     {
       v13 = 1043;
-      if (a6 > 3)
+      if (type > 3)
       {
-        v24 = v12;
-        if (a6 == 5)
+        v24 = viewCopy;
+        if (type == 5)
         {
           v14 = 1049;
         }
@@ -216,7 +216,7 @@
           v14 = 1043;
         }
 
-        if (a6 == 4)
+        if (type == 4)
         {
           v15 = 1047;
         }
@@ -226,7 +226,7 @@
           v15 = v14;
         }
 
-        if ((a6 - 6) >= 2)
+        if ((type - 6) >= 2)
         {
           v13 = v15;
         }
@@ -239,39 +239,39 @@
 
       else
       {
-        switch(a6)
+        switch(type)
         {
           case 0:
             goto LABEL_49;
           case 2:
-            v24 = v12;
+            v24 = viewCopy;
             v13 = 1045;
             break;
           case 3:
             goto LABEL_49;
           default:
-            v24 = v12;
+            v24 = viewCopy;
             break;
         }
       }
 
 LABEL_34:
       v17 = +[MKMapService sharedService];
-      v18 = [v24 mapRegion];
+      mapRegion = [v24 mapRegion];
       [v24 _zoomLevel];
       v20 = v19;
-      v21 = [(NavigationDisplay *)self mapView];
-      v22 = [v21 mapType];
+      mapView = [(NavigationDisplay *)self mapView];
+      mapType = [mapView mapType];
       v23 = 1;
-      if (v22 <= 2)
+      if (mapType <= 2)
       {
-        switch(v22)
+        switch(mapType)
         {
           case 0:
 LABEL_48:
-            [v17 captureUserAction:v13 onTarget:505 eventValue:0 mapRegion:v18 zoomLevel:v23 mapType:v20];
+            [v17 captureUserAction:v13 onTarget:505 eventValue:0 mapRegion:mapRegion zoomLevel:v23 mapType:v20];
 
-            v12 = v24;
+            viewCopy = v24;
             goto LABEL_49;
           case 1:
             goto LABEL_46;
@@ -284,11 +284,11 @@ LABEL_42:
 
       else
       {
-        if (v22 <= 101)
+        if (mapType <= 101)
         {
-          if (v22 != 3)
+          if (mapType != 3)
           {
-            if (v22 != 4)
+            if (mapType != 4)
             {
               goto LABEL_47;
             }
@@ -301,12 +301,12 @@ LABEL_46:
           goto LABEL_48;
         }
 
-        if (v22 == 102)
+        if (mapType == 102)
         {
           goto LABEL_48;
         }
 
-        if (v22 == 104)
+        if (mapType == 104)
         {
           v23 = 4;
           goto LABEL_48;
@@ -318,10 +318,10 @@ LABEL_47:
       goto LABEL_48;
     }
 
-    if (a6 > 3)
+    if (type > 3)
     {
-      v24 = v12;
-      if (a6 == 5)
+      v24 = viewCopy;
+      if (type == 5)
       {
         v16 = 1050;
       }
@@ -331,12 +331,12 @@ LABEL_47:
         v16 = 1044;
       }
 
-      if (a6 == 4)
+      if (type == 4)
       {
         v16 = 1048;
       }
 
-      if ((a6 - 6) >= 2)
+      if ((type - 6) >= 2)
       {
         v13 = v16;
       }
@@ -349,10 +349,10 @@ LABEL_47:
       goto LABEL_34;
     }
 
-    if (a6 && a6 != 2)
+    if (type && type != 2)
     {
-      v24 = v12;
-      if (a6 == 3)
+      v24 = viewCopy;
+      if (type == 3)
       {
         v13 = 1046;
       }
@@ -369,44 +369,44 @@ LABEL_47:
 LABEL_49:
 }
 
-- (id)mapViewCurrentRouteMatch:(id)a3
+- (id)mapViewCurrentRouteMatch:(id)match
 {
   if ([(MNLocation *)self->_matchedLocation state]== 1)
   {
-    v4 = [(MNLocation *)self->_matchedLocation routeMatch];
+    routeMatch = [(MNLocation *)self->_matchedLocation routeMatch];
   }
 
   else
   {
-    v4 = 0;
+    routeMatch = 0;
   }
 
-  return v4;
+  return routeMatch;
 }
 
-- (void)didTapMapView:(id)a3 atPoint:(CGPoint)a4
+- (void)didTapMapView:(id)view atPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3;
+  y = point.y;
+  x = point.x;
+  viewCopy = view;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained didTapMapView:v7 atPoint:{x, y}];
+  [WeakRetained didTapMapView:viewCopy atPoint:{x, y}];
 }
 
-- (void)mapView:(id)a3 didUpdateYaw:(double)a4
+- (void)mapView:(id)view didUpdateYaw:(double)yaw
 {
-  v9 = a3;
+  viewCopy = view;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
     v8 = objc_loadWeakRetained(&self->_delegate);
-    [v8 mapView:v9 didUpdateYaw:a4];
+    [v8 mapView:viewCopy didUpdateYaw:yaw];
   }
 }
 
-- (void)mapView:(id)a3 didChangeUserTrackingMode:(int64_t)a4 animated:(BOOL)a5 fromTrackingButton:(BOOL)a6
+- (void)mapView:(id)view didChangeUserTrackingMode:(int64_t)mode animated:(BOOL)animated fromTrackingButton:(BOOL)button
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v9 = objc_opt_respondsToSelector();
@@ -414,7 +414,7 @@ LABEL_49:
   if (v9)
   {
     v10 = objc_loadWeakRetained(&self->_delegate);
-    [v10 navigationDisplay:self didChangeUserTrackingMode:a4];
+    [v10 navigationDisplay:self didChangeUserTrackingMode:mode];
   }
 }
 
@@ -472,9 +472,9 @@ LABEL_49:
   [(NavCameraController *)cameraController stopTracking];
 }
 
-- (void)startMotion:(BOOL)a3
+- (void)startMotion:(BOOL)motion
 {
-  v3 = a3;
+  motionCopy = motion;
   [(NavigationDisplay *)self _setTracking:1];
   transportType = self->_transportType;
   if ((transportType - 1) < 2)
@@ -506,8 +506,8 @@ LABEL_49:
     }
   }
 
-  v8 = [(MKMapView *)self->_mapView _mapLayer];
-  [v8 setDesiredMapMode:v7];
+  _mapLayer = [(MKMapView *)self->_mapView _mapLayer];
+  [_mapLayer setDesiredMapMode:v7];
 
   v9 = self->_matchedLocation;
   if (v9)
@@ -518,16 +518,16 @@ LABEL_49:
   else if (!-[MKMapView hasUserLocation](self->_mapView, "hasUserLocation") || (v11 = [MNLocation alloc], -[MKMapView userLocation](self->_mapView, "userLocation"), v12 = objc_claimAutoreleasedReturnValue(), [v12 location], v13 = objc_claimAutoreleasedReturnValue(), v23 = objc_msgSend(v11, "initWithRawLocation:", v13), v13, v12, (v10 = v23) == 0))
   {
     v14 = +[MNNavigationService sharedService];
-    v15 = [v14 originalOrigin];
+    originalOrigin = [v14 originalOrigin];
 
-    if (v15)
+    if (originalOrigin)
     {
       v16 = [CLLocation alloc];
-      v17 = [v15 latLng];
-      [v17 lat];
+      latLng = [originalOrigin latLng];
+      [latLng lat];
       v19 = v18;
-      v20 = [v15 latLng];
-      [v20 lng];
+      latLng2 = [originalOrigin latLng];
+      [latLng2 lng];
       v22 = [v16 initWithLatitude:v19 longitude:v21];
 
       v24 = [[MNLocation alloc] initWithRawLocation:v22];
@@ -542,39 +542,39 @@ LABEL_49:
   }
 
   v25 = v10;
-  [(NavCameraController *)self->_cameraController transitionToTrackingInMapMode:v7 animated:v3 startLocation:v10 startHandler:0];
+  [(NavCameraController *)self->_cameraController transitionToTrackingInMapMode:v7 animated:motionCopy startLocation:v10 startHandler:0];
 }
 
-- (void)setNavigationDestinationState:(unint64_t)a3
+- (void)setNavigationDestinationState:(unint64_t)state
 {
-  if (a3 != 2)
+  if (state != 2)
   {
-    a3 = a3 == 1;
+    state = state == 1;
   }
 
-  [(NavCameraController *)self->_cameraController setNavigationDestination:a3];
+  [(NavCameraController *)self->_cameraController setNavigationDestination:state];
 }
 
 - (void)_updateDestinationBuildingId
 {
-  v3 = [(GEOComposedRoute *)self->_route destination];
-  v4 = [v3 geoMapItem];
-  v9 = [v4 _enhancedPlacement];
+  destination = [(GEOComposedRoute *)self->_route destination];
+  geoMapItem = [destination geoMapItem];
+  _enhancedPlacement = [geoMapItem _enhancedPlacement];
 
-  v5 = [v9 buildingIds];
+  buildingIds = [_enhancedPlacement buildingIds];
 
-  v6 = [(MKMapView *)self->_mapView _mapLayer];
-  if (v5)
+  _mapLayer = [(MKMapView *)self->_mapView _mapLayer];
+  if (buildingIds)
   {
-    v7 = [v9 buildingIds];
-    v8 = [NSSet setWithArray:v7];
-    [v6 setSelectedBuildingFeatureIds:v8];
+    buildingIds2 = [_enhancedPlacement buildingIds];
+    v8 = [NSSet setWithArray:buildingIds2];
+    [_mapLayer setSelectedBuildingFeatureIds:v8];
   }
 
   else
   {
-    v7 = +[NSSet set];
-    [v6 setSelectedBuildingFeatureIds:v7];
+    buildingIds2 = +[NSSet set];
+    [_mapLayer setSelectedBuildingFeatureIds:buildingIds2];
   }
 }
 
@@ -592,8 +592,8 @@ LABEL_49:
         v12 = self->_driveCameraProvider;
         self->_driveCameraProvider = v11;
 
-        v13 = [(NavigationDisplay *)self routeGeniusEntry];
-        [(NavCameraDriveProvider *)self->_driveCameraProvider setRouteGeniusEntry:v13];
+        routeGeniusEntry = [(NavigationDisplay *)self routeGeniusEntry];
+        [(NavCameraDriveProvider *)self->_driveCameraProvider setRouteGeniusEntry:routeGeniusEntry];
 
         driveCameraProvider = self->_driveCameraProvider;
       }
@@ -612,12 +612,12 @@ LABEL_49:
   else
   {
     v4 = +[MNNavigationService sharedService];
-    v5 = [v4 nextWaypoint];
-    v6 = [v4 route];
-    v7 = [v6 waypoints];
-    v8 = [v7 lastObject];
+    nextWaypoint = [v4 nextWaypoint];
+    route = [v4 route];
+    waypoints = [route waypoints];
+    lastObject = [waypoints lastObject];
 
-    if (!GEOConfigGetBOOL() || v5 == v8)
+    if (!GEOConfigGetBOOL() || nextWaypoint == lastObject)
     {
       if (self->_navigationCameraMode == 2)
       {
@@ -643,84 +643,84 @@ LABEL_49:
   [(NavCameraController *)self->_cameraController setOverrideNavigationProvider:v14];
 }
 
-- (void)_setTracking:(BOOL)a3
+- (void)_setTracking:(BOOL)tracking
 {
-  if (self->_tracking != a3)
+  if (self->_tracking != tracking)
   {
-    v3 = a3;
+    trackingCopy = tracking;
     v5 = sub_100798240();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       tracking = self->_tracking;
-      v7 = [(NavigationDisplay *)self mapView];
+      mapView = [(NavigationDisplay *)self mapView];
       v8[0] = 67109634;
       v8[1] = tracking;
       v9 = 1024;
-      v10 = v3;
+      v10 = trackingCopy;
       v11 = 2114;
-      v12 = v7;
+      v12 = mapView;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Changing _tracking from %d to %d on %{public}@", v8, 0x18u);
     }
 
-    self->_tracking = v3;
+    self->_tracking = trackingCopy;
   }
 }
 
-- (void)_updateRoadDescription:(id)a3
+- (void)_updateRoadDescription:(id)description
 {
-  v4 = a3;
+  descriptionCopy = description;
   if (!self->_showsRoadLabel)
   {
 
-    v4 = 0;
+    descriptionCopy = 0;
   }
 
-  v6 = v4;
-  if (![v4 length])
+  v6 = descriptionCopy;
+  if (![descriptionCopy length])
   {
 
     v6 = 0;
   }
 
-  v5 = [(MKMapView *)self->_mapView _mapLayer];
-  [v5 setCurrentLocationText:v6];
+  _mapLayer = [(MKMapView *)self->_mapView _mapLayer];
+  [_mapLayer setCurrentLocationText:v6];
 }
 
-- (void)setShowsRoadLabel:(BOOL)a3
+- (void)setShowsRoadLabel:(BOOL)label
 {
-  if (self->_showsRoadLabel != a3)
+  if (self->_showsRoadLabel != label)
   {
-    self->_showsRoadLabel = a3;
-    v5 = [(MNLocation *)self->_matchedLocation roadName];
-    [(NavigationDisplay *)self _updateRoadDescription:v5];
+    self->_showsRoadLabel = label;
+    roadName = [(MNLocation *)self->_matchedLocation roadName];
+    [(NavigationDisplay *)self _updateRoadDescription:roadName];
   }
 }
 
 - (void)clearCache
 {
-  v2 = [(MKMapView *)self->_mapView _mapLayer];
-  [v2 clearScene];
+  _mapLayer = [(MKMapView *)self->_mapView _mapLayer];
+  [_mapLayer clearScene];
 }
 
-- (void)_updateUserAnnotationViewForCurrentTransportTypeAnimated:(BOOL)a3
+- (void)_updateUserAnnotationViewForCurrentTransportTypeAnimated:(BOOL)animated
 {
   transportType = self->_transportType;
   if (transportType <= 3)
   {
-    [(UserLocationView *)self->_userLocationAnnotationView setMode:qword_1012135C0[transportType] animated:a3];
+    [(UserLocationView *)self->_userLocationAnnotationView setMode:qword_1012135C0[transportType] animated:animated];
   }
 }
 
-- (void)setTransportType:(int)a3 animated:(BOOL)a4
+- (void)setTransportType:(int)type animated:(BOOL)animated
 {
-  v4 = a4;
-  self->_transportType = a3;
+  animatedCopy = animated;
+  self->_transportType = type;
   [(NavigationDisplay *)self _updateCartographicConfiguration];
-  if (a3 > 1)
+  if (type > 1)
   {
-    if (a3 != 3)
+    if (type != 3)
     {
-      if (a3 != 2)
+      if (type != 2)
       {
         goto LABEL_10;
       }
@@ -732,9 +732,9 @@ LABEL_49:
     }
   }
 
-  else if (a3)
+  else if (type)
   {
-    if (a3 != 1)
+    if (type != 1)
     {
       goto LABEL_10;
     }
@@ -745,8 +745,8 @@ LABEL_49:
     [(MKMapView *)self->_mapView _setShouldAnimatePositionWithRouteMatch:0];
     [(MKMapView *)self->_mapView _setClearUserLocationOnLocationReset:0];
 LABEL_8:
-    v7 = [(MKMapView *)self->_mapView _mapLayer];
-    [v7 setDesiredMapMode:0];
+    _mapLayer = [(MKMapView *)self->_mapView _mapLayer];
+    [_mapLayer setDesiredMapMode:0];
 
     [(MKMapView *)self->_mapView setUserTrackingMode:0 animated:0];
     goto LABEL_10;
@@ -755,12 +755,12 @@ LABEL_8:
   [(MKMapView *)self->_mapView setShowsTraffic:1];
   [(MKMapView *)self->_mapView _setShowHeadingIndicatorForStepping:0];
   [(MKMapView *)self->_mapView _setShouldAnimatePositionWithRouteMatch:1];
-  v8 = [(MKMapView *)self->_mapView _mapLayer];
-  [v8 setDesiredMapMode:1];
+  _mapLayer2 = [(MKMapView *)self->_mapView _mapLayer];
+  [_mapLayer2 setDesiredMapMode:1];
 
 LABEL_10:
 
-  [(NavigationDisplay *)self _updateUserAnnotationViewForCurrentTransportTypeAnimated:v4];
+  [(NavigationDisplay *)self _updateUserAnnotationViewForCurrentTransportTypeAnimated:animatedCopy];
 }
 
 - (void)_updateCartographicConfiguration
@@ -776,10 +776,10 @@ LABEL_10:
   v9[2] = v13;
   v10 = v14;
   v4 = [v3 initWithCartographicConfiguration:v9];
-  v5 = [(MKMapView *)self->_mapView preferredConfiguration];
-  if ([v5 conformsToProtocol:&OBJC_PROTOCOL___MKMapConfigurationHiking])
+  preferredConfiguration = [(MKMapView *)self->_mapView preferredConfiguration];
+  if ([preferredConfiguration conformsToProtocol:&OBJC_PROTOCOL___MKMapConfigurationHiking])
   {
-    v6 = v5;
+    v6 = preferredConfiguration;
   }
 
   else
@@ -790,13 +790,13 @@ LABEL_10:
   v7 = v6;
 
   [v4 setShowsHiking:{objc_msgSend(v7, "showsHiking")}];
-  v8 = [v7 showsTopographicFeatures];
+  showsTopographicFeatures = [v7 showsTopographicFeatures];
 
-  [v4 setShowsTopographicFeatures:v8];
+  [v4 setShowsTopographicFeatures:showsTopographicFeatures];
   [(MKMapView *)self->_mapView setPreferredConfiguration:v4];
 }
 
-- ($F9C4767691F2EDF2F3162F5FE7B1523A)cartographicConfigurationForTransportType:(SEL)a3
+- ($F9C4767691F2EDF2F3162F5FE7B1523A)cartographicConfigurationForTransportType:(SEL)type
 {
   *&retstr->var6 = 0;
   *&retstr->var2 = 0u;
@@ -804,20 +804,20 @@ LABEL_10:
   *&retstr->var0 = 0u;
   _MKCartographicConfigurationDefault();
   retstr->var4 = 0;
-  v7 = [(NavigationDisplay *)self chromeViewController];
-  v8 = [v7 shouldUseModernMap];
+  chromeViewController = [(NavigationDisplay *)self chromeViewController];
+  shouldUseModernMap = [chromeViewController shouldUseModernMap];
 
-  if (v8)
+  if (shouldUseModernMap)
   {
-    v9 = [(NavigationDisplay *)self chromeViewController];
-    v10 = [v9 modernMapProjectionType];
+    chromeViewController2 = [(NavigationDisplay *)self chromeViewController];
+    modernMapProjectionType = [chromeViewController2 modernMapProjectionType];
 
-    v11 = [(NavigationDisplay *)self chromeViewController];
-    v12 = [v11 modernMapTerrainMode];
+    chromeViewController3 = [(NavigationDisplay *)self chromeViewController];
+    modernMapTerrainMode = [chromeViewController3 modernMapTerrainMode];
 
-    v13 = v12;
-    result = v12;
-    v15 = v10;
+    v13 = modernMapTerrainMode;
+    result = modernMapTerrainMode;
+    v15 = modernMapProjectionType;
   }
 
   else
@@ -825,8 +825,8 @@ LABEL_10:
     result = 0;
     v15 = 0;
     v13 = 2;
-    v12 = 1;
-    v10 = 1;
+    modernMapTerrainMode = 1;
+    modernMapProjectionType = 1;
   }
 
   if (a4 > 1)
@@ -843,7 +843,7 @@ LABEL_10:
       return result;
     }
 
-    v15 = v10;
+    v15 = modernMapProjectionType;
     result = v13;
     v13 = 3;
   }
@@ -861,72 +861,72 @@ LABEL_10:
   else
   {
     v13 = 3;
-    v15 = v10;
-    result = v12;
+    v15 = modernMapProjectionType;
+    result = modernMapTerrainMode;
   }
 
   retstr->var2 = v15;
   v16 = 8;
   v17 = 24;
-  v10 = result;
+  modernMapProjectionType = result;
 LABEL_14:
-  *(&retstr->var0 + v17) = v10;
+  *(&retstr->var0 + v17) = modernMapProjectionType;
   *(&retstr->var0 + v16) = v13;
   return result;
 }
 
-- (void)setRouteGeniusEntry:(id)a3
+- (void)setRouteGeniusEntry:(id)entry
 {
-  objc_storeStrong(&self->_routeGeniusEntry, a3);
-  v5 = a3;
-  [(NavCameraDriveProvider *)self->_driveCameraProvider setRouteGeniusEntry:v5];
+  objc_storeStrong(&self->_routeGeniusEntry, entry);
+  entryCopy = entry;
+  [(NavCameraDriveProvider *)self->_driveCameraProvider setRouteGeniusEntry:entryCopy];
 }
 
-- (void)updateWithRoute:(id)a3
+- (void)updateWithRoute:(id)route
 {
-  v5 = a3;
-  if (self->_route != v5)
+  routeCopy = route;
+  if (self->_route != routeCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_route, a3);
+    v6 = routeCopy;
+    objc_storeStrong(&self->_route, route);
     [(NavigationDebugAnnotationsProvider *)self->_debugAnnotationsProvider updateWithRoute:v6];
     [(NavigationDisplay *)self _updateMapViewAndCameraController];
     [(NavigationDisplay *)self _updateDestinationBuildingId];
-    v5 = v6;
+    routeCopy = v6;
   }
 }
 
-- (void)updateWithLocation:(id)a3
+- (void)updateWithLocation:(id)location
 {
-  objc_storeStrong(&self->_matchedLocation, a3);
-  v6 = a3;
-  v5 = [v6 roadName];
-  [(NavigationDisplay *)self _updateRoadDescription:v5];
+  objc_storeStrong(&self->_matchedLocation, location);
+  locationCopy = location;
+  roadName = [locationCopy roadName];
+  [(NavigationDisplay *)self _updateRoadDescription:roadName];
 
-  [(NavigationDebugAnnotationsProvider *)self->_debugAnnotationsProvider updateWithLocation:v6];
+  [(NavigationDebugAnnotationsProvider *)self->_debugAnnotationsProvider updateWithLocation:locationCopy];
 }
 
-- (void)setUserLocationAnnotationView:(id)a3
+- (void)setUserLocationAnnotationView:(id)view
 {
-  v5 = a3;
-  if (self->_userLocationAnnotationView != v5)
+  viewCopy = view;
+  if (self->_userLocationAnnotationView != viewCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_userLocationAnnotationView, a3);
+    v6 = viewCopy;
+    objc_storeStrong(&self->_userLocationAnnotationView, view);
     [(UserLocationView *)self->_userLocationAnnotationView setCanShowCallout:0];
     [(NavigationDebugAnnotationsProvider *)self->_debugAnnotationsProvider setUserLocationMarkerMode:[(UserLocationView *)v6 mode]];
     [(NavigationDisplay *)self _updateUserAnnotationViewForCurrentTransportTypeAnimated:1];
-    v5 = v6;
+    viewCopy = v6;
   }
 }
 
-- (void)setMapView:(id)a3
+- (void)setMapView:(id)view
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_mapView != v5)
+  viewCopy = view;
+  v6 = viewCopy;
+  if (self->_mapView != viewCopy)
   {
-    v59 = v5;
+    v59 = viewCopy;
     location = &self->_mapView;
     [(NavigationDisplay *)self clearAllAnnotations];
     mapView = self->_mapView;
@@ -970,44 +970,44 @@ LABEL_14:
       [(MKMapView *)v20 _setAlwaysShowHeadingIndicatorIfSupported:1];
     }
 
-    objc_storeStrong(location, a3);
+    objc_storeStrong(location, view);
     v21 = *location;
     memset(v63, 0, 29);
     if (v21)
     {
       v22 = v21;
-      v58 = [v22 _canSelectPOIs];
-      v56 = [v22 isCompassEnabled];
-      v54 = [v22 _isLocationPropagationEnabled];
-      v52 = [v22 _panWithMomentum];
-      v23 = [v22 isRotateEnabled];
-      v24 = [v22 isScaleEnabled];
-      v25 = [v22 _shouldAnimatePositionWithRouteMatch];
-      v26 = [v22 showsUserLocation];
-      v27 = [v22 userTrackingMode];
-      v28 = [v22 isZoomEnabled];
-      v29 = [v22 _alwaysShowHeadingIndicator];
-      v30 = [v22 _clearUserLocationOnLocationReset];
+      _canSelectPOIs = [v22 _canSelectPOIs];
+      isCompassEnabled = [v22 isCompassEnabled];
+      _isLocationPropagationEnabled = [v22 _isLocationPropagationEnabled];
+      _panWithMomentum = [v22 _panWithMomentum];
+      isRotateEnabled = [v22 isRotateEnabled];
+      isScaleEnabled = [v22 isScaleEnabled];
+      _shouldAnimatePositionWithRouteMatch = [v22 _shouldAnimatePositionWithRouteMatch];
+      showsUserLocation = [v22 showsUserLocation];
+      userTrackingMode = [v22 userTrackingMode];
+      isZoomEnabled = [v22 isZoomEnabled];
+      _alwaysShowHeadingIndicator = [v22 _alwaysShowHeadingIndicator];
+      _clearUserLocationOnLocationReset = [v22 _clearUserLocationOnLocationReset];
       [v22 _userTrackingBehavior];
 
-      v31 = v23;
-      v32 = v56;
-      v33 = v58;
-      v34 = v52;
-      v35 = v54;
+      v31 = isRotateEnabled;
+      v32 = isCompassEnabled;
+      v33 = _canSelectPOIs;
+      v34 = _panWithMomentum;
+      v35 = _isLocationPropagationEnabled;
       *(v63 + 5) = v61;
       *(&v63[1] + 5) = v62;
     }
 
     else
     {
-      v30 = 0;
-      v29 = 0;
-      v28 = 0;
-      v27 = 0;
-      v26 = 0;
-      v25 = 0;
-      v24 = 0;
+      _clearUserLocationOnLocationReset = 0;
+      _alwaysShowHeadingIndicator = 0;
+      isZoomEnabled = 0;
+      userTrackingMode = 0;
+      showsUserLocation = 0;
+      _shouldAnimatePositionWithRouteMatch = 0;
+      isScaleEnabled = 0;
       v31 = 0;
       v34 = 0;
       v35 = 0;
@@ -1020,21 +1020,21 @@ LABEL_14:
     self->_mapViewFlagsToRestore.locationPropagationEnabled = v35;
     self->_mapViewFlagsToRestore.panWithMomentum = v34;
     self->_mapViewFlagsToRestore.rotateEnabled = v31;
-    self->_mapViewFlagsToRestore.scaleEnabled = v24;
-    self->_mapViewFlagsToRestore.shouldAnimatePositionWithRouteMatch = v25;
-    self->_mapViewFlagsToRestore.showsUserLocation = v26;
-    self->_mapViewFlagsToRestore.userTrackingMode = v27;
-    self->_mapViewFlagsToRestore.zoomEnabled = v28;
-    self->_mapViewFlagsToRestore.alwaysShowHeadingIndicator = v29;
-    self->_mapViewFlagsToRestore.clearUserLocationOnLocationReset = v30;
+    self->_mapViewFlagsToRestore.scaleEnabled = isScaleEnabled;
+    self->_mapViewFlagsToRestore.shouldAnimatePositionWithRouteMatch = _shouldAnimatePositionWithRouteMatch;
+    self->_mapViewFlagsToRestore.showsUserLocation = showsUserLocation;
+    self->_mapViewFlagsToRestore.userTrackingMode = userTrackingMode;
+    self->_mapViewFlagsToRestore.zoomEnabled = isZoomEnabled;
+    self->_mapViewFlagsToRestore.alwaysShowHeadingIndicator = _alwaysShowHeadingIndicator;
+    self->_mapViewFlagsToRestore.clearUserLocationOnLocationReset = _clearUserLocationOnLocationReset;
     *(&self->_mapViewFlagsToRestore.clearUserLocationOnLocationReset + 1) = v63[0];
     *&self->_mapViewFlagsToRestore.userTrackingBehavior.idealCenterCoordinateDistance = *(v63 + 13);
     transportType = self->_transportType;
     v6 = v59;
     if (v59)
     {
-      v37 = [(MKMapView *)v59 traitCollection];
-      v38 = [v37 userInterfaceIdiom] != 3;
+      traitCollection = [(MKMapView *)v59 traitCollection];
+      v38 = [traitCollection userInterfaceIdiom] != 3;
     }
 
     else
@@ -1076,20 +1076,20 @@ LABEL_14:
 
     [(NavigationDebugAnnotationsProvider *)self->_debugAnnotationsProvider setUserLocationMarkerMode:[(UserLocationView *)self->_userLocationAnnotationView mode]];
     [(NavigationDebugAnnotationsProvider *)self->_debugAnnotationsProvider updateWithRoute:self->_route];
-    v42 = [(MKMapView *)self->_mapView selectedAnnotations];
-    v43 = [v42 count];
+    selectedAnnotations = [(MKMapView *)self->_mapView selectedAnnotations];
+    v43 = [selectedAnnotations count];
 
     if (v43)
     {
       v44 = *location;
-      v45 = [*location selectedAnnotations];
-      v46 = [v45 firstObject];
-      [v44 deselectAnnotation:v46 animated:1];
+      selectedAnnotations2 = [*location selectedAnnotations];
+      firstObject = [selectedAnnotations2 firstObject];
+      [v44 deselectAnnotation:firstObject animated:1];
     }
 
-    v47 = [*location _selectedLabelMarker];
+    _selectedLabelMarker = [*location _selectedLabelMarker];
 
-    if (v47)
+    if (_selectedLabelMarker)
     {
       [*location _deselectLabelMarkerAnimated:1];
     }
@@ -1103,22 +1103,22 @@ LABEL_14:
   }
 }
 
-- (void)setChromeViewController:(id)a3
+- (void)setChromeViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   [(NavigationDisplay *)self _stopObservingChromeIfNeeded];
-  objc_storeWeak(&self->_chromeViewController, v4);
+  objc_storeWeak(&self->_chromeViewController, controllerCopy);
   [(NavigationDisplay *)self _startObservingChromeIfNeeded];
-  v5 = [v4 mapView];
+  mapView = [controllerCopy mapView];
 
-  [(NavigationDisplay *)self setMapView:v5];
+  [(NavigationDisplay *)self setMapView:mapView];
 }
 
-- (void)setSky:(int64_t)a3
+- (void)setSky:(int64_t)sky
 {
-  if (self->_sky != a3)
+  if (self->_sky != sky)
   {
-    self->_sky = a3;
+    self->_sky = sky;
     [(NavigationDisplay *)self _updateSky];
   }
 }
@@ -1132,8 +1132,8 @@ LABEL_14:
     v3 = dbl_1012135A8[sky];
   }
 
-  v4 = [(MKMapView *)self->_mapView _mapLayer];
-  [v4 setCanonicalSkyHeight:v3];
+  _mapLayer = [(MKMapView *)self->_mapView _mapLayer];
+  [_mapLayer setCanonicalSkyHeight:v3];
 }
 
 - (void)dealloc

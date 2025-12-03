@@ -74,7 +74,7 @@
 + (GKRandomDistribution)distributionWithLowestValue:(NSInteger)lowestInclusive highestValue:(NSInteger)highestInclusive
 {
   v7 = objc_opt_new();
-  v8 = [[a1 alloc] initWithRandomSource:v7 lowestValue:lowestInclusive highestValue:highestInclusive];
+  v8 = [[self alloc] initWithRandomSource:v7 lowestValue:lowestInclusive highestValue:highestInclusive];
 
   return v8;
 }
@@ -82,7 +82,7 @@
 + (GKRandomDistribution)distributionForDieWithSideCount:(NSInteger)sideCount
 {
   v5 = objc_opt_new();
-  v6 = [[a1 alloc] initWithRandomSource:v5 lowestValue:1 highestValue:sideCount];
+  v6 = [[self alloc] initWithRandomSource:v5 lowestValue:1 highestValue:sideCount];
 
   return v6;
 }
@@ -90,7 +90,7 @@
 + (GKRandomDistribution)d6
 {
   v3 = objc_opt_new();
-  v4 = [[a1 alloc] initWithRandomSource:v3 lowestValue:1 highestValue:6];
+  v4 = [[self alloc] initWithRandomSource:v3 lowestValue:1 highestValue:6];
 
   return v4;
 }
@@ -98,7 +98,7 @@
 + (GKRandomDistribution)d20
 {
   v3 = objc_opt_new();
-  v4 = [[a1 alloc] initWithRandomSource:v3 lowestValue:1 highestValue:20];
+  v4 = [[self alloc] initWithRandomSource:v3 lowestValue:1 highestValue:20];
 
   return v4;
 }

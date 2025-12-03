@@ -1,18 +1,18 @@
 @interface PXChangePersonKeyFaceAction
 - (PHFace)keyFace;
-- (PXChangePersonKeyFaceAction)initWithPerson:(id)a3 asset:(id)a4;
-- (PXChangePersonKeyFaceAction)initWithPerson:(id)a3 keyFace:(id)a4;
+- (PXChangePersonKeyFaceAction)initWithPerson:(id)person asset:(id)asset;
+- (PXChangePersonKeyFaceAction)initWithPerson:(id)person keyFace:(id)face;
 - (void)_fetchKeyFaceForUndoIfNeeded;
 - (void)_invalidateCache;
-- (void)performAction:(id)a3;
-- (void)performUndo:(id)a3;
+- (void)performAction:(id)action;
+- (void)performUndo:(id)undo;
 @end
 
 @implementation PXChangePersonKeyFaceAction
 
-- (void)performUndo:(id)a3
+- (void)performUndo:(id)undo
 {
-  v4 = a3;
+  undoCopy = undo;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __43__PXChangePersonKeyFaceAction_performUndo___block_invoke;
@@ -23,8 +23,8 @@
   v6[2] = __43__PXChangePersonKeyFaceAction_performUndo___block_invoke_2;
   v6[3] = &unk_1E774BD88;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = undoCopy;
+  v5 = undoCopy;
   [(PXPhotosAction *)self performChanges:v8 completionHandler:v6];
 }
 
@@ -50,9 +50,9 @@ uint64_t __43__PXChangePersonKeyFaceAction_performUndo___block_invoke_2(uint64_t
   return result;
 }
 
-- (void)performAction:(id)a3
+- (void)performAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __45__PXChangePersonKeyFaceAction_performAction___block_invoke;
@@ -63,8 +63,8 @@ uint64_t __43__PXChangePersonKeyFaceAction_performUndo___block_invoke_2(uint64_t
   v6[2] = __45__PXChangePersonKeyFaceAction_performAction___block_invoke_2;
   v6[3] = &unk_1E774BD88;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = actionCopy;
+  v5 = actionCopy;
   [(PXPhotosAction *)self performChanges:v8 completionHandler:v6];
 }
 
@@ -96,8 +96,8 @@ uint64_t __45__PXChangePersonKeyFaceAction_performAction___block_invoke_2(uint64
 {
   if (!self->_keyFaceForUndo)
   {
-    v5 = [(PXChangePersonKeyFaceAction *)self person];
-    v3 = [PXPeopleUtilities keyFaceForPerson:v5];
+    person = [(PXChangePersonKeyFaceAction *)self person];
+    v3 = [PXPeopleUtilities keyFaceForPerson:person];
     keyFaceForUndo = self->_keyFaceForUndo;
     self->_keyFaceForUndo = v3;
   }
@@ -106,8 +106,8 @@ uint64_t __45__PXChangePersonKeyFaceAction_performAction___block_invoke_2(uint64
 - (void)_invalidateCache
 {
   v4 = +[PXPeopleFaceCropManager sharedManager];
-  v3 = [(PXChangePersonKeyFaceAction *)self person];
-  [v4 invalidateCacheForPerson:v3];
+  person = [(PXChangePersonKeyFaceAction *)self person];
+  [v4 invalidateCacheForPerson:person];
 }
 
 - (PHFace)keyFace
@@ -118,13 +118,13 @@ uint64_t __45__PXChangePersonKeyFaceAction_performAction___block_invoke_2(uint64
   {
     if (self->_asset)
     {
-      v4 = [(PXChangePersonKeyFaceAction *)self person];
+      person = [(PXChangePersonKeyFaceAction *)self person];
       v10[0] = self->_asset;
       v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
-      v6 = [PXPeopleUtilities facesForPerson:v4 inAssets:v5];
-      v7 = [v6 firstObject];
+      v6 = [PXPeopleUtilities facesForPerson:person inAssets:v5];
+      firstObject = [v6 firstObject];
       v8 = self->_keyFace;
-      self->_keyFace = v7;
+      self->_keyFace = firstObject;
 
       keyFace = self->_keyFace;
     }
@@ -138,37 +138,37 @@ uint64_t __45__PXChangePersonKeyFaceAction_performAction___block_invoke_2(uint64
   return keyFace;
 }
 
-- (PXChangePersonKeyFaceAction)initWithPerson:(id)a3 asset:(id)a4
+- (PXChangePersonKeyFaceAction)initWithPerson:(id)person asset:(id)asset
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 photoLibrary];
+  personCopy = person;
+  assetCopy = asset;
+  photoLibrary = [personCopy photoLibrary];
   v12.receiver = self;
   v12.super_class = PXChangePersonKeyFaceAction;
-  v10 = [(PXPhotosAction *)&v12 initWithPhotoLibrary:v9];
+  v10 = [(PXPhotosAction *)&v12 initWithPhotoLibrary:photoLibrary];
 
   if (v10)
   {
-    objc_storeStrong(&v10->_person, a3);
-    objc_storeStrong(&v10->_asset, a4);
+    objc_storeStrong(&v10->_person, person);
+    objc_storeStrong(&v10->_asset, asset);
   }
 
   return v10;
 }
 
-- (PXChangePersonKeyFaceAction)initWithPerson:(id)a3 keyFace:(id)a4
+- (PXChangePersonKeyFaceAction)initWithPerson:(id)person keyFace:(id)face
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 photoLibrary];
+  personCopy = person;
+  faceCopy = face;
+  photoLibrary = [personCopy photoLibrary];
   v12.receiver = self;
   v12.super_class = PXChangePersonKeyFaceAction;
-  v10 = [(PXPhotosAction *)&v12 initWithPhotoLibrary:v9];
+  v10 = [(PXPhotosAction *)&v12 initWithPhotoLibrary:photoLibrary];
 
   if (v10)
   {
-    objc_storeStrong(&v10->_person, a3);
-    objc_storeStrong(&v10->_keyFace, a4);
+    objc_storeStrong(&v10->_person, person);
+    objc_storeStrong(&v10->_keyFace, face);
   }
 
   return v10;

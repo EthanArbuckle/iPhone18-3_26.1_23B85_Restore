@@ -1,27 +1,27 @@
 @interface AXAssertionWorkItem
-- (AXAssertionWorkItem)initWithType:(id)a3 identifier:(id)a4 isAcquisition:(BOOL)a5;
+- (AXAssertionWorkItem)initWithType:(id)type identifier:(id)identifier isAcquisition:(BOOL)acquisition;
 @end
 
 @implementation AXAssertionWorkItem
 
-- (AXAssertionWorkItem)initWithType:(id)a3 identifier:(id)a4 isAcquisition:(BOOL)a5
+- (AXAssertionWorkItem)initWithType:(id)type identifier:(id)identifier isAcquisition:(BOOL)acquisition
 {
-  v8 = a3;
-  v9 = a4;
+  typeCopy = type;
+  identifierCopy = identifier;
   v16.receiver = self;
   v16.super_class = AXAssertionWorkItem;
   v10 = [(AXAssertionWorkItem *)&v16 init];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [typeCopy copy];
     type = v10->_type;
     v10->_type = v11;
 
-    v13 = [v9 copy];
+    v13 = [identifierCopy copy];
     identifier = v10->_identifier;
     v10->_identifier = v13;
 
-    v10->_acquire = a5;
+    v10->_acquire = acquisition;
     v10->_retries = 0;
   }
 

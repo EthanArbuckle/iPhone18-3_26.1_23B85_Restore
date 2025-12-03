@@ -1,10 +1,10 @@
 @interface __RKCustomTrigger
-- (id)copyWithZone:(void *)a3;
+- (id)copyWithZone:(void *)zone;
 @end
 
 @implementation __RKCustomTrigger
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
   v4 = *self->identifier;
   v3 = *&self->identifier[8];

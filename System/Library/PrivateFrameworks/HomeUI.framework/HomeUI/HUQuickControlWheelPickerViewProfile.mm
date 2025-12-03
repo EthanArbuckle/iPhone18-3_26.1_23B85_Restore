@@ -1,9 +1,9 @@
 @interface HUQuickControlWheelPickerViewProfile
 - (HUQuickControlWheelPickerViewProfile)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)_setDefaultStyleProperties;
 - (void)_setMultiStateStyleProperties;
-- (void)setStyle:(unint64_t)a3;
+- (void)setStyle:(unint64_t)style;
 @end
 
 @implementation HUQuickControlWheelPickerViewProfile
@@ -23,15 +23,15 @@
   return v3;
 }
 
-- (void)setStyle:(unint64_t)a3
+- (void)setStyle:(unint64_t)style
 {
-  self->_style = a3;
-  if (a3 == 1)
+  self->_style = style;
+  if (style == 1)
   {
     [(HUQuickControlWheelPickerViewProfile *)self _setMultiStateStyleProperties];
   }
 
-  else if (!a3)
+  else if (!style)
   {
     [(HUQuickControlWheelPickerViewProfile *)self _setDefaultStyleProperties];
   }
@@ -40,8 +40,8 @@
 - (void)_setDefaultStyleProperties
 {
   [(HUQuickControlWheelPickerViewProfile *)self setBorderWidth:2.0];
-  v3 = [MEMORY[0x277D75348] systemLightGrayColor];
-  [(HUQuickControlWheelPickerViewProfile *)self setBorderColor:v3];
+  systemLightGrayColor = [MEMORY[0x277D75348] systemLightGrayColor];
+  [(HUQuickControlWheelPickerViewProfile *)self setBorderColor:systemLightGrayColor];
 
   [(HUQuickControlWheelPickerViewProfile *)self setCornerRadius:20.0];
   [(HUQuickControlWheelPickerViewProfile *)self setSizeToFitTextWidth:1];
@@ -61,15 +61,15 @@
   [(HUQuickControlWheelPickerViewProfile *)self setSelectedRowCornerRadius:16.0];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = HUQuickControlWheelPickerViewProfile;
-  v4 = [(HUQuickControlViewProfile *)&v7 copyWithZone:a3];
+  v4 = [(HUQuickControlViewProfile *)&v7 copyWithZone:zone];
   [(HUQuickControlWheelPickerViewProfile *)self borderWidth];
   [v4 setBorderWidth:?];
-  v5 = [(HUQuickControlWheelPickerViewProfile *)self borderColor];
-  [v4 setBorderColor:v5];
+  borderColor = [(HUQuickControlWheelPickerViewProfile *)self borderColor];
+  [v4 setBorderColor:borderColor];
 
   [(HUQuickControlWheelPickerViewProfile *)self cornerRadius];
   [v4 setCornerRadius:?];

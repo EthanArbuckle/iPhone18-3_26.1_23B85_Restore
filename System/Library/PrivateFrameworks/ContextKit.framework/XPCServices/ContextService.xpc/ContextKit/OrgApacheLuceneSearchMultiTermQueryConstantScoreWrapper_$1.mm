@@ -1,14 +1,14 @@
 @interface OrgApacheLuceneSearchMultiTermQueryConstantScoreWrapper_$1
-- (id)bulkScorerWithOrgApacheLuceneIndexLeafReaderContext:(id)a3;
-- (id)scorerWithOrgApacheLuceneIndexLeafReaderContext:(id)a3;
+- (id)bulkScorerWithOrgApacheLuceneIndexLeafReaderContext:(id)context;
+- (id)scorerWithOrgApacheLuceneIndexLeafReaderContext:(id)context;
 - (void)dealloc;
 @end
 
 @implementation OrgApacheLuceneSearchMultiTermQueryConstantScoreWrapper_$1
 
-- (id)bulkScorerWithOrgApacheLuceneIndexLeafReaderContext:(id)a3
+- (id)bulkScorerWithOrgApacheLuceneIndexLeafReaderContext:(id)context
 {
-  v5 = sub_10002593C(self, a3);
+  v5 = sub_10002593C(self, context);
   if (!v5)
   {
     JreThrowNullPointerException();
@@ -18,7 +18,7 @@
   {
     weight = v5->weight_;
 
-    return [(OrgApacheLuceneSearchWeight *)weight bulkScorerWithOrgApacheLuceneIndexLeafReaderContext:a3];
+    return [(OrgApacheLuceneSearchWeight *)weight bulkScorerWithOrgApacheLuceneIndexLeafReaderContext:context];
   }
 
   else
@@ -35,9 +35,9 @@
   return result;
 }
 
-- (id)scorerWithOrgApacheLuceneIndexLeafReaderContext:(id)a3
+- (id)scorerWithOrgApacheLuceneIndexLeafReaderContext:(id)context
 {
-  v5 = sub_10002593C(self, a3);
+  v5 = sub_10002593C(self, context);
   if (!v5)
   {
     JreThrowNullPointerException();
@@ -47,7 +47,7 @@
   {
     weight = v5->weight_;
 
-    return [(OrgApacheLuceneSearchWeight *)weight scorerWithOrgApacheLuceneIndexLeafReaderContext:a3];
+    return [(OrgApacheLuceneSearchWeight *)weight scorerWithOrgApacheLuceneIndexLeafReaderContext:context];
   }
 
   else

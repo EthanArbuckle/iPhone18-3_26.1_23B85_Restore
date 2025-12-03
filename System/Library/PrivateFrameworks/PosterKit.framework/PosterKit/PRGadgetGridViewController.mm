@@ -1,80 +1,80 @@
 @interface PRGadgetGridViewController
 - (BOOL)_shouldDisableInteraction;
-- (BOOL)containsIconsInRow:(unint64_t)a3;
-- (BOOL)interpretsViewAsContent:(id)a3;
-- (BOOL)isIconViewRecycled:(id)a3;
-- (PRGadgetGridViewController)initWithModel:(id)a3 iconViewProvider:(id)a4 contentType:(unint64_t)a5 presentationMode:(unint64_t)a6 gadgetIconControllerProvider:(id)a7;
+- (BOOL)containsIconsInRow:(unint64_t)row;
+- (BOOL)interpretsViewAsContent:(id)content;
+- (BOOL)isIconViewRecycled:(id)recycled;
+- (PRGadgetGridViewController)initWithModel:(id)model iconViewProvider:(id)provider contentType:(unint64_t)type presentationMode:(unint64_t)mode gadgetIconControllerProvider:(id)controllerProvider;
 - (PRGadgetGridViewControllerDelegate)delegate;
 - (PRGadgetIconViewControllerProvider)iconControllerProviderDelegate;
 - (SBIconViewProviding)iconViewProvider;
 - (UIView)recycledViewsContainer;
 - (double)iconContentScale;
-- (id)customImageViewControllerForIconView:(id)a3;
-- (id)dequeueReusableIconViewOfClass:(Class)a3;
-- (id)iconDragManager:(id)a3 dragItemsForIconView:(id)a4;
-- (id)iconDragManager:(id)a3 targetedDragPreviewForIconView:(id)a4 item:(id)a5 session:(id)a6 previewParameters:(id)a7;
-- (id)iconViewControllerForDescriptor:(id)a3 presentationMode:(unint64_t)a4;
-- (id)iconViewControllerForIcon:(id)a3;
+- (id)customImageViewControllerForIconView:(id)view;
+- (id)dequeueReusableIconViewOfClass:(Class)class;
+- (id)iconDragManager:(id)manager dragItemsForIconView:(id)view;
+- (id)iconDragManager:(id)manager targetedDragPreviewForIconView:(id)view item:(id)item session:(id)session previewParameters:(id)parameters;
+- (id)iconViewControllerForDescriptor:(id)descriptor presentationMode:(unint64_t)mode;
+- (id)iconViewControllerForIcon:(id)icon;
 - (id)iconViewMap;
 - (id)icons;
-- (id)rootFolderForIconDragManager:(id)a3;
-- (void)_backgroundTapRecognized:(id)a3;
+- (id)rootFolderForIconDragManager:(id)manager;
+- (void)_backgroundTapRecognized:(id)recognized;
 - (void)_intentsUpdated;
 - (void)_layoutInsetsModeUpdated;
 - (void)_listModelUpdated;
-- (void)configureIconView:(id)a3 forIcon:(id)a4;
+- (void)configureIconView:(id)view forIcon:(id)icon;
 - (void)dealloc;
-- (void)ensureContentWithTimeout:(double)a3 completion:(id)a4;
-- (void)handleLaunchRequestForIcon:(id)a3;
-- (void)icon:(id)a3 touchEnded:(BOOL)a4;
-- (void)iconCloseBoxTapped:(id)a3;
-- (void)iconDragManager:(id)a3 didEndDragWithResult:(id)a4;
-- (void)iconTapped:(id)a3;
-- (void)iconTouchBegan:(id)a3;
-- (void)iconView:(id)a3 didChangeCustomImageViewController:(id)a4;
+- (void)ensureContentWithTimeout:(double)timeout completion:(id)completion;
+- (void)handleLaunchRequestForIcon:(id)icon;
+- (void)icon:(id)icon touchEnded:(BOOL)ended;
+- (void)iconCloseBoxTapped:(id)tapped;
+- (void)iconDragManager:(id)manager didEndDragWithResult:(id)result;
+- (void)iconTapped:(id)tapped;
+- (void)iconTouchBegan:(id)began;
+- (void)iconView:(id)view didChangeCustomImageViewController:(id)controller;
 - (void)invalidate;
 - (void)loadView;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)performAnimatedInsertionForIcon:(id)a3;
-- (void)performAnimatedRemovalForIcon:(id)a3;
-- (void)recycleIconView:(id)a3;
-- (void)setFocused:(BOOL)a3;
-- (void)setFocused:(BOOL)a3 animated:(BOOL)a4;
-- (void)setFocused:(BOOL)a3 animationSettings:(id)a4;
-- (void)setIconContentScale:(double)a3;
-- (void)setInteractionDisabled:(BOOL)a3;
-- (void)setVibrancyConfiguration:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)performAnimatedInsertionForIcon:(id)icon;
+- (void)performAnimatedRemovalForIcon:(id)icon;
+- (void)recycleIconView:(id)view;
+- (void)setFocused:(BOOL)focused;
+- (void)setFocused:(BOOL)focused animated:(BOOL)animated;
+- (void)setFocused:(BOOL)focused animationSettings:(id)settings;
+- (void)setIconContentScale:(double)scale;
+- (void)setInteractionDisabled:(BOOL)disabled;
+- (void)setVibrancyConfiguration:(id)configuration;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)widgetIconViewController:(id)a3 requestsLaunchWithAction:(id)a4;
-- (void)widgetIconViewControllerDidReceiveTap:(id)a3;
+- (void)widgetIconViewController:(id)controller requestsLaunchWithAction:(id)action;
+- (void)widgetIconViewControllerDidReceiveTap:(id)tap;
 @end
 
 @implementation PRGadgetGridViewController
 
-- (PRGadgetGridViewController)initWithModel:(id)a3 iconViewProvider:(id)a4 contentType:(unint64_t)a5 presentationMode:(unint64_t)a6 gadgetIconControllerProvider:(id)a7
+- (PRGadgetGridViewController)initWithModel:(id)model iconViewProvider:(id)provider contentType:(unint64_t)type presentationMode:(unint64_t)mode gadgetIconControllerProvider:(id)controllerProvider
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a7;
+  modelCopy = model;
+  providerCopy = provider;
+  controllerProviderCopy = controllerProvider;
   v22.receiver = self;
   v22.super_class = PRGadgetGridViewController;
   v16 = [(PRGadgetGridViewController *)&v22 initWithNibName:0 bundle:0];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_model, a3);
-    objc_storeWeak(&v17->_iconViewProvider, v14);
-    v17->_contentType = a5;
-    v17->_presentationMode = a6;
+    objc_storeStrong(&v16->_model, model);
+    objc_storeWeak(&v17->_iconViewProvider, providerCopy);
+    v17->_contentType = type;
+    v17->_presentationMode = mode;
     v18 = objc_alloc_init(PRIconDragManager);
     dragManager = v17->_dragManager;
     v17->_dragManager = &v18->super;
 
     [(SBIconDragManager *)v17->_dragManager setDelegate:v17];
-    if (v15)
+    if (controllerProviderCopy)
     {
-      v20 = v15;
+      v20 = controllerProviderCopy;
     }
 
     else
@@ -90,14 +90,14 @@
 
 - (void)dealloc
 {
-  v3 = [(PRGadgetGridViewController *)self model];
-  [v3 removeObserver:self forKeyPath:@"listModel" context:&PRGadgetGridViewControllerKVOContext];
+  model = [(PRGadgetGridViewController *)self model];
+  [model removeObserver:self forKeyPath:@"listModel" context:&PRGadgetGridViewControllerKVOContext];
 
-  v4 = [(PRGadgetGridViewController *)self model];
-  [v4 removeObserver:self forKeyPath:@"layoutInsetsMode" context:&PRGadgetGridViewControllerKVOContext];
+  model2 = [(PRGadgetGridViewController *)self model];
+  [model2 removeObserver:self forKeyPath:@"layoutInsetsMode" context:&PRGadgetGridViewControllerKVOContext];
 
-  v5 = [(PRGadgetGridViewController *)self model];
-  [v5 removeObserver:self forKeyPath:@"intentsByDescriptorIdentifier" context:&PRGadgetGridViewControllerKVOContext];
+  model3 = [(PRGadgetGridViewController *)self model];
+  [model3 removeObserver:self forKeyPath:@"intentsByDescriptorIdentifier" context:&PRGadgetGridViewControllerKVOContext];
 
   v6.receiver = self;
   v6.super_class = PRGadgetGridViewController;
@@ -116,58 +116,58 @@
   v25.super_class = PRGadgetGridViewController;
   [(PRGadgetGridViewController *)&v25 viewDidLoad];
   v3 = [PRIconListLayoutProvider alloc];
-  v4 = [(PRGadgetGridViewController *)self model];
-  v5 = -[PRIconListLayoutProvider initWithGridSize:](v3, "initWithGridSize:", [v4 gridSize]);
+  model = [(PRGadgetGridViewController *)self model];
+  v5 = -[PRIconListLayoutProvider initWithGridSize:](v3, "initWithGridSize:", [model gridSize]);
 
   v6 = objc_alloc(MEMORY[0x1E69D4108]);
-  v7 = [(PRGadgetGridViewController *)self model];
-  v8 = [v7 listModel];
+  model2 = [(PRGadgetGridViewController *)self model];
+  listModel = [model2 listModel];
   v9 = *MEMORY[0x1E69D4148];
   WeakRetained = objc_loadWeakRetained(&self->_iconViewProvider);
   v11 = WeakRetained;
   if (WeakRetained)
   {
-    v12 = WeakRetained;
+    selfCopy = WeakRetained;
   }
 
   else
   {
-    v12 = self;
+    selfCopy = self;
   }
 
-  v13 = [v6 initWithModel:v8 layoutProvider:v5 iconLocation:v9 orientation:1 iconViewProvider:v12];
+  v13 = [v6 initWithModel:listModel layoutProvider:v5 iconLocation:v9 orientation:1 iconViewProvider:selfCopy];
 
   [v13 setAllowsGaps:1];
-  v14 = [(PRGadgetGridViewController *)self dragManager];
-  [v13 setDragDelegate:v14];
+  dragManager = [(PRGadgetGridViewController *)self dragManager];
+  [v13 setDragDelegate:dragManager];
 
   [v13 setIconDragTypeIdentifier:@"com.apple.PosterBoard.WidgetGrid"];
   [v13 addLayoutObserver:self];
   [MEMORY[0x1E6999618] interComplicationSpacingExcludingInnerInset];
   [v13 setIconSpacing:{v15, v15}];
-  v16 = [(PRGadgetGridViewController *)self view];
-  [v16 addSubview:v13];
+  view = [(PRGadgetGridViewController *)self view];
+  [view addSubview:v13];
 
   [(PRGadgetGridViewController *)self setListView:v13];
-  v17 = [(PRGadgetGridViewController *)self view];
-  v18 = [v17 layer];
-  [v18 setHitTestsAsOpaque:1];
+  view2 = [(PRGadgetGridViewController *)self view];
+  layer = [view2 layer];
+  [layer setHitTestsAsOpaque:1];
 
   v19 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:self action:sel__backgroundTapRecognized_];
-  v20 = [(PRGadgetGridViewController *)self view];
-  [v20 addGestureRecognizer:v19];
+  view3 = [(PRGadgetGridViewController *)self view];
+  [view3 addGestureRecognizer:v19];
 
-  v21 = [(PRGadgetGridViewController *)self model];
-  [v21 addObserver:self forKeyPath:@"listModel" options:5 context:&PRGadgetGridViewControllerKVOContext];
+  model3 = [(PRGadgetGridViewController *)self model];
+  [model3 addObserver:self forKeyPath:@"listModel" options:5 context:&PRGadgetGridViewControllerKVOContext];
 
-  v22 = [(PRGadgetGridViewController *)self model];
-  [v22 addObserver:self forKeyPath:@"layoutInsetsMode" options:5 context:&PRGadgetGridViewControllerKVOContext];
+  model4 = [(PRGadgetGridViewController *)self model];
+  [model4 addObserver:self forKeyPath:@"layoutInsetsMode" options:5 context:&PRGadgetGridViewControllerKVOContext];
 
-  v23 = [(PRGadgetGridViewController *)self model];
-  [v23 addObserver:self forKeyPath:@"intentsByDescriptorIdentifier" options:5 context:&PRGadgetGridViewControllerKVOContext];
+  model5 = [(PRGadgetGridViewController *)self model];
+  [model5 addObserver:self forKeyPath:@"intentsByDescriptorIdentifier" options:5 context:&PRGadgetGridViewControllerKVOContext];
 
-  v24 = [(PRGadgetGridViewController *)self model];
-  [v24 setPresenter:self];
+  model6 = [(PRGadgetGridViewController *)self model];
+  [model6 setPresenter:self];
 }
 
 - (void)viewDidLayoutSubviews
@@ -175,25 +175,25 @@
   v9.receiver = self;
   v9.super_class = PRGadgetGridViewController;
   [(PRGadgetGridViewController *)&v9 viewDidLayoutSubviews];
-  v3 = [(PRGadgetGridViewController *)self view];
-  [v3 bounds];
+  view = [(PRGadgetGridViewController *)self view];
+  [view bounds];
   v11 = CGRectInset(v10, -20.0, -20.0);
   x = v11.origin.x;
   y = v11.origin.y;
   width = v11.size.width;
   height = v11.size.height;
 
-  v8 = [(PRGadgetGridViewController *)self listView];
-  [v8 setFrame:{x, y, width, height}];
+  listView = [(PRGadgetGridViewController *)self listView];
+  [listView setFrame:{x, y, width, height}];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = v10;
-  if (a6 == &PRGadgetGridViewControllerKVOContext)
+  pathCopy = path;
+  v11 = pathCopy;
+  if (context == &PRGadgetGridViewControllerKVOContext)
   {
-    if ([v10 isEqualToString:@"listModel"])
+    if ([pathCopy isEqualToString:@"listModel"])
     {
       [(PRGadgetGridViewController *)self _listModelUpdated];
     }
@@ -213,25 +213,25 @@
   {
     v12.receiver = self;
     v12.super_class = PRGadgetGridViewController;
-    [(PRGadgetGridViewController *)&v12 observeValueForKeyPath:v10 ofObject:a4 change:a5 context:a6];
+    [(PRGadgetGridViewController *)&v12 observeValueForKeyPath:pathCopy ofObject:object change:change context:context];
   }
 }
 
 - (void)_listModelUpdated
 {
-  v5 = [(PRGadgetGridViewController *)self listView];
-  v3 = [(PRGadgetGridViewController *)self model];
-  v4 = [v3 listModel];
-  [v5 setModel:v4];
+  listView = [(PRGadgetGridViewController *)self listView];
+  model = [(PRGadgetGridViewController *)self model];
+  listModel = [model listModel];
+  [listView setModel:listModel];
 }
 
 - (void)_layoutInsetsModeUpdated
 {
-  v3 = [(PRGadgetGridViewController *)self model];
-  v4 = [v3 layoutInsetsMode] == 1;
+  model = [(PRGadgetGridViewController *)self model];
+  v4 = [model layoutInsetsMode] == 1;
 
-  v5 = [(PRGadgetGridViewController *)self listView];
-  [v5 setLayoutInsetsMode:2 * v4];
+  listView = [(PRGadgetGridViewController *)self listView];
+  [listView setLayoutInsetsMode:2 * v4];
 }
 
 - (void)_intentsUpdated
@@ -241,12 +241,12 @@
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v3 = [(PRGadgetGridViewController *)self model];
-  v4 = [v3 listModel];
-  v5 = [v4 icons];
+  model = [(PRGadgetGridViewController *)self model];
+  listModel = [model listModel];
+  icons = [listModel icons];
 
-  obj = v5;
-  v6 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  obj = icons;
+  v6 = [icons countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v6)
   {
     v7 = v6;
@@ -262,12 +262,12 @@
         }
 
         v10 = [(PRGadgetGridViewController *)self iconViewControllerForIcon:*(*(&v17 + 1) + 8 * v9)];
-        v11 = [v10 gadgetDescriptor];
-        v12 = [v11 uniqueIdentifier];
+        gadgetDescriptor = [v10 gadgetDescriptor];
+        uniqueIdentifier = [gadgetDescriptor uniqueIdentifier];
 
-        v13 = [(PRGadgetGridViewController *)self model];
-        v14 = [v13 intentsByDescriptorIdentifier];
-        v15 = [v14 objectForKeyedSubscript:v12];
+        model2 = [(PRGadgetGridViewController *)self model];
+        intentsByDescriptorIdentifier = [model2 intentsByDescriptorIdentifier];
+        v15 = [intentsByDescriptorIdentifier objectForKeyedSubscript:uniqueIdentifier];
 
         if (objc_opt_respondsToSelector())
         {
@@ -285,21 +285,21 @@
   }
 }
 
-- (void)ensureContentWithTimeout:(double)a3 completion:(id)a4
+- (void)ensureContentWithTimeout:(double)timeout completion:(id)completion
 {
   v28 = *MEMORY[0x1E69E9840];
-  v17 = a4;
-  v5 = [(PRGadgetGridViewController *)self listView];
-  [v5 layoutIconsIfNeeded];
+  completionCopy = completion;
+  listView = [(PRGadgetGridViewController *)self listView];
+  [listView layoutIconsIfNeeded];
 
-  v6 = [(PRGadgetGridViewController *)self listView];
-  v7 = [v6 icons];
+  listView2 = [(PRGadgetGridViewController *)self listView];
+  icons = [listView2 icons];
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __66__PRGadgetGridViewController_ensureContentWithTimeout_completion___block_invoke;
   v26[3] = &unk_1E7843728;
   v26[4] = self;
-  v8 = [v7 bs_compactMap:v26];
+  v8 = [icons bs_compactMap:v26];
 
   v9 = dispatch_group_create();
   dispatch_group_enter(v9);
@@ -351,8 +351,8 @@
   block[1] = 3221225472;
   block[2] = __66__PRGadgetGridViewController_ensureContentWithTimeout_completion___block_invoke_31;
   block[3] = &unk_1E7843778;
-  v19 = v17;
-  v16 = v17;
+  v19 = completionCopy;
+  v16 = completionCopy;
   dispatch_group_notify(v9, MEMORY[0x1E69E96A0], block);
 }
 
@@ -382,20 +382,20 @@ uint64_t __66__PRGadgetGridViewController_ensureContentWithTimeout_completion___
   return result;
 }
 
-- (BOOL)interpretsViewAsContent:(id)a3
+- (BOOL)interpretsViewAsContent:(id)content
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  contentCopy = content;
+  if (contentCopy)
   {
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v5 = [(PRGadgetGridViewController *)self listView];
-    v6 = [v5 icons];
+    listView = [(PRGadgetGridViewController *)self listView];
+    icons = [listView icons];
 
-    v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    v7 = [icons countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v7)
     {
       v8 = v7;
@@ -406,12 +406,12 @@ uint64_t __66__PRGadgetGridViewController_ensureContentWithTimeout_completion___
         {
           if (*v17 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(icons);
           }
 
           v11 = [(PRGadgetGridViewController *)self iconViewControllerForIcon:*(*(&v16 + 1) + 8 * i)];
-          v12 = [v11 view];
-          v13 = [v12 containsView:v4];
+          view = [v11 view];
+          v13 = [view containsView:contentCopy];
 
           if (v13)
           {
@@ -420,7 +420,7 @@ uint64_t __66__PRGadgetGridViewController_ensureContentWithTimeout_completion___
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v8 = [icons countByEnumeratingWithState:&v16 objects:v20 count:16];
         if (v8)
         {
           continue;
@@ -442,27 +442,27 @@ LABEL_12:
   return v14;
 }
 
-- (void)setFocused:(BOOL)a3
+- (void)setFocused:(BOOL)focused
 {
   v19 = *MEMORY[0x1E69E9840];
-  if (self->_focused != a3)
+  if (self->_focused != focused)
   {
-    v3 = a3;
-    self->_focused = a3;
-    v5 = [(PRGadgetGridViewController *)self listView];
-    [v5 setEditing:v3];
+    focusedCopy = focused;
+    self->_focused = focused;
+    listView = [(PRGadgetGridViewController *)self listView];
+    [listView setEditing:focusedCopy];
 
-    v6 = [(PRGadgetGridViewController *)self listView];
-    [v6 updateEditingStateAnimated:1];
+    listView2 = [(PRGadgetGridViewController *)self listView];
+    [listView2 updateEditingStateAnimated:1];
 
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v7 = [(PRGadgetGridViewController *)self listView];
-    v8 = [v7 icons];
+    listView3 = [(PRGadgetGridViewController *)self listView];
+    icons = [listView3 icons];
 
-    v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    v9 = [icons countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v9)
     {
       v10 = v9;
@@ -473,17 +473,17 @@ LABEL_12:
         {
           if (*v15 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(icons);
           }
 
           v13 = [(PRGadgetGridViewController *)self iconViewControllerForIcon:*(*(&v14 + 1) + 8 * i)];
           if (objc_opt_respondsToSelector())
           {
-            [v13 setBackgroundHidden:v3 ^ 1];
+            [v13 setBackgroundHidden:focusedCopy ^ 1];
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v10 = [icons countByEnumeratingWithState:&v14 objects:v18 count:16];
       }
 
       while (v10);
@@ -491,10 +491,10 @@ LABEL_12:
   }
 }
 
-- (void)setFocused:(BOOL)a3 animated:(BOOL)a4
+- (void)setFocused:(BOOL)focused animated:(BOOL)animated
 {
-  v4 = a3;
-  if (a4)
+  focusedCopy = focused;
+  if (animated)
   {
     v6 = [MEMORY[0x1E698E608] settingsWithDuration:0.3];
   }
@@ -505,33 +505,33 @@ LABEL_12:
   }
 
   v7 = v6;
-  [(PRGadgetGridViewController *)self setFocused:v4 animationSettings:v6];
+  [(PRGadgetGridViewController *)self setFocused:focusedCopy animationSettings:v6];
 }
 
-- (void)setFocused:(BOOL)a3 animationSettings:(id)a4
+- (void)setFocused:(BOOL)focused animationSettings:(id)settings
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __59__PRGadgetGridViewController_setFocused_animationSettings___block_invoke;
   v4[3] = &unk_1E78437A0;
   v4[4] = self;
-  v5 = a3;
-  [MEMORY[0x1E698E7D0] animateWithSettings:a4 actions:v4];
+  focusedCopy = focused;
+  [MEMORY[0x1E698E7D0] animateWithSettings:settings actions:v4];
 }
 
-- (void)setVibrancyConfiguration:(id)a3
+- (void)setVibrancyConfiguration:(id)configuration
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  objc_storeStrong(&self->_vibrancyConfiguration, a3);
+  configurationCopy = configuration;
+  objc_storeStrong(&self->_vibrancyConfiguration, configuration);
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = [(PRGadgetGridViewController *)self listView];
-  v7 = [v6 icons];
+  listView = [(PRGadgetGridViewController *)self listView];
+  icons = [listView icons];
 
-  v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v8 = [icons countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {
     v9 = v8;
@@ -543,60 +543,60 @@ LABEL_12:
       {
         if (*v14 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(icons);
         }
 
         v12 = [(PRGadgetGridViewController *)self iconViewControllerForIcon:*(*(&v13 + 1) + 8 * v11)];
         if (objc_opt_respondsToSelector())
         {
-          [v12 setVibrancyConfiguration:v5];
+          [v12 setVibrancyConfiguration:configurationCopy];
         }
 
         ++v11;
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v9 = [icons countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v9);
   }
 }
 
-- (void)setIconContentScale:(double)a3
+- (void)setIconContentScale:(double)scale
 {
   [MEMORY[0x1E6999618] interComplicationSpacingExcludingInnerInset];
-  v6 = v5 * a3;
-  v7 = [(PRGadgetGridViewController *)self listView];
-  [v7 setIconSpacing:{v6, v6}];
+  v6 = v5 * scale;
+  listView = [(PRGadgetGridViewController *)self listView];
+  [listView setIconSpacing:{v6, v6}];
 
-  v8 = [(PRGadgetGridViewController *)self listView];
-  [v8 setIconContentScale:a3];
+  listView2 = [(PRGadgetGridViewController *)self listView];
+  [listView2 setIconContentScale:scale];
 }
 
 - (double)iconContentScale
 {
-  v2 = [(PRGadgetGridViewController *)self listView];
-  [v2 iconContentScale];
+  listView = [(PRGadgetGridViewController *)self listView];
+  [listView iconContentScale];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setInteractionDisabled:(BOOL)a3
+- (void)setInteractionDisabled:(BOOL)disabled
 {
   v16 = *MEMORY[0x1E69E9840];
-  if (self->_interactionDisabled != a3)
+  if (self->_interactionDisabled != disabled)
   {
-    self->_interactionDisabled = a3;
+    self->_interactionDisabled = disabled;
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v4 = [(PRGadgetGridViewController *)self listView];
-    v5 = [v4 icons];
+    listView = [(PRGadgetGridViewController *)self listView];
+    icons = [listView icons];
 
-    v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    v6 = [icons countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v6)
     {
       v7 = v6;
@@ -607,7 +607,7 @@ LABEL_12:
         {
           if (*v12 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(icons);
           }
 
           v10 = [(PRGadgetGridViewController *)self iconViewControllerForIcon:*(*(&v11 + 1) + 8 * i)];
@@ -617,7 +617,7 @@ LABEL_12:
           }
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v7 = [icons countByEnumeratingWithState:&v11 objects:v15 count:16];
       }
 
       while (v7);
@@ -625,43 +625,43 @@ LABEL_12:
   }
 }
 
-- (id)iconViewControllerForIcon:(id)a3
+- (id)iconViewControllerForIcon:(id)icon
 {
-  v4 = a3;
-  v5 = [(PRGadgetGridViewController *)self listView];
-  v6 = [v5 displayedIconViewForIcon:v4];
+  iconCopy = icon;
+  listView = [(PRGadgetGridViewController *)self listView];
+  v6 = [listView displayedIconViewForIcon:iconCopy];
 
-  v7 = [v6 customIconImageViewController];
-  if ([v7 conformsToProtocol:&unk_1F1CC84B0])
+  customIconImageViewController = [v6 customIconImageViewController];
+  if ([customIconImageViewController conformsToProtocol:&unk_1F1CC84B0])
   {
-    v8 = [v6 customIconImageViewController];
+    customIconImageViewController2 = [v6 customIconImageViewController];
   }
 
   else
   {
-    v8 = 0;
+    customIconImageViewController2 = 0;
   }
 
-  return v8;
+  return customIconImageViewController2;
 }
 
 - (id)icons
 {
-  v2 = [(PRGadgetGridViewController *)self listView];
-  v3 = [v2 icons];
+  listView = [(PRGadgetGridViewController *)self listView];
+  icons = [listView icons];
 
-  return v3;
+  return icons;
 }
 
-- (void)_backgroundTapRecognized:(id)a3
+- (void)_backgroundTapRecognized:(id)recognized
 {
-  v4 = [(PRGadgetGridViewController *)self delegate];
+  delegate = [(PRGadgetGridViewController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(PRGadgetGridViewController *)self delegate];
-    [v6 gadgetGridViewControllerDidReceiveTapToBackground:self];
+    delegate2 = [(PRGadgetGridViewController *)self delegate];
+    [delegate2 gadgetGridViewControllerDidReceiveTapToBackground:self];
   }
 }
 
@@ -682,10 +682,10 @@ LABEL_12:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [(PRGadgetGridViewController *)self listView];
-  v4 = [v3 icons];
+  listView = [(PRGadgetGridViewController *)self listView];
+  icons = [listView icons];
 
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v5 = [icons countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -697,7 +697,7 @@ LABEL_12:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(icons);
         }
 
         v9 = [(PRGadgetGridViewController *)self iconViewControllerForIcon:*(*(&v11 + 1) + 8 * v8)];
@@ -710,101 +710,101 @@ LABEL_12:
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [icons countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
   }
 
-  v10 = [(PRGadgetGridViewController *)self model];
-  [v10 invalidate];
+  model = [(PRGadgetGridViewController *)self model];
+  [model invalidate];
 }
 
-- (void)handleLaunchRequestForIcon:(id)a3
+- (void)handleLaunchRequestForIcon:(id)icon
 {
-  v3 = [(PRGadgetGridViewController *)self iconViewControllerForIcon:a3];
+  v3 = [(PRGadgetGridViewController *)self iconViewControllerForIcon:icon];
   if (objc_opt_respondsToSelector())
   {
     [v3 handleLaunchRequest];
   }
 }
 
-- (void)performAnimatedInsertionForIcon:(id)a3
+- (void)performAnimatedInsertionForIcon:(id)icon
 {
-  v4 = a3;
-  v5 = [(PRGadgetGridViewController *)self listView];
-  [v5 layoutAndCreateIcon:v4];
+  iconCopy = icon;
+  listView = [(PRGadgetGridViewController *)self listView];
+  [listView layoutAndCreateIcon:iconCopy];
 
-  v6 = [(PRGadgetGridViewController *)self listView];
-  [v6 markIcon:v4 asNeedingAnimation:1];
+  listView2 = [(PRGadgetGridViewController *)self listView];
+  [listView2 markIcon:iconCopy asNeedingAnimation:1];
 
-  v7 = [(PRGadgetGridViewController *)self listView];
-  [v7 layoutIconsIfNeededWithAnimationType:0 options:0];
+  listView3 = [(PRGadgetGridViewController *)self listView];
+  [listView3 layoutIconsIfNeededWithAnimationType:0 options:0];
 }
 
-- (void)performAnimatedRemovalForIcon:(id)a3
+- (void)performAnimatedRemovalForIcon:(id)icon
 {
-  v4 = a3;
-  v5 = [(PRGadgetGridViewController *)self listView];
-  v8 = [v5 displayedIconViewForIcon:v4];
+  iconCopy = icon;
+  listView = [(PRGadgetGridViewController *)self listView];
+  v8 = [listView displayedIconViewForIcon:iconCopy];
 
   [v8 setAllowsEditingAnimation:0];
-  v6 = [(PRGadgetGridViewController *)self listView];
-  [v6 markIcon:v4 asNeedingAnimation:0];
+  listView2 = [(PRGadgetGridViewController *)self listView];
+  [listView2 markIcon:iconCopy asNeedingAnimation:0];
 
-  v7 = [(PRGadgetGridViewController *)self listView];
-  [v7 layoutIconsIfNeededWithAnimationType:0 options:0];
+  listView3 = [(PRGadgetGridViewController *)self listView];
+  [listView3 layoutIconsIfNeededWithAnimationType:0 options:0];
 }
 
-- (void)widgetIconViewController:(id)a3 requestsLaunchWithAction:(id)a4
+- (void)widgetIconViewController:(id)controller requestsLaunchWithAction:(id)action
 {
-  v13 = a4;
-  v6 = [a3 complicationDescriptor];
-  v7 = [v6 uniqueIdentifier];
+  actionCopy = action;
+  complicationDescriptor = [controller complicationDescriptor];
+  uniqueIdentifier = [complicationDescriptor uniqueIdentifier];
 
-  v8 = [(PRGadgetGridViewController *)self model];
-  v9 = [v8 gadgetDescriptorForIdentifier:v7];
+  model = [(PRGadgetGridViewController *)self model];
+  v9 = [model gadgetDescriptorForIdentifier:uniqueIdentifier];
 
-  v10 = [(PRGadgetGridViewController *)self delegate];
+  delegate = [(PRGadgetGridViewController *)self delegate];
   v11 = objc_opt_respondsToSelector();
 
   if (v11)
   {
-    v12 = [(PRGadgetGridViewController *)self delegate];
-    [v12 gadgetGridViewController:self didRequestLaunchForDescriptor:v9 withAction:v13];
+    delegate2 = [(PRGadgetGridViewController *)self delegate];
+    [delegate2 gadgetGridViewController:self didRequestLaunchForDescriptor:v9 withAction:actionCopy];
   }
 }
 
-- (void)widgetIconViewControllerDidReceiveTap:(id)a3
+- (void)widgetIconViewControllerDidReceiveTap:(id)tap
 {
-  v4 = a3;
-  v5 = [(PRGadgetGridViewController *)self isFocused];
-  v6 = [(PRGadgetGridViewController *)self delegate];
-  if (v5)
+  tapCopy = tap;
+  isFocused = [(PRGadgetGridViewController *)self isFocused];
+  delegate = [(PRGadgetGridViewController *)self delegate];
+  if (isFocused)
   {
     v7 = objc_opt_respondsToSelector();
 
     if (v7)
     {
-      v8 = [v4 complicationDescriptor];
-      v9 = [v8 uniqueIdentifier];
+      complicationDescriptor = [tapCopy complicationDescriptor];
+      uniqueIdentifier = [complicationDescriptor uniqueIdentifier];
 
-      v10 = [(PRGadgetGridViewController *)self model];
-      v11 = [v10 gadgetDescriptorForIdentifier:v9];
+      model = [(PRGadgetGridViewController *)self model];
+      complicationDescriptor2 = [model gadgetDescriptorForIdentifier:uniqueIdentifier];
 
-      if (!v11)
+      if (!complicationDescriptor2)
       {
         v12 = PRLogCommon();
         if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
         {
-          [(PRGadgetGridViewController *)v9 widgetIconViewControllerDidReceiveTap:v12];
+          [(PRGadgetGridViewController *)uniqueIdentifier widgetIconViewControllerDidReceiveTap:v12];
         }
 
-        v11 = [v4 complicationDescriptor];
+        complicationDescriptor2 = [tapCopy complicationDescriptor];
       }
 
-      v13 = [(PRGadgetGridViewController *)self delegate];
-      [v13 gadgetGridViewController:self didReceiveTapForDescriptor:v11];
+      delegate2 = [(PRGadgetGridViewController *)self delegate];
+      [delegate2 gadgetGridViewController:self didReceiveTapForDescriptor:complicationDescriptor2];
 
       goto LABEL_10;
     }
@@ -816,8 +816,8 @@ LABEL_12:
 
     if (v14)
     {
-      v9 = [(PRGadgetGridViewController *)self delegate];
-      [v9 gadgetGridViewControllerDidReceiveTapToBackground:self];
+      uniqueIdentifier = [(PRGadgetGridViewController *)self delegate];
+      [uniqueIdentifier gadgetGridViewControllerDidReceiveTapToBackground:self];
 LABEL_10:
     }
   }
@@ -838,36 +838,36 @@ LABEL_10:
   return iconViewMap;
 }
 
-- (id)dequeueReusableIconViewOfClass:(Class)a3
+- (id)dequeueReusableIconViewOfClass:(Class)class
 {
-  v4 = [(PRGadgetGridViewController *)self iconViewMap];
-  v5 = [v4 dequeueReusableViewOfClass:a3];
+  iconViewMap = [(PRGadgetGridViewController *)self iconViewMap];
+  v5 = [iconViewMap dequeueReusableViewOfClass:class];
 
   return v5;
 }
 
-- (void)recycleIconView:(id)a3
+- (void)recycleIconView:(id)view
 {
-  v4 = a3;
-  v5 = [(PRGadgetGridViewController *)self iconViewMap];
-  [v5 recycleView:v4];
+  viewCopy = view;
+  iconViewMap = [(PRGadgetGridViewController *)self iconViewMap];
+  [iconViewMap recycleView:viewCopy];
 }
 
-- (BOOL)isIconViewRecycled:(id)a3
+- (BOOL)isIconViewRecycled:(id)recycled
 {
-  v4 = a3;
-  v5 = [(PRGadgetGridViewController *)self iconViewMap];
-  v6 = [v5 isViewRecycled:v4];
+  recycledCopy = recycled;
+  iconViewMap = [(PRGadgetGridViewController *)self iconViewMap];
+  v6 = [iconViewMap isViewRecycled:recycledCopy];
 
   return v6;
 }
 
-- (void)configureIconView:(id)a3 forIcon:(id)a4
+- (void)configureIconView:(id)view forIcon:(id)icon
 {
-  v5 = a3;
-  [v5 setAllowsEditingAnimation:0];
-  [v5 setDelegate:self];
-  [v5 addObserver:self];
+  viewCopy = view;
+  [viewCopy setAllowsEditingAnimation:0];
+  [viewCopy setDelegate:self];
+  [viewCopy addObserver:self];
 }
 
 - (UIView)recycledViewsContainer
@@ -882,8 +882,8 @@ LABEL_10:
     [(UIView *)self->_recycledViewsContainerView setHidden:1];
     [(UIView *)self->_recycledViewsContainerView setAlpha:0.0];
     [(UIView *)self->_recycledViewsContainerView setUserInteractionEnabled:0];
-    v6 = [(PRGadgetGridViewController *)self view];
-    [v6 addSubview:self->_recycledViewsContainerView];
+    view = [(PRGadgetGridViewController *)self view];
+    [view addSubview:self->_recycledViewsContainerView];
 
     recycledViewsContainerView = self->_recycledViewsContainerView;
   }
@@ -891,15 +891,15 @@ LABEL_10:
   return recycledViewsContainerView;
 }
 
-- (id)iconViewControllerForDescriptor:(id)a3 presentationMode:(unint64_t)a4
+- (id)iconViewControllerForDescriptor:(id)descriptor presentationMode:(unint64_t)mode
 {
-  v6 = a3;
-  if ([v6 gadgetType])
+  descriptorCopy = descriptor;
+  if ([descriptorCopy gadgetType])
   {
-    if ([v6 gadgetType] == 1)
+    if ([descriptorCopy gadgetType] == 1)
     {
       v7 = objc_opt_class();
-      v8 = v6;
+      v8 = descriptorCopy;
       if (v7)
       {
         v9 = (objc_opt_isKindOfClass() & 1) != 0 ? v8 : 0;
@@ -923,7 +923,7 @@ LABEL_10:
   else
   {
     v10 = objc_opt_class();
-    v11 = v6;
+    v11 = descriptorCopy;
     if (v10)
     {
       if (objc_opt_isKindOfClass())
@@ -946,7 +946,7 @@ LABEL_10:
 
     if (v13)
     {
-      v14 = [[PRWidgetIconViewController alloc] initWithComplicationDescriptor:v13 contentType:[(PRGadgetGridViewController *)self contentType] presentationMode:a4 delegate:self];
+      v14 = [[PRWidgetIconViewController alloc] initWithComplicationDescriptor:v13 contentType:[(PRGadgetGridViewController *)self contentType] presentationMode:mode delegate:self];
 LABEL_17:
       v15 = v14;
 
@@ -957,7 +957,7 @@ LABEL_17:
   v16 = PRLogCommon();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
   {
-    [PRGadgetGridViewController iconViewControllerForDescriptor:v6 presentationMode:?];
+    [PRGadgetGridViewController iconViewControllerForDescriptor:descriptorCopy presentationMode:?];
   }
 
   v15 = 0;
@@ -966,10 +966,10 @@ LABEL_21:
   return v15;
 }
 
-- (void)iconTouchBegan:(id)a3
+- (void)iconTouchBegan:(id)began
 {
-  v4 = [a3 icon];
-  v5 = [(PRGadgetGridViewController *)self iconViewControllerForIcon:v4];
+  icon = [began icon];
+  v5 = [(PRGadgetGridViewController *)self iconViewControllerForIcon:icon];
 
   if (objc_opt_respondsToSelector())
   {
@@ -977,10 +977,10 @@ LABEL_21:
   }
 }
 
-- (void)icon:(id)a3 touchEnded:(BOOL)a4
+- (void)icon:(id)icon touchEnded:(BOOL)ended
 {
-  v5 = [a3 icon];
-  v6 = [(PRGadgetGridViewController *)self iconViewControllerForIcon:v5];
+  icon = [icon icon];
+  v6 = [(PRGadgetGridViewController *)self iconViewControllerForIcon:icon];
 
   if (objc_opt_respondsToSelector())
   {
@@ -988,10 +988,10 @@ LABEL_21:
   }
 }
 
-- (void)iconTapped:(id)a3
+- (void)iconTapped:(id)tapped
 {
-  v4 = [a3 icon];
-  v5 = [(PRGadgetGridViewController *)self iconViewControllerForIcon:v4];
+  icon = [tapped icon];
+  v5 = [(PRGadgetGridViewController *)self iconViewControllerForIcon:icon];
 
   if (objc_opt_respondsToSelector())
   {
@@ -999,26 +999,26 @@ LABEL_21:
   }
 }
 
-- (id)customImageViewControllerForIconView:(id)a3
+- (id)customImageViewControllerForIconView:(id)view
 {
-  v4 = [a3 icon];
-  v5 = [v4 uniqueIdentifier];
+  icon = [view icon];
+  uniqueIdentifier = [icon uniqueIdentifier];
 
-  v6 = [(PRGadgetGridViewController *)self model];
-  v7 = [v6 gadgetDescriptorForIdentifier:v5];
+  model = [(PRGadgetGridViewController *)self model];
+  v7 = [model gadgetDescriptorForIdentifier:uniqueIdentifier];
 
   if ([(PRGadgetGridViewController *)self presentationMode]== 3)
   {
-    v8 = 2;
+    presentationMode = 2;
   }
 
   else
   {
-    v8 = [(PRGadgetGridViewController *)self presentationMode];
+    presentationMode = [(PRGadgetGridViewController *)self presentationMode];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_iconControllerProviderDelegate);
-  v10 = [WeakRetained iconViewControllerForDescriptor:v7 presentationMode:v8];
+  v10 = [WeakRetained iconViewControllerForDescriptor:v7 presentationMode:presentationMode];
 
   if (objc_opt_respondsToSelector())
   {
@@ -1032,43 +1032,43 @@ LABEL_21:
 
   if (objc_opt_respondsToSelector())
   {
-    v11 = [(PRGadgetGridViewController *)self vibrancyConfiguration];
-    [v10 setVibrancyConfiguration:v11];
+    vibrancyConfiguration = [(PRGadgetGridViewController *)self vibrancyConfiguration];
+    [v10 setVibrancyConfiguration:vibrancyConfiguration];
   }
 
-  v12 = [v10 gadgetDescriptor];
-  v13 = [v12 descriptorFromProvider];
-  v14 = [v13 intentType];
-  if (v14 && (v15 = v14, [v12 intent], v16 = objc_claimAutoreleasedReturnValue(), v16, v15, !v16))
+  gadgetDescriptor = [v10 gadgetDescriptor];
+  descriptorFromProvider = [gadgetDescriptor descriptorFromProvider];
+  intentType = [descriptorFromProvider intentType];
+  if (intentType && (v15 = intentType, [gadgetDescriptor intent], v16 = objc_claimAutoreleasedReturnValue(), v16, v15, !v16))
   {
-    v23 = [v13 defaultIntentReference];
-    v17 = [v23 intent];
+    defaultIntentReference = [descriptorFromProvider defaultIntentReference];
+    intent = [defaultIntentReference intent];
 
     if (objc_opt_respondsToSelector())
     {
-      [v10 updateIntent:v17];
+      [v10 updateIntent:intent];
     }
   }
 
   else
   {
-    v17 = PRLogCommon();
-    if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+    intent = PRLogCommon();
+    if (os_log_type_enabled(intent, OS_LOG_TYPE_ERROR))
     {
-      [PRGadgetGridViewController customImageViewControllerForIconView:v12];
+      [PRGadgetGridViewController customImageViewControllerForIconView:gadgetDescriptor];
     }
   }
 
-  if ([v12 gadgetType])
+  if ([gadgetDescriptor gadgetType])
   {
-    v18 = 0;
+    pr_isWorldClockWidget = 0;
   }
 
   else
   {
-    v19 = [v12 gadgetIdentity];
+    gadgetIdentity = [gadgetDescriptor gadgetIdentity];
     v20 = objc_opt_class();
-    v21 = v19;
+    v21 = gadgetIdentity;
     if (v20)
     {
       if (objc_opt_isKindOfClass())
@@ -1089,16 +1089,16 @@ LABEL_21:
 
     v24 = v22;
 
-    v18 = [v24 pr_isWorldClockWidget];
+    pr_isWorldClockWidget = [v24 pr_isWorldClockWidget];
   }
 
-  if ([(PRGadgetGridViewController *)self presentationMode]== 3 && (v18 & 1) == 0 && (objc_opt_respondsToSelector() & 1) != 0)
+  if ([(PRGadgetGridViewController *)self presentationMode]== 3 && (pr_isWorldClockWidget & 1) == 0 && (objc_opt_respondsToSelector() & 1) != 0)
   {
     v26[0] = MEMORY[0x1E69E9820];
     v26[1] = 3221225472;
     v26[2] = __67__PRGadgetGridViewController_customImageViewControllerForIconView___block_invoke;
     v26[3] = &unk_1E7843750;
-    v27 = v12;
+    v27 = gadgetDescriptor;
     v28 = v10;
     [v28 ensureContentWithTimeout:v26 completion:10.0];
   }
@@ -1153,13 +1153,13 @@ void __67__PRGadgetGridViewController_customImageViewControllerForIconView___blo
   }
 }
 
-- (id)iconDragManager:(id)a3 dragItemsForIconView:(id)a4
+- (id)iconDragManager:(id)manager dragItemsForIconView:(id)view
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  viewCopy = view;
   if ([(PRGadgetGridViewController *)self isFocused])
   {
-    v6 = [v5 icon];
+    icon = [viewCopy icon];
     v7 = SBHIconDragItemWithIconAndIconView();
     v10[0] = v7;
     v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
@@ -1173,31 +1173,31 @@ void __67__PRGadgetGridViewController_customImageViewControllerForIconView___blo
   return v8;
 }
 
-- (id)iconDragManager:(id)a3 targetedDragPreviewForIconView:(id)a4 item:(id)a5 session:(id)a6 previewParameters:(id)a7
+- (id)iconDragManager:(id)manager targetedDragPreviewForIconView:(id)view item:(id)item session:(id)session previewParameters:(id)parameters
 {
-  v8 = a4;
-  v9 = [(PRGadgetGridViewController *)self model];
-  v10 = [v8 icon];
-  v11 = [v10 uniqueIdentifier];
-  v12 = [v9 gadgetDescriptorForIdentifier:v11];
+  viewCopy = view;
+  model = [(PRGadgetGridViewController *)self model];
+  icon = [viewCopy icon];
+  uniqueIdentifier = [icon uniqueIdentifier];
+  v12 = [model gadgetDescriptorForIdentifier:uniqueIdentifier];
 
   if (v12)
   {
-    v13 = [v8 icon];
-    v14 = [(PRGadgetGridViewController *)self iconViewControllerForIcon:v13];
+    icon2 = [viewCopy icon];
+    v14 = [(PRGadgetGridViewController *)self iconViewControllerForIcon:icon2];
 
     if (objc_opt_respondsToSelector())
     {
-      v15 = [v14 createPreviewView];
+      createPreviewView = [v14 createPreviewView];
       v16 = objc_alloc_init(MEMORY[0x1E69DCE28]);
-      v17 = [MEMORY[0x1E69DC888] clearColor];
-      [v16 setBackgroundColor:v17];
+      clearColor = [MEMORY[0x1E69DC888] clearColor];
+      [v16 setBackgroundColor:clearColor];
 
       v18 = objc_alloc_init(MEMORY[0x1E69DC728]);
       [v16 setShadowPath:v18];
 
-      v19 = [v14 view];
-      [v19 frame];
+      view = [v14 view];
+      [view frame];
       BSRectGetCenter();
       v21 = v20;
       v23 = v22;
@@ -1207,8 +1207,8 @@ void __67__PRGadgetGridViewController_customImageViewControllerForIconView___blo
       v29[0] = *MEMORY[0x1E695EFD0];
       v29[1] = v25;
       v29[2] = *(MEMORY[0x1E695EFD0] + 32);
-      v26 = [v24 initWithContainer:v8 center:v29 transform:{v21, v23}];
-      v27 = [objc_alloc(MEMORY[0x1E69DD068]) initWithView:v15 parameters:v16 target:v26];
+      v26 = [v24 initWithContainer:viewCopy center:v29 transform:{v21, v23}];
+      v27 = [objc_alloc(MEMORY[0x1E69DD068]) initWithView:createPreviewView parameters:v16 target:v26];
     }
 
     else
@@ -1225,65 +1225,65 @@ void __67__PRGadgetGridViewController_customImageViewControllerForIconView___blo
   return v27;
 }
 
-- (void)iconCloseBoxTapped:(id)a3
+- (void)iconCloseBoxTapped:(id)tapped
 {
-  v4 = [a3 icon];
-  v9 = [v4 uniqueIdentifier];
+  icon = [tapped icon];
+  uniqueIdentifier = [icon uniqueIdentifier];
 
-  v5 = [(PRGadgetGridViewController *)self model];
-  v6 = [v5 gadgetDescriptorForIdentifier:v9];
+  model = [(PRGadgetGridViewController *)self model];
+  v6 = [model gadgetDescriptorForIdentifier:uniqueIdentifier];
 
-  v7 = [(PRGadgetGridViewController *)self model];
-  v8 = [v7 removeGadgetDescriptor:v6];
+  model2 = [(PRGadgetGridViewController *)self model];
+  v8 = [model2 removeGadgetDescriptor:v6];
 }
 
-- (void)iconView:(id)a3 didChangeCustomImageViewController:(id)a4
+- (void)iconView:(id)view didChangeCustomImageViewController:(id)controller
 {
-  v7 = a4;
-  v4 = [v7 conformsToProtocol:&unk_1F1CC84B0];
-  v5 = v7;
+  controllerCopy = controller;
+  v4 = [controllerCopy conformsToProtocol:&unk_1F1CC84B0];
+  v5 = controllerCopy;
   if (v4)
   {
-    v6 = v7;
+    v6 = controllerCopy;
     if (objc_opt_respondsToSelector())
     {
       [v6 invalidate];
     }
 
-    v5 = v7;
+    v5 = controllerCopy;
   }
 
   MEMORY[0x1EEE66BB8](v4, v5);
 }
 
-- (id)rootFolderForIconDragManager:(id)a3
+- (id)rootFolderForIconDragManager:(id)manager
 {
-  v3 = [(PRGadgetGridViewController *)self model];
-  v4 = [v3 rootFolder];
+  model = [(PRGadgetGridViewController *)self model];
+  rootFolder = [model rootFolder];
 
-  return v4;
+  return rootFolder;
 }
 
-- (void)iconDragManager:(id)a3 didEndDragWithResult:(id)a4
+- (void)iconDragManager:(id)manager didEndDragWithResult:(id)result
 {
-  if (([a4 dragRejectionReason] - 5) <= 1)
+  if (([result dragRejectionReason] - 5) <= 1)
   {
-    v5 = [(PRGadgetGridViewController *)self delegate];
-    [v5 gadgetGridViewController:self isAttemptingDragToAddDescriptor:0];
+    delegate = [(PRGadgetGridViewController *)self delegate];
+    [delegate gadgetGridViewController:self isAttemptingDragToAddDescriptor:0];
   }
 }
 
-- (BOOL)containsIconsInRow:(unint64_t)a3
+- (BOOL)containsIconsInRow:(unint64_t)row
 {
-  v4 = [(PRGadgetGridViewController *)self listView];
-  v5 = [v4 model];
+  listView = [(PRGadgetGridViewController *)self listView];
+  model = [listView model];
 
-  v6 = [v5 gridCellInfoWithOptions:0];
-  v7 = [v6 gridSize];
-  v8 = v7;
-  if (v7)
+  v6 = [model gridCellInfoWithOptions:0];
+  gridSize = [v6 gridSize];
+  v8 = gridSize;
+  if (gridSize)
   {
-    v9 = v7 * a3;
+    v9 = gridSize * row;
     if ([v6 iconIndexForGridCellIndex:v9] == 0x7FFFFFFFFFFFFFFFLL)
     {
       v10 = v9 + 1;

@@ -1,19 +1,19 @@
 @interface IAMWebProcessJSO
-+ (id)eventStringForEvent:(int64_t)a3;
-+ (id)stateStringForState:(int64_t)a3;
++ (id)eventStringForEvent:(int64_t)event;
++ (id)stateStringForState:(int64_t)state;
 - (IAMWebProcessJSO)init;
 - (IAMWebProcessJSODelegate)delegate;
 - (id)getState;
-- (void)_callListenersOfEvent:(int64_t)a3 withArguments:(id)a4;
-- (void)addEventListener:(id)a3 listener:(id)a4;
+- (void)_callListenersOfEvent:(int64_t)event withArguments:(id)arguments;
+- (void)addEventListener:(id)listener listener:(id)a4;
 - (void)close;
-- (void)initializeInContext:(id)a3;
-- (void)open:(id)a3 options:(id)a4;
-- (void)performAction:(id)a3 options:(id)a4;
-- (void)removeEventListener:(id)a3 listener:(id)a4;
-- (void)reportEvent:(id)a3;
-- (void)setContentPages:(id)a3;
-- (void)setState:(int64_t)a3;
+- (void)initializeInContext:(id)context;
+- (void)open:(id)open options:(id)options;
+- (void)performAction:(id)action options:(id)options;
+- (void)removeEventListener:(id)listener listener:(id)a4;
+- (void)reportEvent:(id)event;
+- (void)setContentPages:(id)pages;
+- (void)setState:(int64_t)state;
 @end
 
 @implementation IAMWebProcessJSO
@@ -36,28 +36,28 @@
   return v3;
 }
 
-+ (id)eventStringForEvent:(int64_t)a3
++ (id)eventStringForEvent:(int64_t)event
 {
-  if (a3 > 3)
+  if (event > 3)
   {
     return &stru_8290;
   }
 
   else
   {
-    return *(&off_8180 + a3);
+    return *(&off_8180 + event);
   }
 }
 
-+ (id)stateStringForState:(int64_t)a3
++ (id)stateStringForState:(int64_t)state
 {
   v3 = &stru_8290;
-  if (a3 == 1)
+  if (state == 1)
   {
     v3 = @"default";
   }
 
-  if (a3)
+  if (state)
   {
     return v3;
   }
@@ -68,51 +68,51 @@
   }
 }
 
-- (void)initializeInContext:(id)a3
+- (void)initializeInContext:(id)context
 {
-  v3 = a3;
-  v7 = [JSValue valueWithNewObjectInContext:v3];
+  contextCopy = context;
+  v7 = [JSValue valueWithNewObjectInContext:contextCopy];
   [v7 _IAM_setConstantValue:@"IAMWebProcessShouldDismissPresentationBeforeOpen" forProperty:@"IAMOpenURLOptionsDismissBeforeOpenKey"];
-  v4 = [v3 globalObject];
-  [v4 _IAM_setConstantValue:v7 forProperty:@"IAMOpenURLOptions"];
+  globalObject = [contextCopy globalObject];
+  [globalObject _IAM_setConstantValue:v7 forProperty:@"IAMOpenURLOptions"];
 
-  v5 = [JSValue valueWithNewObjectInContext:v3];
+  v5 = [JSValue valueWithNewObjectInContext:contextCopy];
   [v5 _IAM_setConstantValue:@"IAMWebProcessShouldDismissPresentationBeforePerformingAction" forProperty:@"IAMPerformActionOptionsDismissBeforeActionKey"];
-  v6 = [v3 globalObject];
+  globalObject2 = [contextCopy globalObject];
 
-  [v6 _IAM_setConstantValue:v5 forProperty:@"IAMPerformActionOptions"];
+  [globalObject2 _IAM_setConstantValue:v5 forProperty:@"IAMPerformActionOptions"];
 }
 
-- (void)setContentPages:(id)a3
+- (void)setContentPages:(id)pages
 {
-  v5 = a3;
+  pagesCopy = pages;
   p_contentPages = &self->_contentPages;
-  if (self->_contentPages != v5)
+  if (self->_contentPages != pagesCopy)
   {
-    v7 = v5;
-    objc_storeStrong(p_contentPages, a3);
-    v5 = v7;
+    v7 = pagesCopy;
+    objc_storeStrong(p_contentPages, pages);
+    pagesCopy = v7;
     if (self->_state != 1)
     {
       p_contentPages = [(IAMWebProcessJSO *)self setState:1];
-      v5 = v7;
+      pagesCopy = v7;
     }
   }
 
-  _objc_release_x1(p_contentPages, v5);
+  _objc_release_x1(p_contentPages, pagesCopy);
 }
 
-- (void)setState:(int64_t)a3
+- (void)setState:(int64_t)state
 {
-  if (self->_state != a3)
+  if (self->_state != state)
   {
-    self->_state = a3;
-    v5 = [(IAMWebProcessJSO *)self getState];
-    v7 = v5;
+    self->_state = state;
+    getState = [(IAMWebProcessJSO *)self getState];
+    v7 = getState;
     v6 = [NSArray arrayWithObjects:&v7 count:1];
     [(IAMWebProcessJSO *)self _callListenersOfEvent:3 withArguments:v6];
 
-    if (a3 == 1 && ![(IAMWebProcessJSO *)self hasFiredReadyEvent])
+    if (state == 1 && ![(IAMWebProcessJSO *)self hasFiredReadyEvent])
     {
       [(IAMWebProcessJSO *)self _callListenersOfEvent:1 withArguments:0];
       [(IAMWebProcessJSO *)self setHasFiredReadyEvent:1];
@@ -120,12 +120,12 @@
   }
 }
 
-- (void)_callListenersOfEvent:(int64_t)a3 withArguments:(id)a4
+- (void)_callListenersOfEvent:(int64_t)event withArguments:(id)arguments
 {
-  v6 = a4;
-  v7 = [IAMWebProcessJSO eventStringForEvent:a3];
-  v8 = [(IAMWebProcessJSO *)self listenersDictionary];
-  v9 = [v8 objectForKeyedSubscript:v7];
+  argumentsCopy = arguments;
+  v7 = [IAMWebProcessJSO eventStringForEvent:event];
+  listenersDictionary = [(IAMWebProcessJSO *)self listenersDictionary];
+  v9 = [listenersDictionary objectForKeyedSubscript:v7];
 
   if (v9 && [v9 count])
   {
@@ -150,7 +150,7 @@
           }
 
           v15 = *(*(&v18 + 1) + 8 * v14);
-          v16 = [v6 copy];
+          v16 = [argumentsCopy copy];
           v17 = [v15 callWithArguments:v16];
 
           v14 = v14 + 1;
@@ -165,18 +165,18 @@
   }
 }
 
-- (void)addEventListener:(id)a3 listener:(id)a4
+- (void)addEventListener:(id)listener listener:(id)a4
 {
-  v10 = a3;
+  listenerCopy = listener;
   v6 = a4;
-  v7 = [(IAMWebProcessJSO *)self listenersDictionary];
-  v8 = [v7 objectForKeyedSubscript:v10];
+  listenersDictionary = [(IAMWebProcessJSO *)self listenersDictionary];
+  v8 = [listenersDictionary objectForKeyedSubscript:listenerCopy];
 
   if (!v8)
   {
     v8 = +[NSMutableArray array];
-    v9 = [(IAMWebProcessJSO *)self listenersDictionary];
-    [v9 setObject:v8 forKey:v10];
+    listenersDictionary2 = [(IAMWebProcessJSO *)self listenersDictionary];
+    [listenersDictionary2 setObject:v8 forKey:listenerCopy];
   }
 
   if (([v8 containsObject:v6] & 1) == 0)
@@ -185,17 +185,17 @@
   }
 }
 
-- (void)removeEventListener:(id)a3 listener:(id)a4
+- (void)removeEventListener:(id)listener listener:(id)a4
 {
-  v14 = a3;
+  listenerCopy = listener;
   v6 = a4;
-  v7 = [(IAMWebProcessJSO *)self listenersDictionary];
-  v8 = [v7 objectForKeyedSubscript:v14];
+  listenersDictionary = [(IAMWebProcessJSO *)self listenersDictionary];
+  v8 = [listenersDictionary objectForKeyedSubscript:listenerCopy];
   if (v8)
   {
     v9 = v8;
-    v10 = [(IAMWebProcessJSO *)self listenersDictionary];
-    v11 = [v10 objectForKeyedSubscript:v14];
+    listenersDictionary2 = [(IAMWebProcessJSO *)self listenersDictionary];
+    v11 = [listenersDictionary2 objectForKeyedSubscript:listenerCopy];
     v12 = [v11 containsObject:v6];
 
     if (!v12)
@@ -203,8 +203,8 @@
       goto LABEL_5;
     }
 
-    v7 = [(IAMWebProcessJSO *)self listenersDictionary];
-    v13 = [v7 objectForKeyedSubscript:v14];
+    listenersDictionary = [(IAMWebProcessJSO *)self listenersDictionary];
+    v13 = [listenersDictionary objectForKeyedSubscript:listenerCopy];
     [v13 removeObject:v6];
   }
 
@@ -213,63 +213,63 @@ LABEL_5:
 
 - (id)getState
 {
-  v2 = [(IAMWebProcessJSO *)self state];
+  state = [(IAMWebProcessJSO *)self state];
 
-  return [IAMWebProcessJSO stateStringForState:v2];
+  return [IAMWebProcessJSO stateStringForState:state];
 }
 
-- (void)reportEvent:(id)a3
+- (void)reportEvent:(id)event
 {
-  v7 = a3;
-  v4 = [(IAMWebProcessJSO *)self delegate];
+  eventCopy = event;
+  delegate = [(IAMWebProcessJSO *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(IAMWebProcessJSO *)self delegate];
-    [v6 webProcessJSODidReportEvent:v7];
+    delegate2 = [(IAMWebProcessJSO *)self delegate];
+    [delegate2 webProcessJSODidReportEvent:eventCopy];
   }
 }
 
-- (void)performAction:(id)a3 options:(id)a4
+- (void)performAction:(id)action options:(id)options
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = [(IAMWebProcessJSO *)self delegate];
+  actionCopy = action;
+  optionsCopy = options;
+  delegate = [(IAMWebProcessJSO *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
-  if (v6)
+  if (optionsCopy)
   {
     if (v8)
     {
-      v9 = [v6 objectForKey:@"IAMWebProcessShouldDismissPresentationBeforePerformingAction"];
+      v9 = [optionsCopy objectForKey:@"IAMWebProcessShouldDismissPresentationBeforePerformingAction"];
 
       if (v9)
       {
-        v10 = [(IAMWebProcessJSO *)self delegate];
-        [v10 webProcessJSODidCallPerformAction:v11 options:v6];
+        delegate2 = [(IAMWebProcessJSO *)self delegate];
+        [delegate2 webProcessJSODidCallPerformAction:actionCopy options:optionsCopy];
       }
     }
   }
 }
 
-- (void)open:(id)a3 options:(id)a4
+- (void)open:(id)open options:(id)options
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = [(IAMWebProcessJSO *)self delegate];
+  openCopy = open;
+  optionsCopy = options;
+  delegate = [(IAMWebProcessJSO *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
-  if (v6)
+  if (optionsCopy)
   {
     if (v8)
     {
-      v9 = [v6 objectForKey:@"IAMWebProcessShouldDismissPresentationBeforeOpen"];
+      v9 = [optionsCopy objectForKey:@"IAMWebProcessShouldDismissPresentationBeforeOpen"];
 
       if (v9)
       {
-        v10 = [(IAMWebProcessJSO *)self delegate];
-        [v10 webProcessJSODidCallOpen:v11 options:v6];
+        delegate2 = [(IAMWebProcessJSO *)self delegate];
+        [delegate2 webProcessJSODidCallOpen:openCopy options:optionsCopy];
       }
     }
   }
@@ -277,13 +277,13 @@ LABEL_5:
 
 - (void)close
 {
-  v3 = [(IAMWebProcessJSO *)self delegate];
+  delegate = [(IAMWebProcessJSO *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(IAMWebProcessJSO *)self delegate];
-    [v5 webProcessJSODidCallClose];
+    delegate2 = [(IAMWebProcessJSO *)self delegate];
+    [delegate2 webProcessJSODidCallClose];
   }
 }
 

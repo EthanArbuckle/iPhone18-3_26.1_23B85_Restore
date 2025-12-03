@@ -1,14 +1,14 @@
 @interface WLKFavoritesRequest
-- (id)convertToWLKFavorite:(id)a3;
-- (void)makeRequestWithCompletion:(id)a3;
+- (id)convertToWLKFavorite:(id)favorite;
+- (void)makeRequestWithCompletion:(id)completion;
 @end
 
 @implementation WLKFavoritesRequest
 
-- (void)makeRequestWithCompletion:(id)a3
+- (void)makeRequestWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
     v5 = [[WLKSportsFavoriteRequestOperation alloc] initWithAction:0 ids:0];
     objc_initWeak(&location, v5);
@@ -19,10 +19,10 @@
     v7[3] = &unk_279E5E9E8;
     objc_copyWeak(&v9, &location);
     objc_copyWeak(&v10, &from);
-    v8 = v4;
+    v8 = completionCopy;
     [(WLKSportsFavoriteRequestOperation *)v5 setCompletionBlock:v7];
-    v6 = [MEMORY[0x277CCABD8] wlkDefaultQueue];
-    [v6 addOperation:v5];
+    wlkDefaultQueue = [MEMORY[0x277CCABD8] wlkDefaultQueue];
+    [wlkDefaultQueue addOperation:v5];
 
     objc_destroyWeak(&v10);
     objc_destroyWeak(&v9);
@@ -59,16 +59,16 @@ void __49__WLKFavoritesRequest_makeRequestWithCompletion___block_invoke(uint64_t
   (*(v10 + 16))(v10, v5, v11);
 }
 
-- (id)convertToWLKFavorite:(id)a3
+- (id)convertToWLKFavorite:(id)favorite
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  favoriteCopy = favorite;
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v5 = v3;
+  v5 = favoriteCopy;
   v6 = [v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v6)
   {
@@ -86,9 +86,9 @@ void __49__WLKFavoritesRequest_makeRequestWithCompletion___block_invoke(uint64_t
         v10 = *(*(&v19 + 1) + 8 * i);
         v11 = [WLKFavorite alloc];
         v12 = [v10 ID];
-        v13 = [v10 name];
-        v14 = [v10 leagueId];
-        v15 = [(WLKFavorite *)v11 initWithID:v12 name:v13 leagueID:v14];
+        name = [v10 name];
+        leagueId = [v10 leagueId];
+        v15 = [(WLKFavorite *)v11 initWithID:v12 name:name leagueID:leagueId];
         [v4 addObject:v15];
       }
 

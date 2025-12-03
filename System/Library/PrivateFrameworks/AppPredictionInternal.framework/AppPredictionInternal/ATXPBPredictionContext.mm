@@ -1,12 +1,12 @@
 @interface ATXPBPredictionContext
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ATXPBPredictionContext
@@ -17,145 +17,145 @@
   v8.receiver = self;
   v8.super_class = ATXPBPredictionContext;
   v4 = [(ATXPBPredictionContext *)&v8 description];
-  v5 = [(ATXPBPredictionContext *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ATXPBPredictionContext *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x277CCABB0] numberWithBool:self->_isOverridden];
-    [v3 setObject:v4 forKey:@"isOverridden"];
+    [dictionary setObject:v4 forKey:@"isOverridden"];
   }
 
   deviceStateContext = self->_deviceStateContext;
   if (deviceStateContext)
   {
-    v6 = [(ATXPBPredictionDeviceStateContext *)deviceStateContext dictionaryRepresentation];
-    [v3 setObject:v6 forKey:@"deviceStateContext"];
+    dictionaryRepresentation = [(ATXPBPredictionDeviceStateContext *)deviceStateContext dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"deviceStateContext"];
   }
 
   timeContext = self->_timeContext;
   if (timeContext)
   {
-    v8 = [(ATXPBPredictionTimeContext *)timeContext dictionaryRepresentation];
-    [v3 setObject:v8 forKey:@"timeContext"];
+    dictionaryRepresentation2 = [(ATXPBPredictionTimeContext *)timeContext dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"timeContext"];
   }
 
   locationMotionContext = self->_locationMotionContext;
   if (locationMotionContext)
   {
-    v10 = [(ATXPBPredictionLocationMotionContext *)locationMotionContext dictionaryRepresentation];
-    [v3 setObject:v10 forKey:@"locationMotionContext"];
+    dictionaryRepresentation3 = [(ATXPBPredictionLocationMotionContext *)locationMotionContext dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation3 forKey:@"locationMotionContext"];
   }
 
   ambientLightContext = self->_ambientLightContext;
   if (ambientLightContext)
   {
-    v12 = [(ATXPBPredictionAmbientLightContext *)ambientLightContext dictionaryRepresentation];
-    [v3 setObject:v12 forKey:@"ambientLightContext"];
+    dictionaryRepresentation4 = [(ATXPBPredictionAmbientLightContext *)ambientLightContext dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation4 forKey:@"ambientLightContext"];
   }
 
   userContext = self->_userContext;
   if (userContext)
   {
-    v14 = [(ATXPBPredictionUserContext *)userContext dictionaryRepresentation];
-    [v3 setObject:v14 forKey:@"userContext"];
+    dictionaryRepresentation5 = [(ATXPBPredictionUserContext *)userContext dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation5 forKey:@"userContext"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (*&self->_has)
   {
     isOverridden = self->_isOverridden;
     PBDataWriterWriteBOOLField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_deviceStateContext)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_timeContext)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_locationMotionContext)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_ambientLightContext)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_userContext)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[48] = self->_isOverridden;
-    v4[52] |= 1u;
+    toCopy[48] = self->_isOverridden;
+    toCopy[52] |= 1u;
   }
 
-  v5 = v4;
+  v5 = toCopy;
   if (self->_deviceStateContext)
   {
-    [v4 setDeviceStateContext:?];
-    v4 = v5;
+    [toCopy setDeviceStateContext:?];
+    toCopy = v5;
   }
 
   if (self->_timeContext)
   {
     [v5 setTimeContext:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_locationMotionContext)
   {
     [v5 setLocationMotionContext:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_ambientLightContext)
   {
     [v5 setAmbientLightContext:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_userContext)
   {
     [v5 setUserContext:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -163,49 +163,49 @@
     *(v5 + 52) |= 1u;
   }
 
-  v7 = [(ATXPBPredictionDeviceStateContext *)self->_deviceStateContext copyWithZone:a3];
+  v7 = [(ATXPBPredictionDeviceStateContext *)self->_deviceStateContext copyWithZone:zone];
   v8 = v6[2];
   v6[2] = v7;
 
-  v9 = [(ATXPBPredictionTimeContext *)self->_timeContext copyWithZone:a3];
+  v9 = [(ATXPBPredictionTimeContext *)self->_timeContext copyWithZone:zone];
   v10 = v6[4];
   v6[4] = v9;
 
-  v11 = [(ATXPBPredictionLocationMotionContext *)self->_locationMotionContext copyWithZone:a3];
+  v11 = [(ATXPBPredictionLocationMotionContext *)self->_locationMotionContext copyWithZone:zone];
   v12 = v6[3];
   v6[3] = v11;
 
-  v13 = [(ATXPBPredictionAmbientLightContext *)self->_ambientLightContext copyWithZone:a3];
+  v13 = [(ATXPBPredictionAmbientLightContext *)self->_ambientLightContext copyWithZone:zone];
   v14 = v6[1];
   v6[1] = v13;
 
-  v15 = [(ATXPBPredictionUserContext *)self->_userContext copyWithZone:a3];
+  v15 = [(ATXPBPredictionUserContext *)self->_userContext copyWithZone:zone];
   v16 = v6[5];
   v6[5] = v15;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_15;
   }
 
-  v5 = *(v4 + 52);
+  v5 = *(equalCopy + 52);
   if ((*&self->_has & 1) == 0)
   {
     goto LABEL_3;
   }
 
-  if ((*(v4 + 52) & 1) == 0)
+  if ((*(equalCopy + 52) & 1) == 0)
   {
     goto LABEL_15;
   }
 
-  v5 = *(v4 + 48);
+  v5 = *(equalCopy + 48);
   if (!self->_isOverridden)
   {
 LABEL_3:
@@ -219,20 +219,20 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  if ((*(v4 + 48) & 1) == 0)
+  if ((*(equalCopy + 48) & 1) == 0)
   {
     goto LABEL_15;
   }
 
 LABEL_4:
   deviceStateContext = self->_deviceStateContext;
-  if (deviceStateContext | *(v4 + 2) && ![(ATXPBPredictionDeviceStateContext *)deviceStateContext isEqual:?])
+  if (deviceStateContext | *(equalCopy + 2) && ![(ATXPBPredictionDeviceStateContext *)deviceStateContext isEqual:?])
   {
     goto LABEL_15;
   }
 
   timeContext = self->_timeContext;
-  if (timeContext | *(v4 + 4))
+  if (timeContext | *(equalCopy + 4))
   {
     if (![(ATXPBPredictionTimeContext *)timeContext isEqual:?])
     {
@@ -241,7 +241,7 @@ LABEL_4:
   }
 
   locationMotionContext = self->_locationMotionContext;
-  if (locationMotionContext | *(v4 + 3))
+  if (locationMotionContext | *(equalCopy + 3))
   {
     if (![(ATXPBPredictionLocationMotionContext *)locationMotionContext isEqual:?])
     {
@@ -250,7 +250,7 @@ LABEL_4:
   }
 
   ambientLightContext = self->_ambientLightContext;
-  if (ambientLightContext | *(v4 + 1))
+  if (ambientLightContext | *(equalCopy + 1))
   {
     if (![(ATXPBPredictionAmbientLightContext *)ambientLightContext isEqual:?])
     {
@@ -259,7 +259,7 @@ LABEL_4:
   }
 
   userContext = self->_userContext;
-  if (userContext | *(v4 + 5))
+  if (userContext | *(equalCopy + 5))
   {
     v11 = [(ATXPBPredictionUserContext *)userContext isEqual:?];
   }
@@ -293,13 +293,13 @@ LABEL_16:
   return v6 ^ v7 ^ [(ATXPBPredictionUserContext *)self->_userContext hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 52))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 52))
   {
-    self->_isOverridden = *(v4 + 48);
+    self->_isOverridden = *(fromCopy + 48);
     *&self->_has |= 1u;
   }
 

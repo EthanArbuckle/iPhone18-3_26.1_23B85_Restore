@@ -1,20 +1,20 @@
 @interface BiokitOperation
-- (BiokitOperation)initWithQueue:(id)a3 forUnitTest:(BOOL)a4;
-- (id)cancelActiveOperation:(id)a3;
-- (void)device:(id)a3 pearlEventOccurred:(int64_t)a4;
-- (void)device:(id)a3 pearlStateChanged:(int64_t)a4;
-- (void)operation:(id)a3 faceDetectStateChanged:(id)a4;
-- (void)operation:(id)a3 finishedWithReason:(int64_t)a4;
-- (void)operation:(id)a3 motionDetectStateChanged:(id)a4;
-- (void)startPresenceDetectOperation:(id)a3;
+- (BiokitOperation)initWithQueue:(id)queue forUnitTest:(BOOL)test;
+- (id)cancelActiveOperation:(id)operation;
+- (void)device:(id)device pearlEventOccurred:(int64_t)occurred;
+- (void)device:(id)device pearlStateChanged:(int64_t)changed;
+- (void)operation:(id)operation faceDetectStateChanged:(id)changed;
+- (void)operation:(id)operation finishedWithReason:(int64_t)reason;
+- (void)operation:(id)operation motionDetectStateChanged:(id)changed;
+- (void)startPresenceDetectOperation:(id)operation;
 @end
 
 @implementation BiokitOperation
 
-- (void)device:(id)a3 pearlStateChanged:(int64_t)a4
+- (void)device:(id)device pearlStateChanged:(int64_t)changed
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  deviceCopy = device;
   dispatch_assert_queue_V2(self->_queue);
   if (currentLogLevel == 5)
   {
@@ -37,7 +37,7 @@
       WORD6(v18[0]) = 2112;
       *(v18 + 14) = self;
       WORD3(v18[1]) = 2080;
-      *(&v18[1] + 1) = getDeviceStateDescription(a4);
+      *(&v18[1] + 1) = getDeviceStateDescription(changed);
       v14 = "%13.5f: %@ pearlStateChanged %s";
       v15 = v7;
       v16 = 32;
@@ -85,7 +85,7 @@ LABEL_20:
           WORD6(v18[1]) = 2112;
           *(&v18[1] + 14) = self;
           WORD3(v18[2]) = 2080;
-          *(&v18[2] + 1) = getDeviceStateDescription(a4);
+          *(&v18[2] + 1) = getDeviceStateDescription(changed);
           v14 = "%30s:%-4d: %13.5f: %@ pearlStateChanged %s";
           v15 = v7;
           v16 = 48;
@@ -100,16 +100,16 @@ LABEL_20:
 LABEL_21:
   v19 = 0;
   memset(v18, 0, sizeof(v18));
-  LODWORD(v18[0]) = a4;
+  LODWORD(v18[0]) = changed;
   [(PearlCameraInterfaceMessaging *)self->_delegate cameraActivityNotification:4 data:v18 forOperation:self];
 
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)device:(id)a3 pearlEventOccurred:(int64_t)a4
+- (void)device:(id)device pearlEventOccurred:(int64_t)occurred
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  deviceCopy = device;
   dispatch_assert_queue_V2(self->_queue);
   if (currentLogLevel == 5)
   {
@@ -127,7 +127,7 @@ LABEL_21:
         v9 = v8 / 1000000000.0;
       }
 
-      DeviceEventDescription = getDeviceEventDescription(a4);
+      DeviceEventDescription = getDeviceEventDescription(occurred);
       pendingPresenceOperation = self->_pendingPresenceOperation;
       LODWORD(v22[0]) = 134219010;
       *(v22 + 4) = v9;
@@ -177,7 +177,7 @@ LABEL_20:
             v13 = v12 / 1000000000.0;
           }
 
-          v19 = getDeviceEventDescription(a4);
+          v19 = getDeviceEventDescription(occurred);
           v20 = self->_pendingPresenceOperation;
           LODWORD(v22[0]) = 136316674;
           *(v22 + 4) = v10;
@@ -207,21 +207,21 @@ LABEL_20:
 LABEL_21:
   v23 = 0;
   memset(v22, 0, sizeof(v22));
-  LODWORD(v22[0]) = a4;
+  LODWORD(v22[0]) = occurred;
   [(PearlCameraInterfaceMessaging *)self->_delegate cameraActivityNotification:3 data:v22 forOperation:self];
 
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (void)operation:(id)a3 finishedWithReason:(int64_t)a4
+- (void)operation:(id)operation finishedWithReason:(int64_t)reason
 {
   v32 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  operationCopy = operation;
   dispatch_assert_queue_V2(self->_queue);
   v7 = MEMORY[0x1E696AEC0];
   pendingPresenceOperation = self->_pendingPresenceOperation;
   [(BKFaceDetectOperation *)pendingPresenceOperation timeout];
-  v10 = [v7 stringWithFormat:@"operation %p currentOperation %p (timeout %13.5f) finishedWithReason %s", v6, pendingPresenceOperation, v9, getEndReasonDescriptions(a4)];
+  v10 = [v7 stringWithFormat:@"operation %p currentOperation %p (timeout %13.5f) finishedWithReason %s", operationCopy, pendingPresenceOperation, v9, getEndReasonDescriptions(reason)];
   if (currentLogLevel == 5)
   {
     v11 = _AALog();
@@ -314,17 +314,17 @@ LABEL_21:
   v23 = 0u;
   v24 = 0u;
   memset(buf, 0, sizeof(buf));
-  *buf = a4;
+  *buf = reason;
   [(PearlCameraInterfaceMessaging *)self->_delegate cameraActivityNotification:2 data:buf forOperation:self];
 
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (void)operation:(id)a3 faceDetectStateChanged:(id)a4
+- (void)operation:(id)operation faceDetectStateChanged:(id)changed
 {
   v60 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  operationCopy = operation;
+  changedCopy = changed;
   dispatch_assert_queue_V2(self->_queue);
   v50 = 0u;
   v51 = 0u;
@@ -333,20 +333,20 @@ LABEL_21:
   *&v46 = 0;
   v47 = 0u;
   *&v43 = 0;
-  LODWORD(a4) = [v6 faceDetected];
-  v8 = [v6 pitch];
-  v9 = [v6 yaw];
-  v10 = [v6 roll];
-  v11 = [v6 distance];
-  v12 = [v6 orientation];
-  if ((v12 - 1) >= 4)
+  LODWORD(changed) = [changedCopy faceDetected];
+  pitch = [changedCopy pitch];
+  v9 = [changedCopy yaw];
+  roll = [changedCopy roll];
+  distance = [changedCopy distance];
+  orientation = [changedCopy orientation];
+  if ((orientation - 1) >= 4)
   {
     v13 = 0;
   }
 
   else
   {
-    v13 = v12;
+    v13 = orientation;
   }
 
   v52 = 0u;
@@ -357,11 +357,11 @@ LABEL_21:
     v14 = _AALog();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v40 = v11;
+      v40 = distance;
       v15 = absTimeNS();
-      v41 = v8;
+      v41 = pitch;
       v36 = v9;
-      v16 = v5;
+      v16 = operationCopy;
       if (v15 == -1)
       {
         v17 = INFINITY;
@@ -373,7 +373,7 @@ LABEL_21:
       }
 
       pendingPresenceOperation = self->_pendingPresenceOperation;
-      if (a4)
+      if (changed)
       {
         v23 = "FACE FOUND";
       }
@@ -384,8 +384,8 @@ LABEL_21:
       }
 
       getFaceDetectOrientationDescription(v13);
-      a4 = v38 = a4;
-      v24 = [v6 faceDetectionScore];
+      changed = v38 = changed;
+      faceDetectionScore = [changedCopy faceDetectionScore];
       *buf = 134220290;
       *&buf[4] = v17;
       *&buf[12] = 2112;
@@ -397,23 +397,23 @@ LABEL_21:
       *&buf[42] = 2080;
       *&buf[44] = v23;
       *&buf[52] = 2112;
-      v8 = v41;
+      pitch = v41;
       *&buf[54] = v41;
       *&buf[62] = 2112;
       v9 = v36;
       *&buf[64] = v36;
       *&buf[72] = 2112;
-      *&buf[74] = v10;
+      *&buf[74] = roll;
       *&buf[82] = 2112;
-      *&buf[84] = a4;
+      *&buf[84] = changed;
       *&buf[92] = 2112;
-      *&buf[94] = v24;
+      *&buf[94] = faceDetectionScore;
       _os_log_impl(&dword_1BB2EF000, v14, OS_LOG_TYPE_DEFAULT, "%13.5f: %@ operation %p currentOperation %p faceDetectStateChanged %s pitch: %@ yaw: %@ roll: %@ orientation: %@ faceDetectionScore: %@", buf, 0x66u);
 
-      v5 = v16;
-      LOBYTE(a4) = v38;
+      operationCopy = v16;
+      LOBYTE(changed) = v38;
 LABEL_28:
-      v11 = v40;
+      distance = v40;
     }
 
 LABEL_29:
@@ -426,7 +426,7 @@ LABEL_29:
     v14 = _AALog();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v35 = v5;
+      v35 = operationCopy;
       v18 = "/Library/Caches/com.apple.xbs/Sources/AttentionAwareness/Framework/XPCService/Sampling/PearlBioKitInterface.m";
       for (i = "Library/Caches/com.apple.xbs/Sources/AttentionAwareness/Framework/XPCService/Sampling/PearlBioKitInterface.m"; ; ++i)
       {
@@ -437,9 +437,9 @@ LABEL_29:
 
         else if (!*(i - 1))
         {
-          v40 = v11;
+          v40 = distance;
           v20 = absTimeNS();
-          v42 = v8;
+          v42 = pitch;
           v37 = v9;
           if (v20 == -1)
           {
@@ -452,7 +452,7 @@ LABEL_29:
           }
 
           v25 = self->_pendingPresenceOperation;
-          if (a4)
+          if (changed)
           {
             v26 = "FACE FOUND";
           }
@@ -463,8 +463,8 @@ LABEL_29:
           }
 
           v27 = getFaceDetectOrientationDescription(v13);
-          [v6 faceDetectionScore];
-          a4 = v39 = a4;
+          [changedCopy faceDetectionScore];
+          changed = v39 = changed;
           *buf = 136317954;
           *&buf[4] = v18;
           *&buf[12] = 1024;
@@ -474,27 +474,27 @@ LABEL_29:
           *&buf[28] = 2112;
           *&buf[30] = self;
           *&buf[38] = 2048;
-          v5 = v35;
+          operationCopy = v35;
           *&buf[40] = v35;
           *&buf[48] = 2048;
           *&buf[50] = v25;
           *&buf[58] = 2080;
           *&buf[60] = v26;
           *&buf[68] = 2112;
-          v8 = v42;
+          pitch = v42;
           *&buf[70] = v42;
           *&buf[78] = 2112;
           v9 = v37;
           *&buf[80] = v37;
           *&buf[88] = 2112;
-          *&buf[90] = v10;
+          *&buf[90] = roll;
           *&buf[98] = 2112;
           *&buf[100] = v27;
           *&buf[108] = 2112;
-          *&buf[110] = a4;
+          *&buf[110] = changed;
           _os_log_impl(&dword_1BB2EF000, v14, OS_LOG_TYPE_DEFAULT, "%30s:%-4d: %13.5f: %@ operation %p currentOperation %p faceDetectStateChanged %s pitch: %@ yaw: %@ roll: %@ orientation: %@ faceDetectionScore: %@", buf, 0x76u);
 
-          LOBYTE(a4) = v39;
+          LOBYTE(changed) = v39;
           goto LABEL_28;
         }
       }
@@ -504,19 +504,19 @@ LABEL_29:
   }
 
 LABEL_30:
-  LOBYTE(v43) = a4;
+  LOBYTE(v43) = changed;
   *(&v46 + 1) = 1;
-  [v8 doubleValue];
+  [pitch doubleValue];
   *(&v43 + 1) = v28;
   [v9 doubleValue];
   *&v44 = v29;
-  [v10 doubleValue];
+  [roll doubleValue];
   *(&v44 + 1) = v30;
   *&v45 = v13;
-  [v11 doubleValue];
+  [distance doubleValue];
   *(&v45 + 1) = v31;
-  v32 = [v6 faceDetectionScore];
-  [v32 floatValue];
+  faceDetectionScore2 = [changedCopy faceDetectionScore];
+  [faceDetectionScore2 floatValue];
   DWORD2(v51) = v33;
 
   memset_pattern16(&v47, &unk_1BB32B2C0, 0x40uLL);
@@ -538,11 +538,11 @@ LABEL_30:
   v34 = *MEMORY[0x1E69E9840];
 }
 
-- (void)operation:(id)a3 motionDetectStateChanged:(id)a4
+- (void)operation:(id)operation motionDetectStateChanged:(id)changed
 {
   v57 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  operationCopy = operation;
+  changedCopy = changed;
   dispatch_assert_queue_V2(self->_queue);
   v8 = _AALog();
   v9 = _AALog();
@@ -565,15 +565,15 @@ LABEL_30:
   *&buf[56] = 3;
   v49 = 0u;
   v50 = 0;
-  v11 = [v7 motionDetectState];
-  if (v11 == 1)
+  motionDetectState = [changedCopy motionDetectState];
+  if (motionDetectState == 1)
   {
     v12 = 1;
   }
 
   else
   {
-    v12 = 2 * (v11 == 2);
+    v12 = 2 * (motionDetectState == 2);
   }
 
   *&v47 = v12;
@@ -583,9 +583,9 @@ LABEL_30:
     goto LABEL_13;
   }
 
-  v13 = [v7 motionMatrix];
+  motionMatrix = [changedCopy motionMatrix];
 
-  if (!v13)
+  if (!motionMatrix)
   {
     if (currentLogLevel < 3)
     {
@@ -619,8 +619,8 @@ LABEL_48:
     goto LABEL_41;
   }
 
-  v14 = [v7 motionMatrix];
-  v15 = [v14 count];
+  motionMatrix2 = [changedCopy motionMatrix];
+  v15 = [motionMatrix2 count];
 
   if (v15 != 16)
   {
@@ -654,8 +654,8 @@ LABEL_48:
 
   for (i = 0; i != 16; ++i)
   {
-    v17 = [v7 motionMatrix];
-    v18 = [v17 objectAtIndexedSubscript:i];
+    motionMatrix3 = [changedCopy motionMatrix];
+    v18 = [motionMatrix3 objectAtIndexedSubscript:i];
 
     [v18 floatValue];
     *(&v43 + i) = v19;
@@ -685,7 +685,7 @@ LABEL_13:
       v53 = 2112;
       *v54 = self;
       *&v54[8] = 2048;
-      *&v54[10] = v6;
+      *&v54[10] = operationCopy;
       *&v54[18] = 2048;
       *&v54[20] = pendingPresenceOperation;
       *&v54[28] = 2080;
@@ -749,7 +749,7 @@ LABEL_32:
           *&v54[14] = 2112;
           *&v54[16] = self;
           *&v54[24] = 2048;
-          *&v54[26] = v6;
+          *&v54[26] = operationCopy;
           *&v54[34] = 2048;
           *&v54[36] = v32;
           *&v54[44] = 2080;
@@ -794,10 +794,10 @@ LABEL_34:
   v33 = *MEMORY[0x1E69E9840];
 }
 
-- (id)cancelActiveOperation:(id)a3
+- (id)cancelActiveOperation:(id)operation
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  operationCopy = operation;
   if (currentLogLevel == 5)
   {
     v5 = _AALog();
@@ -817,7 +817,7 @@ LABEL_34:
       *buf = 134218242;
       v26 = v7;
       v27 = 2112;
-      *v28 = v4;
+      *v28 = operationCopy;
       v12 = "%13.5f: cancelActiveOperation called with info %@";
       v13 = v5;
       v14 = 22;
@@ -864,7 +864,7 @@ LABEL_19:
           *&v28[4] = 2048;
           *&v28[6] = v11;
           v29 = 2112;
-          v30 = v4;
+          v30 = operationCopy;
           v12 = "%30s:%-4d: %13.5f: cancelActiveOperation called with info %@";
           v13 = v5;
           v14 = 38;
@@ -884,8 +884,8 @@ LABEL_21:
     block[2] = __41__BiokitOperation_cancelActiveOperation___block_invoke;
     block[3] = &unk_1E7F37C10;
     v22 = v16;
-    v23 = self;
-    v24 = v4;
+    selfCopy = self;
+    v24 = operationCopy;
     v17 = v16;
     dispatch_async(MEMORY[0x1E69E96A0], block);
     v18 = self->_pendingPresenceOperation;
@@ -995,17 +995,17 @@ LABEL_21:
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)startPresenceDetectOperation:(id)a3
+- (void)startPresenceDetectOperation:(id)operation
 {
-  v4 = a3;
+  operationCopy = operation;
   pendingPresenceOperation = self->_pendingPresenceOperation;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __48__BiokitOperation_startPresenceDetectOperation___block_invoke;
   v7[3] = &unk_1E7F37408;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = operationCopy;
+  v6 = operationCopy;
   [(BKFaceDetectOperation *)pendingPresenceOperation startWithReply:v7];
 }
 
@@ -1151,19 +1151,19 @@ LABEL_26:
   v26 = *MEMORY[0x1E69E9840];
 }
 
-- (BiokitOperation)initWithQueue:(id)a3 forUnitTest:(BOOL)a4
+- (BiokitOperation)initWithQueue:(id)queue forUnitTest:(BOOL)test
 {
-  v4 = a4;
+  testCopy = test;
   v33 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  queueCopy = queue;
   v26.receiver = self;
   v26.super_class = BiokitOperation;
   v8 = [(BiokitOperation *)&v26 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_queue, a3);
-    if (v4)
+    objc_storeStrong(&v8->_queue, queue);
+    if (testCopy)
     {
       +[AWUnitTestPearlDevice sharedDevice];
     }
@@ -1181,7 +1181,7 @@ LABEL_26:
     v9->_timeout = 0.0;
   }
 
-  if (v4)
+  if (testCopy)
   {
     if (currentLogLevel == 5)
     {

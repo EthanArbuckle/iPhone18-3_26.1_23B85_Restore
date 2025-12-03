@@ -1,43 +1,43 @@
 @interface VNSession
-+ (Class)trackerClassForOptions:(id)a3 error:(id *)a4;
++ (Class)trackerClassForOptions:(id)options error:(id *)error;
 + (id)globalSession;
-- (BOOL)prepareForPerformingRequests:(id)a3 error:(id *)a4;
-- (VNSession)initWithCachingBehavior:(unint64_t)a3;
-- (id)_cachedDetectorOfClass:(Class)a3 configuredWithOptions:(id)a4;
-- (id)_cachedTrackerResourcesConfiguredWithOptions:(id)a3;
-- (id)_frameworkManagerWithError:(uint64_t)a1;
-- (id)_locateDetectorOfClass:(void *)a3 configuredWithOptions:(int)a4 allowingCreation:(void *)a5 error:;
-- (id)_locateRPNTrackerResourcesForOptions:(int)a3 allowingCreation:(void *)a4 error:;
-- (id)_locateResourceObjectForIdentifier:(id)a3 creationBlock:(id)a4 error:(id *)a5;
-- (id)cachedResourceObjectForIdentifier:(id)a3;
-- (id)createRPNTrackerResourcesConfiguredWithOptions:(id)a3 error:(id *)a4;
-- (id)detectorOfClass:(Class)a3 configuredWithOptions:(id)a4 error:(id *)a5;
-- (id)detectorOfType:(id)a3 configuredWithOptions:(id)a4 error:(id *)a5;
+- (BOOL)prepareForPerformingRequests:(id)requests error:(id *)error;
+- (VNSession)initWithCachingBehavior:(unint64_t)behavior;
+- (id)_cachedDetectorOfClass:(Class)class configuredWithOptions:(id)options;
+- (id)_cachedTrackerResourcesConfiguredWithOptions:(id)options;
+- (id)_frameworkManagerWithError:(uint64_t)error;
+- (id)_locateDetectorOfClass:(void *)class configuredWithOptions:(int)options allowingCreation:(void *)creation error:;
+- (id)_locateRPNTrackerResourcesForOptions:(int)options allowingCreation:(void *)creation error:;
+- (id)_locateResourceObjectForIdentifier:(id)identifier creationBlock:(id)block error:(id *)error;
+- (id)cachedResourceObjectForIdentifier:(id)identifier;
+- (id)createRPNTrackerResourcesConfiguredWithOptions:(id)options error:(id *)error;
+- (id)detectorOfClass:(Class)class configuredWithOptions:(id)options error:(id *)error;
+- (id)detectorOfType:(id)type configuredWithOptions:(id)options error:(id *)error;
 - (id)loadedDetectors;
-- (id)resourceObjectForIdentifier:(id)a3 creationBlock:(id)a4 error:(id *)a5;
-- (id)trackerResourcesConfiguredWithOptions:(id)a3 error:(id *)a4;
-- (id)trackerWithOptions:(id)a3 error:(id *)a4;
+- (id)resourceObjectForIdentifier:(id)identifier creationBlock:(id)block error:(id *)error;
+- (id)trackerResourcesConfiguredWithOptions:(id)options error:(id *)error;
+- (id)trackerWithOptions:(id)options error:(id *)error;
 - (void)_releaseAllDetectors;
-- (void)_releaseDetectorTypes:(uint64_t)a1;
+- (void)_releaseDetectorTypes:(uint64_t)types;
 - (void)dealloc;
-- (void)detectorCache:(id)a3 didCacheDetector:(id)a4;
-- (void)detectorCache:(id)a3 didEvictDetector:(id)a4;
-- (void)legacyForcedCleanupOfFacePipelineWithLevel:(id)a3;
-- (void)legacyForcedCleanupOfJunkPipelineWithLevel:(id)a3;
-- (void)legacyForcedCleanupOfScenePipelineWithLevel:(id)a3;
-- (void)legacyForcedCleanupOfSmartCamPipelineWithLevel:(id)a3;
-- (void)legacyForcedCleanupWithOptions:(id)a3;
+- (void)detectorCache:(id)cache didCacheDetector:(id)detector;
+- (void)detectorCache:(id)cache didEvictDetector:(id)detector;
+- (void)legacyForcedCleanupOfFacePipelineWithLevel:(id)level;
+- (void)legacyForcedCleanupOfJunkPipelineWithLevel:(id)level;
+- (void)legacyForcedCleanupOfScenePipelineWithLevel:(id)level;
+- (void)legacyForcedCleanupOfSmartCamPipelineWithLevel:(id)level;
+- (void)legacyForcedCleanupWithOptions:(id)options;
 - (void)releaseCachedResources;
-- (void)releaseCachedResourcesWithCompletionBlock:(id)a3;
-- (void)releaseDetectorsThatCanBeReplacedByDetectorOfClass:(Class)a3 withConfiguration:(id)a4;
-- (void)releaseTracker:(id)a3;
+- (void)releaseCachedResourcesWithCompletionBlock:(id)block;
+- (void)releaseDetectorsThatCanBeReplacedByDetectorOfClass:(Class)class withConfiguration:(id)configuration;
+- (void)releaseTracker:(id)tracker;
 @end
 
 @implementation VNSession
 
-+ (Class)trackerClassForOptions:(id)a3 error:(id *)a4
++ (Class)trackerClassForOptions:(id)options error:(id *)error
 {
-  v4 = [VNTrackerManager trackerClassForOptions:a3 error:a4];
+  v4 = [VNTrackerManager trackerClassForOptions:options error:error];
 
   return v4;
 }
@@ -61,11 +61,11 @@ uint64_t __26__VNSession_globalSession__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)legacyForcedCleanupOfJunkPipelineWithLevel:(id)a3
+- (void)legacyForcedCleanupOfJunkPipelineWithLevel:(id)level
 {
   v6[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (([v4 isEqualToString:@"VNCleanupLevel_Partial"] & 1) == 0 && objc_msgSend(v4, "isEqualToString:", @"VNCleanupLevel_Complete"))
+  levelCopy = level;
+  if (([levelCopy isEqualToString:@"VNCleanupLevel_Partial"] & 1) == 0 && objc_msgSend(levelCopy, "isEqualToString:", @"VNCleanupLevel_Complete"))
   {
     v6[0] = @"VNJunkIdentifierType";
     v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:1];
@@ -73,11 +73,11 @@ uint64_t __26__VNSession_globalSession__block_invoke()
   }
 }
 
-- (void)_releaseDetectorTypes:(uint64_t)a1
+- (void)_releaseDetectorTypes:(uint64_t)types
 {
   v21 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (types)
   {
     v4 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     v16 = 0u;
@@ -111,21 +111,21 @@ uint64_t __26__VNSession_globalSession__block_invoke()
       while (v6);
     }
 
-    v10 = [v4 allObjects];
-    if ([v10 count])
+    allObjects = [v4 allObjects];
+    if ([allObjects count])
     {
       v18[0] = MEMORY[0x1E69E9820];
       v18[1] = 3221225472;
       v18[2] = __40__VNSession__releaseDetectorsOfClasses___block_invoke;
       v18[3] = &unk_1E77B4B90;
-      v19 = v10;
+      v19 = allObjects;
       v11 = v18;
       v12 = +[VNFrameworkManager manager];
-      v13 = [v12 detectorAccessingLock];
+      detectorAccessingLock = [v12 detectorAccessingLock];
 
-      [v13 lock];
-      [*(a1 + 24) evictDetectorsPassingTest:v11];
-      [v13 unlock];
+      [detectorAccessingLock lock];
+      [*(types + 24) evictDetectorsPassingTest:v11];
+      [detectorAccessingLock unlock];
     }
   }
 }
@@ -174,11 +174,11 @@ LABEL_11:
   return v5;
 }
 
-- (void)legacyForcedCleanupOfSmartCamPipelineWithLevel:(id)a3
+- (void)legacyForcedCleanupOfSmartCamPipelineWithLevel:(id)level
 {
   v6[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (([v4 isEqualToString:@"VNCleanupLevel_Partial"] & 1) == 0 && objc_msgSend(v4, "isEqualToString:", @"VNCleanupLevel_Complete"))
+  levelCopy = level;
+  if (([levelCopy isEqualToString:@"VNCleanupLevel_Partial"] & 1) == 0 && objc_msgSend(levelCopy, "isEqualToString:", @"VNCleanupLevel_Complete"))
   {
     v6[0] = @"VNSmartCamClassifierType";
     v6[1] = @"VNAttentionBasedSaliencyHeatmapBoundingBoxGeneratorType";
@@ -188,11 +188,11 @@ LABEL_11:
   }
 }
 
-- (void)legacyForcedCleanupOfScenePipelineWithLevel:(id)a3
+- (void)legacyForcedCleanupOfScenePipelineWithLevel:(id)level
 {
   v6[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (([v4 isEqualToString:@"VNCleanupLevel_Partial"] & 1) == 0 && objc_msgSend(v4, "isEqualToString:", @"VNCleanupLevel_Complete"))
+  levelCopy = level;
+  if (([levelCopy isEqualToString:@"VNCleanupLevel_Partial"] & 1) == 0 && objc_msgSend(levelCopy, "isEqualToString:", @"VNCleanupLevel_Complete"))
   {
     v6[0] = @"VNImageAnalyzerMultiDetectorType";
     v6[1] = @"VNAttentionBasedSaliencyHeatmapBoundingBoxGeneratorType";
@@ -202,22 +202,22 @@ LABEL_11:
   }
 }
 
-- (void)legacyForcedCleanupOfFacePipelineWithLevel:(id)a3
+- (void)legacyForcedCleanupOfFacePipelineWithLevel:(id)level
 {
   v15[7] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  levelCopy = level;
+  v5 = levelCopy;
+  if (levelCopy)
   {
-    if ([v4 isEqualToString:@"VNCleanupLevel_Partial"])
+    if ([levelCopy isEqualToString:@"VNCleanupLevel_Partial"])
     {
       v6 = &__block_literal_global_67_25026;
       if (self)
       {
         v7 = +[VNFrameworkManager manager];
-        v8 = [v7 detectorAccessingLock];
+        detectorAccessingLock = [v7 detectorAccessingLock];
 
-        [v8 lock];
+        [detectorAccessingLock lock];
         detectorCache_onlyAccessWithDetectorAccessingLock = self->_detectorCache_onlyAccessWithDetectorAccessingLock;
         v13[0] = MEMORY[0x1E69E9820];
         v13[1] = 3221225472;
@@ -227,7 +227,7 @@ LABEL_11:
         v14 = &__block_literal_global_67_25026;
         [(VNDetectorCache *)detectorCache_onlyAccessWithDetectorAccessingLock evictDetectorsPassingTest:v13];
 
-        [v8 unlock];
+        [detectorAccessingLock unlock];
       }
     }
 
@@ -259,13 +259,13 @@ void __56__VNSession_legacyForcedCleanupOfFacePipelineWithLevel___block_invoke(u
   }
 }
 
-- (void)legacyForcedCleanupWithOptions:(id)a3
+- (void)legacyForcedCleanupWithOptions:(id)options
 {
-  v4 = a3;
-  if (v4)
+  optionsCopy = options;
+  if (optionsCopy)
   {
-    v11 = v4;
-    v5 = [v4 objectForKey:@"VNRequestHandlerCleanupOption_AllPipelines"];
+    v11 = optionsCopy;
+    v5 = [optionsCopy objectForKey:@"VNRequestHandlerCleanupOption_AllPipelines"];
     v6 = [v11 objectForKey:@"VNRequestHandlerCleanupOption_FacePipeline"];
     if (!v6)
     {
@@ -309,7 +309,7 @@ void __56__VNSession_legacyForcedCleanupOfFacePipelineWithLevel___block_invoke(u
       [v10 releaseMetalDeviceWisdomParameters];
 
 LABEL_15:
-      v4 = v11;
+      optionsCopy = v11;
       goto LABEL_16;
     }
 
@@ -326,22 +326,22 @@ LABEL_16:
 
 - (void)_releaseAllDetectors
 {
-  if (a1)
+  if (self)
   {
     v2 = +[VNFrameworkManager manager];
-    v3 = [v2 detectorAccessingLock];
+    detectorAccessingLock = [v2 detectorAccessingLock];
 
-    [v3 lock];
-    [*(a1 + 24) evictAllDetectors];
-    [v3 unlock];
+    [detectorAccessingLock lock];
+    [*(self + 24) evictAllDetectors];
+    [detectorAccessingLock unlock];
   }
 }
 
-- (void)releaseTracker:(id)a3
+- (void)releaseTracker:(id)tracker
 {
   trackerManager = self->_trackerManager;
-  v4 = a3;
-  v5 = v4;
+  trackerCopy = tracker;
+  v5 = trackerCopy;
   if (trackerManager)
   {
     trackersCollectionManagementQueue = trackerManager->_trackersCollectionManagementQueue;
@@ -350,22 +350,22 @@ LABEL_16:
     v7[2] = __35__VNTrackerManager_releaseTracker___block_invoke;
     v7[3] = &unk_1E77B3A80;
     v7[4] = trackerManager;
-    v8 = v4;
+    v8 = trackerCopy;
     dispatch_sync(trackersCollectionManagementQueue, v7);
   }
 }
 
-- (id)trackerWithOptions:(id)a3 error:(id *)a4
+- (id)trackerWithOptions:(id)options error:(id *)error
 {
   trackerManager = self->_trackerManager;
-  v6 = a3;
-  v7 = v6;
+  optionsCopy = options;
+  v7 = optionsCopy;
   if (trackerManager)
   {
-    v8 = [v6 objectForKeyedSubscript:@"VNTrackingOption_TrackerKey"];
+    v8 = [optionsCopy objectForKeyedSubscript:@"VNTrackingOption_TrackerKey"];
     if (!v8)
     {
-      if (!a4)
+      if (!error)
       {
         v11 = 0;
 LABEL_31:
@@ -375,7 +375,7 @@ LABEL_31:
 
       v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"A tracker cannot be created without specifying a unique tracker key"];
       [VNError errorWithCode:5 message:v10];
-      *a4 = v11 = 0;
+      *error = v11 = 0;
 LABEL_30:
 
       goto LABEL_31;
@@ -406,17 +406,17 @@ LABEL_30:
 
       v25 = v12;
       v16 = v15;
-      v17 = [VNTrackerManager trackerClassForOptions:v14 error:a4];
+      v17 = [VNTrackerManager trackerClassForOptions:v14 error:error];
       v18 = v16;
       if (v17)
       {
-        v19 = [v17 supportedComputeDevicesForOptions:v14 error:a4];
+        v19 = [v17 supportedComputeDevicesForOptions:v14 error:error];
         v18 = v16;
         if (v19)
         {
           v24 = v19;
-          v20 = [v16 computeDevice];
-          v15 = [VNComputeDeviceUtilities computeDeviceOfComputeDevices:v24 mostCompatibleWithComputeDevice:v20 options:0];
+          computeDevice = [v16 computeDevice];
+          v15 = [VNComputeDeviceUtilities computeDeviceOfComputeDevices:v24 mostCompatibleWithComputeDevice:computeDevice options:0];
 
           if (v15 || ([VNComputeDeviceUtilities mostPerformantComputeDeviceOfComputeDevices:v24], (v15 = objc_claimAutoreleasedReturnValue()) != 0))
           {
@@ -425,7 +425,7 @@ LABEL_30:
             v12 = v25;
 LABEL_17:
 
-            v21 = [(VNTrackerManager *)trackerManager _createTracker:v8 type:v12 options:v14 error:a4];
+            v21 = [(VNTrackerManager *)trackerManager _createTracker:v8 type:v12 options:v14 error:error];
             if (v21)
             {
               v10 = v21;
@@ -439,10 +439,10 @@ LABEL_17:
             goto LABEL_28;
           }
 
-          if (a4)
+          if (error)
           {
-            v22 = [v16 processingDevice];
-            *a4 = [VNError errorForUnsupportedProcessingDevice:v22];
+            processingDevice = [v16 processingDevice];
+            *error = [VNError errorForUnsupportedProcessingDevice:processingDevice];
           }
 
           v18 = 0;
@@ -456,7 +456,7 @@ LABEL_17:
 
     else
     {
-      if (!a4)
+      if (!error)
       {
         v10 = 0;
         goto LABEL_29;
@@ -464,7 +464,7 @@ LABEL_17:
 
       v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Cannot create a Tracker with unknown tracker type: %@", v12];
       [VNError errorWithCode:5 message:v14];
-      *a4 = v10 = 0;
+      *error = v10 = 0;
     }
 
 LABEL_28:
@@ -480,68 +480,68 @@ LABEL_32:
   return v11;
 }
 
-- (void)releaseDetectorsThatCanBeReplacedByDetectorOfClass:(Class)a3 withConfiguration:(id)a4
+- (void)releaseDetectorsThatCanBeReplacedByDetectorOfClass:(Class)class withConfiguration:(id)configuration
 {
-  v8 = a4;
+  configurationCopy = configuration;
   v6 = +[VNFrameworkManager manager];
-  v7 = [v6 detectorAccessingLock];
+  detectorAccessingLock = [v6 detectorAccessingLock];
 
-  [v7 lock];
-  [(VNSession *)self _releaseDetectorsThatCanBeReplacedByDetectorOfClass:a3 withConfiguration:v8];
-  [v7 unlock];
+  [detectorAccessingLock lock];
+  [(VNSession *)self _releaseDetectorsThatCanBeReplacedByDetectorOfClass:class withConfiguration:configurationCopy];
+  [detectorAccessingLock unlock];
 }
 
 - (id)loadedDetectors
 {
   v3 = +[VNFrameworkManager manager];
-  v4 = [v3 detectorAccessingLock];
+  detectorAccessingLock = [v3 detectorAccessingLock];
 
-  [v4 lock];
-  v5 = [(VNDetectorCache *)self->_detectorCache_onlyAccessWithDetectorAccessingLock loadedDetectors];
-  [v4 unlock];
+  [detectorAccessingLock lock];
+  loadedDetectors = [(VNDetectorCache *)self->_detectorCache_onlyAccessWithDetectorAccessingLock loadedDetectors];
+  [detectorAccessingLock unlock];
 
-  return v5;
+  return loadedDetectors;
 }
 
-- (id)trackerResourcesConfiguredWithOptions:(id)a3 error:(id *)a4
+- (id)trackerResourcesConfiguredWithOptions:(id)options error:(id *)error
 {
-  v6 = a3;
+  optionsCopy = options;
   v7 = +[VNFrameworkManager manager];
-  v8 = [v7 trackerResourcesAccessingLock];
+  trackerResourcesAccessingLock = [v7 trackerResourcesAccessingLock];
 
-  [v8 lock];
-  v9 = [(VNSession *)self _locateRPNTrackerResourcesForOptions:v6 allowingCreation:1 error:a4];
-  [v8 unlock];
+  [trackerResourcesAccessingLock lock];
+  v9 = [(VNSession *)self _locateRPNTrackerResourcesForOptions:optionsCopy allowingCreation:1 error:error];
+  [trackerResourcesAccessingLock unlock];
 
   return v9;
 }
 
-- (id)_locateRPNTrackerResourcesForOptions:(int)a3 allowingCreation:(void *)a4 error:
+- (id)_locateRPNTrackerResourcesForOptions:(int)options allowingCreation:(void *)creation error:
 {
   v7 = a2;
-  if (a1)
+  if (self)
   {
-    if (a3)
+    if (options)
     {
-      v8 = 0;
+      creationCopy = 0;
     }
 
     else
     {
-      v8 = a4;
+      creationCopy = creation;
     }
 
-    v9 = [*(a1 + 32) locateRPNTrackerResourcesConfiguredForOptions:v7 error:v8];
-    if (!v9 && (a3 & 1) != 0)
+    v9 = [*(self + 32) locateRPNTrackerResourcesConfiguredForOptions:v7 error:creationCopy];
+    if (!v9 && (options & 1) != 0)
     {
-      v10 = [(VNSession *)a1 _frameworkManagerWithError:a4];
+      v10 = [(VNSession *)self _frameworkManagerWithError:creation];
       v11 = v10;
       if (v10)
       {
-        v9 = [v10 trackerResourcesConfiguredWithOptions:v7 forSession:a1 error:a4];
+        v9 = [v10 trackerResourcesConfiguredWithOptions:v7 forSession:self error:creation];
         if (v9)
         {
-          [*(a1 + 32) addRPNTrackerResourcesConfiguredForOptions:v7 resources:v9 error:a4];
+          [*(self + 32) addRPNTrackerResourcesConfiguredForOptions:v7 resources:v9 error:creation];
         }
       }
 
@@ -560,9 +560,9 @@ LABEL_32:
   return v9;
 }
 
-- (id)_frameworkManagerWithError:(uint64_t)a1
+- (id)_frameworkManagerWithError:(uint64_t)error
 {
-  WeakRetained = objc_loadWeakRetained((a1 + 8));
+  WeakRetained = objc_loadWeakRetained((error + 8));
   v4 = WeakRetained;
   if (WeakRetained)
   {
@@ -577,48 +577,48 @@ LABEL_32:
   return v4;
 }
 
-- (id)detectorOfClass:(Class)a3 configuredWithOptions:(id)a4 error:(id *)a5
+- (id)detectorOfClass:(Class)class configuredWithOptions:(id)options error:(id *)error
 {
-  v8 = a4;
-  v9 = [(objc_class *)a3 fullyPopulatedConfigurationOptionsWithOverridingOptions:v8 populateComputeDevice:1];
+  optionsCopy = options;
+  v9 = [(objc_class *)class fullyPopulatedConfigurationOptionsWithOverridingOptions:optionsCopy populateComputeDevice:1];
   [v9 removeObjectForKey:@"VNDetectorProcessOption_Session"];
   [v9 removeObjectForKey:@"VNDetectorProcessOption_Canceller"];
   v10 = +[VNFrameworkManager manager];
-  v11 = [v10 detectorAccessingLock];
+  detectorAccessingLock = [v10 detectorAccessingLock];
 
-  [v11 lock];
-  v12 = [(VNSession *)self _locateDetectorOfClass:a3 configuredWithOptions:v9 allowingCreation:1 error:a5];
-  [v11 unlock];
+  [detectorAccessingLock lock];
+  v12 = [(VNSession *)self _locateDetectorOfClass:class configuredWithOptions:v9 allowingCreation:1 error:error];
+  [detectorAccessingLock unlock];
 
   return v12;
 }
 
-- (id)_locateDetectorOfClass:(void *)a3 configuredWithOptions:(int)a4 allowingCreation:(void *)a5 error:
+- (id)_locateDetectorOfClass:(void *)class configuredWithOptions:(int)options allowingCreation:(void *)creation error:
 {
-  v9 = a3;
-  if (a1)
+  classCopy = class;
+  if (self)
   {
-    if (a4)
+    if (options)
     {
-      v10 = 0;
+      creationCopy = 0;
     }
 
     else
     {
-      v10 = a5;
+      creationCopy = creation;
     }
 
-    v11 = [*(a1 + 24) detectorOfClass:a2 configuredWithOptions:v9 error:v10];
-    if (!v11 && (a4 & 1) != 0)
+    v11 = [*(self + 24) detectorOfClass:a2 configuredWithOptions:classCopy error:creationCopy];
+    if (!v11 && (options & 1) != 0)
     {
-      v12 = [(VNSession *)a1 _frameworkManagerWithError:a5];
+      v12 = [(VNSession *)self _frameworkManagerWithError:creation];
       v13 = v12;
       if (v12)
       {
-        v11 = [v12 detectorOfClass:a2 configuredWithOptions:v9 forSession:a1 error:a5];
+        v11 = [v12 detectorOfClass:a2 configuredWithOptions:classCopy forSession:self error:creation];
         if (v11)
         {
-          [*(a1 + 24) cacheDetector:v11];
+          [*(self + 24) cacheDetector:v11];
         }
       }
 
@@ -637,14 +637,14 @@ LABEL_32:
   return v11;
 }
 
-- (id)detectorOfType:(id)a3 configuredWithOptions:(id)a4 error:(id *)a5
+- (id)detectorOfType:(id)type configuredWithOptions:(id)options error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [VNDetector detectorClassAndConfigurationOptions:0 forDetectorType:v8 options:v9 error:a5];
+  typeCopy = type;
+  optionsCopy = options;
+  v10 = [VNDetector detectorClassAndConfigurationOptions:0 forDetectorType:typeCopy options:optionsCopy error:error];
   if (v10)
   {
-    v11 = [(VNSession *)self detectorOfClass:v10 configuredWithOptions:v9 error:a5];
+    v11 = [(VNSession *)self detectorOfClass:v10 configuredWithOptions:optionsCopy error:error];
   }
 
   else
@@ -655,15 +655,15 @@ LABEL_32:
   return v11;
 }
 
-- (BOOL)prepareForPerformingRequests:(id)a3 error:(id *)a4
+- (BOOL)prepareForPerformingRequests:(id)requests error:(id *)error
 {
   v46 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  requestsCopy = requests;
   context = objc_autoreleasePoolPush();
-  if (v5)
+  if (requestsCopy)
   {
     v44 = 0;
-    v6 = [VNValidationUtilities validateArray:v5 named:@"requests" hasElementsOfClass:objc_opt_class() requiredMinimumCount:0 allowedMaximumCount:0 error:&v44];
+    v6 = [VNValidationUtilities validateArray:requestsCopy named:@"requests" hasElementsOfClass:objc_opt_class() requiredMinimumCount:0 allowedMaximumCount:0 error:&v44];
     v7 = v44;
     if (v6)
     {
@@ -672,7 +672,7 @@ LABEL_32:
       v9 = v8;
       [(VNRequestPerformingContext *)v8 qosClass];
       v43 = v7;
-      v35 = [(VNRequestPerformer *)v33 dependencyAnalyzedRequestsForRequests:v5 withPerformingContext:v8 error:&v43];
+      v35 = [(VNRequestPerformer *)v33 dependencyAnalyzedRequestsForRequests:requestsCopy withPerformingContext:v8 error:&v43];
       v34 = v43;
 
       if (v35)
@@ -703,13 +703,13 @@ LABEL_32:
               if ((v15 & 1) == 0)
               {
                 v19 = objc_alloc(MEMORY[0x1E696AEC0]);
-                v20 = [v17 localizedDescription];
+                localizedDescription = [v17 localizedDescription];
                 v8 = v9;
-                v21 = [v19 initWithFormat:@"%@ could not be warmed up (%@)", v14, v20];
+                v21 = [v19 initWithFormat:@"%@ could not be warmed up (%@)", v14, localizedDescription];
 
                 v22 = v21;
-                v23 = [v21 UTF8String];
-                VNValidatedLog(4, @"%s", v24, v25, v26, v27, v28, v29, v23);
+                uTF8String = [v21 UTF8String];
+                VNValidatedLog(4, @"%s", v24, v25, v26, v27, v28, v29, uTF8String);
                 v30 = [VNError errorForOperationFailedErrorWithLocalizedDescription:v21 underlyingError:v17];
 
                 v18 = 0;
@@ -754,79 +754,79 @@ LABEL_16:
   }
 
   objc_autoreleasePoolPop(context);
-  if (!v5)
+  if (!requestsCopy)
   {
     v18 = 1;
   }
 
-  if (a4 && !v18)
+  if (error && !v18)
   {
     v31 = v7;
-    *a4 = v7;
+    *error = v7;
   }
 
   return v18;
 }
 
-- (void)detectorCache:(id)a3 didEvictDetector:(id)a4
+- (void)detectorCache:(id)cache didEvictDetector:(id)detector
 {
-  v4 = a4;
+  detectorCopy = detector;
   [objc_opt_class() VNClassCode];
   kdebug_trace();
 }
 
-- (void)detectorCache:(id)a3 didCacheDetector:(id)a4
+- (void)detectorCache:(id)cache didCacheDetector:(id)detector
 {
-  v4 = a4;
+  detectorCopy = detector;
   [objc_opt_class() VNClassCode];
   kdebug_trace();
 }
 
-- (id)_cachedTrackerResourcesConfiguredWithOptions:(id)a3
+- (id)_cachedTrackerResourcesConfiguredWithOptions:(id)options
 {
-  v3 = [(VNSession *)self _locateRPNTrackerResourcesForOptions:a3 allowingCreation:0 error:0];
+  v3 = [(VNSession *)self _locateRPNTrackerResourcesForOptions:options allowingCreation:0 error:0];
 
   return v3;
 }
 
-- (id)_cachedDetectorOfClass:(Class)a3 configuredWithOptions:(id)a4
+- (id)_cachedDetectorOfClass:(Class)class configuredWithOptions:(id)options
 {
-  v4 = [(VNSession *)self _locateDetectorOfClass:a3 configuredWithOptions:a4 allowingCreation:0 error:0];
+  v4 = [(VNSession *)self _locateDetectorOfClass:class configuredWithOptions:options allowingCreation:0 error:0];
 
   return v4;
 }
 
-- (id)cachedResourceObjectForIdentifier:(id)a3
+- (id)cachedResourceObjectForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = +[VNFrameworkManager manager];
-  v6 = [v5 sessionResourcesAccessingLock];
+  sessionResourcesAccessingLock = [v5 sessionResourcesAccessingLock];
 
-  [v6 lock];
-  v7 = [(VisionCoreObjectCache *)self->_resourceObjectsCache_onlyAccessWithSessionResourcesAccessingLock objectForIdentifier:v4 creationBlock:0 error:0];
-  [v6 unlock];
+  [sessionResourcesAccessingLock lock];
+  v7 = [(VisionCoreObjectCache *)self->_resourceObjectsCache_onlyAccessWithSessionResourcesAccessingLock objectForIdentifier:identifierCopy creationBlock:0 error:0];
+  [sessionResourcesAccessingLock unlock];
 
   return v7;
 }
 
-- (id)resourceObjectForIdentifier:(id)a3 creationBlock:(id)a4 error:(id *)a5
+- (id)resourceObjectForIdentifier:(id)identifier creationBlock:(id)block error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  identifierCopy = identifier;
+  blockCopy = block;
   v10 = +[VNFrameworkManager manager];
-  v11 = [v10 sessionResourcesAccessingLock];
+  sessionResourcesAccessingLock = [v10 sessionResourcesAccessingLock];
 
-  [v11 lock];
-  v12 = [(VNSession *)self _locateResourceObjectForIdentifier:v8 creationBlock:v9 error:a5];
-  [v11 unlock];
+  [sessionResourcesAccessingLock lock];
+  v12 = [(VNSession *)self _locateResourceObjectForIdentifier:identifierCopy creationBlock:blockCopy error:error];
+  [sessionResourcesAccessingLock unlock];
 
   return v12;
 }
 
-- (void)releaseCachedResourcesWithCompletionBlock:(id)a3
+- (void)releaseCachedResourcesWithCompletionBlock:(id)block
 {
-  v4 = a3;
-  if (v4)
+  blockCopy = block;
+  if (blockCopy)
   {
     if (_asyncProcessingDispatchQueue(void)::onceToken != -1)
     {
@@ -841,7 +841,7 @@ LABEL_16:
       v7[2] = __55__VNSession_releaseCachedResourcesWithCompletionBlock___block_invoke;
       v7[3] = &unk_1E77B4BE0;
       v7[4] = self;
-      v8 = v4;
+      v8 = blockCopy;
       dispatch_barrier_async(v5, v7);
     }
 
@@ -849,7 +849,7 @@ LABEL_16:
     {
       [VNError VNAssert:0 log:@"Processing dispatch queue is unavailable"];
       v6 = objc_autoreleasePoolPush();
-      v4[2](v4);
+      blockCopy[2](blockCopy);
       objc_autoreleasePoolPop(v6);
     }
   }
@@ -953,16 +953,16 @@ void __55__VNSession_releaseCachedResourcesWithCompletionBlock___block_invoke(ui
   }
 
   v16 = +[VNFrameworkManager manager];
-  v18 = [v16 sessionResourcesAccessingLock];
+  sessionResourcesAccessingLock = [v16 sessionResourcesAccessingLock];
 
-  [v18 lock];
+  [sessionResourcesAccessingLock lock];
   resourceObjectsCache_onlyAccessWithSessionResourcesAccessingLock = self->_resourceObjectsCache_onlyAccessWithSessionResourcesAccessingLock;
   self->_resourceObjectsCache_onlyAccessWithSessionResourcesAccessingLock = 0;
 
-  [v18 unlock];
+  [sessionResourcesAccessingLock unlock];
 }
 
-- (VNSession)initWithCachingBehavior:(unint64_t)a3
+- (VNSession)initWithCachingBehavior:(unint64_t)behavior
 {
   v18.receiver = self;
   v18.super_class = VNSession;
@@ -1004,17 +1004,17 @@ void __55__VNSession_releaseCachedResourcesWithCompletionBlock___block_invoke(ui
   return v3;
 }
 
-- (id)createRPNTrackerResourcesConfiguredWithOptions:(id)a3 error:(id *)a4
+- (id)createRPNTrackerResourcesConfiguredWithOptions:(id)options error:(id *)error
 {
-  v4 = [(VNRPNTrackerEspressoResourcesCache *)self->_trackerResourceCache createRPNTrackerResourcesConfiguredWithOptions:a3 error:a4];
+  v4 = [(VNRPNTrackerEspressoResourcesCache *)self->_trackerResourceCache createRPNTrackerResourcesConfiguredWithOptions:options error:error];
 
   return v4;
 }
 
-- (id)_locateResourceObjectForIdentifier:(id)a3 creationBlock:(id)a4 error:(id *)a5
+- (id)_locateResourceObjectForIdentifier:(id)identifier creationBlock:(id)block error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  identifierCopy = identifier;
+  blockCopy = block;
   if (!self->_resourceObjectsCache_onlyAccessWithSessionResourcesAccessingLock)
   {
     v10 = objc_alloc_init(MEMORY[0x1E69DF950]);
@@ -1026,13 +1026,13 @@ void __55__VNSession_releaseCachedResourcesWithCompletionBlock___block_invoke(ui
   aBlock[1] = 3221225472;
   aBlock[2] = __68__VNSession__locateResourceObjectForIdentifier_creationBlock_error___block_invoke;
   aBlock[3] = &unk_1E77B4BB8;
-  v12 = v8;
+  v12 = identifierCopy;
   v18 = v12;
-  v19 = self;
-  v13 = v9;
+  selfCopy = self;
+  v13 = blockCopy;
   v20 = v13;
   v14 = _Block_copy(aBlock);
-  v15 = [(VisionCoreObjectCache *)self->_resourceObjectsCache_onlyAccessWithSessionResourcesAccessingLock objectForIdentifier:v12 creationBlock:v14 error:a5];
+  v15 = [(VisionCoreObjectCache *)self->_resourceObjectsCache_onlyAccessWithSessionResourcesAccessingLock objectForIdentifier:v12 creationBlock:v14 error:error];
 
   return v15;
 }
@@ -1050,7 +1050,7 @@ id __68__VNSession__locateResourceObjectForIdentifier_creationBlock_error___bloc
   [(VNSession *)self releaseCachedResources];
   v3 = objc_autoreleasePoolPush();
   v4 = +[VNFrameworkManager manager];
-  v5 = [v4 allSessions];
+  allSessions = [v4 allSessions];
 
   objc_autoreleasePoolPop(v3);
   kdebug_trace();

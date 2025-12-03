@@ -1,7 +1,7 @@
 @interface EMHMERecipientCreationRequest
-+ (BOOL)canCreateHMEReplyToAddress:(id)a3;
++ (BOOL)canCreateHMEReplyToAddress:(id)address;
 + (id)log;
-- (EMHMERecipientCreationRequest)initWithAccount:(id)a3 recipient:(id)a4 hmeAddress:(id)a5;
+- (EMHMERecipientCreationRequest)initWithAccount:(id)account recipient:(id)recipient hmeAddress:(id)address;
 - (id)_httpBody;
 - (id)urlRequest;
 - (id)urlString;
@@ -16,7 +16,7 @@
   block[1] = 3221225472;
   block[2] = __36__EMHMERecipientCreationRequest_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_17 != -1)
   {
     dispatch_once(&log_onceToken_17, block);
@@ -35,23 +35,23 @@ void __36__EMHMERecipientCreationRequest_log__block_invoke(uint64_t a1)
   log_log_17 = v1;
 }
 
-- (EMHMERecipientCreationRequest)initWithAccount:(id)a3 recipient:(id)a4 hmeAddress:(id)a5
+- (EMHMERecipientCreationRequest)initWithAccount:(id)account recipient:(id)recipient hmeAddress:(id)address
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  accountCopy = account;
+  recipientCopy = recipient;
+  addressCopy = address;
   v19.receiver = self;
   v19.super_class = EMHMERecipientCreationRequest;
   v12 = [(EMHMERecipientCreationRequest *)&v19 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_account, a3);
-    v14 = [v10 copy];
+    objc_storeStrong(&v12->_account, account);
+    v14 = [recipientCopy copy];
     recipient = v13->_recipient;
     v13->_recipient = v14;
 
-    v16 = [v11 copy];
+    v16 = [addressCopy copy];
     hmeAddress = v13->_hmeAddress;
     v13->_hmeAddress = v16;
   }
@@ -59,9 +59,9 @@ void __36__EMHMERecipientCreationRequest_log__block_invoke(uint64_t a1)
   return v13;
 }
 
-+ (BOOL)canCreateHMEReplyToAddress:(id)a3
++ (BOOL)canCreateHMEReplyToAddress:(id)address
 {
-  v3 = [a3 propertiesForDataclass:@"com.apple.Dataclass.PremiumMailSettings"];
+  v3 = [address propertiesForDataclass:@"com.apple.Dataclass.PremiumMailSettings"];
   v4 = [v3 objectForKeyedSubscript:@"hmeGetReplyToAddress"];
 
   LOBYTE(v3) = [v4 length] != 0;
@@ -118,24 +118,24 @@ void __36__EMHMERecipientCreationRequest_log__block_invoke(uint64_t a1)
 {
   v15.receiver = self;
   v15.super_class = EMHMERecipientCreationRequest;
-  v3 = [(AARequest *)&v15 urlRequest];
-  v4 = [v3 mutableCopy];
+  urlRequest = [(AARequest *)&v15 urlRequest];
+  v4 = [urlRequest mutableCopy];
 
   [v4 setHTTPMethod:@"POST"];
-  v5 = [(EMHMERecipientCreationRequest *)self _httpBody];
-  [v4 setHTTPBody:v5];
+  _httpBody = [(EMHMERecipientCreationRequest *)self _httpBody];
+  [v4 setHTTPBody:_httpBody];
 
   [v4 aa_addBasicAuthorizationHeaderWithAccount:self->_account preferUsingPassword:0];
-  v6 = [MEMORY[0x1E698B890] udid];
-  [v4 setValue:v6 forHTTPHeaderField:@"X-Client-UDID"];
+  udid = [MEMORY[0x1E698B890] udid];
+  [v4 setValue:udid forHTTPHeaderField:@"X-Client-UDID"];
 
   v7 = [MEMORY[0x1E695DF20] dictionaryWithContentsOfFile:@"/System/Library/CoreServices/SystemVersion.plist"];
-  v8 = [MEMORY[0x1E696AAE8] mainBundle];
-  v9 = [v8 infoDictionary];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  infoDictionary = [mainBundle infoDictionary];
 
   v10 = [v7 objectForKey:@"ProductVersion"];
-  v11 = [v9 objectForKey:@"CFBundleName"];
-  v12 = [v9 objectForKey:@"CFBundleVersion"];
+  v11 = [infoDictionary objectForKey:@"CFBundleName"];
+  v12 = [infoDictionary objectForKey:@"CFBundleVersion"];
   v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@/%@ iOS/%@", v11, v12, v10];
   [v4 setValue:v13 forHTTPHeaderField:@"User-agent"];
 
@@ -146,7 +146,7 @@ void __36__EMHMERecipientCreationRequest_log__block_invoke(uint64_t a1)
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_1C6655000, a2, OS_LOG_TYPE_ERROR, "JSONSerialization error for body %@", &v3, 0xCu);
   v2 = *MEMORY[0x1E69E9840];
 }

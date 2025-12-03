@@ -1,5 +1,5 @@
 @interface UIDimmingViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityCoversScreen;
 - (BOOL)accessibilityActivate;
 - (BOOL)accessibilityViewIsModal;
@@ -15,14 +15,14 @@
 
 @implementation UIDimmingViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v7 = location;
   obj = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   v3 = "@";
   [location[0] validateClass:@"UIView" hasInstanceMethod:@"_childFocusViews" withFullSignature:0];
   v4 = @"UIDimmingView";
@@ -36,18 +36,18 @@
 
 - (BOOL)_accessibilityCoversScreen
 {
-  if (a1)
+  if (self)
   {
-    v3 = [a1 safeValueForKey:@"_delegate"];
+    v3 = [self safeValueForKey:@"_delegate"];
     NSClassFromString(&cfstr_Uiremoteviewco_0.isa);
     LOBYTE(v4) = 0;
     if (objc_opt_isKindOfClass())
     {
-      v4 = [a1 safeBoolForKey:@"hitTestsAsOpaque"] ^ 1;
+      v4 = [self safeBoolForKey:@"hitTestsAsOpaque"] ^ 1;
     }
 
     *&v1 = MEMORY[0x29EDC9740](v3).n128_u64[0];
-    return (v4 & 1) == 0 && ([a1 safeBoolForKey:{@"_ignoresTouches", v1}] & 1) == 0 && (objc_msgSend(a1, "isUserInteractionEnabled") & 1) != 0 && (objc_msgSend(a1, "_accessibilityViewIsVisible") & 1) != 0;
+    return (v4 & 1) == 0 && ([self safeBoolForKey:{@"_ignoresTouches", v1}] & 1) == 0 && (objc_msgSend(self, "isUserInteractionEnabled") & 1) != 0 && (objc_msgSend(self, "_accessibilityViewIsVisible") & 1) != 0;
   }
 
   else
@@ -59,18 +59,18 @@
 - (id)_accessibilityObscuredScreenAllowedViews
 {
   v30 = *MEMORY[0x29EDCA608];
-  v27 = self;
+  selfCopy = self;
   v26[1] = a2;
   v26[0] = [(UIDimmingViewAccessibility *)self safeValueForKey:@"passthroughViews"];
-  v16 = [(UIDimmingViewAccessibility *)v27 superview];
-  v15 = [v16 subviews];
-  v14 = [v15 reverseObjectEnumerator];
-  v25 = [v14 allObjects];
-  MEMORY[0x29EDC9740](v14);
-  MEMORY[0x29EDC9740](v15);
-  v24 = [MEMORY[0x29EDB8DE8] array];
+  superview = [(UIDimmingViewAccessibility *)selfCopy superview];
+  subviews = [superview subviews];
+  reverseObjectEnumerator = [subviews reverseObjectEnumerator];
+  allObjects = [reverseObjectEnumerator allObjects];
+  MEMORY[0x29EDC9740](reverseObjectEnumerator);
+  MEMORY[0x29EDC9740](subviews);
+  array = [MEMORY[0x29EDB8DE8] array];
   memset(__b, 0, sizeof(__b));
-  obj = MEMORY[0x29EDC9748](v25);
+  obj = MEMORY[0x29EDC9748](allObjects);
   v18 = [obj countByEnumeratingWithState:__b objects:v29 count:16];
   if (v18)
   {
@@ -86,12 +86,12 @@
       }
 
       v23 = *(__b[1] + 8 * v12);
-      if (v23 == v27)
+      if (v23 == selfCopy)
       {
         break;
       }
 
-      [v24 addObject:v23];
+      [array addObject:v23];
       ++v12;
       if (v10 + 1 >= v13)
       {
@@ -131,9 +131,9 @@ LABEL_9:
       }
 
       v20 = *(v19[1] + 8 * v6);
-      if (([v24 containsObject:v20] & 1) == 0)
+      if (([array containsObject:v20] & 1) == 0)
       {
-        [v24 addObject:v20];
+        [array addObject:v20];
       }
 
       ++v6;
@@ -150,10 +150,10 @@ LABEL_9:
   }
 
   MEMORY[0x29EDC9740](v8);
-  v3 = MEMORY[0x29EDC9748](v24);
+  v3 = MEMORY[0x29EDC9748](array);
   v21 = 1;
-  objc_storeStrong(&v24, 0);
-  objc_storeStrong(&v25, 0);
+  objc_storeStrong(&array, 0);
+  objc_storeStrong(&allObjects, 0);
   objc_storeStrong(v26, 0);
 
   return v3;
@@ -161,25 +161,25 @@ LABEL_9:
 
 - (BOOL)accessibilityViewIsModal
 {
-  v5 = [(UIDimmingViewAccessibility *)self storedAccessibilityViewIsModal];
-  *&v2 = MEMORY[0x29EDC9740](v5).n128_u64[0];
-  if (!v5)
+  storedAccessibilityViewIsModal = [(UIDimmingViewAccessibility *)self storedAccessibilityViewIsModal];
+  *&v2 = MEMORY[0x29EDC9740](storedAccessibilityViewIsModal).n128_u64[0];
+  if (!storedAccessibilityViewIsModal)
   {
     return [(UIDimmingViewAccessibility *)self _accessibilityCoversScreen];
   }
 
-  v4 = [(UIDimmingViewAccessibility *)self storedAccessibilityViewIsModal];
-  v7 = [v4 BOOLValue] & 1;
-  MEMORY[0x29EDC9740](v4);
+  storedAccessibilityViewIsModal2 = [(UIDimmingViewAccessibility *)self storedAccessibilityViewIsModal];
+  v7 = [storedAccessibilityViewIsModal2 BOOLValue] & 1;
+  MEMORY[0x29EDC9740](storedAccessibilityViewIsModal2);
   return v7;
 }
 
 - (uint64_t)_accessibilityCanDismiss
 {
-  v5 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v4 = [v5 safeValueForKey:@"_delegate"];
+    v4 = [selfCopy safeValueForKey:@"_delegate"];
     NSClassFromString(&cfstr_Uipopovercontr.isa);
     if (objc_opt_isKindOfClass())
     {
@@ -239,16 +239,16 @@ LABEL_12:
 
 - (CGPoint)accessibilityActivationPoint
 {
-  v29 = self;
+  selfCopy = self;
   v28[1] = a2;
   if (!AXDoesRequestingClientDeserveAutomation())
   {
     goto LABEL_10;
   }
 
-  v28[0] = [(UIDimmingViewAccessibility *)v29 safeValueForKey:@"_delegate"];
+  v28[0] = [(UIDimmingViewAccessibility *)selfCopy safeValueForKey:@"_delegate"];
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || ((location = [v28[0] presentedView]) == 0 || (-[UIDimmingViewAccessibility accessibilityFrame](v29, "accessibilityFrame"), v22 = v2, v23 = v3, v24 = v4, v25 = v5, objc_msgSend(location, "accessibilityFrame"), v18 = v6, v19 = v7, v20 = v8, v21 = v9, AX_CGRectBySubtractingRect(), v26 = v33, CGRectIsEmpty(v33)) ? (v17 = 0) : (AX_CGRectGetCenter(), v30 = v10, v31 = v11, v17 = 1), objc_storeStrong(&location, 0), !v17))
+  if ((objc_opt_isKindOfClass() & 1) == 0 || ((location = [v28[0] presentedView]) == 0 || (-[UIDimmingViewAccessibility accessibilityFrame](selfCopy, "accessibilityFrame"), v22 = v2, v23 = v3, v24 = v4, v25 = v5, objc_msgSend(location, "accessibilityFrame"), v18 = v6, v19 = v7, v20 = v8, v21 = v9, AX_CGRectBySubtractingRect(), v26 = v33, CGRectIsEmpty(v33)) ? (v17 = 0) : (AX_CGRectGetCenter(), v30 = v10, v31 = v11, v17 = 1), objc_storeStrong(&location, 0), !v17))
   {
     v17 = 0;
   }
@@ -257,7 +257,7 @@ LABEL_12:
   if (!v17)
   {
 LABEL_10:
-    v16.receiver = v29;
+    v16.receiver = selfCopy;
     v16.super_class = UIDimmingViewAccessibility;
     [(UIDimmingViewAccessibility *)&v16 accessibilityActivationPoint];
     v30 = v12;
@@ -273,18 +273,18 @@ LABEL_10:
 
 - (int64_t)accessibilityContainerType
 {
-  v7 = self;
+  selfCopy = self;
   v6 = a2;
-  v4 = [(UIDimmingViewAccessibility *)self storedAccessibilityContainerType];
-  *&v2 = MEMORY[0x29EDC9740](v4).n128_u64[0];
-  if (v4)
+  storedAccessibilityContainerType = [(UIDimmingViewAccessibility *)self storedAccessibilityContainerType];
+  *&v2 = MEMORY[0x29EDC9740](storedAccessibilityContainerType).n128_u64[0];
+  if (storedAccessibilityContainerType)
   {
-    v5.receiver = v7;
+    v5.receiver = selfCopy;
     v5.super_class = UIDimmingViewAccessibility;
     return [(UIDimmingViewAccessibility *)&v5 accessibilityContainerType];
   }
 
-  else if ([(UIDimmingViewAccessibility *)v7 _accessibilityCoversScreen]&& ([(UIDimmingViewAccessibility *)v7 _accessibilityCanDismiss]& 1) != 0)
+  else if ([(UIDimmingViewAccessibility *)selfCopy _accessibilityCoversScreen]&& ([(UIDimmingViewAccessibility *)selfCopy _accessibilityCanDismiss]& 1) != 0)
   {
     return 4;
   }
@@ -342,14 +342,14 @@ LABEL_10:
 
 - (id)_childFocusViews
 {
-  v28 = self;
+  selfCopy = self;
   v27[1] = a2;
   v26.receiver = self;
   v26.super_class = UIDimmingViewAccessibility;
   v27[0] = [(UIDimmingViewAccessibility *)&v26 _childFocusViews];
-  if (([(UIDimmingViewAccessibility *)v28 _accessibilityIsFKARunningForFocusItem]& 1) != 0)
+  if (([(UIDimmingViewAccessibility *)selfCopy _accessibilityIsFKARunningForFocusItem]& 1) != 0)
   {
-    if (([(UIDimmingViewAccessibility *)v28 accessibilityElementsHidden]& 1) != 0)
+    if (([(UIDimmingViewAccessibility *)selfCopy accessibilityElementsHidden]& 1) != 0)
     {
       v29 = MEMORY[0x29EDC9748](MEMORY[0x29EDB8E90]);
       v25 = 1;
@@ -357,11 +357,11 @@ LABEL_10:
 
     else
     {
-      v17 = [(UIDimmingViewAccessibility *)v28 safeArrayForKey:@"passthroughViews"];
+      v17 = [(UIDimmingViewAccessibility *)selfCopy safeArrayForKey:@"passthroughViews"];
       v24 = [v17 mutableCopy];
       if ([v24 count])
       {
-        v13 = v28;
+        v13 = selfCopy;
         v18 = MEMORY[0x29EDCA5F8];
         v19 = -1073741824;
         v20 = 0;
@@ -370,29 +370,29 @@ LABEL_10:
         v23 = MEMORY[0x29EDC9748](v24);
         v2 = [(UIDimmingViewAccessibility *)v13 _accessibilityFindAncestor:&v18 startWithSelf:0];
         v14 = MEMORY[0x29EDB8D80];
-        v16 = [v24 reverseObjectEnumerator];
-        v15 = [v16 allObjects];
-        v3 = [v14 axArrayWithPossiblyNilArrays:{2, v15, v27[0]}];
+        reverseObjectEnumerator = [v24 reverseObjectEnumerator];
+        allObjects = [reverseObjectEnumerator allObjects];
+        v3 = [v14 axArrayWithPossiblyNilArrays:{2, allObjects, v27[0]}];
         v4 = v27[0];
         v27[0] = v3;
         MEMORY[0x29EDC9740](v4);
-        MEMORY[0x29EDC9740](v15);
-        MEMORY[0x29EDC9740](v16);
+        MEMORY[0x29EDC9740](allObjects);
+        MEMORY[0x29EDC9740](reverseObjectEnumerator);
         objc_storeStrong(&v23, 0);
       }
 
       v7 = MEMORY[0x29EDC7DA0];
-      v12 = [v27[0] reverseObjectEnumerator];
-      v11 = [v12 allObjects];
+      reverseObjectEnumerator2 = [v27[0] reverseObjectEnumerator];
+      allObjects2 = [reverseObjectEnumerator2 allObjects];
       v10 = [v7 _subviewsReplacedByModalViewSubviewsIfNecessary:?];
-      v9 = [v10 reverseObjectEnumerator];
-      v8 = [v9 allObjects];
-      v29 = [v8 ax_filteredArrayUsingBlock:&__block_literal_global_20];
-      MEMORY[0x29EDC9740](v8);
-      MEMORY[0x29EDC9740](v9);
+      reverseObjectEnumerator3 = [v10 reverseObjectEnumerator];
+      allObjects3 = [reverseObjectEnumerator3 allObjects];
+      v29 = [allObjects3 ax_filteredArrayUsingBlock:&__block_literal_global_20];
+      MEMORY[0x29EDC9740](allObjects3);
+      MEMORY[0x29EDC9740](reverseObjectEnumerator3);
       MEMORY[0x29EDC9740](v10);
-      MEMORY[0x29EDC9740](v11);
-      MEMORY[0x29EDC9740](v12);
+      MEMORY[0x29EDC9740](allObjects2);
+      MEMORY[0x29EDC9740](reverseObjectEnumerator2);
       v25 = 1;
       objc_storeStrong(&v24, 0);
     }

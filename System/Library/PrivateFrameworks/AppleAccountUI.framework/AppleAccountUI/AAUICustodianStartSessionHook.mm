@@ -1,77 +1,77 @@
 @interface AAUICustodianStartSessionHook
-- (AAUICustodianStartSessionHook)initWithTelemetryFlowID:(id)a3;
-- (BOOL)shouldMatchElement:(id)a3;
-- (BOOL)shouldMatchModel:(id)a3;
+- (AAUICustodianStartSessionHook)initWithTelemetryFlowID:(id)d;
+- (BOOL)shouldMatchElement:(id)element;
+- (BOOL)shouldMatchModel:(id)model;
 - (RUIServerHookDelegate)delegate;
-- (void)_startSessionWithServerAttributes:(id)a3 completion:(id)a4;
-- (void)processObjectModel:(id)a3 completion:(id)a4;
+- (void)_startSessionWithServerAttributes:(id)attributes completion:(id)completion;
+- (void)processObjectModel:(id)model completion:(id)completion;
 @end
 
 @implementation AAUICustodianStartSessionHook
 
-- (AAUICustodianStartSessionHook)initWithTelemetryFlowID:(id)a3
+- (AAUICustodianStartSessionHook)initWithTelemetryFlowID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v9.receiver = self;
   v9.super_class = AAUICustodianStartSessionHook;
   v6 = [(AAUICustodianStartSessionHook *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_telemetryFlowID, a3);
+    objc_storeStrong(&v6->_telemetryFlowID, d);
   }
 
   return v7;
 }
 
-- (BOOL)shouldMatchElement:(id)a3
+- (BOOL)shouldMatchElement:(id)element
 {
-  v3 = [a3 name];
-  v4 = [v3 isEqualToString:@"custodian:startSession"];
+  name = [element name];
+  v4 = [name isEqualToString:@"custodian:startSession"];
 
   return v4;
 }
 
-- (BOOL)shouldMatchModel:(id)a3
+- (BOOL)shouldMatchModel:(id)model
 {
-  v3 = [a3 clientInfo];
-  v4 = [v3 objectForKey:@"action"];
+  clientInfo = [model clientInfo];
+  v4 = [clientInfo objectForKey:@"action"];
   v5 = [v4 isEqualToString:@"custodian:startSession"];
 
   return v5;
 }
 
-- (void)processObjectModel:(id)a3 completion:(id)a4
+- (void)processObjectModel:(id)model completion:(id)completion
 {
-  v6 = a4;
-  v7 = [a3 clientInfo];
-  [(AAUICustodianStartSessionHook *)self _startSessionWithServerAttributes:v7 completion:v6];
+  completionCopy = completion;
+  clientInfo = [model clientInfo];
+  [(AAUICustodianStartSessionHook *)self _startSessionWithServerAttributes:clientInfo completion:completionCopy];
 }
 
-- (void)_startSessionWithServerAttributes:(id)a3 completion:(id)a4
+- (void)_startSessionWithServerAttributes:(id)attributes completion:(id)completion
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  attributesCopy = attributes;
+  completionCopy = completion;
   telemetryFlowID = self->_telemetryFlowID;
   if (telemetryFlowID)
   {
-    v9 = telemetryFlowID;
+    uUIDString = telemetryFlowID;
   }
 
   else
   {
-    v10 = [MEMORY[0x1E696AFB0] UUID];
-    v9 = [v10 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
   }
 
-  v11 = [MEMORY[0x1E6985DB0] analyticsEventWithName:@"com.apple.appleAccount.recoveryContactRecoveryLanding" altDSID:0 flowID:v9];
+  v11 = [MEMORY[0x1E6985DB0] analyticsEventWithName:@"com.apple.appleAccount.recoveryContactRecoveryLanding" altDSID:0 flowID:uUIDString];
   [v11 setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E6985E40]];
-  v12 = [MEMORY[0x1E698B810] reporter];
-  [v12 sendEvent:v11];
+  reporter = [MEMORY[0x1E698B810] reporter];
+  [reporter sendEvent:v11];
 
-  v13 = [v6 objectForKeyedSubscript:@"appleId"];
-  v14 = [v6 objectForKeyedSubscript:@"sessionId"];
+  v13 = [attributesCopy objectForKeyedSubscript:@"appleId"];
+  v14 = [attributesCopy objectForKeyedSubscript:@"sessionId"];
   v15 = _AAUILogSystem();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
@@ -85,7 +85,7 @@
   v16 = objc_alloc_init(MEMORY[0x1E698B868]);
   [v16 setOwnerAppleID:v13];
   [v16 setRecoverySessionID:v14];
-  [v16 setTelemetryFlowID:v9];
+  [v16 setTelemetryFlowID:uUIDString];
   if (objc_opt_respondsToSelector())
   {
     [v16 setIsAccountRecovery:1];
@@ -104,7 +104,7 @@
   v21[3] = &unk_1E820C7D8;
   v18 = v14;
   v22 = v18;
-  v19 = v7;
+  v19 = completionCopy;
   v24 = v19;
   v20 = v13;
   v23 = v20;

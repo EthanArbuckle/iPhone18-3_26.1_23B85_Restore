@@ -1,32 +1,32 @@
 @interface HRCClient
-- (HRCClient)initWithDelegate:(id)a3 remoteObjectProxy:(id)a4 onQueue:(id)a5;
+- (HRCClient)initWithDelegate:(id)delegate remoteObjectProxy:(id)proxy onQueue:(id)queue;
 - (HRCClientDelegate)delegate;
-- (void)_handleHeartRate:(id)a3;
-- (void)_requestStreamingMode:(unint64_t)a3;
-- (void)_setUserWorkoutActivityType:(unint64_t)a3 locationType:(int64_t)a4;
-- (void)_updateProcessName:(id)a3;
+- (void)_handleHeartRate:(id)rate;
+- (void)_requestStreamingMode:(unint64_t)mode;
+- (void)_setUserWorkoutActivityType:(unint64_t)type locationType:(int64_t)locationType;
+- (void)_updateProcessName:(id)name;
 - (void)dealloc;
-- (void)handleHeartRate:(id)a3;
+- (void)handleHeartRate:(id)rate;
 - (void)reportClientSnapshot;
-- (void)requestOpportunisticUpdates:(BOOL)a3;
-- (void)requestStreamingMode:(unint64_t)a3;
-- (void)setUserWorkoutActivityType:(unint64_t)a3 locationType:(int64_t)a4;
-- (void)updateProcessName:(id)a3;
+- (void)requestOpportunisticUpdates:(BOOL)updates;
+- (void)requestStreamingMode:(unint64_t)mode;
+- (void)setUserWorkoutActivityType:(unint64_t)type locationType:(int64_t)locationType;
+- (void)updateProcessName:(id)name;
 @end
 
 @implementation HRCClient
 
-- (HRCClient)initWithDelegate:(id)a3 remoteObjectProxy:(id)a4 onQueue:(id)a5
+- (HRCClient)initWithDelegate:(id)delegate remoteObjectProxy:(id)proxy onQueue:(id)queue
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  delegateCopy = delegate;
+  proxyCopy = proxy;
+  queueCopy = queue;
   v15.receiver = self;
   v15.super_class = HRCClient;
   v11 = [(HRCClient *)&v15 init];
-  objc_storeWeak(&v11->_delegate, v8);
-  objc_storeStrong(&v11->_queue, a5);
-  objc_storeStrong(&v11->_remoteObjectProxy, a4);
+  objc_storeWeak(&v11->_delegate, delegateCopy);
+  objc_storeStrong(&v11->_queue, queue);
+  objc_storeStrong(&v11->_remoteObjectProxy, proxy);
   v12 = +[NSUUID UUID];
   clientIdentifier = v11->_clientIdentifier;
   v11->_clientIdentifier = v12;
@@ -51,7 +51,7 @@
   [(HRCClient *)&v5 dealloc];
 }
 
-- (void)requestOpportunisticUpdates:(BOOL)a3
+- (void)requestOpportunisticUpdates:(BOOL)updates
 {
   queue = self->_queue;
   v4[0] = _NSConcreteStackBlock;
@@ -59,11 +59,11 @@
   v4[2] = sub_1000102B8;
   v4[3] = &unk_100040868;
   v4[4] = self;
-  v5 = a3;
+  updatesCopy = updates;
   dispatch_async(queue, v4);
 }
 
-- (void)requestStreamingMode:(unint64_t)a3
+- (void)requestStreamingMode:(unint64_t)mode
 {
   queue = self->_queue;
   v4[0] = _NSConcreteStackBlock;
@@ -71,25 +71,25 @@
   v4[2] = sub_10001033C;
   v4[3] = &unk_100040840;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = mode;
   dispatch_async(queue, v4);
 }
 
-- (void)updateProcessName:(id)a3
+- (void)updateProcessName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000103E0;
   v7[3] = &unk_100040BC8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = nameCopy;
+  v6 = nameCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)setUserWorkoutActivityType:(unint64_t)a3 locationType:(int64_t)a4
+- (void)setUserWorkoutActivityType:(unint64_t)type locationType:(int64_t)locationType
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -97,53 +97,53 @@
   block[2] = sub_100010464;
   block[3] = &unk_100040BF0;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a4;
+  block[5] = type;
+  block[6] = locationType;
   dispatch_async(queue, block);
 }
 
-- (void)handleHeartRate:(id)a3
+- (void)handleHeartRate:(id)rate
 {
-  v4 = a3;
+  rateCopy = rate;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10001050C;
   v7[3] = &unk_100040BC8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = rateCopy;
+  v6 = rateCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)_requestStreamingMode:(unint64_t)a3
+- (void)_requestStreamingMode:(unint64_t)mode
 {
   dispatch_assert_queue_V2(self->_queue);
   v5 = sub_10000132C();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(HRCClient *)self processName];
+    processName = [(HRCClient *)self processName];
     clientIdentifier = self->_clientIdentifier;
     v9 = 138543874;
-    v10 = v6;
+    v10 = processName;
     v11 = 2114;
     v12 = clientIdentifier;
     v13 = 2048;
-    v14 = a3;
+    modeCopy = mode;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ with uuid : %{public}@ requested streaming mode : %lu", &v9, 0x20u);
   }
 
-  [(HRCClient *)self setStreamingMode:a3];
+  [(HRCClient *)self setStreamingMode:mode];
   [(HRCClient *)self reportClientSnapshot];
-  v8 = [(HRCClient *)self delegate];
-  [v8 clientStreamingModeRequestUpdated];
+  delegate = [(HRCClient *)self delegate];
+  [delegate clientStreamingModeRequestUpdated];
 }
 
-- (void)_updateProcessName:(id)a3
+- (void)_updateProcessName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   dispatch_assert_queue_V2(self->_queue);
-  [(HRCClient *)self setProcessName:v4];
+  [(HRCClient *)self setProcessName:nameCopy];
   v5 = sub_10000132C();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -156,7 +156,7 @@
   [(HRCClient *)self reportClientConnectionUpdate:1];
 }
 
-- (void)_setUserWorkoutActivityType:(unint64_t)a3 locationType:(int64_t)a4
+- (void)_setUserWorkoutActivityType:(unint64_t)type locationType:(int64_t)locationType
 {
   dispatch_assert_queue_V2(self->_queue);
   v7 = sub_10000132C();
@@ -169,40 +169,40 @@
     v13 = 2114;
     v14 = clientIdentifier;
     v15 = 2048;
-    v16 = a3;
+    typeCopy = type;
     v17 = 2048;
-    v18 = a4;
+    locationTypeCopy = locationType;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ with uuid : %{public}@ updated workoutActivityType : %lu, locationType : %lu", &v11, 0x2Au);
   }
 
-  v10 = [(HRCClient *)self delegate];
-  [v10 clientUpdatedWorkoutActivityType:a3 withLocationType:a4 client:self];
+  delegate = [(HRCClient *)self delegate];
+  [delegate clientUpdatedWorkoutActivityType:type withLocationType:locationType client:self];
 }
 
-- (void)_handleHeartRate:(id)a3
+- (void)_handleHeartRate:(id)rate
 {
-  v4 = a3;
+  rateCopy = rate;
   dispatch_assert_queue_V2(self->_queue);
   v5 = sub_10000132C();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [(HRCClient *)self processName];
+    processName = [(HRCClient *)self processName];
     v7 = 138543362;
-    v8 = v6;
+    v8 = processName;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "received heart rate data to be sent to %{public}@ process", &v7, 0xCu);
   }
 
-  [(HRCFrontEndClient *)self->_remoteObjectProxy handleHeartRateData:v4];
+  [(HRCFrontEndClient *)self->_remoteObjectProxy handleHeartRateData:rateCopy];
 }
 
 - (void)reportClientSnapshot
 {
   v19[0] = @"process-name";
-  v3 = [(HRCClient *)self processName];
-  v20[0] = v3;
+  processName = [(HRCClient *)self processName];
+  v20[0] = processName;
   v19[1] = @"connection-identifier";
-  v4 = [(NSUUID *)self->_clientIdentifier UUIDString];
-  v20[1] = v4;
+  uUIDString = [(NSUUID *)self->_clientIdentifier UUIDString];
+  v20[1] = uUIDString;
   v19[2] = @"streaming-mode";
   v5 = [NSNumber numberWithUnsignedInteger:[(HRCClient *)self streamingMode]];
   v20[2] = v5;
@@ -214,16 +214,16 @@
   v8 = sub_10000132C();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
-    v9 = [(HRCClient *)self processName];
-    v10 = [(NSUUID *)self->_clientIdentifier UUIDString];
+    processName2 = [(HRCClient *)self processName];
+    uUIDString2 = [(NSUUID *)self->_clientIdentifier UUIDString];
     v11 = 138544130;
-    v12 = v9;
+    v12 = processName2;
     v13 = 2114;
-    v14 = v10;
+    v14 = uUIDString2;
     v15 = 2050;
-    v16 = [(HRCClient *)self streamingMode];
+    streamingMode = [(HRCClient *)self streamingMode];
     v17 = 1026;
-    v18 = [(HRCClient *)self opportunisticMode];
+    opportunisticMode = [(HRCClient *)self opportunisticMode];
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "power telemetry :: client snapshot with name : %{public}@ , uuid : %{public}@, streaming-mode : %{public}lu , opportunistic-mode : %{public}d", &v11, 0x26u);
   }
 

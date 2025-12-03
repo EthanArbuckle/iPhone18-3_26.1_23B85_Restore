@@ -1,6 +1,6 @@
 @interface MTRSoftwareDiagnosticsClusterThreadMetricsStruct
 - (MTRSoftwareDiagnosticsClusterThreadMetricsStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -33,23 +33,23 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRSoftwareDiagnosticsClusterThreadMetricsStruct);
   v5 = [(MTRSoftwareDiagnosticsClusterThreadMetricsStruct *)self id];
   [(MTRSoftwareDiagnosticsClusterThreadMetricsStruct *)v4 setId:v5];
 
-  v6 = [(MTRSoftwareDiagnosticsClusterThreadMetricsStruct *)self name];
-  [(MTRSoftwareDiagnosticsClusterThreadMetricsStruct *)v4 setName:v6];
+  name = [(MTRSoftwareDiagnosticsClusterThreadMetricsStruct *)self name];
+  [(MTRSoftwareDiagnosticsClusterThreadMetricsStruct *)v4 setName:name];
 
-  v7 = [(MTRSoftwareDiagnosticsClusterThreadMetricsStruct *)self stackFreeCurrent];
-  [(MTRSoftwareDiagnosticsClusterThreadMetricsStruct *)v4 setStackFreeCurrent:v7];
+  stackFreeCurrent = [(MTRSoftwareDiagnosticsClusterThreadMetricsStruct *)self stackFreeCurrent];
+  [(MTRSoftwareDiagnosticsClusterThreadMetricsStruct *)v4 setStackFreeCurrent:stackFreeCurrent];
 
-  v8 = [(MTRSoftwareDiagnosticsClusterThreadMetricsStruct *)self stackFreeMinimum];
-  [(MTRSoftwareDiagnosticsClusterThreadMetricsStruct *)v4 setStackFreeMinimum:v8];
+  stackFreeMinimum = [(MTRSoftwareDiagnosticsClusterThreadMetricsStruct *)self stackFreeMinimum];
+  [(MTRSoftwareDiagnosticsClusterThreadMetricsStruct *)v4 setStackFreeMinimum:stackFreeMinimum];
 
-  v9 = [(MTRSoftwareDiagnosticsClusterThreadMetricsStruct *)self stackSize];
-  [(MTRSoftwareDiagnosticsClusterThreadMetricsStruct *)v4 setStackSize:v9];
+  stackSize = [(MTRSoftwareDiagnosticsClusterThreadMetricsStruct *)self stackSize];
+  [(MTRSoftwareDiagnosticsClusterThreadMetricsStruct *)v4 setStackSize:stackSize];
 
   return v4;
 }

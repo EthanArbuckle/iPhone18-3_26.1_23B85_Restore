@@ -1,7 +1,7 @@
 @interface TUIDeviceSpecifierCell
 - (id)blankIcon;
 - (id)getLazyIcon;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 @end
 
 @implementation TUIDeviceSpecifierCell
@@ -34,56 +34,56 @@ void __35__TUIDeviceSpecifierCell_blankIcon__block_invoke()
   v3 = [TUIDeviceImage alloc];
   v7.receiver = self;
   v7.super_class = TUIDeviceSpecifierCell;
-  v4 = [(PSTableCell *)&v7 getLazyIcon];
-  v5 = -[TUIDeviceImage initWithCGImage:](v3, "initWithCGImage:", [v4 CGImage]);
+  getLazyIcon = [(PSTableCell *)&v7 getLazyIcon];
+  v5 = -[TUIDeviceImage initWithCGImage:](v3, "initWithCGImage:", [getLazyIcon CGImage]);
 
   return v5;
 }
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
   v22.receiver = self;
   v22.super_class = TUIDeviceSpecifierCell;
-  v4 = a3;
-  [(PSTableCell *)&v22 refreshCellContentsWithSpecifier:v4];
+  specifierCopy = specifier;
+  [(PSTableCell *)&v22 refreshCellContentsWithSpecifier:specifierCopy];
   v5 = [(TUIDeviceSpecifierCell *)self textLabel:v22.receiver];
   v6 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76918]];
   [v5 setFont:v6];
 
-  v7 = [(TUIDeviceSpecifierCell *)self textLabel];
-  v8 = [MEMORY[0x277D75348] labelColor];
-  [v7 setTextColor:v8];
+  textLabel = [(TUIDeviceSpecifierCell *)self textLabel];
+  labelColor = [MEMORY[0x277D75348] labelColor];
+  [textLabel setTextColor:labelColor];
 
-  v9 = [(TUIDeviceSpecifierCell *)self textLabel];
-  v10 = [v4 propertyForKey:*MEMORY[0x277D40170]];
-  [v9 setText:v10];
+  textLabel2 = [(TUIDeviceSpecifierCell *)self textLabel];
+  v10 = [specifierCopy propertyForKey:*MEMORY[0x277D40170]];
+  [textLabel2 setText:v10];
 
-  v11 = [(TUIDeviceSpecifierCell *)self textLabel];
-  [v11 setLineBreakMode:0];
+  textLabel3 = [(TUIDeviceSpecifierCell *)self textLabel];
+  [textLabel3 setLineBreakMode:0];
 
-  v12 = [(TUIDeviceSpecifierCell *)self textLabel];
-  [v12 setNumberOfLines:0];
+  textLabel4 = [(TUIDeviceSpecifierCell *)self textLabel];
+  [textLabel4 setNumberOfLines:0];
 
-  v13 = [(TUIDeviceSpecifierCell *)self detailTextLabel];
+  detailTextLabel = [(TUIDeviceSpecifierCell *)self detailTextLabel];
   v14 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76968]];
-  [v13 setFont:v14];
+  [detailTextLabel setFont:v14];
 
-  v15 = [(TUIDeviceSpecifierCell *)self detailTextLabel];
-  v16 = [MEMORY[0x277D75348] secondaryLabelColor];
-  [v15 setTextColor:v16];
+  detailTextLabel2 = [(TUIDeviceSpecifierCell *)self detailTextLabel];
+  secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+  [detailTextLabel2 setTextColor:secondaryLabelColor];
 
-  v17 = [(TUIDeviceSpecifierCell *)self detailTextLabel];
-  v18 = [v4 propertyForKey:*MEMORY[0x277D40160]];
+  detailTextLabel3 = [(TUIDeviceSpecifierCell *)self detailTextLabel];
+  v18 = [specifierCopy propertyForKey:*MEMORY[0x277D40160]];
 
-  [v17 setText:v18];
-  v19 = [(TUIDeviceSpecifierCell *)self detailTextLabel];
-  [v19 setLineBreakMode:0];
+  [detailTextLabel3 setText:v18];
+  detailTextLabel4 = [(TUIDeviceSpecifierCell *)self detailTextLabel];
+  [detailTextLabel4 setLineBreakMode:0];
 
-  v20 = [(TUIDeviceSpecifierCell *)self detailTextLabel];
-  [v20 setNumberOfLines:0];
+  detailTextLabel5 = [(TUIDeviceSpecifierCell *)self detailTextLabel];
+  [detailTextLabel5 setNumberOfLines:0];
 
-  v21 = [(TUIDeviceSpecifierCell *)self imageView];
-  [v21 setContentMode:2];
+  imageView = [(TUIDeviceSpecifierCell *)self imageView];
+  [imageView setContentMode:2];
 
   [(TUIDeviceSpecifierCell *)self setNeedsLayout];
 }

@@ -1,14 +1,14 @@
 @interface PKPaymentSetupFieldBuiltInOTPCode
-- (PKPaymentSetupFieldBuiltInOTPCode)initWithIdentifier:(id)a3 type:(unint64_t)a4;
+- (PKPaymentSetupFieldBuiltInOTPCode)initWithIdentifier:(id)identifier type:(unint64_t)type;
 @end
 
 @implementation PKPaymentSetupFieldBuiltInOTPCode
 
-- (PKPaymentSetupFieldBuiltInOTPCode)initWithIdentifier:(id)a3 type:(unint64_t)a4
+- (PKPaymentSetupFieldBuiltInOTPCode)initWithIdentifier:(id)identifier type:(unint64_t)type
 {
   v8.receiver = self;
   v8.super_class = PKPaymentSetupFieldBuiltInOTPCode;
-  v4 = [(PKPaymentSetupFieldText *)&v8 initWithIdentifier:@"otpCode" type:a4];
+  v4 = [(PKPaymentSetupFieldText *)&v8 initWithIdentifier:@"otpCode" type:type];
   if (v4)
   {
     v5 = PKLocalizedPaymentString(&cfstr_VerificationCo.isa, 0);

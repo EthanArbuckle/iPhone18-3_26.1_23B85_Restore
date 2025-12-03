@@ -1,15 +1,15 @@
 @interface CMAccelerometerDataInternal
-- (CMAccelerometerDataInternal)initWithAcceleration:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CMAccelerometerDataInternal)initWithAcceleration:(id)acceleration;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation CMAccelerometerDataInternal
 
-- (CMAccelerometerDataInternal)initWithAcceleration:(id)a3
+- (CMAccelerometerDataInternal)initWithAcceleration:(id)acceleration
 {
-  var2 = a3.var2;
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var2 = acceleration.var2;
+  var1 = acceleration.var1;
+  var0 = acceleration.var0;
   v14.receiver = self;
   v14.super_class = CMAccelerometerDataInternal;
   v6 = [(CMAccelerometerDataInternal *)&v14 init];
@@ -25,10 +25,10 @@
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   result = objc_msgSend_init(v7, v8, v9);
   if (result)
   {

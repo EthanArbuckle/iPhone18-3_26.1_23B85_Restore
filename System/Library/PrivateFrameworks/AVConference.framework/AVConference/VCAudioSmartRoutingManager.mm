@@ -1,12 +1,12 @@
 @interface VCAudioSmartRoutingManager
 + (id)sharedInstance;
-+ (void)addClient:(id)a3;
-+ (void)removeClient:(id)a3;
-- (BOOL)applyAudioScoreForOptOutOfSmartRouting:(BOOL)a3 error:(id *)a4;
++ (void)addClient:(id)client;
++ (void)removeClient:(id)client;
+- (BOOL)applyAudioScoreForOptOutOfSmartRouting:(BOOL)routing error:(id *)error;
 - (VCAudioSmartRoutingManager)init;
-- (void)addClient:(id)a3;
+- (void)addClient:(id)client;
 - (void)dealloc;
-- (void)removeClient:(id)a3;
+- (void)removeClient:(id)client;
 - (void)updateOptOutOfSmartRouting;
 @end
 
@@ -68,38 +68,38 @@ void __44__VCAudioSmartRoutingManager_sharedInstance__block_invoke()
   [(VCObject *)&v3 dealloc];
 }
 
-+ (void)addClient:(id)a3
++ (void)addClient:(id)client
 {
   v4 = +[VCAudioSmartRoutingManager sharedInstance];
 
-  [(VCAudioSmartRoutingManager *)v4 addClient:a3];
+  [(VCAudioSmartRoutingManager *)v4 addClient:client];
 }
 
-+ (void)removeClient:(id)a3
++ (void)removeClient:(id)client
 {
   v4 = +[VCAudioSmartRoutingManager sharedInstance];
 
-  [(VCAudioSmartRoutingManager *)v4 removeClient:a3];
+  [(VCAudioSmartRoutingManager *)v4 removeClient:client];
 }
 
-- (void)addClient:(id)a3
+- (void)addClient:(id)client
 {
   v22 = *MEMORY[0x1E69E9840];
   [(VCObject *)self lock];
-  if (!a3)
+  if (!client)
   {
     [VCAudioSmartRoutingManager addClient:?];
     goto LABEL_15;
   }
 
-  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(a3, "hash")}];
+  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(client, "hash")}];
   if ([(NSMutableDictionary *)self->_optOutOfSmartRouting objectForKeyedSubscript:v5])
   {
     [VCAudioSmartRoutingManager addClient:?];
     goto LABEL_15;
   }
 
-  -[NSMutableDictionary setObject:forKeyedSubscript:](self->_optOutOfSmartRouting, "setObject:forKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(a3, "optOutOfSmartRouting")}], v5);
+  -[NSMutableDictionary setObject:forKeyedSubscript:](self->_optOutOfSmartRouting, "setObject:forKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(client, "optOutOfSmartRouting")}], v5);
   if (objc_opt_class() == self)
   {
     if (VRTraceGetErrorLogLevelForModule() < 7)
@@ -114,7 +114,7 @@ void __44__VCAudioSmartRoutingManager_sharedInstance__block_invoke()
       goto LABEL_14;
     }
 
-    v9 = [a3 optOutOfSmartRouting];
+    optOutOfSmartRouting = [client optOutOfSmartRouting];
     v10 = [(NSMutableDictionary *)self->_optOutOfSmartRouting count];
     *v18 = 136316674;
     *&v18[4] = v7;
@@ -123,11 +123,11 @@ void __44__VCAudioSmartRoutingManager_sharedInstance__block_invoke()
     *&v18[22] = 1024;
     LODWORD(v19) = 63;
     WORD2(v19) = 2048;
-    *(&v19 + 6) = a3;
+    *(&v19 + 6) = client;
     HIWORD(v19) = 2112;
-    v20 = v5;
+    selfCopy = v5;
     *v21 = 1024;
-    *&v21[2] = v9;
+    *&v21[2] = optOutOfSmartRouting;
     *&v21[6] = 2048;
     *&v21[8] = v10;
     v11 = " [%s] %s:%d client=%p clientHash=%@ optOutOfSmartRouting=%d clients=%ld";
@@ -159,7 +159,7 @@ void __44__VCAudioSmartRoutingManager_sharedInstance__block_invoke()
       goto LABEL_14;
     }
 
-    v16 = [a3 optOutOfSmartRouting];
+    optOutOfSmartRouting2 = [client optOutOfSmartRouting];
     v17 = [(NSMutableDictionary *)self->_optOutOfSmartRouting count];
     *v18 = 136317186;
     *&v18[4] = v14;
@@ -170,13 +170,13 @@ void __44__VCAudioSmartRoutingManager_sharedInstance__block_invoke()
     WORD2(v19) = 2112;
     *(&v19 + 6) = v6;
     HIWORD(v19) = 2048;
-    v20 = self;
+    selfCopy = self;
     *v21 = 2048;
-    *&v21[2] = a3;
+    *&v21[2] = client;
     *&v21[10] = 2112;
     *&v21[12] = v5;
     *&v21[20] = 1024;
-    *&v21[22] = v16;
+    *&v21[22] = optOutOfSmartRouting2;
     *&v21[26] = 2048;
     *&v21[28] = v17;
     v11 = " [%s] %s:%d %@(%p) client=%p clientHash=%@ optOutOfSmartRouting=%d clients=%ld";
@@ -191,17 +191,17 @@ LABEL_15:
   [(VCObject *)self unlock];
 }
 
-- (void)removeClient:(id)a3
+- (void)removeClient:(id)client
 {
   v22 = *MEMORY[0x1E69E9840];
   [(VCObject *)self lock];
-  if (!a3)
+  if (!client)
   {
     [VCAudioSmartRoutingManager removeClient:?];
     goto LABEL_15;
   }
 
-  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(a3, "hash")}];
+  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(client, "hash")}];
   if (![(NSMutableDictionary *)self->_optOutOfSmartRouting objectForKeyedSubscript:v5])
   {
     [VCAudioSmartRoutingManager removeClient:?];
@@ -223,7 +223,7 @@ LABEL_15:
       goto LABEL_14;
     }
 
-    v9 = [a3 optOutOfSmartRouting];
+    optOutOfSmartRouting = [client optOutOfSmartRouting];
     v10 = [(NSMutableDictionary *)self->_optOutOfSmartRouting count];
     *v18 = 136316674;
     *&v18[4] = v7;
@@ -232,11 +232,11 @@ LABEL_15:
     *&v18[22] = 1024;
     LODWORD(v19) = 75;
     WORD2(v19) = 2048;
-    *(&v19 + 6) = a3;
+    *(&v19 + 6) = client;
     HIWORD(v19) = 2112;
-    v20 = v5;
+    selfCopy = v5;
     *v21 = 1024;
-    *&v21[2] = v9;
+    *&v21[2] = optOutOfSmartRouting;
     *&v21[6] = 2048;
     *&v21[8] = v10;
     v11 = " [%s] %s:%d client=%p clientHash=%@ optOutOfSmartRouting=%d clients=%ld";
@@ -268,7 +268,7 @@ LABEL_15:
       goto LABEL_14;
     }
 
-    v16 = [a3 optOutOfSmartRouting];
+    optOutOfSmartRouting2 = [client optOutOfSmartRouting];
     v17 = [(NSMutableDictionary *)self->_optOutOfSmartRouting count];
     *v18 = 136317186;
     *&v18[4] = v14;
@@ -279,13 +279,13 @@ LABEL_15:
     WORD2(v19) = 2112;
     *(&v19 + 6) = v6;
     HIWORD(v19) = 2048;
-    v20 = self;
+    selfCopy = self;
     *v21 = 2048;
-    *&v21[2] = a3;
+    *&v21[2] = client;
     *&v21[10] = 2112;
     *&v21[12] = v5;
     *&v21[20] = 1024;
-    *&v21[22] = v16;
+    *&v21[22] = optOutOfSmartRouting2;
     *&v21[26] = 2048;
     *&v21[28] = v17;
     v11 = " [%s] %s:%d %@(%p) client=%p clientHash=%@ optOutOfSmartRouting=%d clients=%ld";
@@ -352,7 +352,7 @@ LABEL_20:
             v30 = 2112;
             v31 = v10;
             v32 = 1024;
-            LODWORD(v33) = v11;
+            LODWORD(selfCopy) = v11;
             v15 = v19;
             v16 = " [%s] %s:%d clientHash=%@ clientOptOut=%d";
             v17 = 44;
@@ -384,7 +384,7 @@ LABEL_20:
             v30 = 2112;
             v31 = v12;
             v32 = 2048;
-            v33 = self;
+            selfCopy = self;
             v34 = 2112;
             v35 = v10;
             v36 = 1024;
@@ -417,9 +417,9 @@ LABEL_21:
   [(VCAudioSmartRoutingManager *)self applyAudioScoreForOptOutOfSmartRouting:v20 error:&v23];
 }
 
-- (BOOL)applyAudioScoreForOptOutOfSmartRouting:(BOOL)a3 error:(id *)a4
+- (BOOL)applyAudioScoreForOptOutOfSmartRouting:(BOOL)routing error:(id *)error
 {
-  v4 = a3;
+  routingCopy = routing;
   v27 = *MEMORY[0x1E69E9840];
   if (objc_opt_class() == self)
   {
@@ -436,7 +436,7 @@ LABEL_21:
         v19 = 1024;
         v20 = 101;
         v21 = 1024;
-        LODWORD(v22) = v4;
+        LODWORD(v22) = routingCopy;
         v9 = " [%s] %s:%d optOutOfSmartRouting=%d";
         v10 = v8;
         v11 = 34;
@@ -473,9 +473,9 @@ LABEL_11:
         v21 = 2112;
         v22 = v6;
         v23 = 2048;
-        v24 = self;
+        selfCopy = self;
         v25 = 1024;
-        v26 = v4;
+        v26 = routingCopy;
         v9 = " [%s] %s:%d %@(%p) optOutOfSmartRouting=%d";
         v10 = v13;
         v11 = 54;

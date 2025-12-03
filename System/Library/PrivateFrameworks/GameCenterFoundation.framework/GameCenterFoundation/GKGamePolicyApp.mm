@@ -1,23 +1,23 @@
 @interface GKGamePolicyApp
 + (id)secureCodedPropertyKeys;
-- (GKGamePolicyApp)initWithBundleID:(id)a3 adamID:(id)a4 isGame:(BOOL)a5;
+- (GKGamePolicyApp)initWithBundleID:(id)d adamID:(id)iD isGame:(BOOL)game;
 @end
 
 @implementation GKGamePolicyApp
 
-- (GKGamePolicyApp)initWithBundleID:(id)a3 adamID:(id)a4 isGame:(BOOL)a5
+- (GKGamePolicyApp)initWithBundleID:(id)d adamID:(id)iD isGame:(BOOL)game
 {
-  v9 = a3;
-  v10 = a4;
+  dCopy = d;
+  iDCopy = iD;
   v14.receiver = self;
   v14.super_class = GKGamePolicyApp;
   v11 = [(GKGamePolicyApp *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_bundleID, a3);
-    objc_storeStrong(&v12->_adamID, a4);
-    v12->_isGame = a5;
+    objc_storeStrong(&v11->_bundleID, d);
+    objc_storeStrong(&v12->_adamID, iD);
+    v12->_isGame = game;
   }
 
   return v12;

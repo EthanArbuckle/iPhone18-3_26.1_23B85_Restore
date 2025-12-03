@@ -7,20 +7,20 @@
 
 + (id)wl_uniqueIdentifier
 {
-  v0 = [MEMORY[0x277CCAD78] UUID];
-  v1 = [v0 UUIDString];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
 
-  return v1;
+  return uUIDString;
 }
 
 - (id)wl_stringByAppendingRelativePath:()UUID
 {
   v4 = MEMORY[0x277CCACA8];
   v5 = a3;
-  v6 = [a1 pathComponents];
-  v7 = [v5 pathComponents];
+  pathComponents = [self pathComponents];
+  pathComponents2 = [v5 pathComponents];
 
-  v8 = [v6 arrayByAddingObjectsFromArray:v7];
+  v8 = [pathComponents arrayByAddingObjectsFromArray:pathComponents2];
   v9 = [v4 pathWithComponents:v8];
 
   return v9;

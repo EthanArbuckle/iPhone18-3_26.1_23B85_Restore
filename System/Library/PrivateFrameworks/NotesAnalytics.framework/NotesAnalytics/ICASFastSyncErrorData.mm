@@ -1,22 +1,22 @@
 @interface ICASFastSyncErrorData
-- (ICASFastSyncErrorData)initWithErrorCode:(id)a3 countOfIgnoredMessages:(id)a4;
+- (ICASFastSyncErrorData)initWithErrorCode:(id)code countOfIgnoredMessages:(id)messages;
 - (id)toDict;
 @end
 
 @implementation ICASFastSyncErrorData
 
-- (ICASFastSyncErrorData)initWithErrorCode:(id)a3 countOfIgnoredMessages:(id)a4
+- (ICASFastSyncErrorData)initWithErrorCode:(id)code countOfIgnoredMessages:(id)messages
 {
-  v7 = a3;
-  v8 = a4;
+  codeCopy = code;
+  messagesCopy = messages;
   v12.receiver = self;
   v12.super_class = ICASFastSyncErrorData;
   v9 = [(ICASFastSyncErrorData *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_errorCode, a3);
-    objc_storeStrong(&v10->_countOfIgnoredMessages, a4);
+    objc_storeStrong(&v9->_errorCode, code);
+    objc_storeStrong(&v10->_countOfIgnoredMessages, messages);
   }
 
   return v10;
@@ -26,33 +26,33 @@
 {
   v13[2] = *MEMORY[0x277D85DE8];
   v12[0] = @"errorCode";
-  v3 = [(ICASFastSyncErrorData *)self errorCode];
-  if (v3)
+  errorCode = [(ICASFastSyncErrorData *)self errorCode];
+  if (errorCode)
   {
-    v4 = [(ICASFastSyncErrorData *)self errorCode];
+    errorCode2 = [(ICASFastSyncErrorData *)self errorCode];
   }
 
   else
   {
-    v4 = objc_opt_new();
+    errorCode2 = objc_opt_new();
   }
 
-  v5 = v4;
+  v5 = errorCode2;
   v12[1] = @"countOfIgnoredMessages";
-  v13[0] = v4;
-  v6 = [(ICASFastSyncErrorData *)self countOfIgnoredMessages];
-  if (v6)
+  v13[0] = errorCode2;
+  countOfIgnoredMessages = [(ICASFastSyncErrorData *)self countOfIgnoredMessages];
+  if (countOfIgnoredMessages)
   {
-    v7 = [(ICASFastSyncErrorData *)self countOfIgnoredMessages];
+    countOfIgnoredMessages2 = [(ICASFastSyncErrorData *)self countOfIgnoredMessages];
   }
 
   else
   {
-    v7 = objc_opt_new();
+    countOfIgnoredMessages2 = objc_opt_new();
   }
 
-  v8 = v7;
-  v13[1] = v7;
+  v8 = countOfIgnoredMessages2;
+  v13[1] = countOfIgnoredMessages2;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:v12 count:2];
 
   v10 = *MEMORY[0x277D85DE8];

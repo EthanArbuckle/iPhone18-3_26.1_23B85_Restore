@@ -1,6 +1,6 @@
 @interface SafetyMonitorManager
 - (void)dealloc;
-- (void)messageComposeViewController:(id)a3 didFinishWithResult:(int64_t)a4;
+- (void)messageComposeViewController:(id)controller didFinishWithResult:(int64_t)result;
 @end
 
 @implementation SafetyMonitorManager
@@ -15,21 +15,21 @@
   aBlock[2] = thunk for @escaping @callee_guaranteed (@guaranteed Error?) -> ();
   aBlock[3] = &block_descriptor_53;
   v4 = _Block_copy(aBlock);
-  v5 = self;
+  selfCopy = self;
   v6 = v3;
   [v6 stopMonitoringSessionStateWithHandler_];
   _Block_release(v4);
 
-  v7.receiver = v5;
+  v7.receiver = selfCopy;
   v7.super_class = type metadata accessor for SafetyMonitorManager();
   [(SafetyMonitorManager *)&v7 dealloc];
 }
 
-- (void)messageComposeViewController:(id)a3 didFinishWithResult:(int64_t)a4
+- (void)messageComposeViewController:(id)controller didFinishWithResult:(int64_t)result
 {
-  v6 = a3;
-  v7 = self;
-  SafetyMonitorManager.messageComposeViewController(_:didFinishWith:)(v6, a4);
+  controllerCopy = controller;
+  selfCopy = self;
+  SafetyMonitorManager.messageComposeViewController(_:didFinishWith:)(controllerCopy, result);
 }
 
 @end

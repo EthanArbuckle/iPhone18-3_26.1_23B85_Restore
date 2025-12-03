@@ -1,45 +1,45 @@
 @interface HMDCameraRecordingVideoAttributes
 - (BOOL)_parseFromTLVData;
-- (HMDCameraRecordingVideoAttributes)initWithCoder:(id)a3;
-- (HMDCameraRecordingVideoAttributes)initWithImageWidth:(id)a3 imageHeight:(id)a4 frameRate:(id)a5;
-- (HMDCameraRecordingVideoAttributes)initWithResolution:(int64_t)a3 frameRate:(id)a4;
+- (HMDCameraRecordingVideoAttributes)initWithCoder:(id)coder;
+- (HMDCameraRecordingVideoAttributes)initWithImageWidth:(id)width imageHeight:(id)height frameRate:(id)rate;
+- (HMDCameraRecordingVideoAttributes)initWithResolution:(int64_t)resolution frameRate:(id)rate;
 - (NSData)tlvData;
-- (void)description:(id)a3 indent:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (void)description:(id)description indent:(id)indent;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMDCameraRecordingVideoAttributes
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HMDCameraRecordingVideoAttributes *)self imageWidth];
-  [v4 encodeObject:v5 forKey:@"kVideoAttributesImageWidth"];
+  coderCopy = coder;
+  imageWidth = [(HMDCameraRecordingVideoAttributes *)self imageWidth];
+  [coderCopy encodeObject:imageWidth forKey:@"kVideoAttributesImageWidth"];
 
-  v6 = [(HMDCameraRecordingVideoAttributes *)self imageHeight];
-  [v4 encodeObject:v6 forKey:@"kVideoAttributesImageHeight"];
+  imageHeight = [(HMDCameraRecordingVideoAttributes *)self imageHeight];
+  [coderCopy encodeObject:imageHeight forKey:@"kVideoAttributesImageHeight"];
 
-  v7 = [(HMDCameraRecordingVideoAttributes *)self frameRate];
-  [v4 encodeObject:v7 forKey:@"kVideoAttributesFrameRate"];
+  frameRate = [(HMDCameraRecordingVideoAttributes *)self frameRate];
+  [coderCopy encodeObject:frameRate forKey:@"kVideoAttributesFrameRate"];
 }
 
-- (HMDCameraRecordingVideoAttributes)initWithCoder:(id)a3
+- (HMDCameraRecordingVideoAttributes)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = HMDCameraRecordingVideoAttributes;
   v5 = [(HMDCameraRecordingVideoAttributes *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kVideoAttributesImageWidth"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kVideoAttributesImageWidth"];
     imageWidth = v5->_imageWidth;
     v5->_imageWidth = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kVideoAttributesImageHeight"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kVideoAttributesImageHeight"];
     imageHeight = v5->_imageHeight;
     v5->_imageHeight = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kVideoAttributesFrameRate"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kVideoAttributesFrameRate"];
     frameRate = v5->_frameRate;
     v5->_frameRate = v10;
   }
@@ -47,38 +47,38 @@
   return v5;
 }
 
-- (void)description:(id)a3 indent:(id)a4
+- (void)description:(id)description indent:(id)indent
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HAPTLVBase *)self tlvDatablob];
-  [v7 appendFormat:@"\n%@tlvDatablob = %@ ", v6, v8];
+  indentCopy = indent;
+  descriptionCopy = description;
+  tlvDatablob = [(HAPTLVBase *)self tlvDatablob];
+  [descriptionCopy appendFormat:@"\n%@tlvDatablob = %@ ", indentCopy, tlvDatablob];
 
-  v9 = [(HMDCameraRecordingVideoAttributes *)self imageWidth];
-  [v7 appendFormat:@"\n%@imageWidth = %@ ", v6, v9];
+  imageWidth = [(HMDCameraRecordingVideoAttributes *)self imageWidth];
+  [descriptionCopy appendFormat:@"\n%@imageWidth = %@ ", indentCopy, imageWidth];
 
-  v10 = [(HMDCameraRecordingVideoAttributes *)self imageHeight];
-  [v7 appendFormat:@"\n%@imageHeight = %@", v6, v10];
+  imageHeight = [(HMDCameraRecordingVideoAttributes *)self imageHeight];
+  [descriptionCopy appendFormat:@"\n%@imageHeight = %@", indentCopy, imageHeight];
 
-  v11 = [(HMDCameraRecordingVideoAttributes *)self frameRate];
-  [v7 appendFormat:@"\n%@frameRate = %@", v6, v11];
+  frameRate = [(HMDCameraRecordingVideoAttributes *)self frameRate];
+  [descriptionCopy appendFormat:@"\n%@frameRate = %@", indentCopy, frameRate];
 }
 
 - (NSData)tlvData
 {
-  v3 = [MEMORY[0x277CFEC80] creator];
-  v4 = [(HMDCameraRecordingVideoAttributes *)self imageWidth];
-  [v3 addTLV:1 length:2 number:v4];
+  creator = [MEMORY[0x277CFEC80] creator];
+  imageWidth = [(HMDCameraRecordingVideoAttributes *)self imageWidth];
+  [creator addTLV:1 length:2 number:imageWidth];
 
-  v5 = [(HMDCameraRecordingVideoAttributes *)self imageHeight];
-  [v3 addTLV:2 length:2 number:v5];
+  imageHeight = [(HMDCameraRecordingVideoAttributes *)self imageHeight];
+  [creator addTLV:2 length:2 number:imageHeight];
 
-  v6 = [(HMDCameraRecordingVideoAttributes *)self frameRate];
-  [v3 addTLV:3 length:1 number:v6];
+  frameRate = [(HMDCameraRecordingVideoAttributes *)self frameRate];
+  [creator addTLV:3 length:1 number:frameRate];
 
-  v7 = [v3 serialize];
+  serialize = [creator serialize];
 
-  return v7;
+  return serialize;
 }
 
 - (BOOL)_parseFromTLVData
@@ -94,17 +94,17 @@
   v7 = [(HAPTLVBase *)self _parse:v6];
   if (v7)
   {
-    v8 = [v3 field];
+    field = [v3 field];
     imageWidth = self->_imageWidth;
-    self->_imageWidth = v8;
+    self->_imageWidth = field;
 
-    v10 = [v4 field];
+    field2 = [v4 field];
     imageHeight = self->_imageHeight;
-    self->_imageHeight = v10;
+    self->_imageHeight = field2;
 
-    v12 = [v5 field];
+    field3 = [v5 field];
     frameRate = self->_frameRate;
-    self->_frameRate = v12;
+    self->_frameRate = field3;
 
     translateResolutionWidthHeight(self->_imageWidth, self->_imageHeight, &self->_resolution);
   }
@@ -113,41 +113,41 @@
   return v7;
 }
 
-- (HMDCameraRecordingVideoAttributes)initWithImageWidth:(id)a3 imageHeight:(id)a4 frameRate:(id)a5
+- (HMDCameraRecordingVideoAttributes)initWithImageWidth:(id)width imageHeight:(id)height frameRate:(id)rate
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  widthCopy = width;
+  heightCopy = height;
+  rateCopy = rate;
   v16.receiver = self;
   v16.super_class = HMDCameraRecordingVideoAttributes;
   v12 = [(HMDCameraRecordingVideoAttributes *)&v16 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_imageWidth, a3);
-    objc_storeStrong(&v13->_imageHeight, a4);
+    objc_storeStrong(&v12->_imageWidth, width);
+    objc_storeStrong(&v13->_imageHeight, height);
     v15 = 0;
-    translateResolutionWidthHeight(v9, v10, &v15);
+    translateResolutionWidthHeight(widthCopy, heightCopy, &v15);
     v13->_resolution = v15;
-    objc_storeStrong(&v13->_frameRate, a5);
+    objc_storeStrong(&v13->_frameRate, rate);
   }
 
   return v13;
 }
 
-- (HMDCameraRecordingVideoAttributes)initWithResolution:(int64_t)a3 frameRate:(id)a4
+- (HMDCameraRecordingVideoAttributes)initWithResolution:(int64_t)resolution frameRate:(id)rate
 {
-  v7 = a4;
+  rateCopy = rate;
   v16.receiver = self;
   v16.super_class = HMDCameraRecordingVideoAttributes;
   v8 = [(HMDCameraRecordingVideoAttributes *)&v16 init];
   v9 = v8;
   if (v8)
   {
-    v8->_resolution = a3;
-    objc_storeStrong(&v8->_frameRate, a4);
-    v10 = a3 - 1;
-    if ((a3 - 1) > 0x14)
+    v8->_resolution = resolution;
+    objc_storeStrong(&v8->_frameRate, rate);
+    v10 = resolution - 1;
+    if ((resolution - 1) > 0x14)
     {
       v11 = 0;
       v12 = 0;

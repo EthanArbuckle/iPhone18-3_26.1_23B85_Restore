@@ -26,10 +26,10 @@
 
 - (id)preference
 {
-  v2 = [(SafariRequestDesktopSitePerSitePreferenceSettingsController *)self preferenceManager];
-  v3 = [v2 requestDesktopSitePreference];
+  preferenceManager = [(SafariRequestDesktopSitePerSitePreferenceSettingsController *)self preferenceManager];
+  requestDesktopSitePreference = [preferenceManager requestDesktopSitePreference];
 
-  return v3;
+  return requestDesktopSitePreference;
 }
 
 - (void)notifyPerSitePreferenceValueDidChange

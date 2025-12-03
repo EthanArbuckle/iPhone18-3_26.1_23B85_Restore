@@ -1,7 +1,7 @@
 @interface WBSURLHostComponentEnumerator
 - (BOOL)_checkIsIPAddress;
-- (WBSURLHostComponentEnumerator)initWithHost:(id)a3 options:(unint64_t)a4;
-- (_NSRange)_nextPointRangeInRange:(_NSRange)a3 didFindPeriod:(BOOL *)a4;
+- (WBSURLHostComponentEnumerator)initWithHost:(id)host options:(unint64_t)options;
+- (_NSRange)_nextPointRangeInRange:(_NSRange)range didFindPeriod:(BOOL *)period;
 - (id)nextObject;
 - (in6_addr)ipv6Address;
 - (void)clearAccumulatedDomains;
@@ -13,9 +13,9 @@
 {
   if ((self->_options & 1) == 0)
   {
-    v3 = [MEMORY[0x1E696AD60] string];
+    string = [MEMORY[0x1E696AD60] string];
     accumulatorString = self->_accumulatorString;
-    self->_accumulatorString = v3;
+    self->_accumulatorString = string;
   }
 }
 
@@ -33,8 +33,8 @@
   if (!self->_didCheckTopLevelDomain)
   {
     self->_didCheckTopLevelDomain = 1;
-    v16 = [(NSString *)self->_host safari_effectiveTopLevelDomainForHost];
-    if (!v16)
+    safari_effectiveTopLevelDomainForHost = [(NSString *)self->_host safari_effectiveTopLevelDomainForHost];
+    if (!safari_effectiveTopLevelDomainForHost)
     {
       if ([(WBSURLHostComponentEnumerator *)self _checkIsIPAddress])
       {
@@ -64,11 +64,11 @@ LABEL_35:
       goto LABEL_4;
     }
 
-    v14 = v16;
+    v14 = safari_effectiveTopLevelDomainForHost;
     self->_didFindTopLevelDomain = 1;
     self->_didBeginConsumingCharacters = 1;
     self->_numberOfAccummulatedComponents = 1;
-    v17 = [(__CFString *)v16 length];
+    v17 = [(__CFString *)safari_effectiveTopLevelDomainForHost length];
     if ((self->_options & 4) == 0 && [(__CFString *)v14 hasSuffix:@"."])
     {
       v18 = [(__CFString *)v14 substringToIndex:v17 - 1];
@@ -287,18 +287,18 @@ LABEL_46:
   return v14;
 }
 
-- (WBSURLHostComponentEnumerator)initWithHost:(id)a3 options:(unint64_t)a4
+- (WBSURLHostComponentEnumerator)initWithHost:(id)host options:(unint64_t)options
 {
-  v6 = a3;
+  hostCopy = host;
   v14.receiver = self;
   v14.super_class = WBSURLHostComponentEnumerator;
   v7 = [(WBSURLHostComponentEnumerator *)&v14 init];
   v8 = v7;
   if (v7)
   {
-    v7->_options = a4;
+    v7->_options = options;
     v7->_kind = -1;
-    v9 = [v6 copy];
+    v9 = [hostCopy copy];
     host = v8->_host;
     v8->_host = v9;
 
@@ -351,9 +351,9 @@ LABEL_46:
   return v4;
 }
 
-- (_NSRange)_nextPointRangeInRange:(_NSRange)a3 didFindPeriod:(BOOL *)a4
+- (_NSRange)_nextPointRangeInRange:(_NSRange)range didFindPeriod:(BOOL *)period
 {
-  v5 = [(NSString *)self->_host rangeOfString:@"." options:4 range:a3.location, a3.length];
+  v5 = [(NSString *)self->_host rangeOfString:@"." options:4 range:range.location, range.length];
   v7 = v5 != 0x7FFFFFFFFFFFFFFFLL;
   if (v5 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -361,7 +361,7 @@ LABEL_46:
     v6 = 0;
   }
 
-  *a4 = v7;
+  *period = v7;
   result.length = v6;
   result.location = v5;
   return result;

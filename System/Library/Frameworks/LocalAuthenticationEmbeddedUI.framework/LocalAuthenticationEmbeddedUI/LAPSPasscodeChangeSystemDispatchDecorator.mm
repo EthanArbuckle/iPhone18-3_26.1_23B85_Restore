@@ -1,55 +1,55 @@
 @interface LAPSPasscodeChangeSystemDispatchDecorator
-- (LAPSPasscodeChangeSystemDispatchDecorator)initWithSystem:(id)a3;
-- (LAPSPasscodeChangeSystemDispatchDecorator)initWithSystem:(id)a3 workQueue:(id)a4;
-- (void)changePasscode:(id)a3 to:(id)a4 completion:(id)a5;
-- (void)verifyNewPasscode:(id)a3 completion:(id)a4;
-- (void)verifyPasscode:(id)a3 completion:(id)a4;
+- (LAPSPasscodeChangeSystemDispatchDecorator)initWithSystem:(id)system;
+- (LAPSPasscodeChangeSystemDispatchDecorator)initWithSystem:(id)system workQueue:(id)queue;
+- (void)changePasscode:(id)passcode to:(id)to completion:(id)completion;
+- (void)verifyNewPasscode:(id)passcode completion:(id)completion;
+- (void)verifyPasscode:(id)passcode completion:(id)completion;
 @end
 
 @implementation LAPSPasscodeChangeSystemDispatchDecorator
 
-- (LAPSPasscodeChangeSystemDispatchDecorator)initWithSystem:(id)a3
+- (LAPSPasscodeChangeSystemDispatchDecorator)initWithSystem:(id)system
 {
   v4 = MEMORY[0x277D24028];
-  v5 = a3;
+  systemCopy = system;
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
   v8 = [v4 createUserInitiatedSerialQueueWithIdentifier:v7];
 
-  v9 = [(LAPSPasscodeChangeSystemDispatchDecorator *)self initWithSystem:v5 workQueue:v8];
+  v9 = [(LAPSPasscodeChangeSystemDispatchDecorator *)self initWithSystem:systemCopy workQueue:v8];
   return v9;
 }
 
-- (LAPSPasscodeChangeSystemDispatchDecorator)initWithSystem:(id)a3 workQueue:(id)a4
+- (LAPSPasscodeChangeSystemDispatchDecorator)initWithSystem:(id)system workQueue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
+  systemCopy = system;
+  queueCopy = queue;
   v12.receiver = self;
   v12.super_class = LAPSPasscodeChangeSystemDispatchDecorator;
   v9 = [(LAPSPasscodeChangeSystemDispatchDecorator *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_system, a3);
-    objc_storeStrong(&v10->_workQueue, a4);
+    objc_storeStrong(&v9->_system, system);
+    objc_storeStrong(&v10->_workQueue, queue);
   }
 
   return v10;
 }
 
-- (void)verifyPasscode:(id)a3 completion:(id)a4
+- (void)verifyPasscode:(id)passcode completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  passcodeCopy = passcode;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __71__LAPSPasscodeChangeSystemDispatchDecorator_verifyPasscode_completion___block_invoke;
   v10[3] = &unk_278A65818;
   objc_copyWeak(&v13, &location);
-  v8 = v6;
+  v8 = passcodeCopy;
   v11 = v8;
-  v9 = v7;
+  v9 = completionCopy;
   v12 = v9;
   [(LAPSPasscodeChangeSystemDispatchDecorator *)self _performOnBackgroundQueue:v10];
 
@@ -93,19 +93,19 @@ void __71__LAPSPasscodeChangeSystemDispatchDecorator_verifyPasscode_completion__
   }
 }
 
-- (void)verifyNewPasscode:(id)a3 completion:(id)a4
+- (void)verifyNewPasscode:(id)passcode completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  passcodeCopy = passcode;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __74__LAPSPasscodeChangeSystemDispatchDecorator_verifyNewPasscode_completion___block_invoke;
   v10[3] = &unk_278A65818;
   objc_copyWeak(&v13, &location);
-  v8 = v6;
+  v8 = passcodeCopy;
   v11 = v8;
-  v9 = v7;
+  v9 = completionCopy;
   v12 = v9;
   [(LAPSPasscodeChangeSystemDispatchDecorator *)self _performOnBackgroundQueue:v10];
 
@@ -149,22 +149,22 @@ void __74__LAPSPasscodeChangeSystemDispatchDecorator_verifyNewPasscode_completio
   }
 }
 
-- (void)changePasscode:(id)a3 to:(id)a4 completion:(id)a5
+- (void)changePasscode:(id)passcode to:(id)to completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  passcodeCopy = passcode;
+  toCopy = to;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __74__LAPSPasscodeChangeSystemDispatchDecorator_changePasscode_to_completion___block_invoke;
   v14[3] = &unk_278A65E68;
   objc_copyWeak(&v18, &location);
-  v11 = v8;
+  v11 = passcodeCopy;
   v15 = v11;
-  v12 = v9;
+  v12 = toCopy;
   v16 = v12;
-  v13 = v10;
+  v13 = completionCopy;
   v17 = v13;
   [(LAPSPasscodeChangeSystemDispatchDecorator *)self _performOnBackgroundQueue:v14];
 

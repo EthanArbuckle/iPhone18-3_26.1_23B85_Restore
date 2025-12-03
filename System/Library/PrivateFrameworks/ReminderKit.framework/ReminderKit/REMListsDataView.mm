@@ -1,121 +1,121 @@
 @interface REMListsDataView
-+ (id)listsFromAccountStorages:(id)a3 listStorages:(id)a4 store:(id)a5;
-+ (id)listsFromAccountStorages:(id)a3 listStorages:(id)a4 store:(id)a5 requestedExternalIdentifiers:(id)a6;
-+ (id)listsFromAccountStorages:(id)a3 listStorages:(id)a4 store:(id)a5 requestedListIDs:(id)a6;
-+ (id)listsFromAccounts:(id)a3 listStorages:(id)a4 store:(id)a5;
-- (REMListsDataView)initWithStore:(id)a3;
-- (id)debugFetchPhantomListsWithError:(id *)a3;
-- (id)fetchAllListsWithExternalIdentifier:(id)a3 inAccount:(id)a4 error:(id *)a5;
-- (id)fetchDefaultListRequiringCloudKitWithAccountID:(id)a3 error:(id *)a4;
-- (id)fetchDefaultListWithError:(id *)a3;
-- (id)fetchEligibleDefaultListsWithError:(id *)a3;
-- (id)fetchListIncludingSpecialContainerWithExternalIdentifier:(id)a3 inAccount:(id)a4 error:(id *)a5;
-- (id)fetchListIncludingSpecialContainerWithObjectID:(id)a3 error:(id *)a4;
-- (id)fetchListRepresentationOfTemplateWithObjectID:(id)a3 error:(id *)a4;
-- (id)fetchListWithObjectID:(id)a3 error:(id *)a4;
-- (id)fetchListsAndSublistsInAccount:(id)a3 error:(id *)a4;
-- (id)fetchListsInAccount:(id)a3 error:(id *)a4;
-- (id)fetchListsInGroup:(id)a3 error:(id *)a4;
-- (id)fetchListsIncludingSpecialContainersInAccount:(id)a3 error:(id *)a4;
-- (id)fetchListsIncludingSpecialContainersWithObjectIDs:(id)a3 error:(id *)a4;
-- (id)fetchListsWithExternalIdentifiers:(id)a3 inAccount:(id)a4 error:(id *)a5;
-- (id)fetchListsWithObjectIDs:(id)a3 error:(id *)a4;
++ (id)listsFromAccountStorages:(id)storages listStorages:(id)listStorages store:(id)store;
++ (id)listsFromAccountStorages:(id)storages listStorages:(id)listStorages store:(id)store requestedExternalIdentifiers:(id)identifiers;
++ (id)listsFromAccountStorages:(id)storages listStorages:(id)listStorages store:(id)store requestedListIDs:(id)ds;
++ (id)listsFromAccounts:(id)accounts listStorages:(id)storages store:(id)store;
+- (REMListsDataView)initWithStore:(id)store;
+- (id)debugFetchPhantomListsWithError:(id *)error;
+- (id)fetchAllListsWithExternalIdentifier:(id)identifier inAccount:(id)account error:(id *)error;
+- (id)fetchDefaultListRequiringCloudKitWithAccountID:(id)d error:(id *)error;
+- (id)fetchDefaultListWithError:(id *)error;
+- (id)fetchEligibleDefaultListsWithError:(id *)error;
+- (id)fetchListIncludingSpecialContainerWithExternalIdentifier:(id)identifier inAccount:(id)account error:(id *)error;
+- (id)fetchListIncludingSpecialContainerWithObjectID:(id)d error:(id *)error;
+- (id)fetchListRepresentationOfTemplateWithObjectID:(id)d error:(id *)error;
+- (id)fetchListWithObjectID:(id)d error:(id *)error;
+- (id)fetchListsAndSublistsInAccount:(id)account error:(id *)error;
+- (id)fetchListsInAccount:(id)account error:(id *)error;
+- (id)fetchListsInGroup:(id)group error:(id *)error;
+- (id)fetchListsIncludingSpecialContainersInAccount:(id)account error:(id *)error;
+- (id)fetchListsIncludingSpecialContainersWithObjectIDs:(id)ds error:(id *)error;
+- (id)fetchListsWithExternalIdentifiers:(id)identifiers inAccount:(id)account error:(id *)error;
+- (id)fetchListsWithObjectIDs:(id)ds error:(id *)error;
 @end
 
 @implementation REMListsDataView
 
-- (REMListsDataView)initWithStore:(id)a3
+- (REMListsDataView)initWithStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v9.receiver = self;
   v9.super_class = REMListsDataView;
   v6 = [(REMListsDataView *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_store, a3);
+    objc_storeStrong(&v6->_store, store);
   }
 
   return v7;
 }
 
-- (id)fetchListsInAccount:(id)a3 error:(id *)a4
+- (id)fetchListsInAccount:(id)account error:(id *)error
 {
-  v6 = a3;
+  accountCopy = account;
   v7 = [REMListsDataViewInvocation_fetchListsInAccount alloc];
-  v8 = [v6 objectID];
+  objectID = [accountCopy objectID];
 
-  v9 = [(REMListsDataViewInvocation_fetchListsInAccount *)v7 initWithParentAccountObjectID:v8];
-  v10 = [(REMListsDataView *)self store];
-  v11 = [v10 resultFromPerformingInvocation:v9 error:a4];
+  v9 = [(REMListsDataViewInvocation_fetchListsInAccount *)v7 initWithParentAccountObjectID:objectID];
+  store = [(REMListsDataView *)self store];
+  v11 = [store resultFromPerformingInvocation:v9 error:error];
 
   v12 = objc_opt_class();
   v13 = REMDynamicCast(v12, v11);
-  v14 = [v13 accountStorages];
-  v15 = [v13 listStorages];
-  v16 = [(REMListsDataView *)self store];
-  v17 = [v13 objectIDs];
-  v18 = [REMListsDataView listsFromAccountStorages:v14 listStorages:v15 store:v16 requestedListIDs:v17];
+  accountStorages = [v13 accountStorages];
+  listStorages = [v13 listStorages];
+  store2 = [(REMListsDataView *)self store];
+  objectIDs = [v13 objectIDs];
+  v18 = [REMListsDataView listsFromAccountStorages:accountStorages listStorages:listStorages store:store2 requestedListIDs:objectIDs];
 
   return v18;
 }
 
-- (id)fetchListsAndSublistsInAccount:(id)a3 error:(id *)a4
+- (id)fetchListsAndSublistsInAccount:(id)account error:(id *)error
 {
-  v6 = a3;
+  accountCopy = account;
   v7 = [REMListsDataViewInvocation_fetchListsAndSublistsInAccount alloc];
-  v8 = [v6 objectID];
+  objectID = [accountCopy objectID];
 
-  v9 = [(REMListsDataViewInvocation_fetchListsAndSublistsInAccount *)v7 initWithParentAccountObjectID:v8];
-  v10 = [(REMListsDataView *)self store];
-  v11 = [v10 resultFromPerformingInvocation:v9 error:a4];
+  v9 = [(REMListsDataViewInvocation_fetchListsAndSublistsInAccount *)v7 initWithParentAccountObjectID:objectID];
+  store = [(REMListsDataView *)self store];
+  v11 = [store resultFromPerformingInvocation:v9 error:error];
 
   v12 = objc_opt_class();
   v13 = REMDynamicCast(v12, v11);
-  v14 = [v13 accountStorages];
-  v15 = [v13 listStorages];
-  v16 = [(REMListsDataView *)self store];
-  v17 = [v13 objectIDs];
-  v18 = [REMListsDataView listsFromAccountStorages:v14 listStorages:v15 store:v16 requestedListIDs:v17];
+  accountStorages = [v13 accountStorages];
+  listStorages = [v13 listStorages];
+  store2 = [(REMListsDataView *)self store];
+  objectIDs = [v13 objectIDs];
+  v18 = [REMListsDataView listsFromAccountStorages:accountStorages listStorages:listStorages store:store2 requestedListIDs:objectIDs];
 
   return v18;
 }
 
-- (id)fetchListsInGroup:(id)a3 error:(id *)a4
+- (id)fetchListsInGroup:(id)group error:(id *)error
 {
-  v6 = a3;
+  groupCopy = group;
   v7 = [REMListsDataViewInvocation_fetchListsInGroup alloc];
-  v8 = [v6 objectID];
+  objectID = [groupCopy objectID];
 
-  v9 = [(REMListsDataViewInvocation_fetchListsInGroup *)v7 initWithParentGroupObjectID:v8];
-  v10 = [(REMListsDataView *)self store];
-  v11 = [v10 resultFromPerformingInvocation:v9 error:a4];
+  v9 = [(REMListsDataViewInvocation_fetchListsInGroup *)v7 initWithParentGroupObjectID:objectID];
+  store = [(REMListsDataView *)self store];
+  v11 = [store resultFromPerformingInvocation:v9 error:error];
 
   v12 = objc_opt_class();
   v13 = REMDynamicCast(v12, v11);
-  v14 = [v13 accountStorages];
-  v15 = [v13 listStorages];
-  v16 = [(REMListsDataView *)self store];
-  v17 = [v13 objectIDs];
-  v18 = [REMListsDataView listsFromAccountStorages:v14 listStorages:v15 store:v16 requestedListIDs:v17];
+  accountStorages = [v13 accountStorages];
+  listStorages = [v13 listStorages];
+  store2 = [(REMListsDataView *)self store];
+  objectIDs = [v13 objectIDs];
+  v18 = [REMListsDataView listsFromAccountStorages:accountStorages listStorages:listStorages store:store2 requestedListIDs:objectIDs];
 
   return v18;
 }
 
-- (id)fetchListWithObjectID:(id)a3 error:(id *)a4
+- (id)fetchListWithObjectID:(id)d error:(id *)error
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v13[0] = v6;
+  dCopy = d;
+  v13[0] = dCopy;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:1];
-  v8 = [(REMListsDataView *)self fetchListsWithObjectIDs:v7 error:a4];
+  v8 = [(REMListsDataView *)self fetchListsWithObjectIDs:v7 error:error];
 
   if (!v8)
   {
     goto LABEL_7;
   }
 
-  v9 = [v8 objectForKeyedSubscript:v6];
+  v9 = [v8 objectForKeyedSubscript:dCopy];
   if (v9)
   {
     goto LABEL_8;
@@ -124,13 +124,13 @@
   v10 = +[REMLogStore read];
   if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
   {
-    [REMListsDataView fetchListWithObjectID:v6 error:v10];
+    [REMListsDataView fetchListWithObjectID:dCopy error:v10];
   }
 
-  if (a4)
+  if (error)
   {
-    [REMError noSuchObjectErrorWithObjectID:v6];
-    *a4 = v9 = 0;
+    [REMError noSuchObjectErrorWithObjectID:dCopy];
+    *error = v9 = 0;
   }
 
   else
@@ -146,22 +146,22 @@ LABEL_8:
   return v9;
 }
 
-- (id)fetchListsWithObjectIDs:(id)a3 error:(id *)a4
+- (id)fetchListsWithObjectIDs:(id)ds error:(id *)error
 {
   v33 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if ([v6 count])
+  dsCopy = ds;
+  if ([dsCopy count])
   {
-    v7 = [[REMListsDataViewInvocation_fetchByObjectIDs alloc] initWithObjectIDs:v6];
-    v8 = [(REMListsDataView *)self store];
-    v9 = [v8 resultFromPerformingInvocation:v7 error:a4];
+    v7 = [[REMListsDataViewInvocation_fetchByObjectIDs alloc] initWithObjectIDs:dsCopy];
+    store = [(REMListsDataView *)self store];
+    v9 = [store resultFromPerformingInvocation:v7 error:error];
 
     v10 = objc_opt_class();
     v11 = REMDynamicCast(v10, v9);
-    v12 = [v11 accountStorages];
-    v13 = [v11 listStorages];
-    v14 = [(REMListsDataView *)self store];
-    v15 = [REMListsDataView listsFromAccountStorages:v12 listStorages:v13 store:v14 requestedListIDs:v6];
+    accountStorages = [v11 accountStorages];
+    listStorages = [v11 listStorages];
+    store2 = [(REMListsDataView *)self store];
+    v15 = [REMListsDataView listsFromAccountStorages:accountStorages listStorages:listStorages store:store2 requestedListIDs:dsCopy];
 
     if (v15)
     {
@@ -188,8 +188,8 @@ LABEL_8:
             }
 
             v22 = *(*(&v28 + 1) + 8 * i);
-            v23 = [v22 objectID];
-            [v16 setObject:v22 forKeyedSubscript:v23];
+            objectID = [v22 objectID];
+            [v16 setObject:v22 forKeyedSubscript:objectID];
           }
 
           v19 = [v17 countByEnumeratingWithState:&v28 objects:v32 count:16];
@@ -218,101 +218,101 @@ LABEL_8:
   return v16;
 }
 
-- (id)fetchEligibleDefaultListsWithError:(id *)a3
+- (id)fetchEligibleDefaultListsWithError:(id *)error
 {
-  v5 = [(REMListsDataView *)self store];
-  v6 = [v5 mode] == 4599;
+  store = [(REMListsDataView *)self store];
+  v6 = [store mode] == 4599;
 
   v7 = [[REMListsDataViewInvocation_fetchUserSelectableDefaultLists alloc] initWithDebugUseInMemoryPreferredDefaultListStorage:v6];
-  v8 = [(REMListsDataView *)self store];
-  v9 = [v8 resultFromPerformingInvocation:v7 error:a3];
+  store2 = [(REMListsDataView *)self store];
+  v9 = [store2 resultFromPerformingInvocation:v7 error:error];
 
   v10 = objc_opt_class();
   v11 = REMDynamicCast(v10, v9);
-  v12 = [v11 accountStorages];
-  v13 = [v11 listStorages];
-  v14 = [(REMListsDataView *)self store];
-  v15 = [v11 objectIDs];
-  v16 = [REMListsDataView listsFromAccountStorages:v12 listStorages:v13 store:v14 requestedListIDs:v15];
+  accountStorages = [v11 accountStorages];
+  listStorages = [v11 listStorages];
+  store3 = [(REMListsDataView *)self store];
+  objectIDs = [v11 objectIDs];
+  v16 = [REMListsDataView listsFromAccountStorages:accountStorages listStorages:listStorages store:store3 requestedListIDs:objectIDs];
 
   return v16;
 }
 
-- (id)fetchDefaultListWithError:(id *)a3
+- (id)fetchDefaultListWithError:(id *)error
 {
-  v5 = [(REMListsDataView *)self store];
-  v6 = [v5 mode] == 4599;
+  store = [(REMListsDataView *)self store];
+  v6 = [store mode] == 4599;
 
   v7 = [[REMListsDataViewInvocation_fetchDefaultList alloc] initWithDebugUseInMemoryPreferredDefaultListStorage:v6];
-  v8 = [(REMListsDataView *)self store];
-  v9 = [v8 resultFromPerformingInvocation:v7 error:a3];
+  store2 = [(REMListsDataView *)self store];
+  v9 = [store2 resultFromPerformingInvocation:v7 error:error];
 
   v10 = objc_opt_class();
   v11 = REMDynamicCast(v10, v9);
-  v12 = [v11 accountStorages];
-  v13 = [v11 listStorages];
-  v14 = [(REMListsDataView *)self store];
-  v15 = [v11 objectIDs];
-  v16 = [REMListsDataView listsFromAccountStorages:v12 listStorages:v13 store:v14 requestedListIDs:v15];
+  accountStorages = [v11 accountStorages];
+  listStorages = [v11 listStorages];
+  store3 = [(REMListsDataView *)self store];
+  objectIDs = [v11 objectIDs];
+  v16 = [REMListsDataView listsFromAccountStorages:accountStorages listStorages:listStorages store:store3 requestedListIDs:objectIDs];
 
-  v17 = [v16 firstObject];
+  firstObject = [v16 firstObject];
 
-  return v17;
+  return firstObject;
 }
 
-- (id)fetchDefaultListRequiringCloudKitWithAccountID:(id)a3 error:(id *)a4
+- (id)fetchDefaultListRequiringCloudKitWithAccountID:(id)d error:(id *)error
 {
-  v6 = a3;
-  v7 = [(REMListsDataView *)self store];
-  v8 = [v7 mode] == 4599;
+  dCopy = d;
+  store = [(REMListsDataView *)self store];
+  v8 = [store mode] == 4599;
 
-  v9 = [[REMListsDataViewInvocation_fetchDefaultListRequiringCloudKit alloc] initWithAccountObjectID:v6 debugUseInMemoryPreferredDefaultListStorage:v8];
-  v10 = [(REMListsDataView *)self store];
-  v11 = [v10 resultFromPerformingInvocation:v9 error:a4];
+  v9 = [[REMListsDataViewInvocation_fetchDefaultListRequiringCloudKit alloc] initWithAccountObjectID:dCopy debugUseInMemoryPreferredDefaultListStorage:v8];
+  store2 = [(REMListsDataView *)self store];
+  v11 = [store2 resultFromPerformingInvocation:v9 error:error];
 
   v12 = objc_opt_class();
   v13 = REMDynamicCast(v12, v11);
-  v14 = [v13 accountStorages];
-  v15 = [v13 listStorages];
-  v16 = [(REMListsDataView *)self store];
-  v17 = [v13 objectIDs];
-  v18 = [REMListsDataView listsFromAccountStorages:v14 listStorages:v15 store:v16 requestedListIDs:v17];
+  accountStorages = [v13 accountStorages];
+  listStorages = [v13 listStorages];
+  store3 = [(REMListsDataView *)self store];
+  objectIDs = [v13 objectIDs];
+  v18 = [REMListsDataView listsFromAccountStorages:accountStorages listStorages:listStorages store:store3 requestedListIDs:objectIDs];
 
-  v19 = [v18 firstObject];
+  firstObject = [v18 firstObject];
 
-  return v19;
+  return firstObject;
 }
 
-- (id)debugFetchPhantomListsWithError:(id *)a3
+- (id)debugFetchPhantomListsWithError:(id *)error
 {
   v5 = objc_alloc_init(REMListsDataViewInvocation_debugFetchPhantomLists);
-  v6 = [(REMListsDataView *)self store];
-  v7 = [v6 resultFromPerformingInvocation:v5 error:a3];
+  store = [(REMListsDataView *)self store];
+  v7 = [store resultFromPerformingInvocation:v5 error:error];
 
   v8 = objc_opt_class();
   v9 = REMDynamicCast(v8, v7);
-  v10 = [v9 accountStorages];
-  v11 = [v9 listStorages];
-  v12 = [(REMListsDataView *)self store];
-  v13 = [v9 objectIDs];
-  v14 = [REMListsDataView listsFromAccountStorages:v10 listStorages:v11 store:v12 requestedListIDs:v13];
+  accountStorages = [v9 accountStorages];
+  listStorages = [v9 listStorages];
+  store2 = [(REMListsDataView *)self store];
+  objectIDs = [v9 objectIDs];
+  v14 = [REMListsDataView listsFromAccountStorages:accountStorages listStorages:listStorages store:store2 requestedListIDs:objectIDs];
 
   return v14;
 }
 
-+ (id)listsFromAccountStorages:(id)a3 listStorages:(id)a4 store:(id)a5 requestedListIDs:(id)a6
++ (id)listsFromAccountStorages:(id)storages listStorages:(id)listStorages store:(id)store requestedListIDs:(id)ds
 {
   v25 = *MEMORY[0x1E69E9840];
-  v9 = a6;
-  v10 = [REMListsDataView listsFromAccountStorages:a3 listStorages:a4 store:a5];
+  dsCopy = ds;
+  v10 = [REMListsDataView listsFromAccountStorages:storages listStorages:listStorages store:store];
   if (v10)
   {
-    v11 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v9, "count")}];
+    v11 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(dsCopy, "count")}];
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v12 = v9;
+    v12 = dsCopy;
     v13 = [v12 countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v13)
     {
@@ -351,21 +351,21 @@ LABEL_8:
   return v11;
 }
 
-+ (id)listsFromAccountStorages:(id)a3 listStorages:(id)a4 store:(id)a5 requestedExternalIdentifiers:(id)a6
++ (id)listsFromAccountStorages:(id)storages listStorages:(id)listStorages store:(id)store requestedExternalIdentifiers:(id)identifiers
 {
   v40 = *MEMORY[0x1E69E9840];
-  v9 = a6;
-  v10 = [REMListsDataView listsFromAccountStorages:a3 listStorages:a4 store:a5];
+  identifiersCopy = identifiers;
+  v10 = [REMListsDataView listsFromAccountStorages:storages listStorages:listStorages store:store];
   v11 = v10;
   if (v10)
   {
-    v12 = [v10 allValues];
-    v13 = [MEMORY[0x1E695DF90] dictionary];
+    allValues = [v10 allValues];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v14 = v12;
+    v14 = allValues;
     v15 = [v14 countByEnumeratingWithState:&v34 objects:v39 count:16];
     if (v15)
     {
@@ -381,10 +381,10 @@ LABEL_8:
           }
 
           v19 = *(*(&v34 + 1) + 8 * i);
-          v20 = [v19 externalIdentifier];
-          if (v20)
+          externalIdentifier = [v19 externalIdentifier];
+          if (externalIdentifier)
           {
-            [v13 setObject:v19 forKeyedSubscript:v20];
+            [dictionary setObject:v19 forKeyedSubscript:externalIdentifier];
           }
         }
 
@@ -394,12 +394,12 @@ LABEL_8:
       while (v16);
     }
 
-    v21 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v9, "count")}];
+    v21 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(identifiersCopy, "count")}];
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v22 = v9;
+    v22 = identifiersCopy;
     v23 = [v22 countByEnumeratingWithState:&v30 objects:v38 count:16];
     if (v23)
     {
@@ -414,7 +414,7 @@ LABEL_8:
             objc_enumerationMutation(v22);
           }
 
-          v27 = [v13 objectForKeyedSubscript:{*(*(&v30 + 1) + 8 * j), v30}];
+          v27 = [dictionary objectForKeyedSubscript:{*(*(&v30 + 1) + 8 * j), v30}];
           if (v27)
           {
             [v21 addObject:v27];
@@ -438,21 +438,21 @@ LABEL_8:
   return v21;
 }
 
-+ (id)listsFromAccounts:(id)a3 listStorages:(id)a4 store:(id)a5
++ (id)listsFromAccounts:(id)accounts listStorages:(id)storages store:(id)store
 {
   v43 = *MEMORY[0x1E69E9840];
-  v32 = a3;
-  v7 = a4;
-  v8 = a5;
-  if (v7)
+  accountsCopy = accounts;
+  storagesCopy = storages;
+  storeCopy = store;
+  if (storagesCopy)
   {
-    v9 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v7, "count")}];
+    v9 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(storagesCopy, "count")}];
     v37 = 0u;
     v38 = 0u;
     v39 = 0u;
     v40 = 0u;
-    v31 = v7;
-    v10 = v7;
+    v31 = storagesCopy;
+    v10 = storagesCopy;
     v11 = [v10 countByEnumeratingWithState:&v37 objects:v42 count:16];
     if (v11)
     {
@@ -468,12 +468,12 @@ LABEL_8:
           }
 
           v15 = *(*(&v37 + 1) + 8 * i);
-          v16 = [v15 accountID];
-          v17 = [v32 objectForKeyedSubscript:v16];
+          accountID = [v15 accountID];
+          v17 = [accountsCopy objectForKeyedSubscript:accountID];
 
-          v18 = [[REMList alloc] initWithStore:v8 account:v17 storage:v15];
-          v19 = [(REMList *)v18 objectID];
-          [v9 setObject:v18 forKeyedSubscript:v19];
+          v18 = [[REMList alloc] initWithStore:storeCopy account:v17 storage:v15];
+          objectID = [(REMList *)v18 objectID];
+          [v9 setObject:v18 forKeyedSubscript:objectID];
         }
 
         v12 = [v10 countByEnumeratingWithState:&v37 objects:v42 count:16];
@@ -486,8 +486,8 @@ LABEL_8:
     v36 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v20 = [v9 allKeys];
-    v21 = [v20 countByEnumeratingWithState:&v33 objects:v41 count:16];
+    allKeys = [v9 allKeys];
+    v21 = [allKeys countByEnumeratingWithState:&v33 objects:v41 count:16];
     if (v21)
     {
       v22 = v21;
@@ -498,27 +498,27 @@ LABEL_8:
         {
           if (*v34 != v23)
           {
-            objc_enumerationMutation(v20);
+            objc_enumerationMutation(allKeys);
           }
 
           v25 = [v9 objectForKeyedSubscript:{*(*(&v33 + 1) + 8 * j), v31}];
-          v26 = [v25 storage];
-          v27 = [v26 parentListID];
+          storage = [v25 storage];
+          parentListID = [storage parentListID];
 
-          if (v27)
+          if (parentListID)
           {
-            v28 = [v9 objectForKeyedSubscript:v27];
+            v28 = [v9 objectForKeyedSubscript:parentListID];
             [v25 setParentList:v28];
           }
         }
 
-        v22 = [v20 countByEnumeratingWithState:&v33 objects:v41 count:16];
+        v22 = [allKeys countByEnumeratingWithState:&v33 objects:v41 count:16];
       }
 
       while (v22);
     }
 
-    v7 = v31;
+    storagesCopy = v31;
   }
 
   else
@@ -531,50 +531,50 @@ LABEL_8:
   return v9;
 }
 
-+ (id)listsFromAccountStorages:(id)a3 listStorages:(id)a4 store:(id)a5
++ (id)listsFromAccountStorages:(id)storages listStorages:(id)listStorages store:(id)store
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [REMAccountsDataView accountsFromAccountStorages:a3 store:v7];
-  v10 = [REMListsDataView listsFromAccounts:v9 listStorages:v8 store:v7];
+  storeCopy = store;
+  listStoragesCopy = listStorages;
+  v9 = [REMAccountsDataView accountsFromAccountStorages:storages store:storeCopy];
+  v10 = [REMListsDataView listsFromAccounts:v9 listStorages:listStoragesCopy store:storeCopy];
 
   return v10;
 }
 
-- (id)fetchListsIncludingSpecialContainersInAccount:(id)a3 error:(id *)a4
+- (id)fetchListsIncludingSpecialContainersInAccount:(id)account error:(id *)error
 {
-  v6 = a3;
+  accountCopy = account;
   v7 = [REMListsDataViewInvocation_dataAccessFetchListsInAccount alloc];
-  v8 = [v6 objectID];
+  objectID = [accountCopy objectID];
 
-  v9 = [(REMListsDataViewInvocation_dataAccessFetchListsInAccount *)v7 initWithParentAccountObjectID:v8];
-  v10 = [(REMListsDataView *)self store];
-  v11 = [v10 resultFromPerformingInvocation:v9 error:a4];
+  v9 = [(REMListsDataViewInvocation_dataAccessFetchListsInAccount *)v7 initWithParentAccountObjectID:objectID];
+  store = [(REMListsDataView *)self store];
+  v11 = [store resultFromPerformingInvocation:v9 error:error];
 
   v12 = objc_opt_class();
   v13 = REMDynamicCast(v12, v11);
-  v14 = [v13 accountStorages];
-  v15 = [v13 listStorages];
-  v16 = [(REMListsDataView *)self store];
-  v17 = [REMListsDataView listsFromAccountStorages:v14 listStorages:v15 store:v16];
+  accountStorages = [v13 accountStorages];
+  listStorages = [v13 listStorages];
+  store2 = [(REMListsDataView *)self store];
+  v17 = [REMListsDataView listsFromAccountStorages:accountStorages listStorages:listStorages store:store2];
 
   return v17;
 }
 
-- (id)fetchListIncludingSpecialContainerWithObjectID:(id)a3 error:(id *)a4
+- (id)fetchListIncludingSpecialContainerWithObjectID:(id)d error:(id *)error
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v15[0] = v6;
+  dCopy = d;
+  v15[0] = dCopy;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
-  v8 = [(REMListsDataView *)self fetchListsIncludingSpecialContainersWithObjectIDs:v7 error:a4];
+  v8 = [(REMListsDataView *)self fetchListsIncludingSpecialContainersWithObjectIDs:v7 error:error];
 
   if (!v8)
   {
     goto LABEL_7;
   }
 
-  v9 = [v8 objectForKeyedSubscript:v6];
+  v9 = [v8 objectForKeyedSubscript:dCopy];
   if (v9)
   {
     goto LABEL_8;
@@ -584,14 +584,14 @@ LABEL_8:
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138543362;
-    v14 = v6;
+    v14 = dCopy;
     _os_log_impl(&dword_19A0DB000, v10, OS_LOG_TYPE_DEFAULT, "REMListsDataView: Requested to fetch non-existent list {objectID: %{public}@}", &v13, 0xCu);
   }
 
-  if (a4)
+  if (error)
   {
-    [REMError noSuchObjectErrorWithObjectID:v6];
-    *a4 = v9 = 0;
+    [REMError noSuchObjectErrorWithObjectID:dCopy];
+    *error = v9 = 0;
   }
 
   else
@@ -607,20 +607,20 @@ LABEL_8:
   return v9;
 }
 
-- (id)fetchListsIncludingSpecialContainersWithObjectIDs:(id)a3 error:(id *)a4
+- (id)fetchListsIncludingSpecialContainersWithObjectIDs:(id)ds error:(id *)error
 {
   v33 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [[REMListsDataViewInvocation_dataAccessFetchByObjectID alloc] initWithObjectIDs:v6];
-  v8 = [(REMListsDataView *)self store];
-  v9 = [v8 resultFromPerformingInvocation:v7 error:a4];
+  dsCopy = ds;
+  v7 = [[REMListsDataViewInvocation_dataAccessFetchByObjectID alloc] initWithObjectIDs:dsCopy];
+  store = [(REMListsDataView *)self store];
+  v9 = [store resultFromPerformingInvocation:v7 error:error];
 
   v10 = objc_opt_class();
   v11 = REMDynamicCast(v10, v9);
-  v12 = [v11 accountStorages];
-  v13 = [v11 listStorages];
-  v14 = [(REMListsDataView *)self store];
-  v15 = [REMListsDataView listsFromAccountStorages:v12 listStorages:v13 store:v14 requestedListIDs:v6];
+  accountStorages = [v11 accountStorages];
+  listStorages = [v11 listStorages];
+  store2 = [(REMListsDataView *)self store];
+  v15 = [REMListsDataView listsFromAccountStorages:accountStorages listStorages:listStorages store:store2 requestedListIDs:dsCopy];
 
   if (v15)
   {
@@ -647,8 +647,8 @@ LABEL_8:
           }
 
           v22 = *(*(&v28 + 1) + 8 * i);
-          v23 = [v22 objectID];
-          [v16 setObject:v22 forKeyedSubscript:v23];
+          objectID = [v22 objectID];
+          [v16 setObject:v22 forKeyedSubscript:objectID];
         }
 
         v19 = [v17 countByEnumeratingWithState:&v28 objects:v32 count:16];
@@ -671,22 +671,22 @@ LABEL_8:
   return v16;
 }
 
-- (id)fetchListIncludingSpecialContainerWithExternalIdentifier:(id)a3 inAccount:(id)a4 error:(id *)a5
+- (id)fetchListIncludingSpecialContainerWithExternalIdentifier:(id)identifier inAccount:(id)account error:(id *)error
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v19[0] = v8;
+  identifierCopy = identifier;
+  v19[0] = identifierCopy;
   v9 = MEMORY[0x1E695DEC8];
-  v10 = a4;
+  accountCopy = account;
   v11 = [v9 arrayWithObjects:v19 count:1];
-  v12 = [(REMListsDataView *)self fetchListsWithExternalIdentifiers:v11 inAccount:v10 error:a5];
+  v12 = [(REMListsDataView *)self fetchListsWithExternalIdentifiers:v11 inAccount:accountCopy error:error];
 
   if (!v12)
   {
     goto LABEL_7;
   }
 
-  v13 = [v12 objectForKeyedSubscript:v8];
+  v13 = [v12 objectForKeyedSubscript:identifierCopy];
   if (v13)
   {
     goto LABEL_8;
@@ -696,14 +696,14 @@ LABEL_8:
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     v17 = 138543362;
-    v18 = v8;
+    v18 = identifierCopy;
     _os_log_impl(&dword_19A0DB000, v14, OS_LOG_TYPE_DEFAULT, "REMListsDataView: Requested to fetch non-existent list {externalIdentifier: %{public}@}", &v17, 0xCu);
   }
 
-  if (a5)
+  if (error)
   {
-    [REMError noSuchObjectErrorWithExternalIdentifier:v8];
-    *a5 = v13 = 0;
+    [REMError noSuchObjectErrorWithExternalIdentifier:identifierCopy];
+    *error = v13 = 0;
   }
 
   else
@@ -719,30 +719,30 @@ LABEL_8:
   return v13;
 }
 
-- (id)fetchListsWithExternalIdentifiers:(id)a3 inAccount:(id)a4 error:(id *)a5
+- (id)fetchListsWithExternalIdentifiers:(id)identifiers inAccount:(id)account error:(id *)error
 {
   v39 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  identifiersCopy = identifiers;
+  accountCopy = account;
   v10 = [REMListsDataViewInvocation_dataAccessFetchByExternalIdentifier alloc];
-  v11 = [v9 objectID];
-  v12 = [(REMListsDataViewInvocation_dataAccessFetchByExternalIdentifier *)v10 initWithExternalIdentifiers:v8 accountObjectID:v11];
+  objectID = [accountCopy objectID];
+  v12 = [(REMListsDataViewInvocation_dataAccessFetchByExternalIdentifier *)v10 initWithExternalIdentifiers:identifiersCopy accountObjectID:objectID];
 
-  v13 = [(REMListsDataView *)self store];
-  v14 = [v13 resultFromPerformingInvocation:v12 error:a5];
+  store = [(REMListsDataView *)self store];
+  v14 = [store resultFromPerformingInvocation:v12 error:error];
 
   v15 = objc_opt_class();
   v16 = REMDynamicCast(v15, v14);
-  v17 = [v16 accountStorages];
-  v18 = [v16 listStorages];
-  v19 = [(REMListsDataView *)self store];
-  v20 = [REMListsDataView listsFromAccountStorages:v17 listStorages:v18 store:v19 requestedExternalIdentifiers:v8];
+  accountStorages = [v16 accountStorages];
+  listStorages = [v16 listStorages];
+  store2 = [(REMListsDataView *)self store];
+  v20 = [REMListsDataView listsFromAccountStorages:accountStorages listStorages:listStorages store:store2 requestedExternalIdentifiers:identifiersCopy];
 
   if (v20)
   {
     v31 = v14;
     v32 = v12;
-    v33 = v9;
+    v33 = accountCopy;
     v21 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v20, "count")}];
     v34 = 0u;
     v35 = 0u;
@@ -764,8 +764,8 @@ LABEL_8:
           }
 
           v27 = *(*(&v34 + 1) + 8 * i);
-          v28 = [v27 externalIdentifier];
-          [v21 setObject:v27 forKeyedSubscript:v28];
+          externalIdentifier = [v27 externalIdentifier];
+          [v21 setObject:v27 forKeyedSubscript:externalIdentifier];
         }
 
         v24 = [v22 countByEnumeratingWithState:&v34 objects:v38 count:16];
@@ -775,7 +775,7 @@ LABEL_8:
     }
 
     v12 = v32;
-    v9 = v33;
+    accountCopy = v33;
     v14 = v31;
   }
 
@@ -789,30 +789,30 @@ LABEL_8:
   return v21;
 }
 
-- (id)fetchAllListsWithExternalIdentifier:(id)a3 inAccount:(id)a4 error:(id *)a5
+- (id)fetchAllListsWithExternalIdentifier:(id)identifier inAccount:(id)account error:(id *)error
 {
   v34 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  identifierCopy = identifier;
+  accountCopy = account;
   v10 = [REMListsDataViewInvocation_userActivityFetchByExternalIdentifier alloc];
-  v11 = v9;
-  v12 = [v9 objectID];
-  v13 = [(REMListsDataViewInvocation_userActivityFetchByExternalIdentifier *)v10 initWithExternalIdentifier:v8 accountObjectID:v12];
+  v11 = accountCopy;
+  objectID = [accountCopy objectID];
+  v13 = [(REMListsDataViewInvocation_userActivityFetchByExternalIdentifier *)v10 initWithExternalIdentifier:identifierCopy accountObjectID:objectID];
 
-  v14 = [(REMListsDataView *)self store];
-  v29 = a5;
-  v15 = [v14 resultFromPerformingInvocation:v13 error:a5];
+  store = [(REMListsDataView *)self store];
+  errorCopy = error;
+  v15 = [store resultFromPerformingInvocation:v13 error:error];
 
   v16 = objc_opt_class();
   v17 = REMDynamicCast(v16, v15);
-  v18 = [v17 accountStorages];
-  v19 = [v17 listStorages];
-  v20 = [(REMListsDataView *)self store];
-  v21 = [REMListsDataView listsFromAccountStorages:v18 listStorages:v19 store:v20];
+  accountStorages = [v17 accountStorages];
+  listStorages = [v17 listStorages];
+  store2 = [(REMListsDataView *)self store];
+  v21 = [REMListsDataView listsFromAccountStorages:accountStorages listStorages:listStorages store:store2];
 
-  v22 = [v21 allValues];
-  v23 = v22;
-  if (v22 && [v22 count])
+  allValues = [v21 allValues];
+  v23 = allValues;
+  if (allValues && [allValues count])
   {
     v24 = v23;
   }
@@ -822,18 +822,18 @@ LABEL_8:
     v25 = +[REMLogStore read];
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
     {
-      v26 = [v11 remObjectID];
+      remObjectID = [v11 remObjectID];
       *buf = 138543618;
-      v31 = v8;
+      v31 = identifierCopy;
       v32 = 2114;
-      v33 = v26;
+      v33 = remObjectID;
       _os_log_impl(&dword_19A0DB000, v25, OS_LOG_TYPE_DEFAULT, "REMListsDataView: Requested to fetch non-existent lists in account with {externalIdentifier: %{public}@, account.remObjectID: %{public}@}", buf, 0x16u);
     }
 
-    if (v29)
+    if (errorCopy)
     {
-      [REMError noSuchObjectErrorWithExternalIdentifier:v8];
-      *v29 = v24 = 0;
+      [REMError noSuchObjectErrorWithExternalIdentifier:identifierCopy];
+      *errorCopy = v24 = 0;
     }
 
     else
@@ -847,24 +847,24 @@ LABEL_8:
   return v24;
 }
 
-- (id)fetchListRepresentationOfTemplateWithObjectID:(id)a3 error:(id *)a4
+- (id)fetchListRepresentationOfTemplateWithObjectID:(id)d error:(id *)error
 {
   v36[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [[REMListsDataViewInvocation_fetchByTemplateObjectID alloc] initWithTemplateObjectID:v6];
-  v8 = [(REMListsDataView *)self store];
-  v29 = a4;
+  dCopy = d;
+  v7 = [[REMListsDataViewInvocation_fetchByTemplateObjectID alloc] initWithTemplateObjectID:dCopy];
+  store = [(REMListsDataView *)self store];
+  errorCopy = error;
   v30 = v7;
-  v9 = [v8 resultFromPerformingInvocation:v7 error:a4];
+  v9 = [store resultFromPerformingInvocation:v7 error:error];
 
   v10 = objc_opt_class();
   v11 = REMDynamicCast(v10, v9);
-  v12 = [v11 accountStorages];
-  v13 = [v11 listStorages];
-  v14 = [(REMListsDataView *)self store];
-  v36[0] = v6;
+  accountStorages = [v11 accountStorages];
+  listStorages = [v11 listStorages];
+  store2 = [(REMListsDataView *)self store];
+  v36[0] = dCopy;
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v36 count:1];
-  v16 = [REMListsDataView listsFromAccountStorages:v12 listStorages:v13 store:v14 requestedListIDs:v15];
+  v16 = [REMListsDataView listsFromAccountStorages:accountStorages listStorages:listStorages store:store2 requestedListIDs:v15];
 
   v33 = 0u;
   v34 = 0u;
@@ -886,8 +886,8 @@ LABEL_8:
         }
 
         v22 = *(*(&v31 + 1) + 8 * i);
-        v23 = [v22 objectID];
-        v24 = [v23 isEqual:v6];
+        objectID = [v22 objectID];
+        v24 = [objectID isEqual:dCopy];
 
         if (v24)
         {
@@ -907,16 +907,16 @@ LABEL_8:
     }
   }
 
-  if (v29)
+  if (errorCopy)
   {
     v25 = +[REMLogStore read];
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
     {
-      [REMListsDataView(Templates) fetchListRepresentationOfTemplateWithObjectID:v6 error:v25];
+      [REMListsDataView(Templates) fetchListRepresentationOfTemplateWithObjectID:dCopy error:v25];
     }
 
-    [REMError noSuchObjectErrorWithObjectID:v6];
-    *v29 = v26 = 0;
+    [REMError noSuchObjectErrorWithObjectID:dCopy];
+    *errorCopy = v26 = 0;
   }
 
   else

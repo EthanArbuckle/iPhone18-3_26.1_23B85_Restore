@@ -1,21 +1,21 @@
 @interface SXJSONDataTableSelector
 - (NSString)description;
-- (SXJSONDataTableSelector)initWithJSONData:(id)a3 andVersion:(id)a4;
-- (SXJSONDataTableSelector)initWithJSONObject:(id)a3 andVersion:(id)a4;
+- (SXJSONDataTableSelector)initWithJSONData:(id)data andVersion:(id)version;
+- (SXJSONDataTableSelector)initWithJSONObject:(id)object andVersion:(id)version;
 - (id)propertyList;
 - (unint64_t)numberOfConditions;
-- (unint64_t)selectorBooleanForValue:(id)a3;
+- (unint64_t)selectorBooleanForValue:(id)value;
 - (unint64_t)selectorWeight;
-- (unint64_t)weightForSelectorKey:(id)a3;
+- (unint64_t)weightForSelectorKey:(id)key;
 @end
 
 @implementation SXJSONDataTableSelector
 
-- (SXJSONDataTableSelector)initWithJSONData:(id)a3 andVersion:(id)a4
+- (SXJSONDataTableSelector)initWithJSONData:(id)data andVersion:(id)version
 {
   v7.receiver = self;
   v7.super_class = SXJSONDataTableSelector;
-  v4 = [(SXJSONObject *)&v7 initWithJSONData:a3 andVersion:a4];
+  v4 = [(SXJSONObject *)&v7 initWithJSONData:data andVersion:version];
   v5 = v4;
   if (v4)
   {
@@ -25,11 +25,11 @@
   return v5;
 }
 
-- (SXJSONDataTableSelector)initWithJSONObject:(id)a3 andVersion:(id)a4
+- (SXJSONDataTableSelector)initWithJSONObject:(id)object andVersion:(id)version
 {
   v7.receiver = self;
   v7.super_class = SXJSONDataTableSelector;
-  v4 = [(SXJSONObject *)&v7 initWithJSONObject:a3 andVersion:a4];
+  v4 = [(SXJSONObject *)&v7 initWithJSONObject:object andVersion:version];
   v5 = v4;
   if (v4)
   {
@@ -39,12 +39,12 @@
   return v5;
 }
 
-- (unint64_t)selectorBooleanForValue:(id)a3
+- (unint64_t)selectorBooleanForValue:(id)value
 {
-  v3 = a3;
-  if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  valueCopy = value;
+  if (valueCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    if ([v3 BOOLValue])
+    if ([valueCopy BOOLValue])
     {
       v4 = 1;
     }
@@ -73,8 +73,8 @@
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v4 = [(SXJSONDataTableSelector *)self propertyList];
-    v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    propertyList = [(SXJSONDataTableSelector *)self propertyList];
+    v5 = [propertyList countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v5)
     {
       v6 = v5;
@@ -86,18 +86,18 @@
         {
           if (*v16 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(propertyList);
           }
 
           v9 = [objc_opt_class() jsonPropertyNameForObjCPropertyName:*(*(&v15 + 1) + 8 * i)];
-          v10 = [(SXJSONObject *)self jsonDictionary];
-          v11 = [v10 objectForKey:v9];
+          jsonDictionary = [(SXJSONObject *)self jsonDictionary];
+          v11 = [jsonDictionary objectForKey:v9];
 
-          v12 = [MEMORY[0x1E695DFB0] null];
+          null = [MEMORY[0x1E695DFB0] null];
 
           if (v11)
           {
-            v13 = v11 == v12;
+            v13 = v11 == null;
           }
 
           else
@@ -111,7 +111,7 @@
           }
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v6 = [propertyList countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v6);
@@ -128,15 +128,15 @@
   return numberOfConditions;
 }
 
-- (unint64_t)weightForSelectorKey:(id)a3
+- (unint64_t)weightForSelectorKey:(id)key
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"rowIndex"] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"columnIndex"))
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"rowIndex"] & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"columnIndex"))
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"descriptor"])
+  else if ([keyCopy isEqualToString:@"descriptor"])
   {
     v4 = 2;
   }
@@ -155,12 +155,12 @@
   result = self->_selectorWeight;
   if (result == -1)
   {
-    v4 = [(SXJSONDataTableSelector *)self propertyList];
+    propertyList = [(SXJSONDataTableSelector *)self propertyList];
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    v5 = [propertyList countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v5)
     {
       v6 = v5;
@@ -172,25 +172,25 @@
         {
           if (*v15 != v8)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(propertyList);
           }
 
           v10 = *(*(&v14 + 1) + 8 * i);
-          v11 = [(SXJSONObject *)self jsonDictionary];
-          v12 = [v11 valueForKey:v10];
+          jsonDictionary = [(SXJSONObject *)self jsonDictionary];
+          v12 = [jsonDictionary valueForKey:v10];
 
           if (v12)
           {
-            v13 = [MEMORY[0x1E695DFB0] null];
+            null = [MEMORY[0x1E695DFB0] null];
 
-            if (v12 != v13)
+            if (v12 != null)
             {
               v7 += [(SXJSONDataTableSelector *)self weightForSelectorKey:v10];
             }
           }
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v6 = [propertyList countByEnumeratingWithState:&v14 objects:v18 count:16];
       }
 
       while (v6);
@@ -233,15 +233,15 @@
       free(v6);
     }
 
-    v9 = [__propertyList mutableCopy];
-    if (!v9)
+    dictionary = [__propertyList mutableCopy];
+    if (!dictionary)
     {
-      v9 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
     }
 
-    [v9 setObject:i forKey:v3];
+    [dictionary setObject:i forKey:v3];
     v10 = __propertyList;
-    __propertyList = v9;
+    __propertyList = dictionary;
   }
 
   return i;
@@ -250,12 +250,12 @@
 - (NSString)description
 {
   v26 = *MEMORY[0x1E69E9840];
-  v3 = [(SXJSONDataTableSelector *)self propertyList];
+  propertyList = [(SXJSONDataTableSelector *)self propertyList];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  v4 = [propertyList countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v4)
   {
     v5 = v4;
@@ -267,18 +267,18 @@
       {
         if (*v22 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(propertyList);
         }
 
         v9 = *(*(&v21 + 1) + 8 * i);
-        v10 = [(SXJSONObject *)self jsonDictionary];
-        v11 = [v10 valueForKey:v9];
+        jsonDictionary = [(SXJSONObject *)self jsonDictionary];
+        v11 = [jsonDictionary valueForKey:v9];
 
         if (v11)
         {
-          v12 = [MEMORY[0x1E695DFB0] null];
+          null = [MEMORY[0x1E695DFB0] null];
 
-          if (v11 != v12)
+          if (v11 != null)
           {
             v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@" %@: %@", v9, v11];;
             v14 = [(__CFString *)v7 stringByAppendingString:v13];
@@ -288,7 +288,7 @@
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v5 = [propertyList countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v5);

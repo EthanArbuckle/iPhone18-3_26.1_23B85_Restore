@@ -1,26 +1,26 @@
 @interface SGInhumans
-+ (BOOL)_isInhumanEmailAddressPatternMatch:(id)a3;
-+ (BOOL)areHumanHeaders:(id)a3;
-+ (BOOL)hasTooManyLongNumbers:(id)a3;
-+ (BOOL)isInhumanBody:(id)a3;
-+ (BOOL)isInhumanName:(id)a3;
-+ (BOOL)isInhumanNamedEmailAddress:(id)a3;
-+ (BOOL)isInhumanPerson:(id)a3;
-+ (BOOL)isInhumanPhoneNumber:(id)a3;
++ (BOOL)_isInhumanEmailAddressPatternMatch:(id)match;
++ (BOOL)areHumanHeaders:(id)headers;
++ (BOOL)hasTooManyLongNumbers:(id)numbers;
++ (BOOL)isInhumanBody:(id)body;
++ (BOOL)isInhumanName:(id)name;
++ (BOOL)isInhumanNamedEmailAddress:(id)address;
++ (BOOL)isInhumanPerson:(id)person;
++ (BOOL)isInhumanPhoneNumber:(id)number;
 @end
 
 @implementation SGInhumans
 
-+ (BOOL)areHumanHeaders:(id)a3
++ (BOOL)areHumanHeaders:(id)headers
 {
   v24 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  headersCopy = headers;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __30__SGInhumans_areHumanHeaders___block_invoke;
   block[3] = &__block_descriptor_48_e5_v8__0l;
   block[4] = a2;
-  block[5] = a1;
+  block[5] = self;
   if (areHumanHeaders___pasOnceToken5 != -1)
   {
     dispatch_once(&areHumanHeaders___pasOnceToken5, block);
@@ -31,7 +31,7 @@
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v7 = v5;
+  v7 = headersCopy;
   v8 = [v7 countByEnumeratingWithState:&v18 objects:v23 count:16];
   if (v8)
   {
@@ -48,8 +48,8 @@
         v11 = *(*(&v18 + 1) + 8 * i);
         v12 = objc_autoreleasePoolPush();
         v13 = [v11 key];
-        v14 = [v13 lowercaseString];
-        v15 = [v6 containsObject:v14];
+        lowercaseString = [v13 lowercaseString];
+        v15 = [v6 containsObject:lowercaseString];
 
         objc_autoreleasePoolPop(v12);
         if (v15)
@@ -95,17 +95,17 @@ void __30__SGInhumans_areHumanHeaders___block_invoke(uint64_t a1)
   objc_autoreleasePoolPop(v2);
 }
 
-+ (BOOL)isInhumanBody:(id)a3
++ (BOOL)isInhumanBody:(id)body
 {
-  v5 = a3;
-  if ([a1 hasTooManyLongNumbers:v5] & 1) != 0 || (patterns_9349(), v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "stringSetMatcherForKey:", @"InhumanBodyLiterals"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "existsInString:", v5), v7, v6, (v8))
+  bodyCopy = body;
+  if ([self hasTooManyLongNumbers:bodyCopy] & 1) != 0 || (patterns_9349(), v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "stringSetMatcherForKey:", @"InhumanBodyLiterals"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "existsInString:", bodyCopy), v7, v6, (v8))
   {
     v9 = 1;
   }
 
   else
   {
-    CStringPtr = CFStringGetCStringPtr(v5, 0x600u);
+    CStringPtr = CFStringGetCStringPtr(bodyCopy, 0x600u);
     if (CStringPtr)
     {
       v12 = CStringPtr;
@@ -115,13 +115,13 @@ void __30__SGInhumans_areHumanHeaders___block_invoke(uint64_t a1)
       v9 = v15 != 0;
     }
 
-    else if ([(__CFString *)v5 length])
+    else if ([(__CFString *)bodyCopy length])
     {
       v16 = 0;
       v17 = 0;
       do
       {
-        v18 = [(__CFString *)v5 length];
+        v18 = [(__CFString *)bodyCopy length];
         if ((v18 + v16) >= 0x800)
         {
           v19 = 2048;
@@ -133,11 +133,11 @@ void __30__SGInhumans_areHumanHeaders___block_invoke(uint64_t a1)
         }
 
         v20 = malloc_type_calloc(3 * v19 + 1, 1uLL, 0x100004077774924uLL);
-        [(__CFString *)v5 getBytes:v20 maxLength:3 * v19 usedLength:0 encoding:4 options:0 range:v17 remainingRange:v19, 0];
+        [(__CFString *)bodyCopy getBytes:v20 maxLength:3 * v19 usedLength:0 encoding:4 options:0 range:v17 remainingRange:v19, 0];
         if (v20[3 * v19])
         {
-          v24 = [MEMORY[0x277CCA890] currentHandler];
-          [v24 handleFailureInMethod:a2 object:a1 file:@"SGInhumans.m" lineNumber:249 description:@"NUL-terminator overwritten. This should be impossible."];
+          currentHandler = [MEMORY[0x277CCA890] currentHandler];
+          [currentHandler handleFailureInMethod:a2 object:self file:@"SGInhumans.m" lineNumber:249 description:@"NUL-terminator overwritten. This should be impossible."];
         }
 
         v21 = patterns_9349();
@@ -156,7 +156,7 @@ void __30__SGInhumans_areHumanHeaders___block_invoke(uint64_t a1)
         v16 -= 2048;
       }
 
-      while (v17 < [(__CFString *)v5 length]);
+      while (v17 < [(__CFString *)bodyCopy length]);
     }
 
     else
@@ -168,24 +168,24 @@ void __30__SGInhumans_areHumanHeaders___block_invoke(uint64_t a1)
   return v9;
 }
 
-+ (BOOL)hasTooManyLongNumbers:(id)a3
++ (BOOL)hasTooManyLongNumbers:(id)numbers
 {
-  v3 = a3;
+  numbersCopy = numbers;
   v4 = objc_opt_self();
 
   if (v4)
   {
     memset(v24, 0, sizeof(v24));
-    Length = CFStringGetLength(v3);
-    theString = v3;
+    Length = CFStringGetLength(numbersCopy);
+    theString = numbersCopy;
     v28 = 0;
     v29 = Length;
-    CharactersPtr = CFStringGetCharactersPtr(v3);
+    CharactersPtr = CFStringGetCharactersPtr(numbersCopy);
     CStringPtr = 0;
     v26 = CharactersPtr;
     if (!CharactersPtr)
     {
-      CStringPtr = CFStringGetCStringPtr(v3, 0x600u);
+      CStringPtr = CFStringGetCStringPtr(numbersCopy, 0x600u);
     }
 
     v30 = 0;
@@ -298,50 +298,50 @@ LABEL_33:
   return v4;
 }
 
-+ (BOOL)isInhumanPhoneNumber:(id)a3
++ (BOOL)isInhumanPhoneNumber:(id)number
 {
-  v3 = a3;
+  numberCopy = number;
   CFCharacterSetGetPredefined(kCFCharacterSetDecimalDigit);
   v4 = _PASKeepOnlyCharacterSet();
 
-  LOBYTE(v3) = [v4 length] < 7;
-  return v3;
+  LOBYTE(numberCopy) = [v4 length] < 7;
+  return numberCopy;
 }
 
-+ (BOOL)isInhumanPerson:(id)a3
++ (BOOL)isInhumanPerson:(id)person
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  personCopy = person;
+  v5 = personCopy;
+  if (personCopy)
   {
-    v6 = [v4 handles];
-    v7 = [v6 count];
+    handles = [personCopy handles];
+    v7 = [handles count];
 
     if (v7)
     {
-      v8 = [v5 handleIdentifier];
-      v9 = [v8 isEqualToString:*MEMORY[0x277CBCFC0]];
+      handleIdentifier = [v5 handleIdentifier];
+      v9 = [handleIdentifier isEqualToString:*MEMORY[0x277CBCFC0]];
 
       if (v9)
       {
-        v10 = [v5 handles];
-        v11 = [v10 objectAtIndexedSubscript:0];
-        v12 = [a1 isInhumanEmailAddress:v11];
+        handles2 = [v5 handles];
+        v11 = [handles2 objectAtIndexedSubscript:0];
+        v12 = [self isInhumanEmailAddress:v11];
       }
 
       else
       {
-        v14 = [v5 handleIdentifier];
-        v15 = [v14 isEqualToString:*MEMORY[0x277CBD098]];
+        handleIdentifier2 = [v5 handleIdentifier];
+        v15 = [handleIdentifier2 isEqualToString:*MEMORY[0x277CBD098]];
 
         if (!v15)
         {
           goto LABEL_10;
         }
 
-        v10 = [v5 handles];
-        v11 = [v10 objectAtIndexedSubscript:0];
-        v12 = [a1 isInhumanPhoneNumber:v11];
+        handles2 = [v5 handles];
+        v11 = [handles2 objectAtIndexedSubscript:0];
+        v12 = [self isInhumanPhoneNumber:v11];
       }
 
       v16 = v12;
@@ -353,8 +353,8 @@ LABEL_33:
       }
 
 LABEL_10:
-      v17 = [v5 displayName];
-      v13 = [a1 isInhumanName:v17];
+      displayName = [v5 displayName];
+      v13 = [self isInhumanName:displayName];
 
       goto LABEL_11;
     }
@@ -366,22 +366,22 @@ LABEL_11:
   return v13;
 }
 
-+ (BOOL)isInhumanNamedEmailAddress:(id)a3
++ (BOOL)isInhumanNamedEmailAddress:(id)address
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  addressCopy = address;
+  v5 = addressCopy;
+  if (addressCopy)
   {
-    v6 = [v4 emailAddress];
-    if ([a1 isInhumanEmailAddress:v6])
+    emailAddress = [addressCopy emailAddress];
+    if ([self isInhumanEmailAddress:emailAddress])
     {
       v7 = 1;
     }
 
     else
     {
-      v8 = [v5 name];
-      v7 = [a1 isInhumanName:v8];
+      name = [v5 name];
+      v7 = [self isInhumanName:name];
     }
   }
 
@@ -393,18 +393,18 @@ LABEL_11:
   return v7;
 }
 
-+ (BOOL)_isInhumanEmailAddressPatternMatch:(id)a3
++ (BOOL)_isInhumanEmailAddressPatternMatch:(id)match
 {
-  v5 = a3;
-  if (!v5)
+  matchCopy = match;
+  if (!matchCopy)
   {
-    v45 = [MEMORY[0x277CCA890] currentHandler];
-    [v45 handleFailureInMethod:a2 object:a1 file:@"SGInhumans.m" lineNumber:110 description:{@"Invalid parameter not satisfying: %@", @"emailAddress"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGInhumans.m" lineNumber:110 description:{@"Invalid parameter not satisfying: %@", @"emailAddress"}];
   }
 
   v6 = patterns_9349();
   v7 = [v6 regex2ForKey:@"InhumanEmailExceptions"];
-  v8 = [v7 existsInString:v5];
+  v8 = [v7 existsInString:matchCopy];
 
   if (v8)
   {
@@ -412,13 +412,13 @@ LABEL_11:
     goto LABEL_62;
   }
 
-  v10 = v5;
+  v10 = matchCopy;
   v11 = objc_opt_self();
 
   if (v11)
   {
     v46 = a2;
-    v47 = a1;
+    selfCopy = self;
     v56 = 0u;
     v57 = 0u;
     v54 = 0u;
@@ -575,7 +575,7 @@ LABEL_16:
 
 LABEL_48:
     a2 = v46;
-    a1 = v47;
+    self = selfCopy;
   }
 
   block[0] = MEMORY[0x277D85DD0];
@@ -583,7 +583,7 @@ LABEL_48:
   block[2] = __49__SGInhumans__isInhumanEmailAddressPatternMatch___block_invoke;
   block[3] = &__block_descriptor_48_e5_v8__0l;
   block[4] = a2;
-  block[5] = a1;
+  block[5] = self;
   if (_isInhumanEmailAddressPatternMatch__onceToken != -1)
   {
     dispatch_once(&_isInhumanEmailAddressPatternMatch__onceToken, block);
@@ -690,35 +690,35 @@ uint64_t __49__SGInhumans__isInhumanEmailAddressPatternMatch___block_invoke_2(ui
   return v3 ^ 1u;
 }
 
-+ (BOOL)isInhumanName:(id)a3
++ (BOOL)isInhumanName:(id)name
 {
-  v5 = a3;
-  if ([v5 length])
+  nameCopy = name;
+  if ([nameCopy length])
   {
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __28__SGInhumans_isInhumanName___block_invoke;
     block[3] = &__block_descriptor_48_e5_v8__0l;
     block[4] = a2;
-    block[5] = a1;
+    block[5] = self;
     if (isInhumanName__onceToken != -1)
     {
       dispatch_once(&isInhumanName__onceToken, block);
     }
 
     [isInhumanName__cacheLock lock];
-    if ([isInhumanName__yesCache containsObject:v5])
+    if ([isInhumanName__yesCache containsObject:nameCopy])
     {
       LOBYTE(v6) = 1;
 LABEL_9:
-      v7 = v5;
+      v7 = nameCopy;
 LABEL_24:
       [isInhumanName__cacheLock unlock];
-      v5 = v7;
+      nameCopy = v7;
       goto LABEL_25;
     }
 
-    if ([isInhumanName__noCache containsObject:v5])
+    if ([isInhumanName__noCache containsObject:nameCopy])
     {
       LOBYTE(v6) = 0;
       goto LABEL_9;
@@ -738,7 +738,7 @@ LABEL_24:
     if (v19[3])
     {
       v6 = 1;
-      if (v5)
+      if (nameCopy)
       {
 LABEL_12:
         v8 = &isInhumanName__yesCache;
@@ -748,14 +748,14 @@ LABEL_12:
         }
 
         v9 = *v8;
-        if ([v5 _pas_retainsConmingledBackingStore])
+        if ([nameCopy _pas_retainsConmingledBackingStore])
         {
-          v10 = [objc_alloc(MEMORY[0x277CCACA8]) initWithString:v5];
+          v10 = [objc_alloc(MEMORY[0x277CCACA8]) initWithString:nameCopy];
 
-          v5 = v10;
+          nameCopy = v10;
         }
 
-        [v9 addObject:v5];
+        [v9 addObject:nameCopy];
         if ([v9 count] >= 0x19)
         {
           [v9 removeObjectAtIndex:0];
@@ -774,7 +774,7 @@ LABEL_23:
       v13 = [v12 existsInString:v7];
       v6 = v13 != 0;
 
-      if (v5)
+      if (nameCopy)
       {
         goto LABEL_12;
       }

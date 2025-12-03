@@ -2,14 +2,14 @@
 - (BOOL)isStale;
 - (NSNumber)value;
 - (id)token;
-- (void)setToken:(id)a3;
+- (void)setToken:(id)token;
 @end
 
 @implementation AMSAccountCachedServerBoolCore
 
 - (BOOL)isStale
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AccountCachedServerData.AccountBoolObject.isStale.getter();
 
   return v3 & 1;
@@ -17,7 +17,7 @@
 
 - (NSNumber)value
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AccountCachedServerData.AccountBoolObject.value.getter();
 
   return v3;
@@ -30,11 +30,11 @@
   return v2;
 }
 
-- (void)setToken:(id)a3
+- (void)setToken:(id)token
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  AccountCachedServerData.AccountBoolObject.token.setter(a3);
+  selfCopy = self;
+  AccountCachedServerData.AccountBoolObject.token.setter(token);
 }
 
 @end

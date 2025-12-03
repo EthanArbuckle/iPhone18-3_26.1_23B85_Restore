@@ -1,20 +1,20 @@
 @interface FINumberFormatter
-- (id)stringFromNumber:(id)a3;
+- (id)stringFromNumber:(id)number;
 @end
 
 @implementation FINumberFormatter
 
-- (id)stringFromNumber:(id)a3
+- (id)stringFromNumber:(id)number
 {
-  v4 = a3;
+  numberCopy = number;
   if (![(FINumberFormatter *)self maximumFractionDigits])
   {
-    [v4 doubleValue];
+    [numberCopy doubleValue];
     v8 = v7;
-    v9 = [(FINumberFormatter *)self roundingMode];
-    if (v9 <= 3)
+    roundingMode = [(FINumberFormatter *)self roundingMode];
+    if (roundingMode <= 3)
     {
-      if (v9 && v9 != 2 || v8 >= 0.0)
+      if (roundingMode && roundingMode != 2 || v8 >= 0.0)
       {
         goto LABEL_2;
       }
@@ -24,7 +24,7 @@
 
     else
     {
-      if ((v9 - 4) < 2)
+      if ((roundingMode - 4) < 2)
       {
         if (v8 >= 0.0 || v8 < -0.5)
         {
@@ -34,11 +34,11 @@
 LABEL_18:
         v11 = [MEMORY[0x277CCABB0] numberWithDouble:0.0];
 
-        v4 = v11;
+        numberCopy = v11;
         goto LABEL_2;
       }
 
-      if (v9 != 6 || v8 >= 0.0)
+      if (roundingMode != 6 || v8 >= 0.0)
       {
         goto LABEL_2;
       }
@@ -57,7 +57,7 @@ LABEL_18:
 LABEL_2:
   v12.receiver = self;
   v12.super_class = FINumberFormatter;
-  v5 = [(FINumberFormatter *)&v12 stringFromNumber:v4];
+  v5 = [(FINumberFormatter *)&v12 stringFromNumber:numberCopy];
 
   return v5;
 }

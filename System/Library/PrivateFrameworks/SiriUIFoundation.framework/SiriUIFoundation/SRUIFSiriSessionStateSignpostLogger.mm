@@ -1,14 +1,14 @@
 @interface SRUIFSiriSessionStateSignpostLogger
-- (void)sessionStateHandler:(id)a3 didTransitionFromState:(int64_t)a4 toState:(int64_t)a5 forEvent:(int64_t)a6 machAbsoluteTime:(double)a7;
+- (void)sessionStateHandler:(id)handler didTransitionFromState:(int64_t)state toState:(int64_t)toState forEvent:(int64_t)event machAbsoluteTime:(double)time;
 @end
 
 @implementation SRUIFSiriSessionStateSignpostLogger
 
-- (void)sessionStateHandler:(id)a3 didTransitionFromState:(int64_t)a4 toState:(int64_t)a5 forEvent:(int64_t)a6 machAbsoluteTime:(double)a7
+- (void)sessionStateHandler:(id)handler didTransitionFromState:(int64_t)state toState:(int64_t)toState forEvent:(int64_t)event machAbsoluteTime:(double)time
 {
   v33 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  if (a6 == 6)
+  handlerCopy = handler;
+  if (event == 6)
   {
     if (self->_thinkingIntervalID)
     {
@@ -25,7 +25,7 @@
     }
   }
 
-  else if (a6 == 2)
+  else if (event == 2)
   {
     v13 = MEMORY[0x277CEF098];
     self->_thinkingIntervalID = os_signpost_id_generate(*MEMORY[0x277CEF098]);
@@ -39,16 +39,16 @@
     }
   }
 
-  if (a5 > 1)
+  if (toState > 1)
   {
     v23 = 1419;
-    if (a5 != 3)
+    if (toState != 3)
     {
       v23 = 0;
     }
 
-    v21 = a5 != 2 && a5 != 3;
-    if (a5 == 2)
+    v21 = toState != 2 && toState != 3;
+    if (toState == 2)
     {
       v22 = 1418;
     }
@@ -62,14 +62,14 @@
   else
   {
     v20 = 1417;
-    if (a5 != 1)
+    if (toState != 1)
     {
       v20 = 0;
     }
 
-    if (a5)
+    if (toState)
     {
-      v21 = a5 != 1;
+      v21 = toState != 1;
     }
 
     else
@@ -77,7 +77,7 @@
       v21 = 0;
     }
 
-    if (a5)
+    if (toState)
     {
       v22 = v20;
     }
@@ -88,7 +88,7 @@
     }
   }
 
-  if (a4 != a5)
+  if (state != toState)
   {
     v24 = *MEMORY[0x277CEF098];
     if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
@@ -102,8 +102,8 @@
       _os_log_impl(&dword_26951F000, v25, OS_LOG_TYPE_DEFAULT, "%s logging event %@", &v29, 0x16u);
     }
 
-    v27 = [MEMORY[0x277CEF158] sharedAnalytics];
-    [v27 logEventWithType:v22 machAbsoluteTime:a7 context:0];
+    mEMORY[0x277CEF158] = [MEMORY[0x277CEF158] sharedAnalytics];
+    [mEMORY[0x277CEF158] logEventWithType:v22 machAbsoluteTime:time context:0];
 
     if (!v21)
     {

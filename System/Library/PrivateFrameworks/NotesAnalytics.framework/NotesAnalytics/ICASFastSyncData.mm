@@ -1,22 +1,22 @@
 @interface ICASFastSyncData
-- (ICASFastSyncData)initWithFastSyncSessionId:(id)a3 participantVersions:(id)a4;
+- (ICASFastSyncData)initWithFastSyncSessionId:(id)id participantVersions:(id)versions;
 - (id)toDict;
 @end
 
 @implementation ICASFastSyncData
 
-- (ICASFastSyncData)initWithFastSyncSessionId:(id)a3 participantVersions:(id)a4
+- (ICASFastSyncData)initWithFastSyncSessionId:(id)id participantVersions:(id)versions
 {
-  v7 = a3;
-  v8 = a4;
+  idCopy = id;
+  versionsCopy = versions;
   v12.receiver = self;
   v12.super_class = ICASFastSyncData;
   v9 = [(ICASFastSyncData *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_fastSyncSessionId, a3);
-    objc_storeStrong(&v10->_participantVersions, a4);
+    objc_storeStrong(&v9->_fastSyncSessionId, id);
+    objc_storeStrong(&v10->_participantVersions, versions);
   }
 
   return v10;
@@ -26,33 +26,33 @@
 {
   v13[2] = *MEMORY[0x277D85DE8];
   v12[0] = @"fastSyncSessionId";
-  v3 = [(ICASFastSyncData *)self fastSyncSessionId];
-  if (v3)
+  fastSyncSessionId = [(ICASFastSyncData *)self fastSyncSessionId];
+  if (fastSyncSessionId)
   {
-    v4 = [(ICASFastSyncData *)self fastSyncSessionId];
+    fastSyncSessionId2 = [(ICASFastSyncData *)self fastSyncSessionId];
   }
 
   else
   {
-    v4 = objc_opt_new();
+    fastSyncSessionId2 = objc_opt_new();
   }
 
-  v5 = v4;
+  v5 = fastSyncSessionId2;
   v12[1] = @"participantVersions";
-  v13[0] = v4;
-  v6 = [(ICASFastSyncData *)self participantVersions];
-  if (v6)
+  v13[0] = fastSyncSessionId2;
+  participantVersions = [(ICASFastSyncData *)self participantVersions];
+  if (participantVersions)
   {
-    v7 = [(ICASFastSyncData *)self participantVersions];
+    participantVersions2 = [(ICASFastSyncData *)self participantVersions];
   }
 
   else
   {
-    v7 = objc_opt_new();
+    participantVersions2 = objc_opt_new();
   }
 
-  v8 = v7;
-  v13[1] = v7;
+  v8 = participantVersions2;
+  v13[1] = participantVersions2;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:v12 count:2];
 
   v10 = *MEMORY[0x277D85DE8];

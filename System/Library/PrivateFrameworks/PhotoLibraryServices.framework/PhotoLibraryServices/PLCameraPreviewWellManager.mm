@@ -1,24 +1,24 @@
 @interface PLCameraPreviewWellManager
-+ (BOOL)_asset:(id)a3 sortsGreaterThanAssetInfo:(id)a4;
-- (BOOL)shouldReconsiderCameraPreviewWellImageForUpdatedAsset:(id)a3 thumbnailWasGenerated:(BOOL)a4;
++ (BOOL)_asset:(id)_asset sortsGreaterThanAssetInfo:(id)info;
+- (BOOL)shouldReconsiderCameraPreviewWellImageForUpdatedAsset:(id)asset thumbnailWasGenerated:(BOOL)generated;
 - (PLCameraPreviewWellManager)init;
 - (void)_clearPreviewWellAndNotify;
-- (void)_fetchPreviewWellAssetUsingContext:(id)a3 withAssetHandler:(id)a4;
-- (void)_updateLinkAndNotifyForAssetInfo:(id)a3 avoidNotificationIfLinkIsAlreadySet:(BOOL)a4;
-- (void)refreshPreviewWellImageWithContext:(id)a3 avoidNotificationIfLinkIsAlreadySet:(BOOL)a4;
+- (void)_fetchPreviewWellAssetUsingContext:(id)context withAssetHandler:(id)handler;
+- (void)_updateLinkAndNotifyForAssetInfo:(id)info avoidNotificationIfLinkIsAlreadySet:(BOOL)set;
+- (void)refreshPreviewWellImageWithContext:(id)context avoidNotificationIfLinkIsAlreadySet:(BOOL)set;
 @end
 
 @implementation PLCameraPreviewWellManager
 
-- (void)refreshPreviewWellImageWithContext:(id)a3 avoidNotificationIfLinkIsAlreadySet:(BOOL)a4
+- (void)refreshPreviewWellImageWithContext:(id)context avoidNotificationIfLinkIsAlreadySet:(BOOL)set
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __101__PLCameraPreviewWellManager_refreshPreviewWellImageWithContext_avoidNotificationIfLinkIsAlreadySet___block_invoke;
   v4[3] = &unk_1E7566640;
   v4[4] = self;
-  v5 = a4;
-  [(PLCameraPreviewWellManager *)self _fetchPreviewWellAssetUsingContext:a3 withAssetHandler:v4];
+  setCopy = set;
+  [(PLCameraPreviewWellManager *)self _fetchPreviewWellAssetUsingContext:context withAssetHandler:v4];
 }
 
 void __101__PLCameraPreviewWellManager_refreshPreviewWellImageWithContext_avoidNotificationIfLinkIsAlreadySet___block_invoke(uint64_t a1, int a2, void *a3)
@@ -54,13 +54,13 @@ void __101__PLCameraPreviewWellManager_refreshPreviewWellImageWithContext_avoidN
   }
 }
 
-- (BOOL)shouldReconsiderCameraPreviewWellImageForUpdatedAsset:(id)a3 thumbnailWasGenerated:(BOOL)a4
+- (BOOL)shouldReconsiderCameraPreviewWellImageForUpdatedAsset:(id)asset thumbnailWasGenerated:(BOOL)generated
 {
-  LODWORD(v4) = a4;
-  v5 = a3;
-  v6 = [v5 photoLibrary];
-  v7 = [v6 pathManager];
-  if (v7)
+  LODWORD(v4) = generated;
+  assetCopy = asset;
+  photoLibrary = [assetCopy photoLibrary];
+  pathManager = [photoLibrary pathManager];
+  if (pathManager)
   {
   }
 
@@ -82,7 +82,7 @@ void __101__PLCameraPreviewWellManager_refreshPreviewWellImageWithContext_avoidN
     }
   }
 
-  if (![v5 isInserted] || v4)
+  if (![assetCopy isInserted] || v4)
   {
     *buf = 0;
     v22 = buf;
@@ -96,7 +96,7 @@ void __101__PLCameraPreviewWellManager_refreshPreviewWellImageWithContext_avoidN
     v14 = &v13;
     v15 = 0x2020000000;
     v16 = 0;
-    v9 = v5;
+    v9 = assetCopy;
     PLRunWithUnfairLock();
     if (v22[24] == 1)
     {
@@ -165,12 +165,12 @@ void __106__PLCameraPreviewWellManager_shouldReconsiderCameraPreviewWellImageFor
   return result;
 }
 
-- (void)_updateLinkAndNotifyForAssetInfo:(id)a3 avoidNotificationIfLinkIsAlreadySet:(BOOL)a4
+- (void)_updateLinkAndNotifyForAssetInfo:(id)info avoidNotificationIfLinkIsAlreadySet:(BOOL)set
 {
-  v4 = a3;
+  infoCopy = info;
   if ((PLIsAssetsd() & 1) != 0 || MEMORY[0x19EAEE520]())
   {
-    v5 = v4;
+    v5 = infoCopy;
     PLRunWithUnfairLock();
   }
 }
@@ -288,23 +288,23 @@ LABEL_19:
 - (void)_clearPreviewWellAndNotify
 {
   v15 = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E69BF170] cameraPreviewWellImageFileURL];
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
+  cameraPreviewWellImageFileURL = [MEMORY[0x1E69BF170] cameraPreviewWellImageFileURL];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v12 = 0;
-  v4 = [v3 removeItemAtURL:v2 error:&v12];
+  v4 = [defaultManager removeItemAtURL:cameraPreviewWellImageFileURL error:&v12];
   v5 = v12;
 
   if ((v4 & 1) == 0)
   {
-    v6 = [v5 userInfo];
-    v7 = [v6 objectForKey:*MEMORY[0x1E696AA08]];
+    userInfo = [v5 userInfo];
+    v7 = [userInfo objectForKey:*MEMORY[0x1E696AA08]];
 
-    v8 = [v7 domain];
-    if ([v8 isEqualToString:*MEMORY[0x1E696A798]])
+    domain = [v7 domain];
+    if ([domain isEqualToString:*MEMORY[0x1E696A798]])
     {
-      v9 = [v7 code];
+      code = [v7 code];
 
-      if (v9 == 2)
+      if (code == 2)
       {
 LABEL_9:
 
@@ -338,30 +338,30 @@ LABEL_10:
   notify_post("cameraPreviewImageWellChanged");
 }
 
-- (void)_fetchPreviewWellAssetUsingContext:(id)a3 withAssetHandler:(id)a4
+- (void)_fetchPreviewWellAssetUsingContext:(id)context withAssetHandler:(id)handler
 {
   v45 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  contextCopy = context;
+  handlerCopy = handler;
   v42 = _PLCameraPreviewWellAssetFetchRequest();
-  v7 = [v5 executeFetchRequest:? error:?];
+  v7 = [contextCopy executeFetchRequest:? error:?];
   v8 = 0;
   if (v7)
   {
-    v9 = [v7 firstObject];
-    v10 = v9;
-    if (v9)
+    firstObject = [v7 firstObject];
+    v10 = firstObject;
+    if (firstObject)
     {
-      [v9 objectForKeyedSubscript:@"uuid"];
+      [firstObject objectForKeyedSubscript:@"uuid"];
       v11 = v39 = v8;
       v12 = [v10 objectForKeyedSubscript:@"directory"];
       v13 = [v10 objectForKeyedSubscript:@"filename"];
       v14 = [v10 objectForKeyedSubscript:@"bundleScope"];
       v40 = v7;
-      v15 = [v14 shortValue];
-      [v5 pathManager];
-      v16 = v41 = v5;
-      v17 = [PLThumbnailManager thumbnailIdentifierWithAssetUUID:v11 directory:v12 filename:v13 bundleScope:v15 pathManager:v16];
+      shortValue = [v14 shortValue];
+      [contextCopy pathManager];
+      v16 = v41 = contextCopy;
+      v17 = [PLThumbnailManager thumbnailIdentifierWithAssetUUID:v11 directory:v12 filename:v13 bundleScope:shortValue pathManager:v16];
 
       v18 = [PLCameraPreviewWellAssetInfo alloc];
       v36 = [v10 objectForKeyedSubscript:@"uuid"];
@@ -370,22 +370,22 @@ LABEL_10:
       v20 = v19;
       v34 = [v10 objectForKeyedSubscript:@"addedDate"];
       v37 = [v10 objectForKeyedSubscript:@"hidden"];
-      v33 = [v37 BOOLValue];
+      bOOLValue = [v37 BOOLValue];
       v35 = [v10 objectForKeyedSubscript:@"visibilityState"];
-      v31 = [v35 longValue];
+      longValue = [v35 longValue];
       v32 = [v10 objectForKeyedSubscript:@"trashedState"];
-      v21 = [v32 longValue];
+      longValue2 = [v32 longValue];
       v22 = [v10 objectForKeyedSubscript:@"avalanchePickType"];
-      v23 = [v22 longValue];
+      longValue3 = [v22 longValue];
       v24 = [v10 objectForKeyedSubscript:@"savedAssetType"];
-      v25 = [v24 longValue];
-      v26 = [v41 pathManager];
-      v27 = v21;
-      LOWORD(v30) = v25;
+      longValue4 = [v24 longValue];
+      pathManager = [v41 pathManager];
+      v27 = longValue2;
+      LOWORD(v30) = longValue4;
       v7 = v40;
-      v28 = [(PLCameraPreviewWellAssetInfo *)v18 initWithUUID:v36 sortToken:v34 addedDate:v33 hidden:v31 visibilityState:v27 trashedState:v23 avalanchePickType:v20 savedAssetType:v30 thumbnailIdentifier:v17 pathManager:v26];
+      v28 = [(PLCameraPreviewWellAssetInfo *)v18 initWithUUID:v36 sortToken:v34 addedDate:bOOLValue hidden:longValue visibilityState:v27 trashedState:longValue3 avalanchePickType:v20 savedAssetType:v30 thumbnailIdentifier:v17 pathManager:pathManager];
 
-      v5 = v41;
+      contextCopy = v41;
       v8 = v39;
     }
 
@@ -394,8 +394,8 @@ LABEL_10:
       v28 = 0;
     }
 
-    v6[2](v6, 1, v28);
-    v6 = v28;
+    handlerCopy[2](handlerCopy, 1, v28);
+    handlerCopy = v28;
   }
 
   else
@@ -408,20 +408,20 @@ LABEL_10:
       _os_log_impl(&dword_19BF1F000, v29, OS_LOG_TYPE_ERROR, "Error fetching assets for camera preview well metadata: %@", buf, 0xCu);
     }
 
-    v6[2](v6, 0, 0);
+    handlerCopy[2](handlerCopy, 0, 0);
   }
 }
 
-+ (BOOL)_asset:(id)a3 sortsGreaterThanAssetInfo:(id)a4
++ (BOOL)_asset:(id)_asset sortsGreaterThanAssetInfo:(id)info
 {
   v18[2] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (!v7)
+  _assetCopy = _asset;
+  infoCopy = info;
+  v9 = infoCopy;
+  if (!_assetCopy)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:a1 file:@"PLCameraPreviewWellManager.m" lineNumber:368 description:{@"Invalid parameter not satisfying: %@", @"assetToTest"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLCameraPreviewWellManager.m" lineNumber:368 description:{@"Invalid parameter not satisfying: %@", @"assetToTest"}];
 
     if (v9)
     {
@@ -433,7 +433,7 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if (!v8)
+  if (!infoCopy)
   {
     goto LABEL_8;
   }
@@ -443,13 +443,13 @@ LABEL_3:
   if ([v10 evaluateWithObject:v9])
   {
     v18[0] = v9;
-    v18[1] = v7;
+    v18[1] = _assetCopy;
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:2];
     v12 = _PLAllowedForCameraPreviewSortDescriptors();
     v13 = [v11 sortedArrayUsingDescriptors:v12];
 
-    v14 = [v13 firstObject];
-    v15 = [v14 isEqual:v7];
+    firstObject = [v13 firstObject];
+    v15 = [firstObject isEqual:_assetCopy];
   }
 
   else

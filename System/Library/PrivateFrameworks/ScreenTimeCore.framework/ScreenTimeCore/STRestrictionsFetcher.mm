@@ -1,33 +1,33 @@
 @interface STRestrictionsFetcher
-+ (id)_fetchRestrictionsForUserDSID:(id)a3 inManagedObjectContext:(id)a4 allowImageCreation:(int64_t)a5 withError:(id *)a6;
-+ (int64_t)_invertedRestrictionState:(int64_t)a3;
-+ (int64_t)_restrictionStateForPayloadNumber:(id)a3;
-+ (unint64_t)_webFilterStateForWebContentDeclaration:(id)a3;
-+ (void)_fetchImageCreationStateForUserDSID:(id)a3 organizationSettingsRestrictionUtility:(id)a4 completionHandler:(id)a5;
-+ (void)fetchRestrictionsForUserDSID:(id)a3 persistenceController:(id)a4 completionHandler:(id)a5;
-+ (void)fetchRestrictionsForUserDSID:(id)a3 persistenceController:(id)a4 organizationSettingsRestrictionUtility:(id)a5 completionHandler:(id)a6;
++ (id)_fetchRestrictionsForUserDSID:(id)d inManagedObjectContext:(id)context allowImageCreation:(int64_t)creation withError:(id *)error;
++ (int64_t)_invertedRestrictionState:(int64_t)state;
++ (int64_t)_restrictionStateForPayloadNumber:(id)number;
++ (unint64_t)_webFilterStateForWebContentDeclaration:(id)declaration;
++ (void)_fetchImageCreationStateForUserDSID:(id)d organizationSettingsRestrictionUtility:(id)utility completionHandler:(id)handler;
++ (void)fetchRestrictionsForUserDSID:(id)d persistenceController:(id)controller completionHandler:(id)handler;
++ (void)fetchRestrictionsForUserDSID:(id)d persistenceController:(id)controller organizationSettingsRestrictionUtility:(id)utility completionHandler:(id)handler;
 @end
 
 @implementation STRestrictionsFetcher
 
-+ (void)fetchRestrictionsForUserDSID:(id)a3 persistenceController:(id)a4 completionHandler:(id)a5
++ (void)fetchRestrictionsForUserDSID:(id)d persistenceController:(id)controller completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  handlerCopy = handler;
+  controllerCopy = controller;
+  dCopy = d;
   v11 = [STOrganizationSettingsRestrictionUtility alloc];
   v12 = objc_opt_new();
-  v13 = [(STOrganizationSettingsRestrictionUtility *)v11 initWithPersistenceController:v9 restrictionPayloadUtility:v12];
+  v13 = [(STOrganizationSettingsRestrictionUtility *)v11 initWithPersistenceController:controllerCopy restrictionPayloadUtility:v12];
 
-  [a1 fetchRestrictionsForUserDSID:v10 persistenceController:v9 organizationSettingsRestrictionUtility:v13 completionHandler:v8];
+  [self fetchRestrictionsForUserDSID:dCopy persistenceController:controllerCopy organizationSettingsRestrictionUtility:v13 completionHandler:handlerCopy];
 }
 
-+ (void)fetchRestrictionsForUserDSID:(id)a3 persistenceController:(id)a4 organizationSettingsRestrictionUtility:(id)a5 completionHandler:(id)a6
++ (void)fetchRestrictionsForUserDSID:(id)d persistenceController:(id)controller organizationSettingsRestrictionUtility:(id)utility completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = a5;
+  dCopy = d;
+  controllerCopy = controller;
+  handlerCopy = handler;
+  utilityCopy = utility;
   v14 = +[STLog screenTimeOrganizationController];
   v15 = os_signpost_id_generate(v14);
 
@@ -43,15 +43,15 @@
   v21[1] = 3221225472;
   v21[2] = __133__STRestrictionsFetcher_fetchRestrictionsForUserDSID_persistenceController_organizationSettingsRestrictionUtility_completionHandler___block_invoke;
   v21[3] = &unk_1E7CE7EF8;
-  v24 = v12;
+  v24 = handlerCopy;
   v25 = v15;
-  v26 = a1;
-  v22 = v11;
-  v23 = v10;
-  v18 = v10;
-  v19 = v11;
-  v20 = v12;
-  [a1 _fetchImageCreationStateForUserDSID:v18 organizationSettingsRestrictionUtility:v13 completionHandler:v21];
+  selfCopy = self;
+  v22 = controllerCopy;
+  v23 = dCopy;
+  v18 = dCopy;
+  v19 = controllerCopy;
+  v20 = handlerCopy;
+  [self _fetchImageCreationStateForUserDSID:v18 organizationSettingsRestrictionUtility:utilityCopy completionHandler:v21];
 }
 
 void __133__STRestrictionsFetcher_fetchRestrictionsForUserDSID_persistenceController_organizationSettingsRestrictionUtility_completionHandler___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -143,18 +143,18 @@ void __133__STRestrictionsFetcher_fetchRestrictionsForUserDSID_persistenceContro
   *(v9 + 40) = v8;
 }
 
-+ (void)_fetchImageCreationStateForUserDSID:(id)a3 organizationSettingsRestrictionUtility:(id)a4 completionHandler:(id)a5
++ (void)_fetchImageCreationStateForUserDSID:(id)d organizationSettingsRestrictionUtility:(id)utility completionHandler:(id)handler
 {
-  v7 = a5;
-  v8 = v7;
-  if (a3)
+  handlerCopy = handler;
+  v8 = handlerCopy;
+  if (d)
   {
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __118__STRestrictionsFetcher__fetchImageCreationStateForUserDSID_organizationSettingsRestrictionUtility_completionHandler___block_invoke;
     v10[3] = &unk_1E7CE7F20;
-    v11 = v7;
-    [a4 isImageGenerationAllowedForUserDSID:a3 completionHandler:v10];
+    v11 = handlerCopy;
+    [utility isImageGenerationAllowedForUserDSID:d completionHandler:v10];
   }
 
   else
@@ -185,16 +185,16 @@ uint64_t __118__STRestrictionsFetcher__fetchImageCreationStateForUserDSID_organi
   return (*(v3 + 16))(v3, v5);
 }
 
-+ (id)_fetchRestrictionsForUserDSID:(id)a3 inManagedObjectContext:(id)a4 allowImageCreation:(int64_t)a5 withError:(id *)a6
++ (id)_fetchRestrictionsForUserDSID:(id)d inManagedObjectContext:(id)context allowImageCreation:(int64_t)creation withError:(id *)error
 {
   v148 = *MEMORY[0x1E69E9840];
   v141 = 0;
-  v9 = [STCoreUser fetchUserWithDSID:a3 inContext:a4 error:&v141];
+  v9 = [STCoreUser fetchUserWithDSID:d inContext:context error:&v141];
   v10 = v141;
   v11 = v10;
   if (v9)
   {
-    v139 = a1;
+    selfCopy = self;
     v140 = v10;
     v12 = v9;
     v13 = +[STLog screenTimeOrganizationController];
@@ -203,9 +203,9 @@ uint64_t __118__STRestrictionsFetcher__fetchImageCreationStateForUserDSID_organi
       [STRestrictionsFetcher _fetchRestrictionsForUserDSID:v12 inManagedObjectContext:v13 allowImageCreation:? withError:?];
     }
 
-    v14 = [v12 dsid];
-    v15 = [v12 managingOrganization];
-    v16 = [STBlueprint fetchRequestMatchingBlueprintsForUserWithDSID:v14 ofType:@"restrictions" fromOrganization:v15];
+    dsid = [v12 dsid];
+    managingOrganization = [v12 managingOrganization];
+    v16 = [STBlueprint fetchRequestMatchingBlueprintsForUserWithDSID:dsid ofType:@"restrictions" fromOrganization:managingOrganization];
 
     v17 = [v16 execute:&v140];
     v18 = v17;
@@ -237,26 +237,26 @@ uint64_t __118__STRestrictionsFetcher__fetchImageCreationStateForUserDSID_organi
       }
 
       v22 = 0;
-      if (a6 && v20)
+      if (error && v20)
       {
         v40 = v20;
         v22 = 0;
-        *a6 = v20;
+        *error = v20;
       }
 
       goto LABEL_40;
     }
 
-    v25 = [v18 firstObject];
-    v26 = v25;
-    if (v25)
+    firstObject = [v18 firstObject];
+    v26 = firstObject;
+    if (firstObject)
     {
-      if ([v25 enabled])
+      if ([firstObject enabled])
       {
         v27 = [[STMutableRestrictions alloc] initWithIsEnabled:1];
-        [(STMutableRestrictions *)v27 setAllowImageCreation:a5];
-        v28 = [v26 configurations];
-        v29 = [v28 count];
+        [(STMutableRestrictions *)v27 setAllowImageCreation:creation];
+        configurations = [v26 configurations];
+        v29 = [configurations count];
 
         if (v29)
         {
@@ -265,8 +265,8 @@ uint64_t __118__STRestrictionsFetcher__fetchImageCreationStateForUserDSID_organi
           v143 = 0u;
           v144 = 0u;
           v145 = 0u;
-          v30 = [v26 configurations];
-          v31 = [v30 countByEnumeratingWithState:&v142 objects:buf count:16];
+          configurations2 = [v26 configurations];
+          v31 = [configurations2 countByEnumeratingWithState:&v142 objects:buf count:16];
           v137 = v26;
           v138 = v27;
           if (v31)
@@ -279,12 +279,12 @@ uint64_t __118__STRestrictionsFetcher__fetchImageCreationStateForUserDSID_organi
               {
                 if (*v143 != v33)
                 {
-                  objc_enumerationMutation(v30);
+                  objc_enumerationMutation(configurations2);
                 }
 
                 v35 = *(*(&v142 + 1) + 8 * i);
-                v36 = [v35 type];
-                v37 = [v36 isEqualToString:@"application.store"];
+                type = [v35 type];
+                v37 = [type isEqualToString:@"application.store"];
 
                 if (v37)
                 {
@@ -293,7 +293,7 @@ uint64_t __118__STRestrictionsFetcher__fetchImageCreationStateForUserDSID_organi
                 }
               }
 
-              v32 = [v30 countByEnumeratingWithState:&v142 objects:buf count:16];
+              v32 = [configurations2 countByEnumeratingWithState:&v142 objects:buf count:16];
               if (v32)
               {
                 continue;
@@ -314,24 +314,24 @@ LABEL_45:
           }
 
           v135 = v38;
-          v47 = [v38 cemConfiguration];
-          v48 = [v47 payloadAllowAppInstallation];
-          v49 = v139;
-          -[STMutableRestrictions setAllowInstallingApps:](v27, "setAllowInstallingApps:", [v139 _restrictionStateForPayloadNumber:v48]);
+          cemConfiguration = [v38 cemConfiguration];
+          payloadAllowAppInstallation = [cemConfiguration payloadAllowAppInstallation];
+          v49 = selfCopy;
+          -[STMutableRestrictions setAllowInstallingApps:](v27, "setAllowInstallingApps:", [selfCopy _restrictionStateForPayloadNumber:payloadAllowAppInstallation]);
 
-          v50 = [v47 payloadAllowAppRemoval];
-          -[STMutableRestrictions setAllowDeletingApps:](v27, "setAllowDeletingApps:", [v139 _restrictionStateForPayloadNumber:v50]);
+          payloadAllowAppRemoval = [cemConfiguration payloadAllowAppRemoval];
+          -[STMutableRestrictions setAllowDeletingApps:](v27, "setAllowDeletingApps:", [selfCopy _restrictionStateForPayloadNumber:payloadAllowAppRemoval]);
 
-          v134 = v47;
-          v51 = [v47 payloadAllowInAppPurchases];
-          -[STMutableRestrictions setAllowInAppPurchases:](v27, "setAllowInAppPurchases:", [v139 _restrictionStateForPayloadNumber:v51]);
+          v134 = cemConfiguration;
+          payloadAllowInAppPurchases = [cemConfiguration payloadAllowInAppPurchases];
+          -[STMutableRestrictions setAllowInAppPurchases:](v27, "setAllowInAppPurchases:", [selfCopy _restrictionStateForPayloadNumber:payloadAllowInAppPurchases]);
 
           v142 = 0u;
           v143 = 0u;
           v144 = 0u;
           v145 = 0u;
-          v52 = [v26 configurations];
-          v53 = [v52 countByEnumeratingWithState:&v142 objects:buf count:16];
+          configurations3 = [v26 configurations];
+          v53 = [configurations3 countByEnumeratingWithState:&v142 objects:buf count:16];
           if (v53)
           {
             v54 = v53;
@@ -342,12 +342,12 @@ LABEL_45:
               {
                 if (*v143 != v55)
                 {
-                  objc_enumerationMutation(v52);
+                  objc_enumerationMutation(configurations3);
                 }
 
                 v57 = *(*(&v142 + 1) + 8 * j);
-                v58 = [v57 type];
-                v59 = [v58 isEqualToString:@"system.music"];
+                type2 = [v57 type];
+                v59 = [type2 isEqualToString:@"system.music"];
 
                 if (v59)
                 {
@@ -356,7 +356,7 @@ LABEL_45:
                 }
               }
 
-              v54 = [v52 countByEnumeratingWithState:&v142 objects:buf count:16];
+              v54 = [configurations3 countByEnumeratingWithState:&v142 objects:buf count:16];
               if (v54)
               {
                 continue;
@@ -369,7 +369,7 @@ LABEL_45:
 LABEL_60:
             v26 = v137;
             v27 = v138;
-            v49 = v139;
+            v49 = selfCopy;
           }
 
           else
@@ -378,20 +378,20 @@ LABEL_60:
           }
 
           v133 = v60;
-          v61 = [v60 cemConfiguration];
-          v62 = [v61 payloadAllowMusicVideos];
-          -[STMutableRestrictions setAllowMusicVideos:](v27, "setAllowMusicVideos:", [v49 _restrictionStateForPayloadNumber:v62]);
+          cemConfiguration2 = [v60 cemConfiguration];
+          payloadAllowMusicVideos = [cemConfiguration2 payloadAllowMusicVideos];
+          -[STMutableRestrictions setAllowMusicVideos:](v27, "setAllowMusicVideos:", [v49 _restrictionStateForPayloadNumber:payloadAllowMusicVideos]);
 
-          v132 = v61;
-          v63 = [v61 payloadAllowMusicArtistActivity];
-          -[STMutableRestrictions setAllowMusicProfiles:](v27, "setAllowMusicProfiles:", [v49 _restrictionStateForPayloadNumber:v63]);
+          v132 = cemConfiguration2;
+          payloadAllowMusicArtistActivity = [cemConfiguration2 payloadAllowMusicArtistActivity];
+          -[STMutableRestrictions setAllowMusicProfiles:](v27, "setAllowMusicProfiles:", [v49 _restrictionStateForPayloadNumber:payloadAllowMusicArtistActivity]);
 
           v142 = 0u;
           v143 = 0u;
           v144 = 0u;
           v145 = 0u;
-          v64 = [v26 configurations];
-          v65 = [v64 countByEnumeratingWithState:&v142 objects:buf count:16];
+          configurations4 = [v26 configurations];
+          v65 = [configurations4 countByEnumeratingWithState:&v142 objects:buf count:16];
           if (v65)
           {
             v66 = v65;
@@ -402,12 +402,12 @@ LABEL_60:
               {
                 if (*v143 != v67)
                 {
-                  objc_enumerationMutation(v64);
+                  objc_enumerationMutation(configurations4);
                 }
 
                 v69 = *(*(&v142 + 1) + 8 * k);
-                v70 = [v69 type];
-                v71 = [v70 isEqualToString:@"system.ratings"];
+                type3 = [v69 type];
+                v71 = [type3 isEqualToString:@"system.ratings"];
 
                 if (v71)
                 {
@@ -416,7 +416,7 @@ LABEL_60:
                 }
               }
 
-              v66 = [v64 countByEnumeratingWithState:&v142 objects:buf count:16];
+              v66 = [configurations4 countByEnumeratingWithState:&v142 objects:buf count:16];
               if (v66)
               {
                 continue;
@@ -429,7 +429,7 @@ LABEL_60:
 LABEL_72:
             v26 = v137;
             v27 = v138;
-            v49 = v139;
+            v49 = selfCopy;
           }
 
           else
@@ -438,23 +438,23 @@ LABEL_72:
           }
 
           v131 = v72;
-          v73 = [v72 cemConfiguration];
-          v129 = [v73 payloadRatingTVShows];
+          cemConfiguration3 = [v72 cemConfiguration];
+          payloadRatingTVShows = [cemConfiguration3 payloadRatingTVShows];
           [(STMutableRestrictions *)v27 setTvShowsRating:?];
-          v128 = [v73 payloadRatingMovies];
+          payloadRatingMovies = [cemConfiguration3 payloadRatingMovies];
           [(STMutableRestrictions *)v27 setMoviesRating:?];
-          v127 = [v73 payloadRatingApps];
+          payloadRatingApps = [cemConfiguration3 payloadRatingApps];
           [(STMutableRestrictions *)v27 setAppsRating:?];
-          v130 = v73;
-          v74 = [v73 payloadAllowExplicitContent];
-          -[STMutableRestrictions setAllowExplicitMediaContent:](v27, "setAllowExplicitMediaContent:", [v49 _restrictionStateForPayloadNumber:v74]);
+          v130 = cemConfiguration3;
+          payloadAllowExplicitContent = [cemConfiguration3 payloadAllowExplicitContent];
+          -[STMutableRestrictions setAllowExplicitMediaContent:](v27, "setAllowExplicitMediaContent:", [v49 _restrictionStateForPayloadNumber:payloadAllowExplicitContent]);
 
           v142 = 0u;
           v143 = 0u;
           v144 = 0u;
           v145 = 0u;
-          v75 = [v26 configurations];
-          v76 = [v75 countByEnumeratingWithState:&v142 objects:buf count:16];
+          configurations5 = [v26 configurations];
+          v76 = [configurations5 countByEnumeratingWithState:&v142 objects:buf count:16];
           if (v76)
           {
             v77 = v76;
@@ -465,12 +465,12 @@ LABEL_72:
               {
                 if (*v143 != v78)
                 {
-                  objc_enumerationMutation(v75);
+                  objc_enumerationMutation(configurations5);
                 }
 
                 v80 = *(*(&v142 + 1) + 8 * m);
-                v81 = [v80 type];
-                v82 = [v81 isEqualToString:@"media.settings"];
+                type4 = [v80 type];
+                v82 = [type4 isEqualToString:@"media.settings"];
 
                 if (v82)
                 {
@@ -479,7 +479,7 @@ LABEL_72:
                 }
               }
 
-              v77 = [v75 countByEnumeratingWithState:&v142 objects:buf count:16];
+              v77 = [configurations5 countByEnumeratingWithState:&v142 objects:buf count:16];
               if (v77)
               {
                 continue;
@@ -492,7 +492,7 @@ LABEL_72:
 LABEL_84:
             v26 = v137;
             v27 = v138;
-            v49 = v139;
+            v49 = selfCopy;
           }
 
           else
@@ -501,16 +501,16 @@ LABEL_84:
           }
 
           v126 = v83;
-          v125 = [v83 cemConfiguration];
-          v84 = [v125 payloadAllowBookstoreErotica];
-          -[STMutableRestrictions setAllowExplicitBooks:](v27, "setAllowExplicitBooks:", [v49 _restrictionStateForPayloadNumber:v84]);
+          cemConfiguration4 = [v83 cemConfiguration];
+          payloadAllowBookstoreErotica = [cemConfiguration4 payloadAllowBookstoreErotica];
+          -[STMutableRestrictions setAllowExplicitBooks:](v27, "setAllowExplicitBooks:", [v49 _restrictionStateForPayloadNumber:payloadAllowBookstoreErotica]);
 
           v142 = 0u;
           v143 = 0u;
           v144 = 0u;
           v145 = 0u;
-          v85 = [v26 configurations];
-          v86 = [v85 countByEnumeratingWithState:&v142 objects:buf count:16];
+          configurations6 = [v26 configurations];
+          v86 = [configurations6 countByEnumeratingWithState:&v142 objects:buf count:16];
           if (v86)
           {
             v87 = v86;
@@ -521,12 +521,12 @@ LABEL_84:
               {
                 if (*v143 != v88)
                 {
-                  objc_enumerationMutation(v85);
+                  objc_enumerationMutation(configurations6);
                 }
 
                 v90 = *(*(&v142 + 1) + 8 * n);
-                v91 = [v90 type];
-                v92 = [v91 isEqualToString:@"system.webcontentfilter.basic"];
+                type5 = [v90 type];
+                v92 = [type5 isEqualToString:@"system.webcontentfilter.basic"];
 
                 if (v92)
                 {
@@ -535,7 +535,7 @@ LABEL_84:
                 }
               }
 
-              v87 = [v85 countByEnumeratingWithState:&v142 objects:buf count:16];
+              v87 = [configurations6 countByEnumeratingWithState:&v142 objects:buf count:16];
               if (v87)
               {
                 continue;
@@ -548,7 +548,7 @@ LABEL_84:
 LABEL_96:
             v26 = v137;
             v27 = v138;
-            v49 = v139;
+            v49 = selfCopy;
           }
 
           else
@@ -557,14 +557,14 @@ LABEL_96:
           }
 
           v124 = v93;
-          v123 = [v93 cemConfiguration];
+          cemConfiguration5 = [v93 cemConfiguration];
           -[STMutableRestrictions setWebFilterState:](v27, "setWebFilterState:", [v49 _webFilterStateForWebContentDeclaration:?]);
           v142 = 0u;
           v143 = 0u;
           v144 = 0u;
           v145 = 0u;
-          v94 = [v26 configurations];
-          v95 = [v94 countByEnumeratingWithState:&v142 objects:buf count:16];
+          configurations7 = [v26 configurations];
+          v95 = [configurations7 countByEnumeratingWithState:&v142 objects:buf count:16];
           if (v95)
           {
             v96 = v95;
@@ -575,12 +575,12 @@ LABEL_96:
               {
                 if (*v143 != v97)
                 {
-                  objc_enumerationMutation(v94);
+                  objc_enumerationMutation(configurations7);
                 }
 
                 v99 = *(*(&v142 + 1) + 8 * ii);
-                v100 = [v99 type];
-                v101 = [v100 isEqualToString:@"system.gamecenter"];
+                type6 = [v99 type];
+                v101 = [type6 isEqualToString:@"system.gamecenter"];
 
                 if (v101)
                 {
@@ -589,7 +589,7 @@ LABEL_96:
                 }
               }
 
-              v96 = [v94 countByEnumeratingWithState:&v142 objects:buf count:16];
+              v96 = [configurations7 countByEnumeratingWithState:&v142 objects:buf count:16];
               if (v96)
               {
                 continue;
@@ -602,7 +602,7 @@ LABEL_96:
 LABEL_108:
             v26 = v137;
             v27 = v138;
-            v49 = v139;
+            v49 = selfCopy;
           }
 
           else
@@ -611,26 +611,26 @@ LABEL_108:
           }
 
           v122 = v102;
-          v103 = [v102 cemConfiguration];
-          v104 = [v103 payloadAllowGameCenterProfileModification];
-          -[STMutableRestrictions setAllowAvatarAndNicknameChanges:](v27, "setAllowAvatarAndNicknameChanges:", [v49 _restrictionStateForPayloadNumber:v104]);
+          cemConfiguration6 = [v102 cemConfiguration];
+          payloadAllowGameCenterProfileModification = [cemConfiguration6 payloadAllowGameCenterProfileModification];
+          -[STMutableRestrictions setAllowAvatarAndNicknameChanges:](v27, "setAllowAvatarAndNicknameChanges:", [v49 _restrictionStateForPayloadNumber:payloadAllowGameCenterProfileModification]);
 
-          v105 = [v103 payloadAllowGameCenterPrivateMessaging];
-          -[STMutableRestrictions setAllowPrivateMessaging:](v27, "setAllowPrivateMessaging:", [v49 _restrictionStateForPayloadNumber:v105]);
+          payloadAllowGameCenterPrivateMessaging = [cemConfiguration6 payloadAllowGameCenterPrivateMessaging];
+          -[STMutableRestrictions setAllowPrivateMessaging:](v27, "setAllowPrivateMessaging:", [v49 _restrictionStateForPayloadNumber:payloadAllowGameCenterPrivateMessaging]);
 
-          v106 = [v103 payloadAllowGameCenterProfilePrivacyModification];
-          -[STMutableRestrictions setAllowProfilePrivacyChanges:](v27, "setAllowProfilePrivacyChanges:", [v49 _restrictionStateForPayloadNumber:v106]);
+          payloadAllowGameCenterProfilePrivacyModification = [cemConfiguration6 payloadAllowGameCenterProfilePrivacyModification];
+          -[STMutableRestrictions setAllowProfilePrivacyChanges:](v27, "setAllowProfilePrivacyChanges:", [v49 _restrictionStateForPayloadNumber:payloadAllowGameCenterProfilePrivacyModification]);
 
           v142 = 0u;
           v143 = 0u;
           v144 = 0u;
           v145 = 0u;
-          v107 = [v26 configurations];
-          v108 = [v107 countByEnumeratingWithState:&v142 objects:buf count:16];
+          configurations8 = [v26 configurations];
+          v108 = [configurations8 countByEnumeratingWithState:&v142 objects:buf count:16];
           if (v108)
           {
             v109 = v108;
-            v121 = v103;
+            v121 = cemConfiguration6;
             v110 = *v143;
             while (2)
             {
@@ -638,12 +638,12 @@ LABEL_108:
               {
                 if (*v143 != v110)
                 {
-                  objc_enumerationMutation(v107);
+                  objc_enumerationMutation(configurations8);
                 }
 
                 v112 = *(*(&v142 + 1) + 8 * jj);
-                v113 = [v112 type];
-                v114 = [v113 isEqualToString:@"system.siri"];
+                type7 = [v112 type];
+                v114 = [type7 isEqualToString:@"system.siri"];
 
                 if (v114)
                 {
@@ -652,7 +652,7 @@ LABEL_108:
                 }
               }
 
-              v109 = [v107 countByEnumeratingWithState:&v142 objects:buf count:16];
+              v109 = [configurations8 countByEnumeratingWithState:&v142 objects:buf count:16];
               if (v109)
               {
                 continue;
@@ -664,8 +664,8 @@ LABEL_108:
             v115 = 0;
 LABEL_120:
             v26 = v137;
-            v49 = v139;
-            v103 = v121;
+            v49 = selfCopy;
+            cemConfiguration6 = v121;
           }
 
           else
@@ -673,19 +673,19 @@ LABEL_120:
             v115 = 0;
           }
 
-          v116 = [v115 cemConfiguration];
-          v117 = [v116 payloadAllowAssistantUserGeneratedContent];
+          cemConfiguration7 = [v115 cemConfiguration];
+          payloadAllowAssistantUserGeneratedContent = [cemConfiguration7 payloadAllowAssistantUserGeneratedContent];
           v27 = v138;
-          -[STMutableRestrictions setAllowWebContentSearchInSiri:](v138, "setAllowWebContentSearchInSiri:", [v49 _restrictionStateForPayloadNumber:v117]);
+          -[STMutableRestrictions setAllowWebContentSearchInSiri:](v138, "setAllowWebContentSearchInSiri:", [v49 _restrictionStateForPayloadNumber:payloadAllowAssistantUserGeneratedContent]);
 
-          v118 = [v116 payloadForceAssistantProfanityFilter];
-          -[STMutableRestrictions setAllowExplicitLanguageInSiri:](v138, "setAllowExplicitLanguageInSiri:", [v49 _invertedRestrictionState:{objc_msgSend(v49, "_restrictionStateForPayloadNumber:", v118)}]);
+          payloadForceAssistantProfanityFilter = [cemConfiguration7 payloadForceAssistantProfanityFilter];
+          -[STMutableRestrictions setAllowExplicitLanguageInSiri:](v138, "setAllowExplicitLanguageInSiri:", [v49 _invertedRestrictionState:{objc_msgSend(v49, "_restrictionStateForPayloadNumber:", payloadForceAssistantProfanityFilter)}]);
 
-          v119 = [v116 payloadAllowExternalIntelligenceIntegrations];
-          -[STMutableRestrictions setAllowExternalIntelligenceIntegrations:](v138, "setAllowExternalIntelligenceIntegrations:", [v49 _restrictionStateForPayloadNumber:v119]);
+          payloadAllowExternalIntelligenceIntegrations = [cemConfiguration7 payloadAllowExternalIntelligenceIntegrations];
+          -[STMutableRestrictions setAllowExternalIntelligenceIntegrations:](v138, "setAllowExternalIntelligenceIntegrations:", [v49 _restrictionStateForPayloadNumber:payloadAllowExternalIntelligenceIntegrations]);
 
-          v120 = [v116 payloadAllowWritingTools];
-          -[STMutableRestrictions setAllowWritingTools:](v138, "setAllowWritingTools:", [v49 _restrictionStateForPayloadNumber:v120]);
+          payloadAllowWritingTools = [cemConfiguration7 payloadAllowWritingTools];
+          -[STMutableRestrictions setAllowWritingTools:](v138, "setAllowWritingTools:", [v49 _restrictionStateForPayloadNumber:payloadAllowWritingTools]);
 
           v22 = [(STMutableRestrictions *)v138 copy];
           v20 = v136;
@@ -743,11 +743,11 @@ LABEL_36:
   }
 
   v22 = 0;
-  if (a6 && v20)
+  if (error && v20)
   {
     v23 = v20;
     v22 = 0;
-    *a6 = v20;
+    *error = v20;
   }
 
 LABEL_41:
@@ -757,14 +757,14 @@ LABEL_41:
   return v22;
 }
 
-+ (int64_t)_restrictionStateForPayloadNumber:(id)a3
++ (int64_t)_restrictionStateForPayloadNumber:(id)number
 {
-  if (!a3)
+  if (!number)
   {
     return 0;
   }
 
-  if ([a3 BOOLValue])
+  if ([number BOOLValue])
   {
     return 1;
   }
@@ -772,34 +772,34 @@ LABEL_41:
   return 2;
 }
 
-+ (unint64_t)_webFilterStateForWebContentDeclaration:(id)a3
++ (unint64_t)_webFilterStateForWebContentDeclaration:(id)declaration
 {
-  v3 = a3;
-  v4 = [v3 payloadRestrictWeb];
-  v5 = [v4 BOOLValue];
+  declarationCopy = declaration;
+  payloadRestrictWeb = [declarationCopy payloadRestrictWeb];
+  bOOLValue = [payloadRestrictWeb BOOLValue];
 
-  if (v5)
+  if (bOOLValue)
   {
-    v6 = [v3 payloadWhiteListEnabled];
-    v7 = [v6 BOOLValue];
+    payloadWhiteListEnabled = [declarationCopy payloadWhiteListEnabled];
+    bOOLValue2 = [payloadWhiteListEnabled BOOLValue];
 
-    if (v7)
+    if (bOOLValue2)
     {
       v8 = 2;
     }
 
     else
     {
-      v9 = [v3 payloadFilterBlackList];
-      if ([v9 count])
+      payloadFilterBlackList = [declarationCopy payloadFilterBlackList];
+      if ([payloadFilterBlackList count])
       {
         v8 = 3;
       }
 
       else
       {
-        v10 = [v3 payloadFilterWhiteList];
-        if ([v10 count])
+        payloadFilterWhiteList = [declarationCopy payloadFilterWhiteList];
+        if ([payloadFilterWhiteList count])
         {
           v8 = 3;
         }
@@ -820,15 +820,15 @@ LABEL_41:
   return v8;
 }
 
-+ (int64_t)_invertedRestrictionState:(int64_t)a3
++ (int64_t)_invertedRestrictionState:(int64_t)state
 {
   v3 = 1;
-  if (a3 != 2)
+  if (state != 2)
   {
     v3 = 2;
   }
 
-  if (a3)
+  if (state)
   {
     return v3;
   }

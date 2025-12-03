@@ -1,28 +1,28 @@
 @interface REDirectoryClassLoader
-- (BOOL)isEqual:(id)a3;
-- (REDirectoryClassLoader)initWithDirectories:(id)a3 dataSourceKey:(id)a4 configuration:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)_enumerateBundleConfigurations:(id)a3;
-- (void)_enumerateBundles:(id)a3;
-- (void)_enumerateClassesWithBlock:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (REDirectoryClassLoader)initWithDirectories:(id)directories dataSourceKey:(id)key configuration:(id)configuration;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)_enumerateBundleConfigurations:(id)configurations;
+- (void)_enumerateBundles:(id)bundles;
+- (void)_enumerateClassesWithBlock:(id)block;
 @end
 
 @implementation REDirectoryClassLoader
 
-- (REDirectoryClassLoader)initWithDirectories:(id)a3 dataSourceKey:(id)a4 configuration:(id)a5
+- (REDirectoryClassLoader)initWithDirectories:(id)directories dataSourceKey:(id)key configuration:(id)configuration
 {
-  v8 = a3;
-  v9 = a4;
+  directoriesCopy = directories;
+  keyCopy = key;
   v16.receiver = self;
   v16.super_class = REDirectoryClassLoader;
-  v10 = [(REClassLoader *)&v16 initWithConfiguration:a5];
+  v10 = [(REClassLoader *)&v16 initWithConfiguration:configuration];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [directoriesCopy copy];
     urls = v10->_urls;
     v10->_urls = v11;
 
-    v13 = [v9 copy];
+    v13 = [keyCopy copy];
     key = v10->_key;
     v10->_key = v13;
   }
@@ -30,10 +30,10 @@
   return v10;
 }
 
-- (void)_enumerateBundles:(id)a3
+- (void)_enumerateBundles:(id)bundles
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  bundlesCopy = bundles;
   urls = self->_urls;
   if (urls)
   {
@@ -57,8 +57,8 @@
           }
 
           v7 = MEMORY[0x277CCA8D8];
-          v8 = [*(*(&v27 + 1) + 8 * v6) path];
-          v9 = [v7 bundleWithPath:v8];
+          path = [*(*(&v27 + 1) + 8 * v6) path];
+          v9 = [v7 bundleWithPath:path];
 
           v22 = v9;
           v10 = [v9 pathsForResourcesOfType:@"bundle" inDirectory:@"."];
@@ -87,7 +87,7 @@
 
                 if (v17)
                 {
-                  v4[2](v4, v17);
+                  bundlesCopy[2](bundlesCopy, v17);
                 }
 
                 ++v14;
@@ -114,21 +114,21 @@
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_enumerateClassesWithBlock:(id)a3
+- (void)_enumerateClassesWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(REClassLoader *)self configuration];
-  v6 = [v5 desiredClassForLoader];
+  blockCopy = block;
+  configuration = [(REClassLoader *)self configuration];
+  desiredClassForLoader = [configuration desiredClassForLoader];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __53__REDirectoryClassLoader__enumerateClassesWithBlock___block_invoke;
   v9[3] = &unk_2785FA900;
-  v10 = v5;
-  v11 = self;
-  v12 = v4;
-  v13 = v6;
-  v7 = v4;
-  v8 = v5;
+  v10 = configuration;
+  selfCopy = self;
+  v12 = blockCopy;
+  v13 = desiredClassForLoader;
+  v7 = blockCopy;
+  v8 = configuration;
   [(REDirectoryClassLoader *)self _enumerateBundles:v9];
 }
 
@@ -174,15 +174,15 @@ void __53__REDirectoryClassLoader__enumerateClassesWithBlock___block_invoke(uint
   }
 }
 
-- (void)_enumerateBundleConfigurations:(id)a3
+- (void)_enumerateBundleConfigurations:(id)configurations
 {
-  v4 = a3;
+  configurationsCopy = configurations;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __57__REDirectoryClassLoader__enumerateBundleConfigurations___block_invoke;
   v6[3] = &unk_2785FA928;
-  v7 = v4;
-  v5 = v4;
+  v7 = configurationsCopy;
+  v5 = configurationsCopy;
   [(REDirectoryClassLoader *)self _enumerateBundles:v6];
 }
 
@@ -200,21 +200,21 @@ uint64_t __57__REDirectoryClassLoader__enumerateBundleConfigurations___block_inv
   return MEMORY[0x2821F96F8](v3, v4);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(REClassLoader *)self configuration];
-  v6 = [v4 initWithConfiguration:v5];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  configuration = [(REClassLoader *)self configuration];
+  v6 = [v4 initWithConfiguration:configuration];
 
   objc_storeStrong(v6 + 5, self->_urls);
   objc_storeStrong(v6 + 6, self->_key);
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -224,7 +224,7 @@ uint64_t __57__REDirectoryClassLoader__enumerateBundleConfigurations___block_inv
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       urls = v5->_urls;
       v7 = self->_urls;
       v8 = v7;

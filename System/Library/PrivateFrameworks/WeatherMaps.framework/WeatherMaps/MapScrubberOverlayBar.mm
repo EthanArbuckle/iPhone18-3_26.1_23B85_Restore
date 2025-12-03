@@ -1,10 +1,10 @@
 @interface MapScrubberOverlayBar
 - (CGPoint)accessibilityActivationPoint;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (void)accessibilityDecrement;
 - (void)accessibilityIncrement;
-- (void)handleWithGesture:(id)a3;
+- (void)handleWithGesture:(id)gesture;
 - (void)layoutSubviews;
 @end
 
@@ -12,14 +12,14 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_220FB0D40();
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  v4 = self;
+  width = fits.width;
+  selfCopy = self;
   sub_220FB17AC(width);
   v6 = v5;
   v8 = v7;
@@ -31,27 +31,27 @@
   return result;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v8 = a4;
-  v9 = self;
-  v10 = sub_220FB18FC(a4, x, y);
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  selfCopy = self;
+  v10 = sub_220FB18FC(event, x, y);
 
   return v10;
 }
 
-- (void)handleWithGesture:(id)a3
+- (void)handleWithGesture:(id)gesture
 {
-  v4 = a3;
-  v5 = self;
-  sub_220FB349C(v4);
+  gestureCopy = gesture;
+  selfCopy = self;
+  sub_220FB349C(gestureCopy);
 }
 
 - (CGPoint)accessibilityActivationPoint
 {
-  v2 = self;
+  selfCopy = self;
   sub_220FB3924();
   v4 = v3;
   v6 = v5;
@@ -65,13 +65,13 @@
 
 - (void)accessibilityIncrement
 {
-  v2 = self;
+  selfCopy = self;
   sub_220FB4238(sub_220FB3940);
 }
 
 - (void)accessibilityDecrement
 {
-  v2 = self;
+  selfCopy = self;
   sub_220FB4238(sub_220FB4454);
 }
 

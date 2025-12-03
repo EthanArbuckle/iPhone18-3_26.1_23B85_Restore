@@ -1,7 +1,7 @@
 @interface DEDImageResourceManager
 + (id)sharedInstance;
-- (id)cachedImageFromKey:(id)a3;
-- (void)asynchronousDataFromURL:(id)a3 key:(id)a4 completionBlock:(id)a5;
+- (id)cachedImageFromKey:(id)key;
+- (void)asynchronousDataFromURL:(id)l key:(id)key completionBlock:(id)block;
 @end
 
 @implementation DEDImageResourceManager
@@ -12,7 +12,7 @@
   block[1] = 3221225472;
   block[2] = __41__DEDImageResourceManager_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_once_1 != -1)
   {
     dispatch_once(&sharedInstance_once_1, block);
@@ -41,22 +41,22 @@ uint64_t __41__DEDImageResourceManager_sharedInstance__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)asynchronousDataFromURL:(id)a3 key:(id)a4 completionBlock:(id)a5
+- (void)asynchronousDataFromURL:(id)l key:(id)key completionBlock:(id)block
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
-  v11 = [(DEDImageResourceManager *)self loader];
+  keyCopy = key;
+  blockCopy = block;
+  lCopy = l;
+  loader = [(DEDImageResourceManager *)self loader];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __71__DEDImageResourceManager_asynchronousDataFromURL_key_completionBlock___block_invoke;
   v14[3] = &unk_278F65C38;
-  v15 = v8;
-  v16 = self;
-  v17 = v9;
-  v12 = v9;
-  v13 = v8;
-  [v11 asynchronousDataFromURL:v10 completionBlock:v14];
+  v15 = keyCopy;
+  selfCopy = self;
+  v17 = blockCopy;
+  v12 = blockCopy;
+  v13 = keyCopy;
+  [loader asynchronousDataFromURL:lCopy completionBlock:v14];
 }
 
 void __71__DEDImageResourceManager_asynchronousDataFromURL_key_completionBlock___block_invoke(uint64_t a1, void *a2)
@@ -82,11 +82,11 @@ void __71__DEDImageResourceManager_asynchronousDataFromURL_key_completionBlock__
   (*(*(a1 + 48) + 16))();
 }
 
-- (id)cachedImageFromKey:(id)a3
+- (id)cachedImageFromKey:(id)key
 {
-  v4 = a3;
-  v5 = [(DEDImageResourceManager *)self imageCache];
-  v6 = [v5 valueForKey:v4];
+  keyCopy = key;
+  imageCache = [(DEDImageResourceManager *)self imageCache];
+  v6 = [imageCache valueForKey:keyCopy];
 
   return v6;
 }

@@ -1,27 +1,27 @@
 @interface PXComposeRecipientTableCellModel
 - (PXComposeRecipientTableCellModel)init;
-- (void)performChanges:(id)a3;
-- (void)setAddress:(id)a3;
-- (void)setChecked:(BOOL)a3;
-- (void)setContact:(id)a3;
-- (void)setImage:(id)a3;
-- (void)setImageRequestID:(int64_t)a3;
-- (void)setIsValidAddress:(BOOL)a3;
-- (void)setName:(id)a3;
-- (void)setShowsCheckbox:(BOOL)a3;
+- (void)performChanges:(id)changes;
+- (void)setAddress:(id)address;
+- (void)setChecked:(BOOL)checked;
+- (void)setContact:(id)contact;
+- (void)setImage:(id)image;
+- (void)setImageRequestID:(int64_t)d;
+- (void)setIsValidAddress:(BOOL)address;
+- (void)setName:(id)name;
+- (void)setShowsCheckbox:(BOOL)checkbox;
 @end
 
 @implementation PXComposeRecipientTableCellModel
 
-- (void)setContact:(id)a3
+- (void)setContact:(id)contact
 {
-  v4 = a3;
+  contactCopy = contact;
   contact = self->_contact;
-  if (contact != v4)
+  if (contact != contactCopy)
   {
-    v9 = v4;
-    v6 = [(CNContact *)contact isEqual:v4];
-    v4 = v9;
+    v9 = contactCopy;
+    v6 = [(CNContact *)contact isEqual:contactCopy];
+    contactCopy = v9;
     if ((v6 & 1) == 0)
     {
       v7 = [(CNContact *)v9 copy];
@@ -29,47 +29,47 @@
       self->_contact = v7;
 
       [(PXComposeRecipientTableCellModel *)self signalChange:128];
-      v4 = v9;
+      contactCopy = v9;
     }
   }
 }
 
-- (void)setShowsCheckbox:(BOOL)a3
+- (void)setShowsCheckbox:(BOOL)checkbox
 {
-  if (self->_showsCheckbox != a3)
+  if (self->_showsCheckbox != checkbox)
   {
-    self->_showsCheckbox = a3;
+    self->_showsCheckbox = checkbox;
     [(PXComposeRecipientTableCellModel *)self signalChange:64];
   }
 }
 
-- (void)setChecked:(BOOL)a3
+- (void)setChecked:(BOOL)checked
 {
-  if (self->_checked != a3)
+  if (self->_checked != checked)
   {
-    self->_checked = a3;
+    self->_checked = checked;
     [(PXComposeRecipientTableCellModel *)self signalChange:32];
   }
 }
 
-- (void)setIsValidAddress:(BOOL)a3
+- (void)setIsValidAddress:(BOOL)address
 {
-  if (self->_isValidAddress != a3)
+  if (self->_isValidAddress != address)
   {
-    self->_isValidAddress = a3;
+    self->_isValidAddress = address;
     [(PXComposeRecipientTableCellModel *)self signalChange:16];
   }
 }
 
-- (void)setAddress:(id)a3
+- (void)setAddress:(id)address
 {
-  v4 = a3;
+  addressCopy = address;
   address = self->_address;
-  if (address != v4)
+  if (address != addressCopy)
   {
-    v9 = v4;
-    v6 = [(NSString *)address isEqualToString:v4];
-    v4 = v9;
+    v9 = addressCopy;
+    v6 = [(NSString *)address isEqualToString:addressCopy];
+    addressCopy = v9;
     if (!v6)
     {
       v7 = [(NSString *)v9 copy];
@@ -77,20 +77,20 @@
       self->_address = v7;
 
       [(PXComposeRecipientTableCellModel *)self signalChange:8];
-      v4 = v9;
+      addressCopy = v9;
     }
   }
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   name = self->_name;
-  if (name != v4)
+  if (name != nameCopy)
   {
-    v9 = v4;
-    v6 = [(NSString *)name isEqualToString:v4];
-    v4 = v9;
+    v9 = nameCopy;
+    v6 = [(NSString *)name isEqualToString:nameCopy];
+    nameCopy = v9;
     if (!v6)
     {
       v7 = [(NSString *)v9 copy];
@@ -98,29 +98,29 @@
       self->_name = v7;
 
       [(PXComposeRecipientTableCellModel *)self signalChange:4];
-      v4 = v9;
+      nameCopy = v9;
     }
   }
 }
 
-- (void)setImageRequestID:(int64_t)a3
+- (void)setImageRequestID:(int64_t)d
 {
-  if (self->_imageRequestID != a3)
+  if (self->_imageRequestID != d)
   {
-    self->_imageRequestID = a3;
+    self->_imageRequestID = d;
     [(PXComposeRecipientTableCellModel *)self signalChange:2];
   }
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   image = self->_image;
-  if (image != v4)
+  if (image != imageCopy)
   {
-    v9 = v4;
-    v6 = [(UIImage *)image isEqual:v4];
-    v4 = v9;
+    v9 = imageCopy;
+    v6 = [(UIImage *)image isEqual:imageCopy];
+    imageCopy = v9;
     if ((v6 & 1) == 0)
     {
       v7 = [(UIImage *)v9 copy];
@@ -128,16 +128,16 @@
       self->_image = v7;
 
       [(PXComposeRecipientTableCellModel *)self signalChange:1];
-      v4 = v9;
+      imageCopy = v9;
     }
   }
 }
 
-- (void)performChanges:(id)a3
+- (void)performChanges:(id)changes
 {
   v3.receiver = self;
   v3.super_class = PXComposeRecipientTableCellModel;
-  [(PXComposeRecipientTableCellModel *)&v3 performChanges:a3];
+  [(PXComposeRecipientTableCellModel *)&v3 performChanges:changes];
 }
 
 - (PXComposeRecipientTableCellModel)init

@@ -1,28 +1,28 @@
 @interface CKMergeableDeltaVectors
-+ (BOOL)addToAttributedVector:(id)a3 fromPVersionVector:(id)a4 forSiteIdentifier:(id)a5 error:(id *)a6;
-+ (id)deltaMetadataVectorsFromPDistributedTimestamps:(id)a3 error:(id *)a4;
-+ (id)mergeableDeltaMetadataVectorsByCombiningVectors:(id)a3;
-+ (id)pDistributedTimestampsFromDeltaMetadataVectors:(id)a3;
-+ (id)pDistributedTimestampsWithPreviousVector:(id)a3 contentsVector:(id)a4 removalsVector:(id)a5 dependenciesVector:(id)a6;
-- (BOOL)_validate:(id *)a3;
-- (BOOL)isEqual:(id)a3;
-- (CKMergeableDeltaVectors)initWithPreviousStateVector:(id)a3 currentStateVector:(id)a4;
-- (CKMergeableDeltaVectors)initWithPreviousVector:(id)a3 contentsVector:(id)a4 removalsVector:(id)a5 dependenciesVector:(id)a6;
-- (id)copyWithZone:(_NSZone *)a3;
++ (BOOL)addToAttributedVector:(id)vector fromPVersionVector:(id)versionVector forSiteIdentifier:(id)identifier error:(id *)error;
++ (id)deltaMetadataVectorsFromPDistributedTimestamps:(id)timestamps error:(id *)error;
++ (id)mergeableDeltaMetadataVectorsByCombiningVectors:(id)vectors;
++ (id)pDistributedTimestampsFromDeltaMetadataVectors:(id)vectors;
++ (id)pDistributedTimestampsWithPreviousVector:(id)vector contentsVector:(id)contentsVector removalsVector:(id)removalsVector dependenciesVector:(id)dependenciesVector;
+- (BOOL)_validate:(id *)_validate;
+- (BOOL)isEqual:(id)equal;
+- (CKMergeableDeltaVectors)initWithPreviousStateVector:(id)vector currentStateVector:(id)stateVector;
+- (CKMergeableDeltaVectors)initWithPreviousVector:(id)vector contentsVector:(id)contentsVector removalsVector:(id)removalsVector dependenciesVector:(id)dependenciesVector;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 - (unint64_t)protobufSize;
 @end
 
 @implementation CKMergeableDeltaVectors
 
-- (CKMergeableDeltaVectors)initWithPreviousStateVector:(id)a3 currentStateVector:(id)a4
+- (CKMergeableDeltaVectors)initWithPreviousStateVector:(id)vector currentStateVector:(id)stateVector
 {
-  v6 = a4;
-  v7 = a3;
-  v10 = objc_msgSend_clockVector(v7, v8, v9);
+  stateVectorCopy = stateVector;
+  vectorCopy = vector;
+  v10 = objc_msgSend_clockVector(vectorCopy, v8, v9);
   v13 = objc_msgSend_mutableCopy(v10, v11, v12);
 
-  v16 = objc_msgSend_mutableCopy(v6, v14, v15);
+  v16 = objc_msgSend_mutableCopy(stateVectorCopy, v14, v15);
   v19 = objc_msgSend_mutableCopy(v16, v17, v18);
   if ((objc_msgSend_isGreaterThanOrEqualToVector_(v16, v20, v13) & 1) == 0)
   {
@@ -33,7 +33,7 @@
   objc_msgSend_minusVector_(v22, v23, v13);
   v24 = v19;
   objc_msgSend_intersectVector_(v24, v25, v13);
-  objc_msgSend_minusStateVector_(v24, v26, v7);
+  objc_msgSend_minusStateVector_(v24, v26, vectorCopy);
 
   v27 = objc_opt_new();
   v29 = objc_msgSend_initWithPreviousVector_contentsVector_removalsVector_dependenciesVector_(self, v28, v13, v22, v24, v27);
@@ -41,15 +41,15 @@
   return v29;
 }
 
-- (CKMergeableDeltaVectors)initWithPreviousVector:(id)a3 contentsVector:(id)a4 removalsVector:(id)a5 dependenciesVector:(id)a6
+- (CKMergeableDeltaVectors)initWithPreviousVector:(id)vector contentsVector:(id)contentsVector removalsVector:(id)removalsVector dependenciesVector:(id)dependenciesVector
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v15 = v13;
+  vectorCopy = vector;
+  contentsVectorCopy = contentsVector;
+  removalsVectorCopy = removalsVector;
+  dependenciesVectorCopy = dependenciesVector;
+  v15 = dependenciesVectorCopy;
   v16 = MEMORY[0x1E695D940];
-  if (!v10 || !v11 || !v12 || !v13)
+  if (!vectorCopy || !contentsVectorCopy || !removalsVectorCopy || !dependenciesVectorCopy)
   {
     objc_msgSend_raise_format_(MEMORY[0x1E695DF30], v14, *MEMORY[0x1E695D940], @"Vectors must not be nil");
   }
@@ -59,15 +59,15 @@
   v19 = [(CKMergeableDeltaVectors *)&v47 init];
   if (v19)
   {
-    v20 = objc_msgSend_mutableCopy(v11, v17, v18);
+    v20 = objc_msgSend_mutableCopy(contentsVectorCopy, v17, v18);
     contents = v19->_contents;
     v19->_contents = v20;
 
-    v24 = objc_msgSend_mutableCopy(v12, v22, v23);
+    v24 = objc_msgSend_mutableCopy(removalsVectorCopy, v22, v23);
     removals = v19->_removals;
     v19->_removals = v24;
 
-    v28 = objc_msgSend_mutableCopy(v10, v26, v27);
+    v28 = objc_msgSend_mutableCopy(vectorCopy, v26, v27);
     previous = v19->_previous;
     v19->_previous = v28;
 
@@ -92,7 +92,7 @@
   return v19;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [CKMergeableDeltaVectors alloc];
   v7 = objc_msgSend_previous(self, v5, v6);
@@ -104,10 +104,10 @@
   return v18;
 }
 
-+ (id)mergeableDeltaMetadataVectorsByCombiningVectors:(id)a3
++ (id)mergeableDeltaMetadataVectorsByCombiningVectors:(id)vectors
 {
   v109 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  vectorsCopy = vectors;
   v4 = [CKMergeableDeltaVectors alloc];
   v5 = objc_opt_new();
   v6 = objc_opt_new();
@@ -119,7 +119,7 @@
   v107 = 0u;
   v104 = 0u;
   v105 = 0u;
-  v11 = v3;
+  v11 = vectorsCopy;
   v13 = objc_msgSend_countByEnumeratingWithState_objects_count_(v11, v12, &v104, v108, 16);
   if (v13)
   {
@@ -196,10 +196,10 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v29 = 1;
   }
@@ -209,7 +209,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v8 = objc_msgSend_previous(self, v6, v7);
       v11 = objc_msgSend_previous(v5, v9, v10);
       if (CKObjectsAreBothNilOrEqual(v8, v11))
@@ -268,9 +268,9 @@
   return v13 ^ v25;
 }
 
-- (BOOL)_validate:(id *)a3
+- (BOOL)_validate:(id *)_validate
 {
-  v5 = objc_msgSend_previous(self, a2, a3);
+  v5 = objc_msgSend_previous(self, a2, _validate);
   isGreaterThanOrEqualToVector = 1;
   v8 = objc_msgSend_vectorFilteredByClockType_(v5, v7, 1);
 
@@ -293,7 +293,7 @@
     if (!objc_msgSend_timestampCount(v28, v34, v35) || !objc_msgSend_timestampCount(v33, v37, v38))
     {
       LOBYTE(isGreaterThanOrEqualToVector) = 0;
-      v36 = a3 == 0;
+      v36 = _validate == 0;
       goto LABEL_9;
     }
 
@@ -301,11 +301,11 @@
     isGreaterThanOrEqualToVector = objc_msgSend_isGreaterThanOrEqualToVector_(v28, v42, v41);
   }
 
-  v36 = a3 == 0;
-  if (a3 && isGreaterThanOrEqualToVector)
+  v36 = _validate == 0;
+  if (_validate && isGreaterThanOrEqualToVector)
   {
     objc_msgSend_errorWithDomain_code_format_(CKPrettyError, v34, @"CKErrorDomain", 12, @"previousVector and contentsVector must not overlap (intesection is %@)", v16);
-    *a3 = v36 = 0;
+    *_validate = v36 = 0;
   }
 
 LABEL_9:
@@ -346,7 +346,7 @@ LABEL_9:
 LABEL_12:
     if (((v36 | v47 ^ 1) & 1) == 0)
     {
-      *a3 = objc_msgSend_errorWithDomain_code_format_(CKPrettyError, v75, @"CKErrorDomain", 12, @"contentsVector and removalsVector must not overlap (intesection is %@)", v57);
+      *_validate = objc_msgSend_errorWithDomain_code_format_(CKPrettyError, v75, @"CKErrorDomain", 12, @"contentsVector and removalsVector must not overlap (intesection is %@)", v57);
     }
 
     goto LABEL_18;
@@ -358,16 +358,16 @@ LABEL_18:
   return v47 ^ 1;
 }
 
-+ (id)pDistributedTimestampsFromDeltaMetadataVectors:(id)a3
++ (id)pDistributedTimestampsFromDeltaMetadataVectors:(id)vectors
 {
-  v3 = a3;
-  v6 = objc_msgSend_previous(v3, v4, v5);
+  vectorsCopy = vectors;
+  v6 = objc_msgSend_previous(vectorsCopy, v4, v5);
   v9 = objc_msgSend_backingVector(v6, v7, v8);
-  v12 = objc_msgSend_contents(v3, v10, v11);
+  v12 = objc_msgSend_contents(vectorsCopy, v10, v11);
   v15 = objc_msgSend_backingVector(v12, v13, v14);
-  v18 = objc_msgSend_removals(v3, v16, v17);
+  v18 = objc_msgSend_removals(vectorsCopy, v16, v17);
   v21 = objc_msgSend_backingVector(v18, v19, v20);
-  v24 = objc_msgSend_dependencies(v3, v22, v23);
+  v24 = objc_msgSend_dependencies(vectorsCopy, v22, v23);
 
   v27 = objc_msgSend_backingVector(v24, v25, v26);
   v29 = objc_msgSend_pDistributedTimestampsWithPreviousVector_contentsVector_removalsVector_dependenciesVector_(CKMergeableDeltaVectors, v28, v9, v15, v21, v27);
@@ -375,20 +375,20 @@ LABEL_18:
   return v29;
 }
 
-+ (id)pDistributedTimestampsWithPreviousVector:(id)a3 contentsVector:(id)a4 removalsVector:(id)a5 dependenciesVector:(id)a6
++ (id)pDistributedTimestampsWithPreviousVector:(id)vector contentsVector:(id)contentsVector removalsVector:(id)removalsVector dependenciesVector:(id)dependenciesVector
 {
   v66 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v60 = v9;
+  vectorCopy = vector;
+  contentsVectorCopy = contentsVector;
+  removalsVectorCopy = removalsVector;
+  dependenciesVectorCopy = dependenciesVector;
+  v60 = vectorCopy;
   objc_sync_enter(v60);
-  v59 = v10;
+  v59 = contentsVectorCopy;
   objc_sync_enter(v59);
-  v58 = v11;
+  v58 = removalsVectorCopy;
   objc_sync_enter(v58);
-  v13 = v12;
+  v13 = dependenciesVectorCopy;
   objc_sync_enter(v13);
   v14 = objc_opt_new();
   v56 = objc_msgSend_set(MEMORY[0x1E695DFA8], v15, v16);
@@ -473,22 +473,22 @@ LABEL_18:
   return v14;
 }
 
-+ (id)deltaMetadataVectorsFromPDistributedTimestamps:(id)a3 error:(id *)a4
++ (id)deltaMetadataVectorsFromPDistributedTimestamps:(id)timestamps error:(id *)error
 {
-  v6 = a3;
+  timestampsCopy = timestamps;
   v68 = objc_opt_new();
   v67 = objc_opt_new();
   v66 = objc_opt_new();
   v7 = objc_opt_new();
-  if (objc_msgSend_siteIdentifiersCount(v6, v8, v9))
+  if (objc_msgSend_siteIdentifiersCount(timestampsCopy, v8, v9))
   {
     v12 = 0;
     while (1)
     {
-      v13 = objc_msgSend_siteVersionVectors(v6, v10, v11);
+      v13 = objc_msgSend_siteVersionVectors(timestampsCopy, v10, v11);
       v15 = objc_msgSend_objectAtIndexedSubscript_(v13, v14, v12);
 
-      v18 = objc_msgSend_siteIdentifiers(v6, v16, v17);
+      v18 = objc_msgSend_siteIdentifiers(timestampsCopy, v16, v17);
       v20 = objc_msgSend_objectAtIndexedSubscript_(v18, v19, v12);
       v22 = objc_msgSend_siteIdentifierFromPSiteIdentifier_(CKDistributedSiteIdentifier, v21, v20);
 
@@ -496,7 +496,7 @@ LABEL_18:
       {
         v27 = objc_msgSend_backingVector(v68, v25, v26);
         v30 = objc_msgSend_previousVector(v15, v28, v29);
-        v32 = objc_msgSend_addToAttributedVector_fromPVersionVector_forSiteIdentifier_error_(a1, v31, v27, v30, v22, a4);
+        v32 = objc_msgSend_addToAttributedVector_fromPVersionVector_forSiteIdentifier_error_(self, v31, v27, v30, v22, error);
 
         if (!v32)
         {
@@ -508,7 +508,7 @@ LABEL_18:
       {
         v35 = objc_msgSend_backingVector(v67, v33, v34);
         v38 = objc_msgSend_contentsVector(v15, v36, v37);
-        v40 = objc_msgSend_addToAttributedVector_fromPVersionVector_forSiteIdentifier_error_(a1, v39, v35, v38, v22, a4);
+        v40 = objc_msgSend_addToAttributedVector_fromPVersionVector_forSiteIdentifier_error_(self, v39, v35, v38, v22, error);
 
         if (!v40)
         {
@@ -520,7 +520,7 @@ LABEL_18:
       {
         v43 = objc_msgSend_backingVector(v66, v41, v42);
         v46 = objc_msgSend_removalsVector(v15, v44, v45);
-        v48 = objc_msgSend_addToAttributedVector_fromPVersionVector_forSiteIdentifier_error_(a1, v47, v43, v46, v22, a4);
+        v48 = objc_msgSend_addToAttributedVector_fromPVersionVector_forSiteIdentifier_error_(self, v47, v43, v46, v22, error);
 
         if (!v48)
         {
@@ -532,7 +532,7 @@ LABEL_18:
       {
         v51 = objc_msgSend_backingVector(v7, v49, v50);
         v54 = objc_msgSend_dependenciesVector(v15, v52, v53);
-        v56 = objc_msgSend_addToAttributedVector_fromPVersionVector_forSiteIdentifier_error_(a1, v55, v51, v54, v22, a4);
+        v56 = objc_msgSend_addToAttributedVector_fromPVersionVector_forSiteIdentifier_error_(self, v55, v51, v54, v22, error);
 
         if ((v56 & 1) == 0)
         {
@@ -540,7 +540,7 @@ LABEL_18:
         }
       }
 
-      if (++v12 >= objc_msgSend_siteIdentifiersCount(v6, v57, v58))
+      if (++v12 >= objc_msgSend_siteIdentifiersCount(timestampsCopy, v57, v58))
       {
         goto LABEL_12;
       }
@@ -565,38 +565,38 @@ LABEL_12:
   return v64;
 }
 
-+ (BOOL)addToAttributedVector:(id)a3 fromPVersionVector:(id)a4 forSiteIdentifier:(id)a5 error:(id *)a6
++ (BOOL)addToAttributedVector:(id)vector fromPVersionVector:(id)versionVector forSiteIdentifier:(id)identifier error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v57 = a5;
-  obj = v9;
+  vectorCopy = vector;
+  versionVectorCopy = versionVector;
+  identifierCopy = identifier;
+  obj = vectorCopy;
   objc_sync_enter(obj);
-  v13 = objc_msgSend_clockValuesCount(v10, v11, v12);
-  if (v13 == objc_msgSend_clockValueLengthsCount(v10, v14, v15))
+  v13 = objc_msgSend_clockValuesCount(versionVectorCopy, v11, v12);
+  if (v13 == objc_msgSend_clockValueLengthsCount(versionVectorCopy, v14, v15))
   {
-    v18 = objc_msgSend_stateValuesCount(v10, v16, v17);
-    if (v18 == objc_msgSend_stateValueLengthsCount(v10, v19, v20))
+    v18 = objc_msgSend_stateValuesCount(versionVectorCopy, v16, v17);
+    if (v18 == objc_msgSend_stateValueLengthsCount(versionVectorCopy, v19, v20))
     {
       goto LABEL_8;
     }
 
-    v23 = objc_msgSend_stateValuesCount(v10, v21, v22);
-    v26 = objc_msgSend_stateValueLengthsCount(v10, v24, v25);
+    v23 = objc_msgSend_stateValuesCount(versionVectorCopy, v21, v22);
+    v26 = objc_msgSend_stateValueLengthsCount(versionVectorCopy, v24, v25);
     objc_msgSend_errorWithDomain_code_format_(CKPrettyError, v27, @"CKErrorDomain", 12, @"State values count (%ld) not equal to state values lengths count (%ld)", v23, v26);
   }
 
   else
   {
-    v28 = objc_msgSend_clockValuesCount(v10, v16, v17);
-    v31 = objc_msgSend_clockValueLengthsCount(v10, v29, v30);
+    v28 = objc_msgSend_clockValuesCount(versionVectorCopy, v16, v17);
+    v31 = objc_msgSend_clockValueLengthsCount(versionVectorCopy, v29, v30);
     objc_msgSend_errorWithDomain_code_format_(CKPrettyError, v32, @"CKErrorDomain", 12, @"Clock values count (%ld) not equal to clock value lengths count (%ld)", v28, v31);
   }
   v33 = ;
   if (v33)
   {
     v34 = 0;
-    if (!a6)
+    if (!error)
     {
       goto LABEL_17;
     }
@@ -607,23 +607,23 @@ LABEL_12:
 LABEL_8:
   v35 = 0;
   v36 = 0;
-  while (v35 < objc_msgSend_clockValuesCount(v10, v21, v22))
+  while (v35 < objc_msgSend_clockValuesCount(versionVectorCopy, v21, v22))
   {
-    v39 = *(objc_msgSend_clockValues(v10, v37, v38) + 8 * v35);
-    v59 = *(objc_msgSend_clockValueLengths(v10, v40, v41) + 8 * v35) + v39;
-    while (v36 < objc_msgSend_stateValuesCount(v10, v42, v43) && v39 < v59)
+    v39 = *(objc_msgSend_clockValues(versionVectorCopy, v37, v38) + 8 * v35);
+    v59 = *(objc_msgSend_clockValueLengths(versionVectorCopy, v40, v41) + 8 * v35) + v39;
+    while (v36 < objc_msgSend_stateValuesCount(versionVectorCopy, v42, v43) && v39 < v59)
     {
-      v44 = *(objc_msgSend_stateValueLengths(v10, v21, v22) + 4 * v36);
-      v47 = *(objc_msgSend_stateValues(v10, v45, v46) + 4 * v36);
+      v44 = *(objc_msgSend_stateValueLengths(versionVectorCopy, v21, v22) + 4 * v36);
+      v47 = *(objc_msgSend_stateValues(versionVectorCopy, v45, v46) + 4 * v36);
       v49 = objc_msgSend_clockTypeFromPClockTypeAndAtomState_(CKDistributedTimestampAttributedVector, v48, v47);
-      v50 = a6;
+      errorCopy = error;
       v52 = objc_msgSend_atomStateFromPClockTypeAndAtomState_(CKDistributedTimestampAttributedVector, v51, v47);
       v54 = objc_msgSend_indexSetWithIndexesInRange_(MEMORY[0x1E696AC90], v53, v39, v44);
-      objc_msgSend_addClockValuesInIndexSet_withAttribute_forSiteIdentifier_(obj, v55, v54, __rev16(v49 | (v52 << 8)), v57);
+      objc_msgSend_addClockValuesInIndexSet_withAttribute_forSiteIdentifier_(obj, v55, v54, __rev16(v49 | (v52 << 8)), identifierCopy);
 
       v39 += v44;
       ++v36;
-      a6 = v50;
+      error = errorCopy;
     }
 
     ++v35;
@@ -631,11 +631,11 @@ LABEL_8:
 
   v33 = 0;
   v34 = 1;
-  if (a6)
+  if (error)
   {
 LABEL_16:
     v33 = v33;
-    *a6 = v33;
+    *error = v33;
   }
 
 LABEL_17:

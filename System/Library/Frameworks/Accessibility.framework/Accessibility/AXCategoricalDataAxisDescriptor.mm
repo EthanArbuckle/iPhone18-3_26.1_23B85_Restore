@@ -1,12 +1,12 @@
 @interface AXCategoricalDataAxisDescriptor
 - (AXCategoricalDataAxisDescriptor)initWithAttributedTitle:(NSAttributedString *)attributedTitle categoryOrder:(NSArray *)categoryOrder;
-- (AXCategoricalDataAxisDescriptor)initWithDictionary:(id)a3;
+- (AXCategoricalDataAxisDescriptor)initWithDictionary:(id)dictionary;
 - (AXCategoricalDataAxisDescriptor)initWithTitle:(NSString *)title categoryOrder:(NSArray *)categoryOrder;
 - (NSString)description;
 - (NSString)title;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (void)setTitle:(id)a3;
+- (void)setTitle:(id)title;
 @end
 
 @implementation AXCategoricalDataAxisDescriptor
@@ -66,58 +66,58 @@
   return v8;
 }
 
-- (AXCategoricalDataAxisDescriptor)initWithDictionary:(id)a3
+- (AXCategoricalDataAxisDescriptor)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = getkAXMChartAxisTitleKey();
-  v6 = [v4 objectForKeyedSubscript:v5];
+  v6 = [dictionaryCopy objectForKeyedSubscript:v5];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v7 = getkAXMChartAxisTitleKey();
-    v8 = [v4 objectForKeyedSubscript:v7];
+    v8 = [dictionaryCopy objectForKeyedSubscript:v7];
   }
 
   else
   {
     v9 = objc_alloc(MEMORY[0x1E696AAB0]);
     v7 = getkAXMChartAxisTitleKey();
-    v10 = [v4 objectForKeyedSubscript:v7];
+    v10 = [dictionaryCopy objectForKeyedSubscript:v7];
     v8 = [v9 initWithString:v10];
   }
 
   v11 = getkAXMChartCategoryAxisCategoriesKey();
-  v12 = [v4 objectForKeyedSubscript:v11];
+  v12 = [dictionaryCopy objectForKeyedSubscript:v11];
   v13 = [(AXCategoricalDataAxisDescriptor *)self initWithAttributedTitle:v8 categoryOrder:v12];
 
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(AXCategoricalDataAxisDescriptor *)self title];
-  v6 = [(AXCategoricalDataAxisDescriptor *)self categoryOrder];
-  v7 = [v4 initWithTitle:v5 categoryOrder:v6];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  title = [(AXCategoricalDataAxisDescriptor *)self title];
+  categoryOrder = [(AXCategoricalDataAxisDescriptor *)self categoryOrder];
+  v7 = [v4 initWithTitle:title categoryOrder:categoryOrder];
 
-  v8 = [(AXCategoricalDataAxisDescriptor *)self attributedTitle];
-  v9 = [v8 length];
+  attributedTitle = [(AXCategoricalDataAxisDescriptor *)self attributedTitle];
+  v9 = [attributedTitle length];
 
   if (v9)
   {
-    v10 = [(AXCategoricalDataAxisDescriptor *)self attributedTitle];
-    v11 = [v10 copy];
+    attributedTitle2 = [(AXCategoricalDataAxisDescriptor *)self attributedTitle];
+    v11 = [attributedTitle2 copy];
     [v7 setAttributedTitle:v11];
   }
 
   return v7;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
   v4 = MEMORY[0x1E696AAB0];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithString:v5];
+  titleCopy = title;
+  v6 = [[v4 alloc] initWithString:titleCopy];
 
   attributedTitle = self->_attributedTitle;
   self->_attributedTitle = v6;
@@ -125,37 +125,37 @@
 
 - (NSString)title
 {
-  v2 = [(AXCategoricalDataAxisDescriptor *)self attributedTitle];
-  v3 = [v2 string];
+  attributedTitle = [(AXCategoricalDataAxisDescriptor *)self attributedTitle];
+  string = [attributedTitle string];
 
-  return v3;
+  return string;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(AXCategoricalDataAxisDescriptor *)self attributedTitle];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  attributedTitle = [(AXCategoricalDataAxisDescriptor *)self attributedTitle];
   v5 = getkAXMChartAxisTitleKey();
-  [v3 setObject:v4 forKeyedSubscript:v5];
+  [dictionary setObject:attributedTitle forKeyedSubscript:v5];
 
-  v6 = [(AXCategoricalDataAxisDescriptor *)self categoryOrder];
+  categoryOrder = [(AXCategoricalDataAxisDescriptor *)self categoryOrder];
   v7 = getkAXMChartCategoryAxisCategoriesKey();
-  [v3 setObject:v6 forKeyedSubscript:v7];
+  [dictionary setObject:categoryOrder forKeyedSubscript:v7];
 
   v8 = getkAXMChartAxisTypeCategorical();
   v9 = getkAXMChartAxisTypeKey();
-  [v3 setObject:v8 forKeyedSubscript:v9];
+  [dictionary setObject:v8 forKeyedSubscript:v9];
 
-  return v3;
+  return dictionary;
 }
 
 - (NSString)description
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(AXCategoricalDataAxisDescriptor *)self title];
-  v6 = [(AXCategoricalDataAxisDescriptor *)self categoryOrder];
-  v7 = [v3 stringWithFormat:@"<%@ %p title=%@ order=%@>", v4, self, v5, v6];
+  title = [(AXCategoricalDataAxisDescriptor *)self title];
+  categoryOrder = [(AXCategoricalDataAxisDescriptor *)self categoryOrder];
+  v7 = [v3 stringWithFormat:@"<%@ %p title=%@ order=%@>", v4, self, title, categoryOrder];
 
   return v7;
 }

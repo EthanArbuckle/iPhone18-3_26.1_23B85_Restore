@@ -1,12 +1,12 @@
 @interface APSFilterChange
 - (APSFilterChange)init;
-- (APSFilterChange)initWithChange:(int64_t)a3 triggeringTopic:(id)a4;
+- (APSFilterChange)initWithChange:(int64_t)change triggeringTopic:(id)topic;
 - (NSString)triggeringTopic;
 - (int64_t)topicGroupChange;
 - (unint64_t)reason;
-- (void)setReason:(unint64_t)a3;
-- (void)setTopicGroupChange:(int64_t)a3;
-- (void)setTriggeringTopic:(id)a3;
+- (void)setReason:(unint64_t)reason;
+- (void)setTopicGroupChange:(int64_t)change;
+- (void)setTriggeringTopic:(id)topic;
 @end
 
 @implementation APSFilterChange
@@ -18,11 +18,11 @@
   return *(self + v3);
 }
 
-- (void)setReason:(unint64_t)a3
+- (void)setReason:(unint64_t)reason
 {
   v5 = OBJC_IVAR___APSFilterChange_reason;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = reason;
 }
 
 - (unint64_t)reason
@@ -51,7 +51,7 @@
   return v4;
 }
 
-- (APSFilterChange)initWithChange:(int64_t)a3 triggeringTopic:(id)a4
+- (APSFilterChange)initWithChange:(int64_t)change triggeringTopic:(id)topic
 {
   v6 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v8 = v7;
@@ -62,7 +62,7 @@
   *(self + OBJC_IVAR___APSFilterChange_topicGroupChange) = 0;
   *(self + OBJC_IVAR___APSFilterChange_reason) = 0;
   swift_beginAccess();
-  *(self + v10) = a3;
+  *(self + v10) = change;
   swift_beginAccess();
   *v9 = v6;
   v9[1] = v8;
@@ -71,9 +71,9 @@
   return [(APSFilterChange *)&v12 init];
 }
 
-- (void)setTriggeringTopic:(id)a3
+- (void)setTriggeringTopic:(id)topic
 {
-  if (a3)
+  if (topic)
   {
     v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v6 = v5;
@@ -92,11 +92,11 @@
   v7[1] = v6;
 }
 
-- (void)setTopicGroupChange:(int64_t)a3
+- (void)setTopicGroupChange:(int64_t)change
 {
   v5 = OBJC_IVAR___APSFilterChange_topicGroupChange;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = change;
 }
 
 - (APSFilterChange)init

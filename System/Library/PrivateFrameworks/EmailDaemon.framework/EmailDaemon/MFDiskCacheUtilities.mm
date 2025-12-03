@@ -1,29 +1,29 @@
 @interface MFDiskCacheUtilities
-+ (id)_pathsForContentWithType:(unint64_t)a3;
-+ (id)mailSpaceWithError:(id *)a3;
-+ (id)systemSpaceWithError:(id *)a3;
-+ (int64_t)deletePlaceholderAttachmentsWithCreationDateOver:(int64_t)a3;
++ (id)_pathsForContentWithType:(unint64_t)type;
++ (id)mailSpaceWithError:(id *)error;
++ (id)systemSpaceWithError:(id *)error;
++ (int64_t)deletePlaceholderAttachmentsWithCreationDateOver:(int64_t)over;
 + (int64_t)deleteTemporaryDirectoryContent;
 + (int64_t)sizeForPurgeableTemporaryDirectoryContent;
-+ (void)_enumerateContentPathsAndAttributes:(id)a3;
-+ (void)_enumerateContentsForAccounts:(id)a3 withType:(unint64_t)a4 handler:(id)a5;
-+ (void)_enumeratePurgeableContentsWithType:(unint64_t)a3 handler:(id)a4;
-+ (void)_enumeratePurgeableFileInTemporaryDirectoryWithHandler:(id)a3;
++ (void)_enumerateContentPathsAndAttributes:(id)attributes;
++ (void)_enumerateContentsForAccounts:(id)accounts withType:(unint64_t)type handler:(id)handler;
++ (void)_enumeratePurgeableContentsWithType:(unint64_t)type handler:(id)handler;
++ (void)_enumeratePurgeableFileInTemporaryDirectoryWithHandler:(id)handler;
 @end
 
 @implementation MFDiskCacheUtilities
 
-+ (id)_pathsForContentWithType:(unint64_t)a3
++ (id)_pathsForContentWithType:(unint64_t)type
 {
-  v3 = a3;
+  typeCopy = type;
   v4 = +[NSMutableArray array];
   v5 = v4;
-  if ((v3 & 2) != 0)
+  if ((typeCopy & 2) != 0)
   {
     [v4 addObject:@"/Attachments"];
   }
 
-  if (v3)
+  if (typeCopy)
   {
     [v5 addObject:@"/Messages"];
   }
@@ -31,23 +31,23 @@
   return v5;
 }
 
-+ (void)_enumerateContentsForAccounts:(id)a3 withType:(unint64_t)a4 handler:(id)a5
++ (void)_enumerateContentsForAccounts:(id)accounts withType:(unint64_t)type handler:(id)handler
 {
-  v21 = a3;
-  v24 = a5;
-  if (!v24)
+  accountsCopy = accounts;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v17 = +[NSAssertionHandler currentHandler];
-    [v17 handleFailureInMethod:a2 object:a1 file:@"MFDiskCacheUtilities.m" lineNumber:102 description:{@"Invalid parameter not satisfying: %@", @"handler"}];
+    [v17 handleFailureInMethod:a2 object:self file:@"MFDiskCacheUtilities.m" lineNumber:102 description:{@"Invalid parameter not satisfying: %@", @"handler"}];
   }
 
   v9 = +[NSFileManager defaultManager];
-  v22 = [a1 _pathsForContentWithType:a4];
+  v22 = [self _pathsForContentWithType:type];
   v37 = 0;
   v38 = &v37;
   v39 = 0x2020000000;
   v40 = 0;
-  [v21 ef_flatMap:&stru_100158610];
+  [accountsCopy ef_flatMap:&stru_100158610];
   v35 = 0u;
   v36 = 0u;
   v34 = 0u;
@@ -89,7 +89,7 @@
               v25[1] = 3221225472;
               v25[2] = sub_100061B1C;
               v25[3] = &unk_100158678;
-              v27 = v24;
+              v27 = handlerCopy;
               v26 = v9;
               v28 = &v37;
               [v26 mf_enumerateAtPath:v15 withBlock:v25];
@@ -124,50 +124,50 @@ LABEL_20:
   _Block_object_dispose(&v37, 8);
 }
 
-+ (void)_enumeratePurgeableContentsWithType:(unint64_t)a3 handler:(id)a4
++ (void)_enumeratePurgeableContentsWithType:(unint64_t)type handler:(id)handler
 {
-  v7 = a4;
+  handlerCopy = handler;
   v6 = +[MailAccount purgeableAccounts];
-  [a1 _enumerateContentsForAccounts:v6 withType:a3 handler:v7];
+  [self _enumerateContentsForAccounts:v6 withType:type handler:handlerCopy];
 }
 
-+ (void)_enumerateContentPathsAndAttributes:(id)a3
++ (void)_enumerateContentPathsAndAttributes:(id)attributes
 {
-  v5 = a3;
-  if (!v5)
+  attributesCopy = attributes;
+  if (!attributesCopy)
   {
     v13 = +[NSAssertionHandler currentHandler];
-    [v13 handleFailureInMethod:a2 object:a1 file:@"MFDiskCacheUtilities.m" lineNumber:136 description:{@"Invalid parameter not satisfying: %@", @"fileHandler"}];
+    [v13 handleFailureInMethod:a2 object:self file:@"MFDiskCacheUtilities.m" lineNumber:136 description:{@"Invalid parameter not satisfying: %@", @"fileHandler"}];
   }
 
   v6 = MFMailDirectory();
   v7 = +[NSFileManager defaultManager];
   v8 = [v7 enumeratorAtPath:v6];
   v14 = 0;
-  v9 = [v8 nextObject];
-  if (v9)
+  nextObject = [v8 nextObject];
+  if (nextObject)
   {
     do
     {
-      v10 = [v6 stringByAppendingPathComponent:v9];
+      v10 = [v6 stringByAppendingPathComponent:nextObject];
       v11 = [v7 attributesOfItemAtPath:v10 error:0];
-      v5[2](v5, v7, v10, v11, &v14);
+      attributesCopy[2](attributesCopy, v7, v10, v11, &v14);
 
-      v12 = [v8 nextObject];
+      nextObject2 = [v8 nextObject];
 
-      if (!v12)
+      if (!nextObject2)
       {
         break;
       }
 
-      v9 = v12;
+      nextObject = nextObject2;
     }
 
     while ((v14 & 1) == 0);
   }
 }
 
-+ (id)systemSpaceWithError:(id *)a3
++ (id)systemSpaceWithError:(id *)error
 {
   v4 = +[NSFileManager defaultManager];
   v5 = MFMailDirectory();
@@ -185,18 +185,18 @@ LABEL_20:
   else
   {
     v10 = 0;
-    if (a3 && v7)
+    if (error && v7)
     {
       v11 = v7;
       v10 = 0;
-      *a3 = v7;
+      *error = v7;
     }
   }
 
   return v10;
 }
 
-+ (id)mailSpaceWithError:(id *)a3
++ (id)mailSpaceWithError:(id *)error
 {
   v23 = 0;
   v24 = &v23;
@@ -222,16 +222,16 @@ LABEL_20:
   v10[5] = &v11;
   v10[6] = &v15;
   v10[7] = &v19;
-  [a1 _enumerateContentPathsAndAttributes:v10];
+  [self _enumerateContentPathsAndAttributes:v10];
   v4 = [NSNumber numberWithUnsignedLongLong:v24[3]];
   v5 = [NSNumber numberWithUnsignedLongLong:v16[3]];
   v6 = [NSNumber numberWithUnsignedLongLong:v12[3]];
   v7 = [NSNumber numberWithUnsignedLongLong:v20[3]];
   v8 = [NSDictionary dictionaryWithObjectsAndKeys:v4, @"MFMailTotalCacheSize", v5, @"MFMailMessageCacheSize", v6, @"MFMailAttachmentCacheSize", v7, @"MFMailHeaderCacheSize", 0];
 
-  if (a3)
+  if (error)
   {
-    *a3 = 0;
+    *error = 0;
   }
 
   _Block_object_dispose(&v11, 8);
@@ -253,13 +253,13 @@ LABEL_20:
   v4[2] = sub_100062384;
   v4[3] = &unk_1001586C8;
   v4[4] = &v5;
-  [a1 _enumeratePurgeableFileInTemporaryDirectoryWithHandler:v4];
+  [self _enumeratePurgeableFileInTemporaryDirectoryWithHandler:v4];
   v2 = v6[3];
   _Block_object_dispose(&v5, 8);
   return v2;
 }
 
-+ (int64_t)deletePlaceholderAttachmentsWithCreationDateOver:(int64_t)a3
++ (int64_t)deletePlaceholderAttachmentsWithCreationDateOver:(int64_t)over
 {
   v17 = 0;
   v18 = &v17;
@@ -269,7 +269,7 @@ LABEL_20:
   v5 = +[NSFileManager defaultManager];
   v6 = +[NSCalendar currentCalendar];
   v7 = +[NSDate date];
-  v8 = [v6 dateByAddingUnit:16 value:-a3 toDate:v7 options:0];
+  v8 = [v6 dateByAddingUnit:16 value:-over toDate:v7 options:0];
 
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
@@ -298,19 +298,19 @@ LABEL_20:
   v4[2] = sub_1000627C4;
   v4[3] = &unk_1001586C8;
   v4[4] = &v5;
-  [a1 _enumeratePurgeableFileInTemporaryDirectoryWithHandler:v4];
+  [self _enumeratePurgeableFileInTemporaryDirectoryWithHandler:v4];
   v2 = v6[3];
   _Block_object_dispose(&v5, 8);
   return v2;
 }
 
-+ (void)_enumeratePurgeableFileInTemporaryDirectoryWithHandler:(id)a3
++ (void)_enumeratePurgeableFileInTemporaryDirectoryWithHandler:(id)handler
 {
-  v5 = a3;
-  if (!v5)
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v13 = +[NSAssertionHandler currentHandler];
-    [v13 handleFailureInMethod:a2 object:a1 file:@"MFDiskCacheUtilities.m" lineNumber:256 description:{@"Invalid parameter not satisfying: %@", @"handler"}];
+    [v13 handleFailureInMethod:a2 object:self file:@"MFDiskCacheUtilities.m" lineNumber:256 description:{@"Invalid parameter not satisfying: %@", @"handler"}];
   }
 
   v6 = +[NSCalendar currentCalendar];
@@ -325,7 +325,7 @@ LABEL_20:
   v14[3] = &unk_100158718;
   v11 = v8;
   v15 = v11;
-  v12 = v5;
+  v12 = handlerCopy;
   v16 = v12;
   [v10 mf_enumerateAtPath:v9 withBlock:v14];
 }

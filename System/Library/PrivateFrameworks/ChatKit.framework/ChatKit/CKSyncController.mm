@@ -3,7 +3,7 @@
 - (CKSyncController)init;
 - (void)attachmentRestored;
 - (void)postAttachmentRestored;
-- (void)prioritizeAttachmentAtPath:(id)a3;
+- (void)prioritizeAttachmentAtPath:(id)path;
 - (void)updateRestoreState;
 @end
 
@@ -16,7 +16,7 @@
   v2 = [(CKSyncController *)&v16 init];
   if (v2)
   {
-    v3 = [@"com.apple.ChatKit.attachmentRestoredNotification" UTF8String];
+    uTF8String = [@"com.apple.ChatKit.attachmentRestoredNotification" UTF8String];
     handler[0] = MEMORY[0x1E69E9820];
     handler[1] = 3221225472;
     handler[2] = __24__CKSyncController_init__block_invoke;
@@ -24,15 +24,15 @@
     v4 = v2;
     v15 = v4;
     v5 = MEMORY[0x1E69E96A0];
-    notify_register_dispatch(v3, &v2->_attachmentRestoredToken, MEMORY[0x1E69E96A0], handler);
-    v6 = [@"com.apple.MobileBackup.restoreStateChanged" UTF8String];
+    notify_register_dispatch(uTF8String, &v2->_attachmentRestoredToken, MEMORY[0x1E69E96A0], handler);
+    uTF8String2 = [@"com.apple.MobileBackup.restoreStateChanged" UTF8String];
     v9 = MEMORY[0x1E69E9820];
     v10 = 3221225472;
     v11 = __24__CKSyncController_init__block_invoke_2;
     v12 = &unk_1E72F5B30;
     v7 = v4;
     v13 = v7;
-    notify_register_dispatch(v6, v4 + 3, v5, &v9);
+    notify_register_dispatch(uTF8String2, v4 + 3, v5, &v9);
 
     [v7 updateRestoreState];
   }
@@ -59,10 +59,10 @@ void __34__CKSyncController_sharedInstance__block_invoke()
   sharedInstance___instance = v0;
 }
 
-- (void)prioritizeAttachmentAtPath:(id)a3
+- (void)prioritizeAttachmentAtPath:(id)path
 {
   v8 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  pathCopy = path;
   if (IMOSLoggingEnabled())
   {
     CKLogCStringForType(46);
@@ -70,7 +70,7 @@ void __34__CKSyncController_sharedInstance__block_invoke()
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      v7 = v3;
+      v7 = pathCopy;
       _os_log_impl(&dword_19020E000, v4, OS_LOG_TYPE_DEBUG, "Prioritize attachment at path %@", buf, 0xCu);
     }
   }
@@ -81,7 +81,7 @@ void __34__CKSyncController_sharedInstance__block_invoke()
   }
 
   v5 = objc_alloc_init(MEMORY[0x193AF5EC0](@"ATConnection", @"AirTraffic"));
-  [v5 prioritizeAsset:v3 forDataclass:@"MessagePart"];
+  [v5 prioritizeAsset:pathCopy forDataclass:@"MessagePart"];
 }
 
 - (void)updateRestoreState
@@ -108,8 +108,8 @@ void __34__CKSyncController_sharedInstance__block_invoke()
 
 - (void)postAttachmentRestored
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 postNotificationName:@"com.apple.ChatKit.attachmentRestoredNotification" object:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"com.apple.ChatKit.attachmentRestoredNotification" object:self];
 }
 
 @end

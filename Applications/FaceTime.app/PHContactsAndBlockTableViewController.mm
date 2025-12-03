@@ -1,13 +1,13 @@
 @interface PHContactsAndBlockTableViewController
 - (BOOL)areUnknownContactsBlocked;
 - (CNAvatarViewControllerSettings)avatarViewControllerSettings;
-- (PHContactsAndBlockTableViewController)initWithContactArray:(id)a3 unknownContacts:(id)a4 contactHandles:(id)a5 tableViewModel:(id)a6;
-- (id)contactAtIndex:(int64_t)a3;
-- (id)contactForContact:(id)a3 contactStore:(id)a4;
-- (id)formattedNameForHandle:(id)a3 countryCode:(id)a4;
-- (id)handleAtIndex:(int64_t)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (PHContactsAndBlockTableViewController)initWithContactArray:(id)array unknownContacts:(id)contacts contactHandles:(id)handles tableViewModel:(id)model;
+- (id)contactAtIndex:(int64_t)index;
+- (id)contactForContact:(id)contact contactStore:(id)store;
+- (id)formattedNameForHandle:(id)handle countryCode:(id)code;
+- (id)handleAtIndex:(int64_t)index;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)dealloc;
 - (void)reportSectionNeedsUpdate;
 - (void)setUpReportAndBlockSection;
@@ -15,33 +15,33 @@
 - (void)showBlockAllAlert;
 - (void)showBlockUnknownAlert;
 - (void)showReportAlert;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
 @implementation PHContactsAndBlockTableViewController
 
-- (PHContactsAndBlockTableViewController)initWithContactArray:(id)a3 unknownContacts:(id)a4 contactHandles:(id)a5 tableViewModel:(id)a6
+- (PHContactsAndBlockTableViewController)initWithContactArray:(id)array unknownContacts:(id)contacts contactHandles:(id)handles tableViewModel:(id)model
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  arrayCopy = array;
+  contactsCopy = contacts;
+  handlesCopy = handles;
+  modelCopy = model;
   v20.receiver = self;
   v20.super_class = PHContactsAndBlockTableViewController;
   v15 = [(PHTableViewController *)&v20 initWithStyle:2];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_contactArray, a3);
-    objc_storeStrong(&v16->_unknownContacts, a4);
-    objc_storeStrong(&v16->_contactHandles, a5);
-    [(PHContactsAndBlockTableViewController *)v16 setTableViewModel:v14];
+    objc_storeStrong(&v15->_contactArray, array);
+    objc_storeStrong(&v16->_unknownContacts, contacts);
+    objc_storeStrong(&v16->_contactHandles, handles);
+    [(PHContactsAndBlockTableViewController *)v16 setTableViewModel:modelCopy];
     v17 = objc_alloc_init(CNContactFormatter);
     [(PHContactsAndBlockTableViewController *)v16 setContactFormatter:v17];
 
-    v18 = [(PHContactsAndBlockTableViewController *)v16 contactFormatter];
-    [v18 setStyle:0];
+    contactFormatter = [(PHContactsAndBlockTableViewController *)v16 contactFormatter];
+    [contactFormatter setStyle:0];
   }
 
   return v16;
@@ -71,9 +71,9 @@
   [(PHTableViewController *)&v4 dealloc];
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  if (a4)
+  if (section)
   {
     [(PHContactsAndBlockTableViewController *)self reportAndBlockSection];
   }
@@ -88,61 +88,61 @@
   return v5;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  if (![v7 section])
+  viewCopy = view;
+  pathCopy = path;
+  if (![pathCopy section])
   {
     v15 = +[(PHTableViewCell *)PHContactsTableViewCell];
-    v14 = [v6 dequeueReusableCellWithIdentifier:v15 forIndexPath:v7];
+    v14 = [viewCopy dequeueReusableCellWithIdentifier:v15 forIndexPath:pathCopy];
 
-    v10 = -[PHContactsAndBlockTableViewController contactAtIndex:](self, "contactAtIndex:", [v7 row]);
-    v16 = -[PHContactsAndBlockTableViewController handleAtIndex:](self, "handleAtIndex:", [v7 row]);
+    v10 = -[PHContactsAndBlockTableViewController contactAtIndex:](self, "contactAtIndex:", [pathCopy row]);
+    reuseIdentifier = -[PHContactsAndBlockTableViewController handleAtIndex:](self, "handleAtIndex:", [pathCopy row]);
     if (v10)
     {
-      v17 = [v14 avatarViewController];
-      if (!v17)
+      avatarViewController = [v14 avatarViewController];
+      if (!avatarViewController)
       {
         v18 = [CNAvatarViewController alloc];
-        v19 = [(PHContactsAndBlockTableViewController *)self avatarViewControllerSettings];
-        v17 = [v18 initWithSettings:v19];
+        avatarViewControllerSettings = [(PHContactsAndBlockTableViewController *)self avatarViewControllerSettings];
+        avatarViewController = [v18 initWithSettings:avatarViewControllerSettings];
 
-        [v17 setObjectViewControllerDelegate:self];
-        [v14 setAvatarViewController:v17];
+        [avatarViewController setObjectViewControllerDelegate:self];
+        [v14 setAvatarViewController:avatarViewController];
       }
 
       v39 = v10;
       v20 = [NSArray arrayWithObjects:&v39 count:1];
-      v21 = [v14 avatarViewController];
-      [v21 setContacts:v20];
+      avatarViewController2 = [v14 avatarViewController];
+      [avatarViewController2 setContacts:v20];
 
-      v22 = [(PHContactsAndBlockTableViewController *)self contactFormatter];
-      v23 = [v22 stringFromContact:v10];
+      contactFormatter = [(PHContactsAndBlockTableViewController *)self contactFormatter];
+      v23 = [contactFormatter stringFromContact:v10];
 
       if (v23)
       {
-        v24 = v23;
+        value = v23;
       }
 
       else
       {
-        v24 = [v16 value];
-        if (!v24)
+        value = [reuseIdentifier value];
+        if (!value)
         {
           v32 = +[NSBundle mainBundle];
-          v24 = [v32 localizedStringForKey:@"UNKNOWN_CALLER" value:&stru_10010E930 table:@"PHRecents"];
+          value = [v32 localizedStringForKey:@"UNKNOWN_CALLER" value:&stru_10010E930 table:@"PHRecents"];
         }
       }
 
-      v33 = [v14 titleLabel];
-      [v33 setText:v24];
+      titleLabel = [v14 titleLabel];
+      [titleLabel setText:value];
 
-      v34 = [v14 titleLabel];
-      [v34 setNumberOfLines:1];
+      titleLabel2 = [v14 titleLabel];
+      [titleLabel2 setNumberOfLines:1];
 
-      v35 = [v14 titleLabel];
-      [v35 setLineBreakMode:4];
+      titleLabel3 = [v14 titleLabel];
+      [titleLabel3 setLineBreakMode:4];
     }
 
     goto LABEL_28;
@@ -155,15 +155,15 @@
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "loading isBlocked:", v38, 2u);
   }
 
-  v9 = [(PHContactsAndBlockTableViewController *)self reportAndBlockSection];
-  v10 = [v9 objectAtIndexedSubscript:{objc_msgSend(v7, "row")}];
+  reportAndBlockSection = [(PHContactsAndBlockTableViewController *)self reportAndBlockSection];
+  v10 = [reportAndBlockSection objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
 
   v11 = +[PHReportTableViewCell reuseIdentifier];
   v12 = [v10 isEqualToString:v11];
 
   if (v12)
   {
-    v13 = [v6 dequeueReusableCellWithIdentifier:v10];
+    v13 = [viewCopy dequeueReusableCellWithIdentifier:v10];
     if (v13)
     {
       v14 = v13;
@@ -181,24 +181,24 @@
   {
     v31 = PHBlockTableViewCell;
 LABEL_21:
-    v16 = [(__objc2_class *)v31 reuseIdentifier];
-    v14 = [v6 dequeueReusableCellWithIdentifier:v16 forIndexPath:v7];
+    reuseIdentifier = [(__objc2_class *)v31 reuseIdentifier];
+    v14 = [viewCopy dequeueReusableCellWithIdentifier:reuseIdentifier forIndexPath:pathCopy];
     goto LABEL_28;
   }
 
-  v14 = [v6 dequeueReusableCellWithIdentifier:v10];
+  v14 = [viewCopy dequeueReusableCellWithIdentifier:v10];
   if (!v14)
   {
     v27 = +[PHBlockTableViewCell reuseIdentifier];
-    v14 = [v6 dequeueReusableCellWithIdentifier:v27 forIndexPath:v7];
+    v14 = [viewCopy dequeueReusableCellWithIdentifier:v27 forIndexPath:pathCopy];
   }
 
   v28 = sub_100003B9C();
   if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
   {
-    v29 = [(PHContactsAndBlockTableViewController *)self areUnknownContactsBlocked];
+    areUnknownContactsBlocked = [(PHContactsAndBlockTableViewController *)self areUnknownContactsBlocked];
     v38[0] = 67109120;
-    v38[1] = v29;
+    v38[1] = areUnknownContactsBlocked;
     _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "loading isBlocked: %d", v38, 8u);
   }
 
@@ -217,9 +217,9 @@ LABEL_21:
     v30 = 1;
   }
 
-  v36 = [(PHContactsAndBlockTableViewController *)self areUnknownContactsBlocked];
-  v16 = [(PHContactsAndBlockTableViewController *)self traitCollection];
-  [v14 updateCellOfFlow:v30 isBlocked:v36 style:{objc_msgSend(v16, "userInterfaceStyle")}];
+  areUnknownContactsBlocked2 = [(PHContactsAndBlockTableViewController *)self areUnknownContactsBlocked];
+  reuseIdentifier = [(PHContactsAndBlockTableViewController *)self traitCollection];
+  [v14 updateCellOfFlow:v30 isBlocked:areUnknownContactsBlocked2 style:{objc_msgSend(reuseIdentifier, "userInterfaceStyle")}];
 LABEL_28:
 
 LABEL_29:
@@ -227,56 +227,56 @@ LABEL_29:
   return v14;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v32 = a3;
-  v6 = a4;
+  viewCopy = view;
+  pathCopy = path;
   if (([(PHContactsAndBlockTableViewController *)self isEditing]& 1) == 0)
   {
-    v7 = [v32 cellForRowAtIndexPath:v6];
+    v7 = [viewCopy cellForRowAtIndexPath:pathCopy];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = -[PHContactsAndBlockTableViewController contactAtIndex:](self, "contactAtIndex:", [v6 row]);
-      v9 = [(PHContactsAndBlockTableViewController *)self customInfoButtonAction];
+      tableViewModel2 = -[PHContactsAndBlockTableViewController contactAtIndex:](self, "contactAtIndex:", [pathCopy row]);
+      customInfoButtonAction = [(PHContactsAndBlockTableViewController *)self customInfoButtonAction];
 
-      if (v9)
+      if (customInfoButtonAction)
       {
-        [v32 rectForRowAtIndexPath:v6];
+        [viewCopy rectForRowAtIndexPath:pathCopy];
         v11 = v10;
         v13 = v12;
         v15 = v14;
         v17 = v16;
-        v18 = [(PHContactsAndBlockTableViewController *)self view];
-        [v18 convertPoint:0 toView:{v11, v13}];
+        view = [(PHContactsAndBlockTableViewController *)self view];
+        [view convertPoint:0 toView:{v11, v13}];
         v20 = v19;
         v22 = v21;
 
-        v23 = [(PHContactsAndBlockTableViewController *)self customInfoButtonAction];
-        v24 = [(PHContactsAndBlockTableViewController *)self view];
-        (v23)[2](v23, v8, v24, v20, v22, v15, v17);
+        customInfoButtonAction2 = [(PHContactsAndBlockTableViewController *)self customInfoButtonAction];
+        view2 = [(PHContactsAndBlockTableViewController *)self view];
+        (customInfoButtonAction2)[2](customInfoButtonAction2, tableViewModel2, view2, v20, v22, v15, v17);
 
 LABEL_23:
         goto LABEL_24;
       }
 
-      v26 = -[PHContactsAndBlockTableViewController handleAtIndex:](self, "handleAtIndex:", [v6 row]);
-      if ([v8 hasBeenPersisted])
+      v26 = -[PHContactsAndBlockTableViewController handleAtIndex:](self, "handleAtIndex:", [pathCopy row]);
+      if ([tableViewModel2 hasBeenPersisted])
       {
-        [PHContactViewController viewControllerForContact:v8];
+        [PHContactViewController viewControllerForContact:tableViewModel2];
       }
 
       else
       {
-        [PHContactViewController viewControllerForUnknownContact:v8];
+        [PHContactViewController viewControllerForUnknownContact:tableViewModel2];
       }
       v27 = ;
       v28 = v27;
       if (v27)
       {
         [v27 setHandle:v26];
-        v29 = [(PHContactsAndBlockTableViewController *)self navigationController];
-        [v29 pushViewController:v28 animated:1];
+        navigationController = [(PHContactsAndBlockTableViewController *)self navigationController];
+        [navigationController pushViewController:v28 animated:1];
 
         [v28 setAllowsEditing:1];
         [v28 setAllowsActions:1];
@@ -312,19 +312,19 @@ LABEL_23:
           [(PHContactsAndBlockTableViewController *)self showBlockUnknownAlert];
         }
 
-        v31 = [(PHContactsAndBlockTableViewController *)self tableViewModel];
-        [v31 fetchSharing];
+        tableViewModel = [(PHContactsAndBlockTableViewController *)self tableViewModel];
+        [tableViewModel fetchSharing];
 
         goto LABEL_22;
       }
 
-      v8 = [(PHContactsAndBlockTableViewController *)self tableViewModel];
-      v25 = [(PHContactsAndBlockTableViewController *)self unknownContacts];
-      [v8 unblockWithContacts:v25];
+      tableViewModel2 = [(PHContactsAndBlockTableViewController *)self tableViewModel];
+      unknownContacts = [(PHContactsAndBlockTableViewController *)self unknownContacts];
+      [tableViewModel2 unblockWithContacts:unknownContacts];
     }
 
 LABEL_22:
-    [v32 deselectRowAtIndexPath:v6 animated:0];
+    [viewCopy deselectRowAtIndexPath:pathCopy animated:0];
     goto LABEL_23;
   }
 
@@ -337,8 +337,8 @@ LABEL_24:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(PHContactsAndBlockTableViewController *)self unknownContacts];
-  v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  unknownContacts = [(PHContactsAndBlockTableViewController *)self unknownContacts];
+  v3 = [unknownContacts countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v3)
   {
     v4 = v3;
@@ -350,13 +350,13 @@ LABEL_24:
       {
         if (*v10 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(unknownContacts);
         }
 
         v6 &= [*(*(&v9 + 1) + 8 * i) mp_isBlocked];
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v4 = [unknownContacts countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v4);
@@ -425,16 +425,16 @@ LABEL_24:
 
   if ([(PHContactsReportAndBlockTableViewModel *)self->_tableViewModel shouldShowReportInitiator])
   {
-    v4 = [(PHContactsAndBlockTableViewController *)self reportAndBlockSection];
+    reportAndBlockSection = [(PHContactsAndBlockTableViewController *)self reportAndBlockSection];
     v5 = +[PHReportTableViewCell reuseIdentifier];
-    [v4 addObject:v5];
+    [reportAndBlockSection addObject:v5];
   }
 
   if ([(PHContactsReportAndBlockTableViewModel *)self->_tableViewModel shouldShowBlockAll]|| [(PHContactsReportAndBlockTableViewModel *)self->_tableViewModel shouldShowBlockUnknown])
   {
-    v7 = [(PHContactsAndBlockTableViewController *)self reportAndBlockSection];
+    reportAndBlockSection2 = [(PHContactsAndBlockTableViewController *)self reportAndBlockSection];
     v6 = +[PHBlockTableViewCell reuseIdentifier];
-    [v7 addObject:v6];
+    [reportAndBlockSection2 addObject:v6];
   }
 }
 
@@ -442,9 +442,9 @@ LABEL_24:
 {
   v3 = +[NSBundle mainBundle];
   v4 = [v3 localizedStringForKey:@"RECENTS_REPORT_SINGLE_PARTICIPANT_AlERT_MESSAGE" value:&stru_10010E930 table:@"PHRecents"];
-  v5 = [(PHContactsAndBlockTableViewController *)self tableViewModel];
-  v6 = [v5 formattedInitiatorValue];
-  v7 = [NSString stringWithFormat:v4, v6];
+  tableViewModel = [(PHContactsAndBlockTableViewController *)self tableViewModel];
+  formattedInitiatorValue = [tableViewModel formattedInitiatorValue];
+  v7 = [NSString stringWithFormat:v4, formattedInitiatorValue];
 
   v8 = [UIAlertController alertControllerWithTitle:0 message:v7 preferredStyle:0];
   v9 = +[NSBundle mainBundle];
@@ -465,34 +465,34 @@ LABEL_24:
   [(PHContactsAndBlockTableViewController *)self presentViewController:v8 animated:1 completion:0];
 }
 
-- (id)contactAtIndex:(int64_t)a3
+- (id)contactAtIndex:(int64_t)index
 {
-  v4 = [(PHContactsAndBlockTableViewController *)self contactArray];
-  v5 = v4;
-  if (a3 < 0 || [v4 count] <= a3)
+  contactArray = [(PHContactsAndBlockTableViewController *)self contactArray];
+  v5 = contactArray;
+  if (index < 0 || [contactArray count] <= index)
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = [v5 objectAtIndexedSubscript:a3];
+    v6 = [v5 objectAtIndexedSubscript:index];
   }
 
   return v6;
 }
 
-- (id)handleAtIndex:(int64_t)a3
+- (id)handleAtIndex:(int64_t)index
 {
-  v5 = [(PHContactsAndBlockTableViewController *)self contactHandles];
-  if (a3 < 0 || (-[PHContactsAndBlockTableViewController contactHandles](self, "contactHandles"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 count], v6, v7 <= a3))
+  contactHandles = [(PHContactsAndBlockTableViewController *)self contactHandles];
+  if (index < 0 || (-[PHContactsAndBlockTableViewController contactHandles](self, "contactHandles"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 count], v6, v7 <= index))
   {
     v8 = 0;
   }
 
   else
   {
-    v8 = [v5 objectAtIndexedSubscript:a3];
+    v8 = [contactHandles objectAtIndexedSubscript:index];
   }
 
   return v8;
@@ -513,65 +513,65 @@ LABEL_24:
   return avatarViewControllerSettings;
 }
 
-- (id)formattedNameForHandle:(id)a3 countryCode:(id)a4
+- (id)formattedNameForHandle:(id)handle countryCode:(id)code
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 type];
+  handleCopy = handle;
+  codeCopy = code;
+  type = [handleCopy type];
   v8 = sub_100003B9C();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
-  if (v7 == 2)
+  if (type == 2)
   {
     if (v9)
     {
-      v10 = [v5 value];
+      value = [handleCopy value];
       v15 = 138412546;
-      v16 = v10;
+      v16 = value;
       v17 = 2112;
-      v18 = v6;
+      v18 = codeCopy;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "     - we'll format the destinationID '%@' with the country code '%@'", &v15, 0x16u);
     }
 
-    v11 = [v5 value];
-    v12 = TUFormattedPhoneNumber();
+    value2 = [handleCopy value];
+    value4 = TUFormattedPhoneNumber();
   }
 
   else
   {
     if (v9)
     {
-      v13 = [v5 value];
+      value3 = [handleCopy value];
       v15 = 138412290;
-      v16 = v13;
+      v16 = value3;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "     - handle can't/shouldn't be formatted as a phone number, so using the unmodified destination ID '%@'", &v15, 0xCu);
     }
 
-    v12 = [v5 value];
+    value4 = [handleCopy value];
   }
 
-  return v12;
+  return value4;
 }
 
 - (void)setUpTableView
 {
-  v3 = [(PHContactsAndBlockTableViewController *)self tableView];
+  tableView = [(PHContactsAndBlockTableViewController *)self tableView];
   v4 = objc_opt_class();
   v5 = +[(PHTableViewCell *)PHContactsTableViewCell];
-  [v3 registerClass:v4 forCellReuseIdentifier:v5];
+  [tableView registerClass:v4 forCellReuseIdentifier:v5];
 
-  v6 = [(PHContactsAndBlockTableViewController *)self tableView];
+  tableView2 = [(PHContactsAndBlockTableViewController *)self tableView];
   v7 = objc_opt_class();
   v8 = +[PHBlockTableViewCell reuseIdentifier];
-  [v6 registerClass:v7 forCellReuseIdentifier:v8];
+  [tableView2 registerClass:v7 forCellReuseIdentifier:v8];
 
-  v9 = [(PHContactsAndBlockTableViewController *)self tableView];
+  tableView3 = [(PHContactsAndBlockTableViewController *)self tableView];
   v10 = objc_opt_class();
   v11 = +[PHReportTableViewCell reuseIdentifier];
-  [v9 registerClass:v10 forCellReuseIdentifier:v11];
+  [tableView3 registerClass:v10 forCellReuseIdentifier:v11];
 
   v12 = [[UIView alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
-  v13 = [(PHContactsAndBlockTableViewController *)self tableView];
-  [v13 setTableFooterView:v12];
+  tableView4 = [(PHContactsAndBlockTableViewController *)self tableView];
+  [tableView4 setTableFooterView:v12];
 
   [(PHContactsAndBlockTableViewController *)self setUpReportAndBlockSection];
   block[0] = _NSConcreteStackBlock;
@@ -591,13 +591,13 @@ LABEL_24:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "block cell update", buf, 2u);
   }
 
-  v4 = [(PHContactsAndBlockTableViewController *)self reportAndBlockSection];
-  v5 = [v4 count];
+  reportAndBlockSection = [(PHContactsAndBlockTableViewController *)self reportAndBlockSection];
+  v5 = [reportAndBlockSection count];
 
   if (v5)
   {
-    v6 = [(PHContactsAndBlockTableViewController *)self reportAndBlockSection];
-    v7 = +[NSIndexPath indexPathForRow:inSection:](NSIndexPath, "indexPathForRow:inSection:", [v6 count] - 1, 1);
+    reportAndBlockSection2 = [(PHContactsAndBlockTableViewController *)self reportAndBlockSection];
+    v7 = +[NSIndexPath indexPathForRow:inSection:](NSIndexPath, "indexPathForRow:inSection:", [reportAndBlockSection2 count] - 1, 1);
 
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
@@ -610,31 +610,31 @@ LABEL_24:
   }
 }
 
-- (id)contactForContact:(id)a3 contactStore:(id)a4
+- (id)contactForContact:(id)contact contactStore:(id)store
 {
-  v5 = a3;
-  v6 = a4;
+  contactCopy = contact;
+  storeCopy = store;
   v7 = +[CNUIFavoritesEntryPicker descriptorForRequiredKeys];
   v23 = v7;
   v8 = [NSArray arrayWithObjects:&v23 count:1];
 
-  if ([v5 areKeysAvailable:v8])
+  if ([contactCopy areKeysAvailable:v8])
   {
-    v9 = v5;
+    v9 = contactCopy;
   }
 
   else
   {
     v10 = [NSMutableArray arrayWithArray:v8];
-    v11 = [v5 availableKeyDescriptor];
-    if (v11)
+    availableKeyDescriptor = [contactCopy availableKeyDescriptor];
+    if (availableKeyDescriptor)
     {
-      [v10 addObject:v11];
+      [v10 addObject:availableKeyDescriptor];
     }
 
-    v12 = [v5 identifier];
+    identifier = [contactCopy identifier];
     v16 = 0;
-    v9 = [v6 unifiedContactWithIdentifier:v12 keysToFetch:v10 error:&v16];
+    v9 = [storeCopy unifiedContactWithIdentifier:identifier keysToFetch:v10 error:&v16];
     v13 = v16;
 
     if (!v9)
@@ -643,9 +643,9 @@ LABEL_24:
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412802;
-        v18 = v5;
+        v18 = contactCopy;
         v19 = 2112;
-        v20 = v6;
+        v20 = storeCopy;
         v21 = 2112;
         v22 = v13;
         _os_log_error_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "Could not retrieve a compatible contact using contact (%@) and contact store (%@) due to an error (%@).", buf, 0x20u);

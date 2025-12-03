@@ -1,6 +1,6 @@
 @interface MatterAddDeviceRequest.Wrapper
-- (BOOL)isEqual:(id)a3;
-- (BOOL)shouldShowDeviceWithUUID:(id)a3 vendorID:(id)a4 productID:(id)a5 serialNumber:(id)a6 rootPublicKey:(id)a7 nodeID:(id)a8;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)shouldShowDeviceWithUUID:(id)d vendorID:(id)iD productID:(id)productID serialNumber:(id)number rootPublicKey:(id)key nodeID:(id)nodeID;
 - (MTSDeviceSetupTopology)topology;
 - (NSData)serializedAsData;
 - (NSString)ecosystemName;
@@ -41,7 +41,7 @@
   v4 = *(v3 + 48);
   v5 = *(v3 + 52);
   swift_allocObject();
-  v6 = self;
+  selfCopy = self;
   sub_239856A64();
   type metadata accessor for MatterAddDeviceRequest(0);
   sub_23982D96C(&qword_27DF7C340, type metadata accessor for MatterAddDeviceRequest);
@@ -54,13 +54,13 @@
   return v10;
 }
 
-- (BOOL)shouldShowDeviceWithUUID:(id)a3 vendorID:(id)a4 productID:(id)a5 serialNumber:(id)a6 rootPublicKey:(id)a7 nodeID:(id)a8
+- (BOOL)shouldShowDeviceWithUUID:(id)d vendorID:(id)iD productID:(id)productID serialNumber:(id)number rootPublicKey:(id)key nodeID:(id)nodeID
 {
   v15 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27DF7C4C0, &qword_23985A5D8);
   v16 = *(*(v15 - 8) + 64);
   MEMORY[0x28223BE20](v15 - 8);
   v18 = &v32 - v17;
-  if (a3)
+  if (d)
   {
     sub_239856AE4();
     v19 = sub_239856AF4();
@@ -73,10 +73,10 @@
     (*(*(v20 - 8) + 56))(v18, 1, 1, v20);
   }
 
-  if (a6)
+  if (number)
   {
     v21 = sub_239856C34();
-    a6 = v22;
+    number = v22;
   }
 
   else
@@ -84,14 +84,14 @@
     v21 = 0;
   }
 
-  v23 = a4;
-  v24 = a5;
-  v25 = a8;
-  v26 = self;
-  if (a7)
+  iDCopy = iD;
+  productIDCopy = productID;
+  nodeIDCopy = nodeID;
+  selfCopy = self;
+  if (key)
   {
-    v27 = a7;
-    a7 = sub_239856AB4();
+    keyCopy = key;
+    key = sub_239856AB4();
     v29 = v28;
   }
 
@@ -100,8 +100,8 @@
     v29 = 0xF000000000000000;
   }
 
-  v30 = sub_23982CBFC(v18, v23, v24, v21, a6, a7, v29, v25);
-  sub_23982D9B4(a7, v29);
+  v30 = sub_23982CBFC(v18, iDCopy, productIDCopy, v21, number, key, v29, nodeIDCopy);
+  sub_23982D9B4(key, v29);
 
   sub_23982F038(v18, &qword_27DF7C4C0, &qword_23985A5D8);
   return v30;
@@ -110,18 +110,18 @@
 - (int64_t)hash
 {
   sub_239857094();
-  v3 = self;
+  selfCopy = self;
   MatterAddDeviceRequest.hash(into:)(v6);
   v4 = sub_2398570E4();
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_239856DE4();
     swift_unknownObjectRelease();
@@ -130,7 +130,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = sub_23982D208(v8);

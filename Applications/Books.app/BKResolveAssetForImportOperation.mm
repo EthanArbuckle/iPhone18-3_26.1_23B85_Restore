@@ -1,5 +1,5 @@
 @interface BKResolveAssetForImportOperation
-- (BKResolveAssetForImportOperation)initWithURL:(id)a3;
+- (BKResolveAssetForImportOperation)initWithURL:(id)l;
 - (BOOL)failed;
 - (void)cleanup;
 - (void)main;
@@ -7,16 +7,16 @@
 
 @implementation BKResolveAssetForImportOperation
 
-- (BKResolveAssetForImportOperation)initWithURL:(id)a3
+- (BKResolveAssetForImportOperation)initWithURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v18.receiver = self;
   v18.super_class = BKResolveAssetForImportOperation;
   v6 = [(BKResolveAssetForImportOperation *)&v18 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_originalURL, a3);
+    objc_storeStrong(&v6->_originalURL, l);
     v8 = +[NSFileManager defaultManager];
     v9 = [v8 URLForDirectory:13 inDomain:1 appropriateForURL:0 create:1 error:0];
     v10 = [v9 URLByAppendingPathComponent:@"Inbox"];
@@ -42,21 +42,21 @@
 
 - (void)cleanup
 {
-  v3 = [(BKResolveAssetForImportOperation *)self resultURL];
+  resultURL = [(BKResolveAssetForImportOperation *)self resultURL];
 
-  if (v3)
+  if (resultURL)
   {
     v4 = +[NSFileManager defaultManager];
     v11 = 2;
-    v5 = [(BKResolveAssetForImportOperation *)self inboxURL];
-    v6 = [(BKResolveAssetForImportOperation *)self resultURL];
-    [v4 getRelationship:&v11 ofDirectoryAtURL:v5 toItemAtURL:v6 error:0];
+    inboxURL = [(BKResolveAssetForImportOperation *)self inboxURL];
+    resultURL2 = [(BKResolveAssetForImportOperation *)self resultURL];
+    [v4 getRelationship:&v11 ofDirectoryAtURL:inboxURL toItemAtURL:resultURL2 error:0];
 
     if (!v11)
     {
-      v7 = [(BKResolveAssetForImportOperation *)self resultURL];
+      resultURL3 = [(BKResolveAssetForImportOperation *)self resultURL];
       v10 = 0;
-      [v4 removeItemAtURL:v7 error:&v10];
+      [v4 removeItemAtURL:resultURL3 error:&v10];
       v8 = v10;
 
       if (v8)
@@ -76,19 +76,19 @@
   v3 = BKLibraryBookImportLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(BKResolveAssetForImportOperation *)self originalURL];
+    originalURL = [(BKResolveAssetForImportOperation *)self originalURL];
     *buf = 141558274;
     v37 = 1752392040;
     v38 = 2112;
-    v39 = v4;
+    v39 = originalURL;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "BKResolveAssetForImportOperation: start main: url: %{mask.hash}@", buf, 0x16u);
   }
 
   v5 = +[NSFileManager defaultManager];
-  v6 = [(BKResolveAssetForImportOperation *)self originalURL];
-  v7 = [v6 startAccessingSecurityScopedResource];
+  originalURL2 = [(BKResolveAssetForImportOperation *)self originalURL];
+  startAccessingSecurityScopedResource = [originalURL2 startAccessingSecurityScopedResource];
 
-  if ((v7 & 1) == 0)
+  if ((startAccessingSecurityScopedResource & 1) == 0)
   {
     v8 = BKLibraryBookImportLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -97,8 +97,8 @@
     }
   }
 
-  v9 = [(BKResolveAssetForImportOperation *)self originalURL];
-  v10 = [v9 ui_downloadOperationForActivity:0];
+  originalURL3 = [(BKResolveAssetForImportOperation *)self originalURL];
+  v10 = [originalURL3 ui_downloadOperationForActivity:0];
 
   [v10 start];
   if ([v10 isCancelled])
@@ -114,15 +114,15 @@
   }
 
   v35 = 2;
-  v12 = [(BKResolveAssetForImportOperation *)self originalURL];
+  originalURL4 = [(BKResolveAssetForImportOperation *)self originalURL];
   v34 = 0;
-  v13 = [v5 getRelationship:&v35 ofDirectory:9 inDomain:1 toItemAtURL:v12 error:&v34];
+  v13 = [v5 getRelationship:&v35 ofDirectory:9 inDomain:1 toItemAtURL:originalURL4 error:&v34];
   v11 = v34;
 
   if ((v13 & 1) == 0)
   {
-    v16 = BKLibraryBookImportLog();
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+    originalURL6 = BKLibraryBookImportLog();
+    if (os_log_type_enabled(originalURL6, OS_LOG_TYPE_ERROR))
     {
       sub_100790E18();
     }
@@ -140,15 +140,15 @@
     v14 = BKLibraryBookImportLog();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [(BKResolveAssetForImportOperation *)self originalURL];
+      originalURL5 = [(BKResolveAssetForImportOperation *)self originalURL];
       *buf = 141558274;
       v37 = 1752392040;
       v38 = 2112;
-      v39 = v15;
+      v39 = originalURL5;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "BKResolveAssetForImportOperation: File is in container. url: %{mask.hash}@", buf, 0x16u);
     }
 
-    v16 = [(BKResolveAssetForImportOperation *)self originalURL];
+    originalURL6 = [(BKResolveAssetForImportOperation *)self originalURL];
     goto LABEL_21;
   }
 
@@ -159,24 +159,24 @@
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "BKResolveAssetForImportOperation: Copying to Inbox.", buf, 2u);
   }
 
-  v18 = [(BKResolveAssetForImportOperation *)self inboxURL];
-  v19 = [(BKResolveAssetForImportOperation *)self originalURL];
-  v20 = [v19 lastPathComponent];
-  v16 = [v18 URLByAppendingPathComponent:v20];
+  inboxURL = [(BKResolveAssetForImportOperation *)self inboxURL];
+  originalURL7 = [(BKResolveAssetForImportOperation *)self originalURL];
+  lastPathComponent = [originalURL7 lastPathComponent];
+  originalURL6 = [inboxURL URLByAppendingPathComponent:lastPathComponent];
 
-  v21 = [(BKResolveAssetForImportOperation *)self originalURL];
+  originalURL8 = [(BKResolveAssetForImportOperation *)self originalURL];
   v33 = 0;
-  LODWORD(v19) = [v5 copyItemAtURL:v21 toURL:v16 error:&v33];
+  LODWORD(originalURL7) = [v5 copyItemAtURL:originalURL8 toURL:originalURL6 error:&v33];
   v11 = v33;
 
-  if (!v19)
+  if (!originalURL7)
   {
-    v22 = [v11 domain];
-    if ([v22 isEqualToString:NSCocoaErrorDomain])
+    domain = [v11 domain];
+    if ([domain isEqualToString:NSCocoaErrorDomain])
     {
-      v23 = [v11 code];
+      code = [v11 code];
 
-      if (v23 == 516)
+      if (code == 516)
       {
         v24 = BKLibraryBookImportLog();
         if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
@@ -184,20 +184,20 @@
           *buf = 141558274;
           v37 = 1752392040;
           v38 = 2112;
-          v39 = v16;
+          v39 = originalURL6;
           _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "BKResolveAssetForImportOperation: Removing exising file from Inbox. url: %{mask.hash}@", buf, 0x16u);
         }
 
         v32 = 0;
-        v25 = [v5 removeItemAtURL:v16 error:&v32];
+        v25 = [v5 removeItemAtURL:originalURL6 error:&v32];
         v26 = v32;
         v11 = v26;
         if (v25)
         {
 
-          v27 = [(BKResolveAssetForImportOperation *)self originalURL];
+          originalURL9 = [(BKResolveAssetForImportOperation *)self originalURL];
           v31 = 0;
-          v28 = [v5 copyItemAtURL:v27 toURL:v16 error:&v31];
+          v28 = [v5 copyItemAtURL:originalURL9 toURL:originalURL6 error:&v31];
           v11 = v31;
 
           if (v28)
@@ -241,14 +241,14 @@ LABEL_33:
   }
 
 LABEL_21:
-  [(BKResolveAssetForImportOperation *)self setResultURL:v16];
+  [(BKResolveAssetForImportOperation *)self setResultURL:originalURL6];
 LABEL_34:
 
 LABEL_35:
-  if (v7)
+  if (startAccessingSecurityScopedResource)
   {
-    v30 = [(BKResolveAssetForImportOperation *)self originalURL];
-    [v30 stopAccessingSecurityScopedResource];
+    originalURL10 = [(BKResolveAssetForImportOperation *)self originalURL];
+    [originalURL10 stopAccessingSecurityScopedResource];
   }
 
 LABEL_37:
@@ -256,8 +256,8 @@ LABEL_37:
 
 - (BOOL)failed
 {
-  v2 = [(BKResolveAssetForImportOperation *)self resultURL];
-  v3 = v2 == 0;
+  resultURL = [(BKResolveAssetForImportOperation *)self resultURL];
+  v3 = resultURL == 0;
 
   return v3;
 }

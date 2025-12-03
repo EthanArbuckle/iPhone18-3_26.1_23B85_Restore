@@ -1,14 +1,14 @@
 @interface ICRealtimeCollaborationController
 + (BOOL)isRealtimeCollaborationEnabled;
-+ (BOOL)isRealtimeCollaborationEnabledForNote:(id)a3;
++ (BOOL)isRealtimeCollaborationEnabledForNote:(id)note;
 - (BOOL)hasActiveSession;
 - (ICRealtimeCollaborationController)init;
 - (ICRealtimeCollaborationDelegate)delegate;
 - (NSString)currentNoteIdentifier;
 - (NSString)description;
-- (void)configurePaperKitAttachmentViewIfNecessary:(id)a3;
+- (void)configurePaperKitAttachmentViewIfNecessary:(id)necessary;
 - (void)dealloc;
-- (void)removePaperKitMessengerForViewIfNecessary:(id)a3;
+- (void)removePaperKitMessengerForViewIfNecessary:(id)necessary;
 @end
 
 @implementation ICRealtimeCollaborationController
@@ -23,10 +23,10 @@
   return byte_1006EF718;
 }
 
-+ (BOOL)isRealtimeCollaborationEnabledForNote:(id)a3
++ (BOOL)isRealtimeCollaborationEnabledForNote:(id)note
 {
-  v3 = a3;
-  v4 = _s11MobileNotes31RealtimeCollaborationControllerC02iscD7Enabled3forSbSo6ICNoteC_tFZ_0(v3);
+  noteCopy = note;
+  v4 = _s11MobileNotes31RealtimeCollaborationControllerC02iscD7Enabled3forSbSo6ICNoteC_tFZ_0(noteCopy);
 
   return v4 & 1;
 }
@@ -75,11 +75,11 @@
   if (*(self + OBJC_IVAR___ICRealtimeCollaborationController_watchForContextChangesTask))
   {
     ObjectType = swift_getObjectType();
-    v4 = self;
+    selfCopy = self;
 
     Task.cancel()();
 
-    v5.receiver = v4;
+    v5.receiver = selfCopy;
     v5.super_class = ObjectType;
     [(ICRealtimeCollaborationController *)&v5 dealloc];
   }
@@ -90,23 +90,23 @@
   }
 }
 
-- (void)removePaperKitMessengerForViewIfNecessary:(id)a3
+- (void)removePaperKitMessengerForViewIfNecessary:(id)necessary
 {
-  v4 = a3;
-  v5 = self;
-  RealtimeCollaborationController.removePaperKitMessengerIfNecessary(for:)(v4);
+  necessaryCopy = necessary;
+  selfCopy = self;
+  RealtimeCollaborationController.removePaperKitMessengerIfNecessary(for:)(necessaryCopy);
 }
 
-- (void)configurePaperKitAttachmentViewIfNecessary:(id)a3
+- (void)configurePaperKitAttachmentViewIfNecessary:(id)necessary
 {
-  v4 = a3;
-  v5 = self;
-  RealtimeCollaborationController.configurePaperKitAttachmentViewIfNecessary(_:)(v4);
+  necessaryCopy = necessary;
+  selfCopy = self;
+  RealtimeCollaborationController.configurePaperKitAttachmentViewIfNecessary(_:)(necessaryCopy);
 }
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   RealtimeCollaborationController.description.getter();
 
   v3 = String._bridgeToObjectiveC()();

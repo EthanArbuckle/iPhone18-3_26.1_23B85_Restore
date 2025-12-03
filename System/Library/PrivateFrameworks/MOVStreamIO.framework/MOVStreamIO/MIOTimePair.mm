@@ -1,32 +1,32 @@
 @interface MIOTimePair
-+ (id)alignedPTSTimeStamps:(id)a3 withSampleTimes:(id)a4;
-+ (id)timePairWithPts:(id *)a3 originalTime:(id *)a4;
-+ (id)timePairsForStream:(id)a3 mediaType:(int64_t)a4 inAsset:(id)a5 error:(id *)a6;
-+ (id)timePairsForStream:(id)a3 mediaType:(int64_t)a4 inAssetURL:(id)a5 error:(id *)a6;
-- (BOOL)isPTSEqualOrCloseToTime:(id *)a3;
-- (BOOL)isPTSEqualOrCloseToTime:(id *)a3 tolerance:(id *)a4;
++ (id)alignedPTSTimeStamps:(id)stamps withSampleTimes:(id)times;
++ (id)timePairWithPts:(id *)pts originalTime:(id *)time;
++ (id)timePairsForStream:(id)stream mediaType:(int64_t)type inAsset:(id)asset error:(id *)error;
++ (id)timePairsForStream:(id)stream mediaType:(int64_t)type inAssetURL:(id)l error:(id *)error;
+- (BOOL)isPTSEqualOrCloseToTime:(id *)time;
+- (BOOL)isPTSEqualOrCloseToTime:(id *)time tolerance:(id *)tolerance;
 - (MIOTimePair)init;
-- (MIOTimePair)initWithPts:(id *)a3 originalTime:(id *)a4;
-- (id)copyWithNewPts:(id *)a3;
+- (MIOTimePair)initWithPts:(id *)pts originalTime:(id *)time;
+- (id)copyWithNewPts:(id *)pts;
 - (id)description;
 @end
 
 @implementation MIOTimePair
 
-+ (id)timePairsForStream:(id)a3 mediaType:(int64_t)a4 inAssetURL:(id)a5 error:(id *)a6
++ (id)timePairsForStream:(id)stream mediaType:(int64_t)type inAssetURL:(id)l error:(id *)error
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = [MEMORY[0x277CE63D8] assetWithURL:v10];
+  streamCopy = stream;
+  lCopy = l;
+  v11 = [MEMORY[0x277CE63D8] assetWithURL:lCopy];
   if (v11)
   {
-    v12 = [MIOTimePair timePairsForStream:v9 mediaType:a4 inAsset:v11 error:a6];
+    v12 = [MIOTimePair timePairsForStream:streamCopy mediaType:type inAsset:v11 error:error];
   }
 
   else
   {
-    v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"Cannot create asset from URL '%@'.", v10];
-    [MEMORY[0x277CCA9B8] populateReaderError:a6 message:v13 code:5];
+    lCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Cannot create asset from URL '%@'.", lCopy];
+    [MEMORY[0x277CCA9B8] populateReaderError:error message:lCopy code:5];
 
     v12 = 0;
   }
@@ -34,24 +34,24 @@
   return v12;
 }
 
-+ (id)timePairsForStream:(id)a3 mediaType:(int64_t)a4 inAsset:(id)a5 error:(id *)a6
++ (id)timePairsForStream:(id)stream mediaType:(int64_t)type inAsset:(id)asset error:(id *)error
 {
   v55 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v37 = a5;
-  v9 = [MIOMediaTypeUtility matchingAVMediaTypeFromMIOMediaType:a4];
+  streamCopy = stream;
+  assetCopy = asset;
+  v9 = [MIOMediaTypeUtility matchingAVMediaTypeFromMIOMediaType:type];
   v51 = 0u;
   v52 = 0u;
   v49 = 0u;
   v50 = 0u;
-  v10 = [v37 tracksWithMediaType:v9];
+  v10 = [assetCopy tracksWithMediaType:v9];
   v11 = [v10 countByEnumeratingWithState:&v49 objects:v54 count:16];
   if (!v11)
   {
 
 LABEL_31:
-    v35 = [MEMORY[0x277CCACA8] stringWithFormat:@"Cannot find track for stream '%@'.", v8];
-    [MEMORY[0x277CCA9B8] populateReaderError:a6 message:? code:?];
+    streamCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Cannot find track for stream '%@'.", streamCopy];
+    [MEMORY[0x277CCA9B8] populateReaderError:error message:? code:?];
     v12 = 0;
     v36 = 0;
     goto LABEL_42;
@@ -69,7 +69,7 @@ LABEL_31:
       }
 
       v15 = *(*(&v49 + 1) + 8 * i);
-      if ([MIOMovieMetadataUtility isTrack:v15 forStreamId:v8 mediaType:v9])
+      if ([MIOMovieMetadataUtility isTrack:v15 forStreamId:streamCopy mediaType:v9])
       {
         v16 = v15;
 
@@ -87,11 +87,11 @@ LABEL_31:
     goto LABEL_31;
   }
 
-  v35 = [MIOMovieMetadataUtility attachmentsTrackInAsset:v37 forTrack:v12];
-  if (v35)
+  streamCopy = [MIOMovieMetadataUtility attachmentsTrackInAsset:assetCopy forTrack:v12];
+  if (streamCopy)
   {
-    v33 = [objc_alloc(MEMORY[0x277CE6430]) initWithTrack:v35 outputSettings:0];
-    v17 = [MEMORY[0x277CE6410] assetReaderWithAsset:v37 error:a6];
+    v33 = [objc_alloc(MEMORY[0x277CE6430]) initWithTrack:streamCopy outputSettings:0];
+    v17 = [MEMORY[0x277CE6410] assetReaderWithAsset:assetCopy error:error];
     v31 = v17;
     if (v17)
     {
@@ -102,11 +102,11 @@ LABEL_31:
         if ([v31 startReading])
         {
           v36 = objc_opt_new();
-          for (j = 0; ; j = v30)
+          for (j = 0; ; j = nextTimedMetadataGroup)
           {
-            v30 = [v28 nextTimedMetadataGroup];
+            nextTimedMetadataGroup = [v28 nextTimedMetadataGroup];
 
-            if (!v30)
+            if (!nextTimedMetadataGroup)
             {
               break;
             }
@@ -115,7 +115,7 @@ LABEL_31:
             v48 = 0u;
             v45 = 0u;
             v46 = 0u;
-            obj = [v30 items];
+            obj = [nextTimedMetadataGroup items];
             v19 = [obj countByEnumeratingWithState:&v45 objects:v53 count:16];
             if (v19)
             {
@@ -129,8 +129,8 @@ LABEL_31:
                     objc_enumerationMutation(obj);
                   }
 
-                  v22 = [*(*(&v45 + 1) + 8 * k) value];
-                  v23 = [MOVStreamIOUtility plistDeserializedObject:v22 error:a6];
+                  value = [*(*(&v45 + 1) + 8 * k) value];
+                  v23 = [MOVStreamIOUtility plistDeserializedObject:value error:error];
                   if (!v23)
                   {
 
@@ -146,7 +146,7 @@ LABEL_31:
                     {
                       memset(&v44, 0, sizeof(v44));
                       CMTimeMakeFromDictionary(&v44, v24);
-                      [v30 timeRange];
+                      [nextTimedMetadataGroup timeRange];
                       v42 = v40;
                       v43 = v41;
                       v39 = v44;
@@ -170,8 +170,8 @@ LABEL_31:
 
         else
         {
-          v30 = [MEMORY[0x277CCACA8] stringWithFormat:@"Cannot start reading data for stream '%@'.", v8];
-          [MEMORY[0x277CCA9B8] populateReaderError:a6 message:? code:?];
+          nextTimedMetadataGroup = [MEMORY[0x277CCACA8] stringWithFormat:@"Cannot start reading data for stream '%@'.", streamCopy];
+          [MEMORY[0x277CCA9B8] populateReaderError:error message:? code:?];
 LABEL_37:
           v36 = 0;
         }
@@ -179,8 +179,8 @@ LABEL_37:
 
       else
       {
-        v29 = [MEMORY[0x277CCACA8] stringWithFormat:@"Cannot add output to associated metadata track for stream '%@'.", v8];
-        [MEMORY[0x277CCA9B8] populateReaderError:a6 message:? code:?];
+        streamCopy2 = [MEMORY[0x277CCACA8] stringWithFormat:@"Cannot add output to associated metadata track for stream '%@'.", streamCopy];
+        [MEMORY[0x277CCA9B8] populateReaderError:error message:? code:?];
         v36 = 0;
       }
     }
@@ -193,8 +193,8 @@ LABEL_37:
 
   else
   {
-    v34 = [MEMORY[0x277CCACA8] stringWithFormat:@"Cannot find attachments track for stream '%@'.", v8];
-    [MEMORY[0x277CCA9B8] populateReaderError:a6 message:? code:?];
+    streamCopy3 = [MEMORY[0x277CCACA8] stringWithFormat:@"Cannot find attachments track for stream '%@'.", streamCopy];
+    [MEMORY[0x277CCA9B8] populateReaderError:error message:? code:?];
     v36 = 0;
   }
 
@@ -203,26 +203,26 @@ LABEL_42:
   return v36;
 }
 
-+ (id)alignedPTSTimeStamps:(id)a3 withSampleTimes:(id)a4
++ (id)alignedPTSTimeStamps:(id)stamps withSampleTimes:(id)times
 {
-  v5 = a3;
-  v6 = a4;
+  stampsCopy = stamps;
+  timesCopy = times;
   v7 = MEMORY[0x277CBEB18];
-  v8 = [v6 times];
-  v9 = [v7 arrayWithCapacity:{objc_msgSend(v8, "count")}];
+  times = [timesCopy times];
+  v9 = [v7 arrayWithCapacity:{objc_msgSend(times, "count")}];
 
   v10 = 0;
   v11 = 0;
   v12 = MEMORY[0x277CC0890];
-  while ([v6 count] > v10)
+  while ([timesCopy count] > v10)
   {
     memset(&v26, 0, sizeof(v26));
-    if (v6)
+    if (timesCopy)
     {
-      [v6 timeAtIndex:v10];
+      [timesCopy timeAtIndex:v10];
     }
 
-    if (v11 >= [v5 count])
+    if (v11 >= [stampsCopy count])
     {
       time1 = v26;
       v24 = *v12;
@@ -230,7 +230,7 @@ LABEL_42:
       [v9 addObject:v13];
     }
 
-    v14 = [v5 objectAtIndex:v11];
+    v14 = [stampsCopy objectAtIndex:v11];
     time1 = v26;
     if ([v14 isPTSEqualOrCloseToTime:&time1])
     {
@@ -260,7 +260,7 @@ LABEL_42:
         v18 = v11 + 1;
         while (1)
         {
-          if (v18 >= [v5 count])
+          if (v18 >= [stampsCopy count])
           {
             time1 = v26;
             v24 = *v12;
@@ -270,7 +270,7 @@ LABEL_42:
             goto LABEL_25;
           }
 
-          v19 = [v5 objectAtIndex:v18];
+          v19 = [stampsCopy objectAtIndex:v18];
 
           time1 = v26;
           if ([v19 isPTSEqualOrCloseToTime:&time1])
@@ -331,11 +331,11 @@ LABEL_25:
   return v9;
 }
 
-+ (id)timePairWithPts:(id *)a3 originalTime:(id *)a4
++ (id)timePairWithPts:(id *)pts originalTime:(id *)time
 {
   v6 = [MIOTimePair alloc];
-  v10 = *a3;
-  v9 = *a4;
+  v10 = *pts;
+  v9 = *time;
   v7 = [(MIOTimePair *)v6 initWithPts:&v10 originalTime:&v9];
 
   return v7;
@@ -361,7 +361,7 @@ LABEL_25:
   return v3;
 }
 
-- (MIOTimePair)initWithPts:(id *)a3 originalTime:(id *)a4
+- (MIOTimePair)initWithPts:(id *)pts originalTime:(id *)time
 {
   v11.receiver = self;
   v11.super_class = MIOTimePair;
@@ -369,27 +369,27 @@ LABEL_25:
   v7 = v6;
   if (v6)
   {
-    v9 = *&a3->var0;
-    var3 = a3->var3;
+    v9 = *&pts->var0;
+    var3 = pts->var3;
     [(MIOTimePair *)v6 setPts:&v9];
-    v9 = *&a4->var0;
-    var3 = a4->var3;
+    v9 = *&time->var0;
+    var3 = time->var3;
     [(MIOTimePair *)v7 setOriginalTime:&v9];
   }
 
   return v7;
 }
 
-- (BOOL)isPTSEqualOrCloseToTime:(id *)a3
+- (BOOL)isPTSEqualOrCloseToTime:(id *)time
 {
-  v6 = *a3;
+  v6 = *time;
   CMTimeMakeWithSeconds(&v5, 0.000003, 100000000);
   return [(MIOTimePair *)self isPTSEqualOrCloseToTime:&v6 tolerance:&v5];
 }
 
-- (BOOL)isPTSEqualOrCloseToTime:(id *)a3 tolerance:(id *)a4
+- (BOOL)isPTSEqualOrCloseToTime:(id *)time tolerance:(id *)tolerance
 {
-  if ((a3->var2 & 1) == 0)
+  if ((time->var2 & 1) == 0)
   {
     return 0;
   }
@@ -403,12 +403,12 @@ LABEL_25:
   }
 
   memset(&v13, 0, sizeof(v13));
-  lhs = *a3;
+  lhs = *time;
   [(MIOTimePair *)self pts];
   CMTimeSubtract(&time, &lhs, &rhs);
   CMTimeAbsoluteValue(&v13, &time);
   time = v13;
-  lhs = *a4;
+  lhs = *tolerance;
   return CMTimeCompare(&time, &lhs) < 1;
 }
 
@@ -423,9 +423,9 @@ LABEL_25:
   return v5;
 }
 
-- (id)copyWithNewPts:(id *)a3
+- (id)copyWithNewPts:(id *)pts
 {
-  v5 = *a3;
+  v5 = *pts;
   [(MIOTimePair *)self originalTime];
   [MIOTimePair timePairWithPts:&v5 originalTime:v4];
   return objc_claimAutoreleasedReturnValue();

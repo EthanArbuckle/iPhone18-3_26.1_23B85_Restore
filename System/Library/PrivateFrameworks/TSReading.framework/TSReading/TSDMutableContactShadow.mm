@@ -1,32 +1,32 @@
 @interface TSDMutableContactShadow
-- (void)setColor:(CGColor *)a3;
-- (void)setTSUColor:(id)a3;
+- (void)setColor:(CGColor *)color;
+- (void)setTSUColor:(id)color;
 @end
 
 @implementation TSDMutableContactShadow
 
-- (void)setColor:(CGColor *)a3
+- (void)setColor:(CGColor *)color
 {
-  if (!a3)
+  if (!color)
   {
-    v5 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDMutableContactShadow setColor:]"];
-    [v5 handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDContactShadow.m"), 497, @"invalid nil value for '%s'", "color"}];
+    [currentHandler handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDContactShadow.m"), 497, @"invalid nil value for '%s'", "color"}];
   }
 
   mColor = self->super.super.mColor;
-  if (mColor != a3)
+  if (mColor != color)
   {
     CGColorRelease(mColor);
-    self->super.super.mColor = CGColorRetain(a3);
+    self->super.super.mColor = CGColorRetain(color);
   }
 }
 
-- (void)setTSUColor:(id)a3
+- (void)setTSUColor:(id)color
 {
-  v4 = [a3 CGColor];
+  cGColor = [color CGColor];
 
-  [(TSDMutableContactShadow *)self setColor:v4];
+  [(TSDMutableContactShadow *)self setColor:cGColor];
 }
 
 @end

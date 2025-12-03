@@ -1,27 +1,27 @@
 @interface BCSShardItemPersistentStore
-- (BCSShardItemPersistentStore)initWithSchemaVersion:(int64_t)a3;
+- (BCSShardItemPersistentStore)initWithSchemaVersion:(int64_t)version;
 - (id)databasePath;
-- (id)shardItemMatching:(id)a3;
-- (int64_t)countOfExpiredShardsOfType:(int64_t)a3;
-- (int64_t)countOfShardsOfType:(int64_t)a3;
-- (sqlite3_int64)_executeCountSQLQuery:(void *)a1;
-- (void)deleteExpiredShardItemsOfType:(int64_t)a3;
-- (void)deleteShardItemMatching:(id)a3;
-- (void)deleteShardItemsOfType:(int64_t)a3;
-- (void)schemaVersionWillChangeForDatabase:(sqlite3 *)a3 fromSchemaVersion:(int64_t)a4 toSchemaVersion:(int64_t)a5;
-- (void)updateShardItem:(id)a3 withShardIdentifier:(id)a4;
+- (id)shardItemMatching:(id)matching;
+- (int64_t)countOfExpiredShardsOfType:(int64_t)type;
+- (int64_t)countOfShardsOfType:(int64_t)type;
+- (sqlite3_int64)_executeCountSQLQuery:(void *)query;
+- (void)deleteExpiredShardItemsOfType:(int64_t)type;
+- (void)deleteShardItemMatching:(id)matching;
+- (void)deleteShardItemsOfType:(int64_t)type;
+- (void)schemaVersionWillChangeForDatabase:(sqlite3 *)database fromSchemaVersion:(int64_t)version toSchemaVersion:(int64_t)schemaVersion;
+- (void)updateShardItem:(id)item withShardIdentifier:(id)identifier;
 @end
 
 @implementation BCSShardItemPersistentStore
 
-- (BCSShardItemPersistentStore)initWithSchemaVersion:(int64_t)a3
+- (BCSShardItemPersistentStore)initWithSchemaVersion:(int64_t)version
 {
   v5.receiver = self;
   v5.super_class = BCSShardItemPersistentStore;
   result = [(BCSPersistentStore *)&v5 init];
   if (result)
   {
-    result->_schemaVersion = a3;
+    result->_schemaVersion = version;
   }
 
   return result;
@@ -34,10 +34,10 @@
     if (![_databasePath_databasePath length])
     {
       v3 = +[BCSPathProvider sharedInstance];
-      v4 = [v3 documentsURL];
-      v5 = [v4 path];
+      documentsURL = [v3 documentsURL];
+      path = [documentsURL path];
 
-      v6 = [v5 stringByAppendingPathComponent:@"shard_items.db"];
+      v6 = [path stringByAppendingPathComponent:@"shard_items.db"];
       v7 = _databasePath_databasePath;
       _databasePath_databasePath = v6;
     }
@@ -49,7 +49,7 @@
   return self;
 }
 
-- (void)schemaVersionWillChangeForDatabase:(sqlite3 *)a3 fromSchemaVersion:(int64_t)a4 toSchemaVersion:(int64_t)a5
+- (void)schemaVersionWillChangeForDatabase:(sqlite3 *)database fromSchemaVersion:(int64_t)version toSchemaVersion:(int64_t)schemaVersion
 {
   v19 = *MEMORY[0x277D85DE8];
   v8 = ABSLogCommon();
@@ -58,21 +58,21 @@
     *buf = 136315650;
     v14 = "[BCSShardItemPersistentStore schemaVersionWillChangeForDatabase:fromSchemaVersion:toSchemaVersion:]";
     v15 = 2048;
-    v16 = a4;
+    versionCopy = version;
     v17 = 2048;
-    v18 = a5;
+    schemaVersionCopy = schemaVersion;
     _os_log_impl(&dword_242072000, v8, OS_LOG_TYPE_DEFAULT, "%s schema version will change from '%ld' to '%ld', dropping shard_items table", buf, 0x20u);
   }
 
   ppStmt = 0;
-  if (!sqlite3_prepare_v2(a3, "DROP TABLE IF EXISTS shard_items", -1, &ppStmt, 0))
+  if (!sqlite3_prepare_v2(database, "DROP TABLE IF EXISTS shard_items", -1, &ppStmt, 0))
   {
     if (sqlite3_step(ppStmt) != 101)
     {
       v9 = ABSLogCommon();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
-        v11 = sqlite3_errmsg(a3);
+        v11 = sqlite3_errmsg(database);
         *buf = 136315138;
         v14 = v11;
         _os_log_error_impl(&dword_242072000, v9, OS_LOG_TYPE_ERROR, "error while dropping shard_items table: %s", buf, 0xCu);
@@ -85,58 +85,58 @@
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateShardItem:(id)a3 withShardIdentifier:(id)a4
+- (void)updateShardItem:(id)item withShardIdentifier:(id)identifier
 {
   v40 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
+  identifierCopy = identifier;
+  itemCopy = item;
   [(BCSPersistentStore *)self beginBatch];
-  [(BCSShardItemPersistentStore *)self deleteShardItemMatching:v6];
-  v8 = v7;
+  [(BCSShardItemPersistentStore *)self deleteShardItemMatching:identifierCopy];
+  v8 = itemCopy;
   if (self)
   {
     [(BCSPersistentStore *)self beginBatch];
     ppStmt = 0;
-    v9 = [CFSTR(""insert into shard_items (bloom_filter_string start_index];
+    start_index = [CFSTR(""insert into shard_items (bloom_filter_string start_index];
     v10 = ABSLogCommon();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       [v8 base64EncodedString];
-      v11 = v26 = v6;
+      v11 = v26 = identifierCopy;
       v12 = [v11 length];
-      v13 = [v8 startIndex];
-      v14 = [v8 shardCount];
-      v15 = [v8 type];
-      v16 = [v8 expirationDate];
+      startIndex = [v8 startIndex];
+      shardCount = [v8 shardCount];
+      type = [v8 type];
+      expirationDate = [v8 expirationDate];
       *buf = 136316418;
       v29 = "[BCSShardItemPersistentStore _updateShardItem:withShardIdentifier:]";
       v30 = 2048;
       v31 = v12;
       v32 = 2048;
-      v33 = v13;
+      v33 = startIndex;
       v34 = 2048;
-      v35 = v14;
+      v35 = shardCount;
       v36 = 2048;
-      v37 = v15;
+      v37 = type;
       v38 = 2112;
-      v39 = v16;
+      v39 = expirationDate;
       _os_log_impl(&dword_242072000, v10, OS_LOG_TYPE_DEFAULT, "%s Inserting shard into DB Shard Item of length %lu startIndex %lld shardCount %lld type %ld %@", buf, 0x3Eu);
 
-      v6 = v26;
+      identifierCopy = v26;
     }
 
-    if (!sqlite3_prepare_v2([(BCSPersistentStore *)self openedDatabase], v9, -1, &ppStmt, 0))
+    if (!sqlite3_prepare_v2([(BCSPersistentStore *)self openedDatabase], start_index, -1, &ppStmt, 0))
     {
       v17 = ppStmt;
-      v18 = [v8 base64EncodedString];
-      sqlite3_bind_text(v17, 1, [v18 UTF8String], -1, 0);
+      base64EncodedString = [v8 base64EncodedString];
+      sqlite3_bind_text(v17, 1, [base64EncodedString UTF8String], -1, 0);
 
       sqlite3_bind_int64(ppStmt, 2, [v8 startIndex]);
       sqlite3_bind_int64(ppStmt, 3, [v8 shardCount]);
       sqlite3_bind_int(ppStmt, 4, [v8 type]);
       v19 = ppStmt;
-      v20 = [v8 expirationDate];
-      [v20 timeIntervalSince1970];
+      expirationDate2 = [v8 expirationDate];
+      [expirationDate2 timeIntervalSince1970];
       sqlite3_bind_double(v19, 5, v21);
 
       v22 = sqlite3_step(ppStmt);
@@ -164,33 +164,33 @@
   [(BCSPersistentStore *)self endBatch];
 }
 
-- (id)shardItemMatching:(id)a3
+- (id)shardItemMatching:(id)matching
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  matchingCopy = matching;
   v5 = ABSLogCommon();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315906;
     *&buf[4] = "[BCSShardItemPersistentStore shardItemMatching:]";
     v18 = 2048;
-    v19 = [v4 startIndex];
+    startIndex = [matchingCopy startIndex];
     v20 = 2048;
-    v21 = [v4 shardCount];
+    shardCount = [matchingCopy shardCount];
     v22 = 2048;
-    v23 = [v4 type];
+    type = [matchingCopy type];
     _os_log_impl(&dword_242072000, v5, OS_LOG_TYPE_DEFAULT, "%s Fetching shard from DB Shard Item from startIndex %lld shardCount %lld type %ld", buf, 0x2Au);
   }
 
-  v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"select * from shard_items where start_index=%lld AND shard_count = %lld AND bloom_filter_type = %ld", objc_msgSend(v4, "startIndex"), objc_msgSend(v4, "shardCount"), objc_msgSend(v4, "type")];
-  v7 = [v6 UTF8String];
+  v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"select * from shard_items where start_index=%lld AND shard_count = %lld AND bloom_filter_type = %ld", objc_msgSend(matchingCopy, "startIndex"), objc_msgSend(matchingCopy, "shardCount"), objc_msgSend(matchingCopy, "type")];
+  uTF8String = [v6 UTF8String];
 
   if (self)
   {
     [(BCSPersistentStore *)self beginBatch];
     *buf = 0;
     v8 = 0;
-    if (!sqlite3_prepare_v2([(BCSPersistentStore *)self openedDatabase], v7, -1, buf, 0))
+    if (!sqlite3_prepare_v2([(BCSPersistentStore *)self openedDatabase], uTF8String, -1, buf, 0))
     {
       if (sqlite3_step(*buf) == 100)
       {
@@ -233,57 +233,57 @@
   return v8;
 }
 
-- (void)deleteShardItemMatching:(id)a3
+- (void)deleteShardItemMatching:(id)matching
 {
   v4 = MEMORY[0x277CCACA8];
-  v5 = a3;
-  v6 = [v5 startIndex];
-  v7 = [v5 shardCount];
-  v8 = [v5 type];
+  matchingCopy = matching;
+  startIndex = [matchingCopy startIndex];
+  shardCount = [matchingCopy shardCount];
+  type = [matchingCopy type];
 
-  v9 = [v4 stringWithFormat:@"delete from shard_items where start_index=%lld AND shard_count = %lld AND bloom_filter_type = %ld", v6, v7, v8];
-  v10 = [v9 UTF8String];
+  v9 = [v4 stringWithFormat:@"delete from shard_items where start_index=%lld AND shard_count = %lld AND bloom_filter_type = %ld", startIndex, shardCount, type];
+  uTF8String = [v9 UTF8String];
 
-  [(BCSLinkItemPersistentStore *)self _executeDeleteSQLQuery:v10];
+  [(BCSLinkItemPersistentStore *)self _executeDeleteSQLQuery:uTF8String];
 }
 
-- (void)deleteShardItemsOfType:(int64_t)a3
+- (void)deleteShardItemsOfType:(int64_t)type
 {
-  v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"delete from shard_items where bloom_filter_type = %ld", a3];
-  v5 = [v4 UTF8String];
+  type = [MEMORY[0x277CCACA8] stringWithFormat:@"delete from shard_items where bloom_filter_type = %ld", type];
+  uTF8String = [type UTF8String];
 
-  [(BCSLinkItemPersistentStore *)self _executeDeleteSQLQuery:v5];
+  [(BCSLinkItemPersistentStore *)self _executeDeleteSQLQuery:uTF8String];
 }
 
-- (void)deleteExpiredShardItemsOfType:(int64_t)a3
+- (void)deleteExpiredShardItemsOfType:(int64_t)type
 {
   v5 = MEMORY[0x277CCACA8];
-  v6 = [MEMORY[0x277CBEAA8] date];
-  [v6 timeIntervalSince1970];
-  v8 = [v5 stringWithFormat:@"delete from shard_items where bloom_filter_type = %ld AND expiration_date <= %f", a3, v7];
-  v9 = [v8 UTF8String];
+  date = [MEMORY[0x277CBEAA8] date];
+  [date timeIntervalSince1970];
+  v8 = [v5 stringWithFormat:@"delete from shard_items where bloom_filter_type = %ld AND expiration_date <= %f", type, v7];
+  uTF8String = [v8 UTF8String];
 
-  [(BCSLinkItemPersistentStore *)self _executeDeleteSQLQuery:v9];
+  [(BCSLinkItemPersistentStore *)self _executeDeleteSQLQuery:uTF8String];
 }
 
-- (int64_t)countOfShardsOfType:(int64_t)a3
+- (int64_t)countOfShardsOfType:(int64_t)type
 {
-  v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"select count(*) from shard_items where bloom_filter_type = %ld", a3];
-  v5 = [v4 UTF8String];
+  type = [MEMORY[0x277CCACA8] stringWithFormat:@"select count(*) from shard_items where bloom_filter_type = %ld", type];
+  uTF8String = [type UTF8String];
 
-  return [(BCSShardItemPersistentStore *)self _executeCountSQLQuery:v5];
+  return [(BCSShardItemPersistentStore *)self _executeCountSQLQuery:uTF8String];
 }
 
-- (sqlite3_int64)_executeCountSQLQuery:(void *)a1
+- (sqlite3_int64)_executeCountSQLQuery:(void *)query
 {
-  if (!a1)
+  if (!query)
   {
     return 0;
   }
 
-  [a1 beginBatch];
+  [query beginBatch];
   ppStmt = 0;
-  v4 = sqlite3_prepare_v2([a1 openedDatabase], a2, -1, &ppStmt, 0);
+  v4 = sqlite3_prepare_v2([query openedDatabase], a2, -1, &ppStmt, 0);
   v5 = 0;
   if (!v4)
   {
@@ -300,19 +300,19 @@
     sqlite3_finalize(ppStmt);
   }
 
-  [a1 endBatch];
+  [query endBatch];
   return v5;
 }
 
-- (int64_t)countOfExpiredShardsOfType:(int64_t)a3
+- (int64_t)countOfExpiredShardsOfType:(int64_t)type
 {
   v5 = MEMORY[0x277CCACA8];
-  v6 = [MEMORY[0x277CBEAA8] date];
-  [v6 timeIntervalSince1970];
-  v8 = [v5 stringWithFormat:@"select count(*) from shard_items where bloom_filter_type = %ld AND expiration_date <= %f", a3, v7];
-  v9 = [v8 UTF8String];
+  date = [MEMORY[0x277CBEAA8] date];
+  [date timeIntervalSince1970];
+  v8 = [v5 stringWithFormat:@"select count(*) from shard_items where bloom_filter_type = %ld AND expiration_date <= %f", type, v7];
+  uTF8String = [v8 UTF8String];
 
-  return [(BCSShardItemPersistentStore *)self _executeCountSQLQuery:v9];
+  return [(BCSShardItemPersistentStore *)self _executeCountSQLQuery:uTF8String];
 }
 
 @end

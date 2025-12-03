@@ -1,25 +1,25 @@
 @interface CADCoreSpotlightIndex
-- (CADCoreSpotlightIndex)initWithBundleID:(id)a3;
-- (void)deleteAllSearchableItemsForBundleID:(id)a3 completionHandler:(id)a4;
-- (void)deleteSearchableItemsWithDomainIdentifiers:(id)a3 completionHandler:(id)a4;
-- (void)endIndexBatchWithExpectedClientState:(id)a3 newClientState:(id)a4 completionHandler:(id)a5;
-- (void)indexSearchableItems:(id)a3 completionHandler:(id)a4;
+- (CADCoreSpotlightIndex)initWithBundleID:(id)d;
+- (void)deleteAllSearchableItemsForBundleID:(id)d completionHandler:(id)handler;
+- (void)deleteSearchableItemsWithDomainIdentifiers:(id)identifiers completionHandler:(id)handler;
+- (void)endIndexBatchWithExpectedClientState:(id)state newClientState:(id)clientState completionHandler:(id)handler;
+- (void)indexSearchableItems:(id)items completionHandler:(id)handler;
 @end
 
 @implementation CADCoreSpotlightIndex
 
-- (void)endIndexBatchWithExpectedClientState:(id)a3 newClientState:(id)a4 completionHandler:(id)a5
+- (void)endIndexBatchWithExpectedClientState:(id)state newClientState:(id)clientState completionHandler:(id)handler
 {
-  v8 = a5;
+  handlerCopy = handler;
   index = self->_index;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __95__CADCoreSpotlightIndex_endIndexBatchWithExpectedClientState_newClientState_completionHandler___block_invoke;
   v11[3] = &unk_27851B168;
   v11[4] = self;
-  v12 = v8;
-  v10 = v8;
-  [(CSSearchableIndex *)index endIndexBatchWithExpectedClientState:a3 newClientState:a4 completionHandler:v11];
+  v12 = handlerCopy;
+  v10 = handlerCopy;
+  [(CSSearchableIndex *)index endIndexBatchWithExpectedClientState:state newClientState:clientState completionHandler:v11];
 }
 
 uint64_t __95__CADCoreSpotlightIndex_endIndexBatchWithExpectedClientState_newClientState_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -54,16 +54,16 @@ uint64_t __95__CADCoreSpotlightIndex_endIndexBatchWithExpectedClientState_newCli
   return MEMORY[0x2821F96F8](v6);
 }
 
-- (CADCoreSpotlightIndex)initWithBundleID:(id)a3
+- (CADCoreSpotlightIndex)initWithBundleID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v10.receiver = self;
   v10.super_class = CADCoreSpotlightIndex;
   v5 = [(CADCoreSpotlightIndex *)&v10 init];
   if (v5)
   {
     v6 = objc_alloc(MEMORY[0x277CC34A8]);
-    v7 = [v6 initWithName:@"events" protectionClass:*MEMORY[0x277CCA1A0] bundleIdentifier:v4];
+    v7 = [v6 initWithName:@"events" protectionClass:*MEMORY[0x277CCA1A0] bundleIdentifier:dCopy];
     index = v5->_index;
     v5->_index = v7;
 
@@ -73,19 +73,19 @@ uint64_t __95__CADCoreSpotlightIndex_endIndexBatchWithExpectedClientState_newCli
   return v5;
 }
 
-- (void)deleteSearchableItemsWithDomainIdentifiers:(id)a3 completionHandler:(id)a4
+- (void)deleteSearchableItemsWithDomainIdentifiers:(id)identifiers completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  [CADSpotlightLogger log:@"started deleteSearchableItemsWithDomainIdentifiers: %@", v7];
+  handlerCopy = handler;
+  identifiersCopy = identifiers;
+  [CADSpotlightLogger log:@"started deleteSearchableItemsWithDomainIdentifiers: %@", identifiersCopy];
   index = self->_index;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __86__CADCoreSpotlightIndex_deleteSearchableItemsWithDomainIdentifiers_completionHandler___block_invoke;
   v10[3] = &unk_27851B190;
-  v11 = v6;
-  v9 = v6;
-  [(CSSearchableIndex *)index deleteSearchableItemsWithDomainIdentifiers:v7 completionHandler:v10];
+  v11 = handlerCopy;
+  v9 = handlerCopy;
+  [(CSSearchableIndex *)index deleteSearchableItemsWithDomainIdentifiers:identifiersCopy completionHandler:v10];
 }
 
 void __86__CADCoreSpotlightIndex_deleteSearchableItemsWithDomainIdentifiers_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -105,20 +105,20 @@ void __86__CADCoreSpotlightIndex_deleteSearchableItemsWithDomainIdentifiers_comp
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)indexSearchableItems:(id)a3 completionHandler:(id)a4
+- (void)indexSearchableItems:(id)items completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 CalMap:&__block_literal_global_19];
+  handlerCopy = handler;
+  itemsCopy = items;
+  v8 = [itemsCopy CalMap:&__block_literal_global_19];
   [CADSpotlightLogger log:@"started indexSearchableItems: %@", v8];
   index = self->_index;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __64__CADCoreSpotlightIndex_indexSearchableItems_completionHandler___block_invoke_2;
   v11[3] = &unk_27851B190;
-  v12 = v6;
-  v10 = v6;
-  [(CSSearchableIndex *)index indexSearchableItems:v7 completionHandler:v11];
+  v12 = handlerCopy;
+  v10 = handlerCopy;
+  [(CSSearchableIndex *)index indexSearchableItems:itemsCopy completionHandler:v11];
 }
 
 id __64__CADCoreSpotlightIndex_indexSearchableItems_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -150,19 +150,19 @@ void __64__CADCoreSpotlightIndex_indexSearchableItems_completionHandler___block_
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)deleteAllSearchableItemsForBundleID:(id)a3 completionHandler:(id)a4
+- (void)deleteAllSearchableItemsForBundleID:(id)d completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  [CADSpotlightLogger log:@"started deleteAllSearchableItemsForBundleID: %@", v7];
+  handlerCopy = handler;
+  dCopy = d;
+  [CADSpotlightLogger log:@"started deleteAllSearchableItemsForBundleID: %@", dCopy];
   index = self->_index;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __79__CADCoreSpotlightIndex_deleteAllSearchableItemsForBundleID_completionHandler___block_invoke;
   v10[3] = &unk_27851B190;
-  v11 = v6;
-  v9 = v6;
-  [(CSSearchableIndex *)index deleteAllSearchableItemsForBundleID:v7 completionHandler:v10];
+  v11 = handlerCopy;
+  v9 = handlerCopy;
+  [(CSSearchableIndex *)index deleteAllSearchableItemsForBundleID:dCopy completionHandler:v10];
 }
 
 void __79__CADCoreSpotlightIndex_deleteAllSearchableItemsForBundleID_completionHandler___block_invoke(uint64_t a1, void *a2)

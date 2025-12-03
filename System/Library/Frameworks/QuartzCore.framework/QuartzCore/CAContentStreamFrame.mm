@@ -1,14 +1,14 @@
 @interface CAContentStreamFrame
 - (CGRect)contentRect;
-- (void)setContentRect:(CGRect)a3;
+- (void)setContentRect:(CGRect)rect;
 @end
 
 @implementation CAContentStreamFrame
 
-- (void)setContentRect:(CGRect)a3
+- (void)setContentRect:(CGRect)rect
 {
   v4 = *MEMORY[0x1E69E9840];
-  src = a3;
+  src = rect;
   objc_copyStruct(&self->_contentRect, &src, 32, 1, 0);
 }
 

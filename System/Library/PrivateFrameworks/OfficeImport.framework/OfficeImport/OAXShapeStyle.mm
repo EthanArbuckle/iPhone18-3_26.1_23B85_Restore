@@ -1,37 +1,37 @@
 @interface OAXShapeStyle
-+ (void)readFromNode:(_xmlNode *)a3 shapeStyle:(id)a4 drawingState:(id)a5;
++ (void)readFromNode:(_xmlNode *)node shapeStyle:(id)style drawingState:(id)state;
 @end
 
 @implementation OAXShapeStyle
 
-+ (void)readFromNode:(_xmlNode *)a3 shapeStyle:(id)a4 drawingState:(id)a5
++ (void)readFromNode:(_xmlNode *)node shapeStyle:(id)style drawingState:(id)state
 {
-  v20 = a4;
-  v7 = a5;
-  v8 = [v7 OAXMainNamespace];
-  v9 = OCXFirstChild(a3, v8, "lnRef");
+  styleCopy = style;
+  stateCopy = state;
+  oAXMainNamespace = [stateCopy OAXMainNamespace];
+  v9 = OCXFirstChild(node, oAXMainNamespace, "lnRef");
 
   v10 = [OAXStyleMatrix readReferenceFromNode:v9];
-  [v20 setLineReference:v10];
+  [styleCopy setLineReference:v10];
 
-  v11 = [v7 OAXMainNamespace];
-  v12 = OCXNextSibling(v9, v11, "fillRef");
+  oAXMainNamespace2 = [stateCopy OAXMainNamespace];
+  v12 = OCXNextSibling(v9, oAXMainNamespace2, "fillRef");
 
   v13 = [OAXStyleMatrix readReferenceFromNode:v12];
-  [v20 setFillReference:v13];
+  [styleCopy setFillReference:v13];
 
-  v14 = [v7 OAXMainNamespace];
-  v15 = OCXNextSibling(v12, v14, "effectRef");
+  oAXMainNamespace3 = [stateCopy OAXMainNamespace];
+  v15 = OCXNextSibling(v12, oAXMainNamespace3, "effectRef");
 
   v16 = [OAXStyleMatrix readReferenceFromNode:v15];
-  [v20 setEffectReference:v16];
+  [styleCopy setEffectReference:v16];
 
-  v17 = [v7 OAXMainNamespace];
-  v18 = OCXNextSibling(v15, v17, "fontRef");
+  oAXMainNamespace4 = [stateCopy OAXMainNamespace];
+  v18 = OCXNextSibling(v15, oAXMainNamespace4, "fontRef");
 
   v19 = objc_alloc_init(OADFontReference);
   [OAXFontReference readFromNode:v18 fontReference:v19];
-  [v20 setFontReference:v19];
+  [styleCopy setFontReference:v19];
 }
 
 @end

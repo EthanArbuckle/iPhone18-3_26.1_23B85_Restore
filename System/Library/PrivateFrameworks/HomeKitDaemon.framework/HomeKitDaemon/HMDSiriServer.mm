@@ -1,45 +1,45 @@
 @interface HMDSiriServer
-- (BOOL)_isAudioCodecSupported:(id)a3;
-- (BOOL)_isSiriInputType:(int64_t)a3 supportedOnAccessory:(id)a4 siriAudioConfiguration:(id)a5;
+- (BOOL)_isAudioCodecSupported:(id)supported;
+- (BOOL)_isSiriInputType:(int64_t)type supportedOnAccessory:(id)accessory siriAudioConfiguration:(id)configuration;
 - (HMDSiriServer)init;
-- (HMDSiriServer)initWithQueue:(id)a3;
-- (id)_getBestAudioCodecConfiguration:(id)a3;
-- (id)_getSiriSessionForAccessory:(id)a3;
-- (void)_checkSiriSupportByAccessory:(id)a3;
-- (void)_handleDisconnectForAccessory:(id)a3;
+- (HMDSiriServer)initWithQueue:(id)queue;
+- (id)_getBestAudioCodecConfiguration:(id)configuration;
+- (id)_getSiriSessionForAccessory:(id)accessory;
+- (void)_checkSiriSupportByAccessory:(id)accessory;
+- (void)_handleDisconnectForAccessory:(id)accessory;
 - (void)_maybeTearDownSiriPlugin;
-- (void)_removeDataStreamListenerForAccessory:(id)a3;
+- (void)_removeDataStreamListenerForAccessory:(id)accessory;
 - (void)_setupSiriPlugin;
 - (void)_setupSiriUIContext;
 - (void)_tearDownSiriUIContext;
-- (void)accessory:(id)a3 didCloseDataStreamWithError:(id)a4;
-- (void)accessory:(id)a3 didReceiveBulkSessionCandidate:(id)a4;
-- (void)accessoryDidStartListening:(id)a3;
-- (void)handleAccessoryConfigured:(id)a3;
-- (void)handleAccessoryHasBulkSendDataStream:(id)a3;
-- (void)handleAccessoryRemoved:(id)a3;
-- (void)handleAccessoryUnconfigured:(id)a3;
-- (void)monitor:(id)a3 needsSiriCapabilityForAccessory:(id)a4;
-- (void)monitor:(id)a3 willAllowAccessoryForDragonSiri:(id)a4;
-- (void)monitorHasNoAccessoriesForDragonSiri:(id)a3;
+- (void)accessory:(id)accessory didCloseDataStreamWithError:(id)error;
+- (void)accessory:(id)accessory didReceiveBulkSessionCandidate:(id)candidate;
+- (void)accessoryDidStartListening:(id)listening;
+- (void)handleAccessoryConfigured:(id)configured;
+- (void)handleAccessoryHasBulkSendDataStream:(id)stream;
+- (void)handleAccessoryRemoved:(id)removed;
+- (void)handleAccessoryUnconfigured:(id)unconfigured;
+- (void)monitor:(id)monitor needsSiriCapabilityForAccessory:(id)accessory;
+- (void)monitor:(id)monitor willAllowAccessoryForDragonSiri:(id)siri;
+- (void)monitorHasNoAccessoriesForDragonSiri:(id)siri;
 - (void)registerForMessages;
-- (void)setTargetableAccessory:(id)a3 withControllers:(id)a4;
+- (void)setTargetableAccessory:(id)accessory withControllers:(id)controllers;
 @end
 
 @implementation HMDSiriServer
 
-- (void)accessory:(id)a3 didCloseDataStreamWithError:(id)a4
+- (void)accessory:(id)accessory didCloseDataStreamWithError:(id)error
 {
-  v5 = a3;
-  v6 = [(HMDSiriServer *)self queue];
+  accessoryCopy = accessory;
+  queue = [(HMDSiriServer *)self queue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __55__HMDSiriServer_accessory_didCloseDataStreamWithError___block_invoke;
   v8[3] = &unk_27868A750;
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
-  dispatch_async(v6, v8);
+  v9 = accessoryCopy;
+  selfCopy = self;
+  v7 = accessoryCopy;
+  dispatch_async(queue, v8);
 }
 
 void __55__HMDSiriServer_accessory_didCloseDataStreamWithError___block_invoke(uint64_t a1)
@@ -80,18 +80,18 @@ void __55__HMDSiriServer_accessory_didCloseDataStreamWithError___block_invoke(ui
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)accessoryDidStartListening:(id)a3
+- (void)accessoryDidStartListening:(id)listening
 {
-  v4 = a3;
-  v5 = [(HMDSiriServer *)self queue];
+  listeningCopy = listening;
+  queue = [(HMDSiriServer *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __44__HMDSiriServer_accessoryDidStartListening___block_invoke;
   v7[3] = &unk_27868A750;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = listeningCopy;
+  v6 = listeningCopy;
+  dispatch_async(queue, v7);
 }
 
 void __44__HMDSiriServer_accessoryDidStartListening___block_invoke(uint64_t a1)
@@ -150,12 +150,12 @@ void __44__HMDSiriServer_accessoryDidStartListening___block_invoke(uint64_t a1)
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)accessory:(id)a3 didReceiveBulkSessionCandidate:(id)a4
+- (void)accessory:(id)accessory didReceiveBulkSessionCandidate:(id)candidate
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
+  accessoryCopy = accessory;
+  candidateCopy = candidate;
+  v8 = accessoryCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -171,21 +171,21 @@ void __44__HMDSiriServer_accessoryDidStartListening___block_invoke(uint64_t a1)
 
   if (v10)
   {
-    v11 = [(HMDSiriServer *)self queue];
+    queue = [(HMDSiriServer *)self queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __58__HMDSiriServer_accessory_didReceiveBulkSessionCandidate___block_invoke;
     block[3] = &unk_27868A010;
     block[4] = self;
     v18 = v10;
-    v19 = v7;
-    dispatch_async(v11, block);
+    v19 = candidateCopy;
+    dispatch_async(queue, block);
   }
 
   else
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
@@ -310,24 +310,24 @@ void __58__HMDSiriServer_accessory_didReceiveBulkSessionCandidate___block_invoke
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)monitorHasNoAccessoriesForDragonSiri:(id)a3
+- (void)monitorHasNoAccessoriesForDragonSiri:(id)siri
 {
-  v4 = [(HMDSiriServer *)self queue];
+  queue = [(HMDSiriServer *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __54__HMDSiriServer_monitorHasNoAccessoriesForDragonSiri___block_invoke;
   block[3] = &unk_27868A728;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(queue, block);
 }
 
-- (void)monitor:(id)a3 willAllowAccessoryForDragonSiri:(id)a4
+- (void)monitor:(id)monitor willAllowAccessoryForDragonSiri:(id)siri
 {
-  v5 = a4;
+  siriCopy = siri;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = siriCopy;
   }
 
   else
@@ -338,14 +338,14 @@ void __58__HMDSiriServer_accessory_didReceiveBulkSessionCandidate___block_invoke
   v7 = v6;
   if (v7)
   {
-    v8 = [(HMDSiriServer *)self queue];
+    queue = [(HMDSiriServer *)self queue];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __57__HMDSiriServer_monitor_willAllowAccessoryForDragonSiri___block_invoke;
     v9[3] = &unk_27868A750;
     v9[4] = self;
     v10 = v7;
-    dispatch_async(v8, v9);
+    dispatch_async(queue, v9);
   }
 }
 
@@ -378,13 +378,13 @@ uint64_t __57__HMDSiriServer_monitor_willAllowAccessoryForDragonSiri___block_inv
   return result;
 }
 
-- (void)monitor:(id)a3 needsSiriCapabilityForAccessory:(id)a4
+- (void)monitor:(id)monitor needsSiriCapabilityForAccessory:(id)accessory
 {
-  v5 = a4;
+  accessoryCopy = accessory;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = accessoryCopy;
   }
 
   else
@@ -395,31 +395,31 @@ uint64_t __57__HMDSiriServer_monitor_willAllowAccessoryForDragonSiri___block_inv
   v7 = v6;
   if (v7)
   {
-    v8 = [(HMDSiriServer *)self queue];
+    queue = [(HMDSiriServer *)self queue];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __57__HMDSiriServer_monitor_needsSiriCapabilityForAccessory___block_invoke;
     v9[3] = &unk_27868A750;
     v9[4] = self;
     v10 = v7;
-    dispatch_async(v8, v9);
+    dispatch_async(queue, v9);
   }
 }
 
-- (id)_getSiriSessionForAccessory:(id)a3
+- (id)_getSiriSessionForAccessory:(id)accessory
 {
   [(HMDSiriServer *)self _setupSiriUIContext];
 
   return [(HMDSiriServer *)self siriUISession];
 }
 
-- (void)_removeDataStreamListenerForAccessory:(id)a3
+- (void)_removeDataStreamListenerForAccessory:(id)accessory
 {
-  v4 = a3;
+  accessoryCopy = accessory;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = accessoryCopy;
   }
 
   else
@@ -430,14 +430,14 @@ uint64_t __57__HMDSiriServer_monitor_willAllowAccessoryForDragonSiri___block_inv
   v6 = v5;
   if (v6)
   {
-    v7 = [(HMDSiriServer *)self queue];
+    queue = [(HMDSiriServer *)self queue];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __55__HMDSiriServer__removeDataStreamListenerForAccessory___block_invoke;
     v8[3] = &unk_27868A750;
     v8[4] = self;
     v9 = v6;
-    dispatch_async(v7, v8);
+    dispatch_async(queue, v8);
   }
 }
 
@@ -468,62 +468,62 @@ uint64_t __55__HMDSiriServer__removeDataStreamListenerForAccessory___block_invok
   return result;
 }
 
-- (BOOL)_isAudioCodecSupported:(id)a3
+- (BOOL)_isAudioCodecSupported:(id)supported
 {
-  v3 = a3;
-  v4 = [v3 codecType];
-  if (!v4)
+  supportedCopy = supported;
+  codecType = [supportedCopy codecType];
+  if (!codecType)
   {
     goto LABEL_7;
   }
 
-  v5 = v4;
-  v6 = [v3 codecParameters];
+  v5 = codecType;
+  codecParameters = [supportedCopy codecParameters];
 
-  if (v6)
+  if (codecParameters)
   {
-    v7 = [v3 codecParameters];
-    v6 = [v7 bitRate];
-    if (v6)
+    codecParameters2 = [supportedCopy codecParameters];
+    codecParameters = [codecParameters2 bitRate];
+    if (codecParameters)
     {
-      v8 = [v3 codecParameters];
-      v9 = [v8 sampleRate];
+      codecParameters3 = [supportedCopy codecParameters];
+      sampleRate = [codecParameters3 sampleRate];
 
-      if (!v9)
+      if (!sampleRate)
       {
         goto LABEL_7;
       }
 
-      v10 = [v3 codecType];
-      v11 = [v10 value];
+      codecType2 = [supportedCopy codecType];
+      value = [codecType2 value];
 
-      if (v11 != 3 || ([v3 codecParameters], v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v12, "bitRate"), v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "value"), v13, v12, v14))
+      if (value != 3 || ([supportedCopy codecParameters], v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v12, "bitRate"), v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "value"), v13, v12, v14))
       {
 LABEL_7:
-        LOBYTE(v6) = 0;
+        LOBYTE(codecParameters) = 0;
         goto LABEL_10;
       }
 
-      v7 = [v3 codecParameters];
-      v15 = [v7 sampleRate];
-      LOBYTE(v6) = [v15 value] == 1;
+      codecParameters2 = [supportedCopy codecParameters];
+      sampleRate2 = [codecParameters2 sampleRate];
+      LOBYTE(codecParameters) = [sampleRate2 value] == 1;
     }
   }
 
 LABEL_10:
 
-  return v6;
+  return codecParameters;
 }
 
-- (id)_getBestAudioCodecConfiguration:(id)a3
+- (id)_getBestAudioCodecConfiguration:(id)configuration
 {
   v18 = *MEMORY[0x277D85DE8];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  configurationCopy = configuration;
+  v5 = [configurationCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -534,7 +534,7 @@ LABEL_10:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(configurationCopy);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
@@ -545,7 +545,7 @@ LABEL_10:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [configurationCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v6)
       {
         continue;
@@ -563,56 +563,56 @@ LABEL_11:
   return v10;
 }
 
-- (BOOL)_isSiriInputType:(int64_t)a3 supportedOnAccessory:(id)a4 siriAudioConfiguration:(id)a5
+- (BOOL)_isSiriInputType:(int64_t)type supportedOnAccessory:(id)accessory siriAudioConfiguration:(id)configuration
 {
   v64 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (!v9 || ([v9 supportedConfigurations], v11 = objc_claimAutoreleasedReturnValue(), v11, !v11))
+  accessoryCopy = accessory;
+  configurationCopy = configuration;
+  v10 = configurationCopy;
+  if (!configurationCopy || ([configurationCopy supportedConfigurations], v11 = objc_claimAutoreleasedReturnValue(), v11, !v11))
   {
     v31 = objc_autoreleasePoolPush();
-    v32 = self;
+    selfCopy2 = self;
     v33 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v33, OS_LOG_TYPE_DEBUG))
     {
       v34 = HMFGetLogIdentifier();
-      v35 = [v8 name];
-      v36 = [v8 uuid];
-      v37 = [v36 UUIDString];
+      name = [accessoryCopy name];
+      uuid = [accessoryCopy uuid];
+      uUIDString = [uuid UUIDString];
       *buf = 138543874;
       v59 = v34;
       v60 = 2112;
-      *v61 = v35;
+      *v61 = name;
       *&v61[8] = 2112;
-      *&v61[10] = v37;
+      *&v61[10] = uUIDString;
       _os_log_impl(&dword_229538000, v33, OS_LOG_TYPE_DEBUG, "%{public}@Marking accessory not ready for connection due to missing Siri/Audio ability (%@/%@)", buf, 0x20u);
     }
 
     goto LABEL_17;
   }
 
-  if ([v10 siriInputType] != a3)
+  if ([v10 siriInputType] != type)
   {
     v31 = objc_autoreleasePoolPush();
-    v32 = self;
+    selfCopy2 = self;
     v38 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v38, OS_LOG_TYPE_INFO))
     {
       v39 = HMFGetLogIdentifier();
-      v40 = [v10 siriInputType];
-      v41 = [v8 name];
-      v42 = [v8 uuid];
-      [v42 UUIDString];
+      siriInputType = [v10 siriInputType];
+      name2 = [accessoryCopy name];
+      uuid2 = [accessoryCopy uuid];
+      [uuid2 UUIDString];
       v43 = v56 = v31;
       *buf = 138544386;
       v59 = v39;
       v60 = 2048;
-      *v61 = a3;
+      *v61 = type;
       *&v61[8] = 2048;
-      *&v61[10] = v40;
+      *&v61[10] = siriInputType;
       *&v61[18] = 2112;
-      *&v61[20] = v41;
+      *&v61[20] = name2;
       v62 = 2112;
       v63 = v43;
       _os_log_impl(&dword_229538000, v38, OS_LOG_TYPE_INFO, "%{public}@Checking for input type %ld, but accessory has input type %ld (%@/%@)", buf, 0x34u);
@@ -626,35 +626,35 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  v12 = [v10 supportedConfigurations];
-  v13 = [(HMDSiriServer *)self _getBestAudioCodecConfiguration:v12];
+  supportedConfigurations = [v10 supportedConfigurations];
+  v13 = [(HMDSiriServer *)self _getBestAudioCodecConfiguration:supportedConfigurations];
 
   v14 = v13 != 0;
   if (v13)
   {
-    v15 = [v10 selectedConfiguration];
-    v16 = [v13 isEqual:v15];
+    selectedConfiguration = [v10 selectedConfiguration];
+    v16 = [v13 isEqual:selectedConfiguration];
 
     if ((v16 & 1) == 0)
     {
       v17 = objc_autoreleasePoolPush();
-      v18 = self;
+      selfCopy3 = self;
       v19 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
       {
         v50 = HMFGetLogIdentifier();
-        v20 = [v8 name];
-        v52 = [v8 uuid];
+        name3 = [accessoryCopy name];
+        uuid3 = [accessoryCopy uuid];
         v54 = v17;
-        v21 = [v52 UUIDString];
+        uUIDString2 = [uuid3 UUIDString];
         [v10 selectedConfiguration];
         *buf = 138544386;
         v59 = v50;
         v60 = 2112;
-        *v61 = v20;
+        *v61 = name3;
         *&v61[8] = 2112;
-        *&v61[10] = v21;
-        v22 = v21;
+        *&v61[10] = uUIDString2;
+        v22 = uUIDString2;
         *&v61[18] = 2112;
         *&v61[20] = v13;
         v63 = v62 = 2112;
@@ -665,23 +665,23 @@ LABEL_17:
       }
 
       objc_autoreleasePoolPop(v17);
-      [v8 setSelectedSiriAudioConfiguration:v13];
+      [accessoryCopy setSelectedSiriAudioConfiguration:v13];
     }
 
     v24 = objc_autoreleasePoolPush();
-    v25 = self;
+    selfCopy4 = self;
     v26 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
     {
       v27 = HMFGetLogIdentifier();
-      v28 = [v8 name];
-      v29 = [v8 uuid];
-      [v29 UUIDString];
+      name4 = [accessoryCopy name];
+      uuid4 = [accessoryCopy uuid];
+      [uuid4 UUIDString];
       v30 = v55 = v24;
       *buf = 138543874;
       v59 = v27;
       v60 = 2112;
-      *v61 = v28;
+      *v61 = name4;
       *&v61[8] = 2112;
       *&v61[10] = v30;
       _os_log_impl(&dword_229538000, v26, OS_LOG_TYPE_INFO, "%{public}@Marking accessory READY for connection (%@/%@)", buf, 0x20u);
@@ -693,22 +693,22 @@ LABEL_17:
   else
   {
     v24 = objc_autoreleasePoolPush();
-    v46 = self;
+    selfCopy5 = self;
     v26 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
     {
       v53 = HMFGetLogIdentifier();
-      v57 = [v10 supportedConfigurations];
-      v51 = [v57 count];
-      v47 = [v8 name];
-      v48 = [v8 uuid];
-      [v48 UUIDString];
+      supportedConfigurations2 = [v10 supportedConfigurations];
+      v51 = [supportedConfigurations2 count];
+      name5 = [accessoryCopy name];
+      uuid5 = [accessoryCopy uuid];
+      [uuid5 UUIDString];
       *buf = 138544130;
       v59 = v53;
       v60 = 1024;
       *v61 = v51;
       *&v61[4] = 2112;
-      *&v61[6] = v47;
+      *&v61[6] = name5;
       *&v61[16] = *&v61[14] = 2112;
       v49 = *&v61[16];
       _os_log_impl(&dword_229538000, v26, OS_LOG_TYPE_INFO, "%{public}@Marking accessory not ready for connection due to none of the %u codecs allowed (%@/%@)", buf, 0x26u);
@@ -722,44 +722,44 @@ LABEL_18:
   return v14;
 }
 
-- (void)_checkSiriSupportByAccessory:(id)a3
+- (void)_checkSiriSupportByAccessory:(id)accessory
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 canAcceptBulkSendListeners])
+  accessoryCopy = accessory;
+  if ([accessoryCopy canAcceptBulkSendListeners])
   {
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __46__HMDSiriServer__checkSiriSupportByAccessory___block_invoke;
     v14[3] = &unk_278678AA8;
     v14[4] = self;
-    v15 = v4;
+    v15 = accessoryCopy;
     [v15 getSupportedSiriAudioConfiguration:v14];
   }
 
   else
   {
     v5 = objc_autoreleasePoolPush();
-    v6 = self;
+    selfCopy = self;
     v7 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       v8 = HMFGetLogIdentifier();
-      v9 = [v4 name];
-      v10 = [v4 uuid];
-      v11 = [v10 UUIDString];
+      name = [accessoryCopy name];
+      uuid = [accessoryCopy uuid];
+      uUIDString = [uuid UUIDString];
       *buf = 138543874;
       v17 = v8;
       v18 = 2112;
-      v19 = v9;
+      v19 = name;
       v20 = 2112;
-      v21 = v11;
+      v21 = uUIDString;
       _os_log_impl(&dword_229538000, v7, OS_LOG_TYPE_INFO, "%{public}@Marking accessory not ready for connection due to missing HDS (%@/%@)", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v5);
-    v12 = [(HMDSiriServer *)v6 siriAccessoryMonitor];
-    [v12 accessory:v4 setSupportsDragonSiri:0];
+    siriAccessoryMonitor = [(HMDSiriServer *)selfCopy siriAccessoryMonitor];
+    [siriAccessoryMonitor accessory:accessoryCopy setSupportsDragonSiri:0];
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -797,14 +797,14 @@ void __46__HMDSiriServer__checkSiriSupportByAccessory___block_invoke_2(uint64_t 
 
 - (void)_tearDownSiriUIContext
 {
-  v3 = [(HMDSiriServer *)self siriUISession];
+  siriUISession = [(HMDSiriServer *)self siriUISession];
 
-  if (v3)
+  if (siriUISession)
   {
-    v5 = [(HMDSiriServer *)self siriUISession];
+    siriUISession2 = [(HMDSiriServer *)self siriUISession];
     [(HMDSiriServer *)self setSiriUISession:0];
-    v4 = [(HMDSiriServer *)self siriInputServer];
-    [v4 deregisterSiriSession:v5];
+    siriInputServer = [(HMDSiriServer *)self siriInputServer];
+    [siriInputServer deregisterSiriSession:siriUISession2];
 
     [(HMDSiriServer *)self _maybeTearDownSiriPlugin];
   }
@@ -813,18 +813,18 @@ void __46__HMDSiriServer__checkSiriSupportByAccessory___block_invoke_2(uint64_t 
 - (void)_setupSiriUIContext
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDSiriServer *)self siriUISession];
+  siriUISession = [(HMDSiriServer *)self siriUISession];
 
-  if (!v3)
+  if (!siriUISession)
   {
     v4 = +[HMDSiriSession siriSessionForUI];
     if (v4)
     {
-      v5 = [(HMDSiriServer *)self siriInputServer];
-      v6 = [v5 registerSiriSession:v4];
+      siriInputServer = [(HMDSiriServer *)self siriInputServer];
+      v6 = [siriInputServer registerSiriSession:v4];
 
       v7 = objc_autoreleasePoolPush();
-      v8 = self;
+      selfCopy2 = self;
       v9 = HMFGetOSLogHandle();
       v10 = os_log_type_enabled(v9, OS_LOG_TYPE_INFO);
       if (v6)
@@ -832,16 +832,16 @@ void __46__HMDSiriServer__checkSiriSupportByAccessory___block_invoke_2(uint64_t 
         if (v10)
         {
           v11 = HMFGetLogIdentifier();
-          v12 = [v4 identifier];
+          identifier = [v4 identifier];
           v16 = 138543618;
           v17 = v11;
           v18 = 2112;
-          v19 = v12;
+          v19 = identifier;
           _os_log_impl(&dword_229538000, v9, OS_LOG_TYPE_INFO, "%{public}@Created UI session with session id %@", &v16, 0x16u);
         }
 
         objc_autoreleasePoolPop(v7);
-        [(HMDSiriServer *)v8 setSiriUISession:v4];
+        [(HMDSiriServer *)selfCopy2 setSiriUISession:v4];
         goto LABEL_13;
       }
 
@@ -858,7 +858,7 @@ void __46__HMDSiriServer__checkSiriSupportByAccessory___block_invoke_2(uint64_t 
     else
     {
       v7 = objc_autoreleasePoolPush();
-      v8 = self;
+      selfCopy2 = self;
       v9 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
       {
@@ -880,43 +880,43 @@ LABEL_13:
 
 - (void)_maybeTearDownSiriPlugin
 {
-  v3 = [(HMDSiriServer *)self siriUISession];
-  if (!v3)
+  siriUISession = [(HMDSiriServer *)self siriUISession];
+  if (!siriUISession)
   {
-    v4 = [(HMDSiriServer *)self siriInputServer];
+    siriInputServer = [(HMDSiriServer *)self siriInputServer];
 
-    if (!v4)
+    if (!siriInputServer)
     {
       return;
     }
 
-    v5 = [(HMDSiriServer *)self siriInputServer];
-    [v5 invalidate];
-    v3 = v5;
+    siriInputServer2 = [(HMDSiriServer *)self siriInputServer];
+    [siriInputServer2 invalidate];
+    siriUISession = siriInputServer2;
   }
 }
 
 - (void)_setupSiriPlugin
 {
-  v3 = [(HMDSiriServer *)self siriInputServer];
+  siriInputServer = [(HMDSiriServer *)self siriInputServer];
 
-  if (!v3)
+  if (!siriInputServer)
   {
     v4 = [HMDSiriRemoteInputServer alloc];
-    v6 = [(HMDSiriServer *)self queue];
-    v5 = [(HMDSiriRemoteInputServer *)v4 initWithQueue:v6];
+    queue = [(HMDSiriServer *)self queue];
+    v5 = [(HMDSiriRemoteInputServer *)v4 initWithQueue:queue];
     [(HMDSiriServer *)self setSiriInputServer:v5];
   }
 }
 
-- (void)_handleDisconnectForAccessory:(id)a3
+- (void)_handleDisconnectForAccessory:(id)accessory
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  accessoryCopy = accessory;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = accessoryCopy;
   }
 
   else
@@ -929,31 +929,31 @@ LABEL_13:
   if (v6)
   {
     v7 = objc_autoreleasePoolPush();
-    v8 = self;
+    selfCopy = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       v10 = HMFGetLogIdentifier();
-      v11 = [v6 name];
-      v12 = [v6 uuid];
+      name = [v6 name];
+      uuid = [v6 uuid];
       *buf = 138543874;
       v18 = v10;
       v19 = 2112;
-      v20 = v11;
+      v20 = name;
       v21 = 2112;
-      v22 = v12;
+      v22 = uuid;
       _os_log_impl(&dword_229538000, v9, OS_LOG_TYPE_INFO, "%{public}@Handling disconnect for %@/%@.", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v7);
-    v13 = [(HMDSiriServer *)v8 queue];
+    queue = [(HMDSiriServer *)selfCopy queue];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __47__HMDSiriServer__handleDisconnectForAccessory___block_invoke;
     v15[3] = &unk_27868A750;
-    v15[4] = v8;
+    v15[4] = selfCopy;
     v16 = v6;
-    dispatch_async(v13, v15);
+    dispatch_async(queue, v15);
   }
 
   v14 = *MEMORY[0x277D85DE8];
@@ -965,25 +965,25 @@ void __47__HMDSiriServer__handleDisconnectForAccessory___block_invoke(uint64_t a
   [v2 accessory:*(a1 + 40) setSupportsDragonSiri:0];
 }
 
-- (void)handleAccessoryRemoved:(id)a3
+- (void)handleAccessoryRemoved:(id)removed
 {
-  v4 = [a3 object];
-  [(HMDSiriServer *)self _handleDisconnectForAccessory:v4];
+  object = [removed object];
+  [(HMDSiriServer *)self _handleDisconnectForAccessory:object];
 }
 
-- (void)handleAccessoryUnconfigured:(id)a3
+- (void)handleAccessoryUnconfigured:(id)unconfigured
 {
-  v4 = [a3 object];
-  [(HMDSiriServer *)self _handleDisconnectForAccessory:v4];
+  object = [unconfigured object];
+  [(HMDSiriServer *)self _handleDisconnectForAccessory:object];
 }
 
-- (void)handleAccessoryConfigured:(id)a3
+- (void)handleAccessoryConfigured:(id)configured
 {
-  v4 = [a3 object];
+  object = [configured object];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = object;
   }
 
   else
@@ -995,24 +995,24 @@ void __47__HMDSiriServer__handleDisconnectForAccessory___block_invoke(uint64_t a
 
   if (v6)
   {
-    v7 = [(HMDSiriServer *)self queue];
+    queue = [(HMDSiriServer *)self queue];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __43__HMDSiriServer_handleAccessoryConfigured___block_invoke;
     v8[3] = &unk_27868A750;
     v8[4] = self;
     v9 = v6;
-    dispatch_async(v7, v8);
+    dispatch_async(queue, v8);
   }
 }
 
-- (void)handleAccessoryHasBulkSendDataStream:(id)a3
+- (void)handleAccessoryHasBulkSendDataStream:(id)stream
 {
-  v4 = [a3 object];
+  object = [stream object];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = object;
   }
 
   else
@@ -1024,14 +1024,14 @@ void __47__HMDSiriServer__handleDisconnectForAccessory___block_invoke(uint64_t a
 
   if (v6)
   {
-    v7 = [(HMDSiriServer *)self queue];
+    queue = [(HMDSiriServer *)self queue];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __54__HMDSiriServer_handleAccessoryHasBulkSendDataStream___block_invoke;
     v8[3] = &unk_27868A750;
     v8[4] = self;
     v9 = v6;
-    dispatch_async(v7, v8);
+    dispatch_async(queue, v8);
   }
 }
 
@@ -1066,7 +1066,7 @@ uint64_t __54__HMDSiriServer_handleAccessoryHasBulkSendDataStream___block_invoke
 {
   v14 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1077,36 +1077,36 @@ uint64_t __54__HMDSiriServer_handleAccessoryHasBulkSendDataStream___block_invoke
   }
 
   objc_autoreleasePoolPop(v3);
-  v7 = [(HMDSiriServer *)v4 notificationRegistration];
-  [v7 addObserver:sel_handleAccessoryHasBulkSendDataStream_ name:@"HMDAccessoryDoesSupportBulkSendDataStreamNotification" object:0];
+  notificationRegistration = [(HMDSiriServer *)selfCopy notificationRegistration];
+  [notificationRegistration addObserver:sel_handleAccessoryHasBulkSendDataStream_ name:@"HMDAccessoryDoesSupportBulkSendDataStreamNotification" object:0];
 
-  v8 = [(HMDSiriServer *)v4 notificationRegistration];
-  [v8 addObserver:sel_handleAccessoryConfigured_ name:@"HMDAccessoryConnectedNotification" object:0];
+  notificationRegistration2 = [(HMDSiriServer *)selfCopy notificationRegistration];
+  [notificationRegistration2 addObserver:sel_handleAccessoryConfigured_ name:@"HMDAccessoryConnectedNotification" object:0];
 
-  v9 = [(HMDSiriServer *)v4 notificationRegistration];
-  [v9 addObserver:sel_handleAccessoryUnconfigured_ name:@"HMDAccessoryDisconnectedNotification" object:0];
+  notificationRegistration3 = [(HMDSiriServer *)selfCopy notificationRegistration];
+  [notificationRegistration3 addObserver:sel_handleAccessoryUnconfigured_ name:@"HMDAccessoryDisconnectedNotification" object:0];
 
-  v10 = [(HMDSiriServer *)v4 notificationRegistration];
-  [v10 addObserver:sel_handleAccessoryRemoved_ name:@"HMDHomeAccessoryRemovedNotification" object:0];
+  notificationRegistration4 = [(HMDSiriServer *)selfCopy notificationRegistration];
+  [notificationRegistration4 addObserver:sel_handleAccessoryRemoved_ name:@"HMDHomeAccessoryRemovedNotification" object:0];
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setTargetableAccessory:(id)a3 withControllers:(id)a4
+- (void)setTargetableAccessory:(id)accessory withControllers:(id)controllers
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDSiriServer *)self queue];
+  accessoryCopy = accessory;
+  controllersCopy = controllers;
+  queue = [(HMDSiriServer *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __56__HMDSiriServer_setTargetableAccessory_withControllers___block_invoke;
   block[3] = &unk_27868A010;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = accessoryCopy;
+  v13 = controllersCopy;
+  v9 = controllersCopy;
+  v10 = accessoryCopy;
+  dispatch_async(queue, block);
 }
 
 void __56__HMDSiriServer_setTargetableAccessory_withControllers___block_invoke(uint64_t a1)
@@ -1123,16 +1123,16 @@ void __56__HMDSiriServer_setTargetableAccessory_withControllers___block_invoke(u
   }
 }
 
-- (HMDSiriServer)initWithQueue:(id)a3
+- (HMDSiriServer)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v13.receiver = self;
   v13.super_class = HMDSiriServer;
   v6 = [(HMDSiriServer *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_queue, a3);
+    objc_storeStrong(&v6->_queue, queue);
     v8 = [[HMDNotificationRegistration alloc] initWithRegisterer:v7];
     notificationRegistration = v7->_notificationRegistration;
     v7->_notificationRegistration = v8;

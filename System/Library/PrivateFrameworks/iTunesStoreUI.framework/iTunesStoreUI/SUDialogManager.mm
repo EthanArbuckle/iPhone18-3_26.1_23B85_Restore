@@ -1,14 +1,14 @@
 @interface SUDialogManager
-+ (id)newDialogWithError:(id)a3;
++ (id)newDialogWithError:(id)error;
 + (id)sharedInstance;
-+ (void)setSharedInstance:(id)a3;
-- (BOOL)_isDisplayingEquivalentDialog:(id)a3;
-- (BOOL)presentDialog:(id)a3;
-- (BOOL)presentDialog:(id)a3 withCompletionBlock:(id)a4;
-- (BOOL)presentDialogForError:(id)a3;
-- (BOOL)presentDialogForError:(id)a3 withCompletionBlock:(id)a4;
-- (void)_finishDialog:(id)a3 withButtonIndex:(int64_t)a4;
-- (void)_performDefaultActionForDialog:(id)a3 buttonIndex:(int64_t)a4;
++ (void)setSharedInstance:(id)instance;
+- (BOOL)_isDisplayingEquivalentDialog:(id)dialog;
+- (BOOL)presentDialog:(id)dialog;
+- (BOOL)presentDialog:(id)dialog withCompletionBlock:(id)block;
+- (BOOL)presentDialogForError:(id)error;
+- (BOOL)presentDialogForError:(id)error withCompletionBlock:(id)block;
+- (void)_finishDialog:(id)dialog withButtonIndex:(int64_t)index;
+- (void)_performDefaultActionForDialog:(id)dialog buttonIndex:(int64_t)index;
 - (void)dealloc;
 @end
 
@@ -21,13 +21,13 @@
   [(SUDialogManager *)&v3 dealloc];
 }
 
-+ (void)setSharedInstance:(id)a3
++ (void)setSharedInstance:(id)instance
 {
   _os_nospin_lock_lock();
-  if (__SharedInstance != a3)
+  if (__SharedInstance != instance)
   {
 
-    __SharedInstance = a3;
+    __SharedInstance = instance;
   }
 
   _os_nospin_lock_unlock();
@@ -48,26 +48,26 @@
   return v3;
 }
 
-+ (id)newDialogWithError:(id)a3
++ (id)newDialogWithError:(id)error
 {
-  if (!a3)
+  if (!error)
   {
     return 0;
   }
 
-  v4 = [a3 userInfo];
-  result = [v4 objectForKey:*MEMORY[0x1E69E46C8]];
+  userInfo = [error userInfo];
+  result = [userInfo objectForKey:*MEMORY[0x1E69E46C8]];
   if (!result)
   {
     v6 = objc_alloc(MEMORY[0x1E69E4750]);
 
-    return [v6 initWithError:a3];
+    return [v6 initWithError:error];
   }
 
   return result;
 }
 
-- (BOOL)presentDialog:(id)a3
+- (BOOL)presentDialog:(id)dialog
 {
   v5 = [MEMORY[0x1E69D4A30] weakReferenceWithObject:self];
   v7[0] = MEMORY[0x1E69E9820];
@@ -75,8 +75,8 @@
   v7[2] = __33__SUDialogManager_presentDialog___block_invoke;
   v7[3] = &unk_1E8164CF0;
   v7[4] = v5;
-  v7[5] = a3;
-  return [(SUDialogManager *)self presentDialog:a3 withCompletionBlock:v7];
+  v7[5] = dialog;
+  return [(SUDialogManager *)self presentDialog:dialog withCompletionBlock:v7];
 }
 
 uint64_t __33__SUDialogManager_presentDialog___block_invoke(uint64_t a1, uint64_t a2)
@@ -87,32 +87,32 @@ uint64_t __33__SUDialogManager_presentDialog___block_invoke(uint64_t a1, uint64_
   return [v4 _performDefaultActionForDialog:v5 buttonIndex:a2];
 }
 
-- (BOOL)presentDialog:(id)a3 withCompletionBlock:(id)a4
+- (BOOL)presentDialog:(id)dialog withCompletionBlock:(id)block
 {
   v23 = *MEMORY[0x1E69E9840];
-  v7 = [a3 isDisplayable];
-  if (v7)
+  isDisplayable = [dialog isDisplayable];
+  if (isDisplayable)
   {
     if (!self->_dialogs)
     {
       self->_dialogs = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
 
-    if (![(SUDialogManager *)self _isDisplayingEquivalentDialog:a3])
+    if (![(SUDialogManager *)self _isDisplayingEquivalentDialog:dialog])
     {
-      v8 = [MEMORY[0x1E69D4938] sharedConfig];
-      v9 = [v8 shouldLog];
-      if ([v8 shouldLogToDisk])
+      mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+      shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+      if ([mEMORY[0x1E69D4938] shouldLogToDisk])
       {
-        v10 = v9 | 2;
+        v10 = shouldLog | 2;
       }
 
       else
       {
-        v10 = v9;
+        v10 = shouldLog;
       }
 
-      if (!os_log_type_enabled([v8 OSLogObject], OS_LOG_TYPE_DEFAULT))
+      if (!os_log_type_enabled([mEMORY[0x1E69D4938] OSLogObject], OS_LOG_TYPE_DEFAULT))
       {
         v10 &= 2u;
       }
@@ -135,24 +135,24 @@ uint64_t __33__SUDialogManager_presentDialog___block_invoke(uint64_t a1, uint64_
       }
 
       v14 = [MEMORY[0x1E69D4A30] weakReferenceWithObject:{self, v18}];
-      [(NSMutableArray *)self->_dialogs addObject:a3];
-      v15 = [a3 copyXPCEncoding];
-      v16 = [objc_alloc(MEMORY[0x1E69D4A18]) initWithEncodedDialog:v15];
+      [(NSMutableArray *)self->_dialogs addObject:dialog];
+      copyXPCEncoding = [dialog copyXPCEncoding];
+      v16 = [objc_alloc(MEMORY[0x1E69D4A18]) initWithEncodedDialog:copyXPCEncoding];
       v20[0] = MEMORY[0x1E69E9820];
       v20[1] = 3221225472;
       v20[2] = __53__SUDialogManager_presentDialog_withCompletionBlock___block_invoke;
       v20[3] = &unk_1E8164D40;
-      v20[5] = a3;
-      v20[6] = a4;
+      v20[5] = dialog;
+      v20[6] = block;
       v20[4] = v14;
       [v16 startWithDialogResponseBlock:v20];
 
-      xpc_release(v15);
-      [a3 incrementDisplayCount];
+      xpc_release(copyXPCEncoding);
+      [dialog incrementDisplayCount];
     }
   }
 
-  return v7;
+  return isDisplayable;
 }
 
 void __53__SUDialogManager_presentDialog_withCompletionBlock___block_invoke(uint64_t a1, uint64_t a2)
@@ -182,7 +182,7 @@ uint64_t __53__SUDialogManager_presentDialog_withCompletionBlock___block_invoke_
   return [v3 _finishDialog:v5 withButtonIndex:v2];
 }
 
-- (BOOL)presentDialogForError:(id)a3
+- (BOOL)presentDialogForError:(id)error
 {
   v5 = [MEMORY[0x1E69D4A30] weakReferenceWithObject:self];
   v7[0] = MEMORY[0x1E69E9820];
@@ -190,7 +190,7 @@ uint64_t __53__SUDialogManager_presentDialog_withCompletionBlock___block_invoke_
   v7[2] = __41__SUDialogManager_presentDialogForError___block_invoke;
   v7[3] = &unk_1E8164D68;
   v7[4] = v5;
-  return [(SUDialogManager *)self presentDialogForError:a3 withCompletionBlock:v7];
+  return [(SUDialogManager *)self presentDialogForError:error withCompletionBlock:v7];
 }
 
 uint64_t __41__SUDialogManager_presentDialogForError___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3)
@@ -200,20 +200,20 @@ uint64_t __41__SUDialogManager_presentDialogForError___block_invoke(uint64_t a1,
   return [v5 _performDefaultActionForDialog:a2 buttonIndex:a3];
 }
 
-- (BOOL)presentDialogForError:(id)a3 withCompletionBlock:(id)a4
+- (BOOL)presentDialogForError:(id)error withCompletionBlock:(id)block
 {
-  if (!a3)
+  if (!error)
   {
     return 0;
   }
 
-  v6 = [objc_opt_class() newDialogWithError:a3];
+  v6 = [objc_opt_class() newDialogWithError:error];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __61__SUDialogManager_presentDialogForError_withCompletionBlock___block_invoke;
   v9[3] = &unk_1E8164D90;
   v9[4] = v6;
-  v9[5] = a4;
+  v9[5] = block;
   v7 = [(SUDialogManager *)self presentDialog:v6 withCompletionBlock:v9];
 
   return v7;
@@ -230,22 +230,22 @@ uint64_t __61__SUDialogManager_presentDialogForError_withCompletionBlock___block
   return result;
 }
 
-- (void)_finishDialog:(id)a3 withButtonIndex:(int64_t)a4
+- (void)_finishDialog:(id)dialog withButtonIndex:(int64_t)index
 {
   v22 = *MEMORY[0x1E69E9840];
-  v7 = [MEMORY[0x1E69D4938] sharedConfig];
-  v8 = [v7 shouldLog];
-  if ([v7 shouldLogToDisk])
+  mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+  shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+  if ([mEMORY[0x1E69D4938] shouldLogToDisk])
   {
-    v9 = v8 | 2;
+    v9 = shouldLog | 2;
   }
 
   else
   {
-    v9 = v8;
+    v9 = shouldLog;
   }
 
-  if (!os_log_type_enabled([v7 OSLogObject], OS_LOG_TYPE_DEFAULT))
+  if (!os_log_type_enabled([mEMORY[0x1E69D4938] OSLogObject], OS_LOG_TYPE_DEFAULT))
   {
     v9 &= 2u;
   }
@@ -255,7 +255,7 @@ uint64_t __61__SUDialogManager_presentDialogForError_withCompletionBlock___block
     v18 = 138543618;
     v19 = objc_opt_class();
     v20 = 2048;
-    v21 = a4;
+    indexCopy = index;
     LODWORD(v17) = 22;
     v16 = &v18;
     v10 = _os_log_send_and_compose_impl();
@@ -269,9 +269,9 @@ uint64_t __61__SUDialogManager_presentDialogForError_withCompletionBlock___block
     }
   }
 
-  v13 = a3;
-  [(NSMutableArray *)self->_dialogs removeObject:a3];
-  if (a4 < 0)
+  dialogCopy = dialog;
+  [(NSMutableArray *)self->_dialogs removeObject:dialog];
+  if (index < 0)
   {
     v15 = 0;
   }
@@ -279,13 +279,13 @@ uint64_t __61__SUDialogManager_presentDialogForError_withCompletionBlock___block
   else
   {
     v14 = objc_alloc(MEMORY[0x1E695DF20]);
-    v15 = [v14 initWithObjectsAndKeys:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInteger:", a4), @"SUDialogSelectedButtonIndexKey", 0}];
+    v15 = [v14 initWithObjectsAndKeys:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInteger:", index), @"SUDialogSelectedButtonIndexKey", 0}];
   }
 
   [objc_msgSend(MEMORY[0x1E696AD88] defaultCenter];
 }
 
-- (BOOL)_isDisplayingEquivalentDialog:(id)a3
+- (BOOL)_isDisplayingEquivalentDialog:(id)dialog
 {
   v15 = *MEMORY[0x1E69E9840];
   v10 = 0u;
@@ -308,7 +308,7 @@ uint64_t __61__SUDialogManager_presentDialogForError_withCompletionBlock___block
           objc_enumerationMutation(dialogs);
         }
 
-        if ([a3 isEqual:*(*(&v10 + 1) + 8 * v8)])
+        if ([dialog isEqual:*(*(&v10 + 1) + 8 * v8)])
         {
           LOBYTE(v5) = 1;
           return v5;
@@ -332,17 +332,17 @@ uint64_t __61__SUDialogManager_presentDialogForError_withCompletionBlock___block
   return v5;
 }
 
-- (void)_performDefaultActionForDialog:(id)a3 buttonIndex:(int64_t)a4
+- (void)_performDefaultActionForDialog:(id)dialog buttonIndex:(int64_t)index
 {
-  v6 = [a3 buttons];
-  if ((a4 & 0x8000000000000000) == 0)
+  buttons = [dialog buttons];
+  if ((index & 0x8000000000000000) == 0)
   {
-    v7 = v6;
-    if ([v6 count] > a4)
+    v7 = buttons;
+    if ([buttons count] > index)
     {
-      v8 = [v7 objectAtIndex:a4];
+      v8 = [v7 objectAtIndex:index];
 
-      [SUClientDispatch sendActionForDialog:a3 button:v8];
+      [SUClientDispatch sendActionForDialog:dialog button:v8];
     }
   }
 }

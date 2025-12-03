@@ -1,13 +1,13 @@
 @interface _PKProvisioningSEStorageManager
 - (_PKProvisioningSEStorageManager)init;
-- (_PKProvisioningSEStorageManager)initWithWebService:(id)a3;
-- (void)currentSnapshotWithCompletion:(id)a3;
-- (void)debugReservationDescriptionsWithCompletion:(id)a3;
-- (void)deleteExpiredReservationsWithCompletion:(id)a3;
-- (void)deleteWithReservation:(id)a3 completion:(id)a4;
-- (void)performDebugSECleanupWithCompletion:(id)a3;
-- (void)reclaimUnusedSEMemoryWithCompletion:(id)a3;
-- (void)reserveStorageFor:(id)a3 metadata:(id)a4 completion:(id)a5;
+- (_PKProvisioningSEStorageManager)initWithWebService:(id)service;
+- (void)currentSnapshotWithCompletion:(id)completion;
+- (void)debugReservationDescriptionsWithCompletion:(id)completion;
+- (void)deleteExpiredReservationsWithCompletion:(id)completion;
+- (void)deleteWithReservation:(id)reservation completion:(id)completion;
+- (void)performDebugSECleanupWithCompletion:(id)completion;
+- (void)reclaimUnusedSEMemoryWithCompletion:(id)completion;
+- (void)reserveStorageFor:(id)for metadata:(id)metadata completion:(id)completion;
 @end
 
 @implementation _PKProvisioningSEStorageManager
@@ -22,45 +22,45 @@
 
   else
   {
-    v4 = [objc_opt_self() sharedService];
-    v5 = [(_PKProvisioningSEStorageManager *)self initWithWebService:v4];
+    sharedService = [objc_opt_self() sharedService];
+    v5 = [(_PKProvisioningSEStorageManager *)self initWithWebService:sharedService];
 
     return v5;
   }
 }
 
-- (_PKProvisioningSEStorageManager)initWithWebService:(id)a3
+- (_PKProvisioningSEStorageManager)initWithWebService:(id)service
 {
   v5 = OBJC_IVAR____PKProvisioningSEStorageManager_secureElement;
   v6 = objc_allocWithZone(PKSecureElement);
-  v7 = a3;
+  serviceCopy = service;
   *(&self->super.isa + v5) = [v6 init];
-  *(&self->super.isa + OBJC_IVAR____PKProvisioningSEStorageManager_webService) = a3;
+  *(&self->super.isa + OBJC_IVAR____PKProvisioningSEStorageManager_webService) = service;
   v9.receiver = self;
   v9.super_class = type metadata accessor for ProvisioningSEStorageManager();
   return [(_PKProvisioningSEStorageManager *)&v9 init];
 }
 
-- (void)reserveStorageFor:(id)a3 metadata:(id)a4 completion:(id)a5
+- (void)reserveStorageFor:(id)for metadata:(id)metadata completion:(id)completion
 {
-  v7 = _Block_copy(a5);
+  v7 = _Block_copy(completion);
   v8 = sub_1ADB06610();
-  if (a4)
+  if (metadata)
   {
-    a4 = sub_1ADB06280();
+    metadata = sub_1ADB06280();
   }
 
   _Block_copy(v7);
-  v9 = self;
-  sub_1AD485840(v8, a4, v9, v7);
+  selfCopy = self;
+  sub_1AD485840(v8, metadata, selfCopy, v7);
   _Block_release(v7);
 
   _Block_release(v7);
 }
 
-- (void)deleteWithReservation:(id)a3 completion:(id)a4
+- (void)deleteWithReservation:(id)reservation completion:(id)completion
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(completion);
   sub_1ADB05E30();
   v6 = sub_1ADB06610();
   if (v5)
@@ -76,57 +76,57 @@
   }
 
   sub_1AD3C5F14(v5);
-  v8 = self;
-  sub_1AD486660(v8, v5, v7, v6);
+  selfCopy = self;
+  sub_1AD486660(selfCopy, v5, v7, v6);
   sub_1AD3C5FB8(v5);
 
   sub_1AD3C5FB8(v5);
 }
 
-- (void)currentSnapshotWithCompletion:(id)a3
+- (void)currentSnapshotWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   _Block_copy(v4);
-  v5 = self;
-  sub_1AD4870FC(v5, v4);
+  selfCopy = self;
+  sub_1AD4870FC(selfCopy, v4);
   _Block_release(v4);
   _Block_release(v4);
 }
 
-- (void)deleteExpiredReservationsWithCompletion:(id)a3
+- (void)deleteExpiredReservationsWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
-  v6 = self;
-  sub_1AD484130(v6, sub_1AD4885EC, v5, v6, 1, 2);
+  selfCopy = self;
+  sub_1AD484130(selfCopy, sub_1AD4885EC, v5, selfCopy, 1, 2);
 }
 
-- (void)debugReservationDescriptionsWithCompletion:(id)a3
+- (void)debugReservationDescriptionsWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
-  v6 = self;
-  sub_1AD486DE8(v6, sub_1AD48709C, v5, v6);
+  selfCopy = self;
+  sub_1AD486DE8(selfCopy, sub_1AD48709C, v5, selfCopy);
 }
 
-- (void)performDebugSECleanupWithCompletion:(id)a3
+- (void)performDebugSECleanupWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   v6 = swift_allocObject();
   *(v6 + 16) = sub_1AD48708C;
   *(v6 + 24) = v5;
-  v7 = self;
+  selfCopy = self;
 
   sub_1AD47E5DC(0, 0, sub_1AD42F824, v6);
 }
 
-- (void)reclaimUnusedSEMemoryWithCompletion:(id)a3
+- (void)reclaimUnusedSEMemoryWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   v6 = swift_allocObject();
@@ -139,9 +139,9 @@
   v9[2] = sub_1AD471DC4;
   v9[3] = &block_descriptor_24_2;
   v7 = _Block_copy(v9);
-  v8 = self;
+  selfCopy = self;
 
-  [(_PKProvisioningSEStorageManager *)v8 deleteExpiredReservationsWithCompletion:v7];
+  [(_PKProvisioningSEStorageManager *)selfCopy deleteExpiredReservationsWithCompletion:v7];
 
   _Block_release(v7);
 }

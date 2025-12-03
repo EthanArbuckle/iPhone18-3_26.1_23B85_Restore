@@ -1,20 +1,20 @@
 @interface TextActivityItemProvider
-- (_TtC11AppStoreKit24TextActivityItemProvider)initWithPlaceholderItem:(id)a3;
-- (id)activityViewController:(id)a3 itemForActivityType:(id)a4;
+- (_TtC11AppStoreKit24TextActivityItemProvider)initWithPlaceholderItem:(id)item;
+- (id)activityViewController:(id)controller itemForActivityType:(id)type;
 - (id)item;
 @end
 
 @implementation TextActivityItemProvider
 
-- (id)activityViewController:(id)a3 itemForActivityType:(id)a4
+- (id)activityViewController:(id)controller itemForActivityType:(id)type
 {
-  if (a4)
+  if (type)
   {
     v7 = *(&self->super.super.super.isa + OBJC_IVAR____TtC11AppStoreKit24TextActivityItemProvider_excludedActivityTypes);
-    v8 = a3;
-    v9 = self;
-    v10 = a4;
-    if (sub_1E14AB35C(v10, v7))
+    controllerCopy = controller;
+    selfCopy = self;
+    typeCopy = type;
+    if (sub_1E14AB35C(typeCopy, v7))
     {
 
       v11 = 0;
@@ -24,8 +24,8 @@
 
   else
   {
-    v12 = a3;
-    v13 = self;
+    controllerCopy2 = controller;
+    selfCopy2 = self;
   }
 
   v15 = *(&self->super.super.super.isa + OBJC_IVAR____TtC11AppStoreKit24TextActivityItemProvider_text);
@@ -56,7 +56,7 @@ LABEL_6:
   return v2;
 }
 
-- (_TtC11AppStoreKit24TextActivityItemProvider)initWithPlaceholderItem:(id)a3
+- (_TtC11AppStoreKit24TextActivityItemProvider)initWithPlaceholderItem:(id)item
 {
   swift_unknownObjectRetain();
   sub_1E1AF6EBC();

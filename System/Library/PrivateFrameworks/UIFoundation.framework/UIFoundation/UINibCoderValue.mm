@@ -1,104 +1,104 @@
 @interface UINibCoderValue
-+ (id)nibValueForBoolean:(BOOL)a3 key:(id)a4 scope:(unsigned int)a5;
-+ (id)nibValueForBytes:(const void *)a3 length:(unint64_t)a4 key:(id)a5 scope:(unsigned int)a6;
-+ (id)nibValueForDouble:(double)a3 key:(id)a4 scope:(unsigned int)a5;
-+ (id)nibValueForFloat:(float)a3 key:(id)a4 scope:(unsigned int)a5;
-+ (id)nibValueForInt16:(unsigned __int16)a3 key:(id)a4 scope:(unsigned int)a5;
-+ (id)nibValueForInt32:(unsigned int)a3 key:(id)a4 scope:(unsigned int)a5;
-+ (id)nibValueForInt64:(unint64_t)a3 key:(id)a4 scope:(unsigned int)a5;
-+ (id)nibValueForInt8:(unsigned __int8)a3 key:(id)a4 scope:(unsigned int)a5;
-+ (id)nibValueForInteger:(unint64_t)a3 key:(id)a4 scope:(unsigned int)a5;
-+ (id)nibValueForObjectReference:(int64_t)a3 key:(id)a4 scope:(unsigned int)a5;
-+ (id)nibValueRepresentingNilReferenceForKey:(id)a3 scope:(unsigned int)a4;
++ (id)nibValueForBoolean:(BOOL)boolean key:(id)key scope:(unsigned int)scope;
++ (id)nibValueForBytes:(const void *)bytes length:(unint64_t)length key:(id)key scope:(unsigned int)scope;
++ (id)nibValueForDouble:(double)double key:(id)key scope:(unsigned int)scope;
++ (id)nibValueForFloat:(float)float key:(id)key scope:(unsigned int)scope;
++ (id)nibValueForInt16:(unsigned __int16)int16 key:(id)key scope:(unsigned int)scope;
++ (id)nibValueForInt32:(unsigned int)int32 key:(id)key scope:(unsigned int)scope;
++ (id)nibValueForInt64:(unint64_t)int64 key:(id)key scope:(unsigned int)scope;
++ (id)nibValueForInt8:(unsigned __int8)int8 key:(id)key scope:(unsigned int)scope;
++ (id)nibValueForInteger:(unint64_t)integer key:(id)key scope:(unsigned int)scope;
++ (id)nibValueForObjectReference:(int64_t)reference key:(id)key scope:(unsigned int)scope;
++ (id)nibValueRepresentingNilReferenceForKey:(id)key scope:(unsigned int)scope;
 - (unint64_t)byteLength;
 - (void)dealloc;
 @end
 
 @implementation UINibCoderValue
 
-+ (id)nibValueForObjectReference:(int64_t)a3 key:(id)a4 scope:(unsigned int)a5
++ (id)nibValueForObjectReference:(int64_t)reference key:(id)key scope:(unsigned int)scope
 {
   v8 = objc_alloc_init(UINibCoderValue);
   v8->type = 10;
-  v8->value.integerValue = a3;
-  v8->key = [a4 copy];
-  v8->scope = a5;
+  v8->value.integerValue = reference;
+  v8->key = [key copy];
+  v8->scope = scope;
 
   return v8;
 }
 
-+ (id)nibValueForInt8:(unsigned __int8)a3 key:(id)a4 scope:(unsigned int)a5
++ (id)nibValueForInt8:(unsigned __int8)int8 key:(id)key scope:(unsigned int)scope
 {
-  v7 = a3;
+  int8Copy = int8;
   v8 = objc_alloc_init(UINibCoderValue);
   v8->type = 0;
-  v8->value.integerValue = v7;
-  v8->key = [a4 copy];
-  v8->scope = a5;
+  v8->value.integerValue = int8Copy;
+  v8->key = [key copy];
+  v8->scope = scope;
 
   return v8;
 }
 
-+ (id)nibValueForInt16:(unsigned __int16)a3 key:(id)a4 scope:(unsigned int)a5
++ (id)nibValueForInt16:(unsigned __int16)int16 key:(id)key scope:(unsigned int)scope
 {
-  v7 = a3;
+  int16Copy = int16;
   v8 = objc_alloc_init(UINibCoderValue);
   v8->type = 1;
-  v8->value.integerValue = v7;
-  v8->key = [a4 copy];
-  v8->scope = a5;
+  v8->value.integerValue = int16Copy;
+  v8->key = [key copy];
+  v8->scope = scope;
 
   return v8;
 }
 
-+ (id)nibValueForInt32:(unsigned int)a3 key:(id)a4 scope:(unsigned int)a5
++ (id)nibValueForInt32:(unsigned int)int32 key:(id)key scope:(unsigned int)scope
 {
   v8 = objc_alloc_init(UINibCoderValue);
   v8->type = 2;
-  v8->value.integerValue = a3;
-  v8->key = [a4 copy];
-  v8->scope = a5;
+  v8->value.integerValue = int32;
+  v8->key = [key copy];
+  v8->scope = scope;
 
   return v8;
 }
 
-+ (id)nibValueForInt64:(unint64_t)a3 key:(id)a4 scope:(unsigned int)a5
++ (id)nibValueForInt64:(unint64_t)int64 key:(id)key scope:(unsigned int)scope
 {
   v8 = objc_alloc_init(UINibCoderValue);
   v8->type = 3;
-  v8->value.integerValue = a3;
-  v8->key = [a4 copy];
-  v8->scope = a5;
+  v8->value.integerValue = int64;
+  v8->key = [key copy];
+  v8->scope = scope;
 
   return v8;
 }
 
-+ (id)nibValueForInteger:(unint64_t)a3 key:(id)a4 scope:(unsigned int)a5
++ (id)nibValueForInteger:(unint64_t)integer key:(id)key scope:(unsigned int)scope
 {
-  if (a3 <= 0x7F)
+  if (integer <= 0x7F)
   {
-    return [a1 nibValueForInt8:a3 key:a4 scope:*&a5];
+    return [self nibValueForInt8:integer key:key scope:*&scope];
   }
 
-  if (!(a3 >> 15))
+  if (!(integer >> 15))
   {
-    return [a1 nibValueForInt16:a3 key:a4 scope:*&a5];
+    return [self nibValueForInt16:integer key:key scope:*&scope];
   }
 
-  if (a3 >> 31)
+  if (integer >> 31)
   {
-    return [a1 nibValueForInt64:? key:? scope:?];
+    return [self nibValueForInt64:? key:? scope:?];
   }
 
-  return [a1 nibValueForInt32:? key:? scope:?];
+  return [self nibValueForInt32:? key:? scope:?];
 }
 
-+ (id)nibValueForBoolean:(BOOL)a3 key:(id)a4 scope:(unsigned int)a5
++ (id)nibValueForBoolean:(BOOL)boolean key:(id)key scope:(unsigned int)scope
 {
-  v7 = a3;
+  booleanCopy = boolean;
   v8 = objc_alloc_init(UINibCoderValue);
   v9 = v8;
-  if (v7)
+  if (booleanCopy)
   {
     v10 = 5;
   }
@@ -109,55 +109,55 @@
   }
 
   v8->type = v10;
-  v8->value.integerValue = v7;
-  v8->key = [a4 copy];
-  v9->scope = a5;
+  v8->value.integerValue = booleanCopy;
+  v8->key = [key copy];
+  v9->scope = scope;
 
   return v9;
 }
 
-+ (id)nibValueForDouble:(double)a3 key:(id)a4 scope:(unsigned int)a5
++ (id)nibValueForDouble:(double)double key:(id)key scope:(unsigned int)scope
 {
   v8 = objc_alloc_init(UINibCoderValue);
   v8->type = 7;
-  v8->value.doubleValue = a3;
-  v8->key = [a4 copy];
-  v8->scope = a5;
+  v8->value.doubleValue = double;
+  v8->key = [key copy];
+  v8->scope = scope;
 
   return v8;
 }
 
-+ (id)nibValueForFloat:(float)a3 key:(id)a4 scope:(unsigned int)a5
++ (id)nibValueForFloat:(float)float key:(id)key scope:(unsigned int)scope
 {
   v8 = objc_alloc_init(UINibCoderValue);
   v8->type = 6;
-  v8->value.floatValue = a3;
-  v8->key = [a4 copy];
-  v8->scope = a5;
+  v8->value.floatValue = float;
+  v8->key = [key copy];
+  v8->scope = scope;
 
   return v8;
 }
 
-+ (id)nibValueForBytes:(const void *)a3 length:(unint64_t)a4 key:(id)a5 scope:(unsigned int)a6
++ (id)nibValueForBytes:(const void *)bytes length:(unint64_t)length key:(id)key scope:(unsigned int)scope
 {
-  v10 = malloc_type_malloc(a4, 0x6016F0A2uLL);
-  memcpy(v10, a3, a4);
+  v10 = malloc_type_malloc(length, 0x6016F0A2uLL);
+  memcpy(v10, bytes, length);
   v11 = objc_alloc_init(UINibCoderValue);
   v11->type = 8;
   v11->value.integerValue = v10;
-  v11->key = [a5 copy];
-  v11->length = a4;
-  v11->scope = a6;
+  v11->key = [key copy];
+  v11->length = length;
+  v11->scope = scope;
 
   return v11;
 }
 
-+ (id)nibValueRepresentingNilReferenceForKey:(id)a3 scope:(unsigned int)a4
++ (id)nibValueRepresentingNilReferenceForKey:(id)key scope:(unsigned int)scope
 {
   v6 = objc_alloc_init(UINibCoderValue);
   v6->type = 9;
-  v6->key = [a3 copy];
-  v6->scope = a4;
+  v6->key = [key copy];
+  v6->scope = scope;
 
   return v6;
 }

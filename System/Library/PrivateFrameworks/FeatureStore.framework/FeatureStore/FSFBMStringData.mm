@@ -1,14 +1,14 @@
 @interface FSFBMStringData
-- (FSFBMStringData)initWithContent:(id)a3 dataVersion:(unsigned int)a4;
-- (FSFBMStringData)initWithData:(id)a3 dataVersion:(unsigned int)a4;
+- (FSFBMStringData)initWithContent:(id)content dataVersion:(unsigned int)version;
+- (FSFBMStringData)initWithData:(id)data dataVersion:(unsigned int)version;
 - (id)content;
 @end
 
 @implementation FSFBMStringData
 
-- (FSFBMStringData)initWithData:(id)a3 dataVersion:(unsigned int)a4
+- (FSFBMStringData)initWithData:(id)data dataVersion:(unsigned int)version
 {
-  v6 = a3;
+  dataCopy = data;
   if (+[FSFUtils isSupportedPlatform])
   {
     v13.receiver = self;
@@ -17,36 +17,36 @@
     v8 = v7;
     if (v7)
     {
-      v7->_dataVersion = a4;
-      v9 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v6 encoding:4];
+      v7->_dataVersion = version;
+      v9 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:dataCopy encoding:4];
       content = v8->_content;
       v8->_content = v9;
     }
 
     self = v8;
-    v11 = self;
+    selfCopy = self;
   }
 
   else
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE658] format:@"This method is not implemented for the current platform"];
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
-- (FSFBMStringData)initWithContent:(id)a3 dataVersion:(unsigned int)a4
+- (FSFBMStringData)initWithContent:(id)content dataVersion:(unsigned int)version
 {
-  v7 = a3;
+  contentCopy = content;
   v11.receiver = self;
   v11.super_class = FSFBMStringData;
   v8 = [(FSFBMStringData *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_dataVersion = a4;
-    objc_storeStrong(&v8->_content, a3);
+    v8->_dataVersion = version;
+    objc_storeStrong(&v8->_content, content);
   }
 
   return v9;

@@ -1,43 +1,43 @@
 @interface BKApplicationShortcutController
-+ (void)preWarmWithLibrary:(id)a3 annotationProvider:(id)a4;
++ (void)preWarmWithLibrary:(id)library annotationProvider:(id)provider;
 - (AEAnnotationProvider)annotationProvider;
-- (BKApplicationShortcutController)initWithLibrary:(id)a3;
+- (BKApplicationShortcutController)initWithLibrary:(id)library;
 - (BKLibraryAssetProvider)mainLibrary;
-- (void)_performUpdateShortCutsWithCompletion:(id)a3;
+- (void)_performUpdateShortCutsWithCompletion:(id)completion;
 - (void)_updateShortcuts;
 - (void)dealloc;
-- (void)managedObjectContextDidSave:(id)a3;
+- (void)managedObjectContextDidSave:(id)save;
 @end
 
 @implementation BKApplicationShortcutController
 
-+ (void)preWarmWithLibrary:(id)a3 annotationProvider:(id)a4
++ (void)preWarmWithLibrary:(id)library annotationProvider:(id)provider
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1001B8408;
   v8[3] = &unk_100A03440;
-  v9 = a3;
-  v10 = a4;
+  libraryCopy = library;
+  providerCopy = provider;
   v5 = qword_100AF7800;
-  v6 = v10;
-  v7 = v9;
+  v6 = providerCopy;
+  v7 = libraryCopy;
   if (v5 != -1)
   {
     dispatch_once(&qword_100AF7800, v8);
   }
 }
 
-- (BKApplicationShortcutController)initWithLibrary:(id)a3
+- (BKApplicationShortcutController)initWithLibrary:(id)library
 {
-  v4 = a3;
+  libraryCopy = library;
   v22.receiver = self;
   v22.super_class = BKApplicationShortcutController;
   v5 = [(BKApplicationShortcutController *)&v22 init];
   v6 = v5;
   if (v5)
   {
-    [(BKApplicationShortcutController *)v5 setMainLibrary:v4];
+    [(BKApplicationShortcutController *)v5 setMainLibrary:libraryCopy];
     objc_initWeak(&location, v6);
     v7 = [BUCoalescingCallBlock alloc];
     v16 = _NSConcreteStackBlock;
@@ -48,8 +48,8 @@
     v8 = [v7 initWithNotifyBlock:&v16 blockDescription:@"BKApplicationShortcutController"];
     [(BKApplicationShortcutController *)v6 setCoalescedUpdate:v8, v16, v17, v18, v19];
 
-    v9 = [(BKApplicationShortcutController *)v6 coalescedUpdate];
-    [v9 setCoalescingDelay:1.0];
+    coalescedUpdate = [(BKApplicationShortcutController *)v6 coalescedUpdate];
+    [coalescedUpdate setCoalescingDelay:1.0];
 
     v10 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v11 = dispatch_queue_create("BKApplicationShortcutController.shortcutIconCreationQueue", v10);
@@ -84,36 +84,36 @@
 
 - (void)_updateShortcuts
 {
-  v2 = [(BKApplicationShortcutController *)self coalescedUpdate];
-  [v2 signalWithCompletion:&stru_100A0A6D8];
+  coalescedUpdate = [(BKApplicationShortcutController *)self coalescedUpdate];
+  [coalescedUpdate signalWithCompletion:&stru_100A0A6D8];
 }
 
-- (void)_performUpdateShortCutsWithCompletion:(id)a3
+- (void)_performUpdateShortCutsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(BKApplicationShortcutController *)self mainLibrary];
+  completionCopy = completion;
+  mainLibrary = [(BKApplicationShortcutController *)self mainLibrary];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1001B8A04;
   v7[3] = &unk_100A06678;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 performBackgroundReadOnlyBlock:v7];
+  v8 = completionCopy;
+  v6 = completionCopy;
+  [mainLibrary performBackgroundReadOnlyBlock:v7];
 }
 
-- (void)managedObjectContextDidSave:(id)a3
+- (void)managedObjectContextDidSave:(id)save
 {
-  v13 = [a3 userInfo];
-  v4 = [v13 objectForKey:NSInsertedObjectsKey];
+  userInfo = [save userInfo];
+  v4 = [userInfo objectForKey:NSInsertedObjectsKey];
   v5 = [NSPredicate predicateWithFormat:@"SELF isKindOfClass: %@", objc_opt_class()];
   v6 = [v4 filteredSetUsingPredicate:v5];
 
-  v7 = [v13 objectForKey:NSDeletedObjectsKey];
+  v7 = [userInfo objectForKey:NSDeletedObjectsKey];
   v8 = [NSPredicate predicateWithFormat:@"SELF isKindOfClass: %@", objc_opt_class()];
   v9 = [v7 filteredSetUsingPredicate:v8];
 
-  v10 = [v13 objectForKey:NSUpdatedObjectsKey];
+  v10 = [userInfo objectForKey:NSUpdatedObjectsKey];
   v11 = [NSPredicate predicateWithFormat:@"SELF isKindOfClass: %@", objc_opt_class()];
   v12 = [v10 filteredSetUsingPredicate:v11];
 

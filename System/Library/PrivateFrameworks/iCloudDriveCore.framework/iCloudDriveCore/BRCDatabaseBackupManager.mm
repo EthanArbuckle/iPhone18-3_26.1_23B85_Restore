@@ -1,29 +1,29 @@
 @interface BRCDatabaseBackupManager
-- (BOOL)enumerateRootURL:(id)a3 usingBlock:(id)a4 error:(id *)a5;
-- (BOOL)enumerateURL:(id)a3 rootURL:(id)a4 usingBlock:(id)a5 error:(id *)a6;
-- (BRCDatabaseBackupManager)initWithUserURL:(id)a3 outputUserURL:(id)a4;
+- (BOOL)enumerateRootURL:(id)l usingBlock:(id)block error:(id *)error;
+- (BOOL)enumerateURL:(id)l rootURL:(id)rL usingBlock:(id)block error:(id *)error;
+- (BRCDatabaseBackupManager)initWithUserURL:(id)l outputUserURL:(id)rL;
 - (NSArray)urlPropertiesToFetch;
 - (NSURL)databaseURL;
-- (id)desiredBackupDataDirectoryForUserURL:(id)a3;
-- (void)backUpWithCompletionBlock:(id)a3;
+- (id)desiredBackupDataDirectoryForUserURL:(id)l;
+- (void)backUpWithCompletionBlock:(id)block;
 - (void)cleanOnDisk;
 @end
 
 @implementation BRCDatabaseBackupManager
 
-- (BRCDatabaseBackupManager)initWithUserURL:(id)a3 outputUserURL:(id)a4
+- (BRCDatabaseBackupManager)initWithUserURL:(id)l outputUserURL:(id)rL
 {
   v20 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  lCopy = l;
+  rLCopy = rL;
   v17.receiver = self;
   v17.super_class = BRCDatabaseBackupManager;
   v9 = [(BRCDatabaseBackupManager *)&v17 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_userURL, a3);
-    objc_storeStrong(&v10->_outputUserURL, a4);
+    objc_storeStrong(&v9->_userURL, l);
+    objc_storeStrong(&v10->_outputUserURL, rL);
     v11 = [(BRCDatabaseBackupManager *)v10 desiredBackupDataDirectoryForUserURL:v10->_outputUserURL];
     destinationDirectory = v10->_destinationDirectory;
     v10->_destinationDirectory = v11;
@@ -45,24 +45,24 @@
   return v10;
 }
 
-- (void)backUpWithCompletionBlock:(id)a3
+- (void)backUpWithCompletionBlock:(id)block
 {
   v46 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(BRCDatabaseBackupManager *)self destinationDirectory];
+  blockCopy = block;
+  destinationDirectory = [(BRCDatabaseBackupManager *)self destinationDirectory];
 
-  if (v5)
+  if (destinationDirectory)
   {
-    v6 = [MEMORY[0x277CCAA00] defaultManager];
-    v7 = [(BRCDatabaseBackupManager *)self destinationDirectory];
-    v8 = [v7 path];
-    v9 = [v6 fileExistsAtPath:v8];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    destinationDirectory2 = [(BRCDatabaseBackupManager *)self destinationDirectory];
+    path = [destinationDirectory2 path];
+    v9 = [defaultManager fileExistsAtPath:path];
 
     if (v9)
     {
-      v10 = [(BRCDatabaseBackupManager *)self destinationDirectory];
+      destinationDirectory3 = [(BRCDatabaseBackupManager *)self destinationDirectory];
       v39 = 0;
-      v11 = [v6 removeItemAtURL:v10 error:&v39];
+      v11 = [defaultManager removeItemAtURL:destinationDirectory3 error:&v39];
       v12 = v39;
 
       if ((v11 & 1) == 0)
@@ -71,10 +71,10 @@
         v14 = brc_default_log();
         if (os_log_type_enabled(v14, 0x90u))
         {
-          v15 = [(BRCDatabaseBackupManager *)self destinationDirectory];
-          v16 = [v15 path];
+          destinationDirectory4 = [(BRCDatabaseBackupManager *)self destinationDirectory];
+          path2 = [destinationDirectory4 path];
           *buf = 138412802;
-          v41 = v16;
+          v41 = path2;
           v42 = 2112;
           v43 = v12;
           v44 = 2112;
@@ -96,16 +96,16 @@ LABEL_20:
     }
 
     v18 = v12;
-    v19 = [(BRCDatabaseBackupManager *)self destinationDirectory];
+    destinationDirectory5 = [(BRCDatabaseBackupManager *)self destinationDirectory];
     v38 = v12;
-    v20 = [v6 createDirectoryAtURL:v19 withIntermediateDirectories:0 attributes:0 error:&v38];
+    v20 = [defaultManager createDirectoryAtURL:destinationDirectory5 withIntermediateDirectories:0 attributes:0 error:&v38];
     v12 = v38;
 
     if (v20)
     {
       v21 = [BRCDatabaseBackupStorage alloc];
-      v22 = [(BRCDatabaseBackupManager *)self databaseURL];
-      v23 = [(BRCDatabaseBackupStorage *)v21 initWithDatabaseURL:v22];
+      databaseURL = [(BRCDatabaseBackupManager *)self databaseURL];
+      v23 = [(BRCDatabaseBackupStorage *)v21 initWithDatabaseURL:databaseURL];
 
       userURL = self->_userURL;
       v36[0] = MEMORY[0x277D85DD0];
@@ -119,18 +119,18 @@ LABEL_20:
       v27 = v35;
 
       [(BRCDatabaseBackupStorage *)v25 flushAndClose];
-      v28 = [(BRCDatabaseBackupManager *)self destinationDirectory];
+      destinationDirectory6 = [(BRCDatabaseBackupManager *)self destinationDirectory];
       v34 = v27;
-      BRCRecursivelyChangeOwnerAndGroupToMobile(v28, &v34);
+      BRCRecursivelyChangeOwnerAndGroupToMobile(destinationDirectory6, &v34);
       v12 = v34;
 
       v29 = brc_bread_crumbs();
       v30 = brc_default_log();
       if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
       {
-        v31 = [(BRCDatabaseBackupManager *)self destinationDirectory];
+        destinationDirectory7 = [(BRCDatabaseBackupManager *)self destinationDirectory];
         *buf = 138412802;
-        v41 = v31;
+        v41 = destinationDirectory7;
         v42 = 2112;
         v43 = v12;
         v44 = 2112;
@@ -140,13 +140,13 @@ LABEL_20:
 
       if (v26)
       {
-        v32 = [(BRCDatabaseBackupManager *)self destinationDirectory];
-        v4[2](v4, v32, 0);
+        destinationDirectory8 = [(BRCDatabaseBackupManager *)self destinationDirectory];
+        blockCopy[2](blockCopy, destinationDirectory8, 0);
       }
 
       else
       {
-        (v4)[2](v4, 0, v12);
+        (blockCopy)[2](blockCopy, 0, v12);
       }
 
       goto LABEL_17;
@@ -156,10 +156,10 @@ LABEL_20:
     v14 = brc_default_log();
     if (os_log_type_enabled(v14, 0x90u))
     {
-      v15 = [(BRCDatabaseBackupManager *)self destinationDirectory];
-      v16 = [v15 path];
+      destinationDirectory4 = [(BRCDatabaseBackupManager *)self destinationDirectory];
+      path2 = [destinationDirectory4 path];
       *buf = 138412802;
-      v41 = v16;
+      v41 = path2;
       v42 = 2112;
       v43 = v12;
       v44 = 2112;
@@ -170,13 +170,13 @@ LABEL_20:
 
 LABEL_14:
 
-    (v4)[2](v4, 0, v12);
+    (blockCopy)[2](blockCopy, 0, v12);
 LABEL_17:
 
     goto LABEL_18;
   }
 
-  v4[2](v4, 0, 0);
+  blockCopy[2](blockCopy, 0, 0);
 LABEL_18:
 
   v33 = *MEMORY[0x277D85DE8];
@@ -199,13 +199,13 @@ void __54__BRCDatabaseBackupManager_backUpWithCompletionBlock___block_invoke(uin
   [*(a1 + 32) addRecord:v16];
 }
 
-- (id)desiredBackupDataDirectoryForUserURL:(id)a3
+- (id)desiredBackupDataDirectoryForUserURL:(id)l
 {
-  v3 = [a3 URLByAppendingPathComponent:@"Library/Application Support/CloudDocs" isDirectory:1];
+  v3 = [l URLByAppendingPathComponent:@"Library/Application Support/CloudDocs" isDirectory:1];
   v4 = [v3 URLByAppendingPathComponent:@"session" isDirectory:1];
-  v5 = [MEMORY[0x277CCAA00] defaultManager];
-  v6 = [v4 path];
-  v7 = [v5 fileExistsAtPath:v6];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  path = [v4 path];
+  v7 = [defaultManager fileExistsAtPath:path];
 
   if (v7)
   {
@@ -222,8 +222,8 @@ void __54__BRCDatabaseBackupManager_backUpWithCompletionBlock___block_invoke(uin
 
 - (NSURL)databaseURL
 {
-  v2 = [(BRCDatabaseBackupManager *)self destinationDirectory];
-  v3 = [v2 URLByAppendingPathComponent:@"backup_manifest.db"];
+  destinationDirectory = [(BRCDatabaseBackupManager *)self destinationDirectory];
+  v3 = [destinationDirectory URLByAppendingPathComponent:@"backup_manifest.db"];
 
   return v3;
 }
@@ -244,13 +244,13 @@ void __54__BRCDatabaseBackupManager_backUpWithCompletionBlock___block_invoke(uin
   return v4;
 }
 
-- (BOOL)enumerateRootURL:(id)a3 usingBlock:(id)a4 error:(id *)a5
+- (BOOL)enumerateRootURL:(id)l usingBlock:(id)block error:(id *)error
 {
   v32[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  lCopy = l;
+  blockCopy = block;
   LOBYTE(v10) = 1;
-  v11 = [v8 URLByAppendingPathComponent:@"Library/Mobile Documents/" isDirectory:1];
+  v11 = [lCopy URLByAppendingPathComponent:@"Library/Mobile Documents/" isDirectory:1];
   v32[0] = v11;
   v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v32 count:1];
 
@@ -263,7 +263,7 @@ void __54__BRCDatabaseBackupManager_backUpWithCompletionBlock___block_invoke(uin
   if (v13)
   {
     v14 = v13;
-    v24 = a5;
+    errorCopy = error;
     v15 = 0;
     v16 = *v28;
 LABEL_3:
@@ -279,7 +279,7 @@ LABEL_3:
       v19 = *(*(&v27 + 1) + 8 * v17);
       v20 = objc_autoreleasePoolPush();
       v26 = v18;
-      v10 = [(BRCDatabaseBackupManager *)self enumerateURL:v19 rootURL:v8 usingBlock:v9 error:&v26];
+      v10 = [(BRCDatabaseBackupManager *)self enumerateURL:v19 rootURL:lCopy usingBlock:blockCopy error:&v26];
       v15 = v26;
 
       objc_autoreleasePoolPop(v20);
@@ -303,7 +303,7 @@ LABEL_3:
       }
     }
 
-    a5 = v24;
+    error = errorCopy;
   }
 
   else
@@ -311,23 +311,23 @@ LABEL_3:
     v15 = 0;
   }
 
-  if (a5)
+  if (error)
   {
     v21 = v15;
-    *a5 = v15;
+    *error = v15;
   }
 
   v22 = *MEMORY[0x277D85DE8];
   return v10;
 }
 
-- (BOOL)enumerateURL:(id)a3 rootURL:(id)a4 usingBlock:(id)a5 error:(id *)a6
+- (BOOL)enumerateURL:(id)l rootURL:(id)rL usingBlock:(id)block error:(id *)error
 {
   v73 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v52 = a5;
-  if (!v11)
+  lCopy = l;
+  rLCopy = rL;
+  blockCopy = block;
+  if (!rLCopy)
   {
     v51 = brc_bread_crumbs();
     v17 = brc_default_log();
@@ -339,9 +339,9 @@ LABEL_3:
     goto LABEL_25;
   }
 
-  v12 = [MEMORY[0x277CCAA00] defaultManager];
-  v13 = [v11 path];
-  v14 = [v12 fileExistsAtPath:v13];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  path = [rLCopy path];
+  v14 = [defaultManager fileExistsAtPath:path];
 
   if ((v14 & 1) == 0)
   {
@@ -349,7 +349,7 @@ LABEL_3:
     v17 = brc_default_log();
     if (os_log_type_enabled(v17, 0x90u))
     {
-      [BRCDatabaseBackupManager enumerateURL:v11 rootURL:v51 usingBlock:v17 error:?];
+      [BRCDatabaseBackupManager enumerateURL:rLCopy rootURL:v51 usingBlock:v17 error:?];
     }
 
 LABEL_25:
@@ -361,30 +361,30 @@ LABEL_25:
   v15 = *MEMORY[0x277CBE7A0];
   v64 = 0;
   v50 = v15;
-  v16 = [v11 getResourceValue:&v65 forKey:? error:?];
+  v16 = [rLCopy getResourceValue:&v65 forKey:? error:?];
   v51 = v65;
   v17 = 0;
   if (v16)
   {
-    v18 = [(BRCDatabaseBackupManager *)self urlPropertiesToFetch];
-    v19 = [MEMORY[0x277CCAA00] defaultManager];
-    v54 = v18;
-    v20 = [v19 enumeratorAtURL:v10 includingPropertiesForKeys:v18 options:2 errorHandler:&__block_literal_global_20];
+    urlPropertiesToFetch = [(BRCDatabaseBackupManager *)self urlPropertiesToFetch];
+    defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+    v54 = urlPropertiesToFetch;
+    v20 = [defaultManager2 enumeratorAtURL:lCopy includingPropertiesForKeys:urlPropertiesToFetch options:2 errorHandler:&__block_literal_global_20];
 
     v21 = brc_bread_crumbs();
     v22 = brc_default_log();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v68 = v10;
+      v68 = lCopy;
       v69 = 2112;
       v70 = v21;
       _os_log_impl(&dword_223E7A000, v22, OS_LOG_TYPE_INFO, "[INFO] Enumarating URL: %@%@", buf, 0x16u);
     }
 
     v42 = v16;
-    v43 = v11;
-    v44 = v10;
+    v43 = rLCopy;
+    v44 = lCopy;
 
     v62 = 0u;
     v63 = 0u;
@@ -437,9 +437,9 @@ LABEL_25:
             }
 
             v35 = [v27 objectForKeyedSubscript:v46];
-            v36 = [v35 BOOLValue];
+            bOOLValue = [v35 BOOLValue];
 
-            (v52)[2](v52, v56, v28, v29, v30, v31, v34, v36);
+            (blockCopy)[2](blockCopy, v56, v28, v29, v30, v31, v34, bOOLValue);
             v26 = v57;
             v17 = v58;
           }
@@ -469,8 +469,8 @@ LABEL_25:
       while (v55);
     }
 
-    v11 = v43;
-    v10 = v44;
+    rLCopy = v43;
+    lCopy = v44;
     v16 = v42;
   }
 
@@ -481,7 +481,7 @@ LABEL_25:
     if (os_log_type_enabled(v40, 0x90u))
     {
       *buf = 138412802;
-      v68 = v11;
+      v68 = rLCopy;
       v69 = 2112;
       v70 = v17;
       v71 = 2112;
@@ -489,10 +489,10 @@ LABEL_25:
       _os_log_error_impl(&dword_223E7A000, v40, 0x90u, "[ERROR] Could not get the canonical path for the root URL %@. Error: %@%@", buf, 0x20u);
     }
 
-    if (a6)
+    if (error)
     {
       v41 = v17;
-      *a6 = v17;
+      *error = v17;
     }
   }
 
@@ -527,10 +527,10 @@ uint64_t __66__BRCDatabaseBackupManager_enumerateURL_rootURL_usingBlock_error___
 - (void)cleanOnDisk
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   destinationDirectory = self->_destinationDirectory;
   v11 = 0;
-  v5 = [v3 removeItemAtURL:destinationDirectory error:&v11];
+  v5 = [defaultManager removeItemAtURL:destinationDirectory error:&v11];
   v6 = v11;
 
   if ((v5 & 1) == 0)
@@ -539,9 +539,9 @@ uint64_t __66__BRCDatabaseBackupManager_enumerateURL_rootURL_usingBlock_error___
     v8 = brc_default_log();
     if (os_log_type_enabled(v8, 0x90u))
     {
-      v10 = [(NSURL *)self->_destinationDirectory path];
+      path = [(NSURL *)self->_destinationDirectory path];
       *buf = 138412802;
-      v13 = v10;
+      v13 = path;
       v14 = 2112;
       v15 = v6;
       v16 = 2112;

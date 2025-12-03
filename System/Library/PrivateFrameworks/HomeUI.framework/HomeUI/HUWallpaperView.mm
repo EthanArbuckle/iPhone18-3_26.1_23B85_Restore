@@ -1,18 +1,18 @@
 @interface HUWallpaperView
-- (HUWallpaperView)initWithFrame:(CGRect)a3;
-- (id)refreshWallpaperForHomeKitObject:(id)a3 withAnimation:(BOOL)a4;
-- (void)populateWallpaper:(id)a3 withAnimation:(BOOL)a4 onlyIfNeeded:(BOOL)a5;
-- (void)setCurrentImage:(id)a3 withAnimation:(BOOL)a4;
-- (void)setCurrentLayer:(id)a3 withAnimation:(BOOL)a4;
+- (HUWallpaperView)initWithFrame:(CGRect)frame;
+- (id)refreshWallpaperForHomeKitObject:(id)object withAnimation:(BOOL)animation;
+- (void)populateWallpaper:(id)wallpaper withAnimation:(BOOL)animation onlyIfNeeded:(BOOL)needed;
+- (void)setCurrentImage:(id)image withAnimation:(BOOL)animation;
+- (void)setCurrentLayer:(id)layer withAnimation:(BOOL)animation;
 @end
 
 @implementation HUWallpaperView
 
-- (HUWallpaperView)initWithFrame:(CGRect)a3
+- (HUWallpaperView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = HUWallpaperView;
-  v3 = [(HUWallpaperView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(HUWallpaperView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -22,58 +22,58 @@
   return v4;
 }
 
-- (void)populateWallpaper:(id)a3 withAnimation:(BOOL)a4 onlyIfNeeded:(BOOL)a5
+- (void)populateWallpaper:(id)wallpaper withAnimation:(BOOL)animation onlyIfNeeded:(BOOL)needed
 {
-  v5 = a5;
+  neededCopy = needed;
   v29 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  wallpaperCopy = wallpaper;
   if ([(HUWallpaperView *)self disableWallpaperUpdate])
   {
     v9 = HFLogForCategory();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      *v24 = v8;
+      *v24 = wallpaperCopy;
       *&v24[8] = 2112;
-      v25 = self;
+      selfCopy = self;
       _os_log_impl(&dword_20CEB6000, v9, OS_LOG_TYPE_DEFAULT, "wallpaper update is currently disabled because an animation is in progress, wallpaper:%@ for view:%@", buf, 0x16u);
     }
 
     goto LABEL_11;
   }
 
-  if (!v5)
+  if (!neededCopy)
   {
     goto LABEL_10;
   }
 
-  v10 = [(HUWallpaperView *)self currentLayer];
-  if (v10)
+  currentLayer = [(HUWallpaperView *)self currentLayer];
+  if (currentLayer)
   {
 
     goto LABEL_8;
   }
 
-  v11 = [(HUWallpaperView *)self currentImage];
+  currentImage = [(HUWallpaperView *)self currentImage];
 
-  if (!v11)
+  if (!currentImage)
   {
 LABEL_10:
-    v14 = [MEMORY[0x277D14D18] sharedInstance];
-    v15 = [(HUWallpaperView *)self traitCollection];
-    v16 = [v14 wallpaperObjectForWallpaper:v8 currentUserInterfaceStyle:{objc_msgSend(v15, "userInterfaceStyle")}];
+    mEMORY[0x277D14D18] = [MEMORY[0x277D14D18] sharedInstance];
+    traitCollection = [(HUWallpaperView *)self traitCollection];
+    v16 = [mEMORY[0x277D14D18] wallpaperObjectForWallpaper:wallpaperCopy currentUserInterfaceStyle:{objc_msgSend(traitCollection, "userInterfaceStyle")}];
 
-    v17 = [MEMORY[0x277D2C938] mainThreadScheduler];
+    mainThreadScheduler = [MEMORY[0x277D2C938] mainThreadScheduler];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __64__HUWallpaperView_populateWallpaper_withAnimation_onlyIfNeeded___block_invoke;
     v18[3] = &unk_277DB7180;
     v19 = v16;
-    v20 = v8;
-    v21 = self;
-    v22 = a4;
+    v20 = wallpaperCopy;
+    selfCopy2 = self;
+    animationCopy = animation;
     v9 = v16;
-    [v17 performBlock:v18];
+    [mainThreadScheduler performBlock:v18];
 
     goto LABEL_11;
   }
@@ -82,18 +82,18 @@ LABEL_8:
   v9 = HFLogForCategory();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [(HUWallpaperView *)self currentLayer];
-    v13 = [(HUWallpaperView *)self currentImage];
+    currentLayer2 = [(HUWallpaperView *)self currentLayer];
+    currentImage2 = [(HUWallpaperView *)self currentImage];
     *buf = 67110146;
     *v24 = 1;
     *&v24[4] = 1024;
-    *&v24[6] = v12 == 0;
-    LOWORD(v25) = 1024;
-    *(&v25 + 2) = v13 == 0;
-    HIWORD(v25) = 2112;
-    v26 = v8;
+    *&v24[6] = currentLayer2 == 0;
+    LOWORD(selfCopy) = 1024;
+    *(&selfCopy + 2) = currentImage2 == 0;
+    HIWORD(selfCopy) = 2112;
+    v26 = wallpaperCopy;
     v27 = 2112;
-    v28 = self;
+    selfCopy3 = self;
     _os_log_impl(&dword_20CEB6000, v9, OS_LOG_TYPE_DEFAULT, "wallpaper update abandoned due to onlyIfNeeded: %d, no layer: %d, no image: %d, wallpaper:%@ for view:%@", buf, 0x28u);
   }
 
@@ -130,25 +130,25 @@ uint64_t __64__HUWallpaperView_populateWallpaper_withAnimation_onlyIfNeeded___bl
   return result;
 }
 
-- (id)refreshWallpaperForHomeKitObject:(id)a3 withAnimation:(BOOL)a4
+- (id)refreshWallpaperForHomeKitObject:(id)object withAnimation:(BOOL)animation
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(HUWallpaperView *)self disableWallpaperUpdate];
+  objectCopy = object;
+  disableWallpaperUpdate = [(HUWallpaperView *)self disableWallpaperUpdate];
   v8 = HFLogForCategory();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
-  if (v7)
+  if (disableWallpaperUpdate)
   {
     if (v9)
     {
       *buf = 138412546;
-      v18 = v6;
+      v18 = objectCopy;
       v19 = 2112;
-      v20 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_20CEB6000, v8, OS_LOG_TYPE_DEFAULT, "wallpaper update is currently disabled because an animation is in progress, hkObject:%@ for view:%@", buf, 0x16u);
     }
 
-    v10 = [MEMORY[0x277D2C900] futureWithNoResult];
+    futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
   }
 
   else
@@ -156,30 +156,30 @@ uint64_t __64__HUWallpaperView_populateWallpaper_withAnimation_onlyIfNeeded___bl
     if (v9)
     {
       *buf = 138412546;
-      v18 = v6;
+      v18 = objectCopy;
       v19 = 2112;
-      v20 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_20CEB6000, v8, OS_LOG_TYPE_DEFAULT, "wallpaper update with hkObject:%@ for view:%@", buf, 0x16u);
     }
 
-    [(HUWallpaperView *)self setHkObject:v6];
+    [(HUWallpaperView *)self setHkObject:objectCopy];
     objc_initWeak(buf, self);
-    v11 = [MEMORY[0x277D14D18] sharedInstance];
-    v12 = [v11 wallpaperForHomeKitObject:v6 dispatchToMainOnComplete:0];
+    mEMORY[0x277D14D18] = [MEMORY[0x277D14D18] sharedInstance];
+    v12 = [mEMORY[0x277D14D18] wallpaperForHomeKitObject:objectCopy dispatchToMainOnComplete:0];
 
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __66__HUWallpaperView_refreshWallpaperForHomeKitObject_withAnimation___block_invoke;
     v14[3] = &unk_277DBB8A0;
     objc_copyWeak(&v15, buf);
-    v16 = a4;
-    v10 = [v12 flatMap:v14];
+    animationCopy = animation;
+    futureWithNoResult = [v12 flatMap:v14];
     objc_destroyWeak(&v15);
 
     objc_destroyWeak(buf);
   }
 
-  return v10;
+  return futureWithNoResult;
 }
 
 id __66__HUWallpaperView_refreshWallpaperForHomeKitObject_withAnimation___block_invoke(uint64_t a1, void *a2)
@@ -194,25 +194,25 @@ id __66__HUWallpaperView_refreshWallpaperForHomeKitObject_withAnimation___block_
   return v5;
 }
 
-- (void)setCurrentImage:(id)a3 withAnimation:(BOOL)a4
+- (void)setCurrentImage:(id)image withAnimation:(BOOL)animation
 {
-  v4 = a4;
+  animationCopy = animation;
   v16 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  if (self->_currentImage != v7)
+  imageCopy = image;
+  if (self->_currentImage != imageCopy)
   {
-    objc_storeStrong(&self->_currentImage, a3);
+    objc_storeStrong(&self->_currentImage, image);
     v8 = HFLogForCategory();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v15 = self;
+      selfCopy = self;
       _os_log_impl(&dword_20CEB6000, v8, OS_LOG_TYPE_DEFAULT, "setting image for view:%@", buf, 0xCu);
     }
 
     objc_initWeak(buf, self);
     v9 = MEMORY[0x277D75D18];
-    if (v4)
+    if (animationCopy)
     {
       v10 = 2.0;
     }
@@ -227,7 +227,7 @@ id __66__HUWallpaperView_refreshWallpaperForHomeKitObject_withAnimation___block_
     v11[2] = __49__HUWallpaperView_setCurrentImage_withAnimation___block_invoke;
     v11[3] = &unk_277DBA860;
     objc_copyWeak(&v13, buf);
-    v12 = v7;
+    v12 = imageCopy;
     [v9 transitionWithView:self duration:5242880 options:v11 animations:0 completion:v10];
 
     objc_destroyWeak(&v13);
@@ -245,32 +245,32 @@ void __49__HUWallpaperView_setCurrentImage_withAnimation___block_invoke(uint64_t
   [WeakRetained setCurrentLayer:0];
 }
 
-- (void)setCurrentLayer:(id)a3 withAnimation:(BOOL)a4
+- (void)setCurrentLayer:(id)layer withAnimation:(BOOL)animation
 {
-  v4 = a4;
+  animationCopy = animation;
   v22 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = [(CAGradientLayer *)self->_currentLayer colors];
-  v9 = [v7 colors];
-  v10 = [v8 isEqual:v9];
+  layerCopy = layer;
+  colors = [(CAGradientLayer *)self->_currentLayer colors];
+  colors2 = [layerCopy colors];
+  v10 = [colors isEqual:colors2];
 
   if ((v10 & 1) == 0)
   {
     v11 = self->_currentLayer;
     [(HUWallpaperView *)self frame];
-    [v7 setFrame:?];
-    objc_storeStrong(&self->_currentLayer, a3);
+    [layerCopy setFrame:?];
+    objc_storeStrong(&self->_currentLayer, layer);
     v12 = HFLogForCategory();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v21 = self;
+      selfCopy = self;
       _os_log_impl(&dword_20CEB6000, v12, OS_LOG_TYPE_DEFAULT, "setting layer for view:%@", buf, 0xCu);
     }
 
     objc_initWeak(buf, self);
     v13 = MEMORY[0x277D75D18];
-    if (v4)
+    if (animationCopy)
     {
       v14 = 2.0;
     }
@@ -285,7 +285,7 @@ void __49__HUWallpaperView_setCurrentImage_withAnimation___block_invoke(uint64_t
     v16[2] = __49__HUWallpaperView_setCurrentLayer_withAnimation___block_invoke;
     v16[3] = &unk_277DB76C8;
     objc_copyWeak(&v19, buf);
-    v17 = v7;
+    v17 = layerCopy;
     v15 = v11;
     v18 = v15;
     [v13 transitionWithView:self duration:5242880 options:v16 animations:0 completion:v14];

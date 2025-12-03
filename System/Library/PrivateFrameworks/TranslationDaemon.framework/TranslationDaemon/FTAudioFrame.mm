@@ -1,16 +1,16 @@
 @interface FTAudioFrame
-- (FTAudioFrame)initWithFlatbuffData:(id)a3 root:(const AudioFrame *)a4 verify:(BOOL)a5;
-- (Offset<siri::speech::schema_fb::AudioFrame>)addObjectToBuffer:(void *)a3;
+- (FTAudioFrame)initWithFlatbuffData:(id)data root:(const AudioFrame *)root verify:(BOOL)verify;
+- (Offset<siri::speech::schema_fb::AudioFrame>)addObjectToBuffer:(void *)buffer;
 - (id)flatbuffData;
-- (void)audio_bytes:(id)a3;
+- (void)audio_bytes:(id)audio_bytes;
 @end
 
 @implementation FTAudioFrame
 
-- (FTAudioFrame)initWithFlatbuffData:(id)a3 root:(const AudioFrame *)a4 verify:(BOOL)a5
+- (FTAudioFrame)initWithFlatbuffData:(id)data root:(const AudioFrame *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v25.receiver = self;
   v25.super_class = FTAudioFrame;
   v10 = [(FTAudioFrame *)&v25 init];
@@ -19,35 +19,35 @@
     goto LABEL_13;
   }
 
-  if (!v9 || ![v9 length])
+  if (!dataCopy || ![dataCopy length])
   {
     goto LABEL_14;
   }
 
-  objc_storeStrong(&v10->_data, a3);
-  if (!a4)
+  objc_storeStrong(&v10->_data, data);
+  if (!root)
   {
-    v11 = [(NSData *)v10->_data bytes];
-    a4 = v11 + *v11;
+    bytes = [(NSData *)v10->_data bytes];
+    root = bytes + *bytes;
   }
 
-  v10->_root = a4;
-  if (!v5)
+  v10->_root = root;
+  if (!verifyCopy)
   {
     goto LABEL_13;
   }
 
-  v12 = [(NSData *)v10->_data bytes];
+  bytes2 = [(NSData *)v10->_data bytes];
   v13 = [(NSData *)v10->_data length];
   root = v10->_root;
-  if (root < v12 || root > v12 + v13)
+  if (root < bytes2 || root > bytes2 + v13)
   {
     goto LABEL_14;
   }
 
-  v16 = [(NSData *)v10->_data bytes];
+  bytes3 = [(NSData *)v10->_data bytes];
   v17 = [(NSData *)v10->_data length];
-  v21[0] = v16;
+  v21[0] = bytes3;
   v21[1] = v17;
   v22 = xmmword_233005E20;
   v23 = 0;
@@ -73,19 +73,19 @@ LABEL_13:
   return v19;
 }
 
-- (void)audio_bytes:(id)a3
+- (void)audio_bytes:(id)audio_bytes
 {
   root = self->_root;
   v5 = &root[-*root->var0];
-  v6 = a3;
+  audio_bytesCopy = audio_bytes;
   v7 = *root[*v5[4].var0 + *root[*v5[4].var0].var0].var0;
-  v8 = v6;
-  (*(a3 + 2))();
+  v8 = audio_bytesCopy;
+  (*(audio_bytes + 2))();
 }
 
-- (Offset<siri::speech::schema_fb::AudioFrame>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::schema_fb::AudioFrame>)addObjectToBuffer:(void *)buffer
 {
-  v3 = a3;
+  bufferCopy = buffer;
   v9 = 0;
   v10 = &v9;
   v11 = 0x3812000000;
@@ -98,16 +98,16 @@ LABEL_13:
   v8[2] = __34__FTAudioFrame_addObjectToBuffer___block_invoke;
   v8[3] = &unk_2789B8AB0;
   v8[4] = &v9;
-  v8[5] = a3;
+  v8[5] = buffer;
   [(FTAudioFrame *)self audio_bytes:v8];
-  v3[70] = 1;
-  v4 = *(v3 + 5);
-  v5 = *(v3 + 6);
-  v6 = *(v3 + 4);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(v3, 4, *(v10 + 12));
-  LODWORD(v3) = apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(v3, v6 - v5 + v4);
+  bufferCopy[70] = 1;
+  v4 = *(bufferCopy + 5);
+  v5 = *(bufferCopy + 6);
+  v6 = *(bufferCopy + 4);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(bufferCopy, 4, *(v10 + 12));
+  LODWORD(bufferCopy) = apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(bufferCopy, v6 - v5 + v4);
   _Block_object_dispose(&v9, 8);
-  return v3;
+  return bufferCopy;
 }
 
 uint64_t __34__FTAudioFrame_addObjectToBuffer___block_invoke(uint64_t a1, const unsigned __int8 *a2, unsigned int a3)

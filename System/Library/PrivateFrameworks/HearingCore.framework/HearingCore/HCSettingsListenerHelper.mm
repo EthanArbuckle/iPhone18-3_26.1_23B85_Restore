@@ -1,15 +1,15 @@
 @interface HCSettingsListenerHelper
-- (HCSettingsListenerHelper)initWithListenerAddress:(id)a3 andDelegate:(id)a4;
-- (void)addSelectorKey:(SEL)a3;
+- (HCSettingsListenerHelper)initWithListenerAddress:(id)address andDelegate:(id)delegate;
+- (void)addSelectorKey:(SEL)key;
 - (void)dealloc;
 @end
 
 @implementation HCSettingsListenerHelper
 
-- (HCSettingsListenerHelper)initWithListenerAddress:(id)a3 andDelegate:(id)a4
+- (HCSettingsListenerHelper)initWithListenerAddress:(id)address andDelegate:(id)delegate
 {
-  objc_initWeak(&location, a3);
-  v6 = a4;
+  objc_initWeak(&location, address);
+  delegateCopy = delegate;
   v10.receiver = self;
   v10.super_class = HCSettingsListenerHelper;
   v7 = [(HCSettingsListenerHelper *)&v10 init];
@@ -18,14 +18,14 @@
     v8 = objc_loadWeakRetained(&location);
     objc_storeWeak(&v7->_listenerAddress, v8);
 
-    objc_storeWeak(&v7->_delegate, v6);
+    objc_storeWeak(&v7->_delegate, delegateCopy);
   }
 
   objc_destroyWeak(&location);
   return v7;
 }
 
-- (void)addSelectorKey:(SEL)a3
+- (void)addSelectorKey:(SEL)key
 {
   selectorKeys = self->_selectorKeys;
   if (!selectorKeys)
@@ -37,7 +37,7 @@
     selectorKeys = self->_selectorKeys;
   }
 
-  v8 = NSStringFromSelector(a3);
+  v8 = NSStringFromSelector(key);
   [(NSMutableArray *)selectorKeys addObject:v8];
 }
 

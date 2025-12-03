@@ -13,11 +13,11 @@
   v10 = a3;
   v11 = [[v7 alloc] initWithEventName:v9 eventCategory:v8 initData:0];
 
-  v12 = [v10 telemetryFlowID];
-  [v11 setObject:v12 forKeyedSubscript:*MEMORY[0x1E6985E48]];
+  telemetryFlowID = [v10 telemetryFlowID];
+  [v11 setObject:telemetryFlowID forKeyedSubscript:*MEMORY[0x1E6985E48]];
 
-  v13 = [v10 telemetryDeviceSessionID];
-  [v11 setObject:v13 forKeyedSubscript:*MEMORY[0x1E6985E30]];
+  telemetryDeviceSessionID = [v10 telemetryDeviceSessionID];
+  [v11 setObject:telemetryDeviceSessionID forKeyedSubscript:*MEMORY[0x1E6985E30]];
 
   v14 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v10, "type")}];
   [v11 setObject:v14 forKeyedSubscript:@"contextType"];
@@ -28,18 +28,18 @@
   v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v10, "securityLevel")}];
   [v11 setObject:v16 forKeyedSubscript:@"securityLevel"];
 
-  v17 = [v10 followUpType];
-  [v11 setObject:v17 forKeyedSubscript:@"cfuType"];
+  followUpType = [v10 followUpType];
+  [v11 setObject:followUpType forKeyedSubscript:@"cfuType"];
 
   v18 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v10, "keychainSyncSystem")}];
   [v11 setObject:v18 forKeyedSubscript:@"keychainSyncSystemType"];
 
-  v19 = [v10 accountType];
-  [v11 setObject:v19 forKeyedSubscript:@"accountType"];
+  accountType = [v10 accountType];
+  [v11 setObject:accountType forKeyedSubscript:@"accountType"];
 
-  v20 = [v10 adpCohort];
+  adpCohort = [v10 adpCohort];
 
-  [v11 setObject:v20 forKeyedSubscript:@"telemetryVersion"];
+  [v11 setObject:adpCohort forKeyedSubscript:@"telemetryVersion"];
 
   return v11;
 }
@@ -52,12 +52,12 @@
   v10 = a3;
   v11 = [[v7 alloc] initWithEventName:v9 eventCategory:v8 initData:0];
 
-  v12 = [v10 telemetryFlowID];
-  [v11 setObject:v12 forKeyedSubscript:*MEMORY[0x1E6985E48]];
+  telemetryFlowID = [v10 telemetryFlowID];
+  [v11 setObject:telemetryFlowID forKeyedSubscript:*MEMORY[0x1E6985E48]];
 
-  v13 = [v10 telemetryDeviceSessionID];
+  telemetryDeviceSessionID = [v10 telemetryDeviceSessionID];
 
-  [v11 setObject:v13 forKeyedSubscript:*MEMORY[0x1E6985E30]];
+  [v11 setObject:telemetryDeviceSessionID forKeyedSubscript:*MEMORY[0x1E6985E30]];
 
   return v11;
 }

@@ -1,33 +1,33 @@
 @interface _INPBDeleteTimerIntent
-- (BOOL)isEqual:(id)a3;
-- (_INPBDeleteTimerIntent)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBDeleteTimerIntent)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBDeleteTimerIntent
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(_INPBDeleteTimerIntent *)self hasDeleteMultiple])
   {
     v4 = [MEMORY[0x1E696AD98] numberWithBool:{-[_INPBDeleteTimerIntent deleteMultiple](self, "deleteMultiple")}];
-    [v3 setObject:v4 forKeyedSubscript:@"deleteMultiple"];
+    [dictionary setObject:v4 forKeyedSubscript:@"deleteMultiple"];
   }
 
-  v5 = [(_INPBDeleteTimerIntent *)self intentMetadata];
-  v6 = [v5 dictionaryRepresentation];
-  [v3 setObject:v6 forKeyedSubscript:@"intentMetadata"];
+  intentMetadata = [(_INPBDeleteTimerIntent *)self intentMetadata];
+  dictionaryRepresentation = [intentMetadata dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"intentMetadata"];
 
-  v7 = [(_INPBDeleteTimerIntent *)self targetTimer];
-  v8 = [v7 dictionaryRepresentation];
-  [v3 setObject:v8 forKeyedSubscript:@"targetTimer"];
+  targetTimer = [(_INPBDeleteTimerIntent *)self targetTimer];
+  dictionaryRepresentation2 = [targetTimer dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"targetTimer"];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -46,46 +46,46 @@
   return v4 ^ [(_INPBTimer *)self->_targetTimer hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_16;
   }
 
-  v5 = [(_INPBDeleteTimerIntent *)self hasDeleteMultiple];
-  if (v5 != [v4 hasDeleteMultiple])
+  hasDeleteMultiple = [(_INPBDeleteTimerIntent *)self hasDeleteMultiple];
+  if (hasDeleteMultiple != [equalCopy hasDeleteMultiple])
   {
     goto LABEL_16;
   }
 
   if ([(_INPBDeleteTimerIntent *)self hasDeleteMultiple])
   {
-    if ([v4 hasDeleteMultiple])
+    if ([equalCopy hasDeleteMultiple])
     {
       deleteMultiple = self->_deleteMultiple;
-      if (deleteMultiple != [v4 deleteMultiple])
+      if (deleteMultiple != [equalCopy deleteMultiple])
       {
         goto LABEL_16;
       }
     }
   }
 
-  v7 = [(_INPBDeleteTimerIntent *)self intentMetadata];
-  v8 = [v4 intentMetadata];
-  if ((v7 != 0) == (v8 == 0))
+  intentMetadata = [(_INPBDeleteTimerIntent *)self intentMetadata];
+  intentMetadata2 = [equalCopy intentMetadata];
+  if ((intentMetadata != 0) == (intentMetadata2 == 0))
   {
     goto LABEL_15;
   }
 
-  v9 = [(_INPBDeleteTimerIntent *)self intentMetadata];
-  if (v9)
+  intentMetadata3 = [(_INPBDeleteTimerIntent *)self intentMetadata];
+  if (intentMetadata3)
   {
-    v10 = v9;
-    v11 = [(_INPBDeleteTimerIntent *)self intentMetadata];
-    v12 = [v4 intentMetadata];
-    v13 = [v11 isEqual:v12];
+    v10 = intentMetadata3;
+    intentMetadata4 = [(_INPBDeleteTimerIntent *)self intentMetadata];
+    intentMetadata5 = [equalCopy intentMetadata];
+    v13 = [intentMetadata4 isEqual:intentMetadata5];
 
     if (!v13)
     {
@@ -97,12 +97,12 @@
   {
   }
 
-  v7 = [(_INPBDeleteTimerIntent *)self targetTimer];
-  v8 = [v4 targetTimer];
-  if ((v7 != 0) != (v8 == 0))
+  intentMetadata = [(_INPBDeleteTimerIntent *)self targetTimer];
+  intentMetadata2 = [equalCopy targetTimer];
+  if ((intentMetadata != 0) != (intentMetadata2 == 0))
   {
-    v14 = [(_INPBDeleteTimerIntent *)self targetTimer];
-    if (!v14)
+    targetTimer = [(_INPBDeleteTimerIntent *)self targetTimer];
+    if (!targetTimer)
     {
 
 LABEL_19:
@@ -110,10 +110,10 @@ LABEL_19:
       goto LABEL_17;
     }
 
-    v15 = v14;
-    v16 = [(_INPBDeleteTimerIntent *)self targetTimer];
-    v17 = [v4 targetTimer];
-    v18 = [v16 isEqual:v17];
+    v15 = targetTimer;
+    targetTimer2 = [(_INPBDeleteTimerIntent *)self targetTimer];
+    targetTimer3 = [equalCopy targetTimer];
+    v18 = [targetTimer2 isEqual:targetTimer3];
 
     if (v18)
     {
@@ -133,7 +133,7 @@ LABEL_17:
   return v19;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBDeleteTimerIntent allocWithZone:](_INPBDeleteTimerIntent init];
   if ([(_INPBDeleteTimerIntent *)self hasDeleteMultiple])
@@ -141,65 +141,65 @@ LABEL_17:
     [(_INPBDeleteTimerIntent *)v5 setDeleteMultiple:[(_INPBDeleteTimerIntent *)self deleteMultiple]];
   }
 
-  v6 = [(_INPBIntentMetadata *)self->_intentMetadata copyWithZone:a3];
+  v6 = [(_INPBIntentMetadata *)self->_intentMetadata copyWithZone:zone];
   [(_INPBDeleteTimerIntent *)v5 setIntentMetadata:v6];
 
-  v7 = [(_INPBTimer *)self->_targetTimer copyWithZone:a3];
+  v7 = [(_INPBTimer *)self->_targetTimer copyWithZone:zone];
   [(_INPBDeleteTimerIntent *)v5 setTargetTimer:v7];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBDeleteTimerIntent *)self data];
+  coderCopy = coder;
+  data = [(_INPBDeleteTimerIntent *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBDeleteTimerIntent)initWithCoder:(id)a3
+- (_INPBDeleteTimerIntent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBDeleteTimerIntent *)self initWithData:v6];
+    self = [(_INPBDeleteTimerIntent *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v10 = a3;
+  toCopy = to;
   if ([(_INPBDeleteTimerIntent *)self hasDeleteMultiple])
   {
     deleteMultiple = self->_deleteMultiple;
     PBDataWriterWriteBOOLField();
   }
 
-  v5 = [(_INPBDeleteTimerIntent *)self intentMetadata];
+  intentMetadata = [(_INPBDeleteTimerIntent *)self intentMetadata];
 
-  if (v5)
+  if (intentMetadata)
   {
-    v6 = [(_INPBDeleteTimerIntent *)self intentMetadata];
+    intentMetadata2 = [(_INPBDeleteTimerIntent *)self intentMetadata];
     PBDataWriterWriteSubmessage();
   }
 
-  v7 = [(_INPBDeleteTimerIntent *)self targetTimer];
+  targetTimer = [(_INPBDeleteTimerIntent *)self targetTimer];
 
-  v8 = v10;
-  if (v7)
+  v8 = toCopy;
+  if (targetTimer)
   {
-    v9 = [(_INPBDeleteTimerIntent *)self targetTimer];
+    targetTimer2 = [(_INPBDeleteTimerIntent *)self targetTimer];
     PBDataWriterWriteSubmessage();
 
-    v8 = v10;
+    v8 = toCopy;
   }
 }
 

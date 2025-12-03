@@ -15,28 +15,28 @@
 
 - (BOOL)textFits
 {
-  v3 = [(ReservationLabel *)self text];
-  if (![v3 length])
+  text = [(ReservationLabel *)self text];
+  if (![text length])
   {
 
     return 1;
   }
 
-  v4 = [(ReservationLabel *)self numberOfLines];
+  numberOfLines = [(ReservationLabel *)self numberOfLines];
 
-  if (!v4)
+  if (!numberOfLines)
   {
     return 1;
   }
 
-  v5 = [(ReservationLabel *)self font];
+  font = [(ReservationLabel *)self font];
   v23 = NSFontAttributeName;
-  v24 = v5;
+  v24 = font;
   v6 = [NSDictionary dictionaryWithObjects:&v24 forKeys:&v23 count:1];
   [(ReservationLabel *)self bounds];
   Width = CGRectGetWidth(v25);
-  v8 = [(ReservationLabel *)self text];
-  [v8 boundingRectWithSize:3 options:v6 attributes:0 context:{Width, 1.79769313e308}];
+  text2 = [(ReservationLabel *)self text];
+  [text2 boundingRectWithSize:3 options:v6 attributes:0 context:{Width, 1.79769313e308}];
   v10 = v9;
   v12 = v11;
   v14 = v13;
@@ -47,8 +47,8 @@
   v26.size.width = v14;
   v26.size.height = v16;
   Height = CGRectGetHeight(v26);
-  v18 = [(ReservationLabel *)self font];
-  [v18 lineHeight];
+  font2 = [(ReservationLabel *)self font];
+  [font2 lineHeight];
   v20 = vcvtmd_s64_f64(Height / v19);
 
   v21 = [(ReservationLabel *)self numberOfLines]>= v20;
@@ -60,8 +60,8 @@
   v4.receiver = self;
   v4.super_class = ReservationLabel;
   [(ReservationLabel *)&v4 layoutSubviews];
-  v3 = [(ReservationLabel *)self delegate];
-  [v3 reservationLabelDidLayout:self];
+  delegate = [(ReservationLabel *)self delegate];
+  [delegate reservationLabelDidLayout:self];
 }
 
 @end

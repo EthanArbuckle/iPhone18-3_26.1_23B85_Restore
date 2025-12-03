@@ -1,14 +1,14 @@
 @interface TSNotificationSettings
 - (TSNotificationSettings)init;
-- (TSNotificationSettings)initWithSystemSettings:(id)a3;
+- (TSNotificationSettings)initWithSystemSettings:(id)settings;
 @end
 
 @implementation TSNotificationSettings
 
-- (TSNotificationSettings)initWithSystemSettings:(id)a3
+- (TSNotificationSettings)initWithSystemSettings:(id)settings
 {
-  v3 = a3;
-  v4 = sub_21980FBE0(v3);
+  settingsCopy = settings;
+  v4 = sub_21980FBE0(settingsCopy);
 
   return v4;
 }

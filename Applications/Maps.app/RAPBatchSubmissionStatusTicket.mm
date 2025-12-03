@@ -1,6 +1,6 @@
 @interface RAPBatchSubmissionStatusTicket
 - (void)cancelRequest;
-- (void)fetchStatusesForIdentifiers:(id)a3 querySource:(int)a4 completion:(id)a5;
+- (void)fetchStatusesForIdentifiers:(id)identifiers querySource:(int)source completion:(id)completion;
 @end
 
 @implementation RAPBatchSubmissionStatusTicket
@@ -12,14 +12,14 @@
   self->_ticket = 0;
 }
 
-- (void)fetchStatusesForIdentifiers:(id)a3 querySource:(int)a4 completion:(id)a5
+- (void)fetchStatusesForIdentifiers:(id)identifiers querySource:(int)source completion:(id)completion
 {
-  v6 = *&a4;
-  v8 = a3;
-  v9 = a5;
-  if ([v8 count])
+  v6 = *&source;
+  identifiersCopy = identifiers;
+  completionCopy = completion;
+  if ([identifiersCopy count])
   {
-    v10 = v8;
+    v10 = identifiersCopy;
     v11 = objc_alloc_init(GEORPRapQueryParameters);
     v12 = [v10 mutableCopy];
 
@@ -29,21 +29,21 @@
     v14 = objc_alloc_init(GEORPFeedbackQueryParameters);
     [v13 setQueryParameters:v14];
 
-    v15 = [v13 queryParameters];
-    [v15 addFeedbackComponentType:5];
+    queryParameters = [v13 queryParameters];
+    [queryParameters addFeedbackComponentType:5];
 
     v16 = objc_alloc_init(GEORPFeedbackComponentQueryParameters);
-    v17 = [v13 queryParameters];
-    [v17 setComponentQueryParameters:v16];
+    queryParameters2 = [v13 queryParameters];
+    [queryParameters2 setComponentQueryParameters:v16];
 
-    v18 = [v13 queryParameters];
-    v19 = [v18 componentQueryParameters];
-    [v19 setRapQueryParameters:v11];
+    queryParameters3 = [v13 queryParameters];
+    componentQueryParameters = [queryParameters3 componentQueryParameters];
+    [componentQueryParameters setRapQueryParameters:v11];
 
     v20 = [GEORPFeedbackRequest alloc];
     v21 = +[GEOMapService sharedService];
-    v22 = [v21 defaultTraits];
-    v23 = [v20 initWithFeedbackRequestParameters:v13 traits:v22];
+    defaultTraits = [v21 defaultTraits];
+    v23 = [v20 initWithFeedbackRequestParameters:v13 traits:defaultTraits];
 
     v24 = sub_1008D9F80();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
@@ -55,8 +55,8 @@
 
     v25 = +[GEOMapService sharedService];
     v26 = +[GEOMapService sharedService];
-    v27 = [v26 defaultTraits];
-    v28 = [v25 ticketForFeedbackRequest:v23 traits:v27];
+    defaultTraits2 = [v26 defaultTraits];
+    v28 = [v25 ticketForFeedbackRequest:v23 traits:defaultTraits2];
     ticket = self->_ticket;
     self->_ticket = v28;
 
@@ -65,13 +65,13 @@
     v31[1] = 3221225472;
     v31[2] = sub_1008D9FD4;
     v31[3] = &unk_101652BF8;
-    v32 = v9;
+    v32 = completionCopy;
     [(GEOMapServiceFeedbackReportTicket *)v30 submitWithHandler:v31 networkActivity:0];
   }
 
   else
   {
-    (*(v9 + 2))(v9, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 }
 

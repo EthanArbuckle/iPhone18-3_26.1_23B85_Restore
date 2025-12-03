@@ -1,6 +1,6 @@
 @interface CycleChartsViewController
-- (_TtC24MenstrualCyclesAppPlugin25CycleChartsViewController)initWithCoder:(id)a3;
-- (_TtC24MenstrualCyclesAppPlugin25CycleChartsViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC24MenstrualCyclesAppPlugin25CycleChartsViewController)initWithCoder:(id)coder;
+- (_TtC24MenstrualCyclesAppPlugin25CycleChartsViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)loadView;
 - (void)presentEditView;
 - (void)viewDidLoad;
@@ -8,7 +8,7 @@
 
 @implementation CycleChartsViewController
 
-- (_TtC24MenstrualCyclesAppPlugin25CycleChartsViewController)initWithCoder:(id)a3
+- (_TtC24MenstrualCyclesAppPlugin25CycleChartsViewController)initWithCoder:(id)coder
 {
   if (MEMORY[0x29EDCA190] >> 62 && sub_29E2C4484())
   {
@@ -28,23 +28,23 @@
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   sub_29E277C68();
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_29E277E28();
 }
 
 - (void)presentEditView
 {
-  v2 = self;
+  selfCopy = self;
   sub_29E2781F0();
 }
 
-- (_TtC24MenstrualCyclesAppPlugin25CycleChartsViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC24MenstrualCyclesAppPlugin25CycleChartsViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

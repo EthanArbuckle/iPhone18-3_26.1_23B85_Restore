@@ -1,13 +1,13 @@
 @interface PLPrimaryResourceDataStoreLocalVideoKeyFrameRecipe
-+ (void)generateKeyFrameFromVideoURL:(id)a3 destinationURL:(id)a4 time:(id *)a5 completion:(id)a6;
-+ (void)generateKeyFrameFromVideoURL:(id)a3 time:(id *)a4 completion:(id)a5;
-- (PLPrimaryResourceDataStoreLocalVideoKeyFrameRecipe)initWithRecipeID:(unsigned int)a3;
-- (id)chooseIngredientsFrom:(id)a3 version:(unsigned int)a4;
-- (void)_generateAndStoreForAsset:(id)a3 networkAccessAllowed:(BOOL)a4 clientBundleID:(id)a5 progress:(id *)a6 completion:(id)a7;
-- (void)_handleJobFinished:(id)a3 withMutatedMoc:(id)a4 error:(id)a5 storedRecipes:(id)a6 affectedRecipes:(id)a7 sourceMetadata:(id)a8;
-- (void)_handleKeyFrameGeneratedWithAsset:(id)a3 destinationURL:(id)a4 completion:(id)a5;
++ (void)generateKeyFrameFromVideoURL:(id)l destinationURL:(id)rL time:(id *)time completion:(id)completion;
++ (void)generateKeyFrameFromVideoURL:(id)l time:(id *)time completion:(id)completion;
+- (PLPrimaryResourceDataStoreLocalVideoKeyFrameRecipe)initWithRecipeID:(unsigned int)d;
+- (id)chooseIngredientsFrom:(id)from version:(unsigned int)version;
+- (void)_generateAndStoreForAsset:(id)asset networkAccessAllowed:(BOOL)allowed clientBundleID:(id)d progress:(id *)progress completion:(id)completion;
+- (void)_handleJobFinished:(id)finished withMutatedMoc:(id)moc error:(id)error storedRecipes:(id)recipes affectedRecipes:(id)affectedRecipes sourceMetadata:(id)metadata;
+- (void)_handleKeyFrameGeneratedWithAsset:(id)asset destinationURL:(id)l completion:(id)completion;
 - (void)_runNextJob;
-- (void)generateAndStoreForAsset:(id)a3 options:(id)a4 progress:(id *)a5 completion:(id)a6;
+- (void)generateAndStoreForAsset:(id)asset options:(id)options progress:(id *)progress completion:(id)completion;
 @end
 
 @implementation PLPrimaryResourceDataStoreLocalVideoKeyFrameRecipe
@@ -15,17 +15,17 @@
 - (void)_runNextJob
 {
   v37 = *MEMORY[0x1E69E9840];
-  v3 = [(PLLocalVideoKeyFrameJobQueue *)self->_jobQueue popNextJobToRun];
-  if (v3)
+  popNextJobToRun = [(PLLocalVideoKeyFrameJobQueue *)self->_jobQueue popNextJobToRun];
+  if (popNextJobToRun)
   {
     v4 = +[PLPhotoLibraryBundleController sharedBundleController];
-    v5 = [v4 libraryBundles];
+    libraryBundles = [v4 libraryBundles];
 
     v32 = 0u;
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v6 = v5;
+    v6 = libraryBundles;
     v7 = [v6 countByEnumeratingWithState:&v30 objects:v36 count:16];
     if (v7)
     {
@@ -41,11 +41,11 @@ LABEL_4:
         }
 
         v11 = *(*(&v30 + 1) + 8 * v10);
-        v12 = [v11 pathManager];
+        pathManager = [v11 pathManager];
         v13 = PLLibraryIDFromPathManager();
 
-        v14 = [v3 libraryID];
-        v15 = [v13 isEqual:v14];
+        libraryID = [popNextJobToRun libraryID];
+        v15 = [v13 isEqual:libraryID];
 
         if (v15)
         {
@@ -64,9 +64,9 @@ LABEL_4:
         }
       }
 
-      v16 = [v11 libraryServicesManager];
-      v17 = [v16 databaseContext];
-      v18 = [v17 newShortLivedLibraryWithName:"-[PLPrimaryResourceDataStoreLocalVideoKeyFrameRecipe _runNextJob]"];
+      libraryServicesManager = [v11 libraryServicesManager];
+      databaseContext = [libraryServicesManager databaseContext];
+      v18 = [databaseContext newShortLivedLibraryWithName:"-[PLPrimaryResourceDataStoreLocalVideoKeyFrameRecipe _runNextJob]"];
 
       if (!v18)
       {
@@ -77,11 +77,11 @@ LABEL_4:
       v26[1] = 3221225472;
       v26[2] = __65__PLPrimaryResourceDataStoreLocalVideoKeyFrameRecipe__runNextJob__block_invoke;
       v26[3] = &unk_1E75761B8;
-      v27 = v3;
+      v27 = popNextJobToRun;
       v28 = v18;
-      v29 = self;
-      v19 = v18;
-      [v19 performBlock:v26];
+      selfCopy = self;
+      libraryID2 = v18;
+      [libraryID2 performBlock:v26];
 
       v20 = v27;
     }
@@ -95,12 +95,12 @@ LABEL_13:
       v22 = *MEMORY[0x1E69BFF48];
       v34 = *MEMORY[0x1E696A278];
       v23 = MEMORY[0x1E696AEC0];
-      v19 = [v3 libraryID];
-      v20 = [v23 stringWithFormat:@"Could not find photo library bundle for libraryID: %@", v19];
+      libraryID2 = [popNextJobToRun libraryID];
+      v20 = [v23 stringWithFormat:@"Could not find photo library bundle for libraryID: %@", libraryID2];
       v35 = v20;
       v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v35 forKeys:&v34 count:1];
       v25 = [v21 errorWithDomain:v22 code:47001 userInfo:v24];
-      [(PLPrimaryResourceDataStoreLocalVideoKeyFrameRecipe *)self _handleJobFinished:v3 withMutatedMoc:0 error:v25 storedRecipes:0 affectedRecipes:0 sourceMetadata:0];
+      [(PLPrimaryResourceDataStoreLocalVideoKeyFrameRecipe *)self _handleJobFinished:popNextJobToRun withMutatedMoc:0 error:v25 storedRecipes:0 affectedRecipes:0 sourceMetadata:0];
     }
   }
 }
@@ -196,29 +196,29 @@ void __65__PLPrimaryResourceDataStoreLocalVideoKeyFrameRecipe__runNextJob__block
   [*(a1 + 40) _handleJobFinished:*(a1 + 48) withMutatedMoc:v15 error:v12 storedRecipes:v11 affectedRecipes:v10 sourceMetadata:0];
 }
 
-- (void)_handleJobFinished:(id)a3 withMutatedMoc:(id)a4 error:(id)a5 storedRecipes:(id)a6 affectedRecipes:(id)a7 sourceMetadata:(id)a8
+- (void)_handleJobFinished:(id)finished withMutatedMoc:(id)moc error:(id)error storedRecipes:(id)recipes affectedRecipes:(id)affectedRecipes sourceMetadata:(id)metadata
 {
   jobQueue = self->_jobQueue;
-  v15 = a8;
-  v16 = a7;
-  v17 = a6;
-  v18 = a5;
-  v19 = a4;
-  v20 = a3;
-  [(PLLocalVideoKeyFrameJobQueue *)jobQueue removeJob:v20];
-  [v20 callCompletionHandlersWithMutatedMoc:v19 error:v18 storedRecipes:v17 affectedRecipes:v16 sourceMetadata:v15];
+  metadataCopy = metadata;
+  affectedRecipesCopy = affectedRecipes;
+  recipesCopy = recipes;
+  errorCopy = error;
+  mocCopy = moc;
+  finishedCopy = finished;
+  [(PLLocalVideoKeyFrameJobQueue *)jobQueue removeJob:finishedCopy];
+  [finishedCopy callCompletionHandlersWithMutatedMoc:mocCopy error:errorCopy storedRecipes:recipesCopy affectedRecipes:affectedRecipesCopy sourceMetadata:metadataCopy];
 
   [(PLPrimaryResourceDataStoreLocalVideoKeyFrameRecipe *)self _runNextJob];
 }
 
-- (void)_generateAndStoreForAsset:(id)a3 networkAccessAllowed:(BOOL)a4 clientBundleID:(id)a5 progress:(id *)a6 completion:(id)a7
+- (void)_generateAndStoreForAsset:(id)asset networkAccessAllowed:(BOOL)allowed clientBundleID:(id)d progress:(id *)progress completion:(id)completion
 {
-  v9 = a4;
+  allowedCopy = allowed;
   v73 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v49 = a5;
-  v48 = a7;
-  v12 = [(PLPrimaryResourceDataStoreLocalVideoKeyFrameRecipe *)self chooseIngredientsFrom:v11 version:3];
+  assetCopy = asset;
+  dCopy = d;
+  completionCopy = completion;
+  v12 = [(PLPrimaryResourceDataStoreLocalVideoKeyFrameRecipe *)self chooseIngredientsFrom:assetCopy version:3];
   v13 = MEMORY[0x1E6960CC0];
   v14 = *MEMORY[0x1E6960CC0];
   value = *MEMORY[0x1E6960CC0];
@@ -227,11 +227,11 @@ void __65__PLPrimaryResourceDataStoreLocalVideoKeyFrameRecipe__runNextJob__block
   timescale = v15;
   v16 = *(MEMORY[0x1E6960CC0] + 16);
   epoch = v16;
-  v17 = [v11 mediaAnalysisAttributes];
+  mediaAnalysisAttributes = [assetCopy mediaAnalysisAttributes];
 
-  if (v17)
+  if (mediaAnalysisAttributes)
   {
-    if (v11 && ([v11 videoKeyFrameTime], value = buf.start.value, timescale = buf.start.timescale, (buf.start.flags & 1) != 0))
+    if (assetCopy && ([assetCopy videoKeyFrameTime], value = buf.start.value, timescale = buf.start.timescale, (buf.start.flags & 1) != 0))
     {
       epoch = buf.start.epoch;
       flags = buf.start.flags;
@@ -245,8 +245,8 @@ void __65__PLPrimaryResourceDataStoreLocalVideoKeyFrameRecipe__runNextJob__block
   }
 
   v18 = MEMORY[0x1E695DFF8];
-  v19 = [v11 pathForLocalVideoKeyFrame];
-  v20 = [v18 fileURLWithPath:v19];
+  pathForLocalVideoKeyFrame = [assetCopy pathForLocalVideoKeyFrame];
+  v20 = [v18 fileURLWithPath:pathForLocalVideoKeyFrame];
 
   if ([v12 count])
   {
@@ -267,9 +267,9 @@ void __65__PLPrimaryResourceDataStoreLocalVideoKeyFrameRecipe__runNextJob__block
   v26 = v25;
   if (v25)
   {
-    v27 = [v25 dataStoreKey];
-    v28 = [v11 assetID];
-    v29 = [v27 fileURLForAssetID:v28];
+    dataStoreKey = [v25 dataStoreKey];
+    assetID = [assetCopy assetID];
+    v29 = [dataStoreKey fileURLForAssetID:assetID];
 
     if (v29)
     {
@@ -279,10 +279,10 @@ void __65__PLPrimaryResourceDataStoreLocalVideoKeyFrameRecipe__runNextJob__block
       v60[2] = __136__PLPrimaryResourceDataStoreLocalVideoKeyFrameRecipe__generateAndStoreForAsset_networkAccessAllowed_clientBundleID_progress_completion___block_invoke;
       v60[3] = &unk_1E756FB88;
       v60[4] = self;
-      v61 = v11;
+      v61 = assetCopy;
       v62 = v20;
-      v31 = v48;
-      v63 = v48;
+      v31 = completionCopy;
+      v63 = completionCopy;
       buf.start.value = value;
       buf.start.timescale = timescale;
       buf.start.flags = flags;
@@ -313,17 +313,17 @@ LABEL_21:
   v29 = [v12 objectForKeyedSubscript:@"streamingVideo"];
   if (v29)
   {
-    if (v9)
+    if (allowedCopy)
     {
       v33 = PLImageManagerGetLog();
       if (os_log_type_enabled(v33, OS_LOG_TYPE_DEBUG))
       {
         LODWORD(buf.start.value) = 138412290;
-        *(&buf.start.value + 4) = v49;
+        *(&buf.start.value + 4) = dCopy;
         _os_log_impl(&dword_19BF1F000, v33, OS_LOG_TYPE_DEBUG, "[key frame] Making streaming video request to generate local video key frame, clientBundleID: %@", &buf, 0xCu);
       }
 
-      v45 = [v29 dataStore];
+      dataStore = [v29 dataStore];
       duration.epoch = v16;
       start.value = value;
       start.timescale = timescale;
@@ -331,7 +331,7 @@ LABEL_21:
       start.epoch = epoch;
       *&duration.value = *v13;
       CMTimeRangeMake(&buf, &start, &duration);
-      v44 = [v11 managedObjectContext];
+      managedObjectContext = [assetCopy managedObjectContext];
       v50[0] = MEMORY[0x1E69E9820];
       v50[1] = 3221225472;
       v50[2] = __136__PLPrimaryResourceDataStoreLocalVideoKeyFrameRecipe__generateAndStoreForAsset_networkAccessAllowed_clientBundleID_progress_completion___block_invoke_201;
@@ -342,10 +342,10 @@ LABEL_21:
       v55 = timescale;
       v56 = flags;
       v57 = epoch;
-      v52 = v11;
-      v31 = v48;
-      v53 = v48;
-      [v45 requestStreamingURLForResource:v29 asset:v52 intent:5 timeRange:&buf streamingHints:0 inContext:v44 clientBundleID:v49 completion:v50];
+      v52 = assetCopy;
+      v31 = completionCopy;
+      v53 = completionCopy;
+      [dataStore requestStreamingURLForResource:v29 asset:v52 intent:5 timeRange:&buf streamingHints:0 inContext:managedObjectContext clientBundleID:dCopy completion:v50];
 
       v32 = v51;
       goto LABEL_17;
@@ -358,7 +358,7 @@ LABEL_21:
 
   v34 = 0;
 LABEL_22:
-  v31 = v48;
+  v31 = completionCopy;
 LABEL_23:
 
   if (!v21)
@@ -477,28 +477,28 @@ void __136__PLPrimaryResourceDataStoreLocalVideoKeyFrameRecipe__generateAndStore
   }
 }
 
-- (void)_handleKeyFrameGeneratedWithAsset:(id)a3 destinationURL:(id)a4 completion:(id)a5
+- (void)_handleKeyFrameGeneratedWithAsset:(id)asset destinationURL:(id)l completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  assetCopy = asset;
+  lCopy = l;
+  completionCopy = completion;
   v11 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v12 = +[PLConcurrencyLimiter sharedLimiter];
-  v13 = [v8 managedObjectContext];
+  managedObjectContext = [assetCopy managedObjectContext];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __114__PLPrimaryResourceDataStoreLocalVideoKeyFrameRecipe__handleKeyFrameGeneratedWithAsset_destinationURL_completion___block_invoke;
   v18[3] = &unk_1E7576EE8;
-  v19 = v8;
-  v20 = v9;
-  v21 = self;
+  v19 = assetCopy;
+  v20 = lCopy;
+  selfCopy = self;
   v22 = v11;
-  v23 = v10;
-  v14 = v10;
+  v23 = completionCopy;
+  v14 = completionCopy;
   v15 = v11;
-  v16 = v9;
-  v17 = v8;
-  [v12 asyncPerformOnContext:v13 identifyingBlock:0 block:v18];
+  v16 = lCopy;
+  v17 = assetCopy;
+  [v12 asyncPerformOnContext:managedObjectContext identifyingBlock:0 block:v18];
 }
 
 void __114__PLPrimaryResourceDataStoreLocalVideoKeyFrameRecipe__handleKeyFrameGeneratedWithAsset_destinationURL_completion___block_invoke(uint64_t a1)
@@ -695,21 +695,21 @@ LABEL_37:
   (*(v45 + 16))(v45, 0, v36, v44, v47);
 }
 
-- (void)generateAndStoreForAsset:(id)a3 options:(id)a4 progress:(id *)a5 completion:(id)a6
+- (void)generateAndStoreForAsset:(id)asset options:(id)options progress:(id *)progress completion:(id)completion
 {
-  v9 = a6;
+  completionCopy = completion;
   jobQueue = self->_jobQueue;
-  v11 = a4;
-  v12 = a3;
-  v13 = [v12 objectID];
-  v14 = [v11 networkAccessAllowed];
-  v15 = [v11 clientBundleID];
+  optionsCopy = options;
+  assetCopy = asset;
+  objectID = [assetCopy objectID];
+  networkAccessAllowed = [optionsCopy networkAccessAllowed];
+  clientBundleID = [optionsCopy clientBundleID];
 
-  v16 = [v12 assetID];
+  assetID = [assetCopy assetID];
 
-  v17 = [v16 libraryID];
+  libraryID = [assetID libraryID];
   v21 = 0;
-  LODWORD(jobQueue) = [(PLLocalVideoKeyFrameJobQueue *)jobQueue addJobWithAssetObjectID:v13 networkAccessAllowed:v14 clientBundleID:v15 libraryID:v17 error:&v21 completionHandler:v9];
+  LODWORD(jobQueue) = [(PLLocalVideoKeyFrameJobQueue *)jobQueue addJobWithAssetObjectID:objectID networkAccessAllowed:networkAccessAllowed clientBundleID:clientBundleID libraryID:libraryID error:&v21 completionHandler:completionCopy];
   v18 = v21;
 
   if (jobQueue)
@@ -720,20 +720,20 @@ LABEL_37:
   else
   {
     v19 = [MEMORY[0x1E695DFD8] set];
-    v20 = [MEMORY[0x1E695DFB8] orderedSet];
-    (*(v9 + 2))(v9, 0, v18, v19, v20, 0);
+    orderedSet = [MEMORY[0x1E695DFB8] orderedSet];
+    (*(completionCopy + 2))(completionCopy, 0, v18, v19, orderedSet, 0);
   }
 }
 
-- (id)chooseIngredientsFrom:(id)a3 version:(unsigned int)a4
+- (id)chooseIngredientsFrom:(id)from version:(unsigned int)version
 {
   v26 = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E695DF90];
-  v5 = a3;
+  fromCopy = from;
   v6 = objc_alloc_init(v4);
   v7 = [PLVideoInternalResourceContext alloc];
-  v8 = [v5 managedObjectContext];
-  v9 = [(PLVideoInternalResourceContext *)v7 initWithManagedObjectContext:v8 asset:v5];
+  managedObjectContext = [fromCopy managedObjectContext];
+  v9 = [(PLVideoInternalResourceContext *)v7 initWithManagedObjectContext:managedObjectContext asset:fromCopy];
 
   v10 = [[PLLocalVideoKeyFrameVideoChoosingOptions alloc] initWithStreamingAllowed:[(PLVideoInternalResourceContext *)v9 isWalrusEnabled]^ 1];
   v11 = [PLVideoChoosingAndAvailabilitySupport alloc];
@@ -798,9 +798,9 @@ LABEL_10:
   return v21;
 }
 
-- (PLPrimaryResourceDataStoreLocalVideoKeyFrameRecipe)initWithRecipeID:(unsigned int)a3
+- (PLPrimaryResourceDataStoreLocalVideoKeyFrameRecipe)initWithRecipeID:(unsigned int)d
 {
-  if (a3 == 65749)
+  if (d == 65749)
   {
     v7.receiver = self;
     v7.super_class = PLPrimaryResourceDataStoreLocalVideoKeyFrameRecipe;
@@ -822,21 +822,21 @@ LABEL_10:
   return v3;
 }
 
-+ (void)generateKeyFrameFromVideoURL:(id)a3 destinationURL:(id)a4 time:(id *)a5 completion:(id)a6
++ (void)generateKeyFrameFromVideoURL:(id)l destinationURL:(id)rL time:(id *)time completion:(id)completion
 {
   v21 = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  v11 = a6;
-  v12 = a3;
+  rLCopy = rL;
+  completionCopy = completion;
+  lCopy = l;
   v13 = PLImageManagerGetLog();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
-    time = *a5;
+    time = *time;
     v14 = CMTimeCopyDescription(0, &time);
     LODWORD(time.value) = 138543618;
     *(&time.value + 4) = v14;
     LOWORD(time.flags) = 2112;
-    *(&time.flags + 2) = v10;
+    *(&time.flags + 2) = rLCopy;
     _os_log_impl(&dword_19BF1F000, v13, OS_LOG_TYPE_DEBUG, "[key frame] Image generator copying image at time: %{public}@ to destination: %@", &time, 0x16u);
   }
 
@@ -844,12 +844,12 @@ LABEL_10:
   v17[1] = 3221225472;
   v17[2] = __114__PLPrimaryResourceDataStoreLocalVideoKeyFrameRecipe_generateKeyFrameFromVideoURL_destinationURL_time_completion___block_invoke;
   v17[3] = &unk_1E756E2B0;
-  v18 = v10;
-  v19 = v11;
-  time = *a5;
-  v15 = v11;
-  v16 = v10;
-  [a1 generateKeyFrameFromVideoURL:v12 time:&time completion:v17];
+  v18 = rLCopy;
+  v19 = completionCopy;
+  time = *time;
+  v15 = completionCopy;
+  v16 = rLCopy;
+  [self generateKeyFrameFromVideoURL:lCopy time:&time completion:v17];
 }
 
 void __114__PLPrimaryResourceDataStoreLocalVideoKeyFrameRecipe_generateKeyFrameFromVideoURL_destinationURL_time_completion___block_invoke(uint64_t a1, CGImage *a2, void *a3)
@@ -930,11 +930,11 @@ LABEL_14:
   (*(*(a1 + 40) + 16))();
 }
 
-+ (void)generateKeyFrameFromVideoURL:(id)a3 time:(id *)a4 completion:(id)a5
++ (void)generateKeyFrameFromVideoURL:(id)l time:(id *)time completion:(id)completion
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v7 = a5;
-  v8 = [MEMORY[0x1E6987E28] assetWithURL:a3];
+  completionCopy = completion;
+  v8 = [MEMORY[0x1E6987E28] assetWithURL:l];
   v9 = [objc_alloc(MEMORY[0x1E6987E68]) initWithAsset:v8];
   [v9 setAppliesPreferredTrackTransform:1];
   v17 = **&MEMORY[0x1E6960CC0];
@@ -944,7 +944,7 @@ LABEL_14:
   *&v17.var0 = v14;
   v17.var3 = var3;
   [v9 setRequestedTimeToleranceBefore:&v17];
-  v17 = *a4;
+  v17 = *time;
   v11 = [MEMORY[0x1E696B098] valueWithCMTime:&v17];
   v18[0] = v11;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:1];
@@ -952,8 +952,8 @@ LABEL_14:
   v15[1] = 3221225472;
   v15[2] = __99__PLPrimaryResourceDataStoreLocalVideoKeyFrameRecipe_generateKeyFrameFromVideoURL_time_completion___block_invoke;
   v15[3] = &unk_1E756E288;
-  v16 = v7;
-  v13 = v7;
+  v16 = completionCopy;
+  v13 = completionCopy;
   [v9 generateCGImagesAsynchronouslyForTimes:v12 completionHandler:v15];
 }
 

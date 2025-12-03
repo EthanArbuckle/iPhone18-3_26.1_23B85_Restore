@@ -1,20 +1,20 @@
 @interface CAWindowLayer
-+ (BOOL)CA_automaticallyNotifiesObservers:(Class)a3;
-+ (id)defaultValueForKey:(id)a3;
-- (BOOL)_renderLayerDefinesProperty:(unsigned int)a3;
++ (BOOL)CA_automaticallyNotifiesObservers:(Class)observers;
++ (id)defaultValueForKey:(id)key;
+- (BOOL)_renderLayerDefinesProperty:(unsigned int)property;
 - (BOOL)fullyOccluded;
 - (BOOL)ignoreAnimations;
 - (CAWindowLayer)init;
 - (NSString)flattenMode;
 - (double)postCommitDuration;
-- (void)_copyRenderLayer:(void *)a3 layerFlags:(unsigned int)a4 commitFlags:(unsigned int *)a5;
+- (void)_copyRenderLayer:(void *)layer layerFlags:(unsigned int)flags commitFlags:(unsigned int *)commitFlags;
 - (void)dealloc;
-- (void)didChangeValueForKey:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setFlattenMode:(id)a3;
-- (void)setFullyOccluded:(BOOL)a3;
-- (void)setIgnoreAnimations:(BOOL)a3;
-- (void)setPostCommitDuration:(double)a3;
+- (void)didChangeValueForKey:(id)key;
+- (void)setDelegate:(id)delegate;
+- (void)setFlattenMode:(id)mode;
+- (void)setFullyOccluded:(BOOL)occluded;
+- (void)setIgnoreAnimations:(BOOL)animations;
+- (void)setPostCommitDuration:(double)duration;
 @end
 
 @implementation CAWindowLayer
@@ -51,20 +51,20 @@
   return v3;
 }
 
-+ (BOOL)CA_automaticallyNotifiesObservers:(Class)a3
++ (BOOL)CA_automaticallyNotifiesObservers:(Class)observers
 {
   v7 = *MEMORY[0x1E69E9840];
-  if (objc_opt_class() == a3)
+  if (objc_opt_class() == observers)
   {
     return 0;
   }
 
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___CAWindowLayer;
-  return objc_msgSendSuper2(&v6, sel_CA_automaticallyNotifiesObservers_, a3);
+  return objc_msgSendSuper2(&v6, sel_CA_automaticallyNotifiesObservers_, observers);
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v6 = *MEMORY[0x1E69E9840];
   v5.receiver = self;
@@ -72,45 +72,45 @@
   [(CALayer *)&v5 setDelegate:?];
   if (objc_opt_respondsToSelector())
   {
-    [a3 windowLayer:self didChangeFlatten:{-[CAWindowLayer windowFlattened](self, "windowFlattened")}];
+    [delegate windowLayer:self didChangeFlatten:{-[CAWindowLayer windowFlattened](self, "windowFlattened")}];
   }
 }
 
-- (void)setPostCommitDuration:(double)a3
+- (void)setPostCommitDuration:(double)duration
 {
   v3[1] = *MEMORY[0x1E69E9840];
-  v3[0] = a3;
+  v3[0] = duration;
   CA::Layer::setter(self->super._attr.layer, 0x23A, 0x12, v3);
 }
 
-- (void)setFullyOccluded:(BOOL)a3
+- (void)setFullyOccluded:(BOOL)occluded
 {
   v4 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  CA::Layer::setter(self->super._attr.layer, 0x115, 6, &v3);
+  occludedCopy = occluded;
+  CA::Layer::setter(self->super._attr.layer, 0x115, 6, &occludedCopy);
 }
 
-- (void)setIgnoreAnimations:(BOOL)a3
+- (void)setIgnoreAnimations:(BOOL)animations
 {
   v4 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  CA::Layer::setter(self->super._attr.layer, 0x138, 6, &v3);
+  animationsCopy = animations;
+  CA::Layer::setter(self->super._attr.layer, 0x138, 6, &animationsCopy);
 }
 
-- (void)setFlattenMode:(id)a3
+- (void)setFlattenMode:(id)mode
 {
   v3[1] = *MEMORY[0x1E69E9840];
-  *&v3[0] = a3;
+  *&v3[0] = mode;
   CA::Layer::setter(self->super._attr.layer, 0x101, 3, v3);
 }
 
-- (void)_copyRenderLayer:(void *)a3 layerFlags:(unsigned int)a4 commitFlags:(unsigned int *)a5
+- (void)_copyRenderLayer:(void *)layer layerFlags:(unsigned int)flags commitFlags:(unsigned int *)commitFlags
 {
   v18 = *MEMORY[0x1E69E9840];
   v17.receiver = self;
   v17.super_class = CAWindowLayer;
-  v7 = [(CALayer *)&v17 _copyRenderLayer:a3 layerFlags:*&a4 commitFlags:?];
-  if (!v7 || (*(a5 + 2) & 1) == 0)
+  v7 = [(CALayer *)&v17 _copyRenderLayer:layer layerFlags:*&flags commitFlags:?];
+  if (!v7 || (*(commitFlags + 2) & 1) == 0)
   {
     return v7;
   }
@@ -134,8 +134,8 @@
     *(v9 + 48) = 0;
   }
 
-  v11 = [(CAWindowLayer *)self flattenMode];
-  if ([(NSString *)v11 isEqualToString:@"default"])
+  flattenMode = [(CAWindowLayer *)self flattenMode];
+  if ([(NSString *)flattenMode isEqualToString:@"default"])
   {
     v12 = 0;
 LABEL_13:
@@ -143,13 +143,13 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if ([(NSString *)v11 isEqualToString:@"always"])
+  if ([(NSString *)flattenMode isEqualToString:@"always"])
   {
     v12 = 1;
     goto LABEL_13;
   }
 
-  if ([(NSString *)v11 isEqualToString:@"never"])
+  if ([(NSString *)flattenMode isEqualToString:@"never"])
   {
     v12 = 2;
     goto LABEL_13;
@@ -158,10 +158,10 @@ LABEL_13:
 LABEL_14:
   [(CAWindowLayer *)self postCommitDuration];
   *(v9 + 4) = v13;
-  v14 = [(CAWindowLayer *)self ignoreAnimations];
+  ignoreAnimations = [(CAWindowLayer *)self ignoreAnimations];
   if ([(CAWindowLayer *)self fullyOccluded])
   {
-    v14 |= 2u;
+    ignoreAnimations |= 2u;
   }
 
   if (CA::Render::Encoder::initialize_render_id_slide(void)::once != -1)
@@ -176,9 +176,9 @@ LABEL_14:
   }
 
   *(v9 + 2) = v15;
-  if (v14)
+  if (ignoreAnimations)
   {
-    v9[3] |= v14 << 8;
+    v9[3] |= ignoreAnimations << 8;
   }
 
   CA::Render::Layer::set_subclass(v7, v9);
@@ -190,11 +190,11 @@ LABEL_14:
   return v7;
 }
 
-- (BOOL)_renderLayerDefinesProperty:(unsigned int)a3
+- (BOOL)_renderLayerDefinesProperty:(unsigned int)property
 {
   v3 = 0;
   v6 = *MEMORY[0x1E69E9840];
-  while ([CAWindowLayer _renderLayerDefinesProperty:]::atoms[v3] != a3)
+  while ([CAWindowLayer _renderLayerDefinesProperty:]::atoms[v3] != property)
   {
     if (++v3 == 4)
     {
@@ -207,10 +207,10 @@ LABEL_14:
   return 1;
 }
 
-- (void)didChangeValueForKey:(id)a3
+- (void)didChangeValueForKey:(id)key
 {
   v9 = *MEMORY[0x1E69E9840];
-  v5 = CAInternAtom(a3, 0);
+  v5 = CAInternAtom(key, 0);
   v6 = 0;
   while (v5 != [CAWindowLayer didChangeValueForKey:]::atoms[v6])
   {
@@ -225,7 +225,7 @@ LABEL_14:
 LABEL_6:
   v8.receiver = self;
   v8.super_class = CAWindowLayer;
-  [(CAWindowLayer *)&v8 didChangeValueForKey:a3];
+  [(CAWindowLayer *)&v8 didChangeValueForKey:key];
 }
 
 - (void)dealloc
@@ -354,27 +354,27 @@ LABEL_11:
   return v2;
 }
 
-+ (id)defaultValueForKey:(id)a3
++ (id)defaultValueForKey:(id)key
 {
   v7 = *MEMORY[0x1E69E9840];
-  if ([a3 isEqualToString:@"postCommitDuration"])
+  if ([key isEqualToString:@"postCommitDuration"])
   {
     return &unk_1EF22B840;
   }
 
-  if ([a3 isEqualToString:@"flattenMode"])
+  if ([key isEqualToString:@"flattenMode"])
   {
     return @"default";
   }
 
-  if ([a3 isEqualToString:@"ignoreAnimations"] & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"fullyOccluded") & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"windowFlattened"))
+  if ([key isEqualToString:@"ignoreAnimations"] & 1) != 0 || (objc_msgSend(key, "isEqualToString:", @"fullyOccluded") & 1) != 0 || (objc_msgSend(key, "isEqualToString:", @"windowFlattened"))
   {
     return MEMORY[0x1E695E110];
   }
 
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___CAWindowLayer;
-  return objc_msgSendSuper2(&v6, sel_defaultValueForKey_, a3);
+  return objc_msgSendSuper2(&v6, sel_defaultValueForKey_, key);
 }
 
 @end

@@ -1,16 +1,16 @@
 @interface HKRemoteFeatureAvailabilityRuleSet
-- (HKRemoteFeatureAvailabilityRuleSet)initWithRawValue:(id)a3 dataSource:(id)a4 supportedConditions:(id)a5;
+- (HKRemoteFeatureAvailabilityRuleSet)initWithRawValue:(id)value dataSource:(id)source supportedConditions:(id)conditions;
 - (id)evaluateAll;
-- (void)_parseRulesFromRawValue:(id)a3 dataSource:(id)a4;
+- (void)_parseRulesFromRawValue:(id)value dataSource:(id)source;
 @end
 
 @implementation HKRemoteFeatureAvailabilityRuleSet
 
-- (HKRemoteFeatureAvailabilityRuleSet)initWithRawValue:(id)a3 dataSource:(id)a4 supportedConditions:(id)a5
+- (HKRemoteFeatureAvailabilityRuleSet)initWithRawValue:(id)value dataSource:(id)source supportedConditions:(id)conditions
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  valueCopy = value;
+  sourceCopy = source;
+  conditionsCopy = conditions;
   v17.receiver = self;
   v17.super_class = HKRemoteFeatureAvailabilityRuleSet;
   v11 = [(HKRemoteFeatureAvailabilityRuleSet *)&v17 init];
@@ -20,26 +20,26 @@
     conditions = v11->_conditions;
     v11->_conditions = v12;
 
-    v14 = [v10 copy];
+    v14 = [conditionsCopy copy];
     supportedConditions = v11->_supportedConditions;
     v11->_supportedConditions = v14;
 
-    [(HKRemoteFeatureAvailabilityRuleSet *)v11 _parseRulesFromRawValue:v8 dataSource:v9];
+    [(HKRemoteFeatureAvailabilityRuleSet *)v11 _parseRulesFromRawValue:valueCopy dataSource:sourceCopy];
   }
 
   return v11;
 }
 
-- (void)_parseRulesFromRawValue:(id)a3 dataSource:(id)a4
+- (void)_parseRulesFromRawValue:(id)value dataSource:(id)source
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  valueCopy = value;
+  sourceCopy = source;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v8 = [v6 countByEnumeratingWithState:&v22 objects:v28 count:16];
+  v8 = [valueCopy countByEnumeratingWithState:&v22 objects:v28 count:16];
   if (v8)
   {
     v10 = v8;
@@ -53,21 +53,21 @@
       {
         if (*v23 != v11)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(valueCopy);
         }
 
         v13 = *(*(&v22 + 1) + 8 * v12);
-        v14 = [(HKRemoteFeatureAvailabilityRuleSet *)self supportedConditions];
-        v15 = [v14 containsObject:v13];
+        supportedConditions = [(HKRemoteFeatureAvailabilityRuleSet *)self supportedConditions];
+        v15 = [supportedConditions containsObject:v13];
 
         if (v15)
         {
-          v16 = [v6 objectForKeyedSubscript:v13];
+          v16 = [valueCopy objectForKeyedSubscript:v13];
           if ([HKRemoteFeatureAvailabilityBaseRule ruleClassForRawValue:v16])
           {
-            v17 = [objc_alloc(objc_opt_class()) initWithRawValue:v16 dataSource:v7];
-            v18 = [(HKRemoteFeatureAvailabilityRuleSet *)self conditions];
-            [v18 setObject:v17 forKeyedSubscript:v13];
+            v17 = [objc_alloc(objc_opt_class()) initWithRawValue:v16 dataSource:sourceCopy];
+            conditions = [(HKRemoteFeatureAvailabilityRuleSet *)self conditions];
+            [conditions setObject:v17 forKeyedSubscript:v13];
           }
 
           else
@@ -87,7 +87,7 @@
       }
 
       while (v10 != v12);
-      v10 = [v6 countByEnumeratingWithState:&v22 objects:v28 count:16];
+      v10 = [valueCopy countByEnumeratingWithState:&v22 objects:v28 count:16];
     }
 
     while (v10);
@@ -121,8 +121,8 @@
 
         v8 = *(*(&v16 + 1) + 8 * i);
         v9 = MEMORY[0x1E696AD98];
-        v10 = [(HKRemoteFeatureAvailabilityRuleSet *)self conditions];
-        v11 = [v10 objectForKeyedSubscript:v8];
+        conditions = [(HKRemoteFeatureAvailabilityRuleSet *)self conditions];
+        v11 = [conditions objectForKeyedSubscript:v8];
         v12 = [v9 numberWithBool:{objc_msgSend(v11, "evaluate")}];
         [v3 setObject:v12 forKeyedSubscript:v8];
       }

@@ -1,11 +1,11 @@
 @interface DebugFormatDebuggerSourceBreakpointView
-- (_TtC8NewsFeed39DebugFormatDebuggerSourceBreakpointView)initWithCoder:(id)a3;
-- (_TtC8NewsFeed39DebugFormatDebuggerSourceBreakpointView)initWithFrame:(CGRect)a3;
+- (_TtC8NewsFeed39DebugFormatDebuggerSourceBreakpointView)initWithCoder:(id)coder;
+- (_TtC8NewsFeed39DebugFormatDebuggerSourceBreakpointView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation DebugFormatDebuggerSourceBreakpointView
 
-- (_TtC8NewsFeed39DebugFormatDebuggerSourceBreakpointView)initWithCoder:(id)a3
+- (_TtC8NewsFeed39DebugFormatDebuggerSourceBreakpointView)initWithCoder:(id)coder
 {
   v3 = (self + OBJC_IVAR____TtC8NewsFeed39DebugFormatDebuggerSourceBreakpointView_sourceFile);
   sub_1D607F0A4(v9);
@@ -26,7 +26,7 @@
   return result;
 }
 
-- (_TtC8NewsFeed39DebugFormatDebuggerSourceBreakpointView)initWithFrame:(CGRect)a3
+- (_TtC8NewsFeed39DebugFormatDebuggerSourceBreakpointView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

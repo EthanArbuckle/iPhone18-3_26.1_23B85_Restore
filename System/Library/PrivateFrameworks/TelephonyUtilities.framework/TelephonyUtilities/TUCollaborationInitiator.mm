@@ -1,28 +1,28 @@
 @interface TUCollaborationInitiator
-- (BOOL)isEqual:(id)a3;
-- (TUCollaborationInitiator)initWithCoder:(id)a3;
-- (TUCollaborationInitiator)initWithNameComponents:(id)a3 handle:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (TUCollaborationInitiator)initWithCoder:(id)coder;
+- (TUCollaborationInitiator)initWithNameComponents:(id)components handle:(id)handle;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TUCollaborationInitiator
 
-- (TUCollaborationInitiator)initWithNameComponents:(id)a3 handle:(id)a4
+- (TUCollaborationInitiator)initWithNameComponents:(id)components handle:(id)handle
 {
-  v6 = a3;
-  v7 = a4;
+  componentsCopy = components;
+  handleCopy = handle;
   v15.receiver = self;
   v15.super_class = TUCollaborationInitiator;
   v8 = [(TUCollaborationInitiator *)&v15 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [componentsCopy copy];
     nameComponents = v8->_nameComponents;
     v8->_nameComponents = v9;
 
-    v11 = [v7 copy];
+    v11 = [handleCopy copy];
     handle = v8->_handle;
     v8->_handle = v11;
 
@@ -48,19 +48,19 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     nameComponents = self->_nameComponents;
-    v6 = [v4 nameComponents];
-    if (TUObjectsAreEqualOrNil(nameComponents, v6))
+    nameComponents = [equalCopy nameComponents];
+    if (TUObjectsAreEqualOrNil(nameComponents, nameComponents))
     {
       handle = self->_handle;
-      v8 = [v4 handle];
-      v9 = TUObjectsAreEqualOrNil(handle, v8);
+      handle = [equalCopy handle];
+      v9 = TUObjectsAreEqualOrNil(handle, handle);
     }
 
     else
@@ -77,40 +77,40 @@
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   nameComponents = self->_nameComponents;
   handle = self->_handle;
 
   return [v4 initWithNameComponents:nameComponents handle:handle];
 }
 
-- (TUCollaborationInitiator)initWithCoder:(id)a3
+- (TUCollaborationInitiator)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
   v6 = NSStringFromSelector(sel_nameComponents);
-  v7 = [v4 decodeObjectOfClass:v5 forKey:v6];
+  v7 = [coderCopy decodeObjectOfClass:v5 forKey:v6];
 
   v8 = objc_opt_class();
   v9 = NSStringFromSelector(sel_handle);
-  v10 = [v4 decodeObjectOfClass:v8 forKey:v9];
+  v10 = [coderCopy decodeObjectOfClass:v8 forKey:v9];
 
   v11 = [(TUCollaborationInitiator *)self initWithNameComponents:v7 handle:v10];
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   nameComponents = self->_nameComponents;
-  v5 = a3;
+  coderCopy = coder;
   v6 = NSStringFromSelector(sel_nameComponents);
-  [v5 encodeObject:nameComponents forKey:v6];
+  [coderCopy encodeObject:nameComponents forKey:v6];
 
   handle = self->_handle;
   v8 = NSStringFromSelector(sel_handle);
-  [v5 encodeObject:handle forKey:v8];
+  [coderCopy encodeObject:handle forKey:v8];
 }
 
 @end

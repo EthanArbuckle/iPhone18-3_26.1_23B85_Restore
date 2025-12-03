@@ -16,8 +16,8 @@
   v1 = +[_SFManagedFeatureObserver sharedObserver];
   [v0 setUserHasPassword:{objc_msgSend(v1, "doesUserHavePasscodeSet")}];
 
-  v2 = [MEMORY[0x1E69C9808] sharedManager];
-  [v0 setPrivacyProxyAvailabilityManager:v2];
+  mEMORY[0x1E69C9808] = [MEMORY[0x1E69C9808] sharedManager];
+  [v0 setPrivacyProxyAvailabilityManager:mEMORY[0x1E69C9808]];
 
   v3 = +[_SFSearchEngineController sharedInstance];
   v4 = [v3 defaultSearchEngineForPrivateBrowsing:1];

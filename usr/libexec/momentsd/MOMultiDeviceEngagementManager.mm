@@ -1,14 +1,14 @@
 @interface MOMultiDeviceEngagementManager
 - (MOMultiDeviceEngagementManager)init;
-- (id)eventsBySuggestionIdentifierFrom:(id)a3 to:(id)a4;
-- (id)eventsLightBySuggestionIdentifierFrom:(id)a3 to:(id)a4;
-- (id)goodnessScoreEngagementsBySuggestionIdentifierFrom:(id)a3 to:(id)a4;
-- (id)latestViewedEngagmentDateFrom:(id)a3 to:(id)a4;
-- (id)uniqueRawEngagementSuggestionTypeBySuggestionIdentifierBasedOnEngagementLightFrom:(id)a3 to:(id)a4;
-- (id)uniqueRawEngagementSuggestionTypeBySuggestionIdentifierFrom:(id)a3 to:(id)a4;
+- (id)eventsBySuggestionIdentifierFrom:(id)from to:(id)to;
+- (id)eventsLightBySuggestionIdentifierFrom:(id)from to:(id)to;
+- (id)goodnessScoreEngagementsBySuggestionIdentifierFrom:(id)from to:(id)to;
+- (id)latestViewedEngagmentDateFrom:(id)from to:(id)to;
+- (id)uniqueRawEngagementSuggestionTypeBySuggestionIdentifierBasedOnEngagementLightFrom:(id)from to:(id)to;
+- (id)uniqueRawEngagementSuggestionTypeBySuggestionIdentifierFrom:(id)from to:(id)to;
 - (void)init;
-- (void)sendSuggestionEvent:(id)a3;
-- (void)sendSuggestionEventLight:(id)a3;
+- (void)sendSuggestionEvent:(id)event;
+- (void)sendSuggestionEventLight:(id)light;
 @end
 
 @implementation MOMultiDeviceEngagementManager
@@ -21,12 +21,12 @@
   if (v2)
   {
     v3 = BiomeLibrary();
-    v4 = [v3 Moments];
-    v5 = [v4 Events];
-    v6 = [v5 Engagement];
+    moments = [v3 Moments];
+    events = [moments Events];
+    engagement = [events Engagement];
 
     v42 = 0;
-    v7 = [v6 remoteDevicesWithError:&v42];
+    v7 = [engagement remoteDevicesWithError:&v42];
     v8 = v42;
     v9 = _mo_log_facility_get_os_log(&MOLogFacilityEngagement);
     v10 = v9;
@@ -53,11 +53,11 @@
 
       v13 = +[NSDate distantPast];
       [v13 timeIntervalSinceReferenceDate];
-      mergedStreamPublisher = [v6 publishersForDevices:v7 withUseCase:@"Moments" startTime:1 includeLocal:&__block_literal_global_19 pipeline:?];
+      mergedStreamPublisher = [engagement publishersForDevices:v7 withUseCase:@"Moments" startTime:1 includeLocal:&__block_literal_global_19 pipeline:?];
 
-      v14 = [mergedStreamPublisher merge];
+      merge = [mergedStreamPublisher merge];
       v15 = v2->_mergedStreamPublisher;
-      v2->_mergedStreamPublisher = v14;
+      v2->_mergedStreamPublisher = merge;
 
       v16 = _mo_log_facility_get_os_log(&MOLogFacilityEngagement);
       if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
@@ -68,66 +68,66 @@
     }
 
     v17 = BiomeLibrary();
-    v18 = [v17 Moments];
-    v19 = [v18 Events];
-    v20 = [v19 Engagement];
-    v21 = [v20 source];
+    moments2 = [v17 Moments];
+    events2 = [moments2 Events];
+    engagement2 = [events2 Engagement];
+    source = [engagement2 source];
     streamSource = v2->_streamSource;
-    v2->_streamSource = v21;
+    v2->_streamSource = source;
 
     v23 = BiomeLibrary();
-    v24 = [v23 Moments];
-    v25 = [v24 Events];
-    v26 = [v25 EngagementLight];
-    v27 = [v26 source];
+    moments3 = [v23 Moments];
+    events3 = [moments3 Events];
+    engagementLight = [events3 EngagementLight];
+    source2 = [engagementLight source];
     streamSourceLight = v2->_streamSourceLight;
-    v2->_streamSourceLight = v27;
+    v2->_streamSourceLight = source2;
 
     v29 = BiomeLibrary();
-    v30 = [v29 Moments];
-    v31 = [v30 Events];
-    v32 = [v31 Engagement];
-    v33 = [v32 publisher];
+    moments4 = [v29 Moments];
+    events4 = [moments4 Events];
+    engagement3 = [events4 Engagement];
+    publisher = [engagement3 publisher];
     streamPublisher = v2->_streamPublisher;
-    v2->_streamPublisher = v33;
+    v2->_streamPublisher = publisher;
 
     v35 = BiomeLibrary();
-    v36 = [v35 Moments];
-    v37 = [v36 Events];
-    v38 = [v37 EngagementLight];
-    v39 = [v38 publisher];
+    moments5 = [v35 Moments];
+    events5 = [moments5 Events];
+    engagementLight2 = [events5 EngagementLight];
+    publisher2 = [engagementLight2 publisher];
     streamPublisherLight = v2->_streamPublisherLight;
-    v2->_streamPublisherLight = v39;
+    v2->_streamPublisherLight = publisher2;
   }
 
   return v2;
 }
 
-- (void)sendSuggestionEvent:(id)a3
+- (void)sendSuggestionEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(MOMultiDeviceEngagementManager *)self streamSource];
-  [v5 sendEvent:v4];
+  eventCopy = event;
+  streamSource = [(MOMultiDeviceEngagementManager *)self streamSource];
+  [streamSource sendEvent:eventCopy];
 }
 
-- (void)sendSuggestionEventLight:(id)a3
+- (void)sendSuggestionEventLight:(id)light
 {
-  v4 = a3;
-  v5 = [(MOMultiDeviceEngagementManager *)self streamSourceLight];
-  [v5 sendEvent:v4];
+  lightCopy = light;
+  streamSourceLight = [(MOMultiDeviceEngagementManager *)self streamSourceLight];
+  [streamSourceLight sendEvent:lightCopy];
 }
 
-- (id)uniqueRawEngagementSuggestionTypeBySuggestionIdentifierFrom:(id)a3 to:(id)a4
+- (id)uniqueRawEngagementSuggestionTypeBySuggestionIdentifierFrom:(id)from to:(id)to
 {
-  v6 = a3;
-  v7 = a4;
+  fromCopy = from;
+  toCopy = to;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__18;
   v16 = __Block_byref_object_dispose__18;
   v17 = objc_opt_new();
-  v8 = [(MOMultiDeviceEngagementManager *)self eventsBySuggestionIdentifierFrom:v6 to:v7];
+  v8 = [(MOMultiDeviceEngagementManager *)self eventsBySuggestionIdentifierFrom:fromCopy to:toCopy];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = __97__MOMultiDeviceEngagementManager_uniqueRawEngagementSuggestionTypeBySuggestionIdentifierFrom_to___block_invoke;
@@ -182,17 +182,17 @@ void __97__MOMultiDeviceEngagementManager_uniqueRawEngagementSuggestionTypeBySug
   [*(*(*(a1 + 32) + 8) + 40) setObject:v7 forKeyedSubscript:v5];
 }
 
-- (id)goodnessScoreEngagementsBySuggestionIdentifierFrom:(id)a3 to:(id)a4
+- (id)goodnessScoreEngagementsBySuggestionIdentifierFrom:(id)from to:(id)to
 {
-  v6 = a3;
-  v7 = a4;
+  fromCopy = from;
+  toCopy = to;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__18;
   v16 = __Block_byref_object_dispose__18;
   v17 = objc_opt_new();
-  v8 = [(MOMultiDeviceEngagementManager *)self eventsBySuggestionIdentifierFrom:v6 to:v7];
+  v8 = [(MOMultiDeviceEngagementManager *)self eventsBySuggestionIdentifierFrom:fromCopy to:toCopy];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = __88__MOMultiDeviceEngagementManager_goodnessScoreEngagementsBySuggestionIdentifierFrom_to___block_invoke;
@@ -250,19 +250,19 @@ void __88__MOMultiDeviceEngagementManager_goodnessScoreEngagementsBySuggestionId
   }
 }
 
-- (id)eventsBySuggestionIdentifierFrom:(id)a3 to:(id)a4
+- (id)eventsBySuggestionIdentifierFrom:(id)from to:(id)to
 {
-  v6 = a3;
-  v7 = a4;
+  fromCopy = from;
+  toCopy = to;
   v27 = 0;
   v28 = &v27;
   v29 = 0x3032000000;
   v30 = __Block_byref_object_copy__18;
   v31 = __Block_byref_object_dispose__18;
   v32 = objc_opt_new();
-  v8 = [(MOMultiDeviceEngagementManager *)self mergedStreamPublisher];
+  mergedStreamPublisher = [(MOMultiDeviceEngagementManager *)self mergedStreamPublisher];
 
-  if (!v8)
+  if (!mergedStreamPublisher)
   {
     v20 = _mo_log_facility_get_os_log(&MOLogFacilityEngagement);
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -273,14 +273,14 @@ void __88__MOMultiDeviceEngagementManager_goodnessScoreEngagementsBySuggestionId
     goto LABEL_13;
   }
 
-  v9 = [(MOMultiDeviceEngagementManager *)self mergedStreamPublisher];
+  mergedStreamPublisher2 = [(MOMultiDeviceEngagementManager *)self mergedStreamPublisher];
   v24[0] = _NSConcreteStackBlock;
   v24[1] = 3221225472;
   v24[2] = __70__MOMultiDeviceEngagementManager_eventsBySuggestionIdentifierFrom_to___block_invoke;
   v24[3] = &unk_100338AB8;
-  v25 = v6;
-  v26 = v7;
-  v10 = [v9 filterWithIsIncluded:v24];
+  v25 = fromCopy;
+  v26 = toCopy;
+  v10 = [mergedStreamPublisher2 filterWithIsIncluded:v24];
 
   v11 = [v10 removeDuplicatesWithIsDuplicate:&__block_literal_global_10];
   v12 = objc_opt_new();
@@ -442,12 +442,12 @@ uint64_t __70__MOMultiDeviceEngagementManager_eventsBySuggestionIdentifierFrom_t
   return _objc_release_x1();
 }
 
-- (id)latestViewedEngagmentDateFrom:(id)a3 to:(id)a4
+- (id)latestViewedEngagmentDateFrom:(id)from to:(id)to
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MOMultiDeviceEngagementManager *)self eventsBySuggestionIdentifierFrom:v6 to:v7];
-  v9 = [(MOMultiDeviceEngagementManager *)self eventsLightBySuggestionIdentifierFrom:v6 to:v7];
+  fromCopy = from;
+  toCopy = to;
+  v8 = [(MOMultiDeviceEngagementManager *)self eventsBySuggestionIdentifierFrom:fromCopy to:toCopy];
+  v9 = [(MOMultiDeviceEngagementManager *)self eventsLightBySuggestionIdentifierFrom:fromCopy to:toCopy];
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -574,17 +574,17 @@ void __67__MOMultiDeviceEngagementManager_latestViewedEngagmentDateFrom_to___blo
   }
 }
 
-- (id)uniqueRawEngagementSuggestionTypeBySuggestionIdentifierBasedOnEngagementLightFrom:(id)a3 to:(id)a4
+- (id)uniqueRawEngagementSuggestionTypeBySuggestionIdentifierBasedOnEngagementLightFrom:(id)from to:(id)to
 {
-  v6 = a3;
-  v7 = a4;
+  fromCopy = from;
+  toCopy = to;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__18;
   v16 = __Block_byref_object_dispose__18;
   v17 = objc_opt_new();
-  v8 = [(MOMultiDeviceEngagementManager *)self eventsLightBySuggestionIdentifierFrom:v6 to:v7];
+  v8 = [(MOMultiDeviceEngagementManager *)self eventsLightBySuggestionIdentifierFrom:fromCopy to:toCopy];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = __119__MOMultiDeviceEngagementManager_uniqueRawEngagementSuggestionTypeBySuggestionIdentifierBasedOnEngagementLightFrom_to___block_invoke;
@@ -639,26 +639,26 @@ void __119__MOMultiDeviceEngagementManager_uniqueRawEngagementSuggestionTypeBySu
   [*(*(*(a1 + 32) + 8) + 40) setObject:v7 forKeyedSubscript:v5];
 }
 
-- (id)eventsLightBySuggestionIdentifierFrom:(id)a3 to:(id)a4
+- (id)eventsLightBySuggestionIdentifierFrom:(id)from to:(id)to
 {
-  v6 = a3;
-  v7 = a4;
+  fromCopy = from;
+  toCopy = to;
   v29 = 0;
   v30 = &v29;
   v31 = 0x3032000000;
   v32 = __Block_byref_object_copy__18;
   v33 = __Block_byref_object_dispose__18;
   v34 = objc_opt_new();
-  v8 = [(MOMultiDeviceEngagementManager *)self streamPublisherLight];
+  streamPublisherLight = [(MOMultiDeviceEngagementManager *)self streamPublisherLight];
   v26[0] = _NSConcreteStackBlock;
   v26[1] = 3221225472;
   v26[2] = __75__MOMultiDeviceEngagementManager_eventsLightBySuggestionIdentifierFrom_to___block_invoke;
   v26[3] = &unk_100338AB8;
-  v9 = v6;
+  v9 = fromCopy;
   v27 = v9;
-  v10 = v7;
+  v10 = toCopy;
   v28 = v10;
-  v11 = [v8 filterWithIsIncluded:v26];
+  v11 = [streamPublisherLight filterWithIsIncluded:v26];
 
   v12 = [v11 removeDuplicatesWithIsDuplicate:&__block_literal_global_20];
   v13 = objc_opt_new();
@@ -804,9 +804,9 @@ uint64_t __75__MOMultiDeviceEngagementManager_eventsLightBySuggestionIdentifierF
 
 - (void)init
 {
-  v3 = [a1 localizedDescription];
+  localizedDescription = [self localizedDescription];
   v4 = 138412290;
-  v5 = v3;
+  v5 = localizedDescription;
   _os_log_error_impl(&_mh_execute_header, a2, OS_LOG_TYPE_ERROR, "[MOMultiDeviceEngagementManager.init] Can't fetch remote devices for Engagement stream (error= %@). Setting mergedStreamPublisher to nil.", &v4, 0xCu);
 }
 

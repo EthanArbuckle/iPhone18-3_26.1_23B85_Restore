@@ -1,9 +1,9 @@
 @interface DBAnimationView
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3;
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key;
 - (NSArray)keysToAnimate;
-- (_TtC9DashBoard15DBAnimationView)initWithCoder:(id)a3;
-- (_TtC9DashBoard15DBAnimationView)initWithFrame:(CGRect)a3;
-- (void)setKeysToAnimate:(id)a3;
+- (_TtC9DashBoard15DBAnimationView)initWithCoder:(id)coder;
+- (_TtC9DashBoard15DBAnimationView)initWithFrame:(CGRect)frame;
+- (void)setKeysToAnimate:(id)animate;
 @end
 
 @implementation DBAnimationView
@@ -17,7 +17,7 @@
   return v2;
 }
 
-- (void)setKeysToAnimate:(id)a3
+- (void)setKeysToAnimate:(id)animate
 {
   v4 = sub_248383B10();
   v5 = OBJC_IVAR____TtC9DashBoard15DBAnimationView_keysToAnimate;
@@ -25,9 +25,9 @@
   *(self + v5) = v4;
 }
 
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key
 {
-  if (a3)
+  if (key)
   {
     v4 = sub_248383960();
     v6 = v5;
@@ -39,7 +39,7 @@
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   v8.value._countAndFlagsBits = v4;
   v8.value._object = v6;
   v9 = DBAnimationView._shouldAnimateProperty(withKey:)(v8);
@@ -47,12 +47,12 @@
   return v9;
 }
 
-- (_TtC9DashBoard15DBAnimationView)initWithFrame:(CGRect)a3
+- (_TtC9DashBoard15DBAnimationView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   ObjectType = swift_getObjectType();
   *(self + OBJC_IVAR____TtC9DashBoard15DBAnimationView_keysToAnimate) = MEMORY[0x277D84F90];
   v10.receiver = self;
@@ -60,14 +60,14 @@
   return [(DBAnimationView *)&v10 initWithFrame:x, y, width, height];
 }
 
-- (_TtC9DashBoard15DBAnimationView)initWithCoder:(id)a3
+- (_TtC9DashBoard15DBAnimationView)initWithCoder:(id)coder
 {
   ObjectType = swift_getObjectType();
   *(self + OBJC_IVAR____TtC9DashBoard15DBAnimationView_keysToAnimate) = MEMORY[0x277D84F90];
   v9.receiver = self;
   v9.super_class = ObjectType;
-  v6 = a3;
-  v7 = [(DBAnimationView *)&v9 initWithCoder:v6];
+  coderCopy = coder;
+  v7 = [(DBAnimationView *)&v9 initWithCoder:coderCopy];
 
   if (v7)
   {

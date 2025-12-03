@@ -1,6 +1,6 @@
 @interface MTRCameraAVStreamManagementClusterVideoStreamStruct
 - (MTRCameraAVStreamManagementClusterVideoStreamStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -59,47 +59,47 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRCameraAVStreamManagementClusterVideoStreamStruct);
-  v5 = [(MTRCameraAVStreamManagementClusterVideoStreamStruct *)self videoStreamID];
-  [(MTRCameraAVStreamManagementClusterVideoStreamStruct *)v4 setVideoStreamID:v5];
+  videoStreamID = [(MTRCameraAVStreamManagementClusterVideoStreamStruct *)self videoStreamID];
+  [(MTRCameraAVStreamManagementClusterVideoStreamStruct *)v4 setVideoStreamID:videoStreamID];
 
-  v6 = [(MTRCameraAVStreamManagementClusterVideoStreamStruct *)self streamUsage];
-  [(MTRCameraAVStreamManagementClusterVideoStreamStruct *)v4 setStreamUsage:v6];
+  streamUsage = [(MTRCameraAVStreamManagementClusterVideoStreamStruct *)self streamUsage];
+  [(MTRCameraAVStreamManagementClusterVideoStreamStruct *)v4 setStreamUsage:streamUsage];
 
-  v7 = [(MTRCameraAVStreamManagementClusterVideoStreamStruct *)self videoCodec];
-  [(MTRCameraAVStreamManagementClusterVideoStreamStruct *)v4 setVideoCodec:v7];
+  videoCodec = [(MTRCameraAVStreamManagementClusterVideoStreamStruct *)self videoCodec];
+  [(MTRCameraAVStreamManagementClusterVideoStreamStruct *)v4 setVideoCodec:videoCodec];
 
-  v8 = [(MTRCameraAVStreamManagementClusterVideoStreamStruct *)self minFrameRate];
-  [(MTRCameraAVStreamManagementClusterVideoStreamStruct *)v4 setMinFrameRate:v8];
+  minFrameRate = [(MTRCameraAVStreamManagementClusterVideoStreamStruct *)self minFrameRate];
+  [(MTRCameraAVStreamManagementClusterVideoStreamStruct *)v4 setMinFrameRate:minFrameRate];
 
-  v9 = [(MTRCameraAVStreamManagementClusterVideoStreamStruct *)self maxFrameRate];
-  [(MTRCameraAVStreamManagementClusterVideoStreamStruct *)v4 setMaxFrameRate:v9];
+  maxFrameRate = [(MTRCameraAVStreamManagementClusterVideoStreamStruct *)self maxFrameRate];
+  [(MTRCameraAVStreamManagementClusterVideoStreamStruct *)v4 setMaxFrameRate:maxFrameRate];
 
-  v10 = [(MTRCameraAVStreamManagementClusterVideoStreamStruct *)self minResolution];
-  [(MTRCameraAVStreamManagementClusterVideoStreamStruct *)v4 setMinResolution:v10];
+  minResolution = [(MTRCameraAVStreamManagementClusterVideoStreamStruct *)self minResolution];
+  [(MTRCameraAVStreamManagementClusterVideoStreamStruct *)v4 setMinResolution:minResolution];
 
-  v11 = [(MTRCameraAVStreamManagementClusterVideoStreamStruct *)self maxResolution];
-  [(MTRCameraAVStreamManagementClusterVideoStreamStruct *)v4 setMaxResolution:v11];
+  maxResolution = [(MTRCameraAVStreamManagementClusterVideoStreamStruct *)self maxResolution];
+  [(MTRCameraAVStreamManagementClusterVideoStreamStruct *)v4 setMaxResolution:maxResolution];
 
-  v12 = [(MTRCameraAVStreamManagementClusterVideoStreamStruct *)self minBitRate];
-  [(MTRCameraAVStreamManagementClusterVideoStreamStruct *)v4 setMinBitRate:v12];
+  minBitRate = [(MTRCameraAVStreamManagementClusterVideoStreamStruct *)self minBitRate];
+  [(MTRCameraAVStreamManagementClusterVideoStreamStruct *)v4 setMinBitRate:minBitRate];
 
-  v13 = [(MTRCameraAVStreamManagementClusterVideoStreamStruct *)self maxBitRate];
-  [(MTRCameraAVStreamManagementClusterVideoStreamStruct *)v4 setMaxBitRate:v13];
+  maxBitRate = [(MTRCameraAVStreamManagementClusterVideoStreamStruct *)self maxBitRate];
+  [(MTRCameraAVStreamManagementClusterVideoStreamStruct *)v4 setMaxBitRate:maxBitRate];
 
-  v14 = [(MTRCameraAVStreamManagementClusterVideoStreamStruct *)self keyFrameInterval];
-  [(MTRCameraAVStreamManagementClusterVideoStreamStruct *)v4 setKeyFrameInterval:v14];
+  keyFrameInterval = [(MTRCameraAVStreamManagementClusterVideoStreamStruct *)self keyFrameInterval];
+  [(MTRCameraAVStreamManagementClusterVideoStreamStruct *)v4 setKeyFrameInterval:keyFrameInterval];
 
-  v15 = [(MTRCameraAVStreamManagementClusterVideoStreamStruct *)self watermarkEnabled];
-  [(MTRCameraAVStreamManagementClusterVideoStreamStruct *)v4 setWatermarkEnabled:v15];
+  watermarkEnabled = [(MTRCameraAVStreamManagementClusterVideoStreamStruct *)self watermarkEnabled];
+  [(MTRCameraAVStreamManagementClusterVideoStreamStruct *)v4 setWatermarkEnabled:watermarkEnabled];
 
-  v16 = [(MTRCameraAVStreamManagementClusterVideoStreamStruct *)self osdEnabled];
-  [(MTRCameraAVStreamManagementClusterVideoStreamStruct *)v4 setOsdEnabled:v16];
+  osdEnabled = [(MTRCameraAVStreamManagementClusterVideoStreamStruct *)self osdEnabled];
+  [(MTRCameraAVStreamManagementClusterVideoStreamStruct *)v4 setOsdEnabled:osdEnabled];
 
-  v17 = [(MTRCameraAVStreamManagementClusterVideoStreamStruct *)self referenceCount];
-  [(MTRCameraAVStreamManagementClusterVideoStreamStruct *)v4 setReferenceCount:v17];
+  referenceCount = [(MTRCameraAVStreamManagementClusterVideoStreamStruct *)self referenceCount];
+  [(MTRCameraAVStreamManagementClusterVideoStreamStruct *)v4 setReferenceCount:referenceCount];
 
   return v4;
 }

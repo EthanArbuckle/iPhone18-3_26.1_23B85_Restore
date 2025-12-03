@@ -2,13 +2,13 @@
 + (id)sharedImageRenderer;
 - (UIKeyboardCandidateViewImageRenderer)init;
 - (UIView)viewForTraitCollection;
-- (id)drawGradientImage:(CGRect)a3 startPoint:(CGPoint)a4 endPoint:(CGPoint)a5 applyScale:(BOOL)a6;
-- (id)edgeMaskImageForRightSide:(BOOL)a3;
+- (id)drawGradientImage:(CGRect)image startPoint:(CGPoint)point endPoint:(CGPoint)endPoint applyScale:(BOOL)scale;
+- (id)edgeMaskImageForRightSide:(BOOL)side;
 - (id)extensionMaskImage;
-- (id)handwritingCellBackgroundImageForDarkKeyboard:(BOOL)a3 highlighted:(BOOL)a4;
-- (id)highlightedBarCellBackgroundImageWithColor:(id)a3 insets:(UIEdgeInsets)a4;
-- (id)pocketShadowImageForDarkKeyboard:(BOOL)a3 fadesToBottom:(BOOL)a4 drawShadow:(BOOL)a5 topPadding:(double)a6 bottomPadding:(double)a7 height:(double)a8;
-- (id)separatorImageWithColor:(id)a3 height:(double)a4;
+- (id)handwritingCellBackgroundImageForDarkKeyboard:(BOOL)keyboard highlighted:(BOOL)highlighted;
+- (id)highlightedBarCellBackgroundImageWithColor:(id)color insets:(UIEdgeInsets)insets;
+- (id)pocketShadowImageForDarkKeyboard:(BOOL)keyboard fadesToBottom:(BOOL)bottom drawShadow:(BOOL)shadow topPadding:(double)padding bottomPadding:(double)bottomPadding height:(double)height;
+- (id)separatorImageWithColor:(id)color height:(double)height;
 @end
 
 @implementation UIKeyboardCandidateViewImageRenderer
@@ -47,18 +47,18 @@ void __59__UIKeyboardCandidateViewImageRenderer_sharedImageRenderer__block_invok
   qword_1ED49EE08 = v0;
 }
 
-- (id)highlightedBarCellBackgroundImageWithColor:(id)a3 insets:(UIEdgeInsets)a4
+- (id)highlightedBarCellBackgroundImageWithColor:(id)color insets:(UIEdgeInsets)insets
 {
-  right = a4.right;
-  bottom = a4.bottom;
-  left = a4.left;
-  top = a4.top;
-  v9 = a3;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  colorCopy = color;
   v10 = MEMORY[0x1E696AEC0];
-  v11 = 257 * [v9 hash];
-  v12 = [(UIKeyboardCandidateViewImageRenderer *)self viewForTraitCollection];
-  v13 = [v12 traitCollection];
-  v14 = [v13 hash] + v11;
+  v11 = 257 * [colorCopy hash];
+  viewForTraitCollection = [(UIKeyboardCandidateViewImageRenderer *)self viewForTraitCollection];
+  traitCollection = [viewForTraitCollection traitCollection];
+  v14 = [traitCollection hash] + v11;
   v43.top = top;
   v43.left = left;
   v43.bottom = bottom;
@@ -71,8 +71,8 @@ void __59__UIKeyboardCandidateViewImageRenderer_sharedImageRenderer__block_invok
   v38 = 0x3032000000;
   v39 = __Block_byref_object_copy__118;
   v40 = __Block_byref_object_dispose__118;
-  v17 = [(UIKeyboardCandidateViewImageRenderer *)self imageCache];
-  v41 = [v17 objectForKey:v16];
+  imageCache = [(UIKeyboardCandidateViewImageRenderer *)self imageCache];
+  v41 = [imageCache objectForKey:v16];
 
   v18 = v37[5];
   if (v18)
@@ -82,12 +82,12 @@ void __59__UIKeyboardCandidateViewImageRenderer_sharedImageRenderer__block_invok
 
   else
   {
-    v20 = [(UIKeyboardCandidateViewImageRenderer *)self viewForTraitCollection];
-    v21 = [v20 traitCollection];
-    v22 = v21;
-    if (v21)
+    viewForTraitCollection2 = [(UIKeyboardCandidateViewImageRenderer *)self viewForTraitCollection];
+    traitCollection2 = [viewForTraitCollection2 traitCollection];
+    v22 = traitCollection2;
+    if (traitCollection2)
     {
-      v23 = v21;
+      v23 = traitCollection2;
     }
 
     else
@@ -107,8 +107,8 @@ void __59__UIKeyboardCandidateViewImageRenderer_sharedImageRenderer__block_invok
     v34 = bottom;
     v35 = right;
     v31 = &v36;
-    v28 = v9;
-    v29 = self;
+    v28 = colorCopy;
+    selfCopy = self;
     v30 = v16;
     [UITraitCollection _performWithCurrentTraitCollection:v25 usingBlock:v27];
     v19 = v37[5];
@@ -167,22 +167,22 @@ void __90__UIKeyboardCandidateViewImageRenderer_highlightedBarCellBackgroundImag
   [v18 setObject:*(*(*(a1 + 56) + 8) + 40) forKey:*(a1 + 48)];
 }
 
-- (id)separatorImageWithColor:(id)a3 height:(double)a4
+- (id)separatorImageWithColor:(id)color height:(double)height
 {
-  v6 = a3;
+  colorCopy = color;
   v7 = MEMORY[0x1E696AEC0];
-  v8 = 257 * [v6 hash];
-  v9 = [(UIKeyboardCandidateViewImageRenderer *)self viewForTraitCollection];
-  v10 = [v9 traitCollection];
-  v11 = [v7 stringWithFormat:@"SI_%lld_%g", objc_msgSend(v10, "hash") + v8, *&a4];
+  v8 = 257 * [colorCopy hash];
+  viewForTraitCollection = [(UIKeyboardCandidateViewImageRenderer *)self viewForTraitCollection];
+  traitCollection = [viewForTraitCollection traitCollection];
+  v11 = [v7 stringWithFormat:@"SI_%lld_%g", objc_msgSend(traitCollection, "hash") + v8, *&height];
 
-  v12 = [(UIKeyboardCandidateViewImageRenderer *)self imageCache];
-  v13 = [v12 objectForKey:v11];
+  imageCache = [(UIKeyboardCandidateViewImageRenderer *)self imageCache];
+  v13 = [imageCache objectForKey:v11];
 
   if (!v13)
   {
     v14 = UIKBScale();
-    _UIGraphicsBeginImageContextWithOptions(0, 0, 1.0, a4, v14);
+    _UIGraphicsBeginImageContextWithOptions(0, 0, 1.0, height, v14);
     ContextStack = GetContextStack(0);
     if (*ContextStack < 1)
     {
@@ -194,16 +194,16 @@ void __90__UIKeyboardCandidateViewImageRenderer_highlightedBarCellBackgroundImag
       v16 = ContextStack[3 * (*ContextStack - 1) + 1];
     }
 
-    CGContextSetFillColorWithColor(v16, [v6 CGColor]);
+    CGContextSetFillColorWithColor(v16, [colorCopy CGColor]);
     v21.origin.x = 0.0;
     v21.origin.y = 0.0;
     v21.size.width = 1.0;
-    v21.size.height = a4;
+    v21.size.height = height;
     CGContextFillRect(v16, v21);
     v13 = _UIGraphicsGetImageFromCurrentImageContext(0);
     UIGraphicsEndImageContext();
-    v17 = [(UIKeyboardCandidateViewImageRenderer *)self imageCache];
-    [v17 setObject:v13 forKey:v11];
+    imageCache2 = [(UIKeyboardCandidateViewImageRenderer *)self imageCache];
+    [imageCache2 setObject:v13 forKey:v11];
   }
 
   v18 = v13;
@@ -211,12 +211,12 @@ void __90__UIKeyboardCandidateViewImageRenderer_highlightedBarCellBackgroundImag
   return v18;
 }
 
-- (id)pocketShadowImageForDarkKeyboard:(BOOL)a3 fadesToBottom:(BOOL)a4 drawShadow:(BOOL)a5 topPadding:(double)a6 bottomPadding:(double)a7 height:(double)a8
+- (id)pocketShadowImageForDarkKeyboard:(BOOL)keyboard fadesToBottom:(BOOL)bottom drawShadow:(BOOL)shadow topPadding:(double)padding bottomPadding:(double)bottomPadding height:(double)height
 {
-  v8 = a5;
-  v9 = a4;
-  v13 = a3;
-  if (a4)
+  shadowCopy = shadow;
+  bottomCopy = bottom;
+  keyboardCopy = keyboard;
+  if (bottom)
   {
     v15 = 2;
   }
@@ -226,8 +226,8 @@ void __90__UIKeyboardCandidateViewImageRenderer_highlightedBarCellBackgroundImag
     v15 = 0;
   }
 
-  v16 = v15 | a3;
-  if (a5)
+  v16 = v15 | keyboard;
+  if (shadow)
   {
     v17 = 4;
   }
@@ -237,14 +237,14 @@ void __90__UIKeyboardCandidateViewImageRenderer_highlightedBarCellBackgroundImag
     v17 = 0;
   }
 
-  v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"PSI_%d_%g_%g_%g", v16 | v17, *&a6, *&a7, *&a8];
-  v19 = [(UIKeyboardCandidateViewImageRenderer *)self imageCache];
-  v20 = [v19 objectForKey:v18];
+  v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"PSI_%d_%g_%g_%g", v16 | v17, *&padding, *&bottomPadding, *&height];
+  imageCache = [(UIKeyboardCandidateViewImageRenderer *)self imageCache];
+  v20 = [imageCache objectForKey:v18];
 
   if (!v20)
   {
     v21 = 1.0;
-    if (v8)
+    if (shadowCopy)
     {
       v21 = 2.0;
       if ((UIKeyboardGetSafeDeviceIdiom() & 0xFFFFFFFFFFFFFFFBLL) != 1)
@@ -262,7 +262,7 @@ void __90__UIKeyboardCandidateViewImageRenderer_highlightedBarCellBackgroundImag
     }
 
     v22 = UIKBScale();
-    _UIGraphicsBeginImageContextWithOptions(0, 0, v21, a8, v22);
+    _UIGraphicsBeginImageContextWithOptions(0, 0, v21, height, v22);
     ContextStack = GetContextStack(0);
     if (*ContextStack < 1)
     {
@@ -274,115 +274,115 @@ void __90__UIKeyboardCandidateViewImageRenderer_highlightedBarCellBackgroundImag
       v24 = ContextStack[3 * (*ContextStack - 1) + 1];
     }
 
-    v25 = a8 - a6 - a7;
-    if (v9)
+    v25 = height - padding - bottomPadding;
+    if (bottomCopy)
     {
-      v26 = UIKBCreateFadeClipImage(0, 0, 0.0, a6, v21, a8, 0.0, v25 * 0.75 + a6, v21, v25 * 0.25, 1.0);
+      v26 = UIKBCreateFadeClipImage(0, 0, 0.0, padding, v21, height, 0.0, v25 * 0.75 + padding, v21, v25 * 0.25, 1.0);
       v49.origin.x = 0.0;
-      v49.origin.y = a6;
+      v49.origin.y = padding;
       v49.size.width = v21;
-      v49.size.height = a8;
+      v49.size.height = height;
       CGContextClipToMask(v24, v49, v26);
       v50.origin.x = 0.0;
-      v50.origin.y = a6;
+      v50.origin.y = padding;
       v50.size.width = v21;
-      v50.size.height = a8;
+      v50.size.height = height;
       CGContextClipToMask(v24, v50, v26);
       CGImageRelease(v26);
     }
 
-    if (v8)
+    if (shadowCopy)
     {
       CGContextSetAlpha(v24, 0.7);
-      if (v13)
+      if (keyboardCopy)
       {
         v27 = +[UIColor grayColor];
         v28 = [v27 colorWithAlphaComponent:0.05];
-        v29 = [v28 CGColor];
+        cGColor = [v28 CGColor];
 
         v30 = +[UIColor grayColor];
         v31 = [v30 colorWithAlphaComponent:0.11];
-        v32 = [v31 CGColor];
+        cGColor2 = [v31 CGColor];
 
         v33 = +[UIColor grayColor];
         v34 = [v33 colorWithAlphaComponent:0.31];
-        v35 = [v34 CGColor];
+        cGColor3 = [v34 CGColor];
       }
 
       else
       {
-        v29 = UIKBGetNamedColor(@"UIKBColorBlack_Alpha5");
-        v32 = UIKBGetNamedColor(@"UIKBColorBlack_Alpha11");
-        v35 = UIKBGetNamedColor(@"UIKBColorBlack_Alpha31");
+        cGColor = UIKBGetNamedColor(@"UIKBColorBlack_Alpha5");
+        cGColor2 = UIKBGetNamedColor(@"UIKBColorBlack_Alpha11");
+        cGColor3 = UIKBGetNamedColor(@"UIKBColorBlack_Alpha31");
       }
 
       v51.origin.x = 0.0;
-      v51.origin.y = a6;
+      v51.origin.y = padding;
       v51.size.width = v21;
-      v51.size.height = a8;
+      v51.size.height = height;
       v39 = CGRectGetMaxX(v51) - v21;
       v52.origin.x = 0.0;
-      v52.origin.y = a6;
+      v52.origin.y = padding;
       v52.size.width = v21;
-      v52.size.height = a8;
+      v52.size.height = height;
       MinY = CGRectGetMinY(v52);
-      CGContextSetFillColorWithColor(v24, v29);
+      CGContextSetFillColorWithColor(v24, cGColor);
       v53.origin.x = v39;
       v53.origin.y = MinY;
       v53.size.width = v21 / 3.0;
       v53.size.height = v25;
       CGContextFillRect(v24, v53);
       v54.origin.x = 0.0;
-      v54.origin.y = a6;
+      v54.origin.y = padding;
       v54.size.width = v21;
-      v54.size.height = a8;
+      v54.size.height = height;
       v41 = CGRectGetMaxX(v54) - (v21 + v21) / 3.0;
       v55.origin.x = 0.0;
-      v55.origin.y = a6;
+      v55.origin.y = padding;
       v55.size.width = v21;
-      v55.size.height = a8;
+      v55.size.height = height;
       v42 = CGRectGetMinY(v55);
-      CGContextSetFillColorWithColor(v24, v32);
+      CGContextSetFillColorWithColor(v24, cGColor2);
       v56.origin.x = v41;
       v56.origin.y = v42;
       v56.size.width = v21 / 3.0;
       v56.size.height = v25;
       CGContextFillRect(v24, v56);
       v57.origin.x = 0.0;
-      v57.origin.y = a6;
+      v57.origin.y = padding;
       v57.size.width = v21;
-      v57.size.height = a8;
+      v57.size.height = height;
       v43 = CGRectGetMaxX(v57) - v21 / 3.0;
       v58.origin.x = 0.0;
-      v58.origin.y = a6;
+      v58.origin.y = padding;
       v58.size.width = v21;
-      v58.size.height = a8;
+      v58.size.height = height;
       v44 = CGRectGetMinY(v58);
-      CGContextSetFillColorWithColor(v24, v35);
+      CGContextSetFillColorWithColor(v24, cGColor3);
       v21 = v21 / 3.0;
     }
 
     else
     {
-      if (v13)
+      if (keyboardCopy)
       {
         v36 = +[UIColor grayColor];
         v37 = [v36 colorWithAlphaComponent:0.3];
-        v38 = [v37 CGColor];
+        cGColor4 = [v37 CGColor];
       }
 
       else
       {
-        v38 = UIKBGetNamedColor(@"UIKBColorBlack_Alpha11");
+        cGColor4 = UIKBGetNamedColor(@"UIKBColorBlack_Alpha11");
       }
 
       v43 = 0.0;
       v59.origin.x = 0.0;
-      v59.origin.y = a6;
+      v59.origin.y = padding;
       v59.size.width = v21;
-      v59.size.height = a8;
+      v59.size.height = height;
       v44 = CGRectGetMinY(v59);
-      CGContextSetFillColorWithColor(v24, v38);
+      CGContextSetFillColorWithColor(v24, cGColor4);
     }
 
     v60.origin.x = v43;
@@ -392,8 +392,8 @@ void __90__UIKeyboardCandidateViewImageRenderer_highlightedBarCellBackgroundImag
     CGContextFillRect(v24, v60);
     v20 = _UIGraphicsGetImageFromCurrentImageContext(0);
     UIGraphicsEndImageContext();
-    v45 = [(UIKeyboardCandidateViewImageRenderer *)self imageCache];
-    [v45 setObject:v20 forKey:v18];
+    imageCache2 = [(UIKeyboardCandidateViewImageRenderer *)self imageCache];
+    [imageCache2 setObject:v20 forKey:v18];
   }
 
   v46 = v20;
@@ -401,11 +401,11 @@ void __90__UIKeyboardCandidateViewImageRenderer_highlightedBarCellBackgroundImag
   return v46;
 }
 
-- (id)handwritingCellBackgroundImageForDarkKeyboard:(BOOL)a3 highlighted:(BOOL)a4
+- (id)handwritingCellBackgroundImageForDarkKeyboard:(BOOL)keyboard highlighted:(BOOL)highlighted
 {
-  v4 = a4;
-  v5 = a3;
-  if (a4)
+  highlightedCopy = highlighted;
+  keyboardCopy = keyboard;
+  if (highlighted)
   {
     v7 = 2;
   }
@@ -415,9 +415,9 @@ void __90__UIKeyboardCandidateViewImageRenderer_highlightedBarCellBackgroundImag
     v7 = 0;
   }
 
-  v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"HWRCB_%d", v7 | a3];
-  v9 = [(UIKeyboardCandidateViewImageRenderer *)self imageCache];
-  v10 = [v9 objectForKey:v8];
+  keyboard = [MEMORY[0x1E696AEC0] stringWithFormat:@"HWRCB_%d", v7 | keyboard];
+  imageCache = [(UIKeyboardCandidateViewImageRenderer *)self imageCache];
+  v10 = [imageCache objectForKey:keyboard];
 
   if (v10)
   {
@@ -426,7 +426,7 @@ void __90__UIKeyboardCandidateViewImageRenderer_highlightedBarCellBackgroundImag
 
   else
   {
-    if (v5)
+    if (keyboardCopy)
     {
       v12 = 1;
     }
@@ -441,16 +441,16 @@ void __90__UIKeyboardCandidateViewImageRenderer_highlightedBarCellBackgroundImag
     v15 = [UIKBRenderingContext renderingContextForRenderConfig:v13];
     v16 = [(UIKBRenderFactory_Candidates *)v14 initWithRenderingContext:v15];
 
-    v17 = [(UIKBRenderFactory_Candidates *)v16 traitsForHWRCellSize:v4 highlighted:2.0, 42.0];
+    v17 = [(UIKBRenderFactory_Candidates *)v16 traitsForHWRCellSize:highlightedCopy highlighted:2.0, 42.0];
     v18 = UIKBScale();
     v19 = [UIKBRenderer rendererWithContext:0 withSize:0 withScale:3 opaque:UIKeyboardGetCurrentIdiom() renderFlags:2.0 assetIdiom:42.0, v18];
     [v19 setDisableInternalCaching:1];
     [v19 renderBackgroundTraits:v17];
-    v20 = [v19 renderedImage];
-    v21 = [v20 resizableImageWithCapInsets:1 resizingMode:{0.0, 0.0, 0.0, 1.0}];
+    renderedImage = [v19 renderedImage];
+    v21 = [renderedImage resizableImageWithCapInsets:1 resizingMode:{0.0, 0.0, 0.0, 1.0}];
 
-    v22 = [(UIKeyboardCandidateViewImageRenderer *)self imageCache];
-    [v22 setObject:v21 forKey:v8];
+    imageCache2 = [(UIKeyboardCandidateViewImageRenderer *)self imageCache];
+    [imageCache2 setObject:v21 forKey:keyboard];
 
     v11 = v21;
   }
@@ -461,14 +461,14 @@ void __90__UIKeyboardCandidateViewImageRenderer_highlightedBarCellBackgroundImag
 - (id)extensionMaskImage
 {
   v3 = [MEMORY[0x1E696AEC0] stringWithFormat:@"EXTM"];
-  v4 = [(UIKeyboardCandidateViewImageRenderer *)self imageCache];
-  v5 = [v4 objectForKey:v3];
+  imageCache = [(UIKeyboardCandidateViewImageRenderer *)self imageCache];
+  v5 = [imageCache objectForKey:v3];
 
   if (!v5)
   {
     v5 = [(UIKeyboardCandidateViewImageRenderer *)self drawGradientImage:0 startPoint:0.0 endPoint:0.0 applyScale:1.0, 80.0, 0.0, 0.0, 0.0, 80.0];
-    v6 = [(UIKeyboardCandidateViewImageRenderer *)self imageCache];
-    [v6 setObject:v5 forKey:v3];
+    imageCache2 = [(UIKeyboardCandidateViewImageRenderer *)self imageCache];
+    [imageCache2 setObject:v5 forKey:v3];
   }
 
   v7 = v5;
@@ -476,22 +476,22 @@ void __90__UIKeyboardCandidateViewImageRenderer_highlightedBarCellBackgroundImag
   return v7;
 }
 
-- (id)edgeMaskImageForRightSide:(BOOL)a3
+- (id)edgeMaskImageForRightSide:(BOOL)side
 {
-  v3 = a3;
+  sideCopy = side;
   v5 = @"Left";
-  if (a3)
+  if (side)
   {
     v5 = @"Right";
   }
 
   v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"SEP-%@", v5];
-  v7 = [(UIKeyboardCandidateViewImageRenderer *)self imageCache];
-  v8 = [v7 objectForKey:v6];
+  imageCache = [(UIKeyboardCandidateViewImageRenderer *)self imageCache];
+  v8 = [imageCache objectForKey:v6];
 
   if (!v8)
   {
-    if (v3)
+    if (sideCopy)
     {
       v9 = 20.0;
     }
@@ -501,7 +501,7 @@ void __90__UIKeyboardCandidateViewImageRenderer_highlightedBarCellBackgroundImag
       v9 = 0.0;
     }
 
-    if (v3)
+    if (sideCopy)
     {
       v10 = 0.0;
     }
@@ -512,8 +512,8 @@ void __90__UIKeyboardCandidateViewImageRenderer_highlightedBarCellBackgroundImag
     }
 
     v8 = [(UIKeyboardCandidateViewImageRenderer *)self drawGradientImage:1 startPoint:0.0 endPoint:0.0 applyScale:20.0, 1.0, v9, 0.0, v10, 0.0];
-    v11 = [(UIKeyboardCandidateViewImageRenderer *)self imageCache];
-    [v11 setObject:v8 forKey:v6];
+    imageCache2 = [(UIKeyboardCandidateViewImageRenderer *)self imageCache];
+    [imageCache2 setObject:v8 forKey:v6];
   }
 
   v12 = v8;
@@ -521,17 +521,17 @@ void __90__UIKeyboardCandidateViewImageRenderer_highlightedBarCellBackgroundImag
   return v12;
 }
 
-- (id)drawGradientImage:(CGRect)a3 startPoint:(CGPoint)a4 endPoint:(CGPoint)a5 applyScale:(BOOL)a6
+- (id)drawGradientImage:(CGRect)image startPoint:(CGPoint)point endPoint:(CGPoint)endPoint applyScale:(BOOL)scale
 {
-  v6 = a6;
-  endPoint = a5.y;
-  x = a5.x;
-  y = a4.y;
-  v9 = a4.x;
-  height = a3.size.height;
-  width = a3.size.width;
-  v12 = a3.origin.y;
-  v13 = a3.origin.x;
+  scaleCopy = scale;
+  endPoint = endPoint.y;
+  x = endPoint.x;
+  y = point.y;
+  v9 = point.x;
+  height = image.size.height;
+  width = image.size.width;
+  v12 = image.origin.y;
+  v13 = image.origin.x;
   v30 = *MEMORY[0x1E69E9840];
   if (!drawGradientImage_startPoint_endPoint_applyScale__colorspace)
   {
@@ -566,7 +566,7 @@ void __90__UIKeyboardCandidateViewImageRenderer_highlightedBarCellBackgroundImag
   Image = CGBitmapContextCreateImage(v17);
   CGContextRelease(v17);
   v21 = 1.0;
-  if (v6)
+  if (scaleCopy)
   {
     v21 = v14;
   }

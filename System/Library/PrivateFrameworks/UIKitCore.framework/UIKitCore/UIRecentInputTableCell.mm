@@ -1,14 +1,14 @@
 @interface UIRecentInputTableCell
-+ (id)backgroundColorForBlurEffectStyle:(int64_t)a3;
-+ (id)focusedTextColorForBlurEffectStyle:(int64_t)a3;
-+ (id)unfocusedTextColorForBlurEffectStyle:(int64_t)a3;
++ (id)backgroundColorForBlurEffectStyle:(int64_t)style;
++ (id)focusedTextColorForBlurEffectStyle:(int64_t)style;
++ (id)unfocusedTextColorForBlurEffectStyle:(int64_t)style;
 - (BOOL)_tvIsDarkMode;
 - (void)_updateAppearance;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
 - (void)layoutSubviews;
-- (void)setHighlighted:(BOOL)a3 animated:(BOOL)a4;
-- (void)setInputText:(id)a3 withBlurStyle:(int64_t)a4;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated;
+- (void)setInputText:(id)text withBlurStyle:(int64_t)style;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation UIRecentInputTableCell
@@ -18,18 +18,18 @@
   v5.receiver = self;
   v5.super_class = UIRecentInputTableCell;
   [(UITableViewCell *)&v5 layoutSubviews];
-  v3 = [(UIRecentInputTableCell *)self floatingLabel];
-  v4 = [(UIRecentInputTableCell *)self floatingContentView];
-  [v4 bounds];
-  [v3 setFrame:?];
+  floatingLabel = [(UIRecentInputTableCell *)self floatingLabel];
+  floatingContentView = [(UIRecentInputTableCell *)self floatingContentView];
+  [floatingContentView bounds];
+  [floatingLabel setFrame:?];
 }
 
-- (void)setInputText:(id)a3 withBlurStyle:(int64_t)a4
+- (void)setInputText:(id)text withBlurStyle:(int64_t)style
 {
-  v6 = a3;
-  v7 = [(UIRecentInputTableCell *)self floatingLabel];
+  textCopy = text;
+  floatingLabel = [(UIRecentInputTableCell *)self floatingLabel];
 
-  if (!v7)
+  if (!floatingLabel)
   {
     v8 = [_UIFloatingContentView alloc];
     v9 = *MEMORY[0x1E695F058];
@@ -39,44 +39,44 @@
     v13 = [(_UIFloatingContentView *)v8 initWithFrame:*MEMORY[0x1E695F058], v10, v11, v12];
     [(_UIFloatingContentView *)v13 setContentMotionRotation:0.0 translation:0.0698131701, 0.0, 4.0];
     [(UITableViewCell *)self setBackgroundView:v13];
-    [(UIRecentInputTableCell *)self setBlurEffectStyle:a4];
+    [(UIRecentInputTableCell *)self setBlurEffectStyle:style];
     v14 = [[UILabel alloc] initWithFrame:v9, v10, v11, v12];
     [(UIRecentInputTableCell *)self setFloatingLabel:v14];
 
     v15 = [off_1E70ECC18 preferredFontForTextStyle:@"UICTFontTextStyleHeadline"];
-    v16 = [(UIRecentInputTableCell *)self floatingLabel];
-    [v16 setFont:v15];
+    floatingLabel2 = [(UIRecentInputTableCell *)self floatingLabel];
+    [floatingLabel2 setFont:v15];
 
-    v17 = [(UIRecentInputTableCell *)self floatingLabel];
-    [v17 setTextAlignment:1];
+    floatingLabel3 = [(UIRecentInputTableCell *)self floatingLabel];
+    [floatingLabel3 setTextAlignment:1];
 
-    v18 = [(_UIFloatingContentView *)v13 contentView];
-    v19 = [(UIRecentInputTableCell *)self floatingLabel];
-    [v18 addSubview:v19];
+    contentView = [(_UIFloatingContentView *)v13 contentView];
+    floatingLabel4 = [(UIRecentInputTableCell *)self floatingLabel];
+    [contentView addSubview:floatingLabel4];
   }
 
-  v20 = [(UIRecentInputTableCell *)self floatingLabel];
-  [v20 setText:v6];
+  floatingLabel5 = [(UIRecentInputTableCell *)self floatingLabel];
+  [floatingLabel5 setText:textCopy];
 
   [(UIRecentInputTableCell *)self _updateAppearance];
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
   v18.receiver = self;
   v18.super_class = UIRecentInputTableCell;
-  v6 = a4;
-  v7 = a3;
-  [(UITableViewCell *)&v18 didUpdateFocusInContext:v7 withAnimationCoordinator:v6];
-  v8 = [(UIRecentInputTableCell *)self _tvIsDarkMode];
-  v9 = [v7 nextFocusedView];
+  coordinatorCopy = coordinator;
+  contextCopy = context;
+  [(UITableViewCell *)&v18 didUpdateFocusInContext:contextCopy withAnimationCoordinator:coordinatorCopy];
+  _tvIsDarkMode = [(UIRecentInputTableCell *)self _tvIsDarkMode];
+  nextFocusedView = [contextCopy nextFocusedView];
 
-  LODWORD(v7) = [v9 isDescendantOfView:self];
-  v10 = [(UIRecentInputTableCell *)self floatingContentView];
-  v11 = v10;
-  if (v7)
+  LODWORD(contextCopy) = [nextFocusedView isDescendantOfView:self];
+  floatingContentView = [(UIRecentInputTableCell *)self floatingContentView];
+  v11 = floatingContentView;
+  if (contextCopy)
   {
-    [v10 setControlState:8 animated:1];
+    [floatingContentView setControlState:8 animated:1];
 
     v12 = v17;
     v17[0] = MEMORY[0x1E69E9820];
@@ -86,7 +86,7 @@
 
   else
   {
-    [v10 setControlState:0 animated:1];
+    [floatingContentView setControlState:0 animated:1];
 
     v12 = &v15;
     v15 = MEMORY[0x1E69E9820];
@@ -96,7 +96,7 @@
 
   v12[2] = v13;
   v12[3] = &unk_1E70F32F0;
-  if (v8)
+  if (_tvIsDarkMode)
   {
     v14 = 2;
   }
@@ -108,7 +108,7 @@
 
   v12[4] = self;
   v12[5] = v14;
-  [v6 addCoordinatedAnimations:v15 completion:v16];
+  [coordinatorCopy addCoordinatedAnimations:v15 completion:v16];
 }
 
 void __75__UIRecentInputTableCell_didUpdateFocusInContext_withAnimationCoordinator___block_invoke(uint64_t a1)
@@ -127,44 +127,44 @@ void __75__UIRecentInputTableCell_didUpdateFocusInContext_withAnimationCoordinat
 
 - (void)_updateAppearance
 {
-  v3 = [(UIRecentInputTableCell *)self blurEffectStyle];
-  v4 = [(UITableViewCell *)self backgroundView];
+  blurEffectStyle = [(UIRecentInputTableCell *)self blurEffectStyle];
+  backgroundView = [(UITableViewCell *)self backgroundView];
 
-  if (v4)
+  if (backgroundView)
   {
-    v5 = [objc_opt_class() backgroundColorForBlurEffectStyle:v3];
-    v6 = [(UITableViewCell *)self backgroundView];
-    [v6 setBackgroundColor:v5 forState:0];
+    v5 = [objc_opt_class() backgroundColorForBlurEffectStyle:blurEffectStyle];
+    backgroundView2 = [(UITableViewCell *)self backgroundView];
+    [backgroundView2 setBackgroundColor:v5 forState:0];
   }
 
-  v7 = [(UIRecentInputTableCell *)self floatingLabel];
+  floatingLabel = [(UIRecentInputTableCell *)self floatingLabel];
 
-  if (v7)
+  if (floatingLabel)
   {
-    v8 = [(UIView *)self isFocused];
+    isFocused = [(UIView *)self isFocused];
     v9 = objc_opt_class();
-    if (v8)
+    if (isFocused)
     {
-      [v9 focusedTextColorForBlurEffectStyle:v3];
+      [v9 focusedTextColorForBlurEffectStyle:blurEffectStyle];
     }
 
     else
     {
-      [v9 unfocusedTextColorForBlurEffectStyle:v3];
+      [v9 unfocusedTextColorForBlurEffectStyle:blurEffectStyle];
     }
     v11 = ;
-    v10 = [(UIRecentInputTableCell *)self floatingLabel];
-    [v10 setTextColor:v11];
+    floatingLabel2 = [(UIRecentInputTableCell *)self floatingLabel];
+    [floatingLabel2 setTextColor:v11];
   }
 }
 
-- (void)setHighlighted:(BOOL)a3 animated:(BOOL)a4
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated
 {
-  v4 = a3;
+  highlightedCopy = highlighted;
   v8.receiver = self;
   v8.super_class = UIRecentInputTableCell;
-  [(UITableViewCell *)&v8 setHighlighted:a3 animated:a4];
-  if (v4)
+  [(UITableViewCell *)&v8 setHighlighted:highlighted animated:animated];
+  if (highlightedCopy)
   {
     v6 = 9;
   }
@@ -174,22 +174,22 @@ void __75__UIRecentInputTableCell_didUpdateFocusInContext_withAnimationCoordinat
     v6 = 0;
   }
 
-  v7 = [(UIRecentInputTableCell *)self floatingContentView];
-  [v7 setControlState:v6 animated:1];
+  floatingContentView = [(UIRecentInputTableCell *)self floatingContentView];
+  [floatingContentView setControlState:v6 animated:1];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v6.receiver = self;
   v6.super_class = UIRecentInputTableCell;
-  v4 = a3;
-  [(UITableViewCell *)&v6 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(UITableViewCell *)&v6 traitCollectionDidChange:changeCopy];
   v5 = [(UIView *)self traitCollection:v6.receiver];
 }
 
-+ (id)unfocusedTextColorForBlurEffectStyle:(int64_t)a3
++ (id)unfocusedTextColorForBlurEffectStyle:(int64_t)style
 {
-  if (a3 <= 0xD && ((1 << a3) & 0x2003) != 0 || a3 == 4002)
+  if (style <= 0xD && ((1 << style) & 0x2003) != 0 || style == 4002)
   {
     v3 = [UIColor colorWithWhite:0.0 alpha:0.6];
   }
@@ -202,9 +202,9 @@ void __75__UIRecentInputTableCell_didUpdateFocusInContext_withAnimationCoordinat
   return v3;
 }
 
-+ (id)focusedTextColorForBlurEffectStyle:(int64_t)a3
++ (id)focusedTextColorForBlurEffectStyle:(int64_t)style
 {
-  if (a3 <= 0xD && ((1 << a3) & 0x2003) != 0 || a3 == 4002)
+  if (style <= 0xD && ((1 << style) & 0x2003) != 0 || style == 4002)
   {
     v3 = [UIColor colorWithWhite:0.0 alpha:0.6];
   }
@@ -217,10 +217,10 @@ void __75__UIRecentInputTableCell_didUpdateFocusInContext_withAnimationCoordinat
   return v3;
 }
 
-+ (id)backgroundColorForBlurEffectStyle:(int64_t)a3
++ (id)backgroundColorForBlurEffectStyle:(int64_t)style
 {
   v5 = 0.0;
-  if ((a3 > 0xD || ((1 << a3) & 0x2003) == 0) && a3 != 4002)
+  if ((style > 0xD || ((1 << style) & 0x2003) == 0) && style != 4002)
   {
     v5 = 1.0;
   }
@@ -232,13 +232,13 @@ void __75__UIRecentInputTableCell_didUpdateFocusInContext_withAnimationCoordinat
 
 - (BOOL)_tvIsDarkMode
 {
-  v3 = [(UIRecentInputTableCell *)self textInputTraits];
-  v4 = [v3 keyboardAppearance];
+  textInputTraits = [(UIRecentInputTableCell *)self textInputTraits];
+  keyboardAppearance = [textInputTraits keyboardAppearance];
 
-  v5 = [(UIView *)self traitCollection];
-  v6 = [v5 userInterfaceStyle];
+  traitCollection = [(UIView *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  return v6 == 2 || v6 == 1000 || v4 == 1;
+  return userInterfaceStyle == 2 || userInterfaceStyle == 1000 || keyboardAppearance == 1;
 }
 
 @end

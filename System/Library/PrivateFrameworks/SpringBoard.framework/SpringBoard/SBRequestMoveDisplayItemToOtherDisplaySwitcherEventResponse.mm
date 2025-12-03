@@ -1,23 +1,23 @@
 @interface SBRequestMoveDisplayItemToOtherDisplaySwitcherEventResponse
-- (SBRequestMoveDisplayItemToOtherDisplaySwitcherEventResponse)initWithDisplayItem:(id)a3;
+- (SBRequestMoveDisplayItemToOtherDisplaySwitcherEventResponse)initWithDisplayItem:(id)item;
 @end
 
 @implementation SBRequestMoveDisplayItemToOtherDisplaySwitcherEventResponse
 
-- (SBRequestMoveDisplayItemToOtherDisplaySwitcherEventResponse)initWithDisplayItem:(id)a3
+- (SBRequestMoveDisplayItemToOtherDisplaySwitcherEventResponse)initWithDisplayItem:(id)item
 {
-  v6 = a3;
+  itemCopy = item;
   v9.receiver = self;
   v9.super_class = SBRequestMoveDisplayItemToOtherDisplaySwitcherEventResponse;
   v7 = [(SBChainableModifierEventResponse *)&v9 init];
   if (v7)
   {
-    if (!v6)
+    if (!itemCopy)
     {
       [(SBRequestMoveDisplayItemToOtherDisplaySwitcherEventResponse *)a2 initWithDisplayItem:v7];
     }
 
-    objc_storeStrong(&v7->_displayItem, a3);
+    objc_storeStrong(&v7->_displayItem, item);
   }
 
   return v7;

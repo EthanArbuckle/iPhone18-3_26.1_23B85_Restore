@@ -1,13 +1,13 @@
 @interface PXRecipient
-+ (id)_contactForAddress:(id)a3 recipientKind:(int64_t)a4;
++ (id)_contactForAddress:(id)address recipientKind:(int64_t)kind;
 + (id)new;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (PXRecipient)init;
-- (PXRecipient)initWithContact:(id)a3 address:(id)a4 nameComponents:(id)a5 recipientKind:(int64_t)a6;
-- (PXRecipient)initWithEmailAddress:(id)a3 phoneNumber:(id)a4 nameComponents:(id)a5;
+- (PXRecipient)initWithContact:(id)contact address:(id)address nameComponents:(id)components recipientKind:(int64_t)kind;
+- (PXRecipient)initWithEmailAddress:(id)address phoneNumber:(id)number nameComponents:(id)components;
 - (unint64_t)hash;
-- (void)px_requestImageWithTargetSize:(CGSize)a3 displayScale:(double)a4 isRTL:(BOOL)a5 resultHandler:(id)a6;
+- (void)px_requestImageWithTargetSize:(CGSize)size displayScale:(double)scale isRTL:(BOOL)l resultHandler:(id)handler;
 @end
 
 @implementation PXRecipient
@@ -15,39 +15,39 @@
 - (NSString)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(PXRecipient *)self localizedName];
-  v5 = [(PXRecipient *)self allEmails];
-  v6 = [(PXRecipient *)self allPhones];
-  v7 = [(PXRecipient *)self suggestedTransport];
-  v8 = [v3 stringWithFormat:@"localizedName %@ emails %@ phones %@ suggestedTransport %@", v4, v5, v6, v7];
+  localizedName = [(PXRecipient *)self localizedName];
+  allEmails = [(PXRecipient *)self allEmails];
+  allPhones = [(PXRecipient *)self allPhones];
+  suggestedTransport = [(PXRecipient *)self suggestedTransport];
+  v8 = [v3 stringWithFormat:@"localizedName %@ emails %@ phones %@ suggestedTransport %@", localizedName, allEmails, allPhones, suggestedTransport];
 
   return v8;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(PXRecipient *)self firstName];
-  v4 = [v3 hash];
-  v5 = [(PXRecipient *)self lastName];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(PXRecipient *)self allPhones];
-  v8 = [v7 hash];
-  v9 = [(PXRecipient *)self allEmails];
-  v10 = v8 ^ [v9 hash];
+  firstName = [(PXRecipient *)self firstName];
+  v4 = [firstName hash];
+  lastName = [(PXRecipient *)self lastName];
+  v6 = [lastName hash] ^ v4;
+  allPhones = [(PXRecipient *)self allPhones];
+  v8 = [allPhones hash];
+  allEmails = [(PXRecipient *)self allEmails];
+  v10 = v8 ^ [allEmails hash];
 
   return v6 ^ v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(PXRecipient *)self firstName];
-    v7 = [v5 firstName];
-    if (v6 != v7 && ![v6 isEqualToString:v7])
+    v5 = equalCopy;
+    firstName = [(PXRecipient *)self firstName];
+    firstName2 = [v5 firstName];
+    if (firstName != firstName2 && ![firstName isEqualToString:firstName2])
     {
       v14 = 0;
 LABEL_21:
@@ -55,9 +55,9 @@ LABEL_21:
       goto LABEL_22;
     }
 
-    v8 = [(PXRecipient *)self lastName];
-    v9 = [v5 lastName];
-    if (v8 != v9 && ![v8 isEqualToString:v9])
+    lastName = [(PXRecipient *)self lastName];
+    lastName2 = [v5 lastName];
+    if (lastName != lastName2 && ![lastName isEqualToString:lastName2])
     {
       v14 = 0;
 LABEL_20:
@@ -65,19 +65,19 @@ LABEL_20:
       goto LABEL_21;
     }
 
-    v10 = [(PXRecipient *)self allPhones];
-    v11 = [v5 allPhones];
-    v12 = v11;
-    if (v10 == v11)
+    allPhones = [(PXRecipient *)self allPhones];
+    allPhones2 = [v5 allPhones];
+    v12 = allPhones2;
+    if (allPhones == allPhones2)
     {
-      v25 = v11;
+      v25 = allPhones2;
     }
 
     else
     {
-      v13 = [(PXRecipient *)self allPhones];
-      v24 = [v5 allPhones];
-      if (![v13 isEqualToSet:?])
+      allPhones3 = [(PXRecipient *)self allPhones];
+      allPhones4 = [v5 allPhones];
+      if (![allPhones3 isEqualToSet:?])
       {
         v14 = 0;
 LABEL_18:
@@ -86,14 +86,14 @@ LABEL_19:
         goto LABEL_20;
       }
 
-      v23 = v13;
+      v23 = allPhones3;
       v25 = v12;
     }
 
-    v15 = [(PXRecipient *)self allEmails];
-    v16 = [v5 allEmails];
-    v17 = v16;
-    if (v15 == v16)
+    allEmails = [(PXRecipient *)self allEmails];
+    allEmails2 = [v5 allEmails];
+    v17 = allEmails2;
+    if (allEmails == allEmails2)
     {
 
       v14 = 1;
@@ -102,18 +102,18 @@ LABEL_19:
     else
     {
       [(PXRecipient *)self allEmails];
-      v18 = v21 = v10;
+      v18 = v21 = allPhones;
       [v5 allEmails];
-      v19 = v22 = v8;
+      v19 = v22 = lastName;
       v14 = [v18 isEqualToSet:v19];
 
-      v8 = v22;
-      v10 = v21;
+      lastName = v22;
+      allPhones = v21;
     }
 
     v12 = v25;
-    v13 = v23;
-    if (v10 == v25)
+    allPhones3 = v23;
+    if (allPhones == v25)
     {
       goto LABEL_19;
     }
@@ -127,16 +127,16 @@ LABEL_22:
   return v14;
 }
 
-- (PXRecipient)initWithContact:(id)a3 address:(id)a4 nameComponents:(id)a5 recipientKind:(int64_t)a6
+- (PXRecipient)initWithContact:(id)contact address:(id)address nameComponents:(id)components recipientKind:(int64_t)kind
 {
   v121 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  if (!(v11 | v12))
+  contactCopy = contact;
+  addressCopy = address;
+  componentsCopy = components;
+  if (!(contactCopy | addressCopy))
   {
-    v92 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v92 handleFailureInMethod:a2 object:self file:@"PXRecipient.m" lineNumber:118 description:{@"Invalid parameter not satisfying: %@", @"providedContact != nil || providedAddress != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXRecipient.m" lineNumber:118 description:{@"Invalid parameter not satisfying: %@", @"providedContact != nil || providedAddress != nil"}];
   }
 
   v112.receiver = self;
@@ -144,20 +144,20 @@ LABEL_22:
   v14 = [(PXRecipient *)&v112 init];
   if (v14)
   {
-    v15 = v11;
+    v15 = contactCopy;
     v94 = v15;
-    if (v11 || ([objc_opt_class() _contactForAddress:v12 recipientKind:a6], (v15 = objc_claimAutoreleasedReturnValue()) != 0))
+    if (contactCopy || ([objc_opt_class() _contactForAddress:addressCopy recipientKind:kind], (v15 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       objc_storeStrong(&v14->_contact, v15);
       v16 = MEMORY[0x1E696ADF0];
       v17 = v15;
       v18 = objc_alloc_init(v16);
-      v19 = [v17 givenName];
-      [v18 setGivenName:v19];
+      givenName = [v17 givenName];
+      [v18 setGivenName:givenName];
 
-      v20 = [v17 familyName];
+      familyName = [v17 familyName];
 
-      [v18 setFamilyName:v20];
+      [v18 setFamilyName:familyName];
       v21 = [MEMORY[0x1E696ADF8] localizedStringFromPersonNameComponents:v18 style:0 options:0];
 
       v22 = [v21 copy];
@@ -171,34 +171,34 @@ LABEL_22:
 
       else
       {
-        v24 = [v12 copy];
+        v24 = [addressCopy copy];
       }
 
       v25 = v14->_localizedName;
       v14->_localizedName = v24;
 
-      v26 = [v17 givenName];
+      givenName2 = [v17 givenName];
       firstName = v14->_firstName;
-      v14->_firstName = v26;
+      v14->_firstName = givenName2;
 
-      v28 = [v17 familyName];
+      familyName2 = [v17 familyName];
       lastName = v14->_lastName;
-      v14->_lastName = v28;
+      v14->_lastName = familyName2;
 
       v30 = objc_alloc_init(MEMORY[0x1E695DF70]);
       v101 = [MEMORY[0x1E695DFA8] set];
       v103 = v14;
-      v96 = a6;
-      v97 = v13;
+      kindCopy = kind;
+      v97 = componentsCopy;
       v95 = v17;
       if ([v17 isKeyAvailable:*MEMORY[0x1E695C208]])
       {
-        v31 = [v17 emailAddresses];
+        emailAddresses = [v17 emailAddresses];
         v108 = 0u;
         v109 = 0u;
         v110 = 0u;
         v111 = 0u;
-        v32 = [v31 countByEnumeratingWithState:&v108 objects:v120 count:16];
+        v32 = [emailAddresses countByEnumeratingWithState:&v108 objects:v120 count:16];
         if (!v32)
         {
           goto LABEL_24;
@@ -213,17 +213,17 @@ LABEL_22:
           {
             if (*v109 != v34)
             {
-              objc_enumerationMutation(v31);
+              objc_enumerationMutation(emailAddresses);
             }
 
-            v36 = [*(*(&v108 + 1) + 8 * v35) value];
-            v37 = [PXRecipientTransportUtilities px_IsValidEmailAddress:v36];
+            value = [*(*(&v108 + 1) + 8 * v35) value];
+            v37 = [PXRecipientTransportUtilities px_IsValidEmailAddress:value];
             v38 = v30;
             if (v37)
             {
-              if (v12)
+              if (addressCopy)
               {
-                v39 = [PXRecipientTransportUtilities px_IsEmailAddress:v36 equalToEmailAddress:v12];
+                v39 = [PXRecipientTransportUtilities px_IsEmailAddress:value equalToEmailAddress:addressCopy];
                 v38 = v101;
                 if (!v39)
                 {
@@ -231,7 +231,7 @@ LABEL_22:
                 }
 
 LABEL_18:
-                v40 = [v36 copy];
+                v40 = [value copy];
                 emailAddressString = v103->_emailAddressString;
                 v103->_emailAddressString = v40;
 
@@ -247,20 +247,20 @@ LABEL_18:
             }
 
 LABEL_19:
-            [v38 addObject:v36];
+            [v38 addObject:value];
 
             ++v35;
           }
 
           while (v33 != v35);
-          v42 = [v31 countByEnumeratingWithState:&v108 objects:v120 count:16];
+          v42 = [emailAddresses countByEnumeratingWithState:&v108 objects:v120 count:16];
           v33 = v42;
           if (!v42)
           {
 LABEL_24:
 
             v14 = v103;
-            v13 = v97;
+            componentsCopy = v97;
             v17 = v95;
             break;
           }
@@ -279,14 +279,14 @@ LABEL_24:
       }
 
       v98 = v30;
-      v45 = [v17 phoneNumbers];
-      v93 = v12;
-      v46 = [MEMORY[0x1E695CF50] phoneNumberWithStringValue:v12];
+      phoneNumbers = [v17 phoneNumbers];
+      v93 = addressCopy;
+      v46 = [MEMORY[0x1E695CF50] phoneNumberWithStringValue:addressCopy];
       v104 = 0u;
       v105 = 0u;
       v106 = 0u;
       v107 = 0u;
-      v47 = v45;
+      v47 = phoneNumbers;
       v48 = [v47 countByEnumeratingWithState:&v104 objects:v119 count:16];
       if (!v48)
       {
@@ -304,15 +304,15 @@ LABEL_28:
           objc_enumerationMutation(v47);
         }
 
-        v52 = [*(*(&v104 + 1) + 8 * v51) value];
-        v53 = [v52 formattedStringValue];
-        v54 = [PXRecipientTransportUtilities px_validPhoneNumberFromString:v53];
+        value2 = [*(*(&v104 + 1) + 8 * v51) value];
+        formattedStringValue = [value2 formattedStringValue];
+        v54 = [PXRecipientTransportUtilities px_validPhoneNumberFromString:formattedStringValue];
         v55 = v54;
         if (!v54)
         {
-          if (v53)
+          if (formattedStringValue)
           {
-            [v98 addObject:v53];
+            [v98 addObject:formattedStringValue];
           }
 
           goto LABEL_43;
@@ -332,10 +332,10 @@ LABEL_39:
         }
 
         [v100 addObject:v55];
-        v60 = [v52 unformattedInternationalStringValue];
-        if (v60)
+        unformattedInternationalStringValue = [value2 unformattedInternationalStringValue];
+        if (unformattedInternationalStringValue)
         {
-          [v99 addObject:v60];
+          [v99 addObject:unformattedInternationalStringValue];
         }
 
 LABEL_43:
@@ -346,9 +346,9 @@ LABEL_43:
           {
 LABEL_45:
 
-            v12 = v93;
-            a6 = v96;
-            v13 = v97;
+            addressCopy = v93;
+            kind = kindCopy;
+            componentsCopy = v97;
             v14 = v103;
             v17 = v95;
             v30 = v98;
@@ -380,17 +380,17 @@ LABEL_47:
       goto LABEL_39;
     }
 
-    if (v13)
+    if (componentsCopy)
     {
       v72 = objc_alloc_init(MEMORY[0x1E696ADF8]);
       [v72 setStyle:0];
-      v73 = [v72 stringFromPersonNameComponents:v13];
+      v73 = [v72 stringFromPersonNameComponents:componentsCopy];
       v74 = v14->_localizedName;
       v14->_localizedName = v73;
     }
 
-    v75 = [PXRecipientTransportUtilities px_IsValidEmailAddress:v12];
-    v76 = [PXRecipientTransportUtilities px_validPhoneNumberFromString:v12];
+    v75 = [PXRecipientTransportUtilities px_IsValidEmailAddress:addressCopy];
+    v76 = [PXRecipientTransportUtilities px_validPhoneNumberFromString:addressCopy];
     if (v76)
     {
       v30 = v76;
@@ -410,10 +410,10 @@ LABEL_47:
 
       objc_storeStrong(&v14->_localizedName, v81);
       v101 = [MEMORY[0x1E695CF50] phoneNumberWithStringValue:v30];
-      v82 = [v101 unformattedInternationalStringValue];
-      if (v82)
+      unformattedInternationalStringValue2 = [v101 unformattedInternationalStringValue];
+      if (unformattedInternationalStringValue2)
       {
-        v83 = [MEMORY[0x1E695DFD8] setWithObject:v82];
+        v83 = [MEMORY[0x1E695DFD8] setWithObject:unformattedInternationalStringValue2];
         v84 = v14->_unformattedAllPhones;
         v14->_unformattedAllPhones = v83;
       }
@@ -424,11 +424,11 @@ LABEL_47:
 
     if (v75)
     {
-      v86 = [MEMORY[0x1E695DFD8] setWithObject:v12];
+      v86 = [MEMORY[0x1E695DFD8] setWithObject:addressCopy];
       v87 = v14->_allEmails;
       v14->_allEmails = v86;
 
-      v88 = [v12 copy];
+      v88 = [addressCopy copy];
       v89 = v14->_emailAddressString;
       v14->_emailAddressString = v88;
 
@@ -470,13 +470,13 @@ LABEL_48:
           *buf = 138412802;
           v114 = v94;
           v115 = 2112;
-          v116 = v12;
+          v116 = addressCopy;
           v117 = 2048;
-          v118 = a6;
+          kindCopy2 = kind;
           _os_log_impl(&dword_1A3C1C000, v85, OS_LOG_TYPE_ERROR, "No valid email address or phone number for the provided contact: %@, address: %@, kind: %ld", buf, 0x20u);
         }
 
-        v68 = [v12 copy];
+        v68 = [addressCopy copy];
         v69 = 88;
         goto LABEL_53;
       }
@@ -496,46 +496,46 @@ LABEL_53:
   return v14;
 }
 
-- (PXRecipient)initWithEmailAddress:(id)a3 phoneNumber:(id)a4 nameComponents:(id)a5
+- (PXRecipient)initWithEmailAddress:(id)address phoneNumber:(id)number nameComponents:(id)components
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a3;
-  if ([v11 length])
+  numberCopy = number;
+  componentsCopy = components;
+  addressCopy = address;
+  if ([addressCopy length])
   {
     v12 = 1;
-    v13 = v11;
+    v13 = addressCopy;
   }
 
   else
   {
-    if (![v9 length])
+    if (![numberCopy length])
     {
-      v16 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v16 handleFailureInMethod:a2 object:self file:@"PXRecipient.m" lineNumber:111 description:{@"Invalid parameter not satisfying: %@", @"hasEmailAddress || (phoneNumber.length > 0)"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXRecipient.m" lineNumber:111 description:{@"Invalid parameter not satisfying: %@", @"hasEmailAddress || (phoneNumber.length > 0)"}];
     }
 
     v12 = 2;
-    v13 = v9;
+    v13 = numberCopy;
   }
 
-  v14 = [(PXRecipient *)self initWithContact:0 address:v13 nameComponents:v10 recipientKind:v12];
+  v14 = [(PXRecipient *)self initWithContact:0 address:v13 nameComponents:componentsCopy recipientKind:v12];
 
   return v14;
 }
 
 - (PXRecipient)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXRecipient.m" lineNumber:98 description:{@"%s is not available as initializer", "-[PXRecipient init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXRecipient.m" lineNumber:98 description:{@"%s is not available as initializer", "-[PXRecipient init]"}];
 
   abort();
 }
 
-+ (id)_contactForAddress:(id)a3 recipientKind:(int64_t)a4
++ (id)_contactForAddress:(id)address recipientKind:(int64_t)kind
 {
   v28[3] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  addressCopy = address;
   if (([MEMORY[0x1E695CE18] authorizationStatusForEntityType:0] - 3) > 0xFFFFFFFFFFFFFFFDLL)
   {
     v6 = 0;
@@ -543,30 +543,30 @@ LABEL_53:
   }
 
   v6 = +[PXPeopleUtilities sharedContactStore];
-  if (!a4)
+  if (!kind)
   {
-    a4 = [PXRecipientTransportUtilities px_recipientKindFromString:v5];
+    kind = [PXRecipientTransportUtilities px_recipientKindFromString:addressCopy];
   }
 
-  if (a4 == 1)
+  if (kind == 1)
   {
-    v8 = [MEMORY[0x1E695CD58] predicateForContactsMatchingEmailAddress:v5];
+    v8 = [MEMORY[0x1E695CD58] predicateForContactsMatchingEmailAddress:addressCopy];
     if (v8)
     {
       goto LABEL_11;
     }
 
 LABEL_9:
-    v9 = 0;
+    firstObject = 0;
     goto LABEL_19;
   }
 
-  if (a4 != 2)
+  if (kind != 2)
   {
     goto LABEL_9;
   }
 
-  v7 = [MEMORY[0x1E695CF50] phoneNumberWithStringValue:v5];
+  v7 = [MEMORY[0x1E695CF50] phoneNumberWithStringValue:addressCopy];
   v8 = [MEMORY[0x1E695CD58] predicateForContactsMatchingPhoneNumber:v7];
 
   if (!v8)
@@ -615,81 +615,81 @@ LABEL_11:
     }
   }
 
-  v9 = [v18 firstObject];
+  firstObject = [v18 firstObject];
 
 LABEL_19:
 
-  return v9;
+  return firstObject;
 }
 
 + (id)new
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"PXRecipient.m" lineNumber:102 description:{@"%s is not available as initializer", "+[PXRecipient new]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXRecipient.m" lineNumber:102 description:{@"%s is not available as initializer", "+[PXRecipient new]"}];
 
   abort();
 }
 
-- (void)px_requestImageWithTargetSize:(CGSize)a3 displayScale:(double)a4 isRTL:(BOOL)a5 resultHandler:(id)a6
+- (void)px_requestImageWithTargetSize:(CGSize)size displayScale:(double)scale isRTL:(BOOL)l resultHandler:(id)handler
 {
-  v6 = a5;
-  height = a3.height;
-  width = a3.width;
-  v12 = a6;
+  lCopy = l;
+  height = size.height;
+  width = size.width;
+  handlerCopy = handler;
   if (width == *MEMORY[0x1E695F060] && height == *(MEMORY[0x1E695F060] + 8))
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"PXRecipient+PXFaceTileImageCombinerItem.m" lineNumber:20 description:{@"Invalid parameter not satisfying: %@", @"!CGSizeEqualToSize(targetSize, CGSizeZero)"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXRecipient+PXFaceTileImageCombinerItem.m" lineNumber:20 description:{@"Invalid parameter not satisfying: %@", @"!CGSizeEqualToSize(targetSize, CGSizeZero)"}];
   }
 
-  if (a4 <= 0.0)
+  if (scale <= 0.0)
   {
-    v22 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v22 handleFailureInMethod:a2 object:self file:@"PXRecipient+PXFaceTileImageCombinerItem.m" lineNumber:21 description:{@"Invalid parameter not satisfying: %@", @"displayScale > 0"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXRecipient+PXFaceTileImageCombinerItem.m" lineNumber:21 description:{@"Invalid parameter not satisfying: %@", @"displayScale > 0"}];
 
-    if (v12)
+    if (handlerCopy)
     {
       goto LABEL_8;
     }
   }
 
-  else if (v12)
+  else if (handlerCopy)
   {
     goto LABEL_8;
   }
 
-  v23 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v23 handleFailureInMethod:a2 object:self file:@"PXRecipient+PXFaceTileImageCombinerItem.m" lineNumber:22 description:{@"Invalid parameter not satisfying: %@", @"resultHandler"}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"PXRecipient+PXFaceTileImageCombinerItem.m" lineNumber:22 description:{@"Invalid parameter not satisfying: %@", @"resultHandler"}];
 
 LABEL_8:
-  v14 = [(PXRecipient *)self suggestedTransport];
-  v15 = [v14 addressKind];
-  if (v15 == 2)
+  suggestedTransport = [(PXRecipient *)self suggestedTransport];
+  addressKind = [suggestedTransport addressKind];
+  if (addressKind == 2)
   {
-    v17 = [v14 address];
+    address = [suggestedTransport address];
 LABEL_13:
-    v16 = 0;
+    address2 = 0;
     goto LABEL_14;
   }
 
-  if (v15 != 1)
+  if (addressKind != 1)
   {
-    v17 = 0;
+    address = 0;
     goto LABEL_13;
   }
 
-  v16 = [v14 address];
-  v17 = 0;
+  address2 = [suggestedTransport address];
+  address = 0;
 LABEL_14:
-  v18 = [(PXRecipient *)self firstName];
-  v19 = [(PXRecipient *)self lastName];
+  firstName = [(PXRecipient *)self firstName];
+  lastName = [(PXRecipient *)self lastName];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __107__PXRecipient_PXFaceTileImageCombinerItem__px_requestImageWithTargetSize_displayScale_isRTL_resultHandler___block_invoke;
   v24[3] = &unk_1E774B7B8;
-  v25 = v12;
-  v20 = v12;
-  [PXActivityUtilities requestPersonImageWithTargetSize:v6 displayScale:v16 isRTL:v17 matchingEmail:v18 orPhone:v19 withFirstName:1 lastName:width prefersPhotosImage:height withCompletion:a4, v24];
+  v25 = handlerCopy;
+  v20 = handlerCopy;
+  [PXActivityUtilities requestPersonImageWithTargetSize:lCopy displayScale:address2 isRTL:address matchingEmail:firstName orPhone:lastName withFirstName:1 lastName:width prefersPhotosImage:height withCompletion:scale, v24];
 }
 
 @end

@@ -1,10 +1,10 @@
 @interface CAAUEQHeaderView
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5;
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string;
 - (void)didMoveToSuperview;
 - (void)removeFromSuperview;
-- (void)textFieldDidBeginEditing:(id)a3;
-- (void)textFieldDidEndEditing:(id)a3 reason:(int64_t)a4;
-- (void)textFieldEditingDidChange:(id)a3;
+- (void)textFieldDidBeginEditing:(id)editing;
+- (void)textFieldDidEndEditing:(id)editing reason:(int64_t)reason;
+- (void)textFieldEditingDidChange:(id)change;
 - (void)tintColorDidChange;
 @end
 
@@ -30,52 +30,52 @@
   v4.super_class = type metadata accessor for CAAUEQHeaderView();
   v2 = v4.receiver;
   [(CAAUEQHeaderView *)&v4 removeFromSuperview];
-  v3 = [objc_opt_self() defaultCenter];
-  [v3 removeObserver_];
+  defaultCenter = [objc_opt_self() defaultCenter];
+  [defaultCenter removeObserver_];
 }
 
 - (void)tintColorDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_237134124();
 }
 
-- (void)textFieldEditingDidChange:(id)a3
+- (void)textFieldEditingDidChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
-  sub_237134694(v4);
+  changeCopy = change;
+  selfCopy = self;
+  sub_237134694(changeCopy);
 }
 
-- (void)textFieldDidBeginEditing:(id)a3
+- (void)textFieldDidBeginEditing:(id)editing
 {
-  v4 = a3;
-  v8 = self;
-  [v4 selectAll_];
-  v5 = [v4 textColor];
-  if (v5)
+  editingCopy = editing;
+  selfCopy = self;
+  [editingCopy selectAll_];
+  textColor = [editingCopy textColor];
+  if (textColor)
   {
-    v6 = v5;
-    v7 = [v5 colorWithAlphaComponent_];
+    v6 = textColor;
+    colorWithAlphaComponent_ = [textColor colorWithAlphaComponent_];
   }
 
   else
   {
-    v7 = 0;
+    colorWithAlphaComponent_ = 0;
   }
 
-  [v4 setBackgroundColor_];
+  [editingCopy setBackgroundColor_];
 }
 
-- (void)textFieldDidEndEditing:(id)a3 reason:(int64_t)a4
+- (void)textFieldDidEndEditing:(id)editing reason:(int64_t)reason
 {
   v5 = objc_opt_self();
-  v7 = a3;
-  v6 = [v5 clearColor];
-  [v7 setBackgroundColor_];
+  editingCopy = editing;
+  clearColor = [v5 clearColor];
+  [editingCopy setBackgroundColor_];
 }
 
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string
 {
   v5 = sub_2371962EC();
   v6 = *(v5 - 8);

@@ -1,6 +1,6 @@
 @interface MTRUnitTestingClusterTestEventEvent
 - (MTRUnitTestingClusterTestEventEvent)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -27,38 +27,38 @@
     arg4 = v3->_arg4;
     v3->_arg4 = v7;
 
-    v9 = [MEMORY[0x277CBEA60] array];
+    array = [MEMORY[0x277CBEA60] array];
     arg5 = v3->_arg5;
-    v3->_arg5 = v9;
+    v3->_arg5 = array;
 
-    v11 = [MEMORY[0x277CBEA60] array];
+    array2 = [MEMORY[0x277CBEA60] array];
     arg6 = v3->_arg6;
-    v3->_arg6 = v11;
+    v3->_arg6 = array2;
   }
 
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRUnitTestingClusterTestEventEvent);
-  v5 = [(MTRUnitTestingClusterTestEventEvent *)self arg1];
-  [(MTRUnitTestingClusterTestEventEvent *)v4 setArg1:v5];
+  arg1 = [(MTRUnitTestingClusterTestEventEvent *)self arg1];
+  [(MTRUnitTestingClusterTestEventEvent *)v4 setArg1:arg1];
 
-  v6 = [(MTRUnitTestingClusterTestEventEvent *)self arg2];
-  [(MTRUnitTestingClusterTestEventEvent *)v4 setArg2:v6];
+  arg2 = [(MTRUnitTestingClusterTestEventEvent *)self arg2];
+  [(MTRUnitTestingClusterTestEventEvent *)v4 setArg2:arg2];
 
-  v7 = [(MTRUnitTestingClusterTestEventEvent *)self arg3];
-  [(MTRUnitTestingClusterTestEventEvent *)v4 setArg3:v7];
+  arg3 = [(MTRUnitTestingClusterTestEventEvent *)self arg3];
+  [(MTRUnitTestingClusterTestEventEvent *)v4 setArg3:arg3];
 
-  v8 = [(MTRUnitTestingClusterTestEventEvent *)self arg4];
-  [(MTRUnitTestingClusterTestEventEvent *)v4 setArg4:v8];
+  arg4 = [(MTRUnitTestingClusterTestEventEvent *)self arg4];
+  [(MTRUnitTestingClusterTestEventEvent *)v4 setArg4:arg4];
 
-  v9 = [(MTRUnitTestingClusterTestEventEvent *)self arg5];
-  [(MTRUnitTestingClusterTestEventEvent *)v4 setArg5:v9];
+  arg5 = [(MTRUnitTestingClusterTestEventEvent *)self arg5];
+  [(MTRUnitTestingClusterTestEventEvent *)v4 setArg5:arg5];
 
-  v10 = [(MTRUnitTestingClusterTestEventEvent *)self arg6];
-  [(MTRUnitTestingClusterTestEventEvent *)v4 setArg6:v10];
+  arg6 = [(MTRUnitTestingClusterTestEventEvent *)self arg6];
+  [(MTRUnitTestingClusterTestEventEvent *)v4 setArg6:arg6];
 
   return v4;
 }

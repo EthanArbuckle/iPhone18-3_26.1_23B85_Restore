@@ -1,9 +1,9 @@
 @interface PopUpPresentationController
 - (UIView)dimmingView;
 - (void)containerViewWillLayoutSubviews;
-- (void)dismissalTransitionDidEnd:(BOOL)a3;
+- (void)dismissalTransitionDidEnd:(BOOL)end;
 - (void)dismissalTransitionWillBegin;
-- (void)presentationTransitionDidEnd:(BOOL)a3;
+- (void)presentationTransitionDidEnd:(BOOL)end;
 - (void)presentationTransitionWillBegin;
 @end
 
@@ -11,14 +11,14 @@
 
 - (void)containerViewWillLayoutSubviews
 {
-  v3 = [(PopUpPresentationController *)self containerView];
-  [v3 bounds];
+  containerView = [(PopUpPresentationController *)self containerView];
+  [containerView bounds];
   [(UIView *)self->_dimmingView setFrame:?];
 }
 
-- (void)dismissalTransitionDidEnd:(BOOL)a3
+- (void)dismissalTransitionDidEnd:(BOOL)end
 {
-  if (a3)
+  if (end)
   {
     [(UIView *)self->_dimmingView removeFromSuperview];
     dimmingView = self->_dimmingView;
@@ -28,19 +28,19 @@
 
 - (void)dismissalTransitionWillBegin
 {
-  v3 = [(PopUpPresentationController *)self presentedViewController];
-  v4 = [v3 transitionCoordinator];
+  presentedViewController = [(PopUpPresentationController *)self presentedViewController];
+  transitionCoordinator = [presentedViewController transitionCoordinator];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100109E48;
   v5[3] = &unk_100194FA0;
   v5[4] = self;
-  [v4 animateAlongsideTransition:v5 completion:0];
+  [transitionCoordinator animateAlongsideTransition:v5 completion:0];
 }
 
-- (void)presentationTransitionDidEnd:(BOOL)a3
+- (void)presentationTransitionDidEnd:(BOOL)end
 {
-  if (!a3)
+  if (!end)
   {
     [(UIView *)self->_dimmingView removeFromSuperview];
     dimmingView = self->_dimmingView;
@@ -50,8 +50,8 @@
 
 - (void)presentationTransitionWillBegin
 {
-  v3 = [(PopUpPresentationController *)self dimmingView];
-  [v3 setAlpha:0.0];
+  dimmingView = [(PopUpPresentationController *)self dimmingView];
+  [dimmingView setAlpha:0.0];
 
   if (self->_blurBackground)
   {
@@ -65,17 +65,17 @@
   v4 = ;
   [(UIView *)self->_dimmingView setBackgroundColor:v4];
 
-  v5 = [(PopUpPresentationController *)self containerView];
-  [v5 addSubview:self->_dimmingView];
+  containerView = [(PopUpPresentationController *)self containerView];
+  [containerView addSubview:self->_dimmingView];
 
-  v6 = [(PopUpPresentationController *)self presentedViewController];
-  v7 = [v6 transitionCoordinator];
+  presentedViewController = [(PopUpPresentationController *)self presentedViewController];
+  transitionCoordinator = [presentedViewController transitionCoordinator];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100109FE0;
   v8[3] = &unk_100194FA0;
   v8[4] = self;
-  [v7 animateAlongsideTransition:v8 completion:0];
+  [transitionCoordinator animateAlongsideTransition:v8 completion:0];
 }
 
 - (UIView)dimmingView
@@ -86,15 +86,15 @@
     if (self->_blurBackground)
     {
       v4 = [UIVisualEffectView alloc];
-      v5 = [UIBlurEffect effectWithStyle:2];
-      v6 = [v4 initWithEffect:v5];
+      containerView = [UIBlurEffect effectWithStyle:2];
+      v6 = [v4 initWithEffect:containerView];
     }
 
     else
     {
       v7 = [UIView alloc];
-      v5 = [(PopUpPresentationController *)self containerView];
-      [v5 bounds];
+      containerView = [(PopUpPresentationController *)self containerView];
+      [containerView bounds];
       v6 = [v7 initWithFrame:?];
     }
 

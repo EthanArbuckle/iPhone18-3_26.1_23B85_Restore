@@ -1,45 +1,45 @@
 @interface NTKColorCircularUtilitarianFaceViewComplicationFactory
-- (CGRect)keylineFrameForCornerComplicationSlot:(id)a3 selected:(BOOL)a4;
-- (NTKColorCircularUtilitarianFaceViewComplicationFactory)initWithFaceView:(id)a3 device:(id)a4 graphicCornerComplications:(BOOL)a5;
+- (CGRect)keylineFrameForCornerComplicationSlot:(id)slot selected:(BOOL)selected;
+- (NTKColorCircularUtilitarianFaceViewComplicationFactory)initWithFaceView:(id)view device:(id)device graphicCornerComplications:(BOOL)complications;
 - (NTKColorCircularUtilitarianFaceViewComplicationFactoryDelegate)delegate;
 - (NTKFaceView)faceView;
-- (double)_edgeGapForState:(int64_t)a3;
-- (double)_keylinePaddingForState:(int64_t)a3;
-- (double)_lisaGapForState:(int64_t)a3;
+- (double)_edgeGapForState:(int64_t)state;
+- (double)_keylinePaddingForState:(int64_t)state;
+- (double)_lisaGapForState:(int64_t)state;
 - (id)_colorComplicationSlots;
 - (id)_complicationSlots;
-- (id)_slotForUtilitySlot:(int64_t)a3;
+- (id)_slotForUtilitySlot:(int64_t)slot;
 - (id)_utilityComplicationSlots;
-- (id)createComplicationContentSpecificAttributesAnimationWithAttributes:(unint64_t)a3 faceView:(id)a4 forSlots:(id)a5;
-- (id)curvedMaskForSlot:(id)a3;
-- (id)initForDevice:(id)a3;
-- (id)keylineViewForComplicationSlot:(id)a3;
-- (id)newLegacyViewForComplication:(id)a3 family:(int64_t)a4 slot:(id)a5;
-- (id)newLegacyViewForComplication:(id)a3 family:(int64_t)a4 slot:(id)a5 faceView:(id)a6;
-- (int64_t)_utilitySlotForSlot:(id)a3;
-- (int64_t)keylineStyleForComplicationSlot:(id)a3;
-- (unint64_t)textLayoutStyleForSlot:(int64_t)a3;
-- (void)applyComplicationContentSpecificAttributesAnimated:(BOOL)a3 faceView:(id)a4;
-- (void)configureComplicationView:(id)a3 forSlot:(id)a4;
-- (void)configureComplicationView:(id)a3 forSlot:(id)a4 faceView:(id)a5;
-- (void)curvedCircleRadius:(double *)a3 centerAngle:(double *)a4 maxAngularWidth:(double *)a5 circleCenter:(CGPoint *)a6 interior:(BOOL *)a7 forSlot:(id)a8;
+- (id)createComplicationContentSpecificAttributesAnimationWithAttributes:(unint64_t)attributes faceView:(id)view forSlots:(id)slots;
+- (id)curvedMaskForSlot:(id)slot;
+- (id)initForDevice:(id)device;
+- (id)keylineViewForComplicationSlot:(id)slot;
+- (id)newLegacyViewForComplication:(id)complication family:(int64_t)family slot:(id)slot;
+- (id)newLegacyViewForComplication:(id)complication family:(int64_t)family slot:(id)slot faceView:(id)view;
+- (int64_t)_utilitySlotForSlot:(id)slot;
+- (int64_t)keylineStyleForComplicationSlot:(id)slot;
+- (unint64_t)textLayoutStyleForSlot:(int64_t)slot;
+- (void)applyComplicationContentSpecificAttributesAnimated:(BOOL)animated faceView:(id)view;
+- (void)configureComplicationView:(id)view forSlot:(id)slot;
+- (void)configureComplicationView:(id)view forSlot:(id)slot faceView:(id)faceView;
+- (void)curvedCircleRadius:(double *)radius centerAngle:(double *)angle maxAngularWidth:(double *)width circleCenter:(CGPoint *)center interior:(BOOL *)interior forSlot:(id)slot;
 - (void)loadLayoutRules;
-- (void)loadLayoutRulesForFaceView:(id)a3;
+- (void)loadLayoutRulesForFaceView:(id)view;
 @end
 
 @implementation NTKColorCircularUtilitarianFaceViewComplicationFactory
 
-- (NTKColorCircularUtilitarianFaceViewComplicationFactory)initWithFaceView:(id)a3 device:(id)a4 graphicCornerComplications:(BOOL)a5
+- (NTKColorCircularUtilitarianFaceViewComplicationFactory)initWithFaceView:(id)view device:(id)device graphicCornerComplications:(BOOL)complications
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(NTKColorCircularUtilitarianFaceViewComplicationFactory *)self initForDevice:v9];
+  viewCopy = view;
+  deviceCopy = device;
+  v10 = [(NTKColorCircularUtilitarianFaceViewComplicationFactory *)self initForDevice:deviceCopy];
   v11 = v10;
   if (v10)
   {
-    objc_storeWeak(v10 + 14, v8);
-    v11->_graphicCornerComplications = a5;
-    v12 = [[NTKWhistlerAnalogFaceViewComplicationFactory alloc] initWithFaceView:v8 dialDiameter:v9 device:50.0];
+    objc_storeWeak(v10 + 14, viewCopy);
+    v11->_graphicCornerComplications = complications;
+    v12 = [[NTKWhistlerAnalogFaceViewComplicationFactory alloc] initWithFaceView:viewCopy dialDiameter:deviceCopy device:50.0];
     cornerComplicationFactory = v11->_cornerComplicationFactory;
     v11->_cornerComplicationFactory = v12;
 
@@ -49,15 +49,15 @@
   return v11;
 }
 
-- (id)initForDevice:(id)a3
+- (id)initForDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v16.receiver = self;
   v16.super_class = NTKColorCircularUtilitarianFaceViewComplicationFactory;
-  v5 = [(NTKFaceViewComplicationFactory *)&v16 initForDevice:v4];
+  v5 = [(NTKFaceViewComplicationFactory *)&v16 initForDevice:deviceCopy];
   if (v5)
   {
-    v6 = [[NTKUtilityComplicationFactory alloc] initForDevice:v4];
+    v6 = [[NTKUtilityComplicationFactory alloc] initForDevice:deviceCopy];
     v7 = *(v5 + 9);
     *(v5 + 9) = v6;
 
@@ -66,15 +66,15 @@
     [*(v5 + 9) setForegroundImageAlpha:1.0];
     [*(v5 + 9) setBottomCenterLayout:3];
     [v5 setContentSpecificAnimationDuration:0.45];
-    v8 = [MEMORY[0x277D75348] whiteColor];
-    [v5 setForegroundColor:v8];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [v5 setForegroundColor:whiteColor];
 
     v9 = NTKActivityBackgroundPlatterColor();
     [v5 setPlatterColor:v9];
 
-    v10 = [MEMORY[0x277D75348] whiteColor];
+    whiteColor2 = [MEMORY[0x277D75348] whiteColor];
     v11 = *(v5 + 11);
-    *(v5 + 11) = v10;
+    *(v5 + 11) = whiteColor2;
 
     v12 = NTKActivityBackgroundPlatterColor();
     v13 = *(v5 + 12);
@@ -96,11 +96,11 @@
   [(NTKColorCircularUtilitarianFaceViewComplicationFactory *)self loadLayoutRulesForFaceView:WeakRetained];
 }
 
-- (void)loadLayoutRulesForFaceView:(id)a3
+- (void)loadLayoutRulesForFaceView:(id)view
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  [v4 bounds];
+  viewCopy = view;
+  [viewCopy bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -109,8 +109,8 @@
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v13 = [(NTKColorCircularUtilitarianFaceViewComplicationFactory *)self _utilityComplicationSlots];
-  v14 = [v13 countByEnumeratingWithState:&v26 objects:v30 count:16];
+  _utilityComplicationSlots = [(NTKColorCircularUtilitarianFaceViewComplicationFactory *)self _utilityComplicationSlots];
+  v14 = [_utilityComplicationSlots countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v14)
   {
     v15 = v14;
@@ -121,15 +121,15 @@
       {
         if (*v27 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(_utilityComplicationSlots);
         }
 
         v18 = *(*(&v26 + 1) + 8 * i);
-        v19 = [v4 complicationLayoutforSlot:v18];
+        v19 = [viewCopy complicationLayoutforSlot:v18];
         [(NTKUtilityComplicationFactory *)self->_complicationFactory configureComplicationLayout:v19 forSlot:[(NTKColorCircularUtilitarianFaceViewComplicationFactory *)self _utilitySlotForSlot:v18] withBounds:v6, v8, v10, v12];
       }
 
-      v15 = [v13 countByEnumeratingWithState:&v26 objects:v30 count:16];
+      v15 = [_utilityComplicationSlots countByEnumeratingWithState:&v26 objects:v30 count:16];
     }
 
     while (v15);
@@ -147,7 +147,7 @@
     v20[2] = __85__NTKColorCircularUtilitarianFaceViewComplicationFactory_loadLayoutRulesForFaceView___block_invoke;
     v20[3] = &unk_27877E670;
     v20[4] = self;
-    v21 = v4;
+    v21 = viewCopy;
     v22 = v6;
     v23 = v8;
     v24 = v10;
@@ -183,103 +183,103 @@ void __85__NTKColorCircularUtilitarianFaceViewComplicationFactory_loadLayoutRule
   [v19 setDefaultLayoutRule:v20 forState:a2];
 }
 
-- (id)newLegacyViewForComplication:(id)a3 family:(int64_t)a4 slot:(id)a5
+- (id)newLegacyViewForComplication:(id)complication family:(int64_t)family slot:(id)slot
 {
-  v8 = a5;
-  v9 = a3;
+  slotCopy = slot;
+  complicationCopy = complication;
   WeakRetained = objc_loadWeakRetained(&self->_faceView);
-  v11 = [(NTKColorCircularUtilitarianFaceViewComplicationFactory *)self newLegacyViewForComplication:v9 family:a4 slot:v8 faceView:WeakRetained];
+  v11 = [(NTKColorCircularUtilitarianFaceViewComplicationFactory *)self newLegacyViewForComplication:complicationCopy family:family slot:slotCopy faceView:WeakRetained];
 
   return v11;
 }
 
-- (id)newLegacyViewForComplication:(id)a3 family:(int64_t)a4 slot:(id)a5 faceView:(id)a6
+- (id)newLegacyViewForComplication:(id)complication family:(int64_t)family slot:(id)slot faceView:(id)view
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  if ([v11 isEqual:@"bottom-center"])
+  complicationCopy = complication;
+  slotCopy = slot;
+  viewCopy = view;
+  if ([slotCopy isEqual:@"bottom-center"])
   {
-    v13 = [(NTKUtilityComplicationFactory *)self->_complicationFactory newViewForComplication:v10 family:a4 forSlot:[(NTKColorCircularUtilitarianFaceViewComplicationFactory *)self _utilitySlotForSlot:v11]];
-    [v12 _configureComplicationView:v13 forSlot:v11];
+    v13 = [(NTKUtilityComplicationFactory *)self->_complicationFactory newViewForComplication:complicationCopy family:family forSlot:[(NTKColorCircularUtilitarianFaceViewComplicationFactory *)self _utilitySlotForSlot:slotCopy]];
+    [viewCopy _configureComplicationView:v13 forSlot:slotCopy];
   }
 
   else if (self->_graphicCornerComplications)
   {
-    v13 = [(NTKWhistlerAnalogFaceViewComplicationFactory *)self->_cornerComplicationFactory newLegacyViewForComplication:v10 family:a4 slot:v11 faceView:v12];
+    v13 = [(NTKWhistlerAnalogFaceViewComplicationFactory *)self->_cornerComplicationFactory newLegacyViewForComplication:complicationCopy family:family slot:slotCopy faceView:viewCopy];
   }
 
   else
   {
-    v13 = +[NTKCircularComplicationView viewForComplicationType:](NTKCircularComplicationView, "viewForComplicationType:", [v10 complicationType]);
-    v14 = [(NTKFaceViewComplicationFactory *)self foregroundColor];
-    [v13 setForegroundColor:v14];
+    v13 = +[NTKCircularComplicationView viewForComplicationType:](NTKCircularComplicationView, "viewForComplicationType:", [complicationCopy complicationType]);
+    foregroundColor = [(NTKFaceViewComplicationFactory *)self foregroundColor];
+    [v13 setForegroundColor:foregroundColor];
 
-    v15 = [(NTKFaceViewComplicationFactory *)self platterColor];
-    [v13 setPlatterColor:v15];
+    platterColor = [(NTKFaceViewComplicationFactory *)self platterColor];
+    [v13 setPlatterColor:platterColor];
   }
 
   return v13;
 }
 
-- (void)configureComplicationView:(id)a3 forSlot:(id)a4
+- (void)configureComplicationView:(id)view forSlot:(id)slot
 {
-  v6 = a4;
-  v7 = a3;
+  slotCopy = slot;
+  viewCopy = view;
   WeakRetained = objc_loadWeakRetained(&self->_faceView);
-  [(NTKColorCircularUtilitarianFaceViewComplicationFactory *)self configureComplicationView:v7 forSlot:v6 faceView:WeakRetained];
+  [(NTKColorCircularUtilitarianFaceViewComplicationFactory *)self configureComplicationView:viewCopy forSlot:slotCopy faceView:WeakRetained];
 }
 
-- (void)configureComplicationView:(id)a3 forSlot:(id)a4 faceView:(id)a5
+- (void)configureComplicationView:(id)view forSlot:(id)slot faceView:(id)faceView
 {
-  v18 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(NTKFaceViewComplicationFactory *)self foregroundColor];
-  v11 = [(NTKFaceViewComplicationFactory *)self platterColor];
-  objc_storeStrong(&self->_previousForegroundColor, v10);
-  objc_storeStrong(&self->_previousPlatterColor, v11);
-  if (([v8 isEqualToString:@"top-left"] & 1) != 0 || objc_msgSend(v8, "isEqualToString:", @"top-right"))
+  viewCopy = view;
+  slotCopy = slot;
+  faceViewCopy = faceView;
+  foregroundColor = [(NTKFaceViewComplicationFactory *)self foregroundColor];
+  platterColor = [(NTKFaceViewComplicationFactory *)self platterColor];
+  objc_storeStrong(&self->_previousForegroundColor, foregroundColor);
+  objc_storeStrong(&self->_previousPlatterColor, platterColor);
+  if (([slotCopy isEqualToString:@"top-left"] & 1) != 0 || objc_msgSend(slotCopy, "isEqualToString:", @"top-right"))
   {
     if (self->_graphicCornerComplications)
     {
-      [(NTKWhistlerAnalogFaceViewComplicationFactory *)self->_cornerComplicationFactory configureComplicationView:v18 forSlot:v8 faceView:v9];
+      [(NTKWhistlerAnalogFaceViewComplicationFactory *)self->_cornerComplicationFactory configureComplicationView:viewCopy forSlot:slotCopy faceView:faceViewCopy];
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v12 = v18;
-      [v9 setComplicationColor:v10];
-      [v9 setInterpolatedComplicationColor:v10];
+      v12 = viewCopy;
+      [faceViewCopy setComplicationColor:foregroundColor];
+      [faceViewCopy setInterpolatedComplicationColor:foregroundColor];
       [v12 transitionToMonochromeWithFraction:1.0];
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v13 = v18;
-      [v13 setForegroundColor:v10];
-      [v13 setPlatterColor:v11];
+      v13 = viewCopy;
+      [v13 setForegroundColor:foregroundColor];
+      [v13 setPlatterColor:platterColor];
       [v13 setUseRoundedFontDesign:1];
-      v14 = [MEMORY[0x277D75348] clearColor];
-      [v13 setBackgroundColor:v14];
+      clearColor = [MEMORY[0x277D75348] clearColor];
+      [v13 setBackgroundColor:clearColor];
     }
   }
 
-  if ([v8 isEqual:@"bottom-center"])
+  if ([slotCopy isEqual:@"bottom-center"])
   {
-    v15 = v18;
-    v16 = [(NTKColorCircularUtilitarianFaceViewComplicationFactory *)self delegate];
-    v17 = [v16 textLayoutStyleForSlot:v8] == 0;
+    v15 = viewCopy;
+    delegate = [(NTKColorCircularUtilitarianFaceViewComplicationFactory *)self delegate];
+    v17 = [delegate textLayoutStyleForSlot:slotCopy] == 0;
 
     [v15 setShouldUseBackgroundPlatter:v17];
-    -[NTKUtilityComplicationFactory foregroundAlphaForEditing:](self->_complicationFactory, "foregroundAlphaForEditing:", [v9 editing]);
+    -[NTKUtilityComplicationFactory foregroundAlphaForEditing:](self->_complicationFactory, "foregroundAlphaForEditing:", [faceViewCopy editing]);
     [v15 setForegroundAlpha:?];
-    [v15 setForegroundColor:v10];
-    -[NTKUtilityComplicationFactory foregroundImageAlphaForEditing:](self->_complicationFactory, "foregroundImageAlphaForEditing:", [v9 editing]);
+    [v15 setForegroundColor:foregroundColor];
+    -[NTKUtilityComplicationFactory foregroundImageAlphaForEditing:](self->_complicationFactory, "foregroundImageAlphaForEditing:", [faceViewCopy editing]);
     [v15 setForegroundImageAlpha:?];
-    [v15 setPlacement:{+[NTKUtilityComplicationFactory placementForSlot:](NTKUtilityComplicationFactory, "placementForSlot:", -[NTKColorCircularUtilitarianFaceViewComplicationFactory _utilitySlotForSlot:](self, "_utilitySlotForSlot:", v8))}];
+    [v15 setPlacement:{+[NTKUtilityComplicationFactory placementForSlot:](NTKUtilityComplicationFactory, "placementForSlot:", -[NTKColorCircularUtilitarianFaceViewComplicationFactory _utilitySlotForSlot:](self, "_utilitySlotForSlot:", slotCopy))}];
     if (self->_graphicCornerComplications)
     {
       [v15 setUseRoundedFontDesign:1];
@@ -288,9 +288,9 @@ void __85__NTKColorCircularUtilitarianFaceViewComplicationFactory_loadLayoutRule
   }
 }
 
-- (CGRect)keylineFrameForCornerComplicationSlot:(id)a3 selected:(BOOL)a4
+- (CGRect)keylineFrameForCornerComplicationSlot:(id)slot selected:(BOOL)selected
 {
-  [(NTKWhistlerAnalogFaceViewComplicationFactory *)self->_cornerComplicationFactory keylineFrameForCornerComplicationSlot:a3 selected:a4];
+  [(NTKWhistlerAnalogFaceViewComplicationFactory *)self->_cornerComplicationFactory keylineFrameForCornerComplicationSlot:slot selected:selected];
   result.size.height = v7;
   result.size.width = v6;
   result.origin.y = v5;
@@ -298,11 +298,11 @@ void __85__NTKColorCircularUtilitarianFaceViewComplicationFactory_loadLayoutRule
   return result;
 }
 
-- (id)keylineViewForComplicationSlot:(id)a3
+- (id)keylineViewForComplicationSlot:(id)slot
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_graphicCornerComplications && (([v4 isEqualToString:@"top-left"] & 1) != 0 || objc_msgSend(v5, "isEqualToString:", @"top-right")))
+  slotCopy = slot;
+  v5 = slotCopy;
+  if (self->_graphicCornerComplications && (([slotCopy isEqualToString:@"top-left"] & 1) != 0 || objc_msgSend(v5, "isEqualToString:", @"top-right")))
   {
     v6 = [(NTKWhistlerAnalogFaceViewComplicationFactory *)self->_cornerComplicationFactory keylineViewForComplicationSlot:v5];
   }
@@ -317,9 +317,9 @@ void __85__NTKColorCircularUtilitarianFaceViewComplicationFactory_loadLayoutRule
   return v7;
 }
 
-- (int64_t)_utilitySlotForSlot:(id)a3
+- (int64_t)_utilitySlotForSlot:(id)slot
 {
-  if ([a3 isEqualToString:@"bottom-center"])
+  if ([slot isEqualToString:@"bottom-center"])
   {
     return 10;
   }
@@ -330,9 +330,9 @@ void __85__NTKColorCircularUtilitarianFaceViewComplicationFactory_loadLayoutRule
   }
 }
 
-- (id)_slotForUtilitySlot:(int64_t)a3
+- (id)_slotForUtilitySlot:(int64_t)slot
 {
-  if (a3 == 10)
+  if (slot == 10)
   {
     v4 = @"bottom-center";
   }
@@ -345,19 +345,19 @@ void __85__NTKColorCircularUtilitarianFaceViewComplicationFactory_loadLayoutRule
   return v4;
 }
 
-- (int64_t)keylineStyleForComplicationSlot:(id)a3
+- (int64_t)keylineStyleForComplicationSlot:(id)slot
 {
-  v4 = a3;
-  v5 = [(NTKFaceViewComplicationFactory *)self device];
-  if ([v5 deviceCategory] != 1)
+  slotCopy = slot;
+  device = [(NTKFaceViewComplicationFactory *)self device];
+  if ([device deviceCategory] != 1)
   {
-    if ([v4 isEqualToString:@"top-left"])
+    if ([slotCopy isEqualToString:@"top-left"])
     {
     }
 
     else
     {
-      v7 = [v4 isEqualToString:@"top-right"];
+      v7 = [slotCopy isEqualToString:@"top-right"];
 
       if ((v7 & 1) == 0)
       {
@@ -376,27 +376,27 @@ LABEL_8:
   return v6;
 }
 
-- (double)_edgeGapForState:(int64_t)a3
+- (double)_edgeGapForState:(int64_t)state
 {
-  if ((a3 - 2) >= 2)
+  if ((state - 2) >= 2)
   {
-    if (a3 == 1)
+    if (state == 1)
     {
-      v3 = [(NTKFaceViewComplicationFactory *)self device];
-      v4 = NTKColorFaceViewEdgeGapEditing(v3);
+      device = [(NTKFaceViewComplicationFactory *)self device];
+      v4 = NTKColorFaceViewEdgeGapEditing(device);
     }
 
     else
     {
-      v3 = [(NTKFaceViewComplicationFactory *)self device];
-      v4 = NTKColorFaceViewEdgeGapNormal(v3);
+      device = [(NTKFaceViewComplicationFactory *)self device];
+      v4 = NTKColorFaceViewEdgeGapNormal(device);
     }
   }
 
   else
   {
-    v3 = [(NTKFaceViewComplicationFactory *)self device];
-    v4 = NTKColorFaceViewEdgeGapDeselected(v3);
+    device = [(NTKFaceViewComplicationFactory *)self device];
+    v4 = NTKColorFaceViewEdgeGapDeselected(device);
   }
 
   v5 = v4;
@@ -404,28 +404,28 @@ LABEL_8:
   return v5;
 }
 
-- (double)_keylinePaddingForState:(int64_t)a3
+- (double)_keylinePaddingForState:(int64_t)state
 {
   v3 = 0.0;
-  if ((a3 & 0xFFFFFFFFFFFFFFFELL) == 2)
+  if ((state & 0xFFFFFFFFFFFFFFFELL) == 2)
   {
     v5 = NTKKeylineWidth();
-    v6 = [(NTKFaceViewComplicationFactory *)self device];
-    v3 = v5 + NTKColorFaceViewDeselectedKeylineInnerPadding(v6);
+    device = [(NTKFaceViewComplicationFactory *)self device];
+    v3 = v5 + NTKColorFaceViewDeselectedKeylineInnerPadding(device);
   }
 
   return v3;
 }
 
-- (double)_lisaGapForState:(int64_t)a3
+- (double)_lisaGapForState:(int64_t)state
 {
-  if ((a3 & 0xFFFFFFFFFFFFFFFELL) != 2)
+  if ((state & 0xFFFFFFFFFFFFFFFELL) != 2)
   {
     return 0.0;
   }
 
-  v3 = [(NTKFaceViewComplicationFactory *)self device];
-  v4 = NTKColorFaceViewLisaKeylineGap(v3);
+  device = [(NTKFaceViewComplicationFactory *)self device];
+  v4 = NTKColorFaceViewLisaKeylineGap(device);
 
   return v4;
 }
@@ -497,30 +497,30 @@ void __76__NTKColorCircularUtilitarianFaceViewComplicationFactory__complicationS
   _complicationSlots_slots = v3;
 }
 
-- (void)applyComplicationContentSpecificAttributesAnimated:(BOOL)a3 faceView:(id)a4
+- (void)applyComplicationContentSpecificAttributesAnimated:(BOOL)animated faceView:(id)view
 {
-  v4 = a3;
-  v10 = a4;
-  if (v4)
+  animatedCopy = animated;
+  viewCopy = view;
+  if (animatedCopy)
   {
-    v6 = [(NTKFaceViewComplicationFactory *)self foregroundColorProviderBlock];
+    foregroundColorProviderBlock = [(NTKFaceViewComplicationFactory *)self foregroundColorProviderBlock];
 
-    v7 = [(NTKFaceViewComplicationFactory *)self platterColorProviderBlock];
+    platterColorProviderBlock = [(NTKFaceViewComplicationFactory *)self platterColorProviderBlock];
 
     v8 = 8;
-    if (v6)
+    if (foregroundColorProviderBlock)
     {
       v8 = 9;
     }
 
-    if (v7)
+    if (platterColorProviderBlock)
     {
       v9 = v8;
     }
 
     else
     {
-      v9 = v6 != 0;
+      v9 = foregroundColorProviderBlock != 0;
     }
   }
 
@@ -529,36 +529,36 @@ void __76__NTKColorCircularUtilitarianFaceViewComplicationFactory__complicationS
     v9 = 0xFFFFFFFFLL;
   }
 
-  [(NTKFaceViewComplicationFactory *)self applyComplicationContentSpecificAttributesAnimated:v4 attributes:v9 faceView:v10];
+  [(NTKFaceViewComplicationFactory *)self applyComplicationContentSpecificAttributesAnimated:animatedCopy attributes:v9 faceView:viewCopy];
 }
 
-- (id)createComplicationContentSpecificAttributesAnimationWithAttributes:(unint64_t)a3 faceView:(id)a4 forSlots:(id)a5
+- (id)createComplicationContentSpecificAttributesAnimationWithAttributes:(unint64_t)attributes faceView:(id)view forSlots:(id)slots
 {
-  v6 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ((v6 & 9) != 0)
+  attributesCopy = attributes;
+  viewCopy = view;
+  slotsCopy = slots;
+  if ((attributesCopy & 9) != 0)
   {
-    v10 = (v6 >> 3) & 1;
-    v11 = v6 & 1;
-    v12 = [(NTKFaceViewComplicationFactory *)self foregroundColor];
-    v13 = [(NTKFaceViewComplicationFactory *)self platterColor];
+    v10 = (attributesCopy >> 3) & 1;
+    v11 = attributesCopy & 1;
+    foregroundColor = [(NTKFaceViewComplicationFactory *)self foregroundColor];
+    platterColor = [(NTKFaceViewComplicationFactory *)self platterColor];
     v14 = objc_opt_new();
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
     v25[2] = __143__NTKColorCircularUtilitarianFaceViewComplicationFactory_createComplicationContentSpecificAttributesAnimationWithAttributes_faceView_forSlots___block_invoke;
     v25[3] = &unk_27877E6C0;
-    v26 = v9;
-    v27 = self;
-    v28 = v12;
-    v29 = v13;
-    v30 = v8;
+    v26 = slotsCopy;
+    selfCopy = self;
+    v28 = foregroundColor;
+    v29 = platterColor;
+    v30 = viewCopy;
     v32 = v11;
     v33 = v10;
     v15 = v14;
     v31 = v15;
-    v16 = v13;
-    v17 = v12;
+    v16 = platterColor;
+    v17 = foregroundColor;
     [v30 enumerateComplicationDisplayWrappersWithBlock:v25];
     [(NTKFaceViewComplicationFactory *)self contentSpecificAnimationDuration];
     v19 = v18;
@@ -686,26 +686,26 @@ void __143__NTKColorCircularUtilitarianFaceViewComplicationFactory_createComplic
   }
 }
 
-- (unint64_t)textLayoutStyleForSlot:(int64_t)a3
+- (unint64_t)textLayoutStyleForSlot:(int64_t)slot
 {
-  v5 = [(NTKColorCircularUtilitarianFaceViewComplicationFactory *)self delegate];
-  v6 = [(NTKColorCircularUtilitarianFaceViewComplicationFactory *)self _slotForUtilitySlot:a3];
-  v7 = [v5 textLayoutStyleForSlot:v6];
+  delegate = [(NTKColorCircularUtilitarianFaceViewComplicationFactory *)self delegate];
+  v6 = [(NTKColorCircularUtilitarianFaceViewComplicationFactory *)self _slotForUtilitySlot:slot];
+  v7 = [delegate textLayoutStyleForSlot:v6];
 
   return v7;
 }
 
-- (void)curvedCircleRadius:(double *)a3 centerAngle:(double *)a4 maxAngularWidth:(double *)a5 circleCenter:(CGPoint *)a6 interior:(BOOL *)a7 forSlot:(id)a8
+- (void)curvedCircleRadius:(double *)radius centerAngle:(double *)angle maxAngularWidth:(double *)width circleCenter:(CGPoint *)center interior:(BOOL *)interior forSlot:(id)slot
 {
-  v14 = [(NTKColorCircularUtilitarianFaceViewComplicationFactory *)self _utilitySlotForSlot:a8];
-  v15 = [(NTKFaceViewComplicationFactory *)self device];
-  [NTKUtilityComplicationFactory curvedCircleRadius:a3 centerAngle:a4 maxAngularWidth:a5 circleCenter:a6 interior:a7 forSlot:v14 forDevice:v15];
+  v14 = [(NTKColorCircularUtilitarianFaceViewComplicationFactory *)self _utilitySlotForSlot:slot];
+  device = [(NTKFaceViewComplicationFactory *)self device];
+  [NTKUtilityComplicationFactory curvedCircleRadius:radius centerAngle:angle maxAngularWidth:width circleCenter:center interior:interior forSlot:v14 forDevice:device];
 }
 
-- (id)curvedMaskForSlot:(id)a3
+- (id)curvedMaskForSlot:(id)slot
 {
   complicationFactory = self->_complicationFactory;
-  v4 = [(NTKColorCircularUtilitarianFaceViewComplicationFactory *)self _utilitySlotForSlot:a3];
+  v4 = [(NTKColorCircularUtilitarianFaceViewComplicationFactory *)self _utilitySlotForSlot:slot];
 
   return [(NTKUtilityComplicationFactory *)complicationFactory curvedMaskForSlot:v4];
 }

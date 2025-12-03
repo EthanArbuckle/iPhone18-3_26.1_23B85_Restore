@@ -1,14 +1,14 @@
 @interface WiFiUsageLQMKernelSampleSecurityErrors
-+ (id)sampleWithStruct:(rxSecurityInfo *)a3 andTimestamp:(id)a4;
-- (WiFiUsageLQMKernelSampleSecurityErrors)initWithStruct:(rxSecurityInfo *)a3 andTimestamp:(id)a4;
++ (id)sampleWithStruct:(rxSecurityInfo *)struct andTimestamp:(id)timestamp;
+- (WiFiUsageLQMKernelSampleSecurityErrors)initWithStruct:(rxSecurityInfo *)struct andTimestamp:(id)timestamp;
 @end
 
 @implementation WiFiUsageLQMKernelSampleSecurityErrors
 
-+ (id)sampleWithStruct:(rxSecurityInfo *)a3 andTimestamp:(id)a4
++ (id)sampleWithStruct:(rxSecurityInfo *)struct andTimestamp:(id)timestamp
 {
-  v5 = a4;
-  var0 = a3->var0;
+  timestampCopy = timestamp;
+  var0 = struct->var0;
   if (var0)
   {
     NSLog(&cfstr_SUnknownVersio.isa, "+[WiFiUsageLQMKernelSampleSecurityErrors sampleWithStruct:andTimestamp:]", var0);
@@ -17,26 +17,26 @@
 
   else
   {
-    v7 = [[WiFiUsageLQMKernelSampleSecurityErrors alloc] initWithStruct:a3 andTimestamp:v5];
+    v7 = [[WiFiUsageLQMKernelSampleSecurityErrors alloc] initWithStruct:struct andTimestamp:timestampCopy];
   }
 
   return v7;
 }
 
-- (WiFiUsageLQMKernelSampleSecurityErrors)initWithStruct:(rxSecurityInfo *)a3 andTimestamp:(id)a4
+- (WiFiUsageLQMKernelSampleSecurityErrors)initWithStruct:(rxSecurityInfo *)struct andTimestamp:(id)timestamp
 {
-  v6 = a4;
+  timestampCopy = timestamp;
   v12.receiver = self;
   v12.super_class = WiFiUsageLQMKernelSampleSecurityErrors;
   v7 = [(WiFiUsageLQMKernelSampleSecurityErrors *)&v12 init];
   timestamp = v7->_timestamp;
-  v7->_timestamp = v6;
+  v7->_timestamp = timestampCopy;
 
-  var2 = a3->var2;
-  v7->_rxUcastReplayError = a3->var1;
+  var2 = struct->var2;
+  v7->_rxUcastReplayError = struct->var1;
   v7->_rxucastDecryptError = var2;
-  var4 = a3->var4;
-  v7->_rxmcastReplayError = a3->var3;
+  var4 = struct->var4;
+  v7->_rxmcastReplayError = struct->var3;
   v7->_rxmcastDecryptError = var4;
   return v7;
 }

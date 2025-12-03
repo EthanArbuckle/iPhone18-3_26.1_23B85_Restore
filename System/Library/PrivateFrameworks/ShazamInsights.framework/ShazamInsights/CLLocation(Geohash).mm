@@ -8,8 +8,8 @@
 
 - (double)sh_roundCoordinateValuesToGeohashOfLength:()Geohash
 {
-  v2 = [a1 sh_geohashOfLength:?];
-  [a1 sh_geoHashToCoordinates:v2];
+  v2 = [self sh_geohashOfLength:?];
+  [self sh_geoHashToCoordinates:v2];
   v4 = v3;
 
   return v4;
@@ -28,7 +28,7 @@
   do
   {
     v12 = v9 + (v8 - v9) * 0.5;
-    [a1 coordinate];
+    [self coordinate];
     if (v13 >= v12)
     {
       v14 = v7;
@@ -55,7 +55,7 @@
       v9 = v9 + (v8 - v9) * 0.5;
     }
 
-    [a1 coordinate];
+    [self coordinate];
     if (v15 >= v11 + (v10 - v11) * 0.5)
     {
       v11 = v11 + (v10 - v11) * 0.5;
@@ -103,10 +103,10 @@
 {
   v26 = *MEMORY[0x277D85DE8];
   v3 = a3;
-  v4 = [v3 UTF8String];
-  v5 = 5 * strlen(v4);
+  uTF8String = [v3 UTF8String];
+  v5 = 5 * strlen(uTF8String);
   *&v6 = *&CLLocationCoordinate2DMake(0.0, 0.0);
-  v7 = strlen(v4);
+  v7 = strlen(uTF8String);
   if (v7)
   {
     v8 = v7;
@@ -114,14 +114,14 @@
     v10 = v5 - 5;
     while (1)
     {
-      v11 = memchr("0123456789bcdefghjkmnpqrstuvwxyz", *v4, 0x21uLL);
+      v11 = memchr("0123456789bcdefghjkmnpqrstuvwxyz", *uTF8String, 0x21uLL);
       if (!v11)
       {
         break;
       }
 
       v9 |= (v11 - "0123456789bcdefghjkmnpqrstuvwxyz") << v10;
-      ++v4;
+      ++uTF8String;
       v10 -= 5;
       if (!--v8)
       {
@@ -132,7 +132,7 @@
     v18 = shcore_log_object();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
-      v19 = *v4;
+      v19 = *uTF8String;
       v22 = 138412546;
       v23 = v3;
       v24 = 1024;

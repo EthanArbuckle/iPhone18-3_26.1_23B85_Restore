@@ -1,61 +1,61 @@
 @interface SBShelfRootSwitcherModifier
 - (CGRect)containerViewBounds;
-- (CGRect)frameForIndex:(unint64_t)a3;
+- (CGRect)frameForIndex:(unint64_t)index;
 - (CGRect)targetFrame;
-- (id)floorModifierForTransitionEvent:(id)a3;
-- (id)focusedAppModifierForUpdateFocusedAppLayoutEvent:(id)a3;
-- (id)insertionModifierForInsertionEvent:(id)a3;
-- (id)orderedVisibleAppLayoutsForShelfExpansionModifier:(id)a3;
-- (id)removalModifierForRemovalEvent:(id)a3;
-- (id)swipeToKillModifierForSwipeToKillEvent:(id)a3;
-- (id)transitionModifierForMainTransitionEvent:(id)a3;
-- (id)userScrollingModifierForScrollEvent:(id)a3;
-- (int64_t)tintStyleForLayoutRole:(int64_t)a3 inAppLayout:(id)a4;
+- (id)floorModifierForTransitionEvent:(id)event;
+- (id)focusedAppModifierForUpdateFocusedAppLayoutEvent:(id)event;
+- (id)insertionModifierForInsertionEvent:(id)event;
+- (id)orderedVisibleAppLayoutsForShelfExpansionModifier:(id)modifier;
+- (id)removalModifierForRemovalEvent:(id)event;
+- (id)swipeToKillModifierForSwipeToKillEvent:(id)event;
+- (id)transitionModifierForMainTransitionEvent:(id)event;
+- (id)userScrollingModifierForScrollEvent:(id)event;
+- (int64_t)tintStyleForLayoutRole:(int64_t)role inAppLayout:(id)layout;
 - (void)_rebuildContainerBounds;
-- (void)didMoveToParentModifier:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setDisplayMode:(unint64_t)a3;
+- (void)didMoveToParentModifier:(id)modifier;
+- (void)setDelegate:(id)delegate;
+- (void)setDisplayMode:(unint64_t)mode;
 @end
 
 @implementation SBShelfRootSwitcherModifier
 
-- (void)didMoveToParentModifier:(id)a3
+- (void)didMoveToParentModifier:(id)modifier
 {
   v5.receiver = self;
   v5.super_class = SBShelfRootSwitcherModifier;
   [(SBFluidSwitcherRootSwitcherModifier *)&v5 didMoveToParentModifier:?];
-  if (a3)
+  if (modifier)
   {
     [(SBShelfRootSwitcherModifier *)self _rebuildContainerBounds];
   }
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v5.receiver = self;
   v5.super_class = SBShelfRootSwitcherModifier;
   [(SBFluidSwitcherRootSwitcherModifier *)&v5 setDelegate:?];
-  if (a3)
+  if (delegate)
   {
     [(SBShelfRootSwitcherModifier *)self _rebuildContainerBounds];
   }
 }
 
-- (void)setDisplayMode:(unint64_t)a3
+- (void)setDisplayMode:(unint64_t)mode
 {
-  if (self->_displayMode != a3)
+  if (self->_displayMode != mode)
   {
-    self->_displayMode = a3;
-    v4 = [(SBChainableModifier *)self parentModifier];
-    if (v4)
+    self->_displayMode = mode;
+    parentModifier = [(SBChainableModifier *)self parentModifier];
+    if (parentModifier)
     {
     }
 
     else
     {
-      v5 = [(SBChainableModifier *)self delegate];
+      delegate = [(SBChainableModifier *)self delegate];
 
-      if (!v5)
+      if (!delegate)
       {
         return;
       }
@@ -83,8 +83,8 @@
 
   else if (!displayMode)
   {
-    v4 = [MEMORY[0x277D759A0] mainScreen];
-    [v4 bounds];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen bounds];
     v6 = v5;
     v8 = v7;
 
@@ -143,18 +143,18 @@
   return result;
 }
 
-- (int64_t)tintStyleForLayoutRole:(int64_t)a3 inAppLayout:(id)a4
+- (int64_t)tintStyleForLayoutRole:(int64_t)role inAppLayout:(id)layout
 {
-  v5 = a4;
-  if ([v5 type] == 5)
+  layoutCopy = layout;
+  if ([layoutCopy type] == 5)
   {
     goto LABEL_2;
   }
 
   if ([(SBShelfRootSwitcherModifier *)self userInterfaceStyle]== 2)
   {
-    v7 = [(SBShelfRootSwitcherModifier *)self shelfFocusedDisplayItems];
-    if ([v5 containsAnyItemFromSet:v7])
+    shelfFocusedDisplayItems = [(SBShelfRootSwitcherModifier *)self shelfFocusedDisplayItems];
+    if ([layoutCopy containsAnyItemFromSet:shelfFocusedDisplayItems])
     {
       v6 = 2;
     }
@@ -171,8 +171,8 @@ LABEL_11:
 
   if ([(SBShelfRootSwitcherModifier *)self userInterfaceStyle]== 1)
   {
-    v7 = [(SBShelfRootSwitcherModifier *)self shelfFocusedDisplayItems];
-    if ([v5 containsAnyItemFromSet:v7])
+    shelfFocusedDisplayItems = [(SBShelfRootSwitcherModifier *)self shelfFocusedDisplayItems];
+    if ([layoutCopy containsAnyItemFromSet:shelfFocusedDisplayItems])
     {
       v6 = 1;
     }
@@ -192,10 +192,10 @@ LABEL_12:
   return v6;
 }
 
-- (CGRect)frameForIndex:(unint64_t)a3
+- (CGRect)frameForIndex:(unint64_t)index
 {
-  v5 = [(SBShelfRootSwitcherModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  appLayouts = [(SBShelfRootSwitcherModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:index];
 
   if ([v6 environment] == 2)
   {
@@ -203,7 +203,7 @@ LABEL_12:
     self->_isRoutingFrameForIndexToFloating = 1;
     v25.receiver = self;
     v25.super_class = SBShelfRootSwitcherModifier;
-    [(SBShelfRootSwitcherModifier *)&v25 frameForIndex:a3];
+    [(SBShelfRootSwitcherModifier *)&v25 frameForIndex:index];
     v9 = v8;
     v11 = v10;
     v13 = v12;
@@ -215,7 +215,7 @@ LABEL_12:
   {
     v24.receiver = self;
     v24.super_class = SBShelfRootSwitcherModifier;
-    [(SBShelfRootSwitcherModifier *)&v24 frameForIndex:a3];
+    [(SBShelfRootSwitcherModifier *)&v24 frameForIndex:index];
     v9 = v16;
     v11 = v17;
     v13 = v18;
@@ -233,72 +233,72 @@ LABEL_12:
   return result;
 }
 
-- (id)floorModifierForTransitionEvent:(id)a3
+- (id)floorModifierForTransitionEvent:(id)event
 {
-  v3 = [(SBFluidSwitcherRootSwitcherModifier *)self floorModifier];
-  if (!v3)
+  floorModifier = [(SBFluidSwitcherRootSwitcherModifier *)self floorModifier];
+  if (!floorModifier)
   {
-    v3 = objc_alloc_init(SBShelfCarouselSwitcherModifier);
+    floorModifier = objc_alloc_init(SBShelfCarouselSwitcherModifier);
   }
 
-  return v3;
+  return floorModifier;
 }
 
-- (id)removalModifierForRemovalEvent:(id)a3
+- (id)removalModifierForRemovalEvent:(id)event
 {
-  v3 = a3;
+  eventCopy = event;
   v4 = [SBRemovalSwitcherModifier alloc];
-  v5 = [v3 layoutRole];
-  v6 = [v3 appLayout];
-  v7 = [v3 reason];
+  layoutRole = [eventCopy layoutRole];
+  appLayout = [eventCopy appLayout];
+  reason = [eventCopy reason];
 
-  v8 = [(SBRemovalSwitcherModifier *)v4 initWithLayoutRole:v5 inAppLayout:v6 reason:v7];
+  v8 = [(SBRemovalSwitcherModifier *)v4 initWithLayoutRole:layoutRole inAppLayout:appLayout reason:reason];
 
   return v8;
 }
 
-- (id)insertionModifierForInsertionEvent:(id)a3
+- (id)insertionModifierForInsertionEvent:(id)event
 {
-  v3 = a3;
+  eventCopy = event;
   v4 = [SBInsertionSwitcherModifier alloc];
-  v5 = [v3 appLayout];
+  appLayout = [eventCopy appLayout];
 
-  v6 = [(SBInsertionSwitcherModifier *)v4 initWithAppLayout:v5];
+  v6 = [(SBInsertionSwitcherModifier *)v4 initWithAppLayout:appLayout];
 
   return v6;
 }
 
-- (id)swipeToKillModifierForSwipeToKillEvent:(id)a3
+- (id)swipeToKillModifierForSwipeToKillEvent:(id)event
 {
-  v3 = a3;
+  eventCopy = event;
   v4 = [SBSwipeToKillSwitcherModifier alloc];
-  v5 = [v3 layoutRole];
-  v6 = [v3 appLayout];
+  layoutRole = [eventCopy layoutRole];
+  appLayout = [eventCopy appLayout];
 
-  v7 = [(SBSwipeToKillSwitcherModifier *)v4 initWithLayoutRole:v5 inAppLayout:v6 fadeOutSwipedItems:1];
+  v7 = [(SBSwipeToKillSwitcherModifier *)v4 initWithLayoutRole:layoutRole inAppLayout:appLayout fadeOutSwipedItems:1];
 
   return v7;
 }
 
-- (id)userScrollingModifierForScrollEvent:(id)a3
+- (id)userScrollingModifierForScrollEvent:(id)event
 {
   v3 = objc_alloc_init(SBScrollingSwitcherModifier);
 
   return v3;
 }
 
-- (id)focusedAppModifierForUpdateFocusedAppLayoutEvent:(id)a3
+- (id)focusedAppModifierForUpdateFocusedAppLayoutEvent:(id)event
 {
-  v3 = a3;
+  eventCopy = event;
   v4 = [SBFocusedAppLayoutSwitcherModifier alloc];
-  v5 = [v3 appLayout];
+  appLayout = [eventCopy appLayout];
 
-  v6 = [(SBFocusedAppLayoutSwitcherModifier *)v4 initWithFocusedAppLayout:v5];
+  v6 = [(SBFocusedAppLayoutSwitcherModifier *)v4 initWithFocusedAppLayout:appLayout];
 
   return v6;
 }
 
-- (id)transitionModifierForMainTransitionEvent:(id)a3
+- (id)transitionModifierForMainTransitionEvent:(id)event
 {
   if (self->_appearanceState - 1 > 1)
   {
@@ -311,7 +311,7 @@ LABEL_12:
     y = self->_targetFrame.origin.y;
     width = self->_targetFrame.size.width;
     height = self->_targetFrame.size.height;
-    v8 = a3;
+    eventCopy = event;
     v21.origin.x = x;
     v21.origin.y = y;
     v21.size.width = width;
@@ -328,26 +328,26 @@ LABEL_12:
       v9 = v12;
       [(SBShelfRootSwitcherModifier *)self switcherViewBounds];
       v14 = v13;
-      v15 = [(SBShelfRootSwitcherModifier *)self medusaSettings];
-      [v15 switcherShelfGenieInitialYIncrementBelowScreen];
+      medusaSettings = [(SBShelfRootSwitcherModifier *)self medusaSettings];
+      [medusaSettings switcherShelfGenieInitialYIncrementBelowScreen];
       v10 = v14 + v16;
     }
 
     v17 = [SBShelfExpansionSwitcherModifier alloc];
-    v18 = [v8 transitionID];
+    transitionID = [eventCopy transitionID];
 
-    v11 = [(SBShelfExpansionSwitcherModifier *)v17 initWithTransitionID:v18 expand:self->_appearanceState == 1 style:self->_animationStyle target:self animationDelegate:v9, v10];
+    v11 = [(SBShelfExpansionSwitcherModifier *)v17 initWithTransitionID:transitionID expand:self->_appearanceState == 1 style:self->_animationStyle target:self animationDelegate:v9, v10];
   }
 
   return v11;
 }
 
-- (id)orderedVisibleAppLayoutsForShelfExpansionModifier:(id)a3
+- (id)orderedVisibleAppLayoutsForShelfExpansionModifier:(id)modifier
 {
-  v3 = [(SBFluidSwitcherRootSwitcherModifier *)self floorModifier];
-  v4 = [v3 orderedVisibleAppLayouts];
+  floorModifier = [(SBFluidSwitcherRootSwitcherModifier *)self floorModifier];
+  orderedVisibleAppLayouts = [floorModifier orderedVisibleAppLayouts];
 
-  return v4;
+  return orderedVisibleAppLayouts;
 }
 
 - (CGRect)targetFrame

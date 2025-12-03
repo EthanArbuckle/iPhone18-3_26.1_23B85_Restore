@@ -2,10 +2,10 @@
 - (BOOL)saveIfPossible;
 - (HCDatabaseManager)init;
 - (id)databaseFilePath;
-- (void)contentDidUpdate:(id)a3;
+- (void)contentDidUpdate:(id)update;
 - (void)dealloc;
 - (void)setupDatabase;
-- (void)storesWillChange:(id)a3;
+- (void)storesWillChange:(id)change;
 @end
 
 @implementation HCDatabaseManager
@@ -21,7 +21,7 @@ void __34__HCDatabaseManager_setupDatabase__block_invoke(uint64_t a1, uint64_t a
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_1D952C000, a2, OS_LOG_TYPE_ERROR, "Database Manager: Protected state, will not create database: %@", &v3, 0xCu);
   v2 = *MEMORY[0x1E69E9840];
 }
@@ -40,7 +40,7 @@ void __25__HCDatabaseManager_init__block_invoke(uint64_t a1)
 
 - (BOOL)saveIfPossible
 {
-  v2 = self;
+  selfCopy = self;
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;
@@ -51,21 +51,21 @@ void __25__HCDatabaseManager_init__block_invoke(uint64_t a1)
   v6[3] = __Block_byref_object_copy__1;
   v6[4] = __Block_byref_object_dispose__1;
   v7 = 0;
-  v3 = [(HCDatabaseManager *)self managedObjectContext];
+  managedObjectContext = [(HCDatabaseManager *)self managedObjectContext];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __35__HCDatabaseManager_saveIfPossible__block_invoke;
   v5[3] = &unk_1E857EF80;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = v6;
   v5[6] = &v8;
-  [v3 performBlockAndWait:v5];
+  [managedObjectContext performBlockAndWait:v5];
 
-  LOBYTE(v2) = *(v9 + 24);
+  LOBYTE(selfCopy) = *(v9 + 24);
   _Block_object_dispose(v6, 8);
 
   _Block_object_dispose(&v8, 8);
-  return v2;
+  return selfCopy;
 }
 
 void __35__HCDatabaseManager_saveIfPossible__block_invoke(uint64_t a1)
@@ -164,12 +164,12 @@ void __35__HCDatabaseManager_saveIfPossible__block_invoke(uint64_t a1)
 - (id)databaseFilePath
 {
   v3 = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, 1uLL, 1);
-  v4 = [v3 lastObject];
-  v5 = [v4 stringByAppendingPathComponent:@"Accessibility"];
+  lastObject = [v3 lastObject];
+  v5 = [lastObject stringByAppendingPathComponent:@"Accessibility"];
 
-  v6 = [MEMORY[0x1E696AAE8] mainBundle];
-  v7 = [v6 bundleIdentifier];
-  v8 = [v7 isEqualToString:@"com.apple.accessibility.HearingTestApp"];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v8 = [bundleIdentifier isEqualToString:@"com.apple.accessibility.HearingTestApp"];
 
   if (v8)
   {
@@ -177,8 +177,8 @@ void __35__HCDatabaseManager_saveIfPossible__block_invoke(uint64_t a1)
     v5 = @"/var/mobile/Library/Accessibility";
   }
 
-  v9 = [(HCDatabaseManager *)self cloudKitContainer];
-  v10 = [(__CFString *)v5 stringByAppendingPathComponent:v9];
+  cloudKitContainer = [(HCDatabaseManager *)self cloudKitContainer];
+  v10 = [(__CFString *)v5 stringByAppendingPathComponent:cloudKitContainer];
   v11 = [v10 stringByAppendingPathExtension:@"sqlite"];
 
   v12 = [MEMORY[0x1E695DFF8] fileURLWithPath:v11];
@@ -188,8 +188,8 @@ void __35__HCDatabaseManager_saveIfPossible__block_invoke(uint64_t a1)
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [(HCDatabaseManager *)self setManagedObjectContext:0];
   v4.receiver = self;
@@ -197,15 +197,15 @@ void __35__HCDatabaseManager_saveIfPossible__block_invoke(uint64_t a1)
   [(HCDatabaseManager *)&v4 dealloc];
 }
 
-- (void)storesWillChange:(id)a3
+- (void)storesWillChange:(id)change
 {
-  v4 = [(HCDatabaseManager *)self managedObjectContext];
+  managedObjectContext = [(HCDatabaseManager *)self managedObjectContext];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __38__HCDatabaseManager_storesWillChange___block_invoke;
   v5[3] = &unk_1E857EDF0;
   v5[4] = self;
-  [v4 performBlock:v5];
+  [managedObjectContext performBlock:v5];
 }
 
 void __38__HCDatabaseManager_storesWillChange___block_invoke(uint64_t a1)
@@ -227,11 +227,11 @@ void __38__HCDatabaseManager_storesWillChange___block_invoke(uint64_t a1)
   }
 }
 
-- (void)contentDidUpdate:(id)a3
+- (void)contentDidUpdate:(id)update
 {
-  v4 = a3;
-  v5 = [(HCDatabaseManager *)self managedObjectContext];
-  [v5 mergeChangesFromContextDidSaveNotification:v4];
+  updateCopy = update;
+  managedObjectContext = [(HCDatabaseManager *)self managedObjectContext];
+  [managedObjectContext mergeChangesFromContextDidSaveNotification:updateCopy];
 }
 
 @end

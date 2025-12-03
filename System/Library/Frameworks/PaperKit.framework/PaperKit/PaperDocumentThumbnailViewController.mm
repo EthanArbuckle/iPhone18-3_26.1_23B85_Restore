@@ -1,7 +1,7 @@
 @interface PaperDocumentThumbnailViewController
 - (_TtC8PaperKit36PaperDocumentThumbnailViewController)init;
-- (_TtC8PaperKit36PaperDocumentThumbnailViewController)initWithCoder:(id)a3;
-- (_TtC8PaperKit36PaperDocumentThumbnailViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC8PaperKit36PaperDocumentThumbnailViewController)initWithCoder:(id)coder;
+- (_TtC8PaperKit36PaperDocumentThumbnailViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)loadView;
 @end
 
@@ -16,7 +16,7 @@
   return [(PaperDocumentThumbnailViewController *)&v5 initWithNibName:0 bundle:0];
 }
 
-- (_TtC8PaperKit36PaperDocumentThumbnailViewController)initWithCoder:(id)a3
+- (_TtC8PaperKit36PaperDocumentThumbnailViewController)initWithCoder:(id)coder
 {
   v3 = OBJC_IVAR____TtC8PaperKit36PaperDocumentThumbnailViewController_paperDocumentThumbnailView;
   *(&self->super.super.super.isa + v3) = [objc_allocWithZone(type metadata accessor for PaperDocumentThumbnailView()) initWithFrame_];
@@ -27,11 +27,11 @@
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   PaperDocumentThumbnailViewController.loadView()();
 }
 
-- (_TtC8PaperKit36PaperDocumentThumbnailViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC8PaperKit36PaperDocumentThumbnailViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,6 +1,6 @@
 @interface UICollectionViewPlaceholder
 - (UICollectionViewPlaceholder)initWithInsertionIndexPath:(NSIndexPath *)insertionIndexPath reuseIdentifier:(NSString *)reuseIdentifier;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation UICollectionViewPlaceholder
@@ -24,15 +24,15 @@
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [UICollectionViewPlaceholder alloc];
-  v5 = [(UICollectionViewPlaceholder *)self insertionIndexPath];
-  v6 = [(UICollectionViewPlaceholder *)self cellReuseIdentifier];
-  v7 = [(UICollectionViewPlaceholder *)v4 initWithInsertionIndexPath:v5 reuseIdentifier:v6];
+  insertionIndexPath = [(UICollectionViewPlaceholder *)self insertionIndexPath];
+  cellReuseIdentifier = [(UICollectionViewPlaceholder *)self cellReuseIdentifier];
+  v7 = [(UICollectionViewPlaceholder *)v4 initWithInsertionIndexPath:insertionIndexPath reuseIdentifier:cellReuseIdentifier];
 
-  v8 = [(UICollectionViewPlaceholder *)self cellUpdateHandler];
-  [(UICollectionViewPlaceholder *)v7 setCellUpdateHandler:v8];
+  cellUpdateHandler = [(UICollectionViewPlaceholder *)self cellUpdateHandler];
+  [(UICollectionViewPlaceholder *)v7 setCellUpdateHandler:cellUpdateHandler];
 
   return v7;
 }

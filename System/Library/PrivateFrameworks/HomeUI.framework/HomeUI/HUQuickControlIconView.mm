@@ -1,32 +1,32 @@
 @interface HUQuickControlIconView
 - (CGRect)_getLabelsContainingRect;
 - (CGSize)intrinsicContentSize;
-- (HUQuickControlIconView)initWithProfile:(id)a3;
+- (HUQuickControlIconView)initWithProfile:(id)profile;
 - (HUQuickControlViewInteractionDelegate)interactionDelegate;
 - (double)_iconAndLabelsHeight;
-- (id)intrinsicSizeDescriptorForControlSize:(unint64_t)a3;
+- (id)intrinsicSizeDescriptorForControlSize:(unint64_t)size;
 - (void)_updateLabelFramesOrigins;
 - (void)_updateLabelSizes;
 - (void)_updateLayout;
 - (void)_updateUI;
-- (void)_updateUIForReachabilityState:(unint64_t)a3;
+- (void)_updateUIForReachabilityState:(unint64_t)state;
 - (void)layoutSubviews;
-- (void)setProfile:(id)a3;
-- (void)setValue:(id)a3;
+- (void)setProfile:(id)profile;
+- (void)setValue:(id)value;
 @end
 
 @implementation HUQuickControlIconView
 
-- (HUQuickControlIconView)initWithProfile:(id)a3
+- (HUQuickControlIconView)initWithProfile:(id)profile
 {
-  v5 = a3;
+  profileCopy = profile;
   v15.receiver = self;
   v15.super_class = HUQuickControlIconView;
   v6 = [(HUQuickControlIconView *)&v15 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_profile, a3);
+    objc_storeStrong(&v6->_profile, profile);
     v7->_reachabilityState = 0;
     v8 = objc_alloc_init(MEMORY[0x277D180D0]);
     iconView = v7->_iconView;
@@ -55,25 +55,25 @@
   return v7;
 }
 
-- (void)setProfile:(id)a3
+- (void)setProfile:(id)profile
 {
-  objc_storeStrong(&self->_profile, a3);
+  objc_storeStrong(&self->_profile, profile);
 
   [(HUQuickControlIconView *)self _updateUI];
 }
 
-- (id)intrinsicSizeDescriptorForControlSize:(unint64_t)a3
+- (id)intrinsicSizeDescriptorForControlSize:(unint64_t)size
 {
   [(HUQuickControlIconView *)self _iconAndLabelsHeight];
-  v5 = HUQuickControlIconViewMetricsForControlSize(a3, v4);
-  v6 = [v5 sizeDescriptor];
+  v5 = HUQuickControlIconViewMetricsForControlSize(size, v4);
+  sizeDescriptor = [v5 sizeDescriptor];
 
-  return v6;
+  return sizeDescriptor;
 }
 
-- (void)setValue:(id)a3
+- (void)setValue:(id)value
 {
-  objc_storeStrong(&self->_viewValue, a3);
+  objc_storeStrong(&self->_viewValue, value);
 
   [(HUQuickControlIconView *)self _updateUI];
 }
@@ -82,10 +82,10 @@
 {
   [(HUQuickControlIconView *)self _iconAndLabelsHeight];
   v4 = v3;
-  v5 = [(HUQuickControlIconView *)self profile];
-  v6 = HUQuickControlIconViewMetricsForControlSize([v5 controlSize], v4);
-  v7 = [v6 sizeDescriptor];
-  [v7 intrinsicSize];
+  profile = [(HUQuickControlIconView *)self profile];
+  v6 = HUQuickControlIconViewMetricsForControlSize([profile controlSize], v4);
+  sizeDescriptor = [v6 sizeDescriptor];
+  [sizeDescriptor intrinsicSize];
   v9 = v8;
   v11 = v10;
 
@@ -96,11 +96,11 @@
   return result;
 }
 
-- (void)_updateUIForReachabilityState:(unint64_t)a3
+- (void)_updateUIForReachabilityState:(unint64_t)state
 {
-  if (a3 <= 2)
+  if (state <= 2)
   {
-    [(HUQuickControlIconView *)self setAlpha:dbl_20D5CA878[a3]];
+    [(HUQuickControlIconView *)self setAlpha:dbl_20D5CA878[state]];
   }
 }
 
@@ -116,27 +116,27 @@
 - (void)_updateUI
 {
   v55[4] = *MEMORY[0x277D85DE8];
-  v3 = [(HUQuickControlIconView *)self profile];
-  v4 = [v3 iconDescriptor];
+  profile = [(HUQuickControlIconView *)self profile];
+  iconDescriptor = [profile iconDescriptor];
 
-  v5 = [(HUQuickControlIconView *)self profile];
-  v6 = [v5 iconDescriptor];
+  profile2 = [(HUQuickControlIconView *)self profile];
+  iconDescriptor2 = [profile2 iconDescriptor];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
     v8 = objc_alloc(MEMORY[0x277D14BD8]);
-    v9 = [(HUQuickControlIconView *)self profile];
-    v10 = [v9 statusString];
-    v11 = [v8 initWithFormattedTemperature:v10 heatingCoolingMode:0 targetHeatingCoolingMode:0];
+    profile3 = [(HUQuickControlIconView *)self profile];
+    statusString = [profile3 statusString];
+    v11 = [v8 initWithFormattedTemperature:statusString heatingCoolingMode:0 targetHeatingCoolingMode:0];
 
-    v4 = v11;
+    iconDescriptor = v11;
   }
 
-  v12 = [(HUQuickControlIconView *)self iconView];
-  v50 = v4;
-  [v12 updateWithIconDescriptor:v4 displayStyle:1 animated:1];
+  iconView = [(HUQuickControlIconView *)self iconView];
+  v50 = iconDescriptor;
+  [iconView updateWithIconDescriptor:iconDescriptor displayStyle:1 animated:1];
 
   v13 = [MEMORY[0x277D74310] preferredFontDescriptorWithTextStyle:*MEMORY[0x277D76968] addingSymbolicTraits:2 options:0];
   v14 = objc_opt_new();
@@ -144,39 +144,39 @@
   LODWORD(v15) = 1.0;
   [v14 setHyphenationFactor:v15];
   [v14 setLineBreakMode:0];
-  v16 = [MEMORY[0x277CBEAF8] preferredLanguages];
-  v17 = [v16 firstObject];
+  preferredLanguages = [MEMORY[0x277CBEAF8] preferredLanguages];
+  firstObject = [preferredLanguages firstObject];
 
-  v18 = [(HUQuickControlIconView *)self profile];
-  v19 = [v18 statusString];
-  v20 = v19;
+  profile4 = [(HUQuickControlIconView *)self profile];
+  statusString2 = [profile4 statusString];
+  v20 = statusString2;
   v21 = &stru_2823E0EE8;
-  if (v19)
+  if (statusString2)
   {
-    v21 = v19;
+    v21 = statusString2;
   }
 
   v22 = v21;
 
-  v23 = [(HUQuickControlIconView *)self statusLabel];
+  statusLabel = [(HUQuickControlIconView *)self statusLabel];
   v51 = v22;
-  [v23 setText:v22];
+  [statusLabel setText:v22];
 
-  v24 = [(HUQuickControlIconView *)self profile];
-  v25 = [v24 statusTextColor];
-  v26 = v25;
-  if (v25)
+  profile5 = [(HUQuickControlIconView *)self profile];
+  statusTextColor = [profile5 statusTextColor];
+  v26 = statusTextColor;
+  if (statusTextColor)
   {
-    v27 = v25;
+    labelColor = statusTextColor;
   }
 
   else
   {
-    v27 = [MEMORY[0x277D75348] labelColor];
+    labelColor = [MEMORY[0x277D75348] labelColor];
   }
 
-  v28 = v27;
-  v49 = v27;
+  v28 = labelColor;
+  v49 = labelColor;
 
   v29 = *MEMORY[0x277D740C0];
   v55[0] = v28;
@@ -191,40 +191,40 @@
   v34 = *MEMORY[0x277CC49E8];
   v54[2] = v33;
   v54[3] = v34;
-  v55[3] = v17;
+  v55[3] = firstObject;
   [MEMORY[0x277CBEAC0] dictionaryWithObjects:v55 forKeys:v54 count:4];
   v48 = v47 = v14;
 
   v35 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:v51 attributes:v48];
-  v36 = [(HUQuickControlIconView *)self statusLabel];
-  [v36 setAttributedText:v35];
+  statusLabel2 = [(HUQuickControlIconView *)self statusLabel];
+  [statusLabel2 setAttributedText:v35];
 
-  v37 = [(HUQuickControlIconView *)self profile];
-  v38 = [v37 supplementaryString];
-  v39 = v38;
+  profile6 = [(HUQuickControlIconView *)self profile];
+  supplementaryString = [profile6 supplementaryString];
+  v39 = supplementaryString;
   v40 = &stru_2823E0EE8;
-  if (v38)
+  if (supplementaryString)
   {
-    v40 = v38;
+    v40 = supplementaryString;
   }
 
   v41 = v40;
 
   v52[0] = v29;
-  v42 = [MEMORY[0x277D75348] secondaryLabelColor];
-  v53[0] = v42;
+  secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+  v53[0] = secondaryLabelColor;
   v52[1] = v30;
   v43 = [MEMORY[0x277D74300] fontWithDescriptor:v31 size:0.0];
   v53[1] = v43;
   v53[2] = v47;
   v52[2] = v33;
   v52[3] = v34;
-  v53[3] = v17;
+  v53[3] = firstObject;
   v44 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v53 forKeys:v52 count:4];
 
   v45 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:v41 attributes:v44];
-  v46 = [(HUQuickControlIconView *)self supplementaryLabel];
-  [v46 setAttributedText:v45];
+  supplementaryLabel = [(HUQuickControlIconView *)self supplementaryLabel];
+  [supplementaryLabel setAttributedText:v45];
 
   [(HUQuickControlIconView *)self _updateLayout];
 }
@@ -244,23 +244,23 @@
   v6 = v5 * 0.5 + -35.0;
   [(HUQuickControlIconView *)self frame];
   v8 = v7 * 0.5 - v4 * 0.5;
-  v9 = [(HUQuickControlIconView *)self iconView];
-  [v9 setFrame:{v6, v8, 70.0, 70.0}];
+  iconView = [(HUQuickControlIconView *)self iconView];
+  [iconView setFrame:{v6, v8, 70.0, 70.0}];
 
   [(HUQuickControlIconView *)self _updateLabelFramesOrigins];
 }
 
 - (void)_updateLabelSizes
 {
-  v3 = [(HUQuickControlIconView *)self profile];
-  v4 = [v3 controlSize];
+  profile = [(HUQuickControlIconView *)self profile];
+  controlSize = [profile controlSize];
   v5 = 120.0;
-  if (v4 == 1)
+  if (controlSize == 1)
   {
     v5 = 280.0;
   }
 
-  if (v4)
+  if (controlSize)
   {
     v6 = v5;
   }
@@ -273,8 +273,8 @@
   [(HUQuickControlIconView *)self frame];
   if (v7 <= 0.0)
   {
-    v9 = [(HUQuickControlIconView *)self iconView];
-    [v9 frame];
+    iconView = [(HUQuickControlIconView *)self iconView];
+    [iconView frame];
     v11 = v10 * 1.5;
 
     if (v11 >= v6)
@@ -292,44 +292,44 @@
     }
   }
 
-  v12 = [(HUQuickControlIconView *)self statusLabel];
-  [v12 sizeThatFits:{v6, 1.79769313e308}];
+  statusLabel = [(HUQuickControlIconView *)self statusLabel];
+  [statusLabel sizeThatFits:{v6, 1.79769313e308}];
   v14 = v13;
   v16 = v15;
 
-  v17 = [(HUQuickControlIconView *)self statusLabel];
-  [v17 frame];
+  statusLabel2 = [(HUQuickControlIconView *)self statusLabel];
+  [statusLabel2 frame];
   v19 = v18;
-  v20 = [(HUQuickControlIconView *)self statusLabel];
-  [v20 frame];
+  statusLabel3 = [(HUQuickControlIconView *)self statusLabel];
+  [statusLabel3 frame];
   v22 = v21;
-  v23 = [(HUQuickControlIconView *)self statusLabel];
-  [v23 setFrame:{v19, v22, v14, v16}];
+  statusLabel4 = [(HUQuickControlIconView *)self statusLabel];
+  [statusLabel4 setFrame:{v19, v22, v14, v16}];
 
-  v24 = [(HUQuickControlIconView *)self supplementaryLabel];
-  [v24 sizeThatFits:{v6, 1.79769313e308}];
+  supplementaryLabel = [(HUQuickControlIconView *)self supplementaryLabel];
+  [supplementaryLabel sizeThatFits:{v6, 1.79769313e308}];
   v26 = v25;
   v28 = v27;
 
-  v35 = [(HUQuickControlIconView *)self supplementaryLabel];
-  [v35 frame];
+  supplementaryLabel2 = [(HUQuickControlIconView *)self supplementaryLabel];
+  [supplementaryLabel2 frame];
   v30 = v29;
-  v31 = [(HUQuickControlIconView *)self supplementaryLabel];
-  [v31 frame];
+  supplementaryLabel3 = [(HUQuickControlIconView *)self supplementaryLabel];
+  [supplementaryLabel3 frame];
   v33 = v32;
-  v34 = [(HUQuickControlIconView *)self supplementaryLabel];
-  [v34 setFrame:{v30, v33, v26, v28}];
+  supplementaryLabel4 = [(HUQuickControlIconView *)self supplementaryLabel];
+  [supplementaryLabel4 setFrame:{v30, v33, v26, v28}];
 }
 
 - (CGRect)_getLabelsContainingRect
 {
   [(HUQuickControlIconView *)self _updateLabelSizes];
-  v3 = [(HUQuickControlIconView *)self statusLabel];
-  [v3 frame];
+  statusLabel = [(HUQuickControlIconView *)self statusLabel];
+  [statusLabel frame];
   v5 = v4;
 
-  v6 = [(HUQuickControlIconView *)self supplementaryLabel];
-  [v6 frame];
+  supplementaryLabel = [(HUQuickControlIconView *)self supplementaryLabel];
+  [supplementaryLabel frame];
   v8 = v7;
 
   if (v5 >= v8)
@@ -337,12 +337,12 @@
     v5 = v8;
   }
 
-  v9 = [(HUQuickControlIconView *)self statusLabel];
-  [v9 frame];
+  statusLabel2 = [(HUQuickControlIconView *)self statusLabel];
+  [statusLabel2 frame];
   v11 = v10;
 
-  v12 = [(HUQuickControlIconView *)self supplementaryLabel];
-  [v12 frame];
+  supplementaryLabel2 = [(HUQuickControlIconView *)self supplementaryLabel];
+  [supplementaryLabel2 frame];
   v14 = v13;
 
   if (v11 >= v14)
@@ -350,18 +350,18 @@
     v11 = v14;
   }
 
-  v15 = [(HUQuickControlIconView *)self statusLabel];
-  [v15 frame];
+  statusLabel3 = [(HUQuickControlIconView *)self statusLabel];
+  [statusLabel3 frame];
   v17 = v16;
-  v18 = [(HUQuickControlIconView *)self statusLabel];
-  [v18 frame];
+  statusLabel4 = [(HUQuickControlIconView *)self statusLabel];
+  [statusLabel4 frame];
   v20 = v17 + v19;
 
-  v21 = [(HUQuickControlIconView *)self supplementaryLabel];
-  [v21 frame];
+  supplementaryLabel3 = [(HUQuickControlIconView *)self supplementaryLabel];
+  [supplementaryLabel3 frame];
   v23 = v22;
-  v24 = [(HUQuickControlIconView *)self supplementaryLabel];
-  [v24 frame];
+  supplementaryLabel4 = [(HUQuickControlIconView *)self supplementaryLabel];
+  [supplementaryLabel4 frame];
   v26 = v23 + v25;
 
   if (v20 >= v26)
@@ -375,18 +375,18 @@
   }
 
   v28 = v27 - v5;
-  v29 = [(HUQuickControlIconView *)self statusLabel];
-  [v29 frame];
+  statusLabel5 = [(HUQuickControlIconView *)self statusLabel];
+  [statusLabel5 frame];
   v31 = v30;
-  v32 = [(HUQuickControlIconView *)self statusLabel];
-  [v32 frame];
+  statusLabel6 = [(HUQuickControlIconView *)self statusLabel];
+  [statusLabel6 frame];
   v34 = v31 + v33;
 
-  v35 = [(HUQuickControlIconView *)self supplementaryLabel];
-  [v35 frame];
+  supplementaryLabel5 = [(HUQuickControlIconView *)self supplementaryLabel];
+  [supplementaryLabel5 frame];
   v37 = v36;
-  v38 = [(HUQuickControlIconView *)self supplementaryLabel];
-  [v38 frame];
+  supplementaryLabel6 = [(HUQuickControlIconView *)self supplementaryLabel];
+  [supplementaryLabel6 frame];
   v40 = v37 + v39;
 
   if (v34 >= v40)
@@ -414,45 +414,45 @@
 {
   [(HUQuickControlIconView *)self frame];
   v4 = v3 * 0.5;
-  v5 = [(HUQuickControlIconView *)self statusLabel];
-  [v5 frame];
+  statusLabel = [(HUQuickControlIconView *)self statusLabel];
+  [statusLabel frame];
   v7 = v4 - v6 * 0.5;
 
-  v8 = [(HUQuickControlIconView *)self iconView];
-  [v8 frame];
+  iconView = [(HUQuickControlIconView *)self iconView];
+  [iconView frame];
   v10 = v9;
-  v11 = [(HUQuickControlIconView *)self iconView];
-  [v11 frame];
+  iconView2 = [(HUQuickControlIconView *)self iconView];
+  [iconView2 frame];
   v13 = v10 + v12 + 6.0;
 
-  v14 = [(HUQuickControlIconView *)self statusLabel];
-  [v14 frame];
+  statusLabel2 = [(HUQuickControlIconView *)self statusLabel];
+  [statusLabel2 frame];
   v16 = v15;
   v18 = v17;
 
-  v19 = [(HUQuickControlIconView *)self statusLabel];
-  [v19 setFrame:{v7, v13, v16, v18}];
+  statusLabel3 = [(HUQuickControlIconView *)self statusLabel];
+  [statusLabel3 setFrame:{v7, v13, v16, v18}];
 
   [(HUQuickControlIconView *)self frame];
   v21 = v20 * 0.5;
-  v22 = [(HUQuickControlIconView *)self supplementaryLabel];
-  [v22 frame];
+  supplementaryLabel = [(HUQuickControlIconView *)self supplementaryLabel];
+  [supplementaryLabel frame];
   v24 = v21 - v23 * 0.5;
 
-  v25 = [(HUQuickControlIconView *)self statusLabel];
-  [v25 frame];
+  statusLabel4 = [(HUQuickControlIconView *)self statusLabel];
+  [statusLabel4 frame];
   v27 = v26;
-  v28 = [(HUQuickControlIconView *)self statusLabel];
-  [v28 frame];
+  statusLabel5 = [(HUQuickControlIconView *)self statusLabel];
+  [statusLabel5 frame];
   v30 = v27 + v29;
 
-  v31 = [(HUQuickControlIconView *)self supplementaryLabel];
-  [v31 frame];
+  supplementaryLabel2 = [(HUQuickControlIconView *)self supplementaryLabel];
+  [supplementaryLabel2 frame];
   v33 = v32;
   v35 = v34;
 
-  v36 = [(HUQuickControlIconView *)self supplementaryLabel];
-  [v36 setFrame:{v24, v30, v33, v35}];
+  supplementaryLabel3 = [(HUQuickControlIconView *)self supplementaryLabel];
+  [supplementaryLabel3 setFrame:{v24, v30, v33, v35}];
 }
 
 - (HUQuickControlViewInteractionDelegate)interactionDelegate

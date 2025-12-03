@@ -1,6 +1,6 @@
 @interface SKWeakReference
-- (BOOL)isEqual:(id)a3;
-- (SKWeakReference)initWithObject:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (SKWeakReference)initWithObject:(id)object;
 - (id)object;
 - (unint64_t)hash;
 @end
@@ -9,21 +9,21 @@
 
 - (unint64_t)hash
 {
-  v2 = [(SKWeakReference *)self object];
-  v3 = [v2 hash];
+  object = [(SKWeakReference *)self object];
+  v3 = [object hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 object];
-    v6 = [(SKWeakReference *)self object];
-    v7 = v5 == v6;
+    object = [equalCopy object];
+    object2 = [(SKWeakReference *)self object];
+    v7 = object == object2;
   }
 
   else
@@ -34,16 +34,16 @@
   return v7;
 }
 
-- (SKWeakReference)initWithObject:(id)a3
+- (SKWeakReference)initWithObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v8.receiver = self;
   v8.super_class = SKWeakReference;
   v5 = [(SKWeakReference *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(SKWeakReference *)v5 setObject:v4];
+    [(SKWeakReference *)v5 setObject:objectCopy];
   }
 
   return v6;

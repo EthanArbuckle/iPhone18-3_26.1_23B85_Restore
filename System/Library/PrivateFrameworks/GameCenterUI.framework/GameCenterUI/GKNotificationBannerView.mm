@@ -1,20 +1,20 @@
 @interface GKNotificationBannerView
-- (GKNotificationBannerView)initWithTitle:(id)a3 image:(id)a4 message:(id)a5 useShortBanner:(BOOL)a6;
-- (GKNotificationBannerView)initWithTitle:(id)a3 player:(id)a4 leadingAccessoryView:(id)a5 message:(id)a6 useShortBanner:(BOOL)a7;
-- (void)_wasTouched:(id)a3;
+- (GKNotificationBannerView)initWithTitle:(id)title image:(id)image message:(id)message useShortBanner:(BOOL)banner;
+- (GKNotificationBannerView)initWithTitle:(id)title player:(id)player leadingAccessoryView:(id)view message:(id)message useShortBanner:(BOOL)banner;
+- (void)_wasTouched:(id)touched;
 - (void)awakeFromNib;
 - (void)callCompletionHandler;
-- (void)createBackdropViewWithBlurStyle:(int64_t)a3;
-- (void)createMessageLabel:(id)a3 withTextStyle:(id)a4;
-- (void)createTitleLabel:(id)a3 withTextStyle:(id)a4;
+- (void)createBackdropViewWithBlurStyle:(int64_t)style;
+- (void)createMessageLabel:(id)label withTextStyle:(id)style;
+- (void)createTitleLabel:(id)label withTextStyle:(id)style;
 - (void)dealloc;
-- (void)fadeInWithCompletionHandler:(id)a3;
-- (void)fadeOutQuickly:(BOOL)a3 withCompletionHandler:(id)a4;
+- (void)fadeInWithCompletionHandler:(id)handler;
+- (void)fadeOutQuickly:(BOOL)quickly withCompletionHandler:(id)handler;
 - (void)hideBanner;
 - (void)layoutSubviews;
-- (void)showPlayerAvatarAnimationWithCompletionHandler:(id)a3;
-- (void)showWithCompletionHandler:(id)a3;
-- (void)showWithTouchHandler:(id)a3;
+- (void)showPlayerAvatarAnimationWithCompletionHandler:(id)handler;
+- (void)showWithCompletionHandler:(id)handler;
+- (void)showWithTouchHandler:(id)handler;
 - (void)startLoadingPlayerAvatar;
 - (void)transitionToPlayerAvatar;
 @end
@@ -30,9 +30,9 @@
   self->_preferredBannerWidth = v3;
 }
 
-- (void)createBackdropViewWithBlurStyle:(int64_t)a3
+- (void)createBackdropViewWithBlurStyle:(int64_t)style
 {
-  v10 = [MEMORY[0x277D75210] effectWithStyle:a3];
+  v10 = [MEMORY[0x277D75210] effectWithStyle:style];
   v4 = [objc_alloc(MEMORY[0x277D75D68]) initWithEffect:v10];
   [(GKNotificationBannerView *)self addSubview:v4];
   if ([(GKNotificationBannerView *)self useShortBanner])
@@ -45,45 +45,45 @@
     v5 = 24.0;
   }
 
-  v6 = [v4 layer];
-  [v6 setCornerRadius:v5];
+  layer = [v4 layer];
+  [layer setCornerRadius:v5];
 
   v7 = *MEMORY[0x277CDA138];
-  v8 = [v4 layer];
-  [v8 setCornerCurve:v7];
+  layer2 = [v4 layer];
+  [layer2 setCornerCurve:v7];
 
-  v9 = [v4 layer];
-  [v9 setMasksToBounds:1];
+  layer3 = [v4 layer];
+  [layer3 setMasksToBounds:1];
 
   [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
   [MEMORY[0x277CCAAD0] _gkInstallEdgeConstraintsForView:v4 containedWithinParentView:self];
 }
 
-- (void)createTitleLabel:(id)a3 withTextStyle:(id)a4
+- (void)createTitleLabel:(id)label withTextStyle:(id)style
 {
-  v6 = a4;
-  v7 = a3;
+  styleCopy = style;
+  labelCopy = label;
   v8 = [GKLabel alloc];
   v9 = [(GKLabel *)v8 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   titleLabel = self->_titleLabel;
   self->_titleLabel = v9;
 
-  v11 = [MEMORY[0x277D75348] clearColor];
-  [(UILabel *)self->_titleLabel setBackgroundColor:v11];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [(UILabel *)self->_titleLabel setBackgroundColor:clearColor];
 
   [(UILabel *)self->_titleLabel setNumberOfLines:1];
   if ([(GKNotificationBannerView *)self useShortBanner])
   {
-    [v6 bannerShortTitle];
+    [styleCopy bannerShortTitle];
   }
 
   else
   {
-    [v6 bannerTitle];
+    [styleCopy bannerTitle];
   }
   v12 = ;
 
-  v13 = [v7 _gkAttributedStringByApplyingStyle:v12];
+  v13 = [labelCopy _gkAttributedStringByApplyingStyle:v12];
 
   [(UILabel *)self->_titleLabel setAttributedText:v13];
   [(UILabel *)self->_titleLabel setAdjustsFontSizeToFitWidth:1];
@@ -94,24 +94,24 @@
   [(GKNotificationBannerView *)self addSubview:v14];
 }
 
-- (void)createMessageLabel:(id)a3 withTextStyle:(id)a4
+- (void)createMessageLabel:(id)label withTextStyle:(id)style
 {
-  v6 = a4;
-  v7 = a3;
+  styleCopy = style;
+  labelCopy = label;
   v8 = [GKLabel alloc];
   v9 = [(GKLabel *)v8 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   messageLabel = self->_messageLabel;
   self->_messageLabel = v9;
 
-  v11 = [MEMORY[0x277D75348] clearColor];
-  [(UILabel *)self->_messageLabel setBackgroundColor:v11];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [(UILabel *)self->_messageLabel setBackgroundColor:clearColor];
 
   [(UILabel *)self->_messageLabel setNumberOfLines:1];
   [(UILabel *)self->_messageLabel setAdjustsFontSizeToFitWidth:1];
   [(UILabel *)self->_messageLabel setMinimumScaleFactor:0.6];
-  v12 = [v6 bannerMessage];
+  bannerMessage = [styleCopy bannerMessage];
 
-  v13 = [v7 _gkAttributedStringByApplyingStyle:v12];
+  v13 = [labelCopy _gkAttributedStringByApplyingStyle:bannerMessage];
 
   [(UILabel *)self->_messageLabel setAttributedText:v13];
   [(UILabel *)self->_messageLabel setAccessibilityIdentifier:@"GameCenter.notificationBanner.message"];
@@ -120,12 +120,12 @@
   [(GKNotificationBannerView *)self addSubview:v14];
 }
 
-- (GKNotificationBannerView)initWithTitle:(id)a3 player:(id)a4 leadingAccessoryView:(id)a5 message:(id)a6 useShortBanner:(BOOL)a7
+- (GKNotificationBannerView)initWithTitle:(id)title player:(id)player leadingAccessoryView:(id)view message:(id)message useShortBanner:(BOOL)banner
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  titleCopy = title;
+  playerCopy = player;
+  viewCopy = view;
+  messageCopy = message;
   v52.receiver = self;
   v52.super_class = GKNotificationBannerView;
   v16 = [(GKNotificationBannerView *)&v52 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
@@ -135,29 +135,29 @@
     goto LABEL_37;
   }
 
-  v16->_useShortBanner = a7;
+  v16->_useShortBanner = banner;
   [(GKNotificationBannerView *)v16 setDuration:3.0];
-  v18 = [MEMORY[0x277D0C8B0] textStyle];
+  textStyle = [MEMORY[0x277D0C8B0] textStyle];
   if (GKIsXRUIIdiom())
   {
-    v51 = v14;
+    v51 = viewCopy;
     v19 = objc_alloc_init(MEMORY[0x277D75D18]);
     [MEMORY[0x277D75348] blackColor];
-    v50 = a5;
-    v20 = v15;
-    v21 = v13;
-    v22 = v12;
-    v24 = v23 = v18;
+    viewCopy2 = view;
+    v20 = messageCopy;
+    v21 = playerCopy;
+    v22 = titleCopy;
+    v24 = v23 = textStyle;
     v25 = [v24 colorWithAlphaComponent:0.5];
-    v26 = [v25 CGColor];
-    v27 = [v19 layer];
-    [v27 setBackgroundColor:v26];
+    cGColor = [v25 CGColor];
+    layer = [v19 layer];
+    [layer setBackgroundColor:cGColor];
 
-    v18 = v23;
-    v12 = v22;
-    v13 = v21;
-    v15 = v20;
-    a5 = v50;
+    textStyle = v23;
+    titleCopy = v22;
+    playerCopy = v21;
+    messageCopy = v20;
+    view = viewCopy2;
     if ([(GKNotificationBannerView *)v17 useShortBanner])
     {
       v28 = 13.0;
@@ -168,18 +168,18 @@
       v28 = 24.0;
     }
 
-    v29 = [v19 layer];
-    [v29 setCornerRadius:v28];
+    layer2 = [v19 layer];
+    [layer2 setCornerRadius:v28];
 
-    v30 = [v19 layer];
-    [v30 setContinuousCorners:1];
+    layer3 = [v19 layer];
+    [layer3 setContinuousCorners:1];
 
     [(GKNotificationBannerView *)v17 insertSubview:v19 atIndex:0];
     [v19 setTranslatesAutoresizingMaskIntoConstraints:0];
     [MEMORY[0x277CCAAD0] _gkInstallEdgeConstraintsForView:v19 containedWithinParentView:v17];
 
-    v14 = v51;
-    if (!v13)
+    viewCopy = v51;
+    if (!playerCopy)
     {
       goto LABEL_10;
     }
@@ -188,33 +188,33 @@
   }
 
   [(GKNotificationBannerView *)v17 createBackdropViewWithBlurStyle:17];
-  if (v13)
+  if (playerCopy)
   {
 LABEL_9:
     v31 = objc_alloc_init(GKDashboardPlayerPhotoView);
     playerAvatarView = v17->_playerAvatarView;
     v17->_playerAvatarView = v31;
 
-    [(GKDashboardPlayerPhotoView *)v17->_playerAvatarView setPlayer:v13];
+    [(GKDashboardPlayerPhotoView *)v17->_playerAvatarView setPlayer:playerCopy];
     [(GKNotificationBannerView *)v17 addSubview:v17->_playerAvatarView];
   }
 
 LABEL_10:
-  if (v14)
+  if (viewCopy)
   {
-    objc_storeStrong(&v17->_leadingAccessoryView, a5);
+    objc_storeStrong(&v17->_leadingAccessoryView, view);
     [(UIView *)v17->_leadingAccessoryView setAccessibilityIdentifier:@"GameCenter.notificationBanner.image"];
     [(GKNotificationBannerView *)v17 addSubview:v17->_leadingAccessoryView];
   }
 
-  if (v12)
+  if (titleCopy)
   {
-    [(GKNotificationBannerView *)v17 createTitleLabel:v12 withTextStyle:v18];
+    [(GKNotificationBannerView *)v17 createTitleLabel:titleCopy withTextStyle:textStyle];
   }
 
-  if (v15)
+  if (messageCopy)
   {
-    [(GKNotificationBannerView *)v17 createMessageLabel:v15 withTextStyle:v18];
+    [(GKNotificationBannerView *)v17 createMessageLabel:messageCopy withTextStyle:textStyle];
   }
 
   [(GKNotificationBannerView *)v17 setAccessibilityIdentifier:@"UIA.GameCenter.GKNotificationBannerView"];
@@ -252,17 +252,17 @@ LABEL_10:
     v38 = 30.0;
   }
 
-  v39 = [(GKNotificationBannerView *)v17 useShortBanner];
+  useShortBanner = [(GKNotificationBannerView *)v17 useShortBanner];
   v40 = 42.0;
-  if (v39)
+  if (useShortBanner)
   {
     v40 = 24.0;
   }
 
   v41 = v38 + v40;
-  v42 = [(GKNotificationBannerView *)v17 useShortBanner];
+  useShortBanner2 = [(GKNotificationBannerView *)v17 useShortBanner];
   v43 = 20.0;
-  if (v42)
+  if (useShortBanner2)
   {
     v43 = 8.0;
   }
@@ -280,9 +280,9 @@ LABEL_10:
 
   v46 = v45 + v44;
   v17->_preferredBannerWidth = v46;
-  v47 = [(GKNotificationBannerView *)v17 useShortBanner];
+  useShortBanner3 = [(GKNotificationBannerView *)v17 useShortBanner];
   v48 = 282.0;
-  if (v47)
+  if (useShortBanner3)
   {
     v48 = 260.0;
   }
@@ -298,21 +298,21 @@ LABEL_37:
   return v17;
 }
 
-- (GKNotificationBannerView)initWithTitle:(id)a3 image:(id)a4 message:(id)a5 useShortBanner:(BOOL)a6
+- (GKNotificationBannerView)initWithTitle:(id)title image:(id)image message:(id)message useShortBanner:(BOOL)banner
 {
-  v6 = a6;
+  bannerCopy = banner;
   v10 = MEMORY[0x277D755E8];
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [[v10 alloc] initWithImage:v12];
+  messageCopy = message;
+  imageCopy = image;
+  titleCopy = title;
+  v14 = [[v10 alloc] initWithImage:imageCopy];
 
-  v15 = [MEMORY[0x277D75348] clearColor];
-  [v14 setBackgroundColor:v15];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [v14 setBackgroundColor:clearColor];
 
   [v14 setContentMode:1];
   [v14 setClipsToBounds:1];
-  v16 = [(GKNotificationBannerView *)self initWithTitle:v13 player:0 leadingAccessoryView:v14 message:v11 useShortBanner:v6];
+  v16 = [(GKNotificationBannerView *)self initWithTitle:titleCopy player:0 leadingAccessoryView:v14 message:messageCopy useShortBanner:bannerCopy];
 
   return v16;
 }
@@ -324,14 +324,14 @@ LABEL_37:
   [(GKNotificationBannerView *)self setPlayerAvatarView:v4];
 
   objc_initWeak(&location, self);
-  v5 = [(GKNotificationBannerView *)self playerAvatarView];
-  v6 = [MEMORY[0x277D0C138] local];
+  playerAvatarView = [(GKNotificationBannerView *)self playerAvatarView];
+  local = [MEMORY[0x277D0C138] local];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __52__GKNotificationBannerView_startLoadingPlayerAvatar__block_invoke;
   v7[3] = &unk_279669FE0;
   objc_copyWeak(&v8, &location);
-  [v5 setPlayer:v6 completionHandler:v7];
+  [playerAvatarView setPlayer:local completionHandler:v7];
 
   objc_destroyWeak(&v8);
   objc_destroyWeak(&location);
@@ -360,39 +360,39 @@ void __52__GKNotificationBannerView_startLoadingPlayerAvatar__block_invoke(uint6
 
 - (void)transitionToPlayerAvatar
 {
-  v3 = [(GKNotificationBannerView *)self playerAvatarView];
-  [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
+  playerAvatarView = [(GKNotificationBannerView *)self playerAvatarView];
+  [playerAvatarView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v4 = [(GKNotificationBannerView *)self playerAvatarView];
-  v5 = [v4 layer];
-  [v5 setOpacity:0.0];
+  playerAvatarView2 = [(GKNotificationBannerView *)self playerAvatarView];
+  layer = [playerAvatarView2 layer];
+  [layer setOpacity:0.0];
 
-  v6 = [(GKNotificationBannerView *)self playerAvatarView];
-  [(GKNotificationBannerView *)self addSubview:v6];
+  playerAvatarView3 = [(GKNotificationBannerView *)self playerAvatarView];
+  [(GKNotificationBannerView *)self addSubview:playerAvatarView3];
 
-  v7 = [(GKNotificationBannerView *)self leadingAccessoryView];
-  v8 = [(GKNotificationBannerView *)self playerAvatarView];
-  v9 = [v8 centerXAnchor];
-  v10 = [v7 centerXAnchor];
-  v11 = [v9 constraintEqualToAnchor:v10 constant:0.0];
+  leadingAccessoryView = [(GKNotificationBannerView *)self leadingAccessoryView];
+  playerAvatarView4 = [(GKNotificationBannerView *)self playerAvatarView];
+  centerXAnchor = [playerAvatarView4 centerXAnchor];
+  centerXAnchor2 = [leadingAccessoryView centerXAnchor];
+  v11 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2 constant:0.0];
   [v11 setActive:1];
 
-  v12 = [(GKNotificationBannerView *)self playerAvatarView];
-  v13 = [v12 centerYAnchor];
-  v14 = [v7 centerYAnchor];
-  v15 = [v13 constraintEqualToAnchor:v14 constant:0.0];
+  playerAvatarView5 = [(GKNotificationBannerView *)self playerAvatarView];
+  centerYAnchor = [playerAvatarView5 centerYAnchor];
+  centerYAnchor2 = [leadingAccessoryView centerYAnchor];
+  v15 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2 constant:0.0];
   [v15 setActive:1];
 
-  v16 = [(GKNotificationBannerView *)self playerAvatarView];
-  v17 = [v16 widthAnchor];
-  v18 = [v7 widthAnchor];
-  v19 = [v17 constraintEqualToAnchor:v18 constant:0.0];
+  playerAvatarView6 = [(GKNotificationBannerView *)self playerAvatarView];
+  widthAnchor = [playerAvatarView6 widthAnchor];
+  widthAnchor2 = [leadingAccessoryView widthAnchor];
+  v19 = [widthAnchor constraintEqualToAnchor:widthAnchor2 constant:0.0];
   [v19 setActive:1];
 
-  v20 = [(GKNotificationBannerView *)self playerAvatarView];
-  v21 = [v20 heightAnchor];
-  v22 = [v7 widthAnchor];
-  v23 = [v21 constraintEqualToAnchor:v22 constant:0.0];
+  playerAvatarView7 = [(GKNotificationBannerView *)self playerAvatarView];
+  heightAnchor = [playerAvatarView7 heightAnchor];
+  widthAnchor3 = [leadingAccessoryView widthAnchor];
+  v23 = [heightAnchor constraintEqualToAnchor:widthAnchor3 constant:0.0];
   [v23 setActive:1];
 
   [MEMORY[0x277CD9FF0] begin];
@@ -427,12 +427,12 @@ void __52__GKNotificationBannerView_startLoadingPlayerAvatar__block_invoke(uint6
   v36 = 3221225472;
   v37 = __52__GKNotificationBannerView_transitionToPlayerAvatar__block_invoke;
   v38 = &unk_279669E48;
-  v39 = v7;
-  v40 = self;
-  v33 = v7;
+  v39 = leadingAccessoryView;
+  selfCopy = self;
+  v33 = leadingAccessoryView;
   [v32 setCompletionBlock:&v35];
-  v34 = [v33 layer];
-  [v34 addAnimation:v24 forKey:@"transform"];
+  layer2 = [v33 layer];
+  [layer2 addAnimation:v24 forKey:@"transform"];
 
   [MEMORY[0x277CD9FF0] commit];
 }
@@ -501,8 +501,8 @@ void __52__GKNotificationBannerView_transitionToPlayerAvatar__block_invoke(uint6
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = GKNotificationBannerView;
@@ -519,8 +519,8 @@ void __52__GKNotificationBannerView_transitionToPlayerAvatar__block_invoke(uint6
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(GKNotificationBannerView *)self leadingAccessoryView];
-  if (v11)
+  leadingAccessoryView = [(GKNotificationBannerView *)self leadingAccessoryView];
+  if (leadingAccessoryView)
   {
     [(GKNotificationBannerView *)self leadingAccessoryView];
   }
@@ -535,10 +535,10 @@ void __52__GKNotificationBannerView_transitionToPlayerAvatar__block_invoke(uint6
   v14 = 8.0;
   if (![(GKNotificationBannerView *)self useShortBanner])
   {
-    v15 = [MEMORY[0x277D75418] currentDevice];
-    v16 = [v15 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (v16 != 1 || (v14 = 12.0, *MEMORY[0x277D0C258] == 1) && (*MEMORY[0x277D0C8F0] & 1) == 0)
+    if (userInterfaceIdiom != 1 || (v14 = 12.0, *MEMORY[0x277D0C258] == 1) && (*MEMORY[0x277D0C8F0] & 1) == 0)
     {
       v14 = 11.0;
     }
@@ -551,9 +551,9 @@ void __52__GKNotificationBannerView_transitionToPlayerAvatar__block_invoke(uint6
   v115.size.width = v8;
   v115.size.height = v10;
   MidY = CGRectGetMidY(v115);
-  v18 = [(GKNotificationBannerView *)self useShortBanner];
+  useShortBanner = [(GKNotificationBannerView *)self useShortBanner];
   v19 = 21.0;
-  if (v18)
+  if (useShortBanner)
   {
     v19 = 12.0;
   }
@@ -582,9 +582,9 @@ void __52__GKNotificationBannerView_transitionToPlayerAvatar__block_invoke(uint6
   [v12 setFrame:{v14, v20, v21, v22}];
   [v12 frame];
   MaxX = CGRectGetMaxX(v116);
-  v24 = [(GKNotificationBannerView *)self useShortBanner];
+  useShortBanner2 = [(GKNotificationBannerView *)self useShortBanner];
   v25 = 20.0;
-  if (v24)
+  if (useShortBanner2)
   {
     v25 = 8.0;
   }
@@ -592,10 +592,10 @@ void __52__GKNotificationBannerView_transitionToPlayerAvatar__block_invoke(uint6
   v26 = MaxX + v25;
   if (![(GKNotificationBannerView *)self useShortBanner])
   {
-    v27 = [MEMORY[0x277D75418] currentDevice];
-    v28 = [v27 userInterfaceIdiom];
+    currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom2 = [currentDevice2 userInterfaceIdiom];
 
-    if (v28 != 1 || (v13 = 12.0, *MEMORY[0x277D0C258] == 1) && (*MEMORY[0x277D0C8F0] & 1) == 0)
+    if (userInterfaceIdiom2 != 1 || (v13 = 12.0, *MEMORY[0x277D0C258] == 1) && (*MEMORY[0x277D0C8F0] & 1) == 0)
     {
       v13 = 11.0;
     }
@@ -610,21 +610,21 @@ void __52__GKNotificationBannerView_transitionToPlayerAvatar__block_invoke(uint6
   v33 = v8 - v31;
   remainder.size.width = v110 - v31;
   remainder.size.height = v10;
-  v34 = [(GKNotificationBannerView *)self titleLabel];
-  if (v34)
+  titleLabel = [(GKNotificationBannerView *)self titleLabel];
+  if (titleLabel)
   {
-    v35 = v34;
-    v36 = [(GKNotificationBannerView *)self messageLabel];
+    v35 = titleLabel;
+    messageLabel = [(GKNotificationBannerView *)self messageLabel];
 
-    if (v36)
+    if (messageLabel)
     {
-      v37 = [(GKNotificationBannerView *)self titleLabel];
-      [v37 sizeThatFits:{v33, v10}];
+      titleLabel2 = [(GKNotificationBannerView *)self titleLabel];
+      [titleLabel2 sizeThatFits:{v33, v10}];
       v39 = v38;
       v41 = v40;
 
-      v42 = [(GKNotificationBannerView *)self messageLabel];
-      [v42 sizeThatFits:{v33, v10}];
+      messageLabel2 = [(GKNotificationBannerView *)self messageLabel];
+      [messageLabel2 sizeThatFits:{v33, v10}];
       v44 = v43;
       v46 = v45;
 
@@ -662,15 +662,15 @@ void __52__GKNotificationBannerView_transitionToPlayerAvatar__block_invoke(uint6
       y = slice.origin.y;
       width = slice.size.width;
       height = slice.size.height;
-      v56 = [(GKNotificationBannerView *)self titleLabel];
-      [v56 setFrame:{x, y, width, height}];
+      titleLabel3 = [(GKNotificationBannerView *)self titleLabel];
+      [titleLabel3 setFrame:{x, y, width, height}];
 
       v57 = v111.origin.x;
       v58 = v111.origin.y;
       v59 = v111.size.width;
       v60 = v111.size.height;
-      v61 = [(GKNotificationBannerView *)self messageLabel];
-      [v61 setFrame:{v57, v58, v59, v60}];
+      messageLabel3 = [(GKNotificationBannerView *)self messageLabel];
+      [messageLabel3 setFrame:{v57, v58, v59, v60}];
 
       v62 = CGRectGetMaxX(slice);
       v63 = CGRectGetMaxX(v111);
@@ -679,14 +679,14 @@ void __52__GKNotificationBannerView_transitionToPlayerAvatar__block_invoke(uint6
         v62 = v63;
       }
 
-      v64 = [(GKNotificationBannerView *)self useShortBanner];
+      useShortBanner3 = [(GKNotificationBannerView *)self useShortBanner];
       v65 = 8.0;
-      if (!v64)
+      if (!useShortBanner3)
       {
-        v66 = [MEMORY[0x277D75418] currentDevice];
-        v67 = [v66 userInterfaceIdiom];
+        currentDevice3 = [MEMORY[0x277D75418] currentDevice];
+        userInterfaceIdiom3 = [currentDevice3 userInterfaceIdiom];
 
-        if (v67 != 1 || (v65 = 12.0, *MEMORY[0x277D0C258] == 1) && (*MEMORY[0x277D0C8F0] & 1) == 0)
+        if (userInterfaceIdiom3 != 1 || (v65 = 12.0, *MEMORY[0x277D0C258] == 1) && (*MEMORY[0x277D0C8F0] & 1) == 0)
         {
           v65 = 11.0;
         }
@@ -698,12 +698,12 @@ void __52__GKNotificationBannerView_transitionToPlayerAvatar__block_invoke(uint6
     }
   }
 
-  v69 = [(GKNotificationBannerView *)self titleLabel];
+  titleLabel4 = [(GKNotificationBannerView *)self titleLabel];
 
-  if (v69)
+  if (titleLabel4)
   {
-    v70 = [(GKNotificationBannerView *)self titleLabel];
-    [v70 sizeThatFits:{v33, v10}];
+    titleLabel5 = [(GKNotificationBannerView *)self titleLabel];
+    [titleLabel5 sizeThatFits:{v33, v10}];
     v72 = v71;
 
     if (v33 > v72)
@@ -712,20 +712,20 @@ void __52__GKNotificationBannerView_transitionToPlayerAvatar__block_invoke(uint6
     }
 
     remainder.size.width = v33;
-    v73 = [(GKNotificationBannerView *)self titleLabel];
+    titleLabel6 = [(GKNotificationBannerView *)self titleLabel];
   }
 
   else
   {
-    v74 = [(GKNotificationBannerView *)self messageLabel];
+    messageLabel4 = [(GKNotificationBannerView *)self messageLabel];
 
-    if (!v74)
+    if (!messageLabel4)
     {
       goto LABEL_49;
     }
 
-    v75 = [(GKNotificationBannerView *)self messageLabel];
-    [v75 sizeThatFits:{v33, v10}];
+    messageLabel5 = [(GKNotificationBannerView *)self messageLabel];
+    [messageLabel5 sizeThatFits:{v33, v10}];
     v77 = v76;
 
     if (v33 > v77)
@@ -734,11 +734,11 @@ void __52__GKNotificationBannerView_transitionToPlayerAvatar__block_invoke(uint6
     }
 
     remainder.size.width = v33;
-    v73 = [(GKNotificationBannerView *)self messageLabel];
+    titleLabel6 = [(GKNotificationBannerView *)self messageLabel];
   }
 
-  v78 = v73;
-  [v73 setFrame:{v29, v30, v33, v10}];
+  v78 = titleLabel6;
+  [titleLabel6 setFrame:{v29, v30, v33, v10}];
 
 LABEL_49:
   v117.origin.x = v29;
@@ -746,14 +746,14 @@ LABEL_49:
   v117.size.width = v33;
   v117.size.height = v10;
   v79 = CGRectGetMaxX(v117);
-  v80 = [(GKNotificationBannerView *)self useShortBanner];
+  useShortBanner4 = [(GKNotificationBannerView *)self useShortBanner];
   v81 = 8.0;
-  if (!v80)
+  if (!useShortBanner4)
   {
-    v82 = [MEMORY[0x277D75418] currentDevice];
-    v83 = [v82 userInterfaceIdiom];
+    currentDevice4 = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom4 = [currentDevice4 userInterfaceIdiom];
 
-    if (v83 != 1 || (v81 = 12.0, *MEMORY[0x277D0C258] == 1) && (*MEMORY[0x277D0C8F0] & 1) == 0)
+    if (userInterfaceIdiom4 != 1 || (v81 = 12.0, *MEMORY[0x277D0C258] == 1) && (*MEMORY[0x277D0C8F0] & 1) == 0)
     {
       v81 = 11.0;
     }
@@ -766,94 +766,94 @@ LABEL_55:
     v84 = (v32 - v68) * 0.5;
     [v12 frame];
     [v12 setFrame:v84 + v85];
-    v86 = [(GKNotificationBannerView *)self titleLabel];
+    titleLabel7 = [(GKNotificationBannerView *)self titleLabel];
 
-    if (v86)
+    if (titleLabel7)
     {
-      v87 = [(GKNotificationBannerView *)self titleLabel];
-      [v87 frame];
+      titleLabel8 = [(GKNotificationBannerView *)self titleLabel];
+      [titleLabel8 frame];
       v89 = v88;
       v91 = v90;
       v93 = v92;
       v95 = v94;
 
-      v96 = [(GKNotificationBannerView *)self titleLabel];
-      [v96 setFrame:{v84 + v89, v91, v93, v95}];
+      titleLabel9 = [(GKNotificationBannerView *)self titleLabel];
+      [titleLabel9 setFrame:{v84 + v89, v91, v93, v95}];
     }
 
-    v97 = [(GKNotificationBannerView *)self messageLabel];
+    messageLabel6 = [(GKNotificationBannerView *)self messageLabel];
 
-    if (v97)
+    if (messageLabel6)
     {
-      v98 = [(GKNotificationBannerView *)self messageLabel];
-      [v98 frame];
+      messageLabel7 = [(GKNotificationBannerView *)self messageLabel];
+      [messageLabel7 frame];
       v100 = v99;
       v102 = v101;
       v104 = v103;
       v106 = v105;
 
-      v107 = [(GKNotificationBannerView *)self messageLabel];
-      [v107 setFrame:{v84 + v100, v102, v104, v106}];
+      messageLabel8 = [(GKNotificationBannerView *)self messageLabel];
+      [messageLabel8 setFrame:{v84 + v100, v102, v104, v106}];
     }
   }
 }
 
-- (void)showPlayerAvatarAnimationWithCompletionHandler:(id)a3
+- (void)showPlayerAvatarAnimationWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   [(GKNotificationBannerView *)self startLoadingPlayerAvatar];
-  [(GKNotificationBannerView *)self setCompletionHandler:v4];
+  [(GKNotificationBannerView *)self setCompletionHandler:handlerCopy];
 
   [GKNotificationBannerWindow enqueBanner:self];
 }
 
-- (void)showWithCompletionHandler:(id)a3
+- (void)showWithCompletionHandler:(id)handler
 {
-  [(GKNotificationBannerView *)self setCompletionHandler:a3];
+  [(GKNotificationBannerView *)self setCompletionHandler:handler];
 
   [GKNotificationBannerWindow enqueBanner:self];
 }
 
-- (void)showWithTouchHandler:(id)a3
+- (void)showWithTouchHandler:(id)handler
 {
-  [(GKNotificationBannerView *)self setTouchHandler:a3];
+  [(GKNotificationBannerView *)self setTouchHandler:handler];
 
   [GKNotificationBannerWindow enqueBanner:self];
 }
 
 - (void)hideBanner
 {
-  v3 = [(GKNotificationBannerView *)self superview];
-  [v3 _hideBanner:self quickly:1];
+  superview = [(GKNotificationBannerView *)self superview];
+  [superview _hideBanner:self quickly:1];
 }
 
-- (void)_wasTouched:(id)a3
+- (void)_wasTouched:(id)touched
 {
-  v4 = [(GKNotificationBannerView *)self touchHandler];
-  if (v4)
+  touchHandler = [(GKNotificationBannerView *)self touchHandler];
+  if (touchHandler)
   {
-    v5 = v4;
-    v4[2]();
+    v5 = touchHandler;
+    touchHandler[2]();
     [(GKNotificationBannerView *)self setTouchHandler:0];
-    v4 = v5;
+    touchHandler = v5;
   }
 }
 
 - (void)callCompletionHandler
 {
-  v3 = [(GKNotificationBannerView *)self completionHandler];
-  if (v3)
+  completionHandler = [(GKNotificationBannerView *)self completionHandler];
+  if (completionHandler)
   {
-    v3[2]();
+    completionHandler[2]();
   }
 
   [(GKNotificationBannerView *)self setCompletionHandler:0];
   [(GKNotificationBannerView *)self setTouchHandler:0];
 }
 
-- (void)fadeInWithCompletionHandler:(id)a3
+- (void)fadeInWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   [(GKNotificationBannerView *)self setAlpha:0.0];
   v5 = *(MEMORY[0x277CBF2C0] + 16);
   *&v12.a = *MEMORY[0x277CBF2C0];
@@ -862,8 +862,8 @@ LABEL_55:
   CGAffineTransformScale(&v13, &v12, 0.93, 0.93);
   v12 = v13;
   [(GKNotificationBannerView *)self setTransform:&v12];
-  v6 = [(GKNotificationBannerView *)self layer];
-  [v6 setAllowsGroupOpacity:0];
+  layer = [(GKNotificationBannerView *)self layer];
+  [layer setAllowsGroupOpacity:0];
 
   v7 = MEMORY[0x277D75D18];
   v11[0] = MEMORY[0x277D85DD0];
@@ -876,8 +876,8 @@ LABEL_55:
   v9[2] = __56__GKNotificationBannerView_fadeInWithCompletionHandler___block_invoke_2;
   v9[3] = &unk_27966AF50;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
+  v10 = handlerCopy;
+  v8 = handlerCopy;
   [v7 animateWithDuration:38 delay:v11 options:v9 animations:0.5 completion:0.0];
 }
 
@@ -910,15 +910,15 @@ uint64_t __56__GKNotificationBannerView_fadeInWithCompletionHandler___block_invo
   return result;
 }
 
-- (void)fadeOutQuickly:(BOOL)a3 withCompletionHandler:(id)a4
+- (void)fadeOutQuickly:(BOOL)quickly withCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(GKNotificationBannerView *)self layer];
-  [v7 setAllowsGroupOpacity:0];
+  quicklyCopy = quickly;
+  handlerCopy = handler;
+  layer = [(GKNotificationBannerView *)self layer];
+  [layer setAllowsGroupOpacity:0];
 
   v8 = MEMORY[0x277D75D18];
-  if (v4)
+  if (quicklyCopy)
   {
     v9 = 0.1;
   }
@@ -938,8 +938,8 @@ uint64_t __56__GKNotificationBannerView_fadeInWithCompletionHandler___block_invo
   v11[2] = __65__GKNotificationBannerView_fadeOutQuickly_withCompletionHandler___block_invoke_2;
   v11[3] = &unk_27966AF50;
   v11[4] = self;
-  v12 = v6;
-  v10 = v6;
+  v12 = handlerCopy;
+  v10 = handlerCopy;
   [v8 animateWithDuration:38 delay:v13 options:v11 animations:v9 completion:0.0];
 }
 

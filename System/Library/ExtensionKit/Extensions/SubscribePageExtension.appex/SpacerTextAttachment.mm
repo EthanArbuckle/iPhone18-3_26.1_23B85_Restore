@@ -1,19 +1,19 @@
 @interface SpacerTextAttachment
-- (CGRect)attachmentBoundsForTextContainer:(id)a3 proposedLineFragment:(CGRect)a4 glyphPosition:(CGPoint)a5 characterIndex:(int64_t)a6;
-- (_TtC22SubscribePageExtensionP33_6837BF917F8C839CA68F136674C7E50F20SpacerTextAttachment)initWithCoder:(id)a3;
-- (_TtC22SubscribePageExtensionP33_6837BF917F8C839CA68F136674C7E50F20SpacerTextAttachment)initWithData:(id)a3 ofType:(id)a4;
+- (CGRect)attachmentBoundsForTextContainer:(id)container proposedLineFragment:(CGRect)fragment glyphPosition:(CGPoint)position characterIndex:(int64_t)index;
+- (_TtC22SubscribePageExtensionP33_6837BF917F8C839CA68F136674C7E50F20SpacerTextAttachment)initWithCoder:(id)coder;
+- (_TtC22SubscribePageExtensionP33_6837BF917F8C839CA68F136674C7E50F20SpacerTextAttachment)initWithData:(id)data ofType:(id)type;
 @end
 
 @implementation SpacerTextAttachment
 
-- (_TtC22SubscribePageExtensionP33_6837BF917F8C839CA68F136674C7E50F20SpacerTextAttachment)initWithCoder:(id)a3
+- (_TtC22SubscribePageExtensionP33_6837BF917F8C839CA68F136674C7E50F20SpacerTextAttachment)initWithCoder:(id)coder
 {
   result = sub_100754644();
   __break(1u);
   return result;
 }
 
-- (CGRect)attachmentBoundsForTextContainer:(id)a3 proposedLineFragment:(CGRect)a4 glyphPosition:(CGPoint)a5 characterIndex:(int64_t)a6
+- (CGRect)attachmentBoundsForTextContainer:(id)container proposedLineFragment:(CGRect)fragment glyphPosition:(CGPoint)position characterIndex:(int64_t)index
 {
   v6 = *(&self->super.super.isa + OBJC_IVAR____TtC22SubscribePageExtensionP33_6837BF917F8C839CA68F136674C7E50F20SpacerTextAttachment_width);
   v7 = 0.0;
@@ -26,11 +26,11 @@
   return result;
 }
 
-- (_TtC22SubscribePageExtensionP33_6837BF917F8C839CA68F136674C7E50F20SpacerTextAttachment)initWithData:(id)a3 ofType:(id)a4
+- (_TtC22SubscribePageExtensionP33_6837BF917F8C839CA68F136674C7E50F20SpacerTextAttachment)initWithData:(id)data ofType:(id)type
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
+    dataCopy = data;
     v5 = sub_100741274();
     sub_100386870(v5, v6);
   }

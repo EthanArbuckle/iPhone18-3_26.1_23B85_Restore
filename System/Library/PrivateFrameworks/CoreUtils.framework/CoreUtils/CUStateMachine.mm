@@ -1,10 +1,10 @@
 @interface CUStateMachine
 - (void)_firstTimeInit;
 - (void)dealloc;
-- (void)dispatchEvent:(id)a3;
+- (void)dispatchEvent:(id)event;
 - (void)invalidate;
 - (void)start;
-- (void)transitionToState:(id)a3;
+- (void)transitionToState:(id)state;
 @end
 
 @implementation CUStateMachine
@@ -17,7 +17,7 @@
   v79 = 0u;
   v80 = 0u;
   v81 = 0u;
-  v63 = self;
+  selfCopy = self;
   v4 = self->_states;
   v5 = [(NSArray *)v4 countByEnumeratingWithState:&v78 objects:v84 count:16];
   if (v5)
@@ -64,7 +64,7 @@
   v77 = 0u;
   v74 = 0u;
   v75 = 0u;
-  obj = v63->_states;
+  obj = selfCopy->_states;
   v64 = [(NSArray *)obj countByEnumeratingWithState:&v74 objects:v83 count:16];
   v21 = 0;
   if (v64)
@@ -86,7 +86,7 @@
         v71 = 0u;
         v72 = 0u;
         v73 = 0u;
-        v24 = v63->_states;
+        v24 = selfCopy->_states;
         v25 = [(NSArray *)v24 countByEnumeratingWithState:&v70 objects:v82 count:16];
         if (v25)
         {
@@ -242,47 +242,47 @@ LABEL_50:
   }
 
   v56 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  eventQueue = v63->_eventQueue;
-  v63->_eventQueue = v56;
+  eventQueue = selfCopy->_eventQueue;
+  selfCopy->_eventQueue = v56;
 
   v58 = [objc_alloc(MEMORY[0x1E696AE08]) initWithOptions:2];
-  lcaPath = v63->_lcaPath;
-  v63->_lcaPath = v58;
+  lcaPath = selfCopy->_lcaPath;
+  selfCopy->_lcaPath = v58;
 
-  [(NSPointerArray *)v63->_lcaPath setCount:v21];
-  v63->_started = 1;
+  [(NSPointerArray *)selfCopy->_lcaPath setCount:v21];
+  selfCopy->_started = 1;
 }
 
-- (void)transitionToState:(id)a3
+- (void)transitionToState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   if (!self->_dispatching)
   {
-    FatalErrorF("Transition to state %@ only allowed from a state handler", v5, v6, v7, v8, v9, v10, v11, v4);
+    FatalErrorF("Transition to state %@ only allowed from a state handler", v5, v6, v7, v8, v9, v10, v11, stateCopy);
   }
 
   if (self->_targetState)
   {
-    FatalErrorF("Transition to state %@ while transitioning to state %@", v5, v6, v7, v8, v9, v10, v11, v4);
+    FatalErrorF("Transition to state %@ while transitioning to state %@", v5, v6, v7, v8, v9, v10, v11, stateCopy);
   }
 
-  self->_targetState = v4;
+  self->_targetState = stateCopy;
 
-  MEMORY[0x1EEE66BB8](v4, 0);
+  MEMORY[0x1EEE66BB8](stateCopy, 0);
 }
 
-- (void)dispatchEvent:(id)a3
+- (void)dispatchEvent:(id)event
 {
-  v4 = a3;
-  v52 = v4;
+  eventCopy = event;
+  v52 = eventCopy;
   if (self->_dispatching)
   {
-    [(NSMutableArray *)self->_eventQueue addObject:v4];
+    [(NSMutableArray *)self->_eventQueue addObject:eventCopy];
   }
 
   else
   {
-    v5 = v4;
+    v5 = eventCopy;
     p_currentState = &self->_currentState;
     v7 = self->_currentState;
     while (1)
@@ -408,14 +408,14 @@ LABEL_50:
       self->_dispatching = 0;
       v7 = self->_currentState;
 
-      v51 = [(NSMutableArray *)self->_eventQueue firstObject];
+      firstObject = [(NSMutableArray *)self->_eventQueue firstObject];
 
-      if (!v51)
+      if (!firstObject)
       {
         break;
       }
 
-      v5 = v51;
+      v5 = firstObject;
 
       [(NSMutableArray *)self->_eventQueue removeObjectAtIndex:0];
     }
@@ -574,15 +574,15 @@ LABEL_22:
   }
 
   self->_dispatching = 0;
-  v46 = [(NSMutableArray *)self->_eventQueue firstObject];
-  if (v46)
+  firstObject = [(NSMutableArray *)self->_eventQueue firstObject];
+  if (firstObject)
   {
-    v49 = v46;
-    v47 = v46;
+    v49 = firstObject;
+    v47 = firstObject;
 
     [(NSMutableArray *)self->_eventQueue removeObjectAtIndex:0];
     [(CUStateMachine *)self dispatchEvent:v47];
-    v46 = v49;
+    firstObject = v49;
   }
 }
 

@@ -1,22 +1,22 @@
 @interface MXIRenderer
-- (MXIRenderer)initWithDevice:(id)a3 colorPixelFormat:(unint64_t)a4 depthPixelFormat:(unint64_t)a5 sampleCount:(int64_t)a6 error:(id *)a7;
-- (void)renderScene:(id)a3 withEncoder:(id)a4 context:(MXIRenderingContext *)a5;
+- (MXIRenderer)initWithDevice:(id)device colorPixelFormat:(unint64_t)format depthPixelFormat:(unint64_t)pixelFormat sampleCount:(int64_t)count error:(id *)error;
+- (void)renderScene:(id)scene withEncoder:(id)encoder context:(MXIRenderingContext *)context;
 @end
 
 @implementation MXIRenderer
 
-- (MXIRenderer)initWithDevice:(id)a3 colorPixelFormat:(unint64_t)a4 depthPixelFormat:(unint64_t)a5 sampleCount:(int64_t)a6 error:(id *)a7
+- (MXIRenderer)initWithDevice:(id)device colorPixelFormat:(unint64_t)format depthPixelFormat:(unint64_t)pixelFormat sampleCount:(int64_t)count error:(id *)error
 {
-  v11 = a3;
+  deviceCopy = device;
   v193.receiver = self;
   v193.super_class = MXIRenderer;
   v15 = [(MXIRenderer *)&v193 init];
   if (v15)
   {
     v16 = objc_msgSend_bundleWithIdentifier_(MEMORY[0x277CCA8D8], v12, @"com.apple.mxi", v13, v14);
-    v19 = objc_msgSend_newDefaultLibraryWithBundle_error_(v11, v17, v16, 0, v18);
-    v15->_stencilSupport = a5 == 260;
-    if (a5 == 260)
+    v19 = objc_msgSend_newDefaultLibraryWithBundle_error_(deviceCopy, v17, v16, 0, v18);
+    v15->_stencilSupport = pixelFormat == 260;
+    if (pixelFormat == 260)
     {
       v20 = 260;
     }
@@ -34,10 +34,10 @@
     v35 = objc_msgSend_newFunctionWithName_(v19, v32, @"frag_mxi", v33, v34);
     objc_msgSend_setFragmentFunction_(v21, v36, v35, v37, v38);
 
-    objc_msgSend_setRasterSampleCount_(v21, v39, a6, v40, v41);
+    objc_msgSend_setRasterSampleCount_(v21, v39, count, v40, v41);
     v46 = objc_msgSend_colorAttachments(v21, v42, v43, v44, v45);
     v50 = objc_msgSend_objectAtIndexedSubscript_(v46, v47, 0, v48, v49);
-    objc_msgSend_setPixelFormat_(v50, v51, a4, v52, v53);
+    objc_msgSend_setPixelFormat_(v50, v51, format, v52, v53);
 
     v58 = objc_msgSend_colorAttachments(v21, v54, v55, v56, v57);
     v62 = objc_msgSend_objectAtIndexedSubscript_(v58, v59, 0, v60, v61);
@@ -67,40 +67,40 @@
     v134 = objc_msgSend_objectAtIndexedSubscript_(v130, v131, 0, v132, v133);
     objc_msgSend_setDestinationAlphaBlendFactor_(v134, v135, 5, v136, v137);
 
-    objc_msgSend_setDepthAttachmentPixelFormat_(v21, v138, a5, v139, v140);
+    objc_msgSend_setDepthAttachmentPixelFormat_(v21, v138, pixelFormat, v139, v140);
     objc_msgSend_setStencilAttachmentPixelFormat_(v21, v141, v20, v142, v143);
-    if (objc_msgSend_supportsVertexAmplificationCount_(v11, v144, 2, v145, v146))
+    if (objc_msgSend_supportsVertexAmplificationCount_(deviceCopy, v144, 2, v145, v146))
     {
       objc_msgSend_setMaxVertexAmplificationCount_(v21, v147, 2, v148, v149);
     }
 
-    v150 = objc_msgSend_newRenderPipelineStateWithDescriptor_error_(v11, v147, v21, 0, v149);
+    v150 = objc_msgSend_newRenderPipelineStateWithDescriptor_error_(deviceCopy, v147, v21, 0, v149);
     texturePipelineState = v15->_texturePipelineState;
     v15->_texturePipelineState = v150;
 
     v155 = objc_msgSend_newFunctionWithName_(v19, v152, @"frag_mxi_array", v153, v154);
     objc_msgSend_setFragmentFunction_(v21, v156, v155, v157, v158);
 
-    v161 = objc_msgSend_newRenderPipelineStateWithDescriptor_error_(v11, v159, v21, 0, v160);
+    v161 = objc_msgSend_newRenderPipelineStateWithDescriptor_error_(deviceCopy, v159, v21, 0, v160);
     arrayPipelineState = v15->_arrayPipelineState;
     v15->_arrayPipelineState = v161;
 
-    if (a5)
+    if (pixelFormat)
     {
       v163 = objc_opt_new();
       objc_msgSend_setDepthWriteEnabled_(v163, v164, 1, v165, v166);
       objc_msgSend_setDepthCompareFunction_(v163, v167, 1, v168, v169);
-      v173 = objc_msgSend_newDepthStencilStateWithDescriptor_(v11, v170, v163, v171, v172);
+      v173 = objc_msgSend_newDepthStencilStateWithDescriptor_(deviceCopy, v170, v163, v171, v172);
       depthStateDefault = v15->_depthStateDefault;
       v15->_depthStateDefault = v173;
 
       objc_msgSend_setDepthCompareFunction_(v163, v175, 4, v176, v177);
-      v181 = objc_msgSend_newDepthStencilStateWithDescriptor_(v11, v178, v163, v179, v180);
+      v181 = objc_msgSend_newDepthStencilStateWithDescriptor_(deviceCopy, v178, v163, v179, v180);
       depthStateInvZ = v15->_depthStateInvZ;
       v15->_depthStateInvZ = v181;
 
       objc_msgSend_setDepthCompareFunction_(v163, v183, 7, v184, v185);
-      v189 = objc_msgSend_newDepthStencilStateWithDescriptor_(v11, v186, v163, v187, v188);
+      v189 = objc_msgSend_newDepthStencilStateWithDescriptor_(deviceCopy, v186, v163, v187, v188);
       depthStateAlways = v15->_depthStateAlways;
       v15->_depthStateAlways = v189;
 
@@ -113,34 +113,34 @@
   return v15;
 }
 
-- (void)renderScene:(id)a3 withEncoder:(id)a4 context:(MXIRenderingContext *)a5
+- (void)renderScene:(id)scene withEncoder:(id)encoder context:(MXIRenderingContext *)context
 {
   v298 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  if (!objc_msgSend_triangleCount(v8, v10, v11, v12, v13))
+  sceneCopy = scene;
+  encoderCopy = encoder;
+  if (!objc_msgSend_triangleCount(sceneCopy, v10, v11, v12, v13))
   {
     goto LABEL_53;
   }
 
-  v18 = objc_msgSend_colorTextures(v8, v14, v15, v16, v17);
+  v18 = objc_msgSend_colorTextures(sceneCopy, v14, v15, v16, v17);
   v23 = objc_msgSend_count(v18, v19, v20, v21, v22);
 
   if (v23 < 0x21)
   {
-    if (self->_stencilSupport && self->_useStencil == (*&a5[13].var4 == 7))
+    if (self->_stencilSupport && self->_useStencil == (*&context[13].var4 == 7))
     {
       v38 = objc_opt_new();
       objc_msgSend_setDepthWriteEnabled_(v38, v39, 1, v40, v41);
       self->_useStencil = 0;
-      if (*&a5[13].var4 != 7)
+      if (*&context[13].var4 != 7)
       {
         v45 = objc_opt_new();
-        objc_msgSend_setStencilCompareFunction_(v45, v46, *&a5[13].var4, v47, v48);
+        objc_msgSend_setStencilCompareFunction_(v45, v46, *&context[13].var4, v47, v48);
         objc_msgSend_setStencilFailureOperation_(v45, v49, 0, v50, v51);
         objc_msgSend_setDepthFailureOperation_(v45, v52, 0, v53, v54);
         objc_msgSend_setDepthStencilPassOperation_(v45, v55, 0, v56, v57);
-        objc_msgSend_setReadMask_(v45, v58, *&a5[13].var6, v59, v60);
+        objc_msgSend_setReadMask_(v45, v58, *&context[13].var6, v59, v60);
         objc_msgSend_setWriteMask_(v45, v61, 0, v62, v63);
         objc_msgSend_setFrontFaceStencil_(v38, v64, v45, v65, v66);
         objc_msgSend_setBackFaceStencil_(v38, v67, v45, v68, v69);
@@ -148,19 +148,19 @@
       }
 
       objc_msgSend_setDepthCompareFunction_(v38, v42, 1, v43, v44);
-      v74 = objc_msgSend_device(v9, v70, v71, v72, v73);
+      v74 = objc_msgSend_device(encoderCopy, v70, v71, v72, v73);
       v78 = objc_msgSend_newDepthStencilStateWithDescriptor_(v74, v75, v38, v76, v77);
       depthStateDefault = self->_depthStateDefault;
       self->_depthStateDefault = v78;
 
       objc_msgSend_setDepthCompareFunction_(v38, v80, 4, v81, v82);
-      v87 = objc_msgSend_device(v9, v83, v84, v85, v86);
+      v87 = objc_msgSend_device(encoderCopy, v83, v84, v85, v86);
       v91 = objc_msgSend_newDepthStencilStateWithDescriptor_(v87, v88, v38, v89, v90);
       depthStateInvZ = self->_depthStateInvZ;
       self->_depthStateInvZ = v91;
 
       objc_msgSend_setDepthCompareFunction_(v38, v93, 7, v94, v95);
-      v100 = objc_msgSend_device(v9, v96, v97, v98, v99);
+      v100 = objc_msgSend_device(encoderCopy, v96, v97, v98, v99);
       v104 = objc_msgSend_newDepthStencilStateWithDescriptor_(v100, v101, v38, v102, v103);
       depthStateAlways = self->_depthStateAlways;
       self->_depthStateAlways = v104;
@@ -183,14 +183,14 @@
     *buf = 0u;
     v279 = 0u;
     memset(v277, 0, sizeof(v277));
-    v106 = objc_msgSend_colorTextures(v8, v24, v25, v26, v27);
+    v106 = objc_msgSend_colorTextures(sceneCopy, v24, v25, v26, v27);
     v111 = objc_msgSend_count(v106, v107, v108, v109, v110);
 
     if (v111)
     {
       for (i = 0; ; ++i)
       {
-        v117 = objc_msgSend_colorTextures(v8, v112, v113, v114, v115);
+        v117 = objc_msgSend_colorTextures(sceneCopy, v112, v113, v114, v115);
         v122 = objc_msgSend_count(v117, v118, v119, v120, v121);
 
         if (v122 <= i)
@@ -198,7 +198,7 @@
           break;
         }
 
-        v127 = objc_msgSend_colorTextures(v8, v123, v124, v125, v126);
+        v127 = objc_msgSend_colorTextures(sceneCopy, v123, v124, v125, v126);
         v131 = objc_msgSend_objectAtIndex_(v127, v128, i, v129, v130);
         v132 = *&buf[8 * i];
         *&buf[8 * i] = v131;
@@ -206,20 +206,20 @@
         *(v277 + i) = objc_msgSend_gpuResourceID(v131, v133, v134, v135, v136);
       }
 
-      v137 = objc_msgSend_colorTextures(v8, v123, v124, v125, v126);
+      v137 = objc_msgSend_colorTextures(sceneCopy, v123, v124, v125, v126);
       v142 = objc_msgSend_count(v137, v138, v139, v140, v141);
-      objc_msgSend_useResources_count_usage_stages_(v9, v143, buf, v142, 1, 2);
+      objc_msgSend_useResources_count_usage_stages_(encoderCopy, v143, buf, v142, 1, 2);
     }
 
     v144 = 0;
-    v145 = *&a5[8].var3;
-    v146 = *&a5[8].var6;
-    v147 = *&a5[9].var4;
-    v148 = *&a5[10].var3;
-    v149 = *&a5[3].var4;
-    v150 = *&a5[4].var3;
-    v151 = *&a5[4].var6;
-    v273 = *&a5[2].var6;
+    v145 = *&context[8].var3;
+    v146 = *&context[8].var6;
+    v147 = *&context[9].var4;
+    v148 = *&context[10].var3;
+    v149 = *&context[3].var4;
+    v150 = *&context[4].var3;
+    v151 = *&context[4].var6;
+    v273 = *&context[2].var6;
     v274 = v149;
     v275 = v150;
     v276 = v151;
@@ -235,11 +235,11 @@
     v154 = v295;
     v155 = v296;
     v156 = v297;
-    v157 = *&a5->var3;
-    v158 = *&a5->var6;
-    v159 = *&a5[1].var4;
-    v160 = *&a5[2].var3;
-    v273 = *&a5->var3;
+    v157 = *&context->var3;
+    v158 = *&context->var6;
+    v159 = *&context[1].var4;
+    v160 = *&context[2].var3;
+    v273 = *&context->var3;
     v274 = v158;
     v275 = v159;
     v276 = v160;
@@ -254,17 +254,17 @@
     v266 = v295;
     v267 = v296;
     v268 = v297;
-    if (LOBYTE(a5[14].var3) == 1)
+    if (LOBYTE(context[14].var3) == 1)
     {
       v161 = 0;
-      v162 = *&a5[10].var6;
-      v163 = *&a5[11].var4;
-      v164 = *&a5[12].var3;
-      v165 = *&a5[12].var6;
-      v166 = *&a5[6].var3;
-      v167 = *&a5[6].var6;
-      v168 = *&a5[7].var4;
-      v273 = *&a5[5].var4;
+      v162 = *&context[10].var6;
+      v163 = *&context[11].var4;
+      v164 = *&context[12].var3;
+      v165 = *&context[12].var6;
+      v166 = *&context[6].var3;
+      v167 = *&context[6].var6;
+      v168 = *&context[7].var4;
+      v273 = *&context[5].var4;
       v274 = v166;
       v275 = v167;
       v276 = v168;
@@ -297,25 +297,25 @@
       v272 = v297;
     }
 
-    LOBYTE(v273) = objc_msgSend_isPremultipliedAlpha(v8, v112, v113, v114, v115, v265, *&v266, *&v267, *&v268, v269, *&v270, *&v271, *&v272, v273, v274, v275, v276);
-    v178 = objc_msgSend_device(v9, v174, v175, v176, v177);
+    LOBYTE(v273) = objc_msgSend_isPremultipliedAlpha(sceneCopy, v112, v113, v114, v115, v265, *&v266, *&v267, *&v268, v269, *&v270, *&v271, *&v272, v273, v274, v275, v276);
+    v178 = objc_msgSend_device(encoderCopy, v174, v175, v176, v177);
     v182 = objc_msgSend_supportsVertexAmplificationCount_(v178, v179, 2, v180, v181);
 
     if (v182)
     {
       v294 = xmmword_22FA07EC0;
-      if (LOBYTE(a5[14].var3))
+      if (LOBYTE(context[14].var3))
       {
-        objc_msgSend_setVertexAmplificationCount_viewMappings_(v9, v183, 2, &v294, v186);
+        objc_msgSend_setVertexAmplificationCount_viewMappings_(encoderCopy, v183, 2, &v294, v186);
       }
 
       else
       {
-        objc_msgSend_setVertexAmplificationCount_viewMappings_(v9, v183, 1, &v294, v186);
+        objc_msgSend_setVertexAmplificationCount_viewMappings_(encoderCopy, v183, 1, &v294, v186);
       }
     }
 
-    v187 = objc_msgSend_colorTextures(v8, v183, v184, v185, v186);
+    v187 = objc_msgSend_colorTextures(sceneCopy, v183, v184, v185, v186);
     v192 = objc_msgSend_count(v187, v188, v189, v190, v191);
     v196 = 16;
     if (!v192)
@@ -323,38 +323,38 @@
       v196 = 8;
     }
 
-    objc_msgSend_setRenderPipelineState_(v9, v193, *(&self->super.isa + v196), v194, v195);
+    objc_msgSend_setRenderPipelineState_(encoderCopy, v193, *(&self->super.isa + v196), v194, v195);
 
-    objc_msgSend_setStencilReferenceValue_(v9, v197, *(&a5[13].var6 + 1), v198, v199);
-    v204 = objc_msgSend_vertexPositions(v8, v200, v201, v202, v203);
-    objc_msgSend_setVertexBuffer_offset_atIndex_(v9, v205, v204, 0, 1);
+    objc_msgSend_setStencilReferenceValue_(encoderCopy, v197, *(&context[13].var6 + 1), v198, v199);
+    v204 = objc_msgSend_vertexPositions(sceneCopy, v200, v201, v202, v203);
+    objc_msgSend_setVertexBuffer_offset_atIndex_(encoderCopy, v205, v204, 0, 1);
 
-    v210 = objc_msgSend_vertexUVs(v8, v206, v207, v208, v209);
-    objc_msgSend_setVertexBuffer_offset_atIndex_(v9, v211, v210, 0, 2);
+    v210 = objc_msgSend_vertexUVs(sceneCopy, v206, v207, v208, v209);
+    objc_msgSend_setVertexBuffer_offset_atIndex_(encoderCopy, v211, v210, 0, 2);
 
-    v216 = objc_msgSend_triangleIndices(v8, v212, v213, v214, v215);
-    objc_msgSend_setVertexBuffer_offset_atIndex_(v9, v217, v216, 0, 0);
+    v216 = objc_msgSend_triangleIndices(sceneCopy, v212, v213, v214, v215);
+    objc_msgSend_setVertexBuffer_offset_atIndex_(encoderCopy, v217, v216, 0, 0);
 
-    v222 = objc_msgSend_triangleSliceIndices(v8, v218, v219, v220, v221);
-    objc_msgSend_setVertexBuffer_offset_atIndex_(v9, v223, v222, 0, 3);
+    v222 = objc_msgSend_triangleSliceIndices(sceneCopy, v218, v219, v220, v221);
+    objc_msgSend_setVertexBuffer_offset_atIndex_(encoderCopy, v223, v222, 0, 3);
 
-    objc_msgSend_setVertexBytes_length_atIndex_(v9, v224, &v265, 128, 4);
-    objc_msgSend_setFragmentBytes_length_atIndex_(v9, v225, &v273, 1, 0);
-    v230 = objc_msgSend_colorTextures(v8, v226, v227, v228, v229);
+    objc_msgSend_setVertexBytes_length_atIndex_(encoderCopy, v224, &v265, 128, 4);
+    objc_msgSend_setFragmentBytes_length_atIndex_(encoderCopy, v225, &v273, 1, 0);
+    v230 = objc_msgSend_colorTextures(sceneCopy, v226, v227, v228, v229);
     v235 = objc_msgSend_count(v230, v231, v232, v233, v234) == 0;
 
     if (v235)
     {
-      v244 = objc_msgSend_colorTexture(v8, v236, v237, v238, v239);
-      objc_msgSend_setFragmentTexture_atIndex_(v9, v245, v244, 0, v246);
+      v244 = objc_msgSend_colorTexture(sceneCopy, v236, v237, v238, v239);
+      objc_msgSend_setFragmentTexture_atIndex_(encoderCopy, v245, v244, 0, v246);
     }
 
     else
     {
-      objc_msgSend_setFragmentBytes_length_atIndex_(v9, v236, v277, 256, 1);
+      objc_msgSend_setFragmentBytes_length_atIndex_(encoderCopy, v236, v277, 256, 1);
     }
 
-    v251 = objc_msgSend_opaqueTriangleCount(v8, v240, v241, v242, v243);
+    v251 = objc_msgSend_opaqueTriangleCount(sceneCopy, v240, v241, v242, v243);
     v252 = (3 * v251);
     if (v251 <= 0)
     {
@@ -366,26 +366,26 @@
       v253 = v252;
     }
 
-    v261 = 3 * objc_msgSend_triangleCount(v8, v247, v248, v249, v250) - v253;
-    if (objc_msgSend_opaqueTriangleCount(v8, v254, v255, v256, v257))
+    v261 = 3 * objc_msgSend_triangleCount(sceneCopy, v247, v248, v249, v250) - v253;
+    if (objc_msgSend_opaqueTriangleCount(sceneCopy, v254, v255, v256, v257))
     {
       v262 = self->_depthStateDefault;
       if (v262)
       {
-        if ((*&a5[10].var4 - *&a5[9].var6) >= ((*&a5[10].var4 + (*&a5[9].var6 * -100.0)) / 100.0))
+        if ((*&context[10].var4 - *&context[9].var6) >= ((*&context[10].var4 + (*&context[9].var6 * -100.0)) / 100.0))
         {
-          objc_msgSend_setDepthStencilState_(v9, v258, self->_depthStateInvZ, v259, v260);
+          objc_msgSend_setDepthStencilState_(encoderCopy, v258, self->_depthStateInvZ, v259, v260);
         }
 
         else
         {
-          objc_msgSend_setDepthStencilState_(v9, v258, v262, v259, v260);
+          objc_msgSend_setDepthStencilState_(encoderCopy, v258, v262, v259, v260);
         }
       }
 
       if (v251 >= 1)
       {
-        objc_msgSend_drawPrimitives_vertexStart_vertexCount_(v9, v258, 3, 0, v252);
+        objc_msgSend_drawPrimitives_vertexStart_vertexCount_(encoderCopy, v258, 3, 0, v252);
       }
 
       if (v261 <= 0)
@@ -399,7 +399,7 @@
       v263 = self->_depthStateAlways;
       if (v263)
       {
-        objc_msgSend_setDepthStencilState_(v9, v258, v263, v259, v260);
+        objc_msgSend_setDepthStencilState_(encoderCopy, v258, v263, v259, v260);
       }
 
       if (v261 < 1)
@@ -408,7 +408,7 @@
       }
     }
 
-    objc_msgSend_drawPrimitives_vertexStart_vertexCount_(v9, v258, 3, v253, v261);
+    objc_msgSend_drawPrimitives_vertexStart_vertexCount_(encoderCopy, v258, 3, v253, v261);
 LABEL_51:
     for (j = 248; j != -8; j -= 8)
     {
@@ -420,7 +420,7 @@ LABEL_51:
   v28 = _mxi_log();
   if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
   {
-    v33 = objc_msgSend_colorTextures(v8, v29, v30, v31, v32);
+    v33 = objc_msgSend_colorTextures(sceneCopy, v29, v30, v31, v32);
     *buf = 67109376;
     *&buf[4] = objc_msgSend_count(v33, v34, v35, v36, v37);
     *&buf[8] = 1024;

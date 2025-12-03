@@ -1,28 +1,28 @@
 @interface HMPendingRequests
 - (HMPendingRequests)init;
-- (id)_retrieveRequestOfType:(int64_t)a3 forIdentifier:(id)a4 remove:(BOOL)a5;
-- (id)removeAccessoryDescriptionForIdentifier:(id)a3;
-- (id)removeAccessoryForIdentifier:(id)a3;
-- (id)removeActionForIdentifier:(id)a3;
-- (id)removeApplicationDataForIdentifier:(id)a3;
-- (id)removeEventForIdentifier:(id)a3;
-- (id)removeEventsForIdentifier:(id)a3;
-- (id)removeMediaSystemBuilderForIdentifier:(id)a3;
-- (id)removeRequestOfType:(int64_t)a3 forIdentifier:(id)a4;
-- (id)removeTriggerForIdentifier:(id)a3;
-- (id)retrieveAccessoryDescriptionForIdentifier:(id)a3;
-- (id)retrieveRequestOfType:(int64_t)a3 forIdentifier:(id)a4;
-- (id)uuidForAccessoryDescriptionUUID:(id)a3;
-- (void)_addRequest:(id)a3 ofType:(int64_t)a4 forIdentifier:(id)a5;
-- (void)addAccessory:(id)a3 andCompletionBlock:(id)a4 forIdentifier:(id)a5;
-- (void)addAccessoryDescription:(id)a3 progressBlock:(id)a4 andCompletionBlock:(id)a5 forIdentifier:(id)a6;
-- (void)addAction:(id)a3 andCompletionBlock:(id)a4 forIdentifier:(id)a5;
-- (void)addApplicationData:(id)a3 andCompletionBlock:(id)a4 forIdentifier:(id)a5;
-- (void)addEvent:(id)a3 andCompletionBlock:(id)a4 forIdentifier:(id)a5;
-- (void)addEvents:(id)a3 andCompletionBlock:(id)a4 forIdentifier:(id)a5;
-- (void)addMediaSystemBuilder:(id)a3 andCompletionBlock:(id)a4 forIdentifier:(id)a5;
-- (void)addRequest:(id)a3 ofType:(int64_t)a4 forIdentifier:(id)a5;
-- (void)addTrigger:(id)a3 andCompletionBlock:(id)a4 forIdentifier:(id)a5;
+- (id)_retrieveRequestOfType:(int64_t)type forIdentifier:(id)identifier remove:(BOOL)remove;
+- (id)removeAccessoryDescriptionForIdentifier:(id)identifier;
+- (id)removeAccessoryForIdentifier:(id)identifier;
+- (id)removeActionForIdentifier:(id)identifier;
+- (id)removeApplicationDataForIdentifier:(id)identifier;
+- (id)removeEventForIdentifier:(id)identifier;
+- (id)removeEventsForIdentifier:(id)identifier;
+- (id)removeMediaSystemBuilderForIdentifier:(id)identifier;
+- (id)removeRequestOfType:(int64_t)type forIdentifier:(id)identifier;
+- (id)removeTriggerForIdentifier:(id)identifier;
+- (id)retrieveAccessoryDescriptionForIdentifier:(id)identifier;
+- (id)retrieveRequestOfType:(int64_t)type forIdentifier:(id)identifier;
+- (id)uuidForAccessoryDescriptionUUID:(id)d;
+- (void)_addRequest:(id)request ofType:(int64_t)type forIdentifier:(id)identifier;
+- (void)addAccessory:(id)accessory andCompletionBlock:(id)block forIdentifier:(id)identifier;
+- (void)addAccessoryDescription:(id)description progressBlock:(id)block andCompletionBlock:(id)completionBlock forIdentifier:(id)identifier;
+- (void)addAction:(id)action andCompletionBlock:(id)block forIdentifier:(id)identifier;
+- (void)addApplicationData:(id)data andCompletionBlock:(id)block forIdentifier:(id)identifier;
+- (void)addEvent:(id)event andCompletionBlock:(id)block forIdentifier:(id)identifier;
+- (void)addEvents:(id)events andCompletionBlock:(id)block forIdentifier:(id)identifier;
+- (void)addMediaSystemBuilder:(id)builder andCompletionBlock:(id)block forIdentifier:(id)identifier;
+- (void)addRequest:(id)request ofType:(int64_t)type forIdentifier:(id)identifier;
+- (void)addTrigger:(id)trigger andCompletionBlock:(id)block forIdentifier:(id)identifier;
 @end
 
 @implementation HMPendingRequests
@@ -34,23 +34,23 @@
   v2 = [(HMPendingRequests *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     contextLists = v2->_contextLists;
-    v2->_contextLists = v3;
+    v2->_contextLists = array;
 
     for (i = 0; i != 10; ++i)
     {
-      v6 = [MEMORY[0x1E695DF90] dictionary];
-      [(NSMutableArray *)v2->_contextLists setObject:v6 atIndexedSubscript:i];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
+      [(NSMutableArray *)v2->_contextLists setObject:dictionary atIndexedSubscript:i];
     }
   }
 
   return v2;
 }
 
-- (id)removeMediaSystemBuilderForIdentifier:(id)a3
+- (id)removeMediaSystemBuilderForIdentifier:(id)identifier
 {
-  v3 = [(HMPendingRequests *)self removeRequestOfType:9 forIdentifier:a3];
+  v3 = [(HMPendingRequests *)self removeRequestOfType:9 forIdentifier:identifier];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -65,17 +65,17 @@
   return v4;
 }
 
-- (void)addMediaSystemBuilder:(id)a3 andCompletionBlock:(id)a4 forIdentifier:(id)a5
+- (void)addMediaSystemBuilder:(id)builder andCompletionBlock:(id)block forIdentifier:(id)identifier
 {
-  v8 = a5;
-  v9 = a4;
-  [(HMPendingRequests *)self addRequest:a3 ofType:9 forIdentifier:v8];
-  [(HMPendingRequests *)self addRequest:v9 ofType:0 forIdentifier:v8];
+  identifierCopy = identifier;
+  blockCopy = block;
+  [(HMPendingRequests *)self addRequest:builder ofType:9 forIdentifier:identifierCopy];
+  [(HMPendingRequests *)self addRequest:blockCopy ofType:0 forIdentifier:identifierCopy];
 }
 
-- (id)removeTriggerForIdentifier:(id)a3
+- (id)removeTriggerForIdentifier:(id)identifier
 {
-  v3 = [(HMPendingRequests *)self removeRequestOfType:2 forIdentifier:a3];
+  v3 = [(HMPendingRequests *)self removeRequestOfType:2 forIdentifier:identifier];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -90,17 +90,17 @@
   return v4;
 }
 
-- (void)addTrigger:(id)a3 andCompletionBlock:(id)a4 forIdentifier:(id)a5
+- (void)addTrigger:(id)trigger andCompletionBlock:(id)block forIdentifier:(id)identifier
 {
-  v8 = a5;
-  v9 = a4;
-  [(HMPendingRequests *)self addRequest:a3 ofType:2 forIdentifier:v8];
-  [(HMPendingRequests *)self addRequest:v9 ofType:0 forIdentifier:v8];
+  identifierCopy = identifier;
+  blockCopy = block;
+  [(HMPendingRequests *)self addRequest:trigger ofType:2 forIdentifier:identifierCopy];
+  [(HMPendingRequests *)self addRequest:blockCopy ofType:0 forIdentifier:identifierCopy];
 }
 
-- (id)removeAccessoryDescriptionForIdentifier:(id)a3
+- (id)removeAccessoryDescriptionForIdentifier:(id)identifier
 {
-  v3 = [(HMPendingRequests *)self removeRequestOfType:8 forIdentifier:a3];
+  v3 = [(HMPendingRequests *)self removeRequestOfType:8 forIdentifier:identifier];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -117,9 +117,9 @@
   return v4;
 }
 
-- (id)uuidForAccessoryDescriptionUUID:(id)a3
+- (id)uuidForAccessoryDescriptionUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -127,14 +127,14 @@
   v17 = __Block_byref_object_dispose__44337;
   v18 = 0;
   os_unfair_lock_lock_with_options();
-  v5 = [(HMPendingRequests *)self contextLists];
-  v6 = [v5 objectAtIndexedSubscript:8];
+  contextLists = [(HMPendingRequests *)self contextLists];
+  v6 = [contextLists objectAtIndexedSubscript:8];
 
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __53__HMPendingRequests_uuidForAccessoryDescriptionUUID___block_invoke;
   v10[3] = &unk_1E754BE68;
-  v7 = v4;
+  v7 = dCopy;
   v11 = v7;
   v12 = &v13;
   [v6 enumerateKeysAndObjectsUsingBlock:v10];
@@ -199,26 +199,26 @@ void __53__HMPendingRequests_uuidForAccessoryDescriptionUUID___block_invoke(uint
   }
 }
 
-- (void)addAccessoryDescription:(id)a3 progressBlock:(id)a4 andCompletionBlock:(id)a5 forIdentifier:(id)a6
+- (void)addAccessoryDescription:(id)description progressBlock:(id)block andCompletionBlock:(id)completionBlock forIdentifier:(id)identifier
 {
-  v12 = a4;
-  v10 = a5;
-  v11 = a6;
-  [(HMPendingRequests *)self addRequest:a3 ofType:8 forIdentifier:v11];
-  if (v12)
+  blockCopy = block;
+  completionBlockCopy = completionBlock;
+  identifierCopy = identifier;
+  [(HMPendingRequests *)self addRequest:description ofType:8 forIdentifier:identifierCopy];
+  if (blockCopy)
   {
-    [(HMPendingRequests *)self addRequest:v12 ofType:7 forIdentifier:v11];
+    [(HMPendingRequests *)self addRequest:blockCopy ofType:7 forIdentifier:identifierCopy];
   }
 
-  if (v10)
+  if (completionBlockCopy)
   {
-    [(HMPendingRequests *)self addRequest:v10 ofType:0 forIdentifier:v11];
+    [(HMPendingRequests *)self addRequest:completionBlockCopy ofType:0 forIdentifier:identifierCopy];
   }
 }
 
-- (id)removeAccessoryForIdentifier:(id)a3
+- (id)removeAccessoryForIdentifier:(id)identifier
 {
-  v3 = [(HMPendingRequests *)self removeRequestOfType:1 forIdentifier:a3];
+  v3 = [(HMPendingRequests *)self removeRequestOfType:1 forIdentifier:identifier];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -233,17 +233,17 @@ void __53__HMPendingRequests_uuidForAccessoryDescriptionUUID___block_invoke(uint
   return v4;
 }
 
-- (void)addAccessory:(id)a3 andCompletionBlock:(id)a4 forIdentifier:(id)a5
+- (void)addAccessory:(id)accessory andCompletionBlock:(id)block forIdentifier:(id)identifier
 {
-  v8 = a5;
-  v9 = a4;
-  [(HMPendingRequests *)self addRequest:a3 ofType:1 forIdentifier:v8];
-  [(HMPendingRequests *)self addRequest:v9 ofType:0 forIdentifier:v8];
+  identifierCopy = identifier;
+  blockCopy = block;
+  [(HMPendingRequests *)self addRequest:accessory ofType:1 forIdentifier:identifierCopy];
+  [(HMPendingRequests *)self addRequest:blockCopy ofType:0 forIdentifier:identifierCopy];
 }
 
-- (id)removeApplicationDataForIdentifier:(id)a3
+- (id)removeApplicationDataForIdentifier:(id)identifier
 {
-  v3 = [(HMPendingRequests *)self removeRequestOfType:6 forIdentifier:a3];
+  v3 = [(HMPendingRequests *)self removeRequestOfType:6 forIdentifier:identifier];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -258,17 +258,17 @@ void __53__HMPendingRequests_uuidForAccessoryDescriptionUUID___block_invoke(uint
   return v4;
 }
 
-- (void)addApplicationData:(id)a3 andCompletionBlock:(id)a4 forIdentifier:(id)a5
+- (void)addApplicationData:(id)data andCompletionBlock:(id)block forIdentifier:(id)identifier
 {
-  v8 = a5;
-  v9 = a4;
-  [(HMPendingRequests *)self addRequest:a3 ofType:6 forIdentifier:v8];
-  [(HMPendingRequests *)self addRequest:v9 ofType:0 forIdentifier:v8];
+  identifierCopy = identifier;
+  blockCopy = block;
+  [(HMPendingRequests *)self addRequest:data ofType:6 forIdentifier:identifierCopy];
+  [(HMPendingRequests *)self addRequest:blockCopy ofType:0 forIdentifier:identifierCopy];
 }
 
-- (id)removeEventsForIdentifier:(id)a3
+- (id)removeEventsForIdentifier:(id)identifier
 {
-  v3 = [(HMPendingRequests *)self removeRequestOfType:5 forIdentifier:a3];
+  v3 = [(HMPendingRequests *)self removeRequestOfType:5 forIdentifier:identifier];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -283,17 +283,17 @@ void __53__HMPendingRequests_uuidForAccessoryDescriptionUUID___block_invoke(uint
   return v4;
 }
 
-- (void)addEvents:(id)a3 andCompletionBlock:(id)a4 forIdentifier:(id)a5
+- (void)addEvents:(id)events andCompletionBlock:(id)block forIdentifier:(id)identifier
 {
-  v8 = a5;
-  v9 = a4;
-  [(HMPendingRequests *)self addRequest:a3 ofType:5 forIdentifier:v8];
-  [(HMPendingRequests *)self addRequest:v9 ofType:0 forIdentifier:v8];
+  identifierCopy = identifier;
+  blockCopy = block;
+  [(HMPendingRequests *)self addRequest:events ofType:5 forIdentifier:identifierCopy];
+  [(HMPendingRequests *)self addRequest:blockCopy ofType:0 forIdentifier:identifierCopy];
 }
 
-- (id)removeEventForIdentifier:(id)a3
+- (id)removeEventForIdentifier:(id)identifier
 {
-  v3 = [(HMPendingRequests *)self removeRequestOfType:4 forIdentifier:a3];
+  v3 = [(HMPendingRequests *)self removeRequestOfType:4 forIdentifier:identifier];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -308,17 +308,17 @@ void __53__HMPendingRequests_uuidForAccessoryDescriptionUUID___block_invoke(uint
   return v4;
 }
 
-- (void)addEvent:(id)a3 andCompletionBlock:(id)a4 forIdentifier:(id)a5
+- (void)addEvent:(id)event andCompletionBlock:(id)block forIdentifier:(id)identifier
 {
-  v8 = a5;
-  v9 = a4;
-  [(HMPendingRequests *)self addRequest:a3 ofType:4 forIdentifier:v8];
-  [(HMPendingRequests *)self addRequest:v9 ofType:0 forIdentifier:v8];
+  identifierCopy = identifier;
+  blockCopy = block;
+  [(HMPendingRequests *)self addRequest:event ofType:4 forIdentifier:identifierCopy];
+  [(HMPendingRequests *)self addRequest:blockCopy ofType:0 forIdentifier:identifierCopy];
 }
 
-- (id)removeActionForIdentifier:(id)a3
+- (id)removeActionForIdentifier:(id)identifier
 {
-  v3 = [(HMPendingRequests *)self removeRequestOfType:3 forIdentifier:a3];
+  v3 = [(HMPendingRequests *)self removeRequestOfType:3 forIdentifier:identifier];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -333,17 +333,17 @@ void __53__HMPendingRequests_uuidForAccessoryDescriptionUUID___block_invoke(uint
   return v4;
 }
 
-- (void)addAction:(id)a3 andCompletionBlock:(id)a4 forIdentifier:(id)a5
+- (void)addAction:(id)action andCompletionBlock:(id)block forIdentifier:(id)identifier
 {
-  v8 = a5;
-  v9 = a4;
-  [(HMPendingRequests *)self addRequest:a3 ofType:3 forIdentifier:v8];
-  [(HMPendingRequests *)self addRequest:v9 ofType:0 forIdentifier:v8];
+  identifierCopy = identifier;
+  blockCopy = block;
+  [(HMPendingRequests *)self addRequest:action ofType:3 forIdentifier:identifierCopy];
+  [(HMPendingRequests *)self addRequest:blockCopy ofType:0 forIdentifier:identifierCopy];
 }
 
-- (id)retrieveAccessoryDescriptionForIdentifier:(id)a3
+- (id)retrieveAccessoryDescriptionForIdentifier:(id)identifier
 {
-  v3 = [(HMPendingRequests *)self retrieveRequestOfType:8 forIdentifier:a3];
+  v3 = [(HMPendingRequests *)self retrieveRequestOfType:8 forIdentifier:identifier];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -360,55 +360,55 @@ void __53__HMPendingRequests_uuidForAccessoryDescriptionUUID___block_invoke(uint
   return v4;
 }
 
-- (id)retrieveRequestOfType:(int64_t)a3 forIdentifier:(id)a4
+- (id)retrieveRequestOfType:(int64_t)type forIdentifier:(id)identifier
 {
-  v6 = a4;
+  identifierCopy = identifier;
   os_unfair_lock_lock_with_options();
-  v7 = [(HMPendingRequests *)self _retrieveRequestOfType:a3 forIdentifier:v6 remove:0];
+  v7 = [(HMPendingRequests *)self _retrieveRequestOfType:type forIdentifier:identifierCopy remove:0];
   os_unfair_lock_unlock(&self->_lock);
 
   return v7;
 }
 
-- (id)removeRequestOfType:(int64_t)a3 forIdentifier:(id)a4
+- (id)removeRequestOfType:(int64_t)type forIdentifier:(id)identifier
 {
-  v6 = a4;
+  identifierCopy = identifier;
   os_unfair_lock_lock_with_options();
-  v7 = [(HMPendingRequests *)self _retrieveRequestOfType:a3 forIdentifier:v6 remove:1];
+  v7 = [(HMPendingRequests *)self _retrieveRequestOfType:type forIdentifier:identifierCopy remove:1];
   os_unfair_lock_unlock(&self->_lock);
 
   return v7;
 }
 
-- (void)addRequest:(id)a3 ofType:(int64_t)a4 forIdentifier:(id)a5
+- (void)addRequest:(id)request ofType:(int64_t)type forIdentifier:(id)identifier
 {
-  v9 = a3;
-  v8 = a5;
+  requestCopy = request;
+  identifierCopy = identifier;
   os_unfair_lock_lock_with_options();
-  [(HMPendingRequests *)self _addRequest:v9 ofType:a4 forIdentifier:v8];
+  [(HMPendingRequests *)self _addRequest:requestCopy ofType:type forIdentifier:identifierCopy];
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (id)_retrieveRequestOfType:(int64_t)a3 forIdentifier:(id)a4 remove:(BOOL)a5
+- (id)_retrieveRequestOfType:(int64_t)type forIdentifier:(id)identifier remove:(BOOL)remove
 {
-  v5 = a5;
-  v8 = a4;
-  if (a3 > 9)
+  removeCopy = remove;
+  identifierCopy = identifier;
+  if (type > 9)
   {
     v11 = 0;
   }
 
   else
   {
-    v9 = [(HMPendingRequests *)self contextLists];
-    v10 = [v9 objectAtIndexedSubscript:a3];
+    contextLists = [(HMPendingRequests *)self contextLists];
+    v10 = [contextLists objectAtIndexedSubscript:type];
 
     if (v10)
     {
-      v11 = [v10 objectForKeyedSubscript:v8];
-      if (v11 && v5)
+      v11 = [v10 objectForKeyedSubscript:identifierCopy];
+      if (v11 && removeCopy)
       {
-        [v10 removeObjectForKey:v8];
+        [v10 removeObjectForKey:identifierCopy];
       }
     }
 
@@ -421,18 +421,18 @@ void __53__HMPendingRequests_uuidForAccessoryDescriptionUUID___block_invoke(uint
   return v11;
 }
 
-- (void)_addRequest:(id)a3 ofType:(int64_t)a4 forIdentifier:(id)a5
+- (void)_addRequest:(id)request ofType:(int64_t)type forIdentifier:(id)identifier
 {
-  v11 = a3;
-  v8 = a5;
-  if (a4 <= 9)
+  requestCopy = request;
+  identifierCopy = identifier;
+  if (type <= 9)
   {
-    v9 = [(HMPendingRequests *)self contextLists];
-    v10 = [v9 objectAtIndexedSubscript:a4];
+    contextLists = [(HMPendingRequests *)self contextLists];
+    v10 = [contextLists objectAtIndexedSubscript:type];
 
-    if (v11 && v10)
+    if (requestCopy && v10)
     {
-      [v10 setObject:v11 forKeyedSubscript:v8];
+      [v10 setObject:requestCopy forKeyedSubscript:identifierCopy];
     }
   }
 }
